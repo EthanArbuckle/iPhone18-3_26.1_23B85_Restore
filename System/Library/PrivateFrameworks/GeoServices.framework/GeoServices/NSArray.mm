@@ -1,14 +1,14 @@
 @interface NSArray
-- (id)_geo_compactMap:(id)a3;
-- (id)_geo_filtered:(id)a3;
-- (id)_geo_map:(id)a3;
+- (id)_geo_compactMap:(id)map;
+- (id)_geo_filtered:(id)_geo_filtered;
+- (id)_geo_map:(id)_geo_map;
 @end
 
 @implementation NSArray
 
-- (id)_geo_compactMap:(id)a3
+- (id)_geo_compactMap:(id)map
 {
-  v4 = a3;
+  mapCopy = map;
   if ([(NSArray *)self count])
   {
     v5 = [NSMutableArray arrayWithCapacity:[(NSArray *)self count]];
@@ -16,8 +16,8 @@
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v6 = self;
-    v7 = [(NSArray *)v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    selfCopy = self;
+    v7 = [(NSArray *)selfCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v7)
     {
       v8 = v7;
@@ -28,17 +28,17 @@
         {
           if (*v14 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(selfCopy);
           }
 
-          v11 = v4[2](v4, *(*(&v13 + 1) + 8 * i));
+          v11 = mapCopy[2](mapCopy, *(*(&v13 + 1) + 8 * i));
           if (v11)
           {
             [v5 addObject:{v11, v13}];
           }
         }
 
-        v8 = [(NSArray *)v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v8 = [(NSArray *)selfCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
       }
 
       while (v8);
@@ -53,9 +53,9 @@
   return v5;
 }
 
-- (id)_geo_map:(id)a3
+- (id)_geo_map:(id)_geo_map
 {
-  v4 = a3;
+  _geo_mapCopy = _geo_map;
   if ([(NSArray *)self count])
   {
     v5 = [NSMutableArray arrayWithCapacity:[(NSArray *)self count]];
@@ -63,8 +63,8 @@
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v6 = self;
-    v7 = [(NSArray *)v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    selfCopy = self;
+    v7 = [(NSArray *)selfCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v7)
     {
       v8 = v7;
@@ -75,14 +75,14 @@
         {
           if (*v14 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(selfCopy);
           }
 
-          v11 = v4[2](v4, *(*(&v13 + 1) + 8 * i));
+          v11 = _geo_mapCopy[2](_geo_mapCopy, *(*(&v13 + 1) + 8 * i));
           [v5 addObject:{v11, v13}];
         }
 
-        v8 = [(NSArray *)v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v8 = [(NSArray *)selfCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
       }
 
       while (v8);
@@ -97,16 +97,16 @@
   return v5;
 }
 
-- (id)_geo_filtered:(id)a3
+- (id)_geo_filtered:(id)_geo_filtered
 {
-  v4 = a3;
+  _geo_filteredCopy = _geo_filtered;
   if ([(NSArray *)self count])
   {
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = sub_10005231C;
     v8[3] = &unk_100083D08;
-    v9 = v4;
+    v9 = _geo_filteredCopy;
     v5 = [NSPredicate predicateWithBlock:v8];
     v6 = [(NSArray *)self filteredArrayUsingPredicate:v5];
   }

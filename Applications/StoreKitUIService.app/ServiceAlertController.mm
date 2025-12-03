@@ -1,25 +1,25 @@
 @interface ServiceAlertController
-- (ServiceAlertController)initWithRemoteViewControllerProxy:(id)a3;
+- (ServiceAlertController)initWithRemoteViewControllerProxy:(id)proxy;
 - (ServiceAlertDelegate)delegate;
-- (void)_disconnectFromAlertView:(id)a3;
-- (void)alertView:(id)a3 didDismissWithButtonIndex:(int64_t)a4;
-- (void)alertViewCancel:(id)a3;
+- (void)_disconnectFromAlertView:(id)view;
+- (void)alertView:(id)view didDismissWithButtonIndex:(int64_t)index;
+- (void)alertViewCancel:(id)cancel;
 - (void)dealloc;
-- (void)presentAlertForDialog:(id)a3;
+- (void)presentAlertForDialog:(id)dialog;
 @end
 
 @implementation ServiceAlertController
 
-- (ServiceAlertController)initWithRemoteViewControllerProxy:(id)a3
+- (ServiceAlertController)initWithRemoteViewControllerProxy:(id)proxy
 {
-  v5 = a3;
+  proxyCopy = proxy;
   v9.receiver = self;
   v9.super_class = ServiceAlertController;
   v6 = [(ServiceAlertController *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_remoteViewControllerProxy, a3);
+    objc_storeStrong(&v6->_remoteViewControllerProxy, proxy);
   }
 
   return v7;
@@ -63,9 +63,9 @@
   [(ServiceAlertController *)&v8 dealloc];
 }
 
-- (void)presentAlertForDialog:(id)a3
+- (void)presentAlertForDialog:(id)dialog
 {
-  v4 = a3;
+  dialogCopy = dialog;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
@@ -86,7 +86,7 @@ LABEL_3:
       }
 
       v10 = objc_getAssociatedObject(*(*(&v27 + 1) + 8 * v9), "com.apple.ios.StoreKitUIService.dialog");
-      v11 = [v4 isEqual:v10];
+      v11 = [dialogCopy isEqual:v10];
 
       if (v11)
       {
@@ -111,20 +111,20 @@ LABEL_3:
 LABEL_9:
 
     v5 = [UIAlertView _alertViewForSessionWithRemoteViewController:self->_remoteViewControllerProxy];
-    objc_setAssociatedObject(v5, "com.apple.ios.StoreKitUIService.dialog", v4, 1);
+    objc_setAssociatedObject(v5, "com.apple.ios.StoreKitUIService.dialog", dialogCopy, 1);
     [(NSMutableArray *)v5 setDelegate:self];
-    v12 = [v4 message];
-    [(NSMutableArray *)v5 setMessage:v12];
+    message = [dialogCopy message];
+    [(NSMutableArray *)v5 setMessage:message];
 
-    v13 = [v4 title];
-    [(NSMutableArray *)v5 setTitle:v13];
+    title = [dialogCopy title];
+    [(NSMutableArray *)v5 setTitle:title];
 
-    v14 = [v4 buttons];
+    buttons = [dialogCopy buttons];
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v15 = [v14 countByEnumeratingWithState:&v23 objects:v31 count:16];
+    v15 = [buttons countByEnumeratingWithState:&v23 objects:v31 count:16];
     if (v15)
     {
       v16 = v15;
@@ -136,17 +136,17 @@ LABEL_9:
         {
           if (*v24 != v17)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(buttons);
           }
 
-          v19 = [*(*(&v23 + 1) + 8 * v18) title];
-          [(NSMutableArray *)v5 addButtonWithTitle:v19];
+          title2 = [*(*(&v23 + 1) + 8 * v18) title];
+          [(NSMutableArray *)v5 addButtonWithTitle:title2];
 
           v18 = v18 + 1;
         }
 
         while (v16 != v18);
-        v16 = [v14 countByEnumeratingWithState:&v23 objects:v31 count:16];
+        v16 = [buttons countByEnumeratingWithState:&v23 objects:v31 count:16];
       }
 
       while (v16);
@@ -167,50 +167,50 @@ LABEL_9:
   }
 }
 
-- (void)alertView:(id)a3 didDismissWithButtonIndex:(int64_t)a4
+- (void)alertView:(id)view didDismissWithButtonIndex:(int64_t)index
 {
-  v6 = a3;
-  v11 = objc_getAssociatedObject(v6, "com.apple.ios.StoreKitUIService.dialog");
-  [(ServiceAlertController *)self _disconnectFromAlertView:v6];
+  viewCopy = view;
+  v11 = objc_getAssociatedObject(viewCopy, "com.apple.ios.StoreKitUIService.dialog");
+  [(ServiceAlertController *)self _disconnectFromAlertView:viewCopy];
 
-  v7 = [(ServiceAlertController *)self delegate];
+  delegate = [(ServiceAlertController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v8 = [v11 buttons];
-    v9 = v8;
-    if ((a4 & 0x8000000000000000) == 0 && [v8 count] > a4)
+    buttons = [v11 buttons];
+    v9 = buttons;
+    if ((index & 0x8000000000000000) == 0 && [buttons count] > index)
     {
-      v10 = [v9 objectAtIndex:a4];
-      [v7 alertController:self alertDidFinishWithButton:v10];
+      v10 = [v9 objectAtIndex:index];
+      [delegate alertController:self alertDidFinishWithButton:v10];
     }
   }
 }
 
-- (void)alertViewCancel:(id)a3
+- (void)alertViewCancel:(id)cancel
 {
-  [(ServiceAlertController *)self _disconnectFromAlertView:a3];
-  v4 = [(ServiceAlertController *)self delegate];
+  [(ServiceAlertController *)self _disconnectFromAlertView:cancel];
+  delegate = [(ServiceAlertController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 alertController:self alertDidFinishWithButton:0];
+    [delegate alertController:self alertDidFinishWithButton:0];
   }
 }
 
-- (void)_disconnectFromAlertView:(id)a3
+- (void)_disconnectFromAlertView:(id)view
 {
-  v6 = a3;
+  viewCopy = view;
   if ([objc_opt_class() instancesRespondToSelector:"_target"])
   {
-    v4 = [v6 _target];
+    _target = [viewCopy _target];
 
-    v6 = v4;
+    viewCopy = _target;
   }
 
   v5 = +[NSNotificationCenter defaultCenter];
-  [v5 removeObserver:v6 name:@"_UIViewServiceHostedWindowWillDisconnectNotificationName" object:0];
-  [v5 removeObserver:v6 name:@"_UIViewServiceRemoteViewControllerWillDisconnectNotificationName" object:0];
-  [v6 setDelegate:0];
-  [(NSMutableArray *)self->_alertViews removeObjectIdenticalTo:v6];
+  [v5 removeObserver:viewCopy name:@"_UIViewServiceHostedWindowWillDisconnectNotificationName" object:0];
+  [v5 removeObserver:viewCopy name:@"_UIViewServiceRemoteViewControllerWillDisconnectNotificationName" object:0];
+  [viewCopy setDelegate:0];
+  [(NSMutableArray *)self->_alertViews removeObjectIdenticalTo:viewCopy];
 }
 
 - (ServiceAlertDelegate)delegate

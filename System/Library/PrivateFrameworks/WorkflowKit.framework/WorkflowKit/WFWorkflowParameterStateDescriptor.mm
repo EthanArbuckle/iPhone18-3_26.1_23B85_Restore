@@ -1,59 +1,59 @@
 @interface WFWorkflowParameterStateDescriptor
-+ (unint64_t)storageBehaviorForPropertyWithKey:(id)a3;
-- (WFWorkflowParameterStateDescriptor)initWithWorkflowName:(id)a3 workflowIdentifier:(id)a4 isSelf:(BOOL)a5;
-- (id)displayNameWithDatabase:(id)a3 containingWorkflow:(id)a4;
-- (id)matchingWorkflowInDatabase:(id)a3 containingWorkflow:(id)a4;
++ (unint64_t)storageBehaviorForPropertyWithKey:(id)key;
+- (WFWorkflowParameterStateDescriptor)initWithWorkflowName:(id)name workflowIdentifier:(id)identifier isSelf:(BOOL)self;
+- (id)displayNameWithDatabase:(id)database containingWorkflow:(id)workflow;
+- (id)matchingWorkflowInDatabase:(id)database containingWorkflow:(id)workflow;
 @end
 
 @implementation WFWorkflowParameterStateDescriptor
 
-+ (unint64_t)storageBehaviorForPropertyWithKey:(id)a3
++ (unint64_t)storageBehaviorForPropertyWithKey:(id)key
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"cachedDisplayName"])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"cachedDisplayName"])
   {
     v5 = 0;
   }
 
   else
   {
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___WFWorkflowParameterStateDescriptor;
-    v5 = objc_msgSendSuper2(&v7, sel_storageBehaviorForPropertyWithKey_, v4);
+    v5 = objc_msgSendSuper2(&v7, sel_storageBehaviorForPropertyWithKey_, keyCopy);
   }
 
   return v5;
 }
 
-- (id)matchingWorkflowInDatabase:(id)a3 containingWorkflow:(id)a4
+- (id)matchingWorkflowInDatabase:(id)database containingWorkflow:(id)workflow
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(WFWorkflowParameterStateDescriptor *)self isSelf];
-  if (v7 && v8)
+  databaseCopy = database;
+  workflowCopy = workflow;
+  isSelf = [(WFWorkflowParameterStateDescriptor *)self isSelf];
+  if (workflowCopy && isSelf)
   {
-    v9 = v7;
+    v9 = workflowCopy;
   }
 
   else
   {
-    v10 = [(WFWorkflowParameterStateDescriptor *)self workflowIdentifier];
-    if (!v10 || ([v6 referenceForWorkflowID:v10], (v9 = objc_claimAutoreleasedReturnValue()) == 0))
+    workflowIdentifier = [(WFWorkflowParameterStateDescriptor *)self workflowIdentifier];
+    if (!workflowIdentifier || ([databaseCopy referenceForWorkflowID:workflowIdentifier], (v9 = objc_claimAutoreleasedReturnValue()) == 0))
     {
-      v11 = [(WFWorkflowParameterStateDescriptor *)self workflowName];
-      v9 = [v6 uniqueVisibleReferenceForWorkflowName:v11];
+      workflowName = [(WFWorkflowParameterStateDescriptor *)self workflowName];
+      v9 = [databaseCopy uniqueVisibleReferenceForWorkflowName:workflowName];
     }
   }
 
   return v9;
 }
 
-- (id)displayNameWithDatabase:(id)a3 containingWorkflow:(id)a4
+- (id)displayNameWithDatabase:(id)database containingWorkflow:(id)workflow
 {
   cachedDisplayName = self->_cachedDisplayName;
   if (!cachedDisplayName)
   {
-    v6 = [(WFWorkflowParameterStateDescriptor *)self matchingWorkflowInDatabase:a3 containingWorkflow:a4];
+    v6 = [(WFWorkflowParameterStateDescriptor *)self matchingWorkflowInDatabase:database containingWorkflow:workflow];
     v7 = v6;
     if (v6)
     {
@@ -75,14 +75,14 @@
   return cachedDisplayName;
 }
 
-- (WFWorkflowParameterStateDescriptor)initWithWorkflowName:(id)a3 workflowIdentifier:(id)a4 isSelf:(BOOL)a5
+- (WFWorkflowParameterStateDescriptor)initWithWorkflowName:(id)name workflowIdentifier:(id)identifier isSelf:(BOOL)self
 {
-  v9 = a3;
-  v10 = a4;
-  if (!v9)
+  nameCopy = name;
+  identifierCopy = identifier;
+  if (!nameCopy)
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"WFWorkflowParameterState.m" lineNumber:45 description:{@"Invalid parameter not satisfying: %@", @"workflowName"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFWorkflowParameterState.m" lineNumber:45 description:{@"Invalid parameter not satisfying: %@", @"workflowName"}];
   }
 
   v19.receiver = self;
@@ -90,15 +90,15 @@
   v11 = [(MTLModel *)&v19 init];
   if (v11)
   {
-    v12 = [v9 copy];
+    v12 = [nameCopy copy];
     workflowName = v11->_workflowName;
     v11->_workflowName = v12;
 
-    v14 = [v10 copy];
+    v14 = [identifierCopy copy];
     workflowIdentifier = v11->_workflowIdentifier;
     v11->_workflowIdentifier = v14;
 
-    v11->_isSelf = a5;
+    v11->_isSelf = self;
     v16 = v11;
   }
 

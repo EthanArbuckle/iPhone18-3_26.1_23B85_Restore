@@ -1,5 +1,5 @@
 @interface MSNPillDataSource
-- (MSNPillDataSource)initWithConnection:(id)a3 identifiers:(id)a4;
+- (MSNPillDataSource)initWithConnection:(id)connection identifiers:(id)identifiers;
 - (NSXPCConnection)connection;
 @end
 
@@ -12,18 +12,18 @@
   return WeakRetained;
 }
 
-- (MSNPillDataSource)initWithConnection:(id)a3 identifiers:(id)a4
+- (MSNPillDataSource)initWithConnection:(id)connection identifiers:(id)identifiers
 {
-  v6 = a3;
-  v7 = a4;
+  connectionCopy = connection;
+  identifiersCopy = identifiers;
   v11.receiver = self;
   v11.super_class = MSNPillDataSource;
   v8 = [(MSNPillDataSource *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_connection, v6);
-    objc_storeStrong(&v9->_identifiers, a4);
+    objc_storeWeak(&v8->_connection, connectionCopy);
+    objc_storeStrong(&v9->_identifiers, identifiers);
   }
 
   return v9;

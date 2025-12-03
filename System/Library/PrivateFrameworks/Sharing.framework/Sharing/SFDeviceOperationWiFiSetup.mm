@@ -4,11 +4,11 @@
 - (uint64_t)_activate2;
 - (void)_activate;
 - (void)_activate2;
-- (void)_bonjourTestFoundDevice:(id)a3;
+- (void)_bonjourTestFoundDevice:(id)device;
 - (void)_bonjourTestStart;
 - (void)_bonjourTestTimeout;
-- (void)_complete:(id)a3;
-- (void)_setupResponse:(id)a3 inResponse:(id)a4;
+- (void)_complete:(id)_complete;
+- (void)_setupResponse:(id)response inResponse:(id)inResponse;
 - (void)activate;
 - (void)invalidate;
 @end
@@ -173,8 +173,8 @@ void __39__SFDeviceOperationWiFiSetup__activate__block_invoke(uint64_t a1, void 
   }
 
   v41 = 0;
-  v3 = [(SFDeviceOperationWiFiSetup *)self createRequestFromWiFiConfig];
-  if (!v3)
+  createRequestFromWiFiConfig = [(SFDeviceOperationWiFiSetup *)self createRequestFromWiFiConfig];
+  if (!createRequestFromWiFiConfig)
   {
     v7 = WiFiCopyCurrentNetworkInfoEx();
     if (v7)
@@ -342,7 +342,7 @@ LABEL_70:
     goto LABEL_71;
   }
 
-  v4 = v3;
+  v4 = createRequestFromWiFiConfig;
   if (gLogCategory_SFDeviceOperationWiFiSetup <= 30 && (gLogCategory_SFDeviceOperationWiFiSetup != -1 || _LogCategory_Initialize()))
   {
     [SFDeviceOperationWiFiSetup _activate2];
@@ -646,11 +646,11 @@ void __47__SFDeviceOperationWiFiSetup__bonjourTestStart__block_invoke_3(uint64_t
   }
 }
 
-- (void)_bonjourTestFoundDevice:(id)a3
+- (void)_bonjourTestFoundDevice:(id)device
 {
-  v4 = a3;
-  v5 = [v4 txtDictionary];
-  v6 = [v5 objectForKeyedSubscript:@"rpBA"];
+  deviceCopy = device;
+  txtDictionary = [deviceCopy txtDictionary];
+  v6 = [txtDictionary objectForKeyedSubscript:@"rpBA"];
 
   if ([v6 isEqual:self->_bonjourTestID])
   {
@@ -744,11 +744,11 @@ LABEL_6:
   [(SFDeviceOperationWiFiSetup *)self _complete:0];
 }
 
-- (void)_complete:(id)a3
+- (void)_complete:(id)_complete
 {
-  v4 = a3;
+  _completeCopy = _complete;
   bonjourTimer = self->_bonjourTimer;
-  v16 = v4;
+  v16 = _completeCopy;
   if (bonjourTimer)
   {
     v6 = bonjourTimer;
@@ -756,7 +756,7 @@ LABEL_6:
     v7 = self->_bonjourTimer;
     self->_bonjourTimer = 0;
 
-    v4 = v16;
+    _completeCopy = v16;
   }
 
   timeoutTimer = self->_timeoutTimer;
@@ -767,7 +767,7 @@ LABEL_6:
     v10 = self->_timeoutTimer;
     self->_timeoutTimer = 0;
 
-    v4 = v16;
+    _completeCopy = v16;
   }
 
   if (self->_completionHandler)
@@ -815,14 +815,14 @@ LABEL_16:
     completionHandler = self->_completionHandler;
     self->_completionHandler = 0;
 
-    v4 = v16;
+    _completeCopy = v16;
   }
 }
 
-- (void)_setupResponse:(id)a3 inResponse:(id)a4
+- (void)_setupResponse:(id)response inResponse:(id)inResponse
 {
-  v6 = a3;
-  v7 = a4;
+  responseCopy = response;
+  inResponseCopy = inResponse;
   mach_absolute_time();
   startTicks = self->_startTicks;
   UpTicksToSecondsF();
@@ -832,9 +832,9 @@ LABEL_16:
     [SFDeviceOperationWiFiSetup _setupResponse:inResponse:];
   }
 
-  if (v6)
+  if (responseCopy)
   {
-    v10 = v6;
+    v10 = responseCopy;
 LABEL_12:
     [(SFDeviceOperationWiFiSetup *)self _complete:v10];
 
@@ -883,8 +883,8 @@ LABEL_13:
 
 - (uint64_t)_activate2
 {
-  v2 = *(a1 + 152);
-  v3 = *(a1 + 144);
+  v2 = *(self + 152);
+  v3 = *(self + 144);
   return LogPrintF();
 }
 

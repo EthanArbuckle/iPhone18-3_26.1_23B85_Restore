@@ -1,6 +1,6 @@
 @interface BCInsetsFittingButton
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (double)bk_extraWidthNeeded;
 @end
 
@@ -27,11 +27,11 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   v13.receiver = self;
   v13.super_class = BCInsetsFittingButton;
-  [(BCInsetsFittingButton *)&v13 sizeThatFits:a3.width, a3.height];
+  [(BCInsetsFittingButton *)&v13 sizeThatFits:fits.width, fits.height];
   v5 = v4;
   v7 = v6;
   v8 = fabs(v6);
@@ -50,9 +50,9 @@
 
 - (double)bk_extraWidthNeeded
 {
-  v3 = [(BCInsetsFittingButton *)self currentImage];
+  currentImage = [(BCInsetsFittingButton *)self currentImage];
 
-  if (v3)
+  if (currentImage)
   {
     [(BCInsetsFittingButton *)self imageEdgeInsets];
     v6 = v4 + v5 + 0.0;
@@ -63,8 +63,8 @@
     v6 = 0.0;
   }
 
-  v7 = [(BCInsetsFittingButton *)self currentTitle];
-  v8 = [v7 length];
+  currentTitle = [(BCInsetsFittingButton *)self currentTitle];
+  v8 = [currentTitle length];
 
   if (v8)
   {

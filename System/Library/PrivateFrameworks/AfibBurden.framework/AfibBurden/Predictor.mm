@@ -1,7 +1,7 @@
 @interface Predictor
-- (BOOL)predict:(void *)a3 afib:(void *)a4 be_mode:(BOOL *)a5 with_error_status:(BOOL *)a6;
+- (BOOL)predict:(void *)predict afib:(void *)afib be_mode:(BOOL *)be_mode with_error_status:(BOOL *)with_error_status;
 - (Predictor)init;
-- (void)resample:(void *)a3 output:(void *)a4;
+- (void)resample:(void *)resample output:(void *)output;
 @end
 
 @implementation Predictor
@@ -81,7 +81,7 @@ LABEL_14:
   return v6;
 }
 
-- (BOOL)predict:(void *)a3 afib:(void *)a4 be_mode:(BOOL *)a5 with_error_status:(BOOL *)a6
+- (BOOL)predict:(void *)predict afib:(void *)afib be_mode:(BOOL *)be_mode with_error_status:(BOOL *)with_error_status
 {
   v78[2] = *MEMORY[0x277D85DE8];
   v74 = 0;
@@ -89,7 +89,7 @@ LABEL_14:
   v76 = 0;
   v72 = 0;
   v73 = 0uLL;
-  [(Predictor *)self resample:a3 output:&v74];
+  [(Predictor *)self resample:predict output:&v74];
   for (i = 0; i != 240; ++i)
   {
     TeModelInput = self->_TeModelInput;
@@ -126,19 +126,19 @@ LABEL_14:
   if (v21 | v27)
   {
     v29 = 0;
-    *a6 = 1;
+    *with_error_status = 1;
   }
 
   else
   {
-    *a6 = 0;
-    v30 = [(Te_c3seuakuh8Output *)self->_TeModelOutput_c3seuakuh8 RHYTHM_TYPE_HEAD_FC_1_fully_connected_BiasAdd];
-    v31 = [v30 objectAtIndexedSubscript:1];
+    *with_error_status = 0;
+    rHYTHM_TYPE_HEAD_FC_1_fully_connected_BiasAdd = [(Te_c3seuakuh8Output *)self->_TeModelOutput_c3seuakuh8 RHYTHM_TYPE_HEAD_FC_1_fully_connected_BiasAdd];
+    v31 = [rHYTHM_TYPE_HEAD_FC_1_fully_connected_BiasAdd objectAtIndexedSubscript:1];
     [v31 doubleValue];
     v33 = exp(v32 * -1.62473583 + 0.976720872);
 
-    v34 = [(Te_tjejjxf8q3Output *)self->_TeModelOutput_tjejjxf8q3 RHYTHM_TYPE_HEAD_FC_1_fully_connected_BiasAdd];
-    v35 = [v34 objectAtIndexedSubscript:1];
+    rHYTHM_TYPE_HEAD_FC_1_fully_connected_BiasAdd2 = [(Te_tjejjxf8q3Output *)self->_TeModelOutput_tjejjxf8q3 RHYTHM_TYPE_HEAD_FC_1_fully_connected_BiasAdd];
+    v35 = [rHYTHM_TYPE_HEAD_FC_1_fully_connected_BiasAdd2 objectAtIndexedSubscript:1];
     [v35 doubleValue];
     v37 = exp(v36 * -1.51426294 + 0.182884028);
 
@@ -146,12 +146,12 @@ LABEL_14:
     v39 = 1.0 / (v37 + 1.0);
     v40 = (v38 + v39) * 0.5;
     v41 = v40;
-    v43 = *(a4 + 1);
-    v42 = *(a4 + 2);
+    v43 = *(afib + 1);
+    v42 = *(afib + 2);
     if (v43 >= v42)
     {
-      v45 = *a4;
-      v46 = v43 - *a4;
+      v45 = *afib;
+      v46 = v43 - *afib;
       v47 = v46 >> 2;
       v48 = (v46 >> 2) + 1;
       if (v48 >> 62)
@@ -174,16 +174,16 @@ LABEL_14:
 
       if (v51)
       {
-        std::__allocate_at_least[abi:ne200100]<std::allocator<int>>(a4, v51);
+        std::__allocate_at_least[abi:ne200100]<std::allocator<int>>(afib, v51);
       }
 
       *(4 * v47) = v41;
       v44 = 4 * v47 + 4;
       memcpy(0, v45, v46);
-      v52 = *a4;
-      *a4 = 0;
-      *(a4 + 1) = v44;
-      *(a4 + 2) = 0;
+      v52 = *afib;
+      *afib = 0;
+      *(afib + 1) = v44;
+      *(afib + 2) = 0;
       if (v52)
       {
         operator delete(v52);
@@ -196,7 +196,7 @@ LABEL_14:
       v44 = (v43 + 1);
     }
 
-    *(a4 + 1) = v44;
+    *(afib + 1) = v44;
     std::to_string(&v68, v38);
     v53 = std::string::insert(&v68, 0, "Tellurium AFib probabilities from two models: ");
     v54 = *&v53->__r_.__value_.__l.__data_;
@@ -280,7 +280,7 @@ LABEL_14:
     }
 
     v64 = 0.930000007;
-    if (*a5)
+    if (*be_mode)
     {
       v64 = 0.150000006;
     }
@@ -302,44 +302,44 @@ LABEL_14:
   return v29;
 }
 
-- (void)resample:(void *)a3 output:(void *)a4
+- (void)resample:(void *)resample output:(void *)output
 {
   __p = 0;
   v19 = 0;
   v20 = 0;
-  std::vector<double>::reserve(a4, 0xF0uLL);
-  v6 = *a3;
-  v7 = *(a3 + 1);
-  if (v7 - *a3 != 8)
+  std::vector<double>::reserve(output, 0xF0uLL);
+  v6 = *resample;
+  v7 = *(resample + 1);
+  if (v7 - *resample != 8)
   {
     v15 = 0;
     do
     {
       v17 = 60.0 / (v6[v15 + 1] - v6[v15]);
       std::vector<double>::push_back[abi:ne200100](&__p, &v17);
-      v6 = *a3;
-      v16 = *(*a3 + 8 * v15++);
-      v7 = *(a3 + 1);
+      v6 = *resample;
+      v16 = *(*resample + 8 * v15++);
+      v7 = *(resample + 1);
     }
 
-    while (((v7 - *a3) >> 3) - 1 > v15);
+    while (((v7 - *resample) >> 3) - 1 > v15);
   }
 
   v8 = v7 - 8;
-  *(a3 + 1) = v8;
+  *(resample + 1) = v8;
   v9 = 0.0;
   if (*v6 > 0.0)
   {
     do
     {
       v17 = 0.0;
-      std::vector<double>::push_back[abi:ne200100](a4, &v17);
+      std::vector<double>::push_back[abi:ne200100](output, &v17);
       v9 = v9 + 0.25;
-      v6 = *a3;
+      v6 = *resample;
     }
 
-    while (v9 < **a3);
-    v8 = *(a3 + 1);
+    while (v9 < **resample);
+    v8 = *(resample + 1);
   }
 
   if (v8 - v6 != 8)
@@ -349,10 +349,10 @@ LABEL_14:
     do
     {
       v17 = *(__p + v10) + (*(__p + v11 + 1) - *(__p + v10)) / (v6[v11 + 1] - v6[v10]) * (v9 - v6[v10]);
-      std::vector<double>::push_back[abi:ne200100](a4, &v17);
+      std::vector<double>::push_back[abi:ne200100](output, &v17);
       v9 = v9 + 0.25;
-      v6 = *a3;
-      if (v9 >= *(*a3 + 8 * (v11 + 1)))
+      v6 = *resample;
+      if (v9 >= *(*resample + 8 * (v11 + 1)))
       {
         ++v11;
       }
@@ -360,22 +360,22 @@ LABEL_14:
       v10 = v11;
     }
 
-    while (((*(a3 + 1) - v6) >> 3) - 1 > v11);
+    while (((*(resample + 1) - v6) >> 3) - 1 > v11);
   }
 
-  v13 = *a4;
-  v12 = *(a4 + 1);
-  if (v12 - *a4 <= 0x77F)
+  v13 = *output;
+  v12 = *(output + 1);
+  if (v12 - *output <= 0x77F)
   {
     do
     {
       v17 = 0.0;
-      std::vector<double>::push_back[abi:ne200100](a4, &v17);
-      v13 = *a4;
-      v12 = *(a4 + 1);
+      std::vector<double>::push_back[abi:ne200100](output, &v17);
+      v13 = *output;
+      v12 = *(output + 1);
     }
 
-    while (v12 - *a4 < 0x780);
+    while (v12 - *output < 0x780);
   }
 
   while (v13 != v12)

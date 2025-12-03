@@ -10,16 +10,16 @@
   v5 = a3;
   if (!v5)
   {
-    [(NSArray(ImageCaptureCoreAdditions) *)a2 copyGroupIntoDictionary:a1];
+    [(NSArray(ImageCaptureCoreAdditions) *)a2 copyGroupIntoDictionary:self];
   }
 
-  v6 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v7 = a1;
-  v8 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  selfCopy = self;
+  v8 = [selfCopy countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v8)
   {
     v9 = v8;
@@ -30,31 +30,31 @@
       {
         if (*v19 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(selfCopy);
         }
 
         v12 = *(*(&v18 + 1) + 8 * i);
         v13 = v5[2](v5, v12);
         if (v13)
         {
-          v14 = [v6 objectForKeyedSubscript:{v13, v18}];
-          if (!v14)
+          array = [dictionary objectForKeyedSubscript:{v13, v18}];
+          if (!array)
           {
-            v14 = [MEMORY[0x1E695DF70] array];
-            [v6 setObject:v14 forKeyedSubscript:v13];
+            array = [MEMORY[0x1E695DF70] array];
+            [dictionary setObject:array forKeyedSubscript:v13];
           }
 
-          [v14 addObject:v12];
+          [array addObject:v12];
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v9 = [selfCopy countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v9);
   }
 
-  v15 = [v6 copy];
+  v15 = [dictionary copy];
   v16 = *MEMORY[0x1E69E9840];
   return v15;
 }

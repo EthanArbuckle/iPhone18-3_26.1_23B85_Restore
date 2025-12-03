@@ -1,62 +1,62 @@
 @interface HFAnalyticsAnnounceUserSettingEvent
-- (HFAnalyticsAnnounceUserSettingEvent)initWithData:(id)a3;
+- (HFAnalyticsAnnounceUserSettingEvent)initWithData:(id)data;
 - (id)payload;
 @end
 
 @implementation HFAnalyticsAnnounceUserSettingEvent
 
-- (HFAnalyticsAnnounceUserSettingEvent)initWithData:(id)a3
+- (HFAnalyticsAnnounceUserSettingEvent)initWithData:(id)data
 {
-  v4 = a3;
-  obj = [v4 objectForKeyedSubscript:@"announceIsEnabledForUser"];
+  dataCopy = data;
+  obj = [dataCopy objectForKeyedSubscript:@"announceIsEnabledForUser"];
   if (!obj)
   {
     NSLog(&cfstr_Hfanalyticsann_6.isa);
   }
 
-  v5 = [v4 objectForKeyedSubscript:@"announceSettingChangedForCurrentUser"];
+  v5 = [dataCopy objectForKeyedSubscript:@"announceSettingChangedForCurrentUser"];
   if (!v5)
   {
     NSLog(&cfstr_Hfanalyticsann_7.isa);
   }
 
-  v6 = [v4 objectForKeyedSubscript:@"announceSettingChangedEnabledForAdminUser"];
+  v6 = [dataCopy objectForKeyedSubscript:@"announceSettingChangedEnabledForAdminUser"];
   if (!v6)
   {
     NSLog(&cfstr_Hfanalyticsann_8.isa);
   }
 
-  v7 = [v4 objectForKeyedSubscript:@"announceSettingChangedByOwner"];
+  v7 = [dataCopy objectForKeyedSubscript:@"announceSettingChangedByOwner"];
   if (!v7)
   {
     NSLog(&cfstr_Hfanalyticsann_0.isa);
   }
 
-  v8 = [v4 objectForKeyedSubscript:@"announceSettingChangedByAdmin"];
+  v8 = [dataCopy objectForKeyedSubscript:@"announceSettingChangedByAdmin"];
   if (!v8)
   {
     NSLog(&cfstr_Hfanalyticsann_1.isa);
   }
 
-  v9 = [v4 objectForKeyedSubscript:@"announceSettingChangedDuringOnboarding"];
+  v9 = [dataCopy objectForKeyedSubscript:@"announceSettingChangedDuringOnboarding"];
   if (!v9)
   {
     NSLog(&cfstr_Hfanalyticsann_2.isa);
   }
 
-  v10 = [v4 objectForKeyedSubscript:@"announceSettingChangedFromUserSettings"];
+  v10 = [dataCopy objectForKeyedSubscript:@"announceSettingChangedFromUserSettings"];
   if (!v10)
   {
     NSLog(&cfstr_Hfanalyticsann_3.isa);
   }
 
-  v11 = [v4 objectForKeyedSubscript:@"announceSettingChangedFromHomePodSettings"];
+  v11 = [dataCopy objectForKeyedSubscript:@"announceSettingChangedFromHomePodSettings"];
   if (!v11)
   {
     NSLog(&cfstr_Hfanalyticsann_4.isa);
   }
 
-  v12 = [v4 objectForKeyedSubscript:@"announceSettingChangeFailed"];
+  v12 = [dataCopy objectForKeyedSubscript:@"announceSettingChangeFailed"];
   if (!v12)
   {
     NSLog(&cfstr_Hfanalyticsann_5.isa);
@@ -85,9 +85,9 @@
     v18 = v6;
     v19 = v5;
     v21 = v20 = v12;
-    v22 = [v21 processName];
+    processName = [v21 processName];
     processName = v14->_processName;
-    v14->_processName = v22;
+    v14->_processName = processName;
 
     v12 = v20;
     v5 = v19;
@@ -105,38 +105,38 @@
 {
   v16.receiver = self;
   v16.super_class = HFAnalyticsAnnounceUserSettingEvent;
-  v3 = [(HFAnalyticsEvent *)&v16 payload];
-  v4 = [v3 mutableCopy];
+  payload = [(HFAnalyticsEvent *)&v16 payload];
+  v4 = [payload mutableCopy];
 
-  v5 = [(HFAnalyticsAnnounceUserSettingEvent *)self announceEnabledForUser];
-  [v4 setObject:v5 forKeyedSubscript:@"intercomIsEnabledForUser"];
+  announceEnabledForUser = [(HFAnalyticsAnnounceUserSettingEvent *)self announceEnabledForUser];
+  [v4 setObject:announceEnabledForUser forKeyedSubscript:@"intercomIsEnabledForUser"];
 
-  v6 = [(HFAnalyticsAnnounceUserSettingEvent *)self settingChangedForCurrentUser];
-  [v4 setObject:v6 forKeyedSubscript:@"intercomSettingChangedForCurrentUser"];
+  settingChangedForCurrentUser = [(HFAnalyticsAnnounceUserSettingEvent *)self settingChangedForCurrentUser];
+  [v4 setObject:settingChangedForCurrentUser forKeyedSubscript:@"intercomSettingChangedForCurrentUser"];
 
-  v7 = [(HFAnalyticsAnnounceUserSettingEvent *)self settingChangedForAdminUser];
-  [v4 setObject:v7 forKeyedSubscript:@"intercomSettingChangedForAdminUser"];
+  settingChangedForAdminUser = [(HFAnalyticsAnnounceUserSettingEvent *)self settingChangedForAdminUser];
+  [v4 setObject:settingChangedForAdminUser forKeyedSubscript:@"intercomSettingChangedForAdminUser"];
 
-  v8 = [(HFAnalyticsAnnounceUserSettingEvent *)self settingChangedByOwner];
-  [v4 setObject:v8 forKeyedSubscript:@"intercomSettingChangedByOwner"];
+  settingChangedByOwner = [(HFAnalyticsAnnounceUserSettingEvent *)self settingChangedByOwner];
+  [v4 setObject:settingChangedByOwner forKeyedSubscript:@"intercomSettingChangedByOwner"];
 
-  v9 = [(HFAnalyticsAnnounceUserSettingEvent *)self settingChangedByAdmin];
-  [v4 setObject:v9 forKeyedSubscript:@"intercomSettingChangedByAdmin"];
+  settingChangedByAdmin = [(HFAnalyticsAnnounceUserSettingEvent *)self settingChangedByAdmin];
+  [v4 setObject:settingChangedByAdmin forKeyedSubscript:@"intercomSettingChangedByAdmin"];
 
-  v10 = [(HFAnalyticsAnnounceUserSettingEvent *)self settingChangedDuringOnboarding];
-  [v4 setObject:v10 forKeyedSubscript:@"intercomSettingChangedDuringOnboarding"];
+  settingChangedDuringOnboarding = [(HFAnalyticsAnnounceUserSettingEvent *)self settingChangedDuringOnboarding];
+  [v4 setObject:settingChangedDuringOnboarding forKeyedSubscript:@"intercomSettingChangedDuringOnboarding"];
 
-  v11 = [(HFAnalyticsAnnounceUserSettingEvent *)self settingChangedFromUserSettings];
-  [v4 setObject:v11 forKeyedSubscript:@"intercomSettingChangedFromUserSettings"];
+  settingChangedFromUserSettings = [(HFAnalyticsAnnounceUserSettingEvent *)self settingChangedFromUserSettings];
+  [v4 setObject:settingChangedFromUserSettings forKeyedSubscript:@"intercomSettingChangedFromUserSettings"];
 
-  v12 = [(HFAnalyticsAnnounceUserSettingEvent *)self settingChangedFromHomePodSettings];
-  [v4 setObject:v12 forKeyedSubscript:@"intercomSettingChangedFromHomePodSettings"];
+  settingChangedFromHomePodSettings = [(HFAnalyticsAnnounceUserSettingEvent *)self settingChangedFromHomePodSettings];
+  [v4 setObject:settingChangedFromHomePodSettings forKeyedSubscript:@"intercomSettingChangedFromHomePodSettings"];
 
-  v13 = [(HFAnalyticsAnnounceUserSettingEvent *)self announceSettingChangeFailed];
-  [v4 setObject:v13 forKeyedSubscript:@"intercomSettingChangeFailed"];
+  announceSettingChangeFailed = [(HFAnalyticsAnnounceUserSettingEvent *)self announceSettingChangeFailed];
+  [v4 setObject:announceSettingChangeFailed forKeyedSubscript:@"intercomSettingChangeFailed"];
 
-  v14 = [(HFAnalyticsAnnounceUserSettingEvent *)self processName];
-  [v4 setObject:v14 forKeyedSubscript:@"processName"];
+  processName = [(HFAnalyticsAnnounceUserSettingEvent *)self processName];
+  [v4 setObject:processName forKeyedSubscript:@"processName"];
 
   return v4;
 }

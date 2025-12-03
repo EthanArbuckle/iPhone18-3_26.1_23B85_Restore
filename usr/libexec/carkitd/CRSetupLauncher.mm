@@ -1,18 +1,18 @@
 @interface CRSetupLauncher
-- (void)_launchRemoteAlertWithUserInfo:(id)a3 errorHandler:(id)a4;
+- (void)_launchRemoteAlertWithUserInfo:(id)info errorHandler:(id)handler;
 - (void)invalidate;
-- (void)launchCarPlaySetupWithUserInfo:(id)a3 errorHandler:(id)a4;
-- (void)remoteAlertHandle:(id)a3 didInvalidateWithError:(id)a4;
-- (void)remoteAlertHandleDidDeactivate:(id)a3;
+- (void)launchCarPlaySetupWithUserInfo:(id)info errorHandler:(id)handler;
+- (void)remoteAlertHandle:(id)handle didInvalidateWithError:(id)error;
+- (void)remoteAlertHandleDidDeactivate:(id)deactivate;
 @end
 
 @implementation CRSetupLauncher
 
-- (void)launchCarPlaySetupWithUserInfo:(id)a3 errorHandler:(id)a4
+- (void)launchCarPlaySetupWithUserInfo:(id)info errorHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  [(CRSetupLauncher *)self setCurrentErrorHandler:v7];
+  infoCopy = info;
+  handlerCopy = handler;
+  [(CRSetupLauncher *)self setCurrentErrorHandler:handlerCopy];
   v8 = CarPairingLogging();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -24,30 +24,30 @@
   [(CRSetupLauncher *)self setSharingClient:v9];
 
   objc_initWeak(buf, self);
-  v10 = [(CRSetupLauncher *)self sharingClient];
+  sharingClient = [(CRSetupLauncher *)self sharingClient];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100016470;
   v13[3] = &unk_1000DD8A0;
   objc_copyWeak(&v16, buf);
-  v11 = v6;
+  v11 = infoCopy;
   v14 = v11;
-  v12 = v7;
+  v12 = handlerCopy;
   v15 = v12;
-  [v10 startProxCardTransactionWithOptions:0 completion:v13];
+  [sharingClient startProxCardTransactionWithOptions:0 completion:v13];
 
   objc_destroyWeak(&v16);
   objc_destroyWeak(buf);
 }
 
-- (void)_launchRemoteAlertWithUserInfo:(id)a3 errorHandler:(id)a4
+- (void)_launchRemoteAlertWithUserInfo:(id)info errorHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CRSetupLauncher *)self remoteAlert];
-  v9 = [v8 isValid];
+  infoCopy = info;
+  handlerCopy = handler;
+  remoteAlert = [(CRSetupLauncher *)self remoteAlert];
+  isValid = [remoteAlert isValid];
 
-  if (v9)
+  if (isValid)
   {
     v10 = CarPairingLogging();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -56,9 +56,9 @@
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Not showing CarPlaySetup - alert is still valid.", v14, 2u);
     }
 
-    if (v7)
+    if (handlerCopy)
     {
-      v7[2](v7, 0);
+      handlerCopy[2](handlerCopy, 0);
     }
   }
 
@@ -66,7 +66,7 @@
   {
     v11 = [[SBSRemoteAlertDefinition alloc] initWithServiceName:@"com.apple.CarPlaySetupApp" viewControllerClassName:@"CARSetupContainerViewController"];
     v12 = objc_alloc_init(SBSRemoteAlertConfigurationContext);
-    [v12 setUserInfo:v6];
+    [v12 setUserInfo:infoCopy];
     v13 = [SBSRemoteAlertHandle newHandleWithDefinition:v11 configurationContext:v12];
     [v13 registerObserver:self];
     [v13 activateWithContext:0];
@@ -74,7 +74,7 @@
   }
 }
 
-- (void)remoteAlertHandleDidDeactivate:(id)a3
+- (void)remoteAlertHandleDidDeactivate:(id)deactivate
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -84,17 +84,17 @@
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)remoteAlertHandle:(id)a3 didInvalidateWithError:(id)a4
+- (void)remoteAlertHandle:(id)handle didInvalidateWithError:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   objc_initWeak(&location, self);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000169B4;
   block[3] = &unk_1000DD8E8;
   objc_copyWeak(&v9, &location);
-  v8 = v5;
-  v6 = v5;
+  v8 = errorCopy;
+  v6 = errorCopy;
   dispatch_async(&_dispatch_main_q, block);
 
   objc_destroyWeak(&v9);
@@ -111,15 +111,15 @@
   }
 
   [(CRSetupLauncher *)self setCurrentErrorHandler:0];
-  v4 = [(CRSetupLauncher *)self remoteAlert];
-  [v4 unregisterObserver:self];
+  remoteAlert = [(CRSetupLauncher *)self remoteAlert];
+  [remoteAlert unregisterObserver:self];
 
-  v5 = [(CRSetupLauncher *)self remoteAlert];
-  [v5 invalidate];
+  remoteAlert2 = [(CRSetupLauncher *)self remoteAlert];
+  [remoteAlert2 invalidate];
 
   [(CRSetupLauncher *)self setRemoteAlert:0];
-  v6 = [(CRSetupLauncher *)self sharingClient];
-  [v6 invalidate];
+  sharingClient = [(CRSetupLauncher *)self sharingClient];
+  [sharingClient invalidate];
 
   [(CRSetupLauncher *)self setSharingClient:0];
 }

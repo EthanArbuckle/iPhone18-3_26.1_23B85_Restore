@@ -1,19 +1,19 @@
 @interface AWDMMCSChunkingInfo
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addChunkingError:(id)a3;
-- (void)copyTo:(id)a3;
+- (void)addChunkingError:(id)error;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasCancelled:(BOOL)a3;
-- (void)setHasChunkCount:(BOOL)a3;
-- (void)setHasDuration:(BOOL)a3;
-- (void)setHasErrorCode:(BOOL)a3;
-- (void)setHasStartTime:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasCancelled:(BOOL)cancelled;
+- (void)setHasChunkCount:(BOOL)count;
+- (void)setHasDuration:(BOOL)duration;
+- (void)setHasErrorCode:(BOOL)code;
+- (void)setHasStartTime:(BOOL)time;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDMMCSChunkingInfo
@@ -27,9 +27,9 @@
   [(AWDMMCSChunkingInfo *)&v3 dealloc];
 }
 
-- (void)setHasChunkCount:(BOOL)a3
+- (void)setHasChunkCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 2;
   }
@@ -42,9 +42,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasStartTime:(BOOL)a3
+- (void)setHasStartTime:(BOOL)time
 {
-  if (a3)
+  if (time)
   {
     v3 = 8;
   }
@@ -57,9 +57,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasDuration:(BOOL)a3
+- (void)setHasDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 4;
   }
@@ -72,9 +72,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasErrorCode:(BOOL)a3
+- (void)setHasErrorCode:(BOOL)code
 {
-  if (a3)
+  if (code)
   {
     v3 = 16;
   }
@@ -87,9 +87,9 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasCancelled:(BOOL)a3
+- (void)setHasCancelled:(BOOL)cancelled
 {
-  if (a3)
+  if (cancelled)
   {
     v3 = 32;
   }
@@ -102,7 +102,7 @@
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)addChunkingError:(id)a3
+- (void)addChunkingError:(id)error
 {
   chunkingErrors = self->_chunkingErrors;
   if (!chunkingErrors)
@@ -111,7 +111,7 @@
     self->_chunkingErrors = chunkingErrors;
   }
 
-  [(NSMutableArray *)chunkingErrors addObject:a3];
+  [(NSMutableArray *)chunkingErrors addObject:error];
 }
 
 - (id)description
@@ -124,11 +124,11 @@
 - (id)dictionaryRepresentation
 {
   v20 = *MEMORY[0x29EDCA608];
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if ((has & 2) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_chunkCount), @"chunkCount"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_chunkCount), @"chunkCount"}];
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -147,7 +147,7 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_byteCount), @"byteCount"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_byteCount), @"byteCount"}];
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -161,30 +161,30 @@ LABEL_4:
   }
 
 LABEL_24:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_startTime), @"startTime"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_startTime), @"startTime"}];
   if ((*&self->_has & 4) != 0)
   {
 LABEL_5:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_duration), @"duration"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_duration), @"duration"}];
   }
 
 LABEL_6:
   errorDomain = self->_errorDomain;
   if (errorDomain)
   {
-    [v3 setObject:errorDomain forKey:@"errorDomain"];
+    [dictionary setObject:errorDomain forKey:@"errorDomain"];
   }
 
   v6 = self->_has;
   if ((v6 & 0x10) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_errorCode), @"errorCode"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_errorCode), @"errorCode"}];
     v6 = self->_has;
   }
 
   if ((v6 & 0x20) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_cancelled), @"cancelled"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_cancelled), @"cancelled"}];
   }
 
   if ([(NSMutableArray *)self->_chunkingErrors count])
@@ -218,14 +218,14 @@ LABEL_6:
       while (v10);
     }
 
-    [v3 setObject:v7 forKey:@"chunkingError"];
+    [dictionary setObject:v7 forKey:@"chunkingError"];
   }
 
   v13 = *MEMORY[0x29EDCA608];
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v24 = *MEMORY[0x29EDCA608];
   has = self->_has;
@@ -327,13 +327,13 @@ LABEL_6:
   v15 = *MEMORY[0x29EDCA608];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(a3 + 2) = self->_chunkCount;
-    *(a3 + 68) |= 2u;
+    *(to + 2) = self->_chunkCount;
+    *(to + 68) |= 2u;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -352,8 +352,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(a3 + 1) = self->_byteCount;
-  *(a3 + 68) |= 1u;
+  *(to + 1) = self->_byteCount;
+  *(to + 68) |= 1u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -367,54 +367,54 @@ LABEL_4:
   }
 
 LABEL_19:
-  *(a3 + 4) = self->_startTime;
-  *(a3 + 68) |= 8u;
+  *(to + 4) = self->_startTime;
+  *(to + 68) |= 8u;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_5:
-    *(a3 + 3) = self->_duration;
-    *(a3 + 68) |= 4u;
+    *(to + 3) = self->_duration;
+    *(to + 68) |= 4u;
   }
 
 LABEL_6:
   if (self->_errorDomain)
   {
-    [a3 setErrorDomain:?];
+    [to setErrorDomain:?];
   }
 
   v6 = self->_has;
   if ((v6 & 0x10) != 0)
   {
-    *(a3 + 12) = self->_errorCode;
-    *(a3 + 68) |= 0x10u;
+    *(to + 12) = self->_errorCode;
+    *(to + 68) |= 0x10u;
     v6 = self->_has;
   }
 
   if ((v6 & 0x20) != 0)
   {
-    *(a3 + 64) = self->_cancelled;
-    *(a3 + 68) |= 0x20u;
+    *(to + 64) = self->_cancelled;
+    *(to + 68) |= 0x20u;
   }
 
   if ([(AWDMMCSChunkingInfo *)self chunkingErrorsCount])
   {
-    [a3 clearChunkingErrors];
-    v7 = [(AWDMMCSChunkingInfo *)self chunkingErrorsCount];
-    if (v7)
+    [to clearChunkingErrors];
+    chunkingErrorsCount = [(AWDMMCSChunkingInfo *)self chunkingErrorsCount];
+    if (chunkingErrorsCount)
     {
-      v8 = v7;
+      v8 = chunkingErrorsCount;
       for (i = 0; i != v8; ++i)
       {
-        [a3 addChunkingError:{-[AWDMMCSChunkingInfo chunkingErrorAtIndex:](self, "chunkingErrorAtIndex:", i)}];
+        [to addChunkingError:{-[AWDMMCSChunkingInfo chunkingErrorAtIndex:](self, "chunkingErrorAtIndex:", i)}];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v22 = *MEMORY[0x29EDCA608];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 2) != 0)
@@ -465,7 +465,7 @@ LABEL_5:
 
 LABEL_6:
 
-  *(v6 + 56) = [(NSString *)self->_errorDomain copyWithZone:a3];
+  *(v6 + 56) = [(NSString *)self->_errorDomain copyWithZone:zone];
   v8 = self->_has;
   if ((v8 & 0x10) != 0)
   {
@@ -499,7 +499,7 @@ LABEL_6:
           objc_enumerationMutation(chunkingErrors);
         }
 
-        v14 = [*(*(&v17 + 1) + 8 * i) copyWithZone:a3];
+        v14 = [*(*(&v17 + 1) + 8 * i) copyWithZone:zone];
         [v6 addChunkingError:v14];
       }
 
@@ -513,70 +513,70 @@ LABEL_6:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (!v5)
   {
     return v5;
   }
 
   has = self->_has;
-  v7 = *(a3 + 68);
+  v7 = *(equal + 68);
   if ((has & 2) != 0)
   {
-    if ((*(a3 + 68) & 2) == 0 || self->_chunkCount != *(a3 + 2))
+    if ((*(equal + 68) & 2) == 0 || self->_chunkCount != *(equal + 2))
     {
       goto LABEL_35;
     }
   }
 
-  else if ((*(a3 + 68) & 2) != 0)
+  else if ((*(equal + 68) & 2) != 0)
   {
     goto LABEL_35;
   }
 
   if (*&self->_has)
   {
-    if ((*(a3 + 68) & 1) == 0 || self->_byteCount != *(a3 + 1))
+    if ((*(equal + 68) & 1) == 0 || self->_byteCount != *(equal + 1))
     {
       goto LABEL_35;
     }
   }
 
-  else if (*(a3 + 68))
+  else if (*(equal + 68))
   {
     goto LABEL_35;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(a3 + 68) & 8) == 0 || self->_startTime != *(a3 + 4))
+    if ((*(equal + 68) & 8) == 0 || self->_startTime != *(equal + 4))
     {
       goto LABEL_35;
     }
   }
 
-  else if ((*(a3 + 68) & 8) != 0)
+  else if ((*(equal + 68) & 8) != 0)
   {
     goto LABEL_35;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(a3 + 68) & 4) == 0 || self->_duration != *(a3 + 3))
+    if ((*(equal + 68) & 4) == 0 || self->_duration != *(equal + 3))
     {
       goto LABEL_35;
     }
   }
 
-  else if ((*(a3 + 68) & 4) != 0)
+  else if ((*(equal + 68) & 4) != 0)
   {
     goto LABEL_35;
   }
 
   errorDomain = self->_errorDomain;
-  if (errorDomain | *(a3 + 7))
+  if (errorDomain | *(equal + 7))
   {
     v5 = [(NSString *)errorDomain isEqual:?];
     if (!v5)
@@ -587,34 +587,34 @@ LABEL_6:
     has = self->_has;
   }
 
-  v9 = *(a3 + 68);
+  v9 = *(equal + 68);
   if ((has & 0x10) != 0)
   {
-    if ((*(a3 + 68) & 0x10) == 0 || self->_errorCode != *(a3 + 12))
+    if ((*(equal + 68) & 0x10) == 0 || self->_errorCode != *(equal + 12))
     {
       goto LABEL_35;
     }
   }
 
-  else if ((*(a3 + 68) & 0x10) != 0)
+  else if ((*(equal + 68) & 0x10) != 0)
   {
     goto LABEL_35;
   }
 
   if ((has & 0x20) != 0)
   {
-    if ((*(a3 + 68) & 0x20) != 0)
+    if ((*(equal + 68) & 0x20) != 0)
     {
-      v11 = *(a3 + 64);
+      v11 = *(equal + 64);
       if (self->_cancelled)
       {
-        if ((*(a3 + 64) & 1) == 0)
+        if ((*(equal + 64) & 1) == 0)
         {
           goto LABEL_35;
         }
       }
 
-      else if (*(a3 + 64))
+      else if (*(equal + 64))
       {
         goto LABEL_35;
       }
@@ -627,14 +627,14 @@ LABEL_35:
     return v5;
   }
 
-  if ((*(a3 + 68) & 0x20) != 0)
+  if ((*(equal + 68) & 0x20) != 0)
   {
     goto LABEL_35;
   }
 
 LABEL_32:
   chunkingErrors = self->_chunkingErrors;
-  if (chunkingErrors | *(a3 + 5))
+  if (chunkingErrors | *(equal + 5))
   {
 
     LOBYTE(v5) = [(NSMutableArray *)chunkingErrors isEqual:?];
@@ -725,15 +725,15 @@ LABEL_12:
   return v4 ^ v3 ^ v5 ^ v6 ^ v8 ^ v9 ^ v7 ^ [(NSMutableArray *)self->_chunkingErrors hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v18 = *MEMORY[0x29EDCA608];
-  v5 = *(a3 + 68);
+  v5 = *(from + 68);
   if ((v5 & 2) != 0)
   {
-    self->_chunkCount = *(a3 + 2);
+    self->_chunkCount = *(from + 2);
     *&self->_has |= 2u;
-    v5 = *(a3 + 68);
+    v5 = *(from + 68);
     if ((v5 & 1) == 0)
     {
 LABEL_3:
@@ -746,14 +746,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(a3 + 68) & 1) == 0)
+  else if ((*(from + 68) & 1) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_byteCount = *(a3 + 1);
+  self->_byteCount = *(from + 1);
   *&self->_has |= 1u;
-  v5 = *(a3 + 68);
+  v5 = *(from + 68);
   if ((v5 & 8) == 0)
   {
 LABEL_4:
@@ -766,32 +766,32 @@ LABEL_4:
   }
 
 LABEL_22:
-  self->_startTime = *(a3 + 4);
+  self->_startTime = *(from + 4);
   *&self->_has |= 8u;
-  if ((*(a3 + 68) & 4) != 0)
+  if ((*(from + 68) & 4) != 0)
   {
 LABEL_5:
-    self->_duration = *(a3 + 3);
+    self->_duration = *(from + 3);
     *&self->_has |= 4u;
   }
 
 LABEL_6:
-  if (*(a3 + 7))
+  if (*(from + 7))
   {
     [(AWDMMCSChunkingInfo *)self setErrorDomain:?];
   }
 
-  v6 = *(a3 + 68);
+  v6 = *(from + 68);
   if ((v6 & 0x10) != 0)
   {
-    self->_errorCode = *(a3 + 12);
+    self->_errorCode = *(from + 12);
     *&self->_has |= 0x10u;
-    v6 = *(a3 + 68);
+    v6 = *(from + 68);
   }
 
   if ((v6 & 0x20) != 0)
   {
-    self->_cancelled = *(a3 + 64);
+    self->_cancelled = *(from + 64);
     *&self->_has |= 0x20u;
   }
 
@@ -799,7 +799,7 @@ LABEL_6:
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v7 = *(a3 + 5);
+  v7 = *(from + 5);
   v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {

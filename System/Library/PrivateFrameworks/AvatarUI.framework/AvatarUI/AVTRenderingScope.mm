@@ -1,31 +1,31 @@
 @interface AVTRenderingScope
-+ (double)extraMagnifyingFactorForFramingMode:(id)a3;
-+ (double)thumbnailHeightRatioForFramingMode:(id)a3;
-+ (double)widthForRenderingType:(int64_t)a3 options:(unint64_t)a4;
++ (double)extraMagnifyingFactorForFramingMode:(id)mode;
++ (double)thumbnailHeightRatioForFramingMode:(id)mode;
++ (double)widthForRenderingType:(int64_t)type options:(unint64_t)options;
 + (id)funCamCarouselThumbnailScope;
 + (id)gridThumbnailScope;
 + (id)largeThumbnailScope;
 + (id)listControllerThumbnailScope;
 + (id)simplePickerThumbnailScope;
 + (id)thumbnailScope;
-+ (unint64_t)scopeOptionsForEnvironment:(id)a3;
-- (AVTRenderingScope)initWithCoder:(id)a3;
-- (AVTRenderingScope)initWithRenderingType:(int64_t)a3 scale:(double)a4 options:(unint64_t)a5 framingMode:(id)a6 pose:(id)a7 size:(CGSize)a8;
-- (AVTRenderingScope)initWithRenderingType:(int64_t)a3 scale:(double)a4 options:(unint64_t)a5 framingMode:(id)a6 pose:(id)a7 sizeModifier:(float)a8;
-- (BOOL)isEqual:(id)a3;
++ (unint64_t)scopeOptionsForEnvironment:(id)environment;
+- (AVTRenderingScope)initWithCoder:(id)coder;
+- (AVTRenderingScope)initWithRenderingType:(int64_t)type scale:(double)scale options:(unint64_t)options framingMode:(id)mode pose:(id)pose size:(CGSize)size;
+- (AVTRenderingScope)initWithRenderingType:(int64_t)type scale:(double)scale options:(unint64_t)options framingMode:(id)mode pose:(id)pose sizeModifier:(float)modifier;
+- (BOOL)isEqual:(id)equal;
 - (CGSize)size;
-- (id)adaptedFramingModeForObjectType:(int64_t)a3;
+- (id)adaptedFramingModeForObjectType:(int64_t)type;
 - (id)cacheableResourceAssociatedIdentifier;
-- (id)copyApplyingPoseOverride:(id)a3;
-- (id)copyWithFramingMode:(id)a3;
-- (id)copyWithPose:(id)a3;
-- (id)copyWithSize:(CGSize)a3 framingMode:(id)a4;
-- (id)copyWithSizeModifier:(float)a3;
+- (id)copyApplyingPoseOverride:(id)override;
+- (id)copyWithFramingMode:(id)mode;
+- (id)copyWithPose:(id)pose;
+- (id)copyWithSize:(CGSize)size framingMode:(id)mode;
+- (id)copyWithSizeModifier:(float)modifier;
 - (id)description;
 - (id)framingModeIdentifier;
 - (unint64_t)cacheableResourceAssociatedCost;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AVTRenderingScope
@@ -33,34 +33,34 @@
 - (id)cacheableResourceAssociatedIdentifier
 {
   v3 = objc_alloc_init(MEMORY[0x1E696AD60]);
-  v4 = [(AVTRenderingScope *)self framingModeIdentifier];
+  framingModeIdentifier = [(AVTRenderingScope *)self framingModeIdentifier];
 
-  if (v4)
+  if (framingModeIdentifier)
   {
-    v5 = [(AVTRenderingScope *)self framingModeIdentifier];
-    v6 = [MEMORY[0x1E696AB08] URLPathAllowedCharacterSet];
-    v7 = [v5 stringByAddingPercentEncodingWithAllowedCharacters:v6];
+    framingModeIdentifier2 = [(AVTRenderingScope *)self framingModeIdentifier];
+    uRLPathAllowedCharacterSet = [MEMORY[0x1E696AB08] URLPathAllowedCharacterSet];
+    v7 = [framingModeIdentifier2 stringByAddingPercentEncodingWithAllowedCharacters:uRLPathAllowedCharacterSet];
 
     [v3 appendFormat:@"_%@", v7];
   }
 
-  v8 = [(AVTRenderingScope *)self pose];
+  pose = [(AVTRenderingScope *)self pose];
 
-  if (v8)
+  if (pose)
   {
-    v9 = [(AVTRenderingScope *)self pose];
-    v10 = [v9 _avtui_identifier];
+    pose2 = [(AVTRenderingScope *)self pose];
+    _avtui_identifier = [pose2 _avtui_identifier];
 
-    [v3 appendFormat:@"_%@", v10];
+    [v3 appendFormat:@"_%@", _avtui_identifier];
   }
 
-  v11 = [(AVTRenderingScope *)self options];
+  options = [(AVTRenderingScope *)self options];
   [(AVTRenderingScope *)self size];
   v13 = v12;
   [(AVTRenderingScope *)self size];
   v15 = v14;
   [(AVTRenderingScope *)self scale];
-  [v3 appendFormat:@"_e%0.2g_o%lu_%2.2fx%2.2fAt%2.2fx", 0x3FF0000000000000, v11, v13, v15, v16];
+  [v3 appendFormat:@"_e%0.2g_o%lu_%2.2fx%2.2fAt%2.2fx", 0x3FF0000000000000, options, v13, v15, v16];
   v17 = [v3 copy];
 
   return v17;
@@ -74,56 +74,56 @@
   return (v4 * v5);
 }
 
-- (AVTRenderingScope)initWithCoder:(id)a3
+- (AVTRenderingScope)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"renderingType"];
-  v6 = [v5 integerValue];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"renderingType"];
+  integerValue = [v5 integerValue];
 
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"scale"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"scale"];
   [v7 doubleValue];
   v9 = v8;
 
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"framingMode"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"framingMode"];
   v11 = MEMORY[0x1E695DFD8];
   v12 = objc_opt_class();
   v13 = objc_opt_class();
   v14 = objc_opt_class();
   v15 = [v11 setWithObjects:{v12, v13, v14, objc_opt_class(), 0}];
-  v16 = [v4 decodeObjectOfClasses:v15 forKey:@"pose"];
+  v16 = [coderCopy decodeObjectOfClasses:v15 forKey:@"pose"];
   v17 = [objc_alloc(MEMORY[0x1E698E288]) initWithDictionaryRepresentation:v16];
-  [v4 decodeCGSizeForKey:@"size"];
+  [coderCopy decodeCGSizeForKey:@"size"];
   v19 = v18;
   v21 = v20;
 
   v22 = +[AVTUIEnvironment defaultEnvironment];
-  v23 = [(AVTRenderingScope *)self initWithRenderingType:v6 scale:[AVTRenderingScope scopeOptionsForEnvironment:?]pose:v10 size:v17, v9, v19, v21];
+  v23 = [(AVTRenderingScope *)self initWithRenderingType:integerValue scale:[AVTRenderingScope scopeOptionsForEnvironment:?]pose:v10 size:v17, v9, v19, v21];
 
   return v23;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E696AD98];
-  v12 = a3;
+  coderCopy = coder;
   v5 = [v4 numberWithInt:{-[AVTRenderingScope renderingType](self, "renderingType")}];
-  [v12 encodeObject:v5 forKey:@"renderingType"];
+  [coderCopy encodeObject:v5 forKey:@"renderingType"];
 
   v6 = MEMORY[0x1E696AD98];
   [(AVTRenderingScope *)self scale];
   *&v7 = v7;
   v8 = [v6 numberWithFloat:v7];
-  [v12 encodeObject:v8 forKey:@"scale"];
+  [coderCopy encodeObject:v8 forKey:@"scale"];
 
-  v9 = [(AVTRenderingScope *)self framingMode];
-  [v12 encodeObject:v9 forKey:@"framingMode"];
+  framingMode = [(AVTRenderingScope *)self framingMode];
+  [coderCopy encodeObject:framingMode forKey:@"framingMode"];
 
-  v10 = [(AVTRenderingScope *)self pose];
-  v11 = [v10 dictionaryRepresentation];
-  [v12 encodeObject:v11 forKey:@"pose"];
+  pose = [(AVTRenderingScope *)self pose];
+  dictionaryRepresentation = [pose dictionaryRepresentation];
+  [coderCopy encodeObject:dictionaryRepresentation forKey:@"pose"];
 
   [(AVTRenderingScope *)self size];
-  [v12 encodeCGSize:@"size" forKey:?];
+  [coderCopy encodeCGSize:@"size" forKey:?];
 }
 
 + (id)thumbnailScope
@@ -132,9 +132,9 @@
   [v3 mainScreenScale];
   v5 = v4;
 
-  v6 = [a1 alloc];
+  v6 = [self alloc];
   v7 = +[AVTUIEnvironment defaultEnvironment];
-  v8 = [v6 initWithRenderingType:1 scale:objc_msgSend(a1 options:{"scopeOptionsForEnvironment:", v7), v5}];
+  v8 = [v6 initWithRenderingType:1 scale:objc_msgSend(self options:{"scopeOptionsForEnvironment:", v7), v5}];
 
   return v8;
 }
@@ -145,9 +145,9 @@
   [v3 mainScreenScale];
   v5 = v4;
 
-  v6 = [a1 alloc];
+  v6 = [self alloc];
   v7 = +[AVTUIEnvironment defaultEnvironment];
-  v8 = [v6 initWithRenderingType:2 scale:objc_msgSend(a1 options:{"scopeOptionsForEnvironment:", v7), v5}];
+  v8 = [v6 initWithRenderingType:2 scale:objc_msgSend(self options:{"scopeOptionsForEnvironment:", v7), v5}];
 
   return v8;
 }
@@ -158,12 +158,12 @@
   [v3 mainScreenScale];
   v5 = v4;
 
-  v6 = [a1 alloc];
+  v6 = [self alloc];
   v7 = +[AVTUIEnvironment defaultEnvironment];
-  v8 = [a1 scopeOptionsForEnvironment:v7];
+  v8 = [self scopeOptionsForEnvironment:v7];
   v9 = *MEMORY[0x1E698E240];
-  v10 = [MEMORY[0x1E698E288] friendlyPose];
-  v11 = [v6 initWithRenderingType:3 scale:v8 options:v9 framingMode:v10 pose:v5];
+  friendlyPose = [MEMORY[0x1E698E288] friendlyPose];
+  v11 = [v6 initWithRenderingType:3 scale:v8 options:v9 framingMode:friendlyPose pose:v5];
 
   return v11;
 }
@@ -176,10 +176,10 @@
 
   v6 = [AVTRenderingScope alloc];
   v7 = +[AVTUIEnvironment defaultEnvironment];
-  v8 = [a1 scopeOptionsForEnvironment:v7];
+  v8 = [self scopeOptionsForEnvironment:v7];
   v9 = *MEMORY[0x1E698E228];
-  v10 = [MEMORY[0x1E698E288] friendlyPose];
-  v11 = [(AVTRenderingScope *)v6 initWithRenderingType:2 scale:v8 options:v9 framingMode:v10 pose:v5];
+  friendlyPose = [MEMORY[0x1E698E288] friendlyPose];
+  v11 = [(AVTRenderingScope *)v6 initWithRenderingType:2 scale:v8 options:v9 framingMode:friendlyPose pose:v5];
 
   return v11;
 }
@@ -192,10 +192,10 @@
 
   v6 = [AVTRenderingScope alloc];
   v7 = +[AVTUIEnvironment defaultEnvironment];
-  v8 = [a1 scopeOptionsForEnvironment:v7];
+  v8 = [self scopeOptionsForEnvironment:v7];
   v9 = *MEMORY[0x1E698E238];
-  v10 = [MEMORY[0x1E698E288] friendlyPose];
-  v11 = [(AVTRenderingScope *)v6 initWithRenderingType:102 scale:v8 options:v9 framingMode:v10 pose:v5];
+  friendlyPose = [MEMORY[0x1E698E288] friendlyPose];
+  v11 = [(AVTRenderingScope *)v6 initWithRenderingType:102 scale:v8 options:v9 framingMode:friendlyPose pose:v5];
 
   return v11;
 }
@@ -208,19 +208,19 @@
 
   v6 = [AVTRenderingScope alloc];
   v7 = +[AVTUIEnvironment defaultEnvironment];
-  v8 = [a1 scopeOptionsForEnvironment:v7];
+  v8 = [self scopeOptionsForEnvironment:v7];
   v9 = *MEMORY[0x1E698E240];
-  v10 = [MEMORY[0x1E698E288] friendlyPose];
-  v11 = [(AVTRenderingScope *)v6 initWithRenderingType:103 scale:v8 options:v9 framingMode:v10 pose:v5];
+  friendlyPose = [MEMORY[0x1E698E288] friendlyPose];
+  v11 = [(AVTRenderingScope *)v6 initWithRenderingType:103 scale:v8 options:v9 framingMode:friendlyPose pose:v5];
 
   return v11;
 }
 
-+ (unint64_t)scopeOptionsForEnvironment:(id)a3
++ (unint64_t)scopeOptionsForEnvironment:(id)environment
 {
-  v3 = a3;
-  v4 = ([v3 deviceIsPad] & 1) != 0 || objc_msgSend(v3, "deviceIsMac");
-  [v3 mainScreenSize];
+  environmentCopy = environment;
+  v4 = ([environmentCopy deviceIsPad] & 1) != 0 || objc_msgSend(environmentCopy, "deviceIsMac");
+  [environmentCopy mainScreenSize];
   if (v5 <= 375.0)
   {
     v4 |= 2uLL;
@@ -229,11 +229,11 @@
   return v4;
 }
 
-+ (double)widthForRenderingType:(int64_t)a3 options:(unint64_t)a4
++ (double)widthForRenderingType:(int64_t)type options:(unint64_t)options
 {
-  if (a3 > 100)
+  if (type > 100)
   {
-    switch(a3)
+    switch(type)
     {
       case 'e':
         return 102.0;
@@ -246,32 +246,32 @@
     return 166.0;
   }
 
-  if (a3 == 2)
+  if (type == 2)
   {
-    v5 = (a4 & 1) == 0;
+    v5 = (options & 1) == 0;
     v6 = &unk_1BB4164C0;
     return v6[v5];
   }
 
-  if (a3 == 3)
+  if (type == 3)
   {
-    v5 = (a4 & 1) == 0;
+    v5 = (options & 1) == 0;
     v6 = &unk_1BB4164B0;
     return v6[v5];
   }
 
-  if (a3 != 100)
+  if (type != 100)
   {
     return 166.0;
   }
 
   result = 84.0;
-  if ((a4 & 1) == 0)
+  if ((options & 1) == 0)
   {
     result = 114.0;
   }
 
-  if ((a4 & 2) != 0)
+  if ((options & 2) != 0)
   {
     return 83.0;
   }
@@ -279,13 +279,13 @@
   return result;
 }
 
-+ (double)thumbnailHeightRatioForFramingMode:(id)a3
++ (double)thumbnailHeightRatioForFramingMode:(id)mode
 {
-  v3 = a3;
+  modeCopy = mode;
   v4 = 1.2;
-  if (([v3 isEqual:*MEMORY[0x1E698E248]] & 1) == 0 && (objc_msgSend(v3, "isEqual:", *MEMORY[0x1E698E250]) & 1) == 0)
+  if (([modeCopy isEqual:*MEMORY[0x1E698E248]] & 1) == 0 && (objc_msgSend(modeCopy, "isEqual:", *MEMORY[0x1E698E250]) & 1) == 0)
   {
-    if ([v3 isEqual:*MEMORY[0x1E698E238]])
+    if ([modeCopy isEqual:*MEMORY[0x1E698E238]])
     {
       v4 = 1.31;
     }
@@ -299,9 +299,9 @@
   return v4;
 }
 
-+ (double)extraMagnifyingFactorForFramingMode:(id)a3
++ (double)extraMagnifyingFactorForFramingMode:(id)mode
 {
-  v3 = [a3 isEqual:*MEMORY[0x1E698E238]];
+  v3 = [mode isEqual:*MEMORY[0x1E698E238]];
   result = 1.2;
   if (!v3)
   {
@@ -311,35 +311,35 @@
   return result;
 }
 
-- (AVTRenderingScope)initWithRenderingType:(int64_t)a3 scale:(double)a4 options:(unint64_t)a5 framingMode:(id)a6 pose:(id)a7 sizeModifier:(float)a8
+- (AVTRenderingScope)initWithRenderingType:(int64_t)type scale:(double)scale options:(unint64_t)options framingMode:(id)mode pose:(id)pose sizeModifier:(float)modifier
 {
-  v14 = a7;
-  v15 = a6;
-  [objc_opt_class() widthForRenderingType:a3 options:a5];
+  poseCopy = pose;
+  modeCopy = mode;
+  [objc_opt_class() widthForRenderingType:type options:options];
   v17 = v16;
-  [objc_opt_class() thumbnailHeightRatioForFramingMode:v15];
-  v19 = [(AVTRenderingScope *)self initWithRenderingType:a3 scale:a5 options:v15 framingMode:v14 pose:a4 size:v17 * a8, v17 * a8 * v18];
+  [objc_opt_class() thumbnailHeightRatioForFramingMode:modeCopy];
+  v19 = [(AVTRenderingScope *)self initWithRenderingType:type scale:options options:modeCopy framingMode:poseCopy pose:scale size:v17 * modifier, v17 * modifier * v18];
 
   return v19;
 }
 
-- (AVTRenderingScope)initWithRenderingType:(int64_t)a3 scale:(double)a4 options:(unint64_t)a5 framingMode:(id)a6 pose:(id)a7 size:(CGSize)a8
+- (AVTRenderingScope)initWithRenderingType:(int64_t)type scale:(double)scale options:(unint64_t)options framingMode:(id)mode pose:(id)pose size:(CGSize)size
 {
-  height = a8.height;
-  width = a8.width;
-  v15 = a6;
-  v16 = a7;
+  height = size.height;
+  width = size.width;
+  modeCopy = mode;
+  poseCopy = pose;
   v20.receiver = self;
   v20.super_class = AVTRenderingScope;
   v17 = [(AVTRenderingScope *)&v20 init];
   v18 = v17;
   if (v17)
   {
-    v17->_scale = a4;
-    v17->_framingMode = v15;
-    v17->_renderingType = a3;
-    v17->_options = a5;
-    objc_storeStrong(&v17->_pose, a7);
+    v17->_scale = scale;
+    v17->_framingMode = modeCopy;
+    v17->_renderingType = type;
+    v17->_options = options;
+    objc_storeStrong(&v17->_pose, pose);
     v18->_size.width = width;
     v18->_size.height = height;
   }
@@ -347,10 +347,10 @@
   return v18;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (v5 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v11 = 1;
     goto LABEL_23;
@@ -362,20 +362,20 @@
     goto LABEL_22;
   }
 
-  v6 = [(AVTRenderingScope *)self renderingType];
-  if (v6 != [(AVTRenderingScope *)v5 renderingType])
+  renderingType = [(AVTRenderingScope *)self renderingType];
+  if (renderingType != [(AVTRenderingScope *)equalCopy renderingType])
   {
     goto LABEL_22;
   }
 
-  v7 = [(AVTRenderingScope *)self framingMode];
-  if (v7 || ([(AVTRenderingScope *)v5 framingMode], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+  framingMode = [(AVTRenderingScope *)self framingMode];
+  if (framingMode || ([(AVTRenderingScope *)equalCopy framingMode], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v8 = [(AVTRenderingScope *)self framingMode];
-    v9 = [(AVTRenderingScope *)v5 framingMode];
-    v10 = [v8 isEqual:v9];
+    framingMode2 = [(AVTRenderingScope *)self framingMode];
+    framingMode3 = [(AVTRenderingScope *)equalCopy framingMode];
+    v10 = [framingMode2 isEqual:framingMode3];
 
-    if (v7)
+    if (framingMode)
     {
 
       if (!v10)
@@ -394,14 +394,14 @@
     }
   }
 
-  v12 = [(AVTRenderingScope *)self pose];
-  if (v12 || ([(AVTRenderingScope *)v5 pose], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+  pose = [(AVTRenderingScope *)self pose];
+  if (pose || ([(AVTRenderingScope *)equalCopy pose], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v13 = [(AVTRenderingScope *)self pose];
-    v14 = [(AVTRenderingScope *)v5 pose];
-    v15 = [v13 isEqual:v14];
+    pose2 = [(AVTRenderingScope *)self pose];
+    pose3 = [(AVTRenderingScope *)equalCopy pose];
+    v15 = [pose2 isEqual:pose3];
 
-    if (v12)
+    if (pose)
     {
 
       if (!v15)
@@ -423,14 +423,14 @@ LABEL_22:
 LABEL_17:
   [(AVTRenderingScope *)self scale];
   v17 = v16;
-  [(AVTRenderingScope *)v5 scale];
+  [(AVTRenderingScope *)equalCopy scale];
   if (v17 != v18)
   {
     goto LABEL_22;
   }
 
-  v19 = [(AVTRenderingScope *)self options];
-  if (v19 != [(AVTRenderingScope *)v5 options])
+  options = [(AVTRenderingScope *)self options];
+  if (options != [(AVTRenderingScope *)equalCopy options])
   {
     goto LABEL_22;
   }
@@ -438,7 +438,7 @@ LABEL_17:
   [(AVTRenderingScope *)self size];
   v21 = v20;
   v23 = v22;
-  [(AVTRenderingScope *)v5 size];
+  [(AVTRenderingScope *)equalCopy size];
   v11 = v23 == v25 && v21 == v24;
 LABEL_23:
 
@@ -466,137 +466,137 @@ LABEL_23:
   *(&v4 + 1) = v10;
   *&v4 = v11;
   v12 = v4 >> 43;
-  v13 = [(AVTRenderingScope *)self framingMode];
-  v14 = [v13 hash];
-  v15 = [(AVTRenderingScope *)self framingMode];
+  framingMode = [(AVTRenderingScope *)self framingMode];
+  v14 = [framingMode hash];
+  framingMode2 = [(AVTRenderingScope *)self framingMode];
   *(&v4 + 1) = v14;
-  *&v4 = [v15 hash];
-  v16 = [(AVTRenderingScope *)self pose];
-  v17 = v8 ^ (v4 >> 32) ^ [v16 hash];
+  *&v4 = [framingMode2 hash];
+  pose = [(AVTRenderingScope *)self pose];
+  v17 = v8 ^ (v4 >> 32) ^ [pose hash];
 
   return v17 ^ v12;
 }
 
-- (id)copyWithSize:(CGSize)a3 framingMode:(id)a4
+- (id)copyWithSize:(CGSize)size framingMode:(id)mode
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  modeCopy = mode;
   v8 = objc_alloc(objc_opt_class());
-  v9 = [(AVTRenderingScope *)self renderingType];
+  renderingType = [(AVTRenderingScope *)self renderingType];
   [(AVTRenderingScope *)self scale];
   v11 = v10;
-  v12 = [(AVTRenderingScope *)self options];
-  v13 = [(AVTRenderingScope *)self pose];
-  v14 = [v8 initWithRenderingType:v9 scale:v12 options:v7 framingMode:v13 pose:v11 size:{width, height}];
+  options = [(AVTRenderingScope *)self options];
+  pose = [(AVTRenderingScope *)self pose];
+  v14 = [v8 initWithRenderingType:renderingType scale:options options:modeCopy framingMode:pose pose:v11 size:{width, height}];
 
   return v14;
 }
 
-- (id)copyWithPose:(id)a3
+- (id)copyWithPose:(id)pose
 {
-  v4 = a3;
+  poseCopy = pose;
   v5 = objc_alloc(objc_opt_class());
-  v6 = [(AVTRenderingScope *)self renderingType];
+  renderingType = [(AVTRenderingScope *)self renderingType];
   [(AVTRenderingScope *)self scale];
   v8 = v7;
-  v9 = [(AVTRenderingScope *)self options];
-  v10 = [(AVTRenderingScope *)self framingMode];
+  options = [(AVTRenderingScope *)self options];
+  framingMode = [(AVTRenderingScope *)self framingMode];
   [(AVTRenderingScope *)self size];
-  v13 = [v5 initWithRenderingType:v6 scale:v9 options:v10 framingMode:v4 pose:v8 size:{v11, v12}];
+  v13 = [v5 initWithRenderingType:renderingType scale:options options:framingMode framingMode:poseCopy pose:v8 size:{v11, v12}];
 
   return v13;
 }
 
-- (id)copyWithFramingMode:(id)a3
+- (id)copyWithFramingMode:(id)mode
 {
-  v4 = a3;
+  modeCopy = mode;
   v5 = objc_alloc(objc_opt_class());
-  v6 = [(AVTRenderingScope *)self renderingType];
+  renderingType = [(AVTRenderingScope *)self renderingType];
   [(AVTRenderingScope *)self scale];
   v8 = v7;
-  v9 = [(AVTRenderingScope *)self options];
-  v10 = [(AVTRenderingScope *)self pose];
-  v11 = [v5 initWithRenderingType:v6 scale:v9 options:v4 framingMode:v10 pose:v8];
+  options = [(AVTRenderingScope *)self options];
+  pose = [(AVTRenderingScope *)self pose];
+  v11 = [v5 initWithRenderingType:renderingType scale:options options:modeCopy framingMode:pose pose:v8];
 
   return v11;
 }
 
-- (id)copyWithSizeModifier:(float)a3
+- (id)copyWithSizeModifier:(float)modifier
 {
-  v4 = a3;
-  if (v4 > 1.0)
+  modifierCopy = modifier;
+  if (modifierCopy > 1.0)
   {
-    v4 = 1.0;
+    modifierCopy = 1.0;
   }
 
-  if (v4 < 0.0)
+  if (modifierCopy < 0.0)
   {
-    v4 = 0.0;
+    modifierCopy = 0.0;
   }
 
-  v5 = v4;
+  v5 = modifierCopy;
   v6 = objc_alloc(objc_opt_class());
-  v7 = [(AVTRenderingScope *)self renderingType];
+  renderingType = [(AVTRenderingScope *)self renderingType];
   [(AVTRenderingScope *)self scale];
   v9 = v8;
-  v10 = [(AVTRenderingScope *)self options];
-  v11 = [(AVTRenderingScope *)self framingMode];
-  v12 = [(AVTRenderingScope *)self pose];
+  options = [(AVTRenderingScope *)self options];
+  framingMode = [(AVTRenderingScope *)self framingMode];
+  pose = [(AVTRenderingScope *)self pose];
   *&v13 = v5;
-  v14 = [v6 initWithRenderingType:v7 scale:v10 options:v11 framingMode:v12 pose:v9 sizeModifier:v13];
+  v14 = [v6 initWithRenderingType:renderingType scale:options options:framingMode framingMode:pose pose:v9 sizeModifier:v13];
 
   return v14;
 }
 
-- (id)copyApplyingPoseOverride:(id)a3
+- (id)copyApplyingPoseOverride:(id)override
 {
-  v4 = a3;
-  v5 = [(AVTRenderingScope *)self pose];
-  if (v5)
+  overrideCopy = override;
+  pose = [(AVTRenderingScope *)self pose];
+  if (pose)
   {
-    v6 = [(AVTRenderingScope *)self pose];
-    v7 = [v6 poseByMergingPose:v4];
+    pose2 = [(AVTRenderingScope *)self pose];
+    v7 = [pose2 poseByMergingPose:overrideCopy];
   }
 
   else
   {
-    v7 = v4;
+    v7 = overrideCopy;
   }
 
   v8 = objc_alloc(objc_opt_class());
-  v9 = [(AVTRenderingScope *)self renderingType];
+  renderingType = [(AVTRenderingScope *)self renderingType];
   [(AVTRenderingScope *)self scale];
   v11 = v10;
-  v12 = [(AVTRenderingScope *)self options];
-  v13 = [(AVTRenderingScope *)self framingMode];
-  v14 = [v8 initWithRenderingType:v9 scale:v12 options:v13 framingMode:v7 pose:v11];
+  options = [(AVTRenderingScope *)self options];
+  framingMode = [(AVTRenderingScope *)self framingMode];
+  v14 = [v8 initWithRenderingType:renderingType scale:options options:framingMode framingMode:v7 pose:v11];
 
   return v14;
 }
 
-- (id)adaptedFramingModeForObjectType:(int64_t)a3
+- (id)adaptedFramingModeForObjectType:(int64_t)type
 {
-  v5 = [(AVTRenderingScope *)self framingMode];
-  v6 = [v5 isEqualToString:*MEMORY[0x1E698E240]];
+  framingMode = [(AVTRenderingScope *)self framingMode];
+  v6 = [framingMode isEqualToString:*MEMORY[0x1E698E240]];
 
-  if (a3 == 3 && v6)
+  if (type == 3 && v6)
   {
-    v7 = *MEMORY[0x1E698E228];
+    framingMode2 = *MEMORY[0x1E698E228];
   }
 
   else
   {
-    v7 = [(AVTRenderingScope *)self framingMode];
+    framingMode2 = [(AVTRenderingScope *)self framingMode];
   }
 
-  return v7;
+  return framingMode2;
 }
 
 - (id)framingModeIdentifier
 {
-  v2 = [(AVTRenderingScope *)self framingMode];
-  v3 = [v2 description];
+  framingMode = [(AVTRenderingScope *)self framingMode];
+  v3 = [framingMode description];
 
   return v3;
 }
@@ -620,21 +620,21 @@ LABEL_23:
   v8 = [v7 numberWithDouble:?];
   [v4 appendFormat:@" scale: %@", v8];
 
-  v9 = [(AVTRenderingScope *)self framingMode];
+  framingMode = [(AVTRenderingScope *)self framingMode];
 
-  if (v9)
+  if (framingMode)
   {
-    v10 = [(AVTRenderingScope *)self framingMode];
-    [v4 appendFormat:@" framingMode: %@", v10];
+    framingMode2 = [(AVTRenderingScope *)self framingMode];
+    [v4 appendFormat:@" framingMode: %@", framingMode2];
   }
 
-  v11 = [(AVTRenderingScope *)self pose];
+  pose = [(AVTRenderingScope *)self pose];
 
-  if (v11)
+  if (pose)
   {
-    v12 = [(AVTRenderingScope *)self pose];
-    v13 = [v12 _avtui_identifier];
-    [v4 appendFormat:@" pose: %@", v13];
+    pose2 = [(AVTRenderingScope *)self pose];
+    _avtui_identifier = [pose2 _avtui_identifier];
+    [v4 appendFormat:@" pose: %@", _avtui_identifier];
   }
 
   v14 = [v4 copy];

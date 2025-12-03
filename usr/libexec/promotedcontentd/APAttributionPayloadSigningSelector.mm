@@ -1,6 +1,6 @@
 @interface APAttributionPayloadSigningSelector
 + (id)selectorWithAttributionConfig;
-- (APAttributionPayloadSigningSelector)initWithSigningPercentageFPDIValue:(unsigned int)a3;
+- (APAttributionPayloadSigningSelector)initWithSigningPercentageFPDIValue:(unsigned int)value;
 - (int64_t)selectRandomSigningService;
 @end
 
@@ -22,34 +22,34 @@
     v7 = APLogForCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
-      v8 = [v5 signingPercentageFPDI];
+      signingPercentageFPDI = [v5 signingPercentageFPDI];
       v13 = 138412290;
-      v14 = v8;
+      v14 = signingPercentageFPDI;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "Using attribution config loaded value %@", &v13, 0xCu);
     }
 
-    v9 = [v5 signingPercentageFPDI];
-    v10 = [v9 unsignedIntValue];
+    signingPercentageFPDI2 = [v5 signingPercentageFPDI];
+    unsignedIntValue = [signingPercentageFPDI2 unsignedIntValue];
   }
 
   else
   {
-    v10 = 10000;
+    unsignedIntValue = 10000;
   }
 
-  v11 = [[a1 alloc] initWithSigningPercentageFPDIValue:v10];
+  v11 = [[self alloc] initWithSigningPercentageFPDIValue:unsignedIntValue];
 
   return v11;
 }
 
-- (APAttributionPayloadSigningSelector)initWithSigningPercentageFPDIValue:(unsigned int)a3
+- (APAttributionPayloadSigningSelector)initWithSigningPercentageFPDIValue:(unsigned int)value
 {
   v5.receiver = self;
   v5.super_class = APAttributionPayloadSigningSelector;
   result = [(APAttributionPayloadSigningSelector *)&v5 init];
   if (result)
   {
-    result->_signingPercentageFPDI = a3;
+    result->_signingPercentageFPDI = value;
   }
 
   return result;
@@ -66,26 +66,26 @@
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEBUG, "Signging service selector random number chosen (%u)", &v12, 8u);
   }
 
-  v5 = [(APAttributionPayloadSigningSelector *)self signingPercentageFPDI];
+  signingPercentageFPDI = [(APAttributionPayloadSigningSelector *)self signingPercentageFPDI];
   v6 = APLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     v7 = @"FPDI service";
-    if (v3 > v5)
+    if (v3 > signingPercentageFPDI)
     {
       v7 = @"Mescal service";
     }
 
     v8 = v7;
-    v9 = [(APAttributionPayloadSigningSelector *)self signingPercentageFPDI];
+    signingPercentageFPDI2 = [(APAttributionPayloadSigningSelector *)self signingPercentageFPDI];
     v12 = 138412546;
     v13 = v8;
     v14 = 1024;
-    v15 = v9;
+    v15 = signingPercentageFPDI2;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEBUG, "Selected [(%@)] for signing threshold (%d)", &v12, 0x12u);
   }
 
-  if (v3 <= v5)
+  if (v3 <= signingPercentageFPDI)
   {
     v10 = 1;
   }

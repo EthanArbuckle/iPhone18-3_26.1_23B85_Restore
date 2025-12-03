@@ -1,34 +1,34 @@
 @interface NWInterface
-+ (NWInterface)interfaceWithProtocolBufferData:(id)a3;
-+ (id)descriptionForSubtype:(int64_t)a3;
-+ (id)descriptionForType:(int64_t)a3;
++ (NWInterface)interfaceWithProtocolBufferData:(id)data;
++ (id)descriptionForSubtype:(int64_t)subtype;
++ (id)descriptionForType:(int64_t)type;
 - (BOOL)hasDNS;
 - (BOOL)hasNAT64;
 - (BOOL)isConstrained;
-- (BOOL)isDeepEqual:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isDeepEqual:(id)equal;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isExpensive;
 - (BOOL)isIPv4Routable;
 - (BOOL)isIPv6Routable;
-- (BOOL)isShallowEqual:(id)a3;
+- (BOOL)isShallowEqual:(id)equal;
 - (BOOL)isUltraConstrained;
 - (BOOL)supportsMulticast;
 - (NSString)interfaceName;
 - (NSString)privateDescription;
 - (NSString)typeString;
 - (NWInterface)delegateInterface;
-- (NWInterface)initWithCoder:(id)a3;
-- (NWInterface)initWithInterface:(id)a3;
-- (NWInterface)initWithInterfaceIndex:(unint64_t)a3;
-- (NWInterface)initWithInterfaceIndex:(unint64_t)a3 interfaceName:(id)a4;
-- (NWInterface)initWithInterfaceName:(id)a3;
+- (NWInterface)initWithCoder:(id)coder;
+- (NWInterface)initWithInterface:(id)interface;
+- (NWInterface)initWithInterfaceIndex:(unint64_t)index;
+- (NWInterface)initWithInterfaceIndex:(unint64_t)index interfaceName:(id)name;
+- (NWInterface)initWithInterfaceName:(id)name;
 - (id)copyLocalAddressForDefaultIPv4;
 - (id)copyLocalAddressForDefaultIPv6;
-- (id)copyLocalAddressForRemoteAddress:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyLocalAddressForRemoteAddress:(id)address;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)createProtocolBufferObject;
 - (id)description;
-- (id)descriptionWithIndent:(int)a3 showFullContent:(BOOL)a4;
+- (id)descriptionWithIndent:(int)indent showFullContent:(BOOL)content;
 - (id)ipv4Broadcast;
 - (id)ipv4Netmask;
 - (int64_t)mtu;
@@ -37,31 +37,31 @@
 - (unint64_t)generation;
 - (unint64_t)hash;
 - (unint64_t)interfaceIndex;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NWInterface
 
 - (int64_t)type
 {
-  v2 = [(NWInterface *)self internalInterface];
-  type = nw_interface_get_type(v2);
+  internalInterface = [(NWInterface *)self internalInterface];
+  type = nw_interface_get_type(internalInterface);
 
   return type;
 }
 
 - (int64_t)subtype
 {
-  v2 = [(NWInterface *)self internalInterface];
-  subtype = nw_interface_get_subtype(v2);
+  internalInterface = [(NWInterface *)self internalInterface];
+  subtype = nw_interface_get_subtype(internalInterface);
 
   return subtype;
 }
 
 - (NSString)interfaceName
 {
-  v2 = [(NWInterface *)self internalInterface];
-  if (v2 && (v3 = v2, name = _nw_interface_get_name(v2), v3, name))
+  internalInterface = [(NWInterface *)self internalInterface];
+  if (internalInterface && (v3 = internalInterface, name = _nw_interface_get_name(internalInterface), v3, name))
   {
     v5 = [MEMORY[0x1E696AEC0] stringWithUTF8String:name];
   }
@@ -76,11 +76,11 @@
 
 - (unint64_t)interfaceIndex
 {
-  v2 = [(NWInterface *)self internalInterface];
-  v3 = v2;
-  if (v2)
+  internalInterface = [(NWInterface *)self internalInterface];
+  v3 = internalInterface;
+  if (internalInterface)
   {
-    index = _nw_interface_get_index(v2);
+    index = _nw_interface_get_index(internalInterface);
   }
 
   else
@@ -93,48 +93,48 @@
 
 - (BOOL)isConstrained
 {
-  v2 = [(NWInterface *)self internalInterface];
-  is_constrained = nw_interface_is_constrained(v2);
+  internalInterface = [(NWInterface *)self internalInterface];
+  is_constrained = nw_interface_is_constrained(internalInterface);
 
   return is_constrained;
 }
 
 - (BOOL)isExpensive
 {
-  v2 = [(NWInterface *)self internalInterface];
-  is_expensive = nw_interface_is_expensive(v2);
+  internalInterface = [(NWInterface *)self internalInterface];
+  is_expensive = nw_interface_is_expensive(internalInterface);
 
   return is_expensive;
 }
 
 - (BOOL)isUltraConstrained
 {
-  v2 = [(NWInterface *)self internalInterface];
-  is_ultra_constrained = nw_interface_is_ultra_constrained(v2);
+  internalInterface = [(NWInterface *)self internalInterface];
+  is_ultra_constrained = nw_interface_is_ultra_constrained(internalInterface);
 
   return is_ultra_constrained;
 }
 
 - (unint64_t)generation
 {
-  v2 = [(NWInterface *)self internalInterface];
-  generation = nw_interface_get_generation(v2);
+  internalInterface = [(NWInterface *)self internalInterface];
+  generation = nw_interface_get_generation(internalInterface);
 
   return generation;
 }
 
 - (int64_t)mtu
 {
-  v2 = [(NWInterface *)self internalInterface];
-  mtu = nw_interface_get_mtu(v2);
+  internalInterface = [(NWInterface *)self internalInterface];
+  mtu = nw_interface_get_mtu(internalInterface);
 
   return mtu;
 }
 
 - (id)ipv4Netmask
 {
-  v2 = [(NWInterface *)self internalInterface];
-  v3 = nw_interface_copy_ipv4_netmask_endpoint(v2);
+  internalInterface = [(NWInterface *)self internalInterface];
+  v3 = nw_interface_copy_ipv4_netmask_endpoint(internalInterface);
 
   if (v3)
   {
@@ -151,8 +151,8 @@
 
 - (id)ipv4Broadcast
 {
-  v2 = [(NWInterface *)self internalInterface];
-  v3 = nw_interface_copy_ipv4_broadcast_endpoint(v2);
+  internalInterface = [(NWInterface *)self internalInterface];
+  v3 = nw_interface_copy_ipv4_broadcast_endpoint(internalInterface);
 
   if (v3)
   {
@@ -169,40 +169,40 @@
 
 - (BOOL)supportsMulticast
 {
-  v2 = [(NWInterface *)self internalInterface];
-  v3 = nw_interface_supports_multicast(v2);
+  internalInterface = [(NWInterface *)self internalInterface];
+  v3 = nw_interface_supports_multicast(internalInterface);
 
   return v3;
 }
 
 - (BOOL)hasDNS
 {
-  v2 = [(NWInterface *)self internalInterface];
-  has_dns = nw_interface_has_dns(v2);
+  internalInterface = [(NWInterface *)self internalInterface];
+  has_dns = nw_interface_has_dns(internalInterface);
 
   return has_dns;
 }
 
 - (BOOL)hasNAT64
 {
-  v2 = [(NWInterface *)self internalInterface];
-  has_nat64 = nw_interface_has_nat64(v2);
+  internalInterface = [(NWInterface *)self internalInterface];
+  has_nat64 = nw_interface_has_nat64(internalInterface);
 
   return has_nat64;
 }
 
 - (BOOL)isIPv4Routable
 {
-  v2 = [(NWInterface *)self internalInterface];
-  is_ipv4_routable = nw_interface_is_ipv4_routable(v2);
+  internalInterface = [(NWInterface *)self internalInterface];
+  is_ipv4_routable = nw_interface_is_ipv4_routable(internalInterface);
 
   return is_ipv4_routable;
 }
 
 - (BOOL)isIPv6Routable
 {
-  v2 = [(NWInterface *)self internalInterface];
-  is_ipv6_routable = nw_interface_is_ipv6_routable(v2);
+  internalInterface = [(NWInterface *)self internalInterface];
+  is_ipv6_routable = nw_interface_is_ipv6_routable(internalInterface);
 
   return is_ipv6_routable;
 }
@@ -210,15 +210,15 @@
 - (id)createProtocolBufferObject
 {
   v3 = objc_alloc_init(NWPBInterface);
-  v4 = [(NWInterface *)self interfaceName];
-  v5 = v4;
+  interfaceName = [(NWInterface *)self interfaceName];
+  v5 = interfaceName;
   if (v3)
   {
-    objc_storeStrong(&v3->_name, v4);
+    objc_storeStrong(&v3->_name, interfaceName);
 
-    v6 = [(NWInterface *)self interfaceIndex];
+    interfaceIndex = [(NWInterface *)self interfaceIndex];
     *&v3->_has |= 4u;
-    v3->_index = v6;
+    v3->_index = interfaceIndex;
   }
 
   else
@@ -227,28 +227,28 @@
     [(NWInterface *)self interfaceIndex];
   }
 
-  v7 = [(NWInterface *)self delegateInterface];
-  v8 = [v7 interfaceIndex];
+  delegateInterface = [(NWInterface *)self delegateInterface];
+  interfaceIndex2 = [delegateInterface interfaceIndex];
   if (v3)
   {
     *&v3->_has |= 1u;
-    v3->_delegateIndex = v8;
+    v3->_delegateIndex = interfaceIndex2;
 
     v9 = [(NWInterface *)self mtu];
     *&v3->_has |= 8u;
     v3->_mtu = v9;
-    v10 = [(NWInterface *)self generation];
+    generation = [(NWInterface *)self generation];
     *&v3->_has |= 2u;
-    v3->_generation = v10;
-    v11 = [(NWInterface *)self type];
+    v3->_generation = generation;
+    type = [(NWInterface *)self type];
     *&v3->_has |= 0x20u;
-    v3->_type = v11;
-    v12 = [(NWInterface *)self subtype];
+    v3->_type = type;
+    subtype = [(NWInterface *)self subtype];
     *&v3->_has |= 0x10u;
-    v3->_subtype = v12;
-    v13 = [(NWInterface *)self isExpensive];
+    v3->_subtype = subtype;
+    isExpensive = [(NWInterface *)self isExpensive];
     *&v3->_has |= 0x40u;
-    v3->_expensive = v13;
+    v3->_expensive = isExpensive;
   }
 
   else
@@ -266,46 +266,46 @@
 
 - (NSString)typeString
 {
-  v2 = [(NWInterface *)self internalInterface];
-  v3 = [NWInterface descriptionForType:nw_interface_get_type(v2)];
+  internalInterface = [(NWInterface *)self internalInterface];
+  v3 = [NWInterface descriptionForType:nw_interface_get_type(internalInterface)];
 
   return v3;
 }
 
-- (BOOL)isDeepEqual:(id)a3
+- (BOOL)isDeepEqual:(id)equal
 {
-  if (!a3)
+  if (!equal)
   {
     return 0;
   }
 
-  v4 = a3;
-  v5 = [(NWInterface *)self internalInterface];
-  v6 = [v4 internalInterface];
+  equalCopy = equal;
+  internalInterface = [(NWInterface *)self internalInterface];
+  internalInterface2 = [equalCopy internalInterface];
 
-  LOBYTE(v4) = _nw_interface_deep_compare(v5, v6);
-  return v4;
+  LOBYTE(equalCopy) = _nw_interface_deep_compare(internalInterface, internalInterface2);
+  return equalCopy;
 }
 
-- (BOOL)isShallowEqual:(id)a3
+- (BOOL)isShallowEqual:(id)equal
 {
-  if (!a3)
+  if (!equal)
   {
     return 0;
   }
 
-  v4 = a3;
-  v5 = [(NWInterface *)self internalInterface];
-  v6 = [v4 internalInterface];
+  equalCopy = equal;
+  internalInterface = [(NWInterface *)self internalInterface];
+  internalInterface2 = [equalCopy internalInterface];
 
-  LOBYTE(v4) = _nw_interface_shallow_compare(v5, v6);
-  return v4;
+  LOBYTE(equalCopy) = _nw_interface_shallow_compare(internalInterface, internalInterface2);
+  return equalCopy;
 }
 
 - (NWInterface)delegateInterface
 {
-  v2 = [(NWInterface *)self internalInterface];
-  v3 = nw_interface_copy_delegate_interface(v2);
+  internalInterface = [(NWInterface *)self internalInterface];
+  v3 = nw_interface_copy_delegate_interface(internalInterface);
 
   if (v3)
   {
@@ -334,10 +334,10 @@
   return v2;
 }
 
-- (id)descriptionWithIndent:(int)a3 showFullContent:(BOOL)a4
+- (id)descriptionWithIndent:(int)indent showFullContent:(BOOL)content
 {
-  v4 = a4;
-  v5 = *&a3;
+  contentCopy = content;
+  v5 = *&indent;
   v7 = objc_alloc_init(MEMORY[0x1E696AD60]);
   v8 = [NWInterface descriptionForType:[(NWInterface *)self type]];
   [v7 appendPrettyObject:v8 withName:@"type" indent:v5 showFullContent:1];
@@ -345,19 +345,19 @@
   v9 = [NWInterface descriptionForSubtype:[(NWInterface *)self subtype]];
   [v7 appendPrettyObject:v9 withName:@"subtype" indent:v5 showFullContent:1];
 
-  if (v4)
+  if (contentCopy)
   {
-    v10 = [(NWInterface *)self interfaceName];
-    [v7 appendPrettyObject:v10 withName:@"interfaceName" indent:v5 showFullContent:1];
+    interfaceName = [(NWInterface *)self interfaceName];
+    [v7 appendPrettyObject:interfaceName withName:@"interfaceName" indent:v5 showFullContent:1];
 
     [v7 appendPrettyInt:-[NWInterface interfaceIndex](self withName:"interfaceIndex") indent:{@"interfaceIndex", v5}];
     [v7 appendPrettyInt:-[NWInterface generation](self withName:"generation") indent:{@"generation", v5}];
     [v7 appendPrettyInt:-[NWInterface mtu](self withName:"mtu") indent:{@"mtu", v5}];
-    v11 = [(NWInterface *)self ipv4Netmask];
-    [v7 appendPrettyObject:v11 withName:@"ipv4Netmask" indent:v5 showFullContent:1];
+    ipv4Netmask = [(NWInterface *)self ipv4Netmask];
+    [v7 appendPrettyObject:ipv4Netmask withName:@"ipv4Netmask" indent:v5 showFullContent:1];
 
-    v12 = [(NWInterface *)self ipv4Broadcast];
-    [v7 appendPrettyObject:v12 withName:@"ipv4Broadcast" indent:v5 showFullContent:1];
+    ipv4Broadcast = [(NWInterface *)self ipv4Broadcast];
+    [v7 appendPrettyObject:ipv4Broadcast withName:@"ipv4Broadcast" indent:v5 showFullContent:1];
 
     if ([(NWInterface *)self supportsMulticast])
     {
@@ -403,10 +403,10 @@
   return v7;
 }
 
-- (NWInterface)initWithInterfaceIndex:(unint64_t)a3
+- (NWInterface)initWithInterfaceIndex:(unint64_t)index
 {
   v25 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!index)
   {
     pthread_once(&nwlog_legacy_init(void)::init_once, nwlog_legacy_init_once);
     networkd_settings_init();
@@ -501,7 +501,7 @@ LABEL_24:
     if (!v8)
     {
 LABEL_19:
-      v6 = 0;
+      selfCopy = 0;
       goto LABEL_20;
     }
 
@@ -510,12 +510,12 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  v4 = a3;
-  v5 = nw_interface_create_with_index(a3);
+  indexCopy = index;
+  v5 = nw_interface_create_with_index(index);
   if (v5)
   {
     self = [(NWInterface *)self initWithInterface:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
@@ -528,29 +528,29 @@ LABEL_18:
       *buf = 136446466;
       v22 = "[NWInterface initWithInterfaceIndex:]";
       v23 = 1024;
-      LODWORD(v24) = v4;
+      LODWORD(v24) = indexCopy;
       _os_log_impl(&dword_181A37000, v12, OS_LOG_TYPE_ERROR, "%{public}s nw_interface_create_with_index(%u) failed", buf, 0x12u);
     }
 
-    v6 = 0;
+    selfCopy = 0;
   }
 
 LABEL_20:
-  return v6;
+  return selfCopy;
 }
 
-- (NWInterface)initWithInterfaceName:(id)a3
+- (NWInterface)initWithInterfaceName:(id)name
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  nameCopy = name;
+  v5 = nameCopy;
+  if (nameCopy)
   {
-    v6 = nw_interface_create_with_name([v4 UTF8String]);
+    v6 = nw_interface_create_with_name([nameCopy UTF8String]);
     if (v6)
     {
       self = [(NWInterface *)self initWithInterface:v6];
-      v7 = self;
+      selfCopy = self;
     }
 
     else
@@ -567,7 +567,7 @@ LABEL_20:
         _os_log_impl(&dword_181A37000, v8, OS_LOG_TYPE_ERROR, "%{public}s nw_interface_create_with_name(%{public}@) failed", buf, 0x16u);
       }
 
-      v7 = 0;
+      selfCopy = 0;
     }
 
     goto LABEL_8;
@@ -650,17 +650,17 @@ LABEL_24:
     free(v11);
   }
 
-  v7 = 0;
+  selfCopy = 0;
 LABEL_8:
 
-  return v7;
+  return selfCopy;
 }
 
-- (NWInterface)initWithInterface:(id)a3
+- (NWInterface)initWithInterface:(id)interface
 {
   v30 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (v5)
+  interfaceCopy = interface;
+  if (interfaceCopy)
   {
     v23.receiver = self;
     v23.super_class = NWInterface;
@@ -668,7 +668,7 @@ LABEL_8:
     if (v6)
     {
       v7 = v6;
-      objc_storeStrong(&v6->_internalInterface, a3);
+      objc_storeStrong(&v6->_internalInterface, interface);
       goto LABEL_4;
     }
 
@@ -836,11 +836,11 @@ LABEL_4:
 
 - (unint64_t)hash
 {
-  v2 = [(NWInterface *)self internalInterface];
-  v3 = v2;
-  if (v2)
+  internalInterface = [(NWInterface *)self internalInterface];
+  v3 = internalInterface;
+  if (internalInterface)
   {
-    shallow_hash = _nw_interface_get_shallow_hash(v2);
+    shallow_hash = _nw_interface_get_shallow_hash(internalInterface);
   }
 
   else
@@ -851,10 +851,10 @@ LABEL_4:
   return shallow_hash;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -864,9 +864,9 @@ LABEL_4:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(NWInterface *)self internalInterface];
-      v6 = [(NWInterface *)v4 internalInterface];
-      v7 = _nw_interface_shallow_compare(v5, v6);
+      internalInterface = [(NWInterface *)self internalInterface];
+      internalInterface2 = [(NWInterface *)equalCopy internalInterface];
+      v7 = _nw_interface_shallow_compare(internalInterface, internalInterface2);
     }
 
     else
@@ -878,38 +878,38 @@ LABEL_4:
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [NWInterface allocWithZone:a3];
-  v5 = [(NWInterface *)self internalInterface];
-  v6 = [(NWInterface *)v4 initWithInterface:v5];
+  v4 = [NWInterface allocWithZone:zone];
+  internalInterface = [(NWInterface *)self internalInterface];
+  v6 = [(NWInterface *)v4 initWithInterface:internalInterface];
 
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v36 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(NWInterface *)self internalInterface];
-  v6 = nw_interface_copy_dictionary(v5);
+  coderCopy = coder;
+  internalInterface = [(NWInterface *)self internalInterface];
+  v6 = nw_interface_copy_dictionary(internalInterface);
 
   if (v6)
   {
     v7 = MEMORY[0x1E695DF90];
     v8 = v6;
-    v9 = [v7 dictionary];
+    dictionary = [v7 dictionary];
     *applier = MEMORY[0x1E69E9820];
     *&applier[8] = 3221225472;
     *&applier[16] = __NWUtilsCreateNSDictionaryFromXPCDictionary_block_invoke;
     v34 = &unk_1E6A39980;
-    v10 = v9;
+    v10 = dictionary;
     v35 = v10;
     xpc_dictionary_apply(v8, applier);
 
     if (v10)
     {
-      [v4 encodeObject:v10 forKey:@"dictionary"];
+      [coderCopy encodeObject:v10 forKey:@"dictionary"];
 LABEL_37:
 
       goto LABEL_38;
@@ -1111,10 +1111,10 @@ LABEL_29:
 LABEL_38:
 }
 
-- (NWInterface)initWithCoder:(id)a3
+- (NWInterface)initWithCoder:(id)coder
 {
   v58 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v53.receiver = self;
   v53.super_class = NWInterface;
   v5 = [(NWInterface *)&v53 init];
@@ -1127,7 +1127,7 @@ LABEL_38:
     v10 = objc_opt_class();
     v11 = objc_opt_class();
     v12 = [v6 initWithObjects:{v7, v8, v9, v10, v11, objc_opt_class(), 0}];
-    v13 = [v4 decodeObjectOfClasses:v12 forKey:@"dictionary"];
+    v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"dictionary"];
     v14 = v13;
     if (v13)
     {
@@ -1138,9 +1138,9 @@ LABEL_38:
         v17 = nw_interface_create_from_dictionary(XPCDictionaryFromNSDictionary);
         [(NWInterface *)v5 setInternalInterface:v17];
 
-        v18 = [(NWInterface *)v5 internalInterface];
+        internalInterface = [(NWInterface *)v5 internalInterface];
 
-        if (v18)
+        if (internalInterface)
         {
           v19 = v5;
 LABEL_45:
@@ -1525,16 +1525,16 @@ LABEL_47:
   return v19;
 }
 
-+ (NWInterface)interfaceWithProtocolBufferData:(id)a3
++ (NWInterface)interfaceWithProtocolBufferData:(id)data
 {
   v28 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [[NWPBInterface alloc] initWithData:v3];
+  dataCopy = data;
+  v4 = [[NWPBInterface alloc] initWithData:dataCopy];
 
   if (v4)
   {
     v5 = v4->_name;
-    v6 = [(NSString *)v5 UTF8String];
+    uTF8String = [(NSString *)v5 UTF8String];
     if ((*&v4->_has & 0x20) != 0)
     {
       v7 = v4->_type;
@@ -1552,7 +1552,7 @@ LABEL_47:
 LABEL_4:
         subtype = v4->_subtype;
 LABEL_11:
-        v14 = nw_interface_create_static(v6, v4->_index, v7, subtype, v4->_generation, v4->_delegateIndex, v4->_expensive, 0, v4->_mtu, 0, 0);
+        v14 = nw_interface_create_static(uTF8String, v4->_index, v7, subtype, v4->_generation, v4->_delegateIndex, v4->_expensive, 0, v4->_mtu, 0, 0);
         if (v14)
         {
           v15 = [[NWInterface alloc] initWithInterface:v14];
@@ -1674,17 +1674,17 @@ LABEL_23:
   return v15;
 }
 
-+ (id)descriptionForSubtype:(int64_t)a3
++ (id)descriptionForSubtype:(int64_t)subtype
 {
-  if (a3 <= 1001)
+  if (subtype <= 1001)
   {
-    if (!a3)
+    if (!subtype)
     {
       v3 = "other";
       return [MEMORY[0x1E696AEC0] stringWithUTF8String:v3];
     }
 
-    if (a3 == 1001)
+    if (subtype == 1001)
     {
       v3 = "wifi_infrastructure";
       return [MEMORY[0x1E696AEC0] stringWithUTF8String:v3];
@@ -1695,19 +1695,19 @@ LABEL_13:
     return [MEMORY[0x1E696AEC0] stringWithUTF8String:v3];
   }
 
-  if (a3 == 1002)
+  if (subtype == 1002)
   {
     v3 = "wifi_awdl";
     return [MEMORY[0x1E696AEC0] stringWithUTF8String:v3];
   }
 
-  if (a3 == 4001)
+  if (subtype == 4001)
   {
     v3 = "coprocessor";
     return [MEMORY[0x1E696AEC0] stringWithUTF8String:v3];
   }
 
-  if (a3 != 5001)
+  if (subtype != 5001)
   {
     goto LABEL_13;
   }
@@ -1716,16 +1716,16 @@ LABEL_13:
   return [MEMORY[0x1E696AEC0] stringWithUTF8String:v3];
 }
 
-+ (id)descriptionForType:(int64_t)a3
++ (id)descriptionForType:(int64_t)type
 {
-  if (a3 > 4)
+  if (type > 4)
   {
     v3 = "unknown";
   }
 
   else
   {
-    v3 = off_1E6A357B8[a3 & 7];
+    v3 = off_1E6A357B8[type & 7];
   }
 
   return [MEMORY[0x1E696AEC0] stringWithUTF8String:v3];
@@ -1747,13 +1747,13 @@ LABEL_13:
   return v4;
 }
 
-- (id)copyLocalAddressForRemoteAddress:(id)a3
+- (id)copyLocalAddressForRemoteAddress:(id)address
 {
-  v4 = a3;
-  v5 = [(NWInterface *)self internalInterface];
-  v6 = [v4 internalEndpoint];
+  addressCopy = address;
+  internalInterface = [(NWInterface *)self internalInterface];
+  internalEndpoint = [addressCopy internalEndpoint];
 
-  v7 = nw_interface_copy_local_address_for_remote_address(v5, v6);
+  v7 = nw_interface_copy_local_address_for_remote_address(internalInterface, internalEndpoint);
   if (v7)
   {
     v8 = [NWEndpoint endpointWithCEndpoint:v7];
@@ -1767,20 +1767,20 @@ LABEL_13:
   return v8;
 }
 
-- (NWInterface)initWithInterfaceIndex:(unint64_t)a3 interfaceName:(id)a4
+- (NWInterface)initWithInterfaceIndex:(unint64_t)index interfaceName:(id)name
 {
   *&v37[13] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = v6;
-  if (a3)
+  nameCopy = name;
+  v7 = nameCopy;
+  if (index)
   {
-    if (v6)
+    if (nameCopy)
     {
-      v8 = nw_interface_create_with_index_and_name(a3, [v6 UTF8String]);
+      v8 = nw_interface_create_with_index_and_name(index, [nameCopy UTF8String]);
       if (v8)
       {
         self = [(NWInterface *)self initWithInterface:v8];
-        v9 = self;
+        selfCopy = self;
 LABEL_19:
 
         goto LABEL_20;
@@ -1794,7 +1794,7 @@ LABEL_19:
         *buf = 136446722;
         v35 = "[NWInterface(Private) initWithInterfaceIndex:interfaceName:]";
         v36 = 1024;
-        *v37 = a3;
+        *v37 = index;
         v37[2] = 2114;
         *&v37[3] = v7;
         _os_log_impl(&dword_181A37000, v10, OS_LOG_TYPE_ERROR, "%{public}s nw_interface_create_with_index_and_name failed for index, name (%u, %{public}@)", buf, 0x1Cu);
@@ -1893,7 +1893,7 @@ LABEL_24:
       if (!v12)
       {
 LABEL_18:
-        v9 = 0;
+        selfCopy = 0;
         goto LABEL_19;
       }
 
@@ -2057,10 +2057,10 @@ LABEL_57:
     free(v23);
   }
 
-  v9 = 0;
+  selfCopy = 0;
 LABEL_20:
 
-  return v9;
+  return selfCopy;
 }
 
 @end

@@ -1,15 +1,15 @@
 @interface TSCH3DShaderStatement
-+ (id)statementWithFormat:(id)a3 dependees:(id)a4 program:(id)a5;
++ (id)statementWithFormat:(id)format dependees:(id)dependees program:(id)program;
 - (id)string;
 @end
 
 @implementation TSCH3DShaderStatement
 
-+ (id)statementWithFormat:(id)a3 dependees:(id)a4 program:(id)a5
++ (id)statementWithFormat:(id)format dependees:(id)dependees program:(id)program
 {
-  v7.receiver = a1;
+  v7.receiver = self;
   v7.super_class = &OBJC_METACLASS___TSCH3DShaderStatement;
-  v5 = objc_msgSendSuper2(&v7, sel_assignmentWithAssignee_statement_dependees_program_, 0, a3, a4, a5);
+  v5 = objc_msgSendSuper2(&v7, sel_assignmentWithAssignee_statement_dependees_program_, 0, format, dependees, program);
 
   return v5;
 }

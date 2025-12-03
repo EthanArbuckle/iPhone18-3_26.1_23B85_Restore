@@ -1,15 +1,15 @@
 @interface PXGDecoratingLayout
 - (BOOL)canHandleVisibleRectRejection;
-- (BOOL)isSpriteIndex:(unsigned int)a3 decoratingSpriteWithIndex:(unsigned int *)a4;
+- (BOOL)isSpriteIndex:(unsigned int)index decoratingSpriteWithIndex:(unsigned int *)withIndex;
 - (BOOL)spritesAreInSyncWithDecoratedLayout;
-- (CGRect)sublayout:(id)a3 visibleRectForRequestedVisibleRect:(CGRect)a4;
+- (CGRect)sublayout:(id)sublayout visibleRectForRequestedVisibleRect:(CGRect)rect;
 - (PXGAssetBackgroundDecorationSource)assetBackgroundDecorationSource;
 - (PXGAssetBadgeDecorationSource)assetBadgeDecorationSource;
 - (PXGAssetBadgeDecorationSource)assetProgressDecorationSource;
 - (PXGCaptionDecorationSource)captionDecorationSource;
 - (PXGDebugDecorationSource)debugDecorationSource;
 - (PXGDecoratingLayout)init;
-- (PXGDecoratingLayout)initWithDecoratedLayout:(id)a3;
+- (PXGDecoratingLayout)initWithDecoratedLayout:(id)layout;
 - (PXGDragDecorationSource)dragDecorationSource;
 - (PXGHighlightDecorationSource)highlightDecorationSource;
 - (PXGItemsGeometry)itemsGeometry;
@@ -19,49 +19,49 @@
 - (PXGTapbackDecorationSource)tapbackDecorationSource;
 - (PXGViewDecorationSource)viewDecorationSource;
 - (double)lastBaseline;
-- (id)axContentInfoAtSpriteIndex:(unsigned int)a3;
+- (id)axContentInfoAtSpriteIndex:(unsigned int)index;
 - (id)axSpriteIndexes;
 - (id)currentDataSourceChange;
 - (id)description;
-- (id)hitTestResultForSpriteIndex:(unsigned int)a3;
+- (id)hitTestResultForSpriteIndex:(unsigned int)index;
 - (id)itemsLayout;
 - (id)layoutForItemChanges;
 - (id)preferredFocusLayouts;
-- (int64_t)decoratingTypeForSpriteIndex:(unsigned int)a3;
+- (int64_t)decoratingTypeForSpriteIndex:(unsigned int)index;
 - (int64_t)scrollableAxis;
-- (int64_t)sublayoutIndexForObjectReference:(id)a3 options:(unint64_t)a4 updatedObjectReference:(id *)a5;
-- (unsigned)decorationIndexForSpriteIndex:(unsigned int)a3;
-- (unsigned)spriteIndexForDecorationIndex:(unsigned int)a3 decoratingSpriteIndex:(unsigned int)a4;
-- (unsigned)spriteIndexForObjectReference:(id)a3 options:(unint64_t)a4 updatedObjectReference:(id *)a5;
-- (unsigned)viewHostingSpriteIndexForSublayout:(id)a3 spriteIndex:(unsigned int)a4;
-- (void)_applyDecoratedLayoutChangeDetails:(id)a3;
-- (void)_invalidateDecorationForSpriteRange:(_PXGSpriteIndexRange)a3 inLayout:(id)a4 invalidateSprites:(BOOL)a5;
+- (int64_t)sublayoutIndexForObjectReference:(id)reference options:(unint64_t)options updatedObjectReference:(id *)objectReference;
+- (unsigned)decorationIndexForSpriteIndex:(unsigned int)index;
+- (unsigned)spriteIndexForDecorationIndex:(unsigned int)index decoratingSpriteIndex:(unsigned int)spriteIndex;
+- (unsigned)spriteIndexForObjectReference:(id)reference options:(unint64_t)options updatedObjectReference:(id *)objectReference;
+- (unsigned)viewHostingSpriteIndexForSublayout:(id)sublayout spriteIndex:(unsigned int)index;
+- (void)_applyDecoratedLayoutChangeDetails:(id)details;
+- (void)_invalidateDecorationForSpriteRange:(_PXGSpriteIndexRange)range inLayout:(id)layout invalidateSprites:(BOOL)sprites;
 - (void)_updateDecoratedLayout;
 - (void)_updateDecorationSources;
 - (void)_updateDecorationSprites;
 - (void)_updateReloadSprites;
-- (void)addActiveDecorations:(id)a3;
+- (void)addActiveDecorations:(id)decorations;
 - (void)alphaDidChange;
 - (void)dealloc;
 - (void)didUpdate;
 - (void)displayScaleDidChange;
-- (void)insertSublayout:(id)a3 atIndex:(int64_t)a4;
+- (void)insertSublayout:(id)sublayout atIndex:(int64_t)index;
 - (void)referenceSizeDidChange;
-- (void)removeSublayoutsInRange:(_NSRange)a3;
+- (void)removeSublayoutsInRange:(_NSRange)range;
 - (void)safeAreaInsetsDidChange;
-- (void)setActiveDecorations:(id)a3;
-- (void)setContentSource:(id)a3;
-- (void)setDecoratedLayout:(id)a3;
-- (void)setDecorationSource:(id)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setLastBaseline:(double)a3;
-- (void)sublayout:(id)a3 didApplySpriteChangeDetails:(id)a4 fromDescendentSublayout:(id)a5;
-- (void)sublayoutDidChangeContentSize:(id)a3;
-- (void)sublayoutDidChangeLastBaseline:(id)a3;
-- (void)sublayoutNeedsUpdate:(id)a3;
+- (void)setActiveDecorations:(id)decorations;
+- (void)setContentSource:(id)source;
+- (void)setDecoratedLayout:(id)layout;
+- (void)setDecorationSource:(id)source;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setLastBaseline:(double)baseline;
+- (void)sublayout:(id)sublayout didApplySpriteChangeDetails:(id)details fromDescendentSublayout:(id)descendentSublayout;
+- (void)sublayoutDidChangeContentSize:(id)size;
+- (void)sublayoutDidChangeLastBaseline:(id)baseline;
+- (void)sublayoutNeedsUpdate:(id)update;
 - (void)update;
 - (void)userInterfaceDirectionDidChange;
-- (void)viewEnvironmentWillChange:(id)a3;
+- (void)viewEnvironmentWillChange:(id)change;
 - (void)visibleRectDidChange;
 - (void)willUpdate;
 @end
@@ -123,21 +123,21 @@
 
 - (BOOL)spritesAreInSyncWithDecoratedLayout
 {
-  v3 = [(PXGDecoratingLayout *)self enabled];
-  if (v3)
+  enabled = [(PXGDecoratingLayout *)self enabled];
+  if (enabled)
   {
-    LOBYTE(v3) = (self->_updateFlags.needsUpdate & 4) == 0;
+    LOBYTE(enabled) = (self->_updateFlags.needsUpdate & 4) == 0;
   }
 
-  return v3;
+  return enabled;
 }
 
 - (id)itemsLayout
 {
-  v2 = [(PXGDecoratingLayout *)self decoratedLayout];
-  v3 = [v2 itemsLayout];
+  decoratedLayout = [(PXGDecoratingLayout *)self decoratedLayout];
+  itemsLayout = [decoratedLayout itemsLayout];
 
-  return v3;
+  return itemsLayout;
 }
 
 - (void)referenceSizeDidChange
@@ -159,9 +159,9 @@ LABEL_6:
 LABEL_5:
     if (self->_updateFlags.updated)
     {
-      v6 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGDecoratingLayout referenceSizeDidChange]"];
-      [v6 handleFailureInFunction:v7 file:@"PXGDecoratingLayout.m" lineNumber:708 description:{@"invalidating %lu after it already has been updated", 1}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXGDecoratingLayout.m" lineNumber:708 description:{@"invalidating %lu after it already has been updated", 1}];
 
       abort();
     }
@@ -203,9 +203,9 @@ LABEL_7:
 LABEL_6:
       if (self->_updateFlags.updated)
       {
-        v6 = [MEMORY[0x277CCA890] currentHandler];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
         v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGDecoratingLayout visibleRectDidChange]"];
-        [v6 handleFailureInFunction:v7 file:@"PXGDecoratingLayout.m" lineNumber:715 description:{@"invalidating %lu after it already has been updated", 1}];
+        [currentHandler handleFailureInFunction:v7 file:@"PXGDecoratingLayout.m" lineNumber:715 description:{@"invalidating %lu after it already has been updated", 1}];
 
         abort();
       }
@@ -246,9 +246,9 @@ LABEL_6:
 LABEL_5:
     if (self->_updateFlags.updated)
     {
-      v6 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGDecoratingLayout displayScaleDidChange]"];
-      [v6 handleFailureInFunction:v7 file:@"PXGDecoratingLayout.m" lineNumber:721 description:{@"invalidating %lu after it already has been updated", 1}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXGDecoratingLayout.m" lineNumber:721 description:{@"invalidating %lu after it already has been updated", 1}];
 
       abort();
     }
@@ -288,9 +288,9 @@ LABEL_6:
 LABEL_5:
     if (self->_updateFlags.updated)
     {
-      v6 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGDecoratingLayout safeAreaInsetsDidChange]"];
-      [v6 handleFailureInFunction:v7 file:@"PXGDecoratingLayout.m" lineNumber:726 description:{@"invalidating %lu after it already has been updated", 1}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXGDecoratingLayout.m" lineNumber:726 description:{@"invalidating %lu after it already has been updated", 1}];
 
       abort();
     }
@@ -319,9 +319,9 @@ LABEL_5:
   self->_updateFlags.willPerformUpdate = 1;
   if (self->_updateFlags.isPerformingUpdate)
   {
-    v3 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGDecoratingLayout willUpdate]"];
-    [v3 handleFailureInFunction:v4 file:@"PXGDecoratingLayout.m" lineNumber:267 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
+    [currentHandler handleFailureInFunction:v4 file:@"PXGDecoratingLayout.m" lineNumber:267 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
   }
 }
 
@@ -334,9 +334,9 @@ LABEL_5:
   {
     if (self->_updateFlags.isPerformingUpdate)
     {
-      v8 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGDecoratingLayout update]"];
-      [v8 handleFailureInFunction:v9 file:@"PXGDecoratingLayout.m" lineNumber:271 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
+      [currentHandler handleFailureInFunction:v9 file:@"PXGDecoratingLayout.m" lineNumber:271 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
 
       needsUpdate = p_updateFlags->needsUpdate;
     }
@@ -349,9 +349,9 @@ LABEL_5:
       [(PXGDecoratingLayout *)self _updateDecoratedLayout];
       if (!p_updateFlags->isPerformingUpdate)
       {
-        v10 = [MEMORY[0x277CCA890] currentHandler];
+        currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
         v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGDecoratingLayout update]"];
-        [v10 handleFailureInFunction:v11 file:@"PXGDecoratingLayout.m" lineNumber:275 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
+        [currentHandler2 handleFailureInFunction:v11 file:@"PXGDecoratingLayout.m" lineNumber:275 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
       }
     }
 
@@ -365,9 +365,9 @@ LABEL_5:
 
     if (!p_updateFlags->isPerformingUpdate)
     {
-      v12 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
       v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGDecoratingLayout update]"];
-      [v12 handleFailureInFunction:v13 file:@"PXGDecoratingLayout.m" lineNumber:278 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
+      [currentHandler3 handleFailureInFunction:v13 file:@"PXGDecoratingLayout.m" lineNumber:278 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
     }
 
     v6 = p_updateFlags->needsUpdate;
@@ -380,9 +380,9 @@ LABEL_5:
 
     if (!p_updateFlags->isPerformingUpdate)
     {
-      v14 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler4 = [MEMORY[0x277CCA890] currentHandler];
       v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGDecoratingLayout update]"];
-      [v14 handleFailureInFunction:v15 file:@"PXGDecoratingLayout.m" lineNumber:281 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
+      [currentHandler4 handleFailureInFunction:v15 file:@"PXGDecoratingLayout.m" lineNumber:281 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
     }
 
     v7 = p_updateFlags->needsUpdate;
@@ -397,9 +397,9 @@ LABEL_5:
     p_updateFlags->isPerformingUpdate = 0;
     if (v7)
     {
-      v16 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler5 = [MEMORY[0x277CCA890] currentHandler];
       v17 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGDecoratingLayout update]"];
-      [v16 handleFailureInFunction:v17 file:@"PXGDecoratingLayout.m" lineNumber:284 description:{@"still needing to update %lu after update pass", p_updateFlags->needsUpdate}];
+      [currentHandler5 handleFailureInFunction:v17 file:@"PXGDecoratingLayout.m" lineNumber:284 description:{@"still needing to update %lu after update pass", p_updateFlags->needsUpdate}];
     }
   }
 
@@ -410,19 +410,19 @@ LABEL_5:
 
 - (void)_updateDecoratedLayout
 {
-  v4 = [(PXGDecoratingLayout *)self decoratedLayout];
-  if (v4)
+  decoratedLayout = [(PXGDecoratingLayout *)self decoratedLayout];
+  if (decoratedLayout)
   {
-    v15 = v4;
+    v15 = decoratedLayout;
     if (self->_isUpdatingDecoratedLayout)
     {
-      v14 = [MEMORY[0x277CCA890] currentHandler];
-      [v14 handleFailureInMethod:a2 object:self file:@"PXGDecoratingLayout.m" lineNumber:299 description:{@"Invalid parameter not satisfying: %@", @"!_isUpdatingDecoratedLayout"}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXGDecoratingLayout.m" lineNumber:299 description:{@"Invalid parameter not satisfying: %@", @"!_isUpdatingDecoratedLayout"}];
     }
 
     self->_isUpdatingDecoratedLayout = 1;
-    v5 = [(PXGLayout *)self viewEnvironment];
-    [v15 setViewEnvironment:v5];
+    viewEnvironment = [(PXGLayout *)self viewEnvironment];
+    [v15 setViewEnvironment:viewEnvironment];
 
     [(PXGLayout *)self referenceSize];
     [v15 setReferenceSize:?];
@@ -436,24 +436,24 @@ LABEL_5:
     [v15 setSafeAreaInsets:?];
     [v15 setUserInterfaceDirection:{-[PXGLayout userInterfaceDirection](self, "userInterfaceDirection")}];
     v6 = [v15 createAnchorFromSuperlayoutWithSublayoutIndex:0 sublayoutPositionEdges:15 ignoringScrollingAnimationAnchors:0];
-    v7 = [v6 autoInvalidate];
+    autoInvalidate = [v6 autoInvalidate];
 
     [v15 updateIfNeeded];
     [v15 contentSize];
     v9 = v8;
     v11 = v10;
-    v12 = [(PXGLayout *)self sublayoutDataStore];
-    v13 = [v12 geometries];
+    sublayoutDataStore = [(PXGLayout *)self sublayoutDataStore];
+    geometries = [sublayoutDataStore geometries];
 
-    v13[6] = 0.0;
-    v13[7] = 0.0;
-    v13[8] = 0.0;
-    v13[4] = v9;
-    v13[5] = v11;
+    geometries[6] = 0.0;
+    geometries[7] = 0.0;
+    geometries[8] = 0.0;
+    geometries[4] = v9;
+    geometries[5] = v11;
     [(PXGLayout *)self setContentSize:v9, v11];
     [v15 visibleRect];
     [(PXGLayout *)self changeVisibleRectToProposedVisibleRect:?];
-    v4 = v15;
+    decoratedLayout = v15;
     self->_isUpdatingDecoratedLayout = 0;
   }
 }
@@ -467,21 +467,21 @@ LABEL_5:
 
 - (void)_updateDecorationSources
 {
-  v30 = [(PXGDecoratingLayout *)self decoratedLayout];
-  v3 = [(PXGLayout *)self contentSource];
-  v4 = [(PXGDecoratingLayout *)self decorationSource];
-  v5 = v4;
-  if (v4)
+  decoratedLayout = [(PXGDecoratingLayout *)self decoratedLayout];
+  contentSource = [(PXGLayout *)self contentSource];
+  decorationSource = [(PXGDecoratingLayout *)self decorationSource];
+  v5 = decorationSource;
+  if (decorationSource)
   {
-    v6 = v4;
+    contentSource2 = decorationSource;
   }
 
   else
   {
-    v6 = [v30 contentSource];
+    contentSource2 = [decoratedLayout contentSource];
   }
 
-  v7 = v6;
+  v7 = contentSource2;
 
   if ((objc_opt_respondsToSelector() & 1) == 0 || (objc_opt_respondsToSelector() & 1) == 0)
   {
@@ -489,7 +489,7 @@ LABEL_5:
   }
 
   v8 = v7;
-  if (([v8 wantsAssetBadgeDecorationsInLayout:v30] & 1) == 0)
+  if (([v8 wantsAssetBadgeDecorationsInLayout:decoratedLayout] & 1) == 0)
   {
 
 LABEL_10:
@@ -520,7 +520,7 @@ LABEL_11:
   if (objc_opt_respondsToSelector())
   {
     v10 = v7;
-    self->_wantsCaptionDecorations = [v10 wantsCaptionDecorationsInLayout:v30];
+    self->_wantsCaptionDecorations = [v10 wantsCaptionDecorationsInLayout:decoratedLayout];
   }
 
   else
@@ -545,8 +545,8 @@ LABEL_11:
   if (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector())
   {
     v12 = v7;
-    v13 = [v12 selectionDecorationStyleInLayout:v30];
-    v14 = [v12 selectionDecorationAdditionsInLayout:v30];
+    v13 = [v12 selectionDecorationStyleInLayout:decoratedLayout];
+    v14 = [v12 selectionDecorationAdditionsInLayout:decoratedLayout];
     if (v13 | v14)
     {
       v15 = v14;
@@ -563,7 +563,7 @@ LABEL_25:
   self->_selectionDecorationOptions = v15;
   if (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector())
   {
-    v16 = v3;
+    v16 = contentSource;
   }
 
   else
@@ -575,7 +575,7 @@ LABEL_25:
   objc_storeStrong(&self->_shadowSource, v16);
   if (objc_opt_respondsToSelector())
   {
-    v17 = v3;
+    v17 = contentSource;
   }
 
   else
@@ -609,7 +609,7 @@ LABEL_25:
   objc_storeWeak(&self->_solidColorOverlayDecorationSource, v19);
   if (objc_opt_respondsToSelector())
   {
-    v20 = [v7 focusRingTypeInLayout:{v30, v25, v26}];
+    v20 = [v7 focusRingTypeInLayout:{decoratedLayout, v25, v26}];
   }
 
   else
@@ -633,7 +633,7 @@ LABEL_25:
   if (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector())
   {
     v22 = v7;
-    if ([v22 wantsDebugDecorationInLayout:v30])
+    if ([v22 wantsDebugDecorationInLayout:decoratedLayout])
     {
       goto LABEL_49;
     }
@@ -653,7 +653,7 @@ LABEL_49:
   }
 
   objc_storeWeak(&self->_viewDecorationSource, v23);
-  if ((objc_opt_respondsToSelector() & 1) != 0 && [v7 wantsTapbackDecorationInLayout:v30])
+  if ((objc_opt_respondsToSelector() & 1) != 0 && [v7 wantsTapbackDecorationInLayout:decoratedLayout])
   {
     v24 = v7;
   }
@@ -675,47 +675,47 @@ LABEL_49:
 
 - (void)_updateDecorationSprites
 {
-  v3 = [(PXGDecoratingLayout *)self decoratedLayout];
-  if (v3 && [(NSMutableIndexSet *)self->_invalidatedDecoratedSpriteIndexes count]&& [(PXGDecoratingLayout *)self enabled])
+  decoratedLayout = [(PXGDecoratingLayout *)self decoratedLayout];
+  if (decoratedLayout && [(NSMutableIndexSet *)self->_invalidatedDecoratedSpriteIndexes count]&& [(PXGDecoratingLayout *)self enabled])
   {
-    v4 = [(PXGDecoratingLayout *)self numberOfDecoratingSpritesPerDecoratedSprite];
-    if (v4)
+    numberOfDecoratingSpritesPerDecoratedSprite = [(PXGDecoratingLayout *)self numberOfDecoratingSpritesPerDecoratedSprite];
+    if (numberOfDecoratingSpritesPerDecoratedSprite)
     {
-      v5 = v4;
+      v5 = numberOfDecoratingSpritesPerDecoratedSprite;
       [(PXGLayout *)self alpha];
       v7 = v6;
       activeDecorationSpriteIndexes = self->_activeDecorationSpriteIndexes;
       v21 = [(PXGDecoratingLayout *)self scrollableAxis]== 2 && [(PXGLayout *)self userInterfaceDirection]== 1;
-      v8 = [(PXGDecoratingLayout *)self itemsLayout];
-      v19 = [v8 insetDelegate];
+      itemsLayout = [(PXGDecoratingLayout *)self itemsLayout];
+      insetDelegate = [itemsLayout insetDelegate];
       WeakRetained = objc_loadWeakRetained(&self->_assetBackgroundDecorationSource);
       v10 = objc_loadWeakRetained(&self->_selectionDecorationSource);
       v11 = objc_loadWeakRetained(&self->_tapbackDecorationSource);
-      v12 = [v3 shouldDecorateUndefinedMediaKind];
-      v13 = [v3 shouldUpdateDecorationMediaTargetSizes];
+      shouldDecorateUndefinedMediaKind = [decoratedLayout shouldDecorateUndefinedMediaKind];
+      shouldUpdateDecorationMediaTargetSizes = [decoratedLayout shouldUpdateDecorationMediaTargetSizes];
       invalidatedDecoratedSpriteIndexes = self->_invalidatedDecoratedSpriteIndexes;
       v23[0] = MEMORY[0x277D85DD0];
       v23[1] = 3221225472;
       v23[2] = __47__PXGDecoratingLayout__updateDecorationSprites__block_invoke;
       v23[3] = &unk_2782A9F68;
-      v24 = v3;
-      v25 = v8;
+      v24 = decoratedLayout;
+      v25 = itemsLayout;
       v26 = WeakRetained;
-      v27 = self;
+      selfCopy = self;
       v33 = v5;
       v34 = v21;
-      v35 = v12;
-      v28 = v19;
+      v35 = shouldDecorateUndefinedMediaKind;
+      v28 = insetDelegate;
       v29 = v10;
       v30 = v11;
       v31 = activeDecorationSpriteIndexes;
       v32 = v7;
-      v36 = v13;
+      v36 = shouldUpdateDecorationMediaTargetSizes;
       v14 = v11;
       v15 = v10;
-      v16 = v19;
+      v16 = insetDelegate;
       v17 = WeakRetained;
-      v18 = v8;
+      v18 = itemsLayout;
       [(NSMutableIndexSet *)invalidatedDecoratedSpriteIndexes enumerateRangesUsingBlock:v23];
       [(NSMutableIndexSet *)self->_invalidatedDecoratedSpriteIndexes removeAllIndexes];
     }
@@ -729,10 +729,10 @@ LABEL_49:
 
 - (int64_t)scrollableAxis
 {
-  v2 = [(PXGDecoratingLayout *)self decoratedLayout];
-  v3 = [v2 scrollableAxis];
+  decoratedLayout = [(PXGDecoratingLayout *)self decoratedLayout];
+  scrollableAxis = [decoratedLayout scrollableAxis];
 
-  return v3;
+  return scrollableAxis;
 }
 
 void __47__PXGDecoratingLayout__updateDecorationSprites__block_invoke(uint64_t a1, unsigned int a2, unsigned int a3)
@@ -1190,16 +1190,16 @@ LABEL_78:
   [(PXGLayout *)&v5 didUpdate];
   if (self->_updateFlags.willPerformUpdate)
   {
-    v3 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGDecoratingLayout didUpdate]"];
-    [v3 handleFailureInFunction:v4 file:@"PXGDecoratingLayout.m" lineNumber:290 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.willPerformUpdate"}];
+    [currentHandler handleFailureInFunction:v4 file:@"PXGDecoratingLayout.m" lineNumber:290 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.willPerformUpdate"}];
   }
 }
 
 - (double)lastBaseline
 {
-  v2 = [(PXGDecoratingLayout *)self decoratedLayout];
-  [v2 lastBaseline];
+  decoratedLayout = [(PXGDecoratingLayout *)self decoratedLayout];
+  [decoratedLayout lastBaseline];
   v4 = v3;
 
   return v4;
@@ -1278,38 +1278,38 @@ LABEL_78:
 - (id)preferredFocusLayouts
 {
   v8[1] = *MEMORY[0x277D85DE8];
-  v3 = [(PXGDecoratingLayout *)self decoratedLayout];
+  decoratedLayout = [(PXGDecoratingLayout *)self decoratedLayout];
 
-  if (v3)
+  if (decoratedLayout)
   {
-    v4 = [(PXGDecoratingLayout *)self decoratedLayout];
-    v8[0] = v4;
-    v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:1];
+    decoratedLayout2 = [(PXGDecoratingLayout *)self decoratedLayout];
+    v8[0] = decoratedLayout2;
+    preferredFocusLayouts = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:1];
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = PXGDecoratingLayout;
-    v5 = [(PXGLayout *)&v7 preferredFocusLayouts];
+    preferredFocusLayouts = [(PXGLayout *)&v7 preferredFocusLayouts];
   }
 
-  return v5;
+  return preferredFocusLayouts;
 }
 
-- (id)axContentInfoAtSpriteIndex:(unsigned int)a3
+- (id)axContentInfoAtSpriteIndex:(unsigned int)index
 {
-  v3 = *&a3;
+  v3 = *&index;
   v39 = *MEMORY[0x277D85DE8];
-  v5 = [(PXGLayout *)self spriteDataStore];
-  if ([v5 count] > v3 && -[PXGDecoratingLayout decorationIndexForSpriteIndex:](self, "decorationIndexForSpriteIndex:", v3) == 3)
+  spriteDataStore = [(PXGLayout *)self spriteDataStore];
+  if ([spriteDataStore count] > v3 && -[PXGDecoratingLayout decorationIndexForSpriteIndex:](self, "decorationIndexForSpriteIndex:", v3) == 3)
   {
     v6 = +[PXGReusableAXInfo sharedPool];
     v7 = [v6 checkOutReusableObjectWithReuseIdentifier:1];
-    v8 = ([v5 geometries] + 32 * v3);
+    v8 = ([spriteDataStore geometries] + 32 * v3);
     v17 = *v8;
     v18 = v8[1];
-    v9 = ([v5 styles] + 160 * v3);
+    v9 = ([spriteDataStore styles] + 160 * v3);
     v10 = v9[7];
     v35 = v9[6];
     v36 = v10;
@@ -1340,8 +1340,8 @@ LABEL_78:
     v19 = v29;
     v20 = v30;
     [v7 setSpriteStyle:&v19];
-    v15 = [(PXGLayout *)self axGroup];
-    [v7 setAxContainingGroup:v15];
+    axGroup = [(PXGLayout *)self axGroup];
+    [v7 setAxContainingGroup:axGroup];
 
     [v7 setContent:0 ofContentKind:5];
   }
@@ -1354,61 +1354,61 @@ LABEL_78:
   return v7;
 }
 
-- (unsigned)viewHostingSpriteIndexForSublayout:(id)a3 spriteIndex:(unsigned int)a4
+- (unsigned)viewHostingSpriteIndexForSublayout:(id)sublayout spriteIndex:(unsigned int)index
 {
-  v4 = *&a4;
-  v6 = a3;
-  if (v6 == self && self->_wantsDecorationSpritesHostedInDecoratedSprite && [(PXGLayout *)self localNumberOfSprites]> v4)
+  v4 = *&index;
+  sublayoutCopy = sublayout;
+  if (sublayoutCopy == self && self->_wantsDecorationSpritesHostedInDecoratedSprite && [(PXGLayout *)self localNumberOfSprites]> v4)
   {
     v7 = [(PXGDecoratingLayout *)self decoratedIndexForDecoratingIndex:v4];
-    v8 = [(PXGDecoratingLayout *)self decoratedLayout];
-    v9 = [(PXGLayout *)self convertSpriteIndex:v7 fromDescendantLayout:v8];
+    decoratedLayout = [(PXGDecoratingLayout *)self decoratedLayout];
+    v9 = [(PXGLayout *)self convertSpriteIndex:v7 fromDescendantLayout:decoratedLayout];
   }
 
   else
   {
     v11.receiver = self;
     v11.super_class = PXGDecoratingLayout;
-    v9 = [(PXGLayout *)&v11 viewHostingSpriteIndexForSublayout:v6 spriteIndex:v4];
+    v9 = [(PXGLayout *)&v11 viewHostingSpriteIndexForSublayout:sublayoutCopy spriteIndex:v4];
   }
 
   return v9;
 }
 
-- (int64_t)decoratingTypeForSpriteIndex:(unsigned int)a3
+- (int64_t)decoratingTypeForSpriteIndex:(unsigned int)index
 {
-  v3 = [(PXGDecoratingLayout *)self decorationIndexForSpriteIndex:*&a3];
+  v3 = [(PXGDecoratingLayout *)self decorationIndexForSpriteIndex:*&index];
 
   return _DecorationTypeForIndex(v3);
 }
 
-- (unsigned)decorationIndexForSpriteIndex:(unsigned int)a3
+- (unsigned)decorationIndexForSpriteIndex:(unsigned int)index
 {
-  v3 = *&a3;
-  if ([(PXGLayout *)self localNumberOfSprites]<= a3)
+  v3 = *&index;
+  if ([(PXGLayout *)self localNumberOfSprites]<= index)
   {
-    v8 = [MEMORY[0x277CCA890] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"PXGDecoratingLayout.m" lineNumber:989 description:{@"Sprite index %u is not valid for decorating layout with %u sprites", v3, -[PXGLayout localNumberOfSprites](self, "localNumberOfSprites")}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGDecoratingLayout.m" lineNumber:989 description:{@"Sprite index %u is not valid for decorating layout with %u sprites", v3, -[PXGLayout localNumberOfSprites](self, "localNumberOfSprites")}];
   }
 
   v6 = self->_activeDecorationSpriteIndexes[v3 % self->_activeDecorationsCount];
   if (v6 >= 9)
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"PXGDecoratingLayout.m" lineNumber:993 description:{@"Invalid parameter not satisfying: %@", @"decorationIndex < PXGDecoratingLayoutMaxNumberOfDecoratingSpritesPerDecoratedSprite"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXGDecoratingLayout.m" lineNumber:993 description:{@"Invalid parameter not satisfying: %@", @"decorationIndex < PXGDecoratingLayoutMaxNumberOfDecoratingSpritesPerDecoratedSprite"}];
   }
 
   return v6;
 }
 
-- (void)addActiveDecorations:(id)a3
+- (void)addActiveDecorations:(id)decorations
 {
-  v9 = a3;
-  v4 = [v9 count];
-  v5 = v9;
+  decorationsCopy = decorations;
+  v4 = [decorationsCopy count];
+  v5 = decorationsCopy;
   if (v4)
   {
-    v6 = [v9 mutableCopy];
+    v6 = [decorationsCopy mutableCopy];
     if (self->_activeDecorationsCount)
     {
       v7 = 0;
@@ -1425,23 +1425,23 @@ LABEL_78:
 
     [(PXGDecoratingLayout *)self setActiveDecorations:v6];
 
-    v5 = v9;
+    v5 = decorationsCopy;
   }
 }
 
-- (void)setActiveDecorations:(id)a3
+- (void)setActiveDecorations:(id)decorations
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CCAB58] indexSet];
+  decorationsCopy = decorations;
+  indexSet = [MEMORY[0x277CCAB58] indexSet];
   pendingActiveDecorationSpriteIndexes = self->_pendingActiveDecorationSpriteIndexes;
-  self->_pendingActiveDecorationSpriteIndexes = v5;
+  self->_pendingActiveDecorationSpriteIndexes = indexSet;
 
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = v4;
+  v7 = decorationsCopy;
   v8 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v8)
   {
@@ -1479,9 +1479,9 @@ LABEL_13:
 LABEL_12:
     if ((self->_updateFlags.updated & 0xC) != 0)
     {
-      v15 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v16 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGDecoratingLayout setActiveDecorations:]"];
-      [v15 handleFailureInFunction:v16 file:@"PXGDecoratingLayout.m" lineNumber:974 description:{@"invalidating %lu after it already has been updated", 12}];
+      [currentHandler handleFailureInFunction:v16 file:@"PXGDecoratingLayout.m" lineNumber:974 description:{@"invalidating %lu after it already has been updated", 12}];
 
       abort();
     }
@@ -1506,48 +1506,48 @@ LABEL_14:
 
 - (BOOL)canHandleVisibleRectRejection
 {
-  v2 = [(PXGDecoratingLayout *)self itemsLayout];
-  v3 = [v2 canHandleVisibleRectRejection];
+  itemsLayout = [(PXGDecoratingLayout *)self itemsLayout];
+  canHandleVisibleRectRejection = [itemsLayout canHandleVisibleRectRejection];
 
-  return v3;
+  return canHandleVisibleRectRejection;
 }
 
 - (PXGItemsGeometry)itemsGeometry
 {
-  v2 = [(PXGDecoratingLayout *)self itemsLayout];
-  v3 = [v2 itemsGeometry];
+  itemsLayout = [(PXGDecoratingLayout *)self itemsLayout];
+  itemsGeometry = [itemsLayout itemsGeometry];
 
-  return v3;
+  return itemsGeometry;
 }
 
-- (BOOL)isSpriteIndex:(unsigned int)a3 decoratingSpriteWithIndex:(unsigned int *)a4
+- (BOOL)isSpriteIndex:(unsigned int)index decoratingSpriteWithIndex:(unsigned int *)withIndex
 {
-  v8 = [(PXGLayout *)self localNumberOfSprites];
-  v9 = a3;
-  if (v8 > a3)
+  localNumberOfSprites = [(PXGLayout *)self localNumberOfSprites];
+  indexCopy = index;
+  if (localNumberOfSprites > index)
   {
-    v10 = a3 / [(PXGDecoratingLayout *)self numberOfDecoratingSpritesPerDecoratedSprite];
-    v11 = [(PXGDecoratingLayout *)self decoratedLayout];
-    if (!v11)
+    v10 = index / [(PXGDecoratingLayout *)self numberOfDecoratingSpritesPerDecoratedSprite];
+    decoratedLayout = [(PXGDecoratingLayout *)self decoratedLayout];
+    if (!decoratedLayout)
     {
-      v13 = [MEMORY[0x277CCA890] currentHandler];
-      [v13 handleFailureInMethod:a2 object:self file:@"PXGDecoratingLayout.m" lineNumber:940 description:{@"Invalid parameter not satisfying: %@", @"decoratedLayout != nil"}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXGDecoratingLayout.m" lineNumber:940 description:{@"Invalid parameter not satisfying: %@", @"decoratedLayout != nil"}];
     }
 
-    v9 = [(PXGLayout *)self convertSpriteIndex:v10 fromDescendantLayout:v11];
+    indexCopy = [(PXGLayout *)self convertSpriteIndex:v10 fromDescendantLayout:decoratedLayout];
   }
 
-  if (a4)
+  if (withIndex)
   {
-    *a4 = v9;
+    *withIndex = indexCopy;
   }
 
-  return v8 > a3;
+  return localNumberOfSprites > index;
 }
 
-- (unsigned)spriteIndexForDecorationIndex:(unsigned int)a3 decoratingSpriteIndex:(unsigned int)a4
+- (unsigned)spriteIndexForDecorationIndex:(unsigned int)index decoratingSpriteIndex:(unsigned int)spriteIndex
 {
-  v6 = [(PXGDecoratingLayout *)self numberOfDecoratingSpritesPerDecoratedSprite]* a4;
+  v6 = [(PXGDecoratingLayout *)self numberOfDecoratingSpritesPerDecoratedSprite]* spriteIndex;
   if (v6 >= [(PXGLayout *)self localNumberOfSprites])
   {
     return -1;
@@ -1555,19 +1555,19 @@ LABEL_14:
 
   else
   {
-    return v6 + a3;
+    return v6 + index;
   }
 }
 
-- (id)hitTestResultForSpriteIndex:(unsigned int)a3
+- (id)hitTestResultForSpriteIndex:(unsigned int)index
 {
-  v3 = *&a3;
-  v5 = [(PXGDecoratingLayout *)self decoratedLayout];
-  v6 = v5;
+  v3 = *&index;
+  decoratedLayout = [(PXGDecoratingLayout *)self decoratedLayout];
+  v6 = decoratedLayout;
   v7 = 0;
-  if (v3 != -1 && v5)
+  if (v3 != -1 && decoratedLayout)
   {
-    v8 = [(PXGLayout *)self convertSpriteIndex:v3 toDescendantLayout:v5];
+    v8 = [(PXGLayout *)self convertSpriteIndex:v3 toDescendantLayout:decoratedLayout];
     if (v8 != -1)
     {
       v9 = v8;
@@ -1581,9 +1581,9 @@ LABEL_5:
     {
       v11 = v3 % [(PXGDecoratingLayout *)self numberOfDecoratingSpritesPerDecoratedSprite];
       v12 = v3 / [(PXGDecoratingLayout *)self numberOfDecoratingSpritesPerDecoratedSprite];
-      v13 = [(PXGDecoratingLayout *)self allowsViewDecorationHitTesting];
+      allowsViewDecorationHitTesting = [(PXGDecoratingLayout *)self allowsViewDecorationHitTesting];
       v14 = self->_activeDecorationSpriteIndexes[v11];
-      if (v13 && v14 == 3)
+      if (allowsViewDecorationHitTesting && v14 == 3)
       {
         v15 = [(PXGLayout *)self spriteReferenceForSpriteIndex:v3];
         v16 = [PXGHitTestResult alloc];
@@ -1609,37 +1609,37 @@ LABEL_12:
   return v7;
 }
 
-- (void)setLastBaseline:(double)a3
+- (void)setLastBaseline:(double)baseline
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
-  v6 = [(PXGDecoratingLayout *)self decoratedLayout];
-  [v5 handleFailureInMethod:a2 object:self file:@"PXGDecoratingLayout.m" lineNumber:887 description:{@"baseline shouldn't be set on %@, did you mean to set it on %@ instead?", self, v6}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  decoratedLayout = [(PXGDecoratingLayout *)self decoratedLayout];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXGDecoratingLayout.m" lineNumber:887 description:{@"baseline shouldn't be set on %@, did you mean to set it on %@ instead?", self, decoratedLayout}];
 
   abort();
 }
 
 - (id)currentDataSourceChange
 {
-  v2 = [(PXGDecoratingLayout *)self decoratedLayout];
-  v3 = [v2 currentDataSourceChange];
+  decoratedLayout = [(PXGDecoratingLayout *)self decoratedLayout];
+  currentDataSourceChange = [decoratedLayout currentDataSourceChange];
 
-  return v3;
+  return currentDataSourceChange;
 }
 
 - (id)layoutForItemChanges
 {
-  v2 = [(PXGDecoratingLayout *)self decoratedLayout];
-  v3 = [v2 layoutForItemChanges];
+  decoratedLayout = [(PXGDecoratingLayout *)self decoratedLayout];
+  layoutForItemChanges = [decoratedLayout layoutForItemChanges];
 
-  return v3;
+  return layoutForItemChanges;
 }
 
-- (int64_t)sublayoutIndexForObjectReference:(id)a3 options:(unint64_t)a4 updatedObjectReference:(id *)a5
+- (int64_t)sublayoutIndexForObjectReference:(id)reference options:(unint64_t)options updatedObjectReference:(id *)objectReference
 {
-  v8 = a3;
-  *a5 = v8;
-  v9 = [(PXGDecoratingLayout *)self decoratedLayout];
-  if (v9)
+  referenceCopy = reference;
+  *objectReference = referenceCopy;
+  decoratedLayout = [(PXGDecoratingLayout *)self decoratedLayout];
+  if (decoratedLayout)
   {
     v10 = 0;
   }
@@ -1648,28 +1648,28 @@ LABEL_12:
   {
     v12.receiver = self;
     v12.super_class = PXGDecoratingLayout;
-    v10 = [(PXGLayout *)&v12 sublayoutIndexForObjectReference:v8 options:a4 updatedObjectReference:a5];
+    v10 = [(PXGLayout *)&v12 sublayoutIndexForObjectReference:referenceCopy options:options updatedObjectReference:objectReference];
   }
 
   return v10;
 }
 
-- (unsigned)spriteIndexForObjectReference:(id)a3 options:(unint64_t)a4 updatedObjectReference:(id *)a5
+- (unsigned)spriteIndexForObjectReference:(id)reference options:(unint64_t)options updatedObjectReference:(id *)objectReference
 {
-  v8 = a3;
+  referenceCopy = reference;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = v8;
-    v10 = [(PXGDecoratingLayout *)self decoratedLayout];
-    v11 = [v9 decoratedSpriteReference];
-    v12 = [v10 spriteIndexForSpriteReference:v11 options:a4];
+    v9 = referenceCopy;
+    decoratedLayout = [(PXGDecoratingLayout *)self decoratedLayout];
+    decoratedSpriteReference = [v9 decoratedSpriteReference];
+    v12 = [decoratedLayout spriteIndexForSpriteReference:decoratedSpriteReference options:options];
 
     v13 = -1;
-    if (v10 && v12 != -1)
+    if (decoratedLayout && v12 != -1)
     {
-      v14 = [(PXGDecoratingLayout *)self numberOfDecoratingSpritesPerDecoratedSprite];
-      v13 = _DecorationIndexForType([v9 decorationType]) + v14 * v12;
+      numberOfDecoratingSpritesPerDecoratedSprite = [(PXGDecoratingLayout *)self numberOfDecoratingSpritesPerDecoratedSprite];
+      v13 = _DecorationIndexForType([v9 decorationType]) + numberOfDecoratingSpritesPerDecoratedSprite * v12;
       if (v13 >= [(PXGLayout *)self localNumberOfSprites])
       {
         v13 = -1;
@@ -1678,7 +1678,7 @@ LABEL_12:
       else
       {
         v15 = v9;
-        *a5 = v9;
+        *objectReference = v9;
       }
     }
   }
@@ -1687,34 +1687,34 @@ LABEL_12:
   {
     v17.receiver = self;
     v17.super_class = PXGDecoratingLayout;
-    v13 = [(PXGLayout *)&v17 spriteIndexForObjectReference:v8 options:a4 updatedObjectReference:a5];
+    v13 = [(PXGLayout *)&v17 spriteIndexForObjectReference:referenceCopy options:options updatedObjectReference:objectReference];
   }
 
   return v13;
 }
 
-- (void)_invalidateDecorationForSpriteRange:(_PXGSpriteIndexRange)a3 inLayout:(id)a4 invalidateSprites:(BOOL)a5
+- (void)_invalidateDecorationForSpriteRange:(_PXGSpriteIndexRange)range inLayout:(id)layout invalidateSprites:(BOOL)sprites
 {
-  v21 = a4;
-  v8 = [(PXGDecoratingLayout *)self decoratedLayout];
-  if (v8 != v21)
+  layoutCopy = layout;
+  decoratedLayout = [(PXGDecoratingLayout *)self decoratedLayout];
+  if (decoratedLayout != layoutCopy)
   {
 
     goto LABEL_19;
   }
 
-  v9 = [(PXGDecoratingLayout *)self spritesAreInSyncWithDecoratedLayout];
+  spritesAreInSyncWithDecoratedLayout = [(PXGDecoratingLayout *)self spritesAreInSyncWithDecoratedLayout];
 
-  if (v9)
+  if (spritesAreInSyncWithDecoratedLayout)
   {
-    if (!a5)
+    if (!sprites)
     {
       goto LABEL_12;
     }
 
     invalidatedDecoratedSpriteIndexes = self->_invalidatedDecoratedSpriteIndexes;
-    v11 = [(PXGDecoratingLayout *)self decoratedLayout];
-    -[NSMutableIndexSet addIndexesInRange:](invalidatedDecoratedSpriteIndexes, "addIndexesInRange:", 0, [v11 localNumberOfSprites]);
+    decoratedLayout2 = [(PXGDecoratingLayout *)self decoratedLayout];
+    -[NSMutableIndexSet addIndexesInRange:](invalidatedDecoratedSpriteIndexes, "addIndexesInRange:", 0, [decoratedLayout2 localNumberOfSprites]);
 
     p_updateFlags = &self->_updateFlags;
     needsUpdate = self->_updateFlags.needsUpdate;
@@ -1752,14 +1752,14 @@ LABEL_12:
 LABEL_17:
           v14->needsUpdate = v15 | 2;
 LABEL_18:
-          v16 = [(PXGDecoratingLayout *)self numberOfDecoratingSpritesPerDecoratedSprite];
-          [(PXGLayout *)self modifySpritesInRange:(v16 * a3.location) | ((v16 * a3.length) << 32) state:&__block_literal_global_11853];
+          numberOfDecoratingSpritesPerDecoratedSprite = [(PXGDecoratingLayout *)self numberOfDecoratingSpritesPerDecoratedSprite];
+          [(PXGLayout *)self modifySpritesInRange:(numberOfDecoratingSpritesPerDecoratedSprite * range.location) | ((numberOfDecoratingSpritesPerDecoratedSprite * range.length) << 32) state:&__block_literal_global_11853];
           goto LABEL_19;
         }
 
-        v19 = [MEMORY[0x277CCA890] currentHandler];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
         v20 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGDecoratingLayout _invalidateDecorationForSpriteRange:inLayout:invalidateSprites:]"];
-        [v19 handleFailureInFunction:v20 file:@"PXGDecoratingLayout.m" lineNumber:840 description:{@"invalidating %lu after it already has been updated", 2}];
+        [currentHandler handleFailureInFunction:v20 file:@"PXGDecoratingLayout.m" lineNumber:840 description:{@"invalidating %lu after it already has been updated", 2}];
 LABEL_28:
 
         abort();
@@ -1780,9 +1780,9 @@ LABEL_28:
 
     if ((self->_updateFlags.updated & 8) != 0)
     {
-      v19 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v20 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGDecoratingLayout _invalidateDecorationForSpriteRange:inLayout:invalidateSprites:]"];
-      [v19 handleFailureInFunction:v20 file:@"PXGDecoratingLayout.m" lineNumber:837 description:{@"invalidating %lu after it already has been updated", 8}];
+      [currentHandler handleFailureInFunction:v20 file:@"PXGDecoratingLayout.m" lineNumber:837 description:{@"invalidating %lu after it already has been updated", 8}];
       goto LABEL_28;
     }
 
@@ -1813,20 +1813,20 @@ void __86__PXGDecoratingLayout__invalidateDecorationForSpriteRange_inLayout_inva
   }
 }
 
-- (void)sublayout:(id)a3 didApplySpriteChangeDetails:(id)a4 fromDescendentSublayout:(id)a5
+- (void)sublayout:(id)sublayout didApplySpriteChangeDetails:(id)details fromDescendentSublayout:(id)descendentSublayout
 {
-  v8 = a4;
+  detailsCopy = details;
   v13.receiver = self;
   v13.super_class = PXGDecoratingLayout;
-  v9 = a5;
-  [(PXGLayout *)&v13 sublayout:a3 didApplySpriteChangeDetails:v8 fromDescendentSublayout:v9];
+  descendentSublayoutCopy = descendentSublayout;
+  [(PXGLayout *)&v13 sublayout:sublayout didApplySpriteChangeDetails:detailsCopy fromDescendentSublayout:descendentSublayoutCopy];
   v10 = [(PXGDecoratingLayout *)self decoratedLayout:v13.receiver];
 
-  if (v10 == v9)
+  if (v10 == descendentSublayoutCopy)
   {
-    v11 = [(PXGDecoratingLayout *)self spritesAreInSyncWithDecoratedLayout];
+    spritesAreInSyncWithDecoratedLayout = [(PXGDecoratingLayout *)self spritesAreInSyncWithDecoratedLayout];
 
-    if (v11)
+    if (spritesAreInSyncWithDecoratedLayout)
     {
       if (self->_isChangingDecoratedLayout)
       {
@@ -1835,7 +1835,7 @@ void __86__PXGDecoratingLayout__invalidateDecorationForSpriteRange_inLayout_inva
 
       else
       {
-        v12 = v8;
+        v12 = detailsCopy;
       }
 
       [(PXGDecoratingLayout *)self _applyDecoratedLayoutChangeDetails:v12];
@@ -1847,35 +1847,35 @@ void __86__PXGDecoratingLayout__invalidateDecorationForSpriteRange_inLayout_inva
   }
 }
 
-- (void)_applyDecoratedLayoutChangeDetails:(id)a3
+- (void)_applyDecoratedLayoutChangeDetails:(id)details
 {
   v43 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(PXGDecoratingLayout *)self decoratedLayout];
-  v6 = [(PXGDecoratingLayout *)self enabled];
-  v7 = (v4 != 0) & v6;
-  v8 = [v5 shouldInvalidateDecorationForModifiedSprites];
-  if (v6)
+  detailsCopy = details;
+  decoratedLayout = [(PXGDecoratingLayout *)self decoratedLayout];
+  enabled = [(PXGDecoratingLayout *)self enabled];
+  v7 = (detailsCopy != 0) & enabled;
+  shouldInvalidateDecorationForModifiedSprites = [decoratedLayout shouldInvalidateDecorationForModifiedSprites];
+  if (enabled)
   {
-    v6 = [(PXGDecoratingLayout *)self numberOfDecoratingSpritesPerDecoratedSprite];
+    enabled = [(PXGDecoratingLayout *)self numberOfDecoratingSpritesPerDecoratedSprite];
   }
 
-  v9 = [v5 localNumberOfSprites] * v6;
+  v9 = [decoratedLayout localNumberOfSprites] * enabled;
   if (v7)
   {
-    [v4 applyToIndexSet:self->_invalidatedDecoratedSpriteIndexes];
-    v10 = [v4 changeDetailsShiftedBy:0 scaledBy:v6];
+    [detailsCopy applyToIndexSet:self->_invalidatedDecoratedSpriteIndexes];
+    v10 = [detailsCopy changeDetailsShiftedBy:0 scaledBy:enabled];
   }
 
   else
   {
-    v11 = [(PXGLayout *)self localNumberOfSprites];
-    v12 = v8;
+    localNumberOfSprites = [(PXGLayout *)self localNumberOfSprites];
+    v12 = shouldInvalidateDecorationForModifiedSprites;
     v13 = objc_alloc(MEMORY[0x277D3CCC8]);
-    v14 = [MEMORY[0x277CCAA78] indexSetWithIndexesInRange:{0, v11}];
+    v14 = [MEMORY[0x277CCAA78] indexSetWithIndexesInRange:{0, localNumberOfSprites}];
     v15 = [MEMORY[0x277CCAA78] indexSetWithIndexesInRange:{0, v9}];
     v16 = v13;
-    v8 = v12;
+    shouldInvalidateDecorationForModifiedSprites = v12;
     v10 = [v16 initWithIncrementalChangeDetailsRemovedIndexes:v14 insertedIndexes:v15 movesToIndexes:0 movesFromIndexes:0 changedIndexes:0];
 
     [(NSMutableIndexSet *)self->_invalidatedDecoratedSpriteIndexes removeAllIndexes];
@@ -1899,16 +1899,16 @@ void __86__PXGDecoratingLayout__invalidateDecorationForSpriteRange_inLayout_inva
   v25[2] = __58__PXGDecoratingLayout__applyDecoratedLayoutChangeDetails___block_invoke;
   v25[3] = &unk_2782A9F90;
   v37 = 2048;
-  v36 = self;
+  selfCopy = self;
   v39 = 1065353216;
-  v42 = v6;
+  v42 = enabled;
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __58__PXGDecoratingLayout__applyDecoratedLayoutChangeDetails___block_invoke_2;
   v22[3] = &unk_2782A9FB8;
-  v24 = v8;
+  v24 = shouldInvalidateDecorationForModifiedSprites;
   v22[4] = self;
-  v23 = v6;
+  v23 = enabled;
   [(PXGLayout *)self applySpriteChangeDetails:v10 countAfterChanges:v9 initialState:v25 modifyState:v22];
   p_updateFlags = &self->_updateFlags;
   needsUpdate = self->_updateFlags.needsUpdate;
@@ -1924,9 +1924,9 @@ LABEL_11:
 LABEL_10:
     if ((self->_updateFlags.updated & 8) != 0)
     {
-      v20 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v21 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGDecoratingLayout _applyDecoratedLayoutChangeDetails:]"];
-      [v20 handleFailureInFunction:v21 file:@"PXGDecoratingLayout.m" lineNumber:816 description:{@"invalidating %lu after it already has been updated", 8}];
+      [currentHandler handleFailureInFunction:v21 file:@"PXGDecoratingLayout.m" lineNumber:816 description:{@"invalidating %lu after it already has been updated", 8}];
 
       abort();
     }
@@ -2014,18 +2014,18 @@ uint64_t __58__PXGDecoratingLayout__applyDecoratedLayoutChangeDetails___block_in
   return [*(*(a1 + 32) + 880) addIndexesInRange:?];
 }
 
-- (CGRect)sublayout:(id)a3 visibleRectForRequestedVisibleRect:(CGRect)a4
+- (CGRect)sublayout:(id)sublayout visibleRectForRequestedVisibleRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3;
-  v10 = [(PXGLayout *)self superlayout];
-  if (v10)
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  sublayoutCopy = sublayout;
+  superlayout = [(PXGLayout *)self superlayout];
+  if (superlayout)
   {
-    v11 = [(PXGLayout *)self superlayout];
-    [v11 sublayout:v9 visibleRectForRequestedVisibleRect:{x, y, width, height}];
+    superlayout2 = [(PXGLayout *)self superlayout];
+    [superlayout2 sublayout:sublayoutCopy visibleRectForRequestedVisibleRect:{x, y, width, height}];
     x = v12;
     y = v13;
     width = v14;
@@ -2043,21 +2043,21 @@ uint64_t __58__PXGDecoratingLayout__applyDecoratedLayoutChangeDetails___block_in
   return result;
 }
 
-- (void)sublayoutDidChangeLastBaseline:(id)a3
+- (void)sublayoutDidChangeLastBaseline:(id)baseline
 {
   v5.receiver = self;
   v5.super_class = PXGDecoratingLayout;
-  [(PXGLayout *)&v5 sublayoutDidChangeLastBaseline:a3];
-  v4 = [(PXGLayout *)self superlayout];
-  [v4 sublayoutDidChangeLastBaseline:self];
+  [(PXGLayout *)&v5 sublayoutDidChangeLastBaseline:baseline];
+  superlayout = [(PXGLayout *)self superlayout];
+  [superlayout sublayoutDidChangeLastBaseline:self];
 }
 
-- (void)sublayoutDidChangeContentSize:(id)a3
+- (void)sublayoutDidChangeContentSize:(id)size
 {
-  v4 = a3;
+  sizeCopy = size;
   v10.receiver = self;
   v10.super_class = PXGDecoratingLayout;
-  [(PXGLayout *)&v10 sublayoutDidChangeContentSize:v4];
+  [(PXGLayout *)&v10 sublayoutDidChangeContentSize:sizeCopy];
   if (!self->_isUpdatingDecoratedLayout)
   {
     p_updateFlags = &self->_updateFlags;
@@ -2074,9 +2074,9 @@ LABEL_7:
 LABEL_6:
       if (self->_updateFlags.updated)
       {
-        v8 = [MEMORY[0x277CCA890] currentHandler];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
         v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGDecoratingLayout sublayoutDidChangeContentSize:]"];
-        [v8 handleFailureInFunction:v9 file:@"PXGDecoratingLayout.m" lineNumber:748 description:{@"invalidating %lu after it already has been updated", 1}];
+        [currentHandler handleFailureInFunction:v9 file:@"PXGDecoratingLayout.m" lineNumber:748 description:{@"invalidating %lu after it already has been updated", 1}];
 
         abort();
       }
@@ -2100,12 +2100,12 @@ LABEL_6:
 LABEL_8:
 }
 
-- (void)sublayoutNeedsUpdate:(id)a3
+- (void)sublayoutNeedsUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   v10.receiver = self;
   v10.super_class = PXGDecoratingLayout;
-  [(PXGLayout *)&v10 sublayoutNeedsUpdate:v4];
+  [(PXGLayout *)&v10 sublayoutNeedsUpdate:updateCopy];
   if (!self->_isUpdatingDecoratedLayout)
   {
     p_updateFlags = &self->_updateFlags;
@@ -2122,9 +2122,9 @@ LABEL_7:
 LABEL_6:
       if (self->_updateFlags.updated)
       {
-        v8 = [MEMORY[0x277CCA890] currentHandler];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
         v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGDecoratingLayout sublayoutNeedsUpdate:]"];
-        [v8 handleFailureInFunction:v9 file:@"PXGDecoratingLayout.m" lineNumber:741 description:{@"invalidating %lu after it already has been updated", 1}];
+        [currentHandler handleFailureInFunction:v9 file:@"PXGDecoratingLayout.m" lineNumber:741 description:{@"invalidating %lu after it already has been updated", 1}];
 
         abort();
       }
@@ -2167,9 +2167,9 @@ LABEL_6:
 LABEL_5:
     if ((self->_updateFlags.updated & 9) != 0)
     {
-      v6 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGDecoratingLayout userInterfaceDirectionDidChange]"];
-      [v6 handleFailureInFunction:v7 file:@"PXGDecoratingLayout.m" lineNumber:731 description:{@"invalidating %lu after it already has been updated", 9}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXGDecoratingLayout.m" lineNumber:731 description:{@"invalidating %lu after it already has been updated", 9}];
 
       abort();
     }
@@ -2190,14 +2190,14 @@ LABEL_5:
   }
 }
 
-- (void)viewEnvironmentWillChange:(id)a3
+- (void)viewEnvironmentWillChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v13.receiver = self;
   v13.super_class = PXGDecoratingLayout;
-  [(PXGLayout *)&v13 viewEnvironmentWillChange:v4];
-  v5 = [(PXGLayout *)self viewEnvironment];
-  v6 = [v5 hasEqualAppearanceTo:v4];
+  [(PXGLayout *)&v13 viewEnvironmentWillChange:changeCopy];
+  viewEnvironment = [(PXGLayout *)self viewEnvironment];
+  v6 = [viewEnvironment hasEqualAppearanceTo:changeCopy];
 
   if ((v6 & 1) == 0)
   {
@@ -2210,8 +2210,8 @@ LABEL_5:
 LABEL_7:
         p_updateFlags->needsUpdate = needsUpdate | 1;
 LABEL_8:
-        v9 = [(PXGDecoratingLayout *)self decoratedLayout];
-        [v9 invalidateDecoration];
+        decoratedLayout = [(PXGDecoratingLayout *)self decoratedLayout];
+        [decoratedLayout invalidateDecoration];
 
         goto LABEL_9;
       }
@@ -2231,9 +2231,9 @@ LABEL_8:
 
     if (self->_updateFlags.updated)
     {
-      v11 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGDecoratingLayout viewEnvironmentWillChange:]"];
-      [v11 handleFailureInFunction:v12 file:@"PXGDecoratingLayout.m" lineNumber:701 description:{@"invalidating %lu after it already has been updated", 1}];
+      [currentHandler handleFailureInFunction:v12 file:@"PXGDecoratingLayout.m" lineNumber:701 description:{@"invalidating %lu after it already has been updated", 1}];
 
       abort();
     }
@@ -2250,8 +2250,8 @@ LABEL_9:
   v10.super_class = PXGDecoratingLayout;
   [(PXGLayout *)&v10 alphaDidChange];
   invalidatedDecoratedSpriteIndexes = self->_invalidatedDecoratedSpriteIndexes;
-  v4 = [(PXGDecoratingLayout *)self decoratedLayout];
-  -[NSMutableIndexSet addIndexesInRange:](invalidatedDecoratedSpriteIndexes, "addIndexesInRange:", 0, [v4 localNumberOfSprites]);
+  decoratedLayout = [(PXGDecoratingLayout *)self decoratedLayout];
+  -[NSMutableIndexSet addIndexesInRange:](invalidatedDecoratedSpriteIndexes, "addIndexesInRange:", 0, [decoratedLayout localNumberOfSprites]);
 
   p_updateFlags = &self->_updateFlags;
   needsUpdate = self->_updateFlags.needsUpdate;
@@ -2267,9 +2267,9 @@ LABEL_6:
 LABEL_5:
     if ((self->_updateFlags.updated & 8) != 0)
     {
-      v8 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGDecoratingLayout alphaDidChange]"];
-      [v8 handleFailureInFunction:v9 file:@"PXGDecoratingLayout.m" lineNumber:695 description:{@"invalidating %lu after it already has been updated", 8}];
+      [currentHandler handleFailureInFunction:v9 file:@"PXGDecoratingLayout.m" lineNumber:695 description:{@"invalidating %lu after it already has been updated", 8}];
 
       abort();
     }
@@ -2298,8 +2298,8 @@ LABEL_5:
     v5 = [(NSMutableIndexSet *)pendingActiveDecorationSpriteIndexes count];
     if (v5 && [(NSMutableIndexSet *)self->_pendingActiveDecorationSpriteIndexes lastIndex]>= 9)
     {
-      v8 = [MEMORY[0x277CCA890] currentHandler];
-      [v8 handleFailureInMethod:a2 object:self file:@"PXGDecoratingLayout.m" lineNumber:457 description:{@"Invalid parameter not satisfying: %@", @"pendingCount == 0 || _pendingActiveDecorationSpriteIndexes.lastIndex < PXGDecoratingLayoutMaxNumberOfDecoratingSpritesPerDecoratedSprite"}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXGDecoratingLayout.m" lineNumber:457 description:{@"Invalid parameter not satisfying: %@", @"pendingCount == 0 || _pendingActiveDecorationSpriteIndexes.lastIndex < PXGDecoratingLayoutMaxNumberOfDecoratingSpritesPerDecoratedSprite"}];
     }
 
     if (v5 != self->_activeDecorationsCount)
@@ -2339,15 +2339,15 @@ uint64_t __43__PXGDecoratingLayout__updateReloadSprites__block_invoke(uint64_t r
   return result;
 }
 
-- (void)setDecoratedLayout:(id)a3
+- (void)setDecoratedLayout:(id)layout
 {
-  v5 = a3;
+  layoutCopy = layout;
   decoratedLayout = self->_decoratedLayout;
-  if (decoratedLayout != v5)
+  if (decoratedLayout != layoutCopy)
   {
-    v9 = v5;
+    v9 = layoutCopy;
     v7 = decoratedLayout;
-    objc_storeStrong(&self->_decoratedLayout, a3);
+    objc_storeStrong(&self->_decoratedLayout, layout);
     self->_isChangingDecoratedLayout = 1;
     if (v7)
     {
@@ -2360,17 +2360,17 @@ uint64_t __43__PXGDecoratingLayout__updateReloadSprites__block_invoke(uint64_t r
     }
 
     self->_isChangingDecoratedLayout = 0;
-    v8 = [(PXGLayout *)self superlayout];
-    [v8 sublayoutDidChangeLastBaseline:self];
+    superlayout = [(PXGLayout *)self superlayout];
+    [superlayout sublayoutDidChangeLastBaseline:self];
 
     [(PXGLayout *)self setNeedsUpdateOfScrollableAxis];
-    v5 = v9;
+    layoutCopy = v9;
   }
 }
 
-- (void)setDecorationSource:(id)a3
+- (void)setDecorationSource:(id)source
 {
-  obj = a3;
+  obj = source;
   WeakRetained = objc_loadWeakRetained(&self->_decorationSource);
 
   v5 = obj;
@@ -2393,9 +2393,9 @@ LABEL_8:
 LABEL_6:
       if ((self->_updateFlags.updated & 2) != 0)
       {
-        v9 = [MEMORY[0x277CCA890] currentHandler];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
         v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGDecoratingLayout setDecorationSource:]"];
-        [v9 handleFailureInFunction:v10 file:@"PXGDecoratingLayout.m" lineNumber:242 description:{@"invalidating %lu after it already has been updated", 2}];
+        [currentHandler handleFailureInFunction:v10 file:@"PXGDecoratingLayout.m" lineNumber:242 description:{@"invalidating %lu after it already has been updated", 2}];
 
         abort();
       }
@@ -2421,12 +2421,12 @@ LABEL_6:
 LABEL_9:
 }
 
-- (void)setContentSource:(id)a3
+- (void)setContentSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   v10.receiver = self;
   v10.super_class = PXGDecoratingLayout;
-  [(PXGLayout *)&v10 setContentSource:v4];
+  [(PXGLayout *)&v10 setContentSource:sourceCopy];
   p_updateFlags = &self->_updateFlags;
   needsUpdate = self->_updateFlags.needsUpdate;
   if (needsUpdate)
@@ -2441,9 +2441,9 @@ LABEL_6:
 LABEL_5:
     if ((self->_updateFlags.updated & 2) != 0)
     {
-      v8 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGDecoratingLayout setContentSource:]"];
-      [v8 handleFailureInFunction:v9 file:@"PXGDecoratingLayout.m" lineNumber:234 description:{@"invalidating %lu after it already has been updated", 2}];
+      [currentHandler handleFailureInFunction:v9 file:@"PXGDecoratingLayout.m" lineNumber:234 description:{@"invalidating %lu after it already has been updated", 2}];
 
       abort();
     }
@@ -2466,14 +2466,14 @@ LABEL_5:
 LABEL_7:
 }
 
-- (void)insertSublayout:(id)a3 atIndex:(int64_t)a4
+- (void)insertSublayout:(id)sublayout atIndex:(int64_t)index
 {
-  v7 = a3;
+  sublayoutCopy = sublayout;
   isChangingDecoratedLayout = self->_isChangingDecoratedLayout;
-  if (!a4)
+  if (!index)
   {
     self->_isChangingDecoratedLayout = 1;
-    objc_storeStrong(&self->_decoratedLayout, a3);
+    objc_storeStrong(&self->_decoratedLayout, sublayout);
     p_updateFlags = &self->_updateFlags;
     needsUpdate = self->_updateFlags.needsUpdate;
     if (needsUpdate)
@@ -2488,9 +2488,9 @@ LABEL_7:
 LABEL_6:
       if ((self->_updateFlags.updated & 3) != 0)
       {
-        v12 = [MEMORY[0x277CCA890] currentHandler];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
         v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGDecoratingLayout insertSublayout:atIndex:]"];
-        [v12 handleFailureInFunction:v13 file:@"PXGDecoratingLayout.m" lineNumber:226 description:{@"invalidating %lu after it already has been updated", 3}];
+        [currentHandler handleFailureInFunction:v13 file:@"PXGDecoratingLayout.m" lineNumber:226 description:{@"invalidating %lu after it already has been updated", 3}];
 
         abort();
       }
@@ -2514,14 +2514,14 @@ LABEL_6:
 LABEL_8:
   v14.receiver = self;
   v14.super_class = PXGDecoratingLayout;
-  [(PXGLayout *)&v14 insertSublayout:v7 atIndex:a4];
+  [(PXGLayout *)&v14 insertSublayout:sublayoutCopy atIndex:index];
   self->_isChangingDecoratedLayout = isChangingDecoratedLayout;
 }
 
-- (void)removeSublayoutsInRange:(_NSRange)a3
+- (void)removeSublayoutsInRange:(_NSRange)range
 {
   isChangingDecoratedLayout = self->_isChangingDecoratedLayout;
-  if (!a3.location)
+  if (!range.location)
   {
     self->_isChangingDecoratedLayout = 1;
   }
@@ -2532,11 +2532,11 @@ LABEL_8:
   self->_isChangingDecoratedLayout = isChangingDecoratedLayout;
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  if (self->_enabled != a3)
+  if (self->_enabled != enabled)
   {
-    self->_enabled = a3;
+    self->_enabled = enabled;
     p_updateFlags = &self->_updateFlags;
     needsUpdate = self->_updateFlags.needsUpdate;
     if (needsUpdate)
@@ -2551,9 +2551,9 @@ LABEL_7:
 LABEL_6:
       if ((self->_updateFlags.updated & 0xC) != 0)
       {
-        v7 = [MEMORY[0x277CCA890] currentHandler];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
         v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGDecoratingLayout setEnabled:]"];
-        [v7 handleFailureInFunction:v8 file:@"PXGDecoratingLayout.m" lineNumber:209 description:{@"invalidating %lu after it already has been updated", 12}];
+        [currentHandler handleFailureInFunction:v8 file:@"PXGDecoratingLayout.m" lineNumber:209 description:{@"invalidating %lu after it already has been updated", 12}];
 
         abort();
       }
@@ -2578,13 +2578,13 @@ LABEL_6:
 
 - (id)description
 {
-  v3 = [(PXGDecoratingLayout *)self decoratedLayout];
+  decoratedLayout = [(PXGDecoratingLayout *)self decoratedLayout];
   v9.receiver = self;
   v9.super_class = PXGDecoratingLayout;
   v4 = [(PXGDecoratingLayout *)&v9 description];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  v7 = [v4 px_stringByAppendingDescriptionDetailsWithFormat:@", decoratedLayout=<%@: %p>", v6, v3];
+  v7 = [v4 px_stringByAppendingDescriptionDetailsWithFormat:@", decoratedLayout=<%@: %p>", v6, decoratedLayout];
 
   return v7;
 }
@@ -2597,11 +2597,11 @@ LABEL_6:
   [(PXGLayout *)&v3 dealloc];
 }
 
-- (PXGDecoratingLayout)initWithDecoratedLayout:(id)a3
+- (PXGDecoratingLayout)initWithDecoratedLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   v5 = [(PXGDecoratingLayout *)self init];
-  [(PXGDecoratingLayout *)v5 setDecoratedLayout:v4];
+  [(PXGDecoratingLayout *)v5 setDecoratedLayout:layoutCopy];
 
   return v5;
 }

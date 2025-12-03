@@ -1,19 +1,19 @@
 @interface IOGPUMetal4MachineLearningCommandEncoder
-- (IOGPUMetal4MachineLearningCommandEncoder)initWithCommandBuffer:(id)a3 allocator:(id)a4;
+- (IOGPUMetal4MachineLearningCommandEncoder)initWithCommandBuffer:(id)buffer allocator:(id)allocator;
 - (void)dealloc;
 - (void)endEncoding;
 - (void)popDebugGroup;
-- (void)pushDebugGroup:(id)a3;
-- (void)setLabel:(id)a3;
+- (void)pushDebugGroup:(id)group;
+- (void)setLabel:(id)label;
 @end
 
 @implementation IOGPUMetal4MachineLearningCommandEncoder
 
-- (IOGPUMetal4MachineLearningCommandEncoder)initWithCommandBuffer:(id)a3 allocator:(id)a4
+- (IOGPUMetal4MachineLearningCommandEncoder)initWithCommandBuffer:(id)buffer allocator:(id)allocator
 {
   v11.receiver = self;
   v11.super_class = IOGPUMetal4MachineLearningCommandEncoder;
-  v4 = [(_MTL4MachineLearningCommandEncoder *)&v11 initWithCommandBuffer:a3 allocator:a4];
+  v4 = [(_MTL4MachineLearningCommandEncoder *)&v11 initWithCommandBuffer:buffer allocator:allocator];
   v5 = v4;
   if (v4)
   {
@@ -57,31 +57,31 @@
   [(_MTL4MachineLearningCommandEncoder *)&v2 dealloc];
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
   v9.receiver = self;
   v9.super_class = IOGPUMetal4MachineLearningCommandEncoder;
   [(_MTLObjectWithLabel *)&v9 setLabel:?];
   if (*__globalGPUCommPage)
   {
-    v5 = [*(&self->super.super.super.super.isa + *MEMORY[0x1E6974228]) deviceRef];
+    deviceRef = [*(&self->super.super.super.super.isa + *MEMORY[0x1E6974228]) deviceRef];
     v6 = *(&self->super.super.super.super.isa + *MEMORY[0x1E6974230]);
     v7 = *MEMORY[0x1E6974238];
     v8 = *(&self->super.super.super.super.isa + v7);
-    [a3 cStringUsingEncoding:1];
-    *(&self->super.super.super.super.isa + v7) = IOGPUDeviceTraceObjectLabel(v5, 8, 0, v6, v8);
+    [label cStringUsingEncoding:1];
+    *(&self->super.super.super.super.isa + v7) = IOGPUDeviceTraceObjectLabel(deviceRef, 8, 0, v6, v8);
   }
 }
 
-- (void)pushDebugGroup:(id)a3
+- (void)pushDebugGroup:(id)group
 {
   if (*__globalGPUCommPage)
   {
-    v5 = [*(&self->super.super.super.super.isa + *MEMORY[0x1E6974228]) deviceRef];
+    deviceRef = [*(&self->super.super.super.super.isa + *MEMORY[0x1E6974228]) deviceRef];
     v6 = *(&self->super.super.super.super.isa + *MEMORY[0x1E6974230]);
-    [a3 cStringUsingEncoding:1];
+    [group cStringUsingEncoding:1];
 
-    IOGPUDeviceTraceObjectLabel(v5, 8, 12, v6, 0);
+    IOGPUDeviceTraceObjectLabel(deviceRef, 8, 12, v6, 0);
   }
 }
 

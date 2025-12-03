@@ -1,24 +1,24 @@
 @interface RSDRemoteService
 - (RSDRemoteDevice)device;
-- (RSDRemoteService)initWithName:(const char *)a3 description:(id)a4;
+- (RSDRemoteService)initWithName:(const char *)name description:(id)description;
 - (id)copyClientDescription;
 - (id)description;
 - (void)cancel;
 - (void)dealloc;
-- (void)getSocketWithTcpOption:(id *)a3 callback:(id)a4;
-- (void)updateWithDescription:(id)a3;
+- (void)getSocketWithTcpOption:(id *)option callback:(id)callback;
+- (void)updateWithDescription:(id)description;
 @end
 
 @implementation RSDRemoteService
 
 - (void)cancel
 {
-  v3 = [(RSDRemoteService *)self service_listener];
+  service_listener = [(RSDRemoteService *)self service_listener];
 
-  if (v3)
+  if (service_listener)
   {
-    v4 = [(RSDRemoteService *)self service_listener];
-    xpc_connection_cancel(v4);
+    service_listener2 = [(RSDRemoteService *)self service_listener];
+    xpc_connection_cancel(service_listener2);
 
     [(RSDRemoteService *)self setService_listener:0];
   }
@@ -34,14 +34,14 @@
   [(RSDRemoteService *)&v3 dealloc];
 }
 
-- (RSDRemoteService)initWithName:(const char *)a3 description:(id)a4
+- (RSDRemoteService)initWithName:(const char *)name description:(id)description
 {
-  v6 = a4;
+  descriptionCopy = description;
   v7 = [(RSDRemoteService *)self init];
   if (v7)
   {
-    [(RSDRemoteService *)v7 setName:strdup(a3)];
-    v8 = xpc_dictionary_get_value(v6, "Port");
+    [(RSDRemoteService *)v7 setName:strdup(name)];
+    v8 = xpc_dictionary_get_value(descriptionCopy, "Port");
     v9 = v8;
     if (v8)
     {
@@ -60,7 +60,7 @@
       [(RSDRemoteService *)v7 setPort:strdup(string_ptr)];
     }
 
-    v12 = xpc_dictionary_get_value(v6, "EntitlementOverride");
+    v12 = xpc_dictionary_get_value(descriptionCopy, "EntitlementOverride");
     v13 = v12;
     if (v12 && xpc_get_type(v12) == &_xpc_type_string)
     {
@@ -70,7 +70,7 @@
 
     else
     {
-      v14 = xpc_dictionary_get_value(v6, "Entitlement");
+      v14 = xpc_dictionary_get_value(descriptionCopy, "Entitlement");
       v15 = v14;
       if (!v14 || xpc_get_type(v14) != &_xpc_type_string)
       {
@@ -91,7 +91,7 @@ LABEL_25:
       [(RSDRemoteService *)v7 setEntitlement:strdup(v17)];
     }
 
-    v18 = xpc_dictionary_get_value(v6, "Properties");
+    v18 = xpc_dictionary_get_value(descriptionCopy, "Properties");
     v15 = v18;
     if (v18)
     {
@@ -118,9 +118,9 @@ LABEL_26:
   return v10;
 }
 
-- (void)updateWithDescription:(id)a3
+- (void)updateWithDescription:(id)description
 {
-  v4 = xpc_dictionary_get_value(a3, "Port");
+  v4 = xpc_dictionary_get_value(description, "Port");
   v5 = v4;
   if (v4)
   {
@@ -138,39 +138,39 @@ LABEL_26:
   }
 }
 
-- (void)getSocketWithTcpOption:(id *)a3 callback:(id)a4
+- (void)getSocketWithTcpOption:(id *)option callback:(id)callback
 {
-  v13 = a4;
-  v6 = [(RSDRemoteService *)self device];
-  v7 = [v6 state];
+  callbackCopy = callback;
+  device = [(RSDRemoteService *)self device];
+  state = [device state];
 
-  if (v7 == 5)
+  if (state == 5)
   {
     sub_10003A374(&v14, v15);
   }
 
-  v8 = [(RSDRemoteService *)self device];
+  device2 = [(RSDRemoteService *)self device];
   v9 = objc_opt_respondsToSelector();
 
-  v10 = [(RSDRemoteService *)self device];
-  v11 = [(RSDRemoteService *)self port];
+  device3 = [(RSDRemoteService *)self device];
+  port = [(RSDRemoteService *)self port];
   if (v9)
   {
-    [v10 connectToService:v11 withTcpOption:a3 callback:v13];
+    [device3 connectToService:port withTcpOption:option callback:callbackCopy];
   }
 
   else
   {
-    v12 = [v10 connectToService:v11 withTcpOption:a3];
+    v12 = [device3 connectToService:port withTcpOption:option];
 
-    v13[2](v13, v12);
+    callbackCopy[2](callbackCopy, v12);
   }
 }
 
 - (id)description
 {
-  v3 = [(RSDRemoteService *)self device];
-  v4 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%s/%s", [v3 device_name], -[RSDRemoteService name](self, "name"));
+  device = [(RSDRemoteService *)self device];
+  v4 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%s/%s", [device device_name], -[RSDRemoteService name](self, "name"));
 
   return v4;
 }
@@ -186,51 +186,51 @@ LABEL_26:
 {
   v3 = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_string(v3, "name", [(RSDRemoteService *)self name]);
-  v4 = [(RSDRemoteService *)self properties];
+  properties = [(RSDRemoteService *)self properties];
 
-  if (v4)
+  if (properties)
   {
-    v5 = [(RSDRemoteService *)self properties];
+    properties2 = [(RSDRemoteService *)self properties];
   }
 
   else
   {
-    v5 = xpc_dictionary_create(0, 0, 0);
+    properties2 = xpc_dictionary_create(0, 0, 0);
   }
 
-  v6 = v5;
-  xpc_dictionary_set_value(v3, "properties", v5);
+  v6 = properties2;
+  xpc_dictionary_set_value(v3, "properties", properties2);
 
-  v7 = [(RSDRemoteService *)self service_listener];
+  service_listener = [(RSDRemoteService *)self service_listener];
 
-  if (!v7)
+  if (!service_listener)
   {
     v8 = qword_100064558;
     if (os_log_type_enabled(qword_100064558, OS_LOG_TYPE_INFO))
     {
       v9 = v8;
       *buf = 136446210;
-      v17 = [(RSDRemoteService *)self name];
+      name = [(RSDRemoteService *)self name];
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "Creating service listener for %{public}s", buf, 0xCu);
     }
 
     v10 = xpc_connection_create(0, qword_100064560);
     [(RSDRemoteService *)self setService_listener:v10];
 
-    v11 = [(RSDRemoteService *)self service_listener];
+    service_listener2 = [(RSDRemoteService *)self service_listener];
     handler[0] = _NSConcreteStackBlock;
     handler[1] = 3221225472;
     handler[2] = sub_10002583C;
     handler[3] = &unk_10005CF88;
     handler[4] = self;
-    xpc_connection_set_event_handler(v11, handler);
+    xpc_connection_set_event_handler(service_listener2, handler);
 
-    v12 = [(RSDRemoteService *)self service_listener];
-    xpc_connection_activate(v12);
+    service_listener3 = [(RSDRemoteService *)self service_listener];
+    xpc_connection_activate(service_listener3);
   }
 
-  v13 = [(RSDRemoteService *)self service_listener];
-  xpc_dictionary_set_connection(v3, "endpoint", v13);
+  service_listener4 = [(RSDRemoteService *)self service_listener];
+  xpc_dictionary_set_connection(v3, "endpoint", service_listener4);
 
   return v3;
 }

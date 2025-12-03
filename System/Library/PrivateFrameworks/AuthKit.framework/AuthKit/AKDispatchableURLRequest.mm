@@ -1,51 +1,51 @@
 @interface AKDispatchableURLRequest
-- (AKDispatchableURLRequest)initWithURLRequestProvider:(id)a3 authenticationHandler:(id)a4 completionHandler:(id)a5;
+- (AKDispatchableURLRequest)initWithURLRequestProvider:(id)provider authenticationHandler:(id)handler completionHandler:(id)completionHandler;
 - (NSDictionary)dispatchingInfo;
-- (id)_addingAdditionalHeaders:(id)a3 forURLRequest:(id)a4;
+- (id)_addingAdditionalHeaders:(id)headers forURLRequest:(id)request;
 - (id)_urlSession;
-- (void)_executeAllowingReauthentication:(BOOL)a3 completion:(id)a4;
-- (void)_executeURLRequest:(id)a3 withSession:(id)a4 completion:(id)a5;
-- (void)_reauthenticateAndExecuteWithCompletion:(id)a3;
-- (void)_reauthenticateWithCompletion:(id)a3;
-- (void)executeWithResponseHandler:(id)a3;
+- (void)_executeAllowingReauthentication:(BOOL)reauthentication completion:(id)completion;
+- (void)_executeURLRequest:(id)request withSession:(id)session completion:(id)completion;
+- (void)_reauthenticateAndExecuteWithCompletion:(id)completion;
+- (void)_reauthenticateWithCompletion:(id)completion;
+- (void)executeWithResponseHandler:(id)handler;
 - (void)handleResponseCode;
-- (void)invalidateWithError:(id)a3;
+- (void)invalidateWithError:(id)error;
 @end
 
 @implementation AKDispatchableURLRequest
 
 - (NSDictionary)dispatchingInfo
 {
-  v17 = self;
+  selfCopy = self;
   v16[1] = a2;
   v16[0] = [[NSMutableDictionary alloc] initWithCapacity:3];
-  v13 = [(AKDispatchableURLRequest *)v17 urlRequestProvider];
-  v12 = [(AKURLRequestProvider *)v13 client];
-  v11 = [v12 name];
+  urlRequestProvider = [(AKDispatchableURLRequest *)selfCopy urlRequestProvider];
+  client = [(AKURLRequestProvider *)urlRequestProvider client];
+  name = [client name];
   [v16[0] setObject:? forKeyedSubscript:?];
-  _objc_release(v11);
-  _objc_release(v12);
-  _objc_release(v13);
-  v14 = [(AKDispatchableURLRequest *)v17 urlRequestProvider];
-  v15 = [(AKURLRequestProvider *)v14 concreteAuthenticationContext];
-  _objc_release(v15);
-  _objc_release(v14);
-  if (v15)
+  _objc_release(name);
+  _objc_release(client);
+  _objc_release(urlRequestProvider);
+  urlRequestProvider2 = [(AKDispatchableURLRequest *)selfCopy urlRequestProvider];
+  concreteAuthenticationContext = [(AKURLRequestProvider *)urlRequestProvider2 concreteAuthenticationContext];
+  _objc_release(concreteAuthenticationContext);
+  _objc_release(urlRequestProvider2);
+  if (concreteAuthenticationContext)
   {
-    v7 = [(AKDispatchableURLRequest *)v17 urlRequestProvider];
-    v6 = [(AKURLRequestProvider *)v7 concreteAuthenticationContext];
-    v5 = [v6 _proxiedAppName];
+    urlRequestProvider3 = [(AKDispatchableURLRequest *)selfCopy urlRequestProvider];
+    concreteAuthenticationContext2 = [(AKURLRequestProvider *)urlRequestProvider3 concreteAuthenticationContext];
+    _proxiedAppName = [concreteAuthenticationContext2 _proxiedAppName];
     [v16[0] setObject:? forKeyedSubscript:?];
-    _objc_release(v5);
-    _objc_release(v6);
-    _objc_release(v7);
-    v10 = [(AKDispatchableURLRequest *)v17 urlRequestProvider];
-    v9 = [(AKURLRequestProvider *)v10 concreteAuthenticationContext];
-    v8 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v9 serviceType]);
+    _objc_release(_proxiedAppName);
+    _objc_release(concreteAuthenticationContext2);
+    _objc_release(urlRequestProvider3);
+    urlRequestProvider4 = [(AKDispatchableURLRequest *)selfCopy urlRequestProvider];
+    concreteAuthenticationContext3 = [(AKURLRequestProvider *)urlRequestProvider4 concreteAuthenticationContext];
+    v8 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [concreteAuthenticationContext3 serviceType]);
     [v16[0] setObject:? forKeyedSubscript:?];
     _objc_release(v8);
-    _objc_release(v9);
-    _objc_release(v10);
+    _objc_release(concreteAuthenticationContext3);
+    _objc_release(urlRequestProvider4);
   }
 
   v4 = [v16[0] copy];
@@ -54,57 +54,57 @@
   return v4;
 }
 
-- (AKDispatchableURLRequest)initWithURLRequestProvider:(id)a3 authenticationHandler:(id)a4 completionHandler:(id)a5
+- (AKDispatchableURLRequest)initWithURLRequestProvider:(id)provider authenticationHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, provider);
   v16 = 0;
-  objc_storeStrong(&v16, a4);
+  objc_storeStrong(&v16, handler);
   v15 = 0;
-  objc_storeStrong(&v15, a5);
-  v5 = v18;
-  v18 = 0;
+  objc_storeStrong(&v15, completionHandler);
+  v5 = selfCopy;
+  selfCopy = 0;
   v14.receiver = v5;
   v14.super_class = AKDispatchableURLRequest;
-  v18 = [(AKDispatchableURLRequest *)&v14 init];
-  objc_storeStrong(&v18, v18);
-  if (v18)
+  selfCopy = [(AKDispatchableURLRequest *)&v14 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
-    objc_storeStrong(&v18->_urlRequestProvider, location[0]);
-    objc_storeStrong(&v18->_authenticationHandler, v16);
+    objc_storeStrong(&selfCopy->_urlRequestProvider, location[0]);
+    objc_storeStrong(&selfCopy->_authenticationHandler, v16);
     v6 = objc_retainBlock(v15);
-    completionHandler = v18->_completionHandler;
-    v18->_completionHandler = v6;
+    completionHandler = selfCopy->_completionHandler;
+    selfCopy->_completionHandler = v6;
     _objc_release(completionHandler);
     v8 = objc_alloc_init(AKServerBackoffHelper);
-    serverBackoffHelper = v18->_serverBackoffHelper;
-    v18->_serverBackoffHelper = v8;
+    serverBackoffHelper = selfCopy->_serverBackoffHelper;
+    selfCopy->_serverBackoffHelper = v8;
     _objc_release(serverBackoffHelper);
   }
 
-  v11 = _objc_retain(v18);
+  v11 = _objc_retain(selfCopy);
   objc_storeStrong(&v15, 0);
   objc_storeStrong(&v16, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v18, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v11;
 }
 
-- (void)executeWithResponseHandler:(id)a3
+- (void)executeWithResponseHandler:(id)handler
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v12;
+  objc_storeStrong(location, handler);
+  v3 = selfCopy;
   v4 = _NSConcreteStackBlock;
   v5 = -1073741824;
   v6 = 0;
   v7 = sub_1000D44E8;
   v8 = &unk_100322C28;
-  v9 = _objc_retain(v12);
+  v9 = _objc_retain(selfCopy);
   v10 = _objc_retain(location[0]);
   [(AKDispatchableURLRequest *)v3 _executeAllowingReauthentication:1 completion:?];
   objc_storeStrong(&v10, 0);
@@ -114,42 +114,42 @@
 
 - (void)handleResponseCode
 {
-  v2 = [(AKDispatchableURLRequest *)self responseCode];
-  v5 = [(AKDispatchableURLRequest *)self urlRequestProvider];
-  v4 = [(AKURLRequestProvider *)v5 context];
-  v3 = [v4 altDSID];
-  [AKCommonResponseCodeHandler handleResponseCode:v2 altDSID:?];
-  _objc_release(v3);
-  _objc_release(v4);
-  _objc_release(v5);
+  responseCode = [(AKDispatchableURLRequest *)self responseCode];
+  urlRequestProvider = [(AKDispatchableURLRequest *)self urlRequestProvider];
+  context = [(AKURLRequestProvider *)urlRequestProvider context];
+  altDSID = [context altDSID];
+  [AKCommonResponseCodeHandler handleResponseCode:responseCode altDSID:?];
+  _objc_release(altDSID);
+  _objc_release(context);
+  _objc_release(urlRequestProvider);
 }
 
-- (void)invalidateWithError:(id)a3
+- (void)invalidateWithError:(id)error
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  (*(v4->_completionHandler + 2))();
+  objc_storeStrong(location, error);
+  (*(selfCopy->_completionHandler + 2))();
   objc_storeStrong(location, 0);
 }
 
 - (id)_urlSession
 {
-  v5 = [(AKDispatchableURLRequest *)self urlRequestProvider];
-  v6 = [(AKURLRequestProvider *)v5 _denyVirtualInterfaces];
-  _objc_release(v5);
-  if (v6)
+  urlRequestProvider = [(AKDispatchableURLRequest *)self urlRequestProvider];
+  _denyVirtualInterfaces = [(AKURLRequestProvider *)urlRequestProvider _denyVirtualInterfaces];
+  _objc_release(urlRequestProvider);
+  if (_denyVirtualInterfaces)
   {
     v8 = +[AKURLSession sharedURLSessionWithDenyVirtualInterfaces];
   }
 
   else
   {
-    v3 = [(AKDispatchableURLRequest *)self urlRequestProvider];
-    v4 = [(AKURLRequestProvider *)v3 shouldCacheResource];
-    _objc_release(v3);
-    if (v4)
+    urlRequestProvider2 = [(AKDispatchableURLRequest *)self urlRequestProvider];
+    shouldCacheResource = [(AKURLRequestProvider *)urlRequestProvider2 shouldCacheResource];
+    _objc_release(urlRequestProvider2);
+    if (shouldCacheResource)
     {
       v8 = +[AKURLSession sharedCacheEnabledURLSession];
     }
@@ -163,63 +163,63 @@
   return v8;
 }
 
-- (void)_executeAllowingReauthentication:(BOOL)a3 completion:(id)a4
+- (void)_executeAllowingReauthentication:(BOOL)reauthentication completion:(id)completion
 {
-  v16 = self;
+  selfCopy = self;
   v15 = a2;
-  v14 = a3;
+  reauthenticationCopy = reauthentication;
   location = 0;
-  objc_storeStrong(&location, a4);
-  v4 = [(AKDispatchableURLRequest *)v16 urlRequestProvider];
+  objc_storeStrong(&location, completion);
+  urlRequestProvider = [(AKDispatchableURLRequest *)selfCopy urlRequestProvider];
   v5 = _NSConcreteStackBlock;
   v6 = -1073741824;
   v7 = 0;
   v8 = sub_1000D49A0;
   v9 = &unk_100322C78;
-  v10 = _objc_retain(v16);
+  v10 = _objc_retain(selfCopy);
   v11 = _objc_retain(location);
-  v12 = v14;
-  [(AKURLRequestProvider *)v4 buildRequestWithCompletion:?];
-  _objc_release(v4);
+  v12 = reauthenticationCopy;
+  [(AKURLRequestProvider *)urlRequestProvider buildRequestWithCompletion:?];
+  _objc_release(urlRequestProvider);
   objc_storeStrong(&v11, 0);
   objc_storeStrong(&v10, 0);
   objc_storeStrong(&location, 0);
 }
 
-- (void)_executeURLRequest:(id)a3 withSession:(id)a4 completion:(id)a5
+- (void)_executeURLRequest:(id)request withSession:(id)session completion:(id)completion
 {
-  v30 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, request);
   v28 = 0;
-  objc_storeStrong(&v28, a4);
+  objc_storeStrong(&v28, session);
   v27 = 0;
-  objc_storeStrong(&v27, a5);
+  objc_storeStrong(&v27, completion);
   v26 = _AKLogSystem();
   v25 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
   {
-    v12 = v30;
-    v13 = [(AKDispatchableURLRequest *)v30 additionalHeaders];
-    sub_10004DCC8(v32, v12, v13, location[0]);
+    v12 = selfCopy;
+    additionalHeaders = [(AKDispatchableURLRequest *)selfCopy additionalHeaders];
+    sub_10004DCC8(v32, v12, additionalHeaders, location[0]);
     _os_log_debug_impl(&_mh_execute_header, v26, v25, "%@: Adding additional headers (%@) to URL request (%@)", v32, 0x20u);
-    _objc_release(v13);
+    _objc_release(additionalHeaders);
   }
 
   objc_storeStrong(&v26, 0);
-  v10 = v30;
-  v11 = [(AKDispatchableURLRequest *)v30 additionalHeaders];
+  v10 = selfCopy;
+  additionalHeaders2 = [(AKDispatchableURLRequest *)selfCopy additionalHeaders];
   v5 = [AKDispatchableURLRequest _addingAdditionalHeaders:v10 forURLRequest:"_addingAdditionalHeaders:forURLRequest:"];
   v6 = location[0];
   location[0] = v5;
   _objc_release(v6);
-  _objc_release(v11);
+  _objc_release(additionalHeaders2);
   v24 = _AKLogSystem();
   v23 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
   {
-    sub_10001B098(v31, v30, location[0]);
+    sub_10001B098(v31, selfCopy, location[0]);
     _os_log_debug_impl(&_mh_execute_header, v24, v23, "%@: Executing URL request (%@)", v31, 0x16u);
   }
 
@@ -231,7 +231,7 @@
   v18 = 0;
   v19 = sub_1000D55C4;
   v20 = &unk_100320A80;
-  v21 = _objc_retain(v30);
+  v21 = _objc_retain(selfCopy);
   v22 = _objc_retain(v27);
   v7 = [v9 beginAuthenticationDataTaskWithRequest:v8 completionHandler:&v16];
   objc_storeStrong(&v22, 0);
@@ -241,19 +241,19 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_reauthenticateAndExecuteWithCompletion:(id)a3
+- (void)_reauthenticateAndExecuteWithCompletion:(id)completion
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v12;
+  objc_storeStrong(location, completion);
+  v3 = selfCopy;
   v4 = _NSConcreteStackBlock;
   v5 = -1073741824;
   v6 = 0;
   v7 = sub_1000D5A78;
   v8 = &unk_10031F838;
-  v9 = _objc_retain(v12);
+  v9 = _objc_retain(selfCopy);
   v10 = _objc_retain(location[0]);
   [(AKDispatchableURLRequest *)v3 _reauthenticateWithCompletion:?];
   objc_storeStrong(&v10, 0);
@@ -261,27 +261,27 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_reauthenticateWithCompletion:(id)a3
+- (void)_reauthenticateWithCompletion:(id)completion
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v8 = [(AKDispatchableURLRequest *)v16 authenticationHandler];
-  _objc_release(v8);
-  if (v8)
+  objc_storeStrong(location, completion);
+  authenticationHandler = [(AKDispatchableURLRequest *)selfCopy authenticationHandler];
+  _objc_release(authenticationHandler);
+  if (authenticationHandler)
   {
     v11 = 0;
-    v7 = [(AKDispatchableURLRequest *)v16 authenticationHandler];
-    v6 = [(AKDispatchableURLRequest *)v16 urlRequestProvider];
-    v5 = [(AKURLRequestProvider *)v6 concreteAuthenticationContext];
+    authenticationHandler2 = [(AKDispatchableURLRequest *)selfCopy authenticationHandler];
+    urlRequestProvider = [(AKDispatchableURLRequest *)selfCopy urlRequestProvider];
+    concreteAuthenticationContext = [(AKURLRequestProvider *)urlRequestProvider concreteAuthenticationContext];
     v9 = v11;
-    v4 = [AKAuthHandler buildReauthenticationContextFromContext:v7 error:"buildReauthenticationContextFromContext:error:"];
+    v4 = [AKAuthHandler buildReauthenticationContextFromContext:authenticationHandler2 error:"buildReauthenticationContextFromContext:error:"];
     objc_storeStrong(&v11, v9);
     v10 = v4;
-    _objc_release(v5);
-    _objc_release(v6);
-    _objc_release(v7);
+    _objc_release(concreteAuthenticationContext);
+    _objc_release(urlRequestProvider);
+    _objc_release(authenticationHandler2);
     if (v11)
     {
       (*(location[0] + 2))(location[0], 0, v11);
@@ -289,9 +289,9 @@
 
     else
     {
-      v3 = [(AKDispatchableURLRequest *)v16 authenticationHandler];
-      [(AKAuthHandler *)v3 reauthenticateWithContext:v10 completion:location[0]];
-      _objc_release(v3);
+      authenticationHandler3 = [(AKDispatchableURLRequest *)selfCopy authenticationHandler];
+      [(AKAuthHandler *)authenticationHandler3 reauthenticateWithContext:v10 completion:location[0]];
+      _objc_release(authenticationHandler3);
     }
 
     objc_storeStrong(&v10, 0);
@@ -305,7 +305,7 @@
     v13 = OS_LOG_TYPE_ERROR;
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
-      sub_1000194D4(v17, v16);
+      sub_1000194D4(v17, selfCopy);
       _os_log_error_impl(&_mh_execute_header, v14, v13, "%@: Unable to reauthenticate with nil authenticationHandler", v17, 0xCu);
     }
 
@@ -317,14 +317,14 @@
   objc_storeStrong(location, 0);
 }
 
-- (id)_addingAdditionalHeaders:(id)a3 forURLRequest:(id)a4
+- (id)_addingAdditionalHeaders:(id)headers forURLRequest:(id)request
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, headers);
   v16 = 0;
-  objc_storeStrong(&v16, a4);
+  objc_storeStrong(&v16, request);
   if ([location[0] count])
   {
     v14 = [v16 mutableCopy];

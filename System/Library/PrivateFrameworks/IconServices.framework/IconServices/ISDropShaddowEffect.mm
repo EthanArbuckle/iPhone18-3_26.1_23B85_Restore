@@ -1,7 +1,7 @@
 @interface ISDropShaddowEffect
 - (CGSize)offset;
 - (ISDropShaddowEffect)init;
-- (id)filterWithBackgroundImage:(id)a3 inputImage:(id)a4;
+- (id)filterWithBackgroundImage:(id)image inputImage:(id)inputImage;
 @end
 
 @implementation ISDropShaddowEffect
@@ -26,12 +26,12 @@
   return v3;
 }
 
-- (id)filterWithBackgroundImage:(id)a3 inputImage:(id)a4
+- (id)filterWithBackgroundImage:(id)image inputImage:(id)inputImage
 {
   scale = self->_scale;
   color = self->_color;
-  v7 = a4;
-  v8 = [(IFColor *)color ciColor];
+  inputImageCopy = inputImage;
+  ciColor = [(IFColor *)color ciColor];
   v9 = [MEMORY[0x1E695F648] filterWithName:@"CUIOuterGlowOrShadowFilter"];
   v10 = [MEMORY[0x1E696AD98] numberWithDouble:scale];
   [v9 setValue:v10 forKey:*MEMORY[0x1E695FB10]];
@@ -43,7 +43,7 @@
   v15 = [v11 vectorWithX:v13 Y:scale * v14];
   [v9 setValue:v15 forKey:@"inputOffset"];
 
-  [v9 setValue:v8 forKey:*MEMORY[0x1E695FA78]];
+  [v9 setValue:ciColor forKey:*MEMORY[0x1E695FA78]];
   v16 = MEMORY[0x1E696AD98];
   [(ISDropShaddowEffect *)self blur];
   v18 = [v16 numberWithDouble:scale * v17];
@@ -56,12 +56,12 @@
   [v9 setValue:v20 forKey:@"inputSpread"];
 
   v21 = *MEMORY[0x1E695FAB0];
-  [v9 setValue:v7 forKey:*MEMORY[0x1E695FAB0]];
+  [v9 setValue:inputImageCopy forKey:*MEMORY[0x1E695FAB0]];
   v22 = [MEMORY[0x1E695F648] filterWithName:@"CISourceOverCompositing"];
-  [v22 setValue:v7 forKey:v21];
+  [v22 setValue:inputImageCopy forKey:v21];
 
-  v23 = [v9 outputImage];
-  [v22 setValue:v23 forKey:*MEMORY[0x1E695FA48]];
+  outputImage = [v9 outputImage];
+  [v22 setValue:outputImage forKey:*MEMORY[0x1E695FA48]];
 
   return v22;
 }

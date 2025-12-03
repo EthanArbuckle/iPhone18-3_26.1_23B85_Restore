@@ -1,6 +1,6 @@
 @interface SKUIEditorialLinkLayoutRequest
 - (Class)layoutClass;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)layoutClass;
 @end
 
@@ -18,14 +18,14 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIEditorialLinkLayoutRequest copyWithZone:];
   }
 
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v5 setLinks:self->_links];
   [v5 setWidth:self->_width];
   return v5;

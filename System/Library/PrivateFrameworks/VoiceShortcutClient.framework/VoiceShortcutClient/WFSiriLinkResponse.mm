@@ -1,30 +1,30 @@
 @interface WFSiriLinkResponse
-- (WFSiriLinkResponse)initWithCoder:(id)a3;
-- (WFSiriLinkResponse)initWithOutput:(id)a3 andError:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (WFSiriLinkResponse)initWithCoder:(id)coder;
+- (WFSiriLinkResponse)initWithOutput:(id)output andError:(id)error;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFSiriLinkResponse
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = WFSiriLinkResponse;
-  v4 = a3;
-  [(WFSiriActionResponse *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(WFSiriActionResponse *)&v6 encodeWithCoder:coderCopy];
   v5 = [(WFSiriLinkResponse *)self actionOutput:v6.receiver];
-  [v4 encodeObject:v5 forKey:@"actionOutput"];
+  [coderCopy encodeObject:v5 forKey:@"actionOutput"];
 }
 
-- (WFSiriLinkResponse)initWithCoder:(id)a3
+- (WFSiriLinkResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = WFSiriLinkResponse;
-  v5 = [(WFSiriActionResponse *)&v10 initWithCoder:v4];
+  v5 = [(WFSiriActionResponse *)&v10 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"actionOutput"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"actionOutput"];
     actionOutput = v5->_actionOutput;
     v5->_actionOutput = v6;
 
@@ -34,16 +34,16 @@
   return v5;
 }
 
-- (WFSiriLinkResponse)initWithOutput:(id)a3 andError:(id)a4
+- (WFSiriLinkResponse)initWithOutput:(id)output andError:(id)error
 {
-  v7 = a3;
+  outputCopy = output;
   v12.receiver = self;
   v12.super_class = WFSiriLinkResponse;
-  v8 = [(WFSiriActionResponse *)&v12 initWithError:a4];
+  v8 = [(WFSiriActionResponse *)&v12 initWithError:error];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_actionOutput, a3);
+    objc_storeStrong(&v8->_actionOutput, output);
     v10 = v9;
   }
 

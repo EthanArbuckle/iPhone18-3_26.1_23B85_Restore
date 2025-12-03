@@ -1,10 +1,10 @@
 @interface LibraryTVShowsMoviesViewController.SegmentedControlCell
-- (_TtCC5Music34LibraryTVShowsMoviesViewControllerP33_93C7FD7BE2577186821DBE5ED4FA54AB20SegmentedControlCell)initWithCoder:(id)a3;
+- (_TtCC5Music34LibraryTVShowsMoviesViewControllerP33_93C7FD7BE2577186821DBE5ED4FA54AB20SegmentedControlCell)initWithCoder:(id)coder;
 @end
 
 @implementation LibraryTVShowsMoviesViewController.SegmentedControlCell
 
-- (_TtCC5Music34LibraryTVShowsMoviesViewControllerP33_93C7FD7BE2577186821DBE5ED4FA54AB20SegmentedControlCell)initWithCoder:(id)a3
+- (_TtCC5Music34LibraryTVShowsMoviesViewControllerP33_93C7FD7BE2577186821DBE5ED4FA54AB20SegmentedControlCell)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtCC5Music34LibraryTVShowsMoviesViewControllerP33_93C7FD7BE2577186821DBE5ED4FA54AB20SegmentedControlCell_currentSelection) = 0;
   v3 = (&self->super.super.super.super.super.isa + OBJC_IVAR____TtCC5Music34LibraryTVShowsMoviesViewControllerP33_93C7FD7BE2577186821DBE5ED4FA54AB20SegmentedControlCell_selectionDidChange);

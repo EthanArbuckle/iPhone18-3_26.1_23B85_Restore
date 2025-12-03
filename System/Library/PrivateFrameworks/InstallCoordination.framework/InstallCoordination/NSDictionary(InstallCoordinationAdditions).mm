@@ -65,7 +65,7 @@ LABEL_10:
 {
   v10 = a3;
   v19 = 0;
-  v11 = [MEMORY[0x1E696AE40] dataWithPropertyList:a1 format:a4 options:0 error:&v19];
+  v11 = [MEMORY[0x1E696AE40] dataWithPropertyList:self format:a4 options:0 error:&v19];
   v12 = v19;
   v13 = v12;
   if (v11)

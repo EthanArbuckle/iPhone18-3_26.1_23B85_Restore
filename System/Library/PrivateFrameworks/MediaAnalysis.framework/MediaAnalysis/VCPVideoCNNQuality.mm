@@ -1,7 +1,7 @@
 @interface VCPVideoCNNQuality
 - (VCPVideoCNNQuality)init;
 - (id)results;
-- (int)run:(id)a3 withPersons:(id)a4 andRegionCrop:(CGRect)a5 atTime:(id *)a6 andDuration:(id *)a7;
+- (int)run:(id)run withPersons:(id)persons andRegionCrop:(CGRect)crop atTime:(id *)time andDuration:(id *)duration;
 @end
 
 @implementation VCPVideoCNNQuality
@@ -13,13 +13,13 @@
   v2 = [(VCPVideoCNNQuality *)&v13 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AAE8] vcp_mediaAnalysisBundle];
-    v4 = [v3 resourceURL];
+    vcp_mediaAnalysisBundle = [MEMORY[0x1E696AAE8] vcp_mediaAnalysisBundle];
+    resourceURL = [vcp_mediaAnalysisBundle resourceURL];
 
-    v5 = [MEMORY[0x1E695DFF8] URLWithString:@"quality_head.espresso.net" relativeToURL:v4];
-    v6 = [MEMORY[0x1E695DF70] array];
+    v5 = [MEMORY[0x1E695DFF8] URLWithString:@"quality_head.espresso.net" relativeToURL:resourceURL];
+    array = [MEMORY[0x1E695DF70] array];
     results = v2->_results;
-    v2->_results = v6;
+    v2->_results = array;
 
     v8 = [VCPCNNModelEspresso alloc];
     v9 = [(VCPCNNModelEspresso *)v8 initWithParameters:v5 inputNames:&unk_1F49BE908 outputNames:0 properties:MEMORY[0x1E695E0F8]];
@@ -36,17 +36,17 @@
   return v2;
 }
 
-- (int)run:(id)a3 withPersons:(id)a4 andRegionCrop:(CGRect)a5 atTime:(id *)a6 andDuration:(id *)a7
+- (int)run:(id)run withPersons:(id)persons andRegionCrop:(CGRect)crop atTime:(id *)time andDuration:(id *)duration
 {
   v36[3] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = -[VCPCNNModelEspresso espressoForward:](self->_modelEspresso, "espressoForward:", [v10 outputBeforeTemporalPooling]);
+  runCopy = run;
+  v11 = -[VCPCNNModelEspresso espressoForward:](self->_modelEspresso, "espressoForward:", [runCopy outputBeforeTemporalPooling]);
   if (!v11)
   {
     modelEspresso = self->_modelEspresso;
     if (modelEspresso && ([(VCPCNNModelEspresso *)modelEspresso outputBlob], (value = time.value) != 0))
     {
-      v28 = v10;
+      v28 = runCopy;
       v13 = 0;
       v14 = 1;
       do
@@ -72,12 +72,12 @@
 
         while (v19 != 5);
         memset(&v32, 0, sizeof(v32));
-        time = *a7;
+        time = *duration;
         CMTimeMultiply(&v30, &time, v13);
         time = v30;
         CMTimeMultiplyByRatio(&v31, &time, 1, 2);
         time = v31;
-        rhs = *a6;
+        rhs = *time;
         CMTimeAdd(&v32, &time, &rhs);
         results = self->_results;
         v35[0] = @"start";
@@ -85,7 +85,7 @@
         v22 = CMTimeCopyAsDictionary(&time, 0);
         v36[0] = v22;
         v35[1] = @"duration";
-        time = *a7;
+        time = *duration;
         CMTimeMultiplyByRatio(&rhs, &time, 1, 2);
         time = rhs;
         v23 = CMTimeCopyAsDictionary(&time, 0);
@@ -103,7 +103,7 @@
 
       while ((v16 & 1) != 0);
       v11 = 0;
-      v10 = v28;
+      runCopy = v28;
     }
 
     else

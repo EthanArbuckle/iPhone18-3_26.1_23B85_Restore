@@ -1,22 +1,22 @@
 @interface _GCDeviceGamepadComponentDescription
-- (id)createWithContext:(id)a3;
+- (id)createWithContext:(id)context;
 @end
 
 @implementation _GCDeviceGamepadComponentDescription
 
-- (id)createWithContext:(id)a3
+- (id)createWithContext:(id)context
 {
   v22 = *MEMORY[0x1E69E9840];
   v4 = [GCGamepad alloc];
-  v5 = [(_GCDevicePhysicalInputComponentDescription *)self identifier];
-  v6 = [(GCGamepad *)v4 _initWithIdentifier:v5 createDefaultElements:0];
+  identifier = [(_GCDevicePhysicalInputComponentDescription *)self identifier];
+  v6 = [(GCGamepad *)v4 _initWithIdentifier:identifier createDefaultElements:0];
 
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = [(_GCDevicePhysicalInputComponentDescription *)self elementDescriptions];
-  v8 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  elementDescriptions = [(_GCDevicePhysicalInputComponentDescription *)self elementDescriptions];
+  v8 = [elementDescriptions countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v8)
   {
     v9 = v8;
@@ -27,7 +27,7 @@
       {
         if (*v18 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(elementDescriptions);
         }
 
         v12 = *(*(&v17 + 1) + 8 * i);
@@ -47,7 +47,7 @@
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v9 = [elementDescriptions countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v9);

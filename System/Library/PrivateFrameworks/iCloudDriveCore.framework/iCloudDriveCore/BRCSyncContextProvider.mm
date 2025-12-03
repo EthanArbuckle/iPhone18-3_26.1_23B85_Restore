@@ -1,16 +1,16 @@
 @interface BRCSyncContextProvider
-- (BRCSyncContextProvider)initWithAccountSession:(id)a3;
-- (id)_syncContextIdentifierForMangledID:(id)a3 metadata:(BOOL)a4;
+- (BRCSyncContextProvider)initWithAccountSession:(id)session;
+- (id)_syncContextIdentifierForMangledID:(id)d metadata:(BOOL)metadata;
 - (id)allSyncContexts;
-- (id)metadataSyncContextForMangledID:(id)a3;
+- (id)metadataSyncContextForMangledID:(id)d;
 - (void)closeSyncContexts;
 @end
 
 @implementation BRCSyncContextProvider
 
-- (BRCSyncContextProvider)initWithAccountSession:(id)a3
+- (BRCSyncContextProvider)initWithAccountSession:(id)session
 {
-  v5 = a3;
+  sessionCopy = session;
   v10.receiver = self;
   v10.super_class = BRCSyncContextProvider;
   v6 = [(BRCSyncContextProvider *)&v10 init];
@@ -20,85 +20,85 @@
     syncContexts = v6->_syncContexts;
     v6->_syncContexts = v7;
 
-    objc_storeStrong(&v6->_session, a3);
+    objc_storeStrong(&v6->_session, session);
   }
 
   return v6;
 }
 
-- (id)_syncContextIdentifierForMangledID:(id)a3 metadata:(BOOL)a4
+- (id)_syncContextIdentifierForMangledID:(id)d metadata:(BOOL)metadata
 {
-  v4 = a4;
-  v5 = a3;
-  if ([v5 isShared])
+  metadataCopy = metadata;
+  dCopy = d;
+  if ([dCopy isShared])
   {
-    if (v4)
+    if (metadataCopy)
     {
-      v6 = *MEMORY[0x277CFADA8];
+      aliasTargetContainerString = *MEMORY[0x277CFADA8];
     }
 
     else
     {
-      v6 = [v5 aliasTargetContainerString];
+      aliasTargetContainerString = [dCopy aliasTargetContainerString];
     }
   }
 
   else
   {
-    if (v4 && [v5 isCloudDocsMangledID])
+    if (metadataCopy && [dCopy isCloudDocsMangledID])
     {
       v7 = MEMORY[0x277CCACA8];
-      v8 = [v5 appLibraryOrZoneName];
-      v9 = [v7 stringWithFormat:@"%@-metadata", v8];
+      appLibraryOrZoneName = [dCopy appLibraryOrZoneName];
+      v9 = [v7 stringWithFormat:@"%@-metadata", appLibraryOrZoneName];
 
       goto LABEL_10;
     }
 
-    v6 = [v5 appLibraryOrZoneName];
+    aliasTargetContainerString = [dCopy appLibraryOrZoneName];
   }
 
-  v9 = v6;
+  v9 = aliasTargetContainerString;
 LABEL_10:
 
   return v9;
 }
 
-- (id)metadataSyncContextForMangledID:(id)a3
+- (id)metadataSyncContextForMangledID:(id)d
 {
-  v4 = a3;
-  v5 = [(BRCSyncContextProvider *)self _syncContextIdentifierForMangledID:v4 metadata:1];
-  v6 = [v4 isShared];
+  dCopy = d;
+  v5 = [(BRCSyncContextProvider *)self _syncContextIdentifierForMangledID:dCopy metadata:1];
+  isShared = [dCopy isShared];
 
-  v7 = [(BRCSyncContextProvider *)self _syncContextForContextIdentifier:v5 isShared:v6 createIfNeeded:1];
+  v7 = [(BRCSyncContextProvider *)self _syncContextForContextIdentifier:v5 isShared:isShared createIfNeeded:1];
 
   return v7;
 }
 
 - (id)allSyncContexts
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSMutableDictionary *)v2->_syncContexts allValues];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  allValues = [(NSMutableDictionary *)selfCopy->_syncContexts allValues];
+  objc_sync_exit(selfCopy);
 
-  return v3;
+  return allValues;
 }
 
 - (void)closeSyncContexts
 {
   v39 = *MEMORY[0x277D85DE8];
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(BRCSyncContextProvider *)v2 allSyncContexts];
-  syncContexts = v2->_syncContexts;
-  v2->_syncContexts = 0;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  allSyncContexts = [(BRCSyncContextProvider *)selfCopy allSyncContexts];
+  syncContexts = selfCopy->_syncContexts;
+  selfCopy->_syncContexts = 0;
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
   v29 = 0u;
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v5 = v3;
+  v5 = allSyncContexts;
   v6 = [v5 countByEnumeratingWithState:&v27 objects:v38 count:16];
   if (v6)
   {

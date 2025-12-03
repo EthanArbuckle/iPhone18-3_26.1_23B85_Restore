@@ -1,33 +1,33 @@
 @interface CKDPZone
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addProtectionInfoKeysToRemove:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addProtectionInfoKeysToRemove:(id)remove;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CKDPZone
 
-- (void)addProtectionInfoKeysToRemove:(id)a3
+- (void)addProtectionInfoKeysToRemove:(id)remove
 {
-  v4 = a3;
+  removeCopy = remove;
   protectionInfoKeysToRemoves = self->_protectionInfoKeysToRemoves;
-  v8 = v4;
+  v8 = removeCopy;
   if (!protectionInfoKeysToRemoves)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_protectionInfoKeysToRemoves;
     self->_protectionInfoKeysToRemoves = v6;
 
-    v4 = v8;
+    removeCopy = v8;
     protectionInfoKeysToRemoves = self->_protectionInfoKeysToRemoves;
   }
 
-  objc_msgSend_addObject_(protectionInfoKeysToRemoves, v4, v4);
+  objc_msgSend_addObject_(protectionInfoKeysToRemoves, removeCopy, removeCopy);
 }
 
 - (id)description
@@ -137,10 +137,10 @@
   return v6;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (self->_zoneIdentifier)
   {
     PBDataWriterWriteSubmessage();
@@ -236,42 +236,42 @@
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v27 = a3;
+  toCopy = to;
   zoneIdentifier = self->_zoneIdentifier;
   if (zoneIdentifier)
   {
-    objc_msgSend_setZoneIdentifier_(v27, v4, zoneIdentifier);
+    objc_msgSend_setZoneIdentifier_(toCopy, v4, zoneIdentifier);
   }
 
   protectionInfo = self->_protectionInfo;
   if (protectionInfo)
   {
-    objc_msgSend_setProtectionInfo_(v27, v4, protectionInfo);
+    objc_msgSend_setProtectionInfo_(toCopy, v4, protectionInfo);
   }
 
   recordProtectionInfo = self->_recordProtectionInfo;
   if (recordProtectionInfo)
   {
-    objc_msgSend_setRecordProtectionInfo_(v27, v4, recordProtectionInfo);
+    objc_msgSend_setRecordProtectionInfo_(toCopy, v4, recordProtectionInfo);
   }
 
   stableUrl = self->_stableUrl;
   if (stableUrl)
   {
-    objc_msgSend_setStableUrl_(v27, v4, stableUrl);
+    objc_msgSend_setStableUrl_(toCopy, v4, stableUrl);
   }
 
   shareId = self->_shareId;
   if (shareId)
   {
-    objc_msgSend_setShareId_(v27, v4, shareId);
+    objc_msgSend_setShareId_(toCopy, v4, shareId);
   }
 
   if (objc_msgSend_protectionInfoKeysToRemovesCount(self, v4, shareId))
   {
-    objc_msgSend_clearProtectionInfoKeysToRemoves(v27, v10, v11);
+    objc_msgSend_clearProtectionInfoKeysToRemoves(toCopy, v10, v11);
     v14 = objc_msgSend_protectionInfoKeysToRemovesCount(self, v12, v13);
     if (v14)
     {
@@ -279,7 +279,7 @@
       for (i = 0; i != v15; ++i)
       {
         v17 = objc_msgSend_protectionInfoKeysToRemoveAtIndex_(self, v10, i);
-        objc_msgSend_addProtectionInfoKeysToRemove_(v27, v18, v17);
+        objc_msgSend_addProtectionInfoKeysToRemove_(toCopy, v18, v17);
       }
     }
   }
@@ -287,76 +287,76 @@
   storageExpiration = self->_storageExpiration;
   if (storageExpiration)
   {
-    objc_msgSend_setStorageExpiration_(v27, v10, storageExpiration);
+    objc_msgSend_setStorageExpiration_(toCopy, v10, storageExpiration);
   }
 
   signedCryptoRequirements = self->_signedCryptoRequirements;
-  v21 = v27;
+  v21 = toCopy;
   if (signedCryptoRequirements)
   {
-    objc_msgSend_setSignedCryptoRequirements_(v27, v10, signedCryptoRequirements);
-    v21 = v27;
+    objc_msgSend_setSignedCryptoRequirements_(toCopy, v10, signedCryptoRequirements);
+    v21 = toCopy;
   }
 
   appliedCryptoFeatures = self->_appliedCryptoFeatures;
   if (appliedCryptoFeatures)
   {
-    objc_msgSend_setAppliedCryptoFeatures_(v27, v10, appliedCryptoFeatures);
-    v21 = v27;
+    objc_msgSend_setAppliedCryptoFeatures_(toCopy, v10, appliedCryptoFeatures);
+    v21 = toCopy;
   }
 
   zoneProtectionInfoKeysToRemove = self->_zoneProtectionInfoKeysToRemove;
   if (zoneProtectionInfoKeysToRemove)
   {
-    objc_msgSend_setZoneProtectionInfoKeysToRemove_(v27, v10, zoneProtectionInfoKeysToRemove);
-    v21 = v27;
+    objc_msgSend_setZoneProtectionInfoKeysToRemove_(toCopy, v10, zoneProtectionInfoKeysToRemove);
+    v21 = toCopy;
   }
 
   recordProtectionInfoKeysToRemove = self->_recordProtectionInfoKeysToRemove;
   if (recordProtectionInfoKeysToRemove)
   {
-    objc_msgSend_setRecordProtectionInfoKeysToRemove_(v27, v10, recordProtectionInfoKeysToRemove);
-    v21 = v27;
+    objc_msgSend_setRecordProtectionInfoKeysToRemove_(toCopy, v10, recordProtectionInfoKeysToRemove);
+    v21 = toCopy;
   }
 
   parentReference = self->_parentReference;
   if (parentReference)
   {
-    objc_msgSend_setParentReference_(v27, v10, parentReference);
-    v21 = v27;
+    objc_msgSend_setParentReference_(toCopy, v10, parentReference);
+    v21 = toCopy;
   }
 
   etag = self->_etag;
   if (etag)
   {
-    objc_msgSend_setEtag_(v27, v10, etag);
-    v21 = v27;
+    objc_msgSend_setEtag_(toCopy, v10, etag);
+    v21 = toCopy;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v63 = *MEMORY[0x277D85DE8];
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_init(v7, v8, v9);
-  v12 = objc_msgSend_copyWithZone_(self->_zoneIdentifier, v11, a3);
+  v12 = objc_msgSend_copyWithZone_(self->_zoneIdentifier, v11, zone);
   v13 = v10[12];
   v10[12] = v12;
 
-  v15 = objc_msgSend_copyWithZone_(self->_protectionInfo, v14, a3);
+  v15 = objc_msgSend_copyWithZone_(self->_protectionInfo, v14, zone);
   v16 = v10[4];
   v10[4] = v15;
 
-  v18 = objc_msgSend_copyWithZone_(self->_recordProtectionInfo, v17, a3);
+  v18 = objc_msgSend_copyWithZone_(self->_recordProtectionInfo, v17, zone);
   v19 = v10[6];
   v10[6] = v18;
 
-  v21 = objc_msgSend_copyWithZone_(self->_stableUrl, v20, a3);
+  v21 = objc_msgSend_copyWithZone_(self->_stableUrl, v20, zone);
   v22 = v10[10];
   v10[10] = v21;
 
-  v24 = objc_msgSend_copyWithZone_(self->_shareId, v23, a3);
+  v24 = objc_msgSend_copyWithZone_(self->_shareId, v23, zone);
   v25 = v10[8];
   v10[8] = v24;
 
@@ -380,7 +380,7 @@
           objc_enumerationMutation(v26);
         }
 
-        v33 = objc_msgSend_copyWithZone_(*(*(&v58 + 1) + 8 * v32), v29, a3, v58);
+        v33 = objc_msgSend_copyWithZone_(*(*(&v58 + 1) + 8 * v32), v29, zone, v58);
         objc_msgSend_addProtectionInfoKeysToRemove_(v10, v34, v33);
 
         ++v32;
@@ -393,31 +393,31 @@
     while (v30);
   }
 
-  v36 = objc_msgSend_copyWithZone_(self->_storageExpiration, v35, a3);
+  v36 = objc_msgSend_copyWithZone_(self->_storageExpiration, v35, zone);
   v37 = v10[11];
   v10[11] = v36;
 
-  v39 = objc_msgSend_copyWithZone_(self->_signedCryptoRequirements, v38, a3);
+  v39 = objc_msgSend_copyWithZone_(self->_signedCryptoRequirements, v38, zone);
   v40 = v10[9];
   v10[9] = v39;
 
-  v42 = objc_msgSend_copyWithZone_(self->_appliedCryptoFeatures, v41, a3);
+  v42 = objc_msgSend_copyWithZone_(self->_appliedCryptoFeatures, v41, zone);
   v43 = v10[1];
   v10[1] = v42;
 
-  v45 = objc_msgSend_copyWithZone_(self->_zoneProtectionInfoKeysToRemove, v44, a3);
+  v45 = objc_msgSend_copyWithZone_(self->_zoneProtectionInfoKeysToRemove, v44, zone);
   v46 = v10[13];
   v10[13] = v45;
 
-  v48 = objc_msgSend_copyWithZone_(self->_recordProtectionInfoKeysToRemove, v47, a3);
+  v48 = objc_msgSend_copyWithZone_(self->_recordProtectionInfoKeysToRemove, v47, zone);
   v49 = v10[7];
   v10[7] = v48;
 
-  v51 = objc_msgSend_copyWithZone_(self->_parentReference, v50, a3);
+  v51 = objc_msgSend_copyWithZone_(self->_parentReference, v50, zone);
   v52 = v10[3];
   v10[3] = v51;
 
-  v54 = objc_msgSend_copyWithZone_(self->_etag, v53, a3);
+  v54 = objc_msgSend_copyWithZone_(self->_etag, v53, zone);
   v55 = v10[2];
   v10[2] = v54;
 
@@ -425,17 +425,17 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (!objc_msgSend_isMemberOfClass_(v4, v6, v5))
+  if (!objc_msgSend_isMemberOfClass_(equalCopy, v6, v5))
   {
     goto LABEL_28;
   }
 
   zoneIdentifier = self->_zoneIdentifier;
-  v9 = v4[12];
+  v9 = equalCopy[12];
   if (zoneIdentifier | v9)
   {
     if (!objc_msgSend_isEqual_(zoneIdentifier, v7, v9))
@@ -445,7 +445,7 @@
   }
 
   protectionInfo = self->_protectionInfo;
-  v11 = v4[4];
+  v11 = equalCopy[4];
   if (protectionInfo | v11)
   {
     if (!objc_msgSend_isEqual_(protectionInfo, v7, v11))
@@ -455,7 +455,7 @@
   }
 
   recordProtectionInfo = self->_recordProtectionInfo;
-  v13 = v4[6];
+  v13 = equalCopy[6];
   if (recordProtectionInfo | v13)
   {
     if (!objc_msgSend_isEqual_(recordProtectionInfo, v7, v13))
@@ -465,7 +465,7 @@
   }
 
   stableUrl = self->_stableUrl;
-  v15 = v4[10];
+  v15 = equalCopy[10];
   if (stableUrl | v15)
   {
     if (!objc_msgSend_isEqual_(stableUrl, v7, v15))
@@ -475,7 +475,7 @@
   }
 
   shareId = self->_shareId;
-  v17 = v4[8];
+  v17 = equalCopy[8];
   if (shareId | v17)
   {
     if (!objc_msgSend_isEqual_(shareId, v7, v17))
@@ -485,7 +485,7 @@
   }
 
   protectionInfoKeysToRemoves = self->_protectionInfoKeysToRemoves;
-  v19 = v4[5];
+  v19 = equalCopy[5];
   if (protectionInfoKeysToRemoves | v19)
   {
     if (!objc_msgSend_isEqual_(protectionInfoKeysToRemoves, v7, v19))
@@ -495,7 +495,7 @@
   }
 
   storageExpiration = self->_storageExpiration;
-  v21 = v4[11];
+  v21 = equalCopy[11];
   if (storageExpiration | v21)
   {
     if (!objc_msgSend_isEqual_(storageExpiration, v7, v21))
@@ -505,7 +505,7 @@
   }
 
   signedCryptoRequirements = self->_signedCryptoRequirements;
-  v23 = v4[9];
+  v23 = equalCopy[9];
   if (signedCryptoRequirements | v23)
   {
     if (!objc_msgSend_isEqual_(signedCryptoRequirements, v7, v23))
@@ -515,7 +515,7 @@
   }
 
   appliedCryptoFeatures = self->_appliedCryptoFeatures;
-  v25 = v4[1];
+  v25 = equalCopy[1];
   if (appliedCryptoFeatures | v25)
   {
     if (!objc_msgSend_isEqual_(appliedCryptoFeatures, v7, v25))
@@ -524,10 +524,10 @@
     }
   }
 
-  if (((zoneProtectionInfoKeysToRemove = self->_zoneProtectionInfoKeysToRemove, v27 = v4[13], !(zoneProtectionInfoKeysToRemove | v27)) || objc_msgSend_isEqual_(zoneProtectionInfoKeysToRemove, v7, v27)) && ((recordProtectionInfoKeysToRemove = self->_recordProtectionInfoKeysToRemove, v29 = v4[7], !(recordProtectionInfoKeysToRemove | v29)) || objc_msgSend_isEqual_(recordProtectionInfoKeysToRemove, v7, v29)) && ((parentReference = self->_parentReference, v31 = v4[3], !(parentReference | v31)) || objc_msgSend_isEqual_(parentReference, v7, v31)))
+  if (((zoneProtectionInfoKeysToRemove = self->_zoneProtectionInfoKeysToRemove, v27 = equalCopy[13], !(zoneProtectionInfoKeysToRemove | v27)) || objc_msgSend_isEqual_(zoneProtectionInfoKeysToRemove, v7, v27)) && ((recordProtectionInfoKeysToRemove = self->_recordProtectionInfoKeysToRemove, v29 = equalCopy[7], !(recordProtectionInfoKeysToRemove | v29)) || objc_msgSend_isEqual_(recordProtectionInfoKeysToRemove, v7, v29)) && ((parentReference = self->_parentReference, v31 = equalCopy[3], !(parentReference | v31)) || objc_msgSend_isEqual_(parentReference, v7, v31)))
   {
     etag = self->_etag;
-    v33 = v4[2];
+    v33 = equalCopy[2];
     if (etag | v33)
     {
       isEqual = objc_msgSend_isEqual_(etag, v7, v33);
@@ -565,12 +565,12 @@ LABEL_28:
   return v34 ^ v37 ^ objc_msgSend_hash(self->_etag, v38, v39);
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v43 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  fromCopy = from;
   zoneIdentifier = self->_zoneIdentifier;
-  v7 = *(v5 + 12);
+  v7 = *(fromCopy + 12);
   if (zoneIdentifier)
   {
     if (v7)
@@ -585,7 +585,7 @@ LABEL_28:
   }
 
   protectionInfo = self->_protectionInfo;
-  v9 = *(v5 + 4);
+  v9 = *(fromCopy + 4);
   if (protectionInfo)
   {
     if (v9)
@@ -600,7 +600,7 @@ LABEL_28:
   }
 
   recordProtectionInfo = self->_recordProtectionInfo;
-  v11 = *(v5 + 6);
+  v11 = *(fromCopy + 6);
   if (recordProtectionInfo)
   {
     if (v11)
@@ -615,7 +615,7 @@ LABEL_28:
   }
 
   stableUrl = self->_stableUrl;
-  v13 = *(v5 + 10);
+  v13 = *(fromCopy + 10);
   if (stableUrl)
   {
     if (v13)
@@ -630,7 +630,7 @@ LABEL_28:
   }
 
   shareId = self->_shareId;
-  v15 = *(v5 + 8);
+  v15 = *(fromCopy + 8);
   if (shareId)
   {
     if (v15)
@@ -648,7 +648,7 @@ LABEL_28:
   v41 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v16 = *(v5 + 5);
+  v16 = *(fromCopy + 5);
   v18 = objc_msgSend_countByEnumeratingWithState_objects_count_(v16, v17, &v38, v42, 16);
   if (v18)
   {
@@ -673,7 +673,7 @@ LABEL_28:
   }
 
   storageExpiration = self->_storageExpiration;
-  v25 = *(v5 + 11);
+  v25 = *(fromCopy + 11);
   if (storageExpiration)
   {
     if (v25)
@@ -688,7 +688,7 @@ LABEL_28:
   }
 
   signedCryptoRequirements = self->_signedCryptoRequirements;
-  v27 = *(v5 + 9);
+  v27 = *(fromCopy + 9);
   if (signedCryptoRequirements)
   {
     if (v27)
@@ -703,7 +703,7 @@ LABEL_28:
   }
 
   appliedCryptoFeatures = self->_appliedCryptoFeatures;
-  v29 = *(v5 + 1);
+  v29 = *(fromCopy + 1);
   if (appliedCryptoFeatures)
   {
     if (v29)
@@ -718,7 +718,7 @@ LABEL_28:
   }
 
   zoneProtectionInfoKeysToRemove = self->_zoneProtectionInfoKeysToRemove;
-  v31 = *(v5 + 13);
+  v31 = *(fromCopy + 13);
   if (zoneProtectionInfoKeysToRemove)
   {
     if (v31)
@@ -733,7 +733,7 @@ LABEL_28:
   }
 
   recordProtectionInfoKeysToRemove = self->_recordProtectionInfoKeysToRemove;
-  v33 = *(v5 + 7);
+  v33 = *(fromCopy + 7);
   if (recordProtectionInfoKeysToRemove)
   {
     if (v33)
@@ -748,7 +748,7 @@ LABEL_28:
   }
 
   parentReference = self->_parentReference;
-  v35 = *(v5 + 3);
+  v35 = *(fromCopy + 3);
   if (parentReference)
   {
     if (v35)
@@ -762,7 +762,7 @@ LABEL_28:
     objc_msgSend_setParentReference_(self, v23, v35);
   }
 
-  v36 = *(v5 + 2);
+  v36 = *(fromCopy + 2);
   if (v36)
   {
     objc_msgSend_setEtag_(self, v23, v36);

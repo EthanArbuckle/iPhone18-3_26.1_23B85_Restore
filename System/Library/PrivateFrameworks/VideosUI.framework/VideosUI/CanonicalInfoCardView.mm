@@ -1,5 +1,5 @@
 @interface CanonicalInfoCardView
-- (CGSize)vui_layoutSubviews:(CGSize)a3 computationOnly:(BOOL)a4;
+- (CGSize)vui_layoutSubviews:(CGSize)subviews computationOnly:(BOOL)only;
 - (FocusableTextView)accessibilityDescriptionLabel;
 - (VUIImageView)accessibilityImageView;
 - (VUILabel)accessibilitySubtitleLabel;
@@ -10,12 +10,12 @@
 
 @implementation CanonicalInfoCardView
 
-- (CGSize)vui_layoutSubviews:(CGSize)a3 computationOnly:(BOOL)a4
+- (CGSize)vui_layoutSubviews:(CGSize)subviews computationOnly:(BOOL)only
 {
-  v4 = a4;
-  width = a3.width;
-  v6 = self;
-  v7 = sub_1E3B1C510(v4, width);
+  onlyCopy = only;
+  width = subviews.width;
+  selfCopy = self;
+  v7 = sub_1E3B1C510(onlyCopy, width);
   v9 = v8;
 
   v10 = v7;
@@ -27,7 +27,7 @@
 
 - (void)vui_prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   sub_1E3B1D73C();
 }
 

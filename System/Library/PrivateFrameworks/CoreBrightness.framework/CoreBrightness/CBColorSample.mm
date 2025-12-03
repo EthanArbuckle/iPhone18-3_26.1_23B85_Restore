@@ -3,13 +3,13 @@
 - ($1AB5FA073B851C12C2339EC22442E995)XYZ;
 - ($F24F406B2B787EFB06265DBA3D28CBD5)xy;
 - (CBColorSample)init;
-- (CBColorSample)initWithChromaticity:(id)a3 illuminance:(double)a4 andTempterature:(double)a5;
-- (CBColorSample)initWithHIDEvent:(__IOHIDEvent *)a3;
-- (CBColorSample)initWithTristimulus:(id)a3 illuminance:(double)a4 andTempterature:(double)a5;
+- (CBColorSample)initWithChromaticity:(id)chromaticity illuminance:(double)illuminance andTempterature:(double)tempterature;
+- (CBColorSample)initWithHIDEvent:(__IOHIDEvent *)event;
+- (CBColorSample)initWithTristimulus:(id)tristimulus illuminance:(double)illuminance andTempterature:(double)tempterature;
 - (CFXColorSample)colorSample;
-- (double)CCTDifferenceWith:(id)a3;
-- (double)LuxDifferenceWith:(id)a3;
-- (double)colorDeltaEWith:(id)a3;
+- (double)CCTDifferenceWith:(id)with;
+- (double)LuxDifferenceWith:(id)with;
+- (double)colorDeltaEWith:(id)with;
 - (id)copyDataInDictionary;
 - (id)description;
 - (int64_t)colorBin;
@@ -36,15 +36,15 @@
 
 - (id)copyDataInDictionary
 {
-  v11 = self;
+  selfCopy = self;
   v10 = a2;
   v9 = 0;
   v3[12] = 0x1E696A000uLL;
   v8 = [objc_alloc(MEMORY[0x1E696AD98]) initWithDouble:self->_lux];
-  v7 = [objc_alloc(MEMORY[0x1E696AD98]) initWithDouble:v11->_CCT];
-  v6 = [objc_alloc(MEMORY[0x1E696AD98]) initWithDouble:v11->_xy.x];
-  v5 = [objc_alloc(MEMORY[0x1E696AD98]) initWithDouble:v11->_xy.y];
-  v4 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInteger:v11->_mode];
+  v7 = [objc_alloc(MEMORY[0x1E696AD98]) initWithDouble:selfCopy->_CCT];
+  v6 = [objc_alloc(MEMORY[0x1E696AD98]) initWithDouble:selfCopy->_xy.x];
+  v5 = [objc_alloc(MEMORY[0x1E696AD98]) initWithDouble:selfCopy->_xy.y];
+  v4 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInteger:selfCopy->_mode];
   if (v8 && v7 && v6 && v5 && v4)
   {
     v3[11] = v3;
@@ -106,99 +106,99 @@
 
 - (CBColorSample)init
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   v3.receiver = self;
   v3.super_class = CBColorSample;
-  v5 = [(CBColorSample *)&v3 init];
-  if (v5)
+  selfCopy = [(CBColorSample *)&v3 init];
+  if (selfCopy)
   {
-    v5->_lux = -1.0;
-    v5->_CCT = 0.0;
-    v5->_XYZ.X = 0.0;
-    v5->_XYZ.Y = 0.0;
-    v5->_XYZ.Z = 0.0;
-    v5->_xy.x = 0.0;
-    v5->_xy.y = 0.0;
+    selfCopy->_lux = -1.0;
+    selfCopy->_CCT = 0.0;
+    selfCopy->_XYZ.X = 0.0;
+    selfCopy->_XYZ.Y = 0.0;
+    selfCopy->_XYZ.Z = 0.0;
+    selfCopy->_xy.x = 0.0;
+    selfCopy->_xy.y = 0.0;
   }
 
-  return v5;
+  return selfCopy;
 }
 
-- (CBColorSample)initWithTristimulus:(id)a3 illuminance:(double)a4 andTempterature:(double)a5
+- (CBColorSample)initWithTristimulus:(id)tristimulus illuminance:(double)illuminance andTempterature:(double)tempterature
 {
-  *&v12 = a3.var0;
-  *(&v12 + 1) = *&a3.var1;
-  var2 = a3.var2;
-  v11 = self;
+  *&v12 = tristimulus.var0;
+  *(&v12 + 1) = *&tristimulus.var1;
+  var2 = tristimulus.var2;
+  selfCopy = self;
   v10 = a2;
-  v9 = a4;
-  v8 = a5;
+  illuminanceCopy = illuminance;
+  tempteratureCopy = tempterature;
   v7.receiver = self;
   v7.super_class = CBColorSample;
-  v11 = [(CBColorSample *)&v7 init];
-  if (v11)
+  selfCopy = [(CBColorSample *)&v7 init];
+  if (selfCopy)
   {
-    *(v11 + 1) = v9;
-    *(v11 + 2) = v8;
-    v5 = v11;
-    *(v11 + 56) = v12;
+    *(selfCopy + 1) = illuminanceCopy;
+    *(selfCopy + 2) = tempteratureCopy;
+    v5 = selfCopy;
+    *(selfCopy + 56) = v12;
     v5[9] = var2;
-    [v11 fillInChromaticity];
+    [selfCopy fillInChromaticity];
   }
 
-  return v11;
+  return selfCopy;
 }
 
-- (CBColorSample)initWithChromaticity:(id)a3 illuminance:(double)a4 andTempterature:(double)a5
+- (CBColorSample)initWithChromaticity:(id)chromaticity illuminance:(double)illuminance andTempterature:(double)tempterature
 {
-  v11 = a3;
-  v10 = self;
+  chromaticityCopy = chromaticity;
+  selfCopy = self;
   v9 = a2;
-  v8 = a4;
-  v7 = a5;
+  illuminanceCopy = illuminance;
+  tempteratureCopy = tempterature;
   v6.receiver = self;
   v6.super_class = CBColorSample;
-  v10 = [(CBColorSample *)&v6 init];
-  if (v10)
+  selfCopy = [(CBColorSample *)&v6 init];
+  if (selfCopy)
   {
-    *(v10 + 1) = v8;
-    *(v10 + 2) = v7;
-    *(v10 + 40) = v11;
-    [v10 fillInTristimulus];
+    *(selfCopy + 1) = illuminanceCopy;
+    *(selfCopy + 2) = tempteratureCopy;
+    *(selfCopy + 40) = chromaticityCopy;
+    [selfCopy fillInTristimulus];
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (CBColorSample)initWithHIDEvent:(__IOHIDEvent *)a3
+- (CBColorSample)initWithHIDEvent:(__IOHIDEvent *)event
 {
-  v24 = self;
+  selfCopy = self;
   v23 = a2;
-  v22 = a3;
+  eventCopy = event;
   if (IOHIDEventGetType() == 12)
   {
     if (IOHIDEventGetIntegerValue() == 1)
     {
-      v15.receiver = v24;
+      v15.receiver = selfCopy;
       v15.super_class = CBColorSample;
-      v24 = [(CBColorSample *)&v15 init];
-      if (v24)
+      selfCopy = [(CBColorSample *)&v15 init];
+      if (selfCopy)
       {
         IOHIDEventGetDoubleValue();
-        v24->_lux = v3;
+        selfCopy->_lux = v3;
         IOHIDEventGetDoubleValue();
-        v24->_CCT = v4;
+        selfCopy->_CCT = v4;
         IOHIDEventGetDoubleValue();
-        v24->_XYZ.X = v5;
+        selfCopy->_XYZ.X = v5;
         IOHIDEventGetDoubleValue();
-        v24->_XYZ.Y = v6;
+        selfCopy->_XYZ.Y = v6;
         IOHIDEventGetDoubleValue();
-        v24->_XYZ.Z = v7;
-        [(CBColorSample *)v24 fillInChromaticity];
+        selfCopy->_XYZ.Z = v7;
+        [(CBColorSample *)selfCopy fillInChromaticity];
       }
 
-      return v24;
+      return selfCopy;
     }
 
     else
@@ -273,7 +273,7 @@
 - ($1AB5FA073B851C12C2339EC22442E995)Lab
 {
   v17 = *MEMORY[0x1E69E9840];
-  v11 = self;
+  selfCopy = self;
   v10 = a2;
   v15 = 0;
   v16 = 0.0;
@@ -299,16 +299,16 @@
   return result;
 }
 
-- (double)colorDeltaEWith:(id)a3
+- (double)colorDeltaEWith:(id)with
 {
   v18 = 0.0;
-  if (a3)
+  if (with)
   {
     [(CBColorSample *)self Lab];
     v15 = v3;
     v16 = v4;
     v17 = v5;
-    [a3 Lab];
+    [with Lab];
     v13 = v6;
     v14 = v7;
     v11 = pow(v15 - v8, 2.0);
@@ -320,28 +320,28 @@
   return v18;
 }
 
-- (double)CCTDifferenceWith:(id)a3
+- (double)CCTDifferenceWith:(id)with
 {
   v7 = 0.0;
-  if (a3)
+  if (with)
   {
     [(CBColorSample *)self CCT];
     v6 = v3;
-    [a3 CCT];
+    [with CCT];
     return vabdd_f64(v6, v4);
   }
 
   return v7;
 }
 
-- (double)LuxDifferenceWith:(id)a3
+- (double)LuxDifferenceWith:(id)with
 {
   v7 = 0.0;
-  if (a3)
+  if (with)
   {
     [(CBColorSample *)self lux];
     v6 = v3;
-    [a3 lux];
+    [with lux];
     return vabdd_f64(v6, v4);
   }
 
@@ -350,13 +350,13 @@
 
 - (int64_t)colorBin
 {
-  v7 = self;
+  selfCopy = self;
   v6[1] = a2;
   v6[0] = 0;
   [(CBColorSample *)self xy];
   *&v2 = v2;
   LODWORD(v6[0]) = LODWORD(v2);
-  [(CBColorSample *)v7 xy];
+  [(CBColorSample *)selfCopy xy];
   v4 = v3;
   *(v6 + 1) = v4;
   return CFXAnsiBinFromChromaticity(v6);
@@ -364,7 +364,7 @@
 
 - (id)description
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   return [MEMORY[0x1E696AEC0] stringWithFormat:@"Lux = %f; CCT = %f; XYZ = [%f, %f, %f]; xy = [%f, %f]", *&self->_lux, *&self->_CCT, *&self->_XYZ.X, *&self->_XYZ.Y, *&self->_XYZ.Z, *&self->_xy.x, *&self->_xy.y];
 }

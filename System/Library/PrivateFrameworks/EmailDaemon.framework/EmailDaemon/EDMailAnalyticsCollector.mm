@@ -1,27 +1,27 @@
 @interface EDMailAnalyticsCollector
-- (EDMailAnalyticsCollector)initWithAnalyticsCollector:(id)a3 smimeConfigurationProvider:(id)a4 messagePersistence:(id)a5;
+- (EDMailAnalyticsCollector)initWithAnalyticsCollector:(id)collector smimeConfigurationProvider:(id)provider messagePersistence:(id)persistence;
 - (id)coreAnalyticsPeriodicEvent;
 @end
 
 @implementation EDMailAnalyticsCollector
 
-- (EDMailAnalyticsCollector)initWithAnalyticsCollector:(id)a3 smimeConfigurationProvider:(id)a4 messagePersistence:(id)a5
+- (EDMailAnalyticsCollector)initWithAnalyticsCollector:(id)collector smimeConfigurationProvider:(id)provider messagePersistence:(id)persistence
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  collectorCopy = collector;
+  providerCopy = provider;
+  persistenceCopy = persistence;
   v17.receiver = self;
   v17.super_class = EDMailAnalyticsCollector;
   v11 = [(EDMailAnalyticsCollector *)&v17 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_messagePersistence, a5);
-    v13 = [[EDSMIMEAnalyticsCollector alloc] initWithAnalyticsCollector:v8 smimeConfigurationProvider:v9 messagePersistence:v10];
+    objc_storeStrong(&v11->_messagePersistence, persistence);
+    v13 = [[EDSMIMEAnalyticsCollector alloc] initWithAnalyticsCollector:collectorCopy smimeConfigurationProvider:providerCopy messagePersistence:persistenceCopy];
     smimeAnalyticsCollector = v12->_smimeAnalyticsCollector;
     v12->_smimeAnalyticsCollector = v13;
 
-    v15 = [v8 registerForLogEventsWithPeriodicDataProvider:v12];
+    v15 = [collectorCopy registerForLogEventsWithPeriodicDataProvider:v12];
   }
 
   return v12;
@@ -30,8 +30,8 @@
 - (id)coreAnalyticsPeriodicEvent
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695E000] em_userDefaults];
-  v4 = [v3 objectForKey:*MEMORY[0x1E699AB88]];
+  em_userDefaults = [MEMORY[0x1E695E000] em_userDefaults];
+  v4 = [em_userDefaults objectForKey:*MEMORY[0x1E699AB88]];
 
   v5 = [MEMORY[0x1E695DF00] ef_midnightNdaysAgo:30];
   v6 = [MEMORY[0x1E699B8C8] column:@"date_received"];
@@ -47,8 +47,8 @@
 
   [v13 setWhere:v9];
   [v13 setLimit:1];
-  v14 = [(EDMailAnalyticsCollector *)self messagePersistence];
-  v15 = [v14 countOfMessageStatement:v13];
+  messagePersistence = [(EDMailAnalyticsCollector *)self messagePersistence];
+  v15 = [messagePersistence countOfMessageStatement:v13];
 
   if (v15 < 1)
   {

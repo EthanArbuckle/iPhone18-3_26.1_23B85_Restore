@@ -1,19 +1,19 @@
 @interface GCVersion
 + (id)currentSourceVersion;
-- (BOOL)isEqualTo:(id)a3;
-- (BOOL)isEqualToSourceVersion:(id)a3;
-- (BOOL)isGreaterThan:(id)a3;
-- (BOOL)isGreaterThanOrEqualTo:(id)a3;
-- (BOOL)isGreaterThanOrEqualToSourceVersion:(id)a3;
-- (BOOL)isGreaterThanSourceVersion:(id)a3;
-- (BOOL)isLessThan:(id)a3;
-- (BOOL)isLessThanOrEqualTo:(id)a3;
-- (GCVersion)initWithCoder:(id)a3;
-- (GCVersion)initWithMajor:(unint64_t)a3 minor:(unint64_t)a4 patch:(unint64_t)a5;
-- (GCVersion)initWithString:(id)a3;
+- (BOOL)isEqualTo:(id)to;
+- (BOOL)isEqualToSourceVersion:(id)version;
+- (BOOL)isGreaterThan:(id)than;
+- (BOOL)isGreaterThanOrEqualTo:(id)to;
+- (BOOL)isGreaterThanOrEqualToSourceVersion:(id)version;
+- (BOOL)isGreaterThanSourceVersion:(id)version;
+- (BOOL)isLessThan:(id)than;
+- (BOOL)isLessThanOrEqualTo:(id)to;
+- (GCVersion)initWithCoder:(id)coder;
+- (GCVersion)initWithMajor:(unint64_t)major minor:(unint64_t)minor patch:(unint64_t)patch;
+- (GCVersion)initWithString:(id)string;
 - (id)debugDescription;
-- (int64_t)compare:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (int64_t)compare:(id)compare;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation GCVersion
@@ -70,31 +70,31 @@ LABEL_6:
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (GCVersion)initWithMajor:(unint64_t)a3 minor:(unint64_t)a4 patch:(unint64_t)a5
+- (GCVersion)initWithMajor:(unint64_t)major minor:(unint64_t)minor patch:(unint64_t)patch
 {
   v9.receiver = self;
   v9.super_class = GCVersion;
   result = [(GCVersion *)&v9 init];
-  result->_major = a3;
-  result->_minor = a4;
-  result->_patch = a5;
+  result->_major = major;
+  result->_minor = minor;
+  result->_patch = patch;
   return result;
 }
 
-- (GCVersion)initWithString:(id)a3
+- (GCVersion)initWithString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   if (initWithString__onceToken != -1)
   {
     [GCVersion initWithString:];
   }
 
-  v5 = [v4 stringByTrimmingCharactersInSet:initWithString__invalidChars];
-  v6 = [v5 isEqualToString:v4];
+  v5 = [stringCopy stringByTrimmingCharactersInSet:initWithString__invalidChars];
+  v6 = [v5 isEqualToString:stringCopy];
 
   if (v6)
   {
-    v7 = [v4 componentsSeparatedByString:@"."];
+    v7 = [stringCopy componentsSeparatedByString:@"."];
     if (![v7 count])
     {
       goto LABEL_17;
@@ -114,16 +114,16 @@ LABEL_6:
     }
 
     v10 = [v7 objectAtIndexedSubscript:0];
-    v11 = [v10 integerValue];
+    integerValue = [v10 integerValue];
 
-    if (v11 < 1)
+    if (integerValue < 1)
     {
       goto LABEL_17;
     }
 
     if ([v7 count] < 2)
     {
-      v15 = 0;
+      integerValue2 = 0;
     }
 
     else
@@ -137,9 +137,9 @@ LABEL_6:
       }
 
       v14 = [v7 objectAtIndexedSubscript:1];
-      v15 = [v14 integerValue];
+      integerValue2 = [v14 integerValue];
 
-      if (v15 < 0)
+      if (integerValue2 < 0)
       {
         goto LABEL_17;
       }
@@ -158,22 +158,22 @@ LABEL_6:
       if (!v18 || ([v7 objectAtIndexedSubscript:2], v19 = objc_claimAutoreleasedReturnValue(), v20 = objc_msgSend(v19, "integerValue"), v19, v20 < 0))
       {
 LABEL_17:
-        v16 = 0;
+        selfCopy = 0;
 LABEL_18:
 
         goto LABEL_19;
       }
     }
 
-    self = [(GCVersion *)self initWithMajor:v11 minor:v15 patch:v20];
-    v16 = self;
+    self = [(GCVersion *)self initWithMajor:integerValue minor:integerValue2 patch:v20];
+    selfCopy = self;
     goto LABEL_18;
   }
 
-  v16 = 0;
+  selfCopy = 0;
 LABEL_19:
 
-  return v16;
+  return selfCopy;
 }
 
 void __28__GCVersion_initWithString___block_invoke()
@@ -184,32 +184,32 @@ void __28__GCVersion_initWithString___block_invoke()
   initWithString__invalidChars = v0;
 }
 
-- (GCVersion)initWithCoder:(id)a3
+- (GCVersion)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"major"];
-  v6 = [v4 decodeIntegerForKey:@"minor"];
-  v7 = [v4 decodeIntegerForKey:@"patch"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"major"];
+  v6 = [coderCopy decodeIntegerForKey:@"minor"];
+  v7 = [coderCopy decodeIntegerForKey:@"patch"];
 
   return [(GCVersion *)self initWithMajor:v5 minor:v6 patch:v7];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:-[GCVersion major](self forKey:{"major"), @"major"}];
-  [v4 encodeInteger:-[GCVersion minor](self forKey:{"minor"), @"minor"}];
-  [v4 encodeInteger:-[GCVersion patch](self forKey:{"patch"), @"patch"}];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[GCVersion major](self forKey:{"major"), @"major"}];
+  [coderCopy encodeInteger:-[GCVersion minor](self forKey:{"minor"), @"minor"}];
+  [coderCopy encodeInteger:-[GCVersion patch](self forKey:{"patch"), @"patch"}];
 }
 
-- (BOOL)isEqualToSourceVersion:(id)a3
+- (BOOL)isEqualToSourceVersion:(id)version
 {
-  v4 = a3;
-  v5 = [(GCVersion *)self major];
-  if (v5 == [v4 major] && (v6 = -[GCVersion minor](self, "minor"), v6 == objc_msgSend(v4, "minor")))
+  versionCopy = version;
+  major = [(GCVersion *)self major];
+  if (major == [versionCopy major] && (v6 = -[GCVersion minor](self, "minor"), v6 == objc_msgSend(versionCopy, "minor")))
   {
-    v7 = [(GCVersion *)self patch];
-    v8 = v7 == [v4 patch];
+    patch = [(GCVersion *)self patch];
+    v8 = patch == [versionCopy patch];
   }
 
   else
@@ -220,40 +220,40 @@ void __28__GCVersion_initWithString___block_invoke()
   return v8;
 }
 
-- (BOOL)isGreaterThanSourceVersion:(id)a3
+- (BOOL)isGreaterThanSourceVersion:(id)version
 {
-  v4 = a3;
-  v5 = [(GCVersion *)self major];
-  if (v5 > [v4 major])
+  versionCopy = version;
+  major = [(GCVersion *)self major];
+  if (major > [versionCopy major])
   {
     goto LABEL_2;
   }
 
-  v7 = [(GCVersion *)self major];
-  if (v7 != [v4 major])
+  major2 = [(GCVersion *)self major];
+  if (major2 != [versionCopy major])
   {
     goto LABEL_8;
   }
 
-  v8 = [(GCVersion *)self minor];
-  if (v8 > [v4 minor])
+  minor = [(GCVersion *)self minor];
+  if (minor > [versionCopy minor])
   {
     goto LABEL_2;
   }
 
-  v9 = [(GCVersion *)self minor];
-  if (v9 != [v4 minor])
+  minor2 = [(GCVersion *)self minor];
+  if (minor2 != [versionCopy minor])
   {
 LABEL_8:
     v6 = 0;
     goto LABEL_9;
   }
 
-  v10 = [(GCVersion *)self patch];
-  if (v10 <= [v4 patch])
+  patch = [(GCVersion *)self patch];
+  if (patch <= [versionCopy patch])
   {
     [(GCVersion *)self patch];
-    [v4 patch];
+    [versionCopy patch];
     goto LABEL_8;
   }
 
@@ -264,66 +264,66 @@ LABEL_9:
   return v6;
 }
 
-- (BOOL)isGreaterThanOrEqualToSourceVersion:(id)a3
+- (BOOL)isGreaterThanOrEqualToSourceVersion:(id)version
 {
-  v4 = a3;
-  v5 = [(GCVersion *)self isGreaterThanSourceVersion:v4]|| [(GCVersion *)self isEqualToSourceVersion:v4];
+  versionCopy = version;
+  v5 = [(GCVersion *)self isGreaterThanSourceVersion:versionCopy]|| [(GCVersion *)self isEqualToSourceVersion:versionCopy];
 
   return v5;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  if ([(GCVersion *)self isLessThanSourceVersion:v4])
+  compareCopy = compare;
+  if ([(GCVersion *)self isLessThanSourceVersion:compareCopy])
   {
     v5 = -1;
   }
 
   else
   {
-    v5 = [(GCVersion *)self isGreaterThanSourceVersion:v4];
+    v5 = [(GCVersion *)self isGreaterThanSourceVersion:compareCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualTo:(id)a3
+- (BOOL)isEqualTo:(id)to
 {
-  v4 = a3;
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(GCVersion *)self isEqualToSourceVersion:v4];
+  toCopy = to;
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(GCVersion *)self isEqualToSourceVersion:toCopy];
 
   return v5;
 }
 
-- (BOOL)isGreaterThan:(id)a3
+- (BOOL)isGreaterThan:(id)than
 {
-  v4 = a3;
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(GCVersion *)self isGreaterThanSourceVersion:v4];
+  thanCopy = than;
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(GCVersion *)self isGreaterThanSourceVersion:thanCopy];
 
   return v5;
 }
 
-- (BOOL)isGreaterThanOrEqualTo:(id)a3
+- (BOOL)isGreaterThanOrEqualTo:(id)to
 {
-  v4 = a3;
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(GCVersion *)self isGreaterThanOrEqualToSourceVersion:v4];
+  toCopy = to;
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(GCVersion *)self isGreaterThanOrEqualToSourceVersion:toCopy];
 
   return v5;
 }
 
-- (BOOL)isLessThan:(id)a3
+- (BOOL)isLessThan:(id)than
 {
-  v4 = a3;
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(GCVersion *)self isLessThanSourceVersion:v4];
+  thanCopy = than;
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(GCVersion *)self isLessThanSourceVersion:thanCopy];
 
   return v5;
 }
 
-- (BOOL)isLessThanOrEqualTo:(id)a3
+- (BOOL)isLessThanOrEqualTo:(id)to
 {
-  v4 = a3;
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(GCVersion *)self isLessThanOrEqualToSourceVersion:v4];
+  toCopy = to;
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(GCVersion *)self isLessThanOrEqualToSourceVersion:toCopy];
 
   return v5;
 }

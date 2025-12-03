@@ -1,5 +1,5 @@
 @interface HMAccessCodeAddRequest
-- (HMAccessCodeAddRequest)initWithAccessCodeValue:(id)a3 accessory:(id)a4;
+- (HMAccessCodeAddRequest)initWithAccessCodeValue:(id)value accessory:(id)accessory;
 - (id)createAccessCodeAddRequestValue;
 @end
 
@@ -8,28 +8,28 @@
 - (id)createAccessCodeAddRequestValue
 {
   v3 = [HMAccessCodeAddRequestValue alloc];
-  v4 = [(HMAccessCodeAddRequest *)self accessCodeValue];
-  v5 = [(HMAccessCodeAddRequest *)self accessory];
-  v6 = [v5 uuid];
-  v7 = [(HMAccessCodeAddRequestValue *)v3 initWithAccessCodeValue:v4 accessoryUUID:v6];
+  accessCodeValue = [(HMAccessCodeAddRequest *)self accessCodeValue];
+  accessory = [(HMAccessCodeAddRequest *)self accessory];
+  uuid = [accessory uuid];
+  v7 = [(HMAccessCodeAddRequestValue *)v3 initWithAccessCodeValue:accessCodeValue accessoryUUID:uuid];
 
   return v7;
 }
 
-- (HMAccessCodeAddRequest)initWithAccessCodeValue:(id)a3 accessory:(id)a4
+- (HMAccessCodeAddRequest)initWithAccessCodeValue:(id)value accessory:(id)accessory
 {
-  v6 = a3;
-  v7 = a4;
+  valueCopy = value;
+  accessoryCopy = accessory;
   v12.receiver = self;
   v12.super_class = HMAccessCodeAddRequest;
   v8 = [(HMAccessCodeAddRequest *)&v12 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [valueCopy copy];
     accessCodeValue = v8->_accessCodeValue;
     v8->_accessCodeValue = v9;
 
-    objc_storeStrong(&v8->_accessory, a4);
+    objc_storeStrong(&v8->_accessory, accessory);
   }
 
   return v8;

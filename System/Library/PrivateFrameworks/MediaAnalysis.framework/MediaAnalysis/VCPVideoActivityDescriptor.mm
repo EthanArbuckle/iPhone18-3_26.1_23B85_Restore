@@ -1,14 +1,14 @@
 @interface VCPVideoActivityDescriptor
-- (VCPVideoActivityDescriptor)initWithFrameWidthInMb:(int)a3 heightInMb:(int)a4;
-- (void)ExtractActivityDescriptorFromStats:(EncodeStats *)a3;
+- (VCPVideoActivityDescriptor)initWithFrameWidthInMb:(int)mb heightInMb:(int)inMb;
+- (void)ExtractActivityDescriptorFromStats:(EncodeStats *)stats;
 - (void)dealloc;
 - (void)reset;
-- (void)spatialDescriptorWithMvMagnitudeMean:(float)a3;
+- (void)spatialDescriptorWithMvMagnitudeMean:(float)mean;
 @end
 
 @implementation VCPVideoActivityDescriptor
 
-- (VCPVideoActivityDescriptor)initWithFrameWidthInMb:(int)a3 heightInMb:(int)a4
+- (VCPVideoActivityDescriptor)initWithFrameWidthInMb:(int)mb heightInMb:(int)inMb
 {
   v15.receiver = self;
   v15.super_class = VCPVideoActivityDescriptor;
@@ -17,9 +17,9 @@
   if (v6)
   {
     v8 = 0;
-    v6->_widthInMb = a3;
-    v6->_heightInMb = a4;
-    if (a3 < 1 || a4 < 1)
+    v6->_widthInMb = mb;
+    v6->_heightInMb = inMb;
+    if (mb < 1 || inMb < 1)
     {
       goto LABEL_12;
     }
@@ -58,7 +58,7 @@ LABEL_12:
       }
     }
 
-    v12 = operator new[](4 * (a4 * a3), MEMORY[0x1E69E5398]);
+    v12 = operator new[](4 * (inMb * mb), MEMORY[0x1E69E5398]);
     *p_motionMagnitude = v12;
     if (v10)
     {
@@ -102,7 +102,7 @@ LABEL_13:
   *self->descriptors = 0u;
 }
 
-- (void)ExtractActivityDescriptorFromStats:(EncodeStats *)a3
+- (void)ExtractActivityDescriptorFromStats:(EncodeStats *)stats
 {
   bzero(self->_motionMagnitudeHistogram, 0x3C0uLL);
   heightInMb = self->_heightInMb;
@@ -124,13 +124,13 @@ LABEL_13:
       {
         v16 = 0;
         v17 = (4 * v7) | 2;
-        v18 = &a3->var19[v7];
-        v19 = &a3->var17[v7];
+        v18 = &stats->var19[v7];
+        v19 = &stats->var17[v7];
         motionMagnitudeHistogram = self->_motionMagnitudeHistogram;
-        v21 = &a3->var1[v7];
-        v22 = &a3->var20[v7];
-        v23 = &a3->var18[v7];
-        v24 = &a3->var2[v7];
+        v21 = &stats->var1[v7];
+        v22 = &stats->var20[v7];
+        v23 = &stats->var18[v7];
+        v24 = &stats->var2[v7];
         v25 = &self->_motionMagnitude[v7];
         do
         {
@@ -138,7 +138,7 @@ LABEL_13:
           v27 = 0.0;
           if (v21[v16])
           {
-            v28 = (a3->var3 + v17);
+            v28 = (stats->var3 + v17);
             v26 = vcvts_n_f32_s32(*(v28 - 1), 2uLL);
             v27 = vcvts_n_f32_s32(*v28, 2uLL);
           }
@@ -229,7 +229,7 @@ LABEL_13:
   }
 }
 
-- (void)spatialDescriptorWithMvMagnitudeMean:(float)a3
+- (void)spatialDescriptorWithMvMagnitudeMean:(float)mean
 {
   heightInMb = self->_heightInMb;
   widthInMb = self->_widthInMb;
@@ -250,7 +250,7 @@ LABEL_13:
       v14 = &motionMagnitude[v7];
       do
       {
-        if (*v14 >= a3 || v12 == 0)
+        if (*v14 >= mean || v12 == 0)
         {
           v16 = v6 / (widthInMb / 3);
           if (v16 >= 2)

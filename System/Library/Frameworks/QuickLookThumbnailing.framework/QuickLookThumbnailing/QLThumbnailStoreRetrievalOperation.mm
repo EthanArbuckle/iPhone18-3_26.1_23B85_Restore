@@ -1,30 +1,30 @@
 @interface QLThumbnailStoreRetrievalOperation
-+ (BOOL)canMostRecentClientsGenerateThumbnailsForUTI:(id)a3;
++ (BOOL)canMostRecentClientsGenerateThumbnailsForUTI:(id)i;
 - (BOOL)_finishIfNeeded;
 - (BOOL)thumbnailWasAutomaticallyGenerated;
 - (NSData)serializedQuickLookMetadataDictionary;
 - (NSDictionary)thumbnailImagesDictionary;
 - (QLThumbnailStoreRetrievalOperation)init;
-- (QLThumbnailStoreRetrievalOperation)initWithDocumentAtURL:(id)a3;
+- (QLThumbnailStoreRetrievalOperation)initWithDocumentAtURL:(id)l;
 - (id)description;
-- (void)_afterDeterminingWhetherWeCanGenerate:(BOOL)a3;
+- (void)_afterDeterminingWhetherWeCanGenerate:(BOOL)generate;
 - (void)_afterThumbnailIsGenerated;
-- (void)_finishBecauseGenerationFailedWithUnderlyingError:(id)a3;
-- (void)_finishWithError:(id)a3;
+- (void)_finishBecauseGenerationFailedWithUnderlyingError:(id)error;
+- (void)_finishWithError:(id)error;
 - (void)_generateThumbnail;
 - (void)afterThumbnailIsPutInGenstore;
 - (void)cancel;
 - (void)main;
-- (void)setExecuting:(BOOL)a3;
-- (void)setFinished:(BOOL)a3;
+- (void)setExecuting:(BOOL)executing;
+- (void)setFinished:(BOOL)finished;
 - (void)start;
 @end
 
 @implementation QLThumbnailStoreRetrievalOperation
 
-+ (BOOL)canMostRecentClientsGenerateThumbnailsForUTI:(id)a3
++ (BOOL)canMostRecentClientsGenerateThumbnailsForUTI:(id)i
 {
-  if (!a3)
+  if (!i)
   {
     return 0;
   }
@@ -46,23 +46,23 @@
   return v7;
 }
 
-- (void)setFinished:(BOOL)a3
+- (void)setFinished:(BOOL)finished
 {
-  if (self->_finished != a3)
+  if (self->_finished != finished)
   {
     [(QLThumbnailStoreRetrievalOperation *)self willChangeValueForKey:@"isFinished"];
-    self->_finished = a3;
+    self->_finished = finished;
 
     [(QLThumbnailStoreRetrievalOperation *)self didChangeValueForKey:@"isFinished"];
   }
 }
 
-- (void)setExecuting:(BOOL)a3
+- (void)setExecuting:(BOOL)executing
 {
-  if (self->_executing != a3)
+  if (self->_executing != executing)
   {
     [(QLThumbnailStoreRetrievalOperation *)self willChangeValueForKey:@"isExecuting"];
-    self->_executing = a3;
+    self->_executing = executing;
 
     [(QLThumbnailStoreRetrievalOperation *)self didChangeValueForKey:@"isExecuting"];
   }
@@ -75,16 +75,16 @@
   return 0;
 }
 
-- (QLThumbnailStoreRetrievalOperation)initWithDocumentAtURL:(id)a3
+- (QLThumbnailStoreRetrievalOperation)initWithDocumentAtURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   v9.receiver = self;
   v9.super_class = QLThumbnailStoreRetrievalOperation;
   v6 = [(QLThumbnailStoreRetrievalOperation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_documentURL, a3);
+    objc_storeStrong(&v6->_documentURL, l);
     v7->_allowsThumbnailGeneration = 1;
   }
 
@@ -94,24 +94,24 @@
 - (id)description
 {
   v3 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"<%@: %p;", objc_opt_class(), self];
-  v4 = self;
-  objc_sync_enter(v4);
-  if ([(QLThumbnailStoreRetrievalOperation *)v4 isCancelled])
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([(QLThumbnailStoreRetrievalOperation *)selfCopy isCancelled])
   {
     [v3 appendString:@" cancelled"];
   }
 
-  if ([(QLThumbnailStoreRetrievalOperation *)v4 isExecuting])
+  if ([(QLThumbnailStoreRetrievalOperation *)selfCopy isExecuting])
   {
     [v3 appendString:@" executing"];
   }
 
-  if ([(QLThumbnailStoreRetrievalOperation *)v4 isFinished])
+  if ([(QLThumbnailStoreRetrievalOperation *)selfCopy isFinished])
   {
     [v3 appendString:@" finished"];
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 
   [v3 appendString:@">"];
 
@@ -128,38 +128,38 @@
 - (BOOL)_finishIfNeeded
 {
   v10 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(QLThumbnailStoreRetrievalOperation *)v2 isCancelled];
-  if (v3)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  isCancelled = [(QLThumbnailStoreRetrievalOperation *)selfCopy isCancelled];
+  if (isCancelled)
   {
     v4 = _log_0();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
       v8 = 138412290;
-      v9 = v2;
+      v9 = selfCopy;
       _os_log_impl(&dword_1CA1E7000, v4, OS_LOG_TYPE_INFO, "Finishing %@ because it is cancelled", &v8, 0xCu);
     }
 
     v5 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A250] code:3072 userInfo:0];
-    [(QLThumbnailStoreRetrievalOperation *)v2 _finishWithError:v5];
+    [(QLThumbnailStoreRetrievalOperation *)selfCopy _finishWithError:v5];
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   v6 = *MEMORY[0x1E69E9840];
-  return v3;
+  return isCancelled;
 }
 
-- (void)_finishBecauseGenerationFailedWithUnderlyingError:(id)a3
+- (void)_finishBecauseGenerationFailedWithUnderlyingError:(id)error
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  errorCopy = error;
+  v5 = errorCopy;
+  if (errorCopy)
   {
     v15 = *MEMORY[0x1E696AA08];
-    v16[0] = v4;
+    v16[0] = errorCopy;
     v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:&v15 count:1];
   }
 
@@ -260,14 +260,14 @@ void __56__QLThumbnailStoreRetrievalOperation__generateThumbnail__block_invoke(u
   }
 }
 
-- (void)_afterDeterminingWhetherWeCanGenerate:(BOOL)a3
+- (void)_afterDeterminingWhetherWeCanGenerate:(BOOL)generate
 {
-  v3 = a3;
+  generateCopy = generate;
   v29 = *MEMORY[0x1E69E9840];
   addition = self->_addition;
   if (addition)
   {
-    v6 = !a3;
+    v6 = !generate;
   }
 
   else
@@ -282,18 +282,18 @@ void __56__QLThumbnailStoreRetrievalOperation__generateThumbnail__block_invoke(u
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
       documentURL = self->_documentURL;
-      v22 = [(QLThumbnailAddition *)self->_addition thumbnailVersion];
+      thumbnailVersion = [(QLThumbnailAddition *)self->_addition thumbnailVersion];
       v23 = 138412802;
       v24 = documentURL;
       v25 = 2112;
-      v26 = v22;
+      v26 = thumbnailVersion;
       v27 = 2112;
       v28 = v7;
       _os_log_debug_impl(&dword_1CA1E7000, v8, OS_LOG_TYPE_DEBUG, "%@: Stored thumbnail version: %@, proposed version: %@", &v23, 0x20u);
     }
 
-    v9 = [(QLThumbnailAddition *)self->_addition thumbnailVersion];
-    if (!v9 || (v10 = v9, -[QLThumbnailAddition thumbnailVersion](self->_addition, "thumbnailVersion"), v11 = objc_claimAutoreleasedReturnValue(), v12 = [v11 shouldBeInvalidatedByThumbnailWithVersion:v7], v11, v10, v12))
+    thumbnailVersion2 = [(QLThumbnailAddition *)self->_addition thumbnailVersion];
+    if (!thumbnailVersion2 || (v10 = thumbnailVersion2, -[QLThumbnailAddition thumbnailVersion](self->_addition, "thumbnailVersion"), v11 = objc_claimAutoreleasedReturnValue(), v12 = [v11 shouldBeInvalidatedByThumbnailWithVersion:v7], v11, v10, v12))
     {
       v13 = _log_0();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
@@ -318,7 +318,7 @@ void __56__QLThumbnailStoreRetrievalOperation__generateThumbnail__block_invoke(u
   {
     v15 = _log_0();
     v16 = os_log_type_enabled(v15, OS_LOG_TYPE_INFO);
-    if (v3)
+    if (generateCopy)
     {
       if (v16)
       {
@@ -351,7 +351,7 @@ void __56__QLThumbnailStoreRetrievalOperation__generateThumbnail__block_invoke(u
 
 - (void)main
 {
-  OUTLINED_FUNCTION_1_3(a1, *MEMORY[0x1E69E9840]);
+  OUTLINED_FUNCTION_1_3(self, *MEMORY[0x1E69E9840]);
   OUTLINED_FUNCTION_0_3();
   OUTLINED_FUNCTION_2(&dword_1CA1E7000, v1, v2, "QLThumbnailStoreRetrievalOperation called on fault %@", v3, v4, v5, v6, v8);
   v7 = *MEMORY[0x1E69E9840];
@@ -370,7 +370,7 @@ uint64_t __42__QLThumbnailStoreRetrievalOperation_main__block_invoke(uint64_t a1
 
 - (void)_afterThumbnailIsGenerated
 {
-  OUTLINED_FUNCTION_1_3(a1, *MEMORY[0x1E69E9840]);
+  OUTLINED_FUNCTION_1_3(self, *MEMORY[0x1E69E9840]);
   OUTLINED_FUNCTION_0_3();
   OUTLINED_FUNCTION_1(&dword_1CA1E7000, v1, v2, "Could NOT associate an iCloud Drive thumbnail for %@: %@");
   v3 = *MEMORY[0x1E69E9840];
@@ -378,29 +378,29 @@ uint64_t __42__QLThumbnailStoreRetrievalOperation_main__block_invoke(uint64_t a1
 
 - (void)afterThumbnailIsPutInGenstore
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (![(QLThumbnailStoreRetrievalOperation *)v2 _finishIfNeeded])
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (![(QLThumbnailStoreRetrievalOperation *)selfCopy _finishIfNeeded])
   {
     v3 = [QLThumbnailAddition alloc];
-    documentURL = v2->_documentURL;
+    documentURL = selfCopy->_documentURL;
     v8 = 0;
     v5 = [(QLThumbnailAddition *)v3 initWithAdditionsPresentOnURL:documentURL error:&v8];
     v6 = v8;
-    addition = v2->_addition;
-    v2->_addition = v5;
+    addition = selfCopy->_addition;
+    selfCopy->_addition = v5;
 
-    [(QLThumbnailStoreRetrievalOperation *)v2 _finishWithError:v6];
+    [(QLThumbnailStoreRetrievalOperation *)selfCopy _finishWithError:v6];
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)_finishWithError:(id)a3
+- (void)_finishWithError:(id)error
 {
   if (!self->_addition)
   {
-    [(QLThumbnailStoreRetrievalOperation *)self setError:a3];
+    [(QLThumbnailStoreRetrievalOperation *)self setError:error];
   }
 
   [(QLThumbnailStoreRetrievalOperation *)self setExecuting:0];
@@ -414,9 +414,9 @@ uint64_t __42__QLThumbnailStoreRetrievalOperation_main__block_invoke(uint64_t a1
   addition = self->_addition;
   if (addition)
   {
-    v4 = [(QLThumbnailAddition *)addition additionURL];
+    additionURL = [(QLThumbnailAddition *)addition additionURL];
 
-    if (v4)
+    if (additionURL)
     {
       v5 = *MEMORY[0x1E695DA70];
       v6 = [(QLThumbnailAddition *)self->_addition thumbnailURLForKey:*MEMORY[0x1E695DA70]];
@@ -425,24 +425,24 @@ uint64_t __42__QLThumbnailStoreRetrievalOperation_main__block_invoke(uint64_t a1
       {
         v10 = v5;
         v11[0] = v6;
-        v4 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:&v10 count:1];
+        additionURL = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:&v10 count:1];
       }
 
       else
       {
-        v4 = 0;
+        additionURL = 0;
       }
     }
   }
 
   else
   {
-    v4 = 0;
+    additionURL = 0;
   }
 
   v8 = *MEMORY[0x1E69E9840];
 
-  return v4;
+  return additionURL;
 }
 
 - (NSData)serializedQuickLookMetadataDictionary
@@ -451,8 +451,8 @@ uint64_t __42__QLThumbnailStoreRetrievalOperation_main__block_invoke(uint64_t a1
   if (addition && ([(QLThumbnailAddition *)addition metadata], v4 = objc_claimAutoreleasedReturnValue(), v4, v4))
   {
     v5 = MEMORY[0x1E696AE40];
-    v6 = [(QLThumbnailAddition *)self->_addition metadata];
-    v7 = [v5 dataWithPropertyList:v6 format:200 options:0 error:0];
+    metadata = [(QLThumbnailAddition *)self->_addition metadata];
+    v7 = [v5 dataWithPropertyList:metadata format:200 options:0 error:0];
   }
 
   else
@@ -465,10 +465,10 @@ uint64_t __42__QLThumbnailStoreRetrievalOperation_main__block_invoke(uint64_t a1
 
 - (BOOL)thumbnailWasAutomaticallyGenerated
 {
-  v2 = [(QLThumbnailAddition *)self->_addition thumbnailVersion];
-  v3 = [v2 isAutomaticallyGenerated];
+  thumbnailVersion = [(QLThumbnailAddition *)self->_addition thumbnailVersion];
+  isAutomaticallyGenerated = [thumbnailVersion isAutomaticallyGenerated];
 
-  return v3;
+  return isAutomaticallyGenerated;
 }
 
 void __42__QLThumbnailStoreRetrievalOperation_main__block_invoke_cold_1(uint64_t a1)

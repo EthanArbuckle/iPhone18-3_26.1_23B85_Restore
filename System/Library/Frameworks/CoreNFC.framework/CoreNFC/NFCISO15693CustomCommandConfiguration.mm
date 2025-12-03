@@ -1,12 +1,12 @@
 @interface NFCISO15693CustomCommandConfiguration
 - (NFCISO15693CustomCommandConfiguration)initWithManufacturerCode:(NSUInteger)manufacturerCode customCommandCode:(NSUInteger)customCommandCode requestParameters:(NSData *)requestParameters maximumRetries:(NSUInteger)maximumRetries retryInterval:(NSTimeInterval)retryInterval;
-- (id)asNSDataWithError:(id *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)asNSDataWithError:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation NFCISO15693CustomCommandConfiguration
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v9.receiver = self;
   v9.super_class = NFCISO15693CustomCommandConfiguration;
@@ -16,7 +16,7 @@
   {
     [v5 setManufacturerCode:self->_manufacturerCode];
     [v6 setCustomCommandCode:self->_customCommandCode];
-    v7 = [(NSData *)self->_requestParameters copyWithZone:a3];
+    v7 = [(NSData *)self->_requestParameters copyWithZone:zone];
     [v6 setRequestParameters:v7];
 
     [v6 setFlags:self->_flags];
@@ -52,7 +52,7 @@
   return v14;
 }
 
-- (id)asNSDataWithError:(id *)a3
+- (id)asNSDataWithError:(id *)error
 {
   if (self->_customCommandCode - 224 > 0xFFFFFFFFFFFFFFBFLL)
   {
@@ -66,10 +66,10 @@
     [v4 appendData:self->_requestParameters];
   }
 
-  else if (a3)
+  else if (error)
   {
     [NFCError errorWithCode:300];
-    *a3 = v4 = 0;
+    *error = v4 = 0;
   }
 
   else

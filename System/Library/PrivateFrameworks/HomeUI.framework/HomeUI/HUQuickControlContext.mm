@@ -1,27 +1,27 @@
 @interface HUQuickControlContext
 - (Class)viewProfileClass;
-- (HUQuickControlContext)initWithQuickControlClass:(Class)a3 controlItems:(id)a4 home:(id)a5 itemUpdater:(id)a6;
+- (HUQuickControlContext)initWithQuickControlClass:(Class)class controlItems:(id)items home:(id)home itemUpdater:(id)updater;
 - (HUQuickControlItemUpdating)itemUpdater;
 - (id)affectedCharacteristics;
 @end
 
 @implementation HUQuickControlContext
 
-- (HUQuickControlContext)initWithQuickControlClass:(Class)a3 controlItems:(id)a4 home:(id)a5 itemUpdater:(id)a6
+- (HUQuickControlContext)initWithQuickControlClass:(Class)class controlItems:(id)items home:(id)home itemUpdater:(id)updater
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  itemsCopy = items;
+  homeCopy = home;
+  updaterCopy = updater;
   v17.receiver = self;
   v17.super_class = HUQuickControlContext;
   v14 = [(HUQuickControlContext *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_quickControlClass, a3);
-    objc_storeStrong(&v15->_controlItems, a4);
-    objc_storeStrong(&v15->_home, a5);
-    objc_storeWeak(&v15->_itemUpdater, v13);
+    objc_storeStrong(&v14->_quickControlClass, class);
+    objc_storeStrong(&v15->_controlItems, items);
+    objc_storeStrong(&v15->_home, home);
+    objc_storeWeak(&v15->_itemUpdater, updaterCopy);
   }
 
   return v15;
@@ -29,8 +29,8 @@
 
 - (id)affectedCharacteristics
 {
-  v2 = [(HUQuickControlContext *)self controlItems];
-  v3 = [v2 na_flatMap:&__block_literal_global_277];
+  controlItems = [(HUQuickControlContext *)self controlItems];
+  v3 = [controlItems na_flatMap:&__block_literal_global_277];
 
   return v3;
 }
@@ -71,12 +71,12 @@ id __48__HUQuickControlContext_affectedCharacteristics__block_invoke_2(uint64_t 
   if ([(objc_class *)[(HUQuickControlContext *)self quickControlClass] isEqual:objc_opt_class()])
   {
     objc_opt_class();
-    v5 = [(HUQuickControlContext *)self controlItems];
-    v6 = [v5 allObjects];
-    v7 = [v6 firstObject];
+    controlItems = [(HUQuickControlContext *)self controlItems];
+    allObjects = [controlItems allObjects];
+    firstObject = [allObjects firstObject];
     if (objc_opt_isKindOfClass())
     {
-      v8 = v7;
+      v8 = firstObject;
     }
 
     else
@@ -86,12 +86,12 @@ id __48__HUQuickControlContext_affectedCharacteristics__block_invoke_2(uint64_t 
 
     v9 = v8;
 
-    v10 = [v9 possibleValueSet];
-    v11 = v10;
+    possibleValueSet = [v9 possibleValueSet];
+    v11 = possibleValueSet;
     if (v9)
     {
-      v12 = [v10 allValues];
-      v13 = [v12 count];
+      allValues = [possibleValueSet allValues];
+      v13 = [allValues count];
 
       if (v13 == 2)
       {
@@ -101,10 +101,10 @@ id __48__HUQuickControlContext_affectedCharacteristics__block_invoke_2(uint64_t 
 
       else
       {
-        v17 = [v9 multiStateCharacteristicType];
-        if (([v17 isEqualToString:*MEMORY[0x277CCFB20]] & 1) == 0)
+        multiStateCharacteristicType = [v9 multiStateCharacteristicType];
+        if (([multiStateCharacteristicType isEqualToString:*MEMORY[0x277CCFB20]] & 1) == 0)
         {
-          [v17 isEqualToString:*MEMORY[0x277CCFB18]];
+          [multiStateCharacteristicType isEqualToString:*MEMORY[0x277CCFB18]];
         }
 
         v3 = objc_opt_class();
@@ -119,11 +119,11 @@ id __48__HUQuickControlContext_affectedCharacteristics__block_invoke_2(uint64_t 
 
   else if ([(objc_class *)[(HUQuickControlContext *)self quickControlClass] isEqual:objc_opt_class()])
   {
-    v14 = [(HUQuickControlContext *)self controlItems];
-    v15 = [v14 allObjects];
-    v16 = [v15 firstObject];
+    controlItems2 = [(HUQuickControlContext *)self controlItems];
+    allObjects2 = [controlItems2 allObjects];
+    firstObject2 = [allObjects2 firstObject];
 
-    [HUQuickControlUtilities shouldDisplayQuickControlAsPushButton:v16 preferredControl:[(HUQuickControlContext *)self preferredControl]];
+    [HUQuickControlUtilities shouldDisplayQuickControlAsPushButton:firstObject2 preferredControl:[(HUQuickControlContext *)self preferredControl]];
     v3 = objc_opt_class();
   }
 

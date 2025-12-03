@@ -1,12 +1,12 @@
 @interface PPEventStreamHandler
-+ (void)prepareToHandleNotificationWithName:(id)a3;
++ (void)prepareToHandleNotificationWithName:(id)name;
 @end
 
 @implementation PPEventStreamHandler
 
-+ (void)prepareToHandleNotificationWithName:(id)a3
++ (void)prepareToHandleNotificationWithName:(id)name
 {
-  if ([a3 isEqualToString:@"ABAddressBookMeCardChangeDistributedNotification"])
+  if ([name isEqualToString:@"ABAddressBookMeCardChangeDistributedNotification"])
   {
     v3 = pp_default_log_handle();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))

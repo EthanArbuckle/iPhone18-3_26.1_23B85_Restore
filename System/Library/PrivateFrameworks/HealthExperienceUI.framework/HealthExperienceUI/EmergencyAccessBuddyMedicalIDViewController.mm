@@ -1,6 +1,6 @@
 @interface EmergencyAccessBuddyMedicalIDViewController
-- (_TtC18HealthExperienceUI43EmergencyAccessBuddyMedicalIDViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6;
-- (_TtC18HealthExperienceUI43EmergencyAccessBuddyMedicalIDViewController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6;
+- (_TtC18HealthExperienceUI43EmergencyAccessBuddyMedicalIDViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout;
+- (_TtC18HealthExperienceUI43EmergencyAccessBuddyMedicalIDViewController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
@@ -13,9 +13,9 @@
   v5.super_class = type metadata accessor for EmergencyAccessBuddyMedicalIDViewController();
   v2 = v5.receiver;
   [(OBBaseWelcomeController *)&v5 viewDidLoad];
-  v3 = [v2 navigationItem];
+  navigationItem = [v2 navigationItem];
   v4 = [objc_allocWithZone(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:1 target:v2 action:sel_didTapCancel_];
-  [v3 setRightBarButtonItem_];
+  [navigationItem setRightBarButtonItem_];
 
   sub_1BA2B6868();
   sub_1BA2B5F40();
@@ -52,14 +52,14 @@
   [*&v2[OBJC_IVAR____TtC18HealthExperienceUI43EmergencyAccessBuddyMedicalIDViewController_contentViewHeightConstraint] setConstant_];
 }
 
-- (_TtC18HealthExperienceUI43EmergencyAccessBuddyMedicalIDViewController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6
+- (_TtC18HealthExperienceUI43EmergencyAccessBuddyMedicalIDViewController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC18HealthExperienceUI43EmergencyAccessBuddyMedicalIDViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6
+- (_TtC18HealthExperienceUI43EmergencyAccessBuddyMedicalIDViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

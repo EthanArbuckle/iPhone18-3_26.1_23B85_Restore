@@ -1,39 +1,39 @@
 @interface DNDSModeConfigurationRecord
-+ (id)dictionaryRepresentationWithCKRecord:(id)a3 partitionType:(unint64_t)a4;
-+ (id)newWithCKRecord:(id)a3 currentRecord:(id)a4;
-+ (id)newWithDNDSIDSRecord:(id)a3 currentRecord:(id)a4;
-+ (id)newWithDictionaryRepresentation:(id)a3 context:(id)a4;
-+ (id)newWithDictionaryRepresentation:(id)a3 partitionedDictionaryRepresentation:(id)a4 context:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)populateDNDSIDSRecord:(id)a3;
++ (id)dictionaryRepresentationWithCKRecord:(id)record partitionType:(unint64_t)type;
++ (id)newWithCKRecord:(id)record currentRecord:(id)currentRecord;
++ (id)newWithDNDSIDSRecord:(id)record currentRecord:(id)currentRecord;
++ (id)newWithDictionaryRepresentation:(id)representation context:(id)context;
++ (id)newWithDictionaryRepresentation:(id)representation partitionedDictionaryRepresentation:(id)dictionaryRepresentation context:(id)context;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)populateDNDSIDSRecord:(id)record;
 - (BOOL)wasLastModifiedByThisDevice;
 - (NSString)description;
-- (id)_initWithMode:(id)a3 configuration:(id)a4 secureConfiguration:(id)a5 triggers:(id)a6 impactsAvailability:(unint64_t)a7 dimsLockScreen:(unint64_t)a8 created:(id)a9 lastModified:(id)a10 lastModifiedByVersion:(id *)a11 lastModifiedByDeviceID:(id)a12 automaticallyGenerated:(BOOL)a13 compatibilityVersion:(int64_t)a14 ephemeralResolvedCompatibilityVersion:(int64_t)a15 hasSecureData:(BOOL)a16;
-- (id)_initWithRecord:(id)a3;
-- (id)dictionaryRepresentationWithContext:(id)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)_initWithMode:(id)mode configuration:(id)configuration secureConfiguration:(id)secureConfiguration triggers:(id)triggers impactsAvailability:(unint64_t)availability dimsLockScreen:(unint64_t)screen created:(id)created lastModified:(id)self0 lastModifiedByVersion:(id *)self1 lastModifiedByDeviceID:(id)self2 automaticallyGenerated:(BOOL)self3 compatibilityVersion:(int64_t)self4 ephemeralResolvedCompatibilityVersion:(int64_t)self5 hasSecureData:(BOOL)self6;
+- (id)_initWithRecord:(id)record;
+- (id)dictionaryRepresentationWithContext:(id)context;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (id)shortDescription;
-- (int64_t)populateCKRecord:(id)a3 lastChanceRecord:(id)a4;
+- (int64_t)populateCKRecord:(id)record lastChanceRecord:(id)chanceRecord;
 - (unint64_t)hash;
-- (void)log:(id)a3 withMessage:(id)a4;
+- (void)log:(id)log withMessage:(id)message;
 @end
 
 @implementation DNDSModeConfigurationRecord
 
-- (id)_initWithRecord:(id)a3
+- (id)_initWithRecord:(id)record
 {
-  v3 = a3;
-  v20 = [v3 mode];
-  v19 = [v3 configuration];
-  v4 = [v3 secureConfiguration];
-  v5 = [v3 triggers];
-  v17 = [v3 impactsAvailability];
-  v6 = [v3 dimsLockScreen];
-  v7 = [v3 created];
-  v8 = [v3 lastModified];
-  if (v3)
+  recordCopy = record;
+  mode = [recordCopy mode];
+  configuration = [recordCopy configuration];
+  secureConfiguration = [recordCopy secureConfiguration];
+  triggers = [recordCopy triggers];
+  impactsAvailability = [recordCopy impactsAvailability];
+  dimsLockScreen = [recordCopy dimsLockScreen];
+  created = [recordCopy created];
+  lastModified = [recordCopy lastModified];
+  if (recordCopy)
   {
-    [v3 lastModifiedByVersion];
+    [recordCopy lastModifiedByVersion];
   }
 
   else
@@ -41,160 +41,160 @@
     memset(v21, 0, sizeof(v21));
   }
 
-  v9 = [v3 lastModifiedByDeviceID];
-  v10 = [v3 isAutomaticallyGenerated];
-  v11 = [v3 compatibilityVersion];
-  v12 = [v3 ephemeralResolvedCompatibilityVersion];
-  LOBYTE(v16) = [v3 hasSecureData];
-  LOBYTE(v15) = v10;
-  v13 = [(DNDSModeConfigurationRecord *)self _initWithMode:v20 configuration:v19 secureConfiguration:v4 triggers:v5 impactsAvailability:v17 dimsLockScreen:v6 created:v7 lastModified:v8 lastModifiedByVersion:v21 lastModifiedByDeviceID:v9 automaticallyGenerated:v15 compatibilityVersion:v11 ephemeralResolvedCompatibilityVersion:v12 hasSecureData:v16];
+  lastModifiedByDeviceID = [recordCopy lastModifiedByDeviceID];
+  isAutomaticallyGenerated = [recordCopy isAutomaticallyGenerated];
+  compatibilityVersion = [recordCopy compatibilityVersion];
+  ephemeralResolvedCompatibilityVersion = [recordCopy ephemeralResolvedCompatibilityVersion];
+  LOBYTE(v16) = [recordCopy hasSecureData];
+  LOBYTE(v15) = isAutomaticallyGenerated;
+  v13 = [(DNDSModeConfigurationRecord *)self _initWithMode:mode configuration:configuration secureConfiguration:secureConfiguration triggers:triggers impactsAvailability:impactsAvailability dimsLockScreen:dimsLockScreen created:created lastModified:lastModified lastModifiedByVersion:v21 lastModifiedByDeviceID:lastModifiedByDeviceID automaticallyGenerated:v15 compatibilityVersion:compatibilityVersion ephemeralResolvedCompatibilityVersion:ephemeralResolvedCompatibilityVersion hasSecureData:v16];
 
   return v13;
 }
 
-- (id)_initWithMode:(id)a3 configuration:(id)a4 secureConfiguration:(id)a5 triggers:(id)a6 impactsAvailability:(unint64_t)a7 dimsLockScreen:(unint64_t)a8 created:(id)a9 lastModified:(id)a10 lastModifiedByVersion:(id *)a11 lastModifiedByDeviceID:(id)a12 automaticallyGenerated:(BOOL)a13 compatibilityVersion:(int64_t)a14 ephemeralResolvedCompatibilityVersion:(int64_t)a15 hasSecureData:(BOOL)a16
+- (id)_initWithMode:(id)mode configuration:(id)configuration secureConfiguration:(id)secureConfiguration triggers:(id)triggers impactsAvailability:(unint64_t)availability dimsLockScreen:(unint64_t)screen created:(id)created lastModified:(id)self0 lastModifiedByVersion:(id *)self1 lastModifiedByDeviceID:(id)self2 automaticallyGenerated:(BOOL)self3 compatibilityVersion:(int64_t)self4 ephemeralResolvedCompatibilityVersion:(int64_t)self5 hasSecureData:(BOOL)self6
 {
-  v21 = a3;
-  v22 = a4;
-  v23 = a5;
-  v24 = a6;
-  v25 = a9;
-  v26 = a10;
-  v27 = a12;
+  modeCopy = mode;
+  configurationCopy = configuration;
+  secureConfigurationCopy = secureConfiguration;
+  triggersCopy = triggers;
+  createdCopy = created;
+  modifiedCopy = modified;
+  dCopy = d;
   v46.receiver = self;
   v46.super_class = DNDSModeConfigurationRecord;
   v28 = [(DNDSModeConfigurationRecord *)&v46 init];
   if (v28)
   {
-    v29 = [v21 copy];
+    v29 = [modeCopy copy];
     v30 = *(v28 + 1);
     *(v28 + 1) = v29;
 
-    v31 = [v22 copy];
+    v31 = [configurationCopy copy];
     v32 = *(v28 + 2);
     *(v28 + 2) = v31;
 
-    v33 = [v23 copy];
+    v33 = [secureConfigurationCopy copy];
     v34 = *(v28 + 3);
     *(v28 + 3) = v33;
 
-    v35 = [v24 copy];
+    v35 = [triggersCopy copy];
     v36 = *(v28 + 4);
     *(v28 + 4) = v35;
 
-    *(v28 + 5) = a7;
-    *(v28 + 6) = a8;
-    v37 = [v25 copy];
+    *(v28 + 5) = availability;
+    *(v28 + 6) = screen;
+    v37 = [createdCopy copy];
     v38 = *(v28 + 7);
     *(v28 + 7) = v37;
 
-    v39 = [v26 copy];
+    v39 = [modifiedCopy copy];
     v40 = *(v28 + 8);
     *(v28 + 8) = v39;
 
-    v41 = *&a11->var0;
-    *(v28 + 11) = a11->var2;
+    v41 = *&version->var0;
+    *(v28 + 11) = version->var2;
     *(v28 + 72) = v41;
-    v42 = [v27 copy];
+    v42 = [dCopy copy];
     v43 = *(v28 + 12);
     *(v28 + 12) = v42;
 
-    v28[104] = a13;
-    *(v28 + 14) = a14;
-    *(v28 + 15) = a15;
-    v28[105] = a16;
+    v28[104] = generated;
+    *(v28 + 14) = compatibilityVersion;
+    *(v28 + 15) = resolvedCompatibilityVersion;
+    v28[105] = data;
   }
 
   return v28;
 }
 
-- (void)log:(id)a3 withMessage:(id)a4
+- (void)log:(id)log withMessage:(id)message
 {
   v42 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(DNDSModeConfigurationRecord *)self mode];
-  v9 = [v8 modeIdentifier];
+  logCopy = log;
+  messageCopy = message;
+  mode = [(DNDSModeConfigurationRecord *)self mode];
+  modeIdentifier = [mode modeIdentifier];
 
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(logCopy, OS_LOG_TYPE_DEFAULT))
   {
     v26 = 138543618;
-    v27 = v9;
+    v27 = modeIdentifier;
     v28 = 2114;
-    v29 = v7;
-    _os_log_impl(&dword_24912E000, v6, OS_LOG_TYPE_DEFAULT, "[%{public}@] Begin: %{public}@", &v26, 0x16u);
+    v29 = messageCopy;
+    _os_log_impl(&dword_24912E000, logCopy, OS_LOG_TYPE_DEFAULT, "[%{public}@] Begin: %{public}@", &v26, 0x16u);
   }
 
-  v10 = v6;
+  v10 = logCopy;
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [(DNDSModeConfigurationRecord *)self shortDescription];
+    shortDescription = [(DNDSModeConfigurationRecord *)self shortDescription];
     v26 = 138543618;
-    v27 = v9;
+    v27 = modeIdentifier;
     v28 = 2114;
-    v29 = v11;
+    v29 = shortDescription;
     _os_log_impl(&dword_24912E000, v10, OS_LOG_TYPE_DEFAULT, "[%{public}@] %{public}@", &v26, 0x16u);
   }
 
   v12 = v10;
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = [(DNDSModeConfigurationRecord *)self created];
-    v14 = [(DNDSModeConfigurationRecord *)self lastModified];
+    created = [(DNDSModeConfigurationRecord *)self created];
+    lastModified = [(DNDSModeConfigurationRecord *)self lastModified];
     [(DNDSModeConfigurationRecord *)self lastModifiedByVersion];
     v15 = DNDStringFromOperatingSystemVersion();
-    v16 = [(DNDSModeConfigurationRecord *)self lastModifiedByDeviceID];
-    v17 = [(DNDSModeConfigurationRecord *)self isAutomaticallyGenerated];
+    lastModifiedByDeviceID = [(DNDSModeConfigurationRecord *)self lastModifiedByDeviceID];
+    isAutomaticallyGenerated = [(DNDSModeConfigurationRecord *)self isAutomaticallyGenerated];
     v18 = [MEMORY[0x277CCABB0] numberWithInteger:{-[DNDSModeConfigurationRecord compatibilityVersion](self, "compatibilityVersion")}];
-    v19 = [(DNDSModeConfigurationRecord *)self hasSecureData];
+    hasSecureData = [(DNDSModeConfigurationRecord *)self hasSecureData];
     v26 = 138545154;
-    v27 = v9;
+    v27 = modeIdentifier;
     v28 = 2114;
-    v29 = v13;
+    v29 = created;
     v30 = 2114;
-    v31 = v14;
+    v31 = lastModified;
     v32 = 2114;
     v33 = v15;
     v34 = 2112;
-    v35 = v16;
+    v35 = lastModifiedByDeviceID;
     v36 = 1026;
-    v37 = v17;
+    v37 = isAutomaticallyGenerated;
     v38 = 2114;
     v39 = v18;
     v40 = 1026;
-    v41 = v19;
+    v41 = hasSecureData;
     _os_log_impl(&dword_24912E000, v12, OS_LOG_TYPE_DEFAULT, "[%{public}@] created: %{public}@; lastModified: %{public}@; lastModifiedByVersion: %{public}@; lastModifiedByDeviceID: %@; isAutomaticallyGenerated: %{public}d; compatibilityVersion: %{public}@; hasSecureData: %{public}d; ", &v26, 0x4Au);
   }
 
   v20 = v12;
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
   {
-    v21 = [(DNDSModeConfigurationRecord *)self triggers];
+    triggers = [(DNDSModeConfigurationRecord *)self triggers];
     v26 = 138543619;
-    v27 = v9;
+    v27 = modeIdentifier;
     v28 = 2113;
-    v29 = v21;
+    v29 = triggers;
     _os_log_impl(&dword_24912E000, v20, OS_LOG_TYPE_DEFAULT, "[%{public}@] triggers: %{private}@", &v26, 0x16u);
   }
 
   v22 = v20;
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
   {
-    v23 = [(DNDSModeConfigurationRecord *)self configuration];
+    configuration = [(DNDSModeConfigurationRecord *)self configuration];
     v26 = 138543619;
-    v27 = v9;
+    v27 = modeIdentifier;
     v28 = 2113;
-    v29 = v23;
+    v29 = configuration;
     _os_log_impl(&dword_24912E000, v22, OS_LOG_TYPE_DEFAULT, "[%{public}@] configuration: %{private}@", &v26, 0x16u);
   }
 
-  v24 = [(DNDSModeConfigurationRecord *)self secureConfiguration];
-  [v24 log:v22 withPrefix:v9];
+  secureConfiguration = [(DNDSModeConfigurationRecord *)self secureConfiguration];
+  [secureConfiguration log:v22 withPrefix:modeIdentifier];
 
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
   {
     v26 = 138543362;
-    v27 = v9;
+    v27 = modeIdentifier;
     _os_log_impl(&dword_24912E000, v22, OS_LOG_TYPE_DEFAULT, "[%{public}@] End", &v26, 0xCu);
   }
 
@@ -213,10 +213,10 @@
   return v9 ^ [(NSString *)self->_lastModifiedByDeviceID hash]^ self->_automaticallyGenerated ^ self->_compatibilityVersion ^ self->_hasSecureData;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     LOBYTE(v13) = 1;
   }
@@ -226,56 +226,56 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(DNDSModeConfigurationRecord *)self created];
-      v7 = [(DNDSModeConfigurationRecord *)v5 created];
-      if (v6 == v7)
+      v5 = equalCopy;
+      created = [(DNDSModeConfigurationRecord *)self created];
+      created2 = [(DNDSModeConfigurationRecord *)v5 created];
+      if (created == created2)
       {
         goto LABEL_10;
       }
 
-      v8 = [(DNDSModeConfigurationRecord *)self created];
-      if (!v8)
+      created3 = [(DNDSModeConfigurationRecord *)self created];
+      if (!created3)
       {
         goto LABEL_52;
       }
 
-      v9 = v8;
-      v10 = [(DNDSModeConfigurationRecord *)v5 created];
-      if (v10)
+      v9 = created3;
+      created4 = [(DNDSModeConfigurationRecord *)v5 created];
+      if (created4)
       {
-        v11 = [(DNDSModeConfigurationRecord *)self created];
-        v12 = [(DNDSModeConfigurationRecord *)v5 created];
-        if ([v11 isEqual:v12])
+        created5 = [(DNDSModeConfigurationRecord *)self created];
+        created6 = [(DNDSModeConfigurationRecord *)v5 created];
+        if ([created5 isEqual:created6])
         {
           v96 = v9;
-          v97 = v12;
-          v98 = v11;
-          v99 = v10;
+          v97 = created6;
+          v98 = created5;
+          v99 = created4;
 LABEL_10:
-          v14 = [(DNDSModeConfigurationRecord *)self lastModified];
-          v15 = [(DNDSModeConfigurationRecord *)v5 lastModified];
-          if (v14 != v15)
+          lastModified = [(DNDSModeConfigurationRecord *)self lastModified];
+          lastModified2 = [(DNDSModeConfigurationRecord *)v5 lastModified];
+          if (lastModified != lastModified2)
           {
-            v16 = [(DNDSModeConfigurationRecord *)self lastModified];
-            if (!v16)
+            lastModified3 = [(DNDSModeConfigurationRecord *)self lastModified];
+            if (!lastModified3)
             {
 
               goto LABEL_48;
             }
 
-            v17 = v16;
-            v100 = v14;
-            v18 = [(DNDSModeConfigurationRecord *)v5 lastModified];
-            if (v18)
+            v17 = lastModified3;
+            v100 = lastModified;
+            lastModified4 = [(DNDSModeConfigurationRecord *)v5 lastModified];
+            if (lastModified4)
             {
-              v19 = v18;
-              v14 = [(DNDSModeConfigurationRecord *)self lastModified];
-              v20 = [(DNDSModeConfigurationRecord *)v5 lastModified];
-              if ([v14 isEqual:v20])
+              v19 = lastModified4;
+              lastModified = [(DNDSModeConfigurationRecord *)self lastModified];
+              lastModified5 = [(DNDSModeConfigurationRecord *)v5 lastModified];
+              if ([lastModified isEqual:lastModified5])
               {
-                v93 = v20;
-                v94 = v14;
+                v93 = lastModified5;
+                v94 = lastModified;
                 v91 = v19;
                 v92 = v17;
                 goto LABEL_16;
@@ -285,29 +285,29 @@ LABEL_10:
             goto LABEL_48;
           }
 
-          v100 = v14;
+          v100 = lastModified;
 LABEL_16:
-          v21 = [(DNDSModeConfigurationRecord *)self lastModifiedByDeviceID];
-          v22 = [(DNDSModeConfigurationRecord *)v5 lastModifiedByDeviceID];
-          if (v21 != v22)
+          lastModifiedByDeviceID = [(DNDSModeConfigurationRecord *)self lastModifiedByDeviceID];
+          lastModifiedByDeviceID2 = [(DNDSModeConfigurationRecord *)v5 lastModifiedByDeviceID];
+          if (lastModifiedByDeviceID != lastModifiedByDeviceID2)
           {
-            v23 = [(DNDSModeConfigurationRecord *)self lastModifiedByDeviceID];
-            if (!v23)
+            lastModifiedByDeviceID3 = [(DNDSModeConfigurationRecord *)self lastModifiedByDeviceID];
+            if (!lastModifiedByDeviceID3)
             {
               goto LABEL_45;
             }
 
-            v95 = v23;
-            v24 = [(DNDSModeConfigurationRecord *)v5 lastModifiedByDeviceID];
-            if (!v24)
+            v95 = lastModifiedByDeviceID3;
+            lastModifiedByDeviceID4 = [(DNDSModeConfigurationRecord *)v5 lastModifiedByDeviceID];
+            if (!lastModifiedByDeviceID4)
             {
               goto LABEL_44;
             }
 
-            v90 = v24;
-            v25 = [(DNDSModeConfigurationRecord *)self lastModifiedByDeviceID];
-            v26 = [(DNDSModeConfigurationRecord *)v5 lastModifiedByDeviceID];
-            if (([v25 isEqual:v26] & 1) == 0)
+            v90 = lastModifiedByDeviceID4;
+            lastModifiedByDeviceID5 = [(DNDSModeConfigurationRecord *)self lastModifiedByDeviceID];
+            lastModifiedByDeviceID6 = [(DNDSModeConfigurationRecord *)v5 lastModifiedByDeviceID];
+            if (([lastModifiedByDeviceID5 isEqual:lastModifiedByDeviceID6] & 1) == 0)
             {
 
 LABEL_43:
@@ -316,8 +316,8 @@ LABEL_44:
               goto LABEL_45;
             }
 
-            v89 = v25;
-            v14 = v26;
+            v89 = lastModifiedByDeviceID5;
+            lastModified = lastModifiedByDeviceID6;
           }
 
           [(DNDSModeConfigurationRecord *)self lastModifiedByVersion];
@@ -330,15 +330,15 @@ LABEL_44:
           {
             LOBYTE(v13) = 0;
 LABEL_30:
-            if (v21 == v22)
+            if (lastModifiedByDeviceID == lastModifiedByDeviceID2)
             {
 LABEL_33:
 
-              if (v100 != v15)
+              if (v100 != lastModified2)
               {
               }
 
-              if (v6 == v7)
+              if (created == created2)
               {
                 goto LABEL_53;
               }
@@ -350,41 +350,41 @@ LABEL_32:
             goto LABEL_33;
           }
 
-          v27 = [(DNDSModeConfigurationRecord *)self mode];
-          v88 = [(DNDSModeConfigurationRecord *)v5 mode];
-          if (v27 == v88)
+          mode = [(DNDSModeConfigurationRecord *)self mode];
+          mode2 = [(DNDSModeConfigurationRecord *)v5 mode];
+          if (mode == mode2)
           {
-            v87 = v27;
+            v87 = mode;
 LABEL_56:
-            v34 = [(DNDSModeConfigurationRecord *)self configuration];
-            v82 = [(DNDSModeConfigurationRecord *)v5 configuration];
-            v83 = v34;
-            v86 = v14;
-            if (v34 == v82)
+            configuration = [(DNDSModeConfigurationRecord *)self configuration];
+            configuration2 = [(DNDSModeConfigurationRecord *)v5 configuration];
+            v83 = configuration;
+            v86 = lastModified;
+            if (configuration == configuration2)
             {
               v39 = v84;
               goto LABEL_62;
             }
 
-            v35 = [(DNDSModeConfigurationRecord *)self configuration];
-            if (v35)
+            configuration3 = [(DNDSModeConfigurationRecord *)self configuration];
+            if (configuration3)
             {
-              v77 = v35;
-              v36 = [(DNDSModeConfigurationRecord *)v5 configuration];
-              if (!v36)
+              v77 = configuration3;
+              configuration4 = [(DNDSModeConfigurationRecord *)v5 configuration];
+              if (!configuration4)
               {
 
-                if (v87 != v88)
+                if (v87 != mode2)
                 {
                 }
 
 LABEL_87:
-                if (v21 != v22)
+                if (lastModifiedByDeviceID != lastModifiedByDeviceID2)
                 {
                 }
 
                 v32 = v100;
-                if (v100 == v15)
+                if (v100 == lastModified2)
                 {
                   goto LABEL_47;
                 }
@@ -392,66 +392,66 @@ LABEL_87:
                 goto LABEL_46;
               }
 
-              v75 = v36;
-              v37 = [(DNDSModeConfigurationRecord *)self configuration];
-              v38 = [(DNDSModeConfigurationRecord *)v5 configuration];
-              if ([v37 isEqual:v38])
+              v75 = configuration4;
+              configuration5 = [(DNDSModeConfigurationRecord *)self configuration];
+              configuration6 = [(DNDSModeConfigurationRecord *)v5 configuration];
+              if ([configuration5 isEqual:configuration6])
               {
-                v70 = v38;
-                v71 = v37;
+                v70 = configuration6;
+                v71 = configuration5;
                 v39 = v84;
 LABEL_62:
-                v40 = [(DNDSModeConfigurationRecord *)self secureConfiguration];
-                v78 = [(DNDSModeConfigurationRecord *)v5 secureConfiguration];
-                v79 = v40;
-                if (v40 == v78)
+                secureConfiguration = [(DNDSModeConfigurationRecord *)self secureConfiguration];
+                secureConfiguration2 = [(DNDSModeConfigurationRecord *)v5 secureConfiguration];
+                v79 = secureConfiguration;
+                if (secureConfiguration == secureConfiguration2)
                 {
-                  v14 = v86;
+                  lastModified = v86;
                   goto LABEL_79;
                 }
 
-                v41 = [(DNDSModeConfigurationRecord *)self secureConfiguration];
-                if (v41)
+                secureConfiguration3 = [(DNDSModeConfigurationRecord *)self secureConfiguration];
+                if (secureConfiguration3)
                 {
-                  v72 = v41;
-                  v42 = [(DNDSModeConfigurationRecord *)v5 secureConfiguration];
-                  v14 = v86;
-                  if (v42)
+                  v72 = secureConfiguration3;
+                  secureConfiguration4 = [(DNDSModeConfigurationRecord *)v5 secureConfiguration];
+                  lastModified = v86;
+                  if (secureConfiguration4)
                   {
-                    v69 = v42;
-                    v43 = [(DNDSModeConfigurationRecord *)self secureConfiguration];
-                    v44 = [(DNDSModeConfigurationRecord *)v5 secureConfiguration];
-                    v68 = v43;
-                    v45 = v43;
-                    v46 = v44;
-                    if ([v45 isEqual:v44])
+                    v69 = secureConfiguration4;
+                    secureConfiguration5 = [(DNDSModeConfigurationRecord *)self secureConfiguration];
+                    secureConfiguration6 = [(DNDSModeConfigurationRecord *)v5 secureConfiguration];
+                    v68 = secureConfiguration5;
+                    v45 = secureConfiguration5;
+                    v46 = secureConfiguration6;
+                    if ([v45 isEqual:secureConfiguration6])
                     {
                       v63 = v46;
 LABEL_79:
-                      v50 = [(DNDSModeConfigurationRecord *)self triggers];
+                      triggers = [(DNDSModeConfigurationRecord *)self triggers];
                       [(DNDSModeConfigurationRecord *)v5 triggers];
-                      v74 = v73 = v50;
-                      if (v50 != v74)
+                      v74 = v73 = triggers;
+                      if (triggers != v74)
                       {
-                        v51 = [(DNDSModeConfigurationRecord *)self triggers];
-                        if (!v51)
+                        triggers2 = [(DNDSModeConfigurationRecord *)self triggers];
+                        if (!triggers2)
                         {
 
                           LOBYTE(v13) = 0;
 LABEL_123:
-                          if (v79 != v78)
+                          if (v79 != secureConfiguration2)
                           {
                           }
 
-                          if (v83 != v82)
+                          if (v83 != configuration2)
                           {
                           }
 
-                          if (v87 != v88)
+                          if (v87 != mode2)
                           {
                           }
 
-                          if (v21 == v22)
+                          if (lastModifiedByDeviceID == lastModifiedByDeviceID2)
                           {
                             goto LABEL_33;
                           }
@@ -459,9 +459,9 @@ LABEL_123:
                           goto LABEL_32;
                         }
 
-                        v64 = v51;
-                        v52 = [(DNDSModeConfigurationRecord *)v5 triggers];
-                        if (!v52)
+                        v64 = triggers2;
+                        triggers3 = [(DNDSModeConfigurationRecord *)v5 triggers];
+                        if (!triggers3)
                         {
                           LOBYTE(v13) = 0;
 LABEL_122:
@@ -469,13 +469,13 @@ LABEL_122:
                           goto LABEL_123;
                         }
 
-                        v62 = v52;
-                        v53 = [(DNDSModeConfigurationRecord *)self triggers];
-                        v54 = [(DNDSModeConfigurationRecord *)v5 triggers];
-                        v61 = v53;
-                        v55 = v53;
-                        v50 = v54;
-                        if (![v55 isEqual:v54])
+                        v62 = triggers3;
+                        triggers4 = [(DNDSModeConfigurationRecord *)self triggers];
+                        triggers5 = [(DNDSModeConfigurationRecord *)v5 triggers];
+                        v61 = triggers4;
+                        v55 = triggers4;
+                        triggers = triggers5;
+                        if (![v55 isEqual:triggers5])
                         {
                           LOBYTE(v13) = 0;
 LABEL_121:
@@ -484,11 +484,11 @@ LABEL_121:
                         }
                       }
 
-                      v65 = [(DNDSModeConfigurationRecord *)self impactsAvailability];
-                      if (v65 == [(DNDSModeConfigurationRecord *)v5 impactsAvailability]&& (v66 = [(DNDSModeConfigurationRecord *)self dimsLockScreen], v66 == [(DNDSModeConfigurationRecord *)v5 dimsLockScreen]) && (v67 = [(DNDSModeConfigurationRecord *)self isAutomaticallyGenerated], v67 == [(DNDSModeConfigurationRecord *)v5 isAutomaticallyGenerated]))
+                      impactsAvailability = [(DNDSModeConfigurationRecord *)self impactsAvailability];
+                      if (impactsAvailability == [(DNDSModeConfigurationRecord *)v5 impactsAvailability]&& (v66 = [(DNDSModeConfigurationRecord *)self dimsLockScreen], v66 == [(DNDSModeConfigurationRecord *)v5 dimsLockScreen]) && (v67 = [(DNDSModeConfigurationRecord *)self isAutomaticallyGenerated], v67 == [(DNDSModeConfigurationRecord *)v5 isAutomaticallyGenerated]))
                       {
-                        v60 = [(DNDSModeConfigurationRecord *)self hasSecureData];
-                        v13 = v60 ^ [(DNDSModeConfigurationRecord *)v5 hasSecureData]^ 1;
+                        hasSecureData = [(DNDSModeConfigurationRecord *)self hasSecureData];
+                        v13 = hasSecureData ^ [(DNDSModeConfigurationRecord *)v5 hasSecureData]^ 1;
                         if (v73 != v74)
                         {
                           goto LABEL_121;
@@ -502,21 +502,21 @@ LABEL_121:
 
                           LOBYTE(v13) = 0;
 LABEL_112:
-                          v58 = v78;
-                          if (v79 != v78)
+                          v58 = secureConfiguration2;
+                          if (v79 != secureConfiguration2)
                           {
 
-                            v58 = v78;
+                            v58 = secureConfiguration2;
                           }
 
-                          v59 = v82;
-                          if (v83 != v82)
+                          v59 = configuration2;
+                          if (v83 != configuration2)
                           {
 
-                            v59 = v82;
+                            v59 = configuration2;
                           }
 
-                          if (v87 != v88)
+                          if (v87 != mode2)
                           {
                           }
 
@@ -530,12 +530,12 @@ LABEL_112:
                     }
                   }
 
-                  if (v83 != v82)
+                  if (v83 != configuration2)
                   {
                   }
 
                   v56 = v87;
-                  v57 = v88;
+                  v57 = mode2;
                 }
 
                 else
@@ -543,28 +543,28 @@ LABEL_112:
                   v84 = v39;
 
                   v56 = v87;
-                  if (v83 != v82)
+                  if (v83 != configuration2)
                   {
                   }
 
-                  v57 = v88;
+                  v57 = mode2;
                 }
 
                 if (v56 != v57)
                 {
                 }
 
-                if (v21 == v22)
+                if (lastModifiedByDeviceID == lastModifiedByDeviceID2)
                 {
 LABEL_45:
 
                   v32 = v100;
-                  if (v100 == v15)
+                  if (v100 == lastModified2)
                   {
 LABEL_47:
 
 LABEL_48:
-                    if (v6 != v7)
+                    if (created != created2)
                     {
 
                       LOBYTE(v13) = 0;
@@ -589,8 +589,8 @@ LABEL_46:
               v47 = v84;
 
               v49 = v87;
-              v48 = v88;
-              if (v87 == v88)
+              v48 = mode2;
+              if (v87 == mode2)
               {
 LABEL_77:
 
@@ -603,8 +603,8 @@ LABEL_77:
               v47 = v84;
 
               v49 = v87;
-              v48 = v88;
-              if (v87 == v88)
+              v48 = mode2;
+              if (v87 == mode2)
               {
                 goto LABEL_77;
               }
@@ -613,32 +613,32 @@ LABEL_77:
             goto LABEL_77;
           }
 
-          v28 = [(DNDSModeConfigurationRecord *)self mode];
-          if (v28)
+          mode3 = [(DNDSModeConfigurationRecord *)self mode];
+          if (mode3)
           {
-            v81 = v28;
-            v29 = [(DNDSModeConfigurationRecord *)v5 mode];
-            if (v29)
+            v81 = mode3;
+            mode4 = [(DNDSModeConfigurationRecord *)v5 mode];
+            if (mode4)
             {
-              v85 = v14;
-              v87 = v27;
-              v80 = v29;
-              v30 = [(DNDSModeConfigurationRecord *)self mode];
-              v31 = [(DNDSModeConfigurationRecord *)v5 mode];
-              if ([v30 isEqual:v31])
+              v85 = lastModified;
+              v87 = mode;
+              v80 = mode4;
+              mode5 = [(DNDSModeConfigurationRecord *)self mode];
+              mode6 = [(DNDSModeConfigurationRecord *)v5 mode];
+              if ([mode5 isEqual:mode6])
               {
-                v84 = v30;
-                v76 = v31;
-                v14 = v85;
+                v84 = mode5;
+                v76 = mode6;
+                lastModified = v85;
                 goto LABEL_56;
               }
 
-              if (v21 == v22)
+              if (lastModifiedByDeviceID == lastModifiedByDeviceID2)
               {
 LABEL_73:
 
                 v32 = v100;
-                if (v100 == v15)
+                if (v100 == lastModified2)
                 {
                   goto LABEL_47;
                 }
@@ -651,7 +651,7 @@ LABEL_72:
             }
           }
 
-          if (v21 == v22)
+          if (lastModifiedByDeviceID == lastModifiedByDeviceID2)
           {
             goto LABEL_73;
           }
@@ -679,23 +679,23 @@ LABEL_54:
 {
   v16 = MEMORY[0x277CCACA8];
   v15 = objc_opt_class();
-  v14 = [(DNDSModeConfigurationRecord *)self mode];
-  v19 = [(DNDSModeConfigurationRecord *)self configuration];
-  v18 = [(DNDSModeConfigurationRecord *)self secureConfiguration];
-  v17 = [(DNDSModeConfigurationRecord *)self triggers];
+  mode = [(DNDSModeConfigurationRecord *)self mode];
+  configuration = [(DNDSModeConfigurationRecord *)self configuration];
+  secureConfiguration = [(DNDSModeConfigurationRecord *)self secureConfiguration];
+  triggers = [(DNDSModeConfigurationRecord *)self triggers];
   [(DNDSModeConfigurationRecord *)self impactsAvailability];
   v12 = DNDEnabledSettingToString();
   [(DNDSModeConfigurationRecord *)self dimsLockScreen];
   v13 = DNDEnabledSettingToString();
-  v3 = [(DNDSModeConfigurationRecord *)self created];
-  v4 = [(DNDSModeConfigurationRecord *)self lastModified];
+  created = [(DNDSModeConfigurationRecord *)self created];
+  lastModified = [(DNDSModeConfigurationRecord *)self lastModified];
   [(DNDSModeConfigurationRecord *)self lastModifiedByVersion];
   v5 = DNDStringFromOperatingSystemVersion();
-  v6 = [(DNDSModeConfigurationRecord *)self lastModifiedByDeviceID];
+  lastModifiedByDeviceID = [(DNDSModeConfigurationRecord *)self lastModifiedByDeviceID];
   v7 = [MEMORY[0x277CCABB0] numberWithBool:{-[DNDSModeConfigurationRecord isAutomaticallyGenerated](self, "isAutomaticallyGenerated")}];
   v8 = [MEMORY[0x277CCABB0] numberWithInteger:{-[DNDSModeConfigurationRecord compatibilityVersion](self, "compatibilityVersion")}];
   v9 = [MEMORY[0x277CCABB0] numberWithBool:{-[DNDSModeConfigurationRecord hasSecureData](self, "hasSecureData")}];
-  v10 = [v16 stringWithFormat:@"<%@: %p mode: %@; configuration: %@; secureConfiguration: %@; triggers: %@; impactsAvailability: %@; dimsLockScreen: %@; created: %@; lastModified: %@; lastModifiedByVersion: %@; lastModifiedByDeviceID: %@; automaticallyGenerated: %@; compatibilityVersion: %@; hasSecureData: %@>", v15, self, v14, v19, v18, v17, v12, v13, v3, v4, v5, v6, v7, v8, v9];;
+  v10 = [v16 stringWithFormat:@"<%@: %p mode: %@; configuration: %@; secureConfiguration: %@; triggers: %@; impactsAvailability: %@; dimsLockScreen: %@; created: %@; lastModified: %@; lastModifiedByVersion: %@; lastModifiedByDeviceID: %@; automaticallyGenerated: %@; compatibilityVersion: %@; hasSecureData: %@>", v15, self, mode, configuration, secureConfiguration, triggers, v12, v13, created, lastModified, v5, lastModifiedByDeviceID, v7, v8, v9];;
 
   return v10;
 }
@@ -704,96 +704,96 @@ LABEL_54:
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(DNDSModeConfigurationRecord *)self mode];
+  mode = [(DNDSModeConfigurationRecord *)self mode];
   [(DNDSModeConfigurationRecord *)self impactsAvailability];
   v6 = DNDEnabledSettingToString();
   [(DNDSModeConfigurationRecord *)self dimsLockScreen];
   v7 = DNDEnabledSettingToString();
-  v8 = [v3 stringWithFormat:@"<%@: %p mode: %@; impactsAvailability: %@; dimsLockScreen: %@>", v4, self, v5, v6, v7];;
+  v8 = [v3 stringWithFormat:@"<%@: %p mode: %@; impactsAvailability: %@; dimsLockScreen: %@>", v4, self, mode, v6, v7];;
 
   return v8;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [DNDSMutableModeConfigurationRecord alloc];
 
   return [(DNDSModeConfigurationRecord *)v4 _initWithRecord:self];
 }
 
-+ (id)newWithDictionaryRepresentation:(id)a3 context:(id)a4
++ (id)newWithDictionaryRepresentation:(id)representation context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 currentRecord];
-  v60 = a1;
-  if (v8)
+  representationCopy = representation;
+  contextCopy = context;
+  currentRecord = [contextCopy currentRecord];
+  selfCopy = self;
+  if (currentRecord)
   {
-    v9 = [v7 currentRecord];
+    currentRecord2 = [contextCopy currentRecord];
     isKindOfClass = objc_opt_isKindOfClass();
 
     if ((isKindOfClass & 1) == 0)
     {
 
-      v8 = 0;
+      currentRecord = 0;
     }
   }
 
-  v11 = [v6 bs_safeObjectForKey:@"mode" ofType:objc_opt_class()];
-  v12 = [v8 mode];
-  v13 = [v7 copyWithCurrentRecord:v12];
+  v11 = [representationCopy bs_safeObjectForKey:@"mode" ofType:objc_opt_class()];
+  mode = [currentRecord mode];
+  v13 = [contextCopy copyWithCurrentRecord:mode];
   v63 = v11;
   v62 = [DNDSModeRecord newWithDictionaryRepresentation:v11 context:v13];
 
-  v14 = [v6 bs_safeObjectForKey:@"configuration" ofType:objc_opt_class()];
-  v15 = [v8 configuration];
-  v16 = [v7 copyWithCurrentRecord:v15];
+  v14 = [representationCopy bs_safeObjectForKey:@"configuration" ofType:objc_opt_class()];
+  configuration = [currentRecord configuration];
+  v16 = [contextCopy copyWithCurrentRecord:configuration];
   v59 = v14;
   v58 = [DNDSConfigurationRecord newWithDictionaryRepresentation:v14 context:v16];
 
-  v17 = [v8 secureConfiguration];
-  v18 = [v7 copyWithCurrentRecord:v17];
+  secureConfiguration = [currentRecord secureConfiguration];
+  v18 = [contextCopy copyWithCurrentRecord:secureConfiguration];
   v57 = [DNDSConfigurationSecureRecord newWithDictionaryRepresentation:MEMORY[0x277CBEC10] context:v18];
 
-  v19 = [v6 bs_safeObjectForKey:@"triggers" ofType:objc_opt_class()];
-  v20 = [v8 triggers];
-  v21 = [v7 copyWithCurrentRecord:v20];
+  v19 = [representationCopy bs_safeObjectForKey:@"triggers" ofType:objc_opt_class()];
+  triggers = [currentRecord triggers];
+  v21 = [contextCopy copyWithCurrentRecord:triggers];
   v56 = v19;
   v55 = [DNDSModeConfigurationTriggersRecord newWithDictionaryRepresentation:v19 context:v21];
 
-  v22 = [v6 bs_safeObjectForKey:@"impactsAvailability" ofType:objc_opt_class()];
+  v22 = [representationCopy bs_safeObjectForKey:@"impactsAvailability" ofType:objc_opt_class()];
   v54 = v22;
   if (v22)
   {
-    v52 = [v22 unsignedIntegerValue];
+    unsignedIntegerValue = [v22 unsignedIntegerValue];
   }
 
   else
   {
-    v52 = 0;
+    unsignedIntegerValue = 0;
   }
 
-  v23 = [v6 bs_safeObjectForKey:@"dimsLockScreen" ofType:objc_opt_class()];
+  v23 = [representationCopy bs_safeObjectForKey:@"dimsLockScreen" ofType:objc_opt_class()];
   v53 = v23;
   if (v23)
   {
-    v50 = [v23 unsignedIntegerValue];
+    unsignedIntegerValue2 = [v23 unsignedIntegerValue];
   }
 
   else
   {
-    v50 = 0;
+    unsignedIntegerValue2 = 0;
   }
 
-  v24 = [v6 bs_safeObjectForKey:@"lastModified" ofType:objc_opt_class()];
+  v24 = [representationCopy bs_safeObjectForKey:@"lastModified" ofType:objc_opt_class()];
   v25 = MEMORY[0x277CBEAA8];
   v51 = v24;
   [v24 doubleValue];
   v26 = [v25 dateWithTimeIntervalSince1970:?];
-  [v6 bs_safeStringForKey:@"lastModifiedByVersion"];
+  [representationCopy bs_safeStringForKey:@"lastModifiedByVersion"];
   v68 = 0uLL;
   v69 = 0;
-  v49 = v65 = v7;
+  v49 = v65 = contextCopy;
   if (v49)
   {
     DNDOperatingSystemVersionFromString();
@@ -805,8 +805,8 @@ LABEL_54:
     v69 = *(MEMORY[0x277D05858] + 16);
   }
 
-  v27 = [v6 bs_safeStringForKey:@"lastModifiedByDeviceID"];
-  v28 = [v6 bs_safeObjectForKey:@"created" ofType:objc_opt_class()];
+  v27 = [representationCopy bs_safeStringForKey:@"lastModifiedByDeviceID"];
+  v28 = [representationCopy bs_safeObjectForKey:@"created" ofType:objc_opt_class()];
   v48 = v28;
   if (v28)
   {
@@ -821,141 +821,141 @@ LABEL_54:
   }
 
   v31 = v30;
-  v32 = [v6 bs_safeObjectForKey:@"automaticallyGenerated" ofType:objc_opt_class()];
+  v32 = [representationCopy bs_safeObjectForKey:@"automaticallyGenerated" ofType:objc_opt_class()];
   v47 = v32;
   v33 = v26;
   if (v32)
   {
-    v46 = [v32 BOOLValue];
+    bOOLValue = [v32 BOOLValue];
   }
 
   else
   {
-    v46 = 0;
+    bOOLValue = 0;
   }
 
-  v34 = [v6 bs_safeObjectForKey:@"compatibilityVersion" ofType:objc_opt_class()];
+  v34 = [representationCopy bs_safeObjectForKey:@"compatibilityVersion" ofType:objc_opt_class()];
   v35 = v34;
   if (v34)
   {
-    v36 = [v34 integerValue];
+    integerValue = [v34 integerValue];
   }
 
   else
   {
-    v36 = 2;
+    integerValue = 2;
   }
 
-  v37 = [v6 bs_safeObjectForKey:@"resolvedCompatibilityVersion" ofType:objc_opt_class()];
+  v37 = [representationCopy bs_safeObjectForKey:@"resolvedCompatibilityVersion" ofType:objc_opt_class()];
   v38 = v37;
   if (v37)
   {
-    v39 = [v37 integerValue];
+    integerValue2 = [v37 integerValue];
   }
 
   else
   {
-    v39 = 2;
+    integerValue2 = 2;
   }
 
-  v64 = v8;
-  v40 = [v6 bs_safeObjectForKey:@"hasSecureData" ofType:objc_opt_class()];
+  v64 = currentRecord;
+  v40 = [representationCopy bs_safeObjectForKey:@"hasSecureData" ofType:objc_opt_class()];
   v41 = v40;
   if (v40)
   {
-    v42 = [v40 BOOLValue];
+    bOOLValue2 = [v40 BOOLValue];
   }
 
   else
   {
-    v42 = 0;
+    bOOLValue2 = 0;
   }
 
   v66 = v68;
   v67 = v69;
-  LOBYTE(v45) = v42;
-  LOBYTE(v44) = v46;
-  v61 = [[v60 alloc] _initWithMode:v62 configuration:v58 secureConfiguration:v57 triggers:v55 impactsAvailability:v52 dimsLockScreen:v50 created:v31 lastModified:v33 lastModifiedByVersion:&v66 lastModifiedByDeviceID:v27 automaticallyGenerated:v44 compatibilityVersion:v36 ephemeralResolvedCompatibilityVersion:v39 hasSecureData:v45];
+  LOBYTE(v45) = bOOLValue2;
+  LOBYTE(v44) = bOOLValue;
+  v61 = [[selfCopy alloc] _initWithMode:v62 configuration:v58 secureConfiguration:v57 triggers:v55 impactsAvailability:unsignedIntegerValue dimsLockScreen:unsignedIntegerValue2 created:v31 lastModified:v33 lastModifiedByVersion:&v66 lastModifiedByDeviceID:v27 automaticallyGenerated:v44 compatibilityVersion:integerValue ephemeralResolvedCompatibilityVersion:integerValue2 hasSecureData:v45];
 
   return v61;
 }
 
-+ (id)newWithDictionaryRepresentation:(id)a3 partitionedDictionaryRepresentation:(id)a4 context:(id)a5
++ (id)newWithDictionaryRepresentation:(id)representation partitionedDictionaryRepresentation:(id)dictionaryRepresentation context:(id)context
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
-  v11 = [v9 currentRecord];
-  v66 = a1;
-  if (v11)
+  representationCopy = representation;
+  contextCopy = context;
+  dictionaryRepresentationCopy = dictionaryRepresentation;
+  currentRecord = [contextCopy currentRecord];
+  selfCopy = self;
+  if (currentRecord)
   {
-    v12 = [v9 currentRecord];
+    currentRecord2 = [contextCopy currentRecord];
     isKindOfClass = objc_opt_isKindOfClass();
 
     if ((isKindOfClass & 1) == 0)
     {
 
-      v11 = 0;
+      currentRecord = 0;
     }
   }
 
-  v14 = [v8 bs_safeObjectForKey:@"mode" ofType:objc_opt_class()];
-  v15 = [v11 mode];
-  v16 = [v9 copyWithCurrentRecord:v15];
+  v14 = [representationCopy bs_safeObjectForKey:@"mode" ofType:objc_opt_class()];
+  mode = [currentRecord mode];
+  v16 = [contextCopy copyWithCurrentRecord:mode];
   v69 = v14;
   v68 = [DNDSModeRecord newWithDictionaryRepresentation:v14 context:v16];
 
-  v17 = [v8 bs_safeObjectForKey:@"configuration" ofType:objc_opt_class()];
-  v18 = [v11 configuration];
-  v19 = [v9 copyWithCurrentRecord:v18];
+  v17 = [representationCopy bs_safeObjectForKey:@"configuration" ofType:objc_opt_class()];
+  configuration = [currentRecord configuration];
+  v19 = [contextCopy copyWithCurrentRecord:configuration];
   v65 = v17;
   v64 = [DNDSConfigurationRecord newWithDictionaryRepresentation:v17 context:v19];
 
-  v20 = [v10 bs_safeObjectForKey:@"secureConfiguration" ofType:objc_opt_class()];
-  v21 = [v11 secureConfiguration];
-  v22 = [v9 copyWithCurrentRecord:v21];
+  v20 = [dictionaryRepresentationCopy bs_safeObjectForKey:@"secureConfiguration" ofType:objc_opt_class()];
+  secureConfiguration = [currentRecord secureConfiguration];
+  v22 = [contextCopy copyWithCurrentRecord:secureConfiguration];
   v63 = v20;
   v62 = [DNDSConfigurationSecureRecord newWithDictionaryRepresentation:v20 context:v22];
 
-  v23 = [v8 bs_safeObjectForKey:@"triggers" ofType:objc_opt_class()];
-  v24 = [v10 bs_safeObjectForKey:@"secureTriggers" ofType:objc_opt_class()];
+  v23 = [representationCopy bs_safeObjectForKey:@"triggers" ofType:objc_opt_class()];
+  v24 = [dictionaryRepresentationCopy bs_safeObjectForKey:@"secureTriggers" ofType:objc_opt_class()];
 
-  v25 = [v11 triggers];
-  v26 = [v9 copyWithCurrentRecord:v25];
+  triggers = [currentRecord triggers];
+  v26 = [contextCopy copyWithCurrentRecord:triggers];
   v60 = v24;
   v61 = v23;
   v59 = [DNDSModeConfigurationTriggersRecord newWithDictionaryRepresentation:v23 partitionedDictionaryRepresentation:v24 context:v26];
 
-  v27 = [v8 bs_safeObjectForKey:@"impactsAvailability" ofType:objc_opt_class()];
+  v27 = [representationCopy bs_safeObjectForKey:@"impactsAvailability" ofType:objc_opt_class()];
   v58 = v27;
   if (v27)
   {
-    v56 = [v27 unsignedIntegerValue];
+    unsignedIntegerValue = [v27 unsignedIntegerValue];
   }
 
   else
   {
-    v56 = 0;
+    unsignedIntegerValue = 0;
   }
 
-  v28 = [v8 bs_safeObjectForKey:@"dimsLockScreen" ofType:objc_opt_class()];
+  v28 = [representationCopy bs_safeObjectForKey:@"dimsLockScreen" ofType:objc_opt_class()];
   v57 = v28;
   if (v28)
   {
-    v54 = [v28 unsignedIntegerValue];
+    unsignedIntegerValue2 = [v28 unsignedIntegerValue];
   }
 
   else
   {
-    v54 = 0;
+    unsignedIntegerValue2 = 0;
   }
 
-  v29 = [v8 bs_safeObjectForKey:@"lastModified" ofType:objc_opt_class()];
+  v29 = [representationCopy bs_safeObjectForKey:@"lastModified" ofType:objc_opt_class()];
   v30 = MEMORY[0x277CBEAA8];
   v55 = v29;
   [v29 doubleValue];
   v31 = [v30 dateWithTimeIntervalSince1970:?];
-  [v8 bs_safeStringForKey:@"lastModifiedByVersion"];
+  [representationCopy bs_safeStringForKey:@"lastModifiedByVersion"];
   v74 = 0uLL;
   v53 = v75 = 0;
   if (v53)
@@ -969,9 +969,9 @@ LABEL_54:
     v75 = *(MEMORY[0x277D05858] + 16);
   }
 
-  v71 = v9;
-  v32 = [v8 bs_safeStringForKey:@"lastModifiedByDeviceID"];
-  v33 = [v8 bs_safeObjectForKey:@"created" ofType:objc_opt_class()];
+  v71 = contextCopy;
+  v32 = [representationCopy bs_safeStringForKey:@"lastModifiedByDeviceID"];
+  v33 = [representationCopy bs_safeObjectForKey:@"created" ofType:objc_opt_class()];
   v52 = v33;
   if (v33)
   {
@@ -986,95 +986,95 @@ LABEL_54:
   }
 
   v36 = v35;
-  v37 = [v8 bs_safeObjectForKey:@"automaticallyGenerated" ofType:objc_opt_class()];
-  v70 = v11;
+  v37 = [representationCopy bs_safeObjectForKey:@"automaticallyGenerated" ofType:objc_opt_class()];
+  v70 = currentRecord;
   v51 = v37;
   if (v37)
   {
-    v50 = [v37 BOOLValue];
+    bOOLValue = [v37 BOOLValue];
   }
 
   else
   {
-    v50 = 0;
+    bOOLValue = 0;
   }
 
-  v38 = [v8 bs_safeObjectForKey:@"compatibilityVersion" ofType:objc_opt_class()];
+  v38 = [representationCopy bs_safeObjectForKey:@"compatibilityVersion" ofType:objc_opt_class()];
   v39 = v38;
   if (v38)
   {
-    v40 = [v38 integerValue];
+    integerValue = [v38 integerValue];
   }
 
   else
   {
-    v40 = 2;
+    integerValue = 2;
   }
 
-  v41 = [v8 bs_safeObjectForKey:@"resolvedCompatibilityVersion" ofType:objc_opt_class()];
+  v41 = [representationCopy bs_safeObjectForKey:@"resolvedCompatibilityVersion" ofType:objc_opt_class()];
   v42 = v41;
   if (v41)
   {
-    v43 = [v41 integerValue];
+    integerValue2 = [v41 integerValue];
   }
 
   else
   {
-    v43 = 2;
+    integerValue2 = 2;
   }
 
-  v44 = [v8 bs_safeObjectForKey:@"hasSecureData" ofType:objc_opt_class()];
+  v44 = [representationCopy bs_safeObjectForKey:@"hasSecureData" ofType:objc_opt_class()];
   v45 = v44;
   if (v44)
   {
-    v46 = [v44 BOOLValue];
+    bOOLValue2 = [v44 BOOLValue];
   }
 
   else
   {
-    v46 = 0;
+    bOOLValue2 = 0;
   }
 
   v72 = v74;
   v73 = v75;
-  LOBYTE(v49) = v46;
-  LOBYTE(v48) = v50;
-  v67 = [[v66 alloc] _initWithMode:v68 configuration:v64 secureConfiguration:v62 triggers:v59 impactsAvailability:v56 dimsLockScreen:v54 created:v36 lastModified:v31 lastModifiedByVersion:&v72 lastModifiedByDeviceID:v32 automaticallyGenerated:v48 compatibilityVersion:v40 ephemeralResolvedCompatibilityVersion:v43 hasSecureData:v49];
+  LOBYTE(v49) = bOOLValue2;
+  LOBYTE(v48) = bOOLValue;
+  v67 = [[selfCopy alloc] _initWithMode:v68 configuration:v64 secureConfiguration:v62 triggers:v59 impactsAvailability:unsignedIntegerValue dimsLockScreen:unsignedIntegerValue2 created:v36 lastModified:v31 lastModifiedByVersion:&v72 lastModifiedByDeviceID:v32 automaticallyGenerated:v48 compatibilityVersion:integerValue ephemeralResolvedCompatibilityVersion:integerValue2 hasSecureData:v49];
 
   return v67;
 }
 
-- (id)dictionaryRepresentationWithContext:(id)a3
+- (id)dictionaryRepresentationWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [v4 healingSource];
-  v6 = [v5 mutableCopy];
+  contextCopy = context;
+  healingSource = [contextCopy healingSource];
+  v6 = [healingSource mutableCopy];
   v7 = v6;
   if (v6)
   {
-    v8 = v6;
+    dictionary = v6;
   }
 
   else
   {
-    v8 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
   }
 
-  v9 = v8;
+  v9 = dictionary;
 
-  if (([v4 partitionType] & 2) != 0)
+  if (([contextCopy partitionType] & 2) != 0)
   {
-    [v9 setDictionaryRepresentationOfRecord:self->_secureConfiguration forKey:@"secureConfiguration" context:v4];
-    [v9 setDictionaryRepresentationOfRecord:self->_triggers forKey:@"secureTriggers" context:v4];
+    [v9 setDictionaryRepresentationOfRecord:self->_secureConfiguration forKey:@"secureConfiguration" context:contextCopy];
+    [v9 setDictionaryRepresentationOfRecord:self->_triggers forKey:@"secureTriggers" context:contextCopy];
     v10 = [(NSString *)self->_lastModifiedByDeviceID copy];
     [v9 setObject:v10 forKeyedSubscript:@"lastModifiedByDeviceID"];
   }
 
-  if ([v4 partitionType])
+  if ([contextCopy partitionType])
   {
-    [v9 setDictionaryRepresentationOfRecord:self->_mode forKey:@"mode" context:v4];
-    [v9 setDictionaryRepresentationOfRecord:self->_configuration forKey:@"configuration" context:v4];
-    [v9 setDictionaryRepresentationOfRecord:self->_triggers forKey:@"triggers" context:v4];
+    [v9 setDictionaryRepresentationOfRecord:self->_mode forKey:@"mode" context:contextCopy];
+    [v9 setDictionaryRepresentationOfRecord:self->_configuration forKey:@"configuration" context:contextCopy];
+    [v9 setDictionaryRepresentationOfRecord:self->_triggers forKey:@"triggers" context:contextCopy];
     v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_impactsAvailability];
     [v9 setObject:v11 forKeyedSubscript:@"impactsAvailability"];
 
@@ -1116,8 +1116,8 @@ LABEL_54:
 
 - (BOOL)wasLastModifiedByThisDevice
 {
-  v3 = [(DNDSModeConfigurationRecord *)self lastModifiedByDeviceID];
-  if (v3)
+  lastModifiedByDeviceID = [(DNDSModeConfigurationRecord *)self lastModifiedByDeviceID];
+  if (lastModifiedByDeviceID)
   {
     v4 = 0;
   }
@@ -1133,11 +1133,11 @@ LABEL_54:
   return v4;
 }
 
-+ (id)dictionaryRepresentationWithCKRecord:(id)a3 partitionType:(unint64_t)a4
++ (id)dictionaryRepresentationWithCKRecord:(id)record partitionType:(unint64_t)type
 {
   v28 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (a4 == 1)
+  recordCopy = record;
+  if (type == 1)
   {
     v6 = @"Main";
     v7 = kDNDSModeConfigurationsRecordMainPartitionKey;
@@ -1145,7 +1145,7 @@ LABEL_54:
 
   else
   {
-    if (a4 != 2)
+    if (type != 2)
     {
       v14 = 0;
       goto LABEL_17;
@@ -1156,8 +1156,8 @@ LABEL_54:
   }
 
   v8 = *v7;
-  v9 = [v5 encryptedValues];
-  v10 = [v9 objectForKey:v8];
+  encryptedValues = [recordCopy encryptedValues];
+  v10 = [encryptedValues objectForKey:v8];
 
   if (v10)
   {
@@ -1170,12 +1170,12 @@ LABEL_54:
       if (os_log_type_enabled(DNDSLogModeConfigurations, OS_LOG_TYPE_ERROR))
       {
         v18 = v13;
-        v19 = [v5 recordID];
-        v20 = [v19 recordName];
+        recordID = [recordCopy recordID];
+        recordName = [recordID recordName];
         *buf = 138412802;
         v23 = v6;
         v24 = 2114;
-        v25 = v20;
+        v25 = recordName;
         v26 = 2114;
         v27 = v12;
         _os_log_error_impl(&dword_24912E000, v18, OS_LOG_TYPE_ERROR, "Failed to decode %@ partition data %{public}@: %{public}@", buf, 0x20u);
@@ -1195,7 +1195,7 @@ LABEL_54:
     v15 = DNDSLogModeConfigurations;
     if (os_log_type_enabled(DNDSLogModeConfigurations, OS_LOG_TYPE_ERROR))
     {
-      [(DNDSModeConfigurationRecord(CKRecord) *)v6 dictionaryRepresentationWithCKRecord:v15 partitionType:v5];
+      [(DNDSModeConfigurationRecord(CKRecord) *)v6 dictionaryRepresentationWithCKRecord:v15 partitionType:recordCopy];
     }
 
     v14 = 0;
@@ -1207,19 +1207,19 @@ LABEL_17:
   return v14;
 }
 
-+ (id)newWithCKRecord:(id)a3 currentRecord:(id)a4
++ (id)newWithCKRecord:(id)record currentRecord:(id)currentRecord
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [a1 dictionaryRepresentationWithCKRecord:v6 partitionType:1];
+  recordCopy = record;
+  currentRecordCopy = currentRecord;
+  v8 = [self dictionaryRepresentationWithCKRecord:recordCopy partitionType:1];
   if (v8)
   {
-    v9 = [a1 dictionaryRepresentationWithCKRecord:v6 partitionType:2];
+    v9 = [self dictionaryRepresentationWithCKRecord:recordCopy partitionType:2];
     if (v9)
     {
       v10 = objc_alloc_init(DNDSApplicationIdentifierMapper);
       v11 = objc_alloc_init(DNDSContactProvider);
-      v12 = [[DNDSBackingStoreDictionaryContext alloc] initWithDestination:1 partitionType:3 currentRecord:v7 redactSensitiveData:0 contactProvider:v11 applicationIdentifierMapper:v10];
+      v12 = [[DNDSBackingStoreDictionaryContext alloc] initWithDestination:1 partitionType:3 currentRecord:currentRecordCopy redactSensitiveData:0 contactProvider:v11 applicationIdentifierMapper:v10];
       v13 = [DNDSModeConfigurationRecord newWithDictionaryRepresentation:v8 partitionedDictionaryRepresentation:v9 context:v12];
     }
 
@@ -1237,20 +1237,20 @@ LABEL_17:
   return v13;
 }
 
-- (int64_t)populateCKRecord:(id)a3 lastChanceRecord:(id)a4
+- (int64_t)populateCKRecord:(id)record lastChanceRecord:(id)chanceRecord
 {
-  v37 = a3;
-  v6 = a4;
-  v7 = [v6 creationDate];
+  recordCopy = record;
+  chanceRecordCopy = chanceRecord;
+  creationDate = [chanceRecordCopy creationDate];
 
-  v8 = [(DNDSModeConfigurationRecord *)self created];
-  v9 = [v6 creationDate];
-  v10 = [v8 compare:v9];
+  created = [(DNDSModeConfigurationRecord *)self created];
+  creationDate2 = [chanceRecordCopy creationDate];
+  v10 = [created compare:creationDate2];
 
-  v11 = [(DNDSModeConfigurationRecord *)self ephemeralResolvedCompatibilityVersion];
-  v12 = [v6 objectForKeyedSubscript:@"DNDSModeConfigurationsVersion"];
-  v13 = [v12 integerValue];
-  if (v7)
+  ephemeralResolvedCompatibilityVersion = [(DNDSModeConfigurationRecord *)self ephemeralResolvedCompatibilityVersion];
+  v12 = [chanceRecordCopy objectForKeyedSubscript:@"DNDSModeConfigurationsVersion"];
+  integerValue = [v12 integerValue];
+  if (creationDate)
   {
     v14 = v10 == 1;
   }
@@ -1260,13 +1260,13 @@ LABEL_17:
     v14 = 1;
   }
 
-  v16 = !v14 && v11 >= v13;
+  v16 = !v14 && ephemeralResolvedCompatibilityVersion >= integerValue;
 
   v35 = v16;
   if (v16 == 1)
   {
-    v17 = [objc_opt_class() dictionaryRepresentationWithCKRecord:v6 partitionType:1];
-    v18 = [objc_opt_class() dictionaryRepresentationWithCKRecord:v6 partitionType:2];
+    v17 = [objc_opt_class() dictionaryRepresentationWithCKRecord:chanceRecordCopy partitionType:1];
+    v18 = [objc_opt_class() dictionaryRepresentationWithCKRecord:chanceRecordCopy partitionType:2];
   }
 
   else
@@ -1287,18 +1287,18 @@ LABEL_17:
   {
     v34 = [MEMORY[0x277CCAAA0] dataWithJSONObject:v22 options:0 error:0];
     v33 = [MEMORY[0x277CCAAA0] dataWithJSONObject:v24 options:0 error:0];
-    v25 = [v37 encryptedValues];
-    [v25 setObject:v34 forKey:@"DNDSModeConfigurationsRecordMainPartition"];
+    encryptedValues = [recordCopy encryptedValues];
+    [encryptedValues setObject:v34 forKey:@"DNDSModeConfigurationsRecordMainPartition"];
 
-    v26 = [v37 encryptedValues];
-    [v26 setObject:v33 forKey:@"DNDSModeConfigurationsRecordSecondaryPartition"];
+    encryptedValues2 = [recordCopy encryptedValues];
+    [encryptedValues2 setObject:v33 forKey:@"DNDSModeConfigurationsRecordSecondaryPartition"];
 
     v27 = [MEMORY[0x277CCABB0] numberWithInteger:{-[DNDSModeConfigurationRecord ephemeralResolvedCompatibilityVersion](self, "ephemeralResolvedCompatibilityVersion")}];
-    [v37 setObject:v27 forKeyedSubscript:@"DNDSModeConfigurationsVersion"];
+    [recordCopy setObject:v27 forKeyedSubscript:@"DNDSModeConfigurationsVersion"];
 
     v28 = [MEMORY[0x277CCABB0] numberWithInteger:{-[DNDSModeConfigurationRecord ephemeralResolvedCompatibilityVersion](self, "ephemeralResolvedCompatibilityVersion")}];
     v29 = DNDSModeConfigurationsMinimumRequiredVersionForConfigurationVersion(v28);
-    [v37 setObject:v29 forKeyedSubscript:@"DNDSModeConfigurationsMinimumRequiredVersion"];
+    [recordCopy setObject:v29 forKeyedSubscript:@"DNDSModeConfigurationsMinimumRequiredVersion"];
 
     if (v35)
     {
@@ -1316,7 +1316,7 @@ LABEL_17:
     v31 = DNDSLogModeConfigurations;
     if (os_log_type_enabled(DNDSLogModeConfigurations, OS_LOG_TYPE_ERROR))
     {
-      [DNDSModeConfigurationRecord(CKRecord) populateCKRecord:v31 lastChanceRecord:v37];
+      [DNDSModeConfigurationRecord(CKRecord) populateCKRecord:v31 lastChanceRecord:recordCopy];
     }
 
     if (os_log_type_enabled(DNDSLogModeConfigurations, OS_LOG_TYPE_ERROR))
@@ -1340,19 +1340,19 @@ LABEL_17:
   return v30;
 }
 
-+ (id)newWithDNDSIDSRecord:(id)a3 currentRecord:(id)a4
++ (id)newWithDNDSIDSRecord:(id)record currentRecord:(id)currentRecord
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 objectForKey:@"DNDSModeConfigurationsRecordData"];
-  v8 = [v5 objectForKey:@"DNDSModeConfigurationsRecordPartitionedData"];
+  recordCopy = record;
+  currentRecordCopy = currentRecord;
+  v7 = [recordCopy objectForKey:@"DNDSModeConfigurationsRecordData"];
+  v8 = [recordCopy objectForKey:@"DNDSModeConfigurationsRecordPartitionedData"];
   v9 = v8;
   if (!v7)
   {
     v15 = DNDSLogModeConfigurations;
     if (os_log_type_enabled(DNDSLogModeConfigurations, OS_LOG_TYPE_ERROR))
     {
-      [DNDSModeConfigurationRecord(DNDSIDSRecord) newWithDNDSIDSRecord:v15 currentRecord:v5];
+      [DNDSModeConfigurationRecord(DNDSIDSRecord) newWithDNDSIDSRecord:v15 currentRecord:recordCopy];
     }
 
     goto LABEL_11;
@@ -1363,7 +1363,7 @@ LABEL_17:
     v16 = DNDSLogModeConfigurations;
     if (os_log_type_enabled(DNDSLogModeConfigurations, OS_LOG_TYPE_ERROR))
     {
-      [DNDSModeConfigurationRecord(DNDSIDSRecord) newWithDNDSIDSRecord:v16 currentRecord:v5];
+      [DNDSModeConfigurationRecord(DNDSIDSRecord) newWithDNDSIDSRecord:v16 currentRecord:recordCopy];
     }
 
 LABEL_11:
@@ -1380,7 +1380,7 @@ LABEL_11:
     v13 = DNDSLogModeConfigurations;
     if (os_log_type_enabled(DNDSLogModeConfigurations, OS_LOG_TYPE_ERROR))
     {
-      [DNDSModeConfigurationRecord(DNDSIDSRecord) newWithDNDSIDSRecord:v13 currentRecord:v5];
+      [DNDSModeConfigurationRecord(DNDSIDSRecord) newWithDNDSIDSRecord:v13 currentRecord:recordCopy];
     }
 
     v14 = 0;
@@ -1396,7 +1396,7 @@ LABEL_11:
       v18 = DNDSLogModeConfigurations;
       if (os_log_type_enabled(DNDSLogModeConfigurations, OS_LOG_TYPE_ERROR))
       {
-        [DNDSModeConfigurationRecord(DNDSIDSRecord) newWithDNDSIDSRecord:v18 currentRecord:v5];
+        [DNDSModeConfigurationRecord(DNDSIDSRecord) newWithDNDSIDSRecord:v18 currentRecord:recordCopy];
       }
 
       v14 = 0;
@@ -1406,7 +1406,7 @@ LABEL_11:
     {
       v22 = objc_alloc_init(DNDSApplicationIdentifierMapper);
       v19 = objc_alloc_init(DNDSContactProvider);
-      v20 = [[DNDSBackingStoreDictionaryContext alloc] initWithDestination:1 partitionType:3 currentRecord:v6 redactSensitiveData:0 contactProvider:v19 applicationIdentifierMapper:v22];
+      v20 = [[DNDSBackingStoreDictionaryContext alloc] initWithDestination:1 partitionType:3 currentRecord:currentRecordCopy redactSensitiveData:0 contactProvider:v19 applicationIdentifierMapper:v22];
       v14 = [DNDSModeConfigurationRecord newWithDictionaryRepresentation:v10 partitionedDictionaryRepresentation:v17 context:v20];
     }
   }
@@ -1415,9 +1415,9 @@ LABEL_19:
   return v14;
 }
 
-- (BOOL)populateDNDSIDSRecord:(id)a3
+- (BOOL)populateDNDSIDSRecord:(id)record
 {
-  v4 = a3;
+  recordCopy = record;
   v5 = objc_alloc_init(DNDSApplicationIdentifierMapper);
   v6 = objc_alloc_init(DNDSContactProvider);
   v7 = [[DNDSBackingStoreDictionaryContext alloc] initWithDestination:0 partitionType:1 redactSensitiveData:0 contactProvider:v6 applicationIdentifierMapper:v5];
@@ -1429,10 +1429,10 @@ LABEL_19:
   {
     v11 = [MEMORY[0x277CCAAA0] dataWithJSONObject:v8 options:0 error:0];
     v12 = [MEMORY[0x277CCAAA0] dataWithJSONObject:v10 options:0 error:0];
-    [v4 setObject:v11 forKey:@"DNDSModeConfigurationsRecordData"];
-    [v4 setObject:v12 forKey:@"DNDSModeConfigurationsRecordPartitionedData"];
-    [v4 setObject:&unk_285C53670 forKey:@"DNDSModeConfigurationsVersion"];
-    [v4 setObject:&unk_285C53670 forKey:@"DNDSModeConfigurationsMinimumRequiredVersion"];
+    [recordCopy setObject:v11 forKey:@"DNDSModeConfigurationsRecordData"];
+    [recordCopy setObject:v12 forKey:@"DNDSModeConfigurationsRecordPartitionedData"];
+    [recordCopy setObject:&unk_285C53670 forKey:@"DNDSModeConfigurationsVersion"];
+    [recordCopy setObject:&unk_285C53670 forKey:@"DNDSModeConfigurationsMinimumRequiredVersion"];
 
     v13 = 1;
   }
@@ -1442,7 +1442,7 @@ LABEL_19:
     v14 = DNDSLogModeConfigurations;
     if (os_log_type_enabled(DNDSLogModeConfigurations, OS_LOG_TYPE_ERROR))
     {
-      [(DNDSModeConfigurationRecord(DNDSIDSRecord) *)v14 populateDNDSIDSRecord:v4];
+      [(DNDSModeConfigurationRecord(DNDSIDSRecord) *)v14 populateDNDSIDSRecord:recordCopy];
     }
 
     if (os_log_type_enabled(DNDSLogModeConfigurations, OS_LOG_TYPE_ERROR))

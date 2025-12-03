@@ -1,18 +1,18 @@
 @interface SUUIInputViewElement
-- (SUUIInputViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5;
+- (SUUIInputViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory;
 @end
 
 @implementation SUUIInputViewElement
 
-- (SUUIInputViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5
+- (SUUIInputViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  elementCopy = element;
+  parentCopy = parent;
+  factoryCopy = factory;
   v11 = objc_opt_class();
   if (v11 == objc_opt_class())
   {
-    v13 = [v8 getAttribute:@"type"];
+    v13 = [elementCopy getAttribute:@"type"];
     if ([v13 isEqualToString:@"checkbox"])
     {
       v14 = SUUICheckboxInputViewElement;
@@ -34,14 +34,14 @@
       {
         v16.receiver = self;
         v16.super_class = SUUIInputViewElement;
-        v12 = [(SUUIViewElement *)&v16 initWithDOMElement:v8 parent:v9 elementFactory:v10];
+        v12 = [(SUUIViewElement *)&v16 initWithDOMElement:elementCopy parent:parentCopy elementFactory:factoryCopy];
         goto LABEL_12;
       }
 
       v14 = SUUISubmitInputViewElement;
     }
 
-    v12 = [[v14 alloc] initWithDOMElement:v8 parent:v9 elementFactory:v10];
+    v12 = [[v14 alloc] initWithDOMElement:elementCopy parent:parentCopy elementFactory:factoryCopy];
 
 LABEL_12:
     goto LABEL_13;
@@ -49,7 +49,7 @@ LABEL_12:
 
   v17.receiver = self;
   v17.super_class = SUUIInputViewElement;
-  v12 = [(SUUIViewElement *)&v17 initWithDOMElement:v8 parent:v9 elementFactory:v10];
+  v12 = [(SUUIViewElement *)&v17 initWithDOMElement:elementCopy parent:parentCopy elementFactory:factoryCopy];
 LABEL_13:
 
   return v12;

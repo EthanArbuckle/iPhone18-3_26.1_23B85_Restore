@@ -1,30 +1,30 @@
 @interface WiFiAnalyticsAWDWiFiTDMSlice
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasAckTxPowerBackoffCount:(BOOL)a3;
-- (void)setHasTxDeferredCount:(BOOL)a3;
-- (void)setHasTxMuteCount:(BOOL)a3;
-- (void)setHasTxPathEnableReqCount:(BOOL)a3;
-- (void)setHasTxPathMuteCount:(BOOL)a3;
-- (void)setHasTxPriDuration:(BOOL)a3;
-- (void)setHasTxPriorityCount:(BOOL)a3;
-- (void)setHasTxaDuration:(BOOL)a3;
-- (void)setHasTxaONCount:(BOOL)a3;
-- (void)setHasTxaPORCount:(BOOL)a3;
-- (void)setHasTxaTimeoutCount:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasAckTxPowerBackoffCount:(BOOL)count;
+- (void)setHasTxDeferredCount:(BOOL)count;
+- (void)setHasTxMuteCount:(BOOL)count;
+- (void)setHasTxPathEnableReqCount:(BOOL)count;
+- (void)setHasTxPathMuteCount:(BOOL)count;
+- (void)setHasTxPriDuration:(BOOL)duration;
+- (void)setHasTxPriorityCount:(BOOL)count;
+- (void)setHasTxaDuration:(BOOL)duration;
+- (void)setHasTxaONCount:(BOOL)count;
+- (void)setHasTxaPORCount:(BOOL)count;
+- (void)setHasTxaTimeoutCount:(BOOL)count;
+- (void)writeTo:(id)to;
 @end
 
 @implementation WiFiAnalyticsAWDWiFiTDMSlice
 
-- (void)setHasTxaONCount:(BOOL)a3
+- (void)setHasTxaONCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 512;
   }
@@ -37,9 +37,9 @@
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (void)setHasTxaTimeoutCount:(BOOL)a3
+- (void)setHasTxaTimeoutCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 2048;
   }
@@ -52,9 +52,9 @@
   *&self->_has = *&self->_has & 0xF7FF | v3;
 }
 
-- (void)setHasTxaPORCount:(BOOL)a3
+- (void)setHasTxaPORCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 1024;
   }
@@ -67,9 +67,9 @@
   *&self->_has = *&self->_has & 0xFBFF | v3;
 }
 
-- (void)setHasTxPathEnableReqCount:(BOOL)a3
+- (void)setHasTxPathEnableReqCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 64;
   }
@@ -82,9 +82,9 @@
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasTxPathMuteCount:(BOOL)a3
+- (void)setHasTxPathMuteCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 128;
   }
@@ -97,9 +97,9 @@
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasTxPriorityCount:(BOOL)a3
+- (void)setHasTxPriorityCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 256;
   }
@@ -112,9 +112,9 @@
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasTxDeferredCount:(BOOL)a3
+- (void)setHasTxDeferredCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 16;
   }
@@ -127,9 +127,9 @@
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasTxMuteCount:(BOOL)a3
+- (void)setHasTxMuteCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 32;
   }
@@ -142,9 +142,9 @@
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasAckTxPowerBackoffCount:(BOOL)a3
+- (void)setHasAckTxPowerBackoffCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 8;
   }
@@ -157,9 +157,9 @@
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasTxaDuration:(BOOL)a3
+- (void)setHasTxaDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 4;
   }
@@ -172,9 +172,9 @@
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasTxPriDuration:(BOOL)a3
+- (void)setHasTxPriDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 2;
   }
@@ -193,20 +193,20 @@
   v8.receiver = self;
   v8.super_class = WiFiAnalyticsAWDWiFiTDMSlice;
   v4 = [(WiFiAnalyticsAWDWiFiTDMSlice *)&v8 description];
-  v5 = [(WiFiAnalyticsAWDWiFiTDMSlice *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(WiFiAnalyticsAWDWiFiTDMSlice *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 0x200) != 0)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_txaONCount];
-    [v3 setObject:v7 forKey:@"txaONCount"];
+    [dictionary setObject:v7 forKey:@"txaONCount"];
 
     has = self->_has;
     if ((has & 0x800) == 0)
@@ -227,7 +227,7 @@ LABEL_3:
   }
 
   v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_txaTimeoutCount];
-  [v3 setObject:v8 forKey:@"txaTimeoutCount"];
+  [dictionary setObject:v8 forKey:@"txaTimeoutCount"];
 
   has = self->_has;
   if ((has & 0x400) == 0)
@@ -243,7 +243,7 @@ LABEL_4:
 
 LABEL_19:
   v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_txaPORCount];
-  [v3 setObject:v9 forKey:@"txaPORCount"];
+  [dictionary setObject:v9 forKey:@"txaPORCount"];
 
   has = self->_has;
   if ((has & 0x40) == 0)
@@ -259,7 +259,7 @@ LABEL_5:
 
 LABEL_20:
   v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_txPathEnableReqCount];
-  [v3 setObject:v10 forKey:@"txPathEnableReqCount"];
+  [dictionary setObject:v10 forKey:@"txPathEnableReqCount"];
 
   has = self->_has;
   if ((has & 0x80) == 0)
@@ -275,7 +275,7 @@ LABEL_6:
 
 LABEL_21:
   v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_txPathMuteCount];
-  [v3 setObject:v11 forKey:@"txPathMuteCount"];
+  [dictionary setObject:v11 forKey:@"txPathMuteCount"];
 
   has = self->_has;
   if ((has & 0x100) == 0)
@@ -291,7 +291,7 @@ LABEL_7:
 
 LABEL_22:
   v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_txPriorityCount];
-  [v3 setObject:v12 forKey:@"txPriorityCount"];
+  [dictionary setObject:v12 forKey:@"txPriorityCount"];
 
   has = self->_has;
   if ((has & 0x10) == 0)
@@ -307,7 +307,7 @@ LABEL_8:
 
 LABEL_23:
   v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_txDeferredCount];
-  [v3 setObject:v13 forKey:@"txDeferredCount"];
+  [dictionary setObject:v13 forKey:@"txDeferredCount"];
 
   has = self->_has;
   if ((has & 0x20) == 0)
@@ -323,7 +323,7 @@ LABEL_9:
 
 LABEL_24:
   v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_txMuteCount];
-  [v3 setObject:v14 forKey:@"txMuteCount"];
+  [dictionary setObject:v14 forKey:@"txMuteCount"];
 
   has = self->_has;
   if ((has & 8) == 0)
@@ -339,7 +339,7 @@ LABEL_10:
 
 LABEL_25:
   v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_ackTxPowerBackoffCount];
-  [v3 setObject:v15 forKey:@"ackTxPowerBackoffCount"];
+  [dictionary setObject:v15 forKey:@"ackTxPowerBackoffCount"];
 
   has = self->_has;
   if ((has & 4) == 0)
@@ -355,7 +355,7 @@ LABEL_11:
 
 LABEL_26:
   v16 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_txaDuration];
-  [v3 setObject:v16 forKey:@"txaDuration"];
+  [dictionary setObject:v16 forKey:@"txaDuration"];
 
   has = self->_has;
   if ((has & 2) == 0)
@@ -371,23 +371,23 @@ LABEL_12:
 
 LABEL_27:
   v17 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_txPriDuration];
-  [v3 setObject:v17 forKey:@"txPriDuration"];
+  [dictionary setObject:v17 forKey:@"txPriDuration"];
 
   if (*&self->_has)
   {
 LABEL_13:
     v5 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_txDeferDuration];
-    [v3 setObject:v5 forKey:@"txDeferDuration"];
+    [dictionary setObject:v5 forKey:@"txDeferDuration"];
   }
 
 LABEL_14:
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v17 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 0x200) != 0)
   {
@@ -558,14 +558,14 @@ LABEL_13:
 LABEL_14:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 0x200) != 0)
   {
-    v4[14] = self->_txaONCount;
-    *(v4 + 34) |= 0x200u;
+    toCopy[14] = self->_txaONCount;
+    *(toCopy + 34) |= 0x200u;
     has = self->_has;
     if ((has & 0x800) == 0)
     {
@@ -584,8 +584,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[16] = self->_txaTimeoutCount;
-  *(v4 + 34) |= 0x800u;
+  toCopy[16] = self->_txaTimeoutCount;
+  *(toCopy + 34) |= 0x800u;
   has = self->_has;
   if ((has & 0x400) == 0)
   {
@@ -599,8 +599,8 @@ LABEL_4:
   }
 
 LABEL_19:
-  v4[15] = self->_txaPORCount;
-  *(v4 + 34) |= 0x400u;
+  toCopy[15] = self->_txaPORCount;
+  *(toCopy + 34) |= 0x400u;
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -614,8 +614,8 @@ LABEL_5:
   }
 
 LABEL_20:
-  v4[11] = self->_txPathEnableReqCount;
-  *(v4 + 34) |= 0x40u;
+  toCopy[11] = self->_txPathEnableReqCount;
+  *(toCopy + 34) |= 0x40u;
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -629,8 +629,8 @@ LABEL_6:
   }
 
 LABEL_21:
-  v4[12] = self->_txPathMuteCount;
-  *(v4 + 34) |= 0x80u;
+  toCopy[12] = self->_txPathMuteCount;
+  *(toCopy + 34) |= 0x80u;
   has = self->_has;
   if ((has & 0x100) == 0)
   {
@@ -644,8 +644,8 @@ LABEL_7:
   }
 
 LABEL_22:
-  v4[13] = self->_txPriorityCount;
-  *(v4 + 34) |= 0x100u;
+  toCopy[13] = self->_txPriorityCount;
+  *(toCopy + 34) |= 0x100u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -659,8 +659,8 @@ LABEL_8:
   }
 
 LABEL_23:
-  v4[9] = self->_txDeferredCount;
-  *(v4 + 34) |= 0x10u;
+  toCopy[9] = self->_txDeferredCount;
+  *(toCopy + 34) |= 0x10u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -674,8 +674,8 @@ LABEL_9:
   }
 
 LABEL_24:
-  v4[10] = self->_txMuteCount;
-  *(v4 + 34) |= 0x20u;
+  toCopy[10] = self->_txMuteCount;
+  *(toCopy + 34) |= 0x20u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -689,8 +689,8 @@ LABEL_10:
   }
 
 LABEL_25:
-  v4[8] = self->_ackTxPowerBackoffCount;
-  *(v4 + 34) |= 8u;
+  toCopy[8] = self->_ackTxPowerBackoffCount;
+  *(toCopy + 34) |= 8u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -704,8 +704,8 @@ LABEL_11:
   }
 
 LABEL_26:
-  *(v4 + 3) = self->_txaDuration;
-  *(v4 + 34) |= 4u;
+  *(toCopy + 3) = self->_txaDuration;
+  *(toCopy + 34) |= 4u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -719,21 +719,21 @@ LABEL_12:
   }
 
 LABEL_27:
-  *(v4 + 2) = self->_txPriDuration;
-  *(v4 + 34) |= 2u;
+  *(toCopy + 2) = self->_txPriDuration;
+  *(toCopy + 34) |= 2u;
   if (*&self->_has)
   {
 LABEL_13:
-    *(v4 + 1) = self->_txDeferDuration;
-    *(v4 + 34) |= 1u;
+    *(toCopy + 1) = self->_txDeferDuration;
+    *(toCopy + 34) |= 1u;
   }
 
 LABEL_14:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if ((has & 0x200) != 0)
   {
@@ -905,25 +905,25 @@ LABEL_13:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_62;
   }
 
   has = self->_has;
-  v6 = *(v4 + 34);
+  v6 = *(equalCopy + 34);
   if ((has & 0x200) != 0)
   {
-    if ((*(v4 + 34) & 0x200) == 0 || self->_txaONCount != *(v4 + 14))
+    if ((*(equalCopy + 34) & 0x200) == 0 || self->_txaONCount != *(equalCopy + 14))
     {
       goto LABEL_62;
     }
   }
 
-  else if ((*(v4 + 34) & 0x200) != 0)
+  else if ((*(equalCopy + 34) & 0x200) != 0)
   {
 LABEL_62:
     v7 = 0;
@@ -932,33 +932,33 @@ LABEL_62:
 
   if ((*&self->_has & 0x800) != 0)
   {
-    if ((*(v4 + 34) & 0x800) == 0 || self->_txaTimeoutCount != *(v4 + 16))
+    if ((*(equalCopy + 34) & 0x800) == 0 || self->_txaTimeoutCount != *(equalCopy + 16))
     {
       goto LABEL_62;
     }
   }
 
-  else if ((*(v4 + 34) & 0x800) != 0)
+  else if ((*(equalCopy + 34) & 0x800) != 0)
   {
     goto LABEL_62;
   }
 
   if ((*&self->_has & 0x400) != 0)
   {
-    if ((*(v4 + 34) & 0x400) == 0 || self->_txaPORCount != *(v4 + 15))
+    if ((*(equalCopy + 34) & 0x400) == 0 || self->_txaPORCount != *(equalCopy + 15))
     {
       goto LABEL_62;
     }
   }
 
-  else if ((*(v4 + 34) & 0x400) != 0)
+  else if ((*(equalCopy + 34) & 0x400) != 0)
   {
     goto LABEL_62;
   }
 
   if ((has & 0x40) != 0)
   {
-    if ((v6 & 0x40) == 0 || self->_txPathEnableReqCount != *(v4 + 11))
+    if ((v6 & 0x40) == 0 || self->_txPathEnableReqCount != *(equalCopy + 11))
     {
       goto LABEL_62;
     }
@@ -971,7 +971,7 @@ LABEL_62:
 
   if ((has & 0x80) != 0)
   {
-    if ((v6 & 0x80) == 0 || self->_txPathMuteCount != *(v4 + 12))
+    if ((v6 & 0x80) == 0 || self->_txPathMuteCount != *(equalCopy + 12))
     {
       goto LABEL_62;
     }
@@ -984,20 +984,20 @@ LABEL_62:
 
   if ((*&self->_has & 0x100) != 0)
   {
-    if ((*(v4 + 34) & 0x100) == 0 || self->_txPriorityCount != *(v4 + 13))
+    if ((*(equalCopy + 34) & 0x100) == 0 || self->_txPriorityCount != *(equalCopy + 13))
     {
       goto LABEL_62;
     }
   }
 
-  else if ((*(v4 + 34) & 0x100) != 0)
+  else if ((*(equalCopy + 34) & 0x100) != 0)
   {
     goto LABEL_62;
   }
 
   if ((has & 0x10) != 0)
   {
-    if ((v6 & 0x10) == 0 || self->_txDeferredCount != *(v4 + 9))
+    if ((v6 & 0x10) == 0 || self->_txDeferredCount != *(equalCopy + 9))
     {
       goto LABEL_62;
     }
@@ -1010,7 +1010,7 @@ LABEL_62:
 
   if ((has & 0x20) != 0)
   {
-    if ((v6 & 0x20) == 0 || self->_txMuteCount != *(v4 + 10))
+    if ((v6 & 0x20) == 0 || self->_txMuteCount != *(equalCopy + 10))
     {
       goto LABEL_62;
     }
@@ -1023,7 +1023,7 @@ LABEL_62:
 
   if ((has & 8) != 0)
   {
-    if ((v6 & 8) == 0 || self->_ackTxPowerBackoffCount != *(v4 + 8))
+    if ((v6 & 8) == 0 || self->_ackTxPowerBackoffCount != *(equalCopy + 8))
     {
       goto LABEL_62;
     }
@@ -1036,7 +1036,7 @@ LABEL_62:
 
   if ((has & 4) != 0)
   {
-    if ((v6 & 4) == 0 || self->_txaDuration != *(v4 + 3))
+    if ((v6 & 4) == 0 || self->_txaDuration != *(equalCopy + 3))
     {
       goto LABEL_62;
     }
@@ -1049,7 +1049,7 @@ LABEL_62:
 
   if ((has & 2) != 0)
   {
-    if ((v6 & 2) == 0 || self->_txPriDuration != *(v4 + 2))
+    if ((v6 & 2) == 0 || self->_txPriDuration != *(equalCopy + 2))
     {
       goto LABEL_62;
     }
@@ -1062,7 +1062,7 @@ LABEL_62:
 
   if (has)
   {
-    if ((v6 & 1) == 0 || self->_txDeferDuration != *(v4 + 1))
+    if ((v6 & 1) == 0 || self->_txDeferDuration != *(equalCopy + 1))
     {
       goto LABEL_62;
     }
@@ -1247,15 +1247,15 @@ LABEL_13:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13 ^ v14;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 34);
+  fromCopy = from;
+  v5 = *(fromCopy + 34);
   if ((v5 & 0x200) != 0)
   {
-    self->_txaONCount = *(v4 + 14);
+    self->_txaONCount = *(fromCopy + 14);
     *&self->_has |= 0x200u;
-    v5 = *(v4 + 34);
+    v5 = *(fromCopy + 34);
     if ((v5 & 0x800) == 0)
     {
 LABEL_3:
@@ -1268,14 +1268,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 34) & 0x800) == 0)
+  else if ((*(fromCopy + 34) & 0x800) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_txaTimeoutCount = *(v4 + 16);
+  self->_txaTimeoutCount = *(fromCopy + 16);
   *&self->_has |= 0x800u;
-  v5 = *(v4 + 34);
+  v5 = *(fromCopy + 34);
   if ((v5 & 0x400) == 0)
   {
 LABEL_4:
@@ -1288,9 +1288,9 @@ LABEL_4:
   }
 
 LABEL_19:
-  self->_txaPORCount = *(v4 + 15);
+  self->_txaPORCount = *(fromCopy + 15);
   *&self->_has |= 0x400u;
-  v5 = *(v4 + 34);
+  v5 = *(fromCopy + 34);
   if ((v5 & 0x40) == 0)
   {
 LABEL_5:
@@ -1303,9 +1303,9 @@ LABEL_5:
   }
 
 LABEL_20:
-  self->_txPathEnableReqCount = *(v4 + 11);
+  self->_txPathEnableReqCount = *(fromCopy + 11);
   *&self->_has |= 0x40u;
-  v5 = *(v4 + 34);
+  v5 = *(fromCopy + 34);
   if ((v5 & 0x80) == 0)
   {
 LABEL_6:
@@ -1318,9 +1318,9 @@ LABEL_6:
   }
 
 LABEL_21:
-  self->_txPathMuteCount = *(v4 + 12);
+  self->_txPathMuteCount = *(fromCopy + 12);
   *&self->_has |= 0x80u;
-  v5 = *(v4 + 34);
+  v5 = *(fromCopy + 34);
   if ((v5 & 0x100) == 0)
   {
 LABEL_7:
@@ -1333,9 +1333,9 @@ LABEL_7:
   }
 
 LABEL_22:
-  self->_txPriorityCount = *(v4 + 13);
+  self->_txPriorityCount = *(fromCopy + 13);
   *&self->_has |= 0x100u;
-  v5 = *(v4 + 34);
+  v5 = *(fromCopy + 34);
   if ((v5 & 0x10) == 0)
   {
 LABEL_8:
@@ -1348,9 +1348,9 @@ LABEL_8:
   }
 
 LABEL_23:
-  self->_txDeferredCount = *(v4 + 9);
+  self->_txDeferredCount = *(fromCopy + 9);
   *&self->_has |= 0x10u;
-  v5 = *(v4 + 34);
+  v5 = *(fromCopy + 34);
   if ((v5 & 0x20) == 0)
   {
 LABEL_9:
@@ -1363,9 +1363,9 @@ LABEL_9:
   }
 
 LABEL_24:
-  self->_txMuteCount = *(v4 + 10);
+  self->_txMuteCount = *(fromCopy + 10);
   *&self->_has |= 0x20u;
-  v5 = *(v4 + 34);
+  v5 = *(fromCopy + 34);
   if ((v5 & 8) == 0)
   {
 LABEL_10:
@@ -1378,9 +1378,9 @@ LABEL_10:
   }
 
 LABEL_25:
-  self->_ackTxPowerBackoffCount = *(v4 + 8);
+  self->_ackTxPowerBackoffCount = *(fromCopy + 8);
   *&self->_has |= 8u;
-  v5 = *(v4 + 34);
+  v5 = *(fromCopy + 34);
   if ((v5 & 4) == 0)
   {
 LABEL_11:
@@ -1393,9 +1393,9 @@ LABEL_11:
   }
 
 LABEL_26:
-  self->_txaDuration = *(v4 + 3);
+  self->_txaDuration = *(fromCopy + 3);
   *&self->_has |= 4u;
-  v5 = *(v4 + 34);
+  v5 = *(fromCopy + 34);
   if ((v5 & 2) == 0)
   {
 LABEL_12:
@@ -1408,12 +1408,12 @@ LABEL_12:
   }
 
 LABEL_27:
-  self->_txPriDuration = *(v4 + 2);
+  self->_txPriDuration = *(fromCopy + 2);
   *&self->_has |= 2u;
-  if (*(v4 + 34))
+  if (*(fromCopy + 34))
   {
 LABEL_13:
-    self->_txDeferDuration = *(v4 + 1);
+    self->_txDeferDuration = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 

@@ -7,7 +7,7 @@
 
 - (LPLinkMetadata)linkMetadata
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1D6F5987C();
 
   return v3;

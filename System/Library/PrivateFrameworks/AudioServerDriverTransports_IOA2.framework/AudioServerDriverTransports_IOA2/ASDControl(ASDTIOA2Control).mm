@@ -10,18 +10,18 @@
 {
   v64 = *MEMORY[0x277D85DE8];
   v45 = a3;
-  v4 = a1;
+  selfCopy = self;
   v5 = MEMORY[0x277CBEB18];
-  v46 = v4;
-  v6 = [v4 properties];
-  v47 = [v5 arrayWithCapacity:{objc_msgSend(v6, "count") + 1}];
+  v46 = selfCopy;
+  properties = [selfCopy properties];
+  v47 = [v5 arrayWithCapacity:{objc_msgSend(properties, "count") + 1}];
 
   v54 = 0u;
   v55 = 0u;
   v52 = 0u;
   v53 = 0u;
-  v7 = [v46 properties];
-  v8 = [v7 countByEnumeratingWithState:&v52 objects:v63 count:16];
+  properties2 = [v46 properties];
+  v8 = [properties2 countByEnumeratingWithState:&v52 objects:v63 count:16];
   if (v8)
   {
     v9 = *v53;
@@ -31,7 +31,7 @@
       {
         if (*v53 != v9)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(properties2);
         }
 
         v11 = *(*(&v52 + 1) + 8 * i);
@@ -39,8 +39,8 @@
         if (objc_opt_isKindOfClass())
         {
           v12 = MEMORY[0x277CCABB0];
-          v13 = [v11 address];
-          v14 = [v12 numberWithUnsignedInt:{objc_msgSend(v13, "selector")}];
+          address = [v11 address];
+          v14 = [v12 numberWithUnsignedInt:{objc_msgSend(address, "selector")}];
           [v47 addObject:v14];
         }
 
@@ -50,7 +50,7 @@
         }
       }
 
-      v8 = [v7 countByEnumeratingWithState:&v52 objects:v63 count:16];
+      v8 = [properties2 countByEnumeratingWithState:&v52 objects:v63 count:16];
     }
 
     while (v8);
@@ -63,15 +63,15 @@
   }
 
   [v46 asdtRemoveControlProperties];
-  v44 = [v46 propertySelectorInfo];
-  if (![v44 count] || !objc_msgSend(v45, "count"))
+  propertySelectorInfo = [v46 propertySelectorInfo];
+  if (![propertySelectorInfo count] || !objc_msgSend(v45, "count"))
   {
     v15 = 1;
     goto LABEL_43;
   }
 
   v16 = [v45 count];
-  if (v16 != [v44 count])
+  if (v16 != [propertySelectorInfo count])
   {
     log = ASDTIOA2LogType();
     if (os_log_type_enabled(log, OS_LOG_TYPE_ERROR))
@@ -79,7 +79,7 @@
       v39 = objc_opt_class();
       v40 = NSStringFromClass(v39);
       v41 = [v45 count];
-      v42 = [v44 count];
+      v42 = [propertySelectorInfo count];
       *buf = 138412802;
       v58 = v40;
       v59 = 1024;
@@ -107,8 +107,8 @@
       v51 = 0u;
       v48 = 0u;
       v49 = 0u;
-      v27 = [v46 properties];
-      v28 = [v27 countByEnumeratingWithState:&v48 objects:v56 count:16];
+      properties3 = [v46 properties];
+      v28 = [properties3 countByEnumeratingWithState:&v48 objects:v56 count:16];
       v29 = v28;
       if (v28)
       {
@@ -120,22 +120,22 @@
           {
             if (*v49 != v30)
             {
-              objc_enumerationMutation(v27);
+              objc_enumerationMutation(properties3);
             }
 
             v32 = *(*(&v48 + 1) + 8 * v31);
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              v33 = [v46 ioa2Device];
-              [v33 addCustomProperty:v32];
+              ioa2Device = [v46 ioa2Device];
+              [ioa2Device addCustomProperty:v32];
             }
 
             ++v31;
           }
 
           while (v29 != v31);
-          v29 = [v27 countByEnumeratingWithState:&v48 objects:v56 count:16];
+          v29 = [properties3 countByEnumeratingWithState:&v48 objects:v56 count:16];
         }
 
         while (v29);
@@ -145,26 +145,26 @@
     }
 
     v19 = [v45 objectAtIndexedSubscript:j];
-    v20 = [v19 unsignedIntValue];
+    unsignedIntValue = [v19 unsignedIntValue];
 
-    if (v20)
+    if (unsignedIntValue)
     {
       break;
     }
 
-    v27 = [MEMORY[0x277CBEB68] null];
-    [log addObject:v27];
+    properties3 = [MEMORY[0x277CBEB68] null];
+    [log addObject:properties3];
 LABEL_23:
   }
 
-  v27 = [v44 objectAtIndexedSubscript:j];
-  v21 = [v27 objectForKeyedSubscript:@"selector"];
-  v22 = [v21 unsignedIntValue];
+  properties3 = [propertySelectorInfo objectAtIndexedSubscript:j];
+  v21 = [properties3 objectForKeyedSubscript:@"selector"];
+  unsignedIntValue2 = [v21 unsignedIntValue];
 
-  v23 = [v27 objectForKeyedSubscript:@"dataType"];
-  v24 = [v23 unsignedIntValue];
+  v23 = [properties3 objectForKeyedSubscript:@"dataType"];
+  unsignedIntValue3 = [v23 unsignedIntValue];
 
-  v25 = [MEMORY[0x277CEFB80] forControl:v46 controlSelector:v22 propertySelector:v20 propertyDataType:v24];
+  v25 = [MEMORY[0x277CEFB80] forControl:v46 controlSelector:unsignedIntValue2 propertySelector:unsignedIntValue propertyDataType:unsignedIntValue3];
   if (v25)
   {
     [log addObject:v25];
@@ -177,7 +177,7 @@ LABEL_23:
   {
     v35 = objc_opt_class();
     v36 = NSStringFromClass(v35);
-    [(ASDControl(ASDTIOA2Control) *)v36 asdtAddControlProperties:v20, buf, v34];
+    [(ASDControl(ASDTIOA2Control) *)v36 asdtAddControlProperties:unsignedIntValue, buf, v34];
   }
 
 LABEL_41:
@@ -193,13 +193,13 @@ LABEL_44:
 - (void)asdtRemoveControlProperties
 {
   v14 = *MEMORY[0x277D85DE8];
-  v1 = a1;
+  selfCopy = self;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [v1 properties];
-  v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  properties = [selfCopy properties];
+  v3 = [properties countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v3)
   {
     v4 = *v10;
@@ -210,35 +210,35 @@ LABEL_44:
       {
         if (*v10 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(properties);
         }
 
         v6 = *(*(&v9 + 1) + 8 * v5);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v7 = [v1 ioa2Device];
-          [v7 removeCustomProperty:v6];
+          ioa2Device = [selfCopy ioa2Device];
+          [ioa2Device removeCustomProperty:v6];
         }
 
         ++v5;
       }
 
       while (v3 != v5);
-      v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v3 = [properties countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v3);
   }
 
-  [v1 setProperties:0];
+  [selfCopy setProperties:0];
   v8 = *MEMORY[0x277D85DE8];
 }
 
 - (void)asdtSendControlPropertyChangeNotificationAtIndex:()ASDTIOA2Control
 {
-  v4 = [a1 properties];
-  v5 = [v4 objectAtIndex:a3];
+  properties = [self properties];
+  v5 = [properties objectAtIndex:a3];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())

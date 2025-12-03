@@ -1,23 +1,23 @@
 @interface PKPaymentPreferenceAddListItem
-- (PKPaymentPreferenceAddListItem)initWithAddPreferenceType:(int)a3 forSectionPreference:(id)a4 handler:(id)a5;
+- (PKPaymentPreferenceAddListItem)initWithAddPreferenceType:(int)type forSectionPreference:(id)preference handler:(id)handler;
 - (id)_text;
 - (id)configuration;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation PKPaymentPreferenceAddListItem
 
-- (PKPaymentPreferenceAddListItem)initWithAddPreferenceType:(int)a3 forSectionPreference:(id)a4 handler:(id)a5
+- (PKPaymentPreferenceAddListItem)initWithAddPreferenceType:(int)type forSectionPreference:(id)preference handler:(id)handler
 {
-  v8 = a5;
+  handlerCopy = handler;
   v14.receiver = self;
   v14.super_class = PKPaymentPreferenceAddListItem;
-  v9 = [(PKPaymentPreferenceListItem *)&v14 initWithSectionPreference:a4];
+  v9 = [(PKPaymentPreferenceListItem *)&v14 initWithSectionPreference:preference];
   v10 = v9;
   if (v9)
   {
-    v9->_type = a3;
-    v11 = _Block_copy(v8);
+    v9->_type = type;
+    v11 = _Block_copy(handlerCopy);
     handler = v10->_handler;
     v10->_handler = v11;
   }
@@ -25,11 +25,11 @@
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = PKPaymentPreferenceAddListItem;
-  v4 = [(PKPaymentPreferenceListItem *)&v8 copyWithZone:a3];
+  v4 = [(PKPaymentPreferenceListItem *)&v8 copyWithZone:zone];
   v4[4] = self->_type;
   v5 = _Block_copy(self->_handler);
   v6 = *(v4 + 3);
@@ -42,28 +42,28 @@
 {
   v9.receiver = self;
   v9.super_class = PKPaymentPreferenceAddListItem;
-  v3 = [(PKPaymentPreferenceListItem *)&v9 configuration];
+  configuration = [(PKPaymentPreferenceListItem *)&v9 configuration];
   buttonTextColor = self->_buttonTextColor;
   if (buttonTextColor)
   {
-    v5 = buttonTextColor;
+    systemBlueColor = buttonTextColor;
   }
 
   else
   {
-    v5 = [MEMORY[0x1E69DC888] systemBlueColor];
+    systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
   }
 
-  v6 = v5;
-  v7 = [v3 textProperties];
-  [v7 setColor:v6];
+  v6 = systemBlueColor;
+  textProperties = [configuration textProperties];
+  [textProperties setColor:v6];
 
-  return v3;
+  return configuration;
 }
 
 - (id)_text
 {
-  v3 = [(PKPaymentPreferenceListItem *)self sectionPreference];
+  sectionPreference = [(PKPaymentPreferenceListItem *)self sectionPreference];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -73,12 +73,12 @@
     goto LABEL_10;
   }
 
-  v5 = [(PKPaymentPreferenceListItem *)self sectionPreference];
-  v6 = v5;
+  sectionPreference2 = [(PKPaymentPreferenceListItem *)self sectionPreference];
+  v6 = sectionPreference2;
   type = self->_type;
   if (type == 1)
   {
-    v8 = [v5 addExistingTitle];
+    addExistingTitle = [sectionPreference2 addExistingTitle];
   }
 
   else
@@ -89,10 +89,10 @@
       goto LABEL_9;
     }
 
-    v8 = [v5 addNewTitle];
+    addExistingTitle = [sectionPreference2 addNewTitle];
   }
 
-  v9 = v8;
+  v9 = addExistingTitle;
 LABEL_9:
 
 LABEL_10:

@@ -1,94 +1,94 @@
 @interface TUNearbyDeviceHandle
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToDeviceHandle:(id)a3;
-- (BOOL)isEquivalentToDeviceHandle:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToDeviceHandle:(id)handle;
+- (BOOL)isEquivalentToDeviceHandle:(id)handle;
 - (NSDictionary)plistRepresentation;
-- (TUNearbyDeviceHandle)initWithCoder:(id)a3;
-- (TUNearbyDeviceHandle)initWithName:(id)a3 knownIdentifiers:(id)a4;
-- (TUNearbyDeviceHandle)initWithName:(id)a3 knownIdentifiers:(id)a4 deviceModel:(int64_t)a5;
-- (TUNearbyDeviceHandle)initWithName:(id)a3 knownIdentifiers:(id)a4 deviceModel:(int64_t)a5 capabilities:(id)a6;
-- (TUNearbyDeviceHandle)initWithType:(int64_t)a3 identifier:(id)a4 name:(id)a5;
-- (TUNearbyDeviceHandle)initWithType:(int64_t)a3 identifier:(id)a4 name:(id)a5 capabilities:(id)a6;
-- (id)copyWithZone:(_NSZone *)a3;
+- (TUNearbyDeviceHandle)initWithCoder:(id)coder;
+- (TUNearbyDeviceHandle)initWithName:(id)name knownIdentifiers:(id)identifiers;
+- (TUNearbyDeviceHandle)initWithName:(id)name knownIdentifiers:(id)identifiers deviceModel:(int64_t)model;
+- (TUNearbyDeviceHandle)initWithName:(id)name knownIdentifiers:(id)identifiers deviceModel:(int64_t)model capabilities:(id)capabilities;
+- (TUNearbyDeviceHandle)initWithType:(int64_t)type identifier:(id)identifier name:(id)name;
+- (TUNearbyDeviceHandle)initWithType:(int64_t)type identifier:(id)identifier name:(id)name capabilities:(id)capabilities;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)identifierDescription;
-- (id)identifierWithType:(int64_t)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)identifierWithType:(int64_t)type;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TUNearbyDeviceHandle
 
-- (TUNearbyDeviceHandle)initWithName:(id)a3 knownIdentifiers:(id)a4 deviceModel:(int64_t)a5 capabilities:(id)a6
+- (TUNearbyDeviceHandle)initWithName:(id)name knownIdentifiers:(id)identifiers deviceModel:(int64_t)model capabilities:(id)capabilities
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  nameCopy = name;
+  identifiersCopy = identifiers;
+  capabilitiesCopy = capabilities;
   v19.receiver = self;
   v19.super_class = TUNearbyDeviceHandle;
   v13 = [(TUNearbyDeviceHandle *)&v19 init];
   if (v13)
   {
-    v14 = [v10 copy];
+    v14 = [nameCopy copy];
     name = v13->_name;
     v13->_name = v14;
 
-    v16 = [v11 copy];
+    v16 = [identifiersCopy copy];
     knownIdentifiersByHandleType = v13->_knownIdentifiersByHandleType;
     v13->_knownIdentifiersByHandleType = v16;
 
-    v13->_deviceModel = a5;
-    objc_storeStrong(&v13->_capabilities, a6);
+    v13->_deviceModel = model;
+    objc_storeStrong(&v13->_capabilities, capabilities);
   }
 
   return v13;
 }
 
-- (TUNearbyDeviceHandle)initWithName:(id)a3 knownIdentifiers:(id)a4 deviceModel:(int64_t)a5
+- (TUNearbyDeviceHandle)initWithName:(id)name knownIdentifiers:(id)identifiers deviceModel:(int64_t)model
 {
-  v8 = a4;
-  v9 = a3;
+  identifiersCopy = identifiers;
+  nameCopy = name;
   v10 = objc_alloc_init(TUNearbyDeviceHandleCapabilities);
-  v11 = [(TUNearbyDeviceHandle *)self initWithName:v9 knownIdentifiers:v8 deviceModel:a5 capabilities:v10];
+  v11 = [(TUNearbyDeviceHandle *)self initWithName:nameCopy knownIdentifiers:identifiersCopy deviceModel:model capabilities:v10];
 
   return v11;
 }
 
-- (TUNearbyDeviceHandle)initWithName:(id)a3 knownIdentifiers:(id)a4
+- (TUNearbyDeviceHandle)initWithName:(id)name knownIdentifiers:(id)identifiers
 {
-  v6 = a4;
-  v7 = a3;
+  identifiersCopy = identifiers;
+  nameCopy = name;
   v8 = objc_alloc_init(TUNearbyDeviceHandleCapabilities);
-  v9 = [(TUNearbyDeviceHandle *)self initWithName:v7 knownIdentifiers:v6 deviceModel:0 capabilities:v8];
+  v9 = [(TUNearbyDeviceHandle *)self initWithName:nameCopy knownIdentifiers:identifiersCopy deviceModel:0 capabilities:v8];
 
   return v9;
 }
 
-- (TUNearbyDeviceHandle)initWithType:(int64_t)a3 identifier:(id)a4 name:(id)a5
+- (TUNearbyDeviceHandle)initWithType:(int64_t)type identifier:(id)identifier name:(id)name
 {
   v8 = MEMORY[0x1E695DF20];
   v9 = MEMORY[0x1E696AD98];
-  v10 = a5;
-  v11 = a4;
-  v12 = [v9 numberWithInteger:a3];
-  v13 = [v8 dictionaryWithObject:v11 forKey:v12];
+  nameCopy = name;
+  identifierCopy = identifier;
+  v12 = [v9 numberWithInteger:type];
+  v13 = [v8 dictionaryWithObject:identifierCopy forKey:v12];
 
   v14 = objc_alloc_init(TUNearbyDeviceHandleCapabilities);
-  v15 = [(TUNearbyDeviceHandle *)self initWithName:v10 knownIdentifiers:v13 deviceModel:0 capabilities:v14];
+  v15 = [(TUNearbyDeviceHandle *)self initWithName:nameCopy knownIdentifiers:v13 deviceModel:0 capabilities:v14];
 
   return v15;
 }
 
-- (TUNearbyDeviceHandle)initWithType:(int64_t)a3 identifier:(id)a4 name:(id)a5 capabilities:(id)a6
+- (TUNearbyDeviceHandle)initWithType:(int64_t)type identifier:(id)identifier name:(id)name capabilities:(id)capabilities
 {
   v10 = MEMORY[0x1E695DF20];
   v11 = MEMORY[0x1E696AD98];
-  v12 = a6;
-  v13 = a5;
-  v14 = a4;
-  v15 = [v11 numberWithInteger:a3];
-  v16 = [v10 dictionaryWithObject:v14 forKey:v15];
+  capabilitiesCopy = capabilities;
+  nameCopy = name;
+  identifierCopy = identifier;
+  v15 = [v11 numberWithInteger:type];
+  v16 = [v10 dictionaryWithObject:identifierCopy forKey:v15];
 
-  v17 = [(TUNearbyDeviceHandle *)self initWithName:v13 knownIdentifiers:v16 deviceModel:0 capabilities:v12];
+  v17 = [(TUNearbyDeviceHandle *)self initWithName:nameCopy knownIdentifiers:v16 deviceModel:0 capabilities:capabilitiesCopy];
   return v17;
 }
 
@@ -147,11 +147,11 @@ void __45__TUNearbyDeviceHandle_identifierDescription__block_invoke(uint64_t a1,
     name = @"<nil>";
   }
 
-  v6 = [(TUNearbyDeviceHandle *)self identifierDescription];
+  identifierDescription = [(TUNearbyDeviceHandle *)self identifierDescription];
   v7 = [MEMORY[0x1E696AD98] numberWithInteger:self->_deviceModel];
-  v8 = [v7 stringValue];
+  stringValue = [v7 stringValue];
   v9 = [(TUNearbyDeviceHandleCapabilities *)self->_capabilities description];
-  v10 = [v3 initWithFormat:@"%@: %@ - %@ - %@ - %@", v4, name, v6, v8, v9];
+  v10 = [v3 initWithFormat:@"%@: %@ - %@ - %@ - %@", v4, name, identifierDescription, stringValue, v9];
 
   return v10;
 }
@@ -160,11 +160,11 @@ void __45__TUNearbyDeviceHandle_identifierDescription__block_invoke(uint64_t a1,
 {
   v16[4] = *MEMORY[0x1E69E9840];
   v15[0] = @"name";
-  v3 = [(TUNearbyDeviceHandle *)self name];
-  v4 = v3;
-  if (v3)
+  name = [(TUNearbyDeviceHandle *)self name];
+  v4 = name;
+  if (name)
   {
-    v5 = v3;
+    v5 = name;
   }
 
   else
@@ -177,11 +177,11 @@ void __45__TUNearbyDeviceHandle_identifierDescription__block_invoke(uint64_t a1,
   v6 = [MEMORY[0x1E696AD98] numberWithInteger:{-[TUNearbyDeviceHandle deviceModel](self, "deviceModel")}];
   v16[1] = v6;
   v15[2] = @"identifiers";
-  v7 = [(TUNearbyDeviceHandle *)self identifierDescription];
-  v16[2] = v7;
+  identifierDescription = [(TUNearbyDeviceHandle *)self identifierDescription];
+  v16[2] = identifierDescription;
   v15[3] = @"capabilities";
-  v8 = [(TUNearbyDeviceHandle *)self capabilities];
-  v9 = [v8 description];
+  capabilities = [(TUNearbyDeviceHandle *)self capabilities];
+  v9 = [capabilities description];
   v10 = v9;
   if (v9)
   {
@@ -201,18 +201,18 @@ void __45__TUNearbyDeviceHandle_identifierDescription__block_invoke(uint64_t a1,
   return v12;
 }
 
-- (id)identifierWithType:(int64_t)a3
+- (id)identifierWithType:(int64_t)type
 {
   knownIdentifiersByHandleType = self->_knownIdentifiersByHandleType;
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:type];
   v5 = [(NSDictionary *)knownIdentifiersByHandleType objectForKeyedSubscript:v4];
 
   return v5;
 }
 
-- (BOOL)isEquivalentToDeviceHandle:(id)a3
+- (BOOL)isEquivalentToDeviceHandle:(id)handle
 {
-  v4 = a3;
+  handleCopy = handle;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -225,7 +225,7 @@ void __45__TUNearbyDeviceHandle_identifierDescription__block_invoke(uint64_t a1,
     v15 = 3221225472;
     v16 = __51__TUNearbyDeviceHandle_isEquivalentToDeviceHandle___block_invoke;
     v17 = &unk_1E7427D80;
-    v6 = v4;
+    v6 = handleCopy;
     v18 = v6;
     v19 = &v20;
     [(NSDictionary *)knownIdentifiersByHandleType enumerateKeysAndObjectsUsingBlock:&v14];
@@ -239,13 +239,13 @@ LABEL_11:
     }
 
     v8 = [(NSDictionary *)self->_knownIdentifiersByHandleType objectForKeyedSubscript:&unk_1F09C62F8, v14, v15, v16, v17];
-    v9 = [v6 knownIdentifiersByHandleType];
-    v10 = [v9 objectForKeyedSubscript:&unk_1F09C62F8];
+    knownIdentifiersByHandleType = [v6 knownIdentifiersByHandleType];
+    v10 = [knownIdentifiersByHandleType objectForKeyedSubscript:&unk_1F09C62F8];
 
     if (v8)
     {
-      v11 = [v6 knownIdentifiersByHandleType];
-      v12 = [v11 objectForKeyedSubscript:&unk_1F09C6310];
+      knownIdentifiersByHandleType2 = [v6 knownIdentifiersByHandleType];
+      v12 = [knownIdentifiersByHandleType2 objectForKeyedSubscript:&unk_1F09C6310];
       v7 = [v12 isEqualToString:v8];
     }
 
@@ -257,8 +257,8 @@ LABEL_11:
         goto LABEL_10;
       }
 
-      v11 = [(NSDictionary *)self->_knownIdentifiersByHandleType objectForKeyedSubscript:&unk_1F09C6310];
-      v7 = [v11 isEqualToString:v10];
+      knownIdentifiersByHandleType2 = [(NSDictionary *)self->_knownIdentifiersByHandleType objectForKeyedSubscript:&unk_1F09C6310];
+      v7 = [knownIdentifiersByHandleType2 isEqualToString:v10];
     }
 
 LABEL_10:
@@ -287,15 +287,15 @@ void __51__TUNearbyDeviceHandle_isEquivalentToDeviceHandle___block_invoke(uint64
   }
 }
 
-- (BOOL)isEqualToDeviceHandle:(id)a3
+- (BOOL)isEqualToDeviceHandle:(id)handle
 {
-  v4 = a3;
+  handleCopy = handle;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     knownIdentifiersByHandleType = self->_knownIdentifiersByHandleType;
-    v6 = [v4 knownIdentifiersByHandleType];
-    v7 = [(NSDictionary *)knownIdentifiersByHandleType isEqual:v6];
+    knownIdentifiersByHandleType = [handleCopy knownIdentifiersByHandleType];
+    v7 = [(NSDictionary *)knownIdentifiersByHandleType isEqual:knownIdentifiersByHandleType];
   }
 
   else
@@ -306,15 +306,15 @@ void __51__TUNearbyDeviceHandle_isEquivalentToDeviceHandle___block_invoke(uint64
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     knownIdentifiersByHandleType = self->_knownIdentifiersByHandleType;
-    v6 = [v4 knownIdentifiersByHandleType];
-    v7 = [(NSDictionary *)knownIdentifiersByHandleType isEqualToDictionary:v6];
+    knownIdentifiersByHandleType = [equalCopy knownIdentifiersByHandleType];
+    v7 = [(NSDictionary *)knownIdentifiersByHandleType isEqualToDictionary:knownIdentifiersByHandleType];
   }
 
   else
@@ -325,75 +325,75 @@ void __51__TUNearbyDeviceHandle_isEquivalentToDeviceHandle___block_invoke(uint64
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_opt_class() allocWithZone:a3];
-  v6 = [(TUNearbyDeviceHandle *)self name];
-  v7 = [v6 copyWithZone:a3];
-  v8 = [(TUNearbyDeviceHandle *)self knownIdentifiersByHandleType];
-  v9 = [v8 copyWithZone:a3];
-  v10 = [(TUNearbyDeviceHandle *)self deviceModel];
-  v11 = [(TUNearbyDeviceHandle *)self capabilities];
-  v12 = [v11 copyWithZone:a3];
-  v13 = [v5 initWithName:v7 knownIdentifiers:v9 deviceModel:v10 capabilities:v12];
+  v5 = [objc_opt_class() allocWithZone:zone];
+  name = [(TUNearbyDeviceHandle *)self name];
+  v7 = [name copyWithZone:zone];
+  knownIdentifiersByHandleType = [(TUNearbyDeviceHandle *)self knownIdentifiersByHandleType];
+  v9 = [knownIdentifiersByHandleType copyWithZone:zone];
+  deviceModel = [(TUNearbyDeviceHandle *)self deviceModel];
+  capabilities = [(TUNearbyDeviceHandle *)self capabilities];
+  v12 = [capabilities copyWithZone:zone];
+  v13 = [v5 initWithName:v7 knownIdentifiers:v9 deviceModel:deviceModel capabilities:v12];
 
   return v13;
 }
 
-- (TUNearbyDeviceHandle)initWithCoder:(id)a3
+- (TUNearbyDeviceHandle)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
   v6 = NSStringFromSelector(sel_name);
-  v7 = [v4 decodeObjectOfClass:v5 forKey:v6];
+  v7 = [coderCopy decodeObjectOfClass:v5 forKey:v6];
 
   v8 = MEMORY[0x1E695DFD8];
   v9 = objc_opt_class();
   v10 = objc_opt_class();
   v11 = [v8 setWithObjects:{v9, v10, objc_opt_class(), 0}];
   v12 = NSStringFromSelector(sel_knownIdentifiersByHandleType);
-  v13 = [v4 decodeObjectOfClasses:v11 forKey:v12];
+  v13 = [coderCopy decodeObjectOfClasses:v11 forKey:v12];
 
   v14 = objc_opt_class();
   v15 = NSStringFromSelector(sel_deviceModel);
-  v16 = [v4 decodeObjectOfClass:v14 forKey:v15];
+  v16 = [coderCopy decodeObjectOfClass:v14 forKey:v15];
 
   if (v16)
   {
-    v17 = [v16 integerValue];
+    integerValue = [v16 integerValue];
   }
 
   else
   {
-    v17 = 0;
+    integerValue = 0;
   }
 
   v18 = objc_opt_class();
   v19 = NSStringFromSelector(sel_capabilities);
-  v20 = [v4 decodeObjectOfClass:v18 forKey:v19];
+  v20 = [coderCopy decodeObjectOfClass:v18 forKey:v19];
 
-  v21 = [(TUNearbyDeviceHandle *)self initWithName:v7 knownIdentifiers:v13 deviceModel:v17 capabilities:v20];
+  v21 = [(TUNearbyDeviceHandle *)self initWithName:v7 knownIdentifiers:v13 deviceModel:integerValue capabilities:v20];
   return v21;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   name = self->_name;
-  v5 = a3;
+  coderCopy = coder;
   v6 = NSStringFromSelector(sel_name);
-  [v5 encodeObject:name forKey:v6];
+  [coderCopy encodeObject:name forKey:v6];
 
   knownIdentifiersByHandleType = self->_knownIdentifiersByHandleType;
   v8 = NSStringFromSelector(sel_knownIdentifiersByHandleType);
-  [v5 encodeObject:knownIdentifiersByHandleType forKey:v8];
+  [coderCopy encodeObject:knownIdentifiersByHandleType forKey:v8];
 
   v9 = [MEMORY[0x1E696AD98] numberWithInteger:self->_deviceModel];
   v10 = NSStringFromSelector(sel_deviceModel);
-  [v5 encodeObject:v9 forKey:v10];
+  [coderCopy encodeObject:v9 forKey:v10];
 
   capabilities = self->_capabilities;
   v12 = NSStringFromSelector(sel_capabilities);
-  [v5 encodeObject:capabilities forKey:v12];
+  [coderCopy encodeObject:capabilities forKey:v12];
 }
 
 @end

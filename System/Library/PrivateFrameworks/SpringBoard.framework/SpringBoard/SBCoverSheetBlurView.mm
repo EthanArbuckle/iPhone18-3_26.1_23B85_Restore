@@ -1,5 +1,5 @@
 @interface SBCoverSheetBlurView
-- (SBCoverSheetBlurView)initWithFrame:(CGRect)a3 scaleAdjustment:(id)a4 alphaAdjustment:(id)a5;
+- (SBCoverSheetBlurView)initWithFrame:(CGRect)frame scaleAdjustment:(id)adjustment alphaAdjustment:(id)alphaAdjustment;
 - (id)_averageWallpaperColor;
 - (uint64_t)alphaAdjustment;
 - (uint64_t)reduceTransparencyView;
@@ -11,43 +11,43 @@
 - (void)_createReduceTransparencyView;
 - (void)_removeFilters;
 - (void)_removeReduceTransparencyView;
-- (void)_updateForBlurRadius:(double)a3 weighting:(double)a4 forPresentationValue:(BOOL)a5;
+- (void)_updateForBlurRadius:(double)radius weighting:(double)weighting forPresentationValue:(BOOL)value;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setAlphaAdjustment:(uint64_t)a3;
-- (void)setBlurRadius:(double)a3;
-- (void)setDimmingColor:(id)a3;
-- (void)setReduceTransparencyView:(uint64_t)a1;
-- (void)setScaleAdjustment:(uint64_t)a3;
-- (void)setWeighting:(double)a3;
-- (void)setWeighting:(double)a3 forPresentationValue:(BOOL)a4;
-- (void)wallpaperDidChangeForVariant:(int64_t)a3;
+- (void)setAlphaAdjustment:(uint64_t)adjustment;
+- (void)setBlurRadius:(double)radius;
+- (void)setDimmingColor:(id)color;
+- (void)setReduceTransparencyView:(uint64_t)view;
+- (void)setScaleAdjustment:(uint64_t)adjustment;
+- (void)setWeighting:(double)weighting;
+- (void)setWeighting:(double)weighting forPresentationValue:(BOOL)value;
+- (void)wallpaperDidChangeForVariant:(int64_t)variant;
 @end
 
 @implementation SBCoverSheetBlurView
 
-- (SBCoverSheetBlurView)initWithFrame:(CGRect)a3 scaleAdjustment:(id)a4 alphaAdjustment:(id)a5
+- (SBCoverSheetBlurView)initWithFrame:(CGRect)frame scaleAdjustment:(id)adjustment alphaAdjustment:(id)alphaAdjustment
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v11 = a4;
-  v12 = a5;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  adjustmentCopy = adjustment;
+  alphaAdjustmentCopy = alphaAdjustment;
   v20.receiver = self;
   v20.super_class = SBCoverSheetBlurView;
-  v13 = [(SBCoverSheetBlurView *)&v20 initWithFrame:x, y, width, height];
-  v15 = v13;
-  if (v13)
+  height = [(SBCoverSheetBlurView *)&v20 initWithFrame:x, y, width, height];
+  v15 = height;
+  if (height)
   {
-    objc_setProperty_nonatomic_copy(v13, v14, v11, 432);
-    objc_setProperty_nonatomic_copy(v15, v16, v12, 440);
+    objc_setProperty_nonatomic_copy(height, v14, adjustmentCopy, 432);
+    objc_setProperty_nonatomic_copy(v15, v16, alphaAdjustmentCopy, 440);
     [(SBCoverSheetBlurView *)v15 setBlurRadius:20.0];
     v15->_variantToTrack = 1;
     [(SBCoverSheetBlurView *)v15 setDimmingColor:0];
     [(SBCoverSheetBlurView *)v15 _configureForCurrentReduceTransparencySetting];
-    v17 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v17 addObserver:v15 selector:sel__reduceTransparencyEnabledStateDidChange_ name:*MEMORY[0x277D764C8] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v15 selector:sel__reduceTransparencyEnabledStateDidChange_ name:*MEMORY[0x277D764C8] object:0];
 
     v18 = +[SBWallpaperController sharedInstance];
     [v18 addObserver:v15 forVariant:v15->_variantToTrack];
@@ -58,8 +58,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277D764C8] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D764C8] object:0];
 
   v4 = +[SBWallpaperController sharedInstance];
   [v4 removeObserver:self forVariant:self->_variantToTrack];
@@ -69,69 +69,69 @@
   [(SBCoverSheetBlurView *)&v5 dealloc];
 }
 
-- (void)setBlurRadius:(double)a3
+- (void)setBlurRadius:(double)radius
 {
   if ((BSFloatEqualToFloat() & 1) == 0)
   {
-    self->_blurRadius = a3;
+    self->_blurRadius = radius;
     weighting = self->_weighting;
 
-    [(SBCoverSheetBlurView *)self _updateForBlurRadius:0 weighting:a3 forPresentationValue:weighting];
+    [(SBCoverSheetBlurView *)self _updateForBlurRadius:0 weighting:radius forPresentationValue:weighting];
   }
 }
 
-- (void)setDimmingColor:(id)a3
+- (void)setDimmingColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   if ((BSEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_dimmingColor, a3);
+    objc_storeStrong(&self->_dimmingColor, color);
     [(SBCoverSheetBlurView *)self _updateForBlurRadius:0 weighting:self->_blurRadius forPresentationValue:self->_weighting];
   }
 }
 
-- (void)setWeighting:(double)a3
+- (void)setWeighting:(double)weighting
 {
   if ((BSFloatEqualToFloat() & 1) == 0)
   {
-    self->_weighting = a3;
+    self->_weighting = weighting;
     blurRadius = self->_blurRadius;
 
-    [(SBCoverSheetBlurView *)self _updateForBlurRadius:0 weighting:blurRadius forPresentationValue:a3];
+    [(SBCoverSheetBlurView *)self _updateForBlurRadius:0 weighting:blurRadius forPresentationValue:weighting];
   }
 }
 
-- (void)setWeighting:(double)a3 forPresentationValue:(BOOL)a4
+- (void)setWeighting:(double)weighting forPresentationValue:(BOOL)value
 {
-  if (a4)
+  if (value)
   {
-    [(SBCoverSheetBlurView *)self _updateForBlurRadius:1 weighting:self->_blurRadius forPresentationValue:a3];
+    [(SBCoverSheetBlurView *)self _updateForBlurRadius:1 weighting:self->_blurRadius forPresentationValue:weighting];
   }
 
   else
   {
-    [(SBCoverSheetBlurView *)self setWeighting:a3];
+    [(SBCoverSheetBlurView *)self setWeighting:weighting];
   }
 }
 
-- (void)_updateForBlurRadius:(double)a3 weighting:(double)a4 forPresentationValue:(BOOL)a5
+- (void)_updateForBlurRadius:(double)radius weighting:(double)weighting forPresentationValue:(BOOL)value
 {
-  v5 = a5;
+  valueCopy = value;
   if (UIAccessibilityIsReduceTransparencyEnabled())
   {
     if (self)
     {
       reduceTransparencyView = self->_reduceTransparencyView;
-      if (v5)
+      if (valueCopy)
       {
 LABEL_4:
         v10 = MEMORY[0x277CCABB0];
-        v11 = reduceTransparencyView;
-        v12 = [v10 numberWithDouble:a4];
-        v13 = v11;
-        v32 = v12;
+        layer6 = reduceTransparencyView;
+        v12 = [v10 numberWithDouble:weighting];
+        selfCopy = layer6;
+        layer = v12;
 LABEL_12:
-        [(SBCoverSheetBlurView *)v13 _setPresentationValue:v12 forKey:@"opacity"];
+        [(SBCoverSheetBlurView *)selfCopy _setPresentationValue:v12 forKey:@"opacity"];
         goto LABEL_17;
       }
     }
@@ -139,17 +139,17 @@ LABEL_12:
     else
     {
       reduceTransparencyView = 0;
-      if (v5)
+      if (valueCopy)
       {
         goto LABEL_4;
       }
     }
 
     v31 = reduceTransparencyView;
-    v32 = [(UIView *)v31 layer];
+    layer = [(UIView *)v31 layer];
 
-    v11 = [MEMORY[0x277CCABB0] numberWithDouble:a4];
-    [v32 setValue:v11 forKey:@"opacity"];
+    layer6 = [MEMORY[0x277CCABB0] numberWithDouble:weighting];
+    [layer setValue:layer6 forKey:@"opacity"];
     goto LABEL_17;
   }
 
@@ -157,20 +157,20 @@ LABEL_12:
   v15 = 1.0;
   if (scaleAdjustment)
   {
-    v15 = scaleAdjustment[2](a4);
+    v15 = scaleAdjustment[2](weighting);
   }
 
   alphaAdjustment = self->_alphaAdjustment;
   v17 = 1.0;
   if (alphaAdjustment)
   {
-    v17 = alphaAdjustment[2](a4);
+    v17 = alphaAdjustment[2](weighting);
   }
 
-  v18 = a4 * 0.4 + 1.0;
-  v19 = a3 * a4;
-  v32 = [(UIColor *)self->_dimmingColor colorWithAlphaComponent:a4];
-  if (v5)
+  v18 = weighting * 0.4 + 1.0;
+  v19 = radius * weighting;
+  layer = [(UIColor *)self->_dimmingColor colorWithAlphaComponent:weighting];
+  if (valueCopy)
   {
     v20 = [MEMORY[0x277CCABB0] numberWithDouble:v18];
     [(SBCoverSheetBlurView *)self _setPresentationValue:v20 forKey:@"filters.colorSaturate.inputAmount"];
@@ -181,41 +181,41 @@ LABEL_12:
     v22 = [MEMORY[0x277CCABB0] numberWithDouble:v15];
     [(SBCoverSheetBlurView *)self _setPresentationValue:v22 forKey:@"scale"];
 
-    -[SBCoverSheetBlurView _setPresentationValue:forKey:](self, "_setPresentationValue:forKey:", [v32 CGColor], @"backgroundColor");
+    -[SBCoverSheetBlurView _setPresentationValue:forKey:](self, "_setPresentationValue:forKey:", [layer CGColor], @"backgroundColor");
     if (!self->_alphaAdjustment)
     {
       goto LABEL_18;
     }
 
-    v11 = [MEMORY[0x277CCABB0] numberWithDouble:v17];
-    v13 = self;
-    v12 = v11;
+    layer6 = [MEMORY[0x277CCABB0] numberWithDouble:v17];
+    selfCopy = self;
+    v12 = layer6;
     goto LABEL_12;
   }
 
-  v23 = [(SBCoverSheetBlurView *)self layer];
+  layer2 = [(SBCoverSheetBlurView *)self layer];
   v24 = [MEMORY[0x277CCABB0] numberWithDouble:v18];
-  [v23 setValue:v24 forKeyPath:@"filters.colorSaturate.inputAmount"];
+  [layer2 setValue:v24 forKeyPath:@"filters.colorSaturate.inputAmount"];
 
-  v25 = [(SBCoverSheetBlurView *)self layer];
+  layer3 = [(SBCoverSheetBlurView *)self layer];
   v26 = [MEMORY[0x277CCABB0] numberWithDouble:v19];
-  [v25 setValue:v26 forKeyPath:@"filters.gaussianBlur.inputRadius"];
+  [layer3 setValue:v26 forKeyPath:@"filters.gaussianBlur.inputRadius"];
 
-  v27 = [(SBCoverSheetBlurView *)self layer];
+  layer4 = [(SBCoverSheetBlurView *)self layer];
   v28 = [MEMORY[0x277CCABB0] numberWithDouble:v15];
-  [v27 setValue:v28 forKeyPath:@"scale"];
+  [layer4 setValue:v28 forKeyPath:@"scale"];
 
-  v29 = [(SBCoverSheetBlurView *)self layer];
-  [v29 setValue:objc_msgSend(v32 forKey:{"CGColor"), @"backgroundColor"}];
+  layer5 = [(SBCoverSheetBlurView *)self layer];
+  [layer5 setValue:objc_msgSend(layer forKey:{"CGColor"), @"backgroundColor"}];
 
   if (!self->_alphaAdjustment)
   {
     goto LABEL_18;
   }
 
-  v11 = [(SBCoverSheetBlurView *)self layer];
+  layer6 = [(SBCoverSheetBlurView *)self layer];
   v30 = [MEMORY[0x277CCABB0] numberWithDouble:v17];
-  [(SBCoverSheetBlurView *)v11 setValue:v30 forKeyPath:@"opacity"];
+  [(SBCoverSheetBlurView *)layer6 setValue:v30 forKeyPath:@"opacity"];
 
 LABEL_17:
 LABEL_18:
@@ -251,23 +251,23 @@ LABEL_18:
 
   v6 = [MEMORY[0x277CD9EA0] filterWithType:*MEMORY[0x277CDA2D0]];
   [v6 setValue:&unk_28336F500 forKey:@"inputAmount"];
-  v7 = [(SBCoverSheetBlurView *)self backdropLayer];
-  [v7 setIgnoresScreenClip:1];
+  backdropLayer = [(SBCoverSheetBlurView *)self backdropLayer];
+  [backdropLayer setIgnoresScreenClip:1];
 
-  v8 = [(SBCoverSheetBlurView *)self layer];
+  layer = [(SBCoverSheetBlurView *)self layer];
   v10[0] = v3;
   v10[1] = v6;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:2];
-  [v8 setFilters:v9];
+  [layer setFilters:v9];
 }
 
 - (void)_removeFilters
 {
-  v3 = [(SBCoverSheetBlurView *)self layer];
-  [v3 setFilters:0];
+  layer = [(SBCoverSheetBlurView *)self layer];
+  [layer setFilters:0];
 
-  v4 = [(SBCoverSheetBlurView *)self layer];
-  [v4 setValue:&unk_28336F510 forKeyPath:@"scale"];
+  layer2 = [(SBCoverSheetBlurView *)self layer];
+  [layer2 setValue:&unk_28336F510 forKeyPath:@"scale"];
 }
 
 - (id)_averageWallpaperColor
@@ -277,32 +277,32 @@ LABEL_18:
   v5 = v4;
   if (v4)
   {
-    v6 = v4;
+    whiteColor = v4;
   }
 
   else
   {
-    v6 = [MEMORY[0x277D75348] whiteColor];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
   }
 
-  v7 = v6;
+  v7 = whiteColor;
 
   return v7;
 }
 
-- (void)setScaleAdjustment:(uint64_t)a3
+- (void)setScaleAdjustment:(uint64_t)adjustment
 {
-  if (a1)
+  if (self)
   {
-    OUTLINED_FUNCTION_0_40(a1, a2, a3, 432);
+    OUTLINED_FUNCTION_0_40(self, a2, adjustment, 432);
   }
 }
 
-- (void)setAlphaAdjustment:(uint64_t)a3
+- (void)setAlphaAdjustment:(uint64_t)adjustment
 {
-  if (a1)
+  if (self)
   {
-    OUTLINED_FUNCTION_0_40(a1, a2, a3, 440);
+    OUTLINED_FUNCTION_0_40(self, a2, adjustment, 440);
   }
 }
 
@@ -343,7 +343,7 @@ LABEL_18:
   return result;
 }
 
-- (void)wallpaperDidChangeForVariant:(int64_t)a3
+- (void)wallpaperDidChangeForVariant:(int64_t)variant
 {
   if (self)
   {
@@ -356,8 +356,8 @@ LABEL_18:
   }
 
   v5 = reduceTransparencyView;
-  v6 = [(SBCoverSheetBlurView *)self _averageWallpaperColor];
-  [(UIView *)v5 setBackgroundColor:v6];
+  _averageWallpaperColor = [(SBCoverSheetBlurView *)self _averageWallpaperColor];
+  [(UIView *)v5 setBackgroundColor:_averageWallpaperColor];
 }
 
 - (void)_createReduceTransparencyView
@@ -365,25 +365,25 @@ LABEL_18:
   if (!self || !self->_reduceTransparencyView)
   {
     v4 = objc_alloc_init(MEMORY[0x277D75D18]);
-    v3 = [(SBCoverSheetBlurView *)self _averageWallpaperColor];
-    [v4 setBackgroundColor:v3];
+    _averageWallpaperColor = [(SBCoverSheetBlurView *)self _averageWallpaperColor];
+    [v4 setBackgroundColor:_averageWallpaperColor];
 
     [(SBCoverSheetBlurView *)self setReduceTransparencyView:v4];
     [(SBCoverSheetBlurView *)self insertSubview:v4 atIndex:0];
   }
 }
 
-- (void)setReduceTransparencyView:(uint64_t)a1
+- (void)setReduceTransparencyView:(uint64_t)view
 {
-  if (a1)
+  if (view)
   {
-    objc_storeStrong((a1 + 448), a2);
+    objc_storeStrong((view + 448), a2);
   }
 }
 
 - (void)_removeReduceTransparencyView
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     self = self->_reduceTransparencyView;
@@ -391,7 +391,7 @@ LABEL_18:
 
   [(SBCoverSheetBlurView *)self removeFromSuperview];
 
-  [(SBCoverSheetBlurView *)v2 setReduceTransparencyView:?];
+  [(SBCoverSheetBlurView *)selfCopy setReduceTransparencyView:?];
 }
 
 - (uint64_t)scaleAdjustment

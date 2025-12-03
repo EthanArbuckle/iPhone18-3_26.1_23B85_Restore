@@ -1,28 +1,28 @@
 @interface ICQDaemonPlanRecommendation
-+ (BOOL)isBackupEnabledForAccount:(id)a3;
-+ (id)accountForID:(id)a3;
-+ (int64_t)calculateExtraQuotaNeededToSyncWithBackupSize:(int64_t)a3;
-+ (void)calculateExtraQuotaNeededToSyncForAccountWithID:(id)a3 isAccountFull:(BOOL)a4 completion:(id)a5;
-+ (void)getLocalPhotoLibrarySizeWithCompletion:(id)a3;
++ (BOOL)isBackupEnabledForAccount:(id)account;
++ (id)accountForID:(id)d;
++ (int64_t)calculateExtraQuotaNeededToSyncWithBackupSize:(int64_t)size;
++ (void)calculateExtraQuotaNeededToSyncForAccountWithID:(id)d isAccountFull:(BOOL)full completion:(id)completion;
++ (void)getLocalPhotoLibrarySizeWithCompletion:(id)completion;
 @end
 
 @implementation ICQDaemonPlanRecommendation
 
-+ (void)calculateExtraQuotaNeededToSyncForAccountWithID:(id)a3 isAccountFull:(BOOL)a4 completion:(id)a5
++ (void)calculateExtraQuotaNeededToSyncForAccountWithID:(id)d isAccountFull:(BOOL)full completion:(id)completion
 {
-  v7 = a5;
-  v8 = [a1 accountForID:a3];
-  v9 = [a1 fullBackupSize];
-  v10 = [v9 integerValue];
+  completionCopy = completion;
+  v8 = [self accountForID:d];
+  fullBackupSize = [self fullBackupSize];
+  integerValue = [fullBackupSize integerValue];
 
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __104__ICQDaemonPlanRecommendation_calculateExtraQuotaNeededToSyncForAccountWithID_isAccountFull_completion___block_invoke;
   v12[3] = &unk_27A652968;
-  v14 = v10;
-  v15 = a1;
-  v13 = v7;
-  v11 = v7;
+  v14 = integerValue;
+  selfCopy = self;
+  v13 = completionCopy;
+  v11 = completionCopy;
   [_ICQHelperFunctions remoteBackupSizeForAccount:v8 timeoutInSeconds:v12 completion:2.0];
 }
 
@@ -54,10 +54,10 @@ void __104__ICQDaemonPlanRecommendation_calculateExtraQuotaNeededToSyncForAccoun
   v10 = *MEMORY[0x277D85DE8];
 }
 
-+ (int64_t)calculateExtraQuotaNeededToSyncWithBackupSize:(int64_t)a3
++ (int64_t)calculateExtraQuotaNeededToSyncWithBackupSize:(int64_t)size
 {
   v9 = *MEMORY[0x277D85DE8];
-  v3 = a3 & ~(a3 >> 63);
+  v3 = size & ~(size >> 63);
   v4 = _ICQGetLogSystem();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -70,35 +70,35 @@ void __104__ICQDaemonPlanRecommendation_calculateExtraQuotaNeededToSyncForAccoun
   return v3;
 }
 
-+ (id)accountForID:(id)a3
++ (id)accountForID:(id)d
 {
   v3 = MEMORY[0x277CB8F48];
-  v4 = a3;
-  v5 = [v3 defaultStore];
-  v6 = [v5 aa_appleAccountWithAltDSID:v4];
+  dCopy = d;
+  defaultStore = [v3 defaultStore];
+  v6 = [defaultStore aa_appleAccountWithAltDSID:dCopy];
 
   return v6;
 }
 
-+ (BOOL)isBackupEnabledForAccount:(id)a3
++ (BOOL)isBackupEnabledForAccount:(id)account
 {
   v3 = MEMORY[0x277CB8F48];
-  v4 = a3;
-  v5 = [v3 defaultStore];
-  v6 = [_ICQHelperFunctions isBackupEnabledForAccount:v4 accountStore:v5];
+  accountCopy = account;
+  defaultStore = [v3 defaultStore];
+  v6 = [_ICQHelperFunctions isBackupEnabledForAccount:accountCopy accountStore:defaultStore];
 
   return v6;
 }
 
-+ (void)getLocalPhotoLibrarySizeWithCompletion:(id)a3
++ (void)getLocalPhotoLibrarySizeWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __70__ICQDaemonPlanRecommendation_getLocalPhotoLibrarySizeWithCompletion___block_invoke;
   v5[3] = &unk_27A652990;
-  v6 = v3;
-  v4 = v3;
+  v6 = completionCopy;
+  v4 = completionCopy;
   [_ICQHelperFunctions getOriginalPhotosSizeWithCompletion:v5];
 }
 

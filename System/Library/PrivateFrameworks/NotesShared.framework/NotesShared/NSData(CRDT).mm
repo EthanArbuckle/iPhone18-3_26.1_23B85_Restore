@@ -7,7 +7,7 @@
 
 - (uint64_t)mergeWith:()CRDT
 {
-  result = [a1 isEqual:?];
+  result = [self isEqual:?];
   if ((result & 1) == 0)
   {
     v2 = MEMORY[0x277D36198];

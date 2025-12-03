@@ -1,32 +1,32 @@
 @interface HAPJSONValueTransformer
-+ (Class)expectedTransformedClassForFormat:(unint64_t)a3;
++ (Class)expectedTransformedClassForFormat:(unint64_t)format;
 + (void)initialize;
-- (id)reverseTransformedValue:(id)a3 format:(unint64_t)a4 error:(id *)a5;
-- (id)transformedValue:(id)a3 format:(unint64_t)a4 error:(id *)a5;
+- (id)reverseTransformedValue:(id)value format:(unint64_t)format error:(id *)error;
+- (id)transformedValue:(id)value format:(unint64_t)format error:(id *)error;
 @end
 
 @implementation HAPJSONValueTransformer
 
-- (id)reverseTransformedValue:(id)a3 format:(unint64_t)a4 error:(id *)a5
+- (id)reverseTransformedValue:(id)value format:(unint64_t)format error:(id *)error
 {
-  v8 = a3;
+  valueCopy = value;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 || v8 && (v15.receiver = self, v15.super_class = HAPJSONValueTransformer, -[HAPValueTransformer reverseTransformedValue:format:error:](&v15, sel_reverseTransformedValue_format_error_, v8, a4, a5), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v8 isEqual:v9], v9, !v10))
+  if ((objc_opt_isKindOfClass() & 1) != 0 || valueCopy && (v15.receiver = self, v15.super_class = HAPJSONValueTransformer, -[HAPValueTransformer reverseTransformedValue:format:error:](&v15, sel_reverseTransformedValue_format_error_, valueCopy, format, error), v9 = objc_claimAutoreleasedReturnValue(), v10 = [valueCopy isEqual:v9], v9, !v10))
   {
     v13 = 0;
   }
 
   else
   {
-    v11 = [objc_opt_class() expectedClassForFormat:a4];
+    v11 = [objc_opt_class() expectedClassForFormat:format];
     if (v11 == objc_opt_class() && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v12 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBase64EncodedString:v8 options:0];
+      v12 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBase64EncodedString:valueCopy options:0];
     }
 
     else
     {
-      v12 = v8;
+      v12 = valueCopy;
     }
 
     v13 = v12;
@@ -35,15 +35,15 @@
   return v13;
 }
 
-- (id)transformedValue:(id)a3 format:(unint64_t)a4 error:(id *)a5
+- (id)transformedValue:(id)value format:(unint64_t)format error:(id *)error
 {
-  v8 = a3;
-  if (v8)
+  valueCopy = value;
+  if (valueCopy)
   {
     v14.receiver = self;
     v14.super_class = HAPJSONValueTransformer;
-    v9 = [(HAPValueTransformer *)&v14 transformedValue:v8 format:a4 error:a5];
-    v10 = [v8 isEqual:v9];
+    v9 = [(HAPValueTransformer *)&v14 transformedValue:valueCopy format:format error:error];
+    v10 = [valueCopy isEqual:v9];
 
     if (!v10)
     {
@@ -54,21 +54,21 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v11 = [v8 base64EncodedStringWithOptions:0];
+      null = [valueCopy base64EncodedStringWithOptions:0];
     }
 
     else
     {
-      v11 = v8;
+      null = valueCopy;
     }
   }
 
   else
   {
-    v11 = [MEMORY[0x277CBEB68] null];
+    null = [MEMORY[0x277CBEB68] null];
   }
 
-  v12 = v11;
+  v12 = null;
 LABEL_9:
 
   return v12;
@@ -84,16 +84,16 @@ LABEL_9:
   }
 }
 
-+ (Class)expectedTransformedClassForFormat:(unint64_t)a3
++ (Class)expectedTransformedClassForFormat:(unint64_t)format
 {
-  if (a3 - 1 > 0xE)
+  if (format - 1 > 0xE)
   {
     v5 = 0;
   }
 
   else
   {
-    v4 = **(&unk_2786D44B0 + a3 - 1);
+    v4 = **(&unk_2786D44B0 + format - 1);
     v5 = objc_opt_class();
   }
 

@@ -1,10 +1,10 @@
 @interface UIAirDropActivity
-+ (BOOL)canPerformActivityWithItemClasses:(id)a3;
++ (BOOL)canPerformActivityWithItemClasses:(id)classes;
 + (CGSize)_thumbnailSize;
-+ (id)classNamesForItems:(id)a3;
-+ (id)classesForClassNames:(id)a3;
++ (id)classNamesForItems:(id)items;
++ (id)classesForClassNames:(id)names;
 + (unint64_t)_xpcAttributes;
-- (BOOL)canPerformWithActivityItems:(id)a3;
+- (BOOL)canPerformWithActivityItems:(id)items;
 - (CGSize)_thumbnailSize;
 - (id)activityTitle;
 @end
@@ -37,8 +37,8 @@
 
 + (CGSize)_thumbnailSize
 {
-  v2 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v2 scale];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
   SFSuggestedAirDropThumbnailSize();
   v4 = v3;
   v6 = v5;
@@ -58,10 +58,10 @@
   return v3;
 }
 
-- (BOOL)canPerformWithActivityItems:(id)a3
+- (BOOL)canPerformWithActivityItems:(id)items
 {
-  v3 = a3;
-  v4 = [objc_opt_class() classNamesForItems:v3];
+  itemsCopy = items;
+  v4 = [objc_opt_class() classNamesForItems:itemsCopy];
 
   v5 = [objc_opt_class() classesForClassNames:v4];
   v6 = [objc_opt_class() canPerformActivityWithItemClasses:v5];
@@ -69,16 +69,16 @@
   return v6;
 }
 
-+ (id)classNamesForItems:(id)a3
++ (id)classNamesForItems:(id)items
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF70] array];
+  itemsCopy = items;
+  array = [MEMORY[0x1E695DF70] array];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = v3;
+  v5 = itemsCopy;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -95,7 +95,7 @@
 
         v10 = objc_opt_class();
         v11 = NSStringFromClass(v10);
-        [v4 addObject:{v11, v13}];
+        [array addObject:{v11, v13}];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -104,19 +104,19 @@
     while (v7);
   }
 
-  return v4;
+  return array;
 }
 
-+ (id)classesForClassNames:(id)a3
++ (id)classesForClassNames:(id)names
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF70] array];
+  namesCopy = names;
+  array = [MEMORY[0x1E695DF70] array];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = v3;
+  v5 = namesCopy;
   v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
@@ -134,7 +134,7 @@
         v10 = NSClassFromString(*(*(&v12 + 1) + 8 * i));
         if (v10)
         {
-          [v4 addObject:{v10, v12}];
+          [array addObject:{v10, v12}];
         }
       }
 
@@ -144,13 +144,13 @@
     while (v7);
   }
 
-  return v4;
+  return array;
 }
 
-+ (BOOL)canPerformActivityWithItemClasses:(id)a3
++ (BOOL)canPerformActivityWithItemClasses:(id)classes
 {
   v41 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DFD8] setWithArray:a3];
+  v3 = [MEMORY[0x1E695DFD8] setWithArray:classes];
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;

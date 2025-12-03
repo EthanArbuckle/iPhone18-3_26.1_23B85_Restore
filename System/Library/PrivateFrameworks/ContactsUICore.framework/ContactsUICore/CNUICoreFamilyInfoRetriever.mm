@@ -1,12 +1,12 @@
 @interface CNUICoreFamilyInfoRetriever
-+ (id)contactsMatchingFamilyMember:(id)a3 inContactStore:(id)a4;
-+ (id)familyCircleFromRequest:(id)a3 schedulerProvider:(id)a4;
-+ (id)familyInfoWithFamilyMembers:(id)a3 meContact:(id)a4;
-+ (id)familyInfoWithFamilyMembers:(id)a3 meContact:(id)a4 matchedWithContactsInContactStore:(id)a5;
-+ (id)meContactFromStore:(id)a3 schedulerProvider:(id)a4;
++ (id)contactsMatchingFamilyMember:(id)member inContactStore:(id)store;
++ (id)familyCircleFromRequest:(id)request schedulerProvider:(id)provider;
++ (id)familyInfoWithFamilyMembers:(id)members meContact:(id)contact;
++ (id)familyInfoWithFamilyMembers:(id)members meContact:(id)contact matchedWithContactsInContactStore:(id)store;
++ (id)meContactFromStore:(id)store schedulerProvider:(id)provider;
 - (CNUICoreFamilyInfoRetriever)init;
-- (CNUICoreFamilyInfoRetriever)initWithMainContactStoreFacade:(id)a3 fetchFamilyCircleRequest:(id)a4 matchFamilyMembersWithContacts:(BOOL)a5 schedulerProvider:(id)a6;
-- (CNUICoreFamilyInfoRetriever)initWithMainContactStoreFacade:(id)a3 matchFamilyMembersWithContacts:(BOOL)a4 schedulerProvider:(id)a5;
+- (CNUICoreFamilyInfoRetriever)initWithMainContactStoreFacade:(id)facade fetchFamilyCircleRequest:(id)request matchFamilyMembersWithContacts:(BOOL)contacts schedulerProvider:(id)provider;
+- (CNUICoreFamilyInfoRetriever)initWithMainContactStoreFacade:(id)facade matchFamilyMembersWithContacts:(BOOL)contacts schedulerProvider:(id)provider;
 - (id)createFamilyFuture;
 - (id)familyInfo;
 @end
@@ -15,30 +15,30 @@
 
 - (CNUICoreFamilyInfoRetriever)init
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CNInitializerUnavailableException();
   objc_exception_throw(v3);
 }
 
-- (CNUICoreFamilyInfoRetriever)initWithMainContactStoreFacade:(id)a3 matchFamilyMembersWithContacts:(BOOL)a4 schedulerProvider:(id)a5
+- (CNUICoreFamilyInfoRetriever)initWithMainContactStoreFacade:(id)facade matchFamilyMembersWithContacts:(BOOL)contacts schedulerProvider:(id)provider
 {
-  v5 = a4;
+  contactsCopy = contacts;
   v8 = MEMORY[0x1E699C070];
-  v9 = a5;
-  v10 = a3;
+  providerCopy = provider;
+  facadeCopy = facade;
   v11 = objc_alloc_init(v8);
   [v11 setPromptUserToResolveAuthenticatonFailure:0];
-  v12 = [(CNUICoreFamilyInfoRetriever *)self initWithMainContactStoreFacade:v10 fetchFamilyCircleRequest:v11 matchFamilyMembersWithContacts:v5 schedulerProvider:v9];
+  v12 = [(CNUICoreFamilyInfoRetriever *)self initWithMainContactStoreFacade:facadeCopy fetchFamilyCircleRequest:v11 matchFamilyMembersWithContacts:contactsCopy schedulerProvider:providerCopy];
 
   return v12;
 }
 
-- (CNUICoreFamilyInfoRetriever)initWithMainContactStoreFacade:(id)a3 fetchFamilyCircleRequest:(id)a4 matchFamilyMembersWithContacts:(BOOL)a5 schedulerProvider:(id)a6
+- (CNUICoreFamilyInfoRetriever)initWithMainContactStoreFacade:(id)facade fetchFamilyCircleRequest:(id)request matchFamilyMembersWithContacts:(BOOL)contacts schedulerProvider:(id)provider
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  if (v11)
+  facadeCopy = facade;
+  requestCopy = request;
+  providerCopy = provider;
+  if (facadeCopy)
   {
     goto LABEL_5;
   }
@@ -52,7 +52,7 @@
   if (os_log_type_enabled(CNGuardOSLog_cn_once_object_0_12, OS_LOG_TYPE_FAULT))
   {
     [(CNUICoreFamilyInfoRetriever *)v14 initWithMainContactStoreFacade:v15 fetchFamilyCircleRequest:v16 matchFamilyMembersWithContacts:v17 schedulerProvider:v18, v19, v20, v21];
-    if (v12)
+    if (requestCopy)
     {
       goto LABEL_10;
     }
@@ -61,7 +61,7 @@
   else
   {
 LABEL_5:
-    if (v12)
+    if (requestCopy)
     {
       goto LABEL_10;
     }
@@ -79,7 +79,7 @@ LABEL_5:
   }
 
 LABEL_10:
-  if (!v13)
+  if (!providerCopy)
   {
     if (CNGuardOSLog_cn_once_token_0_12 != -1)
     {
@@ -99,10 +99,10 @@ LABEL_10:
   v39 = v38;
   if (v38)
   {
-    objc_storeStrong(&v38->_mainContactStore, a3);
-    objc_storeStrong(&v39->_fetchFamilyCircleRequest, a4);
-    v39->_matchFamilyMembersWithContacts = a5;
-    objc_storeStrong(&v39->_schedulerProvider, a6);
+    objc_storeStrong(&v38->_mainContactStore, facade);
+    objc_storeStrong(&v39->_fetchFamilyCircleRequest, request);
+    v39->_matchFamilyMembersWithContacts = contacts;
+    objc_storeStrong(&v39->_schedulerProvider, provider);
     v40 = v39;
   }
 
@@ -136,14 +136,14 @@ id __41__CNUICoreFamilyInfoRetriever_familyInfo__block_invoke(uint64_t a1)
 - (id)createFamilyFuture
 {
   v18[2] = *MEMORY[0x1E69E9840];
-  v3 = [(CNUICoreFamilyInfoRetriever *)self matchFamilyMembersWithContacts];
-  v4 = [(CNUICoreFamilyInfoRetriever *)self schedulerProvider];
-  v5 = [(CNUICoreFamilyInfoRetriever *)self mainContactStore];
-  v6 = [objc_opt_class() meContactFromStore:v5 schedulerProvider:v4];
+  matchFamilyMembersWithContacts = [(CNUICoreFamilyInfoRetriever *)self matchFamilyMembersWithContacts];
+  schedulerProvider = [(CNUICoreFamilyInfoRetriever *)self schedulerProvider];
+  mainContactStore = [(CNUICoreFamilyInfoRetriever *)self mainContactStore];
+  v6 = [objc_opt_class() meContactFromStore:mainContactStore schedulerProvider:schedulerProvider];
   v18[0] = v6;
   v7 = objc_opt_class();
-  v8 = [(CNUICoreFamilyInfoRetriever *)self fetchFamilyCircleRequest];
-  v9 = [v7 familyCircleFromRequest:v8 schedulerProvider:v4];
+  fetchFamilyCircleRequest = [(CNUICoreFamilyInfoRetriever *)self fetchFamilyCircleRequest];
+  v9 = [v7 familyCircleFromRequest:fetchFamilyCircleRequest schedulerProvider:schedulerProvider];
   v18[1] = v9;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:2];
 
@@ -152,10 +152,10 @@ id __41__CNUICoreFamilyInfoRetriever_familyInfo__block_invoke(uint64_t a1)
   v15[1] = 3221225472;
   v15[2] = __49__CNUICoreFamilyInfoRetriever_createFamilyFuture__block_invoke;
   v15[3] = &unk_1E76E94A0;
-  v17 = v3;
-  v16 = v5;
-  v12 = v5;
-  v13 = [v11 flatMap:v15 schedulerProvider:v4];
+  v17 = matchFamilyMembersWithContacts;
+  v16 = mainContactStore;
+  v12 = mainContactStore;
+  v13 = [v11 flatMap:v15 schedulerProvider:schedulerProvider];
 
   return v13;
 }
@@ -197,18 +197,18 @@ id __49__CNUICoreFamilyInfoRetriever_createFamilyFuture__block_invoke(uint64_t a
   return v10;
 }
 
-+ (id)meContactFromStore:(id)a3 schedulerProvider:(id)a4
++ (id)meContactFromStore:(id)store schedulerProvider:(id)provider
 {
-  v5 = a3;
-  v6 = a4;
+  storeCopy = store;
+  providerCopy = provider;
   if ([MEMORY[0x1E696AF00] isMainThread])
   {
-    [v6 backgroundScheduler];
+    [providerCopy backgroundScheduler];
   }
 
   else
   {
-    [v6 immediateScheduler];
+    [providerCopy immediateScheduler];
   }
   v7 = ;
   v8 = MEMORY[0x1E6996720];
@@ -216,10 +216,10 @@ id __49__CNUICoreFamilyInfoRetriever_createFamilyFuture__block_invoke(uint64_t a
   v13[1] = 3221225472;
   v13[2] = __68__CNUICoreFamilyInfoRetriever_meContactFromStore_schedulerProvider___block_invoke;
   v13[3] = &unk_1E76E94C8;
-  v14 = v5;
-  v9 = v5;
-  v10 = [v8 futureWithBlock:v13 scheduler:v7 schedulerProvider:v6];
-  v11 = [v10 recover:&__block_literal_global_45 schedulerProvider:v6];
+  v14 = storeCopy;
+  v9 = storeCopy;
+  v10 = [v8 futureWithBlock:v13 scheduler:v7 schedulerProvider:providerCopy];
+  v11 = [v10 recover:&__block_literal_global_45 schedulerProvider:providerCopy];
 
   return v11;
 }
@@ -256,17 +256,17 @@ id __68__CNUICoreFamilyInfoRetriever_meContactFromStore_schedulerProvider___bloc
   return v6;
 }
 
-+ (id)familyCircleFromRequest:(id)a3 schedulerProvider:(id)a4
++ (id)familyCircleFromRequest:(id)request schedulerProvider:(id)provider
 {
   v5 = MEMORY[0x1E69967D0];
-  v6 = a4;
-  v7 = a3;
-  v8 = [[v5 alloc] initWithSchedulerProvider:v6];
-  v9 = [v8 completionHandlerAdapter];
-  [v7 startRequestWithCompletionHandler:v9];
+  providerCopy = provider;
+  requestCopy = request;
+  v8 = [[v5 alloc] initWithSchedulerProvider:providerCopy];
+  completionHandlerAdapter = [v8 completionHandlerAdapter];
+  [requestCopy startRequestWithCompletionHandler:completionHandlerAdapter];
 
-  v10 = [v8 future];
-  v11 = [v10 recover:&__block_literal_global_31 schedulerProvider:v6];
+  future = [v8 future];
+  v11 = [future recover:&__block_literal_global_31 schedulerProvider:providerCopy];
 
   return v11;
 }
@@ -284,11 +284,11 @@ id __73__CNUICoreFamilyInfoRetriever_familyCircleFromRequest_schedulerProvider__
   return v6;
 }
 
-+ (id)familyInfoWithFamilyMembers:(id)a3 meContact:(id)a4
++ (id)familyInfoWithFamilyMembers:(id)members meContact:(id)contact
 {
-  v5 = a4;
-  v6 = [a3 _cn_map:&__block_literal_global_35_2];
-  v7 = [[CNUICoreFamilyInfo alloc] initWithMeContact:v5 elements:v6];
+  contactCopy = contact;
+  v6 = [members _cn_map:&__block_literal_global_35_2];
+  v7 = [[CNUICoreFamilyInfo alloc] initWithMeContact:contactCopy elements:v6];
 
   return v7;
 }
@@ -302,20 +302,20 @@ CNUICoreFamilyElement *__69__CNUICoreFamilyInfoRetriever_familyInfoWithFamilyMem
   return v4;
 }
 
-+ (id)familyInfoWithFamilyMembers:(id)a3 meContact:(id)a4 matchedWithContactsInContactStore:(id)a5
++ (id)familyInfoWithFamilyMembers:(id)members meContact:(id)contact matchedWithContactsInContactStore:(id)store
 {
-  v8 = a5;
+  storeCopy = store;
   v15 = MEMORY[0x1E69E9820];
   v16 = 3221225472;
   v17 = __103__CNUICoreFamilyInfoRetriever_familyInfoWithFamilyMembers_meContact_matchedWithContactsInContactStore___block_invoke;
   v18 = &unk_1E76E9530;
-  v19 = v8;
-  v20 = a1;
-  v9 = v8;
-  v10 = a4;
-  v11 = [a3 _cn_map:&v15];
+  v19 = storeCopy;
+  selfCopy = self;
+  v9 = storeCopy;
+  contactCopy = contact;
+  v11 = [members _cn_map:&v15];
   v12 = [CNUICoreFamilyInfo alloc];
-  v13 = [(CNUICoreFamilyInfo *)v12 initWithMeContact:v10 elements:v11, v15, v16, v17, v18];
+  v13 = [(CNUICoreFamilyInfo *)v12 initWithMeContact:contactCopy elements:v11, v15, v16, v17, v18];
 
   return v13;
 }
@@ -330,35 +330,35 @@ CNUICoreFamilyElement *__103__CNUICoreFamilyInfoRetriever_familyInfoWithFamilyMe
   return v6;
 }
 
-+ (id)contactsMatchingFamilyMember:(id)a3 inContactStore:(id)a4
++ (id)contactsMatchingFamilyMember:(id)member inContactStore:(id)store
 {
   v5 = MEMORY[0x1E695CD78];
-  v6 = a4;
-  v7 = a3;
+  storeCopy = store;
+  memberCopy = member;
   v8 = [v5 alloc];
   v9 = +[CNUICoreFamilyInfoRetriever keysToFetch];
   v10 = [v8 initWithKeysToFetch:v9];
 
   [v10 setUnifyResults:0];
   v11 = MEMORY[0x1E695CD58];
-  v12 = [CNUICoreContactMatcher nameFromFammilyMember:v7];
+  v12 = [CNUICoreContactMatcher nameFromFammilyMember:memberCopy];
 
   v13 = [v11 predicateForContactsMatchingName:v12];
   [v10 setPredicate:v13];
 
-  v14 = [CNUICoreContactFetchRequestAccumulator resultOfFetchRequest:v10 fromStore:v6];
+  v14 = [CNUICoreContactFetchRequestAccumulator resultOfFetchRequest:v10 fromStore:storeCopy];
 
   if ([v14 isSuccess])
   {
-    v15 = [v14 value];
+    value = [v14 value];
   }
 
   else
   {
-    v15 = MEMORY[0x1E695E0F0];
+    value = MEMORY[0x1E695E0F0];
   }
 
-  return v15;
+  return value;
 }
 
 @end

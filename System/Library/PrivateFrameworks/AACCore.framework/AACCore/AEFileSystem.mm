@@ -9,9 +9,9 @@
 
 + (NSURL)assessmentAgentContainerURL
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(a2);
-  [v4 handleFailureInMethod:a2 object:a1 file:@"AEFileSystem.m" lineNumber:53 description:{@"%@ is unimplemented on iOS", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"AEFileSystem.m" lineNumber:53 description:{@"%@ is unimplemented on iOS", v5}];
 
   return 0;
 }

@@ -1,6 +1,6 @@
 @interface MUISearchRequestID
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToID:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToID:(id)d;
 - (MUISearchRequestID)init;
 - (id)description;
 - (unint64_t)hash;
@@ -21,18 +21,18 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(MUISearchRequestID *)self isEqualToID:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(MUISearchRequestID *)self isEqualToID:equalCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToID:(id)a3
+- (BOOL)isEqualToID:(id)d
 {
-  if (!a3)
+  if (!d)
   {
     return 0;
   }
@@ -47,7 +47,7 @@
     underlying = 0;
   }
 
-  return underlying == *(a3 + 2);
+  return underlying == *(d + 2);
 }
 
 - (unint64_t)hash

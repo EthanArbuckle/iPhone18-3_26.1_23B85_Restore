@@ -2,7 +2,7 @@
 + (_TtC18MobileTimerSupport19MTAppIntentsManager)sharedManager;
 - (_TtC18MobileTimerSupport19MTAppIntentsManager)init;
 - (_TtP18MobileTimerSupport27MTAppIntentsManagerDelegate_)delegate;
-- (void)didSelectTabWithTab:(int64_t)a3;
+- (void)didSelectTabWithTab:(int64_t)tab;
 @end
 
 @implementation MTAppIntentsManager
@@ -35,10 +35,10 @@
   return Strong;
 }
 
-- (void)didSelectTabWithTab:(int64_t)a3
+- (void)didSelectTabWithTab:(int64_t)tab
 {
-  v4 = self;
-  sub_22D7BCAD0(a3);
+  selfCopy = self;
+  sub_22D7BCAD0(tab);
 }
 
 @end

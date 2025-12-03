@@ -7,20 +7,20 @@
 
 - (double)documentBounds
 {
-  if (![a1 isViewLoaded])
+  if (![self isViewLoaded])
   {
     return *MEMORY[0x1E695F050];
   }
 
-  [objc_msgSend(a1 "view")];
+  [objc_msgSend(self "view")];
   return result;
 }
 
 - (uint64_t)storePageProtocolDidChange
 {
-  v1 = [a1 parentViewController];
+  parentViewController = [self parentViewController];
 
-  return [v1 storePageProtocolDidChange];
+  return [parentViewController storePageProtocolDidChange];
 }
 
 @end

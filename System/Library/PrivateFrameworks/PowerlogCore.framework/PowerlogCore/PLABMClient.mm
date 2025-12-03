@@ -2,7 +2,7 @@
 + (id)sharedABMClient;
 - (PLABMClient)init;
 - (id).cxx_construct;
-- (id)addDeviceConfigWith:(id)a3 andConfigExtension:(id)a4;
+- (id)addDeviceConfigWith:(id)with andConfigExtension:(id)extension;
 - (id)addMavDeviceConfig;
 - (id)addMavDeviceConfigDebug;
 - (id)getBasebandBootState;
@@ -15,12 +15,12 @@
 - (void)regMetricListener;
 - (void)regTriggerListener;
 - (void)removeDeviceConfig;
-- (void)sendBootStateChangInfoToLoggerUsing:(id)a3;
-- (void)sendMetricToLoggerUsing:(id)a3;
-- (void)sendTriggerToLoggerUsing:(id)a3;
-- (void)sendWakeInfoToLoggerUsing:(id)a3;
+- (void)sendBootStateChangInfoToLoggerUsing:(id)using;
+- (void)sendMetricToLoggerUsing:(id)using;
+- (void)sendTriggerToLoggerUsing:(id)using;
+- (void)sendWakeInfoToLoggerUsing:(id)using;
 - (void)startListening;
-- (void)triggerPeriodicMetrics:(int)a3 andprofileId:(int)a4;
+- (void)triggerPeriodicMetrics:(int)metrics andprofileId:(int)id;
 @end
 
 @implementation PLABMClient
@@ -75,7 +75,7 @@ void __40__PLABMClient_getBasebandTimeAndLatency__block_invoke(uint64_t a1, _DWO
 
 - (id)getBasebandTimeAndLatency
 {
-  v3 = [MEMORY[0x1E695DF00] date];
+  date = [MEMORY[0x1E695DF00] date];
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
@@ -116,7 +116,7 @@ void __40__PLABMClient_getBasebandTimeAndLatency__block_invoke(uint64_t a1, _DWO
   {
     v8 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSince1970:v22[3]];
     v9 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSince1970:v18[3]];
-    [v9 timeIntervalSinceDate:v3];
+    [v9 timeIntervalSinceDate:date];
     v11 = v10;
     dispatch_release(v4);
     v7 = [[TimeAndLatencyAbm alloc] initWithTime:v8 andLatency:v11];
@@ -185,16 +185,16 @@ void __30__PLABMClient_sharedABMClient__block_invoke()
   return v2;
 }
 
-- (id)addDeviceConfigWith:(id)a3 andConfigExtension:(id)a4
+- (id)addDeviceConfigWith:(id)with andConfigExtension:(id)extension
 {
   v47 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  withCopy = with;
+  extensionCopy = extension;
   v43 = -534716414;
   v45 = 0;
   __p = 0uLL;
   v8 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-  v9 = [v8 pathForResource:v6 ofType:v7];
+  v9 = [v8 pathForResource:withCopy ofType:extensionCopy];
 
   if (PLLogABMClient(void)::onceToken != -1)
   {
@@ -846,7 +846,7 @@ LABEL_10:
   return v11;
 }
 
-- (void)triggerPeriodicMetrics:(int)a3 andprofileId:(int)a4
+- (void)triggerPeriodicMetrics:(int)metrics andprofileId:(int)id
 {
   v46 = *MEMORY[0x1E69E9840];
   v41 = -534716414;
@@ -930,7 +930,7 @@ LABEL_9:
   v35 = 0;
   xpc_release(v34);
   v34 = 0;
-  v32 = xpc_int64_create(a3);
+  v32 = xpc_int64_create(metrics);
   if (!v32)
   {
     v32 = xpc_null_create();
@@ -944,7 +944,7 @@ LABEL_9:
   v33 = 0;
   xpc_release(v32);
   v32 = 0;
-  v30 = xpc_int64_create(a4);
+  v30 = xpc_int64_create(id);
   if (!v30)
   {
     v30 = xpc_null_create();
@@ -980,7 +980,7 @@ LABEL_9:
   v17 = PLLogABMClient(void)::__logObj;
   if (os_log_type_enabled(PLLogABMClient(void)::__logObj, OS_LOG_TYPE_DEBUG))
   {
-    [(PLABMClient *)a3 triggerPeriodicMetrics:a4 andprofileId:v17];
+    [(PLABMClient *)metrics triggerPeriodicMetrics:id andprofileId:v17];
   }
 
   v27 = xpc_null_create();
@@ -1031,7 +1031,7 @@ LABEL_9:
       }
 
       TelephonyXPC::Result::describe(&v24, &v41);
-      [(PLABMClient *)&v24 triggerPeriodicMetrics:buf andprofileId:a3, v20];
+      [(PLABMClient *)&v24 triggerPeriodicMetrics:buf andprofileId:metrics, v20];
     }
 
     if (PLLogABMClient(void)::onceToken != -1)
@@ -1069,32 +1069,32 @@ LABEL_49:
   v21 = *MEMORY[0x1E69E9840];
 }
 
-- (void)sendTriggerToLoggerUsing:(id)a3
+- (void)sendTriggerToLoggerUsing:(id)using
 {
-  v4 = a3;
+  usingCopy = using;
   v5 = objc_opt_new();
-  v6 = [v4 objectForKeyedSubscript:@"kKeyTriggerID"];
+  v6 = [usingCopy objectForKeyedSubscript:@"kKeyTriggerID"];
   [v5 setObject:v6 forKeyedSubscript:@"triggerId"];
 
-  v7 = [v4 objectForKeyedSubscript:@"kKeyTriggerRef"];
+  v7 = [usingCopy objectForKeyedSubscript:@"kKeyTriggerRef"];
   [v5 setObject:v7 forKeyedSubscript:@"triggerRef"];
 
-  v8 = [v4 objectForKeyedSubscript:@"kKeyTriggerType"];
+  v8 = [usingCopy objectForKeyedSubscript:@"kKeyTriggerType"];
   [v5 setObject:v8 forKeyedSubscript:@"triggerType"];
 
-  v9 = [v4 objectForKeyedSubscript:@"kKeyTriggerTime"];
+  v9 = [usingCopy objectForKeyedSubscript:@"kKeyTriggerTime"];
   [v5 setObject:v9 forKeyedSubscript:@"triggerTime"];
 
-  v10 = [v4 objectForKeyedSubscript:@"kKeyAppID"];
+  v10 = [usingCopy objectForKeyedSubscript:@"kKeyAppID"];
   [v5 setObject:v10 forKeyedSubscript:@"appId"];
 
-  v11 = [(PLABMClient *)self delegate];
+  delegate = [(PLABMClient *)self delegate];
   v12 = objc_opt_respondsToSelector();
 
   if (v12)
   {
-    v13 = [(PLABMClient *)self delegate];
-    [v13 triggerMessage:v5];
+    delegate2 = [(PLABMClient *)self delegate];
+    [delegate2 triggerMessage:v5];
   }
 
   else
@@ -1113,9 +1113,9 @@ LABEL_49:
   }
 }
 
-- (void)sendMetricToLoggerUsing:(id)a3
+- (void)sendMetricToLoggerUsing:(id)using
 {
-  v4 = a3;
+  usingCopy = using;
   v5 = objc_opt_new();
   if (PLLogABMClient(void)::onceToken != -1)
   {
@@ -1127,28 +1127,28 @@ LABEL_49:
     [PLABMClient sendMetricToLoggerUsing:];
   }
 
-  v6 = [v4 objectForKeyedSubscript:@"kKeyMetricID"];
+  v6 = [usingCopy objectForKeyedSubscript:@"kKeyMetricID"];
   [v5 setObject:v6 forKeyedSubscript:@"metricId"];
 
-  v7 = [v4 objectForKeyedSubscript:@"kKeyPayload"];
+  v7 = [usingCopy objectForKeyedSubscript:@"kKeyPayload"];
   [v5 setObject:v7 forKeyedSubscript:@"metricPayload"];
 
-  v8 = [v4 objectForKeyedSubscript:@"kKeyTriggerRef"];
+  v8 = [usingCopy objectForKeyedSubscript:@"kKeyTriggerRef"];
   [v5 setObject:v8 forKeyedSubscript:@"metricTriggerRef"];
 
-  v9 = [v4 objectForKeyedSubscript:@"kKeyProfileID"];
+  v9 = [usingCopy objectForKeyedSubscript:@"kKeyProfileID"];
   [v5 setObject:v9 forKeyedSubscript:@"metricProfileId"];
 
-  v10 = [v4 objectForKeyedSubscript:@"kKeyAppID"];
+  v10 = [usingCopy objectForKeyedSubscript:@"kKeyAppID"];
   [v5 setObject:v10 forKeyedSubscript:@"appId"];
 
-  v11 = [(PLABMClient *)self delegate];
+  delegate = [(PLABMClient *)self delegate];
   v12 = objc_opt_respondsToSelector();
 
   if (v12)
   {
-    v13 = [(PLABMClient *)self delegate];
-    [v13 metricMessage:v5];
+    delegate2 = [(PLABMClient *)self delegate];
+    [delegate2 metricMessage:v5];
   }
 
   else
@@ -1167,13 +1167,13 @@ LABEL_49:
   }
 }
 
-- (void)sendWakeInfoToLoggerUsing:(id)a3
+- (void)sendWakeInfoToLoggerUsing:(id)using
 {
-  v4 = [a3 copy];
+  v4 = [using copy];
   if (v4 && ([(PLABMClient *)self delegate], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_opt_respondsToSelector(), v5, (v6 & 1) != 0))
   {
-    v7 = [(PLABMClient *)self delegate];
-    [v7 wakeMessage:v4];
+    delegate = [(PLABMClient *)self delegate];
+    [delegate wakeMessage:v4];
   }
 
   else
@@ -1192,13 +1192,13 @@ LABEL_49:
   }
 }
 
-- (void)sendBootStateChangInfoToLoggerUsing:(id)a3
+- (void)sendBootStateChangInfoToLoggerUsing:(id)using
 {
-  v4 = [a3 copy];
+  v4 = [using copy];
   if (v4 && ([(PLABMClient *)self delegate], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_opt_respondsToSelector(), v5, (v6 & 1) != 0))
   {
-    v7 = [(PLABMClient *)self delegate];
-    [v7 bootStateChange:v4];
+    delegate = [(PLABMClient *)self delegate];
+    [delegate bootStateChange:v4];
   }
 
   else
@@ -1355,7 +1355,7 @@ void __38__PLABMClient_getLTESleepManagerStats__block_invoke(uint64_t a1, _DWORD
     TelephonyXPC::Result::describe(__p, &v21);
     v5 = v18;
     v6 = __p[0];
-    v7 = [MEMORY[0x1E696AEC0] defaultCStringEncoding];
+    defaultCStringEncoding = [MEMORY[0x1E696AEC0] defaultCStringEncoding];
     if (v5 >= 0)
     {
       v8 = __p;
@@ -1366,7 +1366,7 @@ void __38__PLABMClient_getLTESleepManagerStats__block_invoke(uint64_t a1, _DWORD
       v8 = v6;
     }
 
-    v9 = [v4 stringWithCString:v8 encoding:v7];
+    v9 = [v4 stringWithCString:v8 encoding:defaultCStringEncoding];
     if (v18 < 0)
     {
       operator delete(__p[0]);
@@ -1413,7 +1413,7 @@ void __38__PLABMClient_getLTESleepManagerStats__block_invoke(uint64_t a1, _DWORD
     v11 = MEMORY[0x1E696AEC0];
     v12 = SHIBYTE(v25);
     v13 = v24[0];
-    v14 = [MEMORY[0x1E696AEC0] defaultCStringEncoding];
+    defaultCStringEncoding2 = [MEMORY[0x1E696AEC0] defaultCStringEncoding];
     if (v12 >= 0)
     {
       v15 = v24;
@@ -1424,7 +1424,7 @@ void __38__PLABMClient_getLTESleepManagerStats__block_invoke(uint64_t a1, _DWORD
       v15 = v13;
     }
 
-    v10 = [v11 stringWithCString:v15 encoding:v14];
+    v10 = [v11 stringWithCString:v15 encoding:defaultCStringEncoding2];
   }
 
   if (v23 < 0)

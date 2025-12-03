@@ -1,13 +1,13 @@
 @interface AVCaptureDeviceFormat
-- ($2825F4736939C4A6D3AD43837233062D)_defaultPhotoDimensionsInNativeSensorOrientationWithHighResolutionCaptureEnabled:(BOOL)a3;
-- ($2825F4736939C4A6D3AD43837233062D)defaultPhotoDimensionsWithHighResolutionCaptureEnabled:(BOOL)a3;
+- ($2825F4736939C4A6D3AD43837233062D)_defaultPhotoDimensionsInNativeSensorOrientationWithHighResolutionCaptureEnabled:(BOOL)enabled;
+- ($2825F4736939C4A6D3AD43837233062D)defaultPhotoDimensionsWithHighResolutionCaptureEnabled:(BOOL)enabled;
 - ($2825F4736939C4A6D3AD43837233062D)previewDimensions;
 - ($2825F4736939C4A6D3AD43837233062D)sensorDimensions;
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)defaultActiveMaxFrameDurationForSessionPreset:(SEL)a3;
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)defaultActiveMinFrameDurationForSessionPreset:(SEL)a3;
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)defaultActiveMaxFrameDurationForSessionPreset:(SEL)preset;
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)defaultActiveMinFrameDurationForSessionPreset:(SEL)preset;
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)highestSupportedVideoFrameDuration;
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)lowestSupportedVideoFrameDuration;
-- (AVCaptureDeviceFormat)initWithFigCaptureSourceFormat:(id)a3 fcSourceAttributes:(id)a4;
+- (AVCaptureDeviceFormat)initWithFigCaptureSourceFormat:(id)format fcSourceAttributes:(id)attributes;
 - (AVExposureBiasRange)systemRecommendedExposureBiasRange;
 - (AVFrameRateRange)videoFrameRateRangeForCenterStage;
 - (AVFrameRateRange)videoFrameRateRangeForPortraitEffect;
@@ -26,7 +26,7 @@
 - (BOOL)isDemosaicedRawConfigurationWithDepthSupported;
 - (BOOL)isDemosaicedRawSupported;
 - (BOOL)isDigitalFlashSupported;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isFastCapturePrioritizationSupported;
 - (BOOL)isGlobalToneMappingSupported;
 - (BOOL)isHDRSupported;
@@ -60,17 +60,17 @@
 - (BOOL)isVideoHDRSupported;
 - (BOOL)isVideoHDRSuspensionSupported;
 - (BOOL)isVideoStabilizationModeSupported:(AVCaptureVideoStabilizationMode)videoStabilizationMode;
-- (BOOL)isVideoStabilizationStrengthSupported:(int64_t)a3;
+- (BOOL)isVideoStabilizationStrengthSupported:(int64_t)supported;
 - (BOOL)isVideoStabilizationSupported;
 - (BOOL)isVisionDataDeliverySupported;
 - (BOOL)isWideColorSupported;
 - (BOOL)isZeroShutterLagSupported;
 - (BOOL)isZeroShutterLagWithDepthSupported;
-- (BOOL)maxPhotoDimensionsAreUltraHighResolution:(id)a3 privateDimensionsEnabled:(BOOL)a4;
-- (BOOL)prefersVideoHDREnabledForSessionPreset:(id)a3;
+- (BOOL)maxPhotoDimensionsAreUltraHighResolution:(id)resolution privateDimensionsEnabled:(BOOL)enabled;
+- (BOOL)prefersVideoHDREnabledForSessionPreset:(id)preset;
 - (BOOL)supportsHighResolutionStillImageOutput;
 - (BOOL)supportsRedEyeReduction;
-- (BOOL)validateMaxPhotoDimensions:(id)a3 privateDimensionsEnabled:(BOOL)a4;
+- (BOOL)validateMaxPhotoDimensions:(id)dimensions privateDimensionsEnabled:(BOOL)enabled;
 - (CGFloat)videoMaxZoomFactor;
 - (CGFloat)videoMaxZoomFactorForCenterStage;
 - (CGFloat)videoMaxZoomFactorForDepthDataDelivery;
@@ -86,7 +86,7 @@
 - (NSArray)supportedVideoZoomRangesForDepthDataDelivery;
 - (NSArray)unsupportedCaptureOutputClasses;
 - (NSArray)videoSupportedFrameRateRanges;
-- (double)focalLengthIn35mmFilmWithGeometricDistortionCorrection:(BOOL)a3;
+- (double)focalLengthIn35mmFilmWithGeometricDistortionCorrection:(BOOL)correction;
 - (double)videoMaxZoomFactorForCinematicVideo;
 - (double)videoMinZoomFactorForCinematicVideo;
 - (float)defaultPortraitLightingEffectStrength;
@@ -101,10 +101,10 @@
 - (float)minSimulatedAperture;
 - (float)spatialOverCapturePercentage;
 - (float)videoFieldOfView;
-- (float)videoFieldOfViewForAspectRatio:(id)a3 geometricDistortionCorrected:(BOOL)a4;
+- (float)videoFieldOfViewForAspectRatio:(id)ratio geometricDistortionCorrected:(BOOL)corrected;
 - (id)AVCaptureSessionPresets;
-- (id)_stringForMediaType:(unsigned int)a3 formatDescription:(opaqueCMFormatDescription *)a4 frameRateRanges:(id)a5;
-- (id)_supportedMaxPhotoDimensionsPrivateDimensionsEnabled:(BOOL)a3;
+- (id)_stringForMediaType:(unsigned int)type formatDescription:(opaqueCMFormatDescription *)description frameRateRanges:(id)ranges;
+- (id)_supportedMaxPhotoDimensionsPrivateDimensionsEnabled:(BOOL)enabled;
 - (id)debugDescription;
 - (id)description;
 - (id)figCaptureSourceDepthDataFormat;
@@ -126,7 +126,7 @@
 - (unsigned)supportedRawPixelFormat;
 - (void)_initializeSupportedMaxPhotoDimensions;
 - (void)dealloc;
-- (void)setContinuousZoomWithDepthEnabled:(BOOL)a3;
+- (void)setContinuousZoomWithDepthEnabled:(BOOL)enabled;
 @end
 
 @implementation AVCaptureDeviceFormat
@@ -152,7 +152,7 @@
     {
       [-[AVCaptureDeviceFormat figCaptureSourceVideoFormat](self "figCaptureSourceVideoFormat")];
       v4 = v3;
-      v5 = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
+      figCaptureSourceVideoFormat = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
     }
 
     else
@@ -165,10 +165,10 @@
 
       [-[AVCaptureDeviceFormat figCaptureSourceDepthDataFormat](self "figCaptureSourceDepthDataFormat")];
       v4 = v6;
-      v5 = [(AVCaptureDeviceFormat *)self figCaptureSourceDepthDataFormat];
+      figCaptureSourceVideoFormat = [(AVCaptureDeviceFormat *)self figCaptureSourceDepthDataFormat];
     }
 
-    [v5 maxSupportedFrameRate];
+    [figCaptureSourceVideoFormat maxSupportedFrameRate];
     v8 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithObjects:{+[AVFrameRateRange frameRateRangeWithMinRate:maxFrameRate:](AVFrameRateRange, "frameRateRangeWithMinRate:maxFrameRate:", v4, v7), 0}];
 LABEL_7:
     self->_internal->videoSupportedFrameRateRanges = v8;
@@ -179,42 +179,42 @@ LABEL_7:
 
 - (BOOL)isPhotoFormat
 {
-  v2 = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
+  figCaptureSourceVideoFormat = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
 
-  return [v2 isPhotoFormat];
+  return [figCaptureSourceVideoFormat isPhotoFormat];
 }
 
 - (void)_initializeSupportedMaxPhotoDimensions
 {
-  v2 = self;
+  selfCopy = self;
   v3 = [-[AVCaptureDeviceFormat figCaptureSourceVideoFormat](self "figCaptureSourceVideoFormat")];
-  v4 = [(AVCaptureDeviceFormat *)v2 figCaptureSourceVideoFormat];
+  figCaptureSourceVideoFormat = [(AVCaptureDeviceFormat *)selfCopy figCaptureSourceVideoFormat];
   if (v3)
   {
-    v5 = [v4 geometricDistortionCorrectionFormat];
+    geometricDistortionCorrectionFormat = [figCaptureSourceVideoFormat geometricDistortionCorrectionFormat];
 LABEL_7:
-    v6 = v5;
+    v6 = geometricDistortionCorrectionFormat;
     goto LABEL_8;
   }
 
-  if (v4)
+  if (figCaptureSourceVideoFormat)
   {
-    v5 = [(AVCaptureDeviceFormat *)v2 figCaptureSourceVideoFormat];
+    geometricDistortionCorrectionFormat = [(AVCaptureDeviceFormat *)selfCopy figCaptureSourceVideoFormat];
     goto LABEL_7;
   }
 
-  if ([(AVCaptureDeviceFormat *)v2 figCaptureSourceDepthDataFormat])
+  if ([(AVCaptureDeviceFormat *)selfCopy figCaptureSourceDepthDataFormat])
   {
-    v5 = [(AVCaptureDeviceFormat *)v2 figCaptureSourceDepthDataFormat];
+    geometricDistortionCorrectionFormat = [(AVCaptureDeviceFormat *)selfCopy figCaptureSourceDepthDataFormat];
     goto LABEL_7;
   }
 
   v6 = 0;
 LABEL_8:
-  v7 = [MEMORY[0x1E695DF70] array];
-  v8 = [(AVCaptureDeviceFormat *)v2 defaultPhotoDimensionsWithHighResolutionCaptureEnabled:0];
-  v25 = v7;
-  [v7 addObject:{objc_msgSend(objc_alloc(MEMORY[0x1E698F7F0]), "initWithDimensions:deferredPhotoProxyDimensions:isPrivate:flavor:maxUpscalingDimensions:", v8, 0, 0, 0, 0)}];
+  array = [MEMORY[0x1E695DF70] array];
+  v8 = [(AVCaptureDeviceFormat *)selfCopy defaultPhotoDimensionsWithHighResolutionCaptureEnabled:0];
+  v25 = array;
+  [array addObject:{objc_msgSend(objc_alloc(MEMORY[0x1E698F7F0]), "initWithDimensions:deferredPhotoProxyDimensions:isPrivate:flavor:maxUpscalingDimensions:", v8, 0, 0, 0, 0)}];
   v30 = 0u;
   v31 = 0u;
   v28 = 0u;
@@ -237,22 +237,22 @@ LABEL_8:
         }
 
         v13 = *(*(&v28 + 1) + 8 * v12);
-        if (v2->_internal->mountedInPortraitOrientation)
+        if (selfCopy->_internal->mountedInPortraitOrientation)
         {
-          v14 = v2;
+          v14 = selfCopy;
           v15 = objc_alloc(MEMORY[0x1E698F7F0]);
           v16 = AVCaptureFlippedDimensions([v13 dimensions]);
           v17 = AVCaptureFlippedDimensions([v13 deferredPhotoProxyDimensions]);
-          v18 = [v13 isPrivate];
+          isPrivate = [v13 isPrivate];
           v19 = v8;
-          v20 = [v13 flavor];
+          flavor = [v13 flavor];
           v21 = AVCaptureFlippedDimensions([v13 maxUpscalingDimensions]);
           v22 = v15;
-          v2 = v14;
+          selfCopy = v14;
           v11 = v24;
-          v23 = v20;
+          v23 = flavor;
           v8 = v19;
-          v13 = [v22 initWithDimensions:v16 deferredPhotoProxyDimensions:v17 isPrivate:v18 flavor:v23 maxUpscalingDimensions:v21];
+          v13 = [v22 initWithDimensions:v16 deferredPhotoProxyDimensions:v17 isPrivate:isPrivate flavor:v23 maxUpscalingDimensions:v21];
         }
 
         if (([v13 dimensionsAreEqualToDimensions:v8] & 1) == 0)
@@ -270,14 +270,14 @@ LABEL_8:
     while (v10);
   }
 
-  v2->_internal->supportedMaxPhotoDimensions = [v25 copy];
+  selfCopy->_internal->supportedMaxPhotoDimensions = [v25 copy];
 }
 
 - (BOOL)isSmartFramingSupported
 {
-  v2 = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
+  figCaptureSourceVideoFormat = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
 
-  return [v2 isSmartFramingSupported];
+  return [figCaptureSourceVideoFormat isSmartFramingSupported];
 }
 
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)lowestSupportedVideoFrameDuration
@@ -287,8 +287,8 @@ LABEL_8:
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(AVCaptureDeviceFormat *)self videoSupportedFrameRateRanges];
-  result = [(NSArray *)v4 countByEnumeratingWithState:&v13 objects:v12 count:16];
+  videoSupportedFrameRateRanges = [(AVCaptureDeviceFormat *)self videoSupportedFrameRateRanges];
+  result = [(NSArray *)videoSupportedFrameRateRanges countByEnumeratingWithState:&v13 objects:v12 count:16];
   if (result)
   {
     v6 = result;
@@ -300,7 +300,7 @@ LABEL_8:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(videoSupportedFrameRateRanges);
         }
 
         v9 = *(*(&v13 + 1) + 8 * v8);
@@ -334,7 +334,7 @@ LABEL_8:
       }
 
       while (v6 != v8);
-      result = [(NSArray *)v4 countByEnumeratingWithState:&v13 objects:v12 count:16];
+      result = [(NSArray *)videoSupportedFrameRateRanges countByEnumeratingWithState:&v13 objects:v12 count:16];
       v6 = result;
     }
 
@@ -351,8 +351,8 @@ LABEL_8:
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(AVCaptureDeviceFormat *)self videoSupportedFrameRateRanges];
-  result = [(NSArray *)v4 countByEnumeratingWithState:&v13 objects:v12 count:16];
+  videoSupportedFrameRateRanges = [(AVCaptureDeviceFormat *)self videoSupportedFrameRateRanges];
+  result = [(NSArray *)videoSupportedFrameRateRanges countByEnumeratingWithState:&v13 objects:v12 count:16];
   if (result)
   {
     v6 = result;
@@ -364,7 +364,7 @@ LABEL_8:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(videoSupportedFrameRateRanges);
         }
 
         v9 = *(*(&v13 + 1) + 8 * v8);
@@ -398,7 +398,7 @@ LABEL_8:
       }
 
       while (v6 != v8);
-      result = [(NSArray *)v4 countByEnumeratingWithState:&v13 objects:v12 count:16];
+      result = [(NSArray *)videoSupportedFrameRateRanges countByEnumeratingWithState:&v13 objects:v12 count:16];
       v6 = result;
     }
 
@@ -505,13 +505,13 @@ LABEL_8:
 
     else
     {
-      v4 = [(FigCaptureSourceFormat *)internal->sourceFormat formatDescription];
-      if (v4)
+      formatDescription = [(FigCaptureSourceFormat *)internal->sourceFormat formatDescription];
+      if (formatDescription)
       {
-        v4 = CFRetain(v4);
+        formatDescription = CFRetain(formatDescription);
       }
 
-      self->_internal->formatDescription = v4;
+      self->_internal->formatDescription = formatDescription;
     }
   }
 
@@ -533,9 +533,9 @@ LABEL_8:
 
 - (float)defaultSimulatedAperture
 {
-  v2 = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
+  figCaptureSourceVideoFormat = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
 
-  [v2 defaultSimulatedAperture];
+  [figCaptureSourceVideoFormat defaultSimulatedAperture];
   return result;
 }
 
@@ -546,9 +546,9 @@ LABEL_8:
     return 0;
   }
 
-  v5 = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
+  figCaptureSourceVideoFormat = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
 
-  return [v5 isStillImageDisparitySupported];
+  return [figCaptureSourceVideoFormat isStillImageDisparitySupported];
 }
 
 - (BOOL)isStillImageDepthSupported
@@ -558,16 +558,16 @@ LABEL_8:
     return 0;
   }
 
-  v5 = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
+  figCaptureSourceVideoFormat = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
 
-  return [v5 isStillImageDepthSupported];
+  return [figCaptureSourceVideoFormat isStillImageDepthSupported];
 }
 
 - (id)AVCaptureSessionPresets
 {
-  v2 = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
+  figCaptureSourceVideoFormat = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
 
-  return [v2 AVCaptureSessionPresets];
+  return [figCaptureSourceVideoFormat AVCaptureSessionPresets];
 }
 
 - (BOOL)isStreamingDisparitySupported
@@ -577,9 +577,9 @@ LABEL_8:
     return 0;
   }
 
-  v5 = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
+  figCaptureSourceVideoFormat = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
 
-  return [v5 isStreamingDisparitySupported];
+  return [figCaptureSourceVideoFormat isStreamingDisparitySupported];
 }
 
 - (BOOL)isStreamingDepthSupported
@@ -589,49 +589,49 @@ LABEL_8:
     return 0;
   }
 
-  v5 = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
+  figCaptureSourceVideoFormat = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
 
-  return [v5 isStreamingDepthSupported];
+  return [figCaptureSourceVideoFormat isStreamingDepthSupported];
 }
 
 - (BOOL)isVideoGreenGhostMitigationSupported
 {
-  v2 = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
+  figCaptureSourceVideoFormat = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
 
-  return [v2 isVideoGreenGhostMitigationSupported];
+  return [figCaptureSourceVideoFormat isVideoGreenGhostMitigationSupported];
 }
 
 - (float)defaultPortraitLightingEffectStrength
 {
-  v2 = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
-  if (!v2)
+  figCaptureSourceVideoFormat = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
+  if (!figCaptureSourceVideoFormat)
   {
     return NAN;
   }
 
-  [v2 defaultPortraitLightingEffectStrength];
+  [figCaptureSourceVideoFormat defaultPortraitLightingEffectStrength];
   return result;
 }
 
 - (BOOL)isPortraitAutoSuggestSupported
 {
-  v2 = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
+  figCaptureSourceVideoFormat = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
 
-  return [v2 isPortraitAutoSuggestSupported];
+  return [figCaptureSourceVideoFormat isPortraitAutoSuggestSupported];
 }
 
 - (NSArray)supportedColorSpaces
 {
-  v2 = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
+  figCaptureSourceVideoFormat = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
 
-  return [v2 supportedColorSpaces];
+  return [figCaptureSourceVideoFormat supportedColorSpaces];
 }
 
 - (BOOL)isSemanticStyleRenderingSupported
 {
-  v2 = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
+  figCaptureSourceVideoFormat = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
 
-  return [v2 isSemanticStyleRenderingSupported];
+  return [figCaptureSourceVideoFormat isSemanticStyleRenderingSupported];
 }
 
 - (id)description
@@ -645,10 +645,10 @@ LABEL_8:
 {
   [(AVCaptureDeviceFormat *)self mediaType];
   v3 = AVOSTypeForString();
-  v4 = [(AVCaptureDeviceFormat *)self formatDescription];
-  v5 = [(AVCaptureDeviceFormat *)self videoSupportedFrameRateRanges];
+  formatDescription = [(AVCaptureDeviceFormat *)self formatDescription];
+  videoSupportedFrameRateRanges = [(AVCaptureDeviceFormat *)self videoSupportedFrameRateRanges];
 
-  return [(AVCaptureDeviceFormat *)self _stringForMediaType:v3 formatDescription:v4 frameRateRanges:v5];
+  return [(AVCaptureDeviceFormat *)self _stringForMediaType:v3 formatDescription:formatDescription frameRateRanges:videoSupportedFrameRateRanges];
 }
 
 - (AVMediaType)mediaType
@@ -663,11 +663,11 @@ LABEL_8:
   if ([(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat])
   {
     mountedInPortraitOrientation = self->_internal->mountedInPortraitOrientation;
-    v4 = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
+    figCaptureSourceVideoFormat = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
     if (mountedInPortraitOrientation)
     {
 
-      [v4 verticalFieldOfViewForAspectRatio:0];
+      [figCaptureSourceVideoFormat verticalFieldOfViewForAspectRatio:0];
       return result;
     }
   }
@@ -679,10 +679,10 @@ LABEL_8:
       return 0.0;
     }
 
-    v4 = [(AVCaptureDeviceFormat *)self figCaptureSourceDepthDataFormat];
+    figCaptureSourceVideoFormat = [(AVCaptureDeviceFormat *)self figCaptureSourceDepthDataFormat];
   }
 
-  [v4 fieldOfView];
+  [figCaptureSourceVideoFormat fieldOfView];
   return result;
 }
 
@@ -690,29 +690,29 @@ LABEL_8:
 {
   if ([-[AVCaptureDeviceFormat figCaptureSourceVideoFormat](self "figCaptureSourceVideoFormat")])
   {
-    v3 = [-[AVCaptureDeviceFormat figCaptureSourceVideoFormat](self "figCaptureSourceVideoFormat")];
+    figCaptureSourceVideoFormat = [-[AVCaptureDeviceFormat figCaptureSourceVideoFormat](self "figCaptureSourceVideoFormat")];
 LABEL_7:
 
-    [v3 geometricDistortionCorrectedFieldOfView];
+    [figCaptureSourceVideoFormat geometricDistortionCorrectedFieldOfView];
     return result;
   }
 
   mountedInPortraitOrientation = self->_internal->mountedInPortraitOrientation;
-  v3 = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
+  figCaptureSourceVideoFormat = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
   if (!mountedInPortraitOrientation)
   {
     goto LABEL_7;
   }
 
-  [v3 verticalGeometricDistortionCorrectedFieldOfViewForAspectRatio:0];
+  [figCaptureSourceVideoFormat verticalGeometricDistortionCorrectedFieldOfViewForAspectRatio:0];
   return result;
 }
 
 - (BOOL)isVideoBinned
 {
-  v2 = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
+  figCaptureSourceVideoFormat = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
 
-  return [v2 isBinned];
+  return [figCaptureSourceVideoFormat isBinned];
 }
 
 - (int)supportedStabilizationMethod
@@ -741,9 +741,9 @@ LABEL_7:
 
 - (NSArray)secondaryNativeResolutionZoomFactors
 {
-  v2 = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
+  figCaptureSourceVideoFormat = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
 
-  return [v2 secondaryNativeResolutionZoomFactors];
+  return [figCaptureSourceVideoFormat secondaryNativeResolutionZoomFactors];
 }
 
 - (AVZoomRange)systemRecommendedVideoZoomRange
@@ -797,9 +797,9 @@ LABEL_7:
 
 - (BOOL)isHighestPhotoQualitySupported
 {
-  v2 = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
+  figCaptureSourceVideoFormat = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
 
-  return [v2 isStillImageStabilizationSupported];
+  return [figCaptureSourceVideoFormat isStillImageStabilizationSupported];
 }
 
 - (AVExposureBiasRange)systemRecommendedExposureBiasRange
@@ -817,17 +817,17 @@ LABEL_7:
 
 - (float)minISO
 {
-  v2 = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
+  figCaptureSourceVideoFormat = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
 
-  [v2 minISO];
+  [figCaptureSourceVideoFormat minISO];
   return result;
 }
 
 - (float)maxISO
 {
-  v2 = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
+  figCaptureSourceVideoFormat = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
 
-  [v2 maxISO];
+  [figCaptureSourceVideoFormat maxISO];
   return result;
 }
 
@@ -875,8 +875,8 @@ LABEL_7:
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(AVCaptureDeviceFormat *)self supportedColorSpaces];
-  v4 = [(NSArray *)v3 countByEnumeratingWithState:&v11 objects:v10 count:16];
+  supportedColorSpaces = [(AVCaptureDeviceFormat *)self supportedColorSpaces];
+  v4 = [(NSArray *)supportedColorSpaces countByEnumeratingWithState:&v11 objects:v10 count:16];
   if (v4)
   {
     v5 = v4;
@@ -887,7 +887,7 @@ LABEL_7:
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(supportedColorSpaces);
         }
 
         if (!AVCaptureColorSpaceIsHDR([*(*(&v11 + 1) + 8 * i) integerValue]))
@@ -897,7 +897,7 @@ LABEL_7:
         }
       }
 
-      v5 = [(NSArray *)v3 countByEnumeratingWithState:&v11 objects:v10 count:16];
+      v5 = [(NSArray *)supportedColorSpaces countByEnumeratingWithState:&v11 objects:v10 count:16];
       if (v5)
       {
         continue;
@@ -919,30 +919,30 @@ LABEL_11:
 
 - (BOOL)isWideColorSupported
 {
-  v2 = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
+  figCaptureSourceVideoFormat = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
 
-  return [v2 isWideColorSupported];
+  return [figCaptureSourceVideoFormat isWideColorSupported];
 }
 
 - (BOOL)isDeferredPhotoProcessingSupported
 {
-  v2 = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
+  figCaptureSourceVideoFormat = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
 
-  return [v2 isDeferredPhotoProcessingSupported];
+  return [figCaptureSourceVideoFormat isDeferredPhotoProcessingSupported];
 }
 
 - (BOOL)isDeepFusionSupported
 {
-  v2 = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
+  figCaptureSourceVideoFormat = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
 
-  return [v2 isDeepFusionSupported];
+  return [figCaptureSourceVideoFormat isDeepFusionSupported];
 }
 
 - (BOOL)isMultiCamSupported
 {
-  v2 = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
+  figCaptureSourceVideoFormat = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
 
-  return [v2 isMultiCamSupported];
+  return [figCaptureSourceVideoFormat isMultiCamSupported];
 }
 
 - (BOOL)isSpatialVideoCaptureSupported
@@ -950,9 +950,9 @@ LABEL_11:
   BoolAnswer = AVGestaltGetBoolAnswer(@"AVGQBWQSOG5QWWG276TG2HH4RGJZDA");
   if (BoolAnswer)
   {
-    v4 = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
+    figCaptureSourceVideoFormat = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
 
-    LOBYTE(BoolAnswer) = [v4 isStereoVideoCaptureSupported];
+    LOBYTE(BoolAnswer) = [figCaptureSourceVideoFormat isStereoVideoCaptureSupported];
   }
 
   return BoolAnswer;
@@ -985,91 +985,91 @@ LABEL_11:
 
 - (float)minSimulatedAperture
 {
-  v2 = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
+  figCaptureSourceVideoFormat = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
 
-  [v2 minSimulatedAperture];
+  [figCaptureSourceVideoFormat minSimulatedAperture];
   return result;
 }
 
 - (float)maxSimulatedAperture
 {
-  v2 = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
+  figCaptureSourceVideoFormat = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
 
-  [v2 maxSimulatedAperture];
+  [figCaptureSourceVideoFormat maxSimulatedAperture];
   return result;
 }
 
 - (float)minPortraitLightingEffectStrength
 {
-  v2 = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
-  if (!v2)
+  figCaptureSourceVideoFormat = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
+  if (!figCaptureSourceVideoFormat)
   {
     return NAN;
   }
 
-  [v2 minPortraitLightingEffectStrength];
+  [figCaptureSourceVideoFormat minPortraitLightingEffectStrength];
   return result;
 }
 
 - (float)maxPortraitLightingEffectStrength
 {
-  v2 = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
-  if (!v2)
+  figCaptureSourceVideoFormat = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
+  if (!figCaptureSourceVideoFormat)
   {
     return NAN;
   }
 
-  [v2 maxPortraitLightingEffectStrength];
+  [figCaptureSourceVideoFormat maxPortraitLightingEffectStrength];
   return result;
 }
 
 - (BOOL)isFastCapturePrioritizationSupported
 {
-  v2 = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
+  figCaptureSourceVideoFormat = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
 
-  return [v2 isResponsiveShutterSupported];
+  return [figCaptureSourceVideoFormat isResponsiveShutterSupported];
 }
 
 - (BOOL)isZeroShutterLagSupported
 {
-  v2 = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
+  figCaptureSourceVideoFormat = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
 
-  return [v2 isZeroShutterLagSupported];
+  return [figCaptureSourceVideoFormat isZeroShutterLagSupported];
 }
 
 - (BOOL)isZeroShutterLagWithDepthSupported
 {
-  v2 = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
+  figCaptureSourceVideoFormat = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
 
-  return [v2 isZeroShutterLagWithDepthSupported];
+  return [figCaptureSourceVideoFormat isZeroShutterLagWithDepthSupported];
 }
 
 - (BOOL)isHighPhotoQualitySupported
 {
-  v2 = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
+  figCaptureSourceVideoFormat = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
 
-  return [v2 isHighPhotoQualitySupported];
+  return [figCaptureSourceVideoFormat isHighPhotoQualitySupported];
 }
 
 - (BOOL)isSmartStyleRenderingSupported
 {
-  v2 = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
+  figCaptureSourceVideoFormat = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
 
-  return [v2 isSmartStyleRenderingSupported];
+  return [figCaptureSourceVideoFormat isSmartStyleRenderingSupported];
 }
 
 - (BOOL)isCameraLensSmudgeDetectionSupported
 {
-  v2 = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
+  figCaptureSourceVideoFormat = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
 
-  return [v2 isLensSmudgeDetectionSupported];
+  return [figCaptureSourceVideoFormat isLensSmudgeDetectionSupported];
 }
 
 - (BOOL)isSpatialOverCaptureSupported
 {
-  v2 = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
+  figCaptureSourceVideoFormat = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
 
-  return [v2 isSpatialOverCaptureSupported];
+  return [figCaptureSourceVideoFormat isSpatialOverCaptureSupported];
 }
 
 - (id)supportedZoomRangesForCinematicVideo
@@ -1086,37 +1086,37 @@ LABEL_11:
 
 - (BOOL)isIrisVideoStabilizationSupported
 {
-  v2 = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
+  figCaptureSourceVideoFormat = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
 
-  return [v2 isIrisVideoStabilizationSupported];
+  return [figCaptureSourceVideoFormat isIrisVideoStabilizationSupported];
 }
 
 - (unsigned)supportedRawPixelFormat
 {
-  v2 = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
+  figCaptureSourceVideoFormat = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
 
-  return [v2 supportedRawPixelFormat];
+  return [figCaptureSourceVideoFormat supportedRawPixelFormat];
 }
 
 - (BOOL)supportsRedEyeReduction
 {
-  v2 = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
+  figCaptureSourceVideoFormat = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
 
-  return [v2 isRedEyeReductionSupported];
+  return [figCaptureSourceVideoFormat isRedEyeReductionSupported];
 }
 
 - (BOOL)isSISSupported
 {
-  v2 = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
+  figCaptureSourceVideoFormat = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
 
-  return [v2 isStillImageStabilizationSupported];
+  return [figCaptureSourceVideoFormat isStillImageStabilizationSupported];
 }
 
 - (BOOL)isStereoFusionSupported
 {
-  v2 = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
+  figCaptureSourceVideoFormat = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
 
-  return [v2 isStereoFusionSupported];
+  return [figCaptureSourceVideoFormat isStereoFusionSupported];
 }
 
 - (int64_t)videoHDRFlavor
@@ -1134,23 +1134,23 @@ LABEL_11:
 
 - (BOOL)isHDRSupported
 {
-  v2 = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
+  figCaptureSourceVideoFormat = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
 
-  return [v2 isHDRSupported];
+  return [figCaptureSourceVideoFormat isHDRSupported];
 }
 
 - (BOOL)isDigitalFlashSupported
 {
-  v2 = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
+  figCaptureSourceVideoFormat = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
 
-  return [v2 isDigitalFlashSupported];
+  return [figCaptureSourceVideoFormat isDigitalFlashSupported];
 }
 
 - (BOOL)isIrisSupported
 {
-  v2 = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
+  figCaptureSourceVideoFormat = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
 
-  return [v2 isIrisSupported];
+  return [figCaptureSourceVideoFormat isIrisSupported];
 }
 
 - (BOOL)isPortraitEffectsMatteStillImageDeliverySupported
@@ -1167,7 +1167,7 @@ LABEL_11:
 
 - (id)supportedSemanticSegmentationMatteTypes
 {
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v4 = [(NSDictionary *)self->_internal->fcSourceAttributes objectForKeyedSubscript:*MEMORY[0x1E6990270]];
   if ([v4 count])
   {
@@ -1204,7 +1204,7 @@ LABEL_11:
           v12 = [v7 objectForKeyedSubscript:*(*(&v15 + 1) + 8 * v11)];
           if (v12)
           {
-            [v3 addObject:v12];
+            [array addObject:v12];
           }
 
           ++v11;
@@ -1218,74 +1218,74 @@ LABEL_11:
     }
   }
 
-  return [MEMORY[0x1E695DEC8] arrayWithArray:v3];
+  return [MEMORY[0x1E695DEC8] arrayWithArray:array];
 }
 
 - (BOOL)isMomentCaptureMovieRecordingSupported
 {
-  v2 = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
+  figCaptureSourceVideoFormat = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
 
-  return [v2 isMomentCaptureMovieRecordingSupported];
+  return [figCaptureSourceVideoFormat isMomentCaptureMovieRecordingSupported];
 }
 
 - (BOOL)isContentAwareDistortionCorrectionSupported
 {
-  v2 = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
+  figCaptureSourceVideoFormat = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
 
-  return [v2 intelligentDistortionCorrectionSupported];
+  return [figCaptureSourceVideoFormat intelligentDistortionCorrectionSupported];
 }
 
 - (BOOL)isDemosaicedRawSupported
 {
-  v3 = [(AVCaptureDeviceFormat *)self internalDemosaicedRawPixelFormat];
-  if (v3)
+  internalDemosaicedRawPixelFormat = [(AVCaptureDeviceFormat *)self internalDemosaicedRawPixelFormat];
+  if (internalDemosaicedRawPixelFormat)
   {
-    LOBYTE(v3) = [(AVCaptureDeviceFormat *)self supportedDemosaicedRawPixelFormat]!= 0;
+    LOBYTE(internalDemosaicedRawPixelFormat) = [(AVCaptureDeviceFormat *)self supportedDemosaicedRawPixelFormat]!= 0;
   }
 
-  return v3;
+  return internalDemosaicedRawPixelFormat;
 }
 
 - (unsigned)internalDemosaicedRawPixelFormat
 {
-  v2 = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
+  figCaptureSourceVideoFormat = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
 
-  return [v2 internalDemosaicedRawPixelFormat];
+  return [figCaptureSourceVideoFormat internalDemosaicedRawPixelFormat];
 }
 
 - (unsigned)supportedDemosaicedRawPixelFormat
 {
-  v2 = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
+  figCaptureSourceVideoFormat = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
 
-  return [v2 supportedDemosaicedRawPixelFormat];
+  return [figCaptureSourceVideoFormat supportedDemosaicedRawPixelFormat];
 }
 
 - (BOOL)isUltraHighResolutionZeroShutterLagSupported
 {
-  v2 = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
+  figCaptureSourceVideoFormat = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
 
-  return [v2 isUltraHighResolutionZeroShutterLagSupported];
+  return [figCaptureSourceVideoFormat isUltraHighResolutionZeroShutterLagSupported];
 }
 
 - (BOOL)isVariableFrameRateVideoCaptureSupported
 {
-  v2 = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
+  figCaptureSourceVideoFormat = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
 
-  return [v2 isVariableFrameRateVideoCaptureSupported];
+  return [figCaptureSourceVideoFormat isVariableFrameRateVideoCaptureSupported];
 }
 
 - (BOOL)isLowLightVideoCaptureSupported
 {
-  v2 = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
+  figCaptureSourceVideoFormat = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
 
-  return [v2 isLowLightVideoCaptureSupported];
+  return [figCaptureSourceVideoFormat isLowLightVideoCaptureSupported];
 }
 
 - (BOOL)isVideoHDRSuspensionSupported
 {
-  v2 = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
+  figCaptureSourceVideoFormat = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
 
-  return [v2 isSIFRSupported];
+  return [figCaptureSourceVideoFormat isSIFRSupported];
 }
 
 - (NSArray)supportedVideoZoomRangesForDepthDataDelivery
@@ -1311,7 +1311,7 @@ LABEL_11:
 
   else
   {
-    v8 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v9 = [(NSDictionary *)self->_internal->fcSourceAttributes objectForKeyedSubscript:*MEMORY[0x1E69902B0]];
     v19 = 0u;
     v20 = 0u;
@@ -1335,7 +1335,7 @@ LABEL_11:
           [v14 floatValue];
           v16 = v15;
           [v14 floatValue];
-          [v8 addObject:{+[AVZoomRange zoomRangeWithMinZoomFactor:maxZoomFactor:](AVZoomRange, "zoomRangeWithMinZoomFactor:maxZoomFactor:", v16, v17)}];
+          [array addObject:{+[AVZoomRange zoomRangeWithMinZoomFactor:maxZoomFactor:](AVZoomRange, "zoomRangeWithMinZoomFactor:maxZoomFactor:", v16, v17)}];
         }
 
         v11 = [v9 countByEnumeratingWithState:&v19 objects:v18 count:16];
@@ -1344,7 +1344,7 @@ LABEL_11:
       while (v11);
     }
 
-    return [v8 copy];
+    return [array copy];
   }
 }
 
@@ -1367,57 +1367,57 @@ LABEL_11:
 - (BOOL)supportsHighResolutionStillImageOutput
 {
   v3 = [-[AVCaptureDeviceFormat figCaptureSourceVideoFormat](self "figCaptureSourceVideoFormat")];
-  v4 = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
+  figCaptureSourceVideoFormat = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
   if (v3)
   {
-    v5 = [v4 geometricDistortionCorrectionFormat];
+    geometricDistortionCorrectionFormat = [figCaptureSourceVideoFormat geometricDistortionCorrectionFormat];
   }
 
   else
   {
-    if (!v4)
+    if (!figCaptureSourceVideoFormat)
     {
       return [(AVCaptureDeviceFormat *)self figCaptureSourceDepthDataFormat]!= 0;
     }
 
-    v5 = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
+    geometricDistortionCorrectionFormat = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
   }
 
-  return [v5 isHighResStillImageSupported];
+  return [geometricDistortionCorrectionFormat isHighResStillImageSupported];
 }
 
 - (BOOL)isNonDestructiveCropSupported
 {
-  v2 = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
+  figCaptureSourceVideoFormat = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
 
-  return [v2 isNonDestructiveCropSupported];
+  return [figCaptureSourceVideoFormat isNonDestructiveCropSupported];
 }
 
 - (BOOL)isApplyStandardSmartStyleForStillsWhenNoStyleRequestedSupported
 {
-  v2 = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
+  figCaptureSourceVideoFormat = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
 
-  return [v2 isApplyStandardSmartStyleForStillsWhenNoStyleRequestedSupported];
+  return [figCaptureSourceVideoFormat isApplyStandardSmartStyleForStillsWhenNoStyleRequestedSupported];
 }
 
-- (id)_stringForMediaType:(unsigned int)a3 formatDescription:(opaqueCMFormatDescription *)a4 frameRateRanges:(id)a5
+- (id)_stringForMediaType:(unsigned int)type formatDescription:(opaqueCMFormatDescription *)description frameRateRanges:(id)ranges
 {
-  CMFormatDescriptionGetMediaSubType(a4);
+  CMFormatDescriptionGetMediaSubType(description);
   v9 = MEMORY[0x1E696AD60];
   v10 = AVStringForOSType();
   v11 = [v9 stringWithFormat:@"'%@'/'%@' ", v10, AVStringForOSType()];
-  if (a3 > 1936684397)
+  if (type > 1936684397)
   {
-    if (a3 == 1936684398)
+    if (type == 1936684398)
     {
-      StreamBasicDescription = CMAudioFormatDescriptionGetStreamBasicDescription(a4);
+      StreamBasicDescription = CMAudioFormatDescriptionGetStreamBasicDescription(description);
       [v11 appendFormat:@"SR=%0.0f, FF=%u, BPP=%u, FPP=%u, BPF=%u, CH=%u, BPC=%u", *&StreamBasicDescription->mSampleRate, StreamBasicDescription->mFormatFlags, StreamBasicDescription->mBytesPerPacket, StreamBasicDescription->mFramesPerPacket, StreamBasicDescription->mBytesPerFrame, StreamBasicDescription->mChannelsPerFrame, StreamBasicDescription->mBitsPerChannel, time.value, *&time.timescale, time.epoch];
       return v11;
     }
 
     v12 = 1986618469;
 LABEL_6:
-    if (a3 != v12)
+    if (type != v12)
     {
       return v11;
     }
@@ -1425,18 +1425,18 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  if (a3 != 1685091432)
+  if (type != 1685091432)
   {
     v12 = 1885564004;
     goto LABEL_6;
   }
 
 LABEL_7:
-  if ([a5 count])
+  if ([ranges count])
   {
-    [objc_msgSend(a5 "firstObject")];
+    [objc_msgSend(ranges "firstObject")];
     v14 = v13;
-    [objc_msgSend(a5 "firstObject")];
+    [objc_msgSend(ranges "firstObject")];
     v16 = v15;
   }
 
@@ -1446,14 +1446,14 @@ LABEL_7:
     v14 = 0;
   }
 
-  if (a3 == 1885564004)
+  if (type == 1885564004)
   {
     [v11 appendFormat:@"max points: %d, {%2d-%3d fps} ", CMPointCloudFormatDescriptionGetNumberOfPoints(), v14, v16, v59];
   }
 
   else
   {
-    Dimensions = CMVideoFormatDescriptionGetDimensions(a4);
+    Dimensions = CMVideoFormatDescriptionGetDimensions(description);
     [v11 appendFormat:@"%4dx%4d, {%2d-%3d fps}", Dimensions, HIDWORD(*&Dimensions), v14, v16];
   }
 
@@ -1563,14 +1563,14 @@ LABEL_7:
   }
 
   v31 = [(NSArray *)[(AVCaptureDeviceFormat *)self secondaryNativeResolutionZoomFactors] count];
-  v32 = [(AVCaptureDeviceFormat *)self secondaryNativeResolutionZoomFactors];
+  secondaryNativeResolutionZoomFactors = [(AVCaptureDeviceFormat *)self secondaryNativeResolutionZoomFactors];
   if (v31 == 1)
   {
-    [-[NSArray firstObject](v32 "firstObject")];
+    [-[NSArray firstObject](secondaryNativeResolutionZoomFactors "firstObject")];
     [v11 appendFormat:@", secondary:%.2f", v33];
   }
 
-  else if ([(NSArray *)v32 count]>= 2)
+  else if ([(NSArray *)secondaryNativeResolutionZoomFactors count]>= 2)
   {
     [-[NSArray firstObject](-[AVCaptureDeviceFormat secondaryNativeResolutionZoomFactors](self "secondaryNativeResolutionZoomFactors")];
     [v11 appendFormat:@", secondaries:{%.2f", v34];
@@ -1659,17 +1659,17 @@ LABEL_7:
     [v11 appendString:{@", *EXPERIMENTAL*"}];
   }
 
-  v50 = [(AVCaptureDeviceFormat *)self isStillImageDisparitySupported]|| [(AVCaptureDeviceFormat *)self isStillImageDepthSupported];
-  v51 = [(AVCaptureDeviceFormat *)self isStreamingDisparitySupported]|| [(AVCaptureDeviceFormat *)self isStreamingDepthSupported];
-  if (v50 || v51)
+  isStillImageDepthSupported = [(AVCaptureDeviceFormat *)self isStillImageDisparitySupported]|| [(AVCaptureDeviceFormat *)self isStillImageDepthSupported];
+  isStreamingDepthSupported = [(AVCaptureDeviceFormat *)self isStreamingDisparitySupported]|| [(AVCaptureDeviceFormat *)self isStreamingDepthSupported];
+  if (isStillImageDepthSupported || isStreamingDepthSupported)
   {
     v52 = @", supports still image only depth";
-    if (v50 && v51)
+    if (isStillImageDepthSupported && isStreamingDepthSupported)
     {
       v52 = @", supports depth";
     }
 
-    if (v50)
+    if (isStillImageDepthSupported)
     {
       v53 = v52;
     }
@@ -1774,7 +1774,7 @@ LABEL_7:
   return v11;
 }
 
-- (AVCaptureDeviceFormat)initWithFigCaptureSourceFormat:(id)a3 fcSourceAttributes:(id)a4
+- (AVCaptureDeviceFormat)initWithFigCaptureSourceFormat:(id)format fcSourceAttributes:(id)attributes
 {
   v20.receiver = self;
   v20.super_class = AVCaptureDeviceFormat;
@@ -1785,11 +1785,11 @@ LABEL_7:
     v6->_internal = v7;
     if (v7)
     {
-      v6->_internal->sourceFormat = a3;
-      v6->_internal->fcSourceAttributes = a4;
+      v6->_internal->sourceFormat = format;
+      v6->_internal->fcSourceAttributes = attributes;
       if ([(FigCaptureSourceFormat *)v6->_internal->sourceFormat mediaType]== 1986618469)
       {
-        [a3 sensorOrientation];
+        [format sensorOrientation];
         v6->_internal->mountedInPortraitOrientation = AVCaptureIsSensorMountedInPortraitOrientation(v8);
         [(AVCaptureDeviceFormat *)v6 _initializeSupportedMaxPhotoDimensions];
         v6->_internal->backgroundBlurSupported = [(FigCaptureSourceFormat *)v6->_internal->sourceFormat isBackgroundBlurSupported];
@@ -1876,7 +1876,7 @@ LABEL_7:
 
       else if ([(FigCaptureSourceFormat *)v6->_internal->sourceFormat mediaType]== 1685091432)
       {
-        [a3 sensorOrientation];
+        [format sensorOrientation];
         v6->_internal->mountedInPortraitOrientation = AVCaptureIsSensorMountedInPortraitOrientation(v18);
         v6->_internal->isDepthDataFormat = 1;
       }
@@ -1892,21 +1892,21 @@ LABEL_7:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     goto LABEL_7;
   }
 
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (!v5)
   {
     return v5;
   }
 
   sourceFormat = self->_internal->sourceFormat;
-  if (sourceFormat == *(*(a3 + 1) + 8))
+  if (sourceFormat == *(*(equal + 1) + 8))
   {
 LABEL_7:
     LOBYTE(v5) = 1;
@@ -1992,8 +1992,8 @@ LABEL_7:
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v3 = [(AVCaptureDeviceFormat *)self videoSupportedFrameRateRanges];
-  v4 = [(NSArray *)v3 countByEnumeratingWithState:&v27 objects:v26 count:16];
+  videoSupportedFrameRateRanges = [(AVCaptureDeviceFormat *)self videoSupportedFrameRateRanges];
+  v4 = [(NSArray *)videoSupportedFrameRateRanges countByEnumeratingWithState:&v27 objects:v26 count:16];
   if (v4)
   {
     v5 = v4;
@@ -2006,7 +2006,7 @@ LABEL_7:
       {
         if (*v28 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(videoSupportedFrameRateRanges);
         }
 
         v10 = *(*(&v27 + 1) + 8 * i);
@@ -2025,7 +2025,7 @@ LABEL_7:
         }
       }
 
-      v5 = [(NSArray *)v3 countByEnumeratingWithState:&v27 objects:v26 count:16];
+      v5 = [(NSArray *)videoSupportedFrameRateRanges countByEnumeratingWithState:&v27 objects:v26 count:16];
     }
 
     while (v5);
@@ -2086,8 +2086,8 @@ LABEL_7:
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v3 = [(AVCaptureDeviceFormat *)self videoSupportedFrameRateRanges];
-  v4 = [(NSArray *)v3 countByEnumeratingWithState:&v26 objects:v25 count:16];
+  videoSupportedFrameRateRanges = [(AVCaptureDeviceFormat *)self videoSupportedFrameRateRanges];
+  v4 = [(NSArray *)videoSupportedFrameRateRanges countByEnumeratingWithState:&v26 objects:v25 count:16];
   if (v4)
   {
     v5 = v4;
@@ -2100,7 +2100,7 @@ LABEL_7:
       {
         if (*v27 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(videoSupportedFrameRateRanges);
         }
 
         v10 = *(*(&v26 + 1) + 8 * i);
@@ -2119,7 +2119,7 @@ LABEL_7:
         }
       }
 
-      v5 = [(NSArray *)v3 countByEnumeratingWithState:&v26 objects:v25 count:16];
+      v5 = [(NSArray *)videoSupportedFrameRateRanges countByEnumeratingWithState:&v26 objects:v25 count:16];
     }
 
     while (v5);
@@ -2174,8 +2174,8 @@ LABEL_7:
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v3 = [(AVCaptureDeviceFormat *)self videoSupportedFrameRateRanges];
-  v4 = [(NSArray *)v3 countByEnumeratingWithState:&v17 objects:v16 count:16];
+  videoSupportedFrameRateRanges = [(AVCaptureDeviceFormat *)self videoSupportedFrameRateRanges];
+  v4 = [(NSArray *)videoSupportedFrameRateRanges countByEnumeratingWithState:&v17 objects:v16 count:16];
   v5 = *v18;
   v6 = 0.0;
   v7 = 3.40282347e38;
@@ -2186,7 +2186,7 @@ LABEL_7:
     {
       if (*v18 != v5)
       {
-        objc_enumerationMutation(v3);
+        objc_enumerationMutation(videoSupportedFrameRateRanges);
       }
 
       v9 = *(*(&v17 + 1) + 8 * v8);
@@ -2208,7 +2208,7 @@ LABEL_7:
     }
 
     while (v4 != v8);
-    v4 = [(NSArray *)v3 countByEnumeratingWithState:&v17 objects:v16 count:16];
+    v4 = [(NSArray *)videoSupportedFrameRateRanges countByEnumeratingWithState:&v17 objects:v16 count:16];
   }
 
   while (v4);
@@ -2232,8 +2232,8 @@ LABEL_7:
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v3 = [(AVCaptureDeviceFormat *)self videoSupportedFrameRateRanges];
-  v4 = [(NSArray *)v3 countByEnumeratingWithState:&v17 objects:v16 count:16];
+  videoSupportedFrameRateRanges = [(AVCaptureDeviceFormat *)self videoSupportedFrameRateRanges];
+  v4 = [(NSArray *)videoSupportedFrameRateRanges countByEnumeratingWithState:&v17 objects:v16 count:16];
   v5 = *v18;
   v6 = 0.0;
   v7 = 3.40282347e38;
@@ -2244,7 +2244,7 @@ LABEL_7:
     {
       if (*v18 != v5)
       {
-        objc_enumerationMutation(v3);
+        objc_enumerationMutation(videoSupportedFrameRateRanges);
       }
 
       v9 = *(*(&v17 + 1) + 8 * v8);
@@ -2266,7 +2266,7 @@ LABEL_7:
     }
 
     while (v4 != v8);
-    v4 = [(NSArray *)v3 countByEnumeratingWithState:&v17 objects:v16 count:16];
+    v4 = [(NSArray *)videoSupportedFrameRateRanges countByEnumeratingWithState:&v17 objects:v16 count:16];
   }
 
   while (v4);
@@ -2290,8 +2290,8 @@ LABEL_7:
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v3 = [(AVCaptureDeviceFormat *)self videoSupportedFrameRateRanges];
-  v4 = [(NSArray *)v3 countByEnumeratingWithState:&v17 objects:v16 count:16];
+  videoSupportedFrameRateRanges = [(AVCaptureDeviceFormat *)self videoSupportedFrameRateRanges];
+  v4 = [(NSArray *)videoSupportedFrameRateRanges countByEnumeratingWithState:&v17 objects:v16 count:16];
   v5 = *v18;
   v6 = 0.0;
   v7 = 3.40282347e38;
@@ -2302,7 +2302,7 @@ LABEL_7:
     {
       if (*v18 != v5)
       {
-        objc_enumerationMutation(v3);
+        objc_enumerationMutation(videoSupportedFrameRateRanges);
       }
 
       v9 = *(*(&v17 + 1) + 8 * v8);
@@ -2324,7 +2324,7 @@ LABEL_7:
     }
 
     while (v4 != v8);
-    v4 = [(NSArray *)v3 countByEnumeratingWithState:&v17 objects:v16 count:16];
+    v4 = [(NSArray *)videoSupportedFrameRateRanges countByEnumeratingWithState:&v17 objects:v16 count:16];
   }
 
   while (v4);
@@ -2348,8 +2348,8 @@ LABEL_7:
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v3 = [(AVCaptureDeviceFormat *)self videoSupportedFrameRateRanges];
-  v4 = [(NSArray *)v3 countByEnumeratingWithState:&v17 objects:v16 count:16];
+  videoSupportedFrameRateRanges = [(AVCaptureDeviceFormat *)self videoSupportedFrameRateRanges];
+  v4 = [(NSArray *)videoSupportedFrameRateRanges countByEnumeratingWithState:&v17 objects:v16 count:16];
   v5 = *v18;
   v6 = 0.0;
   v7 = 3.40282347e38;
@@ -2360,7 +2360,7 @@ LABEL_7:
     {
       if (*v18 != v5)
       {
-        objc_enumerationMutation(v3);
+        objc_enumerationMutation(videoSupportedFrameRateRanges);
       }
 
       v9 = *(*(&v17 + 1) + 8 * v8);
@@ -2382,7 +2382,7 @@ LABEL_7:
     }
 
     while (v4 != v8);
-    v4 = [(NSArray *)v3 countByEnumeratingWithState:&v17 objects:v16 count:16];
+    v4 = [(NSArray *)videoSupportedFrameRateRanges countByEnumeratingWithState:&v17 objects:v16 count:16];
   }
 
   while (v4);
@@ -2408,9 +2408,9 @@ LABEL_7:
     }
   }
 
-  v7 = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
+  figCaptureSourceVideoFormat = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
 
-  return [v7 isStabilizationModeSupported:1];
+  return [figCaptureSourceVideoFormat isStabilizationModeSupported:1];
 }
 
 - (BOOL)isGlobalToneMappingSupported
@@ -2440,13 +2440,13 @@ LABEL_7:
           return BoolAnswer;
         }
 
-        v5 = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
+        figCaptureSourceVideoFormat = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
         v6 = AVCaptureVideoStabilizationModeCinematicExtended;
       }
 
       else
       {
-        v5 = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
+        figCaptureSourceVideoFormat = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
         v6 = AVCaptureVideoStabilizationModePreviewOptimized;
       }
 
@@ -2455,14 +2455,14 @@ LABEL_7:
 
     if (videoStabilizationMode == (AVCaptureVideoStabilizationModePreviewOptimized|AVCaptureVideoStabilizationModeStandard))
     {
-      v5 = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
+      figCaptureSourceVideoFormat = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
       v6 = AVCaptureVideoStabilizationModePreviewOptimized|AVCaptureVideoStabilizationModeStandard;
       goto LABEL_15;
     }
 
     if (videoStabilizationMode == (AVCaptureVideoStabilizationModePreviewOptimized|AVCaptureVideoStabilizationModeCinematic))
     {
-      v5 = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
+      figCaptureSourceVideoFormat = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
       v6 = AVCaptureVideoStabilizationModePreviewOptimized|AVCaptureVideoStabilizationModeCinematic;
       goto LABEL_15;
     }
@@ -2483,30 +2483,30 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  v5 = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
+  figCaptureSourceVideoFormat = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
   v6 = videoStabilizationMode;
 LABEL_15:
 
-  LOBYTE(BoolAnswer) = [v5 isStabilizationModeSupported:v6];
+  LOBYTE(BoolAnswer) = [figCaptureSourceVideoFormat isStabilizationModeSupported:v6];
   return BoolAnswer;
 }
 
-- ($2825F4736939C4A6D3AD43837233062D)_defaultPhotoDimensionsInNativeSensorOrientationWithHighResolutionCaptureEnabled:(BOOL)a3
+- ($2825F4736939C4A6D3AD43837233062D)_defaultPhotoDimensionsInNativeSensorOrientationWithHighResolutionCaptureEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v5 = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
-  if (v3)
+  enabledCopy = enabled;
+  figCaptureSourceVideoFormat = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
+  if (enabledCopy)
   {
-    v6 = [v5 geometricDistortionCorrectionFormat];
-    v7 = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
-    if (v6)
+    geometricDistortionCorrectionFormat = [figCaptureSourceVideoFormat geometricDistortionCorrectionFormat];
+    figCaptureSourceVideoFormat2 = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
+    if (geometricDistortionCorrectionFormat)
     {
-      v8 = [v7 geometricDistortionCorrectionFormat];
+      geometricDistortionCorrectionFormat2 = [figCaptureSourceVideoFormat2 geometricDistortionCorrectionFormat];
     }
 
-    else if (v7)
+    else if (figCaptureSourceVideoFormat2)
     {
-      v8 = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
+      geometricDistortionCorrectionFormat2 = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
     }
 
     else
@@ -2518,13 +2518,13 @@ LABEL_15:
         return (v10 | Dimensions.width);
       }
 
-      v8 = [(AVCaptureDeviceFormat *)self figCaptureSourceDepthDataFormat];
+      geometricDistortionCorrectionFormat2 = [(AVCaptureDeviceFormat *)self figCaptureSourceDepthDataFormat];
     }
 
-    Dimensions = [v8 defaultHighResStillImageDimensions];
+    Dimensions = [geometricDistortionCorrectionFormat2 defaultHighResStillImageDimensions];
   }
 
-  else if (v5)
+  else if (figCaptureSourceVideoFormat)
   {
     Dimensions = [-[AVCaptureDeviceFormat figCaptureSourceVideoFormat](self "figCaptureSourceVideoFormat")];
   }
@@ -2538,9 +2538,9 @@ LABEL_15:
   return (v10 | Dimensions.width);
 }
 
-- ($2825F4736939C4A6D3AD43837233062D)defaultPhotoDimensionsWithHighResolutionCaptureEnabled:(BOOL)a3
+- ($2825F4736939C4A6D3AD43837233062D)defaultPhotoDimensionsWithHighResolutionCaptureEnabled:(BOOL)enabled
 {
-  v4 = [(AVCaptureDeviceFormat *)self _defaultPhotoDimensionsInNativeSensorOrientationWithHighResolutionCaptureEnabled:a3];
+  v4 = [(AVCaptureDeviceFormat *)self _defaultPhotoDimensionsInNativeSensorOrientationWithHighResolutionCaptureEnabled:enabled];
   if (self->_internal->mountedInPortraitOrientation)
   {
 
@@ -2550,15 +2550,15 @@ LABEL_15:
   return v4;
 }
 
-- (void)setContinuousZoomWithDepthEnabled:(BOOL)a3
+- (void)setContinuousZoomWithDepthEnabled:(BOOL)enabled
 {
   internal = self->_internal;
-  if (internal->continuousZoomWithDepthEnabled != a3)
+  if (internal->continuousZoomWithDepthEnabled != enabled)
   {
-    internal->continuousZoomWithDepthEnabled = a3;
+    internal->continuousZoomWithDepthEnabled = enabled;
     if ([-[NSDictionary objectForKeyedSubscript:](self->_internal->fcSourceAttributes objectForKeyedSubscript:{*MEMORY[0x1E6990138]), "intValue"}] == 9)
     {
-      self->_internal->depthDataFormatsDisabled = !a3;
+      self->_internal->depthDataFormatsDisabled = !enabled;
 
       self->_internal->supportedDepthDataFormats = 0;
     }
@@ -2600,12 +2600,12 @@ LABEL_15:
 
 - (BOOL)isManualFramingSupported
 {
-  v2 = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
+  figCaptureSourceVideoFormat = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
 
-  return [v2 isManualFramingSupported];
+  return [figCaptureSourceVideoFormat isManualFramingSupported];
 }
 
-- (BOOL)prefersVideoHDREnabledForSessionPreset:(id)a3
+- (BOOL)prefersVideoHDREnabledForSessionPreset:(id)preset
 {
   if ([-[AVCaptureDeviceFormat figCaptureSourceVideoFormat](self "figCaptureSourceVideoFormat")])
   {
@@ -2617,58 +2617,58 @@ LABEL_15:
     v5 = [-[AVCaptureDeviceFormat AVCaptureSessionPresets](self "AVCaptureSessionPresets")];
     if (v5)
     {
-      v6 = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
+      figCaptureSourceVideoFormat = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
 
-      LOBYTE(v5) = [v6 prefersSensorHDREnabled];
+      LOBYTE(v5) = [figCaptureSourceVideoFormat prefersSensorHDREnabled];
     }
   }
 
   return v5;
 }
 
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)defaultActiveMinFrameDurationForSessionPreset:(SEL)a3
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)defaultActiveMinFrameDurationForSessionPreset:(SEL)preset
 {
-  v4 = self;
+  selfCopy = self;
   v6 = *&self->var1;
   if ((*(v6 + 36) & 1) == 0)
   {
     [($3CC8671D27C23BF42ADDB32F2B5E48AE *)self lowestSupportedVideoFrameDuration];
     *(v6 + 24) = v11;
-    self = [($3CC8671D27C23BF42ADDB32F2B5E48AE *)v4 figCaptureSourceVideoFormat];
+    self = [($3CC8671D27C23BF42ADDB32F2B5E48AE *)selfCopy figCaptureSourceVideoFormat];
     if (self)
     {
-      [-[$3CC8671D27C23BF42ADDB32F2B5E48AE figCaptureSourceVideoFormat](v4 "figCaptureSourceVideoFormat")];
-      v8 = *&v4->var1;
+      [-[$3CC8671D27C23BF42ADDB32F2B5E48AE figCaptureSourceVideoFormat](selfCopy "figCaptureSourceVideoFormat")];
+      v8 = *&selfCopy->var1;
       self = CMTimeMake(&v11, 1, v9);
       v8[1] = v11;
     }
   }
 
-  v10 = *&v4->var1;
+  v10 = *&selfCopy->var1;
   *&retstr->var0 = *(v10 + 24);
   retstr->var3 = *(v10 + 40);
   return self;
 }
 
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)defaultActiveMaxFrameDurationForSessionPreset:(SEL)a3
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)defaultActiveMaxFrameDurationForSessionPreset:(SEL)preset
 {
-  v4 = self;
+  selfCopy = self;
   v6 = *&self->var1;
   if ((*(v6 + 60) & 1) == 0)
   {
     [($3CC8671D27C23BF42ADDB32F2B5E48AE *)self highestSupportedVideoFrameDuration];
     *(v6 + 48) = v11;
-    self = [($3CC8671D27C23BF42ADDB32F2B5E48AE *)v4 figCaptureSourceVideoFormat];
+    self = [($3CC8671D27C23BF42ADDB32F2B5E48AE *)selfCopy figCaptureSourceVideoFormat];
     if (self)
     {
-      [-[$3CC8671D27C23BF42ADDB32F2B5E48AE figCaptureSourceVideoFormat](v4 "figCaptureSourceVideoFormat")];
-      v8 = *&v4->var1;
+      [-[$3CC8671D27C23BF42ADDB32F2B5E48AE figCaptureSourceVideoFormat](selfCopy "figCaptureSourceVideoFormat")];
+      v8 = *&selfCopy->var1;
       self = CMTimeMake(&v11, 1, v9);
       v8[2] = v11;
     }
   }
 
-  v10 = *&v4->var1;
+  v10 = *&selfCopy->var1;
   *&retstr->var0 = *(v10 + 48);
   retstr->var3 = *(v10 + 64);
   return self;
@@ -2704,31 +2704,31 @@ LABEL_15:
 
 - (float)hardwareCost
 {
-  v2 = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
+  figCaptureSourceVideoFormat = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
 
-  [v2 hardwareCost];
+  [figCaptureSourceVideoFormat hardwareCost];
   return result;
 }
 
 - (int)baseSensorPowerConsumption
 {
-  v2 = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
+  figCaptureSourceVideoFormat = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
 
-  return [v2 baseSensorPowerConsumption];
+  return [figCaptureSourceVideoFormat baseSensorPowerConsumption];
 }
 
 - (int)variableSensorPowerConsumption
 {
-  v2 = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
+  figCaptureSourceVideoFormat = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
 
-  return [v2 variableSensorPowerConsumption];
+  return [figCaptureSourceVideoFormat variableSensorPowerConsumption];
 }
 
 - (int)ispPowerConsumption
 {
-  v2 = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
+  figCaptureSourceVideoFormat = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
 
-  return [v2 ispPowerConsumption];
+  return [figCaptureSourceVideoFormat ispPowerConsumption];
 }
 
 - (BOOL)isAutoVideoFrameRateSupported
@@ -2741,33 +2741,33 @@ LABEL_15:
   return [(AVCaptureDeviceFormat *)self isLowLightVideoCaptureSupported];
 }
 
-- (BOOL)isVideoStabilizationStrengthSupported:(int64_t)a3
+- (BOOL)isVideoStabilizationStrengthSupported:(int64_t)supported
 {
   if (![(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat])
   {
-    return a3 == 0;
+    return supported == 0;
   }
 
-  v5 = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
+  figCaptureSourceVideoFormat = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
 
-  return [v5 isVideoStabilizationStrengthSupported:a3];
+  return [figCaptureSourceVideoFormat isVideoStabilizationStrengthSupported:supported];
 }
 
 - (double)videoMinZoomFactorForCinematicVideo
 {
   if ([-[AVCaptureDeviceFormat supportedZoomRangesForCinematicVideo](self "supportedZoomRangesForCinematicVideo")])
   {
-    v3 = [(AVCaptureDeviceFormat *)self supportedZoomRangesForCinematicVideo];
+    supportedZoomRangesForCinematicVideo = [(AVCaptureDeviceFormat *)self supportedZoomRangesForCinematicVideo];
   }
 
   else
   {
-    v3 = [(AVCaptureDeviceFormat *)self supportedVideoZoomRangesForDepthDataDelivery];
+    supportedZoomRangesForCinematicVideo = [(AVCaptureDeviceFormat *)self supportedVideoZoomRangesForDepthDataDelivery];
   }
 
-  v4 = [(NSArray *)v3 firstObject];
+  firstObject = [(NSArray *)supportedZoomRangesForCinematicVideo firstObject];
 
-  [v4 minZoomFactor];
+  [firstObject minZoomFactor];
   return result;
 }
 
@@ -2775,17 +2775,17 @@ LABEL_15:
 {
   if ([-[AVCaptureDeviceFormat supportedZoomRangesForCinematicVideo](self "supportedZoomRangesForCinematicVideo")])
   {
-    v3 = [(AVCaptureDeviceFormat *)self supportedZoomRangesForCinematicVideo];
+    supportedZoomRangesForCinematicVideo = [(AVCaptureDeviceFormat *)self supportedZoomRangesForCinematicVideo];
   }
 
   else
   {
-    v3 = [(AVCaptureDeviceFormat *)self supportedVideoZoomRangesForDepthDataDelivery];
+    supportedZoomRangesForCinematicVideo = [(AVCaptureDeviceFormat *)self supportedVideoZoomRangesForDepthDataDelivery];
   }
 
-  v4 = [(NSArray *)v3 firstObject];
+  firstObject = [(NSArray *)supportedZoomRangesForCinematicVideo firstObject];
 
-  [v4 maxZoomFactor];
+  [firstObject maxZoomFactor];
   return result;
 }
 
@@ -2801,16 +2801,16 @@ LABEL_15:
 
 - (float)spatialOverCapturePercentage
 {
-  v2 = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
+  figCaptureSourceVideoFormat = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
 
-  [v2 spatialOverCapturePercentage];
+  [figCaptureSourceVideoFormat spatialOverCapturePercentage];
   return result;
 }
 
-- (id)_supportedMaxPhotoDimensionsPrivateDimensionsEnabled:(BOOL)a3
+- (id)_supportedMaxPhotoDimensionsPrivateDimensionsEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
+  enabledCopy = enabled;
+  array = [MEMORY[0x1E695DF70] array];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -2833,7 +2833,7 @@ LABEL_15:
         v11 = *(*(&v15 + 1) + 8 * i);
         if ([v11 isPrivate])
         {
-          v12 = !v3;
+          v12 = !enabledCopy;
         }
 
         else
@@ -2843,8 +2843,8 @@ LABEL_15:
 
         if (!v12)
         {
-          v19 = [v11 dimensions];
-          [v5 addObject:{objc_msgSend(MEMORY[0x1E696B098], "valueWithBytes:objCType:", &v19, "{?=ii}")}];
+          dimensions = [v11 dimensions];
+          [array addObject:{objc_msgSend(MEMORY[0x1E696B098], "valueWithBytes:objCType:", &dimensions, "{?=ii}")}];
         }
       }
 
@@ -2854,12 +2854,12 @@ LABEL_15:
     while (v8);
   }
 
-  return [v5 copy];
+  return [array copy];
 }
 
-- (BOOL)validateMaxPhotoDimensions:(id)a3 privateDimensionsEnabled:(BOOL)a4
+- (BOOL)validateMaxPhotoDimensions:(id)dimensions privateDimensionsEnabled:(BOOL)enabled
 {
-  v4 = a4;
+  enabledCopy = enabled;
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
@@ -2883,7 +2883,7 @@ LABEL_15:
         v11 = *(*(&v15 + 1) + 8 * v10);
         if ([v11 isPrivate])
         {
-          v12 = !v4;
+          v12 = !enabledCopy;
         }
 
         else
@@ -2891,7 +2891,7 @@ LABEL_15:
           v12 = 0;
         }
 
-        if (!v12 && ([v11 dimensionsAreEqualToDimensions:a3] & 1) != 0)
+        if (!v12 && ([v11 dimensionsAreEqualToDimensions:dimensions] & 1) != 0)
         {
           LOBYTE(v7) = 1;
           return v7;
@@ -2915,9 +2915,9 @@ LABEL_15:
   return v7;
 }
 
-- (BOOL)maxPhotoDimensionsAreUltraHighResolution:(id)a3 privateDimensionsEnabled:(BOOL)a4
+- (BOOL)maxPhotoDimensionsAreUltraHighResolution:(id)resolution privateDimensionsEnabled:(BOOL)enabled
 {
-  v4 = a4;
+  enabledCopy = enabled;
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
@@ -2941,7 +2941,7 @@ LABEL_15:
         v11 = *(*(&v15 + 1) + 8 * v10);
         if ([v11 isPrivate])
         {
-          v12 = !v4;
+          v12 = !enabledCopy;
         }
 
         else
@@ -2949,7 +2949,7 @@ LABEL_15:
           v12 = 0;
         }
 
-        if (!v12 && [v11 dimensionsAreEqualToDimensions:a3] && objc_msgSend(v11, "flavor") == 2)
+        if (!v12 && [v11 dimensionsAreEqualToDimensions:resolution] && objc_msgSend(v11, "flavor") == 2)
         {
           LOBYTE(v7) = 1;
           return v7;
@@ -2973,9 +2973,9 @@ LABEL_15:
   return v7;
 }
 
-- (double)focalLengthIn35mmFilmWithGeometricDistortionCorrection:(BOOL)a3
+- (double)focalLengthIn35mmFilmWithGeometricDistortionCorrection:(BOOL)correction
 {
-  if (a3)
+  if (correction)
   {
     [(AVCaptureDeviceFormat *)self geometricDistortionCorrectedVideoFieldOfView];
   }
@@ -3024,37 +3024,37 @@ LABEL_15:
   return v3;
 }
 
-- (float)videoFieldOfViewForAspectRatio:(id)a3 geometricDistortionCorrected:(BOOL)a4
+- (float)videoFieldOfViewForAspectRatio:(id)ratio geometricDistortionCorrected:(BOOL)corrected
 {
-  v4 = a4;
-  v6 = AVCaptureTranslateAVCaptureAspectRatioToFig(a3, NAN);
+  correctedCopy = corrected;
+  v6 = AVCaptureTranslateAVCaptureAspectRatioToFig(ratio, NAN);
   mountedInPortraitOrientation = self->_internal->mountedInPortraitOrientation;
-  v8 = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
-  if (v4)
+  figCaptureSourceVideoFormat = [(AVCaptureDeviceFormat *)self figCaptureSourceVideoFormat];
+  if (correctedCopy)
   {
     if (mountedInPortraitOrientation)
     {
 
-      [v8 verticalGeometricDistortionCorrectedFieldOfViewForAspectRatio:v6];
+      [figCaptureSourceVideoFormat verticalGeometricDistortionCorrectedFieldOfViewForAspectRatio:v6];
     }
 
     else
     {
 
-      [v8 horizontalGeometricDistortionCorrectedFieldOfViewForAspectRatio:v6];
+      [figCaptureSourceVideoFormat horizontalGeometricDistortionCorrectedFieldOfViewForAspectRatio:v6];
     }
   }
 
   else if (mountedInPortraitOrientation)
   {
 
-    [v8 verticalFieldOfViewForAspectRatio:v6];
+    [figCaptureSourceVideoFormat verticalFieldOfViewForAspectRatio:v6];
   }
 
   else
   {
 
-    [v8 horizontalFieldOfViewForAspectRatio:v6];
+    [figCaptureSourceVideoFormat horizontalFieldOfViewForAspectRatio:v6];
   }
 
   return result;

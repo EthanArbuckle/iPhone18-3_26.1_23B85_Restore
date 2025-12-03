@@ -1,31 +1,31 @@
 @interface DMCMigrationFlowController
 + (BOOL)isMigrationNeeded;
 + (BOOL)shouldShowMigrationUI;
-- (DMCMigrationFlowController)initWithPresenter:(id)a3 managedConfigurationHelper:(id)a4;
+- (DMCMigrationFlowController)initWithPresenter:(id)presenter managedConfigurationHelper:(id)helper;
 - (DMCMigrationFlowDelegate)delegate;
-- (id)_convertErrorToHumanReadableError:(id)a3;
+- (id)_convertErrorToHumanReadableError:(id)error;
 - (id)_enrollmentTypeNotSupportedError;
-- (id)_nameForStep:(unint64_t)a3;
+- (id)_nameForStep:(unint64_t)step;
 - (id)_trustedErrors;
 - (void)_finalizeMigration;
-- (void)_flowTerminatedWithError:(id)a3 canceled:(BOOL)a4;
-- (void)_formalizePendingCloudConfig:(id)a3;
+- (void)_flowTerminatedWithError:(id)error canceled:(BOOL)canceled;
+- (void)_formalizePendingCloudConfig:(id)config;
 - (void)_performEnrollmentFlow;
 - (void)_performUnenrollmentFlow;
 - (void)_preflightMigration;
-- (void)_preserveManagedAppsIfNeededWithPendingCloudConfig:(id)a3;
-- (void)_promptForMigrationConsentWithEnrollmentType:(unint64_t)a3 pendingCloudConfig:(id)a4;
+- (void)_preserveManagedAppsIfNeededWithPendingCloudConfig:(id)config;
+- (void)_promptForMigrationConsentWithEnrollmentType:(unint64_t)type pendingCloudConfig:(id)config;
 - (void)_removeExistingCloudConfigProfile;
-- (void)_removePendingCloudConfigIfNeededWithEnrollmentCloudConfig:(id)a3;
+- (void)_removePendingCloudConfigIfNeededWithEnrollmentCloudConfig:(id)config;
 - (void)_resetToInitialSteps;
-- (void)_sendEndMigrationRequestWithCloudConfig:(id)a3;
-- (void)_sendStartMigrationRequestWithPendingCloudConfig:(id)a3;
+- (void)_sendEndMigrationRequestWithCloudConfig:(id)config;
+- (void)_sendStartMigrationRequestWithPendingCloudConfig:(id)config;
 - (void)_workerQueue_cleanupCachedValues;
 - (void)_workerQueue_flowCompleted;
-- (void)_workerQueue_performFlowStep:(unint64_t)a3;
-- (void)enrollmentFlowController:(id)a3 appInstallationStatusUpdatedForType:(id)a4 totalNumber:(unint64_t)a5 finishedNumber:(unint64_t)a6;
-- (void)enrollmentFlowController:(id)a3 performingEnrollmentStepWithName:(id)a4 status:(id)a5;
-- (void)startMDMMigrationWithCompletionHandler:(id)a3;
+- (void)_workerQueue_performFlowStep:(unint64_t)step;
+- (void)enrollmentFlowController:(id)controller appInstallationStatusUpdatedForType:(id)type totalNumber:(unint64_t)number finishedNumber:(unint64_t)finishedNumber;
+- (void)enrollmentFlowController:(id)controller performingEnrollmentStepWithName:(id)name status:(id)status;
+- (void)startMDMMigrationWithCompletionHandler:(id)handler;
 @end
 
 @implementation DMCMigrationFlowController
@@ -33,14 +33,14 @@
 + (BOOL)isMigrationNeeded
 {
   v2 = +[DMCMigrationHelper readPendingCloudConfigDetails];
-  v3 = [MEMORY[0x277D24640] sharedConfiguration];
-  [v3 refreshDetailsFromDisk];
+  mEMORY[0x277D24640] = [MEMORY[0x277D24640] sharedConfiguration];
+  [mEMORY[0x277D24640] refreshDetailsFromDisk];
 
-  v4 = [MEMORY[0x277D24640] sharedConfiguration];
-  v5 = [v4 details];
+  mEMORY[0x277D24640]2 = [MEMORY[0x277D24640] sharedConfiguration];
+  details = [mEMORY[0x277D24640]2 details];
 
-  LOBYTE(v4) = [DMCMigrationHelper isMigrationNeededWithExistingCloudConfig:v5 newCloudConfig:v2];
-  return v4;
+  LOBYTE(mEMORY[0x277D24640]2) = [DMCMigrationHelper isMigrationNeededWithExistingCloudConfig:details newCloudConfig:v2];
+  return mEMORY[0x277D24640]2;
 }
 
 + (BOOL)shouldShowMigrationUI
@@ -81,32 +81,32 @@
   return v3;
 }
 
-- (DMCMigrationFlowController)initWithPresenter:(id)a3 managedConfigurationHelper:(id)a4
+- (DMCMigrationFlowController)initWithPresenter:(id)presenter managedConfigurationHelper:(id)helper
 {
-  v7 = a3;
-  v8 = a4;
+  presenterCopy = presenter;
+  helperCopy = helper;
   v12.receiver = self;
   v12.super_class = DMCMigrationFlowController;
   v9 = [(DMCEnrollmentFlowControllerBase *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_presenter, a3);
-    objc_storeStrong(&v10->_managedConfigurationHelper, a4);
+    objc_storeStrong(&v9->_presenter, presenter);
+    objc_storeStrong(&v10->_managedConfigurationHelper, helper);
   }
 
   return v10;
 }
 
-- (void)startMDMMigrationWithCompletionHandler:(id)a3
+- (void)startMDMMigrationWithCompletionHandler:(id)handler
 {
-  [(DMCMigrationFlowController *)self setMigrationCompletionHandler:a3];
+  [(DMCMigrationFlowController *)self setMigrationCompletionHandler:handler];
   [(DMCMigrationFlowController *)self _resetToInitialSteps];
 
   [(DMCEnrollmentFlowControllerBase *)self _pollNextStep];
 }
 
-- (void)_workerQueue_performFlowStep:(unint64_t)a3
+- (void)_workerQueue_performFlowStep:(unint64_t)step
 {
   v24 = *MEMORY[0x277D85DE8];
   v5 = [(DMCMigrationFlowController *)self _nameForStep:?];
@@ -120,40 +120,40 @@
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [MEMORY[0x277D03550] currentPersonaID];
-    v8 = [MEMORY[0x277D03550] currentPersonaTypeString];
+    currentPersonaID = [MEMORY[0x277D03550] currentPersonaID];
+    currentPersonaTypeString = [MEMORY[0x277D03550] currentPersonaTypeString];
     v16 = 136315906;
     v17 = "[DMCMigrationFlowController _workerQueue_performFlowStep:]";
     v18 = 1024;
     v19 = 91;
     v20 = 2114;
-    v21 = v7;
+    v21 = currentPersonaID;
     v22 = 2114;
-    v23 = v8;
+    v23 = currentPersonaTypeString;
     _os_log_impl(&dword_247E39000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%s (L: %d): Current persona ID: %{public}@, type: %{public}@", &v16, 0x26u);
   }
 
-  v9 = [(DMCMigrationFlowController *)self delegate];
+  delegate = [(DMCMigrationFlowController *)self delegate];
   v10 = objc_opt_respondsToSelector();
 
   if (v10)
   {
-    v11 = [(DMCMigrationFlowController *)self delegate];
-    [v11 migrationFlowController:self performingMigrationStepWithName:v5 status:0];
+    delegate2 = [(DMCMigrationFlowController *)self delegate];
+    [delegate2 migrationFlowController:self performingMigrationStepWithName:v5 status:0];
   }
 
-  [(DMCEnrollmentFlowControllerBase *)self setCurrentStep:a3];
-  if (a3 > 4)
+  [(DMCEnrollmentFlowControllerBase *)self setCurrentStep:step];
+  if (step > 4)
   {
-    if (a3 <= 7)
+    if (step <= 7)
     {
-      if (a3 == 5)
+      if (step == 5)
       {
         [(DMCMigrationFlowController *)self _removeExistingCloudConfigProfile];
         goto LABEL_30;
       }
 
-      if (a3 == 6)
+      if (step == 6)
       {
         if (![(DMCMigrationFlowController *)self canUsePendingCloudConfig])
         {
@@ -161,28 +161,28 @@
           goto LABEL_30;
         }
 
-        v12 = [(DMCMigrationFlowController *)self pendingCloudConfig];
-        [(DMCMigrationFlowController *)self _formalizePendingCloudConfig:v12];
+        pendingCloudConfig = [(DMCMigrationFlowController *)self pendingCloudConfig];
+        [(DMCMigrationFlowController *)self _formalizePendingCloudConfig:pendingCloudConfig];
       }
 
       else
       {
-        v12 = [(DMCMigrationFlowController *)self enrollmentCloudConfig];
-        [(DMCMigrationFlowController *)self _removePendingCloudConfigIfNeededWithEnrollmentCloudConfig:v12];
+        pendingCloudConfig = [(DMCMigrationFlowController *)self enrollmentCloudConfig];
+        [(DMCMigrationFlowController *)self _removePendingCloudConfigIfNeededWithEnrollmentCloudConfig:pendingCloudConfig];
       }
 
       goto LABEL_29;
     }
 
-    if (a3 == 8)
+    if (step == 8)
     {
       [(DMCMigrationFlowController *)self _performEnrollmentFlow];
       goto LABEL_30;
     }
 
-    if (a3 != 9)
+    if (step != 9)
     {
-      if (a3 == 10)
+      if (step == 10)
       {
         [(DMCMigrationFlowController *)self _finalizeMigration];
       }
@@ -190,43 +190,43 @@
       goto LABEL_30;
     }
 
-    v12 = [(DMCMigrationFlowController *)self enrollmentCloudConfig];
-    [(DMCMigrationFlowController *)self _sendEndMigrationRequestWithCloudConfig:v12];
+    pendingCloudConfig = [(DMCMigrationFlowController *)self enrollmentCloudConfig];
+    [(DMCMigrationFlowController *)self _sendEndMigrationRequestWithCloudConfig:pendingCloudConfig];
 LABEL_29:
 
     goto LABEL_30;
   }
 
-  if (a3 > 1)
+  if (step > 1)
   {
-    if (a3 == 2)
+    if (step == 2)
     {
-      v12 = [(DMCMigrationFlowController *)self pendingCloudConfig];
-      [(DMCMigrationFlowController *)self _sendStartMigrationRequestWithPendingCloudConfig:v12];
+      pendingCloudConfig = [(DMCMigrationFlowController *)self pendingCloudConfig];
+      [(DMCMigrationFlowController *)self _sendStartMigrationRequestWithPendingCloudConfig:pendingCloudConfig];
     }
 
     else
     {
-      if (a3 != 3)
+      if (step != 3)
       {
         [(DMCMigrationFlowController *)self _performUnenrollmentFlow];
         goto LABEL_30;
       }
 
-      v12 = [(DMCMigrationFlowController *)self pendingCloudConfig];
-      [(DMCMigrationFlowController *)self _preserveManagedAppsIfNeededWithPendingCloudConfig:v12];
+      pendingCloudConfig = [(DMCMigrationFlowController *)self pendingCloudConfig];
+      [(DMCMigrationFlowController *)self _preserveManagedAppsIfNeededWithPendingCloudConfig:pendingCloudConfig];
     }
 
     goto LABEL_29;
   }
 
-  if (a3)
+  if (step)
   {
-    if (a3 == 1)
+    if (step == 1)
     {
-      v13 = [(DMCMigrationFlowController *)self originEnrollmentType];
-      v14 = [(DMCMigrationFlowController *)self pendingCloudConfig];
-      [(DMCMigrationFlowController *)self _promptForMigrationConsentWithEnrollmentType:v13 pendingCloudConfig:v14];
+      originEnrollmentType = [(DMCMigrationFlowController *)self originEnrollmentType];
+      pendingCloudConfig2 = [(DMCMigrationFlowController *)self pendingCloudConfig];
+      [(DMCMigrationFlowController *)self _promptForMigrationConsentWithEnrollmentType:originEnrollmentType pendingCloudConfig:pendingCloudConfig2];
     }
   }
 
@@ -250,41 +250,41 @@ LABEL_30:
   }
 
   [(DMCMigrationFlowController *)self _workerQueue_cleanupCachedValues];
-  v4 = [(DMCMigrationFlowController *)self presenter];
+  presenter = [(DMCMigrationFlowController *)self presenter];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(DMCMigrationFlowController *)self presenter];
-    [v6 showMigrationCompletionScene];
+    presenter2 = [(DMCMigrationFlowController *)self presenter];
+    [presenter2 showMigrationCompletionScene];
   }
 
   [DMCMigrationHelper setMigrationIncomplete:0];
   [DMCMigrationHelper setUserInititiatedMigration:0];
-  v7 = [(DMCMigrationFlowController *)self migrationCompletionHandler];
+  migrationCompletionHandler = [(DMCMigrationFlowController *)self migrationCompletionHandler];
 
-  if (v7)
+  if (migrationCompletionHandler)
   {
-    v8 = [(DMCMigrationFlowController *)self migrationCompletionHandler];
-    v8[2](v8, 1, 0, 0);
+    migrationCompletionHandler2 = [(DMCMigrationFlowController *)self migrationCompletionHandler];
+    migrationCompletionHandler2[2](migrationCompletionHandler2, 1, 0, 0);
 
     [(DMCMigrationFlowController *)self setMigrationCompletionHandler:0];
   }
 }
 
-- (void)_flowTerminatedWithError:(id)a3 canceled:(BOOL)a4
+- (void)_flowTerminatedWithError:(id)error canceled:(BOOL)canceled
 {
-  v6 = a3;
-  v7 = [(DMCEnrollmentFlowControllerBase *)self workerQueue];
+  errorCopy = error;
+  workerQueue = [(DMCEnrollmentFlowControllerBase *)self workerQueue];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __64__DMCMigrationFlowController__flowTerminatedWithError_canceled___block_invoke;
   v9[3] = &unk_278EE31E0;
-  v12 = a4;
-  v10 = v6;
-  v11 = self;
-  v8 = v6;
-  [v7 queueBlock:v9];
+  canceledCopy = canceled;
+  v10 = errorCopy;
+  selfCopy = self;
+  v8 = errorCopy;
+  [workerQueue queueBlock:v9];
 }
 
 void __64__DMCMigrationFlowController__flowTerminatedWithError_canceled___block_invoke(uint64_t a1)
@@ -366,20 +366,20 @@ LABEL_10:
 - (void)_preflightMigration
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = [(DMCMigrationFlowController *)self managedConfigurationHelper];
-  v4 = [v3 currentPendingCloudConfigOnDisk];
+  managedConfigurationHelper = [(DMCMigrationFlowController *)self managedConfigurationHelper];
+  currentPendingCloudConfigOnDisk = [managedConfigurationHelper currentPendingCloudConfigOnDisk];
 
-  if (v4 || +[DMCMigrationHelper hasIncompleteMigration])
+  if (currentPendingCloudConfigOnDisk || +[DMCMigrationHelper hasIncompleteMigration])
   {
-    v5 = [objc_alloc(MEMORY[0x277D24640]) initWithCloudConfigDetails:v4];
+    v5 = [objc_alloc(MEMORY[0x277D24640]) initWithCloudConfigDetails:currentPendingCloudConfigOnDisk];
     v6 = objc_alloc(MEMORY[0x277D24640]);
-    v7 = [(DMCMigrationFlowController *)self managedConfigurationHelper];
-    v8 = [v7 existingCloudConfigOnDisk];
-    v9 = [v6 initWithCloudConfigDetails:v8];
+    managedConfigurationHelper2 = [(DMCMigrationFlowController *)self managedConfigurationHelper];
+    existingCloudConfigOnDisk = [managedConfigurationHelper2 existingCloudConfigOnDisk];
+    v9 = [v6 initWithCloudConfigDetails:existingCloudConfigOnDisk];
 
     if ([v9 isStoredProfileInstalled])
     {
-      if (![v4 count])
+      if (![currentPendingCloudConfigOnDisk count])
       {
         v13 = *DMCLogObjects();
         if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -392,48 +392,48 @@ LABEL_10:
 LABEL_15:
         v15 = 0;
 LABEL_16:
-        v17 = [(DMCMigrationFlowController *)self managedConfigurationHelper];
-        v18 = [v17 currentEnrollmentType];
+        managedConfigurationHelper3 = [(DMCMigrationFlowController *)self managedConfigurationHelper];
+        currentEnrollmentType = [managedConfigurationHelper3 currentEnrollmentType];
 
-        if (v18 != 10)
+        if (currentEnrollmentType != 10)
         {
-          if (v18 != 9)
+          if (currentEnrollmentType != 9)
           {
             v21 = *DMCLogObjects();
             if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
             {
               *v24 = 134217984;
-              *&v24[4] = v18;
+              *&v24[4] = currentEnrollmentType;
               _os_log_impl(&dword_247E39000, v21, OS_LOG_TYPE_ERROR, "Migration is not supported with current enrollment type: %lu", v24, 0xCu);
             }
 
-            v22 = [(DMCMigrationFlowController *)self _enrollmentTypeNotSupportedError];
-            [(DMCMigrationFlowController *)self _flowTerminatedWithError:v22 canceled:0];
+            _enrollmentTypeNotSupportedError = [(DMCMigrationFlowController *)self _enrollmentTypeNotSupportedError];
+            [(DMCMigrationFlowController *)self _flowTerminatedWithError:_enrollmentTypeNotSupportedError canceled:0];
 
             goto LABEL_24;
           }
 
           if (v15)
           {
-            v19 = [(DMCMigrationFlowController *)self _migration_unenrollmentSteps];
-            [(DMCEnrollmentFlowControllerBase *)self _appendSteps:v19];
+            _migration_unenrollmentSteps = [(DMCMigrationFlowController *)self _migration_unenrollmentSteps];
+            [(DMCEnrollmentFlowControllerBase *)self _appendSteps:_migration_unenrollmentSteps];
           }
         }
 
-        v20 = [(DMCMigrationFlowController *)self _migration_enrollmentSteps];
-        [(DMCEnrollmentFlowControllerBase *)self _appendSteps:v20];
+        _migration_enrollmentSteps = [(DMCMigrationFlowController *)self _migration_enrollmentSteps];
+        [(DMCEnrollmentFlowControllerBase *)self _appendSteps:_migration_enrollmentSteps];
 
-        [(DMCMigrationFlowController *)self setOriginEnrollmentType:v18];
-        [(DMCMigrationFlowController *)self setPendingCloudConfig:v4];
+        [(DMCMigrationFlowController *)self setOriginEnrollmentType:currentEnrollmentType];
+        [(DMCMigrationFlowController *)self setPendingCloudConfig:currentPendingCloudConfigOnDisk];
         [(DMCEnrollmentFlowControllerBase *)self _pollNextStep];
 LABEL_24:
 
         goto LABEL_25;
       }
 
-      v10 = [v9 mdmServerUID];
-      v11 = [v5 mdmServerUID];
-      v12 = [v10 isEqualToString:v11];
+      mdmServerUID = [v9 mdmServerUID];
+      mdmServerUID2 = [v5 mdmServerUID];
+      v12 = [mdmServerUID isEqualToString:mdmServerUID2];
 
       if (v12)
       {
@@ -468,19 +468,19 @@ LABEL_25:
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_promptForMigrationConsentWithEnrollmentType:(unint64_t)a3 pendingCloudConfig:(id)a4
+- (void)_promptForMigrationConsentWithEnrollmentType:(unint64_t)type pendingCloudConfig:(id)config
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [(DMCMigrationFlowController *)self presenter];
+  configCopy = config;
+  presenter = [(DMCMigrationFlowController *)self presenter];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [objc_alloc(MEMORY[0x277D24640]) initWithCloudConfigDetails:v6];
-    v10 = [v9 migrationDeadline];
-    v11 = [DMCMigrationHelper isMigrationMandatoryWithPendingCloudConfig:v6];
-    v13 = a3 == 10 || a3 == 0 || v11;
+    v9 = [objc_alloc(MEMORY[0x277D24640]) initWithCloudConfigDetails:configCopy];
+    migrationDeadline = [v9 migrationDeadline];
+    v11 = [DMCMigrationHelper isMigrationMandatoryWithPendingCloudConfig:configCopy];
+    v13 = type == 10 || type == 0 || v11;
     v14 = v13 | +[DMCMigrationHelper hasIncompleteMigration];
     v15 = *DMCLogObjects();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
@@ -488,21 +488,21 @@ LABEL_25:
       *buf = 136315906;
       v24 = "[DMCMigrationFlowController _promptForMigrationConsentWithEnrollmentType:pendingCloudConfig:]";
       v25 = 2048;
-      v26 = a3;
+      typeCopy = type;
       v27 = 2112;
-      v28 = v10;
+      v28 = migrationDeadline;
       v29 = 1024;
       v30 = v14;
       _os_log_impl(&dword_247E39000, v15, OS_LOG_TYPE_DEBUG, "%s enrollmentType: %lu, deadline: %@, isMandatory: %d", buf, 0x26u);
     }
 
-    v16 = [(DMCMigrationFlowController *)self presenter];
+    presenter2 = [(DMCMigrationFlowController *)self presenter];
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
     v22[2] = __94__DMCMigrationFlowController__promptForMigrationConsentWithEnrollmentType_pendingCloudConfig___block_invoke;
     v22[3] = &unk_278EE3F48;
     v22[4] = self;
-    [v16 requestUserConsentForMigrationWithPendingCloudConfig:v6 originalEnrollmentType:a3 isMandatory:v14 deadline:v10 completionHandler:v22];
+    [presenter2 requestUserConsentForMigrationWithPendingCloudConfig:configCopy originalEnrollmentType:type isMandatory:v14 deadline:migrationDeadline completionHandler:v22];
   }
 
   else
@@ -511,12 +511,12 @@ LABEL_25:
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
       v18 = v17;
-      v19 = [(DMCMigrationFlowController *)self presenter];
+      presenter3 = [(DMCMigrationFlowController *)self presenter];
       v20 = NSStringFromSelector(sel_requestUserConsentForMigrationWithPendingCloudConfig_originalEnrollmentType_isMandatory_deadline_completionHandler_);
       *buf = 138543618;
-      v24 = v19;
+      v24 = presenter3;
       v25 = 2114;
-      v26 = v20;
+      typeCopy = v20;
       _os_log_impl(&dword_247E39000, v18, OS_LOG_TYPE_ERROR, "Client %{public}@ does not implement %{public}@", buf, 0x16u);
     }
 
@@ -553,16 +553,16 @@ uint64_t __94__DMCMigrationFlowController__promptForMigrationConsentWithEnrollme
   }
 }
 
-- (void)_sendStartMigrationRequestWithPendingCloudConfig:(id)a3
+- (void)_sendStartMigrationRequestWithPendingCloudConfig:(id)config
 {
-  v4 = a3;
+  configCopy = config;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __79__DMCMigrationFlowController__sendStartMigrationRequestWithPendingCloudConfig___block_invoke;
   v6[3] = &unk_278EE3F98;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = configCopy;
+  v5 = configCopy;
   [DMCMigrationHelper makeStartMigrationRequestWithCloudConfig:v5 completionHandler:v6];
 }
 
@@ -673,15 +673,15 @@ void __79__DMCMigrationFlowController__sendStartMigrationRequestWithPendingCloud
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_preserveManagedAppsIfNeededWithPendingCloudConfig:(id)a3
+- (void)_preserveManagedAppsIfNeededWithPendingCloudConfig:(id)config
 {
   v30 = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277D24640];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithCloudConfigDetails:v5];
+  configCopy = config;
+  v6 = [[v4 alloc] initWithCloudConfigDetails:configCopy];
 
-  LOBYTE(v5) = [v6 isAwaitingConfiguration];
-  if ((v5 & 1) == 0)
+  LOBYTE(configCopy) = [v6 isAwaitingConfiguration];
+  if ((configCopy & 1) == 0)
   {
     v15 = *DMCLogObjects();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -699,7 +699,7 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  v7 = [(DMCMigrationFlowController *)self managedConfigurationHelper];
+  managedConfigurationHelper = [(DMCMigrationFlowController *)self managedConfigurationHelper];
   v8 = objc_opt_respondsToSelector();
 
   if ((v8 & 1) == 0)
@@ -708,10 +708,10 @@ LABEL_18:
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
       v20 = v19;
-      v21 = [(DMCMigrationFlowController *)self managedConfigurationHelper];
+      managedConfigurationHelper2 = [(DMCMigrationFlowController *)self managedConfigurationHelper];
       v22 = NSStringFromSelector(sel_isMDMProfileADEProfile);
       *buf = 138543618;
-      v27 = v21;
+      v27 = managedConfigurationHelper2;
       v28 = 2114;
       v29 = v22;
 LABEL_13:
@@ -723,10 +723,10 @@ LABEL_13:
     goto LABEL_18;
   }
 
-  v9 = [(DMCMigrationFlowController *)self managedConfigurationHelper];
-  v10 = [v9 isMDMProfileADEProfile];
+  managedConfigurationHelper3 = [(DMCMigrationFlowController *)self managedConfigurationHelper];
+  isMDMProfileADEProfile = [managedConfigurationHelper3 isMDMProfileADEProfile];
 
-  if ((v10 & 1) == 0)
+  if ((isMDMProfileADEProfile & 1) == 0)
   {
     v23 = *DMCLogObjects();
     if (!os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
@@ -741,7 +741,7 @@ LABEL_13:
     goto LABEL_10;
   }
 
-  v11 = [(DMCMigrationFlowController *)self managedConfigurationHelper];
+  managedConfigurationHelper4 = [(DMCMigrationFlowController *)self managedConfigurationHelper];
   v12 = objc_opt_respondsToSelector();
 
   v13 = *DMCLogObjects();
@@ -753,10 +753,10 @@ LABEL_13:
     }
 
     v20 = v13;
-    v21 = [(DMCMigrationFlowController *)self managedConfigurationHelper];
+    managedConfigurationHelper2 = [(DMCMigrationFlowController *)self managedConfigurationHelper];
     v22 = NSStringFromSelector(sel_preserveManagedAppsWithCompletionHandler_);
     *buf = 138543618;
-    v27 = v21;
+    v27 = managedConfigurationHelper2;
     v28 = 2114;
     v29 = v22;
     goto LABEL_13;
@@ -768,13 +768,13 @@ LABEL_13:
     _os_log_impl(&dword_247E39000, v13, OS_LOG_TYPE_DEBUG, "Preserving managed apps...", buf, 2u);
   }
 
-  v14 = [(DMCMigrationFlowController *)self managedConfigurationHelper];
+  managedConfigurationHelper5 = [(DMCMigrationFlowController *)self managedConfigurationHelper];
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
   v25[2] = __81__DMCMigrationFlowController__preserveManagedAppsIfNeededWithPendingCloudConfig___block_invoke;
   v25[3] = &unk_278EE3550;
   v25[4] = self;
-  [v14 preserveManagedAppsWithCompletionHandler:v25];
+  [managedConfigurationHelper5 preserveManagedAppsWithCompletionHandler:v25];
 
 LABEL_19:
   v24 = *MEMORY[0x277D85DE8];
@@ -824,9 +824,9 @@ uint64_t __81__DMCMigrationFlowController__preserveManagedAppsIfNeededWithPendin
   v8[4] = self;
   v3 = MEMORY[0x24C1BD5A0](v8, a2);
   v4 = [DMCUnenrollmentFlowController alloc];
-  v5 = [(DMCMigrationFlowController *)self presenter];
-  v6 = [(DMCMigrationFlowController *)self managedConfigurationHelper];
-  v7 = [(DMCUnenrollmentFlowController *)v4 initWithPresenter:v5 managedConfigurationHelper:v6];
+  presenter = [(DMCMigrationFlowController *)self presenter];
+  managedConfigurationHelper = [(DMCMigrationFlowController *)self managedConfigurationHelper];
+  v7 = [(DMCUnenrollmentFlowController *)v4 initWithPresenter:presenter managedConfigurationHelper:managedConfigurationHelper];
 
   [(DMCUnenrollmentFlowController *)v7 setMigrationDelegate:self];
   [(DMCUnenrollmentFlowController *)v7 unenrollADEWithCompletionHandler:v3];
@@ -900,28 +900,28 @@ uint64_t __54__DMCMigrationFlowController__performUnenrollmentFlow__block_invoke
   return result;
 }
 
-- (void)_removePendingCloudConfigIfNeededWithEnrollmentCloudConfig:(id)a3
+- (void)_removePendingCloudConfigIfNeededWithEnrollmentCloudConfig:(id)config
 {
   v21 = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277D24640];
-  v5 = a3;
+  configCopy = config;
   v6 = [v4 alloc];
-  v7 = [(DMCMigrationFlowController *)self managedConfigurationHelper];
-  v8 = [v7 currentPendingCloudConfigOnDisk];
-  v9 = [v6 initWithCloudConfigDetails:v8];
+  managedConfigurationHelper = [(DMCMigrationFlowController *)self managedConfigurationHelper];
+  currentPendingCloudConfigOnDisk = [managedConfigurationHelper currentPendingCloudConfigOnDisk];
+  v9 = [v6 initWithCloudConfigDetails:currentPendingCloudConfigOnDisk];
 
-  v10 = [objc_alloc(MEMORY[0x277D24640]) initWithCloudConfigDetails:v5];
-  v11 = [v10 mdmServerUID];
-  v12 = [v9 mdmServerUID];
-  if ([v11 isEqualToString:v12])
+  v10 = [objc_alloc(MEMORY[0x277D24640]) initWithCloudConfigDetails:configCopy];
+  mdmServerUID = [v10 mdmServerUID];
+  mdmServerUID2 = [v9 mdmServerUID];
+  if ([mdmServerUID isEqualToString:mdmServerUID2])
   {
-    v13 = [(DMCMigrationFlowController *)self managedConfigurationHelper];
+    managedConfigurationHelper2 = [(DMCMigrationFlowController *)self managedConfigurationHelper];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __89__DMCMigrationFlowController__removePendingCloudConfigIfNeededWithEnrollmentCloudConfig___block_invoke;
     v16[3] = &unk_278EE3550;
     v16[4] = self;
-    [v13 removePendingCloudConfigWithCompletionHandler:v16];
+    [managedConfigurationHelper2 removePendingCloudConfigWithCompletionHandler:v16];
   }
 
   else
@@ -930,9 +930,9 @@ uint64_t __54__DMCMigrationFlowController__performUnenrollmentFlow__block_invoke
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v18 = v11;
+      v18 = mdmServerUID;
       v19 = 2114;
-      v20 = v12;
+      v20 = mdmServerUID2;
       _os_log_impl(&dword_247E39000, v14, OS_LOG_TYPE_DEFAULT, "Server UID has changed from %{public}@ to %{public}@.", buf, 0x16u);
     }
 
@@ -986,13 +986,13 @@ uint64_t __89__DMCMigrationFlowController__removePendingCloudConfigIfNeededWithE
     _os_log_impl(&dword_247E39000, v3, OS_LOG_TYPE_DEFAULT, "Removing set aside cloud config profile...", buf, 2u);
   }
 
-  v4 = [(DMCMigrationFlowController *)self managedConfigurationHelper];
+  managedConfigurationHelper = [(DMCMigrationFlowController *)self managedConfigurationHelper];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __63__DMCMigrationFlowController__removeExistingCloudConfigProfile__block_invoke;
   v5[3] = &unk_278EE3550;
   v5[4] = self;
-  [v4 removeSetAsideCloudConfigWithCompletionHandler:v5];
+  [managedConfigurationHelper removeSetAsideCloudConfigWithCompletionHandler:v5];
 }
 
 void __63__DMCMigrationFlowController__removeExistingCloudConfigProfile__block_invoke(uint64_t a1, void *a2)
@@ -1068,12 +1068,12 @@ uint64_t __63__DMCMigrationFlowController__removeExistingCloudConfigProfile__blo
   }
 }
 
-- (void)_formalizePendingCloudConfig:(id)a3
+- (void)_formalizePendingCloudConfig:(id)config
 {
-  v4 = a3;
+  configCopy = config;
   v5 = *DMCLogObjects();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
-  if (v4)
+  if (configCopy)
   {
     if (v6)
     {
@@ -1081,13 +1081,13 @@ uint64_t __63__DMCMigrationFlowController__removeExistingCloudConfigProfile__blo
       _os_log_impl(&dword_247E39000, v5, OS_LOG_TYPE_DEFAULT, "Formalizing pending cloud config...", buf, 2u);
     }
 
-    v7 = [(DMCMigrationFlowController *)self managedConfigurationHelper];
+    managedConfigurationHelper = [(DMCMigrationFlowController *)self managedConfigurationHelper];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __59__DMCMigrationFlowController__formalizePendingCloudConfig___block_invoke;
     v8[3] = &unk_278EE3550;
     v8[4] = self;
-    [v7 storeCloudConfig:v4 completionHandler:v8];
+    [managedConfigurationHelper storeCloudConfig:configCopy completionHandler:v8];
   }
 
   else
@@ -1146,9 +1146,9 @@ uint64_t __59__DMCMigrationFlowController__formalizePendingCloudConfig___block_i
   v8[4] = self;
   v3 = MEMORY[0x24C1BD5A0](v8, a2);
   v4 = [DMCEnrollmentFlowController alloc];
-  v5 = [(DMCMigrationFlowController *)self presenter];
-  v6 = [(DMCMigrationFlowController *)self managedConfigurationHelper];
-  v7 = [(DMCEnrollmentFlowController *)v4 initWithPresenter:v5 managedConfigurationHelper:v6];
+  presenter = [(DMCMigrationFlowController *)self presenter];
+  managedConfigurationHelper = [(DMCMigrationFlowController *)self managedConfigurationHelper];
+  v7 = [(DMCEnrollmentFlowController *)v4 initWithPresenter:presenter managedConfigurationHelper:managedConfigurationHelper];
 
   [(DMCEnrollmentFlowController *)v7 setMigrationDelegate:self];
   [(DMCEnrollmentFlowController *)v7 startInBuddyEnrollmentFlowRestartIfFail:0 completionHandler:v3];
@@ -1222,16 +1222,16 @@ LABEL_10:
   return result;
 }
 
-- (void)_sendEndMigrationRequestWithCloudConfig:(id)a3
+- (void)_sendEndMigrationRequestWithCloudConfig:(id)config
 {
-  v4 = a3;
+  configCopy = config;
   [DMCMigrationHelper setMigrationIncomplete:0];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __70__DMCMigrationFlowController__sendEndMigrationRequestWithCloudConfig___block_invoke;
   v5[3] = &unk_278EE3BD8;
   v5[4] = self;
-  [DMCMigrationHelper makeEndMigrationRequestIfNeededWithCloudConfig:v4 success:1 completionHandler:v5];
+  [DMCMigrationHelper makeEndMigrationRequestIfNeededWithCloudConfig:configCopy success:1 completionHandler:v5];
 }
 
 void __70__DMCMigrationFlowController__sendEndMigrationRequestWithCloudConfig___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -1271,13 +1271,13 @@ uint64_t __70__DMCMigrationFlowController__sendEndMigrationRequestWithCloudConfi
 
 - (void)_finalizeMigration
 {
-  v3 = [(DMCMigrationFlowController *)self managedConfigurationHelper];
+  managedConfigurationHelper = [(DMCMigrationFlowController *)self managedConfigurationHelper];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __48__DMCMigrationFlowController__finalizeMigration__block_invoke;
   v4[3] = &unk_278EE3BB0;
   v4[4] = self;
-  [v3 evaluateMigrationStatusWithPollFromServer:0 completionHandler:v4];
+  [managedConfigurationHelper evaluateMigrationStatusWithPollFromServer:0 completionHandler:v4];
 }
 
 void __48__DMCMigrationFlowController__finalizeMigration__block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -1320,8 +1320,8 @@ uint64_t __48__DMCMigrationFlowController__finalizeMigration__block_invoke_2(uin
   v4.receiver = self;
   v4.super_class = DMCMigrationFlowController;
   [(DMCEnrollmentFlowControllerBase *)&v4 _resetToInitialSteps];
-  v3 = [(DMCMigrationFlowController *)self _migration_commonSteps];
-  [(DMCEnrollmentFlowControllerBase *)self _appendSteps:v3];
+  _migration_commonSteps = [(DMCMigrationFlowController *)self _migration_commonSteps];
+  [(DMCEnrollmentFlowControllerBase *)self _appendSteps:_migration_commonSteps];
 }
 
 - (id)_enrollmentTypeNotSupportedError
@@ -1334,14 +1334,14 @@ uint64_t __48__DMCMigrationFlowController__finalizeMigration__block_invoke_2(uin
   return v5;
 }
 
-- (id)_convertErrorToHumanReadableError:(id)a3
+- (id)_convertErrorToHumanReadableError:(id)error
 {
   v22[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   v5 = DMCErrorArray();
-  v6 = [(DMCMigrationFlowController *)self _trustedErrors];
-  v7 = [v4 domain];
-  v8 = [v6 objectForKeyedSubscript:v7];
+  _trustedErrors = [(DMCMigrationFlowController *)self _trustedErrors];
+  domain = [errorCopy domain];
+  v8 = [_trustedErrors objectForKeyedSubscript:domain];
   if (!v8)
   {
 
@@ -1349,17 +1349,17 @@ uint64_t __48__DMCMigrationFlowController__finalizeMigration__block_invoke_2(uin
   }
 
   v9 = v8;
-  v10 = [v4 domain];
-  v11 = [v6 objectForKeyedSubscript:v10];
-  v12 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v4, "code")}];
+  domain2 = [errorCopy domain];
+  v11 = [_trustedErrors objectForKeyedSubscript:domain2];
+  v12 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(errorCopy, "code")}];
   if ([v11 containsObject:v12])
   {
   }
 
   else
   {
-    v13 = [v4 domain];
-    v14 = [v6 objectForKeyedSubscript:v13];
+    domain3 = [errorCopy domain];
+    v14 = [_trustedErrors objectForKeyedSubscript:domain3];
     v21 = [v14 containsObject:&unk_2859F9838];
 
     if ((v21 & 1) == 0)
@@ -1368,15 +1368,15 @@ uint64_t __48__DMCMigrationFlowController__finalizeMigration__block_invoke_2(uin
     }
   }
 
-  v15 = [v4 localizedDescription];
-  v22[0] = v15;
-  v16 = [MEMORY[0x277CBEB68] null];
-  v22[1] = v16;
+  localizedDescription = [errorCopy localizedDescription];
+  v22[0] = localizedDescription;
+  null = [MEMORY[0x277CBEB68] null];
+  v22[1] = null;
   v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v22 count:2];
 
   v5 = v17;
 LABEL_7:
-  v18 = [MEMORY[0x277CCA9B8] DMCErrorWithDomain:*MEMORY[0x277D03410] code:67003 descriptionArray:v5 underlyingError:v4 errorType:*MEMORY[0x277D032F8]];
+  v18 = [MEMORY[0x277CCA9B8] DMCErrorWithDomain:*MEMORY[0x277D03410] code:67003 descriptionArray:v5 underlyingError:errorCopy errorType:*MEMORY[0x277D032F8]];
 
   v19 = *MEMORY[0x277D85DE8];
 
@@ -1414,30 +1414,30 @@ void __44__DMCMigrationFlowController__trustedErrors__block_invoke()
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)enrollmentFlowController:(id)a3 appInstallationStatusUpdatedForType:(id)a4 totalNumber:(unint64_t)a5 finishedNumber:(unint64_t)a6
+- (void)enrollmentFlowController:(id)controller appInstallationStatusUpdatedForType:(id)type totalNumber:(unint64_t)number finishedNumber:(unint64_t)finishedNumber
 {
-  v12 = a4;
-  v9 = [(DMCMigrationFlowController *)self delegate];
+  typeCopy = type;
+  delegate = [(DMCMigrationFlowController *)self delegate];
   v10 = objc_opt_respondsToSelector();
 
   if (v10)
   {
-    v11 = [(DMCMigrationFlowController *)self delegate];
-    [v11 migrationFlowController:self appInstallationStatusUpdatedForType:v12 totalNumber:a5 finishedNumber:a6];
+    delegate2 = [(DMCMigrationFlowController *)self delegate];
+    [delegate2 migrationFlowController:self appInstallationStatusUpdatedForType:typeCopy totalNumber:number finishedNumber:finishedNumber];
   }
 }
 
-- (void)enrollmentFlowController:(id)a3 performingEnrollmentStepWithName:(id)a4 status:(id)a5
+- (void)enrollmentFlowController:(id)controller performingEnrollmentStepWithName:(id)name status:(id)status
 {
-  v11 = a4;
-  v7 = a5;
-  v8 = [(DMCMigrationFlowController *)self delegate];
+  nameCopy = name;
+  statusCopy = status;
+  delegate = [(DMCMigrationFlowController *)self delegate];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v10 = [(DMCMigrationFlowController *)self delegate];
-    [v10 migrationFlowController:self performingEnrollmentStepWithName:v11 status:v7];
+    delegate2 = [(DMCMigrationFlowController *)self delegate];
+    [delegate2 migrationFlowController:self performingEnrollmentStepWithName:nameCopy status:statusCopy];
   }
 }
 
@@ -1448,16 +1448,16 @@ void __44__DMCMigrationFlowController__trustedErrors__block_invoke()
   return WeakRetained;
 }
 
-- (id)_nameForStep:(unint64_t)a3
+- (id)_nameForStep:(unint64_t)step
 {
-  if (a3 - 1 > 9)
+  if (step - 1 > 9)
   {
     return @"PreflightMigration";
   }
 
   else
   {
-    return off_278EE3FE0[a3 - 1];
+    return off_278EE3FE0[step - 1];
   }
 }
 

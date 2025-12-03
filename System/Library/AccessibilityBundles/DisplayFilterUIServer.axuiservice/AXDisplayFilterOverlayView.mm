@@ -1,18 +1,18 @@
 @interface AXDisplayFilterOverlayView
-- (AXDisplayFilterOverlayView)initWithFrame:(CGRect)a3;
+- (AXDisplayFilterOverlayView)initWithFrame:(CGRect)frame;
 - (void)_setupLayers;
 - (void)_updateLensEffect;
 - (void)layoutSubviews;
-- (void)setFilters:(id)a3;
+- (void)setFilters:(id)filters;
 @end
 
 @implementation AXDisplayFilterOverlayView
 
-- (AXDisplayFilterOverlayView)initWithFrame:(CGRect)a3
+- (AXDisplayFilterOverlayView)initWithFrame:(CGRect)frame
 {
   v14.receiver = self;
   v14.super_class = AXDisplayFilterOverlayView;
-  v3 = [(AXDisplayFilterOverlayView *)&v14 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(AXDisplayFilterOverlayView *)&v14 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -30,19 +30,19 @@
     [v8 setAllowsHitTesting:0];
     [v8 setInstanceCount:2];
     [(AXDisplayFilterOverlayView *)v4 setEffectReplicatorLayer:v8];
-    v9 = [v6 layer];
-    [v9 addSublayer:v8];
+    layer = [v6 layer];
+    [layer addSublayer:v8];
 
-    v10 = [v6 layer];
-    [v10 setAllowsHitTesting:0];
+    layer2 = [v6 layer];
+    [layer2 setAllowsHitTesting:0];
 
     v11 = objc_alloc_init(CABackdropLayer);
     [v11 setEnabled:1];
     [v11 setAllowsHitTesting:0];
     [(AXDisplayFilterOverlayView *)v4 setEffectBackdropLayer:v11];
     [v8 addSublayer:v11];
-    v12 = [(AXDisplayFilterOverlayView *)v4 effectView];
-    [(AXDisplayFilterOverlayView *)v4 sendSubviewToBack:v12];
+    effectView = [(AXDisplayFilterOverlayView *)v4 effectView];
+    [(AXDisplayFilterOverlayView *)v4 sendSubviewToBack:effectView];
 
     [(AXDisplayFilterOverlayView *)v4 layoutSubviews];
   }
@@ -67,18 +67,18 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v12 = [(AXDisplayFilterOverlayView *)self effectReplicatorLayer];
-  v11 = [(AXDisplayFilterOverlayView *)self effectBackdropLayer];
-  [v12 setBounds:{v4, v6, v8, v10}];
-  [v12 setPosition:{v8, v10}];
-  [v11 setBounds:{v4, v6, v8, v10}];
-  [v11 setPosition:{CGPointZero.x, CGPointZero.y}];
+  effectReplicatorLayer = [(AXDisplayFilterOverlayView *)self effectReplicatorLayer];
+  effectBackdropLayer = [(AXDisplayFilterOverlayView *)self effectBackdropLayer];
+  [effectReplicatorLayer setBounds:{v4, v6, v8, v10}];
+  [effectReplicatorLayer setPosition:{v8, v10}];
+  [effectBackdropLayer setBounds:{v4, v6, v8, v10}];
+  [effectBackdropLayer setPosition:{CGPointZero.x, CGPointZero.y}];
   +[CATransaction commit];
 }
 
-- (void)setFilters:(id)a3
+- (void)setFilters:(id)filters
 {
-  objc_storeStrong(&self->_filters, a3);
+  objc_storeStrong(&self->_filters, filters);
 
   [(AXDisplayFilterOverlayView *)self _updateLensEffect];
 }
@@ -87,40 +87,40 @@
 {
   +[CATransaction begin];
   [CATransaction setDisableActions:1];
-  v12 = [(AXDisplayFilterOverlayView *)self filters];
-  v3 = [(AXDisplayFilterOverlayView *)self effectBackdropLayer];
-  v4 = [v12 count];
+  filters = [(AXDisplayFilterOverlayView *)self filters];
+  effectBackdropLayer = [(AXDisplayFilterOverlayView *)self effectBackdropLayer];
+  v4 = [filters count];
   v5 = v4 == 0;
-  v6 = [(AXDisplayFilterOverlayView *)self effectReplicatorLayer];
-  v7 = v6;
+  effectReplicatorLayer = [(AXDisplayFilterOverlayView *)self effectReplicatorLayer];
+  effectView = effectReplicatorLayer;
   if (v4)
   {
-    v8 = [v6 superlayer];
+    superlayer = [effectReplicatorLayer superlayer];
 
-    if (v8)
+    if (superlayer)
     {
       v5 = 0;
       v9 = 1;
       goto LABEL_7;
     }
 
-    v7 = [(AXDisplayFilterOverlayView *)self effectView];
-    v10 = [v7 layer];
-    v11 = [(AXDisplayFilterOverlayView *)self effectReplicatorLayer];
-    [v10 addSublayer:v11];
+    effectView = [(AXDisplayFilterOverlayView *)self effectView];
+    layer = [effectView layer];
+    effectReplicatorLayer2 = [(AXDisplayFilterOverlayView *)self effectReplicatorLayer];
+    [layer addSublayer:effectReplicatorLayer2];
   }
 
   else
   {
-    [v6 removeFromSuperlayer];
+    [effectReplicatorLayer removeFromSuperlayer];
   }
 
   v9 = v4 != 0;
 
 LABEL_7:
-  [v3 setHidden:v5];
-  [v3 setEnabled:v9];
-  [v3 setFilters:v12];
+  [effectBackdropLayer setHidden:v5];
+  [effectBackdropLayer setEnabled:v9];
+  [effectBackdropLayer setFilters:filters];
   +[CATransaction commit];
 }
 

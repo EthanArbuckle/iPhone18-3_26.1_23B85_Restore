@@ -1,21 +1,21 @@
 @interface AWDCoreRoutineHintSourceUsageInstance
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasIsLOI:(BOOL)a3;
-- (void)setHasIsVisit:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasIsLOI:(BOOL)i;
+- (void)setHasIsVisit:(BOOL)visit;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDCoreRoutineHintSourceUsageInstance
 
-- (void)setHasIsLOI:(BOOL)a3
+- (void)setHasIsLOI:(BOOL)i
 {
-  if (a3)
+  if (i)
   {
     v3 = 2;
   }
@@ -28,9 +28,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasIsVisit:(BOOL)a3
+- (void)setHasIsVisit:(BOOL)visit
 {
-  if (a3)
+  if (visit)
   {
     v3 = 4;
   }
@@ -52,7 +52,7 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -62,16 +62,16 @@
     }
 
 LABEL_7:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_isLOI), @"isLOI"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_isLOI), @"isLOI"}];
     if ((*&self->_has & 4) == 0)
     {
-      return v3;
+      return dictionary;
     }
 
     goto LABEL_4;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_hintSource), @"hintSource"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_hintSource), @"hintSource"}];
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -82,13 +82,13 @@ LABEL_3:
   if ((has & 4) != 0)
   {
 LABEL_4:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_isVisit), @"isVisit"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_isVisit), @"isVisit"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   has = self->_has;
   if ((has & 1) == 0)
@@ -129,13 +129,13 @@ LABEL_7:
   PBDataWriterWriteInt32Field();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if (has)
   {
-    *(a3 + 2) = self->_hintSource;
-    *(a3 + 20) |= 1u;
+    *(to + 2) = self->_hintSource;
+    *(to + 20) |= 1u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -146,8 +146,8 @@ LABEL_3:
       }
 
 LABEL_7:
-      *(a3 + 4) = self->_isVisit;
-      *(a3 + 20) |= 4u;
+      *(to + 4) = self->_isVisit;
+      *(to + 20) |= 4u;
       return;
     }
   }
@@ -157,17 +157,17 @@ LABEL_7:
     goto LABEL_3;
   }
 
-  *(a3 + 3) = self->_isLOI;
-  *(a3 + 20) |= 2u;
+  *(to + 3) = self->_isLOI;
+  *(to + 20) |= 2u;
   if ((*&self->_has & 4) != 0)
   {
     goto LABEL_7;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if (has)
   {
@@ -204,20 +204,20 @@ LABEL_4:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     if (*&self->_has)
     {
-      if ((*(a3 + 20) & 1) == 0 || self->_hintSource != *(a3 + 2))
+      if ((*(equal + 20) & 1) == 0 || self->_hintSource != *(equal + 2))
       {
         goto LABEL_16;
       }
     }
 
-    else if (*(a3 + 20))
+    else if (*(equal + 20))
     {
 LABEL_16:
       LOBYTE(v5) = 0;
@@ -226,21 +226,21 @@ LABEL_16:
 
     if ((*&self->_has & 2) != 0)
     {
-      if ((*(a3 + 20) & 2) == 0 || self->_isLOI != *(a3 + 3))
+      if ((*(equal + 20) & 2) == 0 || self->_isLOI != *(equal + 3))
       {
         goto LABEL_16;
       }
     }
 
-    else if ((*(a3 + 20) & 2) != 0)
+    else if ((*(equal + 20) & 2) != 0)
     {
       goto LABEL_16;
     }
 
-    LOBYTE(v5) = (*(a3 + 20) & 4) == 0;
+    LOBYTE(v5) = (*(equal + 20) & 4) == 0;
     if ((*&self->_has & 4) != 0)
     {
-      if ((*(a3 + 20) & 4) == 0 || self->_isVisit != *(a3 + 4))
+      if ((*(equal + 20) & 4) == 0 || self->_isVisit != *(equal + 4))
       {
         goto LABEL_16;
       }
@@ -292,14 +292,14 @@ LABEL_4:
   return v3 ^ v2 ^ v4;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v3 = *(a3 + 20);
+  v3 = *(from + 20);
   if (v3)
   {
-    self->_hintSource = *(a3 + 2);
+    self->_hintSource = *(from + 2);
     *&self->_has |= 1u;
-    v3 = *(a3 + 20);
+    v3 = *(from + 20);
     if ((v3 & 2) == 0)
     {
 LABEL_3:
@@ -309,20 +309,20 @@ LABEL_3:
       }
 
 LABEL_7:
-      self->_isVisit = *(a3 + 4);
+      self->_isVisit = *(from + 4);
       *&self->_has |= 4u;
       return;
     }
   }
 
-  else if ((*(a3 + 20) & 2) == 0)
+  else if ((*(from + 20) & 2) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_isLOI = *(a3 + 3);
+  self->_isLOI = *(from + 3);
   *&self->_has |= 2u;
-  if ((*(a3 + 20) & 4) != 0)
+  if ((*(from + 20) & 4) != 0)
   {
     goto LABEL_7;
   }

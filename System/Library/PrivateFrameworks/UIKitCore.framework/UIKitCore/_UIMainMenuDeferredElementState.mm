@@ -1,48 +1,48 @@
 @interface _UIMainMenuDeferredElementState
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (_UIMainMenuDeferredElementState)initWithCoder:(id)a3;
-- (id)_initWithProvidedElements:(id)a3 childMenuStates:(id)a4 fulfilledDeferredElementStates:(id)a5 commandStates:(id)a6;
+- (_UIMainMenuDeferredElementState)initWithCoder:(id)coder;
+- (id)_initWithProvidedElements:(id)elements childMenuStates:(id)states fulfilledDeferredElementStates:(id)elementStates commandStates:(id)commandStates;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _UIMainMenuDeferredElementState
 
-- (id)_initWithProvidedElements:(id)a3 childMenuStates:(id)a4 fulfilledDeferredElementStates:(id)a5 commandStates:(id)a6
+- (id)_initWithProvidedElements:(id)elements childMenuStates:(id)states fulfilledDeferredElementStates:(id)elementStates commandStates:(id)commandStates
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  elementsCopy = elements;
+  statesCopy = states;
+  elementStatesCopy = elementStates;
+  commandStatesCopy = commandStates;
   v18.receiver = self;
   v18.super_class = _UIMainMenuDeferredElementState;
   v15 = [(_UIMainMenuDeferredElementState *)&v18 init];
   p_isa = &v15->super.isa;
   if (v15)
   {
-    objc_storeStrong(&v15->_providedElements, a3);
-    objc_storeStrong(p_isa + 1, a4);
-    objc_storeStrong(p_isa + 2, a5);
-    objc_storeStrong(p_isa + 3, a6);
+    objc_storeStrong(&v15->_providedElements, elements);
+    objc_storeStrong(p_isa + 1, states);
+    objc_storeStrong(p_isa + 2, elementStates);
+    objc_storeStrong(p_isa + 3, commandStates);
   }
 
   return p_isa;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   providedElements = self->_providedElements;
-  v5 = a3;
-  [v5 encodeObject:providedElements forKey:@"ProvidedElements"];
-  [v5 encodeObject:self->_childMenuStates forKey:@"ChildMenuStates"];
-  [v5 encodeObject:self->_fulfilledDeferredElementStates forKey:@"FulfilledDeferredElementStates"];
-  [v5 encodeObject:self->_commandStates forKey:@"CommandStates"];
+  coderCopy = coder;
+  [coderCopy encodeObject:providedElements forKey:@"ProvidedElements"];
+  [coderCopy encodeObject:self->_childMenuStates forKey:@"ChildMenuStates"];
+  [coderCopy encodeObject:self->_fulfilledDeferredElementStates forKey:@"FulfilledDeferredElementStates"];
+  [coderCopy encodeObject:self->_commandStates forKey:@"CommandStates"];
 }
 
-- (_UIMainMenuDeferredElementState)initWithCoder:(id)a3
+- (_UIMainMenuDeferredElementState)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(_UIMainMenuDeferredElementState *)self init];
   if (v5)
   {
@@ -52,7 +52,7 @@
     v9 = objc_opt_self();
     v10 = objc_opt_self();
     v11 = [v6 setWithObjects:{v7, v8, v9, v10, 0}];
-    v12 = [v4 decodeObjectOfClasses:v11 forKey:@"ProvidedElements"];
+    v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"ProvidedElements"];
     providedElements = v5->_providedElements;
     v5->_providedElements = v12;
 
@@ -61,7 +61,7 @@
     v16 = objc_opt_self();
     v17 = objc_opt_self();
     v18 = [v14 setWithObjects:{v15, v16, v17, 0}];
-    v19 = [v4 decodeObjectOfClasses:v18 forKey:@"ChildMenuStates"];
+    v19 = [coderCopy decodeObjectOfClasses:v18 forKey:@"ChildMenuStates"];
     childMenuStates = v5->_childMenuStates;
     v5->_childMenuStates = v19;
 
@@ -70,7 +70,7 @@
     v23 = objc_opt_self();
     v24 = objc_opt_self();
     v25 = [v21 setWithObjects:{v22, v23, v24, 0}];
-    v26 = [v4 decodeObjectOfClasses:v25 forKey:@"FulfilledDeferredElementStates"];
+    v26 = [coderCopy decodeObjectOfClasses:v25 forKey:@"FulfilledDeferredElementStates"];
     fulfilledDeferredElementStates = v5->_fulfilledDeferredElementStates;
     v5->_fulfilledDeferredElementStates = v26;
 
@@ -79,7 +79,7 @@
     v30 = objc_opt_self();
     v31 = objc_opt_self();
     v32 = [v28 setWithObjects:{v29, v30, v31, 0}];
-    v33 = [v4 decodeObjectOfClasses:v32 forKey:@"CommandStates"];
+    v33 = [coderCopy decodeObjectOfClasses:v32 forKey:@"CommandStates"];
     commandStates = v5->_commandStates;
     v5->_commandStates = v33;
   }
@@ -87,10 +87,10 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     LOBYTE(v12) = 1;
   }
@@ -102,7 +102,7 @@
 
     if (isKindOfClass)
     {
-      v7 = v4;
+      v7 = equalCopy;
       providedElements = v7->_providedElements;
       v9 = self->_providedElements;
       v10 = providedElements;
@@ -223,9 +223,9 @@ LABEL_30:
   v5 = [v3 appendObject:self->_childMenuStates withName:@"childMenuStates"];
   v6 = [v3 appendObject:self->_fulfilledDeferredElementStates withName:@"fulfilledDeferredElementStates"];
   v7 = [v3 appendObject:self->_commandStates withName:@"commandStates"];
-  v8 = [v3 build];
+  build = [v3 build];
 
-  return v8;
+  return build;
 }
 
 @end

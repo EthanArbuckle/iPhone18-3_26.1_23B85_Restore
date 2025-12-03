@@ -1,15 +1,15 @@
 @interface _DPWordRecorder
-- (BOOL)record:(id)a3;
+- (BOOL)record:(id)record;
 - (id)description;
 @end
 
 @implementation _DPWordRecorder
 
-- (BOOL)record:(id)a3
+- (BOOL)record:(id)record
 {
-  v4 = a3;
+  recordCopy = record;
   v5 = objc_autoreleasePoolPush();
-  [(_DPDataRecorder *)self->_recorder recordWords:v4];
+  [(_DPDataRecorder *)self->_recorder recordWords:recordCopy];
   objc_autoreleasePoolPop(v5);
 
   return 1;

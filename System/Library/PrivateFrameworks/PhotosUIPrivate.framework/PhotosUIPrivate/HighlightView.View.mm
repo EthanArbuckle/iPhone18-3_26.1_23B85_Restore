@@ -1,5 +1,5 @@
 @interface HighlightView.View
-- (id)contextMenuItemsForAttributionView:(id)a3;
+- (id)contextMenuItemsForAttributionView:(id)view;
 - (void)layoutSubviews;
 @end
 
@@ -7,15 +7,15 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B3727A58();
 }
 
-- (id)contextMenuItemsForAttributionView:(id)a3
+- (id)contextMenuItemsForAttributionView:(id)view
 {
-  v4 = a3;
-  v5 = self;
-  sub_1B3727B1C(v4);
+  viewCopy = view;
+  selfCopy = self;
+  sub_1B3727B1C(viewCopy);
 
   sub_1B3710718(0, &unk_1EB851C40);
   v6 = sub_1B3C9C778();

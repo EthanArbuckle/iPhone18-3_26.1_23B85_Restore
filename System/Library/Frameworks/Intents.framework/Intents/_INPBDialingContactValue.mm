@@ -1,31 +1,31 @@
 @interface _INPBDialingContactValue
-- (BOOL)isEqual:(id)a3;
-- (_INPBDialingContactValue)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBDialingContactValue)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBDialingContactValue
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(_INPBDialingContactValue *)self dialingContact];
-  v5 = [v4 dictionaryRepresentation];
-  [v3 setObject:v5 forKeyedSubscript:@"dialingContact"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  dialingContact = [(_INPBDialingContactValue *)self dialingContact];
+  dictionaryRepresentation = [dialingContact dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"dialingContact"];
 
-  v6 = [(_INPBDialingContactValue *)self dialingPhoneLabel];
-  v7 = [v6 dictionaryRepresentation];
-  [v3 setObject:v7 forKeyedSubscript:@"dialingPhoneLabel"];
+  dialingPhoneLabel = [(_INPBDialingContactValue *)self dialingPhoneLabel];
+  dictionaryRepresentation2 = [dialingPhoneLabel dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"dialingPhoneLabel"];
 
-  v8 = [(_INPBDialingContactValue *)self dialingPhoneNumber];
-  v9 = [v8 dictionaryRepresentation];
-  [v3 setObject:v9 forKeyedSubscript:@"dialingPhoneNumber"];
+  dialingPhoneNumber = [(_INPBDialingContactValue *)self dialingPhoneNumber];
+  dictionaryRepresentation3 = [dialingPhoneNumber dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"dialingPhoneNumber"];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -35,28 +35,28 @@
   return v4 ^ [(_INPBStringValue *)self->_dialingPhoneNumber hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_17;
   }
 
-  v5 = [(_INPBDialingContactValue *)self dialingContact];
-  v6 = [v4 dialingContact];
-  if ((v5 != 0) == (v6 == 0))
+  dialingContact = [(_INPBDialingContactValue *)self dialingContact];
+  dialingContact2 = [equalCopy dialingContact];
+  if ((dialingContact != 0) == (dialingContact2 == 0))
   {
     goto LABEL_16;
   }
 
-  v7 = [(_INPBDialingContactValue *)self dialingContact];
-  if (v7)
+  dialingContact3 = [(_INPBDialingContactValue *)self dialingContact];
+  if (dialingContact3)
   {
-    v8 = v7;
-    v9 = [(_INPBDialingContactValue *)self dialingContact];
-    v10 = [v4 dialingContact];
-    v11 = [v9 isEqual:v10];
+    v8 = dialingContact3;
+    dialingContact4 = [(_INPBDialingContactValue *)self dialingContact];
+    dialingContact5 = [equalCopy dialingContact];
+    v11 = [dialingContact4 isEqual:dialingContact5];
 
     if (!v11)
     {
@@ -68,20 +68,20 @@
   {
   }
 
-  v5 = [(_INPBDialingContactValue *)self dialingPhoneLabel];
-  v6 = [v4 dialingPhoneLabel];
-  if ((v5 != 0) == (v6 == 0))
+  dialingContact = [(_INPBDialingContactValue *)self dialingPhoneLabel];
+  dialingContact2 = [equalCopy dialingPhoneLabel];
+  if ((dialingContact != 0) == (dialingContact2 == 0))
   {
     goto LABEL_16;
   }
 
-  v12 = [(_INPBDialingContactValue *)self dialingPhoneLabel];
-  if (v12)
+  dialingPhoneLabel = [(_INPBDialingContactValue *)self dialingPhoneLabel];
+  if (dialingPhoneLabel)
   {
-    v13 = v12;
-    v14 = [(_INPBDialingContactValue *)self dialingPhoneLabel];
-    v15 = [v4 dialingPhoneLabel];
-    v16 = [v14 isEqual:v15];
+    v13 = dialingPhoneLabel;
+    dialingPhoneLabel2 = [(_INPBDialingContactValue *)self dialingPhoneLabel];
+    dialingPhoneLabel3 = [equalCopy dialingPhoneLabel];
+    v16 = [dialingPhoneLabel2 isEqual:dialingPhoneLabel3];
 
     if (!v16)
     {
@@ -93,12 +93,12 @@
   {
   }
 
-  v5 = [(_INPBDialingContactValue *)self dialingPhoneNumber];
-  v6 = [v4 dialingPhoneNumber];
-  if ((v5 != 0) != (v6 == 0))
+  dialingContact = [(_INPBDialingContactValue *)self dialingPhoneNumber];
+  dialingContact2 = [equalCopy dialingPhoneNumber];
+  if ((dialingContact != 0) != (dialingContact2 == 0))
   {
-    v17 = [(_INPBDialingContactValue *)self dialingPhoneNumber];
-    if (!v17)
+    dialingPhoneNumber = [(_INPBDialingContactValue *)self dialingPhoneNumber];
+    if (!dialingPhoneNumber)
     {
 
 LABEL_20:
@@ -106,10 +106,10 @@ LABEL_20:
       goto LABEL_18;
     }
 
-    v18 = v17;
-    v19 = [(_INPBDialingContactValue *)self dialingPhoneNumber];
-    v20 = [v4 dialingPhoneNumber];
-    v21 = [v19 isEqual:v20];
+    v18 = dialingPhoneNumber;
+    dialingPhoneNumber2 = [(_INPBDialingContactValue *)self dialingPhoneNumber];
+    dialingPhoneNumber3 = [equalCopy dialingPhoneNumber];
+    v21 = [dialingPhoneNumber2 isEqual:dialingPhoneNumber3];
 
     if (v21)
     {
@@ -129,73 +129,73 @@ LABEL_18:
   return v22;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBDialingContactValue allocWithZone:](_INPBDialingContactValue init];
-  v6 = [(_INPBContactValue *)self->_dialingContact copyWithZone:a3];
+  v6 = [(_INPBContactValue *)self->_dialingContact copyWithZone:zone];
   [(_INPBDialingContactValue *)v5 setDialingContact:v6];
 
-  v7 = [(_INPBStringValue *)self->_dialingPhoneLabel copyWithZone:a3];
+  v7 = [(_INPBStringValue *)self->_dialingPhoneLabel copyWithZone:zone];
   [(_INPBDialingContactValue *)v5 setDialingPhoneLabel:v7];
 
-  v8 = [(_INPBStringValue *)self->_dialingPhoneNumber copyWithZone:a3];
+  v8 = [(_INPBStringValue *)self->_dialingPhoneNumber copyWithZone:zone];
   [(_INPBDialingContactValue *)v5 setDialingPhoneNumber:v8];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBDialingContactValue *)self data];
+  coderCopy = coder;
+  data = [(_INPBDialingContactValue *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBDialingContactValue)initWithCoder:(id)a3
+- (_INPBDialingContactValue)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBDialingContactValue *)self initWithData:v6];
+    self = [(_INPBDialingContactValue *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v11 = a3;
-  v4 = [(_INPBDialingContactValue *)self dialingContact];
+  toCopy = to;
+  dialingContact = [(_INPBDialingContactValue *)self dialingContact];
 
-  if (v4)
+  if (dialingContact)
   {
-    v5 = [(_INPBDialingContactValue *)self dialingContact];
+    dialingContact2 = [(_INPBDialingContactValue *)self dialingContact];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(_INPBDialingContactValue *)self dialingPhoneLabel];
+  dialingPhoneLabel = [(_INPBDialingContactValue *)self dialingPhoneLabel];
 
-  if (v6)
+  if (dialingPhoneLabel)
   {
-    v7 = [(_INPBDialingContactValue *)self dialingPhoneLabel];
+    dialingPhoneLabel2 = [(_INPBDialingContactValue *)self dialingPhoneLabel];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(_INPBDialingContactValue *)self dialingPhoneNumber];
+  dialingPhoneNumber = [(_INPBDialingContactValue *)self dialingPhoneNumber];
 
-  v9 = v11;
-  if (v8)
+  v9 = toCopy;
+  if (dialingPhoneNumber)
   {
-    v10 = [(_INPBDialingContactValue *)self dialingPhoneNumber];
+    dialingPhoneNumber2 = [(_INPBDialingContactValue *)self dialingPhoneNumber];
     PBDataWriterWriteSubmessage();
 
-    v9 = v11;
+    v9 = toCopy;
   }
 }
 

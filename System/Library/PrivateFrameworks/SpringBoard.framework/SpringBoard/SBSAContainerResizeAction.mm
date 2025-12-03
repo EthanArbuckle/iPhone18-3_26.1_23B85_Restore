@@ -1,29 +1,29 @@
 @interface SBSAContainerResizeAction
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (SBSAContainerResizeAction)initWithResult:(int64_t)a3 associatedInterfaceElementIdentifier:(id)a4 reasons:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SBSAContainerResizeAction)initWithResult:(int64_t)result associatedInterfaceElementIdentifier:(id)identifier reasons:(id)reasons;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
 @implementation SBSAContainerResizeAction
 
-- (SBSAContainerResizeAction)initWithResult:(int64_t)a3 associatedInterfaceElementIdentifier:(id)a4 reasons:(id)a5
+- (SBSAContainerResizeAction)initWithResult:(int64_t)result associatedInterfaceElementIdentifier:(id)identifier reasons:(id)reasons
 {
-  v8 = a4;
-  v9 = a5;
+  identifierCopy = identifier;
+  reasonsCopy = reasons;
   v17.receiver = self;
   v17.super_class = SBSAContainerResizeAction;
   v10 = [(SBSAContainerResizeAction *)&v17 init];
   v11 = v10;
   if (v10)
   {
-    v10->_resizeActionResult = a3;
-    v12 = [v8 copy];
+    v10->_resizeActionResult = result;
+    v12 = [identifierCopy copy];
     associatedInterfaceElementIdentifier = v11->_associatedInterfaceElementIdentifier;
     v11->_associatedInterfaceElementIdentifier = v12;
 
-    v14 = [v9 copy];
+    v14 = [reasonsCopy copy];
     reasons = v11->_reasons;
     v11->_reasons = v14;
   }
@@ -31,16 +31,16 @@
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CF0C20] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
+  equalCopy = equal;
+  v5 = [MEMORY[0x277CF0C20] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
   resizeActionResult = self->_resizeActionResult;
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __37__SBSAContainerResizeAction_isEqual___block_invoke;
   v21[3] = &unk_2783ACDE0;
-  v7 = v4;
+  v7 = equalCopy;
   v22 = v7;
   v8 = [v5 appendInteger:resizeActionResult counterpart:v21];
   associatedInterfaceElementIdentifier = self->_associatedInterfaceElementIdentifier;
@@ -66,8 +66,8 @@
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x277CF0C40] builder];
-  v4 = [v3 appendInteger:self->_resizeActionResult];
+  builder = [MEMORY[0x277CF0C40] builder];
+  v4 = [builder appendInteger:self->_resizeActionResult];
   v5 = [v4 appendObject:self->_associatedInterfaceElementIdentifier];
   v6 = [v5 appendObject:self->_reasons];
   v7 = [v6 hash];
@@ -93,7 +93,7 @@
   return [v3 stringWithFormat:@"<%@: %p; resizeActionResult: %@; associatedInterfaceElementIdentifier: %@; reasons: %@>", v4, self, v6, self->_associatedInterfaceElementIdentifier, self->_reasons];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   resizeActionResult = self->_resizeActionResult;

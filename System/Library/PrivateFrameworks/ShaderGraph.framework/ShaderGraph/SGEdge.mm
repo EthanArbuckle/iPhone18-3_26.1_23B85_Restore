@@ -1,19 +1,19 @@
 @interface SGEdge
 - (SGEdge)init;
-- (id)initFrom:(id)a3 to:(id)a4;
+- (id)initFrom:(id)from to:(id)to;
 @end
 
 @implementation SGEdge
 
-- (id)initFrom:(id)a3 to:(id)a4
+- (id)initFrom:(id)from to:(id)to
 {
   ObjectType = swift_getObjectType();
-  *(&self->super.isa + OBJC_IVAR___SGEdge_from) = a3;
-  *(&self->super.isa + OBJC_IVAR___SGEdge_to) = a4;
+  *(&self->super.isa + OBJC_IVAR___SGEdge_from) = from;
+  *(&self->super.isa + OBJC_IVAR___SGEdge_to) = to;
   v11.receiver = self;
   v11.super_class = ObjectType;
-  v8 = a3;
-  v9 = a4;
+  fromCopy = from;
+  toCopy = to;
   return [(SGEdge *)&v11 init];
 }
 

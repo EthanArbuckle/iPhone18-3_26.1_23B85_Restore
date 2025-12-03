@@ -5,22 +5,22 @@
 - (BOOL)shouldShowTitleLabel;
 - (BOOL)shouldShowToggleButton;
 - (CKAutomaticTranslationIndicatorCellDelegate)delegate;
-- (double)heightThatFits:(CGSize)a3;
+- (double)heightThatFits:(CGSize)fits;
 - (void)activateConstraintsForButtonOnly;
 - (void)activateConstraintsForLabelAndButton;
 - (void)activateConstraintsForLabelOnly;
-- (void)addButtonMenuWithCompletionHandler:(id)a3;
-- (void)configureForChatItem:(id)a3 context:(id)a4 animated:(BOOL)a5 animationDuration:(double)a6 animationCurve:(int64_t)a7;
+- (void)addButtonMenuWithCompletionHandler:(id)handler;
+- (void)configureForChatItem:(id)item context:(id)context animated:(BOOL)animated animationDuration:(double)duration animationCurve:(int64_t)curve;
 - (void)layoutSubviewsForAlignmentContents;
 - (void)removeButtonMenu;
 - (void)removeLabelView;
-- (void)setButtonAttributedString:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setProgressIndicator:(id)a3;
-- (void)setTitleAttributedString:(id)a3;
-- (void)setTitleLabel:(id)a3;
-- (void)setTitleToButtonVerticalConstraint:(id)a3;
-- (void)setToggleButton:(id)a3;
+- (void)setButtonAttributedString:(id)string;
+- (void)setDelegate:(id)delegate;
+- (void)setProgressIndicator:(id)indicator;
+- (void)setTitleAttributedString:(id)string;
+- (void)setTitleLabel:(id)label;
+- (void)setTitleToButtonVerticalConstraint:(id)constraint;
+- (void)setToggleButton:(id)button;
 - (void)updateButtonMenu;
 - (void)updateContentConstraints;
 - (void)updateTitleToButtonVerticalConstraint;
@@ -28,31 +28,31 @@
 
 @implementation CKAutomaticTranslationIndicatorCell
 
-- (void)configureForChatItem:(id)a3 context:(id)a4 animated:(BOOL)a5 animationDuration:(double)a6 animationCurve:(int64_t)a7
+- (void)configureForChatItem:(id)item context:(id)context animated:(BOOL)animated animationDuration:(double)duration animationCurve:(int64_t)curve
 {
-  v9 = a5;
-  v12 = a3;
-  v13 = a4;
+  animatedCopy = animated;
+  itemCopy = item;
+  contextCopy = context;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v18.receiver = self;
     v18.super_class = CKAutomaticTranslationIndicatorCell;
-    [(CKTranscriptCell *)&v18 configureForChatItem:v12 context:v13 animated:v9 animationDuration:a7 animationCurve:a6];
-    v14 = [v12 titleAttributedText];
-    [(CKAutomaticTranslationIndicatorCell *)self setTitleAttributedString:v14];
+    [(CKTranscriptCell *)&v18 configureForChatItem:itemCopy context:contextCopy animated:animatedCopy animationDuration:curve animationCurve:duration];
+    titleAttributedText = [itemCopy titleAttributedText];
+    [(CKAutomaticTranslationIndicatorCell *)self setTitleAttributedString:titleAttributedText];
 
-    v15 = [v12 buttonAttributedText];
-    [(CKAutomaticTranslationIndicatorCell *)self setButtonAttributedString:v15];
+    buttonAttributedText = [itemCopy buttonAttributedText];
+    [(CKAutomaticTranslationIndicatorCell *)self setButtonAttributedString:buttonAttributedText];
 
-    [v12 languageDownloadProgress];
+    [itemCopy languageDownloadProgress];
     [(CKAutomaticTranslationIndicatorCell *)self setLanguageDownloadProgress:?];
     [(CKAutomaticTranslationIndicatorCell *)self updateContentConstraints];
-    v16 = [v12 imAutomaticTranslationIndicatorChatItem];
-    if ([v16 translationLanguageStatus]== 3)
+    imAutomaticTranslationIndicatorChatItem = [itemCopy imAutomaticTranslationIndicatorChatItem];
+    if ([imAutomaticTranslationIndicatorChatItem translationLanguageStatus]== 3)
     {
-      v17 = [v12 imAutomaticTranslationIndicatorChatItem];
-      -[CKAutomaticTranslationIndicatorCell setButtonPresentsMenu:](self, "setButtonPresentsMenu:", [v17 userTranslationLanguageStatus] == 3);
+      imAutomaticTranslationIndicatorChatItem2 = [itemCopy imAutomaticTranslationIndicatorChatItem];
+      -[CKAutomaticTranslationIndicatorCell setButtonPresentsMenu:](self, "setButtonPresentsMenu:", [imAutomaticTranslationIndicatorChatItem2 userTranslationLanguageStatus] == 3);
     }
 
     else
@@ -63,8 +63,8 @@
 
   else
   {
-    v16 = IMLogHandleForCategory();
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+    imAutomaticTranslationIndicatorChatItem = IMLogHandleForCategory();
+    if (os_log_type_enabled(imAutomaticTranslationIndicatorChatItem, OS_LOG_TYPE_ERROR))
     {
       [CKAutomaticTranslationIndicatorCell(CKChatItem) configureForChatItem:context:animated:animationDuration:animationCurve:];
     }
@@ -80,9 +80,9 @@
 
 + (CKTranscriptLegibilityLabel)translationTitleLabel
 {
-  v2 = [objc_allocWithZone(CKTranscriptLegibilityLabel) initWithFrame_];
-  [v2 setNumberOfLines_];
-  v3 = v2;
+  initWithFrame_ = [objc_allocWithZone(CKTranscriptLegibilityLabel) initWithFrame_];
+  [initWithFrame_ setNumberOfLines_];
+  v3 = initWithFrame_;
   [v3 setContentMode_];
   [v3 setTextAlignment_];
   [v3 setTranslatesAutoresizingMaskIntoConstraints_];
@@ -97,7 +97,7 @@
   return Strong;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   swift_unknownObjectWeakAssign();
 
@@ -111,48 +111,48 @@
   return v2;
 }
 
-- (void)setTitleLabel:(id)a3
+- (void)setTitleLabel:(id)label
 {
   v4 = *(self + OBJC_IVAR___CKAutomaticTranslationIndicatorCell_titleLabel);
-  *(self + OBJC_IVAR___CKAutomaticTranslationIndicatorCell_titleLabel) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___CKAutomaticTranslationIndicatorCell_titleLabel) = label;
+  labelCopy = label;
 }
 
-- (void)setToggleButton:(id)a3
+- (void)setToggleButton:(id)button
 {
   v4 = *(self + OBJC_IVAR___CKAutomaticTranslationIndicatorCell_toggleButton);
-  *(self + OBJC_IVAR___CKAutomaticTranslationIndicatorCell_toggleButton) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___CKAutomaticTranslationIndicatorCell_toggleButton) = button;
+  buttonCopy = button;
 }
 
-- (void)setProgressIndicator:(id)a3
+- (void)setProgressIndicator:(id)indicator
 {
   v4 = *(self + OBJC_IVAR___CKAutomaticTranslationIndicatorCell_progressIndicator);
-  *(self + OBJC_IVAR___CKAutomaticTranslationIndicatorCell_progressIndicator) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___CKAutomaticTranslationIndicatorCell_progressIndicator) = indicator;
+  indicatorCopy = indicator;
 }
 
-- (void)setTitleToButtonVerticalConstraint:(id)a3
+- (void)setTitleToButtonVerticalConstraint:(id)constraint
 {
   v4 = *(self + OBJC_IVAR___CKAutomaticTranslationIndicatorCell_titleToButtonVerticalConstraint);
-  *(self + OBJC_IVAR___CKAutomaticTranslationIndicatorCell_titleToButtonVerticalConstraint) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___CKAutomaticTranslationIndicatorCell_titleToButtonVerticalConstraint) = constraint;
+  constraintCopy = constraint;
 }
 
 - (BOOL)shouldShowTitleLabel
 {
-  v2 = self;
-  v3 = [(CKAutomaticTranslationIndicatorCell *)v2 titleAttributedString];
-  if (v3)
+  selfCopy = self;
+  titleAttributedString = [(CKAutomaticTranslationIndicatorCell *)selfCopy titleAttributedString];
+  if (titleAttributedString)
   {
 
-    v4 = [(CKAutomaticTranslationIndicatorCell *)v2 titleAttributedString];
-    if (v4)
+    titleAttributedString2 = [(CKAutomaticTranslationIndicatorCell *)selfCopy titleAttributedString];
+    if (titleAttributedString2)
     {
-      v5 = v4;
-      v6 = [(NSAttributedString *)v4 length];
+      v5 = titleAttributedString2;
+      v6 = [(NSAttributedString *)titleAttributedString2 length];
 
-      LOBYTE(v4) = v6 > 0;
+      LOBYTE(titleAttributedString2) = v6 > 0;
     }
 
     else
@@ -164,64 +164,64 @@
   else
   {
 
-    LOBYTE(v4) = 0;
+    LOBYTE(titleAttributedString2) = 0;
   }
 
-  return v4;
+  return titleAttributedString2;
 }
 
 - (BOOL)shouldShowToggleButton
 {
-  v2 = [(CKAutomaticTranslationIndicatorCell *)self buttonAttributedString];
-  v3 = v2;
-  if (v2)
+  buttonAttributedString = [(CKAutomaticTranslationIndicatorCell *)self buttonAttributedString];
+  v3 = buttonAttributedString;
+  if (buttonAttributedString)
   {
   }
 
   return v3 != 0;
 }
 
-- (void)setTitleAttributedString:(id)a3
+- (void)setTitleAttributedString:(id)string
 {
   v4 = OBJC_IVAR___CKAutomaticTranslationIndicatorCell_titleAttributedString;
   v5 = *(self + OBJC_IVAR___CKAutomaticTranslationIndicatorCell_titleAttributedString);
-  *(self + OBJC_IVAR___CKAutomaticTranslationIndicatorCell_titleAttributedString) = a3;
-  v6 = a3;
-  v9 = self;
+  *(self + OBJC_IVAR___CKAutomaticTranslationIndicatorCell_titleAttributedString) = string;
+  stringCopy = string;
+  selfCopy = self;
 
-  v7 = [(CKAutomaticTranslationIndicatorCell *)v9 titleLabel];
+  titleLabel = [(CKAutomaticTranslationIndicatorCell *)selfCopy titleLabel];
   v8 = *(self + v4);
-  [(CKTranscriptLegibilityLabel *)v7 setAttributedText:v8];
+  [(CKTranscriptLegibilityLabel *)titleLabel setAttributedText:v8];
 }
 
-- (void)setButtonAttributedString:(id)a3
+- (void)setButtonAttributedString:(id)string
 {
   v4 = OBJC_IVAR___CKAutomaticTranslationIndicatorCell_buttonAttributedString;
   v5 = *(self + OBJC_IVAR___CKAutomaticTranslationIndicatorCell_buttonAttributedString);
-  *(self + OBJC_IVAR___CKAutomaticTranslationIndicatorCell_buttonAttributedString) = a3;
-  v6 = a3;
-  v9 = self;
+  *(self + OBJC_IVAR___CKAutomaticTranslationIndicatorCell_buttonAttributedString) = string;
+  stringCopy = string;
+  selfCopy = self;
 
-  v7 = [(CKAutomaticTranslationIndicatorCell *)v9 toggleButton];
+  toggleButton = [(CKAutomaticTranslationIndicatorCell *)selfCopy toggleButton];
   v8 = *(self + v4);
-  [(UIButton *)v7 setAttributedTitle:v8 forState:0];
+  [(UIButton *)toggleButton setAttributedTitle:v8 forState:0];
 }
 
 - (void)activateConstraintsForLabelOnly
 {
-  v2 = self;
+  selfCopy = self;
   sub_190958FBC();
 }
 
 - (void)activateConstraintsForButtonOnly
 {
-  v2 = self;
+  selfCopy = self;
   sub_19095936C();
 }
 
 - (void)activateConstraintsForLabelAndButton
 {
-  v2 = self;
+  selfCopy = self;
   sub_190959724();
 }
 
@@ -233,28 +233,28 @@
   v6 = sub_190D572E0();
   (*(*(v6 - 8) + 56))(v5, 1, 1, v6);
   sub_190D572A0();
-  v7 = self;
+  selfCopy = self;
   v8 = sub_190D57290();
   v9 = swift_allocObject();
   v10 = MEMORY[0x1E69E85E0];
   v9[2] = v8;
   v9[3] = v10;
-  v9[4] = v7;
+  v9[4] = selfCopy;
   sub_190857E08(0, 0, v5, &unk_190DE09D8, v9);
 }
 
 - (void)updateContentConstraints
 {
-  v2 = self;
+  selfCopy = self;
   sub_19095A6B8();
 }
 
-- (void)addButtonMenuWithCompletionHandler:(id)a3
+- (void)addButtonMenuWithCompletionHandler:(id)handler
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EAD5BAF0);
   MEMORY[0x1EEE9AC00](v5 - 8);
   v7 = &v14 - v6;
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   *(v9 + 24) = self;
@@ -270,43 +270,43 @@
   v12[3] = 0;
   v12[4] = &unk_190DD75C0;
   v12[5] = v11;
-  v13 = self;
+  selfCopy = self;
   sub_190C798DC(0, 0, v7, &unk_190DD75C8, v12);
 }
 
 - (void)removeButtonMenu
 {
-  v3 = self;
-  v2 = [(CKAutomaticTranslationIndicatorCell *)v3 toggleButton];
-  [(UIButton *)v2 setMenu:0];
+  selfCopy = self;
+  toggleButton = [(CKAutomaticTranslationIndicatorCell *)selfCopy toggleButton];
+  [(UIButton *)toggleButton setMenu:0];
 }
 
 - (void)updateTitleToButtonVerticalConstraint
 {
-  v9 = self;
-  v2 = [(CKAutomaticTranslationIndicatorCell *)v9 titleToButtonVerticalConstraint];
-  if (v2)
+  selfCopy = self;
+  titleToButtonVerticalConstraint = [(CKAutomaticTranslationIndicatorCell *)selfCopy titleToButtonVerticalConstraint];
+  if (titleToButtonVerticalConstraint)
   {
 
-    v3 = [objc_opt_self() sharedBehaviors];
-    if (!v3)
+    sharedBehaviors = [objc_opt_self() sharedBehaviors];
+    if (!sharedBehaviors)
     {
       __break(1u);
       return;
     }
 
-    v4 = v3;
-    [(CKAutomaticTranslationIndicatorCell *)v3 smallTranscriptSpace];
+    v4 = sharedBehaviors;
+    [(CKAutomaticTranslationIndicatorCell *)sharedBehaviors smallTranscriptSpace];
     v6 = v5;
-    v7 = [(CKAutomaticTranslationIndicatorCell *)v9 titleToButtonVerticalConstraint];
-    [(NSLayoutConstraint *)v7 setConstant:v6];
+    titleToButtonVerticalConstraint2 = [(CKAutomaticTranslationIndicatorCell *)selfCopy titleToButtonVerticalConstraint];
+    [(NSLayoutConstraint *)titleToButtonVerticalConstraint2 setConstant:v6];
 
     v8 = v4;
   }
 
   else
   {
-    v8 = v9;
+    v8 = selfCopy;
   }
 }
 
@@ -314,18 +314,18 @@
 {
   v4.receiver = self;
   v4.super_class = CKAutomaticTranslationIndicatorCell;
-  v2 = self;
+  selfCopy = self;
   [(CKEditableCollectionViewCell *)&v4 layoutSubviewsForAlignmentContents];
-  v3 = [(CKAutomaticTranslationIndicatorCell *)v2 containerView:v4.receiver];
-  [(CKEditableCollectionViewCell *)v2 contentAlignmentRect];
+  v3 = [(CKAutomaticTranslationIndicatorCell *)selfCopy containerView:v4.receiver];
+  [(CKEditableCollectionViewCell *)selfCopy contentAlignmentRect];
   [(UIView *)v3 setFrame:?];
 }
 
-- (double)heightThatFits:(CGSize)a3
+- (double)heightThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
+  height = fits.height;
+  width = fits.width;
+  selfCopy = self;
   sub_19095BD90(width, height);
   v7 = v6;
 
@@ -334,12 +334,12 @@
 
 - (void)removeLabelView
 {
-  v4 = self;
-  v2 = [(CKAutomaticTranslationIndicatorCell *)v4 titleLabel];
-  [(CKTranscriptLegibilityLabel *)v2 removeFromSuperview];
+  selfCopy = self;
+  titleLabel = [(CKAutomaticTranslationIndicatorCell *)selfCopy titleLabel];
+  [(CKTranscriptLegibilityLabel *)titleLabel removeFromSuperview];
 
-  v3 = [(CKAutomaticTranslationIndicatorCell *)v4 toggleButton];
-  [(UIButton *)v3 removeFromSuperview];
+  toggleButton = [(CKAutomaticTranslationIndicatorCell *)selfCopy toggleButton];
+  [(UIButton *)toggleButton removeFromSuperview];
 }
 
 @end

@@ -11,24 +11,24 @@
 - (int)getSendBufferSize;
 - (int)getSoTimeout;
 - (int)getTrafficClass;
-- (void)bindWithJavaNetSocketAddress:(id)a3;
+- (void)bindWithJavaNetSocketAddress:(id)address;
 - (void)checkOpen;
 - (void)close;
-- (void)connectWithJavaNetInetAddress:(id)a3 withInt:(int)a4;
-- (void)connectWithJavaNetSocketAddress:(id)a3;
+- (void)connectWithJavaNetInetAddress:(id)address withInt:(int)int;
+- (void)connectWithJavaNetSocketAddress:(id)address;
 - (void)dealloc;
 - (void)disconnect;
 - (void)onClose;
 - (void)onDisconnect;
-- (void)receiveWithJavaNetDatagramPacket:(id)a3;
-- (void)sendWithJavaNetDatagramPacket:(id)a3;
-- (void)setBroadcastWithBoolean:(BOOL)a3;
-- (void)setNetworkInterfaceWithJavaNetNetworkInterface:(id)a3;
-- (void)setReceiveBufferSizeWithInt:(int)a3;
-- (void)setReuseAddressWithBoolean:(BOOL)a3;
-- (void)setSendBufferSizeWithInt:(int)a3;
-- (void)setSoTimeoutWithInt:(int)a3;
-- (void)setTrafficClassWithInt:(int)a3;
+- (void)receiveWithJavaNetDatagramPacket:(id)packet;
+- (void)sendWithJavaNetDatagramPacket:(id)packet;
+- (void)setBroadcastWithBoolean:(BOOL)boolean;
+- (void)setNetworkInterfaceWithJavaNetNetworkInterface:(id)interface;
+- (void)setReceiveBufferSizeWithInt:(int)int;
+- (void)setReuseAddressWithBoolean:(BOOL)boolean;
+- (void)setSendBufferSizeWithInt:(int)int;
+- (void)setSoTimeoutWithInt:(int)int;
+- (void)setTrafficClassWithInt:(int)int;
 @end
 
 @implementation JavaNetDatagramSocket
@@ -136,9 +136,9 @@
     JreThrowClassCastException();
   }
 
-  v5 = [v4 intValue];
+  intValue = [v4 intValue];
   objc_sync_exit(self);
-  return v5;
+  return intValue;
 }
 
 - (int)getSendBufferSize
@@ -156,9 +156,9 @@
     JreThrowClassCastException();
   }
 
-  v5 = [v4 intValue];
+  intValue = [v4 intValue];
   objc_sync_exit(self);
-  return v5;
+  return intValue;
 }
 
 - (int)getSoTimeout
@@ -176,17 +176,17 @@
     JreThrowClassCastException();
   }
 
-  v5 = [v4 intValue];
+  intValue = [v4 intValue];
   objc_sync_exit(self);
-  return v5;
+  return intValue;
 }
 
-- (void)receiveWithJavaNetDatagramPacket:(id)a3
+- (void)receiveWithJavaNetDatagramPacket:(id)packet
 {
   objc_sync_enter(self);
   [(JavaNetDatagramSocket *)self checkOpen];
   [JavaNetDatagramSocket ensureBound]_0(self);
-  if (!a3)
+  if (!packet)
   {
     v7 = new_JavaLangNullPointerException_initWithNSString_(@"pack == null");
     goto LABEL_10;
@@ -200,24 +200,24 @@ LABEL_10:
     objc_exception_throw(v7);
   }
 
-  [a3 resetLengthForReceive];
+  [packet resetLengthForReceive];
   impl = self->impl_;
   if (!impl)
   {
     JreThrowNullPointerException();
   }
 
-  [(JavaNetDatagramSocketImpl *)impl receiveWithJavaNetDatagramPacket:a3];
+  [(JavaNetDatagramSocketImpl *)impl receiveWithJavaNetDatagramPacket:packet];
 
   objc_sync_exit(self);
 }
 
 - (id)ensureBound
 {
-  result = [a1 isBound];
+  result = [self isBound];
   if ((result & 1) == 0)
   {
-    v3 = *(a1 + 8);
+    v3 = *(self + 8);
     if (!v3)
     {
       JreThrowNullPointerException();
@@ -229,27 +229,27 @@ LABEL_10:
     }
 
     result = [v3 bindWithInt:0 withJavaNetInetAddress:JavaNetInet4Address_ANY_];
-    *(a1 + 28) = 1;
+    *(self + 28) = 1;
   }
 
   return result;
 }
 
-- (void)sendWithJavaNetDatagramPacket:(id)a3
+- (void)sendWithJavaNetDatagramPacket:(id)packet
 {
   [(JavaNetDatagramSocket *)self checkOpen];
   [JavaNetDatagramSocket ensureBound]_0(self);
-  if (!a3)
+  if (!packet)
   {
     goto LABEL_15;
   }
 
-  v5 = [a3 getAddress];
+  getAddress = [packet getAddress];
   if (self->address_)
   {
-    if (v5)
+    if (getAddress)
     {
-      if (!-[JavaNetInetAddress isEqual:](self->address_, "isEqual:", v5) || (port = self->port_, port != [a3 getPort]))
+      if (!-[JavaNetInetAddress isEqual:](self->address_, "isEqual:", getAddress) || (port = self->port_, port != [packet getPort]))
       {
         v7 = new_JavaLangIllegalArgumentException_initWithNSString_(@"Packet address mismatch with connected address");
         goto LABEL_9;
@@ -258,12 +258,12 @@ LABEL_10:
 
     else
     {
-      [a3 setAddressWithJavaNetInetAddress:self->address_];
-      [a3 setPortWithInt:self->port_];
+      [packet setAddressWithJavaNetInetAddress:self->address_];
+      [packet setPortWithInt:self->port_];
     }
   }
 
-  else if (!v5)
+  else if (!getAddress)
   {
     v7 = new_JavaLangNullPointerException_initWithNSString_(@"Destination address is null");
 LABEL_9:
@@ -277,12 +277,12 @@ LABEL_15:
     JreThrowNullPointerException();
   }
 
-  [(JavaNetDatagramSocketImpl *)impl sendWithJavaNetDatagramPacket:a3];
+  [(JavaNetDatagramSocketImpl *)impl sendWithJavaNetDatagramPacket:packet];
 }
 
-- (void)setNetworkInterfaceWithJavaNetNetworkInterface:(id)a3
+- (void)setNetworkInterfaceWithJavaNetNetworkInterface:(id)interface
 {
-  if (!a3)
+  if (!interface)
   {
     v6 = new_JavaLangNullPointerException_initWithNSString_(@"netInterface == null");
     objc_exception_throw(v6);
@@ -298,13 +298,13 @@ LABEL_15:
     JreThrowNullPointerException();
   }
 
-  [LibcoreIoLibcore_os_ setsockoptIfreqWithJavaIoFileDescriptor:impl->fd_ withInt:0xFFFFLL withInt:25 withNSString:{objc_msgSend(a3, "getName")}];
+  [LibcoreIoLibcore_os_ setsockoptIfreqWithJavaIoFileDescriptor:impl->fd_ withInt:0xFFFFLL withInt:25 withNSString:{objc_msgSend(interface, "getName")}];
 }
 
-- (void)setSendBufferSizeWithInt:(int)a3
+- (void)setSendBufferSizeWithInt:(int)int
 {
   objc_sync_enter(self);
-  if (a3 <= 0)
+  if (int <= 0)
   {
     v6 = new_JavaLangIllegalArgumentException_initWithNSString_(@"size < 1");
     objc_exception_throw(v6);
@@ -317,15 +317,15 @@ LABEL_15:
     JreThrowNullPointerException();
   }
 
-  [(JavaNetDatagramSocketImpl *)impl setOptionWithInt:4097 withId:JavaLangInteger_valueOfWithInt_(a3)];
+  [(JavaNetDatagramSocketImpl *)impl setOptionWithInt:4097 withId:JavaLangInteger_valueOfWithInt_(int)];
 
   objc_sync_exit(self);
 }
 
-- (void)setReceiveBufferSizeWithInt:(int)a3
+- (void)setReceiveBufferSizeWithInt:(int)int
 {
   objc_sync_enter(self);
-  if (a3 <= 0)
+  if (int <= 0)
   {
     v6 = new_JavaLangIllegalArgumentException_initWithNSString_(@"size < 1");
     objc_exception_throw(v6);
@@ -338,15 +338,15 @@ LABEL_15:
     JreThrowNullPointerException();
   }
 
-  [(JavaNetDatagramSocketImpl *)impl setOptionWithInt:4098 withId:JavaLangInteger_valueOfWithInt_(a3)];
+  [(JavaNetDatagramSocketImpl *)impl setOptionWithInt:4098 withId:JavaLangInteger_valueOfWithInt_(int)];
 
   objc_sync_exit(self);
 }
 
-- (void)setSoTimeoutWithInt:(int)a3
+- (void)setSoTimeoutWithInt:(int)int
 {
   objc_sync_enter(self);
-  if (a3 < 0)
+  if (int < 0)
   {
     v6 = new_JavaLangIllegalArgumentException_initWithNSString_(@"timeout < 0");
     objc_exception_throw(v6);
@@ -359,7 +359,7 @@ LABEL_15:
     JreThrowNullPointerException();
   }
 
-  [(JavaNetDatagramSocketImpl *)impl setOptionWithInt:4102 withId:JavaLangInteger_valueOfWithInt_(a3)];
+  [(JavaNetDatagramSocketImpl *)impl setOptionWithInt:4102 withId:JavaLangInteger_valueOfWithInt_(int)];
 
   objc_sync_exit(self);
 }
@@ -373,10 +373,10 @@ LABEL_15:
   }
 }
 
-- (void)bindWithJavaNetSocketAddress:(id)a3
+- (void)bindWithJavaNetSocketAddress:(id)address
 {
   [(JavaNetDatagramSocket *)self checkOpen];
-  if (a3)
+  if (address)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -387,23 +387,23 @@ LABEL_15:
         JreThrowClassCastException();
       }
 
-      v5 = [a3 getAddress];
-      if (v5)
+      getAddress = [address getAddress];
+      if (getAddress)
       {
-        v6 = v5;
-        v7 = [a3 getPort];
-        sub_100150728(v7, v8, v9, v10, v11, v12, v13, v14);
+        v6 = getAddress;
+        getPort = [address getPort];
+        sub_100150728(getPort, v8, v9, v10, v11, v12, v13, v14);
         goto LABEL_9;
       }
 
-      [a3 getHostName];
+      [address getHostName];
       v32 = JreStrcat("$$", v25, v26, v27, v28, v29, v30, v31, @"Host is unresolved: ");
       v24 = new_JavaNetSocketException_initWithNSString_(v32);
     }
 
     else
     {
-      [a3 getClass];
+      [address getClass];
       v23 = JreStrcat("$@", v16, v17, v18, v19, v20, v21, v22, @"Local address not an InetSocketAddress: ");
       v24 = new_JavaLangIllegalArgumentException_initWithNSString_(v23);
     }
@@ -416,7 +416,7 @@ LABEL_15:
     sub_1001520E0();
   }
 
-  v7 = 0;
+  getPort = 0;
   v6 = JavaNetInet4Address_ANY_;
 LABEL_9:
   impl = self->impl_;
@@ -425,13 +425,13 @@ LABEL_9:
     JreThrowNullPointerException();
   }
 
-  [(JavaNetDatagramSocketImpl *)impl bindWithInt:v7 withJavaNetInetAddress:v6];
+  [(JavaNetDatagramSocketImpl *)impl bindWithInt:getPort withJavaNetInetAddress:v6];
   self->isBound_ = 1;
 }
 
-- (void)connectWithJavaNetSocketAddress:(id)a3
+- (void)connectWithJavaNetSocketAddress:(id)address
 {
-  if (!a3)
+  if (!address)
   {
     v8 = @"peer == null";
 LABEL_13:
@@ -442,7 +442,7 @@ LABEL_13:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    [a3 getClass];
+    [address getClass];
     v8 = JreStrcat("$@", v9, v10, v11, v12, v13, v14, v15, @"peer not an InetSocketAddress: ");
     goto LABEL_13;
   }
@@ -453,9 +453,9 @@ LABEL_13:
     JreThrowClassCastException();
   }
 
-  if (![a3 getAddress])
+  if (![address getAddress])
   {
-    [a3 getHostName];
+    [address getHostName];
     v24 = JreStrcat("$$", v17, v18, v19, v20, v21, v22, v23, @"Host is unresolved: ");
     v16 = new_JavaNetSocketException_initWithNSString_(v24);
 LABEL_15:
@@ -466,9 +466,9 @@ LABEL_15:
   objc_sync_enter(lock);
   [(JavaNetDatagramSocket *)self checkOpen];
   [JavaNetDatagramSocket ensureBound]_0(self);
-  JreStrongAssign(&self->address_, [a3 getAddress]);
-  v6 = [a3 getPort];
-  self->port_ = v6;
+  JreStrongAssign(&self->address_, [address getAddress]);
+  getPort = [address getPort];
+  self->port_ = getPort;
   self->isConnected_ = 1;
   impl = self->impl_;
   if (!impl)
@@ -476,20 +476,20 @@ LABEL_15:
     JreThrowNullPointerException();
   }
 
-  [(JavaNetDatagramSocketImpl *)impl connectWithJavaNetInetAddress:self->address_ withInt:v6];
+  [(JavaNetDatagramSocketImpl *)impl connectWithJavaNetInetAddress:self->address_ withInt:getPort];
 
   objc_sync_exit(lock);
 }
 
-- (void)connectWithJavaNetInetAddress:(id)a3 withInt:(int)a4
+- (void)connectWithJavaNetInetAddress:(id)address withInt:(int)int
 {
-  if (!a3)
+  if (!address)
   {
     v4 = new_JavaLangIllegalArgumentException_initWithNSString_(@"address == null");
     objc_exception_throw(v4);
   }
 
-  [(JavaNetDatagramSocket *)self connectWithJavaNetSocketAddress:new_JavaNetInetSocketAddress_initWithJavaNetInetAddress_withInt_(a3, a4)];
+  [(JavaNetDatagramSocket *)self connectWithJavaNetSocketAddress:new_JavaNetInetSocketAddress_initWithJavaNetInetAddress_withInt_(address, int)];
 }
 
 - (id)getRemoteSocketAddress
@@ -516,9 +516,9 @@ LABEL_15:
   return v3;
 }
 
-- (void)setReuseAddressWithBoolean:(BOOL)a3
+- (void)setReuseAddressWithBoolean:(BOOL)boolean
 {
-  v3 = a3;
+  booleanCopy = boolean;
   [(JavaNetDatagramSocket *)self checkOpen];
   impl = self->impl_;
   if (!impl)
@@ -526,7 +526,7 @@ LABEL_15:
     JreThrowNullPointerException();
   }
 
-  v6 = JavaLangBoolean_valueOfWithBoolean_(v3);
+  v6 = JavaLangBoolean_valueOfWithBoolean_(booleanCopy);
 
   [(JavaNetDatagramSocketImpl *)impl setOptionWithInt:4 withId:v6];
 }
@@ -548,9 +548,9 @@ LABEL_15:
   return [v4 BOOLeanValue];
 }
 
-- (void)setBroadcastWithBoolean:(BOOL)a3
+- (void)setBroadcastWithBoolean:(BOOL)boolean
 {
-  v3 = a3;
+  booleanCopy = boolean;
   [(JavaNetDatagramSocket *)self checkOpen];
   impl = self->impl_;
   if (!impl)
@@ -558,7 +558,7 @@ LABEL_15:
     JreThrowNullPointerException();
   }
 
-  v6 = JavaLangBoolean_valueOfWithBoolean_(v3);
+  v6 = JavaLangBoolean_valueOfWithBoolean_(booleanCopy);
 
   [(JavaNetDatagramSocketImpl *)impl setOptionWithInt:32 withId:v6];
 }
@@ -580,10 +580,10 @@ LABEL_15:
   return [v4 BOOLeanValue];
 }
 
-- (void)setTrafficClassWithInt:(int)a3
+- (void)setTrafficClassWithInt:(int)int
 {
   [(JavaNetDatagramSocket *)self checkOpen];
-  if (a3 >= 0x100)
+  if (int >= 0x100)
   {
     v14 = JreStrcat("$I", v5, v6, v7, v8, v9, v10, v11, @"Value doesn't fit in an unsigned byte: ");
     v15 = new_JavaLangIllegalArgumentException_initWithNSString_(v14);
@@ -596,7 +596,7 @@ LABEL_15:
     JreThrowNullPointerException();
   }
 
-  v13 = JavaLangInteger_valueOfWithInt_(a3);
+  v13 = JavaLangInteger_valueOfWithInt_(int);
 
   [(JavaNetDatagramSocketImpl *)impl setOptionWithInt:3 withId:v13];
 }

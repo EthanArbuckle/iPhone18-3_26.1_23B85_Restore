@@ -1,11 +1,11 @@
 @interface BCSVisualCodeDetector
 - (BCSVisualCodeDetector)init;
-- (BOOL)_processCameraFrame:(__CVBuffer *)a3 timestamp:(double)a4 cameraMatrix:(double)a5[9];
-- (BOOL)_submitToAppC3D:(__CVBuffer *)a3 timestamp:(double)a4 metadata:(id)a5;
-- (CGAffineTransform)_tranformWithImageOrientation:(SEL)a3;
+- (BOOL)_processCameraFrame:(__CVBuffer *)frame timestamp:(double)timestamp cameraMatrix:(double)matrix[9];
+- (BOOL)_submitToAppC3D:(__CVBuffer *)d timestamp:(double)timestamp metadata:(id)metadata;
+- (CGAffineTransform)_tranformWithImageOrientation:(SEL)orientation;
 - (CGRect)_regionOfInterest;
-- (id)_estimateQRCodeAvailabilityInFrame:(__CVBuffer *)a3;
-- (void)detectCodeFromBuffer:(opaqueCMSampleBuffer *)a3 completion:(id)a4;
+- (id)_estimateQRCodeAvailabilityInFrame:(__CVBuffer *)frame;
+- (void)detectCodeFromBuffer:(opaqueCMSampleBuffer *)buffer completion:(id)completion;
 - (void)endSession;
 - (void)startSession;
 @end
@@ -28,10 +28,10 @@
   return v3;
 }
 
-- (void)detectCodeFromBuffer:(opaqueCMSampleBuffer *)a3 completion:(id)a4
+- (void)detectCodeFromBuffer:(opaqueCMSampleBuffer *)buffer completion:(id)completion
 {
-  v6 = a4;
-  ImageBuffer = CMSampleBufferGetImageBuffer(a3);
+  completionCopy = completion;
+  ImageBuffer = CMSampleBufferGetImageBuffer(buffer);
   if (ImageBuffer)
   {
     v8 = ImageBuffer;
@@ -51,10 +51,10 @@
     v40 = 0;
     v11 = dispatch_group_create();
     memset(&v34, 0, sizeof(v34));
-    CMSampleBufferGetPresentationTimeStamp(&v34, a3);
+    CMSampleBufferGetPresentationTimeStamp(&v34, buffer);
     time = v34;
     Seconds = CMTimeGetSeconds(&time);
-    v13 = CMGetAttachment(a3, *MEMORY[0x277CC06B0], 0);
+    v13 = CMGetAttachment(buffer, *MEMORY[0x277CC06B0], 0);
     v14 = BCS_LOG_CHANNEL_PREFIXBarcodeScanner();
     v15 = v14;
     if (v13 + 1 >= 2 && os_signpost_enabled(v14))
@@ -130,14 +130,14 @@
       v21 = 0;
     }
 
-    v6[2](v6, v21);
+    completionCopy[2](completionCopy, v21);
 
     _Block_object_dispose(buf, 8);
   }
 
   else
   {
-    v6[2](v6, 0);
+    completionCopy[2](completionCopy, 0);
   }
 }
 
@@ -157,11 +157,11 @@ void __57__BCSVisualCodeDetector_detectCodeFromBuffer_completion___block_invoke(
   dispatch_group_leave(*(a1 + 40));
 }
 
-- (id)_estimateQRCodeAvailabilityInFrame:(__CVBuffer *)a3
+- (id)_estimateQRCodeAvailabilityInFrame:(__CVBuffer *)frame
 {
   v30[1] = *MEMORY[0x277D85DE8];
   v5 = objc_alloc(MEMORY[0x277CE2D50]);
-  v6 = [v5 initWithCVPixelBuffer:a3 orientation:self->_imageOrientation options:MEMORY[0x277CBEC10]];
+  v6 = [v5 initWithCVPixelBuffer:frame orientation:self->_imageOrientation options:MEMORY[0x277CBEC10]];
   v7 = objc_alloc_init(MEMORY[0x277CE2C58]);
   [(BCSVisualCodeDetector *)self _regionOfInterest];
   [v7 setRegionOfInterest:?];
@@ -177,13 +177,13 @@ void __57__BCSVisualCodeDetector_detectCodeFromBuffer_completion___block_invoke(
   [v6 performRequests:v9 error:&v27];
   v10 = v27;
 
-  v11 = [v7 results];
-  v12 = [MEMORY[0x277CBEB18] array];
+  results = [v7 results];
+  array = [MEMORY[0x277CBEB18] array];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v13 = v11;
+  v13 = results;
   v14 = [v13 countByEnumeratingWithState:&v23 objects:v28 count:16];
   if (v14)
   {
@@ -201,7 +201,7 @@ void __57__BCSVisualCodeDetector_detectCodeFromBuffer_completion___block_invoke(
         v18 = *(*(&v23 + 1) + 8 * i);
         v19 = [BCSVisualCodeQR alloc];
         v20 = [(BCSVisualCodeQR *)v19 initWithBarcodeObservation:v18, v23];
-        [v12 addObject:v20];
+        [array addObject:v20];
       }
 
       v15 = [v13 countByEnumeratingWithState:&v23 objects:v28 count:16];
@@ -212,7 +212,7 @@ void __57__BCSVisualCodeDetector_detectCodeFromBuffer_completion___block_invoke(
 
   v21 = *MEMORY[0x277D85DE8];
 
-  return v12;
+  return array;
 }
 
 - (CGRect)_regionOfInterest
@@ -228,7 +228,7 @@ void __57__BCSVisualCodeDetector_detectCodeFromBuffer_completion___block_invoke(
   return result;
 }
 
-- (CGAffineTransform)_tranformWithImageOrientation:(SEL)a3
+- (CGAffineTransform)_tranformWithImageOrientation:(SEL)orientation
 {
   switch(a4)
   {
@@ -263,7 +263,7 @@ LABEL_7:
   return self;
 }
 
-- (BOOL)_processCameraFrame:(__CVBuffer *)a3 timestamp:(double)a4 cameraMatrix:(double)a5[9]
+- (BOOL)_processCameraFrame:(__CVBuffer *)frame timestamp:(double)timestamp cameraMatrix:(double)matrix[9]
 {
   v12[1] = *MEMORY[0x277D85DE8];
   v11 = @"orientation";
@@ -278,15 +278,15 @@ LABEL_7:
   return 1;
 }
 
-- (BOOL)_submitToAppC3D:(__CVBuffer *)a3 timestamp:(double)a4 metadata:(id)a5
+- (BOOL)_submitToAppC3D:(__CVBuffer *)d timestamp:(double)timestamp metadata:(id)metadata
 {
   v21 = *MEMORY[0x277D85DE8];
-  if (a5)
+  if (metadata)
   {
     v14 = 0u;
     v15 = 0u;
     v13 = 0u;
-    [a5 getBytes:&v13 length:48];
+    [metadata getBytes:&v13 length:48];
     *buf = vcvtq_f64_f32(vzip1_s32(*v13.i8, *v14.i8));
     v17 = vcvtq_f64_f32(__PAIR64__(v13.u32[1], v15));
     v18 = vcvtq_f64_f32(vzip2_s32(*v14.i8, *&v15));
@@ -303,8 +303,8 @@ LABEL_7:
       _os_log_impl(&dword_2419E7000, v8, OS_LOG_TYPE_INFO, "Intrinsics metadata is nil, generate the matrix based on image dimension.", buf, 2u);
     }
 
-    Width = CVPixelBufferGetWidth(a3);
-    Height = CVPixelBufferGetHeight(a3);
+    Width = CVPixelBufferGetWidth(d);
+    Height = CVPixelBufferGetHeight(d);
     *buf = Width;
     *&buf[8] = 0;
     v17.f64[0] = (Width + -1.0) * 0.5;
@@ -315,7 +315,7 @@ LABEL_7:
     v20 = 1.0;
   }
 
-  result = [(BCSVisualCodeDetector *)self _processCameraFrame:a3 timestamp:buf cameraMatrix:a4];
+  result = [(BCSVisualCodeDetector *)self _processCameraFrame:d timestamp:buf cameraMatrix:timestamp];
   v12 = *MEMORY[0x277D85DE8];
   return result;
 }

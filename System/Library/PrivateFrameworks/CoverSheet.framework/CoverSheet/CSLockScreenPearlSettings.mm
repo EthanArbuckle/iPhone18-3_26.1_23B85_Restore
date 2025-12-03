@@ -38,17 +38,17 @@
 - (void)setDefaultValues
 {
   [(CSLockScreenPearlSettings *)self setPearlDebugUIEnabled:0];
-  v3 = [(CSLockScreenPearlSettings *)self failureSettings];
-  [v3 setJiggleLock:1];
+  failureSettings = [(CSLockScreenPearlSettings *)self failureSettings];
+  [failureSettings setJiggleLock:1];
 
-  v4 = [(CSLockScreenPearlSettings *)self failureSettings];
-  [v4 setVibrate:1];
+  failureSettings2 = [(CSLockScreenPearlSettings *)self failureSettings];
+  [failureSettings2 setVibrate:1];
 
-  v5 = [(CSLockScreenPearlSettings *)self failureSettings];
-  [v5 setShowPasscode:0];
+  failureSettings3 = [(CSLockScreenPearlSettings *)self failureSettings];
+  [failureSettings3 setShowPasscode:0];
 
-  v6 = [(CSLockScreenPearlSettings *)self failureSettings];
-  [v6 setWaitUntilButtonUp:0];
+  failureSettings4 = [(CSLockScreenPearlSettings *)self failureSettings];
+  [failureSettings4 setWaitUntilButtonUp:0];
 
   SBUIProudLockContainerViewControllerConfigurationDefault();
   [(CSLockScreenPearlSettings *)self setShowScanningStateOnLockScreen:0];

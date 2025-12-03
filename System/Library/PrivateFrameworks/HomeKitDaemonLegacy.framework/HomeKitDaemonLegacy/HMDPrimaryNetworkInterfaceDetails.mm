@@ -1,6 +1,6 @@
 @interface HMDPrimaryNetworkInterfaceDetails
-- (HMDPrimaryNetworkInterfaceDetails)initWithDictionaryRepresentation:(id)a3;
-- (HMDPrimaryNetworkInterfaceDetails)initWithPrimaryInterfaceType:(id)a3 primaryInterfaceName:(id)a4 wifiSSID:(id)a5 primaryIPv4Addresses:(id)a6 primaryIPv6Addresses:(id)a7 primaryIPv4NetworkSignature:(id)a8 primaryIPv6NetworkSignature:(id)a9;
+- (HMDPrimaryNetworkInterfaceDetails)initWithDictionaryRepresentation:(id)representation;
+- (HMDPrimaryNetworkInterfaceDetails)initWithPrimaryInterfaceType:(id)type primaryInterfaceName:(id)name wifiSSID:(id)d primaryIPv4Addresses:(id)addresses primaryIPv6Addresses:(id)pv6Addresses primaryIPv4NetworkSignature:(id)signature primaryIPv6NetworkSignature:(id)networkSignature;
 - (id)dictionaryRepresentation;
 - (id)generateStatusKitPayload;
 - (void)_computeHashValues;
@@ -10,58 +10,58 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = [(HMDPrimaryNetworkInterfaceDetails *)self primaryInterfaceType];
-  [v3 setObject:v4 forKeyedSubscript:@"NwIt"];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  primaryInterfaceType = [(HMDPrimaryNetworkInterfaceDetails *)self primaryInterfaceType];
+  [dictionary setObject:primaryInterfaceType forKeyedSubscript:@"NwIt"];
 
-  v5 = [(HMDPrimaryNetworkInterfaceDetails *)self primaryInterfaceName];
-  [v3 setObject:v5 forKeyedSubscript:@"NwIn"];
+  primaryInterfaceName = [(HMDPrimaryNetworkInterfaceDetails *)self primaryInterfaceName];
+  [dictionary setObject:primaryInterfaceName forKeyedSubscript:@"NwIn"];
 
-  v6 = [(HMDPrimaryNetworkInterfaceDetails *)self wifiSSID];
-  [v3 setObject:v6 forKeyedSubscript:@"NwWf"];
+  wifiSSID = [(HMDPrimaryNetworkInterfaceDetails *)self wifiSSID];
+  [dictionary setObject:wifiSSID forKeyedSubscript:@"NwWf"];
 
-  v7 = [(HMDPrimaryNetworkInterfaceDetails *)self primaryIPv4Addresses];
-  [v3 setObject:v7 forKeyedSubscript:@"NwI4"];
+  primaryIPv4Addresses = [(HMDPrimaryNetworkInterfaceDetails *)self primaryIPv4Addresses];
+  [dictionary setObject:primaryIPv4Addresses forKeyedSubscript:@"NwI4"];
 
-  v8 = [(HMDPrimaryNetworkInterfaceDetails *)self primaryIPv6Addresses];
-  [v3 setObject:v8 forKeyedSubscript:@"NwI6"];
+  primaryIPv6Addresses = [(HMDPrimaryNetworkInterfaceDetails *)self primaryIPv6Addresses];
+  [dictionary setObject:primaryIPv6Addresses forKeyedSubscript:@"NwI6"];
 
-  v9 = [(HMDPrimaryNetworkInterfaceDetails *)self primaryIPv4NetworkSignature];
-  [v3 setObject:v9 forKeyedSubscript:@"Nw4s"];
+  primaryIPv4NetworkSignature = [(HMDPrimaryNetworkInterfaceDetails *)self primaryIPv4NetworkSignature];
+  [dictionary setObject:primaryIPv4NetworkSignature forKeyedSubscript:@"Nw4s"];
 
-  v10 = [(HMDPrimaryNetworkInterfaceDetails *)self primaryIPv6NetworkSignature];
-  [v3 setObject:v10 forKeyedSubscript:@"Nw6s"];
+  primaryIPv6NetworkSignature = [(HMDPrimaryNetworkInterfaceDetails *)self primaryIPv6NetworkSignature];
+  [dictionary setObject:primaryIPv6NetworkSignature forKeyedSubscript:@"Nw6s"];
 
-  v11 = [v3 copy];
+  v11 = [dictionary copy];
 
   return v11;
 }
 
 - (id)generateStatusKitPayload
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = [(HMDPrimaryNetworkInterfaceDetails *)self primaryInterfaceType];
-  [v3 setObject:v4 forKeyedSubscript:@"NwIt"];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  primaryInterfaceType = [(HMDPrimaryNetworkInterfaceDetails *)self primaryInterfaceType];
+  [dictionary setObject:primaryInterfaceType forKeyedSubscript:@"NwIt"];
 
-  v5 = [(HMDPrimaryNetworkInterfaceDetails *)self primaryInterfaceName];
-  [v3 setObject:v5 forKeyedSubscript:@"NwIn"];
+  primaryInterfaceName = [(HMDPrimaryNetworkInterfaceDetails *)self primaryInterfaceName];
+  [dictionary setObject:primaryInterfaceName forKeyedSubscript:@"NwIn"];
 
-  v6 = [(HMDPrimaryNetworkInterfaceDetails *)self hashWifiSSID];
-  [v3 setObject:v6 forKeyedSubscript:@"NwWf"];
+  hashWifiSSID = [(HMDPrimaryNetworkInterfaceDetails *)self hashWifiSSID];
+  [dictionary setObject:hashWifiSSID forKeyedSubscript:@"NwWf"];
 
-  v7 = [(HMDPrimaryNetworkInterfaceDetails *)self hashPrimaryIPv4Addresses];
-  [v3 setObject:v7 forKeyedSubscript:@"NwI4"];
+  hashPrimaryIPv4Addresses = [(HMDPrimaryNetworkInterfaceDetails *)self hashPrimaryIPv4Addresses];
+  [dictionary setObject:hashPrimaryIPv4Addresses forKeyedSubscript:@"NwI4"];
 
-  v8 = [(HMDPrimaryNetworkInterfaceDetails *)self hashPrimaryIPv6Addresses];
-  [v3 setObject:v8 forKeyedSubscript:@"NwI6"];
+  hashPrimaryIPv6Addresses = [(HMDPrimaryNetworkInterfaceDetails *)self hashPrimaryIPv6Addresses];
+  [dictionary setObject:hashPrimaryIPv6Addresses forKeyedSubscript:@"NwI6"];
 
-  v9 = [(HMDPrimaryNetworkInterfaceDetails *)self hashPrimaryIPv4NetworkSignature];
-  [v3 setObject:v9 forKeyedSubscript:@"Nw4s"];
+  hashPrimaryIPv4NetworkSignature = [(HMDPrimaryNetworkInterfaceDetails *)self hashPrimaryIPv4NetworkSignature];
+  [dictionary setObject:hashPrimaryIPv4NetworkSignature forKeyedSubscript:@"Nw4s"];
 
-  v10 = [(HMDPrimaryNetworkInterfaceDetails *)self hashPrimaryIPv6NetworkSignature];
-  [v3 setObject:v10 forKeyedSubscript:@"Nw6s"];
+  hashPrimaryIPv6NetworkSignature = [(HMDPrimaryNetworkInterfaceDetails *)self hashPrimaryIPv6NetworkSignature];
+  [dictionary setObject:hashPrimaryIPv6NetworkSignature forKeyedSubscript:@"Nw6s"];
 
-  v11 = [v3 copy];
+  v11 = [dictionary copy];
 
   return v11;
 }
@@ -69,20 +69,20 @@
 - (void)_computeHashValues
 {
   v62 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDPrimaryNetworkInterfaceDetails *)self wifiSSID];
+  wifiSSID = [(HMDPrimaryNetworkInterfaceDetails *)self wifiSSID];
 
-  if (v3)
+  if (wifiSSID)
   {
     v4 = objc_alloc(MEMORY[0x277CCABB0]);
-    v5 = [(HMDPrimaryNetworkInterfaceDetails *)self wifiSSID];
-    v6 = [v5 dataUsingEncoding:4];
+    wifiSSID2 = [(HMDPrimaryNetworkInterfaceDetails *)self wifiSSID];
+    v6 = [wifiSSID2 dataUsingEncoding:4];
     v7 = [v4 initWithLong:HMDTruncatedHash(v6)];
     hashWifiSSID = self->_hashWifiSSID;
     self->_hashWifiSSID = v7;
   }
 
-  v9 = [(HMDPrimaryNetworkInterfaceDetails *)self primaryIPv4Addresses];
-  v10 = [v9 count];
+  primaryIPv4Addresses = [(HMDPrimaryNetworkInterfaceDetails *)self primaryIPv4Addresses];
+  v10 = [primaryIPv4Addresses count];
 
   if (v10)
   {
@@ -98,8 +98,8 @@
   v59 = 0u;
   v56 = 0u;
   v57 = 0u;
-  v12 = [(HMDPrimaryNetworkInterfaceDetails *)self primaryIPv4Addresses];
-  v13 = [v12 countByEnumeratingWithState:&v56 objects:v61 count:16];
+  primaryIPv4Addresses2 = [(HMDPrimaryNetworkInterfaceDetails *)self primaryIPv4Addresses];
+  v13 = [primaryIPv4Addresses2 countByEnumeratingWithState:&v56 objects:v61 count:16];
   if (v13)
   {
     v14 = v13;
@@ -111,7 +111,7 @@
       {
         if (*v57 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(primaryIPv4Addresses2);
         }
 
         v17 = [*(*(&v56 + 1) + 8 * v16) dataUsingEncoding:4];
@@ -124,7 +124,7 @@
       }
 
       while (v14 != v16);
-      v14 = [v12 countByEnumeratingWithState:&v56 objects:v61 count:16];
+      v14 = [primaryIPv4Addresses2 countByEnumeratingWithState:&v56 objects:v61 count:16];
     }
 
     while (v14);
@@ -134,8 +134,8 @@
   hashPrimaryIPv4Addresses = self->_hashPrimaryIPv4Addresses;
   self->_hashPrimaryIPv4Addresses = v20;
 
-  v22 = [(HMDPrimaryNetworkInterfaceDetails *)self primaryIPv6Addresses];
-  v23 = [v22 count];
+  primaryIPv6Addresses = [(HMDPrimaryNetworkInterfaceDetails *)self primaryIPv6Addresses];
+  v23 = [primaryIPv6Addresses count];
 
   if (v23)
   {
@@ -151,8 +151,8 @@
   v55 = 0u;
   v52 = 0u;
   v53 = 0u;
-  v25 = [(HMDPrimaryNetworkInterfaceDetails *)self primaryIPv6Addresses];
-  v26 = [v25 countByEnumeratingWithState:&v52 objects:v60 count:16];
+  primaryIPv6Addresses2 = [(HMDPrimaryNetworkInterfaceDetails *)self primaryIPv6Addresses];
+  v26 = [primaryIPv6Addresses2 countByEnumeratingWithState:&v52 objects:v60 count:16];
   if (v26)
   {
     v27 = v26;
@@ -164,7 +164,7 @@
       {
         if (*v53 != v28)
         {
-          objc_enumerationMutation(v25);
+          objc_enumerationMutation(primaryIPv6Addresses2);
         }
 
         v30 = [*(*(&v52 + 1) + 8 * v29) dataUsingEncoding:4];
@@ -177,7 +177,7 @@
       }
 
       while (v27 != v29);
-      v27 = [v25 countByEnumeratingWithState:&v52 objects:v60 count:16];
+      v27 = [primaryIPv6Addresses2 countByEnumeratingWithState:&v52 objects:v60 count:16];
     }
 
     while (v27);
@@ -187,35 +187,35 @@
   hashPrimaryIPv6Addresses = self->_hashPrimaryIPv6Addresses;
   self->_hashPrimaryIPv6Addresses = v33;
 
-  v35 = [(HMDPrimaryNetworkInterfaceDetails *)self primaryIPv4NetworkSignature];
-  if (v35)
+  primaryIPv4NetworkSignature = [(HMDPrimaryNetworkInterfaceDetails *)self primaryIPv4NetworkSignature];
+  if (primaryIPv4NetworkSignature)
   {
-    v36 = v35;
-    v37 = [(HMDPrimaryNetworkInterfaceDetails *)self primaryIPv4NetworkSignature];
-    v38 = [v37 length];
+    v36 = primaryIPv4NetworkSignature;
+    primaryIPv4NetworkSignature2 = [(HMDPrimaryNetworkInterfaceDetails *)self primaryIPv4NetworkSignature];
+    v38 = [primaryIPv4NetworkSignature2 length];
 
     if (v38)
     {
       v39 = objc_alloc(MEMORY[0x277CCABB0]);
-      v40 = [(HMDPrimaryNetworkInterfaceDetails *)self primaryIPv4NetworkSignature];
-      v41 = [v39 initWithLong:HMDTruncatedHash(v40)];
+      primaryIPv4NetworkSignature3 = [(HMDPrimaryNetworkInterfaceDetails *)self primaryIPv4NetworkSignature];
+      v41 = [v39 initWithLong:HMDTruncatedHash(primaryIPv4NetworkSignature3)];
       hashPrimaryIPv4NetworkSignature = self->_hashPrimaryIPv4NetworkSignature;
       self->_hashPrimaryIPv4NetworkSignature = v41;
     }
   }
 
-  v43 = [(HMDPrimaryNetworkInterfaceDetails *)self primaryIPv6NetworkSignature];
-  if (v43)
+  primaryIPv6NetworkSignature = [(HMDPrimaryNetworkInterfaceDetails *)self primaryIPv6NetworkSignature];
+  if (primaryIPv6NetworkSignature)
   {
-    v44 = v43;
-    v45 = [(HMDPrimaryNetworkInterfaceDetails *)self primaryIPv6NetworkSignature];
-    v46 = [v45 length];
+    v44 = primaryIPv6NetworkSignature;
+    primaryIPv6NetworkSignature2 = [(HMDPrimaryNetworkInterfaceDetails *)self primaryIPv6NetworkSignature];
+    v46 = [primaryIPv6NetworkSignature2 length];
 
     if (v46)
     {
       v47 = objc_alloc(MEMORY[0x277CCABB0]);
-      v48 = [(HMDPrimaryNetworkInterfaceDetails *)self primaryIPv6NetworkSignature];
-      v49 = [v47 initWithLong:HMDTruncatedHash(v48)];
+      primaryIPv6NetworkSignature3 = [(HMDPrimaryNetworkInterfaceDetails *)self primaryIPv6NetworkSignature];
+      v49 = [v47 initWithLong:HMDTruncatedHash(primaryIPv6NetworkSignature3)];
       hashPrimaryIPv6NetworkSignature = self->_hashPrimaryIPv6NetworkSignature;
       self->_hashPrimaryIPv6NetworkSignature = v49;
     }
@@ -224,42 +224,42 @@
   v51 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDPrimaryNetworkInterfaceDetails)initWithDictionaryRepresentation:(id)a3
+- (HMDPrimaryNetworkInterfaceDetails)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"NwIt"];
-  v6 = [v4 objectForKeyedSubscript:@"NwIn"];
-  v7 = [v4 objectForKeyedSubscript:@"NwWf"];
-  v8 = [v4 objectForKeyedSubscript:@"NwI4"];
-  v9 = [v4 objectForKeyedSubscript:@"NwI6"];
-  v10 = [v4 objectForKeyedSubscript:@"Nw4s"];
-  v11 = [v4 objectForKeyedSubscript:@"Nw6s"];
+  representationCopy = representation;
+  v5 = [representationCopy objectForKeyedSubscript:@"NwIt"];
+  v6 = [representationCopy objectForKeyedSubscript:@"NwIn"];
+  v7 = [representationCopy objectForKeyedSubscript:@"NwWf"];
+  v8 = [representationCopy objectForKeyedSubscript:@"NwI4"];
+  v9 = [representationCopy objectForKeyedSubscript:@"NwI6"];
+  v10 = [representationCopy objectForKeyedSubscript:@"Nw4s"];
+  v11 = [representationCopy objectForKeyedSubscript:@"Nw6s"];
 
   v12 = [(HMDPrimaryNetworkInterfaceDetails *)self initWithPrimaryInterfaceType:v5 primaryInterfaceName:v6 wifiSSID:v7 primaryIPv4Addresses:v8 primaryIPv6Addresses:v9 primaryIPv4NetworkSignature:v10 primaryIPv6NetworkSignature:v11];
   return v12;
 }
 
-- (HMDPrimaryNetworkInterfaceDetails)initWithPrimaryInterfaceType:(id)a3 primaryInterfaceName:(id)a4 wifiSSID:(id)a5 primaryIPv4Addresses:(id)a6 primaryIPv6Addresses:(id)a7 primaryIPv4NetworkSignature:(id)a8 primaryIPv6NetworkSignature:(id)a9
+- (HMDPrimaryNetworkInterfaceDetails)initWithPrimaryInterfaceType:(id)type primaryInterfaceName:(id)name wifiSSID:(id)d primaryIPv4Addresses:(id)addresses primaryIPv6Addresses:(id)pv6Addresses primaryIPv4NetworkSignature:(id)signature primaryIPv6NetworkSignature:(id)networkSignature
 {
-  v27 = a3;
-  v26 = a4;
-  v25 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  v19 = a9;
+  typeCopy = type;
+  nameCopy = name;
+  dCopy = d;
+  addressesCopy = addresses;
+  pv6AddressesCopy = pv6Addresses;
+  signatureCopy = signature;
+  networkSignatureCopy = networkSignature;
   v28.receiver = self;
   v28.super_class = HMDPrimaryNetworkInterfaceDetails;
   v20 = [(HMDPrimaryNetworkInterfaceDetails *)&v28 init];
   v21 = v20;
   if (v20)
   {
-    objc_storeStrong(&v20->_primaryInterfaceType, a3);
-    objc_storeStrong(&v21->_primaryInterfaceName, a4);
-    objc_storeStrong(&v21->_wifiSSID, a5);
-    if (v16)
+    objc_storeStrong(&v20->_primaryInterfaceType, type);
+    objc_storeStrong(&v21->_primaryInterfaceName, name);
+    objc_storeStrong(&v21->_wifiSSID, d);
+    if (addressesCopy)
     {
-      v22 = [objc_alloc(MEMORY[0x277CBEA60]) initWithArray:v16 copyItems:1];
+      v22 = [objc_alloc(MEMORY[0x277CBEA60]) initWithArray:addressesCopy copyItems:1];
     }
 
     else
@@ -268,13 +268,13 @@
     }
 
     objc_storeStrong(&v21->_primaryIPv4Addresses, v22);
-    if (v16)
+    if (addressesCopy)
     {
     }
 
-    if (v17)
+    if (pv6AddressesCopy)
     {
-      v23 = [objc_alloc(MEMORY[0x277CBEA60]) initWithArray:v17 copyItems:1];
+      v23 = [objc_alloc(MEMORY[0x277CBEA60]) initWithArray:pv6AddressesCopy copyItems:1];
     }
 
     else
@@ -283,12 +283,12 @@
     }
 
     objc_storeStrong(&v21->_primaryIPv6Addresses, v23);
-    if (v17)
+    if (pv6AddressesCopy)
     {
     }
 
-    objc_storeStrong(&v21->_primaryIPv4NetworkSignature, a8);
-    objc_storeStrong(&v21->_primaryIPv6NetworkSignature, a9);
+    objc_storeStrong(&v21->_primaryIPv4NetworkSignature, signature);
+    objc_storeStrong(&v21->_primaryIPv6NetworkSignature, networkSignature);
     [(HMDPrimaryNetworkInterfaceDetails *)v21 _computeHashValues];
   }
 

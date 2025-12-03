@@ -1,5 +1,5 @@
 @interface AURingModVisualizationView
-- (_TtC12CoreAudioKit26AURingModVisualizationView)initWithFrame:(CGRect)a3;
+- (_TtC12CoreAudioKit26AURingModVisualizationView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
@@ -7,16 +7,16 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_237145B30();
 }
 
-- (_TtC12CoreAudioKit26AURingModVisualizationView)initWithFrame:(CGRect)a3
+- (_TtC12CoreAudioKit26AURingModVisualizationView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC12CoreAudioKit26AURingModVisualizationView_freq1) = 1056964608;
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC12CoreAudioKit26AURingModVisualizationView_freq2) = 1056964608;
   v8 = OBJC_IVAR____TtC12CoreAudioKit26AURingModVisualizationView_modShape;

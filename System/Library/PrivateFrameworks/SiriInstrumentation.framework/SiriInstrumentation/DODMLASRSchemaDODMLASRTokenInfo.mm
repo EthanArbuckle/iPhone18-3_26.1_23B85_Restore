@@ -1,32 +1,32 @@
 @interface DODMLASRSchemaDODMLASRTokenInfo
-- (BOOL)isEqual:(id)a3;
-- (DODMLASRSchemaDODMLASRTokenInfo)initWithDictionary:(id)a3;
-- (DODMLASRSchemaDODMLASRTokenInfo)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (DODMLASRSchemaDODMLASRTokenInfo)initWithDictionary:(id)dictionary;
+- (DODMLASRSchemaDODMLASRTokenInfo)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (float)languageModelCostsAtIndex:(unint64_t)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (float)languageModelCostsAtIndex:(unint64_t)index;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (unsigned)numBackoffsAtIndex:(unint64_t)a3;
-- (void)addLanguageModelCosts:(float)a3;
-- (void)addNumBackoffs:(unsigned int)a3;
-- (void)setHasSilenceAcousticCost:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (unsigned)numBackoffsAtIndex:(unint64_t)index;
+- (void)addLanguageModelCosts:(float)costs;
+- (void)addNumBackoffs:(unsigned int)backoffs;
+- (void)setHasSilenceAcousticCost:(BOOL)cost;
+- (void)writeTo:(id)to;
 @end
 
 @implementation DODMLASRSchemaDODMLASRTokenInfo
 
-- (DODMLASRSchemaDODMLASRTokenInfo)initWithDictionary:(id)a3
+- (DODMLASRSchemaDODMLASRTokenInfo)initWithDictionary:(id)dictionary
 {
   v40 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v37.receiver = self;
   v37.super_class = DODMLASRSchemaDODMLASRTokenInfo;
   v5 = [(DODMLASRSchemaDODMLASRTokenInfo *)&v37 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"token"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"token"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -34,7 +34,7 @@
       [(DODMLASRSchemaDODMLASRTokenInfo *)v5 setToken:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"acousticCost"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"acousticCost"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -42,7 +42,7 @@
       [(DODMLASRSchemaDODMLASRTokenInfo *)v5 setAcousticCost:?];
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"silenceAcousticCost"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"silenceAcousticCost"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -50,7 +50,7 @@
       [(DODMLASRSchemaDODMLASRTokenInfo *)v5 setSilenceAcousticCost:?];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"numBackoffs"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"numBackoffs"];
     objc_opt_class();
     v27 = v9;
     v28 = v8;
@@ -97,7 +97,7 @@
       v8 = v28;
     }
 
-    v17 = [v4 objectForKeyedSubscript:@"languageModelCosts"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"languageModelCosts"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -151,30 +151,30 @@
   return v5;
 }
 
-- (DODMLASRSchemaDODMLASRTokenInfo)initWithJSON:(id)a3
+- (DODMLASRSchemaDODMLASRTokenInfo)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(DODMLASRSchemaDODMLASRTokenInfo *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(DODMLASRSchemaDODMLASRTokenInfo *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(DODMLASRSchemaDODMLASRTokenInfo *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -187,27 +187,27 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     v4 = MEMORY[0x1E696AD98];
     [(DODMLASRSchemaDODMLASRTokenInfo *)self acousticCost];
     v5 = [v4 numberWithFloat:?];
-    [v3 setObject:v5 forKeyedSubscript:@"acousticCost"];
+    [dictionary setObject:v5 forKeyedSubscript:@"acousticCost"];
   }
 
   if ([(NSArray *)self->_languageModelCosts count])
   {
-    v6 = [(DODMLASRSchemaDODMLASRTokenInfo *)self languageModelCosts];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"languageModelCosts"];
+    languageModelCosts = [(DODMLASRSchemaDODMLASRTokenInfo *)self languageModelCosts];
+    v7 = [languageModelCosts copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"languageModelCosts"];
   }
 
   if ([(NSArray *)self->_numBackoffs count])
   {
-    v8 = [(DODMLASRSchemaDODMLASRTokenInfo *)self numBackoffs];
-    v9 = [v8 copy];
-    [v3 setObject:v9 forKeyedSubscript:@"numBackoffs"];
+    numBackoffs = [(DODMLASRSchemaDODMLASRTokenInfo *)self numBackoffs];
+    v9 = [numBackoffs copy];
+    [dictionary setObject:v9 forKeyedSubscript:@"numBackoffs"];
   }
 
   if ((*&self->_has & 2) != 0)
@@ -215,28 +215,28 @@
     v10 = MEMORY[0x1E696AD98];
     [(DODMLASRSchemaDODMLASRTokenInfo *)self silenceAcousticCost];
     v11 = [v10 numberWithFloat:?];
-    [v3 setObject:v11 forKeyedSubscript:@"silenceAcousticCost"];
+    [dictionary setObject:v11 forKeyedSubscript:@"silenceAcousticCost"];
   }
 
   if (self->_token)
   {
-    v12 = [(DODMLASRSchemaDODMLASRTokenInfo *)self token];
-    v13 = [v12 dictionaryRepresentation];
-    if (v13)
+    token = [(DODMLASRSchemaDODMLASRTokenInfo *)self token];
+    dictionaryRepresentation = [token dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v13 forKeyedSubscript:@"token"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"token"];
     }
 
     else
     {
-      v14 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v14 forKeyedSubscript:@"token"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"token"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -323,28 +323,28 @@
   return v16 ^ [(NSArray *)self->_languageModelCosts hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_24;
   }
 
-  v5 = [(DODMLASRSchemaDODMLASRTokenInfo *)self token];
-  v6 = [v4 token];
-  if ((v5 != 0) == (v6 == 0))
+  token = [(DODMLASRSchemaDODMLASRTokenInfo *)self token];
+  token2 = [equalCopy token];
+  if ((token != 0) == (token2 == 0))
   {
     goto LABEL_23;
   }
 
-  v7 = [(DODMLASRSchemaDODMLASRTokenInfo *)self token];
-  if (v7)
+  token3 = [(DODMLASRSchemaDODMLASRTokenInfo *)self token];
+  if (token3)
   {
-    v8 = v7;
-    v9 = [(DODMLASRSchemaDODMLASRTokenInfo *)self token];
-    v10 = [v4 token];
-    v11 = [v9 isEqual:v10];
+    v8 = token3;
+    token4 = [(DODMLASRSchemaDODMLASRTokenInfo *)self token];
+    token5 = [equalCopy token];
+    v11 = [token4 isEqual:token5];
 
     if (!v11)
     {
@@ -357,7 +357,7 @@
   }
 
   has = self->_has;
-  v13 = v4[40];
+  v13 = equalCopy[40];
   if ((*&has & 1) != (v13 & 1))
   {
     goto LABEL_24;
@@ -366,14 +366,14 @@
   if (*&has)
   {
     acousticCost = self->_acousticCost;
-    [v4 acousticCost];
+    [equalCopy acousticCost];
     if (acousticCost != v15)
     {
       goto LABEL_24;
     }
 
     has = self->_has;
-    v13 = v4[40];
+    v13 = equalCopy[40];
   }
 
   v16 = (*&has >> 1) & 1;
@@ -385,27 +385,27 @@
   if (v16)
   {
     silenceAcousticCost = self->_silenceAcousticCost;
-    [v4 silenceAcousticCost];
+    [equalCopy silenceAcousticCost];
     if (silenceAcousticCost != v18)
     {
       goto LABEL_24;
     }
   }
 
-  v5 = [(DODMLASRSchemaDODMLASRTokenInfo *)self numBackoffs];
-  v6 = [v4 numBackoffs];
-  if ((v5 != 0) == (v6 == 0))
+  token = [(DODMLASRSchemaDODMLASRTokenInfo *)self numBackoffs];
+  token2 = [equalCopy numBackoffs];
+  if ((token != 0) == (token2 == 0))
   {
     goto LABEL_23;
   }
 
-  v19 = [(DODMLASRSchemaDODMLASRTokenInfo *)self numBackoffs];
-  if (v19)
+  numBackoffs = [(DODMLASRSchemaDODMLASRTokenInfo *)self numBackoffs];
+  if (numBackoffs)
   {
-    v20 = v19;
-    v21 = [(DODMLASRSchemaDODMLASRTokenInfo *)self numBackoffs];
-    v22 = [v4 numBackoffs];
-    v23 = [v21 isEqual:v22];
+    v20 = numBackoffs;
+    numBackoffs2 = [(DODMLASRSchemaDODMLASRTokenInfo *)self numBackoffs];
+    numBackoffs3 = [equalCopy numBackoffs];
+    v23 = [numBackoffs2 isEqual:numBackoffs3];
 
     if (!v23)
     {
@@ -417,17 +417,17 @@
   {
   }
 
-  v5 = [(DODMLASRSchemaDODMLASRTokenInfo *)self languageModelCosts];
-  v6 = [v4 languageModelCosts];
-  if ((v5 != 0) == (v6 == 0))
+  token = [(DODMLASRSchemaDODMLASRTokenInfo *)self languageModelCosts];
+  token2 = [equalCopy languageModelCosts];
+  if ((token != 0) == (token2 == 0))
   {
 LABEL_23:
 
     goto LABEL_24;
   }
 
-  v24 = [(DODMLASRSchemaDODMLASRTokenInfo *)self languageModelCosts];
-  if (!v24)
+  languageModelCosts = [(DODMLASRSchemaDODMLASRTokenInfo *)self languageModelCosts];
+  if (!languageModelCosts)
   {
 
 LABEL_27:
@@ -435,10 +435,10 @@ LABEL_27:
     goto LABEL_25;
   }
 
-  v25 = v24;
-  v26 = [(DODMLASRSchemaDODMLASRTokenInfo *)self languageModelCosts];
-  v27 = [v4 languageModelCosts];
-  v28 = [v26 isEqual:v27];
+  v25 = languageModelCosts;
+  languageModelCosts2 = [(DODMLASRSchemaDODMLASRTokenInfo *)self languageModelCosts];
+  languageModelCosts3 = [equalCopy languageModelCosts];
+  v28 = [languageModelCosts2 isEqual:languageModelCosts3];
 
   if (v28)
   {
@@ -452,15 +452,15 @@ LABEL_25:
   return v29;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(DODMLASRSchemaDODMLASRTokenInfo *)self token];
+  toCopy = to;
+  token = [(DODMLASRSchemaDODMLASRTokenInfo *)self token];
 
-  if (v5)
+  if (token)
   {
-    v6 = [(DODMLASRSchemaDODMLASRTokenInfo *)self token];
+    token2 = [(DODMLASRSchemaDODMLASRTokenInfo *)self token];
     PBDataWriterWriteSubmessage();
   }
 
@@ -535,49 +535,49 @@ LABEL_25:
   }
 }
 
-- (float)languageModelCostsAtIndex:(unint64_t)a3
+- (float)languageModelCostsAtIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->_languageModelCosts objectAtIndexedSubscript:a3];
+  v3 = [(NSArray *)self->_languageModelCosts objectAtIndexedSubscript:index];
   [v3 floatValue];
   v5 = v4;
 
   return v5;
 }
 
-- (void)addLanguageModelCosts:(float)a3
+- (void)addLanguageModelCosts:(float)costs
 {
   languageModelCosts = self->_languageModelCosts;
   if (!languageModelCosts)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_languageModelCosts;
-    self->_languageModelCosts = v6;
+    self->_languageModelCosts = array;
 
     languageModelCosts = self->_languageModelCosts;
   }
 
-  *&v8 = a3;
+  *&v8 = costs;
   v9 = [MEMORY[0x1E696AD98] numberWithFloat:v8];
   [(NSArray *)languageModelCosts addObject:v9];
 }
 
-- (unsigned)numBackoffsAtIndex:(unint64_t)a3
+- (unsigned)numBackoffsAtIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->_numBackoffs objectAtIndexedSubscript:a3];
-  v4 = [v3 unsignedIntValue];
+  v3 = [(NSArray *)self->_numBackoffs objectAtIndexedSubscript:index];
+  unsignedIntValue = [v3 unsignedIntValue];
 
-  return v4;
+  return unsignedIntValue;
 }
 
-- (void)addNumBackoffs:(unsigned int)a3
+- (void)addNumBackoffs:(unsigned int)backoffs
 {
-  v3 = *&a3;
+  v3 = *&backoffs;
   numBackoffs = self->_numBackoffs;
   if (!numBackoffs)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_numBackoffs;
-    self->_numBackoffs = v6;
+    self->_numBackoffs = array;
 
     numBackoffs = self->_numBackoffs;
   }
@@ -586,9 +586,9 @@ LABEL_25:
   [(NSArray *)numBackoffs addObject:v8];
 }
 
-- (void)setHasSilenceAcousticCost:(BOOL)a3
+- (void)setHasSilenceAcousticCost:(BOOL)cost
 {
-  if (a3)
+  if (cost)
   {
     v3 = 2;
   }
@@ -601,17 +601,17 @@ LABEL_25:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = DODMLASRSchemaDODMLASRTokenInfo;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(DODMLASRSchemaDODMLASRTokenInfo *)self token:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(DODMLASRSchemaDODMLASRTokenInfo *)self deleteToken];
   }

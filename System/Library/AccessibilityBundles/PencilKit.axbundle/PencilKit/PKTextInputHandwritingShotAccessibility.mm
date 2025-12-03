@@ -1,13 +1,13 @@
 @interface PKTextInputHandwritingShotAccessibility
-- (BOOL)_shouldTargetFirstResponderElement:(id)a3 strokeIdentifiers:(id)a4;
+- (BOOL)_shouldTargetFirstResponderElement:(id)element strokeIdentifiers:(id)identifiers;
 @end
 
 @implementation PKTextInputHandwritingShotAccessibility
 
-- (BOOL)_shouldTargetFirstResponderElement:(id)a3 strokeIdentifiers:(id)a4
+- (BOOL)_shouldTargetFirstResponderElement:(id)element strokeIdentifiers:(id)identifiers
 {
-  v6 = a3;
-  v7 = a4;
+  elementCopy = element;
+  identifiersCopy = identifiers;
   if (UIAccessibilityIsVoiceOverRunning())
   {
     v8 = 1;
@@ -17,7 +17,7 @@
   {
     v10.receiver = self;
     v10.super_class = PKTextInputHandwritingShotAccessibility;
-    v8 = [(PKTextInputHandwritingShotAccessibility *)&v10 _shouldTargetFirstResponderElement:v6 strokeIdentifiers:v7];
+    v8 = [(PKTextInputHandwritingShotAccessibility *)&v10 _shouldTargetFirstResponderElement:elementCopy strokeIdentifiers:identifiersCopy];
   }
 
   return v8;

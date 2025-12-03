@@ -1,6 +1,6 @@
 @interface RidesharingAnalyticsBookedSession
 - (RidesharingAnalyticsBookedSession)init;
-- (void)captureIntent:(int)a3 withFailure:(int)a4;
+- (void)captureIntent:(int)intent withFailure:(int)failure;
 - (void)endSession;
 @end
 
@@ -12,8 +12,8 @@
   {
     self->_sessionEnded = 1;
     v3 = +[NSProcessInfo processInfo];
-    v4 = [v3 processName];
-    v5 = [v4 isEqualToString:@"destinationd"];
+    processName = [v3 processName];
+    v5 = [processName isEqualToString:@"destinationd"];
 
     if (v5)
     {
@@ -46,17 +46,17 @@
   }
 }
 
-- (void)captureIntent:(int)a3 withFailure:(int)a4
+- (void)captureIntent:(int)intent withFailure:(int)failure
 {
-  v4 = *&a4;
-  v5 = *&a3;
+  v4 = *&failure;
+  v5 = *&intent;
   v8 = objc_alloc_init(GEORideBookingIntentResponseFailure);
   [v8 setIntent:v5];
   [v8 setFailure:v4];
-  v7 = self;
-  objc_sync_enter(v7);
-  [(NSMutableArray *)v7->_intentResponseFailures addObject:v8];
-  objc_sync_exit(v7);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSMutableArray *)selfCopy->_intentResponseFailures addObject:v8];
+  objc_sync_exit(selfCopy);
 }
 
 - (RidesharingAnalyticsBookedSession)init

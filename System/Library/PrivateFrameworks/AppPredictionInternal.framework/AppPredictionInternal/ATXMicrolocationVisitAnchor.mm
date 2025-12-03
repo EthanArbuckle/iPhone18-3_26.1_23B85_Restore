@@ -1,8 +1,8 @@
 @interface ATXMicrolocationVisitAnchor
-+ (id)fetchAnchorOccurrencesBetweenStartDate:(id)a3 endDate:(id)a4;
++ (id)fetchAnchorOccurrencesBetweenStartDate:(id)date endDate:(id)endDate;
 + (id)sampleEvent;
-+ (void)registerForNotificationsWithoutUsingContextStoreForObserver:(id)a3 enterSelector:(SEL)a4 exitSelector:(SEL)a5;
-+ (void)unregisterForNotificationsWithoutUsingContextStoreForObserver:(id)a3;
++ (void)registerForNotificationsWithoutUsingContextStoreForObserver:(id)observer enterSelector:(SEL)selector exitSelector:(SEL)exitSelector;
++ (void)unregisterForNotificationsWithoutUsingContextStoreForObserver:(id)observer;
 @end
 
 @implementation ATXMicrolocationVisitAnchor
@@ -26,21 +26,21 @@ BOOL __42__ATXMicrolocationVisitAnchor_filterBlock__block_invoke(uint64_t a1, vo
   return v5;
 }
 
-+ (id)fetchAnchorOccurrencesBetweenStartDate:(id)a3 endDate:(id)a4
++ (id)fetchAnchorOccurrencesBetweenStartDate:(id)date endDate:(id)endDate
 {
   v5 = MEMORY[0x277CEBCA0];
-  v6 = a4;
-  v7 = a3;
+  endDateCopy = endDate;
+  dateCopy = date;
   v8 = objc_alloc_init(v5);
   v9 = objc_opt_new();
-  v10 = [objc_opt_class() filterBlock];
+  filterBlock = [objc_opt_class() filterBlock];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __78__ATXMicrolocationVisitAnchor_fetchAnchorOccurrencesBetweenStartDate_endDate___block_invoke;
   v13[3] = &unk_27859E388;
   v11 = v9;
   v14 = v11;
-  [v8 enumerateMicroLocationVisitEventsFromStartDate:v7 endDate:v6 filterBlock:v10 limit:1000000 ascending:1 block:v13];
+  [v8 enumerateMicroLocationVisitEventsFromStartDate:dateCopy endDate:endDateCopy filterBlock:filterBlock limit:1000000 ascending:1 block:v13];
 
   return v11;
 }
@@ -55,16 +55,16 @@ uint64_t __78__ATXMicrolocationVisitAnchor_fetchAnchorOccurrencesBetweenStartDat
   return 1;
 }
 
-+ (void)registerForNotificationsWithoutUsingContextStoreForObserver:(id)a3 enterSelector:(SEL)a4 exitSelector:(SEL)a5
++ (void)registerForNotificationsWithoutUsingContextStoreForObserver:(id)observer enterSelector:(SEL)selector exitSelector:(SEL)exitSelector
 {
-  v7 = [MEMORY[0x277CCA890] currentHandler];
-  [v7 handleFailureInMethod:a2 object:a1 file:@"ATXMicrolocationVisitAnchor.m" lineNumber:96 description:@"ATXMicrolocationVisitAnchor notification listener has moved to Biome scheduler via ATXMicroLocationVisitScheduler"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"ATXMicrolocationVisitAnchor.m" lineNumber:96 description:@"ATXMicrolocationVisitAnchor notification listener has moved to Biome scheduler via ATXMicroLocationVisitScheduler"];
 }
 
-+ (void)unregisterForNotificationsWithoutUsingContextStoreForObserver:(id)a3
++ (void)unregisterForNotificationsWithoutUsingContextStoreForObserver:(id)observer
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
-  [v5 handleFailureInMethod:a2 object:a1 file:@"ATXMicrolocationVisitAnchor.m" lineNumber:102 description:@"ATXMicrolocationVisitAnchor notification listener has moved to Biome scheduler via ATXMicroLocationVisitScheduler"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"ATXMicrolocationVisitAnchor.m" lineNumber:102 description:@"ATXMicrolocationVisitAnchor notification listener has moved to Biome scheduler via ATXMicroLocationVisitScheduler"];
 }
 
 + (id)sampleEvent

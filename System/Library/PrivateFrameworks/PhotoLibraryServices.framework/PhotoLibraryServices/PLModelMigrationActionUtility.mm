@@ -1,26 +1,26 @@
 @interface PLModelMigrationActionUtility
-+ (BOOL)processExtendedAttributesWithAction:(id)a3 asset:(id)a4 metadata:(id)a5 error:(id *)a6;
-+ (BOOL)shouldProcessHistoryTokenWithAction:(id)a3 token:(id)a4 cutoffPercent:(double)a5 managedObjectContext:(id)a6;
-+ (id)getHistoryTokenWithAction:(id)a3 key:(id)a4 managedObjectContext:(id)a5;
-+ (int64_t)processManagedObjectBatchesWithAction:(id)a3 managedObjectContext:(id)a4 fetchRequest:(id)a5 pendingParentUnitCount:(int64_t)a6 useObjectIDResumeMarker:(BOOL)a7 error:(id *)a8 processingBlock:(id)a9;
-+ (int64_t)processManagedObjectWithAction:(id)a3 managedObjectContext:(id)a4 fetchRequest:(id)a5 useObjectIDResumeMarker:(BOOL)a6 error:(id *)a7 processingBlock:(id)a8;
-+ (int64_t)processManagedObjectsWithAction:(id)a3 managedObjectContext:(id)a4 fetchRequest:(id)a5 pendingParentUnitCount:(int64_t)a6 error:(id *)a7 processingBlock:(id)a8;
-+ (int64_t)removeFromDuplicatesWithAction:(id)a3 managedObjectContext:(id)a4 fetchRequest:(id)a5 requiresLibraryReprocessing:(BOOL)a6 error:(id *)a7;
-+ (int64_t)removeOrphanedObjectsWithAction:(id)a3 managedObjectContext:(id)a4 fetchRequest:(id)a5 error:(id *)a6;
-+ (int64_t)resetDuplicateProcessingWithAction:(id)a3 managedObjectContext:(id)a4 error:(id *)a5;
-+ (int64_t)updateExtendedAttributesWithAction:(id)a3 managedObjectContext:(id)a4 fetchRequest:(id)a5 useObjectIDResumeMarker:(BOOL)a6 error:(id *)a7;
-+ (void)setHistoryTokenWithAction:(id)a3 key:(id)a4 value:(id)a5 managedObjectContext:(id)a6;
++ (BOOL)processExtendedAttributesWithAction:(id)action asset:(id)asset metadata:(id)metadata error:(id *)error;
++ (BOOL)shouldProcessHistoryTokenWithAction:(id)action token:(id)token cutoffPercent:(double)percent managedObjectContext:(id)context;
++ (id)getHistoryTokenWithAction:(id)action key:(id)key managedObjectContext:(id)context;
++ (int64_t)processManagedObjectBatchesWithAction:(id)action managedObjectContext:(id)context fetchRequest:(id)request pendingParentUnitCount:(int64_t)count useObjectIDResumeMarker:(BOOL)marker error:(id *)error processingBlock:(id)block;
++ (int64_t)processManagedObjectWithAction:(id)action managedObjectContext:(id)context fetchRequest:(id)request useObjectIDResumeMarker:(BOOL)marker error:(id *)error processingBlock:(id)block;
++ (int64_t)processManagedObjectsWithAction:(id)action managedObjectContext:(id)context fetchRequest:(id)request pendingParentUnitCount:(int64_t)count error:(id *)error processingBlock:(id)block;
++ (int64_t)removeFromDuplicatesWithAction:(id)action managedObjectContext:(id)context fetchRequest:(id)request requiresLibraryReprocessing:(BOOL)reprocessing error:(id *)error;
++ (int64_t)removeOrphanedObjectsWithAction:(id)action managedObjectContext:(id)context fetchRequest:(id)request error:(id *)error;
++ (int64_t)resetDuplicateProcessingWithAction:(id)action managedObjectContext:(id)context error:(id *)error;
++ (int64_t)updateExtendedAttributesWithAction:(id)action managedObjectContext:(id)context fetchRequest:(id)request useObjectIDResumeMarker:(BOOL)marker error:(id *)error;
++ (void)setHistoryTokenWithAction:(id)action key:(id)key value:(id)value managedObjectContext:(id)context;
 @end
 
 @implementation PLModelMigrationActionUtility
 
-+ (int64_t)processManagedObjectsWithAction:(id)a3 managedObjectContext:(id)a4 fetchRequest:(id)a5 pendingParentUnitCount:(int64_t)a6 error:(id *)a7 processingBlock:(id)a8
++ (int64_t)processManagedObjectsWithAction:(id)action managedObjectContext:(id)context fetchRequest:(id)request pendingParentUnitCount:(int64_t)count error:(id *)error processingBlock:(id)block
 {
   v131 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a8;
+  actionCopy = action;
+  contextCopy = context;
+  requestCopy = request;
+  blockCopy = block;
   v90 = 0;
   v91 = &v90;
   v92 = 0x3032000000;
@@ -39,33 +39,33 @@
   v83 = 1;
   v16 = objc_opt_class();
   v17 = NSStringFromClass(v16);
-  if (v15)
+  if (blockCopy)
   {
-    [v14 setFetchBatchSize:100];
+    [requestCopy setFetchBatchSize:100];
     v18 = [PLEnumerateAndSaveController alloc];
     v78[0] = MEMORY[0x1E69E9820];
     v78[1] = 3221225472;
     v78[2] = __144__PLModelMigrationActionUtility_processManagedObjectsWithAction_managedObjectContext_fetchRequest_pendingParentUnitCount_error_processingBlock___block_invoke;
     v78[3] = &unk_1E7575B30;
-    v79 = v13;
+    v79 = contextCopy;
     v74[0] = MEMORY[0x1E69E9820];
     v74[1] = 3221225472;
     v74[2] = __144__PLModelMigrationActionUtility_processManagedObjectsWithAction_managedObjectContext_fetchRequest_pendingParentUnitCount_error_processingBlock___block_invoke_2;
     v74[3] = &unk_1E7567CD8;
     v76 = &v84;
-    v75 = v12;
-    v77 = a6;
+    v75 = actionCopy;
+    countCopy = count;
     v68[0] = MEMORY[0x1E69E9820];
     v68[1] = 3221225472;
     v68[2] = __144__PLModelMigrationActionUtility_processManagedObjectsWithAction_managedObjectContext_fetchRequest_pendingParentUnitCount_error_processingBlock___block_invoke_3;
     v68[3] = &unk_1E7567D28;
-    v70 = v15;
+    v70 = blockCopy;
     v71 = &v84;
     v19 = v75;
     v69 = v19;
     v72 = &v80;
     v73 = &v90;
-    v20 = [(PLEnumerateAndSaveController *)v18 initWithName:v17 fetchRequest:v14 context:v79 options:4 generateContextBlock:v78 didFetchObjectIDsBlock:v74 processResultBlock:v68];
+    v20 = [(PLEnumerateAndSaveController *)v18 initWithName:v17 fetchRequest:requestCopy context:v79 options:4 generateContextBlock:v78 didFetchObjectIDsBlock:v74 processResultBlock:v68];
     v67 = 0;
     v21 = [(PLEnumerateAndSaveController *)v20 processObjectsWithError:&v67];
     v22 = v67;
@@ -80,17 +80,17 @@
 
         if (v25)
         {
-          v26 = [v19 logger];
-          v27 = v26 == 0;
+          logger = [v19 logger];
+          v27 = logger == 0;
 
           if (v27)
           {
             v63 = PLMigrationGetLog();
             if (os_log_type_enabled(v63, OS_LOG_TYPE_DEFAULT))
             {
-              v64 = [v85[5] completedUnitCount];
+              completedUnitCount = [v85[5] completedUnitCount];
               *buf = 134218242;
-              *&buf[4] = v64;
+              *&buf[4] = completedUnitCount;
               *&buf[12] = 2112;
               *&buf[14] = v23;
               _os_log_impl(&dword_19BF1F000, v63, OS_LOG_TYPE_DEFAULT, "Cancelled operation after update of %lld objects. Error: %@", buf, 0x16u);
@@ -132,16 +132,16 @@
             memset(buf, 0, sizeof(buf));
             v28 = PLMigrationGetLog();
             os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT);
-            v29 = [v85[5] completedUnitCount];
+            completedUnitCount2 = [v85[5] completedUnitCount];
             v96 = 134218242;
-            v97 = v29;
+            v97 = completedUnitCount2;
             v98 = 2112;
             v99 = v23;
             LODWORD(v65) = 22;
             v30 = _os_log_send_and_compose_impl();
 
-            v31 = [v19 logger];
-            [v31 logWithMessage:v30 fromCodeLocation:"PLModelMigrationActionUtility.m" type:{411, 0}];
+            logger2 = [v19 logger];
+            [logger2 logWithMessage:v30 fromCodeLocation:"PLModelMigrationActionUtility.m" type:{411, 0}];
 
             if (v30 != buf)
             {
@@ -158,17 +158,17 @@
 
       if (v47)
       {
-        v48 = [v19 logger];
-        v49 = v48 == 0;
+        logger3 = [v19 logger];
+        v49 = logger3 == 0;
 
         if (v49)
         {
           v56 = PLMigrationGetLog();
           if (os_log_type_enabled(v56, OS_LOG_TYPE_DEFAULT))
           {
-            v57 = [v85[5] completedUnitCount];
+            completedUnitCount3 = [v85[5] completedUnitCount];
             *buf = 134217984;
-            *&buf[4] = v57;
+            *&buf[4] = completedUnitCount3;
             _os_log_impl(&dword_19BF1F000, v56, OS_LOG_TYPE_DEFAULT, "Completed update of %lld objects.", buf, 0xCu);
           }
 
@@ -208,14 +208,14 @@
         memset(buf, 0, sizeof(buf));
         v50 = PLMigrationGetLog();
         os_log_type_enabled(v50, OS_LOG_TYPE_DEFAULT);
-        v51 = [v85[5] completedUnitCount];
+        completedUnitCount4 = [v85[5] completedUnitCount];
         v96 = 134217984;
-        v97 = v51;
+        v97 = completedUnitCount4;
         LODWORD(v65) = 12;
         v44 = _os_log_send_and_compose_impl();
 
-        v52 = [v19 logger];
-        [v52 logWithMessage:v44 fromCodeLocation:"PLModelMigrationActionUtility.m" type:{413, 0}];
+        logger4 = [v19 logger];
+        [logger4 logWithMessage:v44 fromCodeLocation:"PLModelMigrationActionUtility.m" type:{413, 0}];
 
         goto LABEL_19;
       }
@@ -229,8 +229,8 @@
 
       if (v40)
       {
-        v41 = [v19 logger];
-        v42 = v41 == 0;
+        logger5 = [v19 logger];
+        v42 = logger5 == 0;
 
         if (v42)
         {
@@ -287,8 +287,8 @@
         LODWORD(v65) = 22;
         v44 = _os_log_send_and_compose_impl();
 
-        v45 = [v19 logger];
-        [v45 logWithMessage:v44 fromCodeLocation:"PLModelMigrationActionUtility.m" type:{417, 16}];
+        logger6 = [v19 logger];
+        [logger6 logWithMessage:v44 fromCodeLocation:"PLModelMigrationActionUtility.m" type:{417, 16}];
 
 LABEL_19:
         if (v44 != buf)
@@ -304,10 +304,10 @@ LABEL_32:
     v58 = v81[3];
     v59 = v23;
     v60 = v59;
-    if (v58 != 1 && a7)
+    if (v58 != 1 && error)
     {
       v61 = v59;
-      *a7 = v60;
+      *error = v60;
     }
 
     v54 = v81[3];
@@ -319,8 +319,8 @@ LABEL_32:
 
   if (v33)
   {
-    v34 = [v12 logger];
-    v35 = v34 == 0;
+    logger7 = [actionCopy logger];
+    v35 = logger7 == 0;
 
     if (v35)
     {
@@ -373,8 +373,8 @@ LABEL_32:
       LODWORD(v65) = 12;
       v37 = _os_log_send_and_compose_impl();
 
-      v38 = [v12 logger];
-      [v38 logWithMessage:v37 fromCodeLocation:"PLModelMigrationActionUtility.m" type:{378, 1}];
+      logger8 = [actionCopy logger];
+      [logger8 logWithMessage:v37 fromCodeLocation:"PLModelMigrationActionUtility.m" type:{378, 1}];
 
       if (v37 != buf)
       {
@@ -511,12 +511,12 @@ void __144__PLModelMigrationActionUtility_processManagedObjectsWithAction_manage
   }
 }
 
-+ (int64_t)processManagedObjectBatchesWithAction:(id)a3 managedObjectContext:(id)a4 fetchRequest:(id)a5 pendingParentUnitCount:(int64_t)a6 useObjectIDResumeMarker:(BOOL)a7 error:(id *)a8 processingBlock:(id)a9
++ (int64_t)processManagedObjectBatchesWithAction:(id)action managedObjectContext:(id)context fetchRequest:(id)request pendingParentUnitCount:(int64_t)count useObjectIDResumeMarker:(BOOL)marker error:(id *)error processingBlock:(id)block
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a9;
+  actionCopy = action;
+  contextCopy = context;
+  requestCopy = request;
+  blockCopy = block;
   v52 = 0;
   v53 = &v52;
   v54 = 0x2020000000;
@@ -540,27 +540,27 @@ void __144__PLModelMigrationActionUtility_processManagedObjectsWithAction_manage
   v42[1] = 3221225472;
   v42[2] = __174__PLModelMigrationActionUtility_processManagedObjectBatchesWithAction_managedObjectContext_fetchRequest_pendingParentUnitCount_useObjectIDResumeMarker_error_processingBlock___block_invoke;
   v42[3] = &unk_1E7575B30;
-  v20 = v14;
+  v20 = contextCopy;
   v43 = v20;
   v38[0] = MEMORY[0x1E69E9820];
   v38[1] = 3221225472;
   v38[2] = __174__PLModelMigrationActionUtility_processManagedObjectBatchesWithAction_managedObjectContext_fetchRequest_pendingParentUnitCount_useObjectIDResumeMarker_error_processingBlock___block_invoke_2;
   v38[3] = &unk_1E7567CD8;
   v40 = v50;
-  v39 = v13;
-  v41 = a6;
+  v39 = actionCopy;
+  countCopy = count;
   v32[0] = MEMORY[0x1E69E9820];
   v32[1] = 3221225472;
   v32[2] = __174__PLModelMigrationActionUtility_processManagedObjectBatchesWithAction_managedObjectContext_fetchRequest_pendingParentUnitCount_useObjectIDResumeMarker_error_processingBlock___block_invoke_3;
   v32[3] = &unk_1E7567D00;
   v35 = &v52;
-  v21 = v16;
+  v21 = blockCopy;
   v34 = v21;
   v36 = v50;
   v37 = &v44;
   v22 = v39;
   v33 = v22;
-  v23 = [(PLEnumerateAndSaveController *)v19 initWithName:v18 fetchRequest:v15 context:v20 options:4 generateContextBlock:v42 didFetchObjectIDsBlock:v38 processResultsBlock:v32];
+  v23 = [(PLEnumerateAndSaveController *)v19 initWithName:v18 fetchRequest:requestCopy context:v20 options:4 generateContextBlock:v42 didFetchObjectIDsBlock:v38 processResultsBlock:v32];
   v31 = 0;
   v24 = [(PLEnumerateAndSaveController *)v23 processObjectsWithError:&v31];
   v25 = v31;
@@ -574,7 +574,7 @@ void __144__PLModelMigrationActionUtility_processManagedObjectsWithAction_manage
   if (v53[3] != 1)
   {
     v28 = v45[5];
-    if (!a8)
+    if (!error)
     {
       goto LABEL_7;
     }
@@ -585,11 +585,11 @@ void __144__PLModelMigrationActionUtility_processManagedObjectsWithAction_manage
   [v22 setResumeMarkerValue:0];
   v27 = v53[3];
   v28 = v45[5];
-  if (v27 != 1 && a8)
+  if (v27 != 1 && error)
   {
 LABEL_6:
     v28 = v28;
-    *a8 = v28;
+    *error = v28;
   }
 
 LABEL_7:
@@ -645,14 +645,14 @@ void __174__PLModelMigrationActionUtility_processManagedObjectBatchesWithAction_
   }
 }
 
-+ (int64_t)processManagedObjectWithAction:(id)a3 managedObjectContext:(id)a4 fetchRequest:(id)a5 useObjectIDResumeMarker:(BOOL)a6 error:(id *)a7 processingBlock:(id)a8
++ (int64_t)processManagedObjectWithAction:(id)action managedObjectContext:(id)context fetchRequest:(id)request useObjectIDResumeMarker:(BOOL)marker error:(id *)error processingBlock:(id)block
 {
-  v9 = a6;
+  markerCopy = marker;
   v141 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v76 = a4;
-  v13 = a5;
-  v14 = a8;
+  actionCopy = action;
+  contextCopy = context;
+  requestCopy = request;
+  blockCopy = block;
   v100 = 0;
   v101 = &v100;
   v102 = 0x3032000000;
@@ -669,9 +669,9 @@ void __174__PLModelMigrationActionUtility_processManagedObjectBatchesWithAction_
   v91 = &v90;
   v92 = 0x2020000000;
   v93 = 1;
-  if (v14)
+  if (blockCopy)
   {
-    [v13 setFetchBatchSize:100];
+    [requestCopy setFetchBatchSize:100];
     v15 = [PLEnumerateAndSaveController alloc];
     v16 = objc_opt_class();
     v17 = NSStringFromClass(v16);
@@ -679,26 +679,26 @@ void __174__PLModelMigrationActionUtility_processManagedObjectBatchesWithAction_
     v88[1] = 3221225472;
     v88[2] = __144__PLModelMigrationActionUtility_processManagedObjectWithAction_managedObjectContext_fetchRequest_useObjectIDResumeMarker_error_processingBlock___block_invoke;
     v88[3] = &unk_1E7575B30;
-    v89 = v76;
+    v89 = contextCopy;
     v85[0] = MEMORY[0x1E69E9820];
     v85[1] = 3221225472;
     v85[2] = __144__PLModelMigrationActionUtility_processManagedObjectWithAction_managedObjectContext_fetchRequest_useObjectIDResumeMarker_error_processingBlock___block_invoke_2;
     v85[3] = &unk_1E7572E50;
     v87 = &v94;
-    v86 = v12;
-    v74 = v12;
+    v86 = actionCopy;
+    v74 = actionCopy;
     v78[0] = MEMORY[0x1E69E9820];
     v78[1] = 3221225472;
     v78[2] = __144__PLModelMigrationActionUtility_processManagedObjectWithAction_managedObjectContext_fetchRequest_useObjectIDResumeMarker_error_processingBlock___block_invoke_3;
     v78[3] = &unk_1E7567CB0;
-    v80 = v14;
+    v80 = blockCopy;
     v81 = &v94;
     v18 = v86;
     v79 = v18;
     v82 = &v90;
-    v84 = v9;
+    v84 = markerCopy;
     v83 = &v100;
-    v19 = [(PLEnumerateAndSaveController *)v15 initWithName:v17 fetchRequest:v13 context:v89 options:4 generateContextBlock:v88 didFetchObjectIDsBlock:v85 processResultBlock:v78];
+    v19 = [(PLEnumerateAndSaveController *)v15 initWithName:v17 fetchRequest:requestCopy context:v89 options:4 generateContextBlock:v88 didFetchObjectIDsBlock:v85 processResultBlock:v78];
 
     v77 = 0;
     v20 = [(PLEnumerateAndSaveController *)v19 processObjectsWithError:&v77];
@@ -714,17 +714,17 @@ void __174__PLModelMigrationActionUtility_processManagedObjectBatchesWithAction_
 
         if (v24)
         {
-          v25 = [v18 logger];
-          v26 = v25 == 0;
+          logger = [v18 logger];
+          v26 = logger == 0;
 
           if (v26)
           {
             v71 = PLMigrationGetLog();
             if (os_log_type_enabled(v71, OS_LOG_TYPE_DEFAULT))
             {
-              v72 = [v95[5] completedUnitCount];
+              completedUnitCount = [v95[5] completedUnitCount];
               *buf = 134218242;
-              *&buf[4] = v72;
+              *&buf[4] = completedUnitCount;
               *&buf[12] = 2112;
               *&buf[14] = v22;
               _os_log_impl(&dword_19BF1F000, v71, OS_LOG_TYPE_DEFAULT, "Cancelled operation after update of %lld assets. Error: %@", buf, 0x16u);
@@ -766,16 +766,16 @@ void __174__PLModelMigrationActionUtility_processManagedObjectBatchesWithAction_
             memset(buf, 0, sizeof(buf));
             v27 = PLMigrationGetLog();
             os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT);
-            v28 = [v95[5] completedUnitCount];
+            completedUnitCount2 = [v95[5] completedUnitCount];
             v106 = 134218242;
-            v107 = v28;
+            v107 = completedUnitCount2;
             v108 = 2112;
             v109 = v22;
             LODWORD(v73) = 22;
             v29 = _os_log_send_and_compose_impl();
 
-            v30 = [v18 logger];
-            [v30 logWithMessage:v29 fromCodeLocation:"PLModelMigrationActionUtility.m" type:{315, 0}];
+            logger2 = [v18 logger];
+            [logger2 logWithMessage:v29 fromCodeLocation:"PLModelMigrationActionUtility.m" type:{315, 0}];
 
             if (v29 != buf)
             {
@@ -796,7 +796,7 @@ LABEL_31:
         v22 = v21;
 LABEL_32:
         v64 = v91;
-        if (v9 && v91[3] == 1)
+        if (markerCopy && v91[3] == 1)
         {
           [v18 setResumeMarkerValue:0];
           v64 = v91;
@@ -806,19 +806,19 @@ LABEL_32:
         v66 = v22;
         v67 = v66;
         v68 = v65 == 1;
-        v12 = v74;
-        if (!v68 && a7)
+        actionCopy = v74;
+        if (!v68 && error)
         {
           v69 = v66;
-          *a7 = v67;
+          *error = v67;
         }
 
         v59 = v91[3];
         goto LABEL_39;
       }
 
-      v51 = [v18 logger];
-      v52 = v51 == 0;
+      logger3 = [v18 logger];
+      v52 = logger3 == 0;
 
       if (!v52)
       {
@@ -855,14 +855,14 @@ LABEL_32:
         memset(buf, 0, sizeof(buf));
         v53 = PLMigrationGetLog();
         os_log_type_enabled(v53, OS_LOG_TYPE_DEFAULT);
-        v54 = [v95[5] completedUnitCount];
+        completedUnitCount3 = [v95[5] completedUnitCount];
         v106 = 134217984;
-        v107 = v54;
+        v107 = completedUnitCount3;
         LODWORD(v73) = 12;
         v47 = _os_log_send_and_compose_impl();
 
-        v55 = [v18 logger];
-        [v55 logWithMessage:v47 fromCodeLocation:"PLModelMigrationActionUtility.m" type:{317, 0}];
+        logger4 = [v18 logger];
+        [logger4 logWithMessage:v47 fromCodeLocation:"PLModelMigrationActionUtility.m" type:{317, 0}];
 
 LABEL_19:
         if (v47 != buf)
@@ -876,9 +876,9 @@ LABEL_19:
       v60 = PLMigrationGetLog();
       if (os_log_type_enabled(v60, OS_LOG_TYPE_DEFAULT))
       {
-        v63 = [v95[5] completedUnitCount];
+        completedUnitCount4 = [v95[5] completedUnitCount];
         *buf = 134217984;
-        *&buf[4] = v63;
+        *&buf[4] = completedUnitCount4;
         _os_log_impl(&dword_19BF1F000, v60, OS_LOG_TYPE_DEFAULT, "Completed update of %lld assets.", buf, 0xCu);
       }
     }
@@ -899,8 +899,8 @@ LABEL_19:
         goto LABEL_31;
       }
 
-      v42 = [v18 logger];
-      v43 = v42 == 0;
+      logger5 = [v18 logger];
+      v43 = logger5 == 0;
 
       if (!v43)
       {
@@ -946,8 +946,8 @@ LABEL_19:
         LODWORD(v73) = 22;
         v47 = _os_log_send_and_compose_impl();
 
-        v48 = [v18 logger];
-        [v48 logWithMessage:v47 fromCodeLocation:"PLModelMigrationActionUtility.m" type:{321, 16}];
+        logger6 = [v18 logger];
+        [logger6 logWithMessage:v47 fromCodeLocation:"PLModelMigrationActionUtility.m" type:{321, 16}];
 
         goto LABEL_19;
       }
@@ -973,8 +973,8 @@ LABEL_19:
 
   if (v32)
   {
-    v33 = [v12 logger];
-    v34 = v33 == 0;
+    logger7 = [actionCopy logger];
+    v34 = logger7 == 0;
 
     if (v34)
     {
@@ -1031,8 +1031,8 @@ LABEL_19:
       LODWORD(v73) = 12;
       v38 = _os_log_send_and_compose_impl();
 
-      v39 = [v12 logger];
-      [v39 logWithMessage:v38 fromCodeLocation:"PLModelMigrationActionUtility.m" type:{277, 1}];
+      logger8 = [actionCopy logger];
+      [logger8 logWithMessage:v38 fromCodeLocation:"PLModelMigrationActionUtility.m" type:{277, 1}];
 
       if (v38 != buf)
       {
@@ -1179,14 +1179,14 @@ void __144__PLModelMigrationActionUtility_processManagedObjectWithAction_managed
   }
 }
 
-+ (BOOL)shouldProcessHistoryTokenWithAction:(id)a3 token:(id)a4 cutoffPercent:(double)a5 managedObjectContext:(id)a6
++ (BOOL)shouldProcessHistoryTokenWithAction:(id)action token:(id)token cutoffPercent:(double)percent managedObjectContext:(id)context
 {
   v104 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
-  v12 = [PLPersistentHistoryUtilities oldestTransactionWithContext:v11];
-  v13 = [PLPersistentHistoryUtilities newestTransactionWithContext:v11];
+  actionCopy = action;
+  tokenCopy = token;
+  contextCopy = context;
+  v12 = [PLPersistentHistoryUtilities oldestTransactionWithContext:contextCopy];
+  v13 = [PLPersistentHistoryUtilities newestTransactionWithContext:contextCopy];
 
   if (v12)
   {
@@ -1200,23 +1200,23 @@ void __144__PLModelMigrationActionUtility_processManagedObjectWithAction_managed
 
   if (!v14)
   {
-    v21 = [PLPersistentHistoryUtilities transactionNumberFromToken:v10];
+    v21 = [PLPersistentHistoryUtilities transactionNumberFromToken:tokenCopy];
     v22 = v21;
     if (v21)
     {
-      v16 = [v21 integerValue];
-      v23 = [v12 transactionNumber];
-      v24 = [v13 transactionNumber];
-      if (v24 == v16)
+      integerValue = [v21 integerValue];
+      transactionNumber = [v12 transactionNumber];
+      transactionNumber2 = [v13 transactionNumber];
+      if (transactionNumber2 == integerValue)
       {
         v25 = PLMigrationGetLog();
         v26 = os_log_type_enabled(v25, OS_LOG_TYPE_ERROR);
 
         if (v26)
         {
-          v27 = [v9 logger];
+          logger = [actionCopy logger];
 
-          if (v27)
+          if (logger)
           {
             v102 = 0u;
             v103 = 0u;
@@ -1256,8 +1256,8 @@ void __144__PLModelMigrationActionUtility_processManagedObjectWithAction_managed
             LODWORD(v69) = 2;
             v29 = _os_log_send_and_compose_impl();
 
-            v30 = [v9 logger];
-            v31 = v30;
+            logger2 = [actionCopy logger];
+            v31 = logger2;
             v32 = v29;
             v33 = 235;
             goto LABEL_22;
@@ -1275,16 +1275,16 @@ void __144__PLModelMigrationActionUtility_processManagedObjectWithAction_managed
         }
 
 LABEL_46:
-        LOBYTE(v16) = 0;
+        LOBYTE(integerValue) = 0;
 LABEL_47:
 
         goto LABEL_48;
       }
 
-      if (v24 != v23)
+      if (transactionNumber2 != transactionNumber)
       {
-        v43 = v24 - v23;
-        if (v24 - v23 > 1999)
+        v43 = transactionNumber2 - transactionNumber;
+        if (transactionNumber2 - transactionNumber > 1999)
         {
           if (v43 >= 0xC351)
           {
@@ -1293,9 +1293,9 @@ LABEL_47:
 
             if (v51)
             {
-              v52 = [v9 logger];
+              logger3 = [actionCopy logger];
 
-              if (v52)
+              if (logger3)
               {
                 v102 = 0u;
                 v103 = 0u;
@@ -1335,8 +1335,8 @@ LABEL_47:
                 LODWORD(v69) = 2;
                 v54 = _os_log_send_and_compose_impl();
 
-                v55 = [v9 logger];
-                [v55 logWithMessage:v54 fromCodeLocation:"PLModelMigrationActionUtility.m" type:{255, 0}];
+                logger4 = [actionCopy logger];
+                [logger4 logWithMessage:v54 fromCodeLocation:"PLModelMigrationActionUtility.m" type:{255, 0}];
 
                 if (v54 != buf)
                 {
@@ -1355,16 +1355,16 @@ LABEL_47:
               }
             }
 
-            if (a5 < 0.75)
+            if (percent < 0.75)
             {
               v61 = PLMigrationGetLog();
               v62 = os_log_type_enabled(v61, OS_LOG_TYPE_DEFAULT);
 
               if (v62)
               {
-                v63 = [v9 logger];
+                logger5 = [actionCopy logger];
 
-                if (v63)
+                if (logger5)
                 {
                   v102 = 0u;
                   v103 = 0u;
@@ -1405,8 +1405,8 @@ LABEL_47:
                   LODWORD(v69) = 12;
                   v65 = _os_log_send_and_compose_impl();
 
-                  v66 = [v9 logger];
-                  [v66 logWithMessage:v65 fromCodeLocation:"PLModelMigrationActionUtility.m" type:{257, 0}];
+                  logger6 = [actionCopy logger];
+                  [logger6 logWithMessage:v65 fromCodeLocation:"PLModelMigrationActionUtility.m" type:{257, 0}];
 
                   if (v65 != buf)
                   {
@@ -1426,21 +1426,21 @@ LABEL_47:
                 }
               }
 
-              a5 = 0.75;
+              percent = 0.75;
             }
           }
 
-          if (v16 == v23)
+          if (integerValue == transactionNumber)
           {
             v68 = 0;
           }
 
           else
           {
-            v68 = v23;
+            v68 = transactionNumber;
           }
 
-          LOBYTE(v16) = (v16 - v68) / v43 >= a5;
+          LOBYTE(integerValue) = (integerValue - v68) / v43 >= percent;
         }
 
         else
@@ -1450,9 +1450,9 @@ LABEL_47:
 
           if (v45)
           {
-            v46 = [v9 logger];
+            logger7 = [actionCopy logger];
 
-            if (v46)
+            if (logger7)
             {
               v102 = 0u;
               v103 = 0u;
@@ -1492,8 +1492,8 @@ LABEL_47:
               LODWORD(v69) = 2;
               v48 = _os_log_send_and_compose_impl();
 
-              v49 = [v9 logger];
-              [v49 logWithMessage:v48 fromCodeLocation:"PLModelMigrationActionUtility.m" type:{247, 0}];
+              logger8 = [actionCopy logger];
+              [logger8 logWithMessage:v48 fromCodeLocation:"PLModelMigrationActionUtility.m" type:{247, 0}];
 
               if (v48 != buf)
               {
@@ -1512,7 +1512,7 @@ LABEL_47:
             }
           }
 
-          LOBYTE(v16) = 1;
+          LOBYTE(integerValue) = 1;
         }
 
         goto LABEL_47;
@@ -1526,9 +1526,9 @@ LABEL_47:
         goto LABEL_46;
       }
 
-      v40 = [v9 logger];
+      logger9 = [actionCopy logger];
 
-      if (v40)
+      if (logger9)
       {
         v102 = 0u;
         v103 = 0u;
@@ -1568,12 +1568,12 @@ LABEL_47:
         LODWORD(v69) = 2;
         v29 = _os_log_send_and_compose_impl();
 
-        v30 = [v9 logger];
-        v31 = v30;
+        logger2 = [actionCopy logger];
+        v31 = logger2;
         v32 = v29;
         v33 = 241;
 LABEL_22:
-        [v30 logWithMessage:v32 fromCodeLocation:"PLModelMigrationActionUtility.m" type:{v33, 16}];
+        [logger2 logWithMessage:v32 fromCodeLocation:"PLModelMigrationActionUtility.m" type:{v33, 16}];
 
         if (v29 != buf)
         {
@@ -1602,9 +1602,9 @@ LABEL_22:
         goto LABEL_46;
       }
 
-      v36 = [v9 logger];
+      logger10 = [actionCopy logger];
 
-      if (v36)
+      if (logger10)
       {
         v102 = 0u;
         v103 = 0u;
@@ -1644,8 +1644,8 @@ LABEL_22:
         LODWORD(v69) = 2;
         v29 = _os_log_send_and_compose_impl();
 
-        v30 = [v9 logger];
-        v31 = v30;
+        logger2 = [actionCopy logger];
+        v31 = logger2;
         v32 = v29;
         v33 = 224;
         goto LABEL_22;
@@ -1667,13 +1667,13 @@ LABEL_45:
   }
 
   v15 = PLMigrationGetLog();
-  LODWORD(v16) = os_log_type_enabled(v15, OS_LOG_TYPE_ERROR);
+  LODWORD(integerValue) = os_log_type_enabled(v15, OS_LOG_TYPE_ERROR);
 
-  if (v16)
+  if (integerValue)
   {
-    v17 = [v9 logger];
+    logger11 = [actionCopy logger];
 
-    if (v17)
+    if (logger11)
     {
       v102 = 0u;
       v103 = 0u;
@@ -1713,8 +1713,8 @@ LABEL_45:
       LODWORD(v69) = 2;
       v19 = _os_log_send_and_compose_impl();
 
-      v20 = [v9 logger];
-      [v20 logWithMessage:v19 fromCodeLocation:"PLModelMigrationActionUtility.m" type:{217, 16}];
+      logger12 = [actionCopy logger];
+      [logger12 logWithMessage:v19 fromCodeLocation:"PLModelMigrationActionUtility.m" type:{217, 16}];
 
       if (v19 != buf)
       {
@@ -1732,45 +1732,45 @@ LABEL_45:
       }
     }
 
-    LOBYTE(v16) = 0;
+    LOBYTE(integerValue) = 0;
   }
 
 LABEL_48:
 
-  return v16;
+  return integerValue;
 }
 
-+ (void)setHistoryTokenWithAction:(id)a3 key:(id)a4 value:(id)a5 managedObjectContext:(id)a6
++ (void)setHistoryTokenWithAction:(id)action key:(id)key value:(id)value managedObjectContext:(id)context
 {
-  v15 = a4;
-  v10 = a5;
-  v11 = a6;
-  v12 = v15;
-  v13 = v11;
-  if (!v15)
+  keyCopy = key;
+  valueCopy = value;
+  contextCopy = context;
+  v12 = keyCopy;
+  v13 = contextCopy;
+  if (!keyCopy)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:a1 file:@"PLModelMigrationActionUtility.m" lineNumber:204 description:{@"Invalid parameter not satisfying: %@", @"key"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLModelMigrationActionUtility.m" lineNumber:204 description:{@"Invalid parameter not satisfying: %@", @"key"}];
 
     v12 = 0;
   }
 
-  [PLGlobalKeyValue setGlobalValue:v10 forKey:v12 managedObjectContext:v13];
+  [PLGlobalKeyValue setGlobalValue:valueCopy forKey:v12 managedObjectContext:v13];
 }
 
-+ (id)getHistoryTokenWithAction:(id)a3 key:(id)a4 managedObjectContext:(id)a5
++ (id)getHistoryTokenWithAction:(id)action key:(id)key managedObjectContext:(id)context
 {
   v63 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v10)
+  actionCopy = action;
+  keyCopy = key;
+  contextCopy = context;
+  if (!keyCopy)
   {
-    v28 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v28 handleFailureInMethod:a2 object:a1 file:@"PLModelMigrationActionUtility.m" lineNumber:190 description:{@"Invalid parameter not satisfying: %@", @"key"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLModelMigrationActionUtility.m" lineNumber:190 description:{@"Invalid parameter not satisfying: %@", @"key"}];
   }
 
-  v12 = [PLGlobalKeyValue globalValueForKey:v10 managedObjectContext:v11];
+  v12 = [PLGlobalKeyValue globalValueForKey:keyCopy managedObjectContext:contextCopy];
   if (v12)
   {
     v13 = v12;
@@ -1785,9 +1785,9 @@ LABEL_48:
 
     if (v15)
     {
-      v16 = [v9 logger];
+      logger = [actionCopy logger];
 
-      if (v16)
+      if (logger)
       {
         v61 = 0u;
         v62 = 0u;
@@ -1827,8 +1827,8 @@ LABEL_48:
         LODWORD(v29) = 2;
         v18 = _os_log_send_and_compose_impl();
 
-        v19 = [v9 logger];
-        [v19 logWithMessage:v18 fromCodeLocation:"PLModelMigrationActionUtility.m" type:{197, 16}];
+        logger2 = [actionCopy logger];
+        [logger2 logWithMessage:v18 fromCodeLocation:"PLModelMigrationActionUtility.m" type:{197, 16}];
 
         if (v18 != buf)
         {
@@ -1857,9 +1857,9 @@ LABEL_18:
 
   if (v21)
   {
-    v22 = [v9 logger];
+    logger3 = [actionCopy logger];
 
-    if (v22)
+    if (logger3)
     {
       v61 = 0u;
       v62 = 0u;
@@ -1899,8 +1899,8 @@ LABEL_18:
       LODWORD(v29) = 2;
       v24 = _os_log_send_and_compose_impl();
 
-      v25 = [v9 logger];
-      [v25 logWithMessage:v24 fromCodeLocation:"PLModelMigrationActionUtility.m" type:{193, 16}];
+      logger4 = [actionCopy logger];
+      [logger4 logWithMessage:v24 fromCodeLocation:"PLModelMigrationActionUtility.m" type:{193, 16}];
 
       if (v24 != buf)
       {
@@ -1927,13 +1927,13 @@ LABEL_20:
   return v13;
 }
 
-+ (int64_t)resetDuplicateProcessingWithAction:(id)a3 managedObjectContext:(id)a4 error:(id *)a5
++ (int64_t)resetDuplicateProcessingWithAction:(id)action managedObjectContext:(id)context error:(id *)error
 {
   v134 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 cancellableDiscreteProgressWithTotalUnitCount:1 pendingParentUnitCount:0];
-  v10 = [[PLGlobalValues alloc] initWithManagedObjectContext:v8];
+  actionCopy = action;
+  contextCopy = context;
+  v9 = [actionCopy cancellableDiscreteProgressWithTotalUnitCount:1 pendingParentUnitCount:0];
+  v10 = [[PLGlobalValues alloc] initWithManagedObjectContext:contextCopy];
   [(PLGlobalValues *)v10 setDuplicateProcessingStatus:0];
   [(PLGlobalValues *)v10 setLastInitialDuplicateDetectorProcessingCompletedDate:0];
   v11 = MEMORY[0x1E695D5E0];
@@ -1947,7 +1947,7 @@ LABEL_20:
   v15 = [objc_alloc(MEMORY[0x1E695D538]) initWithFetchRequest:v13];
   [v15 setResultType:2];
   v96 = 0;
-  v16 = [v8 executeRequest:v15 error:&v96];
+  v16 = [contextCopy executeRequest:v15 error:&v96];
   v17 = v96;
   v18 = PLMigrationGetLog();
   v19 = v18;
@@ -1959,12 +1959,12 @@ LABEL_20:
     v91 = v10;
     if (v20)
     {
-      v21 = [v7 logger];
+      logger = [actionCopy logger];
 
-      if (v21)
+      if (logger)
       {
         v86 = v9;
-        v88 = a5;
+        errorCopy = error;
         v132 = 0u;
         v133 = 0u;
         v130 = 0u;
@@ -1998,11 +1998,11 @@ LABEL_20:
         memset(buf, 0, sizeof(buf));
         v22 = PLMigrationGetLog();
         os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT);
-        v23 = [v93 result];
+        result = [v93 result];
         v24 = objc_opt_class();
         v25 = NSStringFromClass(v24);
         v97 = 138412802;
-        v98 = v23;
+        v98 = result;
         v99 = 2114;
         v100 = v25;
         v101 = 2112;
@@ -2010,8 +2010,8 @@ LABEL_20:
         LODWORD(v84) = 32;
         v26 = _os_log_send_and_compose_impl();
 
-        v27 = [v7 logger];
-        [v27 logWithMessage:v26 fromCodeLocation:"PLModelMigrationActionUtility.m" type:{162, 0}];
+        logger2 = [actionCopy logger];
+        [logger2 logWithMessage:v26 fromCodeLocation:"PLModelMigrationActionUtility.m" type:{162, 0}];
 
         if (v26 != buf)
         {
@@ -2019,7 +2019,7 @@ LABEL_20:
         }
 
         v9 = v86;
-        a5 = v88;
+        error = errorCopy;
       }
 
       else
@@ -2027,35 +2027,35 @@ LABEL_20:
         v35 = PLMigrationGetLog();
         if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
         {
-          v36 = [v93 result];
+          result2 = [v93 result];
           v37 = objc_opt_class();
           NSStringFromClass(v37);
-          v39 = v38 = a5;
+          v39 = v38 = error;
           *buf = 138412802;
-          *&buf[4] = v36;
+          *&buf[4] = result2;
           *&buf[12] = 2114;
           *&buf[14] = v39;
           *&buf[22] = 2112;
           *&buf[24] = v17;
           _os_log_impl(&dword_19BF1F000, v35, OS_LOG_TYPE_DEFAULT, "Removed %@ duplicate background job items for %{public}@. Error: %@", buf, 0x20u);
 
-          a5 = v38;
+          error = v38;
         }
       }
     }
 
     v95 = v17;
-    v40 = [v8 save:&v95];
+    v40 = [contextCopy save:&v95];
     v41 = v95;
 
     if (v40)
     {
-      v90 = a5;
+      errorCopy2 = error;
       v42 = v9;
       v43 = MEMORY[0x1E69BF188];
-      v44 = [v7 pathManager];
-      v45 = [v44 libraryURL];
-      v46 = [v43 appPrivateDataForLibraryURL:v45];
+      pathManager = [actionCopy pathManager];
+      libraryURL = [pathManager libraryURL];
+      v46 = [v43 appPrivateDataForLibraryURL:libraryURL];
 
       v94 = v41;
       v85 = v46;
@@ -2074,9 +2074,9 @@ LABEL_42:
 
         if (v77)
         {
-          v78 = [v7 logger];
+          logger3 = [actionCopy logger];
 
-          if (v78)
+          if (logger3)
           {
             v132 = 0u;
             v133 = 0u;
@@ -2115,8 +2115,8 @@ LABEL_42:
             LODWORD(v84) = 2;
             v80 = _os_log_send_and_compose_impl();
 
-            v81 = [v7 logger];
-            [v81 logWithMessage:v80 fromCodeLocation:"PLModelMigrationActionUtility.m" type:{177, 0}];
+            logger4 = [actionCopy logger];
+            [logger4 logWithMessage:v80 fromCodeLocation:"PLModelMigrationActionUtility.m" type:{177, 0}];
 
             if (v80 != buf)
             {
@@ -2143,9 +2143,9 @@ LABEL_42:
           goto LABEL_52;
         }
 
-        a5 = v90;
+        error = errorCopy2;
         v10 = v91;
-        if (!v90)
+        if (!errorCopy2)
         {
           goto LABEL_52;
         }
@@ -2159,9 +2159,9 @@ LABEL_42:
       v9 = v42;
       if (v60)
       {
-        v61 = [v7 logger];
+        logger5 = [actionCopy logger];
 
-        if (v61)
+        if (logger5)
         {
           v132 = 0u;
           v133 = 0u;
@@ -2205,8 +2205,8 @@ LABEL_42:
           LODWORD(v84) = 22;
           v65 = _os_log_send_and_compose_impl();
 
-          v66 = [v7 logger];
-          [v66 logWithMessage:v65 fromCodeLocation:"PLModelMigrationActionUtility.m" type:{174, 0}];
+          logger6 = [actionCopy logger];
+          [logger6 logWithMessage:v65 fromCodeLocation:"PLModelMigrationActionUtility.m" type:{174, 0}];
 
           if (v65 != buf)
           {
@@ -2242,9 +2242,9 @@ LABEL_42:
       goto LABEL_22;
     }
 
-    v51 = [v7 logger];
+    logger7 = [actionCopy logger];
 
-    if (v51)
+    if (logger7)
     {
       v132 = 0u;
       v133 = 0u;
@@ -2288,8 +2288,8 @@ LABEL_42:
       LODWORD(v84) = 22;
       v55 = _os_log_send_and_compose_impl();
 
-      v56 = [v7 logger];
-      [v56 logWithMessage:v55 fromCodeLocation:"PLModelMigrationActionUtility.m" type:{180, 16}];
+      logger8 = [actionCopy logger];
+      [logger8 logWithMessage:v55 fromCodeLocation:"PLModelMigrationActionUtility.m" type:{180, 16}];
 
       if (v55 != buf)
       {
@@ -2328,11 +2328,11 @@ LABEL_23:
       goto LABEL_24;
     }
 
-    v29 = [v7 logger];
+    logger9 = [actionCopy logger];
 
-    if (v29)
+    if (logger9)
     {
-      v89 = a5;
+      errorCopy3 = error;
       v91 = v10;
       v132 = 0u;
       v133 = 0u;
@@ -2376,15 +2376,15 @@ LABEL_23:
       LODWORD(v84) = 22;
       v33 = _os_log_send_and_compose_impl();
 
-      v34 = [v7 logger];
-      [v34 logWithMessage:v33 fromCodeLocation:"PLModelMigrationActionUtility.m" type:{165, 16}];
+      logger10 = [actionCopy logger];
+      [logger10 logWithMessage:v33 fromCodeLocation:"PLModelMigrationActionUtility.m" type:{165, 16}];
 
       if (v33 != buf)
       {
         free(v33);
       }
 
-      a5 = v89;
+      error = errorCopy3;
       goto LABEL_23;
     }
 
@@ -2404,11 +2404,11 @@ LABEL_23:
 LABEL_24:
   v57 = v17;
   v48 = 3;
-  if (a5)
+  if (error)
   {
 LABEL_25:
     v58 = v57;
-    *a5 = v57;
+    *error = v57;
   }
 
 LABEL_52:
@@ -2416,13 +2416,13 @@ LABEL_52:
   return v48;
 }
 
-+ (int64_t)removeFromDuplicatesWithAction:(id)a3 managedObjectContext:(id)a4 fetchRequest:(id)a5 requiresLibraryReprocessing:(BOOL)a6 error:(id *)a7
++ (int64_t)removeFromDuplicatesWithAction:(id)action managedObjectContext:(id)context fetchRequest:(id)request requiresLibraryReprocessing:(BOOL)reprocessing error:(id *)error
 {
-  v48 = a6;
+  reprocessingCopy = reprocessing;
   v101 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  actionCopy = action;
+  contextCopy = context;
+  requestCopy = request;
   v62 = 0;
   v63 = &v62;
   v64 = 0x2020000000;
@@ -2434,22 +2434,22 @@ LABEL_52:
   v60 = __Block_byref_object_dispose__15715;
   v61 = 0;
   obj = 0;
-  v13 = [v11 executeFetchRequest:v12 error:&obj];
+  v13 = [contextCopy executeFetchRequest:requestCopy error:&obj];
   objc_storeStrong(&v61, obj);
   if ([v13 count])
   {
-    v14 = [v10 cancellableDiscreteProgressWithTotalUnitCount:objc_msgSend(v13 pendingParentUnitCount:{"count"), 0}];
+    v14 = [actionCopy cancellableDiscreteProgressWithTotalUnitCount:objc_msgSend(v13 pendingParentUnitCount:{"count"), 0}];
     v50[0] = MEMORY[0x1E69E9820];
     v50[1] = 3221225472;
     v50[2] = __132__PLModelMigrationActionUtility_removeFromDuplicatesWithAction_managedObjectContext_fetchRequest_requiresLibraryReprocessing_error___block_invoke;
     v50[3] = &unk_1E756DBE0;
-    v47 = v10;
+    v47 = actionCopy;
     v51 = v47;
     v53 = &v56;
     v54 = &v62;
     v15 = v14;
     v52 = v15;
-    v16 = [v11 enumerateWithIncrementalSaveUsingObjects:v13 withBlock:v50];
+    v16 = [contextCopy enumerateWithIncrementalSaveUsingObjects:v13 withBlock:v50];
     if (v16 && !v57[5])
     {
       objc_storeStrong(v57 + 5, v16);
@@ -2463,8 +2463,8 @@ LABEL_52:
 
       if (v18)
       {
-        v19 = [v47 logger];
-        v20 = v19 == 0;
+        logger = [v47 logger];
+        v20 = logger == 0;
 
         if (!v20)
         {
@@ -2507,8 +2507,8 @@ LABEL_52:
           LODWORD(v45) = 8;
           v23 = _os_log_send_and_compose_impl();
 
-          v24 = [v47 logger];
-          [v24 logWithMessage:v23 fromCodeLocation:"PLModelMigrationActionUtility.m" type:{128, 0}];
+          logger2 = [v47 logger];
+          [logger2 logWithMessage:v23 fromCodeLocation:"PLModelMigrationActionUtility.m" type:{128, 0}];
 
           goto LABEL_14;
         }
@@ -2533,12 +2533,12 @@ LABEL_21:
 
       if (v26)
       {
-        v27 = [v47 logger];
-        v28 = v27 == 0;
+        logger3 = [v47 logger];
+        v28 = logger3 == 0;
 
         if (!v28)
         {
-          v46 = a7;
+          errorCopy = error;
           v99 = 0u;
           v100 = 0u;
           v97 = 0u;
@@ -2582,9 +2582,9 @@ LABEL_21:
           LODWORD(v45) = 22;
           v23 = _os_log_send_and_compose_impl();
 
-          a7 = v46;
-          v33 = [v47 logger];
-          [v33 logWithMessage:v23 fromCodeLocation:"PLModelMigrationActionUtility.m" type:{130, 16}];
+          error = errorCopy;
+          logger4 = [v47 logger];
+          [logger4 logWithMessage:v23 fromCodeLocation:"PLModelMigrationActionUtility.m" type:{130, 16}];
 
 LABEL_14:
           if (v23 != buf)
@@ -2614,10 +2614,10 @@ LABEL_14:
 
 LABEL_22:
 
-    if (v48 && v63[3] == 1 && (MEMORY[0x19EAEE520]() & 1) == 0)
+    if (reprocessingCopy && v63[3] == 1 && (MEMORY[0x19EAEE520]() & 1) == 0)
     {
       v49 = 0;
-      v39 = [PLModelMigrationActionUtility resetDuplicateProcessingWithAction:v47 managedObjectContext:v11 error:&v49];
+      v39 = [PLModelMigrationActionUtility resetDuplicateProcessingWithAction:v47 managedObjectContext:contextCopy error:&v49];
       v40 = v49;
       v63[3] = v39;
     }
@@ -2633,10 +2633,10 @@ LABEL_22:
 LABEL_26:
   v41 = v63[3];
   v42 = v57[5];
-  if (v41 != 1 && a7)
+  if (v41 != 1 && error)
   {
     v42 = v42;
-    *a7 = v42;
+    *error = v42;
   }
 
   v43 = v63[3];
@@ -2663,32 +2663,32 @@ uint64_t __132__PLModelMigrationActionUtility_removeFromDuplicatesWithAction_man
   return [*(a1 + 40) setCompletedUnitCount:{objc_msgSend(*(a1 + 40), "completedUnitCount") + 1}];
 }
 
-+ (BOOL)processExtendedAttributesWithAction:(id)a3 asset:(id)a4 metadata:(id)a5 error:(id *)a6
++ (BOOL)processExtendedAttributesWithAction:(id)action asset:(id)asset metadata:(id)metadata error:(id *)error
 {
   v66 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
+  actionCopy = action;
+  assetCopy = asset;
   v30 = 0;
-  v11 = [v10 updateExtendedAttributesWithMetadata:a5 error:&v30];
+  v11 = [assetCopy updateExtendedAttributesWithMetadata:metadata error:&v30];
   v12 = v30;
   if (v11)
   {
-    v13 = [v10 extendedAttributes];
-    v14 = [v13 dateCreated];
-    if (v14)
+    extendedAttributes = [assetCopy extendedAttributes];
+    dateCreated = [extendedAttributes dateCreated];
+    if (dateCreated)
     {
-      v15 = v14;
-      v16 = [v13 timezoneName];
-      if (v16)
+      master = dateCreated;
+      timezoneName = [extendedAttributes timezoneName];
+      if (timezoneName)
       {
 
 LABEL_14:
         goto LABEL_15;
       }
 
-      v25 = [v13 timezoneOffset];
+      timezoneOffset = [extendedAttributes timezoneOffset];
 
-      if (v25)
+      if (timezoneOffset)
       {
 LABEL_15:
 
@@ -2696,11 +2696,11 @@ LABEL_15:
       }
     }
 
-    v15 = [v10 master];
-    if (v15)
+    master = [assetCopy master];
+    if (master)
     {
-      [PLManagedAsset fixMissingOriginalDateCreatedIfNeededForAsset:v10 withCloudMaster:v15];
-      [PLManagedAsset fixMissingOriginalTimezoneIfNeededForAsset:v10];
+      [PLManagedAsset fixMissingOriginalDateCreatedIfNeededForAsset:assetCopy withCloudMaster:master];
+      [PLManagedAsset fixMissingOriginalTimezoneIfNeededForAsset:assetCopy];
     }
 
     goto LABEL_14;
@@ -2711,22 +2711,22 @@ LABEL_15:
 
   if (v18)
   {
-    v19 = [v9 logger];
+    logger = [actionCopy logger];
 
-    if (!v19)
+    if (!logger)
     {
       v27 = PLMigrationGetLog();
       if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
       {
-        v28 = [v10 uuidDescription];
+        uuidDescription = [assetCopy uuidDescription];
         *buf = 138543618;
-        *&buf[4] = v28;
+        *&buf[4] = uuidDescription;
         *&buf[12] = 2112;
         *&buf[14] = v12;
         _os_log_impl(&dword_19BF1F000, v27, OS_LOG_TYPE_INFO, "Failed updating attributes for asset %{public}@. Error: %@", buf, 0x16u);
       }
 
-      if (a6)
+      if (error)
       {
         goto LABEL_10;
       }
@@ -2767,16 +2767,16 @@ LABEL_15:
     memset(buf, 0, sizeof(buf));
     v20 = PLMigrationGetLog();
     os_log_type_enabled(v20, OS_LOG_TYPE_INFO);
-    v21 = [v10 uuidDescription];
+    uuidDescription2 = [assetCopy uuidDescription];
     v31 = 138543618;
-    v32 = v21;
+    v32 = uuidDescription2;
     v33 = 2112;
     v34 = v12;
     LODWORD(v29) = 22;
     v22 = _os_log_send_and_compose_impl();
 
-    v23 = [v9 logger];
-    [v23 logWithMessage:v22 fromCodeLocation:"PLModelMigrationActionUtility.m" type:{100, 1}];
+    logger2 = [actionCopy logger];
+    [logger2 logWithMessage:v22 fromCodeLocation:"PLModelMigrationActionUtility.m" type:{100, 1}];
 
     if (v22 != buf)
     {
@@ -2784,11 +2784,11 @@ LABEL_15:
     }
   }
 
-  if (a6)
+  if (error)
   {
 LABEL_10:
     v24 = v12;
-    *a6 = v12;
+    *error = v12;
   }
 
 LABEL_16:
@@ -2796,20 +2796,20 @@ LABEL_16:
   return v11;
 }
 
-+ (int64_t)updateExtendedAttributesWithAction:(id)a3 managedObjectContext:(id)a4 fetchRequest:(id)a5 useObjectIDResumeMarker:(BOOL)a6 error:(id *)a7
++ (int64_t)updateExtendedAttributesWithAction:(id)action managedObjectContext:(id)context fetchRequest:(id)request useObjectIDResumeMarker:(BOOL)marker error:(id *)error
 {
-  v8 = a6;
+  markerCopy = marker;
   v30[4] = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  [v14 setFetchBatchSize:100];
+  actionCopy = action;
+  contextCopy = context;
+  requestCopy = request;
+  [requestCopy setFetchBatchSize:100];
   v30[0] = @"extendedAttributes";
   v30[1] = @"master";
   v30[2] = @"master.mediaMetadata";
   v30[3] = @"modernResources";
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v30 count:4];
-  [v14 setRelationshipKeyPathsForPrefetching:v15];
+  [requestCopy setRelationshipKeyPathsForPrefetching:v15];
 
   v24 = 0;
   v25 = &v24;
@@ -2821,16 +2821,16 @@ LABEL_16:
   v20[1] = 3221225472;
   v20[2] = __132__PLModelMigrationActionUtility_updateExtendedAttributesWithAction_managedObjectContext_fetchRequest_useObjectIDResumeMarker_error___block_invoke;
   v20[3] = &unk_1E7567C80;
-  v23 = a1;
-  v16 = v12;
+  selfCopy = self;
+  v16 = actionCopy;
   v21 = v16;
   v22 = &v24;
-  v17 = [a1 processManagedObjectWithAction:v16 managedObjectContext:v13 fetchRequest:v14 useObjectIDResumeMarker:v8 error:a7 processingBlock:v20];
+  v17 = [self processManagedObjectWithAction:v16 managedObjectContext:contextCopy fetchRequest:requestCopy useObjectIDResumeMarker:markerCopy error:error processingBlock:v20];
   v18 = v25[5];
-  if (!v17 && a7)
+  if (!v17 && error)
   {
     v18 = v18;
-    *a7 = v18;
+    *error = v18;
   }
 
   _Block_object_dispose(&v24, 8);
@@ -2850,17 +2850,17 @@ void __132__PLModelMigrationActionUtility_updateExtendedAttributesWithAction_man
   objc_storeStrong((v7 + 40), obj);
 }
 
-+ (int64_t)removeOrphanedObjectsWithAction:(id)a3 managedObjectContext:(id)a4 fetchRequest:(id)a5 error:(id *)a6
++ (int64_t)removeOrphanedObjectsWithAction:(id)action managedObjectContext:(id)context fetchRequest:(id)request error:(id *)error
 {
   v76 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a5;
+  actionCopy = action;
+  requestCopy = request;
   v11 = MEMORY[0x1E695D538];
-  v12 = a4;
-  v13 = [[v11 alloc] initWithFetchRequest:v10];
+  contextCopy = context;
+  v13 = [[v11 alloc] initWithFetchRequest:requestCopy];
   [v13 setResultType:2];
   v40 = 0;
-  v14 = [v12 executeRequest:v13 error:&v40];
+  v14 = [contextCopy executeRequest:v13 error:&v40];
 
   v15 = v40;
   v16 = PLMigrationGetLog();
@@ -2872,9 +2872,9 @@ void __132__PLModelMigrationActionUtility_updateExtendedAttributesWithAction_man
 
     if (v19)
     {
-      v20 = [v9 logger];
+      logger = [actionCopy logger];
 
-      if (v20)
+      if (logger)
       {
         v74 = 0u;
         v75 = 0u;
@@ -2909,17 +2909,17 @@ void __132__PLModelMigrationActionUtility_updateExtendedAttributesWithAction_man
         memset(buf, 0, sizeof(buf));
         v21 = PLMigrationGetLog();
         os_log_type_enabled(v21, OS_LOG_TYPE_INFO);
-        v22 = [v14 result];
-        v23 = [v10 entityName];
+        result = [v14 result];
+        entityName = [requestCopy entityName];
         v41 = 138543618;
-        v42 = v22;
+        v42 = result;
         v43 = 2114;
-        v44 = v23;
+        v44 = entityName;
         LODWORD(v39) = 22;
         v24 = _os_log_send_and_compose_impl();
 
-        v25 = [v9 logger];
-        [v25 logWithMessage:v24 fromCodeLocation:"PLModelMigrationActionUtility.m" type:{50, 1}];
+        logger2 = [actionCopy logger];
+        [logger2 logWithMessage:v24 fromCodeLocation:"PLModelMigrationActionUtility.m" type:{50, 1}];
 
         if (v24 != buf)
         {
@@ -2932,12 +2932,12 @@ void __132__PLModelMigrationActionUtility_updateExtendedAttributesWithAction_man
         v32 = PLMigrationGetLog();
         if (os_log_type_enabled(v32, OS_LOG_TYPE_INFO))
         {
-          v33 = [v14 result];
-          v34 = [v10 entityName];
+          result2 = [v14 result];
+          entityName2 = [requestCopy entityName];
           *buf = 138543618;
-          *&buf[4] = v33;
+          *&buf[4] = result2;
           *&buf[12] = 2114;
-          *&buf[14] = v34;
+          *&buf[14] = entityName2;
           _os_log_impl(&dword_19BF1F000, v32, OS_LOG_TYPE_INFO, "Deleted %{public}@ %{public}@ objects", buf, 0x16u);
         }
       }
@@ -2945,11 +2945,11 @@ void __132__PLModelMigrationActionUtility_updateExtendedAttributesWithAction_man
       v18 = 1;
     }
 
-    if (a6)
+    if (error)
     {
 LABEL_15:
       v35 = v15;
-      *a6 = v15;
+      *error = v15;
     }
   }
 
@@ -2959,9 +2959,9 @@ LABEL_15:
 
     if (v26)
     {
-      v27 = [v9 logger];
+      logger3 = [actionCopy logger];
 
-      if (v27)
+      if (logger3)
       {
         v74 = 0u;
         v75 = 0u;
@@ -2996,16 +2996,16 @@ LABEL_15:
         memset(buf, 0, sizeof(buf));
         v28 = PLMigrationGetLog();
         os_log_type_enabled(v28, OS_LOG_TYPE_ERROR);
-        v29 = [v10 entityName];
+        entityName3 = [requestCopy entityName];
         v41 = 138543618;
-        v42 = v29;
+        v42 = entityName3;
         v43 = 2112;
         v44 = v15;
         LODWORD(v39) = 22;
         v30 = _os_log_send_and_compose_impl();
 
-        v31 = [v9 logger];
-        [v31 logWithMessage:v30 fromCodeLocation:"PLModelMigrationActionUtility.m" type:{53, 16}];
+        logger4 = [actionCopy logger];
+        [logger4 logWithMessage:v30 fromCodeLocation:"PLModelMigrationActionUtility.m" type:{53, 16}];
 
         if (v30 != buf)
         {
@@ -3018,9 +3018,9 @@ LABEL_15:
         v37 = PLMigrationGetLog();
         if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
         {
-          v38 = [v10 entityName];
+          entityName4 = [requestCopy entityName];
           *buf = 138543618;
-          *&buf[4] = v38;
+          *&buf[4] = entityName4;
           *&buf[12] = 2112;
           *&buf[14] = v15;
           _os_log_impl(&dword_19BF1F000, v37, OS_LOG_TYPE_ERROR, "Failed to delete orphaned %{public}@. Error: %@", buf, 0x16u);
@@ -3029,7 +3029,7 @@ LABEL_15:
     }
 
     v18 = 3;
-    if (a6)
+    if (error)
     {
       goto LABEL_15;
     }

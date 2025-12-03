@@ -13,7 +13,7 @@
   *(x8_0 + 32) = 0;
   *(x8_0 + 16) = v5;
   *(x8_0 + 40) = xmmword_2603426F0;
-  return [a1 getValue:? size:?];
+  return [self getValue:? size:?];
 }
 
 @end

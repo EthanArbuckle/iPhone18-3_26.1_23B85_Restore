@@ -1,6 +1,6 @@
 @interface TUIAXCustomActionsCollector
 - (TUIAXCustomActionsCollector)init;
-- (void)addActionTriggerHandler:(id)a3 controlIdentifier:(id)a4;
+- (void)addActionTriggerHandler:(id)handler controlIdentifier:(id)identifier;
 @end
 
 @implementation TUIAXCustomActionsCollector
@@ -24,18 +24,18 @@
   return v2;
 }
 
-- (void)addActionTriggerHandler:(id)a3 controlIdentifier:(id)a4
+- (void)addActionTriggerHandler:(id)handler controlIdentifier:(id)identifier
 {
-  v5 = a3;
-  v27 = a4;
-  v6 = [v5 actionsData];
+  handlerCopy = handler;
+  identifierCopy = identifier;
+  actionsData = [handlerCopy actionsData];
   v28 = objc_opt_new();
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v26 = v6;
-  obj = [v6 allTriggers];
+  v26 = actionsData;
+  obj = [actionsData allTriggers];
   v7 = [obj countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (v7)
   {
@@ -54,9 +54,9 @@
         v11 = *(*(&v29 + 1) + 8 * v10);
         v12 = [TUIAXCustomAction alloc];
         v13 = [v26 behaviorDataForTrigger:v11];
-        v14 = [v5 actionObject];
-        v15 = [v5 actionDelegate];
-        v16 = [(TUIAXCustomAction *)v12 initWithTrigger:v11 actionData:v13 actionObject:v14 actionDelegate:v15 controlIdentifier:v27];
+        actionObject = [handlerCopy actionObject];
+        actionDelegate = [handlerCopy actionDelegate];
+        v16 = [(TUIAXCustomAction *)v12 initWithTrigger:v11 actionData:v13 actionObject:actionObject actionDelegate:actionDelegate controlIdentifier:identifierCopy];
 
         [v28 setObject:v16 forKey:v11];
         if ([v11 isEqualToString:@"press"])
@@ -74,19 +74,19 @@
     while (v8);
   }
 
-  v17 = [v5 refId];
-  if (v17)
+  refId = [handlerCopy refId];
+  if (refId)
   {
-    v18 = v17;
+    v18 = refId;
     customActionByRefIdAndTrigger = self->_customActionByRefIdAndTrigger;
-    v20 = [v5 refId];
-    v21 = [(NSMutableDictionary *)customActionByRefIdAndTrigger objectForKey:v20];
+    refId2 = [handlerCopy refId];
+    v21 = [(NSMutableDictionary *)customActionByRefIdAndTrigger objectForKey:refId2];
 
     if (!v21)
     {
       v22 = self->_customActionByRefIdAndTrigger;
-      v23 = [v5 refId];
-      [(NSMutableDictionary *)v22 setObject:v28 forKey:v23];
+      refId3 = [handlerCopy refId];
+      [(NSMutableDictionary *)v22 setObject:v28 forKey:refId3];
     }
   }
 }

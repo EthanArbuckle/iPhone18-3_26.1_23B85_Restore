@@ -1,26 +1,26 @@
 @interface RMDataStreamHandler
-- (BOOL)endpoint:(id)a3 shouldStartStreamingDataToReceiver:(id)a4;
-- (RMDataStreamHandler)initWithEndpoint:(id)a3 isInternal:(BOOL)a4;
+- (BOOL)endpoint:(id)endpoint shouldStartStreamingDataToReceiver:(id)receiver;
+- (RMDataStreamHandler)initWithEndpoint:(id)endpoint isInternal:(BOOL)internal;
 - (void)dealloc;
-- (void)endpoint:(id)a3 didReceiveMessage:(id)a4 withData:(id)a5 replyBlock:(id)a6;
-- (void)endpoint:(id)a3 didReceiveStreamingRequest:(id)a4 withData:(id)a5;
-- (void)endpointShouldStopStreamingData:(id)a3;
+- (void)endpoint:(id)endpoint didReceiveMessage:(id)message withData:(id)data replyBlock:(id)block;
+- (void)endpoint:(id)endpoint didReceiveStreamingRequest:(id)request withData:(id)data;
+- (void)endpointShouldStopStreamingData:(id)data;
 @end
 
 @implementation RMDataStreamHandler
 
-- (RMDataStreamHandler)initWithEndpoint:(id)a3 isInternal:(BOOL)a4
+- (RMDataStreamHandler)initWithEndpoint:(id)endpoint isInternal:(BOOL)internal
 {
-  v7 = a3;
+  endpointCopy = endpoint;
   v11.receiver = self;
   v11.super_class = RMDataStreamHandler;
   v8 = [(RMDataStreamHandler *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_endpoint, a3);
-    sub_10001541C(v7, v9);
-    v9->_isInternal = a4;
+    objc_storeStrong(&v8->_endpoint, endpoint);
+    sub_10001541C(endpointCopy, v9);
+    v9->_isInternal = internal;
     v9->_dataProviderStreaming = 0;
   }
 
@@ -50,29 +50,29 @@
   [(RMDataStreamHandler *)&v4 dealloc];
 }
 
-- (void)endpoint:(id)a3 didReceiveMessage:(id)a4 withData:(id)a5 replyBlock:(id)a6
+- (void)endpoint:(id)endpoint didReceiveMessage:(id)message withData:(id)data replyBlock:(id)block
 {
-  v26 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  endpointCopy = endpoint;
+  messageCopy = message;
+  dataCopy = data;
+  blockCopy = block;
   if (!self)
   {
     goto LABEL_14;
   }
 
-  for (i = self->_endpoint; i != v26; i = 0)
+  for (i = self->_endpoint; i != endpointCopy; i = 0)
   {
     v14 = sub_10000942C();
-    v11 = "self.endpoint == endpoint";
+    dataCopy = "self.endpoint == endpoint";
     if (sub_1000086B4(v14))
     {
       sub_10000861C();
       sub_100009B60(&_mh_execute_header, v15, v16, "{msg%{public}.0s:Endpoint must be same as the initially passed endpoint, event:%{public, location:escape_only}s, condition:%{private, location:escape_only}s}", v27);
     }
 
-    v10 = sub_10000942C();
-    if (os_signpost_enabled(v10))
+    messageCopy = sub_10000942C();
+    if (os_signpost_enabled(messageCopy))
     {
       sub_10000861C();
       sub_100009B50();
@@ -87,18 +87,18 @@
     }
 
     sub_100009BD8();
-    v12 = abort_report_np();
+    blockCopy = abort_report_np();
 LABEL_14:
     ;
   }
 }
 
-- (void)endpoint:(id)a3 didReceiveStreamingRequest:(id)a4 withData:(id)a5
+- (void)endpoint:(id)endpoint didReceiveStreamingRequest:(id)request withData:(id)data
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
+  endpointCopy = endpoint;
+  requestCopy = request;
+  dataCopy = data;
+  v11 = dataCopy;
   if (self)
   {
     endpoint = self->_endpoint;
@@ -109,9 +109,9 @@ LABEL_14:
     endpoint = 0;
   }
 
-  if (endpoint == v8)
+  if (endpoint == endpointCopy)
   {
-    if (!v10)
+    if (!dataCopy)
     {
       sub_100009BE4();
       if (v13)
@@ -179,7 +179,7 @@ LABEL_14:
         _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_FAULT, "Received a new streaming request while the previous streaming is still active", buf, 2u);
       }
 
-      [(RMDataStreamHandler *)self endpointShouldStopStreamingData:v8];
+      [(RMDataStreamHandler *)self endpointShouldStopStreamingData:endpointCopy];
     }
 
     sub_100013E3C(self, 0);
@@ -187,24 +187,24 @@ LABEL_14:
     if (self->_isInternal)
     {
       v25 = v16;
-      if ([v9 isEqualToString:@"kRMStartStreamingDummyData"])
+      if ([requestCopy isEqualToString:@"kRMStartStreamingDummyData"])
       {
         v26 = -[RMDummyDataProviderConfiguration initWithUniqueIdentifier:updateInterval:]([RMDummyDataProviderConfiguration alloc], "initWithUniqueIdentifier:updateInterval:", v60, [v21 unsignedLongLongValue]);
         v39 = [RMDummyDataProvider alloc];
-        v29 = sub_100015290(v8);
+        v29 = sub_100015290(endpointCopy);
         v40 = [(RMDummyDataProvider *)v39 initWithConfiguration:v26 receiverQueue:v29];
         sub_100013E3C(self, v40);
 
         goto LABEL_39;
       }
 
-      if ([v9 isEqualToString:@"kRMStartStreamingAudioListenerPose"])
+      if ([requestCopy isEqualToString:@"kRMStartStreamingAudioListenerPose"])
       {
         v26 = [v59 objectForKeyedSubscript:@"TempestOptions"];
         v27 = [v59 objectForKeyedSubscript:@"ForceSessionRestart"];
-        v28 = [v27 BOOLValue];
+        bOOLValue = [v27 BOOLValue];
 
-        v29 = [[RMAudioListenerPoseProviderConfiguration alloc] initWithUniqueIdentifier:v60 tempestOptions:v26 forceSessionRestart:v28];
+        v29 = [[RMAudioListenerPoseProviderConfiguration alloc] initWithUniqueIdentifier:v60 tempestOptions:v26 forceSessionRestart:bOOLValue];
         v30 = [RMAudioListenerPoseProvider alloc];
         v31 = sub_100009BCC();
         v32 = sub_100015290(v31);
@@ -221,18 +221,18 @@ LABEL_40:
     }
 
     v25 = v16;
-    if ([v9 isEqualToString:@"kRMStartStreamingHeadphoneMotion"])
+    if ([requestCopy isEqualToString:@"kRMStartStreamingHeadphoneMotion"])
     {
       v41 = [v59 objectForKeyedSubscript:@"lowLatency"];
-      v42 = [v41 BOOLValue];
+      bOOLValue2 = [v41 BOOLValue];
 
       v43 = [RMHeadphoneMotionProvider alloc];
       v44 = sub_100009BCC();
       v26 = sub_100015290(v44);
-      v38 = sub_100012A50(v41, v26, v42);
+      v38 = sub_100012A50(v41, v26, bOOLValue2);
     }
 
-    else if ([v9 isEqualToString:@"kRMStartStreamingHeadphoneActivity"])
+    else if ([requestCopy isEqualToString:@"kRMStartStreamingHeadphoneActivity"])
     {
       v45 = [RMHeadphoneActivityProvider alloc];
       v46 = sub_100009BCC();
@@ -242,18 +242,18 @@ LABEL_40:
 
     else
     {
-      if (![v9 isEqualToString:@"kRMStartStreamingHeadphoneStatus"])
+      if (![requestCopy isEqualToString:@"kRMStartStreamingHeadphoneStatus"])
       {
         goto LABEL_40;
       }
 
       v34 = [v59 objectForKeyedSubscript:kCMHeadphoneRequireActivitySupport];
-      v35 = [v34 BOOLValue];
+      bOOLValue3 = [v34 BOOLValue];
 
       v36 = [RMHeadphoneStatusProvider alloc];
       v37 = sub_100009BCC();
       v26 = sub_100015290(v37);
-      v38 = [v34 initWithReceiverQueue:v26 requireActivitySupport:v35];
+      v38 = [v34 initWithReceiverQueue:v26 requireActivitySupport:bOOLValue3];
     }
 
     v29 = v38;
@@ -263,15 +263,15 @@ LABEL_40:
 
   v47 = sub_10000942C();
   v11 = "assert";
-  v9 = "self.endpoint == endpoint";
+  requestCopy = "self.endpoint == endpoint";
   if (sub_1000086B4(v47))
   {
     sub_100009B24();
     sub_100009B60(&_mh_execute_header, v48, v49, "{msg%{public}.0s:Endpoint must be same as the initially passed endpoint, event:%{public, location:escape_only}s, condition:%{private, location:escape_only}s}", buf);
   }
 
-  v8 = sub_10000942C();
-  if (os_signpost_enabled(v8))
+  endpointCopy = sub_10000942C();
+  if (os_signpost_enabled(endpointCopy))
   {
     sub_100009B24();
     sub_100009B50();
@@ -300,10 +300,10 @@ LABEL_7:
 LABEL_9:
 }
 
-- (BOOL)endpoint:(id)a3 shouldStartStreamingDataToReceiver:(id)a4
+- (BOOL)endpoint:(id)endpoint shouldStartStreamingDataToReceiver:(id)receiver
 {
-  v6 = a3;
-  v7 = a4;
+  endpointCopy = endpoint;
+  receiverCopy = receiver;
   if (self)
   {
     endpoint = self->_endpoint;
@@ -314,18 +314,18 @@ LABEL_9:
     endpoint = 0;
   }
 
-  if (endpoint != v6)
+  if (endpoint != endpointCopy)
   {
     v34 = sub_10000942C();
-    v7 = "self.endpoint == endpoint";
+    receiverCopy = "self.endpoint == endpoint";
     if (sub_1000086B4(v34))
     {
       sub_100009ACC(1.7164e-36);
       sub_100009B60(&_mh_execute_header, v35, v36, "{msg%{public}.0s:Endpoint must be same as the initially passed endpoint, event:%{public, location:escape_only}s, condition:%{private, location:escape_only}s}", buf);
     }
 
-    v6 = sub_10000942C();
-    if (os_signpost_enabled(v6))
+    endpointCopy = sub_10000942C();
+    if (os_signpost_enabled(endpointCopy))
     {
       sub_100009ACC(1.7164e-36);
       sub_100009B50();
@@ -366,7 +366,7 @@ LABEL_34:
   }
 
   v13 = v9;
-  v14 = sub_100012944(&v6->isa);
+  v14 = sub_100012944(&endpointCopy->isa);
   objc_setProperty_nonatomic_copy(self, v15, v14, 24);
 
   if (!self->_endpointName)
@@ -381,7 +381,7 @@ LABEL_34:
     if (os_log_type_enabled(qword_10002C0D0, OS_LOG_TYPE_FAULT))
     {
       *buf = 138477827;
-      v55 = v6;
+      v55 = endpointCopy;
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_FAULT, "Failed to determine the endpoint name for endpoint: %{private}@", buf, 0xCu);
     }
   }
@@ -432,10 +432,10 @@ LABEL_34:
   v48[1] = 3221225472;
   v48[2] = sub_100009560;
   v48[3] = &unk_100024ED0;
-  v49 = v6;
+  v49 = endpointCopy;
   v29 = v13;
   v50 = v29;
-  v30 = v7;
+  v30 = receiverCopy;
   v51 = v30;
   v31 = [RBSProcessMonitor monitorWithConfiguration:v48];
   sub_10000FA48(self, v31);
@@ -457,10 +457,10 @@ LABEL_10:
   return v11;
 }
 
-- (void)endpointShouldStopStreamingData:(id)a3
+- (void)endpointShouldStopStreamingData:(id)data
 {
-  v5 = a3;
-  p_super = &v5->super;
+  dataCopy = data;
+  p_super = &dataCopy->super;
   if (self)
   {
     endpoint = self->_endpoint;
@@ -471,7 +471,7 @@ LABEL_10:
     endpoint = 0;
   }
 
-  if (endpoint == v5)
+  if (endpoint == dataCopy)
   {
     p_info = RMFacePoseCaptureContext.info;
     if (qword_10002C0C8 == -1)

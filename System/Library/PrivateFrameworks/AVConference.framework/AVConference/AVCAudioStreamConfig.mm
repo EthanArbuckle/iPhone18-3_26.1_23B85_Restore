@@ -1,12 +1,12 @@
 @interface AVCAudioStreamConfig
-+ (int)clientCodecCMRModeModeWithEVSCMRMode:(int)a3;
-+ (int)codecRateModeForClientCodecRateMode:(int64_t)a3;
-+ (int)evsCMRModeForClientCodecCMRMode:(int)a3;
-+ (int64_t)clientCodecRateModeForCodecRateMode:(int)a3;
-+ (int64_t)clientCodecTypeWithCodecType:(int64_t)a3;
-+ (int64_t)clientStreamModeWithStreamMode:(int64_t)a3;
-+ (int64_t)codecTypeWithClientCodecType:(int64_t)a3;
-+ (int64_t)streamModeWithClientStreamMode:(int64_t)a3;
++ (int)clientCodecCMRModeModeWithEVSCMRMode:(int)mode;
++ (int)codecRateModeForClientCodecRateMode:(int64_t)mode;
++ (int)evsCMRModeForClientCodecCMRMode:(int)mode;
++ (int64_t)clientCodecRateModeForCodecRateMode:(int)mode;
++ (int64_t)clientCodecTypeWithCodecType:(int64_t)type;
++ (int64_t)clientStreamModeWithStreamMode:(int64_t)mode;
++ (int64_t)codecTypeWithClientCodecType:(int64_t)type;
++ (int64_t)streamModeWithClientStreamMode:(int64_t)mode;
 - (AVCAudioStreamConfig)init;
 - (BOOL)isCNValid;
 - (BOOL)isChannelCountValid;
@@ -21,7 +21,7 @@
 - (void)isDTMFValid;
 - (void)isRedValid;
 - (void)isSystemAudioCaptureMuteBehaviorValid;
-- (void)setUpWithDictionary:(id)a3;
+- (void)setUpWithDictionary:(id)dictionary;
 @end
 
 @implementation AVCAudioStreamConfig
@@ -163,7 +163,7 @@ LABEL_11:
         v18 = 2112;
         v19 = v3;
         v20 = 2048;
-        v21 = self;
+        selfCopy = self;
         v6 = " [%s] %s:%d %@(%p) ";
         v7 = v10;
         v8 = 48;
@@ -187,37 +187,37 @@ LABEL_11:
   return [(AVCAudioStreamConfig *)self isSystemAudioCaptureMuteBehaviorValid];
 }
 
-+ (int64_t)codecTypeWithClientCodecType:(int64_t)a3
++ (int64_t)codecTypeWithClientCodecType:(int64_t)type
 {
-  if (a3 > 0x11)
+  if (type > 0x11)
   {
     return 0;
   }
 
   else
   {
-    return qword_1DBD51598[a3];
+    return qword_1DBD51598[type];
   }
 }
 
-+ (int64_t)clientCodecTypeWithCodecType:(int64_t)a3
++ (int64_t)clientCodecTypeWithCodecType:(int64_t)type
 {
-  if ((a3 - 2) > 0x12)
+  if ((type - 2) > 0x12)
   {
     return 0;
   }
 
   else
   {
-    return qword_1DBD51628[a3 - 2];
+    return qword_1DBD51628[type - 2];
   }
 }
 
-+ (int64_t)streamModeWithClientStreamMode:(int64_t)a3
++ (int64_t)streamModeWithClientStreamMode:(int64_t)mode
 {
-  if (a3 < 0xC)
+  if (mode < 0xC)
   {
-    return a3 + 1;
+    return mode + 1;
   }
 
   if (VRTraceGetErrorLogLevelForModule() >= 3)
@@ -232,22 +232,22 @@ LABEL_11:
   return 0;
 }
 
-+ (int64_t)clientStreamModeWithStreamMode:(int64_t)a3
++ (int64_t)clientStreamModeWithStreamMode:(int64_t)mode
 {
-  if ((a3 - 2) > 0xA)
+  if ((mode - 2) > 0xA)
   {
     return 0;
   }
 
   else
   {
-    return qword_1DBD516C0[a3 - 2];
+    return qword_1DBD516C0[mode - 2];
   }
 }
 
-+ (int)clientCodecCMRModeModeWithEVSCMRMode:(int)a3
++ (int)clientCodecCMRModeModeWithEVSCMRMode:(int)mode
 {
-  if (a3 == -1)
+  if (mode == -1)
   {
     v3 = -1;
   }
@@ -257,7 +257,7 @@ LABEL_11:
     v3 = 0;
   }
 
-  if (a3 == 1)
+  if (mode == 1)
   {
     return 1;
   }
@@ -268,9 +268,9 @@ LABEL_11:
   }
 }
 
-+ (int)evsCMRModeForClientCodecCMRMode:(int)a3
++ (int)evsCMRModeForClientCodecCMRMode:(int)mode
 {
-  if (a3 == -1)
+  if (mode == -1)
   {
     v3 = -1;
   }
@@ -280,7 +280,7 @@ LABEL_11:
     v3 = 0;
   }
 
-  if (a3 == 1)
+  if (mode == 1)
   {
     return 1;
   }
@@ -291,29 +291,29 @@ LABEL_11:
   }
 }
 
-+ (int)codecRateModeForClientCodecRateMode:(int64_t)a3
++ (int)codecRateModeForClientCodecRateMode:(int64_t)mode
 {
-  if (a3 > 0x15)
+  if (mode > 0x15)
   {
     return -1;
   }
 
   else
   {
-    return dword_1DBD51718[a3];
+    return dword_1DBD51718[mode];
   }
 }
 
-+ (int64_t)clientCodecRateModeForCodecRateMode:(int)a3
++ (int64_t)clientCodecRateModeForCodecRateMode:(int)mode
 {
-  if ((a3 - 1) > 0x14)
+  if ((mode - 1) > 0x14)
   {
     return 0;
   }
 
   else
   {
-    return qword_1DBD51770[a3 - 1];
+    return qword_1DBD51770[mode - 1];
   }
 }
 
@@ -368,9 +368,9 @@ LABEL_11:
         v14 = 2112;
         v15 = v4;
         v16 = 2048;
-        v17 = self;
+        selfCopy = self;
         v18 = 2048;
-        v19 = [(AVCAudioStreamConfig *)self dtmfPayloadType];
+        dtmfPayloadType = [(AVCAudioStreamConfig *)self dtmfPayloadType];
         _os_log_error_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) Invalid DTMF type=%lu", &v8, 0x3Au);
       }
     }
@@ -434,9 +434,9 @@ LABEL_11:
         v14 = 2112;
         v15 = v4;
         v16 = 2048;
-        v17 = self;
+        selfCopy = self;
         v18 = 2048;
-        v19 = [(AVCAudioStreamConfig *)self cnPayloadType];
+        cnPayloadType = [(AVCAudioStreamConfig *)self cnPayloadType];
         _os_log_error_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) Invalid CN type=%lu", &v8, 0x3Au);
       }
     }
@@ -503,11 +503,11 @@ LABEL_11:
         v14 = 2112;
         v15 = v4;
         v16 = 2048;
-        v17 = self;
+        selfCopy = self;
         v18 = 2048;
-        v19 = [(AVCAudioStreamConfig *)self txRedPayloadType];
+        txRedPayloadType = [(AVCAudioStreamConfig *)self txRedPayloadType];
         v20 = 2048;
-        v21 = [(AVCAudioStreamConfig *)self rxRedPayloadType];
+        rxRedPayloadType = [(AVCAudioStreamConfig *)self rxRedPayloadType];
         _os_log_error_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) Invalid RED type(tx)=%lu, type(rx)=%lu", &v8, 0x44u);
       }
     }
@@ -523,9 +523,9 @@ LABEL_11:
 - (BOOL)isChannelCountValid
 {
   v26 = *MEMORY[0x1E69E9840];
-  v3 = [(AVCAudioStreamConfig *)self audioStreamMode];
-  v4 = v3 + 1;
-  if ((v3 + 1) <= 0xC)
+  audioStreamMode = [(AVCAudioStreamConfig *)self audioStreamMode];
+  v4 = audioStreamMode + 1;
+  if ((audioStreamMode + 1) <= 0xC)
   {
     if (((1 << v4) & 0x4FF) != 0)
     {
@@ -604,11 +604,11 @@ LABEL_17:
     v18 = 2112;
     v19 = v5;
     v20 = 2048;
-    v21 = self;
+    selfCopy = self;
     v22 = 2048;
     v23 = v9;
     v24 = 2048;
-    v25 = [(AVCAudioStreamConfig *)self audioStreamMode];
+    audioStreamMode2 = [(AVCAudioStreamConfig *)self audioStreamMode];
     _os_log_error_impl(&dword_1DB56E000, v8, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) Invalid channel count==%lu for audio mode=%ld", &v12, 0x44u);
     goto LABEL_17;
   }
@@ -628,35 +628,35 @@ LABEL_17:
   return v4;
 }
 
-- (void)setUpWithDictionary:(id)a3
+- (void)setUpWithDictionary:(id)dictionary
 {
-  self->_audioStreamMode = +[AVCAudioStreamConfig clientStreamModeWithStreamMode:](AVCAudioStreamConfig, "clientStreamModeWithStreamMode:", [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamAudioStreamMode", "integerValue"}]);
-  self->_codecType = +[AVCAudioStreamConfig clientCodecTypeWithCodecType:](AVCAudioStreamConfig, "clientCodecTypeWithCodecType:", [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamCodecType", "integerValue"}]);
-  self->_cnEnabled = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamCNEnabled", "BOOLValue"}];
-  self->_cnPayloadType = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamCNPayloadType", "integerValue"}];
-  self->_dtmfPayloadType = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamDTMFPayloadType", "integerValue"}];
-  self->_dtmfTimestampRate = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamDTMFTsRate", "integerValue"}];
-  self->_dtmfTonePlaybackEnabled = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamdtmfTonePlaybackEnabled", "BOOLValue"}];
-  self->_dtmfEventCallbacksEnabled = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamDTMFEventCallbacksEnabled", "BOOLValue"}];
-  self->_ptime = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamPtime", "integerValue"}];
-  self->_maxPtime = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamMaxPtime", "integerValue"}];
-  self->_channelAwareOffset = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamEVSChannelAwareOffset", "integerValue"}];
-  self->_headerFullOnly = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamEVSHeaderFullOnly", "BOOLValue"}];
-  self->_dtxEnabled = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamAMRDTXEnabled", "BOOLValue"}];
-  self->_octetAligned = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamAMRIsOctetAligned", "BOOLValue"}];
-  self->_codecRateModeMask = +[AVCAudioStreamConfig clientCodecRateMaskForCodecRateMode:](AVCAudioStreamConfig, "clientCodecRateMaskForCodecRateMode:", [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamCodecRateModeMask", "integerValue"}]);
-  self->_codecBandwidthMask = +[AVCAudioStreamConfig clientCodecBandwidthMaskForCodecBandwidth:](AVCAudioStreamConfig, "clientCodecBandwidthMaskForCodecBandwidth:", [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamCodecBandwidthMask", "integerValue"}]);
-  self->_preferredCodecRateMode = +[AVCAudioStreamConfig clientCodecRateModeForCodecRateMode:](AVCAudioStreamConfig, "clientCodecRateModeForCodecRateMode:", [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamCodecRateModePreferred", "integerValue"}]);
-  self->_latencySensitiveMode = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamLatencySensitiveMode", "BOOLValue"}];
-  self->_numRedundantPayloads = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamNumRedundantPayloads", "integerValue"}];
-  self->_txRedPayloadType = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamTxRedPayloadType", "integerValue"}];
-  self->_rxRedPayloadType = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamRxRedPayloadType", "integerValue"}];
-  self->_enableMaxBitrateOnNoChangeCMR = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamEnableMaxBitrateOnNoChangeCMR", "BOOLValue"}];
-  self->_anbrEnabled = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamAnbrEnabled", "BOOLValue"}];
-  self->_subscriptionSlot = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamTelephonyServiceSubscriptionSlot", "integerValue"}];
-  if ([objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamChannelCount", "unsignedIntegerValue"}])
+  self->_audioStreamMode = +[AVCAudioStreamConfig clientStreamModeWithStreamMode:](AVCAudioStreamConfig, "clientStreamModeWithStreamMode:", [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamAudioStreamMode", "integerValue"}]);
+  self->_codecType = +[AVCAudioStreamConfig clientCodecTypeWithCodecType:](AVCAudioStreamConfig, "clientCodecTypeWithCodecType:", [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamCodecType", "integerValue"}]);
+  self->_cnEnabled = [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamCNEnabled", "BOOLValue"}];
+  self->_cnPayloadType = [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamCNPayloadType", "integerValue"}];
+  self->_dtmfPayloadType = [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamDTMFPayloadType", "integerValue"}];
+  self->_dtmfTimestampRate = [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamDTMFTsRate", "integerValue"}];
+  self->_dtmfTonePlaybackEnabled = [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamdtmfTonePlaybackEnabled", "BOOLValue"}];
+  self->_dtmfEventCallbacksEnabled = [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamDTMFEventCallbacksEnabled", "BOOLValue"}];
+  self->_ptime = [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamPtime", "integerValue"}];
+  self->_maxPtime = [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamMaxPtime", "integerValue"}];
+  self->_channelAwareOffset = [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamEVSChannelAwareOffset", "integerValue"}];
+  self->_headerFullOnly = [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamEVSHeaderFullOnly", "BOOLValue"}];
+  self->_dtxEnabled = [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamAMRDTXEnabled", "BOOLValue"}];
+  self->_octetAligned = [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamAMRIsOctetAligned", "BOOLValue"}];
+  self->_codecRateModeMask = +[AVCAudioStreamConfig clientCodecRateMaskForCodecRateMode:](AVCAudioStreamConfig, "clientCodecRateMaskForCodecRateMode:", [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamCodecRateModeMask", "integerValue"}]);
+  self->_codecBandwidthMask = +[AVCAudioStreamConfig clientCodecBandwidthMaskForCodecBandwidth:](AVCAudioStreamConfig, "clientCodecBandwidthMaskForCodecBandwidth:", [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamCodecBandwidthMask", "integerValue"}]);
+  self->_preferredCodecRateMode = +[AVCAudioStreamConfig clientCodecRateModeForCodecRateMode:](AVCAudioStreamConfig, "clientCodecRateModeForCodecRateMode:", [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamCodecRateModePreferred", "integerValue"}]);
+  self->_latencySensitiveMode = [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamLatencySensitiveMode", "BOOLValue"}];
+  self->_numRedundantPayloads = [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamNumRedundantPayloads", "integerValue"}];
+  self->_txRedPayloadType = [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamTxRedPayloadType", "integerValue"}];
+  self->_rxRedPayloadType = [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamRxRedPayloadType", "integerValue"}];
+  self->_enableMaxBitrateOnNoChangeCMR = [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamEnableMaxBitrateOnNoChangeCMR", "BOOLValue"}];
+  self->_anbrEnabled = [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamAnbrEnabled", "BOOLValue"}];
+  self->_subscriptionSlot = [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamTelephonyServiceSubscriptionSlot", "integerValue"}];
+  if ([objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamChannelCount", "unsignedIntegerValue"}])
   {
-    v5 = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamChannelCount", "unsignedIntegerValue"}];
+    v5 = [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamChannelCount", "unsignedIntegerValue"}];
   }
 
   else
@@ -665,9 +665,9 @@ LABEL_17:
   }
 
   self->_channelCount = v5;
-  self->_preferredMediaBitRate = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamPreferredMediaBitRate", "unsignedIntegerValue"}];
-  self->_codecCMRMode = +[AVCAudioStreamConfig clientCodecCMRModeModeWithEVSCMRMode:](AVCAudioStreamConfig, "clientCodecCMRModeModeWithEVSCMRMode:", [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamEVSCMRMode", "integerValue"}]);
-  v6 = [a3 objectForKeyedSubscript:@"vcMediaStreamSystemAudioCaptureIncludedAuditTokens"];
+  self->_preferredMediaBitRate = [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamPreferredMediaBitRate", "unsignedIntegerValue"}];
+  self->_codecCMRMode = +[AVCAudioStreamConfig clientCodecCMRModeModeWithEVSCMRMode:](AVCAudioStreamConfig, "clientCodecCMRModeModeWithEVSCMRMode:", [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamEVSCMRMode", "integerValue"}]);
+  v6 = [dictionary objectForKeyedSubscript:@"vcMediaStreamSystemAudioCaptureIncludedAuditTokens"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -680,7 +680,7 @@ LABEL_17:
   }
 
   self->_systemAudioCaptureIncludedAuditTokens = v7;
-  self->_systemAudioCaptureMuteBehavior = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamSystemAudioCaptureMuteBehavior", "integerValue"}];
+  self->_systemAudioCaptureMuteBehavior = [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamSystemAudioCaptureMuteBehavior", "integerValue"}];
 }
 
 - (id)dictionary
@@ -747,15 +747,15 @@ LABEL_17:
   v5[29] = @"vcMediaStreamSystemAudioCaptureIncludedAuditTokens";
   if (self->_systemAudioCaptureIncludedAuditTokens)
   {
-    v3 = [AVCAuditToken serializeAuditTokens:?];
+    null = [AVCAuditToken serializeAuditTokens:?];
   }
 
   else
   {
-    v3 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v6[29] = v3;
+  v6[29] = null;
   v5[30] = @"vcMediaStreamSystemAudioCaptureMuteBehavior";
   v6[30] = [MEMORY[0x1E696AD98] numberWithInteger:self->_systemAudioCaptureMuteBehavior];
   return [MEMORY[0x1E695DF20] dictionaryWithObjects:v6 forKeys:v5 count:31];
@@ -822,7 +822,7 @@ LABEL_17:
     VRTraceErrorLogLevelToCSTR();
     if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_ERROR))
     {
-      [a1 audioStreamMode];
+      [self audioStreamMode];
       OUTLINED_FUNCTION_2();
       _os_log_error_impl(v5, v6, v7, v8, v9, 0x30u);
     }

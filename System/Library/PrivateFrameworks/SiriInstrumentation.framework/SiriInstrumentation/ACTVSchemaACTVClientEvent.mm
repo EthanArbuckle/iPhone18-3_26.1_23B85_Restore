@@ -1,13 +1,13 @@
 @interface ACTVSchemaACTVClientEvent
-+ (id)getInnerTypeStringByTag:(unint64_t)a3;
++ (id)getInnerTypeStringByTag:(unint64_t)tag;
 - (ACTVSchemaACTVButtonInteractionDetected)buttonInteractionDetected;
-- (ACTVSchemaACTVClientEvent)initWithDictionary:(id)a3;
-- (ACTVSchemaACTVClientEvent)initWithJSON:(id)a3;
+- (ACTVSchemaACTVClientEvent)initWithDictionary:(id)dictionary;
+- (ACTVSchemaACTVClientEvent)initWithJSON:(id)n;
 - (ACTVSchemaACTVTurnActivated)turnActivated;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (SISchemaInstrumentationMessage)innerEvent;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)getComponentId;
 - (id)qualifiedMessageName;
@@ -16,9 +16,9 @@
 - (unint64_t)hash;
 - (void)deleteButtonInteractionDetected;
 - (void)deleteTurnActivated;
-- (void)setButtonInteractionDetected:(id)a3;
-- (void)setTurnActivated:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setButtonInteractionDetected:(id)detected;
+- (void)setTurnActivated:(id)activated;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ACTVSchemaACTVClientEvent
@@ -40,14 +40,14 @@
 
 - (id)qualifiedMessageName
 {
-  v2 = [(ACTVSchemaACTVClientEvent *)self whichEvent_Type];
+  whichEvent_Type = [(ACTVSchemaACTVClientEvent *)self whichEvent_Type];
   v3 = @"com.apple.aiml.siri.activation.ACTVClientEvent";
-  if (v2 == 102)
+  if (whichEvent_Type == 102)
   {
     v3 = @"com.apple.aiml.siri.activation.ACTVClientEvent.ACTVTurnActivated";
   }
 
-  if (v2 == 101)
+  if (whichEvent_Type == 101)
   {
     return @"com.apple.aiml.siri.activation.ACTVClientEvent.ACTVButtonInteractionDetected";
   }
@@ -73,15 +73,15 @@
   return v3;
 }
 
-- (ACTVSchemaACTVClientEvent)initWithDictionary:(id)a3
+- (ACTVSchemaACTVClientEvent)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v14.receiver = self;
   v14.super_class = ACTVSchemaACTVClientEvent;
   v5 = [(ACTVSchemaACTVClientEvent *)&v14 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"eventMetadata"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"eventMetadata"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -89,7 +89,7 @@
       [(ACTVSchemaACTVClientEvent *)v5 setEventMetadata:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"buttonInteractionDetected"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"buttonInteractionDetected"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -97,7 +97,7 @@
       [(ACTVSchemaACTVClientEvent *)v5 setButtonInteractionDetected:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"turnActivated"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"turnActivated"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -111,30 +111,30 @@
   return v5;
 }
 
-- (ACTVSchemaACTVClientEvent)initWithJSON:(id)a3
+- (ACTVSchemaACTVClientEvent)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(ACTVSchemaACTVClientEvent *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(ACTVSchemaACTVClientEvent *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(ACTVSchemaACTVClientEvent *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -147,58 +147,58 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_buttonInteractionDetected)
   {
-    v4 = [(ACTVSchemaACTVClientEvent *)self buttonInteractionDetected];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    buttonInteractionDetected = [(ACTVSchemaACTVClientEvent *)self buttonInteractionDetected];
+    dictionaryRepresentation = [buttonInteractionDetected dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"buttonInteractionDetected"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"buttonInteractionDetected"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"buttonInteractionDetected"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"buttonInteractionDetected"];
     }
   }
 
   if (self->_eventMetadata)
   {
-    v7 = [(ACTVSchemaACTVClientEvent *)self eventMetadata];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    eventMetadata = [(ACTVSchemaACTVClientEvent *)self eventMetadata];
+    dictionaryRepresentation2 = [eventMetadata dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"eventMetadata"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"eventMetadata"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"eventMetadata"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"eventMetadata"];
     }
   }
 
   if (self->_turnActivated)
   {
-    v10 = [(ACTVSchemaACTVClientEvent *)self turnActivated];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    turnActivated = [(ACTVSchemaACTVClientEvent *)self turnActivated];
+    dictionaryRepresentation3 = [turnActivated dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"turnActivated"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"turnActivated"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"turnActivated"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"turnActivated"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -208,34 +208,34 @@
   return v4 ^ [(ACTVSchemaACTVTurnActivated *)self->_turnActivated hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_18;
   }
 
   whichEvent_Type = self->_whichEvent_Type;
-  if (whichEvent_Type != [v4 whichEvent_Type])
+  if (whichEvent_Type != [equalCopy whichEvent_Type])
   {
     goto LABEL_18;
   }
 
-  v6 = [(ACTVSchemaACTVClientEvent *)self eventMetadata];
-  v7 = [v4 eventMetadata];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(ACTVSchemaACTVClientEvent *)self eventMetadata];
+  eventMetadata2 = [equalCopy eventMetadata];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_17;
   }
 
-  v8 = [(ACTVSchemaACTVClientEvent *)self eventMetadata];
-  if (v8)
+  eventMetadata3 = [(ACTVSchemaACTVClientEvent *)self eventMetadata];
+  if (eventMetadata3)
   {
-    v9 = v8;
-    v10 = [(ACTVSchemaACTVClientEvent *)self eventMetadata];
-    v11 = [v4 eventMetadata];
-    v12 = [v10 isEqual:v11];
+    v9 = eventMetadata3;
+    eventMetadata4 = [(ACTVSchemaACTVClientEvent *)self eventMetadata];
+    eventMetadata5 = [equalCopy eventMetadata];
+    v12 = [eventMetadata4 isEqual:eventMetadata5];
 
     if (!v12)
     {
@@ -247,20 +247,20 @@
   {
   }
 
-  v6 = [(ACTVSchemaACTVClientEvent *)self buttonInteractionDetected];
-  v7 = [v4 buttonInteractionDetected];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(ACTVSchemaACTVClientEvent *)self buttonInteractionDetected];
+  eventMetadata2 = [equalCopy buttonInteractionDetected];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_17;
   }
 
-  v13 = [(ACTVSchemaACTVClientEvent *)self buttonInteractionDetected];
-  if (v13)
+  buttonInteractionDetected = [(ACTVSchemaACTVClientEvent *)self buttonInteractionDetected];
+  if (buttonInteractionDetected)
   {
-    v14 = v13;
-    v15 = [(ACTVSchemaACTVClientEvent *)self buttonInteractionDetected];
-    v16 = [v4 buttonInteractionDetected];
-    v17 = [v15 isEqual:v16];
+    v14 = buttonInteractionDetected;
+    buttonInteractionDetected2 = [(ACTVSchemaACTVClientEvent *)self buttonInteractionDetected];
+    buttonInteractionDetected3 = [equalCopy buttonInteractionDetected];
+    v17 = [buttonInteractionDetected2 isEqual:buttonInteractionDetected3];
 
     if (!v17)
     {
@@ -272,12 +272,12 @@
   {
   }
 
-  v6 = [(ACTVSchemaACTVClientEvent *)self turnActivated];
-  v7 = [v4 turnActivated];
-  if ((v6 != 0) != (v7 == 0))
+  eventMetadata = [(ACTVSchemaACTVClientEvent *)self turnActivated];
+  eventMetadata2 = [equalCopy turnActivated];
+  if ((eventMetadata != 0) != (eventMetadata2 == 0))
   {
-    v18 = [(ACTVSchemaACTVClientEvent *)self turnActivated];
-    if (!v18)
+    turnActivated = [(ACTVSchemaACTVClientEvent *)self turnActivated];
+    if (!turnActivated)
     {
 
 LABEL_21:
@@ -285,10 +285,10 @@ LABEL_21:
       goto LABEL_19;
     }
 
-    v19 = v18;
-    v20 = [(ACTVSchemaACTVClientEvent *)self turnActivated];
-    v21 = [v4 turnActivated];
-    v22 = [v20 isEqual:v21];
+    v19 = turnActivated;
+    turnActivated2 = [(ACTVSchemaACTVClientEvent *)self turnActivated];
+    turnActivated3 = [equalCopy turnActivated];
+    v22 = [turnActivated2 isEqual:turnActivated3];
 
     if (v22)
     {
@@ -308,34 +308,34 @@ LABEL_19:
   return v23;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v11 = a3;
-  v4 = [(ACTVSchemaACTVClientEvent *)self eventMetadata];
+  toCopy = to;
+  eventMetadata = [(ACTVSchemaACTVClientEvent *)self eventMetadata];
 
-  if (v4)
+  if (eventMetadata)
   {
-    v5 = [(ACTVSchemaACTVClientEvent *)self eventMetadata];
+    eventMetadata2 = [(ACTVSchemaACTVClientEvent *)self eventMetadata];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(ACTVSchemaACTVClientEvent *)self buttonInteractionDetected];
+  buttonInteractionDetected = [(ACTVSchemaACTVClientEvent *)self buttonInteractionDetected];
 
-  if (v6)
+  if (buttonInteractionDetected)
   {
-    v7 = [(ACTVSchemaACTVClientEvent *)self buttonInteractionDetected];
+    buttonInteractionDetected2 = [(ACTVSchemaACTVClientEvent *)self buttonInteractionDetected];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(ACTVSchemaACTVClientEvent *)self turnActivated];
+  turnActivated = [(ACTVSchemaACTVClientEvent *)self turnActivated];
 
-  v9 = v11;
-  if (v8)
+  v9 = toCopy;
+  if (turnActivated)
   {
-    v10 = [(ACTVSchemaACTVClientEvent *)self turnActivated];
+    turnActivated2 = [(ACTVSchemaACTVClientEvent *)self turnActivated];
     PBDataWriterWriteSubmessage();
 
-    v9 = v11;
+    v9 = toCopy;
   }
 }
 
@@ -349,21 +349,21 @@ LABEL_19:
   }
 }
 
-- (void)setTurnActivated:(id)a3
+- (void)setTurnActivated:(id)activated
 {
-  v4 = a3;
+  activatedCopy = activated;
   buttonInteractionDetected = self->_buttonInteractionDetected;
   self->_buttonInteractionDetected = 0;
 
   v6 = 102;
-  if (!v4)
+  if (!activatedCopy)
   {
     v6 = 0;
   }
 
   self->_whichEvent_Type = v6;
   turnActivated = self->_turnActivated;
-  self->_turnActivated = v4;
+  self->_turnActivated = activatedCopy;
 }
 
 - (void)deleteButtonInteractionDetected
@@ -376,52 +376,52 @@ LABEL_19:
   }
 }
 
-- (void)setButtonInteractionDetected:(id)a3
+- (void)setButtonInteractionDetected:(id)detected
 {
-  v4 = a3;
+  detectedCopy = detected;
   turnActivated = self->_turnActivated;
   self->_turnActivated = 0;
 
   v6 = 101;
-  if (!v4)
+  if (!detectedCopy)
   {
     v6 = 0;
   }
 
   self->_whichEvent_Type = v6;
   buttonInteractionDetected = self->_buttonInteractionDetected;
-  self->_buttonInteractionDetected = v4;
+  self->_buttonInteractionDetected = detectedCopy;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v16.receiver = self;
   v16.super_class = ACTVSchemaACTVClientEvent;
-  v5 = [(SISchemaInstrumentationMessage *)&v16 applySensitiveConditionsPolicy:v4];
-  v6 = [(ACTVSchemaACTVClientEvent *)self eventMetadata];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v16 applySensitiveConditionsPolicy:policyCopy];
+  eventMetadata = [(ACTVSchemaACTVClientEvent *)self eventMetadata];
+  v7 = [eventMetadata applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(ACTVSchemaACTVClientEvent *)self deleteEventMetadata];
   }
 
-  v9 = [(ACTVSchemaACTVClientEvent *)self buttonInteractionDetected];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  buttonInteractionDetected = [(ACTVSchemaACTVClientEvent *)self buttonInteractionDetected];
+  v10 = [buttonInteractionDetected applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(ACTVSchemaACTVClientEvent *)self deleteButtonInteractionDetected];
   }
 
-  v12 = [(ACTVSchemaACTVClientEvent *)self turnActivated];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  turnActivated = [(ACTVSchemaACTVClientEvent *)self turnActivated];
+  v13 = [turnActivated applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(ACTVSchemaACTVClientEvent *)self deleteTurnActivated];
   }
@@ -439,82 +439,82 @@ LABEL_19:
 
 - (int)componentName
 {
-  v2 = [(ACTVSchemaACTVClientEvent *)self eventMetadata];
-  v3 = [v2 activationEventId];
+  eventMetadata = [(ACTVSchemaACTVClientEvent *)self eventMetadata];
+  activationEventId = [eventMetadata activationEventId];
 
-  if (v3)
+  if (activationEventId)
   {
-    v4 = [v3 value];
-    if (v4)
+    value = [activationEventId value];
+    if (value)
     {
-      v5 = [v3 value];
-      v6 = [v5 length];
+      value2 = [activationEventId value];
+      v6 = [value2 length];
 
       if (v6)
       {
-        LODWORD(v4) = 34;
+        LODWORD(value) = 34;
       }
 
       else
       {
-        LODWORD(v4) = 0;
+        LODWORD(value) = 0;
       }
     }
   }
 
   else
   {
-    LODWORD(v4) = 0;
+    LODWORD(value) = 0;
   }
 
-  return v4;
+  return value;
 }
 
 - (id)getComponentId
 {
-  v2 = [(ACTVSchemaACTVClientEvent *)self eventMetadata];
-  v3 = [v2 activationEventId];
+  eventMetadata = [(ACTVSchemaACTVClientEvent *)self eventMetadata];
+  activationEventId = [eventMetadata activationEventId];
 
-  if (!v3)
+  if (!activationEventId)
   {
     goto LABEL_5;
   }
 
-  v4 = [v3 value];
-  if (!v4)
+  value = [activationEventId value];
+  if (!value)
   {
     goto LABEL_6;
   }
 
-  v5 = [v3 value];
-  v6 = [v5 length];
+  value2 = [activationEventId value];
+  v6 = [value2 length];
 
   if (v6)
   {
-    v4 = v3;
+    value = activationEventId;
   }
 
   else
   {
 LABEL_5:
-    v4 = 0;
+    value = 0;
   }
 
 LABEL_6:
 
-  return v4;
+  return value;
 }
 
 - (SISchemaInstrumentationMessage)innerEvent
 {
-  v3 = [(ACTVSchemaACTVClientEvent *)self whichEvent_Type];
-  if (v3 == 101)
+  whichEvent_Type = [(ACTVSchemaACTVClientEvent *)self whichEvent_Type];
+  if (whichEvent_Type == 101)
   {
     v4 = &OBJC_IVAR___ACTVSchemaACTVClientEvent__buttonInteractionDetected;
     goto LABEL_5;
   }
 
-  if (v3 == 102)
+  if (whichEvent_Type == 102)
   {
     v4 = &OBJC_IVAR___ACTVSchemaACTVClientEvent__turnActivated;
 LABEL_5:
@@ -528,15 +528,15 @@ LABEL_7:
   return v5;
 }
 
-+ (id)getInnerTypeStringByTag:(unint64_t)a3
++ (id)getInnerTypeStringByTag:(unint64_t)tag
 {
   v3 = @"turnActivated";
-  if (a3 != 102)
+  if (tag != 102)
   {
     v3 = 0;
   }
 
-  if (a3 == 101)
+  if (tag == 101)
   {
     return @"buttonInteractionDetected";
   }

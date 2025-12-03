@@ -1,20 +1,20 @@
 @interface DNDMutableBypassSettings
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setImmediateBypassCNGroupIdentifier:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setImmediateBypassCNGroupIdentifier:(id)identifier;
 @end
 
 @implementation DNDMutableBypassSettings
 
-- (void)setImmediateBypassCNGroupIdentifier:(id)a3
+- (void)setImmediateBypassCNGroupIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   immediateBypassCNGroupIdentifier = self->super._immediateBypassCNGroupIdentifier;
   self->super._immediateBypassCNGroupIdentifier = v4;
 
   MEMORY[0x2821F96F8](v4, immediateBypassCNGroupIdentifier);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [DNDBypassSettings alloc];
 

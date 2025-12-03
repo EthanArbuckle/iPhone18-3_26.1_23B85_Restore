@@ -1,8 +1,8 @@
 @interface ICSHomeViewControllerLegacy
-- (BOOL)_canHandleURL:(id)a3;
+- (BOOL)_canHandleURL:(id)l;
 - (BOOL)_shouldDisableiCloudUI;
 - (BOOL)isSecondaryAccount;
-- (BOOL)shouldDeferPushForSpecifierID:(id)a3 urlDictionary:(id)a4;
+- (BOOL)shouldDeferPushForSpecifierID:(id)d urlDictionary:(id)dictionary;
 - (BOOL)shouldEnableAccountSummaryCell;
 - (Class)accountInfoControllerClass;
 - (ICSHomeViewControllerLegacy)init;
@@ -16,9 +16,9 @@
 - (void)_loadMailSettingsBundleIfNeeded;
 - (void)cleanupDataclassSpecifiers;
 - (void)dealloc;
-- (void)handleURL:(id)a3 withCompletion:(id)a4;
-- (void)setAccountManager:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)handleURL:(id)l withCompletion:(id)completion;
+- (void)setAccountManager:(id)manager;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation ICSHomeViewControllerLegacy
@@ -64,14 +64,14 @@
 
 - (BOOL)shouldEnableAccountSummaryCell
 {
-  v3 = [MEMORY[0x277CECA48] isAccountDataclassListRedesignEnabled];
-  if (v3)
+  isAccountDataclassListRedesignEnabled = [MEMORY[0x277CECA48] isAccountDataclassListRedesignEnabled];
+  if (isAccountDataclassListRedesignEnabled)
   {
 
-    LOBYTE(v3) = [(ICSHomeViewControllerLegacy *)self isSecondaryAccount];
+    LOBYTE(isAccountDataclassListRedesignEnabled) = [(ICSHomeViewControllerLegacy *)self isSecondaryAccount];
   }
 
-  return v3;
+  return isAccountDataclassListRedesignEnabled;
 }
 
 - (void)_loadMailSettingsBundleIfNeeded
@@ -94,9 +94,9 @@
   }
 }
 
-- (void)setAccountManager:(id)a3
+- (void)setAccountManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v5 = LogSubsystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -105,41 +105,41 @@
 
   v6.receiver = self;
   v6.super_class = ICSHomeViewControllerLegacy;
-  [(ICSDataclassViewController *)&v6 setAccountManager:v4];
+  [(ICSDataclassViewController *)&v6 setAccountManager:managerCopy];
 
   [(ICSHomeViewControllerLegacy *)self _initiateSpecifiers];
 }
 
 - (BOOL)isSecondaryAccount
 {
-  v3 = [(ICSDataclassViewController *)self account];
-  if ([v3 aa_isAccountClass:*MEMORY[0x277CEC688]])
+  account = [(ICSDataclassViewController *)self account];
+  if ([account aa_isAccountClass:*MEMORY[0x277CEC688]])
   {
     LOBYTE(v4) = 0;
   }
 
   else
   {
-    v5 = [(ICSDataclassViewController *)self account];
-    v4 = [v5 aa_isManagedAppleID] ^ 1;
+    account2 = [(ICSDataclassViewController *)self account];
+    v4 = [account2 aa_isManagedAppleID] ^ 1;
   }
 
   return v4;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = ICSHomeViewControllerLegacy;
-  [(ICSHomeViewControllerLegacy *)&v4 traitCollectionDidChange:a3];
+  [(ICSHomeViewControllerLegacy *)&v4 traitCollectionDidChange:change];
   [(ICSHomeViewControllerLegacy *)self reloadSpecifiers];
 }
 
 - (void)_initiateSpecifiers
 {
   v3 = [ICSHeaderSpecifierProvider alloc];
-  v4 = [(ICSDataclassViewController *)self accountManager];
-  v5 = [(ICSHeaderSpecifierProvider *)v3 initWithAccountManager:v4 presenter:self];
+  accountManager = [(ICSDataclassViewController *)self accountManager];
+  v5 = [(ICSHeaderSpecifierProvider *)v3 initWithAccountManager:accountManager presenter:self];
   headerSpecifierProvider = self->_headerSpecifierProvider;
   self->_headerSpecifierProvider = v5;
 
@@ -147,8 +147,8 @@
   if (![MEMORY[0x277CECA48] isAccountDataclassListRedesignEnabled] || !-[ICSHomeViewControllerLegacy isSecondaryAccount](self, "isSecondaryAccount"))
   {
     v7 = [ICSBackupSpecifierProvider alloc];
-    v8 = [(ICSDataclassViewController *)self accountManager];
-    v9 = [(ICSBackupSpecifierProvider *)v7 initWithAccountManager:v8 presenter:self];
+    accountManager2 = [(ICSDataclassViewController *)self accountManager];
+    v9 = [(ICSBackupSpecifierProvider *)v7 initWithAccountManager:accountManager2 presenter:self];
     backupSpecifierProvider = self->_backupSpecifierProvider;
     self->_backupSpecifierProvider = v9;
 
@@ -156,8 +156,8 @@
   }
 
   v11 = [ICSDataclassSpecifierProvider alloc];
-  v12 = [(ICSDataclassViewController *)self accountManager];
-  v13 = [(ICSDataclassSpecifierProvider *)v11 initWithAccountManager:v12 presenter:self homeViewModel:0 manageStorageAppsListViewModel:0];
+  accountManager3 = [(ICSDataclassViewController *)self accountManager];
+  v13 = [(ICSDataclassSpecifierProvider *)v11 initWithAccountManager:accountManager3 presenter:self homeViewModel:0 manageStorageAppsListViewModel:0];
   dataClassSpecifierProvider = self->_dataClassSpecifierProvider;
   self->_dataClassSpecifierProvider = v13;
 
@@ -209,32 +209,32 @@
     v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
     if (![MEMORY[0x277CECA48] isAccountDataclassListRedesignEnabled] || !-[ICSHomeViewControllerLegacy isSecondaryAccount](self, "isSecondaryAccount"))
     {
-      v6 = [(AAUISpecifierProvider *)self->_headerSpecifierProvider specifiers];
-      v7 = [v6 count];
+      specifiers = [(AAUISpecifierProvider *)self->_headerSpecifierProvider specifiers];
+      v7 = [specifiers count];
 
       if (v7)
       {
-        v8 = [(AAUISpecifierProvider *)self->_headerSpecifierProvider specifiers];
-        [v5 addObjectsFromArray:v8];
+        specifiers2 = [(AAUISpecifierProvider *)self->_headerSpecifierProvider specifiers];
+        [v5 addObjectsFromArray:specifiers2];
       }
     }
 
-    v9 = [(ICSDataclassViewController *)self account];
+    account = [(ICSDataclassViewController *)self account];
 
-    if (v9)
+    if (account)
     {
       if (![MEMORY[0x277CECA48] isAccountDataclassListRedesignEnabled] || !-[ICSHomeViewControllerLegacy isSecondaryAccount](self, "isSecondaryAccount"))
       {
 LABEL_15:
-        v13 = [(AAUISpecifierProvider *)self->_dataClassSpecifierProvider specifiers];
-        [v5 addObjectsFromArray:v13];
+        specifiers3 = [(AAUISpecifierProvider *)self->_dataClassSpecifierProvider specifiers];
+        [v5 addObjectsFromArray:specifiers3];
 
-        v14 = [(ICSHomeViewControllerLegacy *)self _iCloudBackupSpecifiers];
-        [v5 addObjectsFromArray:v14];
+        _iCloudBackupSpecifiers = [(ICSHomeViewControllerLegacy *)self _iCloudBackupSpecifiers];
+        [v5 addObjectsFromArray:_iCloudBackupSpecifiers];
 
-        v15 = [(ICSDataclassViewController *)self account];
+        account2 = [(ICSDataclassViewController *)self account];
 
-        if (v15)
+        if (account2)
         {
           if (![MEMORY[0x277CECA48] isAccountDataclassListRedesignEnabled] || !-[ICSHomeViewControllerLegacy isSecondaryAccount](self, "isSecondaryAccount"))
           {
@@ -243,16 +243,16 @@ LABEL_15:
 
           v16 = [MEMORY[0x277D3FAD8] groupSpecifierWithID:@"accountSettingsSpecifier"];
           [v5 addObject:v16];
-          v17 = [(ACUIDataclassConfigurationViewController *)self specifierForAccountSettingsCell];
-          [v5 addObject:v17];
+          specifierForAccountSettingsCell = [(ACUIDataclassConfigurationViewController *)self specifierForAccountSettingsCell];
+          [v5 addObject:specifierForAccountSettingsCell];
 
-          v18 = [(AAUISpecifierProvider *)self->_headerSpecifierProvider specifiers];
-          v19 = [v18 count];
+          specifiers4 = [(AAUISpecifierProvider *)self->_headerSpecifierProvider specifiers];
+          v19 = [specifiers4 count];
 
           if (v19)
           {
-            v20 = [(AAUISpecifierProvider *)self->_headerSpecifierProvider specifiers];
-            [v5 addObjectsFromArray:v20];
+            specifiers5 = [(AAUISpecifierProvider *)self->_headerSpecifierProvider specifiers];
+            [v5 addObjectsFromArray:specifiers5];
           }
         }
 
@@ -274,19 +274,19 @@ LABEL_23:
       }
 
       v10 = [MEMORY[0x277D3FAD8] groupSpecifierWithName:0];
-      v11 = [(ICSHomeViewControllerLegacy *)self groupSpecifierAccountSummary];
+      groupSpecifierAccountSummary = [(ICSHomeViewControllerLegacy *)self groupSpecifierAccountSummary];
 
-      v12 = [(ACUIDataclassConfigurationViewController *)self specifierForAccountSummaryCell];
-      [v5 addObject:v11];
-      [v5 addObject:v12];
+      specifierForAccountSummaryCell = [(ACUIDataclassConfigurationViewController *)self specifierForAccountSummaryCell];
+      [v5 addObject:groupSpecifierAccountSummary];
+      [v5 addObject:specifierForAccountSummaryCell];
     }
 
     else
     {
-      v11 = LogSubsystem();
-      if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+      groupSpecifierAccountSummary = LogSubsystem();
+      if (os_log_type_enabled(groupSpecifierAccountSummary, OS_LOG_TYPE_ERROR))
       {
-        [(ICSHomeViewControllerLegacy *)v11 specifiers];
+        [(ICSHomeViewControllerLegacy *)groupSpecifierAccountSummary specifiers];
       }
     }
 
@@ -380,35 +380,35 @@ LABEL_24:
 - (void)_changePasswordLinkWasTapped
 {
   v3 = [MEMORY[0x277CBEBC0] URLWithString:@"https://appleid.apple.com"];
-  v2 = [MEMORY[0x277D75128] sharedApplication];
-  [v2 openURL:v3 withCompletionHandler:0];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  [mEMORY[0x277D75128] openURL:v3 withCompletionHandler:0];
 }
 
 - (BOOL)_shouldDisableiCloudUI
 {
-  v3 = [(ICSDataclassViewController *)self account];
-  if ([v3 aa_needsToVerifyTerms])
+  account = [(ICSDataclassViewController *)self account];
+  if ([account aa_needsToVerifyTerms])
   {
-    v4 = 1;
+    isiCloudSuspended = 1;
   }
 
   else
   {
-    v5 = [(ICSDataclassViewController *)self account];
-    if ([v5 aa_isPrimaryEmailVerified])
+    account2 = [(ICSDataclassViewController *)self account];
+    if ([account2 aa_isPrimaryEmailVerified])
     {
-      v6 = [(ICSDataclassViewController *)self account];
-      v7 = [v6 aa_suspensionInfo];
-      v4 = [v7 isiCloudSuspended];
+      account3 = [(ICSDataclassViewController *)self account];
+      aa_suspensionInfo = [account3 aa_suspensionInfo];
+      isiCloudSuspended = [aa_suspensionInfo isiCloudSuspended];
     }
 
     else
     {
-      v4 = 1;
+      isiCloudSuspended = 1;
     }
   }
 
-  return v4;
+  return isiCloudSuspended;
 }
 
 - (id)_iCloudBackupSpecifiers
@@ -416,8 +416,8 @@ LABEL_24:
   v16[2] = *MEMORY[0x277D85DE8];
   if (!self->_deviceBackupSpecifiers)
   {
-    v3 = [(AAUISpecifierProvider *)self->_backupSpecifierProvider specifiers];
-    v4 = [v3 count];
+    specifiers = [(AAUISpecifierProvider *)self->_backupSpecifierProvider specifiers];
+    v4 = [specifiers count];
 
     if (v4)
     {
@@ -427,9 +427,9 @@ LABEL_24:
       v8 = [v5 groupSpecifierWithName:v7];
 
       v16[0] = v8;
-      v9 = [(AAUISpecifierProvider *)self->_backupSpecifierProvider specifiers];
-      v10 = [v9 firstObject];
-      v16[1] = v10;
+      specifiers2 = [(AAUISpecifierProvider *)self->_backupSpecifierProvider specifiers];
+      firstObject = [specifiers2 firstObject];
+      v16[1] = firstObject;
       v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:2];
       deviceBackupSpecifiers = self->_deviceBackupSpecifiers;
       self->_deviceBackupSpecifiers = v11;
@@ -442,15 +442,15 @@ LABEL_24:
   return v13;
 }
 
-- (BOOL)shouldDeferPushForSpecifierID:(id)a3 urlDictionary:(id)a4
+- (BOOL)shouldDeferPushForSpecifierID:(id)d urlDictionary:(id)dictionary
 {
   v14 = *MEMORY[0x277D85DE8];
   v5 = LogSubsystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(ICSHomeViewControllerLegacy *)self navigationController];
+    navigationController = [(ICSHomeViewControllerLegacy *)self navigationController];
     v7 = @"NO";
-    if (!v6)
+    if (!navigationController)
     {
       v7 = @"YES";
     }
@@ -460,45 +460,45 @@ LABEL_24:
     _os_log_impl(&dword_275819000, v5, OS_LOG_TYPE_DEFAULT, "shouldDeferPush? %@", &v12, 0xCu);
   }
 
-  v8 = [(ICSHomeViewControllerLegacy *)self navigationController];
-  v9 = v8 == 0;
+  navigationController2 = [(ICSHomeViewControllerLegacy *)self navigationController];
+  v9 = navigationController2 == 0;
 
   v10 = *MEMORY[0x277D85DE8];
   return v9;
 }
 
-- (void)handleURL:(id)a3 withCompletion:(id)a4
+- (void)handleURL:(id)l withCompletion:(id)completion
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  completionCopy = completion;
   v8 = LogSubsystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v19 = "[ICSHomeViewControllerLegacy handleURL:withCompletion:]";
     v20 = 2112;
-    v21 = v6;
+    v21 = lCopy;
     _os_log_impl(&dword_275819000, v8, OS_LOG_TYPE_DEFAULT, "%s handleURL with dictionary - %@", buf, 0x16u);
   }
 
-  v9 = [v6 objectForKeyedSubscript:@"showiCloudDetails"];
+  v9 = [lCopy objectForKeyedSubscript:@"showiCloudDetails"];
   [(ICSHomeViewControllerLegacy *)self setShouldShowiCloudDetails:v9 != 0];
 
-  if ([(ICSHomeViewControllerLegacy *)self _canHandleURL:v6])
+  if ([(ICSHomeViewControllerLegacy *)self _canHandleURL:lCopy])
   {
-    v7[2](v7);
-    v10 = [(ICSHomeViewControllerLegacy *)self presentedViewController];
-    if (v10)
+    completionCopy[2](completionCopy);
+    presentedViewController = [(ICSHomeViewControllerLegacy *)self presentedViewController];
+    if (presentedViewController)
     {
-      v11 = v10;
-      v12 = [(ICSHomeViewControllerLegacy *)self presentedViewController];
-      v13 = [v12 parentViewController];
+      v11 = presentedViewController;
+      presentedViewController2 = [(ICSHomeViewControllerLegacy *)self presentedViewController];
+      parentViewController = [presentedViewController2 parentViewController];
 
-      if (!v13)
+      if (!parentViewController)
       {
-        v14 = [(ICSHomeViewControllerLegacy *)self presentedViewController];
-        [v14 dismissViewControllerAnimated:1 completion:0];
+        presentedViewController3 = [(ICSHomeViewControllerLegacy *)self presentedViewController];
+        [presentedViewController3 dismissViewControllerAnimated:1 completion:0];
       }
     }
   }
@@ -514,18 +514,18 @@ LABEL_24:
 
     v17.receiver = self;
     v17.super_class = ICSHomeViewControllerLegacy;
-    [(ICSHomeViewControllerLegacy *)&v17 handleURL:v6 withCompletion:v7];
+    [(ICSHomeViewControllerLegacy *)&v17 handleURL:lCopy withCompletion:completionCopy];
   }
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_canHandleURL:(id)a3
+- (BOOL)_canHandleURL:(id)l
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  lCopy = l;
   headerSpecifierProvider = self->_headerSpecifierProvider;
-  if ((objc_opt_respondsToSelector() & 1) != 0 && [(AAUISpecifierProvider *)self->_headerSpecifierProvider handleURL:v4])
+  if ((objc_opt_respondsToSelector() & 1) != 0 && [(AAUISpecifierProvider *)self->_headerSpecifierProvider handleURL:lCopy])
   {
     v6 = LogSubsystem();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -533,7 +533,7 @@ LABEL_24:
       v12 = 136315394;
       v13 = "[ICSHomeViewControllerLegacy _canHandleURL:]";
       v14 = 2112;
-      v15 = v4;
+      v15 = lCopy;
       v7 = "%s Header specifier provider handled url: %@";
 LABEL_9:
       _os_log_impl(&dword_275819000, v6, OS_LOG_TYPE_DEFAULT, v7, &v12, 0x16u);
@@ -543,7 +543,7 @@ LABEL_9:
   else
   {
     dataClassSpecifierProvider = self->_dataClassSpecifierProvider;
-    if ((objc_opt_respondsToSelector() & 1) == 0 || ![(AAUISpecifierProvider *)self->_dataClassSpecifierProvider handleURL:v4])
+    if ((objc_opt_respondsToSelector() & 1) == 0 || ![(AAUISpecifierProvider *)self->_dataClassSpecifierProvider handleURL:lCopy])
     {
       v9 = 0;
       goto LABEL_12;
@@ -555,7 +555,7 @@ LABEL_9:
       v12 = 136315394;
       v13 = "[ICSHomeViewControllerLegacy _canHandleURL:]";
       v14 = 2112;
-      v15 = v4;
+      v15 = lCopy;
       v7 = "%s iCloud specifier provider handled url: %@";
       goto LABEL_9;
     }

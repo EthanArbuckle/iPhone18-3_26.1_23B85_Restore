@@ -1,6 +1,6 @@
 @interface GKLeaderboardChallengeSummaryInternal
 + (id)secureCodedPropertyKeys;
-- (GKLeaderboardChallengeSummaryInternal)initWithServerRepresentation:(id)a3;
+- (GKLeaderboardChallengeSummaryInternal)initWithServerRepresentation:(id)representation;
 @end
 
 @implementation GKLeaderboardChallengeSummaryInternal
@@ -37,29 +37,29 @@ void __64__GKLeaderboardChallengeSummaryInternal_secureCodedPropertyKeys__block_
   v2 = *MEMORY[0x277D85DE8];
 }
 
-- (GKLeaderboardChallengeSummaryInternal)initWithServerRepresentation:(id)a3
+- (GKLeaderboardChallengeSummaryInternal)initWithServerRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v15.receiver = self;
   v15.super_class = GKLeaderboardChallengeSummaryInternal;
   v5 = [(GKLeaderboardChallengeSummaryInternal *)&v15 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"completed"];
+    v6 = [representationCopy objectForKeyedSubscript:@"completed"];
     [(GKLeaderboardChallengeSummaryInternal *)v5 setCompletedCount:v6];
 
-    v7 = [v4 objectForKeyedSubscript:@"wins"];
+    v7 = [representationCopy objectForKeyedSubscript:@"wins"];
     [(GKLeaderboardChallengeSummaryInternal *)v5 setWinCount:v7];
 
-    v8 = [v4 objectForKeyedSubscript:@"invites"];
+    v8 = [representationCopy objectForKeyedSubscript:@"invites"];
     v9 = [GKLeaderboardChallengeInvitePageInternal initWithServerFragment:v8];
     [(GKLeaderboardChallengeSummaryInternal *)v5 setInvitedPlayers:v9];
 
-    v10 = [v4 objectForKeyedSubscript:@"active-challenges"];
+    v10 = [representationCopy objectForKeyedSubscript:@"active-challenges"];
     v11 = [GKLeaderboardChallengeActivePageInternal initWithServerFragment:v10];
     [(GKLeaderboardChallengeSummaryInternal *)v5 setActiveChallenges:v11];
 
-    v12 = [v4 objectForKeyedSubscript:@"completed-challenges"];
+    v12 = [representationCopy objectForKeyedSubscript:@"completed-challenges"];
     v13 = [GKLeaderboardChallengeDetailsPageInternal initWithServerFragment:v12];
     [(GKLeaderboardChallengeSummaryInternal *)v5 setCompletedChallenges:v13];
   }

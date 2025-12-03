@@ -4,7 +4,7 @@
 - (uint64_t)ageUrgencies;
 - (uint64_t)urgencyForClient:(uint64_t)result;
 - (void)recomputeUrgency;
-- (void)updateUrgency:(void *)a3 forClient:;
+- (void)updateUrgency:(void *)urgency forClient:;
 @end
 
 @implementation _DKSyncUrgencyTracker
@@ -77,11 +77,11 @@
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updateUrgency:(void *)a3 forClient:
+- (void)updateUrgency:(void *)urgency forClient:
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (a1)
+  urgencyCopy = urgency;
+  if (self)
   {
     v6 = +[_DKSyncSerializer underlyingQueue];
     dispatch_assert_queue_V2(v6);
@@ -109,17 +109,17 @@
       _os_log_impl(&dword_191750000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@: Updating urgency for %@ to %@", v21, 0x20u);
     }
 
-    v11 = a1[2];
+    v11 = self[2];
     if (!v11)
     {
       v12 = objc_opt_new();
-      v13 = a1[2];
-      a1[2] = v12;
+      v13 = self[2];
+      self[2] = v12;
 
-      v11 = a1[2];
+      v11 = self[2];
     }
 
-    v14 = [v11 objectForKeyedSubscript:v5];
+    v14 = [v11 objectForKeyedSubscript:urgencyCopy];
     if (v14)
     {
       v15 = [OUTLINED_FUNCTION_1_27() numberWithUnsignedInteger:?];
@@ -129,15 +129,15 @@
       {
         if (!a2)
         {
-          [a1[2] setObject:0 forKeyedSubscript:v5];
+          [self[2] setObject:0 forKeyedSubscript:urgencyCopy];
 LABEL_16:
-          [a1 recomputeUrgency];
+          [self recomputeUrgency];
           goto LABEL_17;
         }
 
 LABEL_15:
         v17 = [OUTLINED_FUNCTION_1_27() numberWithUnsignedInteger:?];
-        [a1[2] setObject:v17 forKeyedSubscript:v5];
+        [self[2] setObject:v17 forKeyedSubscript:urgencyCopy];
 
         goto LABEL_16;
       }
@@ -159,9 +159,9 @@ LABEL_17:
   if (result)
   {
     v2 = [*(result + 16) objectForKeyedSubscript:a2];
-    v3 = [v2 unsignedIntegerValue];
+    unsignedIntegerValue = [v2 unsignedIntegerValue];
 
-    return v3;
+    return unsignedIntegerValue;
   }
 
   return result;
@@ -169,13 +169,13 @@ LABEL_17:
 
 - (id)allUrgencies
 {
-  if (a1)
+  if (self)
   {
-    a1 = [a1[2] copy];
+    self = [self[2] copy];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (uint64_t)ageUrgencies

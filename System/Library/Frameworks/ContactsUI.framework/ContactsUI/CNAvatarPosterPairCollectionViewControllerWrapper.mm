@@ -1,8 +1,8 @@
 @interface CNAvatarPosterPairCollectionViewControllerWrapper
 - (UIViewController)viewController;
 - (_TtC10ContactsUI49CNAvatarPosterPairCollectionViewControllerWrapper)init;
-- (_TtC10ContactsUI49CNAvatarPosterPairCollectionViewControllerWrapper)initWithConfiguration:(id)a3 contact:(id)a4 contactForSharedProfile:(id)a5 mode:(int64_t)a6 delegate:(id)a7;
-- (void)setViewController:(id)a3;
+- (_TtC10ContactsUI49CNAvatarPosterPairCollectionViewControllerWrapper)initWithConfiguration:(id)configuration contact:(id)contact contactForSharedProfile:(id)profile mode:(int64_t)mode delegate:(id)delegate;
+- (void)setViewController:(id)controller;
 @end
 
 @implementation CNAvatarPosterPairCollectionViewControllerWrapper
@@ -14,22 +14,22 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setViewController:(id)a3
+- (void)setViewController:(id)controller
 {
   v5 = OBJC_IVAR____TtC10ContactsUI49CNAvatarPosterPairCollectionViewControllerWrapper_viewController;
   swift_beginAccess();
   v6 = *(&self->super.isa + v5);
-  *(&self->super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.isa + v5) = controller;
+  controllerCopy = controller;
 }
 
-- (_TtC10ContactsUI49CNAvatarPosterPairCollectionViewControllerWrapper)initWithConfiguration:(id)a3 contact:(id)a4 contactForSharedProfile:(id)a5 mode:(int64_t)a6 delegate:(id)a7
+- (_TtC10ContactsUI49CNAvatarPosterPairCollectionViewControllerWrapper)initWithConfiguration:(id)configuration contact:(id)contact contactForSharedProfile:(id)profile mode:(int64_t)mode delegate:(id)delegate
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  configurationCopy = configuration;
+  contactCopy = contact;
+  profileCopy = profile;
   swift_unknownObjectRetain();
-  v13 = sub_199B6AA90(v10, v11, v12, a6);
+  v13 = sub_199B6AA90(configurationCopy, contactCopy, profileCopy, mode);
 
   swift_unknownObjectRelease();
   return v13;

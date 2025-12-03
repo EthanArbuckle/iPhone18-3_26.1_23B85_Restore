@@ -1,9 +1,9 @@
 @interface PDFetchReportsOperation
-- (BOOL)processResponseObject:(id)a3 error:(id *)a4;
+- (BOOL)processResponseObject:(id)object error:(id *)error;
 - (BOOL)wantsToExecute;
 - (id)requestData;
 - (void)execute;
-- (void)populateClassIDsBuffer:(id)a3 handoutIDsBuffer:(id)a4 studentIDsBUffer:(id)a5;
+- (void)populateClassIDsBuffer:(id)buffer handoutIDsBuffer:(id)dsBuffer studentIDsBUffer:(id)uffer;
 - (void)prepare;
 @end
 
@@ -32,17 +32,17 @@
 {
   if ([(PDOperation *)self isAborted])
   {
-    v3 = 0;
+    data = 0;
   }
 
   else
   {
     v4 = objc_opt_new();
-    v5 = [(PDEndpointRequestOperation *)self endpointInfo];
-    v6 = v5;
-    if (v5)
+    endpointInfo = [(PDEndpointRequestOperation *)self endpointInfo];
+    v6 = endpointInfo;
+    if (endpointInfo)
     {
-      v7 = *(v5 + 64);
+      v7 = *(endpointInfo + 64);
     }
 
     else
@@ -52,11 +52,11 @@
 
     [v4 setMaxReportItemsCount:v7];
 
-    v8 = [(PDEndpointRequestOperation *)self endpointInfo];
-    v9 = v8;
-    if (v8)
+    endpointInfo2 = [(PDEndpointRequestOperation *)self endpointInfo];
+    v9 = endpointInfo2;
+    if (endpointInfo2)
     {
-      v10 = *(v8 + 72);
+      v10 = *(endpointInfo2 + 72);
     }
 
     else
@@ -69,7 +69,7 @@
     if (*(&self->super._responseStatusError + 2))
     {
       [v4 setBatchPointer:?];
-      v3 = [v4 data];
+      data = [v4 data];
     }
 
     else
@@ -78,22 +78,22 @@
       v12 = [NSHashTable hashTableWithOptions:0];
       v13 = [NSHashTable hashTableWithOptions:0];
       [(PDFetchReportsOperation *)self populateClassIDsBuffer:v11 handoutIDsBuffer:v12 studentIDsBUffer:v13];
-      v14 = [v11 allObjects];
+      allObjects = [v11 allObjects];
       v15 = objc_opt_new();
-      if ([v14 count])
+      if ([allObjects count])
       {
-        v16 = [PDDatabase whereSQLForArray:v14 prefix:@"classID in "];
+        v16 = [PDDatabase whereSQLForArray:allObjects prefix:@"classID in "];
         [v15 addObject:v16];
       }
 
-      v17 = [v12 allObjects];
-      v61 = v17;
-      if ([v17 count])
+      allObjects2 = [v12 allObjects];
+      v61 = allObjects2;
+      if ([allObjects2 count])
       {
-        v18 = [PDDatabase whereSQLForArray:v17 prefix:@"parentObjectID in "];
+        v18 = [PDDatabase whereSQLForArray:allObjects2 prefix:@"parentObjectID in "];
         [v15 addObject:v18];
 
-        v17 = v61;
+        allObjects2 = v61;
       }
 
       if ([v15 count])
@@ -101,10 +101,10 @@
         v57 = v11;
         v54 = v15;
         v19 = [v15 componentsJoinedByString:@" and "];
-        v20 = [v14 arrayByAddingObjectsFromArray:v17];
+        v20 = [allObjects arrayByAddingObjectsFromArray:allObjects2];
         v21 = +[NSMapTable strongToStrongObjectsMapTable];
         [v12 removeAllObjects];
-        v22 = [(PDOperation *)self database];
+        database = [(PDOperation *)self database];
         v23 = objc_opt_class();
         v64[0] = _NSConcreteStackBlock;
         v64[1] = 3221225472;
@@ -115,28 +115,28 @@
         v60 = v4;
         v66 = v60;
         v67 = v12;
-        v59 = v22;
-        v24 = v22;
+        v59 = database;
+        v24 = database;
         v25 = v19;
         v55 = v20;
         [v24 selectAll:v23 where:v19 bindings:v20 block:v64];
         v56 = v13;
-        v26 = [v13 allObjects];
-        v53 = v26;
-        if ([v26 count])
+        allObjects3 = [v13 allObjects];
+        v53 = allObjects3;
+        if ([allObjects3 count])
         {
           v27 = v25;
           v28 = objc_opt_new();
           v29 = objc_opt_new();
-          v30 = [PDDatabase whereSQLForArray:v26 prefix:@"personID in "];
-          [v29 addObjectsFromArray:v26];
+          v30 = [PDDatabase whereSQLForArray:allObjects3 prefix:@"personID in "];
+          [v29 addObjectsFromArray:allObjects3];
           [v28 addObject:v30];
-          if ([v14 count])
+          if ([allObjects count])
           {
-            v31 = [PDDatabase whereSQLForArray:v14 prefix:@"parentObjectID in "];
+            v31 = [PDDatabase whereSQLForArray:allObjects prefix:@"parentObjectID in "];
 
             [v28 addObject:v31];
-            [v29 addObjectsFromArray:v14];
+            [v29 addObjectsFromArray:allObjects];
             v30 = v31;
           }
 
@@ -159,25 +159,25 @@
           v32 = v58;
         }
 
-        v35 = [v60 requestItems];
-        v36 = [v35 count];
+        requestItems = [v60 requestItems];
+        v36 = [requestItems count];
 
         CLSInitLog();
-        v37 = [(PDOperation *)self logSubsystem];
-        v38 = v37;
+        logSubsystem = [(PDOperation *)self logSubsystem];
+        v38 = logSubsystem;
         if (v36)
         {
-          if (os_log_type_enabled(v37, OS_LOG_TYPE_DEBUG))
+          if (os_log_type_enabled(logSubsystem, OS_LOG_TYPE_DEBUG))
           {
             v43 = objc_opt_class();
             v44 = v43;
-            v45 = [(PDURLRequestOperation *)self operationID];
+            operationID = [(PDURLRequestOperation *)self operationID];
             [v60 dictionaryRepresentation];
             v47 = v46 = v25;
             *buf = 138543874;
             v69 = v43;
             v70 = 2114;
-            v71 = v45;
+            v71 = operationID;
             v72 = 2112;
             v73 = v47;
             _os_log_debug_impl(&_mh_execute_header, v38, OS_LOG_TYPE_DEBUG, "%{public}@: %{public}@ prepared request payload: %@", buf, 0x20u);
@@ -186,30 +186,30 @@
             v32 = v58;
           }
 
-          v39 = [v60 requestItems];
-          v40 = [v39 count];
-          v41 = [(PDURLRequestOperation *)self stats];
-          if (v41)
+          requestItems2 = [v60 requestItems];
+          v40 = [requestItems2 count];
+          stats = [(PDURLRequestOperation *)self stats];
+          if (stats)
           {
-            v41[14] = v40;
+            stats[14] = v40;
           }
 
-          v3 = [v60 data];
+          data = [v60 data];
         }
 
         else
         {
-          if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
+          if (os_log_type_enabled(logSubsystem, OS_LOG_TYPE_ERROR))
           {
             v48 = objc_opt_class();
             v49 = v48;
-            v50 = [(PDURLRequestOperation *)self operationID];
+            operationID2 = [(PDURLRequestOperation *)self operationID];
             [v60 dictionaryRepresentation];
             v52 = v51 = v25;
             *buf = 138543874;
             v69 = v48;
             v70 = 2114;
-            v71 = v50;
+            v71 = operationID2;
             v72 = 2112;
             v73 = v52;
             _os_log_error_impl(&_mh_execute_header, v38, OS_LOG_TYPE_ERROR, "%{public}@: %{public}@ attempting to send request with no items: %@", buf, 0x20u);
@@ -219,7 +219,7 @@
           }
 
           [(PDEndpointRequestOperation *)self markAsFinished];
-          v3 = 0;
+          data = 0;
         }
 
         v13 = v56;
@@ -230,19 +230,19 @@
       else
       {
         [(PDEndpointRequestOperation *)self abort];
-        v3 = 0;
+        data = 0;
       }
     }
   }
 
-  return v3;
+  return data;
 }
 
-- (void)populateClassIDsBuffer:(id)a3 handoutIDsBuffer:(id)a4 studentIDsBUffer:(id)a5
+- (void)populateClassIDsBuffer:(id)buffer handoutIDsBuffer:(id)dsBuffer studentIDsBUffer:(id)uffer
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  bufferCopy = buffer;
+  dsBufferCopy = dsBuffer;
+  ufferCopy = uffer;
   [*(&self->_firstTime + 2) pd_keypathValueMap];
   v54[0] = _NSConcreteStackBlock;
   v54[1] = 3221225472;
@@ -270,7 +270,7 @@
           objc_enumerationMutation(v12);
         }
 
-        [v8 addObject:*(*(&v50 + 1) + 8 * v16)];
+        [bufferCopy addObject:*(*(&v50 + 1) + 8 * v16)];
         v16 = v16 + 1;
       }
 
@@ -303,7 +303,7 @@
           objc_enumerationMutation(v18);
         }
 
-        [v9 addObject:*(*(&v46 + 1) + 8 * v22)];
+        [dsBufferCopy addObject:*(*(&v46 + 1) + 8 * v22)];
         v22 = v22 + 1;
       }
 
@@ -314,7 +314,7 @@
     while (v20);
   }
 
-  v23 = [(PDOperation *)self database];
+  database = [(PDOperation *)self database];
   v24 = (v11[2])(v11, @"attachmentID");
   if ([v24 count])
   {
@@ -324,8 +324,8 @@
     v44[1] = 3221225472;
     v44[2] = sub_10008FD04;
     v44[3] = &unk_100203860;
-    v45 = v9;
-    [v23 selectAll:v26 where:v25 bindings:v24 block:v44];
+    v45 = dsBufferCopy;
+    [database selectAll:v26 where:v25 bindings:v24 block:v44];
   }
 
   v27 = (v11[2])(v11, @"studentID");
@@ -338,10 +338,10 @@
     v42[1] = 3221225472;
     v42[2] = sub_10008FD5C;
     v42[3] = &unk_100203C88;
-    v43 = v8;
+    v43 = bufferCopy;
     v35 = v28;
-    v36 = v23;
-    [v23 selectAll:v29 where:v28 bindings:v27 block:v42];
+    v36 = database;
+    [database selectAll:v29 where:v28 bindings:v27 block:v42];
     v38 = 0u;
     v39 = 0u;
     v40 = 0u;
@@ -362,7 +362,7 @@
             objc_enumerationMutation(v30);
           }
 
-          [v10 addObject:*(*(&v38 + 1) + 8 * v34)];
+          [ufferCopy addObject:*(*(&v38 + 1) + 8 * v34)];
           v34 = v34 + 1;
         }
 
@@ -373,39 +373,39 @@
       while (v32);
     }
 
-    v23 = v36;
+    database = v36;
   }
 }
 
-- (BOOL)processResponseObject:(id)a3 error:(id *)a4
+- (BOOL)processResponseObject:(id)object error:(id *)error
 {
-  v6 = a3;
+  objectCopy = object;
   if (![(PDOperation *)self isAborted])
   {
-    v8 = [(PDOperation *)self database];
-    if ([v6 hasStatus])
+    database = [(PDOperation *)self database];
+    if ([objectCopy hasStatus])
     {
-      v9 = [v6 status];
-      v10 = sub_100105CA4(v9);
+      status = [objectCopy status];
+      v10 = sub_100105CA4(status);
       [(PDEndpointRequestOperation *)self handleServerAlerts:v10];
 
-      v11 = [v6 status];
-      v12 = sub_1001055FC(v11, 0);
+      status2 = [objectCopy status];
+      v12 = sub_1001055FC(status2, 0);
 
-      v13 = [(PDURLRequestOperation *)self operationID];
-      v14 = v13;
+      operationID = [(PDURLRequestOperation *)self operationID];
+      v14 = operationID;
       if (v12)
       {
         CLSInitLog();
-        v15 = [(PDOperation *)self logSubsystem];
-        if (!os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+        logSubsystem = [(PDOperation *)self logSubsystem];
+        if (!os_log_type_enabled(logSubsystem, OS_LOG_TYPE_ERROR))
         {
 LABEL_6:
 
-          if (a4)
+          if (error)
           {
             v16 = v12;
-            *a4 = v12;
+            *error = v12;
           }
 
           v7 = 0;
@@ -415,15 +415,15 @@ LABEL_18:
         }
 
         v25 = objc_opt_class();
-        v26 = [v6 status];
-        v27 = [v26 code];
-        if (v27 > 299)
+        status3 = [objectCopy status];
+        code = [status3 code];
+        if (code > 299)
         {
-          if (v27 <= 801)
+          if (code <= 801)
           {
-            if (v27 > 799)
+            if (code > 799)
             {
-              if (v27 == 800)
+              if (code == 800)
               {
                 v28 = @"E_NOT_APPLICABLE_TYPE";
               }
@@ -436,13 +436,13 @@ LABEL_18:
               goto LABEL_77;
             }
 
-            if (v27 == 300)
+            if (code == 300)
             {
               v28 = @"E_DEVICE_UNSUPPORTED";
               goto LABEL_77;
             }
 
-            if (v27 == 500)
+            if (code == 500)
             {
               v28 = @"E_INVALID_FIELD_VALUE";
               goto LABEL_77;
@@ -451,9 +451,9 @@ LABEL_18:
 
           else
           {
-            if (v27 <= 803)
+            if (code <= 803)
             {
-              if (v27 == 802)
+              if (code == 802)
               {
                 v28 = @"E_ENTITY_PRIVILEGE_CHANGE";
               }
@@ -466,7 +466,7 @@ LABEL_18:
               goto LABEL_77;
             }
 
-            switch(v27)
+            switch(code)
             {
               case 0x324:
                 v28 = @"E_ENTITY_EXPIRED";
@@ -477,7 +477,7 @@ LABEL_18:
               case 0x326:
                 v28 = @"E_DISALLOWED_EMAIL_DOMAIN";
 LABEL_77:
-                v29 = [v6 status];
+                status4 = [objectCopy status];
                 *buf = 138544130;
                 v35 = v25;
                 v36 = 2114;
@@ -485,8 +485,8 @@ LABEL_77:
                 v38 = 2112;
                 v39 = v28;
                 v40 = 2048;
-                v41 = [v29 code];
-                _os_log_error_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "%{public}@: %{public}@ request failed with status: %@ (%ld)", buf, 0x2Au);
+                code2 = [status4 code];
+                _os_log_error_impl(&_mh_execute_header, logSubsystem, OS_LOG_TYPE_ERROR, "%{public}@: %{public}@ request failed with status: %@ (%ld)", buf, 0x2Au);
 
                 goto LABEL_6;
             }
@@ -495,9 +495,9 @@ LABEL_77:
 
         else
         {
-          if (v27 > 3)
+          if (code > 3)
           {
-            switch(v27)
+            switch(code)
             {
               case 'd':
                 v28 = @"E_BOOTSTRAP_REQUIRED";
@@ -566,14 +566,14 @@ LABEL_77:
                 v28 = @"E_DISALLOWED_COUNTRY_CODE";
                 break;
               default:
-                if (v27 == 4)
+                if (code == 4)
                 {
                   v28 = @"S_OK_HAS_MORE_DATA";
                 }
 
                 else
                 {
-                  if (v27 != 5)
+                  if (code != 5)
                   {
                     goto LABEL_49;
                   }
@@ -587,9 +587,9 @@ LABEL_77:
             goto LABEL_77;
           }
 
-          if (v27 > 1)
+          if (code > 1)
           {
-            if (v27 == 2)
+            if (code == 2)
             {
               v28 = @"E_ERROR";
             }
@@ -602,13 +602,13 @@ LABEL_77:
             goto LABEL_77;
           }
 
-          if (!v27)
+          if (!code)
           {
             v28 = @"UNKNOWN_CODE";
             goto LABEL_77;
           }
 
-          if (v27 == 1)
+          if (code == 1)
           {
             v28 = @"S_OK";
             goto LABEL_77;
@@ -616,28 +616,28 @@ LABEL_77:
         }
 
 LABEL_49:
-        v28 = [NSString stringWithFormat:@"(unknown: %i)", v27];
+        v28 = [NSString stringWithFormat:@"(unknown: %i)", code];
         goto LABEL_77;
       }
     }
 
-    v17 = [v6 reports];
-    v18 = [v17 count];
-    v19 = [(PDURLRequestOperation *)self stats];
-    if (v19)
+    reports = [objectCopy reports];
+    v18 = [reports count];
+    stats = [(PDURLRequestOperation *)self stats];
+    if (stats)
     {
-      v19[15] = v18;
+      stats[15] = v18;
     }
 
     v30[0] = _NSConcreteStackBlock;
     v30[1] = 3221225472;
     v30[2] = sub_1000903BC;
     v30[3] = &unk_1002038B0;
-    v20 = v6;
+    v20 = objectCopy;
     v31 = v20;
-    v21 = v8;
+    v21 = database;
     v32 = v21;
-    v33 = self;
+    selfCopy = self;
     if (v21)
     {
       v7 = [v21 performTransaction:v30 forWriting:1];
@@ -650,16 +650,16 @@ LABEL_49:
 
     if ([v20 hasNextBatchPointer])
     {
-      v22 = [v20 nextBatchPointer];
+      nextBatchPointer = [v20 nextBatchPointer];
     }
 
     else
     {
-      v22 = 0;
+      nextBatchPointer = 0;
     }
 
     v23 = *(&self->super._responseStatusError + 2);
-    *(&self->super._responseStatusError + 2) = v22;
+    *(&self->super._responseStatusError + 2) = nextBatchPointer;
 
     v12 = v31;
     goto LABEL_18;

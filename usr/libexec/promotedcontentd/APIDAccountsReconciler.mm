@@ -1,12 +1,12 @@
 @interface APIDAccountsReconciler
-+ (void)forceReconcile:(id)a3;
++ (void)forceReconcile:(id)reconcile;
 @end
 
 @implementation APIDAccountsReconciler
 
-+ (void)forceReconcile:(id)a3
++ (void)forceReconcile:(id)reconcile
 {
-  v3 = a3;
+  reconcileCopy = reconcile;
   v4 = APLogForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
@@ -19,16 +19,16 @@
   [v5 setRemoteObjectInterface:v6];
 
   [v5 resume];
-  v7 = [v5 remoteObjectProxy];
+  remoteObjectProxy = [v5 remoteObjectProxy];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10028CADC;
   v10[3] = &unk_10047CA18;
   v11 = v5;
-  v12 = v3;
+  v12 = reconcileCopy;
   v8 = v5;
-  v9 = v3;
-  [v7 forceReconcile:v10];
+  v9 = reconcileCopy;
+  [remoteObjectProxy forceReconcile:v10];
 }
 
 @end

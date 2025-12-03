@@ -9,63 +9,63 @@
   v35.receiver = self;
   v35.super_class = WFTLKSimpleRowView;
   [(TLKSimpleRowView *)&v35 observedPropertiesChanged];
-  v3 = [(TLKSimpleRowView *)self leadingImage];
-  if (v3)
+  leadingImage = [(TLKSimpleRowView *)self leadingImage];
+  if (leadingImage)
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(TLKSimpleRowView *)self trailingImage];
-    v4 = v5 != 0;
+    trailingImage = [(TLKSimpleRowView *)self trailingImage];
+    v4 = trailingImage != 0;
   }
 
-  v6 = [(TLKSimpleRowView *)self leadingSubtitle];
-  if (v6)
+  leadingSubtitle = [(TLKSimpleRowView *)self leadingSubtitle];
+  if (leadingSubtitle)
   {
     v7 = 1;
   }
 
   else
   {
-    v8 = [(TLKSimpleRowView *)self trailingSubtitle];
-    v7 = v8 != 0;
+    trailingSubtitle = [(TLKSimpleRowView *)self trailingSubtitle];
+    v7 = trailingSubtitle != 0;
   }
 
-  v9 = [(TLKSimpleRowView *)self leadingImage];
-  [v9 size];
+  leadingImage2 = [(TLKSimpleRowView *)self leadingImage];
+  [leadingImage2 size];
   v11 = v10;
 
-  v12 = [(TLKSimpleRowView *)self leadingImage];
-  if (v12)
+  leadingImage3 = [(TLKSimpleRowView *)self leadingImage];
+  if (leadingImage3)
   {
     v13 = 0;
   }
 
   else
   {
-    v14 = [(TLKSimpleRowView *)self leadingTitle];
-    if (v14)
+    leadingTitle = [(TLKSimpleRowView *)self leadingTitle];
+    if (leadingTitle)
     {
-      v15 = [(TLKSimpleRowView *)self trailingTitle];
-      if (v15)
+      trailingTitle = [(TLKSimpleRowView *)self trailingTitle];
+      if (trailingTitle)
       {
         v13 = 0;
       }
 
       else
       {
-        v16 = [(TLKSimpleRowView *)self trailingSubtitle];
-        if (v16)
+        trailingSubtitle2 = [(TLKSimpleRowView *)self trailingSubtitle];
+        if (trailingSubtitle2)
         {
           v13 = 0;
         }
 
         else
         {
-          v17 = [(TLKSimpleRowView *)self trailingImage];
-          [v17 size];
+          trailingImage2 = [(TLKSimpleRowView *)self trailingImage];
+          [trailingImage2 size];
           if (v19 == 29.0 && v18 == 29.0)
           {
             v13 = 1;
@@ -73,11 +73,11 @@
 
           else
           {
-            v20 = [(TLKSimpleRowView *)self trailingImage];
-            if ([v20 isTemplate])
+            trailingImage3 = [(TLKSimpleRowView *)self trailingImage];
+            if ([trailingImage3 isTemplate])
             {
-              v34 = [(TLKSimpleRowView *)self trailingImage];
-              [v34 size];
+              trailingImage4 = [(TLKSimpleRowView *)self trailingImage];
+              [trailingImage4 size];
               if (v21 <= 29.0)
               {
                 v13 = 1;
@@ -85,8 +85,8 @@
 
               else
               {
-                v33 = [(TLKSimpleRowView *)self trailingImage];
-                [v33 size];
+                trailingImage5 = [(TLKSimpleRowView *)self trailingImage];
+                [trailingImage5 size];
                 v13 = v22 <= 29.0;
               }
             }
@@ -106,33 +106,33 @@
     }
   }
 
-  v23 = [(TLKSimpleRowView *)self leadingTitle];
-  if (v23)
+  leadingTitle2 = [(TLKSimpleRowView *)self leadingTitle];
+  if (leadingTitle2)
   {
-    v24 = [(TLKSimpleRowView *)self leadingSubtitle];
-    if (v24)
+    leadingSubtitle2 = [(TLKSimpleRowView *)self leadingSubtitle];
+    if (leadingSubtitle2)
     {
-      v25 = [(TLKSimpleRowView *)self trailingTitle];
-      if (v25)
+      trailingTitle2 = [(TLKSimpleRowView *)self trailingTitle];
+      if (trailingTitle2)
       {
         v26 = 0;
       }
 
       else
       {
-        v27 = [(TLKSimpleRowView *)self trailingSubtitle];
-        if (v27)
+        trailingSubtitle3 = [(TLKSimpleRowView *)self trailingSubtitle];
+        if (trailingSubtitle3)
         {
           v26 = 0;
         }
 
         else
         {
-          v28 = [(TLKSimpleRowView *)self leadingImage];
-          if (v28)
+          leadingImage4 = [(TLKSimpleRowView *)self leadingImage];
+          if (leadingImage4)
           {
-            v29 = [(TLKSimpleRowView *)self trailingImage];
-            v26 = v11 <= 18.0 && v29 == 0;
+            trailingImage6 = [(TLKSimpleRowView *)self trailingImage];
+            v26 = v11 <= 18.0 && trailingImage6 == 0;
           }
 
           else
@@ -157,8 +157,8 @@
   if (!v13 && !v26 && !v7 && !v4)
   {
     v31 = [MEMORY[0x277D6F1A8] cachedFontForTextStyle:*MEMORY[0x277D76988] isShort:1 isBold:0];
-    v32 = [(TLKSimpleRowView *)self leadingTitleLabel];
-    [v32 setFont:v31];
+    leadingTitleLabel = [(TLKSimpleRowView *)self leadingTitleLabel];
+    [leadingTitleLabel setFont:v31];
   }
 }
 

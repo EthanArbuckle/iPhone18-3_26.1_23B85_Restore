@@ -1,5 +1,5 @@
 @interface EAHIDAccessory
-- (EAHIDAccessory)initWithName:(id)a3 HIDDeviceRef:(__IOHIDDevice *)a4;
+- (EAHIDAccessory)initWithName:(id)name HIDDeviceRef:(__IOHIDDevice *)ref;
 - (void)dealloc;
 @end
 
@@ -59,7 +59,7 @@
   [(EAHIDAccessory *)&v12 dealloc];
 }
 
-- (EAHIDAccessory)initWithName:(id)a3 HIDDeviceRef:(__IOHIDDevice *)a4
+- (EAHIDAccessory)initWithName:(id)name HIDDeviceRef:(__IOHIDDevice *)ref
 {
   v9.receiver = self;
   v9.super_class = EAHIDAccessory;
@@ -67,8 +67,8 @@
   v7 = v6;
   if (v6)
   {
-    [(EAHIDAccessory *)v6 setName:a3];
-    [(EAHIDAccessory *)v7 setHIDDevice:a4];
+    [(EAHIDAccessory *)v6 setName:name];
+    [(EAHIDAccessory *)v7 setHIDDevice:ref];
   }
 
   return v7;

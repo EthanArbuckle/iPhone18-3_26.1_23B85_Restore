@@ -1,37 +1,37 @@
 @interface CMLIndexPIRClient
-- (id)constructPIRBatchRequestWithIndices:(id)a3 error:(id *)a4;
-- (id)constructPIRRequestWithIndex:(unint64_t)a3 error:(id *)a4;
-- (id)dataByIndex:(unint64_t)a3 error:(id *)a4;
-- (id)dataByIndices:(id)a3 error:(id *)a4;
-- (id)decryptPIRBatchResponse:(id)a3 indices:(id)a4 error:(id *)a5;
-- (id)decryptPIRResponse:(id)a3 index:(unint64_t)a4 error:(id *)a5;
-- (void)requestDataByIndex:(unint64_t)a3 completionHandler:(id)a4;
-- (void)requestDataByIndices:(id)a3 completionHandler:(id)a4;
+- (id)constructPIRBatchRequestWithIndices:(id)indices error:(id *)error;
+- (id)constructPIRRequestWithIndex:(unint64_t)index error:(id *)error;
+- (id)dataByIndex:(unint64_t)index error:(id *)error;
+- (id)dataByIndices:(id)indices error:(id *)error;
+- (id)decryptPIRBatchResponse:(id)response indices:(id)indices error:(id *)error;
+- (id)decryptPIRResponse:(id)response index:(unint64_t)index error:(id *)error;
+- (void)requestDataByIndex:(unint64_t)index completionHandler:(id)handler;
+- (void)requestDataByIndices:(id)indices completionHandler:(id)handler;
 @end
 
 @implementation CMLIndexPIRClient
 
-- (void)requestDataByIndex:(unint64_t)a3 completionHandler:(id)a4
+- (void)requestDataByIndex:(unint64_t)index completionHandler:(id)handler
 {
   v30 = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  handlerCopy = handler;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __58__CMLIndexPIRClient_requestDataByIndex_completionHandler___block_invoke;
   aBlock[3] = &unk_2785419B0;
-  v8 = v7;
+  v8 = handlerCopy;
   v27 = v8;
   v9 = _Block_copy(aBlock);
-  v10 = [(CMLPIRClient *)self connection];
-  v11 = [(CMLPIRClient *)self dispatchQueue];
-  v12 = [CMLXPC asyncProxyToConnection:v10 dispatchQueue:v11 errorHandler:v9];
+  connection = [(CMLPIRClient *)self connection];
+  dispatchQueue = [(CMLPIRClient *)self dispatchQueue];
+  v12 = [CMLXPC asyncProxyToConnection:connection dispatchQueue:dispatchQueue errorHandler:v9];
 
   v19 = MEMORY[0x277D85DD0];
   v20 = 3221225472;
   v21 = __58__CMLIndexPIRClient_requestDataByIndex_completionHandler___block_invoke_2;
   v22 = &unk_278541C08;
   v25 = a2;
-  v23 = self;
+  selfCopy = self;
   v13 = v8;
   v24 = v13;
   v14 = _Block_copy(&v19);
@@ -44,8 +44,8 @@
     _os_log_impl(&dword_224E26000, v15, OS_LOG_TYPE_DEFAULT, "%{public}@ Sending XPC request", buf, 0xCu);
   }
 
-  v17 = [(CMLPIRClient *)self clientConfig];
-  [v12 requestDataByIndex:a3 clientConfig:v17 reply:v14];
+  clientConfig = [(CMLPIRClient *)self clientConfig];
+  [v12 requestDataByIndex:index clientConfig:clientConfig reply:v14];
 
   v18 = *MEMORY[0x277D85DE8];
 }
@@ -94,28 +94,28 @@ void __58__CMLIndexPIRClient_requestDataByIndex_completionHandler___block_invoke
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)requestDataByIndices:(id)a3 completionHandler:(id)a4
+- (void)requestDataByIndices:(id)indices completionHandler:(id)handler
 {
   v31 = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  handlerCopy = handler;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __60__CMLIndexPIRClient_requestDataByIndices_completionHandler___block_invoke;
   aBlock[3] = &unk_2785419B0;
-  v8 = v7;
+  v8 = handlerCopy;
   v28 = v8;
-  v9 = a3;
+  indicesCopy = indices;
   v10 = _Block_copy(aBlock);
-  v11 = [(CMLPIRClient *)self connection];
-  v12 = [(CMLPIRClient *)self dispatchQueue];
-  v13 = [CMLXPC asyncProxyToConnection:v11 dispatchQueue:v12 errorHandler:v10];
+  connection = [(CMLPIRClient *)self connection];
+  dispatchQueue = [(CMLPIRClient *)self dispatchQueue];
+  v13 = [CMLXPC asyncProxyToConnection:connection dispatchQueue:dispatchQueue errorHandler:v10];
 
   v20 = MEMORY[0x277D85DD0];
   v21 = 3221225472;
   v22 = __60__CMLIndexPIRClient_requestDataByIndices_completionHandler___block_invoke_2;
   v23 = &unk_278541A00;
   v26 = a2;
-  v24 = self;
+  selfCopy = self;
   v14 = v8;
   v25 = v14;
   v15 = _Block_copy(&v20);
@@ -128,8 +128,8 @@ void __58__CMLIndexPIRClient_requestDataByIndex_completionHandler___block_invoke
     _os_log_impl(&dword_224E26000, v16, OS_LOG_TYPE_DEFAULT, "%{public}@ Sending XPC request", buf, 0xCu);
   }
 
-  v18 = [(CMLPIRClient *)self clientConfig];
-  [v13 requestDataByIndices:v9 clientConfig:v18 reply:v15];
+  clientConfig = [(CMLPIRClient *)self clientConfig];
+  [v13 requestDataByIndices:indicesCopy clientConfig:clientConfig reply:v15];
 
   v19 = *MEMORY[0x277D85DE8];
 }
@@ -179,12 +179,12 @@ void __60__CMLIndexPIRClient_requestDataByIndices_completionHandler___block_invo
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (id)dataByIndex:(unint64_t)a3 error:(id *)a4
+- (id)dataByIndex:(unint64_t)index error:(id *)error
 {
   v34 = *MEMORY[0x277D85DE8];
   v31 = 0;
-  v8 = [(CMLPIRClient *)self connection];
-  v9 = [CMLXPC syncProxyToConnection:v8 error:&v31];
+  connection = [(CMLPIRClient *)self connection];
+  v9 = [CMLXPC syncProxyToConnection:connection error:&v31];
 
   v25 = 0;
   v26 = &v25;
@@ -215,10 +215,10 @@ void __60__CMLIndexPIRClient_requestDataByIndices_completionHandler___block_invo
     _os_log_impl(&dword_224E26000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@ Sending XPC request", buf, 0xCu);
   }
 
-  v13 = [(CMLPIRClient *)self clientConfig];
-  [v9 requestDataByIndex:a3 clientConfig:v13 reply:v10];
+  clientConfig = [(CMLPIRClient *)self clientConfig];
+  [v9 requestDataByIndex:index clientConfig:clientConfig reply:v10];
 
-  if (a4)
+  if (error)
   {
     v14 = v31;
     if (!v31)
@@ -226,7 +226,7 @@ void __60__CMLIndexPIRClient_requestDataByIndices_completionHandler___block_invo
       v14 = v26[5];
     }
 
-    *a4 = v14;
+    *error = v14;
   }
 
   v15 = v20[5];
@@ -269,13 +269,13 @@ void __39__CMLIndexPIRClient_dataByIndex_error___block_invoke(uint64_t a1, void 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (id)dataByIndices:(id)a3 error:(id *)a4
+- (id)dataByIndices:(id)indices error:(id *)error
 {
   v34 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  indicesCopy = indices;
   v31 = 0;
-  v8 = [(CMLPIRClient *)self connection];
-  v9 = [CMLXPC syncProxyToConnection:v8 error:&v31];
+  connection = [(CMLPIRClient *)self connection];
+  v9 = [CMLXPC syncProxyToConnection:connection error:&v31];
 
   v25 = 0;
   v26 = &v25;
@@ -306,10 +306,10 @@ void __39__CMLIndexPIRClient_dataByIndex_error___block_invoke(uint64_t a1, void 
     _os_log_impl(&dword_224E26000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@ Sending XPC request", buf, 0xCu);
   }
 
-  v13 = [(CMLPIRClient *)self clientConfig];
-  [v9 requestDataByIndices:v7 clientConfig:v13 reply:v10];
+  clientConfig = [(CMLPIRClient *)self clientConfig];
+  [v9 requestDataByIndices:indicesCopy clientConfig:clientConfig reply:v10];
 
-  if (a4)
+  if (error)
   {
     v14 = v31;
     if (!v31)
@@ -317,7 +317,7 @@ void __39__CMLIndexPIRClient_dataByIndex_error___block_invoke(uint64_t a1, void 
       v14 = v26[5];
     }
 
-    *a4 = v14;
+    *error = v14;
   }
 
   v15 = v20[5];
@@ -361,12 +361,12 @@ void __41__CMLIndexPIRClient_dataByIndices_error___block_invoke(uint64_t a1, voi
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (id)constructPIRRequestWithIndex:(unint64_t)a3 error:(id *)a4
+- (id)constructPIRRequestWithIndex:(unint64_t)index error:(id *)error
 {
   v34 = *MEMORY[0x277D85DE8];
   v31 = 0;
-  v8 = [(CMLPIRClient *)self connection];
-  v9 = [CMLXPC syncProxyToConnection:v8 error:&v31];
+  connection = [(CMLPIRClient *)self connection];
+  v9 = [CMLXPC syncProxyToConnection:connection error:&v31];
 
   v25 = 0;
   v26 = &v25;
@@ -397,10 +397,10 @@ void __41__CMLIndexPIRClient_dataByIndices_error___block_invoke(uint64_t a1, voi
     _os_log_impl(&dword_224E26000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@ Sending XPC request", buf, 0xCu);
   }
 
-  v13 = [(CMLPIRClient *)self clientConfig];
-  [v9 constructPIRRequestWithIndex:a3 clientConfig:v13 reply:v10];
+  clientConfig = [(CMLPIRClient *)self clientConfig];
+  [v9 constructPIRRequestWithIndex:index clientConfig:clientConfig reply:v10];
 
-  if (a4)
+  if (error)
   {
     v14 = v31;
     if (!v31)
@@ -408,7 +408,7 @@ void __41__CMLIndexPIRClient_dataByIndices_error___block_invoke(uint64_t a1, voi
       v14 = v26[5];
     }
 
-    *a4 = v14;
+    *error = v14;
   }
 
   v15 = v20[5];
@@ -463,13 +463,13 @@ LABEL_7:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (id)constructPIRBatchRequestWithIndices:(id)a3 error:(id *)a4
+- (id)constructPIRBatchRequestWithIndices:(id)indices error:(id *)error
 {
   v34 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  indicesCopy = indices;
   v31 = 0;
-  v8 = [(CMLPIRClient *)self connection];
-  v9 = [CMLXPC syncProxyToConnection:v8 error:&v31];
+  connection = [(CMLPIRClient *)self connection];
+  v9 = [CMLXPC syncProxyToConnection:connection error:&v31];
 
   v25 = 0;
   v26 = &v25;
@@ -500,10 +500,10 @@ LABEL_7:
     _os_log_impl(&dword_224E26000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@ Sending XPC request", buf, 0xCu);
   }
 
-  v13 = [(CMLPIRClient *)self clientConfig];
-  [v9 constructPIRBatchRequestWithIndices:v7 clientConfig:v13 reply:v10];
+  clientConfig = [(CMLPIRClient *)self clientConfig];
+  [v9 constructPIRBatchRequestWithIndices:indicesCopy clientConfig:clientConfig reply:v10];
 
-  if (a4)
+  if (error)
   {
     v14 = v31;
     if (!v31)
@@ -511,7 +511,7 @@ LABEL_7:
       v14 = v26[5];
     }
 
-    *a4 = v14;
+    *error = v14;
   }
 
   v15 = v20[5];
@@ -566,13 +566,13 @@ LABEL_7:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (id)decryptPIRResponse:(id)a3 index:(unint64_t)a4 error:(id *)a5
+- (id)decryptPIRResponse:(id)response index:(unint64_t)index error:(id *)error
 {
   v36 = *MEMORY[0x277D85DE8];
-  v9 = a3;
+  responseCopy = response;
   v33 = 0;
-  v10 = [(CMLPIRClient *)self connection];
-  v11 = [CMLXPC syncProxyToConnection:v10 error:&v33];
+  connection = [(CMLPIRClient *)self connection];
+  v11 = [CMLXPC syncProxyToConnection:connection error:&v33];
 
   v27 = 0;
   v28 = &v27;
@@ -603,10 +603,10 @@ LABEL_7:
     _os_log_impl(&dword_224E26000, v13, OS_LOG_TYPE_DEFAULT, "%{public}@ Sending XPC request", buf, 0xCu);
   }
 
-  v15 = [(CMLPIRClient *)self clientConfig];
-  [v11 decryptPIRResponse:v9 index:a4 clientConfig:v15 reply:v12];
+  clientConfig = [(CMLPIRClient *)self clientConfig];
+  [v11 decryptPIRResponse:responseCopy index:index clientConfig:clientConfig reply:v12];
 
-  if (a5)
+  if (error)
   {
     v16 = v33;
     if (!v33)
@@ -614,7 +614,7 @@ LABEL_7:
       v16 = v28[5];
     }
 
-    *a5 = v16;
+    *error = v16;
   }
 
   v17 = v22[5];
@@ -669,14 +669,14 @@ LABEL_7:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (id)decryptPIRBatchResponse:(id)a3 indices:(id)a4 error:(id *)a5
+- (id)decryptPIRBatchResponse:(id)response indices:(id)indices error:(id *)error
 {
   v37 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
+  responseCopy = response;
+  indicesCopy = indices;
   v34 = 0;
-  v11 = [(CMLPIRClient *)self connection];
-  v12 = [CMLXPC syncProxyToConnection:v11 error:&v34];
+  connection = [(CMLPIRClient *)self connection];
+  v12 = [CMLXPC syncProxyToConnection:connection error:&v34];
 
   v28 = 0;
   v29 = &v28;
@@ -707,10 +707,10 @@ LABEL_7:
     _os_log_impl(&dword_224E26000, v14, OS_LOG_TYPE_DEFAULT, "%{public}@ Sending XPC request", buf, 0xCu);
   }
 
-  v16 = [(CMLPIRClient *)self clientConfig];
-  [v12 decryptPIRBatchResponse:v9 indices:v10 clientConfig:v16 reply:v13];
+  clientConfig = [(CMLPIRClient *)self clientConfig];
+  [v12 decryptPIRBatchResponse:responseCopy indices:indicesCopy clientConfig:clientConfig reply:v13];
 
-  if (a5)
+  if (error)
   {
     v17 = v34;
     if (!v34)
@@ -718,7 +718,7 @@ LABEL_7:
       v17 = v29[5];
     }
 
-    *a5 = v17;
+    *error = v17;
   }
 
   v18 = v23[5];

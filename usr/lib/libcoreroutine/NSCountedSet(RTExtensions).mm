@@ -13,8 +13,8 @@
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v1 = a1;
-  v2 = [v1 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  selfCopy = self;
+  v2 = [selfCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v2)
   {
     v3 = v2;
@@ -27,11 +27,11 @@
       {
         if (*v14 != v5)
         {
-          objc_enumerationMutation(v1);
+          objc_enumerationMutation(selfCopy);
         }
 
         v8 = *(*(&v13 + 1) + 8 * i);
-        v9 = [v1 countForObject:{v8, v13}];
+        v9 = [selfCopy countForObject:{v8, v13}];
         if (v9 > v6)
         {
           v10 = v9;
@@ -42,7 +42,7 @@
         }
       }
 
-      v3 = [v1 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v3 = [selfCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v3);
@@ -63,8 +63,8 @@
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v1 = a1;
-  v2 = [v1 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  selfCopy = self;
+  v2 = [selfCopy countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v2)
   {
     v3 = v2;
@@ -76,13 +76,13 @@
       {
         if (*v9 != v5)
         {
-          objc_enumerationMutation(v1);
+          objc_enumerationMutation(selfCopy);
         }
 
-        v4 += [v1 countForObject:{*(*(&v8 + 1) + 8 * i), v8}];
+        v4 += [selfCopy countForObject:{*(*(&v8 + 1) + 8 * i), v8}];
       }
 
-      v3 = [v1 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v3 = [selfCopy countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v3);
@@ -98,13 +98,13 @@
 
 - (id)arrayOrderedByHighestCount
 {
-  v2 = [a1 allObjects];
+  allObjects = [self allObjects];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __56__NSCountedSet_RTExtensions__arrayOrderedByHighestCount__block_invoke;
   v5[3] = &unk_2788CDF20;
-  v5[4] = a1;
-  v3 = [v2 sortedArrayUsingComparator:v5];
+  v5[4] = self;
+  v3 = [allObjects sortedArrayUsingComparator:v5];
 
   return v3;
 }

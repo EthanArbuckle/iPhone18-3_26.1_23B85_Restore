@@ -1,17 +1,17 @@
 @interface SXEmbedResource
-- (id)expirationDateWithValue:(id)a3 withType:(int)a4;
+- (id)expirationDateWithValue:(id)value withType:(int)type;
 @end
 
 @implementation SXEmbedResource
 
-- (id)expirationDateWithValue:(id)a3 withType:(int)a4
+- (id)expirationDateWithValue:(id)value withType:(int)type
 {
-  if (a4 == 3)
+  if (type == 3)
   {
     v4 = MEMORY[0x1E696AB78];
-    v5 = a3;
+    valueCopy = value;
     v6 = [v4 dateFormatterWithFormat:@"yyyy-MM-dd'T'HH:mm:ss.SSSZ"];
-    v7 = [v6 dateFromString:v5];
+    v7 = [v6 dateFromString:valueCopy];
   }
 
   else

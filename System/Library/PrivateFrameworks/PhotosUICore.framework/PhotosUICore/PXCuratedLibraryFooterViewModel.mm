@@ -1,20 +1,20 @@
 @interface PXCuratedLibraryFooterViewModel
-+ (BOOL)hasAnalysisProgressForMode:(int64_t)a3 analysisStatus:(id)a4 cplUIStatus:(id)a5 userDefaults:(id)a6 outAnimatedIconMode:(int64_t *)a7 outProgress:(float *)a8 outTitle:(id *)a9 outDescription:(id *)a10;
-+ (id)_titleWithOptionalDescription:(id *)a3 progress:(float *)a4 forMode:(int64_t)a5 itemCountsController:(id)a6 analysisStatus:(id)a7 cplUIStatus:(id)a8 inRebuild:(BOOL)a9 reason:(id)a10;
++ (BOOL)hasAnalysisProgressForMode:(int64_t)mode analysisStatus:(id)status cplUIStatus:(id)iStatus userDefaults:(id)defaults outAnimatedIconMode:(int64_t *)iconMode outProgress:(float *)progress outTitle:(id *)title outDescription:(id *)self0;
++ (id)_titleWithOptionalDescription:(id *)description progress:(float *)progress forMode:(int64_t)mode itemCountsController:(id)controller analysisStatus:(id)status cplUIStatus:(id)iStatus inRebuild:(BOOL)rebuild reason:(id)self0;
 - (BOOL)shouldAlternateTitleWithAnimatedGridCycle;
 - (PXCuratedLibraryFooterViewModel)init;
-- (PXCuratedLibraryFooterViewModel)initWithItemCountsController:(id)a3 cplUIStatusProvider:(id)a4 analysisStatus:(id)a5 mode:(int64_t)a6 viewModel:(id)a7;
+- (PXCuratedLibraryFooterViewModel)initWithItemCountsController:(id)controller cplUIStatusProvider:(id)provider analysisStatus:(id)status mode:(int64_t)mode viewModel:(id)model;
 - (PXCuratedLibraryFooterViewModelPresentationDelegate)presentingDelegate;
-- (id)presentingViewControllerForCloudQuotaControllerHelper:(id)a3;
-- (void)_updateExposedPropertiesForReason:(id)a3;
+- (id)presentingViewControllerForCloudQuotaControllerHelper:(id)helper;
+- (void)_updateExposedPropertiesForReason:(id)reason;
 - (void)_updateHasImportantInformation;
-- (void)cloudQuotaControllerHelper:(id)a3 informationViewDidChange:(id)a4;
+- (void)cloudQuotaControllerHelper:(id)helper informationViewDidChange:(id)change;
 - (void)didHideFooter;
 - (void)footerAnimationCrossedGridCycleBoundary;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)setIsFooterShown:(BOOL)a3;
-- (void)setMode:(int64_t)a3;
-- (void)settings:(id)a3 changedValueForKey:(id)a4;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)setIsFooterShown:(BOOL)shown;
+- (void)setMode:(int64_t)mode;
+- (void)settings:(id)settings changedValueForKey:(id)key;
 @end
 
 @implementation PXCuratedLibraryFooterViewModel
@@ -26,36 +26,36 @@
   return WeakRetained;
 }
 
-- (void)settings:(id)a3 changedValueForKey:(id)a4
+- (void)settings:(id)settings changedValueForKey:(id)key
 {
-  v5 = a4;
-  if (([v5 isEqualToString:@"simulateAnimatedIconMode"] & 1) != 0 || objc_msgSend(v5, "isEqualToString:", @"simulatedAnimatedIconMode"))
+  keyCopy = key;
+  if (([keyCopy isEqualToString:@"simulateAnimatedIconMode"] & 1) != 0 || objc_msgSend(keyCopy, "isEqualToString:", @"simulatedAnimatedIconMode"))
   {
     [(PXCuratedLibraryFooterViewModel *)self _updateExposedPropertiesForReason:@"SimulateAnimatedIconMode"];
   }
 
-  if ([v5 isEqualToString:@"simulateImportantInformation"])
+  if ([keyCopy isEqualToString:@"simulateImportantInformation"])
   {
     [(PXCuratedLibraryFooterViewModel *)self _updateHasImportantInformation];
   }
 }
 
-- (id)presentingViewControllerForCloudQuotaControllerHelper:(id)a3
+- (id)presentingViewControllerForCloudQuotaControllerHelper:(id)helper
 {
-  v4 = [(PXCuratedLibraryFooterViewModel *)self presentingDelegate];
-  v5 = [v4 presentingViewControllerForFooterViewModel:self];
+  presentingDelegate = [(PXCuratedLibraryFooterViewModel *)self presentingDelegate];
+  v5 = [presentingDelegate presentingViewControllerForFooterViewModel:self];
 
   return v5;
 }
 
-- (void)cloudQuotaControllerHelper:(id)a3 informationViewDidChange:(id)a4
+- (void)cloudQuotaControllerHelper:(id)helper informationViewDidChange:(id)change
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __87__PXCuratedLibraryFooterViewModel_cloudQuotaControllerHelper_informationViewDidChange___block_invoke;
   v4[3] = &unk_1E77350C0;
   v4[4] = self;
-  [(PXCuratedLibraryFooterViewModel *)self performChanges:v4, a4];
+  [(PXCuratedLibraryFooterViewModel *)self performChanges:v4, change];
 }
 
 uint64_t __87__PXCuratedLibraryFooterViewModel_cloudQuotaControllerHelper_informationViewDidChange___block_invoke(uint64_t a1)
@@ -66,13 +66,13 @@ uint64_t __87__PXCuratedLibraryFooterViewModel_cloudQuotaControllerHelper_inform
   return [v2 _updateHasImportantInformation];
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v6 = a4;
-  v9 = a3;
-  if (CuratedLibraryItemCountsControllerObserverContext == a5)
+  changeCopy = change;
+  observableCopy = observable;
+  if (CuratedLibraryItemCountsControllerObserverContext == context)
   {
-    if ((v6 & 1) == 0)
+    if ((changeCopy & 1) == 0)
     {
       goto LABEL_17;
     }
@@ -81,53 +81,53 @@ uint64_t __87__PXCuratedLibraryFooterViewModel_cloudQuotaControllerHelper_inform
     goto LABEL_13;
   }
 
-  if (CuratedLibraryAnalysisStatusObserverContext == a5)
+  if (CuratedLibraryAnalysisStatusObserverContext == context)
   {
     v10 = @"PXCuratedLibraryAnalysisStatus";
     goto LABEL_13;
   }
 
-  if (PXCPLUIStatusProviderObserverContext == a5)
+  if (PXCPLUIStatusProviderObserverContext == context)
   {
-    v15 = v9;
+    v15 = observableCopy;
     [(PXCuratedLibraryFooterViewModel *)self _updateExposedPropertiesForReason:@"PXCPLUIStatusProvider"];
     [(PXCuratedLibraryFooterViewModel *)self _updateHasImportantInformation];
     goto LABEL_16;
   }
 
-  if (PXCuratedLibraryViewModelObserverContext_73372 == a5)
+  if (PXCuratedLibraryViewModelObserverContext_73372 == context)
   {
-    if ((v6 & 0x2000000) != 0)
+    if ((changeCopy & 0x2000000) != 0)
     {
-      v15 = v9;
-      v11 = [(PXCuratedLibraryViewModel *)self->_curatedLibraryViewModel currentContentFilterState];
-      [(PXFilterFooterController *)self->_filterFooterController setContentFilterState:v11];
+      v15 = observableCopy;
+      currentContentFilterState = [(PXCuratedLibraryViewModel *)self->_curatedLibraryViewModel currentContentFilterState];
+      [(PXFilterFooterController *)self->_filterFooterController setContentFilterState:currentContentFilterState];
 
       v10 = @"PXCuratedLibraryViewModel";
       goto LABEL_14;
     }
   }
 
-  else if (PXSharedLibraryStatusProviderObservationContext_73374 == a5)
+  else if (PXSharedLibraryStatusProviderObservationContext_73374 == context)
   {
-    if ((v6 & 3) != 0)
+    if ((changeCopy & 3) != 0)
     {
-      v15 = v9;
-      v12 = [(PXCuratedLibraryFooterViewModel *)self sharedLibraryStatusProvider];
-      [(PXFilterFooterController *)self->_filterFooterController setSharedLibraryStatusProvider:v12];
+      v15 = observableCopy;
+      sharedLibraryStatusProvider = [(PXCuratedLibraryFooterViewModel *)self sharedLibraryStatusProvider];
+      [(PXFilterFooterController *)self->_filterFooterController setSharedLibraryStatusProvider:sharedLibraryStatusProvider];
 
       v10 = @"PXSharedLibraryStatusProvider";
       goto LABEL_14;
     }
   }
 
-  else if (PXLibraryFilterStateObservationContext_73376 == a5)
+  else if (PXLibraryFilterStateObservationContext_73376 == context)
   {
-    if (v6)
+    if (changeCopy)
     {
-      v15 = v9;
-      v13 = [(PXCuratedLibraryFooterViewModel *)self libraryFilterState];
-      [(PXFilterFooterController *)self->_filterFooterController setLibraryFilterState:v13];
+      v15 = observableCopy;
+      libraryFilterState = [(PXCuratedLibraryFooterViewModel *)self libraryFilterState];
+      [(PXFilterFooterController *)self->_filterFooterController setLibraryFilterState:libraryFilterState];
 
       v10 = @"PXLibraryFilterState";
       goto LABEL_14;
@@ -136,58 +136,58 @@ uint64_t __87__PXCuratedLibraryFooterViewModel_cloudQuotaControllerHelper_inform
 
   else
   {
-    if (PXCPLPhotoLibrarySourceObservationContext_73378 != a5)
+    if (PXCPLPhotoLibrarySourceObservationContext_73378 != context)
     {
-      v14 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v14 handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryFooterViewModel.m" lineNumber:609 description:@"Code which should be unreachable has been reached"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryFooterViewModel.m" lineNumber:609 description:@"Code which should be unreachable has been reached"];
 
       abort();
     }
 
-    if ((v6 & 8) != 0)
+    if ((changeCopy & 8) != 0)
     {
       v10 = @"PXCPLPhotoLibrarySource";
 LABEL_13:
-      v15 = v9;
+      v15 = observableCopy;
 LABEL_14:
       [(PXCuratedLibraryFooterViewModel *)self _updateExposedPropertiesForReason:v10];
 LABEL_16:
-      v9 = v15;
+      observableCopy = v15;
     }
   }
 
 LABEL_17:
 }
 
-- (void)_updateExposedPropertiesForReason:(id)a3
+- (void)_updateExposedPropertiesForReason:(id)reason
 {
-  v3 = self;
+  selfCopy = self;
   v112 = *MEMORY[0x1E69E9840];
   v4 = *off_1E7721FC8;
   v103 = *off_1E7721FC8;
   cplUIStatusProvider = self->_cplUIStatusProvider;
-  v6 = a3;
-  v7 = [(PXCPLUIStatusProvider *)cplUIStatusProvider status];
-  if (PXCloudQuotaCanShowInformationView(v7))
+  reasonCopy = reason;
+  status = [(PXCPLUIStatusProvider *)cplUIStatusProvider status];
+  if (PXCloudQuotaCanShowInformationView(status))
   {
-    v76 = [(PXCloudQuotaControllerHelper *)v3->_cloudQuotaHelper informationView];
-    v73 = [(PXCloudQuotaControllerHelper *)v3->_cloudQuotaHelper premiumInformationView];
+    informationView = [(PXCloudQuotaControllerHelper *)selfCopy->_cloudQuotaHelper informationView];
+    premiumInformationView = [(PXCloudQuotaControllerHelper *)selfCopy->_cloudQuotaHelper premiumInformationView];
   }
 
   else
   {
-    v73 = 0;
-    v76 = 0;
+    premiumInformationView = 0;
+    informationView = 0;
   }
 
-  v8 = [(PXCuratedLibraryFooterViewModel *)v3 mode];
-  v9 = [(PXCuratedLibraryFooterViewModel *)v3 itemCountsController];
-  v10 = [(PXCuratedLibraryFooterViewModel *)v3 analysisStatus];
+  mode = [(PXCuratedLibraryFooterViewModel *)selfCopy mode];
+  itemCountsController = [(PXCuratedLibraryFooterViewModel *)selfCopy itemCountsController];
+  analysisStatus = [(PXCuratedLibraryFooterViewModel *)selfCopy analysisStatus];
   v102 = 0;
-  v11 = [(PXCuratedLibraryFooterViewModel *)v3 photoLibrary];
-  v12 = [v11 hasSyncProgressReturningImportOperations:&v102];
+  photoLibrary = [(PXCuratedLibraryFooterViewModel *)selfCopy photoLibrary];
+  v12 = [photoLibrary hasSyncProgressReturningImportOperations:&v102];
 
-  p_isa = &v3->super.super.super.isa;
+  p_isa = &selfCopy->super.super.super.isa;
   if (v12)
   {
     v13 = PLProgressDescription();
@@ -204,7 +204,7 @@ LABEL_17:
       _os_log_impl(&dword_1A3C1C000, v15, OS_LOG_TYPE_DEFAULT, "%{public}@ Providing status for import operation: %{public}@ (%{public}@)", buf, 0x20u);
     }
 
-    v3 = p_isa;
+    selfCopy = p_isa;
   }
 
   else
@@ -214,7 +214,7 @@ LABEL_17:
 
   v101 = 0;
   LOBYTE(v58) = (v102 & 0x10) != 0;
-  v16 = [objc_opt_class() _titleWithOptionalDescription:&v101 progress:&v103 forMode:v8 itemCountsController:v9 analysisStatus:v10 cplUIStatus:v7 inRebuild:v58 reason:v6];
+  v16 = [objc_opt_class() _titleWithOptionalDescription:&v101 progress:&v103 forMode:mode itemCountsController:itemCountsController analysisStatus:analysisStatus cplUIStatus:status inRebuild:v58 reason:reasonCopy];
 
   v17 = v101;
   v70 = v17;
@@ -226,22 +226,22 @@ LABEL_17:
   }
 
   v19 = +[PXFooterSettings sharedInstance];
-  v20 = [v19 showFilterView];
+  showFilterView = [v19 showFilterView];
 
-  if (v20)
+  if (showFilterView)
   {
-    v21 = [(PXFilterFooterController *)v3->_filterFooterController view];
-    v22 = [(PXFilterFooterController *)v3->_filterFooterController contentFilterState];
-    v69 = v21;
-    if (v21)
+    view = [(PXFilterFooterController *)selfCopy->_filterFooterController view];
+    contentFilterState = [(PXFilterFooterController *)selfCopy->_filterFooterController contentFilterState];
+    v69 = view;
+    if (view)
     {
       v23 = PLUserStatusUIGetLog();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543618;
-        v105 = v3;
+        v105 = selfCopy;
         v106 = 2114;
-        v107 = v22;
+        v107 = contentFilterState;
         _os_log_impl(&dword_1A3C1C000, v23, OS_LOG_TYPE_DEFAULT, "%{public}@ Show filter view in footer: %{public}@", buf, 0x16u);
       }
     }
@@ -253,7 +253,7 @@ LABEL_17:
 
     else
     {
-      LOBYTE(v12) = [v22 isFiltering];
+      LOBYTE(v12) = [contentFilterState isFiltering];
     }
 
     v24 = v16;
@@ -265,13 +265,13 @@ LABEL_17:
     v24 = v16;
   }
 
-  v75 = v7;
-  v71 = v10;
-  v72 = v9;
-  if (v7 && (v12 & 1) == 0)
+  v75 = status;
+  v71 = analysisStatus;
+  v72 = itemCountsController;
+  if (status && (v12 & 1) == 0)
   {
-    v25 = [v10 localizedTitle];
-    v26 = [v24 isEqualToString:v25];
+    localizedTitle = [analysisStatus localizedTitle];
+    v26 = [v24 isEqualToString:localizedTitle];
 
     if (v26)
     {
@@ -279,42 +279,42 @@ LABEL_17:
       v24 = 0;
     }
 
-    if (v8)
+    if (mode)
     {
-      v27 = 0;
+      referencedItemsDescription = 0;
     }
 
     else
     {
-      v27 = [v7 referencedItemsDescription];
+      referencedItemsDescription = [status referencedItemsDescription];
     }
 
-    v32 = [v7 stateDescription];
+    stateDescription = [status stateDescription];
 
-    v31 = [v7 failureDescription];
-    v35 = [v7 internalInformationMessage];
-    v29 = [v7 isPaused];
+    failureDescription = [status failureDescription];
+    internalInformationMessage = [status internalInformationMessage];
+    isPaused = [status isPaused];
     *&v36 = v103;
     if (v103 == v4)
     {
-      [v7 progress];
+      [status progress];
       v103 = v37;
     }
 
-    v67 = [v7 actionTitle];
-    v65 = [v7 actionConfirmationAlertTitle];
-    v64 = [v7 actionConfirmationAlertSubtitle];
-    v63 = [v7 actionConfirmationAlertButtonTitle];
-    v38 = [v7 action];
-    v34 = v38;
-    if (v38)
+    actionTitle = [status actionTitle];
+    actionConfirmationAlertTitle = [status actionConfirmationAlertTitle];
+    actionConfirmationAlertSubtitle = [status actionConfirmationAlertSubtitle];
+    actionConfirmationAlertButtonTitle = [status actionConfirmationAlertButtonTitle];
+    action = [status action];
+    v34 = action;
+    if (action)
     {
       aBlock[0] = MEMORY[0x1E69E9820];
       aBlock[1] = 3221225472;
       aBlock[2] = __69__PXCuratedLibraryFooterViewModel__updateExposedPropertiesForReason___block_invoke;
       aBlock[3] = &unk_1E774C2F0;
-      v100 = v38;
-      v99 = v7;
+      v100 = action;
+      v99 = status;
       v62 = _Block_copy(aBlock);
     }
 
@@ -323,25 +323,25 @@ LABEL_17:
       v62 = 0;
     }
 
-    v40 = [v7 pauseReason] == 2 && v76 != 0;
+    v40 = [status pauseReason] == 2 && informationView != 0;
     v60 = v40;
-    if (v8 != 2 || v24 || v27)
+    if (mode != 2 || v24 || referencedItemsDescription)
     {
-      v30 = v35;
+      v30 = internalInformationMessage;
     }
 
     else
     {
-      v30 = v35;
+      v30 = internalInformationMessage;
       if ((PXCPLUIStatusHasImportantInformation(v75) & 1) == 0)
       {
-        v41 = [v75 actionTitle];
+        actionTitle2 = [v75 actionTitle];
 
-        if (!v41)
+        if (!actionTitle2)
         {
 
-          v31 = 0;
-          v32 = 0;
+          failureDescription = 0;
+          stateDescription = 0;
           v103 = v4;
         }
       }
@@ -355,9 +355,9 @@ LABEL_17:
       v106 = 2114;
       v107 = v24;
       v108 = 2114;
-      v109 = v32;
+      v109 = stateDescription;
       v110 = 2114;
-      v111 = v31;
+      v111 = failureDescription;
       _os_log_impl(&dword_1A3C1C000, v42, OS_LOG_TYPE_DEFAULT, "%{public}@ Did provide CPL status: %{public}@, %{public}@, %{public}@", buf, 0x2Au);
     }
 
@@ -371,29 +371,29 @@ LABEL_17:
     if (([v28 forceShowProcessingUI] & 1) != 0 || objc_msgSend(p_isa[46], "state") == 1)
     {
 
-      if (v8)
+      if (mode)
       {
 
         v103 = -1.0;
         v24 = 0;
-        v76 = 0;
+        informationView = 0;
         v60 = 0;
         v62 = 0;
-        v63 = 0;
-        v64 = 0;
-        v65 = 0;
-        v67 = 0;
-        v29 = 0;
+        actionConfirmationAlertButtonTitle = 0;
+        actionConfirmationAlertSubtitle = 0;
+        actionConfirmationAlertTitle = 0;
+        actionTitle = 0;
+        isPaused = 0;
         v30 = 0;
-        v31 = 0;
-        v27 = 0;
-        v32 = 0;
+        failureDescription = 0;
+        referencedItemsDescription = 0;
+        stateDescription = 0;
         v33 = 1;
-        v34 = v73;
-        v73 = 0;
+        v34 = premiumInformationView;
+        premiumInformationView = 0;
 LABEL_54:
 
-        v13 = v32;
+        v13 = stateDescription;
         goto LABEL_61;
       }
     }
@@ -404,7 +404,7 @@ LABEL_54:
 
     if ([p_isa[31] isRebuildingThumbnails])
     {
-      v32 = PXLocalizedStringFromTable(@"PXCPLStatusRebuildingThumbnails", @"PhotosUICore");
+      stateDescription = PXLocalizedStringFromTable(@"PXCPLStatusRebuildingThumbnails", @"PhotosUICore");
 
       v34 = PLUserStatusUIGetLog();
       if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
@@ -414,7 +414,7 @@ LABEL_54:
         v106 = 2114;
         v107 = v24;
         v108 = 2114;
-        v109 = v32;
+        v109 = stateDescription;
         v110 = 2114;
         v111 = 0;
         _os_log_impl(&dword_1A3C1C000, v34, OS_LOG_TYPE_DEFAULT, "%{public}@ Did provide thumbnail rebuild status: %{public}@, %{public}@, %{public}@", buf, 0x2Au);
@@ -423,14 +423,14 @@ LABEL_54:
       v33 = 0;
       v60 = 0;
       v62 = 0;
-      v63 = 0;
-      v64 = 0;
-      v65 = 0;
-      v67 = 0;
-      v29 = 0;
+      actionConfirmationAlertButtonTitle = 0;
+      actionConfirmationAlertSubtitle = 0;
+      actionConfirmationAlertTitle = 0;
+      actionTitle = 0;
+      isPaused = 0;
       v30 = 0;
-      v31 = 0;
-      v27 = 0;
+      failureDescription = 0;
+      referencedItemsDescription = 0;
       goto LABEL_54;
     }
   }
@@ -438,14 +438,14 @@ LABEL_54:
   v33 = 0;
   v60 = 0;
   v62 = 0;
-  v63 = 0;
-  v64 = 0;
-  v65 = 0;
-  v67 = 0;
-  v29 = 0;
+  actionConfirmationAlertButtonTitle = 0;
+  actionConfirmationAlertSubtitle = 0;
+  actionConfirmationAlertTitle = 0;
+  actionTitle = 0;
+  isPaused = 0;
   v30 = 0;
-  v31 = 0;
-  v27 = 0;
+  failureDescription = 0;
+  referencedItemsDescription = 0;
 LABEL_61:
   v43 = PXLocalizedStringFromTable(@"PXCuratedLibraryFooterCuratedLibraryCurationCompleteTitle", @"PhotosUICore");
   if (![v24 isEqualToString:v43])
@@ -470,7 +470,7 @@ LABEL_61:
     v24 = 0;
 LABEL_68:
 
-    if (!v27)
+    if (!referencedItemsDescription)
     {
       goto LABEL_71;
     }
@@ -479,7 +479,7 @@ LABEL_68:
   }
 
   v24 = v44;
-  if (!v27)
+  if (!referencedItemsDescription)
   {
     goto LABEL_71;
   }
@@ -492,41 +492,41 @@ LABEL_69:
 
 LABEL_71:
   v47 = v24;
-  v59 = v27;
+  v59 = referencedItemsDescription;
   v48 = +[PXLemonadeSettings sharedInstance];
-  v49 = [v48 forceHideProcessingUI];
+  forceHideProcessingUI = [v48 forceHideProcessingUI];
 
   v79[0] = MEMORY[0x1E69E9820];
   v79[1] = 3221225472;
   v79[2] = __69__PXCuratedLibraryFooterViewModel__updateExposedPropertiesForReason___block_invoke_390;
   v79[3] = &unk_1E7735098;
   v80 = v47;
-  v81 = v27;
+  v81 = referencedItemsDescription;
   v82 = v69;
   v83 = v13;
-  v84 = v31;
+  v84 = failureDescription;
   v85 = v30;
-  v96 = v29;
+  v96 = isPaused;
   v95 = v103;
-  v86 = v67;
-  v87 = v65;
-  v88 = v64;
-  v89 = v63;
+  v86 = actionTitle;
+  v87 = actionConfirmationAlertTitle;
+  v88 = actionConfirmationAlertSubtitle;
+  v89 = actionConfirmationAlertButtonTitle;
   v92 = v62;
   v93 = 0;
-  v90 = v76;
-  v91 = v73;
+  v90 = informationView;
+  v91 = premiumInformationView;
   v94 = v60;
-  v97 = v33 & (v49 ^ 1);
-  v61 = v73;
-  v77 = v76;
+  v97 = v33 & (forceHideProcessingUI ^ 1);
+  v61 = premiumInformationView;
+  v77 = informationView;
   v50 = v62;
-  v51 = v63;
-  v74 = v64;
-  v66 = v65;
-  v68 = v67;
+  v51 = actionConfirmationAlertButtonTitle;
+  v74 = actionConfirmationAlertSubtitle;
+  v66 = actionConfirmationAlertTitle;
+  v68 = actionTitle;
   v52 = v30;
-  v53 = v31;
+  v53 = failureDescription;
   v54 = v13;
   v55 = v69;
   v56 = v59;
@@ -561,8 +561,8 @@ void __69__PXCuratedLibraryFooterViewModel__updateExposedPropertiesForReason___b
 
 - (void)_updateHasImportantInformation
 {
-  v3 = [(PXCPLUIStatusProvider *)self->_cplUIStatusProvider status];
-  if (PXCPLUIStatusHasImportantInformation(v3))
+  status = [(PXCPLUIStatusProvider *)self->_cplUIStatusProvider status];
+  if (PXCPLUIStatusHasImportantInformation(status))
   {
     [(PXCuratedLibraryFooterViewModel *)self mode];
 LABEL_4:
@@ -570,24 +570,24 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  v4 = [(PXCloudQuotaControllerHelper *)self->_cloudQuotaHelper hasAnyInformationViews];
-  v5 = [(PXCuratedLibraryFooterViewModel *)self mode];
-  if (v4)
+  hasAnyInformationViews = [(PXCloudQuotaControllerHelper *)self->_cloudQuotaHelper hasAnyInformationViews];
+  mode = [(PXCuratedLibraryFooterViewModel *)self mode];
+  if (hasAnyInformationViews)
   {
     goto LABEL_4;
   }
 
-  v9 = v5;
-  if ((v5 - 1) > 1)
+  v9 = mode;
+  if ((mode - 1) > 1)
   {
     v6 = 0;
   }
 
   else
   {
-    v10 = [off_1E7721948 standardUserDefaults];
-    v11 = [v10 didShowCurationFooter];
-    if ([v11 BOOLValue])
+    standardUserDefaults = [off_1E7721948 standardUserDefaults];
+    didShowCurationFooter = [standardUserDefaults didShowCurationFooter];
+    if ([didShowCurationFooter BOOLValue])
     {
       v6 = 0;
     }
@@ -595,16 +595,16 @@ LABEL_4:
     else
     {
       v12 = objc_opt_class();
-      v13 = [(PXCuratedLibraryFooterViewModel *)self analysisStatus];
-      v14 = [off_1E7721948 standardUserDefaults];
-      v6 = [v12 hasAnalysisProgressForMode:v9 analysisStatus:v13 cplUIStatus:v3 userDefaults:v14 outAnimatedIconMode:0 outProgress:0 outTitle:0 outDescription:0];
+      analysisStatus = [(PXCuratedLibraryFooterViewModel *)self analysisStatus];
+      standardUserDefaults2 = [off_1E7721948 standardUserDefaults];
+      v6 = [v12 hasAnalysisProgressForMode:v9 analysisStatus:analysisStatus cplUIStatus:status userDefaults:standardUserDefaults2 outAnimatedIconMode:0 outProgress:0 outTitle:0 outDescription:0];
     }
 
-    v15 = [v10 didShowCompletedCurationFooterAnimation];
-    if (([v15 BOOLValue] & 1) == 0)
+    didShowCompletedCurationFooterAnimation = [standardUserDefaults didShowCompletedCurationFooterAnimation];
+    if (([didShowCompletedCurationFooterAnimation BOOLValue] & 1) == 0)
     {
-      v16 = [(PXCuratedLibraryFooterViewModel *)self analysisStatus];
-      v17 = [v16 state] == 1;
+      analysisStatus2 = [(PXCuratedLibraryFooterViewModel *)self analysisStatus];
+      v17 = [analysisStatus2 state] == 1;
 
       v6 |= v17;
     }
@@ -612,31 +612,31 @@ LABEL_4:
 
 LABEL_5:
   v7 = +[PXFooterSettings sharedInstance];
-  v8 = [v7 simulateImportantInformation];
+  simulateImportantInformation = [v7 simulateImportantInformation];
 
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __65__PXCuratedLibraryFooterViewModel__updateHasImportantInformation__block_invoke;
   v18[3] = &__block_descriptor_33_e36_v16__0___PXMutableFooterViewModel__8l;
-  v19 = (v8 | v6) & 1;
+  v19 = (simulateImportantInformation | v6) & 1;
   [(PXCuratedLibraryFooterViewModel *)self performChanges:v18];
 }
 
 - (BOOL)shouldAlternateTitleWithAnimatedGridCycle
 {
-  v3 = [off_1E7721948 standardUserDefaults];
-  v4 = [v3 didShowCompletedCurationFooterAnimation];
-  v5 = [v4 BOOLValue];
+  standardUserDefaults = [off_1E7721948 standardUserDefaults];
+  didShowCompletedCurationFooterAnimation = [standardUserDefaults didShowCompletedCurationFooterAnimation];
+  bOOLValue = [didShowCompletedCurationFooterAnimation BOOLValue];
 
-  if (v5)
+  if (bOOLValue)
   {
     return 0;
   }
 
-  v7 = [(PXCuratedLibraryFooterViewModel *)self settings];
-  v8 = [v7 shouldAlternateTitleWithGridCycle];
+  settings = [(PXCuratedLibraryFooterViewModel *)self settings];
+  shouldAlternateTitleWithGridCycle = [settings shouldAlternateTitleWithGridCycle];
 
-  return v8;
+  return shouldAlternateTitleWithGridCycle;
 }
 
 - (void)footerAnimationCrossedGridCycleBoundary
@@ -644,14 +644,14 @@ LABEL_5:
   v8.receiver = self;
   v8.super_class = PXCuratedLibraryFooterViewModel;
   [(PXCuratedLibraryFooterViewModel *)&v8 footerAnimationCrossedGridCycleBoundary];
-  v3 = [(PXCuratedLibraryFooterViewModel *)self settings];
+  settings = [(PXCuratedLibraryFooterViewModel *)self settings];
   if ([(PXCuratedLibraryFooterViewModel *)self shouldAlternateTitleWithAnimatedGridCycle])
   {
     v4 = self->_animatedGridCycleIndex + 1;
     self->_animatedGridCycleIndex = v4;
-    if (!(v4 % [v3 alternateTitleGridCycleCount]))
+    if (!(v4 % [settings alternateTitleGridCycleCount]))
     {
-      [v3 alternateTitleGridCycleDelay];
+      [settings alternateTitleGridCycleDelay];
       v6 = dispatch_time(0, (v5 * 1000000000.0));
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
@@ -672,24 +672,24 @@ void __74__PXCuratedLibraryFooterViewModel_footerAnimationCrossedGridCycleBounda
   }
 }
 
-- (void)setIsFooterShown:(BOOL)a3
+- (void)setIsFooterShown:(BOOL)shown
 {
-  if (self->_isFooterShown != a3)
+  if (self->_isFooterShown != shown)
   {
-    v3 = a3;
-    self->_isFooterShown = a3;
+    shownCopy = shown;
+    self->_isFooterShown = shown;
     if (![(PXCuratedLibraryFooterViewModel *)self shouldAlternateTitleWithAnimatedGridCycle])
     {
-      v5 = [(PXCuratedLibraryFooterViewModel *)self analysisStatus];
-      v6 = v5;
-      if (v3)
+      analysisStatus = [(PXCuratedLibraryFooterViewModel *)self analysisStatus];
+      v6 = analysisStatus;
+      if (shownCopy)
       {
-        [v5 startCyclingThroughAlternateTitles];
+        [analysisStatus startCyclingThroughAlternateTitles];
       }
 
       else
       {
-        [v5 stopCyclingThroughAlternateTitles];
+        [analysisStatus stopCyclingThroughAlternateTitles];
       }
     }
   }
@@ -698,69 +698,69 @@ void __74__PXCuratedLibraryFooterViewModel_footerAnimationCrossedGridCycleBounda
 - (void)didHideFooter
 {
   [(PXCuratedLibraryFooterViewModel *)self setIsFooterShown:0];
-  v5 = [off_1E7721948 standardUserDefaults];
-  v3 = [(PXCuratedLibraryFooterViewModel *)self animatedIconMode];
-  if (v3)
+  standardUserDefaults = [off_1E7721948 standardUserDefaults];
+  animatedIconMode = [(PXCuratedLibraryFooterViewModel *)self animatedIconMode];
+  if (animatedIconMode)
   {
-    v4 = v3;
-    [v5 setDidShowCurationFooter:MEMORY[0x1E695E118]];
+    v4 = animatedIconMode;
+    [standardUserDefaults setDidShowCurationFooter:MEMORY[0x1E695E118]];
     if (v4 == 3)
     {
-      [v5 setDidShowCompletedCurationFooterAnimation:MEMORY[0x1E695E118]];
+      [standardUserDefaults setDidShowCompletedCurationFooterAnimation:MEMORY[0x1E695E118]];
       [(PXCuratedLibraryFooterViewModel *)self _updateExposedPropertiesForReason:@"DidShowCompletedCurationFooterAnimation"];
     }
   }
 }
 
-- (void)setMode:(int64_t)a3
+- (void)setMode:(int64_t)mode
 {
-  if (self->_mode != a3)
+  if (self->_mode != mode)
   {
-    self->_mode = a3;
+    self->_mode = mode;
     [(PXCuratedLibraryFooterViewModel *)self _updateExposedPropertiesForReason:@"PXCuratedLibraryFooterViewModelMode"];
 
     [(PXCuratedLibraryFooterViewModel *)self _updateHasImportantInformation];
   }
 }
 
-- (PXCuratedLibraryFooterViewModel)initWithItemCountsController:(id)a3 cplUIStatusProvider:(id)a4 analysisStatus:(id)a5 mode:(int64_t)a6 viewModel:(id)a7
+- (PXCuratedLibraryFooterViewModel)initWithItemCountsController:(id)controller cplUIStatusProvider:(id)provider analysisStatus:(id)status mode:(int64_t)mode viewModel:(id)model
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a7;
+  controllerCopy = controller;
+  providerCopy = provider;
+  statusCopy = status;
+  modelCopy = model;
   v43.receiver = self;
   v43.super_class = PXCuratedLibraryFooterViewModel;
   v17 = [(PXCuratedLibraryFooterViewModel *)&v43 init];
   if (v17)
   {
-    v42 = a6;
-    v18 = [v16 photoLibrary];
+    modeCopy = mode;
+    photoLibrary = [modelCopy photoLibrary];
     photoLibrary = v17->_photoLibrary;
-    v17->_photoLibrary = v18;
+    v17->_photoLibrary = photoLibrary;
 
-    v20 = [v16 configuration];
-    v21 = [v20 featureAvailabilityMonitor];
+    configuration = [modelCopy configuration];
+    featureAvailabilityMonitor = [configuration featureAvailabilityMonitor];
     featureAvailabilityMonitor = v17->_featureAvailabilityMonitor;
-    v17->_featureAvailabilityMonitor = v21;
+    v17->_featureAvailabilityMonitor = featureAvailabilityMonitor;
 
-    v23 = [(PXLemonadeFeatureAvailabilityMonitor *)v17->_featureAvailabilityMonitor observable];
-    [v23 registerChangeObserver:v17 context:PXLemonadeFeatureAvailabilityMonitorObservationContext];
+    observable = [(PXLemonadeFeatureAvailabilityMonitor *)v17->_featureAvailabilityMonitor observable];
+    [observable registerChangeObserver:v17 context:PXLemonadeFeatureAvailabilityMonitorObservationContext];
 
     v24 = [PXSharedLibraryStatusProvider sharedLibraryStatusProviderWithPhotoLibrary:v17->_photoLibrary];
     sharedLibraryStatusProvider = v17->_sharedLibraryStatusProvider;
     v17->_sharedLibraryStatusProvider = v24;
 
     [(PXSharedLibraryStatusProvider *)v17->_sharedLibraryStatusProvider registerChangeObserver:v17 context:PXSharedLibraryStatusProviderObservationContext_73374];
-    v26 = [v16 libraryFilterState];
+    libraryFilterState = [modelCopy libraryFilterState];
     libraryFilterState = v17->_libraryFilterState;
-    v17->_libraryFilterState = v26;
+    v17->_libraryFilterState = libraryFilterState;
 
     [(PXLibraryFilterState *)v17->_libraryFilterState registerChangeObserver:v17 context:PXLibraryFilterStateObservationContext_73376];
-    objc_storeStrong(&v17->_itemCountsController, a3);
+    objc_storeStrong(&v17->_itemCountsController, controller);
     [(PXAssetsDataSourceCountsController *)v17->_itemCountsController prepareCountsIfNeeded];
     [(PXAssetsDataSourceCountsController *)v17->_itemCountsController registerChangeObserver:v17 context:CuratedLibraryItemCountsControllerObserverContext];
-    objc_storeStrong(&v17->_cplUIStatusProvider, a4);
+    objc_storeStrong(&v17->_cplUIStatusProvider, provider);
     [(PXCPLUIStatusProvider *)v17->_cplUIStatusProvider registerChangeObserver:v17 context:PXCPLUIStatusProviderObserverContext];
     v28 = [[PXCPLPhotoLibrarySource alloc] initWithPhotoLibrary:v17->_photoLibrary];
     photoLibrarySource = v17->_photoLibrarySource;
@@ -773,28 +773,28 @@ void __74__PXCuratedLibraryFooterViewModel_footerAnimationCrossedGridCycleBounda
 
     [(PXCloudQuotaControllerHelper *)v17->_cloudQuotaHelper setDelegate:v17];
     v32 = +[PXFooterSettings sharedInstance];
-    v33 = [v32 showFilterView];
+    showFilterView = [v32 showFilterView];
 
-    if (v33)
+    if (showFilterView)
     {
-      objc_storeStrong(&v17->_curatedLibraryViewModel, a7);
+      objc_storeStrong(&v17->_curatedLibraryViewModel, model);
       v34 = [PXFilterFooterController alloc];
-      v35 = [v16 actionManager];
-      v36 = [(PXFilterFooterController *)v34 initWithActionManager:v35 photoLibrary:v17->_photoLibrary];
+      actionManager = [modelCopy actionManager];
+      v36 = [(PXFilterFooterController *)v34 initWithActionManager:actionManager photoLibrary:v17->_photoLibrary];
       filterFooterController = v17->_filterFooterController;
       v17->_filterFooterController = v36;
 
       [(PXFilterFooterController *)v17->_filterFooterController setSharedLibraryStatusProvider:v17->_sharedLibraryStatusProvider];
       [(PXFilterFooterController *)v17->_filterFooterController setLibraryFilterState:v17->_libraryFilterState];
-      v38 = [(PXCuratedLibraryViewModel *)v17->_curatedLibraryViewModel currentContentFilterState];
-      [(PXFilterFooterController *)v17->_filterFooterController setContentFilterState:v38];
+      currentContentFilterState = [(PXCuratedLibraryViewModel *)v17->_curatedLibraryViewModel currentContentFilterState];
+      [(PXFilterFooterController *)v17->_filterFooterController setContentFilterState:currentContentFilterState];
 
-      [v16 registerChangeObserver:v17 context:PXCuratedLibraryViewModelObserverContext_73372];
+      [modelCopy registerChangeObserver:v17 context:PXCuratedLibraryViewModelObserverContext_73372];
     }
 
-    objc_storeStrong(&v17->_analysisStatus, a5);
+    objc_storeStrong(&v17->_analysisStatus, status);
     [(PXCuratedLibraryAnalysisStatus *)v17->_analysisStatus registerChangeObserver:v17 context:CuratedLibraryAnalysisStatusObserverContext];
-    v17->_mode = v42;
+    v17->_mode = modeCopy;
     v39 = +[PXFooterSettings sharedInstance];
     settings = v17->_settings;
     v17->_settings = v39;
@@ -809,53 +809,53 @@ void __74__PXCuratedLibraryFooterViewModel_footerAnimationCrossedGridCycleBounda
 
 - (PXCuratedLibraryFooterViewModel)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryFooterViewModel.m" lineNumber:124 description:{@"%s is not available as initializer", "-[PXCuratedLibraryFooterViewModel init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryFooterViewModel.m" lineNumber:124 description:{@"%s is not available as initializer", "-[PXCuratedLibraryFooterViewModel init]"}];
 
   abort();
 }
 
-+ (BOOL)hasAnalysisProgressForMode:(int64_t)a3 analysisStatus:(id)a4 cplUIStatus:(id)a5 userDefaults:(id)a6 outAnimatedIconMode:(int64_t *)a7 outProgress:(float *)a8 outTitle:(id *)a9 outDescription:(id *)a10
++ (BOOL)hasAnalysisProgressForMode:(int64_t)mode analysisStatus:(id)status cplUIStatus:(id)iStatus userDefaults:(id)defaults outAnimatedIconMode:(int64_t *)iconMode outProgress:(float *)progress outTitle:(id *)title outDescription:(id *)self0
 {
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  if ((a3 - 1) > 1)
+  statusCopy = status;
+  iStatusCopy = iStatus;
+  defaultsCopy = defaults;
+  if ((mode - 1) > 1)
   {
     goto LABEL_5;
   }
 
   v18 = +[PXCuratedLibrarySettings sharedInstance];
-  v19 = [v18 hideAnalyzingStatus];
+  hideAnalyzingStatus = [v18 hideAnalyzingStatus];
 
-  if (v19)
+  if (hideAnalyzingStatus)
   {
     goto LABEL_5;
   }
 
-  if (PXCPLUIStatusHasImportantInformation(v16))
+  if (PXCPLUIStatusHasImportantInformation(iStatusCopy))
   {
     goto LABEL_5;
   }
 
-  v20 = [v16 actionTitle];
+  actionTitle = [iStatusCopy actionTitle];
 
-  if (v20)
+  if (actionTitle)
   {
     goto LABEL_5;
   }
 
-  v23 = v15;
-  v24 = v17;
+  v23 = statusCopy;
+  v24 = defaultsCopy;
   v25 = +[PXFooterSettings sharedInstance];
-  v26 = [v25 simulateAnimatedIconMode];
+  simulateAnimatedIconMode = [v25 simulateAnimatedIconMode];
 
-  if (v26)
+  if (simulateAnimatedIconMode)
   {
     v36 = +[PXFooterSettings sharedInstance];
-    v30 = [v36 simulatedAnimatedIconMode];
+    simulatedAnimatedIconMode = [v36 simulatedAnimatedIconMode];
 
-    if (v30)
+    if (simulatedAnimatedIconMode)
     {
       goto LABEL_19;
     }
@@ -863,30 +863,30 @@ void __74__PXCuratedLibraryFooterViewModel_footerAnimationCrossedGridCycleBounda
 
   else
   {
-    v27 = [v24 didShowCompletedCurationFooterAnimation];
-    v28 = [v27 BOOLValue];
+    didShowCompletedCurationFooterAnimation = [v24 didShowCompletedCurationFooterAnimation];
+    bOOLValue = [didShowCompletedCurationFooterAnimation BOOLValue];
 
-    if ((v28 & 1) == 0)
+    if ((bOOLValue & 1) == 0)
     {
-      v29 = [v23 state];
-      if (v29 == 1)
+      state = [v23 state];
+      if (state == 1)
       {
-        v30 = 3;
+        simulatedAnimatedIconMode = 3;
 LABEL_18:
 
         goto LABEL_19;
       }
 
-      if (v29 == 2)
+      if (state == 2)
       {
         if ([v23 isDevicePlugged])
         {
-          v30 = 2;
+          simulatedAnimatedIconMode = 2;
         }
 
         else
         {
-          v30 = 1;
+          simulatedAnimatedIconMode = 1;
         }
 
         goto LABEL_18;
@@ -901,36 +901,36 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v30 = 0;
+  simulatedAnimatedIconMode = 0;
 LABEL_19:
-  if (a8)
+  if (progress)
   {
     [v23 displayProgress];
     v32 = v31;
-    v33 = [v23 state];
-    v34 = v32 == -1.0 || v33 == 1;
+    state2 = [v23 state];
+    v34 = v32 == -1.0 || state2 == 1;
     v35 = *off_1E7721FC8;
     if (!v34)
     {
       v35 = v32;
     }
 
-    *a8 = v35;
+    *progress = v35;
   }
 
-  if (a10)
+  if (description)
   {
-    *a10 = [v23 localizedDescription];
+    *description = [v23 localizedDescription];
   }
 
-  if (a9)
+  if (title)
   {
-    *a9 = [v23 localizedTitle];
+    *title = [v23 localizedTitle];
   }
 
-  if (a7)
+  if (iconMode)
   {
-    *a7 = v30;
+    *iconMode = simulatedAnimatedIconMode;
   }
 
   v21 = 1;
@@ -939,58 +939,58 @@ LABEL_6:
   return v21;
 }
 
-+ (id)_titleWithOptionalDescription:(id *)a3 progress:(float *)a4 forMode:(int64_t)a5 itemCountsController:(id)a6 analysisStatus:(id)a7 cplUIStatus:(id)a8 inRebuild:(BOOL)a9 reason:(id)a10
++ (id)_titleWithOptionalDescription:(id *)description progress:(float *)progress forMode:(int64_t)mode itemCountsController:(id)controller analysisStatus:(id)status cplUIStatus:(id)iStatus inRebuild:(BOOL)rebuild reason:(id)self0
 {
   v52 = *MEMORY[0x1E69E9840];
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  v19 = a10;
+  controllerCopy = controller;
+  statusCopy = status;
+  iStatusCopy = iStatus;
+  reasonCopy = reason;
   v20 = *off_1E7721FC8;
-  if ((a5 - 1) < 2)
+  if ((mode - 1) < 2)
   {
-    v21 = [v17 localizedTitle];
-    v22 = [v17 localizedDescription];
-    if (!a3)
+    localizedTitle = [statusCopy localizedTitle];
+    localizedDescription = [statusCopy localizedDescription];
+    if (!description)
     {
       goto LABEL_16;
     }
 
 LABEL_15:
-    v29 = v22;
-    *a3 = v22;
+    v29 = localizedDescription;
+    *description = localizedDescription;
     goto LABEL_16;
   }
 
-  if (!a5)
+  if (!mode)
   {
-    if (v16)
+    if (controllerCopy)
     {
-      [v16 counts];
+      [controllerCopy counts];
     }
 
-    v23 = [v18 inResetSync];
-    v22 = 0;
-    if (v18 && ((a9 | v23) & 1) != 0)
+    inResetSync = [iStatusCopy inResetSync];
+    localizedDescription = 0;
+    if (iStatusCopy && ((rebuild | inResetSync) & 1) != 0)
     {
-      v24 = [v18 numberOfPhotoAssets];
-      v25 = [v18 numberOfVideoAssets];
-      v26 = [v18 numberOfOtherAssets];
-      v27 = v25 + v24 + v26;
+      numberOfPhotoAssets = [iStatusCopy numberOfPhotoAssets];
+      numberOfVideoAssets = [iStatusCopy numberOfVideoAssets];
+      numberOfOtherAssets = [iStatusCopy numberOfOtherAssets];
+      v27 = numberOfVideoAssets + numberOfPhotoAssets + numberOfOtherAssets;
       if (v27 && v27 > v34)
       {
-        v35 = v24;
-        v36 = v25;
-        v37 = v26;
+        v35 = numberOfPhotoAssets;
+        v36 = numberOfVideoAssets;
+        v37 = numberOfOtherAssets;
         v28 = v27;
-        if (a9)
+        if (rebuild)
         {
-          v22 = PXLocalizedStringFromTable(@"PXCPLStatus_Rebuild", @"PhotosUICore");
+          localizedDescription = PXLocalizedStringFromTable(@"PXCPLStatus_Rebuild", @"PhotosUICore");
         }
 
         else
         {
-          v22 = 0;
+          localizedDescription = 0;
         }
 
         v20 = v34 / v28;
@@ -999,8 +999,8 @@ LABEL_15:
         {
 LABEL_32:
 
-          v21 = PLLocalizedCountDescription();
-          if (a3)
+          localizedTitle = PLLocalizedCountDescription();
+          if (description)
           {
             goto LABEL_15;
           }
@@ -1009,13 +1009,13 @@ LABEL_32:
         }
 
         v33 = @"reset";
-        if (a9)
+        if (rebuild)
         {
           v33 = @"rebuild";
         }
 
         *buf = 138544898;
-        v39 = a1;
+        selfCopy2 = self;
         v40 = 2114;
         v41 = v33;
         v42 = 2048;
@@ -1027,21 +1027,21 @@ LABEL_32:
         v48 = 2048;
         v49 = v37;
         v50 = 2114;
-        v51 = v19;
+        v51 = reasonCopy;
         v32 = "%{public}@ Cloud counts for <%{public}@, progress:%f>: photos:%lu, videos:%lu, others:%lu [Reason: %{public}@]";
 LABEL_31:
         _os_log_impl(&dword_1A3C1C000, v31, OS_LOG_TYPE_DEFAULT, v32, buf, 0x48u);
         goto LABEL_32;
       }
 
-      if (a9)
+      if (rebuild)
       {
-        v22 = PXLocalizedStringFromTable(@"PXCPLStatus_Rebuild", @"PhotosUICore");
+        localizedDescription = PXLocalizedStringFromTable(@"PXCPLStatus_Rebuild", @"PhotosUICore");
       }
 
       else
       {
-        v22 = 0;
+        localizedDescription = 0;
       }
     }
 
@@ -1052,11 +1052,11 @@ LABEL_31:
     }
 
     *buf = 138544898;
-    v39 = a1;
+    selfCopy2 = self;
     v40 = 2114;
     v41 = objc_opt_class();
     v42 = 2048;
-    v43 = *&v16;
+    v43 = *&controllerCopy;
     v44 = 2048;
     v45 = 0;
     v46 = 2048;
@@ -1064,25 +1064,25 @@ LABEL_31:
     v48 = 2048;
     v49 = 0;
     v50 = 2114;
-    v51 = v19;
+    v51 = reasonCopy;
     v32 = "%{public}@ Local counts for <%{public}@:%p>: photos:%lu, videos:%lu, others:%lu [Reason: %{public}@]";
     goto LABEL_31;
   }
 
-  v22 = 0;
-  v21 = 0;
-  if (a3)
+  localizedDescription = 0;
+  localizedTitle = 0;
+  if (description)
   {
     goto LABEL_15;
   }
 
 LABEL_16:
-  if (a4)
+  if (progress)
   {
-    *a4 = v20;
+    *progress = v20;
   }
 
-  return v21;
+  return localizedTitle;
 }
 
 @end

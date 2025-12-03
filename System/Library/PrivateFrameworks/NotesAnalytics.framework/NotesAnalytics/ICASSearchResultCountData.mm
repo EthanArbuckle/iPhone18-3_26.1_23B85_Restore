@@ -1,24 +1,24 @@
 @interface ICASSearchResultCountData
-- (ICASSearchResultCountData)initWithTopHitCount:(id)a3 notesCount:(id)a4 attachmentsCount:(id)a5;
+- (ICASSearchResultCountData)initWithTopHitCount:(id)count notesCount:(id)notesCount attachmentsCount:(id)attachmentsCount;
 - (id)toDict;
 @end
 
 @implementation ICASSearchResultCountData
 
-- (ICASSearchResultCountData)initWithTopHitCount:(id)a3 notesCount:(id)a4 attachmentsCount:(id)a5
+- (ICASSearchResultCountData)initWithTopHitCount:(id)count notesCount:(id)notesCount attachmentsCount:(id)attachmentsCount
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  countCopy = count;
+  notesCountCopy = notesCount;
+  attachmentsCountCopy = attachmentsCount;
   v15.receiver = self;
   v15.super_class = ICASSearchResultCountData;
   v12 = [(ICASSearchResultCountData *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_topHitCount, a3);
-    objc_storeStrong(&v13->_notesCount, a4);
-    objc_storeStrong(&v13->_attachmentsCount, a5);
+    objc_storeStrong(&v12->_topHitCount, count);
+    objc_storeStrong(&v13->_notesCount, notesCount);
+    objc_storeStrong(&v13->_attachmentsCount, attachmentsCount);
   }
 
   return v13;
@@ -28,47 +28,47 @@
 {
   v16[3] = *MEMORY[0x277D85DE8];
   v15[0] = @"topHitCount";
-  v3 = [(ICASSearchResultCountData *)self topHitCount];
-  if (v3)
+  topHitCount = [(ICASSearchResultCountData *)self topHitCount];
+  if (topHitCount)
   {
-    v4 = [(ICASSearchResultCountData *)self topHitCount];
+    topHitCount2 = [(ICASSearchResultCountData *)self topHitCount];
   }
 
   else
   {
-    v4 = objc_opt_new();
+    topHitCount2 = objc_opt_new();
   }
 
-  v5 = v4;
-  v16[0] = v4;
+  v5 = topHitCount2;
+  v16[0] = topHitCount2;
   v15[1] = @"notesCount";
-  v6 = [(ICASSearchResultCountData *)self notesCount];
-  if (v6)
+  notesCount = [(ICASSearchResultCountData *)self notesCount];
+  if (notesCount)
   {
-    v7 = [(ICASSearchResultCountData *)self notesCount];
+    notesCount2 = [(ICASSearchResultCountData *)self notesCount];
   }
 
   else
   {
-    v7 = objc_opt_new();
+    notesCount2 = objc_opt_new();
   }
 
-  v8 = v7;
-  v16[1] = v7;
+  v8 = notesCount2;
+  v16[1] = notesCount2;
   v15[2] = @"attachmentsCount";
-  v9 = [(ICASSearchResultCountData *)self attachmentsCount];
-  if (v9)
+  attachmentsCount = [(ICASSearchResultCountData *)self attachmentsCount];
+  if (attachmentsCount)
   {
-    v10 = [(ICASSearchResultCountData *)self attachmentsCount];
+    attachmentsCount2 = [(ICASSearchResultCountData *)self attachmentsCount];
   }
 
   else
   {
-    v10 = objc_opt_new();
+    attachmentsCount2 = objc_opt_new();
   }
 
-  v11 = v10;
-  v16[2] = v10;
+  v11 = attachmentsCount2;
+  v16[2] = attachmentsCount2;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:v15 count:3];
 
   v13 = *MEMORY[0x277D85DE8];

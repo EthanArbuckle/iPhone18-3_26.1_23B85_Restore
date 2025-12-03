@@ -1,21 +1,21 @@
 @interface OADAdjustRect
-- (OADAdjustRect)initWithLeft:(OADAdjustCoord)a3 top:(OADAdjustCoord)a4 right:(OADAdjustCoord)a5 bottom:(OADAdjustCoord)a6;
+- (OADAdjustRect)initWithLeft:(OADAdjustCoord)left top:(OADAdjustCoord)top right:(OADAdjustCoord)right bottom:(OADAdjustCoord)bottom;
 - (id)description;
 @end
 
 @implementation OADAdjustRect
 
-- (OADAdjustRect)initWithLeft:(OADAdjustCoord)a3 top:(OADAdjustCoord)a4 right:(OADAdjustCoord)a5 bottom:(OADAdjustCoord)a6
+- (OADAdjustRect)initWithLeft:(OADAdjustCoord)left top:(OADAdjustCoord)top right:(OADAdjustCoord)right bottom:(OADAdjustCoord)bottom
 {
   v11.receiver = self;
   v11.super_class = OADAdjustRect;
   result = [(OADAdjustRect *)&v11 init];
   if (result)
   {
-    result->mLeft = a3;
-    result->mTop = a4;
-    result->mRight = a5;
-    result->mBottom = a6;
+    result->mLeft = left;
+    result->mTop = top;
+    result->mRight = right;
+    result->mBottom = bottom;
   }
 
   return result;

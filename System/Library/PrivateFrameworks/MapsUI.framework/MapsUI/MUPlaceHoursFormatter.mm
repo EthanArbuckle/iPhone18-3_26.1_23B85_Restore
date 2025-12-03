@@ -1,9 +1,9 @@
 @interface MUPlaceHoursFormatter
 + (id)_AMPMFont;
 + (id)_hoursMonospacedFont;
-+ (id)hoursFormatterFromHoursStringComponents:(id)a3 AMPMSymbols:(id)a4;
-- (MUPlaceHoursFormatter)initWithHoursString:(id)a3 AMPMSymbols:(id)a4;
-- (id)buildAttributedHourStringWithHourFont:(id)a3 AMPMFont:(id)a4 hourColor:(id)a5;
++ (id)hoursFormatterFromHoursStringComponents:(id)components AMPMSymbols:(id)symbols;
+- (MUPlaceHoursFormatter)initWithHoursString:(id)string AMPMSymbols:(id)symbols;
+- (id)buildAttributedHourStringWithHourFont:(id)font AMPMFont:(id)mFont hourColor:(id)color;
 - (id)buildDefaultPlacecardHoursString;
 @end
 
@@ -11,38 +11,38 @@
 
 - (id)buildDefaultPlacecardHoursString
 {
-  v3 = [objc_opt_class() _hoursMonospacedFont];
-  v4 = [objc_opt_class() _AMPMFont];
-  v5 = [MEMORY[0x1E69DC888] labelColor];
-  v6 = [(MUPlaceHoursFormatter *)self buildAttributedHourStringWithHourFont:v3 AMPMFont:v4 hourColor:v5];
+  _hoursMonospacedFont = [objc_opt_class() _hoursMonospacedFont];
+  _AMPMFont = [objc_opt_class() _AMPMFont];
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  v6 = [(MUPlaceHoursFormatter *)self buildAttributedHourStringWithHourFont:_hoursMonospacedFont AMPMFont:_AMPMFont hourColor:labelColor];
 
   return v6;
 }
 
-- (id)buildAttributedHourStringWithHourFont:(id)a3 AMPMFont:(id)a4 hourColor:(id)a5
+- (id)buildAttributedHourStringWithHourFont:(id)font AMPMFont:(id)mFont hourColor:(id)color
 {
   v43[2] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  fontCopy = font;
+  mFontCopy = mFont;
+  colorCopy = color;
   v12 = *MEMORY[0x1E69DB650];
   v42[0] = *MEMORY[0x1E69DB648];
   v11 = v42[0];
   v42[1] = v12;
-  v43[0] = v8;
-  v43[1] = v10;
+  v43[0] = fontCopy;
+  v43[1] = colorCopy;
   v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v43 forKeys:v42 count:2];
   v40[0] = v11;
   v40[1] = v12;
-  v41[0] = v9;
-  v41[1] = v10;
+  v41[0] = mFontCopy;
+  v41[1] = colorCopy;
   v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v41 forKeys:v40 count:2];
   v15 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:self->_hoursString attributes:v13];
   if (self->_formatAMPM)
   {
     v28 = v13;
-    v29 = v10;
-    v30 = v8;
+    v29 = colorCopy;
+    v30 = fontCopy;
     v37 = 0u;
     v38 = 0u;
     v35 = 0u;
@@ -83,9 +83,9 @@
       while (v17);
     }
 
-    v8 = v30;
+    fontCopy = v30;
     v13 = v28;
-    v10 = v29;
+    colorCopy = v29;
   }
 
   v25 = [v15 copy];
@@ -104,40 +104,40 @@ uint64_t __82__MUPlaceHoursFormatter_buildAttributedHourStringWithHourFont_AMPMF
   return [v2 setAttributes:v3 range:{v5, v4}];
 }
 
-- (MUPlaceHoursFormatter)initWithHoursString:(id)a3 AMPMSymbols:(id)a4
+- (MUPlaceHoursFormatter)initWithHoursString:(id)string AMPMSymbols:(id)symbols
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 length] && objc_msgSend(v7, "count"))
+  stringCopy = string;
+  symbolsCopy = symbols;
+  if ([stringCopy length] && objc_msgSend(symbolsCopy, "count"))
   {
     v17.receiver = self;
     v17.super_class = MUPlaceHoursFormatter;
     v8 = [(MUPlaceHoursFormatter *)&v17 init];
     if (v8)
     {
-      v9 = [v6 copy];
+      v9 = [stringCopy copy];
       hoursString = v8->_hoursString;
       v8->_hoursString = v9;
 
-      v11 = [v7 copy];
+      v11 = [symbolsCopy copy];
       AMPMSymbols = v8->_AMPMSymbols;
       v8->_AMPMSymbols = v11;
 
-      v13 = [MEMORY[0x1E695DF58] currentLocale];
-      v14 = [v13 languageCode];
-      v8->_formatAMPM = [v14 isEqualToString:@"ar"] ^ 1;
+      currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+      languageCode = [currentLocale languageCode];
+      v8->_formatAMPM = [languageCode isEqualToString:@"ar"] ^ 1;
     }
 
     self = v8;
-    v15 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v15 = 0;
+    selfCopy = 0;
   }
 
-  return v15;
+  return selfCopy;
 }
 
 + (id)_AMPMFont
@@ -156,8 +156,8 @@ uint64_t __82__MUPlaceHoursFormatter_buildAttributedHourStringWithHourFont_AMPMF
   v17[0] = v5;
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:&v16 count:1];
 
-  v7 = [v2 fontDescriptor];
-  v8 = [v7 fontDescriptorByAddingAttributes:v6];
+  fontDescriptor = [v2 fontDescriptor];
+  v8 = [fontDescriptor fontDescriptorByAddingAttributes:v6];
 
   v9 = MEMORY[0x1E69DB878];
   [v2 pointSize];
@@ -178,8 +178,8 @@ uint64_t __82__MUPlaceHoursFormatter_buildAttributedHourStringWithHourFont_AMPMF
   v12[1] = &unk_1F450DD18;
   v3 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:v11 count:2];
   v4 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDCF8]];
-  v5 = [v4 fontDescriptor];
-  v6 = [v5 fontDescriptorByAddingAttributes:v3];
+  fontDescriptor = [v4 fontDescriptor];
+  v6 = [fontDescriptor fontDescriptorByAddingAttributes:v3];
 
   v7 = MEMORY[0x1E69DB878];
   [v6 pointSize];
@@ -190,16 +190,16 @@ uint64_t __82__MUPlaceHoursFormatter_buildAttributedHourStringWithHourFont_AMPMF
   return v8;
 }
 
-+ (id)hoursFormatterFromHoursStringComponents:(id)a3 AMPMSymbols:(id)a4
++ (id)hoursFormatterFromHoursStringComponents:(id)components AMPMSymbols:(id)symbols
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  componentsCopy = components;
+  symbolsCopy = symbols;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v8 = [v6 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  v8 = [componentsCopy countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v8)
   {
     v9 = v8;
@@ -211,7 +211,7 @@ uint64_t __82__MUPlaceHoursFormatter_buildAttributedHourStringWithHourFont_AMPMF
       {
         if (*v21 != v11)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(componentsCopy);
         }
 
         v13 = *(*(&v20 + 1) + 8 * i);
@@ -221,7 +221,7 @@ uint64_t __82__MUPlaceHoursFormatter_buildAttributedHourStringWithHourFont_AMPMF
         }
       }
 
-      v9 = [v6 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v9 = [componentsCopy countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v9);
@@ -237,9 +237,9 @@ uint64_t __82__MUPlaceHoursFormatter_buildAttributedHourStringWithHourFont_AMPMF
   v19[2] = __77__MUPlaceHoursFormatter_hoursFormatterFromHoursStringComponents_AMPMSymbols___block_invoke;
   v19[3] = &__block_descriptor_40_e21__24__0__NSString_8Q16l;
   v19[4] = v10;
-  v14 = MUMap(v6, v19);
+  v14 = MUMap(componentsCopy, v19);
   v15 = [v14 componentsJoinedByString:@"\n"];
-  v16 = [[a1 alloc] initWithHoursString:v15 AMPMSymbols:v7];
+  v16 = [[self alloc] initWithHoursString:v15 AMPMSymbols:symbolsCopy];
 
   v17 = *MEMORY[0x1E69E9840];
 

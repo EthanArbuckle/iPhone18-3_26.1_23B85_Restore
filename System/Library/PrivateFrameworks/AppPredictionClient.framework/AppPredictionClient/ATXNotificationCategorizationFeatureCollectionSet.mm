@@ -1,135 +1,135 @@
 @interface ATXNotificationCategorizationFeatureCollectionSet
-- (ATXNotificationCategorizationFeatureCollectionSet)initWithBundleID:(id)a3 notificationDeliveryUrgency:(int64_t)a4 contactRelationships:(unint64_t)a5 relationshipsFromMegadome:(id)a6 dayOfWeek:(unint64_t)a7 timeOfDay:(int)a8 locationSemantic:(int)a9 appModeAffinityScore:(double)a10 contactModeAffinityScore:(double)a11 notificationModeAffinityScore:(double)a12 appCategoryScoreInMode:(double)a13 urgencyScore:(double)a14 importanceScore:(double)a15 bucketizedLengthOfNotificationBody:(unint64_t)a16 currentMode:(unint64_t)a17 timeToLaunchApp:(unint64_t)a18 historicalVolumeByCountAndPercentage:(id)a19 modeConditionedHistoricalVolumeByCountAndPercentage:(id)a20 historicalResolutionByPercentage:(id)a21 modeConditionedHistoricalResolutionByPercentage:(id)a22;
-- (ATXNotificationCategorizationFeatureCollectionSet)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (ATXNotificationCategorizationFeatureCollectionSet)initWithBundleID:(id)d notificationDeliveryUrgency:(int64_t)urgency contactRelationships:(unint64_t)relationships relationshipsFromMegadome:(id)megadome dayOfWeek:(unint64_t)week timeOfDay:(int)day locationSemantic:(int)semantic appModeAffinityScore:(double)self0 contactModeAffinityScore:(double)self1 notificationModeAffinityScore:(double)self2 appCategoryScoreInMode:(double)self3 urgencyScore:(double)self4 importanceScore:(double)self5 bucketizedLengthOfNotificationBody:(unint64_t)self6 currentMode:(unint64_t)self7 timeToLaunchApp:(unint64_t)self8 historicalVolumeByCountAndPercentage:(id)self9 modeConditionedHistoricalVolumeByCountAndPercentage:(id)andPercentage historicalResolutionByPercentage:(id)byPercentage modeConditionedHistoricalResolutionByPercentage:(id)resolutionByPercentage;
+- (ATXNotificationCategorizationFeatureCollectionSet)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATXNotificationCategorizationFeatureCollectionSet
 
-- (ATXNotificationCategorizationFeatureCollectionSet)initWithBundleID:(id)a3 notificationDeliveryUrgency:(int64_t)a4 contactRelationships:(unint64_t)a5 relationshipsFromMegadome:(id)a6 dayOfWeek:(unint64_t)a7 timeOfDay:(int)a8 locationSemantic:(int)a9 appModeAffinityScore:(double)a10 contactModeAffinityScore:(double)a11 notificationModeAffinityScore:(double)a12 appCategoryScoreInMode:(double)a13 urgencyScore:(double)a14 importanceScore:(double)a15 bucketizedLengthOfNotificationBody:(unint64_t)a16 currentMode:(unint64_t)a17 timeToLaunchApp:(unint64_t)a18 historicalVolumeByCountAndPercentage:(id)a19 modeConditionedHistoricalVolumeByCountAndPercentage:(id)a20 historicalResolutionByPercentage:(id)a21 modeConditionedHistoricalResolutionByPercentage:(id)a22
+- (ATXNotificationCategorizationFeatureCollectionSet)initWithBundleID:(id)d notificationDeliveryUrgency:(int64_t)urgency contactRelationships:(unint64_t)relationships relationshipsFromMegadome:(id)megadome dayOfWeek:(unint64_t)week timeOfDay:(int)day locationSemantic:(int)semantic appModeAffinityScore:(double)self0 contactModeAffinityScore:(double)self1 notificationModeAffinityScore:(double)self2 appCategoryScoreInMode:(double)self3 urgencyScore:(double)self4 importanceScore:(double)self5 bucketizedLengthOfNotificationBody:(unint64_t)self6 currentMode:(unint64_t)self7 timeToLaunchApp:(unint64_t)self8 historicalVolumeByCountAndPercentage:(id)self9 modeConditionedHistoricalVolumeByCountAndPercentage:(id)andPercentage historicalResolutionByPercentage:(id)byPercentage modeConditionedHistoricalResolutionByPercentage:(id)resolutionByPercentage
 {
-  v32 = a3;
-  v33 = a6;
-  v34 = a19;
-  v45 = a20;
-  v44 = a21;
-  v43 = a22;
+  dCopy = d;
+  megadomeCopy = megadome;
+  percentageCopy = percentage;
+  andPercentageCopy = andPercentage;
+  byPercentageCopy = byPercentage;
+  resolutionByPercentageCopy = resolutionByPercentage;
   v46.receiver = self;
   v46.super_class = ATXNotificationCategorizationFeatureCollectionSet;
   v35 = [(ATXNotificationCategorizationFeatureCollectionSet *)&v46 init];
   if (v35)
   {
-    v36 = [v32 copy];
+    v36 = [dCopy copy];
     bundleID = v35->_bundleID;
     v35->_bundleID = v36;
 
-    v35->_notificationDeliveryUrgency = a4;
-    v35->_contactRelationships = a5;
-    v38 = [v33 copy];
+    v35->_notificationDeliveryUrgency = urgency;
+    v35->_contactRelationships = relationships;
+    v38 = [megadomeCopy copy];
     relationshipsFromMegadome = v35->_relationshipsFromMegadome;
     v35->_relationshipsFromMegadome = v38;
 
-    v35->_dayOfWeek = a7;
-    v35->_timeOfDay = a8;
-    v35->_locationSemantic = a9;
-    v35->_appModeAffinityScore = a10;
-    v35->_contactModeAffinityScore = a11;
-    v35->_notificationModeAffinityScore = a12;
-    v35->_appCategoryScoreInMode = a13;
-    v35->_urgencyScore = a14;
-    v35->_importanceScore = a15;
-    v35->_bucketizedLengthOfNotificationBody = a16;
-    v35->_currentUnifiedMode = a17;
-    v35->_timeToLaunchApp = a18;
-    objc_storeStrong(&v35->_historicalVolumeByCountAndPercentage, a19);
-    objc_storeStrong(&v35->_modeConditionedHistoricalVolumeByCountAndPercentage, a20);
-    objc_storeStrong(&v35->_historicalResolutionByPercentage, a21);
-    objc_storeStrong(&v35->_modeConditionedHistoricalResolutionByPercentage, a22);
+    v35->_dayOfWeek = week;
+    v35->_timeOfDay = day;
+    v35->_locationSemantic = semantic;
+    v35->_appModeAffinityScore = score;
+    v35->_contactModeAffinityScore = affinityScore;
+    v35->_notificationModeAffinityScore = modeAffinityScore;
+    v35->_appCategoryScoreInMode = mode;
+    v35->_urgencyScore = urgencyScore;
+    v35->_importanceScore = importanceScore;
+    v35->_bucketizedLengthOfNotificationBody = body;
+    v35->_currentUnifiedMode = currentMode;
+    v35->_timeToLaunchApp = app;
+    objc_storeStrong(&v35->_historicalVolumeByCountAndPercentage, percentage);
+    objc_storeStrong(&v35->_modeConditionedHistoricalVolumeByCountAndPercentage, andPercentage);
+    objc_storeStrong(&v35->_historicalResolutionByPercentage, byPercentage);
+    objc_storeStrong(&v35->_modeConditionedHistoricalResolutionByPercentage, resolutionByPercentage);
   }
 
   return v35;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   bundleID = self->_bundleID;
-  v5 = a3;
-  [v5 encodeObject:bundleID forKey:@"bundleID"];
-  [v5 encodeInteger:self->_notificationDeliveryUrgency forKey:@"notificationDeliveryUrgency"];
-  [v5 encodeInteger:self->_contactRelationships forKey:@"contactRelationships"];
-  [v5 encodeObject:self->_relationshipsFromMegadome forKey:@"relationshipsFromMegadome"];
-  [v5 encodeInteger:self->_dayOfWeek forKey:@"dayOfWeek"];
-  [v5 encodeInt32:self->_timeOfDay forKey:@"timeOfDay"];
-  [v5 encodeInt32:self->_locationSemantic forKey:@"locationSemantic"];
-  [v5 encodeDouble:@"appModeAffinityScore" forKey:self->_appModeAffinityScore];
-  [v5 encodeDouble:@"contactModeAffinityScore" forKey:self->_contactModeAffinityScore];
-  [v5 encodeDouble:@"notificationModeAffinityScore" forKey:self->_notificationModeAffinityScore];
-  [v5 encodeDouble:@"appCategoryScoreInMode" forKey:self->_appCategoryScoreInMode];
-  [v5 encodeDouble:@"urgencyScore" forKey:self->_urgencyScore];
-  [v5 encodeDouble:@"importanceScore" forKey:self->_importanceScore];
-  [v5 encodeInteger:self->_bucketizedLengthOfNotificationBody forKey:@"bucketizedLengthOfNotificationBody"];
-  [v5 encodeInteger:self->_currentUnifiedMode forKey:@"currentUnifiedMode"];
-  [v5 encodeInteger:self->_timeToLaunchApp forKey:@"timeToLaunchApp"];
-  [v5 encodeObject:self->_historicalVolumeByCountAndPercentage forKey:@"historicalVolumeByCountAndPercentage"];
-  [v5 encodeObject:self->_modeConditionedHistoricalVolumeByCountAndPercentage forKey:@"modeConditionedHistoricalVolumeByCountAndPercentage"];
-  [v5 encodeObject:self->_historicalResolutionByPercentage forKey:@"historicalResolutionByPercentage"];
-  [v5 encodeObject:self->_modeConditionedHistoricalResolutionByPercentage forKey:@"modeConditionedHistoricalResolutionByPercentage"];
+  coderCopy = coder;
+  [coderCopy encodeObject:bundleID forKey:@"bundleID"];
+  [coderCopy encodeInteger:self->_notificationDeliveryUrgency forKey:@"notificationDeliveryUrgency"];
+  [coderCopy encodeInteger:self->_contactRelationships forKey:@"contactRelationships"];
+  [coderCopy encodeObject:self->_relationshipsFromMegadome forKey:@"relationshipsFromMegadome"];
+  [coderCopy encodeInteger:self->_dayOfWeek forKey:@"dayOfWeek"];
+  [coderCopy encodeInt32:self->_timeOfDay forKey:@"timeOfDay"];
+  [coderCopy encodeInt32:self->_locationSemantic forKey:@"locationSemantic"];
+  [coderCopy encodeDouble:@"appModeAffinityScore" forKey:self->_appModeAffinityScore];
+  [coderCopy encodeDouble:@"contactModeAffinityScore" forKey:self->_contactModeAffinityScore];
+  [coderCopy encodeDouble:@"notificationModeAffinityScore" forKey:self->_notificationModeAffinityScore];
+  [coderCopy encodeDouble:@"appCategoryScoreInMode" forKey:self->_appCategoryScoreInMode];
+  [coderCopy encodeDouble:@"urgencyScore" forKey:self->_urgencyScore];
+  [coderCopy encodeDouble:@"importanceScore" forKey:self->_importanceScore];
+  [coderCopy encodeInteger:self->_bucketizedLengthOfNotificationBody forKey:@"bucketizedLengthOfNotificationBody"];
+  [coderCopy encodeInteger:self->_currentUnifiedMode forKey:@"currentUnifiedMode"];
+  [coderCopy encodeInteger:self->_timeToLaunchApp forKey:@"timeToLaunchApp"];
+  [coderCopy encodeObject:self->_historicalVolumeByCountAndPercentage forKey:@"historicalVolumeByCountAndPercentage"];
+  [coderCopy encodeObject:self->_modeConditionedHistoricalVolumeByCountAndPercentage forKey:@"modeConditionedHistoricalVolumeByCountAndPercentage"];
+  [coderCopy encodeObject:self->_historicalResolutionByPercentage forKey:@"historicalResolutionByPercentage"];
+  [coderCopy encodeObject:self->_modeConditionedHistoricalResolutionByPercentage forKey:@"modeConditionedHistoricalResolutionByPercentage"];
 }
 
-- (ATXNotificationCategorizationFeatureCollectionSet)initWithCoder:(id)a3
+- (ATXNotificationCategorizationFeatureCollectionSet)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v29.receiver = self;
   v29.super_class = ATXNotificationCategorizationFeatureCollectionSet;
   v5 = [(ATXNotificationCategorizationFeatureCollectionSet *)&v29 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleID"];
     bundleID = v5->_bundleID;
     v5->_bundleID = v6;
 
-    v5->_notificationDeliveryUrgency = [v4 decodeIntegerForKey:@"notificationDeliveryUrgency"];
-    v5->_contactRelationships = [v4 decodeIntegerForKey:@"contactRelationships"];
+    v5->_notificationDeliveryUrgency = [coderCopy decodeIntegerForKey:@"notificationDeliveryUrgency"];
+    v5->_contactRelationships = [coderCopy decodeIntegerForKey:@"contactRelationships"];
     v8 = objc_autoreleasePoolPush();
     v9 = objc_alloc(MEMORY[0x1E695DFD8]);
     v10 = objc_opt_class();
     v11 = [v9 initWithObjects:{v10, objc_opt_class(), 0}];
     objc_autoreleasePoolPop(v8);
-    v12 = [v4 decodeObjectOfClasses:v11 forKey:@"relationshipsFromMegadome"];
+    v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"relationshipsFromMegadome"];
     relationshipsFromMegadome = v5->_relationshipsFromMegadome;
     v5->_relationshipsFromMegadome = v12;
 
-    v5->_dayOfWeek = [v4 decodeIntegerForKey:@"dayOfWeek"];
-    v5->_timeOfDay = [v4 decodeInt32ForKey:@"timeOfDay"];
-    v5->_locationSemantic = [v4 decodeInt32ForKey:@"locationSemantic"];
-    [v4 decodeDoubleForKey:@"appModeAffinityScore"];
+    v5->_dayOfWeek = [coderCopy decodeIntegerForKey:@"dayOfWeek"];
+    v5->_timeOfDay = [coderCopy decodeInt32ForKey:@"timeOfDay"];
+    v5->_locationSemantic = [coderCopy decodeInt32ForKey:@"locationSemantic"];
+    [coderCopy decodeDoubleForKey:@"appModeAffinityScore"];
     v5->_appModeAffinityScore = v14;
-    [v4 decodeDoubleForKey:@"contactModeAffinityScore"];
+    [coderCopy decodeDoubleForKey:@"contactModeAffinityScore"];
     v5->_contactModeAffinityScore = v15;
-    [v4 decodeDoubleForKey:@"notificationModeAffinityScore"];
+    [coderCopy decodeDoubleForKey:@"notificationModeAffinityScore"];
     v5->_notificationModeAffinityScore = v16;
-    [v4 decodeDoubleForKey:@"appCategoryScoreInMode"];
+    [coderCopy decodeDoubleForKey:@"appCategoryScoreInMode"];
     v5->_appCategoryScoreInMode = v17;
-    [v4 decodeDoubleForKey:@"urgencyScore"];
+    [coderCopy decodeDoubleForKey:@"urgencyScore"];
     v5->_urgencyScore = v18;
-    [v4 decodeDoubleForKey:@"importanceScore"];
+    [coderCopy decodeDoubleForKey:@"importanceScore"];
     v5->_importanceScore = v19;
-    v5->_bucketizedLengthOfNotificationBody = [v4 decodeIntegerForKey:@"bucketizedLengthOfNotificationBody"];
-    v5->_currentUnifiedMode = [v4 decodeIntegerForKey:@"currentUnifiedMode"];
-    v5->_timeToLaunchApp = [v4 decodeIntegerForKey:@"timeToLaunchApp"];
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"historicalVolumeByCountAndPercentage"];
+    v5->_bucketizedLengthOfNotificationBody = [coderCopy decodeIntegerForKey:@"bucketizedLengthOfNotificationBody"];
+    v5->_currentUnifiedMode = [coderCopy decodeIntegerForKey:@"currentUnifiedMode"];
+    v5->_timeToLaunchApp = [coderCopy decodeIntegerForKey:@"timeToLaunchApp"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"historicalVolumeByCountAndPercentage"];
     historicalVolumeByCountAndPercentage = v5->_historicalVolumeByCountAndPercentage;
     v5->_historicalVolumeByCountAndPercentage = v20;
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"modeConditionedHistoricalVolumeByCountAndPercentage"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"modeConditionedHistoricalVolumeByCountAndPercentage"];
     modeConditionedHistoricalVolumeByCountAndPercentage = v5->_modeConditionedHistoricalVolumeByCountAndPercentage;
     v5->_modeConditionedHistoricalVolumeByCountAndPercentage = v22;
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"historicalResolutionByPercentage"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"historicalResolutionByPercentage"];
     historicalResolutionByPercentage = v5->_historicalResolutionByPercentage;
     v5->_historicalResolutionByPercentage = v24;
 
-    v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"modeConditionedHistoricalResolutionByPercentage"];
+    v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"modeConditionedHistoricalResolutionByPercentage"];
     modeConditionedHistoricalResolutionByPercentage = v5->_modeConditionedHistoricalResolutionByPercentage;
     v5->_modeConditionedHistoricalResolutionByPercentage = v26;
   }

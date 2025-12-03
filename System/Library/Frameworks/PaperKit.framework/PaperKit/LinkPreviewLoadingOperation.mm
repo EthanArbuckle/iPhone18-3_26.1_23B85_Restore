@@ -1,10 +1,10 @@
 @interface LinkPreviewLoadingOperation
-- (void)linkPreviewDidFinishLoadingWithNotification:(id)a3;
+- (void)linkPreviewDidFinishLoadingWithNotification:(id)notification;
 @end
 
 @implementation LinkPreviewLoadingOperation
 
-- (void)linkPreviewDidFinishLoadingWithNotification:(id)a3
+- (void)linkPreviewDidFinishLoadingWithNotification:(id)notification
 {
   v3 = type metadata accessor for Notification();
   v4 = *(v3 - 8);

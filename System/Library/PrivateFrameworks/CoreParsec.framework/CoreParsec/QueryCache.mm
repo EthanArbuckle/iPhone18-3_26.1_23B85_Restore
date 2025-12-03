@@ -1,12 +1,12 @@
 @interface QueryCache
-- (void)cacheClearNotificationWithNotification:(id)a3;
+- (void)cacheClearNotificationWithNotification:(id)notification;
 @end
 
 @implementation QueryCache
 
-- (void)cacheClearNotificationWithNotification:(id)a3
+- (void)cacheClearNotificationWithNotification:(id)notification
 {
-  v3 = a3;
+  notificationCopy = notification;
 
   sub_1000F1ED0();
 }

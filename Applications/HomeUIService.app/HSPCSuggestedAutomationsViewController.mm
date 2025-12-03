@@ -1,6 +1,6 @@
 @interface HSPCSuggestedAutomationsViewController
-- (HSPCSuggestedAutomationsViewController)initWithCoordinator:(id)a3 config:(id)a4;
-- (id)buildItemModuleControllerForModule:(id)a3;
+- (HSPCSuggestedAutomationsViewController)initWithCoordinator:(id)coordinator config:(id)config;
+- (id)buildItemModuleControllerForModule:(id)module;
 - (id)commitConfiguration;
 - (id)shouldSkip;
 - (void)viewDidLoad;
@@ -8,23 +8,23 @@
 
 @implementation HSPCSuggestedAutomationsViewController
 
-- (HSPCSuggestedAutomationsViewController)initWithCoordinator:(id)a3 config:(id)a4
+- (HSPCSuggestedAutomationsViewController)initWithCoordinator:(id)coordinator config:(id)config
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v8 addedAccessory];
+  coordinatorCopy = coordinator;
+  configCopy = config;
+  addedAccessory = [configCopy addedAccessory];
   v10 = +[NSMutableArray array];
   v11 = objc_alloc_init(HFNullValueSource);
-  if ([v9 hf_isMediaAccessory])
+  if ([addedAccessory hf_isMediaAccessory])
   {
     v12 = [HFMediaAccessoryItem alloc];
-    v13 = [v9 mediaProfile];
-    v14 = [v12 initWithValueSource:v11 mediaProfileContainer:v13];
+    mediaProfile = [addedAccessory mediaProfile];
+    v14 = [v12 initWithValueSource:v11 mediaProfileContainer:mediaProfile];
   }
 
   else
   {
-    v14 = [[HFAccessoryItem alloc] initWithAccessory:v9 valueSource:v11];
+    v14 = [[HFAccessoryItem alloc] initWithAccessory:addedAccessory valueSource:v11];
   }
 
   [v10 addObject:v14];
@@ -32,7 +32,7 @@
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v25 = v9;
+    v25 = addedAccessory;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Setting up HSPCSuggestedAutomationsViewController with accessory: %@", buf, 0xCu);
   }
 
@@ -43,11 +43,11 @@
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_config, a4);
-    objc_storeStrong(&v18->_coordinator, a3);
+    objc_storeStrong(&v17->_config, config);
+    objc_storeStrong(&v18->_coordinator, coordinator);
     v19 = +[UIColor clearColor];
-    v20 = [(HSPCSuggestedAutomationsViewController *)v18 tableView];
-    [v20 setBackgroundColor:v19];
+    tableView = [(HSPCSuggestedAutomationsViewController *)v18 tableView];
+    [tableView setBackgroundColor:v19];
 
     commitInProgress = v18->_commitInProgress;
     v18->_commitInProgress = 0;
@@ -64,11 +64,11 @@
   [(HSPCSuggestedAutomationsViewController *)self setWantsPreferredContentSize:1];
 }
 
-- (id)buildItemModuleControllerForModule:(id)a3
+- (id)buildItemModuleControllerForModule:(id)module
 {
-  v4 = a3;
+  moduleCopy = module;
   objc_opt_class();
-  v5 = v4;
+  v5 = moduleCopy;
   if (objc_opt_isKindOfClass())
   {
     v6 = v5;
@@ -87,40 +87,40 @@
     recommendationModuleController = self->_recommendationModuleController;
     self->_recommendationModuleController = v8;
 
-    v10 = [(HSPCSuggestedAutomationsViewController *)self recommendationModuleController];
+    recommendationModuleController = [(HSPCSuggestedAutomationsViewController *)self recommendationModuleController];
   }
 
   else
   {
     v13.receiver = self;
     v13.super_class = HSPCSuggestedAutomationsViewController;
-    v10 = [(HSPCSuggestedAutomationsViewController *)&v13 buildItemModuleControllerForModule:v5];
+    recommendationModuleController = [(HSPCSuggestedAutomationsViewController *)&v13 buildItemModuleControllerForModule:v5];
   }
 
-  v11 = v10;
+  v11 = recommendationModuleController;
 
   return v11;
 }
 
 - (id)commitConfiguration
 {
-  v3 = [(HSPCSuggestedAutomationsViewController *)self commitInProgress];
-  if (v3 && (v4 = v3, -[HSPCSuggestedAutomationsViewController commitInProgress](self, "commitInProgress"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 isFinished], v5, v4, (v6 & 1) == 0))
+  commitInProgress = [(HSPCSuggestedAutomationsViewController *)self commitInProgress];
+  if (commitInProgress && (v4 = commitInProgress, -[HSPCSuggestedAutomationsViewController commitInProgress](self, "commitInProgress"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 isFinished], v5, v4, (v6 & 1) == 0))
   {
     v12 = [NAFuture futureWithResult:&off_1000CE0B0];
   }
 
   else
   {
-    v7 = [(HSPCSuggestedAutomationsViewController *)self recommendationModuleController];
-    v8 = [v7 commitSelectedItems];
-    [(HSPCSuggestedAutomationsViewController *)self setCommitInProgress:v8];
+    recommendationModuleController = [(HSPCSuggestedAutomationsViewController *)self recommendationModuleController];
+    commitSelectedItems = [recommendationModuleController commitSelectedItems];
+    [(HSPCSuggestedAutomationsViewController *)self setCommitInProgress:commitSelectedItems];
 
-    v9 = [(HSPCSuggestedAutomationsViewController *)self itemManager];
-    [v9 disableExternalUpdatesWithReason:@"setupSuggestedAutomationsVCUpdatesDisabledReason"];
+    itemManager = [(HSPCSuggestedAutomationsViewController *)self itemManager];
+    [itemManager disableExternalUpdatesWithReason:@"setupSuggestedAutomationsVCUpdatesDisabledReason"];
 
-    v10 = [(HSPCSuggestedAutomationsViewController *)self commitInProgress];
-    v11 = [v10 flatMap:&stru_1000C8150];
+    commitInProgress2 = [(HSPCSuggestedAutomationsViewController *)self commitInProgress];
+    v11 = [commitInProgress2 flatMap:&stru_1000C8150];
     v12 = [v11 recover:&stru_1000C8170];
   }
 

@@ -1,11 +1,11 @@
 @interface RTMapItemProviderReverseGeocodeParameters
-- (RTMapItemProviderReverseGeocodeParameters)initWithConfidence:(double)a3 relatedPlacesConfidence:(double)a4;
-- (RTMapItemProviderReverseGeocodeParameters)initWithDefaultsManager:(id)a3;
+- (RTMapItemProviderReverseGeocodeParameters)initWithConfidence:(double)confidence relatedPlacesConfidence:(double)placesConfidence;
+- (RTMapItemProviderReverseGeocodeParameters)initWithDefaultsManager:(id)manager;
 @end
 
 @implementation RTMapItemProviderReverseGeocodeParameters
 
-- (RTMapItemProviderReverseGeocodeParameters)initWithConfidence:(double)a3 relatedPlacesConfidence:(double)a4
+- (RTMapItemProviderReverseGeocodeParameters)initWithConfidence:(double)confidence relatedPlacesConfidence:(double)placesConfidence
 {
   if ((RTCommonValidConfidence() & 1) == 0)
   {
@@ -14,7 +14,7 @@
     {
 LABEL_9:
 
-      v8 = 0;
+      selfCopy = 0;
       goto LABEL_10;
     }
 
@@ -43,24 +43,24 @@ LABEL_12:
   v7 = [(RTMapItemProviderReverseGeocodeParameters *)&v12 init];
   if (v7)
   {
-    v7->_confidence = a3;
-    v7->_relatedPlacesConfidence = a4;
+    v7->_confidence = confidence;
+    v7->_relatedPlacesConfidence = placesConfidence;
   }
 
   self = v7;
-  v8 = self;
+  selfCopy = self;
 LABEL_10:
 
-  return v8;
+  return selfCopy;
 }
 
-- (RTMapItemProviderReverseGeocodeParameters)initWithDefaultsManager:(id)a3
+- (RTMapItemProviderReverseGeocodeParameters)initWithDefaultsManager:(id)manager
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  managerCopy = manager;
+  v5 = managerCopy;
+  if (managerCopy)
   {
-    v6 = [v4 objectForKey:@"RTDefaultsMapItemProviderReverseGeocodeConfidence"];
+    v6 = [managerCopy objectForKey:@"RTDefaultsMapItemProviderReverseGeocodeConfidence"];
     objc_opt_class();
     v7 = 0.4;
     v8 = 0.4;
@@ -80,7 +80,7 @@ LABEL_10:
 
     self = [(RTMapItemProviderReverseGeocodeParameters *)self initWithConfidence:v8 relatedPlacesConfidence:v7];
 
-    v12 = self;
+    selfCopy = self;
   }
 
   else
@@ -92,10 +92,10 @@ LABEL_10:
       _os_log_error_impl(&dword_2304B3000, v13, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: defaultsManager", v15, 2u);
     }
 
-    v12 = 0;
+    selfCopy = 0;
   }
 
-  return v12;
+  return selfCopy;
 }
 
 @end

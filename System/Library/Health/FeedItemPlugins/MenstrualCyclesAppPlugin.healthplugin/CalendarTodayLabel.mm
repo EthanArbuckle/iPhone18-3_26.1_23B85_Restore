@@ -1,10 +1,10 @@
 @interface CalendarTodayLabel
-- (_TtC24MenstrualCyclesAppPlugin18CalendarTodayLabel)initWithCoder:(id)a3;
+- (_TtC24MenstrualCyclesAppPlugin18CalendarTodayLabel)initWithCoder:(id)coder;
 @end
 
 @implementation CalendarTodayLabel
 
-- (_TtC24MenstrualCyclesAppPlugin18CalendarTodayLabel)initWithCoder:(id)a3
+- (_TtC24MenstrualCyclesAppPlugin18CalendarTodayLabel)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC24MenstrualCyclesAppPlugin18CalendarTodayLabel_ring;
   v5 = [objc_allocWithZone(MEMORY[0x29EDBBAC0]) init];

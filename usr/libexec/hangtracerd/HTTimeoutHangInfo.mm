@@ -1,38 +1,38 @@
 @interface HTTimeoutHangInfo
-- (HTTimeoutHangInfo)initWithServiceName:(id)a3 threadID:(unint64_t)a4 startTime:(unint64_t)a5 endTime:(unint64_t)a6 saveTailspin:(BOOL)a7 subType:(int64_t)a8 userActionData:(id)a9 isThirdPartyDevSupportModeHang:(BOOL)a10 processInfo:(id)a11 captureMicroHang:(BOOL)a12 recentStateInfo:(id)a13;
+- (HTTimeoutHangInfo)initWithServiceName:(id)name threadID:(unint64_t)d startTime:(unint64_t)time endTime:(unint64_t)endTime saveTailspin:(BOOL)tailspin subType:(int64_t)type userActionData:(id)data isThirdPartyDevSupportModeHang:(BOOL)self0 processInfo:(id)self1 captureMicroHang:(BOOL)self2 recentStateInfo:(id)self3;
 - (void)recordHang;
 @end
 
 @implementation HTTimeoutHangInfo
 
-- (HTTimeoutHangInfo)initWithServiceName:(id)a3 threadID:(unint64_t)a4 startTime:(unint64_t)a5 endTime:(unint64_t)a6 saveTailspin:(BOOL)a7 subType:(int64_t)a8 userActionData:(id)a9 isThirdPartyDevSupportModeHang:(BOOL)a10 processInfo:(id)a11 captureMicroHang:(BOOL)a12 recentStateInfo:(id)a13
+- (HTTimeoutHangInfo)initWithServiceName:(id)name threadID:(unint64_t)d startTime:(unint64_t)time endTime:(unint64_t)endTime saveTailspin:(BOOL)tailspin subType:(int64_t)type userActionData:(id)data isThirdPartyDevSupportModeHang:(BOOL)self0 processInfo:(id)self1 captureMicroHang:(BOOL)self2 recentStateInfo:(id)self3
 {
-  v18 = a3;
-  v19 = a9;
-  v20 = a11;
-  v21 = a13;
+  nameCopy = name;
+  dataCopy = data;
+  infoCopy = info;
+  stateInfoCopy = stateInfo;
   v31.receiver = self;
   v31.super_class = HTTimeoutHangInfo;
   v22 = [(HTTimeoutHangInfo *)&v31 init];
   if (v22)
   {
-    v23 = [v18 copy];
+    v23 = [nameCopy copy];
     serviceName = v22->_serviceName;
     v22->_serviceName = v23;
 
-    v22->_threadID = a4;
-    v22->_startTime = a5;
-    v22->_saveTailspin = a7;
-    v22->_endTime = a6;
-    v22->_subtype = a8;
-    v25 = [v19 copy];
+    v22->_threadID = d;
+    v22->_startTime = time;
+    v22->_saveTailspin = tailspin;
+    v22->_endTime = endTime;
+    v22->_subtype = type;
+    v25 = [dataCopy copy];
     userActionData = v22->_userActionData;
     v22->_userActionData = v25;
 
-    v22->_isThirdPartyDevSupportModeHang = a10;
-    objc_storeStrong(&v22->_processInfo, a11);
-    v22->_captureMicroHang = a12;
-    v27 = [v21 copy];
+    v22->_isThirdPartyDevSupportModeHang = hang;
+    objc_storeStrong(&v22->_processInfo, info);
+    v22->_captureMicroHang = microHang;
+    v27 = [stateInfoCopy copy];
     recentStateInfo = v22->_recentStateInfo;
     v22->_recentStateInfo = v27;
   }
@@ -42,20 +42,20 @@
 
 - (void)recordHang
 {
-  v14 = [(HTTimeoutHangInfo *)self processInfo];
-  v3 = [(HTTimeoutHangInfo *)self serviceName];
-  v4 = [(HTTimeoutHangInfo *)self threadID];
-  v5 = [(HTTimeoutHangInfo *)self startTime];
-  v6 = [(HTTimeoutHangInfo *)self endTime];
-  v7 = [(HTTimeoutHangInfo *)self saveTailspin];
-  v8 = [(HTTimeoutHangInfo *)self subtype];
-  v9 = [(HTTimeoutHangInfo *)self userActionData];
-  v10 = [(HTTimeoutHangInfo *)self isThirdPartyDevSupportModeHang];
-  v11 = [(HTTimeoutHangInfo *)self captureMicroHang];
-  v12 = [(HTTimeoutHangInfo *)self recentStateInfo];
-  BYTE1(v13) = v11;
-  LOBYTE(v13) = v10;
-  [v14 recordHang:v3 threadID:v4 startTime:v5 endTime:v6 saveTailspin:v7 subtype:v8 userActionData:v9 isThirdPartyDevSupportModeHang:v13 captureMicroHang:v12 recentStateInfo:?];
+  processInfo = [(HTTimeoutHangInfo *)self processInfo];
+  serviceName = [(HTTimeoutHangInfo *)self serviceName];
+  threadID = [(HTTimeoutHangInfo *)self threadID];
+  startTime = [(HTTimeoutHangInfo *)self startTime];
+  endTime = [(HTTimeoutHangInfo *)self endTime];
+  saveTailspin = [(HTTimeoutHangInfo *)self saveTailspin];
+  subtype = [(HTTimeoutHangInfo *)self subtype];
+  userActionData = [(HTTimeoutHangInfo *)self userActionData];
+  isThirdPartyDevSupportModeHang = [(HTTimeoutHangInfo *)self isThirdPartyDevSupportModeHang];
+  captureMicroHang = [(HTTimeoutHangInfo *)self captureMicroHang];
+  recentStateInfo = [(HTTimeoutHangInfo *)self recentStateInfo];
+  BYTE1(v13) = captureMicroHang;
+  LOBYTE(v13) = isThirdPartyDevSupportModeHang;
+  [processInfo recordHang:serviceName threadID:threadID startTime:startTime endTime:endTime saveTailspin:saveTailspin subtype:subtype userActionData:userActionData isThirdPartyDevSupportModeHang:v13 captureMicroHang:recentStateInfo recentStateInfo:?];
 }
 
 @end

@@ -1,31 +1,31 @@
 @interface ICPDFUtilities
-+ (id)renderedImageForPage:(CGPDFPage *)a3 scale:(double)a4 size:(CGSize)a5 colorSpace:(CGColorSpace *)a6;
++ (id)renderedImageForPage:(CGPDFPage *)page scale:(double)scale size:(CGSize)size colorSpace:(CGColorSpace *)space;
 @end
 
 @implementation ICPDFUtilities
 
-+ (id)renderedImageForPage:(CGPDFPage *)a3 scale:(double)a4 size:(CGSize)a5 colorSpace:(CGColorSpace *)a6
++ (id)renderedImageForPage:(CGPDFPage *)page scale:(double)scale size:(CGSize)size colorSpace:(CGColorSpace *)space
 {
-  v6 = a3;
-  if (a3)
+  pageCopy = page;
+  if (page)
   {
-    height = a5.height;
-    width = a5.width;
+    height = size.height;
+    width = size.width;
     v14 = *MEMORY[0x277CBF348];
-    v10 = [MEMORY[0x277D75568] defaultFormat];
-    [v10 setScale:a4];
-    v11 = [objc_alloc(MEMORY[0x277D75560]) initWithSize:v10 format:{width, height}];
+    defaultFormat = [MEMORY[0x277D75568] defaultFormat];
+    [defaultFormat setScale:scale];
+    v11 = [objc_alloc(MEMORY[0x277D75560]) initWithSize:defaultFormat format:{width, height}];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __61__ICPDFUtilities_renderedImageForPage_scale_size_colorSpace___block_invoke;
     v13[3] = &__block_descriptor_72_e40_v16__0__UIGraphicsImageRendererContext_8l;
     v15 = width;
     v16 = height;
-    v17 = v6;
-    v6 = [v11 imageWithActions:v13];
+    v17 = pageCopy;
+    pageCopy = [v11 imageWithActions:v13];
   }
 
-  return v6;
+  return pageCopy;
 }
 
 uint64_t __61__ICPDFUtilities_renderedImageForPage_scale_size_colorSpace___block_invoke(uint64_t a1, void *a2)

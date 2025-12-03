@@ -1,34 +1,34 @@
 @interface _CDInBedDetector
-+ (double)hoursOfSleepForResult:(id)a3;
++ (double)hoursOfSleepForResult:(id)result;
 + (id)inBedDetector;
-+ (id)inBedDetectorWithKnowledge:(id)a3;
-+ (id)inBedDetectorWithKnowledge:(id)a3 method:(unint64_t)a4;
-- (_CDInBedDetector)initWithKnowledge:(id)a3 method:(unint64_t)a4;
-- (id)detectInBedBetweenBedtimeDate:(id)a3 wakupDate:(id)a4 error:(id *)a5;
-- (id)detectInBedWithPolicyV1BetweenStartDate:(id)a3 endDate:(id)a4 error:(id *)a5;
-- (id)detectInBedWithPolicyV2BetweenStartDate:(id)a3 endDate:(id)a4 error:(id *)a5 motionBased:(BOOL)a6;
-- (id)findDateIntervalOfEventInStream:(id)a3 datePredicate:(id)a4 valuePredicate:(id)a5 sortDescriptor:(id)a6 error:(id *)a7;
-- (id)findLastTimeDeviceWasLockedBetweenStartDate:(id)a3 endDate:(id)a4 error:(id *)a5;
-- (id)findLastTimeDeviceWasPluggedInBetweenStartDate:(id)a3 endDate:(id)a4 error:(id *)a5;
-- (id)findMotionTerminusBetweenStartDate:(id)a3 endDate:(id)a4 latest:(BOOL)a5 error:(id *)a6;
-- (id)lockedTimesBetweenStartDate:(id)a3 endDate:(id)a4 error:(id *)a5;
-- (id)stationaryIntervalsBetweenStartDate:(id)a3 endDate:(id)a4 error:(id *)a5;
++ (id)inBedDetectorWithKnowledge:(id)knowledge;
++ (id)inBedDetectorWithKnowledge:(id)knowledge method:(unint64_t)method;
+- (_CDInBedDetector)initWithKnowledge:(id)knowledge method:(unint64_t)method;
+- (id)detectInBedBetweenBedtimeDate:(id)date wakupDate:(id)wakupDate error:(id *)error;
+- (id)detectInBedWithPolicyV1BetweenStartDate:(id)date endDate:(id)endDate error:(id *)error;
+- (id)detectInBedWithPolicyV2BetweenStartDate:(id)date endDate:(id)endDate error:(id *)error motionBased:(BOOL)based;
+- (id)findDateIntervalOfEventInStream:(id)stream datePredicate:(id)predicate valuePredicate:(id)valuePredicate sortDescriptor:(id)descriptor error:(id *)error;
+- (id)findLastTimeDeviceWasLockedBetweenStartDate:(id)date endDate:(id)endDate error:(id *)error;
+- (id)findLastTimeDeviceWasPluggedInBetweenStartDate:(id)date endDate:(id)endDate error:(id *)error;
+- (id)findMotionTerminusBetweenStartDate:(id)date endDate:(id)endDate latest:(BOOL)latest error:(id *)error;
+- (id)lockedTimesBetweenStartDate:(id)date endDate:(id)endDate error:(id *)error;
+- (id)stationaryIntervalsBetweenStartDate:(id)date endDate:(id)endDate error:(id *)error;
 @end
 
 @implementation _CDInBedDetector
 
-+ (id)inBedDetectorWithKnowledge:(id)a3
++ (id)inBedDetectorWithKnowledge:(id)knowledge
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithKnowledge:v4 method:2];
+  knowledgeCopy = knowledge;
+  v5 = [[self alloc] initWithKnowledge:knowledgeCopy method:2];
 
   return v5;
 }
 
-+ (id)inBedDetectorWithKnowledge:(id)a3 method:(unint64_t)a4
++ (id)inBedDetectorWithKnowledge:(id)knowledge method:(unint64_t)method
 {
-  v6 = a3;
-  v7 = [[a1 alloc] initWithKnowledge:v6 method:a4];
+  knowledgeCopy = knowledge;
+  v7 = [[self alloc] initWithKnowledge:knowledgeCopy method:method];
 
   return v7;
 }
@@ -36,22 +36,22 @@
 + (id)inBedDetector
 {
   v3 = +[_DKKnowledgeStore knowledgeStore];
-  v4 = [a1 inBedDetectorWithKnowledge:v3];
+  v4 = [self inBedDetectorWithKnowledge:v3];
 
   return v4;
 }
 
-- (_CDInBedDetector)initWithKnowledge:(id)a3 method:(unint64_t)a4
+- (_CDInBedDetector)initWithKnowledge:(id)knowledge method:(unint64_t)method
 {
-  v7 = a3;
+  knowledgeCopy = knowledge;
   v14.receiver = self;
   v14.super_class = _CDInBedDetector;
   v8 = [(_CDInBedDetector *)&v14 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_knowledge, a3);
-    v9->_method = a4;
+    objc_storeStrong(&v8->_knowledge, knowledge);
+    v9->_method = method;
     v10 = os_log_create("com.apple.coreduet", "inBedDetector");
     v11 = v10;
     if (v10)
@@ -70,15 +70,15 @@
   return v9;
 }
 
-+ (double)hoursOfSleepForResult:(id)a3
++ (double)hoursOfSleepForResult:(id)result
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  resultCopy = result;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v4 = [resultCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v4)
   {
     v5 = v4;
@@ -90,17 +90,17 @@
       {
         if (*v16 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(resultCopy);
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
-        v10 = [v9 endDate];
-        v11 = [v9 startDate];
-        [v10 timeIntervalSinceDate:v11];
+        endDate = [v9 endDate];
+        startDate = [v9 startDate];
+        [endDate timeIntervalSinceDate:startDate];
         v7 = v7 + v12 / 3600.0;
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v5 = [resultCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v5);
@@ -115,16 +115,16 @@
   return v7;
 }
 
-- (id)detectInBedBetweenBedtimeDate:(id)a3 wakupDate:(id)a4 error:(id *)a5
+- (id)detectInBedBetweenBedtimeDate:(id)date wakupDate:(id)wakupDate error:(id *)error
 {
   v36 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  dateCopy = date;
+  wakupDateCopy = wakupDate;
   v10 = objc_autoreleasePoolPush();
   if (![(_CDInBedDetector *)self method])
   {
     v33 = 0;
-    v11 = [(_CDInBedDetector *)self lockedTimesBetweenStartDate:v8 endDate:v9 error:&v33];
+    v11 = [(_CDInBedDetector *)self lockedTimesBetweenStartDate:dateCopy endDate:wakupDateCopy error:&v33];
     v12 = v33;
     goto LABEL_5;
   }
@@ -132,7 +132,7 @@
   if ([(_CDInBedDetector *)self method]== 1)
   {
     v32 = 0;
-    v11 = [(_CDInBedDetector *)self detectInBedWithPolicyV1BetweenStartDate:v8 endDate:v9 error:&v32];
+    v11 = [(_CDInBedDetector *)self detectInBedWithPolicyV1BetweenStartDate:dateCopy endDate:wakupDateCopy error:&v32];
     v12 = v32;
 LABEL_5:
     v13 = v12;
@@ -140,7 +140,7 @@ LABEL_5:
   }
 
   v31 = 0;
-  v11 = [(_CDInBedDetector *)self detectInBedWithPolicyV2BetweenStartDate:v8 endDate:v9 error:&v31 motionBased:0];
+  v11 = [(_CDInBedDetector *)self detectInBedWithPolicyV2BetweenStartDate:dateCopy endDate:wakupDateCopy error:&v31 motionBased:0];
   v13 = v31;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
@@ -155,7 +155,7 @@ LABEL_5:
   if (+[_CDDeviceInfo isRunningOnInternalBuild])
   {
     v30 = v13;
-    v20 = [(_CDInBedDetector *)self detectInBedWithPolicyV1BetweenStartDate:v8 endDate:v9 error:&v30];
+    v20 = [(_CDInBedDetector *)self detectInBedWithPolicyV1BetweenStartDate:dateCopy endDate:wakupDateCopy error:&v30];
     v21 = v30;
 
     v22 = self->_log;
@@ -169,7 +169,7 @@ LABEL_5:
     }
 
     v29 = v21;
-    v25 = [(_CDInBedDetector *)self detectInBedWithPolicyV2BetweenStartDate:v8 endDate:v9 error:&v29 motionBased:1];
+    v25 = [(_CDInBedDetector *)self detectInBedWithPolicyV2BetweenStartDate:dateCopy endDate:wakupDateCopy error:&v29 motionBased:1];
     v13 = v29;
 
     v26 = self->_log;
@@ -185,10 +185,10 @@ LABEL_5:
 
 LABEL_6:
   objc_autoreleasePoolPop(v10);
-  if (a5 && v13)
+  if (error && v13)
   {
     v14 = v13;
-    *a5 = v13;
+    *error = v13;
   }
 
   v15 = *MEMORY[0x1E69E9840];
@@ -196,13 +196,13 @@ LABEL_6:
   return v11;
 }
 
-- (id)lockedTimesBetweenStartDate:(id)a3 endDate:(id)a4 error:(id *)a5
+- (id)lockedTimesBetweenStartDate:(id)date endDate:(id)endDate error:(id *)error
 {
   v84[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v72 = v8;
-  v10 = [_DKQuery predicateForEventsIntersectingDateRangeFrom:v8 to:v9];
+  dateCopy = date;
+  endDateCopy = endDate;
+  v72 = dateCopy;
+  v10 = [_DKQuery predicateForEventsIntersectingDateRangeFrom:dateCopy to:endDateCopy];
   v11 = +[_DKBoolCategory no];
   v12 = [_DKQuery predicateForEventsWithCategoryValue:v11];
 
@@ -231,17 +231,17 @@ LABEL_6:
   [(_DKEventQuery *)v13 setSortDescriptors:v22];
 
   [(_DKEventQuery *)v13 setResultType:2];
-  v23 = [(_CDInBedDetector *)self knowledge];
+  knowledge = [(_CDInBedDetector *)self knowledge];
   v79 = 0;
   v70 = v13;
-  v24 = [v23 executeQuery:v13 error:&v79];
+  v24 = [knowledge executeQuery:v13 error:&v79];
   v25 = v79;
 
-  if (a5 && v25)
+  if (error && v25)
   {
     v26 = v25;
-    v73 = 0;
-    *a5 = v25;
+    array = 0;
+    *error = v25;
     v27 = v25;
     v28 = v71;
     v29 = v72;
@@ -253,8 +253,8 @@ LABEL_6:
     v67 = v10;
     v30 = +[_DKSystemEventStreams deviceIsLockedStream];
     v29 = v72;
-    v68 = v9;
-    v31 = [_DKQuery predicateForEventsWithEndInDateRangeFrom:v72 to:v9];
+    v68 = endDateCopy;
+    v31 = [_DKQuery predicateForEventsWithEndInDateRangeFrom:v72 to:endDateCopy];
     v32 = +[_DKBoolCategory yes];
     v33 = [_DKQuery predicateForEventsWithCategoryValue:v32];
     v34 = [_DKQuery endDateSortDescriptorAscending:0];
@@ -262,61 +262,61 @@ LABEL_6:
     v35 = [(_CDInBedDetector *)self findDateIntervalOfEventInStream:v30 datePredicate:v31 valuePredicate:v33 sortDescriptor:v34 error:&v78];
     v36 = v78;
 
-    v37 = [v35 endDate];
+    endDate = [v35 endDate];
 
     v27 = v36;
-    if (a5 && v36)
+    if (error && v36)
     {
       v38 = v36;
-      v73 = 0;
-      *a5 = v36;
+      array = 0;
+      *error = v36;
       v10 = v67;
-      v9 = v68;
+      endDateCopy = v68;
       v28 = v71;
       v24 = v66;
     }
 
     else
     {
-      if (v37)
+      if (endDate)
       {
         v24 = v66;
         v10 = v67;
-        v9 = v68;
+        endDateCopy = v68;
         if (![v66 count])
         {
           goto LABEL_11;
         }
 
-        v39 = [v66 lastObject];
-        v40 = [v39 endDate];
-        v41 = v37;
-        v42 = [v40 compare:v37];
+        lastObject = [v66 lastObject];
+        endDate2 = [lastObject endDate];
+        v41 = endDate;
+        v42 = [endDate2 compare:endDate];
 
         v43 = v42 == -1;
-        v37 = v41;
+        endDate = v41;
         if (v43)
         {
 LABEL_11:
-          v44 = v37;
+          v44 = endDate;
 
-          v9 = v44;
+          endDateCopy = v44;
         }
       }
 
       else
       {
         v10 = v67;
-        v9 = v68;
+        endDateCopy = v68;
         v24 = v66;
       }
 
       if ([v24 count])
       {
-        v64 = v37;
+        v64 = endDate;
         v65 = v27;
-        v69 = v9;
-        v73 = [MEMORY[0x1E695DF70] array];
+        v69 = endDateCopy;
+        array = [MEMORY[0x1E695DF70] array];
         v45 = v72;
         v74 = 0u;
         v75 = 0u;
@@ -328,11 +328,11 @@ LABEL_11:
         {
           v48 = v47;
           v49 = *v75;
-          v50 = v45;
+          endDate3 = v45;
           do
           {
             v51 = 0;
-            v52 = v50;
+            v52 = endDate3;
             do
             {
               if (*v75 != v49)
@@ -343,21 +343,21 @@ LABEL_11:
               v53 = *(*(&v74 + 1) + 8 * v51);
               v54 = objc_alloc_init(_CDInBedDetection);
               [(_CDInBedDetection *)v54 setStartDate:v52];
-              v55 = [v53 startDate];
-              v56 = [v55 laterDate:v45];
+              startDate = [v53 startDate];
+              v56 = [startDate laterDate:v45];
               [(_CDInBedDetection *)v54 setEndDate:v56];
 
               [(_CDInBedDetection *)v54 setConfidence:1.0];
               [(_CDInBedDetection *)v54 duration];
               if (v57 > 0.0)
               {
-                [v73 addObject:v54];
+                [array addObject:v54];
               }
 
-              v50 = [v53 endDate];
+              endDate3 = [v53 endDate];
 
               ++v51;
-              v52 = v50;
+              v52 = endDate3;
             }
 
             while (v48 != v51);
@@ -369,26 +369,26 @@ LABEL_11:
 
         else
         {
-          v50 = v45;
+          endDate3 = v45;
         }
 
-        v9 = v69;
-        v59 = [v50 earlierDate:v69];
-        v60 = [v59 isEqualToDate:v50];
+        endDateCopy = v69;
+        v59 = [endDate3 earlierDate:v69];
+        v60 = [v59 isEqualToDate:endDate3];
 
         if (v60)
         {
           v61 = objc_alloc_init(_CDInBedDetection);
-          [(_CDInBedDetection *)v61 setStartDate:v50];
+          [(_CDInBedDetection *)v61 setStartDate:endDate3];
           [(_CDInBedDetection *)v61 setEndDate:v69];
-          [v73 addObject:v61];
+          [array addObject:v61];
         }
 
         v28 = v71;
         v29 = v72;
         v24 = v66;
         v10 = v67;
-        v37 = v64;
+        endDate = v64;
         v27 = v65;
       }
 
@@ -396,9 +396,9 @@ LABEL_11:
       {
         v58 = objc_alloc_init(_CDInBedDetection);
         [(_CDInBedDetection *)v58 setStartDate:v72];
-        [(_CDInBedDetection *)v58 setEndDate:v9];
+        [(_CDInBedDetection *)v58 setEndDate:endDateCopy];
         v81 = v58;
-        v73 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v81 count:1];
+        array = [MEMORY[0x1E695DEC8] arrayWithObjects:&v81 count:1];
 
         v28 = v71;
       }
@@ -407,18 +407,18 @@ LABEL_11:
 
   v62 = *MEMORY[0x1E69E9840];
 
-  return v73;
+  return array;
 }
 
-- (id)detectInBedWithPolicyV1BetweenStartDate:(id)a3 endDate:(id)a4 error:(id *)a5
+- (id)detectInBedWithPolicyV1BetweenStartDate:(id)date endDate:(id)endDate error:(id *)error
 {
   v61 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  [v8 dateByAddingTimeInterval:-3600.0];
+  dateCopy = date;
+  endDateCopy = endDate;
+  [endDateCopy dateByAddingTimeInterval:-3600.0];
   v52[1] = 0;
-  v47 = v49 = v7;
-  v9 = [_CDInBedDetector findLatestEndOfMovementBetweenStartDate:"findLatestEndOfMovementBetweenStartDate:endDate:error:" endDate:v7 error:?];
+  v47 = v49 = dateCopy;
+  v9 = [_CDInBedDetector findLatestEndOfMovementBetweenStartDate:"findLatestEndOfMovementBetweenStartDate:endDate:error:" endDate:dateCopy error:?];
   v10 = 0;
   if (v10)
   {
@@ -508,13 +508,13 @@ LABEL_11:
   else
   {
     v50 = 0;
-    v27 = [(_CDInBedDetector *)self lockedTimesBetweenStartDate:v20 endDate:v8 error:&v50];
+    v27 = [(_CDInBedDetector *)self lockedTimesBetweenStartDate:v20 endDate:endDateCopy error:&v50];
     v48 = v50;
     if (v48)
     {
-      if (a5)
+      if (error)
       {
-        *a5 = v48;
+        *error = v48;
       }
 
       v29 = self->_log;
@@ -523,7 +523,7 @@ LABEL_11:
         *buf = 138412802;
         v54 = v20;
         v55 = 2112;
-        v56 = v8;
+        v56 = endDateCopy;
         v57 = 2112;
         v58 = v48;
         _os_log_error_impl(&dword_191750000, v29, OS_LOG_TYPE_ERROR, "Error identifying locked times between %@ and %@: %@", buf, 0x20u);
@@ -546,9 +546,9 @@ LABEL_11:
     v31 = MEMORY[0x1E696AD98];
     v32 = v30;
     v33 = [v31 numberWithUnsignedInteger:{objc_msgSend(v27, "count")}];
-    v34 = [v27 firstObject];
-    [v34 startDate];
-    v35 = v44 = v8;
+    firstObject = [v27 firstObject];
+    [firstObject startDate];
+    v35 = v44 = endDateCopy;
     [v27 lastObject];
     v36 = v43 = v16;
     [v36 endDate];
@@ -568,7 +568,7 @@ LABEL_11:
     v20 = v37;
 
     v16 = v43;
-    v8 = v44;
+    endDateCopy = v44;
 
     v21 = v42;
   }
@@ -578,17 +578,17 @@ LABEL_11:
   return v27;
 }
 
-- (id)detectInBedWithPolicyV2BetweenStartDate:(id)a3 endDate:(id)a4 error:(id *)a5 motionBased:(BOOL)a6
+- (id)detectInBedWithPolicyV2BetweenStartDate:(id)date endDate:(id)endDate error:(id *)error motionBased:(BOOL)based
 {
-  v6 = a6;
+  basedCopy = based;
   v106 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = [v9 dateByAddingTimeInterval:14400.0];
-  v12 = [v10 dateByAddingTimeInterval:-60.0];
+  dateCopy = date;
+  endDateCopy = endDate;
+  v11 = [dateCopy dateByAddingTimeInterval:14400.0];
+  v12 = [endDateCopy dateByAddingTimeInterval:-60.0];
   v13 = [v11 earlierDate:v12];
   v96 = 0;
-  v14 = [(_CDInBedDetector *)self findLatestEndOfMovementBetweenStartDate:v9 endDate:v13 error:&v96];
+  v14 = [(_CDInBedDetector *)self findLatestEndOfMovementBetweenStartDate:dateCopy endDate:v13 error:&v96];
   v15 = v96;
 
   if (v15)
@@ -611,14 +611,14 @@ LABEL_11:
 
   else
   {
-    v16 = v9;
+    v16 = dateCopy;
   }
 
   v17 = v16;
 
   v18 = v17;
   v19 = [v18 dateByAddingTimeInterval:5400.0];
-  v20 = [v10 dateByAddingTimeInterval:-60.0];
+  v20 = [endDateCopy dateByAddingTimeInterval:-60.0];
   v21 = [v19 earlierDate:v20];
 
   v95 = 0;
@@ -675,7 +675,7 @@ LABEL_11:
     v25 = v30;
   }
 
-  v31 = [v10 dateByAddingTimeInterval:-3600.0];
+  v31 = [endDateCopy dateByAddingTimeInterval:-3600.0];
   [v31 timeIntervalSinceReferenceDate];
   v33 = v32;
   [v25 timeIntervalSinceReferenceDate];
@@ -696,7 +696,7 @@ LABEL_33:
   }
 
   v93 = 0;
-  v35 = [(_CDInBedDetector *)self findMotionTerminusBetweenStartDate:v31 endDate:v10 latest:0 error:&v93];
+  v35 = [(_CDInBedDetector *)self findMotionTerminusBetweenStartDate:v31 endDate:endDateCopy latest:0 error:&v93];
   v36 = v93;
   if (!v36)
   {
@@ -728,15 +728,15 @@ LABEL_34:
 
   else
   {
-    v39 = v10;
+    v39 = endDateCopy;
   }
 
   v40 = v39;
 
   v81 = v11;
-  v82 = v9;
+  v82 = dateCopy;
   v83 = v40;
-  if (v6)
+  if (basedCopy)
   {
     v73 = v21;
     v75 = v18;
@@ -759,7 +759,7 @@ LABEL_34:
       }
     }
 
-    v45 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v88 = 0u;
     v89 = 0u;
     v90 = 0u;
@@ -784,14 +784,14 @@ LABEL_34:
           if (v52 >= 300.0)
           {
             v53 = objc_alloc_init(_CDInBedDetection);
-            v54 = [v51 startDate];
-            [(_CDInBedDetection *)v53 setStartDate:v54];
+            startDate = [v51 startDate];
+            [(_CDInBedDetection *)v53 setStartDate:startDate];
 
-            v55 = [v51 endDate];
-            [(_CDInBedDetection *)v53 setEndDate:v55];
+            endDate = [v51 endDate];
+            [(_CDInBedDetection *)v53 setEndDate:endDate];
 
             [(_CDInBedDetection *)v53 setConfidence:1.0];
-            [v45 addObject:v53];
+            [array addObject:v53];
           }
         }
 
@@ -801,7 +801,7 @@ LABEL_34:
       while (v48);
     }
 
-    v9 = v82;
+    dateCopy = v82;
     v21 = v73;
     v18 = v75;
     v25 = v84;
@@ -809,13 +809,13 @@ LABEL_34:
 
   else
   {
-    v45 = 0;
+    array = 0;
   }
 
   v56 = v86;
-  if ([v45 count])
+  if ([array count])
   {
-    v57 = [v45 copy];
+    v57 = [array copy];
     v58 = 0;
     v59 = @"motion";
   }
@@ -828,10 +828,10 @@ LABEL_34:
     v58 = v60;
     if (v60)
     {
-      if (a5)
+      if (error)
       {
         v61 = v60;
-        *a5 = v58;
+        *error = v58;
       }
 
       v62 = self->_log;
@@ -857,23 +857,23 @@ LABEL_34:
     v64 = MEMORY[0x1E696AD98];
     v76 = v63;
     v72 = [v64 numberWithUnsignedInteger:{objc_msgSend(v57, "count")}];
-    v65 = [v57 firstObject];
-    [v65 startDate];
+    firstObject = [v57 firstObject];
+    [firstObject startDate];
     v78 = v58;
     v67 = v66 = v57;
-    v68 = [v66 lastObject];
-    v69 = [v68 endDate];
+    lastObject = [v66 lastObject];
+    endDate2 = [lastObject endDate];
     *buf = 138413058;
     v98 = v72;
     v99 = 2112;
     v100 = v67;
     v101 = 2112;
-    v102 = v69;
+    v102 = endDate2;
     v103 = 2112;
     v104 = v74;
     _os_log_impl(&dword_191750000, v76, OS_LOG_TYPE_DEFAULT, "Found %@ in-bed intervals between %@ & %@ using %@-based heuristic", buf, 0x2Au);
 
-    v9 = v82;
+    dateCopy = v82;
     v56 = v86;
 
     v57 = v66;
@@ -885,14 +885,14 @@ LABEL_34:
   return v57;
 }
 
-- (id)findMotionTerminusBetweenStartDate:(id)a3 endDate:(id)a4 latest:(BOOL)a5 error:(id *)a6
+- (id)findMotionTerminusBetweenStartDate:(id)date endDate:(id)endDate latest:(BOOL)latest error:(id *)error
 {
-  v6 = a5;
+  latestCopy = latest;
   v62 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = [v9 earlierDate:v10];
-  v12 = [v11 isEqualToDate:v10];
+  dateCopy = date;
+  endDateCopy = endDate;
+  v11 = [dateCopy earlierDate:endDateCopy];
+  v12 = [v11 isEqualToDate:endDateCopy];
 
   if (v12)
   {
@@ -902,7 +902,7 @@ LABEL_34:
     }
 
 LABEL_22:
-    v19 = 0;
+    startDate3 = 0;
     goto LABEL_40;
   }
 
@@ -942,7 +942,7 @@ LABEL_22:
   dsema = v15;
   v45 = dsema;
   v32 = v13;
-  [v13 queryActivityStartingFromDate:v9 toDate:v10 toQueue:v14 withHandler:v44];
+  [v13 queryActivityStartingFromDate:dateCopy toDate:endDateCopy toQueue:v14 withHandler:v44];
   v16 = dispatch_time(0, 60000000000);
   if (dispatch_semaphore_wait(dsema, v16))
   {
@@ -954,52 +954,52 @@ LABEL_22:
     [v14 cancelAllOperations];
   }
 
-  v17 = v10;
-  if (v6)
+  startDate = endDateCopy;
+  if (latestCopy)
   {
     v42 = 0uLL;
     v43 = 0uLL;
     v40 = 0uLL;
     v41 = 0uLL;
-    v18 = [v49[5] reverseObjectEnumerator];
-    v19 = [v18 countByEnumeratingWithState:&v40 objects:v61 count:16];
-    if (v19)
+    reverseObjectEnumerator = [v49[5] reverseObjectEnumerator];
+    startDate3 = [reverseObjectEnumerator countByEnumeratingWithState:&v40 objects:v61 count:16];
+    if (startDate3)
     {
       v20 = *v41;
-      v21 = v17;
+      startDate2 = startDate;
       while (2)
       {
         v22 = 0;
-        v23 = v17;
-        v24 = v21;
+        v23 = startDate;
+        v24 = startDate2;
         do
         {
           if (*v41 != v20)
           {
-            objc_enumerationMutation(v18);
+            objc_enumerationMutation(reverseObjectEnumerator);
           }
 
           v25 = *(*(&v40 + 1) + 8 * v22);
           if (([v25 stationary] & 1) == 0 && objc_msgSend(v25, "confidence") == 1)
           {
-            v21 = v24;
-            v17 = v23;
-            v19 = v21;
+            startDate2 = v24;
+            startDate = v23;
+            startDate3 = startDate2;
             goto LABEL_36;
           }
 
-          v17 = [v25 startDate];
+          startDate = [v25 startDate];
 
-          v21 = [v25 startDate];
+          startDate2 = [v25 startDate];
 
           v22 = v22 + 1;
-          v23 = v17;
-          v24 = v21;
+          v23 = startDate;
+          v24 = startDate2;
         }
 
-        while (v19 != v22);
-        v19 = [v18 countByEnumeratingWithState:&v40 objects:v61 count:16];
-        if (v19)
+        while (startDate3 != v22);
+        startDate3 = [reverseObjectEnumerator countByEnumeratingWithState:&v40 objects:v61 count:16];
+        if (startDate3)
         {
           continue;
         }
@@ -1015,30 +1015,30 @@ LABEL_22:
     v39 = 0uLL;
     v36 = 0uLL;
     v37 = 0uLL;
-    v18 = [v49[5] objectEnumerator];
-    v19 = [v18 countByEnumeratingWithState:&v36 objects:v60 count:16];
-    if (v19)
+    reverseObjectEnumerator = [v49[5] objectEnumerator];
+    startDate3 = [reverseObjectEnumerator countByEnumeratingWithState:&v36 objects:v60 count:16];
+    if (startDate3)
     {
       v26 = *v37;
       while (2)
       {
-        for (i = 0; i != v19; i = i + 1)
+        for (i = 0; i != startDate3; i = i + 1)
         {
           if (*v37 != v26)
           {
-            objc_enumerationMutation(v18);
+            objc_enumerationMutation(reverseObjectEnumerator);
           }
 
           v28 = *(*(&v36 + 1) + 8 * i);
           if (([v28 stationary] & 1) == 0 && objc_msgSend(v28, "confidence") == 1)
           {
-            v19 = [v28 startDate];
+            startDate3 = [v28 startDate];
             goto LABEL_34;
           }
         }
 
-        v19 = [v18 countByEnumeratingWithState:&v36 objects:v60 count:16];
-        if (v19)
+        startDate3 = [reverseObjectEnumerator countByEnumeratingWithState:&v36 objects:v60 count:16];
+        if (startDate3)
         {
           continue;
         }
@@ -1049,15 +1049,15 @@ LABEL_22:
   }
 
 LABEL_34:
-  v21 = v17;
+  startDate2 = startDate;
 LABEL_36:
 
-  if (a6)
+  if (error)
   {
     v29 = v55[5];
     if (v29)
     {
-      *a6 = v29;
+      *error = v29;
     }
   }
 
@@ -1067,17 +1067,17 @@ LABEL_36:
 LABEL_40:
   v30 = *MEMORY[0x1E69E9840];
 
-  return v19;
+  return startDate3;
 }
 
-- (id)stationaryIntervalsBetweenStartDate:(id)a3 endDate:(id)a4 error:(id *)a5
+- (id)stationaryIntervalsBetweenStartDate:(id)date endDate:(id)endDate error:(id *)error
 {
   v56 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v34 = v7;
-  v9 = [v7 earlierDate:v8];
-  v10 = [v9 isEqualToDate:v8];
+  dateCopy = date;
+  endDateCopy = endDate;
+  v34 = dateCopy;
+  v9 = [dateCopy earlierDate:endDateCopy];
+  v10 = [v9 isEqualToDate:endDateCopy];
 
   if (v10)
   {
@@ -1122,7 +1122,7 @@ LABEL_2:
   dsema = v14;
   v40 = dsema;
   v30 = v12;
-  [v12 queryActivityStartingFromDate:v7 toDate:v8 toQueue:v13 withHandler:v39];
+  [v12 queryActivityStartingFromDate:dateCopy toDate:endDateCopy toQueue:v13 withHandler:v39];
   v15 = dispatch_time(0, 60000000000);
   if (dispatch_semaphore_wait(dsema, v15))
   {
@@ -1134,7 +1134,7 @@ LABEL_2:
     [v13 cancelAllOperations];
   }
 
-  v16 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v37 = 0u;
   v38 = 0u;
   v35 = 0u;
@@ -1162,7 +1162,7 @@ LABEL_23:
       v22 = *(*(&v35 + 1) + 8 * i);
       if ([v22 stationary] && objc_msgSend(v22, "confidence") == 2)
       {
-        v23 = [v22 startDate];
+        startDate = [v22 startDate];
       }
 
       else
@@ -1173,14 +1173,14 @@ LABEL_23:
         }
 
         v24 = objc_alloc(MEMORY[0x1E696AB80]);
-        v25 = [v22 startDate];
-        v26 = [v24 initWithStartDate:v18 endDate:v25];
-        [v16 addObject:v26];
+        startDate2 = [v22 startDate];
+        v26 = [v24 initWithStartDate:v18 endDate:startDate2];
+        [array addObject:v26];
 
-        v23 = 0;
+        startDate = 0;
       }
 
-      v18 = v23;
+      v18 = startDate;
     }
 
     v19 = [v17 countByEnumeratingWithState:&v35 objects:v55 count:16];
@@ -1190,22 +1190,22 @@ LABEL_23:
 
   if (v18)
   {
-    v17 = [objc_alloc(MEMORY[0x1E696AB80]) initWithStartDate:v18 endDate:v8];
-    [v16 addObject:v17];
+    v17 = [objc_alloc(MEMORY[0x1E696AB80]) initWithStartDate:v18 endDate:endDateCopy];
+    [array addObject:v17];
     goto LABEL_23;
   }
 
 LABEL_24:
-  if (a5)
+  if (error)
   {
     v27 = v50[5];
     if (v27)
     {
-      *a5 = v27;
+      *error = v27;
     }
   }
 
-  v11 = [v16 copy];
+  v11 = [array copy];
 
   _Block_object_dispose(&v43, 8);
   _Block_object_dispose(&v49, 8);
@@ -1216,96 +1216,96 @@ LABEL_28:
   return v11;
 }
 
-- (id)findLastTimeDeviceWasLockedBetweenStartDate:(id)a3 endDate:(id)a4 error:(id *)a5
+- (id)findLastTimeDeviceWasLockedBetweenStartDate:(id)date endDate:(id)endDate error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
+  endDateCopy = endDate;
+  dateCopy = date;
   v10 = +[_DKSystemEventStreams deviceIsLockedStream];
-  v11 = [_DKQuery predicateForEventsWithEndInDateRangeFrom:v9 to:v8];
+  v11 = [_DKQuery predicateForEventsWithEndInDateRangeFrom:dateCopy to:endDateCopy];
 
   v12 = +[_DKBoolCategory no];
   v13 = [_DKQuery predicateForEventsWithCategoryValue:v12];
   v14 = [_DKQuery endDateSortDescriptorAscending:0];
-  v15 = [(_CDInBedDetector *)self findDateIntervalOfEventInStream:v10 datePredicate:v11 valuePredicate:v13 sortDescriptor:v14 error:a5];
-  v16 = [v15 endDate];
+  v15 = [(_CDInBedDetector *)self findDateIntervalOfEventInStream:v10 datePredicate:v11 valuePredicate:v13 sortDescriptor:v14 error:error];
+  endDate = [v15 endDate];
 
-  return v16;
+  return endDate;
 }
 
-- (id)findLastTimeDeviceWasPluggedInBetweenStartDate:(id)a3 endDate:(id)a4 error:(id *)a5
+- (id)findLastTimeDeviceWasPluggedInBetweenStartDate:(id)date endDate:(id)endDate error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
+  endDateCopy = endDate;
+  dateCopy = date;
   v10 = +[_DKSystemEventStreams deviceIsPluggedInStream];
-  v11 = [_DKQuery predicateForEventsWithEndInDateRangeFrom:v9 to:v8];
+  v11 = [_DKQuery predicateForEventsWithEndInDateRangeFrom:dateCopy to:endDateCopy];
 
   v12 = +[_DKBoolCategory no];
   v13 = [_DKQuery predicateForEventsWithCategoryValue:v12];
   v14 = [_DKQuery endDateSortDescriptorAscending:0];
-  v15 = [(_CDInBedDetector *)self findDateIntervalOfEventInStream:v10 datePredicate:v11 valuePredicate:v13 sortDescriptor:v14 error:a5];
-  v16 = [v15 endDate];
+  v15 = [(_CDInBedDetector *)self findDateIntervalOfEventInStream:v10 datePredicate:v11 valuePredicate:v13 sortDescriptor:v14 error:error];
+  endDate = [v15 endDate];
 
-  return v16;
+  return endDate;
 }
 
-- (id)findDateIntervalOfEventInStream:(id)a3 datePredicate:(id)a4 valuePredicate:(id)a5 sortDescriptor:(id)a6 error:(id *)a7
+- (id)findDateIntervalOfEventInStream:(id)stream datePredicate:(id)predicate valuePredicate:(id)valuePredicate sortDescriptor:(id)descriptor error:(id *)error
 {
   v34[1] = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  streamCopy = stream;
+  predicateCopy = predicate;
+  valuePredicateCopy = valuePredicate;
+  descriptorCopy = descriptor;
   v16 = objc_alloc_init(_DKEventQuery);
   v17 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"_CDInBedDetector.m"];
   v18 = [v17 stringByAppendingFormat:@":%d", 638];
   [(_DKQuery *)v16 setClientName:v18];
 
   [(_DKQuery *)v16 setTracker:&__block_literal_global_557];
-  v34[0] = v12;
+  v34[0] = streamCopy;
   v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v34 count:1];
   [(_DKEventQuery *)v16 setEventStreams:v19];
 
   v20 = MEMORY[0x1E696AB28];
-  v33[0] = v13;
-  v33[1] = v14;
+  v33[0] = predicateCopy;
+  v33[1] = valuePredicateCopy;
   v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:v33 count:2];
   v22 = [v20 andPredicateWithSubpredicates:v21];
   [(_DKEventQuery *)v16 setPredicate:v22];
 
-  v32 = v15;
+  v32 = descriptorCopy;
   v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v32 count:1];
   [(_DKEventQuery *)v16 setSortDescriptors:v23];
 
   [(_DKEventQuery *)v16 setLimit:1];
   [(_DKEventQuery *)v16 setResultType:2];
-  v24 = [(_CDInBedDetector *)self knowledge];
+  knowledge = [(_CDInBedDetector *)self knowledge];
   v31 = 0;
-  v25 = [v24 executeQuery:v16 error:&v31];
+  v25 = [knowledge executeQuery:v16 error:&v31];
   v26 = v31;
 
   if (v26)
   {
-    if (a7)
+    if (error)
     {
       v27 = v26;
-      v28 = 0;
-      *a7 = v26;
+      firstObject = 0;
+      *error = v26;
     }
 
     else
     {
-      v28 = 0;
+      firstObject = 0;
     }
   }
 
   else
   {
-    v28 = [v25 firstObject];
+    firstObject = [v25 firstObject];
   }
 
   v29 = *MEMORY[0x1E69E9840];
 
-  return v28;
+  return firstObject;
 }
 
 - (void)detectInBedWithPolicyV1BetweenStartDate:endDate:error:.cold.1()

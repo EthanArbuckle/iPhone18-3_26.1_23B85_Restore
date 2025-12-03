@@ -1,16 +1,16 @@
 @interface HMDCompositeSettingsHH2DatabaseAdapter
 - (HMDCompositeSettingsDatabaseAdapterDelegate)delegate;
-- (HMDCompositeSettingsHH2DatabaseAdapter)initWithAccessory:(id)a3 homeID:(id)a4 workingManagedObjectContext:(id)a5 queue:(id)a6 notificationCenter:(id)a7;
-- (id)_modelFromAccessory:(id)a3;
-- (id)emptyModelWithID:(id)a3 parentModelID:(id)a4 modelClass:(Class)a5;
-- (id)fetchModelWithID:(id)a3;
+- (HMDCompositeSettingsHH2DatabaseAdapter)initWithAccessory:(id)accessory homeID:(id)d workingManagedObjectContext:(id)context queue:(id)queue notificationCenter:(id)center;
+- (id)_modelFromAccessory:(id)accessory;
+- (id)emptyModelWithID:(id)d parentModelID:(id)iD modelClass:(Class)class;
+- (id)fetchModelWithID:(id)d;
 - (id)logIdentifier;
 - (id)rawDatabase;
-- (void)_copySettingsFromModel:(id)a3 toAccessory:(id)a4;
-- (void)_handleAccessoryUpdateTransaction:(id)a3;
-- (void)_setDefaultVersionsOnModel:(id)a3;
-- (void)addModel:(id)a3 withOptionsLabel:(id)a4 completion:(id)a5;
-- (void)startWithDelegate:(id)a3;
+- (void)_copySettingsFromModel:(id)model toAccessory:(id)accessory;
+- (void)_handleAccessoryUpdateTransaction:(id)transaction;
+- (void)_setDefaultVersionsOnModel:(id)model;
+- (void)addModel:(id)model withOptionsLabel:(id)label completion:(id)completion;
+- (void)startWithDelegate:(id)delegate;
 @end
 
 @implementation HMDCompositeSettingsHH2DatabaseAdapter
@@ -31,341 +31,341 @@
 
 - (id)logIdentifier
 {
-  v2 = [(HMDCompositeSettingsHH2DatabaseAdapter *)self accessoryID];
-  v3 = [v2 UUIDString];
+  accessoryID = [(HMDCompositeSettingsHH2DatabaseAdapter *)self accessoryID];
+  uUIDString = [accessoryID UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
-- (void)_setDefaultVersionsOnModel:(id)a3
+- (void)_setDefaultVersionsOnModel:(id)model
 {
-  v4 = a3;
-  [v4 setRoot_siri_soundAlert_readVersion:@"7.1"];
-  [v4 setRoot_siri_soundAlert_writeVersion:@"7.1"];
-  [v4 setRoot_siri_lightWhenUsingSiri_readVersion:@"7.1"];
-  [v4 setRoot_siri_lightWhenUsingSiri_writeVersion:@"7.1"];
-  [v4 setRoot_siri_siriEnabled_readVersion:@"7.1"];
-  [v4 setRoot_siri_siriEnabled_writeVersion:@"7.1"];
-  [v4 setRoot_siri_language_readVersion:@"7.1"];
-  [v4 setRoot_siri_language_writeVersion:@"7.1"];
-  [v4 setRoot_home_dismissedHomePodHasNonMemberMediaAccountWarning_readVersion:@"7.1"];
-  [v4 setRoot_home_dismissedHomePodHasNonMemberMediaAccountWarning_writeVersion:@"7.1"];
-  [v4 setRoot_doorbellChime_enabled_readVersion:@"7.1"];
-  [v4 setRoot_doorbellChime_enabled_writeVersion:@"7.1"];
-  [v4 setRoot_announce_enabled_readVersion:@"7.1"];
-  [v4 setRoot_announce_enabled_writeVersion:@"7.1"];
-  [v4 setRoot_general_accessibility_vision_doubleTapSettings_timeoutSettings_timeoutInterval_readVersion:@"7.1"];
-  [v4 setRoot_general_accessibility_vision_doubleTapSettings_timeoutSettings_timeoutInterval_writeVersion:@"7.1"];
-  [v4 setRoot_general_accessibility_vision_voiceOver_enabled_readVersion:@"7.1"];
-  [v4 setRoot_general_accessibility_vision_voiceOver_enabled_writeVersion:@"7.1"];
-  [v4 setRoot_general_accessibility_vision_voiceOver_audioDuckingEnabled_readVersion:@"7.1"];
-  [v4 setRoot_general_accessibility_vision_voiceOver_audioDuckingEnabled_writeVersion:@"7.1"];
-  [v4 setRoot_general_accessibility_vision_speakingRateSection_speakingRate_readVersion:@"7.1"];
-  [v4 setRoot_general_accessibility_vision_speakingRateSection_speakingRate_writeVersion:@"7.1"];
-  [v4 setRoot_general_accessibility_interaction_holdDuration_enabled_readVersion:@"7.1"];
-  [v4 setRoot_general_accessibility_interaction_holdDuration_enabled_writeVersion:@"7.1"];
-  [v4 setRoot_general_accessibility_interaction_holdDuration_seconds_readVersion:@"7.1"];
-  [v4 setRoot_general_accessibility_interaction_holdDuration_seconds_writeVersion:@"7.1"];
-  [v4 setRoot_general_accessibility_interaction_touchAccommodations_enabled_readVersion:@"7.1"];
-  [v4 setRoot_general_accessibility_interaction_touchAccommodations_enabled_writeVersion:@"7.1"];
-  [v4 setRoot_general_accessibility_interaction_ignoreRepeat_enabled_readVersion:@"7.1"];
-  [v4 setRoot_general_accessibility_interaction_ignoreRepeat_enabled_writeVersion:@"7.1"];
-  [v4 setRoot_general_accessibility_interaction_ignoreRepeat_seconds_readVersion:@"7.1"];
-  [v4 setRoot_general_accessibility_interaction_ignoreRepeat_seconds_writeVersion:@"7.1"];
-  [v4 setRoot_general_analytics_shareSiriAnalytics_readVersion:@"7.1"];
-  [v4 setRoot_general_analytics_shareSiriAnalytics_writeVersion:@"9.0"];
-  [v4 setRoot_general_analytics_shareSpeakerAnalytics_readVersion:@"7.1"];
-  [v4 setRoot_general_analytics_shareSpeakerAnalytics_writeVersion:@"7.1"];
-  [v4 setRoot_airPlay_airPlayEnabled_readVersion:@"7.1"];
-  [v4 setRoot_airPlay_airPlayEnabled_writeVersion:@"7.1"];
-  [v4 setRoot_siriEndpoint_enabled_readVersion:@"7.1"];
-  [v4 setRoot_siriEndpoint_enabled_writeVersion:@"7.1"];
+  modelCopy = model;
+  [modelCopy setRoot_siri_soundAlert_readVersion:@"7.1"];
+  [modelCopy setRoot_siri_soundAlert_writeVersion:@"7.1"];
+  [modelCopy setRoot_siri_lightWhenUsingSiri_readVersion:@"7.1"];
+  [modelCopy setRoot_siri_lightWhenUsingSiri_writeVersion:@"7.1"];
+  [modelCopy setRoot_siri_siriEnabled_readVersion:@"7.1"];
+  [modelCopy setRoot_siri_siriEnabled_writeVersion:@"7.1"];
+  [modelCopy setRoot_siri_language_readVersion:@"7.1"];
+  [modelCopy setRoot_siri_language_writeVersion:@"7.1"];
+  [modelCopy setRoot_home_dismissedHomePodHasNonMemberMediaAccountWarning_readVersion:@"7.1"];
+  [modelCopy setRoot_home_dismissedHomePodHasNonMemberMediaAccountWarning_writeVersion:@"7.1"];
+  [modelCopy setRoot_doorbellChime_enabled_readVersion:@"7.1"];
+  [modelCopy setRoot_doorbellChime_enabled_writeVersion:@"7.1"];
+  [modelCopy setRoot_announce_enabled_readVersion:@"7.1"];
+  [modelCopy setRoot_announce_enabled_writeVersion:@"7.1"];
+  [modelCopy setRoot_general_accessibility_vision_doubleTapSettings_timeoutSettings_timeoutInterval_readVersion:@"7.1"];
+  [modelCopy setRoot_general_accessibility_vision_doubleTapSettings_timeoutSettings_timeoutInterval_writeVersion:@"7.1"];
+  [modelCopy setRoot_general_accessibility_vision_voiceOver_enabled_readVersion:@"7.1"];
+  [modelCopy setRoot_general_accessibility_vision_voiceOver_enabled_writeVersion:@"7.1"];
+  [modelCopy setRoot_general_accessibility_vision_voiceOver_audioDuckingEnabled_readVersion:@"7.1"];
+  [modelCopy setRoot_general_accessibility_vision_voiceOver_audioDuckingEnabled_writeVersion:@"7.1"];
+  [modelCopy setRoot_general_accessibility_vision_speakingRateSection_speakingRate_readVersion:@"7.1"];
+  [modelCopy setRoot_general_accessibility_vision_speakingRateSection_speakingRate_writeVersion:@"7.1"];
+  [modelCopy setRoot_general_accessibility_interaction_holdDuration_enabled_readVersion:@"7.1"];
+  [modelCopy setRoot_general_accessibility_interaction_holdDuration_enabled_writeVersion:@"7.1"];
+  [modelCopy setRoot_general_accessibility_interaction_holdDuration_seconds_readVersion:@"7.1"];
+  [modelCopy setRoot_general_accessibility_interaction_holdDuration_seconds_writeVersion:@"7.1"];
+  [modelCopy setRoot_general_accessibility_interaction_touchAccommodations_enabled_readVersion:@"7.1"];
+  [modelCopy setRoot_general_accessibility_interaction_touchAccommodations_enabled_writeVersion:@"7.1"];
+  [modelCopy setRoot_general_accessibility_interaction_ignoreRepeat_enabled_readVersion:@"7.1"];
+  [modelCopy setRoot_general_accessibility_interaction_ignoreRepeat_enabled_writeVersion:@"7.1"];
+  [modelCopy setRoot_general_accessibility_interaction_ignoreRepeat_seconds_readVersion:@"7.1"];
+  [modelCopy setRoot_general_accessibility_interaction_ignoreRepeat_seconds_writeVersion:@"7.1"];
+  [modelCopy setRoot_general_analytics_shareSiriAnalytics_readVersion:@"7.1"];
+  [modelCopy setRoot_general_analytics_shareSiriAnalytics_writeVersion:@"9.0"];
+  [modelCopy setRoot_general_analytics_shareSpeakerAnalytics_readVersion:@"7.1"];
+  [modelCopy setRoot_general_analytics_shareSpeakerAnalytics_writeVersion:@"7.1"];
+  [modelCopy setRoot_airPlay_airPlayEnabled_readVersion:@"7.1"];
+  [modelCopy setRoot_airPlay_airPlayEnabled_writeVersion:@"7.1"];
+  [modelCopy setRoot_siriEndpoint_enabled_readVersion:@"7.1"];
+  [modelCopy setRoot_siriEndpoint_enabled_writeVersion:@"7.1"];
   v3 = MEMORY[0x277CBEC28];
-  [v4 setRoot_music_allowExplicitContent_value:MEMORY[0x277CBEC28]];
-  [v4 setRoot_music_allowExplicitContent_readVersion:@"7.1"];
-  [v4 setRoot_music_allowExplicitContent_writeVersion:@"7.1"];
-  [v4 setRoot_locationServices_enabled_value:v3];
-  [v4 setRoot_locationServices_enabled_readVersion:@"7.1"];
-  [v4 setRoot_locationServices_enabled_writeVersion:@"7.1"];
+  [modelCopy setRoot_music_allowExplicitContent_value:MEMORY[0x277CBEC28]];
+  [modelCopy setRoot_music_allowExplicitContent_readVersion:@"7.1"];
+  [modelCopy setRoot_music_allowExplicitContent_writeVersion:@"7.1"];
+  [modelCopy setRoot_locationServices_enabled_value:v3];
+  [modelCopy setRoot_locationServices_enabled_readVersion:@"7.1"];
+  [modelCopy setRoot_locationServices_enabled_writeVersion:@"7.1"];
 }
 
-- (id)_modelFromAccessory:(id)a3
+- (id)_modelFromAccessory:(id)accessory
 {
-  v4 = a3;
+  accessoryCopy = accessory;
   v5 = [HMDCompositeSettingsAccessorySettingsModel alloc];
-  v6 = [v4 modelID];
-  v7 = [v4 modelID];
-  v8 = [(HMBModel *)v5 initWithModelID:v6 parentModelID:v7];
+  modelID = [accessoryCopy modelID];
+  modelID2 = [accessoryCopy modelID];
+  v8 = [(HMBModel *)v5 initWithModelID:modelID parentModelID:modelID2];
 
   [(HMDCompositeSettingsHH2DatabaseAdapter *)self _setDefaultVersionsOnModel:v8];
-  v9 = [v4 soundAlertEnabled];
-  [(HMDCompositeSettingsAccessorySettingsModel *)v8 setRoot_siri_soundAlert_value:v9];
+  soundAlertEnabled = [accessoryCopy soundAlertEnabled];
+  [(HMDCompositeSettingsAccessorySettingsModel *)v8 setRoot_siri_soundAlert_value:soundAlertEnabled];
 
-  v10 = [v4 lightWhenUsingSiriEnabled];
-  [(HMDCompositeSettingsAccessorySettingsModel *)v8 setRoot_siri_lightWhenUsingSiri_value:v10];
+  lightWhenUsingSiriEnabled = [accessoryCopy lightWhenUsingSiriEnabled];
+  [(HMDCompositeSettingsAccessorySettingsModel *)v8 setRoot_siri_lightWhenUsingSiri_value:lightWhenUsingSiriEnabled];
 
-  v11 = [v4 siriEnabled];
-  [(HMDCompositeSettingsAccessorySettingsModel *)v8 setRoot_siri_siriEnabled_value:v11];
+  siriEnabled = [accessoryCopy siriEnabled];
+  [(HMDCompositeSettingsAccessorySettingsModel *)v8 setRoot_siri_siriEnabled_value:siriEnabled];
 
-  v12 = [v4 siriLanguageCode];
-  [(HMDCompositeSettingsAccessorySettingsModel *)v8 setRoot_siri_language_inputLanguageCodeValueName:v12];
+  siriLanguageCode = [accessoryCopy siriLanguageCode];
+  [(HMDCompositeSettingsAccessorySettingsModel *)v8 setRoot_siri_language_inputLanguageCodeValueName:siriLanguageCode];
 
-  v13 = [v4 siriLanguageVoiceCode];
-  [(HMDCompositeSettingsAccessorySettingsModel *)v8 setRoot_siri_language_outputLanguageVoiceCodeValueName:v13];
+  siriLanguageVoiceCode = [accessoryCopy siriLanguageVoiceCode];
+  [(HMDCompositeSettingsAccessorySettingsModel *)v8 setRoot_siri_language_outputLanguageVoiceCodeValueName:siriLanguageVoiceCode];
 
-  v14 = [v4 siriLanguageVoiceGenderCode];
-  [(HMDCompositeSettingsAccessorySettingsModel *)v8 setRoot_siri_language_outputLanguageGenderCodeValueName:v14];
+  siriLanguageVoiceGenderCode = [accessoryCopy siriLanguageVoiceGenderCode];
+  [(HMDCompositeSettingsAccessorySettingsModel *)v8 setRoot_siri_language_outputLanguageGenderCodeValueName:siriLanguageVoiceGenderCode];
 
-  v15 = [v4 siriLanguageVoiceName];
-  [(HMDCompositeSettingsAccessorySettingsModel *)v8 setRoot_siri_language_voiceNameValueName:v15];
+  siriLanguageVoiceName = [accessoryCopy siriLanguageVoiceName];
+  [(HMDCompositeSettingsAccessorySettingsModel *)v8 setRoot_siri_language_voiceNameValueName:siriLanguageVoiceName];
 
-  v16 = [v4 hasDismissedHomePodHasNonMemberMediaAccountWarning];
-  [(HMDCompositeSettingsAccessorySettingsModel *)v8 setRoot_home_dismissedHomePodHasNonMemberMediaAccountWarning_value:v16];
+  hasDismissedHomePodHasNonMemberMediaAccountWarning = [accessoryCopy hasDismissedHomePodHasNonMemberMediaAccountWarning];
+  [(HMDCompositeSettingsAccessorySettingsModel *)v8 setRoot_home_dismissedHomePodHasNonMemberMediaAccountWarning_value:hasDismissedHomePodHasNonMemberMediaAccountWarning];
 
-  v17 = [v4 doorbellChimeEnabled];
-  [(HMDCompositeSettingsAccessorySettingsModel *)v8 setRoot_doorbellChime_enabled_value:v17];
+  doorbellChimeEnabled = [accessoryCopy doorbellChimeEnabled];
+  [(HMDCompositeSettingsAccessorySettingsModel *)v8 setRoot_doorbellChime_enabled_value:doorbellChimeEnabled];
 
-  v18 = [v4 announceEnabled];
-  [(HMDCompositeSettingsAccessorySettingsModel *)v8 setRoot_announce_enabled_value:v18];
+  announceEnabled = [accessoryCopy announceEnabled];
+  [(HMDCompositeSettingsAccessorySettingsModel *)v8 setRoot_announce_enabled_value:announceEnabled];
 
-  v19 = [v4 visionDoubleTapSettingsTimeoutInterval];
-  [(HMDCompositeSettingsAccessorySettingsModel *)v8 setRoot_general_accessibility_vision_doubleTapSettings_timeoutSettings_timeoutInterval_value:v19];
+  visionDoubleTapSettingsTimeoutInterval = [accessoryCopy visionDoubleTapSettingsTimeoutInterval];
+  [(HMDCompositeSettingsAccessorySettingsModel *)v8 setRoot_general_accessibility_vision_doubleTapSettings_timeoutSettings_timeoutInterval_value:visionDoubleTapSettingsTimeoutInterval];
 
-  v20 = [v4 visionVoiceOverEnabled];
-  [(HMDCompositeSettingsAccessorySettingsModel *)v8 setRoot_general_accessibility_vision_voiceOver_enabled_value:v20];
+  visionVoiceOverEnabled = [accessoryCopy visionVoiceOverEnabled];
+  [(HMDCompositeSettingsAccessorySettingsModel *)v8 setRoot_general_accessibility_vision_voiceOver_enabled_value:visionVoiceOverEnabled];
 
-  v21 = [v4 visionVoiceOverAudioDuckingEnabled];
-  [(HMDCompositeSettingsAccessorySettingsModel *)v8 setRoot_general_accessibility_vision_voiceOver_audioDuckingEnabled_value:v21];
+  visionVoiceOverAudioDuckingEnabled = [accessoryCopy visionVoiceOverAudioDuckingEnabled];
+  [(HMDCompositeSettingsAccessorySettingsModel *)v8 setRoot_general_accessibility_vision_voiceOver_audioDuckingEnabled_value:visionVoiceOverAudioDuckingEnabled];
 
-  v22 = [v4 visionSpeakingRate];
-  [(HMDCompositeSettingsAccessorySettingsModel *)v8 setRoot_general_accessibility_vision_speakingRateSection_speakingRate_value:v22];
+  visionSpeakingRate = [accessoryCopy visionSpeakingRate];
+  [(HMDCompositeSettingsAccessorySettingsModel *)v8 setRoot_general_accessibility_vision_speakingRateSection_speakingRate_value:visionSpeakingRate];
 
-  v23 = [v4 interactionHoldDurationEnabled];
-  [(HMDCompositeSettingsAccessorySettingsModel *)v8 setRoot_general_accessibility_interaction_holdDuration_enabled_value:v23];
+  interactionHoldDurationEnabled = [accessoryCopy interactionHoldDurationEnabled];
+  [(HMDCompositeSettingsAccessorySettingsModel *)v8 setRoot_general_accessibility_interaction_holdDuration_enabled_value:interactionHoldDurationEnabled];
 
-  v24 = [v4 interactionHoldDurationSeconds];
-  [(HMDCompositeSettingsAccessorySettingsModel *)v8 setRoot_general_accessibility_interaction_holdDuration_seconds_value:v24];
+  interactionHoldDurationSeconds = [accessoryCopy interactionHoldDurationSeconds];
+  [(HMDCompositeSettingsAccessorySettingsModel *)v8 setRoot_general_accessibility_interaction_holdDuration_seconds_value:interactionHoldDurationSeconds];
 
-  v25 = [v4 interactionTouchAccommodationsEnabled];
-  [(HMDCompositeSettingsAccessorySettingsModel *)v8 setRoot_general_accessibility_interaction_touchAccommodations_enabled_value:v25];
+  interactionTouchAccommodationsEnabled = [accessoryCopy interactionTouchAccommodationsEnabled];
+  [(HMDCompositeSettingsAccessorySettingsModel *)v8 setRoot_general_accessibility_interaction_touchAccommodations_enabled_value:interactionTouchAccommodationsEnabled];
 
-  v26 = [v4 interactionIgnoreRepeatEnabled];
-  [(HMDCompositeSettingsAccessorySettingsModel *)v8 setRoot_general_accessibility_interaction_ignoreRepeat_enabled_value:v26];
+  interactionIgnoreRepeatEnabled = [accessoryCopy interactionIgnoreRepeatEnabled];
+  [(HMDCompositeSettingsAccessorySettingsModel *)v8 setRoot_general_accessibility_interaction_ignoreRepeat_enabled_value:interactionIgnoreRepeatEnabled];
 
-  v27 = [v4 interactionIgnoreRepeatSeconds];
-  [(HMDCompositeSettingsAccessorySettingsModel *)v8 setRoot_general_accessibility_interaction_ignoreRepeat_seconds_value:v27];
+  interactionIgnoreRepeatSeconds = [accessoryCopy interactionIgnoreRepeatSeconds];
+  [(HMDCompositeSettingsAccessorySettingsModel *)v8 setRoot_general_accessibility_interaction_ignoreRepeat_seconds_value:interactionIgnoreRepeatSeconds];
 
-  v28 = [v4 shareSiriAnalytics];
-  [(HMDCompositeSettingsAccessorySettingsModel *)v8 setRoot_general_analytics_shareSiriAnalytics_value:v28];
+  shareSiriAnalytics = [accessoryCopy shareSiriAnalytics];
+  [(HMDCompositeSettingsAccessorySettingsModel *)v8 setRoot_general_analytics_shareSiriAnalytics_value:shareSiriAnalytics];
 
-  v29 = [v4 shareSpeakerAnalytics];
-  [(HMDCompositeSettingsAccessorySettingsModel *)v8 setRoot_general_analytics_shareSpeakerAnalytics_value:v29];
+  shareSpeakerAnalytics = [accessoryCopy shareSpeakerAnalytics];
+  [(HMDCompositeSettingsAccessorySettingsModel *)v8 setRoot_general_analytics_shareSpeakerAnalytics_value:shareSpeakerAnalytics];
 
-  v30 = [v4 airPlayEnabled];
-  [(HMDCompositeSettingsAccessorySettingsModel *)v8 setRoot_airPlay_airPlayEnabled_value:v30];
+  airPlayEnabled = [accessoryCopy airPlayEnabled];
+  [(HMDCompositeSettingsAccessorySettingsModel *)v8 setRoot_airPlay_airPlayEnabled_value:airPlayEnabled];
 
-  v31 = [v4 siriEndpointEnabled];
+  siriEndpointEnabled = [accessoryCopy siriEndpointEnabled];
 
-  [(HMDCompositeSettingsAccessorySettingsModel *)v8 setRoot_siriEndpoint_enabled_value:v31];
+  [(HMDCompositeSettingsAccessorySettingsModel *)v8 setRoot_siriEndpoint_enabled_value:siriEndpointEnabled];
 
   return v8;
 }
 
-- (void)_copySettingsFromModel:(id)a3 toAccessory:(id)a4
+- (void)_copySettingsFromModel:(id)model toAccessory:(id)accessory
 {
-  v52 = a3;
-  v5 = a4;
-  v6 = [v52 root_siri_soundAlert_value];
+  modelCopy = model;
+  accessoryCopy = accessory;
+  root_siri_soundAlert_value = [modelCopy root_siri_soundAlert_value];
 
-  if (v6)
+  if (root_siri_soundAlert_value)
   {
-    v7 = [v52 root_siri_soundAlert_value];
-    [v5 setSoundAlertEnabled:v7];
+    root_siri_soundAlert_value2 = [modelCopy root_siri_soundAlert_value];
+    [accessoryCopy setSoundAlertEnabled:root_siri_soundAlert_value2];
   }
 
-  v8 = [v52 root_siri_lightWhenUsingSiri_value];
+  root_siri_lightWhenUsingSiri_value = [modelCopy root_siri_lightWhenUsingSiri_value];
 
-  if (v8)
+  if (root_siri_lightWhenUsingSiri_value)
   {
-    v9 = [v52 root_siri_lightWhenUsingSiri_value];
-    [v5 setLightWhenUsingSiriEnabled:v9];
+    root_siri_lightWhenUsingSiri_value2 = [modelCopy root_siri_lightWhenUsingSiri_value];
+    [accessoryCopy setLightWhenUsingSiriEnabled:root_siri_lightWhenUsingSiri_value2];
   }
 
-  v10 = [v52 root_siri_siriEnabled_value];
+  root_siri_siriEnabled_value = [modelCopy root_siri_siriEnabled_value];
 
-  if (v10)
+  if (root_siri_siriEnabled_value)
   {
-    v11 = [v52 root_siri_siriEnabled_value];
-    [v5 setSiriEnabled:v11];
+    root_siri_siriEnabled_value2 = [modelCopy root_siri_siriEnabled_value];
+    [accessoryCopy setSiriEnabled:root_siri_siriEnabled_value2];
   }
 
-  v12 = [v52 root_siri_language_inputLanguageCodeValueName];
+  root_siri_language_inputLanguageCodeValueName = [modelCopy root_siri_language_inputLanguageCodeValueName];
 
-  if (v12)
+  if (root_siri_language_inputLanguageCodeValueName)
   {
-    v13 = [v52 root_siri_language_inputLanguageCodeValueName];
-    [v5 setSiriLanguageCode:v13];
+    root_siri_language_inputLanguageCodeValueName2 = [modelCopy root_siri_language_inputLanguageCodeValueName];
+    [accessoryCopy setSiriLanguageCode:root_siri_language_inputLanguageCodeValueName2];
   }
 
-  v14 = [v52 root_siri_language_outputLanguageVoiceCodeValueName];
+  root_siri_language_outputLanguageVoiceCodeValueName = [modelCopy root_siri_language_outputLanguageVoiceCodeValueName];
 
-  if (v14)
+  if (root_siri_language_outputLanguageVoiceCodeValueName)
   {
-    v15 = [v52 root_siri_language_outputLanguageVoiceCodeValueName];
-    [v5 setSiriLanguageVoiceCode:v15];
+    root_siri_language_outputLanguageVoiceCodeValueName2 = [modelCopy root_siri_language_outputLanguageVoiceCodeValueName];
+    [accessoryCopy setSiriLanguageVoiceCode:root_siri_language_outputLanguageVoiceCodeValueName2];
   }
 
-  v16 = [v52 root_siri_language_outputLanguageGenderCodeValueName];
+  root_siri_language_outputLanguageGenderCodeValueName = [modelCopy root_siri_language_outputLanguageGenderCodeValueName];
 
-  if (v16)
+  if (root_siri_language_outputLanguageGenderCodeValueName)
   {
-    v17 = [v52 root_siri_language_outputLanguageGenderCodeValueName];
-    [v5 setSiriLanguageVoiceGenderCode:v17];
+    root_siri_language_outputLanguageGenderCodeValueName2 = [modelCopy root_siri_language_outputLanguageGenderCodeValueName];
+    [accessoryCopy setSiriLanguageVoiceGenderCode:root_siri_language_outputLanguageGenderCodeValueName2];
   }
 
-  v18 = [v52 root_siri_language_voiceNameValueName];
+  root_siri_language_voiceNameValueName = [modelCopy root_siri_language_voiceNameValueName];
 
-  if (v18)
+  if (root_siri_language_voiceNameValueName)
   {
-    v19 = [v52 root_siri_language_voiceNameValueName];
-    [v5 setSiriLanguageVoiceName:v19];
+    root_siri_language_voiceNameValueName2 = [modelCopy root_siri_language_voiceNameValueName];
+    [accessoryCopy setSiriLanguageVoiceName:root_siri_language_voiceNameValueName2];
   }
 
-  v20 = [v52 root_home_dismissedHomePodHasNonMemberMediaAccountWarning_value];
+  root_home_dismissedHomePodHasNonMemberMediaAccountWarning_value = [modelCopy root_home_dismissedHomePodHasNonMemberMediaAccountWarning_value];
 
-  if (v20)
+  if (root_home_dismissedHomePodHasNonMemberMediaAccountWarning_value)
   {
-    v21 = [v52 root_home_dismissedHomePodHasNonMemberMediaAccountWarning_value];
-    [v5 setHasDismissedHomePodHasNonMemberMediaAccountWarning:v21];
+    root_home_dismissedHomePodHasNonMemberMediaAccountWarning_value2 = [modelCopy root_home_dismissedHomePodHasNonMemberMediaAccountWarning_value];
+    [accessoryCopy setHasDismissedHomePodHasNonMemberMediaAccountWarning:root_home_dismissedHomePodHasNonMemberMediaAccountWarning_value2];
   }
 
-  v22 = [v52 root_doorbellChime_enabled_value];
+  root_doorbellChime_enabled_value = [modelCopy root_doorbellChime_enabled_value];
 
-  if (v22)
+  if (root_doorbellChime_enabled_value)
   {
-    v23 = [v52 root_doorbellChime_enabled_value];
-    [v5 setDoorbellChimeEnabled:v23];
+    root_doorbellChime_enabled_value2 = [modelCopy root_doorbellChime_enabled_value];
+    [accessoryCopy setDoorbellChimeEnabled:root_doorbellChime_enabled_value2];
   }
 
-  v24 = [v52 root_announce_enabled_value];
+  root_announce_enabled_value = [modelCopy root_announce_enabled_value];
 
-  if (v24)
+  if (root_announce_enabled_value)
   {
-    v25 = [v52 root_announce_enabled_value];
-    [v5 setAnnounceEnabled:v25];
+    root_announce_enabled_value2 = [modelCopy root_announce_enabled_value];
+    [accessoryCopy setAnnounceEnabled:root_announce_enabled_value2];
   }
 
-  v26 = [v52 root_general_accessibility_vision_doubleTapSettings_timeoutSettings_timeoutInterval_value];
+  root_general_accessibility_vision_doubleTapSettings_timeoutSettings_timeoutInterval_value = [modelCopy root_general_accessibility_vision_doubleTapSettings_timeoutSettings_timeoutInterval_value];
 
-  if (v26)
+  if (root_general_accessibility_vision_doubleTapSettings_timeoutSettings_timeoutInterval_value)
   {
-    v27 = [v52 root_general_accessibility_vision_doubleTapSettings_timeoutSettings_timeoutInterval_value];
-    [v5 setVisionDoubleTapSettingsTimeoutInterval:v27];
+    root_general_accessibility_vision_doubleTapSettings_timeoutSettings_timeoutInterval_value2 = [modelCopy root_general_accessibility_vision_doubleTapSettings_timeoutSettings_timeoutInterval_value];
+    [accessoryCopy setVisionDoubleTapSettingsTimeoutInterval:root_general_accessibility_vision_doubleTapSettings_timeoutSettings_timeoutInterval_value2];
   }
 
-  v28 = [v52 root_general_accessibility_vision_voiceOver_enabled_value];
+  root_general_accessibility_vision_voiceOver_enabled_value = [modelCopy root_general_accessibility_vision_voiceOver_enabled_value];
 
-  if (v28)
+  if (root_general_accessibility_vision_voiceOver_enabled_value)
   {
-    v29 = [v52 root_general_accessibility_vision_voiceOver_enabled_value];
-    [v5 setVisionVoiceOverEnabled:v29];
+    root_general_accessibility_vision_voiceOver_enabled_value2 = [modelCopy root_general_accessibility_vision_voiceOver_enabled_value];
+    [accessoryCopy setVisionVoiceOverEnabled:root_general_accessibility_vision_voiceOver_enabled_value2];
   }
 
-  v30 = [v52 root_general_accessibility_vision_voiceOver_audioDuckingEnabled_value];
+  root_general_accessibility_vision_voiceOver_audioDuckingEnabled_value = [modelCopy root_general_accessibility_vision_voiceOver_audioDuckingEnabled_value];
 
-  if (v30)
+  if (root_general_accessibility_vision_voiceOver_audioDuckingEnabled_value)
   {
-    v31 = [v52 root_general_accessibility_vision_voiceOver_audioDuckingEnabled_value];
-    [v5 setVisionVoiceOverAudioDuckingEnabled:v31];
+    root_general_accessibility_vision_voiceOver_audioDuckingEnabled_value2 = [modelCopy root_general_accessibility_vision_voiceOver_audioDuckingEnabled_value];
+    [accessoryCopy setVisionVoiceOverAudioDuckingEnabled:root_general_accessibility_vision_voiceOver_audioDuckingEnabled_value2];
   }
 
-  v32 = [v52 root_general_accessibility_vision_speakingRateSection_speakingRate_value];
+  root_general_accessibility_vision_speakingRateSection_speakingRate_value = [modelCopy root_general_accessibility_vision_speakingRateSection_speakingRate_value];
 
-  if (v32)
+  if (root_general_accessibility_vision_speakingRateSection_speakingRate_value)
   {
-    v33 = [v52 root_general_accessibility_vision_speakingRateSection_speakingRate_value];
-    [v5 setVisionSpeakingRate:v33];
+    root_general_accessibility_vision_speakingRateSection_speakingRate_value2 = [modelCopy root_general_accessibility_vision_speakingRateSection_speakingRate_value];
+    [accessoryCopy setVisionSpeakingRate:root_general_accessibility_vision_speakingRateSection_speakingRate_value2];
   }
 
-  v34 = [v52 root_general_accessibility_interaction_holdDuration_enabled_value];
+  root_general_accessibility_interaction_holdDuration_enabled_value = [modelCopy root_general_accessibility_interaction_holdDuration_enabled_value];
 
-  if (v34)
+  if (root_general_accessibility_interaction_holdDuration_enabled_value)
   {
-    v35 = [v52 root_general_accessibility_interaction_holdDuration_enabled_value];
-    [v5 setInteractionHoldDurationEnabled:v35];
+    root_general_accessibility_interaction_holdDuration_enabled_value2 = [modelCopy root_general_accessibility_interaction_holdDuration_enabled_value];
+    [accessoryCopy setInteractionHoldDurationEnabled:root_general_accessibility_interaction_holdDuration_enabled_value2];
   }
 
-  v36 = [v52 root_general_accessibility_interaction_holdDuration_seconds_value];
+  root_general_accessibility_interaction_holdDuration_seconds_value = [modelCopy root_general_accessibility_interaction_holdDuration_seconds_value];
 
-  if (v36)
+  if (root_general_accessibility_interaction_holdDuration_seconds_value)
   {
-    v37 = [v52 root_general_accessibility_interaction_holdDuration_seconds_value];
-    [v5 setInteractionHoldDurationSeconds:v37];
+    root_general_accessibility_interaction_holdDuration_seconds_value2 = [modelCopy root_general_accessibility_interaction_holdDuration_seconds_value];
+    [accessoryCopy setInteractionHoldDurationSeconds:root_general_accessibility_interaction_holdDuration_seconds_value2];
   }
 
-  v38 = [v52 root_general_accessibility_interaction_touchAccommodations_enabled_value];
+  root_general_accessibility_interaction_touchAccommodations_enabled_value = [modelCopy root_general_accessibility_interaction_touchAccommodations_enabled_value];
 
-  if (v38)
+  if (root_general_accessibility_interaction_touchAccommodations_enabled_value)
   {
-    v39 = [v52 root_general_accessibility_interaction_touchAccommodations_enabled_value];
-    [v5 setInteractionTouchAccommodationsEnabled:v39];
+    root_general_accessibility_interaction_touchAccommodations_enabled_value2 = [modelCopy root_general_accessibility_interaction_touchAccommodations_enabled_value];
+    [accessoryCopy setInteractionTouchAccommodationsEnabled:root_general_accessibility_interaction_touchAccommodations_enabled_value2];
   }
 
-  v40 = [v52 root_general_accessibility_interaction_ignoreRepeat_enabled_value];
+  root_general_accessibility_interaction_ignoreRepeat_enabled_value = [modelCopy root_general_accessibility_interaction_ignoreRepeat_enabled_value];
 
-  if (v40)
+  if (root_general_accessibility_interaction_ignoreRepeat_enabled_value)
   {
-    v41 = [v52 root_general_accessibility_interaction_ignoreRepeat_enabled_value];
-    [v5 setInteractionIgnoreRepeatEnabled:v41];
+    root_general_accessibility_interaction_ignoreRepeat_enabled_value2 = [modelCopy root_general_accessibility_interaction_ignoreRepeat_enabled_value];
+    [accessoryCopy setInteractionIgnoreRepeatEnabled:root_general_accessibility_interaction_ignoreRepeat_enabled_value2];
   }
 
-  v42 = [v52 root_general_accessibility_interaction_ignoreRepeat_seconds_value];
+  root_general_accessibility_interaction_ignoreRepeat_seconds_value = [modelCopy root_general_accessibility_interaction_ignoreRepeat_seconds_value];
 
-  if (v42)
+  if (root_general_accessibility_interaction_ignoreRepeat_seconds_value)
   {
-    v43 = [v52 root_general_accessibility_interaction_ignoreRepeat_seconds_value];
-    [v5 setInteractionIgnoreRepeatSeconds:v43];
+    root_general_accessibility_interaction_ignoreRepeat_seconds_value2 = [modelCopy root_general_accessibility_interaction_ignoreRepeat_seconds_value];
+    [accessoryCopy setInteractionIgnoreRepeatSeconds:root_general_accessibility_interaction_ignoreRepeat_seconds_value2];
   }
 
-  v44 = [v52 root_general_analytics_shareSiriAnalytics_value];
+  root_general_analytics_shareSiriAnalytics_value = [modelCopy root_general_analytics_shareSiriAnalytics_value];
 
-  if (v44)
+  if (root_general_analytics_shareSiriAnalytics_value)
   {
-    v45 = [v52 root_general_analytics_shareSiriAnalytics_value];
-    [v5 setShareSiriAnalytics:v45];
+    root_general_analytics_shareSiriAnalytics_value2 = [modelCopy root_general_analytics_shareSiriAnalytics_value];
+    [accessoryCopy setShareSiriAnalytics:root_general_analytics_shareSiriAnalytics_value2];
   }
 
-  v46 = [v52 root_general_analytics_shareSpeakerAnalytics_value];
+  root_general_analytics_shareSpeakerAnalytics_value = [modelCopy root_general_analytics_shareSpeakerAnalytics_value];
 
-  if (v46)
+  if (root_general_analytics_shareSpeakerAnalytics_value)
   {
-    v47 = [v52 root_general_analytics_shareSpeakerAnalytics_value];
-    [v5 setShareSpeakerAnalytics:v47];
+    root_general_analytics_shareSpeakerAnalytics_value2 = [modelCopy root_general_analytics_shareSpeakerAnalytics_value];
+    [accessoryCopy setShareSpeakerAnalytics:root_general_analytics_shareSpeakerAnalytics_value2];
   }
 
-  v48 = [v52 root_airPlay_airPlayEnabled_value];
+  root_airPlay_airPlayEnabled_value = [modelCopy root_airPlay_airPlayEnabled_value];
 
-  if (v48)
+  if (root_airPlay_airPlayEnabled_value)
   {
-    v49 = [v52 root_airPlay_airPlayEnabled_value];
-    [v5 setAirPlayEnabled:v49];
+    root_airPlay_airPlayEnabled_value2 = [modelCopy root_airPlay_airPlayEnabled_value];
+    [accessoryCopy setAirPlayEnabled:root_airPlay_airPlayEnabled_value2];
   }
 
-  v50 = [v52 root_siriEndpoint_enabled_value];
+  root_siriEndpoint_enabled_value = [modelCopy root_siriEndpoint_enabled_value];
 
-  if (v50)
+  if (root_siriEndpoint_enabled_value)
   {
-    v51 = [v52 root_siriEndpoint_enabled_value];
-    [v5 setSiriEndpointEnabled:v51];
+    root_siriEndpoint_enabled_value2 = [modelCopy root_siriEndpoint_enabled_value];
+    [accessoryCopy setSiriEndpointEnabled:root_siriEndpoint_enabled_value2];
   }
 }
 
-- (void)_handleAccessoryUpdateTransaction:(id)a3
+- (void)_handleAccessoryUpdateTransaction:(id)transaction
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  transactionCopy = transaction;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -376,8 +376,8 @@
   }
 
   objc_autoreleasePoolPop(v5);
-  v9 = [v4 userInfo];
-  v10 = [v9 valueForKey:@"HMDHAPAccessoryUpdateTransactionTriggeredKey"];
+  userInfo = [transactionCopy userInfo];
+  v10 = [userInfo valueForKey:@"HMDHAPAccessoryUpdateTransactionTriggeredKey"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -394,20 +394,20 @@
 
   if (v12)
   {
-    v13 = [(HMDCompositeSettingsHH2DatabaseAdapter *)v6 queue];
+    queue = [(HMDCompositeSettingsHH2DatabaseAdapter *)selfCopy queue];
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __76__HMDCompositeSettingsHH2DatabaseAdapter__handleAccessoryUpdateTransaction___block_invoke;
     v19[3] = &unk_27868A750;
-    v19[4] = v6;
+    v19[4] = selfCopy;
     v20 = v12;
-    dispatch_async(v13, v19);
+    dispatch_async(queue, v19);
   }
 
   else
   {
     v14 = objc_autoreleasePoolPush();
-    v15 = v6;
+    v15 = selfCopy;
     v16 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_FAULT))
     {
@@ -415,7 +415,7 @@
       *buf = 138543618;
       v22 = v17;
       v23 = 2112;
-      v24 = v4;
+      v24 = transactionCopy;
       _os_log_impl(&dword_229538000, v16, OS_LOG_TYPE_FAULT, "%{public}@Received accessory update transaction that was nil or an invalid type: %@", buf, 0x16u);
     }
 
@@ -632,11 +632,11 @@ void __76__HMDCompositeSettingsHH2DatabaseAdapter__handleAccessoryUpdateTransact
   [v52 database:*(a1 + 32) didProcessUpdateForModel:v53];
 }
 
-- (id)emptyModelWithID:(id)a3 parentModelID:(id)a4 modelClass:(Class)a5
+- (id)emptyModelWithID:(id)d parentModelID:(id)iD modelClass:(Class)class
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [[a5 alloc] initWithModelID:v7 parentModelID:v8];
+  dCopy = d;
+  iDCopy = iD;
+  v9 = [[class alloc] initWithModelID:dCopy parentModelID:iDCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -682,13 +682,13 @@ LABEL_13:
   return v12;
 }
 
-- (void)addModel:(id)a3 withOptionsLabel:(id)a4 completion:(id)a5
+- (void)addModel:(id)model withOptionsLabel:(id)label completion:(id)completion
 {
   v31 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v8;
+  modelCopy = model;
+  labelCopy = label;
+  completionCopy = completion;
+  v11 = modelCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -703,7 +703,7 @@ LABEL_13:
   v13 = v12;
 
   v14 = objc_autoreleasePoolPush();
-  v15 = self;
+  selfCopy = self;
   v16 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
   {
@@ -711,28 +711,28 @@ LABEL_13:
     *buf = 138543618;
     v28 = v17;
     v29 = 2112;
-    v30 = v9;
+    v30 = labelCopy;
     _os_log_impl(&dword_229538000, v16, OS_LOG_TYPE_INFO, "%{public}@Attempting add model via database adapter with options label: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v14);
   if (v13)
   {
-    v18 = [(HMDCompositeSettingsHH2DatabaseAdapter *)v15 context];
+    context = [(HMDCompositeSettingsHH2DatabaseAdapter *)selfCopy context];
     v24[0] = MEMORY[0x277D85DD0];
     v24[1] = 3221225472;
     v24[2] = __79__HMDCompositeSettingsHH2DatabaseAdapter_addModel_withOptionsLabel_completion___block_invoke;
     v24[3] = &unk_278689F98;
-    v24[4] = v15;
+    v24[4] = selfCopy;
     v25 = v13;
-    v26 = v10;
-    [v18 performBlock:v24];
+    v26 = completionCopy;
+    [context performBlock:v24];
   }
 
   else
   {
     v19 = objc_autoreleasePoolPush();
-    v20 = v15;
+    v20 = selfCopy;
     v21 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
@@ -833,10 +833,10 @@ LABEL_12:
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (id)fetchModelWithID:(id)a3
+- (id)fetchModelWithID:(id)d
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
@@ -844,7 +844,7 @@ LABEL_12:
   v22 = __Block_byref_object_dispose__43811;
   v23 = 0;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -852,21 +852,21 @@ LABEL_12:
     *buf = 138543618;
     v25 = v8;
     v26 = 2112;
-    v27 = v4;
+    v27 = dCopy;
     _os_log_impl(&dword_229538000, v7, OS_LOG_TYPE_DEBUG, "%{public}@Fetching model with id %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
-  v9 = [(HMDCompositeSettingsHH2DatabaseAdapter *)v6 context];
+  context = [(HMDCompositeSettingsHH2DatabaseAdapter *)selfCopy context];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __59__HMDCompositeSettingsHH2DatabaseAdapter_fetchModelWithID___block_invoke;
   v14[3] = &unk_27868A4D8;
-  v10 = v4;
+  v10 = dCopy;
   v15 = v10;
-  v16 = v6;
+  v16 = selfCopy;
   v17 = &v18;
-  [v9 unsafeSynchronousBlock:v14];
+  [context unsafeSynchronousBlock:v14];
 
   v11 = v19[5];
   _Block_object_dispose(&v18, 8);
@@ -910,18 +910,18 @@ void __59__HMDCompositeSettingsHH2DatabaseAdapter_fetchModelWithID___block_invok
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startWithDelegate:(id)a3
+- (void)startWithDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(HMDCompositeSettingsHH2DatabaseAdapter *)self queue];
+  delegateCopy = delegate;
+  queue = [(HMDCompositeSettingsHH2DatabaseAdapter *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __60__HMDCompositeSettingsHH2DatabaseAdapter_startWithDelegate___block_invoke;
   v7[3] = &unk_27868A750;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = delegateCopy;
+  v6 = delegateCopy;
+  dispatch_async(queue, v7);
 }
 
 uint64_t __60__HMDCompositeSettingsHH2DatabaseAdapter_startWithDelegate___block_invoke(uint64_t a1)
@@ -945,13 +945,13 @@ uint64_t __60__HMDCompositeSettingsHH2DatabaseAdapter_startWithDelegate___block_
   return result;
 }
 
-- (HMDCompositeSettingsHH2DatabaseAdapter)initWithAccessory:(id)a3 homeID:(id)a4 workingManagedObjectContext:(id)a5 queue:(id)a6 notificationCenter:(id)a7
+- (HMDCompositeSettingsHH2DatabaseAdapter)initWithAccessory:(id)accessory homeID:(id)d workingManagedObjectContext:(id)context queue:(id)queue notificationCenter:(id)center
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  accessoryCopy = accessory;
+  dCopy = d;
+  contextCopy = context;
+  queueCopy = queue;
+  centerCopy = center;
   v23.receiver = self;
   v23.super_class = HMDCompositeSettingsHH2DatabaseAdapter;
   v17 = [(HMDCompositeSettingsHH2DatabaseAdapter *)&v23 init];
@@ -962,14 +962,14 @@ uint64_t __60__HMDCompositeSettingsHH2DatabaseAdapter_startWithDelegate___block_
     v17->_strongRawDatabase = @"db";
 
     objc_storeWeak(&v18->_rawDatabase, v18->_strongRawDatabase);
-    v20 = [v12 uuid];
+    uuid = [accessoryCopy uuid];
     accessoryID = v18->_accessoryID;
-    v18->_accessoryID = v20;
+    v18->_accessoryID = uuid;
 
-    objc_storeStrong(&v18->_homeID, a4);
-    objc_storeStrong(&v18->_context, a5);
-    objc_storeStrong(&v18->_queue, a6);
-    [v16 addObserver:v18 selector:sel__handleAccessoryUpdateTransaction_ name:@"HMDHAPAccessoryUpdateTransactionTriggered" object:v12];
+    objc_storeStrong(&v18->_homeID, d);
+    objc_storeStrong(&v18->_context, context);
+    objc_storeStrong(&v18->_queue, queue);
+    [centerCopy addObserver:v18 selector:sel__handleAccessoryUpdateTransaction_ name:@"HMDHAPAccessoryUpdateTransactionTriggered" object:accessoryCopy];
   }
 
   return v18;

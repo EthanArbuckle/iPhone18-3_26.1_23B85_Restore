@@ -1,6 +1,6 @@
 @interface PluginNotificationRouter
 - (_TtC18HealthExperienceUI24PluginNotificationRouter)init;
-- (void)userNotificationCenter:(id)a3 openSettingsForNotification:(id)a4;
+- (void)userNotificationCenter:(id)center openSettingsForNotification:(id)notification;
 @end
 
 @implementation PluginNotificationRouter
@@ -19,15 +19,15 @@
   return v4;
 }
 
-- (void)userNotificationCenter:(id)a3 openSettingsForNotification:(id)a4
+- (void)userNotificationCenter:(id)center openSettingsForNotification:(id)notification
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v11.is_nil = v8;
-  v9 = v8;
-  v11.value.super.isa = a4;
-  PluginNotificationRouter.userNotificationCenter(_:openSettingsFor:)(v6, v11);
+  centerCopy = center;
+  notificationCopy = notification;
+  selfCopy = self;
+  v11.is_nil = selfCopy;
+  v9 = selfCopy;
+  v11.value.super.isa = notification;
+  PluginNotificationRouter.userNotificationCenter(_:openSettingsFor:)(centerCopy, v11);
 }
 
 @end

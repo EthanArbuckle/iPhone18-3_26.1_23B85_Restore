@@ -1,16 +1,16 @@
 @interface SettingsModelProvider
 - (_TtC15HealthBalanceUI21SettingsModelProvider)init;
-- (void)featureStatusProviding:(id)a3 didUpdateFeatureStatus:(id)a4;
+- (void)featureStatusProviding:(id)providing didUpdateFeatureStatus:(id)status;
 @end
 
 @implementation SettingsModelProvider
 
-- (void)featureStatusProviding:(id)a3 didUpdateFeatureStatus:(id)a4
+- (void)featureStatusProviding:(id)providing didUpdateFeatureStatus:(id)status
 {
   swift_unknownObjectRetain();
-  v6 = a4;
-  v7 = self;
-  sub_1CFE62744(v6, v7, sub_1CFE629F8);
+  statusCopy = status;
+  selfCopy = self;
+  sub_1CFE62744(statusCopy, selfCopy, sub_1CFE629F8);
   swift_unknownObjectRelease();
 }
 

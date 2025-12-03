@@ -1,8 +1,8 @@
 @interface HDMCWidgetSchedulingManager
 - (_TtC27HealthMenstrualCyclesDaemon27HDMCWidgetSchedulingManager)init;
 - (void)dealloc;
-- (void)didUpdateAnalysis:(id)a3;
-- (void)profileDidBecomeReady:(id)a3;
+- (void)didUpdateAnalysis:(id)analysis;
+- (void)profileDidBecomeReady:(id)ready;
 @end
 
 @implementation HDMCWidgetSchedulingManager
@@ -10,32 +10,32 @@
 - (void)dealloc
 {
   ObjectType = swift_getObjectType();
-  v4 = self;
+  selfCopy = self;
   v5 = sub_22944609C();
   if (v5)
   {
     v6 = v5;
-    v7 = [v5 _bridging_analysisProviding];
+    _bridging_analysisProviding = [v5 _bridging_analysisProviding];
 
-    if (v7)
+    if (_bridging_analysisProviding)
     {
-      v8 = v4;
-      [v7 unregisterObserver_];
+      v8 = selfCopy;
+      [_bridging_analysisProviding unregisterObserver_];
 
       swift_unknownObjectRelease();
     }
   }
 
-  v9.receiver = v4;
+  v9.receiver = selfCopy;
   v9.super_class = ObjectType;
   [(HDMCWidgetSchedulingManager *)&v9 dealloc];
 }
 
-- (void)profileDidBecomeReady:(id)a3
+- (void)profileDidBecomeReady:(id)ready
 {
-  v4 = a3;
-  v5 = self;
-  HDMCWidgetSchedulingManager.profileDidBecomeReady(_:)(v4);
+  readyCopy = ready;
+  selfCopy = self;
+  HDMCWidgetSchedulingManager.profileDidBecomeReady(_:)(readyCopy);
 }
 
 - (_TtC27HealthMenstrualCyclesDaemon27HDMCWidgetSchedulingManager)init
@@ -45,11 +45,11 @@
   return result;
 }
 
-- (void)didUpdateAnalysis:(id)a3
+- (void)didUpdateAnalysis:(id)analysis
 {
-  v4 = a3;
-  v5 = self;
-  HDMCWidgetSchedulingManager.didUpdate(_:)(v4);
+  analysisCopy = analysis;
+  selfCopy = self;
+  HDMCWidgetSchedulingManager.didUpdate(_:)(analysisCopy);
 }
 
 @end

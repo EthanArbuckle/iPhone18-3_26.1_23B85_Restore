@@ -1,28 +1,28 @@
 @interface PXMenuGenerator
 + (id)photosConfiguration;
-+ (void)insertImageMenuWithBuilder:(id)a3 afterMenuForIdentifier:(id)a4 options:(unint64_t)a5;
++ (void)insertImageMenuWithBuilder:(id)builder afterMenuForIdentifier:(id)identifier options:(unint64_t)options;
 @end
 
 @implementation PXMenuGenerator
 
-+ (void)insertImageMenuWithBuilder:(id)a3 afterMenuForIdentifier:(id)a4 options:(unint64_t)a5
++ (void)insertImageMenuWithBuilder:(id)builder afterMenuForIdentifier:(id)identifier options:(unint64_t)options
 {
-  v118 = a5;
+  optionsCopy = options;
   v129[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 menuForIdentifier:@"com.apple.photos.menu.image"];
+  builderCopy = builder;
+  identifierCopy = identifier;
+  v8 = [builderCopy menuForIdentifier:@"com.apple.photos.menu.image"];
   if (!v8)
   {
     v9 = MEMORY[0x1E69DCC60];
     v10 = PXLocalizedStringFromTable(@"MENU_TITLE_IMAGE", @"PhotosUICore");
     v8 = [v9 menuWithTitle:v10 image:0 identifier:@"com.apple.photos.menu.image" options:1 children:MEMORY[0x1E695E0F0]];
 
-    [v6 insertSiblingMenu:v8 afterMenuForIdentifier:v7];
+    [builderCopy insertSiblingMenu:v8 afterMenuForIdentifier:identifierCopy];
   }
 
   v120 = v8;
-  v121 = v7;
+  v121 = identifierCopy;
   v11 = MEMORY[0x1E69DCC60];
   v12 = MEMORY[0x1E69DC8B0];
   v13 = PXLocalizedStringFromTable(@"PXAdjustDateAndTimeActionName", @"PhotosUICore");
@@ -36,7 +36,7 @@
   v129[1] = v19;
   v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v129 count:2];
   v21 = [v11 menuWithTitle:&stru_1F1741150 image:0 identifier:0 options:1 children:v20];
-  [v6 insertChildMenu:v21 atEndOfMenuForIdentifier:@"com.apple.photos.menu.image"];
+  [builderCopy insertChildMenu:v21 atEndOfMenuForIdentifier:@"com.apple.photos.menu.image"];
 
   v104 = MEMORY[0x1E69DCC60];
   v22 = MEMORY[0x1E69DCBA0];
@@ -54,8 +54,8 @@
   v27 = [MEMORY[0x1E69DCAB8] _systemImageNamed:@"wand.and.sparkles.inverse"];
   v28 = [v25 commandWithTitle:v26 image:v27 action:sel_autoEnhanceAssets_ input:@"e" modifierFlags:0x100000 propertyList:0];
   v128[2] = v28;
-  v29 = v6;
-  v122 = v6;
+  v29 = builderCopy;
+  v122 = builderCopy;
   v30 = MEMORY[0x1E69DCBA0];
   v31 = PXLocalizedStringFromTable(@"MENU_ITEM_TITLE_OPEN_EDITOR", @"PhotosUICore");
   v32 = [MEMORY[0x1E69DCAB8] _systemImageNamed:@"slider.horizontal.3"];
@@ -111,7 +111,7 @@
   [v122 insertChildMenu:v62 atEndOfMenuForIdentifier:@"com.apple.photos.menu.image"];
 
   v63 = [MEMORY[0x1E695DF70] arrayWithCapacity:5];
-  if ((v118 & 1) == 0)
+  if ((optionsCopy & 1) == 0)
   {
     v64 = MEMORY[0x1E69DCBA0];
     v65 = PXLocalizedStringFromTable(@"MENU_ITEM_TITLE_OPEN_VIEWER", @"PhotosUICore");
@@ -120,7 +120,7 @@
     [v63 addObject:v67];
   }
 
-  if ((v118 & 2) == 0)
+  if ((optionsCopy & 2) == 0)
   {
     v68 = MEMORY[0x1E69DCBA0];
     v69 = PXLocalizedStringFromTable(@"PLAY_ASSET_SHORTCUT", @"PhotosUICore");
@@ -129,7 +129,7 @@
     [v63 addObject:v71];
   }
 
-  if ((v118 & 4) == 0)
+  if ((optionsCopy & 4) == 0)
   {
     v72 = MEMORY[0x1E69DCBA0];
     v73 = PXLocalizedStringFromTable(@"MAKE_KEY_PHOTO_SHORTCUT", @"PhotosUICore");
@@ -143,7 +143,7 @@
   [v122 insertChildMenu:v76 atEndOfMenuForIdentifier:@"com.apple.photos.menu.image"];
 
   v77 = [MEMORY[0x1E695DF70] arrayWithCapacity:5];
-  if ((v118 & 8) == 0)
+  if ((optionsCopy & 8) == 0)
   {
     v78 = MEMORY[0x1E69DCBA0];
     v79 = PXLocalizedStringFromTable(@"MERGE_DUPLICATES_SHORTCUT", @"PhotosUICore");
@@ -189,8 +189,8 @@
 {
   v2 = objc_alloc_init(MEMORY[0x1E69DCC58]);
   [v2 setFindingPreference:2];
-  v3 = [v2 findingConfiguration];
-  [v3 setStyle:1];
+  findingConfiguration = [v2 findingConfiguration];
+  [findingConfiguration setStyle:1];
 
   [v2 setNewScenePreference:1];
   [v2 setDocumentPreference:1];

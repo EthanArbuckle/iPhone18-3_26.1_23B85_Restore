@@ -1,11 +1,11 @@
 @interface TSTimeConverter
 - (TSTimeConverter)init;
-- (TSTimeConverter)initWithContentsOfURL:(id)a3;
-- (TSTimeConverter)initWithTAIUTCArray:(id)a3;
-- (double)leapSecondForTAIDate:(id)a3;
-- (double)leapSecondForUTCDate:(id)a3;
-- (id)taiDateFromUTCDate:(id)a3;
-- (id)utcDateFromTAIDate:(id)a3;
+- (TSTimeConverter)initWithContentsOfURL:(id)l;
+- (TSTimeConverter)initWithTAIUTCArray:(id)array;
+- (double)leapSecondForTAIDate:(id)date;
+- (double)leapSecondForUTCDate:(id)date;
+- (id)taiDateFromUTCDate:(id)date;
+- (id)utcDateFromTAIDate:(id)date;
 @end
 
 @implementation TSTimeConverter
@@ -13,24 +13,24 @@
 - (TSTimeConverter)init
 {
   v3 = [NSBundle bundleForClass:objc_opt_class()];
-  v4 = [v3 resourceURL];
-  v5 = [v4 URLByAppendingPathComponent:@"tai_utc_history.plist"];
+  resourceURL = [v3 resourceURL];
+  v5 = [resourceURL URLByAppendingPathComponent:@"tai_utc_history.plist"];
 
   v6 = [(TSTimeConverter *)self initWithContentsOfURL:v5];
   return v6;
 }
 
-- (TSTimeConverter)initWithTAIUTCArray:(id)a3
+- (TSTimeConverter)initWithTAIUTCArray:(id)array
 {
-  v4 = a3;
+  arrayCopy = array;
   v9.receiver = self;
   v9.super_class = TSTimeConverter;
   v5 = [(TSTimeConverter *)&v9 init];
   if (v5)
   {
-    if ([v4 count])
+    if ([arrayCopy count])
     {
-      v6 = [v4 copy];
+      v6 = [arrayCopy copy];
       taiutc = v5->_taiutc;
       v5->_taiutc = v6;
     }
@@ -45,11 +45,11 @@
   return v5;
 }
 
-- (TSTimeConverter)initWithContentsOfURL:(id)a3
+- (TSTimeConverter)initWithContentsOfURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v5 = +[NSMutableArray array];
-  v6 = [NSArray arrayWithContentsOfURL:v4];
+  v6 = [NSArray arrayWithContentsOfURL:lCopy];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -90,27 +90,27 @@
   return v12;
 }
 
-- (id)taiDateFromUTCDate:(id)a3
+- (id)taiDateFromUTCDate:(id)date
 {
-  v4 = a3;
-  [(TSTimeConverter *)self leapSecondForUTCDate:v4];
-  v5 = [v4 dateByAddingTimeInterval:?];
+  dateCopy = date;
+  [(TSTimeConverter *)self leapSecondForUTCDate:dateCopy];
+  v5 = [dateCopy dateByAddingTimeInterval:?];
 
   return v5;
 }
 
-- (id)utcDateFromTAIDate:(id)a3
+- (id)utcDateFromTAIDate:(id)date
 {
-  v4 = a3;
-  [(TSTimeConverter *)self leapSecondForTAIDate:v4];
-  v6 = [v4 dateByAddingTimeInterval:-v5];
+  dateCopy = date;
+  [(TSTimeConverter *)self leapSecondForTAIDate:dateCopy];
+  v6 = [dateCopy dateByAddingTimeInterval:-v5];
 
   return v6;
 }
 
-- (double)leapSecondForUTCDate:(id)a3
+- (double)leapSecondForUTCDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v5 = [(NSArray *)self->_taiutc count];
   if (v5)
   {
@@ -119,8 +119,8 @@
     while (1)
     {
       v8 = [(NSArray *)self->_taiutc objectAtIndexedSubscript:v7];
-      v9 = [v8 utcDate];
-      [v4 timeIntervalSinceDate:v9];
+      utcDate = [v8 utcDate];
+      [dateCopy timeIntervalSinceDate:utcDate];
       v11 = v10;
 
       if (v11 >= 0.0)
@@ -148,8 +148,8 @@
 
     else
     {
-      v18 = [v16 utcDate];
-      [v4 timeIntervalSinceDate:v18];
+      utcDate2 = [v16 utcDate];
+      [dateCopy timeIntervalSinceDate:utcDate2];
       v20 = v19 / 86400.0;
       v21 = [(NSArray *)self->_taiutc objectAtIndexedSubscript:v7];
       v22 = (v20 + [v21 modifiedJulianDay]);
@@ -174,9 +174,9 @@ LABEL_5:
   return v12;
 }
 
-- (double)leapSecondForTAIDate:(id)a3
+- (double)leapSecondForTAIDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v5 = [(NSArray *)self->_taiutc count];
   if (v5)
   {
@@ -185,8 +185,8 @@ LABEL_5:
     while (1)
     {
       v8 = [(NSArray *)self->_taiutc objectAtIndexedSubscript:v7];
-      v9 = [v8 taiDate];
-      [v4 timeIntervalSinceDate:v9];
+      taiDate = [v8 taiDate];
+      [dateCopy timeIntervalSinceDate:taiDate];
       v11 = v10;
 
       if (v11 >= 0.0)
@@ -214,8 +214,8 @@ LABEL_5:
 
     else
     {
-      v18 = [v16 taiDate];
-      [v4 timeIntervalSinceDate:v18];
+      taiDate2 = [v16 taiDate];
+      [dateCopy timeIntervalSinceDate:taiDate2];
       v20 = v19 / 86400.0;
       v21 = [(NSArray *)self->_taiutc objectAtIndexedSubscript:v7];
       v22 = (v20 + [v21 modifiedJulianDay]);
@@ -229,10 +229,10 @@ LABEL_5:
       [v28 coefficient];
       v30 = v29;
 
-      v17 = [v4 dateByAddingTimeInterval:-(v25 + v27 * v30)];
+      v17 = [dateCopy dateByAddingTimeInterval:-(v25 + v27 * v30)];
       v31 = [(NSArray *)self->_taiutc objectAtIndexedSubscript:v7];
-      v32 = [v31 utcDate];
-      [v17 timeIntervalSinceDate:v32];
+      utcDate = [v31 utcDate];
+      [v17 timeIntervalSinceDate:utcDate];
       v34 = v33 / 86400.0;
       v35 = [(NSArray *)self->_taiutc objectAtIndexedSubscript:v7];
       v36 = (v34 + [v35 modifiedJulianDay]);

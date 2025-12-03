@@ -1,9 +1,9 @@
 @interface HMDHomeNFCReaderKeyModel
-+ (id)defaultModelForHome:(id)a3;
-+ (id)modelIDForHome:(id)a3;
++ (id)defaultModelForHome:(id)home;
++ (id)modelIDForHome:(id)home;
 + (id)properties;
 - (HMDHomeNFCReaderKey)nfcReaderKey;
-- (void)setNfcReaderKey:(id)a3;
+- (void)setNfcReaderKey:(id)key;
 @end
 
 @implementation HMDHomeNFCReaderKeyModel
@@ -11,11 +11,11 @@
 - (HMDHomeNFCReaderKey)nfcReaderKey
 {
   v19 = *MEMORY[0x277D85DE8];
-  v2 = [(HMDHomeNFCReaderKeyModel *)self encodedNfcReaderKey];
-  if (v2)
+  encodedNfcReaderKey = [(HMDHomeNFCReaderKeyModel *)self encodedNfcReaderKey];
+  if (encodedNfcReaderKey)
   {
     v12 = 0;
-    v3 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:objc_opt_class() fromData:v2 error:&v12];
+    v3 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:objc_opt_class() fromData:encodedNfcReaderKey error:&v12];
     v4 = v12;
     v5 = v4;
     if (v3)
@@ -38,7 +38,7 @@
         *buf = 138543874;
         v14 = v9;
         v15 = 2112;
-        v16 = v2;
+        v16 = encodedNfcReaderKey;
         v17 = 2112;
         v18 = v5;
         _os_log_impl(&dword_2531F8000, v8, OS_LOG_TYPE_ERROR, "%{public}@Failed to decode nfc reader key set on model %@:%@", buf, 0x20u);
@@ -58,12 +58,12 @@
   return v3;
 }
 
-- (void)setNfcReaderKey:(id)a3
+- (void)setNfcReaderKey:(id)key
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  keyCopy = key;
   v12 = 0;
-  v5 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v4 requiringSecureCoding:1 error:&v12];
+  v5 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:keyCopy requiringSecureCoding:1 error:&v12];
   v6 = v12;
   if (v5)
   {
@@ -73,7 +73,7 @@
   else
   {
     v7 = objc_autoreleasePoolPush();
-    v8 = self;
+    selfCopy = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
@@ -81,7 +81,7 @@
       *buf = 138543874;
       v14 = v10;
       v15 = 2112;
-      v16 = v4;
+      v16 = keyCopy;
       v17 = 2112;
       v18 = v6;
       _os_log_impl(&dword_2531F8000, v9, OS_LOG_TYPE_ERROR, "%{public}@Failed to set encoded nfc reader key on model %@:%@", buf, 0x20u);
@@ -93,26 +93,26 @@
   v11 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)defaultModelForHome:(id)a3
++ (id)defaultModelForHome:(id)home
 {
-  v4 = a3;
+  homeCopy = home;
   v5 = [HMDHomeNFCReaderKeyModel alloc];
-  v6 = [a1 modelIDForHome:v4];
-  v7 = [v4 uuid];
+  v6 = [self modelIDForHome:homeCopy];
+  uuid = [homeCopy uuid];
 
-  v8 = [(HMDBackingStoreModelObject *)v5 initWithObjectChangeType:1 uuid:v6 parentUUID:v7];
+  v8 = [(HMDBackingStoreModelObject *)v5 initWithObjectChangeType:1 uuid:v6 parentUUID:uuid];
 
   return v8;
 }
 
-+ (id)modelIDForHome:(id)a3
++ (id)modelIDForHome:(id)home
 {
-  v3 = a3;
+  homeCopy = home;
   v4 = [@"HMDHomeNFCReaderKeyModel" dataUsingEncoding:4];
   v5 = MEMORY[0x277CCAD78];
-  v6 = [v3 uuid];
+  uuid = [homeCopy uuid];
 
-  v7 = [v5 hmf_UUIDWithNamespace:v6 data:v4];
+  v7 = [v5 hmf_UUIDWithNamespace:uuid data:v4];
 
   return v7;
 }

@@ -1,7 +1,7 @@
 @interface UIAccessibilityInformationLoader
 + (id)sharedInstance;
 - (id)_init;
-- (void)_loadAccessibilityInformationOnMainThread:(BOOL)a3;
+- (void)_loadAccessibilityInformationOnMainThread:(BOOL)thread;
 - (void)_setNeedsLoadAccessibilityInformationOnMainThread;
 - (void)loadAccessibilityInformation;
 - (void)setNeedsLoadAccessibilityInformation;
@@ -73,9 +73,9 @@ uint64_t __50__UIAccessibilityInformationLoader_sharedInstance__block_invoke()
   }
 }
 
-- (void)_loadAccessibilityInformationOnMainThread:(BOOL)a3
+- (void)_loadAccessibilityInformationOnMainThread:(BOOL)thread
 {
-  v3 = a3;
+  threadCopy = thread;
   v61 = *MEMORY[0x1E69E9840];
   if (AXShouldLogValidationErrors())
   {
@@ -83,20 +83,20 @@ uint64_t __50__UIAccessibilityInformationLoader_sharedInstance__block_invoke()
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
       *buf = 67109120;
-      *&buf[4] = v3;
+      *&buf[4] = threadCopy;
       _os_log_impl(&dword_1A9B83000, v4, OS_LOG_TYPE_INFO, "loading ax info. wasCoalesced: %i", buf, 8u);
     }
   }
 
-  v40 = [MEMORY[0x1E69DC668] sharedApplication];
-  [v40 _accessibilityLoadAccessibilityInformation];
-  v39 = [v40 safeValueForKey:@"delegate"];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  [mEMORY[0x1E69DC668] _accessibilityLoadAccessibilityInformation];
+  v39 = [mEMORY[0x1E69DC668] safeValueForKey:@"delegate"];
   if (objc_opt_respondsToSelector())
   {
     [v39 _accessibilityLoadAccessibilityInformation];
   }
 
-  [v40 _accessibilityRegisterForDictationLifecycleNotifications];
+  [mEMORY[0x1E69DC668] _accessibilityRegisterForDictationLifecycleNotifications];
   *buf = 0;
   v56 = buf;
   v57 = 0x3032000000;
@@ -132,9 +132,9 @@ uint64_t __50__UIAccessibilityInformationLoader_sharedInstance__block_invoke()
         goto LABEL_69;
       }
 
-      v11 = [v9 lastObject];
+      lastObject = [v9 lastObject];
       [v9 removeLastObject];
-      if (([v7 containsObject:v11] & 1) == 0)
+      if (([v7 containsObject:lastObject] & 1) == 0)
       {
         break;
       }
@@ -142,15 +142,15 @@ uint64_t __50__UIAccessibilityInformationLoader_sharedInstance__block_invoke()
 LABEL_67:
     }
 
-    [v7 addObject:v11];
-    [v11 _accessibilityLoadAccessibilityInformation];
+    [v7 addObject:lastObject];
+    [lastObject _accessibilityLoadAccessibilityInformation];
     if (AXShouldLogValidationErrors())
     {
       v12 = AXLogLoading();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
       {
         *v53 = v38;
-        v54 = v11;
+        v54 = lastObject;
         _os_log_impl(&dword_1A9B83000, v12, OS_LOG_TYPE_DEBUG, "loading ax info on %@", v53, 0xCu);
       }
     }
@@ -159,8 +159,8 @@ LABEL_67:
     v44 = 0u;
     v41 = 0u;
     v42 = 0u;
-    v13 = [v11 _accessibilityLoadAccessibilityInformationSupplementaryItems];
-    v14 = [v13 countByEnumeratingWithState:&v41 objects:v52 count:16];
+    _accessibilityLoadAccessibilityInformationSupplementaryItems = [lastObject _accessibilityLoadAccessibilityInformationSupplementaryItems];
+    v14 = [_accessibilityLoadAccessibilityInformationSupplementaryItems countByEnumeratingWithState:&v41 objects:v52 count:16];
     if (v14)
     {
       v15 = *v42;
@@ -170,7 +170,7 @@ LABEL_67:
         {
           if (*v42 != v15)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(_accessibilityLoadAccessibilityInformationSupplementaryItems);
           }
 
           v17 = *(*(&v41 + 1) + 8 * i);
@@ -180,52 +180,52 @@ LABEL_67:
           }
         }
 
-        v14 = [v13 countByEnumeratingWithState:&v41 objects:v52 count:16];
+        v14 = [_accessibilityLoadAccessibilityInformationSupplementaryItems countByEnumeratingWithState:&v41 objects:v52 count:16];
       }
 
       while (v14);
     }
 
     v18 = objc_opt_class();
-    if (_AXStrictIsKindOfClass(v11, v18))
+    if (_AXStrictIsKindOfClass(lastObject, v18))
     {
-      v19 = [v11 rootViewController];
-      if (v19)
+      rootViewController = [lastObject rootViewController];
+      if (rootViewController)
       {
-        [v9 addObject:v19];
+        [v9 addObject:rootViewController];
       }
     }
 
     v20 = objc_opt_class();
-    if (_AXStrictIsKindOfClass(v11, v20))
+    if (_AXStrictIsKindOfClass(lastObject, v20))
     {
-      v21 = [MEMORY[0x1E69DD258] viewControllerForView:v11];
+      v21 = [MEMORY[0x1E69DD258] viewControllerForView:lastObject];
       if (v21)
       {
         [v9 addObject:v21];
       }
 
-      v22 = [v11 safeValueForKey:@"subviews"];
+      v22 = [lastObject safeValueForKey:@"subviews"];
       if (v22)
       {
         [v9 addObjectsFromArray:v22];
       }
 
       v23 = objc_opt_class();
-      if (_AXStrictIsKindOfClass(v11, v23))
+      if (_AXStrictIsKindOfClass(lastObject, v23))
       {
-        v24 = [v11 delegate];
-        v25 = v24;
-        if (v24 && ([v24 isProxy] & 1) == 0)
+        delegate = [lastObject delegate];
+        v25 = delegate;
+        if (delegate && ([delegate isProxy] & 1) == 0)
         {
           [v9 addObject:v25];
         }
       }
 
       v26 = objc_opt_class();
-      if (_AXStrictIsKindOfClass(v11, v26))
+      if (_AXStrictIsKindOfClass(lastObject, v26))
       {
-        v27 = [v11 safeValueForKey:@"items"];
+        v27 = [lastObject safeValueForKey:@"items"];
         if (v27)
         {
           [v9 addObjectsFromArray:v27];
@@ -236,11 +236,11 @@ LABEL_67:
     else
     {
       v28 = objc_opt_class();
-      if (_AXStrictIsKindOfClass(v11, v28))
+      if (_AXStrictIsKindOfClass(lastObject, v28))
       {
         v53[0] = 0;
         objc_opt_class();
-        v29 = [v11 safeValueForKey:@"_leftBarButtonItems"];
+        v29 = [lastObject safeValueForKey:@"_leftBarButtonItems"];
         v21 = __UIAccessibilityCastAsClass();
 
         if (v53[0] == 1)
@@ -255,7 +255,7 @@ LABEL_67:
 
         v53[0] = 0;
         objc_opt_class();
-        v30 = [v11 safeValueForKey:@"_rightBarButtonItems"];
+        v30 = [lastObject safeValueForKey:@"_rightBarButtonItems"];
         v22 = __UIAccessibilityCastAsClass();
 
         if (v53[0] == 1)
@@ -273,33 +273,33 @@ LABEL_70:
       else
       {
         v31 = objc_opt_class();
-        if (!_AXStrictIsKindOfClass(v11, v31))
+        if (!_AXStrictIsKindOfClass(lastObject, v31))
         {
           goto LABEL_67;
         }
 
-        v21 = [v11 safeValueForKey:@"presentedViewController"];
+        v21 = [lastObject safeValueForKey:@"presentedViewController"];
         if (v21)
         {
           [v9 addObject:v21];
         }
 
         v32 = objc_opt_class();
-        if (_AXStrictIsKindOfClass(v11, v32))
+        if (_AXStrictIsKindOfClass(lastObject, v32))
         {
-          v33 = [v11 safeValueForKey:@"navigationBar"];
+          v33 = [lastObject safeValueForKey:@"navigationBar"];
           if (v33)
           {
             [v9 addObject:v33];
           }
 
-          v34 = [v11 safeValueForKey:@"toolbar"];
+          v34 = [lastObject safeValueForKey:@"toolbar"];
           if (v34)
           {
             [v9 addObject:v34];
           }
 
-          v35 = [v11 safeValueForKey:@"viewControllers"];
+          v35 = [lastObject safeValueForKey:@"viewControllers"];
           if (v35)
           {
             [v9 addObjectsFromArray:v35];
@@ -307,16 +307,16 @@ LABEL_70:
         }
 
         v36 = objc_opt_class();
-        if (_AXStrictIsKindOfClass(v11, v36))
+        if (_AXStrictIsKindOfClass(lastObject, v36))
         {
-          v37 = [v11 safeValueForKeyPath:@"_panelImpl.panelController"];
+          v37 = [lastObject safeValueForKeyPath:@"_panelImpl.panelController"];
           if (v37)
           {
             [v9 addObject:v37];
           }
         }
 
-        v22 = [v11 safeValueForKey:@"childViewControllers"];
+        v22 = [lastObject safeValueForKey:@"childViewControllers"];
         if (!v22)
         {
           goto LABEL_66;

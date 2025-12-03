@@ -1,7 +1,7 @@
 @interface SCATModernMenuGesturePanSheet
 - (SCATMenuPanItemsViewDelegate)delegate;
 - (id)makeMenuItemsIfNeeded;
-- (void)menuItemWasActivated:(id)a3;
+- (void)menuItemWasActivated:(id)activated;
 @end
 
 @implementation SCATModernMenuGesturePanSheet
@@ -28,40 +28,40 @@
   return v3;
 }
 
-- (void)menuItemWasActivated:(id)a3
+- (void)menuItemWasActivated:(id)activated
 {
-  v4 = a3;
-  v5 = [v4 identifier];
-  if ([v5 isEqualToString:@"gestures_panLeft"])
+  activatedCopy = activated;
+  identifier = [activatedCopy identifier];
+  if ([identifier isEqualToString:@"gestures_panLeft"])
   {
-    v6 = [(SCATModernMenuGesturePanSheet *)self delegate];
-    [v6 didChoosePanLeft:self];
+    delegate = [(SCATModernMenuGesturePanSheet *)self delegate];
+    [delegate didChoosePanLeft:self];
   }
 
-  else if ([v5 isEqualToString:@"gestures_panRight"])
+  else if ([identifier isEqualToString:@"gestures_panRight"])
   {
-    v6 = [(SCATModernMenuGesturePanSheet *)self delegate];
-    [v6 didChoosePanRight:self];
+    delegate = [(SCATModernMenuGesturePanSheet *)self delegate];
+    [delegate didChoosePanRight:self];
   }
 
-  else if ([v5 isEqualToString:@"gestures_panUp"])
+  else if ([identifier isEqualToString:@"gestures_panUp"])
   {
-    v6 = [(SCATModernMenuGesturePanSheet *)self delegate];
-    [v6 didChoosePanUp:self];
+    delegate = [(SCATModernMenuGesturePanSheet *)self delegate];
+    [delegate didChoosePanUp:self];
   }
 
   else
   {
-    if (![v5 isEqualToString:@"gestures_panDown"])
+    if (![identifier isEqualToString:@"gestures_panDown"])
     {
       v7.receiver = self;
       v7.super_class = SCATModernMenuGesturePanSheet;
-      [(SCATModernMenuSheet *)&v7 menuItemWasActivated:v4];
+      [(SCATModernMenuSheet *)&v7 menuItemWasActivated:activatedCopy];
       goto LABEL_10;
     }
 
-    v6 = [(SCATModernMenuGesturePanSheet *)self delegate];
-    [v6 didChoosePanDown:self];
+    delegate = [(SCATModernMenuGesturePanSheet *)self delegate];
+    [delegate didChoosePanDown:self];
   }
 
 LABEL_10:

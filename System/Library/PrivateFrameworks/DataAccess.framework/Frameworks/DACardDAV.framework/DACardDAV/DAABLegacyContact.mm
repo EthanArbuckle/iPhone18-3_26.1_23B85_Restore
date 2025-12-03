@@ -1,5 +1,5 @@
 @interface DAABLegacyContact
-- (DAABLegacyContact)initWithABPerson:(void *)a3;
+- (DAABLegacyContact)initWithABPerson:(void *)person;
 - (id)asContact;
 - (id)eTag;
 - (id)externalIdentifier;
@@ -7,22 +7,22 @@
 - (int)legacyIdentifier;
 - (void)dealloc;
 - (void)markForDeletion;
-- (void)setETag:(id)a3;
-- (void)setExternalIdentifier:(id)a3;
-- (void)setExternalUUID:(id)a3;
-- (void)updateSaveRequest:(id)a3;
+- (void)setETag:(id)tag;
+- (void)setExternalIdentifier:(id)identifier;
+- (void)setExternalUUID:(id)d;
+- (void)updateSaveRequest:(id)request;
 @end
 
 @implementation DAABLegacyContact
 
-- (DAABLegacyContact)initWithABPerson:(void *)a3
+- (DAABLegacyContact)initWithABPerson:(void *)person
 {
   v6.receiver = self;
   v6.super_class = DAABLegacyContact;
   v4 = [(DAABLegacyContact *)&v6 init];
   if (v4)
   {
-    v4->_person = CFRetain(a3);
+    v4->_person = CFRetain(person);
   }
 
   return v4;
@@ -38,68 +38,68 @@
 
 - (int)legacyIdentifier
 {
-  v2 = [(DAABLegacyContact *)self person];
+  person = [(DAABLegacyContact *)self person];
 
-  return ABRecordGetRecordID(v2);
+  return ABRecordGetRecordID(person);
 }
 
 - (id)eTag
 {
-  v2 = [(DAABLegacyContact *)self person];
-  v3 = ABRecordCopyValue(v2, *MEMORY[0x277CE9898]);
+  person = [(DAABLegacyContact *)self person];
+  v3 = ABRecordCopyValue(person, *MEMORY[0x277CE9898]);
 
   return v3;
 }
 
-- (void)setETag:(id)a3
+- (void)setETag:(id)tag
 {
-  value = a3;
-  v4 = [(DAABLegacyContact *)self person];
-  ABRecordSetValue(v4, *MEMORY[0x277CE9898], value, 0);
+  value = tag;
+  person = [(DAABLegacyContact *)self person];
+  ABRecordSetValue(person, *MEMORY[0x277CE9898], value, 0);
 }
 
 - (id)externalUUID
 {
-  v2 = [(DAABLegacyContact *)self person];
-  v3 = ABRecordCopyValue(v2, *MEMORY[0x277CE98A8]);
+  person = [(DAABLegacyContact *)self person];
+  v3 = ABRecordCopyValue(person, *MEMORY[0x277CE98A8]);
 
   return v3;
 }
 
-- (void)setExternalUUID:(id)a3
+- (void)setExternalUUID:(id)d
 {
-  value = a3;
-  v4 = [(DAABLegacyContact *)self person];
-  ABRecordSetValue(v4, *MEMORY[0x277CE98A8], value, 0);
+  value = d;
+  person = [(DAABLegacyContact *)self person];
+  ABRecordSetValue(person, *MEMORY[0x277CE98A8], value, 0);
 }
 
 - (id)externalIdentifier
 {
-  v2 = [(DAABLegacyContact *)self person];
-  v3 = ABRecordCopyValue(v2, *MEMORY[0x277CE9890]);
+  person = [(DAABLegacyContact *)self person];
+  v3 = ABRecordCopyValue(person, *MEMORY[0x277CE9890]);
 
   return v3;
 }
 
-- (void)setExternalIdentifier:(id)a3
+- (void)setExternalIdentifier:(id)identifier
 {
-  value = a3;
-  v4 = [(DAABLegacyContact *)self person];
-  ABRecordSetValue(v4, *MEMORY[0x277CE9890], value, 0);
+  value = identifier;
+  person = [(DAABLegacyContact *)self person];
+  ABRecordSetValue(person, *MEMORY[0x277CE9890], value, 0);
 }
 
 - (void)markForDeletion
 {
   [(DAABLegacyContact *)self person];
   AddressBook = ABRecordGetAddressBook();
-  v4 = [(DAABLegacyContact *)self person];
+  person = [(DAABLegacyContact *)self person];
 
-  ABAddressBookRemoveRecord(AddressBook, v4, 0);
+  ABAddressBookRemoveRecord(AddressBook, person, 0);
 }
 
-- (void)updateSaveRequest:(id)a3
+- (void)updateSaveRequest:(id)request
 {
-  v3 = a3;
+  requestCopy = request;
   v4 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE658] reason:@"DAABLegacyContact cannot update CNSaveRequest" userInfo:0];
   objc_exception_throw(v4);
 }

@@ -1,36 +1,36 @@
 @interface WFToolKitProcessedValueParameterState
-- (BOOL)isEqual:(id)a3;
-- (WFToolKitProcessedValueParameterState)initWithProcessedValue:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (WFToolKitProcessedValueParameterState)initWithProcessedValue:(id)value;
 - (unint64_t)hash;
-- (void)processWithContext:(id)a3 userInputRequiredHandler:(id)a4 valueHandler:(id)a5;
+- (void)processWithContext:(id)context userInputRequiredHandler:(id)handler valueHandler:(id)valueHandler;
 @end
 
 @implementation WFToolKitProcessedValueParameterState
 
-- (void)processWithContext:(id)a3 userInputRequiredHandler:(id)a4 valueHandler:(id)a5
+- (void)processWithContext:(id)context userInputRequiredHandler:(id)handler valueHandler:(id)valueHandler
 {
-  v7 = a5;
-  v8 = [(WFToolKitProcessedValueParameterState *)self processedValue];
-  (*(a5 + 2))(v7, v8, 0);
+  valueHandlerCopy = valueHandler;
+  processedValue = [(WFToolKitProcessedValueParameterState *)self processedValue];
+  (*(valueHandler + 2))(valueHandlerCopy, processedValue, 0);
 }
 
 - (unint64_t)hash
 {
-  v2 = [(WFToolKitProcessedValueParameterState *)self processedValue];
-  v3 = [v2 hash];
+  processedValue = [(WFToolKitProcessedValueParameterState *)self processedValue];
+  v3 = [processedValue hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4)
+  equalCopy = equal;
+  if (equalCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -45,11 +45,11 @@
   }
 
   v6 = v5;
-  v7 = [(WFToolKitProcessedValueParameterState *)self processedValue];
-  v8 = [v6 processedValue];
+  processedValue = [(WFToolKitProcessedValueParameterState *)self processedValue];
+  processedValue2 = [v6 processedValue];
 
-  v9 = v7;
-  v10 = v8;
+  v9 = processedValue;
+  v10 = processedValue2;
   v11 = v10;
   if (v9 == v10)
   {
@@ -68,16 +68,16 @@
   return v12;
 }
 
-- (WFToolKitProcessedValueParameterState)initWithProcessedValue:(id)a3
+- (WFToolKitProcessedValueParameterState)initWithProcessedValue:(id)value
 {
-  v5 = a3;
+  valueCopy = value;
   v10.receiver = self;
   v10.super_class = WFToolKitProcessedValueParameterState;
   v6 = [(WFToolKitProcessedValueParameterState *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_processedValue, a3);
+    objc_storeStrong(&v6->_processedValue, value);
     v8 = v7;
   }
 

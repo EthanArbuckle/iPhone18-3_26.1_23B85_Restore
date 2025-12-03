@@ -1,21 +1,21 @@
 @interface PXPhotoKitMoveToSharedLibraryActionPerformer
-+ (BOOL)_canPerformWithHasSharedLibraryOrPreview:(BOOL)a3 isExitingSharedLibrary:(BOOL)a4 collectionAllowsMoveToSharedLibrary:(BOOL)a5 isUnsavedSyndicatedAsset:(BOOL)a6 canMoveAssetsToSharedLibrary:(BOOL)a7;
-+ (BOOL)canPerformOnAsset:(id)a3 inAssetCollection:(id)a4 person:(id)a5 socialGroup:(id)a6;
-+ (id)createBarButtonItemWithTarget:(id)a3 action:(SEL)a4 actionManager:(id)a5;
-+ (id)createPreviewActionWithTitle:(id)a3 image:(id)a4 handler:(id)a5;
-- (void)_checkMoveToSharedLibraryConfirmationForAssets:(id)a3;
-- (void)_moveAssetsToSharedLibraryWithCompletionHandler:(id)a3;
++ (BOOL)_canPerformWithHasSharedLibraryOrPreview:(BOOL)preview isExitingSharedLibrary:(BOOL)library collectionAllowsMoveToSharedLibrary:(BOOL)sharedLibrary isUnsavedSyndicatedAsset:(BOOL)asset canMoveAssetsToSharedLibrary:(BOOL)toSharedLibrary;
++ (BOOL)canPerformOnAsset:(id)asset inAssetCollection:(id)collection person:(id)person socialGroup:(id)group;
++ (id)createBarButtonItemWithTarget:(id)target action:(SEL)action actionManager:(id)manager;
++ (id)createPreviewActionWithTitle:(id)title image:(id)image handler:(id)handler;
+- (void)_checkMoveToSharedLibraryConfirmationForAssets:(id)assets;
+- (void)_moveAssetsToSharedLibraryWithCompletionHandler:(id)handler;
 - (void)_performAdditionalUserInteractionTasks;
-- (void)_presentFailureWithError:(id)a3 completionHandler:(id)a4;
+- (void)_presentFailureWithError:(id)error completionHandler:(id)handler;
 - (void)performBackgroundTask;
 - (void)performUserInteractionTask;
 @end
 
 @implementation PXPhotoKitMoveToSharedLibraryActionPerformer
 
-- (void)_presentFailureWithError:(id)a3 completionHandler:(id)a4
+- (void)_presentFailureWithError:(id)error completionHandler:(id)handler
 {
-  v5 = a3;
+  errorCopy = error;
   v6 = PXLocalizedSharedLibraryString(@"PXSharedLibraryMoveToSharedLibraryFailureAlertTitle");
   v7 = PXLocalizedSharedLibraryString(@"PXSharedLibraryGenericFailureAlertMessage");
   v8 = PXLocalizedStringFromTable(@"PXOK", @"PhotosUICore");
@@ -26,7 +26,7 @@
   v16[2] = __91__PXPhotoKitMoveToSharedLibraryActionPerformer__presentFailureWithError_completionHandler___block_invoke;
   v16[3] = &unk_1E774A2C8;
   v16[4] = self;
-  v11 = v5;
+  v11 = errorCopy;
   v17 = v11;
   v12 = [v10 actionWithTitle:v8 style:0 handler:v16];
   [v9 addAction:v12];
@@ -45,12 +45,12 @@
   }
 }
 
-- (void)_moveAssetsToSharedLibraryWithCompletionHandler:(id)a3
+- (void)_moveAssetsToSharedLibraryWithCompletionHandler:(id)handler
 {
-  if (!a3)
+  if (!handler)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"PXPhotoKitMoveToSharedLibraryActionPerformer.m" lineNumber:183 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotoKitMoveToSharedLibraryActionPerformer.m" lineNumber:183 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
   }
 
   v5 = PLSharedLibraryGetLog();
@@ -63,8 +63,8 @@
   v6 = self->_assetsToProcess;
   if (![(NSArray *)v6 count])
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"PXPhotoKitMoveToSharedLibraryActionPerformer.m" lineNumber:186 description:{@"Invalid parameter not satisfying: %@", @"assets.count"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXPhotoKitMoveToSharedLibraryActionPerformer.m" lineNumber:186 description:{@"Invalid parameter not satisfying: %@", @"assets.count"}];
   }
 
   PXLocalizedSharedLibraryString(@"PXSharedLibraryMoveToSharedLibraryToastTitle");
@@ -91,14 +91,14 @@ void __96__PXPhotoKitMoveToSharedLibraryActionPerformer__moveAssetsToSharedLibra
 - (void)_performAdditionalUserInteractionTasks
 {
   objc_initWeak(&location, self);
-  v3 = [(PXPhotoKitAssetActionPerformer *)self assets];
-  v4 = [(PXActionPerformer *)self presentationEnvironment];
+  assets = [(PXPhotoKitAssetActionPerformer *)self assets];
+  presentationEnvironment = [(PXActionPerformer *)self presentationEnvironment];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __86__PXPhotoKitMoveToSharedLibraryActionPerformer__performAdditionalUserInteractionTasks__block_invoke;
   v5[3] = &unk_1E77482C8;
   objc_copyWeak(&v6, &location);
-  PXPromptToSaveUnsavedSyndicatedAssetsIfNecessary(v3, v4, v5);
+  PXPromptToSaveUnsavedSyndicatedAssetsIfNecessary(assets, presentationEnvironment, v5);
 
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
@@ -122,15 +122,15 @@ void __86__PXPhotoKitMoveToSharedLibraryActionPerformer__performAdditionalUserIn
   }
 }
 
-- (void)_checkMoveToSharedLibraryConfirmationForAssets:(id)a3
+- (void)_checkMoveToSharedLibraryConfirmationForAssets:(id)assets
 {
-  v5 = a3;
+  assetsCopy = assets;
   if (PXSharedLibraryShouldDisplayMoveToSharedLibraryConfirmation())
   {
-    PXSharedLibraryGetMoveToSharedLibraryConfirmationTitleAndMessage(v5);
+    PXSharedLibraryGetMoveToSharedLibraryConfirmationTitleAndMessage(assetsCopy);
   }
 
-  objc_storeStrong(&self->_assetsToProcess, a3);
+  objc_storeStrong(&self->_assetsToProcess, assets);
   [(PXActionPerformer *)self completeUserInteractionTaskWithSuccess:1 error:0];
 }
 
@@ -196,13 +196,13 @@ void __74__PXPhotoKitMoveToSharedLibraryActionPerformer_performUserInteractionTa
   [v1 completeUserInteractionTaskWithSuccess:0 error:v2];
 }
 
-+ (id)createBarButtonItemWithTarget:(id)a3 action:(SEL)a4 actionManager:(id)a5
++ (id)createBarButtonItemWithTarget:(id)target action:(SEL)action actionManager:(id)manager
 {
-  v7 = a3;
-  v8 = [a5 selectionManager];
-  v9 = [v8 selectionSnapshot];
-  v10 = [v9 allItemsEnumerator];
-  v11 = _PXSharedLibraryFetchAssetsFromAssets(v10, 0, 0, 0);
+  targetCopy = target;
+  selectionManager = [manager selectionManager];
+  selectionSnapshot = [selectionManager selectionSnapshot];
+  allItemsEnumerator = [selectionSnapshot allItemsEnumerator];
+  v11 = _PXSharedLibraryFetchAssetsFromAssets(allItemsEnumerator, 0, 0, 0);
 
   v12 = [v11 count];
   if (v12)
@@ -212,24 +212,24 @@ void __74__PXPhotoKitMoveToSharedLibraryActionPerformer_performUserInteractionTa
 
   v13 = objc_alloc(MEMORY[0x1E69DC708]);
   v14 = PXLocalizedStringFromTable(@"PXSelectItems", @"PhotosUICore");
-  v15 = [v13 initWithTitle:v14 style:0 target:v7 action:a4];
+  v15 = [v13 initWithTitle:v14 style:0 target:targetCopy action:action];
 
   return v15;
 }
 
-+ (id)createPreviewActionWithTitle:(id)a3 image:(id)a4 handler:(id)a5
++ (id)createPreviewActionWithTitle:(id)title image:(id)image handler:(id)handler
 {
-  v7 = a5;
+  handlerCopy = handler;
   v8 = MEMORY[0x1E69DC628];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __91__PXPhotoKitMoveToSharedLibraryActionPerformer_createPreviewActionWithTitle_image_handler___block_invoke;
   v14[3] = &unk_1E7742C90;
-  v9 = v7;
+  v9 = handlerCopy;
   v15 = v9;
-  v10 = [v8 actionWithTitle:a3 image:a4 identifier:0 handler:v14];
-  v11 = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
-  v12 = [PXSharedLibraryStatusProvider sharedLibraryStatusProviderWithPhotoLibrary:v11];
+  v10 = [v8 actionWithTitle:title image:image identifier:0 handler:v14];
+  px_deprecated_appPhotoLibrary = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
+  v12 = [PXSharedLibraryStatusProvider sharedLibraryStatusProviderWithPhotoLibrary:px_deprecated_appPhotoLibrary];
 
   if ([v12 hasPreview])
   {
@@ -239,37 +239,37 @@ void __74__PXPhotoKitMoveToSharedLibraryActionPerformer_performUserInteractionTa
   return v10;
 }
 
-+ (BOOL)canPerformOnAsset:(id)a3 inAssetCollection:(id)a4 person:(id)a5 socialGroup:(id)a6
++ (BOOL)canPerformOnAsset:(id)asset inAssetCollection:(id)collection person:(id)person socialGroup:(id)group
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v7 photoLibrary];
-  v10 = [PXSharedLibraryStatusProvider sharedLibraryStatusProviderWithPhotoLibrary:v9];
+  collectionCopy = collection;
+  assetCopy = asset;
+  photoLibrary = [collectionCopy photoLibrary];
+  v10 = [PXSharedLibraryStatusProvider sharedLibraryStatusProviderWithPhotoLibrary:photoLibrary];
 
-  v11 = [v10 hasSharedLibraryOrPreview];
-  v12 = [v10 exiting];
-  v13 = v12 != 0;
+  hasSharedLibraryOrPreview = [v10 hasSharedLibraryOrPreview];
+  exiting = [v10 exiting];
+  v13 = exiting != 0;
 
-  v14 = [v7 px_allowsMoveToSharedLibrary];
-  v15 = [v8 px_isUnsavedSyndicatedAsset];
-  v19[0] = v8;
+  px_allowsMoveToSharedLibrary = [collectionCopy px_allowsMoveToSharedLibrary];
+  px_isUnsavedSyndicatedAsset = [assetCopy px_isUnsavedSyndicatedAsset];
+  v19[0] = assetCopy;
   v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:1];
   CanMoveAssetsToSharedLibrary = PXSharedLibraryCanMoveAssetsToSharedLibrary(v16);
 
-  LOBYTE(v15) = [PXPhotoKitMoveToSharedLibraryActionPerformer _canPerformWithHasSharedLibraryOrPreview:v11 isExitingSharedLibrary:v13 collectionAllowsMoveToSharedLibrary:v14 isUnsavedSyndicatedAsset:v15 canMoveAssetsToSharedLibrary:CanMoveAssetsToSharedLibrary];
-  return v15;
+  LOBYTE(px_isUnsavedSyndicatedAsset) = [PXPhotoKitMoveToSharedLibraryActionPerformer _canPerformWithHasSharedLibraryOrPreview:hasSharedLibraryOrPreview isExitingSharedLibrary:v13 collectionAllowsMoveToSharedLibrary:px_allowsMoveToSharedLibrary isUnsavedSyndicatedAsset:px_isUnsavedSyndicatedAsset canMoveAssetsToSharedLibrary:CanMoveAssetsToSharedLibrary];
+  return px_isUnsavedSyndicatedAsset;
 }
 
-+ (BOOL)_canPerformWithHasSharedLibraryOrPreview:(BOOL)a3 isExitingSharedLibrary:(BOOL)a4 collectionAllowsMoveToSharedLibrary:(BOOL)a5 isUnsavedSyndicatedAsset:(BOOL)a6 canMoveAssetsToSharedLibrary:(BOOL)a7
++ (BOOL)_canPerformWithHasSharedLibraryOrPreview:(BOOL)preview isExitingSharedLibrary:(BOOL)library collectionAllowsMoveToSharedLibrary:(BOOL)sharedLibrary isUnsavedSyndicatedAsset:(BOOL)asset canMoveAssetsToSharedLibrary:(BOOL)toSharedLibrary
 {
-  v7 = (a6 || a7) && a5;
-  if (a4)
+  v7 = (asset || toSharedLibrary) && sharedLibrary;
+  if (library)
   {
     v7 = 0;
   }
 
-  return a3 && v7;
+  return preview && v7;
 }
 
 @end

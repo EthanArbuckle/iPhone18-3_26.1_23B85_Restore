@@ -1,26 +1,26 @@
 @interface HMDNetworkRouterAdvertisementProtocol
-+ (id)parsedFromData:(id)a3 error:(id *)a4;
-+ (id)protocolFromFirewallRuleAdvertisingProtocol:(unsigned __int8)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)parseFromData:(id)a3 error:(id *)a4;
++ (id)parsedFromData:(id)data error:(id *)error;
++ (id)protocolFromFirewallRuleAdvertisingProtocol:(unsigned __int8)protocol;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)parseFromData:(id)data error:(id *)error;
 - (HMDNetworkRouterAdvertisementProtocol)init;
-- (HMDNetworkRouterAdvertisementProtocol)initWithAdvertisementProtocol:(int64_t)a3;
+- (HMDNetworkRouterAdvertisementProtocol)initWithAdvertisementProtocol:(int64_t)protocol;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializeWithError:(id *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializeWithError:(id *)error;
 @end
 
 @implementation HMDNetworkRouterAdvertisementProtocol
 
-+ (id)protocolFromFirewallRuleAdvertisingProtocol:(unsigned __int8)a3
++ (id)protocolFromFirewallRuleAdvertisingProtocol:(unsigned __int8)protocol
 {
-  if (!a3)
+  if (!protocol)
   {
     v3 = 0;
     goto LABEL_5;
   }
 
-  if (a3 == 1)
+  if (protocol == 1)
   {
     v3 = 1;
 LABEL_5:
@@ -37,17 +37,17 @@ LABEL_7:
 - (NSString)description
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(HMDNetworkRouterAdvertisementProtocol *)self advertisementProtocol];
-  if (v3)
+  advertisementProtocol = [(HMDNetworkRouterAdvertisementProtocol *)self advertisementProtocol];
+  if (advertisementProtocol)
   {
-    if (v3 == 1)
+    if (advertisementProtocol == 1)
     {
       v4 = @"HMDNetworkRouterAdvertisementProtocolTypeSSDP";
     }
 
     else
     {
-      v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"Unknown HMDNetworkRouterAdvertisementProtocolType %ld", v3];
+      v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"Unknown HMDNetworkRouterAdvertisementProtocolType %ld", advertisementProtocol];
     }
   }
 
@@ -61,10 +61,10 @@ LABEL_7:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -74,11 +74,11 @@ LABEL_7:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(HMDNetworkRouterAdvertisementProtocol *)self advertisementProtocol];
-      v7 = [(HMDNetworkRouterAdvertisementProtocol *)v5 advertisementProtocol];
+      v5 = equalCopy;
+      advertisementProtocol = [(HMDNetworkRouterAdvertisementProtocol *)self advertisementProtocol];
+      advertisementProtocol2 = [(HMDNetworkRouterAdvertisementProtocol *)v5 advertisementProtocol];
 
-      v8 = v6 == v7;
+      v8 = advertisementProtocol == advertisementProtocol2;
     }
 
     else
@@ -90,28 +90,28 @@ LABEL_7:
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [HMDNetworkRouterAdvertisementProtocol allocWithZone:a3];
-  v5 = [(HMDNetworkRouterAdvertisementProtocol *)self advertisementProtocol];
+  v4 = [HMDNetworkRouterAdvertisementProtocol allocWithZone:zone];
+  advertisementProtocol = [(HMDNetworkRouterAdvertisementProtocol *)self advertisementProtocol];
 
-  return [(HMDNetworkRouterAdvertisementProtocol *)v4 initWithAdvertisementProtocol:v5];
+  return [(HMDNetworkRouterAdvertisementProtocol *)v4 initWithAdvertisementProtocol:advertisementProtocol];
 }
 
-- (id)serializeWithError:(id *)a3
+- (id)serializeWithError:(id *)error
 {
-  v3 = [(HMDNetworkRouterAdvertisementProtocol *)self advertisementProtocol];
+  advertisementProtocol = [(HMDNetworkRouterAdvertisementProtocol *)self advertisementProtocol];
 
-  return MEMORY[0x2821501D8](v3);
+  return MEMORY[0x2821501D8](advertisementProtocol);
 }
 
-- (BOOL)parseFromData:(id)a3 error:(id *)a4
+- (BOOL)parseFromData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = v6;
-  if (!a4)
+  dataCopy = data;
+  v7 = dataCopy;
+  if (!error)
   {
-    if (![v6 length])
+    if (![dataCopy length])
     {
       v8 = 0;
       goto LABEL_7;
@@ -120,8 +120,8 @@ LABEL_7:
     goto LABEL_5;
   }
 
-  *a4 = 0;
-  if ([v6 length])
+  *error = 0;
+  if ([dataCopy length])
   {
 LABEL_5:
     [v7 bytes];
@@ -132,20 +132,20 @@ LABEL_5:
   }
 
   [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D0F1A0] code:3 userInfo:0];
-  *a4 = v8 = 0;
+  *error = v8 = 0;
 LABEL_7:
 
   return v8;
 }
 
-- (HMDNetworkRouterAdvertisementProtocol)initWithAdvertisementProtocol:(int64_t)a3
+- (HMDNetworkRouterAdvertisementProtocol)initWithAdvertisementProtocol:(int64_t)protocol
 {
   v5.receiver = self;
   v5.super_class = HMDNetworkRouterAdvertisementProtocol;
   result = [(HMDNetworkRouterAdvertisementProtocol *)&v5 init];
   if (result)
   {
-    result->_advertisementProtocol = a3;
+    result->_advertisementProtocol = protocol;
   }
 
   return result;
@@ -164,24 +164,24 @@ LABEL_7:
   return result;
 }
 
-+ (id)parsedFromData:(id)a3 error:(id *)a4
++ (id)parsedFromData:(id)data error:(id *)error
 {
-  v5 = a3;
+  dataCopy = data;
   v6 = objc_alloc_init(HMDNetworkRouterAdvertisementProtocol);
   v7 = v6;
   if (v6)
   {
     v11 = 0;
-    [(HMDNetworkRouterAdvertisementProtocol *)v6 parseFromData:v5 error:&v11];
+    [(HMDNetworkRouterAdvertisementProtocol *)v6 parseFromData:dataCopy error:&v11];
     v8 = v11;
     if (v8)
     {
 
-      if (a4)
+      if (error)
       {
         v9 = v8;
         v7 = 0;
-        *a4 = v8;
+        *error = v8;
       }
 
       else

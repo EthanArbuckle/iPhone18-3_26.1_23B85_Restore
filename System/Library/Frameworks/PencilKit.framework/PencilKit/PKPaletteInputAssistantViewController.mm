@@ -1,7 +1,7 @@
 @interface PKPaletteInputAssistantViewController
 - (CGSize)_preferredContentSize;
 - (void)_updateUI;
-- (void)setInputAssistantView:(id)a3;
+- (void)setInputAssistantView:(id)view;
 - (void)viewDidLoad;
 @end
 
@@ -15,71 +15,71 @@
   [(PKPaletteInputAssistantViewController *)self _updateUI];
 }
 
-- (void)setInputAssistantView:(id)a3
+- (void)setInputAssistantView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   inputAssistantView = self->_inputAssistantView;
-  if (inputAssistantView != v5)
+  if (inputAssistantView != viewCopy)
   {
-    v7 = v5;
+    v7 = viewCopy;
     [(PKDrawingPaletteInputAssistantView *)inputAssistantView removeViewStateObserver:self];
-    objc_storeStrong(&self->_inputAssistantView, a3);
+    objc_storeStrong(&self->_inputAssistantView, view);
     [(PKDrawingPaletteInputAssistantView *)self->_inputAssistantView addViewStateObserver:self];
     [(PKPaletteInputAssistantViewController *)self _updateUI];
-    v5 = v7;
+    viewCopy = v7;
   }
 }
 
 - (void)_updateUI
 {
   v36[4] = *MEMORY[0x1E69E9840];
-  v3 = [(PKPaletteInputAssistantViewController *)self inputAssistantView];
-  v4 = [v3 superview];
-  v5 = [(PKPaletteInputAssistantViewController *)self view];
+  inputAssistantView = [(PKPaletteInputAssistantViewController *)self inputAssistantView];
+  superview = [inputAssistantView superview];
+  view = [(PKPaletteInputAssistantViewController *)self view];
 
-  if (v4 != v5)
+  if (superview != view)
   {
-    v6 = [(PKPaletteInputAssistantViewController *)self inputAssistantView];
-    [v6 removeFromSuperview];
+    inputAssistantView2 = [(PKPaletteInputAssistantViewController *)self inputAssistantView];
+    [inputAssistantView2 removeFromSuperview];
 
-    v7 = [(PKPaletteInputAssistantViewController *)self inputAssistantView];
-    [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
+    inputAssistantView3 = [(PKPaletteInputAssistantViewController *)self inputAssistantView];
+    [inputAssistantView3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v8 = [(PKPaletteInputAssistantViewController *)self view];
-    v9 = [(PKPaletteInputAssistantViewController *)self inputAssistantView];
-    [v8 addSubview:v9];
+    view2 = [(PKPaletteInputAssistantViewController *)self view];
+    inputAssistantView4 = [(PKPaletteInputAssistantViewController *)self inputAssistantView];
+    [view2 addSubview:inputAssistantView4];
 
-    v35 = [(PKPaletteInputAssistantViewController *)self view];
-    v34 = [(PKPaletteInputAssistantViewController *)self inputAssistantView];
-    v32 = [v34 topAnchor];
-    v33 = [(PKPaletteInputAssistantViewController *)self view];
-    v31 = [v33 safeAreaLayoutGuide];
-    v30 = [v31 topAnchor];
-    v29 = [v32 constraintEqualToAnchor:v30 constant:12.0];
+    view3 = [(PKPaletteInputAssistantViewController *)self view];
+    inputAssistantView5 = [(PKPaletteInputAssistantViewController *)self inputAssistantView];
+    topAnchor = [inputAssistantView5 topAnchor];
+    view4 = [(PKPaletteInputAssistantViewController *)self view];
+    safeAreaLayoutGuide = [view4 safeAreaLayoutGuide];
+    topAnchor2 = [safeAreaLayoutGuide topAnchor];
+    v29 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:12.0];
     v36[0] = v29;
-    v28 = [(PKPaletteInputAssistantViewController *)self inputAssistantView];
-    v26 = [v28 bottomAnchor];
-    v27 = [(PKPaletteInputAssistantViewController *)self view];
-    v25 = [v27 safeAreaLayoutGuide];
-    v24 = [v25 bottomAnchor];
-    v23 = [v26 constraintEqualToAnchor:v24 constant:-12.0];
+    inputAssistantView6 = [(PKPaletteInputAssistantViewController *)self inputAssistantView];
+    bottomAnchor = [inputAssistantView6 bottomAnchor];
+    view5 = [(PKPaletteInputAssistantViewController *)self view];
+    safeAreaLayoutGuide2 = [view5 safeAreaLayoutGuide];
+    bottomAnchor2 = [safeAreaLayoutGuide2 bottomAnchor];
+    v23 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-12.0];
     v36[1] = v23;
-    v22 = [(PKPaletteInputAssistantViewController *)self inputAssistantView];
-    v20 = [v22 leadingAnchor];
-    v21 = [(PKPaletteInputAssistantViewController *)self view];
-    v19 = [v21 safeAreaLayoutGuide];
-    v10 = [v19 leadingAnchor];
-    v11 = [v20 constraintEqualToAnchor:v10 constant:12.0];
+    inputAssistantView7 = [(PKPaletteInputAssistantViewController *)self inputAssistantView];
+    leadingAnchor = [inputAssistantView7 leadingAnchor];
+    view6 = [(PKPaletteInputAssistantViewController *)self view];
+    safeAreaLayoutGuide3 = [view6 safeAreaLayoutGuide];
+    leadingAnchor2 = [safeAreaLayoutGuide3 leadingAnchor];
+    v11 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:12.0];
     v36[2] = v11;
-    v12 = [(PKPaletteInputAssistantViewController *)self inputAssistantView];
-    v13 = [v12 trailingAnchor];
-    v14 = [(PKPaletteInputAssistantViewController *)self view];
-    v15 = [v14 safeAreaLayoutGuide];
-    v16 = [v15 trailingAnchor];
-    v17 = [v13 constraintEqualToAnchor:v16 constant:-12.0];
+    inputAssistantView8 = [(PKPaletteInputAssistantViewController *)self inputAssistantView];
+    trailingAnchor = [inputAssistantView8 trailingAnchor];
+    view7 = [(PKPaletteInputAssistantViewController *)self view];
+    safeAreaLayoutGuide4 = [view7 safeAreaLayoutGuide];
+    trailingAnchor2 = [safeAreaLayoutGuide4 trailingAnchor];
+    v17 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-12.0];
     v36[3] = v17;
     v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v36 count:4];
-    [v35 addConstraints:v18];
+    [view3 addConstraints:v18];
   }
 
   [(PKPaletteInputAssistantViewController *)self _preferredContentSize];
@@ -88,13 +88,13 @@
 
 - (CGSize)_preferredContentSize
 {
-  v3 = [(PKPaletteInputAssistantViewController *)self inputAssistantView];
-  v4 = [v3 hasInputAssistantItems];
+  inputAssistantView = [(PKPaletteInputAssistantViewController *)self inputAssistantView];
+  hasInputAssistantItems = [inputAssistantView hasInputAssistantItems];
 
-  if (v4)
+  if (hasInputAssistantItems)
   {
-    v5 = [(PKPaletteInputAssistantViewController *)self inputAssistantView];
-    [v5 systemLayoutSizeFittingSize:{*MEMORY[0x1E69DE090], *(MEMORY[0x1E69DE090] + 8)}];
+    inputAssistantView2 = [(PKPaletteInputAssistantViewController *)self inputAssistantView];
+    [inputAssistantView2 systemLayoutSizeFittingSize:{*MEMORY[0x1E69DE090], *(MEMORY[0x1E69DE090] + 8)}];
     v7 = v6;
     v9 = v8;
 

@@ -27,9 +27,9 @@
 
 - (void)lock
 {
-  v3 = [MEMORY[0x1E695DF00] distantFuture];
+  distantFuture = [MEMORY[0x1E695DF00] distantFuture];
 
-  [(NSConditionLock *)self lockBeforeDate:v3];
+  [(NSConditionLock *)self lockBeforeDate:distantFuture];
 }
 
 - (void)dealloc
@@ -43,9 +43,9 @@
 
 - (BOOL)tryLock
 {
-  v3 = [MEMORY[0x1E695DF00] distantPast];
+  distantPast = [MEMORY[0x1E695DF00] distantPast];
 
-  return [(NSConditionLock *)self lockBeforeDate:v3];
+  return [(NSConditionLock *)self lockBeforeDate:distantPast];
 }
 
 - (NSConditionLock)initWithCondition:(NSInteger)condition
@@ -86,9 +86,9 @@ LABEL_6:
 
 - (void)lockWhenCondition:(NSInteger)condition
 {
-  v5 = [MEMORY[0x1E695DF00] distantFuture];
+  distantFuture = [MEMORY[0x1E695DF00] distantFuture];
 
-  [(NSConditionLock *)self lockWhenCondition:condition beforeDate:v5];
+  [(NSConditionLock *)self lockWhenCondition:condition beforeDate:distantFuture];
 }
 
 - (BOOL)lockWhenCondition:(NSInteger)condition beforeDate:(NSDate *)limit
@@ -112,9 +112,9 @@ LABEL_7:
 
 - (BOOL)tryLockWhenCondition:(NSInteger)condition
 {
-  v5 = [MEMORY[0x1E695DF00] distantPast];
+  distantPast = [MEMORY[0x1E695DF00] distantPast];
 
-  return [(NSConditionLock *)self lockWhenCondition:condition beforeDate:v5];
+  return [(NSConditionLock *)self lockWhenCondition:condition beforeDate:distantPast];
 }
 
 - (void)unlockWithCondition:(NSInteger)condition

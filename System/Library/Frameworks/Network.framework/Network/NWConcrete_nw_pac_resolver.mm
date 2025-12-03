@@ -7,29 +7,29 @@
 
 - (void)dealloc
 {
-  v2 = self;
-  v3 = *(v2 + 3);
+  selfCopy = self;
+  v3 = *(selfCopy + 3);
   if (v3)
   {
     CFRelease(v3);
-    *(v2 + 3) = 0;
+    *(selfCopy + 3) = 0;
   }
 
-  v4 = *(v2 + 4);
+  v4 = *(selfCopy + 4);
   if (v4)
   {
     CFRelease(v4);
-    *(v2 + 4) = 0;
+    *(selfCopy + 4) = 0;
   }
 
-  v5 = *(v2 + 5);
+  v5 = *(selfCopy + 5);
   if (v5)
   {
     CFRelease(v5);
-    *(v2 + 5) = 0;
+    *(selfCopy + 5) = 0;
   }
 
-  v6.receiver = v2;
+  v6.receiver = selfCopy;
   v6.super_class = NWConcrete_nw_pac_resolver;
   [(NWConcrete_nw_pac_resolver *)&v6 dealloc];
 }

@@ -1,16 +1,16 @@
 @interface PKLRUCache
 - (PKLRUCache)init;
-- (id)checkObjectForKey:(uint64_t)a1;
-- (id)objectForKey:(uint64_t)a3 scaleFactor:;
-- (id)objectForKey:(void *)a1;
-- (void)_keyItemForKey:(uint64_t)a3 scaleFactor:;
-- (void)_removeItem:(uint64_t)a1;
+- (id)checkObjectForKey:(uint64_t)key;
+- (id)objectForKey:(uint64_t)key scaleFactor:;
+- (id)objectForKey:(void *)key;
+- (void)_keyItemForKey:(uint64_t)key scaleFactor:;
+- (void)_removeItem:(uint64_t)item;
 - (void)dealloc;
 - (void)removeAllObjects;
-- (void)removeObjectForKey:(uint64_t)a1;
-- (void)removeObjectForKey:(uint64_t)a3 scaleFactor:;
-- (void)setObject:(void *)a3 forKey:(unint64_t)a4 cost:;
-- (void)setObject:(void *)a3 forKey:(unint64_t)a4 cost:(uint64_t)a5 scaleFactor:;
+- (void)removeObjectForKey:(uint64_t)key;
+- (void)removeObjectForKey:(uint64_t)key scaleFactor:;
+- (void)setObject:(void *)object forKey:(unint64_t)key cost:;
+- (void)setObject:(void *)object forKey:(unint64_t)key cost:(uint64_t)cost scaleFactor:;
 @end
 
 @implementation PKLRUCache
@@ -49,20 +49,20 @@
 
 - (void)removeAllObjects
 {
-  if (a1)
+  if (self)
   {
-    os_unfair_lock_lock((a1 + 56));
+    os_unfair_lock_lock((self + 56));
     while (1)
     {
-      v2 = *(a1 + 8);
+      v2 = *(self + 8);
       if (!v2)
       {
         break;
       }
 
       v3 = v2[3];
-      v4 = *(a1 + 8);
-      *(a1 + 8) = v3;
+      v4 = *(self + 8);
+      *(self + 8) = v3;
       v5 = v2;
 
       v6 = v5[1];
@@ -78,45 +78,45 @@
       v2[3] = 0;
     }
 
-    [*(a1 + 32) removeAllObjects];
-    v10 = *(a1 + 16);
-    *(a1 + 16) = 0;
+    [*(self + 32) removeAllObjects];
+    v10 = *(self + 16);
+    *(self + 16) = 0;
 
-    *(a1 + 40) = 0;
+    *(self + 40) = 0;
 
-    os_unfair_lock_unlock((a1 + 56));
+    os_unfair_lock_unlock((self + 56));
   }
 }
 
-- (id)objectForKey:(void *)a1
+- (id)objectForKey:(void *)key
 {
   v3 = a2;
-  if (a1)
+  if (key)
   {
-    a1 = [(PKLRUCache *)a1 objectForKey:v3 scaleFactor:1];
+    key = [(PKLRUCache *)key objectForKey:v3 scaleFactor:1];
   }
 
-  return a1;
+  return key;
 }
 
-- (void)_keyItemForKey:(uint64_t)a3 scaleFactor:
+- (void)_keyItemForKey:(uint64_t)key scaleFactor:
 {
   v5 = a2;
   v6 = v5;
-  if (a1)
+  if (self)
   {
-    if (a3 == 1)
+    if (key == 1)
     {
       p_isa = v5;
     }
 
-    else if ([*(a1 + 48) count])
+    else if ([*(self + 48) count])
     {
-      p_isa = [*(a1 + 48) lastObject];
-      [*(a1 + 48) removeLastObject];
+      p_isa = [*(self + 48) lastObject];
+      [*(self + 48) removeLastObject];
       if (p_isa)
       {
-        p_isa[2] = a3;
+        p_isa[2] = key;
         objc_setProperty_nonatomic_copy(p_isa, v8, v6, 8);
       }
     }
@@ -128,7 +128,7 @@
       if (v9)
       {
         objc_setProperty_nonatomic_copy(v9, v10, v6, 8);
-        p_isa[2] = a3;
+        p_isa[2] = key;
       }
     }
   }
@@ -141,14 +141,14 @@
   return p_isa;
 }
 
-- (id)checkObjectForKey:(uint64_t)a1
+- (id)checkObjectForKey:(uint64_t)key
 {
   v3 = a2;
-  if (a1)
+  if (key)
   {
-    os_unfair_lock_lock((a1 + 56));
-    v4 = [(PKLRUCache *)a1 _keyItemForKey:v3 scaleFactor:1];
-    v5 = [*(a1 + 32) objectForKey:v4];
+    os_unfair_lock_lock((key + 56));
+    v4 = [(PKLRUCache *)key _keyItemForKey:v3 scaleFactor:1];
+    v5 = [*(key + 32) objectForKey:v4];
     v6 = v5;
     if (v5)
     {
@@ -162,7 +162,7 @@
 
     v8 = v7;
 
-    os_unfair_lock_unlock((a1 + 56));
+    os_unfair_lock_unlock((key + 56));
   }
 
   else
@@ -173,19 +173,19 @@
   return v8;
 }
 
-- (id)objectForKey:(uint64_t)a3 scaleFactor:
+- (id)objectForKey:(uint64_t)key scaleFactor:
 {
   v5 = a2;
-  if (a1)
+  if (self)
   {
-    os_unfair_lock_lock((a1 + 56));
-    v6 = [(PKLRUCache *)a1 _keyItemForKey:v5 scaleFactor:a3];
-    v7 = [*(a1 + 32) objectForKey:v6];
+    os_unfair_lock_lock((self + 56));
+    v6 = [(PKLRUCache *)self _keyItemForKey:v5 scaleFactor:key];
+    v7 = [*(self + 32) objectForKey:v6];
     v8 = v7;
     if (v7)
     {
       v9 = *(v7 + 40);
-      if (v8 != *(a1 + 16))
+      if (v8 != *(self + 16))
       {
         v10 = v8[4];
         if (v10)
@@ -199,17 +199,17 @@
           objc_storeStrong(v11 + 4, v8[4]);
         }
 
-        objc_storeStrong(v8 + 4, *(a1 + 16));
-        if (v8 == *(a1 + 8))
+        objc_storeStrong(v8 + 4, *(self + 16));
+        if (v8 == *(self + 8))
         {
-          objc_storeStrong((a1 + 8), v8[3]);
+          objc_storeStrong((self + 8), v8[3]);
         }
 
         v12 = v8[3];
         v8[3] = 0;
 
-        objc_storeStrong((*(a1 + 16) + 24), v8);
-        objc_storeStrong((a1 + 16), v8);
+        objc_storeStrong((*(self + 16) + 24), v8);
+        objc_storeStrong((self + 16), v8);
       }
     }
 
@@ -220,7 +220,7 @@
 
     v13 = v9;
 
-    os_unfair_lock_unlock((a1 + 56));
+    os_unfair_lock_unlock((self + 56));
   }
 
   else
@@ -231,10 +231,10 @@
   return v13;
 }
 
-- (void)_removeItem:(uint64_t)a1
+- (void)_removeItem:(uint64_t)item
 {
   v4 = a2;
-  if (!a1)
+  if (!item)
   {
     goto LABEL_14;
   }
@@ -251,7 +251,7 @@
 
     if (!v8)
     {
-      objc_storeStrong((a1 + 16), v5);
+      objc_storeStrong((item + 16), v5);
       v10 = v6[3];
       v6[3] = 0;
       goto LABEL_8;
@@ -260,8 +260,8 @@
     goto LABEL_7;
   }
 
-  v11 = *(a1 + 8);
-  *(a1 + 8) = v7;
+  v11 = *(item + 8);
+  *(item + 8) = v7;
 
   if (v8)
   {
@@ -275,17 +275,17 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v10 = *(a1 + 16);
-  *(a1 + 16) = 0;
+  v10 = *(item + 16);
+  *(item + 16) = 0;
 LABEL_8:
 
-  v14 = *(a1 + 32);
-  *(a1 + 40) -= v21[6];
+  v14 = *(item + 32);
+  *(item + 40) -= v21[6];
   [v14 removeObjectForKey:v21[1]];
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && [*(a1 + 48) count] <= 0xFFF)
+  if ((objc_opt_isKindOfClass() & 1) != 0 && [*(item + 48) count] <= 0xFFF)
   {
-    [*(a1 + 48) addObject:v21[1]];
+    [*(item + 48) addObject:v21[1]];
   }
 
   v15 = v21[1];
@@ -300,10 +300,10 @@ LABEL_8:
   v18 = v21[4];
   v21[4] = 0;
 
-  if (*(a1 + 72) <= 1023)
+  if (*(item + 72) <= 1023)
   {
-    v20 = *(a1 + 24);
-    v19 = a1 + 24;
+    v20 = *(item + 24);
+    v19 = item + 24;
     objc_storeStrong(v21 + 3, v20);
     objc_storeStrong(v19, a2);
     ++*(v19 + 48);
@@ -313,49 +313,49 @@ LABEL_8:
 LABEL_14:
 }
 
-- (void)setObject:(void *)a3 forKey:(unint64_t)a4 cost:
+- (void)setObject:(void *)object forKey:(unint64_t)key cost:
 {
   v8 = a2;
-  v7 = a3;
-  if (a1)
+  objectCopy = object;
+  if (self)
   {
-    [(PKLRUCache *)a1 setObject:v8 forKey:v7 cost:a4 scaleFactor:1];
+    [(PKLRUCache *)self setObject:v8 forKey:objectCopy cost:key scaleFactor:1];
   }
 }
 
-- (void)setObject:(void *)a3 forKey:(unint64_t)a4 cost:(uint64_t)a5 scaleFactor:
+- (void)setObject:(void *)object forKey:(unint64_t)key cost:(uint64_t)cost scaleFactor:
 {
   v25 = a2;
-  v10 = a3;
-  if (a1)
+  objectCopy = object;
+  if (self)
   {
-    os_unfair_lock_lock((a1 + 56));
-    v11 = [(PKLRUCache *)a1 _keyItemForKey:v10 scaleFactor:a5];
-    v12 = [*(a1 + 32) objectForKey:v11];
+    os_unfair_lock_lock((self + 56));
+    v11 = [(PKLRUCache *)self _keyItemForKey:objectCopy scaleFactor:cost];
+    v12 = [*(self + 32) objectForKey:v11];
     if (v12)
     {
-      [(PKLRUCache *)a1 _removeItem:v12];
+      [(PKLRUCache *)self _removeItem:v12];
     }
 
-    for (i = (a1 + 8); *i; [(PKLRUCache *)a1 _removeItem:?])
+    for (i = (self + 8); *i; [(PKLRUCache *)self _removeItem:?])
     {
-      v14 = *(a1 + 64);
-      if (!v14 || *(a1 + 40) + a4 <= v14)
+      v14 = *(self + 64);
+      if (!v14 || *(self + 40) + key <= v14)
       {
         break;
       }
     }
 
-    if (*(a1 + 72) < 1)
+    if (*(self + 72) < 1)
     {
       v15 = objc_alloc_init(PKLRUCacheItem);
     }
 
     else
     {
-      v15 = *(a1 + 24);
-      objc_storeStrong((a1 + 24), *(*(a1 + 24) + 24));
-      --*(a1 + 72);
+      v15 = *(self + 24);
+      objc_storeStrong((self + 24), *(*(self + 24) + 24));
+      --*(self + 72);
       next = v15->_next;
       v15->_next = 0;
     }
@@ -365,21 +365,21 @@ LABEL_14:
     v15->_key = v17;
 
     objc_storeStrong(&v15->_object, a2);
-    v15->_cost = a4;
+    v15->_cost = key;
     v19 = v15;
     v20 = v19;
-    v21 = (a1 + 16);
-    if (*(a1 + 8))
+    v21 = (self + 16);
+    if (*(self + 8))
     {
       objc_storeStrong(&v19->_prev, *v21);
       objc_storeStrong(*v21 + 3, v15);
       v22 = v20;
-      i = (a1 + 16);
+      i = (self + 16);
     }
 
     else
     {
-      objc_storeStrong((a1 + 16), v15);
+      objc_storeStrong((self + 16), v15);
       v22 = *v21;
     }
 
@@ -387,37 +387,37 @@ LABEL_14:
     v24 = *i;
     *i = v23;
 
-    [*(a1 + 32) setObject:v20 forKey:v15->_key];
-    *(a1 + 40) += v15->_cost;
+    [*(self + 32) setObject:v20 forKey:v15->_key];
+    *(self + 40) += v15->_cost;
 
-    os_unfair_lock_unlock((a1 + 56));
+    os_unfair_lock_unlock((self + 56));
   }
 }
 
-- (void)removeObjectForKey:(uint64_t)a1
+- (void)removeObjectForKey:(uint64_t)key
 {
   v3 = a2;
-  if (a1)
+  if (key)
   {
-    [(PKLRUCache *)a1 removeObjectForKey:v3 scaleFactor:1];
+    [(PKLRUCache *)key removeObjectForKey:v3 scaleFactor:1];
   }
 }
 
-- (void)removeObjectForKey:(uint64_t)a3 scaleFactor:
+- (void)removeObjectForKey:(uint64_t)key scaleFactor:
 {
   v5 = a2;
-  if (a1)
+  if (self)
   {
     v8 = v5;
-    os_unfair_lock_lock((a1 + 56));
-    v6 = [(PKLRUCache *)a1 _keyItemForKey:v8 scaleFactor:a3];
-    v7 = [*(a1 + 32) objectForKey:v6];
+    os_unfair_lock_lock((self + 56));
+    v6 = [(PKLRUCache *)self _keyItemForKey:v8 scaleFactor:key];
+    v7 = [*(self + 32) objectForKey:v6];
     if (v7)
     {
-      [(PKLRUCache *)a1 _removeItem:v7];
+      [(PKLRUCache *)self _removeItem:v7];
     }
 
-    os_unfair_lock_unlock((a1 + 56));
+    os_unfair_lock_unlock((self + 56));
     v5 = v8;
   }
 }

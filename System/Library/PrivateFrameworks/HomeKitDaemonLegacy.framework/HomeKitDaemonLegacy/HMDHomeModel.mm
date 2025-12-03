@@ -1,7 +1,7 @@
 @interface HMDHomeModel
 + (id)properties;
 - (HMDNaturalLightingContext)naturalLightingContext;
-- (void)setNaturalLightingContext:(id)a3;
+- (void)setNaturalLightingContext:(id)context;
 @end
 
 @implementation HMDHomeModel
@@ -148,11 +148,11 @@ void __26__HMDHomeModel_properties__block_invoke()
 - (HMDNaturalLightingContext)naturalLightingContext
 {
   v17 = *MEMORY[0x277D85DE8];
-  v2 = [(HMDHomeModel *)self encodedNaturalLightingContext];
-  if (v2)
+  encodedNaturalLightingContext = [(HMDHomeModel *)self encodedNaturalLightingContext];
+  if (encodedNaturalLightingContext)
   {
     v10 = 0;
-    v3 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:objc_opt_class() fromData:v2 error:&v10];
+    v3 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:objc_opt_class() fromData:encodedNaturalLightingContext error:&v10];
     v4 = v10;
     if (!v3)
     {
@@ -164,7 +164,7 @@ void __26__HMDHomeModel_properties__block_invoke()
         *buf = 138543874;
         v12 = v7;
         v13 = 2112;
-        v14 = v2;
+        v14 = encodedNaturalLightingContext;
         v15 = 2112;
         v16 = v4;
         _os_log_impl(&dword_2531F8000, v6, OS_LOG_TYPE_ERROR, "%{public}@Failed to decode natural lighting context set on home model %@:%@", buf, 0x20u);
@@ -184,12 +184,12 @@ void __26__HMDHomeModel_properties__block_invoke()
   return v3;
 }
 
-- (void)setNaturalLightingContext:(id)a3
+- (void)setNaturalLightingContext:(id)context
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  contextCopy = context;
   v11 = 0;
-  v5 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v4 requiringSecureCoding:1 error:&v11];
+  v5 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:contextCopy requiringSecureCoding:1 error:&v11];
   v6 = v11;
   if (v5)
   {
@@ -206,7 +206,7 @@ void __26__HMDHomeModel_properties__block_invoke()
       *buf = 138543874;
       v13 = v9;
       v14 = 2112;
-      v15 = v4;
+      v15 = contextCopy;
       v16 = 2112;
       v17 = v6;
       _os_log_impl(&dword_2531F8000, v8, OS_LOG_TYPE_ERROR, "%{public}@Failed to set encoded natural lighting context on the home model %@:%@", buf, 0x20u);

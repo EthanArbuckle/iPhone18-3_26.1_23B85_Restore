@@ -1,12 +1,12 @@
 @interface MOVStreamFrameTransform
-- (MOVStreamFrameTransform)initWithRotation:(int64_t)a3 flip:(int64_t)a4 bufferCacheMode:(int)a5;
-- (__CVBuffer)transform:(__CVBuffer *)a3;
+- (MOVStreamFrameTransform)initWithRotation:(int64_t)rotation flip:(int64_t)flip bufferCacheMode:(int)mode;
+- (__CVBuffer)transform:(__CVBuffer *)transform;
 - (void)dealloc;
 @end
 
 @implementation MOVStreamFrameTransform
 
-- (MOVStreamFrameTransform)initWithRotation:(int64_t)a3 flip:(int64_t)a4 bufferCacheMode:(int)a5
+- (MOVStreamFrameTransform)initWithRotation:(int64_t)rotation flip:(int64_t)flip bufferCacheMode:(int)mode
 {
   v15.receiver = self;
   v15.super_class = MOVStreamFrameTransform;
@@ -21,27 +21,27 @@
 
     else
     {
-      v8->_bufferCacheMode = a5;
-      v8->_rotation = a3;
-      if (a3 >= 4)
+      v8->_bufferCacheMode = mode;
+      v8->_rotation = rotation;
+      if (rotation >= 4)
       {
         [MOVStreamFrameTransform initWithRotation:flip:bufferCacheMode:];
       }
 
-      v10 = VTSessionSetProperty(v8->_rotationSession, *MEMORY[0x277CE2850], **(&unk_2798481A0 + a3));
+      v10 = VTSessionSetProperty(v8->_rotationSession, *MEMORY[0x277CE2850], **(&unk_2798481A0 + rotation));
       if (v10)
       {
         [MEMORY[0x277CCACA8] stringWithFormat:@"Cannot set rotation property (err: %d).", v10];
       }
 
-      else if ((a4 & 0xFFFFFFFFFFFFFFFDLL) == 1 && (v11 = VTSessionSetProperty(v8->_rotationSession, *MEMORY[0x277CE2838], *MEMORY[0x277CBED28]), v11))
+      else if ((flip & 0xFFFFFFFFFFFFFFFDLL) == 1 && (v11 = VTSessionSetProperty(v8->_rotationSession, *MEMORY[0x277CE2838], *MEMORY[0x277CBED28]), v11))
       {
         [MEMORY[0x277CCACA8] stringWithFormat:@"Cannot set horizontal flip (err: %d).", v11];
       }
 
       else
       {
-        if ((a4 & 0xFFFFFFFFFFFFFFFELL) != 2)
+        if ((flip & 0xFFFFFFFFFFFFFFFELL) != 2)
         {
           return v8;
         }
@@ -77,14 +77,14 @@
   [(MOVStreamFrameTransform *)&v4 dealloc];
 }
 
-- (__CVBuffer)transform:(__CVBuffer *)a3
+- (__CVBuffer)transform:(__CVBuffer *)transform
 {
   pool = self->_pool;
   if (!pool)
   {
-    Width = CVPixelBufferGetWidth(a3);
-    Height = CVPixelBufferGetHeight(a3);
-    PixelFormatType = CVPixelBufferGetPixelFormatType(a3);
+    Width = CVPixelBufferGetWidth(transform);
+    Height = CVPixelBufferGetHeight(transform);
+    PixelFormatType = CVPixelBufferGetPixelFormatType(transform);
     v9 = self->_rotation | 2;
     v10 = v9 == 3 ? Width : Height;
     v11 = v9 == 3 ? Height : Width;
@@ -104,8 +104,8 @@ LABEL_15:
     }
   }
 
-  v14 = [(MIOPixelBufferPool *)pool getPixelBuffer];
-  if (!v14)
+  getPixelBuffer = [(MIOPixelBufferPool *)pool getPixelBuffer];
+  if (!getPixelBuffer)
   {
     v18 = MEMORY[0x277CBEAD8];
     v19 = *MEMORY[0x277CBE648];
@@ -113,8 +113,8 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  v15 = v14;
-  v16 = VTPixelRotationSessionRotateImage(self->_rotationSession, a3, v14);
+  v15 = getPixelBuffer;
+  v16 = VTPixelRotationSessionRotateImage(self->_rotationSession, transform, getPixelBuffer);
   if (v16)
   {
     v21 = v16;

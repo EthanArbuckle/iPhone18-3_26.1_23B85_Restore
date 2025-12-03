@@ -1,30 +1,30 @@
 @interface OpenMailboxQuicklyFactory
-+ (id)createOpenMailboxQuicklyItemWithFavoriteItem:(id)a3;
-+ (id)createOpenMailboxQuicklyViewControllerWithFavoritesManager:(id)a3 delegate:(id)a4;
++ (id)createOpenMailboxQuicklyItemWithFavoriteItem:(id)item;
++ (id)createOpenMailboxQuicklyViewControllerWithFavoritesManager:(id)manager delegate:(id)delegate;
 @end
 
 @implementation OpenMailboxQuicklyFactory
 
-+ (id)createOpenMailboxQuicklyViewControllerWithFavoritesManager:(id)a3 delegate:(id)a4
++ (id)createOpenMailboxQuicklyViewControllerWithFavoritesManager:(id)manager delegate:(id)delegate
 {
   swift_getObjCClassMetadata();
-  _objc_retain(a3);
+  _objc_retain(manager);
   swift_unknownObjectRetain();
   swift_getObjCClassMetadata();
-  v7 = static OpenMailboxQuicklyFactory.createOpenMailboxQuicklyViewController(with:delegate:)(a3, a4);
+  v7 = static OpenMailboxQuicklyFactory.createOpenMailboxQuicklyViewController(with:delegate:)(manager, delegate);
   swift_unknownObjectRelease();
-  _objc_release(a3);
+  _objc_release(manager);
 
   return v7;
 }
 
-+ (id)createOpenMailboxQuicklyItemWithFavoriteItem:(id)a3
++ (id)createOpenMailboxQuicklyItemWithFavoriteItem:(id)item
 {
   swift_getObjCClassMetadata();
-  _objc_retain(a3);
+  _objc_retain(item);
   swift_getObjCClassMetadata();
-  v5 = static OpenMailboxQuicklyFactory.createOpenMailboxQuicklyItem(with:)(a3);
-  _objc_release(a3);
+  v5 = static OpenMailboxQuicklyFactory.createOpenMailboxQuicklyItem(with:)(item);
+  _objc_release(item);
 
   return v5;
 }

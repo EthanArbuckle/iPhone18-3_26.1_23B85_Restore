@@ -1,46 +1,46 @@
 @interface MTMediaPlayerEpisodeLookupUtil
-+ (id)findEpisodeFromModelObject:(id)a3;
++ (id)findEpisodeFromModelObject:(id)object;
 @end
 
 @implementation MTMediaPlayerEpisodeLookupUtil
 
-+ (id)findEpisodeFromModelObject:(id)a3
++ (id)findEpisodeFromModelObject:(id)object
 {
-  v3 = a3;
-  v4 = [v3 identifiers];
+  objectCopy = object;
+  identifiers = [objectCopy identifiers];
   v5 = objc_alloc_init(MEMORY[0x277D3DB00]);
-  v6 = [v4 universalStore];
-  [v5 setStoreTrackId:{objc_msgSend(v6, "adamID")}];
+  universalStore = [identifiers universalStore];
+  [v5 setStoreTrackId:{objc_msgSend(universalStore, "adamID")}];
 
-  v7 = [v4 library];
-  [v5 setPersistentID:{objc_msgSend(v7, "persistentID")}];
+  library = [identifiers library];
+  [v5 setPersistentID:{objc_msgSend(library, "persistentID")}];
 
-  v8 = [v4 library];
-  v9 = [v8 databaseID];
-  [v5 setUuid:v9];
+  library2 = [identifiers library];
+  databaseID = [library2 databaseID];
+  [v5 setUuid:databaseID];
 
-  v10 = [v4 vendorID];
-  [v5 setEpisodeGuid:v10];
+  vendorID = [identifiers vendorID];
+  [v5 setEpisodeGuid:vendorID];
 
-  v11 = [v3 podcast];
-  v12 = [v11 feedURL];
-  v13 = [v12 absoluteString];
-  [v5 setPodcastFeedUrl:v13];
+  podcast = [objectCopy podcast];
+  feedURL = [podcast feedURL];
+  absoluteString = [feedURL absoluteString];
+  [v5 setPodcastFeedUrl:absoluteString];
 
-  v14 = [v3 title];
-  [v5 setEpisodeTitle:v14];
+  title = [objectCopy title];
+  [v5 setEpisodeTitle:title];
 
-  v15 = [v3 author];
-  v16 = [v15 name];
-  [v5 setPodcastTitle:v16];
+  author = [objectCopy author];
+  name = [author name];
+  [v5 setPodcastTitle:name];
 
-  v17 = [v3 streamURL];
+  streamURL = [objectCopy streamURL];
 
-  v18 = [v17 absoluteString];
-  [v5 setStreamUrl:v18];
+  absoluteString2 = [streamURL absoluteString];
+  [v5 setStreamUrl:absoluteString2];
 
-  v19 = [MEMORY[0x277D3DB08] sharedInstance];
-  v20 = [v19 findEpisodeWithRequest:v5];
+  mEMORY[0x277D3DB08] = [MEMORY[0x277D3DB08] sharedInstance];
+  v20 = [mEMORY[0x277D3DB08] findEpisodeWithRequest:v5];
 
   return v20;
 }

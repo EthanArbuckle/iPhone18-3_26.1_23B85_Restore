@@ -16,23 +16,23 @@
 
 - (UIView)backgroundView
 {
-  v2 = [*(&self->super.isa + OBJC_IVAR____TtC17CollectionsPoster40CollectionsPosterEditorLookViewProviding_posterKitViewProviding) backgroundView];
+  backgroundView = [*(&self->super.isa + OBJC_IVAR____TtC17CollectionsPoster40CollectionsPosterEditorLookViewProviding_posterKitViewProviding) backgroundView];
 
-  return v2;
+  return backgroundView;
 }
 
 - (UIView)foregroundView
 {
-  v2 = [*(&self->super.isa + OBJC_IVAR____TtC17CollectionsPoster40CollectionsPosterEditorLookViewProviding_posterKitViewProviding) foregroundView];
+  foregroundView = [*(&self->super.isa + OBJC_IVAR____TtC17CollectionsPoster40CollectionsPosterEditorLookViewProviding_posterKitViewProviding) foregroundView];
 
-  return v2;
+  return foregroundView;
 }
 
 - (UIView)floatingView
 {
-  v2 = [*(&self->super.isa + OBJC_IVAR____TtC17CollectionsPoster40CollectionsPosterEditorLookViewProviding_posterKitViewProviding) floatingView];
+  floatingView = [*(&self->super.isa + OBJC_IVAR____TtC17CollectionsPoster40CollectionsPosterEditorLookViewProviding_posterKitViewProviding) floatingView];
 
-  return v2;
+  return floatingView;
 }
 
 @end

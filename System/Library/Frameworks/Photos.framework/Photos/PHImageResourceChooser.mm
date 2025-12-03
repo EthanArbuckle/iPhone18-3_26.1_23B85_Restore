@@ -1,33 +1,33 @@
 @interface PHImageResourceChooser
-+ (id)_bagFromInfo:(id)a3 asset:(id)a4 behaviorSpec:(id)a5 requiredScale:(double)a6 bagVendor:(id)a7 assetIDContainerVendor:(id)a8;
-+ (id)_resourceVersionsFromImageRequestVersion:(int64_t)a3 assetHasAdjustments:(BOOL)a4;
-+ (unint64_t)_chooserSourceOptionsFromBehaviorSpec:(id)a3 allowHints:(BOOL)a4;
++ (id)_bagFromInfo:(id)info asset:(id)asset behaviorSpec:(id)spec requiredScale:(double)scale bagVendor:(id)vendor assetIDContainerVendor:(id)containerVendor;
++ (id)_resourceVersionsFromImageRequestVersion:(int64_t)version assetHasAdjustments:(BOOL)adjustments;
++ (unint64_t)_chooserSourceOptionsFromBehaviorSpec:(id)spec allowHints:(BOOL)hints;
 + (void)initialize;
-- (BOOL)_resourceInfoPassesTestForImageDerivativeOfVideo:(id)a3;
+- (BOOL)_resourceInfoPassesTestForImageDerivativeOfVideo:(id)video;
 - (CGRect)normalizedCropRect;
 - (CGSize)desiredSize;
 - (Class)_policyHandlerClassForCurrentPolicy;
-- (PHImageResourceChooser)initWithAsset:(id)a3 resourceHandler:(id)a4;
-- (PHImageResourceChooser)initWithChooserList:(id)a3 asset:(id)a4 resourceHandler:(id)a5;
+- (PHImageResourceChooser)initWithAsset:(id)asset resourceHandler:(id)handler;
+- (PHImageResourceChooser)initWithChooserList:(id)list asset:(id)asset resourceHandler:(id)handler;
 - (id)_requestInfo;
 - (id)context;
 - (void)_reset;
 - (void)_updateCachedGeometry;
 - (void)presentNextQualifyingResource;
-- (void)setAllowChoosingNonLocalVideoKeyFrameResource:(BOOL)a3;
-- (void)setAllowHints:(BOOL)a3;
-- (void)setBehaviorSpec:(id)a3;
-- (void)setDesiredSize:(CGSize)a3;
-- (void)setFallbackRequestedScaleIfPreferredResourceNotLocallyAvailable:(double)a3;
-- (void)setIsCloudSharedMode:(BOOL)a3;
-- (void)setNormalizedCropRect:(CGRect)a3;
+- (void)setAllowChoosingNonLocalVideoKeyFrameResource:(BOOL)resource;
+- (void)setAllowHints:(BOOL)hints;
+- (void)setBehaviorSpec:(id)spec;
+- (void)setDesiredSize:(CGSize)size;
+- (void)setFallbackRequestedScaleIfPreferredResourceNotLocallyAvailable:(double)available;
+- (void)setIsCloudSharedMode:(BOOL)mode;
+- (void)setNormalizedCropRect:(CGRect)rect;
 @end
 
 @implementation PHImageResourceChooser
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = [[PHRecyclableObjectVendor alloc] initWithTargetClass:objc_opt_class() requiresThreadSafety:1 initialPoolSize:4];
     v3 = s_bagVendor;
@@ -48,9 +48,9 @@
   v17 = v5;
   if (!v5)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v16 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PHImageResourceChooser _updateCachedGeometry]"];
-    [v15 handleFailureInFunction:v16 file:@"PHImageResourceChooser.m" lineNumber:166 description:@"asset must be set before setting desired size."];
+    [currentHandler handleFailureInFunction:v16 file:@"PHImageResourceChooser.m" lineNumber:166 description:@"asset must be set before setting desired size."];
   }
 
   v7 = CGRectEqualToRect(self->_normalizedCropRect, *MEMORY[0x1E695F058]);
@@ -82,8 +82,8 @@
 {
   if (!self->_behaviorSpec)
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"PHImageResourceChooser.m" lineNumber:408 description:@"no behavior spec set."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHImageResourceChooser.m" lineNumber:408 description:@"no behavior spec set."];
   }
 
   if (self->_needsReset)
@@ -91,11 +91,11 @@
     [(PHImageResourceChooser *)self _reset];
   }
 
-  v3 = [(PHImageRequestBehaviorSpec *)self->_behaviorSpec version];
-  v4 = [(PHImageRequestBehaviorSpec *)self->_behaviorSpec choosingPolicy];
-  v5 = v4;
-  v7 = v3 < 2 && v4 == 3;
-  v8 = [(PHImageResourceChooser *)self _requestInfo];
+  version = [(PHImageRequestBehaviorSpec *)self->_behaviorSpec version];
+  choosingPolicy = [(PHImageRequestBehaviorSpec *)self->_behaviorSpec choosingPolicy];
+  v5 = choosingPolicy;
+  v7 = version < 2 && choosingPolicy == 3;
+  _requestInfo = [(PHImageResourceChooser *)self _requestInfo];
   objc_initWeak(&location, self);
   objc_storeStrong(&self->_list->_asset, self->_asset);
   aBlock[0] = MEMORY[0x1E69E9820];
@@ -104,7 +104,7 @@
   aBlock[3] = &unk_1E75A7DD8;
   objc_copyWeak(v25, &location);
   v25[1] = v5;
-  v9 = v8;
+  v9 = _requestInfo;
   v24 = v9;
   v10 = _Block_copy(aBlock);
   list = self->_list;
@@ -119,7 +119,7 @@
   v13 = v9;
   v20 = v13;
   v21[1] = v5;
-  v21[2] = v3;
+  v21[2] = version;
   v22 = v7;
   v14 = _Block_copy(v19);
   v15 = self->_list;
@@ -151,15 +151,15 @@
   *&self->_didCheckForLocalVideoKeyFrame = 0;
   PHChooserListMoveFirst(self->_list);
   [(PHImageResourceChooser *)self _updateCachedGeometry];
-  v6 = [(PHImageRequestBehaviorSpec *)self->_behaviorSpec version];
-  if (v6 == 2)
+  version = [(PHImageRequestBehaviorSpec *)self->_behaviorSpec version];
+  if (version == 2)
   {
     v8 = 0;
     goto LABEL_7;
   }
 
   v7 = 0;
-  if (v6 == 1)
+  if (version == 1)
   {
     v8 = 1;
 LABEL_7:
@@ -498,26 +498,26 @@ LABEL_16:
   return result;
 }
 
-- (void)setFallbackRequestedScaleIfPreferredResourceNotLocallyAvailable:(double)a3
+- (void)setFallbackRequestedScaleIfPreferredResourceNotLocallyAvailable:(double)available
 {
-  if (vabdd_f64(self->_fallbackRequestedScaleIfPreferredResourceNotLocallyAvailable, a3) > 0.00000011920929)
+  if (vabdd_f64(self->_fallbackRequestedScaleIfPreferredResourceNotLocallyAvailable, available) > 0.00000011920929)
   {
     self->_needsReset = 1;
-    self->_fallbackRequestedScaleIfPreferredResourceNotLocallyAvailable = a3;
+    self->_fallbackRequestedScaleIfPreferredResourceNotLocallyAvailable = available;
   }
 }
 
-- (void)setBehaviorSpec:(id)a3
+- (void)setBehaviorSpec:(id)spec
 {
-  v4 = a3;
-  v5 = v4;
-  if (!self->_needsReset && v4 && self->_behaviorSpec)
+  specCopy = spec;
+  v5 = specCopy;
+  if (!self->_needsReset && specCopy && self->_behaviorSpec)
   {
-    v6 = [(PHImageRequestBehaviorSpec *)v4 loadingOptions];
-    if (v6 == [(PHImageRequestBehaviorSpec *)self->_behaviorSpec loadingOptions]&& (v7 = [(PHImageRequestBehaviorSpec *)v5 choosingPolicy], v7 >= [(PHImageRequestBehaviorSpec *)self->_behaviorSpec choosingPolicy]) && (v8 = [(PHImageRequestBehaviorSpec *)v5 version], v8 == [(PHImageRequestBehaviorSpec *)self->_behaviorSpec version]) && ([(PHImageRequestBehaviorSpec *)v5 minimumTableThumbnailLongSide], v10 = v9, [(PHImageRequestBehaviorSpec *)self->_behaviorSpec minimumTableThumbnailLongSide], v10 == v11))
+    loadingOptions = [(PHImageRequestBehaviorSpec *)specCopy loadingOptions];
+    if (loadingOptions == [(PHImageRequestBehaviorSpec *)self->_behaviorSpec loadingOptions]&& (v7 = [(PHImageRequestBehaviorSpec *)v5 choosingPolicy], v7 >= [(PHImageRequestBehaviorSpec *)self->_behaviorSpec choosingPolicy]) && (v8 = [(PHImageRequestBehaviorSpec *)v5 version], v8 == [(PHImageRequestBehaviorSpec *)self->_behaviorSpec version]) && ([(PHImageRequestBehaviorSpec *)v5 minimumTableThumbnailLongSide], v10 = v9, [(PHImageRequestBehaviorSpec *)self->_behaviorSpec minimumTableThumbnailLongSide], v10 == v11))
     {
-      v14 = [(PHImageRequestBehaviorSpec *)v5 onlyUseFetchedAssetPropertiesDuringChoosing];
-      v12 = v14 ^ [(PHImageRequestBehaviorSpec *)self->_behaviorSpec onlyUseFetchedAssetPropertiesDuringChoosing];
+      onlyUseFetchedAssetPropertiesDuringChoosing = [(PHImageRequestBehaviorSpec *)v5 onlyUseFetchedAssetPropertiesDuringChoosing];
+      v12 = onlyUseFetchedAssetPropertiesDuringChoosing ^ [(PHImageRequestBehaviorSpec *)self->_behaviorSpec onlyUseFetchedAssetPropertiesDuringChoosing];
     }
 
     else
@@ -532,12 +532,12 @@ LABEL_16:
   self->_behaviorSpec = v5;
 }
 
-- (void)setIsCloudSharedMode:(BOOL)a3
+- (void)setIsCloudSharedMode:(BOOL)mode
 {
-  if (self->_isCloudSharedMode != a3)
+  if (self->_isCloudSharedMode != mode)
   {
     self->_needsReset = 1;
-    self->_isCloudSharedMode = a3;
+    self->_isCloudSharedMode = mode;
   }
 }
 
@@ -554,13 +554,13 @@ LABEL_16:
   return result;
 }
 
-- (void)setNormalizedCropRect:(CGRect)a3
+- (void)setNormalizedCropRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (!CGRectEqualToRect(a3, self->_normalizedCropRect))
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  if (!CGRectEqualToRect(rect, self->_normalizedCropRect))
   {
     if (!CGRectEqualToRect(self->_normalizedCropRect, *MEMORY[0x1E695F058]))
     {
@@ -576,68 +576,68 @@ LABEL_16:
   }
 }
 
-- (void)setAllowChoosingNonLocalVideoKeyFrameResource:(BOOL)a3
+- (void)setAllowChoosingNonLocalVideoKeyFrameResource:(BOOL)resource
 {
-  if (self->_allowChoosingNonLocalVideoKeyFrameResource != a3)
+  if (self->_allowChoosingNonLocalVideoKeyFrameResource != resource)
   {
     self->_needsReset = 1;
-    self->_allowChoosingNonLocalVideoKeyFrameResource = a3;
+    self->_allowChoosingNonLocalVideoKeyFrameResource = resource;
   }
 }
 
-- (void)setAllowHints:(BOOL)a3
+- (void)setAllowHints:(BOOL)hints
 {
-  if (self->_allowHints != a3)
+  if (self->_allowHints != hints)
   {
     self->_needsReset = 1;
-    self->_allowHints = a3;
+    self->_allowHints = hints;
   }
 }
 
-- (void)setDesiredSize:(CGSize)a3
+- (void)setDesiredSize:(CGSize)size
 {
   width = self->_desiredSize.width;
   height = self->_desiredSize.height;
-  if (a3.width != width || a3.height != height)
+  if (size.width != width || size.height != height)
   {
     if (width != *MEMORY[0x1E695F060] || height != *(MEMORY[0x1E695F060] + 8))
     {
       self->_needsReset = 1;
     }
 
-    self->_desiredSize = a3;
+    self->_desiredSize = size;
     [(PHImageResourceChooser *)self _updateCachedGeometry];
   }
 }
 
-- (PHImageResourceChooser)initWithAsset:(id)a3 resourceHandler:(id)a4
+- (PHImageResourceChooser)initWithAsset:(id)asset resourceHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  assetCopy = asset;
   v8 = objc_alloc_init(PHResourceChooserList);
-  v9 = [(PHImageResourceChooser *)self initWithChooserList:v8 asset:v7 resourceHandler:v6];
+  v9 = [(PHImageResourceChooser *)self initWithChooserList:v8 asset:assetCopy resourceHandler:handlerCopy];
 
   return v9;
 }
 
-- (PHImageResourceChooser)initWithChooserList:(id)a3 asset:(id)a4 resourceHandler:(id)a5
+- (PHImageResourceChooser)initWithChooserList:(id)list asset:(id)asset resourceHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  listCopy = list;
+  assetCopy = asset;
+  handlerCopy = handler;
   v20.receiver = self;
   v20.super_class = PHImageResourceChooser;
   v13 = [(PHImageResourceChooser *)&v20 init];
   if (v13)
   {
-    if (v10)
+    if (listCopy)
     {
-      if (v11)
+      if (assetCopy)
       {
 LABEL_4:
-        objc_storeStrong(v13 + 2, a3);
-        objc_storeStrong(v13 + 1, a4);
-        v14 = _Block_copy(v12);
+        objc_storeStrong(v13 + 2, list);
+        objc_storeStrong(v13 + 1, asset);
+        v14 = _Block_copy(handlerCopy);
         v15 = *(v13 + 3);
         *(v13 + 3) = v14;
 
@@ -653,17 +653,17 @@ LABEL_4:
 
     else
     {
-      v18 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v18 handleFailureInMethod:a2 object:v13 file:@"PHImageResourceChooser.m" lineNumber:305 description:{@"Invalid parameter not satisfying: %@", @"list"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v13 file:@"PHImageResourceChooser.m" lineNumber:305 description:{@"Invalid parameter not satisfying: %@", @"list"}];
 
-      if (v11)
+      if (assetCopy)
       {
         goto LABEL_4;
       }
     }
 
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:v13 file:@"PHImageResourceChooser.m" lineNumber:306 description:{@"Invalid parameter not satisfying: %@", @"asset"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:v13 file:@"PHImageResourceChooser.m" lineNumber:306 description:{@"Invalid parameter not satisfying: %@", @"asset"}];
 
     goto LABEL_4;
   }
@@ -673,15 +673,15 @@ LABEL_5:
   return v13;
 }
 
-- (BOOL)_resourceInfoPassesTestForImageDerivativeOfVideo:(id)a3
+- (BOOL)_resourceInfoPassesTestForImageDerivativeOfVideo:(id)video
 {
-  v4 = a3;
+  videoCopy = video;
   if ([(PHResourceChooserAsset *)self->_asset mediaType]!= 2)
   {
     goto LABEL_15;
   }
 
-  if (!self->_didCheckForLocalVideoKeyFrame && self->_list && ([v4 isHintBased] & 1) == 0)
+  if (!self->_didCheckForLocalVideoKeyFrame && self->_list && ([videoCopy isHintBased] & 1) == 0)
   {
     self->_didCheckForLocalVideoKeyFrame = 1;
     self->_hasLocalVideoKeyFrameInNonHintResources = PHChooserListLookAheadForNonHintResourcePassingTest(self->_list, &__block_literal_global_29014);
@@ -692,13 +692,13 @@ LABEL_5:
     goto LABEL_15;
   }
 
-  v5 = [(PHResourceChooserAsset *)self->_asset isLocalVideoKeyFrameValid];
-  v6 = [v4 recipeID];
-  if (v5)
+  isLocalVideoKeyFrameValid = [(PHResourceChooserAsset *)self->_asset isLocalVideoKeyFrameValid];
+  recipeID = [videoCopy recipeID];
+  if (isLocalVideoKeyFrameValid)
   {
-    if ((PLResourceRecipeIDIsCPLImageDerivative() & 1) == 0 && ([v4 recipeID] != 65749 || (-[PHResourceChooserAsset isWalrusEnabled](self->_asset, "isWalrusEnabled") & 1) == 0))
+    if ((PLResourceRecipeIDIsCPLImageDerivative() & 1) == 0 && ([videoCopy recipeID] != 65749 || (-[PHResourceChooserAsset isWalrusEnabled](self->_asset, "isWalrusEnabled") & 1) == 0))
     {
-      if ([v4 recipeID] != 65749 || -[PHImageResourceChooser allowChoosingNonLocalVideoKeyFrameResource](self, "allowChoosingNonLocalVideoKeyFrameResource"))
+      if ([videoCopy recipeID] != 65749 || -[PHImageResourceChooser allowChoosingNonLocalVideoKeyFrameResource](self, "allowChoosingNonLocalVideoKeyFrameResource"))
       {
 LABEL_15:
         v7 = 1;
@@ -718,7 +718,7 @@ LABEL_15:
 
   else
   {
-    v7 = v6 != 65749;
+    v7 = recipeID != 65749;
   }
 
 LABEL_16:
@@ -726,54 +726,54 @@ LABEL_16:
   return v7;
 }
 
-+ (unint64_t)_chooserSourceOptionsFromBehaviorSpec:(id)a3 allowHints:(BOOL)a4
++ (unint64_t)_chooserSourceOptionsFromBehaviorSpec:(id)spec allowHints:(BOOL)hints
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = v4;
-  if (([v5 onlyUseFetchedAssetPropertiesDuringChoosing] & 1) == 0 && (objc_msgSend(v5, "choosingPolicy") > 2 || !v4 || !objc_msgSend(v5, "choosingPolicy") && objc_msgSend(v5, "isNetworkAccessAllowed")))
+  hintsCopy = hints;
+  specCopy = spec;
+  v6 = hintsCopy;
+  if (([specCopy onlyUseFetchedAssetPropertiesDuringChoosing] & 1) == 0 && (objc_msgSend(specCopy, "choosingPolicy") > 2 || !hintsCopy || !objc_msgSend(specCopy, "choosingPolicy") && objc_msgSend(specCopy, "isNetworkAccessAllowed")))
   {
-    v6 = v4 | 2;
+    v6 = hintsCopy | 2;
   }
 
   return v6;
 }
 
-+ (id)_bagFromInfo:(id)a3 asset:(id)a4 behaviorSpec:(id)a5 requiredScale:(double)a6 bagVendor:(id)a7 assetIDContainerVendor:(id)a8
++ (id)_bagFromInfo:(id)info asset:(id)asset behaviorSpec:(id)spec requiredScale:(double)scale bagVendor:(id)vendor assetIDContainerVendor:(id)containerVendor
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a7;
-  v17 = a8;
-  v18 = [v13 dataStoreKey];
+  infoCopy = info;
+  assetCopy = asset;
+  specCopy = spec;
+  vendorCopy = vendor;
+  containerVendorCopy = containerVendor;
+  dataStoreKey = [infoCopy dataStoreKey];
 
-  if (v18)
+  if (dataStoreKey)
   {
-    v18 = [v16 dequeueRecyclableObject];
-    v19 = [v17 dequeueRecyclableObject];
-    [v19 loadFromAsset:v14];
-    [v18 setAssetID:v19];
-    v20 = [v13 store];
-    [v18 setDataStore:v20];
+    dataStoreKey = [vendorCopy dequeueRecyclableObject];
+    dequeueRecyclableObject = [containerVendorCopy dequeueRecyclableObject];
+    [dequeueRecyclableObject loadFromAsset:assetCopy];
+    [dataStoreKey setAssetID:dequeueRecyclableObject];
+    store = [infoCopy store];
+    [dataStoreKey setDataStore:store];
 
-    v21 = [v13 dataStoreKey];
-    [v18 setDataStoreKey:v21];
+    dataStoreKey2 = [infoCopy dataStoreKey];
+    [dataStoreKey setDataStoreKey:dataStoreKey2];
 
-    v22 = [v15 choosingPolicy];
-    if (v22 <= 4)
+    choosingPolicy = [specCopy choosingPolicy];
+    if (choosingPolicy <= 4)
     {
-      if (((1 << v22) & 0x19) != 0)
+      if (((1 << choosingPolicy) & 0x19) != 0)
       {
         IsFullSizeDeferredProcessingPreview = 0;
       }
 
       else
       {
-        [v13 resourceScale];
-        if (v24 >= a6)
+        [infoCopy resourceScale];
+        if (v24 >= scale)
         {
-          [v13 recipeID];
+          [infoCopy recipeID];
           IsFullSizeDeferredProcessingPreview = PLResourceRecipeIsFullSizeDeferredProcessingPreview();
         }
 
@@ -783,35 +783,35 @@ LABEL_16:
         }
       }
 
-      [v18 setIsDegraded:IsFullSizeDeferredProcessingPreview];
+      [dataStoreKey setIsDegraded:IsFullSizeDeferredProcessingPreview];
     }
 
-    [v18 setIsPrimaryFormat:objc_msgSend(v13, "isPrimaryFormat")];
-    [v18 setKeyIsHintBased:{objc_msgSend(v13, "isHintBased")}];
-    [v13 recipeID];
-    [v14 deferredProcessingNeeded];
-    [v18 setIsDerivedFromDeferredPreview:PLResourceIsDerivedFromDeferredProcessingPreviewImage()];
+    [dataStoreKey setIsPrimaryFormat:objc_msgSend(infoCopy, "isPrimaryFormat")];
+    [dataStoreKey setKeyIsHintBased:{objc_msgSend(infoCopy, "isHintBased")}];
+    [infoCopy recipeID];
+    [assetCopy deferredProcessingNeeded];
+    [dataStoreKey setIsDerivedFromDeferredPreview:PLResourceIsDerivedFromDeferredProcessingPreviewImage()];
   }
 
   else
   {
-    v19 = 0;
+    dequeueRecyclableObject = 0;
   }
 
-  return v18;
+  return dataStoreKey;
 }
 
-+ (id)_resourceVersionsFromImageRequestVersion:(int64_t)a3 assetHasAdjustments:(BOOL)a4
++ (id)_resourceVersionsFromImageRequestVersion:(int64_t)version assetHasAdjustments:(BOOL)adjustments
 {
-  v4 = a4;
+  adjustmentsCopy = adjustments;
   v6 = [MEMORY[0x1E695DF70] arrayWithCapacity:2];
   v7 = v6;
   v8 = &unk_1F102D0D0;
-  if (a3 > 1)
+  if (version > 1)
   {
-    if (a3 != 2)
+    if (version != 2)
     {
-      if (a3 != 8)
+      if (version != 8)
       {
         goto LABEL_12;
       }
@@ -822,10 +822,10 @@ LABEL_16:
     goto LABEL_11;
   }
 
-  if (!a3)
+  if (!version)
   {
     [v6 addObject:&unk_1F102D0A0];
-    if (v4)
+    if (adjustmentsCopy)
     {
       v8 = &unk_1F102D0B8;
     }
@@ -833,10 +833,10 @@ LABEL_16:
     goto LABEL_11;
   }
 
-  if (a3 == 1)
+  if (version == 1)
   {
     [v6 addObject:&unk_1F102D0D0];
-    if (!v4)
+    if (!adjustmentsCopy)
     {
       v8 = &unk_1F102D0A0;
 LABEL_11:

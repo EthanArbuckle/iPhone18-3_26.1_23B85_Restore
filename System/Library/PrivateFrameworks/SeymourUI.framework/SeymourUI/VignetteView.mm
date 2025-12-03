@@ -1,7 +1,7 @@
 @interface VignetteView
 + (Class)layerClass;
-- (_TtC9SeymourUI12VignetteView)initWithCoder:(id)a3;
-- (_TtC9SeymourUI12VignetteView)initWithFrame:(CGRect)a3;
+- (_TtC9SeymourUI12VignetteView)initWithCoder:(id)coder;
+- (_TtC9SeymourUI12VignetteView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation VignetteView
@@ -13,20 +13,20 @@
   return swift_getObjCClassFromMetadata();
 }
 
-- (_TtC9SeymourUI12VignetteView)initWithCoder:(id)a3
+- (_TtC9SeymourUI12VignetteView)initWithCoder:(id)coder
 {
   v4 = objc_opt_self();
-  v5 = a3;
-  v6 = [v4 blackColor];
+  coderCopy = coder;
+  blackColor = [v4 blackColor];
   v7 = objc_allocWithZone(type metadata accessor for VignetteView());
-  v8 = sub_20B64C3B4(3, v6);
+  v8 = sub_20B64C3B4(3, blackColor);
 
   swift_getObjectType();
   swift_deallocPartialClassInstance();
   return v8;
 }
 
-- (_TtC9SeymourUI12VignetteView)initWithFrame:(CGRect)a3
+- (_TtC9SeymourUI12VignetteView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

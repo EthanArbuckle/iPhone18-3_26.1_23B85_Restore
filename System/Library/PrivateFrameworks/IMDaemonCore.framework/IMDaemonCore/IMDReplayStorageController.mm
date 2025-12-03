@@ -1,24 +1,24 @@
 @interface IMDReplayStorageController
-- (BOOL)storeDictionary:(id)a3 error:(id *)a4;
-- (IMDReplayStorageController)initWithFilePath:(id)a3;
-- (id)copyNextBatchWithSize:(unint64_t)a3 iterationContext:(id *)a4;
+- (BOOL)storeDictionary:(id)dictionary error:(id *)error;
+- (IMDReplayStorageController)initWithFilePath:(id)path;
+- (id)copyNextBatchWithSize:(unint64_t)size iterationContext:(id *)context;
 - (void)dealloc;
 - (void)deleteReplayDB;
 @end
 
 @implementation IMDReplayStorageController
 
-- (IMDReplayStorageController)initWithFilePath:(id)a3
+- (IMDReplayStorageController)initWithFilePath:(id)path
 {
-  if (a3)
+  if (path)
   {
     v7.receiver = self;
     v7.super_class = IMDReplayStorageController;
     v4 = [(IMDReplayStorageController *)&v7 init];
     if (v4)
     {
-      v4->_filePath = a3;
-      v4->_store = [objc_alloc(MEMORY[0x277D18AD0]) initWithPath:a3 storeName:@"IMDReplayStorageController" dataProtectionClass:2];
+      v4->_filePath = path;
+      v4->_store = [objc_alloc(MEMORY[0x277D18AD0]) initWithPath:path storeName:@"IMDReplayStorageController" dataProtectionClass:2];
     }
   }
 
@@ -40,10 +40,10 @@
   return v4;
 }
 
-- (BOOL)storeDictionary:(id)a3 error:(id *)a4
+- (BOOL)storeDictionary:(id)dictionary error:(id *)error
 {
   objc_sync_enter(self);
-  if (a3)
+  if (dictionary)
   {
     goto LABEL_2;
   }
@@ -58,7 +58,7 @@
     }
   }
 
-  if (!a4)
+  if (!error)
   {
 LABEL_2:
     [(IDSKVStore *)self->_store persistData:JWEncodeDictionary() forKey:0 error:0];
@@ -68,31 +68,31 @@ LABEL_2:
   else
   {
     v7 = 0;
-    *a4 = [MEMORY[0x277CCA9B8] errorWithDomain:@"__kIMDReplayMessageStorageControllerErrorDomain" code:0 userInfo:0];
+    *error = [MEMORY[0x277CCA9B8] errorWithDomain:@"__kIMDReplayMessageStorageControllerErrorDomain" code:0 userInfo:0];
   }
 
   objc_sync_exit(self);
   return v7;
 }
 
-- (id)copyNextBatchWithSize:(unint64_t)a3 iterationContext:(id *)a4
+- (id)copyNextBatchWithSize:(unint64_t)size iterationContext:(id *)context
 {
   v23 = *MEMORY[0x277D85DE8];
   objc_sync_enter(self);
-  if (a4 && *a4)
+  if (context && *context)
   {
-    -[IDSKVStore deleteBatchWithContext:error:](self->_store, "deleteBatchWithContext:error:", [*a4 deleteContext], 0);
-    *a4 = 0;
+    -[IDSKVStore deleteBatchWithContext:error:](self->_store, "deleteBatchWithContext:error:", [*context deleteContext], 0);
+    *context = 0;
   }
 
   v21 = 0;
-  v7 = [(IDSKVStore *)self->_store datasUpToLimit:a3 deleteContext:&v21 error:0];
+  v7 = [(IDSKVStore *)self->_store datasUpToLimit:size deleteContext:&v21 error:0];
   if (v7)
   {
-    if (a4)
+    if (context)
     {
       v8 = objc_alloc_init(IMDReplayStorageIterationContext);
-      *a4 = v8;
+      *context = v8;
       [(IMDReplayStorageIterationContext *)v8 setDeleteContext:v21];
     }
 

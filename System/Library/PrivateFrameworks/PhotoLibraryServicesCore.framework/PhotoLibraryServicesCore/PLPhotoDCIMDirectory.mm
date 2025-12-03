@@ -1,38 +1,38 @@
 @interface PLPhotoDCIMDirectory
 - (BOOL)hasChangedExternally;
-- (PLPhotoDCIMDirectory)initWithDCIMPath:(id)a3;
+- (PLPhotoDCIMDirectory)initWithDCIMPath:(id)path;
 - (id)_userInfoPath;
 - (id)dcfDirectories;
 - (id)miscPath;
 - (id)nextAvailableDirectory;
 - (id)posterImagePath;
 - (id)userInfo;
-- (id)userInfoObjectForKey:(id)a3;
+- (id)userInfoObjectForKey:(id)key;
 - (void)clearDCFDirectories;
 - (void)dealloc;
 - (void)lockDirectory;
 - (void)recreateInfoPlist;
 - (void)reloadUserInfo;
 - (void)saveUserInfo;
-- (void)setHasChangedExternally:(BOOL)a3;
-- (void)setUserInfoObject:(id)a3 forKey:(id)a4;
+- (void)setHasChangedExternally:(BOOL)externally;
+- (void)setUserInfoObject:(id)object forKey:(id)key;
 - (void)unlockDirectory;
 @end
 
 @implementation PLPhotoDCIMDirectory
 
-- (void)setHasChangedExternally:(BOOL)a3
+- (void)setHasChangedExternally:(BOOL)externally
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:externally];
   [(PLPhotoDCIMDirectory *)self setUserInfoObject:v4 forKey:@"DCIMChangedExternally"];
 }
 
 - (BOOL)hasChangedExternally
 {
   v2 = [(PLPhotoDCIMDirectory *)self userInfoObjectForKey:@"DCIMChangedExternally"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (void)unlockDirectory
@@ -78,8 +78,8 @@
 
 - (id)nextAvailableDirectory
 {
-  v14 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [(PLPhotoDCIMDirectory *)self dcfDirectories];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  dcfDirectories = [(PLPhotoDCIMDirectory *)self dcfDirectories];
   lastUsedDirectoryNumber = self->_lastUsedDirectoryNumber;
   if (lastUsedDirectoryNumber >= 1000)
   {
@@ -141,13 +141,13 @@
 LABEL_17:
     self->_lastUsedDirectoryNumber = v5;
     v11 = [MEMORY[0x1E696AD98] numberWithInt:v5];
-    v12 = v14;
-    [v14 setObject:v11 forKey:@"DCFLastDirectoryNumber"];
+    v12 = standardUserDefaults;
+    [standardUserDefaults setObject:v11 forKey:@"DCFLastDirectoryNumber"];
 
     goto LABEL_19;
   }
 
-  v12 = v14;
+  v12 = standardUserDefaults;
 LABEL_19:
 
   return v7;
@@ -180,8 +180,8 @@ LABEL_19:
   topLevelDirectories = self->_topLevelDirectories;
   if (!topLevelDirectories)
   {
-    v24 = [MEMORY[0x1E696AC08] defaultManager];
-    v4 = [v24 contentsOfDirectoryAtPath:self->_dcimPath error:0];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    v4 = [defaultManager contentsOfDirectoryAtPath:self->_dcimPath error:0];
     v5 = [v4 count];
     v6 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:v5];
     self->_topLevelDirectoriesByNumber = CFDictionaryCreateMutable(0, 0, 0, MEMORY[0x1E695E9E8]);
@@ -234,23 +234,23 @@ LABEL_9:
 
 LABEL_13:
     v14 = objc_alloc(MEMORY[0x1E695DF70]);
-    v15 = [v6 allValues];
-    v16 = [v14 initWithArray:v15];
+    allValues = [v6 allValues];
+    v16 = [v14 initWithArray:allValues];
     v17 = self->_topLevelDirectories;
     self->_topLevelDirectories = v16;
 
     v18 = [(NSMutableArray *)self->_topLevelDirectories sortedArrayUsingSelector:sel_compare_];
-    v19 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v20 = [v19 objectForKey:@"DCFLastDirectoryNumber"];
-    v21 = [v20 intValue];
-    if (v21 <= 100)
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    v20 = [standardUserDefaults objectForKey:@"DCFLastDirectoryNumber"];
+    intValue = [v20 intValue];
+    if (intValue <= 100)
     {
       v22 = 100;
     }
 
     else
     {
-      v22 = v21;
+      v22 = intValue;
     }
 
     self->_lastUsedDirectoryNumber = v22;
@@ -261,21 +261,21 @@ LABEL_13:
   return topLevelDirectories;
 }
 
-- (void)setUserInfoObject:(id)a3 forKey:(id)a4
+- (void)setUserInfoObject:(id)object forKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PLPhotoDCIMDirectory *)self userInfo];
-  [v8 setObject:v7 forKey:v6];
+  keyCopy = key;
+  objectCopy = object;
+  userInfo = [(PLPhotoDCIMDirectory *)self userInfo];
+  [userInfo setObject:objectCopy forKey:keyCopy];
 
   self->_userInfoDidChange = 1;
 }
 
-- (id)userInfoObjectForKey:(id)a3
+- (id)userInfoObjectForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(PLPhotoDCIMDirectory *)self userInfo];
-  v6 = [v5 objectForKey:v4];
+  keyCopy = key;
+  userInfo = [(PLPhotoDCIMDirectory *)self userInfo];
+  v6 = [userInfo objectForKey:keyCopy];
 
   return v6;
 }
@@ -285,7 +285,7 @@ LABEL_13:
   userInfo = self->_userInfo;
   self->_userInfo = 0;
 
-  v4 = [(PLPhotoDCIMDirectory *)self userInfo];
+  userInfo = [(PLPhotoDCIMDirectory *)self userInfo];
 }
 
 - (void)recreateInfoPlist
@@ -301,8 +301,8 @@ LABEL_13:
     v46 = 0u;
     v43 = 0u;
     v44 = 0u;
-    v4 = v3;
-    v34 = [v4 countByEnumeratingWithState:&v43 objects:v48 count:16];
+    _userInfoPath = v3;
+    v34 = [_userInfoPath countByEnumeratingWithState:&v43 objects:v48 count:16];
     if (!v34)
     {
 LABEL_28:
@@ -311,7 +311,7 @@ LABEL_28:
     }
 
     v28 = v3;
-    obj = v4;
+    obj = _userInfoPath;
     v5 = 0;
     v33 = *v44;
     do
@@ -358,15 +358,15 @@ LABEL_28:
 
                 v19 = *(*(&v38 + 1) + 8 * j);
                 v20 = objc_autoreleasePoolPush();
-                v21 = [v19 stringByDeletingPathExtension];
-                v22 = [v21 componentsSeparatedByString:@"_"];
+                stringByDeletingPathExtension = [v19 stringByDeletingPathExtension];
+                v22 = [stringByDeletingPathExtension componentsSeparatedByString:@"_"];
 
                 if ([v22 count] >= 2)
                 {
                   v23 = [v22 objectAtIndex:1];
-                  v24 = [v23 intValue];
+                  intValue = [v23 intValue];
 
-                  v15 = v24 + 100000 - 1000 * v42 + 10000 * ((1000 * v42 - 100000) / 10000);
+                  v15 = intValue + 100000 - 1000 * v42 + 10000 * ((1000 * v42 - 100000) / 10000);
                 }
 
                 if (v16 <= v15)
@@ -417,8 +417,8 @@ LABEL_28:
     v3 = v28;
     if (v5)
     {
-      v4 = [(PLPhotoDCIMDirectory *)v30 _userInfoPath];
-      [v32 writeToFile:v4 atomically:0];
+      _userInfoPath = [(PLPhotoDCIMDirectory *)v30 _userInfoPath];
+      [v32 writeToFile:_userInfoPath atomically:0];
       goto LABEL_28;
     }
   }
@@ -432,18 +432,18 @@ LABEL_29:
   userInfo = self->_userInfo;
   if (!userInfo)
   {
-    v4 = [MEMORY[0x1E696AC08] defaultManager];
-    v5 = [(PLPhotoDCIMDirectory *)self _userInfoPath];
-    v31 = v4;
-    v6 = [v4 fileExistsAtPath:v5];
-    v7 = self;
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    _userInfoPath = [(PLPhotoDCIMDirectory *)self _userInfoPath];
+    v31 = defaultManager;
+    v6 = [defaultManager fileExistsAtPath:_userInfoPath];
+    selfCopy = self;
     if ((v6 & 1) == 0)
     {
       [(PLPhotoDCIMDirectory *)self recreateInfoPlist];
     }
 
-    v30 = v5;
-    v8 = [objc_alloc(MEMORY[0x1E695DF90]) initWithContentsOfFile:v5];
+    v30 = _userInfoPath;
+    v8 = [objc_alloc(MEMORY[0x1E695DF90]) initWithContentsOfFile:_userInfoPath];
     v9 = self->_userInfo;
     self->_userInfo = v8;
 
@@ -476,13 +476,13 @@ LABEL_29:
             v17 = v13;
             v18 = v12;
             v19 = [v15 substringFromIndex:{objc_msgSend(v15, "length") - 3}];
-            v20 = [v19 intValue];
-            v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%03dAPPLE", v20];
-            [(PLPhotoDCIMDirectory *)v7 dcimPath];
-            v23 = v22 = v7;
+            intValue = [v19 intValue];
+            v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%03dAPPLE", intValue];
+            [(PLPhotoDCIMDirectory *)selfCopy dcimPath];
+            v23 = v22 = selfCopy;
             v24 = [v23 stringByAppendingPathComponent:v21];
 
-            v7 = v22;
+            selfCopy = v22;
             v34 = 0;
             if (![v31 fileExistsAtPath:v24 isDirectory:&v34] || (v34 & 1) == 0)
             {
@@ -516,8 +516,8 @@ LABEL_29:
       LOBYTE(v12) = 0;
     }
 
-    v25 = v7;
-    userInfo = v7->_userInfo;
+    v25 = selfCopy;
+    userInfo = selfCopy->_userInfo;
     if (userInfo)
     {
       if (v12)
@@ -553,8 +553,8 @@ LABEL_22:
   if (self->_userInfoDidChange)
   {
     userInfo = self->_userInfo;
-    v4 = [(PLPhotoDCIMDirectory *)self _userInfoPath];
-    [(NSMutableDictionary *)userInfo writeToFile:v4 atomically:0];
+    _userInfoPath = [(PLPhotoDCIMDirectory *)self _userInfoPath];
+    [(NSMutableDictionary *)userInfo writeToFile:_userInfoPath atomically:0];
 
     self->_userInfoDidChange = 0;
   }
@@ -565,8 +565,8 @@ LABEL_22:
   posterImagePath = self->_posterImagePath;
   if (!posterImagePath)
   {
-    v4 = [(PLPhotoDCIMDirectory *)self miscPath];
-    v5 = [v4 stringByAppendingPathComponent:@"PosterImage.jpg"];
+    miscPath = [(PLPhotoDCIMDirectory *)self miscPath];
+    v5 = [miscPath stringByAppendingPathComponent:@"PosterImage.jpg"];
     v6 = self->_posterImagePath;
     self->_posterImagePath = v5;
 
@@ -589,8 +589,8 @@ LABEL_22:
     v9 = *MEMORY[0x1E696A370];
     v10[0] = &unk_1F1F90968;
     v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v10 forKeys:&v9 count:1];
-    v7 = [MEMORY[0x1E696AC08] defaultManager];
-    [v7 createDirectoryAtPath:self->_miscPath withIntermediateDirectories:1 attributes:v6 error:0];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    [defaultManager createDirectoryAtPath:self->_miscPath withIntermediateDirectories:1 attributes:v6 error:0];
 
     miscPath = self->_miscPath;
   }
@@ -618,27 +618,27 @@ LABEL_22:
   [(PLPhotoDCIMDirectory *)&v5 dealloc];
 }
 
-- (PLPhotoDCIMDirectory)initWithDCIMPath:(id)a3
+- (PLPhotoDCIMDirectory)initWithDCIMPath:(id)path
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  pathCopy = path;
   v12.receiver = self;
   v12.super_class = PLPhotoDCIMDirectory;
   v5 = [(PLPhotoDCIMDirectory *)&v12 init];
   v6 = v5;
   if (v5)
   {
-    if (v4)
+    if (pathCopy)
     {
-      v7 = [v4 copy];
+      v7 = [pathCopy copy];
       dcimPath = v6->_dcimPath;
       v6->_dcimPath = v7;
 
       v13 = *MEMORY[0x1E696A370];
       v14[0] = &unk_1F1F90968;
       v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:&v13 count:1];
-      v10 = [MEMORY[0x1E696AC08] defaultManager];
-      [v10 createDirectoryAtPath:v4 withIntermediateDirectories:1 attributes:v9 error:0];
+      defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+      [defaultManager createDirectoryAtPath:pathCopy withIntermediateDirectories:1 attributes:v9 error:0];
 
       v6->_lastUsedDirectoryNumber = 100;
       v6->_dcimDirectoryLockDescriptor = -1;
@@ -656,8 +656,8 @@ LABEL_22:
 
 - (id)_userInfoPath
 {
-  v2 = [(PLPhotoDCIMDirectory *)self miscPath];
-  v3 = [v2 stringByAppendingPathComponent:@"Info.plist"];
+  miscPath = [(PLPhotoDCIMDirectory *)self miscPath];
+  v3 = [miscPath stringByAppendingPathComponent:@"Info.plist"];
 
   return v3;
 }

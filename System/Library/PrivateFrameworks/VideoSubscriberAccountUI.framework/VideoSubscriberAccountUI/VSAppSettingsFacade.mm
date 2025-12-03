@@ -1,34 +1,34 @@
 @interface VSAppSettingsFacade
 - (BOOL)shouldShowMVPDAppInstallPrompt;
-- (BOOL)shouldShowMVPDAppInstallPromptFromViewController:(id)a3;
+- (BOOL)shouldShowMVPDAppInstallPromptFromViewController:(id)controller;
 - (VSAppSettingsFacade)init;
-- (VSAppSettingsFacade)initWithStorage:(id)a3 restrictionsCenter:(id)a4;
-- (VSAppSettingsFacade)initWithStorage:(id)a3 restrictionsCenter:(id)a4 accountChannelsCenter:(id)a5 appsOperationClass:(Class)a6;
-- (id)viewModelsForAppDescriptions:(id)a3 bundleByBundleID:(id)a4 vouchersForProvider:(id)a5 restrictionsCenter:(id)a6 privacyFacade:(id)a7;
-- (id)viewModelsForAvailableAppDescriptions:(id)a3 subscribedAppDescriptions:(id)a4 andNonChannelAppDescriptions:(id)a5;
+- (VSAppSettingsFacade)initWithStorage:(id)storage restrictionsCenter:(id)center;
+- (VSAppSettingsFacade)initWithStorage:(id)storage restrictionsCenter:(id)center accountChannelsCenter:(id)channelsCenter appsOperationClass:(Class)class;
+- (id)viewModelsForAppDescriptions:(id)descriptions bundleByBundleID:(id)d vouchersForProvider:(id)provider restrictionsCenter:(id)center privacyFacade:(id)facade;
+- (id)viewModelsForAvailableAppDescriptions:(id)descriptions subscribedAppDescriptions:(id)appDescriptions andNonChannelAppDescriptions:(id)channelAppDescriptions;
 - (void)_updateApps;
 - (void)dealloc;
-- (void)presentMVPDAppInstallPromptFromViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)setIdentityProvider:(id)a3;
-- (void)setKnownAppBundles:(id)a3;
-- (void)setMvpdAppSettingsViewModel:(id)a3;
+- (void)presentMVPDAppInstallPromptFromViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
+- (void)setIdentityProvider:(id)provider;
+- (void)setKnownAppBundles:(id)bundles;
+- (void)setMvpdAppSettingsViewModel:(id)model;
 - (void)setNeedsUpdateApps;
-- (void)setUnredeemedVouchers:(id)a3;
+- (void)setUnredeemedVouchers:(id)vouchers;
 - (void)shouldShowMVPDAppInstallPrompt;
 - (void)updateDecidedApps;
 @end
 
 @implementation VSAppSettingsFacade
 
-- (VSAppSettingsFacade)initWithStorage:(id)a3 restrictionsCenter:(id)a4 accountChannelsCenter:(id)a5 appsOperationClass:(Class)a6
+- (VSAppSettingsFacade)initWithStorage:(id)storage restrictionsCenter:(id)center accountChannelsCenter:(id)channelsCenter appsOperationClass:(Class)class
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  storageCopy = storage;
+  centerCopy = center;
+  channelsCenterCopy = channelsCenter;
   VSRequireMainThread();
-  if (v11)
+  if (storageCopy)
   {
-    if (v12)
+    if (centerCopy)
     {
       goto LABEL_3;
     }
@@ -37,7 +37,7 @@
   else
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The storage parameter must not be nil."];
-    if (v12)
+    if (centerCopy)
     {
       goto LABEL_3;
     }
@@ -51,8 +51,8 @@ LABEL_3:
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_storage, a3);
-    objc_storeStrong(&v15->_restrictionsCenter, a4);
+    objc_storeStrong(&v14->_storage, storage);
+    objc_storeStrong(&v15->_restrictionsCenter, center);
     v16 = objc_alloc_init(MEMORY[0x277CCABD8]);
     privateQueue = v15->_privateQueue;
     v15->_privateQueue = v16;
@@ -67,7 +67,7 @@ LABEL_3:
     handler[2] = __99__VSAppSettingsFacade_initWithStorage_restrictionsCenter_accountChannelsCenter_appsOperationClass___block_invoke;
     handler[3] = &unk_279E1A778;
     objc_copyWeak(&v32, &location);
-    v20 = v11;
+    v20 = storageCopy;
     v31 = v20;
     LODWORD(v18) = notify_register_dispatch("com.apple.tcc.access.changed", &v15->_registrationToken, v18, handler);
 
@@ -80,16 +80,16 @@ LABEL_3:
       }
     }
 
-    v22 = [v20 privacyFacade];
-    v23 = [v22 knownAppBundles];
+    privacyFacade = [v20 privacyFacade];
+    knownAppBundles = [privacyFacade knownAppBundles];
     knownAppBundles = v15->_knownAppBundles;
-    v15->_knownAppBundles = v23;
+    v15->_knownAppBundles = knownAppBundles;
 
-    objc_storeStrong(&v15->_accountChannelsCenter, a5);
-    objc_storeStrong(&v15->_appsOperationClass, a6);
-    v25 = [v20 voucherLockbox];
+    objc_storeStrong(&v15->_accountChannelsCenter, channelsCenter);
+    objc_storeStrong(&v15->_appsOperationClass, class);
+    voucherLockbox = [v20 voucherLockbox];
     v26 = VSMainConcurrencyBindingOptions();
-    [(VSAppSettingsFacade *)v15 vs_bind:@"unredeemedVouchers" toObject:v25 withKeyPath:@"unredeemedVouchers" options:v26];
+    [(VSAppSettingsFacade *)v15 vs_bind:@"unredeemedVouchers" toObject:voucherLockbox withKeyPath:@"unredeemedVouchers" options:v26];
 
     v27 = objc_alloc_init(MEMORY[0x277CBEAC0]);
     appSections = v15->_appSections;
@@ -118,13 +118,13 @@ void __99__VSAppSettingsFacade_initWithStorage_restrictionsCenter_accountChannel
   [WeakRetained setKnownAppBundles:v5];
 }
 
-- (VSAppSettingsFacade)initWithStorage:(id)a3 restrictionsCenter:(id)a4
+- (VSAppSettingsFacade)initWithStorage:(id)storage restrictionsCenter:(id)center
 {
   v6 = MEMORY[0x277CE21C8];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 sharedCenter];
-  v10 = [(VSAppSettingsFacade *)self initWithStorage:v8 restrictionsCenter:v7 accountChannelsCenter:v9 appsOperationClass:objc_opt_class()];
+  centerCopy = center;
+  storageCopy = storage;
+  sharedCenter = [v6 sharedCenter];
+  v10 = [(VSAppSettingsFacade *)self initWithStorage:storageCopy restrictionsCenter:centerCopy accountChannelsCenter:sharedCenter appsOperationClass:objc_opt_class()];
 
   return v10;
 }
@@ -155,8 +155,8 @@ void __99__VSAppSettingsFacade_initWithStorage_restrictionsCenter_accountChannel
 - (void)updateDecidedApps
 {
   v26 = *MEMORY[0x277D85DE8];
-  v3 = [(VSAppSettingsFacade *)self appSections];
-  v18 = [v3 mutableCopy];
+  appSections = [(VSAppSettingsFacade *)self appSections];
+  v18 = [appSections mutableCopy];
 
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v20 = 0u;
@@ -181,10 +181,10 @@ void __99__VSAppSettingsFacade_initWithStorage_restrictionsCenter_accountChannel
 
         v9 = *(*(&v20 + 1) + 8 * v8);
         v10 = [VSAppSettingsViewModel alloc];
-        v11 = [(VSAppSettingsFacade *)self restrictionsCenter];
-        v12 = [(VSAppSettingsFacade *)self storage];
-        v13 = [v12 privacyFacade];
-        v14 = [(VSAppSettingsViewModel *)v10 initWithBundle:v9 restrictionsCenter:v11 privacyFacade:v13];
+        restrictionsCenter = [(VSAppSettingsFacade *)self restrictionsCenter];
+        storage = [(VSAppSettingsFacade *)self storage];
+        privacyFacade = [storage privacyFacade];
+        v14 = [(VSAppSettingsViewModel *)v10 initWithBundle:v9 restrictionsCenter:restrictionsCenter privacyFacade:privacyFacade];
 
         [v4 addObject:v14];
         ++v8;
@@ -240,32 +240,32 @@ void __99__VSAppSettingsFacade_initWithStorage_restrictionsCenter_accountChannel
   v19[5] = v26;
   v19[6] = v24;
   v4 = [v3 blockOperationWithBlock:v19];
-  v5 = [(VSAppSettingsFacade *)self identityProvider];
+  identityProvider = [(VSAppSettingsFacade *)self identityProvider];
 
-  if (v5)
+  if (identityProvider)
   {
-    v6 = [(VSAppSettingsFacade *)self identityProvider];
+    identityProvider2 = [(VSAppSettingsFacade *)self identityProvider];
 
-    if (!v6)
+    if (!identityProvider2)
     {
       [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The [self identityProvider] parameter must not be nil."];
     }
 
-    v7 = [(VSAppSettingsFacade *)self identityProvider];
-    v8 = [(VSAppSettingsFacade *)self privateQueue];
+    identityProvider3 = [(VSAppSettingsFacade *)self identityProvider];
+    privateQueue = [(VSAppSettingsFacade *)self privateQueue];
     v9 = objc_alloc([(VSAppSettingsFacade *)self appsOperationClass]);
-    v10 = [(VSAppSettingsFacade *)self accountChannels];
-    v11 = [v9 initWithIdentityProvider:v7 accountChannels:v10];
+    accountChannels = [(VSAppSettingsFacade *)self accountChannels];
+    v11 = [v9 initWithIdentityProvider:identityProvider3 accountChannels:accountChannels];
 
     objc_initWeak(&from, v11);
     v14 = MEMORY[0x277D85DD0];
     objc_copyWeak(&v16, &location);
     objc_copyWeak(&v17, &from);
-    v15 = v7;
+    v15 = identityProvider3;
     v12 = VSMainThreadOperationWithBlock();
     [v4 addDependency:{v12, v14, 3221225472, __34__VSAppSettingsFacade__updateApps__block_invoke_2, &unk_279E1A7C8}];
-    [v8 addOperation:v11];
-    [v8 addOperation:v12];
+    [privateQueue addOperation:v11];
+    [privateQueue addOperation:v12];
     [v12 addDependency:v11];
     [v4 addDependency:v12];
 
@@ -274,8 +274,8 @@ void __99__VSAppSettingsFacade_initWithStorage_restrictionsCenter_accountChannel
     objc_destroyWeak(&from);
   }
 
-  v13 = [MEMORY[0x277CCABD8] mainQueue];
-  [v13 addOperation:v4];
+  mainQueue = [MEMORY[0x277CCABD8] mainQueue];
+  [mainQueue addOperation:v4];
 
   objc_destroyWeak(&v20);
   objc_destroyWeak(&location);
@@ -541,35 +541,35 @@ LABEL_45:
   v56 = *MEMORY[0x277D85DE8];
 }
 
-- (id)viewModelsForAvailableAppDescriptions:(id)a3 subscribedAppDescriptions:(id)a4 andNonChannelAppDescriptions:(id)a5
+- (id)viewModelsForAvailableAppDescriptions:(id)descriptions subscribedAppDescriptions:(id)appDescriptions andNonChannelAppDescriptions:(id)channelAppDescriptions
 {
   v54 = *MEMORY[0x277D85DE8];
-  v43 = a3;
-  v42 = a4;
-  v41 = a5;
+  descriptionsCopy = descriptions;
+  appDescriptionsCopy = appDescriptions;
+  channelAppDescriptionsCopy = channelAppDescriptions;
   v8 = objc_alloc_init(VSAppSettingsViewModelResult);
-  v39 = [(VSAppSettingsFacade *)self restrictionsCenter];
-  v38 = [(VSAppSettingsFacade *)self storage];
-  v37 = [v38 privacyFacade];
-  v9 = [(VSAppSettingsFacade *)self identityProvider];
+  restrictionsCenter = [(VSAppSettingsFacade *)self restrictionsCenter];
+  storage = [(VSAppSettingsFacade *)self storage];
+  privacyFacade = [storage privacyFacade];
+  identityProvider = [(VSAppSettingsFacade *)self identityProvider];
 
-  if (!v9)
+  if (!identityProvider)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The [self identityProvider] parameter must not be nil."];
   }
 
   v40 = v8;
-  v10 = [(VSAppSettingsFacade *)self identityProvider];
-  v11 = [v10 providerID];
-  v12 = [v11 forceUnwrapObject];
+  identityProvider2 = [(VSAppSettingsFacade *)self identityProvider];
+  providerID = [identityProvider2 providerID];
+  forceUnwrapObject = [providerID forceUnwrapObject];
 
-  v13 = [(VSAppSettingsFacade *)self unredeemedVouchers];
+  unredeemedVouchers = [(VSAppSettingsFacade *)self unredeemedVouchers];
   v14 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
-  v15 = v13;
+  v15 = unredeemedVouchers;
   v16 = [v15 countByEnumeratingWithState:&v48 objects:v53 count:16];
   if (v16)
   {
@@ -585,8 +585,8 @@ LABEL_45:
         }
 
         v20 = *(*(&v48 + 1) + 8 * i);
-        v21 = [v20 providerID];
-        v22 = [v21 isEqualToString:v12];
+        providerID2 = [v20 providerID];
+        v22 = [providerID2 isEqualToString:forceUnwrapObject];
 
         if (v22)
         {
@@ -605,9 +605,9 @@ LABEL_45:
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v36 = self;
-  v24 = [(VSAppSettingsFacade *)self knownAppBundles];
-  v25 = [v24 countByEnumeratingWithState:&v44 objects:v52 count:16];
+  selfCopy = self;
+  knownAppBundles = [(VSAppSettingsFacade *)self knownAppBundles];
+  v25 = [knownAppBundles countByEnumeratingWithState:&v44 objects:v52 count:16];
   if (v25)
   {
     v26 = v25;
@@ -618,26 +618,26 @@ LABEL_45:
       {
         if (*v45 != v27)
         {
-          objc_enumerationMutation(v24);
+          objc_enumerationMutation(knownAppBundles);
         }
 
         v29 = *(*(&v44 + 1) + 8 * j);
-        v30 = [v29 bundleIdentifier];
-        if (v30)
+        bundleIdentifier = [v29 bundleIdentifier];
+        if (bundleIdentifier)
         {
-          [v23 setObject:v29 forKey:v30];
+          [v23 setObject:v29 forKey:bundleIdentifier];
         }
       }
 
-      v26 = [v24 countByEnumeratingWithState:&v44 objects:v52 count:16];
+      v26 = [knownAppBundles countByEnumeratingWithState:&v44 objects:v52 count:16];
     }
 
     while (v26);
   }
 
-  v31 = [(VSAppSettingsFacade *)v36 viewModelsForAppDescriptions:v41 bundleByBundleID:v23 vouchersForProvider:v14 restrictionsCenter:v39 privacyFacade:v37];
-  v32 = [(VSAppSettingsFacade *)v36 viewModelsForAppDescriptions:v43 bundleByBundleID:v23 vouchersForProvider:v14 restrictionsCenter:v39 privacyFacade:v37];
-  v33 = [(VSAppSettingsFacade *)v36 viewModelsForAppDescriptions:v42 bundleByBundleID:v23 vouchersForProvider:v14 restrictionsCenter:v39 privacyFacade:v37];
+  v31 = [(VSAppSettingsFacade *)selfCopy viewModelsForAppDescriptions:channelAppDescriptionsCopy bundleByBundleID:v23 vouchersForProvider:v14 restrictionsCenter:restrictionsCenter privacyFacade:privacyFacade];
+  v32 = [(VSAppSettingsFacade *)selfCopy viewModelsForAppDescriptions:descriptionsCopy bundleByBundleID:v23 vouchersForProvider:v14 restrictionsCenter:restrictionsCenter privacyFacade:privacyFacade];
+  v33 = [(VSAppSettingsFacade *)selfCopy viewModelsForAppDescriptions:appDescriptionsCopy bundleByBundleID:v23 vouchersForProvider:v14 restrictionsCenter:restrictionsCenter privacyFacade:privacyFacade];
   [(VSAppSettingsViewModelResult *)v40 setNonChannelAppViewModels:v31];
   [(VSAppSettingsViewModelResult *)v40 setSubscribedAppViewModels:v33];
   [(VSAppSettingsViewModelResult *)v40 setAvailableAppViewModels:v32];
@@ -647,26 +647,26 @@ LABEL_45:
   return v40;
 }
 
-- (id)viewModelsForAppDescriptions:(id)a3 bundleByBundleID:(id)a4 vouchersForProvider:(id)a5 restrictionsCenter:(id)a6 privacyFacade:(id)a7
+- (id)viewModelsForAppDescriptions:(id)descriptions bundleByBundleID:(id)d vouchersForProvider:(id)provider restrictionsCenter:(id)center privacyFacade:(id)facade
 {
   v59 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v41 = a5;
-  v46 = a6;
-  v13 = a7;
+  descriptionsCopy = descriptions;
+  dCopy = d;
+  providerCopy = provider;
+  centerCopy = center;
+  facadeCopy = facade;
   v45 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
   v56 = 0u;
-  obj = v11;
+  obj = descriptionsCopy;
   v48 = [obj countByEnumeratingWithState:&v53 objects:v58 count:16];
   if (v48)
   {
     v47 = *v54;
-    v39 = v13;
-    v40 = v12;
+    v39 = facadeCopy;
+    v40 = dCopy;
     do
     {
       for (i = 0; i != v48; ++i)
@@ -677,24 +677,24 @@ LABEL_45:
         }
 
         v15 = *(*(&v53 + 1) + 8 * i);
-        v16 = [v15 bundleID];
-        if (v16)
+        bundleID = [v15 bundleID];
+        if (bundleID)
         {
-          v17 = [v12 objectForKey:v16];
+          v17 = [dCopy objectForKey:bundleID];
           if (v17)
           {
             v18 = [VSAppSettingsViewModel alloc];
             v19 = i;
             v20 = v17;
             [v15 adamID];
-            v22 = v21 = v16;
-            v23 = [v22 stringValue];
-            v24 = [(VSAppSettingsViewModel *)v18 initWithBundle:v20 restrictionsCenter:v46 privacyFacade:v13 adamID:v23];
+            v22 = v21 = bundleID;
+            stringValue = [v22 stringValue];
+            v24 = [(VSAppSettingsViewModel *)v18 initWithBundle:v20 restrictionsCenter:centerCopy privacyFacade:facadeCopy adamID:stringValue];
 
             i = v19;
-            v16 = v21;
+            bundleID = v21;
             [v45 addObject:v24];
-            [v12 removeObjectForKey:v21];
+            [dCopy removeObjectForKey:v21];
           }
 
           else
@@ -703,11 +703,11 @@ LABEL_45:
             v52 = 0u;
             v49 = 0u;
             v50 = 0u;
-            v25 = v41;
+            v25 = providerCopy;
             v24 = [v25 countByEnumeratingWithState:&v49 objects:v57 count:16];
             if (v24)
             {
-              v42 = v16;
+              v42 = bundleID;
               v43 = i;
               v26 = *v50;
               while (2)
@@ -720,14 +720,14 @@ LABEL_45:
                   }
 
                   v28 = *(*(&v49 + 1) + 8 * j);
-                  v29 = [v15 adamID];
-                  v30 = [v29 stringValue];
+                  adamID = [v15 adamID];
+                  stringValue2 = [adamID stringValue];
 
-                  if (v30)
+                  if (stringValue2)
                   {
-                    v31 = v30;
-                    v32 = [v28 appAdamID];
-                    v33 = [v32 isEqualToString:v31];
+                    v31 = stringValue2;
+                    appAdamID = [v28 appAdamID];
+                    v33 = [appAdamID isEqualToString:v31];
 
                     if (v33)
                     {
@@ -748,20 +748,20 @@ LABEL_45:
               }
 
 LABEL_21:
-              v13 = v39;
-              v12 = v40;
-              v34 = v46;
-              v16 = v42;
+              facadeCopy = v39;
+              dCopy = v40;
+              v34 = centerCopy;
+              bundleID = v42;
               i = v43;
               v17 = 0;
             }
 
             else
             {
-              v34 = v46;
+              v34 = centerCopy;
             }
 
-            v35 = [[VSAppSettingsViewModel alloc] initWithAppDescription:v15 privacyVoucher:v24 restrictionsCenter:v34 privacyFacade:v13];
+            v35 = [[VSAppSettingsViewModel alloc] initWithAppDescription:v15 privacyVoucher:v24 restrictionsCenter:v34 privacyFacade:facadeCopy];
             [v45 addObject:v35];
           }
         }
@@ -786,13 +786,13 @@ LABEL_21:
   {
     [(VSAppSettingsFacade *)self setNeedsUpdateApps:1];
     objc_initWeak(&location, self);
-    v3 = [(VSAppSettingsFacade *)self accountChannelsCenter];
+    accountChannelsCenter = [(VSAppSettingsFacade *)self accountChannelsCenter];
     v4[0] = MEMORY[0x277D85DD0];
     v4[1] = 3221225472;
     v4[2] = __41__VSAppSettingsFacade_setNeedsUpdateApps__block_invoke;
     v4[3] = &unk_279E1A6D0;
     objc_copyWeak(&v5, &location);
-    [v3 fetchAccountChannelsWithCompletionHandler:v4];
+    [accountChannelsCenter fetchAccountChannelsWithCompletionHandler:v4];
 
     objc_destroyWeak(&v5);
     objc_destroyWeak(&location);
@@ -826,67 +826,67 @@ void __41__VSAppSettingsFacade_setNeedsUpdateApps__block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)setKnownAppBundles:(id)a3
+- (void)setKnownAppBundles:(id)bundles
 {
-  v7 = a3;
+  bundlesCopy = bundles;
   VSRequireMainThread();
-  v4 = v7;
-  if (self->_knownAppBundles != v7)
+  v4 = bundlesCopy;
+  if (self->_knownAppBundles != bundlesCopy)
   {
-    v5 = [(NSArray *)v7 copy];
+    v5 = [(NSArray *)bundlesCopy copy];
     knownAppBundles = self->_knownAppBundles;
     self->_knownAppBundles = v5;
 
     [(VSAppSettingsFacade *)self setNeedsUpdateApps];
-    v4 = v7;
+    v4 = bundlesCopy;
   }
 }
 
-- (void)setUnredeemedVouchers:(id)a3
+- (void)setUnredeemedVouchers:(id)vouchers
 {
-  v7 = a3;
+  vouchersCopy = vouchers;
   VSRequireMainThread();
-  v4 = v7;
-  if (self->_unredeemedVouchers != v7)
+  v4 = vouchersCopy;
+  if (self->_unredeemedVouchers != vouchersCopy)
   {
-    v5 = [(NSArray *)v7 copy];
+    v5 = [(NSArray *)vouchersCopy copy];
     unredeemedVouchers = self->_unredeemedVouchers;
     self->_unredeemedVouchers = v5;
 
     [(VSAppSettingsFacade *)self setNeedsUpdateApps];
-    v4 = v7;
+    v4 = vouchersCopy;
   }
 }
 
-- (void)setIdentityProvider:(id)a3
+- (void)setIdentityProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   VSRequireMainThread();
-  if (self->_identityProvider != v5)
+  if (self->_identityProvider != providerCopy)
   {
-    objc_storeStrong(&self->_identityProvider, a3);
+    objc_storeStrong(&self->_identityProvider, provider);
     [(VSAppSettingsFacade *)self setNeedsUpdateApps];
   }
 }
 
-- (BOOL)shouldShowMVPDAppInstallPromptFromViewController:(id)a3
+- (BOOL)shouldShowMVPDAppInstallPromptFromViewController:(id)controller
 {
-  [(VSAppSettingsFacade *)self setMvpdInstallPromptPresentingViewController:a3];
+  [(VSAppSettingsFacade *)self setMvpdInstallPromptPresentingViewController:controller];
 
   return [(VSAppSettingsFacade *)self shouldShowMVPDAppInstallPrompt];
 }
 
 - (BOOL)shouldShowMVPDAppInstallPrompt
 {
-  v3 = [(VSAppSettingsFacade *)self mvpdAppSettingsViewModel];
-  v4 = [v3 bundleID];
+  mvpdAppSettingsViewModel = [(VSAppSettingsFacade *)self mvpdAppSettingsViewModel];
+  bundleID = [mvpdAppSettingsViewModel bundleID];
 
-  if (v4)
+  if (bundleID)
   {
-    v5 = [(VSAppSettingsFacade *)self identityProvider];
-    v6 = [v5 isSetTopBoxSupported];
+    identityProvider = [(VSAppSettingsFacade *)self identityProvider];
+    isSetTopBoxSupported = [identityProvider isSetTopBoxSupported];
 
-    v7 = v4;
+    v7 = bundleID;
     v14 = 0;
     v8 = [MEMORY[0x277CC1E90] bundleRecordWithBundleIdentifier:v7 allowPlaceholder:0 error:&v14];
     v9 = v14;
@@ -903,7 +903,7 @@ void __41__VSAppSettingsFacade_setNeedsUpdateApps__block_invoke_2(uint64_t a1)
         }
       }
 
-      v11 = v6;
+      v11 = isSetTopBoxSupported;
     }
   }
 
@@ -916,53 +916,53 @@ void __41__VSAppSettingsFacade_setNeedsUpdateApps__block_invoke_2(uint64_t a1)
   return v11;
 }
 
-- (void)presentMVPDAppInstallPromptFromViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)presentMVPDAppInstallPromptFromViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  v10 = [(VSAppSettingsFacade *)self mvpdAppSettingsViewModel];
-  v11 = v10;
-  if (v10)
+  animatedCopy = animated;
+  controllerCopy = controller;
+  completionCopy = completion;
+  mvpdAppSettingsViewModel = [(VSAppSettingsFacade *)self mvpdAppSettingsViewModel];
+  v11 = mvpdAppSettingsViewModel;
+  if (mvpdAppSettingsViewModel)
   {
-    v12 = v10;
-    v13 = [v12 name];
-    v14 = [v13 copy];
+    v12 = mvpdAppSettingsViewModel;
+    name = [v12 name];
+    v14 = [name copy];
 
-    v41 = self;
-    v15 = [MEMORY[0x277CCA8D8] vs_frameworkBundle];
-    v16 = [v15 localizedStringForKey:@"INSTALL_APP_TITLE_PROMPT_FORMAT" value:0 table:0];
+    selfCopy = self;
+    vs_frameworkBundle = [MEMORY[0x277CCA8D8] vs_frameworkBundle];
+    v16 = [vs_frameworkBundle localizedStringForKey:@"INSTALL_APP_TITLE_PROMPT_FORMAT" value:0 table:0];
 
-    v40 = v6;
+    v40 = animatedCopy;
     v38 = v16;
     v17 = [MEMORY[0x277CCACA8] stringWithFormat:v16, v14];
-    v18 = [MEMORY[0x277CCA8D8] vs_frameworkBundle];
-    v19 = [v18 localizedStringForKey:@"INSTALL_APP_TITLE_FORMAT" value:0 table:0];
+    vs_frameworkBundle2 = [MEMORY[0x277CCA8D8] vs_frameworkBundle];
+    v19 = [vs_frameworkBundle2 localizedStringForKey:@"INSTALL_APP_TITLE_FORMAT" value:0 table:0];
 
     v36 = v19;
     v20 = [MEMORY[0x277CCACA8] stringWithFormat:v19, v14];
-    v21 = [MEMORY[0x277CCA8D8] vs_frameworkBundle];
-    v22 = [v21 localizedStringForKey:@"INSTALL_APP_MESSAGE_FORMAT" value:0 table:0];
+    vs_frameworkBundle3 = [MEMORY[0x277CCA8D8] vs_frameworkBundle];
+    v22 = [vs_frameworkBundle3 localizedStringForKey:@"INSTALL_APP_MESSAGE_FORMAT" value:0 table:0];
 
     v34 = v22;
     v33 = [MEMORY[0x277CCACA8] stringWithFormat:v22, v14];
     v35 = v20;
     v23 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@\n%@", v20, v33];
     v39 = v12;
-    v24 = [v12 adamID];
-    v25 = [MEMORY[0x277CEC290] tvProviderLockupRequestWithAdamID:v24];
+    adamID = [v12 adamID];
+    v25 = [MEMORY[0x277CEC290] tvProviderLockupRequestWithAdamID:adamID];
     v37 = v17;
     v32 = v23;
     v26 = [MEMORY[0x277D78308] ascAppInstallerViewControllerWithTitle:v17 subtitle:v23 request:v25 forceDSIDlessInstall:1 onFlowCompletion:0];
     [v26 setModalPresentationStyle:2];
     v27 = [objc_alloc(MEMORY[0x277D757A0]) initWithRootViewController:v26];
     [v27 view];
-    v29 = v28 = v8;
+    v29 = v28 = controllerCopy;
     [MEMORY[0x277D75348] systemBackgroundColor];
-    v31 = v30 = v9;
+    v31 = v30 = completionCopy;
     [v29 setBackgroundColor:v31];
 
-    v9 = v30;
+    completionCopy = v30;
     [v27 setModalPresentationStyle:2];
     v43[0] = 0;
     v43[1] = v43;
@@ -975,8 +975,8 @@ void __41__VSAppSettingsFacade_setNeedsUpdateApps__block_invoke_2(uint64_t a1)
     v42[2] = __89__VSAppSettingsFacade_presentMVPDAppInstallPromptFromViewController_animated_completion___block_invoke;
     v42[3] = &unk_279E1A7F0;
     v42[5] = v43;
-    v8 = v28;
-    v42[4] = v41;
+    controllerCopy = v28;
+    v42[4] = selfCopy;
     [v28 presentViewController:v27 animated:v40 completion:v42];
     _Block_object_dispose(v43, 8);
   }
@@ -996,31 +996,31 @@ uint64_t __89__VSAppSettingsFacade_presentMVPDAppInstallPromptFromViewController
   return [v3 setMvpdInstallPromptPresentingViewController:0];
 }
 
-- (void)setMvpdAppSettingsViewModel:(id)a3
+- (void)setMvpdAppSettingsViewModel:(id)model
 {
-  v10 = a3;
-  objc_storeStrong(&self->_mvpdAppSettingsViewModel, a3);
-  if (v10)
+  modelCopy = model;
+  objc_storeStrong(&self->_mvpdAppSettingsViewModel, model);
+  if (modelCopy)
   {
     if ([(VSAppSettingsFacade *)self needsPresentationOfMVPDAppInstallPromptIfAvailable])
     {
-      v5 = [(VSAppSettingsFacade *)self mvpdInstallPromptPresentingViewController];
-      if (v5)
+      mvpdInstallPromptPresentingViewController = [(VSAppSettingsFacade *)self mvpdInstallPromptPresentingViewController];
+      if (mvpdInstallPromptPresentingViewController)
       {
-        v6 = v5;
-        v7 = [(VSAppSettingsFacade *)self shouldShowMVPDAppInstallPrompt];
+        v6 = mvpdInstallPromptPresentingViewController;
+        shouldShowMVPDAppInstallPrompt = [(VSAppSettingsFacade *)self shouldShowMVPDAppInstallPrompt];
 
-        if (v7)
+        if (shouldShowMVPDAppInstallPrompt)
         {
-          v8 = [(VSAppSettingsFacade *)self mvpdInstallPromptPresentingViewController];
+          mvpdInstallPromptPresentingViewController2 = [(VSAppSettingsFacade *)self mvpdInstallPromptPresentingViewController];
 
-          if (!v8)
+          if (!mvpdInstallPromptPresentingViewController2)
           {
             [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The [self mvpdInstallPromptPresentingViewController] parameter must not be nil."];
           }
 
-          v9 = [(VSAppSettingsFacade *)self mvpdInstallPromptPresentingViewController];
-          [(VSAppSettingsFacade *)self presentMVPDAppInstallPromptFromViewController:v9 animated:1 completion:0];
+          mvpdInstallPromptPresentingViewController3 = [(VSAppSettingsFacade *)self mvpdInstallPromptPresentingViewController];
+          [(VSAppSettingsFacade *)self presentMVPDAppInstallPromptFromViewController:mvpdInstallPromptPresentingViewController3 animated:1 completion:0];
         }
       }
     }
@@ -1030,11 +1030,11 @@ uint64_t __89__VSAppSettingsFacade_presentMVPDAppInstallPromptFromViewController
 - (void)shouldShowMVPDAppInstallPrompt
 {
   v11 = *MEMORY[0x277D85DE8];
-  v5 = [a2 localizedDescription];
+  localizedDescription = [a2 localizedDescription];
   v7 = 138412546;
-  v8 = a1;
+  selfCopy = self;
   v9 = 2112;
-  v10 = v5;
+  v10 = localizedDescription;
   _os_log_error_impl(&dword_270DD4000, a3, OS_LOG_TYPE_ERROR, "shouldShowMVPDAppInstallPrompt - Error finding bundle record for bundleID %@ : %@", &v7, 0x16u);
 
   v6 = *MEMORY[0x277D85DE8];

@@ -1,13 +1,13 @@
 @interface MLRServiceConnection
-- (MLRServiceConnection)initWithXPCConnection:(id)a3;
-- (void)donateJSONResult:(id)a3 identifier:(id)a4 completion:(id)a5;
+- (MLRServiceConnection)initWithXPCConnection:(id)connection;
+- (void)donateJSONResult:(id)result identifier:(id)identifier completion:(id)completion;
 @end
 
 @implementation MLRServiceConnection
 
-- (MLRServiceConnection)initWithXPCConnection:(id)a3
+- (MLRServiceConnection)initWithXPCConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v17.receiver = self;
   v17.super_class = MLRServiceConnection;
   v5 = [(MLRServiceConnection *)&v17 init];
@@ -22,8 +22,8 @@
     queue = v5->_queue;
     v5->_queue = v9;
 
-    [v4 _setQueue:v5->_queue];
-    objc_storeWeak(&v5->_connection, v4);
+    [connectionCopy _setQueue:v5->_queue];
+    objc_storeWeak(&v5->_connection, connectionCopy);
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = sub_1000019C0;
@@ -31,19 +31,19 @@
     v11 = v5;
     v16 = v11;
     v12 = objc_retainBlock(v15);
-    [v4 setInterruptionHandler:v12];
-    [v4 setInvalidationHandler:v12];
+    [connectionCopy setInterruptionHandler:v12];
+    [connectionCopy setInvalidationHandler:v12];
     v13 = v11;
   }
 
   return v5;
 }
 
-- (void)donateJSONResult:(id)a3 identifier:(id)a4 completion:(id)a5
+- (void)donateJSONResult:(id)result identifier:(id)identifier completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  resultCopy = result;
+  identifierCopy = identifier;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_connection);
   v12 = [DESServiceAccess hasMLRCtlEntitlement:WeakRetained];
 
@@ -52,19 +52,19 @@
     v13 = +[DESLogging coreChannel];
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
     {
-      sub_100001DB4(v8, v9, v13);
+      sub_100001DB4(resultCopy, identifierCopy, v13);
     }
 
-    v14 = [[MLRTrialDediscoTaskResult alloc] initWithJSONResult:v8 identifier:v9];
+    v14 = [[MLRTrialDediscoTaskResult alloc] initWithJSONResult:resultCopy identifier:identifierCopy];
     if (!v14)
     {
       v17 = kDESDistributedEvaluationErrorDomain;
       v21 = NSLocalizedDescriptionKey;
-      v16 = [NSString stringWithFormat:@"Unknown identifier = %@", v9];
-      v22 = v16;
+      identifierCopy = [NSString stringWithFormat:@"Unknown identifier = %@", identifierCopy];
+      v22 = identifierCopy;
       v18 = [NSDictionary dictionaryWithObjects:&v22 forKeys:&v21 count:1];
       v19 = [NSError errorWithDomain:v17 code:1303 userInfo:v18];
-      v10[2](v10, v19);
+      completionCopy[2](completionCopy, v19);
 
       goto LABEL_8;
     }
@@ -72,7 +72,7 @@
     v15 = [TRIClient clientWithIdentifier:280];
     v20 = 0;
     [v14 submitWithTRIClient:v15 error:&v20];
-    v16 = v20;
+    identifierCopy = v20;
   }
 
   else
@@ -80,10 +80,10 @@
     v23 = NSLocalizedDescriptionKey;
     v24 = @"donateJSONResult may only be called by internal tool.";
     v14 = [NSDictionary dictionaryWithObjects:&v24 forKeys:&v23 count:1];
-    v16 = [NSError errorWithDomain:NSCocoaErrorDomain code:3328 userInfo:v14];
+    identifierCopy = [NSError errorWithDomain:NSCocoaErrorDomain code:3328 userInfo:v14];
   }
 
-  v10[2](v10, v16);
+  completionCopy[2](completionCopy, identifierCopy);
 LABEL_8:
 }
 

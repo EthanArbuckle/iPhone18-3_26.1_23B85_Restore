@@ -1,32 +1,32 @@
 @interface _ANEWeight
-+ (id)weightWithSymbolAndURL:(id)a3 weightURL:(id)a4;
-+ (id)weightWithSymbolAndURLSHA:(id)a3 weightURL:(id)a4 SHACode:(id)a5;
-- (_ANEWeight)initWithCoder:(id)a3;
-- (_ANEWeight)initWithWeightSymbolAndURL:(id)a3 weightURL:(id)a4;
-- (_ANEWeight)initWithWeightSymbolAndURLSHA:(id)a3 weightURL:(id)a4 SHACode:(id)a5 sandboxExtension:(id)a6;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)weightWithSymbolAndURL:(id)l weightURL:(id)rL;
++ (id)weightWithSymbolAndURLSHA:(id)a weightURL:(id)l SHACode:(id)code;
+- (_ANEWeight)initWithCoder:(id)coder;
+- (_ANEWeight)initWithWeightSymbolAndURL:(id)l weightURL:(id)rL;
+- (_ANEWeight)initWithWeightSymbolAndURLSHA:(id)a weightURL:(id)l SHACode:(id)code sandboxExtension:(id)extension;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
-- (void)updateWeightURL:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)updateWeightURL:(id)l;
 @end
 
 @implementation _ANEWeight
 
-+ (id)weightWithSymbolAndURL:(id)a3 weightURL:(id)a4
++ (id)weightWithSymbolAndURL:(id)l weightURL:(id)rL
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithWeightSymbolAndURL:v7 weightURL:v6];
+  rLCopy = rL;
+  lCopy = l;
+  v8 = [[self alloc] initWithWeightSymbolAndURL:lCopy weightURL:rLCopy];
 
   return v8;
 }
 
-+ (id)weightWithSymbolAndURLSHA:(id)a3 weightURL:(id)a4 SHACode:(id)a5
++ (id)weightWithSymbolAndURLSHA:(id)a weightURL:(id)l SHACode:(id)code
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[a1 alloc] initWithWeightSymbolAndURLSHA:v10 weightURL:v9 SHACode:v8 sandboxExtension:0];
+  codeCopy = code;
+  lCopy = l;
+  aCopy = a;
+  v11 = [[self alloc] initWithWeightSymbolAndURLSHA:aCopy weightURL:lCopy SHACode:codeCopy sandboxExtension:0];
 
   return v11;
 }
@@ -36,90 +36,90 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(_ANEWeight *)self weightSymbol];
-  v7 = [(_ANEWeight *)self weightURL];
-  v8 = [(_ANEWeight *)self SHACode];
-  v9 = [(_ANEWeight *)self sandboxExtension];
-  v10 = [v3 stringWithFormat:@"%@: { weightSymbol=%@ : weightURL=%@ : SHACode=%@ : sandboxExtension=%@} ", v5, v6, v7, v8, v9];
+  weightSymbol = [(_ANEWeight *)self weightSymbol];
+  weightURL = [(_ANEWeight *)self weightURL];
+  sHACode = [(_ANEWeight *)self SHACode];
+  sandboxExtension = [(_ANEWeight *)self sandboxExtension];
+  v10 = [v3 stringWithFormat:@"%@: { weightSymbol=%@ : weightURL=%@ : SHACode=%@ : sandboxExtension=%@} ", v5, weightSymbol, weightURL, sHACode, sandboxExtension];
 
   return v10;
 }
 
-- (_ANEWeight)initWithWeightSymbolAndURL:(id)a3 weightURL:(id)a4
+- (_ANEWeight)initWithWeightSymbolAndURL:(id)l weightURL:(id)rL
 {
-  v7 = a3;
-  v8 = a4;
+  lCopy = l;
+  rLCopy = rL;
   v12.receiver = self;
   v12.super_class = _ANEWeight;
   v9 = [(_ANEWeight *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_weightURL, a4);
-    objc_storeStrong(&v10->_weightSymbol, a3);
+    objc_storeStrong(&v9->_weightURL, rL);
+    objc_storeStrong(&v10->_weightSymbol, l);
   }
 
   return v10;
 }
 
-- (_ANEWeight)initWithWeightSymbolAndURLSHA:(id)a3 weightURL:(id)a4 SHACode:(id)a5 sandboxExtension:(id)a6
+- (_ANEWeight)initWithWeightSymbolAndURLSHA:(id)a weightURL:(id)l SHACode:(id)code sandboxExtension:(id)extension
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  aCopy = a;
+  lCopy = l;
+  codeCopy = code;
+  extensionCopy = extension;
   v18.receiver = self;
   v18.super_class = _ANEWeight;
   v15 = [(_ANEWeight *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_weightURL, a4);
-    objc_storeStrong(&v16->_weightSymbol, a3);
-    objc_storeStrong(&v16->_SHACode, a5);
-    objc_storeStrong(&v16->_sandboxExtension, a6);
+    objc_storeStrong(&v15->_weightURL, l);
+    objc_storeStrong(&v16->_weightSymbol, a);
+    objc_storeStrong(&v16->_SHACode, code);
+    objc_storeStrong(&v16->_sandboxExtension, extension);
   }
 
   return v16;
 }
 
-- (void)updateWeightURL:(id)a3
+- (void)updateWeightURL:(id)l
 {
-  if (a3)
+  if (l)
   {
     [(_ANEWeight *)self setWeightURL:?];
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(_ANEWeight *)self weightURL];
-  [v4 encodeObject:v5 forKey:@"url"];
+  coderCopy = coder;
+  weightURL = [(_ANEWeight *)self weightURL];
+  [coderCopy encodeObject:weightURL forKey:@"url"];
 
-  v6 = [(_ANEWeight *)self weightSymbol];
-  [v4 encodeObject:v6 forKey:@"weightSymbol"];
+  weightSymbol = [(_ANEWeight *)self weightSymbol];
+  [coderCopy encodeObject:weightSymbol forKey:@"weightSymbol"];
 
-  v7 = [(_ANEWeight *)self SHACode];
-  [v4 encodeObject:v7 forKey:@"SHACode"];
+  sHACode = [(_ANEWeight *)self SHACode];
+  [coderCopy encodeObject:sHACode forKey:@"SHACode"];
 
-  v8 = [(_ANEWeight *)self sandboxExtension];
-  [v4 encodeObject:v8 forKey:@"sandboxExtension"];
+  sandboxExtension = [(_ANEWeight *)self sandboxExtension];
+  [coderCopy encodeObject:sandboxExtension forKey:@"sandboxExtension"];
 }
 
-- (_ANEWeight)initWithCoder:(id)a3
+- (_ANEWeight)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"url"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"weightSymbol"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SHACode"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sandboxExtension"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"url"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"weightSymbol"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SHACode"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sandboxExtension"];
 
   v9 = [(_ANEWeight *)self initWithWeightSymbolAndURLSHA:v6 weightURL:v5 SHACode:v7 sandboxExtension:v8];
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = +[_ANELog common];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))

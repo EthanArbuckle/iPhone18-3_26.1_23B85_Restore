@@ -1,22 +1,22 @@
 @interface SXJSONObjectTransformer
-+ (id)transformerWithKey:(id)a3 block:(id)a4;
-- (id)transformKey:(id)a3;
-- (id)transformObject:(id)a3 otherObject:(id)a4;
++ (id)transformerWithKey:(id)key block:(id)block;
+- (id)transformKey:(id)key;
+- (id)transformObject:(id)object otherObject:(id)otherObject;
 @end
 
 @implementation SXJSONObjectTransformer
 
-+ (id)transformerWithKey:(id)a3 block:(id)a4
++ (id)transformerWithKey:(id)key block:(id)block
 {
-  v5 = a4;
-  v6 = a3;
+  blockCopy = block;
+  keyCopy = key;
   v7 = objc_alloc_init(SXJSONObjectTransformer);
-  v8 = [v6 copy];
+  v8 = [keyCopy copy];
 
   key = v7->_key;
   v7->_key = v8;
 
-  v10 = [v5 copy];
+  v10 = [blockCopy copy];
   block = v7->_block;
   v7->_block = v10;
 
@@ -88,19 +88,19 @@ id __53__SXJSONObjectTransformer_mergingTransformerWithKey___block_invoke(uint64
   return v6;
 }
 
-- (id)transformObject:(id)a3 otherObject:(id)a4
+- (id)transformObject:(id)object otherObject:(id)otherObject
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SXJSONObjectTransformer *)self block];
-  v9 = (v8)[2](v8, v7, v6);
+  otherObjectCopy = otherObject;
+  objectCopy = object;
+  block = [(SXJSONObjectTransformer *)self block];
+  v9 = (block)[2](block, objectCopy, otherObjectCopy);
 
   return v9;
 }
 
-- (id)transformKey:(id)a3
+- (id)transformKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = [(SXJSONObjectTransformer *)self key];
   v6 = v5;
   if (v5)
@@ -110,7 +110,7 @@ id __53__SXJSONObjectTransformer_mergingTransformerWithKey___block_invoke(uint64
 
   else
   {
-    v7 = v4;
+    v7 = keyCopy;
   }
 
   v8 = v7;

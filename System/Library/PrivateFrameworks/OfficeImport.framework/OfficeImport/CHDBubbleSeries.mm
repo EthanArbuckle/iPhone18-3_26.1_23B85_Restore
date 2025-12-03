@@ -1,34 +1,34 @@
 @interface CHDBubbleSeries
-- (void)setCategoryData:(id)a3;
-- (void)setSizeData:(id)a3;
+- (void)setCategoryData:(id)data;
+- (void)setSizeData:(id)data;
 @end
 
 @implementation CHDBubbleSeries
 
-- (void)setSizeData:(id)a3
+- (void)setSizeData:(id)data
 {
-  v5 = a3;
-  if (self->mSizeData != v5)
+  dataCopy = data;
+  if (self->mSizeData != dataCopy)
   {
-    v8 = v5;
-    objc_storeStrong(&self->mSizeData, a3);
+    v8 = dataCopy;
+    objc_storeStrong(&self->mSizeData, data);
     WeakRetained = objc_loadWeakRetained(&self->super.mChart);
-    v7 = [WeakRetained processors];
-    [v7 markObject:v8 processor:objc_opt_class()];
+    processors = [WeakRetained processors];
+    [processors markObject:v8 processor:objc_opt_class()];
 
-    v5 = v8;
+    dataCopy = v8;
   }
 }
 
-- (void)setCategoryData:(id)a3
+- (void)setCategoryData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v7.receiver = self;
   v7.super_class = CHDBubbleSeries;
-  [(CHDSeries *)&v7 setCategoryData:v4];
+  [(CHDSeries *)&v7 setCategoryData:dataCopy];
   WeakRetained = objc_loadWeakRetained(&self->super.mChart);
-  v6 = [WeakRetained processors];
-  [v6 markObject:v4 processor:objc_opt_class()];
+  processors = [WeakRetained processors];
+  [processors markObject:dataCopy processor:objc_opt_class()];
 }
 
 @end

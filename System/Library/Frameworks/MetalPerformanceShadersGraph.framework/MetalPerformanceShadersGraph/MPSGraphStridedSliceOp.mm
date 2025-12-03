@@ -1,35 +1,35 @@
 @interface MPSGraphStridedSliceOp
-- (MPSGraphStridedSliceOp)initWithGraph:(id)a3 inputTensors:(id)a4 controlDependencies:(id)a5 startMask:(unsigned int)a6 endMask:(unsigned int)a7 shrinkAxisMask:(unsigned int)a8 endIsSize:(BOOL)a9 name:(id)a10;
-- (id)partialDerivativeForInputTensor:(id)a3 incomingGradient:(id)a4 inputIndex:(unint64_t)a5 name:(id)a6;
-- (void)makeMLIROpWithBuilder:(void *)a3 symbolTable:(void *)a4 inputValues:(void *)a5 opInitialization:(BOOL)a6 name:(id)a7;
+- (MPSGraphStridedSliceOp)initWithGraph:(id)graph inputTensors:(id)tensors controlDependencies:(id)dependencies startMask:(unsigned int)mask endMask:(unsigned int)endMask shrinkAxisMask:(unsigned int)axisMask endIsSize:(BOOL)size name:(id)self0;
+- (id)partialDerivativeForInputTensor:(id)tensor incomingGradient:(id)gradient inputIndex:(unint64_t)index name:(id)name;
+- (void)makeMLIROpWithBuilder:(void *)builder symbolTable:(void *)table inputValues:(void *)values opInitialization:(BOOL)initialization name:(id)name;
 @end
 
 @implementation MPSGraphStridedSliceOp
 
-- (MPSGraphStridedSliceOp)initWithGraph:(id)a3 inputTensors:(id)a4 controlDependencies:(id)a5 startMask:(unsigned int)a6 endMask:(unsigned int)a7 shrinkAxisMask:(unsigned int)a8 endIsSize:(BOOL)a9 name:(id)a10
+- (MPSGraphStridedSliceOp)initWithGraph:(id)graph inputTensors:(id)tensors controlDependencies:(id)dependencies startMask:(unsigned int)mask endMask:(unsigned int)endMask shrinkAxisMask:(unsigned int)axisMask endIsSize:(BOOL)size name:(id)self0
 {
-  self->_begin_mask = a6;
-  self->_end_mask = a7;
-  self->_shrink_axis_mask = a8;
-  self->_end_is_size = a9;
-  return [(MPSGraphOperation *)self initWithGraph:a3 inputTensors:a4 controlDependencies:a5 name:a10];
+  self->_begin_mask = mask;
+  self->_end_mask = endMask;
+  self->_shrink_axis_mask = axisMask;
+  self->_end_is_size = size;
+  return [(MPSGraphOperation *)self initWithGraph:graph inputTensors:tensors controlDependencies:dependencies name:name];
 }
 
-- (void)makeMLIROpWithBuilder:(void *)a3 symbolTable:(void *)a4 inputValues:(void *)a5 opInitialization:(BOOL)a6 name:(id)a7
+- (void)makeMLIROpWithBuilder:(void *)builder symbolTable:(void *)table inputValues:(void *)values opInitialization:(BOOL)initialization name:(id)name
 {
   v48 = *MEMORY[0x1E69E9840];
-  v33 = a7;
+  nameCopy = name;
   mpsFileLoc("[MPSGraphStridedSliceOp makeMLIROpWithBuilder:symbolTable:inputValues:opInitialization:name:]", "/Library/Caches/com.apple.xbs/Sources/MetalPerformanceShadersGraph/mpsgraph/MetalPerformanceShadersGraph/Core/Files/Operations/MPSGraphTensorShapeOps.mm", __p);
-  v11 = v33;
+  v11 = nameCopy;
   v47 = 260;
   v46[0] = __p;
-  StringAttr = mlir::Builder::getStringAttr(a3, v46);
+  StringAttr = mlir::Builder::getStringAttr(builder, v46);
   v14 = mlir::FileLineColLoc::get(StringAttr, 0x208u, 0);
   if (v11)
   {
     v15 = v11;
-    v16 = [v11 UTF8String];
-    v17 = strlen(v16);
+    uTF8String = [v11 UTF8String];
+    v17 = strlen(uTF8String);
     if (v17 >= 0x7FFFFFFFFFFFFFF8)
     {
       std::string::__throw_length_error[abi:ne200100]();
@@ -44,7 +44,7 @@
     v45[6] = v17;
     if (v17)
     {
-      memmove(&__dst, v16, v17);
+      memmove(&__dst, uTF8String, v17);
     }
 
     v19 = &__dst + v18;
@@ -59,7 +59,7 @@
   }
 
   *v19 = 0;
-  MPSSymbolTable::insertOpInSymbolTable(a4, &__dst, v13, &v40);
+  MPSSymbolTable::insertOpInSymbolTable(table, &__dst, v13, &v40);
   v20 = v40.__r_.__value_.__r.__words[0];
   if ((v40.__r_.__value_.__r.__words[2] & 0x8000000000000000) == 0)
   {
@@ -75,7 +75,7 @@
   }
 
   LOBYTE(v47) = v21;
-  v22 = mlir::Builder::getStringAttr(a3, v46);
+  v22 = mlir::Builder::getStringAttr(builder, v46);
   v23 = mlir::NameLoc::get(v22, v14);
   if (SHIBYTE(v40.__r_.__value_.__r.__words[2]) < 0)
   {
@@ -99,8 +99,8 @@ LABEL_16:
     operator delete(__p[0]);
   }
 
-  v24 = *a5;
-  if (*(a5 + 1) - *a5 < 0x20uLL)
+  v24 = *values;
+  if (*(values + 1) - *values < 0x20uLL)
   {
     std::vector<mlir::Value>::__throw_out_of_range[abi:ne200100]();
   }
@@ -119,8 +119,8 @@ LABEL_16:
   }
 
   mlir::OperationState::OperationState(v46, v23, v26);
-  mlir::mps::StridedSliceOp::build(a3, v46, *v24, v24[1], v24[2], v24[3], self->_begin_mask, self->_end_mask, self->_shrink_axis_mask, self->_end_is_size);
-  v28 = mlir::OpBuilder::create(a3, v46);
+  mlir::mps::StridedSliceOp::build(builder, v46, *v24, v24[1], v24[2], v24[3], self->_begin_mask, self->_end_mask, self->_shrink_axis_mask, self->_end_is_size);
+  v28 = mlir::OpBuilder::create(builder, v46);
   v29 = *(*(v28 + 48) + 16);
   mlir::OperationState::~OperationState(v46);
   if (v29 == &mlir::detail::TypeIDResolver<mlir::mps::StridedSliceOp,void>::id)
@@ -139,13 +139,13 @@ LABEL_16:
   return DefiningOp;
 }
 
-- (id)partialDerivativeForInputTensor:(id)a3 incomingGradient:(id)a4 inputIndex:(unint64_t)a5 name:(id)a6
+- (id)partialDerivativeForInputTensor:(id)tensor incomingGradient:(id)gradient inputIndex:(unint64_t)index name:(id)name
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
+  tensorCopy = tensor;
+  gradientCopy = gradient;
+  nameCopy = name;
   WeakRetained = objc_loadWeakRetained(&self->super._graph);
-  v13 = [WeakRetained shapeOfTensor:v9 name:@"in shape"];
+  v13 = [WeakRetained shapeOfTensor:tensorCopy name:@"in shape"];
 
   end_is_size = self->_end_is_size;
   v15 = objc_loadWeakRetained(&self->super._graph);
@@ -153,13 +153,13 @@ LABEL_16:
   [(NSArray *)self->super._inputTensors objectAtIndexedSubscript:2];
   if (end_is_size)
     v17 = {;
-    v18 = [v15 sliceGradientTensor:v10 fwdInShapeTensor:v13 startTensor:v16 sizeTensor:v17 squeezeMask:self->_shrink_axis_mask name:v11];
+    v18 = [v15 sliceGradientTensor:gradientCopy fwdInShapeTensor:v13 startTensor:v16 sizeTensor:v17 squeezeMask:self->_shrink_axis_mask name:nameCopy];
   }
 
   else
     v17 = {;
     v19 = [(NSArray *)self->super._inputTensors objectAtIndexedSubscript:3];
-    v18 = [v15 sliceGradientTensor:v10 fwdInShapeTensor:v13 startTensor:v16 endTensor:v17 strideTensor:v19 startMask:self->_begin_mask endMask:*&self->_end_mask squeezeMask:v11 name:?];
+    v18 = [v15 sliceGradientTensor:gradientCopy fwdInShapeTensor:v13 startTensor:v16 endTensor:v17 strideTensor:v19 startMask:self->_begin_mask endMask:*&self->_end_mask squeezeMask:nameCopy name:?];
   }
 
   return v18;

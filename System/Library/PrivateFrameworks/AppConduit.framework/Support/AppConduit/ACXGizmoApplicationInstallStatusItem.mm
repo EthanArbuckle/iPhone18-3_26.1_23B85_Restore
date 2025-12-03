@@ -1,15 +1,15 @@
 @interface ACXGizmoApplicationInstallStatusItem
-+ (ACXGizmoApplicationInstallStatusItem)itemWithStatus:(unint64_t)a3 companionBundleID:(id)a4;
++ (ACXGizmoApplicationInstallStatusItem)itemWithStatus:(unint64_t)status companionBundleID:(id)d;
 @end
 
 @implementation ACXGizmoApplicationInstallStatusItem
 
-+ (ACXGizmoApplicationInstallStatusItem)itemWithStatus:(unint64_t)a3 companionBundleID:(id)a4
++ (ACXGizmoApplicationInstallStatusItem)itemWithStatus:(unint64_t)status companionBundleID:(id)d
 {
-  v5 = a4;
+  dCopy = d;
   v6 = objc_alloc_init(ACXGizmoApplicationInstallStatusItem);
-  [(ACXGizmoApplicationInstallStatusItem *)v6 setInstallStatus:a3];
-  [(ACXGizmoApplicationInstallStatusItem *)v6 setCompanionBundleID:v5];
+  [(ACXGizmoApplicationInstallStatusItem *)v6 setInstallStatus:status];
+  [(ACXGizmoApplicationInstallStatusItem *)v6 setCompanionBundleID:dCopy];
 
   return v6;
 }

@@ -1,104 +1,104 @@
 @interface TestCNUIUserActionListDataSource
 + (id)allActionTypes;
-- (TestCNUIUserActionListDataSource)initWithActionsByActionTypeByContact:(id)a3;
-- (id)actionTypesForConsumer:(id)a3;
-- (id)consumer:(id)a3 actionModelsForActionType:(id)a4;
-- (id)consumer:(id)a3 actionModelsForActionType:(id)a4 handler:(id)a5;
-- (id)consumer:(id)a3 imageForActionType:(id)a4;
-- (id)consumer:(id)a3 localizedDisplayNameForActionType:(id)a4;
-- (id)thirdPartyActionsForContactProperty:(id)a3;
-- (id)thirdPartyActionsForCurrentContactAndPropertyKey:(id)a3 identifier:(id)a4;
-- (id)thirdPartyTargetsForActionTypes:(id)a3;
-- (void)setContact:(id)a3;
+- (TestCNUIUserActionListDataSource)initWithActionsByActionTypeByContact:(id)contact;
+- (id)actionTypesForConsumer:(id)consumer;
+- (id)consumer:(id)consumer actionModelsForActionType:(id)type;
+- (id)consumer:(id)consumer actionModelsForActionType:(id)type handler:(id)handler;
+- (id)consumer:(id)consumer imageForActionType:(id)type;
+- (id)consumer:(id)consumer localizedDisplayNameForActionType:(id)type;
+- (id)thirdPartyActionsForContactProperty:(id)property;
+- (id)thirdPartyActionsForCurrentContactAndPropertyKey:(id)key identifier:(id)identifier;
+- (id)thirdPartyTargetsForActionTypes:(id)types;
+- (void)setContact:(id)contact;
 @end
 
 @implementation TestCNUIUserActionListDataSource
 
-- (id)consumer:(id)a3 imageForActionType:(id)a4
+- (id)consumer:(id)consumer imageForActionType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  consumerCopy = consumer;
+  typeCopy = type;
+  selfCopy = self;
   v9 = CNUnimplementedMethodException();
   objc_exception_throw(v9);
 }
 
-- (id)thirdPartyActionsForCurrentContactAndPropertyKey:(id)a3 identifier:(id)a4
+- (id)thirdPartyActionsForCurrentContactAndPropertyKey:(id)key identifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  keyCopy = key;
+  identifierCopy = identifier;
+  selfCopy = self;
   v9 = CNUnimplementedMethodException();
   objc_exception_throw(v9);
 }
 
-- (id)thirdPartyActionsForContactProperty:(id)a3
+- (id)thirdPartyActionsForContactProperty:(id)property
 {
-  v4 = a3;
-  v5 = self;
+  propertyCopy = property;
+  selfCopy = self;
   v6 = CNUnimplementedMethodException();
   objc_exception_throw(v6);
 }
 
-- (id)thirdPartyTargetsForActionTypes:(id)a3
+- (id)thirdPartyTargetsForActionTypes:(id)types
 {
-  v4 = a3;
-  v5 = self;
+  typesCopy = types;
+  selfCopy = self;
   v6 = CNUnimplementedMethodException();
   objc_exception_throw(v6);
 }
 
-- (id)consumer:(id)a3 localizedDisplayNameForActionType:(id)a4
+- (id)consumer:(id)consumer localizedDisplayNameForActionType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  consumerCopy = consumer;
+  typeCopy = type;
+  selfCopy = self;
   v9 = CNUnimplementedMethodException();
   objc_exception_throw(v9);
 }
 
-- (id)consumer:(id)a3 actionModelsForActionType:(id)a4
+- (id)consumer:(id)consumer actionModelsForActionType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  consumerCopy = consumer;
+  typeCopy = type;
+  selfCopy = self;
   v9 = CNUnimplementedMethodException();
   objc_exception_throw(v9);
 }
 
-- (id)actionTypesForConsumer:(id)a3
+- (id)actionTypesForConsumer:(id)consumer
 {
   v3 = objc_opt_class();
 
   return [v3 allActionTypes];
 }
 
-- (id)consumer:(id)a3 actionModelsForActionType:(id)a4 handler:(id)a5
+- (id)consumer:(id)consumer actionModelsForActionType:(id)type handler:(id)handler
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [(TestCNUIUserActionListDataSource *)self userActionListModelResultBlocksByActionTypeAskedFor];
-  v10 = [v7 copy];
+  handlerCopy = handler;
+  typeCopy = type;
+  userActionListModelResultBlocksByActionTypeAskedFor = [(TestCNUIUserActionListDataSource *)self userActionListModelResultBlocksByActionTypeAskedFor];
+  v10 = [handlerCopy copy];
 
-  [v9 setValue:v10 forKey:v8];
+  [userActionListModelResultBlocksByActionTypeAskedFor setValue:v10 forKey:typeCopy];
   v11 = objc_alloc_init(MEMORY[0x1E6996668]);
 
   return v11;
 }
 
-- (void)setContact:(id)a3
+- (void)setContact:(id)contact
 {
   v24 = *MEMORY[0x1E69E9840];
-  v18 = a3;
-  objc_storeStrong(&self->_contact, a3);
+  contactCopy = contact;
+  objc_storeStrong(&self->_contact, contact);
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = [(TestCNUIUserActionListDataSource *)self userActionListModelResultBlocksByActionTypeAskedFor];
-  v6 = [v5 allKeys];
+  userActionListModelResultBlocksByActionTypeAskedFor = [(TestCNUIUserActionListDataSource *)self userActionListModelResultBlocksByActionTypeAskedFor];
+  allKeys = [userActionListModelResultBlocksByActionTypeAskedFor allKeys];
 
-  v7 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  v7 = [allKeys countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v7)
   {
     v8 = v7;
@@ -110,16 +110,16 @@
       {
         if (*v20 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allKeys);
         }
 
         v11 = *(*(&v19 + 1) + 8 * v10);
-        v12 = [(TestCNUIUserActionListDataSource *)self userActionListModelResultBlocksByActionTypeAskedFor];
-        v13 = [v12 objectForKeyedSubscript:v11];
+        userActionListModelResultBlocksByActionTypeAskedFor2 = [(TestCNUIUserActionListDataSource *)self userActionListModelResultBlocksByActionTypeAskedFor];
+        v13 = [userActionListModelResultBlocksByActionTypeAskedFor2 objectForKeyedSubscript:v11];
 
-        v14 = [(TestCNUIUserActionListDataSource *)self actionsByActionTypeByContact];
-        v15 = [(TestCNUIUserActionListDataSource *)self contact];
-        v16 = [v14 objectForKeyedSubscript:v15];
+        actionsByActionTypeByContact = [(TestCNUIUserActionListDataSource *)self actionsByActionTypeByContact];
+        contact = [(TestCNUIUserActionListDataSource *)self contact];
+        v16 = [actionsByActionTypeByContact objectForKeyedSubscript:contact];
         v17 = [v16 objectForKeyedSubscript:v11];
         (v13)[2](v13, v17);
 
@@ -127,26 +127,26 @@
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v8 = [allKeys countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v8);
   }
 }
 
-- (TestCNUIUserActionListDataSource)initWithActionsByActionTypeByContact:(id)a3
+- (TestCNUIUserActionListDataSource)initWithActionsByActionTypeByContact:(id)contact
 {
-  v5 = a3;
+  contactCopy = contact;
   v12.receiver = self;
   v12.super_class = TestCNUIUserActionListDataSource;
   v6 = [(TestCNUIUserActionListDataSource *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_actionsByActionTypeByContact, a3);
-    v8 = [MEMORY[0x1E695DF90] dictionary];
+    objc_storeStrong(&v6->_actionsByActionTypeByContact, contact);
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     userActionListModelResultBlocksByActionTypeAskedFor = v7->_userActionListModelResultBlocksByActionTypeAskedFor;
-    v7->_userActionListModelResultBlocksByActionTypeAskedFor = v8;
+    v7->_userActionListModelResultBlocksByActionTypeAskedFor = dictionary;
 
     v10 = v7;
   }

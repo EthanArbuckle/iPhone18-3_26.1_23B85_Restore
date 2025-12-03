@@ -1,28 +1,28 @@
 @interface KTRepairCKVOperation
-- (KTRepairCKVOperation)initWithDependencies:(id)a3 repair:(id)a4 reset:(id)a5 intendedState:(id)a6 errorState:(id)a7;
+- (KTRepairCKVOperation)initWithDependencies:(id)dependencies repair:(id)repair reset:(id)reset intendedState:(id)state errorState:(id)errorState;
 - (void)groupStart;
 @end
 
 @implementation KTRepairCKVOperation
 
-- (KTRepairCKVOperation)initWithDependencies:(id)a3 repair:(id)a4 reset:(id)a5 intendedState:(id)a6 errorState:(id)a7
+- (KTRepairCKVOperation)initWithDependencies:(id)dependencies repair:(id)repair reset:(id)reset intendedState:(id)state errorState:(id)errorState
 {
-  v21 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  dependenciesCopy = dependencies;
+  repairCopy = repair;
+  resetCopy = reset;
+  stateCopy = state;
+  errorStateCopy = errorState;
   v22.receiver = self;
   v22.super_class = KTRepairCKVOperation;
   v17 = [(KTGroupOperation *)&v22 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_deps, a3);
-    objc_storeStrong(&v18->_repair, a4);
-    objc_storeStrong(&v18->_reset, a5);
-    objc_storeStrong(&v18->_nextState, a7);
-    objc_storeStrong(&v18->_intendedState, a6);
+    objc_storeStrong(&v17->_deps, dependencies);
+    objc_storeStrong(&v18->_repair, repair);
+    objc_storeStrong(&v18->_reset, reset);
+    objc_storeStrong(&v18->_nextState, errorState);
+    objc_storeStrong(&v18->_intendedState, state);
     v19 = v18;
   }
 
@@ -42,17 +42,17 @@
     if (os_log_type_enabled(qword_10038BD98, OS_LOG_TYPE_DEFAULT))
     {
       v4 = v3;
-      v5 = [(KTRepairCKVOperation *)self repair];
+      repair = [(KTRepairCKVOperation *)self repair];
       v16 = 138412290;
-      v17 = v5;
+      v17 = repair;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "KTRepairCKVOperation: will do repair: %@", &v16, 0xCu);
     }
 
     v6 = [_TtC13transparencyd11KTRepairCKV alloc];
-    v7 = [(KTRepairCKVOperation *)self deps];
-    v8 = [(KTRepairCKVOperation *)self repair];
-    v9 = [(KTRepairCKVOperation *)self reset];
-    v10 = [(KTRepairCKV *)v6 initWithDeps:v7 repair:v8 reset:v9];
+    deps = [(KTRepairCKVOperation *)self deps];
+    repair2 = [(KTRepairCKVOperation *)self repair];
+    reset = [(KTRepairCKVOperation *)self reset];
+    v10 = [(KTRepairCKV *)v6 initWithDeps:deps repair:repair2 reset:reset];
 
     [(KTRepairCKV *)v10 doRepair];
     if (qword_10038BD90 != -1)
@@ -70,8 +70,8 @@
 
   else
   {
-    v12 = [(KTRepairCKVOperation *)self intendedState];
-    [(KTRepairCKVOperation *)self setNextState:v12];
+    intendedState = [(KTRepairCKVOperation *)self intendedState];
+    [(KTRepairCKVOperation *)self setNextState:intendedState];
 
     if (qword_10038BD90 != -1)
     {
@@ -82,9 +82,9 @@
     if (os_log_type_enabled(qword_10038BD98, OS_LOG_TYPE_DEFAULT))
     {
       v14 = v13;
-      v15 = [(KTRepairCKVOperation *)self repair];
+      repair3 = [(KTRepairCKVOperation *)self repair];
       v16 = 138412290;
-      v17 = v15;
+      v17 = repair3;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "KTRepairCKVOperation: ff off: %@", &v16, 0xCu);
     }
   }

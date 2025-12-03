@@ -6,12 +6,12 @@
 
 - (uint64_t)ln_numberType
 {
-  v1 = [a1 objCType];
+  objCType = [self objCType];
   result = 0;
-  v3 = *v1;
+  v3 = *objCType;
   if (v3 > 0x65)
   {
-    if (*v1 > 0x70u)
+    if (*objCType > 0x70u)
     {
       if (v3 != 113 && v3 != 115)
       {
@@ -23,7 +23,7 @@
     {
       if (v3 == 102)
       {
-        if (v1[1])
+        if (objCType[1])
         {
           return 0;
         }
@@ -40,10 +40,10 @@
       }
     }
 
-    return !v1[1];
+    return !objCType[1];
   }
 
-  if (*v1 <= 0x52u)
+  if (*objCType <= 0x52u)
   {
     if (v3 != 73 && v3 != 81)
     {
@@ -56,7 +56,7 @@
   if (v3 == 83)
   {
 LABEL_13:
-    if (!v1[1])
+    if (!objCType[1])
     {
       return 2;
     }
@@ -66,7 +66,7 @@ LABEL_13:
 
   if (v3 == 100)
   {
-    return 4 * (v1[1] == 0);
+    return 4 * (objCType[1] == 0);
   }
 
   return result;

@@ -1,14 +1,14 @@
 @interface _WKUserStyleSheet
 - (NSString)source;
 - (NSURL)baseURL;
-- (_WKUserStyleSheet)initWithSource:(id)a3 forMainFrameOnly:(BOOL)a4;
-- (_WKUserStyleSheet)initWithSource:(id)a3 forWKWebView:(id)a4 forMainFrameOnly:(BOOL)a5 includeMatchPatternStrings:(id)a6 excludeMatchPatternStrings:(id)a7 baseURL:(id)a8 level:(int64_t)a9 contentWorld:(id)a10;
+- (_WKUserStyleSheet)initWithSource:(id)source forMainFrameOnly:(BOOL)only;
+- (_WKUserStyleSheet)initWithSource:(id)source forWKWebView:(id)view forMainFrameOnly:(BOOL)only includeMatchPatternStrings:(id)strings excludeMatchPatternStrings:(id)patternStrings baseURL:(id)l level:(int64_t)level contentWorld:(id)self0;
 - (void)dealloc;
 @end
 
 @implementation _WKUserStyleSheet
 
-- (_WKUserStyleSheet)initWithSource:(id)a3 forMainFrameOnly:(BOOL)a4
+- (_WKUserStyleSheet)initWithSource:(id)source forMainFrameOnly:(BOOL)only
 {
   v27.receiver = self;
   v27.super_class = _WKUserStyleSheet;
@@ -17,7 +17,7 @@
   if (v5)
   {
     WebKit::InitializeWebKit2(v5);
-    MEMORY[0x19EB02040](&v22, a3);
+    MEMORY[0x19EB02040](&v22, source);
     WTF::URL::URL(&v21);
     v20[0] = 0;
     v20[1] = 0;
@@ -62,28 +62,28 @@
   return v6;
 }
 
-- (_WKUserStyleSheet)initWithSource:(id)a3 forWKWebView:(id)a4 forMainFrameOnly:(BOOL)a5 includeMatchPatternStrings:(id)a6 excludeMatchPatternStrings:(id)a7 baseURL:(id)a8 level:(int64_t)a9 contentWorld:(id)a10
+- (_WKUserStyleSheet)initWithSource:(id)source forWKWebView:(id)view forMainFrameOnly:(BOOL)only includeMatchPatternStrings:(id)strings excludeMatchPatternStrings:(id)patternStrings baseURL:(id)l level:(int64_t)level contentWorld:(id)self0
 {
   WebKit::InitializeWebKit2(self);
-  MEMORY[0x19EB02040](&v33, a3);
-  MEMORY[0x19EB01DE0](&v32, a8);
-  *v30 = a6;
-  v16 = [a6 count];
-  v39 = v30;
-  WTF::Vector<WTF::String,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::Vector<WTF::Vector<WTF::String,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc> WTF::makeVector<WTF::String>(NSArray *)::{lambda(unsigned long)#1}>(v31, v16, &v39, 0);
-  v39 = a7;
-  v17 = [a7 count];
-  v38 = &v39;
+  MEMORY[0x19EB02040](&v33, source);
+  MEMORY[0x19EB01DE0](&v32, l);
+  *v30 = strings;
+  v16 = [strings count];
+  patternStringsCopy = v30;
+  WTF::Vector<WTF::String,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::Vector<WTF::Vector<WTF::String,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc> WTF::makeVector<WTF::String>(NSArray *)::{lambda(unsigned long)#1}>(v31, v16, &patternStringsCopy, 0);
+  patternStringsCopy = patternStrings;
+  v17 = [patternStrings count];
+  v38 = &patternStringsCopy;
   WTF::Vector<WTF::String,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::Vector<WTF::Vector<WTF::String,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc> WTF::makeVector<WTF::String>(NSArray *)::{lambda(unsigned long)#1}>(v30, v17, &v38, 0);
-  if (a4)
+  if (view)
   {
-    [a4 _page];
+    [view _page];
   }
 
   v18 = WebCore::UserStyleSheet::UserStyleSheet();
-  if (a10)
+  if (world)
   {
-    v19 = (a10 + 8);
+    v19 = (world + 8);
   }
 
   else

@@ -1,72 +1,72 @@
 @interface LPSharePlayInviteMetadata
-+ (id)applicationNameToDisplayForBundleID:(id)a3 fallbackName:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (LPSharePlayInviteMetadata)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)presentationPropertiesForTransformer:(id)a3;
-- (id)previewSummaryForTransformer:(id)a3;
-- (id)sourceApplicationMetadataForTransformer:(id)a3;
++ (id)applicationNameToDisplayForBundleID:(id)d fallbackName:(id)name;
+- (BOOL)isEqual:(id)equal;
+- (LPSharePlayInviteMetadata)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)presentationPropertiesForTransformer:(id)transformer;
+- (id)previewSummaryForTransformer:(id)transformer;
+- (id)sourceApplicationMetadataForTransformer:(id)transformer;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)populateMetadataForBackwardCompatibility:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)populateMetadataForBackwardCompatibility:(id)compatibility;
 @end
 
 @implementation LPSharePlayInviteMetadata
 
-- (id)presentationPropertiesForTransformer:(id)a3
+- (id)presentationPropertiesForTransformer:(id)transformer
 {
-  v4 = a3;
-  v5 = [v4 commonPresentationPropertiesForStyle:49];
+  transformerCopy = transformer;
+  v5 = [transformerCopy commonPresentationPropertiesForStyle:49];
   v6 = objc_alloc_init(LPCaptionBarPresentationProperties);
   [v5 setCaptionBar:v6];
 
   v7 = LPLocalizedString(@"SharePlay");
-  v8 = [v5 captionBar];
-  v9 = [v8 top];
-  v10 = [v9 leading];
-  [v10 setText:v7];
+  captionBar = [v5 captionBar];
+  v9 = [captionBar top];
+  leading = [v9 leading];
+  [leading setText:v7];
 
-  v11 = [(LPSharePlayInviteMetadata *)self title];
-  v12 = [v5 captionBar];
-  v13 = [v12 bottom];
-  v14 = [v13 leading];
-  [v14 setText:v11];
+  title = [(LPSharePlayInviteMetadata *)self title];
+  captionBar2 = [v5 captionBar];
+  bottom = [captionBar2 bottom];
+  leading2 = [bottom leading];
+  [leading2 setText:title];
 
-  v15 = [v5 captionBar];
-  v16 = [v15 bottom];
-  v17 = [v16 leading];
-  [v17 setMaximumNumberOfLines:&unk_1F2483380];
+  captionBar3 = [v5 captionBar];
+  bottom2 = [captionBar3 bottom];
+  leading3 = [bottom2 leading];
+  [leading3 setMaximumNumberOfLines:&unk_1F2483380];
 
   v18 = objc_opt_class();
-  v19 = [(LPSharePlayInviteMetadata *)self applicationBundleIdentifier];
-  v20 = [(LPSharePlayInviteMetadata *)self application];
-  v21 = [v18 applicationNameToDisplayForBundleID:v19 fallbackName:v20];
-  v22 = [v5 captionBar];
-  v23 = [v22 belowBottom];
-  v24 = [v23 leading];
-  [v24 setText:v21];
+  applicationBundleIdentifier = [(LPSharePlayInviteMetadata *)self applicationBundleIdentifier];
+  application = [(LPSharePlayInviteMetadata *)self application];
+  v21 = [v18 applicationNameToDisplayForBundleID:applicationBundleIdentifier fallbackName:application];
+  captionBar4 = [v5 captionBar];
+  belowBottom = [captionBar4 belowBottom];
+  leading4 = [belowBottom leading];
+  [leading4 setText:v21];
 
-  v25 = [v5 captionBar];
-  v26 = [v25 belowBottom];
-  v27 = [v26 leading];
-  [v27 setMaximumNumberOfLines:&unk_1F2483380];
+  captionBar5 = [v5 captionBar];
+  belowBottom2 = [captionBar5 belowBottom];
+  leading5 = [belowBottom2 leading];
+  [leading5 setMaximumNumberOfLines:&unk_1F2483380];
 
-  v28 = [(LPSharePlayInviteMetadata *)self icon];
-  [v4 _populateProperties:v5 withPrimaryImage:v28];
+  icon = [(LPSharePlayInviteMetadata *)self icon];
+  [transformerCopy _populateProperties:v5 withPrimaryImage:icon];
 
   return v5;
 }
 
-- (id)previewSummaryForTransformer:(id)a3
+- (id)previewSummaryForTransformer:(id)transformer
 {
-  v4 = [(LPSharePlayInviteMetadata *)self title];
+  title = [(LPSharePlayInviteMetadata *)self title];
 
-  if (v4)
+  if (title)
   {
     v5 = MEMORY[0x1E696AEC0];
     v6 = LPLocalizedString(@"SharePlay Link: %@");
-    v7 = [(LPSharePlayInviteMetadata *)self title];
-    v8 = [v5 localizedStringWithFormat:v6, v7];
+    title2 = [(LPSharePlayInviteMetadata *)self title];
+    v8 = [v5 localizedStringWithFormat:v6, title2];
   }
 
   else
@@ -77,35 +77,35 @@
   return v8;
 }
 
-- (void)populateMetadataForBackwardCompatibility:(id)a3
+- (void)populateMetadataForBackwardCompatibility:(id)compatibility
 {
-  v7 = a3;
-  v4 = [(LPSharePlayInviteMetadata *)self title];
-  v5 = v4;
-  if (!v4)
+  compatibilityCopy = compatibility;
+  title = [(LPSharePlayInviteMetadata *)self title];
+  v5 = title;
+  if (!title)
   {
     v5 = LPLocalizedString(@"SharePlay Link");
   }
 
-  [v7 setTitle:v5];
-  if (!v4)
+  [compatibilityCopy setTitle:v5];
+  if (!title)
   {
   }
 
-  v6 = [(LPSharePlayInviteMetadata *)self icon];
-  [v7 setIcon:v6];
+  icon = [(LPSharePlayInviteMetadata *)self icon];
+  [compatibilityCopy setIcon:icon];
 }
 
-- (id)sourceApplicationMetadataForTransformer:(id)a3
+- (id)sourceApplicationMetadataForTransformer:(id)transformer
 {
-  v4 = a3;
+  transformerCopy = transformer;
   v5 = objc_alloc_init(LPSourceApplicationMetadata);
   v6 = objc_alloc(MEMORY[0x1E69A8A00]);
-  v7 = [(LPSharePlayInviteMetadata *)self applicationBundleIdentifier];
-  v8 = [v6 initWithBundleIdentifier:v7];
+  applicationBundleIdentifier = [(LPSharePlayInviteMetadata *)self applicationBundleIdentifier];
+  v8 = [v6 initWithBundleIdentifier:applicationBundleIdentifier];
 
   v9 = objc_alloc(MEMORY[0x1E69A8A30]);
-  [v4 scaleFactor];
+  [transformerCopy scaleFactor];
   v11 = [v9 initWithSize:8.0 scale:{8.0, v10}];
   [v11 setShouldApplyMask:0];
   v12 = [v8 prepareImageForDescriptor:v11];
@@ -115,11 +115,11 @@
   return v5;
 }
 
-+ (id)applicationNameToDisplayForBundleID:(id)a3 fallbackName:(id)a4
++ (id)applicationNameToDisplayForBundleID:(id)d fallbackName:(id)name
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 isEqualToString:@"com.apple.podcasts"])
+  dCopy = d;
+  nameCopy = name;
+  if ([dCopy isEqualToString:@"com.apple.podcasts"])
   {
     v7 = @" Podcasts";
 LABEL_11:
@@ -127,58 +127,58 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if ([v5 isEqualToString:@"com.apple.news"])
+  if ([dCopy isEqualToString:@"com.apple.news"])
   {
     v7 = @" News";
     goto LABEL_11;
   }
 
-  if ([v5 _lp_isEqualIgnoringCase:@"com.apple.tv"])
+  if ([dCopy _lp_isEqualIgnoringCase:@"com.apple.tv"])
   {
     v7 = @" tv";
     goto LABEL_11;
   }
 
-  if ([v5 isEqualToString:@"com.apple.Music"])
+  if ([dCopy isEqualToString:@"com.apple.Music"])
   {
     v7 = @" Music";
     goto LABEL_11;
   }
 
-  if ([v5 isEqualToString:@"com.apple.iBooks"])
+  if ([dCopy isEqualToString:@"com.apple.iBooks"])
   {
     v7 = @" Books";
     goto LABEL_11;
   }
 
-  v8 = v6;
+  v8 = nameCopy;
 LABEL_12:
   v9 = v8;
 
   return v9;
 }
 
-- (LPSharePlayInviteMetadata)initWithCoder:(id)a3
+- (LPSharePlayInviteMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = LPSharePlayInviteMetadata;
   v5 = [(LPSharePlayInviteMetadata *)&v16 init];
   if (v5)
   {
-    v6 = decodeStringForKey(v4, @"title");
+    v6 = decodeStringForKey(coderCopy, @"title");
     title = v5->_title;
     v5->_title = v6;
 
-    v8 = decodeStringForKey(v4, @"applicationBundleIdentifier");
+    v8 = decodeStringForKey(coderCopy, @"applicationBundleIdentifier");
     applicationBundleIdentifier = v5->_applicationBundleIdentifier;
     v5->_applicationBundleIdentifier = v8;
 
-    v10 = decodeStringForKey(v4, @"application");
+    v10 = decodeStringForKey(coderCopy, @"application");
     application = v5->_application;
     v5->_application = v10;
 
-    v12 = [v4 _lp_strictlyDecodeLPImageForKey:@"icon"];
+    v12 = [coderCopy _lp_strictlyDecodeLPImageForKey:@"icon"];
     icon = v5->_icon;
     v5->_icon = v12;
 
@@ -188,31 +188,31 @@ LABEL_12:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 _lp_encodeStringIfNotNil:self->_title forKey:@"title"];
-  [v4 _lp_encodeStringIfNotNil:self->_applicationBundleIdentifier forKey:@"applicationBundleIdentifier"];
-  [v4 _lp_encodeStringIfNotNil:self->_application forKey:@"application"];
-  [v4 _lp_encodeObjectIfNotNil:self->_icon forKey:@"icon"];
+  coderCopy = coder;
+  [coderCopy _lp_encodeStringIfNotNil:self->_title forKey:@"title"];
+  [coderCopy _lp_encodeStringIfNotNil:self->_applicationBundleIdentifier forKey:@"applicationBundleIdentifier"];
+  [coderCopy _lp_encodeStringIfNotNil:self->_application forKey:@"application"];
+  [coderCopy _lp_encodeObjectIfNotNil:self->_icon forKey:@"icon"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [LPSharePlayInviteMetadata allocWithZone:a3];
+  v4 = [LPSharePlayInviteMetadata allocWithZone:zone];
   if (v4)
   {
-    v5 = [(LPSharePlayInviteMetadata *)self title];
-    [(LPSharePlayInviteMetadata *)v4 setTitle:v5];
+    title = [(LPSharePlayInviteMetadata *)self title];
+    [(LPSharePlayInviteMetadata *)v4 setTitle:title];
 
-    v6 = [(LPSharePlayInviteMetadata *)self applicationBundleIdentifier];
-    [(LPSharePlayInviteMetadata *)v4 setApplicationBundleIdentifier:v6];
+    applicationBundleIdentifier = [(LPSharePlayInviteMetadata *)self applicationBundleIdentifier];
+    [(LPSharePlayInviteMetadata *)v4 setApplicationBundleIdentifier:applicationBundleIdentifier];
 
-    v7 = [(LPSharePlayInviteMetadata *)self application];
-    [(LPSharePlayInviteMetadata *)v4 setApplication:v7];
+    application = [(LPSharePlayInviteMetadata *)self application];
+    [(LPSharePlayInviteMetadata *)v4 setApplication:application];
 
-    v8 = [(LPSharePlayInviteMetadata *)self icon];
-    [(LPSharePlayInviteMetadata *)v4 setIcon:v8];
+    icon = [(LPSharePlayInviteMetadata *)self icon];
+    [(LPSharePlayInviteMetadata *)v4 setIcon:icon];
 
     v9 = v4;
   }
@@ -220,12 +220,12 @@ LABEL_12:
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v8.receiver = self;
   v8.super_class = LPSharePlayInviteMetadata;
-  if ([(LPSharePlayInviteMetadata *)&v8 isEqual:v4])
+  if ([(LPSharePlayInviteMetadata *)&v8 isEqual:equalCopy])
   {
     v5 = 1;
   }
@@ -235,7 +235,7 @@ LABEL_12:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v4;
+      v6 = equalCopy;
       if ((objectsAreEqual_0(v6[2], self->_title) & 1) != 0 && objectsAreEqual_0(v6[3], self->_applicationBundleIdentifier) && objectsAreEqual_0(v6[4], self->_application))
       {
         v5 = objectsAreEqual_0(v6[5], self->_icon);

@@ -1,10 +1,10 @@
 @interface PGGraphSceneFeatureNode
 + (id)filter;
-+ (id)filterForSceneName:(id)a3;
-+ (id)filterForSceneNames:(id)a3;
++ (id)filterForSceneName:(id)name;
++ (id)filterForSceneNames:(id)names;
 + (id)momentOfSceneFeature;
 - (NSString)featureIdentifier;
-- (PGGraphSceneFeatureNode)initWithLabel:(id)a3;
+- (PGGraphSceneFeatureNode)initWithLabel:(id)label;
 - (PGGraphSceneFeatureNodeCollection)collection;
 @end
 
@@ -15,8 +15,8 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(PGGraphSceneFeatureNode *)self label];
-  v7 = [v3 stringWithFormat:@"%@|%@", v5, v6];
+  label = [(PGGraphSceneFeatureNode *)self label];
+  v7 = [v3 stringWithFormat:@"%@|%@", v5, label];
 
   return v7;
 }
@@ -28,15 +28,15 @@
   return v2;
 }
 
-- (PGGraphSceneFeatureNode)initWithLabel:(id)a3
+- (PGGraphSceneFeatureNode)initWithLabel:(id)label
 {
-  v4 = a3;
+  labelCopy = label;
   v9.receiver = self;
   v9.super_class = PGGraphSceneFeatureNode;
   v5 = [(PGGraphNode *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [labelCopy copy];
     label = v5->_label;
     v5->_label = v6;
   }
@@ -47,16 +47,16 @@
 + (id)momentOfSceneFeature
 {
   v2 = +[PGGraphMomentFeaturesEdge filter];
-  v3 = [v2 inRelation];
+  inRelation = [v2 inRelation];
 
-  return v3;
+  return inRelation;
 }
 
-+ (id)filterForSceneNames:(id)a3
++ (id)filterForSceneNames:(id)names
 {
   v3 = MEMORY[0x277CBEB98];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithArray:v4];
+  namesCopy = names;
+  v5 = [[v3 alloc] initWithArray:namesCopy];
 
   v6 = objc_alloc(MEMORY[0x277D22C78]);
   v7 = [v6 initWithLabels:v5 domain:601 properties:MEMORY[0x277CBEC10]];
@@ -64,11 +64,11 @@
   return v7;
 }
 
-+ (id)filterForSceneName:(id)a3
++ (id)filterForSceneName:(id)name
 {
   v3 = MEMORY[0x277D22C78];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithLabel:v4 domain:601];
+  nameCopy = name;
+  v5 = [[v3 alloc] initWithLabel:nameCopy domain:601];
 
   return v5;
 }

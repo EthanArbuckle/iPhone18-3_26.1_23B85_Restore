@@ -1,15 +1,15 @@
 @interface CarouselViewContainer
-- (CGSize)vui_layoutSubviews:(CGSize)a3 computationOnly:(BOOL)a4;
-- (void)pageChangeEventWithSender:(id)a3;
+- (CGSize)vui_layoutSubviews:(CGSize)subviews computationOnly:(BOOL)only;
+- (void)pageChangeEventWithSender:(id)sender;
 @end
 
 @implementation CarouselViewContainer
 
-- (CGSize)vui_layoutSubviews:(CGSize)a3 computationOnly:(BOOL)a4
+- (CGSize)vui_layoutSubviews:(CGSize)subviews computationOnly:(BOOL)only
 {
-  width = a3.width;
-  v6 = self;
-  sub_1E3EE0304(a4, width);
+  width = subviews.width;
+  selfCopy = self;
+  sub_1E3EE0304(only, width);
   OUTLINED_FUNCTION_18_3();
 
   v7 = OUTLINED_FUNCTION_17_4();
@@ -18,11 +18,11 @@
   return result;
 }
 
-- (void)pageChangeEventWithSender:(id)a3
+- (void)pageChangeEventWithSender:(id)sender
 {
-  v4 = a3;
-  v5 = self;
-  sub_1E3EE0CD4(v4);
+  senderCopy = sender;
+  selfCopy = self;
+  sub_1E3EE0CD4(senderCopy);
 }
 
 @end

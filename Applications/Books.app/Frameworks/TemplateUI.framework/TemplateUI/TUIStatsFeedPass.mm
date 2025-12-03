@@ -1,15 +1,15 @@
 @interface TUIStatsFeedPass
 - (NSString)description;
-- (TUIStatsFeedPass)initWithMode:(unint64_t)a3 timingCollector:(id)a4 passes:(id)a5;
+- (TUIStatsFeedPass)initWithMode:(unint64_t)mode timingCollector:(id)collector passes:(id)passes;
 @end
 
 @implementation TUIStatsFeedPass
 
-- (TUIStatsFeedPass)initWithMode:(unint64_t)a3 timingCollector:(id)a4 passes:(id)a5
+- (TUIStatsFeedPass)initWithMode:(unint64_t)mode timingCollector:(id)collector passes:(id)passes
 {
-  v6 = a3;
-  v8 = a4;
-  v9 = a5;
+  modeCopy = mode;
+  collectorCopy = collector;
+  passesCopy = passes;
   v25.receiver = self;
   v25.super_class = TUIStatsFeedPass;
   v10 = [(TUIStatsFeedPass *)&v25 init];
@@ -19,7 +19,7 @@
     v10->_reason = 0;
     for (i = 1; i != 6; ++i)
     {
-      [v8 elapsedTimeForPhase:i - 1];
+      [collectorCopy elapsedTimeForPhase:i - 1];
       *(&v11->super.isa + i) = v13;
     }
 
@@ -38,14 +38,14 @@
     *&v11->_eventCount[6] = 0u;
     *v11->_eventCount = 0u;
     *&v11->_eventCount[2] = 0u;
-    if ((v6 & 8) != 0)
+    if ((modeCopy & 8) != 0)
     {
       v23[0] = _NSConcreteStackBlock;
       v23[1] = 3221225472;
       v23[2] = sub_5B86C;
       v23[3] = &unk_25F590;
       v24 = v11;
-      [v9 enumerateObjectsUsingBlock:v23];
+      [passesCopy enumerateObjectsUsingBlock:v23];
     }
 
     v18 = _NSConcreteStackBlock;
@@ -54,10 +54,10 @@
     v21 = &unk_25F590;
     v14 = v11;
     v22 = v14;
-    [v9 enumerateObjectsUsingBlock:&v18];
-    if ((v6 & 2) != 0)
+    [passesCopy enumerateObjectsUsingBlock:&v18];
+    if ((modeCopy & 2) != 0)
     {
-      v15 = [v9 copy];
+      v15 = [passesCopy copy];
       entryPasses = v14->_entryPasses;
       v14->_entryPasses = v15;
     }

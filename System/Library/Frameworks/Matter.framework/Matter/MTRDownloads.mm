@@ -1,10 +1,10 @@
 @interface MTRDownloads
 - (MTRDownloads)init;
-- (id)add:(int64_t)a3 fabricIndex:(id)a4 nodeID:(id)a5 timeout:(double)a6 queue:(id)a7 completion:(id)a8 done:(id)a9;
-- (id)get:(id)a3 fabricIndex:(id)a4 nodeID:(id)a5;
-- (void)abortDownloadsForController:(id)a3 nodeID:(id)a4;
+- (id)add:(int64_t)add fabricIndex:(id)index nodeID:(id)d timeout:(double)timeout queue:(id)queue completion:(id)completion done:(id)done;
+- (id)get:(id)get fabricIndex:(id)index nodeID:(id)d;
+- (void)abortDownloadsForController:(id)controller nodeID:(id)d;
 - (void)dealloc;
-- (void)remove:(id)a3;
+- (void)remove:(id)remove;
 @end
 
 @implementation MTRDownloads
@@ -66,12 +66,12 @@
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (id)get:(id)a3 fabricIndex:(id)a4 nodeID:(id)a5
+- (id)get:(id)get fabricIndex:(id)index nodeID:(id)d
 {
   v23 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  getCopy = get;
+  indexCopy = index;
+  dCopy = d;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
@@ -91,7 +91,7 @@
         }
 
         v15 = *(*(&v18 + 1) + 8 * i);
-        if ([v15 matches:v8 fabricIndex:v9 nodeID:{v10, v18}])
+        if ([v15 matches:getCopy fabricIndex:indexCopy nodeID:{dCopy, v18}])
         {
           v12 = v15;
           goto LABEL_11;
@@ -115,15 +115,15 @@ LABEL_11:
   return v12;
 }
 
-- (id)add:(int64_t)a3 fabricIndex:(id)a4 nodeID:(id)a5 timeout:(double)a6 queue:(id)a7 completion:(id)a8 done:(id)a9
+- (id)add:(int64_t)add fabricIndex:(id)index nodeID:(id)d timeout:(double)timeout queue:(id)queue completion:(id)completion done:(id)done
 {
-  v16 = a4;
-  v17 = a5;
-  v18 = a7;
-  v19 = a8;
-  v20 = a9;
+  indexCopy = index;
+  dCopy = d;
+  queueCopy = queue;
+  completionCopy = completion;
+  doneCopy = done;
   sub_23947632C("/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/MTRDiagnosticLogsDownloader.mm", 450);
-  v21 = [[MTRDownload alloc] initWithType:a3 fabricIndex:v16 nodeID:v17 timeout:v18 queue:v19 completion:v20 done:a6];
+  v21 = [[MTRDownload alloc] initWithType:add fabricIndex:indexCopy nodeID:dCopy timeout:queueCopy queue:completionCopy completion:doneCopy done:timeout];
   if (v21)
   {
     [(NSMutableArray *)self->_downloads addObject:v21];
@@ -133,14 +133,14 @@ LABEL_11:
   return v21;
 }
 
-- (void)abortDownloadsForController:(id)a3 nodeID:(id)a4
+- (void)abortDownloadsForController:(id)controller nodeID:(id)d
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v20 = v6;
+  controllerCopy = controller;
+  dCopy = d;
+  v20 = controllerCopy;
   sub_23947632C("/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/MTRDiagnosticLogsDownloader.mm", 461);
-  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:{objc_msgSend(v6, "fabricIndex")}];
+  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:{objc_msgSend(controllerCopy, "fabricIndex")}];
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
@@ -160,12 +160,12 @@ LABEL_11:
         }
 
         v13 = *(*(&v21 + 1) + 8 * i);
-        v14 = [v13 fabricIndex];
-        v15 = [v14 isEqual:v8];
+        fabricIndex = [v13 fabricIndex];
+        v15 = [fabricIndex isEqual:v8];
 
         if (v15)
         {
-          if (!v7 || ([v13 nodeID], v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "isEqual:", v7), v16, (v17 & 1) != 0))
+          if (!dCopy || ([v13 nodeID], v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "isEqual:", dCopy), v16, (v17 & 1) != 0))
           {
             v18 = sub_23921C1E4(MTRError, 0x1D900000074, "/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/MTRDiagnosticLogsDownloader.mm");
             [v13 abort:v18];
@@ -184,12 +184,12 @@ LABEL_11:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)remove:(id)a3
+- (void)remove:(id)remove
 {
-  v4 = a3;
+  removeCopy = remove;
   sub_23947632C("/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/MTRDiagnosticLogsDownloader.mm", 483);
-  [v4 cancelTimeoutTimer];
-  [(NSMutableArray *)self->_downloads removeObject:v4];
+  [removeCopy cancelTimeoutTimer];
+  [(NSMutableArray *)self->_downloads removeObject:removeCopy];
 }
 
 @end

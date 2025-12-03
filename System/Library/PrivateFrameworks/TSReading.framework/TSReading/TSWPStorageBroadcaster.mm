@@ -1,10 +1,10 @@
 @interface TSWPStorageBroadcaster
 - (id).cxx_construct;
-- (void)addObserver:(id)a3;
-- (void)broadcastStorage:(id)a3 didChangeRange:(_NSRange)a4 delta:(int64_t)a5 broadcastKind:(int)a6;
+- (void)addObserver:(id)observer;
+- (void)broadcastStorage:(id)storage didChangeRange:(_NSRange)range delta:(int64_t)delta broadcastKind:(int)kind;
 - (void)dealloc;
 - (void)removeAllObservers;
-- (void)removeObserver:(id)a3;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation TSWPStorageBroadcaster
@@ -13,9 +13,9 @@
 {
   if (self->_observers.__tree_.__size_)
   {
-    v3 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPStorageBroadcaster dealloc]"];
-    [v3 handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorageBroadcaster.mm"), 22, @"storage broadcaster has listeners that should have been removed"}];
+    [currentHandler handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStorageBroadcaster.mm"), 22, @"storage broadcaster has listeners that should have been removed"}];
   }
 
   std::__tree<std::__value_type<std::pair<unsigned short,EQKit::Config::Operator::Form>,EQKit::Config::Operator::Dictionary::Entry>,std::__map_value_compare<std::pair<unsigned short,EQKit::Config::Operator::Form>,std::__value_type<std::pair<unsigned short,EQKit::Config::Operator::Form>,EQKit::Config::Operator::Dictionary::Entry>,std::less<std::pair<unsigned short,EQKit::Config::Operator::Form>>,true>,std::allocator<std::__value_type<std::pair<unsigned short,EQKit::Config::Operator::Form>,EQKit::Config::Operator::Dictionary::Entry>>>::destroy(&self->_observers, self->_observers.__tree_.__end_node_.__left_);
@@ -27,24 +27,24 @@
   [(TSWPStorageBroadcaster *)&v5 dealloc];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  if (a3)
+  observerCopy = observer;
+  if (observer)
   {
     objc_sync_enter(self);
-    std::__tree<objc_object  {objcproto19TSWPStorageObserver}*>::__emplace_unique_key_args<objc_object  {objcproto19TSWPStorageObserver},objc_object  {objcproto19TSWPStorageObserver} const&>(&self->_observers, &v4);
+    std::__tree<objc_object  {objcproto19TSWPStorageObserver}*>::__emplace_unique_key_args<objc_object  {objcproto19TSWPStorageObserver},objc_object  {objcproto19TSWPStorageObserver} const&>(&self->_observers, &observerCopy);
     objc_sync_exit(self);
   }
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  if (a3)
+  observerCopy = observer;
+  if (observer)
   {
     objc_sync_enter(self);
-    std::__tree<objc_object  {objcproto19TSWPStorageObserver}*>::__erase_unique<objc_object  {objcproto19TSWPStorageObserver}>(&self->_observers, &v4);
+    std::__tree<objc_object  {objcproto19TSWPStorageObserver}*>::__erase_unique<objc_object  {objcproto19TSWPStorageObserver}>(&self->_observers, &observerCopy);
     objc_sync_exit(self);
   }
 }
@@ -60,18 +60,18 @@
   objc_sync_exit(self);
 }
 
-- (void)broadcastStorage:(id)a3 didChangeRange:(_NSRange)a4 delta:(int64_t)a5 broadcastKind:(int)a6
+- (void)broadcastStorage:(id)storage didChangeRange:(_NSRange)range delta:(int64_t)delta broadcastKind:(int)kind
 {
-  v6 = *&a6;
-  length = a4.length;
-  location = a4.location;
+  v6 = *&kind;
+  length = range.length;
+  location = range.location;
   objc_sync_enter(self);
   begin_node = self->_observers.__tree_.__begin_node_;
   if (begin_node != &self->_observers.__tree_.__end_node_)
   {
     do
     {
-      [(objc_class *)begin_node[1].super.isa storage:a3 didChangeRange:location delta:length broadcastKind:a5, v6];
+      [(objc_class *)begin_node[1].super.isa storage:storage didChangeRange:location delta:length broadcastKind:delta, v6];
       isa = begin_node->_observers.__tree_.__begin_node_;
       if (isa)
       {

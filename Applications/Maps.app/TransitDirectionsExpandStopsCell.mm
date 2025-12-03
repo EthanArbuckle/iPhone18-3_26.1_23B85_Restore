@@ -1,6 +1,6 @@
 @interface TransitDirectionsExpandStopsCell
 - (TransitDirectionsExpandableCellDelegate)expandableCellDelegate;
-- (void)setExpandableCellDelegate:(id)a3;
+- (void)setExpandableCellDelegate:(id)delegate;
 @end
 
 @implementation TransitDirectionsExpandStopsCell
@@ -12,11 +12,11 @@
   return WeakRetained;
 }
 
-- (void)setExpandableCellDelegate:(id)a3
+- (void)setExpandableCellDelegate:(id)delegate
 {
-  v4 = a3;
-  objc_storeWeak(&self->_expandableCellDelegate, v4);
-  [(TransitDirectionsStepView *)self->super.super._stepView setExpandableCellDelegate:v4];
+  delegateCopy = delegate;
+  objc_storeWeak(&self->_expandableCellDelegate, delegateCopy);
+  [(TransitDirectionsStepView *)self->super.super._stepView setExpandableCellDelegate:delegateCopy];
 }
 
 @end

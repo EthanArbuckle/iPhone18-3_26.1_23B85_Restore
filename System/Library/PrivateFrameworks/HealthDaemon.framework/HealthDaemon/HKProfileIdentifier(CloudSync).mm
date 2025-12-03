@@ -35,18 +35,18 @@
 
 - (__CFString)hd_syncCircleIdentifier
 {
-  v1 = a1;
-  v2 = [(__CFString *)a1 type];
-  if ((v2 - 1) < 3)
+  selfCopy = self;
+  type = [(__CFString *)self type];
+  if ((type - 1) < 3)
   {
 LABEL_4:
-    v1 = @"PrimarySyncCircle";
+    selfCopy = @"PrimarySyncCircle";
     goto LABEL_5;
   }
 
-  if (v2 != 4)
+  if (type != 4)
   {
-    if (v2 != 100)
+    if (type != 100)
     {
       goto LABEL_5;
     }
@@ -55,14 +55,14 @@ LABEL_4:
   }
 
   v4 = MEMORY[0x277CCACA8];
-  v5 = [(__CFString *)v1 type];
-  v6 = [(__CFString *)v1 identifier];
-  v7 = [v6 UUIDString];
-  v1 = [v4 stringWithFormat:@"%ld$%@", v5, v7];
+  type2 = [(__CFString *)selfCopy type];
+  identifier = [(__CFString *)selfCopy identifier];
+  uUIDString = [identifier UUIDString];
+  selfCopy = [v4 stringWithFormat:@"%ld$%@", type2, uUIDString];
 
 LABEL_5:
 
-  return v1;
+  return selfCopy;
 }
 
 @end

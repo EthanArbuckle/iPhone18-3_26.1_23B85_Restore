@@ -1,29 +1,29 @@
 @interface ClimateFanIndicator
-- (void)fanService:(id)a3 didUpdateAutoMode:(BOOL)a4;
-- (void)fanService:(id)a3 didUpdateFanLevel:(unsigned __int8)a4;
-- (void)fanService:(id)a3 didUpdateOn:(BOOL)a4;
+- (void)fanService:(id)service didUpdateAutoMode:(BOOL)mode;
+- (void)fanService:(id)service didUpdateFanLevel:(unsigned __int8)level;
+- (void)fanService:(id)service didUpdateOn:(BOOL)on;
 @end
 
 @implementation ClimateFanIndicator
 
-- (void)fanService:(id)a3 didUpdateFanLevel:(unsigned __int8)a4
+- (void)fanService:(id)service didUpdateFanLevel:(unsigned __int8)level
 {
-  v6 = a3;
-  v7 = self;
-  sub_10007B468(v6, a4);
+  serviceCopy = service;
+  selfCopy = self;
+  sub_10007B468(serviceCopy, level);
 }
 
-- (void)fanService:(id)a3 didUpdateOn:(BOOL)a4
+- (void)fanService:(id)service didUpdateOn:(BOOL)on
 {
-  v4 = self;
+  selfCopy = self;
   sub_10007AEE4();
 }
 
-- (void)fanService:(id)a3 didUpdateAutoMode:(BOOL)a4
+- (void)fanService:(id)service didUpdateAutoMode:(BOOL)mode
 {
-  v6 = a3;
-  v7 = self;
-  sub_10007B948(v6, a4);
+  serviceCopy = service;
+  selfCopy = self;
+  sub_10007B948(serviceCopy, mode);
 }
 
 @end

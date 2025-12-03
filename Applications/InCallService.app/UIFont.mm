@@ -1,8 +1,8 @@
 @interface UIFont
-+ (id)preferredBoldFontWithTextStyle:(id)a3;
-+ (id)preferredFontWithTextStyle:(id)a3;
-+ (id)preferredItalicFontWithTextStyle:(id)a3;
-+ (id)preferredTightLeadingWithForTextStyle:(id)a3;
++ (id)preferredBoldFontWithTextStyle:(id)style;
++ (id)preferredFontWithTextStyle:(id)style;
++ (id)preferredItalicFontWithTextStyle:(id)style;
++ (id)preferredTightLeadingWithForTextStyle:(id)style;
 - (id)withCaseSensitiveAttribute;
 @end
 
@@ -21,48 +21,48 @@
   v14 = v4;
   v5 = [NSDictionary dictionaryWithObjects:&v14 forKeys:&v13 count:1];
 
-  v6 = [(UIFont *)self fontDescriptor];
-  v7 = [v6 fontDescriptorByAddingAttributes:v5];
+  fontDescriptor = [(UIFont *)self fontDescriptor];
+  v7 = [fontDescriptor fontDescriptorByAddingAttributes:v5];
 
   v8 = [UIFont fontWithDescriptor:v7 size:0.0];
 
   return v8;
 }
 
-+ (id)preferredFontWithTextStyle:(id)a3
++ (id)preferredFontWithTextStyle:(id)style
 {
-  v3 = [UIFontDescriptor preferredFontDescriptorWithTextStyle:a3 addingSymbolicTraits:0 options:1];
+  v3 = [UIFontDescriptor preferredFontDescriptorWithTextStyle:style addingSymbolicTraits:0 options:1];
   v4 = [UIFont fontWithDescriptor:v3 size:0.0];
-  v5 = [v4 withCaseSensitiveAttribute];
+  withCaseSensitiveAttribute = [v4 withCaseSensitiveAttribute];
 
-  return v5;
+  return withCaseSensitiveAttribute;
 }
 
-+ (id)preferredBoldFontWithTextStyle:(id)a3
++ (id)preferredBoldFontWithTextStyle:(id)style
 {
-  v3 = [UIFontDescriptor preferredFontDescriptorWithTextStyle:a3 addingSymbolicTraits:2 options:1];
+  v3 = [UIFontDescriptor preferredFontDescriptorWithTextStyle:style addingSymbolicTraits:2 options:1];
   v4 = [UIFont fontWithDescriptor:v3 size:0.0];
-  v5 = [v4 withCaseSensitiveAttribute];
+  withCaseSensitiveAttribute = [v4 withCaseSensitiveAttribute];
 
-  return v5;
+  return withCaseSensitiveAttribute;
 }
 
-+ (id)preferredItalicFontWithTextStyle:(id)a3
++ (id)preferredItalicFontWithTextStyle:(id)style
 {
-  v3 = [UIFontDescriptor preferredFontDescriptorWithTextStyle:a3 addingSymbolicTraits:1 options:1];
+  v3 = [UIFontDescriptor preferredFontDescriptorWithTextStyle:style addingSymbolicTraits:1 options:1];
   v4 = [UIFont fontWithDescriptor:v3 size:0.0];
-  v5 = [v4 withCaseSensitiveAttribute];
+  withCaseSensitiveAttribute = [v4 withCaseSensitiveAttribute];
 
-  return v5;
+  return withCaseSensitiveAttribute;
 }
 
-+ (id)preferredTightLeadingWithForTextStyle:(id)a3
++ (id)preferredTightLeadingWithForTextStyle:(id)style
 {
-  v3 = [UIFontDescriptor preferredFontDescriptorWithTextStyle:a3 addingSymbolicTraits:0x8000 options:1];
+  v3 = [UIFontDescriptor preferredFontDescriptorWithTextStyle:style addingSymbolicTraits:0x8000 options:1];
   v4 = [UIFont fontWithDescriptor:v3 size:0.0];
-  v5 = [v4 withCaseSensitiveAttribute];
+  withCaseSensitiveAttribute = [v4 withCaseSensitiveAttribute];
 
-  return v5;
+  return withCaseSensitiveAttribute;
 }
 
 @end

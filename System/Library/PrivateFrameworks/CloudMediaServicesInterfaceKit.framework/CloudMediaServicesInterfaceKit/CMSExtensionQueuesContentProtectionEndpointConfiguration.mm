@@ -1,6 +1,6 @@
 @interface CMSExtensionQueuesContentProtectionEndpointConfiguration
 - (CMSExtensionQueuesContentProtectionEndpointConfiguration)init;
-- (CMSExtensionQueuesContentProtectionEndpointConfiguration)initWithDictionary:(id)a3 endpoint:(id)a4 baseURL:(id)a5 groupHeaders:(id)a6;
+- (CMSExtensionQueuesContentProtectionEndpointConfiguration)initWithDictionary:(id)dictionary endpoint:(id)endpoint baseURL:(id)l groupHeaders:(id)headers;
 - (id)description;
 @end
 
@@ -9,11 +9,11 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(CMSExtensionEndpointConfiguration *)self endpointURL];
-  v5 = [(CMSExtensionEndpointConfiguration *)self groupHeaders];
-  v6 = [(CMSExtensionEndpointConfiguration *)self headers];
+  endpointURL = [(CMSExtensionEndpointConfiguration *)self endpointURL];
+  groupHeaders = [(CMSExtensionEndpointConfiguration *)self groupHeaders];
+  headers = [(CMSExtensionEndpointConfiguration *)self headers];
   keySystemIdentifier = self->_keySystemIdentifier;
-  v8 = [v3 stringWithFormat:@"<CMSExtensionQueuesContentProtectionEndpointConfiguration: endpointURL:%@ groupHeaders:%@ headers:%@ keySystem:%@ certURL:%@>", v4, v5, v6, keySystemIdentifier, self->_fairPlayKeySystemCertificateUrl];
+  v8 = [v3 stringWithFormat:@"<CMSExtensionQueuesContentProtectionEndpointConfiguration: endpointURL:%@ groupHeaders:%@ headers:%@ keySystem:%@ certURL:%@>", endpointURL, groupHeaders, headers, keySystemIdentifier, self->_fairPlayKeySystemCertificateUrl];
 
   return v8;
 }
@@ -26,20 +26,20 @@
   return v4;
 }
 
-- (CMSExtensionQueuesContentProtectionEndpointConfiguration)initWithDictionary:(id)a3 endpoint:(id)a4 baseURL:(id)a5 groupHeaders:(id)a6
+- (CMSExtensionQueuesContentProtectionEndpointConfiguration)initWithDictionary:(id)dictionary endpoint:(id)endpoint baseURL:(id)l groupHeaders:(id)headers
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  dictionaryCopy = dictionary;
+  endpointCopy = endpoint;
+  lCopy = l;
   v24.receiver = self;
   v24.super_class = CMSExtensionQueuesContentProtectionEndpointConfiguration;
-  v13 = [(CMSExtensionEndpointConfiguration *)&v24 initWithDictionary:v10 endpoint:v11 baseURL:v12 groupHeaders:a6];
+  v13 = [(CMSExtensionEndpointConfiguration *)&v24 initWithDictionary:dictionaryCopy endpoint:endpointCopy baseURL:lCopy groupHeaders:headers];
   if (!v13)
   {
     goto LABEL_7;
   }
 
-  v14 = [v10 cmsOptionalDictionaryForKey:@"cks"];
+  v14 = [dictionaryCopy cmsOptionalDictionaryForKey:@"cks"];
   if (!v14)
   {
     v15 = _CMSILogingFacility();
@@ -82,7 +82,7 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v19 = [MEMORY[0x277CBEBC0] URLWithString:v18 relativeToURL:v12];
+  v19 = [MEMORY[0x277CBEBC0] URLWithString:v18 relativeToURL:lCopy];
   fairPlayKeySystemCertificateUrl = v13->_fairPlayKeySystemCertificateUrl;
   v13->_fairPlayKeySystemCertificateUrl = v19;
 

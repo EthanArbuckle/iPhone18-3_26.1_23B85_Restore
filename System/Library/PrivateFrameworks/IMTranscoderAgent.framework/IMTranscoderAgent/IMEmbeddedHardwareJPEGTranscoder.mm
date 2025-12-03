@@ -1,23 +1,23 @@
 @interface IMEmbeddedHardwareJPEGTranscoder
 - (BOOL)_decodeImageToIOSurface;
-- (BOOL)_isJPEGImage:(CGImageSource *)a3;
-- (BOOL)scaleImageToFitLargestDimension:(id)a3 outputData:(id *)a4;
-- (IMEmbeddedHardwareJPEGTranscoder)initWithImageData:(id)a3 imageSource:(CGImageSource *)a4;
+- (BOOL)_isJPEGImage:(CGImageSource *)image;
+- (BOOL)scaleImageToFitLargestDimension:(id)dimension outputData:(id *)data;
+- (IMEmbeddedHardwareJPEGTranscoder)initWithImageData:(id)data imageSource:(CGImageSource *)source;
 - (void)dealloc;
 @end
 
 @implementation IMEmbeddedHardwareJPEGTranscoder
 
-- (IMEmbeddedHardwareJPEGTranscoder)initWithImageData:(id)a3 imageSource:(CGImageSource *)a4
+- (IMEmbeddedHardwareJPEGTranscoder)initWithImageData:(id)data imageSource:(CGImageSource *)source
 {
   v38 = *MEMORY[0x277D85DE8];
   v35.receiver = self;
   v35.super_class = IMEmbeddedHardwareJPEGTranscoder;
   v6 = [(IMEmbeddedHardwareJPEGTranscoder *)&v35 init];
-  if (v6 && MGGetBoolAnswer() && objc_msgSend__isJPEGImage_(v6, v7, a4, v8, v9, v10, v11))
+  if (v6 && MGGetBoolAnswer() && objc_msgSend__isJPEGImage_(v6, v7, source, v8, v9, v10, v11))
   {
-    v6->_imageData = a3;
-    v12 = CGImageSourceCopyPropertiesAtIndex(a4, 0, 0);
+    v6->_imageData = data;
+    v12 = CGImageSourceCopyPropertiesAtIndex(source, 0, 0);
     v6->_imageProperties = v12;
     Value = CFDictionaryGetValue(v12, *MEMORY[0x277CD3450]);
     v20 = objc_msgSend_intValue(Value, v14, v15, v16, v17, v18, v19);
@@ -62,9 +62,9 @@
   [(IMEmbeddedHardwareJPEGTranscoder *)&v5 dealloc];
 }
 
-- (BOOL)_isJPEGImage:(CGImageSource *)a3
+- (BOOL)_isJPEGImage:(CGImageSource *)image
 {
-  Type = CGImageSourceGetType(a3);
+  Type = CGImageSourceGetType(image);
   if (Type)
   {
     LOBYTE(Type) = UTTypeConformsTo(Type, *MEMORY[0x277CC20C8]) != 0;
@@ -89,16 +89,16 @@
   return v11 != 0;
 }
 
-- (BOOL)scaleImageToFitLargestDimension:(id)a3 outputData:(id *)a4
+- (BOOL)scaleImageToFitLargestDimension:(id)dimension outputData:(id *)data
 {
   v81 = *MEMORY[0x277D85DE8];
-  if (!a4)
+  if (!data)
   {
     goto LABEL_4;
   }
 
-  *a4 = 0;
-  if (!self->_canHardwareScaleImage || objc_msgSend_intValue(a3, a2, a3, a4, v4, v5, v6) > 0x4000)
+  *data = 0;
+  if (!self->_canHardwareScaleImage || objc_msgSend_intValue(dimension, a2, dimension, data, v4, v5, v6) > 0x4000)
   {
     goto LABEL_4;
   }
@@ -134,7 +134,7 @@ LABEL_4:
   }
 
   off_27F611A28(v20);
-  objc_msgSend_intValue(a3, v21, v22, v23, v24, v25, v26);
+  objc_msgSend_intValue(dimension, v21, v22, v23, v24, v25, v26);
   FigCreateIOSurfaceBackedCVPixelBuffer();
   VTPixelTransferSessionTransferImage(pixelTransferSessionOut, pixelBufferOut, 0);
   CVPixelBufferRelease(pixelBufferOut);
@@ -245,7 +245,7 @@ LABEL_26:
       EXIFJPEGData = v71;
     }
 
-    *a4 = EXIFJPEGData;
+    *data = EXIFJPEGData;
 
     if (qword_27F611A60 != -1)
     {

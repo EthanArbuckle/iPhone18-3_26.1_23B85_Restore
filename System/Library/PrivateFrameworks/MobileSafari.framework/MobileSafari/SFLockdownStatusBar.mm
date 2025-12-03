@@ -1,23 +1,23 @@
 @interface SFLockdownStatusBar
 - (CGSize)intrinsicContentSize;
 - (CGSize)preferredSize;
-- (SFLockdownStatusBar)initWithFrame:(CGRect)a3;
+- (SFLockdownStatusBar)initWithFrame:(CGRect)frame;
 - (double)preferredSquishedBottomSpacing;
 - (double)topSquishedSpacingAdjustment;
-- (void)_updateLabelWithLockdownStatus:(int64_t)a3;
-- (void)_updateLockdownStatusLabelAnimated:(BOOL)a3;
+- (void)_updateLabelWithLockdownStatus:(int64_t)status;
+- (void)_updateLockdownStatusLabelAnimated:(BOOL)animated;
 - (void)layoutSubviews;
-- (void)setNavigationBarItem:(id)a3;
+- (void)setNavigationBarItem:(id)item;
 @end
 
 @implementation SFLockdownStatusBar
 
-- (SFLockdownStatusBar)initWithFrame:(CGRect)a3
+- (SFLockdownStatusBar)initWithFrame:(CGRect)frame
 {
   v18[1] = *MEMORY[0x1E69E9840];
   v16.receiver = self;
   v16.super_class = SFLockdownStatusBar;
-  v3 = [(SFLockdownStatusBar *)&v16 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SFLockdownStatusBar *)&v16 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69DCC10]);
@@ -73,12 +73,12 @@
   return result;
 }
 
-- (void)_updateLockdownStatusLabelAnimated:(BOOL)a3
+- (void)_updateLockdownStatusLabelAnimated:(BOOL)animated
 {
-  v5 = [(SFNavigationBarItem *)self->_navigationBarItem lockdownModeAnnotation];
-  if (self->_currentLockdownStatus != v5)
+  lockdownModeAnnotation = [(SFNavigationBarItem *)self->_navigationBarItem lockdownModeAnnotation];
+  if (self->_currentLockdownStatus != lockdownModeAnnotation)
   {
-    if (a3)
+    if (animated)
     {
       lockdownModeStatusLabel = self->_lockdownModeStatusLabel;
       v7[0] = MEMORY[0x1E69E9820];
@@ -86,24 +86,24 @@
       v7[2] = __58__SFLockdownStatusBar__updateLockdownStatusLabelAnimated___block_invoke;
       v7[3] = &unk_1E721BAC0;
       v7[4] = self;
-      v7[5] = v5;
+      v7[5] = lockdownModeAnnotation;
       [MEMORY[0x1E69DD250] transitionWithView:lockdownModeStatusLabel duration:5242880 options:v7 animations:0 completion:0.3];
     }
 
     else
     {
 
-      [(SFLockdownStatusBar *)self _updateLabelWithLockdownStatus:v5];
+      [(SFLockdownStatusBar *)self _updateLabelWithLockdownStatus:lockdownModeAnnotation];
     }
   }
 }
 
-- (void)_updateLabelWithLockdownStatus:(int64_t)a3
+- (void)_updateLabelWithLockdownStatus:(int64_t)status
 {
   v5 = WBSAnnotationStringForLockdownModeStatus();
   [(UILabel *)self->_lockdownModeStatusLabel setText:v5];
 
-  if (a3 == 2)
+  if (status == 2)
   {
     [MEMORY[0x1E69DC888] systemRedColor];
   }
@@ -115,21 +115,21 @@
   v6 = ;
   [(UILabel *)self->_lockdownModeStatusLabel setTextColor:v6];
 
-  self->_currentLockdownStatus = a3;
+  self->_currentLockdownStatus = status;
 }
 
-- (void)setNavigationBarItem:(id)a3
+- (void)setNavigationBarItem:(id)item
 {
-  v5 = a3;
+  itemCopy = item;
   navigationBarItem = self->_navigationBarItem;
-  if (navigationBarItem != v5)
+  if (navigationBarItem != itemCopy)
   {
-    v7 = v5;
+    v7 = itemCopy;
     [(SFNavigationBarItem *)navigationBarItem removeObserver:self];
-    objc_storeStrong(&self->_navigationBarItem, a3);
+    objc_storeStrong(&self->_navigationBarItem, item);
     [(SFNavigationBarItem *)self->_navigationBarItem addObserver:self];
     [(SFLockdownStatusBar *)self _updateLockdownStatusLabelAnimated:self->_shouldAnimateNavigationBarItemChanges];
-    v5 = v7;
+    itemCopy = v7;
   }
 }
 

@@ -1,23 +1,23 @@
 @interface MOPreOnboardedVisitAnnotationManager
-+ (void)scoreVisitBundleAssets:(id)a3;
-- (MOPreOnboardedVisitAnnotationManager)initWithUniverse:(id)a3;
-- (id)actionFromBaseEvents:(id)a3;
-- (id)annotateBaseEvents:(id)a3 contextEvents:(id)a4;
-- (id)buildPromptDescriptionForEventBundle:(id)a3;
-- (id)getBaseEvents:(id)a3;
-- (id)groupBaseEvents:(id)a3;
-- (id)placeFromBaseEvents:(id)a3 action:(id)a4;
-- (id)resourcesFromBaseEvents:(id)a3;
++ (void)scoreVisitBundleAssets:(id)assets;
+- (MOPreOnboardedVisitAnnotationManager)initWithUniverse:(id)universe;
+- (id)actionFromBaseEvents:(id)events;
+- (id)annotateBaseEvents:(id)events contextEvents:(id)contextEvents;
+- (id)buildPromptDescriptionForEventBundle:(id)bundle;
+- (id)getBaseEvents:(id)events;
+- (id)groupBaseEvents:(id)events;
+- (id)placeFromBaseEvents:(id)events action:(id)action;
+- (id)resourcesFromBaseEvents:(id)events;
 @end
 
 @implementation MOPreOnboardedVisitAnnotationManager
 
-- (MOPreOnboardedVisitAnnotationManager)initWithUniverse:(id)a3
+- (MOPreOnboardedVisitAnnotationManager)initWithUniverse:(id)universe
 {
-  v4 = a3;
+  universeCopy = universe;
   v41.receiver = self;
   v41.super_class = MOPreOnboardedVisitAnnotationManager;
-  v5 = [(MOTimeContextAnnotationManager *)&v41 initWithUniverse:v4];
+  v5 = [(MOTimeContextAnnotationManager *)&v41 initWithUniverse:universeCopy];
   if (v5)
   {
     v44[0] = GEOPOICategoryATM;
@@ -63,15 +63,15 @@
 
     v15 = objc_opt_class();
     v16 = NSStringFromClass(v15);
-    v17 = [v4 getService:v16];
+    v17 = [universeCopy getService:v16];
 
-    v18 = [v17 routineManager];
+    routineManager = [v17 routineManager];
     routineManager = v5->_routineManager;
-    v5->_routineManager = v18;
+    v5->_routineManager = routineManager;
 
     v20 = objc_opt_class();
     v21 = NSStringFromClass(v20);
-    v22 = [v4 getService:v21];
+    v22 = [universeCopy getService:v21];
     configurationManager = v5->_configurationManager;
     v5->_configurationManager = v22;
 
@@ -112,19 +112,19 @@
   return v5;
 }
 
-- (id)getBaseEvents:(id)a3
+- (id)getBaseEvents:(id)events
 {
-  v3 = a3;
+  eventsCopy = events;
   v4 = [NSPredicate predicateWithFormat:@"%K = %lu", @"category", 1];
-  v5 = [v3 filteredArrayUsingPredicate:v4];
+  v5 = [eventsCopy filteredArrayUsingPredicate:v4];
 
   return v5;
 }
 
-- (id)groupBaseEvents:(id)a3
+- (id)groupBaseEvents:(id)events
 {
-  v4 = a3;
-  if (![v4 count])
+  eventsCopy = events;
+  if (![eventsCopy count])
   {
     v55 = &__NSArray0__struct;
     goto LABEL_49;
@@ -136,8 +136,8 @@
   v65 = 0u;
   v66 = 0u;
   v67 = 0u;
-  v57 = v4;
-  obj = v4;
+  v57 = eventsCopy;
+  obj = eventsCopy;
   v63 = [obj countByEnumeratingWithState:&v64 objects:v80 count:16];
   v7 = 0;
   if (!v63)
@@ -147,7 +147,7 @@
 
   v8 = *v65;
   v61 = *v65;
-  v58 = self;
+  selfCopy = self;
   v59 = v5;
   do
   {
@@ -186,54 +186,54 @@
         v15 = v14;
         [(MOPreOnboardedVisitAnnotationManager *)self distanceThresholdDefault];
         v17 = v16;
-        v18 = [v7 placeName];
-        if (!v18)
+        placeName = [v7 placeName];
+        if (!placeName)
         {
-          v60 = [v10 placeName];
-          if (!v60)
+          placeName2 = [v10 placeName];
+          if (!placeName2)
           {
-            v60 = 0;
+            placeName2 = 0;
             goto LABEL_27;
           }
         }
 
-        v19 = [v7 placeName];
-        if (v19)
+        placeName3 = [v7 placeName];
+        if (placeName3)
         {
-          v20 = v19;
-          v21 = [v10 placeName];
-          if (v21)
+          v20 = placeName3;
+          placeName4 = [v10 placeName];
+          if (placeName4)
           {
-            v22 = v21;
-            v23 = [v7 placeName];
-            v24 = [v10 placeName];
-            v25 = [v23 isEqualToString:v24];
+            v22 = placeName4;
+            placeName5 = [v7 placeName];
+            placeName6 = [v10 placeName];
+            v25 = [placeName5 isEqualToString:placeName6];
 
-            if (v18)
+            if (placeName)
             {
 
-              self = v58;
+              self = selfCopy;
               v5 = v59;
               if (!v25)
               {
 LABEL_30:
-                v31 = [v10 startDate];
-                v32 = [v7 endDate];
-                [v31 timeIntervalSinceDate:v32];
+                startDate = [v10 startDate];
+                endDate = [v7 endDate];
+                [startDate timeIntervalSinceDate:endDate];
                 v34 = v33;
 
-                v35 = [v7 location];
+                location = [v7 location];
                 v36 = 0.0;
-                if (v35)
+                if (location)
                 {
-                  v37 = v35;
-                  v38 = [v10 location];
+                  v37 = location;
+                  location2 = [v10 location];
 
-                  if (v38)
+                  if (location2)
                   {
-                    v39 = [v7 location];
-                    v40 = [v10 location];
-                    [v39 distanceFromLocation:v40];
+                    location3 = [v7 location];
+                    location4 = [v10 location];
+                    [location3 distanceFromLocation:location4];
                     v36 = v41;
                   }
                 }
@@ -275,11 +275,11 @@ LABEL_30:
                 {
                   v46 = objc_opt_class();
                   v47 = NSStringFromClass(v46);
-                  v48 = [v10 eventIdentifier];
+                  eventIdentifier = [v10 eventIdentifier];
                   *buf = 138413570;
                   v69 = v47;
                   v70 = 2112;
-                  v71 = *&v48;
+                  v71 = *&eventIdentifier;
                   v72 = 2048;
                   v73 = v34;
                   v74 = 2048;
@@ -300,7 +300,7 @@ LABEL_30:
             else
             {
 
-              self = v58;
+              self = selfCopy;
               v5 = v59;
               if ((v25 & 1) == 0)
               {
@@ -313,17 +313,17 @@ LABEL_27:
             v15 = v29;
             [(MOPreOnboardedVisitAnnotationManager *)self distanceThresholdWithSamePlaceName];
             v17 = v30;
-            v18 = _mo_log_facility_get_os_log(&MOLogFacilityEventBundleManager);
-            if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
+            placeName = _mo_log_facility_get_os_log(&MOLogFacilityEventBundleManager);
+            if (os_log_type_enabled(placeName, OS_LOG_TYPE_DEBUG))
             {
               v51 = objc_opt_class();
               v52 = NSStringFromClass(v51);
-              v53 = [v10 eventIdentifier];
+              eventIdentifier2 = [v10 eventIdentifier];
               *buf = 138412546;
               v69 = v52;
               v70 = 2112;
-              v71 = *&v53;
-              _os_log_debug_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEBUG, "%@: Grouping the base events, the same place name, %@", buf, 0x16u);
+              v71 = *&eventIdentifier2;
+              _os_log_debug_impl(&_mh_execute_header, placeName, OS_LOG_TYPE_DEBUG, "%@: Grouping the base events, the same place name, %@", buf, 0x16u);
             }
 
 LABEL_29:
@@ -332,7 +332,7 @@ LABEL_29:
           }
         }
 
-        if (!v18)
+        if (!placeName)
         {
         }
 
@@ -346,11 +346,11 @@ LABEL_29:
       {
         v26 = objc_opt_class();
         v27 = NSStringFromClass(v26);
-        v28 = [v7 eventIdentifier];
+        eventIdentifier3 = [v7 eventIdentifier];
         *buf = 138412546;
         v69 = v27;
         v70 = 2112;
-        v71 = *&v28;
+        v71 = *&eventIdentifier3;
         _os_log_debug_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEBUG, "%@: Grouping the base events, add event, %@", buf, 0x16u);
       }
 
@@ -371,17 +371,17 @@ LABEL_45:
 
   v55 = [v5 copy];
 
-  v4 = v57;
+  eventsCopy = v57;
 LABEL_49:
 
   return v55;
 }
 
-- (id)annotateBaseEvents:(id)a3 contextEvents:(id)a4
+- (id)annotateBaseEvents:(id)events contextEvents:(id)contextEvents
 {
-  v6 = a3;
-  v7 = a4;
-  if (![v6 count])
+  eventsCopy = events;
+  contextEventsCopy = contextEvents;
+  if (![eventsCopy count])
   {
     v11 = 0;
     goto LABEL_17;
@@ -395,32 +395,32 @@ LABEL_49:
   [(MOEventBundle *)v11 setInterfaceType:2];
   [(MOEventBundle *)v11 setBundleSuperType:1];
   [(MOEventBundle *)v11 setBundleSubType:106];
-  v12 = [v6 lastObject];
-  v13 = [v12 endDate];
-  v14 = [(MOAnnotationManager *)self timeZoneManager];
-  v15 = [MOTime timeForDate:v13 timeZoneManager:v14];
+  lastObject = [eventsCopy lastObject];
+  endDate = [lastObject endDate];
+  timeZoneManager = [(MOAnnotationManager *)self timeZoneManager];
+  v15 = [MOTime timeForDate:endDate timeZoneManager:timeZoneManager];
   [(MOEventBundle *)v11 setTime:v15];
 
   [(MOEventBundle *)v11 setPropertiesBasedOnEvents];
-  v16 = [v6 firstObject];
-  v17 = [v16 startDate];
-  [(MOEventBundle *)v11 setStartDate:v17];
+  firstObject = [eventsCopy firstObject];
+  startDate = [firstObject startDate];
+  [(MOEventBundle *)v11 setStartDate:startDate];
 
-  v18 = [v6 lastObject];
-  v19 = [v18 endDate];
-  [(MOEventBundle *)v11 setEndDate:v19];
+  lastObject2 = [eventsCopy lastObject];
+  endDate2 = [lastObject2 endDate];
+  [(MOEventBundle *)v11 setEndDate:endDate2];
 
-  v20 = [(MOPreOnboardedVisitAnnotationManager *)self resourcesFromBaseEvents:v6];
+  v20 = [(MOPreOnboardedVisitAnnotationManager *)self resourcesFromBaseEvents:eventsCopy];
   [(MOEventBundle *)v11 setResources:v20];
 
-  v21 = [v6 copy];
+  v21 = [eventsCopy copy];
   [(MOEventBundle *)v11 setEvents:v21];
 
-  v22 = [(MOPreOnboardedVisitAnnotationManager *)self actionFromBaseEvents:v6];
+  v22 = [(MOPreOnboardedVisitAnnotationManager *)self actionFromBaseEvents:eventsCopy];
   [(MOEventBundle *)v11 setAction:v22];
 
-  v23 = [(MOEventBundle *)v11 action];
-  v24 = [(MOPreOnboardedVisitAnnotationManager *)self placeFromBaseEvents:v6 action:v23];
+  action = [(MOEventBundle *)v11 action];
+  v24 = [(MOPreOnboardedVisitAnnotationManager *)self placeFromBaseEvents:eventsCopy action:action];
   [(MOEventBundle *)v11 setPlace:v24];
 
   v63 = 0;
@@ -441,7 +441,7 @@ LABEL_49:
   v58 = objc_opt_new();
   v52.receiver = self;
   v52.super_class = MOPreOnboardedVisitAnnotationManager;
-  v25 = [(MOAnnotationManager *)&v52 fUniverse];
+  fUniverse = [(MOAnnotationManager *)&v52 fUniverse];
   v51[0] = _NSConcreteStackBlock;
   v51[1] = 3221225472;
   v51[2] = __73__MOPreOnboardedVisitAnnotationManager_annotateBaseEvents_contextEvents___block_invoke;
@@ -449,16 +449,16 @@ LABEL_49:
   v51[4] = &v63;
   v51[5] = &v59;
   v51[6] = &v53;
-  [MOContextAnnotationUtilities addPhotoResources:v11 universe:v25 handler:v51];
+  [MOContextAnnotationUtilities addPhotoResources:v11 universe:fUniverse handler:v51];
 
   v26 = _mo_log_facility_get_os_log(&MOLogFacilityEventBundleManager);
   if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
   {
     v27 = objc_opt_class();
-    v25 = NSStringFromClass(v27);
+    fUniverse = NSStringFromClass(v27);
     v28 = v60[3];
     *buf = 138412546;
-    v70 = v25;
+    v70 = fUniverse;
     v71 = 2048;
     v72 = v28;
     _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_INFO, "%@: visit, photoSource, %lu", buf, 0x16u);
@@ -471,23 +471,23 @@ LABEL_49:
 
   if ([v64[5] count])
   {
-    v30 = [(MOEventBundle *)v11 place];
-    [v30 placeNameConfidence];
-    v25 = v31 < 0.0;
+    place = [(MOEventBundle *)v11 place];
+    [place placeNameConfidence];
+    fUniverse = v31 < 0.0;
 
-    if (v25)
+    if (fUniverse)
     {
-      v32 = [(MOEventBundle *)v11 place];
-      [v32 setPlaceNameConfidence:0.0];
+      place2 = [(MOEventBundle *)v11 place];
+      [place2 setPlaceNameConfidence:0.0];
     }
   }
 
-  v33 = [(MOEventBundle *)v11 place];
-  v34 = [v33 placeUserType];
-  if (v34 != 2)
+  place3 = [(MOEventBundle *)v11 place];
+  placeUserType = [place3 placeUserType];
+  if (placeUserType != 2)
   {
-    v25 = [(MOEventBundle *)v11 place];
-    [v25 familiarityIndexLOI];
+    fUniverse = [(MOEventBundle *)v11 place];
+    [fUniverse familiarityIndexLOI];
     if (v35 <= self->_recommendedTabVisitFIThreshold)
     {
 
@@ -495,10 +495,10 @@ LABEL_49:
     }
   }
 
-  v36 = [(MOEventBundle *)v11 photoSource];
-  if (v34 == 2)
+  photoSource = [(MOEventBundle *)v11 photoSource];
+  if (placeUserType == 2)
   {
-    v37 = v36 == 0;
+    v37 = photoSource == 0;
 
     if (v37)
     {
@@ -508,7 +508,7 @@ LABEL_49:
 
   else
   {
-    v38 = v36 == 0;
+    v38 = photoSource == 0;
 
     if (v38)
     {
@@ -518,25 +518,25 @@ LABEL_14:
   }
 
 LABEL_16:
-  v39 = [(MOEventBundle *)v11 place];
-  [v39 distanceToHomeInMiles];
+  place4 = [(MOEventBundle *)v11 place];
+  [place4 distanceToHomeInMiles];
   v40 = [NSNumber numberWithDouble:?];
   [(MOEventBundle *)v11 addMetaDataForRankForKey:@"DistanceToHome" value:v40];
 
-  v41 = [(MOEventBundle *)v11 place];
-  v42 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v41 locationMode] == 2);
+  place5 = [(MOEventBundle *)v11 place];
+  v42 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [place5 locationMode] == 2);
   [(MOEventBundle *)v11 addMetaDataForRankForKey:@"LocationModeTourist" value:v42];
 
-  v43 = [(MOEventBundle *)v11 endDate];
-  v44 = [(MOEventBundle *)v11 startDate];
-  [v43 timeIntervalSinceDate:v44];
+  endDate3 = [(MOEventBundle *)v11 endDate];
+  startDate2 = [(MOEventBundle *)v11 startDate];
+  [endDate3 timeIntervalSinceDate:startDate2];
   v46 = v45;
 
   v47 = [NSNumber numberWithDouble:v46];
   [(MOEventBundle *)v11 addMetaDataForRankForKey:@"VisitDuration" value:v47];
 
-  v48 = [(MOEventBundle *)v11 place];
-  [v48 familiarityIndexLOI];
+  place6 = [(MOEventBundle *)v11 place];
+  [place6 familiarityIndexLOI];
   v49 = [NSNumber numberWithDouble:?];
   [(MOEventBundle *)v11 addMetaDataForRankForKey:@"FamiliarityIndex" value:v49];
 
@@ -566,9 +566,9 @@ void __73__MOPreOnboardedVisitAnnotationManager_annotateBaseEvents_contextEvents
   *(v11 + 40) = v8;
 }
 
-+ (void)scoreVisitBundleAssets:(id)a3
++ (void)scoreVisitBundleAssets:(id)assets
 {
-  v3 = a3;
+  assetsCopy = assets;
   v4 = objc_opt_new();
   v5 = objc_opt_new();
   v6 = objc_opt_new();
@@ -576,8 +576,8 @@ void __73__MOPreOnboardedVisitAnnotationManager_annotateBaseEvents_contextEvents
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v7 = [v3 resources];
-  v8 = [v7 countByEnumeratingWithState:&v29 objects:v34 count:16];
+  resources = [assetsCopy resources];
+  v8 = [resources countByEnumeratingWithState:&v29 objects:v34 count:16];
   if (v8)
   {
     v9 = v8;
@@ -588,7 +588,7 @@ void __73__MOPreOnboardedVisitAnnotationManager_annotateBaseEvents_contextEvents
       {
         if (*v30 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(resources);
         }
 
         v12 = *(*(&v29 + 1) + 8 * i);
@@ -604,7 +604,7 @@ void __73__MOPreOnboardedVisitAnnotationManager_annotateBaseEvents_contextEvents
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v29 objects:v34 count:16];
+      v9 = [resources countByEnumeratingWithState:&v29 objects:v34 count:16];
     }
 
     while (v9);
@@ -614,14 +614,14 @@ void __73__MOPreOnboardedVisitAnnotationManager_annotateBaseEvents_contextEvents
   {
     if ([v5 count])
     {
-      v14 = [v5 firstObject];
-      [v14 setPriorityScore:100.0];
+      firstObject = [v5 firstObject];
+      [firstObject setPriorityScore:100.0];
 
-      v15 = [v3 place];
-      [v15 setPriorityScore:200.0];
+      place = [assetsCopy place];
+      [place setPriorityScore:200.0];
 
-      v16 = [v5 firstObject];
-      [v4 addObject:v16];
+      firstObject2 = [v5 firstObject];
+      [v4 addObject:firstObject2];
 
       [v5 removeObjectAtIndex:0];
       v27 = 0u;
@@ -663,34 +663,34 @@ void __73__MOPreOnboardedVisitAnnotationManager_annotateBaseEvents_contextEvents
       [v4 addObjectsFromArray:v6];
     }
 
-    [v3 setResources:{v4, v25}];
+    [assetsCopy setResources:{v4, v25}];
   }
 
   else
   {
-    v24 = [v3 place];
-    [v24 setPriorityScore:100.0];
+    place2 = [assetsCopy place];
+    [place2 setPriorityScore:100.0];
   }
 }
 
-- (id)actionFromBaseEvents:(id)a3
+- (id)actionFromBaseEvents:(id)events
 {
-  v3 = a3;
+  eventsCopy = events;
   v4 = [[MOAction alloc] initWithActionName:@"visit" actionType:2];
-  v5 = [v3 firstObject];
+  firstObject = [eventsCopy firstObject];
 
-  v6 = [v5 eventIdentifier];
-  [(MOAction *)v4 setSourceEventIdentifier:v6];
+  eventIdentifier = [firstObject eventIdentifier];
+  [(MOAction *)v4 setSourceEventIdentifier:eventIdentifier];
 
   return v4;
 }
 
-- (id)placeFromBaseEvents:(id)a3 action:(id)a4
+- (id)placeFromBaseEvents:(id)events action:(id)action
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MOContextAnnotationUtilities majorityGroupFromEvents:v6 propertyPath:@"placeName" valuePath:@"duration"];
-  if (v7 && [v7 actionType] == 11)
+  eventsCopy = events;
+  actionCopy = action;
+  v8 = [MOContextAnnotationUtilities majorityGroupFromEvents:eventsCopy propertyPath:@"placeName" valuePath:@"duration"];
+  if (actionCopy && [actionCopy actionType] == 11)
   {
     v9 = self->_flightPoiCategories;
   }
@@ -707,8 +707,8 @@ void __73__MOPreOnboardedVisitAnnotationManager_annotateBaseEvents_contextEvents
   v14 = v13;
   [(MOPreOnboardedVisitAnnotationManager *)self aoiVisitLabelConfidentThreshold];
   v16 = v15;
-  v17 = [(MOAnnotationManager *)self fUniverse];
-  v18 = [MOContextAnnotationUtilities placeFromVisitEvents:v8 preferredCategories:v9 poiCategoryBlocklist:lessInterestingPoiCategories mediumConfidenceThreshold:v17 highConfidenceThreshold:v12 aoiConfidenceThreshold:v14 universe:v16];
+  fUniverse = [(MOAnnotationManager *)self fUniverse];
+  v18 = [MOContextAnnotationUtilities placeFromVisitEvents:v8 preferredCategories:v9 poiCategoryBlocklist:lessInterestingPoiCategories mediumConfidenceThreshold:fUniverse highConfidenceThreshold:v12 aoiConfidenceThreshold:v14 universe:v16];
 
   if ([v18 placeUserType] == 2 || objc_msgSend(v18, "placeUserType") == 1)
   {
@@ -719,7 +719,7 @@ void __73__MOPreOnboardedVisitAnnotationManager_annotateBaseEvents_contextEvents
   v39 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v19 = v6;
+  v19 = eventsCopy;
   v20 = [v19 countByEnumeratingWithState:&v36 objects:v40 count:16];
   if (!v20)
   {
@@ -730,7 +730,7 @@ LABEL_18:
   }
 
   v21 = v20;
-  v35 = v7;
+  v35 = actionCopy;
   v22 = v9;
   v23 = v8;
   v24 = *v37;
@@ -745,9 +745,9 @@ LABEL_18:
       }
 
       v27 = *(*(&v36 + 1) + 8 * i);
-      v28 = [v27 endDate];
-      v29 = [v27 startDate];
-      [v28 timeIntervalSinceDate:v29];
+      endDate = [v27 endDate];
+      startDate = [v27 startDate];
+      [endDate timeIntervalSinceDate:startDate];
       v25 = v25 + v30;
     }
 
@@ -758,7 +758,7 @@ LABEL_18:
 
   v8 = v23;
   v9 = v22;
-  v7 = v35;
+  actionCopy = v35;
   if (v25 < 480.0)
   {
     goto LABEL_18;
@@ -768,8 +768,8 @@ LABEL_19:
   if (![v18 placeUserType])
   {
     outingEligiblePoiCategories = self->_outingEligiblePoiCategories;
-    v32 = [v18 poiCategory];
-    LODWORD(outingEligiblePoiCategories) = [(NSSet *)outingEligiblePoiCategories containsObject:v32];
+    poiCategory = [v18 poiCategory];
+    LODWORD(outingEligiblePoiCategories) = [(NSSet *)outingEligiblePoiCategories containsObject:poiCategory];
 
     if (outingEligiblePoiCategories)
     {
@@ -786,10 +786,10 @@ LABEL_19:
   return v18;
 }
 
-- (id)resourcesFromBaseEvents:(id)a3
+- (id)resourcesFromBaseEvents:(id)events
 {
   p_superclass = MOBundleQualityManager.superclass;
-  v5 = [MOContextAnnotationUtilities majorityGroupFromEvents:a3 propertyPath:@"placeName" valuePath:@"duration"];
+  v5 = [MOContextAnnotationUtilities majorityGroupFromEvents:events propertyPath:@"placeName" valuePath:@"duration"];
   v39 = objc_opt_new();
   v41 = 0u;
   v42 = 0u;
@@ -822,22 +822,22 @@ LABEL_19:
         v17 = v16;
         [(MOPreOnboardedVisitAnnotationManager *)self aoiVisitLabelConfidentThreshold];
         v19 = v18;
-        v20 = [(MOAnnotationManager *)self fUniverse];
-        v21 = [p_superclass + 309 placeFromVisitEvent:v12 preferredCategories:0 poiCategoryBlocklist:v13 mediumConfidenceThreshold:v20 highConfidenceThreshold:v15 aoiConfidenceThreshold:v17 universe:v19];
+        fUniverse = [(MOAnnotationManager *)self fUniverse];
+        v21 = [p_superclass + 309 placeFromVisitEvent:v12 preferredCategories:0 poiCategoryBlocklist:v13 mediumConfidenceThreshold:fUniverse highConfidenceThreshold:v15 aoiConfidenceThreshold:v17 universe:v19];
 
         v22 = _mo_log_facility_get_os_log(&MOLogFacilityEventBundleManager);
         if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
         {
           v30 = objc_opt_class();
           v31 = NSStringFromClass(v30);
-          v38 = [v21 placeName];
-          v32 = [v38 mask];
-          v33 = [v12 placeMapItem];
-          v34 = [v33 length];
+          placeName = [v21 placeName];
+          mask = [placeName mask];
+          placeMapItem = [v12 placeMapItem];
+          v34 = [placeMapItem length];
           *buf = v37;
           v46 = v31;
           v47 = 2112;
-          v48 = v32;
+          v48 = mask;
           v49 = 2048;
           v50 = v34;
           _os_log_debug_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEBUG, "%@: resourcesFromBaseEvents, place, %@, mapItem.length, %lu", buf, 0x20u);
@@ -849,12 +849,12 @@ LABEL_19:
         if ([v21 placeType] == 3 && (objc_msgSend(v21, "placeNameConfidence"), v23 >= 0.75) || objc_msgSend(v21, "placeType") == 2 && (objc_msgSend(v21, "placeNameConfidence"), v24 >= 0.5))
         {
           v25 = [MOResource alloc];
-          v26 = [v21 placeName];
-          v27 = [v12 placeMapItem];
-          v28 = [(MOResource *)v25 initWithName:v26 mapItemHandle:v27 priorityScore:-1.0];
+          placeName2 = [v21 placeName];
+          placeMapItem2 = [v12 placeMapItem];
+          v28 = [(MOResource *)v25 initWithName:placeName2 mapItemHandle:placeMapItem2 priorityScore:-1.0];
 
-          v29 = [v12 eventIdentifier];
-          [(MOResource *)v28 setSourceEventIdentifier:v29];
+          eventIdentifier = [v12 eventIdentifier];
+          [(MOResource *)v28 setSourceEventIdentifier:eventIdentifier];
 
           v10 = &OBJC_IVAR___MOBiomeManager__setDefault;
           [v39 addObject:v28];
@@ -885,27 +885,27 @@ LABEL_19:
   return v35;
 }
 
-- (id)buildPromptDescriptionForEventBundle:(id)a3
+- (id)buildPromptDescriptionForEventBundle:(id)bundle
 {
-  v3 = a3;
-  v4 = [v3 action];
-  v5 = [v4 actionName];
+  bundleCopy = bundle;
+  action = [bundleCopy action];
+  actionName = [action actionName];
 
-  v6 = [v3 actions];
-  if (v6 && (v7 = v6, [v3 actions], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "count"), v8, v7, v9))
+  actions = [bundleCopy actions];
+  if (actions && (v7 = actions, [bundleCopy actions], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "count"), v8, v7, v9))
   {
     v10 = [NSPredicate predicateWithFormat:@"%K = %lu", @"actionType", 2];
-    v11 = [v3 actions];
-    v12 = [v11 filteredArrayUsingPredicate:v10];
+    actions2 = [bundleCopy actions];
+    v12 = [actions2 filteredArrayUsingPredicate:v10];
 
     v13 = [v12 count];
     v14 = v13 != 0;
     if (v13)
     {
-      v15 = [v12 firstObject];
-      v16 = [v15 actionName];
+      firstObject = [v12 firstObject];
+      actionName2 = [firstObject actionName];
 
-      v5 = v16;
+      actionName = actionName2;
     }
   }
 
@@ -914,15 +914,15 @@ LABEL_19:
     v14 = 0;
   }
 
-  v17 = [v3 place];
-  if (v17)
+  place = [bundleCopy place];
+  if (place)
   {
-    v18 = [v3 place];
-    v19 = [v18 placeName];
+    place2 = [bundleCopy place];
+    placeName = [place2 placeName];
 
-    if (!v19)
+    if (!placeName)
     {
-      v17 = 0;
+      place = 0;
       if (v14)
       {
         goto LABEL_21;
@@ -931,9 +931,9 @@ LABEL_19:
       goto LABEL_11;
     }
 
-    v20 = [v3 place];
-    v21 = [v20 promptDescription];
-    v17 = [NSString stringWithFormat:@" %@", v21];
+    place3 = [bundleCopy place];
+    promptDescription = [place3 promptDescription];
+    place = [NSString stringWithFormat:@" %@", promptDescription];
   }
 
   if (v14)
@@ -942,49 +942,49 @@ LABEL_19:
   }
 
 LABEL_11:
-  if (!v17)
+  if (!place)
   {
     v31 = @"Outing";
 LABEL_20:
 
-    v5 = v31;
+    actionName = v31;
     goto LABEL_21;
   }
 
-  v22 = [v3 actions];
-  if (v22)
+  actions3 = [bundleCopy actions];
+  if (actions3)
   {
-    v23 = v22;
-    v24 = [v3 actions];
-    v25 = [v24 count];
+    v23 = actions3;
+    actions4 = [bundleCopy actions];
+    v25 = [actions4 count];
 
     if (v25)
     {
       v26 = [NSPredicate predicateWithFormat:@"%K = %lu", @"actionType", 3];
-      v27 = [v3 actions];
-      v28 = [v27 filteredArrayUsingPredicate:v26];
+      actions5 = [bundleCopy actions];
+      v28 = [actions5 filteredArrayUsingPredicate:v26];
 
       if ([v28 count])
       {
-        v29 = [v28 firstObject];
-        v30 = [v29 actionName];
+        firstObject2 = [v28 firstObject];
+        actionName3 = [firstObject2 actionName];
 
-        v5 = v30;
+        actionName = actionName3;
       }
 
-      v31 = v5;
+      v31 = actionName;
 
-      v5 = v26;
+      actionName = v26;
       goto LABEL_20;
     }
   }
 
 LABEL_21:
   v32 = objc_opt_new();
-  [v32 appendString:v5];
-  if (v17)
+  [v32 appendString:actionName];
+  if (place)
   {
-    [v32 appendString:v17];
+    [v32 appendString:place];
   }
 
   v33 = [v32 copy];

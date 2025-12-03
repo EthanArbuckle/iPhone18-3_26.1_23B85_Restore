@@ -1,28 +1,28 @@
 @interface CRSetupPromptDirectorAgent
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (void)_mainQueue_dismissLockscreenAlert;
 - (void)_mainQueue_presentCurrentRequest;
-- (void)_mainQueue_presentLockscreenAlertWithCompletion:(id)a3;
+- (void)_mainQueue_presentLockscreenAlertWithCompletion:(id)completion;
 - (void)_mainQueue_presentRequestIfUnlocked;
 - (void)_mainQueue_setupBlockedSessionQueue;
 - (void)_mainQueue_unblockSessionQueue;
 - (void)dismissPromptPresenter;
 - (void)initializeLockscreenAlert;
 - (void)initializeSetupLauncher;
-- (void)performWithPromptPresenter:(id)a3 errorHandler:(id)a4;
-- (void)setCurrentPresenterSession:(id)a3;
-- (void)setCurrentRequest:(id)a3;
-- (void)setSetupLauncher:(id)a3;
+- (void)performWithPromptPresenter:(id)presenter errorHandler:(id)handler;
+- (void)setCurrentPresenterSession:(id)session;
+- (void)setCurrentRequest:(id)request;
+- (void)setSetupLauncher:(id)launcher;
 @end
 
 @implementation CRSetupPromptDirectorAgent
 
-- (void)performWithPromptPresenter:(id)a3 errorHandler:(id)a4
+- (void)performWithPromptPresenter:(id)presenter errorHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  presenterCopy = presenter;
   dispatch_assert_queue_V2(&_dispatch_main_q);
-  v8 = [[CRSetupPromptPresentationRequest alloc] initWithPresentationHandler:v7 errorHandler:v6];
+  v8 = [[CRSetupPromptPresentationRequest alloc] initWithPresentationHandler:presenterCopy errorHandler:handlerCopy];
 
   [(CRSetupPromptDirectorAgent *)self setCurrentRequest:v8];
   [(CRSetupPromptDirectorAgent *)self _mainQueue_presentRequestIfUnlocked];
@@ -54,11 +54,11 @@
 - (void)_mainQueue_presentCurrentRequest
 {
   dispatch_assert_queue_V2(&_dispatch_main_q);
-  v3 = [(CRSetupPromptDirectorAgent *)self currentRequest];
-  v4 = [v3 presentationHandler];
-  v5 = [v3 errorHandler];
-  v6 = v5;
-  if (v3 && v4 && v5)
+  currentRequest = [(CRSetupPromptDirectorAgent *)self currentRequest];
+  presentationHandler = [currentRequest presentationHandler];
+  errorHandler = [currentRequest errorHandler];
+  v6 = errorHandler;
+  if (currentRequest && presentationHandler && errorHandler)
   {
     v7 = CarPairingLogging();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
@@ -67,41 +67,41 @@
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "presenting current CarPlay Setup request", buf, 2u);
     }
 
-    v8 = [(CRSetupPromptDirectorAgent *)self currentPresenterSession];
+    currentPresenterSession = [(CRSetupPromptDirectorAgent *)self currentPresenterSession];
 
-    if (!v8)
+    if (!currentPresenterSession)
     {
       [(CRSetupPromptDirectorAgent *)self _mainQueue_setupBlockedSessionQueue];
       [(CRSetupPromptDirectorAgent *)self initializeSetupLauncher];
       objc_initWeak(buf, self);
-      v9 = [(CRSetupPromptDirectorAgent *)self setupLauncher];
+      setupLauncher = [(CRSetupPromptDirectorAgent *)self setupLauncher];
       v14[0] = _NSConcreteStackBlock;
       v14[1] = 3221225472;
       v14[2] = sub_10003F114;
       v14[3] = &unk_1000DE9D8;
       objc_copyWeak(&v16, buf);
       v15 = v6;
-      [v9 launchCarPlaySetupWithUserInfo:0 errorHandler:v14];
+      [setupLauncher launchCarPlaySetupWithUserInfo:0 errorHandler:v14];
 
       objc_destroyWeak(&v16);
       objc_destroyWeak(buf);
     }
 
-    v10 = [(CRSetupPromptDirectorAgent *)self sessionQueue];
+    sessionQueue = [(CRSetupPromptDirectorAgent *)self sessionQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_10003F1C0;
     block[3] = &unk_1000DEA00;
     block[4] = self;
     v12 = v6;
-    v13 = v4;
-    dispatch_async(v10, block);
+    v13 = presentationHandler;
+    dispatch_async(sessionQueue, block);
   }
 }
 
-- (void)setCurrentRequest:(id)a3
+- (void)setCurrentRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   currentRequest = self->_currentRequest;
   if (currentRequest)
   {
@@ -111,12 +111,12 @@
   }
 
   v7 = self->_currentRequest;
-  self->_currentRequest = v4;
+  self->_currentRequest = requestCopy;
 }
 
-- (void)setCurrentPresenterSession:(id)a3
+- (void)setCurrentPresenterSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   currentPresenterSession = self->_currentPresenterSession;
   if (currentPresenterSession)
   {
@@ -126,16 +126,16 @@
   }
 
   v7 = self->_currentPresenterSession;
-  self->_currentPresenterSession = v4;
+  self->_currentPresenterSession = sessionCopy;
 }
 
 - (void)initializeSetupLauncher
 {
-  v3 = [(CRSetupPromptDirectorAgent *)self launcherInitializer];
-  v4 = v3;
-  if (v3)
+  launcherInitializer = [(CRSetupPromptDirectorAgent *)self launcherInitializer];
+  v4 = launcherInitializer;
+  if (launcherInitializer)
   {
-    v5 = (*(v3 + 16))(v3);
+    v5 = (*(launcherInitializer + 16))(launcherInitializer);
   }
 
   else
@@ -147,9 +147,9 @@
   [(CRSetupPromptDirectorAgent *)self setSetupLauncher:v5];
 }
 
-- (void)setSetupLauncher:(id)a3
+- (void)setSetupLauncher:(id)launcher
 {
-  v4 = a3;
+  launcherCopy = launcher;
   setupLauncher = self->_setupLauncher;
   if (setupLauncher)
   {
@@ -159,16 +159,16 @@
   }
 
   v7 = self->_setupLauncher;
-  self->_setupLauncher = v4;
+  self->_setupLauncher = launcherCopy;
 }
 
 - (void)initializeLockscreenAlert
 {
-  v3 = [(CRSetupPromptDirectorAgent *)self alertInitializer];
-  v4 = v3;
-  if (v3)
+  alertInitializer = [(CRSetupPromptDirectorAgent *)self alertInitializer];
+  v4 = alertInitializer;
+  if (alertInitializer)
   {
-    v5 = (*(v3 + 16))(v3);
+    v5 = (*(alertInitializer + 16))(alertInitializer);
   }
 
   else
@@ -189,14 +189,14 @@
   [(CRSetupPromptDirectorAgent *)self setSessionQueue:v4];
   v5 = dispatch_semaphore_create(0);
   [(CRSetupPromptDirectorAgent *)self setWaitingOnSession:v5];
-  v6 = [(CRSetupPromptDirectorAgent *)self sessionQueue];
+  sessionQueue = [(CRSetupPromptDirectorAgent *)self sessionQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10003F620;
   block[3] = &unk_1000DD480;
   v9 = v5;
   v7 = v5;
-  dispatch_async(v6, block);
+  dispatch_async(sessionQueue, block);
 }
 
 - (void)_mainQueue_unblockSessionQueue
@@ -208,13 +208,13 @@
     sub_100086868();
   }
 
-  v4 = [(CRSetupPromptDirectorAgent *)self waitingOnSession];
-  dispatch_semaphore_signal(v4);
+  waitingOnSession = [(CRSetupPromptDirectorAgent *)self waitingOnSession];
+  dispatch_semaphore_signal(waitingOnSession);
 }
 
-- (void)_mainQueue_presentLockscreenAlertWithCompletion:(id)a3
+- (void)_mainQueue_presentLockscreenAlertWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatch_assert_queue_V2(&_dispatch_main_q);
   v5 = CarPairingLogging();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -225,15 +225,15 @@
 
   [(CRSetupPromptDirectorAgent *)self initializeLockscreenAlert];
   objc_initWeak(buf, self);
-  v6 = [(CRSetupPromptDirectorAgent *)self lockscreenAlert];
+  lockscreenAlert = [(CRSetupPromptDirectorAgent *)self lockscreenAlert];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10003F838;
   v8[3] = &unk_1000DEA28;
   objc_copyWeak(&v10, buf);
-  v7 = v4;
+  v7 = completionCopy;
   v9 = v7;
-  [v6 presentAlertWithCompletion:v8];
+  [lockscreenAlert presentAlertWithCompletion:v8];
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(buf);
@@ -242,9 +242,9 @@
 - (void)_mainQueue_dismissLockscreenAlert
 {
   dispatch_assert_queue_V2(&_dispatch_main_q);
-  v3 = [(CRSetupPromptDirectorAgent *)self lockscreenAlert];
+  lockscreenAlert = [(CRSetupPromptDirectorAgent *)self lockscreenAlert];
 
-  if (v3)
+  if (lockscreenAlert)
   {
     v4 = CarPairingLogging();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -253,29 +253,29 @@
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "CarPlay Setup dismissing lockscreen alert", v6, 2u);
     }
 
-    v5 = [(CRSetupPromptDirectorAgent *)self lockscreenAlert];
-    [v5 dismissAlert];
+    lockscreenAlert2 = [(CRSetupPromptDirectorAgent *)self lockscreenAlert];
+    [lockscreenAlert2 dismissAlert];
 
     [(CRSetupPromptDirectorAgent *)self setLockscreenAlert:0];
   }
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 serviceName];
-  v9 = [v8 isEqualToString:@"com.apple.carkit.setupPromptDirector.service"];
+  listenerCopy = listener;
+  connectionCopy = connection;
+  serviceName = [connectionCopy serviceName];
+  v9 = [serviceName isEqualToString:@"com.apple.carkit.setupPromptDirector.service"];
 
   if (v9)
   {
-    v10 = [v7 valueForEntitlement:@"com.apple.private.carkit.setupPromptDirector"];
-    v11 = [v10 BOOLValue];
+    v10 = [connectionCopy valueForEntitlement:@"com.apple.private.carkit.setupPromptDirector"];
+    bOOLValue = [v10 BOOLValue];
 
-    if (v11)
+    if (bOOLValue)
     {
       v12 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___CRSetupPromptDirectorService];
-      [v7 setExportedInterface:v12];
+      [connectionCopy setExportedInterface:v12];
       v30 = 0;
       v31 = &v30;
       v32 = 0x3032000000;
@@ -288,7 +288,7 @@
       block[3] = &unk_1000DDE60;
       v29 = &v30;
       block[4] = self;
-      v13 = v7;
+      v13 = connectionCopy;
       v28 = v13;
       dispatch_sync(&_dispatch_main_q, block);
       [v13 setExportedObject:v31[5]];
@@ -307,7 +307,7 @@
       v20 = sub_10003FF68;
       v21 = &unk_1000DD8E8;
       objc_copyWeak(&v23, &location);
-      v22 = self;
+      selfCopy = self;
       [v13 setInvalidationHandler:&v18];
       v15 = CarPairingLogging();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -331,17 +331,17 @@
       v12 = CarPairingLogging();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
-        sub_10008689C(v7, v12);
+        sub_10008689C(connectionCopy, v12);
       }
     }
   }
 
   else
   {
-    v11 = 0;
+    bOOLValue = 0;
   }
 
-  return v11;
+  return bOOLValue;
 }
 
 @end

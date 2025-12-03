@@ -1,33 +1,33 @@
 @interface DonationSchemaSDSpeechSampleDonation
-- (BOOL)isEqual:(id)a3;
-- (DonationSchemaSDSpeechSampleDonation)initWithDictionary:(id)a3;
-- (DonationSchemaSDSpeechSampleDonation)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (DonationSchemaSDSpeechSampleDonation)initWithDictionary:(id)dictionary;
+- (DonationSchemaSDSpeechSampleDonation)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (int)attributesAtIndex:(unint64_t)a3;
+- (int)attributesAtIndex:(unint64_t)index;
 - (unint64_t)hash;
-- (void)addAttributes:(int)a3;
-- (void)setHasAsrTask:(BOOL)a3;
-- (void)setHasAudioCaptureDevice:(BOOL)a3;
-- (void)setHasEvaluation:(BOOL)a3;
-- (void)setHasLocale:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addAttributes:(int)attributes;
+- (void)setHasAsrTask:(BOOL)task;
+- (void)setHasAudioCaptureDevice:(BOOL)device;
+- (void)setHasEvaluation:(BOOL)evaluation;
+- (void)setHasLocale:(BOOL)locale;
+- (void)writeTo:(id)to;
 @end
 
 @implementation DonationSchemaSDSpeechSampleDonation
 
-- (DonationSchemaSDSpeechSampleDonation)initWithDictionary:(id)a3
+- (DonationSchemaSDSpeechSampleDonation)initWithDictionary:(id)dictionary
 {
   v37 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v35.receiver = self;
   v35.super_class = DonationSchemaSDSpeechSampleDonation;
   v5 = [(DonationSchemaSDSpeechSampleDonation *)&v35 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"donationID"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"donationID"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -36,7 +36,7 @@
     }
 
     v30 = v6;
-    v8 = [v4 objectForKeyedSubscript:@"donorBundleID"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"donorBundleID"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -45,7 +45,7 @@
     }
 
     v29 = v8;
-    v10 = [v4 objectForKeyedSubscript:@"captureDate"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"captureDate"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -53,7 +53,7 @@
     }
 
     v28 = v10;
-    v11 = [v4 objectForKeyedSubscript:@"attributes"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"attributes"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -95,28 +95,28 @@
       }
     }
 
-    v18 = [v4 objectForKeyedSubscript:@"audioCaptureDevice"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"audioCaptureDevice"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[DonationSchemaSDSpeechSampleDonation setAudioCaptureDevice:](v5, "setAudioCaptureDevice:", [v18 intValue]);
     }
 
-    v19 = [v4 objectForKeyedSubscript:@"locale"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"locale"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[DonationSchemaSDSpeechSampleDonation setLocale:](v5, "setLocale:", [v19 intValue]);
     }
 
-    v20 = [v4 objectForKeyedSubscript:@"asrTask"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"asrTask"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[DonationSchemaSDSpeechSampleDonation setAsrTask:](v5, "setAsrTask:", [v20 intValue]);
     }
 
-    v21 = [v4 objectForKeyedSubscript:@"transcription"];
+    v21 = [dictionaryCopy objectForKeyedSubscript:@"transcription"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -124,7 +124,7 @@
       [(DonationSchemaSDSpeechSampleDonation *)v5 setTranscription:v22];
     }
 
-    v23 = [v4 objectForKeyedSubscript:@"expected"];
+    v23 = [dictionaryCopy objectForKeyedSubscript:@"expected"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -132,7 +132,7 @@
       [(DonationSchemaSDSpeechSampleDonation *)v5 setExpected:v24];
     }
 
-    v25 = [v4 objectForKeyedSubscript:@"evaluation"];
+    v25 = [dictionaryCopy objectForKeyedSubscript:@"evaluation"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -145,30 +145,30 @@
   return v5;
 }
 
-- (DonationSchemaSDSpeechSampleDonation)initWithJSON:(id)a3
+- (DonationSchemaSDSpeechSampleDonation)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(DonationSchemaSDSpeechSampleDonation *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(DonationSchemaSDSpeechSampleDonation *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(DonationSchemaSDSpeechSampleDonation *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -181,7 +181,7 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ((*&self->_has & 8) != 0)
   {
     v4 = [(DonationSchemaSDSpeechSampleDonation *)self asrTask]- 1;
@@ -195,14 +195,14 @@
       v5 = off_1E78D4528[v4];
     }
 
-    [v3 setObject:v5 forKeyedSubscript:@"asrTask"];
+    [dictionary setObject:v5 forKeyedSubscript:@"asrTask"];
   }
 
   if ([(NSArray *)self->_attributes count])
   {
-    v6 = [(DonationSchemaSDSpeechSampleDonation *)self attributes];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"attributes"];
+    attributes = [(DonationSchemaSDSpeechSampleDonation *)self attributes];
+    v7 = [attributes copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"attributes"];
   }
 
   has = self->_has;
@@ -219,49 +219,49 @@
       v10 = off_1E78D4570[v9];
     }
 
-    [v3 setObject:v10 forKeyedSubscript:@"audioCaptureDevice"];
+    [dictionary setObject:v10 forKeyedSubscript:@"audioCaptureDevice"];
     has = self->_has;
   }
 
   if (has)
   {
     v11 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[DonationSchemaSDSpeechSampleDonation captureDate](self, "captureDate")}];
-    [v3 setObject:v11 forKeyedSubscript:@"captureDate"];
+    [dictionary setObject:v11 forKeyedSubscript:@"captureDate"];
   }
 
   if (self->_donationID)
   {
-    v12 = [(DonationSchemaSDSpeechSampleDonation *)self donationID];
-    v13 = [v12 dictionaryRepresentation];
-    if (v13)
+    donationID = [(DonationSchemaSDSpeechSampleDonation *)self donationID];
+    dictionaryRepresentation = [donationID dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v13 forKeyedSubscript:@"donationID"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"donationID"];
     }
 
     else
     {
-      v14 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v14 forKeyedSubscript:@"donationID"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"donationID"];
     }
   }
 
   if (self->_donorBundleID)
   {
-    v15 = [(DonationSchemaSDSpeechSampleDonation *)self donorBundleID];
-    v16 = [v15 copy];
-    [v3 setObject:v16 forKeyedSubscript:@"donorBundleID"];
+    donorBundleID = [(DonationSchemaSDSpeechSampleDonation *)self donorBundleID];
+    v16 = [donorBundleID copy];
+    [dictionary setObject:v16 forKeyedSubscript:@"donorBundleID"];
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
-    v17 = [(DonationSchemaSDSpeechSampleDonation *)self evaluation];
+    evaluation = [(DonationSchemaSDSpeechSampleDonation *)self evaluation];
     v18 = @"SDTRANSCRIPTIONEVALUATION_UNKNOWN";
-    if (v17 == 1)
+    if (evaluation == 1)
     {
       v18 = @"SDTRANSCRIPTIONEVALUATION_ACCURATE";
     }
 
-    if (v17 == 2)
+    if (evaluation == 2)
     {
       v19 = @"SDTRANSCRIPTIONEVALUATION_INACCURATE";
     }
@@ -271,14 +271,14 @@
       v19 = v18;
     }
 
-    [v3 setObject:v19 forKeyedSubscript:@"evaluation"];
+    [dictionary setObject:v19 forKeyedSubscript:@"evaluation"];
   }
 
   if (self->_expected)
   {
-    v20 = [(DonationSchemaSDSpeechSampleDonation *)self expected];
-    v21 = [v20 copy];
-    [v3 setObject:v21 forKeyedSubscript:@"expected"];
+    expected = [(DonationSchemaSDSpeechSampleDonation *)self expected];
+    v21 = [expected copy];
+    [dictionary setObject:v21 forKeyedSubscript:@"expected"];
   }
 
   if ((*&self->_has & 4) != 0)
@@ -294,19 +294,19 @@
       v23 = off_1E78D45D0[v22];
     }
 
-    [v3 setObject:v23 forKeyedSubscript:@"locale"];
+    [dictionary setObject:v23 forKeyedSubscript:@"locale"];
   }
 
   if (self->_transcription)
   {
-    v24 = [(DonationSchemaSDSpeechSampleDonation *)self transcription];
-    v25 = [v24 copy];
-    [v3 setObject:v25 forKeyedSubscript:@"transcription"];
+    transcription = [(DonationSchemaSDSpeechSampleDonation *)self transcription];
+    v25 = [transcription copy];
+    [dictionary setObject:v25 forKeyedSubscript:@"transcription"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -375,28 +375,28 @@ LABEL_11:
   return v3 ^ v13 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_41;
   }
 
-  v5 = [(DonationSchemaSDSpeechSampleDonation *)self donationID];
-  v6 = [v4 donationID];
-  if ((v5 != 0) == (v6 == 0))
+  donationID = [(DonationSchemaSDSpeechSampleDonation *)self donationID];
+  donationID2 = [equalCopy donationID];
+  if ((donationID != 0) == (donationID2 == 0))
   {
     goto LABEL_40;
   }
 
-  v7 = [(DonationSchemaSDSpeechSampleDonation *)self donationID];
-  if (v7)
+  donationID3 = [(DonationSchemaSDSpeechSampleDonation *)self donationID];
+  if (donationID3)
   {
-    v8 = v7;
-    v9 = [(DonationSchemaSDSpeechSampleDonation *)self donationID];
-    v10 = [v4 donationID];
-    v11 = [v9 isEqual:v10];
+    v8 = donationID3;
+    donationID4 = [(DonationSchemaSDSpeechSampleDonation *)self donationID];
+    donationID5 = [equalCopy donationID];
+    v11 = [donationID4 isEqual:donationID5];
 
     if (!v11)
     {
@@ -408,20 +408,20 @@ LABEL_11:
   {
   }
 
-  v5 = [(DonationSchemaSDSpeechSampleDonation *)self donorBundleID];
-  v6 = [v4 donorBundleID];
-  if ((v5 != 0) == (v6 == 0))
+  donationID = [(DonationSchemaSDSpeechSampleDonation *)self donorBundleID];
+  donationID2 = [equalCopy donorBundleID];
+  if ((donationID != 0) == (donationID2 == 0))
   {
     goto LABEL_40;
   }
 
-  v12 = [(DonationSchemaSDSpeechSampleDonation *)self donorBundleID];
-  if (v12)
+  donorBundleID = [(DonationSchemaSDSpeechSampleDonation *)self donorBundleID];
+  if (donorBundleID)
   {
-    v13 = v12;
-    v14 = [(DonationSchemaSDSpeechSampleDonation *)self donorBundleID];
-    v15 = [v4 donorBundleID];
-    v16 = [v14 isEqual:v15];
+    v13 = donorBundleID;
+    donorBundleID2 = [(DonationSchemaSDSpeechSampleDonation *)self donorBundleID];
+    donorBundleID3 = [equalCopy donorBundleID];
+    v16 = [donorBundleID2 isEqual:donorBundleID3];
 
     if (!v16)
     {
@@ -433,7 +433,7 @@ LABEL_11:
   {
   }
 
-  if ((*&self->_has & 1) != (v4[76] & 1))
+  if ((*&self->_has & 1) != (equalCopy[76] & 1))
   {
     goto LABEL_41;
   }
@@ -441,26 +441,26 @@ LABEL_11:
   if (*&self->_has)
   {
     captureDate = self->_captureDate;
-    if (captureDate != [v4 captureDate])
+    if (captureDate != [equalCopy captureDate])
     {
       goto LABEL_41;
     }
   }
 
-  v5 = [(DonationSchemaSDSpeechSampleDonation *)self attributes];
-  v6 = [v4 attributes];
-  if ((v5 != 0) == (v6 == 0))
+  donationID = [(DonationSchemaSDSpeechSampleDonation *)self attributes];
+  donationID2 = [equalCopy attributes];
+  if ((donationID != 0) == (donationID2 == 0))
   {
     goto LABEL_40;
   }
 
-  v18 = [(DonationSchemaSDSpeechSampleDonation *)self attributes];
-  if (v18)
+  attributes = [(DonationSchemaSDSpeechSampleDonation *)self attributes];
+  if (attributes)
   {
-    v19 = v18;
-    v20 = [(DonationSchemaSDSpeechSampleDonation *)self attributes];
-    v21 = [v4 attributes];
-    v22 = [v20 isEqual:v21];
+    v19 = attributes;
+    attributes2 = [(DonationSchemaSDSpeechSampleDonation *)self attributes];
+    attributes3 = [equalCopy attributes];
+    v22 = [attributes2 isEqual:attributes3];
 
     if (!v22)
     {
@@ -474,7 +474,7 @@ LABEL_11:
 
   has = self->_has;
   v24 = (*&has >> 1) & 1;
-  v25 = v4[76];
+  v25 = equalCopy[76];
   if (v24 != ((v25 >> 1) & 1))
   {
     goto LABEL_41;
@@ -483,13 +483,13 @@ LABEL_11:
   if (v24)
   {
     audioCaptureDevice = self->_audioCaptureDevice;
-    if (audioCaptureDevice != [v4 audioCaptureDevice])
+    if (audioCaptureDevice != [equalCopy audioCaptureDevice])
     {
       goto LABEL_41;
     }
 
     has = self->_has;
-    v25 = v4[76];
+    v25 = equalCopy[76];
   }
 
   v27 = (*&has >> 2) & 1;
@@ -501,13 +501,13 @@ LABEL_11:
   if (v27)
   {
     locale = self->_locale;
-    if (locale != [v4 locale])
+    if (locale != [equalCopy locale])
     {
       goto LABEL_41;
     }
 
     has = self->_has;
-    v25 = v4[76];
+    v25 = equalCopy[76];
   }
 
   v29 = (*&has >> 3) & 1;
@@ -519,26 +519,26 @@ LABEL_11:
   if (v29)
   {
     asrTask = self->_asrTask;
-    if (asrTask != [v4 asrTask])
+    if (asrTask != [equalCopy asrTask])
     {
       goto LABEL_41;
     }
   }
 
-  v5 = [(DonationSchemaSDSpeechSampleDonation *)self transcription];
-  v6 = [v4 transcription];
-  if ((v5 != 0) == (v6 == 0))
+  donationID = [(DonationSchemaSDSpeechSampleDonation *)self transcription];
+  donationID2 = [equalCopy transcription];
+  if ((donationID != 0) == (donationID2 == 0))
   {
     goto LABEL_40;
   }
 
-  v31 = [(DonationSchemaSDSpeechSampleDonation *)self transcription];
-  if (v31)
+  transcription = [(DonationSchemaSDSpeechSampleDonation *)self transcription];
+  if (transcription)
   {
-    v32 = v31;
-    v33 = [(DonationSchemaSDSpeechSampleDonation *)self transcription];
-    v34 = [v4 transcription];
-    v35 = [v33 isEqual:v34];
+    v32 = transcription;
+    transcription2 = [(DonationSchemaSDSpeechSampleDonation *)self transcription];
+    transcription3 = [equalCopy transcription];
+    v35 = [transcription2 isEqual:transcription3];
 
     if (!v35)
     {
@@ -550,22 +550,22 @@ LABEL_11:
   {
   }
 
-  v5 = [(DonationSchemaSDSpeechSampleDonation *)self expected];
-  v6 = [v4 expected];
-  if ((v5 != 0) == (v6 == 0))
+  donationID = [(DonationSchemaSDSpeechSampleDonation *)self expected];
+  donationID2 = [equalCopy expected];
+  if ((donationID != 0) == (donationID2 == 0))
   {
 LABEL_40:
 
     goto LABEL_41;
   }
 
-  v36 = [(DonationSchemaSDSpeechSampleDonation *)self expected];
-  if (v36)
+  expected = [(DonationSchemaSDSpeechSampleDonation *)self expected];
+  if (expected)
   {
-    v37 = v36;
-    v38 = [(DonationSchemaSDSpeechSampleDonation *)self expected];
-    v39 = [v4 expected];
-    v40 = [v38 isEqual:v39];
+    v37 = expected;
+    expected2 = [(DonationSchemaSDSpeechSampleDonation *)self expected];
+    expected3 = [equalCopy expected];
+    v40 = [expected2 isEqual:expected3];
 
     if (!v40)
     {
@@ -578,9 +578,9 @@ LABEL_40:
   }
 
   v43 = (*&self->_has >> 4) & 1;
-  if (v43 == ((v4[76] >> 4) & 1))
+  if (v43 == ((equalCopy[76] >> 4) & 1))
   {
-    if (!v43 || (evaluation = self->_evaluation, evaluation == [v4 evaluation]))
+    if (!v43 || (evaluation = self->_evaluation, evaluation == [equalCopy evaluation]))
     {
       v41 = 1;
       goto LABEL_42;
@@ -594,21 +594,21 @@ LABEL_42:
   return v41;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(DonationSchemaSDSpeechSampleDonation *)self donationID];
+  toCopy = to;
+  donationID = [(DonationSchemaSDSpeechSampleDonation *)self donationID];
 
-  if (v5)
+  if (donationID)
   {
-    v6 = [(DonationSchemaSDSpeechSampleDonation *)self donationID];
+    donationID2 = [(DonationSchemaSDSpeechSampleDonation *)self donationID];
     PBDataWriterWriteSubmessage();
   }
 
-  v7 = [(DonationSchemaSDSpeechSampleDonation *)self donorBundleID];
+  donorBundleID = [(DonationSchemaSDSpeechSampleDonation *)self donorBundleID];
 
-  if (v7)
+  if (donorBundleID)
   {
     PBDataWriterWriteStringField();
   }
@@ -677,16 +677,16 @@ LABEL_17:
   }
 
 LABEL_18:
-  v14 = [(DonationSchemaSDSpeechSampleDonation *)self transcription];
+  transcription = [(DonationSchemaSDSpeechSampleDonation *)self transcription];
 
-  if (v14)
+  if (transcription)
   {
     PBDataWriterWriteStringField();
   }
 
-  v15 = [(DonationSchemaSDSpeechSampleDonation *)self expected];
+  expected = [(DonationSchemaSDSpeechSampleDonation *)self expected];
 
-  if (v15)
+  if (expected)
   {
     PBDataWriterWriteStringField();
   }
@@ -697,9 +697,9 @@ LABEL_18:
   }
 }
 
-- (void)setHasEvaluation:(BOOL)a3
+- (void)setHasEvaluation:(BOOL)evaluation
 {
-  if (a3)
+  if (evaluation)
   {
     v3 = 16;
   }
@@ -712,9 +712,9 @@ LABEL_18:
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasAsrTask:(BOOL)a3
+- (void)setHasAsrTask:(BOOL)task
 {
-  if (a3)
+  if (task)
   {
     v3 = 8;
   }
@@ -727,9 +727,9 @@ LABEL_18:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasLocale:(BOOL)a3
+- (void)setHasLocale:(BOOL)locale
 {
-  if (a3)
+  if (locale)
   {
     v3 = 4;
   }
@@ -742,9 +742,9 @@ LABEL_18:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasAudioCaptureDevice:(BOOL)a3
+- (void)setHasAudioCaptureDevice:(BOOL)device
 {
-  if (a3)
+  if (device)
   {
     v3 = 2;
   }
@@ -757,23 +757,23 @@ LABEL_18:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (int)attributesAtIndex:(unint64_t)a3
+- (int)attributesAtIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->_attributes objectAtIndexedSubscript:a3];
-  v4 = [v3 intValue];
+  v3 = [(NSArray *)self->_attributes objectAtIndexedSubscript:index];
+  intValue = [v3 intValue];
 
-  return v4;
+  return intValue;
 }
 
-- (void)addAttributes:(int)a3
+- (void)addAttributes:(int)attributes
 {
-  v3 = *&a3;
+  v3 = *&attributes;
   attributes = self->_attributes;
   if (!attributes)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_attributes;
-    self->_attributes = v6;
+    self->_attributes = array;
 
     attributes = self->_attributes;
   }
@@ -782,17 +782,17 @@ LABEL_18:
   [(NSArray *)attributes addObject:v8];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = DonationSchemaSDSpeechSampleDonation;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(DonationSchemaSDSpeechSampleDonation *)self donationID:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(DonationSchemaSDSpeechSampleDonation *)self deleteDonationID];
   }

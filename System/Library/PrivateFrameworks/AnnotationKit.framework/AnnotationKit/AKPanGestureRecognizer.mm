@@ -1,16 +1,16 @@
 @interface AKPanGestureRecognizer
 - (CGPoint)locationOfFirstTouch;
-- (CGPoint)locationOfFirstTouchInView:(id)a3;
+- (CGPoint)locationOfFirstTouchInView:(id)view;
 - (id)accumulatedTouches;
 - (unint64_t)additionalNumberOfTouches;
-- (void)_checkTouchForStylus:(id)a3;
+- (void)_checkTouchForStylus:(id)stylus;
 - (void)reset;
 - (void)resetAccumulatedTouches;
 - (void)resetAdditionalTouches;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation AKPanGestureRecognizer
@@ -28,9 +28,9 @@
   [(AKPanGestureRecognizer *)&v3 reset];
 }
 
-- (void)_checkTouchForStylus:(id)a3
+- (void)_checkTouchForStylus:(id)stylus
 {
-  if ([a3 type] == 2)
+  if ([stylus type] == 2)
   {
 
     [(AKPanGestureRecognizer *)self setPenGestureDetected:1];
@@ -39,12 +39,12 @@
 
 - (id)accumulatedTouches
 {
-  v3 = [(AKPanGestureRecognizer *)self currentAccumulatedTouches];
+  currentAccumulatedTouches = [(AKPanGestureRecognizer *)self currentAccumulatedTouches];
 
-  if (v3)
+  if (currentAccumulatedTouches)
   {
-    v4 = [(AKPanGestureRecognizer *)self currentAccumulatedTouches];
-    v5 = [v4 copy];
+    currentAccumulatedTouches2 = [(AKPanGestureRecognizer *)self currentAccumulatedTouches];
+    v5 = [currentAccumulatedTouches2 copy];
   }
 
   else
@@ -57,137 +57,137 @@
 
 - (void)resetAccumulatedTouches
 {
-  v2 = [(AKPanGestureRecognizer *)self currentAccumulatedTouches];
-  [v2 removeAllObjects];
+  currentAccumulatedTouches = [(AKPanGestureRecognizer *)self currentAccumulatedTouches];
+  [currentAccumulatedTouches removeAllObjects];
 }
 
 - (void)resetAdditionalTouches
 {
-  v2 = [(AKPanGestureRecognizer *)self additionalTouches];
-  [v2 removeAllObjects];
+  additionalTouches = [(AKPanGestureRecognizer *)self additionalTouches];
+  [additionalTouches removeAllObjects];
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 anyObject];
-  [(AKPanGestureRecognizer *)self _checkTouchForStylus:v8];
-  [v8 force];
+  beganCopy = began;
+  eventCopy = event;
+  anyObject = [beganCopy anyObject];
+  [(AKPanGestureRecognizer *)self _checkTouchForStylus:anyObject];
+  [anyObject force];
   [(AKPanGestureRecognizer *)self setCurrentWeight:?];
-  [v8 maximumPossibleForce];
+  [anyObject maximumPossibleForce];
   [(AKPanGestureRecognizer *)self setCurrentMaxWeight:?];
-  v9 = [(AKPanGestureRecognizer *)self view];
-  [v8 locationInView:v9];
+  view = [(AKPanGestureRecognizer *)self view];
+  [anyObject locationInView:view];
   [(AKPanGestureRecognizer *)self setLocationOfFirstTouch:?];
 
-  v10 = [(AKPanGestureRecognizer *)self currentAccumulatedTouches];
+  currentAccumulatedTouches = [(AKPanGestureRecognizer *)self currentAccumulatedTouches];
 
-  if (!v10)
+  if (!currentAccumulatedTouches)
   {
     v11 = [MEMORY[0x277CBEB18] arrayWithCapacity:100];
     [(AKPanGestureRecognizer *)self setCurrentAccumulatedTouches:v11];
   }
 
-  v12 = [(AKPanGestureRecognizer *)self currentAccumulatedTouches];
-  v13 = [v7 coalescedTouchesForTouch:v8];
-  [v12 addObjectsFromArray:v13];
+  currentAccumulatedTouches2 = [(AKPanGestureRecognizer *)self currentAccumulatedTouches];
+  v13 = [eventCopy coalescedTouchesForTouch:anyObject];
+  [currentAccumulatedTouches2 addObjectsFromArray:v13];
 
   if ([(AKPanGestureRecognizer *)self state]== 2)
   {
-    v14 = [(AKPanGestureRecognizer *)self additionalTouches];
+    additionalTouches = [(AKPanGestureRecognizer *)self additionalTouches];
 
-    if (!v14)
+    if (!additionalTouches)
     {
       v15 = objc_opt_new();
       [(AKPanGestureRecognizer *)self setAdditionalTouches:v15];
     }
 
-    v16 = [(AKPanGestureRecognizer *)self additionalTouches];
-    [v16 unionSet:v6];
+    additionalTouches2 = [(AKPanGestureRecognizer *)self additionalTouches];
+    [additionalTouches2 unionSet:beganCopy];
   }
 
   v17.receiver = self;
   v17.super_class = AKPanGestureRecognizer;
-  [(AKPanGestureRecognizer *)&v17 touchesBegan:v6 withEvent:v7];
+  [(AKPanGestureRecognizer *)&v17 touchesBegan:beganCopy withEvent:eventCopy];
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 anyObject];
-  [(AKPanGestureRecognizer *)self _checkTouchForStylus:v8];
-  [v8 force];
+  eventCopy = event;
+  movedCopy = moved;
+  anyObject = [movedCopy anyObject];
+  [(AKPanGestureRecognizer *)self _checkTouchForStylus:anyObject];
+  [anyObject force];
   [(AKPanGestureRecognizer *)self setCurrentWeight:?];
-  [v8 maximumPossibleForce];
+  [anyObject maximumPossibleForce];
   [(AKPanGestureRecognizer *)self setCurrentMaxWeight:?];
-  v9 = [(AKPanGestureRecognizer *)self currentAccumulatedTouches];
-  v10 = [v6 coalescedTouchesForTouch:v8];
-  [v9 addObjectsFromArray:v10];
+  currentAccumulatedTouches = [(AKPanGestureRecognizer *)self currentAccumulatedTouches];
+  v10 = [eventCopy coalescedTouchesForTouch:anyObject];
+  [currentAccumulatedTouches addObjectsFromArray:v10];
 
   v11.receiver = self;
   v11.super_class = AKPanGestureRecognizer;
-  [(AKPanGestureRecognizer *)&v11 touchesMoved:v7 withEvent:v6];
+  [(AKPanGestureRecognizer *)&v11 touchesMoved:movedCopy withEvent:eventCopy];
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 anyObject];
-  [v8 force];
+  eventCopy = event;
+  endedCopy = ended;
+  anyObject = [endedCopy anyObject];
+  [anyObject force];
   [(AKPanGestureRecognizer *)self setCurrentWeight:?];
-  [v8 maximumPossibleForce];
+  [anyObject maximumPossibleForce];
   [(AKPanGestureRecognizer *)self setCurrentMaxWeight:?];
-  v9 = [(AKPanGestureRecognizer *)self currentAccumulatedTouches];
-  v10 = [v6 coalescedTouchesForTouch:v8];
-  [v9 addObjectsFromArray:v10];
+  currentAccumulatedTouches = [(AKPanGestureRecognizer *)self currentAccumulatedTouches];
+  v10 = [eventCopy coalescedTouchesForTouch:anyObject];
+  [currentAccumulatedTouches addObjectsFromArray:v10];
 
-  v11 = [(AKPanGestureRecognizer *)self additionalTouches];
-  [v11 minusSet:v7];
+  additionalTouches = [(AKPanGestureRecognizer *)self additionalTouches];
+  [additionalTouches minusSet:endedCopy];
 
   v12.receiver = self;
   v12.super_class = AKPanGestureRecognizer;
-  [(AKPanGestureRecognizer *)&v12 touchesEnded:v7 withEvent:v6];
+  [(AKPanGestureRecognizer *)&v12 touchesEnded:endedCopy withEvent:eventCopy];
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 anyObject];
+  eventCopy = event;
+  cancelledCopy = cancelled;
+  anyObject = [cancelledCopy anyObject];
   [(AKPanGestureRecognizer *)self setPenGestureDetected:0];
-  [v8 force];
+  [anyObject force];
   [(AKPanGestureRecognizer *)self setCurrentWeight:?];
-  [v8 maximumPossibleForce];
+  [anyObject maximumPossibleForce];
   [(AKPanGestureRecognizer *)self setCurrentMaxWeight:?];
-  v9 = [(AKPanGestureRecognizer *)self currentAccumulatedTouches];
-  v10 = [v6 coalescedTouchesForTouch:v8];
-  [v9 addObjectsFromArray:v10];
+  currentAccumulatedTouches = [(AKPanGestureRecognizer *)self currentAccumulatedTouches];
+  v10 = [eventCopy coalescedTouchesForTouch:anyObject];
+  [currentAccumulatedTouches addObjectsFromArray:v10];
 
-  v11 = [(AKPanGestureRecognizer *)self additionalTouches];
-  [v11 minusSet:v7];
+  additionalTouches = [(AKPanGestureRecognizer *)self additionalTouches];
+  [additionalTouches minusSet:cancelledCopy];
 
   v12.receiver = self;
   v12.super_class = AKPanGestureRecognizer;
-  [(AKPanGestureRecognizer *)&v12 touchesCancelled:v7 withEvent:v6];
+  [(AKPanGestureRecognizer *)&v12 touchesCancelled:cancelledCopy withEvent:eventCopy];
 }
 
 - (unint64_t)additionalNumberOfTouches
 {
-  v2 = [(AKPanGestureRecognizer *)self additionalTouches];
-  v3 = [v2 count];
+  additionalTouches = [(AKPanGestureRecognizer *)self additionalTouches];
+  v3 = [additionalTouches count];
 
   return v3;
 }
 
-- (CGPoint)locationOfFirstTouchInView:(id)a3
+- (CGPoint)locationOfFirstTouchInView:(id)view
 {
-  v4 = a3;
-  v5 = [(AKPanGestureRecognizer *)self view];
+  viewCopy = view;
+  view = [(AKPanGestureRecognizer *)self view];
   [(AKPanGestureRecognizer *)self locationOfFirstTouch];
-  [v5 convertPoint:v4 toView:?];
+  [view convertPoint:viewCopy toView:?];
   v7 = v6;
   v9 = v8;
 

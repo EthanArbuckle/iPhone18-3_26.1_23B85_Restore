@@ -1,16 +1,16 @@
 @interface PHVideoOverlayViewController
-- (BOOL)isModeEnabled:(int64_t)a3;
+- (BOOL)isModeEnabled:(int64_t)enabled;
 - (BOOL)isShowingOverlayForRemoteState;
 - (BOOL)isShowingPippedIconViews;
 - (BOOL)shouldShowIconViewsWhenPipped;
 - (PHVideoOverlayViewControllerDelegate)delegate;
 - (void)disableVideoOverlayModes;
-- (void)handlePIPControllerStateDidChangeNotification:(id)a3;
-- (void)hideVideoOverlayAnimated:(BOOL)a3;
-- (void)setVideoOverlayEnabled:(BOOL)a3 forMode:(int64_t)a4;
-- (void)setVideoOverlayWithMode:(int64_t)a3 animated:(BOOL)a4;
+- (void)handlePIPControllerStateDidChangeNotification:(id)notification;
+- (void)hideVideoOverlayAnimated:(BOOL)animated;
+- (void)setVideoOverlayEnabled:(BOOL)enabled forMode:(int64_t)mode;
+- (void)setVideoOverlayWithMode:(int64_t)mode animated:(BOOL)animated;
 - (void)showNextVideoOverlayMode;
-- (void)showVideoOverlayWithContentView:(id)a3 animated:(BOOL)a4;
+- (void)showVideoOverlayWithContentView:(id)view animated:(BOOL)animated;
 - (void)viewDidLoad;
 @end
 
@@ -24,47 +24,47 @@
   v3 = objc_alloc_init(NSMutableArray);
   [(PHVideoOverlayViewController *)self setModesPriorityQueue:v3];
 
-  v4 = [(PHVideoOverlayViewController *)self view];
-  [v4 setAlpha:0.0];
+  view = [(PHVideoOverlayViewController *)self view];
+  [view setAlpha:0.0];
 
   v5 = objc_alloc_init(PHVideoOverlayInsulatorView);
   [(PHVideoOverlayViewController *)self setInsulatorView:v5];
 
-  v6 = [(PHVideoOverlayViewController *)self view];
-  [v6 bounds];
+  view2 = [(PHVideoOverlayViewController *)self view];
+  [view2 bounds];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  v15 = [(PHVideoOverlayViewController *)self insulatorView];
-  [v15 setBounds:{v8, v10, v12, v14}];
+  insulatorView = [(PHVideoOverlayViewController *)self insulatorView];
+  [insulatorView setBounds:{v8, v10, v12, v14}];
 
-  v16 = [(PHVideoOverlayViewController *)self view];
-  [v16 center];
+  view3 = [(PHVideoOverlayViewController *)self view];
+  [view3 center];
   v18 = v17;
   v20 = v19;
-  v21 = [(PHVideoOverlayViewController *)self insulatorView];
-  [v21 setCenter:{v18, v20}];
+  insulatorView2 = [(PHVideoOverlayViewController *)self insulatorView];
+  [insulatorView2 setCenter:{v18, v20}];
 
-  v22 = [(PHVideoOverlayViewController *)self insulatorView];
-  [v22 setAutoresizingMask:18];
+  insulatorView3 = [(PHVideoOverlayViewController *)self insulatorView];
+  [insulatorView3 setAutoresizingMask:18];
 
-  v23 = [(PHVideoOverlayViewController *)self view];
-  v24 = [(PHVideoOverlayViewController *)self insulatorView];
-  [v23 addSubview:v24];
+  view4 = [(PHVideoOverlayViewController *)self view];
+  insulatorView4 = [(PHVideoOverlayViewController *)self insulatorView];
+  [view4 addSubview:insulatorView4];
 
   v25 = +[NSNotificationCenter defaultCenter];
   [v25 addObserver:self selector:"handlePIPControllerStateDidChangeNotification:" name:@"PHPIPControllerStateDidChangeNotification" object:0];
 }
 
-- (void)setVideoOverlayEnabled:(BOOL)a3 forMode:(int64_t)a4
+- (void)setVideoOverlayEnabled:(BOOL)enabled forMode:(int64_t)mode
 {
-  v5 = a3;
+  enabledCopy = enabled;
   v7 = sub_100004F84();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = NSStringFromBOOL();
-    v9 = [NSNumber numberWithInteger:a4];
+    v9 = [NSNumber numberWithInteger:mode];
     *buf = 138412546;
     v24 = v8;
     v25 = 2112;
@@ -72,46 +72,46 @@
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "enabled %@ for mode: %@", buf, 0x16u);
   }
 
-  if (v5)
+  if (enabledCopy)
   {
-    v10 = [(PHVideoOverlayViewController *)self modesPriorityQueue];
-    v11 = [NSNumber numberWithInteger:a4];
-    v12 = [v10 containsObject:v11];
+    modesPriorityQueue = [(PHVideoOverlayViewController *)self modesPriorityQueue];
+    v11 = [NSNumber numberWithInteger:mode];
+    v12 = [modesPriorityQueue containsObject:v11];
 
     if ((v12 & 1) == 0)
     {
-      v13 = [(PHVideoOverlayViewController *)self modesPriorityQueue];
-      v14 = [NSNumber numberWithInteger:a4];
-      [v13 addObject:v14];
+      modesPriorityQueue2 = [(PHVideoOverlayViewController *)self modesPriorityQueue];
+      v14 = [NSNumber numberWithInteger:mode];
+      [modesPriorityQueue2 addObject:v14];
 
-      v15 = [(PHVideoOverlayViewController *)self modesPriorityQueue];
+      modesPriorityQueue3 = [(PHVideoOverlayViewController *)self modesPriorityQueue];
       v16 = [NSSortDescriptor sortDescriptorWithKey:@"self" ascending:1];
       v22 = v16;
       v17 = [NSArray arrayWithObjects:&v22 count:1];
-      [v15 sortUsingDescriptors:v17];
+      [modesPriorityQueue3 sortUsingDescriptors:v17];
     }
   }
 
-  else if (-[PHVideoOverlayViewController currentVideoOverlayMode](self, "currentVideoOverlayMode") == a4 && (-[PHVideoOverlayViewController modesPriorityQueue](self, "modesPriorityQueue"), v18 = objc_claimAutoreleasedReturnValue(), v19 = [v18 count], v18, v19 == 1))
+  else if (-[PHVideoOverlayViewController currentVideoOverlayMode](self, "currentVideoOverlayMode") == mode && (-[PHVideoOverlayViewController modesPriorityQueue](self, "modesPriorityQueue"), v18 = objc_claimAutoreleasedReturnValue(), v19 = [v18 count], v18, v19 == 1))
   {
     [(PHVideoOverlayViewController *)self disableVideoOverlayModes];
   }
 
   else
   {
-    v20 = [(PHVideoOverlayViewController *)self modesPriorityQueue];
-    v21 = [NSNumber numberWithInteger:a4];
-    [v20 removeObject:v21];
+    modesPriorityQueue4 = [(PHVideoOverlayViewController *)self modesPriorityQueue];
+    v21 = [NSNumber numberWithInteger:mode];
+    [modesPriorityQueue4 removeObject:v21];
   }
 
   [(PHVideoOverlayViewController *)self showNextVideoOverlayMode];
 }
 
-- (BOOL)isModeEnabled:(int64_t)a3
+- (BOOL)isModeEnabled:(int64_t)enabled
 {
-  v4 = [(PHVideoOverlayViewController *)self modesPriorityQueue];
-  v5 = [NSNumber numberWithInteger:a3];
-  v6 = [v4 containsObject:v5];
+  modesPriorityQueue = [(PHVideoOverlayViewController *)self modesPriorityQueue];
+  v5 = [NSNumber numberWithInteger:enabled];
+  v6 = [modesPriorityQueue containsObject:v5];
 
   return v6;
 }
@@ -128,8 +128,8 @@
     return 1;
   }
 
-  v3 = [(PHVideoOverlayViewController *)self modesPriorityQueue];
-  v4 = [v3 count] != 1;
+  modesPriorityQueue = [(PHVideoOverlayViewController *)self modesPriorityQueue];
+  v4 = [modesPriorityQueue count] != 1;
 
   return v4;
 }
@@ -139,24 +139,24 @@
   v3 = sub_100004F84();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(PHVideoOverlayViewController *)self modesPriorityQueue];
+    modesPriorityQueue = [(PHVideoOverlayViewController *)self modesPriorityQueue];
     v10 = 138412290;
-    v11 = v4;
+    v11 = modesPriorityQueue;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "queue: %@", &v10, 0xCu);
   }
 
-  v5 = [(PHVideoOverlayViewController *)self modesPriorityQueue];
-  v6 = [v5 count];
+  modesPriorityQueue2 = [(PHVideoOverlayViewController *)self modesPriorityQueue];
+  v6 = [modesPriorityQueue2 count];
 
   if (v6)
   {
-    v7 = [(PHVideoOverlayViewController *)self modesPriorityQueue];
-    v8 = [v7 lastObject];
-    v9 = [v8 integerValue];
+    modesPriorityQueue3 = [(PHVideoOverlayViewController *)self modesPriorityQueue];
+    lastObject = [modesPriorityQueue3 lastObject];
+    integerValue = [lastObject integerValue];
 
-    if ([(PHVideoOverlayViewController *)self currentVideoOverlayMode]!= v9)
+    if ([(PHVideoOverlayViewController *)self currentVideoOverlayMode]!= integerValue)
     {
-      [(PHVideoOverlayViewController *)self setVideoOverlayWithMode:v9 animated:[(PHVideoOverlayViewController *)self currentVideoOverlayMode]== 0];
+      [(PHVideoOverlayViewController *)self setVideoOverlayWithMode:integerValue animated:[(PHVideoOverlayViewController *)self currentVideoOverlayMode]== 0];
     }
   }
 
@@ -166,19 +166,19 @@
   }
 }
 
-- (void)setVideoOverlayWithMode:(int64_t)a3 animated:(BOOL)a4
+- (void)setVideoOverlayWithMode:(int64_t)mode animated:(BOOL)animated
 {
-  v4 = a4;
-  [(PHVideoOverlayViewController *)self setCurrentVideoOverlayMode:a3];
+  animatedCopy = animated;
+  [(PHVideoOverlayViewController *)self setCurrentVideoOverlayMode:mode];
   v6 = +[PHPIPController defaultPIPController];
   if ([v6 isPipped])
   {
-    v7 = [(PHVideoOverlayViewController *)self shouldShowIconViewsWhenPipped];
+    shouldShowIconViewsWhenPipped = [(PHVideoOverlayViewController *)self shouldShowIconViewsWhenPipped];
   }
 
   else
   {
-    v7 = 0;
+    shouldShowIconViewsWhenPipped = 0;
   }
 
   v8 = sub_100004F84();
@@ -190,12 +190,12 @@
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "mode: %@", &v28, 0xCu);
   }
 
-  v10 = [(PHVideoOverlayViewController *)self currentVideoOverlayMode];
-  if (v10 > 3)
+  currentVideoOverlayMode = [(PHVideoOverlayViewController *)self currentVideoOverlayMode];
+  if (currentVideoOverlayMode > 3)
   {
-    if (v10 > 5)
+    if (currentVideoOverlayMode > 5)
     {
-      if (v10 == 6 || v10 == 7)
+      if (currentVideoOverlayMode == 6 || currentVideoOverlayMode == 7)
       {
         v11 = [[PHVideoOverlayContentViewTitle alloc] initWithTitle:0];
         goto LABEL_21;
@@ -204,10 +204,10 @@
       goto LABEL_23;
     }
 
-    if (v10 == 4)
+    if (currentVideoOverlayMode == 4)
     {
       v19 = [PHVideoOverlayContentViewActivity alloc];
-      if (v7)
+      if (shouldShowIconViewsWhenPipped)
       {
         v20 = &stru_100361FD0;
         v21 = 101;
@@ -223,7 +223,7 @@
       v22 = [(PHVideoOverlayContentViewActivity *)v19 initWithTitle:v20 indicatorStyle:v21];
       [(PHVideoOverlayViewController *)self setContentView:v22];
 
-      if (v7)
+      if (shouldShowIconViewsWhenPipped)
       {
         goto LABEL_23;
       }
@@ -244,11 +244,11 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  if (v10 > 1)
+  if (currentVideoOverlayMode > 1)
   {
-    if (v10 == 2)
+    if (currentVideoOverlayMode == 2)
     {
-      if (!v7)
+      if (!shouldShowIconViewsWhenPipped)
       {
         v23 = [PHVideoOverlayContentViewMessage alloc];
         v17 = +[NSBundle mainBundle];
@@ -277,42 +277,42 @@ LABEL_22:
     goto LABEL_16;
   }
 
-  if (!v10)
+  if (!currentVideoOverlayMode)
   {
     [(PHVideoOverlayViewController *)self setContentView:0];
     goto LABEL_23;
   }
 
-  if (v10 == 1)
+  if (currentVideoOverlayMode == 1)
   {
     v11 = objc_alloc_init(PHVideoOverlayContentView);
     goto LABEL_21;
   }
 
 LABEL_23:
-  v18 = [(PHVideoOverlayViewController *)self contentView];
-  [(PHVideoOverlayViewController *)self showVideoOverlayWithContentView:v18 animated:v4];
+  contentView = [(PHVideoOverlayViewController *)self contentView];
+  [(PHVideoOverlayViewController *)self showVideoOverlayWithContentView:contentView animated:animatedCopy];
 }
 
-- (void)showVideoOverlayWithContentView:(id)a3 animated:(BOOL)a4
+- (void)showVideoOverlayWithContentView:(id)view animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
+  animatedCopy = animated;
+  viewCopy = view;
   v7 = sub_100004F84();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v17 = v6;
+    v17 = viewCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "view: %@", buf, 0xCu);
   }
 
-  if (v6)
+  if (viewCopy)
   {
-    v8 = [(PHVideoOverlayViewController *)self insulatorView];
-    [v8 setVideoOverlayContentView:v6 animated:v4];
+    insulatorView = [(PHVideoOverlayViewController *)self insulatorView];
+    [insulatorView setVideoOverlayContentView:viewCopy animated:animatedCopy];
 
-    v9 = [(PHVideoOverlayViewController *)self view];
-    [v9 alpha];
+    view = [(PHVideoOverlayViewController *)self view];
+    [view alpha];
     v11 = v10;
 
     if (v11 != 1.0)
@@ -324,11 +324,11 @@ LABEL_23:
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "animate in the overlay", buf, 2u);
       }
 
-      v13 = [(PHVideoOverlayViewController *)self delegate];
-      [v13 videoOverlayViewController:self isShowingOverlay:1];
+      delegate = [(PHVideoOverlayViewController *)self delegate];
+      [delegate videoOverlayViewController:self isShowingOverlay:1];
 
       v14 = 0.150000006;
-      if (!v4)
+      if (!animatedCopy)
       {
         v14 = 0.0;
       }
@@ -343,11 +343,11 @@ LABEL_23:
   }
 }
 
-- (void)hideVideoOverlayAnimated:(BOOL)a3
+- (void)hideVideoOverlayAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(PHVideoOverlayViewController *)self view];
-  [v5 alpha];
+  animatedCopy = animated;
+  view = [(PHVideoOverlayViewController *)self view];
+  [view alpha];
   v7 = v6;
 
   if (v7 != 0.0)
@@ -360,7 +360,7 @@ LABEL_23:
     }
 
     v9 = 0.150000006;
-    if (!v3)
+    if (!animatedCopy)
     {
       v9 = 0.0;
     }
@@ -388,28 +388,28 @@ LABEL_23:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "removing all the overlays from queue", v5, 2u);
   }
 
-  v4 = [(PHVideoOverlayViewController *)self modesPriorityQueue];
-  [v4 removeAllObjects];
+  modesPriorityQueue = [(PHVideoOverlayViewController *)self modesPriorityQueue];
+  [modesPriorityQueue removeAllObjects];
 
   [(PHVideoOverlayViewController *)self setCurrentVideoOverlayMode:0];
   [(PHVideoOverlayViewController *)self showNextVideoOverlayMode];
 }
 
-- (void)handlePIPControllerStateDidChangeNotification:(id)a3
+- (void)handlePIPControllerStateDidChangeNotification:(id)notification
 {
   v4 = +[PHPIPController defaultPIPController];
-  v5 = [v4 isPipped];
+  isPipped = [v4 isPipped];
 
-  if (v5 != [(PHVideoOverlayViewController *)self isShowingPippedIconViews])
+  if (isPipped != [(PHVideoOverlayViewController *)self isShowingPippedIconViews])
   {
     if ([(PHVideoOverlayViewController *)self shouldShowIconViewsWhenPipped])
     {
-      v6 = [(PHVideoOverlayViewController *)self currentVideoOverlayMode];
-      if (v6 == 4 || v6 == 2)
+      currentVideoOverlayMode = [(PHVideoOverlayViewController *)self currentVideoOverlayMode];
+      if (currentVideoOverlayMode == 4 || currentVideoOverlayMode == 2)
       {
-        v7 = [(PHVideoOverlayViewController *)self currentVideoOverlayMode];
+        currentVideoOverlayMode2 = [(PHVideoOverlayViewController *)self currentVideoOverlayMode];
 
-        [(PHVideoOverlayViewController *)self setVideoOverlayWithMode:v7 animated:1];
+        [(PHVideoOverlayViewController *)self setVideoOverlayWithMode:currentVideoOverlayMode2 animated:1];
       }
     }
   }
@@ -425,18 +425,18 @@ LABEL_23:
 
 - (BOOL)isShowingPippedIconViews
 {
-  v3 = [(PHVideoOverlayViewController *)self currentVideoOverlayMode];
-  if (v3 == 4)
+  currentVideoOverlayMode = [(PHVideoOverlayViewController *)self currentVideoOverlayMode];
+  if (currentVideoOverlayMode == 4)
   {
-    v6 = [(PHVideoOverlayViewController *)self contentView];
+    contentView = [(PHVideoOverlayViewController *)self contentView];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v4 = [(PHVideoOverlayViewController *)self contentView];
-      v8 = [v4 title];
-      v5 = [v8 length] == 0;
+      contentView2 = [(PHVideoOverlayViewController *)self contentView];
+      title = [contentView2 title];
+      v5 = [title length] == 0;
 
       goto LABEL_6;
     }
@@ -446,12 +446,12 @@ LABEL_7:
     return v5 & 1;
   }
 
-  if (v3 != 2)
+  if (currentVideoOverlayMode != 2)
   {
     goto LABEL_7;
   }
 
-  v4 = [(PHVideoOverlayViewController *)self contentView];
+  contentView2 = [(PHVideoOverlayViewController *)self contentView];
   objc_opt_class();
   v5 = objc_opt_isKindOfClass();
 LABEL_6:

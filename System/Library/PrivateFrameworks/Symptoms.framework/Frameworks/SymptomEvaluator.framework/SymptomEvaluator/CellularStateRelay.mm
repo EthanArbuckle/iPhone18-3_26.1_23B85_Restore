@@ -1,25 +1,25 @@
 @interface CellularStateRelay
 - (NSArray)networkSlicingStates;
 - (id)extendedDescription;
-- (void)setCellBandInfo:(int)a3;
-- (void)setCellBandwidth:(int)a3;
-- (void)setCellDualSimStatus:(unsigned __int8)a3;
-- (void)setCellMCC:(int)a3;
-- (void)setCellMNC:(int)a3;
-- (void)setCellNonPreferredMCC:(int)a3;
-- (void)setCellNonPreferredMNC:(int)a3;
-- (void)setCellPID:(int)a3;
-- (void)setCellRSRP:(int)a3;
-- (void)setCellRrcConnected:(BOOL)a3;
-- (void)setCellSNR:(double)a3;
-- (void)setCellTAC:(int)a3;
-- (void)setCellType:(id)a3;
-- (void)setCellUARFCN:(int)a3;
-- (void)setIsNonTerrestrialNetworkActive:(BOOL)a3;
-- (void)setIsStewieActive:(BOOL)a3;
-- (void)setNrFrequencyBand:(char)a3;
-- (void)setRatSelectionIsNR:(BOOL)a3;
-- (void)updateCellInfo:(id)a3;
+- (void)setCellBandInfo:(int)info;
+- (void)setCellBandwidth:(int)bandwidth;
+- (void)setCellDualSimStatus:(unsigned __int8)status;
+- (void)setCellMCC:(int)c;
+- (void)setCellMNC:(int)c;
+- (void)setCellNonPreferredMCC:(int)c;
+- (void)setCellNonPreferredMNC:(int)c;
+- (void)setCellPID:(int)d;
+- (void)setCellRSRP:(int)p;
+- (void)setCellRrcConnected:(BOOL)connected;
+- (void)setCellSNR:(double)r;
+- (void)setCellTAC:(int)c;
+- (void)setCellType:(id)type;
+- (void)setCellUARFCN:(int)n;
+- (void)setIsNonTerrestrialNetworkActive:(BOOL)active;
+- (void)setIsStewieActive:(BOOL)active;
+- (void)setNrFrequencyBand:(char)band;
+- (void)setRatSelectionIsNR:(BOOL)r;
+- (void)updateCellInfo:(id)info;
 @end
 
 @implementation CellularStateRelay
@@ -42,28 +42,28 @@
   v19 = [(NetworkStateRelay *)&v21 description];
   v18 = [NetworkAnalyticsEngine mapPowerCost:[(NetworkStateRelay *)self powerCostDL]];
   v17 = [NetworkAnalyticsEngine mapPowerCost:[(NetworkStateRelay *)self powerCostUL]];
-  v16 = [(NetworkStateRelay *)self signalBars];
+  signalBars = [(NetworkStateRelay *)self signalBars];
   v15 = [NetworkAnalyticsEngine mapRadioTechnology:[(NetworkStateRelay *)self radioTechnology]];
-  v3 = [(CellularStateRelay *)self cellMNC];
-  v4 = [(CellularStateRelay *)self cellMCC];
-  v5 = [(CellularStateRelay *)self cellUARFCN];
-  v6 = [(CellularStateRelay *)self cellPID];
-  v7 = [(CellularStateRelay *)self cellBandInfo];
-  v8 = [(CellularStateRelay *)self cellType];
-  v9 = [(CellularStateRelay *)self cellBandwidth];
-  v10 = [(CellularStateRelay *)self cellTAC];
-  v11 = [(CellularStateRelay *)self cellRSRP];
+  cellMNC = [(CellularStateRelay *)self cellMNC];
+  cellMCC = [(CellularStateRelay *)self cellMCC];
+  cellUARFCN = [(CellularStateRelay *)self cellUARFCN];
+  cellPID = [(CellularStateRelay *)self cellPID];
+  cellBandInfo = [(CellularStateRelay *)self cellBandInfo];
+  cellType = [(CellularStateRelay *)self cellType];
+  cellBandwidth = [(CellularStateRelay *)self cellBandwidth];
+  cellTAC = [(CellularStateRelay *)self cellTAC];
+  cellRSRP = [(CellularStateRelay *)self cellRSRP];
   [(CellularStateRelay *)self cellSNR];
-  v13 = [v20 initWithFormat:@"%@/pwrDL:%ld/pwrUL:%ld/signalBars:%d/ic:%ld/cellMNC:%d/cellMCC:%d/cellUARFCN=%d/cellPID=%d/cellBandInfo=%d/cellType=%@/cellBandwidth=%d/cellTAC=%d/cellRSRP=%d/cellSNR=%f"], v19, v18, v17, v16, v15, v3, v4, v5, v6, v7, v8, v9, v10, v11, v12);
+  v13 = [v20 initWithFormat:@"%@/pwrDL:%ld/pwrUL:%ld/signalBars:%d/ic:%ld/cellMNC:%d/cellMCC:%d/cellUARFCN=%d/cellPID=%d/cellBandInfo=%d/cellType=%@/cellBandwidth=%d/cellTAC=%d/cellRSRP=%d/cellSNR=%f"], v19, v18, v17, signalBars, v15, cellMNC, cellMCC, cellUARFCN, cellPID, cellBandInfo, cellType, cellBandwidth, cellTAC, cellRSRP, v12);
 
   return v13;
 }
 
-- (void)updateCellInfo:(id)a3
+- (void)updateCellInfo:(id)info
 {
   v66 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  infoCopy = info;
+  if (infoCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -72,7 +72,7 @@
       v46 = 0u;
       v47 = 0u;
       v48 = 0u;
-      v5 = v4;
+      v5 = infoCopy;
       v6 = [v5 countByEnumeratingWithState:&v45 objects:v65 count:16];
       if (v6)
       {
@@ -195,34 +195,34 @@
         if (os_log_type_enabled(netepochsLogHandle, OS_LOG_TYPE_DEFAULT))
         {
           log = v23;
-          v43 = [(CellularStateRelay *)self cellMCC];
-          v42 = [(CellularStateRelay *)self cellMNC];
-          v41 = [(CellularStateRelay *)self cellUARFCN];
-          v40 = [(CellularStateRelay *)self cellPID];
-          v39 = [(CellularStateRelay *)self cellBandInfo];
-          v24 = [(CellularStateRelay *)self cellType];
-          v25 = [(CellularStateRelay *)self cellBandwidth];
-          v26 = [(CellularStateRelay *)self cellTAC];
-          v27 = [(CellularStateRelay *)self cellRSRP];
+          cellMCC = [(CellularStateRelay *)self cellMCC];
+          cellMNC = [(CellularStateRelay *)self cellMNC];
+          cellUARFCN = [(CellularStateRelay *)self cellUARFCN];
+          cellPID = [(CellularStateRelay *)self cellPID];
+          cellBandInfo = [(CellularStateRelay *)self cellBandInfo];
+          cellType = [(CellularStateRelay *)self cellType];
+          cellBandwidth = [(CellularStateRelay *)self cellBandwidth];
+          cellTAC = [(CellularStateRelay *)self cellTAC];
+          cellRSRP = [(CellularStateRelay *)self cellRSRP];
           [(CellularStateRelay *)self cellSNR];
           *buf = 67111426;
-          *v50 = v43;
+          *v50 = cellMCC;
           *&v50[4] = 1024;
-          *&v50[6] = v42;
+          *&v50[6] = cellMNC;
           LOWORD(v51) = 1024;
-          *(&v51 + 2) = v41;
+          *(&v51 + 2) = cellUARFCN;
           HIWORD(v51) = 1024;
-          v52 = v40;
+          v52 = cellPID;
           v53 = 1024;
-          v54 = v39;
+          v54 = cellBandInfo;
           v55 = 2112;
-          v56 = v24;
+          v56 = cellType;
           v57 = 1024;
-          v58 = v25;
+          v58 = cellBandwidth;
           v59 = 1024;
-          v60 = v26;
+          v60 = cellTAC;
           v61 = 1024;
-          v62 = v27;
+          v62 = cellRSRP;
           v63 = 2048;
           v64 = v28;
           _os_log_impl(&dword_23255B000, log, OS_LOG_TYPE_DEFAULT, "CT update cell info: mcc:%d/mnc=%d/uarfcn:%d/pid:%d/bandinfo:%d/type:%@/bandwidth:%d/tac:%d/rsrp:%d/snr:%f", buf, 0x46u);
@@ -269,12 +269,12 @@ LABEL_42:
   v37 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setNrFrequencyBand:(char)a3
+- (void)setNrFrequencyBand:(char)band
 {
-  if (self->_nrFrequencyBand != a3)
+  if (self->_nrFrequencyBand != band)
   {
     [(CellularStateRelay *)self willChangeValueForKey:@"nrFrequencyBand"];
-    self->_nrFrequencyBand = a3;
+    self->_nrFrequencyBand = band;
     [(CellularStateRelay *)self didChangeValueForKey:@"nrFrequencyBand"];
     v5 = [MEMORY[0x277D6B3E0] nwInterfaceTypeForNWFunctionalInterfaceType:{-[NetworkStateRelay functionalInterfaceType](self, "functionalInterfaceType")}];
     v6 = +[NetworkAnalyticsEngine sharedInstance];
@@ -282,142 +282,142 @@ LABEL_42:
   }
 }
 
-- (void)setRatSelectionIsNR:(BOOL)a3
+- (void)setRatSelectionIsNR:(BOOL)r
 {
-  if (self->_ratSelectionIsNR != a3)
+  if (self->_ratSelectionIsNR != r)
   {
     [(CellularStateRelay *)self willChangeValueForKey:@"ratSelectionIsNR"];
-    self->_ratSelectionIsNR = a3;
+    self->_ratSelectionIsNR = r;
 
     [(CellularStateRelay *)self didChangeValueForKey:@"ratSelectionIsNR"];
   }
 }
 
-- (void)setCellMNC:(int)a3
+- (void)setCellMNC:(int)c
 {
-  if (self->_cellMNC != a3)
+  if (self->_cellMNC != c)
   {
     [(CellularStateRelay *)self willChangeValueForKey:@"cellMNC"];
-    self->_cellMNC = a3;
+    self->_cellMNC = c;
 
     [(CellularStateRelay *)self didChangeValueForKey:@"cellMNC"];
   }
 }
 
-- (void)setCellMCC:(int)a3
+- (void)setCellMCC:(int)c
 {
-  if (self->_cellMCC != a3)
+  if (self->_cellMCC != c)
   {
     [(CellularStateRelay *)self willChangeValueForKey:@"cellMCC"];
-    self->_cellMCC = a3;
+    self->_cellMCC = c;
 
     [(CellularStateRelay *)self didChangeValueForKey:@"cellMCC"];
   }
 }
 
-- (void)setCellUARFCN:(int)a3
+- (void)setCellUARFCN:(int)n
 {
-  if (self->_cellUARFCN != a3)
+  if (self->_cellUARFCN != n)
   {
     [(CellularStateRelay *)self willChangeValueForKey:@"cellUARFCN"];
-    self->_cellUARFCN = a3;
+    self->_cellUARFCN = n;
 
     [(CellularStateRelay *)self didChangeValueForKey:@"cellUARFCN"];
   }
 }
 
-- (void)setCellPID:(int)a3
+- (void)setCellPID:(int)d
 {
-  if (self->_cellPID != a3)
+  if (self->_cellPID != d)
   {
     [(CellularStateRelay *)self willChangeValueForKey:@"cellPID"];
-    self->_cellPID = a3;
+    self->_cellPID = d;
 
     [(CellularStateRelay *)self didChangeValueForKey:@"cellPID"];
   }
 }
 
-- (void)setCellBandInfo:(int)a3
+- (void)setCellBandInfo:(int)info
 {
-  if (self->_cellBandInfo != a3)
+  if (self->_cellBandInfo != info)
   {
     [(CellularStateRelay *)self willChangeValueForKey:@"cellBandInfo"];
-    self->_cellBandInfo = a3;
+    self->_cellBandInfo = info;
 
     [(CellularStateRelay *)self didChangeValueForKey:@"cellBandInfo"];
   }
 }
 
-- (void)setCellType:(id)a3
+- (void)setCellType:(id)type
 {
-  v5 = a3;
-  if (([v5 isEqualToString:self->_cellType] & 1) == 0)
+  typeCopy = type;
+  if (([typeCopy isEqualToString:self->_cellType] & 1) == 0)
   {
     [(CellularStateRelay *)self willChangeValueForKey:@"cellType"];
-    objc_storeStrong(&self->_cellType, a3);
+    objc_storeStrong(&self->_cellType, type);
     [(CellularStateRelay *)self didChangeValueForKey:@"cellType"];
   }
 }
 
-- (void)setCellBandwidth:(int)a3
+- (void)setCellBandwidth:(int)bandwidth
 {
-  if (self->_cellBandwidth != a3)
+  if (self->_cellBandwidth != bandwidth)
   {
     [(CellularStateRelay *)self willChangeValueForKey:@"cellBandwidth"];
-    self->_cellBandwidth = a3;
+    self->_cellBandwidth = bandwidth;
 
     [(CellularStateRelay *)self didChangeValueForKey:@"cellBandwidth"];
   }
 }
 
-- (void)setCellTAC:(int)a3
+- (void)setCellTAC:(int)c
 {
-  if (self->_cellTAC != a3)
+  if (self->_cellTAC != c)
   {
     [(CellularStateRelay *)self willChangeValueForKey:@"cellTAC"];
-    self->_cellTAC = a3;
+    self->_cellTAC = c;
 
     [(CellularStateRelay *)self didChangeValueForKey:@"cellTAC"];
   }
 }
 
-- (void)setCellRSRP:(int)a3
+- (void)setCellRSRP:(int)p
 {
-  if (self->_cellRSRP != a3)
+  if (self->_cellRSRP != p)
   {
     [(CellularStateRelay *)self willChangeValueForKey:@"cellRSRP"];
-    self->_cellRSRP = a3;
+    self->_cellRSRP = p;
 
     [(CellularStateRelay *)self didChangeValueForKey:@"cellRSRP"];
   }
 }
 
-- (void)setCellSNR:(double)a3
+- (void)setCellSNR:(double)r
 {
-  if (self->_cellSNR != a3)
+  if (self->_cellSNR != r)
   {
     [(CellularStateRelay *)self willChangeValueForKey:@"cellSNR"];
-    self->_cellSNR = a3;
+    self->_cellSNR = r;
 
     [(CellularStateRelay *)self didChangeValueForKey:@"cellSNR"];
   }
 }
 
-- (void)setCellDualSimStatus:(unsigned __int8)a3
+- (void)setCellDualSimStatus:(unsigned __int8)status
 {
   v11 = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!status)
   {
     goto LABEL_7;
   }
 
   cellDualSimStatus = self->_cellDualSimStatus;
-  if (cellDualSimStatus == a3)
+  if (cellDualSimStatus == status)
   {
     goto LABEL_7;
   }
 
-  if (a3 == 2 && (cellDualSimStatus & 0xFFFFFFFD) != 0)
+  if (status == 2 && (cellDualSimStatus & 0xFFFFFFFD) != 0)
   {
     v6 = netepochsLogHandle;
     if (os_log_type_enabled(netepochsLogHandle, OS_LOG_TYPE_ERROR))
@@ -434,62 +434,62 @@ LABEL_7:
   }
 
   [(CellularStateRelay *)self willChangeValueForKey:@"cellDualSimStatus"];
-  self->_cellDualSimStatus = a3;
+  self->_cellDualSimStatus = status;
   v9 = *MEMORY[0x277D85DE8];
 
   [(CellularStateRelay *)self didChangeValueForKey:@"cellDualSimStatus"];
 }
 
-- (void)setCellNonPreferredMNC:(int)a3
+- (void)setCellNonPreferredMNC:(int)c
 {
-  if (self->_cellNonPreferredMNC != a3)
+  if (self->_cellNonPreferredMNC != c)
   {
     [(CellularStateRelay *)self willChangeValueForKey:@"cellNonPreferredMNC"];
-    self->_cellNonPreferredMNC = a3;
+    self->_cellNonPreferredMNC = c;
 
     [(CellularStateRelay *)self didChangeValueForKey:@"cellNonPreferredMNC"];
   }
 }
 
-- (void)setCellNonPreferredMCC:(int)a3
+- (void)setCellNonPreferredMCC:(int)c
 {
-  if (self->_cellNonPreferredMCC != a3)
+  if (self->_cellNonPreferredMCC != c)
   {
     [(CellularStateRelay *)self willChangeValueForKey:@"cellNonPreferredMCC"];
-    self->_cellNonPreferredMCC = a3;
+    self->_cellNonPreferredMCC = c;
 
     [(CellularStateRelay *)self didChangeValueForKey:@"cellNonPreferredMCC"];
   }
 }
 
-- (void)setCellRrcConnected:(BOOL)a3
+- (void)setCellRrcConnected:(BOOL)connected
 {
-  if (self->_cellRrcConnected != a3)
+  if (self->_cellRrcConnected != connected)
   {
     [(CellularStateRelay *)self willChangeValueForKey:@"cellRrcConnected"];
-    self->_cellRrcConnected = a3;
+    self->_cellRrcConnected = connected;
 
     [(CellularStateRelay *)self didChangeValueForKey:@"cellRrcConnected"];
   }
 }
 
-- (void)setIsNonTerrestrialNetworkActive:(BOOL)a3
+- (void)setIsNonTerrestrialNetworkActive:(BOOL)active
 {
-  if (self->_isNonTerrestrialNetworkActive != a3)
+  if (self->_isNonTerrestrialNetworkActive != active)
   {
     [(CellularStateRelay *)self willChangeValueForKey:@"isNonTerrestrialNetworkActive"];
-    self->_isNonTerrestrialNetworkActive = a3;
+    self->_isNonTerrestrialNetworkActive = active;
 
     [(CellularStateRelay *)self didChangeValueForKey:@"isNonTerrestrialNetworkActive"];
   }
 }
 
-- (void)setIsStewieActive:(BOOL)a3
+- (void)setIsStewieActive:(BOOL)active
 {
-  if (self->_isStewieActive != a3)
+  if (self->_isStewieActive != active)
   {
     [(CellularStateRelay *)self willChangeValueForKey:@"isStewieActive"];
-    self->_isStewieActive = a3;
+    self->_isStewieActive = active;
 
     [(CellularStateRelay *)self didChangeValueForKey:@"isStewieActive"];
   }

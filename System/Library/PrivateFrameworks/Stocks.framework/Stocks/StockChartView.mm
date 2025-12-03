@@ -3,41 +3,41 @@
 - (BOOL)isCurrentChart;
 - (BOOL)isLandscape;
 - (BOOL)shouldShowLoadingStatus;
-- (CGRect)graphViewFrameForMode:(id)a3;
+- (CGRect)graphViewFrameForMode:(id)mode;
 - (CGRect)lineGraphFrame;
 - (NSArray)alternateDisplayModes;
 - (NSString)description;
-- (StockChartView)initWithInitialDisplayMode:(id)a3 preferredChartInterval:(int64_t)a4 stockChartViewDelegate:(id)a5;
+- (StockChartView)initWithInitialDisplayMode:(id)mode preferredChartInterval:(int64_t)interval stockChartViewDelegate:(id)delegate;
 - (StockChartViewDelegate)chartViewDelegate;
 - (StocksViewController)controller;
-- (double)_evennessOfValue:(double)a3 inRange:(double)a4;
+- (double)_evennessOfValue:(double)value inRange:(double)range;
 - (double)horizontalPadding;
 - (double)lineGraphBottomPadding;
-- (double)widestYLabelWidthForMode:(id)a3;
+- (double)widestYLabelWidthForMode:(id)mode;
 - (id)currentGraphView;
-- (int64_t)maxSupportedIntervalFromDesiredInterval:(int64_t)a3;
+- (int64_t)maxSupportedIntervalFromDesiredInterval:(int64_t)interval;
 - (void)_layoutAxesAndXLabels;
 - (void)_layoutIntervalButtonRow;
 - (void)_layoutSubviews;
-- (void)_layoutTopLabelsHidden:(BOOL)a3;
-- (void)_layoutVolumeSeparatorLineForGraphRect:(CGRect)a3;
+- (void)_layoutTopLabelsHidden:(BOOL)hidden;
+- (void)_layoutVolumeSeparatorLineForGraphRect:(CGRect)rect;
 - (void)_layoutYLabels;
 - (void)_prepareXAxisLabelsAndPositions;
-- (void)_prepareYAxisLabelsAndPositionsForDisplayMode:(id)a3;
-- (void)_setDayLabelsWithInterval:(unsigned int)a3 realTimePositions:(BOOL)a4;
+- (void)_prepareYAxisLabelsAndPositionsForDisplayMode:(id)mode;
+- (void)_setDayLabelsWithInterval:(unsigned int)interval realTimePositions:(BOOL)positions;
 - (void)_setHourLabels;
 - (void)_setMonthAndYearLabels;
-- (void)_setShowingLoadingStatus:(BOOL)a3;
-- (void)addDisplayMode:(id)a3;
-- (void)animateTransitionToDisplayMode:(id)a3;
-- (void)chartIntervalButtonRow:(id)a3 didSelectChartInterval:(int64_t)a4;
-- (void)chartUpdater:(id)a3 didFailWithError:(id)a4;
-- (void)chartUpdater:(id)a3 didReceiveStockChartData:(id)a4;
+- (void)_setShowingLoadingStatus:(BOOL)status;
+- (void)addDisplayMode:(id)mode;
+- (void)animateTransitionToDisplayMode:(id)mode;
+- (void)chartIntervalButtonRow:(id)row didSelectChartInterval:(int64_t)interval;
+- (void)chartUpdater:(id)updater didFailWithError:(id)error;
+- (void)chartUpdater:(id)updater didReceiveStockChartData:(id)data;
 - (void)clearData;
-- (void)createYLabelsForMode:(id)a3;
+- (void)createYLabelsForMode:(id)mode;
 - (void)dealloc;
-- (void)didTransitionToDisplayMode:(id)a3;
-- (void)enumerateGraphsAndDisplayModesUsingBlock:(id)a3;
+- (void)didTransitionToDisplayMode:(id)mode;
+- (void)enumerateGraphsAndDisplayModesUsingBlock:(id)block;
 - (void)forceLayout;
 - (void)hideLabelsAxesAndGraphs;
 - (void)hideOtherGraphViews;
@@ -46,20 +46,20 @@
 - (void)layoutLoadingStatus;
 - (void)layoutPreviousClose;
 - (void)layoutSubviews;
-- (void)prepareForTransitionToDisplayMode:(id)a3;
+- (void)prepareForTransitionToDisplayMode:(id)mode;
 - (void)reloadData;
 - (void)reloadDataIfStale;
 - (void)renderGraphDataIfNeeded;
-- (void)renderGraphDataIfNeededForMode:(id)a3;
+- (void)renderGraphDataIfNeededForMode:(id)mode;
 - (void)resetLocale;
-- (void)setChartData:(id)a3;
-- (void)setCurrentDisplayMode:(id)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setLabelsAndAxesAlpha:(double)a3;
+- (void)setChartData:(id)data;
+- (void)setCurrentDisplayMode:(id)mode;
+- (void)setFrame:(CGRect)frame;
+- (void)setLabelsAndAxesAlpha:(double)alpha;
 - (void)setNeedsLayout;
-- (void)setShowingHUD:(BOOL)a3;
-- (void)setStock:(id)a3;
-- (void)stockGraphViewReadyForDisplay:(id)a3;
+- (void)setShowingHUD:(BOOL)d;
+- (void)setStock:(id)stock;
+- (void)stockGraphViewReadyForDisplay:(id)display;
 - (void)updateChartViewForSelectedInterval;
 - (void)updateHUDView;
 @end
@@ -74,9 +74,9 @@
     DeviceRGB = CGColorSpaceCreateDeviceRGB();
     v4 = MEMORY[0x277CBEA60];
     v5 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:0.2];
-    v6 = [v5 CGColor];
+    cGColor = [v5 CGColor];
     v7 = [MEMORY[0x277D75348] colorWithWhite:1.0 alpha:0.2];
-    v8 = [v4 arrayWithObjects:{v6, objc_msgSend(v7, "CGColor"), 0}];
+    v8 = [v4 arrayWithObjects:{cGColor, objc_msgSend(v7, "CGColor"), 0}];
 
     LineBackgroundGradient_gradient = CGGradientCreateWithColors(DeviceRGB, v8, 0);
     CGColorSpaceRelease(DeviceRGB);
@@ -88,11 +88,11 @@
 
 - (BOOL)isCurrentChart
 {
-  v2 = self;
-  v3 = [(StockChartView *)self chartViewDelegate];
-  LOBYTE(v2) = [v3 stockChartViewIsCurrentChartView:v2];
+  selfCopy = self;
+  chartViewDelegate = [(StockChartView *)self chartViewDelegate];
+  LOBYTE(selfCopy) = [chartViewDelegate stockChartViewIsCurrentChartView:selfCopy];
 
-  return v2;
+  return selfCopy;
 }
 
 - (void)dealloc
@@ -107,17 +107,17 @@
   [(StockChartView *)&v4 dealloc];
 }
 
-- (StockChartView)initWithInitialDisplayMode:(id)a3 preferredChartInterval:(int64_t)a4 stockChartViewDelegate:(id)a5
+- (StockChartView)initWithInitialDisplayMode:(id)mode preferredChartInterval:(int64_t)interval stockChartViewDelegate:(id)delegate
 {
-  v8 = a3;
-  v9 = a5;
+  modeCopy = mode;
+  delegateCopy = delegate;
   v58.receiver = self;
   v58.super_class = StockChartView;
   v10 = [(StockChartView *)&v58 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   if (v10)
   {
-    v11 = [MEMORY[0x277D75348] clearColor];
-    [(StockChartView *)v10 setBackgroundColor:v11];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(StockChartView *)v10 setBackgroundColor:clearColor];
 
     [(StockChartView *)v10 setMultipleTouchEnabled:1];
     v12 = objc_opt_new();
@@ -146,7 +146,7 @@
     yLabelViews = v10->_yLabelViews;
     v10->_yLabelViews = v22;
 
-    [(StockChartView *)v10 createYLabelsForMode:v8];
+    [(StockChartView *)v10 createYLabelsForMode:modeCopy];
     v24 = objc_alloc_init(MEMORY[0x277D75D18]);
     xAxisKeyline = v10->_xAxisKeyline;
     v10->_xAxisKeyline = v24;
@@ -158,8 +158,8 @@
     v10->_previousCloseLine = v26;
 
     v28 = v10->_previousCloseLine;
-    v29 = [MEMORY[0x277D75348] clearColor];
-    [(DashedLineView *)v28 setBackgroundColor:v29];
+    clearColor2 = [MEMORY[0x277D75348] clearColor];
+    [(DashedLineView *)v28 setBackgroundColor:clearColor2];
 
     [(StockChartView *)v10 addSubview:v10->_previousCloseLine];
     v30 = objc_alloc_init(MEMORY[0x277D756B8]);
@@ -172,12 +172,12 @@
     [(UILabel *)v32 setFont:v34];
 
     v35 = v10->_previousCloseLabel;
-    v36 = [MEMORY[0x277D75348] whiteColor];
-    [(UILabel *)v35 setTextColor:v36];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [(UILabel *)v35 setTextColor:whiteColor];
 
     v37 = v10->_previousCloseLabel;
-    v38 = [MEMORY[0x277D75348] clearColor];
-    [(UILabel *)v37 setBackgroundColor:v38];
+    clearColor3 = [MEMORY[0x277D75348] clearColor];
+    [(UILabel *)v37 setBackgroundColor:clearColor3];
 
     [(UILabel *)v10->_previousCloseLabel setTextAlignment:2];
     [(StockChartView *)v10 addSubview:v10->_previousCloseLabel];
@@ -193,10 +193,10 @@
     v10->_titleView = v41;
 
     v43 = v10->_titleView;
-    v44 = [MEMORY[0x277D75348] blackColor];
-    [(ChartTitleLabel *)v43 setBackgroundColor:v44];
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    [(ChartTitleLabel *)v43 setBackgroundColor:blackColor];
 
-    [v8 showsTitle];
+    [modeCopy showsTitle];
     if (v45 != 0.0)
     {
       [(StockChartView *)v10 insertSubview:v10->_titleView belowSubview:v10->_HUDView];
@@ -207,8 +207,8 @@
     v10->_intervalButtonRow = v46;
 
     [(StockChartView *)v10 addSubview:v10->_intervalButtonRow];
-    v48 = [(StockChartView *)v10 layer];
-    [v48 setNeedsLayoutOnGeometryChange:0];
+    layer = [(StockChartView *)v10 layer];
+    [layer setNeedsLayoutOnGeometryChange:0];
 
     v49 = objc_alloc_init(MEMORY[0x277D75D18]);
     chartTopKeyline = v10->_chartTopKeyline;
@@ -228,45 +228,45 @@
     [(UIView *)v55 setBackgroundColor:v56];
 
     [(StockChartView *)v10 addSubview:v10->_chartBottomKeyline];
-    [v8 setBackgroundGradient:{objc_msgSend(objc_opt_class(), "LineBackgroundGradient")}];
-    [(StockChartView *)v10 addDisplayMode:v8];
-    [(StockChartView *)v10 setCurrentDisplayMode:v8];
-    v10->_preferredInterval = a4;
-    v10->_selectedInterval = a4;
-    objc_storeWeak(&v10->_chartViewDelegate, v9);
-    [(ChartIntervalButtonRow *)v10->_intervalButtonRow selectChartIntervalButtonForInterval:[(StockChartView *)v10 maxSupportedIntervalFromDesiredInterval:a4]];
+    [modeCopy setBackgroundGradient:{objc_msgSend(objc_opt_class(), "LineBackgroundGradient")}];
+    [(StockChartView *)v10 addDisplayMode:modeCopy];
+    [(StockChartView *)v10 setCurrentDisplayMode:modeCopy];
+    v10->_preferredInterval = interval;
+    v10->_selectedInterval = interval;
+    objc_storeWeak(&v10->_chartViewDelegate, delegateCopy);
+    [(ChartIntervalButtonRow *)v10->_intervalButtonRow selectChartIntervalButtonForInterval:[(StockChartView *)v10 maxSupportedIntervalFromDesiredInterval:interval]];
   }
 
   return v10;
 }
 
-- (void)addDisplayMode:(id)a3
+- (void)addDisplayMode:(id)mode
 {
-  v4 = a3;
+  modeCopy = mode;
   displayModes = self->_displayModes;
-  v15 = v4;
+  v15 = modeCopy;
   if (!displayModes)
   {
     v6 = objc_opt_new();
     v7 = self->_displayModes;
     self->_displayModes = v6;
 
-    v4 = v15;
+    modeCopy = v15;
     displayModes = self->_displayModes;
   }
 
-  if (([(NSMutableArray *)displayModes containsObject:v4]& 1) == 0)
+  if (([(NSMutableArray *)displayModes containsObject:modeCopy]& 1) == 0)
   {
     v8 = [StockGraphView alloc];
     v9 = [(StockGraphView *)v8 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
     [(StockGraphView *)v9 setDisplayMode:v15];
     [(StockGraphView *)v9 setChartViewDelegate:self];
-    v10 = [(StockChartView *)self chartData];
-    [(StockGraphView *)v9 loadStockChartData:v10];
+    chartData = [(StockChartView *)self chartData];
+    [(StockGraphView *)v9 loadStockChartData:chartData];
 
     [v15 setBackgroundGradient:{objc_msgSend(objc_opt_class(), "LineBackgroundGradient")}];
-    v11 = [MEMORY[0x277D759A0] mainScreen];
-    [v11 scale];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
     v13 = v12 == 1.0;
     v14 = 0.7;
     if (v13)
@@ -284,11 +284,11 @@
   }
 }
 
-- (void)setCurrentDisplayMode:(id)a3
+- (void)setCurrentDisplayMode:(id)mode
 {
-  v5 = a3;
-  objc_storeStrong(&self->_currentDisplayMode, a3);
-  -[ChartIntervalButtonRow updateMaxChartInterval:](self->_intervalButtonRow, "updateMaxChartInterval:", [v5 maxInterval]);
+  modeCopy = mode;
+  objc_storeStrong(&self->_currentDisplayMode, mode);
+  -[ChartIntervalButtonRow updateMaxChartInterval:](self->_intervalButtonRow, "updateMaxChartInterval:", [modeCopy maxInterval]);
   if (self->_chartData)
   {
     [(StockChartView *)self _prepareXAxisLabelsAndPositions];
@@ -300,17 +300,17 @@
 - (NSArray)alternateDisplayModes
 {
   v3 = [(NSMutableArray *)self->_displayModes mutableCopy];
-  v4 = [(StockChartView *)self currentDisplayMode];
-  [v3 removeObject:v4];
+  currentDisplayMode = [(StockChartView *)self currentDisplayMode];
+  [v3 removeObject:currentDisplayMode];
 
   return v3;
 }
 
-- (void)enumerateGraphsAndDisplayModesUsingBlock:(id)a3
+- (void)enumerateGraphsAndDisplayModesUsingBlock:(id)block
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  blockCopy = block;
+  if (!blockCopy)
   {
     [(StockChartView *)a2 enumerateGraphsAndDisplayModesUsingBlock:?];
   }
@@ -337,7 +337,7 @@ LABEL_5:
       v11 = *(*(&v14 + 1) + 8 * v10);
       v13 = 0;
       v12 = [(StockChartView *)self graphViewForMode:v11];
-      v5[2](v5, v11, v12, &v13);
+      blockCopy[2](blockCopy, v11, v12, &v13);
       LOBYTE(v11) = v13;
 
       if (v11)
@@ -371,43 +371,43 @@ LABEL_5:
 - (NSString)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(Stock *)self->_stock symbol];
+  symbol = [(Stock *)self->_stock symbol];
   v8.receiver = self;
   v8.super_class = StockChartView;
   v5 = [(StockChartView *)&v8 description];
-  v6 = [v3 stringWithFormat:@"Ticker %@ %@", v4, v5];
+  v6 = [v3 stringWithFormat:@"Ticker %@ %@", symbol, v5];
 
   return v6;
 }
 
 - (id)currentGraphView
 {
-  v3 = [(StockChartView *)self currentDisplayMode];
-  v4 = [(StockChartView *)self graphViewForMode:v3];
+  currentDisplayMode = [(StockChartView *)self currentDisplayMode];
+  v4 = [(StockChartView *)self graphViewForMode:currentDisplayMode];
 
   return v4;
 }
 
-- (void)setStock:(id)a3
+- (void)setStock:(id)stock
 {
-  v5 = a3;
-  if (self->_stock != v5)
+  stockCopy = stock;
+  if (self->_stock != stockCopy)
   {
-    v6 = v5;
+    v6 = stockCopy;
     [(StockChartView *)self enumerateGraphsAndDisplayModesUsingBlock:&__block_literal_global_11];
-    objc_storeStrong(&self->_stock, a3);
+    objc_storeStrong(&self->_stock, stock);
     [(StockChartView *)self clearData];
     [(StockChartView *)self setNeedsLayout];
-    v5 = v6;
+    stockCopy = v6;
   }
 }
 
 - (BOOL)shouldShowLoadingStatus
 {
-  v2 = [(StockChartView *)self currentGraphView];
-  v3 = [v2 isRendered];
+  currentGraphView = [(StockChartView *)self currentGraphView];
+  isRendered = [currentGraphView isRendered];
 
-  return v3 ^ 1;
+  return isRendered ^ 1;
 }
 
 - (void)layoutGraphViews
@@ -436,22 +436,22 @@ void __34__StockChartView_layoutGraphViews__block_invoke(uint64_t a1, uint64_t a
   v72 = *MEMORY[0x277D85DE8];
   [(StockChartData *)self->_chartData previousClosePrice];
   v4 = v3;
-  v5 = 0;
+  isRendered = 0;
   if (!self->_selectedInterval && v3 != 0.0)
   {
     if ([(StockChartView *)self isLoading])
     {
-      v5 = 0;
+      isRendered = 0;
     }
 
     else
     {
-      v6 = [(StockChartView *)self currentGraphView];
-      v5 = [v6 isRendered];
+      currentGraphView = [(StockChartView *)self currentGraphView];
+      isRendered = [currentGraphView isRendered];
     }
   }
 
-  v7 = v5 ^ 1u;
+  v7 = isRendered ^ 1u;
   [(DashedLineView *)self->_previousCloseLine setHidden:v7];
   [(UILabel *)self->_previousCloseLabel setHidden:v7];
   if ((v7 & 1) == 0)
@@ -465,18 +465,18 @@ void __34__StockChartView_layoutGraphViews__block_invoke(uint64_t a1, uint64_t a
 
     [(UILabel *)self->_previousCloseLabel sizeToFit];
     v13 = self->_previousCloseLabel;
-    v14 = [(StockChartView *)self currentDisplayMode];
-    v15 = [v14 showsPriceLabelForPreviousClose];
+    currentDisplayMode = [(StockChartView *)self currentDisplayMode];
+    showsPriceLabelForPreviousClose = [currentDisplayMode showsPriceLabelForPreviousClose];
     v16 = 0.0;
-    if (v15)
+    if (showsPriceLabelForPreviousClose)
     {
       v16 = 1.0;
     }
 
     [(UILabel *)v13 setAlpha:v16];
 
-    v17 = [(StockChartView *)self chartData];
-    v18 = *([v17 minValue] + 8);
+    chartData = [(StockChartView *)self chartData];
+    v18 = *([chartData minValue] + 8);
 
     v19 = v4;
     if (v18 <= v4)
@@ -489,8 +489,8 @@ void __34__StockChartView_layoutGraphViews__block_invoke(uint64_t a1, uint64_t a
       v20 = v4;
     }
 
-    v21 = [(StockChartView *)self chartData];
-    v22 = *([v21 maxValue] + 8);
+    chartData2 = [(StockChartView *)self chartData];
+    v22 = *([chartData2 maxValue] + 8);
 
     if (v22 <= v19)
     {
@@ -502,8 +502,8 @@ void __34__StockChartView_layoutGraphViews__block_invoke(uint64_t a1, uint64_t a
       v23 = v22;
     }
 
-    v24 = [(StockChartView *)self currentGraphView];
-    [v24 frame];
+    currentGraphView2 = [(StockChartView *)self currentGraphView];
+    [currentGraphView2 frame];
     v26 = v25;
     v28 = v27;
     v30 = v29;
@@ -535,8 +535,8 @@ void __34__StockChartView_layoutGraphViews__block_invoke(uint64_t a1, uint64_t a
     v42 = v41;
     v44 = v43;
     v45 = v37 - v43 + -4.0;
-    v46 = [(UILabel *)self->_previousCloseLabel font];
-    [v46 descender];
+    font = [(UILabel *)self->_previousCloseLabel font];
+    [font descender];
     v48 = RoundToPixel(v45 - v47);
 
     v76.origin.x = v26;
@@ -546,10 +546,10 @@ void __34__StockChartView_layoutGraphViews__block_invoke(uint64_t a1, uint64_t a
     MaxX = CGRectGetMaxX(v76);
     v50 = MaxX - v42;
     [(UILabel *)self->_previousCloseLabel setFrame:MaxX - v42, v48, v42, v44];
-    v51 = [(StockChartView *)self currentDisplayMode];
-    v52 = [v51 showsPriceLabelForPreviousClose];
+    currentDisplayMode2 = [(StockChartView *)self currentDisplayMode];
+    showsPriceLabelForPreviousClose2 = [currentDisplayMode2 showsPriceLabelForPreviousClose];
 
-    if (v52)
+    if (showsPriceLabelForPreviousClose2)
     {
       v77.origin.x = v50;
       v77.origin.y = v48;
@@ -619,8 +619,8 @@ void __34__StockChartView_layoutGraphViews__block_invoke(uint64_t a1, uint64_t a
 - (void)_layoutSubviews
 {
   v3 = +[StockManager sharedManager];
-  v4 = [v3 stocksList];
-  v5 = [v4 count];
+  stocksList = [v3 stocksList];
+  v5 = [stocksList count];
 
   if (v5)
   {
@@ -629,16 +629,16 @@ void __34__StockChartView_layoutGraphViews__block_invoke(uint64_t a1, uint64_t a
     v9 = v8;
     v11 = v10;
     v13 = v12;
-    v14 = [(StockChartView *)self currentDisplayMode];
-    [v14 showsTitle];
+    currentDisplayMode = [(StockChartView *)self currentDisplayMode];
+    [currentDisplayMode showsTitle];
     v16 = v15;
     v17 = v15 == 0.0;
 
     [(StockChartView *)self _layoutTopLabelsHidden:v17];
     if (v16 != 0.0)
     {
-      v18 = [(StockChartView *)self currentDisplayMode];
-      [v18 chartRenderingInsets];
+      currentDisplayMode2 = [(StockChartView *)self currentDisplayMode];
+      [currentDisplayMode2 chartRenderingInsets];
       v20 = v19;
       v22 = v21;
 
@@ -661,8 +661,8 @@ void __34__StockChartView_layoutGraphViews__block_invoke(uint64_t a1, uint64_t a
     else
     {
       [(StockChartView *)self _setShowingLoadingStatus:0];
-      v23 = [(StockChartView *)self currentGraphView];
-      [v23 frame];
+      currentGraphView = [(StockChartView *)self currentGraphView];
+      [currentGraphView frame];
       v25 = v24;
       v27 = v26;
       v29 = v28;
@@ -672,30 +672,30 @@ void __34__StockChartView_layoutGraphViews__block_invoke(uint64_t a1, uint64_t a
       [(StockChartView *)self _layoutYLabels];
       [(StockChartView *)self _layoutAxesAndXLabels];
       [(ChartHUDView *)self->_HUDView setFrame:v7, v9, v11, v13];
-      v32 = [(StockChartView *)self currentGraphView];
-      [v32 setHidden:0];
+      currentGraphView2 = [(StockChartView *)self currentGraphView];
+      [currentGraphView2 setHidden:0];
 
       [(UIView *)self->_xAxisKeyline setHidden:0];
-      v33 = [(StockChartView *)self chartViewDelegate];
+      chartViewDelegate = [(StockChartView *)self chartViewDelegate];
       v34 = objc_opt_respondsToSelector();
 
       if (v34)
       {
-        v35 = [(StockChartView *)self chartViewDelegate];
-        [v35 stockChartViewFinishedInitialLoad:self];
+        chartViewDelegate2 = [(StockChartView *)self chartViewDelegate];
+        [chartViewDelegate2 stockChartViewFinishedInitialLoad:self];
       }
     }
 
     [(StockChartView *)self layoutPreviousClose];
-    v36 = [(StockChartView *)self currentDisplayMode];
-    [(StockChartView *)self graphViewFrameForMode:v36];
+    currentDisplayMode3 = [(StockChartView *)self currentDisplayMode];
+    [(StockChartView *)self graphViewFrameForMode:currentDisplayMode3];
     v38 = v37;
     v40 = v39;
     v42 = v41;
     v44 = v43;
 
-    v45 = [MEMORY[0x277D75128] sharedApplication];
-    v46 = [v45 statusBarOrientation];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    statusBarOrientation = [mEMORY[0x277D75128] statusBarOrientation];
 
     [(StockChartView *)self horizontalPadding];
     v48 = v47;
@@ -709,8 +709,8 @@ void __34__StockChartView_layoutGraphViews__block_invoke(uint64_t a1, uint64_t a
     v70.size.width = v42;
     v70.size.height = v44;
     Width = CGRectGetWidth(v70);
-    v50 = [MEMORY[0x277D759A0] mainScreen];
-    [v50 scale];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
     v65 = 1.0 / v51;
 
     v71.origin.x = v38;
@@ -725,17 +725,17 @@ void __34__StockChartView_layoutGraphViews__block_invoke(uint64_t a1, uint64_t a
     v72.size.height = v44;
     v54 = CGRectGetWidth(v72);
     v55 = v54 + RoundToPixel(0.5);
-    v56 = [MEMORY[0x277D759A0] mainScreen];
-    [v56 scale];
+    mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen2 scale];
     v58 = 1.0 / v57;
 
-    if (v46 == 3)
+    if (statusBarOrientation == 3)
     {
       v38 = v38 - v48;
     }
 
-    v59 = [MEMORY[0x277D759A0] mainScreen];
-    [v59 _referenceBounds];
+    mainScreen3 = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen3 _referenceBounds];
     v61 = v60;
 
     if (v61 == 812.0)
@@ -780,10 +780,10 @@ void __34__StockChartView_layoutGraphViews__block_invoke(uint64_t a1, uint64_t a
 {
   if (!self->_animating)
   {
-    v3 = [(StockChartView *)self controller];
-    v4 = [v3 isAnimatingRotation];
+    controller = [(StockChartView *)self controller];
+    isAnimatingRotation = [controller isAnimatingRotation];
 
-    if ((v4 & 1) == 0)
+    if ((isAnimatingRotation & 1) == 0)
     {
 
       [(StockChartView *)self _layoutSubviews];
@@ -793,8 +793,8 @@ void __34__StockChartView_layoutGraphViews__block_invoke(uint64_t a1, uint64_t a
 
 - (double)horizontalPadding
 {
-  v3 = [MEMORY[0x277D759A0] mainScreen];
-  [v3 _referenceBounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen _referenceBounds];
   if (v4 == 812.0)
   {
     if ([(StockChartView *)self isLandscape])
@@ -818,10 +818,10 @@ void __34__StockChartView_layoutGraphViews__block_invoke(uint64_t a1, uint64_t a
 
 - (BOOL)isLandscape
 {
-  v2 = [MEMORY[0x277D75128] sharedApplication];
-  v3 = [v2 statusBarOrientation];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  statusBarOrientation = [mEMORY[0x277D75128] statusBarOrientation];
 
-  return (v3 - 3) < 2;
+  return (statusBarOrientation - 3) < 2;
 }
 
 - (void)layoutIfNeeded
@@ -862,12 +862,12 @@ void __34__StockChartView_layoutGraphViews__block_invoke(uint64_t a1, uint64_t a
   }
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(StockChartView *)self frame];
   v9 = v8;
   v11 = v10;
@@ -882,40 +882,40 @@ void __34__StockChartView_layoutGraphViews__block_invoke(uint64_t a1, uint64_t a
 
 - (double)lineGraphBottomPadding
 {
-  v2 = [(StockChartView *)self currentDisplayMode];
-  [v2 lineGraphBottomPadding];
+  currentDisplayMode = [(StockChartView *)self currentDisplayMode];
+  [currentDisplayMode lineGraphBottomPadding];
   v4 = v3;
 
   return v4;
 }
 
-- (void)chartUpdater:(id)a3 didReceiveStockChartData:(id)a4
+- (void)chartUpdater:(id)updater didReceiveStockChartData:(id)data
 {
-  v11 = a4;
-  v5 = [(StockChartView *)self chartViewDelegate];
-  [v5 stockChartViewNeedsLoadingStatusUpdated:self];
+  dataCopy = data;
+  chartViewDelegate = [(StockChartView *)self chartViewDelegate];
+  [chartViewDelegate stockChartViewNeedsLoadingStatusUpdated:self];
 
   selectedInterval = self->_selectedInterval;
-  if (selectedInterval == [v11 chartInterval])
+  if (selectedInterval == [dataCopy chartInterval])
   {
-    v7 = [(Stock *)self->_stock symbol];
-    v8 = [v11 stock];
-    v9 = [v8 symbol];
-    v10 = [v7 isEqualToString:v9];
+    symbol = [(Stock *)self->_stock symbol];
+    stock = [dataCopy stock];
+    symbol2 = [stock symbol];
+    v10 = [symbol isEqualToString:symbol2];
 
     if (v10)
     {
-      [(StockChartView *)self setChartData:v11];
+      [(StockChartView *)self setChartData:dataCopy];
     }
   }
 }
 
-- (void)chartUpdater:(id)a3 didFailWithError:(id)a4
+- (void)chartUpdater:(id)updater didFailWithError:(id)error
 {
-  objc_storeStrong(&self->_error, a4);
+  objc_storeStrong(&self->_error, error);
   [(StockChartView *)self setNeedsLayout];
-  v5 = [(StockChartView *)self chartViewDelegate];
-  [v5 stockChartViewNeedsLoadingStatusUpdated:self];
+  chartViewDelegate = [(StockChartView *)self chartViewDelegate];
+  [chartViewDelegate stockChartViewNeedsLoadingStatusUpdated:self];
 }
 
 - (void)reloadData
@@ -925,8 +925,8 @@ void __34__StockChartView_layoutGraphViews__block_invoke(uint64_t a1, uint64_t a
     [(StockChartView *)self clearData];
     if (![(ChartUpdater *)self->_chartUpdater updateChartForStock:self->_stock interval:self->_selectedInterval])
     {
-      v3 = [(StockChartView *)self chartViewDelegate];
-      [v3 stockChartViewNeedsLoadingStatusUpdated:self];
+      chartViewDelegate = [(StockChartView *)self chartViewDelegate];
+      [chartViewDelegate stockChartViewNeedsLoadingStatusUpdated:self];
     }
 
     [(StockChartView *)self setNeedsLayout];
@@ -962,17 +962,17 @@ void __34__StockChartView_layoutGraphViews__block_invoke(uint64_t a1, uint64_t a
   }
 }
 
-- (void)setChartData:(id)a3
+- (void)setChartData:(id)data
 {
-  v5 = a3;
-  if (self->_chartData != v5)
+  dataCopy = data;
+  if (self->_chartData != dataCopy)
   {
-    objc_storeStrong(&self->_chartData, a3);
+    objc_storeStrong(&self->_chartData, data);
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __31__StockChartView_setChartData___block_invoke;
     v7[3] = &unk_279D16828;
-    v8 = v5;
+    v8 = dataCopy;
     [(StockChartView *)self enumerateGraphsAndDisplayModesUsingBlock:v7];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
@@ -991,10 +991,10 @@ void __34__StockChartView_layoutGraphViews__block_invoke(uint64_t a1, uint64_t a
   }
 }
 
-- (CGRect)graphViewFrameForMode:(id)a3
+- (CGRect)graphViewFrameForMode:(id)mode
 {
-  v4 = a3;
-  [v4 showsTitle];
+  modeCopy = mode;
+  [modeCopy showsTitle];
   if (v5 == 0.0)
   {
     v6 = 0.0;
@@ -1005,23 +1005,23 @@ void __34__StockChartView_layoutGraphViews__block_invoke(uint64_t a1, uint64_t a
     v6 = 37.0;
   }
 
-  [v4 chartSize];
-  [v4 chartRenderingInsets];
+  [modeCopy chartSize];
+  [modeCopy chartRenderingInsets];
   v8 = v7;
   v10 = v9;
   v39 = v11;
   v13 = v12;
   [(StockChartView *)self horizontalPadding];
   v15 = v14;
-  v16 = [MEMORY[0x277D75128] sharedApplication];
-  v17 = [v16 statusBarOrientation];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  statusBarOrientation = [mEMORY[0x277D75128] statusBarOrientation];
 
   [(StockChartView *)self bounds];
   v19 = v18;
   v38 = v20;
-  [v4 intervalRowHeight];
+  [modeCopy intervalRowHeight];
   v22 = v8 + v6 + v21;
-  if (v17 == 3)
+  if (statusBarOrientation == 3)
   {
     v23 = v10 + v15;
   }
@@ -1032,8 +1032,8 @@ void __34__StockChartView_layoutGraphViews__block_invoke(uint64_t a1, uint64_t a
   }
 
   v24 = v10 + v13;
-  v25 = [MEMORY[0x277D759A0] mainScreen];
-  [v25 _referenceBounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen _referenceBounds];
   v26 = 0.0;
   if (v27 == 812.0)
   {
@@ -1042,11 +1042,11 @@ void __34__StockChartView_layoutGraphViews__block_invoke(uint64_t a1, uint64_t a
 
   v28 = v24 + v26;
 
-  [v4 intervalRowHeight];
+  [modeCopy intervalRowHeight];
   v30 = v29;
 
-  v31 = [MEMORY[0x277D759A0] mainScreen];
-  [v31 scale];
+  mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen2 scale];
   v33 = v38 - (v8 + v39 + v6 + v30 + 1.0 / v32);
 
   v34 = v23;
@@ -1062,8 +1062,8 @@ void __34__StockChartView_layoutGraphViews__block_invoke(uint64_t a1, uint64_t a
 
 - (CGRect)lineGraphFrame
 {
-  v3 = [(StockChartView *)self currentDisplayMode];
-  [(StockChartView *)self graphViewFrameForMode:v3];
+  currentDisplayMode = [(StockChartView *)self currentDisplayMode];
+  [(StockChartView *)self graphViewFrameForMode:currentDisplayMode];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -1071,16 +1071,16 @@ void __34__StockChartView_layoutGraphViews__block_invoke(uint64_t a1, uint64_t a
 
   [(StockChartView *)self lineGraphBottomPadding];
   v13 = v12;
-  v14 = [(StockChartView *)self currentDisplayMode];
-  v15 = [v14 graphOverlapsYAxisLabels];
+  currentDisplayMode2 = [(StockChartView *)self currentDisplayMode];
+  graphOverlapsYAxisLabels = [currentDisplayMode2 graphOverlapsYAxisLabels];
 
-  if ((v15 & 1) == 0)
+  if ((graphOverlapsYAxisLabels & 1) == 0)
   {
-    v16 = [(StockChartView *)self currentDisplayMode];
-    [(StockChartView *)self widestYLabelWidthForMode:v16];
+    currentDisplayMode3 = [(StockChartView *)self currentDisplayMode];
+    [(StockChartView *)self widestYLabelWidthForMode:currentDisplayMode3];
     v18 = v17 + 4.0;
-    v19 = [MEMORY[0x277D759A0] mainScreen];
-    [v19 scale];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
     v9 = v9 - (v18 + 1.0 / v20);
   }
 
@@ -1095,30 +1095,30 @@ void __34__StockChartView_layoutGraphViews__block_invoke(uint64_t a1, uint64_t a
   return result;
 }
 
-- (void)renderGraphDataIfNeededForMode:(id)a3
+- (void)renderGraphDataIfNeededForMode:(id)mode
 {
-  v15 = a3;
+  modeCopy = mode;
   v4 = [(StockChartView *)self graphViewForMode:?];
-  v5 = [(StockChartView *)self chartData];
-  if (v5 && ([v4 isRendered] & 1) == 0)
+  chartData = [(StockChartView *)self chartData];
+  if (chartData && ([v4 isRendered] & 1) == 0)
   {
-    v6 = [v4 isRendering];
+    isRendering = [v4 isRendering];
 
-    if ((v6 & 1) == 0)
+    if ((isRendering & 1) == 0)
     {
       v7 = 0.0;
-      if (([v15 graphOverlapsYAxisLabels] & 1) == 0)
+      if (([modeCopy graphOverlapsYAxisLabels] & 1) == 0)
       {
-        [(StockChartView *)self widestYLabelWidthForMode:v15];
+        [(StockChartView *)self widestYLabelWidthForMode:modeCopy];
         v9 = v8 + 4.0;
-        v10 = [MEMORY[0x277D759A0] mainScreen];
-        [v10 scale];
+        mainScreen = [MEMORY[0x277D759A0] mainScreen];
+        [mainScreen scale];
         v7 = FloorToPixel(v9 + 1.0 / v11);
       }
 
-      [v15 lineGraphBottomPadding];
+      [modeCopy lineGraphBottomPadding];
       [v4 setGraphInsets:{18.0, 0.0, v12, v7}];
-      [(StockChartView *)self graphViewFrameForMode:v15];
+      [(StockChartView *)self graphViewFrameForMode:modeCopy];
       [v4 recomputePathsAndRenderIfNeededForSize:{v13, v14}];
     }
   }
@@ -1130,8 +1130,8 @@ void __34__StockChartView_layoutGraphViews__block_invoke(uint64_t a1, uint64_t a
 
 - (void)renderGraphDataIfNeeded
 {
-  v3 = [(StockChartView *)self currentDisplayMode];
-  [(StockChartView *)self renderGraphDataIfNeededForMode:v3];
+  currentDisplayMode = [(StockChartView *)self currentDisplayMode];
+  [(StockChartView *)self renderGraphDataIfNeededForMode:currentDisplayMode];
 
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
@@ -1154,15 +1154,15 @@ void __41__StockChartView_renderGraphDataIfNeeded__block_invoke(uint64_t a1, voi
   }
 }
 
-- (void)stockGraphViewReadyForDisplay:(id)a3
+- (void)stockGraphViewReadyForDisplay:(id)display
 {
-  v5 = a3;
-  v4 = [(StockChartView *)self currentGraphView];
+  displayCopy = display;
+  currentGraphView = [(StockChartView *)self currentGraphView];
 
-  if (v4 == v5)
+  if (currentGraphView == displayCopy)
   {
     [(StockChartView *)self hideOtherGraphViews];
-    [v5 setAlpha:1.0];
+    [displayCopy setAlpha:1.0];
     [(StockChartView *)self setLabelsAndAxesAlpha:1.0];
     [(StockChartView *)self setNeedsLayout];
   }
@@ -1173,7 +1173,7 @@ void __41__StockChartView_renderGraphDataIfNeeded__block_invoke(uint64_t a1, voi
 - (void)hideOtherGraphViews
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [(StockChartView *)self currentDisplayMode];
+  currentDisplayMode = [(StockChartView *)self currentDisplayMode];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -1194,7 +1194,7 @@ void __41__StockChartView_renderGraphDataIfNeeded__block_invoke(uint64_t a1, voi
           objc_enumerationMutation(v4);
         }
 
-        if (v3 != *(*(&v10 + 1) + 8 * v8))
+        if (currentDisplayMode != *(*(&v10 + 1) + 8 * v8))
         {
           v9 = [(StockChartView *)self graphViewForMode:v10];
           [v9 setAlpha:0.0];
@@ -1211,34 +1211,34 @@ void __41__StockChartView_renderGraphDataIfNeeded__block_invoke(uint64_t a1, voi
   }
 }
 
-- (void)setShowingHUD:(BOOL)a3
+- (void)setShowingHUD:(BOOL)d
 {
-  v3 = a3;
-  if ([(ChartHUDView *)self->_HUDView isOverlayHidden]== a3)
+  dCopy = d;
+  if ([(ChartHUDView *)self->_HUDView isOverlayHidden]== d)
   {
-    v5 = [(StockChartView *)self currentDisplayMode];
-    v6 = [(StockChartView *)self currentGraphView];
-    [(ChartHUDView *)self->_HUDView setGraphView:v6];
+    currentDisplayMode = [(StockChartView *)self currentDisplayMode];
+    currentGraphView = [(StockChartView *)self currentGraphView];
+    [(ChartHUDView *)self->_HUDView setGraphView:currentGraphView];
     HUDView = self->_HUDView;
-    [v6 frame];
+    [currentGraphView frame];
     v9 = v8;
-    [v5 gutterHeight];
+    [currentDisplayMode gutterHeight];
     v11 = v9 - v10;
-    v12 = [MEMORY[0x277D759A0] mainScreen];
-    [v12 scale];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
     [(ChartHUDView *)HUDView setBarHeight:v11 + 1.0 / v13 * -2.0];
 
-    [(ChartHUDView *)self->_HUDView setOverlayHidden:!v3];
+    [(ChartHUDView *)self->_HUDView setOverlayHidden:!dCopy];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __32__StockChartView_setShowingHUD___block_invoke;
     v17[3] = &unk_279D15BC8;
     v17[4] = self;
-    v18 = v3;
+    v18 = dCopy;
     [MEMORY[0x277D75D18] animateWithDuration:v17 animations:0.100000001];
     chartTopKeyline = self->_chartTopKeyline;
     v15 = 0.2;
-    if (!v3)
+    if (!dCopy)
     {
       v15 = 0.8;
     }
@@ -1262,11 +1262,11 @@ uint64_t __32__StockChartView_setShowingHUD___block_invoke(uint64_t a1)
   HUDView = self->_HUDView;
   if (self->_chartData)
   {
-    v6 = [(StockChartView *)self currentDisplayMode];
-    if ([v6 HUDEnabled])
+    currentDisplayMode = [(StockChartView *)self currentDisplayMode];
+    if ([currentDisplayMode HUDEnabled])
     {
-      v4 = [(StockChartView *)self currentGraphView];
-      -[ChartHUDView setEnabled:](HUDView, "setEnabled:", [v4 isRendered]);
+      currentGraphView = [(StockChartView *)self currentGraphView];
+      -[ChartHUDView setEnabled:](HUDView, "setEnabled:", [currentGraphView isRendered]);
     }
 
     else
@@ -1288,12 +1288,12 @@ uint64_t __32__StockChartView_setShowingHUD___block_invoke(uint64_t a1)
   [(StockChartView *)self bounds];
   v4 = v3;
   v5 = *MEMORY[0x277CBF3A0];
-  v6 = [MEMORY[0x277D759A0] mainScreen];
-  [v6 _referenceBounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen _referenceBounds];
   v8 = v7;
 
-  v9 = [(StockChartView *)self currentDisplayMode];
-  [v9 showsTitle];
+  currentDisplayMode = [(StockChartView *)self currentDisplayMode];
+  [currentDisplayMode showsTitle];
   if (v10 == 0.0)
   {
     MaxY = 0.0;
@@ -1307,8 +1307,8 @@ uint64_t __32__StockChartView_setShowingHUD___block_invoke(uint64_t a1)
 
   [(StockChartView *)self horizontalPadding];
   v13 = v12;
-  v14 = [(StockChartView *)self isLandscape];
-  if (v14)
+  isLandscape = [(StockChartView *)self isLandscape];
+  if (isLandscape)
   {
     v15 = v4 + v13 * -2.0;
   }
@@ -1318,7 +1318,7 @@ uint64_t __32__StockChartView_setShowingHUD___block_invoke(uint64_t a1)
     v15 = v4;
   }
 
-  if (v14)
+  if (isLandscape)
   {
     v16 = v13;
   }
@@ -1338,14 +1338,14 @@ uint64_t __32__StockChartView_setShowingHUD___block_invoke(uint64_t a1)
   [(ChartIntervalButtonRow *)intervalButtonRow setFrame:v16, MaxY, v15, v17];
 }
 
-- (void)_layoutVolumeSeparatorLineForGraphRect:(CGRect)a3
+- (void)_layoutVolumeSeparatorLineForGraphRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [MEMORY[0x277D75128] sharedApplication];
-  v9 = [v8 statusBarOrientation];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  statusBarOrientation = [mEMORY[0x277D75128] statusBarOrientation];
 
   [(StockChartView *)self horizontalPadding];
   v11 = v10;
@@ -1359,24 +1359,24 @@ uint64_t __32__StockChartView_setShowingHUD___block_invoke(uint64_t a1)
   v32.size.width = width;
   v32.size.height = height;
   v13 = CGRectGetWidth(v32);
-  v14 = [MEMORY[0x277D759A0] mainScreen];
-  [v14 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v16 = v15;
 
-  v17 = [(StockChartView *)self currentDisplayMode];
-  [v17 gutterHeight];
+  currentDisplayMode = [(StockChartView *)self currentDisplayMode];
+  [currentDisplayMode gutterHeight];
   v19 = v18;
-  v20 = [MEMORY[0x277D759A0] mainScreen];
-  [v20 scale];
+  mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen2 scale];
   v22 = v21;
 
-  if (v9 == 3)
+  if (statusBarOrientation == 3)
   {
     x = x - v11;
   }
 
-  v23 = [MEMORY[0x277D759A0] mainScreen];
-  [v23 _referenceBounds];
+  mainScreen3 = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen3 _referenceBounds];
   v25 = v24;
 
   if (v25 == 812.0)
@@ -1391,24 +1391,24 @@ uint64_t __32__StockChartView_setShowingHUD___block_invoke(uint64_t a1)
 
   [(UIView *)self->_xAxisKeyline setFrame:x, MaxY - (v19 + 1.0 / v22), v26, 1.0 / v16];
   xAxisKeyline = self->_xAxisKeyline;
-  v29 = [(StockChartView *)self currentDisplayMode];
-  v28 = [v29 xAxisKeylineColor];
-  [(UIView *)xAxisKeyline setBackgroundColor:v28];
+  currentDisplayMode2 = [(StockChartView *)self currentDisplayMode];
+  xAxisKeylineColor = [currentDisplayMode2 xAxisKeylineColor];
+  [(UIView *)xAxisKeyline setBackgroundColor:xAxisKeylineColor];
 }
 
-- (void)createYLabelsForMode:(id)a3
+- (void)createYLabelsForMode:(id)mode
 {
-  v9 = a3;
+  modeCopy = mode;
   v4 = +[ChartLabelInfoManager chartLabelFont];
   v5 = [(NSMutableArray *)self->_yLabelViews count];
-  if (v5 < [v9 yAxisLabelCount])
+  if (v5 < [modeCopy yAxisLabelCount])
   {
     do
     {
       v6 = objc_alloc_init(MEMORY[0x277D756B8]);
       [v6 setFont:v4];
-      v7 = [MEMORY[0x277D75348] clearColor];
-      [v6 setBackgroundColor:v7];
+      clearColor = [MEMORY[0x277D75348] clearColor];
+      [v6 setBackgroundColor:clearColor];
 
       [v6 setTextAlignment:2];
       [(NSMutableArray *)self->_yLabelViews addObject:v6];
@@ -1417,37 +1417,37 @@ uint64_t __32__StockChartView_setShowingHUD___block_invoke(uint64_t a1)
       v8 = [(NSMutableArray *)self->_yLabelViews count];
     }
 
-    while (v8 < [v9 yAxisLabelCount]);
+    while (v8 < [modeCopy yAxisLabelCount]);
   }
 }
 
 - (void)_setMonthAndYearLabels
 {
-  v3 = [(StockChartData *)self->_chartData stockValueCount];
-  if (!v3)
+  stockValueCount = [(StockChartData *)self->_chartData stockValueCount];
+  if (!stockValueCount)
   {
     return;
   }
 
-  v4 = v3;
-  v5 = [(StockChartData *)self->_chartData stockValues];
-  v6 = [MEMORY[0x277CBEA80] currentCalendar];
-  v132 = [v6 copy];
+  v4 = stockValueCount;
+  stockValues = [(StockChartData *)self->_chartData stockValues];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  v132 = [currentCalendar copy];
 
-  v7 = [(StockChartData *)self->_chartData marketTimeZone];
-  [v132 setTimeZone:v7];
+  marketTimeZone = [(StockChartData *)self->_chartData marketTimeZone];
+  [v132 setTimeZone:marketTimeZone];
 
-  v8 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:v5->var0];
-  v9 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:v5[v4 - 1].var0];
+  v8 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:stockValues->var0];
+  v9 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:stockValues[v4 - 1].var0];
   if ([v9 compare:v8] == -1)
   {
     goto LABEL_101;
   }
 
   v10 = [v132 components:8 fromDate:v8 toDate:v9 options:0];
-  v11 = [v10 month];
+  month = [v10 month];
   v111 = v8;
-  v131 = v11;
+  v131 = month;
   if ([v10 month] >= 25)
   {
     v12 = [v10 month] / 24.0;
@@ -1464,7 +1464,7 @@ LABEL_9:
     goto LABEL_12;
   }
 
-  if (v11 >= 7)
+  if (month >= 7)
   {
     v16 = [v10 month] / 12.0;
     v13 = ceilf(v16);
@@ -1474,19 +1474,19 @@ LABEL_9:
 
   v15 = 1;
 LABEL_12:
-  v123 = self;
+  selfCopy = self;
   v109 = v10;
-  v18 = [v10 month];
+  month2 = [v10 month];
   v19 = v15 == 1 || v15 == 12;
   v128 = v15;
   if (v19)
   {
-    v20 = v18 / v15 + 1;
+    v20 = month2 / v15 + 1;
   }
 
   else
   {
-    v20 = v18 / v15;
+    v20 = month2 / v15;
   }
 
   v21 = 2;
@@ -1499,9 +1499,9 @@ LABEL_12:
   v22 = +[ChartLabelInfoManager sharedLabelInfoManager];
   v23 = [MEMORY[0x277CBEB18] arrayWithCapacity:v20 + 2];
   v113 = v22;
-  v24 = [v22 labelInfoForYAxis];
+  labelInfoForYAxis = [v22 labelInfoForYAxis];
   v127 = v23;
-  [v23 addObject:v24];
+  [v23 addObject:labelInfoForYAxis];
 
   v126 = [MEMORY[0x277CBEB18] arrayWithCapacity:v20 + 1];
   v110 = v9;
@@ -1516,15 +1516,15 @@ LABEL_12:
     v31 = 0;
     v32 = v26 + 1;
     v33 = v26;
-    p_var0 = &v5[v26].var0;
+    p_var0 = &stockValues[v26].var0;
     while (1)
     {
       v35 = v31;
       v36 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:*p_var0];
       v31 = [v132 components:8 fromDate:?];
 
-      v37 = [v31 month];
-      if (v37 != [v25 month])
+      month3 = [v31 month];
+      if (month3 != [v25 month])
       {
         break;
       }
@@ -1575,7 +1575,7 @@ LABEL_26:
 LABEL_34:
   v112 = v36;
 
-  [(StockChartView *)v123 lineGraphFrame];
+  [(StockChartView *)selfCopy lineGraphFrame];
   v120 = v41;
   v121 = v42;
   v122 = v43;
@@ -1621,10 +1621,10 @@ LABEL_34:
     }
   }
 
-  v57 = [(StockChartView *)v123 currentDisplayMode];
-  v58 = [v57 usesDetailedAxisLabels];
+  currentDisplayMode = [(StockChartView *)selfCopy currentDisplayMode];
+  usesDetailedAxisLabels = [currentDisplayMode usesDetailedAxisLabels];
   v59 = 0.015;
-  if (v58)
+  if (usesDetailedAxisLabels)
   {
     v59 = 0.0199999996;
   }
@@ -1672,15 +1672,15 @@ LABEL_34:
 
       if (v131 >= 7 && [v73 month] == 1)
       {
-        v75 = [v132 timeZone];
-        [v30 setStringToYearWithDate:v72 timeZone:v75];
+        timeZone = [v132 timeZone];
+        [v30 setStringToYearWithDate:v72 timeZone:timeZone];
         v66 = 1;
       }
 
       else
       {
-        v75 = [v64 objectAtIndex:{(objc_msgSend(v73, "month") - 1) % objc_msgSend(v64, "count")}];
-        [v30 retainStringAndSizeFromLabelInfo:v75];
+        timeZone = [v64 objectAtIndex:{(objc_msgSend(v73, "month") - 1) % objc_msgSend(v64, "count")}];
+        [v30 retainStringAndSizeFromLabelInfo:timeZone];
         v66 = 0;
       }
 
@@ -1722,10 +1722,10 @@ LABEL_34:
         v77 = v118;
       }
 
-      v92 = [(StockChartView *)v123 currentDisplayMode];
-      v93 = [v92 usesDetailedAxisLabels];
+      currentDisplayMode2 = [(StockChartView *)selfCopy currentDisplayMode];
+      usesDetailedAxisLabels2 = [currentDisplayMode2 usesDetailedAxisLabels];
       v94 = 6.0;
-      if (v93)
+      if (usesDetailedAxisLabels2)
       {
         v94 = 10.0;
       }
@@ -1828,8 +1828,8 @@ LABEL_87:
       }
     }
 
-    v101 = [v30 string];
-    v102 = [v101 length];
+    string = [v30 string];
+    v102 = [string length];
 
     if (!v102)
     {
@@ -1891,27 +1891,27 @@ LABEL_97:
     break;
   }
 
-  chartData = v123->_chartData;
-  v105 = [(StockChartView *)v123 currentDisplayMode];
-  [(StockChartData *)chartData setXAxisLabelInfoArray:v127 forDisplayMode:v105];
+  chartData = selfCopy->_chartData;
+  currentDisplayMode3 = [(StockChartView *)selfCopy currentDisplayMode];
+  [(StockChartData *)chartData setXAxisLabelInfoArray:v127 forDisplayMode:currentDisplayMode3];
 
-  v106 = v123->_chartData;
-  v107 = [(StockChartView *)v123 currentDisplayMode];
-  [(StockChartData *)v106 setLabelPlacement:v108 forDisplayMode:v107];
+  v106 = selfCopy->_chartData;
+  currentDisplayMode4 = [(StockChartView *)selfCopy currentDisplayMode];
+  [(StockChartData *)v106 setLabelPlacement:v108 forDisplayMode:currentDisplayMode4];
 
   v9 = v110;
   v8 = v111;
 LABEL_101:
 }
 
-- (void)_setDayLabelsWithInterval:(unsigned int)a3 realTimePositions:(BOOL)a4
+- (void)_setDayLabelsWithInterval:(unsigned int)interval realTimePositions:(BOOL)positions
 {
-  v80 = a4;
+  positionsCopy = positions;
   v95 = *MEMORY[0x277D85DE8];
-  v77 = [(StockChartData *)self->_chartData marketTimeZone];
-  v6 = [v77 secondsFromGMT];
-  v79 = a3;
-  if (a3 == 1)
+  marketTimeZone = [(StockChartData *)self->_chartData marketTimeZone];
+  secondsFromGMT = [marketTimeZone secondsFromGMT];
+  intervalCopy = interval;
+  if (interval == 1)
   {
     v7 = 3;
   }
@@ -1922,36 +1922,36 @@ LABEL_101:
   }
 
   v8 = +[ChartLabelInfoManager sharedLabelInfoManager];
-  v9 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v81 = v8;
-  v82 = v9;
+  v82 = array;
   v76 = v7;
-  if (self->_selectedInterval == 1 && (v10 = v9, [v8 labelInfoForYAxis], v11 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "addObject:", v11), v11, self->_selectedInterval == 1))
+  if (self->_selectedInterval == 1 && (v10 = array, [v8 labelInfoForYAxis], v11 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "addObject:", v11), v11, self->_selectedInterval == 1))
   {
-    v86 = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
   }
 
   else
   {
-    v86 = 0;
+    array2 = 0;
   }
 
-  v12 = [(StockChartData *)self->_chartData stockValueCount];
-  v13 = [(StockChartData *)self->_chartData stockValues];
-  v14 = [MEMORY[0x277CBEA80] currentCalendar];
-  v15 = [v14 copy];
+  stockValueCount = [(StockChartData *)self->_chartData stockValueCount];
+  stockValues = [(StockChartData *)self->_chartData stockValues];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  v15 = [currentCalendar copy];
 
-  [v15 setTimeZone:v77];
-  if (v12)
+  [v15 setTimeZone:marketTimeZone];
+  if (stockValueCount)
   {
     v87 = 0;
-    v84 = 0;
+    month2 = 0;
     v85 = 0;
     v16 = 0;
     v83 = 0;
-    v17 = v12 - 1;
-    v18 = v6;
-    p_var0 = &v13[v17].var0;
+    v17 = stockValueCount - 1;
+    v18 = secondsFromGMT;
+    p_var0 = &stockValues[v17].var0;
     v20 = 0xFFFFFFFFLL;
     v78 = v15;
     while (1)
@@ -1980,28 +1980,28 @@ LABEL_101:
           v25 = v20 - v23;
         }
 
-        if (v25 >= 1 && v86 != 0)
+        if (v25 >= 1 && array2 != 0)
         {
           v27 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v17];
-          [v86 addObject:v27];
+          [array2 addObject:v27];
         }
 
         if (v25 > v87 || v87 == v25)
         {
-          if (v84)
+          if (month2)
           {
-            v29 = [(StockChartView *)self currentDisplayMode];
-            if (![v29 usesDetailedAxisLabels])
+            currentDisplayMode = [(StockChartView *)self currentDisplayMode];
+            if (![currentDisplayMode usesDetailedAxisLabels])
             {
               goto LABEL_29;
             }
 
-            v30 = [v22 month];
+            month = [v22 month];
 
-            if (v30 != v84)
+            if (month != month2)
             {
-              v29 = [v82 lastObject];
-              [v29 setStringToMonthAndDayWithDate:v85 timeZone:v77];
+              currentDisplayMode = [v82 lastObject];
+              [currentDisplayMode setStringToMonthAndDayWithDate:v85 timeZone:marketTimeZone];
 LABEL_29:
             }
           }
@@ -2010,20 +2010,20 @@ LABEL_29:
           v32 = [v31 copy];
 
           v33 = -1.0;
-          if (v80)
+          if (positionsCopy)
           {
             v33 = (v17 / ([(StockChartData *)self->_chartData stockValueCount]- 1));
           }
 
           [v32 setPosition:v33];
           [v82 addObject:v32];
-          v84 = [v22 month];
+          month2 = [v22 month];
           v16 = v88;
           v34 = v88;
 
           v83 = v32;
           v85 = v34;
-          v87 = v79;
+          v87 = intervalCopy;
           v15 = v78;
           goto LABEL_33;
         }
@@ -2072,55 +2072,55 @@ LABEL_36:
     while (v37 != -1);
   }
 
-  v41 = [(StockChartView *)self currentDisplayMode];
-  v42 = [v41 usesDetailedAxisLabels];
+  currentDisplayMode2 = [(StockChartView *)self currentDisplayMode];
+  usesDetailedAxisLabels = [currentDisplayMode2 usesDetailedAxisLabels];
 
-  if (v42)
+  if (usesDetailedAxisLabels)
   {
-    v43 = [v82 lastObject];
-    [v43 setStringToMonthAndDayWithDate:v85 timeZone:v77];
+    lastObject = [v82 lastObject];
+    [lastObject setStringToMonthAndDayWithDate:v85 timeZone:marketTimeZone];
   }
 
   chartData = self->_chartData;
-  v45 = [(StockChartView *)self currentDisplayMode];
-  [(StockChartData *)chartData setXAxisLabelInfoArray:v82 forDisplayMode:v45];
+  currentDisplayMode3 = [(StockChartView *)self currentDisplayMode];
+  [(StockChartData *)chartData setXAxisLabelInfoArray:v82 forDisplayMode:currentDisplayMode3];
 
   v46 = self->_chartData;
-  v47 = [(StockChartView *)self currentDisplayMode];
-  [(StockChartData *)v46 setLabelPlacement:v76 forDisplayMode:v47];
+  currentDisplayMode4 = [(StockChartView *)self currentDisplayMode];
+  [(StockChartData *)v46 setLabelPlacement:v76 forDisplayMode:currentDisplayMode4];
 
-  if (v86 && [(StockChartData *)self->_chartData stockValueCount]>= 6)
+  if (array2 && [(StockChartData *)self->_chartData stockValueCount]>= 6)
   {
-    v48 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v86, "count")}];
+    v48 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(array2, "count")}];
     if (v48 && self->_selectedInterval == 1)
     {
-      v49 = [(StockChartData *)self->_chartData stockValues];
-      var0 = v49[[(StockChartData *)self->_chartData stockValueCount]- 1].var0;
-      v51 = [(StockChartData *)self->_chartData marketCloseDate];
-      [v51 timeIntervalSince1970];
+      stockValues2 = [(StockChartData *)self->_chartData stockValues];
+      var0 = stockValues2[[(StockChartData *)self->_chartData stockValueCount]- 1].var0;
+      marketCloseDate = [(StockChartData *)self->_chartData marketCloseDate];
+      [marketCloseDate timeIntervalSince1970];
       v53 = fmod(v52, 86400.0);
       v54 = (v53 - fmod(var0, 86400.0)) / 60.0;
 
       v55 = 1.0;
       if (v54 > 20.0)
       {
-        v56 = [MEMORY[0x277CBEA80] currentCalendar];
-        v57 = [v56 copy];
+        currentCalendar2 = [MEMORY[0x277CBEA80] currentCalendar];
+        v57 = [currentCalendar2 copy];
 
-        v58 = [(StockChartData *)self->_chartData marketTimeZone];
-        [v57 setTimeZone:v58];
+        marketTimeZone2 = [(StockChartData *)self->_chartData marketTimeZone];
+        [v57 setTimeZone:marketTimeZone2];
 
-        v59 = [(StockChartData *)self->_chartData marketOpenDate];
-        v60 = [v57 components:96 fromDate:v59];
+        marketOpenDate = [(StockChartData *)self->_chartData marketOpenDate];
+        v60 = [v57 components:96 fromDate:marketOpenDate];
 
-        v61 = [(StockChartData *)self->_chartData marketCloseDate];
-        v62 = [v57 components:96 fromDate:v61];
+        marketCloseDate2 = [(StockChartData *)self->_chartData marketCloseDate];
+        v62 = [v57 components:96 fromDate:marketCloseDate2];
 
-        v63 = [v62 hour];
-        v64 = [v62 minute] + (v63 * 60.0);
-        v65 = [v60 hour];
-        v66 = v54 / (v64 - ([v60 minute] + (v65 * 60.0)));
-        v55 = 1.0 - v66 / ([v86 count] + 1);
+        hour = [v62 hour];
+        v64 = [v62 minute] + (hour * 60.0);
+        hour2 = [v60 hour];
+        v66 = v54 / (v64 - ([v60 minute] + (hour2 * 60.0)));
+        v55 = 1.0 - v66 / ([array2 count] + 1);
       }
 
       v67 = [MEMORY[0x277CCABB0] numberWithDouble:v55];
@@ -2137,7 +2137,7 @@ LABEL_36:
   v93 = 0u;
   v90 = 0u;
   v91 = 0u;
-  v68 = v86;
+  v68 = array2;
   v69 = [v68 countByEnumeratingWithState:&v90 objects:v94 count:16];
   if (v69)
   {
@@ -2170,26 +2170,26 @@ LABEL_36:
 - (void)_setHourLabels
 {
   v65 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEA80] currentCalendar];
-  v4 = [v3 copy];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  v4 = [currentCalendar copy];
 
-  v5 = [(StockChartData *)self->_chartData marketTimeZone];
-  [v4 setTimeZone:v5];
+  marketTimeZone = [(StockChartData *)self->_chartData marketTimeZone];
+  [v4 setTimeZone:marketTimeZone];
 
-  v6 = [(StockChartData *)self->_chartData marketOpenDate];
-  v7 = [(StockChartData *)self->_chartData marketCloseDate];
-  v8 = [v4 components:96 fromDate:v6 toDate:v7 options:0];
+  marketOpenDate = [(StockChartData *)self->_chartData marketOpenDate];
+  marketCloseDate = [(StockChartData *)self->_chartData marketCloseDate];
+  v8 = [v4 components:96 fromDate:marketOpenDate toDate:marketCloseDate options:0];
 
-  v9 = [(StockChartData *)self->_chartData marketOpenDate];
-  v10 = [v4 components:96 fromDate:v9];
+  marketOpenDate2 = [(StockChartData *)self->_chartData marketOpenDate];
+  v10 = [v4 components:96 fromDate:marketOpenDate2];
 
-  v11 = [(StockChartData *)self->_chartData marketCloseDate];
-  v12 = [v4 components:96 fromDate:v11];
+  marketCloseDate2 = [(StockChartData *)self->_chartData marketCloseDate];
+  v12 = [v4 components:96 fromDate:marketCloseDate2];
 
-  v13 = [v10 minute];
-  if (v13)
+  minute = [v10 minute];
+  if (minute)
   {
-    v14 = 1.0 - (v13 / 60.0);
+    v14 = 1.0 - (minute / 60.0);
   }
 
   else
@@ -2198,10 +2198,10 @@ LABEL_36:
   }
 
   v15 = [v12 minute] / 60.0;
-  v16 = [v8 hour];
+  hour = [v8 hour];
   v17 = ceilf(v14);
   *&v18 = v15 + v14;
-  v19 = (v17 + v16) - ((v15 + v14) >= 1.0);
+  v19 = (v17 + hour) - ((v15 + v14) >= 1.0);
   v20 = +[ChartLabelInfoManager sharedLabelInfoManager];
   if (v19 <= 1)
   {
@@ -2218,19 +2218,19 @@ LABEL_36:
   {
     v57 = v10;
     v58 = v8;
-    v59 = self;
+    selfCopy = self;
     v56 = v12;
-    v26 = [v12 hour];
-    v27 = -v26;
+    hour2 = [v12 hour];
+    v27 = -hour2;
     v55 = v19;
     v28 = v19;
     do
     {
-      v29 = (v26 & ~(v26 >> 63)) + v27;
+      v29 = (hour2 & ~(hour2 >> 63)) + v27;
       v30 = v29 != 0;
       v31 = ((v29 - v30) * 0xAAAAAAAAAAAAAAABLL) >> 64;
       v32 = (v29 - v30) / 0x18uLL;
-      if ((v26 & ~(v26 >> 63)) + v27)
+      if ((hour2 & ~(hour2 >> 63)) + v27)
       {
         v33 = v32 + 1;
       }
@@ -2242,12 +2242,12 @@ LABEL_36:
 
       if ([v20 use24hrTime])
       {
-        v34 = v26 + 24 * v33;
+        v34 = hour2 + 24 * v33;
       }
 
-      else if (v26 + 24 * (v30 + (v31 >> 4)) - 12 * ((v26 + 24 * (v30 + (v31 >> 4))) / 0xC))
+      else if (hour2 + 24 * (v30 + (v31 >> 4)) - 12 * ((hour2 + 24 * (v30 + (v31 >> 4))) / 0xC))
       {
-        v34 = v26 + 24 * (v30 + (v31 >> 4)) - 12 * ((v26 + 24 * (v30 + (v31 >> 4))) / 0xC);
+        v34 = hour2 + 24 * (v30 + (v31 >> 4)) - 12 * ((hour2 + 24 * (v30 + (v31 >> 4))) / 0xC);
       }
 
       else
@@ -2259,7 +2259,7 @@ LABEL_36:
       v36 = [v35 copy];
       [v22 addObject:v36];
 
-      --v26;
+      --hour2;
       ++v27;
       --v28;
     }
@@ -2298,19 +2298,19 @@ LABEL_36:
 
     if (v55 < 13)
     {
-      v47 = 0;
-      j = v59;
+      integerValue = 0;
+      j = selfCopy;
     }
 
     else
     {
       v44 = objc_alloc_init(MEMORY[0x277CCAB58]);
       v45 = [v37 objectAtIndex:0];
-      v46 = [v45 string];
-      v47 = [v46 integerValue];
-      v48 = (v47 & 1) == 0;
+      string = [v45 string];
+      integerValue = [string integerValue];
+      v48 = (integerValue & 1) == 0;
 
-      for (j = v59; [v37 count] > v48; v48 += 2)
+      for (j = selfCopy; [v37 count] > v48; v48 += 2)
       {
         [v44 addIndex:v48];
       }
@@ -2318,19 +2318,19 @@ LABEL_36:
       [v37 removeObjectsAtIndexes:v44];
     }
 
-    if (v15 > 0.0 || (v47 & 1) != 0)
+    if (v15 > 0.0 || (integerValue & 1) != 0)
     {
-      v50 = [v20 labelInfoForYAxis];
-      [v37 insertObject:v50 atIndex:0];
+      labelInfoForYAxis = [v20 labelInfoForYAxis];
+      [v37 insertObject:labelInfoForYAxis atIndex:0];
     }
 
     chartData = j->_chartData;
-    v52 = [(StockChartView *)j currentDisplayMode];
-    [(StockChartData *)chartData setXAxisLabelInfoArray:v37 forDisplayMode:v52];
+    currentDisplayMode = [(StockChartView *)j currentDisplayMode];
+    [(StockChartData *)chartData setXAxisLabelInfoArray:v37 forDisplayMode:currentDisplayMode];
 
     v53 = j->_chartData;
-    v54 = [(StockChartView *)j currentDisplayMode];
-    [(StockChartData *)v53 setLabelPlacement:2 forDisplayMode:v54];
+    currentDisplayMode2 = [(StockChartView *)j currentDisplayMode];
+    [(StockChartData *)v53 setLabelPlacement:2 forDisplayMode:currentDisplayMode2];
 
     v8 = v58;
     v12 = v56;
@@ -2339,12 +2339,12 @@ LABEL_36:
 
   else
   {
-    v23 = [v20 labelInfoForYAxis];
-    [v22 addObject:v23];
+    labelInfoForYAxis2 = [v20 labelInfoForYAxis];
+    [v22 addObject:labelInfoForYAxis2];
 
     v24 = self->_chartData;
-    v25 = [(StockChartView *)self currentDisplayMode];
-    [(StockChartData *)v24 setXAxisLabelInfoArray:v22 forDisplayMode:v25];
+    currentDisplayMode3 = [(StockChartView *)self currentDisplayMode];
+    [(StockChartData *)v24 setXAxisLabelInfoArray:v22 forDisplayMode:currentDisplayMode3];
   }
 }
 
@@ -2353,8 +2353,8 @@ LABEL_36:
   if ([(StockChartData *)self->_chartData stockValueCount])
   {
     chartData = self->_chartData;
-    v4 = [(StockChartView *)self currentDisplayMode];
-    v5 = [(StockChartData *)chartData xAxisLabelInfoArrayForMode:v4];
+    currentDisplayMode = [(StockChartView *)self currentDisplayMode];
+    v5 = [(StockChartData *)chartData xAxisLabelInfoArrayForMode:currentDisplayMode];
     v6 = [v5 count];
 
     if (!v6)
@@ -2366,7 +2366,7 @@ LABEL_36:
         {
           if (selectedInterval == 1)
           {
-            v8 = self;
+            selfCopy2 = self;
             v9 = 1;
             v10 = 0;
           }
@@ -2378,12 +2378,12 @@ LABEL_36:
               return;
             }
 
-            v8 = self;
+            selfCopy2 = self;
             v9 = 7;
             v10 = 1;
           }
 
-          [(StockChartView *)v8 _setDayLabelsWithInterval:v9 realTimePositions:v10];
+          [(StockChartView *)selfCopy2 _setDayLabelsWithInterval:v9 realTimePositions:v10];
         }
 
         else
@@ -2402,24 +2402,24 @@ LABEL_36:
   }
 }
 
-- (double)_evennessOfValue:(double)a3 inRange:(double)a4
+- (double)_evennessOfValue:(double)value inRange:(double)range
 {
   result = 1.0;
-  if (a3 == 0.0)
+  if (value == 0.0)
   {
     return result;
   }
 
   v7 = 0.0;
-  if (fmod(a3, 10.0) == 0.0)
+  if (fmod(value, 10.0) == 0.0)
   {
     do
     {
       v7 = v7 + 1.0;
-      a3 = a3 / 10.0;
+      value = value / 10.0;
     }
 
-    while (fmod(a3, 10.0) == 0.0);
+    while (fmod(value, 10.0) == 0.0);
   }
 
   else
@@ -2429,8 +2429,8 @@ LABEL_36:
       do
       {
         v7 = v7 + -1.0;
-        a3 = a3 * 10.0;
-        v8 = fmod(a3, 10.0);
+        value = value * 10.0;
+        v8 = fmod(value, 10.0);
       }
 
       while (v8 < 0.0);
@@ -2438,10 +2438,10 @@ LABEL_36:
 
     while (v8 > 0.0);
     v7 = v7 + 1.0;
-    a3 = a3 / 10.0;
+    value = value / 10.0;
   }
 
-  if (fabs(fmod(a3, 25.0)) < 0.001)
+  if (fabs(fmod(value, 25.0)) < 0.001)
   {
     v9 = 1.0;
 LABEL_10:
@@ -2449,9 +2449,9 @@ LABEL_10:
     goto LABEL_15;
   }
 
-  if (fabs(fmod(a3, 5.0)) >= 0.001)
+  if (fabs(fmod(value, 5.0)) >= 0.001)
   {
-    if (fabs(a3 + trunc(a3 * 0.5) * -2.0) < 0.001)
+    if (fabs(value + trunc(value * 0.5) * -2.0) < 0.001)
     {
       v9 = 0.25;
       goto LABEL_10;
@@ -2464,7 +2464,7 @@ LABEL_10:
   }
 
 LABEL_15:
-  v10 = floor(log10(a4));
+  v10 = floor(log10(range));
   v11 = v7;
   if (v10 >= v7)
   {
@@ -2480,25 +2480,25 @@ LABEL_15:
   return v12 * 0.5 + 0.85;
 }
 
-- (void)_prepareYAxisLabelsAndPositionsForDisplayMode:(id)a3
+- (void)_prepareYAxisLabelsAndPositionsForDisplayMode:(id)mode
 {
-  v43 = a3;
-  v4 = [(StockChartView *)self graphViewForMode:v43];
-  v5 = [(StockChartData *)self->_chartData yAxisLabelInfoArrayForMode:v43];
+  modeCopy = mode;
+  v4 = [(StockChartView *)self graphViewForMode:modeCopy];
+  v5 = [(StockChartData *)self->_chartData yAxisLabelInfoArrayForMode:modeCopy];
   if (![(StockChartData *)self->_chartData stockValueCount])
   {
 LABEL_4:
-    if (self->_chartData && [v43 horizontalGridlineCount])
+    if (self->_chartData && [modeCopy horizontalGridlineCount])
     {
-      v6 = [v43 horizontalGridlineCount];
-      if (v6 == [v43 yAxisLabelCount])
+      horizontalGridlineCount = [modeCopy horizontalGridlineCount];
+      if (horizontalGridlineCount == [modeCopy yAxisLabelCount])
       {
         [v4 setDottedLinePositionsWithLabelInfo:v5];
       }
 
       else
       {
-        [v4 setEvenlySpacedDottedLinePositionsWithCount:{objc_msgSend(v43, "horizontalGridlineCount")}];
+        [v4 setEvenlySpacedDottedLinePositionsWithCount:{objc_msgSend(modeCopy, "horizontalGridlineCount")}];
       }
     }
 
@@ -2526,10 +2526,10 @@ LABEL_4:
   if (v10 != 0.0)
   {
     v11 = v10;
-    v12 = [(StockChartData *)self->_chartData chartInterval];
+    chartInterval = [(StockChartData *)self->_chartData chartInterval];
     v13 = v11 <= v8 ? v11 : v8;
     v14 = v11 <= v9 ? v9 : v11;
-    if (!v12)
+    if (!chartInterval)
     {
       v9 = v14;
       v8 = v13;
@@ -2537,12 +2537,12 @@ LABEL_4:
   }
 
   v15 = v9 - v8;
-  v16 = [v43 yAxisLabelCount];
-  v17 = v16 - 1;
-  v18 = (v9 - v8) / (v16 - 1);
-  v19 = [v43 usesDetailedAxisLabels];
+  yAxisLabelCount = [modeCopy yAxisLabelCount];
+  v17 = yAxisLabelCount - 1;
+  v18 = (v9 - v8) / (yAxisLabelCount - 1);
+  usesDetailedAxisLabels = [modeCopy usesDetailedAxisLabels];
   v20 = 1.0;
-  if (v19)
+  if (usesDetailedAxisLabels)
   {
     v20 = 1.5;
   }
@@ -2560,10 +2560,10 @@ LABEL_4:
       v22 = 3;
     }
 
-    v23 = [(Stock *)self->_stock pricePrecision];
-    if (v22 <= v23)
+    pricePrecision = [(Stock *)self->_stock pricePrecision];
+    if (v22 <= pricePrecision)
     {
-      v24 = v23;
+      v24 = pricePrecision;
     }
 
     else
@@ -2578,8 +2578,8 @@ LABEL_4:
   }
 
   [(StockChartData *)self->_chartData setYAxisFractionDigits:v24];
-  v25 = [MEMORY[0x277CBEB18] arrayWithCapacity:v16];
-  if (v16)
+  v25 = [MEMORY[0x277CBEB18] arrayWithCapacity:yAxisLabelCount];
+  if (yAxisLabelCount)
   {
     v42 = v15 / v17;
     v40 = v5;
@@ -2588,11 +2588,11 @@ LABEL_4:
     v27 = 0;
     v28 = 0;
     v29 = v17;
-    v30 = -v16;
+    v30 = -yAxisLabelCount;
     v31 = 0.0;
     do
     {
-      if ([v43 usesDetailedAxisLabels])
+      if ([modeCopy usesDetailedAxisLabels])
       {
         v34 = v8;
         if (v26)
@@ -2648,21 +2648,21 @@ LABEL_4:
     v4 = v41;
   }
 
-  if ([v43 horizontalGridlineCount])
+  if ([modeCopy horizontalGridlineCount])
   {
-    v39 = [v43 horizontalGridlineCount];
-    if (v39 == [v43 yAxisLabelCount])
+    horizontalGridlineCount2 = [modeCopy horizontalGridlineCount];
+    if (horizontalGridlineCount2 == [modeCopy yAxisLabelCount])
     {
       [v4 setDottedLinePositionsWithLabelInfo:v25];
     }
 
     else
     {
-      [v4 setEvenlySpacedDottedLinePositionsWithCount:{objc_msgSend(v43, "horizontalGridlineCount")}];
+      [v4 setEvenlySpacedDottedLinePositionsWithCount:{objc_msgSend(modeCopy, "horizontalGridlineCount")}];
     }
   }
 
-  [(StockChartData *)self->_chartData setYAxisLabelInfoArray:v25 forDisplayMode:v43];
+  [(StockChartData *)self->_chartData setYAxisLabelInfoArray:v25 forDisplayMode:modeCopy];
 
 LABEL_51:
 }
@@ -2670,14 +2670,14 @@ LABEL_51:
 - (void)_layoutYLabels
 {
   chartData = self->_chartData;
-  v4 = [(StockChartView *)self currentDisplayMode];
-  v76 = [(StockChartData *)chartData yAxisLabelInfoArrayForMode:v4];
+  currentDisplayMode = [(StockChartView *)self currentDisplayMode];
+  v76 = [(StockChartData *)chartData yAxisLabelInfoArrayForMode:currentDisplayMode];
 
   v73 = [v76 count];
   if (v73)
   {
-    v5 = [(StockChartView *)self currentGraphView];
-    [v5 frame];
+    currentGraphView = [(StockChartView *)self currentGraphView];
+    [currentGraphView frame];
     v7 = v6;
     v9 = v8;
     v11 = v10;
@@ -2687,8 +2687,8 @@ LABEL_51:
     y = v85.origin.y;
     height = v85.size.height;
     MaxX = CGRectGetMaxX(v85);
-    v16 = [(StockChartView *)self currentDisplayMode];
-    if ([v16 graphOverlapsYAxisLabels])
+    currentDisplayMode2 = [(StockChartView *)self currentDisplayMode];
+    if ([currentDisplayMode2 graphOverlapsYAxisLabels])
     {
       v17 = MaxX + -4.0;
     }
@@ -2708,11 +2708,11 @@ LABEL_51:
     [v18 leading];
     v20 = v19;
 
-    v21 = [(StockChartView *)self currentDisplayMode];
-    v22 = [v21 yAxisLabelCount];
+    currentDisplayMode3 = [(StockChartView *)self currentDisplayMode];
+    yAxisLabelCount = [currentDisplayMode3 yAxisLabelCount];
 
     v23 = y - ceil(v20);
-    if (v22 == 2)
+    if (yAxisLabelCount == 2)
     {
       v23 = y;
     }
@@ -2769,21 +2769,21 @@ LABEL_51:
             v87.size.width = v11;
             v87.size.height = rect;
             MaxY = CGRectGetMaxY(v87);
-            v44 = [(StockChartView *)self currentDisplayMode];
-            [v44 gutterHeight];
+            currentDisplayMode4 = [(StockChartView *)self currentDisplayMode];
+            [currentDisplayMode4 gutterHeight];
             v46 = MaxY - v45;
-            v47 = [MEMORY[0x277D759A0] mainScreen];
-            [v47 scale];
+            mainScreen = [MEMORY[0x277D759A0] mainScreen];
+            [mainScreen scale];
             v49 = v46 + -1.0 / v48 + -4.0;
-            v50 = [v26 font];
-            [v50 ascender];
+            font = [v26 font];
+            [font ascender];
             v52 = RoundToPixel(v49 - v51);
           }
 
           else
           {
-            v44 = [v26 font];
-            [v44 ascender];
+            currentDisplayMode4 = [v26 font];
+            [currentDisplayMode4 ascender];
             v52 = RoundToPixel(v69 - v56);
           }
 
@@ -2825,34 +2825,34 @@ LABEL_26:
         v58 = v57;
         if (!v55 || v30 > v57)
         {
-          v59 = [MEMORY[0x277D75D18] areAnimationsEnabled];
+          areAnimationsEnabled = [MEMORY[0x277D75D18] areAnimationsEnabled];
           [MEMORY[0x277D75D18] setAnimationsEnabled:0];
           [v26 center];
           [v26 setCenter:v60 + (v30 - v58) * 0.5];
           [v26 setBounds:{0.0, 0.0, v30, v41}];
-          [MEMORY[0x277D75D18] setAnimationsEnabled:v59];
+          [MEMORY[0x277D75D18] setAnimationsEnabled:areAnimationsEnabled];
         }
 
         [v26 bounds];
         v30 = v61;
         v63 = v62;
-        v64 = [(StockChartView *)self currentDisplayMode];
-        v65 = [v64 axisLabelsColor];
-        [v26 setTextColor:v65];
+        currentDisplayMode5 = [(StockChartView *)self currentDisplayMode];
+        axisLabelsColor = [currentDisplayMode5 axisLabelsColor];
+        [v26 setTextColor:axisLabelsColor];
 
         v83 = v63;
         [v26 setFrame:{v54, v52, v30, v63}];
         [v26 setAlpha:!v55];
         if (!v55)
         {
-          v66 = [v29 string];
-          [v26 setText:v66];
+          string = [v29 string];
+          [v26 setText:string];
         }
 
         [v26 setHidden:0];
-        v67 = [v26 superview];
+        superview = [v26 superview];
 
-        if (!v67)
+        if (!superview)
         {
           [(StockChartView *)self addSubview:v26];
         }
@@ -2902,8 +2902,8 @@ LABEL_41:
 - (void)_layoutAxesAndXLabels
 {
   v117 = *MEMORY[0x277D85DE8];
-  v3 = [(StockChartView *)self currentGraphView];
-  [v3 frame];
+  currentGraphView = [(StockChartView *)self currentGraphView];
+  [currentGraphView frame];
   rect = v4;
 
   [(StockChartView *)self lineGraphFrame];
@@ -2912,15 +2912,15 @@ LABEL_41:
   v100 = v7;
   v10 = v9;
   chartData = self->_chartData;
-  v12 = [(StockChartView *)self currentDisplayMode];
-  v96 = [(StockChartData *)chartData labelPlacementForDisplayMode:v12];
+  currentDisplayMode = [(StockChartView *)self currentDisplayMode];
+  v96 = [(StockChartData *)chartData labelPlacementForDisplayMode:currentDisplayMode];
 
   v13 = self->_chartData;
-  v14 = [(StockChartView *)self currentDisplayMode];
-  v15 = [(StockChartData *)v13 xAxisLabelInfoArrayForMode:v14];
+  currentDisplayMode2 = [(StockChartView *)self currentDisplayMode];
+  v15 = [(StockChartData *)v13 xAxisLabelInfoArrayForMode:currentDisplayMode2];
 
   v16 = [v15 count];
-  v94 = [(StockChartView *)self currentGraphView];
+  currentGraphView2 = [(StockChartView *)self currentGraphView];
   while ([(NSMutableArray *)self->_axisViews count]< v16)
   {
     v17 = objc_alloc_init(MEMORY[0x277D75D18]);
@@ -2967,8 +2967,8 @@ LABEL_41:
     {
       v24 = objc_alloc_init(MEMORY[0x277D756B8]);
       [v24 setFont:v23];
-      v25 = [MEMORY[0x277D75348] clearColor];
-      [v24 setBackgroundColor:v25];
+      clearColor = [MEMORY[0x277D75348] clearColor];
+      [v24 setBackgroundColor:clearColor];
 
       [(NSMutableArray *)self->_xLabelViews addObject:v24];
     }
@@ -3027,9 +3027,9 @@ LABEL_41:
           }
 
           v36 = *(*(&v102 + 1) + 8 * k);
-          v37 = [(StockChartView *)self currentDisplayMode];
-          v38 = [v37 axisLabelsColor];
-          [v36 setTextColor:v38];
+          currentDisplayMode3 = [(StockChartView *)self currentDisplayMode];
+          axisLabelsColor = [currentDisplayMode3 axisLabelsColor];
+          [v36 setTextColor:axisLabelsColor];
         }
 
         v33 = [(NSMutableArray *)v31 countByEnumeratingWithState:&v102 objects:v114 count:16];
@@ -3079,19 +3079,19 @@ LABEL_41:
       v55 = v54;
       v56 = round(v6 + v10 * v55);
       v57 = [(NSMutableArray *)self->_xLabelViews objectAtIndex:v48];
-      v58 = [v57 font];
-      [v58 ascender];
+      font = [v57 font];
+      [font ascender];
       v60 = RoundToPixel(v59);
 
       v61 = v56;
-      v62 = [*(v51 + 2464) mainScreen];
-      [v62 scale];
+      mainScreen = [*(v51 + 2464) mainScreen];
+      [mainScreen scale];
       v64 = v63;
 
       if (v50)
       {
-        v65 = [*(v51 + 2464) mainScreen];
-        [v65 scale];
+        mainScreen2 = [*(v51 + 2464) mainScreen];
+        [mainScreen2 scale];
         v61 = v61 + -1.0 / v66 * 0.5;
       }
 
@@ -3113,11 +3113,11 @@ LABEL_41:
         [v70 setBackgroundColor:v74];
 
         [v70 setFrame:{v61, rect, 1.0 / v64, v68}];
-        v75 = [v70 superview];
+        superview = [v70 superview];
 
-        if (!v75)
+        if (!superview)
         {
-          [(StockChartView *)self insertSubview:v70 belowSubview:v94];
+          [(StockChartView *)self insertSubview:v70 belowSubview:currentGraphView2];
         }
       }
 
@@ -3175,16 +3175,16 @@ LABEL_41:
         v52 = v95;
       }
 
-      v83 = [v49 string];
-      [v57 setText:v83];
+      string = [v49 string];
+      [v57 setText:string];
 
-      v84 = [v49 accessibilityLabel];
-      [v57 setAccessibilityLabel:v84];
+      accessibilityLabel = [v49 accessibilityLabel];
+      [v57 setAccessibilityLabel:accessibilityLabel];
 
       MaxY = v67;
       [v57 setFrame:{v52, v67, v77, v79}];
-      v85 = [v49 string];
-      v86 = [v85 length];
+      string2 = [v49 string];
+      v86 = [string2 length];
       v87 = 0.0;
       if (v86)
       {
@@ -3193,11 +3193,11 @@ LABEL_41:
 
       [v57 setAlpha:v87];
 
-      v88 = [v57 superview];
+      superview2 = [v57 superview];
 
-      if (!v88)
+      if (!superview2)
       {
-        [(StockChartView *)self insertSubview:v57 belowSubview:v94];
+        [(StockChartView *)self insertSubview:v57 belowSubview:currentGraphView2];
       }
 
       v6 = v97;
@@ -3216,17 +3216,17 @@ LABEL_41:
   }
 }
 
-- (void)_layoutTopLabelsHidden:(BOOL)a3
+- (void)_layoutTopLabelsHidden:(BOOL)hidden
 {
-  v3 = a3;
+  hiddenCopy = hidden;
   [(StockChartView *)self bounds];
   v6 = v5;
   [(StockChartView *)self horizontalPadding];
   v8 = v7;
-  v9 = [(StockChartView *)self isLandscape];
+  isLandscape = [(StockChartView *)self isLandscape];
   v10 = 0.0;
   v11 = v6 + v8 * -2.0;
-  if (v9)
+  if (isLandscape)
   {
     v10 = v8 + 0.0;
   }
@@ -3237,7 +3237,7 @@ LABEL_41:
   }
 
   v12 = 1.0;
-  if (!v3)
+  if (!hiddenCopy)
   {
     v12 = 37.0;
   }
@@ -3247,13 +3247,13 @@ LABEL_41:
   [(ChartTitleLabel *)self->_titleView setFrame:v16.origin.x, v16.origin.y, v16.size.width, v16.size.height];
   titleView = self->_titleView;
 
-  [(ChartTitleLabel *)titleView setAlpha:!v3];
+  [(ChartTitleLabel *)titleView setAlpha:!hiddenCopy];
 }
 
-- (double)widestYLabelWidthForMode:(id)a3
+- (double)widestYLabelWidthForMode:(id)mode
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [(StockChartData *)self->_chartData yAxisLabelInfoArrayForMode:a3];
+  v3 = [(StockChartData *)self->_chartData yAxisLabelInfoArrayForMode:mode];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -3392,9 +3392,9 @@ LABEL_41:
   [(ChartHUDView *)self->_HUDView setOverlayHidden:1];
 }
 
-- (void)_setShowingLoadingStatus:(BOOL)a3
+- (void)_setShowingLoadingStatus:(BOOL)status
 {
-  if (a3)
+  if (status)
   {
     [(StockChartView *)self hideLabelsAxesAndGraphs];
     [(StockChartView *)self layoutLoadingStatus];
@@ -3414,12 +3414,12 @@ LABEL_41:
 
 - (void)layoutLoadingStatus
 {
-  v3 = [(StockChartView *)self error];
-  v4 = [v3 code];
+  error = [(StockChartView *)self error];
+  code = [error code];
 
-  if (v4)
+  if (code)
   {
-    if (v4 == 2 && self->_selectedInterval < 2uLL)
+    if (code == 2 && self->_selectedInterval < 2uLL)
     {
       v5 = @"No Chart Available";
     }
@@ -3438,7 +3438,7 @@ LABEL_41:
   v6 = [StocksBundles getBundle:1];
   v13 = [v6 localizedStringForKey:v5 value:&stru_287C73C90 table:@"Localizable"];
 
-  [(LoadingLabel *)self->_loadingLabel setText:v13 showingActivity:v4 == 0];
+  [(LoadingLabel *)self->_loadingLabel setText:v13 showingActivity:code == 0];
   [(StockChartView *)self bounds];
   v8 = v7;
   v10 = v9;
@@ -3446,7 +3446,7 @@ LABEL_41:
   [(LoadingLabel *)self->_loadingLabel setFrame:round((v8 - v11) * 0.5), round((v10 - v12) * 0.5)];
 }
 
-- (void)setLabelsAndAxesAlpha:(double)a3
+- (void)setLabelsAndAxesAlpha:(double)alpha
 {
   v35 = *MEMORY[0x277D85DE8];
   v28 = 0u;
@@ -3469,7 +3469,7 @@ LABEL_41:
           objc_enumerationMutation(v5);
         }
 
-        [*(*(&v28 + 1) + 8 * v9++) setAlpha:a3];
+        [*(*(&v28 + 1) + 8 * v9++) setAlpha:alpha];
       }
 
       while (v7 != v9);
@@ -3499,7 +3499,7 @@ LABEL_41:
           objc_enumerationMutation(v10);
         }
 
-        [*(*(&v24 + 1) + 8 * v14++) setAlpha:a3];
+        [*(*(&v24 + 1) + 8 * v14++) setAlpha:alpha];
       }
 
       while (v12 != v14);
@@ -3529,7 +3529,7 @@ LABEL_41:
           objc_enumerationMutation(v15);
         }
 
-        [*(*(&v20 + 1) + 8 * v19++) setAlpha:{a3, v20}];
+        [*(*(&v20 + 1) + 8 * v19++) setAlpha:{alpha, v20}];
       }
 
       while (v17 != v19);
@@ -3540,13 +3540,13 @@ LABEL_41:
   }
 }
 
-- (void)prepareForTransitionToDisplayMode:(id)a3
+- (void)prepareForTransitionToDisplayMode:(id)mode
 {
-  v13 = a3;
+  modeCopy = mode;
   self->_animating = 1;
-  v4 = [(StockChartView *)self graphViewForMode:v13];
-  v5 = [(StockChartView *)self currentGraphView];
-  [v13 showsTitle];
+  v4 = [(StockChartView *)self graphViewForMode:modeCopy];
+  currentGraphView = [(StockChartView *)self currentGraphView];
+  [modeCopy showsTitle];
   titleView = self->_titleView;
   if (v7 == 0.0)
   {
@@ -3558,7 +3558,7 @@ LABEL_41:
   else
   {
     stock = self->_stock;
-    [v13 chartSize];
+    [modeCopy chartSize];
     v10 = titleView;
     v11 = stock;
   }
@@ -3566,7 +3566,7 @@ LABEL_41:
   [(ChartTitleLabel *)v10 prepareStringsWithStock:v11 width:v9];
   if ([v4 isRendered])
   {
-    [v5 frame];
+    [currentGraphView frame];
     [v4 setFrame:?];
     [v4 setAlpha:0.0];
   }
@@ -3576,7 +3576,7 @@ LABEL_41:
     [(StockChartView *)self layoutLoadingStatus];
   }
 
-  [v13 showsTitle];
+  [modeCopy showsTitle];
   if (v12 == 0.0)
   {
     [(StockChartView *)self setShowingHUD:0];
@@ -3588,19 +3588,19 @@ LABEL_41:
   }
 }
 
-- (void)animateTransitionToDisplayMode:(id)a3
+- (void)animateTransitionToDisplayMode:(id)mode
 {
-  v19 = a3;
-  v4 = [(StockChartView *)self currentGraphView];
-  v5 = [(StockChartView *)self graphViewForMode:v19];
-  [(StockChartView *)self setCurrentDisplayMode:v19];
+  modeCopy = mode;
+  currentGraphView = [(StockChartView *)self currentGraphView];
+  v5 = [(StockChartView *)self graphViewForMode:modeCopy];
+  [(StockChartView *)self setCurrentDisplayMode:modeCopy];
   preferredInterval = self->_preferredInterval;
   if (preferredInterval == self->_selectedInterval)
   {
-    v7 = [(StockChartView *)self currentDisplayMode];
-    v8 = [v7 maxInterval];
+    currentDisplayMode = [(StockChartView *)self currentDisplayMode];
+    maxInterval = [currentDisplayMode maxInterval];
 
-    if (preferredInterval <= v8)
+    if (preferredInterval <= maxInterval)
     {
       goto LABEL_5;
     }
@@ -3612,10 +3612,10 @@ LABEL_41:
   [(StockChartView *)self updateChartViewForSelectedInterval];
   [(ChartIntervalButtonRow *)self->_intervalButtonRow selectChartIntervalButtonForInterval:[(StockChartView *)self selectedInterval]];
 LABEL_5:
-  [v4 setAlpha:0.0];
-  v9 = [v5 isRendered];
+  [currentGraphView setAlpha:0.0];
+  isRendered = [v5 isRendered];
   loadingLabel = self->_loadingLabel;
-  if (v9)
+  if (isRendered)
   {
     [(LoadingLabel *)loadingLabel setAlpha:0.0];
     [v5 setAlpha:1.0];
@@ -3627,32 +3627,32 @@ LABEL_5:
     [(StockChartView *)self setLabelsAndAxesAlpha:0.0];
   }
 
-  [(StockChartView *)self graphViewFrameForMode:v19];
+  [(StockChartView *)self graphViewFrameForMode:modeCopy];
   v12 = v11;
   v14 = v13;
   v16 = v15;
   v18 = v17;
-  [v4 setFrame:?];
+  [currentGraphView setFrame:?];
   [v5 setFrame:{v12, v14, v16, v18}];
   [(StockChartView *)self forceLayout];
 }
 
-- (void)didTransitionToDisplayMode:(id)a3
+- (void)didTransitionToDisplayMode:(id)mode
 {
-  [a3 showsTitle];
+  [mode showsTitle];
   if (v4 == 0.0)
   {
     [(ChartTitleLabel *)self->_titleView removeFromSuperview];
   }
 
-  v5 = [(StockChartView *)self currentGraphView];
-  v6 = [v5 isRendered];
+  currentGraphView = [(StockChartView *)self currentGraphView];
+  isRendered = [currentGraphView isRendered];
 
-  if (v6)
+  if (isRendered)
   {
     [(LoadingLabel *)self->_loadingLabel setAlpha:0.0];
-    v7 = [(StockChartView *)self currentGraphView];
-    [v7 setAlpha:1.0];
+    currentGraphView2 = [(StockChartView *)self currentGraphView];
+    [currentGraphView2 setAlpha:1.0];
 
     [(StockChartView *)self setLabelsAndAxesAlpha:1.0];
   }
@@ -3675,19 +3675,19 @@ LABEL_5:
   [(StockChartView *)self updateHUDView];
 }
 
-- (int64_t)maxSupportedIntervalFromDesiredInterval:(int64_t)a3
+- (int64_t)maxSupportedIntervalFromDesiredInterval:(int64_t)interval
 {
-  v4 = [(StockChartView *)self currentDisplayMode];
-  v5 = [v4 maxInterval];
+  currentDisplayMode = [(StockChartView *)self currentDisplayMode];
+  maxInterval = [currentDisplayMode maxInterval];
 
-  if (v5 >= a3)
+  if (maxInterval >= interval)
   {
-    return a3;
+    return interval;
   }
 
   else
   {
-    return v5;
+    return maxInterval;
   }
 }
 
@@ -3698,17 +3698,17 @@ LABEL_5:
   [(StockChartView *)self reloadData];
 }
 
-- (void)chartIntervalButtonRow:(id)a3 didSelectChartInterval:(int64_t)a4
+- (void)chartIntervalButtonRow:(id)row didSelectChartInterval:(int64_t)interval
 {
-  v6 = [(StockChartView *)self selectedInterval];
-  v7 = [(StockChartView *)self maxSupportedIntervalFromDesiredInterval:a4];
-  if (v7 != v6)
+  selectedInterval = [(StockChartView *)self selectedInterval];
+  v7 = [(StockChartView *)self maxSupportedIntervalFromDesiredInterval:interval];
+  if (v7 != selectedInterval)
   {
     self->_preferredInterval = v7;
     [(StockChartView *)self setSelectedInterval:v7];
     [(StockChartView *)self updateChartViewForSelectedInterval];
-    v8 = [(StockChartView *)self chartViewDelegate];
-    [v8 stockChartView:self chartIntervalDidChange:a4];
+    chartViewDelegate = [(StockChartView *)self chartViewDelegate];
+    [chartViewDelegate stockChartView:self chartIntervalDidChange:interval];
   }
 }
 

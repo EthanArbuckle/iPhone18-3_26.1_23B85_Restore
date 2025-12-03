@@ -1,34 +1,34 @@
 @interface _UICollectionViewControllerLayoutToLayoutTransition
-+ (id)transitionForOperation:(int64_t)a3 fromViewController:(id)a4 toViewController:(id)a5;
-- (void)animateTransition:(id)a3;
-- (void)animationEnded:(BOOL)a3;
++ (id)transitionForOperation:(int64_t)operation fromViewController:(id)controller toViewController:(id)viewController;
+- (void)animateTransition:(id)transition;
+- (void)animationEnded:(BOOL)ended;
 @end
 
 @implementation _UICollectionViewControllerLayoutToLayoutTransition
 
-+ (id)transitionForOperation:(int64_t)a3 fromViewController:(id)a4 toViewController:(id)a5
++ (id)transitionForOperation:(int64_t)operation fromViewController:(id)controller toViewController:(id)viewController
 {
-  v7 = a4;
-  v8 = a5;
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
   v9 = objc_alloc_init(objc_opt_class());
   v10 = v9;
   if (v9)
   {
-    if ((a3 - 3) > 0xFFFFFFFFFFFFFFFDLL)
+    if ((operation - 3) > 0xFFFFFFFFFFFFFFFDLL)
     {
-      [v9 setOperation:a3];
-      [v8 loadViewIfRequired];
-      v12 = [v8 collectionViewLayout];
-      [v10 setToLayout:v12];
+      [v9 setOperation:operation];
+      [viewControllerCopy loadViewIfRequired];
+      collectionViewLayout = [viewControllerCopy collectionViewLayout];
+      [v10 setToLayout:collectionViewLayout];
 
-      if (a3 == 1)
+      if (operation == 1)
       {
-        v13 = v8;
+        v13 = viewControllerCopy;
       }
 
       else
       {
-        v13 = v7;
+        v13 = controllerCopy;
       }
 
       [v10 setCrossFadeNavigationBar:{objc_msgSend(v13, "shouldCrossFadeNavigationBar")}];
@@ -46,26 +46,26 @@ LABEL_9:
   return v11;
 }
 
-- (void)animationEnded:(BOOL)a3
+- (void)animationEnded:(BOOL)ended
 {
-  v3 = [(_UICollectionViewControllerLayoutToLayoutTransition *)self interactionController];
-  [v3 _resetInteractionController];
+  interactionController = [(_UICollectionViewControllerLayoutToLayoutTransition *)self interactionController];
+  [interactionController _resetInteractionController];
 }
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
-  v4 = a3;
-  v5 = [v4 viewControllerForKey:@"UITransitionContextToViewController"];
-  v6 = [v4 viewControllerForKey:@"UITransitionContextFromViewController"];
-  v7 = [v5 view];
-  v8 = [v5 collectionView];
+  transitionCopy = transition;
+  v5 = [transitionCopy viewControllerForKey:@"UITransitionContextToViewController"];
+  v6 = [transitionCopy viewControllerForKey:@"UITransitionContextFromViewController"];
+  view = [v5 view];
+  collectionView = [v5 collectionView];
   v30[0] = MEMORY[0x1E69E9820];
   v30[1] = 3221225472;
   v30[2] = __73___UICollectionViewControllerLayoutToLayoutTransition_animateTransition___block_invoke;
   v30[3] = &unk_1E70F3CB0;
-  v9 = v4;
+  v9 = transitionCopy;
   v31 = v9;
-  [v8 _setNavigationCompletion:v30];
+  [collectionView _setNavigationCompletion:v30];
 
   [v6 _navigationControllerContentInsetAdjustment];
   [v5 _primitiveSetNavigationControllerContentInsetAdjustment:?];
@@ -81,9 +81,9 @@ LABEL_9:
   [v6 _rightContentMargin];
   [v5 _setContentOverlayInsets:v11 andLeftMargin:v13 rightMargin:{v15, v17, v19, v20}];
   [v9 finalFrameForViewController:v5];
-  [v7 setFrame:?];
-  v21 = [v9 containerView];
-  [v21 addSubview:v7];
+  [view setFrame:?];
+  containerView = [v9 containerView];
+  [containerView addSubview:view];
 
   [(_UICollectionViewControllerLayoutToLayoutTransition *)self transitionDuration:v9];
   v23 = v22;
@@ -92,7 +92,7 @@ LABEL_9:
   v26[2] = __73___UICollectionViewControllerLayoutToLayoutTransition_animateTransition___block_invoke_2;
   v26[3] = &unk_1E70F6228;
   v27 = v5;
-  v28 = self;
+  selfCopy = self;
   v29 = v9;
   v24 = v9;
   v25 = v5;

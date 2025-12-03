@@ -1,10 +1,10 @@
 @interface MAMsuDownloadOptions
 - (MAMsuDownloadOptions)init;
-- (MAMsuDownloadOptions)initWithCoder:(id)a3;
-- (MAMsuDownloadOptions)initWithPlist:(id)a3;
+- (MAMsuDownloadOptions)initWithCoder:(id)coder;
+- (MAMsuDownloadOptions)initWithPlist:(id)plist;
 - (id)description;
 - (id)encodeAsPlist;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MAMsuDownloadOptions
@@ -15,13 +15,13 @@
   v17.receiver = self;
   v17.super_class = MAMsuDownloadOptions;
   v16 = [(MADownloadOptions *)&v17 description];
-  v3 = [(MAMsuDownloadOptions *)self requestedProductVersion];
-  v4 = [(MAMsuDownloadOptions *)self requestedBuildVersion];
-  v5 = [(MAMsuDownloadOptions *)self delayPeriod];
-  v6 = [(MAMsuDownloadOptions *)self supervised];
-  v7 = [(MAMsuDownloadOptions *)self allowSameVersion];
-  v8 = [(MAMsuDownloadOptions *)self prerequisiteBuildVersion];
-  v9 = [(MAMsuDownloadOptions *)self prerequisiteProductVersion];
+  requestedProductVersion = [(MAMsuDownloadOptions *)self requestedProductVersion];
+  requestedBuildVersion = [(MAMsuDownloadOptions *)self requestedBuildVersion];
+  delayPeriod = [(MAMsuDownloadOptions *)self delayPeriod];
+  supervised = [(MAMsuDownloadOptions *)self supervised];
+  allowSameVersion = [(MAMsuDownloadOptions *)self allowSameVersion];
+  prerequisiteBuildVersion = [(MAMsuDownloadOptions *)self prerequisiteBuildVersion];
+  prerequisiteProductVersion = [(MAMsuDownloadOptions *)self prerequisiteProductVersion];
   if (self->_prerequisiteReleaseTypeIsOverridden)
   {
     prerequisiteReleaseType = self->_prerequisiteReleaseType;
@@ -32,9 +32,9 @@
     prerequisiteReleaseType = @"(default)";
   }
 
-  v11 = [(MAMsuDownloadOptions *)self liveAssetAudienceUUID];
-  v12 = [(MAMsuDownloadOptions *)self purpose];
-  v13 = [v15 stringWithFormat:@"%@  + MAMsuDownloadOptions reqProdVersion: %@ reqBuildVersion: %@ delayPeriod: %ld managedDevice: %d allowSameVersion: %d prereqBuild: %@ prereqVersion: %@ prereqReleaseType: %@ liveAssetAudienceUUID: %@ purpose: %@", v16, v3, v4, v5, v6, v7, v8, v9, prerequisiteReleaseType, v11, v12];
+  liveAssetAudienceUUID = [(MAMsuDownloadOptions *)self liveAssetAudienceUUID];
+  purpose = [(MAMsuDownloadOptions *)self purpose];
+  v13 = [v15 stringWithFormat:@"%@  + MAMsuDownloadOptions reqProdVersion: %@ reqBuildVersion: %@ delayPeriod: %ld managedDevice: %d allowSameVersion: %d prereqBuild: %@ prereqVersion: %@ prereqReleaseType: %@ liveAssetAudienceUUID: %@ purpose: %@", v16, requestedProductVersion, requestedBuildVersion, delayPeriod, supervised, allowSameVersion, prerequisiteBuildVersion, prerequisiteProductVersion, prerequisiteReleaseType, liveAssetAudienceUUID, purpose];
 
   return v13;
 }
@@ -76,155 +76,155 @@
   return v3;
 }
 
-- (MAMsuDownloadOptions)initWithCoder:(id)a3
+- (MAMsuDownloadOptions)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v19.receiver = self;
   v19.super_class = MAMsuDownloadOptions;
-  v5 = [(MADownloadOptions *)&v19 initWithCoder:v4];
+  v5 = [(MADownloadOptions *)&v19 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"RequestedProductVersion"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"RequestedProductVersion"];
     [(MAMsuDownloadOptions *)v5 setRequestedProductVersion:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"RequestedBuildVersion"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"RequestedBuildVersion"];
     requestedBuildVersion = v5->_requestedBuildVersion;
     v5->_requestedBuildVersion = v7;
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"DelayPeriod"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"DelayPeriod"];
     v5->_delayPeriod = [v9 longValue];
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Supervised"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Supervised"];
     v5->_supervised = [v10 BOOLValue];
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AllowSameVersion"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AllowSameVersion"];
     v5->_allowSameVersion = [v11 BOOLValue];
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PrerequisiteBuildVersion"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PrerequisiteBuildVersion"];
     [(MAMsuDownloadOptions *)v5 setPrerequisiteBuildVersion:v12];
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PrerequisiteProductVersion"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PrerequisiteProductVersion"];
     [(MAMsuDownloadOptions *)v5 setPrerequisiteProductVersion:v13];
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PrerequisiteReleaseType"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PrerequisiteReleaseType"];
     [(MAMsuDownloadOptions *)v5 setPrerequisiteReleaseType:v14];
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PrerequisiteReleaseTypeIsOverridden"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PrerequisiteReleaseTypeIsOverridden"];
     v5->_prerequisiteReleaseTypeIsOverridden = [v15 BOOLValue];
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"LiveAssetAudienceUUID"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"LiveAssetAudienceUUID"];
     [(MAMsuDownloadOptions *)v5 setLiveAssetAudienceUUID:v16];
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Purpose"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Purpose"];
     [(MAMsuDownloadOptions *)v5 setPurpose:v17];
   }
 
   return v5;
 }
 
-- (MAMsuDownloadOptions)initWithPlist:(id)a3
+- (MAMsuDownloadOptions)initWithPlist:(id)plist
 {
-  v4 = a3;
+  plistCopy = plist;
   v17.receiver = self;
   v17.super_class = MAMsuDownloadOptions;
-  v5 = [(MADownloadOptions *)&v17 initWithPlist:v4];
+  v5 = [(MADownloadOptions *)&v17 initWithPlist:plistCopy];
   if (v5)
   {
-    v6 = getPlistString(v4, @"RequestedProductVersion");
+    v6 = getPlistString(plistCopy, @"RequestedProductVersion");
     [(MAMsuDownloadOptions *)v5 setRequestedProductVersion:v6];
 
-    v7 = getPlistString(v4, @"RequestedBuildVersion");
+    v7 = getPlistString(plistCopy, @"RequestedBuildVersion");
     requestedBuildVersion = v5->_requestedBuildVersion;
     v5->_requestedBuildVersion = v7;
 
-    v9 = getPlistNumber(v4, @"DelayPeriod");
+    v9 = getPlistNumber(plistCopy, @"DelayPeriod");
     v5->_delayPeriod = [v9 longValue];
 
-    v5->_supervised = getPlistNumberAsBool(v4, @"Supervised");
-    v5->_allowSameVersion = getPlistNumberAsBool(v4, @"AllowSameVersion");
-    v10 = getPlistString(v4, @"PrerequisiteBuildVersion");
+    v5->_supervised = getPlistNumberAsBool(plistCopy, @"Supervised");
+    v5->_allowSameVersion = getPlistNumberAsBool(plistCopy, @"AllowSameVersion");
+    v10 = getPlistString(plistCopy, @"PrerequisiteBuildVersion");
     [(MAMsuDownloadOptions *)v5 setPrerequisiteBuildVersion:v10];
 
-    v11 = getPlistString(v4, @"PrerequisiteProductVersion");
+    v11 = getPlistString(plistCopy, @"PrerequisiteProductVersion");
     [(MAMsuDownloadOptions *)v5 setPrerequisiteProductVersion:v11];
 
-    v12 = getPlistString(v4, @"PrerequisiteReleaseType");
+    v12 = getPlistString(plistCopy, @"PrerequisiteReleaseType");
     [(MAMsuDownloadOptions *)v5 setPrerequisiteReleaseType:v12];
 
-    v5->_prerequisiteReleaseTypeIsOverridden = getPlistNumberAsBool(v4, @"PrerequisiteReleaseTypeIsOverridden");
-    v13 = getPlistString(v4, @"DownloadAuthorizationHeader");
+    v5->_prerequisiteReleaseTypeIsOverridden = getPlistNumberAsBool(plistCopy, @"PrerequisiteReleaseTypeIsOverridden");
+    v13 = getPlistString(plistCopy, @"DownloadAuthorizationHeader");
     [(MADownloadOptions *)v5 setDownloadAuthorizationHeader:v13];
 
-    v14 = getPlistString(v4, @"LiveAssetAudienceUUID");
+    v14 = getPlistString(plistCopy, @"LiveAssetAudienceUUID");
     [(MAMsuDownloadOptions *)v5 setLiveAssetAudienceUUID:v14];
 
-    v15 = getPlistString(v4, @"Purpose");
+    v15 = getPlistString(plistCopy, @"Purpose");
     [(MAMsuDownloadOptions *)v5 setPurpose:v15];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = MAMsuDownloadOptions;
-  [(MADownloadOptions *)&v15 encodeWithCoder:v4];
+  [(MADownloadOptions *)&v15 encodeWithCoder:coderCopy];
   requestedProductVersion = self->_requestedProductVersion;
   if (requestedProductVersion)
   {
-    [v4 encodeObject:requestedProductVersion forKey:@"RequestedProductVersion"];
+    [coderCopy encodeObject:requestedProductVersion forKey:@"RequestedProductVersion"];
   }
 
-  [v4 encodeObject:self->_requestedBuildVersion forKey:@"RequestedBuildVersion"];
+  [coderCopy encodeObject:self->_requestedBuildVersion forKey:@"RequestedBuildVersion"];
   v6 = [MEMORY[0x1E696AD98] numberWithLong:self->_delayPeriod];
-  [v4 encodeObject:v6 forKey:@"DelayPeriod"];
+  [coderCopy encodeObject:v6 forKey:@"DelayPeriod"];
 
   v7 = [MEMORY[0x1E696AD98] numberWithBool:self->_supervised];
-  [v4 encodeObject:v7 forKey:@"Supervised"];
+  [coderCopy encodeObject:v7 forKey:@"Supervised"];
 
   v8 = [MEMORY[0x1E696AD98] numberWithBool:self->_allowSameVersion];
-  [v4 encodeObject:v8 forKey:@"AllowSameVersion"];
+  [coderCopy encodeObject:v8 forKey:@"AllowSameVersion"];
 
   prerequisiteBuildVersion = self->_prerequisiteBuildVersion;
   if (prerequisiteBuildVersion)
   {
-    [v4 encodeObject:prerequisiteBuildVersion forKey:@"PrerequisiteBuildVersion"];
+    [coderCopy encodeObject:prerequisiteBuildVersion forKey:@"PrerequisiteBuildVersion"];
   }
 
   prerequisiteProductVersion = self->_prerequisiteProductVersion;
   if (prerequisiteProductVersion)
   {
-    [v4 encodeObject:prerequisiteProductVersion forKey:@"PrerequisiteProductVersion"];
+    [coderCopy encodeObject:prerequisiteProductVersion forKey:@"PrerequisiteProductVersion"];
   }
 
   prerequisiteReleaseType = self->_prerequisiteReleaseType;
   if (prerequisiteReleaseType)
   {
-    [v4 encodeObject:prerequisiteReleaseType forKey:@"PrerequisiteReleaseType"];
+    [coderCopy encodeObject:prerequisiteReleaseType forKey:@"PrerequisiteReleaseType"];
   }
 
   v12 = [MEMORY[0x1E696AD98] numberWithBool:self->_prerequisiteReleaseTypeIsOverridden];
-  [v4 encodeObject:v12 forKey:@"PrerequisiteReleaseTypeIsOverridden"];
+  [coderCopy encodeObject:v12 forKey:@"PrerequisiteReleaseTypeIsOverridden"];
 
-  v13 = [(MAMsuDownloadOptions *)self liveAssetAudienceUUID];
-  [v4 encodeObject:v13 forKey:@"LiveAssetAudienceUUID"];
+  liveAssetAudienceUUID = [(MAMsuDownloadOptions *)self liveAssetAudienceUUID];
+  [coderCopy encodeObject:liveAssetAudienceUUID forKey:@"LiveAssetAudienceUUID"];
 
-  v14 = [(MAMsuDownloadOptions *)self purpose];
-  [v4 encodeObject:v14 forKey:@"Purpose"];
+  purpose = [(MAMsuDownloadOptions *)self purpose];
+  [coderCopy encodeObject:purpose forKey:@"Purpose"];
 }
 
 - (id)encodeAsPlist
 {
   v18.receiver = self;
   v18.super_class = MAMsuDownloadOptions;
-  v3 = [(MADownloadOptions *)&v18 encodeAsPlist];
-  v4 = v3;
+  encodeAsPlist = [(MADownloadOptions *)&v18 encodeAsPlist];
+  v4 = encodeAsPlist;
   requestedProductVersion = self->_requestedProductVersion;
   if (requestedProductVersion)
   {
-    [v3 setValue:requestedProductVersion forKey:@"RequestedProductVersion"];
+    [encodeAsPlist setValue:requestedProductVersion forKey:@"RequestedProductVersion"];
   }
 
   requestedBuildVersion = self->_requestedBuildVersion;
@@ -263,14 +263,14 @@
   v13 = [MEMORY[0x1E696AD98] numberWithBool:self->_prerequisiteReleaseTypeIsOverridden];
   [v4 setValue:v13 forKey:@"PrerequisiteReleaseTypeIsOverridden"];
 
-  v14 = [(MADownloadOptions *)self downloadAuthorizationHeader];
-  [v4 setValue:v14 forKey:@"DownloadAuthorizationHeader"];
+  downloadAuthorizationHeader = [(MADownloadOptions *)self downloadAuthorizationHeader];
+  [v4 setValue:downloadAuthorizationHeader forKey:@"DownloadAuthorizationHeader"];
 
-  v15 = [(MAMsuDownloadOptions *)self liveAssetAudienceUUID];
-  [v4 setValue:v15 forKey:@"LiveAssetAudienceUUID"];
+  liveAssetAudienceUUID = [(MAMsuDownloadOptions *)self liveAssetAudienceUUID];
+  [v4 setValue:liveAssetAudienceUUID forKey:@"LiveAssetAudienceUUID"];
 
-  v16 = [(MAMsuDownloadOptions *)self purpose];
-  [v4 setValue:v16 forKey:@"Purpose"];
+  purpose = [(MAMsuDownloadOptions *)self purpose];
+  [v4 setValue:purpose forKey:@"Purpose"];
 
   return v4;
 }

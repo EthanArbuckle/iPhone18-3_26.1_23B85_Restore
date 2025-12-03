@@ -1,45 +1,45 @@
 @interface BMStreamBase
-+ (BOOL)_atLeastOneSegmentFileInDirectory:(id)a3 fileManager:(id)a4;
-- (BMStreamBase)initWithIdentifier:(id)a3 schema:(id)a4 configuration:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (id)DSLPublisherWithUseCase:(id)a3;
-- (id)_storeStreamForUseCase:(id)a3;
++ (BOOL)_atLeastOneSegmentFileInDirectory:(id)directory fileManager:(id)manager;
+- (BMStreamBase)initWithIdentifier:(id)identifier schema:(id)schema configuration:(id)configuration;
+- (BOOL)isEqual:(id)equal;
+- (id)DSLPublisherWithUseCase:(id)case;
+- (id)_storeStreamForUseCase:(id)case;
 - (id)description;
 - (id)pruner;
-- (id)prunerForDevice:(id)a3;
-- (id)publisherForAccount:(id)a3 device:(id)a4 withUseCase:(id)a5;
-- (id)publisherForAccount:(id)a3 device:(id)a4 withUseCase:(id)a5 options:(id)a6;
-- (id)publisherForDevice:(id)a3 withUseCase:(id)a4;
-- (id)publisherForDevice:(id)a3 withUseCase:(id)a4 options:(id)a5;
-- (id)publisherWithUseCase:(id)a3 options:(id)a4;
-- (id)publisherWithUser:(unsigned int)a3 useCase:(id)a4 options:(id)a5;
-- (id)publishersForAccounts:(id)a3 deviceTypes:(unint64_t)a4 includeLocal:(BOOL)a5 options:(id)a6 useCase:(id)a7 pipeline:(id)a8;
-- (id)publishersForDevices:(id)a3 withUseCase:(id)a4 startTime:(id)a5 endTime:(id)a6 maxEvents:(id)a7 lastN:(id)a8 reversed:(BOOL)a9 includeLocal:(BOOL)a10 pipeline:(id)a11;
-- (id)publishersForRemoteDevices:(id)a3 startTime:(id)a4 endTime:(id)a5 maxEvents:(id)a6 lastN:(id)a7 reversed:(BOOL)a8 includeLocal:(BOOL)a9 pipeline:(id)a10;
+- (id)prunerForDevice:(id)device;
+- (id)publisherForAccount:(id)account device:(id)device withUseCase:(id)case;
+- (id)publisherForAccount:(id)account device:(id)device withUseCase:(id)case options:(id)options;
+- (id)publisherForDevice:(id)device withUseCase:(id)case;
+- (id)publisherForDevice:(id)device withUseCase:(id)case options:(id)options;
+- (id)publisherWithUseCase:(id)case options:(id)options;
+- (id)publisherWithUser:(unsigned int)user useCase:(id)case options:(id)options;
+- (id)publishersForAccounts:(id)accounts deviceTypes:(unint64_t)types includeLocal:(BOOL)local options:(id)options useCase:(id)case pipeline:(id)pipeline;
+- (id)publishersForDevices:(id)devices withUseCase:(id)case startTime:(id)time endTime:(id)endTime maxEvents:(id)events lastN:(id)n reversed:(BOOL)reversed includeLocal:(BOOL)self0 pipeline:(id)self1;
+- (id)publishersForRemoteDevices:(id)devices startTime:(id)time endTime:(id)endTime maxEvents:(id)events lastN:(id)n reversed:(BOOL)reversed includeLocal:(BOOL)local pipeline:(id)self0;
 - (id)remoteDevices;
-- (id)remoteDevicesForAccount:(id)a3 error:(id *)a4;
-- (id)remoteDevicesWithError:(id *)a3;
-- (id)sharedDeviceAccountsWithUseCase:(id)a3;
+- (id)remoteDevicesForAccount:(id)account error:(id *)error;
+- (id)remoteDevicesWithError:(id *)error;
+- (id)sharedDeviceAccountsWithUseCase:(id)case;
 - (id)source;
-- (id)sourceWithUser:(unsigned int)a3;
-- (id)storeStreamWithLegacyClass:(Class)a3;
-- (id)subscriptionDSLPublisherWithUseCase:(id)a3;
+- (id)sourceWithUser:(unsigned int)user;
+- (id)storeStreamWithLegacyClass:(Class)class;
+- (id)subscriptionDSLPublisherWithUseCase:(id)case;
 - (id)subscriptionPruner;
-- (id)subscriptionPublisherWithUseCase:(id)a3 options:(id)a4;
+- (id)subscriptionPublisherWithUseCase:(id)case options:(id)options;
 - (id)subscriptionSource;
-- (id)subscriptionStoreStreamForUseCase:(id)a3;
-- (id)tombstoneDSLPublisherWithUseCase:(id)a3;
-- (id)tombstoneEventPublisherForAccount:(id)a3 device:(id)a4 useCase:(id)a5 options:(id)a6;
-- (id)tombstoneEventPublisherForDevice:(id)a3 useCase:(id)a4 options:(id)a5;
-- (id)tombstoneEventPublisherWithUseCase:(id)a3 options:(id)a4;
-- (id)tombstonePublisherWithUseCase:(id)a3 account:(id)a4 device:(id)a5 options:(id)a6;
-- (id)tombstonePublisherWithUseCase:(id)a3 device:(id)a4 options:(id)a5;
-- (id)tombstonePublisherWithUseCase:(id)a3 options:(id)a4;
-- (id)tombstoneStoreStreamForUseCase:(id)a3;
+- (id)subscriptionStoreStreamForUseCase:(id)case;
+- (id)tombstoneDSLPublisherWithUseCase:(id)case;
+- (id)tombstoneEventPublisherForAccount:(id)account device:(id)device useCase:(id)case options:(id)options;
+- (id)tombstoneEventPublisherForDevice:(id)device useCase:(id)case options:(id)options;
+- (id)tombstoneEventPublisherWithUseCase:(id)case options:(id)options;
+- (id)tombstonePublisherWithUseCase:(id)case account:(id)account device:(id)device options:(id)options;
+- (id)tombstonePublisherWithUseCase:(id)case device:(id)device options:(id)options;
+- (id)tombstonePublisherWithUseCase:(id)case options:(id)options;
+- (id)tombstoneStoreStreamForUseCase:(id)case;
 - (void)_executePruningPolicyOnSubscriptionSubstream;
 - (void)_pruneDisabledSubstreams;
 - (void)_pruneEmptyRemotesNotRecentlyModified;
-- (void)executePruningPolicyForAccount:(id)a3;
+- (void)executePruningPolicyForAccount:(id)account;
 @end
 
 @implementation BMStreamBase
@@ -47,9 +47,9 @@
 - (id)source
 {
   v2 = [(BMStreamBase *)self _storeStreamForUseCase:*MEMORY[0x1E698E960]];
-  v3 = [v2 source];
+  source = [v2 source];
 
-  return v3;
+  return source;
 }
 
 - (id)pruner
@@ -60,22 +60,22 @@
   return v3;
 }
 
-- (id)tombstoneStoreStreamForUseCase:(id)a3
+- (id)tombstoneStoreStreamForUseCase:(id)case
 {
-  v4 = a3;
-  v5 = [(BMStreamBase *)self configuration];
-  v6 = [v5 enableTombstoneSubstream];
+  caseCopy = case;
+  configuration = [(BMStreamBase *)self configuration];
+  enableTombstoneSubstream = [configuration enableTombstoneSubstream];
 
-  if (v6)
+  if (enableTombstoneSubstream)
   {
-    v7 = [(BMStreamBase *)self identifier];
-    v8 = [v7 stringByAppendingString:@":tombstones"];
+    identifier = [(BMStreamBase *)self identifier];
+    v8 = [identifier stringByAppendingString:@":tombstones"];
 
     v9 = [BMStoreStream alloc];
-    v10 = [(BMStreamBase *)self configuration];
-    v11 = [v10 storeConfig];
-    v12 = [v11 tombstonesConfig];
-    v13 = [(BMStoreStream *)v9 initWithStreamIdentifier:v8 storeConfig:v12 streamType:2 eventDataClass:objc_opt_class() useCase:v4];
+    configuration2 = [(BMStreamBase *)self configuration];
+    storeConfig = [configuration2 storeConfig];
+    tombstonesConfig = [storeConfig tombstonesConfig];
+    v13 = [(BMStoreStream *)v9 initWithStreamIdentifier:v8 storeConfig:tombstonesConfig streamType:2 eventDataClass:objc_opt_class() useCase:caseCopy];
   }
 
   else
@@ -86,17 +86,17 @@
   return v13;
 }
 
-- (id)tombstonePublisherWithUseCase:(id)a3 options:(id)a4
+- (id)tombstonePublisherWithUseCase:(id)case options:(id)options
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BMStreamBase *)self configuration];
-  v9 = [v8 enableTombstoneSubstream];
+  caseCopy = case;
+  optionsCopy = options;
+  configuration = [(BMStreamBase *)self configuration];
+  enableTombstoneSubstream = [configuration enableTombstoneSubstream];
 
-  if (v9)
+  if (enableTombstoneSubstream)
   {
-    v10 = [(BMStreamBase *)self tombstoneStoreStreamForUseCase:v6];
-    v11 = [v10 _publisherWithOptions:v7];
+    v10 = [(BMStreamBase *)self tombstoneStoreStreamForUseCase:caseCopy];
+    v11 = [v10 _publisherWithOptions:optionsCopy];
   }
 
   else
@@ -107,18 +107,18 @@
   return v11;
 }
 
-- (id)tombstonePublisherWithUseCase:(id)a3 device:(id)a4 options:(id)a5
+- (id)tombstonePublisherWithUseCase:(id)case device:(id)device options:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(BMStreamBase *)self configuration];
-  v12 = [v11 enableTombstoneSubstream];
+  caseCopy = case;
+  deviceCopy = device;
+  optionsCopy = options;
+  configuration = [(BMStreamBase *)self configuration];
+  enableTombstoneSubstream = [configuration enableTombstoneSubstream];
 
-  if (v12)
+  if (enableTombstoneSubstream)
   {
-    v13 = [(BMStreamBase *)self tombstoneStoreStreamForUseCase:v8];
-    v14 = [v13 _publisherForDevice:v9 options:v10];
+    v13 = [(BMStreamBase *)self tombstoneStoreStreamForUseCase:caseCopy];
+    v14 = [v13 _publisherForDevice:deviceCopy options:optionsCopy];
   }
 
   else
@@ -129,19 +129,19 @@
   return v14;
 }
 
-- (id)tombstonePublisherWithUseCase:(id)a3 account:(id)a4 device:(id)a5 options:(id)a6
+- (id)tombstonePublisherWithUseCase:(id)case account:(id)account device:(id)device options:(id)options
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(BMStreamBase *)self configuration];
-  v15 = [v14 enableTombstoneSubstream];
+  caseCopy = case;
+  accountCopy = account;
+  deviceCopy = device;
+  optionsCopy = options;
+  configuration = [(BMStreamBase *)self configuration];
+  enableTombstoneSubstream = [configuration enableTombstoneSubstream];
 
-  if (v15)
+  if (enableTombstoneSubstream)
   {
-    v16 = [(BMStreamBase *)self tombstoneStoreStreamForUseCase:v10 account:v11];
-    v17 = [v16 _publisherForDevice:v12 options:v13];
+    v16 = [(BMStreamBase *)self tombstoneStoreStreamForUseCase:caseCopy account:accountCopy];
+    v17 = [v16 _publisherForDevice:deviceCopy options:optionsCopy];
   }
 
   else
@@ -152,18 +152,18 @@
   return v17;
 }
 
-- (id)tombstoneDSLPublisherWithUseCase:(id)a3
+- (id)tombstoneDSLPublisherWithUseCase:(id)case
 {
-  v4 = a3;
-  v5 = [(BMStreamBase *)self configuration];
-  v6 = [v5 enableTombstoneSubstream];
+  caseCopy = case;
+  configuration = [(BMStreamBase *)self configuration];
+  enableTombstoneSubstream = [configuration enableTombstoneSubstream];
 
-  if (v6)
+  if (enableTombstoneSubstream)
   {
-    v7 = [(BMStreamBase *)self identifier];
-    v8 = [v7 stringByAppendingString:@":tombstones"];
+    identifier = [(BMStreamBase *)self identifier];
+    v8 = [identifier stringByAppendingString:@":tombstones"];
 
-    v9 = [[BMDSLStreamPublisher alloc] initWithIdentifier:v8 streamType:2 useCase:v4 eventDataClass:objc_opt_class()];
+    v9 = [[BMDSLStreamPublisher alloc] initWithIdentifier:v8 streamType:2 useCase:caseCopy eventDataClass:objc_opt_class()];
   }
 
   else
@@ -174,17 +174,17 @@
   return v9;
 }
 
-- (id)tombstoneEventPublisherWithUseCase:(id)a3 options:(id)a4
+- (id)tombstoneEventPublisherWithUseCase:(id)case options:(id)options
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BMStreamBase *)self configuration];
-  v9 = [v8 enableTombstoneSubstream];
+  caseCopy = case;
+  optionsCopy = options;
+  configuration = [(BMStreamBase *)self configuration];
+  enableTombstoneSubstream = [configuration enableTombstoneSubstream];
 
-  if (v9)
+  if (enableTombstoneSubstream)
   {
-    v10 = [(BMStreamBase *)self tombstoneStoreStreamForUseCase:v6];
-    v11 = [v10 _publisherWithOptions:v7];
+    v10 = [(BMStreamBase *)self tombstoneStoreStreamForUseCase:caseCopy];
+    v11 = [v10 _publisherWithOptions:optionsCopy];
   }
 
   else
@@ -195,18 +195,18 @@
   return v11;
 }
 
-- (id)tombstoneEventPublisherForDevice:(id)a3 useCase:(id)a4 options:(id)a5
+- (id)tombstoneEventPublisherForDevice:(id)device useCase:(id)case options:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(BMStreamBase *)self configuration];
-  v12 = [v11 enableTombstoneSubstream];
+  deviceCopy = device;
+  caseCopy = case;
+  optionsCopy = options;
+  configuration = [(BMStreamBase *)self configuration];
+  enableTombstoneSubstream = [configuration enableTombstoneSubstream];
 
-  if (v12)
+  if (enableTombstoneSubstream)
   {
-    v13 = [(BMStreamBase *)self tombstoneStoreStreamForUseCase:v9];
-    v14 = [v13 _publisherForDevice:v8 options:v10];
+    v13 = [(BMStreamBase *)self tombstoneStoreStreamForUseCase:caseCopy];
+    v14 = [v13 _publisherForDevice:deviceCopy options:optionsCopy];
   }
 
   else
@@ -217,27 +217,27 @@
   return v14;
 }
 
-- (id)tombstoneEventPublisherForAccount:(id)a3 device:(id)a4 useCase:(id)a5 options:(id)a6
+- (id)tombstoneEventPublisherForAccount:(id)account device:(id)device useCase:(id)case options:(id)options
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(BMStreamBase *)self configuration];
-  v15 = [v14 enableTombstoneSubstream];
+  accountCopy = account;
+  deviceCopy = device;
+  caseCopy = case;
+  optionsCopy = options;
+  configuration = [(BMStreamBase *)self configuration];
+  enableTombstoneSubstream = [configuration enableTombstoneSubstream];
 
-  if (v15)
+  if (enableTombstoneSubstream)
   {
-    v16 = [(BMStreamBase *)self tombstoneStoreStreamForUseCase:v12 account:v10];
+    v16 = [(BMStreamBase *)self tombstoneStoreStreamForUseCase:caseCopy account:accountCopy];
     v17 = v16;
-    if (v11)
+    if (deviceCopy)
     {
-      [v16 _publisherForDevice:v11 options:v13];
+      [v16 _publisherForDevice:deviceCopy options:optionsCopy];
     }
 
     else
     {
-      [v16 _publisherWithOptions:v13];
+      [v16 _publisherWithOptions:optionsCopy];
     }
     v18 = ;
   }
@@ -250,11 +250,11 @@
   return v18;
 }
 
-- (BMStreamBase)initWithIdentifier:(id)a3 schema:(id)a4 configuration:(id)a5
+- (BMStreamBase)initWithIdentifier:(id)identifier schema:(id)schema configuration:(id)configuration
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  schemaCopy = schema;
+  configurationCopy = configuration;
   v16.receiver = self;
   v16.super_class = BMStreamBase;
   v11 = [(BMStreamBase *)&v16 init];
@@ -262,40 +262,40 @@
   if (v11)
   {
     v11->_lock._os_unfair_lock_opaque = 0;
-    v13 = [v8 copy];
+    v13 = [identifierCopy copy];
     identifier = v12->_identifier;
     v12->_identifier = v13;
 
-    objc_storeStrong(&v12->_schema, a4);
-    objc_storeStrong(&v12->_configuration, a5);
+    objc_storeStrong(&v12->_schema, schema);
+    objc_storeStrong(&v12->_configuration, configuration);
   }
 
   return v12;
 }
 
-- (id)_storeStreamForUseCase:(id)a3
+- (id)_storeStreamForUseCase:(id)case
 {
-  v4 = a3;
+  caseCopy = case;
   os_unfair_lock_lock(&self->_lock);
   storeStream = self->_storeStream;
   if (!storeStream)
   {
 LABEL_4:
     v9 = [BMStoreStream alloc];
-    v6 = [(BMStreamConfiguration *)self->_configuration streamIdentifier];
-    v10 = [(BMStreamConfiguration *)self->_configuration storeConfig];
-    v11 = [(BMStoreStream *)v9 initWithStreamIdentifier:v6 storeConfig:v10 streamType:2 eventDataClass:[(BMStreamConfiguration *)self->_configuration eventClass] useCase:v4];
+    streamIdentifier = [(BMStreamConfiguration *)self->_configuration streamIdentifier];
+    storeConfig = [(BMStreamConfiguration *)self->_configuration storeConfig];
+    v11 = [(BMStoreStream *)v9 initWithStreamIdentifier:streamIdentifier storeConfig:storeConfig streamType:2 eventDataClass:[(BMStreamConfiguration *)self->_configuration eventClass] useCase:caseCopy];
     v12 = self->_storeStream;
     self->_storeStream = v11;
 
     goto LABEL_5;
   }
 
-  v6 = [(BMStoreStream *)storeStream useCase];
-  if (v6 != v4)
+  streamIdentifier = [(BMStoreStream *)storeStream useCase];
+  if (streamIdentifier != caseCopy)
   {
-    v7 = [(BMStoreStream *)self->_storeStream useCase];
-    v8 = [v7 isEqualToString:v4];
+    useCase = [(BMStoreStream *)self->_storeStream useCase];
+    v8 = [useCase isEqualToString:caseCopy];
 
     if (v8)
     {
@@ -314,12 +314,12 @@ LABEL_6:
   return v13;
 }
 
-- (id)storeStreamWithLegacyClass:(Class)a3
+- (id)storeStreamWithLegacyClass:(Class)class
 {
   v5 = [BMStoreStream alloc];
-  v6 = [(BMStreamConfiguration *)self->_configuration streamIdentifier];
-  v7 = [(BMStreamConfiguration *)self->_configuration storeConfig];
-  v8 = [(BMStoreStream *)v5 initWithStreamIdentifier:v6 storeConfig:v7 streamType:2 eventDataClass:a3 useCase:*MEMORY[0x1E698E928]];
+  streamIdentifier = [(BMStreamConfiguration *)self->_configuration streamIdentifier];
+  storeConfig = [(BMStreamConfiguration *)self->_configuration storeConfig];
+  v8 = [(BMStoreStream *)v5 initWithStreamIdentifier:streamIdentifier storeConfig:storeConfig streamType:2 eventDataClass:class useCase:*MEMORY[0x1E698E928]];
 
   return v8;
 }
@@ -331,17 +331,17 @@ LABEL_6:
   return v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMStreamBase *)self identifier];
-    v7 = [v5 identifier];
+    v5 = equalCopy;
+    identifier = [(BMStreamBase *)self identifier];
+    identifier2 = [v5 identifier];
 
-    v8 = [v6 isEqualToString:v7];
+    v8 = [identifier isEqualToString:identifier2];
   }
 
   else
@@ -352,161 +352,161 @@ LABEL_6:
   return v8;
 }
 
-- (id)publisherWithUseCase:(id)a3 options:(id)a4
+- (id)publisherWithUseCase:(id)case options:(id)options
 {
-  v6 = a4;
-  v7 = [(BMStreamBase *)self _storeStreamForUseCase:a3];
-  v8 = [v7 _publisherWithOptions:v6];
+  optionsCopy = options;
+  v7 = [(BMStreamBase *)self _storeStreamForUseCase:case];
+  v8 = [v7 _publisherWithOptions:optionsCopy];
 
   return v8;
 }
 
-- (id)DSLPublisherWithUseCase:(id)a3
+- (id)DSLPublisherWithUseCase:(id)case
 {
-  v4 = a3;
+  caseCopy = case;
   v5 = [BMDSLStreamPublisher alloc];
-  v6 = [(BMStreamBase *)self identifier];
-  v7 = [(BMDSLStreamPublisher *)v5 initWithIdentifier:v6 streamType:2 useCase:v4 eventDataClass:[(BMStreamConfiguration *)self->_configuration eventClass]];
+  identifier = [(BMStreamBase *)self identifier];
+  v7 = [(BMDSLStreamPublisher *)v5 initWithIdentifier:identifier streamType:2 useCase:caseCopy eventDataClass:[(BMStreamConfiguration *)self->_configuration eventClass]];
 
   return v7;
 }
 
-- (id)sourceWithUser:(unsigned int)a3
+- (id)sourceWithUser:(unsigned int)user
 {
-  v5 = [(BMStreamConfiguration *)self->_configuration storeConfig];
-  v6 = [v5 domain];
+  storeConfig = [(BMStreamConfiguration *)self->_configuration storeConfig];
+  domain = [storeConfig domain];
 
-  if (v6 != 1)
+  if (domain != 1)
   {
-    if (v6)
+    if (domain)
     {
       goto LABEL_8;
     }
 
-    if (a3 != 501)
+    if (user != 501)
     {
       v8 = __biome_log_for_category();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_FAULT))
       {
-        [(BMStreamBase *)a3 sourceWithUser:v8];
+        [(BMStreamBase *)user sourceWithUser:v8];
       }
     }
   }
 
-  v7 = [(BMStreamBase *)self source];
+  source = [(BMStreamBase *)self source];
 LABEL_8:
 
-  return v7;
+  return source;
 }
 
-- (id)publisherWithUser:(unsigned int)a3 useCase:(id)a4 options:(id)a5
+- (id)publisherWithUser:(unsigned int)user useCase:(id)case options:(id)options
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [(BMStreamConfiguration *)self->_configuration storeConfig];
-  v11 = [v10 domain];
+  caseCopy = case;
+  optionsCopy = options;
+  storeConfig = [(BMStreamConfiguration *)self->_configuration storeConfig];
+  domain = [storeConfig domain];
 
-  if (v11 != 1)
+  if (domain != 1)
   {
-    if (v11)
+    if (domain)
     {
       goto LABEL_8;
     }
 
-    if (a3 != 501)
+    if (user != 501)
     {
       v12 = __biome_log_for_category();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_FAULT))
       {
-        [BMStreamBase publisherWithUser:a3 useCase:v12 options:?];
+        [BMStreamBase publisherWithUser:user useCase:v12 options:?];
       }
     }
   }
 
-  v10 = [(BMStreamBase *)self publisherWithUseCase:v8 options:v9];
+  storeConfig = [(BMStreamBase *)self publisherWithUseCase:caseCopy options:optionsCopy];
 LABEL_8:
 
-  return v10;
+  return storeConfig;
 }
 
-- (id)prunerForDevice:(id)a3
+- (id)prunerForDevice:(id)device
 {
   v4 = *MEMORY[0x1E698E950];
-  v5 = a3;
+  deviceCopy = device;
   v6 = [(BMStreamBase *)self _storeStreamForUseCase:v4];
   v7 = [BMPruner alloc];
-  v8 = [v5 deviceIdentifier];
+  deviceIdentifier = [deviceCopy deviceIdentifier];
 
-  v9 = [(BMPruner *)v7 initWithStoreStream:v6 remote:v8];
+  v9 = [(BMPruner *)v7 initWithStoreStream:v6 remote:deviceIdentifier];
 
   return v9;
 }
 
-- (id)publishersForDevices:(id)a3 withUseCase:(id)a4 startTime:(id)a5 endTime:(id)a6 maxEvents:(id)a7 lastN:(id)a8 reversed:(BOOL)a9 includeLocal:(BOOL)a10 pipeline:(id)a11
+- (id)publishersForDevices:(id)devices withUseCase:(id)case startTime:(id)time endTime:(id)endTime maxEvents:(id)events lastN:(id)n reversed:(BOOL)reversed includeLocal:(BOOL)self0 pipeline:(id)self1
 {
-  v18 = a11;
-  v19 = a8;
-  v20 = a7;
-  v21 = a6;
-  v22 = a5;
-  v23 = a3;
-  v24 = [(BMStreamBase *)self _storeStreamForUseCase:a4];
-  LOBYTE(v27) = a10;
-  v25 = [v24 publishersForDevices:v23 startTime:v22 endTime:v21 maxEvents:v20 lastN:v19 reversed:a9 includeLocal:v27 pipeline:v18];
+  pipelineCopy = pipeline;
+  nCopy = n;
+  eventsCopy = events;
+  endTimeCopy = endTime;
+  timeCopy = time;
+  devicesCopy = devices;
+  v24 = [(BMStreamBase *)self _storeStreamForUseCase:case];
+  LOBYTE(v27) = local;
+  v25 = [v24 publishersForDevices:devicesCopy startTime:timeCopy endTime:endTimeCopy maxEvents:eventsCopy lastN:nCopy reversed:reversed includeLocal:v27 pipeline:pipelineCopy];
 
   return v25;
 }
 
-- (id)publisherForDevice:(id)a3 withUseCase:(id)a4
+- (id)publisherForDevice:(id)device withUseCase:(id)case
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(BMStreamBase *)self _storeStreamForUseCase:v6];
-  v9 = [v8 publisherForDevice:v7 withUseCase:v6];
+  caseCopy = case;
+  deviceCopy = device;
+  v8 = [(BMStreamBase *)self _storeStreamForUseCase:caseCopy];
+  v9 = [v8 publisherForDevice:deviceCopy withUseCase:caseCopy];
 
   return v9;
 }
 
-- (id)publisherForDevice:(id)a3 withUseCase:(id)a4 options:(id)a5
+- (id)publisherForDevice:(id)device withUseCase:(id)case options:(id)options
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(BMStreamBase *)self _storeStreamForUseCase:v9];
-  v12 = [v11 publisherForDevice:v10 withUseCase:v9 options:v8];
+  optionsCopy = options;
+  caseCopy = case;
+  deviceCopy = device;
+  v11 = [(BMStreamBase *)self _storeStreamForUseCase:caseCopy];
+  v12 = [v11 publisherForDevice:deviceCopy withUseCase:caseCopy options:optionsCopy];
 
   return v12;
 }
 
-- (id)remoteDevicesWithError:(id *)a3
+- (id)remoteDevicesWithError:(id *)error
 {
   v4 = [(BMStreamBase *)self _storeStreamForUseCase:*MEMORY[0x1E698E928]];
-  v5 = [v4 remoteDevicesWithError:a3];
+  v5 = [v4 remoteDevicesWithError:error];
 
   return v5;
 }
 
-- (id)remoteDevicesForAccount:(id)a3 error:(id *)a4
+- (id)remoteDevicesForAccount:(id)account error:(id *)error
 {
   v6 = *MEMORY[0x1E698E928];
-  v7 = a3;
+  accountCopy = account;
   v8 = [(BMStreamBase *)self _storeStreamForUseCase:v6];
-  v9 = [v8 remoteDevicesForAccount:v7 error:a4];
+  v9 = [v8 remoteDevicesForAccount:accountCopy error:error];
 
   return v9;
 }
 
-- (id)publishersForRemoteDevices:(id)a3 startTime:(id)a4 endTime:(id)a5 maxEvents:(id)a6 lastN:(id)a7 reversed:(BOOL)a8 includeLocal:(BOOL)a9 pipeline:(id)a10
+- (id)publishersForRemoteDevices:(id)devices startTime:(id)time endTime:(id)endTime maxEvents:(id)events lastN:(id)n reversed:(BOOL)reversed includeLocal:(BOOL)local pipeline:(id)self0
 {
-  v17 = a10;
-  v18 = a7;
-  v19 = a6;
-  v20 = a5;
-  v21 = a4;
-  v22 = [a3 _pas_mappedArrayWithTransform:&__block_literal_global_5];
-  BYTE1(v25) = a9;
-  LOBYTE(v25) = a8;
-  v23 = [(BMStreamBase *)self publishersForDevices:v22 withUseCase:*MEMORY[0x1E698E928] startTime:v21 endTime:v20 maxEvents:v19 lastN:v18 reversed:v25 includeLocal:v17 pipeline:?];
+  pipelineCopy = pipeline;
+  nCopy = n;
+  eventsCopy = events;
+  endTimeCopy = endTime;
+  timeCopy = time;
+  v22 = [devices _pas_mappedArrayWithTransform:&__block_literal_global_5];
+  BYTE1(v25) = local;
+  LOBYTE(v25) = reversed;
+  v23 = [(BMStreamBase *)self publishersForDevices:v22 withUseCase:*MEMORY[0x1E698E928] startTime:timeCopy endTime:endTimeCopy maxEvents:eventsCopy lastN:nCopy reversed:v25 includeLocal:pipelineCopy pipeline:?];
 
   return v23;
 }
@@ -537,35 +537,35 @@ id __75__BMStreamBase_publishersForRemoteDevices_startTime_includeLocal_pipeline
   return v3;
 }
 
-- (id)sharedDeviceAccountsWithUseCase:(id)a3
+- (id)sharedDeviceAccountsWithUseCase:(id)case
 {
   v3 = MEMORY[0x1E698E980];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithUseCase:v4];
+  caseCopy = case;
+  v5 = [[v3 alloc] initWithUseCase:caseCopy];
 
   if (v5)
   {
-    v6 = [v5 accounts];
+    accounts = [v5 accounts];
   }
 
   else
   {
-    v6 = 0;
+    accounts = 0;
   }
 
-  return v6;
+  return accounts;
 }
 
-- (id)publishersForAccounts:(id)a3 deviceTypes:(unint64_t)a4 includeLocal:(BOOL)a5 options:(id)a6 useCase:(id)a7 pipeline:(id)a8
+- (id)publishersForAccounts:(id)accounts deviceTypes:(unint64_t)types includeLocal:(BOOL)local options:(id)options useCase:(id)case pipeline:(id)pipeline
 {
-  v32 = a5;
+  localCopy = local;
   v50 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v35 = a6;
-  v12 = a7;
-  v13 = a8;
-  v34 = v12;
-  v33 = [objc_alloc(MEMORY[0x1E698E980]) initWithUseCase:v12];
+  accountsCopy = accounts;
+  optionsCopy = options;
+  caseCopy = case;
+  pipelineCopy = pipeline;
+  v34 = caseCopy;
+  v33 = [objc_alloc(MEMORY[0x1E698E980]) initWithUseCase:caseCopy];
   if (v33)
   {
     v14 = objc_opt_new();
@@ -573,8 +573,8 @@ id __75__BMStreamBase_publishersForRemoteDevices_startTime_includeLocal_pipeline
     v45 = 0u;
     v46 = 0u;
     v47 = 0u;
-    v28 = v11;
-    obj = v11;
+    v28 = accountsCopy;
+    obj = accountsCopy;
     v36 = [obj countByEnumeratingWithState:&v44 objects:v49 count:16];
     if (v36)
     {
@@ -593,13 +593,13 @@ id __75__BMStreamBase_publishersForRemoteDevices_startTime_includeLocal_pipeline
           v17 = [v39 _pas_mappedArrayWithTransform:&__block_literal_global_76];
           v37 = [(BMStreamBase *)self _storeStreamForAccount:v16 useCase:v34];
           v38 = v17;
-          v18 = [v37 _publishersForDevices:v17 includeLocal:v32 options:v35];
+          v18 = [v37 _publishersForDevices:v17 includeLocal:localCopy options:optionsCopy];
           v40 = 0u;
           v41 = 0u;
           v42 = 0u;
           v43 = 0u;
-          v19 = [v18 publishers];
-          v20 = [v19 countByEnumeratingWithState:&v40 objects:v48 count:16];
+          publishers = [v18 publishers];
+          v20 = [publishers countByEnumeratingWithState:&v40 objects:v48 count:16];
           if (v20)
           {
             v21 = v20;
@@ -610,14 +610,14 @@ id __75__BMStreamBase_publishersForRemoteDevices_startTime_includeLocal_pipeline
               {
                 if (*v41 != v22)
                 {
-                  objc_enumerationMutation(v19);
+                  objc_enumerationMutation(publishers);
                 }
 
-                v24 = v13[2](v13, *(*(&v40 + 1) + 8 * j));
+                v24 = pipelineCopy[2](pipelineCopy, *(*(&v40 + 1) + 8 * j));
                 [v14 addObject:v24];
               }
 
-              v21 = [v19 countByEnumeratingWithState:&v40 objects:v48 count:16];
+              v21 = [publishers countByEnumeratingWithState:&v40 objects:v48 count:16];
             }
 
             while (v21);
@@ -631,7 +631,7 @@ id __75__BMStreamBase_publishersForRemoteDevices_startTime_includeLocal_pipeline
     }
 
     v25 = [[BMSharedPublishers alloc] initWithPublishers:v14];
-    v11 = v28;
+    accountsCopy = v28;
   }
 
   else
@@ -653,34 +653,34 @@ id __88__BMStreamBase_publishersForAccounts_deviceTypes_includeLocal_options_use
   return v4;
 }
 
-- (id)publisherForAccount:(id)a3 device:(id)a4 withUseCase:(id)a5
+- (id)publisherForAccount:(id)account device:(id)device withUseCase:(id)case
 {
-  v8 = a4;
-  v9 = [(BMStreamBase *)self _storeStreamForAccount:a3 useCase:a5];
+  deviceCopy = device;
+  v9 = [(BMStreamBase *)self _storeStreamForAccount:account useCase:case];
   v10 = objc_opt_new();
-  v11 = [v9 _publisherForDevice:v8 options:v10];
+  v11 = [v9 _publisherForDevice:deviceCopy options:v10];
 
   return v11;
 }
 
-- (id)publisherForAccount:(id)a3 device:(id)a4 withUseCase:(id)a5 options:(id)a6
+- (id)publisherForAccount:(id)account device:(id)device withUseCase:(id)case options:(id)options
 {
-  v10 = a6;
-  v11 = a4;
-  v12 = [(BMStreamBase *)self _storeStreamForAccount:a3 useCase:a5];
-  v13 = [v12 _publisherForDevice:v11 options:v10];
+  optionsCopy = options;
+  deviceCopy = device;
+  v12 = [(BMStreamBase *)self _storeStreamForAccount:account useCase:case];
+  v13 = [v12 _publisherForDevice:deviceCopy options:optionsCopy];
 
   return v13;
 }
 
-- (void)executePruningPolicyForAccount:(id)a3
+- (void)executePruningPolicyForAccount:(id)account
 {
   v19 = *MEMORY[0x1E69E9840];
   v5 = [(BMStreamBase *)self _storeStreamForUseCase:*MEMORY[0x1E698E948]];
-  v6 = [v5 storeConfig];
-  v7 = [v6 pruningPolicy];
+  storeConfig = [v5 storeConfig];
+  pruningPolicy = [storeConfig pruningPolicy];
 
-  if (!v7)
+  if (!pruningPolicy)
   {
     v8 = __biome_log_for_category();
     *&buf = 0;
@@ -701,34 +701,34 @@ id __88__BMStreamBase_publishersForAccounts_deviceTypes_includeLocal_options_use
     _Block_object_dispose(&buf, 8);
     if (os_log_type_enabled(v8, v9))
     {
-      v10 = [(BMStreamBase *)self identifier];
+      identifier = [(BMStreamBase *)self identifier];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v10;
+      *(&buf + 4) = identifier;
       _os_log_impl(&dword_1848EE000, v8, v9, "Tried to prune stream with no pruning policy: %@", &buf, 0xCu);
     }
 
-    v7 = [objc_alloc(MEMORY[0x1E698F120]) initPruneOnAccess:0 filterByAgeOnRead:0 maxAge:52428800 maxStreamSize:2419200.0];
+    pruningPolicy = [objc_alloc(MEMORY[0x1E698F120]) initPruneOnAccess:0 filterByAgeOnRead:0 maxAge:52428800 maxStreamSize:2419200.0];
   }
 
-  v11 = [v7 maxStreamSize];
-  if (v11 != *MEMORY[0x1E698F110])
+  maxStreamSize = [pruningPolicy maxStreamSize];
+  if (maxStreamSize != *MEMORY[0x1E698F110])
   {
-    [v5 pruneStreamBySize:{objc_msgSend(v7, "maxStreamSize")}];
+    [v5 pruneStreamBySize:{objc_msgSend(pruningPolicy, "maxStreamSize")}];
   }
 
-  [v7 maxAge];
+  [pruningPolicy maxAge];
   if (v12 != *MEMORY[0x1E698F100])
   {
     [v5 pruneExpiredEventsWithBlock:&__block_literal_global_8];
   }
 
-  v13 = [v7 maxEventCount];
-  if (v13 != *MEMORY[0x1E698F108])
+  maxEventCount = [pruningPolicy maxEventCount];
+  if (maxEventCount != *MEMORY[0x1E698F108])
   {
-    [v5 pruneStreamToMaxCount:{objc_msgSend(v7, "maxEventCount")}];
+    [v5 pruneStreamToMaxCount:{objc_msgSend(pruningPolicy, "maxEventCount")}];
   }
 
-  if (!a3)
+  if (!account)
   {
     [(BMStreamBase *)self _executePruningPolicyOnSubscriptionSubstream];
   }
@@ -741,33 +741,33 @@ id __88__BMStreamBase_publishersForAccounts_deviceTypes_includeLocal_options_use
 
 - (void)_executePruningPolicyOnSubscriptionSubstream
 {
-  v3 = [(BMStreamBase *)self configuration];
-  v4 = [v3 enableSubscriptionSubstream];
+  configuration = [(BMStreamBase *)self configuration];
+  enableSubscriptionSubstream = [configuration enableSubscriptionSubstream];
 
-  if (v4)
+  if (enableSubscriptionSubstream)
   {
-    v5 = [(BMStreamBase *)self configuration];
-    v6 = [v5 storeConfig];
-    v7 = [v6 subscriptionsConfig];
-    v8 = [v7 pruningPolicy];
+    configuration2 = [(BMStreamBase *)self configuration];
+    storeConfig = [configuration2 storeConfig];
+    subscriptionsConfig = [storeConfig subscriptionsConfig];
+    pruningPolicy = [subscriptionsConfig pruningPolicy];
 
     v9 = [(BMStreamBase *)self subscriptionStoreStreamForUseCase:*MEMORY[0x1E698E950]];
-    [v9 pruneStreamBySize:{objc_msgSend(v8, "maxStreamSize")}];
+    [v9 pruneStreamBySize:{objc_msgSend(pruningPolicy, "maxStreamSize")}];
     Current = CFAbsoluteTimeGetCurrent();
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __81__BMStreamBase_PeriodicMaintenance___executePruningPolicyOnSubscriptionSubstream__block_invoke;
     aBlock[3] = &unk_1E6E53188;
     v27 = Current;
-    v26 = v8;
-    v11 = v8;
+    v26 = pruningPolicy;
+    v11 = pruningPolicy;
     v12 = _Block_copy(aBlock);
     v13 = *MEMORY[0x1E698E948];
     v14 = objc_opt_new();
     v15 = [(BMStreamBase *)self subscriptionPublisherWithUseCase:v13 options:v14];
 
     v16 = [BMPairedEventSession sessionPublisherWithStreamPublisher:v15 startingBlock:&__block_literal_global_12 sessionKeyBlock:&__block_literal_global_15 options:4];
-    v17 = [(BMStreamBase *)self subscriptionPruner];
+    subscriptionPruner = [(BMStreamBase *)self subscriptionPruner];
     v23 = v12;
     v24[0] = MEMORY[0x1E69E9820];
     v24[1] = 3221225472;
@@ -778,8 +778,8 @@ id __88__BMStreamBase_publishersForAccounts_deviceTypes_includeLocal_options_use
     v21[1] = 3221225472;
     v21[2] = __81__BMStreamBase_PeriodicMaintenance___executePruningPolicyOnSubscriptionSubstream__block_invoke_18;
     v21[3] = &unk_1E6E53218;
-    v22 = v17;
-    v18 = v17;
+    v22 = subscriptionPruner;
+    v18 = subscriptionPruner;
     v19 = v12;
     v20 = [v16 sinkWithCompletion:v24 receiveInput:v21];
   }
@@ -884,11 +884,11 @@ LABEL_9:
 LABEL_10:
 }
 
-+ (BOOL)_atLeastOneSegmentFileInDirectory:(id)a3 fileManager:(id)a4
++ (BOOL)_atLeastOneSegmentFileInDirectory:(id)directory fileManager:(id)manager
 {
   v19 = *MEMORY[0x1E69E9840];
   v17 = 0;
-  v4 = [a4 contentsOfDirectoryAtPath:a3 error:&v17];
+  v4 = [manager contentsOfDirectoryAtPath:directory error:&v17];
   v5 = v17;
   v13 = 0u;
   v14 = 0u;
@@ -935,17 +935,17 @@ LABEL_11:
 - (void)_pruneEmptyRemotesNotRecentlyModified
 {
   v41 = *MEMORY[0x1E69E9840];
-  v3 = [(BMStreamBase *)self configuration];
-  v4 = [v3 storeConfig];
-  v5 = [v4 datastorePath];
-  v6 = [(BMStreamBase *)self identifier];
-  v7 = [v5 stringByAppendingPathComponent:v6];
+  configuration = [(BMStreamBase *)self configuration];
+  storeConfig = [configuration storeConfig];
+  datastorePath = [storeConfig datastorePath];
+  identifier = [(BMStreamBase *)self identifier];
+  v7 = [datastorePath stringByAppendingPathComponent:identifier];
 
   v28 = v7;
   v8 = [MEMORY[0x1E698E9B8] fileManagerWithDirectAccessToDirectory:v7 cachingOptions:0];
-  v9 = [MEMORY[0x1E698EA08] remoteDevices];
+  remoteDevices = [MEMORY[0x1E698EA08] remoteDevices];
   v36 = 0;
-  v10 = [v8 contentsOfDirectoryAtPath:v9 error:&v36];
+  v10 = [v8 contentsOfDirectoryAtPath:remoteDevices error:&v36];
   v11 = v36;
 
   v12 = objc_opt_new();
@@ -973,8 +973,8 @@ LABEL_11:
 
         v19 = *(*(&v32 + 1) + 8 * i);
         v20 = MEMORY[0x1E696AEC0];
-        v21 = [MEMORY[0x1E698EA08] remoteDevices];
-        v39[0] = v21;
+        remoteDevices2 = [MEMORY[0x1E698EA08] remoteDevices];
+        v39[0] = remoteDevices2;
         v39[1] = v19;
         v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:v39 count:2];
         v23 = [v20 pathWithComponents:v22];
@@ -1029,23 +1029,23 @@ LABEL_16:
 {
   v38 = *MEMORY[0x1E69E9840];
   v3 = objc_opt_new();
-  v4 = [(BMStreamBase *)self configuration];
-  v5 = [v4 enableSubscriptionSubstream];
+  configuration = [(BMStreamBase *)self configuration];
+  enableSubscriptionSubstream = [configuration enableSubscriptionSubstream];
 
-  if ((v5 & 1) == 0)
+  if ((enableSubscriptionSubstream & 1) == 0)
   {
-    v6 = [MEMORY[0x1E698EA08] subscriptions];
-    [v3 addObject:v6];
+    subscriptions = [MEMORY[0x1E698EA08] subscriptions];
+    [v3 addObject:subscriptions];
   }
 
-  v7 = [(BMStreamBase *)self configuration];
-  v8 = [v7 enableTombstoneSubstream];
+  configuration2 = [(BMStreamBase *)self configuration];
+  enableTombstoneSubstream = [configuration2 enableTombstoneSubstream];
 
-  if ((v8 & 1) == 0)
+  if ((enableTombstoneSubstream & 1) == 0)
   {
-    v9 = [MEMORY[0x1E698EA08] localDevice];
-    v10 = [MEMORY[0x1E698EA08] tombstones];
-    v11 = [v9 stringByAppendingPathComponent:v10];
+    localDevice = [MEMORY[0x1E698EA08] localDevice];
+    tombstones = [MEMORY[0x1E698EA08] tombstones];
+    v11 = [localDevice stringByAppendingPathComponent:tombstones];
     [v3 addObject:v11];
   }
 
@@ -1057,11 +1057,11 @@ LABEL_16:
       [(BMStreamBase(PeriodicMaintenance) *)v12 _pruneDisabledSubstreams];
     }
 
-    v13 = [(BMStreamBase *)self configuration];
-    v14 = [v13 storeConfig];
-    v15 = [v14 datastorePath];
-    v16 = [(BMStreamBase *)self identifier];
-    v17 = [v15 stringByAppendingPathComponent:v16];
+    configuration3 = [(BMStreamBase *)self configuration];
+    storeConfig = [configuration3 storeConfig];
+    datastorePath = [storeConfig datastorePath];
+    identifier = [(BMStreamBase *)self identifier];
+    v17 = [datastorePath stringByAppendingPathComponent:identifier];
 
     v18 = [MEMORY[0x1E698E9B8] fileManagerWithDirectAccessToDirectory:v17 cachingOptions:0];
     v31 = 0u;
@@ -1112,22 +1112,22 @@ LABEL_16:
   v28 = *MEMORY[0x1E69E9840];
 }
 
-- (id)subscriptionStoreStreamForUseCase:(id)a3
+- (id)subscriptionStoreStreamForUseCase:(id)case
 {
-  v4 = a3;
-  v5 = [(BMStreamBase *)self configuration];
-  v6 = [v5 enableSubscriptionSubstream];
+  caseCopy = case;
+  configuration = [(BMStreamBase *)self configuration];
+  enableSubscriptionSubstream = [configuration enableSubscriptionSubstream];
 
-  if (v6)
+  if (enableSubscriptionSubstream)
   {
-    v7 = [(BMStreamBase *)self identifier];
-    v8 = [v7 stringByAppendingString:@":subscriptions"];
+    identifier = [(BMStreamBase *)self identifier];
+    v8 = [identifier stringByAppendingString:@":subscriptions"];
 
     v9 = [BMStoreStream alloc];
-    v10 = [(BMStreamBase *)self configuration];
-    v11 = [v10 storeConfig];
-    v12 = [v11 subscriptionsConfig];
-    v13 = [(BMStoreStream *)v9 initWithStreamIdentifier:v8 storeConfig:v12 streamType:2 eventDataClass:objc_opt_class() useCase:v4];
+    configuration2 = [(BMStreamBase *)self configuration];
+    storeConfig = [configuration2 storeConfig];
+    subscriptionsConfig = [storeConfig subscriptionsConfig];
+    v13 = [(BMStoreStream *)v9 initWithStreamIdentifier:v8 storeConfig:subscriptionsConfig streamType:2 eventDataClass:objc_opt_class() useCase:caseCopy];
   }
 
   else
@@ -1140,29 +1140,29 @@ LABEL_16:
 
 - (id)subscriptionSource
 {
-  v3 = [(BMStreamBase *)self configuration];
-  v4 = [v3 enableSubscriptionSubstream];
+  configuration = [(BMStreamBase *)self configuration];
+  enableSubscriptionSubstream = [configuration enableSubscriptionSubstream];
 
-  if (v4)
+  if (enableSubscriptionSubstream)
   {
     v5 = [(BMStreamBase *)self subscriptionStoreStreamForUseCase:*MEMORY[0x1E698E960]];
-    v6 = [v5 source];
+    source = [v5 source];
   }
 
   else
   {
-    v6 = 0;
+    source = 0;
   }
 
-  return v6;
+  return source;
 }
 
 - (id)subscriptionPruner
 {
-  v3 = [(BMStreamBase *)self configuration];
-  v4 = [v3 enableSubscriptionSubstream];
+  configuration = [(BMStreamBase *)self configuration];
+  enableSubscriptionSubstream = [configuration enableSubscriptionSubstream];
 
-  if (v4)
+  if (enableSubscriptionSubstream)
   {
     v5 = [(BMStreamBase *)self subscriptionStoreStreamForUseCase:*MEMORY[0x1E698E950]];
     v6 = [[BMPruner alloc] initWithStoreStream:v5 remote:0];
@@ -1176,17 +1176,17 @@ LABEL_16:
   return v6;
 }
 
-- (id)subscriptionPublisherWithUseCase:(id)a3 options:(id)a4
+- (id)subscriptionPublisherWithUseCase:(id)case options:(id)options
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BMStreamBase *)self configuration];
-  v9 = [v8 enableSubscriptionSubstream];
+  caseCopy = case;
+  optionsCopy = options;
+  configuration = [(BMStreamBase *)self configuration];
+  enableSubscriptionSubstream = [configuration enableSubscriptionSubstream];
 
-  if (v9)
+  if (enableSubscriptionSubstream)
   {
-    v10 = [(BMStreamBase *)self subscriptionStoreStreamForUseCase:v6];
-    v11 = [v10 _publisherWithOptions:v7];
+    v10 = [(BMStreamBase *)self subscriptionStoreStreamForUseCase:caseCopy];
+    v11 = [v10 _publisherWithOptions:optionsCopy];
   }
 
   else
@@ -1197,18 +1197,18 @@ LABEL_16:
   return v11;
 }
 
-- (id)subscriptionDSLPublisherWithUseCase:(id)a3
+- (id)subscriptionDSLPublisherWithUseCase:(id)case
 {
-  v4 = a3;
-  v5 = [(BMStreamBase *)self configuration];
-  v6 = [v5 enableSubscriptionSubstream];
+  caseCopy = case;
+  configuration = [(BMStreamBase *)self configuration];
+  enableSubscriptionSubstream = [configuration enableSubscriptionSubstream];
 
-  if (v6)
+  if (enableSubscriptionSubstream)
   {
-    v7 = [(BMStreamBase *)self identifier];
-    v8 = [v7 stringByAppendingString:@":subscriptions"];
+    identifier = [(BMStreamBase *)self identifier];
+    v8 = [identifier stringByAppendingString:@":subscriptions"];
 
-    v9 = [[BMDSLStreamPublisher alloc] initWithIdentifier:v8 streamType:2 useCase:v4 eventDataClass:objc_opt_class()];
+    v9 = [[BMDSLStreamPublisher alloc] initWithIdentifier:v8 streamType:2 useCase:caseCopy eventDataClass:objc_opt_class()];
   }
 
   else

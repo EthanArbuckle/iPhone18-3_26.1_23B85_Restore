@@ -1,35 +1,35 @@
 @interface AVPlaybackSpeedCollection
-+ (AVPlaybackSpeedCollection)collectionWithSpeeds:(id)a3;
-+ (id)defaultSpeedFromList:(id)a3;
++ (AVPlaybackSpeedCollection)collectionWithSpeeds:(id)speeds;
++ (id)defaultSpeedFromList:(id)list;
 - (AVPlaybackSpeed)selectedSpeed;
-- (id)_descriptionWithInternalState:(void *)a1;
-- (id)_initInternalWithSpeeds:(id)a3;
+- (id)_descriptionWithInternalState:(void *)state;
+- (id)_initInternalWithSpeeds:(id)speeds;
 - (id)delegate;
 - (id)displaySpeeds;
-- (void)selectNextPlaybackSpeed:(id)a3;
-- (void)selectSpeed:(id)a3;
-- (void)setActiveSpeed:(id)a3;
-- (void)setDelegate:(id)a3;
+- (void)selectNextPlaybackSpeed:(id)speed;
+- (void)selectSpeed:(id)speed;
+- (void)setActiveSpeed:(id)speed;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation AVPlaybackSpeedCollection
 
-- (id)_descriptionWithInternalState:(void *)a1
+- (id)_descriptionWithInternalState:(void *)state
 {
   v25 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (state)
   {
     if (a2)
     {
-      [a1 displaySpeeds];
+      [state displaySpeeds];
     }
 
     else
     {
-      [a1 speeds];
+      [state speeds];
     }
     v4 = ;
-    v23.receiver = a1;
+    v23.receiver = state;
     v23.super_class = AVPlaybackSpeedCollection;
     v5 = objc_msgSendSuper2(&v23, sel_description);
     v6 = [v5 stringByAppendingFormat:@" [\n"];
@@ -66,9 +66,9 @@
             [v12 description];
           }
           v13 = ;
-          v14 = [a1 activeSpeed];
+          activeSpeed = [state activeSpeed];
 
-          if (v12 == v14)
+          if (v12 == activeSpeed)
           {
             v15 = @"\t%@ - active\n";
           }
@@ -104,20 +104,20 @@
 
 - (id)displaySpeeds
 {
-  v3 = [(AVPlaybackSpeedCollection *)self speeds];
-  if (([v3 containsObject:self->_activeSpeed] & 1) == 0)
+  speeds = [(AVPlaybackSpeedCollection *)self speeds];
+  if (([speeds containsObject:self->_activeSpeed] & 1) == 0)
   {
-    v4 = [v3 arrayByAddingObject:self->_activeSpeed];
+    v4 = [speeds arrayByAddingObject:self->_activeSpeed];
 
-    v3 = v4;
+    speeds = v4;
   }
 
-  return v3;
+  return speeds;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   v5 = obj;
@@ -135,44 +135,44 @@
   return WeakRetained;
 }
 
-- (void)setActiveSpeed:(id)a3
+- (void)setActiveSpeed:(id)speed
 {
-  v5 = a3;
+  speedCopy = speed;
   activeSpeed = self->_activeSpeed;
   p_activeSpeed = &self->_activeSpeed;
-  if (activeSpeed != v5)
+  if (activeSpeed != speedCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_activeSpeed, a3);
-    v5 = v8;
+    v8 = speedCopy;
+    objc_storeStrong(p_activeSpeed, speed);
+    speedCopy = v8;
   }
 }
 
-- (void)selectNextPlaybackSpeed:(id)a3
+- (void)selectNextPlaybackSpeed:(id)speed
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = [(AVPlaybackSpeedCollection *)self speeds];
-  v5 = [(AVPlaybackSpeedCollection *)self selectedSpeed];
-  if (v5)
+  speeds = [(AVPlaybackSpeedCollection *)self speeds];
+  selectedSpeed = [(AVPlaybackSpeedCollection *)self selectedSpeed];
+  if (selectedSpeed)
   {
-    v6 = [v4 indexOfObject:v5];
+    v6 = [speeds indexOfObject:selectedSpeed];
     if (v6 == 0x7FFFFFFFFFFFFFFFLL)
     {
       goto LABEL_7;
     }
 
-    v7 = [v4 objectAtIndex:{(v6 + 1) % objc_msgSend(v4, "count")}];
+    firstObject = [speeds objectAtIndex:{(v6 + 1) % objc_msgSend(speeds, "count")}];
   }
 
   else
   {
-    v7 = [v4 firstObject];
+    firstObject = [speeds firstObject];
   }
 
-  v8 = v7;
-  if (v7)
+  v8 = firstObject;
+  if (firstObject)
   {
-    [(AVPlaybackSpeedCollection *)self selectSpeed:v7];
+    [(AVPlaybackSpeedCollection *)self selectSpeed:firstObject];
     goto LABEL_9;
   }
 
@@ -180,7 +180,7 @@ LABEL_7:
   v8 = _AVLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
   {
-    v9 = [v5 description];
+    v9 = [selectedSpeed description];
     v10 = [(AVPlaybackSpeedCollection *)self description];
     v11 = 138412546;
     v12 = v9;
@@ -192,18 +192,18 @@ LABEL_7:
 LABEL_9:
 }
 
-- (void)selectSpeed:(id)a3
+- (void)selectSpeed:(id)speed
 {
-  v6 = a3;
+  speedCopy = speed;
   if ([(NSArray *)self->_speeds containsObject:?])
   {
-    v4 = [(AVPlaybackSpeedCollection *)self selectedSpeed];
+    selectedSpeed = [(AVPlaybackSpeedCollection *)self selectedSpeed];
 
-    if (v4 != v6)
+    if (selectedSpeed != speedCopy)
     {
-      [(AVPlaybackSpeedCollection *)self setActiveSpeed:v6];
-      v5 = [(AVPlaybackSpeedCollection *)self delegate];
-      [v5 playbackSpeedCollection:self selectedPlaybackSpeedDidChangeTo:v6];
+      [(AVPlaybackSpeedCollection *)self setActiveSpeed:speedCopy];
+      delegate = [(AVPlaybackSpeedCollection *)self delegate];
+      [delegate playbackSpeedCollection:self selectedPlaybackSpeedDidChangeTo:speedCopy];
     }
   }
 }
@@ -214,8 +214,8 @@ LABEL_9:
   v4 = v3;
   if (self && v3)
   {
-    v5 = [(AVPlaybackSpeedCollection *)self speeds];
-    v6 = [v5 containsObject:v4];
+    speeds = [(AVPlaybackSpeedCollection *)self speeds];
+    v6 = [speeds containsObject:v4];
 
     if (v6 && ![(AVPlaybackSpeed *)self->_activeSpeed isSynthesized])
     {
@@ -234,17 +234,17 @@ LABEL_8:
   return v7;
 }
 
-- (id)_initInternalWithSpeeds:(id)a3
+- (id)_initInternalWithSpeeds:(id)speeds
 {
-  v5 = a3;
+  speedsCopy = speeds;
   v11.receiver = self;
   v11.super_class = AVPlaybackSpeedCollection;
   v6 = [(AVPlaybackSpeedCollection *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_speeds, a3);
-    v8 = [AVPlaybackSpeedCollection defaultSpeedFromList:v5];
+    objc_storeStrong(&v6->_speeds, speeds);
+    v8 = [AVPlaybackSpeedCollection defaultSpeedFromList:speedsCopy];
     activeSpeed = v7->_activeSpeed;
     v7->_activeSpeed = v8;
   }
@@ -252,15 +252,15 @@ LABEL_8:
   return v7;
 }
 
-+ (id)defaultSpeedFromList:(id)a3
++ (id)defaultSpeedFromList:(id)list
 {
   v17 = *MEMORY[0x1E69E9840];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  listCopy = list;
+  v4 = [listCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -271,7 +271,7 @@ LABEL_3:
     {
       if (*v13 != v6)
       {
-        objc_enumerationMutation(v3);
+        objc_enumerationMutation(listCopy);
       }
 
       v8 = *(*(&v12 + 1) + 8 * v7);
@@ -283,7 +283,7 @@ LABEL_3:
 
       if (v5 == ++v7)
       {
-        v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v5 = [listCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
         if (v5)
         {
           goto LABEL_3;
@@ -293,9 +293,9 @@ LABEL_3:
       }
     }
 
-    v10 = v8;
+    firstObject = v8;
 
-    if (v10)
+    if (firstObject)
     {
       goto LABEL_12;
     }
@@ -306,16 +306,16 @@ LABEL_3:
 LABEL_9:
   }
 
-  v10 = [v3 firstObject];
+  firstObject = [listCopy firstObject];
 LABEL_12:
 
-  return v10;
+  return firstObject;
 }
 
-+ (AVPlaybackSpeedCollection)collectionWithSpeeds:(id)a3
++ (AVPlaybackSpeedCollection)collectionWithSpeeds:(id)speeds
 {
-  v4 = a3;
-  v5 = [[a1 alloc] _initInternalWithSpeeds:v4];
+  speedsCopy = speeds;
+  v5 = [[self alloc] _initInternalWithSpeeds:speedsCopy];
 
   return v5;
 }

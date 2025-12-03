@@ -1,13 +1,13 @@
 @interface CMContinuityCaptureBatteryStateMonitor
 + (id)sharedInstance;
-+ (int64_t)resolveBatteryState:(BOOL)a3 isBatteryChargingThermallyLimited:(BOOL)a4 batteryCapacity:(id)a5;
++ (int64_t)resolveBatteryState:(BOOL)state isBatteryChargingThermallyLimited:(BOOL)limited batteryCapacity:(id)capacity;
 + (void)invalidate;
 - (BOOL)invalidated;
 - (BOOL)setupNotification;
-- (CMContinuityCaptureBatteryStateMonitor)initWithQueue:(id)a3;
+- (CMContinuityCaptureBatteryStateMonitor)initWithQueue:(id)queue;
 - (void)handleBatteryInfoChanged;
 - (void)invalidate;
-- (void)setInvalidated:(BOOL)a3;
+- (void)setInvalidated:(BOOL)invalidated;
 - (void)setupNotification;
 @end
 
@@ -37,19 +37,19 @@ void __56__CMContinuityCaptureBatteryStateMonitor_sharedInstance__block_invoke()
 
 - (BOOL)invalidated
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  invalidated = v2->_invalidated;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  invalidated = selfCopy->_invalidated;
+  objc_sync_exit(selfCopy);
 
   return invalidated;
 }
 
-- (void)setInvalidated:(BOOL)a3
+- (void)setInvalidated:(BOOL)invalidated
 {
   obj = self;
   objc_sync_enter(obj);
-  obj->_invalidated = a3;
+  obj->_invalidated = invalidated;
   objc_sync_exit(obj);
 }
 
@@ -81,17 +81,17 @@ void __56__CMContinuityCaptureBatteryStateMonitor_sharedInstance__block_invoke()
   }
 }
 
-+ (int64_t)resolveBatteryState:(BOOL)a3 isBatteryChargingThermallyLimited:(BOOL)a4 batteryCapacity:(id)a5
++ (int64_t)resolveBatteryState:(BOOL)state isBatteryChargingThermallyLimited:(BOOL)limited batteryCapacity:(id)capacity
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = a5;
-  v8 = v7;
-  if (v6)
+  limitedCopy = limited;
+  stateCopy = state;
+  capacityCopy = capacity;
+  v8 = capacityCopy;
+  if (stateCopy)
   {
-    if ([v7 intValue] > 74 || v5)
+    if ([capacityCopy intValue] > 74 || limitedCopy)
     {
-      if ([v8 intValue] <= 74 && v5)
+      if ([v8 intValue] <= 74 && limitedCopy)
       {
         v9 = 4;
       }
@@ -188,9 +188,9 @@ void __59__CMContinuityCaptureBatteryStateMonitor_setupNotification__block_invok
   }
 }
 
-- (CMContinuityCaptureBatteryStateMonitor)initWithQueue:(id)a3
+- (CMContinuityCaptureBatteryStateMonitor)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v13.receiver = self;
   v13.super_class = CMContinuityCaptureBatteryStateMonitor;
   v6 = [(CMContinuityCaptureBatteryStateMonitor *)&v13 init];
@@ -202,7 +202,7 @@ LABEL_8:
     goto LABEL_4;
   }
 
-  objc_storeStrong(&v6->_queue, a3);
+  objc_storeStrong(&v6->_queue, queue);
   batteryLevel = v7->_batteryLevel;
   v7->_batteryLevel = &unk_2854ECD08;
 
@@ -241,12 +241,12 @@ LABEL_4:
     v11 = [v10 objectForKeyedSubscript:@"TimeChargingThermallyLimited"];
     if ([v11 intValue] < 1)
     {
-      v12 = 0;
+      bOOLValue = 0;
     }
 
     else
     {
-      v12 = [v9 BOOLValue];
+      bOOLValue = [v9 BOOLValue];
     }
 
     if (CMContinityCaptureDebugLogEnabled())
@@ -255,7 +255,7 @@ LABEL_4:
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
       {
         v19 = 138413058;
-        v20 = self;
+        selfCopy = self;
         v21 = 2112;
         v22 = CFProperty;
         v23 = 2112;
@@ -266,7 +266,7 @@ LABEL_4:
       }
     }
 
-    v14 = +[CMContinuityCaptureBatteryStateMonitor resolveBatteryState:isBatteryChargingThermallyLimited:batteryCapacity:](CMContinuityCaptureBatteryStateMonitor, "resolveBatteryState:isBatteryChargingThermallyLimited:batteryCapacity:", [v9 BOOLValue], v12, CFProperty);
+    v14 = +[CMContinuityCaptureBatteryStateMonitor resolveBatteryState:isBatteryChargingThermallyLimited:batteryCapacity:](CMContinuityCaptureBatteryStateMonitor, "resolveBatteryState:isBatteryChargingThermallyLimited:batteryCapacity:", [v9 BOOLValue], bOOLValue, CFProperty);
     v15 = MEMORY[0x277CCABB0];
     [CFProperty floatValue];
     *&v17 = v16 / 100.0;
@@ -291,12 +291,12 @@ LABEL_4:
 
 - (void)setupNotification
 {
-  if (os_log_type_enabled(a1, OS_LOG_TYPE_ERROR))
+  if (os_log_type_enabled(self, OS_LOG_TYPE_ERROR))
   {
     OUTLINED_FUNCTION_1_5(&dword_242545000, v4, v5, "Failed to create IO notification port from kIOMainPortDefault", v6, v7, v8, v9, 0);
   }
 
-  *a2 = a1;
+  *a2 = self;
 }
 
 @end

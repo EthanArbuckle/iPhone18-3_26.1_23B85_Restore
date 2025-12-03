@@ -1,23 +1,23 @@
 @interface MSQuickActionController
 + (id)sharedInstance;
-+ (void)processShortcutItem:(id)a3 applicationController:(id)a4 completionHandler:(id)a5;
++ (void)processShortcutItem:(id)item applicationController:(id)controller completionHandler:(id)handler;
 + (void)updateShortcutItems;
 - (MSQuickActionController)init;
 - (id)_shortcutItems;
-- (void)_accountStoreDidChange:(id)a3;
+- (void)_accountStoreDidChange:(id)change;
 - (void)dealloc;
-- (void)processShortcutItem:(id)a3 applicationController:(id)a4 completionHandler:(id)a5;
+- (void)processShortcutItem:(id)item applicationController:(id)controller completionHandler:(id)handler;
 @end
 
 @implementation MSQuickActionController
 
 + (void)updateShortcutItems
 {
-  v2 = [objc_opt_class() sharedInstance];
-  v4 = [v2 _shortcutItems];
+  sharedInstance = [objc_opt_class() sharedInstance];
+  _shortcutItems = [sharedInstance _shortcutItems];
 
   v3 = +[UIApplication sharedApplication];
-  [v3 setShortcutItems:v4];
+  [v3 setShortcutItems:_shortcutItems];
 }
 
 + (id)sharedInstance
@@ -60,9 +60,9 @@
 
   [v2 addObject:v7];
   v8 = +[SSAccountStore defaultStore];
-  v9 = [v8 activeAccount];
+  activeAccount = [v8 activeAccount];
 
-  if (([v9 isManagedAppleID] & 1) == 0)
+  if (([activeAccount isManagedAppleID] & 1) == 0)
   {
     v10 = [UIApplicationShortcutIcon iconWithTemplateImageName:@"RedeemMusicCodeQuickAction"];
     v11 = [UIApplicationShortcutItem alloc];
@@ -92,13 +92,13 @@
   return v25;
 }
 
-+ (void)processShortcutItem:(id)a3 applicationController:(id)a4 completionHandler:(id)a5
++ (void)processShortcutItem:(id)item applicationController:(id)controller completionHandler:(id)handler
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [objc_opt_class() sharedInstance];
-  [v10 processShortcutItem:v9 applicationController:v8 completionHandler:v7];
+  handlerCopy = handler;
+  controllerCopy = controller;
+  itemCopy = item;
+  sharedInstance = [objc_opt_class() sharedInstance];
+  [sharedInstance processShortcutItem:itemCopy applicationController:controllerCopy completionHandler:handlerCopy];
 }
 
 - (void)dealloc
@@ -113,22 +113,22 @@
   [(MSQuickActionController *)&v6 dealloc];
 }
 
-- (void)processShortcutItem:(id)a3 applicationController:(id)a4 completionHandler:(id)a5
+- (void)processShortcutItem:(id)item applicationController:(id)controller completionHandler:(id)handler
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100001FBC;
   block[3] = &unk_1000104E8;
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v7 = v13;
-  v8 = v12;
-  v9 = v11;
+  itemCopy = item;
+  controllerCopy = controller;
+  handlerCopy = handler;
+  v7 = handlerCopy;
+  v8 = controllerCopy;
+  v9 = itemCopy;
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)_accountStoreDidChange:(id)a3
+- (void)_accountStoreDidChange:(id)change
 {
   v3 = objc_opt_class();
 

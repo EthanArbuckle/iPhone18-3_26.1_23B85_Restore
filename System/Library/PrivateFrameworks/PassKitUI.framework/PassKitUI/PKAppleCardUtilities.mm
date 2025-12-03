@@ -1,25 +1,25 @@
 @interface PKAppleCardUtilities
 - (PKAppleCardUtilities)init;
-- (id)_activeAccountUserWithAltDSID:(id)a3;
+- (id)_activeAccountUserWithAltDSID:(id)d;
 - (id)_contactKeysToFetch;
-- (id)_pendingSentInvitationWithAltDSID:(id)a3;
-- (void)_fetchDataIfNecessaryWithCompletion:(id)a3;
-- (void)accountChanged:(id)a3;
-- (void)accountRemoved:(id)a3;
-- (void)accountUsersChanged:(id)a3 forAccountIdentifier:(id)a4;
-- (void)appleCardAccessLevelForAltDSID:(id)a3 completion:(id)a4;
-- (void)appleCardAccountStateWithCompletion:(id)a3;
-- (void)appleCardIsSharedWithWithAltDSID:(id)a3 completion:(id)a4;
-- (void)appleCardTransactionLimitForAltDSID:(id)a3 completion:(id)a4;
+- (id)_pendingSentInvitationWithAltDSID:(id)d;
+- (void)_fetchDataIfNecessaryWithCompletion:(id)completion;
+- (void)accountChanged:(id)changed;
+- (void)accountRemoved:(id)removed;
+- (void)accountUsersChanged:(id)changed forAccountIdentifier:(id)identifier;
+- (void)appleCardAccessLevelForAltDSID:(id)d completion:(id)completion;
+- (void)appleCardAccountStateWithCompletion:(id)completion;
+- (void)appleCardIsSharedWithWithAltDSID:(id)d completion:(id)completion;
+- (void)appleCardTransactionLimitForAltDSID:(id)d completion:(id)completion;
 - (void)dealloc;
-- (void)didUpdateFamilyMembers:(id)a3;
-- (void)featureApplicationAdded:(id)a3;
-- (void)featureApplicationChanged:(id)a3;
-- (void)featureApplicationRemoved:(id)a3;
-- (void)hasAppleCardWithCompletion:(id)a3;
-- (void)hasSentPendingAppleCardInvitationToUserWithAltDSID:(id)a3 completion:(id)a4;
-- (void)presentAppleCardSharingDetailsForAltDSID:(id)a3 viewController:(id)a4 hideUserDetailHeader:(BOOL)a5 completion:(id)a6;
-- (void)presentAppleCardUserInvitationFlowWithViewController:(id)a3 completion:(id)a4;
+- (void)didUpdateFamilyMembers:(id)members;
+- (void)featureApplicationAdded:(id)added;
+- (void)featureApplicationChanged:(id)changed;
+- (void)featureApplicationRemoved:(id)removed;
+- (void)hasAppleCardWithCompletion:(id)completion;
+- (void)hasSentPendingAppleCardInvitationToUserWithAltDSID:(id)d completion:(id)completion;
+- (void)presentAppleCardSharingDetailsForAltDSID:(id)d viewController:(id)controller hideUserDetailHeader:(BOOL)header completion:(id)completion;
+- (void)presentAppleCardUserInvitationFlowWithViewController:(id)controller completion:(id)completion;
 @end
 
 @implementation PKAppleCardUtilities
@@ -33,14 +33,14 @@
   if (v2)
   {
     v2->_lock._os_unfair_lock_opaque = 0;
-    v4 = [MEMORY[0x1E69B8DB8] paymentService];
+    paymentService = [MEMORY[0x1E69B8DB8] paymentService];
     paymentService = v3->_paymentService;
-    v3->_paymentService = v4;
+    v3->_paymentService = paymentService;
 
     [(PKPaymentService *)v3->_paymentService registerObserver:v3];
-    v6 = [MEMORY[0x1E69B8400] sharedInstance];
+    mEMORY[0x1E69B8400] = [MEMORY[0x1E69B8400] sharedInstance];
     accountService = v3->_accountService;
-    v3->_accountService = v6;
+    v3->_accountService = mEMORY[0x1E69B8400];
 
     [(PKAccountService *)v3->_accountService registerObserver:v3];
   }
@@ -57,10 +57,10 @@
   [(PKAppleCardUtilities *)&v3 dealloc];
 }
 
-- (void)hasAppleCardWithCompletion:(id)a3
+- (void)hasAppleCardWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
     v5 = PKLogFacilityTypeGetObject();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -74,7 +74,7 @@
     v6[2] = __51__PKAppleCardUtilities_hasAppleCardWithCompletion___block_invoke;
     v6[3] = &unk_1E8010DD0;
     v6[4] = self;
-    v7 = v4;
+    v7 = completionCopy;
     [(PKAppleCardUtilities *)self _fetchDataIfNecessaryWithCompletion:v6];
   }
 }
@@ -130,10 +130,10 @@ LABEL_11:
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)appleCardAccountStateWithCompletion:(id)a3
+- (void)appleCardAccountStateWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
     v5 = PKLogFacilityTypeGetObject();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -147,7 +147,7 @@ LABEL_11:
     v6[2] = __60__PKAppleCardUtilities_appleCardAccountStateWithCompletion___block_invoke;
     v6[3] = &unk_1E8010DD0;
     v6[4] = self;
-    v7 = v4;
+    v7 = completionCopy;
     [(PKAppleCardUtilities *)self _fetchDataIfNecessaryWithCompletion:v6];
   }
 }
@@ -194,18 +194,18 @@ void __60__PKAppleCardUtilities_appleCardAccountStateWithCompletion___block_invo
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)appleCardAccessLevelForAltDSID:(id)a3 completion:(id)a4
+- (void)appleCardAccessLevelForAltDSID:(id)d completion:(id)completion
 {
   v14 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  dCopy = d;
+  completionCopy = completion;
+  if (completionCopy)
   {
     v8 = PKLogFacilityTypeGetObject();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v13 = v6;
+      v13 = dCopy;
       _os_log_impl(&dword_1BD026000, v8, OS_LOG_TYPE_DEFAULT, "Checking apple card access level of user %@", buf, 0xCu);
     }
 
@@ -214,8 +214,8 @@ void __60__PKAppleCardUtilities_appleCardAccountStateWithCompletion___block_invo
     v9[2] = __66__PKAppleCardUtilities_appleCardAccessLevelForAltDSID_completion___block_invoke;
     v9[3] = &unk_1E8012300;
     v9[4] = self;
-    v10 = v6;
-    v11 = v7;
+    v10 = dCopy;
+    v11 = completionCopy;
     [(PKAppleCardUtilities *)self _fetchDataIfNecessaryWithCompletion:v9];
   }
 }
@@ -322,18 +322,18 @@ LABEL_15:
   (*(a1[6] + 16))(a1[6], v19);
 }
 
-- (void)appleCardIsSharedWithWithAltDSID:(id)a3 completion:(id)a4
+- (void)appleCardIsSharedWithWithAltDSID:(id)d completion:(id)completion
 {
   v14 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  dCopy = d;
+  completionCopy = completion;
+  if (completionCopy)
   {
     v8 = PKLogFacilityTypeGetObject();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v13 = v6;
+      v13 = dCopy;
       _os_log_impl(&dword_1BD026000, v8, OS_LOG_TYPE_DEFAULT, "Checking apple card is being shared with altDSID %@.", buf, 0xCu);
     }
 
@@ -342,8 +342,8 @@ LABEL_15:
     v9[2] = __68__PKAppleCardUtilities_appleCardIsSharedWithWithAltDSID_completion___block_invoke;
     v9[3] = &unk_1E8012300;
     v9[4] = self;
-    v10 = v6;
-    v11 = v7;
+    v10 = dCopy;
+    v11 = completionCopy;
     [(PKAppleCardUtilities *)self _fetchDataIfNecessaryWithCompletion:v9];
   }
 }
@@ -438,19 +438,19 @@ LABEL_14:
 LABEL_19:
 }
 
-- (void)hasSentPendingAppleCardInvitationToUserWithAltDSID:(id)a3 completion:(id)a4
+- (void)hasSentPendingAppleCardInvitationToUserWithAltDSID:(id)d completion:(id)completion
 {
   v15 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6 && v7)
+  dCopy = d;
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (dCopy && completionCopy)
   {
     v9 = PKLogFacilityTypeGetObject();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v14 = v6;
+      v14 = dCopy;
       _os_log_impl(&dword_1BD026000, v9, OS_LOG_TYPE_DEFAULT, "Checking if pending sent invitation exists with altDSID %@", buf, 0xCu);
     }
 
@@ -459,7 +459,7 @@ LABEL_19:
     v10[2] = __86__PKAppleCardUtilities_hasSentPendingAppleCardInvitationToUserWithAltDSID_completion___block_invoke;
     v10[3] = &unk_1E8012300;
     v10[4] = self;
-    v11 = v6;
+    v11 = dCopy;
     v12 = v8;
     [(PKAppleCardUtilities *)self _fetchDataIfNecessaryWithCompletion:v10];
   }
@@ -552,21 +552,21 @@ LABEL_14:
 LABEL_19:
 }
 
-- (void)appleCardTransactionLimitForAltDSID:(id)a3 completion:(id)a4
+- (void)appleCardTransactionLimitForAltDSID:(id)d completion:(id)completion
 {
   v15 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  dCopy = d;
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (completionCopy)
   {
-    if (v6)
+    if (dCopy)
     {
       v9 = PKLogFacilityTypeGetObject();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v14 = v6;
+        v14 = dCopy;
         _os_log_impl(&dword_1BD026000, v9, OS_LOG_TYPE_DEFAULT, "Checking transaction limit for apple card user with altDSID %@", buf, 0xCu);
       }
 
@@ -575,14 +575,14 @@ LABEL_19:
       v10[2] = __71__PKAppleCardUtilities_appleCardTransactionLimitForAltDSID_completion___block_invoke;
       v10[3] = &unk_1E8012300;
       v10[4] = self;
-      v11 = v6;
+      v11 = dCopy;
       v12 = v8;
       [(PKAppleCardUtilities *)self _fetchDataIfNecessaryWithCompletion:v10];
     }
 
     else
     {
-      (*(v7 + 2))(v7, 0, 0);
+      (*(completionCopy + 2))(completionCopy, 0, 0);
     }
   }
 }
@@ -699,19 +699,19 @@ LABEL_23:
 LABEL_24:
 }
 
-- (void)presentAppleCardUserInvitationFlowWithViewController:(id)a3 completion:(id)a4
+- (void)presentAppleCardUserInvitationFlowWithViewController:(id)controller completion:(id)completion
 {
   v15 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  controllerCopy = controller;
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (controllerCopy)
   {
     v9 = PKLogFacilityTypeGetObject();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v14 = v6;
+      v14 = controllerCopy;
       _os_log_impl(&dword_1BD026000, v9, OS_LOG_TYPE_DEFAULT, "Presenting apple card add user flow with presenting view controller %@", buf, 0xCu);
     }
 
@@ -721,13 +721,13 @@ LABEL_24:
     v10[3] = &unk_1E8014918;
     v10[4] = self;
     v12 = v8;
-    v11 = v6;
+    v11 = controllerCopy;
     [(PKAppleCardUtilities *)self _fetchDataIfNecessaryWithCompletion:v10];
   }
 
-  else if (v7)
+  else if (completionCopy)
   {
-    (*(v7 + 2))(v7, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
@@ -796,22 +796,22 @@ uint64_t __88__PKAppleCardUtilities_presentAppleCardUserInvitationFlowWithViewCo
   return result;
 }
 
-- (void)presentAppleCardSharingDetailsForAltDSID:(id)a3 viewController:(id)a4 hideUserDetailHeader:(BOOL)a5 completion:(id)a6
+- (void)presentAppleCardSharingDetailsForAltDSID:(id)d viewController:(id)controller hideUserDetailHeader:(BOOL)header completion:(id)completion
 {
   v23 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  dCopy = d;
+  controllerCopy = controller;
+  completionCopy = completion;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  if (v10 && v11)
+  if (dCopy && controllerCopy)
   {
     v13 = PKLogFacilityTypeGetObject();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v20 = v10;
+      v20 = dCopy;
       v21 = 2112;
-      v22 = v11;
+      v22 = controllerCopy;
       _os_log_impl(&dword_1BD026000, v13, OS_LOG_TYPE_DEFAULT, "Presenting apple card shared user info for altDSID %@ and viewController %@", buf, 0x16u);
     }
 
@@ -820,16 +820,16 @@ uint64_t __88__PKAppleCardUtilities_presentAppleCardUserInvitationFlowWithViewCo
     v14[2] = __112__PKAppleCardUtilities_presentAppleCardSharingDetailsForAltDSID_viewController_hideUserDetailHeader_completion___block_invoke;
     v14[3] = &unk_1E8014940;
     v14[4] = self;
-    v15 = v10;
-    v17 = v12;
-    v18 = a5;
-    v16 = v11;
+    v15 = dCopy;
+    v17 = completionCopy;
+    headerCopy = header;
+    v16 = controllerCopy;
     [(PKAppleCardUtilities *)self _fetchDataIfNecessaryWithCompletion:v14];
   }
 
-  else if (v12)
+  else if (completionCopy)
   {
-    (*(v12 + 2))(v12, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
@@ -920,11 +920,11 @@ LABEL_14:
 LABEL_16:
 }
 
-- (void)didUpdateFamilyMembers:(id)a3
+- (void)didUpdateFamilyMembers:(id)members
 {
-  v4 = a3;
+  membersCopy = members;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [objc_alloc(MEMORY[0x1E69B88A0]) initWithFamilyMembers:v4];
+  v5 = [objc_alloc(MEMORY[0x1E69B88A0]) initWithFamilyMembers:membersCopy];
 
   familyMemberCollection = self->_familyMemberCollection;
   self->_familyMemberCollection = v5;
@@ -932,7 +932,7 @@ LABEL_16:
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)featureApplicationAdded:(id)a3
+- (void)featureApplicationAdded:(id)added
 {
   os_unfair_lock_lock(&self->_lock);
   sentInvitations = self->_sentInvitations;
@@ -941,7 +941,7 @@ LABEL_16:
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)featureApplicationChanged:(id)a3
+- (void)featureApplicationChanged:(id)changed
 {
   os_unfair_lock_lock(&self->_lock);
   sentInvitations = self->_sentInvitations;
@@ -950,7 +950,7 @@ LABEL_16:
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)featureApplicationRemoved:(id)a3
+- (void)featureApplicationRemoved:(id)removed
 {
   os_unfair_lock_lock(&self->_lock);
   sentInvitations = self->_sentInvitations;
@@ -959,14 +959,14 @@ LABEL_16:
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)accountChanged:(id)a3
+- (void)accountChanged:(id)changed
 {
-  v12 = a3;
+  changedCopy = changed;
   os_unfair_lock_lock(&self->_lock);
-  v4 = [(PKAccount *)self->_account accountIdentifier];
-  v5 = [v12 accountIdentifier];
-  account = v4;
-  v7 = v5;
+  accountIdentifier = [(PKAccount *)self->_account accountIdentifier];
+  accountIdentifier2 = [changedCopy accountIdentifier];
+  account = accountIdentifier;
+  v7 = accountIdentifier2;
   v8 = v7;
   if (account == v7)
   {
@@ -996,7 +996,7 @@ LABEL_11:
   if (v10)
   {
 LABEL_10:
-    v11 = v12;
+    v11 = changedCopy;
     account = self->_account;
     self->_account = v11;
     goto LABEL_11;
@@ -1006,15 +1006,15 @@ LABEL_12:
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)accountRemoved:(id)a3
+- (void)accountRemoved:(id)removed
 {
-  v4 = a3;
+  removedCopy = removed;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(PKAccount *)self->_account accountIdentifier];
-  v6 = [v4 accountIdentifier];
+  accountIdentifier = [(PKAccount *)self->_account accountIdentifier];
+  accountIdentifier2 = [removedCopy accountIdentifier];
 
-  account = v5;
-  v8 = v6;
+  account = accountIdentifier;
+  v8 = accountIdentifier2;
   v9 = v8;
   if (account == v8)
   {
@@ -1041,13 +1041,13 @@ LABEL_9:
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)accountUsersChanged:(id)a3 forAccountIdentifier:(id)a4
+- (void)accountUsersChanged:(id)changed forAccountIdentifier:(id)identifier
 {
-  v12 = a3;
-  v6 = a4;
+  changedCopy = changed;
+  identifierCopy = identifier;
   os_unfair_lock_lock(&self->_lock);
   userCollection = [(PKAccount *)self->_account accountIdentifier];
-  v8 = v6;
+  v8 = identifierCopy;
   v9 = v8;
   if (userCollection == v8)
   {
@@ -1066,7 +1066,7 @@ LABEL_9:
   if (v10)
   {
 LABEL_7:
-    v11 = [objc_alloc(MEMORY[0x1E69B8450]) initWithAccountUsers:v12];
+    v11 = [objc_alloc(MEMORY[0x1E69B8450]) initWithAccountUsers:changedCopy];
     userCollection = self->_userCollection;
     self->_userCollection = v11;
 LABEL_9:
@@ -1075,11 +1075,11 @@ LABEL_9:
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (id)_activeAccountUserWithAltDSID:(id)a3
+- (id)_activeAccountUserWithAltDSID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(PKAccountUserCollection *)self->_userCollection accountUserWithAltDSID:v4];
+  v5 = [(PKAccountUserCollection *)self->_userCollection accountUserWithAltDSID:dCopy];
 
   os_unfair_lock_unlock(&self->_lock);
   if (v5 && ([v5 accountState], (PKAccountStateIsTerminal() & 1) == 0))
@@ -1095,17 +1095,17 @@ LABEL_9:
   return v6;
 }
 
-- (id)_pendingSentInvitationWithAltDSID:(id)a3
+- (id)_pendingSentInvitationWithAltDSID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   os_unfair_lock_lock(&self->_lock);
   sentInvitations = self->_sentInvitations;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __58__PKAppleCardUtilities__pendingSentInvitationWithAltDSID___block_invoke;
   v10[3] = &unk_1E8014968;
-  v11 = v4;
-  v6 = v4;
+  v11 = dCopy;
+  v6 = dCopy;
   v7 = [(NSArray *)sentInvitations pk_firstObjectPassingTest:v10];
   os_unfair_lock_unlock(&self->_lock);
   if (v7 && ([v7 applicationState], (PKFeatureApplicationStateIsTerminal() & 1) == 0))
@@ -1160,9 +1160,9 @@ uint64_t __58__PKAppleCardUtilities__pendingSentInvitationWithAltDSID___block_in
   return v9;
 }
 
-- (void)_fetchDataIfNecessaryWithCompletion:(id)a3
+- (void)_fetchDataIfNecessaryWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = objc_alloc_init(MEMORY[0x1E69B8658]);
   objc_initWeak(location, self);
   os_unfair_lock_lock(&self->_lock);
@@ -1240,14 +1240,14 @@ uint64_t __58__PKAppleCardUtilities__pendingSentInvitationWithAltDSID___block_in
     objc_destroyWeak(&v17);
   }
 
-  v11 = [MEMORY[0x1E695DFB0] null];
+  null = [MEMORY[0x1E695DFB0] null];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __60__PKAppleCardUtilities__fetchDataIfNecessaryWithCompletion___block_invoke_63;
   v14[3] = &unk_1E8014A58;
-  v12 = v4;
+  v12 = completionCopy;
   v15 = v12;
-  v13 = [v5 evaluateWithInput:v11 completion:v14];
+  v13 = [v5 evaluateWithInput:null completion:v14];
 
   objc_destroyWeak(location);
 }
@@ -1547,14 +1547,14 @@ uint64_t __60__PKAppleCardUtilities__fetchDataIfNecessaryWithCompletion___block_
   v2 = [MEMORY[0x1E695CD80] descriptorForRequiredKeysForStyle:0];
   v11[0] = v2;
   v3 = _MergedGlobals_617();
-  v4 = [MEMORY[0x1E69DC938] currentDevice];
-  v5 = -[objc_class descriptorForRequiredKeysWithThreeDTouchEnabled:](v3, "descriptorForRequiredKeysWithThreeDTouchEnabled:", [v4 _supportsForceTouch]);
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  v5 = -[objc_class descriptorForRequiredKeysWithThreeDTouchEnabled:](v3, "descriptorForRequiredKeysWithThreeDTouchEnabled:", [currentDevice _supportsForceTouch]);
   v11[1] = v5;
-  v6 = [off_1EE98A650() descriptorForRequiredKeys];
-  v11[2] = v6;
-  v7 = [off_1EE98A658() descriptorForRequiredKeys];
+  descriptorForRequiredKeys = [off_1EE98A650() descriptorForRequiredKeys];
+  v11[2] = descriptorForRequiredKeys;
+  descriptorForRequiredKeys2 = [off_1EE98A658() descriptorForRequiredKeys];
   v8 = *MEMORY[0x1E695C208];
-  v11[3] = v7;
+  v11[3] = descriptorForRequiredKeys2;
   v11[4] = v8;
   v11[5] = *MEMORY[0x1E695C330];
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:6];

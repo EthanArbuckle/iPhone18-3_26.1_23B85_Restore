@@ -1,22 +1,22 @@
 @interface CESRSpeechItemRanker_Contact
-- (BOOL)addSet:(id)a3;
-- (BOOL)enumerateRankedItemsWithError:(id *)a3 usingBlock:(id)a4;
-- (CESRSpeechItemRanker_Contact)initWithInstance:(id)a3 speechProfileSite:(id)a4 categoryGroup:(id)a5;
-- (CESRSpeechItemRanker_Contact)initWithInstance:(id)a3 speechProfileSite:(id)a4 categoryGroup:(id)a5 priorRetriever:(id)a6;
+- (BOOL)addSet:(id)set;
+- (BOOL)enumerateRankedItemsWithError:(id *)error usingBlock:(id)block;
+- (CESRSpeechItemRanker_Contact)initWithInstance:(id)instance speechProfileSite:(id)site categoryGroup:(id)group;
+- (CESRSpeechItemRanker_Contact)initWithInstance:(id)instance speechProfileSite:(id)site categoryGroup:(id)group priorRetriever:(id)retriever;
 - (id)getActivatedCodepathIds;
 - (void)_activateEnrolledTrialExperiments;
 @end
 
 @implementation CESRSpeechItemRanker_Contact
 
-- (BOOL)enumerateRankedItemsWithError:(id *)a3 usingBlock:(id)a4
+- (BOOL)enumerateRankedItemsWithError:(id *)error usingBlock:(id)block
 {
   v37 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [(CESRSpeechItemRanker *)self calculateItemLimit];
+  blockCopy = block;
+  calculateItemLimit = [(CESRSpeechItemRanker *)self calculateItemLimit];
   if ([(NSString *)self->_trialContactRankingStrategy isEqualToString:@"PeopleSuggesterTop20"])
   {
-    v8 = [(CESRPriorRetriever *)self->_priorRetriever allPriorInfoWithThreshold:v7];
+    v8 = [(CESRPriorRetriever *)self->_priorRetriever allPriorInfoWithThreshold:calculateItemLimit];
     v9 = *MEMORY[0x277CEF0E8];
     if (!os_log_type_enabled(*MEMORY[0x277CEF0E8], OS_LOG_TYPE_INFO))
     {
@@ -34,7 +34,7 @@ LABEL_7:
 
   if ([(NSString *)self->_trialContactRankingStrategy isEqualToString:@"MegadomeContactTop20"])
   {
-    v8 = [(CESRPriorRetriever *)self->_priorRetriever allPriorInfoWithThreshold:v7];
+    v8 = [(CESRPriorRetriever *)self->_priorRetriever allPriorInfoWithThreshold:calculateItemLimit];
     v9 = *MEMORY[0x277CEF0E8];
     if (!os_log_type_enabled(*MEMORY[0x277CEF0E8], OS_LOG_TYPE_INFO))
     {
@@ -65,7 +65,7 @@ LABEL_7:
 
   else
   {
-    v8 = [(CESRPriorRetriever *)self->_priorRetriever allPriorInfoWithThreshold:v7];
+    v8 = [(CESRPriorRetriever *)self->_priorRetriever allPriorInfoWithThreshold:calculateItemLimit];
   }
 
 LABEL_13:
@@ -88,8 +88,8 @@ LABEL_13:
     goto LABEL_20;
   }
 
-  v13 = v7 - v11;
-  if (v7 < v11)
+  v13 = calculateItemLimit - v11;
+  if (calculateItemLimit < v11)
   {
     v14 = *MEMORY[0x277CEF0E8];
     if (os_log_type_enabled(*MEMORY[0x277CEF0E8], OS_LOG_TYPE_ERROR))
@@ -107,7 +107,7 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  v36 = v7 - v11;
+  v36 = calculateItemLimit - v11;
   v21 = *MEMORY[0x277CEF0E8];
   if (os_log_type_enabled(*MEMORY[0x277CEF0E8], OS_LOG_TYPE_INFO))
   {
@@ -116,7 +116,7 @@ LABEL_20:
     v29 = 1024;
     v30 = v12;
     v31 = 1024;
-    v32 = v7;
+    v32 = calculateItemLimit;
     v33 = 1024;
     v34 = v13;
     _os_log_impl(&dword_225EEB000, v21, OS_LOG_TYPE_INFO, "%s Received priors for %u contacts with limit: %u allowance: %u", v27, 0x1Eu);
@@ -129,26 +129,26 @@ LABEL_21:
   v23[3] = &unk_27857F078;
   v16 = v8;
   v24 = v16;
-  v17 = v6;
+  v17 = blockCopy;
   v25 = v17;
   v26 = buf;
   v22.receiver = self;
   v22.super_class = CESRSpeechItemRanker_Contact;
-  v18 = [(CESRSpeechItemRanker *)&v22 enumerateRankedItemsWithError:a3 usingBlock:v23];
+  v18 = [(CESRSpeechItemRanker *)&v22 enumerateRankedItemsWithError:error usingBlock:v23];
 
   _Block_object_dispose(buf, 8);
   v19 = *MEMORY[0x277D85DE8];
   return v18;
 }
 
-- (BOOL)addSet:(id)a3
+- (BOOL)addSet:(id)set
 {
-  v4 = a3;
-  if ([v4 itemType] == 19668)
+  setCopy = set;
+  if ([setCopy itemType] == 19668)
   {
     v7.receiver = self;
     v7.super_class = CESRSpeechItemRanker_Contact;
-    v5 = [(CESRSpeechItemRanker *)&v7 addSet:v4];
+    v5 = [(CESRSpeechItemRanker *)&v7 addSet:setCopy];
   }
 
   else
@@ -170,8 +170,8 @@ LABEL_21:
 
   v6.receiver = self;
   v6.super_class = CESRSpeechItemRanker_Contact;
-  v3 = [(CESRSpeechItemRanker *)&v6 enumeratedItemCount];
-  if (v3 >= [(CESRSpeechItemRanker *)self calculateItemLimit])
+  enumeratedItemCount = [(CESRSpeechItemRanker *)&v6 enumeratedItemCount];
+  if (enumeratedItemCount >= [(CESRSpeechItemRanker *)self calculateItemLimit])
   {
     [(NSMutableSet *)self->_codepathIds addObject:@"502484ea-7a73-454a-8e1f-9f04983d6358"];
   }
@@ -185,23 +185,23 @@ LABEL_21:
 {
   v6 = [MEMORY[0x277D73660] clientWithIdentifier:111];
   v3 = [v6 levelForFactor:@"contact_boosting_strategy" withNamespaceName:@"SIRI_SPEECH_SV_SPEECH_PROFILE"];
-  v4 = [v3 stringValue];
+  stringValue = [v3 stringValue];
   trialContactRankingStrategy = self->_trialContactRankingStrategy;
-  self->_trialContactRankingStrategy = v4;
+  self->_trialContactRankingStrategy = stringValue;
 
   self->_didFetchExperiments = 1;
 }
 
-- (CESRSpeechItemRanker_Contact)initWithInstance:(id)a3 speechProfileSite:(id)a4 categoryGroup:(id)a5 priorRetriever:(id)a6
+- (CESRSpeechItemRanker_Contact)initWithInstance:(id)instance speechProfileSite:(id)site categoryGroup:(id)group priorRetriever:(id)retriever
 {
-  v11 = a6;
+  retrieverCopy = retriever;
   v17.receiver = self;
   v17.super_class = CESRSpeechItemRanker_Contact;
-  v12 = [(CESRSpeechItemRanker *)&v17 initWithInstance:a3 speechProfileSite:a4 categoryGroup:a5];
+  v12 = [(CESRSpeechItemRanker *)&v17 initWithInstance:instance speechProfileSite:site categoryGroup:group];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_priorRetriever, a6);
+    objc_storeStrong(&v12->_priorRetriever, retriever);
     v14 = [MEMORY[0x277CBEB58] set];
     codepathIds = v13->_codepathIds;
     v13->_codepathIds = v14;
@@ -215,11 +215,11 @@ LABEL_21:
   return v13;
 }
 
-- (CESRSpeechItemRanker_Contact)initWithInstance:(id)a3 speechProfileSite:(id)a4 categoryGroup:(id)a5
+- (CESRSpeechItemRanker_Contact)initWithInstance:(id)instance speechProfileSite:(id)site categoryGroup:(id)group
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  instanceCopy = instance;
+  siteCopy = site;
+  groupCopy = group;
   trialContactRankingStrategy = self->_trialContactRankingStrategy;
   self->_trialContactRankingStrategy = 0;
 
@@ -232,7 +232,7 @@ LABEL_21:
     v12 = v13;
   }
 
-  v14 = [(CESRSpeechItemRanker_Contact *)self initWithInstance:v8 speechProfileSite:v9 categoryGroup:v10 priorRetriever:v12];
+  v14 = [(CESRSpeechItemRanker_Contact *)self initWithInstance:instanceCopy speechProfileSite:siteCopy categoryGroup:groupCopy priorRetriever:v12];
 
   return v14;
 }

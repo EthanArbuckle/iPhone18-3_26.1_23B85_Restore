@@ -13,18 +13,18 @@
 - (GKUtilityService)utilityService;
 - (id)achievementsDefaultIcon;
 - (id)achievementsNotStartedIcon;
-- (id)avatarSourceWithDimension:(int64_t)a3;
+- (id)avatarSourceWithDimension:(int64_t)dimension;
 - (id)defaultLeaderboardIcon;
 - (id)eventIconImage;
-- (id)groupImageSourceWithDimension:(int64_t)a3;
-- (id)imageNamed:(id)a3;
-- (id)localImageSourceWithName:(id)a3 imageBrush:(id)a4;
-- (id)monogramSourceWithDimension:(int64_t)a3;
-- (id)networkImageSourceWithName:(id)a3 imageBrush:(id)a4;
-- (id)placeholderSourceWithDimension:(int64_t)a3;
+- (id)groupImageSourceWithDimension:(int64_t)dimension;
+- (id)imageNamed:(id)named;
+- (id)localImageSourceWithName:(id)name imageBrush:(id)brush;
+- (id)monogramSourceWithDimension:(int64_t)dimension;
+- (id)networkImageSourceWithName:(id)name imageBrush:(id)brush;
+- (id)placeholderSourceWithDimension:(int64_t)dimension;
 - (id)playerPickerUnselectedImage;
-- (id)resourceForSelector:(SEL)a3 missingHandler:(id)a4;
-- (id)resourceWithName:(id)a3 missingHandler:(id)a4;
+- (id)resourceForSelector:(SEL)selector missingHandler:(id)handler;
+- (id)resourceWithName:(id)name missingHandler:(id)handler;
 - (id)secondaryLabelCompositingFilter;
 - (void)clearResourceCache;
 @end
@@ -33,16 +33,16 @@
 
 - (GKUtilityService)utilityService
 {
-  v2 = [MEMORY[0x277D0C010] daemonProxy];
-  v3 = [v2 utilityService];
+  daemonProxy = [MEMORY[0x277D0C010] daemonProxy];
+  utilityService = [daemonProxy utilityService];
 
-  return v3;
+  return utilityService;
 }
 
 - (void)clearResourceCache
 {
-  v2 = [(GKUITheme *)self resourceCache];
-  [v2 removeAllObjects];
+  resourceCache = [(GKUITheme *)self resourceCache];
+  [resourceCache removeAllObjects];
 
   +[GKImageSource clearCache];
 }
@@ -82,17 +82,17 @@ uint64_t __24__GKUITheme_sharedTheme__block_invoke()
   return v2;
 }
 
-- (id)imageNamed:(id)a3
+- (id)imageNamed:(id)named
 {
   v3 = MEMORY[0x277D755B8];
   v4 = GKThemeBundle_onceToken[0];
-  v5 = a3;
+  namedCopy = named;
   if (v4 != -1)
   {
     [GKUITheme imageNamed:];
   }
 
-  v6 = [v3 imageNamed:v5 inBundle:GKThemeBundle_bundle];
+  v6 = [v3 imageNamed:namedCopy inBundle:GKThemeBundle_bundle];
 
   return v6;
 }
@@ -166,45 +166,45 @@ id __27__GKUITheme_eventIconImage__block_invoke(uint64_t a1)
   return result;
 }
 
-- (id)resourceForSelector:(SEL)a3 missingHandler:(id)a4
+- (id)resourceForSelector:(SEL)selector missingHandler:(id)handler
 {
-  v6 = a4;
-  v7 = NSStringFromSelector(a3);
-  v8 = [(GKUITheme *)self resourceWithName:v7 missingHandler:v6];
+  handlerCopy = handler;
+  v7 = NSStringFromSelector(selector);
+  v8 = [(GKUITheme *)self resourceWithName:v7 missingHandler:handlerCopy];
 
   return v8;
 }
 
-- (id)resourceWithName:(id)a3 missingHandler:(id)a4
+- (id)resourceWithName:(id)name missingHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(GKUITheme *)self resourceCache];
-  v9 = [v8 objectForKey:v6];
+  nameCopy = name;
+  handlerCopy = handler;
+  resourceCache = [(GKUITheme *)self resourceCache];
+  v9 = [resourceCache objectForKey:nameCopy];
   v10 = v9;
-  if (v7 && !v9)
+  if (handlerCopy && !v9)
   {
-    v10 = v7[2](v7);
-    [v8 setObject:v10 forKey:v6];
+    v10 = handlerCopy[2](handlerCopy);
+    [resourceCache setObject:v10 forKey:nameCopy];
   }
 
   return v10;
 }
 
-- (id)networkImageSourceWithName:(id)a3 imageBrush:(id)a4
+- (id)networkImageSourceWithName:(id)name imageBrush:(id)brush
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [(GKImageSource *)[GKNetworkImageSource alloc] initWithName:v6 imageBrush:v5];
+  brushCopy = brush;
+  nameCopy = name;
+  v7 = [(GKImageSource *)[GKNetworkImageSource alloc] initWithName:nameCopy imageBrush:brushCopy];
 
   return v7;
 }
 
-- (id)localImageSourceWithName:(id)a3 imageBrush:(id)a4
+- (id)localImageSourceWithName:(id)name imageBrush:(id)brush
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [(GKImageSource *)[GKLocalImageSource alloc] initWithName:v6 imageBrush:v5];
+  brushCopy = brush;
+  nameCopy = name;
+  v7 = [(GKImageSource *)[GKLocalImageSource alloc] initWithName:nameCopy imageBrush:brushCopy];
 
   return v7;
 }
@@ -271,7 +271,7 @@ id __50__GKUITheme_untreatedAchievementImageDetailSource__block_invoke(uint64_t 
   return v3;
 }
 
-- (id)avatarSourceWithDimension:(int64_t)a3
+- (id)avatarSourceWithDimension:(int64_t)dimension
 {
   v5 = MEMORY[0x277CCACA8];
   v6 = [MEMORY[0x277CCABB0] numberWithInteger:?];
@@ -282,7 +282,7 @@ id __50__GKUITheme_untreatedAchievementImageDetailSource__block_invoke(uint64_t 
   v10[2] = __39__GKUITheme_avatarSourceWithDimension___block_invoke;
   v10[3] = &unk_27967F7A8;
   v10[4] = self;
-  v10[5] = a3;
+  v10[5] = dimension;
   v8 = [(GKUITheme *)self resourceWithName:v7 missingHandler:v10];
 
   return v8;
@@ -297,7 +297,7 @@ id __39__GKUITheme_avatarSourceWithDimension___block_invoke(uint64_t a1)
   return v3;
 }
 
-- (id)monogramSourceWithDimension:(int64_t)a3
+- (id)monogramSourceWithDimension:(int64_t)dimension
 {
   v5 = MEMORY[0x277CCACA8];
   v6 = [MEMORY[0x277CCABB0] numberWithInteger:?];
@@ -308,7 +308,7 @@ id __39__GKUITheme_avatarSourceWithDimension___block_invoke(uint64_t a1)
   v10[2] = __41__GKUITheme_monogramSourceWithDimension___block_invoke;
   v10[3] = &unk_27967F7A8;
   v10[4] = self;
-  v10[5] = a3;
+  v10[5] = dimension;
   v8 = [(GKUITheme *)self resourceWithName:v7 missingHandler:v10];
 
   return v8;
@@ -323,7 +323,7 @@ id __41__GKUITheme_monogramSourceWithDimension___block_invoke(uint64_t a1)
   return v3;
 }
 
-- (id)placeholderSourceWithDimension:(int64_t)a3
+- (id)placeholderSourceWithDimension:(int64_t)dimension
 {
   v5 = MEMORY[0x277CCACA8];
   v6 = [MEMORY[0x277CCABB0] numberWithInteger:?];
@@ -334,7 +334,7 @@ id __41__GKUITheme_monogramSourceWithDimension___block_invoke(uint64_t a1)
   v10[2] = __44__GKUITheme_placeholderSourceWithDimension___block_invoke;
   v10[3] = &unk_27967F7A8;
   v10[4] = self;
-  v10[5] = a3;
+  v10[5] = dimension;
   v8 = [(GKUITheme *)self resourceWithName:v7 missingHandler:v10];
 
   return v8;
@@ -349,7 +349,7 @@ id __44__GKUITheme_placeholderSourceWithDimension___block_invoke(uint64_t a1)
   return v3;
 }
 
-- (id)groupImageSourceWithDimension:(int64_t)a3
+- (id)groupImageSourceWithDimension:(int64_t)dimension
 {
   v5 = MEMORY[0x277CCACA8];
   v6 = [MEMORY[0x277CCABB0] numberWithInteger:?];
@@ -360,7 +360,7 @@ id __44__GKUITheme_placeholderSourceWithDimension___block_invoke(uint64_t a1)
   v10[2] = __43__GKUITheme_groupImageSourceWithDimension___block_invoke;
   v10[3] = &unk_27967F7A8;
   v10[4] = self;
-  v10[5] = a3;
+  v10[5] = dimension;
   v8 = [(GKUITheme *)self resourceWithName:v7 missingHandler:v10];
 
   return v8;
@@ -487,8 +487,8 @@ id __41__GKUITheme_iconLeaderboardSetListSource__block_invoke(uint64_t a1)
 - (id)playerPickerUnselectedImage
 {
   v2 = [MEMORY[0x277D755B8] systemImageNamed:@"circle" compatibleWithTraitCollection:0];
-  v3 = [MEMORY[0x277D75348] secondaryLabelColor];
-  v4 = [v2 _flatImageWithColor:v3];
+  secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+  v4 = [v2 _flatImageWithColor:secondaryLabelColor];
 
   return v4;
 }

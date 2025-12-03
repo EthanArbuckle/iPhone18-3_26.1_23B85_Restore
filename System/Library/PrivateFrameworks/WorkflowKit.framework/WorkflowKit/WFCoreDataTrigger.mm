@@ -8,8 +8,8 @@
 
 - (id)trigger
 {
-  v2 = [(WFCoreDataTrigger *)self data];
-  v3 = [WFTrigger triggerWithSerializedData:v2];
+  data = [(WFCoreDataTrigger *)self data];
+  v3 = [WFTrigger triggerWithSerializedData:data];
 
   return v3;
 }
@@ -17,24 +17,24 @@
 - (id)descriptor
 {
   v20 = [WFConfiguredTrigger alloc];
-  v19 = [(WFCoreDataTrigger *)self identifier];
-  v21 = [(WFCoreDataTrigger *)self shortcut];
-  v3 = [v21 workflowID];
-  v4 = [(WFCoreDataTrigger *)self trigger];
-  v18 = [(WFCoreDataTrigger *)self shouldPrompt];
-  v17 = [(WFCoreDataTrigger *)self shouldNotify];
-  v5 = [(WFCoreDataTrigger *)self shouldRecur];
-  v6 = [(WFCoreDataTrigger *)self potentialLoopDetected];
-  v7 = [(WFCoreDataTrigger *)self enabled];
-  v8 = [(WFCoreDataTrigger *)self disablementReason];
-  v9 = [(WFCoreDataTrigger *)self source];
-  v10 = [(WFCoreDataTrigger *)self notificationLevel];
-  v11 = [(WFCoreDataTrigger *)self editableShortcut];
-  v12 = [(WFCoreDataTrigger *)self selectedEntryMetadata];
-  LOBYTE(v16) = v11;
-  BYTE1(v15) = v7;
-  LOBYTE(v15) = v6;
-  v13 = [(WFConfiguredTrigger *)v20 initWithIdentifier:v19 workflowID:v3 trigger:v4 shouldPrompt:v18 shouldNotify:v17 shouldRecur:v5 potentialLoopDetected:v15 enabled:v8 disablementReason:__PAIR64__(v10 triggerSource:v9) notificationLevel:v16 editableShortcut:v12 selectedEntryMetadata:?];
+  identifier = [(WFCoreDataTrigger *)self identifier];
+  shortcut = [(WFCoreDataTrigger *)self shortcut];
+  workflowID = [shortcut workflowID];
+  trigger = [(WFCoreDataTrigger *)self trigger];
+  shouldPrompt = [(WFCoreDataTrigger *)self shouldPrompt];
+  shouldNotify = [(WFCoreDataTrigger *)self shouldNotify];
+  shouldRecur = [(WFCoreDataTrigger *)self shouldRecur];
+  potentialLoopDetected = [(WFCoreDataTrigger *)self potentialLoopDetected];
+  enabled = [(WFCoreDataTrigger *)self enabled];
+  disablementReason = [(WFCoreDataTrigger *)self disablementReason];
+  source = [(WFCoreDataTrigger *)self source];
+  notificationLevel = [(WFCoreDataTrigger *)self notificationLevel];
+  editableShortcut = [(WFCoreDataTrigger *)self editableShortcut];
+  selectedEntryMetadata = [(WFCoreDataTrigger *)self selectedEntryMetadata];
+  LOBYTE(v16) = editableShortcut;
+  BYTE1(v15) = enabled;
+  LOBYTE(v15) = potentialLoopDetected;
+  v13 = [(WFConfiguredTrigger *)v20 initWithIdentifier:identifier workflowID:workflowID trigger:trigger shouldPrompt:shouldPrompt shouldNotify:shouldNotify shouldRecur:shouldRecur potentialLoopDetected:v15 enabled:disablementReason disablementReason:__PAIR64__(notificationLevel triggerSource:source) notificationLevel:v16 editableShortcut:selectedEntryMetadata selectedEntryMetadata:?];
 
   return v13;
 }

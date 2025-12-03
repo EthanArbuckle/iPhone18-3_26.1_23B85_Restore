@@ -23,23 +23,23 @@
 
 + (uint64_t)_createFrameWithPage:()WebInternal frameName:frameView:ownerElement:
 {
-  v3 = *(a1 + 1);
-  *a1 = &unk_1F472BD08;
-  *(a1 + 1) = 0;
+  v3 = *(self + 1);
+  *self = &unk_1F472BD08;
+  *(self + 1) = 0;
   if (v3)
   {
-    v4 = a1;
+    selfCopy = self;
 
-    a1 = v4;
+    self = selfCopy;
     v2 = vars8;
   }
 
-  return WTF::fastFree(a1, a2);
+  return WTF::fastFree(self, a2);
 }
 
 + (id)_createFrameWithPage:()WebInternal frameName:frameView:ownerElement:
 {
-  v5 = *(a1 + 8);
+  v5 = *(self + 8);
   v6 = WTF::fastMalloc(0x28);
   result = WebCore::LocalFrameLoaderClient::LocalFrameLoaderClient(v6, a2);
   *(v6 + 2) = 0;

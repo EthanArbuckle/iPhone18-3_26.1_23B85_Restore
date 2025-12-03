@@ -1,8 +1,8 @@
 @interface WorkoutAlertTrackStatusChange
 - (NSString)description;
 - (_TtC11WorkoutCore29WorkoutAlertTrackStatusChange)init;
-- (id)spokenDescriptionWithFormattingManager:(id)a3;
-- (id)spokenUserDataWithFormattingManager:(id)a3;
+- (id)spokenDescriptionWithFormattingManager:(id)manager;
+- (id)spokenUserDataWithFormattingManager:(id)manager;
 @end
 
 @implementation WorkoutAlertTrackStatusChange
@@ -14,7 +14,7 @@
   return v2;
 }
 
-- (id)spokenDescriptionWithFormattingManager:(id)a3
+- (id)spokenDescriptionWithFormattingManager:(id)manager
 {
   v3 = specialized WorkoutAlertTrackStatusChange.localizedAlertTitle.getter();
   v4 = MEMORY[0x20F2E6C00](v3);
@@ -22,7 +22,7 @@
   return v4;
 }
 
-- (id)spokenUserDataWithFormattingManager:(id)a3
+- (id)spokenUserDataWithFormattingManager:(id)manager
 {
   v3 = type metadata accessor for BasicVoiceFeedbackAlerts();
   v4 = *(v3 - 8);

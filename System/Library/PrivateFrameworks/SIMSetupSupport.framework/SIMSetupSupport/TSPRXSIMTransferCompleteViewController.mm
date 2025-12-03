@@ -1,30 +1,30 @@
 @interface TSPRXSIMTransferCompleteViewController
-- (TSPRXSIMTransferCompleteViewController)initWithSelectedPlansCount:(int)a3 selectedPlansFailedTransferCount:(int)a4 isDisembarkUIRequired:(BOOL)a5;
-- (TSPRXSIMTransferCompleteViewController)initWithoutTargetSyncAndSelectedPlansCount:(int)a3;
+- (TSPRXSIMTransferCompleteViewController)initWithSelectedPlansCount:(int)count selectedPlansFailedTransferCount:(int)transferCount isDisembarkUIRequired:(BOOL)required;
+- (TSPRXSIMTransferCompleteViewController)initWithoutTargetSyncAndSelectedPlansCount:(int)count;
 - (TSSIMSetupFlowDelegate)delegate;
 - (id)_createPKGlyphView;
-- (id)_getTitleWhenSyncWithTarget:(BOOL)a3 selectedPlansCount:(int)a4 selectedPlansFailedTransferCount:(int)a5;
+- (id)_getTitleWhenSyncWithTarget:(BOOL)target selectedPlansCount:(int)count selectedPlansFailedTransferCount:(int)transferCount;
 - (void)_updateLayoutConstraint;
 - (void)viewDidLoad;
 @end
 
 @implementation TSPRXSIMTransferCompleteViewController
 
-- (TSPRXSIMTransferCompleteViewController)initWithoutTargetSyncAndSelectedPlansCount:(int)a3
+- (TSPRXSIMTransferCompleteViewController)initWithoutTargetSyncAndSelectedPlansCount:(int)count
 {
   v5.receiver = self;
   v5.super_class = TSPRXSIMTransferCompleteViewController;
   result = [(TSPRXSIMTransferCompleteViewController *)&v5 init];
   if (result)
   {
-    result->_selectedPlansCount = a3;
+    result->_selectedPlansCount = count;
     result->_isSyncWithTargetResults = 0;
   }
 
   return result;
 }
 
-- (TSPRXSIMTransferCompleteViewController)initWithSelectedPlansCount:(int)a3 selectedPlansFailedTransferCount:(int)a4 isDisembarkUIRequired:(BOOL)a5
+- (TSPRXSIMTransferCompleteViewController)initWithSelectedPlansCount:(int)count selectedPlansFailedTransferCount:(int)transferCount isDisembarkUIRequired:(BOOL)required
 {
   v9.receiver = self;
   v9.super_class = TSPRXSIMTransferCompleteViewController;
@@ -32,9 +32,9 @@
   if (result)
   {
     result->_isSyncWithTargetResults = 1;
-    result->_selectedPlansCount = a3;
-    result->_selectedPlansFailedTransferCount = a4;
-    result->_isDisembarkUIRequired = a5;
+    result->_selectedPlansCount = count;
+    result->_selectedPlansFailedTransferCount = transferCount;
+    result->_isDisembarkUIRequired = required;
   }
 
   return result;
@@ -54,20 +54,20 @@
   selectedPlansFailedTransferCount = self->_selectedPlansFailedTransferCount;
   if (selectedPlansFailedTransferCount)
   {
-    v6 = [MEMORY[0x277D755B8] systemImageNamed:@"exclamationmark.triangle.fill"];
-    v7 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:v6];
+    contentView2 = [MEMORY[0x277D755B8] systemImageNamed:@"exclamationmark.triangle.fill"];
+    v7 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:contentView2];
     triangleImageView = self->_triangleImageView;
     self->_triangleImageView = v7;
 
-    v9 = [MEMORY[0x277D75348] systemYellowColor];
-    [(UIImageView *)self->_triangleImageView setTintColor:v9];
+    systemYellowColor = [MEMORY[0x277D75348] systemYellowColor];
+    [(UIImageView *)self->_triangleImageView setTintColor:systemYellowColor];
 
     v10 = self->_triangleImageView;
-    v11 = [MEMORY[0x277CE15D0] effect];
-    [(UIImageView *)v10 addSymbolEffect:v11];
+    effect = [MEMORY[0x277CE15D0] effect];
+    [(UIImageView *)v10 addSymbolEffect:effect];
 
-    v12 = [(TSPRXSIMTransferCompleteViewController *)self contentView];
-    [v12 addSubview:self->_triangleImageView];
+    contentView = [(TSPRXSIMTransferCompleteViewController *)self contentView];
+    [contentView addSubview:self->_triangleImageView];
   }
 
   else
@@ -77,13 +77,13 @@
       goto LABEL_5;
     }
 
-    v21 = [(TSPRXSIMTransferCompleteViewController *)self _createPKGlyphView];
+    _createPKGlyphView = [(TSPRXSIMTransferCompleteViewController *)self _createPKGlyphView];
     glyphView = self->_glyphView;
-    self->_glyphView = v21;
+    self->_glyphView = _createPKGlyphView;
 
     [(PKGlyphView *)self->_glyphView setState:11];
-    v6 = [(TSPRXSIMTransferCompleteViewController *)self contentView];
-    [v6 addSubview:self->_glyphView];
+    contentView2 = [(TSPRXSIMTransferCompleteViewController *)self contentView];
+    [contentView2 addSubview:self->_glyphView];
   }
 
 LABEL_5:
@@ -108,8 +108,8 @@ LABEL_5:
   v18 = [v17 actionWithTitle:v14 style:0 handler:&v23];
   [(TSPRXSIMTransferCompleteViewController *)self setDoneAction:v18, v23, v24, v25, v26];
 
-  v19 = [(TSPRXSIMTransferCompleteViewController *)self doneAction];
-  v20 = [(TSPRXSIMTransferCompleteViewController *)self addAction:v19];
+  doneAction = [(TSPRXSIMTransferCompleteViewController *)self doneAction];
+  v20 = [(TSPRXSIMTransferCompleteViewController *)self addAction:doneAction];
 
   [(TSPRXSIMTransferCompleteViewController *)self _updateLayoutConstraint];
   objc_destroyWeak(&v27);
@@ -154,8 +154,8 @@ void __53__TSPRXSIMTransferCompleteViewController_viewDidLoad__block_invoke(uint
   v34[5] = *MEMORY[0x277D85DE8];
   if (self->_glyphView || self->_triangleImageView)
   {
-    v3 = [(TSPRXSIMTransferCompleteViewController *)self contentView];
-    [v3 bounds];
+    contentView = [(TSPRXSIMTransferCompleteViewController *)self contentView];
+    [contentView bounds];
     v5 = v4;
     v7 = v6;
 
@@ -178,29 +178,29 @@ void __53__TSPRXSIMTransferCompleteViewController_viewDidLoad__block_invoke(uint
 
     v25 = MEMORY[0x277CCAAD0];
     v11 = glyphView;
-    v32 = [v11 topAnchor];
-    v33 = [(TSPRXSIMTransferCompleteViewController *)self contentView];
-    v31 = [v33 mainContentGuide];
-    v30 = [v31 topAnchor];
-    v29 = [v32 constraintGreaterThanOrEqualToAnchor:v30];
+    topAnchor = [v11 topAnchor];
+    contentView2 = [(TSPRXSIMTransferCompleteViewController *)self contentView];
+    mainContentGuide = [contentView2 mainContentGuide];
+    topAnchor2 = [mainContentGuide topAnchor];
+    v29 = [topAnchor constraintGreaterThanOrEqualToAnchor:topAnchor2];
     v34[0] = v29;
-    v27 = [v11 centerXAnchor];
-    v28 = [(TSPRXSIMTransferCompleteViewController *)self contentView];
-    v26 = [v28 mainContentGuide];
-    v24 = [v26 centerXAnchor];
-    v23 = [v27 constraintEqualToAnchor:v24];
+    centerXAnchor = [v11 centerXAnchor];
+    contentView3 = [(TSPRXSIMTransferCompleteViewController *)self contentView];
+    mainContentGuide2 = [contentView3 mainContentGuide];
+    centerXAnchor2 = [mainContentGuide2 centerXAnchor];
+    v23 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v34[1] = v23;
-    v22 = [v11 centerYAnchor];
-    v12 = [(TSPRXSIMTransferCompleteViewController *)self contentView];
-    v13 = [v12 mainContentGuide];
-    v14 = [v13 centerYAnchor];
-    v15 = [v22 constraintEqualToAnchor:v14];
+    centerYAnchor = [v11 centerYAnchor];
+    contentView4 = [(TSPRXSIMTransferCompleteViewController *)self contentView];
+    mainContentGuide3 = [contentView4 mainContentGuide];
+    centerYAnchor2 = [mainContentGuide3 centerYAnchor];
+    v15 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v34[2] = v15;
-    v16 = [v11 widthAnchor];
-    v17 = [v16 constraintEqualToConstant:v9];
+    widthAnchor = [v11 widthAnchor];
+    v17 = [widthAnchor constraintEqualToConstant:v9];
     v34[3] = v17;
-    v18 = [v11 heightAnchor];
-    v19 = [v18 constraintEqualToConstant:v9];
+    heightAnchor = [v11 heightAnchor];
+    v19 = [heightAnchor constraintEqualToConstant:v9];
     v34[4] = v19;
     v20 = [MEMORY[0x277CBEA60] arrayWithObjects:v34 count:5];
     [v25 activateConstraints:v20];
@@ -211,24 +211,24 @@ void __53__TSPRXSIMTransferCompleteViewController_viewDidLoad__block_invoke(uint
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_getTitleWhenSyncWithTarget:(BOOL)a3 selectedPlansCount:(int)a4 selectedPlansFailedTransferCount:(int)a5
+- (id)_getTitleWhenSyncWithTarget:(BOOL)target selectedPlansCount:(int)count selectedPlansFailedTransferCount:(int)transferCount
 {
-  v7 = a3;
+  targetCopy = target;
   v8 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v9 = v8;
   v10 = @"PRXCARD_TARGET_TRANSFER_FAILED_TITLE";
-  if (!a5)
+  if (!transferCount)
   {
     v10 = @"PRXCARD_TARGET_TRANSFER_COMPLETE_TITLE";
   }
 
   v11 = @"PRXCARD_SOURCE_COMPLETE_SINGLE_TITLE";
-  if (a4 > 1)
+  if (count > 1)
   {
     v11 = @"PRXCARD_SOURCE_COMPLETE_MULTIPLE_TITLE";
   }
 
-  if (v7)
+  if (targetCopy)
   {
     v12 = v10;
   }

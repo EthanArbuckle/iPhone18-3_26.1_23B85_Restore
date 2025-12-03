@@ -1,15 +1,15 @@
 @interface SPProactiveTopic
-+ (id)proactiveTopicWithResult:(id)a3;
++ (id)proactiveTopicWithResult:(id)result;
 @end
 
 @implementation SPProactiveTopic
 
-+ (id)proactiveTopicWithResult:(id)a3
++ (id)proactiveTopicWithResult:(id)result
 {
-  v3 = a3;
+  resultCopy = result;
   v4 = [SPProactiveTopic alloc];
-  v5 = [v3 identifier];
-  v6 = [(SFLocalTopic *)v4 initWithResult:v3 identifier:v5];
+  identifier = [resultCopy identifier];
+  v6 = [(SFLocalTopic *)v4 initWithResult:resultCopy identifier:identifier];
 
   return v6;
 }

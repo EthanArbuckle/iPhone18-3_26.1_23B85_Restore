@@ -1,13 +1,13 @@
 @interface ASTHeadTrackingTopLevelExpressionActionPickerController
 - (id)prependedSystemIcons;
 - (id)specifiers;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)dealloc;
 - (void)loadView;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation ASTHeadTrackingTopLevelExpressionActionPickerController
@@ -23,8 +23,8 @@
     v7 = [PSSpecifier preferenceSpecifierNamed:v6 target:self set:0 get:0 detail:objc_opt_class() cell:2 edit:0];
 
     [v7 setProperty:@"HeadTrackingExpressionActionsSensitivityKey" forKey:PSIDKey];
-    v8 = [(ASTHeadTrackingTopLevelExpressionActionPickerController *)self expression];
-    [v7 setProperty:v8 forKey:@"TopLevelHeadTrackingExpression"];
+    expression = [(ASTHeadTrackingTopLevelExpressionActionPickerController *)self expression];
+    [v7 setProperty:expression forKey:@"TopLevelHeadTrackingExpression"];
 
     [v7 setProperty:&__kCFBooleanTrue forKey:@"BelongsToTopLevelHeadTracking"];
     v19 = v7;
@@ -43,8 +43,8 @@
     self->_siriShortcutToken = v11;
 
     [(AssistiveTouchCustomizeBaseActionPickerController *)self reloadASTDataSource];
-    v13 = [(AssistiveTouchCustomizeBaseActionPickerController *)self iconSpecifiers];
-    [v5 axSafelyAddObjectsFromArray:v13];
+    iconSpecifiers = [(AssistiveTouchCustomizeBaseActionPickerController *)self iconSpecifiers];
+    [v5 axSafelyAddObjectsFromArray:iconSpecifiers];
 
     v14 = *&self->super.AXUISettingsBaseListController_opaque[v3];
     *&self->super.AXUISettingsBaseListController_opaque[v3] = v5;
@@ -79,13 +79,13 @@ void __69__ASTHeadTrackingTopLevelExpressionActionPickerController_specifiers__b
   [(AssistiveTouchCustomizeBaseActionPickerController *)&v4 loadView];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5 = +[AXSettings sharedInstance];
-  v6 = [v5 assistiveTouchHeadTrackingExpressionToActionMapping];
-  v7 = [(ASTHeadTrackingTopLevelExpressionActionPickerController *)self expression];
-  v8 = [v6 objectForKeyedSubscript:v7];
+  assistiveTouchHeadTrackingExpressionToActionMapping = [v5 assistiveTouchHeadTrackingExpressionToActionMapping];
+  expression = [(ASTHeadTrackingTopLevelExpressionActionPickerController *)self expression];
+  v8 = [assistiveTouchHeadTrackingExpressionToActionMapping objectForKeyedSubscript:expression];
 
   v9 = AXAssistiveTouchDisallowedBaseActions();
   if ([v9 containsObject:v8])
@@ -107,7 +107,7 @@ void __69__ASTHeadTrackingTopLevelExpressionActionPickerController_specifiers__b
   [(AssistiveTouchCustomizeBaseActionPickerController *)self setSelectedPopoverIcon:v10];
   v11.receiver = self;
   v11.super_class = ASTHeadTrackingTopLevelExpressionActionPickerController;
-  [(ASTHeadTrackingTopLevelExpressionActionPickerController *)&v11 viewWillAppear:v3];
+  [(ASTHeadTrackingTopLevelExpressionActionPickerController *)&v11 viewWillAppear:appearCopy];
 }
 
 - (id)prependedSystemIcons
@@ -117,9 +117,9 @@ void __69__ASTHeadTrackingTopLevelExpressionActionPickerController_specifiers__b
   [v2 addObject:AXAssistiveTouchIconTypePassThroughToApp];
   [v2 addObject:AXAssistiveTouchIconTypeMousePrimaryClick];
   v3 = +[AXSettings sharedInstance];
-  v4 = [v3 laserEnabled];
+  laserEnabled = [v3 laserEnabled];
 
-  if (v4)
+  if (laserEnabled)
   {
     [v2 addObject:AXAssistiveTouchIconTypeMouseSecondaryClick];
   }
@@ -130,49 +130,49 @@ void __69__ASTHeadTrackingTopLevelExpressionActionPickerController_specifiers__b
 - (void)dealloc
 {
   v3 = +[AXSiriShortcutsManager sharedManager];
-  v4 = [(ASTHeadTrackingTopLevelExpressionActionPickerController *)self siriShortcutToken];
-  [v3 unregisterShortcutsDidChangeBlock:v4];
+  siriShortcutToken = [(ASTHeadTrackingTopLevelExpressionActionPickerController *)self siriShortcutToken];
+  [v3 unregisterShortcutsDidChangeBlock:siriShortcutToken];
 
   v5.receiver = self;
   v5.super_class = ASTHeadTrackingTopLevelExpressionActionPickerController;
   [(ASTHeadTrackingTopLevelExpressionActionPickerController *)&v5 dealloc];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  if (-[ASTHeadTrackingTopLevelExpressionActionPickerController _sectionNeedsAdjustment:](self, "_sectionNeedsAdjustment:", [v7 section]))
+  viewCopy = view;
+  pathCopy = path;
+  if (-[ASTHeadTrackingTopLevelExpressionActionPickerController _sectionNeedsAdjustment:](self, "_sectionNeedsAdjustment:", [pathCopy section]))
   {
     v20.receiver = self;
     v20.super_class = ASTHeadTrackingTopLevelExpressionActionPickerController;
-    [(ASTHeadTrackingTopLevelExpressionActionPickerController *)&v20 tableView:v6 didSelectRowAtIndexPath:v7];
+    [(ASTHeadTrackingTopLevelExpressionActionPickerController *)&v20 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
   }
 
   else
   {
-    v8 = +[NSIndexPath indexPathForRow:inSection:](NSIndexPath, "indexPathForRow:inSection:", [v7 row], -[ASTHeadTrackingTopLevelExpressionActionPickerController _adjustedSection:](self, "_adjustedSection:", objc_msgSend(v7, "section")));
-    [(AssistiveTouchCustomizeBaseActionPickerController *)self astTableView:v6 didSelectRowAtIndexPath:v8];
-    v9 = [(AssistiveTouchCustomizeBaseActionPickerController *)self selectedPopoverIcon];
+    v8 = +[NSIndexPath indexPathForRow:inSection:](NSIndexPath, "indexPathForRow:inSection:", [pathCopy row], -[ASTHeadTrackingTopLevelExpressionActionPickerController _adjustedSection:](self, "_adjustedSection:", objc_msgSend(pathCopy, "section")));
+    [(AssistiveTouchCustomizeBaseActionPickerController *)self astTableView:viewCopy didSelectRowAtIndexPath:v8];
+    selectedPopoverIcon = [(AssistiveTouchCustomizeBaseActionPickerController *)self selectedPopoverIcon];
     v10 = +[AXSettings sharedInstance];
-    v11 = [v10 assistiveTouchHeadTrackingExpressionToActionMapping];
-    v12 = [(ASTHeadTrackingTopLevelExpressionActionPickerController *)self expression];
-    v13 = [v11 objectForKey:v12];
+    assistiveTouchHeadTrackingExpressionToActionMapping = [v10 assistiveTouchHeadTrackingExpressionToActionMapping];
+    expression = [(ASTHeadTrackingTopLevelExpressionActionPickerController *)self expression];
+    v13 = [assistiveTouchHeadTrackingExpressionToActionMapping objectForKey:expression];
 
-    if (v9 && ([v9 isEqualToString:v13] & 1) == 0)
+    if (selectedPopoverIcon && ([selectedPopoverIcon isEqualToString:v13] & 1) == 0)
     {
       v14 = +[AXSettings sharedInstance];
-      v15 = [v14 assistiveTouchHeadTrackingExpressionToActionMapping];
-      v16 = [v15 mutableCopy];
+      assistiveTouchHeadTrackingExpressionToActionMapping2 = [v14 assistiveTouchHeadTrackingExpressionToActionMapping];
+      v16 = [assistiveTouchHeadTrackingExpressionToActionMapping2 mutableCopy];
 
       if (!v16)
       {
         v16 = objc_alloc_init(NSMutableDictionary);
       }
 
-      v17 = [v9 copy];
-      v18 = [(ASTHeadTrackingTopLevelExpressionActionPickerController *)self expression];
-      [v16 setObject:v17 forKeyedSubscript:v18];
+      v17 = [selectedPopoverIcon copy];
+      expression2 = [(ASTHeadTrackingTopLevelExpressionActionPickerController *)self expression];
+      [v16 setObject:v17 forKeyedSubscript:expression2];
 
       v19 = +[AXSettings sharedInstance];
       [v19 setAssistiveTouchHeadTrackingExpressionToActionMapping:v16];
@@ -180,40 +180,40 @@ void __69__ASTHeadTrackingTopLevelExpressionActionPickerController_specifiers__b
   }
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v11 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (!-[ASTHeadTrackingTopLevelExpressionActionPickerController _sectionNeedsAdjustment:](self, "_sectionNeedsAdjustment:", [v9 section]))
+  viewCopy = view;
+  cellCopy = cell;
+  pathCopy = path;
+  if (!-[ASTHeadTrackingTopLevelExpressionActionPickerController _sectionNeedsAdjustment:](self, "_sectionNeedsAdjustment:", [pathCopy section]))
   {
-    v10 = +[NSIndexPath indexPathForRow:inSection:](NSIndexPath, "indexPathForRow:inSection:", [v9 row], -[ASTHeadTrackingTopLevelExpressionActionPickerController _adjustedSection:](self, "_adjustedSection:", objc_msgSend(v9, "section")));
-    [(AssistiveTouchCustomizeBaseActionPickerController *)self astTableView:v11 willDisplayCell:v8 forRowAtIndexPath:v10];
+    v10 = +[NSIndexPath indexPathForRow:inSection:](NSIndexPath, "indexPathForRow:inSection:", [pathCopy row], -[ASTHeadTrackingTopLevelExpressionActionPickerController _adjustedSection:](self, "_adjustedSection:", objc_msgSend(pathCopy, "section")));
+    [(AssistiveTouchCustomizeBaseActionPickerController *)self astTableView:viewCopy willDisplayCell:cellCopy forRowAtIndexPath:v10];
   }
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  if (!a4)
+  if (!section)
   {
     return 1;
   }
 
-  v5 = [(ASTHeadTrackingTopLevelExpressionActionPickerController *)self _adjustedSection:a4];
+  v5 = [(ASTHeadTrackingTopLevelExpressionActionPickerController *)self _adjustedSection:section];
 
   return [(AssistiveTouchCustomizeBaseActionPickerController *)self astNumberOfRowsInSection:v5];
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  if ([(ASTHeadTrackingTopLevelExpressionActionPickerController *)self _sectionNeedsAdjustment:a4])
+  if ([(ASTHeadTrackingTopLevelExpressionActionPickerController *)self _sectionNeedsAdjustment:section])
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = [(AssistiveTouchCustomizeBaseActionPickerController *)self astTitleForSection:[(ASTHeadTrackingTopLevelExpressionActionPickerController *)self _adjustedSection:a4]];
+    v6 = [(AssistiveTouchCustomizeBaseActionPickerController *)self astTitleForSection:[(ASTHeadTrackingTopLevelExpressionActionPickerController *)self _adjustedSection:section]];
   }
 
   return v6;

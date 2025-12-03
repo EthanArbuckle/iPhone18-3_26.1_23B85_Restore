@@ -1,23 +1,23 @@
 @interface FMDCommandHandlerNotify
 - (void)handleCommand;
-- (void)sendAckWithCompletion:(id)a3;
+- (void)sendAckWithCompletion:(id)completion;
 @end
 
 @implementation FMDCommandHandlerNotify
 
 - (void)handleCommand
 {
-  v3 = [(FMDCommandHandler *)self commandParams];
-  v4 = [v3 objectForKeyedSubscript:@"title"];
+  commandParams = [(FMDCommandHandler *)self commandParams];
+  v4 = [commandParams objectForKeyedSubscript:@"title"];
 
-  v5 = [(FMDCommandHandler *)self commandParams];
-  v6 = [v5 objectForKeyedSubscript:@"body"];
+  commandParams2 = [(FMDCommandHandler *)self commandParams];
+  v6 = [commandParams2 objectForKeyedSubscript:@"body"];
 
-  v7 = [(FMDCommandHandler *)self commandParams];
-  v8 = [v7 objectForKeyedSubscript:@"category"];
+  commandParams3 = [(FMDCommandHandler *)self commandParams];
+  v8 = [commandParams3 objectForKeyedSubscript:@"category"];
 
-  v9 = [(FMDCommandHandler *)self commandParams];
-  v10 = [v9 objectForKeyedSubscript:@"deviceId"];
+  commandParams4 = [(FMDCommandHandler *)self commandParams];
+  v10 = [commandParams4 objectForKeyedSubscript:@"deviceId"];
 
   if (v4)
   {
@@ -71,40 +71,40 @@
 LABEL_13:
 }
 
-- (void)sendAckWithCompletion:(id)a3
+- (void)sendAckWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(FMDCommandHandler *)self commandParams];
-  v6 = [v5 objectForKeyedSubscript:@"ackURL"];
+  completionCopy = completion;
+  commandParams = [(FMDCommandHandler *)self commandParams];
+  v6 = [commandParams objectForKeyedSubscript:@"ackURL"];
 
-  v7 = [(FMDCommandHandler *)self provider];
+  provider = [(FMDCommandHandler *)self provider];
   if (v6)
   {
     v8 = [NSURL URLWithString:v6];
-    v9 = [(FMDCommandHandler *)self ackDataForCommand];
-    v10 = [v9 objectForKeyedSubscript:@"status"];
+    ackDataForCommand = [(FMDCommandHandler *)self ackDataForCommand];
+    v10 = [ackDataForCommand objectForKeyedSubscript:@"status"];
     if (v10)
     {
-      v11 = [v9 objectForKeyedSubscript:@"status"];
-      v26 = [v11 intValue];
+      v11 = [ackDataForCommand objectForKeyedSubscript:@"status"];
+      intValue = [v11 intValue];
     }
 
     else
     {
-      v26 = 200;
+      intValue = 200;
     }
 
-    v12 = [(FMDCommandHandler *)self commandParams];
-    v13 = [v12 objectForKey:@"udid"];
-    v14 = [v13 fm_nullToNil];
+    commandParams2 = [(FMDCommandHandler *)self commandParams];
+    v13 = [commandParams2 objectForKey:@"udid"];
+    fm_nullToNil = [v13 fm_nullToNil];
 
-    v27 = v9;
-    v28 = v4;
-    if ([v14 length])
+    v27 = ackDataForCommand;
+    v28 = completionCopy;
+    if ([fm_nullToNil length])
     {
-      v15 = [[FMDAccessoryIdentifier alloc] initWithString:v14];
-      v16 = [v7 accessoryRegistry];
-      v17 = [v16 accessoryForIdentifier:v15];
+      v15 = [[FMDAccessoryIdentifier alloc] initWithString:fm_nullToNil];
+      accessoryRegistry = [provider accessoryRegistry];
+      v17 = [accessoryRegistry accessoryForIdentifier:v15];
     }
 
     else
@@ -118,21 +118,21 @@ LABEL_13:
     v32[2] = sub_10015810C;
     v32[3] = &unk_1002CDF18;
     v33 = v17;
-    v19 = v7;
+    v19 = provider;
     v34 = v19;
     v20 = v17;
     v21 = [(FMDActingRequestDecorator *)v18 initWithDeviceContextGenerator:&stru_1002CEFF0 deviceInfoGenerator:v32 serverContextGenerator:0 requestHeaderGenerator:0];
     v22 = [FMDRequestAckNotify alloc];
-    v23 = [v19 account];
-    v24 = [(FMDCommandHandler *)self commandParams];
-    v25 = [(FMDRequestAckNotify *)v22 initWithAccount:v23 messageCommand:v24 cmdStatusCode:v26 ackURL:v8];
+    account = [v19 account];
+    commandParams3 = [(FMDCommandHandler *)self commandParams];
+    v25 = [(FMDRequestAckNotify *)v22 initWithAccount:account messageCommand:commandParams3 cmdStatusCode:intValue ackURL:v8];
 
     [(FMDRequest *)v25 setDecorator:v21];
     v30[0] = _NSConcreteStackBlock;
     v30[1] = 3221225472;
     v30[2] = sub_1001581A8;
     v30[3] = &unk_1002CD1D0;
-    v4 = v28;
+    completionCopy = v28;
     v31 = v28;
     [(FMDRequest *)v25 setCompletionHandler:v30];
     [v19 enqueueRequest:v25];

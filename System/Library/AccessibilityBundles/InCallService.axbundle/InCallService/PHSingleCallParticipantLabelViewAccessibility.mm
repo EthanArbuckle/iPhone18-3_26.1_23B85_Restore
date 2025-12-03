@@ -1,5 +1,5 @@
 @interface PHSingleCallParticipantLabelViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_axSetUpCallDetailsViewButton;
 - (void)setUpCallDetailsViewButton;
@@ -7,12 +7,12 @@
 
 @implementation PHSingleCallParticipantLabelViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PHSingleCallParticipantLabelView" hasInstanceVariable:@"_statusLabel" withType:"UILabel"];
-  [v3 validateClass:@"PHSingleCallParticipantLabelView" hasProperty:@"callDetailsViewButton" withType:"@"];
-  [v3 validateClass:@"PHSingleCallParticipantLabelView" hasInstanceMethod:@"setUpCallDetailsViewButton" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PHSingleCallParticipantLabelView" hasInstanceVariable:@"_statusLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"PHSingleCallParticipantLabelView" hasProperty:@"callDetailsViewButton" withType:"@"];
+  [validationsCopy validateClass:@"PHSingleCallParticipantLabelView" hasInstanceMethod:@"setUpCallDetailsViewButton" withFullSignature:{"v", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -21,11 +21,11 @@
   v15.super_class = PHSingleCallParticipantLabelViewAccessibility;
   [(PHSingleCallParticipantLabelViewAccessibility *)&v15 _accessibilityLoadAccessibilityInformation];
   v3 = [(PHSingleCallParticipantLabelViewAccessibility *)self safeValueForKey:@"_statusLabel"];
-  v4 = [v3 accessibilityTraits];
+  accessibilityTraits = [v3 accessibilityTraits];
   v5 = *MEMORY[0x29EDC7FF0];
 
   v6 = [(PHSingleCallParticipantLabelViewAccessibility *)self safeValueForKey:@"_statusLabel"];
-  [v6 setAccessibilityTraits:v5 | v4];
+  [v6 setAccessibilityTraits:v5 | accessibilityTraits];
 
   LOBYTE(location) = 0;
   objc_opt_class();

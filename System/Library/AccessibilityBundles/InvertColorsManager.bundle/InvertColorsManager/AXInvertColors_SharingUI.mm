@@ -1,15 +1,15 @@
 @interface AXInvertColors_SharingUI
-+ (void)performValidations:(id)a3;
++ (void)performValidations:(id)validations;
 @end
 
 @implementation AXInvertColors_SharingUI
 
-+ (void)performValidations:(id)a3
++ (void)performValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SFPersonCollectionViewCell" hasInstanceVariable:@"_person" withType:"SFAirDropNode"];
-  [v3 validateClass:@"SFPersonImageView"];
-  [v3 validateClass:@"SFPersonCollectionViewCell" hasInstanceMethod:@"imageView" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SFPersonCollectionViewCell" hasInstanceVariable:@"_person" withType:"SFAirDropNode"];
+  [validationsCopy validateClass:@"SFPersonImageView"];
+  [validationsCopy validateClass:@"SFPersonCollectionViewCell" hasInstanceMethod:@"imageView" withFullSignature:{"@", 0}];
 }
 
 @end

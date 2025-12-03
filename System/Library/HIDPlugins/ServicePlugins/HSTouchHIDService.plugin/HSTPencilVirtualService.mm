@@ -1,29 +1,29 @@
 @interface HSTPencilVirtualService
-- (BOOL)handleHSDecode:(void *)a3;
-- (BOOL)handleHSEncode:(void *)a3;
-- (BOOL)setOutputEvent:(id)a3 forService:(id)a4;
-- (BOOL)setProperty:(id)a3 forKey:(id)a4 forService:(id)a5;
-- (HSTPencilVirtualService)initWithConfig:(const HSTPencilVirtualServiceConfig *)a3 withQueue:(id)a4;
+- (BOOL)handleHSDecode:(void *)decode;
+- (BOOL)handleHSEncode:(void *)encode;
+- (BOOL)setOutputEvent:(id)event forService:(id)service;
+- (BOOL)setProperty:(id)property forKey:(id)key forService:(id)service;
+- (HSTPencilVirtualService)initWithConfig:(const HSTPencilVirtualServiceConfig *)config withQueue:(id)queue;
 - (HSTPencilVirtualServiceConfig)config;
-- (id)copyEventMatching:(id)a3 forService:(id)a4;
-- (id)propertyForKey:(id)a3 forService:(id)a4;
-- (void)_dispatchHIDEvents:(const void *)a3;
-- (void)_dispatchHIDEventsAsync:(void *)a3;
-- (void)_handleDebugStateEvent:(id)a3;
-- (void)_handleHIDPencilEvents:(id)a3;
-- (void)_handleVendorEvent:(id)a3;
-- (void)_logHIDEvent:(id)a3;
-- (void)_saveLastTouchSystemReady:(id)a3;
+- (id)copyEventMatching:(id)matching forService:(id)service;
+- (id)propertyForKey:(id)key forService:(id)service;
+- (void)_dispatchHIDEvents:(const void *)events;
+- (void)_dispatchHIDEventsAsync:(void *)async;
+- (void)_handleDebugStateEvent:(id)event;
+- (void)_handleHIDPencilEvents:(id)events;
+- (void)_handleVendorEvent:(id)event;
+- (void)_logHIDEvent:(id)event;
+- (void)_saveLastTouchSystemReady:(id)ready;
 - (void)dealloc;
-- (void)handleConsume:(id)a3;
-- (void)setConfig:(HSTPencilVirtualServiceConfig *)a3;
+- (void)handleConsume:(id)consume;
+- (void)setConfig:(HSTPencilVirtualServiceConfig *)config;
 @end
 
 @implementation HSTPencilVirtualService
 
-- (HSTPencilVirtualService)initWithConfig:(const HSTPencilVirtualServiceConfig *)a3 withQueue:(id)a4
+- (HSTPencilVirtualService)initWithConfig:(const HSTPencilVirtualServiceConfig *)config withQueue:(id)queue
 {
-  v7 = a4;
+  queueCopy = queue;
   v26.receiver = self;
   v26.super_class = HSTPencilVirtualService;
   v8 = [(HSStage *)&v26 init];
@@ -33,15 +33,15 @@
     dispatch_set_qos_class_fallback();
     dispatch_workloop_set_scheduler_priority();
     dispatch_activate(inactive);
-    *&v8->_config.vendorID = *&a3->vendorID;
-    v11 = *&a3->accurateMaxForce;
-    v10 = *&a3->maxHoverHeight;
-    v12 = *&a3->ownerRegistryID;
-    *&v8->_config.heightMm = *&a3->heightMm;
+    *&v8->_config.vendorID = *&config->vendorID;
+    v11 = *&config->accurateMaxForce;
+    v10 = *&config->maxHoverHeight;
+    v12 = *&config->ownerRegistryID;
+    *&v8->_config.heightMm = *&config->heightMm;
     *&v8->_config.accurateMaxForce = v11;
     *&v8->_config.maxHoverHeight = v10;
     *&v8->_config.ownerRegistryID = v12;
-    objc_storeStrong(&v8->_outie, a4);
+    objc_storeStrong(&v8->_outie, queue);
     objc_storeStrong(&v8->_innie, inactive);
     v13 = objc_opt_new();
     hidStats = v8->_hidStats;
@@ -125,18 +125,18 @@ void __52__HSTPencilVirtualService_initWithConfig_withQueue___block_invoke_30(id
   [(HSStage *)&v3 dealloc];
 }
 
-- (BOOL)setProperty:(id)a3 forKey:(id)a4 forService:(id)a5
+- (BOOL)setProperty:(id)property forKey:(id)key forService:(id)service
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  propertyCopy = property;
+  keyCopy = key;
+  serviceCopy = service;
   dispatch_assert_queue_V2(self->_innie);
-  if ([v9 isEqualToString:@"MinDigitizerPressureValue"])
+  if ([keyCopy isEqualToString:@"MinDigitizerPressureValue"])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      self->_config.minForce = [(__CFString *)v8 unsignedIntegerValue];
+      self->_config.minForce = [(__CFString *)propertyCopy unsignedIntegerValue];
 LABEL_8:
       v11 = MTLoggingPlugin();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -151,40 +151,40 @@ LABEL_11:
     }
   }
 
-  else if (([v9 isEqualToString:@"AccurateMaxDigitizerPressureValue"] & 1) != 0 || objc_msgSend(v9, "isEqualToString:", @"MaxDigitizerPressureValue"))
+  else if (([keyCopy isEqualToString:@"AccurateMaxDigitizerPressureValue"] & 1) != 0 || objc_msgSend(keyCopy, "isEqualToString:", @"MaxDigitizerPressureValue"))
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      self->_config.accurateMaxForce = [(__CFString *)v8 unsignedIntegerValue];
+      self->_config.accurateMaxForce = [(__CFString *)propertyCopy unsignedIntegerValue];
       goto LABEL_8;
     }
   }
 
-  else if (([v9 isEqualToString:@"ExtendedMaxDigitizerPressureValue"] & 1) != 0 || objc_msgSend(v9, "isEqualToString:", @"DigitizerPressureDynamicRange"))
+  else if (([keyCopy isEqualToString:@"ExtendedMaxDigitizerPressureValue"] & 1) != 0 || objc_msgSend(keyCopy, "isEqualToString:", @"DigitizerPressureDynamicRange"))
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      self->_config.extendedMaxForce = [(__CFString *)v8 unsignedIntegerValue];
+      self->_config.extendedMaxForce = [(__CFString *)propertyCopy unsignedIntegerValue];
       goto LABEL_8;
     }
   }
 
-  else if ([v9 isEqualToString:@"HoverDisabled"])
+  else if ([keyCopy isEqualToString:@"HoverDisabled"])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      self->_config.hoverDisabled = [(__CFString *)v8 BOOLValue];
+      self->_config.hoverDisabled = [(__CFString *)propertyCopy BOOLValue];
       outie = self->_outie;
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = __57__HSTPencilVirtualService_setProperty_forKey_forService___block_invoke;
       block[3] = &unk_10A958;
-      v28 = v9;
-      v29 = v8;
-      v30 = self;
+      v28 = keyCopy;
+      v29 = propertyCopy;
+      selfCopy = self;
       dispatch_async(outie, block);
 
       goto LABEL_8;
@@ -193,17 +193,17 @@ LABEL_11:
 
   else
   {
-    if (![v9 isEqualToString:@"ExternalMessage"])
+    if (![keyCopy isEqualToString:@"ExternalMessage"])
     {
       v11 = MTLoggingPlugin();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412802;
-        v34 = v9;
+        v34 = keyCopy;
         v35 = 2112;
-        v36 = v10;
+        v36 = serviceCopy;
         v37 = 2112;
-        v38 = v8;
+        v38 = propertyCopy;
         _os_log_debug_impl(&dword_0, v11, OS_LOG_TYPE_DEBUG, "HSTPencilVirtualService: unknown set property %@ for service %@ with value %@", buf, 0x20u);
       }
 
@@ -219,8 +219,8 @@ LABEL_11:
       v24[1] = 3221225472;
       v24[2] = __57__HSTPencilVirtualService_setProperty_forKey_forService___block_invoke_2;
       v24[3] = &unk_109250;
-      v25 = v8;
-      v26 = self;
+      v25 = propertyCopy;
+      selfCopy2 = self;
       dispatch_async(v14, v24);
 
       goto LABEL_8;
@@ -244,12 +244,12 @@ LABEL_23:
   v31[2] = @"value";
   v32[0] = v18;
   v19 = @"nil";
-  if (v8)
+  if (propertyCopy)
   {
-    v19 = v8;
+    v19 = propertyCopy;
   }
 
-  v32[1] = v9;
+  v32[1] = keyCopy;
   v32[2] = v19;
   v20 = [NSDictionary dictionaryWithObjects:v32 forKeys:v31 count:3];
   while (1)
@@ -287,17 +287,17 @@ void __57__HSTPencilVirtualService_setProperty_forKey_forService___block_invoke_
   objc_msgSendSuper2(&v3, "handleConsume:", v2);
 }
 
-- (id)propertyForKey:(id)a3 forService:(id)a4
+- (id)propertyForKey:(id)key forService:(id)service
 {
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  serviceCopy = service;
   dispatch_assert_queue_V2(self->_innie);
-  if ([v6 isEqualToString:@"Built-In"])
+  if ([keyCopy isEqualToString:@"Built-In"])
   {
     goto LABEL_2;
   }
 
-  if ([v6 isEqualToString:@"DeviceUsagePairs"])
+  if ([keyCopy isEqualToString:@"DeviceUsagePairs"])
   {
     v18[0] = @"DeviceUsagePage";
     v18[1] = @"DeviceUsage";
@@ -311,54 +311,54 @@ LABEL_5:
     goto LABEL_16;
   }
 
-  if ([v6 isEqualToString:@"Transport"])
+  if ([keyCopy isEqualToString:@"Transport"])
   {
     v8 = @"Virtual";
     goto LABEL_17;
   }
 
-  if ([v6 isEqualToString:@"VendorID"])
+  if ([keyCopy isEqualToString:@"VendorID"])
   {
     p_config = &self->_config;
     goto LABEL_14;
   }
 
-  if ([v6 isEqualToString:@"ProductID"])
+  if ([keyCopy isEqualToString:@"ProductID"])
   {
     p_config = &self->_config.productID;
     goto LABEL_14;
   }
 
-  if ([v6 isEqualToString:@"VirtualServiceOwnerRegistryID"])
+  if ([keyCopy isEqualToString:@"VirtualServiceOwnerRegistryID"])
   {
     p_config = &self->_config.ownerRegistryID;
     goto LABEL_14;
   }
 
-  if ([v6 isEqualToString:@"PrimaryUsagePage"])
+  if ([keyCopy isEqualToString:@"PrimaryUsagePage"])
   {
     v8 = &off_1124A0;
   }
 
   else
   {
-    if (([v6 isEqualToString:@"PrimaryUsage"] & 1) == 0)
+    if (([keyCopy isEqualToString:@"PrimaryUsage"] & 1) == 0)
     {
-      if ([v6 isEqualToString:@"MaxHoverHeight"])
+      if ([keyCopy isEqualToString:@"MaxHoverHeight"])
       {
         p_config = &self->_config.maxHoverHeight;
       }
 
       else
       {
-        if ([v6 isEqualToString:@"DisplayIntegrated"])
+        if ([keyCopy isEqualToString:@"DisplayIntegrated"])
         {
 LABEL_2:
           v8 = &__kCFBooleanTrue;
           goto LABEL_17;
         }
 
-        if ([v6 isEqualToString:@"ServicePluginDebug"])
+        if ([keyCopy isEqualToString:@"ServicePluginDebug"])
         {
           v8 = objc_opt_new();
           [(__CFString *)v8 setObject:self->_recordedProperties forKeyedSubscript:@"Recent set properties"];
@@ -371,23 +371,23 @@ LABEL_16:
           goto LABEL_17;
         }
 
-        if ([v6 isEqualToString:@"MinDigitizerPressureValue"])
+        if ([keyCopy isEqualToString:@"MinDigitizerPressureValue"])
         {
           p_config = &self->_config.minForce;
         }
 
-        else if (([v6 isEqualToString:@"AccurateMaxDigitizerPressureValue"] & 1) != 0 || objc_msgSend(v6, "isEqualToString:", @"MaxDigitizerPressureValue"))
+        else if (([keyCopy isEqualToString:@"AccurateMaxDigitizerPressureValue"] & 1) != 0 || objc_msgSend(keyCopy, "isEqualToString:", @"MaxDigitizerPressureValue"))
         {
           p_config = &self->_config.accurateMaxForce;
         }
 
         else
         {
-          if (([v6 isEqualToString:@"ExtendedMaxDigitizerPressureValue"] & 1) == 0 && !objc_msgSend(v6, "isEqualToString:", @"DigitizerPressureDynamicRange"))
+          if (([keyCopy isEqualToString:@"ExtendedMaxDigitizerPressureValue"] & 1) == 0 && !objc_msgSend(keyCopy, "isEqualToString:", @"DigitizerPressureDynamicRange"))
           {
-            if (![v6 isEqualToString:@"HoverDisabled"])
+            if (![keyCopy isEqualToString:@"HoverDisabled"])
             {
-              if (![v6 isEqualToString:@"SurfaceDimensions"])
+              if (![keyCopy isEqualToString:@"SurfaceDimensions"])
               {
                 v12 = MTLoggingPlugin();
                 if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
@@ -442,11 +442,11 @@ LABEL_20:
   return v8;
 }
 
-- (id)copyEventMatching:(id)a3 forService:(id)a4
+- (id)copyEventMatching:(id)matching forService:(id)service
 {
-  v5 = a3;
+  matchingCopy = matching;
   dispatch_assert_queue_V2(self->_innie);
-  v6 = [v5 objectForKeyedSubscript:@"MatchingEvent"];
+  v6 = [matchingCopy objectForKeyedSubscript:@"MatchingEvent"];
   v7 = [v6 integerValueForField:0x10000];
   v8 = [v6 integerValueForField:65537];
   if ([v6 type] != 1 || v7 == 65376 || v8 == 9)
@@ -474,53 +474,53 @@ LABEL_20:
   return v9;
 }
 
-- (BOOL)setOutputEvent:(id)a3 forService:(id)a4
+- (BOOL)setOutputEvent:(id)event forService:(id)service
 {
-  v5 = a3;
+  eventCopy = event;
   dispatch_assert_queue_V2(self->_innie);
-  LOBYTE(self) = [(HIDVirtualEventService *)self->_virtualService dispatchEvent:v5];
+  LOBYTE(self) = [(HIDVirtualEventService *)self->_virtualService dispatchEvent:eventCopy];
 
   return self;
 }
 
-- (void)_logHIDEvent:(id)a3
+- (void)_logHIDEvent:(id)event
 {
-  v3 = a3;
-  if ([v3 conformsToEventType:11])
+  eventCopy = event;
+  if ([eventCopy conformsToEventType:11])
   {
-    v4 = [v3 integerValueForField:720920];
+    v4 = [eventCopy integerValueForField:720920];
     if ((v4 & 0x83) != 0)
     {
       v5 = MTLoggingPlugin();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
       {
-        v6 = [v3 children];
+        children = [eventCopy children];
         v7 = 134219264;
-        v8 = [v6 count];
+        v8 = [children count];
         v9 = 2048;
-        v10 = [v3 integerValueForField:720903];
+        v10 = [eventCopy integerValueForField:720903];
         v11 = 2048;
         v12 = v4;
         v13 = 1024;
         v14 = (v4 >> 7) & 1;
         v15 = 2048;
-        v16 = [v3 integerValueForField:720905];
+        v16 = [eventCopy integerValueForField:720905];
         v17 = 2048;
-        v18 = [v3 integerValueForField:720904];
+        v18 = [eventCopy integerValueForField:720904];
         _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "Dispatching stylus digitizer event with %lu children, eventMask=0x%lx childEventMask=0x%lx Cancel=%d Touching=%ld inRange=%ld", &v7, 0x3Au);
       }
     }
   }
 }
 
-- (void)_saveLastTouchSystemReady:(id)a3
+- (void)_saveLastTouchSystemReady:(id)ready
 {
-  v5 = a3;
+  readyCopy = ready;
   dispatch_assert_queue_V2(self->_innie);
-  if ([v5 type] == 1 && objc_msgSend(v5, "integerValueForField:", 0x10000) == &loc_FF60 && objc_msgSend(v5, "integerValueForField:", 65537) == &dword_8 + 1)
+  if ([readyCopy type] == 1 && objc_msgSend(readyCopy, "integerValueForField:", 0x10000) == &loc_FF60 && objc_msgSend(readyCopy, "integerValueForField:", 65537) == &dword_8 + 1)
   {
-    objc_storeStrong(&self->_lastTouchSystemReadyEvent, a3);
-    v6 = [v5 dataValueForField:65540];
+    objc_storeStrong(&self->_lastTouchSystemReadyEvent, ready);
+    v6 = [readyCopy dataValueForField:65540];
     v7 = MTLoggingPlugin();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
@@ -541,12 +541,12 @@ LABEL_20:
   }
 }
 
-- (void)_dispatchHIDEvents:(const void *)a3
+- (void)_dispatchHIDEvents:(const void *)events
 {
   dispatch_assert_queue_V2(self->_innie);
-  v5 = *a3;
-  v6 = *(a3 + 1);
-  if (*a3 != v6)
+  v5 = *events;
+  v6 = *(events + 1);
+  if (*events != v6)
   {
     do
     {
@@ -562,7 +562,7 @@ LABEL_20:
   }
 }
 
-- (void)_dispatchHIDEventsAsync:(void *)a3
+- (void)_dispatchHIDEventsAsync:(void *)async
 {
   dispatch_assert_queue_not_V2(self->_innie);
   v5 = mach_continuous_time();
@@ -572,11 +572,11 @@ LABEL_20:
   v9[3] = __Block_byref_object_copy__3;
   v9[4] = __Block_byref_object_dispose__3;
   v9[5] = &unk_FACCA;
-  v10 = *a3;
-  v11 = *(a3 + 2);
-  *a3 = 0;
-  *(a3 + 1) = 0;
-  *(a3 + 2) = 0;
+  v10 = *async;
+  v11 = *(async + 2);
+  *async = 0;
+  *(async + 1) = 0;
+  *(async + 2) = 0;
   objc_initWeak(&location, self);
   innie = self->_innie;
   block[0] = _NSConcreteStackBlock;
@@ -612,11 +612,11 @@ void __51__HSTPencilVirtualService__dispatchHIDEventsAsync___block_invoke(uint64
   }
 }
 
-- (void)_handleVendorEvent:(id)a3
+- (void)_handleVendorEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   dispatch_assert_queue_not_V2(self->_innie);
-  if (!v4)
+  if (!eventCopy)
   {
     v17 = +[NSAssertionHandler currentHandler];
     v18 = [NSString stringWithUTF8String:"[HSTPencilVirtualService _handleVendorEvent:]"];
@@ -625,14 +625,14 @@ void __51__HSTPencilVirtualService__dispatchHIDEventsAsync___block_invoke(uint64
 
   v19.receiver = self;
   v19.super_class = HSTPencilVirtualService;
-  [(HSStage *)&v19 handleConsume:v4];
-  HSUtil::MachTimeFromNanoseconds([v4 hsTimestamp]);
+  [(HSStage *)&v19 handleConsume:eventCopy];
+  HSUtil::MachTimeFromNanoseconds([eventCopy hsTimestamp]);
   v5 = objc_opt_new();
-  [v4 type];
-  v6 = [v4 data];
-  [v6 bytes];
-  v7 = [v4 data];
-  [v7 length];
+  [eventCopy type];
+  data = [eventCopy data];
+  [data bytes];
+  data2 = [eventCopy data];
+  [data2 length];
   VendorDefinedEvent = IOHIDEventCreateVendorDefinedEvent();
   v9 = v5 + 1;
   v11 = v5[2];
@@ -689,12 +689,12 @@ void __51__HSTPencilVirtualService__dispatchHIDEventsAsync___block_invoke(uint64
   [(HSTPencilVirtualService *)self _handleHIDEvents:v5];
 }
 
-- (void)_handleHIDPencilEvents:(id)a3
+- (void)_handleHIDPencilEvents:(id)events
 {
-  v7 = a3;
+  eventsCopy = events;
   dispatch_assert_queue_not_V2(self->_innie);
-  v4 = v7;
-  if (!v7)
+  v4 = eventsCopy;
+  if (!eventsCopy)
   {
     v5 = +[NSAssertionHandler currentHandler];
     v6 = [NSString stringWithUTF8String:"[HSTPencilVirtualService _handleHIDPencilEvents:]"];
@@ -704,39 +704,39 @@ void __51__HSTPencilVirtualService__dispatchHIDEventsAsync___block_invoke(uint64
   }
 
   [(HSTHIDEventStatistics *)self->_hidStats handleHIDEvents:v4];
-  [(HSTPencilVirtualService *)self _handleHIDEvents:v7];
+  [(HSTPencilVirtualService *)self _handleHIDEvents:eventsCopy];
 }
 
-- (void)_handleDebugStateEvent:(id)a3
+- (void)_handleDebugStateEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   dispatch_assert_queue_not_V2(self->_innie);
-  if (!v4)
+  if (!eventCopy)
   {
     v7 = +[NSAssertionHandler currentHandler];
     v8 = [NSString stringWithUTF8String:"[HSTPencilVirtualService _handleDebugStateEvent:]"];
     [v7 handleFailureInFunction:v8 file:@"HSTPencilVirtualService.mm" lineNumber:420 description:{@"Invalid parameter not satisfying: %@", @"event"}];
   }
 
-  *(v4 + 16) = 1;
+  *(eventCopy + 16) = 1;
   v10[0] = @"Stage";
   v10[1] = @"Generation Stats";
   v11[0] = @"PencilVirtualService";
-  v5 = [(HSTHIDEventStatistics *)self->_hidStats stats];
-  v11[1] = v5;
+  stats = [(HSTHIDEventStatistics *)self->_hidStats stats];
+  v11[1] = stats;
   v6 = [NSDictionary dictionaryWithObjects:v11 forKeys:v10 count:2];
 
-  [*(v4 + 3) addObject:v6];
+  [*(eventCopy + 3) addObject:v6];
   v9.receiver = self;
   v9.super_class = HSTPencilVirtualService;
-  [(HSStage *)&v9 handleConsume:v4];
+  [(HSStage *)&v9 handleConsume:eventCopy];
 }
 
-- (void)handleConsume:(id)a3
+- (void)handleConsume:(id)consume
 {
-  v4 = a3;
+  consumeCopy = consume;
   dispatch_assert_queue_not_V2(self->_innie);
-  v5 = v4;
+  v5 = consumeCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -801,50 +801,50 @@ void __51__HSTPencilVirtualService__dispatchHIDEventsAsync___block_invoke(uint64
   }
 }
 
-- (BOOL)handleHSEncode:(void *)a3
+- (BOOL)handleHSEncode:(void *)encode
 {
-  if (!*a3)
+  if (!*encode)
   {
-    *&v7 = *(a3 + 17);
+    *&v7 = *(encode + 17);
     DWORD2(v7) = 4;
-    std::vector<HSUtil::Encoder::ContainerRecord>::push_back[abi:ne200100](a3 + 56, &v7);
-    HSUtil::Encoder::_writeTokenValue32(a3, 0xEBu, 0);
+    std::vector<HSUtil::Encoder::ContainerRecord>::push_back[abi:ne200100](encode + 56, &v7);
+    HSUtil::Encoder::_writeTokenValue32(encode, 0xEBu, 0);
   }
 
   p_config = &self->_config;
-  HSUtil::Encoder::encodeUInt(a3, HSUtil::CoderKey::Literal<(char)118,(char)101,(char)110,(char)100,(char)111,(char)114,(char)73,(char)68>::Key, p_config->vendorID);
-  HSUtil::Encoder::encodeUInt(a3, HSUtil::CoderKey::Literal<(char)112,(char)114,(char)111,(char)100,(char)117,(char)99,(char)116,(char)73,(char)68>::Key, p_config->productID);
-  HSUtil::Encoder::encodeUInt(a3, HSUtil::CoderKey::Literal<(char)111,(char)119,(char)110,(char)101,(char)114,(char)82,(char)101,(char)103,(char)105,(char)115,(char)116,(char)114,(char)121,(char)73,(char)68>::Key, p_config->ownerRegistryID);
-  HSUtil::Encoder::encodeUInt(a3, HSUtil::CoderKey::Literal<(char)109,(char)105,(char)110,(char)70,(char)111,(char)114,(char)99,(char)101>::Key, p_config->minForce);
-  HSUtil::Encoder::encodeUInt(a3, HSUtil::CoderKey::Literal<(char)97,(char)99,(char)99,(char)117,(char)114,(char)97,(char)116,(char)101,(char)77,(char)97,(char)120,(char)70,(char)111,(char)114,(char)99,(char)101>::Key, p_config->accurateMaxForce);
-  HSUtil::Encoder::encodeUInt(a3, HSUtil::CoderKey::Literal<(char)101,(char)120,(char)116,(char)101,(char)110,(char)100,(char)101,(char)100,(char)77,(char)97,(char)120,(char)70,(char)111,(char)114,(char)99,(char)101>::Key, p_config->extendedMaxForce);
-  HSUtil::Encoder::encodeUInt(a3, HSUtil::CoderKey::Literal<(char)109,(char)97,(char)120,(char)72,(char)111,(char)118,(char)101,(char)114,(char)72,(char)101,(char)105,(char)103,(char)104,(char)116>::Key, p_config->maxHoverHeight);
-  HSUtil::Encoder::encodeBool(a3, HSUtil::CoderKey::Literal<(char)104,(char)111,(char)118,(char)101,(char)114,(char)68,(char)105,(char)115,(char)97,(char)98,(char)108,(char)101,(char)100>::Key, p_config->hoverDisabled);
-  HSUtil::Encoder::encodeInt(a3, HSUtil::CoderKey::Literal<(char)119,(char)105,(char)100,(char)116,(char)104,(char)77,(char)109>::Key, p_config->widthMm);
-  HSUtil::Encoder::encodeInt(a3, HSUtil::CoderKey::Literal<(char)104,(char)101,(char)105,(char)103,(char)104,(char)116,(char)77,(char)109>::Key, p_config->heightMm);
-  if (!*a3)
+  HSUtil::Encoder::encodeUInt(encode, HSUtil::CoderKey::Literal<(char)118,(char)101,(char)110,(char)100,(char)111,(char)114,(char)73,(char)68>::Key, p_config->vendorID);
+  HSUtil::Encoder::encodeUInt(encode, HSUtil::CoderKey::Literal<(char)112,(char)114,(char)111,(char)100,(char)117,(char)99,(char)116,(char)73,(char)68>::Key, p_config->productID);
+  HSUtil::Encoder::encodeUInt(encode, HSUtil::CoderKey::Literal<(char)111,(char)119,(char)110,(char)101,(char)114,(char)82,(char)101,(char)103,(char)105,(char)115,(char)116,(char)114,(char)121,(char)73,(char)68>::Key, p_config->ownerRegistryID);
+  HSUtil::Encoder::encodeUInt(encode, HSUtil::CoderKey::Literal<(char)109,(char)105,(char)110,(char)70,(char)111,(char)114,(char)99,(char)101>::Key, p_config->minForce);
+  HSUtil::Encoder::encodeUInt(encode, HSUtil::CoderKey::Literal<(char)97,(char)99,(char)99,(char)117,(char)114,(char)97,(char)116,(char)101,(char)77,(char)97,(char)120,(char)70,(char)111,(char)114,(char)99,(char)101>::Key, p_config->accurateMaxForce);
+  HSUtil::Encoder::encodeUInt(encode, HSUtil::CoderKey::Literal<(char)101,(char)120,(char)116,(char)101,(char)110,(char)100,(char)101,(char)100,(char)77,(char)97,(char)120,(char)70,(char)111,(char)114,(char)99,(char)101>::Key, p_config->extendedMaxForce);
+  HSUtil::Encoder::encodeUInt(encode, HSUtil::CoderKey::Literal<(char)109,(char)97,(char)120,(char)72,(char)111,(char)118,(char)101,(char)114,(char)72,(char)101,(char)105,(char)103,(char)104,(char)116>::Key, p_config->maxHoverHeight);
+  HSUtil::Encoder::encodeBool(encode, HSUtil::CoderKey::Literal<(char)104,(char)111,(char)118,(char)101,(char)114,(char)68,(char)105,(char)115,(char)97,(char)98,(char)108,(char)101,(char)100>::Key, p_config->hoverDisabled);
+  HSUtil::Encoder::encodeInt(encode, HSUtil::CoderKey::Literal<(char)119,(char)105,(char)100,(char)116,(char)104,(char)77,(char)109>::Key, p_config->widthMm);
+  HSUtil::Encoder::encodeInt(encode, HSUtil::CoderKey::Literal<(char)104,(char)101,(char)105,(char)103,(char)104,(char)116,(char)77,(char)109>::Key, p_config->heightMm);
+  if (!*encode)
   {
-    HSUtil::Encoder::_encodeContainerStop(a3);
+    HSUtil::Encoder::_encodeContainerStop(encode);
   }
 
   return 1;
 }
 
-- (BOOL)handleHSDecode:(void *)a3
+- (BOOL)handleHSDecode:(void *)decode
 {
   p_config = &self->_config;
-  self->_config.vendorID = HSUtil::Decoder::decodeUInt(a3, HSUtil::CoderKey::Literal<(char)118,(char)101,(char)110,(char)100,(char)111,(char)114,(char)73,(char)68>::Key);
-  p_config->productID = HSUtil::Decoder::decodeUInt(a3, HSUtil::CoderKey::Literal<(char)112,(char)114,(char)111,(char)100,(char)117,(char)99,(char)116,(char)73,(char)68>::Key);
-  p_config->ownerRegistryID = HSUtil::Decoder::decodeUInt(a3, HSUtil::CoderKey::Literal<(char)111,(char)119,(char)110,(char)101,(char)114,(char)82,(char)101,(char)103,(char)105,(char)115,(char)116,(char)114,(char)121,(char)73,(char)68>::Key);
-  p_config->minForce = HSUtil::Decoder::decodeUInt(a3, HSUtil::CoderKey::Literal<(char)109,(char)105,(char)110,(char)70,(char)111,(char)114,(char)99,(char)101>::Key);
-  p_config->accurateMaxForce = HSUtil::Decoder::decodeUInt(a3, HSUtil::CoderKey::Literal<(char)97,(char)99,(char)99,(char)117,(char)114,(char)97,(char)116,(char)101,(char)77,(char)97,(char)120,(char)70,(char)111,(char)114,(char)99,(char)101>::Key);
-  p_config->extendedMaxForce = HSUtil::Decoder::decodeUInt(a3, HSUtil::CoderKey::Literal<(char)101,(char)120,(char)116,(char)101,(char)110,(char)100,(char)101,(char)100,(char)77,(char)97,(char)120,(char)70,(char)111,(char)114,(char)99,(char)101>::Key);
-  p_config->maxHoverHeight = HSUtil::Decoder::decodeUInt(a3, HSUtil::CoderKey::Literal<(char)109,(char)97,(char)120,(char)72,(char)111,(char)118,(char)101,(char)114,(char)72,(char)101,(char)105,(char)103,(char)104,(char)116>::Key);
-  p_config->hoverDisabled = HSUtil::Decoder::decodeBool(a3, HSUtil::CoderKey::Literal<(char)104,(char)111,(char)118,(char)101,(char)114,(char)68,(char)105,(char)115,(char)97,(char)98,(char)108,(char)101,(char)100>::Key);
-  p_config->widthMm = HSUtil::Decoder::decodeInt(a3, HSUtil::CoderKey::Literal<(char)119,(char)105,(char)100,(char)116,(char)104,(char)77,(char)109>::Key);
-  p_config->heightMm = HSUtil::Decoder::decodeInt(a3, HSUtil::CoderKey::Literal<(char)104,(char)101,(char)105,(char)103,(char)104,(char)116,(char)77,(char)109>::Key);
-  v5 = *a3;
-  if (*a3)
+  self->_config.vendorID = HSUtil::Decoder::decodeUInt(decode, HSUtil::CoderKey::Literal<(char)118,(char)101,(char)110,(char)100,(char)111,(char)114,(char)73,(char)68>::Key);
+  p_config->productID = HSUtil::Decoder::decodeUInt(decode, HSUtil::CoderKey::Literal<(char)112,(char)114,(char)111,(char)100,(char)117,(char)99,(char)116,(char)73,(char)68>::Key);
+  p_config->ownerRegistryID = HSUtil::Decoder::decodeUInt(decode, HSUtil::CoderKey::Literal<(char)111,(char)119,(char)110,(char)101,(char)114,(char)82,(char)101,(char)103,(char)105,(char)115,(char)116,(char)114,(char)121,(char)73,(char)68>::Key);
+  p_config->minForce = HSUtil::Decoder::decodeUInt(decode, HSUtil::CoderKey::Literal<(char)109,(char)105,(char)110,(char)70,(char)111,(char)114,(char)99,(char)101>::Key);
+  p_config->accurateMaxForce = HSUtil::Decoder::decodeUInt(decode, HSUtil::CoderKey::Literal<(char)97,(char)99,(char)99,(char)117,(char)114,(char)97,(char)116,(char)101,(char)77,(char)97,(char)120,(char)70,(char)111,(char)114,(char)99,(char)101>::Key);
+  p_config->extendedMaxForce = HSUtil::Decoder::decodeUInt(decode, HSUtil::CoderKey::Literal<(char)101,(char)120,(char)116,(char)101,(char)110,(char)100,(char)101,(char)100,(char)77,(char)97,(char)120,(char)70,(char)111,(char)114,(char)99,(char)101>::Key);
+  p_config->maxHoverHeight = HSUtil::Decoder::decodeUInt(decode, HSUtil::CoderKey::Literal<(char)109,(char)97,(char)120,(char)72,(char)111,(char)118,(char)101,(char)114,(char)72,(char)101,(char)105,(char)103,(char)104,(char)116>::Key);
+  p_config->hoverDisabled = HSUtil::Decoder::decodeBool(decode, HSUtil::CoderKey::Literal<(char)104,(char)111,(char)118,(char)101,(char)114,(char)68,(char)105,(char)115,(char)97,(char)98,(char)108,(char)101,(char)100>::Key);
+  p_config->widthMm = HSUtil::Decoder::decodeInt(decode, HSUtil::CoderKey::Literal<(char)119,(char)105,(char)100,(char)116,(char)104,(char)77,(char)109>::Key);
+  p_config->heightMm = HSUtil::Decoder::decodeInt(decode, HSUtil::CoderKey::Literal<(char)104,(char)101,(char)105,(char)103,(char)104,(char)116,(char)77,(char)109>::Key);
+  v5 = *decode;
+  if (*decode)
   {
     memset(__b, 170, sizeof(__b));
     v6 = basename_r("/Library/Caches/com.apple.xbs/Sources/Multitouch/HIDSensingTouch/HSTPipeline/HSTPencilVirtualService.mm", __b);
@@ -869,13 +869,13 @@ void __51__HSTPencilVirtualService__dispatchHIDEventsAsync___block_invoke(uint64
   return self;
 }
 
-- (void)setConfig:(HSTPencilVirtualServiceConfig *)a3
+- (void)setConfig:(HSTPencilVirtualServiceConfig *)config
 {
-  *&self->_config.vendorID = *&a3->vendorID;
-  v4 = *&a3->accurateMaxForce;
-  v3 = *&a3->maxHoverHeight;
-  v5 = *&a3->ownerRegistryID;
-  *&self->_config.heightMm = *&a3->heightMm;
+  *&self->_config.vendorID = *&config->vendorID;
+  v4 = *&config->accurateMaxForce;
+  v3 = *&config->maxHoverHeight;
+  v5 = *&config->ownerRegistryID;
+  *&self->_config.heightMm = *&config->heightMm;
   *&self->_config.accurateMaxForce = v4;
   *&self->_config.maxHoverHeight = v3;
   *&self->_config.ownerRegistryID = v5;

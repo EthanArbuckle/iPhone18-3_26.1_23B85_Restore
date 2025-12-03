@@ -4,9 +4,9 @@
 - (CGRect)primaryLabelTileFrame;
 - (CGRect)secondaryLabelTileFrame;
 - (CGRect)tileFrame;
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority;
 - (id)backgroundColor;
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3;
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes;
 - (void)prepareForReuse;
 @end
 
@@ -19,16 +19,16 @@
   [(HUViewControllerCollectionViewCell *)&v2 prepareForReuse];
 }
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   if (![(HUViewControllerCollectionViewCell *)self allowSelfSizing])
   {
     v43.receiver = self;
     v43.super_class = HUMediaPlatterCollectionViewCell;
-    *&v10 = a4;
-    *&v11 = a5;
+    *&v10 = priority;
+    *&v11 = fittingPriority;
     [(HUViewControllerCollectionViewCell *)&v43 systemLayoutSizeFittingSize:width withHorizontalFittingPriority:height verticalFittingPriority:v10, v11];
     v28 = v41;
     v30 = v42;
@@ -39,28 +39,28 @@ LABEL_6:
   }
 
   [(HUMediaPlatterCollectionViewCell *)self setClipsToBounds:1];
-  v12 = [(HUViewControllerCollectionViewCell *)self viewController];
-  v13 = [v12 view];
-  [v13 sizeThatFits:{width, 3.40282347e38}];
+  viewController = [(HUViewControllerCollectionViewCell *)self viewController];
+  view = [viewController view];
+  [view sizeThatFits:{width, 3.40282347e38}];
   v15 = v14;
 
-  v16 = [(HUViewControllerCollectionViewCell *)self viewController];
-  v17 = [v16 view];
-  [v17 frame];
+  viewController2 = [(HUViewControllerCollectionViewCell *)self viewController];
+  view2 = [viewController2 view];
+  [view2 frame];
   v19 = v18;
   v21 = v20;
 
-  v22 = [(HUViewControllerCollectionViewCell *)self viewController];
-  v23 = [v22 view];
-  [v23 setFrame:{v19, v21, width, v15}];
+  viewController3 = [(HUViewControllerCollectionViewCell *)self viewController];
+  view3 = [viewController3 view];
+  [view3 setFrame:{v19, v21, width, v15}];
 
-  v24 = [(HUViewControllerCollectionViewCell *)self viewController];
-  v25 = [v24 view];
-  [v25 layoutIfNeeded];
+  viewController4 = [(HUViewControllerCollectionViewCell *)self viewController];
+  view4 = [viewController4 view];
+  [view4 layoutIfNeeded];
 
   [(HUMediaPlatterCollectionViewCell *)self _setContinuousCornerRadius:16.0];
-  v26 = [(HUViewControllerCollectionViewCell *)self viewController];
-  [v26 preferredContentSize];
+  viewController5 = [(HUViewControllerCollectionViewCell *)self viewController];
+  [viewController5 preferredContentSize];
   v28 = v27;
   v30 = v29;
 
@@ -69,11 +69,11 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  v31 = [(HUViewControllerCollectionViewCell *)self viewController];
-  v32 = [v31 view];
-  *&v33 = a4;
-  *&v34 = a5;
-  [v32 systemLayoutSizeFittingSize:width withHorizontalFittingPriority:height verticalFittingPriority:{v33, v34}];
+  viewController6 = [(HUViewControllerCollectionViewCell *)self viewController];
+  view5 = [viewController6 view];
+  *&v33 = priority;
+  *&v34 = fittingPriority;
+  [view5 systemLayoutSizeFittingSize:width withHorizontalFittingPriority:height verticalFittingPriority:{v33, v34}];
   v36 = v35;
   v38 = v37;
 
@@ -85,19 +85,19 @@ LABEL_7:
   return result;
 }
 
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes
 {
-  v4 = a3;
+  attributesCopy = attributes;
   if ([(HUViewControllerCollectionViewCell *)self allowSelfSizing])
   {
     v8.receiver = self;
     v8.super_class = HUMediaPlatterCollectionViewCell;
-    v5 = [(HUViewControllerCollectionViewCell *)&v8 preferredLayoutAttributesFittingAttributes:v4];
+    v5 = [(HUViewControllerCollectionViewCell *)&v8 preferredLayoutAttributesFittingAttributes:attributesCopy];
   }
 
   else
   {
-    v5 = v4;
+    v5 = attributesCopy;
   }
 
   v6 = v5;
@@ -173,8 +173,8 @@ LABEL_7:
 
 - (id)backgroundColor
 {
-  v2 = [(HUMediaPlatterCollectionViewCell *)self traitCollection];
-  if ([v2 userInterfaceStyle] == 1)
+  traitCollection = [(HUMediaPlatterCollectionViewCell *)self traitCollection];
+  if ([traitCollection userInterfaceStyle] == 1)
   {
     [MEMORY[0x277D75348] systemWhiteColor];
   }

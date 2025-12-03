@@ -1,29 +1,29 @@
 @interface TSCEFunction_WEIBULL
-+ (id)evaluateForArgsWithContext:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5;
++ (id)evaluateForArgsWithContext:(id)context functionSpec:(id)spec arguments:(const void *)arguments;
 @end
 
 @implementation TSCEFunction_WEIBULL
 
-+ (id)evaluateForArgsWithContext:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5
++ (id)evaluateForArgsWithContext:(id)context functionSpec:(id)spec arguments:(const void *)arguments
 {
-  v8 = **a5;
+  v8 = **arguments;
   v61 = 0;
-  v10 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v8, v9, a3, a4, 0, &v61);
+  v10 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v8, v9, context, spec, 0, &v61);
   v11 = v61;
   objc_msgSend_doubleRepresentation(v10, v12, v13, v14, v15);
   v17 = v16;
 
-  v18 = *(*a5 + 8);
+  v18 = *(*arguments + 8);
   v60 = v11;
-  v20 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v18, v19, a3, a4, 1, &v60);
+  v20 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v18, v19, context, spec, 1, &v60);
   v21 = v60;
 
   objc_msgSend_doubleRepresentation(v20, v22, v23, v24, v25);
   v27 = v26;
 
-  v28 = *(*a5 + 16);
+  v28 = *(*arguments + 16);
   v59 = v21;
-  v30 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v28, v29, a3, a4, 2, &v59);
+  v30 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v28, v29, context, spec, 2, &v59);
   v31 = v59;
 
   objc_msgSend_doubleRepresentation(v30, v32, v33, v34, v35);
@@ -31,18 +31,18 @@
 
   if (v31)
   {
-    v41 = objc_msgSend_raiseErrorOrConvert_(a3, v38, v31, v39, v40);
+    v41 = objc_msgSend_raiseErrorOrConvert_(context, v38, v31, v39, v40);
   }
 
   else
   {
-    v42 = *(*a5 + 24);
+    v42 = *(*arguments + 24);
     v58 = 0;
-    v44 = objc_msgSend_asBoolean_functionSpec_argumentIndex_outError_(v42, v43, a3, a4, 3, &v58);
+    v44 = objc_msgSend_asBoolean_functionSpec_argumentIndex_outError_(v42, v43, context, spec, 3, &v58);
     v31 = v58;
     if (v31)
     {
-      v48 = objc_msgSend_raiseErrorOrConvert_(a3, v45, v31, v46, v47);
+      v48 = objc_msgSend_raiseErrorOrConvert_(context, v45, v31, v46, v47);
     }
 
     else
@@ -64,7 +64,7 @@
       TSUDecimal::operator=();
       if (v8)
       {
-        objc_msgSend_formatWithContext_(v8, v52, a3, v53, v54);
+        objc_msgSend_formatWithContext_(v8, v52, context, v53, v54);
       }
 
       else

@@ -1,19 +1,19 @@
 @interface OKActionLongPress
-+ (id)longPressActionWithLocation:(CGPoint)a3 tapCount:(unint64_t)a4 touchCount:(unint64_t)a5 pressDuration:(double)a6 context:(id)a7;
-+ (void)setupJavascriptContext:(id)a3;
++ (id)longPressActionWithLocation:(CGPoint)location tapCount:(unint64_t)count touchCount:(unint64_t)touchCount pressDuration:(double)duration context:(id)context;
++ (void)setupJavascriptContext:(id)context;
 - (OKActionLongPress)init;
-- (OKActionLongPress)initWithCoder:(id)a3;
+- (OKActionLongPress)initWithCoder:(id)coder;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation OKActionLongPress
 
-+ (id)longPressActionWithLocation:(CGPoint)a3 tapCount:(unint64_t)a4 touchCount:(unint64_t)a5 pressDuration:(double)a6 context:(id)a7
++ (id)longPressActionWithLocation:(CGPoint)location tapCount:(unint64_t)count touchCount:(unint64_t)touchCount pressDuration:(double)duration context:(id)context
 {
-  v9 = [[OKActionLongPress alloc] initWithLocation:a5 touchCount:a7 context:a3.x, a3.y];
-  [(OKActionLongPress *)v9 setTapCount:a4];
-  [(OKActionLongPress *)v9 setPressDuration:a6];
+  v9 = [[OKActionLongPress alloc] initWithLocation:touchCount touchCount:context context:location.x, location.y];
+  [(OKActionLongPress *)v9 setTapCount:count];
+  [(OKActionLongPress *)v9 setPressDuration:duration];
 
   return v9;
 }
@@ -41,35 +41,35 @@
   [(OKAction *)&v2 dealloc];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = OKActionLongPress;
   [(OKAction *)&v5 encodeWithCoder:?];
-  [a3 encodeInt32:LODWORD(self->_tapCount) forKey:@"tapCount"];
-  [a3 encodeDouble:@"pressDuration" forKey:self->_pressDuration];
+  [coder encodeInt32:LODWORD(self->_tapCount) forKey:@"tapCount"];
+  [coder encodeDouble:@"pressDuration" forKey:self->_pressDuration];
 }
 
-- (OKActionLongPress)initWithCoder:(id)a3
+- (OKActionLongPress)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = OKActionLongPress;
   v4 = [(OKAction *)&v7 initWithCoder:?];
   if (v4)
   {
-    v4->_tapCount = [a3 decodeInt32ForKey:@"tapCount"];
-    [a3 decodeDoubleForKey:@"pressDuration"];
+    v4->_tapCount = [coder decodeInt32ForKey:@"tapCount"];
+    [coder decodeDoubleForKey:@"pressDuration"];
     v4->_pressDuration = v5;
   }
 
   return v4;
 }
 
-+ (void)setupJavascriptContext:(id)a3
++ (void)setupJavascriptContext:(id)context
 {
   v4 = objc_opt_class();
 
-  [a3 setObject:v4 forKeyedSubscript:@"OKActionLongPress"];
+  [context setObject:v4 forKeyedSubscript:@"OKActionLongPress"];
 }
 
 @end

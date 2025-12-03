@@ -1,7 +1,7 @@
 @interface TSTUidCoordsPerGroupValueTuple
-- (TSKUIDStructCoord)uuidCoordForGroupTuple:(SEL)a3 runningLevel:(id)a4;
+- (TSKUIDStructCoord)uuidCoordForGroupTuple:(SEL)tuple runningLevel:(id)level;
 - (TSTUidCoordsPerGroupValueTuple)init;
-- (void)addUidCoord:(const TSKUIDStructCoord *)a3 tupleForCoord:(id)a4 atRunningLevel:(unsigned __int8)a5;
+- (void)addUidCoord:(const TSKUIDStructCoord *)coord tupleForCoord:(id)forCoord atRunningLevel:(unsigned __int8)level;
 @end
 
 @implementation TSTUidCoordsPerGroupValueTuple
@@ -21,36 +21,36 @@
   return v2;
 }
 
-- (void)addUidCoord:(const TSKUIDStructCoord *)a3 tupleForCoord:(id)a4 atRunningLevel:(unsigned __int8)a5
+- (void)addUidCoord:(const TSKUIDStructCoord *)coord tupleForCoord:(id)forCoord atRunningLevel:(unsigned __int8)level
 {
-  v5 = a5;
-  v8 = a4;
-  if (v8)
+  levelCopy = level;
+  forCoordCopy = forCoord;
+  if (forCoordCopy)
   {
-    v16 = v8;
-    v13 = objc_msgSend_objectForKey_(self->_uidCoordsPerTuple, v8, v8, v9, v10);
+    v16 = forCoordCopy;
+    v13 = objc_msgSend_objectForKey_(self->_uidCoordsPerTuple, forCoordCopy, forCoordCopy, v9, v10);
     if (!v13)
     {
       v13 = objc_opt_new();
       objc_msgSend_setObject_forKey_(self->_uidCoordsPerTuple, v14, v13, v16, v15);
     }
 
-    objc_msgSend_addUidCoord_atRunningLevel_(v13, v11, a3, v5, v12);
+    objc_msgSend_addUidCoord_atRunningLevel_(v13, v11, coord, levelCopy, v12);
 
-    v8 = v16;
+    forCoordCopy = v16;
   }
 }
 
-- (TSKUIDStructCoord)uuidCoordForGroupTuple:(SEL)a3 runningLevel:(id)a4
+- (TSKUIDStructCoord)uuidCoordForGroupTuple:(SEL)tuple runningLevel:(id)level
 {
   v5 = a5;
-  v8 = a4;
+  levelCopy = level;
   retstr->_column = 0u;
   retstr->_row = 0u;
   TSKMakeInvalidUIDStructCoord();
-  if (v8)
+  if (levelCopy)
   {
-    v12 = objc_msgSend_objectForKey_(self->_uidCoordsPerTuple, v9, v8, v10, v11);
+    v12 = objc_msgSend_objectForKey_(self->_uidCoordsPerTuple, v9, levelCopy, v10, v11);
     v16 = v12;
     if (v12)
     {

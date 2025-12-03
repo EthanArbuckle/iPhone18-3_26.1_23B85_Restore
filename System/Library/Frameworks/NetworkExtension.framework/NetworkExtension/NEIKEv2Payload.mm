@@ -1,22 +1,22 @@
 @interface NEIKEv2Payload
 - (BOOL)generatePayloadData;
 - (BOOL)hasRequiredFields;
-- (BOOL)parsePayloadData:(id)a3;
+- (BOOL)parsePayloadData:(id)data;
 - (NEIKEv2Payload)init;
 - (uint64_t)isValid;
-- (void)setPayloadSubHeader:(uint64_t)a1;
+- (void)setPayloadSubHeader:(uint64_t)header;
 @end
 
 @implementation NEIKEv2Payload
 
-- (BOOL)parsePayloadData:(id)a3
+- (BOOL)parsePayloadData:(id)data
 {
   v9 = *MEMORY[0x1E69E9840];
   v4 = ne_log_obj();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
   {
     v7 = 138412290;
-    v8 = self;
+    selfCopy = self;
     _os_log_error_impl(&dword_1BA83C000, v4, OS_LOG_TYPE_ERROR, "Cannot parse payload data for %@", &v7, 0xCu);
   }
 
@@ -31,7 +31,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
   {
     v6 = 138412290;
-    v7 = self;
+    selfCopy = self;
     _os_log_error_impl(&dword_1BA83C000, v3, OS_LOG_TYPE_ERROR, "Cannot generate payload data for %@", &v6, 0xCu);
   }
 
@@ -46,7 +46,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
   {
     v6 = 138412290;
-    v7 = self;
+    selfCopy = self;
     _os_log_error_impl(&dword_1BA83C000, v3, OS_LOG_TYPE_ERROR, "Cannot check for required fields on generic payload %@", &v6, 0xCu);
   }
 
@@ -95,11 +95,11 @@ LABEL_6:
   return v4;
 }
 
-- (void)setPayloadSubHeader:(uint64_t)a1
+- (void)setPayloadSubHeader:(uint64_t)header
 {
-  if (a1)
+  if (header)
   {
-    objc_storeStrong((a1 + 16), a2);
+    objc_storeStrong((header + 16), a2);
   }
 }
 

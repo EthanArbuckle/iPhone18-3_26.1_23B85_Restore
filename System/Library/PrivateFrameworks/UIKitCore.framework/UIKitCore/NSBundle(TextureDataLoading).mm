@@ -7,12 +7,12 @@
 - (id)dataForResourceName:()TextureDataLoading
 {
   v4 = a3;
-  v5 = [_UIAssetManager assetManagerForBundle:a1];
+  v5 = [_UIAssetManager assetManagerForBundle:self];
   v6 = [v5 dataNamed:v4];
 
-  v7 = [v6 data];
+  data = [v6 data];
 
-  return v7;
+  return data;
 }
 
 @end

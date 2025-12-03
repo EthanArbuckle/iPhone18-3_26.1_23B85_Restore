@@ -1,32 +1,32 @@
 @interface WBSCyclerItemListRepresentation
-- (BOOL)_tryToDeleteDescendant:(id)a3;
-- (BOOL)containsChildPassingTest:(id)a3;
-- (BOOL)containsDescendant:(id)a3;
-- (BOOL)isEquivalent:(id)a3;
-- (WBSCyclerItemListRepresentation)initWithCoder:(id)a3;
-- (WBSCyclerItemListRepresentation)initWithTitle:(id)a3 uniqueIdentifier:(id)a4;
-- (id)allDescendantsPassingTest:(id)a3;
-- (id)childAtIndex:(unint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descendantWithUniqueIdentifier:(id)a3;
-- (id)pairsOfItemsWithDifferingExtraAttributesComparedTo:(id)a3;
-- (id)randomChildPassingTest:(id)a3;
-- (id)randomDescendantPassingTest:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)_tryToDeleteDescendant:(id)descendant;
+- (BOOL)containsChildPassingTest:(id)test;
+- (BOOL)containsDescendant:(id)descendant;
+- (BOOL)isEquivalent:(id)equivalent;
+- (WBSCyclerItemListRepresentation)initWithCoder:(id)coder;
+- (WBSCyclerItemListRepresentation)initWithTitle:(id)title uniqueIdentifier:(id)identifier;
+- (id)allDescendantsPassingTest:(id)test;
+- (id)childAtIndex:(unint64_t)index;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descendantWithUniqueIdentifier:(id)identifier;
+- (id)pairsOfItemsWithDifferingExtraAttributesComparedTo:(id)to;
+- (id)randomChildPassingTest:(id)test;
+- (id)randomDescendantPassingTest:(id)test;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WBSCyclerItemListRepresentation
 
-- (WBSCyclerItemListRepresentation)initWithTitle:(id)a3 uniqueIdentifier:(id)a4
+- (WBSCyclerItemListRepresentation)initWithTitle:(id)title uniqueIdentifier:(id)identifier
 {
   v9.receiver = self;
   v9.super_class = WBSCyclerItemListRepresentation;
-  v4 = [(WBSCyclerItemRepresentation *)&v9 initWithTitle:a3 uniqueIdentifier:a4];
+  v4 = [(WBSCyclerItemRepresentation *)&v9 initWithTitle:title uniqueIdentifier:identifier];
   if (v4)
   {
-    v5 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     children = v4->_children;
-    v4->_children = v5;
+    v4->_children = array;
 
     v7 = v4;
   }
@@ -34,12 +34,12 @@
   return v4;
 }
 
-- (WBSCyclerItemListRepresentation)initWithCoder:(id)a3
+- (WBSCyclerItemListRepresentation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = WBSCyclerItemListRepresentation;
-  v5 = [(WBSCyclerItemRepresentation *)&v16 initWithCoder:v4];
+  v5 = [(WBSCyclerItemRepresentation *)&v16 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = MEMORY[0x1E695DFD8];
@@ -47,7 +47,7 @@
     v8 = objc_opt_class();
     v9 = objc_opt_class();
     v10 = [v6 setWithObjects:{v7, v8, v9, objc_opt_class(), 0}];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"Children"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"Children"];
     v12 = [v11 mutableCopy];
     children = v5->_children;
     v5->_children = v12;
@@ -58,25 +58,25 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = WBSCyclerItemListRepresentation;
-  v4 = a3;
-  [(WBSCyclerItemRepresentation *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_children forKey:{@"Children", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(WBSCyclerItemRepresentation *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_children forKey:{@"Children", v5.receiver, v5.super_class}];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v21 = *MEMORY[0x1E69E9840];
   v4 = [WBSCyclerItemListRepresentation alloc];
-  v5 = [(WBSCyclerItemRepresentation *)self title];
-  v6 = [(WBSCyclerItemRepresentation *)self uniqueIdentifier];
-  v7 = [(WBSCyclerItemListRepresentation *)v4 initWithTitle:v5 uniqueIdentifier:v6];
+  title = [(WBSCyclerItemRepresentation *)self title];
+  uniqueIdentifier = [(WBSCyclerItemRepresentation *)self uniqueIdentifier];
+  v7 = [(WBSCyclerItemListRepresentation *)v4 initWithTitle:title uniqueIdentifier:uniqueIdentifier];
 
-  v8 = [(WBSCyclerItemRepresentation *)self extraAttributes];
-  [(WBSCyclerItemRepresentation *)v7 setExtraAttributes:v8];
+  extraAttributes = [(WBSCyclerItemRepresentation *)self extraAttributes];
+  [(WBSCyclerItemRepresentation *)v7 setExtraAttributes:extraAttributes];
 
   v18 = 0u;
   v19 = 0u;
@@ -114,14 +114,14 @@
   return v7;
 }
 
-- (BOOL)isEquivalent:(id)a3
+- (BOOL)isEquivalent:(id)equivalent
 {
-  v4 = a3;
+  equivalentCopy = equivalent;
   v14.receiver = self;
   v14.super_class = WBSCyclerItemListRepresentation;
-  if ([(WBSCyclerItemRepresentation *)&v14 isEquivalent:v4]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  if ([(WBSCyclerItemRepresentation *)&v14 isEquivalent:equivalentCopy]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = v4[5];
+    v5 = equivalentCopy[5];
     v6 = [v5 count];
     if (v6 == [(NSMutableArray *)self->_children count])
     {
@@ -171,14 +171,14 @@
   return v11;
 }
 
-- (id)pairsOfItemsWithDifferingExtraAttributesComparedTo:(id)a3
+- (id)pairsOfItemsWithDifferingExtraAttributesComparedTo:(id)to
 {
-  v4 = a3;
-  v5 = v4[5];
+  toCopy = to;
+  v5 = toCopy[5];
   v6 = [v5 count];
   v14.receiver = self;
   v14.super_class = WBSCyclerItemListRepresentation;
-  v7 = [(WBSCyclerItemRepresentation *)&v14 pairsOfItemsWithDifferingExtraAttributesComparedTo:v4];
+  v7 = [(WBSCyclerItemRepresentation *)&v14 pairsOfItemsWithDifferingExtraAttributesComparedTo:toCopy];
   v8 = [v7 mutableCopy];
 
   if (v6)
@@ -195,10 +195,10 @@
   return v8;
 }
 
-- (BOOL)containsChildPassingTest:(id)a3
+- (BOOL)containsChildPassingTest:(id)test
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  testCopy = test;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -217,7 +217,7 @@
           objc_enumerationMutation(v5);
         }
 
-        if (v4[2](v4, *(*(&v10 + 1) + 8 * i)))
+        if (testCopy[2](testCopy, *(*(&v10 + 1) + 8 * i)))
         {
           LOBYTE(v6) = 1;
           goto LABEL_11;
@@ -239,11 +239,11 @@ LABEL_11:
   return v6;
 }
 
-- (BOOL)containsDescendant:(id)a3
+- (BOOL)containsDescendant:(id)descendant
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([(WBSCyclerItemListRepresentation *)self containsChild:v4])
+  descendantCopy = descendant;
+  if ([(WBSCyclerItemListRepresentation *)self containsChild:descendantCopy])
   {
     LOBYTE(v5) = 1;
   }
@@ -270,7 +270,7 @@ LABEL_11:
 
           v9 = *(*(&v11 + 1) + 8 * i);
           objc_opt_class();
-          if (objc_opt_isKindOfClass() & 1) != 0 && ([v9 containsDescendant:{v4, v11}])
+          if (objc_opt_isKindOfClass() & 1) != 0 && ([v9 containsDescendant:{descendantCopy, v11}])
           {
             LOBYTE(v5) = 1;
             goto LABEL_14;
@@ -293,31 +293,31 @@ LABEL_14:
   return v5;
 }
 
-- (id)childAtIndex:(unint64_t)a3
+- (id)childAtIndex:(unint64_t)index
 {
-  if ([(WBSCyclerItemListRepresentation *)self numberOfChildren]<= a3)
+  if ([(WBSCyclerItemListRepresentation *)self numberOfChildren]<= index)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [(NSMutableArray *)self->_children objectAtIndex:a3];
+    v5 = [(NSMutableArray *)self->_children objectAtIndex:index];
   }
 
   return v5;
 }
 
-- (id)descendantWithUniqueIdentifier:(id)a3
+- (id)descendantWithUniqueIdentifier:(id)identifier
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(WBSCyclerItemRepresentation *)self uniqueIdentifier];
-  v6 = [v5 isEqualToString:v4];
+  identifierCopy = identifier;
+  uniqueIdentifier = [(WBSCyclerItemRepresentation *)self uniqueIdentifier];
+  v6 = [uniqueIdentifier isEqualToString:identifierCopy];
 
   if (v6)
   {
-    v7 = self;
+    selfCopy = self;
   }
 
   else
@@ -342,14 +342,14 @@ LABEL_14:
           }
 
           v13 = *(*(&v18 + 1) + 8 * i);
-          v14 = [v13 uniqueIdentifier];
-          v15 = [v14 isEqualToString:v4];
+          uniqueIdentifier2 = [v13 uniqueIdentifier];
+          v15 = [uniqueIdentifier2 isEqualToString:identifierCopy];
 
           if (v15)
           {
             v16 = v13;
 LABEL_15:
-            v7 = v16;
+            selfCopy = v16;
 
             goto LABEL_16;
           }
@@ -357,7 +357,7 @@ LABEL_15:
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v16 = [v13 descendantWithUniqueIdentifier:v4];
+            v16 = [v13 descendantWithUniqueIdentifier:identifierCopy];
             if (v16)
             {
               goto LABEL_15;
@@ -375,17 +375,17 @@ LABEL_15:
       }
     }
 
-    v7 = 0;
+    selfCopy = 0;
   }
 
 LABEL_16:
 
-  return v7;
+  return selfCopy;
 }
 
-- (id)randomDescendantPassingTest:(id)a3
+- (id)randomDescendantPassingTest:(id)test
 {
-  v3 = [(WBSCyclerItemListRepresentation *)self allDescendantsPassingTest:a3];
+  v3 = [(WBSCyclerItemListRepresentation *)self allDescendantsPassingTest:test];
   if ([v3 count])
   {
     v4 = [WBSCyclerRandomnessUtilities randomElementOfArray:v3];
@@ -399,10 +399,10 @@ LABEL_16:
   return v4;
 }
 
-- (id)randomChildPassingTest:(id)a3
+- (id)randomChildPassingTest:(id)test
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  testCopy = test;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -422,7 +422,7 @@ LABEL_16:
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
-        if (v4[2](v4, v9))
+        if (testCopy[2](testCopy, v9))
         {
           v6 = v9;
           goto LABEL_11;
@@ -444,22 +444,22 @@ LABEL_11:
   return v6;
 }
 
-- (id)allDescendantsPassingTest:(id)a3
+- (id)allDescendantsPassingTest:(id)test
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
-  if (v4[2](v4, self))
+  testCopy = test;
+  array = [MEMORY[0x1E695DF70] array];
+  if (testCopy[2](testCopy, self))
   {
-    [v5 addObject:self];
+    [array addObject:self];
   }
 
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = self;
-  v7 = [(WBSCyclerItemListRepresentation *)v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  selfCopy = self;
+  v7 = [(WBSCyclerItemListRepresentation *)selfCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -470,30 +470,30 @@ LABEL_11:
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(selfCopy);
         }
 
         v11 = *(*(&v14 + 1) + 8 * i);
-        if (v4[2](v4, v11))
+        if (testCopy[2](testCopy, v11))
         {
-          [v5 addObject:{v11, v14}];
+          [array addObject:{v11, v14}];
         }
 
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v12 = [(WBSCyclerItemListRepresentation *)v11 allDescendantsPassingTest:v4];
-          [v5 addObjectsFromArray:v12];
+          v12 = [(WBSCyclerItemListRepresentation *)v11 allDescendantsPassingTest:testCopy];
+          [array addObjectsFromArray:v12];
         }
       }
 
-      v8 = [(WBSCyclerItemListRepresentation *)v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v8 = [(WBSCyclerItemListRepresentation *)selfCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v8);
   }
 
-  return v5;
+  return array;
 }
 
 uint64_t __55__WBSCyclerItemListRepresentation_randomListDescendant__block_invoke(uint64_t a1, void *a2)
@@ -514,13 +514,13 @@ uint64_t __58__WBSCyclerItemListRepresentation_randomProfileDescendant__block_in
   return isKindOfClass & 1;
 }
 
-- (BOOL)_tryToDeleteDescendant:(id)a3
+- (BOOL)_tryToDeleteDescendant:(id)descendant
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([(WBSCyclerItemListRepresentation *)self containsChild:v4])
+  descendantCopy = descendant;
+  if ([(WBSCyclerItemListRepresentation *)self containsChild:descendantCopy])
   {
-    [(WBSCyclerItemListRepresentation *)self deleteChild:v4];
+    [(WBSCyclerItemListRepresentation *)self deleteChild:descendantCopy];
 LABEL_14:
     v11 = 1;
   }
@@ -548,7 +548,7 @@ LABEL_14:
 
           v10 = *(*(&v13 + 1) + 8 * i);
           objc_opt_class();
-          if (objc_opt_isKindOfClass() & 1) != 0 && ([v10 _tryToDeleteDescendant:{v4, v13}])
+          if (objc_opt_isKindOfClass() & 1) != 0 && ([v10 _tryToDeleteDescendant:{descendantCopy, v13}])
           {
 
             goto LABEL_14;

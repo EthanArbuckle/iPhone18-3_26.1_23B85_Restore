@@ -5,23 +5,23 @@
 - (_MKCalloutLayer)init;
 - (void)dealloc;
 - (void)layoutSublayers;
-- (void)setArrowOffset:(double)a3;
-- (void)setArrowPosition:(int64_t)a3;
-- (void)setContentsScale:(double)a3;
-- (void)setMetrics:(id *)a3;
+- (void)setArrowOffset:(double)offset;
+- (void)setArrowPosition:(int64_t)position;
+- (void)setContentsScale:(double)scale;
+- (void)setMetrics:(id *)metrics;
 @end
 
 @implementation _MKCalloutLayer
 
-- (void)setMetrics:(id *)a3
+- (void)setMetrics:(id *)metrics
 {
-  v3 = *&a3->var2;
-  *&self->_metrics.margin = *&a3->var0;
+  v3 = *&metrics->var2;
+  *&self->_metrics.margin = *&metrics->var0;
   *&self->_metrics.arrowBase = v3;
-  v4 = *&a3->var8.bottom;
-  v6 = *&a3->var4;
-  v5 = *&a3->var5.var1.var1;
-  *&self->_metrics.padding.top = *&a3->var8.top;
+  v4 = *&metrics->var8.bottom;
+  v6 = *&metrics->var4;
+  v5 = *&metrics->var5.var1.var1;
+  *&self->_metrics.padding.top = *&metrics->var8.top;
   *&self->_metrics.padding.bottom = v4;
   *&self->_metrics.useRadialSmoothing = v6;
   *&self->_metrics.var0.nonRadialSmoothing.arrowPointFactor = v5;
@@ -54,9 +54,9 @@
       [(_MKCalloutLayer *)self setContents:0];
       if (!self->_leftLayer)
       {
-        v3 = [MEMORY[0x1E6979398] layer];
+        layer = [MEMORY[0x1E6979398] layer];
         leftLayer = self->_leftLayer;
-        self->_leftLayer = v3;
+        self->_leftLayer = layer;
 
         [(_MKCalloutLayer *)self addSublayer:self->_leftLayer];
         [(_MKCalloutLayer *)self contentsScale];
@@ -67,9 +67,9 @@
 
       if (!self->_rightLayer)
       {
-        v5 = [MEMORY[0x1E6979398] layer];
+        layer2 = [MEMORY[0x1E6979398] layer];
         rightLayer = self->_rightLayer;
-        self->_rightLayer = v5;
+        self->_rightLayer = layer2;
 
         [(_MKCalloutLayer *)self addSublayer:self->_rightLayer];
         [(_MKCalloutLayer *)self contentsScale];
@@ -82,8 +82,8 @@
       [(CALayer *)self->_leftLayer setContentsRect:0.0, 0.0, 0.5, 1.0];
       [(_MKCalloutLayer *)self _contentSize];
       [(CALayer *)self->_leftLayer setContentsCenter:self->_metrics.cornerRadius / (v7 * 0.5), 1.0 - self->_metrics.cornerRadius / v8, 1.0 / v7, 1.0 / v8];
-      v9 = [(CALayer *)self->_leftLayer contents];
-      [(CALayer *)self->_rightLayer setContents:v9];
+      contents = [(CALayer *)self->_leftLayer contents];
+      [(CALayer *)self->_rightLayer setContents:contents];
 
       [(CALayer *)self->_leftLayer contentsRect];
       [(CALayer *)self->_rightLayer setContentsRect:?];
@@ -92,7 +92,7 @@
       v42 = v43;
       [(CALayer *)v10 setTransform:&v42];
       [(CALayer *)self->_leftLayer contentsCenter];
-      v15 = self->_rightLayer;
+      selfCopy = self->_rightLayer;
     }
 
     else
@@ -110,12 +110,12 @@
       [(_MKCalloutLayer *)self setContents:self->_contentImage];
       v11 = cornerRadius / v19;
       v13 = 1.0 / v19;
-      v15 = self;
+      selfCopy = self;
       v12 = cornerRadius / v19;
       v14 = 1.0 / v19;
     }
 
-    [(_MKCalloutLayer *)v15 setContentsCenter:v11, v12, v13, v14];
+    [(_MKCalloutLayer *)selfCopy setContentsCenter:v11, v12, v13, v14];
   }
 
   if (self->_arrowPosition)
@@ -222,20 +222,20 @@
   }
 }
 
-- (void)setArrowOffset:(double)a3
+- (void)setArrowOffset:(double)offset
 {
-  if (self->_arrowOffset != a3)
+  if (self->_arrowOffset != offset)
   {
-    self->_arrowOffset = a3;
+    self->_arrowOffset = offset;
     [(_MKCalloutLayer *)self setNeedsLayout];
   }
 }
 
-- (void)setArrowPosition:(int64_t)a3
+- (void)setArrowPosition:(int64_t)position
 {
-  if (self->_arrowPosition != a3)
+  if (self->_arrowPosition != position)
   {
-    self->_arrowPosition = a3;
+    self->_arrowPosition = position;
     contentImage = self->_contentImage;
     if (contentImage)
     {
@@ -247,11 +247,11 @@
   }
 }
 
-- (void)setContentsScale:(double)a3
+- (void)setContentsScale:(double)scale
 {
   v5.receiver = self;
   v5.super_class = _MKCalloutLayer;
-  [(_MKResizingLayer *)&v5 setContentsScale:a3];
+  [(_MKResizingLayer *)&v5 setContentsScale:scale];
   contentImage = self->_contentImage;
   if (contentImage)
   {
@@ -283,8 +283,8 @@
   v2 = [(_MKCalloutLayer *)&v5 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E69DC888] whiteColor];
-    [(_MKCalloutLayer *)v2 setFillColor:v3];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [(_MKCalloutLayer *)v2 setFillColor:whiteColor];
 
     [(_MKResizingLayer *)v2 setNeedsLayoutOnBoundsChange:1];
   }

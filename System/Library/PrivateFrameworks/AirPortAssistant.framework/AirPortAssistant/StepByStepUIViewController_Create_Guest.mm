@@ -5,10 +5,10 @@
 - (void)loadView;
 - (void)setupInitialTableHeaderConfiguration;
 - (void)setupTable;
-- (void)switchTouchedInCellAtIndexPath:(id)a3 forSwitchIndex:(unint64_t)a4 isOn:(BOOL)a5;
+- (void)switchTouchedInCellAtIndexPath:(id)path forSwitchIndex:(unint64_t)index isOn:(BOOL)on;
 - (void)updateTable;
 - (void)validateAndUpdateNextButton;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation StepByStepUIViewController_Create_Guest
@@ -45,9 +45,9 @@
   objc_msgSend_setDelegate_(self, v39, self);
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5 = objc_msgSend_valueForKey_(self->super.super._outResultsDict, a2, @"kSBSKey_GuestNetwork_On");
   v8 = objc_msgSend_BOOLValue(v5, v6, v7);
   objc_msgSend_setGuestNetworkEnabled_(self, v9, v8);
@@ -84,7 +84,7 @@
   objc_msgSend_validateAndUpdateNextButton(self, v32, v33);
   v34.receiver = self;
   v34.super_class = StepByStepUIViewController_Create_Guest;
-  [(StepByStepUIViewController *)&v34 viewWillAppear:v3];
+  [(StepByStepUIViewController *)&v34 viewWillAppear:appearCopy];
 }
 
 - (void)setupInitialTableHeaderConfiguration
@@ -139,16 +139,16 @@ LABEL_6:
   return v10;
 }
 
-- (void)switchTouchedInCellAtIndexPath:(id)a3 forSwitchIndex:(unint64_t)a4 isOn:(BOOL)a5
+- (void)switchTouchedInCellAtIndexPath:(id)path forSwitchIndex:(unint64_t)index isOn:(BOOL)on
 {
-  v5 = a5;
+  onCopy = on;
   v15 = 0;
-  v8 = objc_msgSend_tableManager(self, a2, a3, a4);
-  if (objc_msgSend_tagOfCellAtIndexPath_tag_(v8, v9, a3, &v15))
+  v8 = objc_msgSend_tableManager(self, a2, path, index);
+  if (objc_msgSend_tagOfCellAtIndexPath_tag_(v8, v9, path, &v15))
   {
     if (v15 == 1196314707)
     {
-      if (v5)
+      if (onCopy)
       {
         objc_msgSend_setGuestNetSecMode_(self, v10, 7);
       }
@@ -166,7 +166,7 @@ LABEL_6:
         return;
       }
 
-      objc_msgSend_setGuestNetworkEnabled_(self, v10, v5);
+      objc_msgSend_setGuestNetworkEnabled_(self, v10, onCopy);
     }
 
     objc_msgSend_updateTable(self, v11, v12);

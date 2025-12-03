@@ -1,17 +1,17 @@
 @interface DNSResolverProbe
-- (DNSResolverProbe)initWithQueue:(id)a3;
+- (DNSResolverProbe)initWithQueue:(id)queue;
 - (void)dealloc;
-- (void)startDNSResolveFor:(id)a3 includeAWDL:(BOOL)a4;
+- (void)startDNSResolveFor:(id)for includeAWDL:(BOOL)l;
 - (void)stopTest;
 @end
 
 @implementation DNSResolverProbe
 
-- (DNSResolverProbe)initWithQueue:(id)a3
+- (DNSResolverProbe)initWithQueue:(id)queue
 {
   v4.receiver = self;
   v4.super_class = DNSResolverProbe;
-  return [(TestProbe *)&v4 initWithQueue:a3];
+  return [(TestProbe *)&v4 initWithQueue:queue];
 }
 
 - (void)dealloc
@@ -22,17 +22,17 @@
   [(DNSResolverProbe *)&v3 dealloc];
 }
 
-- (void)startDNSResolveFor:(id)a3 includeAWDL:(BOOL)a4
+- (void)startDNSResolveFor:(id)for includeAWDL:(BOOL)l
 {
-  v4 = a4;
+  lCopy = l;
   v28 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  objc_storeStrong(&self->_serviceDict, a3);
-  self->_includeAWDL = v4;
+  forCopy = for;
+  objc_storeStrong(&self->_serviceDict, for);
+  self->_includeAWDL = lCopy;
   [(TestProbe *)self setRunning:1];
   if (self->_sharedDNSRef)
   {
-    if (v4)
+    if (lCopy)
     {
       v8 = 1064960;
     }
@@ -43,10 +43,10 @@
     }
 
     sdRef = self->_sharedDNSRef;
-    v9 = [v7 objectForKeyedSubscript:@"name"];
-    v10 = [v9 UTF8String];
-    v11 = [v7 objectForKeyedSubscript:@"serviceType"];
-    v12 = DNSServiceResolve(&sdRef, v8, 0, v10, [v11 UTF8String], "local", resolveCallBack, self);
+    v9 = [forCopy objectForKeyedSubscript:@"name"];
+    uTF8String = [v9 UTF8String];
+    v11 = [forCopy objectForKeyedSubscript:@"serviceType"];
+    v12 = DNSServiceResolve(&sdRef, v8, 0, uTF8String, [v11 UTF8String], "local", resolveCallBack, self);
 
     if (!v12)
     {
@@ -58,7 +58,7 @@
     if (os_log_type_enabled(debuggabilityLogHandle, OS_LOG_TYPE_INFO))
     {
       v14 = v13;
-      v15 = [v7 objectForKeyedSubscript:@"name"];
+      v15 = [forCopy objectForKeyedSubscript:@"name"];
       *buf = 138412546;
       v25 = v15;
       v26 = 1024;
@@ -70,10 +70,10 @@
     if (objc_opt_respondsToSelector())
     {
       v17 = self->_errorDelegate;
-      v18 = self;
+      selfCopy2 = self;
       v19 = v12;
 LABEL_14:
-      [(DNSResolverProbeErrorDelegate *)v17 dnsResolver:v18 encounteredDNSError:v19];
+      [(DNSResolverProbeErrorDelegate *)v17 dnsResolver:selfCopy2 encounteredDNSError:v19];
     }
   }
 
@@ -90,7 +90,7 @@ LABEL_14:
     if (objc_opt_respondsToSelector())
     {
       v17 = self->_errorDelegate;
-      v18 = self;
+      selfCopy2 = self;
       v19 = 4294901756;
       goto LABEL_14;
     }

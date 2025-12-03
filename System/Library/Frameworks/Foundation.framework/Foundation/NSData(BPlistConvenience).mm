@@ -6,8 +6,8 @@
 
 - (uint64_t)_getBPlistMarker:()BPlistConvenience offset:trailer:
 {
-  [a1 bytes];
-  [a1 length];
+  [self bytes];
+  [self length];
 
   return __CFBinaryPlistGetTopLevelInfo();
 }

@@ -1,17 +1,17 @@
 @interface CESRRawSpeechProfileWord
 - (CESRRawSpeechProfileWord)init;
-- (CESRRawSpeechProfileWord)initWithSpeechWordDictionary:(id)a3;
-- (id)_extractOrthographyFromSpeechWord:(id)a3;
-- (id)_extractTagFromSpeechWord:(id)a3;
+- (CESRRawSpeechProfileWord)initWithSpeechWordDictionary:(id)dictionary;
+- (id)_extractOrthographyFromSpeechWord:(id)word;
+- (id)_extractTagFromSpeechWord:(id)word;
 @end
 
 @implementation CESRRawSpeechProfileWord
 
-- (id)_extractOrthographyFromSpeechWord:(id)a3
+- (id)_extractOrthographyFromSpeechWord:(id)word
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 objectForKey:@"orthography"];
+  wordCopy = word;
+  v4 = [wordCopy objectForKey:@"orthography"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -26,7 +26,7 @@
       v9 = 136315394;
       v10 = "[CESRRawSpeechProfileWord _extractOrthographyFromSpeechWord:]";
       v11 = 2112;
-      v12 = v3;
+      v12 = wordCopy;
       _os_log_error_impl(&dword_225EEB000, v6, OS_LOG_TYPE_ERROR, "%s Missing orthography string value in speech word: %@", &v9, 0x16u);
     }
 
@@ -38,9 +38,9 @@
   return v5;
 }
 
-- (id)_extractTagFromSpeechWord:(id)a3
+- (id)_extractTagFromSpeechWord:(id)word
 {
-  v3 = [a3 objectForKey:@"tag"];
+  v3 = [word objectForKey:@"tag"];
   if (v3)
   {
     objc_opt_class();
@@ -72,10 +72,10 @@ LABEL_8:
   objc_exception_throw(v2);
 }
 
-- (CESRRawSpeechProfileWord)initWithSpeechWordDictionary:(id)a3
+- (CESRRawSpeechProfileWord)initWithSpeechWordDictionary:(id)dictionary
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v16.receiver = self;
   v16.super_class = CESRRawSpeechProfileWord;
   v5 = [(CESRRawSpeechProfileWord *)&v16 init];
@@ -84,7 +84,7 @@ LABEL_8:
     goto LABEL_5;
   }
 
-  if (!v4 || ![v4 count])
+  if (!dictionaryCopy || ![dictionaryCopy count])
   {
     v13 = *MEMORY[0x277CEF0E8];
     if (os_log_type_enabled(*MEMORY[0x277CEF0E8], OS_LOG_TYPE_ERROR))
@@ -92,20 +92,20 @@ LABEL_8:
       *buf = 136315394;
       v18 = "[CESRRawSpeechProfileWord initWithSpeechWordDictionary:]";
       v19 = 2112;
-      v20 = v4;
+      v20 = dictionaryCopy;
       _os_log_error_impl(&dword_225EEB000, v13, OS_LOG_TYPE_ERROR, "%s Cannot construct speech word from empty dictionary: %@", buf, 0x16u);
     }
 
     goto LABEL_8;
   }
 
-  v6 = [(CESRRawSpeechProfileWord *)v5 _extractTagFromSpeechWord:v4];
+  v6 = [(CESRRawSpeechProfileWord *)v5 _extractTagFromSpeechWord:dictionaryCopy];
   v7 = [v6 copy];
   tagValue = v5->_tagValue;
   v5->_tagValue = v7;
 
   v5->_tagType = CESRRawSpeechProfileWordTagFromString(v5->_tagValue);
-  v9 = [(CESRRawSpeechProfileWord *)v5 _extractOrthographyFromSpeechWord:v4];
+  v9 = [(CESRRawSpeechProfileWord *)v5 _extractOrthographyFromSpeechWord:dictionaryCopy];
   v10 = [v9 copy];
   orthography = v5->_orthography;
   v5->_orthography = v10;

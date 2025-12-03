@@ -1,20 +1,20 @@
 @interface TabCloseUndoGroup
-- (id)_initWithType:(int64_t)a3 name:(id)a4;
+- (id)_initWithType:(int64_t)type name:(id)name;
 @end
 
 @implementation TabCloseUndoGroup
 
-- (id)_initWithType:(int64_t)a3 name:(id)a4
+- (id)_initWithType:(int64_t)type name:(id)name
 {
-  v6 = a4;
+  nameCopy = name;
   v13.receiver = self;
   v13.super_class = TabCloseUndoGroup;
   v7 = [(TabCloseUndoGroup *)&v13 init];
   v8 = v7;
   if (v7)
   {
-    v7->_type = a3;
-    v9 = [v6 copy];
+    v7->_type = type;
+    v9 = [nameCopy copy];
     name = v8->_name;
     v8->_name = v9;
 

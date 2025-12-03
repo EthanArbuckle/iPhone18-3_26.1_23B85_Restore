@@ -1,7 +1,7 @@
 @interface WBSManagedFeatureAvailability
 + (WBSManagedFeatureAvailability)sharedInstance;
 - (WBSManagedFeatureAvailability)init;
-- (void)handleNotificationWithNotification:(id)a3;
+- (void)handleNotificationWithNotification:(id)notification;
 @end
 
 @implementation WBSManagedFeatureAvailability
@@ -36,11 +36,11 @@
   return v7;
 }
 
-- (void)handleNotificationWithNotification:(id)a3
+- (void)handleNotificationWithNotification:(id)notification
 {
-  v4 = a3;
-  v5 = self;
-  sub_1B8548288(v4);
+  notificationCopy = notification;
+  selfCopy = self;
+  sub_1B8548288(notificationCopy);
 }
 
 @end

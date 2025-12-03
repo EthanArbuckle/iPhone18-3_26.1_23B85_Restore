@@ -2,7 +2,7 @@
 - (BOOL)hasTitle;
 - (BOOL)isAnchoredToText;
 - (BOOL)isInlineWithText;
-- (THGlossaryEntryInfo)initWithEntry:(id)a3 body:(id)a4;
+- (THGlossaryEntryInfo)initWithEntry:(id)entry body:(id)body;
 - (THWPStorage)bodyStorage;
 - (THWPStorage)headerInfo;
 - (THWPStorage)linksInfo;
@@ -10,14 +10,14 @@
 - (TSDInfoGeometry)geometry;
 - (id)childEnumerator;
 - (id)childInfos;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
-- (void)setOwningAttachment:(id)a3;
+- (void)setOwningAttachment:(id)attachment;
 @end
 
 @implementation THGlossaryEntryInfo
 
-- (THGlossaryEntryInfo)initWithEntry:(id)a3 body:(id)a4
+- (THGlossaryEntryInfo)initWithEntry:(id)entry body:(id)body
 {
   v12.receiver = self;
   v12.super_class = THGlossaryEntryInfo;
@@ -25,8 +25,8 @@
   v7 = v6;
   if (v6)
   {
-    v6->mEntry = a3;
-    v6->mBody = a4;
+    v6->mEntry = entry;
+    v6->mBody = body;
     v8 = +[TSSPropertyMap propertyMap];
     [v8 setObject:+[TSUColor colorWithRed:green:blue:alpha:](TSUColor forProperty:{"colorWithRed:green:blue:alpha:", 0.0, 0.478431373, 1.0, 1.0), 18}];
     [v8 setObject:objc_msgSend(+[TSUFont systemFontOfSize:](TSUFont forProperty:{"systemFontOfSize:", 15.0), "fontName"), 16}];
@@ -40,9 +40,9 @@
     v11[3] = &unk_45CFD0;
     v11[4] = v8;
     [[NSArray arrayWithObjects:2 count:?], "enumerateObjectsUsingBlock:", v11];
-    if ([objc_msgSend(objc_msgSend(a4 "body")])
+    if ([objc_msgSend(objc_msgSend(body "body")])
     {
-      v7->mFloatingInfo = [[THGlossaryEntryFloatingInfo alloc] initWithEntry:a3 body:a4];
+      v7->mFloatingInfo = [[THGlossaryEntryFloatingInfo alloc] initWithEntry:entry body:body];
     }
   }
 
@@ -62,53 +62,53 @@
 
 - (BOOL)hasTitle
 {
-  v3 = [(THModelGlossaryEntryBody *)[(THGlossaryEntryInfo *)self body] bodyStorage];
-  if (v3)
+  bodyStorage = [(THModelGlossaryEntryBody *)[(THGlossaryEntryInfo *)self body] bodyStorage];
+  if (bodyStorage)
   {
-    LOBYTE(v3) = [(THWPStorage *)[(THModelGlossaryEntryBody *)[(THGlossaryEntryInfo *)self body] bodyStorage] length]!= 0;
+    LOBYTE(bodyStorage) = [(THWPStorage *)[(THModelGlossaryEntryBody *)[(THGlossaryEntryInfo *)self body] bodyStorage] length]!= 0;
   }
 
-  return v3;
+  return bodyStorage;
 }
 
 - (THWPStorage)headerInfo
 {
-  v2 = [(THGlossaryEntryInfo *)self body];
+  body = [(THGlossaryEntryInfo *)self body];
 
-  return [(THModelGlossaryEntryBody *)v2 headerInfo];
+  return [(THModelGlossaryEntryBody *)body headerInfo];
 }
 
 - (THWPStorage)bodyStorage
 {
-  v2 = [(THGlossaryEntryInfo *)self body];
+  body = [(THGlossaryEntryInfo *)self body];
 
-  return [(THModelGlossaryEntryBody *)v2 bodyStorage];
+  return [(THModelGlossaryEntryBody *)body bodyStorage];
 }
 
 - (THWPStorage)relatedTermsInfo
 {
-  v2 = [(THGlossaryEntryInfo *)self body];
+  body = [(THGlossaryEntryInfo *)self body];
 
-  return [(THModelGlossaryEntryBody *)v2 relatedTermsInfo];
+  return [(THModelGlossaryEntryBody *)body relatedTermsInfo];
 }
 
 - (THWPStorage)linksInfo
 {
-  v2 = [(THGlossaryEntryInfo *)self body];
+  body = [(THGlossaryEntryInfo *)self body];
 
-  return [(THModelGlossaryEntryBody *)v2 linksInfo];
+  return [(THModelGlossaryEntryBody *)body linksInfo];
 }
 
 - (id)childEnumerator
 {
-  v2 = [(THGlossaryEntryInfo *)self childInfos];
+  childInfos = [(THGlossaryEntryInfo *)self childInfos];
 
-  return [v2 objectEnumerator];
+  return [childInfos objectEnumerator];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "initWithEntry:body:", self->mEntry, self->mBody}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "initWithEntry:body:", self->mEntry, self->mBody}];
   [v4 setParentInfo:{-[THGlossaryEntryInfo parentInfo](self, "parentInfo")}];
   [v4 setOwningAttachment:{-[THGlossaryEntryInfo owningAttachment](self, "owningAttachment")}];
   return v4;
@@ -121,9 +121,9 @@
   return v2;
 }
 
-- (void)setOwningAttachment:(id)a3
+- (void)setOwningAttachment:(id)attachment
 {
-  if (a3)
+  if (attachment)
   {
     v3 = +[TSUAssertionHandler currentHandler];
     v4 = [NSString stringWithUTF8String:"[THGlossaryEntryInfo setOwningAttachment:]"];
@@ -135,9 +135,9 @@
 
 - (BOOL)isAnchoredToText
 {
-  v2 = [(THGlossaryEntryInfo *)self owningAttachment];
+  owningAttachment = [(THGlossaryEntryInfo *)self owningAttachment];
 
-  return [(TSDOwningAttachment *)v2 isAnchored];
+  return [(TSDOwningAttachment *)owningAttachment isAnchored];
 }
 
 - (BOOL)isInlineWithText
@@ -155,14 +155,14 @@
 
 - (id)childInfos
 {
-  v3 = [(THGlossaryEntryInfo *)self body];
+  body = [(THGlossaryEntryInfo *)self body];
   result = self->mChildInfos;
   if (!result)
   {
-    v5 = [[NSMutableArray alloc] initWithCapacity:{-[NSArray count](-[THModelGlossaryEntryBody bodyFloatingInfos](v3, "bodyFloatingInfos"), "count") + 4}];
-    if ([(THModelGlossaryEntryBody *)v3 headerInfo])
+    v5 = [[NSMutableArray alloc] initWithCapacity:{-[NSArray count](-[THModelGlossaryEntryBody bodyFloatingInfos](body, "bodyFloatingInfos"), "count") + 4}];
+    if ([(THModelGlossaryEntryBody *)body headerInfo])
     {
-      [v5 addObject:{-[THModelGlossaryEntryBody headerInfo](v3, "headerInfo")}];
+      [v5 addObject:{-[THModelGlossaryEntryBody headerInfo](body, "headerInfo")}];
     }
 
     if ([(THGlossaryEntryInfo *)self floatingInfo])
@@ -170,19 +170,19 @@
       [v5 addObject:{-[THGlossaryEntryInfo floatingInfo](self, "floatingInfo")}];
     }
 
-    if ([(THModelGlossaryEntryBody *)v3 bodyStorage])
+    if ([(THModelGlossaryEntryBody *)body bodyStorage])
     {
-      [v5 addObject:{-[THModelGlossaryEntryBody bodyStorage](v3, "bodyStorage")}];
+      [v5 addObject:{-[THModelGlossaryEntryBody bodyStorage](body, "bodyStorage")}];
     }
 
-    if ([(THModelGlossaryEntryBody *)v3 relatedTermsInfo])
+    if ([(THModelGlossaryEntryBody *)body relatedTermsInfo])
     {
-      [v5 addObject:{-[THModelGlossaryEntryBody relatedTermsInfo](v3, "relatedTermsInfo")}];
+      [v5 addObject:{-[THModelGlossaryEntryBody relatedTermsInfo](body, "relatedTermsInfo")}];
     }
 
-    if ([(THModelGlossaryEntryBody *)v3 linksInfo])
+    if ([(THModelGlossaryEntryBody *)body linksInfo])
     {
-      [v5 addObject:{-[THModelGlossaryEntryBody linksInfo](v3, "linksInfo")}];
+      [v5 addObject:{-[THModelGlossaryEntryBody linksInfo](body, "linksInfo")}];
     }
 
     self->mChildInfos = [[NSArray alloc] initWithArray:v5];

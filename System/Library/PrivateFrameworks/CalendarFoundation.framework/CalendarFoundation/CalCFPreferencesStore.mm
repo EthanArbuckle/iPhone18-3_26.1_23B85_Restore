@@ -1,8 +1,8 @@
 @interface CalCFPreferencesStore
 + (id)shared;
-- (BOOL)getBoolean:(BOOL *)a3 forDomain:(id)a4 key:(id)a5;
-- (BOOL)getInteger:(int64_t *)a3 forDomain:(id)a4 key:(id)a5;
-- (BOOL)getValue:(id *)a3 forDomain:(id)a4 key:(id)a5;
+- (BOOL)getBoolean:(BOOL *)boolean forDomain:(id)domain key:(id)key;
+- (BOOL)getInteger:(int64_t *)integer forDomain:(id)domain key:(id)key;
+- (BOOL)getValue:(id *)value forDomain:(id)domain key:(id)key;
 @end
 
 @implementation CalCFPreferencesStore
@@ -26,39 +26,39 @@ uint64_t __31__CalCFPreferencesStore_shared__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (BOOL)getBoolean:(BOOL *)a3 forDomain:(id)a4 key:(id)a5
+- (BOOL)getBoolean:(BOOL *)boolean forDomain:(id)domain key:(id)key
 {
   keyExistsAndHasValidFormat = 0;
-  AppBooleanValue = CFPreferencesGetAppBooleanValue(a5, a4, &keyExistsAndHasValidFormat);
+  AppBooleanValue = CFPreferencesGetAppBooleanValue(key, domain, &keyExistsAndHasValidFormat);
   v7 = keyExistsAndHasValidFormat;
   if (keyExistsAndHasValidFormat)
   {
-    *a3 = AppBooleanValue != 0;
+    *boolean = AppBooleanValue != 0;
   }
 
   return v7 != 0;
 }
 
-- (BOOL)getInteger:(int64_t *)a3 forDomain:(id)a4 key:(id)a5
+- (BOOL)getInteger:(int64_t *)integer forDomain:(id)domain key:(id)key
 {
   keyExistsAndHasValidFormat = 0;
-  AppIntegerValue = CFPreferencesGetAppIntegerValue(a5, a4, &keyExistsAndHasValidFormat);
+  AppIntegerValue = CFPreferencesGetAppIntegerValue(key, domain, &keyExistsAndHasValidFormat);
   v7 = keyExistsAndHasValidFormat;
   if (keyExistsAndHasValidFormat)
   {
-    *a3 = AppIntegerValue;
+    *integer = AppIntegerValue;
   }
 
   return v7 != 0;
 }
 
-- (BOOL)getValue:(id *)a3 forDomain:(id)a4 key:(id)a5
+- (BOOL)getValue:(id *)value forDomain:(id)domain key:(id)key
 {
-  v6 = CFPreferencesCopyAppValue(a5, a4);
+  v6 = CFPreferencesCopyAppValue(key, domain);
   if (v6)
   {
     v6 = v6;
-    *a3 = v6;
+    *value = v6;
   }
 
   v7 = v6 != 0;

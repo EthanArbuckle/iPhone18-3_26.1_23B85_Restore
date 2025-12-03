@@ -1,5 +1,5 @@
 @interface HMITask
-- (HMITask)initWithTaskID:(int)a3 timeout:(double)a4;
+- (HMITask)initWithTaskID:(int)d timeout:(double)timeout;
 - (NSDictionary)results;
 - (void)main;
 - (void)mainInsideAutoreleasePool;
@@ -7,14 +7,14 @@
 
 @implementation HMITask
 
-- (HMITask)initWithTaskID:(int)a3 timeout:(double)a4
+- (HMITask)initWithTaskID:(int)d timeout:(double)timeout
 {
   v6.receiver = self;
   v6.super_class = HMITask;
-  result = [(HMFOperation *)&v6 initWithTimeout:a4];
+  result = [(HMFOperation *)&v6 initWithTimeout:timeout];
   if (result)
   {
-    result->_taskID = a3;
+    result->_taskID = d;
   }
 
   return result;
@@ -23,18 +23,18 @@
 - (NSDictionary)results
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v3 = [(HMFOperation *)self error];
-  if (v3 && (v4 = v3, -[HMFOperation error](self, "error"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 code], v5, v4, v6 == 12))
+  error = [(HMFOperation *)self error];
+  if (error && (v4 = error, -[HMFOperation error](self, "error"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 code], v5, v4, v6 == 12))
   {
     v7 = @"Canceled";
   }
 
   else
   {
-    v8 = [(HMFOperation *)self error];
+    error2 = [(HMFOperation *)self error];
 
     v7 = @"Error";
-    if (!v8)
+    if (!error2)
     {
       v7 = @"Success";
     }

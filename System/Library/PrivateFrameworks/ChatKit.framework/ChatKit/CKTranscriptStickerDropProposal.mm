@@ -1,26 +1,26 @@
 @interface CKTranscriptStickerDropProposal
 - (CGPoint)previewCenter;
-- (CKTranscriptStickerDropProposal)initWithDragItem:(id)a3 previewCenter:(CGPoint)a4 targetBalloonIndex:(id)a5;
+- (CKTranscriptStickerDropProposal)initWithDragItem:(id)item previewCenter:(CGPoint)center targetBalloonIndex:(id)index;
 @end
 
 @implementation CKTranscriptStickerDropProposal
 
-- (CKTranscriptStickerDropProposal)initWithDragItem:(id)a3 previewCenter:(CGPoint)a4 targetBalloonIndex:(id)a5
+- (CKTranscriptStickerDropProposal)initWithDragItem:(id)item previewCenter:(CGPoint)center targetBalloonIndex:(id)index
 {
-  y = a4.y;
-  x = a4.x;
-  v10 = a3;
-  v11 = a5;
+  y = center.y;
+  x = center.x;
+  itemCopy = item;
+  indexCopy = index;
   v15.receiver = self;
   v15.super_class = CKTranscriptStickerDropProposal;
   v12 = [(CKTranscriptStickerDropProposal *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_dragItem, a3);
+    objc_storeStrong(&v12->_dragItem, item);
     v13->_previewCenter.x = x;
     v13->_previewCenter.y = y;
-    objc_storeStrong(&v13->_targetBalloonIndex, a5);
+    objc_storeStrong(&v13->_targetBalloonIndex, index);
   }
 
   return v13;

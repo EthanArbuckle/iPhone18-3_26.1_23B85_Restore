@@ -1,46 +1,46 @@
 @interface AMSDeveloperSilentAuthTokenUpdateConsentTask
-- (AMSDeveloperSilentAuthTokenUpdateConsentTask)initWithBundleId:(id)a3 account:(id)a4 mediaType:(id)a5 bag:(id)a6;
-- (id)performUpdateConsent:(BOOL)a3;
+- (AMSDeveloperSilentAuthTokenUpdateConsentTask)initWithBundleId:(id)id account:(id)account mediaType:(id)type bag:(id)bag;
+- (id)performUpdateConsent:(BOOL)consent;
 @end
 
 @implementation AMSDeveloperSilentAuthTokenUpdateConsentTask
 
-- (AMSDeveloperSilentAuthTokenUpdateConsentTask)initWithBundleId:(id)a3 account:(id)a4 mediaType:(id)a5 bag:(id)a6
+- (AMSDeveloperSilentAuthTokenUpdateConsentTask)initWithBundleId:(id)id account:(id)account mediaType:(id)type bag:(id)bag
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  idCopy = id;
+  accountCopy = account;
+  typeCopy = type;
+  bagCopy = bag;
   v19.receiver = self;
   v19.super_class = AMSDeveloperSilentAuthTokenUpdateConsentTask;
   v14 = [(AMSTask *)&v19 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_account, a4);
-    objc_storeStrong(&v15->_mediaType, a5);
-    v16 = [v10 copy];
+    objc_storeStrong(&v14->_account, account);
+    objc_storeStrong(&v15->_mediaType, type);
+    v16 = [idCopy copy];
     bundleId = v15->_bundleId;
     v15->_bundleId = v16;
 
-    objc_storeStrong(&v15->_bag, a6);
+    objc_storeStrong(&v15->_bag, bag);
   }
 
   return v15;
 }
 
-- (id)performUpdateConsent:(BOOL)a3
+- (id)performUpdateConsent:(BOOL)consent
 {
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __69__AMSDeveloperSilentAuthTokenUpdateConsentTask_performUpdateConsent___block_invoke;
   v6[3] = &unk_1E73B6A80;
   v6[4] = self;
-  v7 = a3;
+  consentCopy = consent;
   v3 = [(AMSTask *)self performTaskWithPromiseBlock:v6];
-  v4 = [v3 binaryPromiseAdapter];
+  binaryPromiseAdapter = [v3 binaryPromiseAdapter];
 
-  return v4;
+  return binaryPromiseAdapter;
 }
 
 id __69__AMSDeveloperSilentAuthTokenUpdateConsentTask_performUpdateConsent___block_invoke(uint64_t a1)

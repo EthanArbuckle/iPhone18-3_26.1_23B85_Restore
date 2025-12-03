@@ -1,33 +1,33 @@
 @interface DIMSchemaDIMWatchDeviceAttributes
-- (BOOL)isEqual:(id)a3;
-- (DIMSchemaDIMWatchDeviceAttributes)initWithDictionary:(id)a3;
-- (DIMSchemaDIMWatchDeviceAttributes)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (DIMSchemaDIMWatchDeviceAttributes)initWithDictionary:(id)dictionary;
+- (DIMSchemaDIMWatchDeviceAttributes)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasWatchArmOrientation:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasWatchArmOrientation:(BOOL)orientation;
+- (void)writeTo:(id)to;
 @end
 
 @implementation DIMSchemaDIMWatchDeviceAttributes
 
-- (DIMSchemaDIMWatchDeviceAttributes)initWithDictionary:(id)a3
+- (DIMSchemaDIMWatchDeviceAttributes)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = DIMSchemaDIMWatchDeviceAttributes;
   v5 = [(DIMSchemaDIMWatchDeviceAttributes *)&v10 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"isSatellitePaired"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"isSatellitePaired"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[DIMSchemaDIMWatchDeviceAttributes setIsSatellitePaired:](v5, "setIsSatellitePaired:", [v6 BOOLValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"watchArmOrientation"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"watchArmOrientation"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -40,30 +40,30 @@
   return v5;
 }
 
-- (DIMSchemaDIMWatchDeviceAttributes)initWithJSON:(id)a3
+- (DIMSchemaDIMWatchDeviceAttributes)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(DIMSchemaDIMWatchDeviceAttributes *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(DIMSchemaDIMWatchDeviceAttributes *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(DIMSchemaDIMWatchDeviceAttributes *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -76,26 +76,26 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if (has)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithBool:{-[DIMSchemaDIMWatchDeviceAttributes isSatellitePaired](self, "isSatellitePaired")}];
-    [v3 setObject:v5 forKeyedSubscript:@"isSatellitePaired"];
+    [dictionary setObject:v5 forKeyedSubscript:@"isSatellitePaired"];
 
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    v6 = [(DIMSchemaDIMWatchDeviceAttributes *)self watchArmOrientation];
+    watchArmOrientation = [(DIMSchemaDIMWatchDeviceAttributes *)self watchArmOrientation];
     v7 = @"WATCHARMORIENTATION_UNKNOWN";
-    if (v6 == 1)
+    if (watchArmOrientation == 1)
     {
       v7 = @"WATCHARMORIENTATION_LEFT";
     }
 
-    if (v6 == 2)
+    if (watchArmOrientation == 2)
     {
       v8 = @"WATCHARMORIENTATION_RIGHT";
     }
@@ -105,12 +105,12 @@
       v8 = v7;
     }
 
-    [v3 setObject:v8 forKeyedSubscript:@"watchArmOrientation"];
+    [dictionary setObject:v8 forKeyedSubscript:@"watchArmOrientation"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -139,16 +139,16 @@ LABEL_3:
   return v3 ^ v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_10;
   }
 
   has = self->_has;
-  v6 = v4[16];
+  v6 = equalCopy[16];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_10;
@@ -157,7 +157,7 @@ LABEL_3:
   if (*&has)
   {
     isSatellitePaired = self->_isSatellitePaired;
-    if (isSatellitePaired != [v4 isSatellitePaired])
+    if (isSatellitePaired != [equalCopy isSatellitePaired])
     {
 LABEL_10:
       v10 = 0;
@@ -165,7 +165,7 @@ LABEL_10:
     }
 
     has = self->_has;
-    v6 = v4[16];
+    v6 = equalCopy[16];
   }
 
   v8 = (*&has >> 1) & 1;
@@ -177,7 +177,7 @@ LABEL_10:
   if (v8)
   {
     watchArmOrientation = self->_watchArmOrientation;
-    if (watchArmOrientation != [v4 watchArmOrientation])
+    if (watchArmOrientation != [equalCopy watchArmOrientation])
     {
       goto LABEL_10;
     }
@@ -189,28 +189,28 @@ LABEL_11:
   return v10;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v6 = v4;
+  v6 = toCopy;
   if (has)
   {
     PBDataWriterWriteBOOLField();
-    v4 = v6;
+    toCopy = v6;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
     PBDataWriterWriteInt32Field();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)setHasWatchArmOrientation:(BOOL)a3
+- (void)setHasWatchArmOrientation:(BOOL)orientation
 {
-  if (a3)
+  if (orientation)
   {
     v3 = 2;
   }

@@ -1,26 +1,26 @@
 @interface PXVisualPositionsChangeDetails
-+ (PXVisualPositionsChangeDetails)changeDetailsWithCountBeforeChanges:(int64_t)a3 anchorIndexBeforeChanges:(int64_t)a4 headerIndexesBeforeChanges:(id)a5 countAfterChanges:(int64_t)a6 anchorIndexAfterChanges:(int64_t)a7 headerIndexesAfterChanges:(id)a8 anchorFan:(int64_t)a9 anchorReload:(int64_t)a10;
-+ (PXVisualPositionsChangeDetails)changeDetailsWithCountBeforeChanges:(int64_t)a3 anchorIndexBeforeChanges:(int64_t)a4 headerIndexesBeforeChanges:(id)a5 countAfterChanges:(int64_t)a6 anchorIndexAfterChanges:(int64_t)a7 headerIndexesAfterChanges:(id)a8 reloadAllIncludingAnchor:(BOOL)a9;
-+ (PXVisualPositionsChangeDetails)changeDetailsWithCountBeforeChanges:(int64_t)a3 anchorIndexBeforeChanges:(int64_t)a4 headerIndexesBeforeChanges:(id)a5 countAfterChanges:(int64_t)a6 anchorRemoved:(int64_t)a7 indexAfterChanges:(int64_t)a8 headerIndexesAfterChanges:(id)a9;
-+ (PXVisualPositionsChangeDetails)changeDetailsWithCountBeforeChanges:(int64_t)a3 anchorInserted:(int64_t)a4 indexBeforeChanges:(int64_t)a5 headerIndexesBeforeChanges:(id)a6 countAfterChanges:(int64_t)a7 anchorIndexAfterChanges:(int64_t)a8 headerIndexesAfterChanges:(id)a9;
-- ($5E4061BE7C3C8BB942C4587960135C41)bodyVisualPositionAfterApplyingChangesToBodyIndex:(SEL)a3;
-- ($5E4061BE7C3C8BB942C4587960135C41)bodyVisualPositionAfterRevertingChangesFromBodyIndex:(SEL)a3;
-- ($5E4061BE7C3C8BB942C4587960135C41)visualPositionAfterApplyingChangesToIndex:(SEL)a3;
-- ($5E4061BE7C3C8BB942C4587960135C41)visualPositionAfterRevertingChangesFromIndex:(SEL)a3;
-- (PXVisualPositionsChangeDetails)initWithCountBeforeChanges:(int64_t)a3 anchorIndexBeforeChanges:(int64_t)a4 headerIndexesBeforeChanges:(id)a5 countAfterChanges:(int64_t)a6 anchorIndexAfterChanges:(int64_t)a7 headerIndexesAfterChanges:(id)a8;
-- (id)arrayChangeDetailsWithItemsChanged:(BOOL)a3;
++ (PXVisualPositionsChangeDetails)changeDetailsWithCountBeforeChanges:(int64_t)changes anchorIndexBeforeChanges:(int64_t)beforeChanges headerIndexesBeforeChanges:(id)indexesBeforeChanges countAfterChanges:(int64_t)afterChanges anchorIndexAfterChanges:(int64_t)indexAfterChanges headerIndexesAfterChanges:(id)indexesAfterChanges anchorFan:(int64_t)fan anchorReload:(int64_t)self0;
++ (PXVisualPositionsChangeDetails)changeDetailsWithCountBeforeChanges:(int64_t)changes anchorIndexBeforeChanges:(int64_t)beforeChanges headerIndexesBeforeChanges:(id)indexesBeforeChanges countAfterChanges:(int64_t)afterChanges anchorIndexAfterChanges:(int64_t)indexAfterChanges headerIndexesAfterChanges:(id)indexesAfterChanges reloadAllIncludingAnchor:(BOOL)anchor;
++ (PXVisualPositionsChangeDetails)changeDetailsWithCountBeforeChanges:(int64_t)changes anchorIndexBeforeChanges:(int64_t)beforeChanges headerIndexesBeforeChanges:(id)indexesBeforeChanges countAfterChanges:(int64_t)afterChanges anchorRemoved:(int64_t)removed indexAfterChanges:(int64_t)indexAfterChanges headerIndexesAfterChanges:(id)indexesAfterChanges;
++ (PXVisualPositionsChangeDetails)changeDetailsWithCountBeforeChanges:(int64_t)changes anchorInserted:(int64_t)inserted indexBeforeChanges:(int64_t)beforeChanges headerIndexesBeforeChanges:(id)indexesBeforeChanges countAfterChanges:(int64_t)afterChanges anchorIndexAfterChanges:(int64_t)indexAfterChanges headerIndexesAfterChanges:(id)indexesAfterChanges;
+- ($5E4061BE7C3C8BB942C4587960135C41)bodyVisualPositionAfterApplyingChangesToBodyIndex:(SEL)index;
+- ($5E4061BE7C3C8BB942C4587960135C41)bodyVisualPositionAfterRevertingChangesFromBodyIndex:(SEL)index;
+- ($5E4061BE7C3C8BB942C4587960135C41)visualPositionAfterApplyingChangesToIndex:(SEL)index;
+- ($5E4061BE7C3C8BB942C4587960135C41)visualPositionAfterRevertingChangesFromIndex:(SEL)index;
+- (PXVisualPositionsChangeDetails)initWithCountBeforeChanges:(int64_t)changes anchorIndexBeforeChanges:(int64_t)beforeChanges headerIndexesBeforeChanges:(id)indexesBeforeChanges countAfterChanges:(int64_t)afterChanges anchorIndexAfterChanges:(int64_t)indexAfterChanges headerIndexesAfterChanges:(id)indexesAfterChanges;
+- (id)arrayChangeDetailsWithItemsChanged:(BOOL)changed;
 @end
 
 @implementation PXVisualPositionsChangeDetails
 
-- (id)arrayChangeDetailsWithItemsChanged:(BOOL)a3
+- (id)arrayChangeDetailsWithItemsChanged:(BOOL)changed
 {
   v5 = objc_alloc_init(MEMORY[0x1E696AD50]);
   v6 = objc_alloc_init(MEMORY[0x1E696AD50]);
-  v7 = [(PXVisualPositionsChangeDetails *)self countBeforeChanges];
-  if (v7 >= 1)
+  countBeforeChanges = [(PXVisualPositionsChangeDetails *)self countBeforeChanges];
+  if (countBeforeChanges >= 1)
   {
-    v8 = v7;
+    v8 = countBeforeChanges;
     for (i = 0; i != v8; ++i)
     {
       [(PXVisualPositionsChangeDetails *)self visualPositionAfterApplyingChangesToIndex:i];
@@ -31,10 +31,10 @@
     }
   }
 
-  v10 = [(PXVisualPositionsChangeDetails *)self countAfterChanges];
-  if (v10 >= 1)
+  countAfterChanges = [(PXVisualPositionsChangeDetails *)self countAfterChanges];
+  if (countAfterChanges >= 1)
   {
-    v11 = v10;
+    v11 = countAfterChanges;
     for (j = 0; j != v11; ++j)
     {
       [(PXVisualPositionsChangeDetails *)self visualPositionAfterRevertingChangesFromIndex:j];
@@ -45,7 +45,7 @@
     }
   }
 
-  if (a3)
+  if (changed)
   {
     v13 = [objc_alloc(MEMORY[0x1E696AD50]) initWithIndexesInRange:{0, -[PXVisualPositionsChangeDetails countAfterChanges](self, "countAfterChanges")}];
     [v13 removeIndexes:v6];
@@ -61,32 +61,32 @@
   return v14;
 }
 
-- ($5E4061BE7C3C8BB942C4587960135C41)bodyVisualPositionAfterRevertingChangesFromBodyIndex:(SEL)a3
+- ($5E4061BE7C3C8BB942C4587960135C41)bodyVisualPositionAfterRevertingChangesFromBodyIndex:(SEL)index
 {
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v7 = objc_opt_class();
   v8 = NSStringFromClass(v7);
-  [v6 handleFailureInMethod:a3 object:self file:@"PXVisualPositionsChangeDetails.m" lineNumber:168 description:{@"Method %s is a responsibility of subclass %@", "-[PXVisualPositionsChangeDetails bodyVisualPositionAfterRevertingChangesFromBodyIndex:]", v8}];
+  [currentHandler handleFailureInMethod:index object:self file:@"PXVisualPositionsChangeDetails.m" lineNumber:168 description:{@"Method %s is a responsibility of subclass %@", "-[PXVisualPositionsChangeDetails bodyVisualPositionAfterRevertingChangesFromBodyIndex:]", v8}];
 
   abort();
 }
 
-- ($5E4061BE7C3C8BB942C4587960135C41)bodyVisualPositionAfterApplyingChangesToBodyIndex:(SEL)a3
+- ($5E4061BE7C3C8BB942C4587960135C41)bodyVisualPositionAfterApplyingChangesToBodyIndex:(SEL)index
 {
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v7 = objc_opt_class();
   v8 = NSStringFromClass(v7);
-  [v6 handleFailureInMethod:a3 object:self file:@"PXVisualPositionsChangeDetails.m" lineNumber:164 description:{@"Method %s is a responsibility of subclass %@", "-[PXVisualPositionsChangeDetails bodyVisualPositionAfterApplyingChangesToBodyIndex:]", v8}];
+  [currentHandler handleFailureInMethod:index object:self file:@"PXVisualPositionsChangeDetails.m" lineNumber:164 description:{@"Method %s is a responsibility of subclass %@", "-[PXVisualPositionsChangeDetails bodyVisualPositionAfterApplyingChangesToBodyIndex:]", v8}];
 
   abort();
 }
 
-- ($5E4061BE7C3C8BB942C4587960135C41)visualPositionAfterRevertingChangesFromIndex:(SEL)a3
+- ($5E4061BE7C3C8BB942C4587960135C41)visualPositionAfterRevertingChangesFromIndex:(SEL)index
 {
   retstr->var0 = 0;
   retstr->var1 = 0;
   *&retstr->var2 = 0;
-  v7 = [(PXVisualPositionsChangeDetails *)self headerIndexesAfterChanges];
+  headerIndexesAfterChanges = [(PXVisualPositionsChangeDetails *)self headerIndexesAfterChanges];
   if (a4 == 0x7FFFFFFFFFFFFFFFLL)
   {
     *&retstr->var2 = 0;
@@ -95,20 +95,20 @@
 
   else
   {
-    v16 = v7;
-    if ([v7 containsIndex:a4])
+    v16 = headerIndexesAfterChanges;
+    if ([headerIndexesAfterChanges containsIndex:a4])
     {
       [(PXVisualPositionsChangeDetails *)self visualPositionAfterRevertingChangesFromIndex:a4 + 1];
       retstr->var2 = 0;
       retstr->var1 = 1;
-      v7 = v16;
+      headerIndexesAfterChanges = v16;
     }
 
     else
     {
       -[PXVisualPositionsChangeDetails bodyVisualPositionAfterRevertingChangesFromBodyIndex:](self, "bodyVisualPositionAfterRevertingChangesFromBodyIndex:", a4 - [v16 countOfIndexesInRange:{0, a4}]);
       var0 = retstr->var0;
-      v9 = [(PXVisualPositionsChangeDetails *)self headerIndexesBeforeChanges];
+      headerIndexesBeforeChanges = [(PXVisualPositionsChangeDetails *)self headerIndexesBeforeChanges];
       v10 = var0;
       if (var0 <= 0x7FFFFFFFFFFFFFFELL)
       {
@@ -117,7 +117,7 @@
         do
         {
           v10 = v12 + var0 - v11;
-          v13 = [v9 countOfIndexesInRange:v12 + 1];
+          v13 = [headerIndexesBeforeChanges countOfIndexesInRange:v12 + 1];
           v11 = var0 - v13;
           v12 = v10;
         }
@@ -128,7 +128,7 @@
       retstr->var0 = v10;
 
       v14 = (v10 & 0x8000000000000000) == 0 && v10 < [(PXVisualPositionsChangeDetails *)self countBeforeChanges];
-      v7 = v16;
+      headerIndexesAfterChanges = v16;
       retstr->var2 &= v14;
     }
   }
@@ -136,12 +136,12 @@
   return result;
 }
 
-- ($5E4061BE7C3C8BB942C4587960135C41)visualPositionAfterApplyingChangesToIndex:(SEL)a3
+- ($5E4061BE7C3C8BB942C4587960135C41)visualPositionAfterApplyingChangesToIndex:(SEL)index
 {
   retstr->var0 = 0;
   retstr->var1 = 0;
   *&retstr->var2 = 0;
-  v7 = [(PXVisualPositionsChangeDetails *)self headerIndexesBeforeChanges];
+  headerIndexesBeforeChanges = [(PXVisualPositionsChangeDetails *)self headerIndexesBeforeChanges];
   if (a4 == 0x7FFFFFFFFFFFFFFFLL)
   {
     *&retstr->var2 = 0;
@@ -150,20 +150,20 @@
 
   else
   {
-    v16 = v7;
-    if ([v7 containsIndex:a4])
+    v16 = headerIndexesBeforeChanges;
+    if ([headerIndexesBeforeChanges containsIndex:a4])
     {
       [(PXVisualPositionsChangeDetails *)self visualPositionAfterApplyingChangesToIndex:a4 + 1];
       retstr->var2 = 0;
       retstr->var1 = 1;
-      v7 = v16;
+      headerIndexesBeforeChanges = v16;
     }
 
     else
     {
       -[PXVisualPositionsChangeDetails bodyVisualPositionAfterApplyingChangesToBodyIndex:](self, "bodyVisualPositionAfterApplyingChangesToBodyIndex:", a4 - [v16 countOfIndexesInRange:{0, a4}]);
       var0 = retstr->var0;
-      v9 = [(PXVisualPositionsChangeDetails *)self headerIndexesAfterChanges];
+      headerIndexesAfterChanges = [(PXVisualPositionsChangeDetails *)self headerIndexesAfterChanges];
       v10 = var0;
       if (var0 <= 0x7FFFFFFFFFFFFFFELL)
       {
@@ -172,7 +172,7 @@
         do
         {
           v10 = v12 + var0 - v11;
-          v13 = [v9 countOfIndexesInRange:v12 + 1];
+          v13 = [headerIndexesAfterChanges countOfIndexesInRange:v12 + 1];
           v11 = var0 - v13;
           v12 = v10;
         }
@@ -183,7 +183,7 @@
       retstr->var0 = v10;
 
       v14 = (v10 & 0x8000000000000000) == 0 && v10 < [(PXVisualPositionsChangeDetails *)self countAfterChanges];
-      v7 = v16;
+      headerIndexesBeforeChanges = v16;
       retstr->var2 &= v14;
     }
   }
@@ -191,25 +191,25 @@
   return result;
 }
 
-- (PXVisualPositionsChangeDetails)initWithCountBeforeChanges:(int64_t)a3 anchorIndexBeforeChanges:(int64_t)a4 headerIndexesBeforeChanges:(id)a5 countAfterChanges:(int64_t)a6 anchorIndexAfterChanges:(int64_t)a7 headerIndexesAfterChanges:(id)a8
+- (PXVisualPositionsChangeDetails)initWithCountBeforeChanges:(int64_t)changes anchorIndexBeforeChanges:(int64_t)beforeChanges headerIndexesBeforeChanges:(id)indexesBeforeChanges countAfterChanges:(int64_t)afterChanges anchorIndexAfterChanges:(int64_t)indexAfterChanges headerIndexesAfterChanges:(id)indexesAfterChanges
 {
-  v14 = a5;
-  v15 = a8;
+  indexesBeforeChangesCopy = indexesBeforeChanges;
+  indexesAfterChangesCopy = indexesAfterChanges;
   v25.receiver = self;
   v25.super_class = PXVisualPositionsChangeDetails;
   v16 = [(PXVisualPositionsChangeDetails *)&v25 init];
   v17 = v16;
   if (v16)
   {
-    v16->_countBeforeChanges = a3;
-    v16->_anchorIndexBeforeChanges = a4;
-    v18 = [v14 copy];
+    v16->_countBeforeChanges = changes;
+    v16->_anchorIndexBeforeChanges = beforeChanges;
+    v18 = [indexesBeforeChangesCopy copy];
     headerIndexesBeforeChanges = v17->_headerIndexesBeforeChanges;
     v17->_headerIndexesBeforeChanges = v18;
 
-    v17->_countAfterChanges = a6;
-    v17->_anchorIndexAfterChanges = a7;
-    v20 = [v15 copy];
+    v17->_countAfterChanges = afterChanges;
+    v17->_anchorIndexAfterChanges = indexAfterChanges;
+    v20 = [indexesAfterChangesCopy copy];
     headerIndexesAfterChanges = v17->_headerIndexesAfterChanges;
     v17->_headerIndexesAfterChanges = v20;
 
@@ -222,41 +222,41 @@
   return v17;
 }
 
-+ (PXVisualPositionsChangeDetails)changeDetailsWithCountBeforeChanges:(int64_t)a3 anchorIndexBeforeChanges:(int64_t)a4 headerIndexesBeforeChanges:(id)a5 countAfterChanges:(int64_t)a6 anchorIndexAfterChanges:(int64_t)a7 headerIndexesAfterChanges:(id)a8 reloadAllIncludingAnchor:(BOOL)a9
++ (PXVisualPositionsChangeDetails)changeDetailsWithCountBeforeChanges:(int64_t)changes anchorIndexBeforeChanges:(int64_t)beforeChanges headerIndexesBeforeChanges:(id)indexesBeforeChanges countAfterChanges:(int64_t)afterChanges anchorIndexAfterChanges:(int64_t)indexAfterChanges headerIndexesAfterChanges:(id)indexesAfterChanges reloadAllIncludingAnchor:(BOOL)anchor
 {
-  v14 = a8;
-  v15 = a5;
-  LOBYTE(v18) = a9;
-  v16 = [[PXReloadingVisualPositionsChangeDetails alloc] initWithCountBeforeChanges:a3 anchorIndexBeforeChanges:a4 headerIndexesBeforeChanges:v15 countAfterChanges:a6 anchorIndexAfterChanges:a7 headerIndexesAfterChanges:v14 reloadAllIncludingAnchor:v18];
+  indexesAfterChangesCopy = indexesAfterChanges;
+  indexesBeforeChangesCopy = indexesBeforeChanges;
+  LOBYTE(v18) = anchor;
+  v16 = [[PXReloadingVisualPositionsChangeDetails alloc] initWithCountBeforeChanges:changes anchorIndexBeforeChanges:beforeChanges headerIndexesBeforeChanges:indexesBeforeChangesCopy countAfterChanges:afterChanges anchorIndexAfterChanges:indexAfterChanges headerIndexesAfterChanges:indexesAfterChangesCopy reloadAllIncludingAnchor:v18];
 
   return v16;
 }
 
-+ (PXVisualPositionsChangeDetails)changeDetailsWithCountBeforeChanges:(int64_t)a3 anchorIndexBeforeChanges:(int64_t)a4 headerIndexesBeforeChanges:(id)a5 countAfterChanges:(int64_t)a6 anchorRemoved:(int64_t)a7 indexAfterChanges:(int64_t)a8 headerIndexesAfterChanges:(id)a9
++ (PXVisualPositionsChangeDetails)changeDetailsWithCountBeforeChanges:(int64_t)changes anchorIndexBeforeChanges:(int64_t)beforeChanges headerIndexesBeforeChanges:(id)indexesBeforeChanges countAfterChanges:(int64_t)afterChanges anchorRemoved:(int64_t)removed indexAfterChanges:(int64_t)indexAfterChanges headerIndexesAfterChanges:(id)indexesAfterChanges
 {
-  v15 = a9;
-  v16 = a5;
+  indexesAfterChangesCopy = indexesAfterChanges;
+  indexesBeforeChangesCopy = indexesBeforeChanges;
   LOBYTE(v19) = 0;
-  v17 = [[PXAnchorInsertingOrRemovingVisualPositionsChangeDetails alloc] initWithCountBeforeChanges:a3 anchorIndexBeforeChanges:a4 headerIndexesBeforeChanges:v16 countAfterChanges:a6 anchorIndexAfterChanges:a8 headerIndexesAfterChanges:v15 anchorInserted:v19 relativePosition:a7];
+  v17 = [[PXAnchorInsertingOrRemovingVisualPositionsChangeDetails alloc] initWithCountBeforeChanges:changes anchorIndexBeforeChanges:beforeChanges headerIndexesBeforeChanges:indexesBeforeChangesCopy countAfterChanges:afterChanges anchorIndexAfterChanges:indexAfterChanges headerIndexesAfterChanges:indexesAfterChangesCopy anchorInserted:v19 relativePosition:removed];
 
   return v17;
 }
 
-+ (PXVisualPositionsChangeDetails)changeDetailsWithCountBeforeChanges:(int64_t)a3 anchorInserted:(int64_t)a4 indexBeforeChanges:(int64_t)a5 headerIndexesBeforeChanges:(id)a6 countAfterChanges:(int64_t)a7 anchorIndexAfterChanges:(int64_t)a8 headerIndexesAfterChanges:(id)a9
++ (PXVisualPositionsChangeDetails)changeDetailsWithCountBeforeChanges:(int64_t)changes anchorInserted:(int64_t)inserted indexBeforeChanges:(int64_t)beforeChanges headerIndexesBeforeChanges:(id)indexesBeforeChanges countAfterChanges:(int64_t)afterChanges anchorIndexAfterChanges:(int64_t)indexAfterChanges headerIndexesAfterChanges:(id)indexesAfterChanges
 {
-  v15 = a9;
-  v16 = a6;
+  indexesAfterChangesCopy = indexesAfterChanges;
+  indexesBeforeChangesCopy = indexesBeforeChanges;
   LOBYTE(v19) = 1;
-  v17 = [[PXAnchorInsertingOrRemovingVisualPositionsChangeDetails alloc] initWithCountBeforeChanges:a3 anchorIndexBeforeChanges:a5 headerIndexesBeforeChanges:v16 countAfterChanges:a7 anchorIndexAfterChanges:a8 headerIndexesAfterChanges:v15 anchorInserted:v19 relativePosition:a4];
+  v17 = [[PXAnchorInsertingOrRemovingVisualPositionsChangeDetails alloc] initWithCountBeforeChanges:changes anchorIndexBeforeChanges:beforeChanges headerIndexesBeforeChanges:indexesBeforeChangesCopy countAfterChanges:afterChanges anchorIndexAfterChanges:indexAfterChanges headerIndexesAfterChanges:indexesAfterChangesCopy anchorInserted:v19 relativePosition:inserted];
 
   return v17;
 }
 
-+ (PXVisualPositionsChangeDetails)changeDetailsWithCountBeforeChanges:(int64_t)a3 anchorIndexBeforeChanges:(int64_t)a4 headerIndexesBeforeChanges:(id)a5 countAfterChanges:(int64_t)a6 anchorIndexAfterChanges:(int64_t)a7 headerIndexesAfterChanges:(id)a8 anchorFan:(int64_t)a9 anchorReload:(int64_t)a10
++ (PXVisualPositionsChangeDetails)changeDetailsWithCountBeforeChanges:(int64_t)changes anchorIndexBeforeChanges:(int64_t)beforeChanges headerIndexesBeforeChanges:(id)indexesBeforeChanges countAfterChanges:(int64_t)afterChanges anchorIndexAfterChanges:(int64_t)indexAfterChanges headerIndexesAfterChanges:(id)indexesAfterChanges anchorFan:(int64_t)fan anchorReload:(int64_t)self0
 {
-  v15 = a8;
-  v16 = a5;
-  v17 = [[PXFanningVisualPositionsChangeDetails alloc] initWithCountBeforeChanges:a3 anchorIndexBeforeChanges:a4 headerIndexesBeforeChanges:v16 countAfterChanges:a6 anchorIndexAfterChanges:a7 headerIndexesAfterChanges:v15 anchorFan:a9 anchorReload:a10];
+  indexesAfterChangesCopy = indexesAfterChanges;
+  indexesBeforeChangesCopy = indexesBeforeChanges;
+  v17 = [[PXFanningVisualPositionsChangeDetails alloc] initWithCountBeforeChanges:changes anchorIndexBeforeChanges:beforeChanges headerIndexesBeforeChanges:indexesBeforeChangesCopy countAfterChanges:afterChanges anchorIndexAfterChanges:indexAfterChanges headerIndexesAfterChanges:indexesAfterChangesCopy anchorFan:fan anchorReload:reload];
 
   return v17;
 }

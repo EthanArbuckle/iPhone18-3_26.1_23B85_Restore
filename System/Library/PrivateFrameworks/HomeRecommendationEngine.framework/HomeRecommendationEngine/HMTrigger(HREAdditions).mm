@@ -12,10 +12,10 @@
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
   objc_opt_class();
-  v7 = a1;
+  selfCopy = self;
   if (objc_opt_isKindOfClass())
   {
-    v8 = v7;
+    v8 = selfCopy;
   }
 
   else
@@ -27,14 +27,14 @@
 
   if (v9)
   {
-    v10 = [v9 events];
+    events = [v9 events];
     v24 = MEMORY[0x277D85DD0];
     v25 = 3221225472;
     v26 = __65__HMTrigger_HREAdditions__hre_triggerComparisonIdentifierInHome___block_invoke;
     v27 = &unk_2797776A0;
-    v28 = v7;
+    v28 = selfCopy;
     v29 = v4;
-    v11 = [v10 na_map:&v24];
+    v11 = [events na_map:&v24];
     v12 = [v11 sortedArrayUsingComparator:&__block_literal_global_16];
     v13 = [v12 componentsJoinedByString:@"-"];
   }
@@ -45,7 +45,7 @@
   }
 
   objc_opt_class();
-  v14 = v7;
+  v14 = selfCopy;
   if (objc_opt_isKindOfClass())
   {
     v15 = v14;
@@ -61,9 +61,9 @@
   if (v16)
   {
     v17 = MEMORY[0x277CCACA8];
-    v18 = [v16 fireDate];
-    v19 = [v16 recurrence];
-    v20 = [v17 stringWithFormat:@"%@-%@", v18, v19];
+    fireDate = [v16 fireDate];
+    recurrence = [v16 recurrence];
+    v20 = [v17 stringWithFormat:@"%@-%@", fireDate, recurrence];
 
     v13 = v20;
   }
@@ -99,35 +99,35 @@
 
   if (v10)
   {
-    v11 = [v10 characteristic];
-    v12 = [v10 hre_triggeringValues];
-    v13 = [v12 count];
+    characteristic = [v10 characteristic];
+    hre_triggeringValues = [v10 hre_triggeringValues];
+    v13 = [hre_triggeringValues count];
 
     v14 = MEMORY[0x277CCACA8];
-    v15 = [v11 uniqueIdentifier];
+    uniqueIdentifier = [characteristic uniqueIdentifier];
     if (v13 != 1)
     {
-      v16 = [v10 thresholdRange];
-      v17 = [v16 minValue];
-      v22 = [v10 thresholdRange];
-      v23 = [v22 maxValue];
-      v21 = [v14 stringWithFormat:@"thresholdCharacteristic:%@, range:(min:%@, max:%@)", v15, v17, v23];
+      thresholdRange = [v10 thresholdRange];
+      minValue = [thresholdRange minValue];
+      thresholdRange2 = [v10 thresholdRange];
+      maxValue = [thresholdRange2 maxValue];
+      v21 = [v14 stringWithFormat:@"thresholdCharacteristic:%@, range:(min:%@, max:%@)", uniqueIdentifier, minValue, maxValue];
 
       goto LABEL_14;
     }
 
-    v16 = [v10 hre_triggeringValues];
-    v17 = [v16 firstObject];
-    [v14 stringWithFormat:@"characteristic:%@, targetValue:%@", v15, v17];
+    thresholdRange = [v10 hre_triggeringValues];
+    minValue = [thresholdRange firstObject];
+    [v14 stringWithFormat:@"characteristic:%@, targetValue:%@", uniqueIdentifier, minValue];
   }
 
   else
   {
     objc_opt_class();
-    v11 = v8;
+    characteristic = v8;
     if (objc_opt_isKindOfClass())
     {
-      v18 = v11;
+      v18 = characteristic;
     }
 
     else
@@ -140,10 +140,10 @@
     if (!v19)
     {
       objc_opt_class();
-      v15 = v11;
+      uniqueIdentifier = characteristic;
       if (objc_opt_isKindOfClass())
       {
-        v25 = v15;
+        v25 = uniqueIdentifier;
       }
 
       else
@@ -156,15 +156,15 @@
       if (v26)
       {
         v27 = MEMORY[0x277CCACA8];
-        v16 = [v26 significantEvent];
-        v28 = [v26 offset];
-        v21 = [v27 stringWithFormat:@"timeEvent:%@, offset:%@", v16, v28];
+        thresholdRange = [v26 significantEvent];
+        offset = [v26 offset];
+        v21 = [v27 stringWithFormat:@"timeEvent:%@, offset:%@", thresholdRange, offset];
       }
 
       else
       {
         objc_opt_class();
-        v29 = v15;
+        v29 = uniqueIdentifier;
         if (objc_opt_isKindOfClass())
         {
           v30 = v29;
@@ -175,11 +175,11 @@
           v30 = 0;
         }
 
-        v16 = v30;
+        thresholdRange = v30;
 
-        if (v16)
+        if (thresholdRange)
         {
-          [a1 _hre_hashForPresenceEvent:v16 inHome:v7 verbose:1];
+          [self _hre_hashForPresenceEvent:thresholdRange inHome:v7 verbose:1];
         }
 
         else
@@ -187,18 +187,18 @@
           [MEMORY[0x277CCACA8] stringWithFormat:@"%@", v29];
         }
         v21 = ;
-        v15 = 0;
+        uniqueIdentifier = 0;
       }
 
-      v11 = 0;
+      characteristic = 0;
       goto LABEL_15;
     }
 
-    v15 = [v19 characteristic];
+    uniqueIdentifier = [v19 characteristic];
     v20 = MEMORY[0x277CCACA8];
-    v16 = [v15 uniqueIdentifier];
-    v17 = [v19 triggerValue];
-    [v20 stringWithFormat:@"characteristic:%@, targetValue:%@", v16, v17];
+    thresholdRange = [uniqueIdentifier uniqueIdentifier];
+    minValue = [v19 triggerValue];
+    [v20 stringWithFormat:@"characteristic:%@, targetValue:%@", thresholdRange, minValue];
   }
   v21 = ;
 LABEL_14:
@@ -212,13 +212,13 @@ LABEL_15:
 {
   v7 = a3;
   v8 = a4;
-  v9 = [v7 presenceEventType];
-  v10 = [v8 users];
-  v11 = [v10 mutableCopy];
+  presenceEventType = [v7 presenceEventType];
+  users = [v8 users];
+  v11 = [users mutableCopy];
 
-  v12 = [v8 currentUser];
+  currentUser = [v8 currentUser];
 
-  [v11 removeObject:v12];
+  [v11 removeObject:currentUser];
   v13 = &stru_286657A08;
   if ([v11 count] && a5)
   {
@@ -228,23 +228,23 @@ LABEL_15:
   if (![v11 count] || (a5 & 1) == 0)
   {
     v14 = 2;
-    if (v9 != 4)
+    if (presenceEventType != 4)
     {
-      v14 = v9;
+      v14 = presenceEventType;
     }
 
-    if (v9 == 3)
+    if (presenceEventType == 3)
     {
-      v9 = 1;
+      presenceEventType = 1;
     }
 
     else
     {
-      v9 = v14;
+      presenceEventType = v14;
     }
   }
 
-  v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"presenceEventType:%lu, %@", v9, v13];
+  v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"presenceEventType:%lu, %@", presenceEventType, v13];
 
   return v15;
 }

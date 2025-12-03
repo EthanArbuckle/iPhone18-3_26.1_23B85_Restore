@@ -1,28 +1,28 @@
 @interface DRTouchDetacher
-- (BOOL)detachTouchesWithTouchIdentifiers:(id)a3 session:(id)a4 routingPolicy:(id)a5 touchOffset:(CGPoint)a6;
+- (BOOL)detachTouchesWithTouchIdentifiers:(id)identifiers session:(id)session routingPolicy:(id)policy touchOffset:(CGPoint)offset;
 - (_TtC5druid15DRTouchDetacher)init;
-- (void)updateRoutingPolicy:(id)a3 forSession:(id)a4;
+- (void)updateRoutingPolicy:(id)policy forSession:(id)session;
 @end
 
 @implementation DRTouchDetacher
 
-- (BOOL)detachTouchesWithTouchIdentifiers:(id)a3 session:(id)a4 routingPolicy:(id)a5 touchOffset:(CGPoint)a6
+- (BOOL)detachTouchesWithTouchIdentifiers:(id)identifiers session:(id)session routingPolicy:(id)policy touchOffset:(CGPoint)offset
 {
   v9 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = a4;
-  v11 = a5;
-  v12 = self;
-  v13 = sub_10002F5E8(v9, v10);
+  sessionCopy = session;
+  policyCopy = policy;
+  selfCopy = self;
+  v13 = sub_10002F5E8(v9, sessionCopy);
 
   return v13 & 1;
 }
 
-- (void)updateRoutingPolicy:(id)a3 forSession:(id)a4
+- (void)updateRoutingPolicy:(id)policy forSession:(id)session
 {
-  v5 = a3;
-  v7 = a4;
-  [v7 identifier];
-  v6 = sub_10002EC40(v7);
+  policyCopy = policy;
+  sessionCopy = session;
+  [sessionCopy identifier];
+  v6 = sub_10002EC40(sessionCopy);
   BKSHIDEventDigitizerSetTouchRoutingPolicy();
 }
 

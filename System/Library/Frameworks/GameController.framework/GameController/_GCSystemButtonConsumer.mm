@@ -1,8 +1,8 @@
 @interface _GCSystemButtonConsumer
 - (NSString)debugDescription;
 - (_GCSystemButtonConsumer)init;
-- (id)initWithEventConsumer:(void *)a3 reason:(void *)a4 priority:;
-- (int64_t)compareTo:(id)a3;
+- (id)initWithEventConsumer:(void *)consumer reason:(void *)reason priority:;
+- (int64_t)compareTo:(id)to;
 - (uint64_t)consumeSystemButtonPressEvent;
 - (void)invalidate;
 @end
@@ -34,22 +34,22 @@
   return v6;
 }
 
-- (id)initWithEventConsumer:(void *)a3 reason:(void *)a4 priority:
+- (id)initWithEventConsumer:(void *)consumer reason:(void *)reason priority:
 {
   v8 = a2;
-  if (a1)
+  if (self)
   {
-    v14.receiver = a1;
+    v14.receiver = self;
     v14.super_class = _GCSystemButtonConsumer;
-    v9 = a3;
+    consumerCopy = consumer;
     v10 = objc_msgSendSuper2(&v14, sel_init);
     objc_storeStrong(v10 + 2, a2);
-    v11 = [v9 copy];
+    v11 = [consumerCopy copy];
 
     v12 = v10[3];
     v10[3] = v11;
 
-    v10[4] = a4;
+    v10[4] = reason;
   }
 
   else
@@ -62,33 +62,33 @@
 
 - (uint64_t)consumeSystemButtonPressEvent
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  v2 = atomic_load((a1 + 8));
+  v2 = atomic_load((self + 8));
   if (v2)
   {
     return 0;
   }
 
-  v4 = *(a1 + 16);
+  v4 = *(self + 16);
 
   return [v4 consumePressEventForGCSystemButton];
 }
 
-- (int64_t)compareTo:(id)a3
+- (int64_t)compareTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self)
   {
     priority = self->_priority;
-    if (v4)
+    if (toCopy)
     {
 LABEL_3:
-      v6 = v4[4];
+      v6 = toCopy[4];
       goto LABEL_4;
     }
   }
@@ -96,7 +96,7 @@ LABEL_3:
   else
   {
     priority = 0;
-    if (v4)
+    if (toCopy)
     {
       goto LABEL_3;
     }
@@ -109,10 +109,10 @@ LABEL_4:
     if (self)
     {
       v8 = self->_priority;
-      if (v4)
+      if (toCopy)
       {
 LABEL_8:
-        v9 = v4[4];
+        v9 = toCopy[4];
 LABEL_9:
         v7 = v8 > v9;
         goto LABEL_10;
@@ -122,7 +122,7 @@ LABEL_9:
     else
     {
       v8 = 0;
-      if (v4)
+      if (toCopy)
       {
         goto LABEL_8;
       }

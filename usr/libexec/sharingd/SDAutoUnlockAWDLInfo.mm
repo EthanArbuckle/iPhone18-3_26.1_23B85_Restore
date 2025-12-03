@@ -1,26 +1,26 @@
 @interface SDAutoUnlockAWDLInfo
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasAuthPrompt:(BOOL)a3;
-- (void)setHasErrorCode:(BOOL)a3;
-- (void)setHasIsAuthenticatingForSiri:(BOOL)a3;
-- (void)setHasSkipMotionCheck:(BOOL)a3;
-- (void)setHasSupportsConfirmationACK:(BOOL)a3;
-- (void)setHasUseToken:(BOOL)a3;
-- (void)setHasVersion:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasAuthPrompt:(BOOL)prompt;
+- (void)setHasErrorCode:(BOOL)code;
+- (void)setHasIsAuthenticatingForSiri:(BOOL)siri;
+- (void)setHasSkipMotionCheck:(BOOL)check;
+- (void)setHasSupportsConfirmationACK:(BOOL)k;
+- (void)setHasUseToken:(BOOL)token;
+- (void)setHasVersion:(BOOL)version;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SDAutoUnlockAWDLInfo
 
-- (void)setHasVersion:(BOOL)a3
+- (void)setHasVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 4;
   }
@@ -33,9 +33,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasUseToken:(BOOL)a3
+- (void)setHasUseToken:(BOOL)token
 {
-  if (a3)
+  if (token)
   {
     v3 = 0x80;
   }
@@ -48,9 +48,9 @@
   *&self->_has = v3 & 0x80 | *&self->_has & 0x7F;
 }
 
-- (void)setHasErrorCode:(BOOL)a3
+- (void)setHasErrorCode:(BOOL)code
 {
-  if (a3)
+  if (code)
   {
     v3 = 2;
   }
@@ -63,9 +63,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasAuthPrompt:(BOOL)a3
+- (void)setHasAuthPrompt:(BOOL)prompt
 {
-  if (a3)
+  if (prompt)
   {
     v3 = 8;
   }
@@ -78,9 +78,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasSupportsConfirmationACK:(BOOL)a3
+- (void)setHasSupportsConfirmationACK:(BOOL)k
 {
-  if (a3)
+  if (k)
   {
     v3 = 64;
   }
@@ -93,9 +93,9 @@
   *&self->_has = *&self->_has & 0xBF | v3;
 }
 
-- (void)setHasSkipMotionCheck:(BOOL)a3
+- (void)setHasSkipMotionCheck:(BOOL)check
 {
-  if (a3)
+  if (check)
   {
     v3 = 32;
   }
@@ -108,9 +108,9 @@
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasIsAuthenticatingForSiri:(BOOL)a3
+- (void)setHasIsAuthenticatingForSiri:(BOOL)siri
 {
-  if (a3)
+  if (siri)
   {
     v3 = 16;
   }
@@ -128,8 +128,8 @@
   v7.receiver = self;
   v7.super_class = SDAutoUnlockAWDLInfo;
   v3 = [(SDAutoUnlockAWDLInfo *)&v7 description];
-  v4 = [(SDAutoUnlockAWDLInfo *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(SDAutoUnlockAWDLInfo *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -241,9 +241,9 @@ LABEL_19:
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v14 = a3;
+  toCopy = to;
   if ((*&self->_has & 4) != 0)
   {
     version = self->_version;
@@ -339,39 +339,39 @@ LABEL_18:
 LABEL_19:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if ((*&self->_has & 4) != 0)
   {
-    v4[12] = self->_version;
-    *(v4 + 60) |= 4u;
+    toCopy[12] = self->_version;
+    *(toCopy + 60) |= 4u;
   }
 
-  v7 = v4;
+  v7 = toCopy;
   if (self->_awdlInfo)
   {
-    [v4 setAwdlInfo:?];
-    v4 = v7;
+    [toCopy setAwdlInfo:?];
+    toCopy = v7;
   }
 
   if ((*&self->_has & 0x80000000) != 0)
   {
-    *(v4 + 56) = self->_useToken;
-    *(v4 + 60) |= 0x80u;
+    *(toCopy + 56) = self->_useToken;
+    *(toCopy + 60) |= 0x80u;
   }
 
   if (self->_keyData)
   {
     [v7 setKeyData:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
-    v4[8] = self->_errorCode;
-    *(v4 + 60) |= 2u;
+    toCopy[8] = self->_errorCode;
+    *(toCopy + 60) |= 2u;
     has = self->_has;
     if ((has & 8) == 0)
     {
@@ -390,27 +390,27 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  *(v4 + 52) = self->_authPrompt;
-  *(v4 + 60) |= 8u;
+  *(toCopy + 52) = self->_authPrompt;
+  *(toCopy + 60) |= 8u;
   if ((*&self->_has & 0x40) != 0)
   {
 LABEL_12:
-    *(v4 + 55) = self->_supportsConfirmationACK;
-    *(v4 + 60) |= 0x40u;
+    *(toCopy + 55) = self->_supportsConfirmationACK;
+    *(toCopy + 60) |= 0x40u;
   }
 
 LABEL_13:
   if (self->_appName)
   {
     [v7 setAppName:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   v6 = self->_has;
   if (v6)
   {
-    *(v4 + 1) = *&self->_phoneUnlockDate;
-    *(v4 + 60) |= 1u;
+    *(toCopy + 1) = *&self->_phoneUnlockDate;
+    *(toCopy + 60) |= 1u;
     v6 = self->_has;
     if ((v6 & 0x20) == 0)
     {
@@ -429,21 +429,21 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  *(v4 + 54) = self->_skipMotionCheck;
-  *(v4 + 60) |= 0x20u;
+  *(toCopy + 54) = self->_skipMotionCheck;
+  *(toCopy + 60) |= 0x20u;
   if ((*&self->_has & 0x10) != 0)
   {
 LABEL_18:
-    *(v4 + 53) = self->_isAuthenticatingForSiri;
-    *(v4 + 60) |= 0x10u;
+    *(toCopy + 53) = self->_isAuthenticatingForSiri;
+    *(toCopy + 60) |= 0x10u;
   }
 
 LABEL_19:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if ((*&self->_has & 4) != 0)
   {
@@ -451,7 +451,7 @@ LABEL_19:
     *(v5 + 60) |= 4u;
   }
 
-  v7 = [(NSData *)self->_awdlInfo copyWithZone:a3];
+  v7 = [(NSData *)self->_awdlInfo copyWithZone:zone];
   v8 = v6[3];
   v6[3] = v7;
 
@@ -461,7 +461,7 @@ LABEL_19:
     *(v6 + 60) |= 0x80u;
   }
 
-  v9 = [(NSData *)self->_keyData copyWithZone:a3];
+  v9 = [(NSData *)self->_keyData copyWithZone:zone];
   v10 = v6[5];
   v6[5] = v9;
 
@@ -498,7 +498,7 @@ LABEL_8:
   }
 
 LABEL_9:
-  v12 = [(NSString *)self->_appName copyWithZone:a3];
+  v12 = [(NSString *)self->_appName copyWithZone:zone];
   v13 = v6[2];
   v6[2] = v12;
 
@@ -540,31 +540,31 @@ LABEL_12:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_58;
   }
 
   has = self->_has;
-  v6 = v4[60];
+  v6 = equalCopy[60];
   if ((has & 4) != 0)
   {
-    if ((v4[60] & 4) == 0 || self->_version != *(v4 + 12))
+    if ((equalCopy[60] & 4) == 0 || self->_version != *(equalCopy + 12))
     {
       goto LABEL_58;
     }
   }
 
-  else if ((v4[60] & 4) != 0)
+  else if ((equalCopy[60] & 4) != 0)
   {
     goto LABEL_58;
   }
 
   awdlInfo = self->_awdlInfo;
-  if (awdlInfo | *(v4 + 3))
+  if (awdlInfo | *(equalCopy + 3))
   {
     if (![(NSData *)awdlInfo isEqual:?])
     {
@@ -574,7 +574,7 @@ LABEL_12:
     has = self->_has;
   }
 
-  v8 = v4[60];
+  v8 = equalCopy[60];
   if (has < 0)
   {
     if ((v8 & 0x80000000) == 0)
@@ -582,16 +582,16 @@ LABEL_12:
       goto LABEL_58;
     }
 
-    v11 = v4[56];
+    v11 = equalCopy[56];
     if (self->_useToken)
     {
-      if ((v4[56] & 1) == 0)
+      if ((equalCopy[56] & 1) == 0)
       {
         goto LABEL_58;
       }
     }
 
-    else if (v4[56])
+    else if (equalCopy[56])
     {
       goto LABEL_58;
     }
@@ -603,7 +603,7 @@ LABEL_12:
   }
 
   keyData = self->_keyData;
-  if (keyData | *(v4 + 5))
+  if (keyData | *(equalCopy + 5))
   {
     if (![(NSData *)keyData isEqual:?])
     {
@@ -613,76 +613,76 @@ LABEL_12:
     has = self->_has;
   }
 
-  v10 = v4[60];
+  v10 = equalCopy[60];
   if ((has & 2) != 0)
   {
-    if ((v4[60] & 2) == 0 || self->_errorCode != *(v4 + 8))
+    if ((equalCopy[60] & 2) == 0 || self->_errorCode != *(equalCopy + 8))
     {
       goto LABEL_58;
     }
   }
 
-  else if ((v4[60] & 2) != 0)
+  else if ((equalCopy[60] & 2) != 0)
   {
     goto LABEL_58;
   }
 
   if ((has & 8) != 0)
   {
-    if ((v4[60] & 8) == 0)
+    if ((equalCopy[60] & 8) == 0)
     {
       goto LABEL_58;
     }
 
-    v13 = v4[52];
+    v13 = equalCopy[52];
     if (self->_authPrompt)
     {
-      if ((v4[52] & 1) == 0)
+      if ((equalCopy[52] & 1) == 0)
       {
         goto LABEL_58;
       }
     }
 
-    else if (v4[52])
+    else if (equalCopy[52])
     {
       goto LABEL_58;
     }
   }
 
-  else if ((v4[60] & 8) != 0)
+  else if ((equalCopy[60] & 8) != 0)
   {
     goto LABEL_58;
   }
 
   if ((has & 0x40) != 0)
   {
-    if ((v4[60] & 0x40) == 0)
+    if ((equalCopy[60] & 0x40) == 0)
     {
       goto LABEL_58;
     }
 
-    v14 = v4[55];
+    v14 = equalCopy[55];
     if (self->_supportsConfirmationACK)
     {
-      if ((v4[55] & 1) == 0)
+      if ((equalCopy[55] & 1) == 0)
       {
         goto LABEL_58;
       }
     }
 
-    else if (v4[55])
+    else if (equalCopy[55])
     {
       goto LABEL_58;
     }
   }
 
-  else if ((v4[60] & 0x40) != 0)
+  else if ((equalCopy[60] & 0x40) != 0)
   {
     goto LABEL_58;
   }
 
   appName = self->_appName;
-  if (appName | *(v4 + 2))
+  if (appName | *(equalCopy + 2))
   {
     if (![(NSString *)appName isEqual:?])
     {
@@ -694,58 +694,58 @@ LABEL_12:
 
   if (has)
   {
-    if ((v4[60] & 1) == 0 || self->_phoneUnlockDate != *(v4 + 1))
+    if ((equalCopy[60] & 1) == 0 || self->_phoneUnlockDate != *(equalCopy + 1))
     {
       goto LABEL_58;
     }
   }
 
-  else if (v4[60])
+  else if (equalCopy[60])
   {
     goto LABEL_58;
   }
 
   if ((has & 0x20) != 0)
   {
-    if ((v4[60] & 0x20) == 0)
+    if ((equalCopy[60] & 0x20) == 0)
     {
       goto LABEL_58;
     }
 
-    v17 = v4[54];
+    v17 = equalCopy[54];
     if (self->_skipMotionCheck)
     {
-      if ((v4[54] & 1) == 0)
+      if ((equalCopy[54] & 1) == 0)
       {
         goto LABEL_58;
       }
     }
 
-    else if (v4[54])
+    else if (equalCopy[54])
     {
       goto LABEL_58;
     }
   }
 
-  else if ((v4[60] & 0x20) != 0)
+  else if ((equalCopy[60] & 0x20) != 0)
   {
     goto LABEL_58;
   }
 
-  v15 = (v4[60] & 0x10) == 0;
+  v15 = (equalCopy[60] & 0x10) == 0;
   if ((has & 0x10) != 0)
   {
-    if ((v4[60] & 0x10) != 0)
+    if ((equalCopy[60] & 0x10) != 0)
     {
       if (self->_isAuthenticatingForSiri)
       {
-        if (v4[53])
+        if (equalCopy[53])
         {
           goto LABEL_66;
         }
       }
 
-      else if (!v4[53])
+      else if (!equalCopy[53])
       {
 LABEL_66:
         v15 = 1;
@@ -880,40 +880,40 @@ LABEL_24:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v13 ^ v17 ^ v18;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if ((v4[60] & 4) != 0)
+  fromCopy = from;
+  if ((fromCopy[60] & 4) != 0)
   {
-    self->_version = *(v4 + 12);
+    self->_version = *(fromCopy + 12);
     *&self->_has |= 4u;
   }
 
-  v7 = v4;
-  if (*(v4 + 3))
+  v7 = fromCopy;
+  if (*(fromCopy + 3))
   {
     [(SDAutoUnlockAWDLInfo *)self setAwdlInfo:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (v4[60] < 0)
+  if (fromCopy[60] < 0)
   {
-    self->_useToken = v4[56];
+    self->_useToken = fromCopy[56];
     *&self->_has |= 0x80u;
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(SDAutoUnlockAWDLInfo *)self setKeyData:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  v5 = v4[60];
+  v5 = fromCopy[60];
   if ((v5 & 2) != 0)
   {
-    self->_errorCode = *(v4 + 8);
+    self->_errorCode = *(fromCopy + 8);
     *&self->_has |= 2u;
-    v5 = v4[60];
+    v5 = fromCopy[60];
     if ((v5 & 8) == 0)
     {
 LABEL_11:
@@ -926,33 +926,33 @@ LABEL_11:
     }
   }
 
-  else if ((v4[60] & 8) == 0)
+  else if ((fromCopy[60] & 8) == 0)
   {
     goto LABEL_11;
   }
 
-  self->_authPrompt = v4[52];
+  self->_authPrompt = fromCopy[52];
   *&self->_has |= 8u;
-  if ((v4[60] & 0x40) != 0)
+  if ((fromCopy[60] & 0x40) != 0)
   {
 LABEL_12:
-    self->_supportsConfirmationACK = v4[55];
+    self->_supportsConfirmationACK = fromCopy[55];
     *&self->_has |= 0x40u;
   }
 
 LABEL_13:
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(SDAutoUnlockAWDLInfo *)self setAppName:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  v6 = v4[60];
+  v6 = fromCopy[60];
   if (v6)
   {
-    self->_phoneUnlockDate = *(v4 + 1);
+    self->_phoneUnlockDate = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v6 = v4[60];
+    v6 = fromCopy[60];
     if ((v6 & 0x20) == 0)
     {
 LABEL_17:
@@ -965,17 +965,17 @@ LABEL_17:
     }
   }
 
-  else if ((v4[60] & 0x20) == 0)
+  else if ((fromCopy[60] & 0x20) == 0)
   {
     goto LABEL_17;
   }
 
-  self->_skipMotionCheck = v4[54];
+  self->_skipMotionCheck = fromCopy[54];
   *&self->_has |= 0x20u;
-  if ((v4[60] & 0x10) != 0)
+  if ((fromCopy[60] & 0x10) != 0)
   {
 LABEL_18:
-    self->_isAuthenticatingForSiri = v4[53];
+    self->_isAuthenticatingForSiri = fromCopy[53];
     *&self->_has |= 0x10u;
   }
 

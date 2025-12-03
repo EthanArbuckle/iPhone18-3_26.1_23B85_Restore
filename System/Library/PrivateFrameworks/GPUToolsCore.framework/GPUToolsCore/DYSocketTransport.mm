@@ -1,6 +1,6 @@
 @interface DYSocketTransport
 - (DYSocketTransport)init;
-- (DYSocketTransport)initWithSocketDescriptor:(int)a3;
+- (DYSocketTransport)initWithSocketDescriptor:(int)descriptor;
 - (id)connect;
 @end
 
@@ -13,14 +13,14 @@
   return 0;
 }
 
-- (DYSocketTransport)initWithSocketDescriptor:(int)a3
+- (DYSocketTransport)initWithSocketDescriptor:(int)descriptor
 {
   v5.receiver = self;
   v5.super_class = DYSocketTransport;
   result = [(DYBaseSocketTransport *)&v5 init];
   if (result)
   {
-    *(&result->super._scheduledReadOnWritableSocket + 3) = a3;
+    *(&result->super._scheduledReadOnWritableSocket + 3) = descriptor;
   }
 
   return result;

@@ -27,7 +27,7 @@
     CGImageRepresentation = _UIImageGetCGImageRepresentation();
     if (!CGImageHasAlpha())
     {
-      v3 = 1;
+      integerValue = 1;
       goto LABEL_7;
     }
 
@@ -41,9 +41,9 @@
     srcFormat.renderingIntent = CGImageGetRenderingIntent(CGImageRepresentation);
     if (MEMORY[0x1CCA51F30](&srcs, &srcFormat, 0, CGImageRepresentation, 0))
     {
-      v3 = 0;
+      integerValue = 0;
 LABEL_7:
-      [v0 safari_setTransparencyAnalysisResult:{v3, v26, v27, v28, v29, v30}];
+      [v0 safari_setTransparencyAnalysisResult:{integerValue, v26, v27, v28, v29, v30}];
       goto LABEL_8;
     }
 
@@ -76,7 +76,7 @@ LABEL_11:
       if (!vImageHistogramCalculation_ARGB8888(&src, histogram, 0))
       {
         v13 = 0;
-        v3 = 1;
+        integerValue = 1;
         while (!*&v44[v13])
         {
           v13 += 8;
@@ -87,7 +87,7 @@ LABEL_11:
         }
 
         v14 = 0;
-        v3 = 3;
+        integerValue = 3;
         while (!*&v44[v14])
         {
           v14 += 8;
@@ -100,16 +100,16 @@ LABEL_11:
         height = src.height;
         width = src.width;
         v17 = src.width >= 0x11 && src.height >= 0x11;
-        if (!v17 || ((aBlock[0] = MEMORY[0x1E69E9820], aBlock[1] = 3221225472, aBlock[2] = ___ZL25_analyzeImageTransparencyP7CGImage_block_invoke_2, aBlock[3] = &__block_descriptor_72_e11_B24__0Q8Q16l, aBlock[4] = src.data, v37 = src, v18 = _Block_copy(aBlock), v33[0] = MEMORY[0x1E69E9820], v33[1] = 3221225472, v33[2] = ___ZL25_analyzeImageTransparencyP7CGImage_block_invoke_3, v33[3] = &unk_1E82858B8, v19 = v18, v34 = v19, v35 = width - 1, v26 = width - 1, v20 = _Block_copy(v33), v21 = height - 1, v27 = MEMORY[0x1E69E9820], v28 = 3221225472, v29 = ___ZL25_analyzeImageTransparencyP7CGImage_block_invoke_4, v30 = &unk_1E82858B8, v22 = v19, v31 = v22, v32 = height - 1, v23 = _Block_copy(&v27), !v20[2](v20, 0)) || !v20[2](v20, v21) || !v23[2](v23, 0) || ((v23[2])(v23, v26) & 1) == 0 ? (v3 = 0, v24 = 1) : (v24 = 0, v3 = 4), v23, v31, v20, v34, v22, v24))
+        if (!v17 || ((aBlock[0] = MEMORY[0x1E69E9820], aBlock[1] = 3221225472, aBlock[2] = ___ZL25_analyzeImageTransparencyP7CGImage_block_invoke_2, aBlock[3] = &__block_descriptor_72_e11_B24__0Q8Q16l, aBlock[4] = src.data, v37 = src, v18 = _Block_copy(aBlock), v33[0] = MEMORY[0x1E69E9820], v33[1] = 3221225472, v33[2] = ___ZL25_analyzeImageTransparencyP7CGImage_block_invoke_3, v33[3] = &unk_1E82858B8, v19 = v18, v34 = v19, v35 = width - 1, v26 = width - 1, v20 = _Block_copy(v33), v21 = height - 1, v27 = MEMORY[0x1E69E9820], v28 = 3221225472, v29 = ___ZL25_analyzeImageTransparencyP7CGImage_block_invoke_4, v30 = &unk_1E82858B8, v22 = v19, v31 = v22, v32 = height - 1, v23 = _Block_copy(&v27), !v20[2](v20, 0)) || !v20[2](v20, v21) || !v23[2](v23, 0) || ((v23[2])(v23, v26) & 1) == 0 ? (integerValue = 0, v24 = 1) : (v24 = 0, integerValue = 4), v23, v31, v20, v34, v22, v24))
         {
-          v3 = 2;
+          integerValue = 2;
         }
 
         goto LABEL_44;
       }
 
 LABEL_12:
-      v3 = 0;
+      integerValue = 0;
 LABEL_44:
       if (v9)
       {
@@ -120,7 +120,7 @@ LABEL_44:
     }
 
     v10 = vImageConverter_CreateWithCGImageFormat(&srcFormat, &destFormat, 0, 0, 0);
-    v3 = v10;
+    integerValue = v10;
     if (!v10)
     {
 LABEL_46:
@@ -149,15 +149,15 @@ LABEL_46:
 
     if (MEMORY[0x1CCA51F20](&src, srcs.height, v12, bitsPerPixel, 0))
     {
-      vImageConverter_Release(v3);
-      v3 = 0;
+      vImageConverter_Release(integerValue);
+      integerValue = 0;
       goto LABEL_46;
     }
 
     v9 = src.data;
 LABEL_39:
-    v25 = vImageConvert_AnyToAny(v3, &srcs, &src, 0, 0);
-    vImageConverter_Release(v3);
+    v25 = vImageConvert_AnyToAny(integerValue, &srcs, &src, 0, 0);
+    vImageConverter_Release(integerValue);
     if (v25)
     {
       goto LABEL_12;
@@ -166,10 +166,10 @@ LABEL_39:
     goto LABEL_11;
   }
 
-  v3 = [v1 integerValue];
+  integerValue = [v1 integerValue];
 LABEL_8:
 
-  return v3;
+  return integerValue;
 }
 
 + (id)safari_largestSizedBitmapImageOrSVGFromImages:()SafariSharedExtras
@@ -202,11 +202,11 @@ LABEL_8:
         [v12 size];
         v14 = v13;
         v16 = v15;
-        v17 = [v12 safari_isSVGImage];
-        v18 = v17;
-        if (v7 && ((v17 ^ 1 | v9) & 1) != 0)
+        safari_isSVGImage = [v12 safari_isSVGImage];
+        v18 = safari_isSVGImage;
+        if (v7 && ((safari_isSVGImage ^ 1 | v9) & 1) != 0)
         {
-          if ((v9 ^ v17))
+          if ((v9 ^ safari_isSVGImage))
           {
             continue;
           }
@@ -236,7 +236,7 @@ LABEL_8:
 
 + (id)safari_imageWithSize:()SafariSharedExtras actions:
 {
-  v3 = [a1 safari_imageWithSize:1 flipped:a3 actions:?];
+  v3 = [self safari_imageWithSize:1 flipped:a3 actions:?];
 
   return v3;
 }
@@ -244,10 +244,10 @@ LABEL_8:
 + (id)safari_imageWithSize:()SafariSharedExtras flipped:actions:
 {
   v8 = a6;
-  v9 = [MEMORY[0x1E69DCA80] preferredFormat];
-  [v9 setPreferredRange:2];
-  [v9 setOpaque:0];
-  v10 = [objc_alloc(MEMORY[0x1E69DCA78]) initWithSize:v9 format:{a1, a2}];
+  preferredFormat = [MEMORY[0x1E69DCA80] preferredFormat];
+  [preferredFormat setPreferredRange:2];
+  [preferredFormat setOpaque:0];
+  v10 = [objc_alloc(MEMORY[0x1E69DCA78]) initWithSize:preferredFormat format:{self, a2}];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __68__UIImage_SafariSharedExtras__safari_imageWithSize_flipped_actions___block_invoke;
@@ -280,19 +280,19 @@ LABEL_8:
 {
   v7 = a5;
   v8 = MEMORY[0x1E69DCAC0];
-  v9 = [MEMORY[0x1E696AFB0] UUID];
-  v10 = [v9 UUIDString];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __69__UIImage_SafariSharedExtras__safari_dynamicImageWithSize_generator___block_invoke;
   v16[3] = &unk_1E82857E0;
   v11 = v7;
   v17 = v11;
-  v18 = a1;
+  selfCopy = self;
   v19 = a2;
-  v12 = [v8 _dynamicAssetNamed:v10 generator:v16];
-  v13 = [MEMORY[0x1E69DD1B8] currentTraitCollection];
-  v14 = [v12 imageWithTraitCollection:v13];
+  v12 = [v8 _dynamicAssetNamed:uUIDString generator:v16];
+  currentTraitCollection = [MEMORY[0x1E69DD1B8] currentTraitCollection];
+  v14 = [v12 imageWithTraitCollection:currentTraitCollection];
 
   return v14;
 }
@@ -300,12 +300,12 @@ LABEL_8:
 - (void)safari_setTransparencyAnalysisResult:()SafariSharedExtras
 {
   v2 = [MEMORY[0x1E696AD98] numberWithInteger:?];
-  objc_setAssociatedObject(a1, &transparencyAnalysisResultKey, v2, 1);
+  objc_setAssociatedObject(self, &transparencyAnalysisResultKey, v2, 1);
 }
 
 - (double)safari_longestEdgeInPixels
 {
-  [a1 size];
+  [self size];
   if (result <= v4)
   {
     return v4;
@@ -316,11 +316,11 @@ LABEL_8:
 
 - (uint64_t)safari_isGrayscale
 {
-  v2 = objc_getAssociatedObject(a1, [UIImage(SafariSharedExtras) safari_isGrayscale]::isGrayscaleImageKey);
+  v2 = objc_getAssociatedObject(self, [UIImage(SafariSharedExtras) safari_isGrayscale]::isGrayscaleImageKey);
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
@@ -412,28 +412,28 @@ LABEL_8:
       }
 
       CGContextRelease(v10);
-      v4 = v27 / v28 < 0.03;
+      bOOLValue = v27 / v28 < 0.03;
       v29 = [UIImage(SafariSharedExtras) safari_isGrayscale]::isGrayscaleImageKey;
-      v30 = [MEMORY[0x1E696AD98] numberWithBool:{v4, v27 / v28}];
-      objc_setAssociatedObject(a1, v29, v30, 1);
+      v30 = [MEMORY[0x1E696AD98] numberWithBool:{bOOLValue, v27 / v28}];
+      objc_setAssociatedObject(self, v29, v30, 1);
     }
 
     else
     {
-      v4 = 1;
+      bOOLValue = 1;
     }
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (uint64_t)safari_isSolidColor
 {
-  v2 = objc_getAssociatedObject(a1, [UIImage(SafariSharedExtras) safari_isSolidColor]::isSolidColorKey);
+  v2 = objc_getAssociatedObject(self, [UIImage(SafariSharedExtras) safari_isSolidColor]::isSolidColorKey);
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
     goto LABEL_22;
   }
 
@@ -453,7 +453,7 @@ LABEL_8:
   if (v11 < 1)
   {
 LABEL_19:
-    v4 = 1;
+    bOOLValue = 1;
     goto LABEL_21;
   }
 
@@ -517,21 +517,21 @@ LABEL_18:
     }
   }
 
-  v4 = 0;
+  bOOLValue = 0;
 LABEL_21:
   CGContextRelease(v9);
   v23 = [UIImage(SafariSharedExtras) safari_isSolidColor]::isSolidColorKey;
-  v24 = [MEMORY[0x1E696AD98] numberWithBool:v4];
-  objc_setAssociatedObject(a1, v23, v24, 1);
+  v24 = [MEMORY[0x1E696AD98] numberWithBool:bOOLValue];
+  objc_setAssociatedObject(self, v23, v24, 1);
 
 LABEL_22:
-  return v4;
+  return bOOLValue;
 }
 
 - (id)safari_makeGrayscale
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v2 = objc_getAssociatedObject(a1, [UIImage(SafariSharedExtras) safari_makeGrayscale]::grayscaleImageKey);
+  v2 = objc_getAssociatedObject(self, [UIImage(SafariSharedExtras) safari_makeGrayscale]::grayscaleImageKey);
   if (!v2)
   {
     v3 = [MEMORY[0x1E695F658] imageWithCGImage:_UIImageGetCGImageRepresentation()];
@@ -546,7 +546,7 @@ LABEL_22:
     v8 = [v6 imageByAdoptingCGImage:{objc_msgSend(v7, "createCGImage:fromRect:", v5)}];
 
     v2 = [objc_alloc(MEMORY[0x1E69DCAB8]) initWithCGImage:{objc_msgSend(v8, "CGImage")}];
-    objc_setAssociatedObject(a1, [UIImage(SafariSharedExtras) safari_makeGrayscale]::grayscaleImageKey, v2, 1);
+    objc_setAssociatedObject(self, [UIImage(SafariSharedExtras) safari_makeGrayscale]::grayscaleImageKey, v2, 1);
   }
 
   return v2;
@@ -554,7 +554,7 @@ LABEL_22:
 
 - (double)safari_computeAverageLuminance
 {
-  v2 = objc_getAssociatedObject(a1, [UIImage(SafariSharedExtras) safari_computeAverageLuminance]::averageLuminanceKey);
+  v2 = objc_getAssociatedObject(self, [UIImage(SafariSharedExtras) safari_computeAverageLuminance]::averageLuminanceKey);
   v3 = v2;
   if (v2)
   {
@@ -567,7 +567,7 @@ LABEL_22:
     CGImageRepresentation = _UIImageGetCGImageRepresentation();
     v5 = WBSComputeAverageLuminance(CGImageRepresentation);
     v7 = [MEMORY[0x1E696AD98] numberWithDouble:?];
-    objc_setAssociatedObject(a1, &[UIImage(SafariSharedExtras) safari_computeAverageLuminance]::averageLuminanceKey, v7, 1);
+    objc_setAssociatedObject(self, &[UIImage(SafariSharedExtras) safari_computeAverageLuminance]::averageLuminanceKey, v7, 1);
   }
 
   return v5;
@@ -576,7 +576,7 @@ LABEL_22:
 - (id)safari_dynamicImageWithSize:()SafariSharedExtras generator:
 {
   v8 = a5;
-  objc_initWeak(&location, a1);
+  objc_initWeak(&location, self);
   v9 = objc_opt_class();
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;

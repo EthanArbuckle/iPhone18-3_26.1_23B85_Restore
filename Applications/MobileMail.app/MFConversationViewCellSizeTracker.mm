@@ -1,11 +1,11 @@
 @interface MFConversationViewCellSizeTracker
 + (id)log;
-- (CGSize)displaySizeForCellWithItemID:(id)a3;
-- (CGSize)intrinsicSizeForCellWithItemID:(id)a3;
+- (CGSize)displaySizeForCellWithItemID:(id)d;
+- (CGSize)intrinsicSizeForCellWithItemID:(id)d;
 - (MFConversationViewCellSizeTracker)init;
 - (MFConversationViewCellSizeTrackerDelegate)delegate;
-- (id)intrinsicSizesForCellsWithItemIDs:(id)a3;
-- (void)setIntrinsicSize:(CGSize)a3 forCellWithItemID:(id)a4;
+- (id)intrinsicSizesForCellsWithItemIDs:(id)ds;
+- (void)setIntrinsicSize:(CGSize)size forCellWithItemID:(id)d;
 @end
 
 @implementation MFConversationViewCellSizeTracker
@@ -31,7 +31,7 @@
   block[1] = 3221225472;
   block[2] = sub_1001C4C90;
   block[3] = &unk_10064C4F8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1006DD4D0 != -1)
   {
     dispatch_once(&qword_1006DD4D0, block);
@@ -42,14 +42,14 @@
   return v2;
 }
 
-- (CGSize)displaySizeForCellWithItemID:(id)a3
+- (CGSize)displaySizeForCellWithItemID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained defaultCellSizeForTracker:self];
   v7 = v6;
   v9 = v8;
-  v10 = [WeakRetained conversationViewCellSizeTracker:self expansionStatusForMessageWithItemID:v4];
+  v10 = [WeakRetained conversationViewCellSizeTracker:self expansionStatusForMessageWithItemID:dCopy];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   if (v10 != 3)
@@ -68,7 +68,7 @@
     }
   }
 
-  [(MFConversationViewCellSizeTracker *)self intrinsicSizeForCellWithItemID:v4];
+  [(MFConversationViewCellSizeTracker *)self intrinsicSizeForCellWithItemID:dCopy];
   if (CGSizeZero.height == v15 && CGSizeZero.width == v14)
   {
     v13 = v9;
@@ -126,9 +126,9 @@ LABEL_11:
   return result;
 }
 
-- (CGSize)intrinsicSizeForCellWithItemID:(id)a3
+- (CGSize)intrinsicSizeForCellWithItemID:(id)d
 {
-  v3 = [(NSMutableDictionary *)self->_intrinsicCellSizes objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->_intrinsicCellSizes objectForKey:d];
   v4 = v3;
   if (v3)
   {
@@ -150,25 +150,25 @@ LABEL_11:
   return result;
 }
 
-- (id)intrinsicSizesForCellsWithItemIDs:(id)a3
+- (id)intrinsicSizesForCellsWithItemIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   intrinsicCellSizes = self->_intrinsicCellSizes;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained defaultCellSizeForTracker:self];
   v7 = [NSValue valueWithCGSize:?];
-  v8 = [(NSMutableDictionary *)intrinsicCellSizes objectsForKeys:v4 notFoundMarker:v7];
+  v8 = [(NSMutableDictionary *)intrinsicCellSizes objectsForKeys:dsCopy notFoundMarker:v7];
 
   return v8;
 }
 
-- (void)setIntrinsicSize:(CGSize)a3 forCellWithItemID:(id)a4
+- (void)setIntrinsicSize:(CGSize)size forCellWithItemID:(id)d
 {
-  height = a3.height;
-  width = a3.width;
-  v8 = a4;
-  v7 = [NSValue valueWithCGSize:width, height];
-  [(NSMutableDictionary *)self->_intrinsicCellSizes setObject:v7 forKey:v8];
+  height = size.height;
+  width = size.width;
+  dCopy = d;
+  height = [NSValue valueWithCGSize:width, height];
+  [(NSMutableDictionary *)self->_intrinsicCellSizes setObject:height forKey:dCopy];
 }
 
 - (MFConversationViewCellSizeTrackerDelegate)delegate

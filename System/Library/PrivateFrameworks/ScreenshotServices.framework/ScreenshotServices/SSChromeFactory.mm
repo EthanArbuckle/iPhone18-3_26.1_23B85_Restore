@@ -12,8 +12,8 @@
     v3 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"xmark"];
     v4 = [v2 initWithImage:v3 style:0 target:0 action:0];
 
-    v5 = [MEMORY[0x1E696AAE8] mainBundle];
-    v6 = [v5 localizedStringForKey:@"CLOSE" value:@"Close" table:0];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    v6 = [mainBundle localizedStringForKey:@"CLOSE" value:@"Close" table:0];
     [v4 setTitle:v6];
   }
 

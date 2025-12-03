@@ -1,28 +1,28 @@
 @interface ChromeControl
 - (_TtC12NewsArticles13ChromeControl)init;
-- (void)prefersChromeHidden:(BOOL)a3 fromViewController:(id)a4;
+- (void)prefersChromeHidden:(BOOL)hidden fromViewController:(id)controller;
 @end
 
 @implementation ChromeControl
 
-- (void)prefersChromeHidden:(BOOL)a3 fromViewController:(id)a4
+- (void)prefersChromeHidden:(BOOL)hidden fromViewController:(id)controller
 {
-  v5 = a3;
+  hiddenCopy = hidden;
   swift_getObjectType();
-  v7 = a4;
-  v8 = self;
+  controllerCopy = controller;
+  selfCopy = self;
   sub_1D7D2AAEC();
-  v9 = [v7 splitViewController];
-  if (!v9)
+  splitViewController = [controllerCopy splitViewController];
+  if (!splitViewController)
   {
-    v10 = [v7 presentingViewController];
-    v11 = [v10 splitViewController];
+    presentingViewController = [controllerCopy presentingViewController];
+    splitViewController2 = [presentingViewController splitViewController];
 
-    v9 = v11;
+    splitViewController = splitViewController2;
   }
 
-  v12 = v9;
-  [v9 ts:!v5 columnSeparatorsExtendToTitlebar:?];
+  v12 = splitViewController;
+  [splitViewController ts:!hiddenCopy columnSeparatorsExtendToTitlebar:?];
 }
 
 - (_TtC12NewsArticles13ChromeControl)init

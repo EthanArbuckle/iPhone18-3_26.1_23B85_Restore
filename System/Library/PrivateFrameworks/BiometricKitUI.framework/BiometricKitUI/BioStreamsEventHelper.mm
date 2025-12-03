@@ -1,5 +1,5 @@
 @interface BioStreamsEventHelper
-- (BioStreamsEventHelper)initWithBKDeviceType:(int64_t)a3 inBuddy:(BOOL)a4;
+- (BioStreamsEventHelper)initWithBKDeviceType:(int64_t)type inBuddy:(BOOL)buddy;
 - (id)containerIdentifier;
 - (id)subtype;
 - (void)sendSuccessfulEnrollEvent;
@@ -7,7 +7,7 @@
 
 @implementation BioStreamsEventHelper
 
-- (BioStreamsEventHelper)initWithBKDeviceType:(int64_t)a3 inBuddy:(BOOL)a4
+- (BioStreamsEventHelper)initWithBKDeviceType:(int64_t)type inBuddy:(BOOL)buddy
 {
   v20.receiver = self;
   v20.super_class = BioStreamsEventHelper;
@@ -18,7 +18,7 @@
     goto LABEL_9;
   }
 
-  v6->_inBuddy = a4;
+  v6->_inBuddy = buddy;
   v26 = 0;
   v27 = &v26;
   v28 = 0x2050000000;
@@ -55,12 +55,12 @@
 
   v11 = v10;
   _Block_object_dispose(&v26, 8);
-  v12 = [v10 deviceDescriptorForType:a3];
+  v12 = [v10 deviceDescriptorForType:type];
   v19 = 0;
   v13 = [v8 deviceWithDescriptor:v12 error:&v19];
   v14 = v19;
 
-  v7->_deviceType = a3;
+  v7->_deviceType = type;
   if (!v14)
   {
     v16 = [v13 identitiesWithError:0];
@@ -103,8 +103,8 @@ LABEL_10:
 
   v4 = v3;
   _Block_object_dispose(&v18, 8);
-  v5 = [v3 discoverabilitySignal];
-  v6 = [v5 source];
+  discoverabilitySignal = [v3 discoverabilitySignal];
+  source = [discoverabilitySignal source];
   v18 = 0;
   v19 = &v18;
   v20 = 0x2050000000;
@@ -124,11 +124,11 @@ LABEL_10:
   v8 = v7;
   _Block_object_dispose(&v18, 8);
   v9 = [v7 alloc];
-  v10 = [(BioStreamsEventHelper *)self containerIdentifier];
-  v11 = [(BioStreamsEventHelper *)self subtype];
-  v12 = [v9 initWithIdentifier:@"com.apple.biometrickitui.enrollment.success" bundleID:v10 context:v11];
+  containerIdentifier = [(BioStreamsEventHelper *)self containerIdentifier];
+  subtype = [(BioStreamsEventHelper *)self subtype];
+  v12 = [v9 initWithIdentifier:@"com.apple.biometrickitui.enrollment.success" bundleID:containerIdentifier context:subtype];
 
-  [v6 sendEvent:v12];
+  [source sendEvent:v12];
 }
 
 - (id)containerIdentifier

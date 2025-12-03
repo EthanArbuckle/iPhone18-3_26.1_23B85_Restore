@@ -1,41 +1,41 @@
 @interface IPSQLDatabase
-- (IPSQLDatabase)initWithBMSQL:(id)a3 databases:(id)a4 sets:(id)a5 useCase:(id)a6 error:(id *)a7;
-- (IPSQLDatabase)initWithStreams:(id)a3 databases:(id)a4 sets:(id)a5 useCase:(id)a6 library:(id)a7 privileges:(id)a8 isColumnAccessLoggingEnabled:(BOOL)a9 error:(id *)a10;
-- (id)executeWithQuery:(id)a3 error:(id *)a4;
+- (IPSQLDatabase)initWithBMSQL:(id)l databases:(id)databases sets:(id)sets useCase:(id)case error:(id *)error;
+- (IPSQLDatabase)initWithStreams:(id)streams databases:(id)databases sets:(id)sets useCase:(id)case library:(id)library privileges:(id)privileges isColumnAccessLoggingEnabled:(BOOL)enabled error:(id *)self0;
+- (id)executeWithQuery:(id)query error:(id *)error;
 @end
 
 @implementation IPSQLDatabase
 
-- (IPSQLDatabase)initWithStreams:(id)a3 databases:(id)a4 sets:(id)a5 useCase:(id)a6 library:(id)a7 privileges:(id)a8 isColumnAccessLoggingEnabled:(BOOL)a9 error:(id *)a10
+- (IPSQLDatabase)initWithStreams:(id)streams databases:(id)databases sets:(id)sets useCase:(id)case library:(id)library privileges:(id)privileges isColumnAccessLoggingEnabled:(BOOL)enabled error:(id *)self0
 {
   v15 = MEMORY[0x277CF1A88];
-  v16 = a8;
-  v17 = a7;
-  v18 = a6;
-  v19 = a5;
-  v20 = a4;
-  v21 = a3;
-  v22 = [[v15 alloc] initWithStreams:v21 library:v17 privileges:v16 isColumnAccessLoggingEnabled:a9 error:a10];
+  privilegesCopy = privileges;
+  libraryCopy = library;
+  caseCopy = case;
+  setsCopy = sets;
+  databasesCopy = databases;
+  streamsCopy = streams;
+  v22 = [[v15 alloc] initWithStreams:streamsCopy library:libraryCopy privileges:privilegesCopy isColumnAccessLoggingEnabled:enabled error:error];
 
-  v23 = [(IPSQLDatabase *)self initWithBMSQL:v22 databases:v20 sets:v19 useCase:v18 error:a10];
+  v23 = [(IPSQLDatabase *)self initWithBMSQL:v22 databases:databasesCopy sets:setsCopy useCase:caseCopy error:error];
   return v23;
 }
 
-- (IPSQLDatabase)initWithBMSQL:(id)a3 databases:(id)a4 sets:(id)a5 useCase:(id)a6 error:(id *)a7
+- (IPSQLDatabase)initWithBMSQL:(id)l databases:(id)databases sets:(id)sets useCase:(id)case error:(id *)error
 {
   v57 = *MEMORY[0x277D85DE8];
-  v41 = a3;
-  v13 = a4;
-  v14 = a5;
-  v43 = a6;
-  objc_storeStrong(&self->_bmsql, a3);
+  lCopy = l;
+  databasesCopy = databases;
+  setsCopy = sets;
+  caseCopy = case;
+  objc_storeStrong(&self->_bmsql, l);
   v40 = [(BMSQLDatabase *)self->_bmsql db];
   sqlite3_set_authorizer(v40, 0, 0);
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
-  v15 = v13;
+  v15 = databasesCopy;
   v16 = [v15 countByEnumeratingWithState:&v49 objects:v56 count:16];
   obj = v15;
   if (v16)
@@ -57,7 +57,7 @@
         v22 = *(*(&v49 + 1) + 8 * v20);
         bmsql = self->_bmsql;
         v48 = v21;
-        v24 = [(BMSQLDatabase *)bmsql attachDatabaseWithResourceIdentifier:v22 useCase:v43 error:&v48];
+        v24 = [(BMSQLDatabase *)bmsql attachDatabaseWithResourceIdentifier:v22 useCase:caseCopy error:&v48];
         v18 = v48;
 
         if ((v24 & 1) == 0)
@@ -68,15 +68,15 @@
             [IPSQLDatabase initWithBMSQL:v22 databases:v18 sets:v25 useCase:? error:?];
           }
 
-          v26 = v41;
+          v26 = lCopy;
           v27 = obj;
-          if (a7)
+          if (error)
           {
             v28 = v18;
-            *a7 = v18;
+            *error = v18;
           }
 
-          v29 = 0;
+          selfCopy = 0;
           goto LABEL_26;
         }
 
@@ -105,8 +105,8 @@
   v47 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v39 = v14;
-  v30 = v14;
+  v39 = setsCopy;
+  v30 = setsCopy;
   v31 = [v30 countByEnumeratingWithState:&v44 objects:v55 count:16];
   if (v31)
   {
@@ -138,25 +138,25 @@
   }
 
   sqlite3_set_authorizer(v40, MEMORY[0x277CF1B88], self->_bmsql);
-  v29 = self;
-  v26 = v41;
+  selfCopy = self;
+  v26 = lCopy;
   v27 = obj;
-  v14 = v39;
+  setsCopy = v39;
 LABEL_26:
 
   v37 = *MEMORY[0x277D85DE8];
-  return v29;
+  return selfCopy;
 }
 
-- (id)executeWithQuery:(id)a3 error:(id *)a4
+- (id)executeWithQuery:(id)query error:(id *)error
 {
-  v5 = [(BMSQLDatabase *)self->_bmsql _executeQuery:a3];
-  v6 = [v5 error];
+  v5 = [(BMSQLDatabase *)self->_bmsql _executeQuery:query];
+  error = [v5 error];
 
-  if (v6)
+  if (error)
   {
     [v5 error];
-    *a4 = v7 = 0;
+    *error = v7 = 0;
   }
 
   else

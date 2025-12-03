@@ -6,7 +6,7 @@
 + (id)propertiesToFetch;
 + (id)propertiesToPrefetch;
 - (PHMemory)memory;
-- (PHMemoryPropertySet)initWithFetchDictionary:(id)a3 memory:(id)a4 prefetched:(BOOL)a5;
+- (PHMemoryPropertySet)initWithFetchDictionary:(id)dictionary memory:(id)memory prefetched:(BOOL)prefetched;
 @end
 
 @implementation PHMemoryPropertySet
@@ -18,11 +18,11 @@
   return WeakRetained;
 }
 
-- (PHMemoryPropertySet)initWithFetchDictionary:(id)a3 memory:(id)a4 prefetched:(BOOL)a5
+- (PHMemoryPropertySet)initWithFetchDictionary:(id)dictionary memory:(id)memory prefetched:(BOOL)prefetched
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
+  dictionaryCopy = dictionary;
+  memoryCopy = memory;
+  selfCopy = self;
   v10 = PLAbstractMethodException();
   objc_exception_throw(v10);
 }
@@ -102,35 +102,35 @@ void __43__PHMemoryPropertySet_propertiesToPrefetch__block_invoke(uint64_t a1)
 
 + (id)keyPathToPrimaryObject
 {
-  v2 = a1;
+  selfCopy = self;
   v3 = PLAbstractMethodException();
   objc_exception_throw(v3);
 }
 
 + (id)keyPathFromPrimaryObject
 {
-  v2 = a1;
+  selfCopy = self;
   v3 = PLAbstractMethodException();
   objc_exception_throw(v3);
 }
 
 + (id)entityName
 {
-  v2 = a1;
+  selfCopy = self;
   v3 = PLAbstractMethodException();
   objc_exception_throw(v3);
 }
 
 + (id)propertiesToFetch
 {
-  v2 = a1;
+  selfCopy = self;
   v3 = PLAbstractMethodException();
   objc_exception_throw(v3);
 }
 
 + (NSString)propertySetName
 {
-  v2 = a1;
+  selfCopy = self;
   v3 = PLAbstractMethodException();
   objc_exception_throw(v3);
 }

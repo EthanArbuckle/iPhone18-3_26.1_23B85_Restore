@@ -1,31 +1,31 @@
 @interface _LTDASRAssetService
 + (BOOL)_supportsGASR;
-+ (BOOL)isSupportedTaskHint:(int64_t)a3;
++ (BOOL)isSupportedTaskHint:(int64_t)hint;
 + (id)_assetTypesForDevice;
 + (id)_availableAssets;
 + (id)_catalog;
 + (id)_requiredAssets;
-+ (id)_requiredSFConfigsForAssets:(id)a3;
++ (id)_requiredSFConfigsForAssets:(id)assets;
 + (id)_selectedLTLocalesIdentifiers;
 + (id)_subscribedSFConfigs;
 + (id)_supportedGASRLocaleIdentifiers;
 + (id)_supportedLTLocaleIdentifiers;
-+ (id)assetSpecifierForSFConfig:(id)a3;
++ (id)assetSpecifierForSFConfig:(id)config;
 + (id)deferredUnsubscribeAssets;
-+ (id)pathToSFAsset:(id)a3;
++ (id)pathToSFAsset:(id)asset;
 + (id)pendingDownloadSchedulingAssetsNameToEntry;
-+ (id)queryAssetType:(id)a3 filter:(unint64_t)a4 error:(id *)a5;
++ (id)queryAssetType:(id)type filter:(unint64_t)filter error:(id *)error;
 + (id)queue;
-+ (id)supportedLanguagesForTaskHint:(int64_t)a3;
-+ (void)_downloadAsset:(id)a3 options:(unint64_t)a4 progress:(id)a5 completion:(id)a6;
-+ (void)_scheduleNextDownloadIfNeededWithCompletedDownloadEntry:(id)a3;
-+ (void)_subscribe:(id)a3 progress:(id)a4 completion:(id)a5;
-+ (void)_unsubscribe:(id)a3 completion:(id)a4;
++ (id)supportedLanguagesForTaskHint:(int64_t)hint;
++ (void)_downloadAsset:(id)asset options:(unint64_t)options progress:(id)progress completion:(id)completion;
++ (void)_scheduleNextDownloadIfNeededWithCompletedDownloadEntry:(id)entry;
++ (void)_subscribe:(id)_subscribe progress:(id)progress completion:(id)completion;
++ (void)_unsubscribe:(id)_unsubscribe completion:(id)completion;
 + (void)cancelDeferredUnsubscribeTimer;
 + (void)deferredUnsubscribe;
-+ (void)downloadAsset:(id)a3 options:(unint64_t)a4 progress:(id)a5 completion:(id)a6;
-+ (void)purgeAsset:(id)a3 completion:(id)a4;
-+ (void)queryAssetType:(id)a3 filter:(unint64_t)a4 completion:(id)a5;
++ (void)downloadAsset:(id)asset options:(unint64_t)options progress:(id)progress completion:(id)completion;
++ (void)purgeAsset:(id)asset completion:(id)completion;
++ (void)queryAssetType:(id)type filter:(unint64_t)filter completion:(id)completion;
 + (void)updateDeferredUnsubscribeTimer;
 @end
 
@@ -80,57 +80,57 @@
   return v2;
 }
 
-+ (BOOL)isSupportedTaskHint:(int64_t)a3
++ (BOOL)isSupportedTaskHint:(int64_t)hint
 {
-  if ((a3 - 9) < 2)
+  if ((hint - 9) < 2)
   {
-    return [a1 _supportsGASR];
+    return [self _supportsGASR];
   }
 
-  if (a3 == 1)
+  if (hint == 1)
   {
-    return [a1 _supportsNGASR];
+    return [self _supportsNGASR];
   }
 
   return 0;
 }
 
-+ (void)queryAssetType:(id)a3 filter:(unint64_t)a4 completion:(id)a5
++ (void)queryAssetType:(id)type filter:(unint64_t)filter completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [a1 queue];
+  typeCopy = type;
+  completionCopy = completion;
+  queue = [self queue];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __56___LTDASRAssetService_queryAssetType_filter_completion___block_invoke;
   v13[3] = &unk_2789B5818;
-  v16 = a1;
-  v17 = a4;
-  v14 = v8;
-  v15 = v9;
-  v11 = v9;
-  v12 = v8;
-  dispatch_async(v10, v13);
+  selfCopy = self;
+  filterCopy = filter;
+  v14 = typeCopy;
+  v15 = completionCopy;
+  v11 = completionCopy;
+  v12 = typeCopy;
+  dispatch_async(queue, v13);
 }
 
-+ (id)queryAssetType:(id)a3 filter:(unint64_t)a4 error:(id *)a5
++ (id)queryAssetType:(id)type filter:(unint64_t)filter error:(id *)error
 {
-  v6 = [a1 _catalog];
-  v7 = v6;
-  if (a4 >= 2)
+  _catalog = [self _catalog];
+  v7 = _catalog;
+  if (filter >= 2)
   {
-    if (a4 != 2)
+    if (filter != 2)
     {
       v9 = MEMORY[0x277CBEBF8];
       goto LABEL_7;
     }
 
-    v8 = [v6 lt_filterUsingBlock:&__block_literal_global_344];
+    v8 = [_catalog lt_filterUsingBlock:&__block_literal_global_344];
   }
 
   else
   {
-    v8 = v6;
+    v8 = _catalog;
   }
 
   v9 = v8;
@@ -141,23 +141,23 @@ LABEL_7:
 
 + (id)_assetTypesForDevice
 {
-  v3 = [MEMORY[0x277CBEB18] array];
-  if ([a1 _supportsGASR])
+  array = [MEMORY[0x277CBEB18] array];
+  if ([self _supportsGASR])
   {
-    [v3 addObject:@"com.apple.MobileAsset.UAF.Speech.AutomaticSpeechRecognition"];
+    [array addObject:@"com.apple.MobileAsset.UAF.Speech.AutomaticSpeechRecognition"];
   }
 
-  if ([a1 _supportsNGASR])
+  if ([self _supportsNGASR])
   {
-    [v3 addObject:@"com.apple.MobileAsset.UAF.Siri.Understanding"];
+    [array addObject:@"com.apple.MobileAsset.UAF.Siri.Understanding"];
   }
 
-  return v3;
+  return array;
 }
 
-+ (id)supportedLanguagesForTaskHint:(int64_t)a3
++ (id)supportedLanguagesForTaskHint:(int64_t)hint
 {
-  switch(a3)
+  switch(hint)
   {
     case 11:
       v3 = &unk_284867D80;
@@ -215,12 +215,12 @@ LABEL_14:
 
 + (id)_supportedGASRLocaleIdentifiers
 {
-  if ([a1 _supportsGASR])
+  if ([self _supportsGASR])
   {
     v3 = [_LTDASRAssetService supportedLanguagesForTaskHint:9];
     v4 = [v3 mutableCopy];
 
-    v5 = [a1 supportedLanguagesForTaskHint:10];
+    v5 = [self supportedLanguagesForTaskHint:10];
     [v4 unionSet:v5];
   }
 
@@ -238,7 +238,7 @@ LABEL_14:
   block[1] = 3221225472;
   block[2] = __39___LTDASRAssetService__availableAssets__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_availableAssets_onceToken != -1)
   {
     dispatch_once(&_availableAssets_onceToken, block);
@@ -252,14 +252,14 @@ LABEL_14:
 + (id)_requiredAssets
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = [a1 _availableAssets];
-  v5 = [a1 _selectedLTLocalesIdentifiers];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  _availableAssets = [self _availableAssets];
+  _selectedLTLocalesIdentifiers = [self _selectedLTLocalesIdentifiers];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v6 = [_selectedLTLocalesIdentifiers countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
     v7 = v6;
@@ -270,54 +270,54 @@ LABEL_14:
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(_selectedLTLocalesIdentifiers);
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        v11 = [v4 objectForKeyedSubscript:v10];
+        v11 = [_availableAssets objectForKeyedSubscript:v10];
         if (v11)
         {
-          [v3 setObject:v11 forKeyedSubscript:v10];
+          [dictionary setObject:v11 forKeyedSubscript:v10];
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [_selectedLTLocalesIdentifiers countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v7);
   }
 
-  v12 = [v3 copy];
+  v12 = [dictionary copy];
 
   v13 = *MEMORY[0x277D85DE8];
 
   return v12;
 }
 
-+ (id)assetSpecifierForSFConfig:(id)a3
++ (id)assetSpecifierForSFConfig:(id)config
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = a3;
-  v5 = [v4 language];
-  [v4 assetType];
+  configCopy = config;
+  language = [configCopy language];
+  [configCopy assetType];
 
   v6 = SFEntitledAssetTypeToString();
-  v7 = [v3 stringWithFormat:@"ASR-%@_%@", v5, v6];
+  v7 = [v3 stringWithFormat:@"ASR-%@_%@", language, v6];
 
   return v7;
 }
 
-+ (id)_requiredSFConfigsForAssets:(id)a3
++ (id)_requiredSFConfigsForAssets:(id)assets
 {
   v36 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB38] dictionary];
+  assetsCopy = assets;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v21 = v4;
-  obj = [v4 allValues];
+  v21 = assetsCopy;
+  obj = [assetsCopy allValues];
   v24 = [obj countByEnumeratingWithState:&v30 objects:v35 count:16];
   if (v24)
   {
@@ -338,8 +338,8 @@ LABEL_14:
         v27 = 0u;
         v28 = 0u;
         v29 = 0u;
-        v8 = [v7 components];
-        v9 = [v8 countByEnumeratingWithState:&v26 objects:v34 count:16];
+        components = [v7 components];
+        v9 = [components countByEnumeratingWithState:&v26 objects:v34 count:16];
         if (v9)
         {
           v10 = v9;
@@ -350,7 +350,7 @@ LABEL_14:
             {
               if (*v27 != v11)
               {
-                objc_enumerationMutation(v8);
+                objc_enumerationMutation(components);
               }
 
               v13 = *(*(&v26 + 1) + 8 * i);
@@ -375,15 +375,15 @@ LABEL_14:
 
               v15 = v14;
 
-              v16 = [v15 provider];
-              v17 = [a1 assetSpecifierForSFConfig:v16];
+              provider = [v15 provider];
+              v17 = [self assetSpecifierForSFConfig:provider];
 
-              v18 = [v15 provider];
+              provider2 = [v15 provider];
 
-              [v5 setObject:v18 forKeyedSubscript:v17];
+              [dictionary setObject:provider2 forKeyedSubscript:v17];
             }
 
-            v10 = [v8 countByEnumeratingWithState:&v26 objects:v34 count:16];
+            v10 = [components countByEnumeratingWithState:&v26 objects:v34 count:16];
           }
 
           while (v10);
@@ -401,14 +401,14 @@ LABEL_14:
 
   v19 = *MEMORY[0x277D85DE8];
 
-  return v5;
+  return dictionary;
 }
 
 + (id)_subscribedSFConfigs
 {
   v19 = *MEMORY[0x277D85DE8];
   v3 = [MEMORY[0x277CDCEB8] subscriptionsForClientIdentifier:@"com.apple.translationd.asr"];
-  v4 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -429,8 +429,8 @@ LABEL_14:
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
-        v11 = [a1 assetSpecifierForSFConfig:{v10, v14}];
-        [v4 setObject:v10 forKeyedSubscript:v11];
+        v11 = [self assetSpecifierForSFConfig:{v10, v14}];
+        [dictionary setObject:v10 forKeyedSubscript:v11];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -441,7 +441,7 @@ LABEL_14:
 
   v12 = *MEMORY[0x277D85DE8];
 
-  return v4;
+  return dictionary;
 }
 
 + (id)_catalog
@@ -468,21 +468,21 @@ LABEL_14:
   spid = v4;
 
   os_unfair_lock_lock(&_subscriptionLock);
-  v7 = [a1 _availableAssets];
-  v52 = [v7 mutableCopy];
+  _availableAssets = [self _availableAssets];
+  v52 = [_availableAssets mutableCopy];
 
-  v53 = [a1 _requiredAssets];
-  v8 = [a1 _requiredSFConfigsForAssets:?];
-  v9 = [a1 _subscribedSFConfigs];
-  v10 = [v9 mutableCopy];
+  _requiredAssets = [self _requiredAssets];
+  v8 = [self _requiredSFConfigsForAssets:?];
+  _subscribedSFConfigs = [self _subscribedSFConfigs];
+  v10 = [_subscribedSFConfigs mutableCopy];
 
-  v11 = [a1 deferredUnsubscribeAssets];
+  deferredUnsubscribeAssets = [self deferredUnsubscribeAssets];
   v70 = 0u;
   v71 = 0u;
   v72 = 0u;
   v73 = 0u;
-  v12 = [v10 allKeys];
-  v13 = [v12 countByEnumeratingWithState:&v70 objects:v78 count:16];
+  allKeys = [v10 allKeys];
+  v13 = [allKeys countByEnumeratingWithState:&v70 objects:v78 count:16];
   if (v13)
   {
     v14 = v13;
@@ -493,7 +493,7 @@ LABEL_14:
       {
         if (*v71 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(allKeys);
         }
 
         v17 = *(*(&v70 + 1) + 8 * i);
@@ -502,26 +502,26 @@ LABEL_14:
         if (!v18)
         {
           v19 = [v10 objectForKeyedSubscript:v17];
-          [v11 setObject:v19 forKeyedSubscript:v17];
+          [deferredUnsubscribeAssets setObject:v19 forKeyedSubscript:v17];
 
           [v10 removeObjectForKey:v17];
         }
       }
 
-      v14 = [v12 countByEnumeratingWithState:&v70 objects:v78 count:16];
+      v14 = [allKeys countByEnumeratingWithState:&v70 objects:v78 count:16];
     }
 
     while (v14);
   }
 
-  v47 = v11;
+  v47 = deferredUnsubscribeAssets;
   v48 = v8;
 
   v68 = 0u;
   v69 = 0u;
   v66 = 0u;
   v67 = 0u;
-  obj = [v53 allKeys];
+  obj = [_requiredAssets allKeys];
   v54 = [obj countByEnumeratingWithState:&v66 objects:v77 count:16];
   if (v54)
   {
@@ -540,14 +540,14 @@ LABEL_14:
 
         v57 = v21;
         v55 = *(*(&v66 + 1) + 8 * v21);
-        v22 = [v53 objectForKeyedSubscript:spid];
+        v22 = [_requiredAssets objectForKeyedSubscript:spid];
         v62 = 0u;
         v63 = 0u;
         v64 = 0u;
         v65 = 0u;
         v56 = v22;
-        v23 = [v22 components];
-        v24 = [v23 countByEnumeratingWithState:&v62 objects:v76 count:16];
+        components = [v22 components];
+        v24 = [components countByEnumeratingWithState:&v62 objects:v76 count:16];
         if (v24)
         {
           v25 = v24;
@@ -560,14 +560,14 @@ LABEL_14:
             {
               if (*v63 != v26)
               {
-                objc_enumerationMutation(v23);
+                objc_enumerationMutation(components);
               }
 
               v28 = *(*(&v62 + 1) + 8 * j);
               if (v28 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
               {
-                v29 = [v28 provider];
-                v30 = [a1 assetSpecifierForSFConfig:v29];
+                provider = [v28 provider];
+                v30 = [self assetSpecifierForSFConfig:provider];
 
                 if (v30)
                 {
@@ -575,18 +575,18 @@ LABEL_14:
 
                   if (!v31)
                   {
-                    v32 = [v28 provider];
-                    [v10 setObject:v32 forKeyedSubscript:v30];
+                    provider2 = [v28 provider];
+                    [v10 setObject:provider2 forKeyedSubscript:v30];
 
                     v58 = 1;
                   }
 
                   v33 = p_vtable;
                   v34 = objc_alloc((p_vtable + 152));
-                  v35 = [v28 assetName];
+                  assetName = [v28 assetName];
                   v36 = v10;
                   v37 = [v10 objectForKeyedSubscript:v30];
-                  v38 = [v34 initWithAssetIdentifier:v35 provider:v37];
+                  v38 = [v34 initWithAssetIdentifier:assetName provider:v37];
 
                   if (v60)
                   {
@@ -628,7 +628,7 @@ LABEL_14:
               }
             }
 
-            v25 = [v23 countByEnumeratingWithState:&v62 objects:v76 count:16];
+            v25 = [components countByEnumeratingWithState:&v62 objects:v76 count:16];
           }
 
           while (v25);
@@ -657,7 +657,7 @@ LABEL_14:
 
   if ([v47 count] || (v58 & 1) != 0)
   {
-    [a1 updateDeferredUnsubscribeTimer];
+    [self updateDeferredUnsubscribeTimer];
   }
 
   os_unfair_lock_unlock(&_subscriptionLock);
@@ -669,43 +669,43 @@ LABEL_14:
     _os_signpost_emit_with_name_impl(&dword_232E53000, v42, OS_SIGNPOST_INTERVAL_END, spid, "asrCatalog", "end", buf, 2u);
   }
 
-  v43 = [v52 allValues];
+  allValues = [v52 allValues];
 
   v44 = *MEMORY[0x277D85DE8];
 
-  return v43;
+  return allValues;
 }
 
-+ (void)_subscribe:(id)a3 progress:(id)a4 completion:(id)a5
++ (void)_subscribe:(id)_subscribe progress:(id)progress completion:(id)completion
 {
   v24 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  _subscribeCopy = _subscribe;
+  progressCopy = progress;
+  completionCopy = completion;
   v10 = _LTOSLogAssets();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v11 = v10;
-    v12 = [v7 language];
+    language = [_subscribeCopy language];
     *buf = 138412290;
-    v23 = v12;
+    v23 = language;
     _os_log_impl(&dword_232E53000, v11, OS_LOG_TYPE_DEFAULT, "Actually in subscribe for %@", buf, 0xCu);
   }
 
-  if (v7)
+  if (_subscribeCopy)
   {
     v13 = MEMORY[0x277CDCEB8];
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __54___LTDASRAssetService__subscribe_progress_completion___block_invoke;
     v20[3] = &unk_2789B5880;
-    v21 = v8;
+    v21 = progressCopy;
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __54___LTDASRAssetService__subscribe_progress_completion___block_invoke_2;
     v17[3] = &unk_2789B58A8;
-    v18 = v7;
-    v19 = v9;
+    v18 = _subscribeCopy;
+    v19 = completionCopy;
     [v13 fetchAssetWithConfig:v18 clientIdentifier:@"com.apple.translationd.asr" progress:v20 completion:v17];
 
     v14 = v21;
@@ -714,11 +714,11 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if (v9)
+  if (completionCopy)
   {
     v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"Subscribe request with nil SFEntitledAssetConfig"];
     v15 = [MEMORY[0x277CCA9B8] ltd_errorWithCode:7 description:v14 userInfo:0];
-    (*(v9 + 2))(v9, v15);
+    (*(completionCopy + 2))(completionCopy, v15);
 
     goto LABEL_7;
   }
@@ -728,21 +728,21 @@ LABEL_8:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)_unsubscribe:(id)a3 completion:(id)a4
++ (void)_unsubscribe:(id)_unsubscribe completion:(id)completion
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5)
+  _unsubscribeCopy = _unsubscribe;
+  completionCopy = completion;
+  v7 = completionCopy;
+  if (_unsubscribeCopy)
   {
     v8 = _LTOSLogAssets();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v9 = v8;
-      v10 = [v5 language];
+      language = [_unsubscribeCopy language];
       *buf = 138543362;
-      v19 = v10;
+      v19 = language;
       _os_log_impl(&dword_232E53000, v9, OS_LOG_TYPE_DEFAULT, "ASR unsubscribe for %{public}@", buf, 0xCu);
     }
 
@@ -751,12 +751,12 @@ LABEL_8:
     v15[1] = 3221225472;
     v15[2] = __47___LTDASRAssetService__unsubscribe_completion___block_invoke;
     v15[3] = &unk_2789B58D0;
-    v16 = v5;
+    v16 = _unsubscribeCopy;
     v17 = v7;
     [v11 unsubscribeFromAssetWithConfig:v16 clientIdentifier:@"com.apple.translationd.asr" completion:v15];
   }
 
-  else if (v6)
+  else if (completionCopy)
   {
     v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"Subscribe request with nil SFEntitledAssetConfig"];
     v13 = [MEMORY[0x277CCA9B8] ltd_errorWithCode:7 description:v12 userInfo:0];
@@ -766,10 +766,10 @@ LABEL_8:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)_scheduleNextDownloadIfNeededWithCompletedDownloadEntry:(id)a3
++ (void)_scheduleNextDownloadIfNeededWithCompletedDownloadEntry:(id)entry
 {
   v74 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  entryCopy = entry;
   v5 = _LTOSLogAssets();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -778,16 +778,16 @@ LABEL_8:
   }
 
   os_unfair_lock_lock(&_downloadThrottlingLock);
-  if (v4)
+  if (entryCopy)
   {
-    v6 = [v4 asset];
-    v7 = [v6 progress];
-    v8 = [v7 offlineState];
+    asset = [entryCopy asset];
+    progress = [asset progress];
+    offlineState = [progress offlineState];
 
-    if (v8 == 2)
+    if (offlineState == 2)
     {
-      v9 = [v4 duplicateEntries];
-      v10 = [v9 count];
+      duplicateEntries = [entryCopy duplicateEntries];
+      v10 = [duplicateEntries count];
 
       if (v10)
       {
@@ -795,10 +795,10 @@ LABEL_8:
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
         {
           v12 = v11;
-          v13 = [v4 asset];
-          v14 = [v13 assetName];
+          asset2 = [entryCopy asset];
+          assetName = [asset2 assetName];
           *buf = 138412290;
-          v70 = v14;
+          v70 = assetName;
           _os_log_impl(&dword_232E53000, v12, OS_LOG_TYPE_DEFAULT, "ASR Asset downloads successfully finished with deduped entries %@", buf, 0xCu);
         }
 
@@ -806,9 +806,9 @@ LABEL_8:
         v68 = 0u;
         v65 = 0u;
         v66 = 0u;
-        v64 = v4;
-        v15 = [v4 duplicateEntries];
-        v16 = [v15 countByEnumeratingWithState:&v65 objects:v73 count:16];
+        v64 = entryCopy;
+        duplicateEntries2 = [entryCopy duplicateEntries];
+        v16 = [duplicateEntries2 countByEnumeratingWithState:&v65 objects:v73 count:16];
         if (v16)
         {
           v17 = v16;
@@ -819,7 +819,7 @@ LABEL_8:
             {
               if (*v66 != v18)
               {
-                objc_enumerationMutation(v15);
+                objc_enumerationMutation(duplicateEntries2);
               }
 
               v20 = *(*(&v65 + 1) + 8 * i);
@@ -827,51 +827,51 @@ LABEL_8:
               if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
               {
                 v22 = v21;
-                v23 = [v20 asset];
-                v24 = [v23 assetName];
+                asset3 = [v20 asset];
+                assetName2 = [asset3 assetName];
                 *buf = 138412290;
-                v70 = v24;
+                v70 = assetName2;
                 _os_log_impl(&dword_232E53000, v22, OS_LOG_TYPE_DEFAULT, "ASR Asset downloads updating offlineStatus and calling completion on the duplicate entry assets %@", buf, 0xCu);
               }
 
-              v25 = [v20 asset];
-              v26 = [v25 progress];
-              [v26 updatePercentComplete:1.0];
+              asset4 = [v20 asset];
+              progress2 = [asset4 progress];
+              [progress2 updatePercentComplete:1.0];
 
-              v27 = [v20 asset];
-              v28 = [v27 progress];
-              [v28 setOfflineState:2];
+              asset5 = [v20 asset];
+              progress3 = [asset5 progress];
+              [progress3 setOfflineState:2];
 
-              v29 = [v20 progress];
+              progress4 = [v20 progress];
 
-              if (v29)
+              if (progress4)
               {
-                v30 = [v20 progress];
-                v31 = [v20 asset];
-                (v30)[2](v30, v31);
+                progress5 = [v20 progress];
+                asset6 = [v20 asset];
+                (progress5)[2](progress5, asset6);
               }
 
-              v32 = [v20 completion];
-              v32[2](v32, 0);
+              completion = [v20 completion];
+              completion[2](completion, 0);
             }
 
-            v17 = [v15 countByEnumeratingWithState:&v65 objects:v73 count:16];
+            v17 = [duplicateEntries2 countByEnumeratingWithState:&v65 objects:v73 count:16];
           }
 
           while (v17);
         }
 
-        v4 = v64;
-        v33 = [v64 duplicateEntries];
-        [v33 removeAllObjects];
+        entryCopy = v64;
+        duplicateEntries3 = [v64 duplicateEntries];
+        [duplicateEntries3 removeAllObjects];
 
-        a1 = v63;
+        self = v63;
       }
     }
   }
 
-  v34 = [v4 duplicateEntries];
-  v35 = [v34 count];
+  duplicateEntries4 = [entryCopy duplicateEntries];
+  v35 = [duplicateEntries4 count];
 
   if (v35)
   {
@@ -879,60 +879,60 @@ LABEL_8:
     if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
     {
       v37 = v36;
-      v38 = [v4 asset];
-      v39 = [v38 assetName];
+      asset7 = [entryCopy asset];
+      assetName3 = [asset7 assetName];
       *buf = 138412290;
-      v70 = v39;
+      v70 = assetName3;
       _os_log_impl(&dword_232E53000, v37, OS_LOG_TYPE_DEFAULT, "ASR Asset downloads re-enqueue same assets %@", buf, 0xCu);
     }
 
-    v40 = [v4 duplicateEntries];
-    v41 = [v40 firstObject];
+    duplicateEntries5 = [entryCopy duplicateEntries];
+    firstObject = [duplicateEntries5 firstObject];
 
-    v42 = [v4 duplicateEntries];
-    [v42 removeObjectAtIndex:0];
+    duplicateEntries6 = [entryCopy duplicateEntries];
+    [duplicateEntries6 removeObjectAtIndex:0];
 
-    v43 = [v4 duplicateEntries];
-    [v41 setDuplicateEntries:v43];
+    duplicateEntries7 = [entryCopy duplicateEntries];
+    [firstObject setDuplicateEntries:duplicateEntries7];
 
-    v44 = [a1 pendingDownloadSchedulingAssetsNameToEntry];
-    v45 = [v41 asset];
-    v46 = [v45 assetName];
-    [v44 setObject:v41 forKey:v46];
+    pendingDownloadSchedulingAssetsNameToEntry = [self pendingDownloadSchedulingAssetsNameToEntry];
+    asset8 = [firstObject asset];
+    assetName4 = [asset8 assetName];
+    [pendingDownloadSchedulingAssetsNameToEntry setObject:firstObject forKey:assetName4];
 
     os_unfair_lock_unlock(&_downloadThrottlingLock);
-    v47 = [v41 options];
-    v48 = [v41 progress];
-    v49 = [v41 completion];
-    [a1 _downloadAsset:v41 options:v47 progress:v48 completion:v49];
+    options = [firstObject options];
+    progress6 = [firstObject progress];
+    completion2 = [firstObject completion];
+    [self _downloadAsset:firstObject options:options progress:progress6 completion:completion2];
   }
 
   else
   {
-    v50 = [a1 pendingDownloadSchedulingAssetsNameToEntry];
-    v51 = [v4 asset];
-    v52 = [v51 assetName];
-    [v50 removeObjectForKey:v52];
+    pendingDownloadSchedulingAssetsNameToEntry2 = [self pendingDownloadSchedulingAssetsNameToEntry];
+    asset9 = [entryCopy asset];
+    assetName5 = [asset9 assetName];
+    [pendingDownloadSchedulingAssetsNameToEntry2 removeObjectForKey:assetName5];
 
     v53 = _LTOSLogAssets();
     if (os_log_type_enabled(v53, OS_LOG_TYPE_DEFAULT))
     {
       v54 = v53;
-      v55 = [v4 asset];
-      v56 = [v55 assetName];
-      v57 = [a1 pendingDownloadSchedulingAssetsNameToEntry];
-      v58 = [v57 count];
+      asset10 = [entryCopy asset];
+      assetName6 = [asset10 assetName];
+      pendingDownloadSchedulingAssetsNameToEntry3 = [self pendingDownloadSchedulingAssetsNameToEntry];
+      v58 = [pendingDownloadSchedulingAssetsNameToEntry3 count];
       *buf = 138412546;
-      v70 = v56;
+      v70 = assetName6;
       v71 = 2048;
       v72 = v58;
       _os_log_impl(&dword_232E53000, v54, OS_LOG_TYPE_DEFAULT, "ASR Asset downloads finished downloading assets %@ pending assets count %lu", buf, 0x16u);
     }
 
-    v59 = [a1 pendingDownloadSchedulingAssetsNameToEntry];
-    v60 = [v59 count];
+    pendingDownloadSchedulingAssetsNameToEntry4 = [self pendingDownloadSchedulingAssetsNameToEntry];
+    v60 = [pendingDownloadSchedulingAssetsNameToEntry4 count];
 
-    [a1 updateDeferredUnsubscribeTimer];
+    [self updateDeferredUnsubscribeTimer];
     os_unfair_lock_unlock(&_downloadThrottlingLock);
     if (!v60)
     {
@@ -950,16 +950,16 @@ LABEL_8:
   v62 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)_downloadAsset:(id)a3 options:(unint64_t)a4 progress:(id)a5 completion:(id)a6
++ (void)_downloadAsset:(id)asset options:(unint64_t)options progress:(id)progress completion:(id)completion
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
-  v12 = [v9 asset];
-  if (!v12 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  assetCopy = asset;
+  progressCopy = progress;
+  completionCopy = completion;
+  asset = [assetCopy asset];
+  if (!asset || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
 
-    v12 = 0;
+    asset = 0;
 LABEL_6:
     v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"ASR asset service unsupported asset type"];
     v15 = [MEMORY[0x277CCA9B8] ltd_errorWithCode:16 description:v14 userInfo:0];
@@ -967,64 +967,64 @@ LABEL_6:
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
       [_LTDASRAssetService _downloadAsset:v16 options:? progress:? completion:?];
-      if (!v11)
+      if (!completionCopy)
       {
         goto LABEL_9;
       }
     }
 
-    else if (!v11)
+    else if (!completionCopy)
     {
 LABEL_9:
-      [a1 _scheduleNextDownloadIfNeededWithCompletedDownloadEntry:v9];
+      [self _scheduleNextDownloadIfNeededWithCompletedDownloadEntry:assetCopy];
 
       goto LABEL_10;
     }
 
-    v11[2](v11, v15);
+    completionCopy[2](completionCopy, v15);
     goto LABEL_9;
   }
 
-  if ([v12 managedAssetProvider] != 3)
+  if ([asset managedAssetProvider] != 3)
   {
     goto LABEL_6;
   }
 
-  v13 = [v12 provider];
+  provider = [asset provider];
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __66___LTDASRAssetService__downloadAsset_options_progress_completion___block_invoke;
   v23[3] = &unk_2789B58F8;
-  v24 = v12;
-  v25 = v10;
+  v24 = asset;
+  v25 = progressCopy;
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __66___LTDASRAssetService__downloadAsset_options_progress_completion___block_invoke_2;
   v17[3] = &unk_2789B5920;
-  v12 = v24;
-  v18 = v12;
+  asset = v24;
+  v18 = asset;
   v20 = v25;
-  v19 = v9;
-  v21 = v11;
-  v22 = a1;
-  [a1 _subscribe:v13 progress:v23 completion:v17];
+  v19 = assetCopy;
+  v21 = completionCopy;
+  selfCopy = self;
+  [self _subscribe:provider progress:v23 completion:v17];
 
   v14 = v24;
 LABEL_10:
 }
 
-+ (void)downloadAsset:(id)a3 options:(unint64_t)a4 progress:(id)a5 completion:(id)a6
++ (void)downloadAsset:(id)asset options:(unint64_t)options progress:(id)progress completion:(id)completion
 {
   v34 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a6;
-  v12 = a5;
+  assetCopy = asset;
+  completionCopy = completion;
+  progressCopy = progress;
   os_unfair_lock_lock(&_downloadThrottlingLock);
-  v13 = [[_LTDASRAssetModelDownloadEntry alloc] initWithAsset:v10 options:a4 progress:v12 completion:v11];
+  v13 = [[_LTDASRAssetModelDownloadEntry alloc] initWithAsset:assetCopy options:options progress:progressCopy completion:completionCopy];
 
-  v14 = [a1 pendingDownloadSchedulingAssetsNameToEntry];
-  v15 = [v10 assetName];
-  v16 = [v14 objectForKeyedSubscript:v15];
+  pendingDownloadSchedulingAssetsNameToEntry = [self pendingDownloadSchedulingAssetsNameToEntry];
+  assetName = [assetCopy assetName];
+  v16 = [pendingDownloadSchedulingAssetsNameToEntry objectForKeyedSubscript:assetName];
 
   if (v16)
   {
@@ -1032,66 +1032,66 @@ LABEL_10:
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
       v18 = v17;
-      v19 = [v16 asset];
-      v20 = [v19 assetName];
+      asset = [v16 asset];
+      assetName2 = [asset assetName];
       v32 = 138412290;
-      v33 = v20;
+      v33 = assetName2;
       _os_log_impl(&dword_232E53000, v18, OS_LOG_TYPE_DEFAULT, "ASR Asset downloads found existing same entry %@", &v32, 0xCu);
     }
 
-    v21 = [v16 duplicateEntries];
-    [v21 addObject:v13];
+    duplicateEntries = [v16 duplicateEntries];
+    [duplicateEntries addObject:v13];
 
     os_unfair_lock_unlock(&_downloadThrottlingLock);
   }
 
   else
   {
-    v22 = [a1 pendingDownloadSchedulingAssetsNameToEntry];
-    v23 = [v10 assetName];
-    [v22 setObject:v13 forKey:v23];
+    pendingDownloadSchedulingAssetsNameToEntry2 = [self pendingDownloadSchedulingAssetsNameToEntry];
+    assetName3 = [assetCopy assetName];
+    [pendingDownloadSchedulingAssetsNameToEntry2 setObject:v13 forKey:assetName3];
 
     v24 = _LTOSLogAssets();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
     {
       v25 = v24;
-      v26 = [(_LTDASRAssetModelDownloadEntry *)v13 asset];
-      v27 = [v26 assetName];
+      asset2 = [(_LTDASRAssetModelDownloadEntry *)v13 asset];
+      assetName4 = [asset2 assetName];
       v32 = 138412290;
-      v33 = v27;
+      v33 = assetName4;
       _os_log_impl(&dword_232E53000, v25, OS_LOG_TYPE_DEFAULT, "ASR Asset downloads downloads starting first download of %@", &v32, 0xCu);
     }
 
-    [a1 cancelDeferredUnsubscribeTimer];
+    [self cancelDeferredUnsubscribeTimer];
     os_unfair_lock_unlock(&_downloadThrottlingLock);
-    v28 = [(_LTDASRAssetModelDownloadEntry *)v13 options];
-    v29 = [(_LTDASRAssetModelDownloadEntry *)v13 progress];
-    v30 = [(_LTDASRAssetModelDownloadEntry *)v13 completion];
-    [a1 _downloadAsset:v13 options:v28 progress:v29 completion:v30];
+    options = [(_LTDASRAssetModelDownloadEntry *)v13 options];
+    progress = [(_LTDASRAssetModelDownloadEntry *)v13 progress];
+    completion = [(_LTDASRAssetModelDownloadEntry *)v13 completion];
+    [self _downloadAsset:v13 options:options progress:progress completion:completion];
   }
 
   v31 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)purgeAsset:(id)a3 completion:(id)a4
++ (void)purgeAsset:(id)asset completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
+  assetCopy = asset;
+  completionCopy = completion;
+  v8 = assetCopy;
   if (v8 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v9 = v8;
     if ([v8 managedAssetProvider] == 3)
     {
-      v10 = [v8 provider];
+      provider = [v8 provider];
       v14[0] = MEMORY[0x277D85DD0];
       v14[1] = 3221225472;
       v14[2] = __45___LTDASRAssetService_purgeAsset_completion___block_invoke;
       v14[3] = &unk_2789B58D0;
       v9 = v8;
       v15 = v9;
-      v16 = v7;
-      [a1 _unsubscribe:v10 completion:v14];
+      v16 = completionCopy;
+      [self _unsubscribe:provider completion:v14];
 
       v11 = v15;
       goto LABEL_9;
@@ -1112,16 +1112,16 @@ LABEL_10:
     +[_LTDASRAssetService purgeAsset:completion:];
   }
 
-  (*(v7 + 2))(v7, 0, v12);
+  (*(completionCopy + 2))(completionCopy, 0, v12);
 
 LABEL_9:
 }
 
-+ (id)pathToSFAsset:(id)a3
++ (id)pathToSFAsset:(id)asset
 {
-  if (a3)
+  if (asset)
   {
-    v4 = [MEMORY[0x277CDCEB8] pathToAssetWithConfig:a3 clientIdentifier:@"com.apple.translationd.asr"];
+    v4 = [MEMORY[0x277CDCEB8] pathToAssetWithConfig:asset clientIdentifier:@"com.apple.translationd.asr"];
   }
 
   else
@@ -1134,15 +1134,15 @@ LABEL_9:
 
 + (void)updateDeferredUnsubscribeTimer
 {
-  [a1 cancelDeferredUnsubscribeTimer];
+  [self cancelDeferredUnsubscribeTimer];
   v3 = _LTOSLogAssets();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
     +[(_LTDASRAssetService *)v3];
   }
 
-  v4 = [a1 queue];
-  v5 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, v4);
+  queue = [self queue];
+  v5 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, queue);
   v6 = _deferredUnsubscribeTimer;
   _deferredUnsubscribeTimer = v5;
 
@@ -1153,7 +1153,7 @@ LABEL_9:
   handler[1] = 3221225472;
   handler[2] = __53___LTDASRAssetService_updateDeferredUnsubscribeTimer__block_invoke;
   handler[3] = &__block_descriptor_40_e5_v8__0l;
-  handler[4] = a1;
+  handler[4] = self;
   dispatch_source_set_event_handler(_deferredUnsubscribeTimer, handler);
   dispatch_resume(_deferredUnsubscribeTimer);
 }
@@ -1172,15 +1172,15 @@ LABEL_9:
 {
   v20 = *MEMORY[0x277D85DE8];
   os_unfair_lock_lock(&_subscriptionLock);
-  v3 = [a1 _requiredAssets];
-  v4 = [a1 _requiredSFConfigsForAssets:v3];
-  v5 = [a1 deferredUnsubscribeAssets];
+  _requiredAssets = [self _requiredAssets];
+  v4 = [self _requiredSFConfigsForAssets:_requiredAssets];
+  deferredUnsubscribeAssets = [self deferredUnsubscribeAssets];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = [v5 allKeys];
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  allKeys = [deferredUnsubscribeAssets allKeys];
+  v7 = [allKeys countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1191,7 +1191,7 @@ LABEL_9:
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allKeys);
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
@@ -1199,19 +1199,19 @@ LABEL_9:
 
         if (!v12)
         {
-          v13 = [v5 objectForKeyedSubscript:v11];
-          [a1 _unsubscribe:v13 completion:0];
+          v13 = [deferredUnsubscribeAssets objectForKeyedSubscript:v11];
+          [self _unsubscribe:v13 completion:0];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [allKeys countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v8);
   }
 
-  [v5 removeAllObjects];
-  [a1 cancelDeferredUnsubscribeTimer];
+  [deferredUnsubscribeAssets removeAllObjects];
+  [self cancelDeferredUnsubscribeTimer];
   os_unfair_lock_unlock(&_subscriptionLock);
 
   v14 = *MEMORY[0x277D85DE8];

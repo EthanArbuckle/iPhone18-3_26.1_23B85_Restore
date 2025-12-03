@@ -1,24 +1,24 @@
 @interface TRILatencyMetricTelemetryValidator
-- (BOOL)_isRecordContainingAllowedLoggingNamespace:(id)a3;
-- (TRILatencyMetricTelemetryValidator)initWithRolloutDatabase:(id)a3 paths:(id)a4;
-- (id)createRolloutFieldForDeployment:(id)a3 factorPackSetId:(id)a4 record:(id)a5;
-- (id)validateAndReturnTelemetryForDeployment:(id)a3 factorPackSetId:(id)a4;
+- (BOOL)_isRecordContainingAllowedLoggingNamespace:(id)namespace;
+- (TRILatencyMetricTelemetryValidator)initWithRolloutDatabase:(id)database paths:(id)paths;
+- (id)createRolloutFieldForDeployment:(id)deployment factorPackSetId:(id)id record:(id)record;
+- (id)validateAndReturnTelemetryForDeployment:(id)deployment factorPackSetId:(id)id;
 @end
 
 @implementation TRILatencyMetricTelemetryValidator
 
-- (TRILatencyMetricTelemetryValidator)initWithRolloutDatabase:(id)a3 paths:(id)a4
+- (TRILatencyMetricTelemetryValidator)initWithRolloutDatabase:(id)database paths:(id)paths
 {
-  v7 = a3;
-  v8 = a4;
+  databaseCopy = database;
+  pathsCopy = paths;
   v16.receiver = self;
   v16.super_class = TRILatencyMetricTelemetryValidator;
   v9 = [(TRILatencyMetricTelemetryValidator *)&v16 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_rolloutDb, a3);
-    v11 = [TRISetupAssistantFetchUtils getNamespaceNamesWithFetchDuringSetupAssistantEnabledWithTRIPaths:v8];
+    objc_storeStrong(&v9->_rolloutDb, database);
+    v11 = [TRISetupAssistantFetchUtils getNamespaceNamesWithFetchDuringSetupAssistantEnabledWithTRIPaths:pathsCopy];
     v12 = v11;
     if (v11)
     {
@@ -37,65 +37,65 @@
   return v10;
 }
 
-- (BOOL)_isRecordContainingAllowedLoggingNamespace:(id)a3
+- (BOOL)_isRecordContainingAllowedLoggingNamespace:(id)namespace
 {
   v17 = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CBEB58];
-  v5 = [a3 artifact];
-  v6 = [v5 namespaceNames];
-  v7 = [v4 setWithArray:v6];
+  artifact = [namespace artifact];
+  namespaceNames = [artifact namespaceNames];
+  v7 = [v4 setWithArray:namespaceNames];
 
   v8 = TRILogCategory_Server();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(TRILatencyMetricTelemetryValidator *)self namespacesAllowedForLogging];
+    namespacesAllowedForLogging = [(TRILatencyMetricTelemetryValidator *)self namespacesAllowedForLogging];
     v13 = 138412546;
     v14 = v7;
     v15 = 2112;
-    v16 = v9;
+    v16 = namespacesAllowedForLogging;
     _os_log_impl(&dword_26F567000, v8, OS_LOG_TYPE_DEFAULT, "Intersecting artifact namespaces: %@ with relevant namespaces: %@ for telemetry", &v13, 0x16u);
   }
 
-  v10 = [(TRILatencyMetricTelemetryValidator *)self namespacesAllowedForLogging];
-  [v7 intersectSet:v10];
+  namespacesAllowedForLogging2 = [(TRILatencyMetricTelemetryValidator *)self namespacesAllowedForLogging];
+  [v7 intersectSet:namespacesAllowedForLogging2];
 
-  LOBYTE(v10) = [v7 count] != 0;
+  LOBYTE(namespacesAllowedForLogging2) = [v7 count] != 0;
   v11 = *MEMORY[0x277D85DE8];
-  return v10;
+  return namespacesAllowedForLogging2;
 }
 
-- (id)createRolloutFieldForDeployment:(id)a3 factorPackSetId:(id)a4 record:(id)a5
+- (id)createRolloutFieldForDeployment:(id)deployment factorPackSetId:(id)id record:(id)record
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = a3;
+  idCopy = id;
+  recordCopy = record;
+  deploymentCopy = deployment;
   v10 = objc_opt_new();
-  v11 = [v9 rolloutId];
+  rolloutId = [deploymentCopy rolloutId];
 
-  [v10 setClientRolloutId:v11];
-  v12 = loggableFactorPackSetIdFromFactorPackSetId(v7);
+  [v10 setClientRolloutId:rolloutId];
+  v12 = loggableFactorPackSetIdFromFactorPackSetId(idCopy);
   [v10 setClientFactorPackSetId:v12];
 
-  v13 = [v8 rampId];
+  rampId = [recordCopy rampId];
 
-  if (v13)
+  if (rampId)
   {
-    v14 = [v8 rampId];
-    [v10 setClientRampId:v14];
+    rampId2 = [recordCopy rampId];
+    [v10 setClientRampId:rampId2];
   }
 
-  v15 = [v8 activeFactorPackSetId];
-  if ([v7 isEqual:v15])
+  activeFactorPackSetId = [recordCopy activeFactorPackSetId];
+  if ([idCopy isEqual:activeFactorPackSetId])
   {
-    v16 = [v8 activeTargetingRuleIndex];
+    activeTargetingRuleIndex = [recordCopy activeTargetingRuleIndex];
 
-    if (!v16)
+    if (!activeTargetingRuleIndex)
     {
       goto LABEL_7;
     }
 
-    v15 = [v8 targetedTargetingRuleIndex];
-    [v10 setClientTargetingRuleGroupOrdinal:{objc_msgSend(v15, "intValue")}];
+    activeFactorPackSetId = [recordCopy targetedTargetingRuleIndex];
+    [v10 setClientTargetingRuleGroupOrdinal:{objc_msgSend(activeFactorPackSetId, "intValue")}];
   }
 
 LABEL_7:
@@ -103,19 +103,19 @@ LABEL_7:
   return v10;
 }
 
-- (id)validateAndReturnTelemetryForDeployment:(id)a3 factorPackSetId:(id)a4
+- (id)validateAndReturnTelemetryForDeployment:(id)deployment factorPackSetId:(id)id
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TRILatencyMetricTelemetryValidator *)self rolloutDb];
-  v9 = [v8 recordWithDeployment:v6 usingTransaction:0];
+  deploymentCopy = deployment;
+  idCopy = id;
+  rolloutDb = [(TRILatencyMetricTelemetryValidator *)self rolloutDb];
+  v9 = [rolloutDb recordWithDeployment:deploymentCopy usingTransaction:0];
 
   if (v9)
   {
     if ([(TRILatencyMetricTelemetryValidator *)self _isRecordContainingAllowedLoggingNamespace:v9])
     {
-      v10 = [(TRILatencyMetricTelemetryValidator *)self createRolloutFieldForDeployment:v6 factorPackSetId:v7 record:v9];
+      v10 = [(TRILatencyMetricTelemetryValidator *)self createRolloutFieldForDeployment:deploymentCopy factorPackSetId:idCopy record:v9];
       goto LABEL_8;
     }
   }
@@ -126,7 +126,7 @@ LABEL_7:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       v14 = 138543362;
-      v15 = v6;
+      v15 = deploymentCopy;
       _os_log_error_impl(&dword_26F567000, v11, OS_LOG_TYPE_ERROR, "Unexpected failure to find record for rollout deployment %{public}@.", &v14, 0xCu);
     }
   }

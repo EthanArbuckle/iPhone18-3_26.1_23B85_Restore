@@ -1,33 +1,33 @@
 @interface WXReadState
 - (WXReadState)init;
-- (_xmlNode)xmlAnnotationExtendedWithParaId:(unsigned int)a3;
-- (_xmlNode)xmlAnnotationWithID:(int64_t)a3;
-- (_xmlNode)xmlEndnoteWithID:(int64_t)a3;
-- (_xmlNode)xmlFootnoteWithID:(int64_t)a3;
-- (id)annotationWithId:(int64_t)a3;
-- (id)annotationWithParaId:(unsigned int)a3;
-- (id)bookmarkName:(int64_t)a3;
-- (id)initNoStacksWith:(id)a3;
-- (id)nodesToBeAdded:(id)a3;
-- (id)textBoxForFlowId:(id)a3;
-- (void)addAnnotationId:(int64_t)a3 annotation:(id)a4;
-- (void)addAnnotationParaId:(unsigned int)a3 annotation:(id)a4;
-- (void)addBookmarkId:(int64_t)a3 name:(id)a4;
-- (void)addPendingBookmark:(_xmlNode *)a3;
-- (void)addPendingComment:(_xmlNode *)a3;
-- (void)addText:(id)a3 node:(_xmlNode *)a4;
-- (void)clearOutNodesToBeAdded:(id)a3;
+- (_xmlNode)xmlAnnotationExtendedWithParaId:(unsigned int)id;
+- (_xmlNode)xmlAnnotationWithID:(int64_t)d;
+- (_xmlNode)xmlEndnoteWithID:(int64_t)d;
+- (_xmlNode)xmlFootnoteWithID:(int64_t)d;
+- (id)annotationWithId:(int64_t)id;
+- (id)annotationWithParaId:(unsigned int)id;
+- (id)bookmarkName:(int64_t)name;
+- (id)initNoStacksWith:(id)with;
+- (id)nodesToBeAdded:(id)added;
+- (id)textBoxForFlowId:(id)id;
+- (void)addAnnotationId:(int64_t)id annotation:(id)annotation;
+- (void)addAnnotationParaId:(unsigned int)id annotation:(id)annotation;
+- (void)addBookmarkId:(int64_t)id name:(id)name;
+- (void)addPendingBookmark:(_xmlNode *)bookmark;
+- (void)addPendingComment:(_xmlNode *)comment;
+- (void)addText:(id)text node:(_xmlNode *)node;
+- (void)clearOutNodesToBeAdded:(id)added;
 - (void)clearPendingBookmarks;
 - (void)dealloc;
 - (void)popDeleteAuthorDate;
 - (void)popEditAuthorDate;
 - (void)popFormatAuthorDate;
-- (void)pushDeleteAuthor:(id)a3 date:(id)a4;
-- (void)pushEditAuthor:(id)a3 date:(id)a4;
-- (void)pushFormatAuthor:(id)a3 date:(id)a4;
-- (void)setDocument:(id)a3;
-- (void)setDocumentPart:(id)a3;
-- (void)setupNSForXMLFormat:(int)a3;
+- (void)pushDeleteAuthor:(id)author date:(id)date;
+- (void)pushEditAuthor:(id)author date:(id)date;
+- (void)pushFormatAuthor:(id)author date:(id)date;
+- (void)setDocument:(id)document;
+- (void)setDocumentPart:(id)part;
+- (void)setupNSForXMLFormat:(int)format;
 @end
 
 @implementation WXReadState
@@ -126,29 +126,29 @@
   return v3;
 }
 
-- (id)initNoStacksWith:(id)a3
+- (id)initNoStacksWith:(id)with
 {
-  v4 = a3;
+  withCopy = with;
   v12.receiver = self;
   v12.super_class = WXReadState;
   v5 = [(OCXState *)&v12 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeStrong(&v5->mDocument, v4[4]);
-    objc_storeStrong(&v6->mTextNodesToBeAdded, v4[5]);
-    objc_storeStrong(&v6->mMapBookmarkIdToName, v4[6]);
-    objc_storeStrong(&v6->mPackagePart, v4[10]);
-    objc_storeStrong(&v6->mMapAnnotationIdToAnnotation, v4[7]);
-    objc_storeStrong(&v6->mMapAnnotationParaIdToAnnotation, v4[8]);
-    objc_storeStrong(&v6->mMapFlowIdToTextBox, v4[9]);
-    v6->mFootnoteDocument = v4[13];
-    v6->mFootnotes = v4[14];
-    v6->mEndnoteDocument = v4[15];
-    v6->mAnnotationDocument = v4[17];
-    v6->mAnnotations = v4[18];
-    v6->mAnnotationExtendedDocument = v4[19];
-    v6->mAnnotationsExtended = v4[20];
+    objc_storeStrong(&v5->mDocument, withCopy[4]);
+    objc_storeStrong(&v6->mTextNodesToBeAdded, withCopy[5]);
+    objc_storeStrong(&v6->mMapBookmarkIdToName, withCopy[6]);
+    objc_storeStrong(&v6->mPackagePart, withCopy[10]);
+    objc_storeStrong(&v6->mMapAnnotationIdToAnnotation, withCopy[7]);
+    objc_storeStrong(&v6->mMapAnnotationParaIdToAnnotation, withCopy[8]);
+    objc_storeStrong(&v6->mMapFlowIdToTextBox, withCopy[9]);
+    v6->mFootnoteDocument = withCopy[13];
+    v6->mFootnotes = withCopy[14];
+    v6->mEndnoteDocument = withCopy[15];
+    v6->mAnnotationDocument = withCopy[17];
+    v6->mAnnotations = withCopy[18];
+    v6->mAnnotationExtendedDocument = withCopy[19];
+    v6->mAnnotationsExtended = withCopy[20];
     v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
     mPendingCommentNodes = v6->mPendingCommentNodes;
     v6->mPendingCommentNodes = v7;
@@ -157,12 +157,12 @@
     mPendingBookmarkNodes = v6->mPendingBookmarkNodes;
     v6->mPendingBookmarkNodes = v9;
 
-    objc_storeStrong(&v6->mWXOavState, v4[29]);
-    objc_storeStrong(&v6->mDrawingState, v4[30]);
-    v6->mNewSectionRequested = *(v4 + 264);
-    v6->mCurrentRowCNFStyle = v4[34];
-    v6->mCurrentCellCNFStyle = v4[35];
-    v6->mCurrentTableWraps = *(v4 + 288);
+    objc_storeStrong(&v6->mWXOavState, withCopy[29]);
+    objc_storeStrong(&v6->mDrawingState, withCopy[30]);
+    v6->mNewSectionRequested = *(withCopy + 264);
+    v6->mCurrentRowCNFStyle = withCopy[34];
+    v6->mCurrentCellCNFStyle = withCopy[35];
+    v6->mCurrentTableWraps = *(withCopy + 288);
   }
 
   return v6;
@@ -175,8 +175,8 @@
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [(OITSUNoCopyDictionary *)self->mTextNodesToBeAdded allKeys];
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  allKeys = [(OITSUNoCopyDictionary *)self->mTextNodesToBeAdded allKeys];
+  v4 = [allKeys countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = *v9;
@@ -187,14 +187,14 @@
       {
         if (*v9 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allKeys);
         }
 
         [(WXReadState *)self clearOutNodesToBeAdded:*(*(&v8 + 1) + 8 * v6++)];
       }
 
       while (v4 != v6);
-      v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v4 = [allKeys countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v4);
@@ -206,46 +206,46 @@
   [(WXReadState *)&v7 dealloc];
 }
 
-- (void)setDocument:(id)a3
+- (void)setDocument:(id)document
 {
-  v4 = a3;
-  v5 = v4;
+  documentCopy = document;
+  v5 = documentCopy;
   if (!self->mDocument)
   {
     mDrawingState = self->mDrawingState;
-    v7 = [(OCDDocument *)v4 blips];
-    [(OAXDrawingState *)mDrawingState setTargetBlipCollection:v7];
+    blips = [(OCDDocument *)documentCopy blips];
+    [(OAXDrawingState *)mDrawingState setTargetBlipCollection:blips];
   }
 
   mDocument = self->mDocument;
   self->mDocument = v5;
 }
 
-- (void)addText:(id)a3 node:(_xmlNode *)a4
+- (void)addText:(id)text node:(_xmlNode *)node
 {
-  v8 = a3;
+  textCopy = text;
   v6 = [(OITSUNoCopyDictionary *)self->mTextNodesToBeAdded objectForKey:?];
   if (!v6)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    [(OITSUNoCopyDictionary *)self->mTextNodesToBeAdded setObject:v6 forUncopiedKey:v8];
+    [(OITSUNoCopyDictionary *)self->mTextNodesToBeAdded setObject:v6 forUncopiedKey:textCopy];
   }
 
-  v7 = [MEMORY[0x277CCABB0] numberWithLong:{xmlCopyNode(a4, 1)}];
+  v7 = [MEMORY[0x277CCABB0] numberWithLong:{xmlCopyNode(node, 1)}];
   [v6 addObject:v7];
 }
 
-- (id)nodesToBeAdded:(id)a3
+- (id)nodesToBeAdded:(id)added
 {
-  v3 = [(OITSUNoCopyDictionary *)self->mTextNodesToBeAdded objectForKey:a3];
-  v4 = [v3 objectEnumerator];
+  v3 = [(OITSUNoCopyDictionary *)self->mTextNodesToBeAdded objectForKey:added];
+  objectEnumerator = [v3 objectEnumerator];
 
-  return v4;
+  return objectEnumerator;
 }
 
-- (void)clearOutNodesToBeAdded:(id)a3
+- (void)clearOutNodesToBeAdded:(id)added
 {
-  v5 = [(OITSUNoCopyDictionary *)self->mTextNodesToBeAdded objectForKey:a3];
+  v5 = [(OITSUNoCopyDictionary *)self->mTextNodesToBeAdded objectForKey:added];
   v3 = [v5 count];
   if (v3)
   {
@@ -258,66 +258,66 @@
   [v5 removeAllObjects];
 }
 
-- (void)addBookmarkId:(int64_t)a3 name:(id)a4
+- (void)addBookmarkId:(int64_t)id name:(id)name
 {
-  v8 = a4;
+  nameCopy = name;
   mMapBookmarkIdToName = self->mMapBookmarkIdToName;
-  v7 = [MEMORY[0x277CCABB0] numberWithLong:a3];
-  [(OITSUNoCopyDictionary *)mMapBookmarkIdToName setObject:v8 forKey:v7];
+  v7 = [MEMORY[0x277CCABB0] numberWithLong:id];
+  [(OITSUNoCopyDictionary *)mMapBookmarkIdToName setObject:nameCopy forKey:v7];
 }
 
-- (id)bookmarkName:(int64_t)a3
+- (id)bookmarkName:(int64_t)name
 {
   mMapBookmarkIdToName = self->mMapBookmarkIdToName;
-  v4 = [MEMORY[0x277CCABB0] numberWithLong:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithLong:name];
   v5 = [(OITSUNoCopyDictionary *)mMapBookmarkIdToName objectForKey:v4];
 
   return v5;
 }
 
-- (void)addAnnotationId:(int64_t)a3 annotation:(id)a4
+- (void)addAnnotationId:(int64_t)id annotation:(id)annotation
 {
-  v8 = a4;
+  annotationCopy = annotation;
   mMapAnnotationIdToAnnotation = self->mMapAnnotationIdToAnnotation;
-  v7 = [MEMORY[0x277CCABB0] numberWithLong:a3];
-  [(OITSUNoCopyDictionary *)mMapAnnotationIdToAnnotation setObject:v8 forKey:v7];
+  v7 = [MEMORY[0x277CCABB0] numberWithLong:id];
+  [(OITSUNoCopyDictionary *)mMapAnnotationIdToAnnotation setObject:annotationCopy forKey:v7];
 }
 
-- (id)annotationWithId:(int64_t)a3
+- (id)annotationWithId:(int64_t)id
 {
   mMapAnnotationIdToAnnotation = self->mMapAnnotationIdToAnnotation;
-  v4 = [MEMORY[0x277CCABB0] numberWithLong:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithLong:id];
   v5 = [(OITSUNoCopyDictionary *)mMapAnnotationIdToAnnotation objectForKey:v4];
 
   return v5;
 }
 
-- (void)addAnnotationParaId:(unsigned int)a3 annotation:(id)a4
+- (void)addAnnotationParaId:(unsigned int)id annotation:(id)annotation
 {
-  v4 = *&a3;
-  v8 = a4;
+  v4 = *&id;
+  annotationCopy = annotation;
   mMapAnnotationParaIdToAnnotation = self->mMapAnnotationParaIdToAnnotation;
   v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v4];
-  [(OITSUNoCopyDictionary *)mMapAnnotationParaIdToAnnotation setObject:v8 forKey:v7];
+  [(OITSUNoCopyDictionary *)mMapAnnotationParaIdToAnnotation setObject:annotationCopy forKey:v7];
 }
 
-- (id)annotationWithParaId:(unsigned int)a3
+- (id)annotationWithParaId:(unsigned int)id
 {
   mMapAnnotationParaIdToAnnotation = self->mMapAnnotationParaIdToAnnotation;
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:*&a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:*&id];
   v5 = [(OITSUNoCopyDictionary *)mMapAnnotationParaIdToAnnotation objectForKey:v4];
 
   return v5;
 }
 
-- (id)textBoxForFlowId:(id)a3
+- (id)textBoxForFlowId:(id)id
 {
-  v3 = [(NSMutableDictionary *)self->mMapFlowIdToTextBox objectForKeyedSubscript:a3];
+  v3 = [(NSMutableDictionary *)self->mMapFlowIdToTextBox objectForKeyedSubscript:id];
 
   return v3;
 }
 
-- (_xmlNode)xmlFootnoteWithID:(int64_t)a3
+- (_xmlNode)xmlFootnoteWithID:(int64_t)d
 {
   mFootnotes = self->mFootnotes;
   if (!mFootnotes)
@@ -327,7 +327,7 @@
 
   for (i = OCXFirstChild(mFootnotes); i; i = OCXNextSibling(i))
   {
-    if (xmlStrEqual(i->name, "footnote") && CXDefaultLongAttribute(i, self->mWXMainNamespace, "id", 0) == a3)
+    if (xmlStrEqual(i->name, "footnote") && CXDefaultLongAttribute(i, self->mWXMainNamespace, "id", 0) == d)
     {
       break;
     }
@@ -336,7 +336,7 @@
   return i;
 }
 
-- (_xmlNode)xmlEndnoteWithID:(int64_t)a3
+- (_xmlNode)xmlEndnoteWithID:(int64_t)d
 {
   mEndnotes = self->mEndnotes;
   if (!mEndnotes)
@@ -346,7 +346,7 @@
 
   for (i = OCXFirstChild(mEndnotes); i; i = OCXNextSibling(i))
   {
-    if (xmlStrEqual(i->name, "endnote") && CXDefaultLongAttribute(i, self->mWXMainNamespace, "id", 0) == a3)
+    if (xmlStrEqual(i->name, "endnote") && CXDefaultLongAttribute(i, self->mWXMainNamespace, "id", 0) == d)
     {
       break;
     }
@@ -355,7 +355,7 @@
   return i;
 }
 
-- (_xmlNode)xmlAnnotationWithID:(int64_t)a3
+- (_xmlNode)xmlAnnotationWithID:(int64_t)d
 {
   mAnnotations = self->mAnnotations;
   if (!mAnnotations)
@@ -365,7 +365,7 @@
 
   for (i = OCXFirstChild(mAnnotations); i; i = OCXNextSibling(i))
   {
-    if (xmlStrEqual(i->name, "comment") && CXDefaultLongAttribute(i, self->mWXMainNamespace, "id", 0) == a3)
+    if (xmlStrEqual(i->name, "comment") && CXDefaultLongAttribute(i, self->mWXMainNamespace, "id", 0) == d)
     {
       break;
     }
@@ -374,7 +374,7 @@
   return i;
 }
 
-- (_xmlNode)xmlAnnotationExtendedWithParaId:(unsigned int)a3
+- (_xmlNode)xmlAnnotationExtendedWithParaId:(unsigned int)id
 {
   if (!self->mAnnotationsExtended)
   {
@@ -399,7 +399,7 @@
         v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v12];
         v9 = [OCXSTValidator isValidValue:v8 simpleType:10];
 
-        if (v12 == a3 && v9)
+        if (v12 == id && v9)
         {
           break;
         }
@@ -410,73 +410,73 @@
   return i;
 }
 
-- (void)setDocumentPart:(id)a3
+- (void)setDocumentPart:(id)part
 {
-  v5 = a3;
-  if (self->mPackagePart != v5)
+  partCopy = part;
+  if (self->mPackagePart != partCopy)
   {
-    v16 = v5;
-    objc_storeStrong(&self->mPackagePart, a3);
+    v16 = partCopy;
+    objc_storeStrong(&self->mPackagePart, part);
     v6 = OCXFirstPartWithRelationshipOfTypeToPartWithFallback(v16, &self->super.super, sel_OCXFootnotesRelationshipType);
-    v7 = [v6 xmlDocument];
-    self->mFootnoteDocument = v7;
-    if (v7)
+    xmlDocument = [v6 xmlDocument];
+    self->mFootnoteDocument = xmlDocument;
+    if (xmlDocument)
     {
-      self->mFootnotes = OCXGetRootElement(v7);
+      self->mFootnotes = OCXGetRootElement(xmlDocument);
     }
 
     v8 = OCXFirstPartWithRelationshipOfTypeToPartWithFallback(v16, &self->super.super, sel_OCXEndnotesRelationshipType);
-    v9 = [v8 xmlDocument];
-    self->mEndnoteDocument = v9;
-    if (v9)
+    xmlDocument2 = [v8 xmlDocument];
+    self->mEndnoteDocument = xmlDocument2;
+    if (xmlDocument2)
     {
-      self->mEndnotes = OCXGetRootElement(v9);
+      self->mEndnotes = OCXGetRootElement(xmlDocument2);
     }
 
     v10 = OCXFirstPartWithRelationshipOfTypeToPartWithFallback(v16, &self->super.super, sel_OCXCommentsRelationshipType);
     mAnnotationPart = self->mAnnotationPart;
     self->mAnnotationPart = v10;
 
-    v12 = [(OCPPackagePart *)self->mAnnotationPart xmlDocument];
-    self->mAnnotationDocument = v12;
-    if (v12)
+    xmlDocument3 = [(OCPPackagePart *)self->mAnnotationPart xmlDocument];
+    self->mAnnotationDocument = xmlDocument3;
+    if (xmlDocument3)
     {
-      self->mAnnotations = OCXGetRootElement(v12);
+      self->mAnnotations = OCXGetRootElement(xmlDocument3);
     }
 
     v13 = OCXFirstPartWithRelationshipOfTypeToPartWithFallback(v16, &self->super.super, sel_OCXCommentsExtendedRelationshipType);
     mAnnotationExtendedPart = self->mAnnotationExtendedPart;
     self->mAnnotationExtendedPart = v13;
 
-    v15 = [(OCPPackagePart *)self->mAnnotationExtendedPart xmlDocument];
-    self->mAnnotationExtendedDocument = v15;
-    if (v15)
+    xmlDocument4 = [(OCPPackagePart *)self->mAnnotationExtendedPart xmlDocument];
+    self->mAnnotationExtendedDocument = xmlDocument4;
+    if (xmlDocument4)
     {
-      self->mAnnotationsExtended = OCXGetRootElement(v15);
+      self->mAnnotationsExtended = OCXGetRootElement(xmlDocument4);
     }
 
     [(OAVReadState *)self->mWXOavState setPackagePart:v16];
     [(OAXDrawingState *)self->mDrawingState setPackagePart:v16];
 
-    v5 = v16;
+    partCopy = v16;
   }
 }
 
-- (void)pushDeleteAuthor:(id)a3 date:(id)a4
+- (void)pushDeleteAuthor:(id)author date:(id)date
 {
-  v8 = a3;
-  v6 = a4;
+  authorCopy = author;
+  dateCopy = date;
   mDeleteAuthorStack = self->mDeleteAuthorStack;
   if (mDeleteAuthorStack && self->mDeleteDateStack)
   {
-    if (v8)
+    if (authorCopy)
     {
-      [(NSMutableArray *)mDeleteAuthorStack addObject:v8];
+      [(NSMutableArray *)mDeleteAuthorStack addObject:authorCopy];
     }
 
-    if (v6)
+    if (dateCopy)
     {
-      [(NSMutableArray *)self->mDeleteDateStack addObject:v6];
+      [(NSMutableArray *)self->mDeleteDateStack addObject:dateCopy];
     }
   }
 }
@@ -493,21 +493,21 @@
   }
 }
 
-- (void)pushEditAuthor:(id)a3 date:(id)a4
+- (void)pushEditAuthor:(id)author date:(id)date
 {
-  v8 = a3;
-  v6 = a4;
+  authorCopy = author;
+  dateCopy = date;
   mEditAuthorStack = self->mEditAuthorStack;
   if (mEditAuthorStack && self->mEditDateStack)
   {
-    if (v8)
+    if (authorCopy)
     {
-      [(NSMutableArray *)mEditAuthorStack addObject:v8];
+      [(NSMutableArray *)mEditAuthorStack addObject:authorCopy];
     }
 
-    if (v6)
+    if (dateCopy)
     {
-      [(NSMutableArray *)self->mEditDateStack addObject:v6];
+      [(NSMutableArray *)self->mEditDateStack addObject:dateCopy];
     }
   }
 }
@@ -529,18 +529,18 @@
   }
 }
 
-- (void)pushFormatAuthor:(id)a3 date:(id)a4
+- (void)pushFormatAuthor:(id)author date:(id)date
 {
-  v7 = a3;
-  v6 = a4;
-  if (v7)
+  authorCopy = author;
+  dateCopy = date;
+  if (authorCopy)
   {
-    [(NSMutableArray *)self->mFormatAuthorStack addObject:v7];
+    [(NSMutableArray *)self->mFormatAuthorStack addObject:authorCopy];
   }
 
-  if (v6)
+  if (dateCopy)
   {
-    [(NSMutableArray *)self->mFormatDateStack addObject:v6];
+    [(NSMutableArray *)self->mFormatDateStack addObject:dateCopy];
   }
 }
 
@@ -552,16 +552,16 @@
   [(NSMutableArray *)mFormatDateStack removeLastObject];
 }
 
-- (void)addPendingComment:(_xmlNode *)a3
+- (void)addPendingComment:(_xmlNode *)comment
 {
   mPendingCommentNodes = self->mPendingCommentNodes;
-  v4 = [MEMORY[0x277CCAE60] valueWithPointer:a3];
+  v4 = [MEMORY[0x277CCAE60] valueWithPointer:comment];
   [(NSMutableArray *)mPendingCommentNodes addObject:?];
 }
 
-- (void)addPendingBookmark:(_xmlNode *)a3
+- (void)addPendingBookmark:(_xmlNode *)bookmark
 {
-  v4 = xmlCopyNode(a3, 1);
+  v4 = xmlCopyNode(bookmark, 1);
   mPendingBookmarkNodes = self->mPendingBookmarkNodes;
   v6 = [MEMORY[0x277CCAE60] valueWithPointer:v4];
   [(NSMutableArray *)mPendingBookmarkNodes addObject:?];
@@ -602,9 +602,9 @@
   [(NSMutableArray *)self->mPendingBookmarkNodes removeAllObjects];
 }
 
-- (void)setupNSForXMLFormat:(int)a3
+- (void)setupNSForXMLFormat:(int)format
 {
-  v3 = *&a3;
+  v3 = *&format;
   v32.receiver = self;
   v32.super_class = WXReadState;
   [(OCXState *)&v32 setupNSForXMLFormat:?];
@@ -626,18 +626,18 @@
     v14 = [(CXNamespace *)v12 initWithUri:"http://purl.oclc.org/ooxml/drawingml/wordprocessingDrawing" fallbackNamespace:v13];
     [(WXReadState *)self setWXShapeNamespace:v14];
 
-    v15 = [(WXReadState *)self WXShapeNamespace];
-    v16 = [v15 fallbackNamespace];
-    [v16 setFallbackNamespace:WXShapeNamespace];
+    wXShapeNamespace = [(WXReadState *)self WXShapeNamespace];
+    fallbackNamespace = [wXShapeNamespace fallbackNamespace];
+    [fallbackNamespace setFallbackNamespace:WXShapeNamespace];
 
     v17 = [CXNamespace alloc];
     v18 = [[CXNamespace alloc] initWithUri:"http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing"];
     v19 = [(CXNamespace *)v17 initWithUri:"http://purl.oclc.org/ooxml/drawingml/wordprocessingDrawing" fallbackNamespace:v18];
     [(WXReadState *)self setWXGroupNamespace:v19];
 
-    v20 = [(WXReadState *)self WXGroupNamespace];
-    v21 = [v20 fallbackNamespace];
-    [v21 setFallbackNamespace:WXGroupNamespace];
+    wXGroupNamespace = [(WXReadState *)self WXGroupNamespace];
+    fallbackNamespace2 = [wXGroupNamespace fallbackNamespace];
+    [fallbackNamespace2 setFallbackNamespace:WXGroupNamespace];
 
     v22 = [CXNamespace alloc];
     v23 = [[CXNamespace alloc] initWithUri:"http://schemas.openxmlformats.org/officeDocument/2006/bibliography"];

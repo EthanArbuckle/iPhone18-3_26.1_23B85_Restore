@@ -1,29 +1,29 @@
 @interface AuthenticateAccountsAuthViewController
-- (_TtC18SharingViewService38AuthenticateAccountsAuthViewController)initWithContentView:(id)a3;
-- (void)didCompleteTextEntry:(id)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (_TtC18SharingViewService38AuthenticateAccountsAuthViewController)initWithContentView:(id)view;
+- (void)didCompleteTextEntry:(id)entry;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation AuthenticateAccountsAuthViewController
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5.receiver = self;
   v5.super_class = type metadata accessor for AuthenticateAccountsAuthViewController();
   v4 = v5.receiver;
-  [(AuthenticateAccountsAuthViewController *)&v5 viewWillAppear:v3];
+  [(AuthenticateAccountsAuthViewController *)&v5 viewWillAppear:appearCopy];
   sub_1000B98CC();
 }
 
-- (void)didCompleteTextEntry:(id)a3
+- (void)didCompleteTextEntry:(id)entry
 {
-  v4 = a3;
-  v5 = self;
-  sub_1000B9798(v4);
+  entryCopy = entry;
+  selfCopy = self;
+  sub_1000B9798(entryCopy);
 }
 
-- (_TtC18SharingViewService38AuthenticateAccountsAuthViewController)initWithContentView:(id)a3
+- (_TtC18SharingViewService38AuthenticateAccountsAuthViewController)initWithContentView:(id)view
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

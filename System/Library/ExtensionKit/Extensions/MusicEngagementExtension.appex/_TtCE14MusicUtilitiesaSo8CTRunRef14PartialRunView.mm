@@ -1,29 +1,29 @@
 @interface _TtCE14MusicUtilitiesaSo8CTRunRef14PartialRunView
-- (_TtCE14MusicUtilitiesaSo8CTRunRef14PartialRunView)initWithCoder:(id)a3;
-- (_TtCE14MusicUtilitiesaSo8CTRunRef14PartialRunView)initWithFrame:(CGRect)a3;
-- (void)drawRect:(CGRect)a3;
+- (_TtCE14MusicUtilitiesaSo8CTRunRef14PartialRunView)initWithCoder:(id)coder;
+- (_TtCE14MusicUtilitiesaSo8CTRunRef14PartialRunView)initWithFrame:(CGRect)frame;
+- (void)drawRect:(CGRect)rect;
 @end
 
 @implementation _TtCE14MusicUtilitiesaSo8CTRunRef14PartialRunView
 
-- (_TtCE14MusicUtilitiesaSo8CTRunRef14PartialRunView)initWithCoder:(id)a3
+- (_TtCE14MusicUtilitiesaSo8CTRunRef14PartialRunView)initWithCoder:(id)coder
 {
   result = _assertionFailure(_:_:file:line:flags:)();
   __break(1u);
   return result;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = self;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  selfCopy = self;
   CTRunRef.PartialRunView.draw(_:)(x, y, width, height);
 }
 
-- (_TtCE14MusicUtilitiesaSo8CTRunRef14PartialRunView)initWithFrame:(CGRect)a3
+- (_TtCE14MusicUtilitiesaSo8CTRunRef14PartialRunView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

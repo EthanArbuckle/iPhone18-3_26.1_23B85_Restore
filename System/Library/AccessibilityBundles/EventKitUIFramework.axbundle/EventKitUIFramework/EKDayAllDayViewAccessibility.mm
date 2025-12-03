@@ -1,17 +1,17 @@
 @interface EKDayAllDayViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (EKDayAllDayViewAccessibility)initWithFrame:(CGRect)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (EKDayAllDayViewAccessibility)initWithFrame:(CGRect)frame;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_axAnnotateAllDayLabel;
 @end
 
 @implementation EKDayAllDayViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"EKDayAllDayView" hasInstanceMethod:@"initWithFrame:" withFullSignature:{"@", "{CGRect={CGPoint=dd}{CGSize=dd}}", 0}];
-  [v3 validateClass:@"EKDayAllDayView" hasInstanceVariable:@"_allDay" withType:"UILabel"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"EKDayAllDayView" hasInstanceMethod:@"initWithFrame:" withFullSignature:{"@", "{CGRect={CGPoint=dd}{CGSize=dd}}", 0}];
+  [validationsCopy validateClass:@"EKDayAllDayView" hasInstanceVariable:@"_allDay" withType:"UILabel"];
 }
 
 - (void)_axAnnotateAllDayLabel
@@ -29,11 +29,11 @@
   [(EKDayAllDayViewAccessibility *)self _axAnnotateAllDayLabel];
 }
 
-- (EKDayAllDayViewAccessibility)initWithFrame:(CGRect)a3
+- (EKDayAllDayViewAccessibility)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = EKDayAllDayViewAccessibility;
-  v3 = [(EKDayAllDayViewAccessibility *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(EKDayAllDayViewAccessibility *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

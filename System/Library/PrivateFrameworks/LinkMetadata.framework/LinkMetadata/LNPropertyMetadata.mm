@@ -1,38 +1,38 @@
 @interface LNPropertyMetadata
-- (BOOL)isEqual:(id)a3;
-- (LNPropertyMetadata)initWithCoder:(id)a3;
-- (LNPropertyMetadata)initWithIdentifier:(id)a3 valueType:(id)a4 title:(id)a5 capabilities:(unint64_t)a6 updateActionIdentifier:(id)a7 optional:(BOOL)a8 spotlightAttributeKey:(id)a9 spotlightCustomAttributeKey:(id)a10;
-- (id)copyWithDescriptiveMetadataFromProperty:(id)a3 usingLibraryKey:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (LNPropertyMetadata)initWithCoder:(id)coder;
+- (LNPropertyMetadata)initWithIdentifier:(id)identifier valueType:(id)type title:(id)title capabilities:(unint64_t)capabilities updateActionIdentifier:(id)actionIdentifier optional:(BOOL)optional spotlightAttributeKey:(id)key spotlightCustomAttributeKey:(id)self0;
+- (id)copyWithDescriptiveMetadataFromProperty:(id)property usingLibraryKey:(id)key;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LNPropertyMetadata
 
-- (id)copyWithDescriptiveMetadataFromProperty:(id)a3 usingLibraryKey:(id)a4
+- (id)copyWithDescriptiveMetadataFromProperty:(id)property usingLibraryKey:(id)key
 {
-  v5 = a3;
+  propertyCopy = property;
   v6 = [(LNPropertyMetadata *)self copy];
   v7 = v6[4];
   if (!v7 || ([v7 key], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "length"), v8, !v9))
   {
-    v10 = [v5 title];
+    title = [propertyCopy title];
     v11 = v6[4];
-    v6[4] = v10;
+    v6[4] = title;
   }
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self != v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self != equalCopy)
   {
-    v6 = v4;
+    v6 = equalCopy;
     if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       LOBYTE(v12) = 0;
@@ -41,10 +41,10 @@ LABEL_55:
       goto LABEL_56;
     }
 
-    v7 = [(LNPropertyMetadata *)self valueType];
-    v8 = [(LNPropertyMetadata *)v6 valueType];
-    v9 = v7;
-    v10 = v8;
+    valueType = [(LNPropertyMetadata *)self valueType];
+    valueType2 = [(LNPropertyMetadata *)v6 valueType];
+    v9 = valueType;
+    v10 = valueType2;
     v11 = v10;
     if (v9 == v10)
     {
@@ -71,10 +71,10 @@ LABEL_54:
       }
     }
 
-    v16 = [(LNPropertyMetadata *)self identifier];
-    v17 = [(LNPropertyMetadata *)v6 identifier];
-    v14 = v16;
-    v18 = v17;
+    identifier = [(LNPropertyMetadata *)self identifier];
+    identifier2 = [(LNPropertyMetadata *)v6 identifier];
+    v14 = identifier;
+    v18 = identifier2;
     v13 = v18;
     if (v14 == v18)
     {
@@ -101,10 +101,10 @@ LABEL_53:
       }
     }
 
-    v22 = [(LNPropertyMetadata *)self title];
-    v23 = [(LNPropertyMetadata *)v6 title];
-    v20 = v22;
-    v24 = v23;
+    title = [(LNPropertyMetadata *)self title];
+    title2 = [(LNPropertyMetadata *)v6 title];
+    v20 = title;
+    v24 = title2;
     v19 = v24;
     v54 = v20;
     if (v20 == v24)
@@ -129,10 +129,10 @@ LABEL_53:
     }
 
     v53 = v19;
-    v26 = [(LNPropertyMetadata *)self updateActionIdentifier];
-    v27 = [(LNPropertyMetadata *)v6 updateActionIdentifier];
-    v20 = v26;
-    v28 = v27;
+    updateActionIdentifier = [(LNPropertyMetadata *)self updateActionIdentifier];
+    updateActionIdentifier2 = [(LNPropertyMetadata *)v6 updateActionIdentifier];
+    v20 = updateActionIdentifier;
+    v28 = updateActionIdentifier2;
     v29 = v28;
     v52 = v20;
     if (v20 != v28)
@@ -163,22 +163,22 @@ LABEL_52:
           }
 
 LABEL_30:
-          v33 = [(LNPropertyMetadata *)self capabilities];
-          if (v33 != [(LNPropertyMetadata *)v6 capabilities])
+          capabilities = [(LNPropertyMetadata *)self capabilities];
+          if (capabilities != [(LNPropertyMetadata *)v6 capabilities])
           {
             goto LABEL_32;
           }
 
-          v34 = [(LNPropertyMetadata *)self isOptional];
-          if (v34 != [(LNPropertyMetadata *)v6 isOptional])
+          isOptional = [(LNPropertyMetadata *)self isOptional];
+          if (isOptional != [(LNPropertyMetadata *)v6 isOptional])
           {
             goto LABEL_32;
           }
 
-          v35 = [(LNPropertyMetadata *)self spotlightAttributeKey];
-          v36 = [(LNPropertyMetadata *)v6 spotlightAttributeKey];
-          v20 = v35;
-          v37 = v36;
+          spotlightAttributeKey = [(LNPropertyMetadata *)self spotlightAttributeKey];
+          spotlightAttributeKey2 = [(LNPropertyMetadata *)v6 spotlightAttributeKey];
+          v20 = spotlightAttributeKey;
+          v37 = spotlightAttributeKey2;
           v50 = v37;
           if (v20 == v37)
           {
@@ -219,10 +219,10 @@ LABEL_49:
             }
           }
 
-          v41 = [(LNPropertyMetadata *)self spotlightCustomAttributeKey];
-          v42 = [(LNPropertyMetadata *)v6 spotlightCustomAttributeKey];
-          v43 = v41;
-          v44 = v42;
+          spotlightCustomAttributeKey = [(LNPropertyMetadata *)self spotlightCustomAttributeKey];
+          spotlightCustomAttributeKey2 = [(LNPropertyMetadata *)v6 spotlightCustomAttributeKey];
+          v43 = spotlightCustomAttributeKey;
+          v44 = spotlightCustomAttributeKey2;
           v49 = v44;
           if (v43 == v44)
           {
@@ -280,12 +280,12 @@ LABEL_56:
 
 - (unint64_t)hash
 {
-  v3 = [(LNPropertyMetadata *)self valueType];
-  v4 = [v3 hash];
-  v5 = [(LNPropertyMetadata *)self identifier];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(LNPropertyMetadata *)self title];
-  v8 = [v7 hash];
+  valueType = [(LNPropertyMetadata *)self valueType];
+  v4 = [valueType hash];
+  identifier = [(LNPropertyMetadata *)self identifier];
+  v6 = [identifier hash] ^ v4;
+  title = [(LNPropertyMetadata *)self title];
+  v8 = [title hash];
 
   return v6 ^ v8;
 }
@@ -295,27 +295,27 @@ LABEL_56:
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(LNPropertyMetadata *)self identifier];
-  v7 = [(LNPropertyMetadata *)self valueType];
-  v8 = [(LNPropertyMetadata *)self title];
-  v9 = self;
+  identifier = [(LNPropertyMetadata *)self identifier];
+  valueType = [(LNPropertyMetadata *)self valueType];
+  title = [(LNPropertyMetadata *)self title];
+  selfCopy = self;
   v10 = objc_opt_new();
-  if (([(LNPropertyMetadata *)v9 capabilities]& 1) != 0)
+  if (([(LNPropertyMetadata *)selfCopy capabilities]& 1) != 0)
   {
     v11 = MEMORY[0x1E696AEC0];
-    v12 = [(LNPropertyMetadata *)v9 updateActionIdentifier];
-    v13 = [v11 stringWithFormat:@"U<%@>", v12];
+    updateActionIdentifier = [(LNPropertyMetadata *)selfCopy updateActionIdentifier];
+    v13 = [v11 stringWithFormat:@"U<%@>", updateActionIdentifier];
     [v10 addObject:v13];
   }
 
-  if (([(LNPropertyMetadata *)v9 capabilities]& 2) != 0)
+  if (([(LNPropertyMetadata *)selfCopy capabilities]& 2) != 0)
   {
     [v10 addObject:@"Def"];
   }
 
   v14 = [v10 componentsJoinedByString:@"|"];
 
-  if ([(LNPropertyMetadata *)v9 isOptional])
+  if ([(LNPropertyMetadata *)selfCopy isOptional])
   {
     v15 = @"YES";
   }
@@ -325,91 +325,91 @@ LABEL_56:
     v15 = @"NO";
   }
 
-  v16 = [(LNPropertyMetadata *)v9 spotlightAttributeKey];
-  v17 = [(LNPropertyMetadata *)v9 spotlightCustomAttributeKey];
-  v18 = [v3 stringWithFormat:@"<%@: %p, identifier: %@, valueType: %@, title: %@, capabilities: %@, isOptional: %@, spotlightAttributeKey: %@, spotlightCustomAttributeKey: %@>", v5, v9, v6, v7, v8, v14, v15, v16, v17];
+  spotlightAttributeKey = [(LNPropertyMetadata *)selfCopy spotlightAttributeKey];
+  spotlightCustomAttributeKey = [(LNPropertyMetadata *)selfCopy spotlightCustomAttributeKey];
+  v18 = [v3 stringWithFormat:@"<%@: %p, identifier: %@, valueType: %@, title: %@, capabilities: %@, isOptional: %@, spotlightAttributeKey: %@, spotlightCustomAttributeKey: %@>", v5, selfCopy, identifier, valueType, title, v14, v15, spotlightAttributeKey, spotlightCustomAttributeKey];
 
   return v18;
 }
 
-- (LNPropertyMetadata)initWithCoder:(id)a3
+- (LNPropertyMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"valueType"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"title"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"valueType"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"title"];
   if (v6)
   {
-    v8 = [v4 decodeIntegerForKey:@"capabilities"];
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"updateActionIdentifier"];
-    v10 = [v4 decodeBoolForKey:@"isOptional"];
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"spotlightAttributeKey"];
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"spotlightCustomAttributeKey"];
+    v8 = [coderCopy decodeIntegerForKey:@"capabilities"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"updateActionIdentifier"];
+    v10 = [coderCopy decodeBoolForKey:@"isOptional"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"spotlightAttributeKey"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"spotlightCustomAttributeKey"];
     self = [(LNPropertyMetadata *)self initWithIdentifier:v5 valueType:v6 title:v7 capabilities:v8 updateActionIdentifier:v9 optional:v10 spotlightAttributeKey:v11 spotlightCustomAttributeKey:v12];
 
-    v13 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v13 = 0;
+    selfCopy = 0;
   }
 
-  return v13;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(LNPropertyMetadata *)self identifier];
-  [v4 encodeObject:v5 forKey:@"identifier"];
+  coderCopy = coder;
+  identifier = [(LNPropertyMetadata *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 
-  v6 = [(LNPropertyMetadata *)self valueType];
-  [v4 encodeObject:v6 forKey:@"valueType"];
+  valueType = [(LNPropertyMetadata *)self valueType];
+  [coderCopy encodeObject:valueType forKey:@"valueType"];
 
-  v7 = [(LNPropertyMetadata *)self title];
-  [v4 encodeObject:v7 forKey:@"title"];
+  title = [(LNPropertyMetadata *)self title];
+  [coderCopy encodeObject:title forKey:@"title"];
 
-  [v4 encodeInteger:-[LNPropertyMetadata capabilities](self forKey:{"capabilities"), @"capabilities"}];
-  v8 = [(LNPropertyMetadata *)self updateActionIdentifier];
-  [v4 encodeObject:v8 forKey:@"updateActionIdentifier"];
+  [coderCopy encodeInteger:-[LNPropertyMetadata capabilities](self forKey:{"capabilities"), @"capabilities"}];
+  updateActionIdentifier = [(LNPropertyMetadata *)self updateActionIdentifier];
+  [coderCopy encodeObject:updateActionIdentifier forKey:@"updateActionIdentifier"];
 
-  [v4 encodeBool:-[LNPropertyMetadata isOptional](self forKey:{"isOptional"), @"isOptional"}];
-  v9 = [(LNPropertyMetadata *)self spotlightAttributeKey];
-  [v4 encodeObject:v9 forKey:@"spotlightAttributeKey"];
+  [coderCopy encodeBool:-[LNPropertyMetadata isOptional](self forKey:{"isOptional"), @"isOptional"}];
+  spotlightAttributeKey = [(LNPropertyMetadata *)self spotlightAttributeKey];
+  [coderCopy encodeObject:spotlightAttributeKey forKey:@"spotlightAttributeKey"];
 
-  v10 = [(LNPropertyMetadata *)self spotlightCustomAttributeKey];
-  [v4 encodeObject:v10 forKey:@"spotlightCustomAttributeKey"];
+  spotlightCustomAttributeKey = [(LNPropertyMetadata *)self spotlightCustomAttributeKey];
+  [coderCopy encodeObject:spotlightCustomAttributeKey forKey:@"spotlightCustomAttributeKey"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [LNPropertyMetadata alloc];
-  v5 = [(LNPropertyMetadata *)self identifier];
-  v6 = [(LNPropertyMetadata *)self valueType];
-  v7 = [(LNPropertyMetadata *)self title];
-  v8 = [(LNPropertyMetadata *)self capabilities];
-  v9 = [(LNPropertyMetadata *)self updateActionIdentifier];
-  v10 = [(LNPropertyMetadata *)self isOptional];
-  v11 = [(LNPropertyMetadata *)self spotlightAttributeKey];
-  v12 = [(LNPropertyMetadata *)self spotlightCustomAttributeKey];
-  v13 = [(LNPropertyMetadata *)v4 initWithIdentifier:v5 valueType:v6 title:v7 capabilities:v8 updateActionIdentifier:v9 optional:v10 spotlightAttributeKey:v11 spotlightCustomAttributeKey:v12];
+  identifier = [(LNPropertyMetadata *)self identifier];
+  valueType = [(LNPropertyMetadata *)self valueType];
+  title = [(LNPropertyMetadata *)self title];
+  capabilities = [(LNPropertyMetadata *)self capabilities];
+  updateActionIdentifier = [(LNPropertyMetadata *)self updateActionIdentifier];
+  isOptional = [(LNPropertyMetadata *)self isOptional];
+  spotlightAttributeKey = [(LNPropertyMetadata *)self spotlightAttributeKey];
+  spotlightCustomAttributeKey = [(LNPropertyMetadata *)self spotlightCustomAttributeKey];
+  v13 = [(LNPropertyMetadata *)v4 initWithIdentifier:identifier valueType:valueType title:title capabilities:capabilities updateActionIdentifier:updateActionIdentifier optional:isOptional spotlightAttributeKey:spotlightAttributeKey spotlightCustomAttributeKey:spotlightCustomAttributeKey];
 
   return v13;
 }
 
-- (LNPropertyMetadata)initWithIdentifier:(id)a3 valueType:(id)a4 title:(id)a5 capabilities:(unint64_t)a6 updateActionIdentifier:(id)a7 optional:(BOOL)a8 spotlightAttributeKey:(id)a9 spotlightCustomAttributeKey:(id)a10
+- (LNPropertyMetadata)initWithIdentifier:(id)identifier valueType:(id)type title:(id)title capabilities:(unint64_t)capabilities updateActionIdentifier:(id)actionIdentifier optional:(BOOL)optional spotlightAttributeKey:(id)key spotlightCustomAttributeKey:(id)self0
 {
-  v14 = a3;
-  v15 = a4;
-  v30 = a5;
-  v16 = a7;
-  v17 = a9;
-  v18 = a10;
-  if (!v15)
+  identifierCopy = identifier;
+  typeCopy = type;
+  titleCopy = title;
+  actionIdentifierCopy = actionIdentifier;
+  keyCopy = key;
+  attributeKeyCopy = attributeKey;
+  if (!typeCopy)
   {
-    v26 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v26 handleFailureInMethod:a2 object:self file:@"LNPropertyMetadata.m" lineNumber:28 description:{@"Invalid parameter not satisfying: %@", @"valueType"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNPropertyMetadata.m" lineNumber:28 description:{@"Invalid parameter not satisfying: %@", @"valueType"}];
   }
 
   v31.receiver = self;
@@ -417,20 +417,20 @@ LABEL_56:
   v19 = [(LNPropertyMetadata *)&v31 init];
   if (v19)
   {
-    v20 = [v14 copy];
+    v20 = [identifierCopy copy];
     identifier = v19->_identifier;
     v19->_identifier = v20;
 
-    v22 = [v15 copy];
+    v22 = [typeCopy copy];
     valueType = v19->_valueType;
     v19->_valueType = v22;
 
-    objc_storeStrong(&v19->_title, a5);
-    v19->_capabilities = a6;
-    objc_storeStrong(&v19->_updateActionIdentifier, a7);
-    v19->_optional = a8;
-    objc_storeStrong(&v19->_spotlightAttributeKey, a9);
-    objc_storeStrong(&v19->_spotlightCustomAttributeKey, a10);
+    objc_storeStrong(&v19->_title, title);
+    v19->_capabilities = capabilities;
+    objc_storeStrong(&v19->_updateActionIdentifier, actionIdentifier);
+    v19->_optional = optional;
+    objc_storeStrong(&v19->_spotlightAttributeKey, key);
+    objc_storeStrong(&v19->_spotlightCustomAttributeKey, attributeKey);
     v24 = v19;
   }
 

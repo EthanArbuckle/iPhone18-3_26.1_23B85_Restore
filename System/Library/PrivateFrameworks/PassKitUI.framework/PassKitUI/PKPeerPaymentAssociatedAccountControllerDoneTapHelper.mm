@@ -1,19 +1,19 @@
 @interface PKPeerPaymentAssociatedAccountControllerDoneTapHelper
-- (PKPeerPaymentAssociatedAccountControllerDoneTapHelper)initWithNavigationController:(id)a3;
+- (PKPeerPaymentAssociatedAccountControllerDoneTapHelper)initWithNavigationController:(id)controller;
 @end
 
 @implementation PKPeerPaymentAssociatedAccountControllerDoneTapHelper
 
-- (PKPeerPaymentAssociatedAccountControllerDoneTapHelper)initWithNavigationController:(id)a3
+- (PKPeerPaymentAssociatedAccountControllerDoneTapHelper)initWithNavigationController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v9.receiver = self;
   v9.super_class = PKPeerPaymentAssociatedAccountControllerDoneTapHelper;
   v6 = [(PKPeerPaymentAssociatedAccountControllerDoneTapHelper *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_navigationController, a3);
+    objc_storeStrong(&v6->_navigationController, controller);
   }
 
   return v7;

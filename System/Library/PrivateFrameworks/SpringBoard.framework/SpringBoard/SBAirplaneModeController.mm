@@ -52,12 +52,12 @@ void __42__SBAirplaneModeController_sharedInstance__block_invoke()
 - (void)airplaneModeChanged
 {
   [(RadiosPreferences *)self->_radioPrefs refresh];
-  v3 = [(RadiosPreferences *)self->_radioPrefs airplaneMode];
+  airplaneMode = [(RadiosPreferences *)self->_radioPrefs airplaneMode];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __47__SBAirplaneModeController_airplaneModeChanged__block_invoke;
   v4[3] = &unk_2783A9F58;
-  v5 = v3;
+  v5 = airplaneMode;
   v4[4] = self;
   dispatch_async(MEMORY[0x277D85CD0], v4);
 }

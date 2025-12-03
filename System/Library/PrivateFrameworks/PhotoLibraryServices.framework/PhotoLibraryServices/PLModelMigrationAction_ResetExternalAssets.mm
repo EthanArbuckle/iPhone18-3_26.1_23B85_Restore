@@ -1,21 +1,21 @@
 @interface PLModelMigrationAction_ResetExternalAssets
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4;
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error;
 @end
 
 @implementation PLModelMigrationAction_ResetExternalAssets
 
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error
 {
   v99 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  contextCopy = context;
   v6 = objc_autoreleasePoolPush();
-  v7 = [objc_opt_class() predicateForFetchingAssetsToReset];
+  predicateForFetchingAssetsToReset = [objc_opt_class() predicateForFetchingAssetsToReset];
   v8 = +[PLManagedAsset fetchRequest];
-  [v8 setPredicate:v7];
+  [v8 setPredicate:predicateForFetchingAssetsToReset];
   v9 = 1;
   [v8 setResultType:1];
   v61 = 0;
-  v10 = [v5 executeFetchRequest:v8 error:&v61];
+  v10 = [contextCopy executeFetchRequest:v8 error:&v61];
   v11 = v61;
   if (!v10)
   {
@@ -24,9 +24,9 @@
 
     if (v13)
     {
-      v14 = [(PLModelMigrationActionCore *)self logger];
+      logger = [(PLModelMigrationActionCore *)self logger];
 
-      if (v14)
+      if (logger)
       {
         v97 = 0u;
         v98 = 0u;
@@ -98,9 +98,9 @@
 
     if (v33)
     {
-      v34 = [(PLModelMigrationActionCore *)self logger];
+      logger2 = [(PLModelMigrationActionCore *)self logger];
 
-      if (v34)
+      if (logger2)
       {
         v97 = 0u;
         v98 = 0u;
@@ -161,7 +161,7 @@
 
     [(PLModelMigrationActionCore *)self finalizeProgress];
     v23 = v11;
-    v45 = a4;
+    errorCopy2 = error;
     if (v10)
     {
       goto LABEL_46;
@@ -179,7 +179,7 @@
   v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v67 forKeys:v66 count:2];
   v21 = +[PLMediaAnalysisAssetAttributes entityName];
   v60 = v11;
-  v22 = [PLModelMigrator executeBatchUpdateWithEntityName:v21 predicate:v19 propertiesToUpdate:v20 managedObjectContext:v5 error:&v60];
+  v22 = [PLModelMigrator executeBatchUpdateWithEntityName:v21 predicate:v19 propertiesToUpdate:v20 managedObjectContext:contextCopy error:&v60];
   v23 = v60;
 
   v24 = PLMigrationGetLog();
@@ -190,9 +190,9 @@
 
     if (v26)
     {
-      v27 = [(PLModelMigrationActionCore *)self logger];
+      logger3 = [(PLModelMigrationActionCore *)self logger];
 
-      if (v27)
+      if (logger3)
       {
         v97 = 0u;
         v98 = 0u;
@@ -262,9 +262,9 @@
 
     if (v38)
     {
-      v39 = [(PLModelMigrationActionCore *)self logger];
+      logger4 = [(PLModelMigrationActionCore *)self logger];
 
-      if (v39)
+      if (logger4)
       {
         v97 = 0u;
         v98 = 0u;
@@ -338,8 +338,8 @@
   if (v9 != 3)
   {
     v51 = objc_autoreleasePoolPush();
-    v52 = [(PLModelMigrationActionCore *)self pathManager];
-    v53 = [PLModelMigrator rebuildMomentsInContext:v5 pathManager:v52 deleteExistingMoments:0 targetedAssetOIDs:v10];
+    pathManager = [(PLModelMigrationActionCore *)self pathManager];
+    v53 = [PLModelMigrator rebuildMomentsInContext:contextCopy pathManager:pathManager deleteExistingMoments:0 targetedAssetOIDs:v10];
 
     if (v53)
     {
@@ -354,7 +354,7 @@
     objc_autoreleasePoolPop(v51);
     [(PLModelMigrationActionCore *)self finalizeProgress];
     v23 = v23;
-    v45 = a4;
+    errorCopy2 = error;
     if (v53)
     {
 LABEL_46:
@@ -363,20 +363,20 @@ LABEL_46:
     }
 
 LABEL_44:
-    if (v45)
+    if (errorCopy2)
     {
       v54 = v23;
-      *v45 = v23;
+      *errorCopy2 = v23;
     }
 
     goto LABEL_46;
   }
 
   [(PLModelMigrationActionCore *)self finalizeProgress];
-  if (a4)
+  if (error)
   {
     v50 = v23;
-    *a4 = v23;
+    *error = v23;
   }
 
   v9 = 3;

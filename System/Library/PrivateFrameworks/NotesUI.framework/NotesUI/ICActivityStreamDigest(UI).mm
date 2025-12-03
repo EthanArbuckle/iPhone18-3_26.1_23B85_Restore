@@ -7,7 +7,7 @@
 - (id)initWithObject:()UI
 {
   v7 = 0;
-  v3 = [a1 objc_initWithObject:a3 error:&v7];
+  v3 = [self objc_initWithObject:a3 error:&v7];
   v4 = v7;
   v5 = v3;
   if (!v5)

@@ -6,8 +6,8 @@
 
 - (NSNumber)upgradeStatus
 {
-  v2 = [(AAResponse *)self responseDictionary];
-  v3 = [v2 objectForKey:AASetupAssistantUpgradeStatusKey];
+  responseDictionary = [(AAResponse *)self responseDictionary];
+  v3 = [responseDictionary objectForKey:AASetupAssistantUpgradeStatusKey];
 
   return v3;
 }

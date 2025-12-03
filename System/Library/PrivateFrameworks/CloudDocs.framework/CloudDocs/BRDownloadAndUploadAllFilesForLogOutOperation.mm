@@ -1,7 +1,7 @@
 @interface BRDownloadAndUploadAllFilesForLogOutOperation
 - (BRDownloadAndUploadAllFilesForLogOutOperation)init;
 - (void)cancel;
-- (void)finishWithResult:(id)a3 error:(id)a4;
+- (void)finishWithResult:(id)result error:(id)error;
 - (void)main;
 @end
 
@@ -37,14 +37,14 @@
   v17.receiver = self;
   v17.super_class = BRDownloadAndUploadAllFilesForLogOutOperation;
   [(BROperation *)&v17 cancel];
-  v3 = self;
-  objc_sync_enter(v3);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  p_isa = &v3->super.super.super.isa;
-  v4 = v3->_fileCoordinators;
+  p_isa = &selfCopy->super.super.super.isa;
+  v4 = selfCopy->_fileCoordinators;
   v5 = [(NSMutableArray *)v4 countByEnumeratingWithState:&v13 objects:v22 count:16];
   if (v5)
   {
@@ -114,16 +114,16 @@
   v25[4] = __Block_byref_object_dispose__10;
   v26 = 0;
   v5 = dispatch_group_create();
-  v6 = self;
-  objc_sync_enter(v6);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v7 = objc_alloc_init(BRUploadAllFilesForLogOutOperation);
-  uploadOp = v6->_uploadOp;
-  v6->_uploadOp = v7;
+  uploadOp = selfCopy->_uploadOp;
+  selfCopy->_uploadOp = v7;
 
-  [(BRUploadAllFilesForLogOutOperation *)v6->_uploadOp setShouldKeepDataLocal:1];
-  if ([(BROperation *)v6 finishIfCancelled])
+  [(BRUploadAllFilesForLogOutOperation *)selfCopy->_uploadOp setShouldKeepDataLocal:1];
+  if ([(BROperation *)selfCopy finishIfCancelled])
   {
-    objc_sync_exit(v6);
+    objc_sync_exit(selfCopy);
   }
 
   else
@@ -136,10 +136,10 @@
     p_buf = &buf;
     v9 = v5;
     v23 = v9;
-    [(BRUploadAllFilesForLogOutOperation *)v6->_uploadOp setUploadAllFilesCompletionBlock:v22];
-    [(NSOperationQueue *)v6->_internalQueue addOperation:v6->_uploadOp];
+    [(BRUploadAllFilesForLogOutOperation *)selfCopy->_uploadOp setUploadAllFilesCompletionBlock:v22];
+    [(NSOperationQueue *)selfCopy->_internalQueue addOperation:selfCopy->_uploadOp];
 
-    objc_sync_exit(v6);
+    objc_sync_exit(selfCopy);
     dispatch_group_enter(v9);
     v10 = +[BRContainer documentContainers];
     v11 = brc_bread_crumbs("[BRDownloadAndUploadAllFilesForLogOutOperation main]", 93);
@@ -157,24 +157,24 @@
     v18[1] = 3221225472;
     v18[2] = __53__BRDownloadAndUploadAllFilesForLogOutOperation_main__block_invoke_8;
     v18[3] = &unk_1E7A16840;
-    v18[4] = v6;
+    v18[4] = selfCopy;
     v13 = v9;
     v19 = v13;
     v14 = v10;
     v20 = v14;
     v21 = v25;
     [BRContainer forceRefreshContainers:v14 completion:v18];
-    v15 = [(BROperation *)v6 callbackQueue];
+    callbackQueue = [(BROperation *)selfCopy callbackQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __53__BRDownloadAndUploadAllFilesForLogOutOperation_main__block_invoke_15;
     block[3] = &unk_1E7A16868;
-    block[4] = v6;
+    block[4] = selfCopy;
     block[5] = &buf;
     block[6] = v25;
-    dispatch_group_notify(v13, v15, block);
+    dispatch_group_notify(v13, callbackQueue, block);
 
-    v6 = v14;
+    selfCopy = v14;
   }
 
   _Block_object_dispose(v25, 8);
@@ -403,19 +403,19 @@ void __53__BRDownloadAndUploadAllFilesForLogOutOperation_main__block_invoke_15(u
   }
 }
 
-- (void)finishWithResult:(id)a3 error:(id)a4
+- (void)finishWithResult:(id)result error:(id)error
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
+  errorCopy = error;
+  resultCopy = result;
   v8 = brc_bread_crumbs("[BRDownloadAndUploadAllFilesForLogOutOperation finishWithResult:error:]", 166);
   v9 = brc_default_log(1, 0);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v10 = @"success";
-    if (v6)
+    if (errorCopy)
     {
-      v10 = v6;
+      v10 = errorCopy;
     }
 
     *buf = 138412546;
@@ -425,11 +425,11 @@ void __53__BRDownloadAndUploadAllFilesForLogOutOperation_main__block_invoke_15(u
     _os_log_impl(&dword_1AE2A9000, v9, OS_LOG_TYPE_DEFAULT, "[NOTICE] uploading and downloading all files for logout finished\n status: %@%@", buf, 0x16u);
   }
 
-  v11 = [(BRDownloadAndUploadAllFilesForLogOutOperation *)self downloadAllFilesCompletionBlock];
-  v12 = v11;
-  if (v11)
+  downloadAllFilesCompletionBlock = [(BRDownloadAndUploadAllFilesForLogOutOperation *)self downloadAllFilesCompletionBlock];
+  v12 = downloadAllFilesCompletionBlock;
+  if (downloadAllFilesCompletionBlock)
   {
-    (*(v11 + 16))(v11, v6);
+    (*(downloadAllFilesCompletionBlock + 16))(downloadAllFilesCompletionBlock, errorCopy);
     [(BRDownloadAndUploadAllFilesForLogOutOperation *)self setDownloadAllFilesCompletionBlock:0];
   }
 
@@ -437,7 +437,7 @@ void __53__BRDownloadAndUploadAllFilesForLogOutOperation_main__block_invoke_15(u
   +[BRContainer unregisterCurrentProcessAsPriorityHint];
   v14.receiver = self;
   v14.super_class = BRDownloadAndUploadAllFilesForLogOutOperation;
-  [(BROperation *)&v14 finishWithResult:v7 error:v6];
+  [(BROperation *)&v14 finishWithResult:resultCopy error:errorCopy];
 
   v13 = *MEMORY[0x1E69E9840];
 }

@@ -1,12 +1,12 @@
 @interface PXNewMagazineRectArray
-- (BOOL)isEqualToRectArray:(id)a3;
+- (BOOL)isEqualToRectArray:(id)array;
 - (BOOL)isPerfectEnding;
-- (PXMagazineRect)rectAtIndex:(SEL)a3;
-- (PXNewMagazineRectArray)initWithSize:(unint64_t)a3 tileGrid:(id)a4;
+- (PXMagazineRect)rectAtIndex:(SEL)index;
+- (PXNewMagazineRectArray)initWithSize:(unint64_t)size tileGrid:(id)grid;
 - (double)tileDensity;
 - (id)immutableCopyForCurrentRectsCount;
 - (unint64_t)rowsUsed;
-- (void)addRect:(PXMagazineRect *)a3;
+- (void)addRect:(PXMagazineRect *)rect;
 - (void)dealloc;
 - (void)removeLastRect;
 - (void)reset;
@@ -14,11 +14,11 @@
 
 @implementation PXNewMagazineRectArray
 
-- (BOOL)isEqualToRectArray:(id)a3
+- (BOOL)isEqualToRectArray:(id)array
 {
-  v4 = a3;
+  arrayCopy = array;
   v5 = [(PXNewMagazineRectArray *)self count];
-  v6 = v5 == [v4 count] && !memcmp(objc_msgSend(v4, "rects"), -[PXNewMagazineRectArray rects](self, "rects"), 32 * v5);
+  v6 = v5 == [arrayCopy count] && !memcmp(objc_msgSend(arrayCopy, "rects"), -[PXNewMagazineRectArray rects](self, "rects"), 32 * v5);
 
   return v6;
 }
@@ -41,12 +41,12 @@
 
 - (double)tileDensity
 {
-  v3 = [(PXNewMagazineGrid *)self->_tileGrid numberOfColumns];
-  v4 = ([(PXNewMagazineGrid *)self->_tileGrid currentRowsUsed]* v3);
+  numberOfColumns = [(PXNewMagazineGrid *)self->_tileGrid numberOfColumns];
+  v4 = ([(PXNewMagazineGrid *)self->_tileGrid currentRowsUsed]* numberOfColumns);
   return v4 / (4 * [(PXNewMagazineRectArray *)self count]);
 }
 
-- (PXMagazineRect)rectAtIndex:(SEL)a3
+- (PXMagazineRect)rectAtIndex:(SEL)index
 {
   v4 = self[1].var1.var1 + 32 * a4;
   v5 = *(v4 + 16);
@@ -75,7 +75,7 @@
   }
 }
 
-- (void)addRect:(PXMagazineRect *)a3
+- (void)addRect:(PXMagazineRect *)rect
 {
   currentIndex = self->_currentIndex;
   size = self->_size;
@@ -94,13 +94,13 @@
   }
 
   v9 = &rects[currentIndex];
-  var1 = a3->var1;
-  v9->var0 = a3->var0;
+  var1 = rect->var1;
+  v9->var0 = rect->var0;
   v9->var1 = var1;
   tileGrid = self->_tileGrid;
   v12 = self->_currentIndex;
-  v13 = a3->var1;
-  v14[0] = a3->var0;
+  v13 = rect->var1;
+  v14[0] = rect->var0;
   v14[1] = v13;
   [(PXNewMagazineGrid *)tileGrid setTileIdentifier:v12 forArea:v14];
   ++self->_currentIndex;
@@ -168,18 +168,18 @@
   [(PXNewMagazineRectArray *)&v3 dealloc];
 }
 
-- (PXNewMagazineRectArray)initWithSize:(unint64_t)a3 tileGrid:(id)a4
+- (PXNewMagazineRectArray)initWithSize:(unint64_t)size tileGrid:(id)grid
 {
-  v7 = a4;
+  gridCopy = grid;
   v11.receiver = self;
   v11.super_class = PXNewMagazineRectArray;
   v8 = [(PXNewMagazineRectArray *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_size = a3;
-    v8->_rects = malloc_type_calloc(a3, 0x20uLL, 0x1000040E0EAB150uLL);
-    objc_storeStrong(&v9->_tileGrid, a4);
+    v8->_size = size;
+    v8->_rects = malloc_type_calloc(size, 0x20uLL, 0x1000040E0EAB150uLL);
+    objc_storeStrong(&v9->_tileGrid, grid);
   }
 
   return v9;

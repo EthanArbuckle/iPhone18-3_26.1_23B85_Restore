@@ -1,36 +1,36 @@
 @interface PKPeerPaymentUpdateUserInfoRequest
-- (PKPeerPaymentUpdateUserInfoRequest)initWithAccountIdentifier:(id)a3;
-- (id)_urlRequestWithServiceURL:(id)a3 appleAccountInformation:(id)a4 deviceIdentifier:(id)a5 deviceScore:(id)a6 odiAssessment:(id)a7 deviceMetadata:(id)a8;
+- (PKPeerPaymentUpdateUserInfoRequest)initWithAccountIdentifier:(id)identifier;
+- (id)_urlRequestWithServiceURL:(id)l appleAccountInformation:(id)information deviceIdentifier:(id)identifier deviceScore:(id)score odiAssessment:(id)assessment deviceMetadata:(id)metadata;
 @end
 
 @implementation PKPeerPaymentUpdateUserInfoRequest
 
-- (PKPeerPaymentUpdateUserInfoRequest)initWithAccountIdentifier:(id)a3
+- (PKPeerPaymentUpdateUserInfoRequest)initWithAccountIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = PKPeerPaymentUpdateUserInfoRequest;
   v6 = [(PKOverlayableWebServiceRequest *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_accountIdentifier, a3);
+    objc_storeStrong(&v6->_accountIdentifier, identifier);
   }
 
   return v7;
 }
 
-- (id)_urlRequestWithServiceURL:(id)a3 appleAccountInformation:(id)a4 deviceIdentifier:(id)a5 deviceScore:(id)a6 odiAssessment:(id)a7 deviceMetadata:(id)a8
+- (id)_urlRequestWithServiceURL:(id)l appleAccountInformation:(id)information deviceIdentifier:(id)identifier deviceScore:(id)score odiAssessment:(id)assessment deviceMetadata:(id)metadata
 {
   v63 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = v19;
-  if (!v14)
+  lCopy = l;
+  informationCopy = information;
+  identifierCopy = identifier;
+  scoreCopy = score;
+  assessmentCopy = assessment;
+  metadataCopy = metadata;
+  v20 = metadataCopy;
+  if (!lCopy)
   {
     v23 = PKLogFacilityTypeGetObject(0xCuLL);
     if (!os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
@@ -50,7 +50,7 @@ LABEL_22:
     goto LABEL_23;
   }
 
-  if (!v15)
+  if (!informationCopy)
   {
     v23 = PKLogFacilityTypeGetObject(0xCuLL);
     if (!os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
@@ -67,7 +67,7 @@ LABEL_22:
     goto LABEL_22;
   }
 
-  if (!v16)
+  if (!identifierCopy)
   {
     v23 = PKLogFacilityTypeGetObject(0xCuLL);
     if (!os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
@@ -84,7 +84,7 @@ LABEL_22:
     goto LABEL_22;
   }
 
-  if (!v19)
+  if (!metadataCopy)
   {
     v23 = PKLogFacilityTypeGetObject(0xCuLL);
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
@@ -108,13 +108,13 @@ LABEL_23:
   v58[1] = accountIdentifier;
   v58[2] = @"userInfo";
   v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:v58 count:3];
-  v23 = [(PKPeerPaymentWebServiceRequest *)self _murlRequestWithServiceURL:v14 endpointComponents:v22 queryParameters:0 appleAccountInformation:v15];
+  v23 = [(PKPeerPaymentWebServiceRequest *)self _murlRequestWithServiceURL:lCopy endpointComponents:v22 queryParameters:0 appleAccountInformation:informationCopy];
 
   [v23 setHTTPMethod:@"POST"];
   [v23 setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-  v56 = [MEMORY[0x1E695DF90] dictionary];
-  v24 = [(PKOverlayableWebServiceRequest *)self secureOverlayParameters];
-  v25 = [v24 count];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  secureOverlayParameters = [(PKOverlayableWebServiceRequest *)self secureOverlayParameters];
+  v25 = [secureOverlayParameters count];
 
   if (v25)
   {
@@ -133,16 +133,16 @@ LABEL_23:
     }
 
     v26 = objc_autoreleasePoolPush();
-    v27 = [MEMORY[0x1E695DF90] dictionary];
-    [(PKOverlayableWebServiceRequest *)self _applySecureOverlayToDictionary:v27];
-    v54 = [v27 objectForKeyedSubscript:@"addressLine2"];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+    [(PKOverlayableWebServiceRequest *)self _applySecureOverlayToDictionary:dictionary2];
+    v54 = [dictionary2 objectForKeyedSubscript:@"addressLine2"];
     if (![v54 length])
     {
-      [v27 removeObjectForKey:@"addressLine2"];
+      [dictionary2 removeObjectForKey:@"addressLine2"];
     }
 
-    v55 = v27;
-    if ([v27 count])
+    v55 = dictionary2;
+    if ([dictionary2 count])
     {
       v51 = v26;
       v28 = PKLogFacilityTypeGetObject(0xCuLL);
@@ -150,9 +150,9 @@ LABEL_23:
       {
         v29 = MEMORY[0x1E696AEC0];
         osloga = [v55 allKeys];
-        v30 = [v29 stringWithFormat:@"Encrypted User Info Fields: %@", osloga];
+        osloga = [v29 stringWithFormat:@"Encrypted User Info Fields: %@", osloga];
         *buf = 138477827;
-        v60 = v30;
+        v60 = osloga;
         _os_log_impl(&dword_1AD337000, v28, OS_LOG_TYPE_DEFAULT, "%{private}@", buf, 0xCu);
       }
 
@@ -190,10 +190,10 @@ LABEL_35:
     if (v33)
     {
       v52 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:v33 encoding:4];
-      [v56 setObject:@"EV_ECC_v1-ASN.1" forKey:@"encryptionVersion"];
-      [v56 setObject:v52 forKey:@"encryptedInputData"];
-      v42 = [v53 hexEncoding];
-      [v56 setObject:v42 forKey:@"publicKeyHash"];
+      [dictionary setObject:@"EV_ECC_v1-ASN.1" forKey:@"encryptionVersion"];
+      [dictionary setObject:v52 forKey:@"encryptedInputData"];
+      hexEncoding = [v53 hexEncoding];
+      [dictionary setObject:hexEncoding forKey:@"publicKeyHash"];
 
       v41 = v53;
     }
@@ -206,31 +206,31 @@ LABEL_35:
 LABEL_38:
   }
 
-  v43 = [(PKOverlayableWebServiceRequest *)self overlayParameters];
-  v44 = [v43 count];
+  overlayParameters = [(PKOverlayableWebServiceRequest *)self overlayParameters];
+  v44 = [overlayParameters count];
 
   if (v44)
   {
-    v45 = [MEMORY[0x1E695DF90] dictionary];
-    [(PKOverlayableWebServiceRequest *)self _applyOverlayToDictionary:v45];
-    [v56 setObject:v45 forKey:@"inputData"];
+    dictionary3 = [MEMORY[0x1E695DF90] dictionary];
+    [(PKOverlayableWebServiceRequest *)self _applyOverlayToDictionary:dictionary3];
+    [dictionary setObject:dictionary3 forKey:@"inputData"];
   }
 
-  if (v17)
+  if (scoreCopy)
   {
-    v46 = [v17 hexEncoding];
-    [v56 setObject:v46 forKey:@"deviceScore"];
+    hexEncoding2 = [scoreCopy hexEncoding];
+    [dictionary setObject:hexEncoding2 forKey:@"deviceScore"];
   }
 
-  if (v18)
+  if (assessmentCopy)
   {
-    [v56 setObject:v18 forKey:@"odiAssessment"];
+    [dictionary setObject:assessmentCopy forKey:@"odiAssessment"];
   }
 
-  v47 = [v20 dictionaryRepresentation];
-  [v56 setObject:v47 forKey:@"deviceMetadata"];
+  dictionaryRepresentation = [v20 dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKey:@"deviceMetadata"];
 
-  v48 = [objc_opt_class() _HTTPBodyWithDictionary:v56];
+  v48 = [objc_opt_class() _HTTPBodyWithDictionary:dictionary];
   [v23 setHTTPBody:v48];
 
   v39 = [v23 copy];

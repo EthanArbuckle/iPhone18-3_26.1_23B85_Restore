@@ -1,51 +1,51 @@
 @interface NUNumberSetting
-+ (id)deserializeFromDictionary:(id)a3 error:(id *)a4;
-- (BOOL)isValid:(id *)a3;
-- (BOOL)serializeIntoDictionary:(id)a3 error:(id *)a4;
-- (BOOL)validateNumber:(id)a3 error:(id *)a4;
++ (id)deserializeFromDictionary:(id)dictionary error:(id *)error;
+- (BOOL)isValid:(id *)valid;
+- (BOOL)serializeIntoDictionary:(id)dictionary error:(id *)error;
+- (BOOL)validateNumber:(id)number error:(id *)error;
 - (NUNumberSetting)init;
-- (NUNumberSetting)initWithAttributes:(id)a3;
-- (NUNumberSetting)initWithMinimum:(id)a3 maximum:(id)a4 uiMinimum:(id)a5 uiMaximum:(id)a6 attributes:(id)a7;
+- (NUNumberSetting)initWithAttributes:(id)attributes;
+- (NUNumberSetting)initWithMinimum:(id)minimum maximum:(id)maximum uiMinimum:(id)uiMinimum uiMaximum:(id)uiMaximum attributes:(id)attributes;
 - (id)description;
 @end
 
 @implementation NUNumberSetting
 
-- (BOOL)serializeIntoDictionary:(id)a3 error:(id *)a4
+- (BOOL)serializeIntoDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
-  [v6 setObject:@"number" forKeyedSubscript:@"isa"];
-  v7 = [(NUNumberSetting *)self minimumValue];
-  [v6 setObject:v7 forKeyedSubscript:@"minimum"];
+  dictionaryCopy = dictionary;
+  [dictionaryCopy setObject:@"number" forKeyedSubscript:@"isa"];
+  minimumValue = [(NUNumberSetting *)self minimumValue];
+  [dictionaryCopy setObject:minimumValue forKeyedSubscript:@"minimum"];
 
-  v8 = [(NUNumberSetting *)self maximumValue];
-  [v6 setObject:v8 forKeyedSubscript:@"maximum"];
+  maximumValue = [(NUNumberSetting *)self maximumValue];
+  [dictionaryCopy setObject:maximumValue forKeyedSubscript:@"maximum"];
 
-  v9 = [(NUNumberSetting *)self ui_minimumValue];
+  ui_minimumValue = [(NUNumberSetting *)self ui_minimumValue];
 
-  if (v9)
+  if (ui_minimumValue)
   {
-    v10 = [(NUNumberSetting *)self ui_minimumValue];
-    [v6 setObject:v10 forKeyedSubscript:@"ui_minimum"];
+    ui_minimumValue2 = [(NUNumberSetting *)self ui_minimumValue];
+    [dictionaryCopy setObject:ui_minimumValue2 forKeyedSubscript:@"ui_minimum"];
   }
 
-  v11 = [(NUNumberSetting *)self ui_maximumValue];
+  ui_maximumValue = [(NUNumberSetting *)self ui_maximumValue];
 
-  if (v11)
+  if (ui_maximumValue)
   {
-    v12 = [(NUNumberSetting *)self ui_maximumValue];
-    [v6 setObject:v12 forKeyedSubscript:@"ui_maximum"];
+    ui_maximumValue2 = [(NUNumberSetting *)self ui_maximumValue];
+    [dictionaryCopy setObject:ui_maximumValue2 forKeyedSubscript:@"ui_maximum"];
   }
 
-  v13 = [(NUSetting *)self serializeAttributesIntoDictionary:v6 error:a4];
+  v13 = [(NUSetting *)self serializeAttributesIntoDictionary:dictionaryCopy error:error];
 
   return v13;
 }
 
-- (BOOL)isValid:(id *)a3
+- (BOOL)isValid:(id *)valid
 {
   v37 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!valid)
   {
     v15 = NUAssertLogger_25303();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -66,8 +66,8 @@
         v22 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v23 = MEMORY[0x1E696AF00];
         v24 = v22;
-        v25 = [v23 callStackSymbols];
-        v26 = [v25 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v23 callStackSymbols];
+        v26 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v34 = v22;
         v35 = 2114;
@@ -78,8 +78,8 @@
 
     else if (v19)
     {
-      v20 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v21 = [v20 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v21 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v34 = v21;
       _os_log_error_impl(&dword_1C0184000, v18, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -107,7 +107,7 @@
       {
         if ([(NSNumber *)self->_minimumValue compare:self->_maximumValue]!= NSOrderedDescending)
         {
-          return [(NUModel *)self validateAttributes:a3];
+          return [(NUModel *)self validateAttributes:valid];
         }
 
         v7 = [NUError rangeError:@"invalid value range" object:self];
@@ -137,15 +137,15 @@ LABEL_12:
   v12 = v7;
 LABEL_15:
   result = 0;
-  *a3 = v11;
+  *valid = v11;
   return result;
 }
 
-- (BOOL)validateNumber:(id)a3 error:(id *)a4
+- (BOOL)validateNumber:(id)number error:(id *)error
 {
   v56 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (!v6)
+  numberCopy = number;
+  if (!numberCopy)
   {
     v20 = NUAssertLogger_25303();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -166,8 +166,8 @@ LABEL_15:
         v34 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v35 = MEMORY[0x1E696AF00];
         v36 = v34;
-        v37 = [v35 callStackSymbols];
-        v38 = [v37 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v35 callStackSymbols];
+        v38 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v53 = v34;
         v54 = 2114;
@@ -178,8 +178,8 @@ LABEL_15:
 
     else if (v24)
     {
-      v25 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v26 = [v25 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v26 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v53 = v26;
       _os_log_error_impl(&dword_1C0184000, v23, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -188,7 +188,7 @@ LABEL_15:
     _NUAssertFailHandler("[NUNumberSetting validateNumber:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Schema/NUSetting.m", 400, @"Invalid parameter not satisfying: %s", v39, v40, v41, v42, "object != nil");
   }
 
-  if (!a4)
+  if (!error)
   {
     v27 = NUAssertLogger_25303();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
@@ -209,8 +209,8 @@ LABEL_15:
         v43 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v44 = MEMORY[0x1E696AF00];
         v45 = v43;
-        v46 = [v44 callStackSymbols];
-        v47 = [v46 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v44 callStackSymbols];
+        v47 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v53 = v43;
         v54 = 2114;
@@ -221,8 +221,8 @@ LABEL_15:
 
     else if (v31)
     {
-      v32 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v33 = [v32 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v33 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v53 = v33;
       _os_log_error_impl(&dword_1C0184000, v30, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -231,18 +231,18 @@ LABEL_15:
     _NUAssertFailHandler("[NUNumberSetting validateNumber:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Schema/NUSetting.m", 401, @"Invalid parameter not satisfying: %s", v48, v49, v50, v51, "error != NULL");
   }
 
-  v7 = v6;
-  if ([NUModel validateNumber:v6 error:a4])
+  v7 = numberCopy;
+  if ([NUModel validateNumber:numberCopy error:error])
   {
     v8 = v7;
     [v8 doubleValue];
     v10 = v9;
-    v11 = [(NUNumberSetting *)self minimumValue];
-    [v11 doubleValue];
+    minimumValue = [(NUNumberSetting *)self minimumValue];
+    [minimumValue doubleValue];
     v13 = v12;
 
-    v14 = [(NUNumberSetting *)self maximumValue];
-    [v14 doubleValue];
+    maximumValue = [(NUNumberSetting *)self maximumValue];
+    [maximumValue doubleValue];
     v16 = v15;
 
     if (v10 >= v13)
@@ -261,7 +261,7 @@ LABEL_15:
       [MEMORY[0x1E696AEC0] stringWithFormat:@"Number (%.2f) is less than minimum (%.2f)", *&v10, *&v13];
     }
     v18 = ;
-    *a4 = [NUError rangeError:v18 object:v8];
+    *error = [NUError rangeError:v18 object:v8];
 
     v17 = 0;
 LABEL_11:
@@ -279,23 +279,23 @@ LABEL_12:
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(NUNumberSetting *)self minimumValue];
-  v6 = [(NUNumberSetting *)self maximumValue];
-  v7 = [(NUModel *)self attributes];
-  v8 = [v3 stringWithFormat:@"<%@ min:%@ max:%@ attributes:%@>", v4, v5, v6, v7];
+  minimumValue = [(NUNumberSetting *)self minimumValue];
+  maximumValue = [(NUNumberSetting *)self maximumValue];
+  attributes = [(NUModel *)self attributes];
+  v8 = [v3 stringWithFormat:@"<%@ min:%@ max:%@ attributes:%@>", v4, minimumValue, maximumValue, attributes];
 
   return v8;
 }
 
-- (NUNumberSetting)initWithMinimum:(id)a3 maximum:(id)a4 uiMinimum:(id)a5 uiMaximum:(id)a6 attributes:(id)a7
+- (NUNumberSetting)initWithMinimum:(id)minimum maximum:(id)maximum uiMinimum:(id)uiMinimum uiMaximum:(id)uiMaximum attributes:(id)attributes
 {
   v64 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  if (!v12)
+  minimumCopy = minimum;
+  maximumCopy = maximum;
+  uiMinimumCopy = uiMinimum;
+  uiMaximumCopy = uiMaximum;
+  attributesCopy = attributes;
+  if (!minimumCopy)
   {
     v27 = NUAssertLogger_25303();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
@@ -316,8 +316,8 @@ LABEL_12:
         v41 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v42 = MEMORY[0x1E696AF00];
         v43 = v41;
-        v44 = [v42 callStackSymbols];
-        v45 = [v44 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v42 callStackSymbols];
+        v45 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v61 = v41;
         v62 = 2114;
@@ -328,8 +328,8 @@ LABEL_12:
 
     else if (v31)
     {
-      v32 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v33 = [v32 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v33 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v61 = v33;
       _os_log_error_impl(&dword_1C0184000, v30, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -338,7 +338,7 @@ LABEL_12:
     _NUAssertFailHandler("[NUNumberSetting initWithMinimum:maximum:uiMinimum:uiMaximum:attributes:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Schema/NUSetting.m", 365, @"Invalid parameter not satisfying: %s", v46, v47, v48, v49, "minValue != nil");
   }
 
-  if (!v13)
+  if (!maximumCopy)
   {
     v34 = NUAssertLogger_25303();
     if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
@@ -359,8 +359,8 @@ LABEL_12:
         v50 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v51 = MEMORY[0x1E696AF00];
         v52 = v50;
-        v53 = [v51 callStackSymbols];
-        v54 = [v53 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v51 callStackSymbols];
+        v54 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v61 = v50;
         v62 = 2114;
@@ -371,8 +371,8 @@ LABEL_12:
 
     else if (v38)
     {
-      v39 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v40 = [v39 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v40 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v61 = v40;
       _os_log_error_impl(&dword_1C0184000, v37, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -381,32 +381,32 @@ LABEL_12:
     _NUAssertFailHandler("[NUNumberSetting initWithMinimum:maximum:uiMinimum:uiMaximum:attributes:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Schema/NUSetting.m", 366, @"Invalid parameter not satisfying: %s", v55, v56, v57, v58, "maxValue != nil");
   }
 
-  v17 = v16;
+  v17 = attributesCopy;
   v59.receiver = self;
   v59.super_class = NUNumberSetting;
-  v18 = [(NUModel *)&v59 initWithAttributes:v16];
+  v18 = [(NUModel *)&v59 initWithAttributes:attributesCopy];
   minimumValue = v18->_minimumValue;
-  v18->_minimumValue = v12;
-  v20 = v12;
+  v18->_minimumValue = minimumCopy;
+  v20 = minimumCopy;
 
   maximumValue = v18->_maximumValue;
-  v18->_maximumValue = v13;
-  v22 = v13;
+  v18->_maximumValue = maximumCopy;
+  v22 = maximumCopy;
 
   ui_minimumValue = v18->_ui_minimumValue;
-  v18->_ui_minimumValue = v14;
-  v24 = v14;
+  v18->_ui_minimumValue = uiMinimumCopy;
+  v24 = uiMinimumCopy;
 
   ui_maximumValue = v18->_ui_maximumValue;
-  v18->_ui_maximumValue = v15;
+  v18->_ui_maximumValue = uiMaximumCopy;
 
   return v18;
 }
 
-- (NUNumberSetting)initWithAttributes:(id)a3
+- (NUNumberSetting)initWithAttributes:(id)attributes
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  attributesCopy = attributes;
   if (_NULogOnceToken != -1)
   {
     dispatch_once(&_NULogOnceToken, &__block_literal_global_25321);
@@ -450,8 +450,8 @@ LABEL_8:
     {
       v14 = MEMORY[0x1E696AF00];
       v15 = v13;
-      v16 = [v14 callStackSymbols];
-      v17 = [v16 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v14 callStackSymbols];
+      v17 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v32 = v17;
       _os_log_error_impl(&dword_1C0184000, v15, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -467,8 +467,8 @@ LABEL_8:
     v20 = MEMORY[0x1E696AF00];
     v21 = specific;
     v22 = v18;
-    v23 = [v20 callStackSymbols];
-    v24 = [v23 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v20 callStackSymbols];
+    v24 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v32 = specific;
     v33 = 2114;
@@ -530,8 +530,8 @@ LABEL_8:
     {
       v12 = MEMORY[0x1E696AF00];
       v13 = v11;
-      v14 = [v12 callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v12 callStackSymbols];
+      v15 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v30 = v15;
       _os_log_error_impl(&dword_1C0184000, v13, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -547,8 +547,8 @@ LABEL_8:
     v18 = MEMORY[0x1E696AF00];
     v19 = specific;
     v20 = v16;
-    v21 = [v18 callStackSymbols];
-    v22 = [v21 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v18 callStackSymbols];
+    v22 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v30 = specific;
     v31 = 2114;
@@ -564,11 +564,11 @@ LABEL_14:
   _NUAssertFailHandler("[NUNumberSetting init]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Schema/NUSetting.m", 349, @"Initializer not available: [%@ %@], use designated initializer instead.", v25, v26, v27, v28, v24);
 }
 
-+ (id)deserializeFromDictionary:(id)a3 error:(id *)a4
++ (id)deserializeFromDictionary:(id)dictionary error:(id *)error
 {
   v56 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (!v6)
+  dictionaryCopy = dictionary;
+  if (!dictionaryCopy)
   {
     v19 = NUAssertLogger_25303();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -589,8 +589,8 @@ LABEL_14:
         v33 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v34 = MEMORY[0x1E696AF00];
         v35 = v33;
-        v36 = [v34 callStackSymbols];
-        v37 = [v36 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v34 callStackSymbols];
+        v37 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v53 = v33;
         v54 = 2114;
@@ -601,8 +601,8 @@ LABEL_14:
 
     else if (v23)
     {
-      v24 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v25 = [v24 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v25 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v53 = v25;
       _os_log_error_impl(&dword_1C0184000, v22, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -611,7 +611,7 @@ LABEL_14:
     _NUAssertFailHandler("+[NUNumberSetting deserializeFromDictionary:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Schema/NUSetting.m", 486, @"Invalid parameter not satisfying: %s", v38, v39, v40, v41, "dictionary != nil");
   }
 
-  if (!a4)
+  if (!error)
   {
     v26 = NUAssertLogger_25303();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
@@ -632,8 +632,8 @@ LABEL_14:
         v42 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v43 = MEMORY[0x1E696AF00];
         v44 = v42;
-        v45 = [v43 callStackSymbols];
-        v46 = [v45 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v43 callStackSymbols];
+        v46 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v53 = v42;
         v54 = 2114;
@@ -644,8 +644,8 @@ LABEL_14:
 
     else if (v30)
     {
-      v31 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v32 = [v31 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v32 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v53 = v32;
       _os_log_error_impl(&dword_1C0184000, v29, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -654,51 +654,51 @@ LABEL_14:
     _NUAssertFailHandler("+[NUNumberSetting deserializeFromDictionary:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Schema/NUSetting.m", 487, @"Invalid parameter not satisfying: %s", v47, v48, v49, v50, "error != NULL");
   }
 
-  v7 = v6;
-  v8 = [v6 objectForKeyedSubscript:@"minimum"];
+  v7 = dictionaryCopy;
+  v8 = [dictionaryCopy objectForKeyedSubscript:@"minimum"];
   if (v8)
   {
     v9 = v8;
-    if ([NUModel validateNumber:v8 error:a4])
+    if ([NUModel validateNumber:v8 error:error])
     {
       v10 = [v7 objectForKeyedSubscript:@"maximum"];
       if (v10)
       {
         v11 = v10;
-        if ([NUModel validateNumber:v10 error:a4])
+        if ([NUModel validateNumber:v10 error:error])
         {
           v12 = [v7 objectForKeyedSubscript:@"ui_minimum"];
-          if (v12 && ![NUModel validateNumber:v12 error:a4])
+          if (v12 && ![NUModel validateNumber:v12 error:error])
           {
             [NUError invalidError:@"Invalid ui_minimum value" object:v12];
-            *a4 = v17 = 0;
+            *error = v17 = 0;
             v13 = v12;
           }
 
           else
           {
             v13 = [v7 objectForKeyedSubscript:@"ui_maximum"];
-            if (v13 && ![NUModel validateNumber:v13 error:a4])
+            if (v13 && ![NUModel validateNumber:v13 error:error])
             {
               [NUError invalidError:@"Invalid ui_maximum value" object:v13];
-              *a4 = v17 = 0;
+              *error = v17 = 0;
             }
 
             else
             {
               v14 = v13;
               v51 = 0;
-              v15 = [a1 deserializeAttributesFromDictionary:v7 error:&v51];
+              v15 = [self deserializeAttributesFromDictionary:v7 error:&v51];
               v16 = v51;
               if (v15)
               {
-                v17 = [[a1 alloc] initWithMinimum:v9 maximum:v11 uiMinimum:v12 uiMaximum:v14 attributes:v15];
+                v17 = [[self alloc] initWithMinimum:v9 maximum:v11 uiMinimum:v12 uiMaximum:v14 attributes:v15];
               }
 
               else
               {
                 [NUError errorWithCode:1 reason:@"Failed to deserialized attributes" object:v7 underlyingError:v16];
-                *a4 = v17 = 0;
+                *error = v17 = 0;
               }
             }
           }
@@ -706,7 +706,7 @@ LABEL_14:
 
         else
         {
-          *a4 = [NUError invalidError:@"Invalid maximum value" object:v11];
+          *error = [NUError invalidError:@"Invalid maximum value" object:v11];
 
           v17 = 0;
         }
@@ -715,13 +715,13 @@ LABEL_14:
       else
       {
         [NUError missingError:@"Missing maximum value" object:v7];
-        *a4 = v17 = 0;
+        *error = v17 = 0;
       }
     }
 
     else
     {
-      *a4 = [NUError invalidError:@"Invalid minimum value" object:v9];
+      *error = [NUError invalidError:@"Invalid minimum value" object:v9];
 
       v17 = 0;
     }
@@ -730,7 +730,7 @@ LABEL_14:
   else
   {
     [NUError missingError:@"Missing minimum value" object:v7];
-    *a4 = v17 = 0;
+    *error = v17 = 0;
   }
 
   return v17;

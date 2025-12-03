@@ -1,7 +1,7 @@
 @interface RMModelAppManagedDeclaration_ExtensionConfigs
 + (id)build;
 + (id)buildRequiredOnly;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation RMModelAppManagedDeclaration_ExtensionConfigs
@@ -20,11 +20,11 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = RMModelAppManagedDeclaration_ExtensionConfigs;
-  v4 = [(RMModelPayloadBase *)&v8 copyWithZone:a3];
+  v4 = [(RMModelPayloadBase *)&v8 copyWithZone:zone];
   v5 = [(NSDictionary *)self->_payloadDictionary copy];
   v6 = v4[2];
   v4[2] = v5;

@@ -8,11 +8,11 @@
 - (id)af_dialogIdentifiersForAnalyticsContext
 {
   v6[1] = *MEMORY[0x1E69E9840];
-  v1 = [a1 dialogIdentifier];
-  v2 = v1;
-  if (v1)
+  dialogIdentifier = [self dialogIdentifier];
+  v2 = dialogIdentifier;
+  if (dialogIdentifier)
   {
-    v6[0] = v1;
+    v6[0] = dialogIdentifier;
     v3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:1];
   }
 
@@ -29,13 +29,13 @@
 - (void)af_addEntriesToAnalyticsContext:()AnalyticsContextVending
 {
   v4 = a3;
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &off_1F05B0830;
   objc_msgSendSuper2(&v6, sel_af_addEntriesToAnalyticsContext_, v4);
-  v5 = [a1 dialogIdentifier];
-  if (v5)
+  dialogIdentifier = [self dialogIdentifier];
+  if (dialogIdentifier)
   {
-    [v4 setObject:v5 forKey:@"dialogIdentifier"];
+    [v4 setObject:dialogIdentifier forKey:@"dialogIdentifier"];
   }
 }
 

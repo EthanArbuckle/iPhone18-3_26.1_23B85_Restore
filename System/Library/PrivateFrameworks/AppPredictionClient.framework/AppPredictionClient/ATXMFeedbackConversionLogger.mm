@@ -1,27 +1,27 @@
 @interface ATXMFeedbackConversionLogger
-+ (void)logRecordedFeedbackWithEngagementType:(int)a3 consumerSubType:(unsigned __int8)a4 tracker:(id)a5;
-+ (void)logUserInteractionFeedbackWithEngagementType:(int)a3 consumerSubType:(unsigned __int8)a4 tracker:(id)a5;
++ (void)logRecordedFeedbackWithEngagementType:(int)type consumerSubType:(unsigned __int8)subType tracker:(id)tracker;
++ (void)logUserInteractionFeedbackWithEngagementType:(int)type consumerSubType:(unsigned __int8)subType tracker:(id)tracker;
 @end
 
 @implementation ATXMFeedbackConversionLogger
 
-+ (void)logUserInteractionFeedbackWithEngagementType:(int)a3 consumerSubType:(unsigned __int8)a4 tracker:(id)a5
++ (void)logUserInteractionFeedbackWithEngagementType:(int)type consumerSubType:(unsigned __int8)subType tracker:(id)tracker
 {
-  v5 = a4;
-  v6 = *&a3;
+  subTypeCopy = subType;
+  v6 = *&type;
   v21 = *MEMORY[0x1E69E9840];
   v8 = MEMORY[0x1E698B028];
-  v9 = a5;
-  v10 = [v8 stringForConsumerSubtype:v5];
+  trackerCopy = tracker;
+  v10 = [v8 stringForConsumerSubtype:subTypeCopy];
   v11 = objc_opt_new();
   [v11 setEngagementType:v6];
   [v11 setConsumerSubType:v10];
-  [v9 trackScalarForMessage:v11];
+  [trackerCopy trackScalarForMessage:v11];
 
   v12 = __atxlog_handle_metrics();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
-    v13 = NSStringFromClass(a1);
+    v13 = NSStringFromClass(self);
     if (v6)
     {
       if (v6 == 1)
@@ -50,23 +50,23 @@
   }
 }
 
-+ (void)logRecordedFeedbackWithEngagementType:(int)a3 consumerSubType:(unsigned __int8)a4 tracker:(id)a5
++ (void)logRecordedFeedbackWithEngagementType:(int)type consumerSubType:(unsigned __int8)subType tracker:(id)tracker
 {
-  v5 = a4;
-  v6 = *&a3;
+  subTypeCopy = subType;
+  v6 = *&type;
   v21 = *MEMORY[0x1E69E9840];
   v8 = MEMORY[0x1E698B028];
-  v9 = a5;
-  v10 = [v8 stringForConsumerSubtype:v5];
+  trackerCopy = tracker;
+  v10 = [v8 stringForConsumerSubtype:subTypeCopy];
   v11 = objc_opt_new();
   [v11 setEngagementType:v6];
   [v11 setConsumerSubType:v10];
-  [v9 trackScalarForMessage:v11];
+  [trackerCopy trackScalarForMessage:v11];
 
   v12 = __atxlog_handle_metrics();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
-    v13 = NSStringFromClass(a1);
+    v13 = NSStringFromClass(self);
     if (v6)
     {
       if (v6 == 1)

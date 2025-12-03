@@ -1,15 +1,15 @@
 @interface CMRotationRateDataInternal
-- (CMRotationRateDataInternal)initWithRotationRate:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CMRotationRateDataInternal)initWithRotationRate:(id)rate;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation CMRotationRateDataInternal
 
-- (CMRotationRateDataInternal)initWithRotationRate:(id)a3
+- (CMRotationRateDataInternal)initWithRotationRate:(id)rate
 {
-  var2 = a3.var2;
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var2 = rate.var2;
+  var1 = rate.var1;
+  var0 = rate.var0;
   v14.receiver = self;
   v14.super_class = CMRotationRateDataInternal;
   v6 = [(CMRotationRateDataInternal *)&v14 init];
@@ -25,10 +25,10 @@
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   result = objc_msgSend_init(v7, v8, v9);
   if (result)
   {

@@ -1,7 +1,7 @@
 @interface ICSystemPaperPresenter
-+ (id)makeExtensionHostViewControllerWithUserActivityData:(id)a3 completion:(id)a4;
++ (id)makeExtensionHostViewControllerWithUserActivityData:(id)data completion:(id)completion;
 + (void)initialize;
-+ (void)presentSystemPaperWithUserActivityData:(id)a3 presentingViewController:(id)a4 completion:(id)a5;
++ (void)presentSystemPaperWithUserActivityData:(id)data presentingViewController:(id)controller completion:(id)completion;
 - (ICSystemPaperPresenter)init;
 @end
 
@@ -10,49 +10,49 @@
 + (void)initialize
 {
   v6[1] = *MEMORY[0x277D85DE8];
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
-    v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
     v5 = @"ICEnableSystemPaperExtension";
     v6[0] = MEMORY[0x277CBEC38];
     v3 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v6 forKeys:&v5 count:1];
-    [v2 registerDefaults:v3];
+    [standardUserDefaults registerDefaults:v3];
   }
 
   v4 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)presentSystemPaperWithUserActivityData:(id)a3 presentingViewController:(id)a4 completion:(id)a5
++ (void)presentSystemPaperWithUserActivityData:(id)data presentingViewController:(id)controller completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dataCopy = data;
+  controllerCopy = controller;
+  completionCopy = completion;
   if (ICIsSystemPaperAvailable())
   {
-    if (!v9)
+    if (!controllerCopy)
     {
-      v11 = [MEMORY[0x277D75DA0] _applicationKeyWindow];
-      v12 = [v11 rootViewController];
+      _applicationKeyWindow = [MEMORY[0x277D75DA0] _applicationKeyWindow];
+      rootViewController = [_applicationKeyWindow rootViewController];
 
-      v13 = [v12 presentedViewController];
+      presentedViewController = [rootViewController presentedViewController];
 
-      if (v13)
+      if (presentedViewController)
       {
         do
         {
-          v9 = [v12 presentedViewController];
+          controllerCopy = [rootViewController presentedViewController];
 
-          v14 = [v9 presentedViewController];
+          presentedViewController2 = [controllerCopy presentedViewController];
 
-          v12 = v9;
+          rootViewController = controllerCopy;
         }
 
-        while (v14);
+        while (presentedViewController2);
       }
 
       else
       {
-        v9 = v12;
+        controllerCopy = rootViewController;
       }
     }
 
@@ -67,23 +67,23 @@
     v22[2] = __101__ICSystemPaperPresenter_presentSystemPaperWithUserActivityData_presentingViewController_completion___block_invoke;
     v22[3] = &unk_279D33EA0;
     v25 = &v26;
-    v9 = v9;
-    v23 = v9;
-    v24 = v10;
+    controllerCopy = controllerCopy;
+    v23 = controllerCopy;
+    v24 = completionCopy;
     v15 = MEMORY[0x26D6A24D0](v22);
-    v16 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v17 = [v16 BOOLForKey:@"ICEnableSystemPaperExtension"];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v17 = [standardUserDefaults BOOLForKey:@"ICEnableSystemPaperExtension"];
 
     if (v17)
     {
-      v18 = [a1 makeExtensionHostViewControllerWithUserActivityData:v8 completion:v15];
+      v18 = [self makeExtensionHostViewControllerWithUserActivityData:dataCopy completion:v15];
       v19 = v27[5];
       v27[5] = v18;
     }
 
     else
     {
-      v20 = [[ICSystemPaperSceneViewController alloc] initWithUserActivityData:v8];
+      v20 = [[ICSystemPaperSceneViewController alloc] initWithUserActivityData:dataCopy];
       v21 = v27[5];
       v27[5] = v20;
 
@@ -117,11 +117,11 @@ uint64_t __101__ICSystemPaperPresenter_presentSystemPaperWithUserActivityData_pr
   return result;
 }
 
-+ (id)makeExtensionHostViewControllerWithUserActivityData:(id)a3 completion:(id)a4
++ (id)makeExtensionHostViewControllerWithUserActivityData:(id)data completion:(id)completion
 {
   v29 = *MEMORY[0x277D85DE8];
-  v23 = a3;
-  v5 = a4;
+  dataCopy = data;
+  completionCopy = completion;
   v6 = [MEMORY[0x277CC5DF8] extensionPointIdentifierQuery:@"com.apple.private.system-paper"];
   [MEMORY[0x277CC5E00] executeQuery:v6];
   v24 = 0u;
@@ -143,8 +143,8 @@ LABEL_3:
       }
 
       v12 = *(*(&v24 + 1) + 8 * v11);
-      v13 = [v12 bundleIdentifier];
-      v14 = [v13 isEqualToString:@"com.apple.mobilenotes.EditorExtension"];
+      bundleIdentifier = [v12 bundleIdentifier];
+      v14 = [bundleIdentifier isEqualToString:@"com.apple.mobilenotes.EditorExtension"];
 
       if (v14)
       {
@@ -173,14 +173,14 @@ LABEL_3:
     v16 = [objc_alloc(MEMORY[0x277CC5E78]) initWithExtensionIdentity:v15];
     [v16 setBeginHostingImmediately:1];
     v17 = objc_alloc_init(MEMORY[0x277D75D18]);
-    v18 = [MEMORY[0x277D75348] systemBackgroundColor];
-    [v17 setBackgroundColor:v18];
+    systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+    [v17 setBackgroundColor:systemBackgroundColor];
 
     v19 = [[ICSystemPaperExtensionHostViewController alloc] initWithConfiguration:v16];
     [(_EXHostViewController *)v19 setPlaceholderView:v17];
-    v20 = v23;
-    [(ICSystemPaperExtensionHostViewController *)v19 setUserActivityData:v23];
-    [(ICSystemPaperExtensionHostViewController *)v19 setStartHostingBlock:v5];
+    v20 = dataCopy;
+    [(ICSystemPaperExtensionHostViewController *)v19 setUserActivityData:dataCopy];
+    [(ICSystemPaperExtensionHostViewController *)v19 setStartHostingBlock:completionCopy];
   }
 
   else
@@ -189,7 +189,7 @@ LABEL_9:
 
 LABEL_12:
     v15 = ICSystemPaperExtensionLog();
-    v20 = v23;
+    v20 = dataCopy;
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
       +[ICSystemPaperPresenter makeExtensionHostViewControllerWithUserActivityData:completion:];

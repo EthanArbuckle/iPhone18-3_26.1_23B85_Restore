@@ -1,38 +1,38 @@
 @interface SIRINLUINTERNALToken
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addCleanValues:(id)a3;
-- (void)addNormalizedValues:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasEnd:(BOOL)a3;
-- (void)setHasIsSignificant:(BOOL)a3;
-- (void)setHasIsWhitespace:(BOOL)a3;
-- (void)setHasNonWhitespaceTokenIndex:(BOOL)a3;
-- (void)setHasTokenIndex:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addCleanValues:(id)values;
+- (void)addNormalizedValues:(id)values;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasEnd:(BOOL)end;
+- (void)setHasIsSignificant:(BOOL)significant;
+- (void)setHasIsWhitespace:(BOOL)whitespace;
+- (void)setHasNonWhitespaceTokenIndex:(BOOL)index;
+- (void)setHasTokenIndex:(BOOL)index;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SIRINLUINTERNALToken
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (*(v4 + 7))
+  fromCopy = from;
+  if (*(fromCopy + 7))
   {
     [(SIRINLUINTERNALToken *)self setValue:?];
   }
 
-  v5 = *(v4 + 68);
+  v5 = *(fromCopy + 68);
   if (v5)
   {
-    self->_begin = *(v4 + 2);
+    self->_begin = *(fromCopy + 2);
     *&self->_has |= 1u;
-    v5 = *(v4 + 68);
+    v5 = *(fromCopy + 68);
     if ((v5 & 2) == 0)
     {
 LABEL_5:
@@ -45,14 +45,14 @@ LABEL_5:
     }
   }
 
-  else if ((*(v4 + 68) & 2) == 0)
+  else if ((*(fromCopy + 68) & 2) == 0)
   {
     goto LABEL_5;
   }
 
-  self->_end = *(v4 + 8);
+  self->_end = *(fromCopy + 8);
   *&self->_has |= 2u;
-  v5 = *(v4 + 68);
+  v5 = *(fromCopy + 68);
   if ((v5 & 0x10) == 0)
   {
 LABEL_6:
@@ -65,12 +65,12 @@ LABEL_6:
   }
 
 LABEL_31:
-  self->_isSignificant = *(v4 + 64);
+  self->_isSignificant = *(fromCopy + 64);
   *&self->_has |= 0x10u;
-  if ((*(v4 + 68) & 0x20) != 0)
+  if ((*(fromCopy + 68) & 0x20) != 0)
   {
 LABEL_7:
-    self->_isWhitespace = *(v4 + 65);
+    self->_isWhitespace = *(fromCopy + 65);
     *&self->_has |= 0x20u;
   }
 
@@ -79,7 +79,7 @@ LABEL_8:
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v6 = *(v4 + 3);
+  v6 = *(fromCopy + 3);
   v7 = [v6 countByEnumeratingWithState:&v22 objects:v27 count:16];
   if (v7)
   {
@@ -103,21 +103,21 @@ LABEL_8:
     while (v8);
   }
 
-  v11 = *(v4 + 68);
+  v11 = *(fromCopy + 68);
   if ((v11 & 8) != 0)
   {
-    self->_tokenIndex = *(v4 + 12);
+    self->_tokenIndex = *(fromCopy + 12);
     *&self->_has |= 8u;
-    v11 = *(v4 + 68);
+    v11 = *(fromCopy + 68);
   }
 
   if ((v11 & 4) != 0)
   {
-    self->_nonWhitespaceTokenIndex = *(v4 + 9);
+    self->_nonWhitespaceTokenIndex = *(fromCopy + 9);
     *&self->_has |= 4u;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(SIRINLUINTERNALToken *)self setCleanValue:?];
   }
@@ -126,7 +126,7 @@ LABEL_8:
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v12 = *(v4 + 5);
+  v12 = *(fromCopy + 5);
   v13 = [v12 countByEnumeratingWithState:&v18 objects:v26 count:16];
   if (v13)
   {
@@ -234,16 +234,16 @@ LABEL_15:
   return v11 ^ v12 ^ [(NSMutableArray *)self->_normalizedValues hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_47;
   }
 
   value = self->_value;
-  if (value | *(v4 + 7))
+  if (value | *(equalCopy + 7))
   {
     if (![(NSString *)value isEqual:?])
     {
@@ -252,89 +252,89 @@ LABEL_15:
   }
 
   has = self->_has;
-  v7 = *(v4 + 68);
+  v7 = *(equalCopy + 68);
   if (has)
   {
-    if ((*(v4 + 68) & 1) == 0 || self->_begin != *(v4 + 2))
+    if ((*(equalCopy + 68) & 1) == 0 || self->_begin != *(equalCopy + 2))
     {
       goto LABEL_47;
     }
   }
 
-  else if (*(v4 + 68))
+  else if (*(equalCopy + 68))
   {
     goto LABEL_47;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 68) & 2) == 0 || self->_end != *(v4 + 8))
+    if ((*(equalCopy + 68) & 2) == 0 || self->_end != *(equalCopy + 8))
     {
       goto LABEL_47;
     }
   }
 
-  else if ((*(v4 + 68) & 2) != 0)
+  else if ((*(equalCopy + 68) & 2) != 0)
   {
     goto LABEL_47;
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(v4 + 68) & 0x10) == 0)
+    if ((*(equalCopy + 68) & 0x10) == 0)
     {
       goto LABEL_47;
     }
 
-    v9 = *(v4 + 64);
+    v9 = *(equalCopy + 64);
     if (self->_isSignificant)
     {
-      if ((*(v4 + 64) & 1) == 0)
+      if ((*(equalCopy + 64) & 1) == 0)
       {
         goto LABEL_47;
       }
     }
 
-    else if (*(v4 + 64))
+    else if (*(equalCopy + 64))
     {
       goto LABEL_47;
     }
   }
 
-  else if ((*(v4 + 68) & 0x10) != 0)
+  else if ((*(equalCopy + 68) & 0x10) != 0)
   {
     goto LABEL_47;
   }
 
   if ((*&self->_has & 0x20) != 0)
   {
-    if ((*(v4 + 68) & 0x20) == 0)
+    if ((*(equalCopy + 68) & 0x20) == 0)
     {
       goto LABEL_47;
     }
 
-    v10 = *(v4 + 65);
+    v10 = *(equalCopy + 65);
     if (self->_isWhitespace)
     {
-      if ((*(v4 + 65) & 1) == 0)
+      if ((*(equalCopy + 65) & 1) == 0)
       {
         goto LABEL_47;
       }
     }
 
-    else if (*(v4 + 65))
+    else if (*(equalCopy + 65))
     {
       goto LABEL_47;
     }
   }
 
-  else if ((*(v4 + 68) & 0x20) != 0)
+  else if ((*(equalCopy + 68) & 0x20) != 0)
   {
     goto LABEL_47;
   }
 
   cleanValues = self->_cleanValues;
-  if (!(cleanValues | *(v4 + 3)))
+  if (!(cleanValues | *(equalCopy + 3)))
   {
     goto LABEL_21;
   }
@@ -347,11 +347,11 @@ LABEL_47:
   }
 
   has = self->_has;
-  v7 = *(v4 + 68);
+  v7 = *(equalCopy + 68);
 LABEL_21:
   if ((has & 8) != 0)
   {
-    if ((v7 & 8) == 0 || self->_tokenIndex != *(v4 + 12))
+    if ((v7 & 8) == 0 || self->_tokenIndex != *(equalCopy + 12))
     {
       goto LABEL_47;
     }
@@ -364,7 +364,7 @@ LABEL_21:
 
   if ((has & 4) != 0)
   {
-    if ((v7 & 4) == 0 || self->_nonWhitespaceTokenIndex != *(v4 + 9))
+    if ((v7 & 4) == 0 || self->_nonWhitespaceTokenIndex != *(equalCopy + 9))
     {
       goto LABEL_47;
     }
@@ -376,13 +376,13 @@ LABEL_21:
   }
 
   cleanValue = self->_cleanValue;
-  if (cleanValue | *(v4 + 2) && ![(NSString *)cleanValue isEqual:?])
+  if (cleanValue | *(equalCopy + 2) && ![(NSString *)cleanValue isEqual:?])
   {
     goto LABEL_47;
   }
 
   normalizedValues = self->_normalizedValues;
-  if (normalizedValues | *(v4 + 5))
+  if (normalizedValues | *(equalCopy + 5))
   {
     v13 = [(NSMutableArray *)normalizedValues isEqual:?];
   }
@@ -397,11 +397,11 @@ LABEL_48:
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v36 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_value copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_value copyWithZone:zone];
   v7 = *(v5 + 56);
   *(v5 + 56) = v6;
 
@@ -472,7 +472,7 @@ LABEL_6:
           objc_enumerationMutation(v9);
         }
 
-        v14 = [*(*(&v30 + 1) + 8 * i) copyWithZone:a3];
+        v14 = [*(*(&v30 + 1) + 8 * i) copyWithZone:zone];
         [v5 addCleanValues:v14];
       }
 
@@ -496,7 +496,7 @@ LABEL_6:
     *(v5 + 68) |= 4u;
   }
 
-  v16 = [(NSString *)self->_cleanValue copyWithZone:a3];
+  v16 = [(NSString *)self->_cleanValue copyWithZone:zone];
   v17 = *(v5 + 16);
   *(v5 + 16) = v16;
 
@@ -519,7 +519,7 @@ LABEL_6:
           objc_enumerationMutation(v18);
         }
 
-        v23 = [*(*(&v26 + 1) + 8 * j) copyWithZone:{a3, v26}];
+        v23 = [*(*(&v26 + 1) + 8 * j) copyWithZone:{zone, v26}];
         [v5 addNormalizedValues:v23];
       }
 
@@ -533,21 +533,21 @@ LABEL_6:
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v15 = v4;
+  toCopy = to;
+  v15 = toCopy;
   if (self->_value)
   {
-    [v4 setValue:?];
-    v4 = v15;
+    [toCopy setValue:?];
+    toCopy = v15;
   }
 
   has = self->_has;
   if (has)
   {
-    *(v4 + 2) = self->_begin;
-    *(v4 + 68) |= 1u;
+    *(toCopy + 2) = self->_begin;
+    *(toCopy + 68) |= 1u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -558,8 +558,8 @@ LABEL_5:
       }
 
 LABEL_27:
-      *(v4 + 64) = self->_isSignificant;
-      *(v4 + 68) |= 0x10u;
+      *(toCopy + 64) = self->_isSignificant;
+      *(toCopy + 68) |= 0x10u;
       if ((*&self->_has & 0x20) == 0)
       {
         goto LABEL_8;
@@ -574,8 +574,8 @@ LABEL_27:
     goto LABEL_5;
   }
 
-  *(v4 + 8) = self->_end;
-  *(v4 + 68) |= 2u;
+  *(toCopy + 8) = self->_end;
+  *(toCopy + 68) |= 2u;
   has = self->_has;
   if ((has & 0x10) != 0)
   {
@@ -586,18 +586,18 @@ LABEL_6:
   if ((has & 0x20) != 0)
   {
 LABEL_7:
-    *(v4 + 65) = self->_isWhitespace;
-    *(v4 + 68) |= 0x20u;
+    *(toCopy + 65) = self->_isWhitespace;
+    *(toCopy + 68) |= 0x20u;
   }
 
 LABEL_8:
   if ([(SIRINLUINTERNALToken *)self cleanValuesCount])
   {
     [v15 clearCleanValues];
-    v6 = [(SIRINLUINTERNALToken *)self cleanValuesCount];
-    if (v6)
+    cleanValuesCount = [(SIRINLUINTERNALToken *)self cleanValuesCount];
+    if (cleanValuesCount)
     {
-      v7 = v6;
+      v7 = cleanValuesCount;
       for (i = 0; i != v7; ++i)
       {
         v9 = [(SIRINLUINTERNALToken *)self cleanValuesAtIndex:i];
@@ -628,10 +628,10 @@ LABEL_8:
   if ([(SIRINLUINTERNALToken *)self normalizedValuesCount])
   {
     [v15 clearNormalizedValues];
-    v11 = [(SIRINLUINTERNALToken *)self normalizedValuesCount];
-    if (v11)
+    normalizedValuesCount = [(SIRINLUINTERNALToken *)self normalizedValuesCount];
+    if (normalizedValuesCount)
     {
-      v12 = v11;
+      v12 = normalizedValuesCount;
       for (j = 0; j != v12; ++j)
       {
         v14 = [(SIRINLUINTERNALToken *)self normalizedValuesAtIndex:j];
@@ -641,10 +641,10 @@ LABEL_8:
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v36 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_value)
   {
     PBDataWriterWriteStringField();
@@ -780,12 +780,12 @@ LABEL_8:
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   value = self->_value;
   if (value)
   {
-    [v3 setObject:value forKey:@"value"];
+    [dictionary setObject:value forKey:@"value"];
   }
 
   has = self->_has;
@@ -881,33 +881,33 @@ LABEL_8:
   v8.receiver = self;
   v8.super_class = SIRINLUINTERNALToken;
   v4 = [(SIRINLUINTERNALToken *)&v8 description];
-  v5 = [(SIRINLUINTERNALToken *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SIRINLUINTERNALToken *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)addNormalizedValues:(id)a3
+- (void)addNormalizedValues:(id)values
 {
-  v4 = a3;
+  valuesCopy = values;
   normalizedValues = self->_normalizedValues;
-  v8 = v4;
+  v8 = valuesCopy;
   if (!normalizedValues)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_normalizedValues;
     self->_normalizedValues = v6;
 
-    v4 = v8;
+    valuesCopy = v8;
     normalizedValues = self->_normalizedValues;
   }
 
-  [(NSMutableArray *)normalizedValues addObject:v4];
+  [(NSMutableArray *)normalizedValues addObject:valuesCopy];
 }
 
-- (void)setHasNonWhitespaceTokenIndex:(BOOL)a3
+- (void)setHasNonWhitespaceTokenIndex:(BOOL)index
 {
-  if (a3)
+  if (index)
   {
     v3 = 4;
   }
@@ -920,9 +920,9 @@ LABEL_8:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasTokenIndex:(BOOL)a3
+- (void)setHasTokenIndex:(BOOL)index
 {
-  if (a3)
+  if (index)
   {
     v3 = 8;
   }
@@ -935,27 +935,27 @@ LABEL_8:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)addCleanValues:(id)a3
+- (void)addCleanValues:(id)values
 {
-  v4 = a3;
+  valuesCopy = values;
   cleanValues = self->_cleanValues;
-  v8 = v4;
+  v8 = valuesCopy;
   if (!cleanValues)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_cleanValues;
     self->_cleanValues = v6;
 
-    v4 = v8;
+    valuesCopy = v8;
     cleanValues = self->_cleanValues;
   }
 
-  [(NSMutableArray *)cleanValues addObject:v4];
+  [(NSMutableArray *)cleanValues addObject:valuesCopy];
 }
 
-- (void)setHasIsWhitespace:(BOOL)a3
+- (void)setHasIsWhitespace:(BOOL)whitespace
 {
-  if (a3)
+  if (whitespace)
   {
     v3 = 32;
   }
@@ -968,9 +968,9 @@ LABEL_8:
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasIsSignificant:(BOOL)a3
+- (void)setHasIsSignificant:(BOOL)significant
 {
-  if (a3)
+  if (significant)
   {
     v3 = 16;
   }
@@ -983,9 +983,9 @@ LABEL_8:
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasEnd:(BOOL)a3
+- (void)setHasEnd:(BOOL)end
 {
-  if (a3)
+  if (end)
   {
     v3 = 2;
   }

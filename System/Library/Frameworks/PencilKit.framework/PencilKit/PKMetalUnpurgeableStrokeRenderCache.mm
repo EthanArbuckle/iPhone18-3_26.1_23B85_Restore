@@ -1,18 +1,18 @@
 @interface PKMetalUnpurgeableStrokeRenderCache
-- (PKMetalUnpurgeableStrokeRenderCache)initWithInk:(id)a3 renderZoomFactor:(int64_t)a4;
-- (void)addBuffer:(id)a3;
-- (void)addSecondaryBuffer:(id)a3;
+- (PKMetalUnpurgeableStrokeRenderCache)initWithInk:(id)ink renderZoomFactor:(int64_t)factor;
+- (void)addBuffer:(id)buffer;
+- (void)addSecondaryBuffer:(id)buffer;
 - (void)dealloc;
 @end
 
 @implementation PKMetalUnpurgeableStrokeRenderCache
 
-- (PKMetalUnpurgeableStrokeRenderCache)initWithInk:(id)a3 renderZoomFactor:(int64_t)a4
+- (PKMetalUnpurgeableStrokeRenderCache)initWithInk:(id)ink renderZoomFactor:(int64_t)factor
 {
-  v6 = a3;
+  inkCopy = ink;
   v11.receiver = self;
   v11.super_class = PKMetalUnpurgeableStrokeRenderCache;
-  v7 = [(PKMetalStrokeRenderCache *)&v11 initWithInk:v6 renderZoomFactor:a4];
+  v7 = [(PKMetalStrokeRenderCache *)&v11 initWithInk:inkCopy renderZoomFactor:factor];
   if (v7)
   {
     v8 = [MEMORY[0x1E695DFA8] set];
@@ -60,22 +60,22 @@
   [(PKMetalUnpurgeableStrokeRenderCache *)&v7 dealloc];
 }
 
-- (void)addBuffer:(id)a3
+- (void)addBuffer:(id)buffer
 {
-  v4 = a3;
-  [(PKMetalStrokeRenderCacheBuffer *)v4 lockPurgeableResourcesAddToSet:?];
+  bufferCopy = buffer;
+  [(PKMetalStrokeRenderCacheBuffer *)bufferCopy lockPurgeableResourcesAddToSet:?];
   v5.receiver = self;
   v5.super_class = PKMetalUnpurgeableStrokeRenderCache;
-  [(PKMetalStrokeRenderCache *)&v5 addBuffer:v4];
+  [(PKMetalStrokeRenderCache *)&v5 addBuffer:bufferCopy];
 }
 
-- (void)addSecondaryBuffer:(id)a3
+- (void)addSecondaryBuffer:(id)buffer
 {
-  v4 = a3;
-  [(PKMetalStrokeRenderCacheBuffer *)v4 lockPurgeableResourcesAddToSet:?];
+  bufferCopy = buffer;
+  [(PKMetalStrokeRenderCacheBuffer *)bufferCopy lockPurgeableResourcesAddToSet:?];
   v5.receiver = self;
   v5.super_class = PKMetalUnpurgeableStrokeRenderCache;
-  [(PKMetalStrokeRenderCache *)&v5 addSecondaryBuffer:v4];
+  [(PKMetalStrokeRenderCache *)&v5 addSecondaryBuffer:bufferCopy];
 }
 
 @end

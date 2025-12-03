@@ -1,12 +1,12 @@
 @interface RingGrabber
 - (_TtC13SleepHealthUIP33_3908BEF921CD76B2D67B4136649A566B11RingGrabber)init;
-- (_TtC13SleepHealthUIP33_3908BEF921CD76B2D67B4136649A566B11RingGrabber)initWithLayer:(id)a3;
+- (_TtC13SleepHealthUIP33_3908BEF921CD76B2D67B4136649A566B11RingGrabber)initWithLayer:(id)layer;
 - (void)layoutSublayers;
 @end
 
 @implementation RingGrabber
 
-- (_TtC13SleepHealthUIP33_3908BEF921CD76B2D67B4136649A566B11RingGrabber)initWithLayer:(id)a3
+- (_TtC13SleepHealthUIP33_3908BEF921CD76B2D67B4136649A566B11RingGrabber)initWithLayer:(id)layer
 {
   swift_unknownObjectRetain();
   sub_269D9AED0();
@@ -16,7 +16,7 @@
 
 - (void)layoutSublayers
 {
-  v2 = self;
+  selfCopy = self;
   sub_269CD1FE0();
 }
 

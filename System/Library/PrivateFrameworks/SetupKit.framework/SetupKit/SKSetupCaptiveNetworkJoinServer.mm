@@ -1,42 +1,42 @@
 @interface SKSetupCaptiveNetworkJoinServer
-+ (void)resetWithCompletionHandler:(id)a3;
++ (void)resetWithCompletionHandler:(id)handler;
 - (BOOL)_bleAdvertiserShouldRun;
 - (SKSetupCaptiveNetworkJoinServer)init;
-- (id)descriptionWithLevel:(int)a3;
+- (id)descriptionWithLevel:(int)level;
 - (void)_activate;
 - (void)_bleAdvertiserEnsureStarted;
 - (void)_bleAdvertiserEnsureStopped;
-- (void)_bleServerAcceptConnecton:(id)a3;
+- (void)_bleServerAcceptConnecton:(id)connecton;
 - (void)_bleServerEnsureStarted;
 - (void)_bleServerEnsureStopped;
-- (void)_captiveDetectedNotificationUpdate:(BOOL)a3;
-- (void)_captiveNetworkIPAssign:(id)a3;
-- (void)_captiveNetworkLoginInfo:(id)a3 cookie:(unsigned int)a4 responseHandler:(id)a5;
-- (void)_captiveNetworkLoginRequest:(id)a3 responseHandler:(id)a4;
+- (void)_captiveDetectedNotificationUpdate:(BOOL)update;
+- (void)_captiveNetworkIPAssign:(id)assign;
+- (void)_captiveNetworkLoginInfo:(id)info cookie:(unsigned int)cookie responseHandler:(id)handler;
+- (void)_captiveNetworkLoginRequest:(id)request responseHandler:(id)handler;
 - (void)_captiveNetworkProbeEnsureStopped;
-- (void)_captiveNetworkProbeRequest:(id)a3 responseHandler:(id)a4;
+- (void)_captiveNetworkProbeRequest:(id)request responseHandler:(id)handler;
 - (void)_cfuEnsuredStarted;
 - (void)_cfuEnsuredStopped;
-- (void)_connectionEnded:(id)a3;
+- (void)_connectionEnded:(id)ended;
 - (void)_invalidate;
 - (void)_invalidated;
-- (void)_networkRelayAWDLStartRequest:(id)a3 responseHandler:(id)a4;
+- (void)_networkRelayAWDLStartRequest:(id)request responseHandler:(id)handler;
 - (void)_networkRelayDeviceEnsureStopped;
-- (void)_networkRelaySetupRequest:(id)a3 responseHandler:(id)a4;
+- (void)_networkRelaySetupRequest:(id)request responseHandler:(id)handler;
 - (void)_oobEnsureStarted;
 - (void)_run;
 - (void)_runDefault;
 - (void)dealloc;
-- (void)deviceIsConnectedDidChange:(id)a3 isConnected:(BOOL)a4;
-- (void)deviceLinkTypeDidChange:(id)a3 linkType:(unsigned __int8)a4 linkSubtype:(unsigned __int8)a5;
-- (void)deviceProxyServiceInterfaceNameDidChange:(id)a3 interfaceName:(id)a4;
+- (void)deviceIsConnectedDidChange:(id)change isConnected:(BOOL)connected;
+- (void)deviceLinkTypeDidChange:(id)change linkType:(unsigned __int8)type linkSubtype:(unsigned __int8)subtype;
+- (void)deviceProxyServiceInterfaceNameDidChange:(id)change interfaceName:(id)name;
 @end
 
 @implementation SKSetupCaptiveNetworkJoinServer
 
-- (void)_captiveNetworkIPAssign:(id)a3
+- (void)_captiveNetworkIPAssign:(id)assign
 {
-  v6 = a3;
+  assignCopy = assign;
   var0 = self->super._ucat->var0;
   if (var0 <= 30)
   {
@@ -55,7 +55,7 @@ LABEL_3:
   }
 
 LABEL_5:
-  v6[2](v6, 0);
+  assignCopy[2](assignCopy, 0);
 }
 
 - (void)_oobEnsureStarted
@@ -68,9 +68,9 @@ LABEL_5:
   }
 }
 
-- (void)_captiveDetectedNotificationUpdate:(BOOL)a3
+- (void)_captiveDetectedNotificationUpdate:(BOOL)update
 {
-  v3 = a3;
+  updateCopy = update;
   var0 = self->super._ucat->var0;
   if (var0 <= 30)
   {
@@ -90,7 +90,7 @@ LABEL_3:
 
 LABEL_5:
   captiveDetectedNotifyToken = self->_captiveDetectedNotifyToken;
-  if (v3)
+  if (updateCopy)
   {
     if (captiveDetectedNotifyToken == -1)
     {
@@ -112,23 +112,23 @@ LABEL_5:
   }
 }
 
-- (void)deviceProxyServiceInterfaceNameDidChange:(id)a3 interfaceName:(id)a4
+- (void)deviceProxyServiceInterfaceNameDidChange:(id)change interfaceName:(id)name
 {
-  v12 = a3;
+  changeCopy = change;
   dispatch_assert_queue_V2(self->super._dispatchQueue);
   var0 = self->super._ucat->var0;
   if (var0 <= 30)
   {
-    v6 = v12;
+    v6 = changeCopy;
     if (var0 != -1)
     {
 LABEL_3:
       [v6 isConnected];
-      [v12 linkType];
+      [changeCopy linkType];
       StringFromNRLinkType = createStringFromNRLinkType();
-      [v12 linkSubtype];
+      [changeCopy linkSubtype];
       StringFromNRLinkSubtype = createStringFromNRLinkSubtype();
-      v11 = [v12 proxyServiceInterfaceName];
+      proxyServiceInterfaceName = [changeCopy proxyServiceInterfaceName];
       LogPrintF();
 
       goto LABEL_5;
@@ -138,7 +138,7 @@ LABEL_3:
     if (_LogCategory_Initialize())
     {
       v10 = self->super._ucat;
-      v6 = v12;
+      v6 = changeCopy;
       goto LABEL_3;
     }
   }
@@ -146,7 +146,7 @@ LABEL_3:
 LABEL_5:
 }
 
-- (void)deviceLinkTypeDidChange:(id)a3 linkType:(unsigned __int8)a4 linkSubtype:(unsigned __int8)a5
+- (void)deviceLinkTypeDidChange:(id)change linkType:(unsigned __int8)type linkSubtype:(unsigned __int8)subtype
 {
   dispatch_assert_queue_V2(self->super._dispatchQueue);
   var0 = self->super._ucat->var0;
@@ -169,20 +169,20 @@ LABEL_5:
   }
 }
 
-- (void)deviceIsConnectedDidChange:(id)a3 isConnected:(BOOL)a4
+- (void)deviceIsConnectedDidChange:(id)change isConnected:(BOOL)connected
 {
-  v11 = a3;
+  changeCopy = change;
   dispatch_assert_queue_V2(self->super._dispatchQueue);
-  v5 = [v11 proxyServiceInterfaceName];
+  proxyServiceInterfaceName = [changeCopy proxyServiceInterfaceName];
   var0 = self->super._ucat->var0;
   if (var0 <= 30)
   {
     if (var0 != -1)
     {
 LABEL_3:
-      [v11 linkType];
+      [changeCopy linkType];
       StringFromNRLinkType = createStringFromNRLinkType();
-      [v11 linkSubtype];
+      [changeCopy linkSubtype];
       StringFromNRLinkSubtype = createStringFromNRLinkSubtype();
       LogPrintF();
 
@@ -200,11 +200,11 @@ LABEL_3:
 LABEL_5:
 }
 
-- (void)_networkRelaySetupRequest:(id)a3 responseHandler:(id)a4
+- (void)_networkRelaySetupRequest:(id)request responseHandler:(id)handler
 {
   v74 = *MEMORY[0x277D85DE8];
-  v54 = a3;
-  v6 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   v64 = 0;
   v65 = &v64;
   v66 = 0x3032000000;
@@ -217,7 +217,7 @@ LABEL_5:
   v61[3] = &unk_279BB8500;
   v63 = &v64;
   v61[4] = self;
-  v7 = v6;
+  v7 = handlerCopy;
   v62 = v7;
   v51 = MEMORY[0x26676A4C0](v61);
   var0 = self->super._ucat->var0;
@@ -226,7 +226,7 @@ LABEL_5:
     if (var0 != -1)
     {
 LABEL_3:
-      v48 = CUPrintNSObjectOneLine();
+      nrDeviceIdentifier = CUPrintNSObjectOneLine();
       LogPrintF();
 
       goto LABEL_5;
@@ -242,8 +242,8 @@ LABEL_3:
 
 LABEL_5:
   CFStringGetTypeID();
-  v10 = [CFDictionaryGetTypedValue() UTF8String];
-  if (!v10)
+  uTF8String = [CFDictionaryGetTypedValue() UTF8String];
+  if (!uTF8String)
   {
     v29 = *MEMORY[0x277CCA590];
     v30 = NSErrorF_safe();
@@ -276,20 +276,20 @@ LABEL_5:
   }
 
   v52 = [MEMORY[0x277CCACA8] stringWithUTF8String:v73];
-  v11 = self->_nrDeviceManager;
-  if (!v11)
+  copySharedDeviceManager = self->_nrDeviceManager;
+  if (!copySharedDeviceManager)
   {
-    v11 = [MEMORY[0x277D2C9E0] copySharedDeviceManager];
-    if (!v11)
+    copySharedDeviceManager = [MEMORY[0x277D2C9E0] copySharedDeviceManager];
+    if (!copySharedDeviceManager)
     {
       v41 = *MEMORY[0x277CCA590];
       v42 = NSErrorF_safe();
-      v11 = v65[5];
+      copySharedDeviceManager = v65[5];
       v65[5] = v42;
       goto LABEL_34;
     }
 
-    objc_storeStrong(&self->_nrDeviceManager, v11);
+    objc_storeStrong(&self->_nrDeviceManager, copySharedDeviceManager);
   }
 
   v12 = self->_nrDeviceIdentifier;
@@ -309,18 +309,18 @@ LABEL_5:
         v47 = self->super._ucat;
       }
 
-      v48 = [(NRDeviceIdentifier *)v12 nrDeviceIdentifier];
+      nrDeviceIdentifier = [(NRDeviceIdentifier *)v12 nrDeviceIdentifier];
       LogPrintF();
     }
 
 LABEL_17:
-    [(NRDeviceManager *)v11 unregisterDevice:v12, v48];
+    [(NRDeviceManager *)copySharedDeviceManager unregisterDevice:v12, nrDeviceIdentifier];
     nrDeviceIdentifier = self->_nrDeviceIdentifier;
     self->_nrDeviceIdentifier = 0;
   }
 
-  v16 = [MEMORY[0x277D2C9D0] newEphemeralDeviceIdentifier];
-  if (!v16)
+  newEphemeralDeviceIdentifier = [MEMORY[0x277D2C9D0] newEphemeralDeviceIdentifier];
+  if (!newEphemeralDeviceIdentifier)
   {
     v36 = *MEMORY[0x277CCA590];
     v37 = NSErrorF_safe();
@@ -329,7 +329,7 @@ LABEL_17:
     goto LABEL_33;
   }
 
-  objc_storeStrong(&self->_nrDeviceIdentifier, v16);
+  objc_storeStrong(&self->_nrDeviceIdentifier, newEphemeralDeviceIdentifier);
   v17 = objc_alloc_init(MEMORY[0x277D2CA20]);
   v18 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBytes:v59 length:v58];
   [v17 setAwdlAddressData:v18];
@@ -387,7 +387,7 @@ LABEL_17:
   v24 = self->_nrDeviceMonitor;
   if (!v24)
   {
-    v24 = [objc_alloc(MEMORY[0x277D2C9F0]) initWithDeviceIdentifier:v16 delegate:self queue:self->super._dispatchQueue];
+    v24 = [objc_alloc(MEMORY[0x277D2C9F0]) initWithDeviceIdentifier:newEphemeralDeviceIdentifier delegate:self queue:self->super._dispatchQueue];
     objc_storeStrong(&self->_nrDeviceMonitor, v24);
   }
 
@@ -405,8 +405,8 @@ LABEL_17:
     }
 
     v49 = v52;
-    v50 = v10;
-    v48 = v16;
+    v50 = uTF8String;
+    nrDeviceIdentifier = newEphemeralDeviceIdentifier;
     LogPrintF();
   }
 
@@ -417,7 +417,7 @@ LABEL_31:
   v55[2] = __77__SKSetupCaptiveNetworkJoinServer__networkRelaySetupRequest_responseHandler___block_invoke_192;
   v55[3] = &unk_279BB8370;
   v55[4] = self;
-  [(NRDeviceManager *)v11 registerDevice:v16 properties:v17 operationalproperties:v23 queue:dispatchQueue completionBlock:v55, v48, v49, v50];
+  [(NRDeviceManager *)copySharedDeviceManager registerDevice:newEphemeralDeviceIdentifier properties:v17 operationalproperties:v23 queue:dispatchQueue completionBlock:v55, nrDeviceIdentifier, v49, v50];
   v70 = @"_ip";
   v71 = v52;
   v27 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v71 forKeys:&v70 count:1];
@@ -505,11 +505,11 @@ LABEL_5:
   [*(a1 + 32) _run];
 }
 
-- (void)_networkRelayAWDLStartRequest:(id)a3 responseHandler:(id)a4
+- (void)_networkRelayAWDLStartRequest:(id)request responseHandler:(id)handler
 {
   v32[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   v25 = 0;
   v26 = &v25;
   v27 = 0x3032000000;
@@ -522,7 +522,7 @@ LABEL_5:
   v22[3] = &unk_279BB8500;
   v24 = &v25;
   v22[4] = self;
-  v8 = v7;
+  v8 = handlerCopy;
   v23 = v8;
   v9 = MEMORY[0x26676A4C0](v22);
   var0 = self->super._ucat->var0;
@@ -660,10 +660,10 @@ LABEL_7:
       if (var0 != -1)
       {
 LABEL_7:
-        v15 = [(NRDeviceIdentifier *)v3 nrDeviceIdentifier];
+        nrDeviceIdentifier = [(NRDeviceIdentifier *)v3 nrDeviceIdentifier];
         LogPrintF();
 
-        [(NRDeviceManager *)v16 unregisterDevice:v3, v15];
+        [(NRDeviceManager *)v16 unregisterDevice:v3, nrDeviceIdentifier];
         goto LABEL_10;
       }
 
@@ -881,11 +881,11 @@ uint64_t __78__SKSetupCaptiveNetworkJoinServer__captiveNetworkProbeResult_respon
   return result;
 }
 
-- (void)_captiveNetworkProbeRequest:(id)a3 responseHandler:(id)a4
+- (void)_captiveNetworkProbeRequest:(id)request responseHandler:(id)handler
 {
   v37[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   v30 = 0;
   v31 = &v30;
   v32 = 0x3032000000;
@@ -898,7 +898,7 @@ uint64_t __78__SKSetupCaptiveNetworkJoinServer__captiveNetworkProbeResult_respon
   v27[3] = &unk_279BB8500;
   v29 = &v30;
   v27[4] = self;
-  v8 = v7;
+  v8 = handlerCopy;
   v28 = v8;
   v9 = MEMORY[0x26676A4C0](v27);
   var0 = self->super._ucat->var0;
@@ -1064,11 +1064,11 @@ LABEL_6:
   }
 }
 
-- (void)_captiveNetworkLoginInfo:(id)a3 cookie:(unsigned int)a4 responseHandler:(id)a5
+- (void)_captiveNetworkLoginInfo:(id)info cookie:(unsigned int)cookie responseHandler:(id)handler
 {
   v42[2] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  infoCopy = info;
+  handlerCopy = handler;
   v35 = 0;
   v36 = &v35;
   v37 = 0x3032000000;
@@ -1081,7 +1081,7 @@ LABEL_6:
   v32[3] = &unk_279BB8500;
   v34 = &v35;
   v32[4] = self;
-  v10 = v9;
+  v10 = handlerCopy;
   v33 = v10;
   v11 = MEMORY[0x26676A4C0](v32);
   var0 = self->super._ucat->var0;
@@ -1105,7 +1105,7 @@ LABEL_3:
   }
 
 LABEL_5:
-  if (v8)
+  if (infoCopy)
   {
     v14 = *MEMORY[0x277CF8000];
     CFStringGetTypeID();
@@ -1122,7 +1122,7 @@ LABEL_5:
         v19 = CFDictionaryGetTypedValue();
         if (v19)
         {
-          self->_captiveNetworkCookie = a4;
+          self->_captiveNetworkCookie = cookie;
           objc_storeStrong(&self->_captiveNetworkInterfaceName, v19);
           self->_captiveNetworkWebSheetActive = 1;
           v41[0] = @"_cnSS";
@@ -1213,10 +1213,10 @@ LABEL_7:
   return v7();
 }
 
-- (void)_captiveNetworkLoginRequest:(id)a3 responseHandler:(id)a4
+- (void)_captiveNetworkLoginRequest:(id)request responseHandler:(id)handler
 {
-  v17 = a3;
-  v6 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   var0 = self->super._ucat->var0;
   if (var0 <= 30)
   {
@@ -1239,7 +1239,7 @@ LABEL_3:
 
 LABEL_5:
   v9 = objc_alloc_init(SKCaptiveContext);
-  [(SKCaptiveContext *)v9 setResponseHandler:v6];
+  [(SKCaptiveContext *)v9 setResponseHandler:handlerCopy];
   [(SKCaptiveContext *)v9 setServer:self];
   v10 = v9;
   if (MEMORY[0x266769E70](_captiveNetworkLoginCallback, v10))
@@ -1267,21 +1267,21 @@ LABEL_10:
 
   v12 = *MEMORY[0x277CCA590];
   v13 = NSErrorF_safe();
-  (*(v6 + 2))(v6, 0, 0, v13, &__block_literal_global_76);
+  (*(handlerCopy + 2))(handlerCopy, 0, 0, v13, &__block_literal_global_76);
 
 LABEL_11:
 }
 
-- (void)_connectionEnded:(id)a3
+- (void)_connectionEnded:(id)ended
 {
   [(SKSetupCaptiveNetworkJoinServer *)self _captiveNetworkProbeEnsureStopped];
 
   [(SKSetupCaptiveNetworkJoinServer *)self _networkRelayDeviceEnsureStopped];
 }
 
-- (void)_bleServerAcceptConnecton:(id)a3
+- (void)_bleServerAcceptConnecton:(id)connecton
 {
-  v12 = a3;
+  connectonCopy = connecton;
   v4 = self->super._skCnx;
   if (v4)
   {
@@ -1289,31 +1289,31 @@ LABEL_11:
     var0 = self->super._ucat->var0;
     if (var0 <= 90)
     {
-      v7 = v12;
+      v7 = connectonCopy;
       if (var0 != -1)
       {
 LABEL_4:
         v10 = v7;
         LogPrintF();
-        [v12 invalidate];
+        [connectonCopy invalidate];
         goto LABEL_8;
       }
 
       if (_LogCategory_Initialize())
       {
         ucat = self->super._ucat;
-        v7 = v12;
+        v7 = connectonCopy;
         goto LABEL_4;
       }
     }
 
-    [v12 invalidate];
+    [connectonCopy invalidate];
   }
 
   else
   {
     v5 = objc_alloc_init(SKConnection);
-    [(SKConnection *)v5 setBleConnection:v12];
+    [(SKConnection *)v5 setBleConnection:connectonCopy];
     [(SKSetupBase *)self _connectionStartWithSKConnection:v5 clientMode:0 completeOnFailure:0 completion:&__block_literal_global_95];
   }
 
@@ -1629,13 +1629,13 @@ LABEL_10:
 
 - (BOOL)_bleAdvertiserShouldRun
 {
-  v3 = [(CBServer *)self->_bleServer bleListeningPSM];
-  if (v3)
+  bleListeningPSM = [(CBServer *)self->_bleServer bleListeningPSM];
+  if (bleListeningPSM)
   {
-    LOBYTE(v3) = [(SKConnection *)self->super._skCnx state]!= 1 && GestaltGetDeviceClass() != 7;
+    LOBYTE(bleListeningPSM) = [(SKConnection *)self->super._skCnx state]!= 1 && GestaltGetDeviceClass() != 7;
   }
 
-  return v3;
+  return bleListeningPSM;
 }
 
 - (void)_runDefault
@@ -1826,9 +1826,9 @@ uint64_t __44__SKSetupCaptiveNetworkJoinServer__activate__block_invoke_8(uint64_
   return result;
 }
 
-- (id)descriptionWithLevel:(int)a3
+- (id)descriptionWithLevel:(int)level
 {
-  if ((a3 & 0x8000000) != 0)
+  if ((level & 0x8000000) != 0)
   {
     v4 = 0;
   }
@@ -1855,11 +1855,11 @@ uint64_t __44__SKSetupCaptiveNetworkJoinServer__activate__block_invoke_8(uint64_
   CUAppendF();
   v7 = v4;
 
-  v8 = [(SKSetupBase *)self pskData];
-  v9 = v8;
-  if (v8)
+  pskData = [(SKSetupBase *)self pskData];
+  v9 = pskData;
+  if (pskData)
   {
-    [v8 length];
+    [pskData length];
     CUAppendF();
     v10 = v7;
 
@@ -1901,9 +1901,9 @@ uint64_t __44__SKSetupCaptiveNetworkJoinServer__activate__block_invoke_8(uint64_
   return v3;
 }
 
-+ (void)resetWithCompletionHandler:(id)a3
++ (void)resetWithCompletionHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v4 = [objc_alloc(getFLFollowUpControllerClass()) initWithClientIdentifier:@"com.apple.SetupKit"];
   if (v4)
   {
@@ -1916,7 +1916,7 @@ uint64_t __44__SKSetupCaptiveNetworkJoinServer__activate__block_invoke_8(uint64_
     v7[1] = 3221225472;
     v7[2] = __62__SKSetupCaptiveNetworkJoinServer_resetWithCompletionHandler___block_invoke;
     v7[3] = &unk_279BB7A00;
-    v9 = v3;
+    v9 = handlerCopy;
     v8 = v4;
     [v8 clearPendingFollowUpItemsWithUniqueIdentifiers:&unk_28776E060 completion:v7];
   }
@@ -1928,11 +1928,11 @@ uint64_t __44__SKSetupCaptiveNetworkJoinServer__activate__block_invoke_8(uint64_
       LogPrintF_safe();
     }
 
-    if (v3)
+    if (handlerCopy)
     {
       v5 = *MEMORY[0x277CCA590];
       v6 = NSErrorF_safe();
-      (*(v3 + 2))(v3, v6);
+      (*(handlerCopy + 2))(handlerCopy, v6);
     }
   }
 }

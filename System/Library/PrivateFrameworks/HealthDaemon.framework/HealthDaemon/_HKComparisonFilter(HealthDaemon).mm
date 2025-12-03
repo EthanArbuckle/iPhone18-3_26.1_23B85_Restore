@@ -7,24 +7,24 @@
 
 - (id)simplePredicate
 {
-  v3 = a1;
-  v4 = [a1 operatorType];
-  if (v4 <= 5)
+  selfCopy = self;
+  operatorType = [self operatorType];
+  if (operatorType <= 5)
   {
-    if (v4 < 6)
+    if (operatorType < 6)
     {
-      if (!v3)
+      if (!selfCopy)
       {
         goto LABEL_22;
       }
 
       v5 = MEMORY[0x277D10B18];
-      v6 = [v3 propertyForKeyPath];
-      v7 = [v3 value];
-      [v3 operatorType];
-      v8 = [v5 predicateWithProperty:v6 value:v7 comparisonType:HDSQLiteComparisonTypeForPredicateOperator()];
+      propertyForKeyPath = [selfCopy propertyForKeyPath];
+      value = [selfCopy value];
+      [selfCopy operatorType];
+      v8 = [v5 predicateWithProperty:propertyForKeyPath value:value comparisonType:HDSQLiteComparisonTypeForPredicateOperator()];
 LABEL_21:
-      v3 = v8;
+      selfCopy = v8;
 
       goto LABEL_22;
     }
@@ -32,88 +32,88 @@ LABEL_21:
     goto LABEL_25;
   }
 
-  if (v4 <= 8)
+  if (operatorType <= 8)
   {
-    if (v4 != 6)
+    if (operatorType != 6)
     {
-      if (v4 == 7)
+      if (operatorType == 7)
       {
-        if (!v3)
+        if (!selfCopy)
         {
           goto LABEL_22;
         }
 
         v13 = MEMORY[0x277D10B18];
-        v6 = [v3 propertyForKeyPath];
-        v7 = [v3 value];
-        v8 = [v13 predicateWithProperty:v6 likePattern:v7];
+        propertyForKeyPath = [selfCopy propertyForKeyPath];
+        value = [selfCopy value];
+        v8 = [v13 predicateWithProperty:propertyForKeyPath likePattern:value];
       }
 
       else
       {
-        if (!v3)
+        if (!selfCopy)
         {
           goto LABEL_22;
         }
 
         v9 = MEMORY[0x277D10B18];
-        v6 = [v3 propertyForKeyPath];
-        v7 = [v3 value];
-        v8 = [v9 predicateWithProperty:v6 beginsWithString:v7];
+        propertyForKeyPath = [selfCopy propertyForKeyPath];
+        value = [selfCopy value];
+        v8 = [v9 predicateWithProperty:propertyForKeyPath beginsWithString:value];
       }
 
       goto LABEL_21;
     }
 
 LABEL_15:
-    if (!v3)
+    if (!selfCopy)
     {
       goto LABEL_22;
     }
 
     v11 = MEMORY[0x277D10B28];
-    v6 = [v3 propertyForKeyPath];
-    v7 = [v3 value];
-    v8 = [v11 containsPredicateWithProperty:v6 values:v7];
+    propertyForKeyPath = [selfCopy propertyForKeyPath];
+    value = [selfCopy value];
+    v8 = [v11 containsPredicateWithProperty:propertyForKeyPath values:value];
     goto LABEL_21;
   }
 
-  switch(v4)
+  switch(operatorType)
   {
     case 9:
-      if (!v3)
+      if (!selfCopy)
       {
         goto LABEL_22;
       }
 
       v12 = MEMORY[0x277D10B18];
-      v6 = [v3 propertyForKeyPath];
-      v7 = [v3 value];
-      v8 = [v12 predicateWithProperty:v6 endsWithString:v7];
+      propertyForKeyPath = [selfCopy propertyForKeyPath];
+      value = [selfCopy value];
+      v8 = [v12 predicateWithProperty:propertyForKeyPath endsWithString:value];
       goto LABEL_21;
     case 10:
       goto LABEL_15;
     case 99:
-      if (!v3)
+      if (!selfCopy)
       {
         goto LABEL_22;
       }
 
       v10 = MEMORY[0x277D10B18];
-      v6 = [v3 propertyForKeyPath];
-      v7 = [v3 value];
-      v8 = [v10 predicateWithProperty:v6 containsString:v7];
+      propertyForKeyPath = [selfCopy propertyForKeyPath];
+      value = [selfCopy value];
+      v8 = [v10 predicateWithProperty:propertyForKeyPath containsString:value];
       goto LABEL_21;
   }
 
 LABEL_25:
-  v15 = [MEMORY[0x277CCA890] currentHandler];
-  [v15 handleFailureInMethod:a2 object:v3 file:@"HKFilter+HealthDaemon.m" lineNumber:130 description:@"Unreachable code has been executed"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:selfCopy file:@"HKFilter+HealthDaemon.m" lineNumber:130 description:@"Unreachable code has been executed"];
 
-  v3 = [MEMORY[0x277D10B70] falsePredicate];
+  selfCopy = [MEMORY[0x277D10B70] falsePredicate];
 LABEL_22:
 
-  return v3;
+  return selfCopy;
 }
 
 - (uint64_t)propertyForKeyPath

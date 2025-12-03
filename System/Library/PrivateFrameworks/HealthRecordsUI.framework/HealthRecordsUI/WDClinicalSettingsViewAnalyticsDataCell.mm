@@ -1,14 +1,14 @@
 @interface WDClinicalSettingsViewAnalyticsDataCell
-- (WDClinicalSettingsViewAnalyticsDataCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (WDClinicalSettingsViewAnalyticsDataCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 @end
 
 @implementation WDClinicalSettingsViewAnalyticsDataCell
 
-- (WDClinicalSettingsViewAnalyticsDataCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (WDClinicalSettingsViewAnalyticsDataCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v7.receiver = self;
   v7.super_class = WDClinicalSettingsViewAnalyticsDataCell;
-  v4 = [(WDClinicalSettingsViewAnalyticsDataCell *)&v7 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(WDClinicalSettingsViewAnalyticsDataCell *)&v7 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {

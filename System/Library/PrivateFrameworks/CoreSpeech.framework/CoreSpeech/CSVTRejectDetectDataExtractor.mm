@@ -1,69 +1,69 @@
 @interface CSVTRejectDetectDataExtractor
 - (CSVTRejectDetectDataExtractor)init;
-- (void)classifyEventWithMetaData:(id)a3;
+- (void)classifyEventWithMetaData:(id)data;
 @end
 
 @implementation CSVTRejectDetectDataExtractor
 
-- (void)classifyEventWithMetaData:(id)a3
+- (void)classifyEventWithMetaData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   if ([(CSVTRejectDetectDataExtractor *)self totalEventCount]< 0x7D1)
   {
-    v6 = [v4 eventType];
-    if (v6 > 1)
+    eventType = [dataCopy eventType];
+    if (eventType > 1)
     {
-      if (v6 == 2)
+      if (eventType == 2)
       {
         ++self->_spkrIdRejectCount;
         spkrIdScores = self->_spkrIdScores;
-        [v4 score];
+        [dataCopy score];
         v23 = [NSNumber numberWithFloat:?];
         [(NSMutableArray *)spkrIdScores addObject:v23];
 
         spkrIdTimeDelta = self->_spkrIdTimeDelta;
-        [v4 deltaTimeFromActivation];
+        [dataCopy deltaTimeFromActivation];
         v25 = [NSNumber numberWithDouble:?];
         [(NSMutableArray *)spkrIdTimeDelta addObject:v25];
 
-        [v4 threshold];
+        [dataCopy threshold];
         self->_phsThreshold = v26;
       }
 
-      else if (v6 == 3)
+      else if (eventType == 3)
       {
         ++self->_spkrIdRejectCount;
         v12 = self->_spkrIdScores;
-        [v4 score];
+        [dataCopy score];
         v13 = [NSNumber numberWithFloat:?];
         [(NSMutableArray *)v12 addObject:v13];
 
         v14 = self->_spkrIdTimeDelta;
-        [v4 deltaTimeFromActivation];
+        [dataCopy deltaTimeFromActivation];
         v15 = [NSNumber numberWithDouble:?];
         [(NSMutableArray *)v14 addObject:v15];
 
-        [v4 threshold];
+        [dataCopy threshold];
         self->_pjsThreshold = v16;
       }
     }
 
-    else if (v6)
+    else if (eventType)
     {
-      if (v6 == 1)
+      if (eventType == 1)
       {
         ++self->_jsRejectCount;
         jsScores = self->_jsScores;
-        [v4 score];
+        [dataCopy score];
         v8 = [NSNumber numberWithFloat:?];
         [(NSMutableArray *)jsScores addObject:v8];
 
         jsTimeDelta = self->_jsTimeDelta;
-        [v4 deltaTimeFromActivation];
+        [dataCopy deltaTimeFromActivation];
         v10 = [NSNumber numberWithDouble:?];
         [(NSMutableArray *)jsTimeDelta addObject:v10];
 
-        [v4 threshold];
+        [dataCopy threshold];
         self->_jsThreshold = v11;
       }
     }
@@ -72,16 +72,16 @@
     {
       ++self->_hsRejectCount;
       hsScores = self->_hsScores;
-      [v4 score];
+      [dataCopy score];
       v18 = [NSNumber numberWithFloat:?];
       [(NSMutableArray *)hsScores addObject:v18];
 
       hsTimeDelta = self->_hsTimeDelta;
-      [v4 deltaTimeFromActivation];
+      [dataCopy deltaTimeFromActivation];
       v20 = [NSNumber numberWithDouble:?];
       [(NSMutableArray *)hsTimeDelta addObject:v20];
 
-      [v4 threshold];
+      [dataCopy threshold];
       self->_hsThreshold = v21;
     }
   }

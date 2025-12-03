@@ -1,31 +1,31 @@
 @interface MBCKSnapshotMergeRequest
-+ (id)snapshotMergeRequestForDevice:(id)a3;
-- (BOOL)addSnapshotToMerge:(id)a3;
++ (id)snapshotMergeRequestForDevice:(id)device;
+- (BOOL)addSnapshotToMerge:(id)merge;
 - (MBCKDevice)device;
-- (MBCKSnapshotMergeRequest)initWithDevice:(id)a3;
+- (MBCKSnapshotMergeRequest)initWithDevice:(id)device;
 - (id)recordRepresentation;
 @end
 
 @implementation MBCKSnapshotMergeRequest
 
-+ (id)snapshotMergeRequestForDevice:(id)a3
++ (id)snapshotMergeRequestForDevice:(id)device
 {
-  v3 = a3;
-  v4 = [[MBCKSnapshotMergeRequest alloc] initWithDevice:v3];
+  deviceCopy = device;
+  v4 = [[MBCKSnapshotMergeRequest alloc] initWithDevice:deviceCopy];
 
   return v4;
 }
 
-- (MBCKSnapshotMergeRequest)initWithDevice:(id)a3
+- (MBCKSnapshotMergeRequest)initWithDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v12.receiver = self;
   v12.super_class = MBCKSnapshotMergeRequest;
   v5 = [(MBCKModel *)&v12 initWithRecord:0 cache:0];
   v6 = v5;
   if (v5)
   {
-    [(MBCKSnapshotMergeRequest *)v5 setDevice:v4];
+    [(MBCKSnapshotMergeRequest *)v5 setDevice:deviceCopy];
     v7 = MBRandomUUID();
     uuid = v6->_uuid;
     v6->_uuid = v7;
@@ -38,14 +38,14 @@
   return v6;
 }
 
-- (BOOL)addSnapshotToMerge:(id)a3
+- (BOOL)addSnapshotToMerge:(id)merge
 {
   snapshotsToMerge = self->_snapshotsToMerge;
-  v4 = a3;
+  mergeCopy = merge;
   v5 = [CKReference alloc];
-  v6 = [v4 recordID];
+  recordID = [mergeCopy recordID];
 
-  v7 = [v5 initWithRecordID:v6 action:0];
+  v7 = [v5 initWithRecordID:recordID action:0];
   [(NSMutableArray *)snapshotsToMerge addObject:v7];
 
   return 1;
@@ -55,21 +55,21 @@
 {
   v10.receiver = self;
   v10.super_class = MBCKSnapshotMergeRequest;
-  v3 = [(MBCKModel *)&v10 recordRepresentation];
-  v4 = [v3 objectForKeyedSubscript:@"device"];
+  recordRepresentation = [(MBCKModel *)&v10 recordRepresentation];
+  v4 = [recordRepresentation objectForKeyedSubscript:@"device"];
 
   if (!v4)
   {
     v5 = [CKReference alloc];
-    v6 = [(MBCKSnapshotMergeRequest *)self device];
-    v7 = [v6 recordID];
-    v8 = [v5 initWithRecordID:v7 action:0];
-    [v3 setObject:v8 forKeyedSubscript:@"device"];
+    device = [(MBCKSnapshotMergeRequest *)self device];
+    recordID = [device recordID];
+    v8 = [v5 initWithRecordID:recordID action:0];
+    [recordRepresentation setObject:v8 forKeyedSubscript:@"device"];
   }
 
-  [v3 setObject:self->_snapshotsToMerge forKeyedSubscript:@"snapshotsToMerge"];
+  [recordRepresentation setObject:self->_snapshotsToMerge forKeyedSubscript:@"snapshotsToMerge"];
 
-  return v3;
+  return recordRepresentation;
 }
 
 - (MBCKDevice)device

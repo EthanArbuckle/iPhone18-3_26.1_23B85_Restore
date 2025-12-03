@@ -10,7 +10,7 @@
   v8 = a4;
   v9 = [objc_opt_class() filterWithType:v8];
 
-  v10 = [MEMORY[0x277CCABB0] numberWithDouble:a1];
+  v10 = [MEMORY[0x277CCABB0] numberWithDouble:self];
   [v9 setValue:v10 forKey:v7];
 
   return v9;

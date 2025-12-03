@@ -1,15 +1,15 @@
 @interface SCATCustomizeSettingsMenuController
 - (id)itemsFromPreferences;
 - (id)originalItemsFromPreference;
-- (void)updateItemsInPreferences:(id)a3;
+- (void)updateItemsInPreferences:(id)preferences;
 @end
 
 @implementation SCATCustomizeSettingsMenuController
 
 - (id)itemsFromPreferences
 {
-  v3 = [(SCATCustomizeSettingsMenuController *)self originalItemsFromPreference];
-  v4 = [(SCATCustomizeMenuBaseController *)self filterAndTrackMenuItemsMatchingBlock:&__block_literal_global_58 allItems:v3];
+  originalItemsFromPreference = [(SCATCustomizeSettingsMenuController *)self originalItemsFromPreference];
+  v4 = [(SCATCustomizeMenuBaseController *)self filterAndTrackMenuItemsMatchingBlock:&__block_literal_global_58 allItems:originalItemsFromPreference];
 
   return v4;
 }
@@ -27,9 +27,9 @@ BOOL __59__SCATCustomizeSettingsMenuController_itemsFromPreferences__block_invok
   return v3;
 }
 
-- (void)updateItemsInPreferences:(id)a3
+- (void)updateItemsInPreferences:(id)preferences
 {
-  v4 = [(SCATCustomizeMenuBaseController *)self restorePreviouslyFilteredItemsToItems:a3];
+  v4 = [(SCATCustomizeMenuBaseController *)self restorePreviouslyFilteredItemsToItems:preferences];
   v3 = +[AXSettings sharedInstance];
   [v3 setSwitchControlSettingsMenuItems:v4];
 }
@@ -37,9 +37,9 @@ BOOL __59__SCATCustomizeSettingsMenuController_itemsFromPreferences__block_invok
 - (id)originalItemsFromPreference
 {
   v2 = +[AXSettings sharedInstance];
-  v3 = [v2 switchControlSettingsMenuItems];
+  switchControlSettingsMenuItems = [v2 switchControlSettingsMenuItems];
 
-  return v3;
+  return switchControlSettingsMenuItems;
 }
 
 @end

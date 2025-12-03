@@ -7,31 +7,31 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCAB68];
-  v4 = [(ASDCustomProperty *)self scope];
+  scope = [(ASDCustomProperty *)self scope];
   v5 = "Output";
-  if (v4 == 1768845428)
+  if (scope == 1768845428)
   {
     v5 = "Input";
   }
 
   v6 = [v3 stringWithFormat:@"%s Channel Layout:", v5];
-  v7 = [(ASDTCustomProperty *)self propertyValue];
-  if ([v7 length] <= 0x1F)
+  propertyValue = [(ASDTCustomProperty *)self propertyValue];
+  if ([propertyValue length] <= 0x1F)
   {
     [v6 appendString:@" nil"];
     v8 = [v6 copy];
     goto LABEL_120;
   }
 
-  v9 = [v7 bytes];
-  v10 = v9[2];
+  bytes = [propertyValue bytes];
+  v10 = bytes[2];
   if (v10 <= 1)
   {
     v10 = 1;
   }
 
   std::vector<char>::vector[abi:ne200100](&__dst, 20 * v10 + 12);
-  memcpy(__dst, v9, 20 * v9[2] + 12);
+  memcpy(__dst, bytes, 20 * bytes[2] + 12);
   if (*__dst == 0x10000)
   {
     v12 = vcnt_s8(*(__dst + 1));

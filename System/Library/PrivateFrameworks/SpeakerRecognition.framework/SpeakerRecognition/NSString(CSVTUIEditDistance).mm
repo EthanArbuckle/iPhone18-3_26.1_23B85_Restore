@@ -15,13 +15,13 @@
 {
   v12 = 0;
   v4 = [MEMORY[0x277CCAC68] regularExpressionWithPattern:a3 options:1 error:&v12];
-  v5 = 0;
+  array = 0;
   if (!v12)
   {
-    v6 = [v4 firstMatchInString:a1 options:0 range:{0, objc_msgSend(a1, "length")}];
+    v6 = [v4 firstMatchInString:self options:0 range:{0, objc_msgSend(self, "length")}];
     if (v6)
     {
-      v5 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
       if ([v6 numberOfRanges])
       {
         v7 = 0;
@@ -29,14 +29,14 @@
         {
           if ([v6 rangeAtIndex:v7] == 0x7FFFFFFFFFFFFFFFLL)
           {
-            [v5 addObject:&stru_283923FC0];
+            [array addObject:&stru_283923FC0];
           }
 
           else
           {
             v8 = [v6 rangeAtIndex:v7];
-            v10 = [a1 substringWithRange:{v8, v9}];
-            [v5 addObject:v10];
+            v10 = [self substringWithRange:{v8, v9}];
+            [array addObject:v10];
           }
 
           ++v7;
@@ -48,11 +48,11 @@
 
     else
     {
-      v5 = 0;
+      array = 0;
     }
   }
 
-  return v5;
+  return array;
 }
 
 - (id)_firstMatchesForRegularExpressions:()CSVTUIEditDistance
@@ -77,7 +77,7 @@
           objc_enumerationMutation(v4);
         }
 
-        v9 = [a1 _firstMatchesForRegularExpression:{*(*(&v13 + 1) + 8 * i), v13}];
+        v9 = [self _firstMatchesForRegularExpression:{*(*(&v13 + 1) + 8 * i), v13}];
         if (v9)
         {
           v10 = v9;
@@ -139,9 +139,9 @@ LABEL_11:
           [v11 description];
         }
         v12 = ;
-        v13 = [v12 lowercaseString];
-        v14 = [a1 lowercaseString];
-        v15 = [v13 isEqualToString:v14];
+        lowercaseString = [v12 lowercaseString];
+        lowercaseString2 = [self lowercaseString];
+        v15 = [lowercaseString isEqualToString:lowercaseString2];
 
         if (v15)
         {
@@ -182,7 +182,7 @@ LABEL_14:
 
   else
   {
-    v5 = [v4 numberOfMatchesInString:a1 options:0 range:{0, objc_msgSend(a1, "length")}] != 0;
+    v5 = [v4 numberOfMatchesInString:self options:0 range:{0, objc_msgSend(self, "length")}] != 0;
   }
 
   return v5;
@@ -191,7 +191,7 @@ LABEL_14:
 - (id)_stringByStrippingNoiseLeadingNoise:()CSVTUIEditDistance TrailingNoise:
 {
   v6 = a4;
-  v7 = [a1 _stringByStrippingLeadingNoise:a3];
+  v7 = [self _stringByStrippingLeadingNoise:a3];
   v8 = [v7 _stringByStrippingTrailingNoise:v6];
 
   return v8;
@@ -201,7 +201,7 @@ LABEL_14:
 {
   v7 = 0;
   v4 = [MEMORY[0x277CCAC68] regularExpressionWithPattern:a3 options:1 error:&v7];
-  v5 = [a1 mutableCopy];
+  v5 = [self mutableCopy];
   [v4 replaceMatchesInString:v5 options:0 range:0 withTemplate:{objc_msgSend(v5, "length"), &stru_283923FC0}];
 
   return v5;
@@ -211,7 +211,7 @@ LABEL_14:
 {
   v7 = 0;
   v4 = [MEMORY[0x277CCAC68] regularExpressionWithPattern:a3 options:1 error:&v7];
-  v5 = [a1 mutableCopy];
+  v5 = [self mutableCopy];
   [v4 replaceMatchesInString:v5 options:0 range:0 withTemplate:{objc_msgSend(v5, "length"), &stru_283923FC0}];
 
   return v5;
@@ -220,20 +220,20 @@ LABEL_14:
 - (id)_stringByFixingNamePattern:()CSVTUIEditDistance
 {
   v4 = a3;
-  v5 = [a1 lowercaseString];
-  v6 = [v5 hasPrefix:v4];
+  lowercaseString = [self lowercaseString];
+  v6 = [lowercaseString hasPrefix:v4];
 
   if (v6)
   {
-    v7 = [a1 substringFromIndex:{objc_msgSend(v4, "length")}];
+    selfCopy = [self substringFromIndex:{objc_msgSend(v4, "length")}];
   }
 
   else
   {
-    v7 = a1;
+    selfCopy = self;
   }
 
-  v8 = v7;
+  v8 = selfCopy;
 
   return v8;
 }

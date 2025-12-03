@@ -1,60 +1,60 @@
 @interface _UIMainMenuBaseMenuResponse
-- (BOOL)isEqual:(id)a3;
-- (_UIMainMenuBaseMenuResponse)initWithCoder:(id)a3;
-- (id)_initWithMenu:(id)a3 clientName:(id)a4 sessionResponse:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (_UIMainMenuBaseMenuResponse)initWithCoder:(id)coder;
+- (id)_initWithMenu:(id)menu clientName:(id)name sessionResponse:(id)response;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _UIMainMenuBaseMenuResponse
 
-- (id)_initWithMenu:(id)a3 clientName:(id)a4 sessionResponse:(id)a5
+- (id)_initWithMenu:(id)menu clientName:(id)name sessionResponse:(id)response
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  menuCopy = menu;
+  nameCopy = name;
+  responseCopy = response;
   v15.receiver = self;
   v15.super_class = _UIMainMenuBaseMenuResponse;
   v12 = [(_UIMainMenuBaseMenuResponse *)&v15 init];
   p_isa = &v12->super.isa;
   if (v12)
   {
-    objc_storeStrong(&v12->_menu, a3);
-    objc_storeStrong(p_isa + 2, a4);
-    objc_storeStrong(p_isa + 3, a5);
+    objc_storeStrong(&v12->_menu, menu);
+    objc_storeStrong(p_isa + 2, name);
+    objc_storeStrong(p_isa + 3, response);
   }
 
   return p_isa;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   menu = self->_menu;
-  v5 = a3;
-  [v5 encodeObject:menu forKey:@"Menu"];
-  [v5 encodeObject:self->_clientName forKey:@"ClientName"];
-  [v5 encodeObject:self->_sessionResponse forKey:@"SessionResponse"];
+  coderCopy = coder;
+  [coderCopy encodeObject:menu forKey:@"Menu"];
+  [coderCopy encodeObject:self->_clientName forKey:@"ClientName"];
+  [coderCopy encodeObject:self->_sessionResponse forKey:@"SessionResponse"];
 }
 
-- (_UIMainMenuBaseMenuResponse)initWithCoder:(id)a3
+- (_UIMainMenuBaseMenuResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(_UIMainMenuBaseMenuResponse *)self init];
   if (v5)
   {
     v6 = objc_opt_self();
-    v7 = [v4 decodeObjectOfClass:v6 forKey:@"Menu"];
+    v7 = [coderCopy decodeObjectOfClass:v6 forKey:@"Menu"];
     menu = v5->_menu;
     v5->_menu = v7;
 
     v9 = objc_opt_self();
-    v10 = [v4 decodeObjectOfClass:v9 forKey:@"ClientName"];
+    v10 = [coderCopy decodeObjectOfClass:v9 forKey:@"ClientName"];
     clientName = v5->_clientName;
     v5->_clientName = v10;
 
     v12 = objc_opt_self();
-    v13 = [v4 decodeObjectOfClass:v12 forKey:@"SessionResponse"];
+    v13 = [coderCopy decodeObjectOfClass:v12 forKey:@"SessionResponse"];
     sessionResponse = v5->_sessionResponse;
     v5->_sessionResponse = v13;
   }
@@ -62,10 +62,10 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     LOBYTE(v12) = 1;
   }
@@ -77,7 +77,7 @@
 
     if (isKindOfClass)
     {
-      v7 = v4;
+      v7 = equalCopy;
       menu = v7->_menu;
       v9 = self->_menu;
       v10 = menu;
@@ -172,9 +172,9 @@ LABEL_24:
   v4 = [v3 appendObject:self->_menu withName:@"menu" skipIfNil:1];
   [v3 appendString:self->_clientName withName:@"clientName" skipIfEmpty:1];
   v5 = [v3 appendObject:self->_sessionResponse withName:@"sessionResponse" skipIfNil:1];
-  v6 = [v3 build];
+  build = [v3 build];
 
-  return v6;
+  return build;
 }
 
 @end

@@ -4,37 +4,37 @@
 - (MRDUIActivityServer)init;
 - (MRVolumeUIControllable)volumeController;
 - (id)combinedSuppressedBundleIdentifiers;
-- (int64_t)_pendingPreferredStateForBundleIdentifier:(id)a3;
-- (int64_t)_preferredStateForPlayerPath:(id)a3;
-- (void)_clearPendingPreferredStateForPlayerPath:(id)a3;
-- (void)_handleElectedPlayerDidChangeNotification:(id)a3;
-- (void)_handleIsPlayingDidChangeNotification:(id)a3;
-- (void)_handlePlaybackQueueDidChangeNotification:(id)a3;
-- (void)_setPendingPreferredState:(int64_t)a3 forBundleIdentifier:(id)a4;
-- (void)acquireGroupSessionLowPowerPlatterAssertionWithReply:(id)a3;
-- (void)acquireGroupSessionNearbyAssertionForSession:(id)a3 withReply:(id)a4;
-- (void)acquireLockScreenControlsAssertionWithReply:(id)a3;
-- (void)acquireNowPlayingActivityAssertionForRouteIdentifier:(id)a3 withDuration:(int64_t)a4 preferredState:(int64_t)a5 withReply:(id)a6;
-- (void)acquireQuickControlsAssertionWithReply:(id)a3;
-- (void)acquireRouteRecommendationAssertionForIdentifiers:(id)a3 withReply:(id)a4;
-- (void)acquireScreenMirroringQuickControlsAssertionWithReply:(id)a3;
-- (void)collectDiagnostic:(id)a3;
-- (void)contextForActivityIdentifier:(id)a3 reply:(id)a4;
+- (int64_t)_pendingPreferredStateForBundleIdentifier:(id)identifier;
+- (int64_t)_preferredStateForPlayerPath:(id)path;
+- (void)_clearPendingPreferredStateForPlayerPath:(id)path;
+- (void)_handleElectedPlayerDidChangeNotification:(id)notification;
+- (void)_handleIsPlayingDidChangeNotification:(id)notification;
+- (void)_handlePlaybackQueueDidChangeNotification:(id)notification;
+- (void)_setPendingPreferredState:(int64_t)state forBundleIdentifier:(id)identifier;
+- (void)acquireGroupSessionLowPowerPlatterAssertionWithReply:(id)reply;
+- (void)acquireGroupSessionNearbyAssertionForSession:(id)session withReply:(id)reply;
+- (void)acquireLockScreenControlsAssertionWithReply:(id)reply;
+- (void)acquireNowPlayingActivityAssertionForRouteIdentifier:(id)identifier withDuration:(int64_t)duration preferredState:(int64_t)state withReply:(id)reply;
+- (void)acquireQuickControlsAssertionWithReply:(id)reply;
+- (void)acquireRouteRecommendationAssertionForIdentifiers:(id)identifiers withReply:(id)reply;
+- (void)acquireScreenMirroringQuickControlsAssertionWithReply:(id)reply;
+- (void)collectDiagnostic:(id)diagnostic;
+- (void)contextForActivityIdentifier:(id)identifier reply:(id)reply;
 - (void)evaluateState;
-- (void)nearbyGroupSessionDismissed:(id)a3;
-- (void)presentVolumeHUDWithRequest:(id)a3;
-- (void)releaseGroupSessionLowPowerPlatterAssertionWithReply:(id)a3;
-- (void)releaseGroupSessionNearbyAssertionWithReply:(id)a3;
-- (void)releaseLockScreenControlsAssertionWithReply:(id)a3;
-- (void)releaseQuickControlsAssertionWithReply:(id)a3;
-- (void)releaseRouteRecommendationAssertionWithReply:(id)a3;
-- (void)releaseScreenMirroringQuickControlsAssertionWithReply:(id)a3;
+- (void)nearbyGroupSessionDismissed:(id)dismissed;
+- (void)presentVolumeHUDWithRequest:(id)request;
+- (void)releaseGroupSessionLowPowerPlatterAssertionWithReply:(id)reply;
+- (void)releaseGroupSessionNearbyAssertionWithReply:(id)reply;
+- (void)releaseLockScreenControlsAssertionWithReply:(id)reply;
+- (void)releaseQuickControlsAssertionWithReply:(id)reply;
+- (void)releaseRouteRecommendationAssertionWithReply:(id)reply;
+- (void)releaseScreenMirroringQuickControlsAssertionWithReply:(id)reply;
 - (void)releaseTimeBasedNowPlayingActivityAssertions;
 - (void)routeRecommendationDismissed;
-- (void)setNowPlayingActivityAssertionEndDate:(id)a3;
-- (void)setPreferredState:(int64_t)a3 forBundleIdentifier:(id)a4 reply:(id)a5;
-- (void)setPreferredState:(int64_t)a3 reply:(id)a4;
-- (void)suppressPresentationOverBundleIdentifiers:(id)a3 reply:(id)a4;
+- (void)setNowPlayingActivityAssertionEndDate:(id)date;
+- (void)setPreferredState:(int64_t)state forBundleIdentifier:(id)identifier reply:(id)reply;
+- (void)setPreferredState:(int64_t)state reply:(id)reply;
+- (void)suppressPresentationOverBundleIdentifiers:(id)identifiers reply:(id)reply;
 @end
 
 @implementation MRDUIActivityServer
@@ -48,8 +48,8 @@
   {
     v3 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v4 = +[MRDUIServer sharedServer];
-    v5 = [v4 messageQueue];
-    v6 = dispatch_queue_create_with_target_V2("com.apple.MRDUIActivityServer.queue", v3, v5);
+    messageQueue = [v4 messageQueue];
+    v6 = dispatch_queue_create_with_target_V2("com.apple.MRDUIActivityServer.queue", v3, messageQueue);
     queue = v2->_queue;
     v2->_queue = v6;
 
@@ -76,124 +76,124 @@
   return v2;
 }
 
-- (void)acquireLockScreenControlsAssertionWithReply:(id)a3
+- (void)acquireLockScreenControlsAssertionWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v5 = +[MRDUIServer sharedServer];
   v6 = +[NSXPCConnection currentConnection];
   v7 = [v5 clientForConnection:v6];
 
   [v7 setHasLockScreenAssertion:1];
   [(MRDUIActivityServer *)self evaluateState];
-  v4[2](v4);
+  replyCopy[2](replyCopy);
 }
 
-- (void)releaseLockScreenControlsAssertionWithReply:(id)a3
+- (void)releaseLockScreenControlsAssertionWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v5 = +[MRDUIServer sharedServer];
   v6 = +[NSXPCConnection currentConnection];
   v7 = [v5 clientForConnection:v6];
 
   [v7 setHasLockScreenAssertion:0];
   [(MRDUIActivityServer *)self evaluateState];
-  v4[2](v4);
+  replyCopy[2](replyCopy);
 }
 
-- (void)acquireQuickControlsAssertionWithReply:(id)a3
+- (void)acquireQuickControlsAssertionWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v5 = +[MRDUIServer sharedServer];
   v6 = +[NSXPCConnection currentConnection];
   v9 = [v5 clientForConnection:v6];
 
   [v9 setHasQuickControlsAssertion:1];
   [(MRDUIActivityServer *)self evaluateState];
-  v7 = [(MRDUIActivityServer *)self activityController];
-  v8 = [v7 nowPlayingActivityIdentifier];
-  v4[2](v4, v8);
+  activityController = [(MRDUIActivityServer *)self activityController];
+  nowPlayingActivityIdentifier = [activityController nowPlayingActivityIdentifier];
+  replyCopy[2](replyCopy, nowPlayingActivityIdentifier);
 }
 
-- (void)releaseQuickControlsAssertionWithReply:(id)a3
+- (void)releaseQuickControlsAssertionWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v5 = +[MRDUIServer sharedServer];
   v6 = +[NSXPCConnection currentConnection];
   v7 = [v5 clientForConnection:v6];
 
   [v7 setHasQuickControlsAssertion:0];
   [(MRDUIActivityServer *)self evaluateState];
-  v4[2](v4);
+  replyCopy[2](replyCopy);
 }
 
-- (void)acquireScreenMirroringQuickControlsAssertionWithReply:(id)a3
+- (void)acquireScreenMirroringQuickControlsAssertionWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v5 = +[MRDUIServer sharedServer];
   v6 = +[NSXPCConnection currentConnection];
   v7 = [v5 clientForConnection:v6];
 
   [v7 setHasScreenMirroringAssertion:1];
   [(MRDUIActivityServer *)self evaluateState];
-  v4[2](v4);
+  replyCopy[2](replyCopy);
 }
 
-- (void)releaseScreenMirroringQuickControlsAssertionWithReply:(id)a3
+- (void)releaseScreenMirroringQuickControlsAssertionWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v5 = +[MRDUIServer sharedServer];
   v6 = +[NSXPCConnection currentConnection];
   v7 = [v5 clientForConnection:v6];
 
   [v7 setHasScreenMirroringAssertion:0];
   [(MRDUIActivityServer *)self evaluateState];
-  v4[2](v4);
+  replyCopy[2](replyCopy);
 }
 
-- (void)acquireGroupSessionNearbyAssertionForSession:(id)a3 withReply:(id)a4
+- (void)acquireGroupSessionNearbyAssertionForSession:(id)session withReply:(id)reply
 {
-  v6 = a4;
-  v7 = a3;
+  replyCopy = reply;
+  sessionCopy = session;
   v8 = +[MRDUIServer sharedServer];
   v9 = +[NSXPCConnection currentConnection];
   v10 = [v8 clientForConnection:v9];
 
-  [(MRDUIActivityServer *)self setDiscoveredSession:v7];
+  [(MRDUIActivityServer *)self setDiscoveredSession:sessionCopy];
   [v10 setHasGroupSessionNearbyAssertion:1];
   [(MRDUIActivityServer *)self evaluateState];
-  v6[2](v6);
+  replyCopy[2](replyCopy);
 }
 
-- (void)releaseGroupSessionNearbyAssertionWithReply:(id)a3
+- (void)releaseGroupSessionNearbyAssertionWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v5 = +[MRDUIServer sharedServer];
   v6 = +[NSXPCConnection currentConnection];
   v7 = [v5 clientForConnection:v6];
 
   [v7 setHasGroupSessionNearbyAssertion:0];
   [(MRDUIActivityServer *)self evaluateState];
-  v4[2](v4);
+  replyCopy[2](replyCopy);
 }
 
-- (void)acquireRouteRecommendationAssertionForIdentifiers:(id)a3 withReply:(id)a4
+- (void)acquireRouteRecommendationAssertionForIdentifiers:(id)identifiers withReply:(id)reply
 {
-  v6 = a4;
-  v7 = a3;
+  replyCopy = reply;
+  identifiersCopy = identifiers;
   v8 = +[MRDUIServer sharedServer];
   v9 = +[NSXPCConnection currentConnection];
   v10 = [v8 clientForConnection:v9];
 
-  [v10 setRouteRecommendationIdentifiers:v7];
+  [v10 setRouteRecommendationIdentifiers:identifiersCopy];
   [v10 setHasRouteRecommendationAssertion:1];
   [(MRDUIActivityServer *)self evaluateState];
-  v6[2](v6);
+  replyCopy[2](replyCopy);
 }
 
-- (void)acquireNowPlayingActivityAssertionForRouteIdentifier:(id)a3 withDuration:(int64_t)a4 preferredState:(int64_t)a5 withReply:(id)a6
+- (void)acquireNowPlayingActivityAssertionForRouteIdentifier:(id)identifier withDuration:(int64_t)duration preferredState:(int64_t)state withReply:(id)reply
 {
-  v9 = a3;
-  v10 = a6;
+  identifierCopy = identifier;
+  replyCopy = reply;
   v11 = +[MRDUIServer sharedServer];
   v12 = +[NSXPCConnection currentConnection];
   v13 = [v11 clientForConnection:v12];
@@ -201,60 +201,60 @@
   v14 = _MRLogForCategory();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
-    v15 = [v13 bundleID];
+    bundleID = [v13 bundleID];
     *buf = 138544386;
-    v38 = v15;
+    v38 = bundleID;
     v39 = 2048;
     v40 = v13;
     v41 = 2114;
-    v42 = v9;
+    v42 = identifierCopy;
     v43 = 2048;
-    v44 = a5;
+    stateCopy = state;
     v45 = 2048;
-    v46 = a4;
+    durationCopy = duration;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "[MRDUIActivityServer] Client %{public}@<%p> acquiring now playing assertion for route: %{public}@, state: %ld, duration: %ld", buf, 0x34u);
   }
 
-  v16 = [v13 bundleID];
-  v17 = [NSString stringWithFormat:@"NowPlayingActivityAssertion for client: %@<%p>, duration: %ld", v16, v13, a4];
+  bundleID2 = [v13 bundleID];
+  duration = [NSString stringWithFormat:@"NowPlayingActivityAssertion for client: %@<%p>, duration: %ld", bundleID2, v13, duration];
 
-  if (([v9 isEqualToString:MRNowPlayingActivityActiveRouteIdentifier] & 1) == 0)
+  if (([identifierCopy isEqualToString:MRNowPlayingActivityActiveRouteIdentifier] & 1) == 0)
   {
-    if ([v9 isEqualToString:MRNowPlayingActivityLocalRouteIdentifier])
+    if ([identifierCopy isEqualToString:MRNowPlayingActivityLocalRouteIdentifier])
     {
       v18 = 0;
     }
 
     else
     {
-      v18 = v9;
+      v18 = identifierCopy;
     }
 
-    v35 = self;
+    selfCopy = self;
     v19 = v13;
-    v20 = v9;
+    v20 = identifierCopy;
     v21 = v18;
     v22 = +[MRDMediaRemoteServer server];
-    v23 = [v22 routingServer];
-    v24 = [v23 systemEndpointController];
-    v25 = [[MRUpdateActiveSystemEndpointRequest alloc] initWithOutputDeviceUID:v21 type:0 reason:v17];
+    routingServer = [v22 routingServer];
+    systemEndpointController = [routingServer systemEndpointController];
+    v25 = [[MRUpdateActiveSystemEndpointRequest alloc] initWithOutputDeviceUID:v21 type:0 reason:duration];
 
-    v9 = v20;
+    identifierCopy = v20;
     v13 = v19;
-    self = v35;
-    [v24 updateSystemEndpointForRequest:v25];
+    self = selfCopy;
+    [systemEndpointController updateSystemEndpointForRequest:v25];
   }
 
-  if (a4 == 2)
+  if (duration == 2)
   {
     v26 = 480.0;
   }
 
   else
   {
-    if (a4 != 1)
+    if (duration != 1)
     {
-      if (!a4)
+      if (!duration)
       {
         [v13 setHasNowPlayingActivityAssertion:1];
       }
@@ -266,8 +266,8 @@
   }
 
   v27 = [NSDate dateWithTimeIntervalSinceNow:v26];
-  v28 = [(MRDUIActivityServer *)self nowPlayingActivityAssertionEndDate];
-  [v27 timeIntervalSinceDate:v28];
+  nowPlayingActivityAssertionEndDate = [(MRDUIActivityServer *)self nowPlayingActivityAssertionEndDate];
+  [v27 timeIntervalSinceDate:nowPlayingActivityAssertionEndDate];
   v30 = v29;
 
   if (v30 > 0.0)
@@ -276,28 +276,28 @@
   }
 
 LABEL_17:
-  v31 = [(MRDUIActivityServer *)self activityController];
-  v32 = [v31 nowPlayingActivityIdentifier];
+  activityController = [(MRDUIActivityServer *)self activityController];
+  nowPlayingActivityIdentifier = [activityController nowPlayingActivityIdentifier];
 
-  v33 = [(MRDUIActivityServer *)self activityController];
-  v34 = [(MRDUIActivityServer *)self combinedSuppressedBundleIdentifiers];
-  if (v32)
+  activityController2 = [(MRDUIActivityServer *)self activityController];
+  combinedSuppressedBundleIdentifiers = [(MRDUIActivityServer *)self combinedSuppressedBundleIdentifiers];
+  if (nowPlayingActivityIdentifier)
   {
-    [v33 updateNowPlayingActivityState:a5 suppressedBundleIdentifiers:v34];
+    [activityController2 updateNowPlayingActivityState:state suppressedBundleIdentifiers:combinedSuppressedBundleIdentifiers];
   }
 
   else
   {
-    [v33 startNowPlayingActivityWithPreferredState:a5 suppressedBundleIdentifiers:v34];
+    [activityController2 startNowPlayingActivityWithPreferredState:state suppressedBundleIdentifiers:combinedSuppressedBundleIdentifiers];
   }
 
   [(MRDUIActivityServer *)self evaluateState];
-  v10[2](v10);
+  replyCopy[2](replyCopy);
 }
 
-- (void)setPreferredState:(int64_t)a3 reply:(id)a4
+- (void)setPreferredState:(int64_t)state reply:(id)reply
 {
-  v6 = a4;
+  replyCopy = reply;
   v7 = +[MRDUIServer sharedServer];
   v8 = +[NSXPCConnection currentConnection];
   v9 = [v7 clientForConnection:v8];
@@ -305,33 +305,33 @@ LABEL_17:
   v10 = _MRLogForCategory();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v9 bundleID];
+    bundleID = [v9 bundleID];
     v16 = 138543874;
-    v17 = v11;
+    v17 = bundleID;
     v18 = 2048;
     v19 = v9;
     v20 = 2048;
-    v21 = a3;
+    stateCopy = state;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "[MRDUIActivityServer] Client %{public}@<%p> setting preferred state: %ld", &v16, 0x20u);
   }
 
-  v12 = [(MRDUIActivityServer *)self activityController];
-  v13 = [v12 nowPlayingActivityIdentifier];
+  activityController = [(MRDUIActivityServer *)self activityController];
+  nowPlayingActivityIdentifier = [activityController nowPlayingActivityIdentifier];
 
-  if (v13)
+  if (nowPlayingActivityIdentifier)
   {
-    v14 = [(MRDUIActivityServer *)self activityController];
-    v15 = [(MRDUIActivityServer *)self combinedSuppressedBundleIdentifiers];
-    [v14 updateNowPlayingActivityState:a3 suppressedBundleIdentifiers:v15];
+    activityController2 = [(MRDUIActivityServer *)self activityController];
+    combinedSuppressedBundleIdentifiers = [(MRDUIActivityServer *)self combinedSuppressedBundleIdentifiers];
+    [activityController2 updateNowPlayingActivityState:state suppressedBundleIdentifiers:combinedSuppressedBundleIdentifiers];
   }
 
-  v6[2](v6);
+  replyCopy[2](replyCopy);
 }
 
-- (void)setPreferredState:(int64_t)a3 forBundleIdentifier:(id)a4 reply:(id)a5
+- (void)setPreferredState:(int64_t)state forBundleIdentifier:(id)identifier reply:(id)reply
 {
-  v8 = a4;
-  v9 = a5;
+  identifierCopy = identifier;
+  replyCopy = reply;
   v10 = +[MRDUIServer sharedServer];
   v11 = +[NSXPCConnection currentConnection];
   v12 = [v10 clientForConnection:v11];
@@ -339,56 +339,56 @@ LABEL_17:
   v13 = _MRLogForCategory();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = [v12 bundleID];
+    bundleID = [v12 bundleID];
     *buf = 138544130;
-    v30 = v14;
+    v30 = bundleID;
     v31 = 2048;
     v32 = v12;
     v33 = 2048;
-    v34 = a3;
+    stateCopy = state;
     v35 = 2114;
-    v36 = v8;
+    v36 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "[MRDUIActivityServer] Client %{public}@<%p> setting preferred state: %ld for %{public}@", buf, 0x2Au);
   }
 
-  v15 = [(MRDUIActivityServer *)self activityController];
-  v16 = [v15 nowPlayingActivityIdentifier];
-  if (!v16)
+  activityController = [(MRDUIActivityServer *)self activityController];
+  nowPlayingActivityIdentifier = [activityController nowPlayingActivityIdentifier];
+  if (!nowPlayingActivityIdentifier)
   {
-    v24 = v8;
+    v24 = identifierCopy;
 
     goto LABEL_7;
   }
 
-  v17 = v16;
+  v17 = nowPlayingActivityIdentifier;
   [(MRDUIActivityServer *)self electedPlayer];
-  v28 = self;
-  v18 = v9;
+  selfCopy = self;
+  v18 = replyCopy;
   v19 = v12;
-  v21 = v20 = a3;
-  v22 = [v21 client];
-  v23 = [v22 bundleIdentifierHierarchy];
-  v24 = v8;
-  v25 = [v23 containsObject:v8];
+  v21 = v20 = state;
+  client = [v21 client];
+  bundleIdentifierHierarchy = [client bundleIdentifierHierarchy];
+  v24 = identifierCopy;
+  v25 = [bundleIdentifierHierarchy containsObject:identifierCopy];
 
-  a3 = v20;
+  state = v20;
   v12 = v19;
-  v9 = v18;
-  self = v28;
+  replyCopy = v18;
+  self = selfCopy;
 
   if (!v25)
   {
 LABEL_7:
-    [(MRDUIActivityServer *)self _setPendingPreferredState:a3 forBundleIdentifier:v24];
+    [(MRDUIActivityServer *)self _setPendingPreferredState:state forBundleIdentifier:v24];
     goto LABEL_8;
   }
 
-  v26 = [(MRDUIActivityServer *)v28 activityController];
-  v27 = [(MRDUIActivityServer *)v28 combinedSuppressedBundleIdentifiers];
-  [v26 updateNowPlayingActivityState:a3 suppressedBundleIdentifiers:v27];
+  activityController2 = [(MRDUIActivityServer *)selfCopy activityController];
+  combinedSuppressedBundleIdentifiers = [(MRDUIActivityServer *)selfCopy combinedSuppressedBundleIdentifiers];
+  [activityController2 updateNowPlayingActivityState:state suppressedBundleIdentifiers:combinedSuppressedBundleIdentifiers];
 
 LABEL_8:
-  v9[2](v9);
+  replyCopy[2](replyCopy);
 }
 
 - (void)releaseTimeBasedNowPlayingActivityAssertions
@@ -402,25 +402,25 @@ LABEL_8:
 - (id)combinedSuppressedBundleIdentifiers
 {
   v3 = objc_alloc_init(NSMutableSet);
-  v4 = [(MRDUIActivityServer *)self suppressedBundleIdentifiers];
+  suppressedBundleIdentifiers = [(MRDUIActivityServer *)self suppressedBundleIdentifiers];
   v8 = _NSConcreteStackBlock;
   v9 = 3221225472;
   v10 = sub_1000692EC;
   v11 = &unk_1004B81F8;
-  v12 = self;
+  selfCopy = self;
   v13 = v3;
   v5 = v3;
-  [v4 enumerateKeysAndObjectsUsingBlock:&v8];
+  [suppressedBundleIdentifiers enumerateKeysAndObjectsUsingBlock:&v8];
 
-  v6 = [v5 allObjects];
+  allObjects = [v5 allObjects];
 
-  return v6;
+  return allObjects;
 }
 
-- (void)suppressPresentationOverBundleIdentifiers:(id)a3 reply:(id)a4
+- (void)suppressPresentationOverBundleIdentifiers:(id)identifiers reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  identifiersCopy = identifiers;
+  replyCopy = reply;
   v8 = +[MRDUIServer sharedServer];
   v9 = +[NSXPCConnection currentConnection];
   v10 = [v8 clientForConnection:v9];
@@ -432,38 +432,38 @@ LABEL_8:
     self->_suppressedBundleIdentifiers = v11;
   }
 
-  v13 = [v6 copy];
+  v13 = [identifiersCopy copy];
   v14 = self->_suppressedBundleIdentifiers;
-  v15 = [v10 bundleID];
-  [(NSMutableDictionary *)v14 setObject:v13 forKeyedSubscript:v15];
+  bundleID = [v10 bundleID];
+  [(NSMutableDictionary *)v14 setObject:v13 forKeyedSubscript:bundleID];
 
   v16 = _MRLogForCategory();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
-    v17 = [v10 bundleID];
+    bundleID2 = [v10 bundleID];
     v22 = 138543618;
-    v23 = v17;
+    v23 = bundleID2;
     v24 = 2114;
-    v25 = v6;
+    v25 = identifiersCopy;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "[MRDUIActivityServer] Client %{public}@ requesting to suppress: %{public}@", &v22, 0x16u);
   }
 
-  v18 = [(MRDUIActivityServer *)self activityController];
-  v19 = [v18 nowPlayingActivityIdentifier];
+  activityController = [(MRDUIActivityServer *)self activityController];
+  nowPlayingActivityIdentifier = [activityController nowPlayingActivityIdentifier];
 
-  if (v19)
+  if (nowPlayingActivityIdentifier)
   {
-    v20 = [(MRDUIActivityServer *)self activityController];
-    v21 = [(MRDUIActivityServer *)self combinedSuppressedBundleIdentifiers];
-    [v20 updateNowPlayingActivityState:0 suppressedBundleIdentifiers:v21];
+    activityController2 = [(MRDUIActivityServer *)self activityController];
+    combinedSuppressedBundleIdentifiers = [(MRDUIActivityServer *)self combinedSuppressedBundleIdentifiers];
+    [activityController2 updateNowPlayingActivityState:0 suppressedBundleIdentifiers:combinedSuppressedBundleIdentifiers];
   }
 
-  v7[2](v7);
+  replyCopy[2](replyCopy);
 }
 
-- (void)releaseRouteRecommendationAssertionWithReply:(id)a3
+- (void)releaseRouteRecommendationAssertionWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v5 = +[MRDUIServer sharedServer];
   v6 = +[NSXPCConnection currentConnection];
   v7 = [v5 clientForConnection:v6];
@@ -471,14 +471,14 @@ LABEL_8:
   [v7 setRouteRecommendationIdentifiers:&__NSArray0__struct];
   [v7 setHasRouteRecommendationAssertion:0];
   [(MRDUIActivityServer *)self evaluateState];
-  v4[2](v4);
+  replyCopy[2](replyCopy);
 }
 
 - (void)routeRecommendationDismissed
 {
   v2 = +[MRDUIServer sharedServer];
-  v3 = [v2 clients];
-  v4 = [v3 msv_filter:&stru_1004B8238];
+  clients = [v2 clients];
+  v4 = [clients msv_filter:&stru_1004B8238];
 
   v12 = 0u;
   v13 = 0u;
@@ -512,46 +512,46 @@ LABEL_8:
   }
 }
 
-- (void)contextForActivityIdentifier:(id)a3 reply:(id)a4
+- (void)contextForActivityIdentifier:(id)identifier reply:(id)reply
 {
-  v7 = a4;
-  v8 = a3;
-  v10 = [(MRDUIActivityServer *)self activityController];
-  v9 = [v10 contextForActivityIdentifier:v8];
+  replyCopy = reply;
+  identifierCopy = identifier;
+  activityController = [(MRDUIActivityServer *)self activityController];
+  v9 = [activityController contextForActivityIdentifier:identifierCopy];
 
-  (*(a4 + 2))(v7, v9);
+  (*(reply + 2))(replyCopy, v9);
 }
 
-- (void)acquireGroupSessionLowPowerPlatterAssertionWithReply:(id)a3
+- (void)acquireGroupSessionLowPowerPlatterAssertionWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v5 = +[MRDUIServer sharedServer];
   v6 = +[NSXPCConnection currentConnection];
   v7 = [v5 clientForConnection:v6];
 
   [v7 setHasGroupSessionLowPowerPlatterAssertion:1];
   [(MRDUIActivityServer *)self evaluateState];
-  v4[2](v4);
+  replyCopy[2](replyCopy);
 }
 
-- (void)releaseGroupSessionLowPowerPlatterAssertionWithReply:(id)a3
+- (void)releaseGroupSessionLowPowerPlatterAssertionWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v5 = +[MRDUIServer sharedServer];
   v6 = +[NSXPCConnection currentConnection];
   v7 = [v5 clientForConnection:v6];
 
   [v7 setHasGroupSessionLowPowerPlatterAssertion:0];
   [(MRDUIActivityServer *)self evaluateState];
-  v4[2](v4);
+  replyCopy[2](replyCopy);
 }
 
-- (void)nearbyGroupSessionDismissed:(id)a3
+- (void)nearbyGroupSessionDismissed:(id)dismissed
 {
-  v3 = a3;
+  dismissedCopy = dismissed;
   v4 = +[MRDUIServer sharedServer];
-  v5 = [v4 clients];
-  v6 = [v5 msv_filter:&stru_1004B8258];
+  clients = [v4 clients];
+  v6 = [clients msv_filter:&stru_1004B8258];
 
   v14 = 0u;
   v15 = 0u;
@@ -573,7 +573,7 @@ LABEL_8:
           objc_enumerationMutation(v7);
         }
 
-        [*(*(&v12 + 1) + 8 * v11) nearbyGroupSessionDismissed:{v3, v12}];
+        [*(*(&v12 + 1) + 8 * v11) nearbyGroupSessionDismissed:{dismissedCopy, v12}];
         v11 = v11 + 1;
       }
 
@@ -588,13 +588,13 @@ LABEL_8:
 - (BOOL)hasNowPlayingAssertion
 {
   v2 = +[MRDUIServer sharedServer];
-  v3 = [v2 clients];
+  clients = [v2 clients];
 
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = v3;
+  v4 = clients;
   v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
@@ -641,14 +641,14 @@ LABEL_14:
 - (void)evaluateState
 {
   v2 = +[MRDUIServer sharedServer];
-  v3 = [v2 clients];
+  clients = [v2 clients];
 
   v73 = objc_alloc_init(NSMutableArray);
   v87 = 0u;
   v88 = 0u;
   v89 = 0u;
   v90 = 0u;
-  v4 = v3;
+  v4 = clients;
   v76 = [v4 countByEnumeratingWithState:&v87 objects:v99 count:16];
   obj = v4;
   if (!v76)
@@ -679,10 +679,10 @@ LABEL_14:
       }
 
       v12 = *(*(&v87 + 1) + 8 * i);
-      v13 = [v12 hasQuickControlsAssertion];
-      v14 = [v12 hasLockScreenAssertion];
-      v15 = [v12 hasScreenMirroringAssertion];
-      v16 = [v12 hasGroupSessionNearbyAssertion];
+      hasQuickControlsAssertion = [v12 hasQuickControlsAssertion];
+      hasLockScreenAssertion = [v12 hasLockScreenAssertion];
+      hasScreenMirroringAssertion = [v12 hasScreenMirroringAssertion];
+      hasGroupSessionNearbyAssertion = [v12 hasGroupSessionNearbyAssertion];
       if ([v12 hasRouteRecommendationAssertion])
       {
         [v12 routeRecommendationIdentifiers];
@@ -692,10 +692,10 @@ LABEL_14:
         v8 = v74;
       }
 
-      v9 = v77 + v13;
-      v10 += v14;
-      v8 += v15;
-      v7 += v16;
+      v9 = v77 + hasQuickControlsAssertion;
+      v10 += hasLockScreenAssertion;
+      v8 += hasScreenMirroringAssertion;
+      v7 += hasGroupSessionNearbyAssertion;
       v6 += [v12 hasGroupSessionLowPowerPlatterAssertion];
       v5 = v78 + [v12 hasNowPlayingActivityAssertion];
     }
@@ -712,23 +712,23 @@ LABEL_14:
   if (v10 <= 0 && v9 <= 0 && v5 < 1)
   {
 LABEL_22:
-    v23 = self;
-    v32 = [(MRDUIActivityServer *)self nowPlayingActivityAssertionEndDate];
-    [v32 timeIntervalSinceNow];
+    selfCopy2 = self;
+    nowPlayingActivityAssertionEndDate = [(MRDUIActivityServer *)self nowPlayingActivityAssertionEndDate];
+    [nowPlayingActivityAssertionEndDate timeIntervalSinceNow];
     v34 = v33;
 
     if (v34 <= 0.0)
     {
-      v35 = [(MRDUIActivityServer *)self activityController];
-      [v35 endNowPlayingActivity];
+      activityController = [(MRDUIActivityServer *)self activityController];
+      [activityController endNowPlayingActivity];
     }
 
     else
     {
-      v35 = _MRLogForCategory();
-      if (os_log_type_enabled(v35, OS_LOG_TYPE_DEBUG))
+      activityController = _MRLogForCategory();
+      if (os_log_type_enabled(activityController, OS_LOG_TYPE_DEBUG))
       {
-        sub_1003A5800(self, v35);
+        sub_1003A5800(self, activityController);
       }
     }
 
@@ -740,54 +740,54 @@ LABEL_22:
     goto LABEL_27;
   }
 
-  v23 = self;
-  v24 = [(MRDUIActivityServer *)self activityController];
-  v25 = [v24 nowPlayingActivityIdentifier];
+  selfCopy2 = self;
+  activityController2 = [(MRDUIActivityServer *)self activityController];
+  nowPlayingActivityIdentifier = [activityController2 nowPlayingActivityIdentifier];
 
-  if (!v25)
+  if (!nowPlayingActivityIdentifier)
   {
-    v26 = [(MRDUIActivityServer *)self electedPlayer];
-    v27 = [(MRDUIActivityServer *)self _preferredStateForPlayerPath:v26];
+    electedPlayer = [(MRDUIActivityServer *)self electedPlayer];
+    v27 = [(MRDUIActivityServer *)self _preferredStateForPlayerPath:electedPlayer];
 
-    v28 = [(MRDUIActivityServer *)self activityController];
-    v29 = [(MRDUIActivityServer *)self combinedSuppressedBundleIdentifiers];
-    [v28 startNowPlayingActivityWithPreferredState:v27 suppressedBundleIdentifiers:v29];
+    activityController3 = [(MRDUIActivityServer *)self activityController];
+    combinedSuppressedBundleIdentifiers = [(MRDUIActivityServer *)self combinedSuppressedBundleIdentifiers];
+    [activityController3 startNowPlayingActivityWithPreferredState:v27 suppressedBundleIdentifiers:combinedSuppressedBundleIdentifiers];
 
-    v30 = [(MRDUIActivityServer *)self electedPlayer];
-    [(MRDUIActivityServer *)self _clearPendingPreferredStateForPlayerPath:v30];
+    electedPlayer2 = [(MRDUIActivityServer *)self electedPlayer];
+    [(MRDUIActivityServer *)self _clearPendingPreferredStateForPlayerPath:electedPlayer2];
   }
 
   if (v8 > 0)
   {
 LABEL_20:
-    v31 = [(MRDUIActivityServer *)v23 activityController];
-    [v31 startMirroringActivity];
+    activityController4 = [(MRDUIActivityServer *)selfCopy2 activityController];
+    [activityController4 startMirroringActivity];
     goto LABEL_28;
   }
 
 LABEL_27:
-  v31 = [(MRDUIActivityServer *)v23 activityController];
-  [v31 endMirroringActivity];
+  activityController4 = [(MRDUIActivityServer *)selfCopy2 activityController];
+  [activityController4 endMirroringActivity];
 LABEL_28:
 
   if (v19)
   {
-    v36 = [(MRDUIActivityServer *)v23 activityController];
-    [v36 startGroupSessionNearbyActivity:v23->_discoveredSession];
+    activityController5 = [(MRDUIActivityServer *)selfCopy2 activityController];
+    [activityController5 startGroupSessionNearbyActivity:selfCopy2->_discoveredSession];
 
     if (!v20)
     {
 LABEL_30:
-      v37 = [(MRDUIActivityServer *)v23 activityController];
-      [v37 endGroupSessionLowPowerPlatterActivity];
+      activityController6 = [(MRDUIActivityServer *)selfCopy2 activityController];
+      [activityController6 endGroupSessionLowPowerPlatterActivity];
       goto LABEL_33;
     }
   }
 
   else
   {
-    v38 = [(MRDUIActivityServer *)v23 activityController];
-    [v38 endGroupSessionNearbyActivity];
+    activityController7 = [(MRDUIActivityServer *)selfCopy2 activityController];
+    [activityController7 endGroupSessionNearbyActivity];
 
     if (!v20)
     {
@@ -795,29 +795,29 @@ LABEL_30:
     }
   }
 
-  v37 = [(MRDUIActivityServer *)v23 activityController];
-  [v37 startGroupSessionLowPowerPlatterActivity];
+  activityController6 = [(MRDUIActivityServer *)selfCopy2 activityController];
+  [activityController6 startGroupSessionLowPowerPlatterActivity];
 LABEL_33:
 
-  v39 = [(MRDUIActivityServer *)v23 activeRecommendationActivities];
-  v40 = [v73 isEqualToArray:v39];
+  activeRecommendationActivities = [(MRDUIActivityServer *)selfCopy2 activeRecommendationActivities];
+  v40 = [v73 isEqualToArray:activeRecommendationActivities];
 
   if ((v40 & 1) == 0)
   {
-    v41 = [(MRDUIActivityServer *)v23 activeRecommendationActivities];
-    v42 = [(MRDUIActivityServer *)v23 routeRecommendationActivities];
+    activeRecommendationActivities2 = [(MRDUIActivityServer *)selfCopy2 activeRecommendationActivities];
+    routeRecommendationActivities = [(MRDUIActivityServer *)selfCopy2 routeRecommendationActivities];
 
-    if (!v42)
+    if (!routeRecommendationActivities)
     {
       v43 = objc_opt_new();
-      [(MRDUIActivityServer *)v23 setRouteRecommendationActivities:v43];
+      [(MRDUIActivityServer *)selfCopy2 setRouteRecommendationActivities:v43];
     }
 
     v85 = 0u;
     v86 = 0u;
     v83 = 0u;
     v84 = 0u;
-    v44 = v41;
+    v44 = activeRecommendationActivities2;
     v45 = [v44 countByEnumeratingWithState:&v83 objects:v98 count:16];
     if (v45)
     {
@@ -833,8 +833,8 @@ LABEL_33:
           }
 
           v49 = *(*(&v83 + 1) + 8 * j);
-          v50 = [(MRDUIActivityServer *)v23 routeRecommendationActivities];
-          v51 = [v50 objectForKeyedSubscript:v49];
+          routeRecommendationActivities2 = [(MRDUIActivityServer *)selfCopy2 routeRecommendationActivities];
+          v51 = [routeRecommendationActivities2 objectForKeyedSubscript:v49];
 
           if (v51)
           {
@@ -843,8 +843,8 @@ LABEL_33:
               goto LABEL_49;
             }
 
-            v52 = [(MRDUIActivityServer *)v23 activityController];
-            [v52 endRouteRecommendationActivityFor:v51];
+            activityController8 = [(MRDUIActivityServer *)selfCopy2 activityController];
+            [activityController8 endRouteRecommendationActivityFor:v51];
 
             v53 = _MRLogForCategory();
             if (os_log_type_enabled(v53, OS_LOG_TYPE_DEBUG))
@@ -856,18 +856,18 @@ LABEL_33:
               _os_log_debug_impl(&_mh_execute_header, v53, OS_LOG_TYPE_DEBUG, "[MRDUIActivityServer] >>+ ending recommendation for route %@ with LA id: %@", buf, 0x16u);
             }
 
-            v54 = [(MRDUIActivityServer *)v23 routeRecommendationActivities];
-            [v54 setObject:0 forKeyedSubscript:v49];
+            routeRecommendationActivities3 = [(MRDUIActivityServer *)selfCopy2 routeRecommendationActivities];
+            [routeRecommendationActivities3 setObject:0 forKeyedSubscript:v49];
           }
 
           else
           {
-            v54 = _MRLogForCategory();
-            if (os_log_type_enabled(v54, OS_LOG_TYPE_DEBUG))
+            routeRecommendationActivities3 = _MRLogForCategory();
+            if (os_log_type_enabled(routeRecommendationActivities3, OS_LOG_TYPE_DEBUG))
             {
               *buf = 138412290;
               v92 = v49;
-              _os_log_debug_impl(&_mh_execute_header, v54, OS_LOG_TYPE_DEBUG, "[MRDUIActivityServer] >>+ could not find activity id for %@", buf, 0xCu);
+              _os_log_debug_impl(&_mh_execute_header, routeRecommendationActivities3, OS_LOG_TYPE_DEBUG, "[MRDUIActivityServer] >>+ could not find activity id for %@", buf, 0xCu);
             }
           }
 
@@ -907,20 +907,20 @@ LABEL_49:
           }
 
           v62 = *(*(&v79 + 1) + 8 * k);
-          v63 = [(MRDUIActivityServer *)self routeRecommendationActivities];
-          v64 = [v63 objectForKeyedSubscript:v62];
+          routeRecommendationActivities4 = [(MRDUIActivityServer *)self routeRecommendationActivities];
+          v64 = [routeRecommendationActivities4 objectForKeyedSubscript:v62];
 
-          v65 = [(MRDUIActivityServer *)self activityController];
-          v66 = v65;
+          activityController9 = [(MRDUIActivityServer *)self activityController];
+          v66 = activityController9;
           if (v64)
           {
-            [v65 setRouteRecommendationRelevanceScore:v64 activityIdentifier:v60];
+            [activityController9 setRouteRecommendationRelevanceScore:v64 activityIdentifier:v60];
             v67 = v66;
           }
 
           else
           {
-            v67 = [v65 startRouteRecommendationActivityFor:v62 relevanceScore:v60];
+            v67 = [activityController9 startRouteRecommendationActivityFor:v62 relevanceScore:v60];
 
             v68 = _MRLogForCategory();
             if (os_log_type_enabled(v68, OS_LOG_TYPE_DEBUG))
@@ -934,8 +934,8 @@ LABEL_49:
               _os_log_debug_impl(&_mh_execute_header, v68, OS_LOG_TYPE_DEBUG, "[MRDUIActivityServer] >>+ %@ for AVOD %@ (%f)", buf, 0x20u);
             }
 
-            v69 = [(MRDUIActivityServer *)self routeRecommendationActivities];
-            [v69 setObject:v67 forKeyedSubscript:v62];
+            routeRecommendationActivities5 = [(MRDUIActivityServer *)self routeRecommendationActivities];
+            [routeRecommendationActivities5 setObject:v67 forKeyedSubscript:v62];
           }
 
           v60 = v60 + -1.0;
@@ -971,9 +971,9 @@ LABEL_49:
   return activityController;
 }
 
-- (void)setNowPlayingActivityAssertionEndDate:(id)a3
+- (void)setNowPlayingActivityAssertionEndDate:(id)date
 {
-  v5 = a3;
+  dateCopy = date;
   v6 = _MRLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -981,24 +981,24 @@ LABEL_49:
     *buf = 138412546;
     v15 = nowPlayingActivityAssertionEndDate;
     v16 = 2112;
-    v17 = v5;
+    v17 = dateCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "[MRDUIActivityServer] Update now playing activity end date from: %@ -> %@", buf, 0x16u);
   }
 
-  objc_storeStrong(&self->_nowPlayingActivityAssertionEndDate, a3);
+  objc_storeStrong(&self->_nowPlayingActivityAssertionEndDate, date);
   [(MSVTimer *)self->_nowPlayingActivityAssertionEndTimer invalidate];
-  [v5 timeIntervalSinceNow];
+  [dateCopy timeIntervalSinceNow];
   v9 = v8 + 1.0;
   if (v8 + 1.0 > 0.0)
   {
     objc_initWeak(buf, self);
-    v10 = [(MRDUIActivityServer *)self queue];
+    queue = [(MRDUIActivityServer *)self queue];
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_10006A6FC;
     v12[3] = &unk_1004B8280;
     objc_copyWeak(&v13, buf);
-    v11 = [MSVTimer timerWithInterval:0 repeats:v10 queue:v12 block:v9];
+    v11 = [MSVTimer timerWithInterval:0 repeats:queue queue:v12 block:v9];
     [(MRDUIActivityServer *)self setNowPlayingActivityAssertionEndTimer:v11];
 
     objc_destroyWeak(&v13);
@@ -1006,50 +1006,50 @@ LABEL_49:
   }
 }
 
-- (void)_handleElectedPlayerDidChangeNotification:(id)a3
+- (void)_handleElectedPlayerDidChangeNotification:(id)notification
 {
-  v4 = [a3 playerPath];
-  v5 = [(MRDUIActivityServer *)self queue];
+  playerPath = [notification playerPath];
+  queue = [(MRDUIActivityServer *)self queue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10006A85C;
   v7[3] = &unk_1004B68F0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = playerPath;
+  selfCopy = self;
+  v6 = playerPath;
+  dispatch_async(queue, v7);
 }
 
-- (void)_handleIsPlayingDidChangeNotification:(id)a3
+- (void)_handleIsPlayingDidChangeNotification:(id)notification
 {
-  v4 = [a3 userInfo];
+  userInfo = [notification userInfo];
   v5 = MRGetPlayerPathFromUserInfo();
 
-  v6 = [(MRDUIActivityServer *)self queue];
+  queue = [(MRDUIActivityServer *)self queue];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10006AA7C;
   v8[3] = &unk_1004B68F0;
   v9 = v5;
-  v10 = self;
+  selfCopy = self;
   v7 = v5;
-  dispatch_async(v6, v8);
+  dispatch_async(queue, v8);
 }
 
-- (void)_handlePlaybackQueueDidChangeNotification:(id)a3
+- (void)_handlePlaybackQueueDidChangeNotification:(id)notification
 {
-  v4 = [a3 userInfo];
+  userInfo = [notification userInfo];
   v5 = MRGetPlayerPathFromUserInfo();
 
-  v6 = [(MRDUIActivityServer *)self queue];
+  queue = [(MRDUIActivityServer *)self queue];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10006AC24;
   v8[3] = &unk_1004B68F0;
   v9 = v5;
-  v10 = self;
+  selfCopy = self;
   v7 = v5;
-  dispatch_async(v6, v8);
+  dispatch_async(queue, v8);
 }
 
 - (MRVolumeUIControllable)volumeController
@@ -1067,9 +1067,9 @@ LABEL_49:
   return volumeController;
 }
 
-- (void)presentVolumeHUDWithRequest:(id)a3
+- (void)presentVolumeHUDWithRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = +[NSXPCConnection currentConnection];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
@@ -1077,26 +1077,26 @@ LABEL_49:
 
   if ((isKindOfClass & 1) != 0 && v7)
   {
-    v8 = [(MRDUIActivityServer *)self volumeController];
-    [v8 presentVolumeHUDWithRequest:v4];
+    volumeController = [(MRDUIActivityServer *)self volumeController];
+    [volumeController presentVolumeHUDWithRequest:requestCopy];
   }
 
   else
   {
     v9 = +[MRDUIServer sharedServer];
-    v8 = [v9 clientForConnection:v5];
+    volumeController = [v9 clientForConnection:v5];
 
     v10 = _MRLogForCategory();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      sub_1003A59C8(v8, v10);
+      sub_1003A59C8(volumeController, v10);
     }
   }
 }
 
-- (void)_setPendingPreferredState:(int64_t)a3 forBundleIdentifier:(id)a4
+- (void)_setPendingPreferredState:(int64_t)state forBundleIdentifier:(id)identifier
 {
-  v9 = a4;
+  identifierCopy = identifier;
   if (!self->_pendingPreferredStates)
   {
     v6 = objc_alloc_init(NSMutableDictionary);
@@ -1104,37 +1104,37 @@ LABEL_49:
     self->_pendingPreferredStates = v6;
   }
 
-  v8 = [NSNumber numberWithInteger:a3];
-  [(NSMutableDictionary *)self->_pendingPreferredStates setObject:v8 forKeyedSubscript:v9];
+  v8 = [NSNumber numberWithInteger:state];
+  [(NSMutableDictionary *)self->_pendingPreferredStates setObject:v8 forKeyedSubscript:identifierCopy];
 }
 
-- (int64_t)_pendingPreferredStateForBundleIdentifier:(id)a3
+- (int64_t)_pendingPreferredStateForBundleIdentifier:(id)identifier
 {
-  v3 = [(NSMutableDictionary *)self->_pendingPreferredStates objectForKeyedSubscript:a3];
+  v3 = [(NSMutableDictionary *)self->_pendingPreferredStates objectForKeyedSubscript:identifier];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 integerValue];
+    integerValue = [v3 integerValue];
   }
 
   else
   {
-    v5 = 0;
+    integerValue = 0;
   }
 
-  return v5;
+  return integerValue;
 }
 
-- (void)_clearPendingPreferredStateForPlayerPath:(id)a3
+- (void)_clearPendingPreferredStateForPlayerPath:(id)path
 {
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [a3 client];
-  v5 = [v4 bundleIdentifierHierarchy];
+  client = [path client];
+  bundleIdentifierHierarchy = [client bundleIdentifierHierarchy];
 
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v6 = [bundleIdentifierHierarchy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1146,7 +1146,7 @@ LABEL_49:
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(bundleIdentifierHierarchy);
         }
 
         [(NSMutableDictionary *)self->_pendingPreferredStates setObject:0 forKeyedSubscript:*(*(&v10 + 1) + 8 * v9)];
@@ -1154,23 +1154,23 @@ LABEL_49:
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [bundleIdentifierHierarchy countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);
   }
 }
 
-- (int64_t)_preferredStateForPlayerPath:(id)a3
+- (int64_t)_preferredStateForPlayerPath:(id)path
 {
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [a3 client];
-  v5 = [v4 bundleIdentifierHierarchy];
+  client = [path client];
+  bundleIdentifierHierarchy = [client bundleIdentifierHierarchy];
 
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v6 = [bundleIdentifierHierarchy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1182,7 +1182,7 @@ LABEL_49:
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(bundleIdentifierHierarchy);
         }
 
         v11 = [(MRDUIActivityServer *)self _pendingPreferredStateForBundleIdentifier:*(*(&v13 + 1) + 8 * i)];
@@ -1192,7 +1192,7 @@ LABEL_49:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [bundleIdentifierHierarchy countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);
@@ -1206,18 +1206,18 @@ LABEL_49:
   return v8;
 }
 
-- (void)collectDiagnostic:(id)a3
+- (void)collectDiagnostic:(id)diagnostic
 {
-  v4 = a3;
-  v5 = [(MRDUIActivityServer *)self queue];
+  diagnosticCopy = diagnostic;
+  queue = [(MRDUIActivityServer *)self queue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10006B234;
   v7[3] = &unk_1004B68F0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = diagnosticCopy;
+  selfCopy = self;
+  v6 = diagnosticCopy;
+  dispatch_sync(queue, v7);
 }
 
 @end

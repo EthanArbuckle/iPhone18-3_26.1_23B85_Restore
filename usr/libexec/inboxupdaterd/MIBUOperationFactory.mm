@@ -1,7 +1,7 @@
 @interface MIBUOperationFactory
 + (id)sharedInstance;
-- (id)buildCurrentOperationWithDelegate:(id)a3;
-- (id)buildOperationFromCode:(unint64_t)a3 andDelegate:(id)a4;
+- (id)buildCurrentOperationWithDelegate:(id)delegate;
+- (id)buildOperationFromCode:(unint64_t)code andDelegate:(id)delegate;
 @end
 
 @implementation MIBUOperationFactory
@@ -18,9 +18,9 @@
   return v3;
 }
 
-- (id)buildCurrentOperationWithDelegate:(id)a3
+- (id)buildCurrentOperationWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v5 = +[MIBUOperation currentOperationCode];
   if (qword_1000B84A8[0] != -1)
   {
@@ -35,23 +35,23 @@
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Current ongoing operation code is %lu", &v9, 0xCu);
   }
 
-  v7 = [(MIBUOperationFactory *)self buildOperationFromCode:v5 andDelegate:v4];
+  v7 = [(MIBUOperationFactory *)self buildOperationFromCode:v5 andDelegate:delegateCopy];
 
   return v7;
 }
 
-- (id)buildOperationFromCode:(unint64_t)a3 andDelegate:(id)a4
+- (id)buildOperationFromCode:(unint64_t)code andDelegate:(id)delegate
 {
-  v5 = a4;
-  if (a3 > 1)
+  delegateCopy = delegate;
+  if (code > 1)
   {
-    if (a3 == 2)
+    if (code == 2)
     {
       v6 = MIBUDiagnosticsOperation;
       goto LABEL_14;
     }
 
-    if (a3 == 4)
+    if (code == 4)
     {
       v6 = MIBUShippingUpdateOperation;
       goto LABEL_14;
@@ -60,16 +60,16 @@
 
   else
   {
-    if (!a3)
+    if (!code)
     {
       goto LABEL_15;
     }
 
-    if (a3 == 1)
+    if (code == 1)
     {
       v6 = MIBUSoftwareUpdateOperation;
 LABEL_14:
-      a3 = [[v6 alloc] initWithDelegate:v5];
+      code = [[v6 alloc] initWithDelegate:delegateCopy];
       goto LABEL_15;
     }
   }
@@ -82,13 +82,13 @@ LABEL_14:
   v7 = qword_1000B84A0;
   if (os_log_type_enabled(qword_1000B84A0, OS_LOG_TYPE_ERROR))
   {
-    sub_10005749C(a3, v7);
+    sub_10005749C(code, v7);
   }
 
-  a3 = 0;
+  code = 0;
 LABEL_15:
 
-  return a3;
+  return code;
 }
 
 @end

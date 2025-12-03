@@ -1,26 +1,26 @@
 @interface FCTagController
 - (BOOL)shouldPrefetchGlobalTags;
 - (FCTagController)init;
-- (FCTagController)initWithContentDatabase:(id)a3 assetManager:(id)a4 tagRecordSource:(id)a5 configurationManager:(id)a6;
-- (id)_cachedTagForTagID:(char)a3 fastCacheOnly:;
-- (id)_cachedTagsForTagIDs:(char)a3 fastCacheOnly:;
-- (id)expectedFastCachedTagForID:(id)a3;
-- (id)fetchOperationForTagsIncludingChildrenWithIDs:(id)a3 softMaxAge:(double)a4;
-- (id)fetchOperationForTagsWithIDs:(id)a3;
+- (FCTagController)initWithContentDatabase:(id)database assetManager:(id)manager tagRecordSource:(id)source configurationManager:(id)configurationManager;
+- (id)_cachedTagForTagID:(char)d fastCacheOnly:;
+- (id)_cachedTagsForTagIDs:(char)ds fastCacheOnly:;
+- (id)expectedFastCachedTagForID:(id)d;
+- (id)fetchOperationForTagsIncludingChildrenWithIDs:(id)ds softMaxAge:(double)age;
+- (id)fetchOperationForTagsWithIDs:(id)ds;
 - (id)jsonEncodableObject;
-- (id)slowCachedTagsForIDs:(id)a3;
-- (id)tagsForTagIDs:(id)a3 predicate:(id)a4;
-- (id)tagsForTagRecords:(id)a3;
-- (void)_fetchTagsForTagIDs:(uint64_t)a3 includeParents:(uint64_t)a4 includeChildren:(uint64_t)a5 qualityOfService:(void *)a6 callbackQueue:(void *)a7 completionHandler:;
-- (void)configurationManager:(id)a3 configurationDidChange:(id)a4;
+- (id)slowCachedTagsForIDs:(id)ds;
+- (id)tagsForTagIDs:(id)ds predicate:(id)predicate;
+- (id)tagsForTagRecords:(id)records;
+- (void)_fetchTagsForTagIDs:(uint64_t)ds includeParents:(uint64_t)parents includeChildren:(uint64_t)children qualityOfService:(void *)service callbackQueue:(void *)queue completionHandler:;
+- (void)configurationManager:(id)manager configurationDidChange:(id)change;
 - (void)dealloc;
-- (void)fetchTagForTagID:(id)a3 qualityOfService:(int64_t)a4 callbackQueue:(id)a5 completionHandler:(id)a6;
-- (void)fetchTagsForTagIDs:(id)a3 cachePolicy:(id)a4 qualityOfService:(int64_t)a5 completionHandler:(id)a6;
-- (void)fetchTagsForTagIDs:(id)a3 maximumCachedAge:(double)a4 qualityOfService:(int64_t)a5 completionHandler:(id)a6;
-- (void)fetchTagsForTagIDs:(id)a3 qualityOfService:(int64_t)a4 callbackQueue:(id)a5 completionHandler:(id)a6;
-- (void)operationThrottler:(id)a3 performAsyncOperationWithCompletion:(id)a4;
-- (void)saveTagsToCache:(id)a3;
-- (void)setShouldPrefetchGlobalTags:(BOOL)a3;
+- (void)fetchTagForTagID:(id)d qualityOfService:(int64_t)service callbackQueue:(id)queue completionHandler:(id)handler;
+- (void)fetchTagsForTagIDs:(id)ds cachePolicy:(id)policy qualityOfService:(int64_t)service completionHandler:(id)handler;
+- (void)fetchTagsForTagIDs:(id)ds maximumCachedAge:(double)age qualityOfService:(int64_t)service completionHandler:(id)handler;
+- (void)fetchTagsForTagIDs:(id)ds qualityOfService:(int64_t)service callbackQueue:(id)queue completionHandler:(id)handler;
+- (void)operationThrottler:(id)throttler performAsyncOperationWithCompletion:(id)completion;
+- (void)saveTagsToCache:(id)cache;
+- (void)setShouldPrefetchGlobalTags:(BOOL)tags;
 @end
 
 @implementation FCTagController
@@ -51,14 +51,14 @@
   objc_exception_throw(v6);
 }
 
-- (FCTagController)initWithContentDatabase:(id)a3 assetManager:(id)a4 tagRecordSource:(id)a5 configurationManager:(id)a6
+- (FCTagController)initWithContentDatabase:(id)database assetManager:(id)manager tagRecordSource:(id)source configurationManager:(id)configurationManager
 {
   v41 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (!v11 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  databaseCopy = database;
+  managerCopy = manager;
+  sourceCopy = source;
+  configurationManagerCopy = configurationManager;
+  if (!databaseCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v29 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "contentDatabase != nil"];
     *buf = 136315906;
@@ -71,13 +71,13 @@
     v40 = v29;
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
 
-    if (v12)
+    if (managerCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v12)
+  else if (managerCopy)
   {
     goto LABEL_6;
   }
@@ -97,7 +97,7 @@
   }
 
 LABEL_6:
-  if (!v13 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if (!sourceCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v31 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "tagRecordSource != nil"];
     *buf = 136315906;
@@ -117,10 +117,10 @@ LABEL_6:
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_contentDatabase, a3);
-    objc_storeStrong(&v16->_assetManager, a4);
-    objc_storeStrong(&v16->_configurationManager, a6);
-    objc_storeStrong(&v16->_tagRecordSource, a5);
+    objc_storeStrong(&v15->_contentDatabase, database);
+    objc_storeStrong(&v16->_assetManager, manager);
+    objc_storeStrong(&v16->_configurationManager, configurationManager);
+    objc_storeStrong(&v16->_tagRecordSource, source);
     v17 = +[FCThreadSafeMapTable strongToWeakObjectsMapTable];
     fastCache = v16->_fastCache;
     v16->_fastCache = v17;
@@ -142,7 +142,7 @@ LABEL_6:
     tagIDsNeedingRefresh = v16->_tagIDsNeedingRefresh;
     v16->_tagIDsNeedingRefresh = v25;
 
-    objc_storeStrong(&v16->_configurationManager, a6);
+    objc_storeStrong(&v16->_configurationManager, configurationManager);
     [(FCCoreConfigurationManager *)v16->_configurationManager addObserver:v16];
   }
 
@@ -158,20 +158,20 @@ LABEL_6:
   [(FCTagController *)&v3 dealloc];
 }
 
-- (id)_cachedTagForTagID:(char)a3 fastCacheOnly:
+- (id)_cachedTagForTagID:(char)d fastCacheOnly:
 {
   v23 = *MEMORY[0x1E69E9840];
   v5 = a2;
   v6 = v5;
-  if (a1)
+  if (self)
   {
     if (v5)
     {
       v14 = v5;
       v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v14 count:1];
-      v8 = [(FCTagController *)a1 _cachedTagsForTagIDs:v7 fastCacheOnly:a3];
-      v9 = [v8 allValues];
-      v10 = [v9 firstObject];
+      v8 = [(FCTagController *)self _cachedTagsForTagIDs:v7 fastCacheOnly:d];
+      allValues = [v8 allValues];
+      firstObject = [allValues firstObject];
 
       goto LABEL_7;
     }
@@ -191,20 +191,20 @@ LABEL_6:
     }
   }
 
-  v10 = 0;
+  firstObject = 0;
 LABEL_7:
 
   v11 = *MEMORY[0x1E69E9840];
 
-  return v10;
+  return firstObject;
 }
 
-- (id)_cachedTagsForTagIDs:(char)a3 fastCacheOnly:
+- (id)_cachedTagsForTagIDs:(char)ds fastCacheOnly:
 {
   v52 = *MEMORY[0x1E69E9840];
   v5 = a2;
   v6 = v5;
-  if (a1)
+  if (self)
   {
     if (!v5 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
@@ -220,43 +220,43 @@ LABEL_7:
       _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
     }
 
-    v7 = [MEMORY[0x1E695DF90] dictionary];
-    v8 = [MEMORY[0x1E695DF70] array];
-    v9 = a1[5];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    array = [MEMORY[0x1E695DF70] array];
+    v9 = self[5];
     v36[0] = MEMORY[0x1E69E9820];
     v36[1] = 3221225472;
     v36[2] = __54__FCTagController__cachedTagsForTagIDs_fastCacheOnly___block_invoke;
     v36[3] = &unk_1E7C37B20;
     v32 = v6;
     v37 = v6;
-    v10 = v7;
+    v10 = dictionary;
     v38 = v10;
-    v11 = v8;
+    v11 = array;
     v39 = v11;
     [v9 readWithAccessor:v36];
-    if ([v11 count] && (a3 & 1) == 0)
+    if ([v11 count] && (ds & 1) == 0)
     {
-      v12 = [a1[3] cachedRecordsWithIDs:v11];
+      v12 = [self[3] cachedRecordsWithIDs:v11];
       v34[0] = MEMORY[0x1E69E9820];
       v34[1] = 3221225472;
       v34[2] = __54__FCTagController__cachedTagsForTagIDs_fastCacheOnly___block_invoke_2;
       v34[3] = &unk_1E7C37B48;
-      v34[4] = a1;
+      v34[4] = self;
       v13 = v10;
       v35 = v13;
       [v12 enumerateRecordsAndInterestTokensWithBlock:v34];
-      [a1[5] addEntriesFromDictionary:v13];
+      [self[5] addEntriesFromDictionary:v13];
     }
 
     v31 = v11;
-    v30 = a1;
-    v14 = [v10 allValues];
+    selfCopy = self;
+    allValues = [v10 allValues];
     v33 = [MEMORY[0x1E695E0F0] mutableCopy];
     v40 = 0u;
     v41 = 0u;
     v42 = 0u;
     v43 = 0u;
-    v15 = v14;
+    v15 = allValues;
     v16 = [v15 countByEnumeratingWithState:&v40 objects:buf count:16];
     if (v16)
     {
@@ -272,15 +272,15 @@ LABEL_7:
           }
 
           v20 = *(*(&v40 + 1) + 8 * i);
-          v21 = [v20 loadDate];
-          v22 = [v21 dateByAddingTimeInterval:3600.0];
-          v23 = [MEMORY[0x1E695DF00] date];
-          v24 = [v22 fc_isEarlierThan:v23];
+          loadDate = [v20 loadDate];
+          v22 = [loadDate dateByAddingTimeInterval:3600.0];
+          date = [MEMORY[0x1E695DF00] date];
+          v24 = [v22 fc_isEarlierThan:date];
 
           if (v24)
           {
-            v25 = [v20 identifier];
-            [v33 addObject:v25];
+            identifier = [v20 identifier];
+            [v33 addObject:identifier];
           }
         }
 
@@ -292,25 +292,25 @@ LABEL_7:
 
     if ([v33 count])
     {
-      [v30[9] addObjectsFromArray:v33];
-      [v30[8] tickle];
+      [selfCopy[9] addObjectsFromArray:v33];
+      [selfCopy[8] tickle];
     }
 
     v26 = v39;
-    a1 = v10;
+    self = v10;
 
     v6 = v32;
   }
 
   v27 = *MEMORY[0x1E69E9840];
 
-  return a1;
+  return self;
 }
 
-- (id)slowCachedTagsForIDs:(id)a3
+- (id)slowCachedTagsForIDs:(id)ds
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dsCopy = ds;
   if ([MEMORY[0x1E696AF00] isMainThread] && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"This operation must not be performed on the main thread."];
@@ -325,18 +325,18 @@ LABEL_7:
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", &v9, 0x26u);
   }
 
-  v5 = [(FCTagController *)&self->super.isa _cachedTagsForTagIDs:v4 fastCacheOnly:0];
+  v5 = [(FCTagController *)&self->super.isa _cachedTagsForTagIDs:dsCopy fastCacheOnly:0];
 
   v6 = *MEMORY[0x1E69E9840];
 
   return v5;
 }
 
-- (id)expectedFastCachedTagForID:(id)a3
+- (id)expectedFastCachedTagForID:(id)d
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(FCTagController *)&self->super.isa _cachedTagForTagID:v4 fastCacheOnly:1];
+  dCopy = d;
+  v5 = [(FCTagController *)&self->super.isa _cachedTagForTagID:dCopy fastCacheOnly:1];
   if (!v5)
   {
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -353,7 +353,7 @@ LABEL_7:
       _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
     }
 
-    v5 = [(FCTagController *)&self->super.isa _cachedTagForTagID:v4 fastCacheOnly:0];
+    v5 = [(FCTagController *)&self->super.isa _cachedTagForTagID:dCopy fastCacheOnly:0];
   }
 
   v6 = *MEMORY[0x1E69E9840];
@@ -361,9 +361,9 @@ LABEL_7:
   return v5;
 }
 
-- (id)fetchOperationForTagsWithIDs:(id)a3
+- (id)fetchOperationForTagsWithIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   v5 = [FCTagsFetchOperation alloc];
   if (self)
   {
@@ -380,15 +380,15 @@ LABEL_7:
   }
 
   v9 = configurationManager;
-  v10 = [(FCCoreConfigurationManager *)v9 configuration];
-  v11 = [(FCTagsFetchOperation *)v5 initWithTagIDs:v4 tagRecordSource:v6 assetManager:v7 configuration:v10 delegate:self];
+  configuration = [(FCCoreConfigurationManager *)v9 configuration];
+  v11 = [(FCTagsFetchOperation *)v5 initWithTagIDs:dsCopy tagRecordSource:v6 assetManager:v7 configuration:configuration delegate:self];
 
   return v11;
 }
 
-- (id)fetchOperationForTagsIncludingChildrenWithIDs:(id)a3 softMaxAge:(double)a4
+- (id)fetchOperationForTagsIncludingChildrenWithIDs:(id)ds softMaxAge:(double)age
 {
-  v6 = a3;
+  dsCopy = ds;
   v7 = [FCTagsFetchOperation alloc];
   if (self)
   {
@@ -405,31 +405,31 @@ LABEL_7:
   }
 
   v11 = configurationManager;
-  v12 = [(FCCoreConfigurationManager *)v11 configuration];
-  v13 = [(FCTagsFetchOperation *)v7 initWithTagIDs:v6 tagRecordSource:v8 assetManager:v9 configuration:v12 delegate:self];
+  configuration = [(FCCoreConfigurationManager *)v11 configuration];
+  v13 = [(FCTagsFetchOperation *)v7 initWithTagIDs:dsCopy tagRecordSource:v8 assetManager:v9 configuration:configuration delegate:self];
 
   [(FCFetchOperation *)v13 setCachePolicy:4];
-  [(FCFetchOperation *)v13 setMaximumCachedAge:a4];
+  [(FCFetchOperation *)v13 setMaximumCachedAge:age];
   [(FCTagsFetchOperation *)v13 setIncludeChildren:1];
   [(FCTagsFetchOperation *)v13 setOverrideChildrenCachePolicy:1];
   [(FCTagsFetchOperation *)v13 setChildrenCachePolicy:4];
-  [(FCTagsFetchOperation *)v13 setChildrenMaximumCachedAge:a4];
+  [(FCTagsFetchOperation *)v13 setChildrenMaximumCachedAge:age];
 
   return v13;
 }
 
-- (void)fetchTagsForTagIDs:(id)a3 maximumCachedAge:(double)a4 qualityOfService:(int64_t)a5 completionHandler:(id)a6
+- (void)fetchTagsForTagIDs:(id)ds maximumCachedAge:(double)age qualityOfService:(int64_t)service completionHandler:(id)handler
 {
-  v10 = a6;
-  v11 = a3;
-  v12 = [FCCachePolicy cachePolicyWithSoftMaxAge:a4];
+  handlerCopy = handler;
+  dsCopy = ds;
+  v12 = [FCCachePolicy cachePolicyWithSoftMaxAge:age];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __90__FCTagController_fetchTagsForTagIDs_maximumCachedAge_qualityOfService_completionHandler___block_invoke;
   v14[3] = &unk_1E7C379A0;
-  v15 = v10;
-  v13 = v10;
-  [(FCTagController *)self fetchTagsForTagIDs:v11 cachePolicy:v12 qualityOfService:a5 completionHandler:v14];
+  v15 = handlerCopy;
+  v13 = handlerCopy;
+  [(FCTagController *)self fetchTagsForTagIDs:dsCopy cachePolicy:v12 qualityOfService:service completionHandler:v14];
 }
 
 uint64_t __90__FCTagController_fetchTagsForTagIDs_maximumCachedAge_qualityOfService_completionHandler___block_invoke(uint64_t a1)
@@ -443,13 +443,13 @@ uint64_t __90__FCTagController_fetchTagsForTagIDs_maximumCachedAge_qualityOfServ
   return result;
 }
 
-- (void)fetchTagsForTagIDs:(id)a3 cachePolicy:(id)a4 qualityOfService:(int64_t)a5 completionHandler:(id)a6
+- (void)fetchTagsForTagIDs:(id)ds cachePolicy:(id)policy qualityOfService:(int64_t)service completionHandler:(id)handler
 {
   v48 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  if (!v10 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  dsCopy = ds;
+  policyCopy = policy;
+  handlerCopy = handler;
+  if (!dsCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v28 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "tagIDs != nil"];
     *buf = 136315906;
@@ -462,18 +462,18 @@ uint64_t __90__FCTagController_fetchTagsForTagIDs_maximumCachedAge_qualityOfServ
     v47 = v28;
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
 
-    if (v12)
+    if (handlerCopy)
     {
 LABEL_4:
-      if ([v10 count])
+      if ([dsCopy count])
       {
-        v13 = [v11 cachePolicy];
-        if (v13 > 5)
+        cachePolicy = [policyCopy cachePolicy];
+        if (cachePolicy > 5)
         {
           v15 = 0;
         }
 
-        else if (((1 << v13) & 0xD) != 0)
+        else if (((1 << cachePolicy) & 0xD) != 0)
         {
           if (self)
           {
@@ -485,27 +485,27 @@ LABEL_4:
             fastCache = 0;
           }
 
-          v15 = [(FCThreadSafeMapTable *)fastCache subdictionaryForKeys:v10];
+          v15 = [(FCThreadSafeMapTable *)fastCache subdictionaryForKeys:dsCopy];
         }
 
-        else if (((1 << v13) & 0x30) != 0)
+        else if (((1 << cachePolicy) & 0x30) != 0)
         {
-          v16 = [v11 oldestAllowedDate];
-          v17 = v16;
-          if (v16)
+          oldestAllowedDate = [policyCopy oldestAllowedDate];
+          v17 = oldestAllowedDate;
+          if (oldestAllowedDate)
           {
-            v18 = v16;
+            distantPast = oldestAllowedDate;
           }
 
           else
           {
-            v18 = [MEMORY[0x1E695DF00] distantPast];
+            distantPast = [MEMORY[0x1E695DF00] distantPast];
           }
 
-          v19 = v18;
+          v19 = distantPast;
 
-          v20 = [MEMORY[0x1E695DF00] distantPast];
-          v21 = [v19 isEqualToDate:v20];
+          distantPast2 = [MEMORY[0x1E695DF00] distantPast];
+          v21 = [v19 isEqualToDate:distantPast2];
 
           if (v21)
           {
@@ -519,7 +519,7 @@ LABEL_4:
               v22 = 0;
             }
 
-            v15 = [(FCThreadSafeMapTable *)v22 subdictionaryForKeys:v10];
+            v15 = [(FCThreadSafeMapTable *)v22 subdictionaryForKeys:dsCopy];
           }
 
           else
@@ -539,7 +539,7 @@ LABEL_4:
             v33[2] = __85__FCTagController_fetchTagsForTagIDs_cachePolicy_qualityOfService_completionHandler___block_invoke_3;
             v33[3] = &unk_1E7C379F0;
             v34 = v19;
-            v15 = [(FCThreadSafeMapTable *)v23 subdictionaryForKeys:v10 passingTest:v33];
+            v15 = [(FCThreadSafeMapTable *)v23 subdictionaryForKeys:dsCopy passingTest:v33];
           }
         }
 
@@ -549,40 +549,40 @@ LABEL_4:
         }
 
         v24 = [v15 count];
-        if (v24 == [v10 count])
+        if (v24 == [dsCopy count])
         {
-          v12[2](v12, v15, 0);
+          handlerCopy[2](handlerCopy, v15, 0);
         }
 
         else
         {
-          v25 = [(FCTagController *)self fetchOperationForTagsWithIDs:v10];
-          [v25 setQualityOfService:a5];
-          if (a5 == 9)
+          v25 = [(FCTagController *)self fetchOperationForTagsWithIDs:dsCopy];
+          [v25 setQualityOfService:service];
+          if (service == 9)
           {
             v26 = -1;
           }
 
           else
           {
-            v26 = a5 == 33 || a5 == 25;
+            v26 = service == 33 || service == 25;
           }
 
           [v25 setRelativePriority:v26];
-          [v25 setCachePolicy:{objc_msgSend(v11, "cachePolicy")}];
-          [v11 maximumCachedAge];
+          [v25 setCachePolicy:{objc_msgSend(policyCopy, "cachePolicy")}];
+          [policyCopy maximumCachedAge];
           [v25 setMaximumCachedAge:?];
           [v25 setCanSendFetchCompletionSynchronously:1];
           v31[0] = MEMORY[0x1E69E9820];
           v31[1] = 3221225472;
           v31[2] = __85__FCTagController_fetchTagsForTagIDs_cachePolicy_qualityOfService_completionHandler___block_invoke_4;
           v31[3] = &unk_1E7C37A38;
-          v32 = v12;
+          v32 = handlerCopy;
           [v25 setFetchCompletionBlock:v31];
           if ([MEMORY[0x1E696AF00] isMainThread])
           {
-            v27 = [MEMORY[0x1E696ADC8] fc_sharedConcurrentQueue];
-            [v27 addOperation:v25];
+            fc_sharedConcurrentQueue = [MEMORY[0x1E696ADC8] fc_sharedConcurrentQueue];
+            [fc_sharedConcurrentQueue addOperation:v25];
           }
 
           else
@@ -598,7 +598,7 @@ LABEL_4:
         v36 = 3221225472;
         v37 = __85__FCTagController_fetchTagsForTagIDs_cachePolicy_qualityOfService_completionHandler___block_invoke_2;
         v38 = &unk_1E7C379C8;
-        v39 = v12;
+        v39 = handlerCopy;
         v39[2](v39, MEMORY[0x1E695E0F8], 0);
       }
 
@@ -606,7 +606,7 @@ LABEL_4:
     }
   }
 
-  else if (v12)
+  else if (handlerCopy)
   {
     goto LABEL_4;
   }
@@ -661,28 +661,28 @@ void __85__FCTagController_fetchTagsForTagIDs_cachePolicy_qualityOfService_compl
   (*(v6 + 16))(v6, v8, v7);
 }
 
-- (void)fetchTagsForTagIDs:(id)a3 qualityOfService:(int64_t)a4 callbackQueue:(id)a5 completionHandler:(id)a6
+- (void)fetchTagsForTagIDs:(id)ds qualityOfService:(int64_t)service callbackQueue:(id)queue completionHandler:(id)handler
 {
   if (self)
   {
-    [(FCTagController *)self _fetchTagsForTagIDs:a3 includeParents:0 includeChildren:0 qualityOfService:a4 callbackQueue:a5 completionHandler:a6];
+    [(FCTagController *)self _fetchTagsForTagIDs:ds includeParents:0 includeChildren:0 qualityOfService:service callbackQueue:queue completionHandler:handler];
   }
 }
 
-- (void)_fetchTagsForTagIDs:(uint64_t)a3 includeParents:(uint64_t)a4 includeChildren:(uint64_t)a5 qualityOfService:(void *)a6 callbackQueue:(void *)a7 completionHandler:
+- (void)_fetchTagsForTagIDs:(uint64_t)ds includeParents:(uint64_t)parents includeChildren:(uint64_t)children qualityOfService:(void *)service callbackQueue:(void *)queue completionHandler:
 {
   v50 = *MEMORY[0x1E69E9840];
   v13 = a2;
-  v14 = a6;
-  v15 = a7;
-  if (!a1)
+  serviceCopy = service;
+  queueCopy = queue;
+  if (!self)
   {
     goto LABEL_27;
   }
 
   if (v13 || !os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
-    if (v14)
+    if (serviceCopy)
     {
       goto LABEL_5;
     }
@@ -702,7 +702,7 @@ LABEL_23:
       _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
     }
 
-    if (v15)
+    if (queueCopy)
     {
       goto LABEL_27;
     }
@@ -737,64 +737,64 @@ LABEL_26:
   v49 = v24;
   _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
 
-  if (!v14)
+  if (!serviceCopy)
   {
     goto LABEL_23;
   }
 
 LABEL_5:
-  if (!v15)
+  if (!queueCopy)
   {
     goto LABEL_26;
   }
 
   if ([v13 count])
   {
-    v16 = [MEMORY[0x1E695DF90] dictionary];
-    v17 = [MEMORY[0x1E695DF70] array];
-    v18 = a1[5];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    array = [MEMORY[0x1E695DF70] array];
+    v18 = self[5];
     v33[0] = MEMORY[0x1E69E9820];
     v33[1] = 3221225472;
     v33[2] = __119__FCTagController__fetchTagsForTagIDs_includeParents_includeChildren_qualityOfService_callbackQueue_completionHandler___block_invoke_4;
     v33[3] = &unk_1E7C37B70;
     v34 = v13;
-    v19 = v16;
+    v19 = dictionary;
     v35 = v19;
-    v37 = a3;
-    v20 = v17;
+    dsCopy = ds;
+    v20 = array;
     v36 = v20;
-    v38 = a4;
+    parentsCopy = parents;
     [v18 readWithAccessor:v33];
     if ([v20 count])
     {
-      v21 = [a1 fetchOperationForTagsWithIDs:v20];
-      [v21 setIncludeParents:a3];
-      [v21 setIncludeChildren:a4];
-      [v21 setQualityOfService:a5];
-      if (a5 == 9)
+      v21 = [self fetchOperationForTagsWithIDs:v20];
+      [v21 setIncludeParents:ds];
+      [v21 setIncludeChildren:parents];
+      [v21 setQualityOfService:children];
+      if (children == 9)
       {
         v22 = -1;
       }
 
       else
       {
-        v22 = a5 == 33 || a5 == 25;
+        v22 = children == 33 || children == 25;
       }
 
       [v21 setRelativePriority:v22];
-      [v21 setFetchCompletionQueue:v14];
+      [v21 setFetchCompletionQueue:serviceCopy];
       [v21 setCanSendFetchCompletionSynchronously:0];
       v30[0] = MEMORY[0x1E69E9820];
       v30[1] = 3221225472;
       v30[2] = __119__FCTagController__fetchTagsForTagIDs_includeParents_includeChildren_qualityOfService_callbackQueue_completionHandler___block_invoke_5;
       v30[3] = &unk_1E7C37B98;
       v31 = v19;
-      v32 = v15;
+      v32 = queueCopy;
       [v21 setFetchCompletionBlock:v30];
       if ([MEMORY[0x1E696AF00] isMainThread])
       {
-        v23 = [MEMORY[0x1E696ADC8] fc_sharedConcurrentQueue];
-        [v23 addOperation:v21];
+        fc_sharedConcurrentQueue = [MEMORY[0x1E696ADC8] fc_sharedConcurrentQueue];
+        [fc_sharedConcurrentQueue addOperation:v21];
       }
 
       else
@@ -810,8 +810,8 @@ LABEL_5:
       block[2] = __119__FCTagController__fetchTagsForTagIDs_includeParents_includeChildren_qualityOfService_callbackQueue_completionHandler___block_invoke_7;
       block[3] = &unk_1E7C37BC0;
       v28 = v19;
-      v29 = v15;
-      dispatch_async(v14, block);
+      v29 = queueCopy;
+      dispatch_async(serviceCopy, block);
 
       v21 = v28;
     }
@@ -824,32 +824,32 @@ LABEL_21:
   v39[1] = 3221225472;
   v39[2] = __119__FCTagController__fetchTagsForTagIDs_includeParents_includeChildren_qualityOfService_callbackQueue_completionHandler___block_invoke_2;
   v39[3] = &unk_1E7C37778;
-  v41 = v15;
-  v40 = v14;
+  v41 = queueCopy;
+  v40 = serviceCopy;
   __119__FCTagController__fetchTagsForTagIDs_includeParents_includeChildren_qualityOfService_callbackQueue_completionHandler___block_invoke_2(v39);
 
 LABEL_27:
   v25 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchTagForTagID:(id)a3 qualityOfService:(int64_t)a4 callbackQueue:(id)a5 completionHandler:(id)a6
+- (void)fetchTagForTagID:(id)d qualityOfService:(int64_t)service callbackQueue:(id)queue completionHandler:(id)handler
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  dCopy = d;
+  queueCopy = queue;
+  handlerCopy = handler;
   if (self)
   {
-    if (v10)
+    if (dCopy)
     {
-      v18[0] = v10;
+      v18[0] = dCopy;
       v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:1];
       *block = MEMORY[0x1E69E9820];
       *&block[8] = 3221225472;
       *&block[16] = __86__FCTagController__fetchTagForTagID_qualityOfService_callbackQueue_completionHandler___block_invoke;
       *&v17 = &unk_1E7C379A0;
-      *(&v17 + 1) = v12;
-      [(FCTagController *)self _fetchTagsForTagIDs:v13 includeParents:0 includeChildren:0 qualityOfService:a4 callbackQueue:v11 completionHandler:block];
+      *(&v17 + 1) = handlerCopy;
+      [(FCTagController *)self _fetchTagsForTagIDs:v13 includeParents:0 includeChildren:0 qualityOfService:service callbackQueue:queueCopy completionHandler:block];
 
 LABEL_7:
       goto LABEL_8;
@@ -868,7 +868,7 @@ LABEL_7:
       *(&v17 + 6) = v15;
       _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", block, 0x26u);
 
-      if (!v12)
+      if (!handlerCopy)
       {
         goto LABEL_8;
       }
@@ -876,15 +876,15 @@ LABEL_7:
       goto LABEL_6;
     }
 
-    if (v12)
+    if (handlerCopy)
     {
 LABEL_6:
       *block = MEMORY[0x1E69E9820];
       *&block[8] = 3221225472;
       *&block[16] = __86__FCTagController__fetchTagForTagID_qualityOfService_callbackQueue_completionHandler___block_invoke_2;
       *&v17 = &unk_1E7C379C8;
-      *(&v17 + 1) = v12;
-      dispatch_async(v11, block);
+      *(&v17 + 1) = handlerCopy;
+      dispatch_async(queueCopy, block);
       goto LABEL_7;
     }
   }
@@ -989,15 +989,15 @@ void *__60__FCTagController_tagsForTagIDs_maximumCachedAge_predicate___block_inv
   return v5;
 }
 
-- (id)tagsForTagIDs:(id)a3 predicate:(id)a4
+- (id)tagsForTagIDs:(id)ds predicate:(id)predicate
 {
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  predicateCopy = predicate;
   if (self)
   {
-    if ([v6 count])
+    if ([dsCopy count])
     {
-      v8 = [[FCArrayStream alloc] initWithArray:v6];
+      v8 = [[FCArrayStream alloc] initWithArray:dsCopy];
       v9 = [FCTransformedResultsStream alloc];
       v12[0] = MEMORY[0x1E69E9820];
       v12[1] = 3221225472;
@@ -1005,7 +1005,7 @@ void *__60__FCTagController_tagsForTagIDs_maximumCachedAge_predicate___block_inv
       v12[3] = &unk_1E7C37AD8;
       v12[4] = self;
       v14 = 0x7FEFFFFFFFFFFFFFLL;
-      v13 = v7;
+      v13 = predicateCopy;
       v10 = [(FCTransformedResultsStream *)v9 initWithStream:v8 asyncTransformBlock:v12];
       self = [[FCStreamingResults alloc] initWithStream:v10];
     }
@@ -1277,9 +1277,9 @@ uint64_t __119__FCTagController__fetchTagsForTagIDs_includeParents_includeChildr
   return v3();
 }
 
-- (void)saveTagsToCache:(id)a3
+- (void)saveTagsToCache:(id)cache
 {
-  v4 = a3;
+  cacheCopy = cache;
   if (self)
   {
     self = self->_fastCache;
@@ -1289,8 +1289,8 @@ uint64_t __119__FCTagController__fetchTagsForTagIDs_includeParents_includeChildr
   v6[1] = 3221225472;
   v6[2] = __35__FCTagController_saveTagsToCache___block_invoke;
   v6[3] = &unk_1E7C37C10;
-  v7 = v4;
-  v5 = v4;
+  v7 = cacheCopy;
+  v5 = cacheCopy;
   [(FCTagController *)self readWriteWithAccessor:v6];
 }
 
@@ -1335,9 +1335,9 @@ LABEL_3:
   }
 }
 
-- (id)tagsForTagRecords:(id)a3
+- (id)tagsForTagRecords:(id)records
 {
-  v4 = a3;
+  recordsCopy = records;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -1360,9 +1360,9 @@ LABEL_3:
   v10[2] = __37__FCTagController_tagsForTagRecords___block_invoke;
   v10[3] = &unk_1E7C37C60;
   v13 = &v14;
-  v7 = v4;
+  v7 = recordsCopy;
   v11 = v7;
-  v12 = self;
+  selfCopy = self;
   [(FCThreadSafeMapTable *)v6 readWriteWithAccessor:v10];
 
   v8 = v15[5];
@@ -1454,20 +1454,20 @@ LABEL_3:
   return [(FCTagController *)self suspended]^ 1;
 }
 
-- (void)setShouldPrefetchGlobalTags:(BOOL)a3
+- (void)setShouldPrefetchGlobalTags:(BOOL)tags
 {
-  v3 = a3;
-  v4 = self;
+  tagsCopy = tags;
+  selfCopy = self;
   if (self)
   {
     self = self->_tagPrefetchThrottler;
   }
 
-  if ([(FCTagController *)self suspended]== a3)
+  if ([(FCTagController *)self suspended]== tags)
   {
-    if (v4)
+    if (selfCopy)
     {
-      tagPrefetchThrottler = v4->_tagPrefetchThrottler;
+      tagPrefetchThrottler = selfCopy->_tagPrefetchThrottler;
     }
 
     else
@@ -1475,12 +1475,12 @@ LABEL_3:
       tagPrefetchThrottler = 0;
     }
 
-    [(FCOperationThrottler *)tagPrefetchThrottler setSuspended:!v3];
+    [(FCOperationThrottler *)tagPrefetchThrottler setSuspended:!tagsCopy];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __47__FCTagController_setShouldPrefetchGlobalTags___block_invoke;
     v6[3] = &unk_1E7C36EA0;
-    v6[4] = v4;
+    v6[4] = selfCopy;
     [FCTaskScheduler scheduleLowPriorityBlock:v6];
   }
 }
@@ -1501,14 +1501,14 @@ uint64_t __47__FCTagController_setShouldPrefetchGlobalTags___block_invoke(uint64
   return [v2 tickle];
 }
 
-- (void)configurationManager:(id)a3 configurationDidChange:(id)a4
+- (void)configurationManager:(id)manager configurationDidChange:(id)change
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __63__FCTagController_configurationManager_configurationDidChange___block_invoke;
   v4[3] = &unk_1E7C36EA0;
   v4[4] = self;
-  [FCTaskScheduler scheduleLowPriorityBlock:v4, a4];
+  [FCTaskScheduler scheduleLowPriorityBlock:v4, change];
 }
 
 uint64_t __63__FCTagController_configurationManager_configurationDidChange___block_invoke(uint64_t a1)
@@ -1527,11 +1527,11 @@ uint64_t __63__FCTagController_configurationManager_configurationDidChange___blo
   return [v2 tickle];
 }
 
-- (void)operationThrottler:(id)a3 performAsyncOperationWithCompletion:(id)a4
+- (void)operationThrottler:(id)throttler performAsyncOperationWithCompletion:(id)completion
 {
   v56 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  throttlerCopy = throttler;
+  completionCopy = completion;
   if ([MEMORY[0x1E696AF00] isMainThread] && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v42 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"This operation must not be performed on the main thread."];
@@ -1551,7 +1551,7 @@ uint64_t __63__FCTagController_configurationManager_configurationDidChange___blo
     }
 
 LABEL_17:
-    if (v6)
+    if (throttlerCopy)
     {
       goto LABEL_15;
     }
@@ -1566,106 +1566,106 @@ LABEL_17:
   }
 
 LABEL_4:
-  if (self->_tagPrefetchThrottler != v6)
+  if (self->_tagPrefetchThrottler != throttlerCopy)
   {
     goto LABEL_12;
   }
 
   configurationManager = self->_configurationManager;
 LABEL_6:
-  v9 = [(FCCoreConfigurationManager *)configurationManager configuration];
+  configuration = [(FCCoreConfigurationManager *)configurationManager configuration];
   v10 = [MEMORY[0x1E695DFA8] set];
-  v11 = [v9 briefingsTagID];
-  [v10 fc_safelyAddObject:v11];
+  briefingsTagID = [configuration briefingsTagID];
+  [v10 fc_safelyAddObject:briefingsTagID];
 
-  v12 = [v9 trendingTagID];
-  [v10 fc_safelyAddObject:v12];
+  trendingTagID = [configuration trendingTagID];
+  [v10 fc_safelyAddObject:trendingTagID];
 
-  v13 = [v9 featuredStoriesTagID];
-  [v10 fc_safelyAddObject:v13];
+  featuredStoriesTagID = [configuration featuredStoriesTagID];
+  [v10 fc_safelyAddObject:featuredStoriesTagID];
 
-  v14 = [v9 savedStoriesTagID];
-  [v10 fc_safelyAddObject:v14];
+  savedStoriesTagID = [configuration savedStoriesTagID];
+  [v10 fc_safelyAddObject:savedStoriesTagID];
 
-  v15 = [v9 spotlightChannelID];
-  [v10 fc_safelyAddObject:v15];
+  spotlightChannelID = [configuration spotlightChannelID];
+  [v10 fc_safelyAddObject:spotlightChannelID];
 
-  v16 = [v9 myMagazinesTagID];
-  [v10 fc_safelyAddObject:v16];
+  myMagazinesTagID = [configuration myMagazinesTagID];
+  [v10 fc_safelyAddObject:myMagazinesTagID];
 
-  v17 = [v9 mySportsTagID];
-  [v10 fc_safelyAddObject:v17];
+  mySportsTagID = [configuration mySportsTagID];
+  [v10 fc_safelyAddObject:mySportsTagID];
 
-  v18 = [v9 sportsTopStoriesTagID];
-  [v10 fc_safelyAddObject:v18];
+  sportsTopStoriesTagID = [configuration sportsTopStoriesTagID];
+  [v10 fc_safelyAddObject:sportsTopStoriesTagID];
 
-  v19 = [v9 puzzlesConfig];
-  v20 = [v19 puzzleHubTagID];
-  [v10 fc_safelyAddObject:v20];
+  puzzlesConfig = [configuration puzzlesConfig];
+  puzzleHubTagID = [puzzlesConfig puzzleHubTagID];
+  [v10 fc_safelyAddObject:puzzleHubTagID];
 
-  v21 = [v9 puzzlesConfig];
-  v22 = [v21 puzzleFullArchiveTagID];
-  [v10 fc_safelyAddObject:v22];
+  puzzlesConfig2 = [configuration puzzlesConfig];
+  puzzleFullArchiveTagID = [puzzlesConfig2 puzzleFullArchiveTagID];
+  [v10 fc_safelyAddObject:puzzleFullArchiveTagID];
 
-  v23 = [v9 shortcutsTagID];
-  [v10 fc_safelyAddObject:v23];
+  shortcutsTagID = [configuration shortcutsTagID];
+  [v10 fc_safelyAddObject:shortcutsTagID];
 
-  v24 = [v9 mySportsScoresTagID];
-  [v10 fc_safelyAddObject:v24];
+  mySportsScoresTagID = [configuration mySportsScoresTagID];
+  [v10 fc_safelyAddObject:mySportsScoresTagID];
 
-  v25 = [v9 mySportsHighlightsTagID];
-  [v10 fc_safelyAddObject:v25];
+  mySportsHighlightsTagID = [configuration mySportsHighlightsTagID];
+  [v10 fc_safelyAddObject:mySportsHighlightsTagID];
 
-  v26 = [v9 sportScoresTagID];
-  [v10 fc_safelyAddObject:v26];
+  sportScoresTagID = [configuration sportScoresTagID];
+  [v10 fc_safelyAddObject:sportScoresTagID];
 
-  v27 = [v9 sportTeamScoresTagID];
-  [v10 fc_safelyAddObject:v27];
+  sportTeamScoresTagID = [configuration sportTeamScoresTagID];
+  [v10 fc_safelyAddObject:sportTeamScoresTagID];
 
-  v28 = [v9 sportLeagueScoresTagID];
-  [v10 fc_safelyAddObject:v28];
+  sportLeagueScoresTagID = [configuration sportLeagueScoresTagID];
+  [v10 fc_safelyAddObject:sportLeagueScoresTagID];
 
-  v29 = [v9 sportsStandingsTagID];
-  [v10 fc_safelyAddObject:v29];
+  sportsStandingsTagID = [configuration sportsStandingsTagID];
+  [v10 fc_safelyAddObject:sportsStandingsTagID];
 
-  v30 = [v9 sportsBracketTagID];
-  [v10 fc_safelyAddObject:v30];
+  sportsBracketTagID = [configuration sportsBracketTagID];
+  [v10 fc_safelyAddObject:sportsBracketTagID];
 
-  v31 = [v9 sportHighlightsTagID];
-  [v10 fc_safelyAddObject:v31];
+  sportHighlightsTagID = [configuration sportHighlightsTagID];
+  [v10 fc_safelyAddObject:sportHighlightsTagID];
 
-  v32 = [v9 sportTeamHighlightsTagID];
-  [v10 fc_safelyAddObject:v32];
+  sportTeamHighlightsTagID = [configuration sportTeamHighlightsTagID];
+  [v10 fc_safelyAddObject:sportTeamHighlightsTagID];
 
-  v33 = [v9 sportLeagueHighlightsTagID];
-  [v10 fc_safelyAddObject:v33];
+  sportLeagueHighlightsTagID = [configuration sportLeagueHighlightsTagID];
+  [v10 fc_safelyAddObject:sportLeagueHighlightsTagID];
 
-  v34 = [v9 sportEventHighlightsTagID];
-  [v10 fc_safelyAddObject:v34];
+  sportEventHighlightsTagID = [configuration sportEventHighlightsTagID];
+  [v10 fc_safelyAddObject:sportEventHighlightsTagID];
 
   if ([v10 count])
   {
-    v35 = [v10 allObjects];
+    allObjects = [v10 allObjects];
     v46[0] = MEMORY[0x1E69E9820];
     v46[1] = 3221225472;
     v46[2] = __74__FCTagController_operationThrottler_performAsyncOperationWithCompletion___block_invoke;
     v46[3] = &unk_1E7C37C88;
     v46[4] = self;
-    v47 = v7;
+    v47 = completionCopy;
     if (self)
     {
-      [(FCTagController *)self _fetchTagsForTagIDs:v35 includeParents:0 includeChildren:0 qualityOfService:9 callbackQueue:MEMORY[0x1E69E96A0] completionHandler:v46];
+      [(FCTagController *)self _fetchTagsForTagIDs:allObjects includeParents:0 includeChildren:0 qualityOfService:9 callbackQueue:MEMORY[0x1E69E96A0] completionHandler:v46];
     }
   }
 
   else
   {
-    v7[2](v7);
+    completionCopy[2](completionCopy);
   }
 
   if (!self)
   {
-    if (v6)
+    if (throttlerCopy)
     {
       goto LABEL_15;
     }
@@ -1675,14 +1675,14 @@ LABEL_6:
   }
 
 LABEL_12:
-  if (self->_tagRefreshThrottler == v6)
+  if (self->_tagRefreshThrottler == throttlerCopy)
   {
     tagIDsNeedingRefresh = self->_tagIDsNeedingRefresh;
 LABEL_14:
     v37 = tagIDsNeedingRefresh;
-    v38 = [(FCThreadSafeMutableSet *)v37 allObjects];
+    allObjects2 = [(FCThreadSafeMutableSet *)v37 allObjects];
 
-    v39 = [(FCTagController *)self fetchOperationForTagsWithIDs:v38];
+    v39 = [(FCTagController *)self fetchOperationForTagsWithIDs:allObjects2];
     [v39 setQualityOfService:9];
     [v39 setRelativePriority:-1];
     [v39 setCachePolicy:4];
@@ -1692,9 +1692,9 @@ LABEL_14:
     v43[2] = __74__FCTagController_operationThrottler_performAsyncOperationWithCompletion___block_invoke_2;
     v43[3] = &unk_1E7C37CB0;
     v43[4] = self;
-    v44 = v38;
-    v45 = v7;
-    v40 = v38;
+    v44 = allObjects2;
+    v45 = completionCopy;
+    v40 = allObjects2;
     [v39 setFetchCompletionBlock:v43];
     [v39 start];
   }

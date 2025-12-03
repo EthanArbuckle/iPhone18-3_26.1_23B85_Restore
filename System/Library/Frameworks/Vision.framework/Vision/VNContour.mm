@@ -1,20 +1,20 @@
 @interface VNContour
-- (BOOL)isEqual:(id)a3;
-- (CGPath)normalizedPathInTopLeftOrigin:(BOOL)a3 orientation:(unsigned int)a4;
+- (BOOL)isEqual:(id)equal;
+- (CGPath)normalizedPathInTopLeftOrigin:(BOOL)origin orientation:(unsigned int)orientation;
 - (CGPathRef)normalizedPath;
 - (NSArray)childContours;
 - (NSInteger)childContourCount;
 - (NSInteger)pointCount;
 - (VNContour)childContourAtIndex:(NSUInteger)childContourIndex error:(NSError *)error;
-- (VNContour)initWithPoints:(VNContour *)self pointCount:(SEL)a2 aspectRatio:;
-- (VNContour)initWithPoints:(const void *)a3 topLevelIndex:(unint64_t)a4 indexPath:(id)a5 aspectRatio:(float)a6;
+- (VNContour)initWithPoints:(VNContour *)self pointCount:(SEL)count aspectRatio:;
+- (VNContour)initWithPoints:(const void *)points topLevelIndex:(unint64_t)index indexPath:(id)path aspectRatio:(float)ratio;
 - (VNContour)polygonApproximationWithEpsilon:(float)epsilon error:(NSError *)error;
 - (const)normalizedPoints;
-- (float)aspectRatioInOrientation:(unsigned int)a3;
+- (float)aspectRatioInOrientation:(unsigned int)orientation;
 - (id).cxx_construct;
 - (id)debugQuickLookObject;
-- (id)initWithObservation:(void *)a3 topLevelIndex:(void *)a4 indexPath:(float)a5 aspectRatio:;
-- (uint64_t)normalizedPointsInTopLeftOrigin:(uint64_t)a3 orientation:(uint64_t)a4;
+- (id)initWithObservation:(void *)observation topLevelIndex:(void *)index indexPath:(float)path aspectRatio:;
+- (uint64_t)normalizedPointsInTopLeftOrigin:(uint64_t)origin orientation:(uint64_t)orientation;
 - (unint64_t)hash;
 - (unint64_t)requestRevision;
 - (void)createNormalizedPointsCorrectedForAspectRatio;
@@ -35,9 +35,9 @@
 {
   [(VNContour *)self aspectRatio];
   v4 = v3 * 1000.0;
-  v5 = [(VNContour *)self normalizedPath];
+  normalizedPath = [(VNContour *)self normalizedPath];
 
-  return VNDebugPathFromNormalizedCGPath(v5, 1000.0, v4);
+  return VNDebugPathFromNormalizedCGPath(normalizedPath, 1000.0, v4);
 }
 
 - (unint64_t)requestRevision
@@ -51,10 +51,10 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v20 = 1;
   }
@@ -64,35 +64,35 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(VNContour *)self requestRevision];
-      if (v6 == [(VNContour *)v5 requestRevision])
+      v5 = equalCopy;
+      requestRevision = [(VNContour *)self requestRevision];
+      if (requestRevision == [(VNContour *)v5 requestRevision])
       {
-        v7 = [(VNContour *)self indexPath];
-        v8 = [(VNContour *)v5 indexPath];
-        v9 = [v7 isEqual:v8];
+        indexPath = [(VNContour *)self indexPath];
+        indexPath2 = [(VNContour *)v5 indexPath];
+        v9 = [indexPath isEqual:indexPath2];
 
         if (v9)
         {
-          v10 = [(VNContour *)self pointCount];
-          if (v10 == [(VNContour *)v5 pointCount])
+          pointCount = [(VNContour *)self pointCount];
+          if (pointCount == [(VNContour *)v5 pointCount])
           {
-            v11 = [(VNContour *)self normalizedPoints];
-            v12 = [(VNContour *)v5 normalizedPoints];
-            if (v10)
+            normalizedPoints = [(VNContour *)self normalizedPoints];
+            normalizedPoints2 = [(VNContour *)v5 normalizedPoints];
+            if (pointCount)
             {
-              v13 = 8 * v10;
+              v13 = 8 * pointCount;
               v14 = vdup_n_s32(0x358637BDu);
               while (1)
               {
-                v15 = vmvn_s8(vcge_f32(v14, vabd_f32(*v11, *v12)));
+                v15 = vmvn_s8(vcge_f32(v14, vabd_f32(*normalizedPoints, *normalizedPoints2)));
                 if ((v15.i32[0] | v15.i32[1]))
                 {
                   break;
                 }
 
-                ++v11;
-                ++v12;
+                ++normalizedPoints;
+                ++normalizedPoints2;
                 v13 -= 8;
                 if (!v13)
                 {
@@ -104,8 +104,8 @@
             else
             {
 LABEL_10:
-              v16 = [(VNContour *)self childContourCount];
-              if (v16 == [(VNContour *)v5 childContourCount])
+              childContourCount = [(VNContour *)self childContourCount];
+              if (childContourCount == [(VNContour *)v5 childContourCount])
               {
                 [(VNContour *)self aspectRatio];
                 v18 = v17;
@@ -137,25 +137,25 @@ LABEL_16:
   v17.receiver = self;
   v17.super_class = VNContour;
   v3 = [(VNContour *)&v17 hash];
-  v4 = [(VNContour *)self requestRevision];
-  v5 = [(VNContour *)self indexPath];
-  v6 = [v5 hash] ^ __ROR8__(v4 ^ __ROR8__(v3, 51), 51);
+  requestRevision = [(VNContour *)self requestRevision];
+  indexPath = [(VNContour *)self indexPath];
+  v6 = [indexPath hash] ^ __ROR8__(requestRevision ^ __ROR8__(v3, 51), 51);
 
   v7 = [(VNContour *)self topLevelIndex]^ __ROR8__(v6, 51);
-  v8 = [(VNContour *)self normalizedPoints];
-  v9 = [(VNContour *)self pointCount];
-  if (v9)
+  normalizedPoints = [(VNContour *)self normalizedPoints];
+  pointCount = [(VNContour *)self pointCount];
+  if (pointCount)
   {
-    v10 = 2 * v9;
-    if ((2 * v9) <= 1)
+    v10 = 2 * pointCount;
+    if ((2 * pointCount) <= 1)
     {
       v10 = 1;
     }
 
     do
     {
-      v11 = v8->i32[0];
-      v8 = (v8 + 4);
+      v11 = normalizedPoints->i32[0];
+      normalizedPoints = (normalizedPoints + 4);
       v7 = v11 ^ __ROR8__(v7, 51);
       --v10;
     }
@@ -190,15 +190,15 @@ LABEL_16:
     }
 
     Mutable = CGPathCreateMutable();
-    v6 = [(VNContour *)self pointCount];
-    if (v6)
+    pointCount = [(VNContour *)self pointCount];
+    if (pointCount)
     {
-      v7 = [(VNContour *)self normalizedPoints];
-      v8 = v7;
-      if (v7)
+      normalizedPoints = [(VNContour *)self normalizedPoints];
+      v8 = normalizedPoints;
+      if (normalizedPoints)
       {
-        CGPathMoveToPoint(Mutable, 0, COERCE_FLOAT(*v7), COERCE_FLOAT(HIDWORD(*v7)));
-        v9 = v6 - 1;
+        CGPathMoveToPoint(Mutable, 0, COERCE_FLOAT(*normalizedPoints), COERCE_FLOAT(HIDWORD(*normalizedPoints)));
+        v9 = pointCount - 1;
         if (v9)
         {
           v10 = v8 + 1;
@@ -224,8 +224,8 @@ LABEL_16:
 
 - (VNContour)polygonApproximationWithEpsilon:(float)epsilon error:(NSError *)error
 {
-  v7 = [(VNContour *)self pointCount];
-  if (v7 <= 1)
+  pointCount = [(VNContour *)self pointCount];
+  if (pointCount <= 1)
   {
     if (error)
     {
@@ -241,8 +241,8 @@ LABEL_16:
   {
     if (error)
     {
-      v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"The value for epsilon is invalid. It needs to be bigger than zero but it is %f", epsilon];
-      *error = [VNError errorForInvalidArgumentWithLocalizedDescription:v18];
+      epsilon = [MEMORY[0x1E696AEC0] stringWithFormat:@"The value for epsilon is invalid. It needs to be bigger than zero but it is %f", epsilon];
+      *error = [VNError errorForInvalidArgumentWithLocalizedDescription:epsilon];
     }
 
 LABEL_10:
@@ -250,12 +250,12 @@ LABEL_10:
     goto LABEL_16;
   }
 
-  v9 = v7;
+  v9 = pointCount;
   [(VNContour *)self aspectRatio];
   v11 = v10;
-  v12 = [(VNContour *)self createNormalizedPointsCorrectedForAspectRatio];
+  createNormalizedPointsCorrectedForAspectRatio = [(VNContour *)self createNormalizedPointsCorrectedForAspectRatio];
   memset(v26, 0, sizeof(v26));
-  _ZNSt3__16vectorIDv2_fNS_9allocatorIS1_EEE16__init_with_sizeB8ne200100IPKS1_S7_EEvT_T0_m(v26, v12, &v12[v9], v9);
+  _ZNSt3__16vectorIDv2_fNS_9allocatorIS1_EEE16__init_with_sizeB8ne200100IPKS1_S7_EEvT_T0_m(v26, createNormalizedPointsCorrectedForAspectRatio, &createNormalizedPointsCorrectedForAspectRatio[v9], v9);
   __p = 0;
   v24 = 0;
   v25 = 0;
@@ -273,7 +273,7 @@ LABEL_10:
   [(VNContour *)self aspectRatio];
   v21 = [(VNContour *)v19 initWithPoints:&__p topLevelIndex:0 indexPath:v20 aspectRatio:?];
 
-  free(v12);
+  free(createNormalizedPointsCorrectedForAspectRatio);
   v8 = v21;
   if (__p)
   {
@@ -293,21 +293,21 @@ LABEL_16:
 
 - (void)createNormalizedPointsCorrectedForAspectRatio
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v2 = [a1 pointCount];
-  v3 = malloc_type_malloc(8 * v2, 0x100004000313F17uLL);
-  v4 = [a1 normalizedPoints];
-  [a1 aspectRatio];
-  if (v3 && v2 >= 1)
+  pointCount = [self pointCount];
+  v3 = malloc_type_malloc(8 * pointCount, 0x100004000313F17uLL);
+  normalizedPoints = [self normalizedPoints];
+  [self aspectRatio];
+  if (v3 && pointCount >= 1)
   {
-    for (i = 0; i != v2; ++i)
+    for (i = 0; i != pointCount; ++i)
     {
-      LODWORD(v7) = HIDWORD(*(v4 + 8 * i));
-      [a1 aspectRatio];
+      LODWORD(v7) = HIDWORD(*(normalizedPoints + 8 * i));
+      [self aspectRatio];
       LODWORD(v8) = v11;
       *(&v8 + 1) = v7 / v9;
       v3[i] = v8;
@@ -353,8 +353,8 @@ LABEL_16:
   if (childContourIndex < (v7[1] - *v7) >> 2)
   {
     v8 = v7;
-    v9 = [(VNContour *)self indexPath];
-    v10 = [v9 indexPathByAddingIndex:childContourIndex];
+    indexPath = [(VNContour *)self indexPath];
+    v10 = [indexPath indexPathByAddingIndex:childContourIndex];
 
     v11 = [[VNContour alloc] initWithObservation:*(*v8 + 4 * childContourIndex) topLevelIndex:v10 indexPath:self->_aspectRatio aspectRatio:?];
 LABEL_5:
@@ -376,27 +376,27 @@ LABEL_6:
   return v11;
 }
 
-- (id)initWithObservation:(void *)a3 topLevelIndex:(void *)a4 indexPath:(float)a5 aspectRatio:
+- (id)initWithObservation:(void *)observation topLevelIndex:(void *)index indexPath:(float)path aspectRatio:
 {
   v10 = a2;
-  v11 = a4;
-  if (a1)
+  indexCopy = index;
+  if (self)
   {
-    v14.receiver = a1;
+    v14.receiver = self;
     v14.super_class = VNContour;
     v12 = objc_msgSendSuper2(&v14, sel_init);
-    a1 = v12;
+    self = v12;
     if (v12)
     {
       objc_storeStrong(v12 + 1, a2);
-      a1[5] = a3;
-      objc_storeStrong(a1 + 9, a4);
-      *(a1 + 12) = 0;
-      *(a1 + 16) = a5;
+      self[5] = observation;
+      objc_storeStrong(self + 9, index);
+      *(self + 12) = 0;
+      *(self + 16) = path;
     }
   }
 
-  return a1;
+  return self;
 }
 
 - (NSArray)childContours
@@ -406,7 +406,7 @@ LABEL_6:
     v3 = objc_autoreleasePoolPush();
     v4 = [(VNContoursObservation *)self->_observation childContourIndicesAtIndex:self->_topLevelIndex];
     v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:(v4[1] - *v4) >> 2];
-    v6 = [(VNContour *)self indexPath];
+    indexPath = [(VNContour *)self indexPath];
     v7 = v4[1] - *v4;
     if (v7)
     {
@@ -424,7 +424,7 @@ LABEL_6:
 
       do
       {
-        v11 = [v6 indexPathByAddingIndex:v8];
+        v11 = [indexPath indexPathByAddingIndex:v8];
         v12 = [[VNContour alloc] initWithObservation:*(*v4 + 4 * v8) topLevelIndex:v11 indexPath:self->_aspectRatio aspectRatio:?];
         [v5 addObject:v12];
 
@@ -465,7 +465,7 @@ LABEL_6:
   [(VNContour *)&v3 dealloc];
 }
 
-- (VNContour)initWithPoints:(VNContour *)self pointCount:(SEL)a2 aspectRatio:
+- (VNContour)initWithPoints:(VNContour *)self pointCount:(SEL)count aspectRatio:
 {
   v5 = v4;
   v6 = v3;
@@ -486,9 +486,9 @@ LABEL_6:
   return v11;
 }
 
-- (VNContour)initWithPoints:(const void *)a3 topLevelIndex:(unint64_t)a4 indexPath:(id)a5 aspectRatio:(float)a6
+- (VNContour)initWithPoints:(const void *)points topLevelIndex:(unint64_t)index indexPath:(id)path aspectRatio:(float)ratio
 {
-  v11 = a5;
+  pathCopy = path;
   v28.receiver = self;
   v28.super_class = VNContour;
   v12 = [(VNContour *)&v28 init];
@@ -496,11 +496,11 @@ LABEL_6:
   if (v12)
   {
     v14 = v12 + 16;
-    if (v12 + 16 != a3)
+    if (v12 + 16 != points)
     {
-      v15 = *a3;
-      v16 = *(a3 + 1);
-      v17 = &v16[-*a3];
+      v15 = *points;
+      v16 = *(points + 1);
+      v17 = &v16[-*points];
       v18 = *(v12 + 4);
       v19 = *(v12 + 2);
       if (v18 - v19 < v17)
@@ -572,19 +572,19 @@ LABEL_6:
       *&v13->_anon_10[8] = v26;
     }
 
-    v13->_topLevelIndex = a4;
-    objc_storeStrong(&v13->_indexPath, a5);
+    v13->_topLevelIndex = index;
+    objc_storeStrong(&v13->_indexPath, path);
     v13->_pathLock._os_unfair_lock_opaque = 0;
-    v13->_aspectRatio = a6;
+    v13->_aspectRatio = ratio;
   }
 
   return v13;
 }
 
-- (float)aspectRatioInOrientation:(unsigned int)a3
+- (float)aspectRatioInOrientation:(unsigned int)orientation
 {
   [(VNContour *)self aspectRatio];
-  if (result != 0.0 && a3 <= 7 && ((1 << a3) & 0xB4) != 0)
+  if (result != 0.0 && orientation <= 7 && ((1 << orientation) & 0xB4) != 0)
   {
     return 1.0 / result;
   }
@@ -592,75 +592,75 @@ LABEL_6:
   return result;
 }
 
-- (CGPath)normalizedPathInTopLeftOrigin:(BOOL)a3 orientation:(unsigned int)a4
+- (CGPath)normalizedPathInTopLeftOrigin:(BOOL)origin orientation:(unsigned int)orientation
 {
   memset(v7, 0, sizeof(v7));
-  VNAffineTransformForVisionToTopLeftOriginOrientation(a3, a4, v7);
+  VNAffineTransformForVisionToTopLeftOriginOrientation(origin, orientation, v7);
   v5 = MEMORY[0x1AC555C10]([(VNContour *)self normalizedPath], v7);
   CFAutorelease(v5);
   return v5;
 }
 
-- (uint64_t)normalizedPointsInTopLeftOrigin:(uint64_t)a3 orientation:(uint64_t)a4
+- (uint64_t)normalizedPointsInTopLeftOrigin:(uint64_t)origin orientation:(uint64_t)orientation
 {
-  v4 = a4;
-  v5 = a3;
-  if (a4 - 2) < 7 || (a3)
+  orientationCopy = orientation;
+  originCopy = origin;
+  if (orientation - 2) < 7 || (origin)
   {
-    v9 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%d_%d", a4, a3];
-    v10 = a1;
-    objc_sync_enter(v10);
-    v11 = objc_getAssociatedObject(v10, [VNContour(OrientationAdditions) normalizedPointsInTopLeftOrigin:orientation:]::kNormalizedPointsDictionaryAssociatedObjectKey);
+    origin = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%d_%d", orientation, origin];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v11 = objc_getAssociatedObject(selfCopy, [VNContour(OrientationAdditions) normalizedPointsInTopLeftOrigin:orientation:]::kNormalizedPointsDictionaryAssociatedObjectKey);
     if (!v11)
     {
       v11 = objc_alloc_init(MEMORY[0x1E695DF90]);
-      objc_setAssociatedObject(v10, [VNContour(OrientationAdditions) normalizedPointsInTopLeftOrigin:orientation:]::kNormalizedPointsDictionaryAssociatedObjectKey, v11, 1);
+      objc_setAssociatedObject(selfCopy, [VNContour(OrientationAdditions) normalizedPointsInTopLeftOrigin:orientation:]::kNormalizedPointsDictionaryAssociatedObjectKey, v11, 1);
     }
 
-    v12 = [v11 objectForKey:v9];
+    v12 = [v11 objectForKey:origin];
     if (!v12)
     {
       v13 = objc_autoreleasePoolPush();
-      v14 = [v10 pointCount];
-      v15 = [objc_alloc(MEMORY[0x1E695DF88]) initWithLength:8 * v14];
-      v16 = [v15 mutableBytes];
+      pointCount = [selfCopy pointCount];
+      v15 = [objc_alloc(MEMORY[0x1E695DF88]) initWithLength:8 * pointCount];
+      mutableBytes = [v15 mutableBytes];
       v24 = 0u;
       v25 = 0u;
       v23 = 0u;
-      VNAffineTransformForVisionToTopLeftOriginOrientation(v5, v4, &v23);
-      v17 = [v10 normalizedPoints];
-      if (v14)
+      VNAffineTransformForVisionToTopLeftOriginOrientation(originCopy, orientationCopy, &v23);
+      normalizedPoints = [selfCopy normalizedPoints];
+      if (pointCount)
       {
         v18 = v23;
         v19 = v24;
         v20 = v25;
         do
         {
-          v21 = *v17++;
-          *v16++ = vcvt_f32_f64(vaddq_f64(v20, vmlaq_n_f64(vmulq_n_f64(v19, *&v21), v18, *&v21)));
-          --v14;
+          v21 = *normalizedPoints++;
+          *mutableBytes++ = vcvt_f32_f64(vaddq_f64(v20, vmlaq_n_f64(vmulq_n_f64(v19, *&v21), v18, *&v21)));
+          --pointCount;
         }
 
-        while (v14);
+        while (pointCount);
       }
 
       v12 = [v15 copy];
-      [v11 setObject:v12 forKey:v9];
+      [v11 setObject:v12 forKey:origin];
 
       objc_autoreleasePoolPop(v13);
     }
 
-    v22 = [v12 bytes];
+    bytes = [v12 bytes];
 
-    objc_sync_exit(v10);
-    return v22;
+    objc_sync_exit(selfCopy);
+    return bytes;
   }
 
   else
   {
-    v7 = a1;
+    selfCopy2 = self;
 
-    return [v7 normalizedPoints];
+    return [selfCopy2 normalizedPoints];
   }
 }
 

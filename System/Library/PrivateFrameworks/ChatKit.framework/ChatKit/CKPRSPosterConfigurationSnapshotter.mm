@@ -1,39 +1,39 @@
 @interface CKPRSPosterConfigurationSnapshotter
-+ (void)createWatchSnapshotFromConfiguration:(id)a3 completion:(id)a4;
++ (void)createWatchSnapshotFromConfiguration:(id)configuration completion:(id)completion;
 @end
 
 @implementation CKPRSPosterConfigurationSnapshotter
 
-+ (void)createWatchSnapshotFromConfiguration:(id)a3 completion:(id)a4
++ (void)createWatchSnapshotFromConfiguration:(id)configuration completion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   gotLoadHelper_x8__OBJC_CLASS___PRPosterSnapshotDefinition(v6);
   v8 = *(v7 + 824);
-  v9 = a3;
+  configurationCopy = configuration;
   v10 = [[v8 alloc] initWithUniqueIdentifier:@"watch_background" includeHeaderElements:0 includesComplications:0 layerSet:0 isUnlocked:1 renderingContent:1 renderingMode:1 previewContent:1];
   gotLoadHelper_x8__OBJC_CLASS___PRUISMutablePosterSnapshotDescriptor(v11);
   v13 = [objc_alloc(*(v12 + 120)) initWithUserInterfaceStyle:2 interfaceOrientation:1 snapshotDefinition:v10];
-  v14 = [MEMORY[0x1E699F7A8] mainConfiguration];
-  [v14 pointScale];
+  mainConfiguration = [MEMORY[0x1E699F7A8] mainConfiguration];
+  [mainConfiguration pointScale];
   [v13 setPersistenceScale:2.0 / v15];
   [v13 setCanvasBounds:{0.0, 0.0, 410.0, 502.0}];
   gotLoadHelper_x8__OBJC_CLASS___PRUISPosterSnapshotRequest(v16);
-  v18 = [objc_alloc(*(v17 + 248)) initWithPoster:v9 snapshotDescriptor:v13];
+  v18 = [objc_alloc(*(v17 + 248)) initWithPoster:configurationCopy snapshotDescriptor:v13];
 
-  v19 = [MEMORY[0x1E696AC08] defaultManager];
-  v20 = [v19 URLsForDirectory:13 inDomains:1];
-  v21 = [v20 firstObject];
-  v22 = [MEMORY[0x1E696AEC0] stringGUID];
-  v23 = [v21 URLByAppendingPathComponent:v22 isDirectory:1];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v20 = [defaultManager URLsForDirectory:13 inDomains:1];
+  firstObject = [v20 firstObject];
+  stringGUID = [MEMORY[0x1E696AEC0] stringGUID];
+  v23 = [firstObject URLByAppendingPathComponent:stringGUID isDirectory:1];
 
   if ([v23 checkResourceIsReachableAndReturnError:0])
   {
-    v24 = [MEMORY[0x1E696AC08] defaultManager];
-    [v24 removeItemAtURL:v23 error:0];
+    defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+    [defaultManager2 removeItemAtURL:v23 error:0];
   }
 
-  v25 = [MEMORY[0x1E696AC08] defaultManager];
-  [v25 createDirectoryAtURL:v23 withIntermediateDirectories:1 attributes:0 error:0];
+  defaultManager3 = [MEMORY[0x1E696AC08] defaultManager];
+  [defaultManager3 createDirectoryAtURL:v23 withIntermediateDirectories:1 attributes:0 error:0];
 
   gotLoadHelper_x8__OBJC_CLASS___PRUISPosterSnapshotController(v26);
   v28 = [objc_alloc(*(v27 + 224)) initWithCacheURL:v23];
@@ -42,11 +42,11 @@
   v32[2] = __87__CKPRSPosterConfigurationSnapshotter_createWatchSnapshotFromConfiguration_completion___block_invoke;
   v32[3] = &unk_1E72F4BF0;
   v34 = v23;
-  v35 = v5;
+  v35 = completionCopy;
   v33 = v28;
   v29 = v23;
   v30 = v28;
-  v31 = v5;
+  v31 = completionCopy;
   [v30 executeSnapshotRequest:v18 completion:v32];
 }
 

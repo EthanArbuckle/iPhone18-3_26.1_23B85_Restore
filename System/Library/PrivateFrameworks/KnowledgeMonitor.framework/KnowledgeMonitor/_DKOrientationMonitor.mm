@@ -1,6 +1,6 @@
 @interface _DKOrientationMonitor
-+ (id)_BMEventWithValue:(int64_t)a3;
-+ (id)_eventWithValue:(int64_t)a3;
++ (id)_BMEventWithValue:(int64_t)value;
++ (id)_eventWithValue:(int64_t)value;
 - (void)deactivate;
 - (void)dealloc;
 - (void)start;
@@ -16,16 +16,16 @@
   [(_DKMonitor *)&v3 dealloc];
 }
 
-+ (id)_eventWithValue:(int64_t)a3
++ (id)_eventWithValue:(int64_t)value
 {
-  if (a3 == 1)
+  if (value == 1)
   {
-    v3 = [MEMORY[0x277CFE2B0] landscape];
+    landscape = [MEMORY[0x277CFE2B0] landscape];
   }
 
   else
   {
-    if (a3)
+    if (value)
     {
       [MEMORY[0x277CFE2B0] unknown];
     }
@@ -34,24 +34,24 @@
     {
       [MEMORY[0x277CFE2B0] portriat];
     }
-    v3 = ;
+    landscape = ;
   }
 
-  v4 = v3;
+  v4 = landscape;
   v5 = MEMORY[0x277CFE1D8];
-  v6 = [MEMORY[0x277CFE298] displayOrientationStream];
-  v7 = [MEMORY[0x277CBEAA8] date];
-  v8 = [MEMORY[0x277CBEAA8] distantFuture];
-  v9 = [v5 eventWithStream:v6 startDate:v7 endDate:v8 value:v4];
+  displayOrientationStream = [MEMORY[0x277CFE298] displayOrientationStream];
+  date = [MEMORY[0x277CBEAA8] date];
+  distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
+  v9 = [v5 eventWithStream:displayOrientationStream startDate:date endDate:distantFuture value:v4];
 
   return v9;
 }
 
-+ (id)_BMEventWithValue:(int64_t)a3
++ (id)_BMEventWithValue:(int64_t)value
 {
-  if (a3)
+  if (value)
   {
-    v3 = 2 * (a3 == 1);
+    v3 = 2 * (value == 1);
   }
 
   else
@@ -67,12 +67,12 @@
 - (void)start
 {
   v3 = BiomeLibrary();
-  v4 = [v3 Device];
-  v5 = [v4 Display];
-  v6 = [v5 InterfaceOrientation];
-  v7 = [v6 source];
+  device = [v3 Device];
+  display = [device Display];
+  interfaceOrientation = [display InterfaceOrientation];
+  source = [interfaceOrientation source];
   source = self->_source;
-  self->_source = v7;
+  self->_source = source;
 
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
@@ -80,10 +80,10 @@
   v13[3] = &unk_27856F650;
   v13[4] = self;
   v9 = MEMORY[0x22AA6AF50](v13);
-  v10 = [MEMORY[0x277D0AD20] configurationForDefaultMainDisplayMonitor];
-  [v10 setNeedsUserInteractivePriority:0];
-  [v10 setTransitionHandler:v9];
-  v11 = [MEMORY[0x277D0AD08] monitorWithConfiguration:v10];
+  configurationForDefaultMainDisplayMonitor = [MEMORY[0x277D0AD20] configurationForDefaultMainDisplayMonitor];
+  [configurationForDefaultMainDisplayMonitor setNeedsUserInteractivePriority:0];
+  [configurationForDefaultMainDisplayMonitor setTransitionHandler:v9];
+  v11 = [MEMORY[0x277D0AD08] monitorWithConfiguration:configurationForDefaultMainDisplayMonitor];
   monitor = self->_monitor;
   self->_monitor = v11;
 }

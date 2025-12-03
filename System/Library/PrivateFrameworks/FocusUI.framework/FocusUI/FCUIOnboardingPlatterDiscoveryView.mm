@@ -1,44 +1,44 @@
 @interface FCUIOnboardingPlatterDiscoveryView
-+ (id)_bodyStringForDNDModeSemanticType:(int64_t)a3;
-+ (id)onboardingPlatterDiscoveryViewForMode:(id)a3;
-- (FCUIOnboardingPlatterDiscoveryView)initWithMode:(id)a3;
++ (id)_bodyStringForDNDModeSemanticType:(int64_t)type;
++ (id)onboardingPlatterDiscoveryViewForMode:(id)mode;
+- (FCUIOnboardingPlatterDiscoveryView)initWithMode:(id)mode;
 - (FCUIOnboardingPlatterDiscoveryViewDelegate)delegate;
-- (id)presentQuickStartForModeIdentifier:(id)a3;
+- (id)presentQuickStartForModeIdentifier:(id)identifier;
 - (void)_configureGraphicViewIfNecessary;
 - (void)_layoutGraphicView;
 - (void)layoutSubviews;
-- (void)requestDismissal:(id)a3;
+- (void)requestDismissal:(id)dismissal;
 @end
 
 @implementation FCUIOnboardingPlatterDiscoveryView
 
-+ (id)onboardingPlatterDiscoveryViewForMode:(id)a3
++ (id)onboardingPlatterDiscoveryViewForMode:(id)mode
 {
-  v3 = a3;
-  v4 = [[FCUIOnboardingPlatterDiscoveryView alloc] initWithMode:v3];
+  modeCopy = mode;
+  v4 = [[FCUIOnboardingPlatterDiscoveryView alloc] initWithMode:modeCopy];
 
   return v4;
 }
 
-- (FCUIOnboardingPlatterDiscoveryView)initWithMode:(id)a3
+- (FCUIOnboardingPlatterDiscoveryView)initWithMode:(id)mode
 {
-  v4 = a3;
+  modeCopy = mode;
   v15.receiver = self;
   v15.super_class = FCUIOnboardingPlatterDiscoveryView;
   v5 = [(PLPlatterDiscoveryView *)&v15 init];
   if (v5)
   {
-    v6 = [v4 semanticType];
+    semanticType = [modeCopy semanticType];
     v7 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v8 = [v7 localizedStringForKey:@"DISCOVERY_ONBOARDING_PLATTER_TITLE" value:&stru_285ECE868 table:0];
     [(PLPlatterDiscoveryView *)v5 setTitleText:v8];
 
-    v9 = [FCUIOnboardingPlatterDiscoveryView _bodyStringForDNDModeSemanticType:v6];
+    v9 = [FCUIOnboardingPlatterDiscoveryView _bodyStringForDNDModeSemanticType:semanticType];
     [(PLPlatterDiscoveryView *)v5 setBodyText:v9];
 
     v10 = MEMORY[0x277D750C8];
-    v11 = [v4 modeIdentifier];
-    v12 = [(FCUIOnboardingPlatterDiscoveryView *)v5 presentQuickStartForModeIdentifier:v11];
+    modeIdentifier = [modeCopy modeIdentifier];
+    v12 = [(FCUIOnboardingPlatterDiscoveryView *)v5 presentQuickStartForModeIdentifier:modeIdentifier];
     v13 = [v10 actionWithTitle:@"Customize" image:0 identifier:@"present-quickstart-sheet" handler:v12];
     [(PLPlatterDiscoveryView *)v5 setDefaultAction:v13];
   }
@@ -46,14 +46,14 @@
   return v5;
 }
 
-+ (id)_bodyStringForDNDModeSemanticType:(int64_t)a3
++ (id)_bodyStringForDNDModeSemanticType:(int64_t)type
 {
   v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v5 = [v4 localizedStringForKey:@"NOTIFICATION_LIST_MISSED_SECTION_HEADER_DO_NOT_DISTURB" value:&stru_285ECE868 table:0];
 
-  if (a3 <= 9)
+  if (type <= 9)
   {
-    v6 = off_27901A668[a3];
+    v6 = off_27901A668[type];
     v7 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v8 = [v7 localizedStringForKey:v6 value:&stru_285ECE868 table:0];
 
@@ -63,18 +63,18 @@
   return v5;
 }
 
-- (id)presentQuickStartForModeIdentifier:(id)a3
+- (id)presentQuickStartForModeIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   objc_initWeak(&location, self);
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __73__FCUIOnboardingPlatterDiscoveryView_presentQuickStartForModeIdentifier___block_invoke;
   v8[3] = &unk_27901A648;
   objc_copyWeak(&v11, &location);
-  v9 = v4;
-  v10 = self;
-  v5 = v4;
+  v9 = identifierCopy;
+  selfCopy = self;
+  v5 = identifierCopy;
   v6 = _Block_copy(v8);
 
   objc_destroyWeak(&v11);
@@ -107,21 +107,21 @@ void __73__FCUIOnboardingPlatterDiscoveryView_presentQuickStartForModeIdentifier
 
 - (void)_configureGraphicViewIfNecessary
 {
-  v3 = [(PLPlatterDiscoveryView *)self graphicView];
+  graphicView = [(PLPlatterDiscoveryView *)self graphicView];
 
-  if (!v3)
+  if (!graphicView)
   {
     v12 = objc_alloc_init(MEMORY[0x277D75D18]);
     v4 = [FCUIOnboardingStackedNotificationView alloc];
-    v5 = [MEMORY[0x277D75348] systemGray3Color];
-    v6 = [(FCUIOnboardingStackedNotificationView *)v4 initWithBackgroundColor:v5 assetImageName:0];
+    systemGray3Color = [MEMORY[0x277D75348] systemGray3Color];
+    v6 = [(FCUIOnboardingStackedNotificationView *)v4 initWithBackgroundColor:systemGray3Color assetImageName:0];
     notificationPlatterView2 = self->_notificationPlatterView2;
     self->_notificationPlatterView2 = v6;
 
     [v12 addSubview:self->_notificationPlatterView2];
     v8 = [FCUIOnboardingStackedNotificationView alloc];
-    v9 = [MEMORY[0x277D75348] systemGray2Color];
-    v10 = [(FCUIOnboardingStackedNotificationView *)v8 initWithBackgroundColor:v9 assetImageName:@"person.circle.fill"];
+    systemGray2Color = [MEMORY[0x277D75348] systemGray2Color];
+    v10 = [(FCUIOnboardingStackedNotificationView *)v8 initWithBackgroundColor:systemGray2Color assetImageName:@"person.circle.fill"];
     notificationPlatterView1 = self->_notificationPlatterView1;
     self->_notificationPlatterView1 = v10;
 
@@ -132,13 +132,13 @@ void __73__FCUIOnboardingPlatterDiscoveryView_presentQuickStartForModeIdentifier
 
 - (void)_layoutGraphicView
 {
-  v3 = [(FCUIOnboardingPlatterDiscoveryView *)self traitCollection];
-  [v3 displayScale];
+  traitCollection = [(FCUIOnboardingPlatterDiscoveryView *)self traitCollection];
+  [traitCollection displayScale];
   v5 = v4;
   v30 = v4;
 
-  v6 = [(PLPlatterDiscoveryView *)self graphicView];
-  [v6 bounds];
+  graphicView = [(PLPlatterDiscoveryView *)self graphicView];
+  [graphicView bounds];
   v8 = v7;
   v10 = v9;
   v12 = v11;
@@ -190,10 +190,10 @@ void __73__FCUIOnboardingPlatterDiscoveryView_presentQuickStartForModeIdentifier
   [(FCUIOnboardingStackedNotificationView *)self->_notificationPlatterView1 setFrame:v30];
 }
 
-- (void)requestDismissal:(id)a3
+- (void)requestDismissal:(id)dismissal
 {
-  v4 = [(FCUIOnboardingPlatterDiscoveryView *)self delegate];
-  [v4 onboardingPlatterRequestsDismissal:self];
+  delegate = [(FCUIOnboardingPlatterDiscoveryView *)self delegate];
+  [delegate onboardingPlatterRequestsDismissal:self];
 }
 
 - (FCUIOnboardingPlatterDiscoveryViewDelegate)delegate

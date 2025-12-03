@@ -149,7 +149,7 @@
 
 - (_NSRange)associatedMessageRange
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_214553214();
   v5 = v4;
 
@@ -178,7 +178,7 @@
   else
   {
     v9 = v8[24];
-    v10 = self;
+    selfCopy = self;
     sub_213FB5844(v7, type metadata accessor for BalloonPlugin);
 
     return (v9 & 1) == 0;

@@ -1,12 +1,12 @@
 @interface BRDSBundleConfiguration
-- (Class)dataSourceClassForKey:(id)a3;
+- (Class)dataSourceClassForKey:(id)key;
 @end
 
 @implementation BRDSBundleConfiguration
 
-- (Class)dataSourceClassForKey:(id)a3
+- (Class)dataSourceClassForKey:(id)key
 {
-  if ([a3 isEqualToString:RESampleDataSourceKey])
+  if ([key isEqualToString:RESampleDataSourceKey])
   {
     v3 = objc_opt_class();
   }

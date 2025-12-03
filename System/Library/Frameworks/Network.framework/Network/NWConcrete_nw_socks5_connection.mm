@@ -8,8 +8,8 @@
 - (NSString)description
 {
   v35 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  if (!v2)
+  selfCopy = self;
+  if (!selfCopy)
   {
     v21 = __nwlog_obj();
     *buf = 136446210;
@@ -83,11 +83,11 @@ LABEL_60:
     goto LABEL_62;
   }
 
-  v3 = v2;
+  v3 = selfCopy;
   *buf = 0;
-  if (*(v2 + 160) < 0)
+  if (*(selfCopy + 160) < 0)
   {
-    sc_in_udp_associated_tcp_connection = v2->sc_in_udp_associated_tcp_connection;
+    sc_in_udp_associated_tcp_connection = selfCopy->sc_in_udp_associated_tcp_connection;
     if (sc_in_udp_associated_tcp_connection)
     {
       v5 = sc_in_udp_associated_tcp_connection;
@@ -344,7 +344,7 @@ LABEL_63:
     *buf = 136446466;
     v32 = "[NWConcrete_nw_socks5_connection dealloc]";
     v33 = 2114;
-    v34 = self;
+    selfCopy6 = self;
     _os_log_impl(&dword_181A37000, v3, OS_LOG_TYPE_DEBUG, "%{public}s %{public}@", buf, 0x16u);
   }
 
@@ -436,7 +436,7 @@ LABEL_11:
       *buf = 136446466;
       v32 = "[NWConcrete_nw_socks5_connection dealloc]";
       v33 = 2082;
-      v34 = backtrace_string;
+      selfCopy6 = backtrace_string;
       _os_log_impl(&dword_181A37000, v7, v16, "%{public}s over-release of nw_socks5_connection. Object should not be internally retained while deallocating, dumping backtrace:%{public}s", buf, 0x16u);
     }
 
@@ -462,7 +462,7 @@ LABEL_13:
   *buf = 136446722;
   v32 = "[NWConcrete_nw_socks5_connection dealloc]";
   v33 = 2112;
-  v34 = self;
+  selfCopy6 = self;
   v35 = 2048;
   v36 = sc_busy_counter;
   v27 = 32;
@@ -485,7 +485,7 @@ LABEL_13:
         *buf = 136446722;
         v32 = "[NWConcrete_nw_socks5_connection dealloc]";
         v33 = 2112;
-        v34 = self;
+        selfCopy6 = self;
         v35 = 2048;
         v36 = v14;
         _os_log_impl(&dword_181A37000, v12, v13, "%{public}s %@ dealloc while busy count is %llu, not zero", buf, 0x20u);
@@ -508,7 +508,7 @@ LABEL_13:
           *buf = 136446978;
           v32 = "[NWConcrete_nw_socks5_connection dealloc]";
           v33 = 2112;
-          v34 = self;
+          selfCopy6 = self;
           v35 = 2048;
           v36 = v21;
           v37 = 2082;
@@ -531,7 +531,7 @@ LABEL_13:
         *buf = 136446722;
         v32 = "[NWConcrete_nw_socks5_connection dealloc]";
         v33 = 2112;
-        v34 = self;
+        selfCopy6 = self;
         v35 = 2048;
         v36 = v25;
         _os_log_impl(&dword_181A37000, v12, v19, "%{public}s %@ dealloc while busy count is %llu, not zero, no backtrace", buf, 0x20u);
@@ -550,7 +550,7 @@ LABEL_13:
         *buf = 136446722;
         v32 = "[NWConcrete_nw_socks5_connection dealloc]";
         v33 = 2112;
-        v34 = self;
+        selfCopy6 = self;
         v35 = 2048;
         v36 = v24;
         _os_log_impl(&dword_181A37000, v12, v23, "%{public}s %@ dealloc while busy count is %llu, not zero, backtrace limit exceeded", buf, 0x20u);

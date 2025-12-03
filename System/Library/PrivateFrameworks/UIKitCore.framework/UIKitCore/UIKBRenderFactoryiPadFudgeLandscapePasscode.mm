@@ -1,5 +1,5 @@
 @interface UIKBRenderFactoryiPadFudgeLandscapePasscode
-- (id)_traitsForKey:(id)a3 onKeyplane:(id)a4;
+- (id)_traitsForKey:(id)key onKeyplane:(id)keyplane;
 - (id)hashStringElement;
 @end
 
@@ -8,27 +8,27 @@
 - (id)hashStringElement
 {
   v2 = MEMORY[0x1E696AD98];
-  v3 = [(UIKBRenderFactory *)self renderConfig];
-  [v3 keycapOpacity];
+  renderConfig = [(UIKBRenderFactory *)self renderConfig];
+  [renderConfig keycapOpacity];
   v4 = [v2 numberWithDouble:?];
 
   return v4;
 }
 
-- (id)_traitsForKey:(id)a3 onKeyplane:(id)a4
+- (id)_traitsForKey:(id)key onKeyplane:(id)keyplane
 {
   v12.receiver = self;
   v12.super_class = UIKBRenderFactoryiPadFudgeLandscapePasscode;
-  v6 = a4;
-  v7 = a3;
-  v8 = [(UIKBRenderFactoryiPadFudge *)&v12 _traitsForKey:v7 onKeyplane:v6];
-  [(UIKBRenderFactory *)self modifyKeyTraitsForPasscode:v8 forKey:v7 onKeyplane:v6, v12.receiver, v12.super_class];
+  keyplaneCopy = keyplane;
+  keyCopy = key;
+  v8 = [(UIKBRenderFactoryiPadFudge *)&v12 _traitsForKey:keyCopy onKeyplane:keyplaneCopy];
+  [(UIKBRenderFactory *)self modifyKeyTraitsForPasscode:v8 forKey:keyCopy onKeyplane:keyplaneCopy, v12.receiver, v12.super_class];
 
-  v9 = [(UIKBRenderFactoryiPhone *)self _popupStyleForKey:v7];
+  v9 = [(UIKBRenderFactoryiPhone *)self _popupStyleForKey:keyCopy];
   if (v9)
   {
-    v10 = [(UIKBRenderFactoryiPadFudgeLandscapePasscode *)self activeControlKeyTraits];
-    [v8 overlayWithTraits:v10];
+    activeControlKeyTraits = [(UIKBRenderFactoryiPadFudgeLandscapePasscode *)self activeControlKeyTraits];
+    [v8 overlayWithTraits:activeControlKeyTraits];
   }
 
   return v8;

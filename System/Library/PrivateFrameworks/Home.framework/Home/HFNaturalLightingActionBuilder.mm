@@ -1,32 +1,32 @@
 @interface HFNaturalLightingActionBuilder
-- (BOOL)canUpdateWithActionBuilder:(id)a3;
-- (BOOL)hasSameTargetAsAction:(id)a3;
-- (BOOL)updateWithActionBuilder:(id)a3;
-- (HFNaturalLightingActionBuilder)initWithExistingObject:(id)a3 inHome:(id)a4;
+- (BOOL)canUpdateWithActionBuilder:(id)builder;
+- (BOOL)hasSameTargetAsAction:(id)action;
+- (BOOL)updateWithActionBuilder:(id)builder;
+- (HFNaturalLightingActionBuilder)initWithExistingObject:(id)object inHome:(id)home;
 - (id)commitItem;
-- (id)compareToObject:(id)a3;
+- (id)compareToObject:(id)object;
 - (id)containedAccessoryRepresentables;
 - (id)copyForCreatingNewAction;
 - (id)createNewAction;
 - (id)description;
 - (unint64_t)hash;
-- (void)setLightProfile:(id)a3;
+- (void)setLightProfile:(id)profile;
 @end
 
 @implementation HFNaturalLightingActionBuilder
 
-- (HFNaturalLightingActionBuilder)initWithExistingObject:(id)a3 inHome:(id)a4
+- (HFNaturalLightingActionBuilder)initWithExistingObject:(id)object inHome:(id)home
 {
   v13.receiver = self;
   v13.super_class = HFNaturalLightingActionBuilder;
-  v4 = [(HFItemBuilder *)&v13 initWithExistingObject:a3 inHome:a4];
+  v4 = [(HFItemBuilder *)&v13 initWithExistingObject:object inHome:home];
   if (v4)
   {
     objc_opt_class();
-    v5 = [(HFActionBuilder *)v4 action];
+    action = [(HFActionBuilder *)v4 action];
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
+      v6 = action;
     }
 
     else
@@ -36,17 +36,17 @@
 
     v7 = v6;
 
-    v8 = [v7 lightProfile];
+    lightProfile = [v7 lightProfile];
     lightProfile = v4->_lightProfile;
-    v4->_lightProfile = v8;
+    v4->_lightProfile = lightProfile;
 
-    v10 = [v7 isNaturalLightingEnabled];
-    v4->_naturalLightEnabled = v10;
+    isNaturalLightingEnabled = [v7 isNaturalLightingEnabled];
+    v4->_naturalLightEnabled = isNaturalLightingEnabled;
     if (!v4->_lightProfile)
     {
-      v11 = [(HFActionBuilder *)v4 action];
+      action2 = [(HFActionBuilder *)v4 action];
 
-      if (v11)
+      if (action2)
       {
         NSLog(&cfstr_FailedToGetLig.isa);
       }
@@ -59,11 +59,11 @@
 - (id)copyForCreatingNewAction
 {
   v3 = objc_alloc(objc_opt_class());
-  v4 = [(HFItemBuilder *)self home];
-  v5 = [v3 initWithHome:v4];
+  home = [(HFItemBuilder *)self home];
+  v5 = [v3 initWithHome:home];
 
-  v6 = [(HFNaturalLightingActionBuilder *)self lightProfile];
-  [v5 setLightProfile:v6];
+  lightProfile = [(HFNaturalLightingActionBuilder *)self lightProfile];
+  [v5 setLightProfile:lightProfile];
 
   [v5 setNaturalLightEnabled:{-[HFNaturalLightingActionBuilder naturalLightEnabled](self, "naturalLightEnabled")}];
   return v5;
@@ -73,19 +73,19 @@
 {
   v3 = [MEMORY[0x277D2C8F8] builderWithObject:self];
   v4 = [v3 appendBool:-[HFNaturalLightingActionBuilder naturalLightEnabled](self withName:{"naturalLightEnabled"), @"naturalLightEnabled"}];
-  v5 = [(HFNaturalLightingActionBuilder *)self lightProfile];
-  v6 = [v3 appendObject:v5 withName:@"lightProfile"];
+  lightProfile = [(HFNaturalLightingActionBuilder *)self lightProfile];
+  v6 = [v3 appendObject:lightProfile withName:@"lightProfile"];
 
-  v7 = [v3 build];
+  build = [v3 build];
 
-  return v7;
+  return build;
 }
 
-- (BOOL)canUpdateWithActionBuilder:(id)a3
+- (BOOL)canUpdateWithActionBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   objc_opt_class();
-  v5 = v4;
+  v5 = builderCopy;
   if (objc_opt_isKindOfClass())
   {
     v6 = v5;
@@ -98,20 +98,20 @@
 
   v7 = v6;
 
-  v8 = [v7 lightProfile];
-  v9 = [(HFNaturalLightingActionBuilder *)self lightProfile];
-  v10 = [v8 isEqual:v9];
+  lightProfile = [v7 lightProfile];
+  lightProfile2 = [(HFNaturalLightingActionBuilder *)self lightProfile];
+  v10 = [lightProfile isEqual:lightProfile2];
 
   return v10;
 }
 
-- (BOOL)updateWithActionBuilder:(id)a3
+- (BOOL)updateWithActionBuilder:(id)builder
 {
-  v4 = a3;
-  if ([(HFNaturalLightingActionBuilder *)self canUpdateWithActionBuilder:v4])
+  builderCopy = builder;
+  if ([(HFNaturalLightingActionBuilder *)self canUpdateWithActionBuilder:builderCopy])
   {
     objc_opt_class();
-    v5 = v4;
+    v5 = builderCopy;
     if (objc_opt_isKindOfClass())
     {
       v6 = v5;
@@ -146,13 +146,13 @@
 
 - (id)createNewAction
 {
-  v3 = [(HFNaturalLightingActionBuilder *)self lightProfile];
+  lightProfile = [(HFNaturalLightingActionBuilder *)self lightProfile];
 
-  if (v3)
+  if (lightProfile)
   {
     v4 = objc_alloc(MEMORY[0x277CD1B20]);
-    v5 = [(HFNaturalLightingActionBuilder *)self lightProfile];
-    v6 = [v4 initWithLightProfile:v5 naturalLightingEnabled:{-[HFNaturalLightingActionBuilder naturalLightEnabled](self, "naturalLightEnabled")}];
+    lightProfile2 = [(HFNaturalLightingActionBuilder *)self lightProfile];
+    v6 = [v4 initWithLightProfile:lightProfile2 naturalLightingEnabled:{-[HFNaturalLightingActionBuilder naturalLightEnabled](self, "naturalLightEnabled")}];
   }
 
   else
@@ -170,11 +170,11 @@
   return v6;
 }
 
-- (BOOL)hasSameTargetAsAction:(id)a3
+- (BOOL)hasSameTargetAsAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   objc_opt_class();
-  v5 = v4;
+  v5 = actionCopy;
   if (objc_opt_isKindOfClass())
   {
     v6 = v5;
@@ -189,9 +189,9 @@
 
   if (v7)
   {
-    v8 = [(HFNaturalLightingActionBuilder *)self lightProfile];
-    v9 = [v7 lightProfile];
-    v10 = [v8 isEqual:v9];
+    lightProfile = [(HFNaturalLightingActionBuilder *)self lightProfile];
+    lightProfile2 = [v7 lightProfile];
+    v10 = [lightProfile isEqual:lightProfile2];
   }
 
   else
@@ -204,22 +204,22 @@
 
 - (id)containedAccessoryRepresentables
 {
-  v2 = [(HFNaturalLightingActionBuilder *)self lightProfile];
-  v3 = [v2 services];
-  v4 = [v3 copy];
+  lightProfile = [(HFNaturalLightingActionBuilder *)self lightProfile];
+  services = [lightProfile services];
+  v4 = [services copy];
 
   return v4;
 }
 
 - (id)commitItem
 {
-  v3 = [(HFNaturalLightingActionBuilder *)self performValidation];
+  performValidation = [(HFNaturalLightingActionBuilder *)self performValidation];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __44__HFNaturalLightingActionBuilder_commitItem__block_invoke;
   v7[3] = &unk_277DF2CE0;
   v7[4] = self;
-  v4 = [v3 flatMap:v7];
+  v4 = [performValidation flatMap:v7];
   v5 = [v4 recover:&__block_literal_global_356];
 
   return v5;
@@ -296,36 +296,36 @@ id __44__HFNaturalLightingActionBuilder_commitItem__block_invoke_4(uint64_t a1, 
   return v4;
 }
 
-- (void)setLightProfile:(id)a3
+- (void)setLightProfile:(id)profile
 {
-  v5 = a3;
-  v6 = [(HFActionBuilder *)self action];
+  profileCopy = profile;
+  action = [(HFActionBuilder *)self action];
 
-  if (v6)
+  if (action)
   {
-    v8 = [MEMORY[0x277CCA890] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"HFActionBuilder.m" lineNumber:1038 description:@"Cannot change the lightProfile for an existing action!"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HFActionBuilder.m" lineNumber:1038 description:@"Cannot change the lightProfile for an existing action!"];
   }
 
   lightProfile = self->_lightProfile;
-  self->_lightProfile = v5;
+  self->_lightProfile = profileCopy;
 }
 
-- (id)compareToObject:(id)a3
+- (id)compareToObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v13.receiver = self;
   v13.super_class = HFNaturalLightingActionBuilder;
-  v5 = [(HFActionBuilder *)&v13 compareToObject:v4];
+  v5 = [(HFActionBuilder *)&v13 compareToObject:objectCopy];
   if (([v5 containsCriticalDifference] & 1) == 0)
   {
-    v6 = [(HFNaturalLightingActionBuilder *)self lightProfile];
-    v7 = [v4 lightProfile];
-    v8 = [HFPropertyDifference compareObjectA:v6 toObjectB:v7 key:@"lightProfile" priority:3];
+    lightProfile = [(HFNaturalLightingActionBuilder *)self lightProfile];
+    lightProfile2 = [objectCopy lightProfile];
+    v8 = [HFPropertyDifference compareObjectA:lightProfile toObjectB:lightProfile2 key:@"lightProfile" priority:3];
     [v5 add:v8];
 
     v9 = [MEMORY[0x277CCABB0] numberWithBool:{-[HFNaturalLightingActionBuilder naturalLightEnabled](self, "naturalLightEnabled")}];
-    v10 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v4, "naturalLightEnabled")}];
+    v10 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(objectCopy, "naturalLightEnabled")}];
     v11 = [HFPropertyDifference compareObjectA:v9 toObjectB:v10 key:@"naturalLightEnabled" priority:2];
     [v5 add:v11];
   }
@@ -336,9 +336,9 @@ id __44__HFNaturalLightingActionBuilder_commitItem__block_invoke_4(uint64_t a1, 
 - (unint64_t)hash
 {
   v3 = [objc_opt_class() hash];
-  v4 = [(HFNaturalLightingActionBuilder *)self lightProfile];
-  v5 = [v4 uniqueIdentifier];
-  v6 = [v5 hash];
+  lightProfile = [(HFNaturalLightingActionBuilder *)self lightProfile];
+  uniqueIdentifier = [lightProfile uniqueIdentifier];
+  v6 = [uniqueIdentifier hash];
 
   return v6 ^ v3;
 }

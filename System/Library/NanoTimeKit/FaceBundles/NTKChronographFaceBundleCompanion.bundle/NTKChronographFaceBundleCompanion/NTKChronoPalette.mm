@@ -1,103 +1,103 @@
 @interface NTKChronoPalette
-+ (id)interpolationFromPalette:(id)a3 toPalette:(id)a4 fraction:(double)a5;
-+ (id)paletteForDevice:(id)a3 withFaceColorPalette:(id)a4;
-- (id)_initForDevice:(id)a3 withFaceColorPalette:(id)a4;
-- (id)initForDevice:(id)a3;
++ (id)interpolationFromPalette:(id)palette toPalette:(id)toPalette fraction:(double)fraction;
++ (id)paletteForDevice:(id)device withFaceColorPalette:(id)palette;
+- (id)_initForDevice:(id)device withFaceColorPalette:(id)palette;
+- (id)initForDevice:(id)device;
 @end
 
 @implementation NTKChronoPalette
 
-+ (id)paletteForDevice:(id)a3 withFaceColorPalette:(id)a4
++ (id)paletteForDevice:(id)device withFaceColorPalette:(id)palette
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [objc_alloc(objc_opt_class()) _initForDevice:v6 withFaceColorPalette:v5];
+  paletteCopy = palette;
+  deviceCopy = device;
+  v7 = [objc_alloc(objc_opt_class()) _initForDevice:deviceCopy withFaceColorPalette:paletteCopy];
 
   return v7;
 }
 
-+ (id)interpolationFromPalette:(id)a3 toPalette:(id)a4 fraction:(double)a5
++ (id)interpolationFromPalette:(id)palette toPalette:(id)toPalette fraction:(double)fraction
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = objc_alloc_init(a1);
-  v10[1] = v9[1];
-  v11 = [v8 backgroundColor];
-  v12 = [v9 backgroundColor];
+  paletteCopy = palette;
+  toPaletteCopy = toPalette;
+  v10 = objc_alloc_init(self);
+  v10[1] = toPaletteCopy[1];
+  backgroundColor = [paletteCopy backgroundColor];
+  backgroundColor2 = [toPaletteCopy backgroundColor];
   v13 = NTKInterpolateBetweenColors();
   v14 = v10[4];
   v10[4] = v13;
 
-  v15 = [v8 foregroundColor];
-  v16 = [v9 foregroundColor];
+  foregroundColor = [paletteCopy foregroundColor];
+  foregroundColor2 = [toPaletteCopy foregroundColor];
   v17 = NTKInterpolateBetweenColors();
   v18 = v10[5];
   v10[5] = v17;
 
-  v19 = [v8 tickColor];
-  v20 = [v9 tickColor];
+  tickColor = [paletteCopy tickColor];
+  tickColor2 = [toPaletteCopy tickColor];
   v21 = NTKInterpolateBetweenColors();
   v22 = v10[6];
   v10[6] = v21;
 
-  v23 = [v8 alternativeTickColor];
-  v24 = [v9 alternativeTickColor];
+  alternativeTickColor = [paletteCopy alternativeTickColor];
+  alternativeTickColor2 = [toPaletteCopy alternativeTickColor];
   v25 = NTKInterpolateBetweenColors();
   v26 = v10[7];
   v10[7] = v25;
 
-  v27 = [v8 labelColor];
-  v28 = [v9 labelColor];
+  labelColor = [paletteCopy labelColor];
+  labelColor2 = [toPaletteCopy labelColor];
   v29 = NTKInterpolateBetweenColors();
   v30 = v10[8];
   v10[8] = v29;
 
-  v31 = [v8 chronoHandColor];
-  v32 = [v9 chronoHandColor];
+  chronoHandColor = [paletteCopy chronoHandColor];
+  chronoHandColor2 = [toPaletteCopy chronoHandColor];
   v33 = NTKInterpolateBetweenColors();
   v34 = v10[9];
   v10[9] = v33;
 
-  v35 = [v8 inlayColor];
-  v36 = [v9 inlayColor];
+  inlayColor = [paletteCopy inlayColor];
+  inlayColor2 = [toPaletteCopy inlayColor];
   v37 = NTKInterpolateBetweenColors();
   v38 = v10[11];
   v10[11] = v37;
 
-  v39 = [v8 dateComplicationColor];
-  v40 = [v9 dateComplicationColor];
+  dateComplicationColor = [paletteCopy dateComplicationColor];
+  dateComplicationColor2 = [toPaletteCopy dateComplicationColor];
   v41 = NTKInterpolateBetweenColors();
   v42 = v10[10];
   v10[10] = v41;
 
-  v43 = [v8 glyphColor];
-  v44 = [v9 glyphColor];
+  glyphColor = [paletteCopy glyphColor];
+  glyphColor2 = [toPaletteCopy glyphColor];
   v45 = NTKInterpolateBetweenColors();
   v46 = v10[12];
   v10[12] = v45;
 
-  v47 = [v8 glyphBackgroundColor];
-  v48 = [v9 glyphBackgroundColor];
+  glyphBackgroundColor = [paletteCopy glyphBackgroundColor];
+  glyphBackgroundColor2 = [toPaletteCopy glyphBackgroundColor];
   v49 = NTKInterpolateBetweenColors();
   v50 = v10[13];
   v10[13] = v49;
 
-  [v8 largeTickValue];
-  [v9 largeTickValue];
+  [paletteCopy largeTickValue];
+  [toPaletteCopy largeTickValue];
   CLKInterpolateBetweenFloatsClipped();
   v10[16] = v51;
-  [v8 smallTickValue];
-  [v9 smallTickValue];
+  [paletteCopy smallTickValue];
+  [toPaletteCopy smallTickValue];
   CLKInterpolateBetweenFloatsClipped();
   v10[15] = v52;
-  if (a5 >= 0.5)
+  if (fraction >= 0.5)
   {
-    v53 = v9;
+    v53 = toPaletteCopy;
   }
 
   else
   {
-    v53 = v8;
+    v53 = paletteCopy;
   }
 
   *(v10 + 16) = [v53 showsShadows];
@@ -105,31 +105,31 @@
   return v10;
 }
 
-- (id)initForDevice:(id)a3
+- (id)initForDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v9.receiver = self;
   v9.super_class = NTKChronoPalette;
   v6 = [(NTKChronoPalette *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_device, a3);
+    objc_storeStrong(&v6->_device, device);
   }
 
   return v7;
 }
 
-- (id)_initForDevice:(id)a3 withFaceColorPalette:(id)a4
+- (id)_initForDevice:(id)device withFaceColorPalette:(id)palette
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NTKChronoPalette *)self initForDevice:v6];
+  deviceCopy = device;
+  paletteCopy = palette;
+  v8 = [(NTKChronoPalette *)self initForDevice:deviceCopy];
   if (v8)
   {
-    v9 = [v7 configuration];
-    v10 = [v9 colorOption];
-    *(v8 + 1) = [NTKPaletteColorEditOption colorValueForColorName:v10];
+    configuration = [paletteCopy configuration];
+    colorOption = [configuration colorOption];
+    *(v8 + 1) = [NTKPaletteColorEditOption colorValueForColorName:colorOption];
 
     v11 = *(v8 + 1);
     v12 = [UIColor colorWithWhite:0.541176471 alpha:1.0];
@@ -165,7 +165,7 @@ LABEL_20:
           v87 = v13;
           objc_storeStrong(v8 + 13, v13);
           *(v8 + 120) = xmmword_14560;
-          v86 = [v6 materialType];
+          materialType = [deviceCopy materialType];
           v98 = 0;
           v99 = &v98;
           v100 = 0x2020000000;
@@ -222,10 +222,10 @@ LABEL_35:
               }
 
               v30 = v89;
-              if (v86 != &dword_4 + 1)
+              if (materialType != &dword_4 + 1)
               {
                 v30 = v28;
-                if (v86 != &dword_4 + 2)
+                if (materialType != &dword_4 + 2)
                 {
                   v30 = v31;
                 }
@@ -246,9 +246,9 @@ LABEL_33:
 
             if (((1 << v11) & 0x1BFE00) != 0)
             {
-              v32 = [v7 primaryColor];
+              primaryColor = [paletteCopy primaryColor];
               v33 = v29[5];
-              v29[5] = v32;
+              v29[5] = primaryColor;
 
               objc_storeStrong(v29 + 6, v29[5]);
               *(v8 + 15) = 0x3FE0000000000000;
@@ -284,9 +284,9 @@ LABEL_52:
                 v65 = v29[5];
                 v29[5] = v64;
 
-                v66 = [v7 primaryColor];
+                primaryColor2 = [paletteCopy primaryColor];
                 v67 = v29[6];
-                v29[6] = v66;
+                v29[6] = primaryColor2;
 
                 v68 = +[UIColor whiteColor];
                 v69 = v29[7];
@@ -307,7 +307,7 @@ LABEL_36:
                 {
                   if (v11 == 3)
                   {
-                    v60 = [UIColor colorWithRed:0.219607843 green:0.380392157 blue:0.196078431 alpha:1.0];
+                    primaryColor5 = [UIColor colorWithRed:0.219607843 green:0.380392157 blue:0.196078431 alpha:1.0];
                     v61 = 0.0431372549;
                     v62 = 0.141176471;
                     v63 = 0.0549019608;
@@ -315,7 +315,7 @@ LABEL_36:
 
                   else
                   {
-                    v60 = [UIColor colorWithRed:0.42745098 green:0.42745098 blue:0.450980392 alpha:1.0];
+                    primaryColor5 = [UIColor colorWithRed:0.42745098 green:0.42745098 blue:0.450980392 alpha:1.0];
                     v61 = 0.141176471;
                     v63 = 0.133333333;
                     v62 = 0.133333333;
@@ -324,7 +324,7 @@ LABEL_36:
 
                 else if (v11 == 1)
                 {
-                  v60 = [UIColor colorWithRed:0.2 green:0.345098039 blue:0.478431373 alpha:1.0];
+                  primaryColor5 = [UIColor colorWithRed:0.2 green:0.345098039 blue:0.478431373 alpha:1.0];
                   v63 = 0.0;
                   v61 = 0.239215686;
                   v62 = 0.125490196;
@@ -337,7 +337,7 @@ LABEL_36:
                     goto LABEL_60;
                   }
 
-                  v60 = [UIColor colorWithRed:0.458823529 green:0.298039216 blue:0.129411765 alpha:1.0];
+                  primaryColor5 = [UIColor colorWithRed:0.458823529 green:0.298039216 blue:0.129411765 alpha:1.0];
                   v61 = 0.0352941176;
                   v62 = 0.101960784;
                   v63 = 0.168627451;
@@ -353,9 +353,9 @@ LABEL_36:
 
               if (((1 << v11) & 0x1BFE00) != 0)
               {
-                v57 = [v7 primaryColor];
+                primaryColor3 = [paletteCopy primaryColor];
                 v58 = *(v8 + 12);
-                *(v8 + 12) = v57;
+                *(v8 + 12) = primaryColor3;
 
                 v59 = NTKColorByPremultiplyingAlpha();
 LABEL_59:
@@ -386,9 +386,9 @@ LABEL_60:
                 {
                   if (v11 == 7)
                   {
-                    v81 = [v7 primaryColor];
+                    primaryColor4 = [paletteCopy primaryColor];
                     v82 = v29[11];
-                    v29[11] = v81;
+                    v29[11] = primaryColor4;
 
                     goto LABEL_76;
                   }
@@ -428,7 +428,7 @@ LABEL_78:
                   if (!v11)
                   {
                     v79 = v29 + 14;
-                    if ((v86 - 5) > 1)
+                    if ((materialType - 5) > 1)
                     {
                       v80 = *(v8 + 13);
                     }
@@ -452,13 +452,13 @@ LABEL_78:
               {
                 if (v11 == 8)
                 {
-                  v60 = [UIColor colorWithRed:0.466666667 green:0.521568627 blue:0.552941176 alpha:1.0];
+                  primaryColor5 = [UIColor colorWithRed:0.466666667 green:0.521568627 blue:0.552941176 alpha:1.0];
                   v61 = 0.180392157;
                   v62 = 0.168627451;
                   v63 = 0.152941176;
 LABEL_58:
                   v70 = *(v8 + 12);
-                  *(v8 + 12) = v60;
+                  *(v8 + 12) = primaryColor5;
 
                   v59 = [UIColor colorWithRed:v63 green:v62 blue:v61 alpha:1.0];
                   goto LABEL_59;
@@ -467,7 +467,7 @@ LABEL_58:
 LABEL_49:
                 if (v11 == 5)
                 {
-                  v60 = [UIColor colorWithRed:0.537254902 green:0.549019608 blue:0.549019608 alpha:1.0];
+                  primaryColor5 = [UIColor colorWithRed:0.537254902 green:0.549019608 blue:0.549019608 alpha:1.0];
                   v62 = 0.160784314;
                   v63 = 0.156862745;
                   v61 = 0.160784314;
@@ -480,7 +480,7 @@ LABEL_49:
                     goto LABEL_60;
                   }
 
-                  v60 = [UIColor colorWithRed:0.650980392 green:0.611764706 blue:0.423529412 alpha:1.0];
+                  primaryColor5 = [UIColor colorWithRed:0.650980392 green:0.611764706 blue:0.423529412 alpha:1.0];
                   v61 = 0.152941176;
                   v62 = 0.176470588;
                   v63 = 0.180392157;
@@ -490,7 +490,7 @@ LABEL_49:
               }
 
 LABEL_54:
-              v60 = [v7 primaryColor];
+              primaryColor5 = [paletteCopy primaryColor];
               v61 = 0.0745098039;
               v62 = 0.156862745;
               v63 = 0.349019608;

@@ -1,6 +1,6 @@
 @interface JSSettingsContainerViewController
 - (_TtC16MusicApplication33JSSettingsContainerViewController)init;
-- (_TtC16MusicApplication33JSSettingsContainerViewController)initWithCoder:(id)a3;
+- (_TtC16MusicApplication33JSSettingsContainerViewController)initWithCoder:(id)coder;
 - (void)handleDoneButtonTapped;
 - (void)viewDidLoad;
 @end
@@ -9,25 +9,25 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   JSSettingsContainerViewController.viewDidLoad()();
 }
 
 - (void)handleDoneButtonTapped
 {
-  v5 = self;
-  v2 = [(JSSettingsContainerViewController *)v5 presentingViewController];
-  if (v2)
+  selfCopy = self;
+  presentingViewController = [(JSSettingsContainerViewController *)selfCopy presentingViewController];
+  if (presentingViewController)
   {
-    v3 = v2;
-    [(JSSettingsContainerViewController *)v2 dismissViewControllerAnimated:1 completion:0];
+    v3 = presentingViewController;
+    [(JSSettingsContainerViewController *)presentingViewController dismissViewControllerAnimated:1 completion:0];
 
     v4 = v3;
   }
 
   else
   {
-    v4 = v5;
+    v4 = selfCopy;
   }
 }
 
@@ -40,14 +40,14 @@
   return [(JSDrivenViewController *)&v5 init];
 }
 
-- (_TtC16MusicApplication33JSSettingsContainerViewController)initWithCoder:(id)a3
+- (_TtC16MusicApplication33JSSettingsContainerViewController)initWithCoder:(id)coder
 {
   ObjectType = swift_getObjectType();
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC16MusicApplication33JSSettingsContainerViewController_allowedServicesSubscription) = 0;
   v9.receiver = self;
   v9.super_class = ObjectType;
-  v6 = a3;
-  v7 = [(JSDrivenViewController *)&v9 initWithCoder:v6];
+  coderCopy = coder;
+  v7 = [(JSDrivenViewController *)&v9 initWithCoder:coderCopy];
 
   return v7;
 }

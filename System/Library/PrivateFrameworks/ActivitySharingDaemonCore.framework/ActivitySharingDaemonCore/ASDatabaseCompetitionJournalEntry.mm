@@ -1,36 +1,36 @@
 @interface ASDatabaseCompetitionJournalEntry
-+ (void)applyEntries:(id)a3 withProfile:(id)a4;
-- (ASDatabaseCompetitionJournalEntry)initWithCoder:(id)a3;
-- (ASDatabaseCompetitionJournalEntry)initWithDatabaseCompetition:(id)a3;
-- (void)encodeWithCoder:(id)a3;
++ (void)applyEntries:(id)entries withProfile:(id)profile;
+- (ASDatabaseCompetitionJournalEntry)initWithCoder:(id)coder;
+- (ASDatabaseCompetitionJournalEntry)initWithDatabaseCompetition:(id)competition;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ASDatabaseCompetitionJournalEntry
 
-- (ASDatabaseCompetitionJournalEntry)initWithDatabaseCompetition:(id)a3
+- (ASDatabaseCompetitionJournalEntry)initWithDatabaseCompetition:(id)competition
 {
-  v5 = a3;
+  competitionCopy = competition;
   v9.receiver = self;
   v9.super_class = ASDatabaseCompetitionJournalEntry;
   v6 = [(ASDatabaseCompetitionJournalEntry *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_databaseCompetition, a3);
+    objc_storeStrong(&v6->_databaseCompetition, competition);
   }
 
   return v7;
 }
 
-- (ASDatabaseCompetitionJournalEntry)initWithCoder:(id)a3
+- (ASDatabaseCompetitionJournalEntry)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = ASDatabaseCompetitionJournalEntry;
-  v5 = [(HDJournalEntry *)&v10 initWithCoder:v4];
+  v5 = [(HDJournalEntry *)&v10 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"competition"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"competition"];
     v7 = [objc_alloc(MEMORY[0x277CE9070]) initWithData:v6];
     databaseCompetition = v5->_databaseCompetition;
     v5->_databaseCompetition = v7;
@@ -39,38 +39,38 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v8.receiver = self;
   v8.super_class = ASDatabaseCompetitionJournalEntry;
-  v4 = a3;
-  [(HDJournalEntry *)&v8 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(HDJournalEntry *)&v8 encodeWithCoder:coderCopy];
   v5 = objc_alloc(MEMORY[0x277CBEA90]);
   v6 = [(ASCodableDatabaseCompetition *)self->_databaseCompetition data:v8.receiver];
   v7 = [v5 initWithData:v6];
-  [v4 encodeObject:v7 forKey:@"competition"];
+  [coderCopy encodeObject:v7 forKey:@"competition"];
 }
 
-+ (void)applyEntries:(id)a3 withProfile:(id)a4
++ (void)applyEntries:(id)entries withProfile:(id)profile
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 database];
+  entriesCopy = entries;
+  profileCopy = profile;
+  database = [profileCopy database];
   v17 = 0;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __62__ASDatabaseCompetitionJournalEntry_applyEntries_withProfile___block_invoke;
   v15[3] = &unk_278C4BF90;
-  v16 = v5;
+  v16 = entriesCopy;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __62__ASDatabaseCompetitionJournalEntry_applyEntries_withProfile___block_invoke_2;
   v12[3] = &unk_278C4BF40;
-  v8 = v6;
+  v8 = profileCopy;
   v13 = v8;
   v9 = v16;
   v14 = v9;
-  v10 = [(HDHealthEntity *)ASDatabaseCompetitionEntity performWriteTransactionWithHealthDatabase:v7 error:&v17 block:v15 inaccessibilityHandler:v12];
+  v10 = [(HDHealthEntity *)ASDatabaseCompetitionEntity performWriteTransactionWithHealthDatabase:database error:&v17 block:v15 inaccessibilityHandler:v12];
   v11 = v17;
 
   if (!v10)

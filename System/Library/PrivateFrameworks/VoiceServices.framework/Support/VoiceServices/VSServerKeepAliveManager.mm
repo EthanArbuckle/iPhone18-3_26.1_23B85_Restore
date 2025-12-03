@@ -1,37 +1,37 @@
 @interface VSServerKeepAliveManager
 - (BOOL)hasActiveKeepAlives;
 - (VSServerKeepAliveManager)init;
-- (void)cancelKeepAlive:(id)a3;
-- (void)maintainKeepAlive:(id)a3;
+- (void)cancelKeepAlive:(id)alive;
+- (void)maintainKeepAlive:(id)alive;
 @end
 
 @implementation VSServerKeepAliveManager
 
-- (void)cancelKeepAlive:(id)a3
+- (void)cancelKeepAlive:(id)alive
 {
-  v4 = a3;
+  aliveCopy = alive;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000EBE78;
   v7[3] = &unk_1000FEBE8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = aliveCopy;
+  v6 = aliveCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)maintainKeepAlive:(id)a3
+- (void)maintainKeepAlive:(id)alive
 {
-  v4 = a3;
+  aliveCopy = alive;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000EBF74;
   v7[3] = &unk_1000FEBE8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = aliveCopy;
+  v6 = aliveCopy;
   dispatch_async(queue, v7);
 }
 

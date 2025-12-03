@@ -1,18 +1,18 @@
 @interface AWDCoreRoutineFMCCarParkedInstance
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasHorizontalAccuracy:(BOOL)a3;
-- (void)setHasLocationType:(BOOL)a3;
-- (void)setHasQualityIndicator:(BOOL)a3;
-- (void)setHasTriggerTypes:(BOOL)a3;
-- (void)setHasUserAssistanceRequired:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasHorizontalAccuracy:(BOOL)accuracy;
+- (void)setHasLocationType:(BOOL)type;
+- (void)setHasQualityIndicator:(BOOL)indicator;
+- (void)setHasTriggerTypes:(BOOL)types;
+- (void)setHasUserAssistanceRequired:(BOOL)required;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDCoreRoutineFMCCarParkedInstance
@@ -25,9 +25,9 @@
   [(AWDCoreRoutineFMCCarParkedInstance *)&v3 dealloc];
 }
 
-- (void)setHasTriggerTypes:(BOOL)a3
+- (void)setHasTriggerTypes:(BOOL)types
 {
-  if (a3)
+  if (types)
   {
     v3 = 16;
   }
@@ -40,9 +40,9 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasUserAssistanceRequired:(BOOL)a3
+- (void)setHasUserAssistanceRequired:(BOOL)required
 {
-  if (a3)
+  if (required)
   {
     v3 = 32;
   }
@@ -55,9 +55,9 @@
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasHorizontalAccuracy:(BOOL)a3
+- (void)setHasHorizontalAccuracy:(BOOL)accuracy
 {
-  if (a3)
+  if (accuracy)
   {
     v3 = 2;
   }
@@ -70,9 +70,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasQualityIndicator:(BOOL)a3
+- (void)setHasQualityIndicator:(BOOL)indicator
 {
-  if (a3)
+  if (indicator)
   {
     v3 = 8;
   }
@@ -85,9 +85,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasLocationType:(BOOL)a3
+- (void)setHasLocationType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 4;
   }
@@ -109,22 +109,22 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   if (*&self->_has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
   }
 
   parkingId = self->_parkingId;
   if (parkingId)
   {
-    [v3 setObject:parkingId forKey:@"parkingId"];
+    [dictionary setObject:parkingId forKey:@"parkingId"];
   }
 
   has = self->_has;
   if ((has & 0x10) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_triggerTypes), @"triggerTypes"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_triggerTypes), @"triggerTypes"}];
     has = self->_has;
     if ((has & 0x20) == 0)
     {
@@ -143,7 +143,7 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_userAssistanceRequired), @"userAssistanceRequired"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_userAssistanceRequired), @"userAssistanceRequired"}];
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -154,17 +154,17 @@ LABEL_8:
     }
 
 LABEL_15:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_qualityIndicator), @"qualityIndicator"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_qualityIndicator), @"qualityIndicator"}];
     if ((*&self->_has & 4) == 0)
     {
-      return v3;
+      return dictionary;
     }
 
     goto LABEL_10;
   }
 
 LABEL_14:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_horizontalAccuracy), @"horizontalAccuracy"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_horizontalAccuracy), @"horizontalAccuracy"}];
   has = self->_has;
   if ((has & 8) != 0)
   {
@@ -175,13 +175,13 @@ LABEL_9:
   if ((has & 4) != 0)
   {
 LABEL_10:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_locationType), @"locationType"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_locationType), @"locationType"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (*&self->_has)
   {
@@ -260,24 +260,24 @@ LABEL_15:
   PBDataWriterWriteInt32Field();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if (*&self->_has)
   {
-    *(a3 + 1) = self->_timestamp;
-    *(a3 + 44) |= 1u;
+    *(to + 1) = self->_timestamp;
+    *(to + 44) |= 1u;
   }
 
   if (self->_parkingId)
   {
-    [a3 setParkingId:?];
+    [to setParkingId:?];
   }
 
   has = self->_has;
   if ((has & 0x10) != 0)
   {
-    *(a3 + 9) = self->_triggerTypes;
-    *(a3 + 44) |= 0x10u;
+    *(to + 9) = self->_triggerTypes;
+    *(to + 44) |= 0x10u;
     has = self->_has;
     if ((has & 0x20) == 0)
     {
@@ -296,8 +296,8 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  *(a3 + 40) = self->_userAssistanceRequired;
-  *(a3 + 44) |= 0x20u;
+  *(to + 40) = self->_userAssistanceRequired;
+  *(to + 44) |= 0x20u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -311,8 +311,8 @@ LABEL_8:
   }
 
 LABEL_14:
-  *(a3 + 4) = self->_horizontalAccuracy;
-  *(a3 + 44) |= 2u;
+  *(to + 4) = self->_horizontalAccuracy;
+  *(to + 44) |= 2u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -326,21 +326,21 @@ LABEL_9:
   }
 
 LABEL_15:
-  *(a3 + 8) = self->_qualityIndicator;
-  *(a3 + 44) |= 8u;
+  *(to + 8) = self->_qualityIndicator;
+  *(to + 44) |= 8u;
   if ((*&self->_has & 4) == 0)
   {
     return;
   }
 
 LABEL_10:
-  *(a3 + 5) = self->_locationType;
-  *(a3 + 44) |= 4u;
+  *(to + 5) = self->_locationType;
+  *(to + 44) |= 4u;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -348,7 +348,7 @@ LABEL_10:
     *(v5 + 44) |= 1u;
   }
 
-  *(v6 + 24) = [(NSString *)self->_parkingId copyWithZone:a3];
+  *(v6 + 24) = [(NSString *)self->_parkingId copyWithZone:zone];
   has = self->_has;
   if ((has & 0x10) != 0)
   {
@@ -414,31 +414,31 @@ LABEL_8:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (!v5)
   {
     return v5;
   }
 
   has = self->_has;
-  v7 = *(a3 + 44);
+  v7 = *(equal + 44);
   if (has)
   {
-    if ((*(a3 + 44) & 1) == 0 || self->_timestamp != *(a3 + 1))
+    if ((*(equal + 44) & 1) == 0 || self->_timestamp != *(equal + 1))
     {
       goto LABEL_37;
     }
   }
 
-  else if (*(a3 + 44))
+  else if (*(equal + 44))
   {
     goto LABEL_37;
   }
 
   parkingId = self->_parkingId;
-  if (parkingId | *(a3 + 3))
+  if (parkingId | *(equal + 3))
   {
     v5 = [(NSString *)parkingId isEqual:?];
     if (!v5)
@@ -451,31 +451,31 @@ LABEL_8:
 
   if ((has & 0x10) != 0)
   {
-    if ((*(a3 + 44) & 0x10) == 0 || self->_triggerTypes != *(a3 + 9))
+    if ((*(equal + 44) & 0x10) == 0 || self->_triggerTypes != *(equal + 9))
     {
       goto LABEL_37;
     }
   }
 
-  else if ((*(a3 + 44) & 0x10) != 0)
+  else if ((*(equal + 44) & 0x10) != 0)
   {
     goto LABEL_37;
   }
 
   if ((has & 0x20) != 0)
   {
-    if ((*(a3 + 44) & 0x20) != 0)
+    if ((*(equal + 44) & 0x20) != 0)
     {
-      v9 = *(a3 + 40);
+      v9 = *(equal + 40);
       if (self->_userAssistanceRequired)
       {
-        if ((*(a3 + 40) & 1) == 0)
+        if ((*(equal + 40) & 1) == 0)
         {
           goto LABEL_37;
         }
       }
 
-      else if (*(a3 + 40))
+      else if (*(equal + 40))
       {
         goto LABEL_37;
       }
@@ -488,7 +488,7 @@ LABEL_37:
     return v5;
   }
 
-  if ((*(a3 + 44) & 0x20) != 0)
+  if ((*(equal + 44) & 0x20) != 0)
   {
     goto LABEL_37;
   }
@@ -496,34 +496,34 @@ LABEL_37:
 LABEL_17:
   if ((has & 2) != 0)
   {
-    if ((*(a3 + 44) & 2) == 0 || self->_horizontalAccuracy != *(a3 + 4))
+    if ((*(equal + 44) & 2) == 0 || self->_horizontalAccuracy != *(equal + 4))
     {
       goto LABEL_37;
     }
   }
 
-  else if ((*(a3 + 44) & 2) != 0)
+  else if ((*(equal + 44) & 2) != 0)
   {
     goto LABEL_37;
   }
 
   if ((has & 8) != 0)
   {
-    if ((*(a3 + 44) & 8) == 0 || self->_qualityIndicator != *(a3 + 8))
+    if ((*(equal + 44) & 8) == 0 || self->_qualityIndicator != *(equal + 8))
     {
       goto LABEL_37;
     }
   }
 
-  else if ((*(a3 + 44) & 8) != 0)
+  else if ((*(equal + 44) & 8) != 0)
   {
     goto LABEL_37;
   }
 
-  LOBYTE(v5) = (*(a3 + 44) & 4) == 0;
+  LOBYTE(v5) = (*(equal + 44) & 4) == 0;
   if ((has & 4) != 0)
   {
-    if ((*(a3 + 44) & 4) == 0 || self->_locationType != *(a3 + 5))
+    if ((*(equal + 44) & 4) == 0 || self->_locationType != *(equal + 5))
     {
       goto LABEL_37;
     }
@@ -613,25 +613,25 @@ LABEL_9:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  if (*(a3 + 44))
+  if (*(from + 44))
   {
-    self->_timestamp = *(a3 + 1);
+    self->_timestamp = *(from + 1);
     *&self->_has |= 1u;
   }
 
-  if (*(a3 + 3))
+  if (*(from + 3))
   {
     [(AWDCoreRoutineFMCCarParkedInstance *)self setParkingId:?];
   }
 
-  v5 = *(a3 + 44);
+  v5 = *(from + 44);
   if ((v5 & 0x10) != 0)
   {
-    self->_triggerTypes = *(a3 + 9);
+    self->_triggerTypes = *(from + 9);
     *&self->_has |= 0x10u;
-    v5 = *(a3 + 44);
+    v5 = *(from + 44);
     if ((v5 & 0x20) == 0)
     {
 LABEL_7:
@@ -644,14 +644,14 @@ LABEL_7:
     }
   }
 
-  else if ((*(a3 + 44) & 0x20) == 0)
+  else if ((*(from + 44) & 0x20) == 0)
   {
     goto LABEL_7;
   }
 
-  self->_userAssistanceRequired = *(a3 + 40);
+  self->_userAssistanceRequired = *(from + 40);
   *&self->_has |= 0x20u;
-  v5 = *(a3 + 44);
+  v5 = *(from + 44);
   if ((v5 & 2) == 0)
   {
 LABEL_8:
@@ -664,9 +664,9 @@ LABEL_8:
   }
 
 LABEL_14:
-  self->_horizontalAccuracy = *(a3 + 4);
+  self->_horizontalAccuracy = *(from + 4);
   *&self->_has |= 2u;
-  v5 = *(a3 + 44);
+  v5 = *(from + 44);
   if ((v5 & 8) == 0)
   {
 LABEL_9:
@@ -679,15 +679,15 @@ LABEL_9:
   }
 
 LABEL_15:
-  self->_qualityIndicator = *(a3 + 8);
+  self->_qualityIndicator = *(from + 8);
   *&self->_has |= 8u;
-  if ((*(a3 + 44) & 4) == 0)
+  if ((*(from + 44) & 4) == 0)
   {
     return;
   }
 
 LABEL_10:
-  self->_locationType = *(a3 + 5);
+  self->_locationType = *(from + 5);
   *&self->_has |= 4u;
 }
 

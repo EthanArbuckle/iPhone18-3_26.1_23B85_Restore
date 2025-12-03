@@ -1,12 +1,12 @@
 @interface ADAuthenticator
-- (ADAuthenticator)initWithTargetQueue:(id)a3 authenticationStrategyVersion:(id)a4;
-- (id)_createDeviceAuthenticationSessionForVersion:(unint64_t)a3;
+- (ADAuthenticator)initWithTargetQueue:(id)queue authenticationStrategyVersion:(id)version;
+- (id)_createDeviceAuthenticationSessionForVersion:(unint64_t)version;
 - (id)deviceAuthSession;
-- (id)signedDataForData:(id)a3;
+- (id)signedDataForData:(id)data;
 - (int)state;
-- (void)prepareWithCertificateData:(id)a3 completion:(id)a4;
+- (void)prepareWithCertificateData:(id)data completion:(id)completion;
 - (void)reset;
-- (void)setSessionInfo:(id)a3 duration:(double)a4;
+- (void)setSessionInfo:(id)info duration:(double)duration;
 @end
 
 @implementation ADAuthenticator
@@ -28,9 +28,9 @@
   self->_deviceAuthSessionState = 0;
 }
 
-- (id)_createDeviceAuthenticationSessionForVersion:(unint64_t)a3
+- (id)_createDeviceAuthenticationSessionForVersion:(unint64_t)version
 {
-  if (!a3)
+  if (!version)
   {
     v4 = off_100505A90;
 LABEL_5:
@@ -39,7 +39,7 @@ LABEL_5:
     return v5;
   }
 
-  if (a3 == 1)
+  if (version == 1)
   {
     v4 = off_100505A98;
     goto LABEL_5;
@@ -50,9 +50,9 @@ LABEL_5:
   return v5;
 }
 
-- (id)signedDataForData:(id)a3
+- (id)signedDataForData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v5 = AFSiriLogContextSession;
   if (os_log_type_enabled(AFSiriLogContextSession, OS_LOG_TYPE_INFO))
   {
@@ -68,9 +68,9 @@ LABEL_5:
 
   else
   {
-    v7 = [(ADAuthenticator *)self deviceAuthSession];
+    deviceAuthSession = [(ADAuthenticator *)self deviceAuthSession];
     v12 = 0;
-    v8 = [v7 signData:v4 error:&v12];
+    v8 = [deviceAuthSession signData:dataCopy error:&v12];
     v9 = v12;
 
     if (v9)
@@ -97,9 +97,9 @@ LABEL_5:
   return v6;
 }
 
-- (void)setSessionInfo:(id)a3 duration:(double)a4
+- (void)setSessionInfo:(id)info duration:(double)duration
 {
-  v6 = a3;
+  infoCopy = info;
   v7 = AFSiriLogContextSession;
   if (os_log_type_enabled(AFSiriLogContextSession, OS_LOG_TYPE_INFO))
   {
@@ -110,16 +110,16 @@ LABEL_5:
 
   if (self->_deviceAuthSessionState != 2)
   {
-    if (v6)
+    if (infoCopy)
     {
-      v8 = [(ADAuthenticator *)self deviceAuthSession];
+      deviceAuthSession = [(ADAuthenticator *)self deviceAuthSession];
       v13 = 0;
-      v9 = [v8 completeWithHandshakeResponse:v6 error:&v13];
+      v9 = [deviceAuthSession completeWithHandshakeResponse:infoCopy error:&v13];
       v10 = v13;
 
       if (v9)
       {
-        self->_duration = a4;
+        self->_duration = duration;
       }
 
       else
@@ -149,10 +149,10 @@ LABEL_5:
   }
 }
 
-- (void)prepareWithCertificateData:(id)a3 completion:(id)a4
+- (void)prepareWithCertificateData:(id)data completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  completionCopy = completion;
   v8 = AFSiriLogContextSession;
   if (os_log_type_enabled(AFSiriLogContextSession, OS_LOG_TYPE_INFO))
   {
@@ -163,9 +163,9 @@ LABEL_5:
 
   if (self->_deviceAuthSessionState != 2)
   {
-    v9 = [(ADAuthenticator *)self deviceAuthSession];
-    v10 = [v9 sessionState];
-    if (!v6 || v10)
+    deviceAuthSession = [(ADAuthenticator *)self deviceAuthSession];
+    sessionState = [deviceAuthSession sessionState];
+    if (!dataCopy || sessionState)
     {
       v18 = AFSiriLogContextSession;
       if (os_log_type_enabled(AFSiriLogContextSession, OS_LOG_TYPE_INFO))
@@ -175,30 +175,30 @@ LABEL_5:
         _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_INFO, "%s Ignoring request to prepare", buf, 0xCu);
       }
 
-      (*(v7 + 2))(v7, 0, 0);
+      (*(completionCopy + 2))(completionCopy, 0, 0);
       goto LABEL_23;
     }
 
     v21 = 0;
-    v11 = [v9 handshakeRequestWithCertificateData:v6 error:&v21];
+    v11 = [deviceAuthSession handshakeRequestWithCertificateData:dataCopy error:&v21];
     v12 = v21;
     if (v12 && (v13 = AFSiriLogContextSession, os_log_type_enabled(AFSiriLogContextSession, OS_LOG_TYPE_ERROR)))
     {
       v19 = v13;
-      v20 = [v12 code];
+      code = [v12 code];
       *buf = 136315394;
       v23 = "[ADAuthenticator prepareWithCertificateData:completion:]";
       v24 = 1026;
-      v25 = v20;
+      v25 = code;
       _os_log_error_impl(&_mh_execute_header, v19, OS_LOG_TYPE_ERROR, "%s Error during handshakeRequestWithCertificateData: %{public}d", buf, 0x12u);
 
-      if (v7)
+      if (completionCopy)
       {
         goto LABEL_10;
       }
     }
 
-    else if (v7)
+    else if (completionCopy)
     {
 LABEL_10:
       if (v12)
@@ -212,29 +212,29 @@ LABEL_10:
       }
 
       v15 = !v14;
-      v16 = [v12 domain];
-      v17 = [v16 isEqualToString:@"com.apple.assistant.deviceAuth.session.badCertificateError"];
+      domain = [v12 domain];
+      v17 = [domain isEqualToString:@"com.apple.assistant.deviceAuth.session.badCertificateError"];
 
       if (v15 == 1)
       {
         [(ADAuthenticator *)self _setRequestData:v11];
       }
 
-      (*(v7 + 2))(v7, v15, v17);
+      (*(completionCopy + 2))(completionCopy, v15, v17);
     }
 
 LABEL_23:
     goto LABEL_24;
   }
 
-  (*(v7 + 2))(v7, 0, 0);
+  (*(completionCopy + 2))(completionCopy, 0, 0);
 LABEL_24:
 }
 
 - (int)state
 {
-  v3 = [(ADAuthenticator *)self deviceAuthSession];
-  v4 = v3;
+  deviceAuthSession = [(ADAuthenticator *)self deviceAuthSession];
+  v4 = deviceAuthSession;
   if (self->_deviceAuthSessionState == 2)
   {
     v5 = 4;
@@ -242,15 +242,15 @@ LABEL_24:
 
   else
   {
-    v6 = [v3 sessionState];
-    if (v6 == 2)
+    sessionState = [deviceAuthSession sessionState];
+    if (sessionState == 2)
     {
       v5 = 3;
     }
 
     else
     {
-      v5 = 2 * (v6 == 1);
+      v5 = 2 * (sessionState == 1);
     }
   }
 
@@ -291,27 +291,27 @@ LABEL_24:
   return v7;
 }
 
-- (ADAuthenticator)initWithTargetQueue:(id)a3 authenticationStrategyVersion:(id)a4
+- (ADAuthenticator)initWithTargetQueue:(id)queue authenticationStrategyVersion:(id)version
 {
-  v7 = a3;
-  v8 = a4;
+  queueCopy = queue;
+  versionCopy = version;
   v12.receiver = self;
   v12.super_class = ADAuthenticator;
   v9 = [(ADAuthenticator *)&v12 init];
   if (v9)
   {
-    if (v8)
+    if (versionCopy)
     {
-      v10 = [v8 unsignedIntegerValue];
+      unsignedIntegerValue = [versionCopy unsignedIntegerValue];
     }
 
     else
     {
-      v10 = 1;
+      unsignedIntegerValue = 1;
     }
 
-    v9->_authStrategyVersion = v10;
-    objc_storeStrong(&v9->_queue, a3);
+    v9->_authStrategyVersion = unsignedIntegerValue;
+    objc_storeStrong(&v9->_queue, queue);
   }
 
   return v9;

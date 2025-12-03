@@ -1,26 +1,26 @@
 @interface GTCaptureProgress
-- (GTCaptureProgress)initWithCoder:(id)a3;
+- (GTCaptureProgress)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation GTCaptureProgress
 
-- (GTCaptureProgress)initWithCoder:(id)a3
+- (GTCaptureProgress)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = GTCaptureProgress;
   v5 = [(GTCaptureProgress *)&v15 init];
   if (v5)
   {
-    v5->_captureState = [v4 decodeInt64ForKey:@"captureState"];
-    v5->_capturedCommandsBuffers = [v4 decodeInt64ForKey:@"capturedCommandsBuffers"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"descriptor"];
+    v5->_captureState = [coderCopy decodeInt64ForKey:@"captureState"];
+    v5->_capturedCommandsBuffers = [coderCopy decodeInt64ForKey:@"capturedCommandsBuffers"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"descriptor"];
     descriptor = v5->_descriptor;
     v5->_descriptor = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"stats"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"stats"];
     stats = v5->_stats;
     v5->_stats = v8;
 
@@ -28,29 +28,29 @@
     completionState = v5->_completionState;
     v5->_completionState = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"completionState.archiveURL"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"completionState.archiveURL"];
     [(GTCaptureCompletionState *)v5->_completionState setArchiveURL:v12];
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"completionState.error"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"completionState.error"];
     [(GTCaptureCompletionState *)v5->_completionState setError:v13];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   captureState = self->_captureState;
-  v5 = a3;
-  [v5 encodeInt64:captureState forKey:@"captureState"];
-  [v5 encodeInt64:self->_capturedCommandsBuffers forKey:@"capturedCommandsBuffers"];
-  [v5 encodeObject:self->_descriptor forKey:@"descriptor"];
-  [v5 encodeObject:self->_stats forKey:@"stats"];
-  v6 = [(GTCaptureCompletionState *)self->_completionState archiveURL];
-  [v5 encodeObject:v6 forKey:@"completionState.archiveURL"];
+  coderCopy = coder;
+  [coderCopy encodeInt64:captureState forKey:@"captureState"];
+  [coderCopy encodeInt64:self->_capturedCommandsBuffers forKey:@"capturedCommandsBuffers"];
+  [coderCopy encodeObject:self->_descriptor forKey:@"descriptor"];
+  [coderCopy encodeObject:self->_stats forKey:@"stats"];
+  archiveURL = [(GTCaptureCompletionState *)self->_completionState archiveURL];
+  [coderCopy encodeObject:archiveURL forKey:@"completionState.archiveURL"];
 
-  v7 = [(GTCaptureCompletionState *)self->_completionState error];
-  [v5 encodeObject:v7 forKey:@"completionState.error"];
+  error = [(GTCaptureCompletionState *)self->_completionState error];
+  [coderCopy encodeObject:error forKey:@"completionState.error"];
 }
 
 - (id)description

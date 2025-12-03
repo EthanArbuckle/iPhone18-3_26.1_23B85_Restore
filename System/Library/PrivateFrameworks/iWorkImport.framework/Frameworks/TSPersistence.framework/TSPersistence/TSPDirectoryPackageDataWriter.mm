@@ -1,10 +1,10 @@
 @interface TSPDirectoryPackageDataWriter
-- (BOOL)flushPendingWritesReturningError:(id *)a3;
-- (BOOL)writeData:(id)a3 toRelativePath:(id)a4 allowEncryption:(BOOL)a5 error:(id *)a6;
-- (CGDataConsumer)newCGDataConsumerAtRelativePath:(id)a3;
+- (BOOL)flushPendingWritesReturningError:(id *)error;
+- (BOOL)writeData:(id)data toRelativePath:(id)path allowEncryption:(BOOL)encryption error:(id *)error;
+- (CGDataConsumer)newCGDataConsumerAtRelativePath:(id)path;
 - (TSPDirectoryPackageDataWriter)init;
-- (TSPDirectoryPackageDataWriter)initWithURL:(id)a3;
-- (id)targetDataURLForPath:(id)a3;
+- (TSPDirectoryPackageDataWriter)initWithURL:(id)l;
+- (id)targetDataURLForPath:(id)path;
 @end
 
 @implementation TSPDirectoryPackageDataWriter
@@ -25,15 +25,15 @@
   objc_exception_throw(v13);
 }
 
-- (TSPDirectoryPackageDataWriter)initWithURL:(id)a3
+- (TSPDirectoryPackageDataWriter)initWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v11.receiver = self;
   v11.super_class = TSPDirectoryPackageDataWriter;
   v7 = [(TSPDirectoryPackageDataWriter *)&v11 init];
   if (v7)
   {
-    v8 = objc_msgSend_copy(v4, v5, v6);
+    v8 = objc_msgSend_copy(lCopy, v5, v6);
     URL = v7->_URL;
     v7->_URL = v8;
   }
@@ -41,22 +41,22 @@
   return v7;
 }
 
-- (id)targetDataURLForPath:(id)a3
+- (id)targetDataURLForPath:(id)path
 {
-  v3 = objc_msgSend_URLByAppendingPathComponent_isDirectory_(self->_URL, a2, a3, 0);
+  v3 = objc_msgSend_URLByAppendingPathComponent_isDirectory_(self->_URL, a2, path, 0);
 
   return v3;
 }
 
-- (BOOL)writeData:(id)a3 toRelativePath:(id)a4 allowEncryption:(BOOL)a5 error:(id *)a6
+- (BOOL)writeData:(id)data toRelativePath:(id)path allowEncryption:(BOOL)encryption error:(id *)error
 {
-  v9 = a3;
-  v11 = a4;
-  if (v11)
+  dataCopy = data;
+  pathCopy = path;
+  if (pathCopy)
   {
-    if (v9)
+    if (dataCopy)
     {
-      v12 = objc_msgSend_targetDataURLForPath_(self, v10, v11);
+      v12 = objc_msgSend_targetDataURLForPath_(self, v10, pathCopy);
       v15 = objc_msgSend_defaultManager(MEMORY[0x277CCAA00], v13, v14);
       v18 = objc_msgSend_URLByDeletingLastPathComponent(v12, v16, v17);
       v33 = 0;
@@ -65,7 +65,7 @@
 
       if (v20)
       {
-        v23 = objc_msgSend_writeToURL_options_error_(v9, v22, v12, 0, a6);
+        v23 = objc_msgSend_writeToURL_options_error_(dataCopy, v22, v12, 0, error);
 LABEL_12:
 
         goto LABEL_13;
@@ -73,12 +73,12 @@ LABEL_12:
 
       if (*MEMORY[0x277D81408] == -1)
       {
-        if (a6)
+        if (error)
         {
 LABEL_9:
           v31 = v21;
           v23 = 0;
-          *a6 = v21;
+          *error = v21;
           goto LABEL_12;
         }
       }
@@ -86,7 +86,7 @@ LABEL_9:
       else
       {
         sub_276BD5B88();
-        if (a6)
+        if (error)
         {
           goto LABEL_9;
         }
@@ -115,12 +115,12 @@ LABEL_13:
   return v23;
 }
 
-- (CGDataConsumer)newCGDataConsumerAtRelativePath:(id)a3
+- (CGDataConsumer)newCGDataConsumerAtRelativePath:(id)path
 {
-  v5 = a3;
-  if (v5)
+  pathCopy = path;
+  if (pathCopy)
   {
-    v6 = objc_msgSend_targetDataURLForPath_(self, v4, v5);
+    v6 = objc_msgSend_targetDataURLForPath_(self, v4, pathCopy);
     v7 = CGDataConsumerCreateWithURL(v6);
   }
 
@@ -138,7 +138,7 @@ LABEL_13:
   return v7;
 }
 
-- (BOOL)flushPendingWritesReturningError:(id *)a3
+- (BOOL)flushPendingWritesReturningError:(id *)error
 {
   v3 = MEMORY[0x277D81150];
   v4 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSPDirectoryPackageDataWriter flushPendingWritesReturningError:]");

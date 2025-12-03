@@ -29,47 +29,47 @@
   v18.receiver = self;
   v18.super_class = CrossPlatformTargetQRCodeWarningViewController;
   [(TSOBWelcomeController *)&v18 viewDidLoad];
-  v3 = [MEMORY[0x277D37618] boldButton];
-  [v3 addTarget:self action:sel__doneButtonTapped forControlEvents:64];
+  boldButton = [MEMORY[0x277D37618] boldButton];
+  [boldButton addTarget:self action:sel__doneButtonTapped forControlEvents:64];
   v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v5 = [v4 localizedStringForKey:@"CONTINUE" value:&stru_28753DF48 table:@"Localizable"];
-  [v3 setTitle:v5 forState:0];
+  [boldButton setTitle:v5 forState:0];
 
-  v6 = [(CrossPlatformTargetQRCodeWarningViewController *)self buttonTray];
-  [v6 addButton:v3];
+  buttonTray = [(CrossPlatformTargetQRCodeWarningViewController *)self buttonTray];
+  [buttonTray addButton:boldButton];
 
-  v7 = [MEMORY[0x277D37650] linkButton];
-  [v7 addTarget:self action:sel__setupLaterButtonTapped forControlEvents:64];
+  linkButton = [MEMORY[0x277D37650] linkButton];
+  [linkButton addTarget:self action:sel__setupLaterButtonTapped forControlEvents:64];
   v8 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v9 = [v8 localizedStringForKey:@"SET_UP_LATER" value:&stru_28753DF48 table:@"Localizable"];
-  [v7 setTitle:v9 forState:0];
+  [linkButton setTitle:v9 forState:0];
 
-  v10 = [(CrossPlatformTargetQRCodeWarningViewController *)self buttonTray];
-  [v10 addButton:v7];
+  buttonTray2 = [(CrossPlatformTargetQRCodeWarningViewController *)self buttonTray];
+  [buttonTray2 addButton:linkButton];
 
-  v11 = [MEMORY[0x277D37638] accessoryButton];
+  accessoryButton = [MEMORY[0x277D37638] accessoryButton];
   v12 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v13 = [v12 localizedStringForKey:@"CROSSPLATFORM_TRANSFER_LEARN_MORE" value:&stru_28753DF48 table:@"Localizable"];
-  [v11 setTitle:v13 forState:0];
+  [accessoryButton setTitle:v13 forState:0];
 
-  [v11 addTarget:self action:sel__learnMoreTapped forControlEvents:64];
+  [accessoryButton addTarget:self action:sel__learnMoreTapped forControlEvents:64];
   if (+[TSUtilities inBuddy])
   {
-    [v11 setHidden:1];
+    [accessoryButton setHidden:1];
   }
 
   else
   {
     v14 = +[TSCoreTelephonyClientCache sharedInstance];
-    [v11 setHidden:{objc_msgSend(v14, "usingBootstrapDataService")}];
+    [accessoryButton setHidden:{objc_msgSend(v14, "usingBootstrapDataService")}];
   }
 
-  v15 = [(CrossPlatformTargetQRCodeWarningViewController *)self headerView];
-  [v15 addAccessoryButton:v11];
+  headerView = [(CrossPlatformTargetQRCodeWarningViewController *)self headerView];
+  [headerView addAccessoryButton:accessoryButton];
 
-  v16 = [(CrossPlatformTargetQRCodeWarningViewController *)self navigationController];
-  v17 = [v16 navigationItem];
-  [v17 setHidesBackButton:0];
+  navigationController = [(CrossPlatformTargetQRCodeWarningViewController *)self navigationController];
+  navigationItem = [navigationController navigationItem];
+  [navigationItem setHidesBackButton:0];
 }
 
 - (void)_cancelButtonTapped

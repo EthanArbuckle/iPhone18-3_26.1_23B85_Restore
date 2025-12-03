@@ -1,7 +1,7 @@
 @interface SFShareAudioSessionClient
 - (SFShareAudioSessionClient)init;
-- (SFShareAudioSessionClient)initWithCoder:(id)a3;
-- (void)_activate:(BOOL)a3;
+- (SFShareAudioSessionClient)initWithCoder:(id)coder;
+- (void)_activate:(BOOL)_activate;
 - (void)_ensureXPCStarted;
 - (void)_interrupted;
 - (void)_invalidated;
@@ -30,7 +30,7 @@
   return v3;
 }
 
-- (SFShareAudioSessionClient)initWithCoder:(id)a3
+- (SFShareAudioSessionClient)initWithCoder:(id)coder
 {
   v9.receiver = self;
   v9.super_class = SFShareAudioSessionClient;
@@ -71,9 +71,9 @@ uint64_t __37__SFShareAudioSessionClient_activate__block_invoke(uint64_t result)
   return result;
 }
 
-- (void)_activate:(BOOL)a3
+- (void)_activate:(BOOL)_activate
 {
-  if (a3)
+  if (_activate)
   {
     if (gLogCategory_SFShareAudioSessionClient <= 30 && (gLogCategory_SFShareAudioSessionClient != -1 || _LogCategory_Initialize()))
     {
@@ -93,13 +93,13 @@ LABEL_10:
   v9[1] = 3221225472;
   v9[2] = __39__SFShareAudioSessionClient__activate___block_invoke;
   v9[3] = &__block_descriptor_33_e17_v16__0__NSError_8l;
-  v10 = a3;
+  _activateCopy = _activate;
   v6 = [(NSXPCConnection *)xpcCnx remoteObjectProxyWithErrorHandler:v9];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __39__SFShareAudioSessionClient__activate___block_invoke_2;
   v7[3] = &__block_descriptor_33_e17_v16__0__NSError_8l;
-  v8 = a3;
+  _activateCopy2 = _activate;
   [v6 shareAudioSessionActivate:self completion:v7];
 }
 

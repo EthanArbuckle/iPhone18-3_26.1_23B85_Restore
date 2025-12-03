@@ -1,25 +1,25 @@
 @interface DAOfficeHoursContext
 - (BOOL)isFetch;
-- (void)abortWithError:(id)a3;
-- (void)finishFetchWithOfficeHours:(id)a3 error:(id)a4;
-- (void)finishSetWithError:(id)a3;
+- (void)abortWithError:(id)error;
+- (void)finishFetchWithOfficeHours:(id)hours error:(id)error;
+- (void)finishSetWithError:(id)error;
 @end
 
 @implementation DAOfficeHoursContext
 
 - (BOOL)isFetch
 {
-  v2 = [(DAOfficeHoursContext *)self fetchCompletionBlock];
-  v3 = v2 != 0;
+  fetchCompletionBlock = [(DAOfficeHoursContext *)self fetchCompletionBlock];
+  v3 = fetchCompletionBlock != 0;
 
   return v3;
 }
 
-- (void)finishFetchWithOfficeHours:(id)a3 error:(id)a4
+- (void)finishFetchWithOfficeHours:(id)hours error:(id)error
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  hoursCopy = hours;
+  errorCopy = error;
   v8 = DALoggingwithCategory(0);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -29,9 +29,9 @@
     _os_log_impl(&dword_2243BD000, v8, OS_LOG_TYPE_DEBUG, "Fetch of office hours for account %{public}@ completed.", buf, 0xCu);
   }
 
-  v10 = [(DAOfficeHoursContext *)self fetchCompletionBlock];
+  fetchCompletionBlock = [(DAOfficeHoursContext *)self fetchCompletionBlock];
 
-  if (v10)
+  if (fetchCompletionBlock)
   {
     queue = self->_queue;
     if (queue)
@@ -50,8 +50,8 @@
     block[2] = __57__DAOfficeHoursContext_finishFetchWithOfficeHours_error___block_invoke;
     block[3] = &unk_27851FF28;
     block[4] = self;
-    v16 = v6;
-    v17 = v7;
+    v16 = hoursCopy;
+    v17 = errorCopy;
     dispatch_async(v13, block);
   }
 
@@ -65,10 +65,10 @@ void __57__DAOfficeHoursContext_finishFetchWithOfficeHours_error___block_invoke(
   (*(v3 + 2))(v3, v2, *(a1 + 40), *(a1 + 48));
 }
 
-- (void)finishSetWithError:(id)a3
+- (void)finishSetWithError:(id)error
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   v5 = DALoggingwithCategory(0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -78,9 +78,9 @@ void __57__DAOfficeHoursContext_finishFetchWithOfficeHours_error___block_invoke(
     _os_log_impl(&dword_2243BD000, v5, OS_LOG_TYPE_DEBUG, "Setting of office hours for account %{public}@ completed.", buf, 0xCu);
   }
 
-  v7 = [(DAOfficeHoursContext *)self setCompletionBlock];
+  setCompletionBlock = [(DAOfficeHoursContext *)self setCompletionBlock];
 
-  if (v7)
+  if (setCompletionBlock)
   {
     queue = self->_queue;
     if (queue)
@@ -99,7 +99,7 @@ void __57__DAOfficeHoursContext_finishFetchWithOfficeHours_error___block_invoke(
     v12[2] = __43__DAOfficeHoursContext_finishSetWithError___block_invoke;
     v12[3] = &unk_27851FED8;
     v12[4] = self;
-    v13 = v4;
+    v13 = errorCopy;
     dispatch_async(v10, v12);
   }
 
@@ -113,23 +113,23 @@ void __43__DAOfficeHoursContext_finishSetWithError___block_invoke(uint64_t a1)
   v3[2](v3, v2, *(a1 + 40));
 }
 
-- (void)abortWithError:(id)a3
+- (void)abortWithError:(id)error
 {
-  v6 = a3;
-  v4 = [(DAOfficeHoursContext *)self fetchCompletionBlock];
+  errorCopy = error;
+  fetchCompletionBlock = [(DAOfficeHoursContext *)self fetchCompletionBlock];
 
-  if (v4)
+  if (fetchCompletionBlock)
   {
-    [(DAOfficeHoursContext *)self finishFetchWithOfficeHours:0 error:v6];
+    [(DAOfficeHoursContext *)self finishFetchWithOfficeHours:0 error:errorCopy];
   }
 
   else
   {
-    v5 = [(DAOfficeHoursContext *)self setCompletionBlock];
+    setCompletionBlock = [(DAOfficeHoursContext *)self setCompletionBlock];
 
-    if (v5)
+    if (setCompletionBlock)
     {
-      [(DAOfficeHoursContext *)self finishSetWithError:v6];
+      [(DAOfficeHoursContext *)self finishSetWithError:errorCopy];
     }
   }
 }

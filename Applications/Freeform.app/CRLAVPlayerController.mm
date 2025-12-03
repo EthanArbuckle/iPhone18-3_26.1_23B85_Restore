@@ -13,8 +13,8 @@
 - (BOOL)p_canFastForwardAtCurrentTime;
 - (BOOL)p_canFastReverseAtCurrentTime;
 - (BOOL)p_notifyDelegateOfPlaybackErrorIfNeeded;
-- (BOOL)p_shouldUsePlayerLooperAtRate:(float)a3 timeRange:(id *)a4;
-- (CRLAVPlayerController)initWithInitialPlayerItem:(id)a3 enqueuedAssets:(id)a4 initialEnqueuedAssetIndex:(unint64_t)a5 delegate:(id)a6;
+- (BOOL)p_shouldUsePlayerLooperAtRate:(float)rate timeRange:(id *)range;
+- (CRLAVPlayerController)initWithInitialPlayerItem:(id)item enqueuedAssets:(id)assets initialEnqueuedAssetIndex:(unint64_t)index delegate:(id)delegate;
 - (double)absoluteCurrentTime;
 - (double)absoluteDuration;
 - (double)currentTime;
@@ -23,49 +23,49 @@
 - (double)remainingTime;
 - (double)startTime;
 - (float)rate;
-- (id)addPeriodicTimeObserverForInterval:(double)a3 block:(id)a4;
+- (id)addPeriodicTimeObserverForInterval:(double)interval block:(id)block;
 - (id)newLayer;
 - (id)newRenderable;
-- (id)p_addTimeObserverForTime:(id *)a3 handler:(id)a4;
+- (id)p_addTimeObserverForTime:(id *)time handler:(id)handler;
 - (id)p_workingPlayerItems;
 - (int64_t)remotePause;
 - (int64_t)remotePlay;
-- (void)attachAVPlayerViewController:(id)a3;
+- (void)attachAVPlayerViewController:(id)controller;
 - (void)beginScrubbing;
 - (void)cancelPendingSeeks;
 - (void)dealloc;
 - (void)endScrubbing;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)p_applicationDidResignActive;
-- (void)p_applyConstantVolumeToPlayerItem:(id)a3;
+- (void)p_applyConstantVolumeToPlayerItem:(id)item;
 - (void)p_applyPendingRateIfNeeded;
-- (void)p_applyRate:(float)a3;
+- (void)p_applyRate:(float)rate;
 - (void)p_clearVolumeRampFromPlayerItem;
-- (void)p_enqueueAssetsFromIndex:(unint64_t)a3;
-- (void)p_notifyPlayerItemMediatorWithRate:(float)a3;
-- (void)p_playerItemDidJumpTime:(id)a3;
-- (void)p_playerItemDidPlayToEndTime:(id)a3;
-- (void)p_playerItemDidPlayToEndTimeAtRate:(float)a3;
+- (void)p_enqueueAssetsFromIndex:(unint64_t)index;
+- (void)p_notifyPlayerItemMediatorWithRate:(float)rate;
+- (void)p_playerItemDidJumpTime:(id)time;
+- (void)p_playerItemDidPlayToEndTime:(id)time;
+- (void)p_playerItemDidPlayToEndTimeAtRate:(float)rate;
 - (void)p_updateAutomaticallyWaitsToMinimizeStalling;
-- (void)p_updatePlayerItemsAndApplyRate:(float)a3;
-- (void)removePeriodicTimeObserver:(id)a3;
-- (void)scrubToTime:(double)a3 withTolerance:(double)a4 completionHandler:(id)a5;
+- (void)p_updatePlayerItemsAndApplyRate:(float)rate;
+- (void)removePeriodicTimeObserver:(id)observer;
+- (void)scrubToTime:(double)time withTolerance:(double)tolerance completionHandler:(id)handler;
 - (void)seekBackwardByOneFrame;
 - (void)seekForwardByOneFrame;
 - (void)seekToBeginning;
 - (void)seekToEnd;
-- (void)setEndTime:(double)a3;
-- (void)setFastForwarding:(BOOL)a3;
-- (void)setFastReversing:(BOOL)a3;
-- (void)setPlayerItemMediator:(id)a3;
-- (void)setPlaying:(BOOL)a3;
-- (void)setRate:(float)a3;
-- (void)setRepeatMode:(int64_t)a3;
-- (void)setStartTime:(double)a3;
-- (void)setVolume:(float)a3;
-- (void)setVolume:(float)a3 rampDuration:(double)a4;
+- (void)setEndTime:(double)time;
+- (void)setFastForwarding:(BOOL)forwarding;
+- (void)setFastReversing:(BOOL)reversing;
+- (void)setPlayerItemMediator:(id)mediator;
+- (void)setPlaying:(BOOL)playing;
+- (void)setRate:(float)rate;
+- (void)setRepeatMode:(int64_t)mode;
+- (void)setStartTime:(double)time;
+- (void)setVolume:(float)volume;
+- (void)setVolume:(float)volume rampDuration:(double)duration;
 - (void)setupRemoteTransportControls;
-- (void)skipToAssetAtIndex:(unint64_t)a3;
+- (void)skipToAssetAtIndex:(unint64_t)index;
 - (void)stopSynchronously;
 - (void)teardown;
 - (void)updateNowPlaying;
@@ -76,15 +76,15 @@
 
 - (id)newRenderable
 {
-  v2 = [(CRLAVPlayerController *)self newLayer];
-  v3 = [CRLCanvasRenderable renderableFromLayer:v2];
+  newLayer = [(CRLAVPlayerController *)self newLayer];
+  v3 = [CRLCanvasRenderable renderableFromLayer:newLayer];
 
   return v3;
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = +[NSUserDefaults standardUserDefaults];
     v4 = @"CRLAVPlayerControllerDisableGaplessLooping";
@@ -94,24 +94,24 @@
   }
 }
 
-- (CRLAVPlayerController)initWithInitialPlayerItem:(id)a3 enqueuedAssets:(id)a4 initialEnqueuedAssetIndex:(unint64_t)a5 delegate:(id)a6
+- (CRLAVPlayerController)initWithInitialPlayerItem:(id)item enqueuedAssets:(id)assets initialEnqueuedAssetIndex:(unint64_t)index delegate:(id)delegate
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  itemCopy = item;
+  assetsCopy = assets;
+  delegateCopy = delegate;
   v22.receiver = self;
   v22.super_class = CRLAVPlayerController;
   v13 = [(CRLAVPlayerController *)&v22 init];
   if (v13)
   {
-    v14 = [v11 copy];
+    v14 = [assetsCopy copy];
     mEnqueuedAssets = v13->mEnqueuedAssets;
     v13->mEnqueuedAssets = v14;
 
     v13->mRepeatMode = 0;
     v13->mVolume = 1.0;
     v13->mPendingRate = NAN;
-    objc_storeStrong(&v13->mDelegate, a6);
+    objc_storeStrong(&v13->mDelegate, delegate);
     v16 = objc_alloc_init(AVQueuePlayer);
     mPlayer = v13->mPlayer;
     v13->mPlayer = v16;
@@ -127,14 +127,14 @@
 
     LODWORD(v20) = 1.0;
     [(AVQueuePlayer *)v13->mPlayer setVolume:v20];
-    if (v10)
+    if (itemCopy)
     {
-      [(AVQueuePlayer *)v13->mPlayer replaceCurrentItemWithPlayerItem:v10];
+      [(AVQueuePlayer *)v13->mPlayer replaceCurrentItemWithPlayerItem:itemCopy];
     }
 
-    if (a5 != 0x7FFFFFFFFFFFFFFFLL)
+    if (index != 0x7FFFFFFFFFFFFFFFLL)
     {
-      [(CRLAVPlayerController *)v13 p_enqueueAssetsFromIndex:a5];
+      [(CRLAVPlayerController *)v13 p_enqueueAssetsFromIndex:index];
     }
   }
 
@@ -246,7 +246,7 @@
   if (os_log_type_enabled(off_1019EFDC0, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v31 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "CRLAVPlayerController %p: teardown", buf, 0xCu);
   }
 
@@ -259,23 +259,23 @@
   mPlayerLooper = self->mPlayerLooper;
   self->mPlayerLooper = 0;
 
-  v12 = [(CRLAVPlayerController *)self player];
-  [v12 setRate:0.0];
-  v13 = [v12 currentItem];
-  if (v13)
+  player = [(CRLAVPlayerController *)self player];
+  [player setRate:0.0];
+  currentItem = [player currentItem];
+  if (currentItem)
   {
     v14 = +[NSNotificationCenter defaultCenter];
-    [v14 removeObserver:self name:AVPlayerItemDidPlayToEndTimeNotification object:v13];
+    [v14 removeObserver:self name:AVPlayerItemDidPlayToEndTimeNotification object:currentItem];
 
     v15 = +[NSNotificationCenter defaultCenter];
-    [v15 removeObserver:self name:AVPlayerItemTimeJumpedNotification object:v13];
+    [v15 removeObserver:self name:AVPlayerItemTimeJumpedNotification object:currentItem];
   }
 
-  [v12 removeObserver:self forKeyPath:@"currentItem" context:off_1019EFDC8];
-  [v12 removeObserver:self forKeyPath:@"rate" context:off_1019EFDD0];
-  [v12 removeObserver:self forKeyPath:@"currentItem.status" context:off_1019EFDE0];
-  [v12 removeObserver:self forKeyPath:@"status" context:off_1019EFDD8];
-  [v12 replaceCurrentItemWithPlayerItem:0];
+  [player removeObserver:self forKeyPath:@"currentItem" context:off_1019EFDC8];
+  [player removeObserver:self forKeyPath:@"rate" context:off_1019EFDD0];
+  [player removeObserver:self forKeyPath:@"currentItem.status" context:off_1019EFDE0];
+  [player removeObserver:self forKeyPath:@"status" context:off_1019EFDD8];
+  [player replaceCurrentItemWithPlayerItem:0];
   mDelegate = self->mDelegate;
   self->mDelegate = 0;
 
@@ -315,87 +315,87 @@
 
   if (self->mVolumeRampBoundaryTimeObserver)
   {
-    [v12 removeTimeObserver:?];
+    [player removeTimeObserver:?];
     mVolumeRampBoundaryTimeObserver = self->mVolumeRampBoundaryTimeObserver;
     self->mVolumeRampBoundaryTimeObserver = 0;
   }
 }
 
-- (void)attachAVPlayerViewController:(id)a3
+- (void)attachAVPlayerViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [(CRLAVPlayerController *)self player];
-  [v4 setPlayer:v5];
+  controllerCopy = controller;
+  player = [(CRLAVPlayerController *)self player];
+  [controllerCopy setPlayer:player];
 }
 
 - (AVAsset)currentAsset
 {
-  v2 = [(CRLAVPlayerController *)self player];
-  v3 = [v2 currentItem];
-  v4 = [v3 asset];
+  player = [(CRLAVPlayerController *)self player];
+  currentItem = [player currentItem];
+  asset = [currentItem asset];
 
-  return v4;
+  return asset;
 }
 
 - (AVPlayerPlaybackCoordinator)playbackCoordinator
 {
-  v2 = [(CRLAVPlayerController *)self player];
-  v3 = [v2 playbackCoordinator];
+  player = [(CRLAVPlayerController *)self player];
+  playbackCoordinator = [player playbackCoordinator];
 
-  return v3;
+  return playbackCoordinator;
 }
 
 - (BOOL)isExternalPlaybackActive
 {
-  v2 = [(CRLAVPlayerController *)self player];
-  v3 = [v2 isExternalPlaybackActive];
+  player = [(CRLAVPlayerController *)self player];
+  isExternalPlaybackActive = [player isExternalPlaybackActive];
 
-  return v3;
+  return isExternalPlaybackActive;
 }
 
 - (id)newLayer
 {
   v3 = objc_alloc_init(AVPlayerLayer);
-  v4 = [(CRLAVPlayerController *)self player];
-  [v3 setPlayer:v4];
+  player = [(CRLAVPlayerController *)self player];
+  [v3 setPlayer:player];
 
   [v3 setVideoGravity:AVLayerVideoGravityResize];
   return v3;
 }
 
-- (BOOL)p_shouldUsePlayerLooperAtRate:(float)a3 timeRange:(id *)a4
+- (BOOL)p_shouldUsePlayerLooperAtRate:(float)rate timeRange:(id *)range
 {
-  v7 = [(CRLAVPlayerController *)self player];
-  v8 = [v7 currentItem];
+  player = [(CRLAVPlayerController *)self player];
+  currentItem = [player currentItem];
 
-  v9 = [v8 asset];
-  v10 = [(CRLAVPlayerController *)self repeatMode];
-  LOBYTE(v11) = 0;
-  if (a3 >= 0.0 && v10 == 1 && v8)
+  asset = [currentItem asset];
+  repeatMode = [(CRLAVPlayerController *)self repeatMode];
+  LOBYTE(isFileReferenceURL) = 0;
+  if (rate >= 0.0 && repeatMode == 1 && currentItem)
   {
-    if ((a4->var0.var2 & 1) != 0 && (a4->var1.var2 & 1) != 0 && !a4->var1.var3 && (a4->var1.var0 & 0x8000000000000000) == 0)
+    if ((range->var0.var2 & 1) != 0 && (range->var1.var2 & 1) != 0 && !range->var1.var3 && (range->var1.var0 & 0x8000000000000000) == 0)
     {
-      time1 = a4->var1;
+      time1 = range->var1;
       v20 = *&kCMTimeZero.value;
       *&time2.value = *&kCMTimeZero.value;
       epoch = kCMTimeZero.epoch;
       time2.epoch = epoch;
       if (CMTimeCompare(&time1, &time2))
       {
-        var2 = a4->var0.var2;
-        if ((var2 & 1) == 0 || (v15 = a4->var1.var2, (v15 & 1) == 0) || a4->var1.var3 || a4->var1.var0 < 0 || ((v15 | var2) & 0x10) == 0)
+        var2 = range->var0.var2;
+        if ((var2 & 1) == 0 || (v15 = range->var1.var2, (v15 & 1) == 0) || range->var1.var3 || range->var1.var0 < 0 || ((v15 | var2) & 0x10) == 0)
         {
-          time1 = a4->var0;
+          time1 = range->var0;
           *&time2.value = v20;
           time2.epoch = epoch;
           if ((CMTimeCompare(&time1, &time2) & 0x80000000) == 0 && ![(CRLAVPlayerController *)self isScrubbing]&& ![(NSArray *)self->mEnqueuedAssets count])
           {
             v16 = objc_opt_class();
-            v17 = sub_100014370(v16, v9);
+            v17 = sub_100014370(v16, asset);
             v18 = [v17 URL];
             if (!v18)
             {
-              LOBYTE(v11) = 0;
+              LOBYTE(isFileReferenceURL) = 0;
 LABEL_28:
 
               goto LABEL_8;
@@ -408,18 +408,18 @@ LABEL_28:
 
             else
             {
-              v11 = [v19 isFileReferenceURL];
+              isFileReferenceURL = [v19 isFileReferenceURL];
 
-              if (!v11)
+              if (!isFileReferenceURL)
               {
                 goto LABEL_8;
               }
             }
 
-            if ([v9 providesPreciseDurationAndTiming] && objc_msgSend(v9, "statusOfValueForKey:error:", @"duration", 0) == 2)
+            if ([asset providesPreciseDurationAndTiming] && objc_msgSend(asset, "statusOfValueForKey:error:", @"duration", 0) == 2)
             {
               v17 = +[NSUserDefaults standardUserDefaults];
-              v11 = [v17 BOOLForKey:@"CRLAVPlayerControllerDisableGaplessLooping"] ^ 1;
+              isFileReferenceURL = [v17 BOOLForKey:@"CRLAVPlayerControllerDisableGaplessLooping"] ^ 1;
               goto LABEL_28;
             }
           }
@@ -427,18 +427,18 @@ LABEL_28:
       }
     }
 
-    LOBYTE(v11) = 0;
+    LOBYTE(isFileReferenceURL) = 0;
   }
 
 LABEL_8:
 
-  return v11;
+  return isFileReferenceURL;
 }
 
-- (void)p_updatePlayerItemsAndApplyRate:(float)a3
+- (void)p_updatePlayerItemsAndApplyRate:(float)rate
 {
-  v5 = [(CRLAVPlayerController *)self player];
-  v6 = [v5 currentItem];
+  player = [(CRLAVPlayerController *)self player];
+  currentItem = [player currentItem];
   v48 = 0uLL;
   v49 = 0;
   [(CRLAVPlayerController *)self p_startCMTime];
@@ -451,17 +451,17 @@ LABEL_8:
   *&end.start.value = v46;
   end.start.epoch = v47;
   CMTimeRangeFromTimeToTime(&v45, &start.start, &end.start);
-  v7 = [(CRLAVPlayerController *)self isScrubbing];
+  isScrubbing = [(CRLAVPlayerController *)self isScrubbing];
   p_mPlayerLooper = &self->mPlayerLooper;
   mPlayerLooper = self->mPlayerLooper;
   start = v45;
-  v10 = [(CRLAVPlayerController *)self p_shouldUsePlayerLooperAtRate:&start timeRange:COERCE_DOUBLE(__PAIR64__(v45.duration.flags, LODWORD(a3)))];
+  v10 = [(CRLAVPlayerController *)self p_shouldUsePlayerLooperAtRate:&start timeRange:COERCE_DOUBLE(__PAIR64__(v45.duration.flags, LODWORD(rate)))];
   v11 = *&self->mPlayerItemTimeRange.start.epoch;
   *&start.start.value = *&self->mPlayerItemTimeRange.start.value;
   *&start.start.epoch = v11;
   *&start.duration.timescale = *&self->mPlayerItemTimeRange.duration.timescale;
   end = v45;
-  if (CMTimeRangeEqual(&start, &end) && self->mIsPlayerItemTimeRangeForScrubbing == v7 && (mPlayerLooper != 0) == v10)
+  if (CMTimeRangeEqual(&start, &end) && self->mIsPlayerItemTimeRangeForScrubbing == isScrubbing && (mPlayerLooper != 0) == v10)
   {
     goto LABEL_43;
   }
@@ -471,13 +471,13 @@ LABEL_8:
   *&self->mPlayerItemTimeRange.start.value = *&v45.start.value;
   *&self->mPlayerItemTimeRange.start.epoch = v13;
   *&self->mPlayerItemTimeRange.duration.timescale = *&v45.duration.timescale;
-  self->mIsPlayerItemTimeRangeForScrubbing = v7;
+  self->mIsPlayerItemTimeRangeForScrubbing = isScrubbing;
   [(CRLAVPlayerController *)self p_notifyPlayerItemMediatorWithRate:0.0];
-  [v5 setRate:0.0];
+  [player setRate:0.0];
   memset(&end, 0, 24);
-  if (v6)
+  if (currentItem)
   {
-    [v6 currentTime];
+    [currentItem currentTime];
   }
 
   if (mPlayerLooper)
@@ -494,7 +494,7 @@ LABEL_8:
     *&start.start.value = *&self->mPlayerItemTimeRange.start.value;
     *&start.start.epoch = v16;
     *&start.duration.timescale = *&self->mPlayerItemTimeRange.duration.timescale;
-    v17 = [v15 initWithPlayer:v5 templateItem:v6 timeRange:&start];
+    v17 = [v15 initWithPlayer:player templateItem:currentItem timeRange:&start];
     v18 = *p_mPlayerLooper;
     *p_mPlayerLooper = v17;
 
@@ -517,8 +517,8 @@ LABEL_8:
     }
   }
 
-  v21 = [v5 currentItem];
-  if (v21)
+  currentItem2 = [player currentItem];
+  if (currentItem2)
   {
     memset(&v43, 0, sizeof(v43));
     time = end.start;
@@ -532,7 +532,7 @@ LABEL_8:
       start.start = v43;
       time = kCMTimeZero;
       v41 = time;
-      [v21 seekToTime:&start toleranceBefore:&time toleranceAfter:&v41 completionHandler:0];
+      [currentItem2 seekToTime:&start toleranceBefore:&time toleranceAfter:&v41 completionHandler:0];
     }
 
     if (!*p_mPlayerLooper)
@@ -547,7 +547,7 @@ LABEL_8:
       epoch = v23->epoch;
       *&start.start.value = v39;
       start.start.epoch = epoch;
-      [v21 setReversePlaybackEndTime:&start];
+      [currentItem2 setReversePlaybackEndTime:&start];
       v24 = &v46;
       if (self->mIsPlayerItemTimeRangeForScrubbing)
       {
@@ -558,7 +558,7 @@ LABEL_8:
       v37 = *&v24->value;
       *&start.start.value = v37;
       start.start.epoch = v38;
-      [v21 setForwardPlaybackEndTime:&start];
+      [currentItem2 setForwardPlaybackEndTime:&start];
     }
   }
 
@@ -610,8 +610,8 @@ LABEL_35:
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v27 = [(CRLAVPlayerController *)self p_workingPlayerItems];
-  v28 = [v27 countByEnumeratingWithState:&v33 objects:v50 count:16];
+  p_workingPlayerItems = [(CRLAVPlayerController *)self p_workingPlayerItems];
+  v28 = [p_workingPlayerItems countByEnumeratingWithState:&v33 objects:v50 count:16];
   if (v28)
   {
     v29 = v28;
@@ -622,22 +622,22 @@ LABEL_35:
       {
         if (*v34 != v30)
         {
-          objc_enumerationMutation(v27);
+          objc_enumerationMutation(p_workingPlayerItems);
         }
 
         [(CRLAVPlayerController *)self p_applyConstantVolumeToPlayerItem:*(*(&v33 + 1) + 8 * i)];
       }
 
-      v29 = [v27 countByEnumeratingWithState:&v33 objects:v50 count:16];
+      v29 = [p_workingPlayerItems countByEnumeratingWithState:&v33 objects:v50 count:16];
     }
 
     while (v29);
   }
 
 LABEL_43:
-  *&v12 = a3;
+  *&v12 = rate;
   [(CRLAVPlayerController *)self p_notifyPlayerItemMediatorWithRate:v12];
-  *&v32 = a3;
+  *&v32 = rate;
   [(CRLAVPlayerController *)self p_applyRate:v32];
 }
 
@@ -646,24 +646,24 @@ LABEL_43:
   mPlayerLooper = self->mPlayerLooper;
   if (mPlayerLooper)
   {
-    v4 = [(AVPlayerLooper *)mPlayerLooper loopingPlayerItems];
+    loopingPlayerItems = [(AVPlayerLooper *)mPlayerLooper loopingPlayerItems];
   }
 
   else
   {
-    v5 = [(CRLAVPlayerController *)self player];
-    v4 = [v5 items];
+    player = [(CRLAVPlayerController *)self player];
+    loopingPlayerItems = [player items];
   }
 
-  return v4;
+  return loopingPlayerItems;
 }
 
 - (double)duration
 {
-  v3 = [(CRLAVPlayerController *)self player];
-  v4 = [v3 currentItem];
+  player = [(CRLAVPlayerController *)self player];
+  currentItem = [player currentItem];
 
-  if (v4 && (memset(&v10[1], 0, sizeof(CMTime)), [v4 duration], 0 >> 96 == 1))
+  if (currentItem && (memset(&v10[1], 0, sizeof(CMTime)), [currentItem duration], 0 >> 96 == 1))
   {
     [(CRLAVPlayerController *)self endTime];
     v10[0] = v10[1];
@@ -682,10 +682,10 @@ LABEL_43:
 
 - (double)absoluteDuration
 {
-  v2 = [(CRLAVPlayerController *)self player];
-  v3 = [v2 currentItem];
+  player = [(CRLAVPlayerController *)self player];
+  currentItem = [player currentItem];
 
-  if (v3 && (memset(&v6[1], 0, sizeof(CMTime)), [v3 duration], 0 >> 96 == 1))
+  if (currentItem && (memset(&v6[1], 0, sizeof(CMTime)), [currentItem duration], 0 >> 96 == 1))
   {
     v6[0] = v6[1];
     Seconds = CMTimeGetSeconds(v6);
@@ -715,10 +715,10 @@ LABEL_43:
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)p_startCMTime
 {
   *retstr = kCMTimeInvalid;
-  v5 = [(CRLAVPlayerController *)self player];
-  v8 = [v5 currentItem];
+  player = [(CRLAVPlayerController *)self player];
+  currentItem = [player currentItem];
 
-  if (v8)
+  if (currentItem)
   {
     if ((self->mStartCMTime.flags & 0x1D) == 1)
     {
@@ -737,10 +737,10 @@ LABEL_43:
   return result;
 }
 
-- (void)setStartTime:(double)a3
+- (void)setStartTime:(double)time
 {
   memset(&v6, 0, sizeof(v6));
-  CMTimeMakeWithSeconds(&v6, a3, +[_TtC8Freeform18CRLCommonConstants timeScale]);
+  CMTimeMakeWithSeconds(&v6, time, +[_TtC8Freeform18CRLCommonConstants timeScale]);
   time1 = self->mStartCMTime;
   v4 = v6;
   if (CMTimeCompare(&time1, &v4))
@@ -767,10 +767,10 @@ LABEL_43:
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)p_endCMTime
 {
   *retstr = kCMTimeInvalid;
-  v5 = [(CRLAVPlayerController *)self player];
-  v6 = [v5 currentItem];
+  player = [(CRLAVPlayerController *)self player];
+  currentItem = [player currentItem];
 
-  if (v6)
+  if (currentItem)
   {
     if ((self->mEndCMTime.flags & 0x1D) == 1)
     {
@@ -780,11 +780,11 @@ LABEL_43:
 
     else
     {
-      v7 = [v6 asset];
-      v8 = v7;
-      if (v7)
+      asset = [currentItem asset];
+      v8 = asset;
+      if (asset)
       {
-        [v7 duration];
+        [asset duration];
       }
 
       else
@@ -801,10 +801,10 @@ LABEL_43:
   return result;
 }
 
-- (void)setEndTime:(double)a3
+- (void)setEndTime:(double)time
 {
   memset(&v6, 0, sizeof(v6));
-  CMTimeMakeWithSeconds(&v6, a3, +[_TtC8Freeform18CRLCommonConstants timeScale]);
+  CMTimeMakeWithSeconds(&v6, time, +[_TtC8Freeform18CRLCommonConstants timeScale]);
   time1 = self->mEndCMTime;
   v4 = v6;
   if (CMTimeCompare(&time1, &v4))
@@ -815,11 +815,11 @@ LABEL_43:
   }
 }
 
-- (void)setRepeatMode:(int64_t)a3
+- (void)setRepeatMode:(int64_t)mode
 {
-  if (self->mRepeatMode != a3)
+  if (self->mRepeatMode != mode)
   {
-    self->mRepeatMode = a3;
+    self->mRepeatMode = mode;
     [(CRLAVPlayerController *)self rate];
     mRepeatMode = self->mRepeatMode;
     if (v4 >= 0.0 || mRepeatMode == 2)
@@ -854,17 +854,17 @@ LABEL_43:
   }
 }
 
-- (void)setVolume:(float)a3
+- (void)setVolume:(float)volume
 {
-  if (self->mVolume != a3)
+  if (self->mVolume != volume)
   {
-    self->mVolume = a3;
+    self->mVolume = volume;
     v9 = 0u;
     v10 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v4 = [(CRLAVPlayerController *)self p_workingPlayerItems];
-    v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+    p_workingPlayerItems = [(CRLAVPlayerController *)self p_workingPlayerItems];
+    v5 = [p_workingPlayerItems countByEnumeratingWithState:&v9 objects:v13 count:16];
     if (v5)
     {
       v6 = v5;
@@ -876,7 +876,7 @@ LABEL_43:
         {
           if (*v10 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(p_workingPlayerItems);
           }
 
           [(CRLAVPlayerController *)self p_applyConstantVolumeToPlayerItem:*(*(&v9 + 1) + 8 * v8)];
@@ -884,7 +884,7 @@ LABEL_43:
         }
 
         while (v6 != v8);
-        v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+        v6 = [p_workingPlayerItems countByEnumeratingWithState:&v9 objects:v13 count:16];
       }
 
       while (v6);
@@ -892,9 +892,9 @@ LABEL_43:
   }
 }
 
-- (void)setVolume:(float)a3 rampDuration:(double)a4
+- (void)setVolume:(float)volume rampDuration:(double)duration
 {
-  if (self->mVolume != a3)
+  if (self->mVolume != volume)
   {
     p_mVolumeRampPlayerItem = &self->mVolumeRampPlayerItem;
     mVolumeRampPlayerItem = self->mVolumeRampPlayerItem;
@@ -902,21 +902,21 @@ LABEL_43:
 
     if (p_mVolumeRampPlayerItem[1])
     {
-      v9 = [(CRLAVPlayerController *)self player];
-      [v9 removeTimeObserver:self->mVolumeRampBoundaryTimeObserver];
+      player = [(CRLAVPlayerController *)self player];
+      [player removeTimeObserver:self->mVolumeRampBoundaryTimeObserver];
       mVolumeRampBoundaryTimeObserver = self->mVolumeRampBoundaryTimeObserver;
       self->mVolumeRampBoundaryTimeObserver = 0;
     }
 
     [(CRLAVPlayerController *)self volume];
     v12 = v11;
-    self->mVolume = a3;
+    self->mVolume = volume;
     v13 = objc_opt_class();
     [(CRLAVPlayerController *)self rate];
     if ([v13 p_canApplyVolumeRampAtRate:?])
     {
       memset(&v47, 0, sizeof(v47));
-      CMTimeMakeWithSeconds(&v47, a4, +[_TtC8Freeform18CRLCommonConstants timeScale]);
+      CMTimeMakeWithSeconds(&v47, duration, +[_TtC8Freeform18CRLCommonConstants timeScale]);
       memset(&v46, 0, sizeof(v46));
       mPlayer = self->mPlayer;
       if (mPlayer)
@@ -928,12 +928,12 @@ LABEL_43:
       lhs = v46;
       rhs = v47;
       CMTimeAdd(&v45, &lhs, &rhs);
-      v15 = [(AVQueuePlayer *)self->mPlayer currentItem];
-      if (v15)
+      currentItem = [(AVQueuePlayer *)self->mPlayer currentItem];
+      if (currentItem)
       {
         v33 = objc_alloc_init(AVMutableAudioMix);
-        v16 = [v15 asset];
-        v17 = [v16 tracksWithMediaType:AVMediaTypeAudio];
+        asset = [currentItem asset];
+        v17 = [asset tracksWithMediaType:AVMediaTypeAudio];
 
         v18 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v17, "count")}];
         v39 = 0u;
@@ -961,7 +961,7 @@ LABEL_43:
               lhs = v46;
               [v25 setVolume:&lhs atTime:{COERCE_DOUBLE(__PAIR64__(HIDWORD(v46.value), v12))}];
               lhs = v45;
-              [v25 setVolume:&lhs atTime:{COERCE_DOUBLE(__PAIR64__(HIDWORD(v45.value), LODWORD(a3)))}];
+              [v25 setVolume:&lhs atTime:{COERCE_DOUBLE(__PAIR64__(HIDWORD(v45.value), LODWORD(volume)))}];
               [v18 addObject:v25];
             }
 
@@ -972,8 +972,8 @@ LABEL_43:
         }
 
         [v33 setInputParameters:v18];
-        [v15 setAudioMix:v33];
-        objc_storeStrong(p_mVolumeRampPlayerItem, v15);
+        [currentItem setAudioMix:v33];
+        objc_storeStrong(p_mVolumeRampPlayerItem, currentItem);
         v38[0] = _NSConcreteStackBlock;
         v38[1] = 3221225472;
         v38[2] = sub_1003E2984;
@@ -990,8 +990,8 @@ LABEL_43:
     v37 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v28 = [(CRLAVPlayerController *)self p_workingPlayerItems];
-    v29 = [v28 countByEnumeratingWithState:&v34 objects:v48 count:16];
+    p_workingPlayerItems = [(CRLAVPlayerController *)self p_workingPlayerItems];
+    v29 = [p_workingPlayerItems countByEnumeratingWithState:&v34 objects:v48 count:16];
     if (v29)
     {
       v30 = v29;
@@ -1002,7 +1002,7 @@ LABEL_43:
         {
           if (*v35 != v31)
           {
-            objc_enumerationMutation(v28);
+            objc_enumerationMutation(p_workingPlayerItems);
           }
 
           if (*(*(&v34 + 1) + 8 * j) != *p_mVolumeRampPlayerItem)
@@ -1011,7 +1011,7 @@ LABEL_43:
           }
         }
 
-        v30 = [v28 countByEnumeratingWithState:&v34 objects:v48 count:16];
+        v30 = [p_workingPlayerItems countByEnumeratingWithState:&v34 objects:v48 count:16];
       }
 
       while (v30);
@@ -1027,20 +1027,20 @@ LABEL_43:
   }
 }
 
-- (void)p_applyConstantVolumeToPlayerItem:(id)a3
+- (void)p_applyConstantVolumeToPlayerItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   [(CRLAVPlayerController *)self volume];
   v6 = v5;
   mVolumeRampPlayerItem = self->mVolumeRampPlayerItem;
-  if (mVolumeRampPlayerItem == v4)
+  if (mVolumeRampPlayerItem == itemCopy)
   {
     self->mVolumeRampPlayerItem = 0;
 
     if (self->mVolumeRampBoundaryTimeObserver)
     {
-      v8 = [(CRLAVPlayerController *)self player];
-      [v8 removeTimeObserver:self->mVolumeRampBoundaryTimeObserver];
+      player = [(CRLAVPlayerController *)self player];
+      [player removeTimeObserver:self->mVolumeRampBoundaryTimeObserver];
       mVolumeRampBoundaryTimeObserver = self->mVolumeRampBoundaryTimeObserver;
       self->mVolumeRampBoundaryTimeObserver = 0;
     }
@@ -1054,9 +1054,9 @@ LABEL_43:
   else
   {
     v10 = objc_alloc_init(AVMutableAudioMix);
-    v22 = v4;
-    v11 = [(AVPlayerItem *)v4 asset];
-    v12 = [v11 tracksWithMediaType:AVMediaTypeAudio];
+    v22 = itemCopy;
+    asset = [(AVPlayerItem *)itemCopy asset];
+    v12 = [asset tracksWithMediaType:AVMediaTypeAudio];
 
     v13 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v12, "count")}];
     v26 = 0u;
@@ -1100,20 +1100,20 @@ LABEL_43:
     }
 
     [v10 setInputParameters:v13];
-    v4 = v22;
+    itemCopy = v22;
   }
 
-  [(AVPlayerItem *)v4 setAudioMix:v10];
+  [(AVPlayerItem *)itemCopy setAudioMix:v10];
 }
 
 - (BOOL)hasCurrentTime
 {
-  v2 = [(CRLAVPlayerController *)self player];
-  v3 = [v2 currentItem];
+  player = [(CRLAVPlayerController *)self player];
+  currentItem = [player currentItem];
 
-  if (v3)
+  if (currentItem)
   {
-    v4 = [v3 status] == 1;
+    v4 = [currentItem status] == 1;
   }
 
   else
@@ -1129,12 +1129,12 @@ LABEL_43:
   v3 = 0.0;
   if ([(CRLAVPlayerController *)self hasCurrentTime])
   {
-    v4 = [(CRLAVPlayerController *)self player];
-    v5 = [v4 currentItem];
+    player = [(CRLAVPlayerController *)self player];
+    currentItem = [player currentItem];
 
-    if (v5)
+    if (currentItem)
     {
-      [v5 currentTime];
+      [currentItem currentTime];
     }
 
     else
@@ -1153,12 +1153,12 @@ LABEL_43:
   v3 = 0.0;
   if ([(CRLAVPlayerController *)self hasCurrentTime])
   {
-    v4 = [(CRLAVPlayerController *)self player];
-    v5 = [v4 currentItem];
+    player = [(CRLAVPlayerController *)self player];
+    currentItem = [player currentItem];
 
-    if (v5)
+    if (currentItem)
     {
-      [v5 currentTime];
+      [currentItem currentTime];
     }
 
     else
@@ -1181,14 +1181,14 @@ LABEL_43:
   v3 = 0.0;
   if ([(CRLAVPlayerController *)self hasCurrentTime])
   {
-    v4 = [(CRLAVPlayerController *)self player];
-    v5 = [v4 currentItem];
+    player = [(CRLAVPlayerController *)self player];
+    currentItem = [player currentItem];
 
     [(CRLAVPlayerController *)self endTime];
     v7 = v6;
-    if (v5)
+    if (currentItem)
     {
-      [v5 currentTime];
+      [currentItem currentTime];
     }
 
     else
@@ -1224,7 +1224,7 @@ LABEL_43:
   {
     v6 = self->mScrubbingCount;
     v8 = 134218240;
-    v9 = self;
+    selfCopy = self;
     v10 = 2048;
     v11 = v6;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "CRLAVPlayerController %p: beginScrubbing count %tu", &v8, 0x16u);
@@ -1238,9 +1238,9 @@ LABEL_43:
   }
 }
 
-- (void)scrubToTime:(double)a3 withTolerance:(double)a4 completionHandler:(id)a5
+- (void)scrubToTime:(double)time withTolerance:(double)tolerance completionHandler:(id)handler
 {
-  v8 = a5;
+  handlerCopy = handler;
   if (![(CRLAVPlayerController *)self isScrubbing])
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -1271,32 +1271,32 @@ LABEL_43:
   }
 
   memset(&v19, 0, sizeof(v19));
-  CMTimeMakeWithSeconds(&v19, a3, +[_TtC8Freeform18CRLCommonConstants timeScale]);
+  CMTimeMakeWithSeconds(&v19, time, +[_TtC8Freeform18CRLCommonConstants timeScale]);
   memset(&v18, 0, sizeof(v18));
-  CMTimeMakeWithSeconds(&v18, a4, +[_TtC8Freeform18CRLCommonConstants timeScale]);
+  CMTimeMakeWithSeconds(&v18, tolerance, +[_TtC8Freeform18CRLCommonConstants timeScale]);
   memset(&v17, 0, sizeof(v17));
-  CMTimeMakeWithSeconds(&v17, a4, +[_TtC8Freeform18CRLCommonConstants timeScale]);
-  v12 = [(CRLAVPlayerController *)self player];
-  v13 = v12;
+  CMTimeMakeWithSeconds(&v17, tolerance, +[_TtC8Freeform18CRLCommonConstants timeScale]);
+  player = [(CRLAVPlayerController *)self player];
+  v13 = player;
   v16 = v19;
   v15 = v18;
   v14 = v17;
-  if (v8)
+  if (handlerCopy)
   {
-    [v12 seekToTime:&v16 toleranceBefore:&v15 toleranceAfter:&v14 completionHandler:v8];
+    [player seekToTime:&v16 toleranceBefore:&v15 toleranceAfter:&v14 completionHandler:handlerCopy];
   }
 
   else
   {
-    [v12 seekToTime:&v16 toleranceBefore:&v15 toleranceAfter:&v14];
+    [player seekToTime:&v16 toleranceBefore:&v15 toleranceAfter:&v14];
   }
 }
 
 - (void)cancelPendingSeeks
 {
-  v3 = [(CRLAVPlayerController *)self player];
-  v2 = [v3 currentItem];
-  [v2 cancelPendingSeeks];
+  player = [(CRLAVPlayerController *)self player];
+  currentItem = [player currentItem];
+  [currentItem cancelPendingSeeks];
 }
 
 - (void)endScrubbing
@@ -1342,11 +1342,11 @@ LABEL_11:
     if (!v7)
     {
       memset(&buf, 0, sizeof(buf));
-      v8 = [(CRLAVPlayerController *)self player];
-      v9 = v8;
-      if (v8)
+      player = [(CRLAVPlayerController *)self player];
+      v9 = player;
+      if (player)
       {
-        [v8 currentTime];
+        [player currentTime];
       }
 
       else
@@ -1426,16 +1426,16 @@ LABEL_11:
 
 - (void)seekForwardByOneFrame
 {
-  v3 = [(CRLAVPlayerController *)self player];
-  v4 = [v3 currentItem];
+  player = [(CRLAVPlayerController *)self player];
+  currentItem = [player currentItem];
 
-  if (v4 && (memset(&v10, 0, sizeof(v10)), [(CRLAVPlayerController *)self p_endCMTime], 0 >> 96 == 1))
+  if (currentItem && (memset(&v10, 0, sizeof(v10)), [(CRLAVPlayerController *)self p_endCMTime], 0 >> 96 == 1))
   {
-    v5 = [(CRLAVPlayerController *)self player];
-    v6 = v5;
-    if (v5)
+    player2 = [(CRLAVPlayerController *)self player];
+    v6 = player2;
+    if (player2)
     {
-      [v5 currentTime];
+      [player2 currentTime];
     }
 
     else
@@ -1452,24 +1452,24 @@ LABEL_11:
     v7 = 0;
   }
 
-  if ([v4 canStepForward] && !v7)
+  if ([currentItem canStepForward] && !v7)
   {
-    [v4 stepByCount:1];
+    [currentItem stepByCount:1];
   }
 }
 
 - (void)seekBackwardByOneFrame
 {
-  v3 = [(CRLAVPlayerController *)self player];
-  v4 = [v3 currentItem];
+  player = [(CRLAVPlayerController *)self player];
+  currentItem = [player currentItem];
 
-  if (v4 && (memset(&v10, 0, sizeof(v10)), [(CRLAVPlayerController *)self p_startCMTime], 0 >> 96 == 1))
+  if (currentItem && (memset(&v10, 0, sizeof(v10)), [(CRLAVPlayerController *)self p_startCMTime], 0 >> 96 == 1))
   {
-    v5 = [(CRLAVPlayerController *)self player];
-    v6 = v5;
-    if (v5)
+    player2 = [(CRLAVPlayerController *)self player];
+    v6 = player2;
+    if (player2)
     {
-      [v5 currentTime];
+      [player2 currentTime];
     }
 
     else
@@ -1486,33 +1486,33 @@ LABEL_11:
     v7 = 0;
   }
 
-  if ([v4 canStepBackward] && !v7)
+  if ([currentItem canStepBackward] && !v7)
   {
-    [v4 stepByCount:-1];
+    [currentItem stepByCount:-1];
   }
 }
 
 - (void)seekToBeginning
 {
-  v3 = [(CRLAVPlayerController *)self player];
+  player = [(CRLAVPlayerController *)self player];
   [(CRLAVPlayerController *)self p_startCMTime];
-  [v3 seekToTime:v4];
+  [player seekToTime:v4];
 }
 
 - (void)seekToEnd
 {
-  v3 = [(CRLAVPlayerController *)self player];
+  player = [(CRLAVPlayerController *)self player];
   [(CRLAVPlayerController *)self p_endCMTime];
-  [v3 seekToTime:v4];
+  [player seekToTime:v4];
 }
 
 - (void)updatePlayingToMatchPlayer
 {
-  v3 = [(CRLAVPlayerController *)self player];
-  v8 = v3;
+  player = [(CRLAVPlayerController *)self player];
+  v8 = player;
   if (self->mPlaying)
   {
-    [v3 rate];
+    [player rate];
     if (v4 == 0.0)
     {
       v5 = 0;
@@ -1540,10 +1540,10 @@ LABEL_7:
 LABEL_8:
 }
 
-- (void)setPlaying:(BOOL)a3
+- (void)setPlaying:(BOOL)playing
 {
-  v3 = a3;
-  if (a3 && [(CRLAVPlayerController *)self p_notifyDelegateOfPlaybackErrorIfNeeded])
+  playingCopy = playing;
+  if (playing && [(CRLAVPlayerController *)self p_notifyDelegateOfPlaybackErrorIfNeeded])
   {
     if (qword_101AD5CA8 != -1)
     {
@@ -1559,7 +1559,7 @@ LABEL_8:
     }
   }
 
-  else if (self->mPlaying != v3)
+  else if (self->mPlaying != playingCopy)
   {
     if (qword_101AD5CA8 != -1)
     {
@@ -1572,23 +1572,23 @@ LABEL_8:
       LODWORD(buf.value) = 134218240;
       *(&buf.value + 4) = self;
       LOWORD(buf.flags) = 1024;
-      *(&buf.flags + 2) = v3;
+      *(&buf.flags + 2) = playingCopy;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "CRLAVPlayerController %p: setPlaying %i", &buf, 0x12u);
     }
 
-    self->mPlaying = v3;
-    if (v3)
+    self->mPlaying = playingCopy;
+    if (playingCopy)
     {
-      v7 = [(CRLAVPlayerController *)self player];
-      [v7 rate];
+      player = [(CRLAVPlayerController *)self player];
+      [player rate];
       if (*&v8 == 0.0)
       {
-        v9 = [v7 currentItem];
-        v10 = v9;
+        currentItem = [player currentItem];
+        v10 = currentItem;
         memset(&buf, 0, sizeof(buf));
-        if (v9)
+        if (currentItem)
         {
-          [v9 currentTime];
+          [currentItem currentTime];
         }
 
         memset(&v16, 0, sizeof(v16));
@@ -1626,9 +1626,9 @@ LABEL_8:
 
 - (float)rate
 {
-  v3 = [(CRLAVPlayerController *)self player];
-  v4 = v3;
-  if ((LODWORD(self->mPendingRate) & 0x7FFFFFFFu) > 0x7F7FFFFF || ([v3 currentItem], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "status"), v5, v6 == 1))
+  player = [(CRLAVPlayerController *)self player];
+  v4 = player;
+  if ((LODWORD(self->mPendingRate) & 0x7FFFFFFFu) > 0x7F7FFFFF || ([player currentItem], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "status"), v5, v6 == 1))
   {
     [v4 rate];
     mPendingRate = v7;
@@ -1642,14 +1642,14 @@ LABEL_8:
   return mPendingRate;
 }
 
-- (void)setRate:(float)a3
+- (void)setRate:(float)rate
 {
-  v3 = a3;
-  if (a3 == 0.0 || ![(CRLAVPlayerController *)self p_notifyDelegateOfPlaybackErrorIfNeeded])
+  rateCopy = rate;
+  if (rate == 0.0 || ![(CRLAVPlayerController *)self p_notifyDelegateOfPlaybackErrorIfNeeded])
   {
-    a3 = v3;
+    rate = rateCopy;
 
-    [(CRLAVPlayerController *)self p_updatePlayerItemsAndApplyRate:*&a3];
+    [(CRLAVPlayerController *)self p_updatePlayerItemsAndApplyRate:*&rate];
   }
 
   else
@@ -1663,24 +1663,24 @@ LABEL_8:
     if (os_log_type_enabled(off_1019EFDC0, OS_LOG_TYPE_DEFAULT))
     {
       v6 = 134218240;
-      v7 = self;
+      selfCopy = self;
       v8 = 2048;
-      v9 = v3;
+      v9 = rateCopy;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "CRLAVPlayerController %p: Not setting rate to %f because a playback error occurred.", &v6, 0x16u);
     }
   }
 }
 
-- (void)p_applyRate:(float)a3
+- (void)p_applyRate:(float)rate
 {
-  v5 = [(CRLAVPlayerController *)self player];
+  player = [(CRLAVPlayerController *)self player];
   [(CRLAVPlayerController *)self rate];
-  if (v6 != a3)
+  if (v6 != rate)
   {
-    v7 = [v5 currentItem];
-    v8 = [v7 status];
+    currentItem = [player currentItem];
+    status = [currentItem status];
 
-    if (v8)
+    if (status)
     {
       if (qword_101AD5CA8 != -1)
       {
@@ -1691,14 +1691,14 @@ LABEL_8:
       if (os_log_type_enabled(off_1019EFDC0, OS_LOG_TYPE_DEFAULT))
       {
         v12 = 134218240;
-        v13 = self;
+        selfCopy2 = self;
         v14 = 2048;
-        v15 = a3;
+        rateCopy2 = rate;
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "CRLAVPlayerController %p: Applying rate %f.", &v12, 0x16u);
       }
 
-      *&v10 = a3;
-      [v5 setRate:v10];
+      *&v10 = rate;
+      [player setRate:v10];
       [(CRLAVPlayerController *)self updateNowPlaying];
     }
 
@@ -1713,14 +1713,14 @@ LABEL_8:
       if (os_log_type_enabled(off_1019EFDC0, OS_LOG_TYPE_DEFAULT))
       {
         v12 = 134218240;
-        v13 = self;
+        selfCopy2 = self;
         v14 = 2048;
-        v15 = a3;
+        rateCopy2 = rate;
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "CRLAVPlayerController %p: Saving pending rate %f because the current player item is not yet ready.", &v12, 0x16u);
       }
 
       [(CRLAVPlayerController *)self willChangeValueForKey:@"rate"];
-      self->mPendingRate = a3;
+      self->mPendingRate = rate;
       [(CRLAVPlayerController *)self didChangeValueForKey:@"rate"];
     }
   }
@@ -1740,7 +1740,7 @@ LABEL_8:
     {
       mPendingRate = self->mPendingRate;
       v8 = 134218240;
-      v9 = self;
+      selfCopy = self;
       v10 = 2048;
       v11 = mPendingRate;
       _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "CRLAVPlayerController %p: Applying pending rate %f.", &v8, 0x16u);
@@ -1748,9 +1748,9 @@ LABEL_8:
 
     v5 = self->mPendingRate;
     self->mPendingRate = NAN;
-    v6 = [(CRLAVPlayerController *)self player];
+    player = [(CRLAVPlayerController *)self player];
     *&v7 = v5;
-    [v6 setRate:v7];
+    [player setRate:v7];
   }
 }
 
@@ -1760,8 +1760,8 @@ LABEL_8:
   [(CRLAVPlayerController *)self setPlaying:0];
   [(CRLAVPlayerController *)self setRate:0.0];
   v3 = [CRLAVPlayerControllerVideoDisplayBarrier alloc];
-  v4 = [(CRLAVPlayerController *)self player];
-  v5 = [(CRLAVPlayerControllerVideoDisplayBarrier *)v3 initWithPlayer:v4];
+  player = [(CRLAVPlayerController *)self player];
+  v5 = [(CRLAVPlayerControllerVideoDisplayBarrier *)v3 initWithPlayer:player];
 
   [(CRLAVPlayerControllerVideoDisplayBarrier *)v5 waitUntilAllVideoFramesAreDisplayed];
 }
@@ -1780,26 +1780,26 @@ LABEL_8:
 
 - (BOOL)canFastReverse
 {
-  v2 = [(CRLAVPlayerController *)self player];
-  v3 = [v2 currentItem];
-  v4 = [v3 canPlayFastReverse];
+  player = [(CRLAVPlayerController *)self player];
+  currentItem = [player currentItem];
+  canPlayFastReverse = [currentItem canPlayFastReverse];
 
-  return v4;
+  return canPlayFastReverse;
 }
 
 - (BOOL)p_canFastReverseAtCurrentTime
 {
-  v3 = [(CRLAVPlayerController *)self player];
-  v4 = [v3 currentItem];
-  if ([v4 canPlayFastReverse])
+  player = [(CRLAVPlayerController *)self player];
+  currentItem = [player currentItem];
+  if ([currentItem canPlayFastReverse])
   {
-    [v3 rate];
+    [player rate];
     if (v5 == 0.0)
     {
       memset(&v10[1], 0, sizeof(CMTime));
-      if (v4)
+      if (currentItem)
       {
-        [v4 currentTime];
+        [currentItem currentTime];
       }
 
       memset(v10, 0, 24);
@@ -1823,9 +1823,9 @@ LABEL_8:
   return v6;
 }
 
-- (void)setFastReversing:(BOOL)a3
+- (void)setFastReversing:(BOOL)reversing
 {
-  if (a3)
+  if (reversing)
   {
     if ([(CRLAVPlayerController *)self p_notifyDelegateOfPlaybackErrorIfNeeded])
     {
@@ -1838,7 +1838,7 @@ LABEL_8:
       if (os_log_type_enabled(off_1019EFDC0, OS_LOG_TYPE_DEFAULT))
       {
         v7 = 134217984;
-        v8 = self;
+        selfCopy = self;
         _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "CRLAVPlayerController %p: Not fast reversing because a playback error occurred.", &v7, 0xCu);
       }
     }
@@ -1887,26 +1887,26 @@ LABEL_8:
 
 - (BOOL)canFastForward
 {
-  v2 = [(CRLAVPlayerController *)self player];
-  v3 = [v2 currentItem];
-  v4 = [v3 canPlayFastForward];
+  player = [(CRLAVPlayerController *)self player];
+  currentItem = [player currentItem];
+  canPlayFastForward = [currentItem canPlayFastForward];
 
-  return v4;
+  return canPlayFastForward;
 }
 
 - (BOOL)p_canFastForwardAtCurrentTime
 {
-  v3 = [(CRLAVPlayerController *)self player];
-  v4 = [v3 currentItem];
-  if ([v4 canPlayFastForward])
+  player = [(CRLAVPlayerController *)self player];
+  currentItem = [player currentItem];
+  if ([currentItem canPlayFastForward])
   {
-    [v3 rate];
+    [player rate];
     if (v5 == 0.0)
     {
       memset(&v10[1], 0, sizeof(CMTime));
-      if (v4)
+      if (currentItem)
       {
-        [v4 currentTime];
+        [currentItem currentTime];
       }
 
       memset(v10, 0, 24);
@@ -1930,9 +1930,9 @@ LABEL_8:
   return v6;
 }
 
-- (void)setFastForwarding:(BOOL)a3
+- (void)setFastForwarding:(BOOL)forwarding
 {
-  if (a3)
+  if (forwarding)
   {
     if ([(CRLAVPlayerController *)self p_notifyDelegateOfPlaybackErrorIfNeeded])
     {
@@ -1945,7 +1945,7 @@ LABEL_8:
       if (os_log_type_enabled(off_1019EFDC0, OS_LOG_TYPE_DEFAULT))
       {
         v7 = 134217984;
-        v8 = self;
+        selfCopy = self;
         _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "CRLAVPlayerController %p: Not fast forwarding because a playback error occurred.", &v7, 0xCu);
       }
     }
@@ -1980,26 +1980,26 @@ LABEL_8:
   }
 }
 
-- (void)skipToAssetAtIndex:(unint64_t)a3
+- (void)skipToAssetAtIndex:(unint64_t)index
 {
   [(CRLAVPlayerController *)self setPlaying:0];
-  v5 = [(CRLAVPlayerController *)self player];
-  [v5 removeAllItems];
-  [(CRLAVPlayerController *)self p_enqueueAssetsFromIndex:a3];
+  player = [(CRLAVPlayerController *)self player];
+  [player removeAllItems];
+  [(CRLAVPlayerController *)self p_enqueueAssetsFromIndex:index];
 }
 
-- (void)p_enqueueAssetsFromIndex:(unint64_t)a3
+- (void)p_enqueueAssetsFromIndex:(unint64_t)index
 {
-  v5 = [(CRLAVPlayerController *)self player];
+  player = [(CRLAVPlayerController *)self player];
   v6 = [(NSArray *)self->mEnqueuedAssets count];
-  if (v6 > a3)
+  if (v6 > index)
   {
     v24 = 0u;
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v7 = [(NSArray *)self->mEnqueuedAssets subarrayWithRange:a3, v6 - a3];
-    v8 = [v7 countByEnumeratingWithState:&v22 objects:v27 count:16];
+    index = [(NSArray *)self->mEnqueuedAssets subarrayWithRange:index, v6 - index];
+    v8 = [index countByEnumeratingWithState:&v22 objects:v27 count:16];
     if (v8)
     {
       v9 = v8;
@@ -2010,14 +2010,14 @@ LABEL_8:
         {
           if (*v23 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(index);
           }
 
           v12 = [AVPlayerItem playerItemWithAsset:*(*(&v22 + 1) + 8 * i)];
-          [v5 insertItem:v12 afterItem:0];
+          [player insertItem:v12 afterItem:0];
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v22 objects:v27 count:16];
+        v9 = [index countByEnumeratingWithState:&v22 objects:v27 count:16];
       }
 
       while (v9);
@@ -2028,8 +2028,8 @@ LABEL_8:
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v13 = [(CRLAVPlayerController *)self p_workingPlayerItems];
-  v14 = [v13 countByEnumeratingWithState:&v18 objects:v26 count:16];
+  p_workingPlayerItems = [(CRLAVPlayerController *)self p_workingPlayerItems];
+  v14 = [p_workingPlayerItems countByEnumeratingWithState:&v18 objects:v26 count:16];
   if (v14)
   {
     v15 = v14;
@@ -2040,13 +2040,13 @@ LABEL_8:
       {
         if (*v19 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(p_workingPlayerItems);
         }
 
         [(CRLAVPlayerController *)self p_applyConstantVolumeToPlayerItem:*(*(&v18 + 1) + 8 * j)];
       }
 
-      v15 = [v13 countByEnumeratingWithState:&v18 objects:v26 count:16];
+      v15 = [p_workingPlayerItems countByEnumeratingWithState:&v18 objects:v26 count:16];
     }
 
     while (v15);
@@ -2056,56 +2056,56 @@ LABEL_8:
   [(CRLAVPlayerController *)self p_notifyPlayerItemMediatorWithRate:?];
 }
 
-- (id)p_addTimeObserverForTime:(id *)a3 handler:(id)a4
+- (id)p_addTimeObserverForTime:(id *)time handler:(id)handler
 {
-  v6 = a4;
-  v7 = [(CRLAVPlayerController *)self player];
-  v12 = *a3;
+  handlerCopy = handler;
+  player = [(CRLAVPlayerController *)self player];
+  v12 = *time;
   v8 = [NSValue valueWithCMTime:&v12];
   v13 = v8;
   v9 = [NSArray arrayWithObjects:&v13 count:1];
-  v10 = [v7 addBoundaryTimeObserverForTimes:v9 queue:&_dispatch_main_q usingBlock:v6];
+  v10 = [player addBoundaryTimeObserverForTimes:v9 queue:&_dispatch_main_q usingBlock:handlerCopy];
 
   return v10;
 }
 
-- (id)addPeriodicTimeObserverForInterval:(double)a3 block:(id)a4
+- (id)addPeriodicTimeObserverForInterval:(double)interval block:(id)block
 {
-  v6 = a4;
-  v7 = [(CRLAVPlayerController *)self player];
-  CMTimeMakeWithSeconds(&v13, a3, +[_TtC8Freeform18CRLCommonConstants timeScale]);
+  blockCopy = block;
+  player = [(CRLAVPlayerController *)self player];
+  CMTimeMakeWithSeconds(&v13, interval, +[_TtC8Freeform18CRLCommonConstants timeScale]);
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1003E5020;
   v11[3] = &unk_10185EA90;
-  v12 = v6;
-  v8 = v6;
-  v9 = [v7 addPeriodicTimeObserverForInterval:&v13 queue:&_dispatch_main_q usingBlock:v11];
+  v12 = blockCopy;
+  v8 = blockCopy;
+  v9 = [player addPeriodicTimeObserverForInterval:&v13 queue:&_dispatch_main_q usingBlock:v11];
 
   return v9;
 }
 
-- (void)removePeriodicTimeObserver:(id)a3
+- (void)removePeriodicTimeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(CRLAVPlayerController *)self player];
-  [v5 removeTimeObserver:v4];
+  observerCopy = observer;
+  player = [(CRLAVPlayerController *)self player];
+  [player removeTimeObserver:observerCopy];
 }
 
-- (void)setPlayerItemMediator:(id)a3
+- (void)setPlayerItemMediator:(id)mediator
 {
-  v5 = a3;
-  if (self->mPlayerItemMediator != v5)
+  mediatorCopy = mediator;
+  if (self->mPlayerItemMediator != mediatorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->mPlayerItemMediator, a3);
+    v6 = mediatorCopy;
+    objc_storeStrong(&self->mPlayerItemMediator, mediator);
     [(CRLAVPlayerController *)self rate];
     [(CRLAVPlayerController *)self p_notifyPlayerItemMediatorWithRate:?];
-    v5 = v6;
+    mediatorCopy = v6;
   }
 }
 
-- (void)p_notifyPlayerItemMediatorWithRate:(float)a3
+- (void)p_notifyPlayerItemMediatorWithRate:(float)rate
 {
   if (!+[NSThread isMainThread])
   {
@@ -2136,16 +2136,16 @@ LABEL_8:
     [CRLAssertionHandler handleFailureInFunction:v6 file:v7 lineNumber:1216 isFatal:0 description:"This operation must only be performed on the main thread."];
   }
 
-  v8 = [(CRLAVPlayerController *)self playerItemMediator];
-  v9 = [(CRLAVPlayerController *)self p_workingPlayerItems];
+  playerItemMediator = [(CRLAVPlayerController *)self playerItemMediator];
+  p_workingPlayerItems = [(CRLAVPlayerController *)self p_workingPlayerItems];
   v10 = *&self->mPlayerItemTimeRange.start.epoch;
   v11[0] = *&self->mPlayerItemTimeRange.start.value;
   v11[1] = v10;
   v12 = *&self->mPlayerItemTimeRange.duration.timescale;
-  [v8 playerController:self willUsePlayerItems:v9 atRate:v11 timeRangeForEachPlayerItem:{COERCE_DOUBLE(__PAIR64__(DWORD1(v12), LODWORD(a3)))}];
+  [playerItemMediator playerController:self willUsePlayerItems:p_workingPlayerItems atRate:v11 timeRangeForEachPlayerItem:{COERCE_DOUBLE(__PAIR64__(DWORD1(v12), LODWORD(rate)))}];
 }
 
-- (void)p_playerItemDidPlayToEndTimeAtRate:(float)a3
+- (void)p_playerItemDidPlayToEndTimeAtRate:(float)rate
 {
   if (qword_101AD5CA8 != -1)
   {
@@ -2158,33 +2158,33 @@ LABEL_8:
     *buf = 134218240;
     *&buf[4] = self;
     *&buf[12] = 2048;
-    *&buf[14] = a3;
+    *&buf[14] = rate;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "CRLAVPlayerController %p: playerItemDidPlayToEndTimeAtRate: %f", buf, 0x16u);
   }
 
   if ([(NSArray *)self->mEnqueuedAssets count])
   {
-    v6 = [(CRLAVPlayerController *)self player];
-    v7 = [v6 items];
-    v8 = [v7 count];
+    player = [(CRLAVPlayerController *)self player];
+    items = [player items];
+    v8 = [items count];
 
     if (v8 == 1)
     {
       v9 = +[NSNotificationCenter defaultCenter];
       [v9 postNotificationName:@"CRLAVPlayerControllerDidPlayToEndNotification" object:self];
 
-      v10 = [(CRLAVPlayerController *)self repeatMode];
-      if (!v10 || v10 == 2)
+      repeatMode = [(CRLAVPlayerController *)self repeatMode];
+      if (!repeatMode || repeatMode == 2)
       {
         [(CRLAVPlayerController *)self setRate:0.0];
-        v14 = [(CRLAVPlayerController *)self delegate];
-        [v14 playbackDidStopForPlayerController:self];
+        delegate = [(CRLAVPlayerController *)self delegate];
+        [delegate playbackDidStopForPlayerController:self];
       }
 
-      else if (v10 == 1)
+      else if (repeatMode == 1)
       {
         [(CRLAVPlayerController *)self p_enqueueAssetsFromIndex:0];
-        *&v11 = a3;
+        *&v11 = rate;
         [(CRLAVPlayerController *)self setRate:v11];
       }
     }
@@ -2195,10 +2195,10 @@ LABEL_8:
   v12 = +[NSNotificationCenter defaultCenter];
   [v12 postNotificationName:@"CRLAVPlayerControllerDidPlayToEndNotification" object:self];
 
-  v13 = [(CRLAVPlayerController *)self repeatMode];
-  if (v13)
+  repeatMode2 = [(CRLAVPlayerController *)self repeatMode];
+  if (repeatMode2)
   {
-    if (v13 == 2)
+    if (repeatMode2 == 2)
     {
       if (self->mPlayerLooper)
       {
@@ -2230,7 +2230,7 @@ LABEL_8:
       }
 
       memset(buf, 0, sizeof(buf));
-      if (a3 >= 0.0)
+      if (rate >= 0.0)
       {
         [(CRLAVPlayerController *)self p_endCMTime];
       }
@@ -2240,20 +2240,20 @@ LABEL_8:
         [(CRLAVPlayerController *)self p_startCMTime];
       }
 
-      v21 = [(CRLAVPlayerController *)self player];
-      *&v22 = -a3;
+      player2 = [(CRLAVPlayerController *)self player];
+      *&v22 = -rate;
       v28 = *buf;
       v29 = *&buf[16];
       v26 = *&kCMTimeInvalid.value;
       epoch = kCMTimeInvalid.epoch;
-      [v21 setRate:&v28 time:&v26 atHostTime:v22];
+      [player2 setRate:&v28 time:&v26 atHostTime:v22];
       goto LABEL_48;
     }
 
-    if (v13 == 1 && !self->mPlayerLooper)
+    if (repeatMode2 == 1 && !self->mPlayerLooper)
     {
       memset(buf, 0, sizeof(buf));
-      if (a3 >= 0.0)
+      if (rate >= 0.0)
       {
         [(CRLAVPlayerController *)self p_startCMTime];
       }
@@ -2263,15 +2263,15 @@ LABEL_8:
         [(CRLAVPlayerController *)self p_endCMTime];
       }
 
-      v21 = [(CRLAVPlayerController *)self player];
-      v23 = [v21 currentItem];
+      player2 = [(CRLAVPlayerController *)self player];
+      currentItem = [player2 currentItem];
       v28 = *buf;
       v29 = *&buf[16];
       v26 = *&kCMTimeZero.value;
       epoch = kCMTimeZero.epoch;
       v24 = v26;
       v25 = epoch;
-      [v23 seekToTime:&v28 toleranceBefore:&v26 toleranceAfter:&v24 completionHandler:0];
+      [currentItem seekToTime:&v28 toleranceBefore:&v26 toleranceAfter:&v24 completionHandler:0];
 
 LABEL_48:
     }
@@ -2311,19 +2311,19 @@ LABEL_48:
     [(CRLAVPlayerController *)self setPlaying:0];
     [(CRLAVPlayerController *)self setFastReversing:0];
     [(CRLAVPlayerController *)self setFastForwarding:0];
-    if (a3 > 0.0)
+    if (rate > 0.0)
     {
-      v6 = [(CRLAVPlayerController *)self delegate];
-      [v6 playbackDidStopForPlayerController:self];
+      player = [(CRLAVPlayerController *)self delegate];
+      [player playbackDidStopForPlayerController:self];
 LABEL_42:
     }
   }
 }
 
-- (void)p_playerItemDidPlayToEndTime:(id)a3
+- (void)p_playerItemDidPlayToEndTime:(id)time
 {
-  v7 = [(CRLAVPlayerController *)self player];
-  [v7 rate];
+  player = [(CRLAVPlayerController *)self player];
+  [player rate];
   v5 = v4;
   [(CRLAVPlayerController *)self p_clearVolumeRampFromPlayerItem];
   LODWORD(v6) = v5;
@@ -2334,11 +2334,11 @@ LABEL_42:
 {
   if (!self->mDidNotifyDelegateOfPlaybackError)
   {
-    v4 = [(CRLAVPlayerController *)self player];
-    if ([v4 status] == 2)
+    player = [(CRLAVPlayerController *)self player];
+    if ([player status] == 2)
     {
-      v5 = [v4 error];
-      if (v5)
+      error = [player error];
+      if (error)
       {
         goto LABEL_17;
       }
@@ -2370,8 +2370,8 @@ LABEL_42:
       [CRLAssertionHandler handleFailureInFunction:v7 file:v8 lineNumber:1316 isFatal:0 description:"invalid nil value for '%{public}s'", "error"];
     }
 
-    v5 = [v4 currentItem];
-    if ([v5 status] != 2)
+    error = [player currentItem];
+    if ([error status] != 2)
     {
 LABEL_30:
 
@@ -2379,8 +2379,8 @@ LABEL_30:
       return mDidNotifyDelegateOfPlaybackError;
     }
 
-    v9 = [v5 error];
-    if (!v9)
+    v5Error = [error error];
+    if (!v5Error)
     {
       +[CRLAssertionHandler _atomicIncrementAssertCount];
       if (qword_101AD5A10 != -1)
@@ -2411,13 +2411,13 @@ LABEL_30:
       goto LABEL_30;
     }
 
-    v10 = v9;
+    v10 = v5Error;
 
-    v5 = v10;
+    error = v10;
 LABEL_17:
     self->mDidNotifyDelegateOfPlaybackError = 1;
-    v11 = [(CRLAVPlayerController *)self delegate];
-    [v11 playerController:self playbackDidFailWithError:v5];
+    delegate = [(CRLAVPlayerController *)self delegate];
+    [delegate playerController:self playbackDidFailWithError:error];
 
     if (qword_101AD5CA8 != -1)
     {
@@ -2427,7 +2427,7 @@ LABEL_17:
     v12 = off_1019EFDC0;
     if (os_log_type_enabled(off_1019EFDC0, OS_LOG_TYPE_ERROR))
     {
-      sub_101369524(self, v12, v5);
+      sub_101369524(self, v12, error);
     }
 
     goto LABEL_30;
@@ -2436,7 +2436,7 @@ LABEL_17:
   return 1;
 }
 
-- (void)p_playerItemDidJumpTime:(id)a3
+- (void)p_playerItemDidJumpTime:(id)time
 {
   [(CRLAVPlayerController *)self p_clearVolumeRampFromPlayerItem];
   v4 = +[NSNotificationCenter defaultCenter];
@@ -2452,25 +2452,25 @@ LABEL_17:
 
 - (void)p_updateAutomaticallyWaitsToMinimizeStalling
 {
-  v11 = [(CRLAVPlayerController *)self player];
+  player = [(CRLAVPlayerController *)self player];
   v3 = objc_opt_class();
-  v4 = [v11 currentItem];
-  v5 = [v4 asset];
-  v6 = sub_100014370(v3, v5);
+  currentItem = [player currentItem];
+  asset = [currentItem asset];
+  v6 = sub_100014370(v3, asset);
 
   if (v6)
   {
     v7 = [v6 URL];
-    v8 = [v7 scheme];
+    scheme = [v7 scheme];
 
-    if ([v8 isEqual:@"http"])
+    if ([scheme isEqual:@"http"])
     {
       v9 = 1;
     }
 
     else
     {
-      v9 = [v8 isEqual:@"https"];
+      v9 = [scheme isEqual:@"https"];
     }
   }
 
@@ -2489,29 +2489,29 @@ LABEL_17:
     v10 = v9;
   }
 
-  [v11 setAutomaticallyWaitsToMinimizeStalling:v10];
+  [player setAutomaticallyWaitsToMinimizeStalling:v10];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
   v13 = +[NSNotificationCenter defaultCenter];
-  if (off_1019EFDC8 == a6)
+  if (off_1019EFDC8 == context)
   {
-    v14 = [v12 objectForKey:NSKeyValueChangeOldKey];
-    if (v14)
+    currentItem = [changeCopy objectForKey:NSKeyValueChangeOldKey];
+    if (currentItem)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [v13 removeObserver:self name:AVPlayerItemDidPlayToEndTimeNotification object:v14];
-        [v13 removeObserver:self name:AVPlayerItemTimeJumpedNotification object:v14];
+        [v13 removeObserver:self name:AVPlayerItemDidPlayToEndTimeNotification object:currentItem];
+        [v13 removeObserver:self name:AVPlayerItemTimeJumpedNotification object:currentItem];
       }
     }
 
-    v15 = [v12 objectForKey:NSKeyValueChangeNewKey];
+    v15 = [changeCopy objectForKey:NSKeyValueChangeNewKey];
     if (v15)
     {
       objc_opt_class();
@@ -2519,15 +2519,15 @@ LABEL_17:
       {
         if (![(CRLAVPlayerController *)self canPlay])
         {
-          v16 = [v15 asset];
+          asset = [v15 asset];
           v17 = [AVAsset crl_playableKeysWithKeys:&off_1018E1E48];
           v46[0] = _NSConcreteStackBlock;
           v46[1] = 3221225472;
           v46[2] = sub_1003E680C;
           v46[3] = &unk_10183AE28;
-          v47 = v16;
-          v48 = self;
-          v18 = v16;
+          v47 = asset;
+          selfCopy = self;
+          v18 = asset;
           [v18 loadValuesAsynchronouslyForKeys:v17 completionHandler:v46];
         }
 
@@ -2544,15 +2544,15 @@ LABEL_17:
     goto LABEL_58;
   }
 
-  if (off_1019EFDD8 != a6)
+  if (off_1019EFDD8 != context)
   {
-    if (off_1019EFDE0 == a6)
+    if (off_1019EFDE0 == context)
     {
-      v22 = [(CRLAVPlayerController *)self player];
-      v14 = [v22 currentItem];
+      player = [(CRLAVPlayerController *)self player];
+      currentItem = [player currentItem];
 
-      v23 = [v14 status];
-      if (v23 == 2)
+      status = [currentItem status];
+      if (status == 2)
       {
         [(CRLAVPlayerController *)self rate];
         if (v39 != 1.0)
@@ -2561,7 +2561,7 @@ LABEL_17:
         }
       }
 
-      else if (v23 == 1)
+      else if (status == 1)
       {
         [(CRLAVPlayerController *)self p_applyPendingRateIfNeeded];
       }
@@ -2569,28 +2569,28 @@ LABEL_17:
       goto LABEL_59;
     }
 
-    if (off_1019EFDD0 != a6)
+    if (off_1019EFDD0 != context)
     {
       v43.receiver = self;
       v43.super_class = CRLAVPlayerController;
-      [(CRLAVPlayerController *)&v43 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+      [(CRLAVPlayerController *)&v43 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
       goto LABEL_60;
     }
 
     v24 = objc_opt_class();
-    v25 = [v12 objectForKeyedSubscript:NSKeyValueChangeOldKey];
-    v14 = sub_100014370(v24, v25);
+    v25 = [changeCopy objectForKeyedSubscript:NSKeyValueChangeOldKey];
+    currentItem = sub_100014370(v24, v25);
 
     v26 = 0.0;
     v27 = 0.0;
-    if (v14)
+    if (currentItem)
     {
-      [v14 floatValue];
+      [currentItem floatValue];
       v27 = v28;
     }
 
     v29 = objc_opt_class();
-    v30 = [v12 objectForKeyedSubscript:NSKeyValueChangeNewKey];
+    v30 = [changeCopy objectForKeyedSubscript:NSKeyValueChangeNewKey];
     v15 = sub_100014370(v29, v30);
 
     if (v15)
@@ -2620,7 +2620,7 @@ LABEL_17:
         {
           mPendingRate = self->mPendingRate;
           *buf = 134218496;
-          v50 = self;
+          selfCopy4 = self;
           v51 = 2048;
           v52 = mPendingRate;
           v53 = 2048;
@@ -2651,7 +2651,7 @@ LABEL_17:
           if (os_log_type_enabled(off_1019EFDC0, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 134217984;
-            v50 = self;
+            selfCopy4 = self;
             _os_log_impl(&_mh_execute_header, v41, OS_LOG_TYPE_DEFAULT, "CRLAVPlayerController %p: Player rate changed to 0 while playing, fast reversing, or fast forwarding.", buf, 0xCu);
           }
 
@@ -2684,7 +2684,7 @@ LABEL_17:
         if (os_log_type_enabled(off_1019EFDC0, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 134218240;
-          v50 = self;
+          selfCopy4 = self;
           v51 = 2048;
           v52 = v26;
           _os_log_impl(&_mh_execute_header, v37, OS_LOG_TYPE_DEFAULT, "CRLAVPlayerController %p: Player rate changed to %f after changing to 0 while playing, fast reversing, or fast forwarding.", buf, 0x16u);
@@ -2706,10 +2706,10 @@ LABEL_59:
     goto LABEL_60;
   }
 
-  v19 = [(CRLAVPlayerController *)self player];
-  v20 = [v19 status];
+  player2 = [(CRLAVPlayerController *)self player];
+  status2 = [player2 status];
 
-  if (v20 == 2)
+  if (status2 == 2)
   {
     [(CRLAVPlayerController *)self rate];
     if (v21 != 1.0)
@@ -2724,8 +2724,8 @@ LABEL_60:
 - (void)updateNowPlaying
 {
   v3 = +[NSMutableDictionary dictionary];
-  v4 = [(CRLAVPlayerController *)self delegate];
-  v5 = [v4 nowPlayingTitleWithPlaybackController:self];
+  delegate = [(CRLAVPlayerController *)self delegate];
+  v5 = [delegate nowPlayingTitleWithPlaybackController:self];
 
   if (v5)
   {
@@ -2737,8 +2737,8 @@ LABEL_60:
   v21 = 0x3032000000;
   v22 = sub_1003E75A8;
   v23 = sub_1003E75B8;
-  v6 = [(CRLAVPlayerController *)self delegate];
-  v24 = [v6 nowPlayingImageProviderWithPlaybackController:self];
+  delegate2 = [(CRLAVPlayerController *)self delegate];
+  v24 = [delegate2 nowPlayingImageProviderWithPlaybackController:self];
 
   if (v20[5])
   {
@@ -2753,12 +2753,12 @@ LABEL_60:
     [v3 setObject:v8 forKeyedSubscript:MPMediaItemPropertyArtwork];
   }
 
-  v9 = [(CRLAVPlayerController *)self player];
-  v10 = [v9 currentItem];
+  player = [(CRLAVPlayerController *)self player];
+  currentItem = [player currentItem];
 
-  if (v10)
+  if (currentItem)
   {
-    [v10 currentTime];
+    [currentItem currentTime];
   }
 
   else
@@ -2769,11 +2769,11 @@ LABEL_60:
   v11 = [NSNumber numberWithDouble:CMTimeGetSeconds(&v17)];
   [v3 setObject:v11 forKeyedSubscript:MPNowPlayingInfoPropertyElapsedPlaybackTime];
 
-  v12 = [v10 asset];
-  v13 = v12;
-  if (v12)
+  asset = [currentItem asset];
+  v13 = asset;
+  if (asset)
   {
-    [v12 duration];
+    [asset duration];
   }
 
   else
@@ -2819,10 +2819,10 @@ LABEL_60:
 - (void)setupRemoteTransportControls
 {
   v5 = +[MPRemoteCommandCenter sharedCommandCenter];
-  v3 = [v5 playCommand];
-  [v3 addTarget:self action:"remotePlay"];
-  v4 = [v5 pauseCommand];
-  [v4 addTarget:self action:"remotePause"];
+  playCommand = [v5 playCommand];
+  [playCommand addTarget:self action:"remotePlay"];
+  pauseCommand = [v5 pauseCommand];
+  [pauseCommand addTarget:self action:"remotePause"];
 }
 
 @end

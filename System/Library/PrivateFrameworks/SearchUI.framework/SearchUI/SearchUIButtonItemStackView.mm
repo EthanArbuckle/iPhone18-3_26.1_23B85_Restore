@@ -2,10 +2,10 @@
 - (SearchUIButtonItemStackView)init;
 - (SearchUIButtonItemStackViewDelegate)buttonItemStackViewDelegate;
 - (id)buttonTypes;
-- (id)viewForButtonItem:(id)a3;
-- (void)enumerateCachedViewControllersUsingBlock:(id)a3;
-- (void)setIsCompact:(BOOL)a3;
-- (void)updateWithButtonItems:(id)a3 maxButtonItems:(unint64_t)a4 buttonItemViewType:(unint64_t)a5 rowModel:(id)a6 feedbackDelegate:(id)a7;
+- (id)viewForButtonItem:(id)item;
+- (void)enumerateCachedViewControllersUsingBlock:(id)block;
+- (void)setIsCompact:(BOOL)compact;
+- (void)updateWithButtonItems:(id)items maxButtonItems:(unint64_t)buttonItems buttonItemViewType:(unint64_t)type rowModel:(id)model feedbackDelegate:(id)delegate;
 @end
 
 @implementation SearchUIButtonItemStackView
@@ -19,8 +19,8 @@
   {
     [SearchUIAutoLayout requireIntrinsicSizeForView:v2];
     [(SearchUIButtonItemStackView *)v2 setIsCompact:0];
-    v3 = [(SearchUIButtonItemStackView *)v2 layer];
-    [v3 setAllowsGroupOpacity:0];
+    layer = [(SearchUIButtonItemStackView *)v2 layer];
+    [layer setAllowsGroupOpacity:0];
 
     [(SearchUIButtonItemStackView *)v2 setCountMoreButtonTowardsMaxCount:1];
   }
@@ -28,15 +28,15 @@
   return v2;
 }
 
-- (void)setIsCompact:(BOOL)a3
+- (void)setIsCompact:(BOOL)compact
 {
-  self->_isCompact = a3;
+  self->_isCompact = compact;
   v5 = 8.0;
-  if (!a3)
+  if (!compact)
   {
-    v6 = [MEMORY[0x1E69D9240] isMacOS];
+    isMacOS = [MEMORY[0x1E69D9240] isMacOS];
     v5 = 10.0;
-    if (v6)
+    if (isMacOS)
     {
       v5 = 8.0;
     }
@@ -47,22 +47,22 @@
   v7[1] = 3221225472;
   v7[2] = __44__SearchUIButtonItemStackView_setIsCompact___block_invoke;
   v7[3] = &__block_descriptor_33_e42_v16__0__SearchUIButtonItemViewController_8l;
-  v8 = a3;
+  compactCopy = compact;
   [(SearchUIButtonItemStackView *)self enumerateCachedViewControllersUsingBlock:v7];
 }
 
-- (void)enumerateCachedViewControllersUsingBlock:(id)a3
+- (void)enumerateCachedViewControllersUsingBlock:(id)block
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v5 = [(SearchUIButtonItemStackView *)self buttonItemViewControllersForClassNames];
-  v6 = [v5 objectEnumerator];
+  buttonItemViewControllersForClassNames = [(SearchUIButtonItemStackView *)self buttonItemViewControllersForClassNames];
+  objectEnumerator = [buttonItemViewControllersForClassNames objectEnumerator];
 
-  v7 = [v6 countByEnumeratingWithState:&v21 objects:v26 count:16];
+  v7 = [objectEnumerator countByEnumeratingWithState:&v21 objects:v26 count:16];
   if (v7)
   {
     v8 = v7;
@@ -74,7 +74,7 @@
       {
         if (*v22 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v11 = *(*(&v21 + 1) + 8 * v10);
@@ -98,7 +98,7 @@
                 objc_enumerationMutation(v12);
               }
 
-              v4[2](v4, *(*(&v17 + 1) + 8 * v16++));
+              blockCopy[2](blockCopy, *(*(&v17 + 1) + 8 * v16++));
             }
 
             while (v14 != v16);
@@ -112,27 +112,27 @@
       }
 
       while (v10 != v8);
-      v8 = [v6 countByEnumeratingWithState:&v21 objects:v26 count:16];
+      v8 = [objectEnumerator countByEnumeratingWithState:&v21 objects:v26 count:16];
     }
 
     while (v8);
   }
 }
 
-- (void)updateWithButtonItems:(id)a3 maxButtonItems:(unint64_t)a4 buttonItemViewType:(unint64_t)a5 rowModel:(id)a6 feedbackDelegate:(id)a7
+- (void)updateWithButtonItems:(id)items maxButtonItems:(unint64_t)buttonItems buttonItemViewType:(unint64_t)type rowModel:(id)model feedbackDelegate:(id)delegate
 {
-  v12 = a3;
-  v13 = a6;
-  v14 = a7;
-  v15 = [(SearchUIButtonItemStackView *)self buttonItems];
-  v16 = [v12 isEqualToArray:v15];
+  itemsCopy = items;
+  modelCopy = model;
+  delegateCopy = delegate;
+  buttonItems = [(SearchUIButtonItemStackView *)self buttonItems];
+  v16 = [itemsCopy isEqualToArray:buttonItems];
 
   if ((v16 & 1) == 0)
   {
-    [(SearchUIButtonItemStackView *)self setButtonItems:v12];
-    -[SearchUIButtonItemStackView setHidden:](self, "setHidden:", [v12 count] == 0);
+    [(SearchUIButtonItemStackView *)self setButtonItems:itemsCopy];
+    -[SearchUIButtonItemStackView setHidden:](self, "setHidden:", [itemsCopy count] == 0);
     [(SearchUIButtonItemStackView *)self setButtonItemFactory:0];
-    if ([v12 count])
+    if ([itemsCopy count])
     {
       [(SearchUIButtonItemStackView *)self enumerateCachedViewControllersUsingBlock:&__block_literal_global_12];
       [(SearchUIButtonItemStackView *)self setHasLeftMainThread:0];
@@ -140,20 +140,20 @@
       objc_initWeak(&location, self);
       v17 = objc_opt_new();
       [v17 setDelegate:self];
-      [v17 setFeedbackDelegate:v14];
+      [v17 setFeedbackDelegate:delegateCopy];
       [v17 setCountMoreButtonTowardsMaxCount:{-[SearchUIButtonItemStackView countMoreButtonTowardsMaxCount](self, "countMoreButtonTowardsMaxCount")}];
       [(SearchUIButtonItemStackView *)self setIsDoneUpdating:0];
-      v18 = [(SearchUIButtonItemStackView *)self shouldReverseButtonOrder];
+      shouldReverseButtonOrder = [(SearchUIButtonItemStackView *)self shouldReverseButtonOrder];
       v19 = MEMORY[0x1E69E9820];
       v20 = 3221225472;
       v21 = __113__SearchUIButtonItemStackView_updateWithButtonItems_maxButtonItems_buttonItemViewType_rowModel_feedbackDelegate___block_invoke_2;
       v22 = &unk_1E85B3130;
       objc_copyWeak(v26, &location);
-      v23 = v12;
-      v24 = v13;
-      v25 = v14;
-      v26[1] = a5;
-      [v17 fetchSearchUIButtonitemsWithSFButtonItems:v23 maxButtonItems:a4 shouldReverseButtonOrder:v18 completion:&v19];
+      v23 = itemsCopy;
+      v24 = modelCopy;
+      v25 = delegateCopy;
+      v26[1] = type;
+      [v17 fetchSearchUIButtonitemsWithSFButtonItems:v23 maxButtonItems:buttonItems shouldReverseButtonOrder:shouldReverseButtonOrder completion:&v19];
       [(SearchUIButtonItemStackView *)self setHasLeftMainThread:1, v19, v20, v21, v22];
       [(SearchUIButtonItemStackView *)self setButtonItemFactory:v17];
 
@@ -349,9 +349,9 @@ void __113__SearchUIButtonItemStackView_updateWithButtonItems_maxButtonItems_but
   [v13 setHidden:0];
 }
 
-- (id)viewForButtonItem:(id)a3
+- (id)viewForButtonItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -362,7 +362,7 @@ void __113__SearchUIButtonItemStackView_updateWithButtonItems_maxButtonItems_but
   v8[1] = 3221225472;
   v8[2] = __49__SearchUIButtonItemStackView_viewForButtonItem___block_invoke;
   v8[3] = &unk_1E85B3158;
-  v5 = v4;
+  v5 = itemCopy;
   v9 = v5;
   v10 = &v11;
   [(SearchUIButtonItemStackView *)self enumerateCachedViewControllersUsingBlock:v8];
@@ -396,8 +396,8 @@ void __49__SearchUIButtonItemStackView_viewForButtonItem___block_invoke(uint64_t
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [(SearchUIButtonItemStackView *)self currentButtonItemViewControllers];
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  currentButtonItemViewControllers = [(SearchUIButtonItemStackView *)self currentButtonItemViewControllers];
+  v5 = [currentButtonItemViewControllers countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -408,21 +408,21 @@ void __49__SearchUIButtonItemStackView_viewForButtonItem___block_invoke(uint64_t
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(currentButtonItemViewControllers);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 view];
-        v11 = [v10 isHidden];
+        view = [v9 view];
+        isHidden = [view isHidden];
 
-        if ((v11 & 1) == 0)
+        if ((isHidden & 1) == 0)
         {
-          v12 = [v9 buttonItem];
+          buttonItem = [v9 buttonItem];
           [v3 addObject:objc_opt_class()];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [currentButtonItemViewControllers countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v6);

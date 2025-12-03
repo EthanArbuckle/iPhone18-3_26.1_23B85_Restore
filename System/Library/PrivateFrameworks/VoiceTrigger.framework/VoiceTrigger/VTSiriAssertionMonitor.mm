@@ -1,7 +1,7 @@
 @interface VTSiriAssertionMonitor
 + (id)sharedInstance;
 - (VTSiriAssertionMonitor)init;
-- (void)_notifyObserver:(BOOL)a3;
+- (void)_notifyObserver:(BOOL)observer;
 - (void)dealloc;
 - (void)disableAssertionReceived;
 - (void)enableAssertionReceived;
@@ -9,14 +9,14 @@
 
 @implementation VTSiriAssertionMonitor
 
-- (void)_notifyObserver:(BOOL)a3
+- (void)_notifyObserver:(BOOL)observer
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __42__VTSiriAssertionMonitor__notifyObserver___block_invoke;
   v3[3] = &unk_2784ECDA8;
   v3[4] = self;
-  v4 = a3;
+  observerCopy = observer;
   [(VTEventMonitor *)self enumerateObserversInQueue:v3];
 }
 

@@ -1,12 +1,12 @@
 @interface WFGetClassAction
-- (void)runAsynchronouslyWithInput:(id)a3;
+- (void)runAsynchronouslyWithInput:(id)input;
 @end
 
 @implementation WFGetClassAction
 
-- (void)runAsynchronouslyWithInput:(id)a3
+- (void)runAsynchronouslyWithInput:(id)input
 {
-  v4 = a3;
+  inputCopy = input;
   v5 = [(WFGetClassAction *)self parameterValueForKey:@"Class" ofClass:objc_opt_class()];
   v6 = NSClassFromString(v5);
 
@@ -20,7 +20,7 @@
   v7[2] = __47__WFGetClassAction_runAsynchronouslyWithInput___block_invoke_2;
   v7[3] = &unk_278C21F18;
   v7[4] = self;
-  [v4 enumerateObjectRepresentations:v8 forClass:v6 completionHandler:v7];
+  [inputCopy enumerateObjectRepresentations:v8 forClass:v6 completionHandler:v7];
 }
 
 void __47__WFGetClassAction_runAsynchronouslyWithInput___block_invoke(uint64_t a1, void *a2, void *a3, void *a4)

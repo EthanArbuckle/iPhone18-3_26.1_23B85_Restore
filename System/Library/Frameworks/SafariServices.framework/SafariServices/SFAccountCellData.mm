@@ -1,66 +1,66 @@
 @interface SFAccountCellData
-+ (id)accountCellDataWithSavedAccount:(id)a3 warning:(id)a4 searchPattern:(id)a5 savedAccountIsOnlySavedAccountForHighLevelDomain:(BOOL)a6;
-+ (id)accountCellDataWithSavedAccount:(id)a3 warning:(id)a4 searchPattern:(id)a5 savedAccountIsOnlySavedAccountForHighLevelDomain:(BOOL)a6 shouldShowReusedPasswordWarning:(BOOL)a7;
-- (BOOL)isEqual:(id)a3;
-- (SFAccountCellData)initWithSavedAccount:(id)a3 warning:(id)a4 searchPattern:(id)a5 savedAccountIsOnlySavedAccountForHighLevelDomain:(BOOL)a6 shouldShowReusedPasswordWarning:(BOOL)a7;
++ (id)accountCellDataWithSavedAccount:(id)account warning:(id)warning searchPattern:(id)pattern savedAccountIsOnlySavedAccountForHighLevelDomain:(BOOL)domain;
++ (id)accountCellDataWithSavedAccount:(id)account warning:(id)warning searchPattern:(id)pattern savedAccountIsOnlySavedAccountForHighLevelDomain:(BOOL)domain shouldShowReusedPasswordWarning:(BOOL)passwordWarning;
+- (BOOL)isEqual:(id)equal;
+- (SFAccountCellData)initWithSavedAccount:(id)account warning:(id)warning searchPattern:(id)pattern savedAccountIsOnlySavedAccountForHighLevelDomain:(BOOL)domain shouldShowReusedPasswordWarning:(BOOL)passwordWarning;
 @end
 
 @implementation SFAccountCellData
 
-+ (id)accountCellDataWithSavedAccount:(id)a3 warning:(id)a4 searchPattern:(id)a5 savedAccountIsOnlySavedAccountForHighLevelDomain:(BOOL)a6 shouldShowReusedPasswordWarning:(BOOL)a7
++ (id)accountCellDataWithSavedAccount:(id)account warning:(id)warning searchPattern:(id)pattern savedAccountIsOnlySavedAccountForHighLevelDomain:(BOOL)domain shouldShowReusedPasswordWarning:(BOOL)passwordWarning
 {
-  v7 = a7;
-  v8 = a6;
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
-  v15 = [[a1 alloc] initWithSavedAccount:v14 warning:v13 searchPattern:v12 savedAccountIsOnlySavedAccountForHighLevelDomain:v8 shouldShowReusedPasswordWarning:v7];
+  passwordWarningCopy = passwordWarning;
+  domainCopy = domain;
+  patternCopy = pattern;
+  warningCopy = warning;
+  accountCopy = account;
+  v15 = [[self alloc] initWithSavedAccount:accountCopy warning:warningCopy searchPattern:patternCopy savedAccountIsOnlySavedAccountForHighLevelDomain:domainCopy shouldShowReusedPasswordWarning:passwordWarningCopy];
 
   return v15;
 }
 
-+ (id)accountCellDataWithSavedAccount:(id)a3 warning:(id)a4 searchPattern:(id)a5 savedAccountIsOnlySavedAccountForHighLevelDomain:(BOOL)a6
++ (id)accountCellDataWithSavedAccount:(id)account warning:(id)warning searchPattern:(id)pattern savedAccountIsOnlySavedAccountForHighLevelDomain:(BOOL)domain
 {
-  v6 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [[a1 alloc] initWithSavedAccount:v12 warning:v11 searchPattern:v10 savedAccountIsOnlySavedAccountForHighLevelDomain:v6 shouldShowReusedPasswordWarning:0];
+  domainCopy = domain;
+  patternCopy = pattern;
+  warningCopy = warning;
+  accountCopy = account;
+  v13 = [[self alloc] initWithSavedAccount:accountCopy warning:warningCopy searchPattern:patternCopy savedAccountIsOnlySavedAccountForHighLevelDomain:domainCopy shouldShowReusedPasswordWarning:0];
 
   return v13;
 }
 
-- (SFAccountCellData)initWithSavedAccount:(id)a3 warning:(id)a4 searchPattern:(id)a5 savedAccountIsOnlySavedAccountForHighLevelDomain:(BOOL)a6 shouldShowReusedPasswordWarning:(BOOL)a7
+- (SFAccountCellData)initWithSavedAccount:(id)account warning:(id)warning searchPattern:(id)pattern savedAccountIsOnlySavedAccountForHighLevelDomain:(BOOL)domain shouldShowReusedPasswordWarning:(BOOL)passwordWarning
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
+  accountCopy = account;
+  warningCopy = warning;
+  patternCopy = pattern;
   v22.receiver = self;
   v22.super_class = SFAccountCellData;
   v16 = [(SFAccountCellData *)&v22 init];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_savedAccount, a3);
-    objc_storeStrong(&v17->_warning, a4);
-    v18 = [v15 copy];
+    objc_storeStrong(&v16->_savedAccount, account);
+    objc_storeStrong(&v17->_warning, warning);
+    v18 = [patternCopy copy];
     searchPattern = v17->_searchPattern;
     v17->_searchPattern = v18;
 
-    v17->_savedAccountIsOnlySavedAccountForHighLevelDomain = a6;
-    v17->_savedAccountHash = [v13 hash];
-    v17->_warningHash = [v14 hash];
-    v17->_shouldShowReusedPasswordWarning = a7;
+    v17->_savedAccountIsOnlySavedAccountForHighLevelDomain = domain;
+    v17->_savedAccountHash = [accountCopy hash];
+    v17->_warningHash = [warningCopy hash];
+    v17->_shouldShowReusedPasswordWarning = passwordWarning;
     v20 = v17;
   }
 
   return v17;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -70,7 +70,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v6 = v5;
       if (self->_savedAccountHash == v5->_savedAccountHash && self->_shouldShowReusedPasswordWarning == v5->_shouldShowReusedPasswordWarning && self->_warningHash == v5->_warningHash && WBSIsEqual() && WBSIsEqual())
       {

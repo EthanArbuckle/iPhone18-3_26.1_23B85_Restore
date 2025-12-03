@@ -1,28 +1,28 @@
 @interface ICExportArchiveActivity
-- (ICExportArchiveActivity)initWithObjects:(id)a3 presentingViewController:(id)a4 presentingBarButtonItem:(id)a5 presentingSourceView:(id)a6;
+- (ICExportArchiveActivity)initWithObjects:(id)objects presentingViewController:(id)controller presentingBarButtonItem:(id)item presentingSourceView:(id)view;
 - (UIViewController)presentingViewController;
 - (id)activityTitle;
-- (void)performActivityWithCompletion:(id)a3;
+- (void)performActivityWithCompletion:(id)completion;
 @end
 
 @implementation ICExportArchiveActivity
 
-- (ICExportArchiveActivity)initWithObjects:(id)a3 presentingViewController:(id)a4 presentingBarButtonItem:(id)a5 presentingSourceView:(id)a6
+- (ICExportArchiveActivity)initWithObjects:(id)objects presentingViewController:(id)controller presentingBarButtonItem:(id)item presentingSourceView:(id)view
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  objectsCopy = objects;
+  controllerCopy = controller;
+  itemCopy = item;
+  viewCopy = view;
   v18.receiver = self;
   v18.super_class = ICExportArchiveActivity;
   v15 = [(ICExportArchiveActivity *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_objects, a3);
-    objc_storeWeak(&v16->_presentingViewController, v12);
-    objc_storeStrong(&v16->_presentingBarButtonItem, a5);
-    objc_storeStrong(&v16->_presentingSourceView, a6);
+    objc_storeStrong(&v15->_objects, objects);
+    objc_storeWeak(&v16->_presentingViewController, controllerCopy);
+    objc_storeStrong(&v16->_presentingBarButtonItem, item);
+    objc_storeStrong(&v16->_presentingSourceView, view);
   }
 
   return v16;
@@ -36,55 +36,55 @@
   return v3;
 }
 
-- (void)performActivityWithCompletion:(id)a3
+- (void)performActivityWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(ICExportArchiveActivity *)self presentingViewController];
+  completionCopy = completion;
+  presentingViewController = [(ICExportArchiveActivity *)self presentingViewController];
 
-  if (v5)
+  if (presentingViewController)
   {
     v6 = [ICExportArchiveController alloc];
-    v7 = [(ICExportArchiveActivity *)self presentingViewController];
-    v8 = [(ICExportArchiveController *)v6 initForPresentingInViewController:v7 markdown:[(ICExportArchiveActivity *)self markdown]];
+    presentingViewController2 = [(ICExportArchiveActivity *)self presentingViewController];
+    v8 = [(ICExportArchiveController *)v6 initForPresentingInViewController:presentingViewController2 markdown:[(ICExportArchiveActivity *)self markdown]];
 
-    v9 = [(ICExportArchiveActivity *)self presentingBarButtonItem];
-    if (v9)
+    presentingBarButtonItem = [(ICExportArchiveActivity *)self presentingBarButtonItem];
+    if (presentingBarButtonItem)
     {
-      [v8 setBarButtonItem:v9];
+      [v8 setBarButtonItem:presentingBarButtonItem];
     }
 
     else
     {
       objc_opt_class();
-      v11 = [(ICExportArchiveActivity *)self presentationSourceItem];
+      presentationSourceItem = [(ICExportArchiveActivity *)self presentationSourceItem];
       v12 = ICDynamicCast();
       [v8 setBarButtonItem:v12];
     }
 
-    v13 = [(ICExportArchiveActivity *)self presentingSourceView];
-    [v8 setSourceView:v13];
+    presentingSourceView = [(ICExportArchiveActivity *)self presentingSourceView];
+    [v8 setSourceView:presentingSourceView];
 
-    v14 = [(ICExportArchiveActivity *)self presentingSourceView];
-    [v14 bounds];
+    presentingSourceView2 = [(ICExportArchiveActivity *)self presentingSourceView];
+    [presentingSourceView2 bounds];
     [v8 setSourceRect:?];
 
-    v15 = [(ICExportArchiveActivity *)self objects];
+    objects = [(ICExportArchiveActivity *)self objects];
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
     v16[2] = sub_1000BF320;
     v16[3] = &unk_100648610;
     v16[4] = self;
-    v17 = v4;
-    [v8 exportObjects:v15 completion:v16];
+    v17 = completionCopy;
+    [v8 exportObjects:objects completion:v16];
   }
 
   else
   {
     [(ICExportArchiveActivity *)self activityDidFinish:0];
-    if (v4)
+    if (completionCopy)
     {
-      v10 = [(ICExportArchiveActivity *)self activityType];
-      (*(v4 + 2))(v4, 0, v10);
+      activityType = [(ICExportArchiveActivity *)self activityType];
+      (*(completionCopy + 2))(completionCopy, 0, activityType);
     }
   }
 }

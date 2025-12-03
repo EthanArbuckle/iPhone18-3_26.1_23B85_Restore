@@ -9,16 +9,16 @@
 
 - (void)pairingGroupInfoForPairingGroupID:()APPairingClientCoreUtils
 {
-  v5 = [MEMORY[0x277CBEB38] dictionary];
-  [v5 setObject:a3 forKeyedSubscript:@"groupID"];
-  v6 = [a1 peersMatchingPairingGroupID:a3];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  [dictionary setObject:a3 forKeyedSubscript:@"groupID"];
+  v6 = [self peersMatchingPairingGroupID:a3];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __80__CUPairingManager_APPairingClientCoreUtils__pairingGroupInfoForPairingGroupID___block_invoke;
   v8[3] = &unk_27849D208;
-  v8[4] = v5;
+  v8[4] = dictionary;
   [v6 enumerateObjectsUsingBlock:v8];
-  return v5;
+  return dictionary;
 }
 
 - (id)peersMatchingPairingGroupID:()APPairingClientCoreUtils
@@ -53,7 +53,7 @@
   v10[5] = v5;
   v10[6] = &v11;
   v10[4] = a3;
-  [a1 getPairedPeersWithGroupID:a3 options:4 completion:{v10, v9}];
+  [self getPairedPeersWithGroupID:a3 options:4 completion:{v10, v9}];
   dispatch_semaphore_wait(v5, 0xFFFFFFFFFFFFFFFFLL);
   if (v5)
   {
@@ -95,7 +95,7 @@
   v12[5] = v7;
   v12[6] = &v13;
   v12[4] = a4;
-  [a1 updatePairedPeersWithGroupID:a4 groupInfo:a3 options:4 completion:{v12, v11}];
+  [self updatePairedPeersWithGroupID:a4 groupInfo:a3 options:4 completion:{v12, v11}];
   dispatch_semaphore_wait(v7, 0xFFFFFFFFFFFFFFFFLL);
   if (v7)
   {
@@ -138,7 +138,7 @@
   v11[5] = v5;
   v11[6] = &v12;
   v11[4] = a3;
-  [a1 savePairedPeer:a3 options:4 completion:{v11, v9, v10}];
+  [self savePairedPeer:a3 options:4 completion:{v11, v9, v10}];
   dispatch_semaphore_wait(v5, 0xFFFFFFFFFFFFFFFFLL);
   if (v5)
   {

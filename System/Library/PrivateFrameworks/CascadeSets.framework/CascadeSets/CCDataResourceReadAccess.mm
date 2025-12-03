@@ -1,37 +1,37 @@
 @interface CCDataResourceReadAccess
-+ (id)defaultInstanceWithUseCase:(id)a3;
-- (BOOL)_isDefaultPersonaRequestingUserResource:(id)a3;
-- (BOOL)_shouldEnumerateContainer:(id)a3;
-- (BOOL)enumerateReadableSets:(id *)a3 resourceOptions:(unsigned __int8)a4 setIdentifiers:(id)a5 descriptors:(id)a6 startAfterSet:(id)a7 sorted:(BOOL)a8 usingBlock:(id)a9;
-- (CCDataResourceReadAccess)initWithAssertionOverride:(id)a3 useCase:(id)a4;
-- (id)_requestAccessToResource:(id)a3 error:(id *)a4;
-- (id)_sortedSetsFromProcessEntitlements:(id)a3 filteredBySortedIdentifiers:(id)a4;
-- (id)databaseReadAccessForSet:(id)a3 error:(id *)a4;
++ (id)defaultInstanceWithUseCase:(id)case;
+- (BOOL)_isDefaultPersonaRequestingUserResource:(id)resource;
+- (BOOL)_shouldEnumerateContainer:(id)container;
+- (BOOL)enumerateReadableSets:(id *)sets resourceOptions:(unsigned __int8)options setIdentifiers:(id)identifiers descriptors:(id)descriptors startAfterSet:(id)set sorted:(BOOL)sorted usingBlock:(id)block;
+- (CCDataResourceReadAccess)initWithAssertionOverride:(id)override useCase:(id)case;
+- (id)_requestAccessToResource:(id)resource error:(id *)error;
+- (id)_sortedSetsFromProcessEntitlements:(id)entitlements filteredBySortedIdentifiers:(id)identifiers;
+- (id)databaseReadAccessForSet:(id)set error:(id *)error;
 @end
 
 @implementation CCDataResourceReadAccess
 
-+ (id)defaultInstanceWithUseCase:(id)a3
++ (id)defaultInstanceWithUseCase:(id)case
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithAssertionOverride:0 useCase:v3];
+  caseCopy = case;
+  v4 = [objc_alloc(objc_opt_class()) initWithAssertionOverride:0 useCase:caseCopy];
 
   return v4;
 }
 
-- (CCDataResourceReadAccess)initWithAssertionOverride:(id)a3 useCase:(id)a4
+- (CCDataResourceReadAccess)initWithAssertionOverride:(id)override useCase:(id)case
 {
-  v7 = a3;
-  v8 = a4;
+  overrideCopy = override;
+  caseCopy = case;
   v14.receiver = self;
   v14.super_class = CCDataResourceReadAccess;
   v9 = [(CCDataResourceReadAccess *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_assertionOverride, a3);
-    objc_storeStrong(&v10->_useCase, a4);
-    v11 = [objc_alloc(MEMORY[0x1E698E968]) initWithUseCase:v8];
+    objc_storeStrong(&v9->_assertionOverride, override);
+    objc_storeStrong(&v10->_useCase, case);
+    v11 = [objc_alloc(MEMORY[0x1E698E968]) initWithUseCase:caseCopy];
     accessClient = v10->_accessClient;
     v10->_accessClient = v11;
   }
@@ -39,12 +39,12 @@
   return v10;
 }
 
-- (id)databaseReadAccessForSet:(id)a3 error:(id *)a4
+- (id)databaseReadAccessForSet:(id)set error:(id *)error
 {
   v35 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 toResourceSpecifier];
-  v8 = [(CCDataResourceReadAccess *)self _requestAccessToResource:v7 error:a4];
+  setCopy = set;
+  toResourceSpecifier = [setCopy toResourceSpecifier];
+  v8 = [(CCDataResourceReadAccess *)self _requestAccessToResource:toResourceSpecifier error:error];
   v9 = v8;
   if (!v8)
   {
@@ -52,19 +52,19 @@
     goto LABEL_14;
   }
 
-  v10 = [v8 container];
-  v11 = [CCDataResource dataResourceForSet:v6 inContainer:v10];
+  container = [v8 container];
+  v11 = [CCDataResource dataResourceForSet:setCopy inContainer:container];
 
   v28 = 0;
   v12 = [v11 databaseFileExists:&v28];
   v13 = v28;
   if (v12)
   {
-    v14 = [v11 resourceStatus];
-    if (!CCDataResourceStatusIsNotDiscoverable(v14))
+    resourceStatus = [v11 resourceStatus];
+    if (!CCDataResourceStatusIsNotDiscoverable(resourceStatus))
     {
-      v24 = [v11 databaseURL];
-      v21 = [CCDatabaseReader readerForDatabaseAtURL:v24 accessAssertion:v9];
+      databaseURL = [v11 databaseURL];
+      v21 = [CCDatabaseReader readerForDatabaseAtURL:databaseURL accessAssertion:v9];
 
       goto LABEL_13;
     }
@@ -72,8 +72,8 @@
     v27 = MEMORY[0x1E696ABC0];
     v29 = *MEMORY[0x1E696A278];
     v15 = MEMORY[0x1E696AEC0];
-    v16 = CCDataResourceStatusToString(v14);
-    v17 = [v15 stringWithFormat:@"Set not discoverable: %@ - %@", v6, v16];
+    v16 = CCDataResourceStatusToString(resourceStatus);
+    v17 = [v15 stringWithFormat:@"Set not discoverable: %@ - %@", setCopy, v16];
     v30 = v17;
     v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v30 forKeys:&v29 count:1];
     v19 = [v27 errorWithDomain:@"com.apple.CascadeSets.Set" code:4 userInfo:v18];
@@ -86,7 +86,7 @@
       _os_log_impl(&dword_1B6DB2000, v20, OS_LOG_TYPE_DEFAULT, "%@", buf, 0xCu);
     }
 
-    CCSetError(a4, v19);
+    CCSetError(error, v19);
   }
 
   else
@@ -94,15 +94,15 @@
     v22 = __biome_log_for_category();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
-      v23 = [v13 localizedFailureReason];
+      localizedFailureReason = [v13 localizedFailureReason];
       *buf = 138412546;
-      v32 = v6;
+      v32 = setCopy;
       v33 = 2112;
-      v34 = v23;
+      v34 = localizedFailureReason;
       _os_log_impl(&dword_1B6DB2000, v22, OS_LOG_TYPE_DEFAULT, "No such set: %@ - %@", buf, 0x16u);
     }
 
-    CCSetError(a4, v13);
+    CCSetError(error, v13);
   }
 
   v21 = 0;
@@ -114,17 +114,17 @@ LABEL_14:
   return v21;
 }
 
-- (BOOL)enumerateReadableSets:(id *)a3 resourceOptions:(unsigned __int8)a4 setIdentifiers:(id)a5 descriptors:(id)a6 startAfterSet:(id)a7 sorted:(BOOL)a8 usingBlock:(id)a9
+- (BOOL)enumerateReadableSets:(id *)sets resourceOptions:(unsigned __int8)options setIdentifiers:(id)identifiers descriptors:(id)descriptors startAfterSet:(id)set sorted:(BOOL)sorted usingBlock:(id)block
 {
-  v52 = a4;
+  optionsCopy = options;
   v82 = *MEMORY[0x1E69E9840];
-  v50 = a6;
-  v49 = a7;
-  v48 = a9;
+  descriptorsCopy = descriptors;
+  setCopy = set;
+  blockCopy = block;
   v12 = MEMORY[0x1E698E9D8];
-  v13 = a5;
-  v45 = [v12 current];
-  v46 = [v13 sortedArrayUsingDescriptors:MEMORY[0x1E695E0F0]];
+  identifiersCopy = identifiers;
+  current = [v12 current];
+  v46 = [identifiersCopy sortedArrayUsingDescriptors:MEMORY[0x1E695E0F0]];
 
   v73 = 0;
   v74 = &v73;
@@ -134,12 +134,12 @@ LABEL_14:
   v70 = &v69;
   v71 = 0x2020000000;
   v72 = 0;
-  if (([v45 hasDatavaultEntitlement] & 1) != 0 || objc_msgSend(v45, "processType") == 8)
+  if (([current hasDatavaultEntitlement] & 1) != 0 || objc_msgSend(current, "processType") == 8)
   {
-    v14 = [(CCDataResourceReadAccess *)self _requestAccessToSetsDirectoryWithOptions:v52 error:a3];
-    v15 = [v14 container];
+    v14 = [(CCDataResourceReadAccess *)self _requestAccessToSetsDirectoryWithOptions:optionsCopy error:sets];
+    container = [v14 container];
     obj = v14;
-    LOBYTE(v14) = v15 == 0;
+    LOBYTE(v14) = container == 0;
 
     if (v14)
     {
@@ -165,16 +165,16 @@ LABEL_14:
         }
 
         v68 = v16;
-        v19 = [obj container];
+        container2 = [obj container];
         v64[0] = MEMORY[0x1E69E9820];
         v64[1] = 3221225472;
         v64[2] = __125__CCDataResourceReadAccess_enumerateReadableSets_resourceOptions_setIdentifiers_descriptors_startAfterSet_sorted_usingBlock___block_invoke;
         v64[3] = &unk_1E7C8B9A8;
-        v65 = v48;
+        v65 = blockCopy;
         v66 = &v73;
         v67 = &v69;
-        LOBYTE(v44) = a8;
-        v20 = [CCDataResource enumerateDataResources:&v68 setIdentifier:v18 descriptors:v50 container:v19 includingTombstoned:0 startAfterSet:v49 sorted:v44 usingBlock:v64];
+        LOBYTE(v44) = sorted;
+        v20 = [CCDataResource enumerateDataResources:&v68 setIdentifier:v18 descriptors:descriptorsCopy container:container2 includingTombstoned:0 startAfterSet:setCopy sorted:v44 usingBlock:v64];
         v21 = v68;
 
         v54 &= v20;
@@ -214,14 +214,14 @@ LABEL_14:
 
       if (v21)
       {
-        CCSetError(a3, v21);
+        CCSetError(sets, v21);
       }
     }
   }
 
   else
   {
-    v25 = [(CCDataResourceReadAccess *)self _sortedSetsFromProcessEntitlements:v45 filteredBySortedIdentifiers:v46];
+    v25 = [(CCDataResourceReadAccess *)self _sortedSetsFromProcessEntitlements:current filteredBySortedIdentifiers:v46];
     v26 = __biome_log_for_category();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
     {
@@ -250,24 +250,24 @@ LABEL_14:
 
           v30 = *(*(&v60 + 1) + 8 * i);
           v31 = objc_alloc(MEMORY[0x1E698E9F8]);
-          v32 = [v31 initWithType:4 name:v30 descriptors:MEMORY[0x1E695E0F0] options:v52];
-          v33 = [(CCDataResourceReadAccess *)self _requestAccessToResource:v32 error:a3];
-          v34 = [v33 container];
-          v35 = [(CCDataResourceReadAccess *)self _shouldEnumerateContainer:v34];
+          v32 = [v31 initWithType:4 name:v30 descriptors:MEMORY[0x1E695E0F0] options:optionsCopy];
+          v33 = [(CCDataResourceReadAccess *)self _requestAccessToResource:v32 error:sets];
+          container3 = [v33 container];
+          v35 = [(CCDataResourceReadAccess *)self _shouldEnumerateContainer:container3];
 
           if (v35)
           {
             v59 = v21;
-            v36 = [v33 container];
+            container4 = [v33 container];
             v55[0] = MEMORY[0x1E69E9820];
             v55[1] = 3221225472;
             v55[2] = __125__CCDataResourceReadAccess_enumerateReadableSets_resourceOptions_setIdentifiers_descriptors_startAfterSet_sorted_usingBlock___block_invoke_21;
             v55[3] = &unk_1E7C8B9A8;
-            v56 = v48;
+            v56 = blockCopy;
             v57 = &v73;
             v58 = &v69;
-            LOBYTE(v44) = a8;
-            v37 = [CCDataResource enumerateDataResources:&v59 setIdentifier:v30 descriptors:v50 container:v36 includingTombstoned:0 startAfterSet:v49 sorted:v44 usingBlock:v55];
+            LOBYTE(v44) = sorted;
+            v37 = [CCDataResource enumerateDataResources:&v59 setIdentifier:v30 descriptors:descriptorsCopy container:container4 includingTombstoned:0 startAfterSet:setCopy sorted:v44 usingBlock:v55];
             v38 = v59;
 
             v54 &= v37;
@@ -312,7 +312,7 @@ LABEL_14:
 
     if (v21)
     {
-      CCSetError(a3, v21);
+      CCSetError(sets, v21);
     }
   }
 
@@ -365,21 +365,21 @@ void __125__CCDataResourceReadAccess_enumerateReadableSets_resourceOptions_setId
   }
 }
 
-- (id)_sortedSetsFromProcessEntitlements:(id)a3 filteredBySortedIdentifiers:(id)a4
+- (id)_sortedSetsFromProcessEntitlements:(id)entitlements filteredBySortedIdentifiers:(id)identifiers
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [MEMORY[0x1E698E970] policyForProcess:a3 connectionFlags:0 useCase:self->_useCase];
+  identifiersCopy = identifiers;
+  v7 = [MEMORY[0x1E698E970] policyForProcess:entitlements connectionFlags:0 useCase:self->_useCase];
   v8 = [v7 explicitlyAuthorizedResourcesOfType:4 withAccessMode:1];
   v9 = v8;
-  if (v6)
+  if (identifiersCopy)
   {
     v10 = objc_opt_new();
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v11 = v6;
+    v11 = identifiersCopy;
     v12 = [v11 countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v12)
     {
@@ -418,10 +418,10 @@ void __125__CCDataResourceReadAccess_enumerateReadableSets_resourceOptions_setId
   return v10;
 }
 
-- (id)_requestAccessToResource:(id)a3 error:(id *)a4
+- (id)_requestAccessToResource:(id)resource error:(id *)error
 {
   v39[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  resourceCopy = resource;
   if (self->_assertionOverride)
   {
     v7 = __biome_log_for_category();
@@ -436,13 +436,13 @@ void __125__CCDataResourceReadAccess_enumerateReadableSets_resourceOptions_setId
     v9 = self->_assertionOverride;
   }
 
-  else if ([(CCDataResourceReadAccess *)self _isDefaultPersonaRequestingUserResource:v6])
+  else if ([(CCDataResourceReadAccess *)self _isDefaultPersonaRequestingUserResource:resourceCopy])
   {
     v10 = MEMORY[0x1E696ABC0];
     v38 = *MEMORY[0x1E696A578];
     v11 = MEMORY[0x1E696AEC0];
-    v12 = [MEMORY[0x1E698E9D0] currentPersonaIdentifierLoggingDescription];
-    v13 = [v11 stringWithFormat:@"Cannot request access for user-domain resource: %@ as persona: %@", v6, v12];
+    currentPersonaIdentifierLoggingDescription = [MEMORY[0x1E698E9D0] currentPersonaIdentifierLoggingDescription];
+    v13 = [v11 stringWithFormat:@"Cannot request access for user-domain resource: %@ as persona: %@", resourceCopy, currentPersonaIdentifierLoggingDescription];
     v39[0] = v13;
     v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v39 forKeys:&v38 count:1];
     v15 = [v10 errorWithDomain:@"com.apple.CascadeSets.Set" code:3 userInfo:v14];
@@ -463,7 +463,7 @@ void __125__CCDataResourceReadAccess_enumerateReadableSets_resourceOptions_setId
   {
     accessClient = self->_accessClient;
     v29 = 0;
-    v9 = [(BMAccessClient *)accessClient requestAccessToResource:v6 mode:1 error:&v29];
+    v9 = [(BMAccessClient *)accessClient requestAccessToResource:resourceCopy mode:1 error:&v29];
     v19 = v29;
     v20 = __biome_log_for_category();
     v21 = v20;
@@ -473,7 +473,7 @@ void __125__CCDataResourceReadAccess_enumerateReadableSets_resourceOptions_setId
       {
         useCase = self->_useCase;
         *buf = 138412546;
-        v33 = v6;
+        v33 = resourceCopy;
         v34 = 2112;
         v35 = useCase;
         _os_log_impl(&dword_1B6DB2000, v21, OS_LOG_TYPE_DEFAULT, "[BiomeAccess] CCDataResourceReadAccess obtained access assertion for %@ using useCase: %@", buf, 0x16u);
@@ -488,7 +488,7 @@ void __125__CCDataResourceReadAccess_enumerateReadableSets_resourceOptions_setId
       {
         v28 = self->_useCase;
         *buf = 138412802;
-        v33 = v6;
+        v33 = resourceCopy;
         v34 = 2112;
         v35 = v28;
         v36 = 2112;
@@ -510,7 +510,7 @@ void __125__CCDataResourceReadAccess_enumerateReadableSets_resourceOptions_setId
 
       v25 = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.CascadeSets.Set" code:3 userInfo:v24];
 
-      CCSetError(a4, v25);
+      CCSetError(error, v25);
       v19 = v25;
     }
   }
@@ -520,12 +520,12 @@ void __125__CCDataResourceReadAccess_enumerateReadableSets_resourceOptions_setId
   return v9;
 }
 
-- (BOOL)_isDefaultPersonaRequestingUserResource:(id)a3
+- (BOOL)_isDefaultPersonaRequestingUserResource:(id)resource
 {
-  v3 = a3;
+  resourceCopy = resource;
   if ([MEMORY[0x1E698E9D0] currentPersonaIsDefault])
   {
-    v4 = [v3 name];
+    name = [resourceCopy name];
     v5 = BMServiceDomainOverrideLookupFromConfigurationForSet();
 
     v6 = v5 == 0;
@@ -539,13 +539,13 @@ void __125__CCDataResourceReadAccess_enumerateReadableSets_resourceOptions_setId
   return v6;
 }
 
-- (BOOL)_shouldEnumerateContainer:(id)a3
+- (BOOL)_shouldEnumerateContainer:(id)container
 {
-  v3 = a3;
-  if (v3)
+  containerCopy = container;
+  if (containerCopy)
   {
-    v4 = [MEMORY[0x1E698E9D0] currentPersonaIdentifier];
-    if (!v4 || (v5 = v4, v6 = [MEMORY[0x1E698E9D0] currentPersonaIsDefault], objc_msgSend(v3, "personaIdentifier"), v7 = objc_claimAutoreleasedReturnValue(), v8 = v7 == 0, v7, v5, v6 == v8))
+    currentPersonaIdentifier = [MEMORY[0x1E698E9D0] currentPersonaIdentifier];
+    if (!currentPersonaIdentifier || (v5 = currentPersonaIdentifier, v6 = [MEMORY[0x1E698E9D0] currentPersonaIsDefault], objc_msgSend(containerCopy, "personaIdentifier"), v7 = objc_claimAutoreleasedReturnValue(), v8 = v7 == 0, v7, v5, v6 == v8))
     {
       v10 = 1;
       goto LABEL_9;
@@ -554,7 +554,7 @@ void __125__CCDataResourceReadAccess_enumerateReadableSets_resourceOptions_setId
     v9 = __biome_log_for_category();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
-      [(CCDataResourceReadAccess *)v3 _shouldEnumerateContainer:v9];
+      [(CCDataResourceReadAccess *)containerCopy _shouldEnumerateContainer:v9];
     }
   }
 

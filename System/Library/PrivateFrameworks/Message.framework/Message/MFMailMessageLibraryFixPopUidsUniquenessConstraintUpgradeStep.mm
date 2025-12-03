@@ -1,6 +1,6 @@
 @interface MFMailMessageLibraryFixPopUidsUniquenessConstraintUpgradeStep
 + (id)_popUIDsTableSchema;
-+ (int)runWithConnection:(id)a3;
++ (int)runWithConnection:(id)connection;
 @end
 
 @implementation MFMailMessageLibraryFixPopUidsUniquenessConstraintUpgradeStep
@@ -28,14 +28,14 @@
   return v9;
 }
 
-+ (int)runWithConnection:(id)a3
++ (int)runWithConnection:(id)connection
 {
-  v4 = a3;
-  if ([v4 executeStatementString:@"ALTER TABLE pop_uids RENAME TO pop_uids_old" errorMessage:@"Moving pop_uids table aside"] & 1) != 0 && (objc_msgSend(a1, "_popUIDsTableSchema"), v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "definitionWithDatabaseName:includeIndexes:", 0, 0), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v4, "executeStatementString:errorMessage:", v6, @"Creating new pop_uids table"), v6, v5, (v7) && (objc_msgSend(v4, "executeStatementString:errorMessage:", @"INSERT OR REPLACE INTO pop_uids (mailbox, uid, date_added, flags, del) SELECT mailbox, uid, date_added, flags, del FROM pop_uids_old ORDER BY ROWID ASC ", @"Populating pop_uids") & 1) != 0 && objc_msgSend(v4, "executeStatementString:errorMessage:", @"DROP TABLE pop_uids_old", @"Dropping pop_uids_old"))
+  connectionCopy = connection;
+  if ([connectionCopy executeStatementString:@"ALTER TABLE pop_uids RENAME TO pop_uids_old" errorMessage:@"Moving pop_uids table aside"] & 1) != 0 && (objc_msgSend(self, "_popUIDsTableSchema"), v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "definitionWithDatabaseName:includeIndexes:", 0, 0), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(connectionCopy, "executeStatementString:errorMessage:", v6, @"Creating new pop_uids table"), v6, v5, (v7) && (objc_msgSend(connectionCopy, "executeStatementString:errorMessage:", @"INSERT OR REPLACE INTO pop_uids (mailbox, uid, date_added, flags, del) SELECT mailbox, uid, date_added, flags, del FROM pop_uids_old ORDER BY ROWID ASC ", @"Populating pop_uids") & 1) != 0 && objc_msgSend(connectionCopy, "executeStatementString:errorMessage:", @"DROP TABLE pop_uids_old", @"Dropping pop_uids_old"))
   {
-    v8 = [a1 _popUIDsTableSchema];
-    v9 = [v8 indexDefinitionsWithDatabaseName:0];
-    v10 = [v4 executeStatementString:v9 errorMessage:@"Creating pop_uids indexes"];
+    _popUIDsTableSchema = [self _popUIDsTableSchema];
+    v9 = [_popUIDsTableSchema indexDefinitionsWithDatabaseName:0];
+    v10 = [connectionCopy executeStatementString:v9 errorMessage:@"Creating pop_uids indexes"];
 
     v11 = v10 ^ 1;
   }

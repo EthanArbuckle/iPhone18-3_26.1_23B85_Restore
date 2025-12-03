@@ -1,21 +1,21 @@
 @interface HMAction
 + (HMAction)new;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isValidWithError:(id *)a3;
-- (HMAction)initWithCoder:(id)a3;
-- (HMAction)initWithDictionary:(id)a3 home:(id)a4;
-- (HMAction)initWithUUID:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isValidWithError:(id *)error;
+- (HMAction)initWithCoder:(id)coder;
+- (HMAction)initWithDictionary:(id)dictionary home:(id)home;
+- (HMAction)initWithUUID:(id)d;
 - (HMActionSet)actionSet;
 - (NSUUID)uniqueIdentifier;
 - (NSUUID)uuid;
 - (id)_serializeForAdd;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 - (unint64_t)type;
-- (void)__configureWithContext:(id)a3 actionSet:(id)a4;
+- (void)__configureWithContext:(id)context actionSet:(id)set;
 - (void)_unconfigure;
-- (void)encodeWithCoder:(id)a3;
-- (void)setUuid:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setUuid:(id)uuid;
 @end
 
 @implementation HMAction
@@ -46,7 +46,7 @@
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
   if (v5 != objc_opt_class())
@@ -63,8 +63,8 @@
   }
 
   v6 = [HMAction alloc];
-  v7 = [(HMAction *)self uuid];
-  v8 = [(HMAction *)v6 initWithUUID:v7];
+  uuid = [(HMAction *)self uuid];
+  v8 = [(HMAction *)v6 initWithUUID:uuid];
 
   return v8;
 }
@@ -83,9 +83,9 @@
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
@@ -94,9 +94,9 @@
   return v3 == objc_opt_class();
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = MEMORY[0x1E695DF30];
   v6 = *MEMORY[0x1E695D930];
   v7 = MEMORY[0x1E696AEC0];
@@ -108,10 +108,10 @@
   objc_exception_throw(v10);
 }
 
-- (HMAction)initWithCoder:(id)a3
+- (HMAction)initWithCoder:(id)coder
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v26.receiver = self;
   v26.super_class = HMAction;
   v5 = [(HMAction *)&v26 init];
@@ -120,7 +120,7 @@
     goto LABEL_5;
   }
 
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"actionUUID"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"actionUUID"];
   v7 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:v6];
   if (!v7)
   {
@@ -143,7 +143,7 @@
   }
 
   v8 = v7;
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"actionActionSet"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"actionActionSet"];
   if (!v9)
   {
     v19 = objc_autoreleasePoolPush();
@@ -194,23 +194,23 @@ LABEL_13:
   return v3;
 }
 
-- (BOOL)isValidWithError:(id *)a3
+- (BOOL)isValidWithError:(id *)error
 {
   v4 = objc_opt_class();
   v5 = objc_opt_class();
   v6 = v5;
-  if (a3 && v4 == v5)
+  if (error && v4 == v5)
   {
-    *a3 = [MEMORY[0x1E696ABC0] hmErrorWithCode:22];
+    *error = [MEMORY[0x1E696ABC0] hmErrorWithCode:22];
   }
 
   return v4 != v6;
 }
 
-- (void)setUuid:(id)a3
+- (void)setUuid:(id)uuid
 {
-  v8 = a3;
-  if (!v8)
+  uuidCopy = uuid;
+  if (!uuidCopy)
   {
     v7 = _HMFPreconditionFailure();
     os_unfair_lock_unlock(&self->_lock);
@@ -218,7 +218,7 @@ LABEL_13:
   }
 
   os_unfair_lock_lock_with_options();
-  v4 = [MEMORY[0x1E69A2A28] hmf_cachedInstanceForNSUUID:v8];
+  v4 = [MEMORY[0x1E69A2A28] hmf_cachedInstanceForNSUUID:uuidCopy];
   uuid = self->_uuid;
   self->_uuid = v4;
 
@@ -250,15 +250,15 @@ LABEL_13:
   objc_exception_throw(v7);
 }
 
-- (void)__configureWithContext:(id)a3 actionSet:(id)a4
+- (void)__configureWithContext:(id)context actionSet:(id)set
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  setCopy = set;
   os_unfair_lock_lock_with_options();
   context = self->_context;
-  self->_context = v6;
+  self->_context = contextCopy;
 
-  objc_storeWeak(&self->_actionSet, v7);
+  objc_storeWeak(&self->_actionSet, setCopy);
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -274,17 +274,17 @@ LABEL_13:
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (HMAction)initWithDictionary:(id)a3 home:(id)a4
+- (HMAction)initWithDictionary:(id)dictionary home:(id)home
 {
   v36 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 hmf_numberForKey:@"kActionType"];
+  dictionaryCopy = dictionary;
+  homeCopy = home;
+  v8 = [dictionaryCopy hmf_numberForKey:@"kActionType"];
   v9 = v8;
   if (!v8)
   {
     v13 = objc_autoreleasePoolPush();
-    v14 = self;
+    selfCopy3 = self;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
@@ -309,7 +309,7 @@ LABEL_12:
   if (!v10)
   {
     v13 = objc_autoreleasePoolPush();
-    v14 = self;
+    selfCopy3 = self;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
@@ -327,7 +327,7 @@ LABEL_12:
 LABEL_13:
 
     objc_autoreleasePoolPop(v13);
-    v20 = 0;
+    selfCopy4 = 0;
     goto LABEL_14;
   }
 
@@ -335,14 +335,14 @@ LABEL_13:
   v12 = objc_opt_class();
   if (v12 == objc_opt_class())
   {
-    v20 = [[v11 alloc] initWithDictionary:v6 home:v7];
+    selfCopy4 = [[v11 alloc] initWithDictionary:dictionaryCopy home:homeCopy];
     goto LABEL_14;
   }
 
   if (v12 != v11)
   {
     v13 = objc_autoreleasePoolPush();
-    v14 = self;
+    selfCopy3 = self;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
@@ -363,20 +363,20 @@ LABEL_11:
     goto LABEL_13;
   }
 
-  v23 = [v6 hmf_UUIDForKey:@"kActionUUID"];
+  v23 = [dictionaryCopy hmf_UUIDForKey:@"kActionUUID"];
   if (v23)
   {
     v24 = [MEMORY[0x1E69A2A28] hmf_cachedInstanceForNSUUID:v23];
     uuid = self->_uuid;
     self->_uuid = v24;
 
-    v20 = self;
+    selfCopy4 = self;
   }
 
   else
   {
     v26 = objc_autoreleasePoolPush();
-    v27 = self;
+    selfCopy5 = self;
     v28 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
     {
@@ -389,25 +389,25 @@ LABEL_11:
     }
 
     objc_autoreleasePoolPop(v26);
-    v20 = 0;
+    selfCopy4 = 0;
   }
 
 LABEL_14:
   v21 = *MEMORY[0x1E69E9840];
-  return v20;
+  return selfCopy4;
 }
 
-- (HMAction)initWithUUID:(id)a3
+- (HMAction)initWithUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v10.receiver = self;
   v10.super_class = HMAction;
   v5 = [(HMAction *)&v10 init];
   if (v5)
   {
-    if (v4)
+    if (dCopy)
     {
-      v6 = [MEMORY[0x1E69A2A28] hmf_cachedInstanceForNSUUID:v4];
+      v6 = [MEMORY[0x1E69A2A28] hmf_cachedInstanceForNSUUID:dCopy];
       v7 = 24;
     }
 
@@ -426,7 +426,7 @@ LABEL_14:
 
 + (HMAction)new
 {
-  v3.receiver = a1;
+  v3.receiver = self;
   v3.super_class = &OBJC_METACLASS___HMAction;
   return objc_msgSendSuper2(&v3, "new");
 }

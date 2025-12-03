@@ -11,10 +11,10 @@
   [(UIVisualEffectViewInvertColorsAccessibility *)&v7 _ensureBackgroundHost];
   if ([(UIVisualEffectViewInvertColorsAccessibility *)self accessibilityVisualEffectHandleBackdrop])
   {
-    v3 = [(UIVisualEffectViewInvertColorsAccessibility *)self contentView];
+    contentView = [(UIVisualEffectViewInvertColorsAccessibility *)self contentView];
     v4 = +[UIColor blackColor];
     v5 = [v4 colorWithAlphaComponent:0.5];
-    v6 = [AXInvertColorsAppHelper insertBackgroundView:v3 color:v5];
+    v6 = [AXInvertColorsAppHelper insertBackgroundView:contentView color:v5];
   }
 }
 

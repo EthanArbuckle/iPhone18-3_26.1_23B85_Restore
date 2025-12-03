@@ -1,7 +1,7 @@
 @interface PGGraphMomentTranslator
-- (id)graphChangesForChangedPropertyNamesByLocalIdentifier:(id)a3 change:(id)a4 progressBlock:(id)a5;
-- (id)graphChangesForDeletedLocalIdentifiers:(id)a3 progressBlock:(id)a4;
-- (id)graphChangesForInsertedLocalIdentifiers:(id)a3 progressBlock:(id)a4;
+- (id)graphChangesForChangedPropertyNamesByLocalIdentifier:(id)identifier change:(id)change progressBlock:(id)block;
+- (id)graphChangesForDeletedLocalIdentifiers:(id)identifiers progressBlock:(id)block;
+- (id)graphChangesForInsertedLocalIdentifiers:(id)identifiers progressBlock:(id)block;
 - (id)highlightUpdateTypeByMomentProperty;
 - (id)momentUpdateTypeByMomentProperty;
 @end
@@ -42,13 +42,13 @@
   return v2;
 }
 
-- (id)graphChangesForChangedPropertyNamesByLocalIdentifier:(id)a3 change:(id)a4 progressBlock:(id)a5
+- (id)graphChangesForChangedPropertyNamesByLocalIdentifier:(id)identifier change:(id)change progressBlock:(id)block
 {
   v61 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v35 = a4;
-  v9 = a5;
-  v10 = _Block_copy(v9);
+  identifierCopy = identifier;
+  changeCopy = change;
+  blockCopy = block;
+  v10 = _Block_copy(blockCopy);
   v53 = 0;
   v54 = &v53;
   v55 = 0x2020000000;
@@ -59,29 +59,29 @@
   v52 = 0;
   if (!v10 || (v11 = CFAbsoluteTimeGetCurrent(), v11 - v50[3] < 0.01) || (v50[3] = v11, v48 = 0, (*(v10 + 2))(v10, &v48, 0.0), v12 = *(v54 + 24) | v48, *(v54 + 24) = v12, (v12 & 1) == 0))
   {
-    v14 = [(PGGraphMomentTranslator *)self momentUpdateTypeByMomentProperty];
-    v15 = [(PGGraphMomentTranslator *)self highlightUpdateTypeByMomentProperty];
-    v16 = [MEMORY[0x277CBEB38] dictionary];
-    v17 = [MEMORY[0x277CBEB18] array];
+    momentUpdateTypeByMomentProperty = [(PGGraphMomentTranslator *)self momentUpdateTypeByMomentProperty];
+    highlightUpdateTypeByMomentProperty = [(PGGraphMomentTranslator *)self highlightUpdateTypeByMomentProperty];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    array = [MEMORY[0x277CBEB18] array];
     v39[0] = MEMORY[0x277D85DD0];
     v39[1] = 3221225472;
     v39[2] = __101__PGGraphMomentTranslator_graphChangesForChangedPropertyNamesByLocalIdentifier_change_progressBlock___block_invoke;
     v39[3] = &unk_278887B50;
     v39[4] = self;
-    v18 = v14;
+    v18 = momentUpdateTypeByMomentProperty;
     v40 = v18;
-    v19 = v17;
+    v19 = array;
     v41 = v19;
-    v20 = v15;
+    v20 = highlightUpdateTypeByMomentProperty;
     v42 = v20;
-    v21 = v16;
+    v21 = dictionary;
     v43 = v21;
     v22 = v10;
     v44 = v22;
     v45 = &v49;
     v46 = &v53;
     v47 = 0x3F847AE147AE147BLL;
-    [v8 enumerateKeysAndObjectsUsingBlock:v39];
+    [identifierCopy enumerateKeysAndObjectsUsingBlock:v39];
     if (*(v54 + 24) == 1)
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -100,11 +100,11 @@ LABEL_10:
     {
       if ([v21 count])
       {
-        v24 = [(PGGraphEntityTranslator *)self photoLibrary];
-        v34 = [v24 librarySpecificFetchOptions];
+        photoLibrary = [(PGGraphEntityTranslator *)self photoLibrary];
+        librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
-        v25 = [v21 allKeys];
-        v26 = [MEMORY[0x277CD9958] fetchPhotosHighlightUUIDByMomentUUIDForMomentUUIDs:v25 options:v34];
+        allKeys = [v21 allKeys];
+        v26 = [MEMORY[0x277CD9958] fetchPhotosHighlightUUIDByMomentUUIDForMomentUUIDs:allKeys options:librarySpecificFetchOptions];
         if (v10)
         {
           Current = CFAbsoluteTimeGetCurrent();
@@ -335,18 +335,18 @@ void __101__PGGraphMomentTranslator_graphChangesForChangedPropertyNamesByLocalId
   [*(a1 + 40) addObject:v3];
 }
 
-- (id)graphChangesForDeletedLocalIdentifiers:(id)a3 progressBlock:(id)a4
+- (id)graphChangesForDeletedLocalIdentifiers:(id)identifiers progressBlock:(id)block
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifiersCopy = identifiers;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     *buf = 134217984;
-    v12 = [v4 count];
+    v12 = [identifiersCopy count];
     _os_log_impl(&dword_22F0FC000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "Batch Updates - Delete %ld moments", buf, 0xCu);
   }
 
-  v5 = [objc_opt_class() uuidsFromLocalIdentifiers:v4];
+  v5 = [objc_opt_class() uuidsFromLocalIdentifiers:identifiersCopy];
   v6 = [[PGGraphMomentsDeletion alloc] initWithMomentUUIDs:v5];
   v10 = v6;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:&v10 count:1];
@@ -356,18 +356,18 @@ void __101__PGGraphMomentTranslator_graphChangesForChangedPropertyNamesByLocalId
   return v7;
 }
 
-- (id)graphChangesForInsertedLocalIdentifiers:(id)a3 progressBlock:(id)a4
+- (id)graphChangesForInsertedLocalIdentifiers:(id)identifiers progressBlock:(id)block
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifiersCopy = identifiers;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     *buf = 134217984;
-    v12 = [v4 count];
+    v12 = [identifiersCopy count];
     _os_log_impl(&dword_22F0FC000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "Batch Updates - Insert %ld new moments", buf, 0xCu);
   }
 
-  v5 = [objc_opt_class() uuidsFromLocalIdentifiers:v4];
+  v5 = [objc_opt_class() uuidsFromLocalIdentifiers:identifiersCopy];
   v6 = [[PGGraphMomentsInsertion alloc] initWithMomentUUIDs:v5];
   v10 = v6;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:&v10 count:1];

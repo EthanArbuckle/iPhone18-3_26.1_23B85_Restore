@@ -1,51 +1,51 @@
 @interface LPHTMLComponent
-- (LPHTMLComponent)initWithTagName:(id)a3 themePath:(id)a4 generator:(id)a5;
+- (LPHTMLComponent)initWithTagName:(id)name themePath:(id)path generator:(id)generator;
 - (LPLinkHTMLGenerator)generator;
-- (id)childThemePathWithName:(id)a3;
-- (void)addChild:(id)a3;
+- (id)childThemePathWithName:(id)name;
+- (void)addChild:(id)child;
 @end
 
 @implementation LPHTMLComponent
 
-- (LPHTMLComponent)initWithTagName:(id)a3 themePath:(id)a4 generator:(id)a5
+- (LPHTMLComponent)initWithTagName:(id)name themePath:(id)path generator:(id)generator
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  nameCopy = name;
+  pathCopy = path;
+  generatorCopy = generator;
   v17.receiver = self;
   v17.super_class = LPHTMLComponent;
   v11 = [(LPHTMLComponent *)&v17 init];
   if (v11)
   {
     WebThreadLock();
-    v12 = [v10 parentDocument];
-    v13 = [v12 createElement:v8];
+    parentDocument = [generatorCopy parentDocument];
+    v13 = [parentDocument createElement:nameCopy];
     element = v11->_element;
     v11->_element = v13;
 
-    objc_storeStrong(&v11->_themePath, a4);
-    objc_storeWeak(&v11->_generator, v10);
+    objc_storeStrong(&v11->_themePath, path);
+    objc_storeWeak(&v11->_generator, generatorCopy);
     v15 = v11;
   }
 
   return v11;
 }
 
-- (void)addChild:(id)a3
+- (void)addChild:(id)child
 {
-  v7 = a3;
+  childCopy = child;
   WebThreadLock();
-  [(NSMutableArray *)self->_children addObject:v7];
+  [(NSMutableArray *)self->_children addObject:childCopy];
   element = self->_element;
-  v5 = [v7 element];
-  v6 = [(DOMElement *)element appendChild:v5];
+  element = [childCopy element];
+  v6 = [(DOMElement *)element appendChild:element];
 }
 
-- (id)childThemePathWithName:(id)a3
+- (id)childThemePathWithName:(id)name
 {
-  v3 = [(NSString *)self->_themePath stringByAppendingFormat:@"-%@", a3];
+  name = [(NSString *)self->_themePath stringByAppendingFormat:@"-%@", name];
 
-  return v3;
+  return name;
 }
 
 - (LPLinkHTMLGenerator)generator

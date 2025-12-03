@@ -1,8 +1,8 @@
 @interface AAAbsintheContext
 - (AAAbsintheContext)init;
-- (BOOL)R6XtwiyjL3q2:(id)a3 error:(id *)a4;
-- (id)TgBfoO2wtF5L:(id)a3 error:(id *)a4;
-- (id)cao1NI5PNJBn:(id)a3 error:(id *)a4;
+- (BOOL)R6XtwiyjL3q2:(id)l3q2 error:(id *)error;
+- (id)TgBfoO2wtF5L:(id)l error:(id *)error;
+- (id)cao1NI5PNJBn:(id)bn error:(id *)error;
 - (void)dealloc;
 @end
 
@@ -34,11 +34,11 @@
   [(AAAbsintheContext *)&v4 dealloc];
 }
 
-- (id)TgBfoO2wtF5L:(id)a3 error:(id *)a4
+- (id)TgBfoO2wtF5L:(id)l error:(id *)error
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  if (!v7)
+  lCopy = l;
+  if (!lCopy)
   {
     [AAAbsintheContext TgBfoO2wtF5L:a2 error:self];
   }
@@ -48,7 +48,7 @@
     [AAAbsintheContext TgBfoO2wtF5L:a2 error:self];
   }
 
-  KxmB0CKvgWt([v7 bytes], objc_msgSend(v7, "length"));
+  KxmB0CKvgWt([lCopy bytes], objc_msgSend(lCopy, "length"));
   if (v8)
   {
     v9 = v8;
@@ -58,39 +58,39 @@
       [AAAbsintheContext TgBfoO2wtF5L:v9 error:?];
     }
 
-    if (a4)
+    if (error)
     {
       v11 = MEMORY[0x1E696ABC0];
       v16 = @"AAAbsintheError";
       v12 = [MEMORY[0x1E696AD98] numberWithInt:v9];
       v17[0] = v12;
       v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:&v16 count:1];
-      *a4 = [v11 aa_errorWithCode:-4403 userInfo:v13];
+      *error = [v11 aa_errorWithCode:-4403 userInfo:v13];
 
-      a4 = 0;
+      error = 0;
     }
   }
 
   else
   {
-    a4 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytesNoCopy:0 length:0 deallocator:&__block_literal_global_10];
+    error = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytesNoCopy:0 length:0 deallocator:&__block_literal_global_10];
   }
 
   v14 = *MEMORY[0x1E69E9840];
 
-  return a4;
+  return error;
 }
 
-- (BOOL)R6XtwiyjL3q2:(id)a3 error:(id *)a4
+- (BOOL)R6XtwiyjL3q2:(id)l3q2 error:(id *)error
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  if (!v7)
+  l3q2Copy = l3q2;
+  if (!l3q2Copy)
   {
     [AAAbsintheContext R6XtwiyjL3q2:a2 error:self];
   }
 
-  nDYmeMqvWb(self->_contextRef, [v7 bytes], objc_msgSend(v7, "length"));
+  nDYmeMqvWb(self->_contextRef, [l3q2Copy bytes], objc_msgSend(l3q2Copy, "length"));
   v9 = v8;
   if (v8)
   {
@@ -100,14 +100,14 @@
       [AAAbsintheContext R6XtwiyjL3q2:v9 error:?];
     }
 
-    if (a4)
+    if (error)
     {
       v11 = MEMORY[0x1E696ABC0];
       v16 = @"AAAbsintheError";
       v12 = [MEMORY[0x1E696AD98] numberWithInt:v9];
       v17[0] = v12;
       v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:&v16 count:1];
-      *a4 = [v11 aa_errorWithCode:-4403 userInfo:v13];
+      *error = [v11 aa_errorWithCode:-4403 userInfo:v13];
     }
   }
 
@@ -115,17 +115,17 @@
   return v9 == 0;
 }
 
-- (id)cao1NI5PNJBn:(id)a3 error:(id *)a4
+- (id)cao1NI5PNJBn:(id)bn error:(id *)error
 {
   v23[1] = *MEMORY[0x1E69E9840];
   v21 = 0;
   contextRef = self->_contextRef;
-  v7 = a3;
-  v8 = a3;
-  v9 = [v8 bytes];
-  v10 = [v8 length];
+  bnCopy = bn;
+  bnCopy2 = bn;
+  bytes = [bnCopy2 bytes];
+  v10 = [bnCopy2 length];
 
-  t1BoNctgaUu66(contextRef, v9, v10, &v21);
+  t1BoNctgaUu66(contextRef, bytes, v10, &v21);
   if (v11)
   {
     v12 = v11;
@@ -140,14 +140,14 @@
       Be81a395Bf0(v21);
     }
 
-    if (a4)
+    if (error)
     {
       v14 = MEMORY[0x1E696ABC0];
       v22 = @"AAAbsintheError";
       v15 = [MEMORY[0x1E696AD98] numberWithInt:v12];
       v23[0] = v15;
       v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:&v22 count:1];
-      *a4 = [v14 aa_errorWithCode:-4403 userInfo:v16];
+      *error = [v14 aa_errorWithCode:-4403 userInfo:v16];
     }
 
     v17 = 0;

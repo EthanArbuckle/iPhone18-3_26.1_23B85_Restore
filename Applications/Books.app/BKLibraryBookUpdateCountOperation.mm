@@ -1,9 +1,9 @@
 @interface BKLibraryBookUpdateCountOperation
 - (BKLibraryBookUpdateCountOperation)init;
-- (BKLibraryBookUpdateCountOperation)initWithLibraryAssetProvider:(id)a3 updatesURL:(id)a4;
+- (BKLibraryBookUpdateCountOperation)initWithLibraryAssetProvider:(id)provider updatesURL:(id)l;
 - (NSDictionary)result;
 - (void)main;
-- (void)setResult:(id)a3;
+- (void)setResult:(id)result;
 @end
 
 @implementation BKLibraryBookUpdateCountOperation
@@ -26,9 +26,9 @@
   return v4.super.isa;
 }
 
-- (void)setResult:(id)a3
+- (void)setResult:(id)result
 {
-  if (a3)
+  if (result)
   {
     v4 = sub_1007A2044();
   }
@@ -43,7 +43,7 @@
   *(self + v5) = v4;
 }
 
-- (BKLibraryBookUpdateCountOperation)initWithLibraryAssetProvider:(id)a3 updatesURL:(id)a4
+- (BKLibraryBookUpdateCountOperation)initWithLibraryAssetProvider:(id)provider updatesURL:(id)l
 {
   v6 = sub_1007969B4();
   v7 = *(v6 - 8);
@@ -51,7 +51,7 @@
   v9 = &v13 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_100796974();
   *(self + OBJC_IVAR___BKLibraryBookUpdateCountOperation_result) = 0;
-  *(self + OBJC_IVAR___BKLibraryBookUpdateCountOperation_libraryAssetProvider) = a3;
+  *(self + OBJC_IVAR___BKLibraryBookUpdateCountOperation_libraryAssetProvider) = provider;
   (*(v7 + 16))(self + OBJC_IVAR___BKLibraryBookUpdateCountOperation_updatesURL, v9, v6);
   updated = type metadata accessor for LibraryBookUpdateCountOperation();
   v13.receiver = self;
@@ -64,7 +64,7 @@
 
 - (void)main
 {
-  v2 = self;
+  selfCopy = self;
   LibraryBookUpdateCountOperation.main()();
 }
 

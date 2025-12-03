@@ -6,22 +6,22 @@
 
 - (NSString)_maps_sha1Hash
 {
-  v2 = [(CLPlacemark *)self _geoMapItem];
-  if ([v2 _hasMUID])
+  _geoMapItem = [(CLPlacemark *)self _geoMapItem];
+  if ([_geoMapItem _hasMUID])
   {
-    v3 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"muid=%llu", [v2 _muid]);
+    v3 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"muid=%llu", [_geoMapItem _muid]);
   }
 
   else
   {
-    v4 = [v2 addressObject];
-    v5 = [v4 fullAddressWithMultiline:0];
+    addressObject = [_geoMapItem addressObject];
+    v5 = [addressObject fullAddressWithMultiline:0];
     v3 = [NSString stringWithFormat:@"address=%@", v5];
   }
 
-  v6 = [v3 _maps_sha1Hash];
+  _maps_sha1Hash = [v3 _maps_sha1Hash];
 
-  return v6;
+  return _maps_sha1Hash;
 }
 
 @end

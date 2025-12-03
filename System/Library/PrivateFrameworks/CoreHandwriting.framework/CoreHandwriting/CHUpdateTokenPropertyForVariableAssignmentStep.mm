@@ -1,13 +1,13 @@
 @interface CHUpdateTokenPropertyForVariableAssignmentStep
-- (id)process:(id)a3 options:(id)a4;
+- (id)process:(id)process options:(id)options;
 @end
 
 @implementation CHUpdateTokenPropertyForVariableAssignmentStep
 
-- (id)process:(id)a3 options:(id)a4
+- (id)process:(id)process options:(id)options
 {
-  v5 = a3;
-  v6 = a4;
+  processCopy = process;
+  optionsCopy = options;
   if (qword_1EA84DC48 != -1)
   {
     dispatch_once(&qword_1EA84DC48, &unk_1EF1BC930);
@@ -21,8 +21,8 @@
   }
 
   v93 = objc_msgSend_array(MEMORY[0x1E695DF70], v8, v9, v10, v11, v12);
-  v92 = v5;
-  v18 = objc_msgSend_result(v5, v13, v14, v15, v16, v17);
+  v92 = processCopy;
+  v18 = objc_msgSend_result(processCopy, v13, v14, v15, v16, v17);
   v29 = objc_msgSend_array(MEMORY[0x1E695DF70], v19, v20, v21, v22, v23);
   for (i = 0; ; ++i)
   {

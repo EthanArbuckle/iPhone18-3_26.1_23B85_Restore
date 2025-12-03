@@ -1,52 +1,52 @@
 @interface HKCodableHealthRecordsIndividualRecord
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addCode:(id)a3;
-- (void)addValueWithRange:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addCode:(id)code;
+- (void)addValueWithRange:(id)range;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HKCodableHealthRecordsIndividualRecord
 
-- (void)addCode:(id)a3
+- (void)addCode:(id)code
 {
-  v4 = a3;
+  codeCopy = code;
   codes = self->_codes;
-  v8 = v4;
+  v8 = codeCopy;
   if (!codes)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_codes;
     self->_codes = v6;
 
-    v4 = v8;
+    codeCopy = v8;
     codes = self->_codes;
   }
 
-  [(NSMutableArray *)codes addObject:v4];
+  [(NSMutableArray *)codes addObject:codeCopy];
 }
 
-- (void)addValueWithRange:(id)a3
+- (void)addValueWithRange:(id)range
 {
-  v4 = a3;
+  rangeCopy = range;
   valueWithRanges = self->_valueWithRanges;
-  v8 = v4;
+  v8 = rangeCopy;
   if (!valueWithRanges)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_valueWithRanges;
     self->_valueWithRanges = v6;
 
-    v4 = v8;
+    rangeCopy = v8;
     valueWithRanges = self->_valueWithRanges;
   }
 
-  [(NSMutableArray *)valueWithRanges addObject:v4];
+  [(NSMutableArray *)valueWithRanges addObject:rangeCopy];
 }
 
 - (id)description
@@ -55,8 +55,8 @@
   v8.receiver = self;
   v8.super_class = HKCodableHealthRecordsIndividualRecord;
   v4 = [(HKCodableHealthRecordsIndividualRecord *)&v8 description];
-  v5 = [(HKCodableHealthRecordsIndividualRecord *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HKCodableHealthRecordsIndividualRecord *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -64,7 +64,7 @@
 - (id)dictionaryRepresentation
 {
   v35 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSMutableArray *)self->_codes count])
   {
     v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{-[NSMutableArray count](self->_codes, "count")}];
@@ -87,8 +87,8 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v29 + 1) + 8 * i) dictionaryRepresentation];
-          [v4 addObject:v10];
+          dictionaryRepresentation = [*(*(&v29 + 1) + 8 * i) dictionaryRepresentation];
+          [v4 addObject:dictionaryRepresentation];
         }
 
         v7 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v29 objects:v34 count:16];
@@ -97,19 +97,19 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKey:@"code"];
+    [dictionary setObject:v4 forKey:@"code"];
   }
 
   recordTitle = self->_recordTitle;
   if (recordTitle)
   {
-    [v3 setObject:recordTitle forKey:@"recordTitle"];
+    [dictionary setObject:recordTitle forKey:@"recordTitle"];
   }
 
   if (*&self->_has)
   {
     v12 = [MEMORY[0x1E696AD98] numberWithDouble:self->_dateData];
-    [v3 setObject:v12 forKey:@"dateData"];
+    [dictionary setObject:v12 forKey:@"dateData"];
   }
 
   if ([(NSMutableArray *)self->_valueWithRanges count])
@@ -134,8 +134,8 @@
             objc_enumerationMutation(v14);
           }
 
-          v19 = [*(*(&v25 + 1) + 8 * j) dictionaryRepresentation];
-          [v13 addObject:v19];
+          dictionaryRepresentation2 = [*(*(&v25 + 1) + 8 * j) dictionaryRepresentation];
+          [v13 addObject:dictionaryRepresentation2];
         }
 
         v16 = [(NSMutableArray *)v14 countByEnumeratingWithState:&v25 objects:v33 count:16];
@@ -144,40 +144,40 @@
       while (v16);
     }
 
-    [v3 setObject:v13 forKey:@"valueWithRange"];
+    [dictionary setObject:v13 forKey:@"valueWithRange"];
   }
 
   textualValue = self->_textualValue;
   if (textualValue)
   {
-    [v3 setObject:textualValue forKey:@"textualValue"];
+    [dictionary setObject:textualValue forKey:@"textualValue"];
   }
 
   ucumUnitString = self->_ucumUnitString;
   if (ucumUnitString)
   {
-    [v3 setObject:ucumUnitString forKey:@"ucumUnitString"];
+    [dictionary setObject:ucumUnitString forKey:@"ucumUnitString"];
   }
 
   providerURI = self->_providerURI;
   if (providerURI)
   {
-    [v3 setObject:providerURI forKey:@"providerURI"];
+    [dictionary setObject:providerURI forKey:@"providerURI"];
   }
 
   recordUUID = self->_recordUUID;
   if (recordUUID)
   {
-    [v3 setObject:recordUUID forKey:@"recordUUID"];
+    [dictionary setObject:recordUUID forKey:@"recordUUID"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -271,79 +271,79 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v13 = a3;
+  toCopy = to;
   if ([(HKCodableHealthRecordsIndividualRecord *)self codesCount])
   {
-    [v13 clearCodes];
-    v4 = [(HKCodableHealthRecordsIndividualRecord *)self codesCount];
-    if (v4)
+    [toCopy clearCodes];
+    codesCount = [(HKCodableHealthRecordsIndividualRecord *)self codesCount];
+    if (codesCount)
     {
-      v5 = v4;
+      v5 = codesCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(HKCodableHealthRecordsIndividualRecord *)self codeAtIndex:i];
-        [v13 addCode:v7];
+        [toCopy addCode:v7];
       }
     }
   }
 
   if (self->_recordTitle)
   {
-    [v13 setRecordTitle:?];
+    [toCopy setRecordTitle:?];
   }
 
   if (*&self->_has)
   {
-    *(v13 + 1) = *&self->_dateData;
-    *(v13 + 72) |= 1u;
+    *(toCopy + 1) = *&self->_dateData;
+    *(toCopy + 72) |= 1u;
   }
 
   if ([(HKCodableHealthRecordsIndividualRecord *)self valueWithRangesCount])
   {
-    [v13 clearValueWithRanges];
-    v8 = [(HKCodableHealthRecordsIndividualRecord *)self valueWithRangesCount];
-    if (v8)
+    [toCopy clearValueWithRanges];
+    valueWithRangesCount = [(HKCodableHealthRecordsIndividualRecord *)self valueWithRangesCount];
+    if (valueWithRangesCount)
     {
-      v9 = v8;
+      v9 = valueWithRangesCount;
       for (j = 0; j != v9; ++j)
       {
         v11 = [(HKCodableHealthRecordsIndividualRecord *)self valueWithRangeAtIndex:j];
-        [v13 addValueWithRange:v11];
+        [toCopy addValueWithRange:v11];
       }
     }
   }
 
   if (self->_textualValue)
   {
-    [v13 setTextualValue:?];
+    [toCopy setTextualValue:?];
   }
 
-  v12 = v13;
+  v12 = toCopy;
   if (self->_ucumUnitString)
   {
-    [v13 setUcumUnitString:?];
-    v12 = v13;
+    [toCopy setUcumUnitString:?];
+    v12 = toCopy;
   }
 
   if (self->_providerURI)
   {
-    [v13 setProviderURI:?];
-    v12 = v13;
+    [toCopy setProviderURI:?];
+    v12 = toCopy;
   }
 
   if (self->_recordUUID)
   {
-    [v13 setRecordUUID:?];
-    v12 = v13;
+    [toCopy setRecordUUID:?];
+    v12 = toCopy;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v39 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
@@ -364,7 +364,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v33 + 1) + 8 * v10) copyWithZone:a3];
+        v11 = [*(*(&v33 + 1) + 8 * v10) copyWithZone:zone];
         [v5 addCode:v11];
 
         ++v10;
@@ -377,7 +377,7 @@
     while (v8);
   }
 
-  v12 = [(NSString *)self->_recordTitle copyWithZone:a3];
+  v12 = [(NSString *)self->_recordTitle copyWithZone:zone];
   v13 = *(v5 + 32);
   *(v5 + 32) = v12;
 
@@ -407,7 +407,7 @@
           objc_enumerationMutation(v14);
         }
 
-        v19 = [*(*(&v29 + 1) + 8 * v18) copyWithZone:{a3, v29}];
+        v19 = [*(*(&v29 + 1) + 8 * v18) copyWithZone:{zone, v29}];
         [v5 addValueWithRange:v19];
 
         ++v18;
@@ -420,35 +420,35 @@
     while (v16);
   }
 
-  v20 = [(NSString *)self->_textualValue copyWithZone:a3];
+  v20 = [(NSString *)self->_textualValue copyWithZone:zone];
   v21 = *(v5 + 48);
   *(v5 + 48) = v20;
 
-  v22 = [(NSString *)self->_ucumUnitString copyWithZone:a3];
+  v22 = [(NSString *)self->_ucumUnitString copyWithZone:zone];
   v23 = *(v5 + 56);
   *(v5 + 56) = v22;
 
-  v24 = [(NSString *)self->_providerURI copyWithZone:a3];
+  v24 = [(NSString *)self->_providerURI copyWithZone:zone];
   v25 = *(v5 + 24);
   *(v5 + 24) = v24;
 
-  v26 = [(NSString *)self->_recordUUID copyWithZone:a3];
+  v26 = [(NSString *)self->_recordUUID copyWithZone:zone];
   v27 = *(v5 + 40);
   *(v5 + 40) = v26;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_21;
   }
 
   codes = self->_codes;
-  if (codes | *(v4 + 2))
+  if (codes | *(equalCopy + 2))
   {
     if (![(NSMutableArray *)codes isEqual:?])
     {
@@ -457,7 +457,7 @@
   }
 
   recordTitle = self->_recordTitle;
-  if (recordTitle | *(v4 + 4))
+  if (recordTitle | *(equalCopy + 4))
   {
     if (![(NSString *)recordTitle isEqual:?])
     {
@@ -467,13 +467,13 @@
 
   if (*&self->_has)
   {
-    if ((*(v4 + 72) & 1) == 0 || self->_dateData != *(v4 + 1))
+    if ((*(equalCopy + 72) & 1) == 0 || self->_dateData != *(equalCopy + 1))
     {
       goto LABEL_21;
     }
   }
 
-  else if (*(v4 + 72))
+  else if (*(equalCopy + 72))
   {
 LABEL_21:
     v12 = 0;
@@ -481,13 +481,13 @@ LABEL_21:
   }
 
   valueWithRanges = self->_valueWithRanges;
-  if (valueWithRanges | *(v4 + 8) && ![(NSMutableArray *)valueWithRanges isEqual:?])
+  if (valueWithRanges | *(equalCopy + 8) && ![(NSMutableArray *)valueWithRanges isEqual:?])
   {
     goto LABEL_21;
   }
 
   textualValue = self->_textualValue;
-  if (textualValue | *(v4 + 6))
+  if (textualValue | *(equalCopy + 6))
   {
     if (![(NSString *)textualValue isEqual:?])
     {
@@ -496,7 +496,7 @@ LABEL_21:
   }
 
   ucumUnitString = self->_ucumUnitString;
-  if (ucumUnitString | *(v4 + 7))
+  if (ucumUnitString | *(equalCopy + 7))
   {
     if (![(NSString *)ucumUnitString isEqual:?])
     {
@@ -505,7 +505,7 @@ LABEL_21:
   }
 
   providerURI = self->_providerURI;
-  if (providerURI | *(v4 + 3))
+  if (providerURI | *(equalCopy + 3))
   {
     if (![(NSString *)providerURI isEqual:?])
     {
@@ -514,7 +514,7 @@ LABEL_21:
   }
 
   recordUUID = self->_recordUUID;
-  if (recordUUID | *(v4 + 5))
+  if (recordUUID | *(equalCopy + 5))
   {
     v12 = [(NSString *)recordUUID isEqual:?];
   }
@@ -573,15 +573,15 @@ LABEL_22:
   return v14 ^ [(NSString *)self->_recordUUID hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  fromCopy = from;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v5 = *(v4 + 2);
+  v5 = *(fromCopy + 2);
   v6 = [v5 countByEnumeratingWithState:&v19 objects:v24 count:16];
   if (v6)
   {
@@ -605,14 +605,14 @@ LABEL_22:
     while (v7);
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(HKCodableHealthRecordsIndividualRecord *)self setRecordTitle:?];
   }
 
-  if (*(v4 + 72))
+  if (*(fromCopy + 72))
   {
-    self->_dateData = *(v4 + 1);
+    self->_dateData = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
@@ -620,7 +620,7 @@ LABEL_22:
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v10 = *(v4 + 8);
+  v10 = *(fromCopy + 8);
   v11 = [v10 countByEnumeratingWithState:&v15 objects:v23 count:16];
   if (v11)
   {
@@ -644,22 +644,22 @@ LABEL_22:
     while (v12);
   }
 
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(HKCodableHealthRecordsIndividualRecord *)self setTextualValue:?];
   }
 
-  if (*(v4 + 7))
+  if (*(fromCopy + 7))
   {
     [(HKCodableHealthRecordsIndividualRecord *)self setUcumUnitString:?];
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(HKCodableHealthRecordsIndividualRecord *)self setProviderURI:?];
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(HKCodableHealthRecordsIndividualRecord *)self setRecordUUID:?];
   }

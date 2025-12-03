@@ -1,19 +1,19 @@
 @interface MBNetworkPathMonitor
-+ (const)_pathTypeStringWithPathType:(int)a3;
++ (const)_pathTypeStringWithPathType:(int)type;
 - ($1C6001547D93A6C6CE4901F2C331F3E5)networkConnectivity;
 - (MBNetworkPathMonitor)init;
-- (MBNetworkPathMonitor)initWithQueue:(id)a3;
+- (MBNetworkPathMonitor)initWithQueue:(id)queue;
 - (int)cellularRadioType;
 - (unint64_t)backupOnCellularSupport;
 - (void)_cancelMonitors;
-- (void)_handleCellularStateChange:(id)a3 backupOnCellularSupport:(unint64_t)a4;
+- (void)_handleCellularStateChange:(id)change backupOnCellularSupport:(unint64_t)support;
 - (void)_handleWiFiStateChange;
-- (void)_performBlock:(id)a3;
+- (void)_performBlock:(id)block;
 - (void)_startCellularMonitor;
 - (void)_startWiFiMonitor;
 - (void)cancel;
 - (void)dealloc;
-- (void)fetchNetworkConnectivityWithBlock:(id)a3;
+- (void)fetchNetworkConnectivityWithBlock:(id)block;
 - (void)start;
 @end
 
@@ -74,9 +74,9 @@ void __45__MBNetworkPathMonitor__startCellularMonitor__block_invoke_2(uint64_t a
   v21 = *MEMORY[0x1E69E9840];
 }
 
-- (MBNetworkPathMonitor)initWithQueue:(id)a3
+- (MBNetworkPathMonitor)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v9.receiver = self;
   v9.super_class = MBNetworkPathMonitor;
   v6 = [(MBNetworkPathMonitor *)&v9 init];
@@ -84,7 +84,7 @@ void __45__MBNetworkPathMonitor__startCellularMonitor__block_invoke_2(uint64_t a
   if (v6)
   {
     atomic_store(0, &v6->_started);
-    objc_storeStrong(&v6->_queue, a3);
+    objc_storeStrong(&v6->_queue, queue);
     v7->_backupOnCellularSupport = 0;
     v7->_backupOnCellularSupportChanged = 0;
     v7->_wifiPathState = 0;
@@ -117,8 +117,8 @@ void __45__MBNetworkPathMonitor__startCellularMonitor__block_invoke_2(uint64_t a
 
 - (void)_cancelMonitors
 {
-  v3 = [(MBNetworkPathMonitor *)self dataSubscriptionMonitor];
-  [v3 cancel];
+  dataSubscriptionMonitor = [(MBNetworkPathMonitor *)self dataSubscriptionMonitor];
+  [dataSubscriptionMonitor cancel];
 
   [(MBNetworkPathMonitor *)self setDataSubscriptionMonitor:0];
   cellularPathMonitor = self->_cellularPathMonitor;
@@ -146,36 +146,36 @@ void __45__MBNetworkPathMonitor__startCellularMonitor__block_invoke_2(uint64_t a
   }
 }
 
-- (void)_performBlock:(id)a3
+- (void)_performBlock:(id)block
 {
   v27 = *MEMORY[0x1E69E9840];
-  v18 = a3;
+  blockCopy = block;
   v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:4];
-  v5 = [(MBNetworkPathMonitor *)self initialCellularStateGroup];
-  if (v5)
+  initialCellularStateGroup = [(MBNetworkPathMonitor *)self initialCellularStateGroup];
+  if (initialCellularStateGroup)
   {
-    [v4 addObject:v5];
+    [v4 addObject:initialCellularStateGroup];
   }
 
-  v6 = [(MBNetworkPathMonitor *)self initialWiFiStateGroup];
+  initialWiFiStateGroup = [(MBNetworkPathMonitor *)self initialWiFiStateGroup];
 
-  if (v6)
+  if (initialWiFiStateGroup)
   {
-    [v4 addObject:v6];
+    [v4 addObject:initialWiFiStateGroup];
   }
 
-  v7 = [(MBNetworkPathMonitor *)self initialWiredStateGroup];
+  initialWiredStateGroup = [(MBNetworkPathMonitor *)self initialWiredStateGroup];
 
-  if (v7)
+  if (initialWiredStateGroup)
   {
-    [v4 addObject:v7];
+    [v4 addObject:initialWiredStateGroup];
   }
 
-  v8 = [(MBNetworkPathMonitor *)self initialBackupOnCellularSupportGroup];
+  initialBackupOnCellularSupportGroup = [(MBNetworkPathMonitor *)self initialBackupOnCellularSupportGroup];
 
-  if (v8)
+  if (initialBackupOnCellularSupportGroup)
   {
-    [v4 addObject:v8];
+    [v4 addObject:initialBackupOnCellularSupportGroup];
   }
 
   v9 = dispatch_group_create();
@@ -192,7 +192,7 @@ void __45__MBNetworkPathMonitor__startCellularMonitor__block_invoke_2(uint64_t a
     do
     {
       v13 = 0;
-      v14 = v8;
+      v14 = initialBackupOnCellularSupportGroup;
       do
       {
         if (*v23 != v12)
@@ -200,19 +200,19 @@ void __45__MBNetworkPathMonitor__startCellularMonitor__block_invoke_2(uint64_t a
           objc_enumerationMutation(obj);
         }
 
-        v8 = *(*(&v22 + 1) + 8 * v13);
+        initialBackupOnCellularSupportGroup = *(*(&v22 + 1) + 8 * v13);
 
         dispatch_group_enter(v9);
-        v15 = [(MBNetworkPathMonitor *)self queue];
+        queue = [(MBNetworkPathMonitor *)self queue];
         block[0] = MEMORY[0x1E69E9820];
         block[1] = 3221225472;
         block[2] = __38__MBNetworkPathMonitor__performBlock___block_invoke;
         block[3] = &unk_1E8684358;
         v21 = v9;
-        dispatch_group_notify(v8, v15, block);
+        dispatch_group_notify(initialBackupOnCellularSupportGroup, queue, block);
 
         ++v13;
-        v14 = v8;
+        v14 = initialBackupOnCellularSupportGroup;
       }
 
       while (v11 != v13);
@@ -222,8 +222,8 @@ void __45__MBNetworkPathMonitor__startCellularMonitor__block_invoke_2(uint64_t a
     while (v11);
   }
 
-  v16 = [(MBNetworkPathMonitor *)self queue];
-  dispatch_group_notify(v9, v16, v18);
+  queue2 = [(MBNetworkPathMonitor *)self queue];
+  dispatch_group_notify(v9, queue2, blockCopy);
 
   v17 = *MEMORY[0x1E69E9840];
 }
@@ -238,23 +238,23 @@ void __45__MBNetworkPathMonitor__startCellularMonitor__block_invoke_2(uint64_t a
   [(MBNetworkPathMonitor *)self _performBlock:v2];
 }
 
-+ (const)_pathTypeStringWithPathType:(int)a3
++ (const)_pathTypeStringWithPathType:(int)type
 {
-  if ((a3 - 1) > 2)
+  if ((type - 1) > 2)
   {
     return "???";
   }
 
   else
   {
-    return off_1E8684418[a3 - 1];
+    return off_1E8684418[type - 1];
   }
 }
 
 - (void)_handleWiFiStateChange
 {
-  v3 = [(MBNetworkPathMonitor *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(MBNetworkPathMonitor *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   if (self->_wifiPathState.isMonitored && self->_wiredPathState.isMonitored)
   {
@@ -265,12 +265,12 @@ void __45__MBNetworkPathMonitor__startCellularMonitor__block_invoke_2(uint64_t a
     }
 
     v5 = *(&self->super.isa + v4);
-    v6 = [(MBNetworkPathMonitor *)self networkPathUpdateHandler];
+    networkPathUpdateHandler = [(MBNetworkPathMonitor *)self networkPathUpdateHandler];
 
-    if (v6)
+    if (networkPathUpdateHandler)
     {
-      v7 = [(MBNetworkPathMonitor *)self networkPathUpdateHandler];
-      v7[2](v7, 1, v5);
+      networkPathUpdateHandler2 = [(MBNetworkPathMonitor *)self networkPathUpdateHandler];
+      networkPathUpdateHandler2[2](networkPathUpdateHandler2, 1, v5);
     }
   }
 }
@@ -285,8 +285,8 @@ void __45__MBNetworkPathMonitor__startCellularMonitor__block_invoke_2(uint64_t a
   update_handler[3] = &unk_1E8684380;
   objc_copyWeak(&v10, &location);
   nw_path_monitor_set_update_handler(v3, update_handler);
-  v4 = [(MBNetworkPathMonitor *)self queue];
-  nw_path_monitor_set_queue(v3, v4);
+  queue = [(MBNetworkPathMonitor *)self queue];
+  nw_path_monitor_set_queue(v3, queue);
 
   objc_storeStrong(&self->_wifiPathMonitor, v3);
   v5 = nw_path_monitor_create_with_type(nw_interface_type_wired);
@@ -296,8 +296,8 @@ void __45__MBNetworkPathMonitor__startCellularMonitor__block_invoke_2(uint64_t a
   v7[3] = &unk_1E8684380;
   objc_copyWeak(&v8, &location);
   nw_path_monitor_set_update_handler(v5, v7);
-  v6 = [(MBNetworkPathMonitor *)self queue];
-  nw_path_monitor_set_queue(v5, v6);
+  queue2 = [(MBNetworkPathMonitor *)self queue];
+  nw_path_monitor_set_queue(v5, queue2);
 
   objc_storeStrong(&self->_wiredPathMonitor, v5);
   nw_path_monitor_start(v3);
@@ -357,24 +357,24 @@ void __41__MBNetworkPathMonitor__startWiFiMonitor__block_invoke_2(uint64_t a1, v
   }
 }
 
-- (void)_handleCellularStateChange:(id)a3 backupOnCellularSupport:(unint64_t)a4
+- (void)_handleCellularStateChange:(id)change backupOnCellularSupport:(unint64_t)support
 {
   v33 = *MEMORY[0x1E69E9840];
-  v7 = [(MBNetworkPathMonitor *)self queue];
-  dispatch_assert_queue_V2(v7);
+  queue = [(MBNetworkPathMonitor *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  if (__PAIR64__((*&a3 >> 8) & 1, a3.var0) == __PAIR64__(self->_cellularPathState.isAvailable, self->_cellularPathState.isMonitored) && (HIWORD(*&a3) & 1) == self->_cellularPathState.isExpensive && (HIBYTE(*&a3) & 1) == self->_cellularPathState.isConstrained)
+  if (__PAIR64__((*&change >> 8) & 1, change.var0) == __PAIR64__(self->_cellularPathState.isAvailable, self->_cellularPathState.isMonitored) && (HIWORD(*&change) & 1) == self->_cellularPathState.isExpensive && (HIBYTE(*&change) & 1) == self->_cellularPathState.isConstrained)
   {
     v8 = 0;
   }
 
   else
   {
-    self->_cellularPathState = a3;
+    self->_cellularPathState = change;
     v8 = 1;
   }
 
-  if (self->_backupOnCellularSupportChanged && self->_backupOnCellularSupport == a4)
+  if (self->_backupOnCellularSupportChanged && self->_backupOnCellularSupport == support)
   {
     if (!v8)
     {
@@ -386,7 +386,7 @@ void __41__MBNetworkPathMonitor__startWiFiMonitor__block_invoke_2(uint64_t a1, v
 
   else
   {
-    self->_backupOnCellularSupport = a4;
+    self->_backupOnCellularSupport = support;
     v9 = 1;
     self->_backupOnCellularSupportChanged = 1;
   }
@@ -398,36 +398,36 @@ void __41__MBNetworkPathMonitor__startWiFiMonitor__block_invoke_2(uint64_t a1, v
     *buf = 136447234;
     v24 = v10;
     v25 = 1024;
-    v26 = (*&a3 >> 8) & 1;
+    v26 = (*&change >> 8) & 1;
     v27 = 1024;
-    v28 = HIWORD(*&a3) & 1;
+    v28 = HIWORD(*&change) & 1;
     v29 = 1024;
-    v30 = HIBYTE(*&a3) & 1;
+    v30 = HIBYTE(*&change) & 1;
     v31 = 2048;
-    v32 = a4;
+    supportCopy = support;
     _os_log_impl(&dword_1DEB5D000, v11, OS_LOG_TYPE_DEFAULT, "%{public}s, available:%d, expensive:%d, constrained:%d, backupOnCellularSupport:0x%lx", buf, 0x28u);
     _MBLog(@"Df", "%{public}s, available:%d, expensive:%d, constrained:%d, backupOnCellularSupport:0x%lx", v12, v13, v14, v15, v16, v17, v10);
   }
 
   if (v8)
   {
-    v18 = [(MBNetworkPathMonitor *)self networkPathUpdateHandler];
+    networkPathUpdateHandler = [(MBNetworkPathMonitor *)self networkPathUpdateHandler];
 
-    if (v18)
+    if (networkPathUpdateHandler)
     {
-      v19 = [(MBNetworkPathMonitor *)self networkPathUpdateHandler];
-      v19[2](v19, 2, *&a3);
+      networkPathUpdateHandler2 = [(MBNetworkPathMonitor *)self networkPathUpdateHandler];
+      networkPathUpdateHandler2[2](networkPathUpdateHandler2, 2, *&change);
     }
   }
 
   if (v9)
   {
-    v20 = [(MBNetworkPathMonitor *)self backupOnCellularSupportUpdateHandler];
+    backupOnCellularSupportUpdateHandler = [(MBNetworkPathMonitor *)self backupOnCellularSupportUpdateHandler];
 
-    if (v20)
+    if (backupOnCellularSupportUpdateHandler)
     {
-      v21 = [(MBNetworkPathMonitor *)self backupOnCellularSupportUpdateHandler];
-      v21[2](v21, a4);
+      backupOnCellularSupportUpdateHandler2 = [(MBNetworkPathMonitor *)self backupOnCellularSupportUpdateHandler];
+      backupOnCellularSupportUpdateHandler2[2](backupOnCellularSupportUpdateHandler2, support);
     }
   }
 
@@ -437,13 +437,13 @@ LABEL_19:
 
 - (void)_startCellularMonitor
 {
-  v3 = [(MBNetworkPathMonitor *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(MBNetworkPathMonitor *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   objc_initWeak(&location, self);
   v4 = [MBCellularDataSubscriptionMonitor alloc];
-  v5 = [(MBNetworkPathMonitor *)self queue];
-  v6 = [(MBCellularDataSubscriptionMonitor *)v4 initWithQueue:v5 timeout:30];
+  queue2 = [(MBNetworkPathMonitor *)self queue];
+  v6 = [(MBCellularDataSubscriptionMonitor *)v4 initWithQueue:queue2 timeout:30];
 
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -459,8 +459,8 @@ LABEL_19:
   update_handler[3] = &unk_1E8684380;
   objc_copyWeak(&v10, &location);
   nw_path_monitor_set_update_handler(v7, update_handler);
-  v8 = [(MBNetworkPathMonitor *)self queue];
-  nw_path_monitor_set_queue(v7, v8);
+  queue3 = [(MBNetworkPathMonitor *)self queue];
+  nw_path_monitor_set_queue(v7, queue3);
 
   objc_storeStrong(&self->_cellularPathMonitor, v7);
   [(MBCellularDataSubscriptionMonitor *)v6 start];
@@ -496,34 +496,34 @@ void __45__MBNetworkPathMonitor__startCellularMonitor__block_invoke(uint64_t a1,
     v3 = dispatch_group_create();
     [(MBNetworkPathMonitor *)self setInitialWiFiStateGroup:v3];
 
-    v4 = [(MBNetworkPathMonitor *)self initialWiFiStateGroup];
-    dispatch_group_enter(v4);
+    initialWiFiStateGroup = [(MBNetworkPathMonitor *)self initialWiFiStateGroup];
+    dispatch_group_enter(initialWiFiStateGroup);
 
     v5 = dispatch_group_create();
     [(MBNetworkPathMonitor *)self setInitialWiredStateGroup:v5];
 
-    v6 = [(MBNetworkPathMonitor *)self initialWiredStateGroup];
-    dispatch_group_enter(v6);
+    initialWiredStateGroup = [(MBNetworkPathMonitor *)self initialWiredStateGroup];
+    dispatch_group_enter(initialWiredStateGroup);
 
     v7 = dispatch_group_create();
     [(MBNetworkPathMonitor *)self setInitialCellularStateGroup:v7];
 
-    v8 = [(MBNetworkPathMonitor *)self initialCellularStateGroup];
-    dispatch_group_enter(v8);
+    initialCellularStateGroup = [(MBNetworkPathMonitor *)self initialCellularStateGroup];
+    dispatch_group_enter(initialCellularStateGroup);
 
     v9 = dispatch_group_create();
     [(MBNetworkPathMonitor *)self setInitialBackupOnCellularSupportGroup:v9];
 
-    v10 = [(MBNetworkPathMonitor *)self initialBackupOnCellularSupportGroup];
-    dispatch_group_enter(v10);
+    initialBackupOnCellularSupportGroup = [(MBNetworkPathMonitor *)self initialBackupOnCellularSupportGroup];
+    dispatch_group_enter(initialBackupOnCellularSupportGroup);
 
-    v11 = [(MBNetworkPathMonitor *)self queue];
+    queue = [(MBNetworkPathMonitor *)self queue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __29__MBNetworkPathMonitor_start__block_invoke;
     block[3] = &unk_1E8684358;
     block[4] = self;
-    dispatch_async(v11, block);
+    dispatch_async(queue, block);
   }
 }
 
@@ -537,8 +537,8 @@ uint64_t __29__MBNetworkPathMonitor_start__block_invoke(uint64_t a1)
 
 - ($1C6001547D93A6C6CE4901F2C331F3E5)networkConnectivity
 {
-  v3 = [(MBNetworkPathMonitor *)self queue];
-  dispatch_assert_queue_not_V2(v3);
+  queue = [(MBNetworkPathMonitor *)self queue];
+  dispatch_assert_queue_not_V2(queue);
 
   v13 = 0;
   v14 = &v13;
@@ -579,16 +579,16 @@ void __43__MBNetworkPathMonitor_networkConnectivity__block_invoke(uint64_t a1, u
   dispatch_group_leave(*(a1 + 32));
 }
 
-- (void)fetchNetworkConnectivityWithBlock:(id)a3
+- (void)fetchNetworkConnectivityWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __58__MBNetworkPathMonitor_fetchNetworkConnectivityWithBlock___block_invoke;
   v6[3] = &unk_1E86843F8;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = blockCopy;
+  v5 = blockCopy;
   [(MBNetworkPathMonitor *)self _performBlock:v6];
 }
 
@@ -618,18 +618,18 @@ uint64_t __58__MBNetworkPathMonitor_fetchNetworkConnectivityWithBlock___block_in
 
 - (unint64_t)backupOnCellularSupport
 {
-  v2 = [(MBNetworkPathMonitor *)self dataSubscriptionMonitor];
-  v3 = [v2 backupOnCellularSupport];
+  dataSubscriptionMonitor = [(MBNetworkPathMonitor *)self dataSubscriptionMonitor];
+  backupOnCellularSupport = [dataSubscriptionMonitor backupOnCellularSupport];
 
-  return v3;
+  return backupOnCellularSupport;
 }
 
 - (int)cellularRadioType
 {
-  v2 = [(MBNetworkPathMonitor *)self dataSubscriptionMonitor];
-  v3 = [v2 cellularRadioType];
+  dataSubscriptionMonitor = [(MBNetworkPathMonitor *)self dataSubscriptionMonitor];
+  cellularRadioType = [dataSubscriptionMonitor cellularRadioType];
 
-  return v3;
+  return cellularRadioType;
 }
 
 @end

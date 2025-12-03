@@ -1,6 +1,6 @@
 @interface SBHSmartStackElement
 - (id)displayName;
-- (id)supportedGridSizeClassesForIcon:(id)a3;
+- (id)supportedGridSizeClassesForIcon:(id)icon;
 @end
 
 @implementation SBHSmartStackElement
@@ -13,7 +13,7 @@
   return v3;
 }
 
-- (id)supportedGridSizeClassesForIcon:(id)a3
+- (id)supportedGridSizeClassesForIcon:(id)icon
 {
   v3 = [SBHIconGridSizeClassSet alloc];
   v4 = [MEMORY[0x1E695DFD8] setWithObjects:{@"SBHIconGridSizeClassSmall", @"SBHIconGridSizeClassMedium", 0}];

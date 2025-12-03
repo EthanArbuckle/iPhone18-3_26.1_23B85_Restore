@@ -13,15 +13,15 @@
     v3 = +[SSLogConfig sharedConfig];
   }
 
-  v4 = [v3 shouldLog];
+  shouldLog = [v3 shouldLog];
   if ([v3 shouldLogToDisk])
   {
-    v5 = v4 | 2;
+    v5 = shouldLog | 2;
   }
 
   else
   {
-    v5 = v4;
+    v5 = shouldLog;
   }
 
   if (!os_log_type_enabled([v3 OSLogObject], OS_LOG_TYPE_INFO))
@@ -58,8 +58,8 @@
     v11 = objc_alloc_init(GetAutomaticDownloadKindsOperation);
     if ([(EnableAllAutomaticDownloadKindsOperation *)self runSubOperation:v11 returningError:&v17])
     {
-      v12 = [(GetAutomaticDownloadKindsOperation *)v11 enabledDownloadKinds];
-      if ([(NSArray *)v12 count])
+      enabledDownloadKinds = [(GetAutomaticDownloadKindsOperation *)v11 enabledDownloadKinds];
+      if ([(NSArray *)enabledDownloadKinds count])
       {
         [+[StoreDownloadQueue sharedDownloadQueue](StoreDownloadQueue "sharedDownloadQueue")];
         v13 = 1;

@@ -1,17 +1,17 @@
 @interface CAFRequestContentObservable
 - (NSString)description;
-- (void)requestContentService:(id)a3 didUpdateOn:(BOOL)a4;
-- (void)requestContentService:(id)a3 didUpdateUserDismissible:(BOOL)a4;
-- (void)serviceDidFinishGroupUpdate:(id)a3;
-- (void)serviceDidUpdate:(id)a3 characteristic:(id)a4 fromGroupUpdate:(BOOL)a5;
-- (void)serviceDidUpdate:(id)a3 receivedAllValues:(BOOL)a4;
+- (void)requestContentService:(id)service didUpdateOn:(BOOL)on;
+- (void)requestContentService:(id)service didUpdateUserDismissible:(BOOL)dismissible;
+- (void)serviceDidFinishGroupUpdate:(id)update;
+- (void)serviceDidUpdate:(id)update characteristic:(id)characteristic fromGroupUpdate:(BOOL)groupUpdate;
+- (void)serviceDidUpdate:(id)update receivedAllValues:(BOOL)values;
 @end
 
 @implementation CAFRequestContentObservable
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CAFRequestContentObservable.description.getter();
   v5 = v4;
 
@@ -20,39 +20,39 @@
   return v6;
 }
 
-- (void)requestContentService:(id)a3 didUpdateOn:(BOOL)a4
+- (void)requestContentService:(id)service didUpdateOn:(BOOL)on
 {
-  v5 = a3;
-  v6 = self;
+  serviceCopy = service;
+  selfCopy = self;
   CAFRequestContentObservable.requestContentService(_:didUpdateOn:)();
 }
 
-- (void)requestContentService:(id)a3 didUpdateUserDismissible:(BOOL)a4
+- (void)requestContentService:(id)service didUpdateUserDismissible:(BOOL)dismissible
 {
-  v5 = a3;
-  v6 = self;
+  serviceCopy = service;
+  selfCopy = self;
   CAFRequestContentObservable.requestContentService(_:didUpdateUserDismissible:)();
 }
 
-- (void)serviceDidUpdate:(id)a3 characteristic:(id)a4 fromGroupUpdate:(BOOL)a5
+- (void)serviceDidUpdate:(id)update characteristic:(id)characteristic fromGroupUpdate:(BOOL)groupUpdate
 {
-  v8 = a3;
-  v9 = a4;
-  v11 = self;
-  CAFRequestContentObservable.serviceDidUpdate(_:characteristic:fromGroupUpdate:)(v11, v10, a5);
+  updateCopy = update;
+  characteristicCopy = characteristic;
+  selfCopy = self;
+  CAFRequestContentObservable.serviceDidUpdate(_:characteristic:fromGroupUpdate:)(selfCopy, v10, groupUpdate);
 }
 
-- (void)serviceDidUpdate:(id)a3 receivedAllValues:(BOOL)a4
+- (void)serviceDidUpdate:(id)update receivedAllValues:(BOOL)values
 {
-  v6 = a3;
-  v7 = self;
-  CAFRequestContentObservable.serviceDidUpdate(_:receivedAllValues:)(v7, a4);
+  updateCopy = update;
+  selfCopy = self;
+  CAFRequestContentObservable.serviceDidUpdate(_:receivedAllValues:)(selfCopy, values);
 }
 
-- (void)serviceDidFinishGroupUpdate:(id)a3
+- (void)serviceDidFinishGroupUpdate:(id)update
 {
-  v4 = a3;
-  v5 = self;
+  updateCopy = update;
+  selfCopy = self;
   CAFRequestContentObservable.serviceDidFinishGroupUpdate(_:)();
 }
 

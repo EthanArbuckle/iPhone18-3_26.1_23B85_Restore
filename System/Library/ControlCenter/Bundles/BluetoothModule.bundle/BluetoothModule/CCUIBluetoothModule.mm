@@ -1,13 +1,13 @@
 @interface CCUIBluetoothModule
-- (id)contentViewControllerForContext:(id)a3;
+- (id)contentViewControllerForContext:(id)context;
 @end
 
 @implementation CCUIBluetoothModule
 
-- (id)contentViewControllerForContext:(id)a3
+- (id)contentViewControllerForContext:(id)context
 {
-  v3 = [(CCUIBluetoothModule *)self contentModuleContext];
-  v4 = [[CCUIBluetoothModuleViewController alloc] initWithContentModuleContext:v3];
+  contentModuleContext = [(CCUIBluetoothModule *)self contentModuleContext];
+  v4 = [[CCUIBluetoothModuleViewController alloc] initWithContentModuleContext:contentModuleContext];
 
   return v4;
 }

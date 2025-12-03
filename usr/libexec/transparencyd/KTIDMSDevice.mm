@@ -1,39 +1,39 @@
 @interface KTIDMSDevice
-- (id)initWithAKRemoteDevice:(id)a3;
+- (id)initWithAKRemoteDevice:(id)device;
 @end
 
 @implementation KTIDMSDevice
 
-- (id)initWithAKRemoteDevice:(id)a3
+- (id)initWithAKRemoteDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v15.receiver = self;
   v15.super_class = KTIDMSDevice;
   v5 = [(KTIDMSDevice *)&v15 init];
   if (v5)
   {
-    v6 = [v4 machineId];
-    [(KTIDMSDevice *)v5 setDeviceID:v6];
+    machineId = [deviceCopy machineId];
+    [(KTIDMSDevice *)v5 setDeviceID:machineId];
 
-    v7 = [v4 name];
-    [(KTIDMSDevice *)v5 setName:v7];
+    name = [deviceCopy name];
+    [(KTIDMSDevice *)v5 setName:name];
 
-    v8 = [v4 model];
-    [(KTIDMSDevice *)v5 setModel:v8];
+    model = [deviceCopy model];
+    [(KTIDMSDevice *)v5 setModel:model];
 
-    v9 = [v4 operatingSystemVersion];
-    [(KTIDMSDevice *)v5 setOsVersion:v9];
+    operatingSystemVersion = [deviceCopy operatingSystemVersion];
+    [(KTIDMSDevice *)v5 setOsVersion:operatingSystemVersion];
 
-    v10 = [v4 buildNumber];
-    [(KTIDMSDevice *)v5 setBuild:v10];
+    buildNumber = [deviceCopy buildNumber];
+    [(KTIDMSDevice *)v5 setBuild:buildNumber];
 
-    v11 = [v4 serialNumber];
-    [(KTIDMSDevice *)v5 setSerial:v11];
+    serialNumber = [deviceCopy serialNumber];
+    [(KTIDMSDevice *)v5 setSerial:serialNumber];
 
     if (objc_opt_respondsToSelector())
     {
-      v12 = [v4 pushToken];
-      [(KTIDMSDevice *)v5 setPushToken:v12];
+      pushToken = [deviceCopy pushToken];
+      [(KTIDMSDevice *)v5 setPushToken:pushToken];
     }
 
     v13 = v5;

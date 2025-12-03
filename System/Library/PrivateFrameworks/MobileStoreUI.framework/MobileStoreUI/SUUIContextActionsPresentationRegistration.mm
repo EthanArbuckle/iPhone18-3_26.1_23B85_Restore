@@ -1,29 +1,29 @@
 @interface SUUIContextActionsPresentationRegistration
-- (BOOL)previewInteractionShouldBegin:(id)a3;
-- (SUUIContextActionsPresentationRegistration)initWithViewController:(id)a3 handler:(id)a4;
-- (void)_presentFromGestureRecognizer:(id)a3;
-- (void)cleanupPreviewInteraction:(id)a3;
+- (BOOL)previewInteractionShouldBegin:(id)begin;
+- (SUUIContextActionsPresentationRegistration)initWithViewController:(id)controller handler:(id)handler;
+- (void)_presentFromGestureRecognizer:(id)recognizer;
+- (void)cleanupPreviewInteraction:(id)interaction;
 - (void)dealloc;
-- (void)longPressGestureRecognizerTriggered:(id)a3;
-- (void)previewInteraction:(id)a3 didUpdatePreviewTransition:(double)a4 ended:(BOOL)a5;
-- (void)previewInteractionDidCancel:(id)a3;
-- (void)setLongPressGestureRecognizer:(id)a3;
+- (void)longPressGestureRecognizerTriggered:(id)triggered;
+- (void)previewInteraction:(id)interaction didUpdatePreviewTransition:(double)transition ended:(BOOL)ended;
+- (void)previewInteractionDidCancel:(id)cancel;
+- (void)setLongPressGestureRecognizer:(id)recognizer;
 @end
 
 @implementation SUUIContextActionsPresentationRegistration
 
-- (SUUIContextActionsPresentationRegistration)initWithViewController:(id)a3 handler:(id)a4
+- (SUUIContextActionsPresentationRegistration)initWithViewController:(id)controller handler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  controllerCopy = controller;
+  handlerCopy = handler;
   v14.receiver = self;
   v14.super_class = SUUIContextActionsPresentationRegistration;
   v9 = [(SUUIContextActionsPresentationRegistration *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_viewController, a3);
-    v11 = _Block_copy(v8);
+    objc_storeStrong(&v9->_viewController, controller);
+    v11 = _Block_copy(handlerCopy);
     handler = v10->_handler;
     v10->_handler = v11;
 
@@ -39,8 +39,8 @@
   longPressGestureRecognizer = self->_longPressGestureRecognizer;
   if (longPressGestureRecognizer)
   {
-    v4 = [(UILongPressGestureRecognizer *)longPressGestureRecognizer view];
-    [v4 removeGestureRecognizer:self->_longPressGestureRecognizer];
+    view = [(UILongPressGestureRecognizer *)longPressGestureRecognizer view];
+    [view removeGestureRecognizer:self->_longPressGestureRecognizer];
   }
 
   v5.receiver = self;
@@ -48,26 +48,26 @@
   [(SUUIContextActionsPresentationRegistration *)&v5 dealloc];
 }
 
-- (BOOL)previewInteractionShouldBegin:(id)a3
+- (BOOL)previewInteractionShouldBegin:(id)begin
 {
   v101 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 view];
-  v6 = [v5 traitCollection];
-  v7 = [v6 forceTouchCapability];
+  beginCopy = begin;
+  view = [beginCopy view];
+  traitCollection = [view traitCollection];
+  forceTouchCapability = [traitCollection forceTouchCapability];
 
-  if (v7 == 1)
+  if (forceTouchCapability == 1)
   {
     v8 = 0;
   }
 
   else
   {
-    v9 = [(SUUIContextActionsPresentationRegistration *)self viewController];
-    if (v9)
+    viewController = [(SUUIContextActionsPresentationRegistration *)self viewController];
+    if (viewController)
     {
       v10 = objc_alloc_init(MEMORY[0x277CBEB18]);
-      v73 = v5;
+      v73 = view;
       if (v73)
       {
         v11 = v73;
@@ -87,15 +87,15 @@
             [v10 addObject:v12];
           }
 
-          v13 = [v11 superview];
+          superview = [v11 superview];
 
-          v11 = v13;
+          v11 = superview;
         }
 
-        while (v13);
+        while (superview);
       }
 
-      v72 = v9;
+      v72 = viewController;
       v98 = 0u;
       v99 = 0u;
       v96 = 0u;
@@ -116,11 +116,11 @@
             }
 
             v19 = *(*(&v96 + 1) + 8 * i);
-            v20 = [v19 panGestureRecognizer];
-            [v20 setEnabled:0];
+            panGestureRecognizer = [v19 panGestureRecognizer];
+            [panGestureRecognizer setEnabled:0];
 
-            v21 = [v19 panGestureRecognizer];
-            [v21 setEnabled:1];
+            panGestureRecognizer2 = [v19 panGestureRecognizer];
+            [panGestureRecognizer2 setEnabled:1];
           }
 
           v16 = [v14 countByEnumeratingWithState:&v96 objects:v100 count:16];
@@ -129,32 +129,32 @@
         while (v16);
       }
 
-      v22 = [(SUUIContextActionsPresentationRegistration *)self handler];
-      v12 = (v22)[2](v22, self);
+      handler = [(SUUIContextActionsPresentationRegistration *)self handler];
+      v12 = (handler)[2](handler, self);
 
       if (v12)
       {
-        [v4 locationInCoordinateSpace:v73];
+        [beginCopy locationInCoordinateSpace:v73];
         v24 = v23;
         v26 = v25;
-        v9 = v72;
+        viewController = v72;
         v27 = [[SUUIContextActionsPresentationSource alloc] initWithViewController:v72];
         [v12 setPresentationSource:v27];
 
-        v28 = [v12 presentationSource];
-        [v28 setSourceView:v73];
+        presentationSource = [v12 presentationSource];
+        [presentationSource setSourceView:v73];
 
         v29 = *MEMORY[0x277CBF3A8];
         v30 = *(MEMORY[0x277CBF3A8] + 8);
-        v31 = [v12 presentationSource];
-        [v31 setSourceRect:{v24, v26, v29, v30}];
+        presentationSource2 = [v12 presentationSource];
+        [presentationSource2 setSourceRect:{v24, v26, v29, v30}];
 
         v32 = [[SUUIContextActionsViewController alloc] initWithConfiguration:v12];
         [(SUUIContextActionsViewController *)v32 setOrbPresentation:1];
-        v33 = [(SUUIContextActionsPresentationRegistration *)self longPressGestureRecognizer];
-        [(SUUIContextActionsViewController *)v32 setSystemProvidedGestureRecognzier:v33];
+        longPressGestureRecognizer = [(SUUIContextActionsPresentationRegistration *)self longPressGestureRecognizer];
+        [(SUUIContextActionsViewController *)v32 setSystemProvidedGestureRecognzier:longPressGestureRecognizer];
 
-        v34 = [v4 valueForKey:@"touchObservingGestureRecognizer"];
+        v34 = [beginCopy valueForKey:@"touchObservingGestureRecognizer"];
         v35 = v34;
         if (v34)
         {
@@ -172,29 +172,29 @@
         v95 = v37;
         [v36 _performWithoutDeferringTransitions:v93];
         [(SUUIContextActionsPresentationRegistration *)self setOrbContextActionsViewController:v37];
-        v38 = [(SUUIContextActionsViewController *)v37 transitionPresentationController];
-        v39 = v38;
-        v8 = v38 != 0;
-        if (v38)
+        transitionPresentationController = [(SUUIContextActionsViewController *)v37 transitionPresentationController];
+        v39 = transitionPresentationController;
+        v8 = transitionPresentationController != 0;
+        if (transitionPresentationController)
         {
           v70 = v35;
           v71 = v37;
-          v40 = [v38 backgroundView];
+          backgroundView = [transitionPresentationController backgroundView];
           v41 = [v73 snapshotViewAfterScreenUpdates:1];
           v69 = v39;
-          v42 = [v39 containerView];
-          v43 = v42;
-          if (v41 && v42)
+          containerView = [v39 containerView];
+          v43 = containerView;
+          if (v41 && containerView)
           {
-            [v42 insertSubview:v41 aboveSubview:v40];
+            [containerView insertSubview:v41 aboveSubview:backgroundView];
             [v73 bounds];
             [v73 convertRect:v43 toView:?];
             [v41 setFrame:?];
             [v73 setHidden:1];
           }
 
-          v44 = [MEMORY[0x277D75348] clearColor];
-          [v40 setBackgroundColor:v44];
+          clearColor = [MEMORY[0x277D75348] clearColor];
+          [backgroundView setBackgroundColor:clearColor];
 
           v45 = [SUUIContextActionsBlurEffect effectWithStyle:1];
           v68 = v43;
@@ -203,7 +203,7 @@
           v89[1] = 3221225472;
           v89[2] = __76__SUUIContextActionsPresentationRegistration_previewInteractionShouldBegin___block_invoke_2;
           v89[3] = &unk_2798F5BC0;
-          v66 = v40;
+          v66 = backgroundView;
           v90 = v66;
           v91 = v45;
           v47 = v41;
@@ -212,32 +212,32 @@
           v48 = [v46 initWithDuration:3 curve:v89 animations:1.0];
           [(SUUIContextActionsPresentationRegistration *)self setPreviewPhasePropertyAnimator:v48];
 
-          v49 = [(SUUIContextActionsViewController *)v71 view];
+          view2 = [(SUUIContextActionsViewController *)v71 view];
           [v73 bounds];
           Width = CGRectGetWidth(v102);
-          [v49 bounds];
+          [view2 bounds];
           v51 = fmax(Width / CGRectGetWidth(v103), 0.5);
           [v73 bounds];
           Height = CGRectGetHeight(v104);
-          [v49 bounds];
+          [view2 bounds];
           v53 = CGRectGetHeight(v105);
           memset(&v88, 0, sizeof(v88));
           CGAffineTransformMakeScale(&v88, v51, fmax(Height / v53, 0.5));
           memset(&v87, 0, sizeof(v87));
           [v47 frame];
           MidX = CGRectGetMidX(v106);
-          [v49 frame];
+          [view2 frame];
           v55 = MidX - CGRectGetMidX(v107);
           [v47 frame];
           MidY = CGRectGetMidY(v108);
-          [v49 frame];
+          [view2 frame];
           v57 = CGRectGetMidY(v109);
           CGAffineTransformMakeTranslation(&v87, v55, MidY - v57);
           t1 = v88;
           t2 = v87;
           CGAffineTransformConcat(&v86, &t1, &t2);
           v88 = v86;
-          [v49 setTransform:&v86];
+          [view2 setTransform:&v86];
           v58 = objc_alloc(MEMORY[0x277D75D40]);
           v80[0] = MEMORY[0x277D85DD0];
           v80[1] = 3221225472;
@@ -245,7 +245,7 @@
           v80[3] = &unk_2798F5BC0;
           v81 = v47;
           v82 = v66;
-          v59 = v49;
+          v59 = view2;
           v83 = v59;
           v74 = v66;
           v60 = v47;
@@ -266,7 +266,7 @@
           v75[2] = __76__SUUIContextActionsPresentationRegistration_previewInteractionShouldBegin___block_invoke_5;
           v75[3] = &unk_2798F8AD0;
           v75[4] = self;
-          v76 = v4;
+          v76 = beginCopy;
           v64 = [v63 scheduledTimerWithTimeInterval:0 repeats:v75 block:1.0];
           [(SUUIContextActionsPresentationRegistration *)self setPreviewInteractionTimeout:v64];
 
@@ -274,21 +274,21 @@
           v37 = v71;
 
           v39 = v69;
-          v9 = v72;
+          viewController = v72;
           v35 = v70;
         }
 
         else
         {
           NSLog(&cfstr_Uipreviewinter.isa);
-          [(SUUIContextActionsPresentationRegistration *)self cleanupPreviewInteraction:v4];
+          [(SUUIContextActionsPresentationRegistration *)self cleanupPreviewInteraction:beginCopy];
         }
       }
 
       else
       {
         v8 = 0;
-        v9 = v72;
+        viewController = v72;
       }
 
 LABEL_30:
@@ -410,51 +410,51 @@ void __76__SUUIContextActionsPresentationRegistration_previewInteractionShouldBe
   }
 }
 
-- (void)previewInteraction:(id)a3 didUpdatePreviewTransition:(double)a4 ended:(BOOL)a5
+- (void)previewInteraction:(id)interaction didUpdatePreviewTransition:(double)transition ended:(BOOL)ended
 {
-  v5 = a5;
-  v21 = a3;
+  endedCopy = ended;
+  interactionCopy = interaction;
   NSLog(&cfstr_Uipreviewinter_1.isa);
-  v8 = a4 * a4;
-  v9 = [(SUUIContextActionsPresentationRegistration *)self previewPhasePropertyAnimator];
-  [v9 fractionComplete];
+  v8 = transition * transition;
+  previewPhasePropertyAnimator = [(SUUIContextActionsPresentationRegistration *)self previewPhasePropertyAnimator];
+  [previewPhasePropertyAnimator fractionComplete];
   v11 = v10;
 
   if (v8 < 1.0 || v11 != 0.0)
   {
-    v12 = [(SUUIContextActionsPresentationRegistration *)self previewPhasePropertyAnimator];
-    [v12 setFractionComplete:v8];
+    previewPhasePropertyAnimator2 = [(SUUIContextActionsPresentationRegistration *)self previewPhasePropertyAnimator];
+    [previewPhasePropertyAnimator2 setFractionComplete:v8];
   }
 
-  if (v5)
+  if (endedCopy)
   {
     [(SUUIContextActionsPresentationRegistration *)self setPreviewInteractionDidEnd:1];
-    v13 = [(SUUIContextActionsPresentationRegistration *)self orbContextActionsViewController];
-    v14 = [v13 view];
-    [v14 setUserInteractionEnabled:1];
+    orbContextActionsViewController = [(SUUIContextActionsPresentationRegistration *)self orbContextActionsViewController];
+    view = [orbContextActionsViewController view];
+    [view setUserInteractionEnabled:1];
 
-    v15 = [(SUUIContextActionsPresentationRegistration *)self orbContextActionsViewController];
-    v16 = [v15 view];
-    [v16 setHidden:0];
+    orbContextActionsViewController2 = [(SUUIContextActionsPresentationRegistration *)self orbContextActionsViewController];
+    view2 = [orbContextActionsViewController2 view];
+    [view2 setHidden:0];
 
-    v17 = [(SUUIContextActionsPresentationRegistration *)self commitPhasePropertyAnimator];
-    [v17 startAnimation];
+    commitPhasePropertyAnimator = [(SUUIContextActionsPresentationRegistration *)self commitPhasePropertyAnimator];
+    [commitPhasePropertyAnimator startAnimation];
 
-    v18 = [(SUUIContextActionsPresentationRegistration *)self previewPhasePropertyAnimator];
-    [v18 pauseAnimation];
+    previewPhasePropertyAnimator3 = [(SUUIContextActionsPresentationRegistration *)self previewPhasePropertyAnimator];
+    [previewPhasePropertyAnimator3 pauseAnimation];
 
     v19 = [objc_alloc(MEMORY[0x277D75A60]) initWithDampingRatio:1.0];
-    v20 = [(SUUIContextActionsPresentationRegistration *)self previewPhasePropertyAnimator];
-    [v20 continueAnimationWithTimingParameters:v19 durationFactor:0.400000006];
+    previewPhasePropertyAnimator4 = [(SUUIContextActionsPresentationRegistration *)self previewPhasePropertyAnimator];
+    [previewPhasePropertyAnimator4 continueAnimationWithTimingParameters:v19 durationFactor:0.400000006];
 
     [(SUUIContextActionsPresentationRegistration *)self setOrbContextActionsViewController:0];
-    [(SUUIContextActionsPresentationRegistration *)self cleanupPreviewInteraction:v21];
+    [(SUUIContextActionsPresentationRegistration *)self cleanupPreviewInteraction:interactionCopy];
   }
 }
 
-- (void)previewInteractionDidCancel:(id)a3
+- (void)previewInteractionDidCancel:(id)cancel
 {
-  v4 = a3;
+  cancelCopy = cancel;
   if ([(SUUIContextActionsPresentationRegistration *)self previewInteractionDidEnd])
   {
     NSLog(&cfstr_Uipreviewinter_2.isa);
@@ -463,87 +463,87 @@ void __76__SUUIContextActionsPresentationRegistration_previewInteractionShouldBe
   else
   {
     NSLog(&cfstr_Uipreviewinter_3.isa);
-    [(SUUIContextActionsPresentationRegistration *)self cleanupPreviewInteraction:v4];
+    [(SUUIContextActionsPresentationRegistration *)self cleanupPreviewInteraction:cancelCopy];
     [(SUUIContextActionsPresentationRegistration *)self setOrbContextActionsViewController:0];
     [(SUUIContextActionsPresentationRegistration *)self setCommitPhasePropertyAnimator:0];
     [(SUUIContextActionsPresentationRegistration *)self setPreviewPhasePropertyAnimator:0];
   }
 }
 
-- (void)cleanupPreviewInteraction:(id)a3
+- (void)cleanupPreviewInteraction:(id)interaction
 {
-  v8 = a3;
-  v4 = [(SUUIContextActionsPresentationRegistration *)self previewInteractionTimeout];
-  [v4 invalidate];
+  interactionCopy = interaction;
+  previewInteractionTimeout = [(SUUIContextActionsPresentationRegistration *)self previewInteractionTimeout];
+  [previewInteractionTimeout invalidate];
 
   [(SUUIContextActionsPresentationRegistration *)self setPreviewInteractionTimeout:0];
-  v5 = [v8 valueForKey:@"touchObservingGestureRecognizer"];
+  v5 = [interactionCopy valueForKey:@"touchObservingGestureRecognizer"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     [v5 setCancelsTouchesInView:0];
   }
 
-  v6 = [(SUUIContextActionsPresentationRegistration *)self orbContextActionsViewController];
-  [v6 dismissViewControllerAnimated:0 completion:0];
+  orbContextActionsViewController = [(SUUIContextActionsPresentationRegistration *)self orbContextActionsViewController];
+  [orbContextActionsViewController dismissViewControllerAnimated:0 completion:0];
 
-  v7 = [v8 view];
-  [v7 setHidden:0];
+  view = [interactionCopy view];
+  [view setHidden:0];
 }
 
-- (void)longPressGestureRecognizerTriggered:(id)a3
+- (void)longPressGestureRecognizerTriggered:(id)triggered
 {
-  v7 = a3;
-  if ([v7 state] == 1)
+  triggeredCopy = triggered;
+  if ([triggeredCopy state] == 1)
   {
-    v4 = [v7 view];
-    v5 = [v4 traitCollection];
-    v6 = [v5 forceTouchCapability];
+    view = [triggeredCopy view];
+    traitCollection = [view traitCollection];
+    forceTouchCapability = [traitCollection forceTouchCapability];
 
-    if (v6 != 2)
+    if (forceTouchCapability != 2)
     {
-      [(SUUIContextActionsPresentationRegistration *)self _presentFromGestureRecognizer:v7];
+      [(SUUIContextActionsPresentationRegistration *)self _presentFromGestureRecognizer:triggeredCopy];
     }
   }
 }
 
-- (void)setLongPressGestureRecognizer:(id)a3
+- (void)setLongPressGestureRecognizer:(id)recognizer
 {
-  v6 = a3;
+  recognizerCopy = recognizer;
   [(UILongPressGestureRecognizer *)self->_longPressGestureRecognizer removeTarget:self action:sel_longPressGestureRecognizerTriggered_];
-  objc_storeStrong(&self->_longPressGestureRecognizer, a3);
-  v5 = v6;
-  if (v6)
+  objc_storeStrong(&self->_longPressGestureRecognizer, recognizer);
+  v5 = recognizerCopy;
+  if (recognizerCopy)
   {
-    [v6 addTarget:self action:sel_longPressGestureRecognizerTriggered_];
-    v5 = v6;
+    [recognizerCopy addTarget:self action:sel_longPressGestureRecognizerTriggered_];
+    v5 = recognizerCopy;
   }
 }
 
-- (void)_presentFromGestureRecognizer:(id)a3
+- (void)_presentFromGestureRecognizer:(id)recognizer
 {
-  v13 = a3;
-  v4 = [(SUUIContextActionsPresentationRegistration *)self handler];
-  v5 = (v4)[2](v4, self);
+  recognizerCopy = recognizer;
+  handler = [(SUUIContextActionsPresentationRegistration *)self handler];
+  v5 = (handler)[2](handler, self);
 
   if (v5)
   {
     v6 = [SUUIContextActionsPresentationSource alloc];
-    v7 = [(SUUIContextActionsPresentationRegistration *)self viewController];
-    v8 = [(SUUIContextActionsPresentationSource *)v6 initWithViewController:v7];
+    viewController = [(SUUIContextActionsPresentationRegistration *)self viewController];
+    v8 = [(SUUIContextActionsPresentationSource *)v6 initWithViewController:viewController];
 
-    v9 = [v13 view];
-    [(SUUIContextActionsPresentationSource *)v8 setSourceView:v9];
+    view = [recognizerCopy view];
+    [(SUUIContextActionsPresentationSource *)v8 setSourceView:view];
 
-    v10 = [v13 view];
-    [v10 defaultPresentationPosition];
+    view2 = [recognizerCopy view];
+    [view2 defaultPresentationPosition];
     [(SUUIContextActionsPresentationSource *)v8 setSourceRect:?];
 
     [v5 setPresentationSource:v8];
     v11 = [[SUUIContextActionsViewController alloc] initWithConfiguration:v5];
-    [(SUUIContextActionsViewController *)v11 setSystemProvidedGestureRecognzier:v13];
-    v12 = [v5 presentationSource];
-    [v12 presentViewController:v11 permittedArrowDirections:12 animated:1];
+    [(SUUIContextActionsViewController *)v11 setSystemProvidedGestureRecognzier:recognizerCopy];
+    presentationSource = [v5 presentationSource];
+    [presentationSource presentViewController:v11 permittedArrowDirections:12 animated:1];
   }
 }
 

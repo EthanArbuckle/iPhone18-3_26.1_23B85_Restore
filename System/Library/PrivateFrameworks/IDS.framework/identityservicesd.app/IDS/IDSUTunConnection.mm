@@ -1,114 +1,114 @@
 @interface IDSUTunConnection
 - (BOOL)_isWiProxPeer;
-- (BOOL)_messageIsAllowedToSendMessageOnTopic:(id)a3;
-- (BOOL)_nonBTAllowedForClientID:(id)a3;
+- (BOOL)_messageIsAllowedToSendMessageOnTopic:(id)topic;
+- (BOOL)_nonBTAllowedForClientID:(id)d;
 - (BOOL)_nonThreadSafeIsConnected;
-- (BOOL)_performFallbackIfNecessary:(id)a3;
-- (BOOL)_resourceTransferUUIDAlreaadyReceived:(id)a3;
-- (BOOL)_shouldAWDLogMessage:(id)a3;
-- (BOOL)_storeIncomingClassADataMesageIfNeeded:(id)a3 topic:(id)a4 sequenceNumber:(unsigned int)a5;
-- (BOOL)_storeIncomingClassCDataMessageIfNeeded:(id)a3 topic:(id)a4 sequenceNumber:(unsigned int)a5;
-- (BOOL)checkServiceCompability:(id)a3 localMessage:(id)a4;
-- (BOOL)hasSpaceForMessagesWithDataProtectionClass:(unsigned int)a3;
+- (BOOL)_performFallbackIfNecessary:(id)necessary;
+- (BOOL)_resourceTransferUUIDAlreaadyReceived:(id)received;
+- (BOOL)_shouldAWDLogMessage:(id)message;
+- (BOOL)_storeIncomingClassADataMesageIfNeeded:(id)needed topic:(id)topic sequenceNumber:(unsigned int)number;
+- (BOOL)_storeIncomingClassCDataMessageIfNeeded:(id)needed topic:(id)topic sequenceNumber:(unsigned int)number;
+- (BOOL)checkServiceCompability:(id)compability localMessage:(id)message;
+- (BOOL)hasSpaceForMessagesWithDataProtectionClass:(unsigned int)class;
 - (BOOL)isConnected;
 - (BOOL)isIdle;
-- (BOOL)supportsMessageOfType:(int64_t)a3;
-- (IDSUTunConnection)initWithIdentifier:(id)a3 socketPriority:(int64_t)a4 btUUID:(id)a5 uniqueID:(id)a6 incomingServiceMap:(id)a7 outgoingServiceMap:(id)a8 isCloudEnabled:(BOOL)a9 shouldUseIPsecLink:(BOOL)a10;
+- (BOOL)supportsMessageOfType:(int64_t)type;
+- (IDSUTunConnection)initWithIdentifier:(id)identifier socketPriority:(int64_t)priority btUUID:(id)d uniqueID:(id)iD incomingServiceMap:(id)map outgoingServiceMap:(id)serviceMap isCloudEnabled:(BOOL)enabled shouldUseIPsecLink:(BOOL)self0;
 - (IDSUTunConnectionDelegate)delegate;
 - (NSDictionary)queueStatistics;
 - (NSDictionary)sendingMessageStatistics;
 - (NSString)description;
-- (double)_fallbackTimeoutForService:(id)a3;
-- (double)_nanoConnectedFallbackTimeoutForService:(id)a3;
-- (double)_nanoDisconnectedFallbackTimeoutForService:(id)a3;
-- (id)_decryptOTREncrtypedMessage:(id)a3;
-- (id)_encryptDataWithOTR:(id)a3 token:(id)a4;
+- (double)_fallbackTimeoutForService:(id)service;
+- (double)_nanoConnectedFallbackTimeoutForService:(id)service;
+- (double)_nanoDisconnectedFallbackTimeoutForService:(id)service;
+- (id)_decryptOTREncrtypedMessage:(id)message;
+- (id)_encryptDataWithOTR:(id)r token:(id)token;
 - (id)_nonThreadSafeSocketOptions;
-- (id)_sendingMessageStatisticsForClass:(unsigned int)a3;
-- (int64_t)_socketToNiceCommand:(unsigned __int8)a3;
+- (id)_sendingMessageStatisticsForClass:(unsigned int)class;
+- (int64_t)_socketToNiceCommand:(unsigned __int8)command;
 - (unint64_t)_currentLink;
-- (unint64_t)_inflightMessageCountForClass:(unsigned int)a3;
-- (unint64_t)_pendingOutgoingBytesForClass:(unsigned int)a3;
-- (unint64_t)_sendingMessageCountForClass:(unsigned int)a3;
-- (unint64_t)_sendingMessageCountForType:(int64_t)a3;
+- (unint64_t)_inflightMessageCountForClass:(unsigned int)class;
+- (unint64_t)_pendingOutgoingBytesForClass:(unsigned int)class;
+- (unint64_t)_sendingMessageCountForClass:(unsigned int)class;
+- (unint64_t)_sendingMessageCountForType:(int64_t)type;
 - (unsigned)_calculateRandomDelayForCloudMessagingRequest;
-- (void)_addMessageSize:(unint64_t)a3 forTopic:(id)a4 direction:(unsigned __int8)a5 dataProtectionClass:(unsigned int)a6 isResource:(BOOL)a7;
-- (void)_addStatsFromDict:(id)a3 toAggregate:(id)a4;
+- (void)_addMessageSize:(unint64_t)size forTopic:(id)topic direction:(unsigned __int8)direction dataProtectionClass:(unsigned int)class isResource:(BOOL)resource;
+- (void)_addStatsFromDict:(id)dict toAggregate:(id)aggregate;
 - (void)_assertQuickRelayForCloudMessaging;
 - (void)_checkAndStartConnection;
-- (void)_clearLastFallbackWithReason:(id)a3;
-- (void)_clearSendingPowerAssertionWithReason:(id)a3;
+- (void)_clearLastFallbackWithReason:(id)reason;
+- (void)_clearSendingPowerAssertionWithReason:(id)reason;
 - (void)_connectivityChanged;
-- (void)_decryptPublicKeyEncryptedMessage:(id)a3 completionBlock:(id)a4;
+- (void)_decryptPublicKeyEncryptedMessage:(id)message completionBlock:(id)block;
 - (void)_dequeueMessages;
-- (void)_dequeueMessagesTimerDidFire:(id)a3;
-- (void)_dequeueTimerFiredOnMain:(id)a3;
+- (void)_dequeueMessagesTimerDidFire:(id)fire;
+- (void)_dequeueTimerFiredOnMain:(id)main;
 - (void)_dumpLogs;
 - (void)_fallbackTimerFired;
 - (void)_fallbackTimerFiredOnMain;
-- (void)_flushMessagesAll:(BOOL)a3 response:(int64_t)a4;
+- (void)_flushMessagesAll:(BOOL)all response:(int64_t)response;
 - (void)_handleBecomingEmpty;
-- (void)_handleBecomingEmptyForDataProtectionClass:(unsigned int)a3;
+- (void)_handleBecomingEmptyForDataProtectionClass:(unsigned int)class;
 - (void)_handleBecomingEmptyOfCloudMessages;
-- (void)_handleOTRDecryptionError:(id)a3;
-- (void)_handleOTRDecryptionSuccess:(id)a3;
+- (void)_handleOTRDecryptionError:(id)error;
+- (void)_handleOTRDecryptionSuccess:(id)success;
 - (void)_invalidateMessagesDequeueTimer;
-- (void)_messageTimedOut:(id)a3 localMessage:(id)a4;
+- (void)_messageTimedOut:(id)out localMessage:(id)message;
 - (void)_nonThreadSafeStopConnection;
-- (void)_noteReceivedResourceTransferUUID:(id)a3;
-- (void)_optionallyDecryptMessage:(id)a3 completionBlock:(id)a4;
-- (void)_processDecryptedMessage:(id)a3;
-- (void)_processIncomingDataMessage:(id)a3;
-- (void)_processIncomingResourceTransferMessage:(id)a3 messageUUID:(id)a4 streamID:(unsigned __int16)a5 topic:(id)a6 wantsAppAck:(BOOL)a7 expectsPeerResponse:(BOOL)a8 peerResponseIdentifier:(id)a9 isDefaultPairedDevice:(BOOL)a10 didWakeHint:(BOOL)a11;
-- (void)_processMessage:(id)a3 withSequenceNumberBlock:(id)a4;
-- (void)_removeMessageFromStatistics:(id)a3;
-- (void)_removeSocketPairMessage:(id)a3 localMessage:(id)a4 reason:(id)a5 detailedError:(id)a6 responseCode:(int64_t)a7;
-- (void)_requeueMessages:(id)a3;
-- (void)_requeueSendingMessage:(id)a3;
-- (void)_resetFallbackTimeout:(double)a3 useNextFallback:(BOOL)a4;
-- (void)_resetTimeout:(id)a3;
-- (void)_sendAckForMessage:(id)a3;
-- (void)_sendEncryptedMessage:(id)a3;
-- (void)_sendExpiredAckForMessage:(id)a3;
-- (void)_sendOTREncryptedMessage:(id)a3 useEncryption:(BOOL)a4 streamID:(unsigned __int16)a5 forPriority:(int64_t)a6 flag:(int)a7 token:(id)a8;
-- (void)_sendOTREncryptionQueue:(id)a3 streamID:(unsigned __int16)a4;
-- (void)_sendPublicKeyEncryptedMessage:(id)a3;
-- (void)_sendSocketMessage:(id)a3 ignoreSequenceNumber:(BOOL)a4;
-- (void)_startAndSetupSocketPairConnection:(IDSUTunConnection *)self capabilityFlags:(SEL)a2 instanceID:(id)a3 serviceMinCompatibilityVersion:(unint64_t)a4 socketDescriptor:(unsigned __int8 *)(a5;
+- (void)_noteReceivedResourceTransferUUID:(id)d;
+- (void)_optionallyDecryptMessage:(id)message completionBlock:(id)block;
+- (void)_processDecryptedMessage:(id)message;
+- (void)_processIncomingDataMessage:(id)message;
+- (void)_processIncomingResourceTransferMessage:(id)message messageUUID:(id)d streamID:(unsigned __int16)iD topic:(id)topic wantsAppAck:(BOOL)ack expectsPeerResponse:(BOOL)response peerResponseIdentifier:(id)identifier isDefaultPairedDevice:(BOOL)self0 didWakeHint:(BOOL)self1;
+- (void)_processMessage:(id)message withSequenceNumberBlock:(id)block;
+- (void)_removeMessageFromStatistics:(id)statistics;
+- (void)_removeSocketPairMessage:(id)message localMessage:(id)localMessage reason:(id)reason detailedError:(id)error responseCode:(int64_t)code;
+- (void)_requeueMessages:(id)messages;
+- (void)_requeueSendingMessage:(id)message;
+- (void)_resetFallbackTimeout:(double)timeout useNextFallback:(BOOL)fallback;
+- (void)_resetTimeout:(id)timeout;
+- (void)_sendAckForMessage:(id)message;
+- (void)_sendEncryptedMessage:(id)message;
+- (void)_sendExpiredAckForMessage:(id)message;
+- (void)_sendOTREncryptedMessage:(id)message useEncryption:(BOOL)encryption streamID:(unsigned __int16)d forPriority:(int64_t)priority flag:(int)flag token:(id)token;
+- (void)_sendOTREncryptionQueue:(id)queue streamID:(unsigned __int16)d;
+- (void)_sendPublicKeyEncryptedMessage:(id)message;
+- (void)_sendSocketMessage:(id)message ignoreSequenceNumber:(BOOL)number;
+- (void)_startAndSetupSocketPairConnection:(IDSUTunConnection *)self capabilityFlags:(SEL)flags instanceID:(id)d serviceMinCompatibilityVersion:(unint64_t)version socketDescriptor:(unsigned __int8 *)(a5;
 - (void)_startConnection;
 - (void)_startConnectionForContinuityPeer;
 - (void)_startMessagesDequeueMessagesTimer;
-- (void)_startNWConnectionForIPsecCase:(id)a3 capabilityFlags:(unint64_t)a4 instanceID:(unsigned __int8 *)(a5 serviceMinCompatibilityVersion:serviceConnection:trafficClass:;
+- (void)_startNWConnectionForIPsecCase:(id)case capabilityFlags:(unint64_t)flags instanceID:(unsigned __int8 *)(a5 serviceMinCompatibilityVersion:serviceConnection:trafficClass:;
 - (void)_timeoutTimerFired;
 - (void)_timeoutTimerFiredOnMain;
-- (void)_updateDictionary:(id)a3 addMessageSize:(int64_t)a4 addMessageCount:(int64_t)a5;
-- (void)admissionPolicyChangedForTopic:(id)a3 allowed:(BOOL)a4;
-- (void)cancelMessageID:(id)a3;
-- (void)classStorageBecameAvailable:(id)a3;
+- (void)_updateDictionary:(id)dictionary addMessageSize:(int64_t)size addMessageCount:(int64_t)count;
+- (void)admissionPolicyChangedForTopic:(id)topic allowed:(BOOL)allowed;
+- (void)cancelMessageID:(id)d;
+- (void)classStorageBecameAvailable:(id)available;
 - (void)clearStats;
-- (void)connection:(id)a3 didReceiveDataMessage:(id)a4;
-- (void)connectionBecameEmpty:(id)a3;
+- (void)connection:(id)connection didReceiveDataMessage:(id)message;
+- (void)connectionBecameEmpty:(id)empty;
 - (void)connectionDidClose;
-- (void)connectionDidClose:(id)a3;
-- (void)connectionDidReachInFlightMessageLowWaterMark:(id)a3;
-- (void)connectionDidReceiveBytes:(id)a3;
+- (void)connectionDidClose:(id)close;
+- (void)connectionDidReachInFlightMessageLowWaterMark:(id)mark;
+- (void)connectionDidReceiveBytes:(id)bytes;
 - (void)dealloc;
-- (void)didReceiveDataMessage:(id)a3;
+- (void)didReceiveDataMessage:(id)message;
 - (void)dropDisallowedMessages;
-- (void)flushAllMessagesForReason:(int64_t)a3;
-- (void)forceOTRNegotiation:(id)a3 priority:(int64_t)a4 completionBlock:(id)a5;
-- (void)handleOTRNegotiationComplete:(id)a3;
-- (void)handleOTRNegotiationTimeout:(id)a3;
+- (void)flushAllMessagesForReason:(int64_t)reason;
+- (void)forceOTRNegotiation:(id)negotiation priority:(int64_t)priority completionBlock:(id)block;
+- (void)handleOTRNegotiationComplete:(id)complete;
+- (void)handleOTRNegotiationTimeout:(id)timeout;
 - (void)invalidateTimeoutTimer;
-- (void)kickProgressBlockForMessageID:(id)a3;
+- (void)kickProgressBlockForMessageID:(id)d;
 - (void)resumeConnectivity;
 - (void)retryWaitingMessages;
-- (void)sendAckForMessageWithSequenceNumber:(unsigned int)a3;
-- (void)sendMessage:(id)a3;
-- (void)setDeviceBTUUID:(id)a3;
-- (void)setEnableOTR:(BOOL)a3;
-- (void)setEnabled:(BOOL)a3 withReason:(id)a4;
-- (void)setIsMagnetIndicatingPeerIsAwake:(BOOL)a3;
+- (void)sendAckForMessageWithSequenceNumber:(unsigned int)number;
+- (void)sendMessage:(id)message;
+- (void)setDeviceBTUUID:(id)d;
+- (void)setEnableOTR:(BOOL)r;
+- (void)setEnabled:(BOOL)enabled withReason:(id)reason;
+- (void)setIsMagnetIndicatingPeerIsAwake:(BOOL)awake;
 - (void)trafficClassesChanged;
 @end
 
@@ -133,15 +133,15 @@
     [(IDSUTunConnection *)self _handleBecomingEmptyOfCloudMessages];
   }
 
-  v4 = [(IDSSocketPairConnectionProtocol *)self->_socketConnection inFlightMessages];
-  v5 = [v4 count];
+  inFlightMessages = [(IDSSocketPairConnectionProtocol *)self->_socketConnection inFlightMessages];
+  v5 = [inFlightMessages count];
   if (v5 >= 7)
   {
     v6 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412802;
-      v154 = self;
+      selfCopy10 = self;
       v155 = 2048;
       *v156 = v5;
       *&v156[8] = 1024;
@@ -173,22 +173,22 @@
   v151[2] = sub_10055A4C8;
   v10 = v151[3] = &unk_100BE0328;
   v152 = v10;
-  [v4 enumerateObjectsUsingBlock:v151];
-  v11 = [(NSMutableDictionary *)self->_tokenToOTREncryptionQueue allValues];
+  [inFlightMessages enumerateObjectsUsingBlock:v151];
+  allValues = [(NSMutableDictionary *)self->_tokenToOTREncryptionQueue allValues];
   v149[0] = _NSConcreteStackBlock;
   v149[1] = 3221225472;
   v149[2] = sub_100018AE8;
   v149[3] = &unk_100BE0350;
   v12 = v10;
   v150 = v12;
-  [v11 enumerateObjectsUsingBlock:v149];
+  [allValues enumerateObjectsUsingBlock:v149];
   v13 = +[IDSFoundationLog UTunConnection];
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
     identifier = self->_identifier;
     v15 = [(IDSLocalDeliveryQueue *)self->_deliveryQueue count];
     *buf = 138412802;
-    v154 = self;
+    selfCopy10 = self;
     v155 = 2112;
     *v156 = identifier;
     *&v156[8] = 2048;
@@ -229,7 +229,7 @@
       v19 = [(IDSLocalDeliveryQueue *)self->_deliveryQueue count];
       v20 = @"NO";
       *buf = 138412802;
-      v154 = self;
+      selfCopy10 = self;
       if (isCloudEnabled)
       {
         v20 = @"YES";
@@ -248,7 +248,7 @@
       v22 = self->_isCloudEnabled ? @"YES" : @"NO";
       v105 = v22;
       v106 = [(IDSLocalDeliveryQueue *)self->_deliveryQueue count];
-      v103 = self;
+      selfCopy11 = self;
       _IDSLogTransport();
       if (_IDSShouldLog())
       {
@@ -260,12 +260,12 @@
         v23 = [(IDSLocalDeliveryQueue *)self->_deliveryQueue count:self];
         v105 = v21;
         v106 = v23;
-        v103 = self;
+        selfCopy11 = self;
         _IDSLogV();
       }
     }
 
-    if ([(IDSLocalDeliveryQueue *)self->_deliveryQueue count:v103])
+    if ([(IDSLocalDeliveryQueue *)self->_deliveryQueue count:selfCopy11])
     {
       [(IDSUTunConnection *)self _assertQuickRelayForCloudMessaging];
     }
@@ -273,23 +273,23 @@
 
   if (self->_shouldUseServiceConnector)
   {
-    v24 = [(IDSUTunConnection *)self _UTunDeliveryController];
-    v25 = [v24 isTerminusConnected];
+    _UTunDeliveryController = [(IDSUTunConnection *)self _UTunDeliveryController];
+    isTerminusConnected = [_UTunDeliveryController isTerminusConnected];
   }
 
   else
   {
-    v25 = 1;
+    isTerminusConnected = 1;
   }
 
-  if (![(IDSUTunConnection *)self isConnected]|| ((self->_isCloudEnabled | v25) & 1) == 0)
+  if (![(IDSUTunConnection *)self isConnected]|| ((self->_isCloudEnabled | isTerminusConnected) & 1) == 0)
   {
     v100 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v100, OS_LOG_TYPE_DEFAULT))
     {
       v101 = self->_identifier;
       *buf = 138412290;
-      v154 = v101;
+      selfCopy10 = v101;
       _os_log_impl(&_mh_execute_header, v100, OS_LOG_TYPE_DEFAULT, "%@ is not available, waiting.", buf, 0xCu);
     }
 
@@ -313,7 +313,7 @@
     v138 = v26;
     context = objc_autoreleasePoolPush();
     v27 = [(IDSLocalDeliveryQueue *)self->_deliveryQueue nextSocketPairMessageNotOnServices:v12];
-    v28 = [(IDSUTunConnection *)v27 context];
+    context = [(IDSUTunConnection *)v27 context];
     if (!v27)
     {
       if (![(NSMutableArray *)self->_sendingMessages count])
@@ -327,17 +327,17 @@
     v29 = 0;
     while (1)
     {
-      v30 = [v28 topic];
+      topic = [context topic];
 
-      if (![(IDSUTunConnection *)self _messageIsAllowedToSendMessageOnTopic:v30])
+      if (![(IDSUTunConnection *)self _messageIsAllowedToSendMessageOnTopic:topic])
       {
-        [v28 setDeniedToSend:1];
+        [context setDeniedToSend:1];
         v31 = OSLogHandleForTransportCategory();
         if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
         {
-          v32 = [v28 messageUUID];
+          messageUUID = [context messageUUID];
           *buf = 138412290;
-          v154 = v32;
+          selfCopy10 = messageUUID;
           _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_DEFAULT, "Message with guid %@ not allowed due to its traffic class", buf, 0xCu);
         }
 
@@ -345,12 +345,12 @@
         {
           if (_IDSShouldLogTransport())
           {
-            v103 = [v28 messageUUID];
+            selfCopy11 = [context messageUUID];
             _IDSLogTransport();
 
             if (_IDSShouldLog())
             {
-              v103 = [v28 messageUUID];
+              selfCopy11 = [context messageUUID];
               _IDSLogV();
             }
           }
@@ -359,39 +359,39 @@
         goto LABEL_60;
       }
 
-      if ([(IDSUTunConnection *)self checkServiceCompability:v27 localMessage:v28])
+      if ([(IDSUTunConnection *)self checkServiceCompability:v27 localMessage:context])
       {
         break;
       }
 
 LABEL_60:
-      v33 = [(IDSLocalDeliveryQueue *)self->_deliveryQueue nextSocketPairMessageNotOnServices:v12, v103];
+      selfCopy11 = [(IDSLocalDeliveryQueue *)self->_deliveryQueue nextSocketPairMessageNotOnServices:v12, selfCopy11];
 
-      v34 = [(IDSUTunConnection *)v33 context];
+      context2 = [(IDSUTunConnection *)selfCopy11 context];
 
-      v27 = v33;
-      v28 = v34;
-      v29 = v30;
-      if (!v33)
+      v27 = selfCopy11;
+      context = context2;
+      v29 = topic;
+      if (!selfCopy11)
       {
 
-        v28 = v34;
+        context = context2;
         goto LABEL_184;
       }
     }
 
-    v35 = [v28 manualQueueRemoval];
-    if ((v35 & 1) == 0)
+    manualQueueRemoval = [context manualQueueRemoval];
+    if ((manualQueueRemoval & 1) == 0)
     {
-      [v28 setUnderlyingSocketPairMessage:0];
-      [(IDSLocalDeliveryQueue *)self->_deliveryQueue dequeueMessage:v28];
+      [context setUnderlyingSocketPairMessage:0];
+      [(IDSLocalDeliveryQueue *)self->_deliveryQueue dequeueMessage:context];
     }
 
     if (!self->_sendingPowerAssertion)
     {
-      if (v30)
+      if (topic)
       {
-        v36 = [NSString stringWithFormat:@"IDSUTunConnection-sending-%@", v30];
+        v36 = [NSString stringWithFormat:@"IDSUTunConnection-sending-%@", topic];
       }
 
       else
@@ -408,7 +408,7 @@ LABEL_60:
       {
         v40 = self->_sendingPowerAssertion;
         *buf = 138412546;
-        v154 = self;
+        selfCopy10 = self;
         v155 = 2112;
         *v156 = v40;
         _os_log_impl(&_mh_execute_header, v39, OS_LOG_TYPE_DEFAULT, "%@ created sending power assertion %@", buf, 0x16u);
@@ -416,29 +416,29 @@ LABEL_60:
 
       if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
       {
-        v103 = self;
+        selfCopy11 = self;
         v105 = self->_sendingPowerAssertion;
         _IDSLogV();
       }
     }
 
-    [(IDSUTunConnection *)v27 setTopic:v30, v103, v105];
+    [(IDSUTunConnection *)v27 setTopic:topic, selfCopy11, v105];
     if (self->_supportDynamicServices && (objc_opt_respondsToSelector() & 1) != 0)
     {
       v148 = 0;
       v147 = -21846;
       if (self->_supportDynamicServicesOptimization)
       {
-        if ([(IDSUTunPeerServiceMap *)self->_outgoingServiceMap translateServiceName:v30 toStreamID:&v147 createIfNotFound:0 mappingCreated:0 remoteInstanceID:self->_remoteInstanceID remoteInstanceIDChanged:&v148])
+        if ([(IDSUTunPeerServiceMap *)self->_outgoingServiceMap translateServiceName:topic toStreamID:&v147 createIfNotFound:0 mappingCreated:0 remoteInstanceID:self->_remoteInstanceID remoteInstanceIDChanged:&v148])
         {
           v41 = OSLogHandleForIDSCategory();
           if (os_log_type_enabled(v41, OS_LOG_TYPE_DEBUG))
           {
-            v42 = [v28 messageUUID];
+            messageUUID2 = [context messageUUID];
             *buf = 138412802;
-            v154 = v42;
+            selfCopy10 = messageUUID2;
             v155 = 2112;
-            *v156 = v30;
+            *v156 = topic;
             *&v156[8] = 1024;
             *v157 = v147;
             _os_log_impl(&_mh_execute_header, v41, OS_LOG_TYPE_DEBUG, "Translated message %@ with servicename %@ to streamID %u", buf, 0x1Cu);
@@ -446,14 +446,14 @@ LABEL_60:
 
           if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
           {
-            v43 = [v28 messageUUID];
-            v105 = v30;
+            messageUUID3 = [context messageUUID];
+            v105 = topic;
             v106 = v147;
-            v103 = v43;
+            selfCopy11 = messageUUID3;
             _IDSLogV();
           }
 
-          [(IDSUTunConnection *)v27 setStreamID:v147, v103];
+          [(IDSUTunConnection *)v27 setStreamID:v147, selfCopy11];
           [(IDSUTunConnection *)v27 setUseDynamicServiceName:0];
         }
 
@@ -462,16 +462,16 @@ LABEL_60:
           [(IDSUTunConnection *)v27 setUseDynamicServiceName:1];
           v146 = 0;
           v145 = 0;
-          if ([(IDSUTunPeerServiceMap *)self->_incomingServiceMap translateServiceName:v30 toStreamID:&v145 createIfNotFound:1 mappingCreated:&v146 remoteInstanceID:self->_remoteInstanceID remoteInstanceIDChanged:&v148])
+          if ([(IDSUTunPeerServiceMap *)self->_incomingServiceMap translateServiceName:topic toStreamID:&v145 createIfNotFound:1 mappingCreated:&v146 remoteInstanceID:self->_remoteInstanceID remoteInstanceIDChanged:&v148])
           {
             v87 = OSLogHandleForIDSCategory();
             if (os_log_type_enabled(v87, OS_LOG_TYPE_DEFAULT))
             {
               loga = v87;
-              v88 = [v28 messageUUID];
+              messageUUID4 = [context messageUUID];
               v89 = v145;
               v90 = v146;
-              v91 = [(IDSUTunConnection *)v27 streamID];
+              streamID = [(IDSUTunConnection *)v27 streamID];
               *buf = 138413314;
               v92 = @"NO";
               if (v90)
@@ -479,15 +479,15 @@ LABEL_60:
                 v92 = @"YES";
               }
 
-              v154 = v88;
+              selfCopy10 = messageUUID4;
               v155 = 2112;
-              *v156 = v30;
+              *v156 = topic;
               *&v156[8] = 1024;
               *v157 = v89;
               *&v157[4] = 2112;
               *&v157[6] = v92;
               *&v157[14] = 1024;
-              *&v157[16] = v91;
+              *&v157[16] = streamID;
               _os_log_impl(&_mh_execute_header, loga, OS_LOG_TYPE_DEFAULT, "Piggybacking message %@ with servicename %@ with incoming streamID %u created %@ (old id %u)", buf, 0x2Cu);
 
               v87 = loga;
@@ -495,7 +495,7 @@ LABEL_60:
 
             if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
             {
-              v93 = [v28 messageUUID];
+              messageUUID5 = [context messageUUID];
               v94 = v145;
               if (v146)
               {
@@ -508,14 +508,14 @@ LABEL_60:
               }
 
               v107 = v95;
-              v108 = [(IDSUTunConnection *)v27 streamID];
-              v105 = v30;
+              streamID2 = [(IDSUTunConnection *)v27 streamID];
+              v105 = topic;
               v106 = v94;
-              v103 = v93;
+              selfCopy11 = messageUUID5;
               _IDSLogV();
             }
 
-            [(IDSUTunConnection *)v27 setStreamID:v145, v103];
+            [(IDSUTunConnection *)v27 setStreamID:v145, selfCopy11];
             if (!self->_incomingServiceMapUpdateCounter)
             {
               Mutable = CFDictionaryCreateMutable(0, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
@@ -523,7 +523,7 @@ LABEL_60:
               self->_incomingServiceMapUpdateCounter = Mutable;
             }
 
-            CFDictionarySetValue(self->_incomingServiceMapUpdateCounter, v30, &off_100C3CA30);
+            CFDictionarySetValue(self->_incomingServiceMapUpdateCounter, topic, &off_100C3CA30);
           }
 
           else
@@ -531,11 +531,11 @@ LABEL_60:
             v98 = OSLogHandleForTransportCategory();
             if (os_log_type_enabled(v98, OS_LOG_TYPE_DEFAULT))
             {
-              v99 = [v28 messageUUID];
+              messageUUID6 = [context messageUUID];
               *buf = 138412546;
-              v154 = v99;
+              selfCopy10 = messageUUID6;
               v155 = 2112;
-              *v156 = v30;
+              *v156 = topic;
               _os_log_impl(&_mh_execute_header, v98, OS_LOG_TYPE_DEFAULT, "Remote instance changed while receiving message %@ with topic %@ - continue and dispatch reconnect", buf, 0x16u);
             }
 
@@ -543,20 +543,20 @@ LABEL_60:
             {
               if (_IDSShouldLogTransport())
               {
-                v103 = [v28 messageUUID];
-                v105 = v30;
+                selfCopy11 = [context messageUUID];
+                v105 = topic;
                 _IDSLogTransport();
 
                 if (_IDSShouldLog())
                 {
-                  v103 = [v28 messageUUID];
-                  v105 = v30;
+                  selfCopy11 = [context messageUUID];
+                  v105 = topic;
                   _IDSLogV();
                 }
               }
             }
 
-            [(IDSUTunConnection *)v27 setStreamID:0, v103];
+            [(IDSUTunConnection *)v27 setStreamID:0, selfCopy11];
           }
         }
       }
@@ -567,35 +567,35 @@ LABEL_60:
       }
     }
 
-    v44 = [(IDSUTunConnection *)self serviceController];
-    v45 = [v44 serviceWithPushTopic:v30];
+    serviceController = [(IDSUTunConnection *)self serviceController];
+    v45 = [serviceController serviceWithPushTopic:topic];
     log = [v45 dataUsageBundleID];
 
-    LOBYTE(v44) = self->_shouldUseServiceConnector;
-    v46 = [(IDSUTunConnection *)self _isMagnetConnection];
-    if ((v44 & 1) == 0)
+    LOBYTE(serviceController) = self->_shouldUseServiceConnector;
+    _isMagnetConnection = [(IDSUTunConnection *)self _isMagnetConnection];
+    if ((serviceController & 1) == 0)
     {
-      if (v46)
+      if (_isMagnetConnection)
       {
-        v48 = [(IDSUTunConnection *)self _currentLink]== 1;
+        isTerminusConnectedOverBluetooth = [(IDSUTunConnection *)self _currentLink]== 1;
         goto LABEL_91;
       }
 
 LABEL_90:
-      v48 = 1;
+      isTerminusConnectedOverBluetooth = 1;
       goto LABEL_91;
     }
 
-    if (!v46)
+    if (!_isMagnetConnection)
     {
       goto LABEL_90;
     }
 
-    v47 = [(IDSUTunConnection *)self _UTunDeliveryController];
-    v48 = [v47 isTerminusConnectedOverBluetooth];
+    _UTunDeliveryController2 = [(IDSUTunConnection *)self _UTunDeliveryController];
+    isTerminusConnectedOverBluetooth = [_UTunDeliveryController2 isTerminusConnectedOverBluetooth];
 
 LABEL_91:
-    if ([log length]&& (([(IDSUTunConnection *)self _nonBTAllowedForClientID:log]| v48) & 1) == 0)
+    if ([log length]&& (([(IDSUTunConnection *)self _nonBTAllowedForClientID:log]| isTerminusConnectedOverBluetooth) & 1) == 0)
     {
       v86 = OSLogHandleForIDSCategory();
       if (os_log_type_enabled(v86, OS_LOG_TYPE_DEFAULT))
@@ -609,7 +609,7 @@ LABEL_91:
         _IDSLogV();
       }
 
-      [(IDSUTunConnection *)self _removeSocketPairMessage:v27 localMessage:v28 reason:@"Celluar Useage Policy states that BT is required" responseCode:15];
+      [(IDSUTunConnection *)self _removeSocketPairMessage:v27 localMessage:context reason:@"Celluar Useage Policy states that BT is required" responseCode:15];
 LABEL_156:
 
       objc_autoreleasePoolPop(context);
@@ -637,20 +637,20 @@ LABEL_156:
   if (isKindOfClass)
   {
     [(NSMutableArray *)self->_sendingMessages removeObject:v27];
-    if (self->_priority != 300 && ([v28 bypassDuet] & 1) == 0)
+    if (self->_priority != 300 && ([context bypassDuet] & 1) == 0)
     {
-      v124 = [v28 duetIdentifiersOverride];
-      if (![v124 count])
+      duetIdentifiersOverride = [context duetIdentifiersOverride];
+      if (![duetIdentifiersOverride count])
       {
         v51 = +[IDSDServiceController sharedInstance];
-        v52 = [v51 serviceWithPushTopic:v30];
-        v53 = [v52 duetIdentifiers];
+        v52 = [v51 serviceWithPushTopic:topic];
+        duetIdentifiers = [v52 duetIdentifiers];
 
-        v124 = v53;
+        duetIdentifiersOverride = duetIdentifiers;
       }
 
-      v54 = [v28 messageUUID];
-      v55 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"dequeueMessages check for %@ %u", v54, [v28 messageID]);
+      messageUUID7 = [context messageUUID];
+      v55 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"dequeueMessages check for %@ %u", messageUUID7, [context messageID]);
 
       v117 = +[IDSDuetInterface sharedInstance];
       priority = self->_priority;
@@ -661,32 +661,32 @@ LABEL_156:
       v143[2] = sub_10055A558;
       v143[3] = &unk_100BD9AA8;
       v143[4] = self;
-      v144 = v30;
-      [v117 forceCheckAvailabilityForValues:v124 priority:priority logString:v55 fromQueue:v57 withCompletionBlock:v143];
+      v144 = topic;
+      [v117 forceCheckAvailabilityForValues:duetIdentifiersOverride priority:priority logString:v55 fromQueue:v57 withCompletionBlock:v143];
     }
   }
 
   [(NSMutableArray *)self->_sendingMessages addObject:v27];
-  if (v30)
+  if (topic)
   {
-    [v12 addObject:v30];
+    [v12 addObject:topic];
   }
 
   if ((isKindOfClass & 1) == 0)
   {
 LABEL_115:
-    if ([v28 manualQueueRemoval])
+    if ([context manualQueueRemoval])
     {
       v116 = 0;
     }
 
     else
     {
-      v126 = [v28 payload];
-      v119 = [v126 length];
-      v64 = [v28 protobuf];
-      v65 = [v64 data];
-      v66 = [v65 length];
+      payload = [context payload];
+      v119 = [payload length];
+      protobuf = [context protobuf];
+      data = [protobuf data];
+      v66 = [data length];
 
       v116 = &v119[v66];
     }
@@ -695,9 +695,9 @@ LABEL_115:
     if (os_log_type_enabled(v67, OS_LOG_TYPE_DEFAULT))
     {
       v68 = @"URGENT";
-      if ([v28 priority] != 300)
+      if ([context priority] != 300)
       {
-        if ([v28 priority] == 200)
+        if ([context priority] == 200)
         {
           v68 = @"Default";
         }
@@ -708,96 +708,96 @@ LABEL_115:
         }
       }
 
-      v112 = [v28 payload];
-      v111 = [v112 length];
-      v120 = [v28 topic];
-      v127 = [v28 domainHash];
-      v69 = [v28 messageUUID];
-      v70 = [v28 messageID];
+      payload2 = [context payload];
+      v111 = [payload2 length];
+      topic2 = [context topic];
+      domainHash = [context domainHash];
+      messageUUID8 = [context messageUUID];
+      messageID = [context messageID];
       *buf = 138544898;
-      v154 = v68;
+      selfCopy10 = v68;
       v155 = 2048;
       *v156 = v116;
       *&v156[8] = 2048;
       *v157 = v111;
       *&v157[8] = 2114;
-      *&v157[10] = v120;
+      *&v157[10] = topic2;
       *&v157[18] = 2114;
-      v158 = v127;
+      v158 = domainHash;
       v159 = 2114;
-      v160 = v69;
+      v160 = messageUUID8;
       v161 = 1024;
-      v162 = v70;
+      v162 = messageID;
       _os_log_impl(&_mh_execute_header, v67, OS_LOG_TYPE_DEFAULT, "* Dequeuing for Sending %{public}@ priority local message payload of data size: %lu/%lu   for topic: %{public}@:%{public}@  guid: %{public}@  messageID: %d", buf, 0x44u);
     }
 
     if (os_log_shim_legacy_logging_enabled() && _IDSShouldLogTransport())
     {
-      v71 = [v28 priority];
+      priority = [context priority];
       v72 = @"URGENT";
-      if (v71 != 300)
+      if (priority != 300)
       {
-        v73 = [v28 priority];
+        priority2 = [context priority];
         v72 = @"Sync";
-        if (v73 == 200)
+        if (priority2 == 200)
         {
           v72 = @"Default";
         }
       }
 
       v113 = v72;
-      v128 = [v28 payload];
-      v74 = [v128 length];
-      v121 = [v28 topic];
-      v75 = [v28 domainHash];
-      v109 = [v28 messageUUID];
-      v110 = [v28 messageID];
-      v107 = v121;
-      v108 = v75;
+      payload3 = [context payload];
+      v74 = [payload3 length];
+      topic3 = [context topic];
+      domainHash2 = [context domainHash];
+      messageUUID9 = [context messageUUID];
+      messageID2 = [context messageID];
+      v107 = topic3;
+      streamID2 = domainHash2;
       v105 = v116;
       v106 = v74;
-      v103 = v113;
+      selfCopy11 = v113;
       _IDSLogTransport();
 
       if (_IDSShouldLog())
       {
-        v76 = [v28 priority];
+        priority3 = [context priority];
         v77 = @"URGENT";
-        if (v76 != 300)
+        if (priority3 != 300)
         {
-          v78 = [v28 priority];
+          priority4 = [context priority];
           v77 = @"Sync";
-          if (v78 == 200)
+          if (priority4 == 200)
           {
             v77 = @"Default";
           }
         }
 
         v114 = v77;
-        v129 = [v28 payload];
-        v79 = [v129 length];
-        v122 = [v28 topic];
-        v80 = [v28 domainHash];
-        v109 = [v28 messageUUID];
-        v110 = [v28 messageID];
-        v107 = v122;
-        v108 = v80;
+        payload4 = [context payload];
+        v79 = [payload4 length];
+        topic4 = [context topic];
+        domainHash3 = [context domainHash];
+        messageUUID9 = [context messageUUID];
+        messageID2 = [context messageID];
+        v107 = topic4;
+        streamID2 = domainHash3;
         v105 = v116;
         v106 = v79;
-        v103 = v114;
+        selfCopy11 = v114;
         _IDSLogV();
       }
     }
 
-    [v28 setSentMessageDataSize:{-[IDSUTunConnection underlyingDataLength](v27, "underlyingDataLength", v103)}];
-    -[IDSUTunConnection _addOutgoingMessageSize:forTopic:dataProtectionClass:isResource:](self, "_addOutgoingMessageSize:forTopic:dataProtectionClass:isResource:", [v28 sentMessageDataSize], v30, objc_msgSend(v28, "dataProtectionClass"), isKindOfClass & 1);
+    [context setSentMessageDataSize:{-[IDSUTunConnection underlyingDataLength](v27, "underlyingDataLength", selfCopy11)}];
+    -[IDSUTunConnection _addOutgoingMessageSize:forTopic:dataProtectionClass:isResource:](self, "_addOutgoingMessageSize:forTopic:dataProtectionClass:isResource:", [context sentMessageDataSize], topic, objc_msgSend(context, "dataProtectionClass"), isKindOfClass & 1);
     v81 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v81, OS_LOG_TYPE_DEFAULT))
     {
       v82 = [(NSMutableArray *)self->_sendingMessages count];
       v83 = [v12 count];
       *buf = 138412802;
-      v154 = v27;
+      selfCopy10 = v27;
       v155 = 1024;
       *v156 = v82;
       *&v156[4] = 1024;
@@ -813,39 +813,39 @@ LABEL_115:
       _IDSLogV();
     }
 
-    if ([(IDSUTunConnection *)self _shouldAWDLogMessage:v28, v104])
+    if ([(IDSUTunConnection *)self _shouldAWDLogMessage:context, v104])
     {
       v130 = [IDSLocalDeliveryMessageSentMetric alloc];
-      v133 = [v28 awdTopic];
-      v131 = [v130 initWithService:v133 isToDefaultPairedDevice:-[IDSUTunConnection _isMagnetConnection](self messageSize:"_isMagnetConnection") linkType:objc_msgSend(v28 priority:{"sentMessageDataSize"), -[IDSUTunConnection _currentLink](self, "_currentLink"), objc_msgSend(v28, "priority")}];
+      awdTopic = [context awdTopic];
+      v131 = [v130 initWithService:awdTopic isToDefaultPairedDevice:-[IDSUTunConnection _isMagnetConnection](self messageSize:"_isMagnetConnection") linkType:objc_msgSend(context priority:{"sentMessageDataSize"), -[IDSUTunConnection _currentLink](self, "_currentLink"), objc_msgSend(context, "priority")}];
 
       v84 = +[IDSCoreAnalyticsLogger defaultLogger];
       [v84 logMetric:v131];
 
       v123 = +[IDSAWDLogging sharedInstance];
-      v134 = [v28 awdTopic];
-      [v123 messageSentForService:v134 isToDefaultPairedDevice:-[IDSUTunConnection _isMagnetConnection](self messageSize:"_isMagnetConnection") linkType:objc_msgSend(v28 priority:{"sentMessageDataSize"), -[IDSUTunConnection _currentLink](self, "_currentLink"), objc_msgSend(v28, "priority")}];
+      awdTopic2 = [context awdTopic];
+      [v123 messageSentForService:awdTopic2 isToDefaultPairedDevice:-[IDSUTunConnection _isMagnetConnection](self messageSize:"_isMagnetConnection") linkType:objc_msgSend(context priority:{"sentMessageDataSize"), -[IDSUTunConnection _currentLink](self, "_currentLink"), objc_msgSend(context, "priority")}];
     }
 
     [(IDSUTunConnection *)self _sendSocketMessage:v27];
     [(IDSUTunConnection *)v27 setWasWrittenToConnection:1];
-    if (v30 && [v30 hasPrefix:@"com.apple.private.alloy.idstool.testservice"] && IMGetDomainBoolForKey())
+    if (topic && [topic hasPrefix:@"com.apple.private.alloy.idstool.testservice"] && IMGetDomainBoolForKey())
     {
       v85 = OSLogHandleForIDSCategory();
       if (os_log_type_enabled(v85, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v154 = v27;
+        selfCopy10 = v27;
         _os_log_impl(&_mh_execute_header, v85, OS_LOG_TYPE_DEFAULT, "Send duplicate message %@", buf, 0xCu);
       }
 
       if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
       {
-        v103 = v27;
+        selfCopy11 = v27;
         _IDSLogV();
       }
 
-      [(IDSUTunConnection *)self _sendSocketMessage:v27, v103];
+      [(IDSUTunConnection *)self _sendSocketMessage:v27, selfCopy11];
     }
 
     goto LABEL_156;
@@ -855,7 +855,7 @@ LABEL_115:
   if (os_log_type_enabled(v58, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412546;
-    v154 = self;
+    selfCopy10 = self;
     v155 = 2112;
     *v156 = v27;
     _os_log_impl(&_mh_execute_header, v58, OS_LOG_TYPE_DEBUG, "%@ resource transfer sender %@", buf, 0x16u);
@@ -863,7 +863,7 @@ LABEL_115:
 
   if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
   {
-    v103 = self;
+    selfCopy11 = self;
     v105 = v27;
     _IDSLogV();
   }
@@ -871,29 +871,29 @@ LABEL_115:
   v59 = v27;
   [(IDSUTunConnection *)v59 setMaxChunkSize:4000];
   [(IDSUTunConnection *)v59 setResumeResourceTransfers:self->_resumeResourceTransfers];
-  v118 = [(IDSUTunConnection *)v59 nextMessage];
-  if (v118)
+  nextMessage = [(IDSUTunConnection *)v59 nextMessage];
+  if (nextMessage)
   {
-    v60 = [v28 progressBlock];
+    progressBlock = [context progressBlock];
 
-    if (v60)
+    if (progressBlock)
     {
       v125 = objc_alloc_init(IDSDeliveryContext);
       [v125 setIdsResponseCode:0];
       [v125 setLastCall:0];
-      v61 = [v28 progressBlock];
+      progressBlock2 = [context progressBlock];
       v62 = [NSNumber numberWithUnsignedLongLong:[(IDSUTunConnection *)v59 nextByte]];
       v63 = [NSNumber numberWithUnsignedLongLong:[(IDSUTunConnection *)v59 totalBytes]];
-      (v61)[2](v61, v125, v62, v63, 1, 0);
+      (progressBlock2)[2](progressBlock2, v125, v62, v63, 1, 0);
     }
 
     if ([(IDSUTunConnection *)v59 isDone])
     {
-      [v28 setUnderlyingSocketPairMessage:0];
-      [(IDSLocalDeliveryQueue *)self->_deliveryQueue dequeueMessage:v28];
+      [context setUnderlyingSocketPairMessage:0];
+      [(IDSLocalDeliveryQueue *)self->_deliveryQueue dequeueMessage:context];
     }
 
-    v27 = v118;
+    v27 = nextMessage;
 
     goto LABEL_115;
   }
@@ -902,7 +902,7 @@ LABEL_115:
   if (os_log_type_enabled(v102, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v154 = self;
+    selfCopy10 = self;
     v155 = 2112;
     *v156 = v59;
     _os_log_impl(&_mh_execute_header, v102, OS_LOG_TYPE_DEFAULT, "%@ cannot read message to deliver for resource transfer %@", buf, 0x16u);
@@ -910,14 +910,14 @@ LABEL_115:
 
   if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
   {
-    v103 = self;
+    selfCopy11 = self;
     v105 = v59;
     _IDSLogV();
   }
 
-  [(IDSUTunConnection *)self _removeSocketPairMessage:v59 localMessage:v28 reason:@"cannot read chunk of resource" responseCode:17, v103, v105, v106, v107, v108, v109, v110];
+  [(IDSUTunConnection *)self _removeSocketPairMessage:v59 localMessage:context reason:@"cannot read chunk of resource" responseCode:17, selfCopy11, v105, v106, v107, streamID2, messageUUID9, messageID2];
 
-  v28 = v59;
+  context = v59;
 LABEL_184:
 
   objc_autoreleasePoolPop(context);
@@ -1020,12 +1020,12 @@ LABEL_195:
   if ([(IDSUTunConnection *)self _isMagnetConnection])
   {
     v4 = +[IDSUTunController sharedInstance];
-    v5 = [v4 linkManager];
-    v6 = [v5 currentDefaultDeviceLinkType];
+    linkManager = [v4 linkManager];
+    currentDefaultDeviceLinkType = [linkManager currentDefaultDeviceLinkType];
 
-    if ((v6 - 1) <= 3)
+    if ((currentDefaultDeviceLinkType - 1) <= 3)
     {
-      return qword_1009ABD80[(v6 - 1)];
+      return qword_1009ABD80[(currentDefaultDeviceLinkType - 1)];
     }
 
     return 0;
@@ -1076,8 +1076,8 @@ LABEL_195:
   [v3 assertRunningWithPriority:self->_priority];
 
   v5 = +[IDSUTunController sharedInstance];
-  v4 = [(IDSUTunConnection *)self _nonThreadSafeSocketOptions];
-  [v5 resumeSocketWithOptions:v4 shouldLogCall:0];
+  _nonThreadSafeSocketOptions = [(IDSUTunConnection *)self _nonThreadSafeSocketOptions];
+  [v5 resumeSocketWithOptions:_nonThreadSafeSocketOptions shouldLogCall:0];
 }
 
 - (id)_nonThreadSafeSocketOptions
@@ -1124,8 +1124,8 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v10 = [(IDSUTunConnection *)self _UTunDeliveryController];
-  if ([v10 enableOTR])
+  _UTunDeliveryController = [(IDSUTunConnection *)self _UTunDeliveryController];
+  if ([_UTunDeliveryController enableOTR])
   {
 
     goto LABEL_10;
@@ -1184,7 +1184,7 @@ LABEL_11:
   {
     socketConnection = self->_socketConnection;
     *buf = 138412546;
-    v9 = self;
+    selfCopy = self;
     v10 = 2112;
     v11 = socketConnection;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEBUG, "%@ connectionBecameEmpty %@", buf, 0x16u);
@@ -1192,27 +1192,27 @@ LABEL_11:
 
   if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
   {
-    v6 = self;
+    selfCopy2 = self;
     v7 = self->_socketConnection;
     _IDSLogV();
   }
 
-  [(IDSUTunConnection *)self _dequeueMessages:v6];
+  [(IDSUTunConnection *)self _dequeueMessages:selfCopy2];
 }
 
-- (IDSUTunConnection)initWithIdentifier:(id)a3 socketPriority:(int64_t)a4 btUUID:(id)a5 uniqueID:(id)a6 incomingServiceMap:(id)a7 outgoingServiceMap:(id)a8 isCloudEnabled:(BOOL)a9 shouldUseIPsecLink:(BOOL)a10
+- (IDSUTunConnection)initWithIdentifier:(id)identifier socketPriority:(int64_t)priority btUUID:(id)d uniqueID:(id)iD incomingServiceMap:(id)map outgoingServiceMap:(id)serviceMap isCloudEnabled:(BOOL)enabled shouldUseIPsecLink:(BOOL)self0
 {
-  v16 = a3;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
+  identifierCopy = identifier;
+  dCopy = d;
+  iDCopy = iD;
+  mapCopy = map;
+  serviceMapCopy = serviceMap;
   v38.receiver = self;
   v38.super_class = IDSUTunConnection;
   v21 = [(IDSUTunConnection *)&v38 init];
   if (v21)
   {
-    v22 = [v16 copy];
+    v22 = [identifierCopy copy];
     identifier = v21->_identifier;
     v21->_identifier = v22;
 
@@ -1220,26 +1220,26 @@ LABEL_11:
     otrTokenIdentifier = v21->_otrTokenIdentifier;
     v21->_otrTokenIdentifier = v24;
 
-    v26 = [v17 copy];
+    v26 = [dCopy copy];
     cbuuid = v21->_cbuuid;
     v21->_cbuuid = v26;
 
-    v28 = [v18 copy];
+    v28 = [iDCopy copy];
     uniqueID = v21->_uniqueID;
     v21->_uniqueID = v28;
 
-    v30 = [[IDSLocalDeliveryQueue alloc] initWithIdentifier:v16];
+    v30 = [[IDSLocalDeliveryQueue alloc] initWithIdentifier:identifierCopy];
     deliveryQueue = v21->_deliveryQueue;
     v21->_deliveryQueue = v30;
 
-    v21->_priority = a4;
+    v21->_priority = priority;
     v21->_isMagnetIndicatingPeerIsAwake = 1;
     *&v21->_useSharedOTRSession = 257;
-    v21->_isCloudEnabled = a9;
-    v21->_shouldUseServiceConnector = a10;
+    v21->_isCloudEnabled = enabled;
+    v21->_shouldUseServiceConnector = link;
     v21->_isASQUICEnabledForRelay = 0;
-    objc_storeStrong(&v21->_incomingServiceMap, a7);
-    objc_storeStrong(&v21->_outgoingServiceMap, a8);
+    objc_storeStrong(&v21->_incomingServiceMap, map);
+    objc_storeStrong(&v21->_outgoingServiceMap, serviceMap);
     v32 = +[NSNotificationCenter defaultCenter];
     [v32 addObserver:v21 selector:"classStorageBecameAvailable:" name:@"__kIDSOTRKeyStorageClassStorageIsAvailableNotification" object:0];
 
@@ -1306,14 +1306,14 @@ LABEL_11:
     *buf = 138412546;
     v13 = identifier;
     v14 = 2048;
-    v15 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Deallocing UTunConnection %@ %p", buf, 0x16u);
   }
 
   if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
   {
     v9 = self->_identifier;
-    v10 = self;
+    selfCopy2 = self;
     _IDSLogV();
   }
 
@@ -1351,44 +1351,44 @@ LABEL_11:
   }
 }
 
-- (unint64_t)_sendingMessageCountForClass:(unsigned int)a3
+- (unint64_t)_sendingMessageCountForClass:(unsigned int)class
 {
   sendingMessages = self->_sendingMessages;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100552F0C;
   v7[3] = &unk_100BE01F0;
-  v8 = a3;
+  classCopy = class;
   v4 = [(NSMutableArray *)sendingMessages indexesOfObjectsPassingTest:v7];
   v5 = [v4 count];
 
   return v5;
 }
 
-- (unint64_t)_sendingMessageCountForType:(int64_t)a3
+- (unint64_t)_sendingMessageCountForType:(int64_t)type
 {
   sendingMessages = self->_sendingMessages;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100552FE4;
   v7[3] = &unk_100BE0210;
-  v7[4] = a3;
+  v7[4] = type;
   v4 = [(NSMutableArray *)sendingMessages indexesOfObjectsPassingTest:v7];
   v5 = [v4 count];
 
   return v5;
 }
 
-- (unint64_t)_inflightMessageCountForClass:(unsigned int)a3
+- (unint64_t)_inflightMessageCountForClass:(unsigned int)class
 {
-  v3 = *&a3;
+  v3 = *&class;
   v5 = [(IDSLocalDeliveryQueue *)self->_deliveryQueue countForDataProtectionClass:?];
   return [(IDSUTunConnection *)self _sendingMessageCountForClass:v3]+ v5;
 }
 
-- (BOOL)hasSpaceForMessagesWithDataProtectionClass:(unsigned int)a3
+- (BOOL)hasSpaceForMessagesWithDataProtectionClass:(unsigned int)class
 {
-  v3 = *&a3;
+  v3 = *&class;
   v5 = +[IDSDaemonPriorityQueueController sharedInstance];
   [v5 assertRunningWithPriority:self->_priority];
 
@@ -1443,20 +1443,20 @@ LABEL_11:
   return v7;
 }
 
-- (id)_sendingMessageStatisticsForClass:(unsigned int)a3
+- (id)_sendingMessageStatisticsForClass:(unsigned int)class
 {
   statistics = self->_statistics;
-  v4 = [NSNumber numberWithUnsignedInt:*&a3];
+  v4 = [NSNumber numberWithUnsignedInt:*&class];
   v5 = [(NSMutableDictionary *)statistics objectForKey:v4];
   v6 = [v5 copy];
 
   return v6;
 }
 
-- (void)_addStatsFromDict:(id)a3 toAggregate:(id)a4
+- (void)_addStatsFromDict:(id)dict toAggregate:(id)aggregate
 {
-  v5 = a3;
-  v6 = a4;
+  dictCopy = dict;
+  aggregateCopy = aggregate;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
@@ -1476,14 +1476,14 @@ LABEL_11:
         }
 
         v11 = *(*(&v24 + 1) + 8 * i);
-        v12 = [v5 objectForKey:v11];
-        v13 = [v12 unsignedLongLongValue];
+        v12 = [dictCopy objectForKey:v11];
+        unsignedLongLongValue = [v12 unsignedLongLongValue];
 
-        v14 = [v6 objectForKey:v11];
-        v15 = [v14 unsignedLongLongValue];
+        v14 = [aggregateCopy objectForKey:v11];
+        unsignedLongLongValue2 = [v14 unsignedLongLongValue];
 
-        v16 = [NSNumber numberWithUnsignedLongLong:&v13[v15]];
-        [v6 setObject:v16 forKey:v11];
+        v16 = [NSNumber numberWithUnsignedLongLong:&unsignedLongLongValue[unsignedLongLongValue2]];
+        [aggregateCopy setObject:v16 forKey:v11];
       }
 
       v8 = [&off_100C3DD48 countByEnumeratingWithState:&v24 objects:v28 count:16];
@@ -1492,31 +1492,31 @@ LABEL_11:
     while (v8);
   }
 
-  v17 = [v5 objectForKey:@"localDeliveryQueueStatsLastDeliveredTime"];
+  v17 = [dictCopy objectForKey:@"localDeliveryQueueStatsLastDeliveredTime"];
   [v17 doubleValue];
   v19 = v18;
 
-  v20 = [v6 objectForKey:@"localDeliveryQueueStatsLastDeliveredTime"];
+  v20 = [aggregateCopy objectForKey:@"localDeliveryQueueStatsLastDeliveredTime"];
   [v20 doubleValue];
   v22 = v21;
 
   if (v19 > v22)
   {
     v23 = [NSNumber numberWithDouble:v19];
-    [v6 setObject:v23 forKey:@"localDeliveryQueueStatsLastDeliveredTime"];
+    [aggregateCopy setObject:v23 forKey:@"localDeliveryQueueStatsLastDeliveredTime"];
   }
 }
 
 - (NSDictionary)sendingMessageStatistics
 {
   v25 = objc_alloc_init(NSMutableDictionary);
-  v3 = [(NSMutableDictionary *)self->_statistics allValues];
+  allValues = [(NSMutableDictionary *)self->_statistics allValues];
   v4 = objc_alloc_init(NSMutableSet);
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  obj = v3;
+  obj = allValues;
   v5 = [obj countByEnumeratingWithState:&v35 objects:v41 count:16];
   if (v5)
   {
@@ -1531,8 +1531,8 @@ LABEL_11:
           objc_enumerationMutation(obj);
         }
 
-        v9 = [*(*(&v35 + 1) + 8 * i) allKeys];
-        v10 = [NSSet setWithArray:v9];
+        allKeys = [*(*(&v35 + 1) + 8 * i) allKeys];
+        v10 = [NSSet setWithArray:allKeys];
         [v4 unionSet:v10];
       }
 
@@ -1614,43 +1614,43 @@ LABEL_11:
   return [(IDSLocalDeliveryQueue *)deliveryQueue statistics];
 }
 
-- (void)setDeviceBTUUID:(id)a3
+- (void)setDeviceBTUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = +[IDSDaemonPriorityQueueController sharedInstance];
   [v5 assertRunningWithPriority:self->_priority];
 
-  if (v4 && self->_cbuuid && ![(NSString *)v4 isEqualToString:?])
+  if (dCopy && self->_cbuuid && ![(NSString *)dCopy isEqualToString:?])
   {
     v8 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       cbuuid = self->_cbuuid;
       *buf = 138412802;
-      v16 = self;
+      selfCopy3 = self;
       v17 = 2112;
       v18 = cbuuid;
       v19 = 2112;
-      v20 = v4;
+      v20 = dCopy;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%@ changing cbuuid from %@ to %@", buf, 0x20u);
     }
 
     if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
     {
       v13 = self->_cbuuid;
-      v14 = v4;
-      v12 = self;
+      v14 = dCopy;
+      selfCopy2 = self;
       _IDSLogV();
     }
 
-    if (self->_cbuuid != v4)
+    if (self->_cbuuid != dCopy)
     {
-      v10 = [(NSString *)v4 copy];
+      v10 = [(NSString *)dCopy copy];
       v11 = self->_cbuuid;
       self->_cbuuid = v10;
     }
 
-    if ([(IDSUTunConnection *)self _isWiProxPeer:v12])
+    if ([(IDSUTunConnection *)self _isWiProxPeer:selfCopy2])
     {
       [(IDSUTunConnection *)self _nonThreadSafeStopConnection];
       if (self->_enabled)
@@ -1667,11 +1667,11 @@ LABEL_11:
     {
       v7 = self->_cbuuid;
       *buf = 138412802;
-      v16 = self;
+      selfCopy3 = self;
       v17 = 2112;
       v18 = v7;
       v19 = 2112;
-      v20 = v4;
+      v20 = dCopy;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%@ ignoring cbuuid update from %@ to %@", buf, 0x20u);
     }
 
@@ -1682,10 +1682,10 @@ LABEL_11:
   }
 }
 
-- (void)setEnabled:(BOOL)a3 withReason:(id)a4
+- (void)setEnabled:(BOOL)enabled withReason:(id)reason
 {
-  v4 = a3;
-  v37 = a4;
+  enabledCopy = enabled;
+  reasonCopy = reason;
   v6 = +[IDSDaemonPriorityQueueController sharedInstance];
   [v6 assertRunningWithPriority:self->_priority];
 
@@ -1704,8 +1704,8 @@ LABEL_11:
     }
 
     *buf = 138412802;
-    v49 = self;
-    if (v4)
+    selfCopy = self;
+    if (enabledCopy)
     {
       v8 = @"YES";
     }
@@ -1730,21 +1730,21 @@ LABEL_11:
       v11 = @"NO";
     }
 
-    if (v4)
+    if (enabledCopy)
     {
       v10 = @"YES";
     }
 
     v35 = v11;
     v36 = v10;
-    v34 = self;
+    selfCopy2 = self;
     _IDSLogV();
   }
 
-  if (self->_enabled != v4)
+  if (self->_enabled != enabledCopy)
   {
-    self->_enabled = v4;
-    if (v4)
+    self->_enabled = enabledCopy;
+    if (enabledCopy)
     {
       [(IDSUTunConnection *)self _startConnection];
     }
@@ -1753,13 +1753,13 @@ LABEL_11:
     {
       if (self->_socketConnection && [(IDSUTunConnection *)self _isWiProxPeer])
       {
-        v12 = [(IDSUTunConnection *)self _nonThreadSafeIsConnected];
+        _nonThreadSafeIsConnected = [(IDSUTunConnection *)self _nonThreadSafeIsConnected];
         v13 = +[IDSUTunController sharedInstance];
-        v14 = [(IDSUTunConnection *)self _nonThreadSafeSocketOptions];
-        [v13 suspendSocketWithOptions:v14];
+        _nonThreadSafeSocketOptions = [(IDSUTunConnection *)self _nonThreadSafeSocketOptions];
+        [v13 suspendSocketWithOptions:_nonThreadSafeSocketOptions];
 
         self->_connectionSuspended = 1;
-        if (v12)
+        if (_nonThreadSafeIsConnected)
         {
           [(IDSUTunConnection *)self _connectivityChanged];
         }
@@ -1767,10 +1767,10 @@ LABEL_11:
 
       else
       {
-        [(IDSUTunConnection *)self _nonThreadSafeStopConnection:v34];
+        [(IDSUTunConnection *)self _nonThreadSafeStopConnection:selfCopy2];
       }
 
-      if (v37)
+      if (reasonCopy)
       {
         v44 = 0u;
         v45 = 0u;
@@ -1791,9 +1791,9 @@ LABEL_11:
               }
 
               v19 = *(*(&v42 + 1) + 8 * i);
-              v20 = [v19 context];
-              v21 = [(IDSUTunConnection *)v20 topic];
-              v22 = [v21 hasPrefix:@"com.apple.private.alloy.continuity"];
+              context = [v19 context];
+              topic = [(IDSUTunConnection *)context topic];
+              v22 = [topic hasPrefix:@"com.apple.private.alloy.continuity"];
 
               if (v22)
               {
@@ -1801,17 +1801,17 @@ LABEL_11:
                 if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
                 {
                   *buf = 138412290;
-                  v49 = v20;
+                  selfCopy = context;
                   _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "Removing continuity message %@", buf, 0xCu);
                 }
 
                 if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
                 {
-                  v34 = v20;
+                  selfCopy2 = context;
                   _IDSLogV();
                 }
 
-                [(IDSUTunConnection *)self _removeSocketPairMessage:v19 localMessage:v20 reason:@"WPConnection failed" detailedError:v37 responseCode:29, v34];
+                [(IDSUTunConnection *)self _removeSocketPairMessage:v19 localMessage:context reason:@"WPConnection failed" detailedError:reasonCopy responseCode:29, selfCopy2];
               }
             }
 
@@ -1825,8 +1825,8 @@ LABEL_11:
         v41 = 0u;
         v38 = 0u;
         v39 = 0u;
-        v24 = [(IDSLocalDeliveryQueue *)self->_deliveryQueue messages];
-        v25 = [v24 copy];
+        messages = [(IDSLocalDeliveryQueue *)self->_deliveryQueue messages];
+        v25 = [messages copy];
 
         v26 = [v25 countByEnumeratingWithState:&v38 objects:v46 count:16];
         if (v26)
@@ -1842,27 +1842,27 @@ LABEL_11:
               }
 
               v29 = *(*(&v38 + 1) + 8 * j);
-              v30 = [(IDSUTunConnection *)v29 topic];
-              v31 = [v30 hasPrefix:@"com.apple.private.alloy.continuity"];
+              topic2 = [(IDSUTunConnection *)v29 topic];
+              v31 = [topic2 hasPrefix:@"com.apple.private.alloy.continuity"];
 
               if (v31)
               {
-                v32 = [(IDSUTunConnection *)v29 underlyingSocketPairMessage];
+                underlyingSocketPairMessage = [(IDSUTunConnection *)v29 underlyingSocketPairMessage];
                 v33 = OSLogHandleForIDSCategory();
                 if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
                 {
                   *buf = 138412290;
-                  v49 = v29;
+                  selfCopy = v29;
                   _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_DEFAULT, "Removing continuity message %@", buf, 0xCu);
                 }
 
                 if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
                 {
-                  v34 = v29;
+                  selfCopy2 = v29;
                   _IDSLogV();
                 }
 
-                [(IDSUTunConnection *)self _removeSocketPairMessage:v32 localMessage:v29 reason:@"WPConnection failed" detailedError:v37 responseCode:29, v34];
+                [(IDSUTunConnection *)self _removeSocketPairMessage:underlyingSocketPairMessage localMessage:v29 reason:@"WPConnection failed" detailedError:reasonCopy responseCode:29, selfCopy2];
               }
             }
 
@@ -1876,16 +1876,16 @@ LABEL_11:
   }
 }
 
-- (void)setIsMagnetIndicatingPeerIsAwake:(BOOL)a3
+- (void)setIsMagnetIndicatingPeerIsAwake:(BOOL)awake
 {
-  v3 = a3;
+  awakeCopy = awake;
   v5 = +[IDSDaemonPriorityQueueController sharedInstance];
   [v5 assertRunningWithPriority:self->_priority];
 
-  if (self->_isMagnetIndicatingPeerIsAwake != v3)
+  if (self->_isMagnetIndicatingPeerIsAwake != awakeCopy)
   {
-    self->_isMagnetIndicatingPeerIsAwake = v3;
-    if (v3)
+    self->_isMagnetIndicatingPeerIsAwake = awakeCopy;
+    if (awakeCopy)
     {
       if ([(IDSLocalDeliveryQueue *)self->_deliveryQueue count])
       {
@@ -1895,7 +1895,7 @@ LABEL_11:
           v7 = [(IDSLocalDeliveryQueue *)self->_deliveryQueue count];
           v8 = [(NSMutableArray *)self->_sendingMessages count];
           *buf = 138412802;
-          v13 = self;
+          selfCopy = self;
           v14 = 2048;
           v15 = v7;
           v16 = 2048;
@@ -1907,18 +1907,18 @@ LABEL_11:
         {
           v10 = [(IDSLocalDeliveryQueue *)self->_deliveryQueue count];
           v11 = [(NSMutableArray *)self->_sendingMessages count];
-          v9 = self;
+          selfCopy3 = self;
           _IDSLogTransport();
           if (_IDSShouldLog())
           {
             v10 = [(IDSLocalDeliveryQueue *)self->_deliveryQueue count:self];
             v11 = [(NSMutableArray *)self->_sendingMessages count];
-            v9 = self;
+            selfCopy3 = self;
             _IDSLogV();
           }
         }
 
-        [(IDSUTunConnection *)self _dequeueMessages:v9];
+        [(IDSUTunConnection *)self _dequeueMessages:selfCopy3];
       }
     }
   }
@@ -1930,7 +1930,7 @@ LABEL_11:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218242;
-    v14 = self;
+    selfCopy = self;
     v15 = 2080;
     v16 = "[IDSUTunConnection _nonThreadSafeStopConnection]";
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%p: %s", buf, 0x16u);
@@ -1938,7 +1938,7 @@ LABEL_11:
 
   if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
   {
-    v11 = self;
+    selfCopy2 = self;
     v12 = "[IDSUTunConnection _nonThreadSafeStopConnection]";
     _IDSLogV();
   }
@@ -1948,17 +1948,17 @@ LABEL_11:
   {
     v5 = +[NSThread callStackSymbols];
     *buf = 138412290;
-    v14 = v5;
+    selfCopy = v5;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%@", buf, 0xCu);
   }
 
   if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
   {
-    v11 = +[NSThread callStackSymbols];
+    selfCopy2 = +[NSThread callStackSymbols];
     _IDSLogV();
   }
 
-  v6 = [(IDSUTunConnection *)self _nonThreadSafeIsConnected:v11];
+  v6 = [(IDSUTunConnection *)self _nonThreadSafeIsConnected:selfCopy2];
   socketConnection = self->_socketConnection;
   if (socketConnection)
   {
@@ -1974,11 +1974,11 @@ LABEL_11:
 
   if (self->_openSocketCalled)
   {
-    v9 = [(IDSUTunConnection *)self _nonThreadSafeSocketOptions];
-    if (v9)
+    _nonThreadSafeSocketOptions = [(IDSUTunConnection *)self _nonThreadSafeSocketOptions];
+    if (_nonThreadSafeSocketOptions)
     {
       v10 = +[IDSUTunController sharedInstance];
-      [v10 closeSocketWithOptions:v9];
+      [v10 closeSocketWithOptions:_nonThreadSafeSocketOptions];
 
       self->_openSocketCalled = 0;
     }
@@ -1991,11 +1991,11 @@ LABEL_11:
 {
   if (self->_enabled)
   {
-    v3 = [(IDSUTunConnection *)self _UTunDeliveryController];
-    v4 = [v3 pendingContinuityPeerID:self->_cbuuid];
+    _UTunDeliveryController = [(IDSUTunConnection *)self _UTunDeliveryController];
+    v4 = [_UTunDeliveryController pendingContinuityPeerID:self->_cbuuid];
 
-    v5 = [(IDSUTunConnection *)self _UTunDeliveryController];
-    v6 = [v5 lockedContinuityPeerID:self->_cbuuid];
+    _UTunDeliveryController2 = [(IDSUTunConnection *)self _UTunDeliveryController];
+    v6 = [_UTunDeliveryController2 lockedContinuityPeerID:self->_cbuuid];
 
     if (v4 && ![v4 isEqualToString:self->_uniqueID] || v6 && (objc_msgSend(v6, "isEqualToString:", self->_uniqueID) & 1) == 0)
     {
@@ -2064,13 +2064,13 @@ LABEL_11:
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v20 = self;
+    selfCopy4 = self;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%@ _startConnection", buf, 0xCu);
   }
 
   if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
   {
-    v17 = self;
+    selfCopy2 = self;
     _IDSLogV();
   }
 
@@ -2080,8 +2080,8 @@ LABEL_11:
     [v5 connectToPeer:self->_cbuuid];
   }
 
-  v6 = [(IDSUTunConnection *)self _nonThreadSafeSocketOptions];
-  if (v6)
+  _nonThreadSafeSocketOptions = [(IDSUTunConnection *)self _nonThreadSafeSocketOptions];
+  if (_nonThreadSafeSocketOptions)
   {
     if (![(NSString *)self->_identifier containsString:@"Relay"])
     {
@@ -2089,15 +2089,15 @@ LABEL_11:
     }
 
     v7 = +[IDSUTunController sharedInstance];
-    v8 = [v7 peerSupportsASQUIC:v6];
+    v8 = [v7 peerSupportsASQUIC:_nonThreadSafeSocketOptions];
 
     if (v8)
     {
       self->_isASQUICEnabledForRelay = 1;
 LABEL_13:
       v9 = +[IDSUTunController sharedInstance];
-      v10 = [(IDSUTunConnection *)self _nonThreadSafeSocketOptions];
-      [v9 resumeSocketWithOptions:v10 shouldLogCall:1];
+      _nonThreadSafeSocketOptions2 = [(IDSUTunConnection *)self _nonThreadSafeSocketOptions];
+      [v9 resumeSocketWithOptions:_nonThreadSafeSocketOptions2 shouldLogCall:1];
 
       if (self->_connectionSuspended)
       {
@@ -2110,7 +2110,7 @@ LABEL_13:
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v20 = self;
+          selfCopy4 = self;
           _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%@ _startConnection early return due to existing openSocket call", buf, 0xCu);
         }
 
@@ -2144,7 +2144,7 @@ LABEL_13:
         v18[2] = sub_100554C58;
         v18[3] = &unk_100BE0260;
         v18[4] = self;
-        [v14 openSocketWithOptions:v6 queue:v16 completionHandler:v18];
+        [v14 openSocketWithOptions:_nonThreadSafeSocketOptions queue:v16 completionHandler:v18];
       }
 
       goto LABEL_33;
@@ -2154,7 +2154,7 @@ LABEL_13:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v20 = self;
+      selfCopy4 = self;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "%@: relay connection not needed as peer doesn't support ASQUIC", buf, 0xCu);
     }
 
@@ -2169,35 +2169,35 @@ LABEL_13:
 LABEL_33:
 }
 
-- (void)_startNWConnectionForIPsecCase:(id)a3 capabilityFlags:(unint64_t)a4 instanceID:(unsigned __int8 *)(a5 serviceMinCompatibilityVersion:serviceConnection:trafficClass:
+- (void)_startNWConnectionForIPsecCase:(id)case capabilityFlags:(unint64_t)flags instanceID:(unsigned __int8 *)(a5 serviceMinCompatibilityVersion:serviceConnection:trafficClass:
 {
   v8 = *&a8;
-  v31 = a3;
+  caseCopy = case;
   v14 = a7;
   v15 = [IDSNWSocketPairConnection alloc];
   v16 = +[IDSDaemonPriorityQueueController sharedInstance];
   v17 = [v16 queueForPriority:self->_priority];
   v18 = [(IDSNWSocketPairConnection *)v15 initWithServiceConnection:v14 queue:v17 delegate:self priority:self->_priority trafficClass:v8 identifier:self->_identifier];
 
-  if (((a4 >> 2) & 1) != self->_resumeResourceTransfers)
+  if (((flags >> 2) & 1) != self->_resumeResourceTransfers)
   {
-    self->_resumeResourceTransfers = (a4 & 4) != 0;
+    self->_resumeResourceTransfers = (flags & 4) != 0;
   }
 
-  if ((a4 & 1) != self->_newServiceSupported)
+  if ((flags & 1) != self->_newServiceSupported)
   {
-    self->_newServiceSupported = a4 & 1;
+    self->_newServiceSupported = flags & 1;
   }
 
   self->_serviceMinCompatibilityVersion = a6;
-  if (((a4 >> 3) & 1) != self->_supportDynamicServices)
+  if (((flags >> 3) & 1) != self->_supportDynamicServices)
   {
-    self->_supportDynamicServices = (a4 & 8) != 0;
+    self->_supportDynamicServices = (flags & 8) != 0;
   }
 
-  if (((a4 >> 4) & 1) != self->_supportDynamicServicesOptimization)
+  if (((flags >> 4) & 1) != self->_supportDynamicServicesOptimization)
   {
-    self->_supportDynamicServicesOptimization = (a4 & 0x10) != 0;
+    self->_supportDynamicServicesOptimization = (flags & 0x10) != 0;
   }
 
   *&out[29] = 0xAAAAAAAAAAAAAAAALL;
@@ -2257,11 +2257,11 @@ LABEL_33:
     }
 
     *buf = 138414338;
-    v35 = v31;
+    selfCopy = caseCopy;
     v36 = 2080;
     v37 = out;
     v38 = 2048;
-    v39 = a4;
+    flagsCopy = flags;
     v40 = 2112;
     v41 = v22;
     v42 = 2112;
@@ -2325,7 +2325,7 @@ LABEL_33:
   if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v35 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEFAULT, "%@ openSocket returned with connection to old instance - stop and reconnect", buf, 0xCu);
   }
 
@@ -2340,10 +2340,10 @@ LABEL_33:
 LABEL_39:
 }
 
-- (void)_startAndSetupSocketPairConnection:(IDSUTunConnection *)self capabilityFlags:(SEL)a2 instanceID:(id)a3 serviceMinCompatibilityVersion:(unint64_t)a4 socketDescriptor:(unsigned __int8 *)(a5
+- (void)_startAndSetupSocketPairConnection:(IDSUTunConnection *)self capabilityFlags:(SEL)flags instanceID:(id)d serviceMinCompatibilityVersion:(unint64_t)version socketDescriptor:(unsigned __int8 *)(a5
 {
   v7 = *&a7;
-  v12 = a3;
+  dCopy = d;
   v13 = [IDSSocketPairConnection alloc];
   v14 = +[IDSDaemonPriorityQueueController sharedInstance];
   v15 = [v14 queueForPriority:self->_priority];
@@ -2374,36 +2374,36 @@ LABEL_39:
   [(IDSSocketPairConnection *)v17 setMaxAllowedMessageSize:v18];
   if ([(IDSUTunConnection *)self _isMagnetConnection])
   {
-    if (((a4 >> 1) & 1) != self->_useSharedOTRSession)
+    if (((version >> 1) & 1) != self->_useSharedOTRSession)
     {
-      self->_useSharedOTRSession = (a4 & 2) != 0;
+      self->_useSharedOTRSession = (version & 2) != 0;
     }
 
-    if (((a4 >> 6) & 1) != self->_useNamedOTRSessionToken)
+    if (((version >> 6) & 1) != self->_useNamedOTRSessionToken)
     {
-      self->_useNamedOTRSessionToken = (a4 & 0x40) != 0;
+      self->_useNamedOTRSessionToken = (version & 0x40) != 0;
     }
   }
 
-  if (((a4 >> 2) & 1) != self->_resumeResourceTransfers)
+  if (((version >> 2) & 1) != self->_resumeResourceTransfers)
   {
-    self->_resumeResourceTransfers = (a4 & 4) != 0;
+    self->_resumeResourceTransfers = (version & 4) != 0;
   }
 
-  if ((a4 & 1) != self->_newServiceSupported)
+  if ((version & 1) != self->_newServiceSupported)
   {
-    self->_newServiceSupported = a4 & 1;
+    self->_newServiceSupported = version & 1;
   }
 
   self->_serviceMinCompatibilityVersion = a6;
-  if (((a4 >> 3) & 1) != self->_supportDynamicServices)
+  if (((version >> 3) & 1) != self->_supportDynamicServices)
   {
-    self->_supportDynamicServices = (a4 & 8) != 0;
+    self->_supportDynamicServices = (version & 8) != 0;
   }
 
-  if (((a4 >> 4) & 1) != self->_supportDynamicServicesOptimization)
+  if (((version >> 4) & 1) != self->_supportDynamicServicesOptimization)
   {
-    self->_supportDynamicServicesOptimization = (a4 & 0x10) != 0;
+    self->_supportDynamicServicesOptimization = (version & 0x10) != 0;
   }
 
   *&out[29] = 0xAAAAAAAAAAAAAAAALL;
@@ -2463,11 +2463,11 @@ LABEL_39:
     }
 
     *buf = 138414338;
-    v56 = v12;
+    selfCopy = dCopy;
     v57 = 2080;
     v58 = out;
     v59 = 2048;
-    v60 = a4;
+    versionCopy = version;
     v61 = 2112;
     v62 = v22;
     v63 = 2112;
@@ -2497,8 +2497,8 @@ LABEL_39:
     v47 = v27;
     v48 = v28;
     v45 = out;
-    v46 = a4;
-    v44 = v12;
+    versionCopy3 = version;
+    v44 = dCopy;
     _IDSLogTransport();
     if (_IDSShouldLog())
     {
@@ -2559,8 +2559,8 @@ LABEL_39:
       v47 = v32;
       v48 = v33;
       v45 = out;
-      v46 = a4;
-      v44 = v12;
+      versionCopy3 = version;
+      v44 = dCopy;
       _IDSLogV();
     }
   }
@@ -2576,15 +2576,15 @@ LABEL_39:
       {
         if ([@"5" isEqualToString:@"5"])
         {
-          v38 = [(IDSUTunConnection *)v12 integerValue];
-          if (v38 < [@"5" integerValue])
+          integerValue = [(IDSUTunConnection *)dCopy integerValue];
+          if (integerValue < [@"5" integerValue])
           {
             self->_shouldAbortOnMissingTopic = 1;
             v39 = OSLogHandleForTransportCategory();
             if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138412290;
-              v56 = v12;
+              selfCopy = dCopy;
               _os_log_impl(&_mh_execute_header, v39, OS_LOG_TYPE_DEFAULT, "This is for phone/watch (_isMagnetConnection == YES), self version is 5 for Tigris, and remote watch is %@ - this is a case where a missing topic should result in an abort() call", buf, 0xCu);
             }
 
@@ -2592,11 +2592,11 @@ LABEL_39:
             {
               if (_IDSShouldLogTransport())
               {
-                v44 = v12;
+                v44 = dCopy;
                 _IDSLogTransport();
                 if (_IDSShouldLog())
                 {
-                  v44 = v12;
+                  v44 = dCopy;
                   _IDSLogV();
                 }
               }
@@ -2646,7 +2646,7 @@ LABEL_39:
   if (os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v56 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v43, OS_LOG_TYPE_DEFAULT, "%@ openSocket returned with connection to old instance - stop and reconnect", buf, 0xCu);
   }
 
@@ -2661,9 +2661,9 @@ LABEL_39:
 LABEL_92:
 }
 
-- (void)sendMessage:(id)a3
+- (void)sendMessage:(id)message
 {
-  v58 = a3;
+  messageCopy = message;
   state.opaque[1] = 0xAAAAAAAAAAAAAAAALL;
   v69 = _os_activity_create(&_mh_execute_header, "UTUNConnection sendMessage", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0xAAAAAAAAAAAAAAAALL;
@@ -2674,7 +2674,7 @@ LABEL_92:
   v4 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
-    if ([v58 nonWaking])
+    if ([messageCopy nonWaking])
     {
       v5 = @"(non waking)";
     }
@@ -2687,11 +2687,11 @@ LABEL_92:
     v6 = [(IDSLocalDeliveryQueue *)self->_deliveryQueue count];
     v7 = qos_class_self();
     *buf = 138413314;
-    v73 = self;
+    selfCopy5 = self;
     v74 = 2112;
     v75 = v5;
     v76 = 2112;
-    v77 = v58;
+    v77 = messageCopy;
     v78 = 2048;
     v79 = v6;
     v80 = 1024;
@@ -2701,7 +2701,7 @@ LABEL_92:
 
   if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
   {
-    if ([v58 nonWaking])
+    if ([messageCopy nonWaking])
     {
       v8 = @"(non waking)";
     }
@@ -2714,29 +2714,29 @@ LABEL_92:
     v55 = [(IDSLocalDeliveryQueue *)self->_deliveryQueue count];
     v56 = qos_class_self();
     v52 = v8;
-    v54 = v58;
-    v50 = self;
+    v54 = messageCopy;
+    selfCopy2 = self;
     _IDSLogV();
   }
 
-  v59 = [v58 topic];
-  v9 = [v58 queueOneIdentifier];
-  if (v9 && v59)
+  topic = [messageCopy topic];
+  queueOneIdentifier = [messageCopy queueOneIdentifier];
+  if (queueOneIdentifier && topic)
   {
     v10 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v73 = v59;
+      selfCopy5 = topic;
       v74 = 2112;
-      v75 = v9;
+      v75 = queueOneIdentifier;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Message with topic %@ has queueOneIdentifier %@, flushing older messages that match.", buf, 0x16u);
     }
 
     if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
     {
-      v51 = v59;
-      v53 = v9;
+      selfCopy6 = topic;
+      v53 = queueOneIdentifier;
       _IDSLogV();
     }
 
@@ -2744,7 +2744,7 @@ LABEL_92:
     v67 = 0u;
     v64 = 0u;
     v65 = 0u;
-    v11 = [(NSMutableArray *)self->_sendingMessages copy:v51];
+    v11 = [(NSMutableArray *)self->_sendingMessages copy:selfCopy6];
     v12 = [v11 countByEnumeratingWithState:&v64 objects:v71 count:16];
     if (v12)
     {
@@ -2759,12 +2759,12 @@ LABEL_21:
         }
 
         v15 = *(*(&v64 + 1) + 8 * v14);
-        v16 = [v15 context];
-        v17 = [v16 queueOneIdentifier];
-        if ([v17 isEqualToString:v9])
+        context = [v15 context];
+        queueOneIdentifier2 = [context queueOneIdentifier];
+        if ([queueOneIdentifier2 isEqualToString:queueOneIdentifier])
         {
-          v18 = [v16 topic];
-          v19 = [v18 isEqualToString:v59];
+          topic2 = [context topic];
+          v19 = [topic2 isEqualToString:topic];
 
           if (v19)
           {
@@ -2796,14 +2796,14 @@ LABEL_21:
       }
     }
 
-    v16 = 0;
+    context = 0;
 LABEL_32:
     v62 = 0u;
     v63 = 0u;
     v60 = 0u;
     v61 = 0u;
-    v21 = [(IDSLocalDeliveryQueue *)self->_deliveryQueue messages];
-    v22 = [v21 countByEnumeratingWithState:&v60 objects:v70 count:16];
+    messages = [(IDSLocalDeliveryQueue *)self->_deliveryQueue messages];
+    v22 = [messages countByEnumeratingWithState:&v60 objects:v70 count:16];
     if (v22)
     {
       v23 = *v61;
@@ -2813,21 +2813,21 @@ LABEL_32:
         {
           if (*v61 != v23)
           {
-            objc_enumerationMutation(v21);
+            objc_enumerationMutation(messages);
           }
 
           v25 = *(*(&v60 + 1) + 8 * i);
-          v26 = [v25 queueOneIdentifier];
-          if ([v26 isEqualToString:v9])
+          queueOneIdentifier3 = [v25 queueOneIdentifier];
+          if ([queueOneIdentifier3 isEqualToString:queueOneIdentifier])
           {
-            v27 = [v25 topic];
-            v28 = [v27 isEqualToString:v59];
+            topic3 = [v25 topic];
+            v28 = [topic3 isEqualToString:topic];
 
             if (v28)
             {
               v29 = v25;
 
-              v16 = v29;
+              context = v29;
               goto LABEL_43;
             }
           }
@@ -2837,7 +2837,7 @@ LABEL_32:
           }
         }
 
-        v22 = [v21 countByEnumeratingWithState:&v60 objects:v70 count:16];
+        v22 = [messages countByEnumeratingWithState:&v60 objects:v70 count:16];
       }
 
       while (v22);
@@ -2847,11 +2847,11 @@ LABEL_43:
 
     v20 = 0;
 LABEL_44:
-    [(IDSUTunConnection *)self _removeSocketPairMessage:v20 localMessage:v16 reason:@"queue one identifier" responseCode:13];
+    [(IDSUTunConnection *)self _removeSocketPairMessage:v20 localMessage:context reason:@"queue one identifier" responseCode:13];
   }
 
-  v30 = [v58 expirationDate];
-  v31 = v30 == 0;
+  expirationDate = [messageCopy expirationDate];
+  v31 = expirationDate == 0;
 
   if (v31)
   {
@@ -2865,24 +2865,24 @@ LABEL_44:
       [NSDate dateWithTimeIntervalSinceNow:120.0];
     }
     v32 = ;
-    [v58 setExpirationDate:v32];
+    [messageCopy setExpirationDate:v32];
   }
 
-  v33 = [v58 resourcePath];
-  v34 = v33 == 0;
+  resourcePath = [messageCopy resourcePath];
+  v34 = resourcePath == 0;
 
   if (!v34)
   {
-    [v58 setManualQueueRemoval:1];
+    [messageCopy setManualQueueRemoval:1];
   }
 
-  [(IDSLocalDeliveryQueue *)self->_deliveryQueue enqueueMessage:v58];
-  self->_cachedBytes[[v58 dataProtectionClass]] = -1;
+  [(IDSLocalDeliveryQueue *)self->_deliveryQueue enqueueMessage:messageCopy];
+  self->_cachedBytes[[messageCopy dataProtectionClass]] = -1;
   +[NSDate timeIntervalSinceReferenceDate];
-  [v58 setTimeEnqueued:?];
-  v35 = [v58 fallbackBlock];
+  [messageCopy setTimeEnqueued:?];
+  fallbackBlock = [messageCopy fallbackBlock];
 
-  if (v35)
+  if (fallbackBlock)
   {
     fallbackMessages = self->_fallbackMessages;
     if (!fallbackMessages)
@@ -2894,23 +2894,23 @@ LABEL_44:
       fallbackMessages = self->_fallbackMessages;
     }
 
-    [(NSMutableArray *)fallbackMessages addObject:v58];
-    v39 = [v58 topic];
-    v40 = [v39 isEqualToString:@"com.apple.private.alloy.phonecontinuity"];
+    [(NSMutableArray *)fallbackMessages addObject:messageCopy];
+    topic4 = [messageCopy topic];
+    v40 = [topic4 isEqualToString:@"com.apple.private.alloy.phonecontinuity"];
 
     [(IDSUTunConnection *)self _resetFallbackTimeout:v40 useNextFallback:0.0];
   }
 
   isMagnetIndicatingPeerIsAwake = self->_isMagnetIndicatingPeerIsAwake;
-  v42 = [v58 nonWaking] ^ 1;
-  if (-[IDSUTunConnection _isMagnetConnection](self, "_isMagnetConnection") && -[IDSUTunConnection _currentLink](self, "_currentLink") != 1 && [v58 nonCloudWaking])
+  v42 = [messageCopy nonWaking] ^ 1;
+  if (-[IDSUTunConnection _isMagnetConnection](self, "_isMagnetConnection") && -[IDSUTunConnection _currentLink](self, "_currentLink") != 1 && [messageCopy nonCloudWaking])
   {
     v43 = OSLogHandleForTransportCategory();
     if (os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT))
     {
-      v44 = [v58 messageUUID];
+      messageUUID = [messageCopy messageUUID];
       *buf = 138412290;
-      v73 = v44;
+      selfCopy5 = messageUUID;
       _os_log_impl(&_mh_execute_header, v43, OS_LOG_TYPE_DEFAULT, "Attempting to send nonCloudWaking message on non-magnet connection. Coallescing {guid: %@}", buf, 0xCu);
     }
 
@@ -2918,12 +2918,12 @@ LABEL_44:
     {
       if (_IDSShouldLogTransport())
       {
-        v51 = [v58 messageUUID];
+        selfCopy6 = [messageCopy messageUUID];
         _IDSLogTransport();
 
         if (_IDSShouldLog())
         {
-          v51 = [v58 messageUUID];
+          selfCopy6 = [messageCopy messageUUID];
           _IDSLogV();
         }
       }
@@ -2949,12 +2949,12 @@ LABEL_44:
   {
     if ((v42 | isMagnetIndicatingPeerIsAwake))
     {
-      [v58 setDidWakeHint:v42 & !isMagnetIndicatingPeerIsAwake];
+      [messageCopy setDidWakeHint:v42 & !isMagnetIndicatingPeerIsAwake];
       v46 = OSLogHandleForIDSCategory();
       if (os_log_type_enabled(v46, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412546;
-        v73 = self;
+        selfCopy5 = self;
         v74 = 1024;
         LODWORD(v75) = v42 & !isMagnetIndicatingPeerIsAwake;
         _os_log_impl(&_mh_execute_header, v46, OS_LOG_TYPE_DEBUG, "%@ socket buffer is empty, dequeuing a message.  didWakeHint(%d)", buf, 0x12u);
@@ -2962,12 +2962,12 @@ LABEL_44:
 
       if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
       {
-        v51 = self;
+        selfCopy6 = self;
         v53 = (v42 & !isMagnetIndicatingPeerIsAwake);
         _IDSLogV();
       }
 
-      [(IDSUTunConnection *)self _dequeueMessages:v51];
+      [(IDSUTunConnection *)self _dequeueMessages:selfCopy6];
     }
 
     else
@@ -2976,36 +2976,36 @@ LABEL_44:
       if (os_log_type_enabled(v47, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v73 = self;
+        selfCopy5 = self;
         _os_log_impl(&_mh_execute_header, v47, OS_LOG_TYPE_DEFAULT, "%@ Waiting for remote device wake before dequeuing message.", buf, 0xCu);
       }
 
       if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
       {
-        v51 = self;
+        selfCopy6 = self;
         _IDSLogV();
       }
     }
   }
 
-  v48 = [(IMTimer *)self->_timeoutTimer fireDate];
-  v49 = [v58 expirationDate];
-  if (!v48 || [v48 compare:v49] == 1)
+  fireDate = [(IMTimer *)self->_timeoutTimer fireDate];
+  expirationDate2 = [messageCopy expirationDate];
+  if (!fireDate || [fireDate compare:expirationDate2] == 1)
   {
-    [(IDSUTunConnection *)self _resetTimeout:v49];
+    [(IDSUTunConnection *)self _resetTimeout:expirationDate2];
   }
 
   os_activity_scope_leave(&state);
   cut_arc_os_release();
 }
 
-- (void)cancelMessageID:(id)a3
+- (void)cancelMessageID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = +[IDSDaemonPriorityQueueController sharedInstance];
   [v5 assertRunningWithPriority:self->_priority];
 
-  if ([v4 length])
+  if ([dCopy length])
   {
     v24 = [(IDSUTunConnection *)self _sendingMessageCountForClass:1];
     v23 = [(IDSUTunConnection *)self _sendingMessageCountForClass:0];
@@ -3014,9 +3014,9 @@ LABEL_44:
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v6 = [(IDSLocalDeliveryQueue *)self->_deliveryQueue messages];
+    messages = [(IDSLocalDeliveryQueue *)self->_deliveryQueue messages];
     v7 = 0;
-    v8 = [v6 countByEnumeratingWithState:&v29 objects:v36 count:16];
+    v8 = [messages countByEnumeratingWithState:&v29 objects:v36 count:16];
     if (v8)
     {
       v9 = *v30;
@@ -3026,12 +3026,12 @@ LABEL_44:
         {
           if (*v30 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(messages);
           }
 
           v11 = *(*(&v29 + 1) + 8 * i);
-          v12 = [v11 messageUUID];
-          v13 = [v12 isEqualToIgnoringCase:v4];
+          messageUUID = [v11 messageUUID];
+          v13 = [messageUUID isEqualToIgnoringCase:dCopy];
 
           if (v13)
           {
@@ -3044,7 +3044,7 @@ LABEL_44:
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v29 objects:v36 count:16];
+        v8 = [messages countByEnumeratingWithState:&v29 objects:v36 count:16];
       }
 
       while (v8);
@@ -3085,9 +3085,9 @@ LABEL_44:
             }
 
             v19 = *(*(&v25 + 1) + 8 * j);
-            v20 = [v19 underlyingSocketPairMessage];
+            underlyingSocketPairMessage = [v19 underlyingSocketPairMessage];
             [v19 setCompletionBlock:0];
-            [(IDSUTunConnection *)self _removeSocketPairMessage:v20 localMessage:v19 reason:@"Client Canceled" responseCode:2];
+            [(IDSUTunConnection *)self _removeSocketPairMessage:underlyingSocketPairMessage localMessage:v19 reason:@"Client Canceled" responseCode:2];
           }
 
           v16 = [v15 countByEnumeratingWithState:&v25 objects:v33 count:16];
@@ -3114,9 +3114,9 @@ LABEL_44:
   }
 }
 
-- (void)kickProgressBlockForMessageID:(id)a3
+- (void)kickProgressBlockForMessageID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = +[IDSDaemonPriorityQueueController sharedInstance];
   [v5 assertRunningWithPriority:self->_priority];
 
@@ -3124,8 +3124,8 @@ LABEL_44:
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [(IDSLocalDeliveryQueue *)self->_deliveryQueue messages];
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  messages = [(IDSLocalDeliveryQueue *)self->_deliveryQueue messages];
+  v7 = [messages countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -3136,12 +3136,12 @@ LABEL_44:
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(messages);
         }
 
         v11 = *(*(&v14 + 1) + 8 * i);
-        v12 = [v11 messageUUID];
-        v13 = [v12 isEqualToIgnoringCase:v4];
+        messageUUID = [v11 messageUUID];
+        v13 = [messageUUID isEqualToIgnoringCase:dCopy];
 
         if (v13)
         {
@@ -3149,16 +3149,16 @@ LABEL_44:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v8 = [messages countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v8);
   }
 }
 
-- (void)_handleBecomingEmptyForDataProtectionClass:(unsigned int)a3
+- (void)_handleBecomingEmptyForDataProtectionClass:(unsigned int)class
 {
-  v3 = *&a3;
+  v3 = *&class;
   v5 = +[IDSDaemonPriorityQueueController sharedInstance];
   [v5 assertRunningWithPriority:self->_priority];
 
@@ -3193,16 +3193,16 @@ LABEL_44:
   [(IDSUTunConnection *)self _resetFallbackTimeout:0 useNextFallback:0.0];
 }
 
-- (void)_clearLastFallbackWithReason:(id)a3
+- (void)_clearLastFallbackWithReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   if (self->_lastFallback)
   {
     v5 = OSLogHandleForTransportCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v8 = v4;
+      v8 = reasonCopy;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Clearing fallback stickiness due to: %@", buf, 0xCu);
     }
 
@@ -3223,10 +3223,10 @@ LABEL_44:
   }
 }
 
-- (double)_nanoConnectedFallbackTimeoutForService:(id)a3
+- (double)_nanoConnectedFallbackTimeoutForService:(id)service
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"com.apple.private.alloy.willow"])
+  serviceCopy = service;
+  if ([serviceCopy isEqualToString:@"com.apple.private.alloy.willow"])
   {
     v4 = 6.0;
   }
@@ -3236,7 +3236,7 @@ LABEL_44:
     v4 = 60.0;
   }
 
-  v5 = [@"utun-push-fallback-connected-timeout-" stringByAppendingString:v3];
+  v5 = [@"utun-push-fallback-connected-timeout-" stringByAppendingString:serviceCopy];
   v6 = +[IDSServerBag sharedInstance];
   v7 = [v6 objectForKey:v5];
 
@@ -3272,10 +3272,10 @@ LABEL_44:
   return v4;
 }
 
-- (double)_nanoDisconnectedFallbackTimeoutForService:(id)a3
+- (double)_nanoDisconnectedFallbackTimeoutForService:(id)service
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"com.apple.private.alloy.willow"])
+  serviceCopy = service;
+  if ([serviceCopy isEqualToString:@"com.apple.private.alloy.willow"])
   {
     v4 = 5.0;
   }
@@ -3285,7 +3285,7 @@ LABEL_44:
     v4 = 20.0;
   }
 
-  v5 = [@"utun-push-fallback-disconnected-timeout-" stringByAppendingString:v3];
+  v5 = [@"utun-push-fallback-disconnected-timeout-" stringByAppendingString:serviceCopy];
   v6 = +[IDSServerBag sharedInstance];
   v7 = [v6 objectForKey:v5];
 
@@ -3321,9 +3321,9 @@ LABEL_44:
   return v4;
 }
 
-- (double)_fallbackTimeoutForService:(id)a3
+- (double)_fallbackTimeoutForService:(id)service
 {
-  v4 = a3;
+  serviceCopy = service;
   v5 = +[IDSDaemonPriorityQueueController sharedInstance];
   [v5 assertRunningWithPriority:self->_priority];
 
@@ -3400,12 +3400,12 @@ LABEL_44:
   {
     if ([(IDSUTunConnection *)self isConnected])
     {
-      [(IDSUTunConnection *)self _nanoConnectedFallbackTimeoutForService:v4];
+      [(IDSUTunConnection *)self _nanoConnectedFallbackTimeoutForService:serviceCopy];
     }
 
     else
     {
-      [(IDSUTunConnection *)self _nanoDisconnectedFallbackTimeoutForService:v4];
+      [(IDSUTunConnection *)self _nanoDisconnectedFallbackTimeoutForService:serviceCopy];
     }
 
     v9 = v14;
@@ -3416,25 +3416,25 @@ LABEL_24:
   return v9;
 }
 
-- (BOOL)_performFallbackIfNecessary:(id)a3
+- (BOOL)_performFallbackIfNecessary:(id)necessary
 {
-  v4 = a3;
+  necessaryCopy = necessary;
   v5 = +[IDSDaemonPriorityQueueController sharedInstance];
   [v5 assertRunningWithPriority:self->_priority];
 
   +[NSDate timeIntervalSinceReferenceDate];
   v7 = v6;
-  [v4 timeEnqueued];
+  [necessaryCopy timeEnqueued];
   v9 = v8;
-  if (([v4 didFallback] & 1) != 0 || (objc_msgSend(v4, "topic"), v10 = objc_claimAutoreleasedReturnValue(), v11 = v7 - v9, -[IDSUTunConnection _fallbackTimeoutForService:](self, "_fallbackTimeoutForService:", v10), v13 = v12, v10, v11 <= v13))
+  if (([necessaryCopy didFallback] & 1) != 0 || (objc_msgSend(necessaryCopy, "topic"), v10 = objc_claimAutoreleasedReturnValue(), v11 = v7 - v9, -[IDSUTunConnection _fallbackTimeoutForService:](self, "_fallbackTimeoutForService:", v10), v13 = v12, v10, v11 <= v13))
   {
     v18 = 0;
   }
 
   else
   {
-    v14 = [v4 fallbackBlock];
-    if (v14)
+    fallbackBlock = [necessaryCopy fallbackBlock];
+    if (fallbackBlock)
     {
       v15 = objc_alloc_init(NSDate);
       lastFallback = self->_lastFallback;
@@ -3455,17 +3455,17 @@ LABEL_24:
       v19 = OSLogHandleForTransportCategory();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
-        v20 = [v4 messageID];
-        v21 = [v4 messageUUID];
-        v22 = [v4 expirationDate];
+        messageID = [necessaryCopy messageID];
+        messageUUID = [necessaryCopy messageUUID];
+        expirationDate = [necessaryCopy expirationDate];
         *buf = 138413058;
-        v42 = self;
+        selfCopy = self;
         v43 = 1024;
-        v44 = v20;
+        v44 = messageID;
         v45 = 2112;
-        v46 = v21;
+        v46 = messageUUID;
         v47 = 2112;
-        v48 = v22;
+        v48 = expirationDate;
         _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "%@ performing cloud fallback for message[%u] %@ which is scheduled to expire %@", buf, 0x26u);
       }
 
@@ -3473,40 +3473,40 @@ LABEL_24:
       {
         if (_IDSShouldLogTransport())
         {
-          v23 = [v4 messageID];
-          v24 = [v4 messageUUID];
-          [v4 expirationDate];
-          v36 = v35 = v24;
-          v33 = self;
-          v34 = v23;
+          messageID2 = [necessaryCopy messageID];
+          messageUUID2 = [necessaryCopy messageUUID];
+          [necessaryCopy expirationDate];
+          v36 = v35 = messageUUID2;
+          selfCopy3 = self;
+          v34 = messageID2;
           _IDSLogTransport();
 
           if (_IDSShouldLog())
           {
-            v25 = [v4 messageID];
-            v26 = [v4 messageUUID];
-            [v4 expirationDate];
-            v36 = v35 = v26;
-            v33 = self;
-            v34 = v25;
+            messageID3 = [necessaryCopy messageID];
+            messageUUID3 = [necessaryCopy messageUUID];
+            [necessaryCopy expirationDate];
+            v36 = v35 = messageUUID3;
+            selfCopy3 = self;
+            v34 = messageID3;
             _IDSLogV();
           }
         }
       }
 
-      [v4 setDidFallback:{1, v33, v34, v35, v36}];
-      v27 = [v4 toURI];
-      v28 = [v4 toDeviceID];
+      [necessaryCopy setDidFallback:{1, selfCopy3, v34, v35, v36}];
+      toURI = [necessaryCopy toURI];
+      toDeviceID = [necessaryCopy toDeviceID];
       v29 = +[IDSDaemonPriorityQueueController sharedInstance];
       v37[0] = _NSConcreteStackBlock;
       v37[1] = 3221225472;
       v37[2] = sub_100557DFC;
       v37[3] = &unk_100BDA5A8;
-      v39 = v28;
-      v40 = v14;
-      v38 = v27;
-      v30 = v28;
-      v31 = v27;
+      v39 = toDeviceID;
+      v40 = fallbackBlock;
+      v38 = toURI;
+      v30 = toDeviceID;
+      v31 = toURI;
       [v29 performBlockMainQueue:v37];
     }
 
@@ -3516,35 +3516,35 @@ LABEL_24:
   return v18;
 }
 
-- (void)_resetFallbackTimeout:(double)a3 useNextFallback:(BOOL)a4
+- (void)_resetFallbackTimeout:(double)timeout useNextFallback:(BOOL)fallback
 {
   if (!self->_fallbackTimer)
   {
-    if (!a4)
+    if (!fallback)
     {
-      v6 = [(NSMutableArray *)self->_fallbackMessages firstObject];
-      v7 = v6;
-      if (!v6)
+      firstObject = [(NSMutableArray *)self->_fallbackMessages firstObject];
+      v7 = firstObject;
+      if (!firstObject)
       {
         return;
       }
 
-      [v6 timeEnqueued];
+      [firstObject timeEnqueued];
       v8 = [NSDate dateWithTimeIntervalSinceReferenceDate:?];
       [v8 timeIntervalSinceNow];
       v10 = v9;
-      v11 = [v7 topic];
-      [(IDSUTunConnection *)self _fallbackTimeoutForService:v11];
-      a3 = v10 + v12;
+      topic = [v7 topic];
+      [(IDSUTunConnection *)self _fallbackTimeoutForService:topic];
+      timeout = v10 + v12;
     }
 
     v13 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v19 = self;
+      selfCopy = self;
       v20 = 2048;
-      v21 = a3;
+      timeoutCopy = timeout;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "%@ - messages in queue in need of fallback, setting timer for: %f", buf, 0x16u);
     }
 
@@ -3554,13 +3554,13 @@ LABEL_24:
     }
 
     v14 = [IMTimer alloc];
-    if (a3 < 0.005)
+    if (timeout < 0.005)
     {
-      a3 = 0.005;
+      timeout = 0.005;
     }
 
     v15 = im_primary_queue();
-    v16 = [v14 initWithTimeInterval:0 name:0 shouldWake:self target:"_fallbackTimerFired" selector:0 userInfo:v15 queue:a3];
+    v16 = [v14 initWithTimeInterval:0 name:0 shouldWake:self target:"_fallbackTimerFired" selector:0 userInfo:v15 queue:timeout];
     fallbackTimer = self->_fallbackTimer;
     self->_fallbackTimer = v16;
   }
@@ -3584,20 +3584,20 @@ LABEL_24:
   self->_timeoutTimer = 0;
 }
 
-- (void)_resetTimeout:(id)a3
+- (void)_resetTimeout:(id)timeout
 {
-  v4 = a3;
+  timeoutCopy = timeout;
   v5 = +[IDSDaemonPriorityQueueController sharedInstance];
   [v5 assertRunningWithPriority:self->_priority];
 
-  if (!v4)
+  if (!timeoutCopy)
   {
     v37 = 0u;
     v38 = 0u;
     v35 = 0u;
     v36 = 0u;
     v6 = self->_sendingMessages;
-    v4 = 0;
+    timeoutCopy = 0;
     v7 = [(NSMutableArray *)v6 countByEnumeratingWithState:&v35 objects:v44 count:16];
     if (v7)
     {
@@ -3612,14 +3612,14 @@ LABEL_24:
             objc_enumerationMutation(v6);
           }
 
-          v10 = [*(*(&v35 + 1) + 8 * v9) context];
-          v11 = [v10 expirationDate];
-          v12 = v11;
-          if (!v4 || [v11 compare:v4] == -1)
+          context = [*(*(&v35 + 1) + 8 * v9) context];
+          expirationDate = [context expirationDate];
+          v12 = expirationDate;
+          if (!timeoutCopy || [expirationDate compare:timeoutCopy] == -1)
           {
             v13 = v12;
 
-            v4 = v13;
+            timeoutCopy = v13;
           }
 
           v9 = v9 + 1;
@@ -3636,8 +3636,8 @@ LABEL_24:
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v14 = [(IDSLocalDeliveryQueue *)self->_deliveryQueue messages];
-    v15 = [v14 countByEnumeratingWithState:&v31 objects:v43 count:16];
+    messages = [(IDSLocalDeliveryQueue *)self->_deliveryQueue messages];
+    v15 = [messages countByEnumeratingWithState:&v31 objects:v43 count:16];
     if (v15)
     {
       v16 = *v32;
@@ -3648,23 +3648,23 @@ LABEL_24:
         {
           if (*v32 != v16)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(messages);
           }
 
-          v18 = [*(*(&v31 + 1) + 8 * v17) expirationDate];
-          v19 = v18;
-          if (!v4 || [v18 compare:v4] == -1)
+          expirationDate2 = [*(*(&v31 + 1) + 8 * v17) expirationDate];
+          v19 = expirationDate2;
+          if (!timeoutCopy || [expirationDate2 compare:timeoutCopy] == -1)
           {
             v20 = v19;
 
-            v4 = v20;
+            timeoutCopy = v20;
           }
 
           v17 = v17 + 1;
         }
 
         while (v15 != v17);
-        v15 = [v14 countByEnumeratingWithState:&v31 objects:v43 count:16];
+        v15 = [messages countByEnumeratingWithState:&v31 objects:v43 count:16];
       }
 
       while (v15);
@@ -3675,9 +3675,9 @@ LABEL_24:
   timeoutTimer = self->_timeoutTimer;
   self->_timeoutTimer = 0;
 
-  if (v4)
+  if (timeoutCopy)
   {
-    [v4 timeIntervalSinceNow];
+    [timeoutCopy timeIntervalSinceNow];
     v23 = v22 + 0.5;
     if (v23 >= 1.0)
     {
@@ -3693,7 +3693,7 @@ LABEL_24:
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v40 = self;
+      selfCopy2 = self;
       v41 = 2048;
       v42 = v24;
       _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "%@ - messages in queue, setting timer for: %f", buf, 0x16u);
@@ -3717,7 +3717,7 @@ LABEL_24:
     if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v40 = self;
+      selfCopy2 = self;
       _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEFAULT, "%@ - no messages in queue, clearing timer", buf, 0xCu);
     }
 
@@ -3751,64 +3751,64 @@ LABEL_24:
   [v3 performBlockWithPriority:v4 priority:self->_priority];
 }
 
-- (BOOL)_shouldAWDLogMessage:(id)a3
+- (BOOL)_shouldAWDLogMessage:(id)message
 {
-  v3 = [a3 command];
-  v4 = [v3 integerValue] != 244;
+  command = [message command];
+  v4 = [command integerValue] != 244;
 
   return v4;
 }
 
-- (void)_messageTimedOut:(id)a3 localMessage:(id)a4
+- (void)_messageTimedOut:(id)out localMessage:(id)message
 {
-  v32 = a3;
-  v6 = a4;
+  outCopy = out;
+  messageCopy = message;
   v7 = +[IDSDaemonPriorityQueueController sharedInstance];
   [v7 assertRunningWithPriority:self->_priority];
 
-  v8 = [v6 dataProtectionClass];
-  v9 = [(IDSUTunConnection *)self _inflightMessageCountForClass:v8];
-  if ([(IDSUTunConnection *)self _shouldAWDLogMessage:v6])
+  dataProtectionClass = [messageCopy dataProtectionClass];
+  v9 = [(IDSUTunConnection *)self _inflightMessageCountForClass:dataProtectionClass];
+  if ([(IDSUTunConnection *)self _shouldAWDLogMessage:messageCopy])
   {
     v10 = [IDSLocalMessageTimedOutMetric alloc];
-    v11 = [v6 awdTopic];
-    v12 = [v10 initWithService:v11 isToDefaultPairedDevice:-[IDSUTunConnection _isMagnetConnection](self messageSize:"_isMagnetConnection") linkType:objc_msgSend(v6 deliveryError:"sentMessageDataSize") RTT:-[IDSUTunConnection _currentLink](self priority:{"_currentLink"), 101, 0, objc_msgSend(v6, "priority")}];
+    awdTopic = [messageCopy awdTopic];
+    v12 = [v10 initWithService:awdTopic isToDefaultPairedDevice:-[IDSUTunConnection _isMagnetConnection](self messageSize:"_isMagnetConnection") linkType:objc_msgSend(messageCopy deliveryError:"sentMessageDataSize") RTT:-[IDSUTunConnection _currentLink](self priority:{"_currentLink"), 101, 0, objc_msgSend(messageCopy, "priority")}];
 
     v13 = +[IDSCoreAnalyticsLogger defaultLogger];
     [v13 logMetric:v12];
 
     v14 = +[IDSAWDLogging sharedInstance];
-    v15 = [v6 awdTopic];
-    [v14 messageDeliveredForService:v15 isToDefaultPairedDevice:-[IDSUTunConnection _isMagnetConnection](self messageSize:"_isMagnetConnection") linkType:objc_msgSend(v6 deliveryError:"sentMessageDataSize") RTT:-[IDSUTunConnection _currentLink](self priority:{"_currentLink"), 101, 0, objc_msgSend(v6, "priority")}];
+    awdTopic2 = [messageCopy awdTopic];
+    [v14 messageDeliveredForService:awdTopic2 isToDefaultPairedDevice:-[IDSUTunConnection _isMagnetConnection](self messageSize:"_isMagnetConnection") linkType:objc_msgSend(messageCopy deliveryError:"sentMessageDataSize") RTT:-[IDSUTunConnection _currentLink](self priority:{"_currentLink"), 101, 0, objc_msgSend(messageCopy, "priority")}];
   }
 
-  v16 = [(IDSUTunConnection *)self _UTunDeliveryController];
-  v17 = [v16 isConnected];
+  _UTunDeliveryController = [(IDSUTunConnection *)self _UTunDeliveryController];
+  isConnected = [_UTunDeliveryController isConnected];
 
-  v18 = [(IDSUTunConnection *)self _UTunDeliveryController];
-  v19 = [v18 isCloudConnected];
+  _UTunDeliveryController2 = [(IDSUTunConnection *)self _UTunDeliveryController];
+  isCloudConnected = [_UTunDeliveryController2 isCloudConnected];
 
-  v20 = [(IDSUTunConnection *)self _UTunDeliveryController];
-  v21 = [v20 isClassCConnected];
+  _UTunDeliveryController3 = [(IDSUTunConnection *)self _UTunDeliveryController];
+  isClassCConnected = [_UTunDeliveryController3 isClassCConnected];
 
-  v22 = [(IDSUTunConnection *)self _UTunDeliveryController];
-  v23 = [v22 isTerminusRegistered];
+  _UTunDeliveryController4 = [(IDSUTunConnection *)self _UTunDeliveryController];
+  isTerminusRegistered = [_UTunDeliveryController4 isTerminusRegistered];
 
   v24 = 0;
-  if (v17 && (v21 & 1) == 0)
+  if (isConnected && (isClassCConnected & 1) == 0)
   {
-    v24 = (v8 < 2) & v23;
+    v24 = (dataProtectionClass < 2) & isTerminusRegistered;
   }
 
-  if (v17)
+  if (isConnected)
   {
-    v25 = [v6 nonWaking];
-    v26 = v32;
-    if (v25)
+    nonWaking = [messageCopy nonWaking];
+    v26 = outCopy;
+    if (nonWaking)
     {
       v27 = @"This message was a non-waking message and the destination device for this message did not wake before the timeout fired";
-      v28 = self;
-      v29 = v6;
+      selfCopy5 = self;
+      v29 = messageCopy;
       v30 = 34;
       goto LABEL_16;
     }
@@ -3816,12 +3816,12 @@ LABEL_24:
 
   else
   {
-    v26 = v32;
-    if ((self->_isCloudEnabled & v19 & 1) == 0)
+    v26 = outCopy;
+    if ((self->_isCloudEnabled & isCloudConnected & 1) == 0)
     {
       v27 = @"The destination device for this message did not connected before the timeout fired.";
-      v28 = self;
-      v29 = v6;
+      selfCopy5 = self;
+      v29 = messageCopy;
       v30 = 33;
       goto LABEL_16;
     }
@@ -3830,67 +3830,67 @@ LABEL_24:
   if ([v26 wasWrittenToConnection])
   {
     v27 = @"This message was written into the connection, but did not receive an ack. Check Bluetooth conditions and that your process is not hung on the receiver.";
-    v28 = self;
-    v26 = v32;
-    v29 = v6;
+    selfCopy5 = self;
+    v26 = outCopy;
+    v29 = messageCopy;
     v30 = 35;
   }
 
   else if (v24)
   {
     v27 = @"This message requires class C connection, but the devices are not ClassC connected, because the remote device is locked.";
-    v28 = self;
-    v26 = v32;
-    v29 = v6;
+    selfCopy5 = self;
+    v26 = outCopy;
+    v29 = messageCopy;
     v30 = 36;
   }
 
   else
   {
     v27 = @"timed out";
-    v28 = self;
-    v26 = v32;
-    v29 = v6;
+    selfCopy5 = self;
+    v26 = outCopy;
+    v29 = messageCopy;
     v30 = 12;
   }
 
 LABEL_16:
-  [(IDSUTunConnection *)v28 _removeSocketPairMessage:v26 localMessage:v29 reason:v27 responseCode:v30];
-  v31 = [(IDSUTunConnection *)self _inflightMessageCountForClass:v8];
+  [(IDSUTunConnection *)selfCopy5 _removeSocketPairMessage:v26 localMessage:v29 reason:v27 responseCode:v30];
+  v31 = [(IDSUTunConnection *)self _inflightMessageCountForClass:dataProtectionClass];
   if (v9 && !v31)
   {
-    [(IDSUTunConnection *)self _handleBecomingEmptyForDataProtectionClass:v8];
+    [(IDSUTunConnection *)self _handleBecomingEmptyForDataProtectionClass:dataProtectionClass];
   }
 }
 
-- (void)_removeSocketPairMessage:(id)a3 localMessage:(id)a4 reason:(id)a5 detailedError:(id)a6 responseCode:(int64_t)a7
+- (void)_removeSocketPairMessage:(id)message localMessage:(id)localMessage reason:(id)reason detailedError:(id)error responseCode:(int64_t)code
 {
-  v12 = a3;
-  v13 = a4;
-  v47 = a5;
-  v46 = a6;
+  messageCopy = message;
+  localMessageCopy = localMessage;
+  reasonCopy = reason;
+  errorCopy = error;
   v14 = +[IDSDaemonPriorityQueueController sharedInstance];
   [v14 assertRunningWithPriority:self->_priority];
 
-  if (v12 | v13)
+  if (messageCopy | localMessageCopy)
   {
-    if (v12)
+    if (messageCopy)
     {
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
-      if (a7 && (isKindOfClass & 1) != 0)
+      if (code && (isKindOfClass & 1) != 0)
       {
-        v16 = v12;
-        v17 = [v16 sequenceNumber];
-        v18 = [v16 streamID];
-        v19 = [v16 messageUUID];
-        v20 = [IDSSocketPairResourceTransferMessage cancelMessageWithSequenceNumber:v17 streamID:v18 messageUUID:v19 cancelReason:5];
+        v16 = messageCopy;
+        sequenceNumber = [v16 sequenceNumber];
+        streamID = [v16 streamID];
+        messageUUID = [v16 messageUUID];
+        v20 = [IDSSocketPairResourceTransferMessage cancelMessageWithSequenceNumber:sequenceNumber streamID:streamID messageUUID:messageUUID cancelReason:5];
 
         v21 = OSLogHandleForIDSCategory();
         if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412546;
-          v57 = self;
+          selfCopy = self;
           v58 = 2112;
           v59 = v20;
           _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "%@ sending resource transfer cancel message %@", buf, 0x16u);
@@ -3898,16 +3898,16 @@ LABEL_16:
 
         if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
         {
-          v41 = self;
+          selfCopy2 = self;
           v42 = v20;
           _IDSLogV();
         }
 
-        [(IDSUTunConnection *)self _sendSocketMessage:v20 ignoreSequenceNumber:1, v41, v42];
+        [(IDSUTunConnection *)self _sendSocketMessage:v20 ignoreSequenceNumber:1, selfCopy2, v42];
       }
 
-      [(IDSUTunConnection *)self _removeMessageFromStatistics:v13];
-      [(NSMutableArray *)self->_sendingMessages removeObject:v12];
+      [(IDSUTunConnection *)self _removeMessageFromStatistics:localMessageCopy];
+      [(NSMutableArray *)self->_sendingMessages removeObject:messageCopy];
       if (![(NSMutableArray *)self->_sendingMessages count])
       {
         sendingMessages = self->_sendingMessages;
@@ -3920,20 +3920,20 @@ LABEL_16:
       }
     }
 
-    v23 = [v13 progressBlock];
+    progressBlock = [localMessageCopy progressBlock];
 
-    if (v23)
+    if (progressBlock)
     {
-      v24 = [v13 progressBlock];
-      v24[2](v24, 0, 0, 0, 0, 1);
+      progressBlock2 = [localMessageCopy progressBlock];
+      progressBlock2[2](progressBlock2, 0, 0, 0, 0, 1);
 
-      [v13 setProgressBlock:0];
+      [localMessageCopy setProgressBlock:0];
     }
 
-    v25 = [v13 completionBlock];
-    if (v25)
+    completionBlock = [localMessageCopy completionBlock];
+    if (completionBlock)
     {
-      v26 = [v13 toDeviceID];
+      toDeviceID = [localMessageCopy toDeviceID];
       v27 = [(NSString *)self->_cbuuid copy];
       rtt = self->_rtt;
       v29 = +[IDSDaemonPriorityQueueController sharedInstance];
@@ -3941,21 +3941,21 @@ LABEL_16:
       v48[1] = 3221225472;
       v48[2] = sub_10055947C;
       v48[3] = &unk_100BE02D8;
-      v54 = a7;
+      codeCopy = code;
       v49 = v27;
-      v50 = v26;
+      v50 = toDeviceID;
       v55 = rtt;
-      v51 = v13;
-      v52 = v46;
-      v53 = v25;
-      v30 = v26;
+      v51 = localMessageCopy;
+      v52 = errorCopy;
+      v53 = completionBlock;
+      v30 = toDeviceID;
       v31 = v27;
       [v29 performBlockMainQueue:v48];
     }
 
-    [(IDSLocalDeliveryQueue *)self->_deliveryQueue dequeueMessage:v13];
-    self->_cachedBytes[[v13 dataProtectionClass]] = -1;
-    [(NSMutableArray *)self->_fallbackMessages removeObject:v13];
+    [(IDSLocalDeliveryQueue *)self->_deliveryQueue dequeueMessage:localMessageCopy];
+    self->_cachedBytes[[localMessageCopy dataProtectionClass]] = -1;
+    [(NSMutableArray *)self->_fallbackMessages removeObject:localMessageCopy];
     if (![(NSMutableArray *)self->_fallbackMessages count])
     {
       fallbackMessages = self->_fallbackMessages;
@@ -3965,19 +3965,19 @@ LABEL_16:
     v33 = OSLogHandleForTransportCategory();
     if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
     {
-      v34 = [v13 messageUUID];
+      messageUUID2 = [localMessageCopy messageUUID];
       v35 = [(IDSLocalDeliveryQueue *)self->_deliveryQueue count];
       v36 = [(NSMutableArray *)self->_sendingMessages count];
       *buf = 138413314;
-      v57 = v12;
+      selfCopy = messageCopy;
       v58 = 2112;
-      v59 = v13;
+      v59 = localMessageCopy;
       v60 = 2112;
-      v61 = v34;
+      v61 = messageUUID2;
       v62 = 1024;
       v63 = v36 + v35;
       v64 = 2112;
-      v65 = v47;
+      v65 = reasonCopy;
       _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_DEFAULT, "Message %@ %@ %@ removed, total message count %d - %@", buf, 0x30u);
     }
 
@@ -3985,50 +3985,50 @@ LABEL_16:
     {
       if (_IDSShouldLogTransport())
       {
-        v37 = [v13 messageUUID];
+        messageUUID3 = [localMessageCopy messageUUID];
         v38 = [(IDSLocalDeliveryQueue *)self->_deliveryQueue count];
         v44 = [(NSMutableArray *)self->_sendingMessages count]+ v38;
-        v45 = v47;
-        v42 = v13;
-        v43 = v37;
-        v41 = v12;
+        v45 = reasonCopy;
+        v42 = localMessageCopy;
+        v43 = messageUUID3;
+        selfCopy2 = messageCopy;
         _IDSLogTransport();
 
         if (_IDSShouldLog())
         {
-          v39 = [v13 messageUUID];
+          messageUUID4 = [localMessageCopy messageUUID];
           v40 = [(IDSLocalDeliveryQueue *)self->_deliveryQueue count];
           v44 = [(NSMutableArray *)self->_sendingMessages count]+ v40;
-          v45 = v47;
-          v42 = v13;
-          v43 = v39;
-          v41 = v12;
+          v45 = reasonCopy;
+          v42 = localMessageCopy;
+          v43 = messageUUID4;
+          selfCopy2 = messageCopy;
           _IDSLogV();
         }
       }
     }
 
-    if (!v12)
+    if (!messageCopy)
     {
-      [v13 setUnderlyingSocketPairMessage:0];
+      [localMessageCopy setUnderlyingSocketPairMessage:0];
     }
 
-    [v12 setContext:{0, v41, v42, v43, v44, v45}];
-    [v12 setCancelled:1];
+    [messageCopy setContext:{0, selfCopy2, v42, v43, v44, v45}];
+    [messageCopy setCancelled:1];
   }
 }
 
-- (BOOL)_messageIsAllowedToSendMessageOnTopic:(id)a3
+- (BOOL)_messageIsAllowedToSendMessageOnTopic:(id)topic
 {
-  v4 = a3;
+  topicCopy = topic;
   if ([(IDSUTunConnection *)self _isMagnetConnection])
   {
     v5 = +[IDSDServiceController sharedInstance];
-    v6 = [v5 serviceWithPushTopic:v4];
+    v6 = [v5 serviceWithPushTopic:topicCopy];
 
-    v7 = [v6 allowedTrafficClasses];
-    v8 = [(IDSUTunConnection *)self _UTunDeliveryController];
-    v9 = [v8 allowedTrafficClasses];
+    allowedTrafficClasses = [v6 allowedTrafficClasses];
+    _UTunDeliveryController = [(IDSUTunConnection *)self _UTunDeliveryController];
+    allowedTrafficClasses2 = [_UTunDeliveryController allowedTrafficClasses];
 
     if ((_IDSIsTrafficAllowed() & 1) == 0)
     {
@@ -4036,11 +4036,11 @@ LABEL_16:
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412802;
-        v18 = v4;
+        v18 = topicCopy;
         v19 = 2112;
-        v20 = v7;
+        v20 = allowedTrafficClasses;
         v21 = 2112;
-        v22 = v9;
+        v22 = allowedTrafficClasses2;
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Message on service %@ not allowed! Attempted to send on traffic classes: %@ Permitted traffic classes: %@", buf, 0x20u);
       }
 
@@ -4048,21 +4048,21 @@ LABEL_16:
       {
         if (_IDSShouldLogTransport())
         {
-          v15 = v7;
-          v16 = v9;
-          v14 = v4;
+          v15 = allowedTrafficClasses;
+          v16 = allowedTrafficClasses2;
+          v14 = topicCopy;
           _IDSLogTransport();
           if (_IDSShouldLog())
           {
-            v15 = v7;
-            v16 = v9;
-            v14 = v4;
+            v15 = allowedTrafficClasses;
+            v16 = allowedTrafficClasses2;
+            v14 = topicCopy;
             _IDSLogV();
           }
         }
       }
 
-      if ([v9 count])
+      if ([allowedTrafficClasses2 count])
       {
         v10 = 0;
         goto LABEL_13;
@@ -4072,7 +4072,7 @@ LABEL_16:
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v18 = v4;
+        v18 = topicCopy;
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Overriding previous decision on message for topic %@ due to feature flag that allows messages will empty traffic classes", buf, 0xCu);
       }
 
@@ -4101,11 +4101,11 @@ LABEL_14:
   return v10;
 }
 
-- (void)admissionPolicyChangedForTopic:(id)a3 allowed:(BOOL)a4
+- (void)admissionPolicyChangedForTopic:(id)topic allowed:(BOOL)allowed
 {
-  v4 = a4;
-  v6 = a3;
-  if (![v6 length])
+  allowedCopy = allowed;
+  topicCopy = topic;
+  if (![topicCopy length])
   {
     [(NSMutableSet *)self->_admissionDeniedTopics removeAllObjects];
     v8 = +[IDSDaemonPriorityQueueController sharedInstance];
@@ -4123,11 +4123,11 @@ LABEL_14:
   v7 = +[IDSDaemonPriorityQueueController sharedInstance];
   [v7 assertRunningWithPriority:self->_priority];
 
-  if (v4)
+  if (allowedCopy)
   {
-    if ([(NSMutableSet *)self->_admissionDeniedTopics containsObject:v6])
+    if ([(NSMutableSet *)self->_admissionDeniedTopics containsObject:topicCopy])
     {
-      [(NSMutableSet *)self->_admissionDeniedTopics removeObject:v6];
+      [(NSMutableSet *)self->_admissionDeniedTopics removeObject:topicCopy];
       v8 = +[IDSDaemonPriorityQueueController sharedInstance];
       v9 = v8;
       v24[0] = _NSConcreteStackBlock;
@@ -4148,15 +4148,15 @@ LABEL_6:
     v21 = &v20;
     v22 = 0x2020000000;
     v23 = 0;
-    v12 = [(IDSLocalDeliveryQueue *)self->_deliveryQueue messages];
+    messages = [(IDSLocalDeliveryQueue *)self->_deliveryQueue messages];
     v14 = _NSConcreteStackBlock;
     v15 = 3221225472;
     v16 = sub_100559B3C;
     v17 = &unk_100BE0300;
-    v13 = v6;
+    v13 = topicCopy;
     v18 = v13;
     v19 = &v20;
-    [v12 enumerateObjectsWithOptions:2 usingBlock:&v14];
+    [messages enumerateObjectsWithOptions:2 usingBlock:&v14];
 
     if (*(v21 + 24) == 1)
     {
@@ -4167,11 +4167,11 @@ LABEL_6:
   }
 }
 
-- (BOOL)checkServiceCompability:(id)a3 localMessage:(id)a4
+- (BOOL)checkServiceCompability:(id)compability localMessage:(id)message
 {
-  v6 = a3;
-  v7 = a4;
-  if (![v7 minCompatibilityVersion] || self->_newServiceSupported && (objc_msgSend(v7, "minCompatibilityVersion") == 1 || self->_newServiceSupported && (serviceMinCompatibilityVersion = self->_serviceMinCompatibilityVersion, objc_msgSend(v7, "minCompatibilityVersion") <= serviceMinCompatibilityVersion)))
+  compabilityCopy = compability;
+  messageCopy = message;
+  if (![messageCopy minCompatibilityVersion] || self->_newServiceSupported && (objc_msgSend(messageCopy, "minCompatibilityVersion") == 1 || self->_newServiceSupported && (serviceMinCompatibilityVersion = self->_serviceMinCompatibilityVersion, objc_msgSend(messageCopy, "minCompatibilityVersion") <= serviceMinCompatibilityVersion)))
   {
     v8 = 1;
   }
@@ -4179,40 +4179,40 @@ LABEL_6:
   else
   {
     v10 = [IDSLocalMessageDeliveryServiceNotCompatibleMetric alloc];
-    v11 = [v7 awdTopic];
-    v12 = [v7 toDeviceID];
+    awdTopic = [messageCopy awdTopic];
+    toDeviceID = [messageCopy toDeviceID];
     v13 = IDSDeviceDefaultPairedDeviceUniqueID;
-    v14 = [v10 initWithService:v11 isToDefaultPairedDevice:objc_msgSend(v12 messageSize:"isEqualToString:" linkType:IDSDeviceDefaultPairedDeviceUniqueID) deliveryError:0 RTT:0 priority:{3, 0, objc_msgSend(v7, "priority")}];
+    v14 = [v10 initWithService:awdTopic isToDefaultPairedDevice:objc_msgSend(toDeviceID messageSize:"isEqualToString:" linkType:IDSDeviceDefaultPairedDeviceUniqueID) deliveryError:0 RTT:0 priority:{3, 0, objc_msgSend(messageCopy, "priority")}];
 
     v15 = +[IDSCoreAnalyticsLogger defaultLogger];
     [v15 logMetric:v14];
 
     v16 = +[IDSAWDLogging sharedInstance];
-    v17 = [v7 awdTopic];
-    v18 = [v7 toDeviceID];
-    [v16 messageDeliveredForService:v17 isToDefaultPairedDevice:objc_msgSend(v18 messageSize:"isEqualToString:" linkType:v13) deliveryError:0 RTT:0 priority:{3, 0, objc_msgSend(v7, "priority")}];
+    awdTopic2 = [messageCopy awdTopic];
+    toDeviceID2 = [messageCopy toDeviceID];
+    [v16 messageDeliveredForService:awdTopic2 isToDefaultPairedDevice:objc_msgSend(toDeviceID2 messageSize:"isEqualToString:" linkType:v13) deliveryError:0 RTT:0 priority:{3, 0, objc_msgSend(messageCopy, "priority")}];
 
-    [(IDSUTunConnection *)self _removeSocketPairMessage:v6 localMessage:v7 reason:@"remote does not support new service" responseCode:23];
+    [(IDSUTunConnection *)self _removeSocketPairMessage:compabilityCopy localMessage:messageCopy reason:@"remote does not support new service" responseCode:23];
     v8 = 0;
   }
 
   return v8;
 }
 
-- (BOOL)supportsMessageOfType:(int64_t)a3
+- (BOOL)supportsMessageOfType:(int64_t)type
 {
   supportedMessageTypes = self->_supportedMessageTypes;
-  v4 = [NSNumber numberWithLongLong:a3];
+  v4 = [NSNumber numberWithLongLong:type];
   LOBYTE(supportedMessageTypes) = [(NSArray *)supportedMessageTypes containsObject:v4];
 
   return supportedMessageTypes;
 }
 
-- (BOOL)_nonBTAllowedForClientID:(id)a3
+- (BOOL)_nonBTAllowedForClientID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = +[FTDeviceSupport sharedInstance];
-  v5 = [v4 nonBluetoothAvailableForBundleId:v3];
+  v5 = [v4 nonBluetoothAvailableForBundleId:dCopy];
 
   return v5;
 }
@@ -4224,14 +4224,14 @@ LABEL_6:
 
   if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = [v4 intValue];
+    intValue = [v4 intValue];
     v6 = OSLogHandleForTransportCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
       v22 = @"cloud-messaging-on-the-hour-max-delay-in-ms";
       v23 = 1024;
-      v24 = v5;
+      v24 = intValue;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Server Bag {%@:%d}", buf, 0x12u);
     }
 
@@ -4240,12 +4240,12 @@ LABEL_6:
       if (_IDSShouldLogTransport())
       {
         v17 = @"cloud-messaging-on-the-hour-max-delay-in-ms";
-        v19 = v5;
+        v19 = intValue;
         _IDSLogTransport();
         if (_IDSShouldLog())
         {
           v17 = @"cloud-messaging-on-the-hour-max-delay-in-ms";
-          v19 = v5;
+          v19 = intValue;
           _IDSLogV();
         }
       }
@@ -4254,7 +4254,7 @@ LABEL_6:
 
   else
   {
-    LODWORD(v5) = 2000;
+    LODWORD(intValue) = 2000;
   }
 
   v7 = [IDSServerBag sharedInstance:v17];
@@ -4262,14 +4262,14 @@ LABEL_6:
 
   if (v8 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v9 = [v8 intValue];
+    intValue2 = [v8 intValue];
     v10 = OSLogHandleForTransportCategory();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
       v22 = @"cloud-messaging-top-of-the-hour-definition-in-seconds";
       v23 = 1024;
-      v24 = v9;
+      v24 = intValue2;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Server Bag {%@:%d}", buf, 0x12u);
     }
 
@@ -4278,12 +4278,12 @@ LABEL_6:
       if (_IDSShouldLogTransport())
       {
         v18 = @"cloud-messaging-top-of-the-hour-definition-in-seconds";
-        v20 = v9;
+        v20 = intValue2;
         _IDSLogTransport();
         if (_IDSShouldLog())
         {
           v18 = @"cloud-messaging-top-of-the-hour-definition-in-seconds";
-          v20 = v9;
+          v20 = intValue2;
           _IDSLogV();
         }
       }
@@ -4292,14 +4292,14 @@ LABEL_6:
 
   else
   {
-    LODWORD(v9) = 5;
+    LODWORD(intValue2) = 5;
   }
 
   v11 = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
-  v12 = [(IDSUTunConnection *)self _now];
-  if (v12)
+  _now = [(IDSUTunConnection *)self _now];
+  if (_now)
   {
-    v13 = [v11 components:192 fromDate:v12];
+    v13 = [v11 components:192 fromDate:_now];
   }
 
   else
@@ -4307,10 +4307,10 @@ LABEL_6:
     v13 = 0;
   }
 
-  v14 = [v13 minute];
-  if ([v13 second] + 60 * v14 <= v9)
+  minute = [v13 minute];
+  if ([v13 second] + 60 * minute <= intValue2)
   {
-    v15 = arc4random_uniform(v5 << (self->_priority != 300));
+    v15 = arc4random_uniform(intValue << (self->_priority != 300));
   }
 
   else
@@ -4325,51 +4325,51 @@ LABEL_6:
 {
   if (self->_shouldUseServiceConnector)
   {
-    v3 = [(IDSUTunConnection *)self _UTunDeliveryController];
-    v4 = [v3 isTerminusConnected];
+    _UTunDeliveryController = [(IDSUTunConnection *)self _UTunDeliveryController];
+    isTerminusConnected = [_UTunDeliveryController isTerminusConnected];
 
-    if ((v4 & 1) == 0)
+    if ((isTerminusConnected & 1) == 0)
     {
-      v5 = [(IDSUTunConnection *)self _calculateRandomDelayForCloudMessagingRequest];
+      _calculateRandomDelayForCloudMessagingRequest = [(IDSUTunConnection *)self _calculateRandomDelayForCloudMessagingRequest];
       v6 = OSLogHandleForTransportCategory();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        v15 = self;
+        selfCopy = self;
         v16 = 1024;
-        v17 = v5;
+        v17 = _calculateRandomDelayForCloudMessagingRequest;
         _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%@ Assert QuickRelay after %d ms", buf, 0x12u);
       }
 
       if (os_log_shim_legacy_logging_enabled() && _IDSShouldLogTransport())
       {
-        v10 = self;
-        v11 = v5;
+        selfCopy3 = self;
+        v11 = _calculateRandomDelayForCloudMessagingRequest;
         _IDSLogTransport();
         if (_IDSShouldLog())
         {
-          v10 = self;
-          v11 = v5;
+          selfCopy3 = self;
+          v11 = _calculateRandomDelayForCloudMessagingRequest;
           _IDSLogV();
         }
       }
 
-      v7 = [IDSDaemonPriorityQueueController sharedInstance:v10];
+      v7 = [IDSDaemonPriorityQueueController sharedInstance:selfCopy3];
       v13[0] = _NSConcreteStackBlock;
       v13[1] = 3221225472;
       v13[2] = sub_10055A480;
       v13[3] = &unk_100BD6ED0;
       v13[4] = self;
-      [v7 performBlockMainQueue:v13 afterTimeMSec:v5];
+      [v7 performBlockMainQueue:v13 afterTimeMSec:_calculateRandomDelayForCloudMessagingRequest];
     }
   }
 
   else
   {
     v12 = +[IDSUTunController sharedInstance];
-    v8 = [(IDSUTunConnection *)self _isMagnetConnection];
+    _isMagnetConnection = [(IDSUTunConnection *)self _isMagnetConnection];
     p_uniqueID = &self->_uniqueID;
-    if (v8)
+    if (_isMagnetConnection)
     {
       p_uniqueID = &kIDSDefaultPairedDeviceID;
     }
@@ -4403,8 +4403,8 @@ LABEL_6:
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v28 + 1) + 8 * v8) context];
-        [v9 setDeniedToSend:0];
+        context = [*(*(&v28 + 1) + 8 * v8) context];
+        [context setDeniedToSend:0];
 
         v8 = v8 + 1;
       }
@@ -4451,8 +4451,8 @@ LABEL_6:
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v15 = [(IDSLocalDeliveryQueue *)self->_deliveryQueue messages];
-  v16 = [v15 countByEnumeratingWithState:&v20 objects:v32 count:16];
+  messages = [(IDSLocalDeliveryQueue *)self->_deliveryQueue messages];
+  v16 = [messages countByEnumeratingWithState:&v20 objects:v32 count:16];
   if (v16)
   {
     v17 = v16;
@@ -4464,7 +4464,7 @@ LABEL_6:
       {
         if (*v21 != v18)
         {
-          objc_enumerationMutation(v15);
+          objc_enumerationMutation(messages);
         }
 
         [*(*(&v20 + 1) + 8 * v19) setDeniedToSend:0];
@@ -4472,7 +4472,7 @@ LABEL_6:
       }
 
       while (v17 != v19);
-      v17 = [v15 countByEnumeratingWithState:&v20 objects:v32 count:16];
+      v17 = [messages countByEnumeratingWithState:&v20 objects:v32 count:16];
     }
 
     while (v17);
@@ -4491,16 +4491,16 @@ LABEL_6:
   [(IDSLocalDeliveryQueue *)deliveryQueue clearStats];
 }
 
-- (void)_clearSendingPowerAssertionWithReason:(id)a3
+- (void)_clearSendingPowerAssertionWithReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   if (self->_sendingPowerAssertion)
   {
     v5 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v8 = v4;
+      v8 = reasonCopy;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Clearing power assertion: %@", buf, 0xCu);
     }
 
@@ -4514,21 +4514,21 @@ LABEL_6:
   }
 }
 
-- (void)_sendSocketMessage:(id)a3 ignoreSequenceNumber:(BOOL)a4
+- (void)_sendSocketMessage:(id)message ignoreSequenceNumber:(BOOL)number
 {
-  v6 = a3;
+  messageCopy = message;
   v7 = +[IDSDaemonPriorityQueueController sharedInstance];
   [v7 assertRunningWithPriority:self->_priority];
 
-  v8 = [v6 context];
-  if (a4)
+  context = [messageCopy context];
+  if (number)
   {
     goto LABEL_2;
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v9 = [v6 sequenceNumber];
+    sequenceNumber = [messageCopy sequenceNumber];
   }
 
   else
@@ -4536,18 +4536,18 @@ LABEL_6:
     if ((objc_opt_respondsToSelector() & 1) == 0)
     {
 LABEL_2:
-      v9 = 0;
+      sequenceNumber = 0;
       v10 = 0;
       goto LABEL_6;
     }
 
-    v9 = [v8 messageID];
-    [v6 setSequenceNumber:v9];
+    sequenceNumber = [context messageID];
+    [messageCopy setSequenceNumber:sequenceNumber];
     v15 = OSLogHandleForTransportCategory();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109120;
-      LODWORD(v18) = v9;
+      LODWORD(v18) = sequenceNumber;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "* Sending message with sequence number %u", buf, 8u);
     }
 
@@ -4567,17 +4567,17 @@ LABEL_2:
   v10 = 1;
 LABEL_6:
   IMTimeOfDay();
-  [v8 setTimeSent:?];
-  if (!a4)
+  [context setTimeSent:?];
+  if (!number)
   {
     v11 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       identifier = self->_identifier;
-      v13 = [v8 messageID];
+      messageID = [context messageID];
       if (v10)
       {
-        v14 = [NSString stringWithFormat:@"with sequenceNumber %u", v9];
+        v14 = [NSString stringWithFormat:@"with sequenceNumber %u", sequenceNumber];
       }
 
       else
@@ -4588,11 +4588,11 @@ LABEL_6:
       *buf = 138413058;
       v18 = identifier;
       v19 = 2048;
-      v20 = v13;
+      v20 = messageID;
       v21 = 2112;
       v22 = v14;
       v23 = 2112;
-      v24 = v6;
+      v24 = messageCopy;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%@ Sending message[%lu] %@ %@.", buf, 0x2Au);
       if (v10)
       {
@@ -4601,10 +4601,10 @@ LABEL_6:
 
     if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
     {
-      [v8 messageID];
+      [context messageID];
       if (v10)
       {
-        v16 = [NSString stringWithFormat:@"with sequenceNumber %u", v9];
+        v16 = [NSString stringWithFormat:@"with sequenceNumber %u", sequenceNumber];
         _IDSLogV();
       }
 
@@ -4616,56 +4616,56 @@ LABEL_6:
   }
 
   kdebug_trace();
-  if ([(IDSUTunConnection *)self _messageHasValidEncryptionStatus:v6])
+  if ([(IDSUTunConnection *)self _messageHasValidEncryptionStatus:messageCopy])
   {
-    [(IDSSocketPairConnectionProtocol *)self->_socketConnection sendDataMessage:v6 canFragment:[(IDSUTunConnection *)self _isMagnetConnection]];
+    [(IDSSocketPairConnectionProtocol *)self->_socketConnection sendDataMessage:messageCopy canFragment:[(IDSUTunConnection *)self _isMagnetConnection]];
   }
 
   else
   {
-    [(IDSUTunConnection *)self _sendEncryptedMessage:v6];
+    [(IDSUTunConnection *)self _sendEncryptedMessage:messageCopy];
   }
 }
 
-- (void)_updateDictionary:(id)a3 addMessageSize:(int64_t)a4 addMessageCount:(int64_t)a5
+- (void)_updateDictionary:(id)dictionary addMessageSize:(int64_t)size addMessageCount:(int64_t)count
 {
-  v8 = a3;
+  dictionaryCopy = dictionary;
   v9 = +[IDSDaemonPriorityQueueController sharedInstance];
   [v9 assertRunningWithPriority:self->_priority];
 
-  v15 = [v8 objectForKey:@"localDeliveryQueueStatMessageCount"];
-  v10 = [v8 objectForKey:@"localDeliveryQueueStatBytes"];
-  v11 = [v15 unsignedLongLongValue];
-  v12 = [v10 unsignedLongLongValue];
-  v13 = [NSNumber numberWithUnsignedLongLong:&v11[a5]];
-  [v8 setObject:v13 forKey:@"localDeliveryQueueStatMessageCount"];
+  v15 = [dictionaryCopy objectForKey:@"localDeliveryQueueStatMessageCount"];
+  v10 = [dictionaryCopy objectForKey:@"localDeliveryQueueStatBytes"];
+  unsignedLongLongValue = [v15 unsignedLongLongValue];
+  unsignedLongLongValue2 = [v10 unsignedLongLongValue];
+  v13 = [NSNumber numberWithUnsignedLongLong:&unsignedLongLongValue[count]];
+  [dictionaryCopy setObject:v13 forKey:@"localDeliveryQueueStatMessageCount"];
 
-  v14 = [NSNumber numberWithUnsignedLongLong:&v12[a4]];
-  [v8 setObject:v14 forKey:@"localDeliveryQueueStatBytes"];
+  v14 = [NSNumber numberWithUnsignedLongLong:&unsignedLongLongValue2[size]];
+  [dictionaryCopy setObject:v14 forKey:@"localDeliveryQueueStatBytes"];
 }
 
-- (void)_addMessageSize:(unint64_t)a3 forTopic:(id)a4 direction:(unsigned __int8)a5 dataProtectionClass:(unsigned int)a6 isResource:(BOOL)a7
+- (void)_addMessageSize:(unint64_t)size forTopic:(id)topic direction:(unsigned __int8)direction dataProtectionClass:(unsigned int)class isResource:(BOOL)resource
 {
-  v7 = a7;
-  v8 = *&a6;
-  v9 = a5;
-  v12 = a4;
-  if (!v12)
+  resourceCopy = resource;
+  v8 = *&class;
+  directionCopy = direction;
+  topicCopy = topic;
+  if (!topicCopy)
   {
     goto LABEL_30;
   }
 
-  if (v9 == 1)
+  if (directionCopy == 1)
   {
     v21 = 48;
 LABEL_16:
-    Mutable = [*(&self->super.isa + v21) objectForKey:v12];
+    Mutable = [*(&self->super.isa + v21) objectForKey:topicCopy];
     if (!Mutable)
     {
       Mutable = CFDictionaryCreateMutable(0, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
     }
 
-    [(IDSUTunConnection *)self _updateDictionary:Mutable addMessageSize:a3 addMessageCount:!v7];
+    [(IDSUTunConnection *)self _updateDictionary:Mutable addMessageSize:size addMessageCount:!resourceCopy];
     v23 = *(&self->super.isa + v21);
     if (!v23)
     {
@@ -4676,7 +4676,7 @@ LABEL_16:
       v23 = *(&self->super.isa + v21);
     }
 
-    [v23 setObject:Mutable forKey:v12];
+    [v23 setObject:Mutable forKey:topicCopy];
     v26 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
     {
@@ -4687,7 +4687,7 @@ LABEL_16:
       v32 = 1024;
       v33 = priority;
       v34 = 1024;
-      v35 = v9;
+      v35 = directionCopy;
       v36 = 2112;
       v37 = v28;
       _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEBUG, "%s: priority %d updated direction %d stats %@", buf, 0x22u);
@@ -4701,9 +4701,9 @@ LABEL_16:
     goto LABEL_30;
   }
 
-  if (!v9)
+  if (!directionCopy)
   {
-    if (!v7)
+    if (!resourceCopy)
     {
       statistics = self->_statistics;
       v14 = [NSNumber numberWithUnsignedInt:v8];
@@ -4724,19 +4724,19 @@ LABEL_16:
         [(NSMutableDictionary *)v18 setObject:v15 forKey:v19];
       }
 
-      v20 = [v15 objectForKey:v12];
+      v20 = [v15 objectForKey:topicCopy];
       if (!v20)
       {
         v20 = CFDictionaryCreateMutable(0, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
       }
 
-      [(IDSUTunConnection *)self _updateDictionary:v20 addMessageSize:a3 addMessageCount:1];
+      [(IDSUTunConnection *)self _updateDictionary:v20 addMessageSize:size addMessageCount:1];
       if (!v15)
       {
         v15 = CFDictionaryCreateMutable(0, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
       }
 
-      [v15 setObject:v20 forKey:v12];
+      [v15 setObject:v20 forKey:topicCopy];
     }
 
     v21 = 40;
@@ -4749,7 +4749,7 @@ LABEL_16:
     *buf = 136315394;
     v31 = "[IDSUTunConnection _addMessageSize:forTopic:direction:dataProtectionClass:isResource:]";
     v32 = 1024;
-    v33 = v9;
+    v33 = directionCopy;
     _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_ERROR, "%s: statsDictionary is nil for direction %d", buf, 0x12u);
   }
 
@@ -4763,19 +4763,19 @@ LABEL_16:
 LABEL_30:
 }
 
-- (void)_removeMessageFromStatistics:(id)a3
+- (void)_removeMessageFromStatistics:(id)statistics
 {
-  v17 = a3;
-  v4 = [v17 topic];
-  v5 = [v17 dataProtectionClass];
-  if (!v4)
+  statisticsCopy = statistics;
+  topic = [statisticsCopy topic];
+  dataProtectionClass = [statisticsCopy dataProtectionClass];
+  if (!topic)
   {
     goto LABEL_12;
   }
 
-  v6 = v5;
+  v6 = dataProtectionClass;
   statistics = self->_statistics;
-  v8 = [NSNumber numberWithUnsignedInt:v5];
+  v8 = [NSNumber numberWithUnsignedInt:dataProtectionClass];
   v9 = [(NSMutableDictionary *)statistics objectForKey:v8];
 
   if (!self->_statistics)
@@ -4804,21 +4804,21 @@ LABEL_8:
   }
 
 LABEL_4:
-  v10 = [v9 objectForKey:v4];
+  v10 = [v9 objectForKey:topic];
   if (v10)
   {
-    -[IDSUTunConnection _updateDictionary:addMessageSize:addMessageCount:](self, "_updateDictionary:addMessageSize:addMessageCount:", v10, -[v17 sentMessageDataSize], -1);
+    -[IDSUTunConnection _updateDictionary:addMessageSize:addMessageCount:](self, "_updateDictionary:addMessageSize:addMessageCount:", v10, -[statisticsCopy sentMessageDataSize], -1);
     v11 = [v10 objectForKey:@"localDeliveryQueueStatMessageCount"];
-    v12 = [v11 unsignedLongLongValue];
+    unsignedLongLongValue = [v11 unsignedLongLongValue];
 
-    if (v12)
+    if (unsignedLongLongValue)
     {
-      [v9 setObject:v10 forKey:v4];
+      [v9 setObject:v10 forKey:topic];
     }
 
     else
     {
-      [v9 removeObjectForKey:v4];
+      [v9 removeObjectForKey:topic];
     }
 
     self->_cachedBytes[v6] = -1;
@@ -4827,16 +4827,16 @@ LABEL_4:
 LABEL_12:
 }
 
-- (unint64_t)_pendingOutgoingBytesForClass:(unsigned int)a3
+- (unint64_t)_pendingOutgoingBytesForClass:(unsigned int)class
 {
-  v3 = *&a3;
+  v3 = *&class;
   v5 = +[IDSDaemonPriorityQueueController sharedInstance];
   [v5 assertRunningWithPriority:self->_priority];
 
   result = self->_cachedBytes[v3];
   if ((result & 0x8000000000000000) != 0)
   {
-    v28 = self;
+    selfCopy = self;
     cachedBytes = self->_cachedBytes;
     v30 = v3;
     v33 = [(IDSLocalDeliveryQueue *)self->_deliveryQueue statisticsForDataProtectionClass:v3];
@@ -4862,12 +4862,12 @@ LABEL_12:
 
           v12 = [v33 objectForKey:*(*(&v38 + 1) + 8 * i)];
           v13 = [v12 objectForKey:@"localDeliveryQueueStatBytes"];
-          v14 = [v13 unsignedLongLongValue];
+          unsignedLongLongValue = [v13 unsignedLongLongValue];
 
           v15 = [v12 objectForKey:@"localDeliveryQueueStatMessageCount"];
-          v16 = [v15 unsignedLongLongValue];
+          unsignedLongLongValue2 = [v15 unsignedLongLongValue];
 
-          v9 += (v14 & ~(v14 >> 63)) + 12288 * v16;
+          v9 += (unsignedLongLongValue & ~(unsignedLongLongValue >> 63)) + 12288 * unsignedLongLongValue2;
         }
 
         v8 = [obj countByEnumeratingWithState:&v38 objects:v43 count:16];
@@ -4881,14 +4881,14 @@ LABEL_12:
       v9 = 0;
     }
 
-    v17 = [(IDSUTunConnection *)v28 _sendingMessageStatisticsForClass:v30];
-    v18 = [v17 allKeys];
+    v17 = [(IDSUTunConnection *)selfCopy _sendingMessageStatisticsForClass:v30];
+    allKeys = [v17 allKeys];
 
     v36 = 0u;
     v37 = 0u;
     v34 = 0u;
     v35 = 0u;
-    obja = v18;
+    obja = allKeys;
     v19 = [obja countByEnumeratingWithState:&v34 objects:v42 count:16];
     if (v19)
     {
@@ -4905,12 +4905,12 @@ LABEL_12:
 
           v23 = [v17 objectForKey:*(*(&v34 + 1) + 8 * j)];
           v24 = [v23 objectForKey:@"localDeliveryQueueStatBytes"];
-          v25 = [v24 unsignedLongLongValue];
+          unsignedLongLongValue3 = [v24 unsignedLongLongValue];
 
           v26 = [v23 objectForKey:@"localDeliveryQueueStatMessageCount"];
-          v27 = [v26 unsignedLongLongValue];
+          unsignedLongLongValue4 = [v26 unsignedLongLongValue];
 
-          v9 += &v25[12288 * v27];
+          v9 += &unsignedLongLongValue3[12288 * unsignedLongLongValue4];
         }
 
         v20 = [obja countByEnumeratingWithState:&v34 objects:v42 count:16];
@@ -4981,21 +4981,21 @@ LABEL_12:
   }
 }
 
-- (void)_dequeueTimerFiredOnMain:(id)a3
+- (void)_dequeueTimerFiredOnMain:(id)main
 {
-  v4 = a3;
+  mainCopy = main;
   v5 = im_primary_queue();
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10055BAD0;
   v7[3] = &unk_100BD6E40;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = mainCopy;
+  v6 = mainCopy;
   dispatch_async(v5, v7);
 }
 
-- (void)_dequeueMessagesTimerDidFire:(id)a3
+- (void)_dequeueMessagesTimerDidFire:(id)fire
 {
   im_assert_primary_base_queue();
   v4 = +[IDSDaemonPriorityQueueController sharedInstance];
@@ -5007,27 +5007,27 @@ LABEL_12:
   [v4 performBlockWithPriority:v5 priority:self->_priority];
 }
 
-- (void)_requeueSendingMessage:(id)a3
+- (void)_requeueSendingMessage:(id)message
 {
-  v5 = a3;
+  messageCopy = message;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v5 reset];
+    [messageCopy reset];
   }
 
-  v4 = [v5 context];
-  if (v4)
+  context = [messageCopy context];
+  if (context)
   {
-    [(IDSLocalDeliveryQueue *)self->_deliveryQueue pushMessage:v4];
-    [(IDSUTunConnection *)self _removeMessageFromStatistics:v4];
+    [(IDSLocalDeliveryQueue *)self->_deliveryQueue pushMessage:context];
+    [(IDSUTunConnection *)self _removeMessageFromStatistics:context];
   }
 }
 
-- (void)_requeueMessages:(id)a3
+- (void)_requeueMessages:(id)messages
 {
-  v4 = a3;
-  v5 = [v4 componentsSeparatedByString:@"-"];
+  messagesCopy = messages;
+  v5 = [messagesCopy componentsSeparatedByString:@"-"];
   if ([v5 count] > 2)
   {
     v7 = v5;
@@ -5039,7 +5039,7 @@ LABEL_12:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v32 = v4;
+      v32 = messagesCopy;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_ERROR, "_otrTokenToArray: invalid OTR token %@", buf, 0xCu);
     }
 
@@ -5047,7 +5047,7 @@ LABEL_12:
     {
       _IDSWarnV();
       _IDSLogV();
-      v20 = v4;
+      v20 = messagesCopy;
       _IDSLogTransport();
     }
 
@@ -5063,14 +5063,14 @@ LABEL_12:
     v12 = v11;
     if (v10)
     {
-      v13 = [v11 intValue];
+      intValue = [v11 intValue];
 
       sendingMessages = self->_sendingMessages;
       v28[0] = _NSConcreteStackBlock;
       v28[1] = 3221225472;
       v28[2] = sub_10055C144;
       v28[3] = &unk_100BE0398;
-      v30 = v13;
+      v30 = intValue;
       v28[4] = self;
       v29 = v9;
       [(NSMutableArray *)sendingMessages enumerateObjectsWithOptions:2 usingBlock:v28];
@@ -5078,16 +5078,16 @@ LABEL_12:
 
     else
     {
-      v15 = [v11 BOOLValue];
+      bOOLValue = [v11 BOOLValue];
 
       v16 = self->_sendingMessages;
       v23[0] = _NSConcreteStackBlock;
       v23[1] = 3221225472;
       v23[2] = sub_10055C21C;
       v23[3] = &unk_100BE03C0;
-      v27 = v15;
+      v27 = bOOLValue;
       v24 = v8;
-      v25 = self;
+      selfCopy = self;
       v26 = v9;
       [(NSMutableArray *)v16 enumerateObjectsWithOptions:2 usingBlock:v23];
     }
@@ -5102,7 +5102,7 @@ LABEL_12:
         *buf = 134218242;
         v32 = v18;
         v33 = 2112;
-        v34 = v4;
+        v34 = messagesCopy;
         _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Requeued %lu sending messages for %@.", buf, 0x16u);
       }
 
@@ -5111,44 +5111,44 @@ LABEL_12:
         if (_IDSShouldLogTransport())
         {
           v21 = [v9 count];
-          v22 = v4;
+          v22 = messagesCopy;
           _IDSLogTransport();
           if (_IDSShouldLog())
           {
             v21 = [v9 count];
-            v22 = v4;
+            v22 = messagesCopy;
             _IDSLogV();
           }
         }
       }
     }
 
-    v19 = [(NSMutableDictionary *)self->_tokenToOTREncryptionQueue objectForKey:v4, v21, v22];
+    v19 = [(NSMutableDictionary *)self->_tokenToOTREncryptionQueue objectForKey:messagesCopy, v21, v22];
     [v19 removeAllObjects];
 
     [(IDSUTunConnection *)self _dequeueMessages];
   }
 }
 
-- (void)handleOTRNegotiationComplete:(id)a3
+- (void)handleOTRNegotiationComplete:(id)complete
 {
-  v6 = a3;
+  completeCopy = complete;
   v4 = +[IDSDaemonPriorityQueueController sharedInstance];
   [v4 assertRunningWithPriority:self->_priority];
 
   v5 = +[IDSOTRController sharedInstance];
-  [v5 setSessionReady:v6];
+  [v5 setSessionReady:completeCopy];
 
-  [(IDSUTunConnection *)self _requeueMessages:v6];
+  [(IDSUTunConnection *)self _requeueMessages:completeCopy];
 }
 
-- (void)handleOTRNegotiationTimeout:(id)a3
+- (void)handleOTRNegotiationTimeout:(id)timeout
 {
-  v4 = a3;
+  timeoutCopy = timeout;
   v5 = +[IDSDaemonPriorityQueueController sharedInstance];
   [v5 assertRunningWithPriority:self->_priority];
 
-  v6 = [v4 componentsSeparatedByString:@"-"];
+  v6 = [timeoutCopy componentsSeparatedByString:@"-"];
   v7 = [v6 objectAtIndex:0];
 
   if ([v7 isEqualToString:@"idsotr"] && !self->_useSharedOTRSession)
@@ -5157,7 +5157,7 @@ LABEL_12:
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v21 = v4;
+      v21 = timeoutCopy;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "OTR negotiation timed out for %@ but remote device doesn't support shared session.", buf, 0xCu);
     }
 
@@ -5165,11 +5165,11 @@ LABEL_12:
     {
       if (_IDSShouldLogTransport())
       {
-        v19 = v4;
+        v19 = timeoutCopy;
         _IDSLogTransport();
         if (_IDSShouldLog())
         {
-          v19 = v4;
+          v19 = timeoutCopy;
           _IDSLogV();
         }
       }
@@ -5185,8 +5185,8 @@ LABEL_12:
       tokenToOTRError = self->_tokenToOTRError;
     }
 
-    [(NSMutableDictionary *)tokenToOTRError setObject:&__kCFBooleanFalse forKey:v4, v19];
-    [(IDSUTunConnection *)self _requeueMessages:v4];
+    [(NSMutableDictionary *)tokenToOTRError setObject:&__kCFBooleanFalse forKey:timeoutCopy, v19];
+    [(IDSUTunConnection *)self _requeueMessages:timeoutCopy];
   }
 
   else if ([(IDSUTunConnection *)self isConnected])
@@ -5195,7 +5195,7 @@ LABEL_12:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v21 = v4;
+      v21 = timeoutCopy;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "OTR negotiation timed out for %@, retry.", buf, 0xCu);
     }
 
@@ -5203,18 +5203,18 @@ LABEL_12:
     {
       if (_IDSShouldLogTransport())
       {
-        v19 = v4;
+        v19 = timeoutCopy;
         _IDSLogTransport();
         if (_IDSShouldLog())
         {
-          v19 = v4;
+          v19 = timeoutCopy;
           _IDSLogV();
         }
       }
     }
 
     v9 = +[IDSOTRController sharedInstance];
-    [v9 startOTRNegotiationWithDeviceIfNeeded:IDSDeviceDefaultPairedDeviceUniqueID token:v4 reset:1 errorHandler:0];
+    [v9 startOTRNegotiationWithDeviceIfNeeded:IDSDeviceDefaultPairedDeviceUniqueID token:timeoutCopy reset:1 errorHandler:0];
   }
 
   else
@@ -5223,7 +5223,7 @@ LABEL_12:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v21 = v4;
+      v21 = timeoutCopy;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "OTR negotiation timed out for %@, clear error state and requeue all messages.", buf, 0xCu);
     }
 
@@ -5231,11 +5231,11 @@ LABEL_12:
     {
       if (_IDSShouldLogTransport())
       {
-        v19 = v4;
+        v19 = timeoutCopy;
         _IDSLogTransport();
         if (_IDSShouldLog())
         {
-          v19 = v4;
+          v19 = timeoutCopy;
           _IDSLogV();
         }
       }
@@ -5252,22 +5252,22 @@ LABEL_12:
     }
 
     v14 = [NSNumber numberWithBool:0, v19];
-    [(NSMutableDictionary *)v11 setObject:v14 forKey:v4];
+    [(NSMutableDictionary *)v11 setObject:v14 forKey:timeoutCopy];
 
-    [(IDSUTunConnection *)self _requeueMessages:v4];
+    [(IDSUTunConnection *)self _requeueMessages:timeoutCopy];
   }
 }
 
-- (void)setEnableOTR:(BOOL)a3
+- (void)setEnableOTR:(BOOL)r
 {
-  v3 = a3;
+  rCopy = r;
   v5 = +[IDSDaemonPriorityQueueController sharedInstance];
   [v5 assertRunningWithPriority:self->_priority];
 
-  if (self->_enableOTR != v3)
+  if (self->_enableOTR != rCopy)
   {
-    self->_enableOTR = v3;
-    if (v3)
+    self->_enableOTR = rCopy;
+    if (rCopy)
     {
       v6 = +[IDSOTRController sharedInstance];
       v19[0] = _NSConcreteStackBlock;
@@ -5322,7 +5322,7 @@ LABEL_12:
 
       v21 = v13;
       v22 = 2048;
-      v23 = self;
+      selfCopy = self;
       v24 = 2048;
       v25 = priority;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "%@ OTR for UTunConnection %p, priority %ld", buf, 0x20u);
@@ -5339,30 +5339,30 @@ LABEL_12:
   }
 }
 
-- (void)classStorageBecameAvailable:(id)a3
+- (void)classStorageBecameAvailable:(id)available
 {
-  v4 = a3;
+  availableCopy = available;
   v5 = +[IDSDaemonPriorityQueueController sharedInstance];
   v6 = [v5 queueForPriority:self->_priority];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10055CCAC;
   v8[3] = &unk_100BD6E40;
-  v9 = v4;
-  v10 = self;
-  v7 = v4;
+  v9 = availableCopy;
+  selfCopy = self;
+  v7 = availableCopy;
   dispatch_async(v6, v8);
 }
 
-- (id)_encryptDataWithOTR:(id)a3 token:(id)a4
+- (id)_encryptDataWithOTR:(id)r token:(id)token
 {
-  v6 = a3;
-  v7 = a4;
+  rCopy = r;
+  tokenCopy = token;
   v19 = 0;
   ids_monotonic_time();
   v9 = v8;
-  v10 = [(IDSUTunConnection *)self _encryptionController];
-  v11 = [v10 OTREncryptData:v6 OTRToken:v7 priority:self->_priority error:&v19];
+  _encryptionController = [(IDSUTunConnection *)self _encryptionController];
+  v11 = [_encryptionController OTREncryptData:rCopy OTRToken:tokenCopy priority:self->_priority error:&v19];
 
   ids_monotonic_time();
   if (v19)
@@ -5391,10 +5391,10 @@ LABEL_12:
     v15 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
-      v16 = [v6 length];
+      v16 = [rCopy length];
       v17 = [v11 length];
       *buf = 138413058;
-      v21 = v7;
+      v21 = tokenCopy;
       v22 = 2048;
       v23 = v16;
       v24 = 2048;
@@ -5406,7 +5406,7 @@ LABEL_12:
 
     if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
     {
-      [v6 length];
+      [rCopy length];
       [v11 length];
       _IDSLogV();
     }
@@ -5415,41 +5415,41 @@ LABEL_12:
   return v11;
 }
 
-- (void)_sendOTREncryptedMessage:(id)a3 useEncryption:(BOOL)a4 streamID:(unsigned __int16)a5 forPriority:(int64_t)a6 flag:(int)a7 token:(id)a8
+- (void)_sendOTREncryptedMessage:(id)message useEncryption:(BOOL)encryption streamID:(unsigned __int16)d forPriority:(int64_t)priority flag:(int)flag token:(id)token
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v14 = a3;
-  v15 = a8;
-  if (([v14 cancelled] & 1) == 0)
+  priorityCopy = priority;
+  dCopy = d;
+  encryptionCopy = encryption;
+  messageCopy = message;
+  tokenCopy = token;
+  if (([messageCopy cancelled] & 1) == 0)
   {
     if (self->_shouldUseNWFraming)
     {
-      [(IDSSocketPairConnectionProtocol *)self->_socketConnection sendDataMessage:v14 canFragment:1];
+      [(IDSSocketPairConnectionProtocol *)self->_socketConnection sendDataMessage:messageCopy canFragment:1];
       goto LABEL_18;
     }
 
     useSharedOTRSession = self->_useSharedOTRSession;
-    v17 = [v14 underlyingData];
-    v18 = v17;
+    underlyingData = [messageCopy underlyingData];
+    v18 = underlyingData;
     if (useSharedOTRSession)
     {
-      if (!v17)
+      if (!underlyingData)
       {
         goto LABEL_18;
       }
 
-      v19 = [v14 context];
-      v20 = [v19 messageID];
+      context = [messageCopy context];
+      messageID = [context messageID];
 
-      LODWORD(v31) = v20;
-      v21 = [[IDSSocketPairOTRMessage alloc] initWithVersion:1 encrypted:0 shouldEncrypt:v12 protectionClass:a7 streamID:v11 priority:v10 sequenceNumber:v31 data:v18];
-      v22 = [v14 topic];
-      [v21 setTopic:v22];
+      LODWORD(v31) = messageID;
+      v21 = [[IDSSocketPairOTRMessage alloc] initWithVersion:1 encrypted:0 shouldEncrypt:encryptionCopy protectionClass:flag streamID:dCopy priority:priorityCopy sequenceNumber:v31 data:v18];
+      topic = [messageCopy topic];
+      [v21 setTopic:topic];
 
-      v23 = [v14 context];
-      [v21 setContext:v23];
+      context2 = [messageCopy context];
+      [v21 setContext:context2];
 
       [(IDSSocketPairConnectionProtocol *)self->_socketConnection sendDataMessage:v21 canFragment:1];
 LABEL_17:
@@ -5457,27 +5457,27 @@ LABEL_17:
       goto LABEL_18;
     }
 
-    if (v12)
+    if (encryptionCopy)
     {
-      v24 = [(IDSUTunConnection *)self _encryptDataWithOTR:v17 token:v15];
+      v24 = [(IDSUTunConnection *)self _encryptDataWithOTR:underlyingData token:tokenCopy];
 
       v18 = v24;
     }
 
     if (v18)
     {
-      v25 = [v14 context];
-      v26 = [v25 messageID];
+      context3 = [messageCopy context];
+      messageID2 = [context3 messageID];
 
       v27 = OSLogHandleForTransportCategory();
       if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543874;
-        v35 = v15;
+        v35 = tokenCopy;
         v36 = 1024;
-        v37 = v12;
+        v37 = encryptionCopy;
         v38 = 1024;
-        v39 = v26;
+        v39 = messageID2;
         _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEFAULT, "Send OTR message for %{public}@ E:%u SN:%u.", buf, 0x18u);
       }
 
@@ -5485,24 +5485,24 @@ LABEL_17:
       {
         if (_IDSShouldLogTransport())
         {
-          v32 = v12;
-          v33 = v26;
+          v32 = encryptionCopy;
+          v33 = messageID2;
           _IDSLogTransport();
           if (_IDSShouldLog())
           {
-            v33 = v26;
-            v32 = v12;
+            v33 = messageID2;
+            v32 = encryptionCopy;
             _IDSLogV();
           }
         }
       }
 
-      v28 = [[IDSSocketPairOTREncryptedMessage alloc] initWithVersion:1 encrypted:v12 streamID:v11 priority:v10 sequenceNumber:v26 fileXfer:a7 != 0 data:{v18, v32, v33}];
-      v29 = [v14 topic];
-      [v28 setTopic:v29];
+      v28 = [[IDSSocketPairOTREncryptedMessage alloc] initWithVersion:1 encrypted:encryptionCopy streamID:dCopy priority:priorityCopy sequenceNumber:messageID2 fileXfer:flag != 0 data:{v18, v32, v33}];
+      topic2 = [messageCopy topic];
+      [v28 setTopic:topic2];
 
-      v30 = [v14 context];
-      [v28 setContext:v30];
+      context4 = [messageCopy context];
+      [v28 setContext:context4];
 
       [(IDSSocketPairConnectionProtocol *)self->_socketConnection sendDataMessage:v28 canFragment:1];
       goto LABEL_17;
@@ -5512,24 +5512,24 @@ LABEL_17:
 LABEL_18:
 }
 
-- (void)_sendOTREncryptionQueue:(id)a3 streamID:(unsigned __int16)a4
+- (void)_sendOTREncryptionQueue:(id)queue streamID:(unsigned __int16)d
 {
-  v4 = a4;
-  v6 = a3;
+  dCopy = d;
+  queueCopy = queue;
   v7 = +[IDSDaemonPriorityQueueController sharedInstance];
   [v7 assertRunningWithPriority:self->_priority];
 
-  v18 = [v6 componentsSeparatedByString:@"-"];
+  v18 = [queueCopy componentsSeparatedByString:@"-"];
   if ([v18 count] > 2)
   {
     v9 = [v18 objectAtIndex:1];
-    v10 = [v9 intValue];
+    intValue = [v9 intValue];
 
     v11 = [v18 objectAtIndex:2];
-    v12 = [v11 intValue];
+    intValue2 = [v11 intValue];
 
-    v13 = v4 != 43258 && self->_enableOTR;
-    v14 = [(NSMutableDictionary *)self->_tokenToOTREncryptionQueue objectForKey:v6];
+    v13 = dCopy != 43258 && self->_enableOTR;
+    v14 = [(NSMutableDictionary *)self->_tokenToOTREncryptionQueue objectForKey:queueCopy];
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
@@ -5547,7 +5547,7 @@ LABEL_18:
             objc_enumerationMutation(v14);
           }
 
-          [(IDSUTunConnection *)self _sendOTREncryptedMessage:*(*(&v19 + 1) + 8 * i) useEncryption:v13 streamID:v4 forPriority:v10 flag:v12 token:v6];
+          [(IDSUTunConnection *)self _sendOTREncryptedMessage:*(*(&v19 + 1) + 8 * i) useEncryption:v13 streamID:dCopy forPriority:intValue flag:intValue2 token:queueCopy];
         }
 
         v15 = [v14 countByEnumeratingWithState:&v19 objects:v23 count:16];
@@ -5565,7 +5565,7 @@ LABEL_18:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v25 = v6;
+      v25 = queueCopy;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_ERROR, "_sendOTREncryptionQueue: invalid OTR token %@", buf, 0xCu);
     }
 
@@ -5578,19 +5578,19 @@ LABEL_18:
   }
 }
 
-- (void)_sendPublicKeyEncryptedMessage:(id)a3
+- (void)_sendPublicKeyEncryptedMessage:(id)message
 {
-  v4 = a3;
-  v5 = v4;
+  messageCopy = message;
+  v5 = messageCopy;
   if (self->_shouldUseNWFraming)
   {
-    [(IDSSocketPairConnectionProtocol *)self->_socketConnection sendDataMessage:v4 canFragment:1];
+    [(IDSSocketPairConnectionProtocol *)self->_socketConnection sendDataMessage:messageCopy canFragment:1];
   }
 
   else
   {
-    v6 = [v4 underlyingData];
-    v7 = [(IDSUTunConnection *)self _encryptionController];
+    underlyingData = [messageCopy underlyingData];
+    _encryptionController = [(IDSUTunConnection *)self _encryptionController];
     uniqueID = self->_uniqueID;
     priority = self->_priority;
     v11[0] = _NSConcreteStackBlock;
@@ -5598,69 +5598,69 @@ LABEL_18:
     v11[2] = sub_10055DAD8;
     v11[3] = &unk_100BE0410;
     v11[4] = self;
-    v12 = v6;
+    v12 = underlyingData;
     v13 = v5;
-    v10 = v6;
-    [v7 legacyPublicKeyEncryptData:v10 withEncryptedAttributes:0 toDeviceID:uniqueID priority:priority completionBlock:v11];
+    v10 = underlyingData;
+    [_encryptionController legacyPublicKeyEncryptData:v10 withEncryptedAttributes:0 toDeviceID:uniqueID priority:priority completionBlock:v11];
   }
 }
 
-- (void)_sendEncryptedMessage:(id)a3
+- (void)_sendEncryptedMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v5 = +[IDSDaemonPriorityQueueController sharedInstance];
   [v5 assertRunningWithPriority:self->_priority];
 
-  if (v4)
+  if (messageCopy)
   {
     if ([(IDSUTunConnection *)self _isMagnetConnection])
     {
-      v6 = [v4 context];
-      v7 = [v6 topic];
+      context = [messageCopy context];
+      topic = [context topic];
 
-      v8 = [v4 context];
-      priority = [v8 priority];
+      context2 = [messageCopy context];
+      priority = [context2 priority];
 
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
-      v11 = (v7 | priority) != 0;
-      if (!(v7 | priority))
+      v11 = (topic | priority) != 0;
+      if (!(topic | priority))
       {
         priority = self->_priority;
-        v7 = @"com.apple.private.alloy.utunconnection";
+        topic = @"com.apple.private.alloy.utunconnection";
       }
 
       if (self->_useSharedOTRSession)
       {
         v12 = +[IDSDServiceController sharedInstance];
-        v13 = [v12 serviceWithPushTopic:v7];
-        v14 = [v13 dataProtectionClass];
+        v13 = [v12 serviceWithPushTopic:topic];
+        dataProtectionClass = [v13 dataProtectionClass];
 
         if (self->_useNamedOTRSessionToken)
         {
           v15 = self->_otrTokenIdentifier;
-          v16 = [NSString stringWithFormat:@"%@-%u-%1u-%@", @"idsotr", priority, v14, v15];
+          v16 = [NSString stringWithFormat:@"%@-%u-%1u-%@", @"idsotr", priority, dataProtectionClass, v15];
 
           goto LABEL_12;
         }
 
-        v17 = [NSString stringWithFormat:@"%@-%u-%1u", @"idsotr", priority, v14];
+        v17 = [NSString stringWithFormat:@"%@-%u-%1u", @"idsotr", priority, dataProtectionClass];
       }
 
       else
       {
-        v17 = [NSString stringWithFormat:@"%@-%u-%1u", v7, priority, isKindOfClass & 1];
+        v17 = [NSString stringWithFormat:@"%@-%u-%1u", topic, priority, isKindOfClass & 1];
       }
 
       v16 = v17;
 LABEL_12:
-      v18 = [(IDSUTunConnection *)self _UTunDeliveryController];
-      v19 = [v18 hashForString:v7];
-      v20 = [v19 unsignedIntValue];
+      _UTunDeliveryController = [(IDSUTunConnection *)self _UTunDeliveryController];
+      v19 = [_UTunDeliveryController hashForString:topic];
+      unsignedIntValue = [v19 unsignedIntValue];
 
       if (!v11)
       {
-        [(IDSUTunConnection *)self _sendOTREncryptedMessage:v4 useEncryption:0 streamID:v20 forPriority:priority flag:0 token:v16];
+        [(IDSUTunConnection *)self _sendOTREncryptedMessage:messageCopy useEncryption:0 streamID:unsignedIntValue forPriority:priority flag:0 token:v16];
 LABEL_33:
 
         goto LABEL_34;
@@ -5680,13 +5680,13 @@ LABEL_33:
       v25 = v24;
       if (v24)
       {
-        [v24 addObject:v4];
+        [v24 addObject:messageCopy];
       }
 
       else
       {
         v25 = objc_alloc_init(NSMutableArray);
-        [v25 addObject:v4];
+        [v25 addObject:messageCopy];
         [(NSMutableDictionary *)self->_tokenToOTREncryptionQueue setObject:v25 forKey:v16];
       }
 
@@ -5695,12 +5695,12 @@ LABEL_33:
         v26 = +[IDSOTRController sharedInstance];
         v27 = [v26 isSessionReady:v16];
 
-        if ((v27 & 1) == 0 && v20 != 43258)
+        if ((v27 & 1) == 0 && unsignedIntValue != 43258)
         {
           v28 = [(NSMutableDictionary *)self->_tokenToOTRError objectForKey:v16];
-          v29 = [v28 BOOLValue];
+          bOOLValue = [v28 BOOLValue];
 
-          if (v29)
+          if (bOOLValue)
           {
             v30 = OSLogHandleForTransportCategory();
             if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
@@ -5733,7 +5733,7 @@ LABEL_33:
             if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 67109378;
-              LODWORD(v44[0]) = v20;
+              LODWORD(v44[0]) = unsignedIntValue;
               WORD2(v44[0]) = 2112;
               *(v44 + 6) = v16;
               _os_log_impl(&_mh_execute_header, v36, OS_LOG_TYPE_DEFAULT, "Waiting OTR session for %04x(%@) ...", buf, 0x12u);
@@ -5741,7 +5741,7 @@ LABEL_33:
 
             if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
             {
-              v39 = v20;
+              v39 = unsignedIntValue;
               v40 = v16;
               _IDSLogV();
             }
@@ -5753,42 +5753,42 @@ LABEL_33:
             v41[2] = sub_10055E570;
             v41[3] = &unk_100BE0438;
             v41[4] = self;
-            v42 = v4;
+            v42 = messageCopy;
             [v37 startOTRNegotiationWithDeviceIfNeeded:v38 token:v16 reset:0 errorHandler:v41];
           }
 
           goto LABEL_32;
         }
 
-        v32 = self;
+        selfCopy2 = self;
         v33 = v16;
-        v31 = v20;
+        v31 = unsignedIntValue;
       }
 
       else
       {
-        v31 = v20;
-        v32 = self;
+        v31 = unsignedIntValue;
+        selfCopy2 = self;
         v33 = v16;
       }
 
-      [(IDSUTunConnection *)v32 _sendOTREncryptionQueue:v33 streamID:v31];
+      [(IDSUTunConnection *)selfCopy2 _sendOTREncryptionQueue:v33 streamID:v31];
 LABEL_32:
 
       goto LABEL_33;
     }
 
-    [(IDSUTunConnection *)self _sendPublicKeyEncryptedMessage:v4];
+    [(IDSUTunConnection *)self _sendPublicKeyEncryptedMessage:messageCopy];
   }
 
 LABEL_34:
 }
 
-- (BOOL)_storeIncomingClassCDataMessageIfNeeded:(id)a3 topic:(id)a4 sequenceNumber:(unsigned int)a5
+- (BOOL)_storeIncomingClassCDataMessageIfNeeded:(id)needed topic:(id)topic sequenceNumber:(unsigned int)number
 {
-  v5 = *&a5;
-  v8 = a3;
-  v9 = a4;
+  v5 = *&number;
+  neededCopy = needed;
+  topicCopy = topic;
   v10 = +[IDSOTRKeyStorage sharedInstance];
   [v10 lock];
 
@@ -5813,13 +5813,13 @@ LABEL_34:
     v15 = 0;
   }
 
-  else if ([v14 containsObject:v8])
+  else if ([v14 containsObject:neededCopy])
   {
     v19 = OSLogHandleForTransportCategory();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v28 = v9;
+      v28 = topicCopy;
       v29 = 1024;
       v30 = v5;
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "Session key store is not available for class C, but %@ message (%u) is already stored.", buf, 0x12u);
@@ -5829,12 +5829,12 @@ LABEL_34:
     {
       if (_IDSShouldLogTransport())
       {
-        v25 = v9;
+        v25 = topicCopy;
         v26 = v5;
         _IDSLogTransport();
         if (_IDSShouldLog())
         {
-          v25 = v9;
+          v25 = topicCopy;
           v26 = v5;
           _IDSLogV();
         }
@@ -5848,7 +5848,7 @@ LABEL_34:
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v28 = v9;
+      v28 = topicCopy;
       v29 = 1024;
       v30 = v5;
       _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "Session key store is not available for class C, holding on to %@ message (%u)", buf, 0x12u);
@@ -5858,12 +5858,12 @@ LABEL_34:
     {
       if (_IDSShouldLogTransport())
       {
-        v25 = v9;
+        v25 = topicCopy;
         v26 = v5;
         _IDSLogTransport();
         if (_IDSShouldLog())
         {
-          v25 = v9;
+          v25 = topicCopy;
           v26 = v5;
           _IDSLogV();
         }
@@ -5882,7 +5882,7 @@ LABEL_34:
       v15 = objc_alloc_init(NSMutableArray);
     }
 
-    [v15 addObject:{v8, v25, v26}];
+    [v15 addObject:{neededCopy, v25, v26}];
     [(NSMutableDictionary *)self->_dataProtectedIncomingMessages setObject:v15 forKey:v13];
     v23 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
@@ -5906,34 +5906,34 @@ LABEL_34:
   return v16 ^ 1;
 }
 
-- (BOOL)_storeIncomingClassADataMesageIfNeeded:(id)a3 topic:(id)a4 sequenceNumber:(unsigned int)a5
+- (BOOL)_storeIncomingClassADataMesageIfNeeded:(id)needed topic:(id)topic sequenceNumber:(unsigned int)number
 {
-  v5 = *&a5;
-  v8 = a3;
-  v9 = a4;
+  v5 = *&number;
+  neededCopy = needed;
+  topicCopy = topic;
   v10 = +[IDSOTRKeyStorage sharedInstance];
   [v10 lock];
 
   v11 = +[IDSOTRKeyStorage sharedInstance];
-  v12 = [v11 isUnderLock];
+  isUnderLock = [v11 isUnderLock];
 
   v13 = IDSDataProtectionClassStringFromDataProtectionClass();
   v14 = [(NSMutableDictionary *)self->_dataProtectedIncomingMessages objectForKey:v13];
   v15 = v14;
   if (v14)
   {
-    v12 = 1;
+    isUnderLock = 1;
   }
 
-  if (v12 == 1)
+  if (isUnderLock == 1)
   {
-    if ([v14 containsObject:v8])
+    if ([v14 containsObject:neededCopy])
     {
       v16 = OSLogHandleForTransportCategory();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        v27 = v9;
+        v27 = topicCopy;
         v28 = 1024;
         v29 = v5;
         _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Session key store is not available for class A, but %@ message (%u) is already stored.", buf, 0x12u);
@@ -5943,12 +5943,12 @@ LABEL_34:
       {
         if (_IDSShouldLogTransport())
         {
-          v24 = v9;
+          v24 = topicCopy;
           v25 = v5;
           _IDSLogTransport();
           if (_IDSShouldLog())
           {
-            v24 = v9;
+            v24 = topicCopy;
             v25 = v5;
             _IDSLogV();
           }
@@ -5962,7 +5962,7 @@ LABEL_34:
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        v27 = v9;
+        v27 = topicCopy;
         v28 = 1024;
         v29 = v5;
         _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "Session key store is not available for class A, holding on to %@ message (%u)", buf, 0x12u);
@@ -5972,12 +5972,12 @@ LABEL_34:
       {
         if (_IDSShouldLogTransport())
         {
-          v24 = v9;
+          v24 = topicCopy;
           v25 = v5;
           _IDSLogTransport();
           if (_IDSShouldLog())
           {
-            v24 = v9;
+            v24 = topicCopy;
             v25 = v5;
             _IDSLogV();
           }
@@ -5996,7 +5996,7 @@ LABEL_34:
         v15 = objc_alloc_init(NSMutableArray);
       }
 
-      [v15 addObject:{v8, v24, v25}];
+      [v15 addObject:{neededCopy, v24, v25}];
       [(NSMutableDictionary *)self->_dataProtectedIncomingMessages setObject:v15 forKey:v13];
       v22 = OSLogHandleForIDSCategory();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
@@ -6023,12 +6023,12 @@ LABEL_34:
   v17 = [IDSOTRKeyStorage sharedInstance:v24];
   [v17 unlock];
 
-  return v12;
+  return isUnderLock;
 }
 
-- (void)_handleOTRDecryptionSuccess:(id)a3
+- (void)_handleOTRDecryptionSuccess:(id)success
 {
-  v4 = a3;
+  successCopy = success;
   v5 = +[IDSDaemonPriorityQueueController sharedInstance];
   [v5 assertRunningWithPriority:self->_priority];
 
@@ -6042,16 +6042,16 @@ LABEL_34:
     tokenToOTRError = self->_tokenToOTRError;
   }
 
-  v9 = [(NSMutableDictionary *)tokenToOTRError objectForKey:v4];
-  v10 = [v9 BOOLValue];
+  v9 = [(NSMutableDictionary *)tokenToOTRError objectForKey:successCopy];
+  bOOLValue = [v9 BOOLValue];
 
-  if (v10)
+  if (bOOLValue)
   {
     v11 = OSLogHandleForTransportCategory();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v16 = v4;
+      v16 = successCopy;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Clear OTR error map for %@.", buf, 0xCu);
     }
 
@@ -6059,11 +6059,11 @@ LABEL_34:
     {
       if (_IDSShouldLogTransport())
       {
-        v14 = v4;
+        v14 = successCopy;
         _IDSLogTransport();
         if (_IDSShouldLog())
         {
-          v14 = v4;
+          v14 = successCopy;
           _IDSLogV();
         }
       }
@@ -6071,13 +6071,13 @@ LABEL_34:
 
     v12 = self->_tokenToOTRError;
     v13 = [NSNumber numberWithBool:0, v14];
-    [(NSMutableDictionary *)v12 setObject:v13 forKey:v4];
+    [(NSMutableDictionary *)v12 setObject:v13 forKey:successCopy];
   }
 }
 
-- (void)_handleOTRDecryptionError:(id)a3
+- (void)_handleOTRDecryptionError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = +[IDSDaemonPriorityQueueController sharedInstance];
   [v5 assertRunningWithPriority:self->_priority];
 
@@ -6091,16 +6091,16 @@ LABEL_34:
     tokenToOTRError = self->_tokenToOTRError;
   }
 
-  v9 = [(NSMutableDictionary *)tokenToOTRError objectForKey:v4];
-  v10 = [v9 BOOLValue];
+  v9 = [(NSMutableDictionary *)tokenToOTRError objectForKey:errorCopy];
+  bOOLValue = [v9 BOOLValue];
 
-  if (v10)
+  if (bOOLValue)
   {
     v11 = OSLogHandleForTransportCategory();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v24 = v4;
+      v24 = errorCopy;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "OTR session for %@ is in error state, skip negotiation.", buf, 0xCu);
     }
 
@@ -6108,11 +6108,11 @@ LABEL_34:
     {
       if (_IDSShouldLogTransport())
       {
-        v22 = v4;
+        v22 = errorCopy;
         _IDSLogTransport();
         if (_IDSShouldLog())
         {
-          v22 = v4;
+          v22 = errorCopy;
           _IDSLogV();
         }
       }
@@ -6123,13 +6123,13 @@ LABEL_34:
   {
     v12 = self->_tokenToOTRError;
     v13 = [NSNumber numberWithBool:1];
-    [(NSMutableDictionary *)v12 setObject:v13 forKey:v4];
+    [(NSMutableDictionary *)v12 setObject:v13 forKey:errorCopy];
 
     v14 = OSLogHandleForTransportCategory();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v24 = v4;
+      v24 = errorCopy;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Set OTR error map for %@.", buf, 0xCu);
     }
 
@@ -6137,26 +6137,26 @@ LABEL_34:
     {
       if (_IDSShouldLogTransport())
       {
-        v22 = v4;
+        v22 = errorCopy;
         _IDSLogTransport();
         if (_IDSShouldLog())
         {
-          v22 = v4;
+          v22 = errorCopy;
           _IDSLogV();
         }
       }
     }
 
     v15 = +[IDSOTRController sharedInstance];
-    [v15 startOTRNegotiationWithDeviceIfNeeded:IDSDeviceDefaultPairedDeviceUniqueID token:v4 reset:1 errorHandler:0];
+    [v15 startOTRNegotiationWithDeviceIfNeeded:IDSDeviceDefaultPairedDeviceUniqueID token:errorCopy reset:1 errorHandler:0];
   }
 
-  v16 = [v4 componentsSeparatedByString:{@"-", v22}];
+  v16 = [errorCopy componentsSeparatedByString:{@"-", v22}];
   if ([v16 count] > 2)
   {
     v18 = [v16 objectAtIndex:0];
     v19 = [v16 objectAtIndex:2];
-    v20 = [v19 intValue];
+    intValue = [v19 intValue];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -6171,7 +6171,7 @@ LABEL_34:
 
     if ([v18 isEqualToString:@"idsotr"])
     {
-      [(IDSSocketPairConnectionProtocol *)v21 removePendingMessagesForProtectionClass:v20];
+      [(IDSSocketPairConnectionProtocol *)v21 removePendingMessagesForProtectionClass:intValue];
     }
   }
 
@@ -6181,7 +6181,7 @@ LABEL_34:
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v24 = v4;
+      v24 = errorCopy;
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_ERROR, "_handleOTRDecryptionError: invalid OTR token %@", buf, 0xCu);
     }
 
@@ -6194,20 +6194,20 @@ LABEL_34:
   }
 }
 
-- (id)_decryptOTREncrtypedMessage:(id)a3
+- (id)_decryptOTREncrtypedMessage:(id)message
 {
-  v4 = a3;
-  v5 = [v4 command];
-  v6 = v5;
-  if (v5 - 25 > 0xFFFFFFFD)
+  messageCopy = message;
+  command = [messageCopy command];
+  v6 = command;
+  if (command - 25 > 0xFFFFFFFD)
   {
-    if (v5 == 23 && self->_useSharedOTRSession)
+    if (command == 23 && self->_useSharedOTRSession)
     {
       v9 = OSLogHandleForIDSCategory();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        *v59 = v4;
+        *v59 = messageCopy;
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "*** Recv old OTREncryptedMessage but remote device asserts useSharedOTRSession message %@", buf, 0xCu);
       }
 
@@ -6215,37 +6215,37 @@ LABEL_34:
       {
         _IDSWarnV();
         _IDSLogV();
-        v45 = v4;
+        v45 = messageCopy;
         _IDSLogTransport();
       }
     }
 
-    else if (v5 != 23)
+    else if (command != 23)
     {
-      v11 = [v4 encrypted];
-      v10 = [v4 versionNumber];
-      v12 = [v4 streamID];
-      v13 = [v4 priority];
-      v52 = [v4 sequenceNumber];
-      v14 = [v4 protectionClass];
+      encrypted = [messageCopy encrypted];
+      versionNumber = [messageCopy versionNumber];
+      streamID = [messageCopy streamID];
+      priority = [messageCopy priority];
+      sequenceNumber = [messageCopy sequenceNumber];
+      protectionClass = [messageCopy protectionClass];
       goto LABEL_16;
     }
 
-    v10 = [v4 versionNumber];
-    v11 = [v4 encrypted];
-    v12 = [v4 streamID];
-    v13 = [v4 priority];
-    v52 = [v4 sequenceNumber];
-    v14 = 0;
+    versionNumber = [messageCopy versionNumber];
+    encrypted = [messageCopy encrypted];
+    streamID = [messageCopy streamID];
+    priority = [messageCopy priority];
+    sequenceNumber = [messageCopy sequenceNumber];
+    protectionClass = 0;
 LABEL_16:
-    v15 = [(IDSUTunConnection *)self _UTunDeliveryController];
-    v16 = [v15 topicForStreamID:v12];
+    _UTunDeliveryController = [(IDSUTunConnection *)self _UTunDeliveryController];
+    v16 = [_UTunDeliveryController topicForStreamID:streamID];
 
     if (!self->_supportDynamicServices && !self->_useSharedOTRSession)
     {
-      if (!v16 && v12 == 43258)
+      if (!v16 && streamID == 43258)
       {
-        if (self->_priority == v13)
+        if (self->_priority == priority)
         {
           v16 = @"com.apple.private.alloy.utunconnection";
           goto LABEL_23;
@@ -6258,13 +6258,13 @@ LABEL_52:
           *buf = 67110144;
           *v59 = v6;
           *&v59[4] = 1024;
-          *&v59[6] = v52;
+          *&v59[6] = sequenceNumber;
           *v60 = 1024;
-          *&v60[2] = v12;
+          *&v60[2] = streamID;
           *&v60[6] = 1024;
-          *&v60[8] = v10;
+          *&v60[8] = versionNumber;
           *&v60[12] = 1024;
-          *&v60[14] = v13;
+          *&v60[14] = priority;
           _os_log_impl(&_mh_execute_header, v34, OS_LOG_TYPE_ERROR, "*** Recv OTR message with unknown topic, command:%d, sequenceNumber:%u, streamID:%04x, version:%u, priority:%d", buf, 0x20u);
         }
 
@@ -6291,18 +6291,18 @@ LABEL_23:
     {
       v17 = +[IDSDServiceController sharedInstance];
       v18 = [v17 serviceWithPushTopic:v16];
-      LODWORD(v14) = [v18 dataProtectionClass];
+      LODWORD(protectionClass) = [v18 dataProtectionClass];
 
-      v19 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@-%u-%1u", v16, v13, [v4 fileXfer]);
+      v19 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@-%u-%1u", v16, priority, [messageCopy fileXfer]);
       v20 = OSLogHandleForTransportCategory();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543874;
         *v59 = v19;
         *&v59[8] = 1024;
-        *v60 = v11;
+        *v60 = encrypted;
         *&v60[4] = 1024;
-        *&v60[6] = v52;
+        *&v60[6] = sequenceNumber;
         _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "Recv OTR message for %{public}@ E:%u SN:%u.", buf, 0x18u);
       }
 
@@ -6310,15 +6310,15 @@ LABEL_23:
       {
         if (_IDSShouldLogTransport())
         {
-          v47 = v11;
-          v49 = v52;
+          v47 = encrypted;
+          v49 = sequenceNumber;
           v45 = v19;
           _IDSLogTransport();
           if (_IDSShouldLog())
           {
-            v49 = v52;
+            v49 = sequenceNumber;
             v45 = v19;
-            v47 = v11;
+            v47 = encrypted;
             _IDSLogV();
           }
         }
@@ -6329,11 +6329,11 @@ LABEL_23:
     {
       if (!self->_useNamedOTRSessionToken)
       {
-        v19 = [NSString stringWithFormat:@"%@-%u-%1u", @"idsotr", v13, v14];
-        if (v11)
+        v19 = [NSString stringWithFormat:@"%@-%u-%1u", @"idsotr", priority, protectionClass];
+        if (encrypted)
         {
 LABEL_35:
-          if (!v14 && [(IDSUTunConnection *)self _storeIncomingClassCDataMessageIfNeeded:v4 topic:v16 sequenceNumber:v52])
+          if (!protectionClass && [(IDSUTunConnection *)self _storeIncomingClassCDataMessageIfNeeded:messageCopy topic:v16 sequenceNumber:sequenceNumber])
           {
             v22 = OSLogHandleForTransportCategory();
             if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
@@ -6341,7 +6341,7 @@ LABEL_35:
               *buf = 138412546;
               *v59 = v19;
               *&v59[8] = 1024;
-              *v60 = v52;
+              *v60 = sequenceNumber;
               _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "Stored class C OTR message for %@, sequneceNumber:%u.", buf, 0x12u);
             }
 
@@ -6366,7 +6366,7 @@ LABEL_84:
 
           v23 = [IDSOTRController sharedInstance:v45];
           v24 = [v23 isSessionReady:v19];
-          if (v12 == 43258)
+          if (streamID == 43258)
           {
             v25 = 1;
           }
@@ -6379,11 +6379,11 @@ LABEL_84:
           if ((v25 & 1) != 0 || (+[IDSOTRController sharedInstance](IDSOTRController, "sharedInstance"), v26 = objc_claimAutoreleasedReturnValue(), v27 = [v26 hasMessagableOTRSessionForToken:v19], v26, v27))
           {
             v57 = 0;
-            v28 = [v4 data];
+            data = [messageCopy data];
             ids_monotonic_time();
             v30 = v29;
-            v31 = [(IDSUTunConnection *)self _encryptionController];
-            v32 = [v31 OTRDecryptData:v28 OTRToken:v19 priority:v13 error:&v57];
+            _encryptionController = [(IDSUTunConnection *)self _encryptionController];
+            data2 = [_encryptionController OTRDecryptData:data OTRToken:v19 priority:priority error:&v57];
 
             ids_monotonic_time();
             if (!v57)
@@ -6392,8 +6392,8 @@ LABEL_84:
               v36 = OSLogHandleForIDSCategory();
               if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
               {
-                v37 = [v28 length];
-                v38 = [v32 length];
+                v37 = [data length];
+                v38 = [data2 length];
                 *buf = 138413058;
                 *v59 = v19;
                 *&v59[8] = 2048;
@@ -6408,8 +6408,8 @@ LABEL_84:
               if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
               {
                 v51 = v35;
-                v48 = [v28 length];
-                v50 = [v32 length];
+                v48 = [data length];
+                v50 = [data2 length];
                 v46 = v19;
                 _IDSLogV();
               }
@@ -6457,7 +6457,7 @@ LABEL_84:
               }
             }
 
-            if (v14 == 1 && [(IDSUTunConnection *)self _storeIncomingClassADataMesageIfNeeded:v4 topic:v16 sequenceNumber:v52])
+            if (protectionClass == 1 && [(IDSUTunConnection *)self _storeIncomingClassADataMesageIfNeeded:messageCopy topic:v16 sequenceNumber:sequenceNumber])
             {
               v42 = OSLogHandleForTransportCategory();
               if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
@@ -6465,7 +6465,7 @@ LABEL_84:
                 *buf = 138412546;
                 *v59 = v19;
                 *&v59[8] = 1024;
-                *v60 = v52;
+                *v60 = sequenceNumber;
                 _os_log_impl(&_mh_execute_header, v42, OS_LOG_TYPE_DEFAULT, "Stored class A OTR message for %@ sequenceNumber:%u, ignore decryption failure.", buf, 0x12u);
               }
 
@@ -6481,11 +6481,11 @@ LABEL_84:
                 }
               }
 
-              v32 = 0;
+              data2 = 0;
               goto LABEL_83;
             }
 
-            v32 = 0;
+            data2 = 0;
           }
 
           v43 = +[IDSDaemonPriorityQueueController sharedInstance];
@@ -6498,17 +6498,17 @@ LABEL_84:
           [v43 performBlockWithPriority:v53 priority:self->_priority];
 
 LABEL_83:
-          v8 = v32;
+          v8 = data2;
           goto LABEL_84;
         }
 
 LABEL_51:
-        v32 = [v4 data];
+        data2 = [messageCopy data];
         goto LABEL_83;
       }
 
       v21 = self->_otrTokenIdentifier;
-      v19 = [NSString stringWithFormat:@"%@-%u-%1u-%@", @"idsotr", v13, v14, v21];
+      v19 = [NSString stringWithFormat:@"%@-%u-%1u-%@", @"idsotr", priority, protectionClass, v21];
     }
 
     else
@@ -6516,7 +6516,7 @@ LABEL_51:
       v19 = 0;
     }
 
-    if (v11)
+    if (encrypted)
     {
       goto LABEL_35;
     }
@@ -6545,11 +6545,11 @@ LABEL_85:
   return v8;
 }
 
-- (void)_decryptPublicKeyEncryptedMessage:(id)a3 completionBlock:(id)a4
+- (void)_decryptPublicKeyEncryptedMessage:(id)message completionBlock:(id)block
 {
-  v6 = a4;
-  v7 = [a3 data];
-  v8 = [(IDSUTunConnection *)self _encryptionController];
+  blockCopy = block;
+  data = [message data];
+  _encryptionController = [(IDSUTunConnection *)self _encryptionController];
   uniqueID = self->_uniqueID;
   priority = self->_priority;
   v13[0] = _NSConcreteStackBlock;
@@ -6557,48 +6557,48 @@ LABEL_85:
   v13[2] = sub_100560308;
   v13[3] = &unk_100BE0460;
   v13[4] = self;
-  v14 = v7;
-  v15 = v6;
-  v11 = v6;
-  v12 = v7;
-  [v8 legacyPublicKeyDecryptData:v12 toDeviceID:uniqueID priority:priority completionBlock:v13];
+  v14 = data;
+  v15 = blockCopy;
+  v11 = blockCopy;
+  v12 = data;
+  [_encryptionController legacyPublicKeyDecryptData:v12 toDeviceID:uniqueID priority:priority completionBlock:v13];
 }
 
-- (void)_optionallyDecryptMessage:(id)a3 completionBlock:(id)a4
+- (void)_optionallyDecryptMessage:(id)message completionBlock:(id)block
 {
-  v11 = a3;
-  v6 = a4;
+  messageCopy = message;
+  blockCopy = block;
   v7 = +[IDSDaemonPriorityQueueController sharedInstance];
   [v7 assertRunningWithPriority:self->_priority];
 
-  v8 = [v11 command];
-  v9 = v8;
-  if (v8 == 23 || v8 == 5)
+  command = [messageCopy command];
+  v9 = command;
+  if (command == 23 || command == 5)
   {
     if ([(IDSUTunConnection *)self _isMagnetConnection])
     {
       if (v9 == 5)
       {
-        [v11 data];
+        [messageCopy data];
       }
 
       else
       {
-        [(IDSUTunConnection *)self _decryptOTREncrtypedMessage:v11];
+        [(IDSUTunConnection *)self _decryptOTREncrtypedMessage:messageCopy];
       }
       v10 = ;
-      v6[2](v6, v10);
+      blockCopy[2](blockCopy, v10);
     }
 
     else
     {
-      [(IDSUTunConnection *)self _decryptPublicKeyEncryptedMessage:v11 completionBlock:v6];
+      [(IDSUTunConnection *)self _decryptPublicKeyEncryptedMessage:messageCopy completionBlock:blockCopy];
     }
   }
 
   else
   {
-    v6[2](v6, 0);
+    blockCopy[2](blockCopy, 0);
   }
 }
 
@@ -6610,25 +6610,25 @@ LABEL_85:
   [(IDSUTunConnection *)self _flushMessagesAll:0 response:20];
 }
 
-- (void)flushAllMessagesForReason:(int64_t)a3
+- (void)flushAllMessagesForReason:(int64_t)reason
 {
   v5 = +[IDSDaemonPriorityQueueController sharedInstance];
   [v5 assertRunningWithPriority:self->_priority];
 
-  if (a3)
+  if (reason)
   {
-    v6 = a3;
+    reasonCopy = reason;
   }
 
   else
   {
-    v6 = 14;
+    reasonCopy = 14;
   }
 
-  [(IDSUTunConnection *)self _flushMessagesAll:1 response:v6];
+  [(IDSUTunConnection *)self _flushMessagesAll:1 response:reasonCopy];
 }
 
-- (void)_flushMessagesAll:(BOOL)a3 response:(int64_t)a4
+- (void)_flushMessagesAll:(BOOL)all response:(int64_t)response
 {
   v5 = +[IDSDaemonPriorityQueueController sharedInstance];
   [v5 assertRunningWithPriority:self->_priority];
@@ -6647,13 +6647,13 @@ LABEL_85:
     _IDSLogV();
   }
 
-  v7 = [(NSMutableArray *)self->_sendingMessages _copyForEnumerating];
+  _copyForEnumerating = [(NSMutableArray *)self->_sendingMessages _copyForEnumerating];
   v47 = objc_alloc_init(NSMutableIndexSet);
   v74 = 0u;
   v75 = 0u;
   v72 = 0u;
   v73 = 0u;
-  obj = v7;
+  obj = _copyForEnumerating;
   v49 = [obj countByEnumeratingWithState:&v72 objects:v77 count:16];
   if (v49)
   {
@@ -6669,33 +6669,33 @@ LABEL_85:
         }
 
         v9 = *(*(&v72 + 1) + 8 * i);
-        v10 = [v9 context];
-        v11 = v10;
-        if (a3 || ([v10 topic], v12 = objc_claimAutoreleasedReturnValue(), v13 = -[IDSUTunConnection _messageIsAllowedToSendMessageOnTopic:](self, "_messageIsAllowedToSendMessageOnTopic:", v12), v12, (v13 & 1) == 0))
+        context = [v9 context];
+        v11 = context;
+        if (all || ([context topic], v12 = objc_claimAutoreleasedReturnValue(), v13 = -[IDSUTunConnection _messageIsAllowedToSendMessageOnTopic:](self, "_messageIsAllowedToSendMessageOnTopic:", v12), v12, (v13 & 1) == 0))
         {
           if ([(IDSUTunConnection *)self _shouldAWDLogMessage:v11])
           {
             v14 = [IDSLocalMessageDeliveryConnectionResetMetric alloc];
-            v15 = [v11 awdTopic];
-            v16 = [v14 initWithService:v15 isToDefaultPairedDevice:-[IDSUTunConnection _isMagnetConnection](self messageSize:"_isMagnetConnection") linkType:objc_msgSend(v11 deliveryError:"sentMessageDataSize") RTT:-[IDSUTunConnection _currentLink](self priority:{"_currentLink"), 102, 0, objc_msgSend(v11, "priority")}];
+            awdTopic = [v11 awdTopic];
+            v16 = [v14 initWithService:awdTopic isToDefaultPairedDevice:-[IDSUTunConnection _isMagnetConnection](self messageSize:"_isMagnetConnection") linkType:objc_msgSend(v11 deliveryError:"sentMessageDataSize") RTT:-[IDSUTunConnection _currentLink](self priority:{"_currentLink"), 102, 0, objc_msgSend(v11, "priority")}];
 
             v17 = +[IDSCoreAnalyticsLogger defaultLogger];
             [v17 logMetric:v16];
 
             v18 = +[IDSAWDLogging sharedInstance];
-            v19 = [v11 awdTopic];
-            [v18 messageDeliveredForService:v19 isToDefaultPairedDevice:-[IDSUTunConnection _isMagnetConnection](self messageSize:"_isMagnetConnection") linkType:objc_msgSend(v11 deliveryError:"sentMessageDataSize") RTT:-[IDSUTunConnection _currentLink](self priority:{"_currentLink"), 102, 0, objc_msgSend(v11, "priority")}];
+            awdTopic2 = [v11 awdTopic];
+            [v18 messageDeliveredForService:awdTopic2 isToDefaultPairedDevice:-[IDSUTunConnection _isMagnetConnection](self messageSize:"_isMagnetConnection") linkType:objc_msgSend(v11 deliveryError:"sentMessageDataSize") RTT:-[IDSUTunConnection _currentLink](self priority:{"_currentLink"), 102, 0, objc_msgSend(v11, "priority")}];
           }
 
           [(IDSUTunConnection *)self _removeMessageFromStatistics:v11];
-          if (a4 == 31 || ([v11 completionBlock], (v20 = objc_claimAutoreleasedReturnValue()) == 0))
+          if (response == 31 || ([v11 completionBlock], (v20 = objc_claimAutoreleasedReturnValue()) == 0))
           {
             v25 = 0;
           }
 
           else
           {
-            v21 = [v11 toDeviceID];
+            toDeviceID = [v11 toDeviceID];
             v22 = [(NSString *)self->_cbuuid copy];
             rtt = self->_rtt;
             v24 = +[IDSDaemonPriorityQueueController sharedInstance];
@@ -6703,14 +6703,14 @@ LABEL_85:
             v65[1] = 3221225472;
             v65[2] = sub_100561120;
             v65[3] = &unk_100BE0488;
-            v70 = a4;
+            responseCopy = response;
             v66 = v22;
-            v67 = v21;
+            v67 = toDeviceID;
             v71 = rtt;
             v68 = v11;
             v25 = v20;
             v69 = v25;
-            v26 = v21;
+            v26 = toDeviceID;
             v27 = v22;
             [v24 performBlockMainQueue:v65];
           }
@@ -6731,14 +6731,14 @@ LABEL_85:
   }
 
   [(NSMutableArray *)self->_sendingMessages removeObjectsAtIndexes:v47];
-  v28 = [(IDSLocalDeliveryQueue *)self->_deliveryQueue messages];
-  v29 = [v28 _copyForEnumerating];
+  messages = [(IDSLocalDeliveryQueue *)self->_deliveryQueue messages];
+  _copyForEnumerating2 = [messages _copyForEnumerating];
 
   v63 = 0u;
   v64 = 0u;
   v61 = 0u;
   v62 = 0u;
-  v53 = v29;
+  v53 = _copyForEnumerating2;
   v30 = [v53 countByEnumeratingWithState:&v61 objects:v76 count:16];
   if (v30)
   {
@@ -6753,10 +6753,10 @@ LABEL_85:
         }
 
         v33 = *(*(&v61 + 1) + 8 * j);
-        if (!a3)
+        if (!all)
         {
-          v34 = [*(*(&v61 + 1) + 8 * j) topic];
-          v35 = [(IDSUTunConnection *)self _messageIsAllowedToSendMessageOnTopic:v34];
+          topic = [*(*(&v61 + 1) + 8 * j) topic];
+          v35 = [(IDSUTunConnection *)self _messageIsAllowedToSendMessageOnTopic:topic];
 
           if (v35)
           {
@@ -6765,17 +6765,17 @@ LABEL_85:
         }
 
         [(IDSUTunConnection *)self _removeMessageFromStatistics:v33];
-        if (a4 == 31)
+        if (response == 31)
         {
-          v36 = 0;
+          completionBlock = 0;
         }
 
         else
         {
-          v36 = [v33 completionBlock];
-          if (v36)
+          completionBlock = [v33 completionBlock];
+          if (completionBlock)
           {
-            v37 = [v33 toDeviceID];
+            toDeviceID2 = [v33 toDeviceID];
             v38 = [(NSString *)self->_cbuuid copy];
             v39 = self->_rtt;
             v40 = +[IDSDaemonPriorityQueueController sharedInstance];
@@ -6784,14 +6784,14 @@ LABEL_85:
             v54[2] = sub_10056123C;
             v54[3] = &unk_100BE0488;
             v60 = v39;
-            v55 = v37;
+            v55 = toDeviceID2;
             v56 = v38;
-            v59 = a4;
+            responseCopy2 = response;
             v57 = v33;
-            v36 = v36;
-            v58 = v36;
+            completionBlock = completionBlock;
+            v58 = completionBlock;
             v41 = v38;
-            v42 = v37;
+            v42 = toDeviceID2;
             [v40 performBlockMainQueue:v54];
           }
         }
@@ -6813,23 +6813,23 @@ LABEL_85:
   self->_tokenToOTREncryptionQueue = 0;
 }
 
-- (int64_t)_socketToNiceCommand:(unsigned __int8)a3
+- (int64_t)_socketToNiceCommand:(unsigned __int8)command
 {
-  if (a3 > 0x39u)
+  if (command > 0x39u)
   {
     return -1;
   }
 
   else
   {
-    return qword_1009ABBB0[a3];
+    return qword_1009ABBB0[command];
   }
 }
 
-- (void)sendAckForMessageWithSequenceNumber:(unsigned int)a3
+- (void)sendAckForMessageWithSequenceNumber:(unsigned int)number
 {
-  v3 = *&a3;
-  v5 = [[IDSSocketPairAckMessage alloc] initWithSequenceNumber:*&a3];
+  v3 = *&number;
+  v5 = [[IDSSocketPairAckMessage alloc] initWithSequenceNumber:*&number];
   [(IDSUTunConnection *)self setEnabled:1];
   v6 = OSLogHandleForTransportCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
@@ -6851,9 +6851,9 @@ LABEL_85:
   [(IDSUTunConnection *)self _sendSocketMessage:v5 ignoreSequenceNumber:1, v7, v8];
 }
 
-- (void)_sendAckForMessage:(id)a3
+- (void)_sendAckForMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v5 = +[IDSDaemonPriorityQueueController sharedInstance];
   [v5 assertRunningWithPriority:self->_priority];
 
@@ -6862,12 +6862,12 @@ LABEL_85:
   v6[2] = sub_100561574;
   v6[3] = &unk_100BDBEE0;
   v6[4] = self;
-  [(IDSUTunConnection *)self _processMessage:v4 withSequenceNumberBlock:v6];
+  [(IDSUTunConnection *)self _processMessage:messageCopy withSequenceNumberBlock:v6];
 }
 
-- (void)_sendExpiredAckForMessage:(id)a3
+- (void)_sendExpiredAckForMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v5 = +[IDSDaemonPriorityQueueController sharedInstance];
   [v5 assertRunningWithPriority:self->_priority];
 
@@ -6876,22 +6876,22 @@ LABEL_85:
   v6[2] = sub_100561638;
   v6[3] = &unk_100BDBEE0;
   v6[4] = self;
-  [(IDSUTunConnection *)self _processMessage:v4 withSequenceNumberBlock:v6];
+  [(IDSUTunConnection *)self _processMessage:messageCopy withSequenceNumberBlock:v6];
 }
 
-- (void)_processMessage:(id)a3 withSequenceNumberBlock:(id)a4
+- (void)_processMessage:(id)message withSequenceNumberBlock:(id)block
 {
-  v6 = a3;
-  v5 = a4;
-  if (v5 && (objc_opt_respondsToSelector() & 1) != 0)
+  messageCopy = message;
+  blockCopy = block;
+  if (blockCopy && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v5[2](v5, [v6 sequenceNumber]);
+    blockCopy[2](blockCopy, [messageCopy sequenceNumber]);
   }
 }
 
-- (void)_noteReceivedResourceTransferUUID:(id)a3
+- (void)_noteReceivedResourceTransferUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   receivedResourceTransferUUIDs = self->_receivedResourceTransferUUIDs;
   if (!receivedResourceTransferUUIDs)
   {
@@ -6904,11 +6904,11 @@ LABEL_85:
     receivedResourceTransferUUIDs = self->_receivedResourceTransferUUIDs;
   }
 
-  v10 = [(IMPair *)receivedResourceTransferUUIDs first];
-  v11 = [(IMPair *)self->_receivedResourceTransferUUIDs second];
-  if (([v10 containsObject:v4] & 1) == 0 && (objc_msgSend(v11, "containsObject:", v4) & 1) == 0)
+  first = [(IMPair *)receivedResourceTransferUUIDs first];
+  second = [(IMPair *)self->_receivedResourceTransferUUIDs second];
+  if (([first containsObject:dCopy] & 1) == 0 && (objc_msgSend(second, "containsObject:", dCopy) & 1) == 0)
   {
-    v12 = [v10 count];
+    v12 = [first count];
     v13 = +[IDSFoundationLog UTunConnection];
     v14 = os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT);
     if (v12 < 0x64)
@@ -6916,11 +6916,11 @@ LABEL_85:
       if (v14)
       {
         *buf = 138412290;
-        v19 = v4;
+        v19 = dCopy;
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Received UUID list adding message UUID %@", buf, 0xCu);
       }
 
-      [v10 addObject:v4];
+      [first addObject:dCopy];
     }
 
     else
@@ -6928,69 +6928,69 @@ LABEL_85:
       if (v14)
       {
         *buf = 138412546;
-        v19 = v4;
+        v19 = dCopy;
         v20 = 2112;
-        v21 = v11;
+        v21 = second;
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Received UUID list adding message UUID %@, purging old UUIDs %@", buf, 0x16u);
       }
 
-      v15 = [NSMutableSet setWithObjects:v4, 0];
-      v16 = [IMPair pairWithFirst:v15 second:v10];
+      v15 = [NSMutableSet setWithObjects:dCopy, 0];
+      v16 = [IMPair pairWithFirst:v15 second:first];
       v17 = self->_receivedResourceTransferUUIDs;
       self->_receivedResourceTransferUUIDs = v16;
 
-      v11 = v10;
-      v10 = v15;
+      second = first;
+      first = v15;
     }
   }
 }
 
-- (BOOL)_resourceTransferUUIDAlreaadyReceived:(id)a3
+- (BOOL)_resourceTransferUUIDAlreaadyReceived:(id)received
 {
-  v4 = a3;
-  v5 = [(IMPair *)self->_receivedResourceTransferUUIDs first];
-  if ([v5 containsObject:v4])
+  receivedCopy = received;
+  first = [(IMPair *)self->_receivedResourceTransferUUIDs first];
+  if ([first containsObject:receivedCopy])
   {
     v6 = 1;
   }
 
   else
   {
-    v7 = [(IMPair *)self->_receivedResourceTransferUUIDs second];
-    v6 = [v7 containsObject:v4];
+    second = [(IMPair *)self->_receivedResourceTransferUUIDs second];
+    v6 = [second containsObject:receivedCopy];
   }
 
   return v6;
 }
 
-- (void)_processIncomingResourceTransferMessage:(id)a3 messageUUID:(id)a4 streamID:(unsigned __int16)a5 topic:(id)a6 wantsAppAck:(BOOL)a7 expectsPeerResponse:(BOOL)a8 peerResponseIdentifier:(id)a9 isDefaultPairedDevice:(BOOL)a10 didWakeHint:(BOOL)a11
+- (void)_processIncomingResourceTransferMessage:(id)message messageUUID:(id)d streamID:(unsigned __int16)iD topic:(id)topic wantsAppAck:(BOOL)ack expectsPeerResponse:(BOOL)response peerResponseIdentifier:(id)identifier isDefaultPairedDevice:(BOOL)self0 didWakeHint:(BOOL)self1
 {
-  v14 = a5;
-  v17 = a3;
-  v18 = a4;
-  v138 = a6;
-  v136 = v17;
-  v137 = a9;
-  if (v18)
+  iDCopy = iD;
+  messageCopy = message;
+  dCopy = d;
+  topicCopy = topic;
+  v136 = messageCopy;
+  identifierCopy = identifier;
+  if (dCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v133 = a7;
-      v19 = v17;
+      ackCopy = ack;
+      v19 = messageCopy;
       v135 = v19;
       if (self->_resumeResourceTransfers)
       {
-        v20 = [v19 type];
+        type = [v19 type];
         v21 = 0;
-        if (v20 > 1)
+        if (type > 1)
         {
-          if (v20 == 2)
+          if (type == 2)
           {
             *buf = 0;
             *&buf[8] = buf;
             *&buf[16] = 0x2020000000;
-            LOBYTE(v182) = 0;
+            LOBYTE(totalBytesReceived4) = 0;
             v174 = 0;
             v175 = &v174;
             v176 = 0x2020000000;
@@ -7000,11 +7000,11 @@ LABEL_85:
             v168[1] = 3221225472;
             v168[2] = sub_1005639A0;
             v168[3] = &unk_100BE04D8;
-            v51 = v18;
+            v51 = dCopy;
             v169 = v51;
             v134 = v135;
             v170 = v134;
-            v171 = self;
+            selfCopy = self;
             v172 = &v174;
             v173 = buf;
             [(NSMutableArray *)sendingMessages enumerateObjectsUsingBlock:v168];
@@ -7019,8 +7019,8 @@ LABEL_85:
               v167 = 0u;
               v164 = 0u;
               v165 = 0u;
-              v52 = [(IDSLocalDeliveryQueue *)self->_deliveryQueue messages];
-              v53 = [v52 countByEnumeratingWithState:&v164 objects:v191 count:16];
+              messages = [(IDSLocalDeliveryQueue *)self->_deliveryQueue messages];
+              v53 = [messages countByEnumeratingWithState:&v164 objects:v191 count:16];
               if (v53)
               {
                 v54 = *v165;
@@ -7030,36 +7030,36 @@ LABEL_85:
                   {
                     if (*v165 != v54)
                     {
-                      objc_enumerationMutation(v52);
+                      objc_enumerationMutation(messages);
                     }
 
                     v56 = *(*(&v164 + 1) + 8 * i);
-                    v57 = [v56 messageUUID];
-                    if (v57)
+                    messageUUID = [v56 messageUUID];
+                    if (messageUUID)
                     {
-                      v58 = [v56 messageUUID];
-                      v59 = [v58 isEqualToString:v51];
+                      messageUUID2 = [v56 messageUUID];
+                      v59 = [messageUUID2 isEqualToString:v51];
 
                       if (v59)
                       {
                         *(*&buf[8] + 24) = 1;
-                        v77 = [v56 socketPairMessage];
+                        socketPairMessage = [v56 socketPairMessage];
                         objc_opt_class();
                         if (objc_opt_isKindOfClass())
                         {
-                          v78 = v77;
-                          v79 = [v134 byteOffset];
+                          v78 = socketPairMessage;
+                          byteOffset = [v134 byteOffset];
                           v80 = OSLogHandleForTransportCategory();
                           if (os_log_type_enabled(v80, OS_LOG_TYPE_DEFAULT))
                           {
-                            v81 = [v134 byteOffset];
-                            v82 = [v78 nextByte];
+                            byteOffset2 = [v134 byteOffset];
+                            nextByte = [v78 nextByte];
                             *v185 = 138412802;
                             v186 = v51;
                             v187 = 2048;
-                            v188 = v81;
+                            v188 = byteOffset2;
                             v189 = 2048;
-                            v190 = v82;
+                            v190 = nextByte;
                             _os_log_impl(&_mh_execute_header, v80, OS_LOG_TYPE_DEFAULT, "IDSSocketPairCommandResourceTransferMessage got resume message for %@ @ %llu (was sending %llu)", v185, 0x20u);
                           }
 
@@ -7067,8 +7067,8 @@ LABEL_85:
                           {
                             if (_IDSShouldLogTransport())
                             {
-                              v126 = [v134 byteOffset];
-                              v130 = [v78 nextByte];
+                              byteOffset3 = [v134 byteOffset];
+                              nextByte2 = [v78 nextByte];
                               _IDSLogTransport();
                               if (_IDSShouldLog())
                               {
@@ -7079,9 +7079,9 @@ LABEL_85:
                             }
                           }
 
-                          if (v79)
+                          if (byteOffset)
                           {
-                            [v78 setNextByte:v79];
+                            [v78 setNextByte:byteOffset];
                           }
 
                           else
@@ -7095,13 +7095,13 @@ LABEL_85:
                           v83 = OSLogHandleForTransportCategory();
                           if (os_log_type_enabled(v83, OS_LOG_TYPE_DEFAULT))
                           {
-                            v84 = [v134 byteOffset];
+                            byteOffset4 = [v134 byteOffset];
                             *v185 = 138412802;
                             v186 = v51;
                             v187 = 2048;
-                            v188 = v84;
+                            v188 = byteOffset4;
                             v189 = 2112;
-                            v190 = v77;
+                            v190 = socketPairMessage;
                             _os_log_impl(&_mh_execute_header, v83, OS_LOG_TYPE_DEFAULT, "IDSSocketPairCommandResourceTransferMessage got resume message for %@ @ %llu (ignoring nonmatching message %@)", v185, 0x20u);
                           }
 
@@ -7109,7 +7109,7 @@ LABEL_85:
                           {
                             if (_IDSShouldLogTransport())
                             {
-                              v127 = [v134 byteOffset];
+                              byteOffset5 = [v134 byteOffset];
                               _IDSLogTransport();
                               if (_IDSShouldLog())
                               {
@@ -7125,7 +7125,7 @@ LABEL_85:
                     }
                   }
 
-                  v53 = [v52 countByEnumeratingWithState:&v164 objects:v191 count:16];
+                  v53 = [messages countByEnumeratingWithState:&v164 objects:v191 count:16];
                   if (v53)
                   {
                     continue;
@@ -7143,11 +7143,11 @@ LABEL_153:
               v109 = OSLogHandleForTransportCategory();
               if (os_log_type_enabled(v109, OS_LOG_TYPE_DEFAULT))
               {
-                v110 = [v134 byteOffset];
+                byteOffset6 = [v134 byteOffset];
                 *v185 = 138412546;
                 v186 = v51;
                 v187 = 2048;
-                v188 = v110;
+                v188 = byteOffset6;
                 _os_log_impl(&_mh_execute_header, v109, OS_LOG_TYPE_DEFAULT, "IDSSocketPairCommandResourceTransferMessage got resume message for %@ @ %llu (sender not found)", v185, 0x16u);
               }
 
@@ -7155,7 +7155,7 @@ LABEL_153:
               {
                 if (_IDSShouldLogTransport())
                 {
-                  v128 = [v134 byteOffset];
+                  byteOffset7 = [v134 byteOffset];
                   _IDSLogTransport();
                   if (_IDSShouldLog())
                   {
@@ -7172,22 +7172,22 @@ LABEL_153:
 
           else
           {
-            if (v20 != 3)
+            if (type != 3)
             {
               goto LABEL_163;
             }
 
-            v29 = [v135 cancelReason];
-            v21 = [(NSMutableDictionary *)self->_incomingResourceTransfers objectForKey:v18];
+            cancelReason = [v135 cancelReason];
+            v21 = [(NSMutableDictionary *)self->_incomingResourceTransfers objectForKey:dCopy];
             if (v21)
             {
               v30 = OSLogHandleForTransportCategory();
               if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 138412546;
-                *&buf[4] = v18;
+                *&buf[4] = dCopy;
                 *&buf[12] = 1024;
-                *&buf[14] = v29;
+                *&buf[14] = cancelReason;
                 _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEFAULT, "Got cancel message for incoming file %@ cancelReason %u", buf, 0x12u);
               }
 
@@ -7195,27 +7195,27 @@ LABEL_153:
               {
                 if (_IDSShouldLogTransport())
                 {
-                  v124 = v18;
-                  v125 = v29;
+                  v124 = dCopy;
+                  totalBytesReceived2 = cancelReason;
                   _IDSLogTransport();
                   if (_IDSShouldLog())
                   {
-                    v124 = v18;
-                    v125 = v29;
+                    v124 = dCopy;
+                    totalBytesReceived2 = cancelReason;
                     _IDSLogV();
                   }
                 }
               }
 
               [v21 abortTransfer];
-              [(NSMutableDictionary *)self->_incomingResourceTransfers removeObjectForKey:v18];
+              [(NSMutableDictionary *)self->_incomingResourceTransfers removeObjectForKey:dCopy];
               goto LABEL_163;
             }
 
             *buf = 0;
             *&buf[8] = buf;
             *&buf[16] = 0x3032000000;
-            v182 = sub_10000AA34;
+            totalBytesReceived4 = sub_10000AA34;
             v183 = sub_10000BC8C;
             v184 = 0;
             v174 = 0;
@@ -7228,10 +7228,10 @@ LABEL_153:
             v158[2] = sub_100563C20;
             v158[3] = &unk_100BE0500;
             v161 = buf;
-            v61 = v18;
-            v163 = v29;
+            v61 = dCopy;
+            v163 = cancelReason;
             v159 = v61;
-            v160 = self;
+            selfCopy2 = self;
             v162 = &v174;
             [(NSMutableArray *)v60 enumerateObjectsUsingBlock:v158];
             if (v175[3] != 0x7FFFFFFFFFFFFFFFLL)
@@ -7247,7 +7247,7 @@ LABEL_153:
                 *v185 = 138412546;
                 v186 = v61;
                 v187 = 1024;
-                LODWORD(v188) = v29;
+                LODWORD(v188) = cancelReason;
                 _os_log_impl(&_mh_execute_header, v64, OS_LOG_TYPE_DEFAULT, "Got cancel message for outgoing file %@ cancelReason %u", v185, 0x12u);
               }
 
@@ -7256,19 +7256,19 @@ LABEL_153:
                 if (_IDSShouldLogTransport())
                 {
                   v124 = v61;
-                  v125 = v29;
+                  totalBytesReceived2 = cancelReason;
                   _IDSLogTransport();
                   if (_IDSShouldLog())
                   {
                     v124 = v61;
-                    v125 = v29;
+                    totalBytesReceived2 = cancelReason;
                     _IDSLogV();
                   }
                 }
               }
 
-              v65 = [*(*&buf[8] + 40) context];
-              v66 = [v65 completionBlock];
+              context = [*(*&buf[8] + 40) context];
+              completionBlock = [context completionBlock];
               v67 = +[IDSDevicePolicyController sharedInstance];
               v68 = [v67 shouldBlackOutDeviceWithCbuuid:self->_cbuuid];
 
@@ -7278,12 +7278,12 @@ LABEL_153:
               v148[1] = 3221225472;
               v148[2] = sub_100563F38;
               v148[3] = &unk_100BE0550;
-              v152 = v29;
-              v71 = v65;
+              v152 = cancelReason;
+              v71 = context;
               v149 = v71;
               v151 = rtt;
               v153 = v68;
-              v72 = v66;
+              v72 = completionBlock;
               v150 = v72;
               [v70 performBlockMainQueue:v148];
             }
@@ -7296,7 +7296,7 @@ LABEL_153:
                 *v185 = 138412546;
                 v186 = v63;
                 v187 = 1024;
-                LODWORD(v188) = v29;
+                LODWORD(v188) = cancelReason;
                 _os_log_impl(&_mh_execute_header, v111, OS_LOG_TYPE_DEFAULT, "IDSSocketPairCommandResourceTransferMessage got cancel message for %@ cancelReason %u, but no sender or receiver found", v185, 0x12u);
               }
 
@@ -7320,21 +7320,21 @@ LABEL_153:
 
         else
         {
-          if (v20)
+          if (type)
           {
-            if (v20 == 1)
+            if (type == 1)
             {
-              if ([(IDSUTunConnection *)self _resourceTransferUUIDAlreaadyReceived:v18])
+              if ([(IDSUTunConnection *)self _resourceTransferUUIDAlreaadyReceived:dCopy])
               {
                 v22 = +[IDSFoundationLog UTunConnection];
                 if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
                 {
                   *buf = 138412290;
-                  *&buf[4] = v18;
+                  *&buf[4] = dCopy;
                   _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "Duplicate file transfer setup detected {duplicateUUID: %@}", buf, 0xCu);
                 }
 
-                v23 = [IDSSocketPairResourceTransferMessage cancelMessageWithSequenceNumber:0 streamID:v14 messageUUID:v18 cancelReason:6];
+                v23 = [IDSSocketPairResourceTransferMessage cancelMessageWithSequenceNumber:0 streamID:iDCopy messageUUID:dCopy cancelReason:6];
                 v24 = v23;
                 if (self->_supportDynamicServices)
                 {
@@ -7345,7 +7345,7 @@ LABEL_153:
 
                   else
                   {
-                    [v23 setTopic:v138];
+                    [v23 setTopic:topicCopy];
                   }
                 }
 
@@ -7359,17 +7359,17 @@ LABEL_153:
                   resettingIncomingResourceTransfers = self->_resettingIncomingResourceTransfers;
                 }
 
-                [(NSMutableSet *)resettingIncomingResourceTransfers addObject:v18];
+                [(NSMutableSet *)resettingIncomingResourceTransfers addObject:dCopy];
                 [(IDSUTunConnection *)self _sendSocketMessage:v24 ignoreSequenceNumber:1];
               }
 
-              [(NSMutableSet *)self->_resettingIncomingResourceTransfers removeObject:v18];
-              v21 = [(NSMutableDictionary *)self->_incomingResourceTransfers objectForKey:v18];
+              [(NSMutableSet *)self->_resettingIncomingResourceTransfers removeObject:dCopy];
+              v21 = [(NSMutableDictionary *)self->_incomingResourceTransfers objectForKey:dCopy];
               if (v21)
               {
-                if (([(NSMutableSet *)self->_resumingIncomingResourceTransfers containsObject:v18]& 1) == 0)
+                if (([(NSMutableSet *)self->_resumingIncomingResourceTransfers containsObject:dCopy]& 1) == 0)
                 {
-                  v88 = +[IDSSocketPairResourceTransferMessage resumeMessageWithSequenceNumber:streamID:messageUUID:nextByteOffset:](IDSSocketPairResourceTransferMessage, "resumeMessageWithSequenceNumber:streamID:messageUUID:nextByteOffset:", 0, v14, v18, [v21 totalBytesReceived]);
+                  v88 = +[IDSSocketPairResourceTransferMessage resumeMessageWithSequenceNumber:streamID:messageUUID:nextByteOffset:](IDSSocketPairResourceTransferMessage, "resumeMessageWithSequenceNumber:streamID:messageUUID:nextByteOffset:", 0, iDCopy, dCopy, [v21 totalBytesReceived]);
                   v89 = v88;
                   if (self->_supportDynamicServices)
                   {
@@ -7380,7 +7380,7 @@ LABEL_153:
 
                     else
                     {
-                      [v88 setTopic:v138];
+                      [v88 setTopic:topicCopy];
                     }
                   }
 
@@ -7395,15 +7395,15 @@ LABEL_153:
                     resumingIncomingResourceTransfers = self->_resumingIncomingResourceTransfers;
                   }
 
-                  [(NSMutableSet *)resumingIncomingResourceTransfers addObject:v18];
+                  [(NSMutableSet *)resumingIncomingResourceTransfers addObject:dCopy];
                   v106 = OSLogHandleForTransportCategory();
                   if (os_log_type_enabled(v106, OS_LOG_TYPE_DEFAULT))
                   {
-                    v107 = [v21 totalBytesReceived];
+                    totalBytesReceived = [v21 totalBytesReceived];
                     *buf = 138412546;
-                    *&buf[4] = v18;
+                    *&buf[4] = dCopy;
                     *&buf[12] = 2048;
-                    *&buf[14] = v107;
+                    *&buf[14] = totalBytesReceived;
                     _os_log_impl(&_mh_execute_header, v106, OS_LOG_TYPE_DEFAULT, "IDSSocketPairCommandResourceTransferMessage already receiving message %@ @%llu", buf, 0x16u);
                   }
 
@@ -7411,14 +7411,14 @@ LABEL_153:
                   {
                     if (_IDSShouldLogTransport())
                     {
-                      v124 = v18;
-                      v125 = [v21 totalBytesReceived];
+                      v124 = dCopy;
+                      totalBytesReceived2 = [v21 totalBytesReceived];
                       _IDSLogTransport();
                       if (_IDSShouldLog())
                       {
-                        v108 = [v21 totalBytesReceived];
-                        v124 = v18;
-                        v125 = v108;
+                        totalBytesReceived3 = [v21 totalBytesReceived];
+                        v124 = dCopy;
+                        totalBytesReceived2 = totalBytesReceived3;
                         _IDSLogV();
                       }
                     }
@@ -7437,8 +7437,8 @@ LABEL_153:
                 else
                 {
                   v21 = [[IDSSocketPairResourceTransferReceiver alloc] initWithMessage:v135 resumeResourceTransfers:1 receiverError:&v174];
-                  v90 = [v21 expiryDate];
-                  [v90 timeIntervalSinceNow];
+                  expiryDate = [v21 expiryDate];
+                  [expiryDate timeIntervalSinceNow];
                   v92 = v91;
 
                   v93 = dispatch_time(0, (v92 * 1000000000.0));
@@ -7449,7 +7449,7 @@ LABEL_153:
                   block[2] = sub_100563814;
                   block[3] = &unk_100BE04B0;
                   block[4] = self;
-                  key = v18;
+                  key = dCopy;
                   v179 = key;
                   v180 = v92;
                   dispatch_after(v93, v95, block);
@@ -7492,7 +7492,7 @@ LABEL_187:
                 if (os_log_type_enabled(v100, OS_LOG_TYPE_DEFAULT))
                 {
                   *buf = 138412546;
-                  *&buf[4] = v18;
+                  *&buf[4] = dCopy;
                   *&buf[12] = 1024;
                   *&buf[14] = v174;
                   _os_log_impl(&_mh_execute_header, v100, OS_LOG_TYPE_DEFAULT, "IDSSocketPairCommandResourceTransferMessage could not create receiver from message %@ (reason %d)", buf, 0x12u);
@@ -7502,13 +7502,13 @@ LABEL_187:
                 {
                   if (_IDSShouldLogTransport())
                   {
-                    v124 = v18;
-                    v125 = v174;
+                    v124 = dCopy;
+                    totalBytesReceived2 = v174;
                     _IDSLogTransport();
                     if (_IDSShouldLog())
                     {
-                      v124 = v18;
-                      v125 = v174;
+                      v124 = dCopy;
+                      totalBytesReceived2 = v174;
                       _IDSLogV();
                     }
                   }
@@ -7516,7 +7516,7 @@ LABEL_187:
 
                 if (v174)
                 {
-                  v101 = [IDSSocketPairResourceTransferMessage cancelMessageWithSequenceNumber:0 streamID:v14 messageUUID:v18 cancelReason:?];
+                  v101 = [IDSSocketPairResourceTransferMessage cancelMessageWithSequenceNumber:0 streamID:iDCopy messageUUID:dCopy cancelReason:?];
                   v102 = v101;
                   if (self->_supportDynamicServices)
                   {
@@ -7527,7 +7527,7 @@ LABEL_187:
 
                     else
                     {
-                      [v101 setTopic:v138];
+                      [v101 setTopic:topicCopy];
                     }
                   }
 
@@ -7541,7 +7541,7 @@ LABEL_187:
                     v116 = self->_resettingIncomingResourceTransfers;
                   }
 
-                  [(NSMutableSet *)v116 addObject:v18, v124, v125];
+                  [(NSMutableSet *)v116 addObject:dCopy, v124, totalBytesReceived2];
                   [(IDSUTunConnection *)self _sendSocketMessage:v102 ignoreSequenceNumber:1];
                 }
 
@@ -7557,7 +7557,7 @@ LABEL_163:
             goto LABEL_164;
           }
 
-          v46 = [(NSMutableDictionary *)self->_incomingResourceTransfers objectForKey:v18];
+          v46 = [(NSMutableDictionary *)self->_incomingResourceTransfers objectForKey:dCopy];
           v21 = v46;
           if (v46)
           {
@@ -7565,9 +7565,9 @@ LABEL_163:
             v48 = self->_resumingIncomingResourceTransfers;
             if (!v47)
             {
-              if (([(NSMutableSet *)v48 containsObject:v18]& 1) == 0)
+              if (([(NSMutableSet *)v48 containsObject:dCopy]& 1) == 0)
               {
-                v75 = +[IDSSocketPairResourceTransferMessage resumeMessageWithSequenceNumber:streamID:messageUUID:nextByteOffset:](IDSSocketPairResourceTransferMessage, "resumeMessageWithSequenceNumber:streamID:messageUUID:nextByteOffset:", 0, v14, v18, [v21 totalBytesReceived]);
+                v75 = +[IDSSocketPairResourceTransferMessage resumeMessageWithSequenceNumber:streamID:messageUUID:nextByteOffset:](IDSSocketPairResourceTransferMessage, "resumeMessageWithSequenceNumber:streamID:messageUUID:nextByteOffset:", 0, iDCopy, dCopy, [v21 totalBytesReceived]);
                 v76 = v75;
                 if (self->_supportDynamicServices)
                 {
@@ -7578,7 +7578,7 @@ LABEL_163:
 
                   else
                   {
-                    [v75 setTopic:v138];
+                    [v75 setTopic:topicCopy];
                   }
                 }
 
@@ -7593,16 +7593,16 @@ LABEL_163:
                   v120 = self->_resumingIncomingResourceTransfers;
                 }
 
-                [(NSMutableSet *)v120 addObject:v18];
+                [(NSMutableSet *)v120 addObject:dCopy];
                 v123 = OSLogHandleForTransportCategory();
                 if (os_log_type_enabled(v123, OS_LOG_TYPE_DEFAULT))
                 {
                   *buf = 138412802;
-                  *&buf[4] = v18;
+                  *&buf[4] = dCopy;
                   *&buf[12] = 2048;
                   *&buf[14] = [v135 byteOffset];
                   *&buf[22] = 2048;
-                  v182 = [v21 totalBytesReceived];
+                  totalBytesReceived4 = [v21 totalBytesReceived];
                   _os_log_impl(&_mh_execute_header, v123, OS_LOG_TYPE_DEFAULT, "IDSSocketPairCommandResourceTransferMessage received %@ @ incorrect offset %llu (should be @%llu)", buf, 0x20u);
                 }
 
@@ -7610,8 +7610,8 @@ LABEL_163:
                 {
                   if (_IDSShouldLogTransport())
                   {
-                    v129 = [v135 byteOffset];
-                    v131 = [v21 totalBytesReceived];
+                    byteOffset8 = [v135 byteOffset];
+                    totalBytesReceived5 = [v21 totalBytesReceived];
                     _IDSLogTransport();
                     if (_IDSShouldLog())
                     {
@@ -7626,7 +7626,7 @@ LABEL_163:
               goto LABEL_163;
             }
 
-            [(NSMutableSet *)v48 removeObject:v18];
+            [(NSMutableSet *)v48 removeObject:dCopy];
             if (![(NSMutableSet *)self->_resumingIncomingResourceTransfers count])
             {
               v49 = self->_resumingIncomingResourceTransfers;
@@ -7636,9 +7636,9 @@ LABEL_163:
             goto LABEL_42;
           }
 
-          if (([(NSMutableSet *)self->_resettingIncomingResourceTransfers containsObject:v18]& 1) == 0)
+          if (([(NSMutableSet *)self->_resettingIncomingResourceTransfers containsObject:dCopy]& 1) == 0)
           {
-            v73 = [IDSSocketPairResourceTransferMessage resumeMessageWithSequenceNumber:0 streamID:v14 messageUUID:v18 nextByteOffset:0];
+            v73 = [IDSSocketPairResourceTransferMessage resumeMessageWithSequenceNumber:0 streamID:iDCopy messageUUID:dCopy nextByteOffset:0];
             v74 = v73;
             if (self->_supportDynamicServices)
             {
@@ -7649,7 +7649,7 @@ LABEL_163:
 
               else
               {
-                [v73 setTopic:v138];
+                [v73 setTopic:topicCopy];
               }
             }
 
@@ -7664,12 +7664,12 @@ LABEL_163:
               v112 = self->_resettingIncomingResourceTransfers;
             }
 
-            [(NSMutableSet *)v112 addObject:v18];
+            [(NSMutableSet *)v112 addObject:dCopy];
             v115 = OSLogHandleForTransportCategory();
             if (os_log_type_enabled(v115, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138412290;
-              *&buf[4] = v18;
+              *&buf[4] = dCopy;
               _os_log_impl(&_mh_execute_header, v115, OS_LOG_TYPE_DEFAULT, "IDSSocketPairCommandResourceTransferMessage cannot find receiver for message %@ - asking sender to reset", buf, 0xCu);
             }
 
@@ -7692,7 +7692,7 @@ LABEL_162:
         goto LABEL_163;
       }
 
-      v27 = [(NSMutableDictionary *)self->_incomingResourceTransfers objectForKey:v18];
+      v27 = [(NSMutableDictionary *)self->_incomingResourceTransfers objectForKey:dCopy];
       v21 = v27;
       if (v27)
       {
@@ -7734,8 +7734,8 @@ LABEL_41:
           }
 
 LABEL_42:
-          v33 = [v21 finalizedMessageDictionaryIfDone];
-          if (v33)
+          finalizedMessageDictionaryIfDone = [v21 finalizedMessageDictionaryIfDone];
+          if (finalizedMessageDictionaryIfDone)
           {
             v34 = OSLogHandleForIDSCategory();
             if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
@@ -7749,17 +7749,17 @@ LABEL_42:
               _IDSLogV();
             }
 
-            -[IDSUTunConnection _addIncomingMessageSize:forTopic:](self, "_addIncomingMessageSize:forTopic:", [v21 totalBytesReceived], v138);
+            -[IDSUTunConnection _addIncomingMessageSize:forTopic:](self, "_addIncomingMessageSize:forTopic:", [v21 totalBytesReceived], topicCopy);
             v35 = [IDSLocalDeliveryMessageReceivedMetric alloc];
-            v36 = [v135 data];
-            v37 = [v35 initWithService:v138 isFromDefaultPairedDevice:a10 messageSize:objc_msgSend(v36 linkType:"length") priority:{-[IDSUTunConnection _currentLink](self, "_currentLink"), self->_priority}];
+            data = [v135 data];
+            v37 = [v35 initWithService:topicCopy isFromDefaultPairedDevice:device messageSize:objc_msgSend(data linkType:"length") priority:{-[IDSUTunConnection _currentLink](self, "_currentLink"), self->_priority}];
 
             v38 = +[IDSCoreAnalyticsLogger defaultLogger];
             [v38 logMetric:v37];
 
             v39 = +[IDSAWDLogging sharedInstance];
-            v40 = [v135 data];
-            [v39 messageReceivedForService:v138 isFromDefaultPairedDevice:a10 messageSize:objc_msgSend(v40 linkType:"length") priority:{-[IDSUTunConnection _currentLink](self, "_currentLink"), self->_priority}];
+            data2 = [v135 data];
+            [v39 messageReceivedForService:topicCopy isFromDefaultPairedDevice:device messageSize:objc_msgSend(data2 linkType:"length") priority:{-[IDSUTunConnection _currentLink](self, "_currentLink"), self->_priority}];
 
             v41 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", -[IDSUTunConnection _socketToNiceCommand:](self, "_socketToNiceCommand:", [v135 command]));
             v139[0] = _NSConcreteStackBlock;
@@ -7767,15 +7767,15 @@ LABEL_42:
             v139[2] = sub_100564054;
             v139[3] = &unk_100BE0578;
             v139[4] = self;
-            v140 = v33;
-            v141 = v138;
+            v140 = finalizedMessageDictionaryIfDone;
+            v141 = topicCopy;
             v142 = v41;
-            v145 = v133;
-            v146 = a8;
-            v143 = v137;
-            v42 = v18;
+            v145 = ackCopy;
+            responseCopy = response;
+            v143 = identifierCopy;
+            v42 = dCopy;
             v144 = v42;
-            v147 = a11;
+            hintCopy = hint;
             v43 = v41;
             [(IDSUTunConnection *)self _processMessage:v135 withSequenceNumberBlock:v139];
             [(NSMutableDictionary *)self->_incomingResourceTransfers removeObjectForKey:v42];
@@ -7816,7 +7816,7 @@ LABEL_42:
         }
       }
 
-      CFDictionarySetValue(self->_incomingResourceTransfers, v18, v21);
+      CFDictionarySetValue(self->_incomingResourceTransfers, dCopy, v21);
       goto LABEL_41;
     }
 
@@ -7852,20 +7852,20 @@ LABEL_17:
 LABEL_164:
 }
 
-- (void)_processIncomingDataMessage:(id)a3
+- (void)_processIncomingDataMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v5 = +[IDSDaemonPriorityQueueController sharedInstance];
   [v5 assertRunningWithPriority:self->_priority];
 
-  if ([(IDSUTunConnection *)self _messageHasValidEncryptionStatus:v4]|| [(IDSUTunConnection *)self _isMagnetConnection])
+  if ([(IDSUTunConnection *)self _messageHasValidEncryptionStatus:messageCopy]|| [(IDSUTunConnection *)self _isMagnetConnection])
   {
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_100564364;
     v7[3] = &unk_100BE05A0;
-    v8 = v4;
-    v9 = self;
+    v8 = messageCopy;
+    selfCopy = self;
     [(IDSUTunConnection *)self _optionallyDecryptMessage:v8 completionBlock:v7];
   }
 
@@ -7875,9 +7875,9 @@ LABEL_164:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v11 = self;
+      selfCopy2 = self;
       v12 = 2112;
-      v13 = v4;
+      v13 = messageCopy;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_ERROR, "%@ received a message that we cannot accept without encryption! %@", buf, 0x16u);
     }
 
@@ -7890,26 +7890,26 @@ LABEL_164:
   }
 }
 
-- (void)_processDecryptedMessage:(id)a3
+- (void)_processDecryptedMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v165 = [(IDSUTunConnection *)self _sendingMessageCountForClass:1];
   v164 = [(IDSUTunConnection *)self _sendingMessageCountForClass:0];
   v163 = [(IDSUTunConnection *)self _sendingMessageCountForClass:2];
-  v158 = [(IDSUTunConnection *)self _isMagnetConnection];
+  _isMagnetConnection = [(IDSUTunConnection *)self _isMagnetConnection];
   if (objc_opt_respondsToSelector())
   {
-    v168 = [v4 messageUUID];
+    messageUUID = [messageCopy messageUUID];
   }
 
   else
   {
-    v168 = 0;
+    messageUUID = 0;
   }
 
   if (objc_opt_respondsToSelector())
   {
-    [v4 peerResponseIdentifier];
+    [messageCopy peerResponseIdentifier];
     v167 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
   }
 
@@ -7920,42 +7920,42 @@ LABEL_164:
 
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v4 expectsPeerResponse];
+    expectsPeerResponse = [messageCopy expectsPeerResponse];
   }
 
   else
   {
-    v5 = 0;
+    expectsPeerResponse = 0;
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v4 wantsAppAck];
+    wantsAppAck = [messageCopy wantsAppAck];
   }
 
   else
   {
-    v6 = 0;
+    wantsAppAck = 0;
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v161 = [v4 didWakeHint];
+    didWakeHint = [messageCopy didWakeHint];
   }
 
   else
   {
-    v161 = 0;
+    didWakeHint = 0;
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v7 = [v4 expiryDate];
+    expiryDate = [messageCopy expiryDate];
   }
 
   else
   {
-    v7 = 0;
+    expiryDate = 0;
   }
 
   v8 = OSLogHandleForTransportCategory();
@@ -7963,8 +7963,8 @@ LABEL_164:
   {
     v9 = @"NO";
     *buf = 138544386;
-    *v263 = v168;
-    if (v5)
+    *v263 = messageUUID;
+    if (expectsPeerResponse)
     {
       v10 = @"YES";
     }
@@ -7974,7 +7974,7 @@ LABEL_164:
       v10 = @"NO";
     }
 
-    if (v6)
+    if (wantsAppAck)
     {
       v9 = @"YES";
     }
@@ -7986,41 +7986,41 @@ LABEL_164:
     *&v263[28] = 2112;
     *&v263[30] = v9;
     *&v263[38] = 2112;
-    *&v263[40] = v7;
+    *&v263[40] = expiryDate;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Received message has messageUUID %{public}@ peerResponseID %@ expectsPeerResponse? %@ wantsAppAck %@ remoteExpiryDate: %@", buf, 0x34u);
   }
 
   if (os_log_shim_legacy_logging_enabled() && _IDSShouldLogTransport())
   {
-    *&v11 = v5 ? COERCE_DOUBLE(@"YES") : COERCE_DOUBLE(@"NO");
-    *&v12 = v6 ? COERCE_DOUBLE(@"YES") : COERCE_DOUBLE(@"NO");
+    *&v11 = expectsPeerResponse ? COERCE_DOUBLE(@"YES") : COERCE_DOUBLE(@"NO");
+    *&v12 = wantsAppAck ? COERCE_DOUBLE(@"YES") : COERCE_DOUBLE(@"NO");
     v156 = *&v12;
-    v157 = v7;
+    v157 = expiryDate;
     v154 = v167;
     v155 = *&v11;
-    v151 = v168;
+    selfCopy8 = messageUUID;
     _IDSLogTransport();
     if (_IDSShouldLog())
     {
       v156 = *&v12;
-      v157 = v7;
+      v157 = expiryDate;
       v154 = v167;
       v155 = *&v11;
-      v151 = v168;
+      selfCopy8 = messageUUID;
       _IDSLogV();
     }
   }
 
-  if (v7)
+  if (expiryDate)
   {
-    [v7 timeIntervalSinceNow];
+    [expiryDate timeIntervalSinceNow];
     if (v13 < 0.0)
     {
       v14 = OSLogHandleForTransportCategory();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        *v263 = v168;
+        *v263 = messageUUID;
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Received a message that has passed its expiry date, sending back an expired ack MessageUUID: %@", buf, 0xCu);
       }
 
@@ -8028,29 +8028,29 @@ LABEL_164:
       {
         if (_IDSShouldLogTransport())
         {
-          v151 = v168;
+          selfCopy8 = messageUUID;
           _IDSLogTransport();
           if (_IDSShouldLog())
           {
-            v151 = v168;
+            selfCopy8 = messageUUID;
             _IDSLogV();
           }
         }
       }
 
-      [(IDSUTunConnection *)self _sendExpiredAckForMessage:v4, v151, *&v154, *&v155, *&v156, v157];
+      [(IDSUTunConnection *)self _sendExpiredAckForMessage:messageCopy, selfCopy8, *&v154, *&v155, *&v156, v157];
       goto LABEL_183;
     }
   }
 
-  if (!self->_needsHandshake || [v4 command] == 4)
+  if (!self->_needsHandshake || [messageCopy command] == 4)
   {
     if (objc_opt_respondsToSelector())
     {
-      *&v159 = COERCE_DOUBLE([v4 streamID]);
+      *&v159 = COERCE_DOUBLE([messageCopy streamID]);
       if (self->_supportDynamicServices)
       {
-        [v4 topic];
+        [messageCopy topic];
         key = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
         v261 = 0;
         if (key != 0.0)
@@ -8064,7 +8064,7 @@ LABEL_129:
               if (os_log_type_enabled(v44, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 138412546;
-                *v263 = v168;
+                *v263 = messageUUID;
                 *&v263[8] = 2112;
                 *&v263[10] = key;
                 _os_log_impl(&_mh_execute_header, v44, OS_LOG_TYPE_DEFAULT, "Remote instance changed while receiving message %@ with topic %@ - continue and dispatch reconnect", buf, 0x16u);
@@ -8074,19 +8074,19 @@ LABEL_129:
               {
                 if (_IDSShouldLogTransport())
                 {
-                  v151 = v168;
+                  selfCopy8 = messageUUID;
                   v154 = key;
                   _IDSLogTransport();
                   if (_IDSShouldLog())
                   {
-                    v151 = v168;
+                    selfCopy8 = messageUUID;
                     v154 = key;
                     _IDSLogV();
                   }
                 }
               }
 
-              [(IDSUTunConnection *)self _nonThreadSafeStopConnection:v151];
+              [(IDSUTunConnection *)self _nonThreadSafeStopConnection:selfCopy8];
               v45 = dispatch_time(0, 0);
               v46 = +[IDSDaemonPriorityQueueController sharedInstance];
               v47 = [v46 queueForPriority:self->_priority];
@@ -8103,7 +8103,7 @@ LABEL_129:
 
           v260 = 0;
           LOWORD(v216) = 0;
-          if (![(IDSUTunPeerServiceMap *)self->_incomingServiceMap translateServiceName:*&key toStreamID:&v216 createIfNotFound:1 mappingCreated:&v260 remoteInstanceID:self->_remoteInstanceID remoteInstanceIDChanged:&v261, v151, *&v154, *&v155, *&v156, v157])
+          if (![(IDSUTunPeerServiceMap *)self->_incomingServiceMap translateServiceName:*&key toStreamID:&v216 createIfNotFound:1 mappingCreated:&v260 remoteInstanceID:self->_remoteInstanceID remoteInstanceIDChanged:&v261, selfCopy8, *&v154, *&v155, *&v156, v157])
           {
             if ((v260 & 1) == 0)
             {
@@ -8111,7 +8111,7 @@ LABEL_129:
               if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 138412546;
-                *v263 = v168;
+                *v263 = messageUUID;
                 *&v263[8] = 2112;
                 *&v263[10] = key;
                 _os_log_impl(&_mh_execute_header, v42, OS_LOG_TYPE_DEFAULT, "Cannot create mapping while receiving message %@ with topic %@ - continuing", buf, 0x16u);
@@ -8119,7 +8119,7 @@ LABEL_129:
 
               if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
               {
-                v151 = v168;
+                selfCopy8 = messageUUID;
                 v154 = key;
                 _IDSLogV();
               }
@@ -8173,7 +8173,7 @@ LABEL_129:
               }
 
               *buf = 138413314;
-              *v263 = v168;
+              *v263 = messageUUID;
               *&v263[8] = 2112;
               *&v263[10] = key;
               *&v263[18] = 1024;
@@ -8200,7 +8200,7 @@ LABEL_129:
               v156 = *&v23;
               v157 = v20;
               *&v155 = v216;
-              v151 = v168;
+              selfCopy8 = messageUUID;
               v154 = key;
               _IDSLogV();
             }
@@ -8229,28 +8229,28 @@ LABEL_128:
               v36 = OSLogHandleForIDSCategory();
               if (os_log_type_enabled(v36, OS_LOG_TYPE_DEBUG))
               {
-                v37 = [v4 sequenceNumber];
+                sequenceNumber = [messageCopy sequenceNumber];
                 *buf = 138413058;
-                *v263 = v168;
+                *v263 = messageUUID;
                 *&v263[8] = 2112;
                 *&v263[10] = key;
                 *&v263[18] = 1024;
                 *&v263[20] = v159;
                 *&v263[24] = 1024;
-                *&v263[26] = v37;
+                *&v263[26] = sequenceNumber;
                 _os_log_impl(&_mh_execute_header, v36, OS_LOG_TYPE_DEBUG, "Incoming message %@ servicename-found %@ streamID %u sequenceNumber %u", buf, 0x22u);
               }
 
               if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
               {
                 v155 = *&v159;
-                v156 = COERCE_DOUBLE([v4 sequenceNumber]);
-                v151 = v168;
+                v156 = COERCE_DOUBLE([messageCopy sequenceNumber]);
+                selfCopy8 = messageUUID;
                 v154 = key;
                 _IDSLogV();
               }
 
-              [v4 sequenceNumber];
+              [messageCopy sequenceNumber];
               kdebug_trace();
             }
 
@@ -8260,7 +8260,7 @@ LABEL_128:
               if (os_log_type_enabled(v139, OS_LOG_TYPE_DEBUG))
               {
                 *buf = 138412802;
-                *v263 = v168;
+                *v263 = messageUUID;
                 *&v263[8] = 2112;
                 *&v263[10] = key;
                 *&v263[18] = 1024;
@@ -8271,7 +8271,7 @@ LABEL_128:
               if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
               {
                 v155 = *&v159;
-                v151 = v168;
+                selfCopy8 = messageUUID;
                 v154 = key;
                 _IDSLogV();
               }
@@ -8286,7 +8286,7 @@ LABEL_128:
             if (os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138412290;
-              *v263 = v168;
+              *v263 = messageUUID;
               _os_log_impl(&_mh_execute_header, v43, OS_LOG_TYPE_DEFAULT, "Remote instance changed while receiving message %@ - drop and reconnect", buf, 0xCu);
             }
 
@@ -8294,11 +8294,11 @@ LABEL_128:
             {
               if (_IDSShouldLogTransport())
               {
-                v151 = v168;
+                selfCopy8 = messageUUID;
                 _IDSLogTransport();
                 if (_IDSShouldLog())
                 {
-                  v151 = v168;
+                  selfCopy8 = messageUUID;
                   _IDSLogV();
                 }
               }
@@ -8307,8 +8307,8 @@ LABEL_128:
             goto LABEL_270;
           }
 
-          v134 = [(IDSUTunConnection *)self _UTunDeliveryController];
-          [v134 topicForStreamID:v159];
+          _UTunDeliveryController = [(IDSUTunConnection *)self _UTunDeliveryController];
+          [_UTunDeliveryController topicForStreamID:v159];
           *&v135 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
 
           v136 = OSLogHandleForIDSCategory();
@@ -8326,7 +8326,7 @@ LABEL_128:
           {
             _IDSWarnV();
             _IDSLogV();
-            v151 = v159;
+            selfCopy8 = v159;
             v154 = *&v135;
             _IDSLogTransport();
             v137 = v159;
@@ -8344,11 +8344,11 @@ LABEL_128:
           {
             _IDSWarnV();
             _IDSLogV();
-            v151 = v159;
+            selfCopy8 = v159;
             _IDSLogTransport();
           }
 
-          [(IDSUTunPeerServiceMap *)self->_incomingServiceMap dumpServiceMap:v151];
+          [(IDSUTunPeerServiceMap *)self->_incomingServiceMap dumpServiceMap:selfCopy8];
           [(IDSUTunPeerServiceMap *)self->_outgoingServiceMap dumpServiceMap];
           if (!self->_shouldAbortOnMissingTopic)
           {
@@ -8370,8 +8370,8 @@ LABEL_270:
 
         else
         {
-          v38 = [(IDSUTunConnection *)self _UTunDeliveryController];
-          [v38 topicForStreamID:v159];
+          _UTunDeliveryController2 = [(IDSUTunConnection *)self _UTunDeliveryController];
+          [_UTunDeliveryController2 topicForStreamID:v159];
           key = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
 
           v39 = OSLogHandleForIDSCategory();
@@ -8389,7 +8389,7 @@ LABEL_270:
           {
             _IDSWarnV();
             _IDSLogV();
-            v151 = v159;
+            selfCopy8 = v159;
             v154 = key;
             _IDSLogTransport();
             v40 = v159;
@@ -8407,11 +8407,11 @@ LABEL_270:
           {
             _IDSWarnV();
             _IDSLogV();
-            v151 = v159;
+            selfCopy8 = v159;
             _IDSLogTransport();
           }
 
-          [(IDSUTunPeerServiceMap *)self->_incomingServiceMap dumpServiceMap:v151];
+          [(IDSUTunPeerServiceMap *)self->_incomingServiceMap dumpServiceMap:selfCopy8];
           [(IDSUTunPeerServiceMap *)self->_outgoingServiceMap dumpServiceMap];
           if (!self->_shouldAbortOnMissingTopic)
           {
@@ -8431,8 +8431,8 @@ LABEL_182:
         abort();
       }
 
-      v33 = [(IDSUTunConnection *)self _UTunDeliveryController];
-      [v33 topicForStreamID:v159];
+      _UTunDeliveryController3 = [(IDSUTunConnection *)self _UTunDeliveryController];
+      [_UTunDeliveryController3 topicForStreamID:v159];
       key = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
     }
 
@@ -8443,13 +8443,13 @@ LABEL_182:
     }
 
 LABEL_137:
-    switch([v4 command])
+    switch([messageCopy command])
     {
       case 0u:
         goto LABEL_153;
       case 1u:
       case 0x25u:
-        v65 = v4;
+        v65 = messageCopy;
         v216 = 0;
         v217 = &v216;
         v218 = 0x2020000000;
@@ -8469,9 +8469,9 @@ LABEL_137:
           v67 = OSLogHandleForTransportCategory();
           if (os_log_type_enabled(v67, OS_LOG_TYPE_DEFAULT))
           {
-            v68 = [v162 sequenceNumber];
+            sequenceNumber2 = [v162 sequenceNumber];
             *buf = 67109120;
-            *v263 = v68;
+            *v263 = sequenceNumber2;
             _os_log_impl(&_mh_execute_header, v67, OS_LOG_TYPE_DEFAULT, "  => Message id %d ACK'd but it already timed out...", buf, 8u);
           }
 
@@ -8479,7 +8479,7 @@ LABEL_137:
           {
             if (_IDSShouldLogTransport())
             {
-              v153 = [v162 sequenceNumber];
+              sequenceNumber3 = [v162 sequenceNumber];
               _IDSLogTransport();
               if (_IDSShouldLog())
               {
@@ -8493,15 +8493,15 @@ LABEL_137:
         }
 
         v100 = [(NSMutableArray *)self->_sendingMessages objectAtIndex:?];
-        v101 = [v100 context];
-        [v101 processAckForSocketPairMessage:v100];
+        context = [v100 context];
+        [context processAckForSocketPairMessage:v100];
         v160 = v100;
-        if (![v101 isDoneSending])
+        if (![context isDoneSending])
         {
           goto LABEL_279;
         }
 
-        [v101 timeSent];
+        [context timeSent];
         v103 = v102;
         IMTimeOfDay();
         v105 = v104 - v103;
@@ -8520,10 +8520,10 @@ LABEL_137:
         v108 = OSLogHandleForTransportCategory();
         if (os_log_type_enabled(v108, OS_LOG_TYPE_DEFAULT))
         {
-          v109 = [v162 sequenceNumber];
+          sequenceNumber4 = [v162 sequenceNumber];
           v110 = self->_rtt;
           *buf = 67109888;
-          *v263 = v109;
+          *v263 = sequenceNumber4;
           *&v263[4] = 2048;
           *&v263[6] = v110;
           *&v263[14] = 2048;
@@ -8537,36 +8537,36 @@ LABEL_137:
         {
           if (_IDSShouldLogTransport())
           {
-            v111 = [v162 sequenceNumber];
+            sequenceNumber5 = [v162 sequenceNumber];
             v155 = v105;
             v156 = v103;
             v154 = self->_rtt;
-            v152 = v111;
+            v152 = sequenceNumber5;
             _IDSLogTransport();
             if (_IDSShouldLog())
             {
-              v112 = [v162 sequenceNumber];
+              sequenceNumber6 = [v162 sequenceNumber];
               v155 = v105;
               v156 = v103;
               v154 = self->_rtt;
-              v152 = v112;
+              v152 = sequenceNumber6;
               _IDSLogV();
             }
           }
         }
 
-        if ([(IDSUTunConnection *)self _shouldAWDLogMessage:v101, v152, *&v154, *&v155, *&v156])
+        if ([(IDSUTunConnection *)self _shouldAWDLogMessage:context, v152, *&v154, *&v155, *&v156])
         {
           v113 = [IDSLocalMessageRTTMetric alloc];
-          v114 = [v101 awdTopic];
-          v115 = [v113 initWithService:v114 isToDefaultPairedDevice:v158 messageSize:objc_msgSend(v101 linkType:"sentMessageDataSize") deliveryError:-[IDSUTunConnection _currentLink](self RTT:"_currentLink") priority:{0, objc_msgSend(v101, "priority")}];
+          awdTopic = [context awdTopic];
+          v115 = [v113 initWithService:awdTopic isToDefaultPairedDevice:_isMagnetConnection messageSize:objc_msgSend(context linkType:"sentMessageDataSize") deliveryError:-[IDSUTunConnection _currentLink](self RTT:"_currentLink") priority:{0, objc_msgSend(context, "priority")}];
 
           v116 = +[IDSCoreAnalyticsLogger defaultLogger];
           [v116 logMetric:v115];
 
           v117 = +[IDSAWDLogging sharedInstance];
-          v118 = [v101 awdTopic];
-          [v117 messageDeliveredForService:v118 isToDefaultPairedDevice:v158 messageSize:objc_msgSend(v101 linkType:"sentMessageDataSize") deliveryError:-[IDSUTunConnection _currentLink](self RTT:"_currentLink") priority:{0, (v105 * 1000.0), objc_msgSend(v101, "priority")}];
+          awdTopic2 = [context awdTopic];
+          [v117 messageDeliveredForService:awdTopic2 isToDefaultPairedDevice:_isMagnetConnection messageSize:objc_msgSend(context linkType:"sentMessageDataSize") deliveryError:-[IDSUTunConnection _currentLink](self RTT:"_currentLink") priority:{0, (v105 * 1000.0), objc_msgSend(context, "priority")}];
 
           v100 = v160;
         }
@@ -8577,14 +8577,14 @@ LABEL_137:
           goto LABEL_238;
         }
 
-        v119 = v100;
-        if ([v119 isDone])
+        completionBlock = v100;
+        if ([completionBlock isDone])
         {
-          [v101 setUnderlyingSocketPairMessage:0];
-          [(IDSLocalDeliveryQueue *)self->_deliveryQueue dequeueMessage:v101];
+          [context setUnderlyingSocketPairMessage:0];
+          [(IDSLocalDeliveryQueue *)self->_deliveryQueue dequeueMessage:context];
 
 LABEL_238:
-          v119 = [v101 completionBlock];
+          completionBlock = [context completionBlock];
           v120 = +[IDSDevicePolicyController sharedInstance];
           v121 = [v120 shouldBlackOutDeviceWithCbuuid:self->_cbuuid];
 
@@ -8597,10 +8597,10 @@ LABEL_238:
             v211[1] = 3221225472;
             v211[2] = sub_10056824C;
             v211[3] = &unk_100BE0668;
-            v211[4] = v101;
+            v211[4] = context;
             *&v211[6] = v122;
             v212 = v121;
-            v211[5] = v119;
+            v211[5] = completionBlock;
             [v123 performBlockMainQueue:v211];
           }
 
@@ -8612,10 +8612,10 @@ LABEL_238:
             v209[1] = 3221225472;
             v209[2] = sub_100568348;
             v209[3] = &unk_100BE0668;
-            v209[4] = v101;
+            v209[4] = context;
             *&v209[6] = v122;
             v210 = v121;
-            v209[5] = v119;
+            v209[5] = completionBlock;
             [v123 performBlockMainQueue:v209];
           }
         }
@@ -8626,14 +8626,14 @@ LABEL_279:
         v140 = OSLogHandleForIDSCategory();
         if (os_log_type_enabled(v140, OS_LOG_TYPE_DEFAULT))
         {
-          v141 = [v101 messageID];
-          v142 = [v162 sequenceNumber];
+          messageID = [context messageID];
+          sequenceNumber7 = [v162 sequenceNumber];
           v143 = *(v217 + 3);
           v144 = [(NSMutableArray *)self->_sendingMessages count];
           *buf = 67110146;
-          *v263 = v141;
+          *v263 = messageID;
           *&v263[4] = 1024;
-          *&v263[6] = v142;
+          *&v263[6] = sequenceNumber7;
           *&v263[10] = 2048;
           *&v263[12] = v143;
           *&v263[20] = 2112;
@@ -8646,18 +8646,18 @@ LABEL_279:
         v145 = v160;
         if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
         {
-          v146 = [v101 messageID];
+          messageID2 = [context messageID];
           v147 = COERCE_DOUBLE([v162 sequenceNumber]);
           v148 = v217[3];
           v156 = *&v160;
           v157 = [(NSMutableArray *)self->_sendingMessages count]- 1;
           v154 = v147;
           v155 = v148;
-          v152 = v146;
+          v152 = messageID2;
           _IDSLogV();
         }
 
-        [(IDSUTunConnection *)self _removeMessageFromStatistics:v101, v152, *&v154, *&v155, *&v156, v157];
+        [(IDSUTunConnection *)self _removeMessageFromStatistics:context, v152, *&v154, *&v155, *&v156, v157];
         [(NSMutableArray *)self->_sendingMessages removeObjectAtIndex:*(v217 + 3)];
         if (![(NSMutableArray *)self->_sendingMessages count])
         {
@@ -8672,7 +8672,7 @@ LABEL_279:
           [(IDSUTunConnection *)self _clearSendingPowerAssertionWithReason:@"No in flight messages remaining"];
         }
 
-        [(NSMutableArray *)self->_fallbackMessages removeObject:v101];
+        [(NSMutableArray *)self->_fallbackMessages removeObject:context];
         if (![(NSMutableArray *)self->_fallbackMessages count])
         {
           fallbackMessages = self->_fallbackMessages;
@@ -8693,11 +8693,11 @@ LABEL_291:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v75 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", -[IDSUTunConnection _socketToNiceCommand:](self, "_socketToNiceCommand:", [v4 command]));
-          v76 = v4;
+          v75 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", -[IDSUTunConnection _socketToNiceCommand:](self, "_socketToNiceCommand:", [messageCopy command]));
+          v76 = messageCopy;
           v77 = [IDSProtobuf alloc];
-          v78 = [v76 data];
-          v79 = [v77 initWithProtobufData:v78 type:objc_msgSend(v76 isResponse:{"type"), objc_msgSend(v76, "isResponse") != 0}];
+          data = [v76 data];
+          v79 = [v77 initWithProtobufData:data type:objc_msgSend(v76 isResponse:{"type"), objc_msgSend(v76, "isResponse") != 0}];
 
           v233[0] = _NSConcreteStackBlock;
           v233[1] = 3221225472;
@@ -8706,16 +8706,16 @@ LABEL_291:
           v234 = v76;
           v235 = v79;
           v241 = v159;
-          v236 = self;
+          selfCopy = self;
           v80 = *&key;
-          v242 = v158;
+          v242 = _isMagnetConnection;
           v237 = v80;
           v238 = v75;
-          v243 = v6;
-          v244 = v5;
+          v243 = wantsAppAck;
+          v244 = expectsPeerResponse;
           v239 = *&v167;
-          v240 = v168;
-          v245 = v161;
+          v240 = messageUUID;
+          v245 = didWakeHint;
           v81 = v75;
           v82 = v79;
           v83 = v76;
@@ -8728,7 +8728,7 @@ LABEL_291:
           if (os_log_type_enabled(v125, OS_LOG_TYPE_ERROR))
           {
             *buf = 138412290;
-            *v263 = v4;
+            *v263 = messageCopy;
             _os_log_impl(&_mh_execute_header, v125, OS_LOG_TYPE_ERROR, "LocalDelivery: IDSSocketPairCommandProtobufMessage received incompatible data message of type %@", buf, 0xCu);
           }
 
@@ -8742,8 +8742,8 @@ LABEL_291:
 
         goto LABEL_173;
       case 4u:
-        v84 = v4;
-        v85 = [v84 versionNumber];
+        v84 = messageCopy;
+        versionNumber = [v84 versionNumber];
         v86 = OSLogHandleForTransportCategory();
         if (os_log_type_enabled(v86, OS_LOG_TYPE_DEFAULT))
         {
@@ -8763,7 +8763,7 @@ LABEL_291:
           *&v263[8] = 2112;
           *&v263[10] = identifier;
           *&v263[18] = 1024;
-          *&v263[20] = v85;
+          *&v263[20] = versionNumber;
           *&v263[24] = 1024;
           *&v263[26] = 4;
           *&v263[30] = 2112;
@@ -8795,9 +8795,9 @@ LABEL_291:
         v205[3] = &unk_100BE0690;
         v205[4] = self;
         v206 = *&key;
-        v208 = v158;
+        v208 = _isMagnetConnection;
         v207 = *&v167;
-        [(IDSUTunConnection *)self _processMessage:v4 withSequenceNumberBlock:v205];
+        [(IDSUTunConnection *)self _processMessage:messageCopy withSequenceNumberBlock:v205];
 
         goto LABEL_173;
       case 8u:
@@ -8807,39 +8807,39 @@ LABEL_291:
       case 0xCu:
       case 0xDu:
       case 0x29u:
-        [(IDSUTunConnection *)self _sendAckForMessage:v4];
+        [(IDSUTunConnection *)self _sendAckForMessage:messageCopy];
 LABEL_156:
-        v57 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", -[IDSUTunConnection _socketToNiceCommand:](self, "_socketToNiceCommand:", [v4 command]));
+        v57 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", -[IDSUTunConnection _socketToNiceCommand:](self, "_socketToNiceCommand:", [messageCopy command]));
         if (objc_opt_respondsToSelector())
         {
-          v58 = [v4 data];
+          data2 = [messageCopy data];
         }
 
         else
         {
-          v58 = 0;
+          data2 = 0;
         }
 
         v246[0] = _NSConcreteStackBlock;
         v246[1] = 3221225472;
         v246[2] = sub_100567424;
         v246[3] = &unk_100BE05C8;
-        v61 = v4;
+        v61 = messageCopy;
         v247 = v61;
-        v248 = v58;
-        v249 = self;
+        v248 = data2;
+        selfCopy2 = self;
         v62 = *&key;
-        v255 = v158;
+        v255 = _isMagnetConnection;
         v254 = v159;
         v250 = v62;
         v251 = v57;
-        v256 = v6;
-        v257 = v5;
+        v256 = wantsAppAck;
+        v257 = expectsPeerResponse;
         v252 = *&v167;
-        v253 = v168;
-        v258 = v161;
+        v253 = messageUUID;
+        v258 = didWakeHint;
         v63 = v57;
-        v64 = v58;
+        v64 = data2;
         [(IDSUTunConnection *)self _processMessage:v61 withSequenceNumberBlock:v246];
 
         goto LABEL_173;
@@ -8850,51 +8850,51 @@ LABEL_156:
       case 0x12u:
       case 0x13u:
       case 0x14u:
-        [(IDSUTunConnection *)self _sendAckForMessage:v4];
+        [(IDSUTunConnection *)self _sendAckForMessage:messageCopy];
 LABEL_153:
-        v55 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", -[IDSUTunConnection _socketToNiceCommand:](self, "_socketToNiceCommand:", [v4 command]));
+        v55 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", -[IDSUTunConnection _socketToNiceCommand:](self, "_socketToNiceCommand:", [messageCopy command]));
         if (objc_opt_respondsToSelector())
         {
-          v56 = [v4 data];
+          data3 = [messageCopy data];
         }
 
         else
         {
-          v56 = 0;
+          data3 = 0;
         }
 
-        if ((objc_opt_respondsToSelector() & 1) != 0 && ![v4 compressed])
+        if ((objc_opt_respondsToSelector() & 1) != 0 && ![messageCopy compressed])
         {
           v60 = 0;
         }
 
         else
         {
-          v59 = [v56 _FTOptionallyDecompressData];
+          _FTOptionallyDecompressData = [data3 _FTOptionallyDecompressData];
 
           v60 = 1;
-          v56 = v59;
+          data3 = _FTOptionallyDecompressData;
         }
 
         v220[0] = _NSConcreteStackBlock;
         v220[1] = 3221225472;
         v220[2] = sub_100567DF4;
         v220[3] = &unk_100BE05F0;
-        v69 = v56;
+        v69 = data3;
         v227 = v159;
         v228 = v60;
         v221 = v69;
-        v222 = self;
+        selfCopy3 = self;
         v223 = *&key;
-        v229 = v158;
+        v229 = _isMagnetConnection;
         v70 = v55;
         v224 = v70;
-        v230 = v6;
-        v231 = v5;
+        v230 = wantsAppAck;
+        v231 = expectsPeerResponse;
         v225 = *&v167;
-        v226 = v168;
-        v232 = v161;
-        [(IDSUTunConnection *)self _processMessage:v4 withSequenceNumberBlock:v220];
+        v226 = messageUUID;
+        v232 = didWakeHint;
+        [(IDSUTunConnection *)self _processMessage:messageCopy withSequenceNumberBlock:v220];
 
         goto LABEL_173;
       case 0x15u:
@@ -8912,72 +8912,72 @@ LABEL_153:
 
         goto LABEL_173;
       case 0x16u:
-        BYTE1(v154) = v161;
-        LOBYTE(v154) = v158;
-        [(IDSUTunConnection *)self _processIncomingResourceTransferMessage:v4 messageUUID:v168 streamID:v159 topic:*&key wantsAppAck:v6 expectsPeerResponse:v5 peerResponseIdentifier:*&v167 isDefaultPairedDevice:*&v154 didWakeHint:?];
+        BYTE1(v154) = didWakeHint;
+        LOBYTE(v154) = _isMagnetConnection;
+        [(IDSUTunConnection *)self _processIncomingResourceTransferMessage:messageCopy messageUUID:messageUUID streamID:v159 topic:*&key wantsAppAck:wantsAppAck expectsPeerResponse:expectsPeerResponse peerResponseIdentifier:*&v167 isDefaultPairedDevice:*&v154 didWakeHint:?];
         goto LABEL_173;
       case 0x19u:
         v72 = OSLogHandleForIDSCategory();
         if (os_log_type_enabled(v72, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          *v263 = v4;
+          *v263 = messageCopy;
           _os_log_impl(&_mh_execute_header, v72, OS_LOG_TYPE_DEFAULT, "GOT SOCKET PAIR COMMAND MESSAGE OUTGOING NICE PROXY %@", buf, 0xCu);
         }
 
         if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
         {
-          v152 = v4;
+          v152 = messageCopy;
           _IDSLogV();
         }
 
-        v73 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", -[IDSUTunConnection _socketToNiceCommand:](self, "_socketToNiceCommand:", [v4 command]));
-        [(IDSUTunConnection *)self _sendAckForMessage:v4];
+        v73 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", -[IDSUTunConnection _socketToNiceCommand:](self, "_socketToNiceCommand:", [messageCopy command]));
+        [(IDSUTunConnection *)self _sendAckForMessage:messageCopy];
         if (objc_opt_respondsToSelector())
         {
-          v74 = [v4 compressed];
+          compressed = [messageCopy compressed];
         }
 
         else
         {
-          v74 = 1;
+          compressed = 1;
         }
 
         if (objc_opt_respondsToSelector())
         {
-          v126 = [v4 data];
+          data4 = [messageCopy data];
         }
 
         else
         {
-          v126 = 0;
+          data4 = 0;
         }
 
-        if (v74)
+        if (compressed)
         {
-          v128 = [v126 _FTOptionallyDecompressData];
+          _FTOptionallyDecompressData2 = [data4 _FTOptionallyDecompressData];
 
-          v126 = v128;
+          data4 = _FTOptionallyDecompressData2;
         }
 
         v193[0] = _NSConcreteStackBlock;
         v193[1] = 3221225472;
         v193[2] = sub_1005685E8;
         v193[3] = &unk_100BE06B8;
-        v129 = v126;
+        v129 = data4;
         v200 = v159;
-        v201 = v74;
+        v201 = compressed;
         v194 = v129;
-        v195 = self;
+        selfCopy4 = self;
         v196 = *&key;
         v130 = v73;
         v197 = v130;
-        v202 = v6;
-        v203 = v5;
+        v202 = wantsAppAck;
+        v203 = expectsPeerResponse;
         v198 = *&v167;
-        v199 = v168;
-        v204 = v161;
-        [(IDSUTunConnection *)self _processMessage:v4 withSequenceNumberBlock:v193];
+        v199 = messageUUID;
+        v204 = didWakeHint;
+        [(IDSUTunConnection *)self _processMessage:messageCopy withSequenceNumberBlock:v193];
 
         goto LABEL_173;
       case 0x1Au:
@@ -8985,63 +8985,63 @@ LABEL_153:
         if (os_log_type_enabled(v97, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          *v263 = v4;
+          *v263 = messageCopy;
           _os_log_impl(&_mh_execute_header, v97, OS_LOG_TYPE_DEFAULT, "GOT SOCKET PAIR COMMAND MESSAGE INCOMING NICE PROXY %@", buf, 0xCu);
         }
 
         if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
         {
-          v152 = v4;
+          v152 = messageCopy;
           _IDSLogV();
         }
 
-        v98 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", -[IDSUTunConnection _socketToNiceCommand:](self, "_socketToNiceCommand:", [v4 command]));
-        [(IDSUTunConnection *)self _sendAckForMessage:v4];
+        v98 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", -[IDSUTunConnection _socketToNiceCommand:](self, "_socketToNiceCommand:", [messageCopy command]));
+        [(IDSUTunConnection *)self _sendAckForMessage:messageCopy];
         if (objc_opt_respondsToSelector())
         {
-          v99 = [v4 compressed];
+          compressed2 = [messageCopy compressed];
         }
 
         else
         {
-          v99 = 1;
+          compressed2 = 1;
         }
 
         if (objc_opt_respondsToSelector())
         {
-          v127 = [v4 data];
+          data5 = [messageCopy data];
         }
 
         else
         {
-          v127 = 0;
+          data5 = 0;
         }
 
-        if (v99)
+        if (compressed2)
         {
-          v131 = [v127 _FTOptionallyDecompressData];
+          _FTOptionallyDecompressData3 = [data5 _FTOptionallyDecompressData];
 
-          v127 = v131;
+          data5 = _FTOptionallyDecompressData3;
         }
 
         v181[0] = _NSConcreteStackBlock;
         v181[1] = 3221225472;
         v181[2] = sub_100568878;
         v181[3] = &unk_100BE06B8;
-        v132 = v127;
+        v132 = data5;
         v188 = v159;
-        v189 = v99;
+        v189 = compressed2;
         v182 = v132;
-        v183 = self;
+        selfCopy5 = self;
         v184 = *&key;
         v133 = v98;
         v185 = v133;
-        v190 = v6;
-        v191 = v5;
+        v190 = wantsAppAck;
+        v191 = expectsPeerResponse;
         v186 = *&v167;
-        v187 = v168;
-        v192 = v161;
-        [(IDSUTunConnection *)self _processMessage:v4 withSequenceNumberBlock:v181];
+        v187 = messageUUID;
+        v192 = didWakeHint;
+        [(IDSUTunConnection *)self _processMessage:messageCopy withSequenceNumberBlock:v181];
 
         goto LABEL_173;
       case 0x1Bu:
@@ -9073,33 +9073,33 @@ LABEL_153:
         if (os_log_type_enabled(v48, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          *v263 = v4;
+          *v263 = messageCopy;
           _os_log_impl(&_mh_execute_header, v48, OS_LOG_TYPE_DEFAULT, "GOT SOCKET PAIR COMMAND INCOMMING IMESSAGE COMMAND %@", buf, 0xCu);
         }
 
         if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
         {
-          v152 = v4;
+          v152 = messageCopy;
           _IDSLogV();
         }
 
-        v49 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", -[IDSUTunConnection _socketToNiceCommand:](self, "_socketToNiceCommand:", [v4 command]));
-        [(IDSUTunConnection *)self _sendAckForMessage:v4];
+        v49 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", -[IDSUTunConnection _socketToNiceCommand:](self, "_socketToNiceCommand:", [messageCopy command]));
+        [(IDSUTunConnection *)self _sendAckForMessage:messageCopy];
         if (objc_opt_respondsToSelector())
         {
-          v50 = [v4 compressed];
+          compressed3 = [messageCopy compressed];
         }
 
         else
         {
-          v50 = 1;
+          compressed3 = 1;
         }
 
         if (objc_opt_respondsToSelector())
         {
-          v51 = [v4 data];
+          data6 = [messageCopy data];
 
-          if (!v50)
+          if (!compressed3)
           {
             goto LABEL_151;
           }
@@ -9107,35 +9107,35 @@ LABEL_153:
 
         else
         {
-          v51 = 0;
-          if (!v50)
+          data6 = 0;
+          if (!compressed3)
           {
             goto LABEL_151;
           }
         }
 
-        v52 = [v51 _FTOptionallyDecompressData];
+        _FTOptionallyDecompressData4 = [data6 _FTOptionallyDecompressData];
 
-        v51 = v52;
+        data6 = _FTOptionallyDecompressData4;
 LABEL_151:
         v169[0] = _NSConcreteStackBlock;
         v169[1] = 3221225472;
         v169[2] = sub_100568B18;
         v169[3] = &unk_100BE06B8;
-        v53 = v51;
+        v53 = data6;
         v170 = v53;
         v176 = v159;
-        v177 = v50;
-        v171 = v168;
-        v172 = self;
+        v177 = compressed3;
+        v171 = messageUUID;
+        selfCopy6 = self;
         v173 = *&key;
         v54 = v49;
         v174 = v54;
-        v178 = v6;
-        v179 = v5;
+        v178 = wantsAppAck;
+        v179 = expectsPeerResponse;
         v175 = *&v167;
-        v180 = v161;
-        [(IDSUTunConnection *)self _processMessage:v4 withSequenceNumberBlock:v169];
+        v180 = didWakeHint;
+        [(IDSUTunConnection *)self _processMessage:messageCopy withSequenceNumberBlock:v169];
 
 LABEL_173:
         if (v165 && ![(IDSUTunConnection *)self _sendingMessageCountForClass:1])
@@ -9155,36 +9155,36 @@ LABEL_173:
 
         break;
       case 0x27u:
-        v89 = v4;
+        v89 = messageCopy;
         LOBYTE(v216) = 0;
         v90 = OSLogHandleForIDSCategory();
         if (os_log_type_enabled(v90, OS_LOG_TYPE_DEFAULT))
         {
-          v91 = [v89 reason];
-          v92 = [v89 serviceName];
-          v93 = [v89 mappedStreamID];
+          reason = [v89 reason];
+          serviceName = [v89 serviceName];
+          mappedStreamID = [v89 mappedStreamID];
           *buf = 67109634;
-          *v263 = v91;
+          *v263 = reason;
           *&v263[4] = 2112;
-          *&v263[6] = v92;
+          *&v263[6] = serviceName;
           *&v263[14] = 1024;
-          *&v263[16] = v93;
+          *&v263[16] = mappedStreamID;
           _os_log_impl(&_mh_execute_header, v90, OS_LOG_TYPE_DEFAULT, "Got ServiceMapMessage reason %u serviceName %@ streamID %u", buf, 0x18u);
         }
 
         if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
         {
-          v94 = [v89 reason];
+          reason2 = [v89 reason];
           [v89 serviceName];
           v154 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
           v155 = COERCE_DOUBLE([v89 mappedStreamID]);
-          v152 = v94;
+          v152 = reason2;
           _IDSLogV();
         }
 
         outgoingServiceMap = self->_outgoingServiceMap;
-        v96 = [v89 serviceName];
-        -[IDSUTunPeerServiceMap associateServiceName:withStreamID:remoteInstanceID:remoteInstanceIDChanged:](outgoingServiceMap, "associateServiceName:withStreamID:remoteInstanceID:remoteInstanceIDChanged:", v96, [v89 mappedStreamID], self->_remoteInstanceID, &v216);
+        serviceName2 = [v89 serviceName];
+        -[IDSUTunPeerServiceMap associateServiceName:withStreamID:remoteInstanceID:remoteInstanceIDChanged:](outgoingServiceMap, "associateServiceName:withStreamID:remoteInstanceID:remoteInstanceIDChanged:", serviceName2, [v89 mappedStreamID], self->_remoteInstanceID, &v216);
 
         goto LABEL_173;
       default:
@@ -9198,13 +9198,13 @@ LABEL_173:
   if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
   {
     v25 = self->_identifier;
-    v26 = [v4 command];
+    command = [messageCopy command];
     *buf = 138412802;
     *v263 = self;
     *&v263[8] = 2112;
     *&v263[10] = v25;
     *&v263[18] = 1024;
-    *&v263[20] = v26;
+    *&v263[20] = command;
     _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "%@ [%@] received a %d message when it was expecting a handshake!", buf, 0x1Cu);
   }
 
@@ -9213,16 +9213,16 @@ LABEL_173:
     if (_IDSShouldLogTransport())
     {
       v154 = *&self->_identifier;
-      v155 = COERCE_DOUBLE([v4 command]);
-      v151 = self;
+      v155 = COERCE_DOUBLE([messageCopy command]);
+      selfCopy8 = self;
       _IDSLogTransport();
       if (_IDSShouldLog())
       {
         v27 = self->_identifier;
-        v28 = COERCE_DOUBLE([v4 command]);
+        v28 = COERCE_DOUBLE([messageCopy command]);
         v154 = *&v27;
         v155 = v28;
-        v151 = self;
+        selfCopy8 = self;
         _IDSLogV();
       }
     }
@@ -9261,10 +9261,10 @@ LABEL_173:
     _IDSLogTransport();
   }
 
-  v31 = [IMLockdownManager sharedInstance:v151];
-  v32 = [v31 isInternalInstall];
+  v31 = [IMLockdownManager sharedInstance:selfCopy8];
+  isInternalInstall = [v31 isInternalInstall];
 
-  if (v32)
+  if (isInternalInstall)
   {
     [(IDSUTunConnection *)self _dumpLogs];
   }
@@ -9280,10 +9280,10 @@ LABEL_183:
   }
 }
 
-- (void)connectionDidClose:(id)a3
+- (void)connectionDidClose:(id)close
 {
-  v4 = a3;
-  if (self->_socketConnection == v4)
+  closeCopy = close;
+  if (self->_socketConnection == closeCopy)
   {
     v5 = +[IDSDaemonPriorityQueueController sharedInstance];
     [v5 assertRunningWithPriority:self->_priority];
@@ -9292,20 +9292,20 @@ LABEL_183:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v10 = self;
+      selfCopy = self;
       v11 = 2112;
-      v12 = v4;
+      v12 = closeCopy;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%@ informed that utun socket pair connection %@ has closed...", buf, 0x16u);
     }
 
     if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
     {
-      v7 = self;
-      v8 = v4;
+      selfCopy2 = self;
+      v8 = closeCopy;
       _IDSLogV();
     }
 
-    [(IDSUTunConnection *)self _nonThreadSafeStopConnection:v7];
+    [(IDSUTunConnection *)self _nonThreadSafeStopConnection:selfCopy2];
     [(IDSUTunConnection *)self _checkAndStartConnection];
   }
 }
@@ -9319,13 +9319,13 @@ LABEL_183:
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%@ informed that IDSNWSocketPairConnection has closed.", buf, 0xCu);
   }
 
   if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
   {
-    v5 = self;
+    selfCopy2 = self;
     _IDSLogV();
   }
 
@@ -9333,33 +9333,33 @@ LABEL_183:
   [(IDSUTunConnection *)self _checkAndStartConnection];
 }
 
-- (void)connection:(id)a3 didReceiveDataMessage:(id)a4
+- (void)connection:(id)connection didReceiveDataMessage:(id)message
 {
-  if (self->_socketConnection == a3)
+  if (self->_socketConnection == connection)
   {
-    v7 = a4;
+    messageCopy = message;
     v6 = +[IDSDaemonPriorityQueueController sharedInstance];
     [v6 assertRunningWithPriority:self->_priority];
 
     [(IDSUTunConnection *)self _clearLastFallbackWithReason:@"message received via local link"];
-    [(IDSUTunConnection *)self _processIncomingDataMessage:v7];
+    [(IDSUTunConnection *)self _processIncomingDataMessage:messageCopy];
   }
 }
 
-- (void)didReceiveDataMessage:(id)a3
+- (void)didReceiveDataMessage:(id)message
 {
-  v5 = a3;
+  messageCopy = message;
   v4 = +[IDSDaemonPriorityQueueController sharedInstance];
   [v4 assertRunningWithPriority:self->_priority];
 
   [(IDSUTunConnection *)self _clearLastFallbackWithReason:@"message received via local link"];
-  [(IDSUTunConnection *)self _processIncomingDataMessage:v5];
+  [(IDSUTunConnection *)self _processIncomingDataMessage:messageCopy];
 }
 
-- (void)connectionBecameEmpty:(id)a3
+- (void)connectionBecameEmpty:(id)empty
 {
-  v4 = a3;
-  if (self->_socketConnection == v4)
+  emptyCopy = empty;
+  if (self->_socketConnection == emptyCopy)
   {
     v5 = +[IDSDaemonPriorityQueueController sharedInstance];
     [v5 assertRunningWithPriority:self->_priority];
@@ -9368,27 +9368,27 @@ LABEL_183:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412546;
-      v10 = self;
+      selfCopy = self;
       v11 = 2112;
-      v12 = v4;
+      v12 = emptyCopy;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEBUG, "%@ connectionBecameEmpty %@", buf, 0x16u);
     }
 
     if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
     {
-      v7 = self;
-      v8 = v4;
+      selfCopy2 = self;
+      v8 = emptyCopy;
       _IDSLogV();
     }
 
-    [(IDSUTunConnection *)self _dequeueMessages:v7];
+    [(IDSUTunConnection *)self _dequeueMessages:selfCopy2];
   }
 }
 
-- (void)connectionDidReachInFlightMessageLowWaterMark:(id)a3
+- (void)connectionDidReachInFlightMessageLowWaterMark:(id)mark
 {
-  v4 = a3;
-  if (self->_socketConnection == v4)
+  markCopy = mark;
+  if (self->_socketConnection == markCopy)
   {
     v5 = +[IDSDaemonPriorityQueueController sharedInstance];
     [v5 assertRunningWithPriority:self->_priority];
@@ -9397,58 +9397,58 @@ LABEL_183:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412546;
-      v10 = self;
+      selfCopy = self;
       v11 = 2112;
-      v12 = v4;
+      v12 = markCopy;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEBUG, "%@ connectionDidReachInFlightMessageLowWaterMark %@", buf, 0x16u);
     }
 
     if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
     {
-      v7 = self;
-      v8 = v4;
+      selfCopy2 = self;
+      v8 = markCopy;
       _IDSLogV();
     }
 
-    [(IDSUTunConnection *)self _dequeueMessages:v7];
+    [(IDSUTunConnection *)self _dequeueMessages:selfCopy2];
   }
 }
 
-- (void)connectionDidReceiveBytes:(id)a3
+- (void)connectionDidReceiveBytes:(id)bytes
 {
-  v4 = a3;
-  if (self->_socketConnection == v4)
+  bytesCopy = bytes;
+  if (self->_socketConnection == bytesCopy)
   {
     v5 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412546;
-      v9 = self;
+      selfCopy = self;
       v10 = 2112;
-      v11 = v4;
+      v11 = bytesCopy;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "%@ connectionDidReceiveBytes %@", buf, 0x16u);
     }
 
     if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
     {
-      v6 = self;
-      v7 = v4;
+      selfCopy2 = self;
+      v7 = bytesCopy;
       _IDSLogV();
     }
 
-    [(IDSUTunConnection *)self _clearLastFallbackWithReason:@"local link did receive bytes", v6, v7];
+    [(IDSUTunConnection *)self _clearLastFallbackWithReason:@"local link did receive bytes", selfCopy2, v7];
     [(IDSUTunConnection *)self _dequeueMessages];
   }
 }
 
-- (void)forceOTRNegotiation:(id)a3 priority:(int64_t)a4 completionBlock:(id)a5
+- (void)forceOTRNegotiation:(id)negotiation priority:(int64_t)priority completionBlock:(id)block
 {
-  v7 = a3;
-  v8 = a5;
+  negotiationCopy = negotiation;
+  blockCopy = block;
   v9 = +[IDSDaemonPriorityQueueController sharedInstance];
-  [v9 assertRunningWithPriority:a4];
+  [v9 assertRunningWithPriority:priority];
 
-  v10 = [NSString stringWithFormat:@"%@-%u-%1u", v7, a4, 0];
+  v10 = [NSString stringWithFormat:@"%@-%u-%1u", negotiationCopy, priority, 0];
   v11 = OSLogHandleForTransportCategory();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -9469,7 +9469,7 @@ LABEL_183:
   }
 
   v12 = +[IDSOTRController sharedInstance];
-  [v12 setOTRTestBlockFromCompletionBlock:v8 token:v10];
+  [v12 setOTRTestBlockFromCompletionBlock:blockCopy token:v10];
 
   v13 = +[IDSOTRController sharedInstance];
   [v13 startOTRNegotiationWithDeviceIfNeeded:IDSDeviceDefaultPairedDeviceUniqueID token:v10 reset:1 errorHandler:0];

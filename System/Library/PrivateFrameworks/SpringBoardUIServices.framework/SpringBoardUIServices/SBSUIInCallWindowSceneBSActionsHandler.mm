@@ -1,32 +1,32 @@
 @interface SBSUIInCallWindowSceneBSActionsHandler
-- (id)_respondToActions:(id)a3 forFBSScene:(id)a4 inUIScene:(id)a5 fromTransitionContext:(id)a6;
+- (id)_respondToActions:(id)actions forFBSScene:(id)scene inUIScene:(id)iScene fromTransitionContext:(id)context;
 @end
 
 @implementation SBSUIInCallWindowSceneBSActionsHandler
 
-- (id)_respondToActions:(id)a3 forFBSScene:(id)a4 inUIScene:(id)a5 fromTransitionContext:(id)a6
+- (id)_respondToActions:(id)actions forFBSScene:(id)scene inUIScene:(id)iScene fromTransitionContext:(id)context
 {
   v46 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [v9 mutableCopy];
+  actionsCopy = actions;
+  sceneCopy = scene;
+  iSceneCopy = iScene;
+  contextCopy = context;
+  v13 = [actionsCopy mutableCopy];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     goto LABEL_45;
   }
 
-  v32 = v12;
-  v33 = v10;
-  v14 = v11;
+  v32 = contextCopy;
+  v33 = sceneCopy;
+  v14 = iSceneCopy;
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v34 = v9;
-  v15 = v9;
+  v34 = actionsCopy;
+  v15 = actionsCopy;
   v16 = [v15 countByEnumeratingWithState:&v40 objects:v45 count:16];
   if (!v16)
   {
@@ -150,27 +150,27 @@ LABEL_25:
     }
   }
 
-  v10 = v33;
-  v9 = v34;
+  sceneCopy = v33;
+  actionsCopy = v34;
   if ((v35 & 0x100000000) != 0)
   {
-    v29 = [v14 delegate];
+    delegate = [v14 delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v29 inCallWindowSceneHandleShowingNoticeForRevealingSystemControls:v14];
+      [delegate inCallWindowSceneHandleShowingNoticeForRevealingSystemControls:v14];
     }
   }
 
   if (v35)
   {
-    v30 = [v14 delegate];
+    delegate2 = [v14 delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v30 inCallWindowSceneHandleSilenceRingtone:v14];
+      [delegate2 inCallWindowSceneHandleSilenceRingtone:v14];
     }
   }
 
-  v12 = v32;
+  contextCopy = v32;
 LABEL_45:
 
   return v13;

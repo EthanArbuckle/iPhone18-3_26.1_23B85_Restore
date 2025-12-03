@@ -1,19 +1,19 @@
 @interface CNMutableInstantMessageAddress
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)freeze;
 @end
 
 @implementation CNMutableInstantMessageAddress
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [CNInstantMessageAddress alloc];
-  v5 = [(CNInstantMessageAddress *)self username];
-  v6 = [(CNInstantMessageAddress *)self userIdentifier];
-  v7 = [(CNInstantMessageAddress *)self service];
-  v8 = [(CNInstantMessageAddress *)self teamIdentifier];
-  v9 = [(CNInstantMessageAddress *)self bundleIdentifiers];
-  v10 = [(CNInstantMessageAddress *)v4 initWithUsername:v5 userIdentifier:v6 service:v7 teamIdentifier:v8 bundleIdentifiers:v9];
+  username = [(CNInstantMessageAddress *)self username];
+  userIdentifier = [(CNInstantMessageAddress *)self userIdentifier];
+  service = [(CNInstantMessageAddress *)self service];
+  teamIdentifier = [(CNInstantMessageAddress *)self teamIdentifier];
+  bundleIdentifiers = [(CNInstantMessageAddress *)self bundleIdentifiers];
+  v10 = [(CNInstantMessageAddress *)v4 initWithUsername:username userIdentifier:userIdentifier service:service teamIdentifier:teamIdentifier bundleIdentifiers:bundleIdentifiers];
 
   return v10;
 }

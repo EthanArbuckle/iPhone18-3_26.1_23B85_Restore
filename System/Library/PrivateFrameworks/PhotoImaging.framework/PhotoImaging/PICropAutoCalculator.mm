@@ -1,21 +1,21 @@
 @interface PICropAutoCalculator
-+ (id)updateCropAdjustment:(id)a3 after:(id)a4 error:(id *)a5;
-+ (void)dumpDebugDiagnostics:(id)a3 composition:(id)a4 filePrefix:(id)a5;
-- (BOOL)undoExifOrientation:(id *)a3 error:(id *)a4;
-- (PICropAutoCalculator)initWithComposition:(id)a3;
-- (PICropAutoCalculator)initWithMedia:(id)a3;
-- (PICropAutoCalculator)initWithRequest:(id)a3;
-- (id)imageProperties:(id *)a3;
-- (void)submit:(id)a3;
++ (id)updateCropAdjustment:(id)adjustment after:(id)after error:(id *)error;
++ (void)dumpDebugDiagnostics:(id)diagnostics composition:(id)composition filePrefix:(id)prefix;
+- (BOOL)undoExifOrientation:(id *)orientation error:(id *)error;
+- (PICropAutoCalculator)initWithComposition:(id)composition;
+- (PICropAutoCalculator)initWithMedia:(id)media;
+- (PICropAutoCalculator)initWithRequest:(id)request;
+- (id)imageProperties:(id *)properties;
+- (void)submit:(id)submit;
 @end
 
 @implementation PICropAutoCalculator
 
-- (void)submit:(id)a3
+- (void)submit:(id)submit
 {
   v75 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  submitCopy = submit;
+  if (!submitCopy)
   {
     v43 = NUAssertLogger_25669();
     if (os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
@@ -40,8 +40,8 @@
       v51 = dispatch_get_specific(*v45);
       v52 = MEMORY[0x1E696AF00];
       v50 = v51;
-      v53 = [v52 callStackSymbols];
-      v54 = [v53 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v52 callStackSymbols];
+      v54 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543618;
       *&buf[4] = v51;
       *&buf[12] = 2114;
@@ -56,8 +56,8 @@
         goto LABEL_26;
       }
 
-      v49 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v50 = [v49 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v50 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v50;
       _os_log_error_impl(&dword_1C7694000, v47, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -67,7 +67,7 @@ LABEL_26:
     _NUAssertFailHandler();
   }
 
-  v5 = v4;
+  v5 = submitCopy;
   if ([(PICropAutoCalculator *)self debugFilesEnabled])
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -90,28 +90,28 @@ LABEL_26:
 
   [v7 setObject:self->_autoStraightenVerticalAngleThreshold forKeyedSubscript:*MEMORY[0x1E695F980]];
   [v7 setObject:self->_autoStraightenDominantAngleDiffThreshold forKeyedSubscript:*MEMORY[0x1E695F970]];
-  v11 = [(PICropAutoCalculator *)self faceObservationCache];
-  if (v11)
+  faceObservationCache = [(PICropAutoCalculator *)self faceObservationCache];
+  if (faceObservationCache)
   {
-    v12 = v11;
-    v13 = [(PICropAutoCalculator *)self shouldPerformAutoCrop];
+    v12 = faceObservationCache;
+    shouldPerformAutoCrop = [(PICropAutoCalculator *)self shouldPerformAutoCrop];
 
-    if (v13)
+    if (shouldPerformAutoCrop)
     {
       v14 = objc_alloc(MEMORY[0x1E69B3C50]);
-      v15 = [(NURenderRequest *)self composition];
-      v16 = [v14 initWithComposition:v15];
+      composition = [(NURenderRequest *)self composition];
+      v16 = [v14 initWithComposition:composition];
 
       v17 = [PIFaceObservationCache faceRequestWithRequest:v16];
       [v17 setName:@"PICropAutoCalculator-faceDetection"];
-      v18 = [(PICropAutoCalculator *)self faceObservationCache];
+      faceObservationCache2 = [(PICropAutoCalculator *)self faceObservationCache];
       v69 = 0;
-      v19 = [v18 submitSynchronous:v17 error:&v69];
+      v19 = [faceObservationCache2 submitSynchronous:v17 error:&v69];
       v20 = v69;
 
-      v21 = [v19 faces];
+      faces = [v19 faces];
 
-      if (v21)
+      if (faces)
       {
         v55 = v20;
         v57 = v17;
@@ -193,7 +193,7 @@ LABEL_26:
   v61[2] = __31__PICropAutoCalculator_submit___block_invoke;
   v61[3] = &unk_1E82AC510;
   v62 = v6;
-  v63 = self;
+  selfCopy = self;
   v64 = v5;
   v41 = v5;
   v42 = v6;
@@ -327,10 +327,10 @@ void __31__PICropAutoCalculator_submit___block_invoke_87(uint64_t a1)
   [PICropAutoCalculator dumpDebugDiagnostics:v2 composition:v4 filePrefix:v3];
 }
 
-- (BOOL)undoExifOrientation:(id *)a3 error:(id *)a4
+- (BOOL)undoExifOrientation:(id *)orientation error:(id *)error
 {
   v29 = *MEMORY[0x1E69E9840];
-  if (!a4)
+  if (!error)
   {
     v15 = NUAssertLogger_25669();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -352,8 +352,8 @@ void __31__PICropAutoCalculator_submit___block_invoke_87(uint64_t a1)
         v23 = dispatch_get_specific(*v17);
         v24 = MEMORY[0x1E696AF00];
         v25 = v23;
-        v26 = [v24 callStackSymbols];
-        v27 = [v26 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v24 callStackSymbols];
+        v27 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v23;
         *&buf[12] = 2114;
@@ -364,8 +364,8 @@ void __31__PICropAutoCalculator_submit___block_invoke_87(uint64_t a1)
 
     else if (v20)
     {
-      v21 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v22 = [v21 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v22 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v22;
       _os_log_error_impl(&dword_1C7694000, v19, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -374,7 +374,7 @@ void __31__PICropAutoCalculator_submit___block_invoke_87(uint64_t a1)
     _NUAssertFailHandler();
   }
 
-  v7 = [(PICropAutoCalculator *)self imageProperties:a4];
+  v7 = [(PICropAutoCalculator *)self imageProperties:error];
   v8 = v7;
   if (!v7)
   {
@@ -384,8 +384,8 @@ void __31__PICropAutoCalculator_submit___block_invoke_87(uint64_t a1)
   if (![v7 size] || (objc_msgSend(v8, "size"), !v9))
   {
     v12 = MEMORY[0x1E69B3A48];
-    v13 = [(NURenderRequest *)self composition];
-    *a4 = [v12 errorWithCode:2 reason:@"Source geometry has 0 size" object:v13];
+    composition = [(NURenderRequest *)self composition];
+    *error = [v12 errorWithCode:2 reason:@"Source geometry has 0 size" object:composition];
 
 LABEL_7:
     v11 = 0;
@@ -398,31 +398,31 @@ LABEL_7:
   NUOrientationTransformImageSize();
   NUOrientationTransformImageRect();
   v10 = *&buf[16];
-  a3->var0 = *buf;
-  a3->var1 = v10;
+  orientation->var0 = *buf;
+  orientation->var1 = v10;
   v11 = 1;
 LABEL_8:
 
   return v11;
 }
 
-- (id)imageProperties:(id *)a3
+- (id)imageProperties:(id *)properties
 {
   v5 = objc_alloc(MEMORY[0x1E69B3B30]);
-  v6 = [(NURenderRequest *)self composition];
-  v7 = [v5 initWithComposition:v6];
+  composition = [(NURenderRequest *)self composition];
+  v7 = [v5 initWithComposition:composition];
 
   [v7 setName:@"PICropAutoCalculator-imageProperties"];
-  v8 = [v7 submitSynchronous:a3];
-  v9 = [v8 properties];
+  v8 = [v7 submitSynchronous:properties];
+  properties = [v8 properties];
 
-  return v9;
+  return properties;
 }
 
-- (PICropAutoCalculator)initWithMedia:(id)a3
+- (PICropAutoCalculator)initWithMedia:(id)media
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  mediaCopy = media;
   v5 = MEMORY[0x1E69B3D78];
   if (*MEMORY[0x1E69B3D78] != -1)
   {
@@ -461,8 +461,8 @@ LABEL_11:
           v22 = MEMORY[0x1E696AF00];
           v23 = specific;
           v24 = v20;
-          v25 = [v22 callStackSymbols];
-          v26 = [v25 componentsJoinedByString:@"\n"];
+          callStackSymbols = [v22 callStackSymbols];
+          v26 = [callStackSymbols componentsJoinedByString:@"\n"];
           *buf = 138543618;
           v29 = specific;
           v30 = 2114;
@@ -489,8 +489,8 @@ LABEL_11:
     {
       v16 = MEMORY[0x1E696AF00];
       v17 = v15;
-      v18 = [v16 callStackSymbols];
-      v19 = [v18 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [v16 callStackSymbols];
+      v19 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v29 = v19;
       _os_log_error_impl(&dword_1C7694000, v17, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -508,10 +508,10 @@ LABEL_14:
   }
 }
 
-- (PICropAutoCalculator)initWithRequest:(id)a3
+- (PICropAutoCalculator)initWithRequest:(id)request
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  requestCopy = request;
   v5 = MEMORY[0x1E69B3D78];
   if (*MEMORY[0x1E69B3D78] != -1)
   {
@@ -550,8 +550,8 @@ LABEL_11:
           v22 = MEMORY[0x1E696AF00];
           v23 = specific;
           v24 = v20;
-          v25 = [v22 callStackSymbols];
-          v26 = [v25 componentsJoinedByString:@"\n"];
+          callStackSymbols = [v22 callStackSymbols];
+          v26 = [callStackSymbols componentsJoinedByString:@"\n"];
           *buf = 138543618;
           v29 = specific;
           v30 = 2114;
@@ -578,8 +578,8 @@ LABEL_11:
     {
       v16 = MEMORY[0x1E696AF00];
       v17 = v15;
-      v18 = [v16 callStackSymbols];
-      v19 = [v18 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [v16 callStackSymbols];
+      v19 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v29 = v19;
       _os_log_error_impl(&dword_1C7694000, v17, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -597,11 +597,11 @@ LABEL_14:
   }
 }
 
-- (PICropAutoCalculator)initWithComposition:(id)a3
+- (PICropAutoCalculator)initWithComposition:(id)composition
 {
   v8.receiver = self;
   v8.super_class = PICropAutoCalculator;
-  v3 = [(NURenderRequest *)&v8 initWithComposition:a3];
+  v3 = [(NURenderRequest *)&v8 initWithComposition:composition];
   v3->_maxAutoStraighten = 10.0;
   v3->_shouldPerformAutoCrop = 1;
   v3->_shouldPerformAutoStraighten = 1;
@@ -619,22 +619,22 @@ LABEL_14:
   return v3;
 }
 
-+ (void)dumpDebugDiagnostics:(id)a3 composition:(id)a4 filePrefix:(id)a5
++ (void)dumpDebugDiagnostics:(id)diagnostics composition:(id)composition filePrefix:(id)prefix
 {
   v22 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  diagnosticsCopy = diagnostics;
+  compositionCopy = composition;
+  prefixCopy = prefix;
   v19 = 0;
-  v10 = [PICaptureDebugUtilities createCaptureDebugDirectoryForComposition:v8 error:&v19];
+  v10 = [PICaptureDebugUtilities createCaptureDebugDirectoryForComposition:compositionCopy error:&v19];
   v11 = v19;
   if (v10)
   {
-    v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@AutoCropEvaluation-txt.DBG", v9];
-    v13 = [v10 URLByAppendingPathComponent:v12];
+    prefixCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@AutoCropEvaluation-txt.DBG", prefixCopy];
+    v13 = [v10 URLByAppendingPathComponent:prefixCopy];
 
     v18 = v11;
-    v14 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v7 options:3 error:&v18];
+    v14 = [MEMORY[0x1E696ACB0] dataWithJSONObject:diagnosticsCopy options:3 error:&v18];
     v15 = v18;
 
     if (v14)
@@ -678,12 +678,12 @@ LABEL_14:
   }
 }
 
-+ (id)updateCropAdjustment:(id)a3 after:(id)a4 error:(id *)a5
++ (id)updateCropAdjustment:(id)adjustment after:(id)after error:(id *)error
 {
   v71[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (!a5)
+  adjustmentCopy = adjustment;
+  afterCopy = after;
+  if (!error)
   {
     v54 = NUAssertLogger_25669();
     if (os_log_type_enabled(v54, OS_LOG_TYPE_ERROR))
@@ -705,8 +705,8 @@ LABEL_14:
         v62 = dispatch_get_specific(*v56);
         v63 = MEMORY[0x1E696AF00];
         v64 = v62;
-        v65 = [v63 callStackSymbols];
-        v66 = [v65 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v63 callStackSymbols];
+        v66 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v62;
         *&buf[12] = 2114;
@@ -717,8 +717,8 @@ LABEL_14:
 
     else if (v59)
     {
-      v60 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v61 = [v60 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v61 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v61;
       _os_log_error_impl(&dword_1C7694000, v58, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -727,46 +727,46 @@ LABEL_14:
     _NUAssertFailHandler();
   }
 
-  v9 = v8;
-  v10 = [[PICompositionController alloc] initWithComposition:v7];
+  v9 = afterCopy;
+  v10 = [[PICompositionController alloc] initWithComposition:adjustmentCopy];
   v11 = [[PICompositionController alloc] initWithComposition:v9];
-  v12 = [(PICompositionController *)v10 cropAdjustmentController];
-  if (([v12 enabled] & 1) == 0)
+  cropAdjustmentController = [(PICompositionController *)v10 cropAdjustmentController];
+  if (([cropAdjustmentController enabled] & 1) == 0)
   {
 
     goto LABEL_9;
   }
 
-  v13 = [(PICompositionController *)v11 cropAdjustmentController];
-  v14 = [v13 enabled];
+  cropAdjustmentController2 = [(PICompositionController *)v11 cropAdjustmentController];
+  enabled = [cropAdjustmentController2 enabled];
 
-  if ((v14 & 1) == 0)
+  if ((enabled & 1) == 0)
   {
 LABEL_9:
-    v22 = v9;
+    composition = v9;
     goto LABEL_27;
   }
 
-  v15 = [objc_alloc(MEMORY[0x1E69B3AA8]) initWithComposition:v7];
+  v15 = [objc_alloc(MEMORY[0x1E69B3AA8]) initWithComposition:adjustmentCopy];
   v16 = +[PIPipelineFilters inputToCropFilter];
   v71[0] = v16;
   v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v71 count:1];
   [v15 setPipelineFilters:v17];
 
   [v15 setName:@"PICropAutoCalculator-getBeforeGeometry"];
-  v18 = [v15 submitSynchronous:a5];
+  v18 = [v15 submitSynchronous:error];
   if (v18)
   {
     [v15 setComposition:v9];
     [v15 setName:@"PICropAutoCalculator-getAfterGeometry"];
-    v19 = [v15 submitSynchronous:a5];
+    v19 = [v15 submitSynchronous:error];
     if (v19)
     {
-      v20 = [v18 geometry];
-      v21 = v20;
-      if (v20)
+      geometry = [v18 geometry];
+      v21 = geometry;
+      if (geometry)
       {
-        [v20 extent];
+        [geometry extent];
       }
 
       else
@@ -774,11 +774,11 @@ LABEL_9:
         memset(buf, 0, 32);
       }
 
-      v23 = [v19 geometry];
-      v24 = v23;
-      if (v23)
+      geometry2 = [v19 geometry];
+      v24 = geometry2;
+      if (geometry2)
       {
-        [v23 extent];
+        [geometry2 extent];
       }
 
       else
@@ -791,16 +791,16 @@ LABEL_9:
 
       if (v25)
       {
-        v22 = v9;
+        composition = v9;
       }
 
       else
       {
-        v26 = [v18 geometry];
-        v27 = v26;
-        if (v26)
+        geometry3 = [v18 geometry];
+        v27 = geometry3;
+        if (geometry3)
         {
-          [v26 extent];
+          [geometry3 extent];
         }
 
         else
@@ -810,11 +810,11 @@ LABEL_9:
 
         NUPixelRectToCGRect();
 
-        v28 = [v19 geometry];
-        v29 = v28;
-        if (v28)
+        geometry4 = [v19 geometry];
+        v29 = geometry4;
+        if (geometry4)
         {
-          [v28 extent];
+          [geometry4 extent];
         }
 
         else
@@ -828,8 +828,8 @@ LABEL_9:
         v35 = v34;
         v37 = v36;
 
-        v38 = [(PICompositionController *)v10 cropAdjustmentController];
-        [v38 cropRect];
+        cropAdjustmentController3 = [(PICompositionController *)v10 cropAdjustmentController];
+        [cropAdjustmentController3 cropRect];
 
         NUCGRectConvertFromRectToRect();
         v40 = v39;
@@ -837,12 +837,12 @@ LABEL_9:
         v44 = v43;
         v46 = v45;
         v47 = [objc_alloc(MEMORY[0x1E69B3A28]) initWithMasterImageSize:{v35, v37, v31, v33, *&v35, *&v37}];
-        v48 = [(PICompositionController *)v11 cropAdjustmentController];
-        [v48 yawRadians];
+        cropAdjustmentController4 = [(PICompositionController *)v11 cropAdjustmentController];
+        [cropAdjustmentController4 yawRadians];
         [v47 setYawRadians:?];
-        [v48 pitchRadians];
+        [cropAdjustmentController4 pitchRadians];
         [v47 setPitchRadians:?];
-        [v48 angleRadians];
+        [cropAdjustmentController4 angleRadians];
         [v47 setRollRadians:?];
         [v47 setCropRect:{v40, v42, v44, v46}];
         [v47 cropRect];
@@ -856,24 +856,24 @@ LABEL_9:
         v67[6] = v51;
         v67[7] = v52;
         [(PICompositionController *)v11 modifyAdjustmentWithKey:@"cropStraighten" modificationBlock:v67];
-        v22 = [(PICompositionController *)v11 composition];
+        composition = [(PICompositionController *)v11 composition];
       }
     }
 
     else
     {
-      v22 = 0;
+      composition = 0;
     }
   }
 
   else
   {
-    v22 = 0;
+    composition = 0;
   }
 
 LABEL_27:
 
-  return v22;
+  return composition;
 }
 
 @end

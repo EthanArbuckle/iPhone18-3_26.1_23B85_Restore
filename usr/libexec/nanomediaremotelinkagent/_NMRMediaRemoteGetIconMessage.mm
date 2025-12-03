@@ -1,22 +1,22 @@
 @interface _NMRMediaRemoteGetIconMessage
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasOriginIdentifier:(BOOL)a3;
-- (void)setHasTimestamp:(BOOL)a3;
-- (void)setHasWidth:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasOriginIdentifier:(BOOL)identifier;
+- (void)setHasTimestamp:(BOOL)timestamp;
+- (void)setHasWidth:(BOOL)width;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _NMRMediaRemoteGetIconMessage
 
-- (void)setHasTimestamp:(BOOL)a3
+- (void)setHasTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 2;
   }
@@ -29,9 +29,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasWidth:(BOOL)a3
+- (void)setHasWidth:(BOOL)width
 {
-  if (a3)
+  if (width)
   {
     v3 = 4;
   }
@@ -44,9 +44,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasOriginIdentifier:(BOOL)a3
+- (void)setHasOriginIdentifier:(BOOL)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v3 = 8;
   }
@@ -64,8 +64,8 @@
   v7.receiver = self;
   v7.super_class = _NMRMediaRemoteGetIconMessage;
   v3 = [(_NMRMediaRemoteGetIconMessage *)&v7 description];
-  v4 = [(_NMRMediaRemoteGetIconMessage *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(_NMRMediaRemoteGetIconMessage *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -123,9 +123,9 @@ LABEL_5:
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v9 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -171,14 +171,14 @@ LABEL_5:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 2) != 0)
   {
-    v4[2] = *&self->_timestamp;
-    *(v4 + 44) |= 2u;
+    toCopy[2] = *&self->_timestamp;
+    *(toCopy + 44) |= 2u;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -197,33 +197,33 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[3] = *&self->_width;
-  *(v4 + 44) |= 4u;
+  toCopy[3] = *&self->_width;
+  *(toCopy + 44) |= 4u;
   if (*&self->_has)
   {
 LABEL_4:
-    v4[1] = *&self->_height;
-    *(v4 + 44) |= 1u;
+    toCopy[1] = *&self->_height;
+    *(toCopy + 44) |= 1u;
   }
 
 LABEL_5:
   if (self->_bundleID)
   {
-    v6 = v4;
-    [v4 setBundleID:?];
-    v4 = v6;
+    v6 = toCopy;
+    [toCopy setBundleID:?];
+    toCopy = v6;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    *(v4 + 10) = self->_originIdentifier;
-    *(v4 + 44) |= 8u;
+    *(toCopy + 10) = self->_originIdentifier;
+    *(toCopy + 44) |= 8u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 2) != 0)
@@ -258,7 +258,7 @@ LABEL_4:
   }
 
 LABEL_5:
-  v8 = [(NSString *)self->_bundleID copyWithZone:a3];
+  v8 = [(NSString *)self->_bundleID copyWithZone:zone];
   v9 = v6[4];
   v6[4] = v8;
 
@@ -271,57 +271,57 @@ LABEL_5:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_24;
   }
 
   has = self->_has;
-  v6 = *(v4 + 44);
+  v6 = *(equalCopy + 44);
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 44) & 2) == 0 || self->_timestamp != *(v4 + 2))
+    if ((*(equalCopy + 44) & 2) == 0 || self->_timestamp != *(equalCopy + 2))
     {
       goto LABEL_24;
     }
   }
 
-  else if ((*(v4 + 44) & 2) != 0)
+  else if ((*(equalCopy + 44) & 2) != 0)
   {
     goto LABEL_24;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 44) & 4) == 0 || self->_width != *(v4 + 3))
+    if ((*(equalCopy + 44) & 4) == 0 || self->_width != *(equalCopy + 3))
     {
       goto LABEL_24;
     }
   }
 
-  else if ((*(v4 + 44) & 4) != 0)
+  else if ((*(equalCopy + 44) & 4) != 0)
   {
     goto LABEL_24;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 44) & 1) == 0 || self->_height != *(v4 + 1))
+    if ((*(equalCopy + 44) & 1) == 0 || self->_height != *(equalCopy + 1))
     {
       goto LABEL_24;
     }
   }
 
-  else if (*(v4 + 44))
+  else if (*(equalCopy + 44))
   {
     goto LABEL_24;
   }
 
   bundleID = self->_bundleID;
-  if (bundleID | *(v4 + 4))
+  if (bundleID | *(equalCopy + 4))
   {
     if (![(NSString *)bundleID isEqual:?])
     {
@@ -333,10 +333,10 @@ LABEL_24:
     has = self->_has;
   }
 
-  v8 = (*(v4 + 44) & 8) == 0;
+  v8 = (*(equalCopy + 44) & 8) == 0;
   if ((has & 8) != 0)
   {
-    if ((*(v4 + 44) & 8) == 0 || self->_originIdentifier != *(v4 + 10))
+    if ((*(equalCopy + 44) & 8) == 0 || self->_originIdentifier != *(equalCopy + 10))
     {
       goto LABEL_24;
     }
@@ -466,15 +466,15 @@ LABEL_25:
   return v9 ^ v5 ^ v13 ^ v18 ^ v17;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 44);
+  fromCopy = from;
+  v5 = *(fromCopy + 44);
   if ((v5 & 2) != 0)
   {
-    self->_timestamp = *(v4 + 2);
+    self->_timestamp = *(fromCopy + 2);
     *&self->_has |= 2u;
-    v5 = *(v4 + 44);
+    v5 = *(fromCopy + 44);
     if ((v5 & 4) == 0)
     {
 LABEL_3:
@@ -487,31 +487,31 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 44) & 4) == 0)
+  else if ((*(fromCopy + 44) & 4) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_width = *(v4 + 3);
+  self->_width = *(fromCopy + 3);
   *&self->_has |= 4u;
-  if (*(v4 + 44))
+  if (*(fromCopy + 44))
   {
 LABEL_4:
-    self->_height = *(v4 + 1);
+    self->_height = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
 LABEL_5:
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
-    v6 = v4;
+    v6 = fromCopy;
     [(_NMRMediaRemoteGetIconMessage *)self setBundleID:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if ((*(v4 + 44) & 8) != 0)
+  if ((*(fromCopy + 44) & 8) != 0)
   {
-    self->_originIdentifier = *(v4 + 10);
+    self->_originIdentifier = *(fromCopy + 10);
     *&self->_has |= 8u;
   }
 }

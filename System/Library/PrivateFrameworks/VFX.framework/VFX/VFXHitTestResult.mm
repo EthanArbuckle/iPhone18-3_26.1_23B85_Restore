@@ -1,8 +1,8 @@
 @interface VFXHitTestResult
-+ (id)hitTestResultsFromHitTestResultRef:(__CFArray *)a3;
++ (id)hitTestResultsFromHitTestResultRef:(__CFArray *)ref;
 - (CGPoint)textureCoordinate;
-- (CGPoint)textureCoordinatesWithMappingChannel:(int64_t)a3;
-- (VFXHitTestResult)initWithResult:(__CFXHitTestResult *)a3;
+- (CGPoint)textureCoordinatesWithMappingChannel:(int64_t)channel;
+- (VFXHitTestResult)initWithResult:(__CFXHitTestResult *)result;
 - (VFXNode)boneNode;
 - (VFXNode)node;
 - (__n128)modelTransform;
@@ -18,21 +18,21 @@
 
 @implementation VFXHitTestResult
 
-- (VFXHitTestResult)initWithResult:(__CFXHitTestResult *)a3
+- (VFXHitTestResult)initWithResult:(__CFXHitTestResult *)result
 {
-  v3 = self;
-  if (a3)
+  selfCopy = self;
+  if (result)
   {
     v6.receiver = self;
     v6.super_class = VFXHitTestResult;
-    v3 = [(VFXHitTestResult *)&v6 init];
-    if (v3)
+    selfCopy = [(VFXHitTestResult *)&v6 init];
+    if (selfCopy)
     {
-      v3->_result = CFRetain(a3);
+      selfCopy->_result = CFRetain(result);
     }
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (void)dealloc
@@ -87,9 +87,9 @@
   return objc_msgSend_presentationNode(v4, v5, v6, v7);
 }
 
-- (CGPoint)textureCoordinatesWithMappingChannel:(int64_t)a3
+- (CGPoint)textureCoordinatesWithMappingChannel:(int64_t)channel
 {
-  v3 = vcvtq_f64_f32(COERCE_FLOAT32X2_T(sub_1AF2816F4(self->_result, a3)));
+  v3 = vcvtq_f64_f32(COERCE_FLOAT32X2_T(sub_1AF2816F4(self->_result, channel)));
   v4 = v3.f64[1];
   result.x = v3.f64[0];
   result.y = v4;
@@ -98,7 +98,7 @@
 
 - (float32x2_t)uv0
 {
-  objc_msgSend_textureCoordinatesWithMappingChannel_(a1, a2, 0, a4);
+  objc_msgSend_textureCoordinatesWithMappingChannel_(self, a2, 0, a4);
   v5.f64[1] = v4;
   return vcvt_f32_f64(v5);
 }
@@ -113,15 +113,15 @@
   return result;
 }
 
-+ (id)hitTestResultsFromHitTestResultRef:(__CFArray *)a3
++ (id)hitTestResultsFromHitTestResultRef:(__CFArray *)ref
 {
-  v5 = objc_msgSend_count(a3, a2, a3, v3);
+  v5 = objc_msgSend_count(ref, a2, ref, v3);
   v10 = objc_msgSend_arrayWithCapacity_(MEMORY[0x1E695DF70], v6, v5, v7);
   if (v5)
   {
     for (i = 0; i != v5; ++i)
     {
-      v12 = objc_msgSend_objectAtIndex_(a3, v8, i, v9);
+      v12 = objc_msgSend_objectAtIndex_(ref, v8, i, v9);
       v13 = [VFXHitTestResult alloc];
       v16 = objc_msgSend_initWithResult_(v13, v14, v12, v15);
       objc_msgSend_addObject_(v10, v17, v16, v18);
@@ -146,7 +146,7 @@
 
 - (double)localCoordinates
 {
-  v1 = sub_1AF2814DC(*(a1 + 8));
+  v1 = sub_1AF2814DC(*(self + 8));
   if (v1)
   {
     v2 = *v1;
@@ -162,7 +162,7 @@
 
 - (double)worldCoordinates
 {
-  v1 = sub_1AF281524(*(a1 + 8));
+  v1 = sub_1AF281524(*(self + 8));
   if (v1)
   {
     v2 = *v1;
@@ -178,7 +178,7 @@
 
 - (double)localNormal
 {
-  v1 = sub_1AF28156C(*(a1 + 8));
+  v1 = sub_1AF28156C(*(self + 8));
   if (v1)
   {
     v2 = *v1;
@@ -194,7 +194,7 @@
 
 - (__n128)modelTransform
 {
-  v1 = sub_1AF281664(*(a1 + 8));
+  v1 = sub_1AF281664(*(self + 8));
   v2 = MEMORY[0x1E69E9B18];
   if (v1)
   {

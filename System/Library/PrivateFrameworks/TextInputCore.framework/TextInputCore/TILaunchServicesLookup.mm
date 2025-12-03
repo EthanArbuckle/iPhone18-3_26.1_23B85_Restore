@@ -1,33 +1,33 @@
 @interface TILaunchServicesLookup
-+ (id)genreIDsForApplicationIdentifier:(id)a3;
++ (id)genreIDsForApplicationIdentifier:(id)identifier;
 + (id)lookupAppNames;
 + (id)sharedInstance;
-+ (void)enumerateInstalledApplicationNames:(id)a3;
++ (void)enumerateInstalledApplicationNames:(id)names;
 - (TILaunchServicesLookup)init;
 - (id)appNames;
 - (id)tryCache;
-- (void)cacheNames:(id)a3;
+- (void)cacheNames:(id)names;
 - (void)dealloc;
-- (void)enumerateAppNames:(id)a3;
-- (void)handleMemoryPressureLevel:(unint64_t)a3 excessMemoryInBytes:(unint64_t)a4;
+- (void)enumerateAppNames:(id)names;
+- (void)handleMemoryPressureLevel:(unint64_t)level excessMemoryInBytes:(unint64_t)bytes;
 - (void)resetCache;
 @end
 
 @implementation TILaunchServicesLookup
 
-- (void)handleMemoryPressureLevel:(unint64_t)a3 excessMemoryInBytes:(unint64_t)a4
+- (void)handleMemoryPressureLevel:(unint64_t)level excessMemoryInBytes:(unint64_t)bytes
 {
-  if (a3 == 3)
+  if (level == 3)
   {
     [(TILaunchServicesLookup *)self resetCache:3];
   }
 }
 
-- (void)enumerateAppNames:(id)a3
+- (void)enumerateAppNames:(id)names
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  namesCopy = names;
+  if (namesCopy)
   {
     [(TILaunchServicesLookup *)self appNames];
     v15 = 0;
@@ -49,7 +49,7 @@ LABEL_4:
           objc_enumerationMutation(v5);
         }
 
-        v4[2](v4, *(*(&v11 + 1) + 8 * v9), &v15);
+        namesCopy[2](namesCopy, *(*(&v11 + 1) + 8 * v9), &v15);
         if (v15)
         {
           break;
@@ -75,8 +75,8 @@ LABEL_4:
 - (id)appNames
 {
   v11 = *MEMORY[0x277D85DE8];
-  v3 = [(TILaunchServicesLookup *)self tryCache];
-  if (!v3)
+  tryCache = [(TILaunchServicesLookup *)self tryCache];
+  if (!tryCache)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -85,13 +85,13 @@ LABEL_4:
       _os_log_impl(&dword_22CA55000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%s  Requesting installed app names from LaunchServices.", &v7, 0xCu);
     }
 
-    v3 = +[TILaunchServicesLookup lookupAppNames];
-    [(TILaunchServicesLookup *)self cacheNames:v3];
+    tryCache = +[TILaunchServicesLookup lookupAppNames];
+    [(TILaunchServicesLookup *)self cacheNames:tryCache];
   }
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
-    v4 = [v3 count];
+    v4 = [tryCache count];
     v7 = 136315394;
     v8 = "[TILaunchServicesLookup appNames]";
     v9 = 2048;
@@ -101,7 +101,7 @@ LABEL_4:
 
   v5 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return tryCache;
 }
 
 - (void)resetCache
@@ -113,51 +113,51 @@ LABEL_4:
   objc_sync_exit(obj);
 }
 
-- (void)cacheNames:(id)a3
+- (void)cacheNames:(id)names
 {
   obj = self;
-  v4 = a3;
+  namesCopy = names;
   objc_sync_enter(obj);
-  [(TILaunchServicesLookup *)obj setCache:v4];
+  [(TILaunchServicesLookup *)obj setCache:namesCopy];
 
-  v5 = [MEMORY[0x277CBEAA8] date];
-  [(TILaunchServicesLookup *)obj setLastCacheUpdate:v5];
+  date = [MEMORY[0x277CBEAA8] date];
+  [(TILaunchServicesLookup *)obj setLastCacheUpdate:date];
 
   objc_sync_exit(obj);
 }
 
 - (id)tryCache
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(TILaunchServicesLookup *)v2 cache];
-  if (v3 && (v4 = v3, [(TILaunchServicesLookup *)v2 lastCacheUpdate], v5 = objc_claimAutoreleasedReturnValue(), v5, v4, v5))
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  cache = [(TILaunchServicesLookup *)selfCopy cache];
+  if (cache && (v4 = cache, [(TILaunchServicesLookup *)selfCopy lastCacheUpdate], v5 = objc_claimAutoreleasedReturnValue(), v5, v4, v5))
   {
-    v6 = [MEMORY[0x277CBEAA8] date];
-    v7 = [(TILaunchServicesLookup *)v2 lastCacheUpdate];
-    v8 = [v7 dateByAddingTimeInterval:1200.0];
+    date = [MEMORY[0x277CBEAA8] date];
+    lastCacheUpdate = [(TILaunchServicesLookup *)selfCopy lastCacheUpdate];
+    v8 = [lastCacheUpdate dateByAddingTimeInterval:1200.0];
 
-    v9 = [v6 earlierDate:v8];
+    v9 = [date earlierDate:v8];
 
-    if (v9 == v6)
+    if (v9 == date)
     {
-      v10 = [(TILaunchServicesLookup *)v2 cache];
+      cache2 = [(TILaunchServicesLookup *)selfCopy cache];
     }
 
     else
     {
-      v10 = 0;
+      cache2 = 0;
     }
   }
 
   else
   {
-    v10 = 0;
+    cache2 = 0;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  return v10;
+  return cache2;
 }
 
 - (void)dealloc
@@ -184,10 +184,10 @@ LABEL_4:
   return v2;
 }
 
-+ (id)genreIDsForApplicationIdentifier:(id)a3
++ (id)genreIDsForApplicationIdentifier:(id)identifier
 {
   v42 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  identifierCopy = identifier;
   if (__disableForTesting)
   {
     v4 = 0;
@@ -213,10 +213,10 @@ LABEL_4:
 
     v6 = v5;
     _Block_object_dispose(&v37, 8);
-    v7 = [v5 applicationProxyForIdentifier:v3];
-    v8 = [v7 bundleContainerURL];
-    v9 = [v8 path];
-    v10 = [v9 stringByAppendingPathComponent:@"iTunesMetadata.plist"];
+    v7 = [v5 applicationProxyForIdentifier:identifierCopy];
+    bundleContainerURL = [v7 bundleContainerURL];
+    path = [bundleContainerURL path];
+    v10 = [path stringByAppendingPathComponent:@"iTunesMetadata.plist"];
 
     v11 = [MEMORY[0x277CBEAC0] dictionaryWithContentsOfFile:v10];
     v12 = [v11 objectForKey:@"subgenres"];
@@ -226,7 +226,7 @@ LABEL_4:
     {
       v29 = v11;
       v30 = v10;
-      v31 = v3;
+      v31 = identifierCopy;
       v34 = 0u;
       v35 = 0u;
       v32 = 0u;
@@ -274,7 +274,7 @@ LABEL_4:
         while (v16);
       }
 
-      v3 = v31;
+      identifierCopy = v31;
       v11 = v29;
       v10 = v30;
       v12 = v28;
@@ -312,7 +312,7 @@ LABEL_4:
 
 + (id)lookupAppNames
 {
-  v2 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v11 = 0;
   v12 = &v11;
   v13 = 0x2050000000;
@@ -331,14 +331,14 @@ LABEL_4:
 
   v4 = v3;
   _Block_object_dispose(&v11, 8);
-  v5 = [v3 defaultWorkspace];
+  defaultWorkspace = [v3 defaultWorkspace];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __40__TILaunchServicesLookup_lookupAppNames__block_invoke;
   v8[3] = &unk_278730BC8;
-  v6 = v2;
+  v6 = array;
   v9 = v6;
-  [v5 enumerateBundlesOfType:1 block:v8];
+  [defaultWorkspace enumerateBundlesOfType:1 block:v8];
 
   return v6;
 }
@@ -400,13 +400,13 @@ LABEL_9:
 LABEL_10:
 }
 
-+ (void)enumerateInstalledApplicationNames:(id)a3
++ (void)enumerateInstalledApplicationNames:(id)names
 {
   if ((__disableForTesting & 1) == 0)
   {
-    v4 = a3;
+    namesCopy = names;
     v5 = +[TILaunchServicesLookup sharedInstance];
-    [v5 enumerateAppNames:v4];
+    [v5 enumerateAppNames:namesCopy];
   }
 }
 

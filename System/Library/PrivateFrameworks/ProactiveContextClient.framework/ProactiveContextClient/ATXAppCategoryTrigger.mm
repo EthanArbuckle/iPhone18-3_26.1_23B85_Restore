@@ -1,11 +1,11 @@
 @interface ATXAppCategoryTrigger
-- (ATXAppCategoryTrigger)initWithCoder:(id)a3;
-- (ATXAppCategoryTrigger)initWithiTunesCategoryId:(unint64_t)a3;
+- (ATXAppCategoryTrigger)initWithCoder:(id)coder;
+- (ATXAppCategoryTrigger)initWithiTunesCategoryId:(unint64_t)id;
 @end
 
 @implementation ATXAppCategoryTrigger
 
-- (ATXAppCategoryTrigger)initWithiTunesCategoryId:(unint64_t)a3
+- (ATXAppCategoryTrigger)initWithiTunesCategoryId:(unint64_t)id
 {
   v8.receiver = self;
   v8.super_class = ATXAppCategoryTrigger;
@@ -13,16 +13,16 @@
   v5 = v4;
   if (v4)
   {
-    v4->_iTunesCategoryId = a3;
+    v4->_iTunesCategoryId = id;
     v6 = v4;
   }
 
   return v5;
 }
 
-- (ATXAppCategoryTrigger)initWithCoder:(id)a3
+- (ATXAppCategoryTrigger)initWithCoder:(id)coder
 {
-  v4 = [a3 decodeIntegerForKey:@"iTunesCategory"];
+  v4 = [coder decodeIntegerForKey:@"iTunesCategory"];
 
   return [(ATXAppCategoryTrigger *)self initWithiTunesCategoryId:v4];
 }

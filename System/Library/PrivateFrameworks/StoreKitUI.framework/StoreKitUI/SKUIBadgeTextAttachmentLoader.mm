@@ -1,15 +1,15 @@
 @interface SKUIBadgeTextAttachmentLoader
-- (BOOL)loadImageForBadge:(id)a3 layout:(id)a4 reason:(int64_t)a5;
-- (SKUIBadgeTextAttachmentLoader)initWithResourceLoader:(id)a3;
-- (void)artworkRequest:(id)a3 didLoadImage:(id)a4;
-- (void)connectStringView:(id)a3;
+- (BOOL)loadImageForBadge:(id)badge layout:(id)layout reason:(int64_t)reason;
+- (SKUIBadgeTextAttachmentLoader)initWithResourceLoader:(id)loader;
+- (void)artworkRequest:(id)request didLoadImage:(id)image;
+- (void)connectStringView:(id)view;
 @end
 
 @implementation SKUIBadgeTextAttachmentLoader
 
-- (SKUIBadgeTextAttachmentLoader)initWithResourceLoader:(id)a3
+- (SKUIBadgeTextAttachmentLoader)initWithResourceLoader:(id)loader
 {
-  v5 = a3;
+  loaderCopy = loader;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     [SKUIBadgeTextAttachmentLoader initWithResourceLoader:];
@@ -21,7 +21,7 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_resourceLoader, a3);
+    objc_storeStrong(&v6->_resourceLoader, loader);
     v8 = [objc_alloc(MEMORY[0x277CCAB00]) initWithKeyOptions:517 valueOptions:0 capacity:0];
     imageRequests = v7->_imageRequests;
     v7->_imageRequests = v8;
@@ -34,22 +34,22 @@
   return v7;
 }
 
-- (void)connectStringView:(id)a3
+- (void)connectStringView:(id)view
 {
   stringViews = self->_stringViews;
-  v4 = a3;
-  [(NSHashTable *)stringViews addObject:v4];
+  viewCopy = view;
+  [(NSHashTable *)stringViews addObject:viewCopy];
 }
 
-- (BOOL)loadImageForBadge:(id)a3 layout:(id)a4 reason:(int64_t)a5
+- (BOOL)loadImageForBadge:(id)badge layout:(id)layout reason:(int64_t)reason
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 imageURL];
-  if (v10 && ([v8 image], v11 = objc_claimAutoreleasedReturnValue(), v11, !v11))
+  badgeCopy = badge;
+  layoutCopy = layout;
+  imageURL = [badgeCopy imageURL];
+  if (imageURL && ([badgeCopy image], v11 = objc_claimAutoreleasedReturnValue(), v11, !v11))
   {
-    p_isa = [(NSMapTable *)self->_imageRequests objectForKey:v8];
-    if (p_isa && [(SKUIResourceLoader *)self->_resourceLoader trySetReason:a5 forRequestWithIdentifier:p_isa[1]])
+    p_isa = [(NSMapTable *)self->_imageRequests objectForKey:badgeCopy];
+    if (p_isa && [(SKUIResourceLoader *)self->_resourceLoader trySetReason:reason forRequestWithIdentifier:p_isa[1]])
     {
       v12 = 0;
     }
@@ -61,13 +61,13 @@
       [(SKUIArtworkRequest *)v14 setDataConsumer:v15];
 
       [(SKUIArtworkRequest *)v14 setDelegate:self];
-      [(SKUIArtworkRequest *)v14 setURL:v10];
+      [(SKUIArtworkRequest *)v14 setURL:imageURL];
       v16 = objc_alloc_init(SKUIBadgeImageRequest);
 
       v16->_requestIdentifier = [(SKUIResourceRequest *)v14 requestIdentifier];
-      objc_storeStrong(&v16->_stringLayout, a4);
-      [(NSMapTable *)self->_imageRequests setObject:v16 forKey:v8];
-      v12 = [(SKUIResourceLoader *)self->_resourceLoader loadResourceWithRequest:v14 reason:a5];
+      objc_storeStrong(&v16->_stringLayout, layout);
+      [(NSMapTable *)self->_imageRequests setObject:v16 forKey:badgeCopy];
+      v12 = [(SKUIResourceLoader *)self->_resourceLoader loadResourceWithRequest:v14 reason:reason];
 
       p_isa = &v16->super.isa;
     }
@@ -81,11 +81,11 @@
   return v12;
 }
 
-- (void)artworkRequest:(id)a3 didLoadImage:(id)a4
+- (void)artworkRequest:(id)request didLoadImage:(id)image
 {
   v33 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [a3 requestIdentifier];
+  imageCopy = image;
+  requestIdentifier = [request requestIdentifier];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
@@ -107,7 +107,7 @@ LABEL_3:
       v12 = *(*(&v27 + 1) + 8 * v11);
       v13 = [(NSMapTable *)self->_imageRequests objectForKey:v12];
       v14 = v13;
-      if (v7 == v13[1])
+      if (requestIdentifier == v13[1])
       {
         break;
       }
@@ -132,7 +132,7 @@ LABEL_3:
       goto LABEL_24;
     }
 
-    [v15 setImage:v6];
+    [v15 setImage:imageCopy];
     v25 = 0u;
     v26 = 0u;
     v23 = 0u;
@@ -153,9 +153,9 @@ LABEL_3:
           }
 
           v21 = *(*(&v23 + 1) + 8 * i);
-          v22 = [v21 layout];
+          layout = [v21 layout];
 
-          if (v22 == v9)
+          if (layout == v9)
           {
             v8 = v21;
 

@@ -1,8 +1,8 @@
 @interface CSNotificationLegibilityDimController
 - (CSNotificationLegibilityDimController)init;
-- (void)_updateDimViewsForced:(BOOL)a3;
-- (void)_updateDimViewsWithDimLevel:(int64_t)a3;
-- (void)addDimView:(id)a3;
+- (void)_updateDimViewsForced:(BOOL)forced;
+- (void)_updateDimViewsWithDimLevel:(int64_t)level;
+- (void)addDimView:(id)view;
 @end
 
 @implementation CSNotificationLegibilityDimController
@@ -32,13 +32,13 @@
   return v3;
 }
 
-- (void)addDimView:(id)a3
+- (void)addDimView:(id)view
 {
-  v4 = a3;
-  if (v4)
+  viewCopy = view;
+  if (viewCopy)
   {
-    v5 = [(CSNotificationLegibilityDimController *)self mutableDimViews];
-    [v5 addObject:v4];
+    mutableDimViews = [(CSNotificationLegibilityDimController *)self mutableDimViews];
+    [mutableDimViews addObject:viewCopy];
 
     [(CSNotificationLegibilityDimController *)self _updateDimViewsForced:1];
   }
@@ -53,20 +53,20 @@
   }
 }
 
-- (void)_updateDimViewsForced:(BOOL)a3
+- (void)_updateDimViewsForced:(BOOL)forced
 {
-  v3 = a3;
+  forcedCopy = forced;
   v37 = *MEMORY[0x277D85DE8];
-  v5 = [(CSNotificationLegibilityDimController *)self mutableDimViews];
+  mutableDimViews = [(CSNotificationLegibilityDimController *)self mutableDimViews];
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __63__CSNotificationLegibilityDimController__updateDimViewsForced___block_invoke;
   v26[3] = &unk_27838CBC0;
   v26[4] = self;
-  [v5 enumerateObjectsUsingBlock:v26];
+  [mutableDimViews enumerateObjectsUsingBlock:v26];
 
-  v6 = [(CSNotificationLegibilityDimController *)self traitCollection];
-  if ([v6 userInterfaceIdiom] == 1)
+  traitCollection = [(CSNotificationLegibilityDimController *)self traitCollection];
+  if ([traitCollection userInterfaceIdiom] == 1)
   {
     v7 = 0.45;
   }
@@ -94,10 +94,10 @@
   [(CSNotificationLegibilityDimController *)self fullDimHeight];
   if (v12 <= v7 * v13)
   {
-    v15 = [(CSNotificationLegibilityDimController *)self localizedDimMode];
-    if (v15 <= 2)
+    localizedDimMode = [(CSNotificationLegibilityDimController *)self localizedDimMode];
+    if (localizedDimMode <= 2)
     {
-      v14 = qword_21EC95EC0[v15];
+      v14 = qword_21EC95EC0[localizedDimMode];
       goto LABEL_11;
     }
 
@@ -108,7 +108,7 @@ LABEL_10:
 
   v14 = 3;
 LABEL_11:
-  if ([(CSNotificationLegibilityDimController *)self currentDimLevel]!= v14 || v3)
+  if ([(CSNotificationLegibilityDimController *)self currentDimLevel]!= v14 || forcedCopy)
   {
     self->_currentDimLevel = v14;
     v16 = *MEMORY[0x277D77DD0];
@@ -119,7 +119,7 @@ LABEL_11:
       v19 = v18;
       [(CSNotificationLegibilityDimController *)self effectiveFadeInThreshold];
       v21 = v20;
-      v22 = [(CSNotificationLegibilityDimController *)self isDimVisible];
+      isDimVisible = [(CSNotificationLegibilityDimController *)self isDimVisible];
       [(CSNotificationLegibilityDimController *)self fullDimHeight];
       *buf = 134219008;
       v28 = v14;
@@ -128,7 +128,7 @@ LABEL_11:
       v31 = 2048;
       v32 = v21;
       v33 = 1024;
-      v34 = v22;
+      v34 = isDimVisible;
       v35 = 2048;
       v36 = v23;
       _os_log_impl(&dword_21EB05000, v17, OS_LOG_TYPE_DEFAULT, "CSNotificationLegibilityDimController set dimLevel to %ld; fadeAnchorY: %.2f; effectiveFadeInThreshold: %.2f; isDimVisible: %d; fullDimHeight: %.2f", buf, 0x30u);
@@ -136,7 +136,7 @@ LABEL_11:
 
     if ([(CSNotificationLegibilityDimController *)self shouldAnimate])
     {
-      v24 = [MEMORY[0x277D75D18] areAnimationsEnabled];
+      areAnimationsEnabled = [MEMORY[0x277D75D18] areAnimationsEnabled];
       [MEMORY[0x277D75D18] setAnimationsEnabled:1];
       v25[0] = MEMORY[0x277D85DD0];
       v25[1] = 3221225472;
@@ -145,7 +145,7 @@ LABEL_11:
       v25[4] = self;
       v25[5] = v14;
       [MEMORY[0x277D75D18] _animateUsingSpringWithDampingRatio:0 response:v25 tracking:&__block_literal_global_11 dampingRatioSmoothing:1.0 responseSmoothing:1.4096 targetSmoothing:0.0 projectionDeceleration:0.0 retargetImpulse:0.0 animations:0.998 completion:0.0];
-      [MEMORY[0x277D75D18] setAnimationsEnabled:v24];
+      [MEMORY[0x277D75D18] setAnimationsEnabled:areAnimationsEnabled];
     }
 
     else
@@ -169,13 +169,13 @@ void __63__CSNotificationLegibilityDimController__updateDimViewsForced___block_i
   [v6 setUserInterfaceStyle:{objc_msgSend(v5, "userInterfaceStyle")}];
 }
 
-- (void)_updateDimViewsWithDimLevel:(int64_t)a3
+- (void)_updateDimViewsWithDimLevel:(int64_t)level
 {
-  if (a3 <= 3)
+  if (level <= 3)
   {
-    v4 = *(&off_27838CC00 + a3);
-    v5 = [(CSNotificationLegibilityDimController *)self mutableDimViews];
-    [v5 enumerateObjectsUsingBlock:v4];
+    v4 = *(&off_27838CC00 + level);
+    mutableDimViews = [(CSNotificationLegibilityDimController *)self mutableDimViews];
+    [mutableDimViews enumerateObjectsUsingBlock:v4];
   }
 }
 

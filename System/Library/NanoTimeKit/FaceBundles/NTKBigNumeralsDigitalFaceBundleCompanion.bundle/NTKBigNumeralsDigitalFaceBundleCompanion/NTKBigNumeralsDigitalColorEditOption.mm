@@ -1,78 +1,78 @@
 @interface NTKBigNumeralsDigitalColorEditOption
-+ (id)__orderedValuesForDevice:(id)a3;
-+ (id)_orderedValuesForDevice:(id)a3;
-+ (id)_snapshotKeyForValue:(unint64_t)a3 forDevice:(id)a4;
-- (BOOL)optionExistsInDevice:(id)a3;
++ (id)__orderedValuesForDevice:(id)device;
++ (id)_orderedValuesForDevice:(id)device;
++ (id)_snapshotKeyForValue:(unint64_t)value forDevice:(id)device;
+- (BOOL)optionExistsInDevice:(id)device;
 - (id)_valueToFaceBundleStringDict;
 - (id)pigmentEditOption;
 @end
 
 @implementation NTKBigNumeralsDigitalColorEditOption
 
-- (BOOL)optionExistsInDevice:(id)a3
+- (BOOL)optionExistsInDevice:(id)device
 {
-  v4 = a3;
-  v5 = [v4 supportsPDRCapability:3503302961] && !NTKGizmoOrCompanionAreRussian() || -[NTKBigNumeralsDigitalColorEditOption color](self, "color") != &stru_B90.align;
+  deviceCopy = device;
+  v5 = [deviceCopy supportsPDRCapability:3503302961] && !NTKGizmoOrCompanionAreRussian() || -[NTKBigNumeralsDigitalColorEditOption color](self, "color") != &stru_B90.align;
 
   return v5;
 }
 
-+ (id)_orderedValuesForDevice:(id)a3
++ (id)_orderedValuesForDevice:(id)device
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_34BC;
   v5[3] = &unk_C460;
-  v5[4] = a1;
-  v3 = sub_34BC(v5, a3);
+  v5[4] = self;
+  v3 = sub_34BC(v5, device);
 
   return v3;
 }
 
-+ (id)__orderedValuesForDevice:(id)a3
++ (id)__orderedValuesForDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v5 = objc_opt_new();
   [v5 addObjectsFromArray:&off_D5C8];
-  if ([v4 supportsPDRCapability:753405533])
+  if ([deviceCopy supportsPDRCapability:753405533])
   {
     [v5 addObjectsFromArray:&off_D5E0];
   }
 
-  if ([v4 supportsPDRCapability:2919474315])
+  if ([deviceCopy supportsPDRCapability:2919474315])
   {
     [v5 addObjectsFromArray:&off_D5F8];
   }
 
-  if ([v4 supportsPDRCapability:3356802055])
+  if ([deviceCopy supportsPDRCapability:3356802055])
   {
     [v5 addObjectsFromArray:&off_D610];
   }
 
-  if ([v4 supportsPDRCapability:3503302961] && (NTKGizmoOrCompanionAreRussian() & 1) == 0)
+  if ([deviceCopy supportsPDRCapability:3503302961] && (NTKGizmoOrCompanionAreRussian() & 1) == 0)
   {
     [v5 addObjectsFromArray:&off_D628];
   }
 
-  v8.receiver = a1;
+  v8.receiver = self;
   v8.super_class = &OBJC_METACLASS___NTKBigNumeralsDigitalColorEditOption;
-  v6 = objc_msgSendSuper2(&v8, "__orderedValuesForDevice:", v4);
+  v6 = objc_msgSendSuper2(&v8, "__orderedValuesForDevice:", deviceCopy);
   [v5 addObjectsFromArray:v6];
 
   return v5;
 }
 
-+ (id)_snapshotKeyForValue:(unint64_t)a3 forDevice:(id)a4
++ (id)_snapshotKeyForValue:(unint64_t)value forDevice:(id)device
 {
-  v5 = a4;
-  if (a3 - 3000 >= 0x15)
+  deviceCopy = device;
+  if (value - 3000 >= 0x15)
   {
-    v6 = [NTKFaceColorEditOption _snapshotKeyForValue:a3 forDevice:v5];
+    v6 = [NTKFaceColorEditOption _snapshotKeyForValue:value forDevice:deviceCopy];
   }
 
   else
   {
-    v6 = *(&off_C4A8 + a3 - 3000);
+    v6 = *(&off_C4A8 + value - 3000);
   }
 
   return v6;

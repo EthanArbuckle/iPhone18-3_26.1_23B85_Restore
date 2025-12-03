@@ -1,6 +1,6 @@
 @interface OrgApacheLuceneStoreDataInput
 - (id)clone;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)readMapOfStrings;
 - (id)readSetOfStrings;
 - (id)readString;
@@ -11,7 +11,7 @@
 - (int)readZInt;
 - (int64_t)readZLong;
 - (void)dealloc;
-- (void)skipBytesWithLong:(int64_t)a3;
+- (void)skipBytesWithLong:(int64_t)long;
 @end
 
 @implementation OrgApacheLuceneStoreDataInput
@@ -26,31 +26,31 @@
 
 - (int)readVInt
 {
-  v3 = [(OrgApacheLuceneStoreDataInput *)self readByte];
-  v4 = v3;
-  if ((v3 & 0x80000000) != 0)
+  readByte = [(OrgApacheLuceneStoreDataInput *)self readByte];
+  v4 = readByte;
+  if ((readByte & 0x80000000) != 0)
   {
-    v5 = v3 & 0x7F;
-    v6 = [(OrgApacheLuceneStoreDataInput *)self readByte];
-    v4 = v5 & 0xFFFFC07F | ((v6 & 0x7F) << 7);
-    if ((v6 & 0x80000000) != 0)
+    v5 = readByte & 0x7F;
+    readByte2 = [(OrgApacheLuceneStoreDataInput *)self readByte];
+    v4 = v5 & 0xFFFFC07F | ((readByte2 & 0x7F) << 7);
+    if ((readByte2 & 0x80000000) != 0)
     {
-      v7 = [(OrgApacheLuceneStoreDataInput *)self readByte];
-      v4 = v4 & 0xFFE03FFF | ((v7 & 0x7F) << 14);
-      if ((v7 & 0x80000000) != 0)
+      readByte3 = [(OrgApacheLuceneStoreDataInput *)self readByte];
+      v4 = v4 & 0xFFE03FFF | ((readByte3 & 0x7F) << 14);
+      if ((readByte3 & 0x80000000) != 0)
       {
-        v8 = [(OrgApacheLuceneStoreDataInput *)self readByte];
-        v4 = v4 & 0xF01FFFFF | ((v8 & 0x7F) << 21);
-        if ((v8 & 0x80000000) != 0)
+        readByte4 = [(OrgApacheLuceneStoreDataInput *)self readByte];
+        v4 = v4 & 0xF01FFFFF | ((readByte4 & 0x7F) << 21);
+        if ((readByte4 & 0x80000000) != 0)
         {
-          v9 = [(OrgApacheLuceneStoreDataInput *)self readByte];
-          if (v9 > 0xF)
+          readByte5 = [(OrgApacheLuceneStoreDataInput *)self readByte];
+          if (readByte5 > 0xF)
           {
             v11 = new_JavaIoIOException_initWithNSString_(@"Invalid vInt detected (too many bits)");
             objc_exception_throw(v11);
           }
 
-          v4 |= v9 << 28;
+          v4 |= readByte5 << 28;
         }
       }
     }
@@ -61,9 +61,9 @@
 
 - (int)readZInt
 {
-  v2 = [(OrgApacheLuceneStoreDataInput *)self readVInt];
+  readVInt = [(OrgApacheLuceneStoreDataInput *)self readVInt];
 
-  return OrgApacheLuceneUtilBitUtil_zigZagDecodeWithInt_(v2);
+  return OrgApacheLuceneUtilBitUtil_zigZagDecodeWithInt_(readVInt);
 }
 
 - (int64_t)readZLong
@@ -75,9 +75,9 @@
 
 - (id)readString
 {
-  v3 = [(OrgApacheLuceneStoreDataInput *)self readVInt];
-  v4 = [IOSByteArray arrayWithLength:v3];
-  [(OrgApacheLuceneStoreDataInput *)self readBytesWithByteArray:v4 withInt:0 withInt:v3];
+  readVInt = [(OrgApacheLuceneStoreDataInput *)self readVInt];
+  v4 = [IOSByteArray arrayWithLength:readVInt];
+  [(OrgApacheLuceneStoreDataInput *)self readBytesWithByteArray:v4 withInt:0 withInt:readVInt];
   if ((atomic_load_explicit(OrgLukhnosPortmobileCharsetStandardCharsets__initialized, memory_order_acquire) & 1) == 0)
   {
     sub_10003A2FC();
@@ -85,30 +85,30 @@
 
   v5 = OrgLukhnosPortmobileCharsetStandardCharsets_UTF_8_;
 
-  return [NSString stringWithBytes:v4 offset:0 length:v3 charset:v5];
+  return [NSString stringWithBytes:v4 offset:0 length:readVInt charset:v5];
 }
 
 - (id)clone
 {
   v4.receiver = self;
   v4.super_class = OrgApacheLuceneStoreDataInput;
-  v2 = [(OrgApacheLuceneStoreDataInput *)&v4 clone];
+  clone = [(OrgApacheLuceneStoreDataInput *)&v4 clone];
   objc_opt_class();
-  if (v2 && (objc_opt_isKindOfClass() & 1) == 0)
+  if (clone && (objc_opt_isKindOfClass() & 1) == 0)
   {
     JreThrowClassCastException();
   }
 
-  return v2;
+  return clone;
 }
 
 - (id)readStringStringMap
 {
   v3 = new_JavaUtilHashMap_init();
-  v4 = [(OrgApacheLuceneStoreDataInput *)self readInt];
-  if (v4 >= 1)
+  readInt = [(OrgApacheLuceneStoreDataInput *)self readInt];
+  if (readInt >= 1)
   {
-    v5 = v4;
+    v5 = readInt;
     do
     {
       [(JavaUtilHashMap *)v3 putWithId:[(OrgApacheLuceneStoreDataInput *)self readString] withId:[(OrgApacheLuceneStoreDataInput *)self readString]];
@@ -123,17 +123,17 @@
 
 - (id)readMapOfStrings
 {
-  v3 = [(OrgApacheLuceneStoreDataInput *)self readVInt];
-  if (v3 != 1)
+  readVInt = [(OrgApacheLuceneStoreDataInput *)self readVInt];
+  if (readVInt != 1)
   {
-    v4 = v3;
-    if (!v3)
+    v4 = readVInt;
+    if (!readVInt)
     {
 
       return JavaUtilCollections_emptyMap();
     }
 
-    if (v3 < 11)
+    if (readVInt < 11)
     {
       v8 = new_JavaUtilTreeMap_init();
       if (v4 < 1)
@@ -159,19 +159,19 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  v6 = [(OrgApacheLuceneStoreDataInput *)self readString];
-  v7 = [(OrgApacheLuceneStoreDataInput *)self readString];
+  readString = [(OrgApacheLuceneStoreDataInput *)self readString];
+  readString2 = [(OrgApacheLuceneStoreDataInput *)self readString];
 
-  return JavaUtilCollections_singletonMapWithId_withId_(v6, v7);
+  return JavaUtilCollections_singletonMapWithId_withId_(readString, readString2);
 }
 
 - (id)readStringSet
 {
   v3 = new_JavaUtilHashSet_init();
-  v4 = [(OrgApacheLuceneStoreDataInput *)self readInt];
-  if (v4 >= 1)
+  readInt = [(OrgApacheLuceneStoreDataInput *)self readInt];
+  if (readInt >= 1)
   {
-    v5 = v4;
+    v5 = readInt;
     do
     {
       [(JavaUtilHashSet *)v3 addWithId:[(OrgApacheLuceneStoreDataInput *)self readString]];
@@ -186,17 +186,17 @@ LABEL_13:
 
 - (id)readSetOfStrings
 {
-  v3 = [(OrgApacheLuceneStoreDataInput *)self readVInt];
-  if (v3 != 1)
+  readVInt = [(OrgApacheLuceneStoreDataInput *)self readVInt];
+  if (readVInt != 1)
   {
-    v4 = v3;
-    if (!v3)
+    v4 = readVInt;
+    if (!readVInt)
     {
 
       return JavaUtilCollections_emptySet();
     }
 
-    if (v3 < 11)
+    if (readVInt < 11)
     {
       v7 = new_JavaUtilTreeSet_init();
       if (v4 < 1)
@@ -222,16 +222,16 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  v6 = [(OrgApacheLuceneStoreDataInput *)self readString];
+  readString = [(OrgApacheLuceneStoreDataInput *)self readString];
 
-  return JavaUtilCollections_singletonWithId_(v6);
+  return JavaUtilCollections_singletonWithId_(readString);
 }
 
-- (void)skipBytesWithLong:(int64_t)a3
+- (void)skipBytesWithLong:(int64_t)long
 {
-  if (a3 < 0)
+  if (long < 0)
   {
-    v12 = JreStrcat("$J", a2, a3, v3, v4, v5, v6, v7, @"numBytes must be >= 0, got ");
+    v12 = JreStrcat("$J", a2, long, v3, v4, v5, v6, v7, @"numBytes must be >= 0, got ");
     v13 = new_JavaLangIllegalArgumentException_initWithNSString_(v12);
     objc_exception_throw(v13);
   }
@@ -241,17 +241,17 @@ LABEL_13:
     JreStrongAssignAndConsume(&self->skipBuffer_, [IOSByteArray newArrayWithLength:1024]);
   }
 
-  if (a3)
+  if (long)
   {
     v10 = 0;
     do
     {
-      v11 = JavaLangMath_minWithLong_withLong_(1024, a3 - v10);
+      v11 = JavaLangMath_minWithLong_withLong_(1024, long - v10);
       [(OrgApacheLuceneStoreDataInput *)self readBytesWithByteArray:self->skipBuffer_ withInt:0 withInt:v11 withBoolean:0];
       v10 += v11;
     }
 
-    while (v10 < a3);
+    while (v10 < long);
   }
 }
 
@@ -262,11 +262,11 @@ LABEL_13:
   [(OrgApacheLuceneStoreDataInput *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v3 = [(OrgApacheLuceneStoreDataInput *)self clone];
+  clone = [(OrgApacheLuceneStoreDataInput *)self clone];
 
-  return v3;
+  return clone;
 }
 
 @end

@@ -1,7 +1,7 @@
 @interface CKFullscreenEffectDecorationView
 - (CKFullscreenEffectView)effectView;
 - (void)prepareForReuse;
-- (void)setupForEffectView:(id)a3;
+- (void)setupForEffectView:(id)view;
 - (void)tearDownEffectView;
 @end
 
@@ -15,22 +15,22 @@
   [(CKFullscreenEffectDecorationView *)self tearDownEffectView];
 }
 
-- (void)setupForEffectView:(id)a3
+- (void)setupForEffectView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   [(CKFullscreenEffectDecorationView *)self bounds];
-  [v4 setFrame:?];
-  [(CKFullscreenEffectDecorationView *)self addSubview:v4];
-  [(CKFullscreenEffectDecorationView *)self setEffectView:v4];
+  [viewCopy setFrame:?];
+  [(CKFullscreenEffectDecorationView *)self addSubview:viewCopy];
+  [(CKFullscreenEffectDecorationView *)self setEffectView:viewCopy];
 }
 
 - (void)tearDownEffectView
 {
-  v3 = [(CKFullscreenEffectDecorationView *)self effectView];
-  [v3 stopAnimation];
+  effectView = [(CKFullscreenEffectDecorationView *)self effectView];
+  [effectView stopAnimation];
 
-  v4 = [(CKFullscreenEffectDecorationView *)self effectView];
-  [v4 removeFromSuperview];
+  effectView2 = [(CKFullscreenEffectDecorationView *)self effectView];
+  [effectView2 removeFromSuperview];
 }
 
 - (CKFullscreenEffectView)effectView

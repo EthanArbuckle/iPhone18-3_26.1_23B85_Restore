@@ -1,33 +1,33 @@
 @interface MLCMatMulGPUDeviceOps
 + (id)deviceOps;
-+ (id)deviceOpsWithForwardKernel:(id)a3 gradientKernel:(id)a4 secondaryGradientKernel:(id)a5;
-- (MLCMatMulGPUDeviceOps)initWithForwardKernel:(id)a3 gradientKernel:(id)a4 secondaryGradientKernel:(id)a5;
++ (id)deviceOpsWithForwardKernel:(id)kernel gradientKernel:(id)gradientKernel secondaryGradientKernel:(id)secondaryGradientKernel;
+- (MLCMatMulGPUDeviceOps)initWithForwardKernel:(id)kernel gradientKernel:(id)gradientKernel secondaryGradientKernel:(id)secondaryGradientKernel;
 @end
 
 @implementation MLCMatMulGPUDeviceOps
 
 + (id)deviceOps
 {
-  v2 = [[a1 alloc] initWithForwardKernel:0 gradientKernel:0 secondaryGradientKernel:0];
+  v2 = [[self alloc] initWithForwardKernel:0 gradientKernel:0 secondaryGradientKernel:0];
 
   return v2;
 }
 
-+ (id)deviceOpsWithForwardKernel:(id)a3 gradientKernel:(id)a4 secondaryGradientKernel:(id)a5
++ (id)deviceOpsWithForwardKernel:(id)kernel gradientKernel:(id)gradientKernel secondaryGradientKernel:(id)secondaryGradientKernel
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[a1 alloc] initWithForwardKernel:v10 gradientKernel:v9 secondaryGradientKernel:v8];
+  secondaryGradientKernelCopy = secondaryGradientKernel;
+  gradientKernelCopy = gradientKernel;
+  kernelCopy = kernel;
+  v11 = [[self alloc] initWithForwardKernel:kernelCopy gradientKernel:gradientKernelCopy secondaryGradientKernel:secondaryGradientKernelCopy];
 
   return v11;
 }
 
-- (MLCMatMulGPUDeviceOps)initWithForwardKernel:(id)a3 gradientKernel:(id)a4 secondaryGradientKernel:(id)a5
+- (MLCMatMulGPUDeviceOps)initWithForwardKernel:(id)kernel gradientKernel:(id)gradientKernel secondaryGradientKernel:(id)secondaryGradientKernel
 {
   v29.receiver = self;
   v29.super_class = MLCMatMulGPUDeviceOps;
-  v5 = [(MLCGPUDeviceOps *)&v29 initWithForwardKernel:a3 gradientKernel:a4 secondaryGradientKernel:a5 forwardStatistics:0 gradientStatistics:0];
+  v5 = [(MLCGPUDeviceOps *)&v29 initWithForwardKernel:kernel gradientKernel:gradientKernel secondaryGradientKernel:secondaryGradientKernel forwardStatistics:0 gradientStatistics:0];
   v6 = v5;
   if (v5)
   {

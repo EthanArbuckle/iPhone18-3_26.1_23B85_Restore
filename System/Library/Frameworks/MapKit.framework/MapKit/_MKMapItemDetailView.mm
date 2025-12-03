@@ -1,7 +1,7 @@
 @interface _MKMapItemDetailView
 - (CGSize)intrinsicContentSize;
-- (_MKMapItemDetailView)initWithFrame:(CGRect)a3;
-- (void)orientationDidChangeNotification:(id)a3;
+- (_MKMapItemDetailView)initWithFrame:(CGRect)frame;
+- (void)orientationDidChangeNotification:(id)notification;
 @end
 
 @implementation _MKMapItemDetailView
@@ -27,7 +27,7 @@
   return result;
 }
 
-- (void)orientationDidChangeNotification:(id)a3
+- (void)orientationDidChangeNotification:(id)notification
 {
   v4 = MKGetMKRemoteUILog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -44,20 +44,20 @@
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-- (_MKMapItemDetailView)initWithFrame:(CGRect)a3
+- (_MKMapItemDetailView)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = _MKMapItemDetailView;
-  v3 = [(_MKMapItemDetailView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(_MKMapItemDetailView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x1E69DC938] currentDevice];
-    v5 = [v4 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (!v5)
+    if (!userInterfaceIdiom)
     {
-      v6 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v6 addObserver:v3 selector:sel_orientationDidChangeNotification_ name:*MEMORY[0x1E69DDCB8] object:0];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter addObserver:v3 selector:sel_orientationDidChangeNotification_ name:*MEMORY[0x1E69DDCB8] object:0];
     }
   }
 

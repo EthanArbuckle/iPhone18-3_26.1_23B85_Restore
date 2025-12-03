@@ -1,23 +1,23 @@
 @interface TUICandidateView
-- (BOOL)candidateBackdropViewShouldShowBackdropView:(id)a3;
-- (BOOL)handleNumberKey:(unint64_t)a3;
-- (BOOL)hasCandidateInForwardDirection:(BOOL)a3 granularity:(int)a4;
-- (BOOL)hasCandidateInForwardDirection:(BOOL)a3 granularity:(int)a4 inGridType:(int64_t)a5;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)candidateBackdropViewShouldShowBackdropView:(id)view;
+- (BOOL)handleNumberKey:(unint64_t)key;
+- (BOOL)hasCandidateInForwardDirection:(BOOL)direction granularity:(int)granularity;
+- (BOOL)hasCandidateInForwardDirection:(BOOL)direction granularity:(int)granularity inGridType:(int64_t)type;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (BOOL)reloadPrimaryGridDataIfNeeded;
 - (BOOL)shouldAutomaticallyHideAndShowSortControl;
 - (BOOL)showingArrowButton;
 - (BOOL)showingAutofillCandidate;
-- (BOOL)toggleSortControl:(BOOL)a3 animated:(BOOL)a4;
-- (CGRect)boundsForClipsToBoundsViewWithState:(id)a3;
+- (BOOL)toggleSortControl:(BOOL)control animated:(BOOL)animated;
+- (CGRect)boundsForClipsToBoundsViewWithState:(id)state;
 - (CGRect)candidateViewFrame;
 - (CGSize)getArrowButtonSizeForGrid;
 - (NSIndexPath)disambiguationSelectedIndexPath;
 - (NSIndexPath)selectedIndexPath;
 - (TIKeyboardCandidate)selectedCandidate;
 - (TIKeyboardCandidate)selectedDisambiguationCandidate;
-- (TUICandidateView)initWithCoder:(id)a3;
-- (TUICandidateView)initWithFrame:(CGRect)a3;
+- (TUICandidateView)initWithCoder:(id)coder;
+- (TUICandidateView)initWithFrame:(CGRect)frame;
 - (TUICandidateViewDelegate)delegate;
 - (double)arrowButtonHeight;
 - (double)arrowButtonWidth;
@@ -26,46 +26,46 @@
 - (double)sortControlHeight;
 - (id)candidateGroupsForCurrentState;
 - (id)filteredCandidates;
-- (id)gridOfType:(int64_t)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (id)indexPathForCandidate:(id)a3;
+- (id)gridOfType:(int64_t)type;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (id)indexPathForCandidate:(id)candidate;
 - (id)sortControlTitles;
 - (id)visibleCandidates;
 - (int64_t)effectiveCandidateArrowButonPosition;
-- (int64_t)rowForCandidate:(id)a3;
+- (int64_t)rowForCandidate:(id)candidate;
 - (int64_t)selectedSortControlIndex;
-- (int64_t)viewOffsetForCandidate:(id)a3;
-- (void)candidateGrid:(id)a3 didAcceptCandidate:(id)a4 atIndexPath:(id)a5;
-- (void)candidateGrid:(id)a3 didChangeContentSize:(CGSize)a4;
-- (void)candidateGrid:(id)a3 didMoveHighlightFrame:(CGRect)a4;
-- (void)candidateGridNeedsToExpand:(id)a3;
-- (void)candidateGridSelectionDidChange:(id)a3;
+- (int64_t)viewOffsetForCandidate:(id)candidate;
+- (void)candidateGrid:(id)grid didAcceptCandidate:(id)candidate atIndexPath:(id)path;
+- (void)candidateGrid:(id)grid didChangeContentSize:(CGSize)size;
+- (void)candidateGrid:(id)grid didMoveHighlightFrame:(CGRect)frame;
+- (void)candidateGridNeedsToExpand:(id)expand;
+- (void)candidateGridSelectionDidChange:(id)change;
 - (void)changeLayoutInsideAnimationBlock;
 - (void)commonInit;
-- (void)didTapArrowButton:(id)a3;
-- (void)didTapInlineText:(id)a3;
+- (void)didTapArrowButton:(id)button;
+- (void)didTapInlineText:(id)text;
 - (void)finalizeLayoutChange;
 - (void)handleSortControlValueChanged;
 - (void)layoutSubviews;
-- (void)prepareForLayoutChange:(BOOL)a3;
+- (void)prepareForLayoutChange:(BOOL)change;
 - (void)reloadDisambiguationGridDataIfNeeded;
 - (void)reloadGridsIfNeeded;
 - (void)resetSortControlIndex;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)setCandidateResultSet:(id)a3;
-- (void)setDisambiguationSelectedIndexPath:(id)a3;
-- (void)setInlineText:(id)a3;
-- (void)setSelectedIndexPath:(id)a3;
-- (void)setSelectedIndexPath:(id)a3 animated:(BOOL)a4 scrollPosition:(unint64_t)a5;
-- (void)setState:(id)a3 animated:(BOOL)a4 animator:(id)a5 options:(unint64_t)a6 force:(BOOL)a7 completion:(id)a8;
-- (void)setState:(id)a3 animated:(BOOL)a4 options:(unint64_t)a5 force:(BOOL)a6 completion:(id)a7;
-- (void)showCandidateInForwardDirection:(BOOL)a3 granularity:(int)a4;
-- (void)showCandidateInForwardDirection:(BOOL)a3 granularity:(int)a4 inGridType:(int64_t)a5;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)setCandidateResultSet:(id)set;
+- (void)setDisambiguationSelectedIndexPath:(id)path;
+- (void)setInlineText:(id)text;
+- (void)setSelectedIndexPath:(id)path;
+- (void)setSelectedIndexPath:(id)path animated:(BOOL)animated scrollPosition:(unint64_t)position;
+- (void)setState:(id)state animated:(BOOL)animated animator:(id)animator options:(unint64_t)options force:(BOOL)force completion:(id)completion;
+- (void)setState:(id)state animated:(BOOL)animated options:(unint64_t)options force:(BOOL)force completion:(id)completion;
+- (void)showCandidateInForwardDirection:(BOOL)direction granularity:(int)granularity;
+- (void)showCandidateInForwardDirection:(BOOL)direction granularity:(int)granularity inGridType:(int64_t)type;
 - (void)updateArrowButtonVisibility;
-- (void)updateCornerRadiusAfterFinalizingLayout:(BOOL)a3;
+- (void)updateCornerRadiusAfterFinalizingLayout:(BOOL)layout;
 - (void)updateDisambiguationSelectionIndex;
-- (void)updatePrimaryGridRowTypeWithOptions:(unint64_t)a3 animated:(BOOL)a4 animator:(id)a5 completion:(id)a6;
+- (void)updatePrimaryGridRowTypeWithOptions:(unint64_t)options animated:(BOOL)animated animator:(id)animator completion:(id)completion;
 - (void)updateSortControlTitlesIfNeeded;
 @end
 
@@ -80,10 +80,10 @@
 
 - (CGRect)candidateViewFrame
 {
-  v3 = [(TUICandidateView *)self clipsToBoundsView];
-  v4 = [(TUICandidateView *)self clipsToBoundsView];
-  [v4 bounds];
-  [v3 convertRect:self toView:?];
+  clipsToBoundsView = [(TUICandidateView *)self clipsToBoundsView];
+  clipsToBoundsView2 = [(TUICandidateView *)self clipsToBoundsView];
+  [clipsToBoundsView2 bounds];
+  [clipsToBoundsView convertRect:self toView:?];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -103,75 +103,75 @@
 - (id)filteredCandidates
 {
   v24[1] = *MEMORY[0x1E69E9840];
-  v3 = [(TUICandidateView *)self candidateResultSet];
-  v4 = [v3 hasCandidates];
+  candidateResultSet = [(TUICandidateView *)self candidateResultSet];
+  hasCandidates = [candidateResultSet hasCandidates];
 
-  if (v4)
+  if (hasCandidates)
   {
-    v5 = [(TUICandidateView *)self candidateResultSet];
-    v6 = [v5 sortMethods];
-    v7 = [v6 count];
+    candidateResultSet2 = [(TUICandidateView *)self candidateResultSet];
+    sortMethods = [candidateResultSet2 sortMethods];
+    v7 = [sortMethods count];
 
     if (v7)
     {
-      v8 = [(TUICandidateView *)self candidateResultSet];
-      v9 = [v8 sortMethodGroups];
-      v10 = [(TUICandidateView *)self candidateResultSet];
-      v11 = [v10 sortMethods];
-      v12 = [v11 objectAtIndex:0];
-      v13 = [v9 objectForKey:v12];
+      candidateResultSet3 = [(TUICandidateView *)self candidateResultSet];
+      sortMethodGroups = [candidateResultSet3 sortMethodGroups];
+      candidateResultSet4 = [(TUICandidateView *)self candidateResultSet];
+      sortMethods2 = [candidateResultSet4 sortMethods];
+      v12 = [sortMethods2 objectAtIndex:0];
+      v13 = [sortMethodGroups objectForKey:v12];
     }
 
     else
     {
       v15 = objc_alloc(MEMORY[0x1E69D95E0]);
       v16 = MEMORY[0x1E695DFB8];
-      v17 = [(TUICandidateView *)self candidateResultSet];
-      v18 = [v17 candidates];
-      v19 = [v16 orderedSetWithArray:v18];
+      candidateResultSet5 = [(TUICandidateView *)self candidateResultSet];
+      candidates = [candidateResultSet5 candidates];
+      v19 = [v16 orderedSetWithArray:candidates];
       v20 = [v15 initWithTitle:&stru_1F03BA8F8 candidates:v19];
       v24[0] = v20;
       v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:1];
     }
 
-    v21 = [v13 firstObject];
-    v22 = [v21 candidates];
-    v14 = [v22 array];
+    firstObject = [v13 firstObject];
+    candidates2 = [firstObject candidates];
+    array = [candidates2 array];
   }
 
   else
   {
-    v14 = MEMORY[0x1E695E0F0];
+    array = MEMORY[0x1E695E0F0];
   }
 
-  return v14;
+  return array;
 }
 
 - (id)visibleCandidates
 {
-  v2 = [(TUICandidateView *)self primaryGrid];
-  v3 = [v2 visibleCandidates];
+  primaryGrid = [(TUICandidateView *)self primaryGrid];
+  visibleCandidates = [primaryGrid visibleCandidates];
 
-  return v3;
+  return visibleCandidates;
 }
 
-- (BOOL)candidateBackdropViewShouldShowBackdropView:(id)a3
+- (BOOL)candidateBackdropViewShouldShowBackdropView:(id)view
 {
-  v3 = [(TUICandidateView *)self state];
-  v4 = [v3 arrowButtonDirection] == 1;
+  state = [(TUICandidateView *)self state];
+  v4 = [state arrowButtonDirection] == 1;
 
   return v4;
 }
 
-- (void)candidateGridNeedsToExpand:(id)a3
+- (void)candidateGridNeedsToExpand:(id)expand
 {
-  v4 = a3;
-  v8 = [(TUICandidateView *)self primaryGrid];
+  expandCopy = expand;
+  primaryGrid = [(TUICandidateView *)self primaryGrid];
 
-  v5 = v8;
-  if (v8 == v4)
+  v5 = primaryGrid;
+  if (primaryGrid == expandCopy)
   {
-    v6 = [(TUICandidateView *)self delegate];
+    delegate = [(TUICandidateView *)self delegate];
     v7 = objc_opt_respondsToSelector();
 
     if ((v7 & 1) == 0)
@@ -179,44 +179,44 @@
       return;
     }
 
-    v9 = [(TUICandidateView *)self delegate];
-    [v9 candidateViewNeedsToExpand:self];
-    v5 = v9;
+    delegate2 = [(TUICandidateView *)self delegate];
+    [delegate2 candidateViewNeedsToExpand:self];
+    v5 = delegate2;
   }
 }
 
-- (void)candidateGrid:(id)a3 didMoveHighlightFrame:(CGRect)a4
+- (void)candidateGrid:(id)grid didMoveHighlightFrame:(CGRect)frame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v40 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = [(TUICandidateView *)self primaryGrid];
+  gridCopy = grid;
+  primaryGrid = [(TUICandidateView *)self primaryGrid];
 
-  if (v10 == v9)
+  if (primaryGrid == gridCopy)
   {
-    v11 = [(TUICandidateView *)self state];
-    v12 = [v11 style];
-    v13 = [v12 leftEdgeSeparatorImage];
-    if (v13)
+    state = [(TUICandidateView *)self state];
+    style = [state style];
+    leftEdgeSeparatorImage = [style leftEdgeSeparatorImage];
+    if (leftEdgeSeparatorImage)
     {
     }
 
     else
     {
-      v14 = [(TUICandidateView *)self state];
-      v15 = [v14 style];
-      v16 = [v15 rightEdgeSeparatorImage];
+      state2 = [(TUICandidateView *)self state];
+      style2 = [state2 style];
+      rightEdgeSeparatorImage = [style2 rightEdgeSeparatorImage];
 
-      if (!v16)
+      if (!rightEdgeSeparatorImage)
       {
         goto LABEL_13;
       }
     }
 
-    [(TUICandidateView *)self convertRect:v9 fromView:x, y, width, height];
+    [(TUICandidateView *)self convertRect:gridCopy fromView:x, y, width, height];
     UIRectInset();
     v18 = v17;
     v20 = v19;
@@ -226,8 +226,8 @@
     v36 = 0u;
     v37 = 0u;
     v38 = 0u;
-    v25 = [(UIView *)self _allLines];
-    v26 = [v25 countByEnumeratingWithState:&v35 objects:v39 count:16];
+    _allLines = [(UIView *)self _allLines];
+    v26 = [_allLines countByEnumeratingWithState:&v35 objects:v39 count:16];
     if (v26)
     {
       v27 = v26;
@@ -238,7 +238,7 @@
         {
           if (*v36 != v28)
           {
-            objc_enumerationMutation(v25);
+            objc_enumerationMutation(_allLines);
           }
 
           v30 = *(*(&v35 + 1) + 8 * i);
@@ -254,7 +254,7 @@
           [v30 setHidden:{CGRectIntersectsRect(v41, v42)}];
         }
 
-        v27 = [v25 countByEnumeratingWithState:&v35 objects:v39 count:16];
+        v27 = [_allLines countByEnumeratingWithState:&v35 objects:v39 count:16];
       }
 
       while (v27);
@@ -264,67 +264,67 @@
 LABEL_13:
 }
 
-- (void)candidateGrid:(id)a3 didChangeContentSize:(CGSize)a4
+- (void)candidateGrid:(id)grid didChangeContentSize:(CGSize)size
 {
-  v5 = a3;
-  v6 = [(TUICandidateView *)self primaryGrid];
+  gridCopy = grid;
+  primaryGrid = [(TUICandidateView *)self primaryGrid];
 
-  if (v6 == v5)
+  if (primaryGrid == gridCopy)
   {
 
     [(TUICandidateView *)self updateArrowButtonVisibility];
   }
 }
 
-- (void)candidateGridSelectionDidChange:(id)a3
+- (void)candidateGridSelectionDidChange:(id)change
 {
-  v8 = a3;
-  v4 = [(TUICandidateView *)self delegate];
+  changeCopy = change;
+  delegate = [(TUICandidateView *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(TUICandidateView *)self delegate];
-    v7 = [(TUICandidateView *)self primaryGrid];
-    [v6 candidateViewSelectionDidChange:self inGridType:v7 != v8];
+    delegate2 = [(TUICandidateView *)self delegate];
+    primaryGrid = [(TUICandidateView *)self primaryGrid];
+    [delegate2 candidateViewSelectionDidChange:self inGridType:primaryGrid != changeCopy];
   }
 }
 
-- (void)candidateGrid:(id)a3 didAcceptCandidate:(id)a4 atIndexPath:(id)a5
+- (void)candidateGrid:(id)grid didAcceptCandidate:(id)candidate atIndexPath:(id)path
 {
-  v14 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(TUICandidateView *)self delegate];
+  gridCopy = grid;
+  candidateCopy = candidate;
+  pathCopy = path;
+  delegate = [(TUICandidateView *)self delegate];
   v11 = objc_opt_respondsToSelector();
 
   if (v11)
   {
-    v12 = self->_disambiguationGrid == v14;
-    v13 = [(TUICandidateView *)self delegate];
-    [v13 candidateView:self didAcceptCandidate:v8 atIndexPath:v9 inGridType:v12];
+    v12 = self->_disambiguationGrid == gridCopy;
+    delegate2 = [(TUICandidateView *)self delegate];
+    [delegate2 candidateView:self didAcceptCandidate:candidateCopy atIndexPath:pathCopy inGridType:v12];
   }
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
-  v4 = [(TUICandidateView *)self delegate];
+  delegate = [(TUICandidateView *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(TUICandidateView *)self delegate];
-    [v6 candidateViewWillBeginDragging:self];
+    delegate2 = [(TUICandidateView *)self delegate];
+    [delegate2 candidateViewWillBeginDragging:self];
   }
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v8 = a3;
+  scrollCopy = scroll;
   if ([(TUICandidateView *)self shouldAutomaticallyHideAndShowSortControl])
   {
-    v4 = [v8 panGestureRecognizer];
-    [v4 velocityInView:v8];
+    panGestureRecognizer = [scrollCopy panGestureRecognizer];
+    [panGestureRecognizer velocityInView:scrollCopy];
     v6 = v5;
 
     if (v6 > 200.0 || v6 < -5.0)
@@ -342,8 +342,8 @@ LABEL_13:
   {
     [(TUICandidateView *)self arrowButtonWidth];
     v4 = v5;
-    v6 = [(TUICandidateView *)self state];
-    if (![v6 inlineTextViewPosition])
+    state = [(TUICandidateView *)self state];
+    if (![state inlineTextViewPosition])
     {
       [(TUICandidateView *)self arrowButtonHeight];
       v3 = v7;
@@ -359,28 +359,28 @@ LABEL_13:
 
 - (int64_t)effectiveCandidateArrowButonPosition
 {
-  v3 = [(TUICandidateView *)self state];
-  v4 = [v3 arrowButtonPosition];
+  state = [(TUICandidateView *)self state];
+  arrowButtonPosition = [state arrowButtonPosition];
 
-  v5 = [(TUICandidateView *)self effectiveUserInterfaceLayoutDirection];
+  effectiveUserInterfaceLayoutDirection = [(TUICandidateView *)self effectiveUserInterfaceLayoutDirection];
   v6 = 5;
-  if (v5 != 1)
+  if (effectiveUserInterfaceLayoutDirection != 1)
   {
     v6 = 1;
   }
 
   v7 = 5;
-  if (v5 == 1)
+  if (effectiveUserInterfaceLayoutDirection == 1)
   {
     v7 = 1;
   }
 
-  if (v4 != 6)
+  if (arrowButtonPosition != 6)
   {
-    v7 = v4;
+    v7 = arrowButtonPosition;
   }
 
-  if (v4 == 7)
+  if (arrowButtonPosition == 7)
   {
     return v6;
   }
@@ -404,13 +404,13 @@ LABEL_13:
 
 - (void)updateArrowButtonVisibility
 {
-  v3 = [(TUICandidateView *)self shouldShowArrowButton];
-  v4 = [(TUICandidateView *)self effectiveCandidateArrowButonPosition];
-  v5 = [(TUICandidateView *)self state];
-  if ([v5 primaryGridRowType])
+  shouldShowArrowButton = [(TUICandidateView *)self shouldShowArrowButton];
+  effectiveCandidateArrowButonPosition = [(TUICandidateView *)self effectiveCandidateArrowButonPosition];
+  state = [(TUICandidateView *)self state];
+  if ([state primaryGridRowType])
   {
-    v6 = [(TUICandidateView *)self state];
-    if ([v6 primaryGridRowType] != 1)
+    state2 = [(TUICandidateView *)self state];
+    if ([state2 primaryGridRowType] != 1)
     {
 
 LABEL_9:
@@ -418,7 +418,7 @@ LABEL_9:
       goto LABEL_26;
     }
 
-    if ((v4 & 0xFFFFFFFFFFFFFFFELL) != 4)
+    if ((effectiveCandidateArrowButonPosition & 0xFFFFFFFFFFFFFFFELL) != 4)
     {
       goto LABEL_9;
     }
@@ -428,18 +428,18 @@ LABEL_9:
   {
   }
 
-  v7 = [(TUICandidateView *)self primaryGrid];
-  [v7 contentSize];
+  primaryGrid = [(TUICandidateView *)self primaryGrid];
+  [primaryGrid contentSize];
   v9 = v8;
-  v10 = [(TUICandidateView *)self primaryGrid];
-  [v10 frame];
+  primaryGrid2 = [(TUICandidateView *)self primaryGrid];
+  [primaryGrid2 frame];
   if (v9 <= CGRectGetWidth(v46))
   {
-    v13 = [(TUICandidateView *)self primaryGrid];
-    [v13 contentSize];
+    primaryGrid3 = [(TUICandidateView *)self primaryGrid];
+    [primaryGrid3 contentSize];
     v15 = v14;
-    v16 = [(TUICandidateView *)self primaryGrid];
-    [v16 frame];
+    primaryGrid4 = [(TUICandidateView *)self primaryGrid];
+    [primaryGrid4 frame];
     v11 = v15 > CGRectGetHeight(v47);
   }
 
@@ -448,46 +448,46 @@ LABEL_9:
     v11 = 1;
   }
 
-  v17 = [(TUICandidateView *)self state];
-  v18 = [v17 style];
-  v19 = [v18 arrowButtonImageName];
-  v20 = [v19 hasPrefix:@"character.motion"];
+  state3 = [(TUICandidateView *)self state];
+  style = [state3 style];
+  arrowButtonImageName = [style arrowButtonImageName];
+  v20 = [arrowButtonImageName hasPrefix:@"character.motion"];
 
   v12 = 1;
   if (v20)
   {
-    v3 = 1;
+    shouldShowArrowButton = 1;
   }
 
-  else if (v4 > 3)
+  else if (effectiveCandidateArrowButonPosition > 3)
   {
-    if (v4 == 4)
+    if (effectiveCandidateArrowButonPosition == 4)
     {
-      v3 = v11;
+      shouldShowArrowButton = v11;
     }
 
-    else if (v4 == 5 && !v11 && v3)
+    else if (effectiveCandidateArrowButonPosition == 5 && !v11 && shouldShowArrowButton)
     {
-      v21 = [(TUICandidateView *)self state];
-      [v21 additionalHeight];
-      v3 = v22 != 0.0;
+      state4 = [(TUICandidateView *)self state];
+      [state4 additionalHeight];
+      shouldShowArrowButton = v22 != 0.0;
     }
   }
 
-  else if (v4 == 1)
+  else if (effectiveCandidateArrowButonPosition == 1)
   {
-    if (!v11 && v3)
+    if (!v11 && shouldShowArrowButton)
     {
-      v23 = [(TUICandidateView *)self state];
-      if ([v23 arrowButtonDirection] == 2)
+      state5 = [(TUICandidateView *)self state];
+      if ([state5 arrowButtonDirection] == 2)
       {
-        v3 = 1;
+        shouldShowArrowButton = 1;
       }
 
       else
       {
-        v43 = [(TUICandidateView *)self state];
-        v3 = [v43 arrowButtonDirection] == 3;
+        state6 = [(TUICandidateView *)self state];
+        shouldShowArrowButton = [state6 arrowButtonDirection] == 3;
       }
 
       goto LABEL_9;
@@ -496,43 +496,43 @@ LABEL_9:
 
   else
   {
-    v12 = v4 != 2 || v11;
+    v12 = effectiveCandidateArrowButonPosition != 2 || v11;
   }
 
 LABEL_26:
-  [(TUICandidateArrowButton *)self->_arrowButton setHidden:v3 ^ 1];
+  [(TUICandidateArrowButton *)self->_arrowButton setHidden:shouldShowArrowButton ^ 1];
   [(TUICandidateArrowButton *)self->_arrowButton setEnabled:v12];
-  v44 = [(TUICandidateView *)self state];
-  v24 = [v44 style];
+  state7 = [(TUICandidateView *)self state];
+  style2 = [state7 style];
   if (objc_opt_respondsToSelector())
   {
-    v25 = [(TUICandidateView *)self state];
-    v26 = [v25 style];
-    v27 = [v26 shouldUpdateCollectionViewWidthForArrowButtonVisibility];
+    state8 = [(TUICandidateView *)self state];
+    style3 = [state8 style];
+    shouldUpdateCollectionViewWidthForArrowButtonVisibility = [style3 shouldUpdateCollectionViewWidthForArrowButtonVisibility];
 
-    if (!v27)
+    if (!shouldUpdateCollectionViewWidthForArrowButtonVisibility)
     {
       return;
     }
 
-    v28 = [(TUICandidateView *)self primaryGrid];
-    [v28 setIsArrowButtonVisible:v3];
+    primaryGrid5 = [(TUICandidateView *)self primaryGrid];
+    [primaryGrid5 setIsArrowButtonVisible:shouldShowArrowButton];
 
-    if (!v3)
+    if (!shouldShowArrowButton)
     {
       return;
     }
 
-    v29 = [(TUICandidateView *)self state];
-    v30 = [v29 sortControlPosition];
+    state9 = [(TUICandidateView *)self state];
+    sortControlPosition = [state9 sortControlPosition];
 
-    if (v30 != 4)
+    if (sortControlPosition != 4)
     {
       return;
     }
 
-    v31 = [(TUICandidateView *)self sortControl];
-    [v31 frame];
+    sortControl = [(TUICandidateView *)self sortControl];
+    [sortControl frame];
     v33 = v32;
     v35 = v34;
     v37 = v36;
@@ -541,11 +541,11 @@ LABEL_26:
     v39 = v38;
     [(TUICandidateView *)self getArrowButtonSizeForGrid];
     v41 = v39 - v40;
-    v42 = [(TUICandidateView *)self sortControl];
-    [v42 setFrame:{v33, v35, v41, v37}];
+    sortControl2 = [(TUICandidateView *)self sortControl];
+    [sortControl2 setFrame:{v33, v35, v41, v37}];
 
-    v44 = [(TUICandidateView *)self sortControl];
-    [v44 layoutIfNeeded];
+    state7 = [(TUICandidateView *)self sortControl];
+    [state7 layoutIfNeeded];
   }
 
   else
@@ -555,18 +555,18 @@ LABEL_26:
 
 - (void)handleSortControlValueChanged
 {
-  v7 = [(TUICandidateView *)self selectedIndexPath];
+  selectedIndexPath = [(TUICandidateView *)self selectedIndexPath];
   [(TUICandidateView *)self reloadPrimaryGridDataIfNeeded];
-  v3 = [(TUICandidateView *)self primaryGrid];
-  [v3 scrollToFirstCandidate];
+  primaryGrid = [(TUICandidateView *)self primaryGrid];
+  [primaryGrid scrollToFirstCandidate];
 
-  if (v7)
+  if (selectedIndexPath)
   {
-    v4 = [(TUICandidateView *)self primaryGrid];
-    v5 = [v4 firstIndexPath];
-    if (v5)
+    primaryGrid2 = [(TUICandidateView *)self primaryGrid];
+    firstIndexPath = [primaryGrid2 firstIndexPath];
+    if (firstIndexPath)
     {
-      [(TUICandidateView *)self setSelectedIndexPath:v5];
+      [(TUICandidateView *)self setSelectedIndexPath:firstIndexPath];
     }
 
     else
@@ -577,18 +577,18 @@ LABEL_26:
   }
 }
 
-- (BOOL)toggleSortControl:(BOOL)a3 animated:(BOOL)a4
+- (BOOL)toggleSortControl:(BOOL)control animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  if (a4 && [(TUICandidateView *)self showingSortControl]== a3)
+  animatedCopy = animated;
+  controlCopy = control;
+  if (animated && [(TUICandidateView *)self showingSortControl]== control)
   {
     return 0;
   }
 
-  [(TUICandidateView *)self setShowingSortControl:v5];
-  v7 = [(TUICandidateView *)self sortControl];
-  [v7 setHidden:0];
+  [(TUICandidateView *)self setShowingSortControl:controlCopy];
+  sortControl = [(TUICandidateView *)self sortControl];
+  [sortControl setHidden:0];
 
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -601,9 +601,9 @@ LABEL_26:
   v11[2] = __47__TUICandidateView_toggleSortControl_animated___block_invoke_2;
   v11[3] = &unk_1E72D2C30;
   v11[4] = self;
-  v12 = v5;
+  v12 = controlCopy;
   v9 = _Block_copy(v11);
-  if (v4)
+  if (animatedCopy)
   {
     [MEMORY[0x1E69DD250] animateWithDuration:v8 animations:v9 completion:0.1];
   }
@@ -619,8 +619,8 @@ LABEL_26:
 
 - (BOOL)shouldAutomaticallyHideAndShowSortControl
 {
-  v2 = [(TUICandidateView *)self state];
-  v3 = [v2 sortControlPosition] == 3;
+  state = [(TUICandidateView *)self state];
+  v3 = [state sortControlPosition] == 3;
 
   return v3;
 }
@@ -628,15 +628,15 @@ LABEL_26:
 - (id)sortControlTitles
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v4 = [(TUICandidateView *)self candidateResultSet];
-  v5 = [v4 sortMethods];
+  candidateResultSet = [(TUICandidateView *)self candidateResultSet];
+  sortMethods = [candidateResultSet sortMethods];
 
-  v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v6 = [sortMethods countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
     v7 = v6;
@@ -647,7 +647,7 @@ LABEL_26:
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(sortMethods);
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
@@ -665,110 +665,110 @@ LABEL_26:
 
         v14 = v13;
 
-        [v3 addObject:v14];
+        [array addObject:v14];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v7 = [sortMethods countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v7);
   }
 
-  return v3;
+  return array;
 }
 
-- (void)didTapInlineText:(id)a3
+- (void)didTapInlineText:(id)text
 {
-  v4 = [(TUICandidateView *)self delegate];
+  delegate = [(TUICandidateView *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(TUICandidateView *)self delegate];
-    [v6 candidateViewDidTapInlineText:self];
+    delegate2 = [(TUICandidateView *)self delegate];
+    [delegate2 candidateViewDidTapInlineText:self];
   }
 }
 
-- (void)didTapArrowButton:(id)a3
+- (void)didTapArrowButton:(id)button
 {
-  v4 = [(TUICandidateView *)self delegate];
+  delegate = [(TUICandidateView *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(TUICandidateView *)self delegate];
-    [v6 candidateViewDidTapArrowButton:self];
+    delegate2 = [(TUICandidateView *)self delegate];
+    [delegate2 candidateViewDidTapArrowButton:self];
   }
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [(TUICandidateView *)self clipsToBoundsView];
-  [v8 frame];
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
+  clipsToBoundsView = [(TUICandidateView *)self clipsToBoundsView];
+  [clipsToBoundsView frame];
   v21.x = x;
   v21.y = y;
   v9 = CGRectContainsPoint(v23, v21);
 
   if (v9)
   {
-    v10 = [(TUICandidateView *)self clipsToBoundsView];
-    v11 = [(TUICandidateView *)self clipsToBoundsView];
+    clipsToBoundsView2 = [(TUICandidateView *)self clipsToBoundsView];
+    clipsToBoundsView3 = [(TUICandidateView *)self clipsToBoundsView];
 LABEL_6:
-    v16 = v11;
-    [v11 convertPoint:self fromView:{x, y}];
-    v17 = [v10 hitTest:v7 withEvent:?];
+    v16 = clipsToBoundsView3;
+    [clipsToBoundsView3 convertPoint:self fromView:{x, y}];
+    v17 = [clipsToBoundsView2 hitTest:eventCopy withEvent:?];
 
     goto LABEL_8;
   }
 
-  v12 = [(TUICandidateView *)self arrowButton];
-  if (v12)
+  arrowButton = [(TUICandidateView *)self arrowButton];
+  if (arrowButton)
   {
-    v13 = v12;
-    v14 = [(TUICandidateView *)self arrowButton];
-    [v14 frame];
+    v13 = arrowButton;
+    arrowButton2 = [(TUICandidateView *)self arrowButton];
+    [arrowButton2 frame];
     v22.x = x;
     v22.y = y;
     v15 = CGRectContainsPoint(v24, v22);
 
     if (v15)
     {
-      v10 = [(TUICandidateView *)self arrowButton];
-      v11 = [(TUICandidateView *)self arrowButton];
+      clipsToBoundsView2 = [(TUICandidateView *)self arrowButton];
+      clipsToBoundsView3 = [(TUICandidateView *)self arrowButton];
       goto LABEL_6;
     }
   }
 
   v19.receiver = self;
   v19.super_class = TUICandidateView;
-  v17 = [(TUICandidateView *)&v19 hitTest:v7 withEvent:x, y];
+  v17 = [(TUICandidateView *)&v19 hitTest:eventCopy withEvent:x, y];
 LABEL_8:
 
   return v17;
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v9 = a4;
+  y = inside.y;
+  x = inside.x;
+  eventCopy = event;
   v17.receiver = self;
   v17.super_class = TUICandidateView;
-  if (![(TUICandidateView *)&v17 pointInside:v9 withEvent:x, y])
+  if (![(TUICandidateView *)&v17 pointInside:eventCopy withEvent:x, y])
   {
-    v11 = [(TUICandidateView *)self clipsToBoundsView];
-    v12 = [v11 isHidden];
-    if ((v12 & 1) != 0 || (-[TUICandidateView clipsToBoundsView](self, "clipsToBoundsView"), v4 = objc_claimAutoreleasedReturnValue(), -[TUICandidateView clipsToBoundsView](self, "clipsToBoundsView"), v5 = objc_claimAutoreleasedReturnValue(), [v5 convertPoint:self fromView:{x, y}], (objc_msgSend(v4, "pointInside:withEvent:", v9) & 1) == 0))
+    clipsToBoundsView = [(TUICandidateView *)self clipsToBoundsView];
+    isHidden = [clipsToBoundsView isHidden];
+    if ((isHidden & 1) != 0 || (-[TUICandidateView clipsToBoundsView](self, "clipsToBoundsView"), v4 = objc_claimAutoreleasedReturnValue(), -[TUICandidateView clipsToBoundsView](self, "clipsToBoundsView"), v5 = objc_claimAutoreleasedReturnValue(), [v5 convertPoint:self fromView:{x, y}], (objc_msgSend(v4, "pointInside:withEvent:", eventCopy) & 1) == 0))
     {
-      v13 = [(TUICandidateView *)self arrowButton];
-      if ([v13 isHidden])
+      arrowButton = [(TUICandidateView *)self arrowButton];
+      if ([arrowButton isHidden])
       {
 
         v10 = 0;
-        if (v12)
+        if (isHidden)
         {
           goto LABEL_11;
         }
@@ -776,12 +776,12 @@ LABEL_8:
 
       else
       {
-        v14 = [(TUICandidateView *)self arrowButton];
-        v15 = [(TUICandidateView *)self arrowButton];
-        [v15 convertPoint:self fromView:{x, y}];
-        v10 = [v14 pointInside:v9 withEvent:?];
+        arrowButton2 = [(TUICandidateView *)self arrowButton];
+        arrowButton3 = [(TUICandidateView *)self arrowButton];
+        [arrowButton3 convertPoint:self fromView:{x, y}];
+        v10 = [arrowButton2 pointInside:eventCopy withEvent:?];
 
-        if (v12)
+        if (isHidden)
         {
 LABEL_11:
 
@@ -806,132 +806,132 @@ LABEL_12:
 
 - (TIKeyboardCandidate)selectedDisambiguationCandidate
 {
-  v2 = [(TUICandidateView *)self disambiguationGrid];
-  v3 = [v2 selectedCandidate];
+  disambiguationGrid = [(TUICandidateView *)self disambiguationGrid];
+  selectedCandidate = [disambiguationGrid selectedCandidate];
 
-  return v3;
+  return selectedCandidate;
 }
 
 - (TIKeyboardCandidate)selectedCandidate
 {
-  v2 = [(TUICandidateView *)self primaryGrid];
-  v3 = [v2 selectedCandidate];
+  primaryGrid = [(TUICandidateView *)self primaryGrid];
+  selectedCandidate = [primaryGrid selectedCandidate];
 
-  return v3;
+  return selectedCandidate;
 }
 
-- (void)setDisambiguationSelectedIndexPath:(id)a3
+- (void)setDisambiguationSelectedIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(TUICandidateView *)self disambiguationGrid];
-  [v5 setSelectedIndexPath:v4];
+  pathCopy = path;
+  disambiguationGrid = [(TUICandidateView *)self disambiguationGrid];
+  [disambiguationGrid setSelectedIndexPath:pathCopy];
 }
 
 - (NSIndexPath)disambiguationSelectedIndexPath
 {
-  v2 = [(TUICandidateView *)self disambiguationGrid];
-  v3 = [v2 selectedIndexPath];
+  disambiguationGrid = [(TUICandidateView *)self disambiguationGrid];
+  selectedIndexPath = [disambiguationGrid selectedIndexPath];
 
-  return v3;
+  return selectedIndexPath;
 }
 
-- (void)setSelectedIndexPath:(id)a3 animated:(BOOL)a4 scrollPosition:(unint64_t)a5
+- (void)setSelectedIndexPath:(id)path animated:(BOOL)animated scrollPosition:(unint64_t)position
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = [(TUICandidateView *)self primaryGrid];
-  [v9 setSelectedIndexPath:v8 animated:v6 scrollPosition:a5];
+  animatedCopy = animated;
+  pathCopy = path;
+  primaryGrid = [(TUICandidateView *)self primaryGrid];
+  [primaryGrid setSelectedIndexPath:pathCopy animated:animatedCopy scrollPosition:position];
 }
 
-- (void)setSelectedIndexPath:(id)a3
+- (void)setSelectedIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(TUICandidateView *)self primaryGrid];
-  [v5 setSelectedIndexPath:v4];
+  pathCopy = path;
+  primaryGrid = [(TUICandidateView *)self primaryGrid];
+  [primaryGrid setSelectedIndexPath:pathCopy];
 }
 
 - (NSIndexPath)selectedIndexPath
 {
-  v2 = [(TUICandidateView *)self primaryGrid];
-  v3 = [v2 selectedIndexPath];
+  primaryGrid = [(TUICandidateView *)self primaryGrid];
+  selectedIndexPath = [primaryGrid selectedIndexPath];
 
-  return v3;
+  return selectedIndexPath;
 }
 
-- (BOOL)handleNumberKey:(unint64_t)a3
+- (BOOL)handleNumberKey:(unint64_t)key
 {
-  v4 = [(TUICandidateView *)self primaryGrid];
-  LOBYTE(a3) = [v4 handleNumberKey:a3];
+  primaryGrid = [(TUICandidateView *)self primaryGrid];
+  LOBYTE(key) = [primaryGrid handleNumberKey:key];
 
-  return a3;
+  return key;
 }
 
-- (int64_t)rowForCandidate:(id)a3
+- (int64_t)rowForCandidate:(id)candidate
 {
-  v4 = a3;
-  v5 = [(TUICandidateView *)self primaryGrid];
-  v6 = [v5 rowForCandidate:v4];
+  candidateCopy = candidate;
+  primaryGrid = [(TUICandidateView *)self primaryGrid];
+  v6 = [primaryGrid rowForCandidate:candidateCopy];
 
   return v6;
 }
 
-- (int64_t)viewOffsetForCandidate:(id)a3
+- (int64_t)viewOffsetForCandidate:(id)candidate
 {
-  v4 = a3;
-  v5 = [(TUICandidateView *)self primaryGrid];
-  v6 = [v5 viewOffsetForCandidate:v4];
+  candidateCopy = candidate;
+  primaryGrid = [(TUICandidateView *)self primaryGrid];
+  v6 = [primaryGrid viewOffsetForCandidate:candidateCopy];
 
   return v6;
 }
 
-- (id)indexPathForCandidate:(id)a3
+- (id)indexPathForCandidate:(id)candidate
 {
-  v4 = a3;
-  v5 = [(TUICandidateView *)self primaryGrid];
-  v6 = [v5 indexPathForCandidate:v4];
+  candidateCopy = candidate;
+  primaryGrid = [(TUICandidateView *)self primaryGrid];
+  v6 = [primaryGrid indexPathForCandidate:candidateCopy];
 
   return v6;
 }
 
-- (void)showCandidateInForwardDirection:(BOOL)a3 granularity:(int)a4 inGridType:(int64_t)a5
+- (void)showCandidateInForwardDirection:(BOOL)direction granularity:(int)granularity inGridType:(int64_t)type
 {
-  v5 = *&a4;
-  v6 = a3;
-  v7 = [(TUICandidateView *)self gridOfType:a5];
-  [v7 showCandidateInForwardDirection:v6 granularity:v5];
+  v5 = *&granularity;
+  directionCopy = direction;
+  v7 = [(TUICandidateView *)self gridOfType:type];
+  [v7 showCandidateInForwardDirection:directionCopy granularity:v5];
 }
 
-- (BOOL)hasCandidateInForwardDirection:(BOOL)a3 granularity:(int)a4 inGridType:(int64_t)a5
+- (BOOL)hasCandidateInForwardDirection:(BOOL)direction granularity:(int)granularity inGridType:(int64_t)type
 {
-  v5 = *&a4;
-  v6 = a3;
-  v7 = [(TUICandidateView *)self gridOfType:a5];
-  LOBYTE(v5) = [v7 hasCandidateInForwardDirection:v6 granularity:v5];
+  v5 = *&granularity;
+  directionCopy = direction;
+  v7 = [(TUICandidateView *)self gridOfType:type];
+  LOBYTE(v5) = [v7 hasCandidateInForwardDirection:directionCopy granularity:v5];
 
   return v5;
 }
 
-- (void)showCandidateInForwardDirection:(BOOL)a3 granularity:(int)a4
+- (void)showCandidateInForwardDirection:(BOOL)direction granularity:(int)granularity
 {
-  v4 = a3;
-  if (a4 == 3)
+  directionCopy = direction;
+  if (granularity == 3)
   {
-    v6 = [(TUICandidateSortControl *)self->_sortControl titles];
-    v7 = [v6 count];
+    titles = [(TUICandidateSortControl *)self->_sortControl titles];
+    v7 = [titles count];
 
     if (v7 >= 2)
     {
-      v8 = [(TUICandidateView *)self sortControl];
-      v9 = [v8 selectedIndex];
+      sortControl = [(TUICandidateView *)self sortControl];
+      selectedIndex = [sortControl selectedIndex];
       v10 = v7 - 1;
-      if (v4)
+      if (directionCopy)
       {
         v10 = v7 + 1;
       }
 
-      v11 = (v10 + v9) % v7;
-      v12 = [(TUICandidateView *)self sortControl];
-      [v12 setSelectedIndex:v11];
+      v11 = (v10 + selectedIndex) % v7;
+      sortControl2 = [(TUICandidateView *)self sortControl];
+      [sortControl2 setSelectedIndex:v11];
 
       [(TUICandidateView *)self handleSortControlValueChanged];
     }
@@ -944,25 +944,25 @@ LABEL_12:
   }
 }
 
-- (BOOL)hasCandidateInForwardDirection:(BOOL)a3 granularity:(int)a4
+- (BOOL)hasCandidateInForwardDirection:(BOOL)direction granularity:(int)granularity
 {
-  if (a4 == 3)
+  if (granularity == 3)
   {
-    v5 = [(TUICandidateView *)self sortControl];
-    if (v5 && (v6 = v5, -[TUICandidateView sortControl](self, "sortControl"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 isHidden], v7, v6, (v8 & 1) == 0))
+    sortControl = [(TUICandidateView *)self sortControl];
+    if (sortControl && (v6 = sortControl, -[TUICandidateView sortControl](self, "sortControl"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 isHidden], v7, v6, (v8 & 1) == 0))
     {
-      v11 = [(TUICandidateView *)self sortControl];
-      v12 = [v11 titles];
-      if ([v12 count] < 2)
+      sortControl2 = [(TUICandidateView *)self sortControl];
+      titles = [sortControl2 titles];
+      if ([titles count] < 2)
       {
         LOBYTE(v9) = 0;
       }
 
       else
       {
-        v13 = [(TUICandidateView *)self state];
-        v14 = [v13 style];
-        v9 = [v14 disableSwitchingSortingMethodByTabKey] ^ 1;
+        state = [(TUICandidateView *)self state];
+        style = [state style];
+        v9 = [style disableSwitchingSortingMethodByTabKey] ^ 1;
       }
     }
 
@@ -977,13 +977,13 @@ LABEL_12:
   else
   {
 
-    return [TUICandidateView hasCandidateInForwardDirection:"hasCandidateInForwardDirection:granularity:inGridType:" granularity:a3 inGridType:?];
+    return [TUICandidateView hasCandidateInForwardDirection:"hasCandidateInForwardDirection:granularity:inGridType:" granularity:direction inGridType:?];
   }
 }
 
-- (id)gridOfType:(int64_t)a3
+- (id)gridOfType:(int64_t)type
 {
-  if (a3)
+  if (type)
   {
     [(TUICandidateView *)self disambiguationGrid];
   }
@@ -1000,34 +1000,34 @@ LABEL_12:
 - (id)candidateGroupsForCurrentState
 {
   v37[1] = *MEMORY[0x1E69E9840];
-  v3 = [(TUICandidateView *)self candidateResultSet];
-  v4 = [v3 sortMethods];
-  v5 = [v4 count];
+  candidateResultSet = [(TUICandidateView *)self candidateResultSet];
+  sortMethods = [candidateResultSet sortMethods];
+  v5 = [sortMethods count];
 
-  v6 = [(TUICandidateView *)self state];
-  if ([v6 primaryGridRowType])
+  state = [(TUICandidateView *)self state];
+  if ([state primaryGridRowType])
   {
 
 LABEL_4:
-    v8 = [(TUICandidateView *)self sortControl];
-    v9 = [v8 selectedIndex];
+    sortControl = [(TUICandidateView *)self sortControl];
+    selectedIndex = [sortControl selectedIndex];
 
-    if (v9 > (v5 - 1) || v9 < 0)
+    if (selectedIndex > (v5 - 1) || selectedIndex < 0)
     {
       v11 = 0;
     }
 
     else
     {
-      v11 = v9;
+      v11 = selectedIndex;
     }
 
-    v12 = [(TUICandidateView *)self candidateResultSet];
-    v13 = [v12 sortMethodGroups];
-    v14 = [(TUICandidateView *)self candidateResultSet];
-    v15 = [v14 sortMethods];
-    v16 = [v15 objectAtIndex:v11];
-    v17 = [v13 objectForKey:v16];
+    candidateResultSet2 = [(TUICandidateView *)self candidateResultSet];
+    sortMethodGroups = [candidateResultSet2 sortMethodGroups];
+    candidateResultSet3 = [(TUICandidateView *)self candidateResultSet];
+    sortMethods2 = [candidateResultSet3 sortMethods];
+    v16 = [sortMethods2 objectAtIndex:v11];
+    v17 = [sortMethodGroups objectForKey:v16];
 
     if (v17)
     {
@@ -1036,9 +1036,9 @@ LABEL_4:
 
     v18 = objc_alloc(MEMORY[0x1E69D95E0]);
     v19 = MEMORY[0x1E695DFB8];
-    v20 = [(TUICandidateView *)self candidateResultSet];
-    v21 = [v20 candidates];
-    v22 = [v19 orderedSetWithArray:v21];
+    candidateResultSet4 = [(TUICandidateView *)self candidateResultSet];
+    candidates = [candidateResultSet4 candidates];
+    v22 = [v19 orderedSetWithArray:candidates];
     v23 = [v18 initWithTitle:&stru_1F03BA8F8 candidates:v22];
     v36 = v23;
     v24 = MEMORY[0x1E695DEC8];
@@ -1046,25 +1046,25 @@ LABEL_4:
     goto LABEL_12;
   }
 
-  v7 = [(TUICandidateView *)self changingLayout];
+  changingLayout = [(TUICandidateView *)self changingLayout];
 
-  if (v7)
+  if (changingLayout)
   {
     goto LABEL_4;
   }
 
-  v26 = [(TUICandidateView *)self candidateResultSet];
-  v27 = [v26 hasCandidates];
+  candidateResultSet5 = [(TUICandidateView *)self candidateResultSet];
+  hasCandidates = [candidateResultSet5 hasCandidates];
 
-  if (v27)
+  if (hasCandidates)
   {
     if (!v5)
     {
       v34 = objc_alloc(MEMORY[0x1E69D95E0]);
       v35 = MEMORY[0x1E695DFB8];
-      v20 = [(TUICandidateView *)self candidateResultSet];
-      v21 = [v20 candidates];
-      v22 = [v35 orderedSetWithArray:v21];
+      candidateResultSet4 = [(TUICandidateView *)self candidateResultSet];
+      candidates = [candidateResultSet4 candidates];
+      v22 = [v35 orderedSetWithArray:candidates];
       v23 = [v34 initWithTitle:&stru_1F03BA8F8 candidates:v22];
       v37[0] = v23;
       v24 = MEMORY[0x1E695DEC8];
@@ -1075,12 +1075,12 @@ LABEL_12:
       goto LABEL_17;
     }
 
-    v28 = [(TUICandidateView *)self candidateResultSet];
-    v29 = [v28 sortMethodGroups];
-    v30 = [(TUICandidateView *)self candidateResultSet];
-    v31 = [v30 sortMethods];
-    v32 = [v31 objectAtIndex:0];
-    v17 = [v29 objectForKey:v32];
+    candidateResultSet6 = [(TUICandidateView *)self candidateResultSet];
+    sortMethodGroups2 = [candidateResultSet6 sortMethodGroups];
+    candidateResultSet7 = [(TUICandidateView *)self candidateResultSet];
+    sortMethods3 = [candidateResultSet7 sortMethods];
+    v32 = [sortMethods3 objectAtIndex:0];
+    v17 = [sortMethodGroups2 objectForKey:v32];
   }
 
   else
@@ -1093,40 +1093,40 @@ LABEL_17:
   return v17;
 }
 
-- (void)setInlineText:(id)a3
+- (void)setInlineText:(id)text
 {
-  v8 = a3;
+  textCopy = text;
   if (![(NSString *)self->_inlineText isEqualToString:?])
   {
-    v4 = [v8 copy];
+    v4 = [textCopy copy];
     inlineText = self->_inlineText;
     self->_inlineText = v4;
 
     v6 = self->_inlineText;
-    v7 = [(TUICandidateView *)self inlineTextView];
-    [v7 setText:v6];
+    inlineTextView = [(TUICandidateView *)self inlineTextView];
+    [inlineTextView setText:v6];
   }
 }
 
 - (void)updateDisambiguationSelectionIndex
 {
-  v3 = [(TUICandidateView *)self candidateResultSet];
-  if (v3 && (v4 = v3, -[TUICandidateView candidateResultSet](self, "candidateResultSet"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 selectedDisambiguationCandidateIndex], v5, v4, v6 != 0x7FFFFFFFFFFFFFFFLL))
+  candidateResultSet = [(TUICandidateView *)self candidateResultSet];
+  if (candidateResultSet && (v4 = candidateResultSet, -[TUICandidateView candidateResultSet](self, "candidateResultSet"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 selectedDisambiguationCandidateIndex], v5, v4, v6 != 0x7FFFFFFFFFFFFFFFLL))
   {
     v8 = MEMORY[0x1E696AC88];
-    v11 = [(TUICandidateView *)self candidateResultSet];
-    v9 = [v8 indexPathForRow:objc_msgSend(v11 inSection:{"selectedDisambiguationCandidateIndex"), 0}];
-    v10 = [(TUICandidateView *)self disambiguationGrid];
-    [v10 setSelectedIndexPath:v9];
+    candidateResultSet2 = [(TUICandidateView *)self candidateResultSet];
+    v9 = [v8 indexPathForRow:objc_msgSend(candidateResultSet2 inSection:{"selectedDisambiguationCandidateIndex"), 0}];
+    disambiguationGrid = [(TUICandidateView *)self disambiguationGrid];
+    [disambiguationGrid setSelectedIndexPath:v9];
   }
 
   else
   {
-    v7 = [(TUICandidateView *)self disambiguationGrid];
-    [v7 setSelectedIndexPath:0];
+    disambiguationGrid2 = [(TUICandidateView *)self disambiguationGrid];
+    [disambiguationGrid2 setSelectedIndexPath:0];
 
-    v11 = [(TUICandidateView *)self disambiguationGrid];
-    [v11 scrollToFirstCandidate];
+    candidateResultSet2 = [(TUICandidateView *)self disambiguationGrid];
+    [candidateResultSet2 scrollToFirstCandidate];
   }
 }
 
@@ -1135,46 +1135,46 @@ LABEL_17:
   v11[1] = *MEMORY[0x1E69E9840];
   v3 = objc_alloc(MEMORY[0x1E69D95E0]);
   v4 = MEMORY[0x1E695DFB8];
-  v5 = [(TUICandidateView *)self candidateResultSet];
-  v6 = [v5 disambiguationCandidates];
-  v7 = [v4 orderedSetWithArray:v6];
+  candidateResultSet = [(TUICandidateView *)self candidateResultSet];
+  disambiguationCandidates = [candidateResultSet disambiguationCandidates];
+  v7 = [v4 orderedSetWithArray:disambiguationCandidates];
   v8 = [v3 initWithTitle:&stru_1F03BA8F8 candidates:v7];
   v11[0] = v8;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
-  v10 = [(TUICandidateView *)self disambiguationGrid];
-  [v10 setCandidateGroups:v9];
+  disambiguationGrid = [(TUICandidateView *)self disambiguationGrid];
+  [disambiguationGrid setCandidateGroups:v9];
 
   [(TUICandidateView *)self updateDisambiguationSelectionIndex];
 }
 
 - (BOOL)reloadPrimaryGridDataIfNeeded
 {
-  v3 = [(TUICandidateView *)self candidateGroupsForCurrentState];
-  v4 = [(TUICandidateView *)self primaryGrid];
-  v5 = [v4 candidateGroups];
-  v6 = [v5 isEqual:v3];
+  candidateGroupsForCurrentState = [(TUICandidateView *)self candidateGroupsForCurrentState];
+  primaryGrid = [(TUICandidateView *)self primaryGrid];
+  candidateGroups = [primaryGrid candidateGroups];
+  v6 = [candidateGroups isEqual:candidateGroupsForCurrentState];
 
   if ((v6 & 1) == 0)
   {
-    v7 = [(TUICandidateView *)self candidateGroupsForCurrentState];
-    v8 = [(TUICandidateView *)self primaryGrid];
-    [v8 setCandidateGroups:v7];
+    candidateGroupsForCurrentState2 = [(TUICandidateView *)self candidateGroupsForCurrentState];
+    primaryGrid2 = [(TUICandidateView *)self primaryGrid];
+    [primaryGrid2 setCandidateGroups:candidateGroupsForCurrentState2];
   }
 
   return v6 ^ 1;
 }
 
-- (void)updateCornerRadiusAfterFinalizingLayout:(BOOL)a3
+- (void)updateCornerRadiusAfterFinalizingLayout:(BOOL)layout
 {
-  v3 = a3;
-  v5 = [(TUICandidateView *)self _inheritedRenderConfig];
-  if (![v5 colorAdaptiveBackground])
+  layoutCopy = layout;
+  _inheritedRenderConfig = [(TUICandidateView *)self _inheritedRenderConfig];
+  if (![_inheritedRenderConfig colorAdaptiveBackground])
   {
     goto LABEL_6;
   }
 
-  v6 = [(TUICandidateView *)self state];
-  v7 = [v6 style];
+  state = [(TUICandidateView *)self state];
+  style = [state style];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
 
@@ -1182,33 +1182,33 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v8 = [(TUICandidateView *)self state];
-  v9 = [v8 style];
-  v10 = [v9 performSelector:sel_backgroundMaterial];
+  state2 = [(TUICandidateView *)self state];
+  style2 = [state2 style];
+  v10 = [style2 performSelector:sel_backgroundMaterial];
 
   if (v10)
   {
-    v135 = [(TUICandidateView *)self state];
-    v11 = [v135 style];
-    [v11 cornerRadius];
+    state3 = [(TUICandidateView *)self state];
+    style3 = [state3 style];
+    [style3 cornerRadius];
     v13 = v12;
-    v14 = [(TUICandidateView *)self clipsToBoundsView];
-    [v14 _setCornerRadius:v13];
+    clipsToBoundsView = [(TUICandidateView *)self clipsToBoundsView];
+    [clipsToBoundsView _setCornerRadius:v13];
     goto LABEL_32;
   }
 
 LABEL_7:
-  v15 = [(TUICandidateView *)self state];
-  v16 = [v15 style];
-  if ([v16 doNotClipToBounds])
+  state4 = [(TUICandidateView *)self state];
+  style4 = [state4 style];
+  if ([style4 doNotClipToBounds])
   {
-    v17 = [(TUICandidateView *)self state];
-    v18 = [v17 hasBackdrop];
+    state5 = [(TUICandidateView *)self state];
+    hasBackdrop = [state5 hasBackdrop];
 
-    if (v18)
+    if (hasBackdrop)
     {
-      v135 = [(TUICandidateView *)self backdropView];
-      v19 = [(TUICandidateView *)self clipsToBoundsView];
+      state3 = [(TUICandidateView *)self backdropView];
+      clipsToBoundsView2 = [(TUICandidateView *)self clipsToBoundsView];
       goto LABEL_12;
     }
   }
@@ -1217,116 +1217,116 @@ LABEL_7:
   {
   }
 
-  v135 = [(TUICandidateView *)self clipsToBoundsView];
-  v19 = [(TUICandidateView *)self backdropView];
+  state3 = [(TUICandidateView *)self clipsToBoundsView];
+  clipsToBoundsView2 = [(TUICandidateView *)self backdropView];
 LABEL_12:
-  v11 = v19;
-  [v19 _setContinuousCornerRadius:0.0];
-  v20 = [v11 layer];
-  [v20 setMaskedCorners:15];
+  style3 = clipsToBoundsView2;
+  [clipsToBoundsView2 _setContinuousCornerRadius:0.0];
+  layer = [style3 layer];
+  [layer setMaskedCorners:15];
 
-  v21 = [(TUICandidateView *)self state];
-  v22 = [v21 style];
-  [v22 cornerRadius];
-  [v135 _setContinuousCornerRadius:?];
+  state6 = [(TUICandidateView *)self state];
+  style5 = [state6 style];
+  [style5 cornerRadius];
+  [state3 _setContinuousCornerRadius:?];
 
-  v23 = [(TUICandidateView *)self state];
-  v24 = [v23 style];
-  v25 = [v24 maskedCorners];
-  v26 = [v135 layer];
-  [v26 setMaskedCorners:v25];
+  state7 = [(TUICandidateView *)self state];
+  style6 = [state7 style];
+  maskedCorners = [style6 maskedCorners];
+  layer2 = [state3 layer];
+  [layer2 setMaskedCorners:maskedCorners];
 
-  v27 = [(TUICandidateView *)self state];
-  v28 = [v27 style];
-  LOBYTE(v25) = objc_opt_respondsToSelector();
+  state8 = [(TUICandidateView *)self state];
+  style7 = [state8 style];
+  LOBYTE(maskedCorners) = objc_opt_respondsToSelector();
 
-  if (v25)
+  if (maskedCorners)
   {
-    v29 = [(TUICandidateView *)self state];
-    v30 = [v29 style];
-    [v30 borderWidth];
+    state9 = [(TUICandidateView *)self state];
+    style8 = [state9 style];
+    [style8 borderWidth];
     v32 = v31;
-    v33 = [v135 layer];
-    [v33 setBorderWidth:v32];
+    layer3 = [state3 layer];
+    [layer3 setBorderWidth:v32];
   }
 
-  v34 = [(TUICandidateView *)self state];
-  v35 = [v34 style];
+  state10 = [(TUICandidateView *)self state];
+  style9 = [state10 style];
   v36 = objc_opt_respondsToSelector();
 
   if (v36)
   {
-    v37 = [(TUICandidateView *)self state];
-    v38 = [v37 style];
-    v39 = [v38 borderColor];
-    v40 = [v39 CGColor];
-    v41 = [v135 layer];
-    [v41 setBorderColor:v40];
+    state11 = [(TUICandidateView *)self state];
+    style10 = [state11 style];
+    borderColor = [style10 borderColor];
+    cGColor = [borderColor CGColor];
+    layer4 = [state3 layer];
+    [layer4 setBorderColor:cGColor];
   }
 
-  v42 = [(TUICandidateView *)self roundedBorderLayer];
-  [v42 removeFromSuperlayer];
+  roundedBorderLayer = [(TUICandidateView *)self roundedBorderLayer];
+  [roundedBorderLayer removeFromSuperlayer];
 
-  v43 = [(TUICandidateView *)self state];
-  v44 = [v43 style];
+  state12 = [(TUICandidateView *)self state];
+  style11 = [state12 style];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
 
     goto LABEL_23;
   }
 
-  v45 = [(TUICandidateView *)self state];
-  v46 = [v45 style];
-  v47 = [v46 performSelector:sel_roundsArrowButtonEdge];
+  state13 = [(TUICandidateView *)self state];
+  style12 = [state13 style];
+  v47 = [style12 performSelector:sel_roundsArrowButtonEdge];
 
   if (!v47)
   {
 LABEL_23:
-    v14 = [v135 layer];
-    [v14 setMask:0];
+    clipsToBoundsView = [state3 layer];
+    [clipsToBoundsView setMask:0];
     goto LABEL_32;
   }
 
-  v48 = [(TUICandidateView *)self state];
-  v49 = [v48 arrowButtonPosition];
+  state14 = [(TUICandidateView *)self state];
+  arrowButtonPosition = [state14 arrowButtonPosition];
 
-  v50 = [(TUICandidateView *)self state];
-  v51 = [v50 arrowButtonPosition];
+  state15 = [(TUICandidateView *)self state];
+  arrowButtonPosition2 = [state15 arrowButtonPosition];
 
-  [v135 bounds];
+  [state3 bounds];
   v53 = v52;
   v55 = v54;
   v57 = v56;
   v59 = v58;
-  if (v51 && v3)
+  if (arrowButtonPosition2 && layoutCopy)
   {
-    [v135 bounds];
+    [state3 bounds];
     v61 = v60 * 0.5;
-    v62 = [(TUICandidateView *)self effectiveCandidateArrowButonPosition];
-    v63 = [(TUICandidateView *)self arrowButton];
-    v64 = v63;
-    if (v62 == 5)
+    effectiveCandidateArrowButonPosition = [(TUICandidateView *)self effectiveCandidateArrowButonPosition];
+    arrowButton = [(TUICandidateView *)self arrowButton];
+    v64 = arrowButton;
+    if (effectiveCandidateArrowButonPosition == 5)
     {
-      [v63 setArrowImageOffset:{v61 * 0.25, 0.0}];
+      [arrowButton setArrowImageOffset:{v61 * 0.25, 0.0}];
 
-      v65 = [(TUICandidateView *)self arrowButton];
-      [v65 arrowImageOffset];
+      arrowButton2 = [(TUICandidateView *)self arrowButton];
+      [arrowButton2 arrowImageOffset];
       v67 = v53 + v66;
-      v68 = [(TUICandidateView *)self arrowButton];
-      [v68 arrowImageOffset];
+      arrowButton3 = [(TUICandidateView *)self arrowButton];
+      [arrowButton3 arrowImageOffset];
       v70 = v57 - v69;
-      v71 = [(TUICandidateView *)self arrowButton];
-      [v71 arrowImageOffset];
+      arrowButton4 = [(TUICandidateView *)self arrowButton];
+      [arrowButton4 arrowImageOffset];
       v73 = v59 + v72;
 
       v74 = MEMORY[0x1E69DC728];
-      v75 = [(TUICandidateView *)self state];
-      v76 = [v75 style];
-      [v76 cornerRadius];
+      state16 = [(TUICandidateView *)self state];
+      style13 = [state16 style];
+      [style13 cornerRadius];
       v78 = v77;
-      v79 = [(TUICandidateView *)self state];
-      v80 = [v79 style];
-      [v80 cornerRadius];
+      state17 = [(TUICandidateView *)self state];
+      style14 = [state17 style];
+      [style14 cornerRadius];
       v82 = v81;
       v83 = v74;
       v84 = v67;
@@ -1340,23 +1340,23 @@ LABEL_23:
 
     else
     {
-      [v63 setArrowImageOffset:{v61 * -0.25, 0.0}];
+      [arrowButton setArrowImageOffset:{v61 * -0.25, 0.0}];
 
-      v106 = [(TUICandidateView *)self arrowButton];
-      [v106 arrowImageOffset];
+      arrowButton5 = [(TUICandidateView *)self arrowButton];
+      [arrowButton5 arrowImageOffset];
       v108 = v57 + v107;
-      v109 = [(TUICandidateView *)self arrowButton];
-      [v109 arrowImageOffset];
+      arrowButton6 = [(TUICandidateView *)self arrowButton];
+      [arrowButton6 arrowImageOffset];
       v111 = v59 + v110;
 
       v112 = MEMORY[0x1E69DC728];
-      v75 = [(TUICandidateView *)self state];
-      v76 = [v75 style];
-      [v76 cornerRadius];
+      state16 = [(TUICandidateView *)self state];
+      style13 = [state16 style];
+      [style13 cornerRadius];
       v114 = v113;
-      v79 = [(TUICandidateView *)self state];
-      v80 = [v79 style];
-      [v80 cornerRadius];
+      state17 = [(TUICandidateView *)self state];
+      style14 = [state17 style];
+      [style14 cornerRadius];
       v90 = v115;
       v83 = v112;
       v84 = v53;
@@ -1368,134 +1368,134 @@ LABEL_23:
       v82 = v61;
     }
 
-    v14 = [v83 _bezierPathRect:v84 topLeftRadius:v85 topRightRadius:v86 bottomRightRadius:v87 bottomLeftRadius:{v88, v89, v82, v90}];
+    clipsToBoundsView = [v83 _bezierPathRect:v84 topLeftRadius:v85 topRightRadius:v86 bottomRightRadius:v87 bottomLeftRadius:{v88, v89, v82, v90}];
 
-    v116 = [(TUICandidateView *)self arrowButton];
-    [v116 layoutSubviews];
+    arrowButton7 = [(TUICandidateView *)self arrowButton];
+    [arrowButton7 layoutSubviews];
 
-    v100 = objc_alloc_init(MEMORY[0x1E69794A0]);
-    [v100 setPath:{objc_msgSend(v14, "CGPath")}];
-    v117 = [v135 layer];
-    [v117 setMask:v100];
+    arrowButton9 = objc_alloc_init(MEMORY[0x1E69794A0]);
+    [arrowButton9 setPath:{objc_msgSend(clipsToBoundsView, "CGPath")}];
+    layer5 = [state3 layer];
+    [layer5 setMask:arrowButton9];
 
-    v101 = [(TUICandidateView *)self arrowButton];
-    v118 = [v101 layer];
-    [v118 setHidden:0];
+    arrowButton8 = [(TUICandidateView *)self arrowButton];
+    layer6 = [arrowButton8 layer];
+    [layer6 setHidden:0];
 
     goto LABEL_30;
   }
 
-  if (v49 && !v3)
+  if (arrowButtonPosition && !layoutCopy)
   {
     v91 = MEMORY[0x1E69DC728];
-    v92 = [(TUICandidateView *)self state];
-    v93 = [v92 style];
-    [v93 cornerRadius];
+    state18 = [(TUICandidateView *)self state];
+    style15 = [state18 style];
+    [style15 cornerRadius];
     v95 = v94;
-    v96 = [(TUICandidateView *)self state];
-    v97 = [v96 style];
-    [v97 cornerRadius];
-    v14 = [v91 _bezierPathRect:v53 topLeftRadius:v55 topRightRadius:v57 bottomRightRadius:v59 bottomLeftRadius:{v95, v98, 0.0, 0.0}];
+    state19 = [(TUICandidateView *)self state];
+    style16 = [state19 style];
+    [style16 cornerRadius];
+    clipsToBoundsView = [v91 _bezierPathRect:v53 topLeftRadius:v55 topRightRadius:v57 bottomRightRadius:v59 bottomLeftRadius:{v95, v98, 0.0, 0.0}];
 
-    v99 = [v135 layer];
-    [v99 setMask:0];
+    layer7 = [state3 layer];
+    [layer7 setMask:0];
 
-    v100 = [(TUICandidateView *)self arrowButton];
-    v101 = [v100 layer];
-    [v101 setHidden:1];
+    arrowButton9 = [(TUICandidateView *)self arrowButton];
+    arrowButton8 = [arrowButton9 layer];
+    [arrowButton8 setHidden:1];
 LABEL_30:
 
     goto LABEL_31;
   }
 
-  v102 = [(TUICandidateView *)self state];
-  v103 = [v102 style];
-  [v103 cornerRadius];
+  state20 = [(TUICandidateView *)self state];
+  style17 = [state20 style];
+  [style17 cornerRadius];
   v105 = v104;
 
-  v14 = [MEMORY[0x1E69DC728] _bezierPathRect:v53 topLeftRadius:v55 topRightRadius:v57 bottomRightRadius:v59 bottomLeftRadius:{v105, v105, v105, v105}];
-  v100 = [v135 layer];
-  [v100 setMask:0];
+  clipsToBoundsView = [MEMORY[0x1E69DC728] _bezierPathRect:v53 topLeftRadius:v55 topRightRadius:v57 bottomRightRadius:v59 bottomLeftRadius:{v105, v105, v105, v105}];
+  arrowButton9 = [state3 layer];
+  [arrowButton9 setMask:0];
 LABEL_31:
 
-  v119 = [v135 layer];
-  [v119 setBorderWidth:0.0];
+  layer8 = [state3 layer];
+  [layer8 setBorderWidth:0.0];
 
-  v120 = [v14 CGPath];
-  v121 = [(TUICandidateView *)self roundedBorderLayer];
-  [v121 setPath:v120];
+  cGPath = [clipsToBoundsView CGPath];
+  roundedBorderLayer2 = [(TUICandidateView *)self roundedBorderLayer];
+  [roundedBorderLayer2 setPath:cGPath];
 
-  v122 = [(TUICandidateView *)self roundedBorderLayer];
-  [v122 setLineWidth:1.3];
+  roundedBorderLayer3 = [(TUICandidateView *)self roundedBorderLayer];
+  [roundedBorderLayer3 setLineWidth:1.3];
 
-  v123 = [(TUICandidateView *)self state];
-  v124 = [v123 style];
-  v125 = [v124 lineColor];
-  v126 = [v125 CGColor];
-  v127 = [(TUICandidateView *)self roundedBorderLayer];
-  [v127 setStrokeColor:v126];
+  state21 = [(TUICandidateView *)self state];
+  style18 = [state21 style];
+  lineColor = [style18 lineColor];
+  cGColor2 = [lineColor CGColor];
+  roundedBorderLayer4 = [(TUICandidateView *)self roundedBorderLayer];
+  [roundedBorderLayer4 setStrokeColor:cGColor2];
 
   v128 = [MEMORY[0x1E69DC888] colorWithWhite:0.0 alpha:0.0];
-  v129 = [v128 CGColor];
-  v130 = [(TUICandidateView *)self roundedBorderLayer];
-  [v130 setFillColor:v129];
+  cGColor3 = [v128 CGColor];
+  roundedBorderLayer5 = [(TUICandidateView *)self roundedBorderLayer];
+  [roundedBorderLayer5 setFillColor:cGColor3];
 
-  v131 = [v135 layer];
-  v132 = [(TUICandidateView *)self roundedBorderLayer];
-  [v131 addSublayer:v132];
+  layer9 = [state3 layer];
+  roundedBorderLayer6 = [(TUICandidateView *)self roundedBorderLayer];
+  [layer9 addSublayer:roundedBorderLayer6];
 
-  v133 = [(TUICandidateView *)self arrowButton];
-  v134 = [v133 contentView];
-  [v134 setHidden:0];
+  arrowButton10 = [(TUICandidateView *)self arrowButton];
+  contentView = [arrowButton10 contentView];
+  [contentView setHidden:0];
 
 LABEL_32:
 }
 
 - (void)resetSortControlIndex
 {
-  v2 = [(TUICandidateView *)self sortControl];
-  [v2 setSelectedIndex:0];
+  sortControl = [(TUICandidateView *)self sortControl];
+  [sortControl setSelectedIndex:0];
 }
 
 - (int64_t)selectedSortControlIndex
 {
-  v3 = [(TUICandidateView *)self sortControl];
-  if (!v3)
+  sortControl = [(TUICandidateView *)self sortControl];
+  if (!sortControl)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v4 = v3;
-  v5 = [(TUICandidateView *)self sortControl];
-  v6 = [v5 isHidden];
+  v4 = sortControl;
+  sortControl2 = [(TUICandidateView *)self sortControl];
+  isHidden = [sortControl2 isHidden];
 
-  if (v6)
+  if (isHidden)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v8 = [(TUICandidateView *)self sortControl];
-  v9 = [v8 selectedIndex];
+  sortControl3 = [(TUICandidateView *)self sortControl];
+  selectedIndex = [sortControl3 selectedIndex];
 
-  return v9;
+  return selectedIndex;
 }
 
 - (void)updateSortControlTitlesIfNeeded
 {
-  v6 = [(TUICandidateView *)self state];
-  if ([v6 sortControlPosition])
+  state = [(TUICandidateView *)self state];
+  if ([state sortControlPosition])
   {
-    v3 = [(TUICandidateView *)self state];
-    v4 = [v3 sortControlPosition];
+    state2 = [(TUICandidateView *)self state];
+    sortControlPosition = [state2 sortControlPosition];
 
-    if (v4 == 5)
+    if (sortControlPosition == 5)
     {
       return;
     }
 
-    v6 = [(TUICandidateView *)self sortControlTitles];
-    v5 = [(TUICandidateView *)self sortControl];
-    [v5 setTitles:v6];
+    state = [(TUICandidateView *)self sortControlTitles];
+    sortControl = [(TUICandidateView *)self sortControl];
+    [sortControl setTitles:state];
   }
 }
 
@@ -1503,8 +1503,8 @@ LABEL_32:
 {
   if ([(TUICandidateView *)self reloadPrimaryGridDataIfNeeded])
   {
-    v3 = [(TUICandidateView *)self primaryGrid];
-    [v3 scrollToFirstCandidate];
+    primaryGrid = [(TUICandidateView *)self primaryGrid];
+    [primaryGrid scrollToFirstCandidate];
   }
 
   [(TUICandidateView *)self reloadDisambiguationGridDataIfNeeded];
@@ -1512,40 +1512,40 @@ LABEL_32:
   [(TUICandidateView *)self updateSortControlTitlesIfNeeded];
 }
 
-- (void)setCandidateResultSet:(id)a3
+- (void)setCandidateResultSet:(id)set
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_candidateResultSet != v5)
+  setCopy = set;
+  v6 = setCopy;
+  if (self->_candidateResultSet != setCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_candidateResultSet, a3);
-    v5 = [(TUICandidateView *)self changingLayout];
+    v7 = setCopy;
+    objc_storeStrong(&self->_candidateResultSet, set);
+    setCopy = [(TUICandidateView *)self changingLayout];
     v6 = v7;
-    if ((v5 & 1) == 0)
+    if ((setCopy & 1) == 0)
     {
-      v5 = [(TUICandidateView *)self reloadGridsIfNeeded];
+      setCopy = [(TUICandidateView *)self reloadGridsIfNeeded];
       v6 = v7;
     }
   }
 
-  MEMORY[0x1EEE66BB8](v5, v6);
+  MEMORY[0x1EEE66BB8](setCopy, v6);
 }
 
-- (void)setState:(id)a3 animated:(BOOL)a4 animator:(id)a5 options:(unint64_t)a6 force:(BOOL)a7 completion:(id)a8
+- (void)setState:(id)state animated:(BOOL)animated animator:(id)animator options:(unint64_t)options force:(BOOL)force completion:(id)completion
 {
-  v12 = a4;
-  v15 = a3;
-  v16 = a5;
-  v17 = a8;
+  animatedCopy = animated;
+  stateCopy = state;
+  animatorCopy = animator;
+  completionCopy = completion;
   state = self->_state;
-  if (state != v15 || a7 || v12)
+  if (state != stateCopy || force || animatedCopy)
   {
-    v19 = [(TUICandidateViewState *)state primaryGridRowType];
-    v20 = v19 != [(TUICandidateViewState *)v15 primaryGridRowType];
-    objc_storeStrong(&self->_state, a3);
+    primaryGridRowType = [(TUICandidateViewState *)state primaryGridRowType];
+    v20 = primaryGridRowType != [(TUICandidateViewState *)stateCopy primaryGridRowType];
+    objc_storeStrong(&self->_state, state);
     [(TUICandidateView *)self prepareForLayoutChange:v20];
-    if (v12)
+    if (animatedCopy)
     {
       [(TUICandidateView *)self layoutIfNeeded];
       v24[0] = MEMORY[0x1E69E9820];
@@ -1553,31 +1553,31 @@ LABEL_32:
       v24[2] = __72__TUICandidateView_setState_animated_animator_options_force_completion___block_invoke;
       v24[3] = &unk_1E72D83A0;
       v24[4] = self;
-      [v16 addAnimations:v24];
+      [animatorCopy addAnimations:v24];
       v23[0] = MEMORY[0x1E69E9820];
       v23[1] = 3221225472;
       v23[2] = __72__TUICandidateView_setState_animated_animator_options_force_completion___block_invoke_2;
       v23[3] = &unk_1E72D84D8;
       v23[4] = self;
-      [v16 addCompletion:v23];
-      [(TUICandidateView *)self updatePrimaryGridRowTypeWithOptions:a6 animated:1 animator:v16 completion:&__block_literal_global_43];
+      [animatorCopy addCompletion:v23];
+      [(TUICandidateView *)self updatePrimaryGridRowTypeWithOptions:options animated:1 animator:animatorCopy completion:&__block_literal_global_43];
       v21[0] = MEMORY[0x1E69E9820];
       v21[1] = 3221225472;
       v21[2] = __72__TUICandidateView_setState_animated_animator_options_force_completion___block_invoke_4;
       v21[3] = &unk_1E72D2AF8;
       v21[4] = self;
-      v22 = v17;
-      [v16 addCompletion:v21];
+      v22 = completionCopy;
+      [animatorCopy addCompletion:v21];
     }
 
     else
     {
       [(TUICandidateView *)self changeLayoutInsideAnimationBlock];
-      [(TUICandidateView *)self updatePrimaryGridRowTypeWithOptions:a6 animated:0 animator:0 completion:0];
+      [(TUICandidateView *)self updatePrimaryGridRowTypeWithOptions:options animated:0 animator:0 completion:0];
       [(TUICandidateView *)self finalizeLayoutChange];
-      if (v17)
+      if (completionCopy)
       {
-        (*(v17 + 2))(v17, 1);
+        (*(completionCopy + 2))(completionCopy, 1);
       }
     }
   }
@@ -1597,195 +1597,195 @@ uint64_t __72__TUICandidateView_setState_animated_animator_options_force_complet
   return result;
 }
 
-- (void)setState:(id)a3 animated:(BOOL)a4 options:(unint64_t)a5 force:(BOOL)a6 completion:(id)a7
+- (void)setState:(id)state animated:(BOOL)animated options:(unint64_t)options force:(BOOL)force completion:(id)completion
 {
-  v7 = a6;
-  if (a4)
+  forceCopy = force;
+  if (animated)
   {
     v11 = MEMORY[0x1E69DD278];
-    v12 = a7;
-    v13 = a3;
-    v15 = [[v11 alloc] initWithDuration:(a5 >> 16) & 7 curve:&__block_literal_global_1748 animations:0.25];
-    [(TUICandidateView *)self setState:v13 animated:1 animator:v15 options:a5 force:v7 completion:v12];
+    completionCopy = completion;
+    stateCopy = state;
+    stateCopy2 = [[v11 alloc] initWithDuration:(options >> 16) & 7 curve:&__block_literal_global_1748 animations:0.25];
+    [(TUICandidateView *)self setState:stateCopy animated:1 animator:stateCopy2 options:options force:forceCopy completion:completionCopy];
 
-    [v15 startAnimation];
+    [stateCopy2 startAnimation];
   }
 
   else
   {
-    v14 = a7;
-    v15 = a3;
+    completionCopy2 = completion;
+    stateCopy2 = state;
     [TUICandidateView setState:"setState:animated:animator:options:force:completion:" animated:? animator:? options:? force:? completion:?];
   }
 }
 
 - (void)finalizeLayoutChange
 {
-  v10 = [(TUICandidateView *)self state];
-  if (([v10 hasBackdrop] & 1) == 0)
+  state = [(TUICandidateView *)self state];
+  if (([state hasBackdrop] & 1) == 0)
   {
-    v3 = [(TUICandidateView *)self backdropView];
-    [v3 setHidden:1];
+    backdropView = [(TUICandidateView *)self backdropView];
+    [backdropView setHidden:1];
   }
 
-  v4 = [(TUICandidateView *)self effectiveCandidateArrowButonPosition];
-  if (![v10 arrowButtonPosition])
+  effectiveCandidateArrowButonPosition = [(TUICandidateView *)self effectiveCandidateArrowButonPosition];
+  if (![state arrowButtonPosition])
   {
     [(TUICandidateView *)self setShouldShowArrowButton:0];
     [(TUICandidateView *)self updateArrowButtonVisibility];
     goto LABEL_10;
   }
 
-  if ((v4 & 0xFFFFFFFFFFFFFFFDLL) == 1)
+  if ((effectiveCandidateArrowButonPosition & 0xFFFFFFFFFFFFFFFDLL) == 1)
   {
-    v5 = [(TUICandidateView *)self clipsToBoundsView];
-    v6 = [(TUICandidateView *)self arrowButton];
-    [v5 addSubview:v6];
+    clipsToBoundsView = [(TUICandidateView *)self clipsToBoundsView];
+    arrowButton = [(TUICandidateView *)self arrowButton];
+    [clipsToBoundsView addSubview:arrowButton];
   }
 
   else
   {
-    if (v4 != 2)
+    if (effectiveCandidateArrowButonPosition != 2)
     {
       goto LABEL_10;
     }
 
-    v5 = [(TUICandidateView *)self arrowButton];
-    [(TUICandidateView *)self addSubview:v5];
+    clipsToBoundsView = [(TUICandidateView *)self arrowButton];
+    [(TUICandidateView *)self addSubview:clipsToBoundsView];
   }
 
 LABEL_10:
-  if (![v10 inlineTextViewPosition])
+  if (![state inlineTextViewPosition])
   {
-    v7 = [(TUICandidateView *)self inlineTextView];
-    [v7 setHidden:1];
+    inlineTextView = [(TUICandidateView *)self inlineTextView];
+    [inlineTextView setHidden:1];
   }
 
-  if (![v10 sortControlPosition])
+  if (![state sortControlPosition])
   {
-    v8 = [(TUICandidateView *)self sortControl];
-    [v8 setHidden:1];
+    sortControl = [(TUICandidateView *)self sortControl];
+    [sortControl setHidden:1];
 
     goto LABEL_16;
   }
 
-  if ([v10 sortControlPosition] == 5)
+  if ([state sortControlPosition] == 5)
   {
 LABEL_16:
     [(TUICandidateView *)self setShowingSortControl:0];
   }
 
   [(TUICandidateView *)self updateCornerRadiusAfterFinalizingLayout:1];
-  v9 = [(TUICandidateView *)self primaryGrid];
-  [v9 setSuppressCollectionViewLayout:0];
+  primaryGrid = [(TUICandidateView *)self primaryGrid];
+  [primaryGrid setSuppressCollectionViewLayout:0];
 
   [(TUICandidateView *)self setChangingLayout:0];
 }
 
-- (void)updatePrimaryGridRowTypeWithOptions:(unint64_t)a3 animated:(BOOL)a4 animator:(id)a5 completion:(id)a6
+- (void)updatePrimaryGridRowTypeWithOptions:(unint64_t)options animated:(BOOL)animated animator:(id)animator completion:(id)completion
 {
-  v7 = a4;
-  v10 = a6;
-  v11 = a5;
-  v16 = [(TUICandidateView *)self primaryGrid];
-  v12 = [(TUICandidateView *)self state];
-  v13 = [v12 primaryGridRowType];
-  v14 = [(TUICandidateView *)self state];
-  v15 = [v14 style];
-  [v16 setRowType:v13 options:a3 style:v15 animated:v7 animator:v11 completion:v10];
+  animatedCopy = animated;
+  completionCopy = completion;
+  animatorCopy = animator;
+  primaryGrid = [(TUICandidateView *)self primaryGrid];
+  state = [(TUICandidateView *)self state];
+  primaryGridRowType = [state primaryGridRowType];
+  state2 = [(TUICandidateView *)self state];
+  style = [state2 style];
+  [primaryGrid setRowType:primaryGridRowType options:options style:style animated:animatedCopy animator:animatorCopy completion:completionCopy];
 }
 
 - (void)changeLayoutInsideAnimationBlock
 {
-  v3 = [(TUICandidateView *)self state];
-  [(TUICandidateView *)self boundsForClipsToBoundsViewWithState:v3];
+  state = [(TUICandidateView *)self state];
+  [(TUICandidateView *)self boundsForClipsToBoundsViewWithState:state];
   v305 = v4;
   v6 = v5;
   v312 = v7;
   v309 = v8;
-  v9 = [(TUICandidateView *)self primaryGrid];
-  [v9 bounds];
+  primaryGrid = [(TUICandidateView *)self primaryGrid];
+  [primaryGrid bounds];
   v304 = v10;
   v12 = v11;
   v14 = v13;
   rect = v15;
 
-  v16 = [(TUICandidateView *)self sortControl];
-  [v16 frame];
+  sortControl = [(TUICandidateView *)self sortControl];
+  [sortControl frame];
   v306 = v17;
   v307 = v18;
   v20 = v19;
   v22 = v21;
 
-  v23 = [(TUICandidateView *)self state];
-  v24 = [v23 style];
+  state2 = [(TUICandidateView *)self state];
+  style = [state2 style];
   v25 = objc_opt_respondsToSelector();
 
   if (v25)
   {
-    v26 = [(TUICandidateView *)self state];
-    v27 = [v26 style];
-    v28 = [v27 shouldUpdateCollectionViewWidthForArrowButtonVisibility];
+    state3 = [(TUICandidateView *)self state];
+    style2 = [state3 style];
+    shouldUpdateCollectionViewWidthForArrowButtonVisibility = [style2 shouldUpdateCollectionViewWidthForArrowButtonVisibility];
   }
 
   else
   {
-    v28 = 0;
+    shouldUpdateCollectionViewWidthForArrowButtonVisibility = 0;
   }
 
-  v29 = [(TUICandidateView *)self showingAutofillCandidate];
+  showingAutofillCandidate = [(TUICandidateView *)self showingAutofillCandidate];
   v30 = 0.0;
-  if (!v29 && (v28 & 1) == 0)
+  if (!showingAutofillCandidate && (shouldUpdateCollectionViewWidthForArrowButtonVisibility & 1) == 0)
   {
     [(TUICandidateView *)self arrowButtonWidth];
   }
 
   v299 = v30;
-  v31 = [(TUICandidateView *)self backdropView];
-  [v31 setFrame:{0.0, 0.0, v312, v309}];
+  backdropView = [(TUICandidateView *)self backdropView];
+  [backdropView setFrame:{0.0, 0.0, v312, v309}];
 
-  v32 = [v3 style];
-  v33 = [(TUICandidateView *)self backdropView];
-  [v33 setStyle:v32];
+  style3 = [state style];
+  backdropView2 = [(TUICandidateView *)self backdropView];
+  [backdropView2 setStyle:style3];
 
-  v34 = [v3 style];
-  LODWORD(v33) = [v34 doNotClipToBounds];
+  style4 = [state style];
+  LODWORD(backdropView2) = [style4 doNotClipToBounds];
 
-  if (v33)
+  if (backdropView2)
   {
-    v35 = [(TUICandidateView *)self clipsToBoundsView];
-    v36 = [v3 style];
-    [v35 _setShowsLinesOnEdges:0 style:v36];
+    clipsToBoundsView = [(TUICandidateView *)self clipsToBoundsView];
+    style5 = [state style];
+    [clipsToBoundsView _setShowsLinesOnEdges:0 style:style5];
 
     [(TUICandidateView *)self backdropView];
   }
 
   else
   {
-    v37 = [(TUICandidateView *)self backdropView];
-    v38 = [v3 style];
-    [v37 _setShowsLinesOnEdges:0 style:v38];
+    backdropView3 = [(TUICandidateView *)self backdropView];
+    style6 = [state style];
+    [backdropView3 _setShowsLinesOnEdges:0 style:style6];
 
     [(TUICandidateView *)self clipsToBoundsView];
   }
   v39 = ;
-  v40 = [v3 borders];
-  v41 = [v3 style];
-  [v39 _setShowsLinesOnEdges:v40 style:v41];
+  borders = [state borders];
+  style7 = [state style];
+  [v39 _setShowsLinesOnEdges:borders style:style7];
 
-  v42 = [(TUICandidateView *)self effectiveCandidateArrowButonPosition];
-  v43 = [v3 style];
-  v44 = [(TUICandidateView *)self sortControl];
-  [v44 setStyle:v43];
+  effectiveCandidateArrowButonPosition = [(TUICandidateView *)self effectiveCandidateArrowButonPosition];
+  style8 = [state style];
+  sortControl2 = [(TUICandidateView *)self sortControl];
+  [sortControl2 setStyle:style8];
 
-  if ([v3 sortControlPosition] == 1)
+  if ([state sortControlPosition] == 1)
   {
-    v45 = [(TUICandidateView *)self sortControl];
-    [v45 setAlpha:1.0];
+    sortControl3 = [(TUICandidateView *)self sortControl];
+    [sortControl3 setAlpha:1.0];
 
     v46 = 0.0;
     v306 = 0.0;
-    if (v42 == 1)
+    if (effectiveCandidateArrowButonPosition == 1)
     {
       [(TUICandidateView *)self arrowButtonWidth];
     }
@@ -1801,16 +1801,16 @@ LABEL_16:
     goto LABEL_46;
   }
 
-  if ([v3 sortControlPosition] == 2)
+  if ([state sortControlPosition] == 2)
   {
-    v49 = [(TUICandidateView *)self sortControl];
-    [v49 setAlpha:1.0];
+    sortControl4 = [(TUICandidateView *)self sortControl];
+    [sortControl4 setAlpha:1.0];
 
     [(TUICandidateView *)self sortControlHeight];
     v51 = v50;
     v52 = 0.0;
     v306 = 0.0;
-    if (v42 == 3)
+    if (effectiveCandidateArrowButonPosition == 3)
     {
       [(TUICandidateView *)self arrowButtonWidth];
     }
@@ -1825,15 +1825,15 @@ LABEL_16:
     goto LABEL_18;
   }
 
-  if ([v3 sortControlPosition] != 3)
+  if ([state sortControlPosition] != 3)
   {
     v303 = v22;
-    if ([v3 sortControlPosition] == 4)
+    if ([state sortControlPosition] == 4)
     {
-      v61 = [(TUICandidateView *)self state];
-      v62 = [v61 arrowButtonPosition];
+      state4 = [(TUICandidateView *)self state];
+      arrowButtonPosition = [state4 arrowButtonPosition];
 
-      if (v62 == 5)
+      if (arrowButtonPosition == 5)
       {
         v63 = v299 + 0.0;
         v64 = v312 - (v299 + 0.0);
@@ -1841,46 +1841,46 @@ LABEL_16:
 
       else
       {
-        v69 = [(TUICandidateView *)self state];
-        v70 = [v69 style];
-        v44 = [v70 arrowButtonBackgroundHidden];
+        state5 = [(TUICandidateView *)self state];
+        style9 = [state5 style];
+        sortControl2 = [style9 arrowButtonBackgroundHidden];
 
         v63 = 0.0;
         v64 = v312 - (v299 + 0.0);
-        if (!v44)
+        if (!sortControl2)
         {
           v64 = v312;
         }
       }
 
       v308 = v64;
-      v71 = [(TUICandidateView *)self sortControl];
-      [v71 setAlpha:1.0];
+      sortControl5 = [(TUICandidateView *)self sortControl];
+      [sortControl5 setAlpha:1.0];
 
       v311 = 0.0;
       goto LABEL_38;
     }
 
-    v65 = [(TUICandidateView *)self sortControl];
-    [v65 setAlpha:0.0];
+    sortControl6 = [(TUICandidateView *)self sortControl];
+    [sortControl6 setAlpha:0.0];
 
-    v66 = [v3 sortControlPosition];
+    sortControlPosition = [state sortControlPosition];
     v67 = v307;
-    if (v66 == 5)
+    if (sortControlPosition == 5)
     {
       v67 = v312;
     }
 
     v307 = v67;
-    if (v66 == 5)
+    if (sortControlPosition == 5)
     {
       v20 = v309;
     }
 
-    v68 = [(TUICandidateView *)self state];
-    v44 = [v68 arrowButtonPosition];
+    state6 = [(TUICandidateView *)self state];
+    sortControl2 = [state6 arrowButtonPosition];
 
-    if (v44 == 5)
+    if (sortControl2 == 5)
     {
       v311 = 0.0;
       v63 = v299 + 0.0;
@@ -1890,34 +1890,34 @@ LABEL_38:
       goto LABEL_47;
     }
 
-    v72 = [(TUICandidateView *)self state];
-    v44 = [v72 style];
-    if ([v44 arrowButtonBackgroundHidden])
+    state7 = [(TUICandidateView *)self state];
+    sortControl2 = [state7 style];
+    if ([sortControl2 arrowButtonBackgroundHidden])
     {
-      v73 = [(TUICandidateView *)self state];
-      v74 = [v73 style];
+      state8 = [(TUICandidateView *)self state];
+      style10 = [state8 style];
       if ((objc_opt_respondsToSelector() & 1) == 0)
       {
 
 LABEL_122:
         v311 = 0.0;
         v308 = v312 - (v299 + 0.0);
-        v293 = [(TUICandidateView *)self primaryGrid];
-        [v293 arrowButtonSize];
+        primaryGrid2 = [(TUICandidateView *)self primaryGrid];
+        [primaryGrid2 arrowButtonSize];
         v295 = v294;
-        v296 = [(TUICandidateView *)self primaryGrid];
-        [v296 setArrowButtonSize:{0.0, v295}];
+        primaryGrid3 = [(TUICandidateView *)self primaryGrid];
+        [primaryGrid3 setArrowButtonSize:{0.0, v295}];
 
         v310 = v309;
         goto LABEL_46;
       }
 
-      v75 = [(TUICandidateView *)self state];
-      v76 = [v75 style];
-      v77 = [v76 shouldUpdateCollectionViewWidthForArrowButtonVisibility];
+      state9 = [(TUICandidateView *)self state];
+      style11 = [state9 style];
+      shouldUpdateCollectionViewWidthForArrowButtonVisibility2 = [style11 shouldUpdateCollectionViewWidthForArrowButtonVisibility];
 
       v311 = 0.0;
-      if ((v77 & 1) == 0)
+      if ((shouldUpdateCollectionViewWidthForArrowButtonVisibility2 & 1) == 0)
       {
         goto LABEL_122;
       }
@@ -1934,13 +1934,13 @@ LABEL_122:
     goto LABEL_45;
   }
 
-  v55 = [(TUICandidateView *)self sortControl];
-  [v55 setAlpha:1.0];
+  sortControl7 = [(TUICandidateView *)self sortControl];
+  [sortControl7 setAlpha:1.0];
 
-  v56 = [(TUICandidateView *)self showingSortControl];
+  showingSortControl = [(TUICandidateView *)self showingSortControl];
   v57 = 0.0;
   v306 = 0.0;
-  if (v56)
+  if (showingSortControl)
   {
     [(TUICandidateView *)self sortControlHeight];
   }
@@ -1969,21 +1969,21 @@ LABEL_46:
   v63 = 0.0;
 LABEL_47:
   v302 = v20;
-  if ([v3 inlineTextViewPosition] == 1)
+  if ([state inlineTextViewPosition] == 1)
   {
     v78 = v14;
     v79 = v12;
     v80 = v6;
-    v81 = [v3 style];
-    v82 = [(TUICandidateView *)self inlineTextView];
-    [v82 setStyle:v81];
+    style12 = [state style];
+    inlineTextView = [(TUICandidateView *)self inlineTextView];
+    [inlineTextView setStyle:style12];
 
     [(TUICandidateView *)self arrowButtonWidth];
     v84 = v312 - v83;
     [(TUICandidateView *)self inlineTextHeight];
     v86 = v85;
     v87 = 0.0;
-    if ([v3 sortControlPosition] == 1)
+    if ([state sortControlPosition] == 1)
     {
       v317.origin.x = 0.0;
       v317.origin.y = 0.0;
@@ -1992,11 +1992,11 @@ LABEL_47:
       v87 = CGRectGetHeight(v317) + 0.0;
     }
 
-    v88 = [(TUICandidateView *)self inlineTextView];
-    [v88 setAlpha:1.0];
+    inlineTextView2 = [(TUICandidateView *)self inlineTextView];
+    [inlineTextView2 setAlpha:1.0];
 
-    v89 = [(TUICandidateView *)self inlineTextView];
-    [v89 setFrame:{0.0, v87, v84, v86}];
+    inlineTextView3 = [(TUICandidateView *)self inlineTextView];
+    [inlineTextView3 setFrame:{0.0, v87, v84, v86}];
 
     [(TUICandidateView *)self inlineTextHeight];
     v63 = v63 + 0.0;
@@ -2009,57 +2009,57 @@ LABEL_47:
 
   else
   {
-    v91 = [(TUICandidateView *)self inlineTextView];
-    [v91 setAlpha:0.0];
+    inlineTextView4 = [(TUICandidateView *)self inlineTextView];
+    [inlineTextView4 setAlpha:0.0];
   }
 
-  if ([v3 inlineTextViewPosition] == 1)
+  if ([state inlineTextViewPosition] == 1)
   {
     goto LABEL_53;
   }
 
-  v95 = [v3 style];
+  style13 = [state style];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
 
 LABEL_62:
-    v92 = [(TUICandidateView *)self arrowButton];
-    [v92 setShowsBackground:1];
+    arrowButton = [(TUICandidateView *)self arrowButton];
+    [arrowButton setShowsBackground:1];
     goto LABEL_63;
   }
 
-  v96 = [v3 style];
-  v44 = [v96 arrowButtonBackgroundHidden];
+  style14 = [state style];
+  sortControl2 = [style14 arrowButtonBackgroundHidden];
 
-  if (!v44)
+  if (!sortControl2)
   {
     goto LABEL_62;
   }
 
 LABEL_53:
-  v92 = [(TUICandidateView *)self _inheritedRenderConfig];
-  v93 = [v92 colorAdaptiveBackground];
-  if (v93)
+  arrowButton = [(TUICandidateView *)self _inheritedRenderConfig];
+  colorAdaptiveBackground = [arrowButton colorAdaptiveBackground];
+  if (colorAdaptiveBackground)
   {
-    v44 = [MEMORY[0x1E69DCBE0] activeInstance];
-    v94 = [v44 isMinimized];
+    sortControl2 = [MEMORY[0x1E69DCBE0] activeInstance];
+    isMinimized = [sortControl2 isMinimized];
   }
 
   else
   {
-    v94 = 0;
+    isMinimized = 0;
   }
 
-  v97 = [(TUICandidateView *)self arrowButton];
-  [v97 setShowsBackground:v94];
+  arrowButton2 = [(TUICandidateView *)self arrowButton];
+  [arrowButton2 setShowsBackground:isMinimized];
 
-  if (v93)
+  if (colorAdaptiveBackground)
   {
   }
 
 LABEL_63:
 
-  if ([v3 disambiguationGridPosition] == 2)
+  if ([state disambiguationGridPosition] == 2)
   {
     [(TUICandidateView *)self disambiguationHeight];
     v99 = v98;
@@ -2067,8 +2067,8 @@ LABEL_63:
     v301 = v63 + 0.0;
     v101 = v311 + v100;
     v310 = v310 - (v100 + 0.0);
-    v102 = [(TUICandidateView *)self disambiguationGrid];
-    [v102 setFrame:{0.0, v311, v312, v99}];
+    disambiguationGrid = [(TUICandidateView *)self disambiguationGrid];
+    [disambiguationGrid setFrame:{0.0, v311, v312, v99}];
 
     [(TUICandidateView *)self disambiguationHeight];
     v104 = v103;
@@ -2078,106 +2078,106 @@ LABEL_67:
   }
 
   v104 = 0.0;
-  if ([v3 disambiguationGridPosition] == 1)
+  if ([state disambiguationGridPosition] == 1)
   {
     v301 = v63 + 0.0;
     v101 = v311 + 0.0;
     v308 = v308 + -68.0;
-    v105 = [(TUICandidateView *)self disambiguationGrid];
-    [v105 setFrame:{v312 + -68.0, v311, 68.0, v310}];
+    disambiguationGrid2 = [(TUICandidateView *)self disambiguationGrid];
+    [disambiguationGrid2 setFrame:{v312 + -68.0, v311, 68.0, v310}];
 
     goto LABEL_67;
   }
 
   v301 = v63;
 LABEL_69:
-  if (!v42)
+  if (!effectiveCandidateArrowButonPosition)
   {
     [(TUICandidateView *)self setShouldShowArrowButton:0];
     goto LABEL_83;
   }
 
   [(TUICandidateView *)self setShouldShowArrowButton:1];
-  v106 = [v3 style];
-  v107 = [(TUICandidateView *)self arrowButton];
-  [v107 setStyle:v106];
+  style15 = [state style];
+  arrowButton3 = [(TUICandidateView *)self arrowButton];
+  [arrowButton3 setStyle:style15];
 
-  v108 = [v3 arrowButtonDirection];
-  v109 = [(TUICandidateView *)self arrowButton];
-  [v109 setArrowDirection:v108];
+  arrowButtonDirection = [state arrowButtonDirection];
+  arrowButton4 = [(TUICandidateView *)self arrowButton];
+  [arrowButton4 setArrowDirection:arrowButtonDirection];
 
-  if (v42 > 2)
+  if (effectiveCandidateArrowButonPosition > 2)
   {
-    if (v42 != 3)
+    if (effectiveCandidateArrowButonPosition != 3)
     {
-      if (v42 == 4)
+      if (effectiveCandidateArrowButonPosition == 4)
       {
         [(TUICandidateView *)self arrowButtonHeight];
         v175 = v309 - v174;
         [(TUICandidateView *)self arrowButtonHeight];
         v177 = v176;
-        v178 = [(TUICandidateView *)self arrowButton];
-        [v178 setFrame:{0.0, v175, v312, v177}];
+        arrowButton5 = [(TUICandidateView *)self arrowButton];
+        [arrowButton5 setFrame:{0.0, v175, v312, v177}];
 
-        v179 = [(TUICandidateView *)self arrowButton];
-        v180 = [v3 style];
-        [v179 _setImage:0 onEdges:2 outside:1 style:v180];
+        arrowButton6 = [(TUICandidateView *)self arrowButton];
+        style16 = [state style];
+        [arrowButton6 _setImage:0 onEdges:2 outside:1 style:style16];
 
-        v181 = [v3 style];
-        [v181 cornerRadius];
+        style17 = [state style];
+        [style17 cornerRadius];
         v183 = v182;
-        v184 = [(TUICandidateView *)self arrowButton];
-        [v184 _setContinuousCornerRadius:v183];
+        arrowButton7 = [(TUICandidateView *)self arrowButton];
+        [arrowButton7 _setContinuousCornerRadius:v183];
 
-        v185 = [(TUICandidateView *)self arrowButton];
-        v186 = [v185 layer];
-        [v186 setMaskedCorners:0];
+        arrowButton8 = [(TUICandidateView *)self arrowButton];
+        layer = [arrowButton8 layer];
+        [layer setMaskedCorners:0];
 
-        v187 = [(TUICandidateView *)self arrowButton];
-        v188 = [v187 layer];
-        [v188 setMasksToBounds:0];
+        arrowButton9 = [(TUICandidateView *)self arrowButton];
+        layer2 = [arrowButton9 layer];
+        [layer2 setMasksToBounds:0];
 
         [(TUICandidateView *)self arrowButtonHeight];
         v310 = v310 - v189;
       }
 
-      else if (v42 == 5)
+      else if (effectiveCandidateArrowButonPosition == 5)
       {
         v110 = v6;
         [(TUICandidateView *)self arrowButtonWidth];
         v112 = v111;
         [(TUICandidateView *)self arrowButtonHeight];
         v114 = v113;
-        v115 = [(TUICandidateView *)self arrowButton];
-        [v115 setFrame:{0.0, v104, v112, v114}];
+        arrowButton10 = [(TUICandidateView *)self arrowButton];
+        [arrowButton10 setFrame:{0.0, v104, v112, v114}];
 
-        v116 = [(TUICandidateView *)self arrowButton];
-        v117 = [v3 style];
-        v118 = [v117 arrowButtonSeparatorImage];
-        v119 = [v3 style];
-        [v116 _setImage:v118 onEdges:8 outside:1 style:v119];
+        arrowButton11 = [(TUICandidateView *)self arrowButton];
+        style18 = [state style];
+        arrowButtonSeparatorImage = [style18 arrowButtonSeparatorImage];
+        style19 = [state style];
+        [arrowButton11 _setImage:arrowButtonSeparatorImage onEdges:8 outside:1 style:style19];
 
-        v120 = [(TUICandidateView *)self arrowButton];
-        [v120 _setContinuousCornerRadius:0.0];
+        arrowButton12 = [(TUICandidateView *)self arrowButton];
+        [arrowButton12 _setContinuousCornerRadius:0.0];
 
-        v121 = [(TUICandidateView *)self arrowButton];
-        v122 = [v121 layer];
-        [v122 setMasksToBounds:0];
+        arrowButton13 = [(TUICandidateView *)self arrowButton];
+        layer3 = [arrowButton13 layer];
+        [layer3 setMasksToBounds:0];
 
-        v123 = [v3 style];
-        [v123 cornerRadius];
+        style20 = [state style];
+        [style20 cornerRadius];
         v125 = v124;
 
-        v126 = [v3 style];
-        LODWORD(v122) = [v126 doNotClipToBounds];
+        style21 = [state style];
+        LODWORD(layer3) = [style21 doNotClipToBounds];
 
-        if (v122)
+        if (layer3)
         {
-          v127 = [(TUICandidateView *)self state];
-          v128 = [v127 borders] & 2;
+          state10 = [(TUICandidateView *)self state];
+          v128 = [state10 borders] & 2;
 
-          v129 = [v3 style];
-          [v129 cornerRadius];
+          style22 = [state style];
+          [style22 cornerRadius];
           v125 = v130;
 
           v131 = v104 == 0.0;
@@ -2193,24 +2193,24 @@ LABEL_69:
 
         v6 = v110;
         v190 = v302;
-        v282 = [(TUICandidateView *)self arrowButton];
-        v283 = [v282 contentView];
-        v284 = [v3 style];
-        [v283 _setShowsLinesOnEdges:v128 style:v284];
+        arrowButton14 = [(TUICandidateView *)self arrowButton];
+        contentView = [arrowButton14 contentView];
+        style23 = [state style];
+        [contentView _setShowsLinesOnEdges:v128 style:style23];
 
-        v285 = [(TUICandidateView *)self arrowButton];
-        v286 = [v285 contentView];
-        [v286 _setContinuousCornerRadius:v125];
+        arrowButton15 = [(TUICandidateView *)self arrowButton];
+        contentView2 = [arrowButton15 contentView];
+        [contentView2 _setContinuousCornerRadius:v125];
 
-        v287 = [(TUICandidateView *)self arrowButton];
-        v288 = [v287 contentView];
-        v289 = [v288 layer];
-        [v289 setMaskedCorners:v132];
+        arrowButton16 = [(TUICandidateView *)self arrowButton];
+        contentView3 = [arrowButton16 contentView];
+        layer4 = [contentView3 layer];
+        [layer4 setMaskedCorners:v132];
 
-        v290 = [(TUICandidateView *)self arrowButton];
-        v291 = [v290 contentView];
-        v292 = [v291 layer];
-        [v292 setMasksToBounds:v131];
+        arrowButton17 = [(TUICandidateView *)self arrowButton];
+        contentView4 = [arrowButton17 contentView];
+        layer5 = [contentView4 layer];
+        [layer5 setMasksToBounds:v131];
 
         goto LABEL_84;
       }
@@ -2230,40 +2230,40 @@ LABEL_83:
     [(TUICandidateView *)self arrowButtonHeight];
     v163 = v12;
     v165 = v164;
-    v166 = [(TUICandidateView *)self arrowButton];
+    arrowButton18 = [(TUICandidateView *)self arrowButton];
     v167 = v162;
     v6 = v160;
     v168 = v165;
     v12 = v163;
-    [v166 setFrame:{v157, v159, v167, v168}];
+    [arrowButton18 setFrame:{v157, v159, v167, v168}];
 
-    v169 = [(TUICandidateView *)self arrowButton];
-    v170 = [v3 style];
-    v171 = [v170 arrowButtonSeparatorImage];
-    v172 = [v3 style];
-    [v169 _setImage:v171 onEdges:2 outside:1 style:v172];
+    arrowButton19 = [(TUICandidateView *)self arrowButton];
+    style24 = [state style];
+    arrowButtonSeparatorImage2 = [style24 arrowButtonSeparatorImage];
+    style25 = [state style];
+    [arrowButton19 _setImage:arrowButtonSeparatorImage2 onEdges:2 outside:1 style:style25];
 
-    v173 = [(TUICandidateView *)self arrowButton];
-    [v173 _setContinuousCornerRadius:0.0];
+    arrowButton20 = [(TUICandidateView *)self arrowButton];
+    [arrowButton20 _setContinuousCornerRadius:0.0];
 
-    v154 = [(TUICandidateView *)self arrowButton];
-    v155 = [v154 layer];
-    [v155 setMasksToBounds:0];
+    arrowButton21 = [(TUICandidateView *)self arrowButton];
+    layer6 = [arrowButton21 layer];
+    [layer6 setMasksToBounds:0];
 LABEL_81:
 
     goto LABEL_83;
   }
 
-  if (v42 != 1)
+  if (effectiveCandidateArrowButonPosition != 1)
   {
-    if (v42 != 2)
+    if (effectiveCandidateArrowButonPosition != 2)
     {
       goto LABEL_83;
     }
 
-    [v3 arrowButtonOffset];
+    [state arrowButtonOffset];
     v134 = v312 + v133;
-    [v3 arrowButtonOffset];
+    [state arrowButtonOffset];
     v136 = v104 + v135;
     [(TUICandidateView *)self arrowButtonWidth];
     v137 = v6;
@@ -2271,30 +2271,30 @@ LABEL_81:
     [(TUICandidateView *)self arrowButtonHeight];
     v140 = v12;
     v142 = v141;
-    v143 = [(TUICandidateView *)self arrowButton];
+    arrowButton22 = [(TUICandidateView *)self arrowButton];
     v144 = v139;
     v6 = v137;
     v145 = v142;
     v12 = v140;
-    [v143 setFrame:{v134, v136, v144, v145}];
+    [arrowButton22 setFrame:{v134, v136, v144, v145}];
 
-    v146 = [(TUICandidateView *)self arrowButton];
-    v147 = [v3 style];
-    [v146 _setImage:0 onEdges:2 outside:1 style:v147];
+    arrowButton23 = [(TUICandidateView *)self arrowButton];
+    style26 = [state style];
+    [arrowButton23 _setImage:0 onEdges:2 outside:1 style:style26];
 
-    v148 = [v3 style];
-    [v148 cornerRadius];
+    style27 = [state style];
+    [style27 cornerRadius];
     v150 = v149;
-    v151 = [(TUICandidateView *)self arrowButton];
-    [v151 _setContinuousCornerRadius:v150];
+    arrowButton24 = [(TUICandidateView *)self arrowButton];
+    [arrowButton24 _setContinuousCornerRadius:v150];
 
-    v152 = [(TUICandidateView *)self arrowButton];
-    v153 = [v152 layer];
-    [v153 setMasksToBounds:1];
+    arrowButton25 = [(TUICandidateView *)self arrowButton];
+    layer7 = [arrowButton25 layer];
+    [layer7 setMasksToBounds:1];
 
-    v154 = [(TUICandidateView *)self arrowButton];
-    v155 = [v154 layer];
-    [v155 setMaskedCorners:1];
+    arrowButton21 = [(TUICandidateView *)self arrowButton];
+    layer6 = [arrowButton21 layer];
+    [layer6 setMaskedCorners:1];
     goto LABEL_81;
   }
 
@@ -2302,42 +2302,42 @@ LABEL_81:
   v298 = v6;
   [(TUICandidateView *)self arrowButtonWidth];
   v234 = v312 - v233;
-  [v3 arrowButtonOffset];
+  [state arrowButtonOffset];
   v236 = v104 + v235;
   [(TUICandidateView *)self arrowButtonWidth];
   v238 = v237;
   [(TUICandidateView *)self arrowButtonHeight];
   v240 = v239;
-  v241 = [(TUICandidateView *)self arrowButton];
-  [v241 setFrame:{v234, v236, v238, v240}];
+  arrowButton26 = [(TUICandidateView *)self arrowButton];
+  [arrowButton26 setFrame:{v234, v236, v238, v240}];
 
-  v242 = [(TUICandidateView *)self arrowButton];
-  v243 = [v3 style];
-  v244 = [v243 arrowButtonSeparatorImage];
-  v245 = [v3 style];
-  [v242 _setImage:v244 onEdges:2 outside:1 style:v245];
+  arrowButton27 = [(TUICandidateView *)self arrowButton];
+  style28 = [state style];
+  arrowButtonSeparatorImage3 = [style28 arrowButtonSeparatorImage];
+  style29 = [state style];
+  [arrowButton27 _setImage:arrowButtonSeparatorImage3 onEdges:2 outside:1 style:style29];
 
-  v246 = [(TUICandidateView *)self arrowButton];
-  [v246 _setContinuousCornerRadius:0.0];
+  arrowButton28 = [(TUICandidateView *)self arrowButton];
+  [arrowButton28 _setContinuousCornerRadius:0.0];
 
-  v247 = [(TUICandidateView *)self arrowButton];
-  v248 = [v247 layer];
-  [v248 setMasksToBounds:0];
+  arrowButton29 = [(TUICandidateView *)self arrowButton];
+  layer8 = [arrowButton29 layer];
+  [layer8 setMasksToBounds:0];
 
-  v249 = [v3 style];
-  [v249 cornerRadius];
+  style30 = [state style];
+  [style30 cornerRadius];
   v251 = v250;
 
-  v252 = [v3 style];
-  LODWORD(v248) = [v252 doNotClipToBounds];
+  style31 = [state style];
+  LODWORD(layer8) = [style31 doNotClipToBounds];
 
-  if (v248)
+  if (layer8)
   {
-    v253 = [(TUICandidateView *)self state];
-    v254 = [v253 borders] & 8;
+    state11 = [(TUICandidateView *)self state];
+    v254 = [state11 borders] & 8;
 
-    v255 = [v3 style];
-    [v255 cornerRadius];
+    style32 = [state style];
+    [style32 cornerRadius];
     v251 = v256;
 
     v257 = v104 == 0.0;
@@ -2352,24 +2352,24 @@ LABEL_81:
   }
 
   v190 = v302;
-  v259 = [(TUICandidateView *)self arrowButton];
-  v260 = [v259 contentView];
-  v261 = [v3 style];
-  [v260 _setShowsLinesOnEdges:v254 style:v261];
+  arrowButton30 = [(TUICandidateView *)self arrowButton];
+  contentView5 = [arrowButton30 contentView];
+  style33 = [state style];
+  [contentView5 _setShowsLinesOnEdges:v254 style:style33];
 
-  v262 = [(TUICandidateView *)self arrowButton];
-  v263 = [v262 contentView];
-  [v263 _setContinuousCornerRadius:v251];
+  arrowButton31 = [(TUICandidateView *)self arrowButton];
+  contentView6 = [arrowButton31 contentView];
+  [contentView6 _setContinuousCornerRadius:v251];
 
-  v264 = [(TUICandidateView *)self arrowButton];
-  v265 = [v264 contentView];
-  v266 = [v265 layer];
-  [v266 setMaskedCorners:v258];
+  arrowButton32 = [(TUICandidateView *)self arrowButton];
+  contentView7 = [arrowButton32 contentView];
+  layer9 = [contentView7 layer];
+  [layer9 setMaskedCorners:v258];
 
-  v267 = [(TUICandidateView *)self arrowButton];
-  v268 = [v267 contentView];
-  v269 = [v268 layer];
-  [v269 setMasksToBounds:v257];
+  arrowButton33 = [(TUICandidateView *)self arrowButton];
+  contentView8 = [arrowButton33 contentView];
+  layer10 = [contentView8 layer];
+  [layer10 setMasksToBounds:v257];
 
   [(TUICandidateView *)self bounds];
   v270 = v308;
@@ -2379,43 +2379,43 @@ LABEL_81:
   }
 
   v308 = v270;
-  v272 = [(TUICandidateView *)self _inheritedRenderConfig];
-  v273 = [v272 colorAdaptiveBackground];
-  if (v273)
+  _inheritedRenderConfig = [(TUICandidateView *)self _inheritedRenderConfig];
+  colorAdaptiveBackground2 = [_inheritedRenderConfig colorAdaptiveBackground];
+  if (colorAdaptiveBackground2)
   {
-    v268 = [MEMORY[0x1E69DCBE0] activeInstance];
-    v274 = [v268 isMinimized];
+    contentView8 = [MEMORY[0x1E69DCBE0] activeInstance];
+    isMinimized2 = [contentView8 isMinimized];
   }
 
   else
   {
-    v274 = 0;
+    isMinimized2 = 0;
   }
 
-  v275 = [(TUICandidateView *)self arrowButton];
-  [v275 setShowsBackground:v274];
+  arrowButton34 = [(TUICandidateView *)self arrowButton];
+  [arrowButton34 setShowsBackground:isMinimized2];
 
-  if (v273)
+  if (colorAdaptiveBackground2)
   {
   }
 
-  v276 = [(TUICandidateView *)self arrowButton];
-  v277 = [v276 _allLines];
-  v278 = [v277 firstObject];
+  arrowButton35 = [(TUICandidateView *)self arrowButton];
+  _allLines = [arrowButton35 _allLines];
+  firstObject = [_allLines firstObject];
 
-  v279 = [v278 subviews];
-  v280 = [v279 firstObject];
+  subviews = [firstObject subviews];
+  firstObject2 = [subviews firstObject];
 
-  [v280 frame];
-  v281 = [(TUICandidateView *)self _inheritedRenderConfig];
-  [v281 colorAdaptiveBackground];
+  [firstObject2 frame];
+  _inheritedRenderConfig2 = [(TUICandidateView *)self _inheritedRenderConfig];
+  [_inheritedRenderConfig2 colorAdaptiveBackground];
   UIRectInset();
-  [v280 setFrame:?];
+  [firstObject2 setFrame:?];
 
   v12 = v297;
   v6 = v298;
 LABEL_84:
-  if ([v3 sortControlPosition] == 4)
+  if ([state sortControlPosition] == 4)
   {
     v191 = v308;
   }
@@ -2425,8 +2425,8 @@ LABEL_84:
     v191 = v307;
   }
 
-  v192 = [(TUICandidateView *)self sortControl];
-  [v192 frame];
+  sortControl8 = [(TUICandidateView *)self sortControl];
+  [sortControl8 frame];
   v194 = v193;
 
   if (v194 == 0.0)
@@ -2445,8 +2445,8 @@ LABEL_84:
 
   else
   {
-    v195 = [(TUICandidateView *)self sortControl];
-    [v195 setFrame:{v306, v190, v191, v303}];
+    sortControl9 = [(TUICandidateView *)self sortControl];
+    [sortControl9 setFrame:{v306, v190, v191, v303}];
   }
 
   aBlock[0] = MEMORY[0x1E69E9820];
@@ -2479,24 +2479,24 @@ LABEL_84:
   v318.size.height = rect;
   if (Height <= CGRectGetHeight(v318))
   {
-    v205 = [v3 style];
-    v206 = [v205 doNotClipToBounds];
+    style34 = [state style];
+    doNotClipToBounds = [style34 doNotClipToBounds];
 
-    if (v206)
+    if (doNotClipToBounds)
     {
-      v207 = [(TUICandidateView *)self primaryGrid];
-      [v207 setSuppressCollectionViewLayout:1];
+      primaryGrid4 = [(TUICandidateView *)self primaryGrid];
+      [primaryGrid4 setSuppressCollectionViewLayout:1];
     }
 
     v196[2](v196);
-    v204 = [(TUICandidateView *)self primaryGrid];
-    [v204 layoutIfNeeded];
+    primaryGrid5 = [(TUICandidateView *)self primaryGrid];
+    [primaryGrid5 layoutIfNeeded];
   }
 
   else
   {
-    v202 = [(TUICandidateView *)self primaryGrid];
-    [v202 setOrigin:{v301, v311}];
+    primaryGrid6 = [(TUICandidateView *)self primaryGrid];
+    [primaryGrid6 setOrigin:{v301, v311}];
 
     v203 = MEMORY[0x1E69DD250];
     v313[0] = MEMORY[0x1E69E9820];
@@ -2506,53 +2506,53 @@ LABEL_84:
     v313[4] = self;
     v314 = v196;
     [v203 performWithoutAnimation:v313];
-    v204 = v314;
+    primaryGrid5 = v314;
   }
 
   [(TUICandidateView *)self updateArrowButtonVisibility];
-  v208 = [v3 style];
-  v209 = [v208 leftEdgeSeparatorImage];
-  v210 = [v3 style];
-  [(UIView *)self _setImage:v209 onEdges:2 outside:0 style:v210];
+  style35 = [state style];
+  leftEdgeSeparatorImage = [style35 leftEdgeSeparatorImage];
+  style36 = [state style];
+  [(UIView *)self _setImage:leftEdgeSeparatorImage onEdges:2 outside:0 style:style36];
 
-  v211 = [v3 style];
-  v212 = [v211 rightEdgeSeparatorImage];
-  v213 = [v3 style];
-  [(UIView *)self _setImage:v212 onEdges:8 outside:0 style:v213];
+  style37 = [state style];
+  rightEdgeSeparatorImage = [style37 rightEdgeSeparatorImage];
+  style38 = [state style];
+  [(UIView *)self _setImage:rightEdgeSeparatorImage onEdges:8 outside:0 style:style38];
 
-  v214 = [(TUICandidateView *)self clipsToBoundsView];
-  [v214 setFrame:{v305, v6, v312, v309}];
+  clipsToBoundsView2 = [(TUICandidateView *)self clipsToBoundsView];
+  [clipsToBoundsView2 setFrame:{v305, v6, v312, v309}];
 
-  v215 = [v3 style];
-  v216 = [v215 backgroundColor];
-  v217 = [(TUICandidateView *)self clipsToBoundsView];
-  [v217 setBackgroundColor:v216];
+  style39 = [state style];
+  backgroundColor = [style39 backgroundColor];
+  clipsToBoundsView3 = [(TUICandidateView *)self clipsToBoundsView];
+  [clipsToBoundsView3 setBackgroundColor:backgroundColor];
 
-  v218 = [(TUICandidateView *)self _inheritedRenderConfig];
-  if ([v218 colorAdaptiveBackground])
+  _inheritedRenderConfig3 = [(TUICandidateView *)self _inheritedRenderConfig];
+  if ([_inheritedRenderConfig3 colorAdaptiveBackground])
   {
-    v219 = [(TUICandidateView *)self state];
-    v220 = [v219 style];
+    state12 = [(TUICandidateView *)self state];
+    style40 = [state12 style];
     if (objc_opt_respondsToSelector())
     {
-      v221 = [(TUICandidateView *)self state];
-      v222 = [v221 style];
-      v223 = [v222 performSelector:sel_backgroundMaterial];
+      state13 = [(TUICandidateView *)self state];
+      style41 = [state13 style];
+      v223 = [style41 performSelector:sel_backgroundMaterial];
 
       if (!v223)
       {
         goto LABEL_105;
       }
 
-      v224 = [(TUICandidateView *)self state];
-      v225 = [v224 style];
-      v218 = [v225 performSelector:sel_backgroundMaterial];
+      state14 = [(TUICandidateView *)self state];
+      style42 = [state14 style];
+      _inheritedRenderConfig3 = [style42 performSelector:sel_backgroundMaterial];
 
-      v226 = [(TUICandidateView *)self clipsToBoundsView];
-      [v226 _setBackground:v218];
+      clipsToBoundsView4 = [(TUICandidateView *)self clipsToBoundsView];
+      [clipsToBoundsView4 _setBackground:_inheritedRenderConfig3];
 
-      v219 = [(TUICandidateView *)self clipsToBoundsView];
-      [v219 setClipsToBounds:1];
+      state12 = [(TUICandidateView *)self clipsToBoundsView];
+      [state12 setClipsToBounds:1];
     }
 
     else
@@ -2561,13 +2561,13 @@ LABEL_84:
   }
 
 LABEL_105:
-  v227 = [(TUICandidateView *)self clipsToBoundsView];
-  v228 = [v227 layer];
-  [v228 setMask:0];
+  clipsToBoundsView5 = [(TUICandidateView *)self clipsToBoundsView];
+  layer11 = [clipsToBoundsView5 layer];
+  [layer11 setMask:0];
 
-  v229 = [(TUICandidateView *)self state];
-  v230 = [v229 style];
-  [v230 cornerRadius];
+  state15 = [(TUICandidateView *)self state];
+  style43 = [state15 style];
+  [style43 cornerRadius];
   v232 = v231;
 
   if (v232 > 0.0)
@@ -2652,12 +2652,12 @@ void __52__TUICandidateView_changeLayoutInsideAnimationBlock__block_invoke_3(uin
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [(TUICandidateView *)self primaryGrid];
-  v3 = [v2 candidateGroups];
-  v4 = [v3 firstObject];
-  v5 = [v4 candidates];
+  primaryGrid = [(TUICandidateView *)self primaryGrid];
+  candidateGroups = [primaryGrid candidateGroups];
+  firstObject = [candidateGroups firstObject];
+  candidates = [firstObject candidates];
 
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v6 = [candidates countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = *v11;
@@ -2667,7 +2667,7 @@ void __52__TUICandidateView_changeLayoutInsideAnimationBlock__block_invoke_3(uin
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(candidates);
         }
 
         if ([*(*(&v10 + 1) + 8 * i) isAutofillExtraCandidate])
@@ -2677,7 +2677,7 @@ void __52__TUICandidateView_changeLayoutInsideAnimationBlock__block_invoke_3(uin
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [candidates countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v6)
       {
         continue;
@@ -2692,139 +2692,139 @@ LABEL_11:
   return v6;
 }
 
-- (void)prepareForLayoutChange:(BOOL)a3
+- (void)prepareForLayoutChange:(BOOL)change
 {
-  v3 = a3;
+  changeCopy = change;
   v146[1] = *MEMORY[0x1E69E9840];
   [(TUICandidateView *)self setChangingLayout:1];
-  v5 = [(TUICandidateView *)self state];
-  v6 = [v5 style];
-  v7 = [v6 doNotClipToBounds];
-  v8 = [(TUICandidateView *)self clipsToBoundsView];
-  [v8 setClipsToBounds:v7 ^ 1u];
+  state = [(TUICandidateView *)self state];
+  style = [state style];
+  doNotClipToBounds = [style doNotClipToBounds];
+  clipsToBoundsView = [(TUICandidateView *)self clipsToBoundsView];
+  [clipsToBoundsView setClipsToBounds:doNotClipToBounds ^ 1u];
 
-  [(TUICandidateView *)self boundsForClipsToBoundsViewWithState:v5];
+  [(TUICandidateView *)self boundsForClipsToBoundsViewWithState:state];
   v10 = v9;
-  if ([v5 hasBackdrop])
+  if ([state hasBackdrop])
   {
-    v11 = [(TUICandidateView *)self backdropView];
+    backdropView = [(TUICandidateView *)self backdropView];
 
-    if (!v11)
+    if (!backdropView)
     {
       v12 = [TUICandidateBackdropView alloc];
       [(TUICandidateView *)self bounds];
       v13 = [(TUICandidateBackdropView *)v12 initWithFrame:?];
       [(TUICandidateView *)self setBackdropView:v13];
 
-      v14 = [v5 style];
-      v15 = [(TUICandidateView *)self backdropView];
-      [v15 setStyle:v14];
+      style2 = [state style];
+      backdropView2 = [(TUICandidateView *)self backdropView];
+      [backdropView2 setStyle:style2];
 
-      v16 = [(TUICandidateView *)self backdropView];
-      [v16 setDelegate:self];
+      backdropView3 = [(TUICandidateView *)self backdropView];
+      [backdropView3 setDelegate:self];
 
-      v17 = [(TUICandidateView *)self clipsToBoundsView];
-      v18 = [(TUICandidateView *)self backdropView];
-      [v17 insertSubview:v18 atIndex:0];
+      clipsToBoundsView2 = [(TUICandidateView *)self clipsToBoundsView];
+      backdropView4 = [(TUICandidateView *)self backdropView];
+      [clipsToBoundsView2 insertSubview:backdropView4 atIndex:0];
     }
 
-    v19 = [v5 style];
-    v20 = [v19 doNotClipToBounds];
-    v21 = [(TUICandidateView *)self backdropView];
-    [v21 setClipsToBounds:v20];
+    style3 = [state style];
+    doNotClipToBounds2 = [style3 doNotClipToBounds];
+    backdropView5 = [(TUICandidateView *)self backdropView];
+    [backdropView5 setClipsToBounds:doNotClipToBounds2];
 
-    v22 = [(TUICandidateView *)self backdropView];
-    [v22 setHidden:0];
+    backdropView6 = [(TUICandidateView *)self backdropView];
+    [backdropView6 setHidden:0];
   }
 
-  if ([v5 inlineTextViewPosition])
+  if ([state inlineTextViewPosition])
   {
-    v23 = [(TUICandidateView *)self inlineTextView];
+    inlineTextView = [(TUICandidateView *)self inlineTextView];
 
-    if (!v23)
+    if (!inlineTextView)
     {
       v24 = [TUICandidateInlineTextView alloc];
       [(TUICandidateView *)self bounds];
       v25 = [(TUICandidateInlineTextView *)v24 initWithFrame:?];
       [(TUICandidateView *)self setInlineTextView:v25];
 
-      v26 = [(TUICandidateView *)self clipsToBoundsView];
-      v27 = [(TUICandidateView *)self inlineTextView];
-      v28 = [(TUICandidateView *)self primaryGrid];
-      [v26 insertSubview:v27 belowSubview:v28];
+      clipsToBoundsView3 = [(TUICandidateView *)self clipsToBoundsView];
+      inlineTextView2 = [(TUICandidateView *)self inlineTextView];
+      primaryGrid = [(TUICandidateView *)self primaryGrid];
+      [clipsToBoundsView3 insertSubview:inlineTextView2 belowSubview:primaryGrid];
 
       v29 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:self action:sel_didTapInlineText_];
-      v30 = [(TUICandidateView *)self inlineTextView];
-      [v30 addGestureRecognizer:v29];
+      inlineTextView3 = [(TUICandidateView *)self inlineTextView];
+      [inlineTextView3 addGestureRecognizer:v29];
 
-      v31 = [(TUICandidateView *)self inlineTextView];
-      [v31 setHidden:1];
+      inlineTextView4 = [(TUICandidateView *)self inlineTextView];
+      [inlineTextView4 setHidden:1];
     }
 
-    v32 = [(TUICandidateView *)self inlineTextView];
-    v33 = [v32 isHidden];
+    inlineTextView5 = [(TUICandidateView *)self inlineTextView];
+    isHidden = [inlineTextView5 isHidden];
 
-    if (v33)
+    if (isHidden)
     {
-      v34 = [(TUICandidateView *)self inlineTextView];
-      [v34 setHidden:0];
+      inlineTextView6 = [(TUICandidateView *)self inlineTextView];
+      [inlineTextView6 setHidden:0];
 
-      v35 = [(TUICandidateView *)self inlineTextView];
-      [v35 setAlpha:0.0];
+      inlineTextView7 = [(TUICandidateView *)self inlineTextView];
+      [inlineTextView7 setAlpha:0.0];
     }
 
-    v36 = [(TUICandidateView *)self inlineText];
-    v37 = [(TUICandidateView *)self inlineTextView];
-    [v37 setText:v36];
+    inlineText = [(TUICandidateView *)self inlineText];
+    inlineTextView8 = [(TUICandidateView *)self inlineTextView];
+    [inlineTextView8 setText:inlineText];
   }
 
-  v38 = [(TUICandidateView *)self disambiguationGrid];
+  disambiguationGrid = [(TUICandidateView *)self disambiguationGrid];
 
-  if (!v38)
+  if (!disambiguationGrid)
   {
     v39 = [TUICandidateGrid alloc];
     [(TUICandidateView *)self disambiguationHeight];
     v41 = [(TUICandidateGrid *)v39 initWithFrame:0.0, 0.0, v10, v40];
     [(TUICandidateView *)self setDisambiguationGrid:v41];
 
-    v42 = [(TUICandidateView *)self disambiguationGrid];
-    [v42 setDelegate:self];
+    disambiguationGrid2 = [(TUICandidateView *)self disambiguationGrid];
+    [disambiguationGrid2 setDelegate:self];
   }
 
-  if ([v5 disambiguationGridPosition])
+  if ([state disambiguationGridPosition])
   {
-    v43 = [(TUICandidateView *)self clipsToBoundsView];
-    v44 = [(TUICandidateView *)self disambiguationGrid];
-    v45 = [(TUICandidateView *)self primaryGrid];
-    [v43 insertSubview:v44 aboveSubview:v45];
+    clipsToBoundsView4 = [(TUICandidateView *)self clipsToBoundsView];
+    disambiguationGrid3 = [(TUICandidateView *)self disambiguationGrid];
+    primaryGrid2 = [(TUICandidateView *)self primaryGrid];
+    [clipsToBoundsView4 insertSubview:disambiguationGrid3 aboveSubview:primaryGrid2];
 
-    v46 = [v5 disambiguationStyle];
-    v47 = [(TUICandidateView *)self disambiguationGrid];
-    [v47 setStyle:v46];
+    disambiguationStyle = [state disambiguationStyle];
+    disambiguationGrid4 = [(TUICandidateView *)self disambiguationGrid];
+    [disambiguationGrid4 setStyle:disambiguationStyle];
 
-    v48 = [v5 disambiguationGridRowType];
-    v49 = [(TUICandidateView *)self disambiguationGrid];
-    [v49 setRowType:v48];
+    disambiguationGridRowType = [state disambiguationGridRowType];
+    disambiguationGrid5 = [(TUICandidateView *)self disambiguationGrid];
+    [disambiguationGrid5 setRowType:disambiguationGridRowType];
 
     v50 = objc_alloc(MEMORY[0x1E69D95E0]);
     v51 = MEMORY[0x1E695DFB8];
-    v52 = [(TUICandidateView *)self candidateResultSet];
-    v53 = [v52 disambiguationCandidates];
-    v54 = [v51 orderedSetWithArray:v53];
+    candidateResultSet = [(TUICandidateView *)self candidateResultSet];
+    disambiguationCandidates = [candidateResultSet disambiguationCandidates];
+    v54 = [v51 orderedSetWithArray:disambiguationCandidates];
     v55 = [v50 initWithTitle:&stru_1F03BA8F8 candidates:v54];
     v146[0] = v55;
     v56 = [MEMORY[0x1E695DEC8] arrayWithObjects:v146 count:1];
-    v57 = [(TUICandidateView *)self disambiguationGrid];
-    [v57 setCandidateGroups:v56];
+    disambiguationGrid6 = [(TUICandidateView *)self disambiguationGrid];
+    [disambiguationGrid6 setCandidateGroups:v56];
 
     [(TUICandidateView *)self updateDisambiguationSelectionIndex];
-    v58 = [(TUICandidateView *)self disambiguationGrid];
-    [v58 setHidden:0];
+    disambiguationGrid7 = [(TUICandidateView *)self disambiguationGrid];
+    [disambiguationGrid7 setHidden:0];
   }
 
-  if ([v5 disambiguationGridPosition] == 2)
+  if ([state disambiguationGridPosition] == 2)
   {
-    if ([v5 inlineTextViewPosition] == 1)
+    if ([state inlineTextViewPosition] == 1)
     {
       v59 = 5;
     }
@@ -2834,15 +2834,15 @@ LABEL_11:
       v59 = 4;
     }
 
-    v60 = [(TUICandidateView *)self disambiguationGrid];
-    v61 = [v60 style];
+    disambiguationGrid8 = [(TUICandidateView *)self disambiguationGrid];
+    style4 = [disambiguationGrid8 style];
     if (objc_opt_respondsToSelector())
     {
-      v62 = [(TUICandidateView *)self disambiguationGrid];
-      v63 = [v62 style];
-      v64 = [v63 hideLinesOnDisambiguationGridEdges];
+      disambiguationGrid9 = [(TUICandidateView *)self disambiguationGrid];
+      style5 = [disambiguationGrid9 style];
+      hideLinesOnDisambiguationGridEdges = [style5 hideLinesOnDisambiguationGridEdges];
 
-      if (v64)
+      if (hideLinesOnDisambiguationGridEdges)
       {
         v59 = 0;
       }
@@ -2855,19 +2855,19 @@ LABEL_11:
 
   else
   {
-    v65 = [v5 disambiguationGridPosition];
-    v66 = [(TUICandidateView *)self disambiguationGrid];
-    v67 = v66;
-    if (v65 == 1)
+    disambiguationGridPosition = [state disambiguationGridPosition];
+    disambiguationGrid10 = [(TUICandidateView *)self disambiguationGrid];
+    v67 = disambiguationGrid10;
+    if (disambiguationGridPosition == 1)
     {
-      v68 = [v66 style];
+      style6 = [disambiguationGrid10 style];
       if (objc_opt_respondsToSelector())
       {
-        v69 = [(TUICandidateView *)self disambiguationGrid];
-        v70 = [v69 style];
-        v71 = [v70 hideLinesOnDisambiguationGridEdges];
+        disambiguationGrid11 = [(TUICandidateView *)self disambiguationGrid];
+        style7 = [disambiguationGrid11 style];
+        hideLinesOnDisambiguationGridEdges2 = [style7 hideLinesOnDisambiguationGridEdges];
 
-        if (v71)
+        if (hideLinesOnDisambiguationGridEdges2)
         {
           v59 = 0;
         }
@@ -2887,122 +2887,122 @@ LABEL_11:
 
     else
     {
-      [v66 setHidden:1];
+      [disambiguationGrid10 setHidden:1];
 
       v59 = 0;
     }
   }
 
-  v72 = [(TUICandidateView *)self disambiguationGrid];
-  v73 = [v5 style];
-  [v72 _setShowsLinesOnEdges:v59 style:v73];
+  disambiguationGrid12 = [(TUICandidateView *)self disambiguationGrid];
+  style8 = [state style];
+  [disambiguationGrid12 _setShowsLinesOnEdges:v59 style:style8];
 
-  if ([v5 sortControlPosition] && (-[TUICandidateView state](self, "state"), v74 = objc_claimAutoreleasedReturnValue(), v75 = objc_msgSend(v74, "sortControlPosition"), v74, v75 != 5))
+  if ([state sortControlPosition] && (-[TUICandidateView state](self, "state"), v74 = objc_claimAutoreleasedReturnValue(), v75 = objc_msgSend(v74, "sortControlPosition"), v74, v75 != 5))
   {
-    v77 = [(TUICandidateView *)self sortControl];
-    [v77 setHidden:0];
+    sortControl = [(TUICandidateView *)self sortControl];
+    [sortControl setHidden:0];
 
     [(TUICandidateView *)self updateSortControlTitlesIfNeeded];
   }
 
   else
   {
-    v76 = [(TUICandidateView *)self sortControl];
-    [v76 setHidden:1];
+    sortControl2 = [(TUICandidateView *)self sortControl];
+    [sortControl2 setHidden:1];
 
     [(TUICandidateView *)self resetSortControlIndex];
   }
 
-  if ([v5 sortControlPosition] == 4)
+  if ([state sortControlPosition] == 4)
   {
-    v78 = [(TUICandidateView *)self sortControl];
-    v79 = [v78 superview];
-    v80 = [(TUICandidateView *)self clipsToBoundsView];
+    sortControl3 = [(TUICandidateView *)self sortControl];
+    superview = [sortControl3 superview];
+    clipsToBoundsView5 = [(TUICandidateView *)self clipsToBoundsView];
 
-    if (v79 == v80)
+    if (superview == clipsToBoundsView5)
     {
-      v81 = [(TUICandidateView *)self sortControl];
-      [v81 removeFromSuperview];
+      sortControl4 = [(TUICandidateView *)self sortControl];
+      [sortControl4 removeFromSuperview];
     }
 
-    v82 = [(TUICandidateView *)self sortControl];
-    v83 = [(TUICandidateView *)self primaryGrid];
-    [v83 setCustomHeader:v82];
+    sortControl5 = [(TUICandidateView *)self sortControl];
+    primaryGrid3 = [(TUICandidateView *)self primaryGrid];
+    [primaryGrid3 setCustomHeader:sortControl5];
 
-    v84 = [(TUICandidateView *)self sortControl];
-    [v84 setAlpha:1.0];
+    sortControl6 = [(TUICandidateView *)self sortControl];
+    [sortControl6 setAlpha:1.0];
 
     [(TUICandidateView *)self sortControlHeight];
     v86 = v85;
-    v87 = [(TUICandidateView *)self sortControl];
-    [v87 setFrame:{0.0, 0.0, v10, v86}];
+    sortControl7 = [(TUICandidateView *)self sortControl];
+    [sortControl7 setFrame:{0.0, 0.0, v10, v86}];
 
-    v88 = [(TUICandidateView *)self sortControl];
-    v89 = [v5 style];
-    [v88 _setShowsLinesOnEdges:0 style:v89];
+    sortControl8 = [(TUICandidateView *)self sortControl];
+    style9 = [state style];
+    [sortControl8 _setShowsLinesOnEdges:0 style:style9];
   }
 
   else
   {
-    v90 = [(TUICandidateView *)self primaryGrid];
-    [v90 setCustomHeader:0];
+    primaryGrid4 = [(TUICandidateView *)self primaryGrid];
+    [primaryGrid4 setCustomHeader:0];
 
-    v91 = [(TUICandidateView *)self sortControl];
-    v92 = [v91 superview];
-    v93 = [(TUICandidateView *)self clipsToBoundsView];
+    sortControl9 = [(TUICandidateView *)self sortControl];
+    superview2 = [sortControl9 superview];
+    clipsToBoundsView6 = [(TUICandidateView *)self clipsToBoundsView];
 
-    if (v92 == v93)
+    if (superview2 == clipsToBoundsView6)
     {
       goto LABEL_42;
     }
 
-    v94 = [(TUICandidateView *)self sortControl];
-    [v94 removeFromSuperview];
+    sortControl10 = [(TUICandidateView *)self sortControl];
+    [sortControl10 removeFromSuperview];
 
-    v88 = [(TUICandidateView *)self clipsToBoundsView];
-    v89 = [(TUICandidateView *)self sortControl];
-    [v88 addSubview:v89];
+    sortControl8 = [(TUICandidateView *)self clipsToBoundsView];
+    style9 = [(TUICandidateView *)self sortControl];
+    [sortControl8 addSubview:style9];
   }
 
 LABEL_42:
-  v95 = [v5 style];
+  style10 = [state style];
   if (objc_opt_respondsToSelector())
   {
-    v96 = [v5 style];
-    v97 = [v96 performSelector:sel_hasShadow];
+    style11 = [state style];
+    v97 = [style11 performSelector:sel_hasShadow];
 
     if (!v97)
     {
       goto LABEL_46;
     }
 
-    v98 = [MEMORY[0x1E69DC888] blackColor];
-    v99 = [v98 CGColor];
-    v100 = [(TUICandidateView *)self layer];
-    [v100 setShadowColor:v99];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
+    cGColor = [blackColor CGColor];
+    layer = [(TUICandidateView *)self layer];
+    [layer setShadowColor:cGColor];
 
-    v101 = [(TUICandidateView *)self layer];
-    [v101 setShadowOffset:{0.0, 3.0}];
+    layer2 = [(TUICandidateView *)self layer];
+    [layer2 setShadowOffset:{0.0, 3.0}];
 
-    v102 = [(TUICandidateView *)self layer];
+    layer3 = [(TUICandidateView *)self layer];
     LODWORD(v103) = 1045220557;
-    [v102 setShadowOpacity:v103];
+    [layer3 setShadowOpacity:v103];
 
-    v95 = [(TUICandidateView *)self layer];
-    [v95 setShadowRadius:8.0];
+    style10 = [(TUICandidateView *)self layer];
+    [style10 setShadowRadius:8.0];
   }
 
 LABEL_46:
-  v104 = [v5 style];
-  v105 = [v104 sortControlBackgroundColor];
-  [v105 alphaComponent];
+  style12 = [state style];
+  sortControlBackgroundColor = [style12 sortControlBackgroundColor];
+  [sortControlBackgroundColor alphaComponent];
   if (v106 <= 0.0)
   {
   }
 
   else
   {
-    if ([v5 sortControlPosition] == 2 || objc_msgSend(v5, "sortControlPosition") == 3)
+    if ([state sortControlPosition] == 2 || objc_msgSend(state, "sortControlPosition") == 3)
     {
 
 LABEL_50:
@@ -3010,9 +3010,9 @@ LABEL_50:
       goto LABEL_53;
     }
 
-    v145 = [v5 sortControlPosition];
+    sortControlPosition = [state sortControlPosition];
 
-    if (v145 == 5)
+    if (sortControlPosition == 5)
     {
       goto LABEL_50;
     }
@@ -3020,76 +3020,76 @@ LABEL_50:
 
   v107 = 0;
 LABEL_53:
-  v108 = [(TUICandidateView *)self sortControl];
-  v109 = [v5 style];
-  [v108 _setShowsLinesOnEdges:v107 style:v109];
+  sortControl11 = [(TUICandidateView *)self sortControl];
+  style13 = [state style];
+  [sortControl11 _setShowsLinesOnEdges:v107 style:style13];
 
   if ([(TUICandidateView *)self effectiveCandidateArrowButonPosition])
   {
-    v110 = [(TUICandidateView *)self arrowButton];
+    arrowButton = [(TUICandidateView *)self arrowButton];
 
-    if (!v110)
+    if (!arrowButton)
     {
       v111 = [TUICandidateArrowButton alloc];
       [(TUICandidateView *)self arrowButtonWidth];
       v113 = v112;
       [(TUICandidateView *)self arrowButtonHeight];
-      v115 = [(TUICandidateArrowButton *)v111 initWithFrame:0.0, 0.0, v113, v114];
-      [(TUICandidateView *)self setArrowButton:v115];
+      v114 = [(TUICandidateArrowButton *)v111 initWithFrame:0.0, 0.0, v113, v114];
+      [(TUICandidateView *)self setArrowButton:v114];
 
-      v116 = [(TUICandidateView *)self arrowButton];
-      [v116 addTarget:self action:sel_didTapArrowButton_ forControlEvents:64];
+      arrowButton2 = [(TUICandidateView *)self arrowButton];
+      [arrowButton2 addTarget:self action:sel_didTapArrowButton_ forControlEvents:64];
 
-      v117 = [(TUICandidateView *)self clipsToBoundsView];
-      v118 = [(TUICandidateView *)self arrowButton];
-      [v117 addSubview:v118];
+      clipsToBoundsView7 = [(TUICandidateView *)self clipsToBoundsView];
+      arrowButton3 = [(TUICandidateView *)self arrowButton];
+      [clipsToBoundsView7 addSubview:arrowButton3];
     }
 
     [(TUICandidateView *)self setShouldShowArrowButton:1];
     [(TUICandidateView *)self updateArrowButtonVisibility];
   }
 
-  v119 = [v5 candidateNumberEnabled];
-  v120 = [(TUICandidateView *)self primaryGrid];
-  [v120 setCandidateNumberEnabled:v119];
+  candidateNumberEnabled = [state candidateNumberEnabled];
+  primaryGrid5 = [(TUICandidateView *)self primaryGrid];
+  [primaryGrid5 setCandidateNumberEnabled:candidateNumberEnabled];
 
-  v121 = [(TUICandidateView *)self arrowButton];
-  [v121 frame];
+  arrowButton4 = [(TUICandidateView *)self arrowButton];
+  [arrowButton4 frame];
   v123 = v122;
   v125 = v124;
-  v126 = [(TUICandidateView *)self primaryGrid];
-  [v126 setArrowButtonOrigin:{v123, v125}];
+  primaryGrid6 = [(TUICandidateView *)self primaryGrid];
+  [primaryGrid6 setArrowButtonOrigin:{v123, v125}];
 
   [(TUICandidateView *)self getArrowButtonSizeForGrid];
   v128 = v127;
   v130 = v129;
-  v131 = [(TUICandidateView *)self primaryGrid];
-  [v131 setArrowButtonSize:{v128, v130}];
+  primaryGrid7 = [(TUICandidateView *)self primaryGrid];
+  [primaryGrid7 setArrowButtonSize:{v128, v130}];
 
-  v132 = [(TUICandidateView *)self state];
-  v133 = [v132 style];
-  v134 = [v133 leftEdgeMaskImage];
-  if (v134)
+  state2 = [(TUICandidateView *)self state];
+  style14 = [state2 style];
+  leftEdgeMaskImage = [style14 leftEdgeMaskImage];
+  if (leftEdgeMaskImage)
   {
   }
 
   else
   {
-    v135 = [(TUICandidateView *)self state];
-    v136 = [v135 style];
-    v137 = [v136 rightEdgeMaskImage];
+    state3 = [(TUICandidateView *)self state];
+    style15 = [state3 style];
+    rightEdgeMaskImage = [style15 rightEdgeMaskImage];
 
-    if (!v137)
+    if (!rightEdgeMaskImage)
     {
-      v143 = [(TUICandidateView *)self primaryGrid];
-      [v143 setMaskView:0];
+      primaryGrid8 = [(TUICandidateView *)self primaryGrid];
+      [primaryGrid8 setMaskView:0];
       goto LABEL_63;
     }
   }
 
-  v138 = [(TUICandidateView *)self candidateMask];
+  candidateMask = [(TUICandidateView *)self candidateMask];
 
-  if (!v138)
+  if (!candidateMask)
   {
     v139 = [TUICandidateMask alloc];
     [(TUICandidateView *)self bounds];
@@ -3097,16 +3097,16 @@ LABEL_53:
     [(TUICandidateView *)self setCandidateMask:v140];
   }
 
-  v141 = [v5 style];
-  v142 = [(TUICandidateView *)self candidateMask];
-  [v142 setStyle:v141];
+  style16 = [state style];
+  candidateMask2 = [(TUICandidateView *)self candidateMask];
+  [candidateMask2 setStyle:style16];
 
-  v143 = [(TUICandidateView *)self candidateMask];
-  v144 = [(TUICandidateView *)self primaryGrid];
-  [v144 setMaskView:v143];
+  primaryGrid8 = [(TUICandidateView *)self candidateMask];
+  primaryGrid9 = [(TUICandidateView *)self primaryGrid];
+  [primaryGrid9 setMaskView:primaryGrid8];
 
 LABEL_63:
-  if (v3)
+  if (changeCopy)
   {
     [(TUICandidateView *)self reloadPrimaryGridDataIfNeeded];
   }
@@ -3128,13 +3128,13 @@ LABEL_63:
 
 - (double)arrowButtonWidth
 {
-  v3 = [(TUICandidateView *)self state];
-  v4 = [v3 style];
-  [v4 arrowButtonPadding];
+  state = [(TUICandidateView *)self state];
+  style = [state style];
+  [style arrowButtonPadding];
   v6 = v5;
-  v7 = [(TUICandidateView *)self state];
-  v8 = [v7 style];
-  [v8 arrowButtonPadding];
+  state2 = [(TUICandidateView *)self state];
+  style2 = [state2 style];
+  [style2 arrowButtonPadding];
   v10 = v6 + v9;
   [(TUICandidateView *)self arrowButtonHeight];
   if (v11 == 0.0)
@@ -3149,14 +3149,14 @@ LABEL_63:
 
 - (double)arrowButtonHeight
 {
-  v3 = [(TUICandidateView *)self state];
-  v4 = [v3 style];
-  [v4 arrowButtonHeight];
+  state = [(TUICandidateView *)self state];
+  style = [state style];
+  [style arrowButtonHeight];
   if (v5 == 0.0)
   {
-    v6 = [(TUICandidateView *)self state];
-    v7 = [v6 style];
-    [v7 rowHeight];
+    state2 = [(TUICandidateView *)self state];
+    style2 = [state2 style];
+    [style2 rowHeight];
     v9 = v8;
   }
 
@@ -3170,13 +3170,13 @@ LABEL_63:
 
 - (double)disambiguationHeight
 {
-  v3 = [(TUICandidateView *)self state];
-  v4 = [v3 disambiguationStyle];
-  [v4 rowHeight];
+  state = [(TUICandidateView *)self state];
+  disambiguationStyle = [state disambiguationStyle];
+  [disambiguationStyle rowHeight];
   v6 = v5;
-  v7 = [(TUICandidateView *)self state];
-  v8 = [v7 disambiguationStyle];
-  [v8 gridPadding];
+  state2 = [(TUICandidateView *)self state];
+  disambiguationStyle2 = [state2 disambiguationStyle];
+  [disambiguationStyle2 gridPadding];
   v10 = v6 + v9;
 
   return v10;
@@ -3184,9 +3184,9 @@ LABEL_63:
 
 - (double)inlineTextHeight
 {
-  v2 = [(TUICandidateView *)self state];
-  v3 = [v2 style];
-  [v3 rowHeight];
+  state = [(TUICandidateView *)self state];
+  style = [state style];
+  [style rowHeight];
   v5 = v4;
 
   return v5;
@@ -3194,33 +3194,33 @@ LABEL_63:
 
 - (double)sortControlHeight
 {
-  v3 = [(TUICandidateView *)self state];
-  v4 = [v3 style];
-  [v4 rowHeight];
+  state = [(TUICandidateView *)self state];
+  style = [state style];
+  [style rowHeight];
   v6 = v5;
-  v7 = [(TUICandidateView *)self state];
-  v8 = [v7 style];
-  [v8 sortControlPadding];
+  state2 = [(TUICandidateView *)self state];
+  style2 = [state2 style];
+  [style2 sortControlPadding];
   v10 = v6 + v9;
-  v11 = [(TUICandidateView *)self state];
-  v12 = [v11 style];
-  [v12 sortControlPadding];
+  state3 = [(TUICandidateView *)self state];
+  style3 = [state3 style];
+  [style3 sortControlPadding];
   v14 = v10 + v13;
 
   return v14;
 }
 
-- (CGRect)boundsForClipsToBoundsViewWithState:(id)a3
+- (CGRect)boundsForClipsToBoundsViewWithState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   [(TUICandidateView *)self bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  [v4 yOffset];
+  [stateCopy yOffset];
   v14 = v13 + v8;
-  [v4 additionalHeight];
+  [stateCopy additionalHeight];
   v16 = v15;
 
   v17 = v12 + v16;
@@ -3234,11 +3234,11 @@ LABEL_63:
   return result;
 }
 
-- (TUICandidateView)initWithCoder:(id)a3
+- (TUICandidateView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = TUICandidateView;
-  v3 = [(TUICandidateView *)&v6 initWithCoder:a3];
+  v3 = [(TUICandidateView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -3248,11 +3248,11 @@ LABEL_63:
   return v4;
 }
 
-- (TUICandidateView)initWithFrame:(CGRect)a3
+- (TUICandidateView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = TUICandidateView;
-  v3 = [(TUICandidateView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(TUICandidateView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -3270,41 +3270,41 @@ LABEL_63:
   v4 = [v3 initWithFrame:?];
   [(TUICandidateView *)self setClipsToBoundsView:v4];
 
-  v5 = [(TUICandidateView *)self clipsToBoundsView];
-  [v5 setClipsToBounds:1];
+  clipsToBoundsView = [(TUICandidateView *)self clipsToBoundsView];
+  [clipsToBoundsView setClipsToBounds:1];
 
-  v6 = [(TUICandidateView *)self clipsToBoundsView];
-  [(TUICandidateView *)self addSubview:v6];
+  clipsToBoundsView2 = [(TUICandidateView *)self clipsToBoundsView];
+  [(TUICandidateView *)self addSubview:clipsToBoundsView2];
 
-  v7 = [MEMORY[0x1E69794A0] layer];
-  [(TUICandidateView *)self setRoundedBorderLayer:v7];
+  layer = [MEMORY[0x1E69794A0] layer];
+  [(TUICandidateView *)self setRoundedBorderLayer:layer];
 
   v8 = [TUICandidateGrid alloc];
   [(TUICandidateView *)self bounds];
   v9 = [(TUICandidateGrid *)v8 initWithFrame:?];
   [(TUICandidateView *)self setPrimaryGrid:v9];
 
-  v10 = [(TUICandidateView *)self primaryGrid];
-  [v10 setDelegate:self];
+  primaryGrid = [(TUICandidateView *)self primaryGrid];
+  [primaryGrid setDelegate:self];
 
-  v11 = [(TUICandidateView *)self clipsToBoundsView];
-  v12 = [(TUICandidateView *)self primaryGrid];
-  [v11 addSubview:v12];
+  clipsToBoundsView3 = [(TUICandidateView *)self clipsToBoundsView];
+  primaryGrid2 = [(TUICandidateView *)self primaryGrid];
+  [clipsToBoundsView3 addSubview:primaryGrid2];
 
   v13 = [TUICandidateSortControl alloc];
   [(TUICandidateView *)self bounds];
   v14 = [(TUICandidateSortControl *)v13 initWithFrame:?];
   [(TUICandidateView *)self setSortControl:v14];
 
-  v15 = [(TUICandidateView *)self sortControl];
-  [v15 setHidden:1];
+  sortControl = [(TUICandidateView *)self sortControl];
+  [sortControl setHidden:1];
 
-  v16 = [(TUICandidateView *)self sortControl];
-  [v16 addTarget:self action:sel_handleSortControlValueChanged forControlEvents:4096];
+  sortControl2 = [(TUICandidateView *)self sortControl];
+  [sortControl2 addTarget:self action:sel_handleSortControlValueChanged forControlEvents:4096];
 
-  v18 = [(TUICandidateView *)self clipsToBoundsView];
-  v17 = [(TUICandidateView *)self sortControl];
-  [v18 addSubview:v17];
+  clipsToBoundsView4 = [(TUICandidateView *)self clipsToBoundsView];
+  sortControl3 = [(TUICandidateView *)self sortControl];
+  [clipsToBoundsView4 addSubview:sortControl3];
 }
 
 @end

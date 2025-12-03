@@ -1,39 +1,39 @@
 @interface _HMDAccountIdentifier
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)kind;
 - (_HMDAccountIdentifier)init;
-- (_HMDAccountIdentifier)initWithCoder:(id)a3;
-- (_HMDAccountIdentifier)initWithIdentifier:(id)a3;
+- (_HMDAccountIdentifier)initWithCoder:(id)coder;
+- (_HMDAccountIdentifier)initWithIdentifier:(id)identifier;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _HMDAccountIdentifier
 
 - (unint64_t)hash
 {
-  v2 = [(_HMDAccountIdentifier *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(_HMDAccountIdentifier *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(_HMDAccountIdentifier *)self identifier];
-  [v4 encodeObject:v5 forKey:@"HM.identifier"];
+  coderCopy = coder;
+  identifier = [(_HMDAccountIdentifier *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"HM.identifier"];
 }
 
-- (_HMDAccountIdentifier)initWithCoder:(id)a3
+- (_HMDAccountIdentifier)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = _HMDAccountIdentifier;
   v5 = [(_HMDAccountIdentifier *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HM.identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HM.identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
   }
@@ -54,10 +54,10 @@
   objc_exception_throw(v7);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -67,7 +67,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -78,9 +78,9 @@
     v6 = v5;
     if (v6)
     {
-      v7 = [(_HMDAccountIdentifier *)self identifier];
-      v8 = [(_HMDAccountIdentifier *)v6 identifier];
-      v9 = [v7 hmf_isEqualToUUID:v8];
+      identifier = [(_HMDAccountIdentifier *)self identifier];
+      identifier2 = [(_HMDAccountIdentifier *)v6 identifier];
+      v9 = [identifier hmf_isEqualToUUID:identifier2];
     }
 
     else
@@ -92,31 +92,31 @@
   return v9;
 }
 
-- (_HMDAccountIdentifier)initWithIdentifier:(id)a3
+- (_HMDAccountIdentifier)initWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     v10.receiver = self;
     v10.super_class = _HMDAccountIdentifier;
     v5 = [(_HMDAccountIdentifier *)&v10 init];
     if (v5)
     {
-      v6 = [v4 copy];
+      v6 = [identifierCopy copy];
       identifier = v5->_identifier;
       v5->_identifier = v6;
     }
 
     self = v5;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 - (_HMDAccountIdentifier)init

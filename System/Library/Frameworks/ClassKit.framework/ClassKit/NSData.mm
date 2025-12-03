@@ -1,21 +1,21 @@
 @interface NSData
-- (int64_t)compare:(id)a3;
+- (int64_t)compare:(id)compare;
 @end
 
 @implementation NSData
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
+  compareCopy = compare;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     __assert_rtn("[NSData(PDDatabaseValue) compare:]", "PDDatabaseValue.m", 23, "[other isKindOfClass:[NSData class]]");
   }
 
-  v5 = v4;
-  v6 = [(NSData *)self bytes];
-  v7 = [v5 bytes];
+  v5 = compareCopy;
+  bytes = [(NSData *)self bytes];
+  bytes2 = [v5 bytes];
   v8 = [(NSData *)self length];
   v9 = [v5 length];
   if (v8 >= v9)
@@ -28,7 +28,7 @@
     v10 = v8;
   }
 
-  v11 = memcmp(v6, v7, v10);
+  v11 = memcmp(bytes, bytes2, v10);
   if ((v11 & 0x80000000) == 0)
   {
     if (v11)

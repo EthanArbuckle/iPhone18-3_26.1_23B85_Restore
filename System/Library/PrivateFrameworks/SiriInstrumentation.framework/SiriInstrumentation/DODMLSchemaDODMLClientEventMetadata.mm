@@ -1,26 +1,26 @@
 @interface DODMLSchemaDODMLClientEventMetadata
-- (BOOL)isEqual:(id)a3;
-- (DODMLSchemaDODMLClientEventMetadata)initWithDictionary:(id)a3;
-- (DODMLSchemaDODMLClientEventMetadata)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (DODMLSchemaDODMLClientEventMetadata)initWithDictionary:(id)dictionary;
+- (DODMLSchemaDODMLClientEventMetadata)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation DODMLSchemaDODMLClientEventMetadata
 
-- (DODMLSchemaDODMLClientEventMetadata)initWithDictionary:(id)a3
+- (DODMLSchemaDODMLClientEventMetadata)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v17.receiver = self;
   v17.super_class = DODMLSchemaDODMLClientEventMetadata;
   v5 = [(DODMLSchemaDODMLClientEventMetadata *)&v17 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"dodMlId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"dodMlId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -28,7 +28,7 @@
       [(DODMLSchemaDODMLClientEventMetadata *)v5 setDodMlId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"experimentName"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"experimentName"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -36,7 +36,7 @@
       [(DODMLSchemaDODMLClientEventMetadata *)v5 setExperimentName:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"trialExperimentId"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"trialExperimentId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -44,7 +44,7 @@
       [(DODMLSchemaDODMLClientEventMetadata *)v5 setTrialExperimentId:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"trialTreatmentId"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"trialTreatmentId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -52,7 +52,7 @@
       [(DODMLSchemaDODMLClientEventMetadata *)v5 setTrialTreatmentId:v13];
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"trialDeploymentId"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"trialDeploymentId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -65,30 +65,30 @@
   return v5;
 }
 
-- (DODMLSchemaDODMLClientEventMetadata)initWithJSON:(id)a3
+- (DODMLSchemaDODMLClientEventMetadata)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(DODMLSchemaDODMLClientEventMetadata *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(DODMLSchemaDODMLClientEventMetadata *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(DODMLSchemaDODMLClientEventMetadata *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -101,62 +101,62 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_dodMlId)
   {
-    v4 = [(DODMLSchemaDODMLClientEventMetadata *)self dodMlId];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    dodMlId = [(DODMLSchemaDODMLClientEventMetadata *)self dodMlId];
+    dictionaryRepresentation = [dodMlId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"dodMlId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"dodMlId"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"dodMlId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"dodMlId"];
     }
   }
 
   if (self->_experimentName)
   {
-    v7 = [(DODMLSchemaDODMLClientEventMetadata *)self experimentName];
-    v8 = [v7 copy];
-    [v3 setObject:v8 forKeyedSubscript:@"experimentName"];
+    experimentName = [(DODMLSchemaDODMLClientEventMetadata *)self experimentName];
+    v8 = [experimentName copy];
+    [dictionary setObject:v8 forKeyedSubscript:@"experimentName"];
   }
 
   if (*&self->_has)
   {
     v9 = [MEMORY[0x1E696AD98] numberWithLongLong:{-[DODMLSchemaDODMLClientEventMetadata trialDeploymentId](self, "trialDeploymentId")}];
-    [v3 setObject:v9 forKeyedSubscript:@"trialDeploymentId"];
+    [dictionary setObject:v9 forKeyedSubscript:@"trialDeploymentId"];
   }
 
   if (self->_trialExperimentId)
   {
-    v10 = [(DODMLSchemaDODMLClientEventMetadata *)self trialExperimentId];
-    v11 = [v10 copy];
-    [v3 setObject:v11 forKeyedSubscript:@"trialExperimentId"];
+    trialExperimentId = [(DODMLSchemaDODMLClientEventMetadata *)self trialExperimentId];
+    v11 = [trialExperimentId copy];
+    [dictionary setObject:v11 forKeyedSubscript:@"trialExperimentId"];
   }
 
   if (self->_trialTreatmentId)
   {
-    v12 = [(DODMLSchemaDODMLClientEventMetadata *)self trialTreatmentId];
-    v13 = [v12 dictionaryRepresentation];
-    if (v13)
+    trialTreatmentId = [(DODMLSchemaDODMLClientEventMetadata *)self trialTreatmentId];
+    dictionaryRepresentation2 = [trialTreatmentId dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v13 forKeyedSubscript:@"trialTreatmentId"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"trialTreatmentId"];
     }
 
     else
     {
-      v14 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v14 forKeyedSubscript:@"trialTreatmentId"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"trialTreatmentId"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -178,28 +178,28 @@
   return v4 ^ v3 ^ v5 ^ v6 ^ v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_22;
   }
 
-  v5 = [(DODMLSchemaDODMLClientEventMetadata *)self dodMlId];
-  v6 = [v4 dodMlId];
-  if ((v5 != 0) == (v6 == 0))
+  dodMlId = [(DODMLSchemaDODMLClientEventMetadata *)self dodMlId];
+  dodMlId2 = [equalCopy dodMlId];
+  if ((dodMlId != 0) == (dodMlId2 == 0))
   {
     goto LABEL_21;
   }
 
-  v7 = [(DODMLSchemaDODMLClientEventMetadata *)self dodMlId];
-  if (v7)
+  dodMlId3 = [(DODMLSchemaDODMLClientEventMetadata *)self dodMlId];
+  if (dodMlId3)
   {
-    v8 = v7;
-    v9 = [(DODMLSchemaDODMLClientEventMetadata *)self dodMlId];
-    v10 = [v4 dodMlId];
-    v11 = [v9 isEqual:v10];
+    v8 = dodMlId3;
+    dodMlId4 = [(DODMLSchemaDODMLClientEventMetadata *)self dodMlId];
+    dodMlId5 = [equalCopy dodMlId];
+    v11 = [dodMlId4 isEqual:dodMlId5];
 
     if (!v11)
     {
@@ -211,20 +211,20 @@
   {
   }
 
-  v5 = [(DODMLSchemaDODMLClientEventMetadata *)self experimentName];
-  v6 = [v4 experimentName];
-  if ((v5 != 0) == (v6 == 0))
+  dodMlId = [(DODMLSchemaDODMLClientEventMetadata *)self experimentName];
+  dodMlId2 = [equalCopy experimentName];
+  if ((dodMlId != 0) == (dodMlId2 == 0))
   {
     goto LABEL_21;
   }
 
-  v12 = [(DODMLSchemaDODMLClientEventMetadata *)self experimentName];
-  if (v12)
+  experimentName = [(DODMLSchemaDODMLClientEventMetadata *)self experimentName];
+  if (experimentName)
   {
-    v13 = v12;
-    v14 = [(DODMLSchemaDODMLClientEventMetadata *)self experimentName];
-    v15 = [v4 experimentName];
-    v16 = [v14 isEqual:v15];
+    v13 = experimentName;
+    experimentName2 = [(DODMLSchemaDODMLClientEventMetadata *)self experimentName];
+    experimentName3 = [equalCopy experimentName];
+    v16 = [experimentName2 isEqual:experimentName3];
 
     if (!v16)
     {
@@ -236,20 +236,20 @@
   {
   }
 
-  v5 = [(DODMLSchemaDODMLClientEventMetadata *)self trialExperimentId];
-  v6 = [v4 trialExperimentId];
-  if ((v5 != 0) == (v6 == 0))
+  dodMlId = [(DODMLSchemaDODMLClientEventMetadata *)self trialExperimentId];
+  dodMlId2 = [equalCopy trialExperimentId];
+  if ((dodMlId != 0) == (dodMlId2 == 0))
   {
     goto LABEL_21;
   }
 
-  v17 = [(DODMLSchemaDODMLClientEventMetadata *)self trialExperimentId];
-  if (v17)
+  trialExperimentId = [(DODMLSchemaDODMLClientEventMetadata *)self trialExperimentId];
+  if (trialExperimentId)
   {
-    v18 = v17;
-    v19 = [(DODMLSchemaDODMLClientEventMetadata *)self trialExperimentId];
-    v20 = [v4 trialExperimentId];
-    v21 = [v19 isEqual:v20];
+    v18 = trialExperimentId;
+    trialExperimentId2 = [(DODMLSchemaDODMLClientEventMetadata *)self trialExperimentId];
+    trialExperimentId3 = [equalCopy trialExperimentId];
+    v21 = [trialExperimentId2 isEqual:trialExperimentId3];
 
     if (!v21)
     {
@@ -261,22 +261,22 @@
   {
   }
 
-  v5 = [(DODMLSchemaDODMLClientEventMetadata *)self trialTreatmentId];
-  v6 = [v4 trialTreatmentId];
-  if ((v5 != 0) == (v6 == 0))
+  dodMlId = [(DODMLSchemaDODMLClientEventMetadata *)self trialTreatmentId];
+  dodMlId2 = [equalCopy trialTreatmentId];
+  if ((dodMlId != 0) == (dodMlId2 == 0))
   {
 LABEL_21:
 
     goto LABEL_22;
   }
 
-  v22 = [(DODMLSchemaDODMLClientEventMetadata *)self trialTreatmentId];
-  if (v22)
+  trialTreatmentId = [(DODMLSchemaDODMLClientEventMetadata *)self trialTreatmentId];
+  if (trialTreatmentId)
   {
-    v23 = v22;
-    v24 = [(DODMLSchemaDODMLClientEventMetadata *)self trialTreatmentId];
-    v25 = [v4 trialTreatmentId];
-    v26 = [v24 isEqual:v25];
+    v23 = trialTreatmentId;
+    trialTreatmentId2 = [(DODMLSchemaDODMLClientEventMetadata *)self trialTreatmentId];
+    trialTreatmentId3 = [equalCopy trialTreatmentId];
+    v26 = [trialTreatmentId2 isEqual:trialTreatmentId3];
 
     if (!v26)
     {
@@ -288,9 +288,9 @@ LABEL_21:
   {
   }
 
-  if ((*&self->_has & 1) == (v4[48] & 1))
+  if ((*&self->_has & 1) == (equalCopy[48] & 1))
   {
-    if ((*&self->_has & 1) == 0 || (trialDeploymentId = self->_trialDeploymentId, trialDeploymentId == [v4 trialDeploymentId]))
+    if ((*&self->_has & 1) == 0 || (trialDeploymentId = self->_trialDeploymentId, trialDeploymentId == [equalCopy trialDeploymentId]))
     {
       v27 = 1;
       goto LABEL_23;
@@ -304,36 +304,36 @@ LABEL_23:
   return v27;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v10 = a3;
-  v4 = [(DODMLSchemaDODMLClientEventMetadata *)self dodMlId];
+  toCopy = to;
+  dodMlId = [(DODMLSchemaDODMLClientEventMetadata *)self dodMlId];
 
-  if (v4)
+  if (dodMlId)
   {
-    v5 = [(DODMLSchemaDODMLClientEventMetadata *)self dodMlId];
+    dodMlId2 = [(DODMLSchemaDODMLClientEventMetadata *)self dodMlId];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(DODMLSchemaDODMLClientEventMetadata *)self experimentName];
+  experimentName = [(DODMLSchemaDODMLClientEventMetadata *)self experimentName];
 
-  if (v6)
+  if (experimentName)
   {
     PBDataWriterWriteStringField();
   }
 
-  v7 = [(DODMLSchemaDODMLClientEventMetadata *)self trialExperimentId];
+  trialExperimentId = [(DODMLSchemaDODMLClientEventMetadata *)self trialExperimentId];
 
-  if (v7)
+  if (trialExperimentId)
   {
     PBDataWriterWriteStringField();
   }
 
-  v8 = [(DODMLSchemaDODMLClientEventMetadata *)self trialTreatmentId];
+  trialTreatmentId = [(DODMLSchemaDODMLClientEventMetadata *)self trialTreatmentId];
 
-  if (v8)
+  if (trialTreatmentId)
   {
-    v9 = [(DODMLSchemaDODMLClientEventMetadata *)self trialTreatmentId];
+    trialTreatmentId2 = [(DODMLSchemaDODMLClientEventMetadata *)self trialTreatmentId];
     PBDataWriterWriteSubmessage();
   }
 
@@ -343,26 +343,26 @@ LABEL_23:
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v13.receiver = self;
   v13.super_class = DODMLSchemaDODMLClientEventMetadata;
-  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:v4];
-  v6 = [(DODMLSchemaDODMLClientEventMetadata *)self dodMlId];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:policyCopy];
+  dodMlId = [(DODMLSchemaDODMLClientEventMetadata *)self dodMlId];
+  v7 = [dodMlId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(DODMLSchemaDODMLClientEventMetadata *)self deleteDodMlId];
   }
 
-  v9 = [(DODMLSchemaDODMLClientEventMetadata *)self trialTreatmentId];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  trialTreatmentId = [(DODMLSchemaDODMLClientEventMetadata *)self trialTreatmentId];
+  v10 = [trialTreatmentId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(DODMLSchemaDODMLClientEventMetadata *)self deleteTrialTreatmentId];
   }

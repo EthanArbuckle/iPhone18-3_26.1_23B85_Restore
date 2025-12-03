@@ -1,21 +1,21 @@
 @interface CACMessageDisplayOperation
-- (CACMessageDisplayOperation)initWithMessageString:(id)a3 type:(int64_t)a4;
+- (CACMessageDisplayOperation)initWithMessageString:(id)string type:(int64_t)type;
 - (void)main;
 @end
 
 @implementation CACMessageDisplayOperation
 
-- (CACMessageDisplayOperation)initWithMessageString:(id)a3 type:(int64_t)a4
+- (CACMessageDisplayOperation)initWithMessageString:(id)string type:(int64_t)type
 {
-  v6 = a3;
+  stringCopy = string;
   v10.receiver = self;
   v10.super_class = CACMessageDisplayOperation;
   v7 = [(CACMessageDisplayOperation *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    [(CACMessageDisplayOperation *)v7 setMessage:v6];
-    [(CACMessageDisplayOperation *)v8 setType:a4];
+    [(CACMessageDisplayOperation *)v7 setMessage:stringCopy];
+    [(CACMessageDisplayOperation *)v8 setType:type];
   }
 
   return v8;
@@ -31,8 +31,8 @@
     block[3] = &unk_279CEB2D0;
     block[4] = self;
     dispatch_async(MEMORY[0x277D85CD0], block);
-    v3 = [(CACMessageDisplayOperation *)self message];
-    [CACDisplayManager durationToDisplayMessageString:v3];
+    message = [(CACMessageDisplayOperation *)self message];
+    [CACDisplayManager durationToDisplayMessageString:message];
     v5 = v4;
 
     if (v5 > 0.0)

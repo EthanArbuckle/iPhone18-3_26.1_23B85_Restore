@@ -1,43 +1,43 @@
 @interface IPFeatureSentence
-+ (_NSRange)_rangeExcludingLeadingAndTrailingCharacters:(id)a3 inRange:(_NSRange)a4 ofString:(id)a5;
-+ (id)_substringWithRange:(_NSRange)a3 ofString:(id)a4 removingCharactersFromSet:(id)a5;
-+ (id)bestLanguageIDFromText:(id)a3 linesElided:(unint64_t)a4;
-+ (id)buildRegexForType:(id)a3 languageID:(id)a4;
-+ (id)eventVocabularyIgnoreDateKeywordInString:(id)a3 languageID:(id)a4;
-+ (id)eventVocabularyRegexForType:(id)a3 languageID:(id)a4;
-+ (id)eventVocabularyRejectionKeywordInString:(id)a3 languageID:(id)a4;
-+ (id)eventVocabularySubjectTitleInString:(id)a3 languageID:(id)a4;
-+ (id)humanReadableFeaturePolarity:(unint64_t)a3;
-+ (id)regexArrayForType:(id)a3 languageID:(id)a4;
-+ (unint64_t)numberOfMatchesForEventVocabularySubjectTitleInString:(id)a3 languageID:(id)a4;
++ (_NSRange)_rangeExcludingLeadingAndTrailingCharacters:(id)characters inRange:(_NSRange)range ofString:(id)string;
++ (id)_substringWithRange:(_NSRange)range ofString:(id)string removingCharactersFromSet:(id)set;
++ (id)bestLanguageIDFromText:(id)text linesElided:(unint64_t)elided;
++ (id)buildRegexForType:(id)type languageID:(id)d;
++ (id)eventVocabularyIgnoreDateKeywordInString:(id)string languageID:(id)d;
++ (id)eventVocabularyRegexForType:(id)type languageID:(id)d;
++ (id)eventVocabularyRejectionKeywordInString:(id)string languageID:(id)d;
++ (id)eventVocabularySubjectTitleInString:(id)string languageID:(id)d;
++ (id)humanReadableFeaturePolarity:(unint64_t)polarity;
++ (id)regexArrayForType:(id)type languageID:(id)d;
++ (unint64_t)numberOfMatchesForEventVocabularySubjectTitleInString:(id)string languageID:(id)d;
 - (BOOL)isQuoteAttributionLine;
-- (IPFeatureSentence)initWithLanguageID:(id)a3 responseKitSentence:(id)a4;
+- (IPFeatureSentence)initWithLanguageID:(id)d responseKitSentence:(id)sentence;
 - (NSString)eventVocabularyIgnoreDateKeyword;
 - (NSString)eventVocabularyRejectionKeyword;
 - (id)description;
-- (id)descriptionForFragment:(id)a3;
-- (id)descriptionForFragmentAtIndex:(unint64_t)a3;
+- (id)descriptionForFragment:(id)fragment;
+- (id)descriptionForFragmentAtIndex:(unint64_t)index;
 - (unint64_t)clusterType;
 - (unint64_t)polarity;
-- (unint64_t)polarityForRange:(_NSRange)a3 confidence:(double *)a4;
-- (void)addFragment:(id)a3;
+- (unint64_t)polarityForRange:(_NSRange)range confidence:(double *)confidence;
+- (void)addFragment:(id)fragment;
 - (void)checkEventVocabularyKeywordsIfNeeded;
 @end
 
 @implementation IPFeatureSentence
 
-- (IPFeatureSentence)initWithLanguageID:(id)a3 responseKitSentence:(id)a4
+- (IPFeatureSentence)initWithLanguageID:(id)d responseKitSentence:(id)sentence
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  sentenceCopy = sentence;
   v11.receiver = self;
   v11.super_class = IPFeatureSentence;
   v8 = [(IPFeatureSentence *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(IPFeatureSentence *)v8 setLanguageID:v6];
-    [(IPFeatureSentence *)v9 setResponseKitSentence:v7];
+    [(IPFeatureSentence *)v8 setLanguageID:dCopy];
+    [(IPFeatureSentence *)v9 setResponseKitSentence:sentenceCopy];
     [(IPFeatureSentence *)v9 setStoredPolarity:0];
   }
 
@@ -57,9 +57,9 @@
   return v7;
 }
 
-- (void)addFragment:(id)a3
+- (void)addFragment:(id)fragment
 {
-  v7 = a3;
+  fragmentCopy = fragment;
   if (!self->_fragments)
   {
     v4 = [MEMORY[0x277CBEB18] arrayWithCapacity:100];
@@ -67,8 +67,8 @@
     self->_fragments = v4;
   }
 
-  v6 = [(IPFeatureSentence *)self fragments];
-  [v6 addObject:v7];
+  fragments = [(IPFeatureSentence *)self fragments];
+  [fragments addObject:fragmentCopy];
 }
 
 - (unint64_t)clusterType
@@ -79,8 +79,8 @@
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v4 = [(IPFeatureSentence *)self fragments];
-  v5 = [v4 countByEnumeratingWithState:&v30 objects:v35 count:16];
+  fragments = [(IPFeatureSentence *)self fragments];
+  v5 = [fragments countByEnumeratingWithState:&v30 objects:v35 count:16];
   if (v5)
   {
     v6 = v5;
@@ -92,21 +92,21 @@
       {
         if (*v31 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(fragments);
         }
 
-        v10 = [*(*(&v30 + 1) + 8 * i) clusterType];
-        if (v10)
+        clusterType = [*(*(&v30 + 1) + 8 * i) clusterType];
+        if (clusterType)
         {
-          v11 = v10;
-          v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v10];
+          v11 = clusterType;
+          v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:clusterType];
           [v3 addObject:v12];
 
           v7 |= v11 == 6;
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v30 objects:v35 count:16];
+      v6 = [fragments countByEnumeratingWithState:&v30 objects:v35 count:16];
     }
 
     while (v6);
@@ -154,11 +154,11 @@ LABEL_26:
       }
 
       v21 = *(*(&v26 + 1) + 8 * j);
-      v22 = [v21 integerValue];
+      integerValue = [v21 integerValue];
       v23 = [v14 countForObject:v21];
-      if (v22 != 6 && v23 > v18)
+      if (integerValue != 6 && v23 > v18)
       {
-        v17 = v22;
+        v17 = integerValue;
         v18 = v23;
       }
     }
@@ -179,25 +179,25 @@ LABEL_27:
   return v17;
 }
 
-- (unint64_t)polarityForRange:(_NSRange)a3 confidence:(double *)a4
+- (unint64_t)polarityForRange:(_NSRange)range confidence:(double *)confidence
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v49 = *MEMORY[0x277D85DE8];
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v7 = [(IPFeatureSentence *)self fragments];
-  v8 = [v7 countByEnumeratingWithState:&v42 objects:v48 count:16];
+  fragments = [(IPFeatureSentence *)self fragments];
+  v8 = [fragments countByEnumeratingWithState:&v42 objects:v48 count:16];
   if (!v8)
   {
 
     v16 = 0.0;
 LABEL_24:
-    if (a4)
+    if (confidence)
     {
-      *a4 = v16;
+      *confidence = v16;
     }
 
     result = 1;
@@ -205,7 +205,7 @@ LABEL_24:
   }
 
   v9 = v8;
-  v40 = a4;
+  confidenceCopy = confidence;
   v10 = 0;
   v11 = 0;
   v12 = *v43;
@@ -221,7 +221,7 @@ LABEL_24:
       v18 = v10;
       if (*v43 != v12)
       {
-        objc_enumerationMutation(v7);
+        objc_enumerationMutation(fragments);
       }
 
       v19 = *(*(&v42 + 1) + 8 * v17);
@@ -280,7 +280,7 @@ LABEL_24:
     }
 
     while (v9 != v17);
-    v9 = [v7 countByEnumeratingWithState:&v42 objects:v48 count:16];
+    v9 = [fragments countByEnumeratingWithState:&v42 objects:v48 count:16];
   }
 
   while (v9);
@@ -288,7 +288,7 @@ LABEL_17:
 
   if (!v11)
   {
-    a4 = v40;
+    confidence = confidenceCopy;
     goto LABEL_24;
   }
 
@@ -296,9 +296,9 @@ LABEL_17:
   v34 = v15 / v11;
   if (v34 > 0.35)
   {
-    if (v40)
+    if (confidenceCopy)
     {
-      *v40 = v34;
+      *confidenceCopy = v34;
     }
 
     result = 4;
@@ -308,14 +308,14 @@ LABEL_17:
   v37 = v14 / v33;
   v38 = v13 / v33;
   v39 = v13 / v33 + v14 / v33;
-  a4 = v40;
+  confidence = confidenceCopy;
   if (v39 < 0.66)
   {
     if (v37 > 0.54 && v37 > v38 && v37 > v34)
     {
-      if (v40)
+      if (confidenceCopy)
       {
-        *v40 = v37;
+        *confidenceCopy = v37;
       }
 
       result = 2;
@@ -325,9 +325,9 @@ LABEL_17:
     v16 = v16 / v33;
     if (v38 > 0.54 && v38 > v37 && v38 > v34)
     {
-      if (v40)
+      if (confidenceCopy)
       {
-        *v40 = v38;
+        *confidenceCopy = v38;
       }
 
       result = 3;
@@ -337,9 +337,9 @@ LABEL_17:
     goto LABEL_24;
   }
 
-  if (v40)
+  if (confidenceCopy)
   {
-    *v40 = v39;
+    *confidenceCopy = v39;
   }
 
   if (v38 <= v37)
@@ -382,9 +382,9 @@ LABEL_27:
   if (!self->_hasCheckedEventVocabularyIgnoreDateKeyword)
   {
     v3 = objc_opt_class();
-    v4 = [(IPFeature *)self matchString];
-    v5 = [(IPFeatureSentence *)self languageID];
-    v6 = [v3 eventVocabularyIgnoreDateKeywordInString:v4 languageID:v5];
+    matchString = [(IPFeature *)self matchString];
+    languageID = [(IPFeatureSentence *)self languageID];
+    v6 = [v3 eventVocabularyIgnoreDateKeywordInString:matchString languageID:languageID];
     [(IPFeatureSentence *)self setStoredEventVocabularyIgnoreDateKeyword:v6];
 
     self->_hasCheckedEventVocabularyIgnoreDateKeyword = 1;
@@ -399,9 +399,9 @@ LABEL_27:
   {
     self->_hasCheckedEventVocabularyKeyword = 1;
     v4 = objc_opt_class();
-    v7 = [(IPFeature *)self matchString];
-    v5 = [(IPFeatureSentence *)self languageID];
-    v6 = [v4 eventVocabularyRejectionKeywordInString:v7 languageID:v5];
+    matchString = [(IPFeature *)self matchString];
+    languageID = [(IPFeatureSentence *)self languageID];
+    v6 = [v4 eventVocabularyRejectionKeywordInString:matchString languageID:languageID];
     [(IPFeatureSentence *)self setStoredEventVocabularyRejectionKeyword:v6];
   }
 }
@@ -411,8 +411,8 @@ LABEL_27:
   v26 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
   v4 = [IPRegexToolbox regularExpressionWithKey:@"isQuoteAttributionLine" generator:&__block_literal_global_7];
-  v5 = [(IPFeature *)self matchString];
-  if ([v4 rangeOfFirstMatchInString:v5 options:2 range:{0, objc_msgSend(v5, "length")}] != 0x7FFFFFFFFFFFFFFFLL)
+  matchString = [(IPFeature *)self matchString];
+  if ([v4 rangeOfFirstMatchInString:matchString options:2 range:{0, objc_msgSend(matchString, "length")}] != 0x7FFFFFFFFFFFFFFFLL)
   {
     goto LABEL_9;
   }
@@ -423,7 +423,7 @@ LABEL_27:
   }
 
   v6 = [IPLocalizedString_bundle_0 localizedStringForKey:@"Sent" value:&stru_285AD0E88 table:@"DataDetectorsNaturalLanguage"];
-  if ([v5 hasPrefix:v6])
+  if ([matchString hasPrefix:v6])
   {
 
 LABEL_9:
@@ -431,9 +431,9 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (([v5 hasSuffix:@":\n"] & 1) != 0 || objc_msgSend(v5, "hasSuffix:", @":"))
+  if (([matchString hasSuffix:@":\n"] & 1) != 0 || objc_msgSend(matchString, "hasSuffix:", @":"))
   {
-    v7 = [v5 containsString:@"@"];
+    v7 = [matchString containsString:@"@"];
 
     if (v7)
     {
@@ -451,7 +451,7 @@ LABEL_9:
   }
 
   v11 = [IPLocalizedString_bundle_0 localizedStringForKey:@"Sent" value:&stru_285AD0E88 table:@"DataDetectorsNaturalLanguage"];
-  if ([v5 hasPrefix:v11])
+  if ([matchString hasPrefix:v11])
   {
     v12 = v11;
   }
@@ -464,7 +464,7 @@ LABEL_9:
     }
 
     v13 = [IPLocalizedString_bundle_0 localizedStringForKey:@"Subject" value:&stru_285AD0E88 table:@"DataDetectorsNaturalLanguage"];
-    if ([v5 hasPrefix:v13])
+    if ([matchString hasPrefix:v13])
     {
       v12 = v13;
     }
@@ -490,7 +490,7 @@ LABEL_9:
           objc_enumerationMutation(&unk_285B0FC78);
         }
 
-        [v5 rangeOfString:*(*(&v21 + 1) + 8 * i) options:8 range:{objc_msgSend(v12, "length", v19, v20), objc_msgSend(v5, "length") - objc_msgSend(v12, "length")}];
+        [matchString rangeOfString:*(*(&v21 + 1) + 8 * i) options:8 range:{objc_msgSend(v12, "length", v19, v20), objc_msgSend(matchString, "length") - objc_msgSend(v12, "length")}];
         if (v18)
         {
           v8 = 1;
@@ -540,48 +540,48 @@ id __43__IPFeatureSentence_isQuoteAttributionLine__block_invoke()
   return v5;
 }
 
-+ (id)regexArrayForType:(id)a3 languageID:(id)a4
++ (id)regexArrayForType:(id)type languageID:(id)d
 {
-  v5 = a3;
-  v6 = a4;
+  typeCopy = type;
+  dCopy = d;
   v7 = objc_autoreleasePoolPush();
-  v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"Patterns-%@-%@", v5, v6];
+  dCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Patterns-%@-%@", typeCopy, dCopy];
   objc_autoreleasePoolPop(v7);
-  v9 = [&unk_285B1A6A0 objectForKeyedSubscript:v8];
+  v9 = [&unk_285B1A6A0 objectForKeyedSubscript:dCopy];
 
   return v9;
 }
 
-+ (id)buildRegexForType:(id)a3 languageID:(id)a4
++ (id)buildRegexForType:(id)type languageID:(id)d
 {
   v29[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  typeCopy = type;
+  dCopy = d;
   v8 = [objc_alloc(MEMORY[0x277CBEB58]) initWithCapacity:400];
-  v9 = [a1 regexArrayForType:v6 languageID:@"common"];
+  v9 = [self regexArrayForType:typeCopy languageID:@"common"];
   [v8 addObjectsFromArray:v9];
 
-  v10 = [a1 regexArrayForType:v6 languageID:v7];
+  v10 = [self regexArrayForType:typeCopy languageID:dCopy];
   [v8 addObjectsFromArray:v10];
 
-  v11 = [MEMORY[0x277CBEAF8] currentLocale];
-  v12 = [v11 objectForKey:*MEMORY[0x277CBE6C8]];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  v12 = [currentLocale objectForKey:*MEMORY[0x277CBE6C8]];
 
-  if (v12 != v7)
+  if (v12 != dCopy)
   {
-    v13 = [a1 regexArrayForType:v6 languageID:v12];
+    v13 = [self regexArrayForType:typeCopy languageID:v12];
     [v8 addObjectsFromArray:v13];
   }
 
-  if (([v7 hasPrefix:@"zh"] & 1) != 0 || objc_msgSend(v12, "hasPrefix:", @"zh"))
+  if (([dCopy hasPrefix:@"zh"] & 1) != 0 || objc_msgSend(v12, "hasPrefix:", @"zh"))
   {
-    v14 = [a1 regexArrayForType:v6 languageID:@"zh-Hans"];
+    v14 = [self regexArrayForType:typeCopy languageID:@"zh-Hans"];
     [v8 addObjectsFromArray:v14];
 
-    v15 = [a1 regexArrayForType:v6 languageID:@"zh-Hant-TW"];
+    v15 = [self regexArrayForType:typeCopy languageID:@"zh-Hant-TW"];
     [v8 addObjectsFromArray:v15];
 
-    v16 = [a1 regexArrayForType:v6 languageID:@"zh-Hant-HK"];
+    v16 = [self regexArrayForType:typeCopy languageID:@"zh-Hant-HK"];
     [v8 addObjectsFromArray:v16];
   }
 
@@ -592,7 +592,7 @@ id __43__IPFeatureSentence_isQuoteAttributionLine__block_invoke()
   v20 = [v8 sortedArrayUsingDescriptors:v19];
 
   objc_autoreleasePoolPop(v17);
-  v21 = [IPRegexToolbox regexPatternForLanguageID:v7 eventVocabularyArray:v20];
+  v21 = [IPRegexToolbox regexPatternForLanguageID:dCopy eventVocabularyArray:v20];
   v22 = objc_autoreleasePoolPush();
   v28 = 0;
   v23 = [MEMORY[0x277CCAC68] regularExpressionWithPattern:v21 options:64 error:&v28];
@@ -600,7 +600,7 @@ id __43__IPFeatureSentence_isQuoteAttributionLine__block_invoke()
   objc_autoreleasePoolPop(v22);
   if (v24)
   {
-    NSLog(&cfstr_CanTBuildRegex.isa, v6, v7, v24);
+    NSLog(&cfstr_CanTBuildRegex.isa, typeCopy, dCopy, v24);
     v25 = 0;
   }
 
@@ -614,25 +614,25 @@ id __43__IPFeatureSentence_isQuoteAttributionLine__block_invoke()
   return v25;
 }
 
-+ (id)eventVocabularyRegexForType:(id)a3 languageID:(id)a4
++ (id)eventVocabularyRegexForType:(id)type languageID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CBEAF8] currentLocale];
-  v9 = [v8 objectForKey:*MEMORY[0x277CBE6C8]];
+  typeCopy = type;
+  dCopy = d;
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  v9 = [currentLocale objectForKey:*MEMORY[0x277CBE6C8]];
 
-  if (!v7)
+  if (!dCopy)
   {
-    v7 = v9;
+    dCopy = v9;
   }
 
-  v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%@", v6, v7];
+  dCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%@", typeCopy, dCopy];
   if (eventVocabularyRegexForType_languageID___pasOnceToken3 != -1)
   {
     +[IPFeatureSentence eventVocabularyRegexForType:languageID:];
   }
 
-  v11 = [eventVocabularyRegexForType_languageID___pasExprOnceResult result];
+  result = [eventVocabularyRegexForType_languageID___pasExprOnceResult result];
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
@@ -644,14 +644,14 @@ id __43__IPFeatureSentence_isQuoteAttributionLine__block_invoke()
   v17[2] = __60__IPFeatureSentence_eventVocabularyRegexForType_languageID___block_invoke_139;
   v17[3] = &unk_278F23258;
   v21 = &v23;
-  v12 = v10;
+  v12 = dCopy;
   v18 = v12;
-  v22 = a1;
-  v13 = v6;
+  selfCopy = self;
+  v13 = typeCopy;
   v19 = v13;
-  v14 = v7;
+  v14 = dCopy;
   v20 = v14;
-  [v11 runWithLockAcquired:v17];
+  [result runWithLockAcquired:v17];
   v15 = v24[5];
 
   _Block_object_dispose(&v23, 8);
@@ -720,17 +720,17 @@ void __60__IPFeatureSentence_eventVocabularyRegexForType_languageID___block_invo
   }
 }
 
-+ (_NSRange)_rangeExcludingLeadingAndTrailingCharacters:(id)a3 inRange:(_NSRange)a4 ofString:(id)a5
++ (_NSRange)_rangeExcludingLeadingAndTrailingCharacters:(id)characters inRange:(_NSRange)range ofString:(id)string
 {
-  length = a4.length;
-  location = a4.location;
-  v8 = a3;
-  v9 = a5;
+  length = range.length;
+  location = range.location;
+  charactersCopy = characters;
+  stringCopy = string;
   v10 = 0;
   v11 = location + length;
   if (location + length)
   {
-    while ([v8 characterIsMember:{objc_msgSend(v9, "characterAtIndex:", v10)}])
+    while ([charactersCopy characterIsMember:{objc_msgSend(stringCopy, "characterAtIndex:", v10)}])
     {
       if (v11 == ++v10)
       {
@@ -749,7 +749,7 @@ void __60__IPFeatureSentence_eventVocabularyRegexForType_languageID___block_invo
       break;
     }
 
-    v14 = [v8 characterIsMember:{objc_msgSend(v9, "characterAtIndex:", --v11)}];
+    v14 = [charactersCopy characterIsMember:{objc_msgSend(stringCopy, "characterAtIndex:", --v11)}];
     v12 = v13 - 1;
   }
 
@@ -762,17 +762,17 @@ void __60__IPFeatureSentence_eventVocabularyRegexForType_languageID___block_invo
   return result;
 }
 
-+ (id)_substringWithRange:(_NSRange)a3 ofString:(id)a4 removingCharactersFromSet:(id)a5
++ (id)_substringWithRange:(_NSRange)range ofString:(id)string removingCharactersFromSet:(id)set
 {
-  length = a3.length;
-  location = a3.location;
-  v8 = a4;
-  v9 = a5;
-  if (length && (v10 = [v8 rangeOfCharacterFromSet:v9 options:2 range:{location, length}], v10 != 0x7FFFFFFFFFFFFFFFLL))
+  length = range.length;
+  location = range.location;
+  stringCopy = string;
+  setCopy = set;
+  if (length && (v10 = [stringCopy rangeOfCharacterFromSet:setCopy options:2 range:{location, length}], v10 != 0x7FFFFFFFFFFFFFFFLL))
   {
     v13 = v10;
     v14 = v11;
-    v24 = v9;
+    v24 = setCopy;
     v15 = 0;
     v16 = 0;
     v17 = 0;
@@ -790,28 +790,28 @@ void __60__IPFeatureSentence_eventVocabularyRegexForType_languageID___block_invo
         }
       }
 
-      [v8 getCharacters:&v17[2 * v16] range:{location, v13 - location}];
+      [stringCopy getCharacters:&v17[2 * v16] range:{location, v13 - location}];
       v16 += v13 - location;
       location = v13 + v14;
       v20 = v18 - (v13 + v14);
-      v13 = [v8 rangeOfCharacterFromSet:v24 options:2 range:{v13 + v14, v20}];
+      v13 = [stringCopy rangeOfCharacterFromSet:v24 options:2 range:{v13 + v14, v20}];
       v14 = v21;
     }
 
     while (v13 != 0x7FFFFFFFFFFFFFFFLL);
-    [v8 getCharacters:&v17[2 * v16] range:{location, v20}];
+    [stringCopy getCharacters:&v17[2 * v16] range:{location, v20}];
     v22 = v20 + v16;
     if (v20 + v16)
     {
       if (2 * v22 >= v15)
       {
-        v9 = v24;
+        setCopy = v24;
       }
 
       else
       {
         v17 = malloc_type_realloc(v17, 2 * v22, 0x1000040BDFB0063uLL);
-        v9 = v24;
+        setCopy = v24;
         if (!v17)
         {
           +[IPFeatureSentence _substringWithRange:ofString:removingCharactersFromSet:];
@@ -825,7 +825,7 @@ void __60__IPFeatureSentence_eventVocabularyRegexForType_languageID___block_invo
     {
       free(v17);
       v12 = &stru_285AD0E88;
-      v9 = v24;
+      setCopy = v24;
     }
   }
 
@@ -837,9 +837,9 @@ void __60__IPFeatureSentence_eventVocabularyRegexForType_languageID___block_invo
   return v12;
 }
 
-+ (id)bestLanguageIDFromText:(id)a3 linesElided:(unint64_t)a4
++ (id)bestLanguageIDFromText:(id)text linesElided:(unint64_t)elided
 {
-  v6 = a3;
+  textCopy = text;
   if (bestLanguageIDFromText_linesElided___onceToken != -1)
   {
     +[IPFeatureSentence bestLanguageIDFromText:linesElided:];
@@ -847,7 +847,7 @@ void __60__IPFeatureSentence_eventVocabularyRegexForType_languageID___block_invo
 
   v7 = bestLanguageIDFromText_linesElided___ipExprOnceResult;
   objc_sync_enter(v7);
-  v8 = [v7 objectForKey:v6];
+  v8 = [v7 objectForKey:textCopy];
   if (v8)
   {
     v9 = v8;
@@ -859,18 +859,18 @@ void __60__IPFeatureSentence_eventVocabularyRegexForType_languageID___block_invo
     objc_sync_exit(v7);
 
     v10 = objc_autoreleasePoolPush();
-    v11 = v6;
+    v11 = textCopy;
     v12 = [(__CFString *)v11 length];
-    v13 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-    location = [a1 _rangeExcludingLeadingAndTrailingCharacters:v13 inRange:0 ofString:{v12, v11}];
+    whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+    location = [self _rangeExcludingLeadingAndTrailingCharacters:whitespaceAndNewlineCharacterSet inRange:0 ofString:{v12, v11}];
     length = v15;
 
-    if (a4 <= 1 && [(__CFString *)v11 rangeOfString:@"\n" options:2 range:location, length]!= 0x7FFFFFFFFFFFFFFFLL)
+    if (elided <= 1 && [(__CFString *)v11 rangeOfString:@"\n" options:2 range:location, length]!= 0x7FFFFFFFFFFFFFFFLL)
     {
       v36 = 0;
       v37 = &v36;
       v38 = 0x2020000000;
-      v39 = a4;
+      elidedCopy = elided;
       v32 = 0;
       v33 = &v32;
       v34 = 0x2020000000;
@@ -910,9 +910,9 @@ void __60__IPFeatureSentence_eventVocabularyRegexForType_languageID___block_invo
     v19 = objc_autoreleasePoolPush();
     v20 = [MEMORY[0x277CCA900] characterSetWithCharactersInString:@"-–—_"];
     objc_autoreleasePoolPop(v19);
-    v21 = [a1 _rangeExcludingLeadingAndTrailingCharacters:v20 inRange:location ofString:{v18, v11}];
+    v21 = [self _rangeExcludingLeadingAndTrailingCharacters:v20 inRange:location ofString:{v18, v11}];
     v23 = v22;
-    v24 = [a1 _substringWithRange:v21 ofString:v22 removingCharactersFromSet:{v11, v20}];
+    v24 = [self _substringWithRange:v21 ofString:v22 removingCharactersFromSet:{v11, v20}];
     v25 = v24;
     if (v24)
     {
@@ -932,8 +932,8 @@ void __60__IPFeatureSentence_eventVocabularyRegexForType_languageID___block_invo
     v27 = CFStringTokenizerCopyBestStringLanguage(v26, v42);
     if (!v27)
     {
-      v28 = [MEMORY[0x277CBEAF8] currentLocale];
-      v27 = [v28 objectForKey:*MEMORY[0x277CBE6C8]];
+      currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+      v27 = [currentLocale objectForKey:*MEMORY[0x277CBE6C8]];
     }
 
     if ([(__CFString *)v27 isEqualToString:@"yue"])
@@ -985,19 +985,19 @@ uint64_t __56__IPFeatureSentence_bestLanguageIDFromText_linesElided___block_invo
   return result;
 }
 
-+ (id)eventVocabularyRejectionKeywordInString:(id)a3 languageID:(id)a4
++ (id)eventVocabularyRejectionKeywordInString:(id)string languageID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 length])
+  stringCopy = string;
+  dCopy = d;
+  if ([stringCopy length])
   {
-    if (!v7)
+    if (!dCopy)
     {
-      v7 = [a1 bestLanguageIDFromText:v6];
+      dCopy = [self bestLanguageIDFromText:stringCopy];
     }
 
-    v8 = [a1 eventVocabularyRejectionRegexForLanguageID:v7];
-    v9 = [IPRegexToolbox firstMatchingKeywordForRegex:v8 inString:v6 needsToLowercase:1];
+    v8 = [self eventVocabularyRejectionRegexForLanguageID:dCopy];
+    v9 = [IPRegexToolbox firstMatchingKeywordForRegex:v8 inString:stringCopy needsToLowercase:1];
   }
 
   else
@@ -1008,19 +1008,19 @@ uint64_t __56__IPFeatureSentence_bestLanguageIDFromText_linesElided___block_invo
   return v9;
 }
 
-+ (id)eventVocabularyIgnoreDateKeywordInString:(id)a3 languageID:(id)a4
++ (id)eventVocabularyIgnoreDateKeywordInString:(id)string languageID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 length])
+  stringCopy = string;
+  dCopy = d;
+  if ([stringCopy length])
   {
-    if (!v7)
+    if (!dCopy)
     {
-      v7 = [a1 bestLanguageIDFromText:v6];
+      dCopy = [self bestLanguageIDFromText:stringCopy];
     }
 
-    v8 = [a1 eventVocabularyIgnoreDateRegexForLanguageID:v7];
-    v9 = [IPRegexToolbox firstMatchingKeywordForRegex:v8 inString:v6 needsToLowercase:1];
+    v8 = [self eventVocabularyIgnoreDateRegexForLanguageID:dCopy];
+    v9 = [IPRegexToolbox firstMatchingKeywordForRegex:v8 inString:stringCopy needsToLowercase:1];
   }
 
   else
@@ -1031,19 +1031,19 @@ uint64_t __56__IPFeatureSentence_bestLanguageIDFromText_linesElided___block_invo
   return v9;
 }
 
-+ (id)eventVocabularySubjectTitleInString:(id)a3 languageID:(id)a4
++ (id)eventVocabularySubjectTitleInString:(id)string languageID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 length])
+  stringCopy = string;
+  dCopy = d;
+  if ([stringCopy length])
   {
-    if (!v7)
+    if (!dCopy)
     {
-      v7 = [a1 bestLanguageIDFromText:v6];
+      dCopy = [self bestLanguageIDFromText:stringCopy];
     }
 
-    v8 = [a1 eventVocabularySubjectTitleRegexForLanguageID:v7];
-    v9 = [IPRegexToolbox firstMatchingKeywordForRegex:v8 inString:v6 needsToLowercase:1];
+    v8 = [self eventVocabularySubjectTitleRegexForLanguageID:dCopy];
+    v9 = [IPRegexToolbox firstMatchingKeywordForRegex:v8 inString:stringCopy needsToLowercase:1];
   }
 
   else
@@ -1054,19 +1054,19 @@ uint64_t __56__IPFeatureSentence_bestLanguageIDFromText_linesElided___block_invo
   return v9;
 }
 
-+ (unint64_t)numberOfMatchesForEventVocabularySubjectTitleInString:(id)a3 languageID:(id)a4
++ (unint64_t)numberOfMatchesForEventVocabularySubjectTitleInString:(id)string languageID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 length])
+  stringCopy = string;
+  dCopy = d;
+  if ([stringCopy length])
   {
-    if (!v7)
+    if (!dCopy)
     {
-      v7 = [a1 bestLanguageIDFromText:v6];
+      dCopy = [self bestLanguageIDFromText:stringCopy];
     }
 
-    v8 = [a1 eventVocabularySubjectTitleRegexForLanguageID:v7];
-    v9 = [IPRegexToolbox numberOfMatchesForRegex:v8 inString:v6 needsToLowercase:1];
+    v8 = [self eventVocabularySubjectTitleRegexForLanguageID:dCopy];
+    v9 = [IPRegexToolbox numberOfMatchesForRegex:v8 inString:stringCopy needsToLowercase:1];
   }
 
   else
@@ -1077,37 +1077,37 @@ uint64_t __56__IPFeatureSentence_bestLanguageIDFromText_linesElided___block_invo
   return v9;
 }
 
-- (id)descriptionForFragment:(id)a3
+- (id)descriptionForFragment:(id)fragment
 {
   v4 = MEMORY[0x277CCACA8];
-  v5 = a3;
-  v6 = [(IPFeature *)self matchString];
-  v7 = [v5 range];
-  v9 = [v6 substringWithRange:{v7, v8}];
-  v10 = [v4 stringWithFormat:@"[%@]   %@", v9, v5];
+  fragmentCopy = fragment;
+  matchString = [(IPFeature *)self matchString];
+  range = [fragmentCopy range];
+  v9 = [matchString substringWithRange:{range, v8}];
+  fragmentCopy = [v4 stringWithFormat:@"[%@]   %@", v9, fragmentCopy];
 
-  return v10;
+  return fragmentCopy;
 }
 
-- (id)descriptionForFragmentAtIndex:(unint64_t)a3
+- (id)descriptionForFragmentAtIndex:(unint64_t)index
 {
-  v5 = [(IPFeatureSentence *)self fragments];
-  v6 = [v5 objectAtIndexedSubscript:a3];
+  fragments = [(IPFeatureSentence *)self fragments];
+  v6 = [fragments objectAtIndexedSubscript:index];
   v7 = [(IPFeatureSentence *)self descriptionForFragment:v6];
 
   return v7;
 }
 
-+ (id)humanReadableFeaturePolarity:(unint64_t)a3
++ (id)humanReadableFeaturePolarity:(unint64_t)polarity
 {
-  if (a3 - 1 > 4)
+  if (polarity - 1 > 4)
   {
     return @"undefined";
   }
 
   else
   {
-    return off_278F232A0[a3 - 1];
+    return off_278F232A0[polarity - 1];
   }
 }
 

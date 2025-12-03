@@ -1,12 +1,12 @@
 @interface TIKeyboardBehaviors_Thai_24Key
-- (id)keyBehaviorsForState:(id)a3;
+- (id)keyBehaviorsForState:(id)state;
 @end
 
 @implementation TIKeyboardBehaviors_Thai_24Key
 
-- (id)keyBehaviorsForState:(id)a3
+- (id)keyBehaviorsForState:(id)state
 {
-  if ([a3 hasInput])
+  if ([state hasInput])
   {
     v3 = 11;
     v4 = 2;

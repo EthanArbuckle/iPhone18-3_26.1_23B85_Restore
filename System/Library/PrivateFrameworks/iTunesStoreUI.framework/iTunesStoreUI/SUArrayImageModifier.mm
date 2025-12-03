@@ -1,11 +1,11 @@
 @interface SUArrayImageModifier
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)scalesImage;
-- (CGRect)imageFrameForImage:(id)a3 currentFrame:(CGRect)a4 finalSize:(CGSize)a5;
-- (CGSize)finalSizeForSize:(CGSize)a3 originalSize:(CGSize)a4;
+- (CGRect)imageFrameForImage:(id)image currentFrame:(CGRect)frame finalSize:(CGSize)size;
+- (CGSize)finalSizeForSize:(CGSize)size originalSize:(CGSize)originalSize;
 - (void)dealloc;
-- (void)drawAfterImageForContext:(CGContext *)a3 imageFrame:(CGRect)a4 finalSize:(CGSize)a5;
-- (void)drawBeforeImageForContext:(CGContext *)a3 imageFrame:(CGRect)a4 finalSize:(CGSize)a5;
+- (void)drawAfterImageForContext:(CGContext *)context imageFrame:(CGRect)frame finalSize:(CGSize)size;
+- (void)drawBeforeImageForContext:(CGContext *)context imageFrame:(CGRect)frame finalSize:(CGSize)size;
 @end
 
 @implementation SUArrayImageModifier
@@ -18,7 +18,7 @@
   [(SUArrayImageModifier *)&v3 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -26,17 +26,17 @@
     return 0;
   }
 
-  v5 = [(SUArrayImageModifier *)self modifiers];
-  v6 = [a3 modifiers];
-  v7 = [(NSArray *)v5 count];
-  v8 = [v6 count];
+  modifiers = [(SUArrayImageModifier *)self modifiers];
+  modifiers2 = [equal modifiers];
+  v7 = [(NSArray *)modifiers count];
+  v8 = [modifiers2 count];
   result = v7 == v8;
   if (v7 >= 1 && v7 == v8)
   {
     v10 = 1;
     do
     {
-      result = [-[NSArray objectAtIndex:](v5 objectAtIndex:{v10 - 1), "isEqual:", objc_msgSend(v6, "objectAtIndex:", v10 - 1)}];
+      result = [-[NSArray objectAtIndex:](modifiers objectAtIndex:{v10 - 1), "isEqual:", objc_msgSend(modifiers2, "objectAtIndex:", v10 - 1)}];
       if (v10 >= v7)
       {
         break;
@@ -51,14 +51,14 @@
   return result;
 }
 
-- (void)drawAfterImageForContext:(CGContext *)a3 imageFrame:(CGRect)a4 finalSize:(CGSize)a5
+- (void)drawAfterImageForContext:(CGContext *)context imageFrame:(CGRect)frame finalSize:(CGSize)size
 {
-  height = a5.height;
-  width = a5.width;
-  v7 = a4.size.height;
-  v8 = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = size.height;
+  width = size.width;
+  v7 = frame.size.height;
+  v8 = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v22 = *MEMORY[0x1E69E9840];
   v17 = 0u;
   v18 = 0u;
@@ -79,7 +79,7 @@
           objc_enumerationMutation(modifiers);
         }
 
-        [*(*(&v17 + 1) + 8 * i) drawAfterImageForContext:a3 imageFrame:x finalSize:{y, v8, v7, width, height}];
+        [*(*(&v17 + 1) + 8 * i) drawAfterImageForContext:context imageFrame:x finalSize:{y, v8, v7, width, height}];
       }
 
       v14 = [(NSArray *)modifiers countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -89,14 +89,14 @@
   }
 }
 
-- (void)drawBeforeImageForContext:(CGContext *)a3 imageFrame:(CGRect)a4 finalSize:(CGSize)a5
+- (void)drawBeforeImageForContext:(CGContext *)context imageFrame:(CGRect)frame finalSize:(CGSize)size
 {
-  height = a5.height;
-  width = a5.width;
-  v7 = a4.size.height;
-  v8 = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = size.height;
+  width = size.width;
+  v7 = frame.size.height;
+  v8 = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v22 = *MEMORY[0x1E69E9840];
   v17 = 0u;
   v18 = 0u;
@@ -117,7 +117,7 @@
           objc_enumerationMutation(modifiers);
         }
 
-        [*(*(&v17 + 1) + 8 * i) drawBeforeImageForContext:a3 imageFrame:x finalSize:{y, v8, v7, width, height}];
+        [*(*(&v17 + 1) + 8 * i) drawBeforeImageForContext:context imageFrame:x finalSize:{y, v8, v7, width, height}];
       }
 
       v14 = [(NSArray *)modifiers countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -127,12 +127,12 @@
   }
 }
 
-- (CGSize)finalSizeForSize:(CGSize)a3 originalSize:(CGSize)a4
+- (CGSize)finalSizeForSize:(CGSize)size originalSize:(CGSize)originalSize
 {
-  height = a4.height;
-  width = a4.width;
-  v6 = a3.height;
-  v7 = a3.width;
+  height = originalSize.height;
+  width = originalSize.width;
+  v6 = size.height;
+  v7 = size.width;
   v22 = *MEMORY[0x1E69E9840];
   v17 = 0u;
   v18 = 0u;
@@ -171,14 +171,14 @@
   return result;
 }
 
-- (CGRect)imageFrameForImage:(id)a3 currentFrame:(CGRect)a4 finalSize:(CGSize)a5
+- (CGRect)imageFrameForImage:(id)image currentFrame:(CGRect)frame finalSize:(CGSize)size
 {
-  height = a5.height;
-  width = a5.width;
-  v7 = a4.size.height;
-  v8 = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = size.height;
+  width = size.width;
+  v7 = frame.size.height;
+  v8 = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v30 = *MEMORY[0x1E69E9840];
   v25 = 0u;
   v26 = 0u;
@@ -199,7 +199,7 @@
           objc_enumerationMutation(modifiers);
         }
 
-        [*(*(&v25 + 1) + 8 * i) imageFrameForImage:a3 currentFrame:x finalSize:{y, v8, v7, width, height}];
+        [*(*(&v25 + 1) + 8 * i) imageFrameForImage:image currentFrame:x finalSize:{y, v8, v7, width, height}];
         x = v17;
         y = v18;
         v8 = v19;

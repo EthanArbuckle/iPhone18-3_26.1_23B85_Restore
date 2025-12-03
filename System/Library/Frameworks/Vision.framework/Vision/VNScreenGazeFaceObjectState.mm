@@ -1,5 +1,5 @@
 @interface VNScreenGazeFaceObjectState
-- (void)_replaceFaceObservation:(uint64_t)a3 imageWidth:(uint64_t)a4 imageHeight:(int)a5 frameIndex:;
+- (void)_replaceFaceObservation:(uint64_t)observation imageWidth:(uint64_t)width imageHeight:(int)height frameIndex:;
 - (void)dealloc;
 @end
 
@@ -78,15 +78,15 @@ LABEL_16:
   [(VNScreenGazeFaceObjectState *)&v12 dealloc];
 }
 
-- (void)_replaceFaceObservation:(uint64_t)a3 imageWidth:(uint64_t)a4 imageHeight:(int)a5 frameIndex:
+- (void)_replaceFaceObservation:(uint64_t)observation imageWidth:(uint64_t)width imageHeight:(int)height frameIndex:
 {
   v30 = a2;
   if (x0_0)
   {
     objc_storeStrong((x0_0 + 8), a2);
-    *(x0_0 + 16) = a3;
-    *(x0_0 + 24) = a4;
-    *(x0_0 + 32) = a5;
+    *(x0_0 + 16) = observation;
+    *(x0_0 + 24) = width;
+    *(x0_0 + 32) = height;
     [*(x0_0 + 8) unalignedBoundingBox];
     v10 = cgNormalizedRectToGeometryImageRect(v32, *(x0_0 + 16));
     v11 = floorf(v10);
@@ -95,26 +95,26 @@ LABEL_16:
     *(x0_0 + 76) = v13;
     *(x0_0 + 80) = ceilf((v12 + v15) - v13);
     *(x0_0 + 84) = ceilf((v10 + v14) - v11);
-    v16 = [*(x0_0 + 8) landmarks];
+    landmarks = [*(x0_0 + 8) landmarks];
 
-    if (v16)
+    if (landmarks)
     {
       [*(x0_0 + 8) boundingBox];
       v17 = cgNormalizedRectToGeometryImageRect(v33, *(x0_0 + 16));
       v28 = v18;
       v29 = v17;
-      v19 = [*(x0_0 + 8) landmarks];
-      v20 = [v19 leftPupil];
-      [v20 normalizedPoints];
+      landmarks2 = [*(x0_0 + 8) landmarks];
+      leftPupil = [landmarks2 leftPupil];
+      [leftPupil normalizedPoints];
 
       VisionCoreImagePointForNormalizedPoint();
       *&v21 = v21;
       *&v22 = v22;
       *(x0_0 + 48) = LODWORD(v21);
       *(x0_0 + 52) = LODWORD(v22);
-      v23 = [*(x0_0 + 8) landmarks];
-      v24 = [v23 rightPupil];
-      [v24 normalizedPoints];
+      landmarks3 = [*(x0_0 + 8) landmarks];
+      rightPupil = [landmarks3 rightPupil];
+      [rightPupil normalizedPoints];
 
       VisionCoreImagePointForNormalizedPoint();
       v26.f64[1] = v25;

@@ -12,19 +12,19 @@
 - (id)issueSandboxExtensionData
 {
   v11 = *MEMORY[0x1E69E9840];
-  if (([a1 isFileURL] & 1) == 0)
+  if (([self isFileURL] & 1) == 0)
   {
     v5 = utilities_log();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
-      [(NSURL(Sharing) *)a1 issueSandboxExtensionData];
+      [(NSURL(Sharing) *)self issueSandboxExtensionData];
     }
 
     goto LABEL_10;
   }
 
   v2 = *MEMORY[0x1E69E9BA8];
-  [a1 fileSystemRepresentation];
+  [self fileSystemRepresentation];
   v3 = sandbox_extension_issue_file();
   v4 = utilities_log();
   v5 = v4;
@@ -32,7 +32,7 @@
   {
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
     {
-      [(NSURL(Sharing) *)a1 issueSandboxExtensionData];
+      [(NSURL(Sharing) *)self issueSandboxExtensionData];
     }
 
 LABEL_10:
@@ -44,7 +44,7 @@ LABEL_10:
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138477827;
-    v10 = a1;
+    selfCopy = self;
     _os_log_impl(&dword_1A9662000, v5, OS_LOG_TYPE_DEFAULT, "sandbox extension issued successfully for URL:%{private}@", &v9, 0xCu);
   }
 
@@ -62,7 +62,7 @@ LABEL_11:
   v5 = __error();
   v6 = strerror(*v5);
   v8 = 138412802;
-  v9 = a1;
+  selfCopy = self;
   v10 = 1024;
   v11 = v4;
   v12 = 2080;
@@ -74,16 +74,16 @@ LABEL_11:
 - (uint64_t)isiWorkDocument
 {
   v2 = 0;
-  [a1 getResourceValue:&v2 forKey:*MEMORY[0x1E695DC68] error:0];
+  [self getResourceValue:&v2 forKey:*MEMORY[0x1E695DC68] error:0];
   return [v2 hasPrefix:@"com.apple.iwork"];
 }
 
 - (id)fileName
 {
-  v1 = [a1 URLByDeletingPathExtension];
-  v2 = [v1 lastPathComponent];
+  uRLByDeletingPathExtension = [self URLByDeletingPathExtension];
+  lastPathComponent = [uRLByDeletingPathExtension lastPathComponent];
 
-  return v2;
+  return lastPathComponent;
 }
 
 - (void)coordinateReadingWithSaveToTempDir:()Sharing options:completionHandler:
@@ -99,7 +99,7 @@ LABEL_11:
   v13 = 0;
   v14 = v8;
   v10 = v8;
-  [v9 coordinateReadingItemAtURL:a1 options:a4 error:&v16 byAccessor:v12];
+  [v9 coordinateReadingItemAtURL:self options:a4 error:&v16 byAccessor:v12];
   v11 = v16;
 }
 
@@ -107,19 +107,19 @@ LABEL_11:
 {
   v20 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = [MEMORY[0x1E696AF20] componentsWithURL:a1 resolvingAgainstBaseURL:0];
+  v5 = [MEMORY[0x1E696AF20] componentsWithURL:self resolvingAgainstBaseURL:0];
   [v5 queryItems];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v6 = v18 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
-  if (v7)
+  value = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  if (value)
   {
     v8 = *v16;
     while (2)
     {
-      for (i = 0; i != v7; i = i + 1)
+      for (i = 0; i != value; i = i + 1)
       {
         if (*v16 != v8)
         {
@@ -127,18 +127,18 @@ LABEL_11:
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        v11 = [v10 name];
-        v12 = [v11 isEqualToString:v4];
+        name = [v10 name];
+        v12 = [name isEqualToString:v4];
 
         if (v12)
         {
-          v7 = [v10 value];
+          value = [v10 value];
           goto LABEL_11;
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
-      if (v7)
+      value = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      if (value)
       {
         continue;
       }
@@ -151,7 +151,7 @@ LABEL_11:
 
   v13 = *MEMORY[0x1E69E9840];
 
-  return v7;
+  return value;
 }
 
 @end

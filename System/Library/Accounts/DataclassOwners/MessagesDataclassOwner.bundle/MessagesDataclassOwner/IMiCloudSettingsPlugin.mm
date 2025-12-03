@@ -1,19 +1,19 @@
 @interface IMiCloudSettingsPlugin
 + (id)dataclasses;
-- (BOOL)checkEligibilityWithError:(id *)a3;
+- (BOOL)checkEligibilityWithError:(id *)error;
 - (BOOL)eligibleToToggleMiCSwitch;
-- (BOOL)performAction:(id)a3 forAccount:(id)a4 withChildren:(id)a5 forDataclass:(id)a6 withError:(id *)a7;
+- (BOOL)performAction:(id)action forAccount:(id)account withChildren:(id)children forDataclass:(id)dataclass withError:(id *)error;
 - (BOOL)purchasedMaxQuotaTier;
 - (id)_deviceNameString;
-- (id)actionsForDisablingDataclassOnAccount:(id)a3 forDataclass:(id)a4 withError:(id *)a5;
-- (id)actionsForEnablingDataclassOnAccount:(id)a3 forDataclass:(id)a4 withError:(id *)a5;
-- (int64_t)_disablementOptionForUserNotificationResponse:(id)a3;
+- (id)actionsForDisablingDataclassOnAccount:(id)account forDataclass:(id)dataclass withError:(id *)error;
+- (id)actionsForEnablingDataclassOnAccount:(id)account forDataclass:(id)dataclass withError:(id *)error;
+- (int64_t)_disablementOptionForUserNotificationResponse:(id)response;
 - (int64_t)_promptUserIfTheyWantToDisableOrCancel;
 - (void)_setupIMListener;
-- (void)didPerformAdditionalStorageRequiredCheck:(id)a3;
-- (void)didPerformEligibilityCheck:(id)a3;
+- (void)didPerformAdditionalStorageRequiredCheck:(id)check;
+- (void)didPerformEligibilityCheck:(id)check;
 - (void)performAdditionalStorageRequiredCheck;
-- (void)setEnabledDidReturned:(id)a3;
+- (void)setEnabledDidReturned:(id)returned;
 @end
 
 @implementation IMiCloudSettingsPlugin
@@ -36,28 +36,28 @@
   return v3;
 }
 
-- (id)actionsForDisablingDataclassOnAccount:(id)a3 forDataclass:(id)a4 withError:(id *)a5
+- (id)actionsForDisablingDataclassOnAccount:(id)account forDataclass:(id)dataclass withError:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  accountCopy = account;
+  dataclassCopy = dataclass;
   if (IMOSLoggingEnabled())
   {
     v10 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v22 = v9;
+      v22 = dataclassCopy;
       _os_log_impl(&dword_0, v10, OS_LOG_TYPE_INFO, "actionsForDisablingDataclassOnAccount for dataclass: %@", buf, 0xCu);
     }
   }
 
-  if (![(__CFString *)v9 isEqualToString:kAccountDataclassMessages])
+  if (![(__CFString *)dataclassCopy isEqualToString:kAccountDataclassMessages])
   {
     goto LABEL_22;
   }
 
-  v11 = [(IMiCloudSettingsPlugin *)self _promptUserIfTheyWantToDisableOrCancel];
-  if (v11 == 2)
+  _promptUserIfTheyWantToDisableOrCancel = [(IMiCloudSettingsPlugin *)self _promptUserIfTheyWantToDisableOrCancel];
+  if (_promptUserIfTheyWantToDisableOrCancel == 2)
   {
     if (IMOSLoggingEnabled())
     {
@@ -74,7 +74,7 @@
     [v13 tryToDisableAllDevices];
   }
 
-  v14 = v11 - 1;
+  v14 = _promptUserIfTheyWantToDisableOrCancel - 1;
   if (IMOSLoggingEnabled())
   {
     v15 = OSLogHandleForIMFoundationCategory();
@@ -89,7 +89,7 @@
       *buf = 138412546;
       v22 = v16;
       v23 = 2048;
-      v24 = v11;
+      v24 = _promptUserIfTheyWantToDisableOrCancel;
       _os_log_impl(&dword_0, v15, OS_LOG_TYPE_INFO, "User has chosen to disable Messages in iCloud: %@ disablement option: {%ld}", buf, 0x16u);
     }
   }
@@ -103,10 +103,10 @@
     goto LABEL_23;
   }
 
-  if (a5)
+  if (error)
   {
     [NSError errorWithDomain:@"com.apple.messages" code:0 userInfo:0];
-    *a5 = v18 = 0;
+    *error = v18 = 0;
   }
 
   else
@@ -120,22 +120,22 @@ LABEL_23:
   return v18;
 }
 
-- (id)actionsForEnablingDataclassOnAccount:(id)a3 forDataclass:(id)a4 withError:(id *)a5
+- (id)actionsForEnablingDataclassOnAccount:(id)account forDataclass:(id)dataclass withError:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  accountCopy = account;
+  dataclassCopy = dataclass;
   if (IMOSLoggingEnabled())
   {
     v10 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v17 = v9;
+      v17 = dataclassCopy;
       _os_log_impl(&dword_0, v10, OS_LOG_TYPE_INFO, "actionsForEnablingDataclassOnAccount: %@", buf, 0xCu);
     }
   }
 
-  if (![v9 isEqualToString:kAccountDataclassMessages])
+  if (![dataclassCopy isEqualToString:kAccountDataclassMessages])
   {
     goto LABEL_12;
   }
@@ -150,7 +150,7 @@ LABEL_23:
     }
   }
 
-  if ([(IMiCloudSettingsPlugin *)self checkEligibilityWithError:a5])
+  if ([(IMiCloudSettingsPlugin *)self checkEligibilityWithError:error])
   {
     v12 = [ACDataclassAction actionWithType:5];
     v15 = v12;
@@ -166,21 +166,21 @@ LABEL_12:
   return v13;
 }
 
-- (BOOL)performAction:(id)a3 forAccount:(id)a4 withChildren:(id)a5 forDataclass:(id)a6 withError:(id *)a7
+- (BOOL)performAction:(id)action forAccount:(id)account withChildren:(id)children forDataclass:(id)dataclass withError:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  actionCopy = action;
+  accountCopy = account;
+  childrenCopy = children;
+  dataclassCopy = dataclass;
   if (IMOSLoggingEnabled())
   {
     v16 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
     {
       v23 = 138412546;
-      v24 = v12;
+      v24 = actionCopy;
       v25 = 2112;
-      v26 = v15;
+      v26 = dataclassCopy;
       _os_log_impl(&dword_0, v16, OS_LOG_TYPE_INFO, "perform action: %@ for dataclass: %@", &v23, 0x16u);
     }
   }
@@ -188,7 +188,7 @@ LABEL_12:
   byte_C630 = 0;
   qword_C638 = 0;
   v17 = kAccountDataclassMessages;
-  if (![v15 isEqualToString:kAccountDataclassMessages] || objc_msgSend(v12, "type") != &dword_4 + 1)
+  if (![dataclassCopy isEqualToString:kAccountDataclassMessages] || objc_msgSend(actionCopy, "type") != &dword_4 + 1)
   {
     goto LABEL_14;
   }
@@ -203,7 +203,7 @@ LABEL_12:
     }
   }
 
-  if ([(IMiCloudSettingsPlugin *)self checkEligibilityWithError:a7])
+  if ([(IMiCloudSettingsPlugin *)self checkEligibilityWithError:error])
   {
     v19 = 1;
   }
@@ -211,7 +211,7 @@ LABEL_12:
   else
   {
 LABEL_14:
-    if (![v15 isEqualToString:v17] || objc_msgSend(v12, "type") != &dword_0 + 2)
+    if (![dataclassCopy isEqualToString:v17] || objc_msgSend(actionCopy, "type") != &dword_0 + 2)
     {
       v21 = 0;
       goto LABEL_22;
@@ -258,8 +258,8 @@ LABEL_22:
 
   v4 = [NSBundle bundleForClass:objc_opt_class()];
   v5 = [v4 localizedStringForKey:@"DISABLE_MIC_MESSAGE_FORMAT" value:&stru_8260 table:@"IMiCloudSettingsPlugin"];
-  v6 = [(IMiCloudSettingsPlugin *)self _deviceNameString];
-  v7 = [NSString stringWithFormat:v5, v6];
+  _deviceNameString = [(IMiCloudSettingsPlugin *)self _deviceNameString];
+  v7 = [NSString stringWithFormat:v5, _deviceNameString];
 
   v8 = +[NSString stringGUID];
   v9 = sub_DD0(@"DISABLE_MIC_TITLE");
@@ -326,7 +326,7 @@ LABEL_22:
   return v13;
 }
 
-- (BOOL)checkEligibilityWithError:(id *)a3
+- (BOOL)checkEligibilityWithError:(id *)error
 {
   if (-[IMiCloudSettingsPlugin eligibleToToggleMiCSwitch](self, "eligibleToToggleMiCSwitch") && (+[IMCloudKitHooks sharedInstance](IMCloudKitHooks, "sharedInstance"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 mocAccountsMatch], v5, (v6 & 1) != 0))
   {
@@ -336,9 +336,9 @@ LABEL_22:
       return 1;
     }
 
-    v7 = [(IMiCloudSettingsPlugin *)self purchasedMaxQuotaTier];
+    purchasedMaxQuotaTier = [(IMiCloudSettingsPlugin *)self purchasedMaxQuotaTier];
     v8 = IMOSLoggingEnabled();
-    if (v7)
+    if (purchasedMaxQuotaTier)
     {
       if (v8)
       {
@@ -356,9 +356,9 @@ LABEL_22:
       v22 = v10;
       v11 = [NSDictionary dictionaryWithObjects:&v22 forKeys:&v21 count:1];
 
-      if (a3)
+      if (error)
       {
-        *a3 = [NSError errorWithDomain:AADataclassActionErrorDomain code:2 userInfo:v11];
+        *error = [NSError errorWithDomain:AADataclassActionErrorDomain code:2 userInfo:v11];
       }
     }
 
@@ -375,13 +375,13 @@ LABEL_22:
         }
       }
 
-      v17 = [NSNumber numberWithUnsignedLongLong:qword_C638, AADataclassActionUserInfoLibrarySize];
-      v20 = v17;
+      aADataclassActionUserInfoLibrarySize = [NSNumber numberWithUnsignedLongLong:qword_C638, AADataclassActionUserInfoLibrarySize];
+      v20 = aADataclassActionUserInfoLibrarySize;
       v18 = [NSDictionary dictionaryWithObjects:&v20 forKeys:&v19 count:1];
 
-      if (a3)
+      if (error)
       {
-        *a3 = [NSError errorWithDomain:AADataclassActionErrorDomain code:0 userInfo:v18];
+        *error = [NSError errorWithDomain:AADataclassActionErrorDomain code:0 userInfo:v18];
       }
     }
   }
@@ -398,12 +398,12 @@ LABEL_22:
       }
     }
 
-    if (a3)
+    if (error)
     {
       v13 = [NSError errorWithDomain:AADataclassActionErrorDomain code:1 userInfo:0];
       v14 = v13;
       result = 0;
-      *a3 = v13;
+      *error = v13;
       return result;
     }
   }
@@ -562,9 +562,9 @@ LABEL_20:
   return byte_C650;
 }
 
-- (void)didPerformEligibilityCheck:(id)a3
+- (void)didPerformEligibilityCheck:(id)check
 {
-  v4 = a3;
+  checkCopy = check;
   byte_C650 = IMCloudKitIsEligibleToToggleMiCSwitch();
   if (IMOSLoggingEnabled())
   {
@@ -593,22 +593,22 @@ LABEL_20:
   dispatch_semaphore_signal(qword_C658);
 }
 
-- (void)didPerformAdditionalStorageRequiredCheck:(id)a3
+- (void)didPerformAdditionalStorageRequiredCheck:(id)check
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
+  checkCopy = check;
+  userInfo = [checkCopy userInfo];
   if (IMOSLoggingEnabled())
   {
     v6 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       v9 = 138412290;
-      v10 = v5;
+      v10 = userInfo;
       _os_log_impl(&dword_0, v6, OS_LOG_TYPE_INFO, "didPerformAdditionalStorageRequiredCheck with userInfo: %@", &v9, 0xCu);
     }
   }
 
-  v7 = [v5 objectForKeyedSubscript:IMCloudKitHooksResultAdditionalStorageRequiredUserInfoKey];
+  v7 = [userInfo objectForKeyedSubscript:IMCloudKitHooksResultAdditionalStorageRequiredUserInfoKey];
   qword_C638 = [v7 longLongValue];
 
   v8 = +[NSNotificationCenter defaultCenter];
@@ -617,22 +617,22 @@ LABEL_20:
   dispatch_semaphore_signal(qword_C648);
 }
 
-- (void)setEnabledDidReturned:(id)a3
+- (void)setEnabledDidReturned:(id)returned
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
+  returnedCopy = returned;
+  userInfo = [returnedCopy userInfo];
   if (IMOSLoggingEnabled())
   {
     v6 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       v9 = 138412290;
-      v10 = v5;
+      v10 = userInfo;
       _os_log_impl(&dword_0, v6, OS_LOG_TYPE_INFO, "setEnabledDidReturned with result: %@", &v9, 0xCu);
     }
   }
 
-  v7 = [v5 objectForKeyedSubscript:IMCloudKitHooksResultSuccessUserInfoKey];
+  v7 = [userInfo objectForKeyedSubscript:IMCloudKitHooksResultSuccessUserInfoKey];
   byte_C630 = [v7 BOOLValue];
 
   v8 = +[NSNotificationCenter defaultCenter];
@@ -650,9 +650,9 @@ LABEL_20:
   v2 = dispatch_semaphore_create(0);
   v3 = dispatch_time(0, 3000000000);
   v4 = +[ACAccountStore defaultStore];
-  v5 = [v4 aa_primaryAppleAccount];
+  aa_primaryAppleAccount = [v4 aa_primaryAppleAccount];
 
-  v6 = [[AAQuotaInfoRequest alloc] initDetailedRequestWithAccount:v5];
+  v6 = [[AAQuotaInfoRequest alloc] initDetailedRequestWithAccount:aa_primaryAppleAccount];
   if (IMOSLoggingEnabled())
   {
     v7 = OSLogHandleForIMFoundationCategory();
@@ -709,17 +709,17 @@ LABEL_13:
   return v12 & 1;
 }
 
-- (int64_t)_disablementOptionForUserNotificationResponse:(id)a3
+- (int64_t)_disablementOptionForUserNotificationResponse:(id)response
 {
-  v3 = [a3 response];
-  if (v3 > 3)
+  response = [response response];
+  if (response > 3)
   {
     return -1;
   }
 
   else
   {
-    return qword_3BC8[v3];
+    return qword_3BC8[response];
   }
 }
 

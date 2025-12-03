@@ -1,9 +1,9 @@
 @interface PRGenerativeExperiencesRunner
 - (PRGenerativeExperiencesRunner)init;
-- (void)requestCancellationForToken:(unint64_t)a3;
-- (void)requestReviewWithAttributedString:(id)a3 range:(_NSRange)a4 options:(id)a5 completionHandler:(id)a6;
-- (void)requestRewritingWithAttributedString:(id)a3 range:(_NSRange)a4 rewritingType:(id)a5 options:(id)a6 completionHandler:(id)a7;
-- (void)requestShortFormRepliesWithContextHistory:(id)a3 documentType:(id)a4 options:(id)a5 completionHandler:(id)a6;
+- (void)requestCancellationForToken:(unint64_t)token;
+- (void)requestReviewWithAttributedString:(id)string range:(_NSRange)range options:(id)options completionHandler:(id)handler;
+- (void)requestRewritingWithAttributedString:(id)string range:(_NSRange)range rewritingType:(id)type options:(id)options completionHandler:(id)handler;
+- (void)requestShortFormRepliesWithContextHistory:(id)history documentType:(id)type options:(id)options completionHandler:(id)handler;
 @end
 
 @implementation PRGenerativeExperiencesRunner
@@ -15,42 +15,42 @@
   return [(PRGenerativeExperiencesRunner *)&v3 init];
 }
 
-- (void)requestCancellationForToken:(unint64_t)a3
+- (void)requestCancellationForToken:(unint64_t)token
 {
   v3 = [objc_allocWithZone(sub_1D2BF3FC8()) init];
   sub_1D2BF3FB8();
 }
 
-- (void)requestShortFormRepliesWithContextHistory:(id)a3 documentType:(id)a4 options:(id)a5 completionHandler:(id)a6
+- (void)requestShortFormRepliesWithContextHistory:(id)history documentType:(id)type options:(id)options completionHandler:(id)handler
 {
-  v9 = _Block_copy(a6);
+  v9 = _Block_copy(handler);
   v10 = sub_1D2BF3FF8();
   v12 = v11;
-  if (a5)
+  if (options)
   {
-    a5 = sub_1D2BF3FE8();
+    options = sub_1D2BF3FE8();
   }
 
   _Block_copy(v9);
-  v13 = a3;
-  v14 = self;
-  sub_1D2BF2C00(v13, v10, v12, a5, v9);
+  historyCopy = history;
+  selfCopy = self;
+  sub_1D2BF2C00(historyCopy, v10, v12, options, v9);
   _Block_release(v9);
   _Block_release(v9);
 }
 
-- (void)requestReviewWithAttributedString:(id)a3 range:(_NSRange)a4 options:(id)a5 completionHandler:(id)a6
+- (void)requestReviewWithAttributedString:(id)string range:(_NSRange)range options:(id)options completionHandler:(id)handler
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v11 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EC72BCD8, &qword_1D2BFD980);
   v12 = *(*(v11 - 8) + 64);
   MEMORY[0x1EEE9AC00](v11 - 8);
   v14 = &v20 - v13;
-  v15 = _Block_copy(a6);
-  if (a5)
+  v15 = _Block_copy(handler);
+  if (options)
   {
-    a5 = sub_1D2BF3FE8();
+    options = sub_1D2BF3FE8();
   }
 
   v16 = swift_allocObject();
@@ -60,32 +60,32 @@
   v18 = swift_allocObject();
   v18[2] = 0;
   v18[3] = 0;
-  v18[4] = a3;
+  v18[4] = string;
   v18[5] = location;
   v18[6] = length;
-  v18[7] = a5;
+  v18[7] = options;
   v18[8] = sub_1D2BF3470;
   v18[9] = v16;
-  v19 = a3;
+  stringCopy = string;
   sub_1D2BF13E0(0, 0, v14, &unk_1D2BFDA40, v18);
 }
 
-- (void)requestRewritingWithAttributedString:(id)a3 range:(_NSRange)a4 rewritingType:(id)a5 options:(id)a6 completionHandler:(id)a7
+- (void)requestRewritingWithAttributedString:(id)string range:(_NSRange)range rewritingType:(id)type options:(id)options completionHandler:(id)handler
 {
-  length = a4.length;
-  location = a4.location;
-  v12 = _Block_copy(a7);
+  length = range.length;
+  location = range.location;
+  v12 = _Block_copy(handler);
   v13 = sub_1D2BF3FF8();
   v15 = v14;
-  if (a6)
+  if (options)
   {
-    a6 = sub_1D2BF3FE8();
+    options = sub_1D2BF3FE8();
   }
 
   _Block_copy(v12);
-  v16 = a3;
-  v17 = self;
-  sub_1D2BF2FAC(v16, location, length, v13, v15, a6, v12);
+  stringCopy = string;
+  selfCopy = self;
+  sub_1D2BF2FAC(stringCopy, location, length, v13, v15, options, v12);
   _Block_release(v12);
   _Block_release(v12);
 }

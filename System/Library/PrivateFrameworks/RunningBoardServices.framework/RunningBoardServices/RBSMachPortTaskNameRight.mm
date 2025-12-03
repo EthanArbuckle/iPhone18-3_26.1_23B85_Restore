@@ -1,15 +1,15 @@
 @interface RBSMachPortTaskNameRight
 + (id)portForSelf;
-+ (id)taskNameForPID:(int)a3;
++ (id)taskNameForPID:(int)d;
 - (RBSMachPortTaskNameRight)init;
-- (RBSMachPortTaskNameRight)initWithCoder:(id)a3;
-- (RBSMachPortTaskNameRight)initWithRBSXPCCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)initWithPID:(void *)a1;
-- (uint64_t)_initWithPID:(void *)a3 port:(void *)a4 auditToken:;
+- (RBSMachPortTaskNameRight)initWithCoder:(id)coder;
+- (RBSMachPortTaskNameRight)initWithRBSXPCCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)initWithPID:(void *)d;
+- (uint64_t)_initWithPID:(void *)d port:(void *)port auditToken:;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)encodeWithRBSXPCCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)encodeWithRBSXPCCoder:(id)coder;
 @end
 
 @implementation RBSMachPortTaskNameRight
@@ -29,10 +29,10 @@
   return [(RBSMachPortTaskNameRight *)self initWithPID:v3];
 }
 
-- (id)initWithPID:(void *)a1
+- (id)initWithPID:(void *)d
 {
-  v3 = 0;
-  if (!a1 || a2 < 1)
+  dCopy = 0;
+  if (!d || a2 < 1)
   {
     goto LABEL_15;
   }
@@ -65,7 +65,7 @@
     }
 
 LABEL_10:
-    v3 = 0;
+    dCopy = 0;
     goto LABEL_15;
   }
 
@@ -85,7 +85,7 @@ LABEL_11:
       [RBSMachPortTaskNameRight initWithPID:v11];
     }
 
-    v3 = 0;
+    dCopy = 0;
     tn = 0;
   }
 
@@ -95,27 +95,27 @@ LABEL_11:
     v16[1] = v19;
     v14 = [RBSAuditToken tokenFromAuditToken:v16];
     v15 = [RBSMachPort portConsumingRightForPort:tn];
-    [(RBSMachPortTaskNameRight *)a1 _initWithPID:a2 port:v15 auditToken:v14];
-    v3 = a1;
+    [(RBSMachPortTaskNameRight *)d _initWithPID:a2 port:v15 auditToken:v14];
+    dCopy = d;
   }
 
 LABEL_15:
 
-  return v3;
+  return dCopy;
 }
 
-+ (id)taskNameForPID:(int)a3
++ (id)taskNameForPID:(int)d
 {
-  if (a3 < 1)
+  if (d < 1)
   {
     v6 = 0;
   }
 
   else
   {
-    if (_RBSSandboxCanGetMachTaskName(a3))
+    if (_RBSSandboxCanGetMachTaskName(d))
     {
-      v6 = [(RBSMachPortTaskNameRight *)[a1 alloc] initWithPID:a3];
+      v6 = [(RBSMachPortTaskNameRight *)[self alloc] initWithPID:d];
     }
 
     else
@@ -134,24 +134,24 @@ LABEL_15:
   return [RBSMachPortTaskNameRight taskNameForPID:v2];
 }
 
-- (void)encodeWithRBSXPCCoder:(id)a3
+- (void)encodeWithRBSXPCCoder:(id)coder
 {
   pid = self->_pid;
-  v5 = a3;
-  [v5 encodeInt64:pid forKey:@"_pid"];
-  [v5 encodeObject:self->_auditToken forKey:@"_auditToken"];
-  [v5 encodeObject:self->_port forKey:@"_port"];
+  coderCopy = coder;
+  [coderCopy encodeInt64:pid forKey:@"_pid"];
+  [coderCopy encodeObject:self->_auditToken forKey:@"_auditToken"];
+  [coderCopy encodeObject:self->_port forKey:@"_port"];
 }
 
-- (RBSMachPortTaskNameRight)initWithCoder:(id)a3
+- (RBSMachPortTaskNameRight)initWithCoder:(id)coder
 {
-  v4 = a3;
-  self->_pid = [v4 decodeIntForKey:@"_pid"];
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_auditToken"];
+  coderCopy = coder;
+  self->_pid = [coderCopy decodeIntForKey:@"_pid"];
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_auditToken"];
   auditToken = self->_auditToken;
   self->_auditToken = v5;
 
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_port"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_port"];
 
   port = self->_port;
   self->_port = v7;
@@ -159,21 +159,21 @@ LABEL_15:
   return self;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   pid = self->_pid;
-  v5 = a3;
-  [v5 encodeInt:pid forKey:@"_pid"];
-  [v5 encodeObject:self->_auditToken forKey:@"_auditToken"];
-  [v5 encodeObject:self->_port forKey:@"_port"];
+  coderCopy = coder;
+  [coderCopy encodeInt:pid forKey:@"_pid"];
+  [coderCopy encodeObject:self->_auditToken forKey:@"_auditToken"];
+  [coderCopy encodeObject:self->_port forKey:@"_port"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [(RBSMachPort *)self->_port copyWithZone:?];
   if (v5)
   {
-    v6 = [RBSMachPortTaskNameRight allocWithZone:a3];
+    v6 = [RBSMachPortTaskNameRight allocWithZone:zone];
     [(RBSMachPortTaskNameRight *)v6 _initWithPID:v5 port:self->_auditToken auditToken:?];
   }
 
@@ -185,27 +185,27 @@ LABEL_15:
   return v6;
 }
 
-- (uint64_t)_initWithPID:(void *)a3 port:(void *)a4 auditToken:
+- (uint64_t)_initWithPID:(void *)d port:(void *)port auditToken:
 {
-  v8 = a3;
-  v9 = a4;
-  if (a1)
+  dCopy = d;
+  portCopy = port;
+  if (self)
   {
-    objc_storeStrong((a1 + 8), a3);
-    *(a1 + 16) = a2;
-    objc_storeStrong((a1 + 24), a4);
-    v10 = a1;
+    objc_storeStrong((self + 8), d);
+    *(self + 16) = a2;
+    objc_storeStrong((self + 24), port);
+    selfCopy = self;
   }
 
-  return a1;
+  return self;
 }
 
-- (RBSMachPortTaskNameRight)initWithRBSXPCCoder:(id)a3
+- (RBSMachPortTaskNameRight)initWithRBSXPCCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeInt64ForKey:@"_pid"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_auditToken"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_port"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeInt64ForKey:@"_pid"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_auditToken"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_port"];
 
   [(RBSMachPortTaskNameRight *)self _initWithPID:v5 port:v7 auditToken:v6];
   return self;

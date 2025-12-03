@@ -1,19 +1,19 @@
 @interface UISwipeActionDynamicPullViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_rebuildButtons;
 @end
 
 @implementation UISwipeActionDynamicPullViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v5 = location;
   obj = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   v3 = @"UISwipeActionDynamicPullView";
   [location[0] validateClass:0 hasInstanceMethod:? withFullSignature:?];
   [location[0] validateClass:@"_UISwipeActionDynamicButtonView" hasInstanceMethod:@"button" withFullSignature:{"@", 0}];
@@ -24,14 +24,14 @@
 
 - (void)_accessibilityLoadAccessibilityInformation
 {
-  v21 = self;
+  selfCopy = self;
   v20 = a2;
   v19.receiver = self;
   v19.super_class = UISwipeActionDynamicPullViewAccessibility;
   [(UISwipeActionDynamicPullViewAccessibility *)&v19 _accessibilityLoadAccessibilityInformation];
   v17 = 0;
   objc_opt_class();
-  v4 = [(UISwipeActionDynamicPullViewAccessibility *)v21 safeValueForKey:@"_buttons"];
+  v4 = [(UISwipeActionDynamicPullViewAccessibility *)selfCopy safeValueForKey:@"_buttons"];
   v16 = __UIAccessibilityCastAsClass();
   MEMORY[0x29EDC9740](v4);
   v15 = MEMORY[0x29EDC9748](v16);
@@ -39,7 +39,7 @@
   v18 = v15;
   v13 = 0;
   objc_opt_class();
-  v3 = [(UISwipeActionDynamicPullViewAccessibility *)v21 safeValueForKey:@"_actions"];
+  v3 = [(UISwipeActionDynamicPullViewAccessibility *)selfCopy safeValueForKey:@"_actions"];
   v12 = __UIAccessibilityCastAsClass();
   MEMORY[0x29EDC9740](v3);
   v11 = MEMORY[0x29EDC9748](v12);
@@ -102,12 +102,12 @@ void __87__UISwipeActionDynamicPullViewAccessibility__accessibilityLoadAccessibi
 
 - (void)_rebuildButtons
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   v2.receiver = self;
   v2.super_class = UISwipeActionDynamicPullViewAccessibility;
   [(UISwipeActionDynamicPullViewAccessibility *)&v2 _rebuildButtons];
-  [(UISwipeActionDynamicPullViewAccessibility *)v4 _accessibilityLoadAccessibilityInformation];
+  [(UISwipeActionDynamicPullViewAccessibility *)selfCopy _accessibilityLoadAccessibilityInformation];
 }
 
 @end

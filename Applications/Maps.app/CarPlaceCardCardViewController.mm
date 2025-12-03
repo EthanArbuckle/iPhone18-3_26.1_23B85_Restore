@@ -3,14 +3,14 @@
 - (BOOL)_isGoButtonFocusable;
 - (BOOL)_shouldHideNavigationRelatedInfo;
 - (BOOL)_shouldShowEVViewsInline;
-- (CarPlaceCardCardViewController)initWithSearchResult:(id)a3 style:(int64_t)a4 dataSource:(id)a5 delegate:(id)a6;
+- (CarPlaceCardCardViewController)initWithSearchResult:(id)result style:(int64_t)style dataSource:(id)source delegate:(id)delegate;
 - (CarPlaceCardCardViewControllerDataSource)dataSource;
 - (CarPlaceCardCardViewControllerDelegate)delegate;
 - (MKMapItem)mapItem;
 - (NSArray)preferredFocusEnvironments;
 - (_MKLocalizedHoursBuilder)localizedHoursBuilder;
 - (id)_attributesForPlainSubtitleString;
-- (id)_createAutohidingTextlabelWithVerticalCompressionResistancePriority:(float)a3;
+- (id)_createAutohidingTextlabelWithVerticalCompressionResistancePriority:(float)priority;
 - (id)_createEVChargingViewModel;
 - (id)_createEtaLabelTrailingConstraint;
 - (id)_localizedHours;
@@ -18,15 +18,15 @@
 - (id)_subtitleString;
 - (id)_visibleButtons;
 - (int64_t)titleNumberOfLines;
-- (void)ETAProviderUpdated:(id)a3;
+- (void)ETAProviderUpdated:(id)updated;
 - (void)_callDestination;
 - (void)_cancelScheduleETAUpdate;
 - (void)_captureAnalytics;
-- (void)_evChargingMoreButtonPressed:(id)a3;
-- (void)_externalDeviceUpdated:(id)a3;
-- (void)_goButtonPressed:(id)a3;
+- (void)_evChargingMoreButtonPressed:(id)pressed;
+- (void)_externalDeviceUpdated:(id)updated;
+- (void)_goButtonPressed:(id)pressed;
 - (void)_initializeGoButtonState;
-- (void)_moreButtonPressed:(id)a3;
+- (void)_moreButtonPressed:(id)pressed;
 - (void)_presentMoreOptions;
 - (void)_scheduleETAUpdate;
 - (void)_scheduleOpeningHoursUpdate;
@@ -41,16 +41,16 @@
 - (void)_updateOpeningHours;
 - (void)_updateRouteAdvisoriesStack;
 - (void)dealloc;
-- (void)setGoButtonEnabled:(BOOL)a3;
-- (void)setGoButtonHidden:(BOOL)a3;
-- (void)setHandoffEnabled:(BOOL)a3;
-- (void)setHasCardFinishedTransitioning:(BOOL)a3;
-- (void)setLoading:(BOOL)a3;
-- (void)setNavigationAidedDrivingEnabled:(BOOL)a3;
-- (void)setSearchResult:(id)a3;
-- (void)setShouldDisplayMoreButton:(BOOL)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)setGoButtonEnabled:(BOOL)enabled;
+- (void)setGoButtonHidden:(BOOL)hidden;
+- (void)setHandoffEnabled:(BOOL)enabled;
+- (void)setHasCardFinishedTransitioning:(BOOL)transitioning;
+- (void)setLoading:(BOOL)loading;
+- (void)setNavigationAidedDrivingEnabled:(BOOL)enabled;
+- (void)setSearchResult:(id)result;
+- (void)setShouldDisplayMoreButton:(BOOL)button;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
 @end
 
@@ -70,13 +70,13 @@
   return WeakRetained;
 }
 
-- (void)ETAProviderUpdated:(id)a3
+- (void)ETAProviderUpdated:(id)updated
 {
-  v4 = a3;
+  updatedCopy = updated;
   v5 = sub_100006E1C();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    [v4 etaTravelTime];
+    [updatedCopy etaTravelTime];
     v9 = 134217984;
     v10 = v6;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "CarPlaceCard: ETAProviderUpdated: etaTravelTime: %f", &v9, 0xCu);
@@ -84,14 +84,14 @@
 
   if (self->_style == 1 && self->_etaTravelTime == 0.0)
   {
-    [v4 etaTravelTime];
+    [updatedCopy etaTravelTime];
     if (v7 > 0.0)
     {
-      [v4 etaTravelTime];
+      [updatedCopy etaTravelTime];
       self->_etaTravelTime = v8;
       [(CarPlaceCardCardViewController *)self setGoButtonEnabled:1];
       [(CarPlaceCardCardViewController *)self setGoButtonHidden:0];
-      [v4 cancel];
+      [updatedCopy cancel];
     }
   }
 }
@@ -112,7 +112,7 @@
   return v3;
 }
 
-- (void)_externalDeviceUpdated:(id)a3
+- (void)_externalDeviceUpdated:(id)updated
 {
   v4 = sub_100006E1C();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -128,7 +128,7 @@
   -[CarPlaceCardCardViewController setHandoffEnabled:](self, "setHandoffEnabled:", [v6 destinationHandoffEnabled]);
 }
 
-- (void)_evChargingMoreButtonPressed:(id)a3
+- (void)_evChargingMoreButtonPressed:(id)pressed
 {
   v4 = sub_100006E1C();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -140,31 +140,31 @@
   if (![(CarPlaceCardCardViewController *)self _shouldShowEVViewsInline])
   {
     v5 = [_TtC4Maps39CarEVChargingAvailabilityViewController alloc];
-    v6 = [(CarPlaceCardCardViewController *)self evChargingViewModel];
-    v7 = [(CarEVChargingAvailabilityViewController *)v5 initWithViewModal:v6];
+    evChargingViewModel = [(CarPlaceCardCardViewController *)self evChargingViewModel];
+    v7 = [(CarEVChargingAvailabilityViewController *)v5 initWithViewModal:evChargingViewModel];
     [(CarPlaceCardCardViewController *)self setEvChargingAvailabilityVC:v7];
 
-    v8 = [(CarPlaceCardCardViewController *)self evChargingAvailabilityVC];
-    [v8 configureForModalPresentation];
+    evChargingAvailabilityVC = [(CarPlaceCardCardViewController *)self evChargingAvailabilityVC];
+    [evChargingAvailabilityVC configureForModalPresentation];
 
-    v9 = [(CarPlaceCardCardViewController *)self delegate];
-    LOBYTE(v6) = objc_opt_respondsToSelector();
+    delegate = [(CarPlaceCardCardViewController *)self delegate];
+    LOBYTE(evChargingViewModel) = objc_opt_respondsToSelector();
 
-    if (v6)
+    if (evChargingViewModel)
     {
-      v10 = [(CarPlaceCardCardViewController *)self delegate];
-      v11 = [(CarPlaceCardCardViewController *)self evChargingAvailabilityVC];
-      [v10 placeCard:self wantsToPresentEVAvailability:v11];
+      delegate2 = [(CarPlaceCardCardViewController *)self delegate];
+      evChargingAvailabilityVC2 = [(CarPlaceCardCardViewController *)self evChargingAvailabilityVC];
+      [delegate2 placeCard:self wantsToPresentEVAvailability:evChargingAvailabilityVC2];
     }
   }
 }
 
-- (void)_goButtonPressed:(id)a3
+- (void)_goButtonPressed:(id)pressed
 {
-  v4 = [(CarPlaceCardCardViewController *)self isNavigationAidedDrivingEnabled];
+  isNavigationAidedDrivingEnabled = [(CarPlaceCardCardViewController *)self isNavigationAidedDrivingEnabled];
   v5 = sub_100006E1C();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_INFO);
-  if (v4)
+  if (isNavigationAidedDrivingEnabled)
   {
     if (v6)
     {
@@ -172,8 +172,8 @@
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "CarPlaceCard go button pressed, NAD active -> handing off", buf, 2u);
     }
 
-    v7 = [(CarPlaceCardCardViewController *)self delegate];
-    [v7 placeCardDidSelectHandoff:self];
+    delegate = [(CarPlaceCardCardViewController *)self delegate];
+    [delegate placeCardDidSelectHandoff:self];
   }
 
   else
@@ -184,19 +184,19 @@
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "CarPlaceCard go button pressed, NAD inactive -> starting nav", v8, 2u);
     }
 
-    v7 = [(CarPlaceCardCardViewController *)self delegate];
-    [v7 placeCardDidSelectGo:self];
+    delegate = [(CarPlaceCardCardViewController *)self delegate];
+    [delegate placeCardDidSelectGo:self];
   }
 }
 
-- (void)_moreButtonPressed:(id)a3
+- (void)_moreButtonPressed:(id)pressed
 {
   v4 = sub_100006E1C();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
-    v5 = [(CarMoreButton *)self->_moreButton options];
+    options = [(CarMoreButton *)self->_moreButton options];
     v8 = 134217984;
-    v9 = v5;
+    v9 = options;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "CarPlaceCard 'More' button pressed with options: %lu", &v8, 0xCu);
   }
 
@@ -209,8 +209,8 @@
 
     else if (([(CarMoreButton *)self->_moreButton options]& 4) != 0)
     {
-      v7 = [(CarPlaceCardCardViewController *)self delegate];
-      [v7 placeCardDidSelectHandoff:self];
+      delegate = [(CarPlaceCardCardViewController *)self delegate];
+      [delegate placeCardDidSelectHandoff:self];
     }
 
     else
@@ -233,8 +233,8 @@
 - (BOOL)_shouldShowEVViewsInline
 {
   v2 = +[UIScreen _carScreen];
-  v3 = [v2 currentMode];
-  [v3 size];
+  currentMode = [v2 currentMode];
+  [currentMode size];
   v5 = v4 >= 1000.0;
 
   return v5;
@@ -242,14 +242,14 @@
 
 - (id)_createEVChargingViewModel
 {
-  v3 = [(CarPlaceCardCardViewController *)self mapItem];
+  mapItem = [(CarPlaceCardCardViewController *)self mapItem];
 
-  if (v3)
+  if (mapItem)
   {
     v4 = [_TtC4Maps31CarPlaceCardEVChargingViewModel alloc];
-    v5 = [(CarPlaceCardCardViewController *)self mapItem];
+    mapItem2 = [(CarPlaceCardCardViewController *)self mapItem];
     v6 = +[VGVirtualGarageService sharedService];
-    v7 = [(CarPlaceCardEVChargingViewModel *)v4 initWithMapItem:v5 virtualGarageService:v6];
+    v7 = [(CarPlaceCardEVChargingViewModel *)v4 initWithMapItem:mapItem2 virtualGarageService:v6];
   }
 
   else
@@ -278,25 +278,25 @@
 
 - (void)_callDestination
 {
-  v3 = [(SearchResult *)self->_searchResult mapItem];
-  v4 = [v3 phoneNumber];
+  mapItem = [(SearchResult *)self->_searchResult mapItem];
+  phoneNumber = [mapItem phoneNumber];
 
-  if (v4 && [v4 length])
+  if (phoneNumber && [phoneNumber length])
   {
-    sub_10096B660(v4);
+    sub_10096B660(phoneNumber);
   }
 
   else if ([(SearchResult *)self->_searchResult isAddressBookResult])
   {
-    v5 = [(SearchResult *)self->_searchResult address];
-    v6 = [v5 contact];
+    address = [(SearchResult *)self->_searchResult address];
+    contact = [address contact];
 
-    v7 = [v6 phoneNumbers];
-    v8 = [v7 firstObject];
-    v9 = [v8 value];
+    phoneNumbers = [contact phoneNumbers];
+    firstObject = [phoneNumbers firstObject];
+    value = [firstObject value];
 
-    v10 = [v9 stringValue];
-    sub_10096B660(v10);
+    stringValue = [value stringValue];
+    sub_10096B660(stringValue);
   }
 
   else
@@ -304,16 +304,16 @@
     v11 = sub_100006E1C();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      v12 = [(SearchResult *)self->_searchResult mapItem];
-      v13 = [v12 phoneNumber];
+      mapItem2 = [(SearchResult *)self->_searchResult mapItem];
+      phoneNumber2 = [mapItem2 phoneNumber];
       v15 = 138412290;
-      v16 = v13;
+      v16 = phoneNumber2;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_ERROR, "CarPlaceCard tried to call POI, but failed. Number: %@", &v15, 0xCu);
     }
   }
 
-  v14 = [(CarPlaceCardCardViewController *)self delegate];
-  [v14 placeCardDidSelectCall:self];
+  delegate = [(CarPlaceCardCardViewController *)self delegate];
+  [delegate placeCardDidSelectCall:self];
 }
 
 - (void)_presentMoreOptions
@@ -326,9 +326,9 @@
   {
     v5 = +[NSBundle mainBundle];
     v6 = [v5 localizedStringForKey:@"Call [CarPlay]" value:@"localized string not found" table:0];
-    v7 = [(CarPlaceCardCardViewController *)self mapItem];
-    v8 = [v7 name];
-    v9 = [NSString stringWithFormat:v6, v8];
+    mapItem = [(CarPlaceCardCardViewController *)self mapItem];
+    name = [mapItem name];
+    v9 = [NSString stringWithFormat:v6, name];
 
     v10 = [UIImage _mapsCar_systemImageNamed:@"phone.fill" textStyle:UIFontTextStyleTitle3];
     v40[0] = _NSConcreteStackBlock;
@@ -345,13 +345,13 @@
   if (([(CarMoreButton *)self->_moreButton options]& 4) != 0)
   {
     v12 = +[MapsExternalDevice sharedInstance];
-    v13 = [v12 mapsDisplayName];
+    mapsDisplayName = [v12 mapsDisplayName];
 
     v14 = +[NSBundle mainBundle];
-    if (v13)
+    if (mapsDisplayName)
     {
       v15 = [v14 localizedStringForKey:@"Share destination [CarPlay]" value:@"localized string not found" table:0];
-      v16 = [NSString stringWithFormat:v15, v13];
+      v16 = [NSString stringWithFormat:v15, mapsDisplayName];
     }
 
     else
@@ -435,11 +435,11 @@
   objc_destroyWeak(&location);
 }
 
-- (id)_createAutohidingTextlabelWithVerticalCompressionResistancePriority:(float)a3
+- (id)_createAutohidingTextlabelWithVerticalCompressionResistancePriority:(float)priority
 {
   v4 = [[CarAutohidingLabel alloc] initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
   [(CarAutohidingLabel *)v4 setTranslatesAutoresizingMaskIntoConstraints:0];
-  *&v5 = a3;
+  *&v5 = priority;
   [(CarAutohidingLabel *)v4 setContentCompressionResistancePriority:1 forAxis:v5];
   LODWORD(v6) = 1148846080;
   [(CarAutohidingLabel *)v4 setContentHuggingPriority:1 forAxis:v6];
@@ -449,19 +449,19 @@
 
 - (id)_createEtaLabelTrailingConstraint
 {
-  v3 = [(CarPlaceCardCardViewController *)self shouldDisplayMoreButton];
-  v4 = [(UILabel *)self->_etaLabel trailingAnchor];
-  if (v3)
+  shouldDisplayMoreButton = [(CarPlaceCardCardViewController *)self shouldDisplayMoreButton];
+  trailingAnchor = [(UILabel *)self->_etaLabel trailingAnchor];
+  if (shouldDisplayMoreButton)
   {
-    v5 = [(CarMoreButton *)self->_moreButton leadingAnchor];
-    v6 = [v4 constraintLessThanOrEqualToAnchor:v5 constant:-10.0];
+    leadingAnchor = [(CarMoreButton *)self->_moreButton leadingAnchor];
+    v6 = [trailingAnchor constraintLessThanOrEqualToAnchor:leadingAnchor constant:-10.0];
   }
 
   else
   {
-    v5 = [(CarPlaceCardCardViewController *)self view];
-    v7 = [v5 trailingAnchor];
-    v6 = [v4 constraintEqualToAnchor:v7 constant:-10.0];
+    leadingAnchor = [(CarPlaceCardCardViewController *)self view];
+    trailingAnchor2 = [leadingAnchor trailingAnchor];
+    v6 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-10.0];
   }
 
   return v6;
@@ -469,27 +469,27 @@
 
 - (id)_localizedHours
 {
-  v3 = [(CarPlaceCardCardViewController *)self mapItem];
-  v4 = [v3 _hasBusinessHours];
+  mapItem = [(CarPlaceCardCardViewController *)self mapItem];
+  _hasBusinessHours = [mapItem _hasBusinessHours];
 
-  if (v4)
+  if (_hasBusinessHours)
   {
-    v5 = [(CarPlaceCardCardViewController *)self localizedHoursBuilder];
-    v6 = ([v5 geoMapItemOpeningHourOptions] & 0x1CC);
+    localizedHoursBuilder = [(CarPlaceCardCardViewController *)self localizedHoursBuilder];
+    v6 = ([localizedHoursBuilder geoMapItemOpeningHourOptions] & 0x1CC);
 
-    v7 = [(CarPlaceCardCardViewController *)self localizedHoursBuilder];
-    v8 = [v7 geoMapItemOpeningHourOptions];
+    localizedHoursBuilder2 = [(CarPlaceCardCardViewController *)self localizedHoursBuilder];
+    geoMapItemOpeningHourOptions = [localizedHoursBuilder2 geoMapItemOpeningHourOptions];
 
     if (v6)
     {
       v9 = [NSAttributedString alloc];
-      v10 = [(CarPlaceCardCardViewController *)self localizedHoursBuilder];
-      v11 = [v10 localizedOperatingHours];
+      localizedHoursBuilder3 = [(CarPlaceCardCardViewController *)self localizedHoursBuilder];
+      localizedOperatingHours = [localizedHoursBuilder3 localizedOperatingHours];
       v16[0] = NSFontAttributeName;
       v12 = [UIFont _mapsCar_fontForTextStyle:UIFontTextStyleCaption2 weight:UIFontWeightRegular];
       v17[0] = v12;
       v16[1] = NSForegroundColorAttributeName;
-      if ((v8 & 0x40) != 0)
+      if ((geoMapItemOpeningHourOptions & 0x40) != 0)
       {
         +[UIColor systemOrangeColor];
       }
@@ -501,7 +501,7 @@
       v13 = ;
       v17[1] = v13;
       v14 = [NSDictionary dictionaryWithObjects:v17 forKeys:v16 count:2];
-      v6 = [v9 initWithString:v11 attributes:v14];
+      v6 = [v9 initWithString:localizedOperatingHours attributes:v14];
     }
   }
 
@@ -515,27 +515,27 @@
 
 - (id)_sharingETAString
 {
-  v2 = [(CarPlaceCardCardViewController *)self dataSource];
-  v3 = [v2 automaticSharingContacts];
+  dataSource = [(CarPlaceCardCardViewController *)self dataSource];
+  automaticSharingContacts = [dataSource automaticSharingContacts];
 
-  if ([v3 count])
+  if ([automaticSharingContacts count])
   {
-    if ([v3 count] == 1)
+    if ([automaticSharingContacts count] == 1)
     {
-      v4 = [v3 firstObject];
-      v5 = [v4 contact];
-      v6 = [v5 givenName];
+      firstObject = [automaticSharingContacts firstObject];
+      contact = [firstObject contact];
+      givenName = [contact givenName];
 
       v7 = +[NSBundle mainBundle];
       v8 = [v7 localizedStringForKey:@"CarPlay_PlaceCard_SharingAutomatically_OneContact" value:@"localized string not found" table:0];
-      v9 = [NSString stringWithFormat:v8, v6];
+      v9 = [NSString stringWithFormat:v8, givenName];
     }
 
     else
     {
-      v4 = +[NSBundle mainBundle];
-      v6 = [v4 localizedStringForKey:@"CarPlay_PlaceCard_SharingAutomatically" value:@"localized string not found" table:0];
-      v9 = +[NSString localizedStringWithFormat:](NSString, "localizedStringWithFormat:", v6, [v3 count]);
+      firstObject = +[NSBundle mainBundle];
+      givenName = [firstObject localizedStringForKey:@"CarPlay_PlaceCard_SharingAutomatically" value:@"localized string not found" table:0];
+      v9 = +[NSString localizedStringWithFormat:](NSString, "localizedStringWithFormat:", givenName, [automaticSharingContacts count]);
     }
   }
 
@@ -549,47 +549,47 @@
 
 - (id)_subtitleString
 {
-  v3 = [(CarPlaceCardCardViewController *)self mapItem];
-  v4 = [v3 _hasChargerNumberString];
+  mapItem = [(CarPlaceCardCardViewController *)self mapItem];
+  _hasChargerNumberString = [mapItem _hasChargerNumberString];
 
-  if (v4)
+  if (_hasChargerNumberString)
   {
     v5 = [NSAttributedString alloc];
-    v6 = [(CarPlaceCardCardViewController *)self mapItem];
-    v7 = [v6 _chargerNumberString];
-    v8 = [(CarPlaceCardCardViewController *)self _attributesForPlainSubtitleString];
-    v9 = [v5 initWithString:v7 attributes:v8];
+    mapItem2 = [(CarPlaceCardCardViewController *)self mapItem];
+    _chargerNumberString = [mapItem2 _chargerNumberString];
+    _attributesForPlainSubtitleString = [(CarPlaceCardCardViewController *)self _attributesForPlainSubtitleString];
+    v9 = [v5 initWithString:_chargerNumberString attributes:_attributesForPlainSubtitleString];
   }
 
   else
   {
-    v10 = [(CarPlaceCardCardViewController *)self _localizedHours];
-    if (v10)
+    _localizedHours = [(CarPlaceCardCardViewController *)self _localizedHours];
+    if (_localizedHours)
     {
-      v6 = v10;
-      v9 = v6;
+      mapItem2 = _localizedHours;
+      v9 = mapItem2;
     }
 
     else
     {
-      v11 = [(CarPlaceCardCardViewController *)self mapItem];
-      v12 = [v11 _firstLocalizedCategoryName];
-      v13 = [v12 length];
+      mapItem3 = [(CarPlaceCardCardViewController *)self mapItem];
+      _firstLocalizedCategoryName = [mapItem3 _firstLocalizedCategoryName];
+      v13 = [_firstLocalizedCategoryName length];
 
       if (v13)
       {
         v14 = [NSAttributedString alloc];
-        v15 = [(CarPlaceCardCardViewController *)self mapItem];
-        v16 = [v15 _firstLocalizedCategoryName];
-        v17 = [(CarPlaceCardCardViewController *)self _attributesForPlainSubtitleString];
-        v9 = [v14 initWithString:v16 attributes:v17];
+        mapItem4 = [(CarPlaceCardCardViewController *)self mapItem];
+        _firstLocalizedCategoryName2 = [mapItem4 _firstLocalizedCategoryName];
+        _attributesForPlainSubtitleString2 = [(CarPlaceCardCardViewController *)self _attributesForPlainSubtitleString];
+        v9 = [v14 initWithString:_firstLocalizedCategoryName2 attributes:_attributesForPlainSubtitleString2];
 
-        v6 = 0;
+        mapItem2 = 0;
       }
 
       else
       {
-        v6 = 0;
+        mapItem2 = 0;
         v9 = 0;
       }
     }
@@ -645,27 +645,27 @@
 
 - (void)_updateOpeningHours
 {
-  v3 = [(CarPlaceCardCardViewController *)self mapItem];
-  v4 = [v3 _businessHours];
-  v5 = [v4 objectAtIndex:0];
+  mapItem = [(CarPlaceCardCardViewController *)self mapItem];
+  _businessHours = [mapItem _businessHours];
+  v5 = [_businessHours objectAtIndex:0];
   v6 = +[NSDate date];
-  v7 = [(CarPlaceCardCardViewController *)self mapItem];
-  v8 = [v7 timeZone];
-  v9 = [GEOMapItemOpenState _geoMapItemOpeningHoursOptionsForBusinessHours:v5 compareDate:v6 timeZone:v8];
+  mapItem2 = [(CarPlaceCardCardViewController *)self mapItem];
+  timeZone = [mapItem2 timeZone];
+  v9 = [GEOMapItemOpenState _geoMapItemOpeningHoursOptionsForBusinessHours:v5 compareDate:v6 timeZone:timeZone];
 
-  v10 = [(CarPlaceCardCardViewController *)self localizedHoursBuilder];
-  [v10 setGeoMapItemOpeningHourOptions:v9];
+  localizedHoursBuilder = [(CarPlaceCardCardViewController *)self localizedHoursBuilder];
+  [localizedHoursBuilder setGeoMapItemOpeningHourOptions:v9];
 
-  v11 = [(CarPlaceCardCardViewController *)self _subtitleString];
-  [(CarAutohidingLabel *)self->_subtitleLabel setAttributedText:v11];
+  _subtitleString = [(CarPlaceCardCardViewController *)self _subtitleString];
+  [(CarAutohidingLabel *)self->_subtitleLabel setAttributedText:_subtitleString];
 
   v12 = sub_100006E1C();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
-    v13 = [(CarAutohidingLabel *)self->_subtitleLabel attributedText];
-    v14 = [v13 string];
+    attributedText = [(CarAutohidingLabel *)self->_subtitleLabel attributedText];
+    string = [attributedText string];
     v15 = 138412290;
-    v16 = v14;
+    v16 = string;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "CarPlaceCard: updating opening hours to: %@", &v15, 0xCu);
   }
 }
@@ -682,17 +682,17 @@
 
 - (void)_updateETA
 {
-  v3 = [(CarPlaceCardCardViewController *)self dataSource];
-  v4 = [v3 etaForCurrentRoute];
+  dataSource = [(CarPlaceCardCardViewController *)self dataSource];
+  etaForCurrentRoute = [dataSource etaForCurrentRoute];
   latestETA = self->_latestETA;
-  self->_latestETA = v4;
+  self->_latestETA = etaForCurrentRoute;
 
   v6 = sub_100006E1C();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
-    v7 = [(GuidanceETA *)self->_latestETA remainingMinutes];
+    remainingMinutes = [(GuidanceETA *)self->_latestETA remainingMinutes];
     v8 = 134217984;
-    v9 = v7;
+    v9 = remainingMinutes;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "CarPlaceCard: eta update timer fired. new ETA remainingMinutes: %lu", &v8, 0xCu);
   }
 
@@ -750,29 +750,29 @@
     return 0;
   }
 
-  v3 = [(CarPlaceCardCardViewController *)self view];
-  v4 = [v3 window];
-  v5 = [v4 rootViewController];
+  view = [(CarPlaceCardCardViewController *)self view];
+  window = [view window];
+  rootViewController = [window rootViewController];
 
-  if (!v5)
+  if (!rootViewController)
   {
     return 0;
   }
 
-  v6 = [(CarPlaceCardCardViewController *)self view];
-  v7 = [v6 superview];
-  if (v7)
+  view2 = [(CarPlaceCardCardViewController *)self view];
+  superview = [view2 superview];
+  if (superview)
   {
-    v8 = [(CarPlaceCardCardViewController *)self traitCollection];
+    traitCollection = [(CarPlaceCardCardViewController *)self traitCollection];
   }
 
   else
   {
     v11 = +[UIScreen _carScreen];
-    v8 = [v11 traitCollection];
+    traitCollection = [v11 traitCollection];
   }
 
-  v9 = ([v8 interactionModel] & 0xA) != 0;
+  v9 = ([traitCollection interactionModel] & 0xA) != 0;
   return v9;
 }
 
@@ -801,11 +801,11 @@
   }
 }
 
-- (void)setHandoffEnabled:(BOOL)a3
+- (void)setHandoffEnabled:(BOOL)enabled
 {
-  if (self->_handoffEnabled != a3)
+  if (self->_handoffEnabled != enabled)
   {
-    self->_handoffEnabled = a3;
+    self->_handoffEnabled = enabled;
     v4 = sub_100006E1C();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
     {
@@ -829,11 +829,11 @@
   }
 }
 
-- (void)setNavigationAidedDrivingEnabled:(BOOL)a3
+- (void)setNavigationAidedDrivingEnabled:(BOOL)enabled
 {
-  if (self->_navigationAidedDrivingEnabled != a3)
+  if (self->_navigationAidedDrivingEnabled != enabled)
   {
-    self->_navigationAidedDrivingEnabled = a3;
+    self->_navigationAidedDrivingEnabled = enabled;
     v4 = sub_100006E1C();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
     {
@@ -862,14 +862,14 @@
   }
 }
 
-- (void)setGoButtonEnabled:(BOOL)a3
+- (void)setGoButtonEnabled:(BOOL)enabled
 {
-  if (self->_goButtonEnabled != a3)
+  if (self->_goButtonEnabled != enabled)
   {
-    self->_goButtonEnabled = a3;
+    self->_goButtonEnabled = enabled;
     v4 = +[CarDisplayController sharedInstance];
-    v5 = [v4 chromeViewController];
-    [v5 setNeedsFocusUpdate];
+    chromeViewController = [v4 chromeViewController];
+    [chromeViewController setNeedsFocusUpdate];
 
     v6 = sub_100006E1C();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
@@ -895,11 +895,11 @@
   }
 }
 
-- (void)setGoButtonHidden:(BOOL)a3
+- (void)setGoButtonHidden:(BOOL)hidden
 {
-  if (self->_goButtonHidden != a3)
+  if (self->_goButtonHidden != hidden)
   {
-    self->_goButtonHidden = a3;
+    self->_goButtonHidden = hidden;
     v4 = sub_100006E1C();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
@@ -923,11 +923,11 @@
   }
 }
 
-- (void)setLoading:(BOOL)a3
+- (void)setLoading:(BOOL)loading
 {
-  if (self->_loading != a3)
+  if (self->_loading != loading)
   {
-    self->_loading = a3;
+    self->_loading = loading;
     v4 = sub_100006E1C();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
@@ -951,23 +951,23 @@
   }
 }
 
-- (void)setHasCardFinishedTransitioning:(BOOL)a3
+- (void)setHasCardFinishedTransitioning:(BOOL)transitioning
 {
-  if (self->_hasCardFinishedTransitioning != a3)
+  if (self->_hasCardFinishedTransitioning != transitioning)
   {
-    self->_hasCardFinishedTransitioning = a3;
-    if (a3)
+    self->_hasCardFinishedTransitioning = transitioning;
+    if (transitioning)
     {
       [(CarPlaceCardCardViewController *)self _updateContents];
     }
   }
 }
 
-- (void)setShouldDisplayMoreButton:(BOOL)a3
+- (void)setShouldDisplayMoreButton:(BOOL)button
 {
-  if (self->_shouldDisplayMoreButton != a3)
+  if (self->_shouldDisplayMoreButton != button)
   {
-    self->_shouldDisplayMoreButton = a3;
+    self->_shouldDisplayMoreButton = button;
     [(CarPlaceCardCardViewController *)self _updateConstraints];
   }
 }
@@ -978,8 +978,8 @@
   if (!localizedHoursBuilder)
   {
     v4 = [_MKLocalizedHoursBuilder alloc];
-    v5 = [(CarPlaceCardCardViewController *)self mapItem];
-    v6 = [v4 initWithMapItem:v5 localizedHoursStringOptions:41];
+    mapItem = [(CarPlaceCardCardViewController *)self mapItem];
+    v6 = [v4 initWithMapItem:mapItem localizedHoursStringOptions:41];
     v7 = self->_localizedHoursBuilder;
     self->_localizedHoursBuilder = v6;
 
@@ -991,28 +991,28 @@
 
 - (MKMapItem)mapItem
 {
-  v2 = [(CarPlaceCardCardViewController *)self searchResult];
-  v3 = [v2 mapItem];
+  searchResult = [(CarPlaceCardCardViewController *)self searchResult];
+  mapItem = [searchResult mapItem];
 
-  return v3;
+  return mapItem;
 }
 
-- (void)setSearchResult:(id)a3
+- (void)setSearchResult:(id)result
 {
-  v5 = a3;
-  if (self->_searchResult != v5)
+  resultCopy = result;
+  if (self->_searchResult != resultCopy)
   {
-    objc_storeStrong(&self->_searchResult, a3);
+    objc_storeStrong(&self->_searchResult, result);
     v6 = sub_100006E1C();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
-      v7 = [(CarPlaceCardCardViewController *)self mapItem];
-      v8 = [v7 name];
-      v9 = [(CarPlaceCardCardViewController *)self mapItem];
+      mapItem = [(CarPlaceCardCardViewController *)self mapItem];
+      name = [mapItem name];
+      mapItem2 = [(CarPlaceCardCardViewController *)self mapItem];
       v10 = 138478083;
-      v11 = v8;
+      v11 = name;
       v12 = 2049;
-      v13 = [v9 _muid];
+      _muid = [mapItem2 _muid];
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "CarPlaceCard: placecard changed searchResult with mapItem: (name: %{private}@, muid: %{private}llu)", &v10, 0x16u);
     }
 
@@ -1026,38 +1026,38 @@
   v3 = sub_100006E1C();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
-    v4 = [(CarPlaceCardCardViewController *)self mapItem];
-    v5 = [v4 name];
-    v6 = [(CarPlaceCardCardViewController *)self mapItem];
+    mapItem = [(CarPlaceCardCardViewController *)self mapItem];
+    name = [mapItem name];
+    mapItem2 = [(CarPlaceCardCardViewController *)self mapItem];
     v9 = 138478083;
-    v10 = v5;
+    v10 = name;
     v11 = 2049;
-    v12 = [v6 _muid];
+    _muid = [mapItem2 _muid];
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "CarPlaceCard: placecard loaded and displayed with mapItem: (name: %{private}@, muid: %{private}llu)", &v9, 0x16u);
   }
 
   v7 = +[CarDisplayController sharedInstance];
-  v8 = [v7 chromeViewController];
-  [v8 captureUserAction:21];
+  chromeViewController = [v7 chromeViewController];
+  [chromeViewController captureUserAction:21];
 }
 
 - (void)_updateETARelatedContents
 {
-  v3 = [(CarPlaceCardCardViewController *)self style];
-  if (v3 == 1)
+  style = [(CarPlaceCardCardViewController *)self style];
+  if (style == 1)
   {
-    v8 = [(CarPlaceCardCardViewController *)self mapItem];
-    v9 = [v8 _maps_detourTextForIdiom:3];
+    mapItem = [(CarPlaceCardCardViewController *)self mapItem];
+    v9 = [mapItem _maps_detourTextForIdiom:3];
     [(UILabel *)self->_etaLabel setText:v9];
 
     latestETA = self->_latestETA;
     if (latestETA)
     {
       [(GuidanceETA *)latestETA remainingDistance];
-      v15 = [NSString _navigation_localizedStringForDistance:0 detail:1 unitFormat:0 locale:0 useMetric:0 useYards:?];
+      dataSource2 = [NSString _navigation_localizedStringForDistance:0 detail:1 unitFormat:0 locale:0 useMetric:0 useYards:?];
       v11 = +[NSBundle mainBundle];
       v12 = [v11 localizedStringForKey:@"%@ miles away" value:@"localized string not found" table:0];
-      v13 = [NSString localizedStringWithFormat:v12, v15];
+      v13 = [NSString localizedStringWithFormat:v12, dataSource2];
       [(UILabel *)self->_mainDescriptionLabel setText:v13];
 
       goto LABEL_7;
@@ -1066,22 +1066,22 @@
 
   else
   {
-    if (v3)
+    if (style)
     {
       return;
     }
 
-    v4 = [(GuidanceETA *)self->_latestETA etaDateString];
-    [(UILabel *)self->_etaLabel setText:v4];
+    etaDateString = [(GuidanceETA *)self->_latestETA etaDateString];
+    [(UILabel *)self->_etaLabel setText:etaDateString];
 
-    v5 = [(CarPlaceCardCardViewController *)self dataSource];
+    dataSource = [(CarPlaceCardCardViewController *)self dataSource];
     v6 = objc_opt_respondsToSelector();
 
     if (v6)
     {
-      v15 = [(CarPlaceCardCardViewController *)self dataSource];
-      v7 = [v15 routeMainDescriptionText];
-      [(UILabel *)self->_mainDescriptionLabel setAttributedText:v7];
+      dataSource2 = [(CarPlaceCardCardViewController *)self dataSource];
+      routeMainDescriptionText = [dataSource2 routeMainDescriptionText];
+      [(UILabel *)self->_mainDescriptionLabel setAttributedText:routeMainDescriptionText];
 
 LABEL_7:
 
@@ -1096,78 +1096,78 @@ LABEL_7:
 
 - (void)_updateRouteAdvisoriesStack
 {
-  v3 = [(CarPlaceCardCardViewController *)self dataSource];
+  dataSource = [(CarPlaceCardCardViewController *)self dataSource];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
     routeAdvisoriesView = self->_routeAdvisoriesView;
-    v6 = [(CarPlaceCardCardViewController *)self dataSource];
-    v7 = [v6 currentRoute];
-    [(CarAdvisoriesView *)routeAdvisoriesView setRoute:v7];
+    dataSource2 = [(CarPlaceCardCardViewController *)self dataSource];
+    currentRoute = [dataSource2 currentRoute];
+    [(CarAdvisoriesView *)routeAdvisoriesView setRoute:currentRoute];
 
     if ([(CarAdvisoriesView *)self->_routeAdvisoriesView count])
     {
-      v8 = [(CarPlaceCardCardViewController *)self _shouldHideNavigationRelatedInfo];
+      _shouldHideNavigationRelatedInfo = [(CarPlaceCardCardViewController *)self _shouldHideNavigationRelatedInfo];
     }
 
     else
     {
-      v8 = 1;
+      _shouldHideNavigationRelatedInfo = 1;
     }
 
-    [(NSLayoutConstraint *)self->_routeAdvisoriesHeightConstraint setActive:v8];
+    [(NSLayoutConstraint *)self->_routeAdvisoriesHeightConstraint setActive:_shouldHideNavigationRelatedInfo];
     v9 = self->_routeAdvisoriesView;
 
-    [(CarAdvisoriesView *)v9 setHidden:v8];
+    [(CarAdvisoriesView *)v9 setHidden:_shouldHideNavigationRelatedInfo];
   }
 }
 
 - (void)_updateContents
 {
-  v3 = [(CarPlaceCardCardViewController *)self _shouldHideNavigationRelatedInfo];
-  v4 = [(CarPlaceCardCardViewController *)self _subtitleString];
-  [(CarAutohidingLabel *)self->_subtitleLabel setAttributedText:v4];
+  _shouldHideNavigationRelatedInfo = [(CarPlaceCardCardViewController *)self _shouldHideNavigationRelatedInfo];
+  _subtitleString = [(CarPlaceCardCardViewController *)self _subtitleString];
+  [(CarAutohidingLabel *)self->_subtitleLabel setAttributedText:_subtitleString];
 
-  v5 = [(CarAutohidingLabel *)self->_subtitleLabel attributedText];
-  -[CarAutohidingLabel setHidden:](self->_subtitleLabel, "setHidden:", [v5 length] == 0);
+  attributedText = [(CarAutohidingLabel *)self->_subtitleLabel attributedText];
+  -[CarAutohidingLabel setHidden:](self->_subtitleLabel, "setHidden:", [attributedText length] == 0);
 
   if (!self->_openingHoursUpdateTimer)
   {
-    v6 = [(CarPlaceCardCardViewController *)self mapItem];
-    v7 = [v6 _hasBusinessHours];
+    mapItem = [(CarPlaceCardCardViewController *)self mapItem];
+    _hasBusinessHours = [mapItem _hasBusinessHours];
 
-    if (v7)
+    if (_hasBusinessHours)
     {
       [(CarPlaceCardCardViewController *)self _scheduleOpeningHoursUpdate];
     }
   }
 
   ratingView = self->_ratingView;
-  v9 = [(CarPlaceCardCardViewController *)self mapItem];
-  [(CarStarRatingView *)ratingView setupWithMapItem:v9];
+  mapItem2 = [(CarPlaceCardCardViewController *)self mapItem];
+  [(CarStarRatingView *)ratingView setupWithMapItem:mapItem2];
 
-  v10 = [(CarPlaceCardCardViewController *)self mapItem];
-  -[CarStarRatingView setHidden:](self->_ratingView, "setHidden:", [v10 _hasUserRatingScore] ^ 1);
+  mapItem3 = [(CarPlaceCardCardViewController *)self mapItem];
+  -[CarStarRatingView setHidden:](self->_ratingView, "setHidden:", [mapItem3 _hasUserRatingScore] ^ 1);
 
-  v11 = [(CarPlaceCardCardViewController *)self mapItem];
-  v12 = [v11 _addressFormattedAsShortenedAddress];
-  [(CarAutohidingLabel *)self->_addressLabel setText:v12];
+  mapItem4 = [(CarPlaceCardCardViewController *)self mapItem];
+  _addressFormattedAsShortenedAddress = [mapItem4 _addressFormattedAsShortenedAddress];
+  [(CarAutohidingLabel *)self->_addressLabel setText:_addressFormattedAsShortenedAddress];
 
   if (![(CarPlaceCardCardViewController *)self _shouldShowEVViewsInline])
   {
-    v13 = [(CarPlaceCardCardViewController *)self evChargingViewModel];
-    v14 = [v13 hasSummaryInfo];
+    evChargingViewModel = [(CarPlaceCardCardViewController *)self evChargingViewModel];
+    hasSummaryInfo = [evChargingViewModel hasSummaryInfo];
 
-    if (v14)
+    if (hasSummaryInfo)
     {
-      v15 = [(CarPlaceCardCardViewController *)self evChargingViewModel];
-      v16 = [v15 summaryTitle];
-      [(UILabel *)self->_evChargingTitleLabel setText:v16];
+      evChargingViewModel2 = [(CarPlaceCardCardViewController *)self evChargingViewModel];
+      summaryTitle = [evChargingViewModel2 summaryTitle];
+      [(UILabel *)self->_evChargingTitleLabel setText:summaryTitle];
 
-      v17 = [(CarPlaceCardCardViewController *)self evChargingViewModel];
-      v18 = [v17 summaryDescription];
-      [(UILabel *)self->_evChargingAvailabilityLabel setAttributedText:v18];
+      evChargingViewModel3 = [(CarPlaceCardCardViewController *)self evChargingViewModel];
+      summaryDescription = [evChargingViewModel3 summaryDescription];
+      [(UILabel *)self->_evChargingAvailabilityLabel setAttributedText:summaryDescription];
 
       v19 = [UIImageSymbolConfiguration configurationWithTextStyle:UIFontTextStyleFootnote];
       v20 = [MUEVChargingHelper evPlugIconWithConfiguration:v19];
@@ -1175,13 +1175,13 @@ LABEL_7:
       [(CarCardRoundedButton *)self->_evChargingMoreButton setImage:v20 forState:0];
     }
 
-    [(UILabel *)self->_evChargingTitleLabel setHidden:v14 ^ 1];
-    [(UILabel *)self->_evChargingAvailabilityLabel setHidden:v14 ^ 1];
-    [(CarCardRoundedButton *)self->_evChargingMoreButton setHidden:v14 ^ 1];
+    [(UILabel *)self->_evChargingTitleLabel setHidden:hasSummaryInfo ^ 1];
+    [(UILabel *)self->_evChargingAvailabilityLabel setHidden:hasSummaryInfo ^ 1];
+    [(CarCardRoundedButton *)self->_evChargingMoreButton setHidden:hasSummaryInfo ^ 1];
     if ([(NSArray *)self->_evChargingSummaryViewConstraints count])
     {
       evChargingSummaryViewConstraints = self->_evChargingSummaryViewConstraints;
-      if (v14)
+      if (hasSummaryInfo)
       {
         [NSLayoutConstraint activateConstraints:evChargingSummaryViewConstraints];
       }
@@ -1193,11 +1193,11 @@ LABEL_7:
     }
   }
 
-  v22 = [(CarPlaceCardCardViewController *)self _sharingETAString];
-  [(CarAutohidingLabel *)self->_sharingETALabel setText:v22];
+  _sharingETAString = [(CarPlaceCardCardViewController *)self _sharingETAString];
+  [(CarAutohidingLabel *)self->_sharingETALabel setText:_sharingETAString];
 
-  v23 = [(CarAutohidingLabel *)self->_sharingETALabel attributedText];
-  -[CarAutohidingLabel setHidden:](self->_sharingETALabel, "setHidden:", [v23 length] == 0);
+  attributedText2 = [(CarAutohidingLabel *)self->_sharingETALabel attributedText];
+  -[CarAutohidingLabel setHidden:](self->_sharingETALabel, "setHidden:", [attributedText2 length] == 0);
 
   [(CarPlaceCardCardViewController *)self _updateETA];
   if (!self->_etaUpdateTimer && ![(CarPlaceCardCardViewController *)self style])
@@ -1206,8 +1206,8 @@ LABEL_7:
   }
 
   [(CarPlaceCardCardViewController *)self _updateETARelatedContents];
-  [(UILabel *)self->_etaLabel setHidden:v3];
-  [(UILabel *)self->_mainDescriptionLabel setHidden:v3];
+  [(UILabel *)self->_etaLabel setHidden:_shouldHideNavigationRelatedInfo];
+  [(UILabel *)self->_mainDescriptionLabel setHidden:_shouldHideNavigationRelatedInfo];
   [(CarPlaceCardCardViewController *)self _updateMoreButton];
   [(CarMoreButton *)self->_moreButton setHidden:[(CarPlaceCardCardViewController *)self shouldDisplayMoreButton]^ 1];
   if ([(CarPlaceCardCardViewController *)self isLoading])
@@ -1221,11 +1221,11 @@ LABEL_7:
     if ([(CarPlaceCardCardViewController *)self isNavigationAidedDrivingEnabled])
     {
       v24 = +[MapsExternalDevice sharedInstance];
-      v25 = [v24 mapsDisplayName];
-      v26 = v25;
-      if (v25)
+      mapsDisplayName = [v24 mapsDisplayName];
+      v26 = mapsDisplayName;
+      if (mapsDisplayName)
       {
-        v27 = v25;
+        v27 = mapsDisplayName;
       }
 
       else
@@ -1241,10 +1241,10 @@ LABEL_7:
 
     else
     {
-      v28 = [(CarPlaceCardCardViewController *)self style];
+      style = [(CarPlaceCardCardViewController *)self style];
       v29 = +[NSBundle mainBundle];
       v30 = v29;
-      if (v28 == 1)
+      if (style == 1)
       {
         v31 = @"Car_ADD_STOP_BUTTON";
       }
@@ -1285,13 +1285,13 @@ LABEL_7:
     dispatch_async(&_dispatch_main_q, block);
   }
 
-  v36 = [(CarPlaceCardCardViewController *)self _isGoButtonFocusable];
-  if (v36)
+  _isGoButtonFocusable = [(CarPlaceCardCardViewController *)self _isGoButtonFocusable];
+  if (_isGoButtonFocusable)
   {
-    LOBYTE(v36) = [(CarPlaceCardCardViewController *)self _canSafelyRequestFocusUpdate];
+    LOBYTE(_isGoButtonFocusable) = [(CarPlaceCardCardViewController *)self _canSafelyRequestFocusUpdate];
   }
 
-  self->_goButtonIsFocusable = v36;
+  self->_goButtonIsFocusable = _isGoButtonFocusable;
   [(CarPlaceCardCardViewController *)self _updateRouteAdvisoriesStack];
 }
 
@@ -1306,9 +1306,9 @@ LABEL_7:
       [NSLayoutConstraint deactivateConstraints:v3];
     }
 
-    v4 = [(CarPlaceCardCardViewController *)self _createEtaLabelTrailingConstraint];
+    _createEtaLabelTrailingConstraint = [(CarPlaceCardCardViewController *)self _createEtaLabelTrailingConstraint];
     v5 = self->_etaLabelTrailingConstraint;
-    self->_etaLabelTrailingConstraint = v4;
+    self->_etaLabelTrailingConstraint = _createEtaLabelTrailingConstraint;
 
     v7 = self->_etaLabelTrailingConstraint;
     v6 = [NSArray arrayWithObjects:&v7 count:1];
@@ -1322,10 +1322,10 @@ LABEL_7:
   v4 = [NSURL URLWithString:@"tel:"];
   v5 = [v3 canOpenURL:v4];
 
-  v6 = [(SearchResult *)self->_searchResult mapItem];
-  v7 = [v6 phoneNumber];
+  mapItem = [(SearchResult *)self->_searchResult mapItem];
+  phoneNumber = [mapItem phoneNumber];
 
-  if ((v5 & (v7 != 0)) != 0)
+  if ((v5 & (phoneNumber != 0)) != 0)
   {
     v8 = 3;
   }
@@ -1354,7 +1354,7 @@ LABEL_7:
 
   [(CarAutohidingLabel *)self->_subtitleLabel setLineBreakMode:4];
   [(CarAutohidingLabel *)self->_subtitleLabel setNumberOfLines:1];
-  v4 = UIFontTextStyleCaption1;
+  font4 = UIFontTextStyleCaption1;
   v5 = [UIFont _mapsCar_fontForTextStyle:UIFontTextStyleCaption1 traits:0x8000];
   [(CarAutohidingLabel *)self->_addressLabel setFont:v5];
   v6 = +[UIColor _carSystemPrimaryColor];
@@ -1362,8 +1362,8 @@ LABEL_7:
 
   [(CarAutohidingLabel *)self->_addressLabel setLineBreakMode:4];
   [(CarAutohidingLabel *)self->_addressLabel setNumberOfLines:3];
-  v7 = [UIFont _mapsCar_fontForTextStyle:UIFontTextStyleFootnote weight:UIFontWeightMedium];
-  [(UILabel *)self->_evChargingTitleLabel setFont:v7];
+  titleLabel4 = [UIFont _mapsCar_fontForTextStyle:UIFontTextStyleFootnote weight:UIFontWeightMedium];
+  [(UILabel *)self->_evChargingTitleLabel setFont:titleLabel4];
   v8 = +[UIColor labelColor];
   [(UILabel *)self->_evChargingTitleLabel setTextColor:v8];
 
@@ -1395,11 +1395,11 @@ LABEL_7:
   v12 = +[UIColor _carSystemPrimaryColor];
   [(UILabel *)self->_mainDescriptionLabel setTextColor:v12];
 
-  v13 = [(UILabel *)self->_mainDescriptionLabel font];
-  [v13 pointSize];
+  font = [(UILabel *)self->_mainDescriptionLabel font];
+  [font pointSize];
   mainDescriptionLabel = self->_mainDescriptionLabel;
   v46 = v5;
-  v52 = v7;
+  v52 = titleLabel4;
   if (10.0 / v14 > 1.0)
   {
     [(UILabel *)mainDescriptionLabel setMinimumScaleFactor:1.0];
@@ -1407,8 +1407,8 @@ LABEL_7:
 
   else
   {
-    v16 = [(UILabel *)mainDescriptionLabel font];
-    [v16 pointSize];
+    font2 = [(UILabel *)mainDescriptionLabel font];
+    [font2 pointSize];
     [(UILabel *)self->_mainDescriptionLabel setMinimumScaleFactor:10.0 / v17];
   }
 
@@ -1422,27 +1422,27 @@ LABEL_7:
   [(CarFocusableButton *)self->_goButton setNonFocusedBackgroundColor:v19];
 
   v20 = [UIFont _mapsCar_fontForTextStyle:UIFontTextStyleCallout weight:UIFontWeightBold];
-  v21 = [(CarLoadingButton *)self->_goButton titleLabel];
-  [v21 setFont:v20];
+  titleLabel = [(CarLoadingButton *)self->_goButton titleLabel];
+  [titleLabel setFont:v20];
 
-  v22 = [(CarLoadingButton *)self->_goButton titleLabel];
-  [v22 setAdjustsFontSizeToFitWidth:1];
+  titleLabel2 = [(CarLoadingButton *)self->_goButton titleLabel];
+  [titleLabel2 setAdjustsFontSizeToFitWidth:1];
 
-  v23 = [(CarLoadingButton *)self->_goButton titleLabel];
-  v24 = [v23 font];
-  [v24 pointSize];
+  titleLabel3 = [(CarLoadingButton *)self->_goButton titleLabel];
+  font3 = [titleLabel3 font];
+  [font3 pointSize];
   v26 = 10.0 / v25;
   v27 = 1.0;
   if (10.0 / v25 <= 1.0)
   {
-    v7 = [(CarLoadingButton *)self->_goButton titleLabel];
-    v4 = [v7 font];
-    [v4 pointSize];
+    titleLabel4 = [(CarLoadingButton *)self->_goButton titleLabel];
+    font4 = [titleLabel4 font];
+    [font4 pointSize];
     v27 = 10.0 / v28;
   }
 
-  v29 = [(CarLoadingButton *)self->_goButton titleLabel];
-  [v29 setMinimumScaleFactor:v27];
+  titleLabel5 = [(CarLoadingButton *)self->_goButton titleLabel];
+  [titleLabel5 setMinimumScaleFactor:v27];
 
   if (v26 <= 1.0)
   {
@@ -1487,33 +1487,33 @@ LABEL_7:
     [(UILabel *)self->_mainDescriptionLabel setFont:v44];
 
     v30 = v52;
-    v45 = [(CarLoadingButton *)self->_goButton titleLabel];
-    [v45 setAdjustsFontForContentSizeCategory:1];
+    titleLabel6 = [(CarLoadingButton *)self->_goButton titleLabel];
+    [titleLabel6 setAdjustsFontForContentSizeCategory:1];
   }
 }
 
 - (void)_setupConstraints
 {
   v164 = +[NSMutableArray array];
-  v156 = [(UIStackView *)self->_textStackView firstBaselineAnchor];
-  v160 = [(CarPlaceCardCardViewController *)self view];
-  v150 = [v160 topAnchor];
-  v144 = [v156 constraintEqualToAnchor:v150 constant:-1.0];
+  firstBaselineAnchor = [(UIStackView *)self->_textStackView firstBaselineAnchor];
+  view = [(CarPlaceCardCardViewController *)self view];
+  topAnchor = [view topAnchor];
+  v144 = [firstBaselineAnchor constraintEqualToAnchor:topAnchor constant:-1.0];
   v171[0] = v144;
-  v133 = [(UIStackView *)self->_textStackView leadingAnchor];
-  v138 = [(CarPlaceCardCardViewController *)self view];
-  v128 = [v138 leadingAnchor];
-  v124 = [v133 constraintEqualToAnchor:v128 constant:10.0];
+  leadingAnchor = [(UIStackView *)self->_textStackView leadingAnchor];
+  view2 = [(CarPlaceCardCardViewController *)self view];
+  leadingAnchor2 = [view2 leadingAnchor];
+  v124 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:10.0];
   v171[1] = v124;
-  v119 = [(UIStackView *)self->_textStackView trailingAnchor];
-  v3 = [(CarPlaceCardCardViewController *)self view];
-  v4 = [v3 trailingAnchor];
-  v5 = [v119 constraintEqualToAnchor:v4 constant:-10.0];
+  trailingAnchor = [(UIStackView *)self->_textStackView trailingAnchor];
+  view3 = [(CarPlaceCardCardViewController *)self view];
+  trailingAnchor2 = [view3 trailingAnchor];
+  v5 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-10.0];
   v171[2] = v5;
-  v6 = [(UIStackView *)self->_textStackView bottomAnchor];
-  v7 = [(CarPlaceCardCardViewController *)self view];
-  v8 = [v7 bottomAnchor];
-  v9 = [v6 constraintLessThanOrEqualToAnchor:v8];
+  bottomAnchor = [(UIStackView *)self->_textStackView bottomAnchor];
+  view4 = [(CarPlaceCardCardViewController *)self view];
+  bottomAnchor2 = [view4 bottomAnchor];
+  v9 = [bottomAnchor constraintLessThanOrEqualToAnchor:bottomAnchor2];
   v171[3] = v9;
   v10 = [NSArray arrayWithObjects:v171 count:4];
   [v164 addObjectsFromArray:v10];
@@ -1522,54 +1522,54 @@ LABEL_7:
   v12 = self->_textStackView;
   [(CarAutohidingLabel *)addressLabel firstBaselineAnchor];
   v161 = v157 = v12;
-  v151 = [(UIStackView *)v12 lastBaselineAnchor];
+  lastBaselineAnchor = [(UIStackView *)v12 lastBaselineAnchor];
   LODWORD(v13) = 1144602624;
-  v145 = [v161 constraintEqualToAnchor:v151 constant:20.0 priority:v13];
+  v145 = [v161 constraintEqualToAnchor:lastBaselineAnchor constant:20.0 priority:v13];
   v170[0] = v145;
-  v139 = [(CarAutohidingLabel *)self->_addressLabel firstBaselineAnchor];
-  v134 = [(UIStackView *)v12 lastBaselineAnchor];
-  v129 = [v139 constraintGreaterThanOrEqualToAnchor:v134 constant:14.0];
+  firstBaselineAnchor2 = [(CarAutohidingLabel *)self->_addressLabel firstBaselineAnchor];
+  lastBaselineAnchor2 = [(UIStackView *)v12 lastBaselineAnchor];
+  v129 = [firstBaselineAnchor2 constraintGreaterThanOrEqualToAnchor:lastBaselineAnchor2 constant:14.0];
   v170[1] = v129;
-  v125 = [(CarAutohidingLabel *)self->_addressLabel heightAnchor];
-  v120 = [v125 constraintGreaterThanOrEqualToConstant:20.0];
+  heightAnchor = [(CarAutohidingLabel *)self->_addressLabel heightAnchor];
+  v120 = [heightAnchor constraintGreaterThanOrEqualToConstant:20.0];
   v170[2] = v120;
-  v115 = [(CarAutohidingLabel *)self->_addressLabel leadingAnchor];
-  v14 = [(CarPlaceCardCardViewController *)self view];
-  v15 = [v14 leadingAnchor];
-  v16 = [v115 constraintEqualToAnchor:v15 constant:10.0];
+  leadingAnchor3 = [(CarAutohidingLabel *)self->_addressLabel leadingAnchor];
+  view5 = [(CarPlaceCardCardViewController *)self view];
+  leadingAnchor4 = [view5 leadingAnchor];
+  v16 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:10.0];
   v170[3] = v16;
-  v17 = [(CarAutohidingLabel *)self->_addressLabel trailingAnchor];
-  v18 = [(CarPlaceCardCardViewController *)self view];
-  v19 = [v18 trailingAnchor];
-  v20 = [v17 constraintEqualToAnchor:v19 constant:-10.0];
+  trailingAnchor3 = [(CarAutohidingLabel *)self->_addressLabel trailingAnchor];
+  view6 = [(CarPlaceCardCardViewController *)self view];
+  trailingAnchor4 = [view6 trailingAnchor];
+  v20 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:-10.0];
   v170[4] = v20;
   v21 = [NSArray arrayWithObjects:v170 count:5];
   [v164 addObjectsFromArray:v21];
 
   v22 = self->_addressLabel;
-  v23 = [(CarPlaceCardCardViewController *)self evChargingViewModel];
+  evChargingViewModel = [(CarPlaceCardCardViewController *)self evChargingViewModel];
 
-  if (v23)
+  if (evChargingViewModel)
   {
     v162 = v22;
     if ([(CarPlaceCardCardViewController *)self _shouldShowEVViewsInline])
     {
-      v24 = [(CarPlaceCardCardViewController *)self evChargingAvailabilityVC];
-      v25 = [v24 view];
+      evChargingAvailabilityVC = [(CarPlaceCardCardViewController *)self evChargingAvailabilityVC];
+      view7 = [evChargingAvailabilityVC view];
 
-      v158 = [(UILabel *)v25 topAnchor];
-      v152 = [(CarAutohidingLabel *)v22 lastBaselineAnchor];
-      v146 = [v158 constraintEqualToAnchor:v152 constant:12.0];
+      topAnchor2 = [(UILabel *)view7 topAnchor];
+      lastBaselineAnchor3 = [(CarAutohidingLabel *)v22 lastBaselineAnchor];
+      v146 = [topAnchor2 constraintEqualToAnchor:lastBaselineAnchor3 constant:12.0];
       v169[0] = v146;
-      v140 = [(UILabel *)v25 leadingAnchor];
-      v26 = [(CarPlaceCardCardViewController *)self view];
-      v27 = [v26 leadingAnchor];
-      v28 = [v140 constraintEqualToAnchor:v27 constant:10.0];
+      leadingAnchor5 = [(UILabel *)view7 leadingAnchor];
+      view8 = [(CarPlaceCardCardViewController *)self view];
+      leadingAnchor6 = [view8 leadingAnchor];
+      v28 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6 constant:10.0];
       v169[1] = v28;
-      v29 = [(UILabel *)v25 trailingAnchor];
-      v30 = [(CarPlaceCardCardViewController *)self view];
-      v31 = [v30 trailingAnchor];
-      v32 = [v29 constraintEqualToAnchor:v31 constant:-10.0];
+      trailingAnchor5 = [(UILabel *)view7 trailingAnchor];
+      view9 = [(CarPlaceCardCardViewController *)self view];
+      trailingAnchor6 = [view9 trailingAnchor];
+      v32 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6 constant:-10.0];
       v169[2] = v32;
       v33 = [NSArray arrayWithObjects:v169 count:3];
       [v164 addObjectsFromArray:v33];
@@ -1577,46 +1577,46 @@ LABEL_7:
 
     else
     {
-      v159 = [(CarCardRoundedButton *)self->_evChargingMoreButton topAnchor];
-      v153 = [(CarAutohidingLabel *)v22 lastBaselineAnchor];
-      v147 = [v159 constraintEqualToAnchor:v153 constant:6.0];
+      topAnchor3 = [(CarCardRoundedButton *)self->_evChargingMoreButton topAnchor];
+      lastBaselineAnchor4 = [(CarAutohidingLabel *)v22 lastBaselineAnchor];
+      v147 = [topAnchor3 constraintEqualToAnchor:lastBaselineAnchor4 constant:6.0];
       v168[0] = v147;
-      v141 = [(CarCardRoundedButton *)self->_evChargingMoreButton heightAnchor];
-      v135 = [v141 constraintEqualToConstant:30.0];
+      heightAnchor2 = [(CarCardRoundedButton *)self->_evChargingMoreButton heightAnchor];
+      v135 = [heightAnchor2 constraintEqualToConstant:30.0];
       v168[1] = v135;
-      v130 = [(CarCardRoundedButton *)self->_evChargingMoreButton widthAnchor];
-      v126 = [v130 constraintEqualToConstant:30.0];
+      widthAnchor = [(CarCardRoundedButton *)self->_evChargingMoreButton widthAnchor];
+      v126 = [widthAnchor constraintEqualToConstant:30.0];
       v168[2] = v126;
-      v116 = [(CarCardRoundedButton *)self->_evChargingMoreButton trailingAnchor];
-      v121 = [(CarPlaceCardCardViewController *)self view];
-      v112 = [v121 trailingAnchor];
-      v109 = [v116 constraintEqualToAnchor:v112 constant:-10.0];
+      trailingAnchor7 = [(CarCardRoundedButton *)self->_evChargingMoreButton trailingAnchor];
+      view10 = [(CarPlaceCardCardViewController *)self view];
+      trailingAnchor8 = [view10 trailingAnchor];
+      v109 = [trailingAnchor7 constraintEqualToAnchor:trailingAnchor8 constant:-10.0];
       v168[3] = v109;
-      v106 = [(UILabel *)self->_evChargingTitleLabel bottomAnchor];
-      v103 = [(UILabel *)self->_evChargingAvailabilityLabel topAnchor];
-      v101 = [v106 constraintEqualToAnchor:v103 constant:2.0];
+      bottomAnchor3 = [(UILabel *)self->_evChargingTitleLabel bottomAnchor];
+      topAnchor4 = [(UILabel *)self->_evChargingAvailabilityLabel topAnchor];
+      v101 = [bottomAnchor3 constraintEqualToAnchor:topAnchor4 constant:2.0];
       v168[4] = v101;
-      v97 = [(UILabel *)self->_evChargingTitleLabel leadingAnchor];
-      v99 = [(CarPlaceCardCardViewController *)self view];
-      v94 = [v99 leadingAnchor];
-      v91 = [v97 constraintEqualToAnchor:v94 constant:10.0];
+      leadingAnchor7 = [(UILabel *)self->_evChargingTitleLabel leadingAnchor];
+      view11 = [(CarPlaceCardCardViewController *)self view];
+      leadingAnchor8 = [view11 leadingAnchor];
+      v91 = [leadingAnchor7 constraintEqualToAnchor:leadingAnchor8 constant:10.0];
       v168[5] = v91;
-      v89 = [(UILabel *)self->_evChargingTitleLabel trailingAnchor];
-      v87 = [(CarCardRoundedButton *)self->_evChargingMoreButton leadingAnchor];
-      v85 = [v89 constraintLessThanOrEqualToAnchor:v87 constant:-10.0];
+      trailingAnchor9 = [(UILabel *)self->_evChargingTitleLabel trailingAnchor];
+      leadingAnchor9 = [(CarCardRoundedButton *)self->_evChargingMoreButton leadingAnchor];
+      v85 = [trailingAnchor9 constraintLessThanOrEqualToAnchor:leadingAnchor9 constant:-10.0];
       v168[6] = v85;
-      v83 = [(UILabel *)self->_evChargingAvailabilityLabel bottomAnchor];
-      v81 = [(CarCardRoundedButton *)self->_evChargingMoreButton bottomAnchor];
-      v34 = [v83 constraintEqualToAnchor:v81];
+      bottomAnchor4 = [(UILabel *)self->_evChargingAvailabilityLabel bottomAnchor];
+      bottomAnchor5 = [(CarCardRoundedButton *)self->_evChargingMoreButton bottomAnchor];
+      v34 = [bottomAnchor4 constraintEqualToAnchor:bottomAnchor5];
       v168[7] = v34;
-      v35 = [(UILabel *)self->_evChargingAvailabilityLabel leadingAnchor];
-      v36 = [(CarPlaceCardCardViewController *)self view];
-      v37 = [v36 leadingAnchor];
-      v38 = [v35 constraintEqualToAnchor:v37 constant:10.0];
+      leadingAnchor10 = [(UILabel *)self->_evChargingAvailabilityLabel leadingAnchor];
+      view12 = [(CarPlaceCardCardViewController *)self view];
+      leadingAnchor11 = [view12 leadingAnchor];
+      v38 = [leadingAnchor10 constraintEqualToAnchor:leadingAnchor11 constant:10.0];
       v168[8] = v38;
-      v39 = [(UILabel *)self->_evChargingAvailabilityLabel trailingAnchor];
-      v40 = [(CarCardRoundedButton *)self->_evChargingMoreButton leadingAnchor];
-      v41 = [v39 constraintLessThanOrEqualToAnchor:v40 constant:-10.0];
+      trailingAnchor10 = [(UILabel *)self->_evChargingAvailabilityLabel trailingAnchor];
+      leadingAnchor12 = [(CarCardRoundedButton *)self->_evChargingMoreButton leadingAnchor];
+      v41 = [trailingAnchor10 constraintLessThanOrEqualToAnchor:leadingAnchor12 constant:-10.0];
       v168[9] = v41;
       v42 = [NSArray arrayWithObjects:v168 count:10];
       evChargingSummaryViewConstraints = self->_evChargingSummaryViewConstraints;
@@ -1624,94 +1624,94 @@ LABEL_7:
 
       [v164 addObjectsFromArray:self->_evChargingSummaryViewConstraints];
       [(CarCardRoundedButton *)self->_evChargingMoreButton _setCornerRadius:15.0];
-      v25 = self->_evChargingAvailabilityLabel;
+      view7 = self->_evChargingAvailabilityLabel;
     }
 
-    v22 = v25;
+    v22 = view7;
   }
 
-  v154 = [(CarMoreButton *)self->_moreButton topAnchor];
+  topAnchor5 = [(CarMoreButton *)self->_moreButton topAnchor];
   v163 = v22;
-  v148 = [(CarAutohidingLabel *)v22 lastBaselineAnchor];
-  v142 = [v154 constraintGreaterThanOrEqualToAnchor:v148 constant:6.0];
+  lastBaselineAnchor5 = [(CarAutohidingLabel *)v22 lastBaselineAnchor];
+  v142 = [topAnchor5 constraintGreaterThanOrEqualToAnchor:lastBaselineAnchor5 constant:6.0];
   v167[0] = v142;
-  v136 = [(UILabel *)self->_etaLabel bottomAnchor];
-  v131 = [(UILabel *)self->_mainDescriptionLabel topAnchor];
-  v127 = [v136 constraintEqualToAnchor:v131 constant:2.0];
+  bottomAnchor6 = [(UILabel *)self->_etaLabel bottomAnchor];
+  topAnchor6 = [(UILabel *)self->_mainDescriptionLabel topAnchor];
+  v127 = [bottomAnchor6 constraintEqualToAnchor:topAnchor6 constant:2.0];
   v167[1] = v127;
-  v117 = [(UILabel *)self->_etaLabel leadingAnchor];
-  v122 = [(CarPlaceCardCardViewController *)self view];
-  v113 = [v122 leadingAnchor];
-  v110 = [v117 constraintEqualToAnchor:v113 constant:10.0];
+  leadingAnchor13 = [(UILabel *)self->_etaLabel leadingAnchor];
+  view13 = [(CarPlaceCardCardViewController *)self view];
+  leadingAnchor14 = [view13 leadingAnchor];
+  v110 = [leadingAnchor13 constraintEqualToAnchor:leadingAnchor14 constant:10.0];
   v167[2] = v110;
-  v107 = [(UILabel *)self->_mainDescriptionLabel bottomAnchor];
-  v104 = [(CarMoreButton *)self->_moreButton bottomAnchor];
-  v44 = [v107 constraintEqualToAnchor:v104];
+  bottomAnchor7 = [(UILabel *)self->_mainDescriptionLabel bottomAnchor];
+  bottomAnchor8 = [(CarMoreButton *)self->_moreButton bottomAnchor];
+  v44 = [bottomAnchor7 constraintEqualToAnchor:bottomAnchor8];
   v167[3] = v44;
-  v45 = [(UILabel *)self->_mainDescriptionLabel leadingAnchor];
-  v46 = [(CarPlaceCardCardViewController *)self view];
-  v47 = [v46 leadingAnchor];
-  v48 = [v45 constraintEqualToAnchor:v47 constant:10.0];
+  leadingAnchor15 = [(UILabel *)self->_mainDescriptionLabel leadingAnchor];
+  view14 = [(CarPlaceCardCardViewController *)self view];
+  leadingAnchor16 = [view14 leadingAnchor];
+  v48 = [leadingAnchor15 constraintEqualToAnchor:leadingAnchor16 constant:10.0];
   v167[4] = v48;
-  v49 = [(UILabel *)self->_mainDescriptionLabel trailingAnchor];
-  v50 = [(UILabel *)self->_etaLabel trailingAnchor];
-  v51 = [v49 constraintEqualToAnchor:v50];
+  trailingAnchor11 = [(UILabel *)self->_mainDescriptionLabel trailingAnchor];
+  trailingAnchor12 = [(UILabel *)self->_etaLabel trailingAnchor];
+  v51 = [trailingAnchor11 constraintEqualToAnchor:trailingAnchor12];
   v167[5] = v51;
   v52 = [NSArray arrayWithObjects:v167 count:6];
   [v164 addObjectsFromArray:v52];
 
-  v53 = [(CarPlaceCardCardViewController *)self _createEtaLabelTrailingConstraint];
+  _createEtaLabelTrailingConstraint = [(CarPlaceCardCardViewController *)self _createEtaLabelTrailingConstraint];
   etaLabelTrailingConstraint = self->_etaLabelTrailingConstraint;
-  self->_etaLabelTrailingConstraint = v53;
+  self->_etaLabelTrailingConstraint = _createEtaLabelTrailingConstraint;
 
   [v164 addObject:self->_etaLabelTrailingConstraint];
-  v155 = [(CarMoreButton *)self->_moreButton heightAnchor];
-  v149 = [v155 constraintEqualToConstant:30.0];
+  heightAnchor3 = [(CarMoreButton *)self->_moreButton heightAnchor];
+  v149 = [heightAnchor3 constraintEqualToConstant:30.0];
   v166[0] = v149;
-  v143 = [(CarMoreButton *)self->_moreButton widthAnchor];
-  v137 = [v143 constraintEqualToConstant:30.0];
+  widthAnchor2 = [(CarMoreButton *)self->_moreButton widthAnchor];
+  v137 = [widthAnchor2 constraintEqualToConstant:30.0];
   v166[1] = v137;
-  v55 = [(CarMoreButton *)self->_moreButton trailingAnchor];
-  v123 = [(CarPlaceCardCardViewController *)self view];
-  [v123 trailingAnchor];
-  v118 = v132 = v55;
-  v114 = [v55 constraintEqualToAnchor:-10.0 constant:?];
+  trailingAnchor13 = [(CarMoreButton *)self->_moreButton trailingAnchor];
+  view15 = [(CarPlaceCardCardViewController *)self view];
+  [view15 trailingAnchor];
+  v118 = v132 = trailingAnchor13;
+  v114 = [trailingAnchor13 constraintEqualToAnchor:-10.0 constant:?];
   v166[2] = v114;
-  v56 = [(CarMoreButton *)self->_moreButton bottomAnchor];
-  v108 = [(CarAdvisoriesView *)self->_routeAdvisoriesView topAnchor];
-  v111 = v56;
-  v105 = [v56 constraintLessThanOrEqualToAnchor:-6.0 constant:?];
+  bottomAnchor9 = [(CarMoreButton *)self->_moreButton bottomAnchor];
+  topAnchor7 = [(CarAdvisoriesView *)self->_routeAdvisoriesView topAnchor];
+  v111 = bottomAnchor9;
+  v105 = [bottomAnchor9 constraintLessThanOrEqualToAnchor:-6.0 constant:?];
   v166[3] = v105;
-  v57 = [(CarAdvisoriesView *)self->_routeAdvisoriesView leadingAnchor];
-  v100 = [(CarPlaceCardCardViewController *)self view];
-  [v100 leadingAnchor];
-  v98 = v102 = v57;
-  v96 = [v57 constraintEqualToAnchor:10.0 constant:?];
+  leadingAnchor17 = [(CarAdvisoriesView *)self->_routeAdvisoriesView leadingAnchor];
+  view16 = [(CarPlaceCardCardViewController *)self view];
+  [view16 leadingAnchor];
+  v98 = v102 = leadingAnchor17;
+  v96 = [leadingAnchor17 constraintEqualToAnchor:10.0 constant:?];
   v166[4] = v96;
-  v58 = [(CarAdvisoriesView *)self->_routeAdvisoriesView trailingAnchor];
-  v93 = [(CarPlaceCardCardViewController *)self view];
-  [v93 trailingAnchor];
-  v92 = v95 = v58;
-  v90 = [v58 constraintEqualToAnchor:-10.0 constant:?];
+  trailingAnchor14 = [(CarAdvisoriesView *)self->_routeAdvisoriesView trailingAnchor];
+  view17 = [(CarPlaceCardCardViewController *)self view];
+  [view17 trailingAnchor];
+  v92 = v95 = trailingAnchor14;
+  v90 = [trailingAnchor14 constraintEqualToAnchor:-10.0 constant:?];
   v166[5] = v90;
-  v59 = [(CarAdvisoriesView *)self->_routeAdvisoriesView bottomAnchor];
-  v86 = [(CarLoadingButton *)self->_goButton topAnchor];
-  v88 = v59;
-  v84 = [v59 constraintLessThanOrEqualToAnchor:-6.0 constant:?];
+  bottomAnchor10 = [(CarAdvisoriesView *)self->_routeAdvisoriesView bottomAnchor];
+  topAnchor8 = [(CarLoadingButton *)self->_goButton topAnchor];
+  v88 = bottomAnchor10;
+  v84 = [bottomAnchor10 constraintLessThanOrEqualToAnchor:-6.0 constant:?];
   v166[6] = v84;
-  v60 = [(CarLoadingButton *)self->_goButton leadingAnchor];
-  v80 = [(CarPlaceCardCardViewController *)self view];
-  [v80 leadingAnchor];
-  v79 = v82 = v60;
-  v78 = [v60 constraintEqualToAnchor:10.0 constant:?];
+  leadingAnchor18 = [(CarLoadingButton *)self->_goButton leadingAnchor];
+  view18 = [(CarPlaceCardCardViewController *)self view];
+  [view18 leadingAnchor];
+  v79 = v82 = leadingAnchor18;
+  v78 = [leadingAnchor18 constraintEqualToAnchor:10.0 constant:?];
   v166[7] = v78;
-  v61 = [(CarLoadingButton *)self->_goButton trailingAnchor];
-  v76 = [(CarPlaceCardCardViewController *)self view];
-  v62 = [v76 trailingAnchor];
-  v77 = v61;
-  v63 = [v61 constraintEqualToAnchor:v62 constant:-10.0];
+  trailingAnchor15 = [(CarLoadingButton *)self->_goButton trailingAnchor];
+  view19 = [(CarPlaceCardCardViewController *)self view];
+  trailingAnchor16 = [view19 trailingAnchor];
+  v77 = trailingAnchor15;
+  v63 = [trailingAnchor15 constraintEqualToAnchor:trailingAnchor16 constant:-10.0];
   v166[8] = v63;
-  v64 = [(CarLoadingButton *)self->_goButton heightAnchor];
+  heightAnchor4 = [(CarLoadingButton *)self->_goButton heightAnchor];
   goButton = self->_goButton;
   if (goButton)
   {
@@ -1724,38 +1724,38 @@ LABEL_7:
     v66 = 0.0;
   }
 
-  v67 = [v64 constraintEqualToConstant:v66];
+  v67 = [heightAnchor4 constraintEqualToConstant:v66];
   v166[9] = v67;
-  v68 = [(CarLoadingButton *)self->_goButton bottomAnchor];
-  v69 = [(CarPlaceCardCardViewController *)self view];
-  v70 = [v69 bottomAnchor];
-  v71 = [v68 constraintEqualToAnchor:v70 constant:-10.0];
+  bottomAnchor11 = [(CarLoadingButton *)self->_goButton bottomAnchor];
+  view20 = [(CarPlaceCardCardViewController *)self view];
+  bottomAnchor12 = [view20 bottomAnchor];
+  v71 = [bottomAnchor11 constraintEqualToAnchor:bottomAnchor12 constant:-10.0];
   v166[10] = v71;
   v72 = [NSArray arrayWithObjects:v166 count:11];
   [v164 addObjectsFromArray:v72];
 
   [(CarMoreButton *)self->_moreButton _setCornerRadius:15.0];
-  v73 = [(CarAdvisoriesView *)self->_routeAdvisoriesView heightAnchor];
-  v74 = [v73 constraintEqualToConstant:0.0];
+  heightAnchor5 = [(CarAdvisoriesView *)self->_routeAdvisoriesView heightAnchor];
+  v74 = [heightAnchor5 constraintEqualToConstant:0.0];
   routeAdvisoriesHeightConstraint = self->_routeAdvisoriesHeightConstraint;
   self->_routeAdvisoriesHeightConstraint = v74;
 
   [NSLayoutConstraint activateConstraints:v164];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = CarPlaceCardCardViewController;
-  [(CarPlaceCardCardViewController *)&v4 viewDidDisappear:a3];
+  [(CarPlaceCardCardViewController *)&v4 viewDidDisappear:disappear];
   [(CarPlaceCardEVChargingViewModel *)self->_evChargingViewModel setIsActive:0];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = CarPlaceCardCardViewController;
-  [(CarPlaceCardCardViewController *)&v4 viewDidAppear:a3];
+  [(CarPlaceCardCardViewController *)&v4 viewDidAppear:appear];
   self->_goButtonIsFocusable = 0;
   [(CarPlaceCardCardViewController *)self _updateContents];
   [PPTNotificationCenter postNotificationIfNeededWithName:@"CarPlaceCardCardViewControllerDidAppearNotification" object:self userInfo:0];
@@ -1767,8 +1767,8 @@ LABEL_7:
   v89.receiver = self;
   v89.super_class = CarPlaceCardCardViewController;
   [(CarPlaceCardCardViewController *)&v89 viewDidLoad];
-  v3 = [(CarPlaceCardCardViewController *)self view];
-  [v3 setAccessibilityIdentifier:@"CarPlaceCard"];
+  view = [(CarPlaceCardCardViewController *)self view];
+  [view setAccessibilityIdentifier:@"CarPlaceCard"];
 
   LODWORD(v4) = 1144635392;
   v5 = [(CarPlaceCardCardViewController *)self _createAutohidingTextlabelWithVerticalCompressionResistancePriority:v4];
@@ -1809,8 +1809,8 @@ LABEL_7:
   [(UIStackView *)self->_textStackView setSpacing:15.0];
   LODWORD(v19) = 1144750080;
   [(UIStackView *)self->_textStackView setContentHuggingPriority:1 forAxis:v19];
-  v20 = [(CarPlaceCardCardViewController *)self view];
-  [v20 addSubview:self->_textStackView];
+  view2 = [(CarPlaceCardCardViewController *)self view];
+  [view2 addSubview:self->_textStackView];
 
   LODWORD(v21) = 1144619008;
   v22 = [(CarPlaceCardCardViewController *)self _createAutohidingTextlabelWithVerticalCompressionResistancePriority:v21];
@@ -1818,34 +1818,34 @@ LABEL_7:
   self->_addressLabel = v22;
 
   [(CarAutohidingLabel *)self->_addressLabel setAccessibilityIdentifier:@"AddressLabel"];
-  v24 = [(CarPlaceCardCardViewController *)self view];
-  [v24 addSubview:self->_addressLabel];
+  view3 = [(CarPlaceCardCardViewController *)self view];
+  [view3 addSubview:self->_addressLabel];
 
-  v25 = [(CarPlaceCardCardViewController *)self evChargingViewModel];
+  evChargingViewModel = [(CarPlaceCardCardViewController *)self evChargingViewModel];
 
-  if (v25)
+  if (evChargingViewModel)
   {
     if ([(CarPlaceCardCardViewController *)self _shouldShowEVViewsInline])
     {
       v26 = [_TtC4Maps39CarEVChargingAvailabilityViewController alloc];
-      v27 = [(CarPlaceCardCardViewController *)self evChargingViewModel];
-      v28 = [(CarEVChargingAvailabilityViewController *)v26 initWithViewModal:v27];
+      evChargingViewModel2 = [(CarPlaceCardCardViewController *)self evChargingViewModel];
+      v28 = [(CarEVChargingAvailabilityViewController *)v26 initWithViewModal:evChargingViewModel2];
       [(CarPlaceCardCardViewController *)self setEvChargingAvailabilityVC:v28];
 
-      v29 = [(CarPlaceCardCardViewController *)self evChargingAvailabilityVC];
-      [(CarPlaceCardCardViewController *)self addChildViewController:v29];
+      evChargingAvailabilityVC = [(CarPlaceCardCardViewController *)self evChargingAvailabilityVC];
+      [(CarPlaceCardCardViewController *)self addChildViewController:evChargingAvailabilityVC];
 
-      v30 = [(CarPlaceCardCardViewController *)self view];
-      v31 = [(CarPlaceCardCardViewController *)self evChargingAvailabilityVC];
-      v32 = [v31 view];
-      [v30 addSubview:v32];
+      view4 = [(CarPlaceCardCardViewController *)self view];
+      evChargingAvailabilityVC2 = [(CarPlaceCardCardViewController *)self evChargingAvailabilityVC];
+      view5 = [evChargingAvailabilityVC2 view];
+      [view4 addSubview:view5];
 
-      v33 = [(CarPlaceCardCardViewController *)self evChargingAvailabilityVC];
-      v34 = [v33 view];
-      [v34 setTranslatesAutoresizingMaskIntoConstraints:0];
+      evChargingAvailabilityVC3 = [(CarPlaceCardCardViewController *)self evChargingAvailabilityVC];
+      view6 = [evChargingAvailabilityVC3 view];
+      [view6 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-      v35 = [(CarPlaceCardCardViewController *)self evChargingAvailabilityVC];
-      [v35 didMoveToParentViewController:self];
+      evChargingAvailabilityVC4 = [(CarPlaceCardCardViewController *)self evChargingAvailabilityVC];
+      [evChargingAvailabilityVC4 didMoveToParentViewController:self];
     }
 
     else
@@ -1864,8 +1864,8 @@ LABEL_7:
       [(UILabel *)self->_evChargingTitleLabel setContentHuggingPriority:1 forAxis:v42];
       LODWORD(v43) = 1144700928;
       [(UILabel *)self->_evChargingTitleLabel setContentCompressionResistancePriority:0 forAxis:v43];
-      v44 = [(CarPlaceCardCardViewController *)self view];
-      [v44 addSubview:self->_evChargingTitleLabel];
+      view7 = [(CarPlaceCardCardViewController *)self view];
+      [view7 addSubview:self->_evChargingTitleLabel];
 
       v45 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
       evChargingAvailabilityLabel = self->_evChargingAvailabilityLabel;
@@ -1877,12 +1877,12 @@ LABEL_7:
       [(UILabel *)self->_evChargingAvailabilityLabel setContentHuggingPriority:1 forAxis:v47];
       LODWORD(v48) = 1144700928;
       [(UILabel *)self->_evChargingAvailabilityLabel setContentCompressionResistancePriority:0 forAxis:v48];
-      v49 = [(CarPlaceCardCardViewController *)self view];
-      [v49 addSubview:self->_evChargingAvailabilityLabel];
+      view8 = [(CarPlaceCardCardViewController *)self view];
+      [view8 addSubview:self->_evChargingAvailabilityLabel];
 
-      v50 = [[CarCardRoundedButton alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
+      height = [[CarCardRoundedButton alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
       evChargingMoreButton = self->_evChargingMoreButton;
-      self->_evChargingMoreButton = v50;
+      self->_evChargingMoreButton = height;
 
       [(CarCardRoundedButton *)self->_evChargingMoreButton setAccessibilityIdentifier:@"EVChargingMoreButton"];
       [(CarCardRoundedButton *)self->_evChargingMoreButton setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -1893,8 +1893,8 @@ LABEL_7:
       LODWORD(v54) = 1148846080;
       [(CarCardRoundedButton *)self->_evChargingMoreButton setContentCompressionResistancePriority:1 forAxis:v54];
       [(CarCardRoundedButton *)self->_evChargingMoreButton addTarget:self action:"_evChargingMoreButtonPressed:" forControlEvents:64];
-      v35 = [(CarPlaceCardCardViewController *)self view];
-      [v35 addSubview:self->_evChargingMoreButton];
+      evChargingAvailabilityVC4 = [(CarPlaceCardCardViewController *)self view];
+      [evChargingAvailabilityVC4 addSubview:self->_evChargingMoreButton];
     }
   }
 
@@ -1912,8 +1912,8 @@ LABEL_7:
   [(UILabel *)self->_etaLabel setContentHuggingPriority:1 forAxis:v61];
   LODWORD(v62) = 1144733696;
   [(UILabel *)self->_etaLabel setContentCompressionResistancePriority:0 forAxis:v62];
-  v63 = [(CarPlaceCardCardViewController *)self view];
-  [v63 addSubview:self->_etaLabel];
+  view9 = [(CarPlaceCardCardViewController *)self view];
+  [view9 addSubview:self->_etaLabel];
 
   v64 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, v56, v57, v58}];
   mainDescriptionLabel = self->_mainDescriptionLabel;
@@ -1927,8 +1927,8 @@ LABEL_7:
   [(UILabel *)self->_mainDescriptionLabel setContentCompressionResistancePriority:0 forAxis:v67];
   LODWORD(v68) = 1144668160;
   [(UILabel *)self->_mainDescriptionLabel setContentCompressionResistancePriority:1 forAxis:v68];
-  v69 = [(CarPlaceCardCardViewController *)self view];
-  [v69 addSubview:self->_mainDescriptionLabel];
+  view10 = [(CarPlaceCardCardViewController *)self view];
+  [view10 addSubview:self->_mainDescriptionLabel];
 
   v70 = [[CarAdvisoriesView alloc] initWithFrame:CGRectZero.origin.x, v56, v57, v58];
   routeAdvisoriesView = self->_routeAdvisoriesView;
@@ -1939,8 +1939,8 @@ LABEL_7:
   [(CarAdvisoriesView *)self->_routeAdvisoriesView setContentHuggingPriority:1 forAxis:v72];
   LODWORD(v73) = 1144651776;
   [(CarAdvisoriesView *)self->_routeAdvisoriesView setContentCompressionResistancePriority:1 forAxis:v73];
-  v74 = [(CarPlaceCardCardViewController *)self view];
-  [v74 addSubview:self->_routeAdvisoriesView];
+  view11 = [(CarPlaceCardCardViewController *)self view];
+  [view11 addSubview:self->_routeAdvisoriesView];
 
   v75 = [[CarMoreButton alloc] initWithFrame:CGRectZero.origin.x, v56, v57, v58];
   moreButton = self->_moreButton;
@@ -1954,8 +1954,8 @@ LABEL_7:
   LODWORD(v79) = 1148846080;
   [(CarMoreButton *)self->_moreButton setContentCompressionResistancePriority:1 forAxis:v79];
   [(CarMoreButton *)self->_moreButton addTarget:self action:"_moreButtonPressed:" forControlEvents:64];
-  v80 = [(CarPlaceCardCardViewController *)self view];
-  [v80 addSubview:self->_moreButton];
+  view12 = [(CarPlaceCardCardViewController *)self view];
+  [view12 addSubview:self->_moreButton];
 
   v81 = [(CarCardRoundedButton *)[CarLoadingButton alloc] initWithFrame:CGRectZero.origin.x, v56, v57, v58];
   goButton = self->_goButton;
@@ -1963,16 +1963,16 @@ LABEL_7:
 
   [(CarLoadingButton *)self->_goButton setAccessibilityIdentifier:@"GoButton"];
   v83 = self->_goButton;
-  v84 = [(CarLoadingButton *)v83 accessibilityTraits];
-  [(CarLoadingButton *)v83 setAccessibilityTraits:UIAccessibilityTraitButton | v84];
+  accessibilityTraits = [(CarLoadingButton *)v83 accessibilityTraits];
+  [(CarLoadingButton *)v83 setAccessibilityTraits:UIAccessibilityTraitButton | accessibilityTraits];
   [(CarLoadingButton *)self->_goButton setTranslatesAutoresizingMaskIntoConstraints:0];
   LODWORD(v85) = 1148846080;
   [(CarLoadingButton *)self->_goButton setContentHuggingPriority:1 forAxis:v85];
   LODWORD(v86) = 1148846080;
   [(CarLoadingButton *)self->_goButton setContentCompressionResistancePriority:1 forAxis:v86];
   [(CarLoadingButton *)self->_goButton addTarget:self action:"_goButtonPressed:" forControlEvents:64];
-  v87 = [(CarPlaceCardCardViewController *)self view];
-  [v87 addSubview:self->_goButton];
+  view13 = [(CarPlaceCardCardViewController *)self view];
+  [view13 addSubview:self->_goButton];
 
   [(CarPlaceCardCardViewController *)self _setupConstraints];
   [(CarPlaceCardCardViewController *)self _setupStyling];
@@ -2009,10 +2009,10 @@ LABEL_7:
   {
     v13 = v2;
     v14 = v3;
-    v5 = [(SearchResult *)self->_searchResult mapItem];
-    v6 = [v5 _detourInfo];
+    mapItem = [(SearchResult *)self->_searchResult mapItem];
+    _detourInfo = [mapItem _detourInfo];
 
-    if (v6)
+    if (_detourInfo)
     {
       v7 = sub_100006E1C();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
@@ -2029,7 +2029,7 @@ LABEL_7:
     {
       [(MKETAProvider *)self->_etaProvider removeObserver:self];
       [(MKETAProvider *)self->_etaProvider cancel];
-      v8 = [[MKETAProvider alloc] initWithMapItem:v5];
+      v8 = [[MKETAProvider alloc] initWithMapItem:mapItem];
       etaProvider = self->_etaProvider;
       self->_etaProvider = v8;
 
@@ -2071,34 +2071,34 @@ LABEL_7:
   [(CarPlaceCardCardViewController *)&v7 dealloc];
 }
 
-- (CarPlaceCardCardViewController)initWithSearchResult:(id)a3 style:(int64_t)a4 dataSource:(id)a5 delegate:(id)a6
+- (CarPlaceCardCardViewController)initWithSearchResult:(id)result style:(int64_t)style dataSource:(id)source delegate:(id)delegate
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
+  resultCopy = result;
+  sourceCopy = source;
+  delegateCopy = delegate;
   v28.receiver = self;
   v28.super_class = CarPlaceCardCardViewController;
   v14 = [(CarPlaceCardCardViewController *)&v28 initWithNibName:0 bundle:0];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_searchResult, a3);
-    objc_storeWeak(&v15->_dataSource, v12);
-    objc_storeWeak(&v15->_delegate, v13);
-    v15->_style = a4;
+    objc_storeStrong(&v14->_searchResult, result);
+    objc_storeWeak(&v15->_dataSource, sourceCopy);
+    objc_storeWeak(&v15->_delegate, delegateCopy);
+    v15->_style = style;
     v16 = sub_100006E1C();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
     {
-      v17 = [(CarPlaceCardCardViewController *)v15 mapItem];
-      v18 = [v17 name];
-      v19 = [(CarPlaceCardCardViewController *)v15 mapItem];
-      v20 = [v19 _muid];
+      mapItem = [(CarPlaceCardCardViewController *)v15 mapItem];
+      name = [mapItem name];
+      mapItem2 = [(CarPlaceCardCardViewController *)v15 mapItem];
+      _muid = [mapItem2 _muid];
       *buf = 138543875;
       v30 = v15;
       v31 = 2113;
-      v32 = v18;
+      v32 = name;
       v33 = 2049;
-      v34 = v20;
+      v34 = _muid;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "CarPlaceCard: placecard initialized (%{public}@) with mapItem: (name: %{private}@, muid: %{private}llu)", buf, 0x20u);
     }
 
@@ -2113,12 +2113,12 @@ LABEL_7:
     [v23 addObserver:v15 selector:"_externalDeviceUpdated:" name:@"MapsExternalDeviceUpdated" object:0];
   }
 
-  v24 = [(CarPlaceCardCardViewController *)v15 _createEVChargingViewModel];
+  _createEVChargingViewModel = [(CarPlaceCardCardViewController *)v15 _createEVChargingViewModel];
   evChargingViewModel = v15->_evChargingViewModel;
-  v15->_evChargingViewModel = v24;
+  v15->_evChargingViewModel = _createEVChargingViewModel;
 
-  v26 = [(CarPlaceCardCardViewController *)v15 view];
-  [v26 _maps_annotateViewWithCarPlaceCardCardViewController:v15];
+  view = [(CarPlaceCardCardViewController *)v15 view];
+  [view _maps_annotateViewWithCarPlaceCardCardViewController:v15];
 
   return v15;
 }

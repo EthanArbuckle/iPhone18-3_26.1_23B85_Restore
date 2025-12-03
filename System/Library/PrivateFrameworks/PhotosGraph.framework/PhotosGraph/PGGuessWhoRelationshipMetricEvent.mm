@@ -1,38 +1,38 @@
 @interface PGGuessWhoRelationshipMetricEvent
-- (PGGuessWhoRelationshipMetricEvent)initWithGraphManager:(id)a3;
+- (PGGuessWhoRelationshipMetricEvent)initWithGraphManager:(id)manager;
 - (id)_readableStringByRelationshipEdgeProperty;
-- (id)_relationshipKeyForLabel:(id)a3;
+- (id)_relationshipKeyForLabel:(id)label;
 - (id)payload;
-- (void)_incrementRelationshipSignalMetricsForRelationshipEdge:(id)a3 inferredRelationshipCorrect:(BOOL)a4;
-- (void)gatherMetricsWithProgressBlock:(id)a3;
+- (void)_incrementRelationshipSignalMetricsForRelationshipEdge:(id)edge inferredRelationshipCorrect:(BOOL)correct;
+- (void)gatherMetricsWithProgressBlock:(id)block;
 @end
 
 @implementation PGGuessWhoRelationshipMetricEvent
 
-- (id)_relationshipKeyForLabel:(id)a3
+- (id)_relationshipKeyForLabel:(id)label
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"FAMILY"])
+  labelCopy = label;
+  if ([labelCopy isEqualToString:@"FAMILY"])
   {
     v4 = &unk_284483A50;
   }
 
-  else if ([v3 isEqualToString:@"PARTNER"])
+  else if ([labelCopy isEqualToString:@"PARTNER"])
   {
     v4 = &unk_284483A98;
   }
 
-  else if ([v3 isEqualToString:@"COWORKER"])
+  else if ([labelCopy isEqualToString:@"COWORKER"])
   {
     v4 = &unk_284483A80;
   }
 
-  else if ([v3 isEqualToString:@"FRIEND"])
+  else if ([labelCopy isEqualToString:@"FRIEND"])
   {
     v4 = &unk_284483A68;
   }
 
-  else if ([v3 isEqualToString:@"PARENT"])
+  else if ([labelCopy isEqualToString:@"PARENT"])
   {
     v4 = &unk_284483AB0;
   }
@@ -86,31 +86,31 @@
   return v2;
 }
 
-- (void)_incrementRelationshipSignalMetricsForRelationshipEdge:(id)a3 inferredRelationshipCorrect:(BOOL)a4
+- (void)_incrementRelationshipSignalMetricsForRelationshipEdge:(id)edge inferredRelationshipCorrect:(BOOL)correct
 {
-  v4 = a4;
-  v64 = a3;
-  [v64 familyHolidayAttendanceRate];
+  correctCopy = correct;
+  edgeCopy = edge;
+  [edgeCopy familyHolidayAttendanceRate];
   v7 = v6;
-  v8 = [(PGGuessWhoRelationshipMetricEvent *)self numberOfFamilyHolidaySignalRegistrations];
+  numberOfFamilyHolidaySignalRegistrations = [(PGGuessWhoRelationshipMetricEvent *)self numberOfFamilyHolidaySignalRegistrations];
   if (v7 <= 0.0)
   {
-    v9 = v8;
+    v9 = numberOfFamilyHolidaySignalRegistrations;
   }
 
   else
   {
-    v9 = v8 + 1;
+    v9 = numberOfFamilyHolidaySignalRegistrations + 1;
   }
 
   [(PGGuessWhoRelationshipMetricEvent *)self setNumberOfFamilyHolidaySignalRegistrations:v9];
-  v10 = [(PGGuessWhoRelationshipMetricEvent *)self numberOfFamilyHolidaySignalRegistrationsInCorrectInference];
-  v11 = v4 && v7 > 0.0;
-  [(PGGuessWhoRelationshipMetricEvent *)self setNumberOfFamilyHolidaySignalRegistrationsInCorrectInference:v10 + v11];
-  v12 = [v64 hasParentContactName];
-  if (v4)
+  numberOfFamilyHolidaySignalRegistrationsInCorrectInference = [(PGGuessWhoRelationshipMetricEvent *)self numberOfFamilyHolidaySignalRegistrationsInCorrectInference];
+  v11 = correctCopy && v7 > 0.0;
+  [(PGGuessWhoRelationshipMetricEvent *)self setNumberOfFamilyHolidaySignalRegistrationsInCorrectInference:numberOfFamilyHolidaySignalRegistrationsInCorrectInference + v11];
+  hasParentContactName = [edgeCopy hasParentContactName];
+  if (correctCopy)
   {
-    v13 = v12;
+    v13 = hasParentContactName;
   }
 
   else
@@ -118,12 +118,12 @@
     v13 = 0;
   }
 
-  [(PGGuessWhoRelationshipMetricEvent *)self setNumberOfParentContactNameSignalRegistrations:[(PGGuessWhoRelationshipMetricEvent *)self numberOfParentContactNameSignalRegistrations]+ v12];
+  [(PGGuessWhoRelationshipMetricEvent *)self setNumberOfParentContactNameSignalRegistrations:[(PGGuessWhoRelationshipMetricEvent *)self numberOfParentContactNameSignalRegistrations]+ hasParentContactName];
   [(PGGuessWhoRelationshipMetricEvent *)self setNumberOfParentContactNameSignalRegistrationsInCorrectInference:[(PGGuessWhoRelationshipMetricEvent *)self numberOfParentContactNameSignalRegistrationsInCorrectInference]+ v13];
-  v14 = [v64 hasSameFamilyNameAsMePerson];
-  if (v4)
+  hasSameFamilyNameAsMePerson = [edgeCopy hasSameFamilyNameAsMePerson];
+  if (correctCopy)
   {
-    v15 = v14;
+    v15 = hasSameFamilyNameAsMePerson;
   }
 
   else
@@ -131,27 +131,27 @@
     v15 = 0;
   }
 
-  [(PGGuessWhoRelationshipMetricEvent *)self setNumberOfSameFamilyNameSignalRegistrations:[(PGGuessWhoRelationshipMetricEvent *)self numberOfSameFamilyNameSignalRegistrations]+ v14];
+  [(PGGuessWhoRelationshipMetricEvent *)self setNumberOfSameFamilyNameSignalRegistrations:[(PGGuessWhoRelationshipMetricEvent *)self numberOfSameFamilyNameSignalRegistrations]+ hasSameFamilyNameAsMePerson];
   [(PGGuessWhoRelationshipMetricEvent *)self setNumberOfSameFamilyNameSignalRegistrationsInCorrectInference:[(PGGuessWhoRelationshipMetricEvent *)self numberOfSameFamilyNameSignalRegistrationsInCorrectInference]+ v15];
-  v16 = [v64 numberOfMomentsAtHome];
-  v17 = [(PGGuessWhoRelationshipMetricEvent *)self numberOfHomeMomentsSignalRegistrations];
-  if (v16)
+  numberOfMomentsAtHome = [edgeCopy numberOfMomentsAtHome];
+  numberOfHomeMomentsSignalRegistrations = [(PGGuessWhoRelationshipMetricEvent *)self numberOfHomeMomentsSignalRegistrations];
+  if (numberOfMomentsAtHome)
   {
-    v18 = v17 + 1;
+    v18 = numberOfHomeMomentsSignalRegistrations + 1;
   }
 
   else
   {
-    v18 = v17;
+    v18 = numberOfHomeMomentsSignalRegistrations;
   }
 
-  v19 = v4 && v16 != 0;
+  v19 = correctCopy && numberOfMomentsAtHome != 0;
   [(PGGuessWhoRelationshipMetricEvent *)self setNumberOfHomeMomentsSignalRegistrations:v18];
   [(PGGuessWhoRelationshipMetricEvent *)self setNumberOfHomeMomentsSignalRegistrationsInCorrectInference:[(PGGuessWhoRelationshipMetricEvent *)self numberOfHomeMomentsSignalRegistrationsInCorrectInference]+ v19];
-  v20 = [v64 hasAnniversaryDate];
-  if (v4)
+  hasAnniversaryDate = [edgeCopy hasAnniversaryDate];
+  if (correctCopy)
   {
-    v21 = v20;
+    v21 = hasAnniversaryDate;
   }
 
   else
@@ -159,12 +159,12 @@
     v21 = 0;
   }
 
-  [(PGGuessWhoRelationshipMetricEvent *)self setNumberOfAnniversaryDateSignalRegistrations:[(PGGuessWhoRelationshipMetricEvent *)self numberOfAnniversaryDateSignalRegistrations]+ v20];
+  [(PGGuessWhoRelationshipMetricEvent *)self setNumberOfAnniversaryDateSignalRegistrations:[(PGGuessWhoRelationshipMetricEvent *)self numberOfAnniversaryDateSignalRegistrations]+ hasAnniversaryDate];
   [(PGGuessWhoRelationshipMetricEvent *)self setNumberOfAnniversaryDateSignalRegistrationsInCorrectInference:[(PGGuessWhoRelationshipMetricEvent *)self numberOfAnniversaryDateSignalRegistrationsInCorrectInference]+ v21];
-  v22 = [v64 isTopTwoPersonsSocialGroup];
-  if (v4)
+  isTopTwoPersonsSocialGroup = [edgeCopy isTopTwoPersonsSocialGroup];
+  if (correctCopy)
   {
-    v23 = v22;
+    v23 = isTopTwoPersonsSocialGroup;
   }
 
   else
@@ -172,27 +172,27 @@
     v23 = 0;
   }
 
-  [(PGGuessWhoRelationshipMetricEvent *)self setNumberOfTopTwoPersonSocialGroupSignalRegistrations:[(PGGuessWhoRelationshipMetricEvent *)self numberOfTopTwoPersonSocialGroupSignalRegistrations]+ v22];
+  [(PGGuessWhoRelationshipMetricEvent *)self setNumberOfTopTwoPersonSocialGroupSignalRegistrations:[(PGGuessWhoRelationshipMetricEvent *)self numberOfTopTwoPersonSocialGroupSignalRegistrations]+ isTopTwoPersonsSocialGroup];
   [(PGGuessWhoRelationshipMetricEvent *)self setNumberOfTopTwoPersonSocialGroupSignalRegistrationsInCorrectInference:[(PGGuessWhoRelationshipMetricEvent *)self numberOfTopTwoPersonSocialGroupSignalRegistrationsInCorrectInference]+ v23];
-  v24 = [v64 numberOfLoveEmojisExchanged];
-  v25 = [(PGGuessWhoRelationshipMetricEvent *)self numberOfLoveEmojisSignalRegistrations];
-  if (v24)
+  numberOfLoveEmojisExchanged = [edgeCopy numberOfLoveEmojisExchanged];
+  numberOfLoveEmojisSignalRegistrations = [(PGGuessWhoRelationshipMetricEvent *)self numberOfLoveEmojisSignalRegistrations];
+  if (numberOfLoveEmojisExchanged)
   {
-    v26 = v25 + 1;
+    v26 = numberOfLoveEmojisSignalRegistrations + 1;
   }
 
   else
   {
-    v26 = v25;
+    v26 = numberOfLoveEmojisSignalRegistrations;
   }
 
-  v27 = v4 && v24 != 0;
+  v27 = correctCopy && numberOfLoveEmojisExchanged != 0;
   [(PGGuessWhoRelationshipMetricEvent *)self setNumberOfLoveEmojisSignalRegistrations:v26];
   [(PGGuessWhoRelationshipMetricEvent *)self setNumberOfLoveEmojisSignalRegistrationsInCorrectInference:[(PGGuessWhoRelationshipMetricEvent *)self numberOfLoveEmojisSignalRegistrationsInCorrectInference]+ v27];
-  v28 = [v64 isTopPerson];
-  if (v4)
+  isTopPerson = [edgeCopy isTopPerson];
+  if (correctCopy)
   {
-    v29 = v28;
+    v29 = isTopPerson;
   }
 
   else
@@ -200,108 +200,108 @@
     v29 = 0;
   }
 
-  [(PGGuessWhoRelationshipMetricEvent *)self setNumberOfTopPersonSignalRegistrations:[(PGGuessWhoRelationshipMetricEvent *)self numberOfTopPersonSignalRegistrations]+ v28];
+  [(PGGuessWhoRelationshipMetricEvent *)self setNumberOfTopPersonSignalRegistrations:[(PGGuessWhoRelationshipMetricEvent *)self numberOfTopPersonSignalRegistrations]+ isTopPerson];
   [(PGGuessWhoRelationshipMetricEvent *)self setNumberOfTopPersonSignalRegistrationsInCorrectInference:[(PGGuessWhoRelationshipMetricEvent *)self numberOfTopPersonSignalRegistrationsInCorrectInference]+ v29];
-  [v64 friendNightOutAttendanceRate];
+  [edgeCopy friendNightOutAttendanceRate];
   v31 = v30;
-  v32 = [(PGGuessWhoRelationshipMetricEvent *)self numberOfFriendNightOutSignalRegistrations];
+  numberOfFriendNightOutSignalRegistrations = [(PGGuessWhoRelationshipMetricEvent *)self numberOfFriendNightOutSignalRegistrations];
   if (v31 <= 0.0)
   {
-    v33 = v32;
+    v33 = numberOfFriendNightOutSignalRegistrations;
   }
 
   else
   {
-    v33 = v32 + 1;
+    v33 = numberOfFriendNightOutSignalRegistrations + 1;
   }
 
-  v34 = v4 && v31 > 0.0;
+  v34 = correctCopy && v31 > 0.0;
   [(PGGuessWhoRelationshipMetricEvent *)self setNumberOfFriendNightOutSignalRegistrations:v33];
   [(PGGuessWhoRelationshipMetricEvent *)self setNumberOfFriendNightOutSignalRegistrationsInCorrectInference:[(PGGuessWhoRelationshipMetricEvent *)self numberOfFriendNightOutSignalRegistrationsInCorrectInference]+ v34];
-  [v64 partnerTripAttendanceRate];
+  [edgeCopy partnerTripAttendanceRate];
   v36 = v35;
-  v37 = [(PGGuessWhoRelationshipMetricEvent *)self numberOfPartnerTripSignalRegistrations];
+  numberOfPartnerTripSignalRegistrations = [(PGGuessWhoRelationshipMetricEvent *)self numberOfPartnerTripSignalRegistrations];
   if (v36 <= 0.0)
   {
-    v38 = v37;
+    v38 = numberOfPartnerTripSignalRegistrations;
   }
 
   else
   {
-    v38 = v37 + 1;
+    v38 = numberOfPartnerTripSignalRegistrations + 1;
   }
 
-  v39 = v4 && v36 > 0.0;
+  v39 = correctCopy && v36 > 0.0;
   [(PGGuessWhoRelationshipMetricEvent *)self setNumberOfPartnerTripSignalRegistrations:v38];
   [(PGGuessWhoRelationshipMetricEvent *)self setNumberOfPartnerTripSignalRegistrationsInCorrectInference:[(PGGuessWhoRelationshipMetricEvent *)self numberOfPartnerTripSignalRegistrationsInCorrectInference]+ v39];
-  [v64 friendsAndFamilyTripAttendanceRate];
+  [edgeCopy friendsAndFamilyTripAttendanceRate];
   v41 = v40;
-  v42 = [(PGGuessWhoRelationshipMetricEvent *)self numberOfFriendsFamilyTripSignalRegistrations];
+  numberOfFriendsFamilyTripSignalRegistrations = [(PGGuessWhoRelationshipMetricEvent *)self numberOfFriendsFamilyTripSignalRegistrations];
   if (v41 <= 0.0)
   {
-    v43 = v42;
+    v43 = numberOfFriendsFamilyTripSignalRegistrations;
   }
 
   else
   {
-    v43 = v42 + 1;
+    v43 = numberOfFriendsFamilyTripSignalRegistrations + 1;
   }
 
-  v44 = v4 && v41 > 0.0;
+  v44 = correctCopy && v41 > 0.0;
   [(PGGuessWhoRelationshipMetricEvent *)self setNumberOfFriendsFamilyTripSignalRegistrations:v43];
   [(PGGuessWhoRelationshipMetricEvent *)self setNumberOfFriendsFamilyTripSignalRegistrationsInCorrectInference:[(PGGuessWhoRelationshipMetricEvent *)self numberOfFriendsFamilyTripSignalRegistrationsInCorrectInference]+ v44];
-  [v64 weekendAppearanceRatio];
+  [edgeCopy weekendAppearanceRatio];
   v46 = v45;
-  v47 = [(PGGuessWhoRelationshipMetricEvent *)self numberOfWeekendSignalRegistrations];
+  numberOfWeekendSignalRegistrations = [(PGGuessWhoRelationshipMetricEvent *)self numberOfWeekendSignalRegistrations];
   if (v46 <= 0.0)
   {
-    v48 = v47;
+    v48 = numberOfWeekendSignalRegistrations;
   }
 
   else
   {
-    v48 = v47 + 1;
+    v48 = numberOfWeekendSignalRegistrations + 1;
   }
 
-  v49 = v4 && v46 > 0.0;
+  v49 = correctCopy && v46 > 0.0;
   [(PGGuessWhoRelationshipMetricEvent *)self setNumberOfWeekendSignalRegistrations:v48];
   [(PGGuessWhoRelationshipMetricEvent *)self setNumberOfWeekendSignalRegistrationsInCorrectInference:[(PGGuessWhoRelationshipMetricEvent *)self numberOfWeekendSignalRegistrationsInCorrectInference]+ v49];
-  [v64 momentsAtWorkAppearanceRate];
+  [edgeCopy momentsAtWorkAppearanceRate];
   v51 = v50;
-  v52 = [(PGGuessWhoRelationshipMetricEvent *)self numberOfCoworkersAtWorkSignalRegistrations];
+  numberOfCoworkersAtWorkSignalRegistrations = [(PGGuessWhoRelationshipMetricEvent *)self numberOfCoworkersAtWorkSignalRegistrations];
   if (v51 <= 0.0)
   {
-    v53 = v52;
+    v53 = numberOfCoworkersAtWorkSignalRegistrations;
   }
 
   else
   {
-    v53 = v52 + 1;
+    v53 = numberOfCoworkersAtWorkSignalRegistrations + 1;
   }
 
-  v54 = v4 && v51 > 0.0;
+  v54 = correctCopy && v51 > 0.0;
   [(PGGuessWhoRelationshipMetricEvent *)self setNumberOfCoworkersAtWorkSignalRegistrations:v53];
   [(PGGuessWhoRelationshipMetricEvent *)self setNumberOfCoworkersAtWorkSignalRegistrationsInCorrectInference:[(PGGuessWhoRelationshipMetricEvent *)self numberOfCoworkersAtWorkSignalRegistrationsInCorrectInference]+ v54];
-  [v64 calendarAttendanceRatio];
+  [edgeCopy calendarAttendanceRatio];
   v56 = v55;
-  v57 = [(PGGuessWhoRelationshipMetricEvent *)self numberOfCoworkerCalendarSignalRegistrations];
+  numberOfCoworkerCalendarSignalRegistrations = [(PGGuessWhoRelationshipMetricEvent *)self numberOfCoworkerCalendarSignalRegistrations];
   if (v56 <= 0.0)
   {
-    v58 = v57;
+    v58 = numberOfCoworkerCalendarSignalRegistrations;
   }
 
   else
   {
-    v58 = v57 + 1;
+    v58 = numberOfCoworkerCalendarSignalRegistrations + 1;
   }
 
-  v59 = v4 && v56 > 0.0;
+  v59 = correctCopy && v56 > 0.0;
   [(PGGuessWhoRelationshipMetricEvent *)self setNumberOfCoworkerCalendarSignalRegistrations:v58];
   [(PGGuessWhoRelationshipMetricEvent *)self setNumberOfCoworkerCalendarSignalRegistrationsInCorrectInference:[(PGGuessWhoRelationshipMetricEvent *)self numberOfCoworkerCalendarSignalRegistrationsInCorrectInference]+ v59];
-  v60 = [v64 isPersonAgeDifferentThanMeNode];
-  if (v4)
+  isPersonAgeDifferentThanMeNode = [edgeCopy isPersonAgeDifferentThanMeNode];
+  if (correctCopy)
   {
-    v61 = v60;
+    v61 = isPersonAgeDifferentThanMeNode;
   }
 
   else
@@ -309,12 +309,12 @@
     v61 = 0;
   }
 
-  [(PGGuessWhoRelationshipMetricEvent *)self setNumberOfAgeDifferentThanMeSignalRegistrations:[(PGGuessWhoRelationshipMetricEvent *)self numberOfAgeDifferentThanMeSignalRegistrations]+ v60];
+  [(PGGuessWhoRelationshipMetricEvent *)self setNumberOfAgeDifferentThanMeSignalRegistrations:[(PGGuessWhoRelationshipMetricEvent *)self numberOfAgeDifferentThanMeSignalRegistrations]+ isPersonAgeDifferentThanMeNode];
   [(PGGuessWhoRelationshipMetricEvent *)self setNumberOfAgeDifferentThanMeSignalRegistrationsInCorrectInference:[(PGGuessWhoRelationshipMetricEvent *)self numberOfAgeDifferentThanMeSignalRegistrationsInCorrectInference]+ v61];
-  v62 = [v64 isPersonOldEnoughToBeParentOrGrandparent];
-  if (v4)
+  isPersonOldEnoughToBeParentOrGrandparent = [edgeCopy isPersonOldEnoughToBeParentOrGrandparent];
+  if (correctCopy)
   {
-    v63 = v62;
+    v63 = isPersonOldEnoughToBeParentOrGrandparent;
   }
 
   else
@@ -322,14 +322,14 @@
     v63 = 0;
   }
 
-  [(PGGuessWhoRelationshipMetricEvent *)self setNumberOfParentGrandparentOldSignalRegistrations:[(PGGuessWhoRelationshipMetricEvent *)self numberOfParentGrandparentOldSignalRegistrations]+ v62];
+  [(PGGuessWhoRelationshipMetricEvent *)self setNumberOfParentGrandparentOldSignalRegistrations:[(PGGuessWhoRelationshipMetricEvent *)self numberOfParentGrandparentOldSignalRegistrations]+ isPersonOldEnoughToBeParentOrGrandparent];
   [(PGGuessWhoRelationshipMetricEvent *)self setNumberOfParentGrandparentOldSignalRegistrationsInCorrectInference:[(PGGuessWhoRelationshipMetricEvent *)self numberOfParentGrandparentOldSignalRegistrationsInCorrectInference]+ v63];
 }
 
-- (void)gatherMetricsWithProgressBlock:(id)a3
+- (void)gatherMetricsWithProgressBlock:(id)block
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(block);
   v5 = 0.0;
   if (!v4 || (Current = CFAbsoluteTimeGetCurrent(), Current < 0.01))
   {
@@ -554,137 +554,137 @@ void __68__PGGuessWhoRelationshipMetricEvent_gatherMetricsWithProgressBlock___bl
 
 - (id)payload
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_numberOfPeople];
-  [v3 setObject:v4 forKeyedSubscript:@"people_count"];
+  [dictionary setObject:v4 forKeyedSubscript:@"people_count"];
 
   v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_numberOfInferredFamilyMembers];
-  [v3 setObject:v5 forKeyedSubscript:@"inferred_family_members_count"];
+  [dictionary setObject:v5 forKeyedSubscript:@"inferred_family_members_count"];
 
   v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_numberOfInferredFriends];
-  [v3 setObject:v6 forKeyedSubscript:@"inferred_friends_count"];
+  [dictionary setObject:v6 forKeyedSubscript:@"inferred_friends_count"];
 
   v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_numberOfInferredParents];
-  [v3 setObject:v7 forKeyedSubscript:@"inferred_parents_count"];
+  [dictionary setObject:v7 forKeyedSubscript:@"inferred_parents_count"];
 
   v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_numberOfInferredCoworkers];
-  [v3 setObject:v8 forKeyedSubscript:@"inferred_coworkers_count"];
+  [dictionary setObject:v8 forKeyedSubscript:@"inferred_coworkers_count"];
 
   v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_numberOfInferredPartners];
-  [v3 setObject:v9 forKeyedSubscript:@"inferred_partners_count"];
+  [dictionary setObject:v9 forKeyedSubscript:@"inferred_partners_count"];
 
   v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_numberOfInferredChildren];
-  [v3 setObject:v10 forKeyedSubscript:@"inferred_children_count"];
+  [dictionary setObject:v10 forKeyedSubscript:@"inferred_children_count"];
 
   v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_numberOfFamilyHolidaySignalRegistrations];
-  [v3 setObject:v11 forKeyedSubscript:@"family_holiday_signal_count"];
+  [dictionary setObject:v11 forKeyedSubscript:@"family_holiday_signal_count"];
 
   v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_numberOfParentContactNameSignalRegistrations];
-  [v3 setObject:v12 forKeyedSubscript:@"parent_contact_name_signal_count"];
+  [dictionary setObject:v12 forKeyedSubscript:@"parent_contact_name_signal_count"];
 
   v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_numberOfSameFamilyNameSignalRegistrations];
-  [v3 setObject:v13 forKeyedSubscript:@"same_family_name_signal_count"];
+  [dictionary setObject:v13 forKeyedSubscript:@"same_family_name_signal_count"];
 
   v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_numberOfHomeMomentsSignalRegistrations];
-  [v3 setObject:v14 forKeyedSubscript:@"home_moments_signal_count"];
+  [dictionary setObject:v14 forKeyedSubscript:@"home_moments_signal_count"];
 
   v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_numberOfAnniversaryDateSignalRegistrations];
-  [v3 setObject:v15 forKeyedSubscript:@"anniversary_date_signal_count"];
+  [dictionary setObject:v15 forKeyedSubscript:@"anniversary_date_signal_count"];
 
   v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_numberOfTopTwoPersonSocialGroupSignalRegistrations];
-  [v3 setObject:v16 forKeyedSubscript:@"top_two_person_sg_signal_count"];
+  [dictionary setObject:v16 forKeyedSubscript:@"top_two_person_sg_signal_count"];
 
   v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_numberOfLoveEmojisSignalRegistrations];
-  [v3 setObject:v17 forKeyedSubscript:@"love_emojis_signal_count"];
+  [dictionary setObject:v17 forKeyedSubscript:@"love_emojis_signal_count"];
 
   v18 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_numberOfTopPersonSignalRegistrations];
-  [v3 setObject:v18 forKeyedSubscript:@"top_person_signal_count"];
+  [dictionary setObject:v18 forKeyedSubscript:@"top_person_signal_count"];
 
   v19 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_numberOfFriendNightOutSignalRegistrations];
-  [v3 setObject:v19 forKeyedSubscript:@"friend_night_out_signal_count"];
+  [dictionary setObject:v19 forKeyedSubscript:@"friend_night_out_signal_count"];
 
   v20 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_numberOfPartnerTripSignalRegistrations];
-  [v3 setObject:v20 forKeyedSubscript:@"partner_trip_signal_count"];
+  [dictionary setObject:v20 forKeyedSubscript:@"partner_trip_signal_count"];
 
   v21 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_numberOfFriendsFamilyTripSignalRegistrations];
-  [v3 setObject:v21 forKeyedSubscript:@"friends_family_trip_signal_count"];
+  [dictionary setObject:v21 forKeyedSubscript:@"friends_family_trip_signal_count"];
 
   v22 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_numberOfWeekendSignalRegistrations];
-  [v3 setObject:v22 forKeyedSubscript:@"weekend_signal_count"];
+  [dictionary setObject:v22 forKeyedSubscript:@"weekend_signal_count"];
 
   v23 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_numberOfCoworkersAtWorkSignalRegistrations];
-  [v3 setObject:v23 forKeyedSubscript:@"coworker_work_signal_count"];
+  [dictionary setObject:v23 forKeyedSubscript:@"coworker_work_signal_count"];
 
   v24 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_numberOfCoworkerCalendarSignalRegistrations];
-  [v3 setObject:v24 forKeyedSubscript:@"coworker_calendar_signal_count"];
+  [dictionary setObject:v24 forKeyedSubscript:@"coworker_calendar_signal_count"];
 
   v25 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_numberOfAgeDifferentThanMeSignalRegistrations];
-  [v3 setObject:v25 forKeyedSubscript:@"age_different_signal_count"];
+  [dictionary setObject:v25 forKeyedSubscript:@"age_different_signal_count"];
 
   v26 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_numberOfParentGrandparentOldSignalRegistrations];
-  [v3 setObject:v26 forKeyedSubscript:@"parent_grandparent_old_signal_count"];
+  [dictionary setObject:v26 forKeyedSubscript:@"parent_grandparent_old_signal_count"];
 
   v27 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_numberOfFamilyHolidaySignalRegistrationsInCorrectInference];
-  [v3 setObject:v27 forKeyedSubscript:@"family_holiday_signal_in_correct_inference_count"];
+  [dictionary setObject:v27 forKeyedSubscript:@"family_holiday_signal_in_correct_inference_count"];
 
   v28 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_numberOfParentContactNameSignalRegistrationsInCorrectInference];
-  [v3 setObject:v28 forKeyedSubscript:@"parent_contact_name_signal_in_correct_inference_count"];
+  [dictionary setObject:v28 forKeyedSubscript:@"parent_contact_name_signal_in_correct_inference_count"];
 
   v29 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_numberOfSameFamilyNameSignalRegistrationsInCorrectInference];
-  [v3 setObject:v29 forKeyedSubscript:@"same_family_name_signal_in_correct_inference_count"];
+  [dictionary setObject:v29 forKeyedSubscript:@"same_family_name_signal_in_correct_inference_count"];
 
   v30 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_numberOfHomeMomentsSignalRegistrationsInCorrectInference];
-  [v3 setObject:v30 forKeyedSubscript:@"home_moments_signal_in_correct_inference_count"];
+  [dictionary setObject:v30 forKeyedSubscript:@"home_moments_signal_in_correct_inference_count"];
 
   v31 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_numberOfAnniversaryDateSignalRegistrationsInCorrectInference];
-  [v3 setObject:v31 forKeyedSubscript:@"anniversary_date_signal_in_correct_inference_count"];
+  [dictionary setObject:v31 forKeyedSubscript:@"anniversary_date_signal_in_correct_inference_count"];
 
   v32 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_numberOfTopTwoPersonSocialGroupSignalRegistrationsInCorrectInference];
-  [v3 setObject:v32 forKeyedSubscript:@"top_two_person_sg_signal_in_correct_inference_count"];
+  [dictionary setObject:v32 forKeyedSubscript:@"top_two_person_sg_signal_in_correct_inference_count"];
 
   v33 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_numberOfLoveEmojisSignalRegistrationsInCorrectInference];
-  [v3 setObject:v33 forKeyedSubscript:@"love_emojis_signal_in_correct_inference_count"];
+  [dictionary setObject:v33 forKeyedSubscript:@"love_emojis_signal_in_correct_inference_count"];
 
   v34 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_numberOfTopPersonSignalRegistrationsInCorrectInference];
-  [v3 setObject:v34 forKeyedSubscript:@"top_person_signal_in_correct_inference_count"];
+  [dictionary setObject:v34 forKeyedSubscript:@"top_person_signal_in_correct_inference_count"];
 
   v35 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_numberOfFriendNightOutSignalRegistrationsInCorrectInference];
-  [v3 setObject:v35 forKeyedSubscript:@"friend_night_out_signal_in_correct_inference_count"];
+  [dictionary setObject:v35 forKeyedSubscript:@"friend_night_out_signal_in_correct_inference_count"];
 
   v36 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_numberOfPartnerTripSignalRegistrationsInCorrectInference];
-  [v3 setObject:v36 forKeyedSubscript:@"partner_trip_signal_in_correct_inference_count"];
+  [dictionary setObject:v36 forKeyedSubscript:@"partner_trip_signal_in_correct_inference_count"];
 
   v37 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_numberOfFriendsFamilyTripSignalRegistrationsInCorrectInference];
-  [v3 setObject:v37 forKeyedSubscript:@"friends_family_trip_signal_in_correct_inference_count"];
+  [dictionary setObject:v37 forKeyedSubscript:@"friends_family_trip_signal_in_correct_inference_count"];
 
   v38 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_numberOfWeekendSignalRegistrationsInCorrectInference];
-  [v3 setObject:v38 forKeyedSubscript:@"weekend_signal_in_correct_inference_count"];
+  [dictionary setObject:v38 forKeyedSubscript:@"weekend_signal_in_correct_inference_count"];
 
   v39 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_numberOfCoworkersAtWorkSignalRegistrationsInCorrectInference];
-  [v3 setObject:v39 forKeyedSubscript:@"coworker_work_signal_in_correct_inference_count"];
+  [dictionary setObject:v39 forKeyedSubscript:@"coworker_work_signal_in_correct_inference_count"];
 
   v40 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_numberOfCoworkerCalendarSignalRegistrationsInCorrectInference];
-  [v3 setObject:v40 forKeyedSubscript:@"coworker_calendar_signal_in_correct_inference_count"];
+  [dictionary setObject:v40 forKeyedSubscript:@"coworker_calendar_signal_in_correct_inference_count"];
 
   v41 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_numberOfAgeDifferentThanMeSignalRegistrationsInCorrectInference];
-  [v3 setObject:v41 forKeyedSubscript:@"age_different_signal_in_correct_inference_count"];
+  [dictionary setObject:v41 forKeyedSubscript:@"age_different_signal_in_correct_inference_count"];
 
   v42 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_numberOfParentGrandparentOldSignalRegistrationsInCorrectInference];
-  [v3 setObject:v42 forKeyedSubscript:@"parent_grandparent_old_signal_in_correct_inference_count"];
+  [dictionary setObject:v42 forKeyedSubscript:@"parent_grandparent_old_signal_in_correct_inference_count"];
 
-  return v3;
+  return dictionary;
 }
 
-- (PGGuessWhoRelationshipMetricEvent)initWithGraphManager:(id)a3
+- (PGGuessWhoRelationshipMetricEvent)initWithGraphManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v9.receiver = self;
   v9.super_class = PGGuessWhoRelationshipMetricEvent;
   v6 = [(PGGuessWhoRelationshipMetricEvent *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_manager, a3);
+    objc_storeStrong(&v6->_manager, manager);
   }
 
   return v7;

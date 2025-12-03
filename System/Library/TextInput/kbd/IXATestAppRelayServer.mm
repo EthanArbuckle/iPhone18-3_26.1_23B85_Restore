@@ -1,11 +1,11 @@
 @interface IXATestAppRelayServer
 + (id)sharedServer;
-- (BOOL)_checkEntitlement:(id)a3 withAuditToken:(id *)a4;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)_checkEntitlement:(id)entitlement withAuditToken:(id *)token;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (IXATestAppRelayServer)init;
 - (void)dealloc;
-- (void)fetchEndpointForServiceName:(id)a3 completion:(id)a4;
-- (void)unregisterEndpointForServiceName:(id)a3 completion:(id)a4;
+- (void)fetchEndpointForServiceName:(id)name completion:(id)completion;
+- (void)unregisterEndpointForServiceName:(id)name completion:(id)completion;
 @end
 
 @implementation IXATestAppRelayServer
@@ -70,12 +70,12 @@
   [(IXATestAppRelayServer *)&v4 dealloc];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
+  connectionCopy = connection;
   if ((TI_IS_INTERNAL_INSTALL() & 1) == 0)
   {
-    [v5 invalidate];
+    [connectionCopy invalidate];
     v6 = IXATestAppRelayLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
@@ -85,9 +85,9 @@
     goto LABEL_13;
   }
 
-  if (v5)
+  if (connectionCopy)
   {
-    [v5 auditToken];
+    [connectionCopy auditToken];
   }
 
   else
@@ -97,7 +97,7 @@
 
   if (![(IXATestAppRelayServer *)self _checkEntitlement:@"com.apple.inputanalytics.testAppRelay" withAuditToken:v12])
   {
-    [v5 invalidate];
+    [connectionCopy invalidate];
     v6 = IXATestAppRelayLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
@@ -113,35 +113,35 @@ LABEL_13:
   v7 = IXATestAppRelayLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v5 processIdentifier];
+    processIdentifier = [connectionCopy processIdentifier];
     LODWORD(v12[0]) = 67109120;
-    DWORD1(v12[0]) = v8;
+    DWORD1(v12[0]) = processIdentifier;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Accepting connection from client (pid=%d).", v12, 8u);
   }
 
-  [v5 setExportedObject:self];
+  [connectionCopy setExportedObject:self];
   v9 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___IXATestAppRelayProtocol];
-  [v5 setExportedInterface:v9];
+  [connectionCopy setExportedInterface:v9];
 
-  [v5 resume];
+  [connectionCopy resume];
   v10 = 1;
 LABEL_14:
 
   return v10;
 }
 
-- (void)unregisterEndpointForServiceName:(id)a3 completion:(id)a4
+- (void)unregisterEndpointForServiceName:(id)name completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  completionCopy = completion;
   if (TI_IS_INTERNAL_INSTALL())
   {
-    v8 = [(IXATestAppRelayServer *)self registrations];
-    v9 = [v8 objectForKey:v6];
+    registrations = [(IXATestAppRelayServer *)self registrations];
+    v9 = [registrations objectForKey:nameCopy];
 
     if (v9)
     {
-      v10 = [v9 entitlement];
+      entitlement = [v9 entitlement];
       v11 = +[NSXPCConnection currentConnection];
       v12 = v11;
       if (v11)
@@ -154,18 +154,18 @@ LABEL_14:
         memset(v17, 0, sizeof(v17));
       }
 
-      v15 = [(IXATestAppRelayServer *)self _checkEntitlement:v10 withAuditToken:v17];
+      v15 = [(IXATestAppRelayServer *)self _checkEntitlement:entitlement withAuditToken:v17];
 
       if (v15)
       {
-        v16 = [(IXATestAppRelayServer *)self registrations];
-        [v16 removeObjectForKey:v6];
+        registrations2 = [(IXATestAppRelayServer *)self registrations];
+        [registrations2 removeObjectForKey:nameCopy];
 
         v14 = IXATestAppRelayLog();
         if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
         {
           LODWORD(v17[0]) = 138412290;
-          *(v17 + 4) = v6;
+          *(v17 + 4) = nameCopy;
           _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Unregistered endpoint for service name '%@'.", v17, 0xCu);
         }
       }
@@ -189,7 +189,7 @@ LABEL_14:
       }
     }
 
-    v7[2](v7);
+    completionCopy[2](completionCopy);
   }
 
   else
@@ -200,22 +200,22 @@ LABEL_14:
       sub_10000D354();
     }
 
-    v7[2](v7);
+    completionCopy[2](completionCopy);
   }
 }
 
-- (void)fetchEndpointForServiceName:(id)a3 completion:(id)a4
+- (void)fetchEndpointForServiceName:(id)name completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  completionCopy = completion;
   if (TI_IS_INTERNAL_INSTALL())
   {
-    v8 = [(IXATestAppRelayServer *)self registrations];
-    v9 = [v8 objectForKey:v6];
+    registrations = [(IXATestAppRelayServer *)self registrations];
+    v9 = [registrations objectForKey:nameCopy];
 
     if (v9)
     {
-      v10 = [v9 entitlement];
+      entitlement = [v9 entitlement];
       v11 = +[NSXPCConnection currentConnection];
       v12 = v11;
       if (v11)
@@ -228,7 +228,7 @@ LABEL_14:
         memset(v18, 0, sizeof(v18));
       }
 
-      v15 = [(IXATestAppRelayServer *)self _checkEntitlement:v10 withAuditToken:v18];
+      v15 = [(IXATestAppRelayServer *)self _checkEntitlement:entitlement withAuditToken:v18];
 
       v16 = IXATestAppRelayLog();
       v14 = v16;
@@ -237,12 +237,12 @@ LABEL_14:
         if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
         {
           LODWORD(v18[0]) = 138412290;
-          *(v18 + 4) = v6;
+          *(v18 + 4) = nameCopy;
           _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Fetched endpoint for service name '%@'.", v18, 0xCu);
         }
 
-        v17 = [v9 endpoint];
-        v7[2](v7, v17);
+        endpoint = [v9 endpoint];
+        completionCopy[2](completionCopy, endpoint);
 
         goto LABEL_18;
       }
@@ -262,7 +262,7 @@ LABEL_14:
       }
     }
 
-    v7[2](v7, 0);
+    completionCopy[2](completionCopy, 0);
 LABEL_18:
 
     goto LABEL_19;
@@ -274,22 +274,22 @@ LABEL_18:
     sub_10000D354();
   }
 
-  v7[2](v7, 0);
+  completionCopy[2](completionCopy, 0);
 LABEL_19:
 }
 
-- (BOOL)_checkEntitlement:(id)a3 withAuditToken:(id *)a4
+- (BOOL)_checkEntitlement:(id)entitlement withAuditToken:(id *)token
 {
-  v5 = a3;
-  v6 = *&a4->var0[4];
-  *cf.val = *a4->var0;
+  entitlementCopy = entitlement;
+  v6 = *&token->var0[4];
+  *cf.val = *token->var0;
   *&cf.val[4] = v6;
   v7 = SecTaskCreateWithAuditToken(0, &cf);
   if (v7)
   {
     v8 = v7;
     *cf.val = 0;
-    v9 = SecTaskCopyValueForEntitlement(v7, v5, &cf);
+    v9 = SecTaskCopyValueForEntitlement(v7, entitlementCopy, &cf);
     if (v9)
     {
       v10 = v9;

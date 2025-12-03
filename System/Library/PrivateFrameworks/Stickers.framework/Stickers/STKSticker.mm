@@ -2,7 +2,7 @@
 + (NSDate)kGenmojiFirstBetaReleaseDate;
 - (BOOL)canDistribute;
 - (BOOL)distributionIsRestricted;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isGeneratedSticker;
 - (BOOL)prefersAnimation;
 - (NSArray)distributionRestrictions_ObjC;
@@ -19,17 +19,17 @@
 - (int64_t)byteCount;
 - (int64_t)effect;
 - (int64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setAttributionInfo:(id)a3;
-- (void)setByteCount:(int64_t)a3;
-- (void)setCreationDate:(double)a3;
-- (void)setEffect:(int64_t)a3;
-- (void)setLastUsedDate:(double)a3;
-- (void)setLibraryIndex:(double)a3;
-- (void)setMetadata:(id)a3;
-- (void)setName:(id)a3;
-- (void)setRepresentations:(id)a3;
-- (void)set_companionRecentUUID:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setAttributionInfo:(id)info;
+- (void)setByteCount:(int64_t)count;
+- (void)setCreationDate:(double)date;
+- (void)setEffect:(int64_t)effect;
+- (void)setLastUsedDate:(double)date;
+- (void)setLibraryIndex:(double)index;
+- (void)setMetadata:(id)metadata;
+- (void)setName:(id)name;
+- (void)setRepresentations:(id)representations;
+- (void)set_companionRecentUUID:(id)d;
 @end
 
 @implementation STKSticker
@@ -46,11 +46,11 @@
   return v5;
 }
 
-- (void)setRepresentations:(id)a3
+- (void)setRepresentations:(id)representations
 {
   type metadata accessor for Sticker.Representation();
   v4 = sub_1B8A240F4();
-  v5 = self;
+  selfCopy = self;
   sub_1B89F9794(v4);
 }
 
@@ -61,11 +61,11 @@
   return *(self + v3);
 }
 
-- (void)setByteCount:(int64_t)a3
+- (void)setByteCount:(int64_t)count
 {
   v5 = OBJC_IVAR___STKSticker_byteCount;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = count;
 }
 
 - (NSString)name
@@ -80,7 +80,7 @@
   return v5;
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
   v4 = sub_1B8A23F24();
   v6 = v5;
@@ -121,11 +121,11 @@
   return *(self + v3);
 }
 
-- (void)setEffect:(int64_t)a3
+- (void)setEffect:(int64_t)effect
 {
   v5 = OBJC_IVAR___STKSticker_effect;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = effect;
 }
 
 - (NSData)metadata
@@ -146,20 +146,20 @@
   return v3;
 }
 
-- (void)setMetadata:(id)a3
+- (void)setMetadata:(id)metadata
 {
-  v3 = a3;
-  if (a3)
+  metadataCopy = metadata;
+  if (metadata)
   {
-    v5 = self;
-    v6 = v3;
-    v3 = sub_1B8A237C4();
+    selfCopy = self;
+    v6 = metadataCopy;
+    metadataCopy = sub_1B8A237C4();
     v8 = v7;
   }
 
   else
   {
-    v9 = self;
+    selfCopy2 = self;
     v8 = 0xF000000000000000;
   }
 
@@ -167,7 +167,7 @@
   swift_beginAccess();
   v11 = *v10;
   v12 = v10[1];
-  *v10 = v3;
+  *v10 = metadataCopy;
   v10[1] = v8;
   sub_1B89B4A04(v11, v12);
 }
@@ -179,13 +179,13 @@
   return *(self + v3);
 }
 
-- (void)setAttributionInfo:(id)a3
+- (void)setAttributionInfo:(id)info
 {
   v5 = OBJC_IVAR___STKSticker_attributionInfo;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = a3;
-  v7 = a3;
+  *(self + v5) = info;
+  infoCopy = info;
 }
 
 - (double)creationDate
@@ -195,11 +195,11 @@
   return *(self + v3);
 }
 
-- (void)setCreationDate:(double)a3
+- (void)setCreationDate:(double)date
 {
   v5 = OBJC_IVAR___STKSticker_creationDate;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = date;
 }
 
 - (double)lastUsedDate
@@ -209,11 +209,11 @@
   return *(self + v3);
 }
 
-- (void)setLastUsedDate:(double)a3
+- (void)setLastUsedDate:(double)date
 {
   v5 = OBJC_IVAR___STKSticker_lastUsedDate;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = date;
 }
 
 - (double)libraryIndex
@@ -223,11 +223,11 @@
   return *(self + v3);
 }
 
-- (void)setLibraryIndex:(double)a3
+- (void)setLibraryIndex:(double)index
 {
   v5 = OBJC_IVAR___STKSticker_libraryIndex;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = index;
 }
 
 - (NSUUID)_companionRecentUUID
@@ -253,13 +253,13 @@
   return v11;
 }
 
-- (void)set_companionRecentUUID:(id)a3
+- (void)set_companionRecentUUID:(id)d
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EBA92220, &unk_1B8A281A0);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x1EEE9AC00](v5 - 8);
   v8 = &v13 - v7;
-  if (a3)
+  if (d)
   {
     sub_1B8A238D4();
     v9 = sub_1B8A23904();
@@ -274,14 +274,14 @@
 
   v11 = OBJC_IVAR___STKSticker__companionRecentUUID;
   swift_beginAccess();
-  v12 = self;
+  selfCopy = self;
   sub_1B89DD9E4(v8, self + v11);
   swift_endAccess();
 }
 
 - (BOOL)prefersAnimation
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1B89FB424();
 
   return v3 & 1;
@@ -289,7 +289,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B89FD71C();
 
   v3 = sub_1B8A23EF4();
@@ -297,11 +297,11 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_1B8A244A4();
     swift_unknownObjectRelease();
@@ -310,7 +310,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = sub_1B89FE0BC(v8);
@@ -321,17 +321,17 @@
 
 - (int64_t)hash
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1B8A238E4();
 
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_1B89FFDE4(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_1B89FFDE4(coderCopy);
 }
 
 - (STKSticker)init
@@ -357,12 +357,12 @@
 
 - (BOOL)distributionIsRestricted
 {
-  v2 = self;
+  selfCopy = self;
   if (os_variant_has_internal_content())
   {
-    v3 = [(STKSticker *)v2 canDistribute];
+    canDistribute = [(STKSticker *)selfCopy canDistribute];
 
-    return v3 ^ 1;
+    return canDistribute ^ 1;
   }
 
   else
@@ -374,7 +374,7 @@
 
 - (BOOL)canDistribute
 {
-  v2 = self;
+  selfCopy = self;
   if (os_variant_has_internal_content())
   {
     v3 = Sticker.distributionRestrictions.getter();
@@ -393,7 +393,7 @@
 
 - (NSArray)distributionRestrictions_ObjC
 {
-  v2 = self;
+  selfCopy = self;
   Sticker.distributionRestrictions_ObjC.getter();
 
   v3 = sub_1B8A240E4();

@@ -1,18 +1,18 @@
 @interface AXShotflowConfiguration
-- (AXShotflowConfiguration)initWithURL:(id)a3;
+- (AXShotflowConfiguration)initWithURL:(id)l;
 @end
 
 @implementation AXShotflowConfiguration
 
-- (AXShotflowConfiguration)initWithURL:(id)a3
+- (AXShotflowConfiguration)initWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v21.receiver = self;
   v21.super_class = AXShotflowConfiguration;
   v5 = [(AXShotflowConfiguration *)&v21 init];
   if (v5)
   {
-    v6 = [MEMORY[0x1E695DF20] dictionaryWithContentsOfURL:v4];
+    v6 = [MEMORY[0x1E695DF20] dictionaryWithContentsOfURL:lCopy];
     filterThresholds = v5->_filterThresholds;
     v5->_filterThresholds = &unk_1F240B568;
 

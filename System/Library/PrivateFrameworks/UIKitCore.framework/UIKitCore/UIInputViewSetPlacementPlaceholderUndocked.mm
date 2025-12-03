@@ -1,29 +1,29 @@
 @interface UIInputViewSetPlacementPlaceholderUndocked
-+ (id)placementWithHeight:(double)a3 undockedOffset:(CGPoint)a4 chromeBuffer:(UIEdgeInsets)a5;
-- (BOOL)isEqual:(id)a3;
++ (id)placementWithHeight:(double)height undockedOffset:(CGPoint)offset chromeBuffer:(UIEdgeInsets)buffer;
+- (BOOL)isEqual:(id)equal;
 @end
 
 @implementation UIInputViewSetPlacementPlaceholderUndocked
 
-+ (id)placementWithHeight:(double)a3 undockedOffset:(CGPoint)a4 chromeBuffer:(UIEdgeInsets)a5
++ (id)placementWithHeight:(double)height undockedOffset:(CGPoint)offset chromeBuffer:(UIEdgeInsets)buffer
 {
-  result = [a1 placementWithUndockedOffset:a4.x chromeBuffer:{a4.y, a5.top, a5.left, a5.bottom, a5.right}];
+  result = [self placementWithUndockedOffset:offset.x chromeBuffer:{offset.y, buffer.top, buffer.left, buffer.bottom, buffer.right}];
   if (result)
   {
-    *(result + 11) = a3;
+    *(result + 11) = height;
   }
 
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v7.receiver = self;
   v7.super_class = UIInputViewSetPlacementPlaceholderUndocked;
-  if ([(UIInputViewSetPlacementUndocked *)&v7 isEqual:v4])
+  if ([(UIInputViewSetPlacementUndocked *)&v7 isEqual:equalCopy])
   {
-    v5 = v4[11] == self->_height;
+    v5 = equalCopy[11] == self->_height;
   }
 
   else

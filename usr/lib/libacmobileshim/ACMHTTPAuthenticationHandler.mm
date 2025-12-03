@@ -1,16 +1,16 @@
 @interface ACMHTTPAuthenticationHandler
-- (ACMHTTPAuthenticationHandler)initWithContext:(id)a3;
-- (BOOL)shouldReturnResponse:(id)a3 orReportError:(id *)a4;
+- (ACMHTTPAuthenticationHandler)initWithContext:(id)context;
+- (BOOL)shouldReturnResponse:(id)response orReportError:(id *)error;
 - (id)requestBody;
 @end
 
 @implementation ACMHTTPAuthenticationHandler
 
-- (ACMHTTPAuthenticationHandler)initWithContext:(id)a3
+- (ACMHTTPAuthenticationHandler)initWithContext:(id)context
 {
   v6.receiver = self;
   v6.super_class = ACMHTTPAuthenticationHandler;
-  v3 = [(ACCHTTPHandler *)&v6 initWithContext:a3];
+  v3 = [(ACCHTTPHandler *)&v6 initWithContext:context];
   v4 = v3;
   if (v3)
   {
@@ -86,36 +86,36 @@
   return result;
 }
 
-- (BOOL)shouldReturnResponse:(id)a3 orReportError:(id *)a4
+- (BOOL)shouldReturnResponse:(id)response orReportError:(id *)error
 {
-  if (!a4)
+  if (!error)
   {
     [ACMHTTPAuthenticationHandler shouldReturnResponse:a2 orReportError:self];
   }
 
   v13.receiver = self;
   v13.super_class = ACMHTTPAuthenticationHandler;
-  v7 = [(ACCHTTPHandler *)&v13 shouldReturnResponse:a3 orReportError:a4];
+  v7 = [(ACCHTTPHandler *)&v13 shouldReturnResponse:response orReportError:error];
   v8 = v7;
-  if (a3)
+  if (response)
   {
     if (v7)
     {
-      if (!*a4)
+      if (!*error)
       {
         if ([(ACMHTTPAuthenticationHandler *)self shouldValidateTGTs])
         {
-          if (![a3 objectForKey:@"pt"])
+          if (![response objectForKey:@"pt"])
           {
             v10 = MEMORY[0x29EDB9FA0];
             v11 = MEMORY[0x29EDB8DC0];
             v12 = [ACMBaseLocale localizedString:@"Response from server is malformed"];
-            *a4 = [v10 errorWithDomain:@"HTTPServerErrorDomain" code:-100360 userInfo:{objc_msgSend(v11, "dictionaryWithObjectsAndKeys:", v12, *MEMORY[0x29EDB9EE0], 0)}];
+            *error = [v10 errorWithDomain:@"HTTPServerErrorDomain" code:-100360 userInfo:{objc_msgSend(v11, "dictionaryWithObjectsAndKeys:", v12, *MEMORY[0x29EDB9EE0], 0)}];
             if (qword_2A1EB8F00)
             {
               if ((ACFLogSettingsGetLevelMask() & 8) != 0)
               {
-                ACFLog(3, "[ACMHTTPAuthenticationHandler shouldReturnResponse:orReportError:]", "/Library/Caches/com.apple.xbs/Sources/AppleConnectClients/Mobile/Common/Sources/ACMHTTPAuthenticationHandler.m", 116, 0, "Response from server does not have TGT: %@", a3);
+                ACFLog(3, "[ACMHTTPAuthenticationHandler shouldReturnResponse:orReportError:]", "/Library/Caches/com.apple.xbs/Sources/AppleConnectClients/Mobile/Common/Sources/ACMHTTPAuthenticationHandler.m", 116, 0, "Response from server does not have TGT: %@", response);
               }
             }
           }

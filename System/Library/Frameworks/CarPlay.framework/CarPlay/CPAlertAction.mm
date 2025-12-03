@@ -1,8 +1,8 @@
 @interface CPAlertAction
-- (CPAlertAction)initWithCoder:(id)a3;
+- (CPAlertAction)initWithCoder:(id)coder;
 - (CPAlertAction)initWithTitle:(NSString *)title color:(UIColor *)color handler:(CPAlertActionHandler)handler;
 - (CPAlertAction)initWithTitle:(NSString *)title style:(CPAlertActionStyle)style handler:(CPAlertActionHandler)handler;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CPAlertAction
@@ -23,9 +23,9 @@
     v14 = v12->_handler;
     v12->_handler = v13;
 
-    v15 = [MEMORY[0x277CCAD78] UUID];
+    uUID = [MEMORY[0x277CCAD78] UUID];
     identifier = v12->_identifier;
-    v12->_identifier = v15;
+    v12->_identifier = uUID;
   }
 
   return v12;
@@ -46,24 +46,24 @@
   return v10;
 }
 
-- (CPAlertAction)initWithCoder:(id)a3
+- (CPAlertAction)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = CPAlertAction;
   v5 = [(CPAlertAction *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCPAlertActionTitleKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCPAlertActionTitleKey"];
     title = v5->_title;
     v5->_title = v6;
 
-    v5->_style = [v4 decodeIntegerForKey:@"kCPAlertActionStyleKey"];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCPAlertActionIdentifierKey"];
+    v5->_style = [coderCopy decodeIntegerForKey:@"kCPAlertActionStyleKey"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCPAlertActionIdentifierKey"];
     identifier = v5->_identifier;
     v5->_identifier = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCPAlertActionColorKey"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCPAlertActionColorKey"];
     color = v5->_color;
     v5->_color = v10;
   }
@@ -71,18 +71,18 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(CPAlertAction *)self title];
-  [v4 encodeObject:v5 forKey:@"kCPAlertActionTitleKey"];
+  coderCopy = coder;
+  title = [(CPAlertAction *)self title];
+  [coderCopy encodeObject:title forKey:@"kCPAlertActionTitleKey"];
 
-  [v4 encodeInteger:-[CPAlertAction style](self forKey:{"style"), @"kCPAlertActionStyleKey"}];
-  v6 = [(CPAlertAction *)self identifier];
-  [v4 encodeObject:v6 forKey:@"kCPAlertActionIdentifierKey"];
+  [coderCopy encodeInteger:-[CPAlertAction style](self forKey:{"style"), @"kCPAlertActionStyleKey"}];
+  identifier = [(CPAlertAction *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"kCPAlertActionIdentifierKey"];
 
-  v7 = [(CPAlertAction *)self color];
-  [v4 encodeObject:v7 forKey:@"kCPAlertActionColorKey"];
+  color = [(CPAlertAction *)self color];
+  [coderCopy encodeObject:color forKey:@"kCPAlertActionColorKey"];
 }
 
 @end

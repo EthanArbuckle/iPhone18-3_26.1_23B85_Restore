@@ -1,8 +1,8 @@
 @interface FMWeakWrapper
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (FMWeakWrapper)init;
-- (FMWeakWrapper)initWithObject:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (FMWeakWrapper)initWithObject:(id)object;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)object;
 @end
@@ -16,47 +16,47 @@
   return 0;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [(FMWeakWrapper *)self object];
-  v5 = [objc_alloc(objc_opt_class()) initWithObject:v4];
-  [v5 setObject:v4];
+  object = [(FMWeakWrapper *)self object];
+  v5 = [objc_alloc(objc_opt_class()) initWithObject:object];
+  [v5 setObject:object];
   [v5 setObjectHash:{-[FMWeakWrapper objectHash](self, "objectHash")}];
 
   return v5;
 }
 
-- (FMWeakWrapper)initWithObject:(id)a3
+- (FMWeakWrapper)initWithObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v8.receiver = self;
   v8.super_class = FMWeakWrapper;
   v5 = [(FMWeakWrapper *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(FMWeakWrapper *)v5 setObject:v4];
-    -[FMWeakWrapper setObjectHash:](v6, "setObjectHash:", [v4 hash]);
+    [(FMWeakWrapper *)v5 setObject:objectCopy];
+    -[FMWeakWrapper setObjectHash:](v6, "setObjectHash:", [objectCopy hash]);
   }
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [(FMWeakWrapper *)self objectHash];
-  v6 = [v4 objectHash];
+  equalCopy = equal;
+  objectHash = [(FMWeakWrapper *)self objectHash];
+  objectHash2 = [equalCopy objectHash];
 
-  return v5 == v6;
+  return objectHash == objectHash2;
 }
 
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(FMWeakWrapper *)self object];
-  v6 = [v3 stringWithFormat:@"<%@ %p> [%p]", v4, self, v5];
+  object = [(FMWeakWrapper *)self object];
+  v6 = [v3 stringWithFormat:@"<%@ %p> [%p]", v4, self, object];
 
   return v6;
 }

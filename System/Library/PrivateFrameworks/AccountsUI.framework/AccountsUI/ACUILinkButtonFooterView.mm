@@ -1,71 +1,71 @@
 @interface ACUILinkButtonFooterView
-- (ACUILinkButtonFooterView)initWithButton:(id)a3;
-- (ACUILinkButtonFooterView)initWithSpecifier:(id)a3;
+- (ACUILinkButtonFooterView)initWithButton:(id)button;
+- (ACUILinkButtonFooterView)initWithSpecifier:(id)specifier;
 - (void)layoutSubviews;
 @end
 
 @implementation ACUILinkButtonFooterView
 
-- (ACUILinkButtonFooterView)initWithSpecifier:(id)a3
+- (ACUILinkButtonFooterView)initWithSpecifier:(id)specifier
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v18;
-  v18 = 0;
+  objc_storeStrong(location, specifier);
+  v3 = selfCopy;
+  selfCopy = 0;
   v16.receiver = v3;
   v16.super_class = ACUILinkButtonFooterView;
   v15 = [(ACUILinkButtonFooterView *)&v16 init];
-  v18 = v15;
-  objc_storeStrong(&v18, v15);
+  selfCopy = v15;
+  objc_storeStrong(&selfCopy, v15);
   if (v15)
   {
     v4 = [location[0] propertyForKey:@"ACUILinkButtonHolder"];
-    linkButton = v18->_linkButton;
-    v18->_linkButton = v4;
+    linkButton = selfCopy->_linkButton;
+    selfCopy->_linkButton = v4;
     MEMORY[0x277D82BD8](linkButton);
     v13 = [location[0] propertyForKey:*MEMORY[0x277D3FF40]];
-    v6 = [v13 integerValue];
-    v18->_desiredTextAlignment = v6;
+    integerValue = [v13 integerValue];
+    selfCopy->_desiredTextAlignment = integerValue;
     MEMORY[0x277D82BD8](v13);
-    v14 = v18;
-    [(ACUILinkButton *)v18->_linkButton bounds];
+    v14 = selfCopy;
+    [(ACUILinkButton *)selfCopy->_linkButton bounds];
     [(ACUILinkButtonFooterView *)v14 setFrame:v7, v8, v9, v10];
-    [(ACUILinkButtonFooterView *)v18 addSubview:v18->_linkButton];
+    [(ACUILinkButtonFooterView *)selfCopy addSubview:selfCopy->_linkButton];
   }
 
-  v12 = MEMORY[0x277D82BE0](v18);
+  v12 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v18, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v12;
 }
 
-- (ACUILinkButtonFooterView)initWithButton:(id)a3
+- (ACUILinkButtonFooterView)initWithButton:(id)button
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v14;
-  v14 = 0;
+  objc_storeStrong(location, button);
+  v3 = selfCopy;
+  selfCopy = 0;
   v12.receiver = v3;
   v12.super_class = ACUILinkButtonFooterView;
   v11 = [(ACUILinkButtonFooterView *)&v12 init];
-  v14 = v11;
-  objc_storeStrong(&v14, v11);
+  selfCopy = v11;
+  objc_storeStrong(&selfCopy, v11);
   if (v11)
   {
-    objc_storeStrong(&v14->_linkButton, location[0]);
-    v10 = v14;
-    [(ACUILinkButton *)v14->_linkButton bounds];
+    objc_storeStrong(&selfCopy->_linkButton, location[0]);
+    v10 = selfCopy;
+    [(ACUILinkButton *)selfCopy->_linkButton bounds];
     [(ACUILinkButtonFooterView *)v10 setFrame:v4, v5, v6, v7];
-    [(ACUILinkButtonFooterView *)v14 addSubview:v14->_linkButton];
+    [(ACUILinkButtonFooterView *)selfCopy addSubview:selfCopy->_linkButton];
   }
 
-  v9 = MEMORY[0x277D82BE0](v14);
+  v9 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v14, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v9;
 }
 

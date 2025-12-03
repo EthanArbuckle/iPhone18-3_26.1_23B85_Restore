@@ -7,8 +7,8 @@
 - (void)objectsForPasteboardType:()OFUIPasteboardExtension
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [a1 dataForPasteboardType:a3 inItemSet:{objc_msgSend(a1, "itemSetWithPasteboardTypes:", objc_msgSend(MEMORY[0x277CBEA60], "arrayWithObject:"))}];
-  v4 = [MEMORY[0x277CBEB18] array];
+  v3 = [self dataForPasteboardType:a3 inItemSet:{objc_msgSend(self, "itemSetWithPasteboardTypes:", objc_msgSend(MEMORY[0x277CBEA60], "arrayWithObject:"))}];
+  array = [MEMORY[0x277CBEB18] array];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -33,7 +33,7 @@
         v10 = [MEMORY[0x277CCAC58] propertyListWithData:v9 options:0 format:0 error:&v12];
         if (v10 || (v10 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v9 encoding:4]) != 0)
         {
-          [v4 addObject:v10];
+          [array addObject:v10];
         }
 
         ++v8;
@@ -46,7 +46,7 @@
     while (v6);
   }
 
-  return v4;
+  return array;
 }
 
 @end

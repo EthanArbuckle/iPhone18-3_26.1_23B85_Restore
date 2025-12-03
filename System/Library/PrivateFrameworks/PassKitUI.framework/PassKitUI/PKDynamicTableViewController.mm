@@ -1,37 +1,37 @@
 @interface PKDynamicTableViewController
-- (BOOL)hasSectionForSectionIdentifier:(id)a3;
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4;
-- (BOOL)tableView:(id)a3 shouldDrawBottomSeparatorForSection:(int64_t)a4;
-- (BOOL)tableView:(id)a3 shouldDrawTopSeparatorForSection:(int64_t)a4;
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4;
+- (BOOL)hasSectionForSectionIdentifier:(id)identifier;
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path;
+- (BOOL)tableView:(id)view shouldDrawBottomSeparatorForSection:(int64_t)section;
+- (BOOL)tableView:(id)view shouldDrawTopSeparatorForSection:(int64_t)section;
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path;
 - (PKDynamicTableViewController)init;
-- (PKDynamicTableViewController)initWithStyle:(int64_t)a3;
-- (double)tableView:(id)a3 estimatedHeightForRowAtIndexPath:(id)a4;
-- (double)tableView:(id)a3 heightForFooterInSection:(int64_t)a4;
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
-- (id)_computeSectionControllerMap:(id)a3;
-- (id)cellForRowAtIndexPath:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 contextMenuConfigurationForRowAtIndexPath:(id)a4 point:(CGPoint)a5;
-- (id)tableView:(id)a3 leadingSwipeActionsConfigurationForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (id)tableView:(id)a3 trailingSwipeActionsConfigurationForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
-- (int64_t)indexOfSectionIdentifier:(id)a3;
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)_reloadData:(BOOL)a3;
-- (void)_sortMappedSectionIdentifiers:(id)a3;
-- (void)recomputeMappedSectionsAndReloadSections:(id)a3 sectionIdentifiers:(id)a4 updates:(id)a5;
-- (void)reloadRow:(int64_t)a3 inSectionWithSectionIdentifier:(id)a4;
-- (void)reloadRows:(id)a3 inSectionWithSectionIdentifier:(id)a4;
-- (void)reloadSectionIdentifier:(id)a3;
-- (void)reloadSectionIdentifiers:(id)a3 updates:(id)a4;
-- (void)setSectionControllers:(id)a3 sectionIdentifiers:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (PKDynamicTableViewController)initWithStyle:(int64_t)style;
+- (double)tableView:(id)view estimatedHeightForRowAtIndexPath:(id)path;
+- (double)tableView:(id)view heightForFooterInSection:(int64_t)section;
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
+- (id)_computeSectionControllerMap:(id)map;
+- (id)cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view contextMenuConfigurationForRowAtIndexPath:(id)path point:(CGPoint)point;
+- (id)tableView:(id)view leadingSwipeActionsConfigurationForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (id)tableView:(id)view trailingSwipeActionsConfigurationForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
+- (int64_t)indexOfSectionIdentifier:(id)identifier;
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)_reloadData:(BOOL)data;
+- (void)_sortMappedSectionIdentifiers:(id)identifiers;
+- (void)recomputeMappedSectionsAndReloadSections:(id)sections sectionIdentifiers:(id)identifiers updates:(id)updates;
+- (void)reloadRow:(int64_t)row inSectionWithSectionIdentifier:(id)identifier;
+- (void)reloadRows:(id)rows inSectionWithSectionIdentifier:(id)identifier;
+- (void)reloadSectionIdentifier:(id)identifier;
+- (void)reloadSectionIdentifiers:(id)identifiers updates:(id)updates;
+- (void)setSectionControllers:(id)controllers sectionIdentifiers:(id)identifiers;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -39,16 +39,16 @@
 
 - (PKDynamicTableViewController)init
 {
-  v3 = [MEMORY[0x1E69DD020] pkui_groupedStyleDefaultRoundedCornerBehavior];
+  pkui_groupedStyleDefaultRoundedCornerBehavior = [MEMORY[0x1E69DD020] pkui_groupedStyleDefaultRoundedCornerBehavior];
 
-  return [(PKDynamicTableViewController *)self initWithStyle:v3];
+  return [(PKDynamicTableViewController *)self initWithStyle:pkui_groupedStyleDefaultRoundedCornerBehavior];
 }
 
-- (PKDynamicTableViewController)initWithStyle:(int64_t)a3
+- (PKDynamicTableViewController)initWithStyle:(int64_t)style
 {
   v4.receiver = self;
   v4.super_class = PKDynamicTableViewController;
-  return [(PKDynamicTableViewController *)&v4 initWithStyle:a3];
+  return [(PKDynamicTableViewController *)&v4 initWithStyle:style];
 }
 
 - (void)viewDidLoad
@@ -56,64 +56,64 @@
   v4.receiver = self;
   v4.super_class = PKDynamicTableViewController;
   [(PKDynamicTableViewController *)&v4 viewDidLoad];
-  v3 = [(PKDynamicTableViewController *)self tableView];
-  [v3 pkui_setupForReadableContentGuide];
+  tableView = [(PKDynamicTableViewController *)self tableView];
+  [tableView pkui_setupForReadableContentGuide];
 }
 
-- (void)setSectionControllers:(id)a3 sectionIdentifiers:(id)a4
+- (void)setSectionControllers:(id)controllers sectionIdentifiers:(id)identifiers
 {
-  objc_storeStrong(&self->_sectionControllers, a3);
-  v6 = a4;
-  v7 = [(PKDynamicTableViewController *)self _computeSectionControllerMap:v6];
+  objc_storeStrong(&self->_sectionControllers, controllers);
+  identifiersCopy = identifiers;
+  v7 = [(PKDynamicTableViewController *)self _computeSectionControllerMap:identifiersCopy];
 
   [(PKDynamicTableViewController *)self _sortMappedSectionIdentifiers:v7];
   [(PKDynamicTableViewController *)self _reloadData:0];
 }
 
-- (void)_reloadData:(BOOL)a3
+- (void)_reloadData:(BOOL)data
 {
-  v3 = a3;
+  dataCopy = data;
   if ([(PKDynamicTableViewController *)self isViewLoaded])
   {
-    v6 = [(PKDynamicTableViewController *)self tableView];
-    [v6 setEditing:0 animated:v3];
-    v5 = [(PKDynamicTableViewController *)self tableView];
-    [v5 reloadData];
+    tableView = [(PKDynamicTableViewController *)self tableView];
+    [tableView setEditing:0 animated:dataCopy];
+    tableView2 = [(PKDynamicTableViewController *)self tableView];
+    [tableView2 reloadData];
   }
 }
 
-- (void)reloadSectionIdentifier:(id)a3
+- (void)reloadSectionIdentifier:(id)identifier
 {
-  v8 = a3;
+  identifierCopy = identifier;
   if ([(PKDynamicTableViewController *)self isViewLoaded])
   {
-    v4 = [(PKDynamicTableViewController *)self indexOfSectionIdentifier:v8];
+    v4 = [(PKDynamicTableViewController *)self indexOfSectionIdentifier:identifierCopy];
     if (v4 != 0x7FFFFFFFFFFFFFFFLL)
     {
       v5 = v4;
-      v6 = [(PKDynamicTableViewController *)self tableView];
+      tableView = [(PKDynamicTableViewController *)self tableView];
       v7 = [MEMORY[0x1E696AC90] indexSetWithIndex:v5];
-      [v6 reloadSections:v7 withRowAnimation:{-[PKDynamicTableViewController rowAnimationForReloadingSection:](self, "rowAnimationForReloadingSection:", v5)}];
+      [tableView reloadSections:v7 withRowAnimation:{-[PKDynamicTableViewController rowAnimationForReloadingSection:](self, "rowAnimationForReloadingSection:", v5)}];
     }
   }
 }
 
-- (void)reloadSectionIdentifiers:(id)a3 updates:(id)a4
+- (void)reloadSectionIdentifiers:(id)identifiers updates:(id)updates
 {
-  v6 = a3;
-  v7 = a4;
-  if (-[PKDynamicTableViewController isViewLoaded](self, "isViewLoaded") && [v6 count])
+  identifiersCopy = identifiers;
+  updatesCopy = updates;
+  if (-[PKDynamicTableViewController isViewLoaded](self, "isViewLoaded") && [identifiersCopy count])
   {
-    v8 = [(PKDynamicTableViewController *)self tableView];
+    tableView = [(PKDynamicTableViewController *)self tableView];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __65__PKDynamicTableViewController_reloadSectionIdentifiers_updates___block_invoke;
     v10[3] = &unk_1E801AA50;
-    v14 = v7;
-    v11 = v6;
-    v12 = self;
-    v13 = v8;
-    v9 = v8;
+    v14 = updatesCopy;
+    v11 = identifiersCopy;
+    selfCopy = self;
+    v13 = tableView;
+    v9 = tableView;
     [v9 performBatchUpdates:v10 completion:0];
   }
 }
@@ -167,34 +167,34 @@ void __65__PKDynamicTableViewController_reloadSectionIdentifiers_updates___block
   }
 }
 
-- (void)reloadRow:(int64_t)a3 inSectionWithSectionIdentifier:(id)a4
+- (void)reloadRow:(int64_t)row inSectionWithSectionIdentifier:(id)identifier
 {
   v10[1] = *MEMORY[0x1E69E9840];
   v6 = MEMORY[0x1E696AD98];
-  v7 = a4;
-  v8 = [v6 numberWithInteger:a3];
+  identifierCopy = identifier;
+  v8 = [v6 numberWithInteger:row];
   v10[0] = v8;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
-  [(PKDynamicTableViewController *)self reloadRows:v9 inSectionWithSectionIdentifier:v7];
+  [(PKDynamicTableViewController *)self reloadRows:v9 inSectionWithSectionIdentifier:identifierCopy];
 }
 
-- (id)cellForRowAtIndexPath:(id)a3
+- (id)cellForRowAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(PKDynamicTableViewController *)self tableView];
-  v6 = [v5 cellForRowAtIndexPath:v4];
+  pathCopy = path;
+  tableView = [(PKDynamicTableViewController *)self tableView];
+  v6 = [tableView cellForRowAtIndexPath:pathCopy];
 
   return v6;
 }
 
-- (void)reloadRows:(id)a3 inSectionWithSectionIdentifier:(id)a4
+- (void)reloadRows:(id)rows inSectionWithSectionIdentifier:(id)identifier
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  rowsCopy = rows;
+  identifierCopy = identifier;
   if ([(PKDynamicTableViewController *)self isViewLoaded])
   {
-    v8 = [(PKDynamicTableViewController *)self indexOfSectionIdentifier:v7];
+    v8 = [(PKDynamicTableViewController *)self indexOfSectionIdentifier:identifierCopy];
     if (v8 != 0x7FFFFFFFFFFFFFFFLL)
     {
       v9 = v8;
@@ -203,8 +203,8 @@ void __65__PKDynamicTableViewController_reloadSectionIdentifiers_updates___block
       v20 = 0u;
       v21 = 0u;
       v22 = 0u;
-      v18 = v6;
-      v11 = v6;
+      v18 = rowsCopy;
+      v11 = rowsCopy;
       v12 = [v11 countByEnumeratingWithState:&v19 objects:v23 count:16];
       if (v12)
       {
@@ -233,18 +233,18 @@ void __65__PKDynamicTableViewController_reloadSectionIdentifiers_updates___block
         while (v13);
       }
 
-      v17 = [(PKDynamicTableViewController *)self tableView];
-      [v17 reloadRowsAtIndexPaths:v10 withRowAnimation:{-[PKDynamicTableViewController rowAnimationForReloadingSection:](self, "rowAnimationForReloadingSection:", v9)}];
+      tableView = [(PKDynamicTableViewController *)self tableView];
+      [tableView reloadRowsAtIndexPaths:v10 withRowAnimation:{-[PKDynamicTableViewController rowAnimationForReloadingSection:](self, "rowAnimationForReloadingSection:", v9)}];
 
-      v6 = v18;
+      rowsCopy = v18;
     }
   }
 }
 
-- (id)_computeSectionControllerMap:(id)a3
+- (id)_computeSectionControllerMap:(id)map
 {
   v33 = *MEMORY[0x1E69E9840];
-  v19 = a3;
+  mapCopy = map;
   v4 = objc_alloc_init(MEMORY[0x1E695DF90]);
   sectionControllerMap = self->_sectionControllerMap;
   self->_sectionControllerMap = v4;
@@ -273,8 +273,8 @@ void __65__PKDynamicTableViewController_reloadSectionIdentifiers_updates___block
         v24 = 0u;
         v25 = 0u;
         v26 = 0u;
-        v9 = [v8 sectionIdentifiers];
-        v10 = [v9 countByEnumeratingWithState:&v23 objects:v31 count:16];
+        sectionIdentifiers = [v8 sectionIdentifiers];
+        v10 = [sectionIdentifiers countByEnumeratingWithState:&v23 objects:v31 count:16];
         if (v10)
         {
           v11 = v10;
@@ -285,7 +285,7 @@ void __65__PKDynamicTableViewController_reloadSectionIdentifiers_updates___block
             {
               if (*v24 != v12)
               {
-                objc_enumerationMutation(v9);
+                objc_enumerationMutation(sectionIdentifiers);
               }
 
               v14 = *(*(&v23 + 1) + 8 * j);
@@ -293,7 +293,7 @@ void __65__PKDynamicTableViewController_reloadSectionIdentifiers_updates___block
               [v6 addObject:v14];
             }
 
-            v11 = [v9 countByEnumeratingWithState:&v23 objects:v31 count:16];
+            v11 = [sectionIdentifiers countByEnumeratingWithState:&v23 objects:v31 count:16];
           }
 
           while (v11);
@@ -306,15 +306,15 @@ void __65__PKDynamicTableViewController_reloadSectionIdentifiers_updates___block
     while (v22);
   }
 
-  v15 = v19;
-  v16 = v19;
-  if (!v19)
+  v15 = mapCopy;
+  v16 = mapCopy;
+  if (!mapCopy)
   {
     v16 = [v6 copy];
   }
 
   objc_storeStrong(&self->_orderOfSectionIdentifiers, v16);
-  if (!v19)
+  if (!mapCopy)
   {
   }
 
@@ -323,11 +323,11 @@ void __65__PKDynamicTableViewController_reloadSectionIdentifiers_updates___block
   return v17;
 }
 
-- (void)_sortMappedSectionIdentifiers:(id)a3
+- (void)_sortMappedSectionIdentifiers:(id)identifiers
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v4, "count")}];
+  identifiersCopy = identifiers;
+  v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(identifiersCopy, "count")}];
   sectionItems = self->_sectionItems;
   self->_sectionItems = v5;
 
@@ -351,7 +351,7 @@ void __65__PKDynamicTableViewController_reloadSectionIdentifiers_updates___block
         }
 
         v12 = *(*(&v13 + 1) + 8 * i);
-        if ([v4 containsObject:{v12, v13}])
+        if ([identifiersCopy containsObject:{v12, v13}])
         {
           [(NSMutableArray *)self->_sectionItems addObject:v12];
         }
@@ -364,24 +364,24 @@ void __65__PKDynamicTableViewController_reloadSectionIdentifiers_updates___block
   }
 }
 
-- (void)recomputeMappedSectionsAndReloadSections:(id)a3 sectionIdentifiers:(id)a4 updates:(id)a5
+- (void)recomputeMappedSectionsAndReloadSections:(id)sections sectionIdentifiers:(id)identifiers updates:(id)updates
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  sectionsCopy = sections;
+  identifiersCopy = identifiers;
+  updatesCopy = updates;
   if ([(PKDynamicTableViewController *)self isViewLoaded]&& self->_sectionItems)
   {
-    v11 = [(PKDynamicTableViewController *)self tableView];
+    tableView = [(PKDynamicTableViewController *)self tableView];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __100__PKDynamicTableViewController_recomputeMappedSectionsAndReloadSections_sectionIdentifiers_updates___block_invoke;
     v13[3] = &unk_1E801AA78;
-    v17 = v10;
+    v17 = updatesCopy;
     v13[4] = self;
-    v14 = v9;
-    v15 = v8;
-    v16 = v11;
-    v12 = v11;
+    v14 = identifiersCopy;
+    v15 = sectionsCopy;
+    v16 = tableView;
+    v12 = tableView;
     [v12 performBatchUpdates:v13 completion:0];
   }
 }
@@ -510,25 +510,25 @@ void __100__PKDynamicTableViewController_recomputeMappedSectionsAndReloadSection
   }
 }
 
-- (BOOL)hasSectionForSectionIdentifier:(id)a3
+- (BOOL)hasSectionForSectionIdentifier:(id)identifier
 {
-  v3 = [(NSMutableDictionary *)self->_sectionControllerMap objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->_sectionControllerMap objectForKey:identifier];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (int64_t)indexOfSectionIdentifier:(id)a3
+- (int64_t)indexOfSectionIdentifier:(id)identifier
 {
-  v4 = [(NSMutableArray *)self->_sectionItems indexOfObject:a3];
+  v4 = [(NSMutableArray *)self->_sectionItems indexOfObject:identifier];
   v5 = 0x7FFFFFFFFFFFFFFFLL;
   if (v4 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v6 = v4;
-    v7 = [(PKDynamicTableViewController *)self tableView];
-    v8 = [v7 numberOfSections];
+    tableView = [(PKDynamicTableViewController *)self tableView];
+    numberOfSections = [tableView numberOfSections];
 
-    if (v6 < v8)
+    if (v6 < numberOfSections)
     {
       return v6;
     }
@@ -537,32 +537,32 @@ void __100__PKDynamicTableViewController_recomputeMappedSectionsAndReloadSection
   return v5;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
   sectionItems = self->_sectionItems;
-  v7 = a3;
-  v8 = [(NSMutableArray *)sectionItems objectAtIndexedSubscript:a4];
+  viewCopy = view;
+  v8 = [(NSMutableArray *)sectionItems objectAtIndexedSubscript:section];
   v9 = [(PKDynamicTableViewController *)self _sectionControllerForSectionIdentifier:v8];
-  v10 = [v9 tableView:v7 numberOfRowsInSectionIdentifier:v8];
+  v10 = [v9 tableView:viewCopy numberOfRowsInSectionIdentifier:v8];
 
   return v10;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   sectionItems = self->_sectionItems;
-  v7 = a4;
-  v8 = a3;
-  v9 = -[NSMutableArray objectAtIndexedSubscript:](sectionItems, "objectAtIndexedSubscript:", [v7 section]);
+  pathCopy = path;
+  viewCopy = view;
+  v9 = -[NSMutableArray objectAtIndexedSubscript:](sectionItems, "objectAtIndexedSubscript:", [pathCopy section]);
   v10 = [(PKDynamicTableViewController *)self _sectionControllerForSectionIdentifier:v9];
-  v11 = [v10 tableView:v8 cellForRowAtIndexPath:v7 sectionIdentifier:v9];
+  v11 = [v10 tableView:viewCopy cellForRowAtIndexPath:pathCopy sectionIdentifier:v9];
 
   return v11;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v5 = [(NSMutableArray *)self->_sectionItems objectAtIndexedSubscript:a4];
+  v5 = [(NSMutableArray *)self->_sectionItems objectAtIndexedSubscript:section];
   v6 = [(PKDynamicTableViewController *)self _sectionControllerForSectionIdentifier:v5];
   if (objc_opt_respondsToSelector())
   {
@@ -577,9 +577,9 @@ void __100__PKDynamicTableViewController_recomputeMappedSectionsAndReloadSection
   return v7;
 }
 
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section
 {
-  v5 = [(NSMutableArray *)self->_sectionItems objectAtIndexedSubscript:a4];
+  v5 = [(NSMutableArray *)self->_sectionItems objectAtIndexedSubscript:section];
   v6 = [(PKDynamicTableViewController *)self _sectionControllerForSectionIdentifier:v5];
   if (objc_opt_respondsToSelector())
   {
@@ -594,10 +594,10 @@ void __100__PKDynamicTableViewController_recomputeMappedSectionsAndReloadSection
   return v7;
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = [(NSMutableArray *)self->_sectionItems objectAtIndexedSubscript:a4];
+  viewCopy = view;
+  v7 = [(NSMutableArray *)self->_sectionItems objectAtIndexedSubscript:section];
   v8 = [(PKDynamicTableViewController *)self _sectionControllerForSectionIdentifier:v7];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
@@ -605,10 +605,10 @@ void __100__PKDynamicTableViewController_recomputeMappedSectionsAndReloadSection
     goto LABEL_8;
   }
 
-  v9 = [v8 tableView:v6 viewForHeaderInSectionIdentifier:v7];
+  v9 = [v8 tableView:viewCopy viewForHeaderInSectionIdentifier:v7];
   if (!v9)
   {
-    v11 = [(PKDynamicTableViewController *)self tableView:v6 titleForHeaderInSection:a4];
+    v11 = [(PKDynamicTableViewController *)self tableView:viewCopy titleForHeaderInSection:section];
     v12 = [v11 length];
 
     if (v12)
@@ -617,7 +617,7 @@ void __100__PKDynamicTableViewController_recomputeMappedSectionsAndReloadSection
       goto LABEL_7;
     }
 
-    v9 = [v6 dequeueReusableHeaderFooterViewWithIdentifier:@"default"];
+    v9 = [viewCopy dequeueReusableHeaderFooterViewWithIdentifier:@"default"];
     if (!v9)
     {
       v9 = [objc_alloc(MEMORY[0x1E69DD050]) initWithReuseIdentifier:@"default"];
@@ -632,10 +632,10 @@ LABEL_8:
   return v10;
 }
 
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = [(NSMutableArray *)self->_sectionItems objectAtIndexedSubscript:a4];
+  viewCopy = view;
+  v7 = [(NSMutableArray *)self->_sectionItems objectAtIndexedSubscript:section];
   v8 = [(PKDynamicTableViewController *)self _sectionControllerForSectionIdentifier:v7];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
@@ -643,10 +643,10 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  v9 = [v8 tableView:v6 viewForFooterInSectionIdentifier:v7];
+  v9 = [v8 tableView:viewCopy viewForFooterInSectionIdentifier:v7];
   if (!v9)
   {
-    v11 = [(PKDynamicTableViewController *)self tableView:v6 titleForFooterInSection:a4];
+    v11 = [(PKDynamicTableViewController *)self tableView:viewCopy titleForFooterInSection:section];
     v12 = [v11 length];
 
     if (v12)
@@ -655,7 +655,7 @@ LABEL_8:
       goto LABEL_7;
     }
 
-    v9 = [v6 dequeueReusableHeaderFooterViewWithIdentifier:@"default"];
+    v9 = [viewCopy dequeueReusableHeaderFooterViewWithIdentifier:@"default"];
     if (!v9)
     {
       v9 = [objc_alloc(MEMORY[0x1E69DD050]) initWithReuseIdentifier:@"default"];
@@ -670,15 +670,15 @@ LABEL_8:
   return v10;
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = -[NSMutableArray objectAtIndexedSubscript:](self->_sectionItems, "objectAtIndexedSubscript:", [v7 section]);
+  viewCopy = view;
+  pathCopy = path;
+  v8 = -[NSMutableArray objectAtIndexedSubscript:](self->_sectionItems, "objectAtIndexedSubscript:", [pathCopy section]);
   v9 = [(PKDynamicTableViewController *)self _sectionControllerForSectionIdentifier:v8];
   if (objc_opt_respondsToSelector())
   {
-    [v9 tableView:v6 heightForRowAtIndexPath:v7 sectionIdentifier:v8];
+    [v9 tableView:viewCopy heightForRowAtIndexPath:pathCopy sectionIdentifier:v8];
     v11 = v10;
   }
 
@@ -690,14 +690,14 @@ LABEL_8:
   return v11;
 }
 
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = [(NSMutableArray *)self->_sectionItems objectAtIndexedSubscript:a4];
+  viewCopy = view;
+  v7 = [(NSMutableArray *)self->_sectionItems objectAtIndexedSubscript:section];
   v8 = [(PKDynamicTableViewController *)self _sectionControllerForSectionIdentifier:v7];
   if (objc_opt_respondsToSelector())
   {
-    [v8 tableView:v6 heightForHeaderInSectionIdentifier:v7];
+    [v8 tableView:viewCopy heightForHeaderInSectionIdentifier:v7];
     v10 = v9;
   }
 
@@ -709,14 +709,14 @@ LABEL_8:
   return v10;
 }
 
-- (double)tableView:(id)a3 heightForFooterInSection:(int64_t)a4
+- (double)tableView:(id)view heightForFooterInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = [(NSMutableArray *)self->_sectionItems objectAtIndexedSubscript:a4];
+  viewCopy = view;
+  v7 = [(NSMutableArray *)self->_sectionItems objectAtIndexedSubscript:section];
   v8 = [(PKDynamicTableViewController *)self _sectionControllerForSectionIdentifier:v7];
   if (objc_opt_respondsToSelector())
   {
-    [v8 tableView:v6 heightForFooterInSectionIdentifier:v7];
+    [v8 tableView:viewCopy heightForFooterInSectionIdentifier:v7];
     v10 = v9;
   }
 
@@ -728,14 +728,14 @@ LABEL_8:
   return v10;
 }
 
-- (double)tableView:(id)a3 estimatedHeightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view estimatedHeightForRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = -[NSMutableArray objectAtIndexedSubscript:](self->_sectionItems, "objectAtIndexedSubscript:", [v5 section]);
+  pathCopy = path;
+  v6 = -[NSMutableArray objectAtIndexedSubscript:](self->_sectionItems, "objectAtIndexedSubscript:", [pathCopy section]);
   v7 = [(PKDynamicTableViewController *)self _sectionControllerForSectionIdentifier:v6];
   if (objc_opt_respondsToSelector())
   {
-    [v7 estimatedHeightForRowAtIndexPath:v5 sectionIdentifier:v6];
+    [v7 estimatedHeightForRowAtIndexPath:pathCopy sectionIdentifier:v6];
     v9 = v8;
   }
 
@@ -747,27 +747,27 @@ LABEL_8:
   return v9;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = -[NSMutableArray objectAtIndexedSubscript:](self->_sectionItems, "objectAtIndexedSubscript:", [v6 section]);
+  viewCopy = view;
+  pathCopy = path;
+  v7 = -[NSMutableArray objectAtIndexedSubscript:](self->_sectionItems, "objectAtIndexedSubscript:", [pathCopy section]);
   v8 = [(PKDynamicTableViewController *)self _sectionControllerForSectionIdentifier:v7];
   if (objc_opt_respondsToSelector())
   {
-    [v8 tableView:v9 didSelectRowAtIndexPath:v6 sectionIdentifier:v7];
+    [v8 tableView:viewCopy didSelectRowAtIndexPath:pathCopy sectionIdentifier:v7];
   }
 }
 
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = -[NSMutableArray objectAtIndexedSubscript:](self->_sectionItems, "objectAtIndexedSubscript:", [v7 section]);
+  viewCopy = view;
+  pathCopy = path;
+  v8 = -[NSMutableArray objectAtIndexedSubscript:](self->_sectionItems, "objectAtIndexedSubscript:", [pathCopy section]);
   v9 = [(PKDynamicTableViewController *)self _sectionControllerForSectionIdentifier:v8];
   if (objc_opt_respondsToSelector())
   {
-    v10 = [v9 tableView:v6 canEditRowAtIndexPath:v7 sectionIdentifier:v8];
+    v10 = [v9 tableView:viewCopy canEditRowAtIndexPath:pathCopy sectionIdentifier:v8];
   }
 
   else
@@ -778,14 +778,14 @@ LABEL_8:
   return v10;
 }
 
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = -[NSMutableArray objectAtIndexedSubscript:](self->_sectionItems, "objectAtIndexedSubscript:", [v5 section]);
+  pathCopy = path;
+  v6 = -[NSMutableArray objectAtIndexedSubscript:](self->_sectionItems, "objectAtIndexedSubscript:", [pathCopy section]);
   v7 = [(PKDynamicTableViewController *)self _sectionControllerForSectionIdentifier:v6];
   if (objc_opt_respondsToSelector())
   {
-    v8 = [v7 editingStyleForRowAtIndexPath:v5 sectionIdentifier:v6];
+    v8 = [v7 editingStyleForRowAtIndexPath:pathCopy sectionIdentifier:v6];
   }
 
   else
@@ -796,15 +796,15 @@ LABEL_8:
   return v8;
 }
 
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = -[NSMutableArray objectAtIndexedSubscript:](self->_sectionItems, "objectAtIndexedSubscript:", [v7 section]);
+  viewCopy = view;
+  pathCopy = path;
+  v8 = -[NSMutableArray objectAtIndexedSubscript:](self->_sectionItems, "objectAtIndexedSubscript:", [pathCopy section]);
   v9 = [(PKDynamicTableViewController *)self _sectionControllerForSectionIdentifier:v8];
   if (objc_opt_respondsToSelector())
   {
-    v10 = [v9 tableView:v6 shouldHighlightRowAtIndexPath:v7 sectionIdentifier:v8];
+    v10 = [v9 tableView:viewCopy shouldHighlightRowAtIndexPath:pathCopy sectionIdentifier:v8];
   }
 
   else
@@ -815,9 +815,9 @@ LABEL_8:
   return v10;
 }
 
-- (BOOL)tableView:(id)a3 shouldDrawTopSeparatorForSection:(int64_t)a4
+- (BOOL)tableView:(id)view shouldDrawTopSeparatorForSection:(int64_t)section
 {
-  v5 = [(NSMutableArray *)self->_sectionItems objectAtIndexedSubscript:a4];
+  v5 = [(NSMutableArray *)self->_sectionItems objectAtIndexedSubscript:section];
   v6 = [(PKDynamicTableViewController *)self _sectionControllerForSectionIdentifier:v5];
   if (objc_opt_respondsToSelector())
   {
@@ -832,9 +832,9 @@ LABEL_8:
   return v7;
 }
 
-- (BOOL)tableView:(id)a3 shouldDrawBottomSeparatorForSection:(int64_t)a4
+- (BOOL)tableView:(id)view shouldDrawBottomSeparatorForSection:(int64_t)section
 {
-  v5 = [(NSMutableArray *)self->_sectionItems objectAtIndexedSubscript:a4];
+  v5 = [(NSMutableArray *)self->_sectionItems objectAtIndexedSubscript:section];
   v6 = [(PKDynamicTableViewController *)self _sectionControllerForSectionIdentifier:v5];
   if (objc_opt_respondsToSelector())
   {
@@ -849,15 +849,15 @@ LABEL_8:
   return v7;
 }
 
-- (id)tableView:(id)a3 leadingSwipeActionsConfigurationForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view leadingSwipeActionsConfigurationForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = -[NSMutableArray objectAtIndexedSubscript:](self->_sectionItems, "objectAtIndexedSubscript:", [v7 section]);
+  viewCopy = view;
+  pathCopy = path;
+  v8 = -[NSMutableArray objectAtIndexedSubscript:](self->_sectionItems, "objectAtIndexedSubscript:", [pathCopy section]);
   v9 = [(PKDynamicTableViewController *)self _sectionControllerForSectionIdentifier:v8];
   if (objc_opt_respondsToSelector())
   {
-    v10 = [v9 tableView:v6 leadingSwipeActionsConfigurationForRowAtIndexPath:v7 sectionIdentifier:v8];
+    v10 = [v9 tableView:viewCopy leadingSwipeActionsConfigurationForRowAtIndexPath:pathCopy sectionIdentifier:v8];
   }
 
   else
@@ -868,15 +868,15 @@ LABEL_8:
   return v10;
 }
 
-- (id)tableView:(id)a3 trailingSwipeActionsConfigurationForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view trailingSwipeActionsConfigurationForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = -[NSMutableArray objectAtIndexedSubscript:](self->_sectionItems, "objectAtIndexedSubscript:", [v7 section]);
+  viewCopy = view;
+  pathCopy = path;
+  v8 = -[NSMutableArray objectAtIndexedSubscript:](self->_sectionItems, "objectAtIndexedSubscript:", [pathCopy section]);
   v9 = [(PKDynamicTableViewController *)self _sectionControllerForSectionIdentifier:v8];
   if (objc_opt_respondsToSelector())
   {
-    v10 = [v9 tableView:v6 trailingSwipeActionsConfigurationForRowAtIndexPath:v7 sectionIdentifier:v8];
+    v10 = [v9 tableView:viewCopy trailingSwipeActionsConfigurationForRowAtIndexPath:pathCopy sectionIdentifier:v8];
   }
 
   else
@@ -887,17 +887,17 @@ LABEL_8:
   return v10;
 }
 
-- (id)tableView:(id)a3 contextMenuConfigurationForRowAtIndexPath:(id)a4 point:(CGPoint)a5
+- (id)tableView:(id)view contextMenuConfigurationForRowAtIndexPath:(id)path point:(CGPoint)point
 {
-  y = a5.y;
-  x = a5.x;
-  v9 = a3;
-  v10 = a4;
-  v11 = -[NSMutableArray objectAtIndexedSubscript:](self->_sectionItems, "objectAtIndexedSubscript:", [v10 section]);
+  y = point.y;
+  x = point.x;
+  viewCopy = view;
+  pathCopy = path;
+  v11 = -[NSMutableArray objectAtIndexedSubscript:](self->_sectionItems, "objectAtIndexedSubscript:", [pathCopy section]);
   v12 = [(PKDynamicTableViewController *)self _sectionControllerForSectionIdentifier:v11];
   if (objc_opt_respondsToSelector())
   {
-    v13 = [v12 tableView:v9 contextMenuConfigurationForRowAtIndexPath:v10 point:v11 sectionIdentifier:{x, y}];
+    v13 = [v12 tableView:viewCopy contextMenuConfigurationForRowAtIndexPath:pathCopy point:v11 sectionIdentifier:{x, y}];
   }
 
   else

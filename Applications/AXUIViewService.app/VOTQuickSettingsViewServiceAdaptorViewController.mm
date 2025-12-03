@@ -1,8 +1,8 @@
 @interface VOTQuickSettingsViewServiceAdaptorViewController
 - (void)_dismiss;
 - (void)_setupRemoteProxy;
-- (void)configureWithContext:(id)a3 completion:(id)a4;
-- (void)prepareForActivationWithContext:(id)a3 completion:(id)a4;
+- (void)configureWithContext:(id)context completion:(id)completion;
+- (void)prepareForActivationWithContext:(id)context completion:(id)completion;
 - (void)viewDidLoad;
 @end
 
@@ -16,38 +16,38 @@
   v3 = objc_alloc_init(VOTQuickSettingsViewController);
   [(VOTQuickSettingsViewServiceAdaptorViewController *)self setRootViewController:v3];
 
-  v4 = [(VOTQuickSettingsViewServiceAdaptorViewController *)self rootViewController];
-  [v4 setDelegate:self];
+  rootViewController = [(VOTQuickSettingsViewServiceAdaptorViewController *)self rootViewController];
+  [rootViewController setDelegate:self];
 }
 
-- (void)prepareForActivationWithContext:(id)a3 completion:(id)a4
+- (void)prepareForActivationWithContext:(id)context completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   v8 = VOTLogQuickSettings();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    sub_100012B0C(self, v6, v8);
+    sub_100012B0C(self, contextCopy, v8);
   }
 
-  if (v7)
+  if (completionCopy)
   {
-    v7[2](v7);
+    completionCopy[2](completionCopy);
   }
 }
 
-- (void)configureWithContext:(id)a3 completion:(id)a4
+- (void)configureWithContext:(id)context completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   v8 = VOTLogQuickSettings();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    sub_100012BC0(self, v6, v8);
+    sub_100012BC0(self, contextCopy, v8);
   }
 
-  v9 = [v6 userInfo];
-  v10 = [v9 objectForKeyedSubscript:@"data"];
+  userInfo = [contextCopy userInfo];
+  v10 = [userInfo objectForKeyedSubscript:@"data"];
 
   v15 = 0;
   v11 = [NSKeyedUnarchiver unarchivedObjectOfClass:objc_opt_class() fromData:v10 error:&v15];
@@ -61,22 +61,22 @@
     }
   }
 
-  v14 = [(VOTQuickSettingsViewServiceAdaptorViewController *)self rootViewController];
-  [v14 setData:v11];
+  rootViewController = [(VOTQuickSettingsViewServiceAdaptorViewController *)self rootViewController];
+  [rootViewController setData:v11];
 
-  if (v7)
+  if (completionCopy)
   {
-    v7[2](v7);
+    completionCopy[2](completionCopy);
   }
 }
 
 - (void)_setupRemoteProxy
 {
-  v2 = [(VOTQuickSettingsViewServiceAdaptorViewController *)self _remoteViewControllerProxy];
-  [v2 setDismissalAnimationStyle:2];
-  [v2 setOrientationChangedEventsEnabled:0];
-  [v2 setAllowsMenuButtonDismissal:1];
-  [v2 setWallpaperTunnelActive:0];
+  _remoteViewControllerProxy = [(VOTQuickSettingsViewServiceAdaptorViewController *)self _remoteViewControllerProxy];
+  [_remoteViewControllerProxy setDismissalAnimationStyle:2];
+  [_remoteViewControllerProxy setOrientationChangedEventsEnabled:0];
+  [_remoteViewControllerProxy setAllowsMenuButtonDismissal:1];
+  [_remoteViewControllerProxy setWallpaperTunnelActive:0];
 }
 
 - (void)_dismiss

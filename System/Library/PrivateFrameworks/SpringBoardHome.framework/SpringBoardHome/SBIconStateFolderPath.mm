@@ -1,9 +1,9 @@
 @interface SBIconStateFolderPath
 - (SBIconStateFolderPath)init;
-- (id)folderDefaultNameAtIndex:(unint64_t)a3;
-- (id)folderUniqueIdentifierAtIndex:(unint64_t)a3;
-- (void)addFolderWithName:(id)a3 defaultName:(id)a4 uniqueIdentifier:(id)a5 indexPath:(id)a6;
-- (void)enumerateFoldersUsingBlock:(id)a3;
+- (id)folderDefaultNameAtIndex:(unint64_t)index;
+- (id)folderUniqueIdentifierAtIndex:(unint64_t)index;
+- (void)addFolderWithName:(id)name defaultName:(id)defaultName uniqueIdentifier:(id)identifier indexPath:(id)path;
+- (void)enumerateFoldersUsingBlock:(id)block;
 @end
 
 @implementation SBIconStateFolderPath
@@ -35,9 +35,9 @@
   return v2;
 }
 
-- (id)folderDefaultNameAtIndex:(unint64_t)a3
+- (id)folderDefaultNameAtIndex:(unint64_t)index
 {
-  v3 = [(NSMutableArray *)self->_folderDefaultNames objectAtIndex:a3];
+  v3 = [(NSMutableArray *)self->_folderDefaultNames objectAtIndex:index];
   v4 = objc_opt_self();
   if (objc_opt_isKindOfClass())
   {
@@ -54,9 +54,9 @@
   return v5;
 }
 
-- (id)folderUniqueIdentifierAtIndex:(unint64_t)a3
+- (id)folderUniqueIdentifierAtIndex:(unint64_t)index
 {
-  v3 = [(NSMutableArray *)self->_folderUniqueIdentifiers objectAtIndex:a3];
+  v3 = [(NSMutableArray *)self->_folderUniqueIdentifiers objectAtIndex:index];
   v4 = objc_opt_self();
   if (objc_opt_isKindOfClass())
   {
@@ -73,51 +73,51 @@
   return v5;
 }
 
-- (void)addFolderWithName:(id)a3 defaultName:(id)a4 uniqueIdentifier:(id)a5 indexPath:(id)a6
+- (void)addFolderWithName:(id)name defaultName:(id)defaultName uniqueIdentifier:(id)identifier indexPath:(id)path
 {
-  v17 = a4;
-  v10 = a5;
+  defaultNameCopy = defaultName;
+  identifierCopy = identifier;
   folderNames = self->_folderNames;
-  v12 = a6;
-  [(NSMutableArray *)folderNames addObject:a3];
+  pathCopy = path;
+  [(NSMutableArray *)folderNames addObject:name];
   folderDefaultNames = self->_folderDefaultNames;
-  if (v17)
+  if (defaultNameCopy)
   {
     [(NSMutableArray *)self->_folderDefaultNames addObject:?];
   }
 
   else
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
-    [(NSMutableArray *)folderDefaultNames addObject:v14];
+    null = [MEMORY[0x1E695DFB0] null];
+    [(NSMutableArray *)folderDefaultNames addObject:null];
   }
 
   folderUniqueIdentifiers = self->_folderUniqueIdentifiers;
-  if (v10)
+  if (identifierCopy)
   {
-    [(NSMutableArray *)self->_folderUniqueIdentifiers addObject:v10];
+    [(NSMutableArray *)self->_folderUniqueIdentifiers addObject:identifierCopy];
   }
 
   else
   {
-    v16 = [MEMORY[0x1E695DFB0] null];
-    [(NSMutableArray *)folderUniqueIdentifiers addObject:v16];
+    null2 = [MEMORY[0x1E695DFB0] null];
+    [(NSMutableArray *)folderUniqueIdentifiers addObject:null2];
   }
 
-  [(NSMutableArray *)self->_folderPaths addObject:v12];
+  [(NSMutableArray *)self->_folderPaths addObject:pathCopy];
 }
 
-- (void)enumerateFoldersUsingBlock:(id)a3
+- (void)enumerateFoldersUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   folderNames = self->_folderNames;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __52__SBIconStateFolderPath_enumerateFoldersUsingBlock___block_invoke;
   v7[3] = &unk_1E808A710;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   [(NSMutableArray *)folderNames enumerateObjectsUsingBlock:v7];
 }
 

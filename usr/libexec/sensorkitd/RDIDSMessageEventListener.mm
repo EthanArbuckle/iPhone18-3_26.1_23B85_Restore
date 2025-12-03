@@ -1,17 +1,17 @@
 @interface RDIDSMessageEventListener
 + (void)initialize;
 - (void)dealloc;
-- (void)service:(id)a3 didFailResource:(id)a4 IDSIdentifier:(id)a5 keyName:(id)a6 sensor:(id)a7 withError:(id)a8;
-- (void)service:(id)a3 didReceiveResourceServiceMessage:(id)a4 fromID:(id)a5 incomingResponseIdentifier:(id)a6 outgoingResponseIdentifier:(id)a7;
-- (void)service:(id)a3 didRequestToSendIDSMessage:(id)a4 withIDSIdentifier:(id)a5;
-- (void)service:(id)a3 didRequestToSendResource:(id)a4 withIDSIdentifier:(id)a5 keyName:(id)a6 sensor:(id)a7 isRetry:(BOOL)a8;
+- (void)service:(id)service didFailResource:(id)resource IDSIdentifier:(id)identifier keyName:(id)name sensor:(id)sensor withError:(id)error;
+- (void)service:(id)service didReceiveResourceServiceMessage:(id)message fromID:(id)d incomingResponseIdentifier:(id)identifier outgoingResponseIdentifier:(id)responseIdentifier;
+- (void)service:(id)service didRequestToSendIDSMessage:(id)message withIDSIdentifier:(id)identifier;
+- (void)service:(id)service didRequestToSendResource:(id)resource withIDSIdentifier:(id)identifier keyName:(id)name sensor:(id)sensor isRetry:(BOOL)retry;
 @end
 
 @implementation RDIDSMessageEventListener
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     qword_100071988 = os_log_create("com.apple.SensorKit", "RDCompanionSideIDSMessageEventListener");
   }
@@ -24,28 +24,28 @@
   [(RDIDSMessageEventListener *)&v3 dealloc];
 }
 
-- (void)service:(id)a3 didRequestToSendIDSMessage:(id)a4 withIDSIdentifier:(id)a5
+- (void)service:(id)service didRequestToSendIDSMessage:(id)message withIDSIdentifier:(id)identifier
 {
-  v9 = [a4 objectForKeyedSubscript:@"RDGizmoSyncMessageTypeKey"];
+  v9 = [message objectForKeyedSubscript:@"RDGizmoSyncMessageTypeKey"];
   if (v9)
   {
-    v10 = [v9 integerValue];
-    if (v10 != 4)
+    integerValue = [v9 integerValue];
+    if (integerValue != 4)
     {
-      if (v10 != 3 || ([objc_msgSend(a4 objectForKeyedSubscript:{@"RDGizmoSyncArchiveTransferStatusKey", "integerValue"}] | 2) != 2)
+      if (integerValue != 3 || ([objc_msgSend(message objectForKeyedSubscript:{@"RDGizmoSyncArchiveTransferStatusKey", "integerValue"}] | 2) != 2)
       {
         return;
       }
 
-      if (a3)
+      if (service)
       {
-        v11 = sub_100023DB4(a3);
-        v12 = sub_100023C20(a3, v11, [*(a3 + 3) devices]);
+        v11 = sub_100023DB4(service);
+        v12 = sub_100023C20(service, v11, [*(service + 3) devices]);
         if (v12)
         {
           v13 = sub_10003A334(0, v12, self->_fileURLs, self->_defaults);
           v23 = sub_100012B50([RDIDSMessageStore alloc], v13);
-          sub_1000132DC(v23, a4, a5);
+          sub_1000132DC(v23, message, identifier);
 
           return;
         }
@@ -70,10 +70,10 @@ LABEL_21:
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Resending any pending IDS messages", buf, 2u);
     }
 
-    if (a3)
+    if (service)
     {
-      v16 = sub_100023DB4(a3);
-      v17 = sub_100023C20(a3, v16, [*(a3 + 3) devices]);
+      v16 = sub_100023DB4(service);
+      v17 = sub_100023C20(service, v16, [*(service + 3) devices]);
       if (v17)
       {
         v18 = sub_10003A334(0, v17, self->_fileURLs, self->_defaults);
@@ -90,7 +90,7 @@ LABEL_21:
         v24[3] = &unk_1000609D0;
         v24[4] = v19;
         v24[5] = v21;
-        v24[6] = a3;
+        v24[6] = service;
         v24[7] = buf;
         v24[8] = v20;
         sub_100012C04(v19, v24);
@@ -119,20 +119,20 @@ LABEL_21:
   }
 }
 
-- (void)service:(id)a3 didRequestToSendResource:(id)a4 withIDSIdentifier:(id)a5 keyName:(id)a6 sensor:(id)a7 isRetry:(BOOL)a8
+- (void)service:(id)service didRequestToSendResource:(id)resource withIDSIdentifier:(id)identifier keyName:(id)name sensor:(id)sensor isRetry:(BOOL)retry
 {
-  if (a3 && (v14 = sub_100023DB4(a3), (v15 = sub_100023C20(a3, v14, [*(a3 + 3) devices])) != 0))
+  if (service && (v14 = sub_100023DB4(service), (v15 = sub_100023C20(service, v14, [*(service + 3) devices])) != 0))
   {
     v16 = sub_10003A334(0, v15, self->_fileURLs, self->_defaults);
     v17 = sub_100012B50([RDIDSMessageStore alloc], v16);
     v26[0] = &off_1000651A8;
     v25[0] = @"RDGizmoSyncMessageTypeKey";
     v25[1] = @"RDGizmoSyncSamplesURLKey";
-    v26[1] = [a4 path];
-    v26[2] = a6;
+    v26[1] = [resource path];
+    v26[2] = name;
     v25[2] = @"RDGizmoSyncKeyKey";
     v25[3] = @"RDGizmoSyncSensorIdentifierKey";
-    v26[3] = a7;
+    v26[3] = sensor;
     v25[4] = @"RDGizmoSyncGizmoAbsoluteTimeKey";
     v18 = mach_continuous_time();
     if (qword_100071B60 != -1)
@@ -150,7 +150,7 @@ LABEL_21:
     }
 
     v26[4] = [NSNumber numberWithDouble:v21 + v20 + v22];
-    sub_1000132DC(v17, [NSDictionary dictionaryWithObjects:v26 forKeys:v25 count:5], a5);
+    sub_1000132DC(v17, [NSDictionary dictionaryWithObjects:v26 forKeys:v25 count:5], identifier);
   }
 
   else
@@ -164,23 +164,23 @@ LABEL_21:
   }
 }
 
-- (void)service:(id)a3 didFailResource:(id)a4 IDSIdentifier:(id)a5 keyName:(id)a6 sensor:(id)a7 withError:(id)a8
+- (void)service:(id)service didFailResource:(id)resource IDSIdentifier:(id)identifier keyName:(id)name sensor:(id)sensor withError:(id)error
 {
   v11 = qword_100071988;
   if (os_log_type_enabled(qword_100071988, OS_LOG_TYPE_DEFAULT))
   {
     v17 = 138543362;
-    v18 = a5;
+    identifierCopy = identifier;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Resource send failed immediately for %{public}@, removing pending message", &v17, 0xCu);
   }
 
-  if (a5)
+  if (identifier)
   {
-    if (a3 && (v12 = sub_100023DB4(a3), (v13 = sub_100023C20(a3, v12, [*(a3 + 3) devices])) != 0))
+    if (service && (v12 = sub_100023DB4(service), (v13 = sub_100023C20(service, v12, [*(service + 3) devices])) != 0))
     {
       v14 = sub_10003A334(0, v13, self->_fileURLs, self->_defaults);
       v15 = sub_100012B50([RDIDSMessageStore alloc], v14);
-      sub_100013800(v15, a5);
+      sub_100013800(v15, identifier);
     }
 
     else
@@ -195,9 +195,9 @@ LABEL_21:
   }
 }
 
-- (void)service:(id)a3 didReceiveResourceServiceMessage:(id)a4 fromID:(id)a5 incomingResponseIdentifier:(id)a6 outgoingResponseIdentifier:(id)a7
+- (void)service:(id)service didReceiveResourceServiceMessage:(id)message fromID:(id)d incomingResponseIdentifier:(id)identifier outgoingResponseIdentifier:(id)responseIdentifier
 {
-  v11 = [a4 objectForKeyedSubscript:@"RDGizmoSyncMessageTypeKey"];
+  v11 = [message objectForKeyedSubscript:@"RDGizmoSyncMessageTypeKey"];
   if (!v11)
   {
     v18 = qword_100071988;
@@ -211,7 +211,7 @@ LABEL_21:
     goto LABEL_15;
   }
 
-  if (!a3 || (v12 = v11, v13 = sub_100023DB4(a3), (v14 = sub_100023C20(a3, v13, [*(a3 + 3) devices])) == 0))
+  if (!service || (v12 = v11, v13 = sub_100023DB4(service), (v14 = sub_100023C20(service, v13, [*(service + 3) devices])) == 0))
   {
     v18 = qword_100071988;
     if (!os_log_type_enabled(qword_100071988, OS_LOG_TYPE_ERROR))
@@ -227,8 +227,8 @@ LABEL_15:
   }
 
   v15 = v14;
-  v16 = [v12 integerValue];
-  if (v16 == 3)
+  integerValue = [v12 integerValue];
+  if (integerValue == 3)
   {
     v20 = sub_10003A334(0, v15, self->_fileURLs, self->_defaults);
     v21 = sub_100012B50([RDIDSMessageStore alloc], v20);
@@ -236,16 +236,16 @@ LABEL_15:
     v23[1] = 3221225472;
     v23[2] = sub_100002DA0;
     v23[3] = &unk_1000609F8;
-    v23[4] = a4;
+    v23[4] = message;
     v23[5] = v21;
     sub_100012C04(v21, v23);
   }
 
-  else if (v16 == 6)
+  else if (integerValue == 6)
   {
     v17 = sub_10003A334(0, v15, self->_fileURLs, self->_defaults);
     v22 = sub_100012B50([RDIDSMessageStore alloc], v17);
-    sub_100013800(v22, a6);
+    sub_100013800(v22, identifier);
   }
 }
 

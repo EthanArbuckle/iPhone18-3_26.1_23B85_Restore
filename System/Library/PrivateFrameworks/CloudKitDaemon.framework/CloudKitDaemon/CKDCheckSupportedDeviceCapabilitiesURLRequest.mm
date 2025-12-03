@@ -1,30 +1,30 @@
 @interface CKDCheckSupportedDeviceCapabilitiesURLRequest
-- (CKDCheckSupportedDeviceCapabilitiesURLRequest)initWithOperation:(id)a3 continuations:(id)a4 zoneIDs:(id)a5 desiredCapabilitySets:(id)a6 options:(id)a7;
+- (CKDCheckSupportedDeviceCapabilitiesURLRequest)initWithOperation:(id)operation continuations:(id)continuations zoneIDs:(id)ds desiredCapabilitySets:(id)sets options:(id)options;
 - (id)generateRequestOperations;
-- (id)requestDidParseProtobufObject:(id)a3;
+- (id)requestDidParseProtobufObject:(id)object;
 - (id)requestOperationClasses;
-- (void)reportClientValidationError:(id)a3 forZoneID:(id)a4 capabilitySet:(id)a5 failureType:(id)a6;
-- (void)reportContinuationToken:(id)a3 forZoneID:(id)a4 capabilitySet:(id)a5;
-- (void)requestDidParseNodeFailure:(id)a3;
+- (void)reportClientValidationError:(id)error forZoneID:(id)d capabilitySet:(id)set failureType:(id)type;
+- (void)reportContinuationToken:(id)token forZoneID:(id)d capabilitySet:(id)set;
+- (void)requestDidParseNodeFailure:(id)failure;
 @end
 
 @implementation CKDCheckSupportedDeviceCapabilitiesURLRequest
 
-- (CKDCheckSupportedDeviceCapabilitiesURLRequest)initWithOperation:(id)a3 continuations:(id)a4 zoneIDs:(id)a5 desiredCapabilitySets:(id)a6 options:(id)a7
+- (CKDCheckSupportedDeviceCapabilitiesURLRequest)initWithOperation:(id)operation continuations:(id)continuations zoneIDs:(id)ds desiredCapabilitySets:(id)sets options:(id)options
 {
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  continuationsCopy = continuations;
+  dsCopy = ds;
+  setsCopy = sets;
+  optionsCopy = options;
   v24.receiver = self;
   v24.super_class = CKDCheckSupportedDeviceCapabilitiesURLRequest;
-  v17 = [(CKDURLRequest *)&v24 initWithOperation:a3];
+  v17 = [(CKDURLRequest *)&v24 initWithOperation:operation];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_continuations, a4);
-    objc_storeStrong(&v18->_zoneIDs, a5);
-    objc_storeStrong(&v18->_desiredCapabilitySets, a6);
+    objc_storeStrong(&v17->_continuations, continuations);
+    objc_storeStrong(&v18->_zoneIDs, ds);
+    objc_storeStrong(&v18->_desiredCapabilitySets, sets);
     v19 = objc_opt_new();
     zoneIDByRequestID = v18->_zoneIDByRequestID;
     v18->_zoneIDByRequestID = v19;
@@ -33,7 +33,7 @@
     capabililitySetsByRequestID = v18->_capabililitySetsByRequestID;
     v18->_capabililitySetsByRequestID = v21;
 
-    objc_storeStrong(&v18->_options, a7);
+    objc_storeStrong(&v18->_options, options);
   }
 
   return v18;
@@ -301,40 +301,40 @@
   return v227;
 }
 
-- (void)reportClientValidationError:(id)a3 forZoneID:(id)a4 capabilitySet:(id)a5 failureType:(id)a6
+- (void)reportClientValidationError:(id)error forZoneID:(id)d capabilitySet:(id)set failureType:(id)type
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  errorCopy = error;
+  dCopy = d;
+  setCopy = set;
+  typeCopy = type;
   v16 = objc_msgSend_errorFromClientValidationBlock(self, v14, v15);
 
   if (v16)
   {
     v19 = objc_msgSend_errorFromClientValidationBlock(self, v17, v18);
-    (v19)[2](v19, v10, v11, v12);
+    (v19)[2](v19, errorCopy, dCopy, setCopy);
   }
 
-  if (v13)
+  if (typeCopy)
   {
     v20 = objc_msgSend_operation(self, v17, v18);
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
     v22[2] = sub_2253DF7FC;
     v22[3] = &unk_2785487F8;
-    v23 = v13;
+    v23 = typeCopy;
     objc_msgSend_updateCloudKitMetrics_(v20, v21, v22);
   }
 }
 
-- (void)reportContinuationToken:(id)a3 forZoneID:(id)a4 capabilitySet:(id)a5
+- (void)reportContinuationToken:(id)token forZoneID:(id)d capabilitySet:(id)set
 {
   v30 = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  setCopy = set;
+  dCopy = d;
+  tokenCopy = token;
   v11 = [CKDCheckSupportedDeviceCapabilitiesContinuationParams alloc];
-  v13 = objc_msgSend_initWithContinuationToken_zoneID_capabilitySet_(v11, v12, v10, v9, v8);
+  v13 = objc_msgSend_initWithContinuationToken_zoneID_capabilitySet_(v11, v12, tokenCopy, dCopy, setCopy);
 
   if (*MEMORY[0x277CBC880] != -1)
   {
@@ -364,17 +364,17 @@
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (id)requestDidParseProtobufObject:(id)a3
+- (id)requestDidParseProtobufObject:(id)object
 {
   v730 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  objectCopy = object;
   v7 = objc_msgSend_zoneIDByRequestID(self, v5, v6);
-  v10 = objc_msgSend_response(v4, v8, v9);
+  v10 = objc_msgSend_response(objectCopy, v8, v9);
   v13 = objc_msgSend_operationUUID(v10, v11, v12);
   v15 = objc_msgSend_objectForKeyedSubscript_(v7, v14, v13);
 
   v18 = objc_msgSend_capabililitySetsByRequestID(self, v16, v17);
-  v21 = objc_msgSend_response(v4, v19, v20);
+  v21 = objc_msgSend_response(objectCopy, v19, v20);
   v24 = objc_msgSend_operationUUID(v21, v22, v23);
   v26 = objc_msgSend_objectForKeyedSubscript_(v18, v25, v24);
 
@@ -394,20 +394,20 @@
     *buf = 138543874;
     v717 = v90;
     v718 = 2112;
-    v719 = v4;
+    v719 = objectCopy;
     v720 = 2112;
     v721 = v15;
     _os_log_debug_impl(&dword_22506F000, v31, OS_LOG_TYPE_DEBUG, "req: %{public}@, Received device capabilities check response: %@ for zoneID: %@", buf, 0x20u);
   }
 
-  v36 = objc_msgSend_result(v4, v34, v35);
+  v36 = objc_msgSend_result(objectCopy, v34, v35);
   hasError = objc_msgSend_hasError(v36, v37, v38);
 
   if (!hasError)
   {
     v48 = objc_opt_new();
     v708 = v48;
-    if (!objc_msgSend_hasAdopterCapabilitiesCheckResponse(v4, v49, v50))
+    if (!objc_msgSend_hasAdopterCapabilitiesCheckResponse(objectCopy, v49, v50))
     {
       v45 = 0;
       v704 = 0;
@@ -423,7 +423,7 @@ LABEL_14:
       if (os_log_type_enabled(v68, OS_LOG_TYPE_ERROR))
       {
         v122 = objc_msgSend_requestUUID(self, v69, v70);
-        v125 = objc_msgSend_result(v4, v123, v124);
+        v125 = objc_msgSend_result(objectCopy, v123, v124);
         *buf = 138543874;
         v717 = v122;
         v718 = 2112;
@@ -442,7 +442,7 @@ LABEL_14:
       goto LABEL_47;
     }
 
-    v53 = objc_msgSend_adopterCapabilitiesCheckResponse(v4, v51, v52);
+    v53 = objc_msgSend_adopterCapabilitiesCheckResponse(objectCopy, v51, v52);
     if (objc_msgSend_hasContinuation(v53, v54, v55))
     {
       v58 = objc_msgSend_continuation(v53, v56, v57);
@@ -1597,7 +1597,7 @@ LABEL_206:
                 }
 
                 v495 = objc_msgSend_supportedDeviceCapabilitiesCheckedForZoneBlock(self, v492, v493);
-                v498 = objc_msgSend_result(v4, v496, v497);
+                v498 = objc_msgSend_result(objectCopy, v496, v497);
                 (v495)[2](v495, v15, v26, inited, v498);
 
                 v64 = 0;
@@ -1742,7 +1742,7 @@ LABEL_206:
   if (v42)
   {
     v45 = objc_msgSend_errorFromServerBlock(self, v43, v44);
-    v48 = objc_msgSend_result(v4, v46, v47);
+    v48 = objc_msgSend_result(objectCopy, v46, v47);
     (v45->data)(v45, v15, v26, v48);
 LABEL_49:
   }
@@ -1751,17 +1751,17 @@ LABEL_49:
   return 0;
 }
 
-- (void)requestDidParseNodeFailure:(id)a3
+- (void)requestDidParseNodeFailure:(id)failure
 {
   v54 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  failureCopy = failure;
   v7 = objc_msgSend_zoneIDByRequestID(self, v5, v6);
-  v10 = objc_msgSend_response(v4, v8, v9);
+  v10 = objc_msgSend_response(failureCopy, v8, v9);
   v13 = objc_msgSend_operationUUID(v10, v11, v12);
   v15 = objc_msgSend_objectForKeyedSubscript_(v7, v14, v13);
 
   v18 = objc_msgSend_capabililitySetsByRequestID(self, v16, v17);
-  v21 = objc_msgSend_response(v4, v19, v20);
+  v21 = objc_msgSend_response(failureCopy, v19, v20);
   v24 = objc_msgSend_operationUUID(v21, v22, v23);
   v26 = objc_msgSend_objectForKeyedSubscript_(v18, v25, v24);
 
@@ -1775,14 +1775,14 @@ LABEL_49:
   {
     v38 = v27;
     v41 = objc_msgSend_requestUUID(self, v39, v40);
-    v44 = objc_msgSend_response(v4, v42, v43);
+    v44 = objc_msgSend_response(failureCopy, v42, v43);
     v47 = objc_msgSend_operationUUID(v44, v45, v46);
     v48 = 138543874;
     v49 = v41;
     v50 = 2112;
     v51 = v47;
     v52 = 2112;
-    v53 = v4;
+    v53 = failureCopy;
     _os_log_error_impl(&dword_22506F000, v38, OS_LOG_TYPE_ERROR, "req: %{public}@, Parse failure in device capabilities check response, operationUUID: %@, responseObject: %@", &v48, 0x20u);
   }
 
@@ -1791,7 +1791,7 @@ LABEL_49:
   if (v30)
   {
     v33 = objc_msgSend_errorFromServerBlock(self, v31, v32);
-    v36 = objc_msgSend_result(v4, v34, v35);
+    v36 = objc_msgSend_result(failureCopy, v34, v35);
     (v33)[2](v33, v15, v26, v36);
   }
 

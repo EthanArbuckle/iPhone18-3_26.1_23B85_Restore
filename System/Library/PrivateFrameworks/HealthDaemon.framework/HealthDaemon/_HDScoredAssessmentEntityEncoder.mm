@@ -1,7 +1,7 @@
 @interface _HDScoredAssessmentEntityEncoder
-- (BOOL)applyPropertiesToObject:(id)a3 persistentID:(int64_t)a4 row:(HDSQLiteRow *)a5 error:(id *)a6;
-- (id)codableRepresentationForPersistentID:(int64_t)a3 row:(HDSQLiteRow *)a4 error:(id *)a5;
-- (id)objectForPersistentID:(int64_t)a3 row:(HDSQLiteRow *)a4 error:(id *)a5;
+- (BOOL)applyPropertiesToObject:(id)object persistentID:(int64_t)d row:(HDSQLiteRow *)row error:(id *)error;
+- (id)codableRepresentationForPersistentID:(int64_t)d row:(HDSQLiteRow *)row error:(id *)error;
+- (id)objectForPersistentID:(int64_t)d row:(HDSQLiteRow *)row error:(id *)error;
 - (id)orderedProperties;
 @end
 
@@ -14,19 +14,19 @@
   v9[1] = @"answers";
   v9[2] = @"risk";
   v3 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:3];
-  v4 = [(HDEntityEncoder *)self superclassEncoder];
-  v5 = [v4 orderedProperties];
-  v6 = [v3 arrayByAddingObjectsFromArray:v5];
+  superclassEncoder = [(HDEntityEncoder *)self superclassEncoder];
+  orderedProperties = [superclassEncoder orderedProperties];
+  v6 = [v3 arrayByAddingObjectsFromArray:orderedProperties];
 
   v7 = *MEMORY[0x277D85DE8];
 
   return v6;
 }
 
-- (id)objectForPersistentID:(int64_t)a3 row:(HDSQLiteRow *)a4 error:(id *)a5
+- (id)objectForPersistentID:(int64_t)d row:(HDSQLiteRow *)row error:(id *)error
 {
   v9 = HDSQLiteColumnWithName();
-  if (MEMORY[0x22AAC6CD0](a4, v9))
+  if (MEMORY[0x22AAC6CD0](row, v9))
   {
     v10 = 0;
   }
@@ -37,7 +37,7 @@
   }
 
   v11 = [objc_alloc(objc_msgSend(v10 "dataObjectClass"))];
-  if ([(_HDScoredAssessmentEntityEncoder *)self applyPropertiesToObject:v11 persistentID:a3 row:a4 error:a5])
+  if ([(_HDScoredAssessmentEntityEncoder *)self applyPropertiesToObject:v11 persistentID:d row:row error:error])
   {
     v12 = v11;
   }
@@ -50,10 +50,10 @@
   return v12;
 }
 
-- (id)codableRepresentationForPersistentID:(int64_t)a3 row:(HDSQLiteRow *)a4 error:(id *)a5
+- (id)codableRepresentationForPersistentID:(int64_t)d row:(HDSQLiteRow *)row error:(id *)error
 {
-  v8 = [(HDEntityEncoder *)self superclassEncoder];
-  v9 = [v8 codableRepresentationForPersistentID:a3 row:a4 error:a5];
+  superclassEncoder = [(HDEntityEncoder *)self superclassEncoder];
+  v9 = [superclassEncoder codableRepresentationForPersistentID:d row:row error:error];
 
   if (v9)
   {
@@ -74,30 +74,30 @@
   return v10;
 }
 
-- (BOOL)applyPropertiesToObject:(id)a3 persistentID:(int64_t)a4 row:(HDSQLiteRow *)a5 error:(id *)a6
+- (BOOL)applyPropertiesToObject:(id)object persistentID:(int64_t)d row:(HDSQLiteRow *)row error:(id *)error
 {
-  v9 = a3;
-  v10 = [(HDEntityEncoder *)self superclassEncoder];
-  LODWORD(a6) = [v10 applyPropertiesToObject:v9 persistentID:a4 row:a5 error:a6];
+  objectCopy = object;
+  superclassEncoder = [(HDEntityEncoder *)self superclassEncoder];
+  LODWORD(error) = [superclassEncoder applyPropertiesToObject:objectCopy persistentID:d row:row error:error];
 
-  if (a6)
+  if (error)
   {
-    [v9 _setScore:HDSQLiteColumnWithNameAsInt64()];
-    a6 = MEMORY[0x277CCAAC8];
+    [objectCopy _setScore:HDSQLiteColumnWithNameAsInt64()];
+    error = MEMORY[0x277CCAAC8];
     v12 = objc_opt_class();
     v13 = HDSQLiteColumnWithNameAsData();
     v16 = 0;
-    v14 = [a6 unarchivedArrayOfObjectsOfClass:v12 fromData:v13 error:&v16];
+    v14 = [error unarchivedArrayOfObjectsOfClass:v12 fromData:v13 error:&v16];
 
-    LOBYTE(a6) = v14 != 0;
+    LOBYTE(error) = v14 != 0;
     if (v14)
     {
-      [v9 _setAnswers:v14];
-      [v9 _setRisk:HDSQLiteColumnWithNameAsInt64()];
+      [objectCopy _setAnswers:v14];
+      [objectCopy _setRisk:HDSQLiteColumnWithNameAsInt64()];
     }
   }
 
-  return a6;
+  return error;
 }
 
 @end

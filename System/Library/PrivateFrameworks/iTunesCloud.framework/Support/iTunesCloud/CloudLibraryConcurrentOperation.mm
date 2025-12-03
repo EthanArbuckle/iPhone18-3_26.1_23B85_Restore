@@ -24,8 +24,8 @@
 
 - (void)start
 {
-  v3 = [(CloudLibraryConcurrentOperation *)self isCancelled];
-  if (v3)
+  isCancelled = [(CloudLibraryConcurrentOperation *)self isCancelled];
+  if (isCancelled)
   {
     v4 = &OBJC_IVAR___CloudLibraryConcurrentOperation__finished;
   }
@@ -36,7 +36,7 @@
   }
 
   v5 = &selRef_isFinished;
-  if (!v3)
+  if (!isCancelled)
   {
     v5 = &selRef_isExecuting;
   }

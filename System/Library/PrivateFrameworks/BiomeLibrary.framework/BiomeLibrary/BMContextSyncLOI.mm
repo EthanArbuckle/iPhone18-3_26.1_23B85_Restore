@@ -1,15 +1,15 @@
 @interface BMContextSyncLOI
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMContextSyncLOI)initWithID:(id)a3 deviceUUID:(id)a4 starting:(id)a5 userSpecificPlaceType:(int)a6 placeType:(int)a7;
-- (BMContextSyncLOI)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
+- (BMContextSyncLOI)initWithID:(id)d deviceUUID:(id)iD starting:(id)starting userSpecificPlaceType:(int)type placeType:(int)placeType;
+- (BMContextSyncLOI)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMContextSyncLOI
@@ -34,13 +34,13 @@
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = [(BMContextSyncLOI *)self ID];
     v7 = [v5 ID];
     v8 = v7;
@@ -60,18 +60,18 @@
       }
     }
 
-    v13 = [(BMContextSyncLOI *)self deviceUUID];
-    v14 = [v5 deviceUUID];
-    v15 = v14;
-    if (v13 == v14)
+    deviceUUID = [(BMContextSyncLOI *)self deviceUUID];
+    deviceUUID2 = [v5 deviceUUID];
+    v15 = deviceUUID2;
+    if (deviceUUID == deviceUUID2)
     {
     }
 
     else
     {
-      v16 = [(BMContextSyncLOI *)self deviceUUID];
-      v17 = [v5 deviceUUID];
-      v18 = [v16 isEqual:v17];
+      deviceUUID3 = [(BMContextSyncLOI *)self deviceUUID];
+      deviceUUID4 = [v5 deviceUUID];
+      v18 = [deviceUUID3 isEqual:deviceUUID4];
 
       if (!v18)
       {
@@ -81,11 +81,11 @@
 
     if (!-[BMContextSyncLOI hasStarting](self, "hasStarting") && ![v5 hasStarting] || -[BMContextSyncLOI hasStarting](self, "hasStarting") && objc_msgSend(v5, "hasStarting") && (v19 = -[BMContextSyncLOI starting](self, "starting"), v19 == objc_msgSend(v5, "starting")))
     {
-      v20 = [(BMContextSyncLOI *)self userSpecificPlaceType];
-      if (v20 == [v5 userSpecificPlaceType])
+      userSpecificPlaceType = [(BMContextSyncLOI *)self userSpecificPlaceType];
+      if (userSpecificPlaceType == [v5 userSpecificPlaceType])
       {
-        v21 = [(BMContextSyncLOI *)self placeType];
-        v12 = v21 == [v5 placeType];
+        placeType = [(BMContextSyncLOI *)self placeType];
+        v12 = placeType == [v5 placeType];
 LABEL_19:
 
         goto LABEL_20;
@@ -107,7 +107,7 @@ LABEL_20:
 {
   v23[5] = *MEMORY[0x1E69E9840];
   v3 = [(BMContextSyncLOI *)self ID];
-  v4 = [(BMContextSyncLOI *)self deviceUUID];
+  deviceUUID = [(BMContextSyncLOI *)self deviceUUID];
   if ([(BMContextSyncLOI *)self hasStarting])
   {
     v5 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMContextSyncLOI starting](self, "starting")}];
@@ -121,46 +121,46 @@ LABEL_20:
   v6 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMContextSyncLOI userSpecificPlaceType](self, "userSpecificPlaceType")}];
   v7 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMContextSyncLOI placeType](self, "placeType")}];
   v18 = @"ID";
-  v8 = v3;
+  null = v3;
   if (!v3)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v16 = v8;
-  v23[0] = v8;
+  v16 = null;
+  v23[0] = null;
   v19 = @"deviceUUID";
-  v9 = v4;
-  if (!v4)
+  null2 = deviceUUID;
+  if (!deviceUUID)
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[1] = v9;
+  v23[1] = null2;
   v20 = @"starting";
-  v10 = v5;
+  null3 = v5;
   if (!v5)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[2] = v10;
+  v23[2] = null3;
   v21 = @"userSpecificPlaceType";
-  v11 = v6;
+  null4 = v6;
   if (!v6)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[3] = v11;
+  v23[3] = null4;
   v22 = @"placeType";
-  v12 = v7;
+  null5 = v7;
   if (!v7)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[4] = v12;
+  v23[4] = null5;
   v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:&v18 count:{5, v16}];
   if (v7)
   {
@@ -188,7 +188,7 @@ LABEL_16:
   if (v5)
   {
 LABEL_17:
-    if (v4)
+    if (deviceUUID)
     {
       goto LABEL_18;
     }
@@ -205,7 +205,7 @@ LABEL_25:
 
 LABEL_24:
 
-  if (!v4)
+  if (!deviceUUID)
   {
     goto LABEL_25;
   }
@@ -224,23 +224,23 @@ LABEL_19:
   return v13;
 }
 
-- (BMContextSyncLOI)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMContextSyncLOI)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v46[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"ID"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"ID"];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v8 = 0;
 LABEL_4:
-    v9 = [v6 objectForKeyedSubscript:@"deviceUUID"];
-    v33 = a4;
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"deviceUUID"];
+    errorCopy = error;
     if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v36 = 0;
           v17 = 0;
@@ -255,7 +255,7 @@ LABEL_4:
         v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v44 forKeys:&v43 count:1];
         v36 = 0;
         v17 = 0;
-        *v33 = [v18 initWithDomain:v19 code:2 userInfo:v10];
+        *errorCopy = [v18 initWithDomain:v19 code:2 userInfo:v10];
         goto LABEL_41;
       }
 
@@ -267,14 +267,14 @@ LABEL_4:
       v36 = 0;
     }
 
-    v10 = [v6 objectForKeyedSubscript:@"starting"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"starting"];
     v34 = v8;
     if (v10 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v35 = 0;
           v17 = 0;
@@ -289,7 +289,7 @@ LABEL_4:
         v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v42 forKeys:&v41 count:1];
         v35 = 0;
         v17 = 0;
-        *v33 = [v20 initWithDomain:v21 code:2 userInfo:v11];
+        *errorCopy = [v20 initWithDomain:v21 code:2 userInfo:v11];
 LABEL_40:
 
         v8 = v34;
@@ -306,7 +306,7 @@ LABEL_41:
       v35 = 0;
     }
 
-    v11 = [v6 objectForKeyedSubscript:@"userSpecificPlaceType"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"userSpecificPlaceType"];
     if (v11 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
@@ -320,7 +320,7 @@ LABEL_41:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (!a4)
+          if (!error)
           {
             v12 = 0;
             v17 = 0;
@@ -335,7 +335,7 @@ LABEL_41:
           v22 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v40 forKeys:&v39 count:1];
           v12 = 0;
           v17 = 0;
-          *v33 = [v31 initWithDomain:v29 code:2 userInfo:v22];
+          *errorCopy = [v31 initWithDomain:v29 code:2 userInfo:v22];
           goto LABEL_39;
         }
 
@@ -350,7 +350,7 @@ LABEL_41:
       v12 = 0;
     }
 
-    v22 = [v6 objectForKeyedSubscript:@"placeType"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"placeType"];
     if (v22 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
@@ -364,7 +364,7 @@ LABEL_41:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (v33)
+          if (errorCopy)
           {
             v32 = objc_alloc(MEMORY[0x1E696ABC0]);
             v30 = *MEMORY[0x1E698F240];
@@ -372,7 +372,7 @@ LABEL_41:
             v27 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber (corresponding to enum value), or NSString (string version of enum)", objc_opt_class(), @"placeType"];
             v38 = v27;
             v28 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v38 forKeys:&v37 count:1];
-            *v33 = [v32 initWithDomain:v30 code:2 userInfo:v28];
+            *errorCopy = [v32 initWithDomain:v30 code:2 userInfo:v28];
           }
 
           v23 = 0;
@@ -405,14 +405,14 @@ LABEL_39:
     goto LABEL_4;
   }
 
-  if (!a4)
+  if (!error)
   {
     v8 = 0;
     v17 = 0;
     goto LABEL_43;
   }
 
-  v14 = a4;
+  errorCopy2 = error;
   v15 = objc_alloc(MEMORY[0x1E696ABC0]);
   v16 = *MEMORY[0x1E698F240];
   v45 = *MEMORY[0x1E696A578];
@@ -421,7 +421,7 @@ LABEL_39:
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v46 forKeys:&v45 count:1];
   v8 = 0;
   v17 = 0;
-  *v14 = [v15 initWithDomain:v16 code:2 userInfo:v9];
+  *errorCopy2 = [v15 initWithDomain:v16 code:2 userInfo:v9];
 LABEL_42:
 
 LABEL_43:
@@ -433,14 +433,14 @@ LABEL_43:
 {
   v3 = objc_opt_new();
   [(BMContextSyncLOI *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v7 = a3;
+  toCopy = to;
   if (self->_ID)
   {
     PBDataWriterWriteStringField();
@@ -463,9 +463,9 @@ LABEL_43:
   PBDataWriterWriteUint32Field();
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v42.receiver = self;
   v42.super_class = BMContextSyncLOI;
   v5 = [(BMEventBase *)&v42 init];
@@ -474,12 +474,12 @@ LABEL_43:
     goto LABEL_70;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -490,18 +490,18 @@ LABEL_43:
       while (1)
       {
         v43 = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v43 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v43 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v43 & 0x7F) << v7;
@@ -519,9 +519,9 @@ LABEL_43:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -565,18 +565,18 @@ LABEL_54:
         while (1)
         {
           v43 = 0;
-          v28 = [v4 position] + 1;
-          if (v28 >= [v4 position] && (v29 = objc_msgSend(v4, "position") + 1, v29 <= objc_msgSend(v4, "length")))
+          v28 = [fromCopy position] + 1;
+          if (v28 >= [fromCopy position] && (v29 = objc_msgSend(fromCopy, "position") + 1, v29 <= objc_msgSend(fromCopy, "length")))
           {
-            v30 = [v4 data];
-            [v30 getBytes:&v43 range:{objc_msgSend(v4, "position"), 1}];
+            data2 = [fromCopy data];
+            [data2 getBytes:&v43 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v27 |= (v43 & 0x7F) << v25;
@@ -594,7 +594,7 @@ LABEL_54:
           }
         }
 
-        v31 = (v27 != 0) & ~[v4 hasError];
+        v31 = (v27 != 0) & ~[fromCopy hasError];
 LABEL_57:
         v5->_starting = v31;
       }
@@ -609,18 +609,18 @@ LABEL_57:
           while (1)
           {
             v43 = 0;
-            v34 = [v4 position] + 1;
-            if (v34 >= [v4 position] && (v35 = objc_msgSend(v4, "position") + 1, v35 <= objc_msgSend(v4, "length")))
+            v34 = [fromCopy position] + 1;
+            if (v34 >= [fromCopy position] && (v35 = objc_msgSend(fromCopy, "position") + 1, v35 <= objc_msgSend(fromCopy, "length")))
             {
-              v36 = [v4 data];
-              [v36 getBytes:&v43 range:{objc_msgSend(v4, "position"), 1}];
+              data3 = [fromCopy data];
+              [data3 getBytes:&v43 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v18 |= (v43 & 0x7F) << v32;
@@ -637,7 +637,7 @@ LABEL_57:
             }
           }
 
-          if (([v4 hasError] & 1) != 0 || v18 > 4)
+          if (([fromCopy hasError] & 1) != 0 || v18 > 4)
           {
 LABEL_60:
             LODWORD(v18) = 0;
@@ -659,18 +659,18 @@ LABEL_60:
           while (1)
           {
             v43 = 0;
-            v19 = [v4 position] + 1;
-            if (v19 >= [v4 position] && (v20 = objc_msgSend(v4, "position") + 1, v20 <= objc_msgSend(v4, "length")))
+            v19 = [fromCopy position] + 1;
+            if (v19 >= [fromCopy position] && (v20 = objc_msgSend(fromCopy, "position") + 1, v20 <= objc_msgSend(fromCopy, "length")))
             {
-              v21 = [v4 data];
-              [v21 getBytes:&v43 range:{objc_msgSend(v4, "position"), 1}];
+              data4 = [fromCopy data];
+              [data4 getBytes:&v43 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v18 |= (v43 & 0x7F) << v16;
@@ -687,7 +687,7 @@ LABEL_60:
             }
           }
 
-          if (([v4 hasError] & 1) != 0 || v18 > 3)
+          if (([fromCopy hasError] & 1) != 0 || v18 > 3)
           {
 LABEL_64:
             LODWORD(v18) = 0;
@@ -700,13 +700,13 @@ LABEL_64:
       }
 
 LABEL_67:
-      v39 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v39 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_69:
     v40 = 0;
@@ -725,32 +725,32 @@ LABEL_70:
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
   v4 = [(BMContextSyncLOI *)self ID];
-  v5 = [(BMContextSyncLOI *)self deviceUUID];
+  deviceUUID = [(BMContextSyncLOI *)self deviceUUID];
   v6 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMContextSyncLOI starting](self, "starting")}];
   v7 = BMContextSyncLOIUserSpecificPlaceTypeAsString([(BMContextSyncLOI *)self userSpecificPlaceType]);
   v8 = BMContextSyncLOIPlaceTypeAsString([(BMContextSyncLOI *)self placeType]);
-  v9 = [v3 initWithFormat:@"BMContextSyncLOI with ID: %@, deviceUUID: %@, starting: %@, userSpecificPlaceType: %@, placeType: %@", v4, v5, v6, v7, v8];
+  v9 = [v3 initWithFormat:@"BMContextSyncLOI with ID: %@, deviceUUID: %@, starting: %@, userSpecificPlaceType: %@, placeType: %@", v4, deviceUUID, v6, v7, v8];
 
   return v9;
 }
 
-- (BMContextSyncLOI)initWithID:(id)a3 deviceUUID:(id)a4 starting:(id)a5 userSpecificPlaceType:(int)a6 placeType:(int)a7
+- (BMContextSyncLOI)initWithID:(id)d deviceUUID:(id)iD starting:(id)starting userSpecificPlaceType:(int)type placeType:(int)placeType
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
+  dCopy = d;
+  iDCopy = iD;
+  startingCopy = starting;
   v18.receiver = self;
   v18.super_class = BMContextSyncLOI;
   v16 = [(BMEventBase *)&v18 init];
   if (v16)
   {
     v16->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v16->_ID, a3);
-    objc_storeStrong(&v16->_deviceUUID, a4);
-    if (v15)
+    objc_storeStrong(&v16->_ID, d);
+    objc_storeStrong(&v16->_deviceUUID, iD);
+    if (startingCopy)
     {
       v16->_hasStarting = 1;
-      v16->_starting = [v15 BOOLValue];
+      v16->_starting = [startingCopy BOOLValue];
     }
 
     else
@@ -759,8 +759,8 @@ LABEL_70:
       v16->_starting = 0;
     }
 
-    v16->_userSpecificPlaceType = a6;
-    v16->_placeType = a7;
+    v16->_userSpecificPlaceType = type;
+    v16->_placeType = placeType;
   }
 
   return v16;
@@ -785,9 +785,9 @@ LABEL_70:
   return v7;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -795,8 +795,8 @@ LABEL_70:
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMContextSyncLOI alloc] initByReadFrom:v7];
     v4 = v8;

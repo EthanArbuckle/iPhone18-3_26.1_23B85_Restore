@@ -1,13 +1,13 @@
 @interface HPSUISpatialProfileManager
 + (BOOL)isProfileExisting;
-+ (BOOL)isProxCardEnrollmentSupportedForDevice:(id)a3;
++ (BOOL)isProxCardEnrollmentSupportedForDevice:(id)device;
 + (BOOL)isProxCardShowed;
 + (BOOL)isSettingsEnrollmentSupported;
-+ (id)profileEnrollmentViewController:(id)a3;
-+ (id)profileManagementSpecifier:(id)a3;
++ (id)profileEnrollmentViewController:(id)controller;
++ (id)profileManagementSpecifier:(id)specifier;
 + (id)spatialProfileStatus;
-+ (void)setProxCardShowed:(BOOL)a3;
-+ (void)setProxCardShowed:(BOOL)a3 forDevice:(id)a4;
++ (void)setProxCardShowed:(BOOL)showed;
++ (void)setProxCardShowed:(BOOL)showed forDevice:(id)device;
 @end
 
 @implementation HPSUISpatialProfileManager
@@ -18,11 +18,11 @@
   if (_os_feature_enabled_impl())
   {
     v2 = MGCopyAnswer();
-    v3 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
     v4 = MGGetStringAnswer();
     v5 = [v4 isEqualToString:@"iPhone"];
     v6 = MGGetBoolAnswer();
-    v7 = v3 & v5;
+    v7 = bOOLValue & v5;
     v8 = os_log_create("com.apple.connectedAudio", "HeadphoneCommonUIKit");
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
@@ -37,7 +37,7 @@
         v10 = "No";
       }
 
-      if (v3)
+      if (bOOLValue)
       {
         v11 = "Yes";
       }
@@ -82,11 +82,11 @@
   return v7;
 }
 
-+ (BOOL)isProxCardEnrollmentSupportedForDevice:(id)a3
++ (BOOL)isProxCardEnrollmentSupportedForDevice:(id)device
 {
   v53 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  deviceCopy = device;
+  if (!deviceCopy)
   {
     v16 = os_log_create("com.apple.connectedAudio", "HeadphoneCommonUIKit");
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -102,17 +102,17 @@ LABEL_50:
 
   if (_os_feature_enabled_impl())
   {
-    v34 = a1;
-    v35 = [a1 isSettingsEnrollmentSupported];
+    selfCopy = self;
+    isSettingsEnrollmentSupported = [self isSettingsEnrollmentSupported];
     v36 = +[HPSUISpatialProfileManager isProxCardShowed];
     v40 = 0u;
     v41 = 0u;
     v42 = 0u;
     v43 = 0u;
-    v5 = [MEMORY[0x1E698F468] sharedInstance];
-    v6 = [v5 pairedDevices];
+    mEMORY[0x1E698F468] = [MEMORY[0x1E698F468] sharedInstance];
+    pairedDevices = [mEMORY[0x1E698F468] pairedDevices];
 
-    v7 = [v6 countByEnumeratingWithState:&v40 objects:v52 count:16];
+    v7 = [pairedDevices countByEnumeratingWithState:&v40 objects:v52 count:16];
     if (v7)
     {
       v8 = *v41;
@@ -122,14 +122,14 @@ LABEL_5:
       {
         if (*v41 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(pairedDevices);
         }
 
         v10 = *(*(&v40 + 1) + 8 * v9);
-        v11 = [v10 address];
-        v12 = [v11 uppercaseString];
-        v13 = [v4 uppercaseString];
-        v14 = [v12 isEqualToString:v13];
+        address = [v10 address];
+        uppercaseString = [address uppercaseString];
+        uppercaseString2 = [deviceCopy uppercaseString];
+        v14 = [uppercaseString isEqualToString:uppercaseString2];
 
         if (v14)
         {
@@ -138,7 +138,7 @@ LABEL_5:
 
         if (v7 == ++v9)
         {
-          v7 = [v6 countByEnumeratingWithState:&v40 objects:v52 count:16];
+          v7 = [pairedDevices countByEnumeratingWithState:&v40 objects:v52 count:16];
           if (v7)
           {
             goto LABEL_5;
@@ -148,27 +148,27 @@ LABEL_5:
         }
       }
 
-      v18 = [v10 getSpatialAudioPlatformSupport];
-      v15 = v18 == 1;
+      getSpatialAudioPlatformSupport = [v10 getSpatialAudioPlatformSupport];
+      v15 = getSpatialAudioPlatformSupport == 1;
       v19 = os_log_create("com.apple.connectedAudio", "HeadphoneCommonUIKit");
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
         v20 = "NO";
-        if (v18 == 1)
+        if (getSpatialAudioPlatformSupport == 1)
         {
           v20 = "YES";
         }
 
         *buf = 138412546;
-        *&buf[4] = v4;
+        *&buf[4] = deviceCopy;
         *&buf[12] = 2080;
         *&buf[14] = v20;
         _os_log_impl(&dword_1AC1C3000, v19, OS_LOG_TYPE_DEFAULT, "Spatial Profile: %@, Remote Support: %s", buf, 0x16u);
       }
 
-      if ((v35 & (v18 == 1)) == 1)
+      if ((isSettingsEnrollmentSupported & (getSpatialAudioPlatformSupport == 1)) == 1)
       {
-        v17 = ([v34 isProfileExisting] | v36) ^ 1;
+        v17 = ([selfCopy isProfileExisting] | v36) ^ 1;
         v15 = 1;
         goto LABEL_23;
       }
@@ -242,7 +242,7 @@ LABEL_23:
         v28 = "No";
       }
 
-      if (v35)
+      if (isSettingsEnrollmentSupported)
       {
         v29 = "Yes";
       }
@@ -262,7 +262,7 @@ LABEL_23:
         v30 = "No";
       }
 
-      if ([v34 isProfileExisting])
+      if ([selfCopy isProfileExisting])
       {
         v31 = "Yes";
       }
@@ -331,15 +331,15 @@ void __69__HPSUISpatialProfileManager_isProxCardEnrollmentSupportedForDevice___b
   dispatch_group_leave(*(a1 + 32));
 }
 
-+ (void)setProxCardShowed:(BOOL)a3 forDevice:(id)a4
++ (void)setProxCardShowed:(BOOL)showed forDevice:(id)device
 {
-  v4 = a3;
+  showedCopy = showed;
   v13 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  if (v5)
+  deviceCopy = device;
+  if (deviceCopy)
   {
     v6 = MEMORY[0x1E695E4D0];
-    if (!v4)
+    if (!showedCopy)
     {
       v6 = MEMORY[0x1E695E4C0];
     }
@@ -350,7 +350,7 @@ void __69__HPSUISpatialProfileManager_isProxCardEnrollmentSupportedForDevice___b
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v8 = "NO";
-      if (v4)
+      if (showedCopy)
       {
         v8 = "YES";
       }
@@ -358,7 +358,7 @@ void __69__HPSUISpatialProfileManager_isProxCardEnrollmentSupportedForDevice___b
       v9 = 136315394;
       v10 = v8;
       v11 = 2112;
-      v12 = v5;
+      v12 = deviceCopy;
       _os_log_impl(&dword_1AC1C3000, v7, OS_LOG_TYPE_DEFAULT, "Spatial Profile: Set Prox Card Showd to %s for Device: %@", &v9, 0x16u);
     }
   }
@@ -373,12 +373,12 @@ void __69__HPSUISpatialProfileManager_isProxCardEnrollmentSupportedForDevice___b
   }
 }
 
-+ (void)setProxCardShowed:(BOOL)a3
++ (void)setProxCardShowed:(BOOL)showed
 {
-  v3 = a3;
+  showedCopy = showed;
   v9 = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E695E4C0];
-  if (a3)
+  if (showed)
   {
     v4 = MEMORY[0x1E695E4D0];
   }
@@ -389,7 +389,7 @@ void __69__HPSUISpatialProfileManager_isProxCardEnrollmentSupportedForDevice___b
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = "NO";
-    if (v3)
+    if (showedCopy)
     {
       v6 = "YES";
     }
@@ -445,14 +445,14 @@ void __69__HPSUISpatialProfileManager_isProxCardEnrollmentSupportedForDevice___b
   return !v6;
 }
 
-+ (id)profileEnrollmentViewController:(id)a3
++ (id)profileEnrollmentViewController:(id)controller
 {
   v12 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  controllerCopy = controller;
   if (!_os_feature_enabled_impl())
   {
     v4 = objc_alloc_init(HPSUISpatialProfileEnrollmentController);
-    [(HPSUISpatialProfileEnrollmentController *)v4 setContent:v3];
+    [(HPSUISpatialProfileEnrollmentController *)v4 setContent:controllerCopy];
 LABEL_7:
     v8 = [[HPSUISpatialProfileNavigationController alloc] initWithRootViewController:v4];
     goto LABEL_8;
@@ -473,7 +473,7 @@ LABEL_7:
     }
 
     [(HPSUISpatialProfileEnrollmentController *)v4 setDownloadAssetPath:v5];
-    [(HPSUISpatialProfileEnrollmentController *)v4 setContent:v3];
+    [(HPSUISpatialProfileEnrollmentController *)v4 setContent:controllerCopy];
 
     goto LABEL_7;
   }
@@ -489,18 +489,18 @@ LABEL_8:
   return v8;
 }
 
-+ (id)profileManagementSpecifier:(id)a3
++ (id)profileManagementSpecifier:(id)specifier
 {
   v13[1] = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E69C5748];
   v5 = MEMORY[0x1E696AAE8];
-  v6 = a3;
+  specifierCopy = specifier;
   v7 = [v5 bundleForClass:objc_opt_class()];
   v8 = [v7 localizedStringForKey:@"SPATIAL_AUDIO_PROFILE_TITLE" value:&stru_1F20FAB50 table:@"SpatialAudioProfile"];
-  v9 = [v4 preferenceSpecifierNamed:v8 target:a1 set:0 get:sel_spatialProfileStatus detail:objc_opt_class() cell:2 edit:0];
+  v9 = [v4 preferenceSpecifierNamed:v8 target:self set:0 get:sel_spatialProfileStatus detail:objc_opt_class() cell:2 edit:0];
 
   v12 = @"content";
-  v13[0] = v6;
+  v13[0] = specifierCopy;
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:&v12 count:1];
 
   [v9 setUserInfo:v10];
@@ -511,7 +511,7 @@ LABEL_8:
 
 + (id)spatialProfileStatus
 {
-  if ([a1 isProfileExisting])
+  if ([self isProfileExisting])
   {
     v2 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
     v3 = [v2 localizedStringForKey:@"ON" value:&stru_1F20FAB50 table:@"SpatialAudioProfile"];

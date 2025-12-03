@@ -1,140 +1,140 @@
 @interface HUColorSwatchView
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3;
-- (HUColorSwatchView)initWithFrame:(CGRect)a3 text:(id)a4;
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key;
+- (HUColorSwatchView)initWithFrame:(CGRect)frame text:(id)text;
 - (UIColor)color;
 - (void)_updateLayout;
 - (void)_updateTextColor;
 - (void)layoutSubviews;
-- (void)setColor:(id)a3;
-- (void)setLabelHidden:(BOOL)a3;
-- (void)setSelectionState:(unint64_t)a3;
-- (void)setText:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setColor:(id)color;
+- (void)setLabelHidden:(BOOL)hidden;
+- (void)setSelectionState:(unint64_t)state;
+- (void)setText:(id)text;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation HUColorSwatchView
 
-- (HUColorSwatchView)initWithFrame:(CGRect)a3 text:(id)a4
+- (HUColorSwatchView)initWithFrame:(CGRect)frame text:(id)text
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  textCopy = text;
   v37.receiver = self;
   v37.super_class = HUColorSwatchView;
-  v11 = [(HUColorSwatchView *)&v37 initWithFrame:x, y, width, height];
-  if (v11)
+  height = [(HUColorSwatchView *)&v37 initWithFrame:x, y, width, height];
+  if (height)
   {
     v12 = objc_alloc_init(MEMORY[0x277CD9F90]);
-    circleLayer = v11->_circleLayer;
-    v11->_circleLayer = v12;
+    circleLayer = height->_circleLayer;
+    height->_circleLayer = v12;
 
-    [(CAShapeLayer *)v11->_circleLayer setFillRule:*MEMORY[0x277CDA248]];
-    [(CAShapeLayer *)v11->_circleLayer setLineWidth:0.5];
-    v14 = [MEMORY[0x277D75348] systemBlackColor];
-    v15 = [v14 colorWithAlphaComponent:0.1];
-    -[CAShapeLayer setStrokeColor:](v11->_circleLayer, "setStrokeColor:", [v15 CGColor]);
+    [(CAShapeLayer *)height->_circleLayer setFillRule:*MEMORY[0x277CDA248]];
+    [(CAShapeLayer *)height->_circleLayer setLineWidth:0.5];
+    systemBlackColor = [MEMORY[0x277D75348] systemBlackColor];
+    v15 = [systemBlackColor colorWithAlphaComponent:0.1];
+    -[CAShapeLayer setStrokeColor:](height->_circleLayer, "setStrokeColor:", [v15 CGColor]);
 
-    v16 = [(HUColorSwatchView *)v11 layer];
-    [v16 addSublayer:v11->_circleLayer];
+    layer = [(HUColorSwatchView *)height layer];
+    [layer addSublayer:height->_circleLayer];
 
     v17 = objc_alloc_init(MEMORY[0x277CD9F90]);
-    selectedCircleLayer = v11->_selectedCircleLayer;
-    v11->_selectedCircleLayer = v17;
+    selectedCircleLayer = height->_selectedCircleLayer;
+    height->_selectedCircleLayer = v17;
 
-    v19 = [(HUColorSwatchView *)v11 layer];
-    [v19 addSublayer:v11->_selectedCircleLayer];
+    layer2 = [(HUColorSwatchView *)height layer];
+    [layer2 addSublayer:height->_selectedCircleLayer];
 
     v20 = objc_alloc_init(MEMORY[0x277CD9F90]);
-    selectedCircleInnerLayer = v11->_selectedCircleInnerLayer;
-    v11->_selectedCircleInnerLayer = v20;
+    selectedCircleInnerLayer = height->_selectedCircleInnerLayer;
+    height->_selectedCircleInnerLayer = v20;
 
-    [(CAShapeLayer *)v11->_selectedCircleInnerLayer setLineWidth:0.3];
-    v22 = [MEMORY[0x277D75348] systemBlackColor];
-    v23 = [v22 colorWithAlphaComponent:0.1];
-    -[CAShapeLayer setStrokeColor:](v11->_selectedCircleInnerLayer, "setStrokeColor:", [v23 CGColor]);
+    [(CAShapeLayer *)height->_selectedCircleInnerLayer setLineWidth:0.3];
+    systemBlackColor2 = [MEMORY[0x277D75348] systemBlackColor];
+    v23 = [systemBlackColor2 colorWithAlphaComponent:0.1];
+    -[CAShapeLayer setStrokeColor:](height->_selectedCircleInnerLayer, "setStrokeColor:", [v23 CGColor]);
 
-    v24 = [MEMORY[0x277D75348] clearColor];
-    -[CAShapeLayer setFillColor:](v11->_selectedCircleInnerLayer, "setFillColor:", [v24 CGColor]);
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    -[CAShapeLayer setFillColor:](height->_selectedCircleInnerLayer, "setFillColor:", [clearColor CGColor]);
 
-    v25 = [(HUColorSwatchView *)v11 layer];
-    [v25 addSublayer:v11->_selectedCircleInnerLayer];
+    layer3 = [(HUColorSwatchView *)height layer];
+    [layer3 addSublayer:height->_selectedCircleInnerLayer];
 
     v26 = objc_alloc_init(MEMORY[0x277CD9F90]);
-    selectedCircleOuterLayer = v11->_selectedCircleOuterLayer;
-    v11->_selectedCircleOuterLayer = v26;
+    selectedCircleOuterLayer = height->_selectedCircleOuterLayer;
+    height->_selectedCircleOuterLayer = v26;
 
-    [(CAShapeLayer *)v11->_selectedCircleOuterLayer setLineWidth:0.3];
-    v28 = [MEMORY[0x277D75348] systemBlackColor];
-    v29 = [v28 colorWithAlphaComponent:0.1];
-    -[CAShapeLayer setStrokeColor:](v11->_selectedCircleOuterLayer, "setStrokeColor:", [v29 CGColor]);
+    [(CAShapeLayer *)height->_selectedCircleOuterLayer setLineWidth:0.3];
+    systemBlackColor3 = [MEMORY[0x277D75348] systemBlackColor];
+    v29 = [systemBlackColor3 colorWithAlphaComponent:0.1];
+    -[CAShapeLayer setStrokeColor:](height->_selectedCircleOuterLayer, "setStrokeColor:", [v29 CGColor]);
 
-    v30 = [MEMORY[0x277D75348] clearColor];
-    -[CAShapeLayer setFillColor:](v11->_selectedCircleOuterLayer, "setFillColor:", [v30 CGColor]);
+    clearColor2 = [MEMORY[0x277D75348] clearColor];
+    -[CAShapeLayer setFillColor:](height->_selectedCircleOuterLayer, "setFillColor:", [clearColor2 CGColor]);
 
-    v31 = [(HUColorSwatchView *)v11 layer];
-    [v31 addSublayer:v11->_selectedCircleOuterLayer];
+    layer4 = [(HUColorSwatchView *)height layer];
+    [layer4 addSublayer:height->_selectedCircleOuterLayer];
 
-    objc_storeStrong(&v11->_text, a4);
+    objc_storeStrong(&height->_text, text);
     v32 = objc_alloc_init(MEMORY[0x277D756B8]);
-    label = v11->_label;
-    v11->_label = v32;
+    label = height->_label;
+    height->_label = v32;
 
-    [(UILabel *)v11->_label setText:v10];
-    [(UILabel *)v11->_label setTextAlignment:1];
-    v34 = [MEMORY[0x277D75348] systemWhiteColor];
-    [(UILabel *)v11->_label setTextColor:v34];
+    [(UILabel *)height->_label setText:textCopy];
+    [(UILabel *)height->_label setTextAlignment:1];
+    systemWhiteColor = [MEMORY[0x277D75348] systemWhiteColor];
+    [(UILabel *)height->_label setTextColor:systemWhiteColor];
 
     v35 = [MEMORY[0x277D74300] systemFontOfSize:11.0 weight:*MEMORY[0x277D74420]];
-    [(UILabel *)v11->_label setFont:v35];
+    [(UILabel *)height->_label setFont:v35];
 
-    [(UILabel *)v11->_label setAdjustsFontSizeToFitWidth:1];
-    [(UILabel *)v11->_label setMinimumScaleFactor:0.1];
-    [(HUColorSwatchView *)v11 addSubview:v11->_label];
-    [(HUColorSwatchView *)v11 setClipsToBounds:0];
+    [(UILabel *)height->_label setAdjustsFontSizeToFitWidth:1];
+    [(UILabel *)height->_label setMinimumScaleFactor:0.1];
+    [(HUColorSwatchView *)height addSubview:height->_label];
+    [(HUColorSwatchView *)height setClipsToBounds:0];
   }
 
-  return v11;
+  return height;
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  objc_storeStrong(&self->_text, a3);
-  v5 = a3;
-  v6 = [(HUColorSwatchView *)self label];
-  [v6 setText:v5];
+  objc_storeStrong(&self->_text, text);
+  textCopy = text;
+  label = [(HUColorSwatchView *)self label];
+  [label setText:textCopy];
 }
 
 - (UIColor)color
 {
   v2 = MEMORY[0x277D75348];
-  v3 = [(HUColorSwatchView *)self circleLayer];
-  v4 = [v2 colorWithCGColor:{objc_msgSend(v3, "fillColor")}];
+  circleLayer = [(HUColorSwatchView *)self circleLayer];
+  v4 = [v2 colorWithCGColor:{objc_msgSend(circleLayer, "fillColor")}];
 
   return v4;
 }
 
-- (void)setColor:(id)a3
+- (void)setColor:(id)color
 {
-  v5 = a3;
-  v6 = a3;
-  v7 = [v6 CGColor];
-  v8 = [(HUColorSwatchView *)self circleLayer];
-  [v8 setFillColor:v7];
+  colorCopy = color;
+  colorCopy2 = color;
+  cGColor = [colorCopy2 CGColor];
+  circleLayer = [(HUColorSwatchView *)self circleLayer];
+  [circleLayer setFillColor:cGColor];
 
-  v9 = [v6 CGColor];
-  v10 = [(HUColorSwatchView *)self selectedCircleLayer];
-  [v10 setStrokeColor:v9];
+  cGColor2 = [colorCopy2 CGColor];
+  selectedCircleLayer = [(HUColorSwatchView *)self selectedCircleLayer];
+  [selectedCircleLayer setStrokeColor:cGColor2];
 
   [(HUColorSwatchView *)self _updateTextColor];
 }
 
-- (void)setSelectionState:(unint64_t)a3
+- (void)setSelectionState:(unint64_t)state
 {
-  if (self->_selectionState != a3)
+  if (self->_selectionState != state)
   {
-    self->_selectionState = a3;
+    self->_selectionState = state;
     [(HUColorSwatchView *)self _updateLayout];
 
     [(HUColorSwatchView *)self _updateTextColor];
@@ -162,20 +162,20 @@
   v10 = v9;
   if (([(HUColorSwatchView *)self selectionState]& 2) != 0 || ([(HUColorSwatchView *)self selectionState]& 1) != 0)
   {
-    v21 = [MEMORY[0x277D75348] systemBlackColor];
-    v22 = [v21 colorWithAlphaComponent:0.05];
-    v23 = [v22 CGColor];
-    v24 = [(HUColorSwatchView *)self circleLayer];
-    [v24 setStrokeColor:v23];
+    systemBlackColor = [MEMORY[0x277D75348] systemBlackColor];
+    v22 = [systemBlackColor colorWithAlphaComponent:0.05];
+    cGColor = [v22 CGColor];
+    circleLayer = [(HUColorSwatchView *)self circleLayer];
+    [circleLayer setStrokeColor:cGColor];
 
-    v25 = [(HUColorSwatchView *)self selectedCircleLayer];
-    [v25 setHidden:0];
+    selectedCircleLayer = [(HUColorSwatchView *)self selectedCircleLayer];
+    [selectedCircleLayer setHidden:0];
 
-    v26 = [(HUColorSwatchView *)self selectedCircleInnerLayer];
-    [v26 setHidden:0];
+    selectedCircleInnerLayer = [(HUColorSwatchView *)self selectedCircleInnerLayer];
+    [selectedCircleInnerLayer setHidden:0];
 
-    v27 = [(HUColorSwatchView *)self selectedCircleOuterLayer];
-    [v27 setHidden:0];
+    selectedCircleOuterLayer = [(HUColorSwatchView *)self selectedCircleOuterLayer];
+    [selectedCircleOuterLayer setHidden:0];
 
     v18 = v6 * 0.5;
     v19 = v18 + -3.0;
@@ -184,20 +184,20 @@
 
   else
   {
-    v11 = [MEMORY[0x277D75348] systemBlackColor];
-    v12 = [v11 colorWithAlphaComponent:0.1];
-    v13 = [v12 CGColor];
-    v14 = [(HUColorSwatchView *)self circleLayer];
-    [v14 setStrokeColor:v13];
+    systemBlackColor2 = [MEMORY[0x277D75348] systemBlackColor];
+    v12 = [systemBlackColor2 colorWithAlphaComponent:0.1];
+    cGColor2 = [v12 CGColor];
+    circleLayer2 = [(HUColorSwatchView *)self circleLayer];
+    [circleLayer2 setStrokeColor:cGColor2];
 
-    v15 = [(HUColorSwatchView *)self selectedCircleLayer];
-    [v15 setHidden:1];
+    selectedCircleLayer2 = [(HUColorSwatchView *)self selectedCircleLayer];
+    [selectedCircleLayer2 setHidden:1];
 
-    v16 = [(HUColorSwatchView *)self selectedCircleInnerLayer];
-    [v16 setHidden:1];
+    selectedCircleInnerLayer2 = [(HUColorSwatchView *)self selectedCircleInnerLayer];
+    [selectedCircleInnerLayer2 setHidden:1];
 
-    v17 = [(HUColorSwatchView *)self selectedCircleOuterLayer];
-    [v17 setHidden:1];
+    selectedCircleOuterLayer2 = [(HUColorSwatchView *)self selectedCircleOuterLayer];
+    [selectedCircleOuterLayer2 setHidden:1];
 
     v18 = v6 * 0.5;
     v19 = v18 + -3.0;
@@ -208,55 +208,55 @@
   v29 = v8 * 0.5;
   v51 = [MEMORY[0x277D75208] bezierPathWithArcCenter:1 radius:v29 startAngle:v28 endAngle:v20 clockwise:{0.0, 6.28318531}];
   v30 = v51;
-  v31 = [v51 CGPath];
-  v32 = [(HUColorSwatchView *)self circleLayer];
-  [v32 setPath:v31];
+  cGPath = [v51 CGPath];
+  circleLayer3 = [(HUColorSwatchView *)self circleLayer];
+  [circleLayer3 setPath:cGPath];
 
   v33 = [MEMORY[0x277D75208] bezierPathWithArcCenter:1 radius:v29 startAngle:v28 endAngle:v18 + -1.5 clockwise:{0.0, 6.28318531}];
-  v34 = [v33 CGPath];
-  v35 = [(HUColorSwatchView *)self selectedCircleLayer];
-  [v35 setPath:v34];
+  cGPath2 = [v33 CGPath];
+  selectedCircleLayer3 = [(HUColorSwatchView *)self selectedCircleLayer];
+  [selectedCircleLayer3 setPath:cGPath2];
 
-  v36 = [MEMORY[0x277D75348] clearColor];
-  v37 = [v36 CGColor];
-  v38 = [(HUColorSwatchView *)self selectedCircleLayer];
-  [v38 setFillColor:v37];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  cGColor3 = [clearColor CGColor];
+  selectedCircleLayer4 = [(HUColorSwatchView *)self selectedCircleLayer];
+  [selectedCircleLayer4 setFillColor:cGColor3];
 
-  v39 = [(HUColorSwatchView *)self selectedCircleLayer];
-  [v39 setLineWidth:3.0];
+  selectedCircleLayer5 = [(HUColorSwatchView *)self selectedCircleLayer];
+  [selectedCircleLayer5 setLineWidth:3.0];
 
   v40 = [MEMORY[0x277D75208] bezierPathWithArcCenter:1 radius:v29 startAngle:v28 endAngle:v19 clockwise:{0.0, 6.28318531}];
-  v41 = [v40 CGPath];
-  v42 = [(HUColorSwatchView *)self selectedCircleInnerLayer];
-  [v42 setPath:v41];
+  cGPath3 = [v40 CGPath];
+  selectedCircleInnerLayer3 = [(HUColorSwatchView *)self selectedCircleInnerLayer];
+  [selectedCircleInnerLayer3 setPath:cGPath3];
 
   v43 = [MEMORY[0x277D75208] bezierPathWithArcCenter:1 radius:v29 startAngle:v28 endAngle:v18 clockwise:{0.0, 6.28318531}];
-  v44 = [v43 CGPath];
-  v45 = [(HUColorSwatchView *)self selectedCircleOuterLayer];
-  [v45 setPath:v44];
+  cGPath4 = [v43 CGPath];
+  selectedCircleOuterLayer3 = [(HUColorSwatchView *)self selectedCircleOuterLayer];
+  [selectedCircleOuterLayer3 setPath:cGPath4];
 
   [(HUColorSwatchView *)self frame];
   v47 = v46 + -18.0;
   [(HUColorSwatchView *)self frame];
   v49 = v48 + -18.0;
-  v50 = [(HUColorSwatchView *)self label];
-  [v50 setFrame:{9.0, 9.0, v47, v49}];
+  label = [(HUColorSwatchView *)self label];
+  [label setFrame:{9.0, 9.0, v47, v49}];
 }
 
 - (void)_updateTextColor
 {
-  v8 = [(HUColorSwatchView *)self color];
-  if (HUIsLightColor(v8))
+  color = [(HUColorSwatchView *)self color];
+  if (HUIsLightColor(color))
   {
-    v3 = [MEMORY[0x277D75348] systemGrayColor];
+    systemGrayColor = [MEMORY[0x277D75348] systemGrayColor];
   }
 
   else
   {
-    v4 = [(HUColorSwatchView *)self traitCollection];
-    v5 = [v4 userInterfaceStyle];
+    traitCollection = [(HUColorSwatchView *)self traitCollection];
+    userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-    if (v5 == 1)
+    if (userInterfaceStyle == 1)
     {
       [MEMORY[0x277D75348] systemWhiteColor];
     }
@@ -265,19 +265,19 @@
     {
       [MEMORY[0x277D75348] systemBlackColor];
     }
-    v3 = ;
+    systemGrayColor = ;
   }
 
-  v6 = v3;
-  v7 = [(HUColorSwatchView *)self label];
-  [v7 setTextColor:v6];
+  v6 = systemGrayColor;
+  label = [(HUColorSwatchView *)self label];
+  [label setTextColor:v6];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = HUColorSwatchView;
-  [(HUColorSwatchView *)&v4 traitCollectionDidChange:a3];
+  [(HUColorSwatchView *)&v4 traitCollectionDidChange:change];
   [(HUColorSwatchView *)self _updateTextColor];
 }
 
@@ -290,10 +290,10 @@
   [(HUColorSwatchView *)self _updateTextColor];
 }
 
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key
 {
-  v4 = a3;
-  if ([v4 hasPrefix:@"path"] & 1) != 0 || (objc_msgSend(v4, "hasPrefix:", @"fillColor"))
+  keyCopy = key;
+  if ([keyCopy hasPrefix:@"path"] & 1) != 0 || (objc_msgSend(keyCopy, "hasPrefix:", @"fillColor"))
   {
     v5 = 1;
   }
@@ -302,19 +302,19 @@
   {
     v7.receiver = self;
     v7.super_class = HUColorSwatchView;
-    v5 = [(HUColorSwatchView *)&v7 _shouldAnimatePropertyWithKey:v4];
+    v5 = [(HUColorSwatchView *)&v7 _shouldAnimatePropertyWithKey:keyCopy];
   }
 
   return v5;
 }
 
-- (void)setLabelHidden:(BOOL)a3
+- (void)setLabelHidden:(BOOL)hidden
 {
-  self->_labelHidden = a3;
-  v5 = [(HUColorSwatchView *)self label];
-  [v5 setHidden:self->_labelHidden];
+  self->_labelHidden = hidden;
+  label = [(HUColorSwatchView *)self label];
+  [label setHidden:self->_labelHidden];
 
-  if (!a3)
+  if (!hidden)
   {
 
     [(HUColorSwatchView *)self _updateTextColor];

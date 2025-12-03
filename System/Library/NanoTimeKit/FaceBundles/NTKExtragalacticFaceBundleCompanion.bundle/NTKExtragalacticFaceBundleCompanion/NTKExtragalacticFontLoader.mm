@@ -1,18 +1,18 @@
 @interface NTKExtragalacticFontLoader
 + (id)extragalacticFontDescriptor;
-+ (id)extragalacticFontForDevice:(id)a3;
++ (id)extragalacticFontForDevice:(id)device;
 @end
 
 @implementation NTKExtragalacticFontLoader
 
-+ (id)extragalacticFontForDevice:(id)a3
++ (id)extragalacticFontForDevice:(id)device
 {
-  v4 = a3;
-  v5 = [a1 extragalacticFontDescriptor];
+  deviceCopy = device;
+  extragalacticFontDescriptor = [self extragalacticFontDescriptor];
   v6 = MEMORY[0x277CBBB08];
-  v7 = sub_23BE50288(v5, v4);
+  v7 = sub_23BE50288(extragalacticFontDescriptor, deviceCopy);
 
-  v8 = [v6 fontWithDescriptor:v5 size:v7 * 0.5];
+  v8 = [v6 fontWithDescriptor:extragalacticFontDescriptor size:v7 * 0.5];
 
   return v8;
 }

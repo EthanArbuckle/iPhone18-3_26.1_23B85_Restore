@@ -1,9 +1,9 @@
 @interface ATSpatialStreamParameters
 - (ATSpatialStreamParameters)init;
-- (BOOL)enableStreamWithIdentifier:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)enableStreamWithIdentifier:(id)identifier error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
-- (id)initInternalWithFormat:(id)a3;
+- (id)initInternalWithFormat:(id)format;
 - (void)disableStream;
 @end
 
@@ -12,18 +12,18 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(NSUUID *)self->_identifier UUIDString];
-  v5 = [v4 UTF8String];
+  uUIDString = [(NSUUID *)self->_identifier UUIDString];
+  uTF8String = [uUIDString UTF8String];
   v6 = [(AVAudioFormat *)self->_format description];
-  v7 = [v3 stringWithFormat:@"<params@%p: id %s, format %s>", self, v5, objc_msgSend(v6, "UTF8String")];
+  v7 = [v3 stringWithFormat:@"<params@%p: id %s, format %s>", self, uTF8String, objc_msgSend(v6, "UTF8String")];
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v12 = 1;
 LABEL_12:
@@ -38,28 +38,28 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  v5 = v4;
-  v6 = [(ATSpatialStreamParameters *)self isEnabled];
-  if (v6 != [(ATSpatialStreamParameters *)v5 isEnabled])
+  v5 = equalCopy;
+  isEnabled = [(ATSpatialStreamParameters *)self isEnabled];
+  if (isEnabled != [(ATSpatialStreamParameters *)v5 isEnabled])
   {
     goto LABEL_10;
   }
 
   if (self->_identifier)
   {
-    v7 = [(ATSpatialStreamParameters *)v5 identifier];
+    identifier = [(ATSpatialStreamParameters *)v5 identifier];
 
-    if (v7)
+    if (identifier)
     {
       identifier = self->_identifier;
-      v9 = [(ATSpatialStreamParameters *)v5 identifier];
-      LOBYTE(identifier) = [(NSUUID *)identifier isEqual:v9];
+      identifier2 = [(ATSpatialStreamParameters *)v5 identifier];
+      LOBYTE(identifier) = [(NSUUID *)identifier isEqual:identifier2];
 
       if (identifier)
       {
         format = self->_format;
-        v11 = [(ATSpatialStreamParameters *)v5 format];
-        v12 = [(AVAudioFormat *)format isEqual:v11];
+        format = [(ATSpatialStreamParameters *)v5 format];
+        v12 = [(AVAudioFormat *)format isEqual:format];
 
 LABEL_11:
         goto LABEL_12;
@@ -84,52 +84,52 @@ LABEL_10:
   MEMORY[0x1EEE66BB8]();
 }
 
-- (BOOL)enableStreamWithIdentifier:(id)a3 error:(id *)a4
+- (BOOL)enableStreamWithIdentifier:(id)identifier error:(id *)error
 {
-  v7 = a3;
+  identifierCopy = identifier;
   identifier = self->_identifier;
   p_identifier = &self->_identifier;
-  v8 = identifier;
+  identifierCopy2 = identifier;
   if (!identifier)
   {
     goto LABEL_4;
   }
 
-  if (([(NSUUID *)v8 isEqual:v7]& 1) != 0)
+  if (([(NSUUID *)identifierCopy2 isEqual:identifierCopy]& 1) != 0)
   {
     if (*p_identifier)
     {
 LABEL_5:
-      if (a4)
+      if (error)
       {
-        *a4 = 0;
+        *error = 0;
       }
 
-      LOBYTE(a4) = 1;
+      LOBYTE(error) = 1;
       goto LABEL_10;
     }
 
 LABEL_4:
-    objc_storeStrong(p_identifier, a3);
+    objc_storeStrong(p_identifier, identifier);
     goto LABEL_5;
   }
 
-  if (a4)
+  if (error)
   {
     v11 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:-50 userInfo:0];
-    *a4 = v11;
+    *error = v11;
 
-    LOBYTE(a4) = 0;
+    LOBYTE(error) = 0;
   }
 
 LABEL_10:
 
-  return a4;
+  return error;
 }
 
-- (id)initInternalWithFormat:(id)a3
+- (id)initInternalWithFormat:(id)format
 {
-  v5 = a3;
+  formatCopy = format;
   v10.receiver = self;
   v10.super_class = ATSpatialStreamParameters;
   v6 = [(ATSpatialStreamParameters *)&v10 init];
@@ -139,7 +139,7 @@ LABEL_10:
     identifier = v6->_identifier;
     v6->_identifier = 0;
 
-    objc_storeStrong(p_isa + 2, a3);
+    objc_storeStrong(p_isa + 2, format);
   }
 
   return p_isa;

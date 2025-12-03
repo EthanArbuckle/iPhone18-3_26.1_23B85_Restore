@@ -1,7 +1,7 @@
 @interface WidgetRelevanceFetchResult
 - (_TtC9WidgetKit26WidgetRelevanceFetchResult)init;
-- (_TtC9WidgetKit26WidgetRelevanceFetchResult)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (_TtC9WidgetKit26WidgetRelevanceFetchResult)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WidgetRelevanceFetchResult
@@ -13,19 +13,19 @@
   return result;
 }
 
-- (_TtC9WidgetKit26WidgetRelevanceFetchResult)initWithCoder:(id)a3
+- (_TtC9WidgetKit26WidgetRelevanceFetchResult)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v4 = sub_19218C080(v3);
+  coderCopy = coder;
+  v4 = sub_19218C080(coderCopy);
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  WidgetRelevanceFetchResult.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  WidgetRelevanceFetchResult.encode(with:)(coderCopy);
 }
 
 @end

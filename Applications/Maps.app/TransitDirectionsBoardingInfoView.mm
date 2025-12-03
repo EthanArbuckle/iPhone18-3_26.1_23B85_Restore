@@ -1,76 +1,76 @@
 @interface TransitDirectionsBoardingInfoView
-- (TransitDirectionsBoardingInfoView)initWithFrame:(CGRect)a3;
+- (TransitDirectionsBoardingInfoView)initWithFrame:(CGRect)frame;
 - (unint64_t)resolvedLayout;
 - (void)_refreshContent;
 - (void)_updateLayout;
-- (void)setBoardingInfoEntry:(id)a3 exitPlan:(id)a4;
-- (void)setButtonTitle:(id)a3 target:(id)a4 action:(SEL)a5;
-- (void)setForceVerticalAxis:(BOOL)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setPreboardingStrings:(id)a3;
-- (void)setPreferredLayout:(unint64_t)a3;
-- (void)setUseAlternativeInstruction:(BOOL)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setBoardingInfoEntry:(id)entry exitPlan:(id)plan;
+- (void)setButtonTitle:(id)title target:(id)target action:(SEL)action;
+- (void)setForceVerticalAxis:(BOOL)axis;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setPreboardingStrings:(id)strings;
+- (void)setPreferredLayout:(unint64_t)layout;
+- (void)setUseAlternativeInstruction:(BOOL)instruction;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation TransitDirectionsBoardingInfoView
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v9.receiver = self;
   v9.super_class = TransitDirectionsBoardingInfoView;
-  v4 = a3;
-  [(TransitDirectionsBoardingInfoView *)&v9 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(TransitDirectionsBoardingInfoView *)&v9 traitCollectionDidChange:changeCopy];
   v5 = [(TransitDirectionsBoardingInfoView *)self traitCollection:v9.receiver];
-  v6 = sub_100017FE8(v4, v5);
+  v6 = sub_100017FE8(changeCopy, v5);
 
   if (v6)
   {
-    v7 = [(TransitDirectionsBoardingInfoView *)self traitCollection];
-    v8 = [v7 isLuminanceReduced];
+    traitCollection = [(TransitDirectionsBoardingInfoView *)self traitCollection];
+    isLuminanceReduced = [traitCollection isLuminanceReduced];
 
-    [(MapsLargerHitTargetButton *)self->_button setEnabled:v8 ^ 1];
+    [(MapsLargerHitTargetButton *)self->_button setEnabled:isLuminanceReduced ^ 1];
   }
 }
 
 - (void)_refreshContent
 {
-  v2 = self;
+  selfCopy = self;
   entry = self->_entry;
   if (entry)
   {
     v4 = entry;
-    exitPlanInfo = v2->_exitPlanInfo;
+    exitPlanInfo = selfCopy->_exitPlanInfo;
     v6 = exitPlanInfo;
     v62 = v4;
     v59 = exitPlanInfo;
-    if ([(TransitDirectionsBoardingInfoView *)v2 useAlternativeInstruction]&& ([(GEOTransitBoardingInfoEntry *)v4 hasAlternativeTimeInstruction]& 1) != 0)
+    if ([(TransitDirectionsBoardingInfoView *)selfCopy useAlternativeInstruction]&& ([(GEOTransitBoardingInfoEntry *)v4 hasAlternativeTimeInstruction]& 1) != 0)
     {
-      v7 = v2;
-      v8 = [(GEOTransitBoardingInfoEntry *)v4 alternativeTimeInstruction];
+      v7 = selfCopy;
+      alternativeTimeInstruction = [(GEOTransitBoardingInfoEntry *)v4 alternativeTimeInstruction];
     }
 
     else
     {
-      v7 = v2;
-      v8 = [(GEOTransitBoardingInfoEntry *)v4 mainTimeInstruction];
+      v7 = selfCopy;
+      alternativeTimeInstruction = [(GEOTransitBoardingInfoEntry *)v4 mainTimeInstruction];
     }
 
-    v9 = v8;
+    v9 = alternativeTimeInstruction;
     v10 = [GEOComposedString alloc];
-    v11 = [v9 primaryText];
-    v64 = [v10 initWithGeoFormattedString:v11];
+    primaryText = [v9 primaryText];
+    v64 = [v10 initWithGeoFormattedString:primaryText];
 
     v12 = [GEOComposedString alloc];
     v61 = v9;
-    v13 = [v9 secondaryText];
-    v63 = [v12 initWithGeoFormattedString:v13];
+    secondaryText = [v9 secondaryText];
+    v63 = [v12 initWithGeoFormattedString:secondaryText];
 
     v14 = [NSNumber numberWithInteger:5];
     v75[0] = NSFontAttributeName;
-    v15 = [(MKMultiPartLabel *)v7->_label font];
+    font = [(MKMultiPartLabel *)v7->_label font];
     v56 = MKServerFormattedStringArtworkSizeAttributeKey;
-    v76[0] = v15;
+    v76[0] = font;
     v76[1] = v14;
     v16 = MKServerFormattedStringArtworkLimitToFontAscenderAttributeKey;
     v75[1] = MKServerFormattedStringArtworkSizeAttributeKey;
@@ -82,8 +82,8 @@
 
     v73[0] = NSFontAttributeName;
     p_isa = &v7->super.super.super.isa;
-    v20 = [(MKMultiPartLabel *)v7->_label font];
-    v74[0] = v20;
+    font2 = [(MKMultiPartLabel *)v7->_label font];
+    v74[0] = font2;
     v73[1] = NSForegroundColorAttributeName;
     v21 = +[UIColor secondaryLabelColor];
     v74[1] = v21;
@@ -109,7 +109,7 @@
       [v26 addObject:v24];
     }
 
-    v2 = p_isa;
+    selfCopy = p_isa;
     if ([v26 count])
     {
       v27 = [[NSAttributedString alloc] initWithString:@"\n"];
@@ -122,10 +122,10 @@
       [p_isa[1] setMultiPartString:0];
     }
 
-    v43 = [(GEOTransitBoardingInfoEntry *)v62 occupancyInfo];
-    v44 = [v43 occupancyStatus];
+    occupancyInfo = [(GEOTransitBoardingInfoEntry *)v62 occupancyInfo];
+    occupancyStatus = [occupancyInfo occupancyStatus];
 
-    v45 = v44 - 1;
+    v45 = occupancyStatus - 1;
     if (v45 < 4)
     {
       v46 = v45 + 1;
@@ -139,8 +139,8 @@
     [p_isa[3] setOccupancyStatus:v46];
     objc_storeStrong(p_isa + 7, v59);
     v47 = [GEOComposedString alloc];
-    v48 = [(GEOTransitExitPlanInfo *)v6 label];
-    v49 = [v47 initWithGeoFormattedString:v48];
+    label = [(GEOTransitExitPlanInfo *)v6 label];
+    v49 = [v47 initWithGeoFormattedString:label];
     [p_isa[4] setText:v49];
 
     v50 = +[NSMutableIndexSet indexSet];
@@ -164,16 +164,16 @@
     v29 = [[NSMutableArray alloc] initWithCapacity:2];
     v30 = [NSNumber numberWithInteger:5];
     v71[0] = NSFontAttributeName;
-    v31 = [(MKMultiPartLabel *)v2->_label font];
+    font3 = [(MKMultiPartLabel *)selfCopy->_label font];
     v32 = MKServerFormattedStringArtworkSizeAttributeKey;
     v71[1] = MKServerFormattedStringArtworkSizeAttributeKey;
-    v72[0] = v31;
+    v72[0] = font3;
     v72[1] = v30;
     v33 = [NSDictionary dictionaryWithObjects:v72 forKeys:v71 count:2];
 
     v69[0] = NSFontAttributeName;
-    v34 = [(MKMultiPartLabel *)v2->_label font];
-    v70[0] = v34;
+    font4 = [(MKMultiPartLabel *)selfCopy->_label font];
+    v70[0] = font4;
     v69[1] = NSForegroundColorAttributeName;
     v35 = +[UIColor secondaryLabelColor];
     v69[2] = v32;
@@ -181,7 +181,7 @@
     v70[2] = v30;
     v36 = [NSDictionary dictionaryWithObjects:v70 forKeys:v69 count:3];
 
-    preboardingStrings = v2->_preboardingStrings;
+    preboardingStrings = selfCopy->_preboardingStrings;
     v65[0] = _NSConcreteStackBlock;
     v65[1] = 3221225472;
     v65[2] = sub_100D6B35C;
@@ -197,47 +197,47 @@
     {
       v41 = [[NSAttributedString alloc] initWithString:@"\n"];
       v42 = [MKMultiPartAttributedString multiPartAttributedStringWithComponents:v40 repeatedSeparator:v41];
-      [(MKMultiPartLabel *)v2->_label setMultiPartString:v42];
+      [(MKMultiPartLabel *)selfCopy->_label setMultiPartString:v42];
     }
 
     else
     {
-      [(MKMultiPartLabel *)v2->_label setMultiPartString:0];
+      [(MKMultiPartLabel *)selfCopy->_label setMultiPartString:0];
     }
 
-    [(TransitDirectionsOccupancyStatusView *)v2->_occupancyStatusView setOccupancyStatus:0];
-    v53 = v2->_exitPlanInfo;
-    v2->_exitPlanInfo = 0;
+    [(TransitDirectionsOccupancyStatusView *)selfCopy->_occupancyStatusView setOccupancyStatus:0];
+    v53 = selfCopy->_exitPlanInfo;
+    selfCopy->_exitPlanInfo = 0;
 
-    [(TransitDirectionsExitPlanView *)v2->_exitPlanView setIndexSetOfSuggestedCars:0];
-    [(TransitDirectionsExitPlanView *)v2->_exitPlanView setNumberOfCars:0];
+    [(TransitDirectionsExitPlanView *)selfCopy->_exitPlanView setIndexSetOfSuggestedCars:0];
+    [(TransitDirectionsExitPlanView *)selfCopy->_exitPlanView setNumberOfCars:0];
   }
 
   else
   {
     [(MKMultiPartLabel *)self->_label setMultiPartString:0];
-    [(TransitDirectionsOccupancyStatusView *)v2->_occupancyStatusView setOccupancyStatus:0];
-    v52 = v2->_exitPlanInfo;
-    v2->_exitPlanInfo = 0;
+    [(TransitDirectionsOccupancyStatusView *)selfCopy->_occupancyStatusView setOccupancyStatus:0];
+    v52 = selfCopy->_exitPlanInfo;
+    selfCopy->_exitPlanInfo = 0;
 
-    [(TransitDirectionsExitPlanView *)v2->_exitPlanView setIndexSetOfSuggestedCars:0];
-    [(TransitDirectionsExitPlanView *)v2->_exitPlanView setNumberOfCars:0];
+    [(TransitDirectionsExitPlanView *)selfCopy->_exitPlanView setIndexSetOfSuggestedCars:0];
+    [(TransitDirectionsExitPlanView *)selfCopy->_exitPlanView setNumberOfCars:0];
   }
 
-  button = v2->_button;
-  v55 = [(TransitDirectionsBoardingInfoView *)v2 traitCollection];
-  -[MapsLargerHitTargetButton setEnabled:](button, "setEnabled:", [v55 isLuminanceReduced] ^ 1);
+  button = selfCopy->_button;
+  traitCollection = [(TransitDirectionsBoardingInfoView *)selfCopy traitCollection];
+  -[MapsLargerHitTargetButton setEnabled:](button, "setEnabled:", [traitCollection isLuminanceReduced] ^ 1);
 
-  [(TransitDirectionsBoardingInfoView *)v2 _updateLayout];
+  [(TransitDirectionsBoardingInfoView *)selfCopy _updateLayout];
 }
 
-- (void)setButtonTitle:(id)a3 target:(id)a4 action:(SEL)a5
+- (void)setButtonTitle:(id)title target:(id)target action:(SEL)action
 {
-  v8 = a4;
-  v15 = v8;
-  if (a3)
+  targetCopy = target;
+  v15 = targetCopy;
+  if (title)
   {
-    v9 = v8 == 0;
+    v9 = targetCopy == 0;
   }
 
   else
@@ -245,26 +245,26 @@
     v9 = 1;
   }
 
-  v11 = v9 || a5 == 0;
+  v11 = v9 || action == 0;
   button = self->_button;
-  v13 = a3;
+  titleCopy = title;
   [(MapsLargerHitTargetButton *)button setHidden:v11];
-  [(MapsLargerHitTargetButton *)self->_button setTitle:v13 forState:0];
+  [(MapsLargerHitTargetButton *)self->_button setTitle:titleCopy forState:0];
 
   [(MapsLargerHitTargetButton *)self->_button removeTarget:0 action:0 forControlEvents:64];
   v14 = v15;
-  if (v15 && a5)
+  if (v15 && action)
   {
-    [(MapsLargerHitTargetButton *)self->_button addTarget:v15 action:a5 forControlEvents:64];
+    [(MapsLargerHitTargetButton *)self->_button addTarget:v15 action:action forControlEvents:64];
     v14 = v15;
   }
 }
 
-- (void)setUseAlternativeInstruction:(BOOL)a3
+- (void)setUseAlternativeInstruction:(BOOL)instruction
 {
-  if (self->_useAlternativeInstruction != a3)
+  if (self->_useAlternativeInstruction != instruction)
   {
-    self->_useAlternativeInstruction = a3;
+    self->_useAlternativeInstruction = instruction;
     if (self->_entry)
     {
       [(TransitDirectionsBoardingInfoView *)self _refreshContent];
@@ -272,11 +272,11 @@
   }
 }
 
-- (void)setPreboardingStrings:(id)a3
+- (void)setPreboardingStrings:(id)strings
 {
-  v5 = a3;
+  stringsCopy = strings;
   preboardingStrings = self->_preboardingStrings;
-  v11 = v5;
+  v11 = stringsCopy;
   v7 = preboardingStrings;
   if (v11 | v7)
   {
@@ -284,7 +284,7 @@
 
     if (!v8)
     {
-      objc_storeStrong(&self->_preboardingStrings, a3);
+      objc_storeStrong(&self->_preboardingStrings, strings);
       entry = self->_entry;
       self->_entry = 0;
 
@@ -302,17 +302,17 @@ LABEL_6:
   }
 }
 
-- (void)setBoardingInfoEntry:(id)a3 exitPlan:(id)a4
+- (void)setBoardingInfoEntry:(id)entry exitPlan:(id)plan
 {
-  v7 = a3;
-  v8 = a4;
+  entryCopy = entry;
+  planCopy = plan;
   entry = self->_entry;
-  v18 = v7;
-  v10 = entry;
-  if (v18 | v10 && (v11 = [v18 isEqual:v10], v10, v18, !v11) || (exitPlanInfo = self->_exitPlanInfo, v13 = v8, v14 = exitPlanInfo, v13 | v14) && (v15 = v14, v16 = objc_msgSend(v13, "isEqual:", v14), v15, v13, !v16))
+  v18 = entryCopy;
+  entryCopy2 = entry;
+  if (v18 | entryCopy2 && (v11 = [v18 isEqual:entryCopy2], entryCopy2, v18, !v11) || (exitPlanInfo = self->_exitPlanInfo, v13 = planCopy, v14 = exitPlanInfo, v13 | v14) && (v15 = v14, v16 = objc_msgSend(v13, "isEqual:", v14), v15, v13, !v16))
   {
-    objc_storeStrong(&self->_entry, a3);
-    objc_storeStrong(&self->_exitPlanInfo, a4);
+    objc_storeStrong(&self->_entry, entry);
+    objc_storeStrong(&self->_exitPlanInfo, plan);
     preboardingStrings = self->_preboardingStrings;
     self->_preboardingStrings = 0;
 
@@ -331,44 +331,44 @@ LABEL_10:
 
 - (void)_updateLayout
 {
-  v3 = [(TransitDirectionsBoardingInfoView *)self resolvedLayout];
+  resolvedLayout = [(TransitDirectionsBoardingInfoView *)self resolvedLayout];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100D6B88C;
   v8[3] = &unk_101652F38;
-  v8[4] = v3;
+  v8[4] = resolvedLayout;
   v4 = objc_retainBlock(v8);
-  v5 = 1;
+  forceVerticalAxis = 1;
   [(TransitDirectionsOccupancyStatusView *)self->_occupancyStatusView setHidden:(v4[2])(v4, 1) ^ 1];
-  if (v3 == 1)
+  if (resolvedLayout == 1)
   {
-    v5 = [(TransitDirectionsBoardingInfoView *)self forceVerticalAxis];
+    forceVerticalAxis = [(TransitDirectionsBoardingInfoView *)self forceVerticalAxis];
   }
 
-  [(TransitDirectionsBoardingInfoStackView *)self->_occupancyStatusView setAxis:v5];
+  [(TransitDirectionsBoardingInfoStackView *)self->_occupancyStatusView setAxis:forceVerticalAxis];
   [(TransitDirectionsExitPlanView *)self->_exitPlanView setHidden:(v4[2])(v4, 2) ^ 1];
-  if (v3 == 2)
+  if (resolvedLayout == 2)
   {
-    v6 = [(TransitDirectionsBoardingInfoView *)self forceVerticalAxis];
+    forceVerticalAxis2 = [(TransitDirectionsBoardingInfoView *)self forceVerticalAxis];
   }
 
   else
   {
-    v6 = 1;
+    forceVerticalAxis2 = 1;
   }
 
-  [(TransitDirectionsBoardingInfoStackView *)self->_exitPlanView setAxis:v6];
+  [(TransitDirectionsBoardingInfoStackView *)self->_exitPlanView setAxis:forceVerticalAxis2];
   if ([(TransitDirectionsOccupancyStatusView *)self->_occupancyStatusView isHidden])
   {
-    v7 = [(TransitDirectionsExitPlanView *)self->_exitPlanView isHidden];
+    isHidden = [(TransitDirectionsExitPlanView *)self->_exitPlanView isHidden];
   }
 
   else
   {
-    v7 = 0;
+    isHidden = 0;
   }
 
-  [(UIStackView *)self->_occupancyAndExitStackView setHidden:v7];
+  [(UIStackView *)self->_occupancyAndExitStackView setHidden:isHidden];
   [(TransitDirectionsBoardingInfoView *)self invalidateIntrinsicContentSize];
 }
 
@@ -392,13 +392,13 @@ LABEL_10:
   return result;
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   if (sub_10000FA08(self) == 5)
   {
     button = self->_button;
-    if (v3)
+    if (highlightedCopy)
     {
       +[UIColor systemWhiteColor];
     }
@@ -412,29 +412,29 @@ LABEL_10:
   }
 }
 
-- (void)setForceVerticalAxis:(BOOL)a3
+- (void)setForceVerticalAxis:(BOOL)axis
 {
-  if (self->_forceVerticalAxis != a3)
+  if (self->_forceVerticalAxis != axis)
   {
-    self->_forceVerticalAxis = a3;
+    self->_forceVerticalAxis = axis;
     [(TransitDirectionsBoardingInfoView *)self _updateLayout];
   }
 }
 
-- (void)setPreferredLayout:(unint64_t)a3
+- (void)setPreferredLayout:(unint64_t)layout
 {
-  if (self->_preferredLayout != a3)
+  if (self->_preferredLayout != layout)
   {
-    self->_preferredLayout = a3;
+    self->_preferredLayout = layout;
     [(TransitDirectionsBoardingInfoView *)self _updateLayout];
   }
 }
 
-- (TransitDirectionsBoardingInfoView)initWithFrame:(CGRect)a3
+- (TransitDirectionsBoardingInfoView)initWithFrame:(CGRect)frame
 {
   v87.receiver = self;
   v87.super_class = TransitDirectionsBoardingInfoView;
-  v3 = [(TransitDirectionsBoardingInfoView *)&v87 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(TransitDirectionsBoardingInfoView *)&v87 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_opt_class();
@@ -508,12 +508,12 @@ LABEL_10:
     [(MapsLargerHitTargetButton *)v16->_button setContentEdgeInsets:UIEdgeInsetsZero.top, left, bottom, right];
     [(MapsLargerHitTargetButton *)v16->_button setTitleEdgeInsets:UIEdgeInsetsZero.top, left, bottom, right];
     [(MapsLargerHitTargetButton *)v16->_button setTouchInsets:-2.0, -4.0, -2.0, -4.0];
-    v29 = [(MKMultiPartLabel *)v3->_label font];
-    v30 = [(MapsLargerHitTargetButton *)v16->_button titleLabel];
-    [v30 setFont:v29];
+    font = [(MKMultiPartLabel *)v3->_label font];
+    titleLabel = [(MapsLargerHitTargetButton *)v16->_button titleLabel];
+    [titleLabel setFont:font];
 
-    v31 = [(MapsLargerHitTargetButton *)v16->_button titleLabel];
-    [v31 setAdjustsFontForContentSizeCategory:1];
+    titleLabel2 = [(MapsLargerHitTargetButton *)v16->_button titleLabel];
+    [titleLabel2 setAdjustsFontForContentSizeCategory:1];
 
     v32 = v16->_button;
     v33 = +[UIColor systemGrayColor];
@@ -525,18 +525,18 @@ LABEL_10:
     [(MapsLargerHitTargetButton *)v16->_button setContentHuggingPriority:1 forAxis:v35];
     LODWORD(v36) = 1148846080;
     [(MapsLargerHitTargetButton *)v16->_button setContentCompressionResistancePriority:1 forAxis:v36];
-    v37 = [[TransitDirectionsOccupancyStatusView alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
+    height = [[TransitDirectionsOccupancyStatusView alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
     occupancyStatusView = v16->_occupancyStatusView;
-    v16->_occupancyStatusView = v37;
+    v16->_occupancyStatusView = height;
 
     [(TransitDirectionsOccupancyStatusView *)v16->_occupancyStatusView setTranslatesAutoresizingMaskIntoConstraints:0];
     LODWORD(v39) = 1148846080;
     [(TransitDirectionsOccupancyStatusView *)v16->_occupancyStatusView setContentCompressionResistancePriority:1 forAxis:v39];
     LODWORD(v40) = 1148846080;
     [(TransitDirectionsOccupancyStatusView *)v16->_occupancyStatusView setContentHuggingPriority:1 forAxis:v40];
-    v41 = [[TransitDirectionsExitPlanView alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
+    height2 = [[TransitDirectionsExitPlanView alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
     exitPlanView = v16->_exitPlanView;
-    v16->_exitPlanView = v41;
+    v16->_exitPlanView = height2;
 
     [(TransitDirectionsExitPlanView *)v16->_exitPlanView setTranslatesAutoresizingMaskIntoConstraints:0];
     LODWORD(v43) = 1148846080;
@@ -560,11 +560,11 @@ LABEL_10:
     {
       [(UIStackView *)v51 setAxis:1];
       [(UIStackView *)v16->_labelAndButtonStackView setAlignment:1];
-      v52 = [(MKMultiPartLabel *)v3->_label font];
-      [v52 descender];
+      font2 = [(MKMultiPartLabel *)v3->_label font];
+      [font2 descender];
       v54 = v53;
-      v55 = [(MKMultiPartLabel *)v3->_label font];
-      [v55 descender];
+      font3 = [(MKMultiPartLabel *)v3->_label font];
+      [font3 descender];
       if (v54 < 0.0)
       {
         v57 = -v56;
@@ -575,9 +575,9 @@ LABEL_10:
         v57 = v56;
       }
 
-      v58 = [(MapsLargerHitTargetButton *)v16->_button titleLabel];
-      v59 = [v58 font];
-      [v59 ascender];
+      titleLabel3 = [(MapsLargerHitTargetButton *)v16->_button titleLabel];
+      font4 = [titleLabel3 font];
+      [font4 ascender];
       [(UIStackView *)v16->_labelAndButtonStackView setSpacing:v57 + v60 + 4.0];
 
       v45 = &MKLookAroundViewDidBecomeFullyDrawnNotification_ptr;
@@ -660,11 +660,11 @@ LABEL_10:
       v83 = 5.0;
     }
 
-    v84 = [v82 bottomConstraint];
-    [v84 setConstant:v83];
+    bottomConstraint = [v82 bottomConstraint];
+    [bottomConstraint setConstant:v83];
 
-    v85 = [v82 allConstraints];
-    [NSLayoutConstraint activateConstraints:v85];
+    allConstraints = [v82 allConstraints];
+    [NSLayoutConstraint activateConstraints:allConstraints];
 
     [(TransitDirectionsBoardingInfoView *)v16 _updateLayout];
   }

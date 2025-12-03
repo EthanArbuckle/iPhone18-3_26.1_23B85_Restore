@@ -1,10 +1,10 @@
 @interface MPSTemporaryNDArrayDefaultAllocator
-- (MPSTemporaryNDArrayDefaultAllocator)initWithCoder:(id)a3;
+- (MPSTemporaryNDArrayDefaultAllocator)initWithCoder:(id)coder;
 @end
 
 @implementation MPSTemporaryNDArrayDefaultAllocator
 
-- (MPSTemporaryNDArrayDefaultAllocator)initWithCoder:(id)a3
+- (MPSTemporaryNDArrayDefaultAllocator)initWithCoder:(id)coder
 {
   v13.receiver = self;
   v13.super_class = MPSTemporaryNDArrayDefaultAllocator;

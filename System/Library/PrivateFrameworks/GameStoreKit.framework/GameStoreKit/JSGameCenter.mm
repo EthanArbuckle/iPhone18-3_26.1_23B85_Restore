@@ -1,14 +1,14 @@
 @interface JSGameCenter
 - (_TtC12GameStoreKit12JSGameCenter)init;
-- (id)fetchGameInfo:(id)a3;
-- (id)fetchRecentlyPlayedGamesWithinSeconds:(id)a3 :(int64_t)a4 :(int64_t)a5;
+- (id)fetchGameInfo:(id)info;
+- (id)fetchRecentlyPlayedGamesWithinSeconds:(id)seconds :(int64_t)a4 :(int64_t)a5;
 - (id)fetchRengagementDataForLocalPlayer;
-- (id)fetchSuggestedFriends:(int64_t)a3;
+- (id)fetchSuggestedFriends:(int64_t)friends;
 @end
 
 @implementation JSGameCenter
 
-- (id)fetchRecentlyPlayedGamesWithinSeconds:(id)a3 :(int64_t)a4 :(int64_t)a5
+- (id)fetchRecentlyPlayedGamesWithinSeconds:(id)seconds :(int64_t)a4 :(int64_t)a5
 {
   v8 = sub_24F922028();
   v9 = *(v8 - 8);
@@ -17,7 +17,7 @@
   v12 = sub_24F92B0D8();
   v14 = v13;
   sub_24F929778();
-  v15 = self;
+  selfCopy = self;
   sub_24F929768();
   sub_24F921FF8();
   sub_24F92C058();
@@ -28,7 +28,7 @@
   v17 = sub_24F92C448();
   v21 = v12;
   v22 = v14;
-  v23 = v15;
+  v23 = selfCopy;
   v24 = a4;
   v25 = a5;
   v26 = v11;
@@ -39,10 +39,10 @@
   return v18;
 }
 
-- (id)fetchSuggestedFriends:(int64_t)a3
+- (id)fetchSuggestedFriends:(int64_t)friends
 {
   v3 = qword_27F210590;
-  v4 = self;
+  selfCopy = self;
   if (v3 != -1)
   {
     swift_once();
@@ -67,14 +67,14 @@
 - (id)fetchRengagementDataForLocalPlayer
 {
   sub_24E69A5C4(0, &qword_27F21C8C8);
-  v3 = self;
+  selfCopy = self;
   v4 = sub_24F92C448();
   v5 = sub_24F92C458();
 
   return v5;
 }
 
-- (id)fetchGameInfo:(id)a3
+- (id)fetchGameInfo:(id)info
 {
   sub_24F92B0D8();
   sub_24E69A5C4(0, &qword_27F21C8C8);

@@ -15,8 +15,8 @@
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v4 = [(TIDPBiomeUnigramTokenRecorder *)self records];
-  v5 = [v4 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  records = [(TIDPBiomeUnigramTokenRecorder *)self records];
+  v5 = [records countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v5)
   {
     v6 = v5;
@@ -27,12 +27,12 @@
       {
         if (*v24 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(records);
         }
 
         v9 = *(*(&v23 + 1) + 8 * i);
-        v10 = [v9 word];
-        v11 = [v3 objectForKey:v10];
+        word = [v9 word];
+        v11 = [v3 objectForKey:word];
 
         if (v11)
         {
@@ -44,11 +44,11 @@
           v12 = [MEMORY[0x277CCABB0] numberWithInt:1];
         }
 
-        v13 = [v9 word];
-        [v3 setObject:v12 forKey:v13];
+        word2 = [v9 word];
+        [v3 setObject:v12 forKey:word2];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v6 = [records countByEnumeratingWithState:&v23 objects:v27 count:16];
     }
 
     while (v6);
@@ -57,15 +57,15 @@
   v14 = [v3 count];
   if (v14)
   {
-    v15 = [(TIDPBiomeUnigramTokenRecorder *)self delegate];
+    delegate = [(TIDPBiomeUnigramTokenRecorder *)self delegate];
     v16 = objc_opt_respondsToSelector();
 
     if (v16)
     {
-      v17 = [(TIDPBiomeUnigramTokenRecorder *)self delegate];
-      v18 = [(TIDPRecorder *)self recordingKeyLocaleSubstring];
-      v19 = [(TIDPBiomeUnigramTokenRecorder *)self recordingKey];
-      [v17 recordTokenFrequency:v3 withLocale:v18 withTokenType:v19];
+      delegate2 = [(TIDPBiomeUnigramTokenRecorder *)self delegate];
+      recordingKeyLocaleSubstring = [(TIDPRecorder *)self recordingKeyLocaleSubstring];
+      recordingKey = [(TIDPBiomeUnigramTokenRecorder *)self recordingKey];
+      [delegate2 recordTokenFrequency:v3 withLocale:recordingKeyLocaleSubstring withTokenType:recordingKey];
     }
   }
 
@@ -82,17 +82,17 @@
   v64 = 0u;
   v65 = 0u;
   v66 = 0u;
-  v4 = [(TIDPRecorder *)self typingSessionAligned];
-  v5 = [v4 alignedEntries];
+  typingSessionAligned = [(TIDPRecorder *)self typingSessionAligned];
+  alignedEntries = [typingSessionAligned alignedEntries];
 
-  v6 = [v5 countByEnumeratingWithState:&v63 objects:v68 count:16];
+  v6 = [alignedEntries countByEnumeratingWithState:&v63 objects:v68 count:16];
   if (v6)
   {
     v7 = v6;
     v8 = *v64;
     v9 = &OBJC_METACLASS___TICoreAnalyticsEventController;
     v49 = *v64;
-    v50 = v5;
+    v50 = alignedEntries;
     do
     {
       v10 = 0;
@@ -101,73 +101,73 @@
       {
         if (*v64 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(alignedEntries);
         }
 
         v11 = *(*(&v63 + 1) + 8 * v10);
-        v12 = [v11 originalWord];
-        v13 = [v12 editedEntry];
-        v14 = v13;
+        originalWord = [v11 originalWord];
+        editedEntry = [originalWord editedEntry];
+        v14 = editedEntry;
         v56 = v10;
-        if (v13)
+        if (editedEntry)
         {
-          v15 = v13;
+          originalWord2 = editedEntry;
         }
 
         else
         {
-          v15 = [v11 originalWord];
+          originalWord2 = [v11 originalWord];
         }
 
-        v16 = v15;
+        v16 = originalWord2;
 
         v17 = v16;
-        v18 = [v17 acceptedString];
-        v19 = [v18 length];
+        acceptedString = [v17 acceptedString];
+        v19 = [acceptedString length];
 
         v20 = v17;
         if (v19)
         {
-          v21 = [v17 acceptedString];
-          v22 = [v21 _containsEmoji];
+          acceptedString2 = [v17 acceptedString];
+          _containsEmoji = [acceptedString2 _containsEmoji];
 
           v20 = v17;
-          if ((v22 & 1) == 0)
+          if ((_containsEmoji & 1) == 0)
           {
-            v23 = [v17 keyboardState];
-            v24 = [v23 textInputTraits];
+            keyboardState = [v17 keyboardState];
+            textInputTraits = [keyboardState textInputTraits];
             v55 = v17;
-            v25 = [v24 autocorrectionType];
+            autocorrectionType = [textInputTraits autocorrectionType];
 
-            v26 = v25 == 1;
+            v26 = autocorrectionType == 1;
             v17 = v55;
             if (v26)
             {
               goto LABEL_30;
             }
 
-            v27 = [v55 acceptedString];
+            acceptedString3 = [v55 acceptedString];
             v62 = 8217;
             v28 = [MEMORY[0x277CCACA8] stringWithCharacters:&v62 length:1];
-            [v27 rangeOfString:v28];
+            [acceptedString3 rangeOfString:v28];
             v53 = v28;
             if (v29)
             {
-              v30 = [v27 stringByReplacingOccurrencesOfString:v28 withString:@"'"];
+              v30 = [acceptedString3 stringByReplacingOccurrencesOfString:v28 withString:@"'"];
 
-              v27 = v30;
+              acceptedString3 = v30;
             }
 
-            v31 = [MEMORY[0x277CCAB50] punctuationCharacterSet];
-            [v31 removeCharactersInString:@"'-"];
-            v52 = v31;
-            v32 = [v27 stringByTrimmingCharactersInSet:v31];
+            punctuationCharacterSet = [MEMORY[0x277CCAB50] punctuationCharacterSet];
+            [punctuationCharacterSet removeCharactersInString:@"'-"];
+            v52 = punctuationCharacterSet;
+            v32 = [acceptedString3 stringByTrimmingCharactersInSet:punctuationCharacterSet];
 
             v54 = v32;
             if ([v32 length])
             {
-              v33 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-              v34 = [v32 componentsSeparatedByCharactersInSet:v33];
+              whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+              v34 = [v32 componentsSeparatedByCharactersInSet:whitespaceAndNewlineCharacterSet];
 
               v60 = 0u;
               v61 = 0u;
@@ -196,14 +196,14 @@
                       if ([(TIDPRecorder *)self isWordEntryReallyOOV:v40 caseSensitive:1])
                       {
                         [v39 lowercaseString];
-                        v41 = self;
+                        selfCopy = self;
                         v42 = v3;
                         v44 = v43 = v9;
                         v45 = [TIDPWordRecord word:v44];
 
                         v9 = v43;
                         v3 = v42;
-                        self = v41;
+                        self = selfCopy;
                       }
 
                       else
@@ -221,7 +221,7 @@
                 while (v36);
               }
 
-              v5 = v50;
+              alignedEntries = v50;
               v7 = v51;
               v8 = v49;
               v17 = v55;
@@ -236,7 +236,7 @@ LABEL_30:
       }
 
       while (v56 + 1 != v7);
-      v7 = [v5 countByEnumeratingWithState:&v63 objects:v68 count:16];
+      v7 = [alignedEntries countByEnumeratingWithState:&v63 objects:v68 count:16];
     }
 
     while (v7);
@@ -252,9 +252,9 @@ LABEL_30:
 {
   v9.receiver = self;
   v9.super_class = TIDPBiomeUnigramTokenRecorder;
-  v3 = [(TIDPRecorder *)&v9 delegate];
+  delegate = [(TIDPRecorder *)&v9 delegate];
 
-  if (!v3)
+  if (!delegate)
   {
     v4 = objc_alloc_init(TIDPBiomeReportingDelegate);
     v8.receiver = self;
@@ -264,9 +264,9 @@ LABEL_30:
 
   v7.receiver = self;
   v7.super_class = TIDPBiomeUnigramTokenRecorder;
-  v5 = [(TIDPRecorder *)&v7 delegate];
+  delegate2 = [(TIDPRecorder *)&v7 delegate];
 
-  return v5;
+  return delegate2;
 }
 
 @end

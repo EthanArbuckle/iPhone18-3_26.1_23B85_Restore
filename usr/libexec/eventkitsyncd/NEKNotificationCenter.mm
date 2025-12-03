@@ -1,10 +1,10 @@
 @interface NEKNotificationCenter
 - (NEKNotificationCenter)init;
 - (id)_tapToRadarUrl;
-- (void)requestDiagnosticNotificationForDeviceID:(id)a3;
-- (void)userNotificationCenter:(id)a3 didChangeSettings:(id)a4;
-- (void)userNotificationCenter:(id)a3 didOpenApplicationForResponse:(id)a4;
-- (void)userNotificationCenter:(id)a3 didReceiveNotificationResponse:(id)a4 withCompletionHandler:(id)a5;
+- (void)requestDiagnosticNotificationForDeviceID:(id)d;
+- (void)userNotificationCenter:(id)center didChangeSettings:(id)settings;
+- (void)userNotificationCenter:(id)center didOpenApplicationForResponse:(id)response;
+- (void)userNotificationCenter:(id)center didReceiveNotificationResponse:(id)response withCompletionHandler:(id)handler;
 @end
 
 @implementation NEKNotificationCenter
@@ -44,18 +44,18 @@
   return v2;
 }
 
-- (void)requestDiagnosticNotificationForDeviceID:(id)a3
+- (void)requestDiagnosticNotificationForDeviceID:(id)d
 {
-  objc_storeStrong(&self->_pairedDeviceID, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_pairedDeviceID, d);
+  dCopy = d;
   v9 = objc_opt_new();
   [v9 setTitle:@"Slow Calendar Sync Detected"];
   [v9 setBody:@"Tap to file Radar"];
   v6 = [UNNotificationIcon iconForApplicationIdentifier:@"com.apple.TapToRadar"];
   [v9 setIcon:v6];
 
-  v7 = [(NEKNotificationCenter *)self _tapToRadarUrl];
-  [v9 setDefaultActionURL:v7];
+  _tapToRadarUrl = [(NEKNotificationCenter *)self _tapToRadarUrl];
+  [v9 setDefaultActionURL:_tapToRadarUrl];
 
   [v9 setCategoryIdentifier:@"OPEN_TAP_TO_RADAR"];
   v8 = [UNNotificationRequest requestWithIdentifier:@"com.apple.usernotifications.delegate.com.apple.eventkitsync.diagnostic" content:v9 trigger:0];
@@ -108,32 +108,32 @@
   return v14;
 }
 
-- (void)userNotificationCenter:(id)a3 didReceiveNotificationResponse:(id)a4 withCompletionHandler:(id)a5
+- (void)userNotificationCenter:(id)center didReceiveNotificationResponse:(id)response withCompletionHandler:(id)handler
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [v7 actionIdentifier];
-  v10 = [v9 isEqualToString:@"OPEN_TAP_TO_RADAR"];
+  responseCopy = response;
+  handlerCopy = handler;
+  actionIdentifier = [responseCopy actionIdentifier];
+  v10 = [actionIdentifier isEqualToString:@"OPEN_TAP_TO_RADAR"];
 
   if (v10)
   {
-    v11 = [(NEKNotificationCenter *)self _tapToRadarUrl];
+    _tapToRadarUrl = [(NEKNotificationCenter *)self _tapToRadarUrl];
     v12 = +[LSApplicationWorkspace defaultWorkspace];
     v24[0] = _NSConcreteStackBlock;
     v24[1] = 3221225472;
     v24[2] = sub_100023DF0;
     v24[3] = &unk_1000B5238;
-    v25 = v11;
-    v26 = self;
-    v13 = v11;
+    v25 = _tapToRadarUrl;
+    selfCopy = self;
+    v13 = _tapToRadarUrl;
     [v12 openURL:v13 configuration:0 completionHandler:v24];
 
 LABEL_7:
     goto LABEL_10;
   }
 
-  v14 = [v7 actionIdentifier];
-  v15 = [v14 isEqualToString:@"IGNORE_FOR_ONE_WEEK"];
+  actionIdentifier2 = [responseCopy actionIdentifier];
+  v15 = [actionIdentifier2 isEqualToString:@"IGNORE_FOR_ONE_WEEK"];
 
   if (v15)
   {
@@ -152,8 +152,8 @@ LABEL_7:
     }
 
     v21 = +[NEKEnvironment instance];
-    v22 = [v21 tinyStore];
-    [v22 setDoubleValue:@"diagnosticNotificationIgnoreUntil" forKey:v19];
+    tinyStore = [v21 tinyStore];
+    [tinyStore setDoubleValue:@"diagnosticNotificationIgnoreUntil" forKey:v19];
 
     goto LABEL_7;
   }
@@ -161,35 +161,35 @@ LABEL_7:
   v23 = *(qword_1000D18A8 + 8);
   if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
   {
-    sub_100070DBC(v23, v7);
+    sub_100070DBC(v23, responseCopy);
   }
 
 LABEL_10:
-  v8[2](v8);
+  handlerCopy[2](handlerCopy);
 }
 
-- (void)userNotificationCenter:(id)a3 didOpenApplicationForResponse:(id)a4
+- (void)userNotificationCenter:(id)center didOpenApplicationForResponse:(id)response
 {
   v6 = *(qword_1000D18A8 + 8);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     v7 = v6;
-    v8 = [a4 actionIdentifier];
+    actionIdentifier = [response actionIdentifier];
     v9 = 138412290;
-    v10 = v8;
+    v10 = actionIdentifier;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "Notification didOpenApplicationForResponse: %@", &v9, 0xCu);
   }
 
   [(NEKNotificationCenter *)self requestResetSync];
 }
 
-- (void)userNotificationCenter:(id)a3 didChangeSettings:(id)a4
+- (void)userNotificationCenter:(id)center didChangeSettings:(id)settings
 {
   v5 = *(qword_1000D18A8 + 8);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = v5;
-    v7 = [a4 debugDescription];
+    v7 = [settings debugDescription];
     v8 = 138412290;
     v9 = v7;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Notification didChangeSettings: %@", &v8, 0xCu);

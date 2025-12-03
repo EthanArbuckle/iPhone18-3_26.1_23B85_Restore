@@ -1,23 +1,23 @@
 @interface SFSpeechProfileResourceMonitor
 + (id)sharedMonitor;
 - (SFSpeechProfileResourceMonitor)init;
-- (void)addObserver:(id)a3;
-- (void)removeObserver:(id)a3;
+- (void)addObserver:(id)observer;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation SFSpeechProfileResourceMonitor
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __49__SFSpeechProfileResourceMonitor_removeObserver___block_invoke;
   v7[3] = &unk_1E797CB08;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_async(queue, v7);
 }
 
@@ -37,17 +37,17 @@ void __49__SFSpeechProfileResourceMonitor_removeObserver___block_invoke(uint64_t
   }
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __46__SFSpeechProfileResourceMonitor_addObserver___block_invoke;
   v7[3] = &unk_1E797CB08;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_async(queue, v7);
 }
 
@@ -79,7 +79,7 @@ void __46__SFSpeechProfileResourceMonitor_addObserver___block_invoke(uint64_t a1
   block[1] = 3221225472;
   block[2] = __47__SFSpeechProfileResourceMonitor_sharedMonitor__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedMonitor_onceToken != -1)
   {
     dispatch_once(&sharedMonitor_onceToken, block);

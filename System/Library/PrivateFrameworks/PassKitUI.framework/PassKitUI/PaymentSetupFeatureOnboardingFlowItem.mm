@@ -1,7 +1,7 @@
 @interface PaymentSetupFeatureOnboardingFlowItem
 - (_TtC9PassKitUI37PaymentSetupFeatureOnboardingFlowItem)init;
-- (void)nextViewControllerWithCompletion:(id)a3;
-- (void)viewControllerDidTerminateSetupFlow:(id)a3;
+- (void)nextViewControllerWithCompletion:(id)completion;
+- (void)viewControllerDidTerminateSetupFlow:(id)flow;
 @end
 
 @implementation PaymentSetupFeatureOnboardingFlowItem
@@ -13,9 +13,9 @@
   return result;
 }
 
-- (void)nextViewControllerWithCompletion:(id)a3
+- (void)nextViewControllerWithCompletion:(id)completion
 {
-  v3 = _Block_copy(a3);
+  v3 = _Block_copy(completion);
   if (v3)
   {
     v4 = v3;
@@ -30,15 +30,15 @@
   }
 }
 
-- (void)viewControllerDidTerminateSetupFlow:(id)a3
+- (void)viewControllerDidTerminateSetupFlow:(id)flow
 {
   v4 = self + OBJC_IVAR____TtC9PassKitUI37PaymentSetupFeatureOnboardingFlowItem_delegate;
   if (swift_unknownObjectWeakLoadStrong())
   {
     v5 = *(v4 + 1);
     ObjectType = swift_getObjectType();
-    v7 = self;
-    sub_1BD8659A4(v7, &off_1F3BC23D0, ObjectType, v5);
+    selfCopy = self;
+    sub_1BD8659A4(selfCopy, &off_1F3BC23D0, ObjectType, v5);
     swift_unknownObjectRelease();
   }
 }

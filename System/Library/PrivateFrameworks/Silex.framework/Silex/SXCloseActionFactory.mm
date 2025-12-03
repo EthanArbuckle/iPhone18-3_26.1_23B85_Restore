@@ -1,17 +1,17 @@
 @interface SXCloseActionFactory
-- (id)actionForURL:(id)a3;
+- (id)actionForURL:(id)l;
 @end
 
 @implementation SXCloseActionFactory
 
-- (id)actionForURL:(id)a3
+- (id)actionForURL:(id)l
 {
-  v3 = [MEMORY[0x1E696AF20] componentsWithURL:a3 resolvingAgainstBaseURL:0];
-  v4 = [v3 scheme];
-  if ([v4 isEqualToString:@"action"])
+  v3 = [MEMORY[0x1E696AF20] componentsWithURL:l resolvingAgainstBaseURL:0];
+  scheme = [v3 scheme];
+  if ([scheme isEqualToString:@"action"])
   {
-    v5 = [v3 host];
-    v6 = [v5 isEqualToString:@"close"];
+    host = [v3 host];
+    v6 = [host isEqualToString:@"close"];
 
     if (v6)
     {

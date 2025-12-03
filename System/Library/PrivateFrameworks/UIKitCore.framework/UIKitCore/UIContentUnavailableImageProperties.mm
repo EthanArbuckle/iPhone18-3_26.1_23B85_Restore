@@ -1,20 +1,20 @@
 @interface UIContentUnavailableImageProperties
-- (BOOL)_isEqualToProperties:(int)a3 compareImage:;
-- (BOOL)_isEqualToPropertiesQuick:(int)a3 compareImage:;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)_isEqualToProperties:(int)properties compareImage:;
+- (BOOL)_isEqualToPropertiesQuick:(int)quick compareImage:;
+- (BOOL)isEqual:(id)equal;
 - (CGSize)maximumSize;
 - (UIContentUnavailableImageProperties)init;
-- (UIContentUnavailableImageProperties)initWithCoder:(id)a3;
+- (UIContentUnavailableImageProperties)initWithCoder:(id)coder;
 - (__CFString)_shortDescription;
 - (double)_effectiveActivityIndicatorViewWidth;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)_applyPropertiesFromDefaultProperties:(uint64_t)a1;
-- (void)_applyToActivityIndicatorView:(uint64_t)a1;
-- (void)_applyToImageView:(uint64_t)a1;
-- (void)_setTintColor:(uint64_t)a1;
-- (void)encodeWithCoder:(id)a3;
-- (void)setImage:(uint64_t)a1;
+- (void)_applyPropertiesFromDefaultProperties:(uint64_t)properties;
+- (void)_applyToActivityIndicatorView:(uint64_t)view;
+- (void)_applyToImageView:(uint64_t)view;
+- (void)_setTintColor:(uint64_t)color;
+- (void)encodeWithCoder:(id)coder;
+- (void)setImage:(uint64_t)image;
 @end
 
 @implementation UIContentUnavailableImageProperties
@@ -28,21 +28,21 @@
 
 - (double)_effectiveActivityIndicatorViewWidth
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  v1 = *(a1 + 48);
-  v2 = *(a1 + 56);
+  v1 = *(self + 48);
+  v2 = *(self + 56);
   if (v1 >= v2)
   {
-    v3 = *(a1 + 56);
+    v3 = *(self + 56);
   }
 
   else
   {
-    v3 = *(a1 + 48);
+    v3 = *(self + 48);
   }
 
   v4 = v2 == *(MEMORY[0x1E695F060] + 8) && v1 == *MEMORY[0x1E695F060];
@@ -52,7 +52,7 @@
     v5 = 2777777.0;
   }
 
-  v6 = *(a1 + 24);
+  v6 = *(self + 24);
   v7 = 0.0;
   if (v6)
   {
@@ -74,37 +74,37 @@
   return result;
 }
 
-- (UIContentUnavailableImageProperties)initWithCoder:(id)a3
+- (UIContentUnavailableImageProperties)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v25.receiver = self;
   v25.super_class = UIContentUnavailableImageProperties;
   v5 = [(UIContentUnavailableImageProperties *)&v25 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"image"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"image"];
     image = v5->_image;
     v5->_image = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"preferredSymbolConfiguration"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"preferredSymbolConfiguration"];
     preferredSymbolConfiguration = v5->_preferredSymbolConfiguration;
     v5->_preferredSymbolConfiguration = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"tintColor"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"tintColor"];
     tintColor = v5->_tintColor;
     v5->_tintColor = v10;
 
-    [v4 decodeDoubleForKey:@"cornerRadius"];
+    [coderCopy decodeDoubleForKey:@"cornerRadius"];
     v5->_cornerRadius = v12;
-    [v4 decodeCGSizeForKey:@"maximumSize"];
+    [coderCopy decodeCGSizeForKey:@"maximumSize"];
     v5->_maximumSize.width = v13;
     v5->_maximumSize.height = v14;
-    v5->_accessibilityIgnoresInvertColors = [v4 decodeBoolForKey:@"accessibilityIgnoresInvertColors"];
+    v5->_accessibilityIgnoresInvertColors = [coderCopy decodeBoolForKey:@"accessibilityIgnoresInvertColors"];
     v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"preferredSymbolConfiguration"];
-    *&v5->_imageFlags = *&v5->_imageFlags & 0xFE | [v4 decodeBoolForKey:v15];
+    *&v5->_imageFlags = *&v5->_imageFlags & 0xFE | [coderCopy decodeBoolForKey:v15];
 
     v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"tintColor"];
-    if ([v4 decodeBoolForKey:v16])
+    if ([coderCopy decodeBoolForKey:v16])
     {
       v17 = 2;
     }
@@ -117,7 +117,7 @@
     *&v5->_imageFlags = *&v5->_imageFlags & 0xFD | v17;
 
     v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"cornerRadius"];
-    if ([v4 decodeBoolForKey:v18])
+    if ([coderCopy decodeBoolForKey:v18])
     {
       v19 = 4;
     }
@@ -130,7 +130,7 @@
     *&v5->_imageFlags = *&v5->_imageFlags & 0xFB | v19;
 
     v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"maximumSize"];
-    if ([v4 decodeBoolForKey:v20])
+    if ([coderCopy decodeBoolForKey:v20])
     {
       v21 = 8;
     }
@@ -143,7 +143,7 @@
     *&v5->_imageFlags = *&v5->_imageFlags & 0xF7 | v21;
 
     v22 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"accessibilityIgnoresInvertColors"];
-    if ([v4 decodeBoolForKey:v22])
+    if ([coderCopy decodeBoolForKey:v22])
     {
       v23 = 16;
     }
@@ -159,40 +159,40 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   image = self->_image;
-  v5 = a3;
-  [v5 encodeObject:image forKey:@"image"];
-  [v5 encodeObject:self->_preferredSymbolConfiguration forKey:@"preferredSymbolConfiguration"];
-  [v5 encodeObject:self->_tintColor forKey:@"tintColor"];
-  [v5 encodeDouble:@"cornerRadius" forKey:self->_cornerRadius];
-  [v5 encodeCGSize:@"maximumSize" forKey:{self->_maximumSize.width, self->_maximumSize.height}];
-  [v5 encodeBool:self->_accessibilityIgnoresInvertColors forKey:@"accessibilityIgnoresInvertColors"];
+  coderCopy = coder;
+  [coderCopy encodeObject:image forKey:@"image"];
+  [coderCopy encodeObject:self->_preferredSymbolConfiguration forKey:@"preferredSymbolConfiguration"];
+  [coderCopy encodeObject:self->_tintColor forKey:@"tintColor"];
+  [coderCopy encodeDouble:@"cornerRadius" forKey:self->_cornerRadius];
+  [coderCopy encodeCGSize:@"maximumSize" forKey:{self->_maximumSize.width, self->_maximumSize.height}];
+  [coderCopy encodeBool:self->_accessibilityIgnoresInvertColors forKey:@"accessibilityIgnoresInvertColors"];
   imageFlags = self->_imageFlags;
   v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"preferredSymbolConfiguration"];
-  [v5 encodeBool:imageFlags & 1 forKey:v7];
+  [coderCopy encodeBool:imageFlags & 1 forKey:v7];
 
   v8 = (*&self->_imageFlags >> 1) & 1;
   v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"tintColor"];
-  [v5 encodeBool:v8 forKey:v9];
+  [coderCopy encodeBool:v8 forKey:v9];
 
   v10 = (*&self->_imageFlags >> 2) & 1;
   v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"cornerRadius"];
-  [v5 encodeBool:v10 forKey:v11];
+  [coderCopy encodeBool:v10 forKey:v11];
 
   v12 = (*&self->_imageFlags >> 3) & 1;
   v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"maximumSize"];
-  [v5 encodeBool:v12 forKey:v13];
+  [coderCopy encodeBool:v12 forKey:v13];
 
   v14 = (*&self->_imageFlags >> 4) & 1;
   v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"accessibilityIgnoresInvertColors"];
-  [v5 encodeBool:v14 forKey:v15];
+  [coderCopy encodeBool:v14 forKey:v15];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = v4;
   if (v4)
   {
@@ -211,41 +211,41 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(UIContentUnavailableImageProperties *)self _isEqualToProperties:v5 compareImage:0];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(UIContentUnavailableImageProperties *)self _isEqualToProperties:v5 compareImage:0];
   }
 
   return v6;
 }
 
-- (BOOL)_isEqualToProperties:(int)a3 compareImage:
+- (BOOL)_isEqualToProperties:(int)properties compareImage:
 {
   v5 = a2;
-  if (!a1)
+  if (!self)
   {
     goto LABEL_25;
   }
 
-  if ([(UIContentUnavailableImageProperties *)a1 _isEqualToPropertiesQuick:v5 compareImage:a3])
+  if ([(UIContentUnavailableImageProperties *)self _isEqualToPropertiesQuick:v5 compareImage:properties])
   {
     v6 = 1;
     goto LABEL_26;
   }
 
-  if (a3)
+  if (properties)
   {
     v7 = *(v5 + 2);
-    v8 = *(a1 + 16);
+    v8 = *(self + 16);
     v9 = v7;
     v10 = v9;
     if (v8 == v9)
@@ -269,7 +269,7 @@
   }
 
   v12 = *(v5 + 3);
-  v8 = *(a1 + 24);
+  v8 = *(self + 24);
   v13 = v12;
   v10 = v13;
   if (v8 == v13)
@@ -292,7 +292,7 @@
   }
 
   v15 = *(v5 + 4);
-  v8 = *(a1 + 32);
+  v8 = *(self + 32);
   v16 = v15;
   v10 = v16;
   if (v8 == v16)
@@ -318,15 +318,15 @@ LABEL_25:
   }
 
 LABEL_24:
-  if (*(a1 + 40) != *(v5 + 5))
+  if (*(self + 40) != *(v5 + 5))
   {
     goto LABEL_25;
   }
 
   v6 = 0;
-  if (*(a1 + 48) == *(v5 + 6) && *(a1 + 56) == *(v5 + 7))
+  if (*(self + 48) == *(v5 + 6) && *(self + 56) == *(v5 + 7))
   {
-    v6 = *(a1 + 12) == v5[12];
+    v6 = *(self + 12) == v5[12];
   }
 
 LABEL_26:
@@ -334,29 +334,29 @@ LABEL_26:
   return v6;
 }
 
-- (BOOL)_isEqualToPropertiesQuick:(int)a3 compareImage:
+- (BOOL)_isEqualToPropertiesQuick:(int)quick compareImage:
 {
   v5 = a2;
   v6 = v5;
-  if (!a1)
+  if (!self)
   {
     goto LABEL_18;
   }
 
-  if (v5 == a1)
+  if (v5 == self)
   {
     v12 = 1;
   }
 
   else
   {
-    if (a3 && *(a1 + 16) != v5[2])
+    if (quick && *(self + 16) != v5[2])
     {
       goto LABEL_18;
     }
 
     v7 = v5[3];
-    v8 = *(a1 + 24);
+    v8 = *(self + 24);
     v9 = v7;
     v10 = v9;
     if (v8 == v9)
@@ -381,15 +381,15 @@ LABEL_18:
       }
     }
 
-    if (*(a1 + 32) != *(v6 + 4) || *(a1 + 40) != v6[5])
+    if (*(self + 32) != *(v6 + 4) || *(self + 40) != v6[5])
     {
       goto LABEL_18;
     }
 
     v12 = 0;
-    if (*(a1 + 48) == v6[6] && *(a1 + 56) == v6[7])
+    if (*(self + 48) == v6[6] && *(self + 56) == v6[7])
     {
-      v12 = *(a1 + 12) == *(v6 + 12);
+      v12 = *(self + 12) == *(v6 + 12);
     }
   }
 
@@ -460,63 +460,63 @@ LABEL_19:
 
 - (__CFString)_shortDescription
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    if (a1->data)
+    if (self->data)
     {
       v2 = MEMORY[0x1E696AEC0];
       v3 = objc_opt_class();
       v4 = NSStringFromClass(v3);
-      data = v1->data;
-      v6 = [data _identityDescription];
-      v1 = [v2 stringWithFormat:@"<%@: %p %@>", v4, data, v6];;
+      data = selfCopy->data;
+      _identityDescription = [data _identityDescription];
+      selfCopy = [v2 stringWithFormat:@"<%@: %p %@>", v4, data, _identityDescription];;
     }
 
     else
     {
-      v1 = @"none";
+      selfCopy = @"none";
     }
   }
 
-  return v1;
+  return selfCopy;
 }
 
-- (void)_applyToImageView:(uint64_t)a1
+- (void)_applyToImageView:(uint64_t)view
 {
-  if (a1)
+  if (view)
   {
-    v3 = *(a1 + 16);
+    v3 = *(view + 16);
     v4 = a2;
     [v4 setImage:v3];
-    [v4 setPreferredSymbolConfiguration:*(a1 + 24)];
-    [v4 setTintColor:*(a1 + 32)];
-    [v4 setAccessibilityIgnoresInvertColors:*(a1 + 12)];
+    [v4 setPreferredSymbolConfiguration:*(view + 24)];
+    [v4 setTintColor:*(view + 32)];
+    [v4 setAccessibilityIgnoresInvertColors:*(view + 12)];
   }
 }
 
-- (void)_applyToActivityIndicatorView:(uint64_t)a1
+- (void)_applyToActivityIndicatorView:(uint64_t)view
 {
-  if (a1)
+  if (view)
   {
     v3 = a2;
     [v3 setActivityIndicatorViewStyle:16];
-    [v3 _setCustomWidth:-[UIContentUnavailableImageProperties _effectiveActivityIndicatorViewWidth](a1)];
-    [v3 setColor:*(a1 + 32)];
-    [v3 setAccessibilityIgnoresInvertColors:*(a1 + 12)];
+    [v3 _setCustomWidth:-[UIContentUnavailableImageProperties _effectiveActivityIndicatorViewWidth](view)];
+    [v3 setColor:*(view + 32)];
+    [v3 setAccessibilityIgnoresInvertColors:*(view + 12)];
   }
 }
 
-- (void)_applyPropertiesFromDefaultProperties:(uint64_t)a1
+- (void)_applyPropertiesFromDefaultProperties:(uint64_t)properties
 {
   v3 = a2;
-  if (a1)
+  if (properties)
   {
-    v5 = *(a1 + 8);
+    v5 = *(properties + 8);
     v11 = v3;
     if (v5)
     {
-      if ((*(a1 + 8) & 2) != 0)
+      if ((*(properties + 8) & 2) != 0)
       {
         goto LABEL_4;
       }
@@ -534,8 +534,8 @@ LABEL_19:
         v6 = 0;
       }
 
-      objc_setProperty_nonatomic_copy(a1, v4, v6, 24);
-      v5 = *(a1 + 8);
+      objc_setProperty_nonatomic_copy(properties, v4, v6, 24);
+      v5 = *(properties + 8);
       v3 = v11;
       if ((v5 & 2) != 0)
       {
@@ -559,8 +559,8 @@ LABEL_4:
       v7 = 0;
     }
 
-    objc_storeStrong((a1 + 32), v7);
-    v5 = *(a1 + 8);
+    objc_storeStrong((properties + 32), v7);
+    v5 = *(properties + 8);
     v3 = v11;
     if ((v5 & 4) != 0)
     {
@@ -584,7 +584,7 @@ LABEL_14:
       v8 = 0;
     }
 
-    *(a1 + 40) = v8;
+    *(properties + 40) = v8;
     if ((v5 & 8) != 0)
     {
 LABEL_6:
@@ -604,7 +604,7 @@ LABEL_20:
         v10 = 0;
       }
 
-      *(a1 + 12) = v10 & 1;
+      *(properties + 12) = v10 & 1;
       goto LABEL_23;
     }
 
@@ -619,7 +619,7 @@ LABEL_17:
       v9 = 0uLL;
     }
 
-    *(a1 + 48) = v9;
+    *(properties + 48) = v9;
     if ((v5 & 0x10) != 0)
     {
       goto LABEL_23;
@@ -631,20 +631,20 @@ LABEL_17:
 LABEL_23:
 }
 
-- (void)_setTintColor:(uint64_t)a1
+- (void)_setTintColor:(uint64_t)color
 {
-  if (a1)
+  if (color)
   {
-    objc_storeStrong((a1 + 32), a2);
+    objc_storeStrong((color + 32), a2);
   }
 }
 
-- (void)setImage:(uint64_t)a1
+- (void)setImage:(uint64_t)image
 {
   v4 = a2;
-  if (a1)
+  if (image)
   {
-    objc_storeStrong((a1 + 16), a2);
+    objc_storeStrong((image + 16), a2);
   }
 }
 

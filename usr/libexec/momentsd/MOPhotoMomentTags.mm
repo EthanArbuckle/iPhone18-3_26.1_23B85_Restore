@@ -1,5 +1,5 @@
 @interface MOPhotoMomentTags
-+ (id)getCoarseInferenceTag:(id)a3;
++ (id)getCoarseInferenceTag:(id)tag;
 + (id)getInferenceTagMap;
 @end
 
@@ -74,7 +74,7 @@
   return v2;
 }
 
-+ (id)getCoarseInferenceTag:(id)a3
++ (id)getCoarseInferenceTag:(id)tag
 {
   v7[0] = &off_10036A5D0;
   v7[1] = &off_10036A5E8;
@@ -138,9 +138,9 @@
   v8[29] = &off_10036A8D0;
   v7[30] = &off_10036A6A8;
   v8[30] = &off_10036A8D0;
-  v3 = a3;
+  tagCopy = tag;
   v4 = [NSDictionary dictionaryWithObjects:v8 forKeys:v7 count:31];
-  v5 = [v4 objectForKeyedSubscript:v3];
+  v5 = [v4 objectForKeyedSubscript:tagCopy];
 
   return v5;
 }

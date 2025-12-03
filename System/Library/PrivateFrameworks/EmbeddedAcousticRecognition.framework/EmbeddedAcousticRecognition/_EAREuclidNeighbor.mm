@@ -1,20 +1,20 @@
 @interface _EAREuclidNeighbor
-- (_EAREuclidNeighbor)initWithName:(id)a3 distance:(id)a4;
+- (_EAREuclidNeighbor)initWithName:(id)name distance:(id)distance;
 - (id)description;
 @end
 
 @implementation _EAREuclidNeighbor
 
-- (_EAREuclidNeighbor)initWithName:(id)a3 distance:(id)a4
+- (_EAREuclidNeighbor)initWithName:(id)name distance:(id)distance
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  distanceCopy = distance;
   name = self->_name;
-  self->_name = v6;
-  v9 = v6;
+  self->_name = nameCopy;
+  v9 = nameCopy;
 
   distance = self->_distance;
-  self->_distance = v7;
+  self->_distance = distanceCopy;
 
   return self;
 }
@@ -24,9 +24,9 @@
   v8.receiver = self;
   v8.super_class = _EAREuclidNeighbor;
   v3 = [(_EAREuclidNeighbor *)&v8 description];
-  v4 = [(_EAREuclidNeighbor *)self name];
-  v5 = [(_EAREuclidNeighbor *)self distance];
-  v6 = [v3 stringByAppendingFormat:@" name=%@, distance=%@", v4, v5];
+  name = [(_EAREuclidNeighbor *)self name];
+  distance = [(_EAREuclidNeighbor *)self distance];
+  v6 = [v3 stringByAppendingFormat:@" name=%@, distance=%@", name, distance];
 
   return v6;
 }

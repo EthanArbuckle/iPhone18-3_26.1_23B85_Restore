@@ -1,32 +1,32 @@
 @interface _MRRemoveOutputDevicesMessageProtobuf
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)addOutputDeviceUIDs:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addOutputDeviceUIDs:(id)ds;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _MRRemoveOutputDevicesMessageProtobuf
 
-- (void)addOutputDeviceUIDs:(id)a3
+- (void)addOutputDeviceUIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   outputDeviceUIDs = self->_outputDeviceUIDs;
-  v8 = v4;
+  v8 = dsCopy;
   if (!outputDeviceUIDs)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_outputDeviceUIDs;
     self->_outputDeviceUIDs = v6;
 
-    v4 = v8;
+    dsCopy = v8;
     outputDeviceUIDs = self->_outputDeviceUIDs;
   }
 
-  [(NSMutableArray *)outputDeviceUIDs addObject:v4];
+  [(NSMutableArray *)outputDeviceUIDs addObject:dsCopy];
 }
 
 - (id)description
@@ -35,20 +35,20 @@
   v8.receiver = self;
   v8.super_class = _MRRemoveOutputDevicesMessageProtobuf;
   v4 = [(_MRRemoveOutputDevicesMessageProtobuf *)&v8 description];
-  v5 = [(_MRRemoveOutputDevicesMessageProtobuf *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(_MRRemoveOutputDevicesMessageProtobuf *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   outputDeviceUIDs = self->_outputDeviceUIDs;
   if (outputDeviceUIDs)
   {
-    [v3 setObject:outputDeviceUIDs forKey:@"outputDeviceUIDs"];
+    [dictionary setObject:outputDeviceUIDs forKey:@"outputDeviceUIDs"];
   }
 
   endpointUID = self->_endpointUID;
@@ -60,10 +60,10 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -104,34 +104,34 @@
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if ([(_MRRemoveOutputDevicesMessageProtobuf *)self outputDeviceUIDsCount])
   {
-    [v8 clearOutputDeviceUIDs];
-    v4 = [(_MRRemoveOutputDevicesMessageProtobuf *)self outputDeviceUIDsCount];
-    if (v4)
+    [toCopy clearOutputDeviceUIDs];
+    outputDeviceUIDsCount = [(_MRRemoveOutputDevicesMessageProtobuf *)self outputDeviceUIDsCount];
+    if (outputDeviceUIDsCount)
     {
-      v5 = v4;
+      v5 = outputDeviceUIDsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(_MRRemoveOutputDevicesMessageProtobuf *)self outputDeviceUIDsAtIndex:i];
-        [v8 addOutputDeviceUIDs:v7];
+        [toCopy addOutputDeviceUIDs:v7];
       }
     }
   }
 
   if (self->_endpointUID)
   {
-    [v8 setEndpointUID:?];
+    [toCopy setEndpointUID:?];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -152,7 +152,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v16 + 1) + 8 * v10) copyWithZone:{a3, v16}];
+        v11 = [*(*(&v16 + 1) + 8 * v10) copyWithZone:{zone, v16}];
         [v5 addOutputDeviceUIDs:v11];
 
         ++v10;
@@ -165,7 +165,7 @@
     while (v8);
   }
 
-  v12 = [(NSString *)self->_endpointUID copyWithZone:a3];
+  v12 = [(NSString *)self->_endpointUID copyWithZone:zone];
   v13 = v5[1];
   v5[1] = v12;
 
@@ -173,13 +173,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((outputDeviceUIDs = self->_outputDeviceUIDs, !(outputDeviceUIDs | v4[2])) || -[NSMutableArray isEqual:](outputDeviceUIDs, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((outputDeviceUIDs = self->_outputDeviceUIDs, !(outputDeviceUIDs | equalCopy[2])) || -[NSMutableArray isEqual:](outputDeviceUIDs, "isEqual:")))
   {
     endpointUID = self->_endpointUID;
-    if (endpointUID | v4[1])
+    if (endpointUID | equalCopy[1])
     {
       v7 = [(NSString *)endpointUID isEqual:?];
     }
@@ -198,15 +198,15 @@
   return v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  fromCopy = from;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = v4[2];
+  v5 = fromCopy[2];
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
@@ -230,7 +230,7 @@
     while (v7);
   }
 
-  if (v4[1])
+  if (fromCopy[1])
   {
     [(_MRRemoveOutputDevicesMessageProtobuf *)self setEndpointUID:?];
   }

@@ -1,23 +1,23 @@
 @interface OrgApacheLuceneSearchFieldDoc
-- (OrgApacheLuceneSearchFieldDoc)initWithInt:(int)a3 withFloat:(float)a4 withNSObjectArray:(id)a5;
-- (OrgApacheLuceneSearchFieldDoc)initWithInt:(int)a3 withFloat:(float)a4 withNSObjectArray:(id)a5 withInt:(int)a6;
+- (OrgApacheLuceneSearchFieldDoc)initWithInt:(int)int withFloat:(float)float withNSObjectArray:(id)array;
+- (OrgApacheLuceneSearchFieldDoc)initWithInt:(int)int withFloat:(float)float withNSObjectArray:(id)array withInt:(int)withInt;
 - (id)description;
 - (void)dealloc;
 @end
 
 @implementation OrgApacheLuceneSearchFieldDoc
 
-- (OrgApacheLuceneSearchFieldDoc)initWithInt:(int)a3 withFloat:(float)a4 withNSObjectArray:(id)a5
+- (OrgApacheLuceneSearchFieldDoc)initWithInt:(int)int withFloat:(float)float withNSObjectArray:(id)array
 {
-  OrgApacheLuceneSearchScoreDoc_initWithInt_withFloat_(self, a3, a4);
-  JreStrongAssign(&self->fields_, a5);
+  OrgApacheLuceneSearchScoreDoc_initWithInt_withFloat_(self, int, float);
+  JreStrongAssign(&self->fields_, array);
   return self;
 }
 
-- (OrgApacheLuceneSearchFieldDoc)initWithInt:(int)a3 withFloat:(float)a4 withNSObjectArray:(id)a5 withInt:(int)a6
+- (OrgApacheLuceneSearchFieldDoc)initWithInt:(int)int withFloat:(float)float withNSObjectArray:(id)array withInt:(int)withInt
 {
-  OrgApacheLuceneSearchScoreDoc_initWithInt_withFloat_withInt_(self, a3, a6, a4);
-  JreStrongAssign(&self->fields_, a5);
+  OrgApacheLuceneSearchScoreDoc_initWithInt_withFloat_withInt_(self, int, withInt, float);
+  JreStrongAssign(&self->fields_, array);
   return self;
 }
 

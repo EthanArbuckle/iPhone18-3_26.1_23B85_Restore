@@ -1,22 +1,22 @@
 @interface SFRemoteAutoFillScanAction
-+ (void)actionForURL:(id)a3 completion:(id)a4;
-- (void)performWithCompletion:(id)a3;
++ (void)actionForURL:(id)l completion:(id)completion;
+- (void)performWithCompletion:(id)completion;
 @end
 
 @implementation SFRemoteAutoFillScanAction
 
-+ (void)actionForURL:(id)a3 completion:(id)a4
++ (void)actionForURL:(id)l completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  lCopy = l;
+  completionCopy = completion;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __54__SFRemoteAutoFillScanAction_actionForURL_completion___block_invoke;
   v9[3] = &unk_1E788B210;
-  v10 = v5;
-  v11 = v6;
-  v7 = v6;
-  v8 = v5;
+  v10 = lCopy;
+  v11 = completionCopy;
+  v7 = completionCopy;
+  v8 = lCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v9);
 }
 
@@ -58,9 +58,9 @@ void __54__SFRemoteAutoFillScanAction_actionForURL_completion___block_invoke(uin
   }
 }
 
-- (void)performWithCompletion:(id)a3
+- (void)performWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (gLogCategory_SFRemoteAutoFillScanAction <= 50 && (gLogCategory_SFRemoteAutoFillScanAction != -1 || _LogCategory_Initialize()))
   {
     [SFRemoteAutoFillScanAction performWithCompletion:?];
@@ -73,9 +73,9 @@ void __54__SFRemoteAutoFillScanAction_actionForURL_completion___block_invoke(uin
   v9[2] = __52__SFRemoteAutoFillScanAction_performWithCompletion___block_invoke;
   v9[3] = &unk_1E788CB38;
   v10 = v5;
-  v11 = v4;
+  v11 = completionCopy;
   v7 = v5;
-  v8 = v4;
+  v8 = completionCopy;
   [(SFClient *)v7 triggerProximityAutoFillDetectedWithURL:url completion:v9];
 }
 

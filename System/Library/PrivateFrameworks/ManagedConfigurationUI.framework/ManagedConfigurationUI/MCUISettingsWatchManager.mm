@@ -1,5 +1,5 @@
 @interface MCUISettingsWatchManager
-+ (BOOL)_isWatchYorktownEnrolled:(id)a3;
++ (BOOL)_isWatchYorktownEnrolled:(id)enrolled;
 + (BOOL)hasAnyYorktownEnrolledWatches;
 @end
 
@@ -10,9 +10,9 @@
   v19 = *MEMORY[0x277D85DE8];
   if (MCUIIsiPhone())
   {
-    v3 = [MEMORY[0x277D2BCF8] sharedInstance];
-    v4 = [MEMORY[0x277D2BCF8] setupCompletedDevicesSelectorBlock];
-    v5 = [v3 getAllDevicesWithArchivedDevicesMatching:v4];
+    mEMORY[0x277D2BCF8] = [MEMORY[0x277D2BCF8] sharedInstance];
+    setupCompletedDevicesSelectorBlock = [MEMORY[0x277D2BCF8] setupCompletedDevicesSelectorBlock];
+    v5 = [mEMORY[0x277D2BCF8] getAllDevicesWithArchivedDevicesMatching:setupCompletedDevicesSelectorBlock];
 
     if ([v5 count])
     {
@@ -35,7 +35,7 @@
               objc_enumerationMutation(v6);
             }
 
-            if ([a1 _isWatchYorktownEnrolled:{*(*(&v14 + 1) + 8 * i), v14}])
+            if ([self _isWatchYorktownEnrolled:{*(*(&v14 + 1) + 8 * i), v14}])
             {
               v11 = 1;
               goto LABEL_14;
@@ -71,9 +71,9 @@ LABEL_14:
   return v11;
 }
 
-+ (BOOL)_isWatchYorktownEnrolled:(id)a3
++ (BOOL)_isWatchYorktownEnrolled:(id)enrolled
 {
-  v3 = [a3 valueForProperty:*MEMORY[0x277D2BB78]];
+  v3 = [enrolled valueForProperty:*MEMORY[0x277D2BB78]];
   v4 = v3;
   if (v3)
   {

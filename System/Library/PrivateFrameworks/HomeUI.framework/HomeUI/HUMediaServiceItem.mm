@@ -1,24 +1,24 @@
 @interface HUMediaServiceItem
 - (HUMediaServiceItem)init;
-- (HUMediaServiceItem)initWithMediaService:(id)a3 home:(id)a4;
-- (id)_subclass_updateWithOptions:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (HUMediaServiceItem)initWithMediaService:(id)service home:(id)home;
+- (id)_subclass_updateWithOptions:(id)options;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation HUMediaServiceItem
 
-- (HUMediaServiceItem)initWithMediaService:(id)a3 home:(id)a4
+- (HUMediaServiceItem)initWithMediaService:(id)service home:(id)home
 {
-  v7 = a3;
-  v8 = a4;
+  serviceCopy = service;
+  homeCopy = home;
   v12.receiver = self;
   v12.super_class = HUMediaServiceItem;
   v9 = [(HUMediaServiceItem *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_mediaService, a3);
-    objc_storeStrong(&v10->_home, a4);
+    objc_storeStrong(&v9->_mediaService, service);
+    objc_storeStrong(&v10->_home, home);
   }
 
   return v10;
@@ -26,18 +26,18 @@
 
 - (HUMediaServiceItem)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithMediaService_home_);
-  [v4 handleFailureInMethod:a2 object:self file:@"HUMediaServiceItem.m" lineNumber:38 description:{@"%s is unavailable; use %@ instead", "-[HUMediaServiceItem init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUMediaServiceItem.m" lineNumber:38 description:{@"%s is unavailable; use %@ instead", "-[HUMediaServiceItem init]", v5}];
 
   return 0;
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
-  v4 = [MEMORY[0x277D14820] sharedManager];
-  v5 = [(HUMediaServiceItem *)self home];
-  v6 = [v4 mediaServicesForHome:v5];
+  mEMORY[0x277D14820] = [MEMORY[0x277D14820] sharedManager];
+  home = [(HUMediaServiceItem *)self home];
+  v6 = [mEMORY[0x277D14820] mediaServicesForHome:home];
 
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
@@ -51,20 +51,20 @@
   }
 
   v8 = objc_opt_new();
-  v9 = [(HUMediaServiceItem *)self mediaService];
-  v10 = [v9 serviceName];
-  v11 = [v10 copy];
+  mediaService = [(HUMediaServiceItem *)self mediaService];
+  serviceName = [mediaService serviceName];
+  v11 = [serviceName copy];
   [v8 na_safeSetObject:v11 forKey:*MEMORY[0x277D13F60]];
 
-  v12 = [MEMORY[0x277D14820] sharedManager];
-  v13 = [(HUMediaServiceItem *)self home];
-  v14 = [v12 defaultMediaServiceForHome:v13];
+  mEMORY[0x277D14820]2 = [MEMORY[0x277D14820] sharedManager];
+  home2 = [(HUMediaServiceItem *)self home];
+  v14 = [mEMORY[0x277D14820]2 defaultMediaServiceForHome:home2];
 
   v15 = MEMORY[0x277CCABB0];
-  v16 = [(HUMediaServiceItem *)self mediaService];
-  v17 = [v16 bundleIdentifier];
-  v18 = [v14 bundleIdentifier];
-  v19 = [v15 numberWithBool:{objc_msgSend(v17, "isEqualToString:", v18)}];
+  mediaService2 = [(HUMediaServiceItem *)self mediaService];
+  bundleIdentifier = [mediaService2 bundleIdentifier];
+  bundleIdentifier2 = [v14 bundleIdentifier];
+  v19 = [v15 numberWithBool:{objc_msgSend(bundleIdentifier, "isEqualToString:", bundleIdentifier2)}];
   [v8 na_safeSetObject:v19 forKey:*MEMORY[0x277D13FE8]];
 
   [v8 na_safeSetObject:MEMORY[0x277CBEC28] forKey:*MEMORY[0x277D13F10]];
@@ -86,12 +86,12 @@ uint64_t __50__HUMediaServiceItem__subclass_updateWithOptions___block_invoke(uin
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(HUMediaServiceItem *)self mediaService];
-  v6 = [(HUMediaServiceItem *)self home];
-  v7 = [v4 initWithMediaService:v5 home:v6];
+  mediaService = [(HUMediaServiceItem *)self mediaService];
+  home = [(HUMediaServiceItem *)self home];
+  v7 = [v4 initWithMediaService:mediaService home:home];
 
   [v7 copyLatestResultsFromItem:self];
   return v7;

@@ -1,20 +1,20 @@
 @interface NPSUserDefaultsMsgKey
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasTwoWaySync:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasTwoWaySync:(BOOL)sync;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NPSUserDefaultsMsgKey
 
-- (void)setHasTwoWaySync:(BOOL)a3
+- (void)setHasTwoWaySync:(BOOL)sync
 {
-  if (a3)
+  if (sync)
   {
     v3 = 2;
   }
@@ -32,8 +32,8 @@
   v7.receiver = self;
   v7.super_class = NPSUserDefaultsMsgKey;
   v3 = [(NPSUserDefaultsMsgKey *)&v7 description];
-  v4 = [(NPSUserDefaultsMsgKey *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(NPSUserDefaultsMsgKey *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -72,15 +72,15 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (!self->_key)
   {
     sub_100026604();
   }
 
-  v9 = v4;
+  v9 = toCopy;
   PBDataWriterWriteStringField();
   if (self->_value)
   {
@@ -104,38 +104,38 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v5 = a3;
-  [v5 setKey:self->_key];
+  toCopy = to;
+  [toCopy setKey:self->_key];
   if (self->_value)
   {
-    [v5 setValue:?];
+    [toCopy setValue:?];
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(v5 + 32) = self->_twoWaySync;
-    *(v5 + 36) |= 2u;
+    *(toCopy + 32) = self->_twoWaySync;
+    *(toCopy + 36) |= 2u;
     has = self->_has;
   }
 
   if (has)
   {
-    *(v5 + 1) = *&self->_timestamp;
-    *(v5 + 36) |= 1u;
+    *(toCopy + 1) = *&self->_timestamp;
+    *(toCopy + 36) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_key copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_key copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
-  v8 = [(NSData *)self->_value copyWithZone:a3];
+  v8 = [(NSData *)self->_value copyWithZone:zone];
   v9 = v5[3];
   v5[3] = v8;
 
@@ -156,16 +156,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_13;
   }
 
   key = self->_key;
-  if (key | *(v4 + 2))
+  if (key | *(equalCopy + 2))
   {
     if (![(NSString *)key isEqual:?])
     {
@@ -174,7 +174,7 @@
   }
 
   value = self->_value;
-  if (value | *(v4 + 3))
+  if (value | *(equalCopy + 3))
   {
     if (![(NSData *)value isEqual:?])
     {
@@ -184,35 +184,35 @@
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 36) & 2) == 0)
+    if ((*(equalCopy + 36) & 2) == 0)
     {
       goto LABEL_13;
     }
 
-    v9 = *(v4 + 32);
+    v9 = *(equalCopy + 32);
     if (self->_twoWaySync)
     {
-      if ((*(v4 + 32) & 1) == 0)
+      if ((*(equalCopy + 32) & 1) == 0)
       {
         goto LABEL_13;
       }
     }
 
-    else if (*(v4 + 32))
+    else if (*(equalCopy + 32))
     {
       goto LABEL_13;
     }
   }
 
-  else if ((*(v4 + 36) & 2) != 0)
+  else if ((*(equalCopy + 36) & 2) != 0)
   {
     goto LABEL_13;
   }
 
-  v7 = (*(v4 + 36) & 1) == 0;
+  v7 = (*(equalCopy + 36) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 36) & 1) != 0 && self->_timestamp == *(v4 + 1))
+    if ((*(equalCopy + 36) & 1) != 0 && self->_timestamp == *(equalCopy + 1))
     {
       v7 = 1;
       goto LABEL_14;
@@ -279,33 +279,33 @@ LABEL_3:
   return v4 ^ v3 ^ v7 ^ v11;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v6 = v4;
-  if (*(v4 + 2))
+  fromCopy = from;
+  v6 = fromCopy;
+  if (*(fromCopy + 2))
   {
     [(NPSUserDefaultsMsgKey *)self setKey:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(NPSUserDefaultsMsgKey *)self setValue:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = *(v4 + 36);
+  v5 = *(fromCopy + 36);
   if ((v5 & 2) != 0)
   {
-    self->_twoWaySync = *(v4 + 32);
+    self->_twoWaySync = *(fromCopy + 32);
     *&self->_has |= 2u;
-    v5 = *(v4 + 36);
+    v5 = *(fromCopy + 36);
   }
 
   if (v5)
   {
-    self->_timestamp = *(v4 + 1);
+    self->_timestamp = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 }

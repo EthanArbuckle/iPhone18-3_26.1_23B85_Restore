@@ -1,12 +1,12 @@
 @interface ASKLoadImageResourceOperation
 + (OS_dispatch_queue)dataConsumerQueue;
-- (ASKLoadImageResourceOperation)initWithURLRequest:(id)a3 URLSession:(id)a4 dataConsumer:(id)a5;
-- (ASKLoadImageResourceOperation)initWithURLRequest:(id)a3 URLSession:(id)a4 dataConsumer:(id)a5 dataConsumerQueue:(id)a6;
+- (ASKLoadImageResourceOperation)initWithURLRequest:(id)request URLSession:(id)session dataConsumer:(id)consumer;
+- (ASKLoadImageResourceOperation)initWithURLRequest:(id)request URLSession:(id)session dataConsumer:(id)consumer dataConsumerQueue:(id)queue;
 - (BOOL)isExecuting;
 - (BOOL)isFinished;
 - (void)cancel;
-- (void)didFinishTaskWithData:(id)a3 response:(id)a4 error:(id)a5;
-- (void)setQueuePriority:(int64_t)a3;
+- (void)didFinishTaskWithData:(id)data response:(id)response error:(id)error;
+- (void)setQueuePriority:(int64_t)priority;
 - (void)start;
 @end
 
@@ -33,54 +33,54 @@ void __50__ASKLoadImageResourceOperation_dataConsumerQueue__block_invoke()
   dataConsumerQueue_dataConsumerQueue = v1;
 }
 
-- (ASKLoadImageResourceOperation)initWithURLRequest:(id)a3 URLSession:(id)a4 dataConsumer:(id)a5 dataConsumerQueue:(id)a6
+- (ASKLoadImageResourceOperation)initWithURLRequest:(id)request URLSession:(id)session dataConsumer:(id)consumer dataConsumerQueue:(id)queue
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  requestCopy = request;
+  sessionCopy = session;
+  consumerCopy = consumer;
+  queueCopy = queue;
   v18.receiver = self;
   v18.super_class = ASKLoadImageResourceOperation;
   v15 = [(ASKLoadImageResourceOperation *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_session, a4);
-    objc_storeStrong(&v16->_urlRequest, a3);
-    objc_storeStrong(&v16->_dataConsumer, a5);
-    objc_storeStrong(&v16->_dataConsumerQueue, a6);
+    objc_storeStrong(&v15->_session, session);
+    objc_storeStrong(&v16->_urlRequest, request);
+    objc_storeStrong(&v16->_dataConsumer, consumer);
+    objc_storeStrong(&v16->_dataConsumerQueue, queue);
   }
 
   return v16;
 }
 
-- (ASKLoadImageResourceOperation)initWithURLRequest:(id)a3 URLSession:(id)a4 dataConsumer:(id)a5
+- (ASKLoadImageResourceOperation)initWithURLRequest:(id)request URLSession:(id)session dataConsumer:(id)consumer
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [objc_opt_class() dataConsumerQueue];
-  v12 = [(ASKLoadImageResourceOperation *)self initWithURLRequest:v10 URLSession:v9 dataConsumer:v8 dataConsumerQueue:v11];
+  consumerCopy = consumer;
+  sessionCopy = session;
+  requestCopy = request;
+  dataConsumerQueue = [objc_opt_class() dataConsumerQueue];
+  v12 = [(ASKLoadImageResourceOperation *)self initWithURLRequest:requestCopy URLSession:sessionCopy dataConsumer:consumerCopy dataConsumerQueue:dataConsumerQueue];
 
   return v12;
 }
 
-- (void)didFinishTaskWithData:(id)a3 response:(id)a4 error:(id)a5
+- (void)didFinishTaskWithData:(id)data response:(id)response error:(id)error
 {
-  v7 = a3;
-  v8 = a5;
+  dataCopy = data;
+  errorCopy = error;
   [(ASKLoadImageResourceOperation *)self willChangeValueForKey:@"isExecuting"];
-  v9 = [(ASKLoadImageResourceOperation *)self dataConsumerQueue];
+  dataConsumerQueue = [(ASKLoadImageResourceOperation *)self dataConsumerQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __70__ASKLoadImageResourceOperation_didFinishTaskWithData_response_error___block_invoke;
   block[3] = &unk_27968B4B0;
-  v13 = v7;
-  v14 = self;
-  v15 = v8;
-  v10 = v8;
-  v11 = v7;
-  dispatch_async(v9, block);
+  v13 = dataCopy;
+  selfCopy = self;
+  v15 = errorCopy;
+  v10 = errorCopy;
+  v11 = dataCopy;
+  dispatch_async(dataConsumerQueue, block);
 
   [(ASKLoadImageResourceOperation *)self didChangeValueForKey:@"isExecuting"];
 }
@@ -127,11 +127,11 @@ void __70__ASKLoadImageResourceOperation_didFinishTaskWithData_response_error___
     return 0;
   }
 
-  v4 = [(ASKLoadImageResourceOperation *)self task];
-  if (v4)
+  task = [(ASKLoadImageResourceOperation *)self task];
+  if (task)
   {
-    v5 = [(ASKLoadImageResourceOperation *)self task];
-    v3 = [v5 state] == 0;
+    task2 = [(ASKLoadImageResourceOperation *)self task];
+    v3 = [task2 state] == 0;
   }
 
   else
@@ -149,18 +149,18 @@ void __70__ASKLoadImageResourceOperation_didFinishTaskWithData_response_error___
     return 1;
   }
 
-  v4 = [(ASKLoadImageResourceOperation *)self task];
-  v3 = [v4 state] == 3;
+  task = [(ASKLoadImageResourceOperation *)self task];
+  v3 = [task state] == 3;
 
   return v3;
 }
 
-- (void)setQueuePriority:(int64_t)a3
+- (void)setQueuePriority:(int64_t)priority
 {
   v9.receiver = self;
   v9.super_class = ASKLoadImageResourceOperation;
   [(ASKLoadImageResourceOperation *)&v9 setQueuePriority:?];
-  v5 = __ROR8__(a3 + 8, 2) - 1;
+  v5 = __ROR8__(priority + 8, 2) - 1;
   if (v5 > 3)
   {
     v6 = 1045220557;
@@ -171,29 +171,29 @@ void __70__ASKLoadImageResourceOperation_didFinishTaskWithData_response_error___
     v6 = dword_24F9354A0[v5];
   }
 
-  v7 = [(ASKLoadImageResourceOperation *)self task];
+  task = [(ASKLoadImageResourceOperation *)self task];
   LODWORD(v8) = v6;
-  [v7 setPriority:v8];
+  [task setPriority:v8];
 }
 
 - (void)start
 {
-  v3 = [(ASKLoadImageResourceOperation *)self task];
-  v4 = [v3 state];
+  task = [(ASKLoadImageResourceOperation *)self task];
+  state = [task state];
 
-  if (([(ASKLoadImageResourceOperation *)self isCancelled]& 1) == 0 && v4 != 2)
+  if (([(ASKLoadImageResourceOperation *)self isCancelled]& 1) == 0 && state != 2)
   {
-    v5 = [(ASKLoadImageResourceOperation *)self task];
+    task2 = [(ASKLoadImageResourceOperation *)self task];
 
-    if (!v5 || v4 == 1)
+    if (!task2 || state == 1)
     {
-      v6 = [(ASKLoadImageResourceOperation *)self task];
+      task3 = [(ASKLoadImageResourceOperation *)self task];
 
-      if (!v6)
+      if (!task3)
       {
         objc_initWeak(&location, self);
-        v7 = [(ASKLoadImageResourceOperation *)self session];
-        v8 = [(ASKLoadImageResourceOperation *)self urlRequest];
+        session = [(ASKLoadImageResourceOperation *)self session];
+        urlRequest = [(ASKLoadImageResourceOperation *)self urlRequest];
         v11[0] = MEMORY[0x277D85DD0];
         v11[1] = 3221225472;
         v11[2] = __38__ASKLoadImageResourceOperation_start__block_invoke;
@@ -204,7 +204,7 @@ void __70__ASKLoadImageResourceOperation_didFinishTaskWithData_response_error___
         v9[2] = __38__ASKLoadImageResourceOperation_start__block_invoke_2;
         v9[3] = &unk_27968B500;
         objc_copyWeak(&v10, &location);
-        [v7 createDataTaskWithRequest:v8 activity:0 dataTaskCreationCompletionHandler:v11 requestCompletionHandler:v9];
+        [session createDataTaskWithRequest:urlRequest activity:0 dataTaskCreationCompletionHandler:v11 requestCompletionHandler:v9];
 
         objc_destroyWeak(&v10);
         objc_destroyWeak(&v12);
@@ -266,8 +266,8 @@ void __38__ASKLoadImageResourceOperation_start__block_invoke_2(uint64_t a1, void
 
 - (void)cancel
 {
-  v3 = [(ASKLoadImageResourceOperation *)self task];
-  [v3 cancel];
+  task = [(ASKLoadImageResourceOperation *)self task];
+  [task cancel];
 
   v4.receiver = self;
   v4.super_class = ASKLoadImageResourceOperation;

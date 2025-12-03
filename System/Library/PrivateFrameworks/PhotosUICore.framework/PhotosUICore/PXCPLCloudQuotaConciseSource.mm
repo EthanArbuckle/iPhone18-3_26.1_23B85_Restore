@@ -1,23 +1,23 @@
 @interface PXCPLCloudQuotaConciseSource
 + (id)_placement;
 - (PXCPLCloudQuotaConciseSource)init;
-- (PXCPLCloudQuotaConciseSource)initWithPlacement:(int64_t)a3;
-- (id)_actionForMessageAction:(id)a3;
-- (void)_handleInAppMessage:(id)a3;
-- (void)_presentInAppAlert:(id)a3;
-- (void)currentInAppMessageDidChange:(id)a3;
-- (void)setAction:(id)a3;
-- (void)setIcon:(id)a3;
-- (void)setIconColor:(id)a3;
-- (void)setTitle:(id)a3;
+- (PXCPLCloudQuotaConciseSource)initWithPlacement:(int64_t)placement;
+- (id)_actionForMessageAction:(id)action;
+- (void)_handleInAppMessage:(id)message;
+- (void)_presentInAppAlert:(id)alert;
+- (void)currentInAppMessageDidChange:(id)change;
+- (void)setAction:(id)action;
+- (void)setIcon:(id)icon;
+- (void)setIconColor:(id)color;
+- (void)setTitle:(id)title;
 @end
 
 @implementation PXCPLCloudQuotaConciseSource
 
-- (void)currentInAppMessageDidChange:(id)a3
+- (void)currentInAppMessageDidChange:(id)change
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
+  changeCopy = change;
+  userInfo = [changeCopy userInfo];
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -34,33 +34,33 @@
   _Block_object_dispose(&v11, 8);
   if (v6)
   {
-    v8 = [v5 objectForKeyedSubscript:*v6];
+    v8 = [userInfo objectForKeyedSubscript:*v6];
 
     [(PXCPLCloudQuotaConciseSource *)self _handleInAppMessage:v8];
   }
 
   else
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v10 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getICQInAppMessageKey(void)"];
-    [v9 handleFailureInFunction:v10 file:@"PXCPLCloudQuotaSourceUtilities.h" lineNumber:28 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v10 file:@"PXCPLCloudQuotaSourceUtilities.h" lineNumber:28 description:{@"%s", dlerror()}];
 
     __break(1u);
   }
 }
 
-- (void)_handleInAppMessage:(id)a3
+- (void)_handleInAppMessage:(id)message
 {
-  v4 = a3;
-  v5 = [v4 reason];
-  PXCPLCloudQuotaStateForReason(v5);
+  messageCopy = message;
+  reason = [messageCopy reason];
+  PXCPLCloudQuotaStateForReason(reason);
   v7 = v6;
   if (v6)
   {
-    v8 = [v4 conciseTitle];
-    if ([v8 length])
+    conciseTitle = [messageCopy conciseTitle];
+    if ([conciseTitle length])
     {
-      v9 = v8;
+      v9 = conciseTitle;
     }
 
     else
@@ -68,10 +68,10 @@
       v9 = 0;
     }
 
-    v14 = [v4 sfSymbolName];
-    if ([v14 length])
+    sfSymbolName = [messageCopy sfSymbolName];
+    if ([sfSymbolName length])
     {
-      v13 = v14;
+      v13 = sfSymbolName;
     }
 
     else
@@ -79,18 +79,18 @@
       v13 = 0;
     }
 
-    v12 = [v4 sfSymbolColor];
-    v15 = [v4 actions];
-    v11 = [v15 firstObject];
+    sfSymbolColor = [messageCopy sfSymbolColor];
+    actions = [messageCopy actions];
+    firstObject = [actions firstObject];
 
-    v10 = [(PXCPLCloudQuotaConciseSource *)self _actionForMessageAction:v11];
+    v10 = [(PXCPLCloudQuotaConciseSource *)self _actionForMessageAction:firstObject];
   }
 
   else
   {
     v10 = 0;
-    v11 = 0;
-    v12 = 0;
+    firstObject = 0;
+    sfSymbolColor = 0;
     v13 = 0;
     v9 = 0;
   }
@@ -102,15 +102,15 @@
   v22[4] = self;
   v23 = v9;
   v24 = v13;
-  v25 = v12;
+  v25 = sfSymbolColor;
   v28 = v10;
   v29 = v7;
-  v26 = v11;
-  v27 = v5;
-  v16 = v5;
-  v17 = v11;
+  v26 = firstObject;
+  v27 = reason;
+  v16 = reason;
+  v17 = firstObject;
   v18 = v10;
-  v19 = v12;
+  v19 = sfSymbolColor;
   v20 = v13;
   v21 = v9;
   [(PXCPLCloudQuotaConciseSource *)self performChanges:v22];
@@ -201,34 +201,34 @@ LABEL_14:
   }
 }
 
-- (void)_presentInAppAlert:(id)a3
+- (void)_presentInAppAlert:(id)alert
 {
-  v4 = a3;
+  alertCopy = alert;
   v5 = MEMORY[0x1E69DC650];
-  v6 = [v4 title];
-  v7 = [v4 message];
-  v8 = [v5 alertControllerWithTitle:v6 message:v7 preferredStyle:1];
+  title = [alertCopy title];
+  message = [alertCopy message];
+  v8 = [v5 alertControllerWithTitle:title message:message preferredStyle:1];
 
-  v9 = [v4 actions];
-  v10 = [v9 count];
+  actions = [alertCopy actions];
+  v10 = [actions count];
 
   if (v10)
   {
     for (i = 0; i != v10; ++i)
     {
-      v12 = [v4 actions];
-      v13 = [v12 objectAtIndexedSubscript:i];
+      actions2 = [alertCopy actions];
+      v13 = [actions2 objectAtIndexedSubscript:i];
 
       v14 = MEMORY[0x1E69DC648];
-      v15 = [v13 title];
+      title2 = [v13 title];
       v19[0] = MEMORY[0x1E69E9820];
       v19[1] = 3221225472;
       v19[2] = __51__PXCPLCloudQuotaConciseSource__presentInAppAlert___block_invoke;
       v19[3] = &unk_1E774A2C8;
       v20 = v13;
-      v21 = self;
+      selfCopy = self;
       v16 = v13;
-      v17 = [v14 actionWithTitle:v15 style:0 handler:v19];
+      v17 = [v14 actionWithTitle:title2 style:0 handler:v19];
 
       [v8 addAction:v17];
       if (!i)
@@ -238,8 +238,8 @@ LABEL_14:
     }
   }
 
-  v18 = [(PXCPLCloudQuotaConciseSource *)self presentationEnvironment];
-  [v18 presentViewController:v8 animated:1 completionHandler:0];
+  presentationEnvironment = [(PXCPLCloudQuotaConciseSource *)self presentationEnvironment];
+  [presentationEnvironment presentViewController:v8 animated:1 completionHandler:0];
 }
 
 void __51__PXCPLCloudQuotaConciseSource__presentInAppAlert___block_invoke(uint64_t a1)
@@ -249,23 +249,23 @@ void __51__PXCPLCloudQuotaConciseSource__presentInAppAlert___block_invoke(uint64
   [v1 performActionWithContext:v2];
 }
 
-- (id)_actionForMessageAction:(id)a3
+- (id)_actionForMessageAction:(id)action
 {
-  v4 = a3;
-  if (v4)
+  actionCopy = action;
+  if (actionCopy)
   {
     if (objc_opt_respondsToSelector())
     {
-      v5 = [v4 inAppAlert];
-      if ([v4 icqActionType] == 102 && v5)
+      inAppAlert = [actionCopy inAppAlert];
+      if ([actionCopy icqActionType] == 102 && inAppAlert)
       {
         aBlock[0] = MEMORY[0x1E69E9820];
         aBlock[1] = 3221225472;
         aBlock[2] = __56__PXCPLCloudQuotaConciseSource__actionForMessageAction___block_invoke;
         aBlock[3] = &unk_1E774C620;
         aBlock[4] = self;
-        v5 = v5;
-        v17 = v5;
+        inAppAlert = inAppAlert;
+        v17 = inAppAlert;
         v6 = _Block_copy(aBlock);
         v7 = v17;
       }
@@ -276,8 +276,8 @@ void __51__PXCPLCloudQuotaConciseSource__presentInAppAlert___block_invoke(uint64
         v13[1] = 3221225472;
         v13[2] = __56__PXCPLCloudQuotaConciseSource__actionForMessageAction___block_invoke_2;
         v13[3] = &unk_1E774C620;
-        v14 = v4;
-        v15 = self;
+        v14 = actionCopy;
+        selfCopy = self;
         v6 = _Block_copy(v13);
         v7 = v14;
       }
@@ -289,10 +289,10 @@ void __51__PXCPLCloudQuotaConciseSource__presentInAppAlert___block_invoke(uint64
       v10[1] = 3221225472;
       v10[2] = __56__PXCPLCloudQuotaConciseSource__actionForMessageAction___block_invoke_3;
       v10[3] = &unk_1E774C620;
-      v11 = v4;
-      v12 = self;
+      v11 = actionCopy;
+      selfCopy2 = self;
       v6 = _Block_copy(v10);
-      v5 = v11;
+      inAppAlert = v11;
     }
   }
 
@@ -320,9 +320,9 @@ void __56__PXCPLCloudQuotaConciseSource__actionForMessageAction___block_invoke_3
   [v1 performActionWithContext:v2];
 }
 
-- (void)setAction:(id)a3
+- (void)setAction:(id)action
 {
-  aBlock = a3;
+  aBlock = action;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
   v4 = aBlock;
   if (self->_action != aBlock)
@@ -336,73 +336,73 @@ void __56__PXCPLCloudQuotaConciseSource__actionForMessageAction___block_invoke_3
   }
 }
 
-- (void)setIconColor:(id)a3
+- (void)setIconColor:(id)color
 {
-  v9 = a3;
+  colorCopy = color;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  v4 = v9;
+  v4 = colorCopy;
   iconColor = self->_iconColor;
-  if (iconColor != v9)
+  if (iconColor != colorCopy)
   {
-    v6 = [(UIColor *)iconColor isEqual:v9];
-    v4 = v9;
+    v6 = [(UIColor *)iconColor isEqual:colorCopy];
+    v4 = colorCopy;
     if ((v6 & 1) == 0)
     {
-      v7 = [(UIColor *)v9 copy];
+      v7 = [(UIColor *)colorCopy copy];
       v8 = self->_iconColor;
       self->_iconColor = v7;
 
       [(PXCPLCloudQuotaConciseSource *)self signalChange:4];
-      v4 = v9;
+      v4 = colorCopy;
     }
   }
 }
 
-- (void)setIcon:(id)a3
+- (void)setIcon:(id)icon
 {
-  v9 = a3;
+  iconCopy = icon;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  v4 = v9;
+  v4 = iconCopy;
   icon = self->_icon;
-  if (icon != v9)
+  if (icon != iconCopy)
   {
-    v6 = [(NSString *)icon isEqualToString:v9];
-    v4 = v9;
+    v6 = [(NSString *)icon isEqualToString:iconCopy];
+    v4 = iconCopy;
     if (!v6)
     {
-      v7 = [(NSString *)v9 copy];
+      v7 = [(NSString *)iconCopy copy];
       v8 = self->_icon;
       self->_icon = v7;
 
       [(PXCPLCloudQuotaConciseSource *)self signalChange:2];
-      v4 = v9;
+      v4 = iconCopy;
     }
   }
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v9 = a3;
+  titleCopy = title;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  v4 = v9;
+  v4 = titleCopy;
   title = self->_title;
-  if (title != v9)
+  if (title != titleCopy)
   {
-    v6 = [(NSString *)title isEqualToString:v9];
-    v4 = v9;
+    v6 = [(NSString *)title isEqualToString:titleCopy];
+    v4 = titleCopy;
     if (!v6)
     {
-      v7 = [(NSString *)v9 copy];
+      v7 = [(NSString *)titleCopy copy];
       v8 = self->_title;
       self->_title = v7;
 
       [(PXCPLCloudQuotaConciseSource *)self signalChange:1];
-      v4 = v9;
+      v4 = titleCopy;
     }
   }
 }
 
-- (PXCPLCloudQuotaConciseSource)initWithPlacement:(int64_t)a3
+- (PXCPLCloudQuotaConciseSource)initWithPlacement:(int64_t)placement
 {
   v18.receiver = self;
   v18.super_class = PXCPLCloudQuotaConciseSource;
@@ -413,8 +413,8 @@ void __56__PXCPLCloudQuotaConciseSource__actionForMessageAction___block_invoke_3
     return v5;
   }
 
-  v4->_placement = a3;
-  v6 = [MEMORY[0x1E696AD88] defaultCenter];
+  v4->_placement = placement;
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v24 = 0;
   v25 = &v24;
   v26 = 0x2020000000;
@@ -437,7 +437,7 @@ void __56__PXCPLCloudQuotaConciseSource__actionForMessageAction___block_invoke_3
   _Block_object_dispose(&v24, 8);
   if (v7)
   {
-    [v6 addObserver:v5 selector:sel_currentInAppMessageDidChange_ name:*v7 object:0];
+    [defaultCenter addObserver:v5 selector:sel_currentInAppMessageDidChange_ name:*v7 object:0];
 
     v24 = 0;
     v25 = &v24;
@@ -457,17 +457,17 @@ void __56__PXCPLCloudQuotaConciseSource__actionForMessageAction___block_invoke_3
 
     v11 = v10;
     _Block_object_dispose(&v24, 8);
-    v12 = [v10 shared];
+    shared = [v10 shared];
     v13 = *MEMORY[0x1E69BFF18];
-    v14 = [objc_opt_class() _placement];
-    [v12 observeUpdatesForBundleID:v13 placement:v14];
+    _placement = [objc_opt_class() _placement];
+    [shared observeUpdatesForBundleID:v13 placement:_placement];
 
     return v5;
   }
 
-  v16 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v17 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getICQCurrentInAppMessageChangedNotification(void)"];
-  [v16 handleFailureInFunction:v17 file:@"PXCPLCloudQuotaSourceUtilities.h" lineNumber:26 description:{@"%s", dlerror()}];
+  [currentHandler handleFailureInFunction:v17 file:@"PXCPLCloudQuotaSourceUtilities.h" lineNumber:26 description:{@"%s", dlerror()}];
 
   __break(1u);
   return result;
@@ -475,8 +475,8 @@ void __56__PXCPLCloudQuotaConciseSource__actionForMessageAction___block_invoke_3
 
 - (PXCPLCloudQuotaConciseSource)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXCPLCloudQuotaConciseSource.m" lineNumber:43 description:{@"%s is not available as initializer", "-[PXCPLCloudQuotaConciseSource init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXCPLCloudQuotaConciseSource.m" lineNumber:43 description:{@"%s is not available as initializer", "-[PXCPLCloudQuotaConciseSource init]"}];
 
   abort();
 }
@@ -506,9 +506,9 @@ void __56__PXCPLCloudQuotaConciseSource__actionForMessageAction___block_invoke_3
 
   else
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getICQUIMessagePlacementInAppConcise(void)"];
-    [v6 handleFailureInFunction:v7 file:@"PXCPLCloudQuotaSourceUtilities.h" lineNumber:32 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v7 file:@"PXCPLCloudQuotaSourceUtilities.h" lineNumber:32 description:{@"%s", dlerror()}];
 
     __break(1u);
   }

@@ -1,29 +1,29 @@
 @interface AVTAvatarAttributeEditorSectionOptions
-- (AVTAvatarAttributeEditorSectionOptions)initWithFramingMode:(id)a3 poseOverride:(id)a4 presetOverrides:(id)a5 displayMode:(unint64_t)a6 stickerConfiguration:(id)a7 showsLabel:(BOOL)a8;
+- (AVTAvatarAttributeEditorSectionOptions)initWithFramingMode:(id)mode poseOverride:(id)override presetOverrides:(id)overrides displayMode:(unint64_t)displayMode stickerConfiguration:(id)configuration showsLabel:(BOOL)label;
 - (id)description;
 - (id)stringForDisplayMode;
 @end
 
 @implementation AVTAvatarAttributeEditorSectionOptions
 
-- (AVTAvatarAttributeEditorSectionOptions)initWithFramingMode:(id)a3 poseOverride:(id)a4 presetOverrides:(id)a5 displayMode:(unint64_t)a6 stickerConfiguration:(id)a7 showsLabel:(BOOL)a8
+- (AVTAvatarAttributeEditorSectionOptions)initWithFramingMode:(id)mode poseOverride:(id)override presetOverrides:(id)overrides displayMode:(unint64_t)displayMode stickerConfiguration:(id)configuration showsLabel:(BOOL)label
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a7;
+  modeCopy = mode;
+  overrideCopy = override;
+  overridesCopy = overrides;
+  configurationCopy = configuration;
   v22.receiver = self;
   v22.super_class = AVTAvatarAttributeEditorSectionOptions;
   v18 = [(AVTAvatarAttributeEditorSectionOptions *)&v22 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_framingMode, a3);
-    objc_storeStrong(&v19->_poseOverride, a4);
-    objc_storeStrong(&v19->_presetOverrides, a5);
-    v19->_displayMode = a6;
-    objc_storeStrong(&v19->_stickerConfiguration, a7);
-    v19->_showsLabel = a8;
+    objc_storeStrong(&v18->_framingMode, mode);
+    objc_storeStrong(&v19->_poseOverride, override);
+    objc_storeStrong(&v19->_presetOverrides, overrides);
+    v19->_displayMode = displayMode;
+    objc_storeStrong(&v19->_stickerConfiguration, configuration);
+    v19->_showsLabel = label;
   }
 
   return v19;
@@ -31,14 +31,14 @@
 
 - (id)stringForDisplayMode
 {
-  v2 = [(AVTAvatarAttributeEditorSectionOptions *)self displayMode];
+  displayMode = [(AVTAvatarAttributeEditorSectionOptions *)self displayMode];
   v3 = @"unknown";
-  if (v2 == 1)
+  if (displayMode == 1)
   {
     v3 = @"highlightPicker";
   }
 
-  if (v2)
+  if (displayMode)
   {
     return v3;
   }
@@ -56,14 +56,14 @@
   v3 = [(AVTAvatarAttributeEditorSectionOptions *)&v14 description];
   v4 = [v3 mutableCopy];
 
-  v5 = [(AVTAvatarAttributeEditorSectionOptions *)self framingMode];
-  v6 = [(AVTAvatarAttributeEditorSectionOptions *)self stringForDisplayMode];
-  v7 = [(AVTAvatarAttributeEditorSectionOptions *)self poseOverride];
-  v8 = [(AVTAvatarAttributeEditorSectionOptions *)self presetOverrides];
-  v9 = [v8 avt_description];
-  v10 = [(AVTAvatarAttributeEditorSectionOptions *)self stickerConfiguration];
-  v11 = [v10 description];
-  [v4 appendFormat:@" framingMode: %@, displayMode: %@, poseOverride: %@, presetOverrides: %@, stickerConfiguration:  %@ showsLabel:%i", v5, v6, v7, v9, v11, -[AVTAvatarAttributeEditorSectionOptions showsLabel](self, "showsLabel")];
+  framingMode = [(AVTAvatarAttributeEditorSectionOptions *)self framingMode];
+  stringForDisplayMode = [(AVTAvatarAttributeEditorSectionOptions *)self stringForDisplayMode];
+  poseOverride = [(AVTAvatarAttributeEditorSectionOptions *)self poseOverride];
+  presetOverrides = [(AVTAvatarAttributeEditorSectionOptions *)self presetOverrides];
+  avt_description = [presetOverrides avt_description];
+  stickerConfiguration = [(AVTAvatarAttributeEditorSectionOptions *)self stickerConfiguration];
+  v11 = [stickerConfiguration description];
+  [v4 appendFormat:@" framingMode: %@, displayMode: %@, poseOverride: %@, presetOverrides: %@, stickerConfiguration:  %@ showsLabel:%i", framingMode, stringForDisplayMode, poseOverride, avt_description, v11, -[AVTAvatarAttributeEditorSectionOptions showsLabel](self, "showsLabel")];
 
   v12 = [v4 copy];
 

@@ -1,6 +1,6 @@
 @interface MOWatchDog
-- (BOOL)setCadenceSeconds:(float)a3;
-- (MOWatchDog)initWithName:(id)a3 cadenceInSeconds:(float)a4 andHandler:(id)a5;
+- (BOOL)setCadenceSeconds:(float)seconds;
+- (MOWatchDog)initWithName:(id)name cadenceInSeconds:(float)seconds andHandler:(id)handler;
 - (void)_cancel;
 - (void)_pet;
 - (void)cancel;
@@ -87,23 +87,23 @@ void __20__MOWatchDog_cancel__block_invoke(uint64_t a1)
   _os_log_debug_impl(v1, v2, v3, v4, v5, 0x16u);
 }
 
-- (MOWatchDog)initWithName:(id)a3 cadenceInSeconds:(float)a4 andHandler:(id)a5
+- (MOWatchDog)initWithName:(id)name cadenceInSeconds:(float)seconds andHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  nameCopy = name;
+  handlerCopy = handler;
   v27.receiver = self;
   v27.super_class = MOWatchDog;
   v10 = [(MOWatchDog *)&v27 init];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [nameCopy copy];
     v12 = *(v10 + 1);
     *(v10 + 1) = v11;
 
-    v13 = [NSString stringWithFormat:@"MOWatchDog:%@", v8];
-    v14 = [v13 UTF8String];
+    nameCopy = [NSString stringWithFormat:@"MOWatchDog:%@", nameCopy];
+    uTF8String = [nameCopy UTF8String];
     v15 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v16 = dispatch_queue_create(v14, v15);
+    v16 = dispatch_queue_create(uTF8String, v15);
     v17 = *(v10 + 4);
     *(v10 + 4) = v16;
 
@@ -120,7 +120,7 @@ void __20__MOWatchDog_cancel__block_invoke(uint64_t a1)
     objc_copyWeak(&v25, &location);
     dispatch_source_set_event_handler(v20, handler);
     dispatch_resume(*(v10 + 3));
-    *&v21 = a4;
+    *&v21 = seconds;
     [v10 setCadenceSeconds:v21];
     v22 = v10;
     objc_destroyWeak(&v25);
@@ -195,24 +195,24 @@ void __55__MOWatchDog_initWithName_cadenceInSeconds_andHandler___block_invoke(ui
   }
 }
 
-- (BOOL)setCadenceSeconds:(float)a3
+- (BOOL)setCadenceSeconds:(float)seconds
 {
-  if (a3 <= 0.0)
+  if (seconds <= 0.0)
   {
     v4 = _mo_log_facility_get_os_log(&MOLogFacilityWatchDog);
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
     {
-      [(MOWatchDog *)v4 setCadenceSeconds:a3];
+      [(MOWatchDog *)v4 setCadenceSeconds:seconds];
     }
   }
 
   else
   {
-    self->_cadenceSeconds = a3;
+    self->_cadenceSeconds = seconds;
     [(MOWatchDog *)self pet];
   }
 
-  return a3 > 0.0;
+  return seconds > 0.0;
 }
 
 void __55__MOWatchDog_initWithName_cadenceInSeconds_andHandler___block_invoke_cold_1()

@@ -1,36 +1,36 @@
 @interface HUPresenceUserPickerItemModule
 + (NSString)sectionID;
-+ (id)_locationDeviceTextForDeviceNameString:(id)a3;
-- (BOOL)_canDeselectUserHandle:(id)a3;
-- (BOOL)_isPresenceAuthorizedForUser:(id)a3;
-- (BOOL)_isUserHandleSelected:(id)a3;
++ (id)_locationDeviceTextForDeviceNameString:(id)string;
+- (BOOL)_canDeselectUserHandle:(id)handle;
+- (BOOL)_isPresenceAuthorizedForUser:(id)user;
+- (BOOL)_isUserHandleSelected:(id)selected;
 - (BOOL)_shouldUseSingleUserStyle;
-- (HUPresenceUserPickerItemModule)initWithItemUpdater:(id)a3;
-- (HUPresenceUserPickerItemModule)initWithItemUpdater:(id)a3 home:(id)a4 presenceEvent:(id)a5 options:(id)a6 delegate:(id)a7;
+- (HUPresenceUserPickerItemModule)initWithItemUpdater:(id)updater;
+- (HUPresenceUserPickerItemModule)initWithItemUpdater:(id)updater home:(id)home presenceEvent:(id)event options:(id)options delegate:(id)delegate;
 - (HUPresenceUserPickerItemModuleDelegate)delegate;
 - (id)_allSelectedAndSupportedUsers;
 - (id)_attributedFooterTitle;
-- (id)_combinedFooterStringForLocationDeviceText:(id)a3;
+- (id)_combinedFooterStringForLocationDeviceText:(id)text;
 - (id)_homeHubNeedsUpdateWarningText;
 - (id)_someUsersNeedSoftwareUpdateWarningText;
-- (id)activationOptionItemForGranularity:(unint64_t)a3;
-- (id)buildSectionsWithDisplayedItems:(id)a3;
-- (id)confirmationPromptForOptionItem:(id)a3;
+- (id)activationOptionItemForGranularity:(unint64_t)granularity;
+- (id)buildSectionsWithDisplayedItems:(id)items;
+- (id)confirmationPromptForOptionItem:(id)item;
 - (id)itemProviders;
-- (id)stateForActivationOptionItem:(id)a3;
-- (id)stateForUserItem:(id)a3;
-- (unint64_t)_activationGranularityForUserItem:(id)a3;
-- (unint64_t)itemTypeForItem:(id)a3;
+- (id)stateForActivationOptionItem:(id)item;
+- (id)stateForUserItem:(id)item;
+- (unint64_t)_activationGranularityForUserItem:(id)item;
+- (unint64_t)itemTypeForItem:(id)item;
 - (void)_createItemProviders;
 - (void)_resetSelectionForCustomLocation;
-- (void)_updateSelected:(BOOL)a3 forUserHandle:(id)a4;
-- (void)deselectUserItem:(id)a3;
-- (void)locationDeviceManager:(id)a3 didUpdateActiveLocationDevice:(id)a4;
+- (void)_updateSelected:(BOOL)selected forUserHandle:(id)handle;
+- (void)deselectUserItem:(id)item;
+- (void)locationDeviceManager:(id)manager didUpdateActiveLocationDevice:(id)device;
 - (void)registerForExternalUpdates;
-- (void)selectActivationOptionItem:(id)a3;
-- (void)selectUserItem:(id)a3;
-- (void)setOptions:(id)a3;
-- (void)toggleExpandedForActivationOptionItem:(id)a3;
+- (void)selectActivationOptionItem:(id)item;
+- (void)selectUserItem:(id)item;
+- (void)setOptions:(id)options;
+- (void)toggleExpandedForActivationOptionItem:(id)item;
 - (void)unregisterForExternalUpdates;
 @end
 
@@ -54,25 +54,25 @@ void __43__HUPresenceUserPickerItemModule_sectionID__block_invoke_2()
   qword_27C837E60 = @"userList";
 }
 
-- (HUPresenceUserPickerItemModule)initWithItemUpdater:(id)a3
+- (HUPresenceUserPickerItemModule)initWithItemUpdater:(id)updater
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v6 = NSStringFromSelector(sel_initWithItemUpdater_home_presenceEvent_options_delegate_);
-  [v5 handleFailureInMethod:a2 object:self file:@"HUPresenceUserPickerItemModule.m" lineNumber:60 description:{@"%s is unavailable; use %@ instead", "-[HUPresenceUserPickerItemModule initWithItemUpdater:]", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUPresenceUserPickerItemModule.m" lineNumber:60 description:{@"%s is unavailable; use %@ instead", "-[HUPresenceUserPickerItemModule initWithItemUpdater:]", v6}];
 
   return 0;
 }
 
-- (HUPresenceUserPickerItemModule)initWithItemUpdater:(id)a3 home:(id)a4 presenceEvent:(id)a5 options:(id)a6 delegate:(id)a7
+- (HUPresenceUserPickerItemModule)initWithItemUpdater:(id)updater home:(id)home presenceEvent:(id)event options:(id)options delegate:(id)delegate
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  if (v14)
+  updaterCopy = updater;
+  homeCopy = home;
+  eventCopy = event;
+  optionsCopy = options;
+  delegateCopy = delegate;
+  if (homeCopy)
   {
-    if (v15)
+    if (eventCopy)
     {
       goto LABEL_3;
     }
@@ -80,32 +80,32 @@ void __43__HUPresenceUserPickerItemModule_sectionID__block_invoke_2()
 
   else
   {
-    v25 = [MEMORY[0x277CCA890] currentHandler];
-    [v25 handleFailureInMethod:a2 object:self file:@"HUPresenceUserPickerItemModule.m" lineNumber:65 description:{@"Invalid parameter not satisfying: %@", @"home"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HUPresenceUserPickerItemModule.m" lineNumber:65 description:{@"Invalid parameter not satisfying: %@", @"home"}];
 
-    if (v15)
+    if (eventCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v26 = [MEMORY[0x277CCA890] currentHandler];
-  [v26 handleFailureInMethod:a2 object:self file:@"HUPresenceUserPickerItemModule.m" lineNumber:66 description:{@"Invalid parameter not satisfying: %@", @"presenceEvent"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"HUPresenceUserPickerItemModule.m" lineNumber:66 description:{@"Invalid parameter not satisfying: %@", @"presenceEvent"}];
 
 LABEL_3:
   v27.receiver = self;
   v27.super_class = HUPresenceUserPickerItemModule;
-  v18 = [(HFItemModule *)&v27 initWithItemUpdater:v13];
+  v18 = [(HFItemModule *)&v27 initWithItemUpdater:updaterCopy];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_home, a4);
-    v20 = [objc_alloc(MEMORY[0x277D14978]) initWithEvent:v15];
+    objc_storeStrong(&v18->_home, home);
+    v20 = [objc_alloc(MEMORY[0x277D14978]) initWithEvent:eventCopy];
     presenceEventBuilder = v19->_presenceEventBuilder;
     v19->_presenceEventBuilder = v20;
 
-    objc_storeStrong(&v19->_options, a6);
-    objc_storeWeak(&v19->_delegate, v17);
+    objc_storeStrong(&v19->_options, options);
+    objc_storeWeak(&v19->_delegate, delegateCopy);
     v22 = +[HULocationDeviceManager sharedInstance];
     locationDeviceManager = v19->_locationDeviceManager;
     v19->_locationDeviceManager = v22;
@@ -118,23 +118,23 @@ LABEL_3:
 
 - (void)registerForExternalUpdates
 {
-  v3 = [(HUPresenceUserPickerItemModule *)self locationDeviceManager];
-  [v3 addObserver:self];
+  locationDeviceManager = [(HUPresenceUserPickerItemModule *)self locationDeviceManager];
+  [locationDeviceManager addObserver:self];
 }
 
 - (void)unregisterForExternalUpdates
 {
-  v3 = [(HUPresenceUserPickerItemModule *)self locationDeviceManager];
-  [v3 removeObserver:self];
+  locationDeviceManager = [(HUPresenceUserPickerItemModule *)self locationDeviceManager];
+  [locationDeviceManager removeObserver:self];
 }
 
-- (unint64_t)itemTypeForItem:(id)a3
+- (unint64_t)itemTypeForItem:(id)item
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HUPresenceUserPickerItemModule *)self singleUserSummaryItem];
+  itemCopy = item;
+  singleUserSummaryItem = [(HUPresenceUserPickerItemModule *)self singleUserSummaryItem];
 
-  if (v5 == v4)
+  if (singleUserSummaryItem == itemCopy)
   {
     v11 = 0;
   }
@@ -145,10 +145,10 @@ LABEL_3:
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v6 = [(HUPresenceUserPickerItemModule *)self activationOptionStateByGranularity];
-    v7 = [v6 objectEnumerator];
+    activationOptionStateByGranularity = [(HUPresenceUserPickerItemModule *)self activationOptionStateByGranularity];
+    objectEnumerator = [activationOptionStateByGranularity objectEnumerator];
 
-    v8 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    v8 = [objectEnumerator countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v8)
     {
       v9 = v8;
@@ -160,20 +160,20 @@ LABEL_3:
         {
           if (*v20 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(objectEnumerator);
           }
 
           v13 = *(*(&v19 + 1) + 8 * i);
-          v14 = [v13 activationOptionItem];
+          activationOptionItem = [v13 activationOptionItem];
 
-          if (v14 == v4)
+          if (activationOptionItem == itemCopy)
           {
             goto LABEL_14;
           }
 
-          v15 = [v13 userOptionItemProvider];
-          v16 = [v15 items];
-          v17 = [v16 containsObject:v4];
+          userOptionItemProvider = [v13 userOptionItemProvider];
+          items = [userOptionItemProvider items];
+          v17 = [items containsObject:itemCopy];
 
           if (v17)
           {
@@ -184,7 +184,7 @@ LABEL_14:
           }
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v9 = [objectEnumerator countByEnumeratingWithState:&v19 objects:v23 count:16];
         if (v9)
         {
           continue;
@@ -194,7 +194,7 @@ LABEL_14:
       }
     }
 
-    NSLog(&cfstr_UnexpectedItem_2.isa, v4);
+    NSLog(&cfstr_UnexpectedItem_2.isa, itemCopy);
     v11 = 2;
   }
 
@@ -203,28 +203,28 @@ LABEL_15:
   return v11;
 }
 
-- (id)activationOptionItemForGranularity:(unint64_t)a3
+- (id)activationOptionItemForGranularity:(unint64_t)granularity
 {
-  v4 = [(HUPresenceUserPickerItemModule *)self activationOptionStateByGranularity];
-  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-  v6 = [v4 objectForKeyedSubscript:v5];
-  v7 = [v6 activationOptionItem];
+  activationOptionStateByGranularity = [(HUPresenceUserPickerItemModule *)self activationOptionStateByGranularity];
+  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:granularity];
+  v6 = [activationOptionStateByGranularity objectForKeyedSubscript:v5];
+  activationOptionItem = [v6 activationOptionItem];
 
-  return v7;
+  return activationOptionItem;
 }
 
-- (id)stateForActivationOptionItem:(id)a3
+- (id)stateForActivationOptionItem:(id)item
 {
-  v4 = a3;
-  v5 = [(HUPresenceUserPickerItemModule *)self activationOptionStateByGranularity];
-  v6 = [v5 objectEnumerator];
+  itemCopy = item;
+  activationOptionStateByGranularity = [(HUPresenceUserPickerItemModule *)self activationOptionStateByGranularity];
+  objectEnumerator = [activationOptionStateByGranularity objectEnumerator];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __63__HUPresenceUserPickerItemModule_stateForActivationOptionItem___block_invoke;
   v10[3] = &unk_277DBA3F8;
-  v11 = v4;
-  v7 = v4;
-  v8 = [v6 na_firstObjectPassingTest:v10];
+  v11 = itemCopy;
+  v7 = itemCopy;
+  v8 = [objectEnumerator na_firstObjectPassingTest:v10];
 
   return v8;
 }
@@ -237,18 +237,18 @@ BOOL __63__HUPresenceUserPickerItemModule_stateForActivationOptionItem___block_i
   return v4;
 }
 
-- (void)selectActivationOptionItem:(id)a3
+- (void)selectActivationOptionItem:(id)item
 {
   v31 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  itemCopy = item;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v6 = [(HUPresenceUserPickerItemModule *)self activationOptionStateByGranularity];
-  v7 = [v6 objectEnumerator];
+  activationOptionStateByGranularity = [(HUPresenceUserPickerItemModule *)self activationOptionStateByGranularity];
+  objectEnumerator = [activationOptionStateByGranularity objectEnumerator];
 
-  v8 = [v7 countByEnumeratingWithState:&v26 objects:v30 count:16];
+  v8 = [objectEnumerator countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v8)
   {
     v9 = v8;
@@ -259,23 +259,23 @@ BOOL __63__HUPresenceUserPickerItemModule_stateForActivationOptionItem___block_i
       {
         if (*v27 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v12 = *(*(&v26 + 1) + 8 * i);
-        v13 = [v12 activationOptionItem];
-        [v12 setSelected:v13 == v5];
+        activationOptionItem = [v12 activationOptionItem];
+        [v12 setSelected:activationOptionItem == itemCopy];
 
         if ([v12 isSelected])
         {
-          v14 = [v12 activationGranularity];
-          v15 = [(HUPresenceUserPickerItemModule *)self presenceEventBuilder];
-          [v15 setActivationGranularity:v14];
+          activationGranularity = [v12 activationGranularity];
+          presenceEventBuilder = [(HUPresenceUserPickerItemModule *)self presenceEventBuilder];
+          [presenceEventBuilder setActivationGranularity:activationGranularity];
 
-          v16 = [v12 activationOptionItem];
-          v17 = [v16 selectedUsers];
-          v18 = [(HUPresenceUserPickerItemModule *)self presenceEventBuilder];
-          [v18 setUsers:v17];
+          activationOptionItem2 = [v12 activationOptionItem];
+          selectedUsers = [activationOptionItem2 selectedUsers];
+          presenceEventBuilder2 = [(HUPresenceUserPickerItemModule *)self presenceEventBuilder];
+          [presenceEventBuilder2 setUsers:selectedUsers];
         }
 
         else
@@ -284,35 +284,35 @@ BOOL __63__HUPresenceUserPickerItemModule_stateForActivationOptionItem___block_i
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v26 objects:v30 count:16];
+      v9 = [objectEnumerator countByEnumeratingWithState:&v26 objects:v30 count:16];
     }
 
     while (v9);
   }
 
-  v19 = [(HFItemModule *)self itemUpdater];
+  itemUpdater = [(HFItemModule *)self itemUpdater];
   v20 = MEMORY[0x277D14788];
-  v21 = [(HFItemModule *)self allItems];
-  v22 = [v20 requestToUpdateItems:v21 senderSelector:a2];
-  v23 = [v19 performItemUpdateRequest:v22];
+  allItems = [(HFItemModule *)self allItems];
+  v22 = [v20 requestToUpdateItems:allItems senderSelector:a2];
+  v23 = [itemUpdater performItemUpdateRequest:v22];
 
-  v24 = [(HUPresenceUserPickerItemModule *)self delegate];
-  v25 = [(HUPresenceUserPickerItemModule *)self presenceEventBuilder];
-  [v24 userPickerModule:self didUpdatePresenceEvent:v25];
+  delegate = [(HUPresenceUserPickerItemModule *)self delegate];
+  presenceEventBuilder3 = [(HUPresenceUserPickerItemModule *)self presenceEventBuilder];
+  [delegate userPickerModule:self didUpdatePresenceEvent:presenceEventBuilder3];
 }
 
-- (void)toggleExpandedForActivationOptionItem:(id)a3
+- (void)toggleExpandedForActivationOptionItem:(id)item
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  itemCopy = item;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v6 = [(HUPresenceUserPickerItemModule *)self activationOptionStateByGranularity];
-  v7 = [v6 objectEnumerator];
+  activationOptionStateByGranularity = [(HUPresenceUserPickerItemModule *)self activationOptionStateByGranularity];
+  objectEnumerator = [activationOptionStateByGranularity objectEnumerator];
 
-  v8 = [v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  v8 = [objectEnumerator countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v8)
   {
     v9 = v8;
@@ -323,13 +323,13 @@ BOOL __63__HUPresenceUserPickerItemModule_stateForActivationOptionItem___block_i
       {
         if (*v21 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v12 = *(*(&v20 + 1) + 8 * i);
-        v13 = [v12 activationOptionItem];
+        activationOptionItem = [v12 activationOptionItem];
 
-        if (v13 == v5)
+        if (activationOptionItem == itemCopy)
         {
           v14 = [v12 isExpanded] ^ 1;
         }
@@ -342,34 +342,34 @@ BOOL __63__HUPresenceUserPickerItemModule_stateForActivationOptionItem___block_i
         [v12 setExpanded:v14];
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v9 = [objectEnumerator countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v9);
   }
 
-  v15 = [(HFItemModule *)self itemUpdater];
+  itemUpdater = [(HFItemModule *)self itemUpdater];
   v16 = MEMORY[0x277D14788];
-  v17 = [(HFItemModule *)self allItems];
-  v18 = [v16 requestToUpdateItems:v17 senderSelector:a2];
-  v19 = [v15 performItemUpdateRequest:v18];
+  allItems = [(HFItemModule *)self allItems];
+  v18 = [v16 requestToUpdateItems:allItems senderSelector:a2];
+  v19 = [itemUpdater performItemUpdateRequest:v18];
 }
 
-- (id)stateForUserItem:(id)a3
+- (id)stateForUserItem:(id)item
 {
-  v4 = a3;
-  v5 = [v4 latestResults];
-  v6 = [v5 objectForKeyedSubscript:*MEMORY[0x277D14120]];
+  itemCopy = item;
+  latestResults = [itemCopy latestResults];
+  v6 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D14120]];
 
   if (v6)
   {
     v7 = [(HUPresenceUserPickerItemModule *)self _isUserHandleSelected:v6];
-    v8 = [(HUPresenceUserPickerItemModule *)self home];
-    v9 = [(HUPresenceUserPickerItemModule *)self home];
-    v10 = [v9 hf_userForHandle:v6];
-    v11 = [v8 hf_isPresenceAuthorizedForUser:v10];
+    home = [(HUPresenceUserPickerItemModule *)self home];
+    home2 = [(HUPresenceUserPickerItemModule *)self home];
+    v10 = [home2 hf_userForHandle:v6];
+    v11 = [home hf_isPresenceAuthorizedForUser:v10];
 
-    v12 = [[HUPresenceUserOptionState alloc] initWithActivationGranularity:[(HUPresenceUserPickerItemModule *)self _activationGranularityForUserItem:v4] selected:v7 locationAvailable:v11];
+    v12 = [[HUPresenceUserOptionState alloc] initWithActivationGranularity:[(HUPresenceUserPickerItemModule *)self _activationGranularityForUserItem:itemCopy] selected:v7 locationAvailable:v11];
   }
 
   else
@@ -380,10 +380,10 @@ BOOL __63__HUPresenceUserPickerItemModule_stateForActivationOptionItem___block_i
   return v12;
 }
 
-- (void)selectUserItem:(id)a3
+- (void)selectUserItem:(id)item
 {
-  v4 = [a3 latestResults];
-  v6 = [v4 objectForKeyedSubscript:*MEMORY[0x277D14120]];
+  latestResults = [item latestResults];
+  v6 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D14120]];
 
   v5 = v6;
   if (v6)
@@ -393,10 +393,10 @@ BOOL __63__HUPresenceUserPickerItemModule_stateForActivationOptionItem___block_i
   }
 }
 
-- (void)deselectUserItem:(id)a3
+- (void)deselectUserItem:(id)item
 {
-  v4 = [a3 latestResults];
-  v6 = [v4 objectForKeyedSubscript:*MEMORY[0x277D14120]];
+  latestResults = [item latestResults];
+  v6 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D14120]];
 
   v5 = v6;
   if (v6)
@@ -406,22 +406,22 @@ BOOL __63__HUPresenceUserPickerItemModule_stateForActivationOptionItem___block_i
   }
 }
 
-- (void)setOptions:(id)a3
+- (void)setOptions:(id)options
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (self->_options != v6)
+  optionsCopy = options;
+  if (self->_options != optionsCopy)
   {
-    objc_storeStrong(&self->_options, a3);
+    objc_storeStrong(&self->_options, options);
     v25 = 0u;
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v20 = self;
-    v7 = [(HUPresenceUserPickerItemModule *)self activationOptionStateByGranularity];
-    v8 = [v7 objectEnumerator];
+    selfCopy = self;
+    activationOptionStateByGranularity = [(HUPresenceUserPickerItemModule *)self activationOptionStateByGranularity];
+    objectEnumerator = [activationOptionStateByGranularity objectEnumerator];
 
-    v9 = [v8 countByEnumeratingWithState:&v23 objects:v27 count:16];
+    v9 = [objectEnumerator countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (v9)
     {
       v10 = v9;
@@ -432,35 +432,35 @@ BOOL __63__HUPresenceUserPickerItemModule_stateForActivationOptionItem___block_i
         {
           if (*v24 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(objectEnumerator);
           }
 
-          v13 = [*(*(&v23 + 1) + 8 * i) userOptionItemProvider];
-          v14 = [v13 items];
+          userOptionItemProvider = [*(*(&v23 + 1) + 8 * i) userOptionItemProvider];
+          items = [userOptionItemProvider items];
           v21[0] = MEMORY[0x277D85DD0];
           v21[1] = 3221225472;
           v21[2] = __45__HUPresenceUserPickerItemModule_setOptions___block_invoke;
           v21[3] = &unk_277DBA420;
-          v22 = v6;
-          [v14 na_each:v21];
+          v22 = optionsCopy;
+          [items na_each:v21];
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v23 objects:v27 count:16];
+        v10 = [objectEnumerator countByEnumeratingWithState:&v23 objects:v27 count:16];
       }
 
       while (v10);
     }
 
-    if ([(HUPresenceUserPickerItemModuleOptions *)v6 customLocationSelected])
+    if ([(HUPresenceUserPickerItemModuleOptions *)optionsCopy customLocationSelected])
     {
-      [(HUPresenceUserPickerItemModule *)v20 _resetSelectionForCustomLocation];
+      [(HUPresenceUserPickerItemModule *)selfCopy _resetSelectionForCustomLocation];
     }
 
-    v15 = [(HFItemModule *)v20 itemUpdater];
+    itemUpdater = [(HFItemModule *)selfCopy itemUpdater];
     v16 = MEMORY[0x277D14788];
-    v17 = [(HFItemModule *)v20 allItems];
-    v18 = [v16 requestToUpdateItems:v17 senderSelector:a2];
-    v19 = [v15 performItemUpdateRequest:v18];
+    allItems = [(HFItemModule *)selfCopy allItems];
+    v18 = [v16 requestToUpdateItems:allItems senderSelector:a2];
+    v19 = [itemUpdater performItemUpdateRequest:v18];
   }
 }
 
@@ -474,28 +474,28 @@ void __45__HUPresenceUserPickerItemModule_setOptions___block_invoke(uint64_t a1,
   [v4 setSelectedLocationDevice:v5];
 }
 
-- (id)confirmationPromptForOptionItem:(id)a3
+- (id)confirmationPromptForOptionItem:(id)item
 {
-  v4 = a3;
-  v5 = [(HUPresenceUserPickerItemModule *)self options];
-  v6 = [v5 customLocationSelected];
+  itemCopy = item;
+  options = [(HUPresenceUserPickerItemModule *)self options];
+  customLocationSelected = [options customLocationSelected];
 
-  if (v6)
+  if (customLocationSelected)
   {
-    v7 = [(HUPresenceUserPickerItemModule *)self itemTypeForItem:v4];
+    v7 = [(HUPresenceUserPickerItemModule *)self itemTypeForItem:itemCopy];
     if (v7 == 2)
     {
-      v21 = [v4 latestResults];
-      v22 = [v21 objectForKeyedSubscript:*MEMORY[0x277D14120]];
+      latestResults = [itemCopy latestResults];
+      v22 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D14120]];
 
-      v23 = [v22 type];
-      if (v23)
+      type = [v22 type];
+      if (type)
       {
 LABEL_5:
         v10 = _HULocalizedStringWithDefaultValue(@"HUPresenceEventUnsupportedCustomLocationAlertTitleResetLocation", @"HUPresenceEventUnsupportedCustomLocationAlertTitleResetLocation", 1);
-        v11 = [(HUPresenceUserPickerItemModule *)self home];
-        v12 = [v11 name];
-        v19 = HULocalizedStringWithFormat(@"HUPresenceEventUnsupportedCustomLocationAlertMessageResetLocation", @"%@", v13, v14, v15, v16, v17, v18, v12);
+        home = [(HUPresenceUserPickerItemModule *)self home];
+        name = [home name];
+        v19 = HULocalizedStringWithFormat(@"HUPresenceEventUnsupportedCustomLocationAlertMessageResetLocation", @"%@", v13, v14, v15, v16, v17, v18, name);
 
         v20 = [[HUPresenceOptionSelectionConfirmationPrompt alloc] initWithAlertTitle:v10 alertBody:v19 resetLocationToHomeOnConfirmation:1];
         goto LABEL_8;
@@ -504,10 +504,10 @@ LABEL_5:
 
     else if (v7 == 1)
     {
-      v8 = [(HUPresenceUserPickerItemModule *)self stateForActivationOptionItem:v4];
-      v9 = [v8 activationGranularity];
+      v8 = [(HUPresenceUserPickerItemModule *)self stateForActivationOptionItem:itemCopy];
+      activationGranularity = [v8 activationGranularity];
 
-      if (v9)
+      if (activationGranularity)
       {
         goto LABEL_5;
       }
@@ -523,22 +523,22 @@ LABEL_8:
 - (void)_resetSelectionForCustomLocation
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = [MEMORY[0x277D14A70] currentUserCollection];
-  v7 = [(HUPresenceUserPickerItemModule *)self presenceEventBuilder];
-  [v7 setUsers:v6];
+  currentUserCollection = [MEMORY[0x277D14A70] currentUserCollection];
+  presenceEventBuilder = [(HUPresenceUserPickerItemModule *)self presenceEventBuilder];
+  [presenceEventBuilder setUsers:currentUserCollection];
 
-  v8 = [(HUPresenceUserPickerItemModule *)self presenceEventBuilder];
-  [v8 setActivationGranularity:0];
+  presenceEventBuilder2 = [(HUPresenceUserPickerItemModule *)self presenceEventBuilder];
+  [presenceEventBuilder2 setActivationGranularity:0];
 
   v27 = 0u;
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v9 = [(HUPresenceUserPickerItemModule *)self activationOptionStateByGranularity];
-  v10 = [v9 objectEnumerator];
+  activationOptionStateByGranularity = [(HUPresenceUserPickerItemModule *)self activationOptionStateByGranularity];
+  objectEnumerator = [activationOptionStateByGranularity objectEnumerator];
 
-  obj = v10;
-  v11 = [v10 countByEnumeratingWithState:&v25 objects:v29 count:16];
+  obj = objectEnumerator;
+  v11 = [objectEnumerator countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v11)
   {
     v12 = v11;
@@ -554,32 +554,32 @@ LABEL_8:
 
         v15 = *(*(&v25 + 1) + 8 * i);
         [v15 setExpanded:0];
-        v16 = [v15 activationGranularity];
-        v17 = [(HUPresenceUserPickerItemModule *)self presenceEventBuilder];
-        [v15 setSelected:{v16 == objc_msgSend(v17, "activationGranularity")}];
+        activationGranularity = [v15 activationGranularity];
+        presenceEventBuilder3 = [(HUPresenceUserPickerItemModule *)self presenceEventBuilder];
+        [v15 setSelected:{activationGranularity == objc_msgSend(presenceEventBuilder3, "activationGranularity")}];
 
-        v18 = [v15 isSelected];
-        if (v18)
+        isSelected = [v15 isSelected];
+        if (isSelected)
         {
-          v2 = [(HUPresenceUserPickerItemModule *)self presenceEventBuilder];
-          v19 = [v2 users];
-          v3 = v19;
+          presenceEventBuilder4 = [(HUPresenceUserPickerItemModule *)self presenceEventBuilder];
+          users = [presenceEventBuilder4 users];
+          v3 = users;
         }
 
         else
         {
-          v19 = [MEMORY[0x277D14A70] allUsersCollection];
-          v4 = v19;
+          users = [MEMORY[0x277D14A70] allUsersCollection];
+          v4 = users;
         }
 
-        v20 = [v15 activationOptionItem];
-        [v20 setSelectedUsers:v19];
+        activationOptionItem = [v15 activationOptionItem];
+        [activationOptionItem setSelectedUsers:users];
 
         v21 = v4;
-        if (v18)
+        if (isSelected)
         {
 
-          v21 = v2;
+          v21 = presenceEventBuilder4;
         }
       }
 
@@ -589,29 +589,29 @@ LABEL_8:
     while (v12);
   }
 
-  v22 = [(HUPresenceUserPickerItemModule *)self delegate];
-  v23 = [(HUPresenceUserPickerItemModule *)self presenceEventBuilder];
-  [v22 userPickerModule:self didUpdatePresenceEvent:v23];
+  delegate = [(HUPresenceUserPickerItemModule *)self delegate];
+  presenceEventBuilder5 = [(HUPresenceUserPickerItemModule *)self presenceEventBuilder];
+  [delegate userPickerModule:self didUpdatePresenceEvent:presenceEventBuilder5];
 }
 
 - (id)itemProviders
 {
-  v3 = [(HUPresenceUserPickerItemModule *)self activationOptionStateByGranularity];
-  v4 = [v3 allValues];
-  v5 = [v4 na_map:&__block_literal_global_45_0];
+  activationOptionStateByGranularity = [(HUPresenceUserPickerItemModule *)self activationOptionStateByGranularity];
+  allValues = [activationOptionStateByGranularity allValues];
+  v5 = [allValues na_map:&__block_literal_global_45_0];
 
   v6 = MEMORY[0x277CBEB98];
-  v7 = [(HUPresenceUserPickerItemModule *)self staticItemProvider];
-  v8 = [v5 arrayByAddingObject:v7];
+  staticItemProvider = [(HUPresenceUserPickerItemModule *)self staticItemProvider];
+  v8 = [v5 arrayByAddingObject:staticItemProvider];
   v9 = [v6 setWithArray:v8];
 
   return v9;
 }
 
-- (id)buildSectionsWithDisplayedItems:(id)a3
+- (id)buildSectionsWithDisplayedItems:(id)items
 {
   v37 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  itemsCopy = items;
   v5 = objc_alloc(MEMORY[0x277D14850]);
   v6 = +[HUPresenceUserPickerItemModule sectionID];
   v7 = [v5 initWithIdentifier:v6];
@@ -619,14 +619,14 @@ LABEL_8:
   v8 = objc_opt_new();
   if ([(HUPresenceUserPickerItemModule *)self _shouldUseSingleUserStyle])
   {
-    v9 = [(HUPresenceUserPickerItemModule *)self singleUserSummaryItem];
-    [v8 addObject:v9];
+    singleUserSummaryItem = [(HUPresenceUserPickerItemModule *)self singleUserSummaryItem];
+    [v8 addObject:singleUserSummaryItem];
   }
 
   else
   {
     v27 = v7;
-    v28 = v4;
+    v28 = itemsCopy;
     v33 = 0u;
     v34 = 0u;
     v31 = 0u;
@@ -647,17 +647,17 @@ LABEL_8:
           }
 
           v13 = *(*(&v31 + 1) + 8 * i);
-          v14 = [(HUPresenceUserPickerItemModule *)self activationOptionStateByGranularity];
-          v15 = [v14 objectForKeyedSubscript:v13];
+          activationOptionStateByGranularity = [(HUPresenceUserPickerItemModule *)self activationOptionStateByGranularity];
+          v15 = [activationOptionStateByGranularity objectForKeyedSubscript:v13];
 
-          v16 = [v15 activationOptionItem];
-          [v8 addObject:v16];
+          activationOptionItem = [v15 activationOptionItem];
+          [v8 addObject:activationOptionItem];
 
-          v17 = [v15 userOptionItemProvider];
-          v18 = [v17 items];
-          v19 = [v18 allObjects];
-          v20 = [objc_opt_class() _userItemComparator];
-          v21 = [v19 sortedArrayUsingComparator:v20];
+          userOptionItemProvider = [v15 userOptionItemProvider];
+          items = [userOptionItemProvider items];
+          allObjects = [items allObjects];
+          _userItemComparator = [objc_opt_class() _userItemComparator];
+          v21 = [allObjects sortedArrayUsingComparator:_userItemComparator];
           [v8 addObjectsFromArray:v21];
         }
 
@@ -668,45 +668,45 @@ LABEL_8:
     }
 
     v7 = v27;
-    v4 = v28;
+    itemsCopy = v28;
   }
 
   [v7 setItems:v8];
-  v22 = [(HUPresenceUserPickerItemModule *)self _attributedFooterTitle];
-  [v7 setAttributedFooterTitle:v22];
+  _attributedFooterTitle = [(HUPresenceUserPickerItemModule *)self _attributedFooterTitle];
+  [v7 setAttributedFooterTitle:_attributedFooterTitle];
 
   v23 = MEMORY[0x277D14778];
   v35 = v7;
   v24 = [MEMORY[0x277CBEA60] arrayWithObjects:&v35 count:1];
-  v25 = [v23 filterSections:v24 toDisplayedItems:v4];
+  v25 = [v23 filterSections:v24 toDisplayedItems:itemsCopy];
 
   return v25;
 }
 
-- (void)locationDeviceManager:(id)a3 didUpdateActiveLocationDevice:(id)a4
+- (void)locationDeviceManager:(id)manager didUpdateActiveLocationDevice:(id)device
 {
-  v10 = [(HFItemModule *)self itemUpdater:a3];
+  v10 = [(HFItemModule *)self itemUpdater:manager];
   v6 = MEMORY[0x277D14788];
-  v7 = [(HFItemModule *)self allItems];
-  v8 = [v6 requestToUpdateItems:v7 senderSelector:a2];
+  allItems = [(HFItemModule *)self allItems];
+  v8 = [v6 requestToUpdateItems:allItems senderSelector:a2];
   v9 = [v10 performItemUpdateRequest:v8];
 }
 
-- (unint64_t)_activationGranularityForUserItem:(id)a3
+- (unint64_t)_activationGranularityForUserItem:(id)item
 {
-  v4 = a3;
-  v5 = [(HUPresenceUserPickerItemModule *)self activationOptionStateByGranularity];
-  v6 = [v5 objectEnumerator];
+  itemCopy = item;
+  activationOptionStateByGranularity = [(HUPresenceUserPickerItemModule *)self activationOptionStateByGranularity];
+  objectEnumerator = [activationOptionStateByGranularity objectEnumerator];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __68__HUPresenceUserPickerItemModule__activationGranularityForUserItem___block_invoke;
   v11[3] = &unk_277DBA3F8;
-  v12 = v4;
-  v7 = v4;
-  v8 = [v6 na_firstObjectPassingTest:v11];
-  v9 = [v8 activationGranularity];
+  v12 = itemCopy;
+  v7 = itemCopy;
+  v8 = [objectEnumerator na_firstObjectPassingTest:v11];
+  activationGranularity = [v8 activationGranularity];
 
-  return v9;
+  return activationGranularity;
 }
 
 uint64_t __68__HUPresenceUserPickerItemModule__activationGranularityForUserItem___block_invoke(uint64_t a1, void *a2)
@@ -728,12 +728,12 @@ uint64_t __68__HUPresenceUserPickerItemModule__activationGranularityForUserItem_
   v47 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v2 = [(HUPresenceUserPickerItemModule *)self _sortedActivationGranularities];
-  v3 = [v2 countByEnumeratingWithState:&v44 objects:v49 count:16];
+  _sortedActivationGranularities = [(HUPresenceUserPickerItemModule *)self _sortedActivationGranularities];
+  v3 = [_sortedActivationGranularities countByEnumeratingWithState:&v44 objects:v49 count:16];
   if (v3)
   {
     v36 = *v45;
-    obj = v2;
+    obj = _sortedActivationGranularities;
     do
     {
       v39 = v3;
@@ -746,8 +746,8 @@ uint64_t __68__HUPresenceUserPickerItemModule__activationGranularityForUserItem_
 
         v5 = *(*(&v44 + 1) + 8 * i);
         v6 = objc_alloc(MEMORY[0x277D14CA0]);
-        v7 = [(HUPresenceUserPickerItemModule *)self home];
-        v8 = [v6 initWithHome:v7];
+        home = [(HUPresenceUserPickerItemModule *)self home];
+        v8 = [v6 initWithHome:home];
 
         [v8 setIncludeCurrentUser:1];
         [v8 setIncludeGuestUsers:1];
@@ -760,29 +760,29 @@ uint64_t __68__HUPresenceUserPickerItemModule__activationGranularityForUserItem_
         objc_copyWeak(&v43, &location);
         v42[4] = v5;
         v10 = [v9 initWithSourceProvider:v8 transformationBlock:v42];
-        v11 = [v5 unsignedIntegerValue];
-        v12 = [(HUPresenceUserPickerItemModule *)self presenceEventBuilder];
-        v13 = [v12 activationGranularity];
+        unsignedIntegerValue = [v5 unsignedIntegerValue];
+        presenceEventBuilder = [(HUPresenceUserPickerItemModule *)self presenceEventBuilder];
+        activationGranularity = [presenceEventBuilder activationGranularity];
 
         v40 = v5;
-        if (v13 == v11)
+        if (activationGranularity == unsignedIntegerValue)
         {
-          v14 = [(HUPresenceUserPickerItemModule *)self presenceEventBuilder];
-          v15 = [v14 users];
+          presenceEventBuilder2 = [(HUPresenceUserPickerItemModule *)self presenceEventBuilder];
+          users = [presenceEventBuilder2 users];
         }
 
         else
         {
-          v15 = [MEMORY[0x277D14A70] allUsersCollection];
+          users = [MEMORY[0x277D14A70] allUsersCollection];
         }
 
         v16 = [HUPresenceActivationOptionItem alloc];
-        v17 = [(HUPresenceUserPickerItemModule *)self presenceEventBuilder];
-        v18 = [v17 locationEventType];
-        v19 = [(HUPresenceUserPickerItemModule *)self home];
-        v20 = [(HUPresenceActivationOptionItem *)v16 initWithEventType:v18 selectedUsers:v15 activationGranularity:v11 style:0 home:v19];
+        presenceEventBuilder3 = [(HUPresenceUserPickerItemModule *)self presenceEventBuilder];
+        locationEventType = [presenceEventBuilder3 locationEventType];
+        home2 = [(HUPresenceUserPickerItemModule *)self home];
+        v20 = [(HUPresenceActivationOptionItem *)v16 initWithEventType:locationEventType selectedUsers:users activationGranularity:unsignedIntegerValue style:0 home:home2];
 
-        [(HUPresenceActivationOptionItem *)v20 setSelected:v13 == v11];
+        [(HUPresenceActivationOptionItem *)v20 setSelected:activationGranularity == unsignedIntegerValue];
         [v38 addObject:v20];
         v21 = [[HUPresenceActivationOptionState alloc] initWithUserOptionItemProvider:v10 activationOptionItem:v20];
         [v37 setObject:v21 forKeyedSubscript:v40];
@@ -790,7 +790,7 @@ uint64_t __68__HUPresenceUserPickerItemModule__activationGranularityForUserItem_
         objc_destroyWeak(&v43);
       }
 
-      v2 = obj;
+      _sortedActivationGranularities = obj;
       v3 = [obj countByEnumeratingWithState:&v44 objects:v49 count:16];
     }
 
@@ -799,19 +799,19 @@ uint64_t __68__HUPresenceUserPickerItemModule__activationGranularityForUserItem_
 
   objc_storeStrong(&self->_activationOptionStateByGranularity, v37);
   v22 = [HUPresenceActivationOptionItem alloc];
-  v23 = [(HUPresenceUserPickerItemModule *)self presenceEventBuilder];
-  v24 = [v23 locationEventType];
-  v25 = [(HUPresenceUserPickerItemModule *)self presenceEventBuilder];
-  v26 = [v25 users];
-  v27 = [(HUPresenceUserPickerItemModule *)self presenceEventBuilder];
-  v28 = [v27 activationGranularity];
-  v29 = [(HUPresenceUserPickerItemModule *)self home];
-  v30 = [(HUPresenceActivationOptionItem *)v22 initWithEventType:v24 selectedUsers:v26 activationGranularity:v28 style:1 home:v29];
+  presenceEventBuilder4 = [(HUPresenceUserPickerItemModule *)self presenceEventBuilder];
+  locationEventType2 = [presenceEventBuilder4 locationEventType];
+  presenceEventBuilder5 = [(HUPresenceUserPickerItemModule *)self presenceEventBuilder];
+  users2 = [presenceEventBuilder5 users];
+  presenceEventBuilder6 = [(HUPresenceUserPickerItemModule *)self presenceEventBuilder];
+  activationGranularity2 = [presenceEventBuilder6 activationGranularity];
+  home3 = [(HUPresenceUserPickerItemModule *)self home];
+  v30 = [(HUPresenceActivationOptionItem *)v22 initWithEventType:locationEventType2 selectedUsers:users2 activationGranularity:activationGranularity2 style:1 home:home3];
   singleUserSummaryItem = self->_singleUserSummaryItem;
   self->_singleUserSummaryItem = v30;
 
-  v32 = [(HUPresenceUserPickerItemModule *)self singleUserSummaryItem];
-  [v38 addObject:v32];
+  singleUserSummaryItem = [(HUPresenceUserPickerItemModule *)self singleUserSummaryItem];
+  [v38 addObject:singleUserSummaryItem];
 
   v33 = [objc_alloc(MEMORY[0x277D14B40]) initWithItems:v38];
   staticItemProvider = self->_staticItemProvider;
@@ -864,9 +864,9 @@ id __54__HUPresenceUserPickerItemModule__createItemProviders__block_invoke_2(uin
 
 - (BOOL)_shouldUseSingleUserStyle
 {
-  v3 = [(HUPresenceUserPickerItemModule *)self home];
-  v4 = [v3 hf_allUsersIncludingCurrentUser];
-  if ([v4 count] < 2)
+  home = [(HUPresenceUserPickerItemModule *)self home];
+  hf_allUsersIncludingCurrentUser = [home hf_allUsersIncludingCurrentUser];
+  if ([hf_allUsersIncludingCurrentUser count] < 2)
   {
     v7 = 1;
   }
@@ -874,59 +874,59 @@ id __54__HUPresenceUserPickerItemModule__createItemProviders__block_invoke_2(uin
   else
   {
     v5 = MEMORY[0x277CD1D20];
-    v6 = [(HUPresenceUserPickerItemModule *)self home];
-    v7 = [v5 hf_presenceDisableReasonsForHome:v6] != 0;
+    home2 = [(HUPresenceUserPickerItemModule *)self home];
+    v7 = [v5 hf_presenceDisableReasonsForHome:home2] != 0;
   }
 
   return v7;
 }
 
-- (BOOL)_canDeselectUserHandle:(id)a3
+- (BOOL)_canDeselectUserHandle:(id)handle
 {
-  if (![(HUPresenceUserPickerItemModule *)self _isUserHandleSelected:a3])
+  if (![(HUPresenceUserPickerItemModule *)self _isUserHandleSelected:handle])
   {
     return 0;
   }
 
-  v4 = [(HUPresenceUserPickerItemModule *)self _allSelectedAndSupportedUsers];
-  v5 = [v4 count] > 1;
+  _allSelectedAndSupportedUsers = [(HUPresenceUserPickerItemModule *)self _allSelectedAndSupportedUsers];
+  v5 = [_allSelectedAndSupportedUsers count] > 1;
 
   return v5;
 }
 
-- (BOOL)_isUserHandleSelected:(id)a3
+- (BOOL)_isUserHandleSelected:(id)selected
 {
-  if (!a3)
+  if (!selected)
   {
     return 0;
   }
 
-  v4 = a3;
-  v5 = [(HUPresenceUserPickerItemModule *)self home];
-  v6 = [v5 hf_userForHandle:v4];
+  selectedCopy = selected;
+  home = [(HUPresenceUserPickerItemModule *)self home];
+  v6 = [home hf_userForHandle:selectedCopy];
 
-  v7 = [(HUPresenceUserPickerItemModule *)self _allSelectedAndSupportedUsers];
-  LOBYTE(v4) = [v7 containsObject:v6];
+  _allSelectedAndSupportedUsers = [(HUPresenceUserPickerItemModule *)self _allSelectedAndSupportedUsers];
+  LOBYTE(selectedCopy) = [_allSelectedAndSupportedUsers containsObject:v6];
 
-  return v4;
+  return selectedCopy;
 }
 
-- (void)_updateSelected:(BOOL)a3 forUserHandle:(id)a4
+- (void)_updateSelected:(BOOL)selected forUserHandle:(id)handle
 {
-  v4 = a3;
-  v34 = a4;
-  if ([(HUPresenceUserPickerItemModule *)self _isUserHandleSelected:?]!= v4 && (v4 || [(HUPresenceUserPickerItemModule *)self _canDeselectUserHandle:v34]))
+  selectedCopy = selected;
+  handleCopy = handle;
+  if ([(HUPresenceUserPickerItemModule *)self _isUserHandleSelected:?]!= selectedCopy && (selectedCopy || [(HUPresenceUserPickerItemModule *)self _canDeselectUserHandle:handleCopy]))
   {
-    v7 = [(HUPresenceUserPickerItemModule *)self home];
-    v8 = [v7 hf_userForHandle:v34];
+    home = [(HUPresenceUserPickerItemModule *)self home];
+    v8 = [home hf_userForHandle:handleCopy];
 
-    v9 = [(HUPresenceUserPickerItemModule *)self presenceEventBuilder];
-    v10 = [v9 users];
-    v11 = [(HUPresenceUserPickerItemModule *)self home];
-    v12 = [v10 resolveSelectedUsersWithHome:v11];
+    presenceEventBuilder = [(HUPresenceUserPickerItemModule *)self presenceEventBuilder];
+    users = [presenceEventBuilder users];
+    home2 = [(HUPresenceUserPickerItemModule *)self home];
+    v12 = [users resolveSelectedUsersWithHome:home2];
     v13 = [v12 mutableCopy];
 
-    if (v4)
+    if (selectedCopy)
     {
       [v13 addObject:v8];
     }
@@ -937,77 +937,77 @@ id __54__HUPresenceUserPickerItemModule__createItemProviders__block_invoke_2(uin
     }
 
     v14 = MEMORY[0x277D14A70];
-    v15 = [(HUPresenceUserPickerItemModule *)self home];
-    v16 = [v14 collectionWithResolvedUsers:v13 inHome:v15];
+    home3 = [(HUPresenceUserPickerItemModule *)self home];
+    v16 = [v14 collectionWithResolvedUsers:v13 inHome:home3];
 
-    v17 = [(HUPresenceUserPickerItemModule *)self presenceEventBuilder];
-    v18 = [v17 users];
-    v19 = [v16 isEqual:v18];
+    presenceEventBuilder2 = [(HUPresenceUserPickerItemModule *)self presenceEventBuilder];
+    users2 = [presenceEventBuilder2 users];
+    v19 = [v16 isEqual:users2];
 
     if ((v19 & 1) == 0)
     {
-      v20 = [(HUPresenceUserPickerItemModule *)self presenceEventBuilder];
-      [v20 setUsers:v16];
+      presenceEventBuilder3 = [(HUPresenceUserPickerItemModule *)self presenceEventBuilder];
+      [presenceEventBuilder3 setUsers:v16];
 
-      v21 = [(HUPresenceUserPickerItemModule *)self activationOptionStateByGranularity];
+      activationOptionStateByGranularity = [(HUPresenceUserPickerItemModule *)self activationOptionStateByGranularity];
       v22 = MEMORY[0x277CCABB0];
-      v23 = [(HUPresenceUserPickerItemModule *)self presenceEventBuilder];
-      v24 = [v22 numberWithUnsignedInteger:{objc_msgSend(v23, "activationGranularity")}];
-      v25 = [v21 objectForKeyedSubscript:v24];
+      presenceEventBuilder4 = [(HUPresenceUserPickerItemModule *)self presenceEventBuilder];
+      v24 = [v22 numberWithUnsignedInteger:{objc_msgSend(presenceEventBuilder4, "activationGranularity")}];
+      v25 = [activationOptionStateByGranularity objectForKeyedSubscript:v24];
 
-      v26 = [v25 activationOptionItem];
-      [v26 setSelectedUsers:v16];
+      activationOptionItem = [v25 activationOptionItem];
+      [activationOptionItem setSelectedUsers:v16];
 
       [(HUPresenceActivationOptionItem *)self->_singleUserSummaryItem setSelectedUsers:v16];
       v27 = MEMORY[0x277D14788];
-      v28 = [(HFItemModule *)self allItems];
-      v29 = [v27 requestToUpdateItems:v28 senderSelector:a2];
+      allItems = [(HFItemModule *)self allItems];
+      v29 = [v27 requestToUpdateItems:allItems senderSelector:a2];
 
-      v30 = [(HFItemModule *)self itemUpdater];
-      v31 = [v30 performItemUpdateRequest:v29];
+      itemUpdater = [(HFItemModule *)self itemUpdater];
+      v31 = [itemUpdater performItemUpdateRequest:v29];
 
-      v32 = [(HUPresenceUserPickerItemModule *)self delegate];
-      v33 = [(HUPresenceUserPickerItemModule *)self presenceEventBuilder];
-      [v32 userPickerModule:self didUpdatePresenceEvent:v33];
+      delegate = [(HUPresenceUserPickerItemModule *)self delegate];
+      presenceEventBuilder5 = [(HUPresenceUserPickerItemModule *)self presenceEventBuilder];
+      [delegate userPickerModule:self didUpdatePresenceEvent:presenceEventBuilder5];
     }
   }
 }
 
 - (id)_allSelectedAndSupportedUsers
 {
-  v3 = [(HUPresenceUserPickerItemModule *)self options];
-  v4 = [v3 customLocationSelected];
+  options = [(HUPresenceUserPickerItemModule *)self options];
+  customLocationSelected = [options customLocationSelected];
 
-  if (v4)
+  if (customLocationSelected)
   {
     v5 = MEMORY[0x277CBEB98];
-    v6 = [(HUPresenceUserPickerItemModule *)self home];
-    v7 = [v6 currentUser];
-    v8 = [v5 setWithObject:v7];
+    home = [(HUPresenceUserPickerItemModule *)self home];
+    currentUser = [home currentUser];
+    v8 = [v5 setWithObject:currentUser];
   }
 
   else
   {
-    v6 = [(HUPresenceUserPickerItemModule *)self presenceEventBuilder];
-    v7 = [v6 users];
-    v9 = [(HUPresenceUserPickerItemModule *)self home];
-    v8 = [v7 resolveSelectedUsersWithHome:v9];
+    home = [(HUPresenceUserPickerItemModule *)self presenceEventBuilder];
+    currentUser = [home users];
+    home2 = [(HUPresenceUserPickerItemModule *)self home];
+    v8 = [currentUser resolveSelectedUsersWithHome:home2];
   }
 
   return v8;
 }
 
-- (BOOL)_isPresenceAuthorizedForUser:(id)a3
+- (BOOL)_isPresenceAuthorizedForUser:(id)user
 {
-  v4 = a3;
-  v5 = [(HUPresenceUserPickerItemModule *)self home];
-  v6 = [v5 hf_handleForUser:v4];
-  v7 = [v6 type];
+  userCopy = user;
+  home = [(HUPresenceUserPickerItemModule *)self home];
+  v6 = [home hf_handleForUser:userCopy];
+  type = [v6 type];
 
-  if (v7)
+  if (type)
   {
-    v8 = [(HUPresenceUserPickerItemModule *)self home];
-    v9 = [v8 homeAccessControlForUser:v4];
+    home2 = [(HUPresenceUserPickerItemModule *)self home];
+    v9 = [home2 homeAccessControlForUser:userCopy];
 
     v10 = [v9 presenceAuthorizationStatus] != 1;
   }
@@ -1055,11 +1055,11 @@ uint64_t __53__HUPresenceUserPickerItemModule__userItemComparator__block_invoke(
 
 - (id)_attributedFooterTitle
 {
-  v3 = [(HUPresenceUserPickerItemModule *)self options];
-  v4 = [v3 locationDevice];
-  v5 = [v4 type];
+  options = [(HUPresenceUserPickerItemModule *)self options];
+  locationDevice = [options locationDevice];
+  type = [locationDevice type];
 
-  if (v5)
+  if (type)
   {
     v6 = [(HUPresenceUserPickerItemModule *)self _combinedFooterStringForLocationDeviceText:0];
   }
@@ -1072,14 +1072,14 @@ uint64_t __53__HUPresenceUserPickerItemModule__userItemComparator__block_invoke(
     v19 = __Block_byref_object_copy__6;
     v20 = __Block_byref_object_dispose__6;
     v21 = 0;
-    v7 = [(HUPresenceUserPickerItemModule *)self locationDeviceManager];
-    v8 = [v7 activeLocationDeviceFuture];
+    locationDeviceManager = [(HUPresenceUserPickerItemModule *)self locationDeviceManager];
+    activeLocationDeviceFuture = [locationDeviceManager activeLocationDeviceFuture];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __56__HUPresenceUserPickerItemModule__attributedFooterTitle__block_invoke;
     v15[3] = &unk_277DBA4E0;
     v15[4] = self;
-    v9 = [v8 flatMap:v15];
+    v9 = [activeLocationDeviceFuture flatMap:v15];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __56__HUPresenceUserPickerItemModule__attributedFooterTitle__block_invoke_3;
@@ -1155,17 +1155,17 @@ uint64_t __56__HUPresenceUserPickerItemModule__attributedFooterTitle__block_invo
   return [v6 futureWithNoResult];
 }
 
-- (id)_combinedFooterStringForLocationDeviceText:(id)a3
+- (id)_combinedFooterStringForLocationDeviceText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   v5 = objc_opt_new();
-  v6 = [(HUPresenceUserPickerItemModule *)self _homeHubNeedsUpdateWarningText];
-  [v5 na_safeAddObject:v6];
+  _homeHubNeedsUpdateWarningText = [(HUPresenceUserPickerItemModule *)self _homeHubNeedsUpdateWarningText];
+  [v5 na_safeAddObject:_homeHubNeedsUpdateWarningText];
 
-  v7 = [(HUPresenceUserPickerItemModule *)self _someUsersNeedSoftwareUpdateWarningText];
-  [v5 na_safeAddObject:v7];
+  _someUsersNeedSoftwareUpdateWarningText = [(HUPresenceUserPickerItemModule *)self _someUsersNeedSoftwareUpdateWarningText];
+  [v5 na_safeAddObject:_someUsersNeedSoftwareUpdateWarningText];
 
-  [v5 na_safeAddObject:v4];
+  [v5 na_safeAddObject:textCopy];
   if ([v5 count])
   {
     v8 = objc_alloc_init(MEMORY[0x277CCAB48]);
@@ -1201,8 +1201,8 @@ void __77__HUPresenceUserPickerItemModule__combinedFooterStringForLocationDevice
 
 - (id)_homeHubNeedsUpdateWarningText
 {
-  v2 = [(HUPresenceUserPickerItemModule *)self home];
-  if ([v2 hf_supportsSharedEventAutomation])
+  home = [(HUPresenceUserPickerItemModule *)self home];
+  if ([home hf_supportsSharedEventAutomation])
   {
     v3 = 0;
   }
@@ -1244,15 +1244,15 @@ uint64_t __73__HUPresenceUserPickerItemModule__someUsersNeedSoftwareUpdateWarnin
   return v5 ^ 1u;
 }
 
-+ (id)_locationDeviceTextForDeviceNameString:(id)a3
++ (id)_locationDeviceTextForDeviceNameString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v4 = _HULocalizedStringWithDefaultValue(@"HUPresenceActiveLocationDeviceFooterSettingsLinkTitle", @"HUPresenceActiveLocationDeviceFooterSettingsLinkTitle", 1);
   v11 = v4;
-  if (v3)
+  if (stringCopy)
   {
     v24 = HULocalizedStringWithFormat(@"HUPresenceActiveLocationDeviceFooterSettingsDescription", @"%@", v5, v6, v7, v8, v9, v10, v4);
-    v18 = HULocalizedStringWithFormat(@"HUPresenceActiveLocationDeviceFooterFormat", @"%@%@", v12, v13, v14, v15, v16, v17, v3);
+    v18 = HULocalizedStringWithFormat(@"HUPresenceActiveLocationDeviceFooterFormat", @"%@%@", v12, v13, v14, v15, v16, v17, stringCopy);
   }
 
   else
@@ -1260,17 +1260,17 @@ uint64_t __73__HUPresenceUserPickerItemModule__someUsersNeedSoftwareUpdateWarnin
     v18 = HULocalizedStringWithFormat(@"HUPresenceActiveLocationDeviceFooterNoFMFDeviceSettingsDescription", @"%@", v5, v6, v7, v8, v9, v10, v4);
   }
 
-  v19 = [MEMORY[0x277D14CE8] isAMac];
+  isAMac = [MEMORY[0x277D14CE8] isAMac];
   v20 = MEMORY[0x277CCA898];
-  if (v19)
+  if (isAMac)
   {
     v21 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:v18];
   }
 
   else
   {
-    v22 = [MEMORY[0x277CBEBC0] hf_locationDeviceSettingsURL];
-    v21 = [v20 hf_attributedLinkStringForString:v18 linkString:v11 linkURL:v22];
+    hf_locationDeviceSettingsURL = [MEMORY[0x277CBEBC0] hf_locationDeviceSettingsURL];
+    v21 = [v20 hf_attributedLinkStringForString:v18 linkString:v11 linkURL:hf_locationDeviceSettingsURL];
   }
 
   return v21;

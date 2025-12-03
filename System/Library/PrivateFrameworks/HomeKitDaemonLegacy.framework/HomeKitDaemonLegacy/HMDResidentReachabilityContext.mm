@@ -1,28 +1,28 @@
 @interface HMDResidentReachabilityContext
-- (BOOL)isEqual:(id)a3;
-- (HMDResidentReachabilityContext)initWithCoder:(id)a3;
-- (HMDResidentReachabilityContext)initWithMostRecentReachability:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (HMDResidentReachabilityContext)initWithCoder:(id)coder;
+- (HMDResidentReachabilityContext)initWithMostRecentReachability:(id)reachability;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMDResidentReachabilityContext
 
 - (unint64_t)hash
 {
-  v2 = [(HMDResidentReachabilityContext *)self mostRecentReachability];
-  v3 = [v2 hash];
+  mostRecentReachability = [(HMDResidentReachabilityContext *)self mostRecentReachability];
+  v3 = [mostRecentReachability hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = equalCopy;
   }
 
   else
@@ -33,14 +33,14 @@
   v7 = v6;
   if (v7)
   {
-    v8 = [(HMDResidentReachabilityContext *)self mostRecentReachability];
-    if (v8 || ([v7 mostRecentReachability], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+    mostRecentReachability = [(HMDResidentReachabilityContext *)self mostRecentReachability];
+    if (mostRecentReachability || ([v7 mostRecentReachability], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v9 = [(HMDResidentReachabilityContext *)self mostRecentReachability];
-      v10 = [v7 mostRecentReachability];
-      v11 = [v9 isEqual:v10];
+      mostRecentReachability2 = [(HMDResidentReachabilityContext *)self mostRecentReachability];
+      mostRecentReachability3 = [v7 mostRecentReachability];
+      v11 = [mostRecentReachability2 isEqual:mostRecentReachability3];
 
-      if (v8)
+      if (mostRecentReachability)
       {
 LABEL_12:
 
@@ -62,13 +62,13 @@ LABEL_13:
   return v11;
 }
 
-- (HMDResidentReachabilityContext)initWithCoder:(id)a3
+- (HMDResidentReachabilityContext)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(HMDResidentReachabilityContext *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMDResidentReachabilityContextCodingKeyMostRecentReachability"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMDResidentReachabilityContextCodingKeyMostRecentReachability"];
     mostRecentReachability = v5->_mostRecentReachability;
     v5->_mostRecentReachability = v6;
   }
@@ -76,23 +76,23 @@ LABEL_13:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HMDResidentReachabilityContext *)self mostRecentReachability];
-  [v4 encodeObject:v5 forKey:@"HMDResidentReachabilityContextCodingKeyMostRecentReachability"];
+  coderCopy = coder;
+  mostRecentReachability = [(HMDResidentReachabilityContext *)self mostRecentReachability];
+  [coderCopy encodeObject:mostRecentReachability forKey:@"HMDResidentReachabilityContextCodingKeyMostRecentReachability"];
 }
 
-- (HMDResidentReachabilityContext)initWithMostRecentReachability:(id)a3
+- (HMDResidentReachabilityContext)initWithMostRecentReachability:(id)reachability
 {
-  v5 = a3;
+  reachabilityCopy = reachability;
   v9.receiver = self;
   v9.super_class = HMDResidentReachabilityContext;
   v6 = [(HMDResidentReachabilityContext *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_mostRecentReachability, a3);
+    objc_storeStrong(&v6->_mostRecentReachability, reachability);
   }
 
   return v7;

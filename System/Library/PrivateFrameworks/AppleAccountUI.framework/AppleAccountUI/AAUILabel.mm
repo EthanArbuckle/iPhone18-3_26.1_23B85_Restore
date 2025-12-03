@@ -1,20 +1,20 @@
 @interface AAUILabel
-- (AAUILabel)initWithCoder:(id)a3;
-- (AAUILabel)initWithEdgeInsets:(UIEdgeInsets)a3;
-- (AAUILabel)initWithFrame:(CGRect)a3;
+- (AAUILabel)initWithCoder:(id)coder;
+- (AAUILabel)initWithEdgeInsets:(UIEdgeInsets)insets;
+- (AAUILabel)initWithFrame:(CGRect)frame;
 - (CGSize)intrinsicContentSize;
 - (UIEdgeInsets)edgeInsets;
-- (void)drawTextInRect:(CGRect)a3;
+- (void)drawTextInRect:(CGRect)rect;
 - (void)layoutSubviews;
 @end
 
 @implementation AAUILabel
 
-- (AAUILabel)initWithFrame:(CGRect)a3
+- (AAUILabel)initWithFrame:(CGRect)frame
 {
   v5.receiver = self;
   v5.super_class = AAUILabel;
-  result = [(AAUILabel *)&v5 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  result = [(AAUILabel *)&v5 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (result)
   {
     v4 = *(MEMORY[0x1E69DDCE0] + 16);
@@ -25,11 +25,11 @@
   return result;
 }
 
-- (AAUILabel)initWithCoder:(id)a3
+- (AAUILabel)initWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = AAUILabel;
-  result = [(AAUILabel *)&v5 initWithCoder:a3];
+  result = [(AAUILabel *)&v5 initWithCoder:coder];
   if (result)
   {
     v4 = *(MEMORY[0x1E69DDCE0] + 16);
@@ -40,12 +40,12 @@
   return result;
 }
 
-- (AAUILabel)initWithEdgeInsets:(UIEdgeInsets)a3
+- (AAUILabel)initWithEdgeInsets:(UIEdgeInsets)insets
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
   v8.receiver = self;
   v8.super_class = AAUILabel;
   result = [(AAUILabel *)&v8 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
@@ -60,18 +60,18 @@
   return result;
 }
 
-- (void)drawTextInRect:(CGRect)a3
+- (void)drawTextInRect:(CGRect)rect
 {
   v3 = *&self->_edgeInsets.top;
   v4 = *&self->_edgeInsets.bottom;
   if (vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(v3, *MEMORY[0x1E69DDCE0]), vceqq_f64(v4, *(MEMORY[0x1E69DDCE0] + 16))))))
   {
-    [(AAUILabel *)&v6 drawTextInRect:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height, v5.receiver, v5.super_class, self, AAUILabel];
+    [(AAUILabel *)&v6 drawTextInRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height, v5.receiver, v5.super_class, self, AAUILabel];
   }
 
   else
   {
-    [(AAUILabel *)&v5 drawTextInRect:a3.origin.x + v3.f64[1], a3.origin.y + v3.f64[0], a3.size.width - (v3.f64[1] + v4.f64[1]), a3.size.height - (v3.f64[0] + v4.f64[0]), self, AAUILabel, v6.receiver, v6.super_class];
+    [(AAUILabel *)&v5 drawTextInRect:rect.origin.x + v3.f64[1], rect.origin.y + v3.f64[0], rect.size.width - (v3.f64[1] + v4.f64[1]), rect.size.height - (v3.f64[0] + v4.f64[0]), self, AAUILabel, v6.receiver, v6.super_class];
   }
 }
 

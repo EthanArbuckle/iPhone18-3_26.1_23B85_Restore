@@ -1,31 +1,31 @@
 @interface ALCityManager
 + (BOOL)willApplyTimeZoneChanges1;
-+ (__CFArray)legacyCityForCity:(id)a3;
-+ (id)_localeDictionaryFromSQLRow:(char *)a3;
-+ (id)newCitiesByIdentifierMap:(id)a3;
++ (__CFArray)legacyCityForCity:(id)city;
++ (id)_localeDictionaryFromSQLRow:(char *)row;
++ (id)newCitiesByIdentifierMap:(id)map;
 + (id)sharedManager;
 - (ALCityManager)init;
-- (id)_cityForClassicIdentifier:(id)a3 commaSearchOptions:(unint64_t)a4;
-- (id)_cityForTimeZone:(id)a3 localeCode:(id)a4;
-- (id)_defaultCityForTimeZone:(id)a3 localeCode:(id)a4;
-- (id)_whileDatabaseLocked_localeCodesMatchingQualifier:(id)a3;
+- (id)_cityForClassicIdentifier:(id)identifier commaSearchOptions:(unint64_t)options;
+- (id)_cityForTimeZone:(id)zone localeCode:(id)code;
+- (id)_defaultCityForTimeZone:(id)zone localeCode:(id)code;
+- (id)_whileDatabaseLocked_localeCodesMatchingQualifier:(id)qualifier;
 - (id)allCities;
 - (id)allLocales;
-- (id)bestCityForLegacyCity:(__CFArray *)a3;
-- (id)citiesMatchingName:(id)a3 localized:(BOOL)a4;
-- (id)citiesMatchingQualifier:(id)a3;
-- (id)citiesWithIdentifiers:(id)a3;
-- (id)citiesWithTimeZone:(id)a3;
-- (id)cityForClassicIdentifier:(id)a3;
-- (id)defaultCitiesForLocaleCode:(id)a3 options:(int)a4;
-- (id)defaultCityForTimeZone:(id)a3;
-- (id)defaultCityForTimeZone:(id)a3 localeCode:(id)a4;
-- (id)localeWithCode:(id)a3;
+- (id)bestCityForLegacyCity:(__CFArray *)city;
+- (id)citiesMatchingName:(id)name localized:(BOOL)localized;
+- (id)citiesMatchingQualifier:(id)qualifier;
+- (id)citiesWithIdentifiers:(id)identifiers;
+- (id)citiesWithTimeZone:(id)zone;
+- (id)cityForClassicIdentifier:(id)identifier;
+- (id)defaultCitiesForLocaleCode:(id)code options:(int)options;
+- (id)defaultCityForTimeZone:(id)zone;
+- (id)defaultCityForTimeZone:(id)zone localeCode:(id)code;
+- (id)localeWithCode:(id)code;
 - (void)_whileDatabaseLocked_ensureGreenKeyValueCaches;
-- (void)_whileDatabaseLocked_modifyCityForGreen:(id)a3;
+- (void)_whileDatabaseLocked_modifyCityForGreen:(id)green;
 - (void)dealloc;
 - (void)init;
-- (void)localizeCities:(id)a3;
+- (void)localizeCities:(id)cities;
 @end
 
 @implementation ALCityManager
@@ -119,12 +119,12 @@ ALCityManager *__30__ALCityManager_sharedManager__block_invoke()
   return v3;
 }
 
-- (id)citiesMatchingName:(id)a3 localized:(BOOL)a4
+- (id)citiesMatchingName:(id)name localized:(BOOL)localized
 {
-  v4 = a4;
+  localizedCopy = localized;
   [(NSRecursiveLock *)self->_databaseAccessRecursiveLock lock];
 
-  self->_citySearchMatcher = [[CPSearchMatcher alloc] initWithSearchString:a3];
+  self->_citySearchMatcher = [[CPSearchMatcher alloc] initWithSearchString:name];
   v7 = 0x1E7450000uLL;
   v8 = [ALCityManager newCitiesByIdentifierMap:[(ALCityManager *)self citiesMatchingQualifier:@"CDLIKE(name) = 1 OR CDLIKE(country_name) = 1"]];
   [(ALCityManager *)self _whileDatabaseLocked_ensureGreenKeyValueCaches];
@@ -134,7 +134,7 @@ ALCityManager *__30__ALCityManager_sharedManager__block_invoke()
     [v8 addEntriesFromDictionary:v9];
   }
 
-  if (v4 && (localizedDb = self->_localizedDb) != 0)
+  if (localizedCopy && (localizedDb = self->_localizedDb) != 0)
   {
     *pnColumn = 0;
     pazResult = 0;
@@ -143,8 +143,8 @@ ALCityManager *__30__ALCityManager_sharedManager__block_invoke()
     {
       if (pzErrmsg)
       {
-        v20 = [a3 UTF8String];
-        printf("Error fetching locales matching %s: %s\n", v20, pzErrmsg);
+        uTF8String = [name UTF8String];
+        printf("Error fetching locales matching %s: %s\n", uTF8String, pzErrmsg);
         sqlite3_free(pzErrmsg);
       }
 
@@ -267,12 +267,12 @@ LABEL_24:
       [v8 addEntriesFromDictionary:v30];
     }
 
-    v31 = [v8 allValues];
-    [(ALCityManager *)self localizeCities:v31];
+    allValues = [v8 allValues];
+    [(ALCityManager *)self localizeCities:allValues];
 
     self->_citySearchMatcher = 0;
     [(NSRecursiveLock *)self->_databaseAccessRecursiveLock unlock];
-    return v31;
+    return allValues;
   }
 
   else
@@ -280,27 +280,27 @@ LABEL_24:
 
     self->_citySearchMatcher = 0;
     [(NSRecursiveLock *)self->_databaseAccessRecursiveLock unlock];
-    v18 = [v8 allValues];
+    allValues2 = [v8 allValues];
 
-    return v18;
+    return allValues2;
   }
 }
 
-- (void)localizeCities:(id)a3
+- (void)localizeCities:(id)cities
 {
   v75 = *MEMORY[0x1E69E9840];
-  if (self->_localizedDb && [a3 count])
+  if (self->_localizedDb && [cities count])
   {
     *pnColumn = 0;
     pazResult = 0;
     pzErrmsg = 0;
     [(NSRecursiveLock *)self->_databaseAccessRecursiveLock lock];
-    v5 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{(objc_msgSend(a3, "count") + 1) >> 1}];
+    v5 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{(objc_msgSend(cities, "count") + 1) >> 1}];
     v60 = 0u;
     v61 = 0u;
     v62 = 0u;
     v63 = 0u;
-    v6 = [a3 countByEnumeratingWithState:&v60 objects:v73 count:16];
+    v6 = [cities countByEnumeratingWithState:&v60 objects:v73 count:16];
     if (v6)
     {
       v7 = v6;
@@ -311,15 +311,15 @@ LABEL_24:
         {
           if (*v61 != v8)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(cities);
           }
 
           v10 = *(*(&v60 + 1) + 8 * i);
-          v11 = [v10 localeCode];
-          if (v11)
+          localeCode = [v10 localeCode];
+          if (localeCode)
           {
-            v12 = v11;
-            v13 = [v5 objectForKey:v11];
+            v12 = localeCode;
+            v13 = [v5 objectForKey:localeCode];
             if (!v13)
             {
               v13 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:4];
@@ -335,35 +335,35 @@ LABEL_24:
           }
         }
 
-        v7 = [a3 countByEnumeratingWithState:&v60 objects:v73 count:16];
+        v7 = [cities countByEnumeratingWithState:&v60 objects:v73 count:16];
       }
 
       while (v7);
     }
 
-    v14 = [v5 allKeys];
-    if (![v14 count])
+    allKeys = [v5 allKeys];
+    if (![allKeys count])
     {
 LABEL_48:
 
-      v34 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(a3, "count")}];
-      v35 = [objc_alloc(MEMORY[0x1E696AD60]) initWithCapacity:{16 * objc_msgSend(a3, "count") + 40}];
-      objc_msgSend(v35, "appendFormat:", @"SELECT id,name,country_name FROM city_names WHERE id IN(%d"), objc_msgSend(objc_msgSend(a3, "objectAtIndex:", 0), "identifier");
-      v36 = [a3 objectAtIndex:0];
-      [v34 setObject:v36 forKey:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInt:", objc_msgSend(objc_msgSend(a3, "objectAtIndex:", 0), "identifier"))}];
-      if ([a3 count] >= 2)
+      v34 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(cities, "count")}];
+      v35 = [objc_alloc(MEMORY[0x1E696AD60]) initWithCapacity:{16 * objc_msgSend(cities, "count") + 40}];
+      objc_msgSend(v35, "appendFormat:", @"SELECT id,name,country_name FROM city_names WHERE id IN(%d"), objc_msgSend(objc_msgSend(cities, "objectAtIndex:", 0), "identifier");
+      v36 = [cities objectAtIndex:0];
+      [v34 setObject:v36 forKey:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInt:", objc_msgSend(objc_msgSend(cities, "objectAtIndex:", 0), "identifier"))}];
+      if ([cities count] >= 2)
       {
         v37 = 1;
         do
         {
-          v38 = [a3 objectAtIndex:v37];
+          v38 = [cities objectAtIndex:v37];
           v39 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v38, "identifier")}];
           [v35 appendFormat:@", %@", v39];
           [v34 setObject:v38 forKey:v39];
           ++v37;
         }
 
-        while ([a3 count] > v37);
+        while ([cities count] > v37);
       }
 
       [v35 appendString:@""]);
@@ -371,8 +371,8 @@ LABEL_48:
       {
         if (pzErrmsg)
         {
-          v40 = [v35 UTF8String];
-          printf("Error getting city localizations from query %s: %s\n", v40, pzErrmsg);
+          uTF8String = [v35 UTF8String];
+          printf("Error getting city localizations from query %s: %s\n", uTF8String, pzErrmsg);
           sqlite3_free(pzErrmsg);
         }
 
@@ -423,7 +423,7 @@ LABEL_65:
       v55 = 0u;
       v52 = 0u;
       v53 = 0u;
-      v47 = [a3 countByEnumeratingWithState:&v52 objects:v71 count:16];
+      v47 = [cities countByEnumeratingWithState:&v52 objects:v71 count:16];
       if (v47)
       {
         v48 = v47;
@@ -434,13 +434,13 @@ LABEL_65:
           {
             if (*v53 != v49)
             {
-              objc_enumerationMutation(a3);
+              objc_enumerationMutation(cities);
             }
 
             [(ALCityManager *)self _whileDatabaseLocked_modifyCityForGreen:*(*(&v52 + 1) + 8 * j)];
           }
 
-          v48 = [a3 countByEnumeratingWithState:&v52 objects:v71 count:16];
+          v48 = [cities countByEnumeratingWithState:&v52 objects:v71 count:16];
         }
 
         while (v48);
@@ -452,16 +452,16 @@ LABEL_72:
     }
 
     v15 = [objc_alloc(MEMORY[0x1E696AD60]) initWithCapacity:{16 * objc_msgSend(v5, "count") + 40}];
-    objc_msgSend(v15, "appendFormat:", @"SELECT code,name FROM locale_names WHERE code IN (%@"), objc_msgSend(v14, "objectAtIndex:", 0);
-    if ([v14 count] >= 2)
+    objc_msgSend(v15, "appendFormat:", @"SELECT code,name FROM locale_names WHERE code IN (%@"), objc_msgSend(allKeys, "objectAtIndex:", 0);
+    if ([allKeys count] >= 2)
     {
       v16 = 1;
       do
       {
-        [v15 appendFormat:@", %@", objc_msgSend(v14, "objectAtIndex:", v16++)];
+        [v15 appendFormat:@", %@", objc_msgSend(allKeys, "objectAtIndex:", v16++)];
       }
 
-      while ([v14 count] > v16);
+      while ([allKeys count] > v16);
     }
 
     [v15 appendString:@""]);
@@ -469,8 +469,8 @@ LABEL_72:
     {
       if (pzErrmsg)
       {
-        v17 = [v15 UTF8String];
-        printf("Error getting locale localizations from query %s: %s\n", v17, pzErrmsg);
+        uTF8String2 = [v15 UTF8String];
+        printf("Error getting locale localizations from query %s: %s\n", uTF8String2, pzErrmsg);
         sqlite3_free(pzErrmsg);
       }
 
@@ -543,14 +543,14 @@ LABEL_47:
     goto LABEL_48;
   }
 
-  if ([a3 count])
+  if ([cities count])
   {
     [(NSRecursiveLock *)self->_databaseAccessRecursiveLock lock];
     v69 = 0u;
     v70 = 0u;
     v67 = 0u;
     v68 = 0u;
-    v19 = [a3 countByEnumeratingWithState:&v67 objects:v74 count:16];
+    v19 = [cities countByEnumeratingWithState:&v67 objects:v74 count:16];
     if (v19)
     {
       v20 = v19;
@@ -561,13 +561,13 @@ LABEL_47:
         {
           if (*v68 != v21)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(cities);
           }
 
           [(ALCityManager *)self _whileDatabaseLocked_modifyCityForGreen:*(*(&v67 + 1) + 8 * m)];
         }
 
-        v20 = [a3 countByEnumeratingWithState:&v67 objects:v74 count:16];
+        v20 = [cities countByEnumeratingWithState:&v67 objects:v74 count:16];
       }
 
       while (v20);
@@ -580,15 +580,15 @@ LABEL_73:
   v51 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)newCitiesByIdentifierMap:(id)a3
++ (id)newCitiesByIdentifierMap:(id)map
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(a3, "count")}];
+  v4 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(map, "count")}];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [a3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v5 = [map countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -600,7 +600,7 @@ LABEL_73:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(map);
         }
 
         v9 = *(*(&v13 + 1) + 8 * v8);
@@ -611,7 +611,7 @@ LABEL_73:
       }
 
       while (v6 != v8);
-      v6 = [a3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [map countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
@@ -621,23 +621,23 @@ LABEL_73:
   return v4;
 }
 
-- (id)citiesWithIdentifiers:(id)a3
+- (id)citiesWithIdentifiers:(id)identifiers
 {
-  v3 = a3;
+  identifiersCopy = identifiers;
   v34 = *MEMORY[0x1E69E9840];
-  if ([a3 count])
+  if ([identifiers count])
   {
-    v5 = [objc_alloc(MEMORY[0x1E696AD60]) initWithCapacity:{4 * objc_msgSend(v3, "count")}];
-    [v5 appendString:{objc_msgSend(v3, "objectAtIndex:", 0)}];
-    if ([v3 count] >= 2)
+    v5 = [objc_alloc(MEMORY[0x1E696AD60]) initWithCapacity:{4 * objc_msgSend(identifiersCopy, "count")}];
+    [v5 appendString:{objc_msgSend(identifiersCopy, "objectAtIndex:", 0)}];
+    if ([identifiersCopy count] >= 2)
     {
       v6 = 1;
       do
       {
-        [v5 appendFormat:@", %@", objc_msgSend(v3, "objectAtIndex:", v6++)];
+        [v5 appendFormat:@", %@", objc_msgSend(identifiersCopy, "objectAtIndex:", v6++)];
       }
 
-      while ([v3 count] > v6);
+      while ([identifiersCopy count] > v6);
     }
 
     v7 = -[ALCityManager citiesMatchingQualifier:](self, "citiesMatchingQualifier:", [MEMORY[0x1E696AEC0] stringWithFormat:@"identifier IN (%@)", v5]);
@@ -646,14 +646,14 @@ LABEL_73:
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v8 = [v3 countByEnumeratingWithState:&v28 objects:v33 count:16];
+    v8 = [identifiersCopy countByEnumeratingWithState:&v28 objects:v33 count:16];
     if (v8)
     {
       v9 = v8;
       v10 = *v29;
       do
       {
-        v11 = v3;
+        v11 = identifiersCopy;
         for (i = 0; i != v9; ++i)
         {
           if (*v29 != v10)
@@ -661,7 +661,7 @@ LABEL_73:
             objc_enumerationMutation(v11);
           }
 
-          v13 = [*(*(&v28 + 1) + 8 * i) intValue];
+          intValue = [*(*(&v28 + 1) + 8 * i) intValue];
           v24 = 0u;
           v25 = 0u;
           v26 = 0u;
@@ -681,7 +681,7 @@ LABEL_73:
                 }
 
                 v18 = *(*(&v24 + 1) + 8 * j);
-                if (v13 == [v18 identifier])
+                if (intValue == [v18 identifier])
                 {
                   [v23 addObject:v18];
                   goto LABEL_20;
@@ -702,7 +702,7 @@ LABEL_20:
           ;
         }
 
-        v3 = v11;
+        identifiersCopy = v11;
         v9 = [v11 countByEnumeratingWithState:&v28 objects:v33 count:16];
       }
 
@@ -722,17 +722,17 @@ LABEL_20:
   }
 }
 
-- (id)_cityForClassicIdentifier:(id)a3 commaSearchOptions:(unint64_t)a4
+- (id)_cityForClassicIdentifier:(id)identifier commaSearchOptions:(unint64_t)options
 {
-  v6 = [a3 rangeOfString:@" options:{", a4}];
+  v6 = [identifier rangeOfString:@" options:{", options}];
   if (v6 == 0x7FFFFFFFFFFFFFFFLL)
   {
     return 0;
   }
 
   v8 = v6;
-  v9 = [a3 substringToIndex:v6];
-  v10 = [a3 substringFromIndex:v8 + 2];
+  v9 = [identifier substringToIndex:v6];
+  v10 = [identifier substringFromIndex:v8 + 2];
   v11 = [v10 length] ? objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"name = %@ and country_name = %@", v9, v10) : objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"name = %@", v9, v16);
   v12 = [(ALCityManager *)self citiesMatchingQualifier:v11];
   if (!v12 || (v13 = v12, ![v12 count]))
@@ -754,29 +754,29 @@ LABEL_20:
   return [v13 objectAtIndex:0];
 }
 
-- (id)cityForClassicIdentifier:(id)a3
+- (id)cityForClassicIdentifier:(id)identifier
 {
-  result = [(ALCityManager *)self _cityForClassicIdentifier:a3 commaSearchOptions:4];
+  result = [(ALCityManager *)self _cityForClassicIdentifier:identifier commaSearchOptions:4];
   if (!result)
   {
 
-    return [(ALCityManager *)self _cityForClassicIdentifier:a3 commaSearchOptions:0];
+    return [(ALCityManager *)self _cityForClassicIdentifier:identifier commaSearchOptions:0];
   }
 
   return result;
 }
 
-- (id)bestCityForLegacyCity:(__CFArray *)a3
+- (id)bestCityForLegacyCity:(__CFArray *)city
 {
   v20 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!city)
   {
     goto LABEL_8;
   }
 
-  if (CFArrayGetCount(a3) > 9)
+  if (CFArrayGetCount(city) > 9)
   {
-    Identifier = CPCityGetIdentifier(a3);
+    Identifier = CPCityGetIdentifier(city);
     if (Identifier)
     {
       v6 = [(ALCityManager *)self cityForClassicIdentifier:Identifier];
@@ -787,14 +787,14 @@ LABEL_20:
     }
   }
 
-  if (CFArrayGetCount(a3) <= 6)
+  if (CFArrayGetCount(city) <= 6)
   {
 LABEL_8:
     v6 = 0;
     goto LABEL_22;
   }
 
-  v7 = [(ALCityManager *)self citiesMatchingName:CPCityGetLocalizedCityName(a3)];
+  v7 = [(ALCityManager *)self citiesMatchingName:CPCityGetLocalizedCityName(city)];
   if ([v7 count] == 1)
   {
     v8 = 0;
@@ -802,7 +802,7 @@ LABEL_8:
 
   else
   {
-    v8 = [[CPSearchMatcher alloc] initWithSearchString:CPCityGetLocalizedCountryName(a3)];
+    v8 = [[CPSearchMatcher alloc] initWithSearchString:CPCityGetLocalizedCountryName(city)];
   }
 
   v17 = 0u;
@@ -853,28 +853,28 @@ LABEL_22:
   return v6;
 }
 
-+ (__CFArray)legacyCityForCity:(id)a3
++ (__CFArray)legacyCityForCity:(id)city
 {
-  if (!a3)
+  if (!city)
   {
     return 0;
   }
 
-  v4 = [a3 unlocalizedName];
-  v5 = [a3 unlocalizedCountryName];
-  v6 = [a3 localeCode];
+  unlocalizedName = [city unlocalizedName];
+  unlocalizedCountryName = [city unlocalizedCountryName];
+  localeCode = [city localeCode];
   v7 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:10];
   v8 = MEMORY[0x1E696AD98];
-  [a3 latitude];
+  [city latitude];
   [v7 addObject:{objc_msgSend(v8, "numberWithFloat:")}];
   v9 = MEMORY[0x1E696AD98];
-  [a3 longitude];
+  [city longitude];
   [v7 addObject:{objc_msgSend(v9, "numberWithFloat:")}];
-  [v7 addObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInt:", objc_msgSend(a3, "identifier"))}];
-  [v7 addObject:{objc_msgSend(a3, "timeZone")}];
-  if (v6)
+  [v7 addObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInt:", objc_msgSend(city, "identifier"))}];
+  [v7 addObject:{objc_msgSend(city, "timeZone")}];
+  if (localeCode)
   {
-    v10 = v6;
+    v10 = localeCode;
   }
 
   else
@@ -883,34 +883,34 @@ LABEL_22:
   }
 
   [v7 addObject:v10];
-  [v7 addObject:{objc_msgSend(a3, "name")}];
-  [v7 addObject:{objc_msgSend(a3, "countryName")}];
-  [v7 addObject:v4];
-  [v7 addObject:v5];
-  [v7 addObject:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"%@, %@", v4, v5)}];
+  [v7 addObject:{objc_msgSend(city, "name")}];
+  [v7 addObject:{objc_msgSend(city, "countryName")}];
+  [v7 addObject:unlocalizedName];
+  [v7 addObject:unlocalizedCountryName];
+  [v7 addObject:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"%@, %@", unlocalizedName, unlocalizedCountryName)}];
 
   return v7;
 }
 
-- (id)citiesMatchingQualifier:(id)a3
+- (id)citiesMatchingQualifier:(id)qualifier
 {
   *pnColumn = 0;
   pazResult = 0;
   pzErrmsg = 0;
   [(NSRecursiveLock *)self->_databaseAccessRecursiveLock lock];
-  v5 = [(ALCityManager *)self _shouldUseTablesAlternate1];
+  _shouldUseTablesAlternate1 = [(ALCityManager *)self _shouldUseTablesAlternate1];
   v6 = @"cities";
-  if (v5)
+  if (_shouldUseTablesAlternate1)
   {
     v6 = @"cities_alternate_1";
   }
 
-  if (sqlite3_get_table(self->_db, [objc_msgSend(MEMORY[0x1E696AEC0] stringWithFormat:@"SELECT name, country_name, country_override, longitude, latitude, timezonename, yahoocode, identifier, code FROM %@ LEFT OUTER JOIN locales ON %@.locale_code = locales.code WHERE %@ ORDER BY name, country_name", v6, v6, a3), "UTF8String"], &pazResult, &pnColumn[1], pnColumn, &pzErrmsg))
+  if (sqlite3_get_table(self->_db, [objc_msgSend(MEMORY[0x1E696AEC0] stringWithFormat:@"SELECT name, country_name, country_override, longitude, latitude, timezonename, yahoocode, identifier, code FROM %@ LEFT OUTER JOIN locales ON %@.locale_code = locales.code WHERE %@ ORDER BY name, country_name", v6, v6, qualifier), "UTF8String"], &pazResult, &pnColumn[1], pnColumn, &pzErrmsg))
   {
     if (pzErrmsg)
     {
-      v7 = [a3 UTF8String];
-      printf("error getting cities matching %s - %s\n", v7, pzErrmsg);
+      uTF8String = [qualifier UTF8String];
+      printf("error getting cities matching %s - %s\n", uTF8String, pzErrmsg);
       sqlite3_free(pzErrmsg);
     }
 
@@ -950,17 +950,17 @@ LABEL_22:
   return v8;
 }
 
-- (id)_whileDatabaseLocked_localeCodesMatchingQualifier:(id)a3
+- (id)_whileDatabaseLocked_localeCodesMatchingQualifier:(id)qualifier
 {
   *pnColumn = 0;
   pazResult = 0;
   pzErrmsg = 0;
-  if (sqlite3_get_table(self->_db, [objc_msgSend(MEMORY[0x1E696AEC0] stringWithFormat:@"SELECT code FROM locales WHERE %@", a3), "UTF8String"], &pazResult, &pnColumn[1], pnColumn, &pzErrmsg))
+  if (sqlite3_get_table(self->_db, [objc_msgSend(MEMORY[0x1E696AEC0] stringWithFormat:@"SELECT code FROM locales WHERE %@", qualifier), "UTF8String"], &pazResult, &pnColumn[1], pnColumn, &pzErrmsg))
   {
     if (pzErrmsg)
     {
-      v4 = [a3 UTF8String];
-      printf("error getting locale codes matching %s - %s\n", v4, pzErrmsg);
+      uTF8String = [qualifier UTF8String];
+      printf("error getting locale codes matching %s - %s\n", uTF8String, pzErrmsg);
       sqlite3_free(pzErrmsg);
     }
 
@@ -1032,10 +1032,10 @@ LABEL_6:
   self->_greenKey3ValueCache = [(ALSCGreenClientProtocol *)self->_greenClient key3Value];
 }
 
-- (void)_whileDatabaseLocked_modifyCityForGreen:(id)a3
+- (void)_whileDatabaseLocked_modifyCityForGreen:(id)green
 {
   [(ALCityManager *)self _whileDatabaseLocked_ensureGreenKeyValueCaches];
-  if ((self->_greenKey1ValueCache || self->_greenKey2ValueCache) && [objc_msgSend(a3 "localeCode")] && objc_msgSend(a3, "identifier") != 118)
+  if ((self->_greenKey1ValueCache || self->_greenKey2ValueCache) && [objc_msgSend(green "localeCode")] && objc_msgSend(green, "identifier") != 118)
   {
     v5 = [objc_msgSend(MEMORY[0x1E696AAE8] bundleWithIdentifier:{@"com.apple.AppSupport", "localizedStringForKey:value:table:", @"CHINA", &stru_1F0A49170, @"Localizable"}];
   }
@@ -1045,22 +1045,22 @@ LABEL_6:
     v5 = 0;
   }
 
-  if (self->_greenKey2ValueCache && [objc_msgSend(a3 "localeCode")])
+  if (self->_greenKey2ValueCache && [objc_msgSend(green "localeCode")])
   {
     v5 = [objc_msgSend(MEMORY[0x1E696AAE8] bundleWithIdentifier:{@"com.apple.AppSupport", "localizedStringForKey:value:table:", @"TAIPEI_TAIWAN_CHINA", &stru_1F0A49170, @"Localizable"}];
-    [a3 setDisplayNameIncludingCountryShowsOnlyCountry:1];
+    [green setDisplayNameIncludingCountryShowsOnlyCountry:1];
   }
 
   if (self->_greenKey3ValueCache)
   {
-    if ([a3 identifier] == 118)
+    if ([green identifier] == 118)
     {
       v6 = @"HONG_KONG";
     }
 
     else
     {
-      if (![objc_msgSend(a3 "localeCode")])
+      if (![objc_msgSend(green "localeCode")])
       {
         goto LABEL_15;
       }
@@ -1074,26 +1074,26 @@ LABEL_6:
 LABEL_15:
   if (v5)
   {
-    [a3 setUnlocalizedCountryOverride:v5];
+    [green setUnlocalizedCountryOverride:v5];
 
-    [a3 setCountryOverride:v5];
+    [green setCountryOverride:v5];
   }
 }
 
-- (id)_cityForTimeZone:(id)a3 localeCode:(id)a4
+- (id)_cityForTimeZone:(id)zone localeCode:(id)code
 {
-  if ([a3 length])
+  if ([zone length])
   {
-    if (!a4)
+    if (!code)
     {
-      a4 = &stru_1F0A49170;
+      code = &stru_1F0A49170;
     }
 
     [(NSRecursiveLock *)self->_databaseAccessRecursiveLock lock];
-    v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"timezonename = %@ and locale_code = %@", a3, a4];
-    v8 = [(ALCityManager *)self _shouldUseTablesAlternate1];
+    code = [MEMORY[0x1E696AEC0] stringWithFormat:@"timezonename = %@ and locale_code = %@", zone, code];
+    _shouldUseTablesAlternate1 = [(ALCityManager *)self _shouldUseTablesAlternate1];
     v9 = @"timezone_locale_to_city_map";
-    if (v8)
+    if (_shouldUseTablesAlternate1)
     {
       v9 = @"timezone_locale_to_city_map_alternate_1";
     }
@@ -1101,7 +1101,7 @@ LABEL_15:
     *pnColumn = 0;
     pazResult = 0;
     pzErrmsg = 0;
-    if (sqlite3_get_table(self->_db, [objc_msgSend(MEMORY[0x1E696AEC0] stringWithFormat:@"SELECT city_id FROM %@ WHERE %@", v9, v7), "UTF8String"], &pazResult, &pnColumn[1], pnColumn, &pzErrmsg))
+    if (sqlite3_get_table(self->_db, [objc_msgSend(MEMORY[0x1E696AEC0] stringWithFormat:@"SELECT city_id FROM %@ WHERE %@", v9, code), "UTF8String"], &pazResult, &pnColumn[1], pnColumn, &pzErrmsg))
     {
       if (pzErrmsg)
       {
@@ -1148,24 +1148,24 @@ LABEL_19:
   return 0;
 }
 
-+ (id)_localeDictionaryFromSQLRow:(char *)a3
++ (id)_localeDictionaryFromSQLRow:(char *)row
 {
   v4 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:6];
-  [v4 setObject:objc_msgSend(MEMORY[0x1E696AEC0] forKey:{"stringWithUTF8String:", *a3), @"code"}];
-  [v4 setObject:objc_msgSend(MEMORY[0x1E696AEC0] forKey:{"stringWithUTF8String:", a3[1]), @"name"}];
-  if (a3[2])
+  [v4 setObject:objc_msgSend(MEMORY[0x1E696AEC0] forKey:{"stringWithUTF8String:", *row), @"code"}];
+  [v4 setObject:objc_msgSend(MEMORY[0x1E696AEC0] forKey:{"stringWithUTF8String:", row[1]), @"name"}];
+  if (row[2])
   {
     [v4 setObject:objc_msgSend(MEMORY[0x1E696AEC0] forKey:{"stringWithUTF8String:"), @"mainCity"}];
   }
 
-  if (a3[3])
+  if (row[3])
   {
     [v4 setObject:objc_msgSend(MEMORY[0x1E696AEC0] forKey:{"stringWithUTF8String:"), @"mapLongitude"}];
-    [v4 setObject:objc_msgSend(MEMORY[0x1E696AEC0] forKey:{"stringWithUTF8String:", a3[4]), @"mapLatitude"}];
-    if (a3[5])
+    [v4 setObject:objc_msgSend(MEMORY[0x1E696AEC0] forKey:{"stringWithUTF8String:", row[4]), @"mapLatitude"}];
+    if (row[5])
     {
       [v4 setObject:objc_msgSend(MEMORY[0x1E696AEC0] forKey:{"stringWithUTF8String:"), @"mapWidth"}];
-      [v4 setObject:objc_msgSend(MEMORY[0x1E696AEC0] forKey:{"stringWithUTF8String:", a3[6]), @"mapHeight"}];
+      [v4 setObject:objc_msgSend(MEMORY[0x1E696AEC0] forKey:{"stringWithUTF8String:", row[6]), @"mapHeight"}];
     }
   }
 
@@ -1214,18 +1214,18 @@ LABEL_10:
   return v3;
 }
 
-- (id)localeWithCode:(id)a3
+- (id)localeWithCode:(id)code
 {
   *pnColumn = 0;
   pazResult = 0;
   pzErrmsg = 0;
   [(NSRecursiveLock *)self->_databaseAccessRecursiveLock lock];
-  if (sqlite3_get_table(self->_db, [objc_msgSend(MEMORY[0x1E696AEC0] stringWithFormat:@"select code, country_name, main_city, map_center_longitude, map_center_latitude, map_width, map_height from locales where code = %@", a3), "UTF8String"], &pazResult, &pnColumn[1], pnColumn, &pzErrmsg))
+  if (sqlite3_get_table(self->_db, [objc_msgSend(MEMORY[0x1E696AEC0] stringWithFormat:@"select code, country_name, main_city, map_center_longitude, map_center_latitude, map_width, map_height from locales where code = %@", code), "UTF8String"], &pazResult, &pnColumn[1], pnColumn, &pzErrmsg))
   {
     if (pzErrmsg)
     {
-      v5 = [a3 UTF8String];
-      printf("couldn't get locale with code %s: %s\n", v5, pzErrmsg);
+      uTF8String = [code UTF8String];
+      printf("couldn't get locale with code %s: %s\n", uTF8String, pzErrmsg);
       sqlite3_free(pzErrmsg);
     }
 
@@ -1243,7 +1243,7 @@ LABEL_10:
   }
 
   sqlite3_free_table(pazResult);
-  v8 = [objc_msgSend(MEMORY[0x1E695DF58] localeWithLocaleIdentifier:{a3), "regionCode"}];
+  v8 = [objc_msgSend(MEMORY[0x1E695DF58] localeWithLocaleIdentifier:{code), "regionCode"}];
   if (!v8)
   {
 LABEL_6:
@@ -1267,7 +1267,7 @@ LABEL_9:
   return v6;
 }
 
-- (id)defaultCitiesForLocaleCode:(id)a3 options:(int)a4
+- (id)defaultCitiesForLocaleCode:(id)code options:(int)options
 {
   v37 = *MEMORY[0x1E69E9840];
   v7 = [(ALCityManager *)self localeWithCode:?];
@@ -1277,27 +1277,27 @@ LABEL_9:
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v34 = a3;
+    codeCopy = code;
     v35 = 1024;
-    v36 = a4;
+    optionsCopy = options;
     _os_log_impl(&dword_195E6C000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "ALCityManager defaultCitiesForLocaleCode: %@ options: %x", buf, 0x12u);
   }
 
   [(NSRecursiveLock *)self->_databaseAccessRecursiveLock lock];
   db = self->_db;
   v9 = MEMORY[0x1E696AEC0];
-  v10 = a3;
+  codeCopy2 = code;
   if (v7)
   {
-    v10 = [v7 objectForKey:@"code"];
+    codeCopy2 = [v7 objectForKey:@"code"];
   }
 
-  if (sqlite3_get_table(db, [objc_msgSend(v9 stringWithFormat:@"select city_id from defaults where locale_code = %@", v10), "UTF8String"], &pazResult, &pnColumn[1], pnColumn, &pzErrmsg))
+  if (sqlite3_get_table(db, [objc_msgSend(v9 stringWithFormat:@"select city_id from defaults where locale_code = %@", codeCopy2), "UTF8String"], &pazResult, &pnColumn[1], pnColumn, &pzErrmsg))
   {
     if (pzErrmsg)
     {
-      v11 = [a3 UTF8String];
-      printf("couldn't get default cities for locale %s: %s\n", v11, pzErrmsg);
+      uTF8String = [code UTF8String];
+      printf("couldn't get default cities for locale %s: %s\n", uTF8String, pzErrmsg);
       sqlite3_free(pzErrmsg);
     }
 
@@ -1342,9 +1342,9 @@ LABEL_9:
       do
       {
         v20 = [v12 objectAtIndex:v18];
-        v21 = [v15 intValue];
-        v22 = [v20 identifier];
-        if ((a4 & 1) != 0 && v21 == v22)
+        intValue = [v15 intValue];
+        identifier = [v20 identifier];
+        if ((options & 1) != 0 && intValue == identifier)
         {
           v23 = v20;
           [v12 removeObjectAtIndex:v18];
@@ -1357,11 +1357,11 @@ LABEL_9:
       }
 
       while ([v12 count] > v18);
-      if ((a4 & 2) != 0)
+      if ((options & 2) != 0)
       {
         if (v19)
         {
-          v24 = [v19 timeZone];
+          timeZone = [v19 timeZone];
           if ([v12 count])
           {
             v25 = 0;
@@ -1388,7 +1388,7 @@ LABEL_9:
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v34 = v12;
+      codeCopy = v12;
       _os_log_impl(&dword_195E6C000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "ALCityManager defaultCitiesForLocaleCode: returning %@", buf, 0xCu);
     }
   }
@@ -1397,10 +1397,10 @@ LABEL_9:
   return v12;
 }
 
-- (id)defaultCityForTimeZone:(id)a3
+- (id)defaultCityForTimeZone:(id)zone
 {
   v5 = CFLocaleCopyCurrent();
-  v6 = [(ALCityManager *)self _defaultCityForTimeZone:a3 localeCode:MEMORY[0x19A8C1930]()];
+  v6 = [(ALCityManager *)self _defaultCityForTimeZone:zone localeCode:MEMORY[0x19A8C1930]()];
   if (v5)
   {
     CFRelease(v5);
@@ -1409,12 +1409,12 @@ LABEL_9:
   return v6;
 }
 
-- (id)defaultCityForTimeZone:(id)a3 localeCode:(id)a4
+- (id)defaultCityForTimeZone:(id)zone localeCode:(id)code
 {
-  if (a4)
+  if (code)
   {
 
-    return [(ALCityManager *)self _defaultCityForTimeZone:a3 localeCode:?];
+    return [(ALCityManager *)self _defaultCityForTimeZone:zone localeCode:?];
   }
 
   else
@@ -1428,29 +1428,29 @@ LABEL_9:
   }
 }
 
-- (id)_defaultCityForTimeZone:(id)a3 localeCode:(id)a4
+- (id)_defaultCityForTimeZone:(id)zone localeCode:(id)code
 {
   v34 = *MEMORY[0x1E69E9840];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v31 = a3;
+    zoneCopy = zone;
     v32 = 2112;
-    v33 = a4;
+    codeCopy = code;
     _os_log_impl(&dword_195E6C000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "ALCityManager defaultCityForTimeZone: %@ localeCode: %@", buf, 0x16u);
   }
 
-  if (a3)
+  if (zone)
   {
-    if (a4 && ((v7 = -[ALCityManager _cityForTimeZone:localeCode:](self, "_cityForTimeZone:localeCode:", [a3 name], a4)) != 0 || (v7 = -[ALCityManager _cityForTimeZone:localeCode:](self, "_cityForTimeZone:localeCode:", objc_msgSend(a3, "name"), objc_msgSend(objc_msgSend(MEMORY[0x1E695DF58], "localeWithLocaleIdentifier:", a4), "regionCode"))) != 0) || (v7 = -[ALCityManager _cityForTimeZone:localeCode:](self, "_cityForTimeZone:localeCode:", objc_msgSend(a3, "name"), &stru_1F0A49170)) != 0)
+    if (code && ((v7 = -[ALCityManager _cityForTimeZone:localeCode:](self, "_cityForTimeZone:localeCode:", [zone name], code)) != 0 || (v7 = -[ALCityManager _cityForTimeZone:localeCode:](self, "_cityForTimeZone:localeCode:", objc_msgSend(zone, "name"), objc_msgSend(objc_msgSend(MEMORY[0x1E695DF58], "localeWithLocaleIdentifier:", code), "regionCode"))) != 0) || (v7 = -[ALCityManager _cityForTimeZone:localeCode:](self, "_cityForTimeZone:localeCode:", objc_msgSend(zone, "name"), &stru_1F0A49170)) != 0)
     {
       v8 = v7;
       goto LABEL_34;
     }
   }
 
-  v9 = [(ALCityManager *)self citiesWithTimeZone:a3];
-  v10 = [objc_msgSend(a3 "name")];
+  v9 = [(ALCityManager *)self citiesWithTimeZone:zone];
+  v10 = [objc_msgSend(zone "name")];
   if ([v10 count] >= 2)
   {
     v11 = [v10 objectAtIndex:1];
@@ -1501,7 +1501,7 @@ LABEL_20:
   if ([v9 count])
   {
     v8 = [v9 objectAtIndex:0];
-    if (!a3)
+    if (!zone)
     {
       goto LABEL_34;
     }
@@ -1510,20 +1510,20 @@ LABEL_20:
   else
   {
     v8 = 0;
-    if (!a3)
+    if (!zone)
     {
       goto LABEL_34;
     }
   }
 
-  if (a4 && !v8)
+  if (code && !v8)
   {
-    v16 = [(ALCityManager *)self defaultCitiesForLocaleCode:a4 options:1];
+    v16 = [(ALCityManager *)self defaultCitiesForLocaleCode:code options:1];
     if (v16 && (v17 = v16, [v16 count]) && (v18 = objc_msgSend(v17, "objectAtIndexedSubscript:", 0), (v19 = CFTimeZoneCreateWithName(*MEMORY[0x1E695E480], objc_msgSend(v18, "timeZone"), 1u)) != 0))
     {
       v20 = v19;
       Current = CFAbsoluteTimeGetCurrent();
-      SecondsFromGMT = CFTimeZoneGetSecondsFromGMT(a3, Current);
+      SecondsFromGMT = CFTimeZoneGetSecondsFromGMT(zone, Current);
       if (SecondsFromGMT == CFTimeZoneGetSecondsFromGMT(v20, Current))
       {
         v8 = [v17 objectAtIndexedSubscript:0];
@@ -1547,7 +1547,7 @@ LABEL_34:
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v31 = v8;
+    zoneCopy = v8;
     _os_log_impl(&dword_195E6C000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "ALCityManager defaultCityForTimeZone: returning %@", buf, 0xCu);
   }
 
@@ -1555,9 +1555,9 @@ LABEL_34:
   return v8;
 }
 
-- (id)citiesWithTimeZone:(id)a3
+- (id)citiesWithTimeZone:(id)zone
 {
-  v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"timezonename = %@", objc_msgSend(a3, "name")];
+  v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"timezonename = %@", objc_msgSend(zone, "name")];
 
   return [(ALCityManager *)self citiesMatchingQualifier:v4];
 }

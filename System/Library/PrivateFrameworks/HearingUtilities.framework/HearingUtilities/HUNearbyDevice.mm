@@ -1,82 +1,82 @@
 @interface HUNearbyDevice
-+ (HUNearbyDevice)nearbyDeviceWithIDSDevice:(id)a3;
-+ (HUNearbyDevice)nearbyDeviceWithIDSIdentifier:(id)a3;
-- (BOOL)equalsToIdentifier:(id)a3;
++ (HUNearbyDevice)nearbyDeviceWithIDSDevice:(id)device;
++ (HUNearbyDevice)nearbyDeviceWithIDSIdentifier:(id)identifier;
+- (BOOL)equalsToIdentifier:(id)identifier;
 - (BOOL)isCompanion;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isWatch;
 - (BOOL)isiPad;
 - (BOOL)isiPhone;
-- (HUNearbyDevice)initWithIDSDevice:(id)a3;
-- (HUNearbyDevice)initWithIDSIdentifier:(id)a3;
+- (HUNearbyDevice)initWithIDSDevice:(id)device;
+- (HUNearbyDevice)initWithIDSIdentifier:(id)identifier;
 - (id)description;
 - (id)deviceTypeDescription;
 - (id)identifier;
 - (id)name;
-- (id)stateForDomain:(id)a3;
+- (id)stateForDomain:(id)domain;
 - (id)uniqueIdentifier;
-- (void)setState:(id)a3 forDomain:(id)a4;
+- (void)setState:(id)state forDomain:(id)domain;
 @end
 
 @implementation HUNearbyDevice
 
-+ (HUNearbyDevice)nearbyDeviceWithIDSDevice:(id)a3
++ (HUNearbyDevice)nearbyDeviceWithIDSDevice:(id)device
 {
-  v3 = a3;
-  v4 = [[HUNearbyDevice alloc] initWithIDSDevice:v3];
+  deviceCopy = device;
+  v4 = [[HUNearbyDevice alloc] initWithIDSDevice:deviceCopy];
 
   return v4;
 }
 
-+ (HUNearbyDevice)nearbyDeviceWithIDSIdentifier:(id)a3
++ (HUNearbyDevice)nearbyDeviceWithIDSIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = [[HUNearbyDevice alloc] initWithIDSIdentifier:v3];
+  identifierCopy = identifier;
+  v4 = [[HUNearbyDevice alloc] initWithIDSIdentifier:identifierCopy];
 
   return v4;
 }
 
-- (HUNearbyDevice)initWithIDSDevice:(id)a3
+- (HUNearbyDevice)initWithIDSDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v11.receiver = self;
   v11.super_class = HUNearbyDevice;
   v5 = [(HUNearbyDevice *)&v11 init];
   v6 = v5;
   if (v5)
   {
-    [(HUNearbyDevice *)v5 setIdsDevice:v4];
-    v7 = [MEMORY[0x1E695DF70] array];
-    [(HUNearbyDevice *)v6 setRegisteredDomains:v7];
+    [(HUNearbyDevice *)v5 setIdsDevice:deviceCopy];
+    array = [MEMORY[0x1E695DF70] array];
+    [(HUNearbyDevice *)v6 setRegisteredDomains:array];
 
-    v8 = [MEMORY[0x1E695DF70] array];
-    [(HUNearbyDevice *)v6 setUpdateDomains:v8];
+    array2 = [MEMORY[0x1E695DF70] array];
+    [(HUNearbyDevice *)v6 setUpdateDomains:array2];
 
-    v9 = [MEMORY[0x1E695DF90] dictionary];
-    [(HUNearbyDevice *)v6 setState:v9];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    [(HUNearbyDevice *)v6 setState:dictionary];
   }
 
   return v6;
 }
 
-- (HUNearbyDevice)initWithIDSIdentifier:(id)a3
+- (HUNearbyDevice)initWithIDSIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v11.receiver = self;
   v11.super_class = HUNearbyDevice;
   v5 = [(HUNearbyDevice *)&v11 init];
   v6 = v5;
   if (v5)
   {
-    [(HUNearbyDevice *)v5 setIdentifierWithoutDevice:v4];
-    v7 = [MEMORY[0x1E695DF70] array];
-    [(HUNearbyDevice *)v6 setRegisteredDomains:v7];
+    [(HUNearbyDevice *)v5 setIdentifierWithoutDevice:identifierCopy];
+    array = [MEMORY[0x1E695DF70] array];
+    [(HUNearbyDevice *)v6 setRegisteredDomains:array];
 
-    v8 = [MEMORY[0x1E695DF70] array];
-    [(HUNearbyDevice *)v6 setUpdateDomains:v8];
+    array2 = [MEMORY[0x1E695DF70] array];
+    [(HUNearbyDevice *)v6 setUpdateDomains:array2];
 
-    v9 = [MEMORY[0x1E695DF90] dictionary];
-    [(HUNearbyDevice *)v6 setState:v9];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    [(HUNearbyDevice *)v6 setState:dictionary];
   }
 
   return v6;
@@ -84,63 +84,63 @@
 
 - (id)name
 {
-  v2 = [(HUNearbyDevice *)self idsDevice];
-  v3 = [v2 name];
+  idsDevice = [(HUNearbyDevice *)self idsDevice];
+  name = [idsDevice name];
 
-  return v3;
+  return name;
 }
 
 - (id)identifier
 {
-  v3 = [(HUNearbyDevice *)self idsDevice];
+  idsDevice = [(HUNearbyDevice *)self idsDevice];
 
-  if (v3)
+  if (idsDevice)
   {
-    v4 = [(HUNearbyDevice *)self idsDevice];
-    v5 = IDSCopyIDForDevice();
+    idsDevice2 = [(HUNearbyDevice *)self idsDevice];
+    identifierWithoutDevice = IDSCopyIDForDevice();
   }
 
   else
   {
-    v5 = [(HUNearbyDevice *)self identifierWithoutDevice];
+    identifierWithoutDevice = [(HUNearbyDevice *)self identifierWithoutDevice];
   }
 
-  return v5;
+  return identifierWithoutDevice;
 }
 
 - (id)uniqueIdentifier
 {
-  v3 = [(HUNearbyDevice *)self idsDevice];
+  idsDevice = [(HUNearbyDevice *)self idsDevice];
 
-  if (v3)
+  if (idsDevice)
   {
-    v4 = [(HUNearbyDevice *)self idsDevice];
-    v5 = [v4 uniqueID];
+    idsDevice2 = [(HUNearbyDevice *)self idsDevice];
+    uniqueID = [idsDevice2 uniqueID];
   }
 
   else
   {
-    v5 = [(HUNearbyDevice *)self identifierWithoutDevice];
+    uniqueID = [(HUNearbyDevice *)self identifierWithoutDevice];
   }
 
-  return v5;
+  return uniqueID;
 }
 
-- (BOOL)equalsToIdentifier:(id)a3
+- (BOOL)equalsToIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    v5 = [(HUNearbyDevice *)self identifier];
-    if ([v5 containsString:v4])
+    identifier = [(HUNearbyDevice *)self identifier];
+    if ([identifier containsString:identifierCopy])
     {
       v6 = 1;
     }
 
     else
     {
-      v7 = [(HUNearbyDevice *)self uniqueIdentifier];
-      v6 = [v7 containsString:v4];
+      uniqueIdentifier = [(HUNearbyDevice *)self uniqueIdentifier];
+      v6 = [uniqueIdentifier containsString:identifierCopy];
     }
   }
 
@@ -152,15 +152,15 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 identifier];
-    v6 = [(HUNearbyDevice *)self identifier];
-    v7 = [v5 isEqual:v6];
+    identifier = [equalCopy identifier];
+    identifier2 = [(HUNearbyDevice *)self identifier];
+    v7 = [identifier isEqual:identifier2];
   }
 
   else
@@ -173,73 +173,73 @@
 
 - (BOOL)isCompanion
 {
-  v2 = [(HUNearbyDevice *)self idsDevice];
-  v3 = [v2 isDefaultPairedDevice];
+  idsDevice = [(HUNearbyDevice *)self idsDevice];
+  isDefaultPairedDevice = [idsDevice isDefaultPairedDevice];
 
-  return v3;
+  return isDefaultPairedDevice;
 }
 
 - (BOOL)isWatch
 {
-  v2 = [(HUNearbyDevice *)self idsDevice];
-  v3 = [v2 deviceType] == 6;
+  idsDevice = [(HUNearbyDevice *)self idsDevice];
+  v3 = [idsDevice deviceType] == 6;
 
   return v3;
 }
 
 - (BOOL)isiPad
 {
-  v2 = [(HUNearbyDevice *)self idsDevice];
-  v3 = [v2 deviceType] == 4;
+  idsDevice = [(HUNearbyDevice *)self idsDevice];
+  v3 = [idsDevice deviceType] == 4;
 
   return v3;
 }
 
 - (BOOL)isiPhone
 {
-  v2 = [(HUNearbyDevice *)self idsDevice];
-  v3 = [v2 deviceType] == 2;
+  idsDevice = [(HUNearbyDevice *)self idsDevice];
+  v3 = [idsDevice deviceType] == 2;
 
   return v3;
 }
 
-- (void)setState:(id)a3 forDomain:(id)a4
+- (void)setState:(id)state forDomain:(id)domain
 {
-  if (a3)
+  if (state)
   {
-    v6 = a4;
-    v7 = a3;
-    v8 = [(HUNearbyDevice *)self state];
-    v9 = [v8 mutableCopy];
+    domainCopy = domain;
+    stateCopy = state;
+    state = [(HUNearbyDevice *)self state];
+    v9 = [state mutableCopy];
 
-    [v9 setObject:v7 forKey:v6];
+    [v9 setObject:stateCopy forKey:domainCopy];
     [(HUNearbyDevice *)self setState:v9];
   }
 }
 
-- (id)stateForDomain:(id)a3
+- (id)stateForDomain:(id)domain
 {
-  v4 = a3;
-  v5 = [(HUNearbyDevice *)self state];
-  v6 = [v5 objectForKey:v4];
+  domainCopy = domain;
+  state = [(HUNearbyDevice *)self state];
+  v6 = [state objectForKey:domainCopy];
 
   return v6;
 }
 
 - (id)deviceTypeDescription
 {
-  v2 = [(HUNearbyDevice *)self idsDevice];
-  v3 = [v2 deviceType];
+  idsDevice = [(HUNearbyDevice *)self idsDevice];
+  deviceType = [idsDevice deviceType];
 
-  v4 = v3 - 1;
-  if (v3 - 1) < 6 && ((0x2Bu >> v4))
+  v4 = deviceType - 1;
+  if (deviceType - 1) < 6 && ((0x2Bu >> v4))
   {
     v5 = off_1E85CD178[v4];
   }
 
   else
   {
-    v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"DeviceType: %ld", v3];
+    v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"DeviceType: %ld", deviceType];
   }
 
   return v5;
@@ -248,11 +248,11 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(HUNearbyDevice *)self name];
-  v5 = [(HUNearbyDevice *)self identifier];
-  v6 = [(HUNearbyDevice *)self deviceTypeDescription];
-  v7 = [(HUNearbyDevice *)self state];
-  v8 = [v3 stringWithFormat:@"%@ [%@] %@, state: %@", v4, v5, v6, v7];
+  name = [(HUNearbyDevice *)self name];
+  identifier = [(HUNearbyDevice *)self identifier];
+  deviceTypeDescription = [(HUNearbyDevice *)self deviceTypeDescription];
+  state = [(HUNearbyDevice *)self state];
+  v8 = [v3 stringWithFormat:@"%@ [%@] %@, state: %@", name, identifier, deviceTypeDescription, state];
 
   return v8;
 }

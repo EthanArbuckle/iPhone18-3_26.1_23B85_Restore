@@ -1,20 +1,20 @@
 @interface LivefsDomainManager
-+ (void)addDomain:(id)a3 displayName:(id)a4 storage:(id)a5 provider:(id)a6 domainError:(id)a7 how:(int)a8 reply:(id)a9;
-+ (void)removeDomain:(id)a3 provider:(id)a4 how:(int)a5 reply:(id)a6;
-+ (void)updateDomain:(id)a3 reply:(id)a4;
++ (void)addDomain:(id)domain displayName:(id)name storage:(id)storage provider:(id)provider domainError:(id)error how:(int)how reply:(id)reply;
++ (void)removeDomain:(id)domain provider:(id)provider how:(int)how reply:(id)reply;
++ (void)updateDomain:(id)domain reply:(id)reply;
 @end
 
 @implementation LivefsDomainManager
 
-+ (void)addDomain:(id)a3 displayName:(id)a4 storage:(id)a5 provider:(id)a6 domainError:(id)a7 how:(int)a8 reply:(id)a9
++ (void)addDomain:(id)domain displayName:(id)name storage:(id)storage provider:(id)provider domainError:(id)error how:(int)how reply:(id)reply
 {
-  v9 = a8;
-  v26 = a3;
-  v28 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a9;
+  howCopy = how;
+  domainCopy = domain;
+  nameCopy = name;
+  storageCopy = storage;
+  providerCopy = provider;
+  errorCopy = error;
+  replyCopy = reply;
   v18 = dispatch_semaphore_create(0);
   v35 = 0;
   v36 = &v35;
@@ -22,28 +22,28 @@
   v38 = sub_100027AB8;
   v39 = sub_100027AC8;
   v40 = 0;
-  v19 = [[NSFileProviderDomain alloc] initWithIdentifier:v26 displayName:v28 pathRelativeToDocumentStorage:v14 hidden:(v9 & 0x80) != 0];
+  v19 = [[NSFileProviderDomain alloc] initWithIdentifier:domainCopy displayName:nameCopy pathRelativeToDocumentStorage:storageCopy hidden:(howCopy & 0x80) != 0];
   v20 = livefs_std_log();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138413058;
-    v42 = v26;
+    v42 = domainCopy;
     v43 = 2112;
-    v44 = v28;
+    v44 = nameCopy;
     v45 = 2112;
-    v46 = v15;
+    v46 = providerCopy;
     v47 = 1024;
-    v48 = (v9 & 0x80) >> 7;
+    v48 = (howCopy & 0x80) >> 7;
     _os_log_debug_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEBUG, "LivefsDomainManager: Domain name %@ displayName %@ provider %@ isHidden %d", buf, 0x26u);
   }
 
-  v21 = [[NSFileProviderManager alloc] _initWithProviderIdentifier:v15];
-  if ((v9 & 0x1000) != 0)
+  v21 = [[NSFileProviderManager alloc] _initWithProviderIdentifier:providerCopy];
+  if ((howCopy & 0x1000) != 0)
   {
     [v19 setErasable:1];
   }
 
-  [v19 setError:{v16, v26}];
+  [v19 setError:{errorCopy, domainCopy}];
   v32[0] = _NSConcreteStackBlock;
   v32[1] = 3221225472;
   v32[2] = sub_100027AD0;
@@ -54,14 +54,14 @@
   [v21 addDomain:v19 completionHandler:v32];
   dispatch_semaphore_wait(v22, 0xFFFFFFFFFFFFFFFFLL);
   v23 = v36[5];
-  if ((v9 & 1) == 0 || v23)
+  if ((howCopy & 1) == 0 || v23)
   {
     v24 = v21;
   }
 
   else
   {
-    v24 = [[NSFileProviderManager alloc] _initWithProviderIdentifier:v15 domain:v19];
+    v24 = [[NSFileProviderManager alloc] _initWithProviderIdentifier:providerCopy domain:v19];
 
     v25 = dispatch_semaphore_create(0);
     v29[0] = _NSConcreteStackBlock;
@@ -77,23 +77,23 @@
     v23 = v36[5];
   }
 
-  v17[2](v17, v23);
+  replyCopy[2](replyCopy, v23);
 
   _Block_object_dispose(&v35, 8);
 }
 
-+ (void)updateDomain:(id)a3 reply:(id)a4
++ (void)updateDomain:(id)domain reply:(id)reply
 {
-  v16 = a4;
+  replyCopy = reply;
   v6 = LiveFSMounterVolumeNameKey;
-  v7 = a3;
-  v8 = [v7 objectForKeyedSubscript:v6];
-  v9 = [v7 objectForKeyedSubscript:LiveFSMounterDisplayNameKey];
-  v10 = [v7 objectForKeyedSubscript:LiveFSMounterDomainStorageKey];
-  v11 = [v7 objectForKeyedSubscript:LiveFSMounterVolumeProviderNameKey];
-  v12 = [v7 objectForKey:LiveFSMounterDomainErrorKey];
-  v13 = [v7 objectForKey:LiveFSMounterDomainErasable];
-  v14 = [v7 objectForKey:LiveFSMounterDomainHidden];
+  domainCopy = domain;
+  v8 = [domainCopy objectForKeyedSubscript:v6];
+  v9 = [domainCopy objectForKeyedSubscript:LiveFSMounterDisplayNameKey];
+  v10 = [domainCopy objectForKeyedSubscript:LiveFSMounterDomainStorageKey];
+  v11 = [domainCopy objectForKeyedSubscript:LiveFSMounterVolumeProviderNameKey];
+  v12 = [domainCopy objectForKey:LiveFSMounterDomainErrorKey];
+  v13 = [domainCopy objectForKey:LiveFSMounterDomainErasable];
+  v14 = [domainCopy objectForKey:LiveFSMounterDomainHidden];
 
   if (v13 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
@@ -137,23 +137,23 @@
   }
 
 LABEL_13:
-  [a1 addDomain:v8 displayName:v9 storage:v10 provider:v11 domainError:v12 how:v15 reply:v16];
+  [self addDomain:v8 displayName:v9 storage:v10 provider:v11 domainError:v12 how:v15 reply:replyCopy];
 }
 
-+ (void)removeDomain:(id)a3 provider:(id)a4 how:(int)a5 reply:(id)a6
++ (void)removeDomain:(id)domain provider:(id)provider how:(int)how reply:(id)reply
 {
-  v8 = a6;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[NSFileProviderDomain alloc] initWithIdentifier:v10 displayName:v10 pathRelativeToDocumentStorage:v10];
+  replyCopy = reply;
+  providerCopy = provider;
+  domainCopy = domain;
+  v11 = [[NSFileProviderDomain alloc] initWithIdentifier:domainCopy displayName:domainCopy pathRelativeToDocumentStorage:domainCopy];
 
-  v12 = [[NSFileProviderManager alloc] _initWithProviderIdentifier:v9];
+  v12 = [[NSFileProviderManager alloc] _initWithProviderIdentifier:providerCopy];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_100027F48;
   v14[3] = &unk_100060E08;
-  v15 = v8;
-  v13 = v8;
+  v15 = replyCopy;
+  v13 = replyCopy;
   [v12 removeDomain:v11 completionHandler:v14];
 }
 

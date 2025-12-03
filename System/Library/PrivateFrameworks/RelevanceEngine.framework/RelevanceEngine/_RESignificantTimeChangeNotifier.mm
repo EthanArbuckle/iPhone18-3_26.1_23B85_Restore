@@ -38,14 +38,14 @@
     scheduler = v2->_scheduler;
     v2->_scheduler = v5;
 
-    v7 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v7 addObserver:v2->_scheduler selector:sel_schedule name:*MEMORY[0x277CBE580] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2->_scheduler selector:sel_schedule name:*MEMORY[0x277CBE580] object:0];
 
-    v8 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v8 addObserver:v2->_scheduler selector:sel_schedule name:*MEMORY[0x277CBE778] object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v2->_scheduler selector:sel_schedule name:*MEMORY[0x277CBE778] object:0];
 
-    v9 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v9 addObserver:v2->_scheduler selector:sel_schedule name:*MEMORY[0x277CBE780] object:0];
+    defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter3 addObserver:v2->_scheduler selector:sel_schedule name:*MEMORY[0x277CBE780] object:0];
 
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
     CFNotificationCenterAddObserver(DarwinNotifyCenter, v2->_scheduler, _significantTimeChangeForScheduler, @"SignificantTimeChangeNotification", 0, CFNotificationSuspensionBehaviorDeliverImmediately);
@@ -58,8 +58,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self->_scheduler];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self->_scheduler];
 
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterRemoveObserver(DarwinNotifyCenter, self->_scheduler, @"SignificantTimeChangeNotification", 0);
@@ -70,8 +70,8 @@
 
 - (void)_notify
 {
-  v2 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v2 postNotificationName:@"RESignificantTimeChangeNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"RESignificantTimeChangeNotification" object:0];
 }
 
 @end

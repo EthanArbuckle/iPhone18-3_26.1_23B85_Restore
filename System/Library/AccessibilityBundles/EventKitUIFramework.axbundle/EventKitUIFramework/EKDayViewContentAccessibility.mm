@@ -1,16 +1,16 @@
 @interface EKDayViewContentAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation EKDayViewContentAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"EKDayViewContent" hasInstanceMethod:@"applyLoadedOccurrencesWithBatching:animated:reverse:completion:" withFullSignature:{"v", "B", "B", "B", "@?", 0}];
-  [v3 validateClass:@"EKDayViewContent" hasInstanceVariable:@"_itemsByDay" withType:"NSMutableArray"];
-  [v3 validateClass:@"EKDayViewContent" hasInstanceVariable:@"_grid" withType:"EKDayGridView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"EKDayViewContent" hasInstanceMethod:@"applyLoadedOccurrencesWithBatching:animated:reverse:completion:" withFullSignature:{"v", "B", "B", "B", "@?", 0}];
+  [validationsCopy validateClass:@"EKDayViewContent" hasInstanceVariable:@"_itemsByDay" withType:"NSMutableArray"];
+  [validationsCopy validateClass:@"EKDayViewContent" hasInstanceVariable:@"_grid" withType:"EKDayGridView"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

@@ -53,8 +53,8 @@
 - (id)accessories
 {
   v1 = MEMORY[0x277CBEB98];
-  v2 = [a1 accessory];
-  v3 = [v1 na_setWithSafeObject:v2];
+  accessory = [self accessory];
+  v3 = [v1 na_setWithSafeObject:accessory];
 
   return v3;
 }
@@ -62,9 +62,9 @@
 - (id)mediaProfiles
 {
   v1 = MEMORY[0x277CBEB98];
-  v2 = [a1 accessory];
-  v3 = [v2 mediaProfile];
-  v4 = [v1 na_setWithSafeObject:v3];
+  accessory = [self accessory];
+  mediaProfile = [accessory mediaProfile];
+  v4 = [v1 na_setWithSafeObject:mediaProfile];
 
   return v4;
 }
@@ -72,17 +72,17 @@
 - (id)hf_home
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = [a1 accessory];
-  v5 = [v4 home];
+  accessory = [self accessory];
+  home = [accessory home];
 
-  if (!v5)
+  if (!home)
   {
     v6 = HFLogForCategory(0);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
       v12 = NSStringFromSelector(a2);
       v13 = 138412546;
-      v14 = a1;
+      selfCopy = self;
       v15 = 2112;
       v16 = v12;
       _os_log_error_impl(&dword_20D9BF000, v6, OS_LOG_TYPE_ERROR, "%@:%@ nil home. Please file a radar against “Home App | New Bugs” with any info you have on what you were doing.", &v13, 0x16u);
@@ -96,100 +96,100 @@
     }
 
     v9 = +[HFHomeKitDispatcher sharedDispatcher];
-    v5 = [v9 home];
+    home = [v9 home];
   }
 
   v10 = *MEMORY[0x277D85DE8];
 
-  return v5;
+  return home;
 }
 
 - (id)hf_parentRoom
 {
-  v1 = [a1 accessory];
-  v2 = [v1 room];
+  accessory = [self accessory];
+  room = [accessory room];
 
-  return v2;
+  return room;
 }
 
 - (uint64_t)hf_isCurrentAccessory
 {
-  v1 = [a1 accessory];
-  v2 = [v1 isCurrentAccessory];
+  accessory = [self accessory];
+  isCurrentAccessory = [accessory isCurrentAccessory];
 
-  return v2;
+  return isCurrentAccessory;
 }
 
 - (id)symptomsHandler
 {
-  v1 = [a1 accessory];
-  v2 = [v1 symptomsHandler];
+  accessory = [self accessory];
+  symptomsHandler = [accessory symptomsHandler];
 
-  return v2;
+  return symptomsHandler;
 }
 
 - (id)symptoms
 {
-  v1 = [a1 symptomsHandler];
-  v2 = [v1 symptoms];
+  symptomsHandler = [self symptomsHandler];
+  symptoms = [symptomsHandler symptoms];
 
-  return v2;
+  return symptoms;
 }
 
 - (id)hf_fakeDebugSymptoms
 {
-  v1 = [a1 accessory];
-  v2 = [v1 hf_fakeDebugSymptoms];
+  accessory = [self accessory];
+  hf_fakeDebugSymptoms = [accessory hf_fakeDebugSymptoms];
 
-  return v2;
+  return hf_fakeDebugSymptoms;
 }
 
 - (uint64_t)hf_isReachable
 {
-  v1 = [a1 accessories];
-  v2 = [v1 na_all:&__block_literal_global_397];
+  accessories = [self accessories];
+  v2 = [accessories na_all:&__block_literal_global_397];
 
   return v2;
 }
 
 - (uint64_t)hf_supportsStereoPairing
 {
-  v2 = [a1 accessories];
-  v3 = [v2 count] == 1;
+  accessories = [self accessories];
+  v3 = [accessories count] == 1;
 
-  LODWORD(v2) = [a1 isItemGroup];
-  v4 = [a1 hf_home];
-  v5 = [a1 hf_backingAccessory];
-  v6 = [v4 hf_mediaSystemForAccessory:v5];
+  LODWORD(accessories) = [self isItemGroup];
+  hf_home = [self hf_home];
+  hf_backingAccessory = [self hf_backingAccessory];
+  v6 = [hf_home hf_mediaSystemForAccessory:hf_backingAccessory];
 
-  v7 = [a1 accessories];
-  v8 = [v7 anyObject];
-  v9 = [v8 hf_isHomePod];
+  accessories2 = [self accessories];
+  anyObject = [accessories2 anyObject];
+  hf_isHomePod = [anyObject hf_isHomePod];
 
   v10 = MEMORY[0x277CD1BF0];
-  v11 = [a1 accessories];
-  v12 = [v11 anyObject];
-  v13 = [v10 supportsMediaSystem:v12];
+  accessories3 = [self accessories];
+  anyObject2 = [accessories3 anyObject];
+  v13 = [v10 supportsMediaSystem:anyObject2];
 
-  v14 = v3 & ~v2;
+  v14 = v3 & ~accessories;
   if (v6)
   {
     v14 = 0;
   }
 
-  return v14 & v9 & v13;
+  return v14 & hf_isHomePod & v13;
 }
 
 - (uint64_t)hf_supportsMusicAlarm
 {
   v13 = *MEMORY[0x277D85DE8];
-  v2 = [a1 hf_backingAccessory];
-  v3 = [v2 supportsMusicAlarm];
+  hf_backingAccessory = [self hf_backingAccessory];
+  supportsMusicAlarm = [hf_backingAccessory supportsMusicAlarm];
 
   v4 = HFLogForCategory(0);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    if (v3)
+    if (supportsMusicAlarm)
     {
       v5 = @"YES";
     }
@@ -199,7 +199,7 @@
       v5 = @"NO";
     }
 
-    v6 = [a1 description];
+    v6 = [self description];
     v9 = 138412546;
     v10 = v5;
     v11 = 2112;
@@ -208,32 +208,32 @@
   }
 
   v7 = *MEMORY[0x277D85DE8];
-  return v3;
+  return supportsMusicAlarm;
 }
 
 - (uint64_t)hf_isAppleMusicReachable
 {
-  v1 = [a1 accessories];
-  v2 = [v1 na_all:&__block_literal_global_400];
+  accessories = [self accessories];
+  v2 = [accessories na_all:&__block_literal_global_400];
 
   return v2;
 }
 
 - (uint64_t)hf_isAccessorySettingsReachable
 {
-  v1 = [a1 accessories];
-  v2 = [v1 na_all:&__block_literal_global_402];
+  accessories = [self accessories];
+  v2 = [accessories na_all:&__block_literal_global_402];
 
   return v2;
 }
 
 - (HFMediaValueManager)hf_mediaValueSource
 {
-  v4 = objc_getAssociatedObject(a1, a2);
+  v4 = objc_getAssociatedObject(self, a2);
   if (!v4)
   {
-    v4 = [[HFMediaValueManager alloc] initWithMediaProfileContainer:a1];
-    objc_setAssociatedObject(a1, a2, v4, 0x301);
+    v4 = [[HFMediaValueManager alloc] initWithMediaProfileContainer:self];
+    objc_setAssociatedObject(self, a2, v4, 0x301);
   }
 
   return v4;
@@ -242,7 +242,7 @@
 - (HFHomeKitSettingsAdapterManager)hf_settingsAdapterManager
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = objc_getAssociatedObject(a1, a2);
+  v4 = objc_getAssociatedObject(self, a2);
   if (!v4)
   {
     v5 = HFLogForCategory(0);
@@ -251,12 +251,12 @@
       v8 = 136315394;
       v9 = "[HMMediaProfile(HFMediaAccessoryProfileAdditions) hf_settingsAdapterManager]";
       v10 = 2112;
-      v11 = a1;
+      selfCopy = self;
       _os_log_debug_impl(&dword_20D9BF000, v5, OS_LOG_TYPE_DEBUG, "%s Creating new HFHomeKitSettingsAdapterManager for HMMediaProfile %@", &v8, 0x16u);
     }
 
-    v4 = [[HFHomeKitSettingsAdapterManager alloc] initWithHomeKitSettingsVendor:a1];
-    objc_setAssociatedObject(a1, a2, v4, 1);
+    v4 = [[HFHomeKitSettingsAdapterManager alloc] initWithHomeKitSettingsVendor:self];
+    objc_setAssociatedObject(self, a2, v4, 1);
   }
 
   v6 = *MEMORY[0x277D85DE8];
@@ -266,64 +266,64 @@
 
 - (id)hf_categoryCapitalizedLocalizedDescription
 {
-  v1 = [a1 accessory];
-  v2 = [v1 hf_userFriendlyLocalizedCapitalizedDescription];
+  accessory = [self accessory];
+  hf_userFriendlyLocalizedCapitalizedDescription = [accessory hf_userFriendlyLocalizedCapitalizedDescription];
 
-  return v2;
+  return hf_userFriendlyLocalizedCapitalizedDescription;
 }
 
 - (id)hf_categoryLowercaseLocalizedDescription
 {
-  v1 = [a1 accessory];
-  v2 = [v1 hf_userFriendlyLocalizedLowercaseDescription];
+  accessory = [self accessory];
+  hf_userFriendlyLocalizedLowercaseDescription = [accessory hf_userFriendlyLocalizedLowercaseDescription];
 
-  return v2;
+  return hf_userFriendlyLocalizedLowercaseDescription;
 }
 
 - (id)hf_dependentHomeKitObjectsForDownstreamItems
 {
   v2 = objc_opt_new();
-  v3 = [a1 accessories];
-  [v2 unionSet:v3];
+  accessories = [self accessories];
+  [v2 unionSet:accessories];
 
-  [v2 addObject:a1];
-  v4 = [a1 settings];
-  [v2 na_safeAddObject:v4];
+  [v2 addObject:self];
+  settings = [self settings];
+  [v2 na_safeAddObject:settings];
 
   return v2;
 }
 
 - (uint64_t)hf_supportsMultiUser
 {
-  v1 = [a1 accessory];
-  v2 = [v1 supportsMultiUser];
+  accessory = [self accessory];
+  supportsMultiUser = [accessory supportsMultiUser];
 
-  return v2;
+  return supportsMultiUser;
 }
 
 - (uint64_t)hf_supportsMediaActions
 {
-  v1 = [a1 accessory];
-  v2 = [v1 supportsMediaActions];
+  accessory = [self accessory];
+  supportsMediaActions = [accessory supportsMediaActions];
 
-  return v2;
+  return supportsMediaActions;
 }
 
 - (uint64_t)hf_homePodSupportsMultiUser
 {
-  v2 = [a1 accessory];
-  if ([v2 hf_isHomePod])
+  accessory = [self accessory];
+  if ([accessory hf_isHomePod])
   {
-    v3 = [a1 accessory];
-    v4 = [v3 supportsMultiUser];
+    accessory2 = [self accessory];
+    supportsMultiUser = [accessory2 supportsMultiUser];
   }
 
   else
   {
-    v4 = 0;
+    supportsMultiUser = 0;
   }
 
-  return v4;
+  return supportsMultiUser;
 }
 
 - (BOOL)hf_homePodIsCapableOfShowingSplitAccountError
@@ -334,27 +334,27 @@
     goto LABEL_7;
   }
 
-  v4 = [a1 hf_home];
-  v5 = [v4 isMultiUserEnabled];
+  hf_home = [self hf_home];
+  isMultiUserEnabled = [hf_home isMultiUserEnabled];
 
-  if (!v5)
+  if (!isMultiUserEnabled)
   {
     goto LABEL_7;
   }
 
-  v6 = [a1 hf_backingAccessory];
-  v7 = [v6 hf_isHomePod];
+  hf_backingAccessory = [self hf_backingAccessory];
+  hf_isHomePod = [hf_backingAccessory hf_isHomePod];
 
-  if (!v7)
+  if (!hf_isHomePod)
   {
     goto LABEL_7;
   }
 
-  if ([a1 hf_homePodSupportsMultiUser] && (objc_msgSend(a1, "hf_home"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "hf_currentUserIsOwner"), v8, v9))
+  if ([self hf_homePodSupportsMultiUser] && (objc_msgSend(self, "hf_home"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "hf_currentUserIsOwner"), v8, v9))
   {
-    v10 = [a1 hf_home];
-    v11 = [v10 users];
-    v12 = [v11 count] == 0;
+    hf_home2 = [self hf_home];
+    users = [hf_home2 users];
+    v12 = [users count] == 0;
   }
 
   else
@@ -368,17 +368,17 @@ LABEL_7:
   {
     v25 = NSStringFromSelector(a2);
     v24 = +[HFUtilities isAMac];
-    v26 = [a1 hf_home];
-    v23 = [v26 isMultiUserEnabled];
-    v16 = [a1 hf_backingAccessory];
-    v17 = [v16 hf_isHomePod];
-    v18 = [a1 hf_homePodSupportsMultiUser];
-    v19 = [a1 hf_home];
-    v20 = [v19 hf_currentUserIsOwner];
-    v21 = [a1 hf_home];
-    v22 = [v21 users];
+    hf_home3 = [self hf_home];
+    isMultiUserEnabled2 = [hf_home3 isMultiUserEnabled];
+    hf_backingAccessory2 = [self hf_backingAccessory];
+    hf_isHomePod2 = [hf_backingAccessory2 hf_isHomePod];
+    hf_homePodSupportsMultiUser = [self hf_homePodSupportsMultiUser];
+    hf_home4 = [self hf_home];
+    hf_currentUserIsOwner = [hf_home4 hf_currentUserIsOwner];
+    hf_home5 = [self hf_home];
+    users2 = [hf_home5 users];
     *buf = 138414338;
-    v28 = a1;
+    selfCopy = self;
     v29 = 2112;
     v30 = v25;
     v31 = 1024;
@@ -386,15 +386,15 @@ LABEL_7:
     v33 = 1024;
     v34 = v24;
     v35 = 1024;
-    v36 = v23;
+    v36 = isMultiUserEnabled2;
     v37 = 1024;
-    v38 = v17;
+    v38 = hf_isHomePod2;
     v39 = 1024;
-    v40 = v18;
+    v40 = hf_homePodSupportsMultiUser;
     v41 = 1024;
-    v42 = v20;
+    v42 = hf_currentUserIsOwner;
     v43 = 1024;
-    v44 = [v22 count] == 0;
+    v44 = [users2 count] == 0;
     _os_log_debug_impl(&dword_20D9BF000, v13, OS_LOG_TYPE_DEBUG, "%@:%@: %{BOOL}d (Mac = %{BOOL}d, MU enabled = %{BOOL}d, is HomePod = %{BOOL}d, MU HomePod = %{BOOL}d, is Owner = %{BOOL}d, Home has users = %{BOOL}d,)", buf, 0x40u);
   }
 
@@ -405,26 +405,26 @@ LABEL_7:
 - (id)hf_deviceIdentifiers
 {
   v1 = MEMORY[0x277CBEB98];
-  v2 = [a1 accessory];
-  v3 = [v2 deviceIdentifier];
-  v4 = [v1 na_setWithSafeObject:v3];
+  accessory = [self accessory];
+  deviceIdentifier = [accessory deviceIdentifier];
+  v4 = [v1 na_setWithSafeObject:deviceIdentifier];
 
   return v4;
 }
 
 - (id)hf_mediaRouteIdentifier
 {
-  v1 = [a1 hf_deviceIdentifiers];
-  v2 = [v1 anyObject];
+  hf_deviceIdentifiers = [self hf_deviceIdentifiers];
+  anyObject = [hf_deviceIdentifiers anyObject];
 
-  return v2;
+  return anyObject;
 }
 
 - (BOOL)hasValidSettings
 {
-  v1 = [a1 settings];
-  v2 = [v1 rootGroup];
-  v3 = v2 != 0;
+  settings = [self settings];
+  rootGroup = [settings rootGroup];
+  v3 = rootGroup != 0;
 
   return v3;
 }
@@ -432,18 +432,18 @@ LABEL_7:
 - (id)homekitObjectIdentifiers
 {
   v1 = MEMORY[0x277CBEB98];
-  v2 = [a1 accessory];
-  v3 = [v2 uniqueIdentifier];
-  v4 = [v1 setWithObject:v3];
+  accessory = [self accessory];
+  uniqueIdentifier = [accessory uniqueIdentifier];
+  v4 = [v1 setWithObject:uniqueIdentifier];
 
   return v4;
 }
 
 - (BOOL)isContainedWithinItemGroup
 {
-  v2 = [a1 hf_home];
-  v3 = [a1 accessory];
-  v4 = [v2 hf_mediaSystemForAccessory:v3];
+  hf_home = [self hf_home];
+  accessory = [self accessory];
+  v4 = [hf_home hf_mediaSystemForAccessory:accessory];
   v5 = v4 != 0;
 
   return v5;
@@ -451,20 +451,20 @@ LABEL_7:
 
 - (id)hf_appleMusicCurrentLoggedInAccount
 {
-  v1 = [a1 accessory];
-  v2 = [v1 remoteLoginHandler];
+  accessory = [self accessory];
+  remoteLoginHandler = [accessory remoteLoginHandler];
 
-  v3 = [v2 loggedInAccount];
+  loggedInAccount = [remoteLoginHandler loggedInAccount];
 
-  return v3;
+  return loggedInAccount;
 }
 
 - (id)hf_appleMusicCurrentLoggedInAccountDSID
 {
-  v1 = [a1 hf_appleMusicCurrentLoggedInAccount];
-  v2 = [v1 aa_altDSID];
+  hf_appleMusicCurrentLoggedInAccount = [self hf_appleMusicCurrentLoggedInAccount];
+  aa_altDSID = [hf_appleMusicCurrentLoggedInAccount aa_altDSID];
 
-  return v2;
+  return aa_altDSID;
 }
 
 - (id)hf_homePodSupportsMultiUserLanguage
@@ -473,7 +473,7 @@ LABEL_7:
   v4[1] = 3221225472;
   v4[2] = __87__HMMediaProfile_HFMediaAccessoryProfileAdditions__hf_homePodSupportsMultiUserLanguage__block_invoke;
   v4[3] = &unk_277DF2770;
-  v4[4] = a1;
+  v4[4] = self;
   v4[5] = a2;
   v2 = [MEMORY[0x277D2C900] futureWithBlock:v4];
 
@@ -486,7 +486,7 @@ LABEL_7:
   v4[1] = 3221225472;
   v4[2] = __106__HMMediaProfile_HFMediaAccessoryProfileAdditions__hf_homePodMediaAccountIsMismatchedWithHomeMediaAccount__block_invoke;
   v4[3] = &unk_277DF2770;
-  v4[4] = a1;
+  v4[4] = self;
   v4[5] = a2;
   v2 = [MEMORY[0x277D2C900] futureWithBlock:v4];
 
@@ -499,7 +499,7 @@ LABEL_7:
   v4[1] = 3221225472;
   v4[2] = __107__HMMediaProfile_HFMediaAccessoryProfileAdditions__hf_isEitherHomePodMediaAccountOrHomeMediaAccountPresent__block_invoke;
   v4[3] = &unk_277DF2770;
-  v4[4] = a1;
+  v4[4] = self;
   v4[5] = a2;
   v2 = [MEMORY[0x277D2C900] futureWithBlock:v4];
 
@@ -508,52 +508,52 @@ LABEL_7:
 
 - (HFHomeKitSettingsValueManager)hf_settingsValueManager
 {
-  v4 = [a1 settings];
+  settings = [self settings];
 
-  if (v4)
+  if (settings)
   {
-    v4 = objc_getAssociatedObject(a1, a2);
-    if (!v4)
+    settings = objc_getAssociatedObject(self, a2);
+    if (!settings)
     {
       v5 = [HFHomeKitSettingsValueManager alloc];
-      v6 = [a1 settings];
-      v7 = [a1 homekitObjectIdentifiers];
-      v4 = [(HFHomeKitSettingsValueManager *)v5 initWithSettings:v6 homeKitObjectIdentifiers:v7];
+      settings2 = [self settings];
+      homekitObjectIdentifiers = [self homekitObjectIdentifiers];
+      settings = [(HFHomeKitSettingsValueManager *)v5 initWithSettings:settings2 homeKitObjectIdentifiers:homekitObjectIdentifiers];
 
-      objc_setAssociatedObject(a1, a2, v4, 1);
+      objc_setAssociatedObject(self, a2, settings, 1);
     }
   }
 
-  return v4;
+  return settings;
 }
 
 - (HFMediaAccessoryCommonSettingsManager)hf_mediaAccessoryCommonSettingsManager
 {
-  v2 = [a1 accessories];
-  v3 = [v2 allObjects];
-  v4 = [v3 lastObject];
-  if (([v4 hf_isSiriEndpoint] & 1) == 0)
+  accessories = [self accessories];
+  allObjects = [accessories allObjects];
+  lastObject = [allObjects lastObject];
+  if (([lastObject hf_isSiriEndpoint] & 1) == 0)
   {
 
     goto LABEL_6;
   }
 
-  v5 = [a1 accessories];
-  v6 = [v5 allObjects];
-  v7 = [v6 lastObject];
-  if (![v7 hf_isSiriEndpoint])
+  accessories2 = [self accessories];
+  allObjects2 = [accessories2 allObjects];
+  lastObject2 = [allObjects2 lastObject];
+  if (![lastObject2 hf_isSiriEndpoint])
   {
 
     goto LABEL_8;
   }
 
-  v15 = [a1 accessories];
-  v8 = [v15 allObjects];
-  v9 = [v8 lastObject];
-  v10 = [v9 siriEndpointProfile];
-  v16 = [v10 supportsOnboarding];
+  accessories3 = [self accessories];
+  allObjects3 = [accessories3 allObjects];
+  lastObject3 = [allObjects3 lastObject];
+  siriEndpointProfile = [lastObject3 siriEndpointProfile];
+  supportsOnboarding = [siriEndpointProfile supportsOnboarding];
 
-  if ((v16 & 1) == 0)
+  if ((supportsOnboarding & 1) == 0)
   {
 LABEL_6:
     v11 = 0;
@@ -561,14 +561,14 @@ LABEL_6:
   }
 
 LABEL_8:
-  v11 = objc_getAssociatedObject(a1, sel_hf_mediaAccessoryCommonSettingsManager);
+  v11 = objc_getAssociatedObject(self, sel_hf_mediaAccessoryCommonSettingsManager);
   if (!v11)
   {
     v12 = [HFMediaAccessoryCommonSettingsManager alloc];
-    v13 = [a1 hf_home];
-    v11 = [(HFMediaAccessoryCommonSettingsManager *)v12 initWithMediaProfileContainer:a1 home:v13];
+    hf_home = [self hf_home];
+    v11 = [(HFMediaAccessoryCommonSettingsManager *)v12 initWithMediaProfileContainer:self home:hf_home];
 
-    objc_setAssociatedObject(a1, sel_hf_mediaAccessoryCommonSettingsManager, v11, 1);
+    objc_setAssociatedObject(self, sel_hf_mediaAccessoryCommonSettingsManager, v11, 1);
   }
 
 LABEL_10:
@@ -578,40 +578,40 @@ LABEL_10:
 
 - (HFSiriLanguageOptionsManager)hf_siriLanguageOptionsManager
 {
-  v2 = [a1 accessories];
-  v3 = [v2 allObjects];
-  v4 = [v3 lastObject];
-  if ([v4 hf_isSiriEndpoint])
+  accessories = [self accessories];
+  allObjects = [accessories allObjects];
+  lastObject = [allObjects lastObject];
+  if ([lastObject hf_isSiriEndpoint])
   {
   }
 
   else
   {
     v5 = +[HFHomeKitDispatcher sharedDispatcher];
-    v6 = [v5 homeManager];
-    v7 = [v6 hasOptedToHH2];
+    homeManager = [v5 homeManager];
+    hasOptedToHH2 = [homeManager hasOptedToHH2];
 
-    if (!v7)
+    if (!hasOptedToHH2)
     {
       v8 = 0;
       goto LABEL_7;
     }
   }
 
-  v8 = objc_getAssociatedObject(a1, sel_hf_siriLanguageOptionsManager);
+  v8 = objc_getAssociatedObject(self, sel_hf_siriLanguageOptionsManager);
   if (!v8)
   {
     v9 = +[HFHomeKitDispatcher sharedDispatcher];
-    v10 = [v9 homeManager];
+    homeManager2 = [v9 homeManager];
 
     v11 = [HFSiriLanguageOptionsManager alloc];
-    v12 = [v10 hf_accessorySettingsController];
-    v13 = [a1 accessory];
-    v14 = [v13 uniqueIdentifier];
-    v15 = [a1 hf_home];
-    v8 = [(HFSiriLanguageOptionsManager *)v11 initWithSettingsController:v12 accessoryIdentifier:v14 home:v15];
+    hf_accessorySettingsController = [homeManager2 hf_accessorySettingsController];
+    accessory = [self accessory];
+    uniqueIdentifier = [accessory uniqueIdentifier];
+    hf_home = [self hf_home];
+    v8 = [(HFSiriLanguageOptionsManager *)v11 initWithSettingsController:hf_accessorySettingsController accessoryIdentifier:uniqueIdentifier home:hf_home];
 
-    objc_setAssociatedObject(a1, sel_hf_siriLanguageOptionsManager, v8, 1);
+    objc_setAssociatedObject(self, sel_hf_siriLanguageOptionsManager, v8, 1);
   }
 
 LABEL_7:
@@ -621,11 +621,11 @@ LABEL_7:
 
 - (id)hf_analyticsClient
 {
-  v4 = objc_getAssociatedObject(a1, a2);
+  v4 = objc_getAssociatedObject(self, a2);
   if (!v4)
   {
     v4 = [objc_alloc(MEMORY[0x277D36B58]) initWithErrorHandler:&__block_literal_global_412];
-    objc_setAssociatedObject(a1, a2, v4, 1);
+    objc_setAssociatedObject(self, a2, v4, 1);
   }
 
   return v4;
@@ -635,10 +635,10 @@ LABEL_7:
 {
   v27 = *MEMORY[0x277D85DE8];
   v5 = +[HFHomeKitDispatcher sharedDispatcher];
-  v6 = [v5 homeManager];
-  v7 = [v6 hasOptedToHH2];
+  homeManager = [v5 homeManager];
+  hasOptedToHH2 = [homeManager hasOptedToHH2];
 
-  if (v7)
+  if (hasOptedToHH2)
   {
     v8 = @"com.apple.private.alloy.home";
   }
@@ -657,9 +657,9 @@ LABEL_7:
   }
 
   v10 = [objc_alloc(MEMORY[0x277D18778]) initWithService:v8];
-  v11 = [a1 accessory];
-  v12 = [v11 device];
-  v13 = [v12 IDSDeviceForIDSService:v10];
+  accessory = [self accessory];
+  device = [accessory device];
+  v13 = [device IDSDeviceForIDSService:v10];
 
   if (v13)
   {
@@ -671,17 +671,17 @@ LABEL_7:
     v15 = HFLogForCategory(0);
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
-      v24 = [a1 accessory];
+      accessory2 = [self accessory];
       v25 = 138412290;
-      v26 = v24;
+      v26 = accessory2;
       _os_log_error_impl(&dword_20D9BF000, v15, OS_LOG_TYPE_ERROR, "Unable to obtain IDS Identifier for accessory: %@", &v25, 0xCu);
     }
 
     v16 = objc_opt_new();
     [v16 na_safeSetObject:v10 forKey:@"idsService"];
     [v16 na_safeSetObject:0 forKey:@"IDSDevice"];
-    v17 = [a1 accessory];
-    [v16 na_safeSetObject:v17 forKey:@"accessory"];
+    accessory3 = [self accessory];
+    [v16 na_safeSetObject:accessory3 forKey:@"accessory"];
 
     v18 = [MEMORY[0x277CCA9B8] hf_errorWithCode:19 operation:@"HFOperationFindIDSDeviceIdentifier" options:v16];
     v19 = v18;
@@ -705,7 +705,7 @@ LABEL_7:
 - (id)hf_fetchLogListWithTimeout:()HFMediaAccessoryProfileAdditions
 {
   v28 = 0;
-  v4 = [a1 hf_idsDeviceIdentifierWithError:&v28];
+  v4 = [self hf_idsDeviceIdentifierWithError:&v28];
   v5 = v28;
   if (v5)
   {
@@ -729,21 +729,21 @@ LABEL_7:
     v24[3] = &unk_277DFEAA8;
     v6 = v11;
     v25 = v6;
-    v26 = a1;
+    selfCopy = self;
     v27 = v4;
     v13 = [v12 futureWithBlock:v24];
     v14 = 0;
     if (a2 > 0.0)
     {
       objc_initWeak(&location, v13);
-      v15 = [MEMORY[0x277D2C938] mainThreadScheduler];
+      mainThreadScheduler = [MEMORY[0x277D2C938] mainThreadScheduler];
       v20[0] = MEMORY[0x277D85DD0];
       v20[1] = 3221225472;
       v20[2] = __79__HMMediaProfile_HFMediaAccessoryProfileAdditions__hf_fetchLogListWithTimeout___block_invoke_4;
       v20[3] = &unk_277DFEAD0;
       v21 = v6;
       objc_copyWeak(&v22, &location);
-      v14 = [v15 afterDelay:v20 performBlock:a2];
+      v14 = [mainThreadScheduler afterDelay:v20 performBlock:a2];
 
       objc_destroyWeak(&v22);
       objc_destroyWeak(&location);
@@ -768,12 +768,12 @@ LABEL_7:
   v7 = a3;
   if (!v7)
   {
-    v23 = [MEMORY[0x277CCA890] currentHandler];
-    [v23 handleFailureInMethod:a2 object:a1 file:@"HFMediaProfileContainer.m" lineNumber:2420 description:{@"Invalid parameter not satisfying: %@", @"log"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HFMediaProfileContainer.m" lineNumber:2420 description:{@"Invalid parameter not satisfying: %@", @"log"}];
   }
 
   v37 = 0;
-  v8 = [a1 hf_idsDeviceIdentifierWithError:&v37];
+  v8 = [self hf_idsDeviceIdentifierWithError:&v37];
   v9 = v37;
   if (v9)
   {
@@ -801,7 +801,7 @@ LABEL_7:
     v32[3] = &unk_277DFD1F8;
     v10 = v16;
     v33 = v10;
-    v34 = a1;
+    selfCopy = self;
     v35 = v8;
     v36 = v7;
     v18 = [v17 futureWithBlock:v32];
@@ -809,8 +809,8 @@ LABEL_7:
     if (a4 > 0.0)
     {
       objc_initWeak(&location, v18);
-      objc_initWeak(&from, a1);
-      v20 = [MEMORY[0x277D2C938] mainThreadScheduler];
+      objc_initWeak(&from, self);
+      mainThreadScheduler = [MEMORY[0x277D2C938] mainThreadScheduler];
       v26[0] = MEMORY[0x277D85DD0];
       v26[1] = 3221225472;
       v26[2] = __72__HMMediaProfile_HFMediaAccessoryProfileAdditions__hf_fetchLog_timeout___block_invoke_4;
@@ -818,7 +818,7 @@ LABEL_7:
       v27 = v10;
       objc_copyWeak(&v28, &location);
       objc_copyWeak(&v29, &from);
-      v19 = [v20 afterDelay:v26 performBlock:a4];
+      v19 = [mainThreadScheduler afterDelay:v26 performBlock:a4];
 
       objc_destroyWeak(&v29);
       objc_destroyWeak(&v28);
@@ -843,16 +843,16 @@ LABEL_7:
 
 - (id)hf_displayName
 {
-  v1 = [a1 hf_serviceNameComponents];
-  v2 = [v1 composedString];
+  hf_serviceNameComponents = [self hf_serviceNameComponents];
+  composedString = [hf_serviceNameComponents composedString];
 
-  return v2;
+  return composedString;
 }
 
 - (id)hf_dateAdded
 {
-  v1 = [a1 accessory];
-  v2 = HFDateAddedForApplicationDataContainer(v1);
+  accessory = [self accessory];
+  v2 = HFDateAddedForApplicationDataContainer(accessory);
 
   return v2;
 }
@@ -860,51 +860,51 @@ LABEL_7:
 - (id)hf_updateDateAdded:()HFMediaAccessoryProfileAdditions
 {
   v4 = a3;
-  v5 = [a1 accessory];
-  v6 = HFUpdateDateAddedForApplicationDataContainer(v5, v4);
+  accessory = [self accessory];
+  v6 = HFUpdateDateAddedForApplicationDataContainer(accessory, v4);
 
   return v6;
 }
 
 - (uint64_t)hf_supportsHomeTheater
 {
-  v2 = [a1 hf_backingAccessory];
-  v3 = [v2 hf_isHomePod];
+  hf_backingAccessory = [self hf_backingAccessory];
+  hf_isHomePod = [hf_backingAccessory hf_isHomePod];
 
-  v4 = [a1 hf_backingAccessory];
-  v5 = v4;
-  if (v3)
+  hf_backingAccessory2 = [self hf_backingAccessory];
+  hf_backingAccessory3 = hf_backingAccessory2;
+  if (hf_isHomePod)
   {
-    v6 = [v4 supportsAudioDestination];
+    supportsAudioDestination = [hf_backingAccessory2 supportsAudioDestination];
   }
 
   else
   {
-    v7 = [v4 hf_isAppleTV];
+    hf_isAppleTV = [hf_backingAccessory2 hf_isAppleTV];
 
-    if (!v7)
+    if (!hf_isAppleTV)
     {
       return 0;
     }
 
-    v5 = [a1 hf_backingAccessory];
-    v8 = [v5 audioDestinationController];
-    v6 = v8 != 0;
+    hf_backingAccessory3 = [self hf_backingAccessory];
+    audioDestinationController = [hf_backingAccessory3 audioDestinationController];
+    supportsAudioDestination = audioDestinationController != 0;
   }
 
-  return v6;
+  return supportsAudioDestination;
 }
 
 - (uint64_t)hf_supportsPreferredMediaUser
 {
-  v3 = [a1 hf_backingAccessory];
-  v4 = [v3 hf_isHomePod];
-  if ((v4 & 1) != 0 || ([a1 hf_backingAccessory], v1 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v1, "hf_isSiriEndpoint")))
+  hf_backingAccessory = [self hf_backingAccessory];
+  hf_isHomePod = [hf_backingAccessory hf_isHomePod];
+  if ((hf_isHomePod & 1) != 0 || ([self hf_backingAccessory], v1 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v1, "hf_isSiriEndpoint")))
   {
-    v5 = [a1 hf_backingAccessory];
-    v6 = [v5 supportsPreferredMediaUser];
+    hf_backingAccessory2 = [self hf_backingAccessory];
+    supportsPreferredMediaUser = [hf_backingAccessory2 supportsPreferredMediaUser];
 
-    if (v4)
+    if (hf_isHomePod)
     {
       goto LABEL_7;
     }
@@ -912,54 +912,54 @@ LABEL_7:
 
   else
   {
-    v6 = 0;
+    supportsPreferredMediaUser = 0;
   }
 
 LABEL_7:
-  return v6;
+  return supportsPreferredMediaUser;
 }
 
 - (id)hf_preferredMediaUser
 {
-  if ([a1 hf_supportsPreferredMediaUser])
+  if ([self hf_supportsPreferredMediaUser])
   {
-    v2 = [a1 hf_backingAccessory];
-    v3 = [v2 preferredMediaUser];
+    hf_backingAccessory = [self hf_backingAccessory];
+    preferredMediaUser = [hf_backingAccessory preferredMediaUser];
   }
 
   else
   {
-    v3 = 0;
+    preferredMediaUser = 0;
   }
 
-  return v3;
+  return preferredMediaUser;
 }
 
 - (uint64_t)hf_preferredUserSelectionType
 {
-  v1 = [a1 hf_backingAccessory];
-  v2 = [v1 preferredUserSelectionType];
+  hf_backingAccessory = [self hf_backingAccessory];
+  preferredUserSelectionType = [hf_backingAccessory preferredUserSelectionType];
 
-  return v2;
+  return preferredUserSelectionType;
 }
 
 - (id)hf_identify
 {
-  v2 = [a1 hf_backingAccessory];
-  v3 = [v2 hf_isHomePod];
+  hf_backingAccessory = [self hf_backingAccessory];
+  hf_isHomePod = [hf_backingAccessory hf_isHomePod];
 
-  if (v3)
+  if (hf_isHomePod)
   {
-    v4 = [a1 hf_backingAccessory];
-    v5 = [v4 hf_identifyHomePod];
+    hf_backingAccessory2 = [self hf_backingAccessory];
+    hf_identifyHomePod = [hf_backingAccessory2 hf_identifyHomePod];
   }
 
   else
   {
-    v5 = [MEMORY[0x277D2C900] futureWithNoResult];
+    hf_identifyHomePod = [MEMORY[0x277D2C900] futureWithNoResult];
   }
 
-  return v5;
+  return hf_identifyHomePod;
 }
 
 @end

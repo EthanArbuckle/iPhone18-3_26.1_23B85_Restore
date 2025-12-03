@@ -1,6 +1,6 @@
 @interface MADPhotosFullBackgroundSystemTask
 + (id)sharedTask;
-+ (id)taskWithPhotoLibraries:(id)a3 cancelBlock:(id)a4 progressHandler:(id)a5 andCompletionHandler:(id)a6;
++ (id)taskWithPhotoLibraries:(id)libraries cancelBlock:(id)block progressHandler:(id)handler andCompletionHandler:(id)completionHandler;
 @end
 
 @implementation MADPhotosFullBackgroundSystemTask
@@ -11,7 +11,7 @@
   block[1] = 3221225472;
   block[2] = sub_10009CEF0;
   block[3] = &unk_100282998;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1002B82B0 != -1)
   {
     dispatch_once(&qword_1002B82B0, block);
@@ -22,9 +22,9 @@
   return v2;
 }
 
-+ (id)taskWithPhotoLibraries:(id)a3 cancelBlock:(id)a4 progressHandler:(id)a5 andCompletionHandler:(id)a6
++ (id)taskWithPhotoLibraries:(id)libraries cancelBlock:(id)block progressHandler:(id)handler andCompletionHandler:(id)completionHandler
 {
-  v6 = [VCPLibraryProcessingTask taskWithPhotoLibraries:a3 andOptions:0 andProgressHandler:a5 andCompletionHandler:a6 andCancelBlock:a4];
+  v6 = [VCPLibraryProcessingTask taskWithPhotoLibraries:libraries andOptions:0 andProgressHandler:handler andCompletionHandler:completionHandler andCancelBlock:block];
 
   return v6;
 }

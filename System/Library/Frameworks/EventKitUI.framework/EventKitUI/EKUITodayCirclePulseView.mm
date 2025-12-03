@@ -1,56 +1,56 @@
 @interface EKUITodayCirclePulseView
 - (CGPoint)textOffsetFromCircle;
-- (EKUITodayCirclePulseView)initWithFrame:(CGRect)a3;
-- (id)_basicAnimationForView:(id)a3 withKeyPath:(id)a4;
+- (EKUITodayCirclePulseView)initWithFrame:(CGRect)frame;
+- (id)_basicAnimationForView:(id)view withKeyPath:(id)path;
 - (id)_overlayLabel;
 - (void)_layoutSubviews;
 - (void)_updateLabelAttributedString;
 - (void)_updateOverlayLabelAttributedString;
-- (void)pulse:(id)a3;
-- (void)setAttributes:(id)a3;
-- (void)setOverlayAttributes:(id)a3;
-- (void)setOverlayFont:(id)a3;
-- (void)setOverlayString:(id)a3;
-- (void)setString:(id)a3;
+- (void)pulse:(id)pulse;
+- (void)setAttributes:(id)attributes;
+- (void)setOverlayAttributes:(id)attributes;
+- (void)setOverlayFont:(id)font;
+- (void)setOverlayString:(id)string;
+- (void)setString:(id)string;
 @end
 
 @implementation EKUITodayCirclePulseView
 
-- (EKUITodayCirclePulseView)initWithFrame:(CGRect)a3
+- (EKUITodayCirclePulseView)initWithFrame:(CGRect)frame
 {
   v16.receiver = self;
   v16.super_class = EKUITodayCirclePulseView;
-  v3 = [(EKUITodayCirclePulseView *)&v16 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(EKUITodayCirclePulseView *)&v16 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x1E69DC888] clearColor];
-    [(EKUITodayCirclePulseView *)v3 setBackgroundColor:v4];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(EKUITodayCirclePulseView *)v3 setBackgroundColor:clearColor];
 
     [(EKUITodayCirclePulseView *)v3 setClipsToBounds:0];
     v5 = objc_alloc_init(MEMORY[0x1E69DD250]);
     backgroundContainer = v3->_backgroundContainer;
     v3->_backgroundContainer = v5;
 
-    v7 = [MEMORY[0x1E69DC888] clearColor];
-    [(UIView *)v3->_backgroundContainer setBackgroundColor:v7];
+    clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+    [(UIView *)v3->_backgroundContainer setBackgroundColor:clearColor2];
 
     v8 = objc_alloc_init(TodayCirclePulseBackground);
     background = v3->_background;
     v3->_background = v8;
 
-    v10 = [MEMORY[0x1E69DC888] clearColor];
-    [(TodayCirclePulseBackground *)v3->_background setBackgroundColor:v10];
+    clearColor3 = [MEMORY[0x1E69DC888] clearColor];
+    [(TodayCirclePulseBackground *)v3->_background setBackgroundColor:clearColor3];
 
     [(TodayCirclePulseBackground *)v3->_background setAutoresizingMask:18];
     v11 = objc_alloc_init(MEMORY[0x1E69DCC10]);
     label = v3->_label;
     v3->_label = v11;
 
-    v13 = [MEMORY[0x1E69DC888] clearColor];
-    [(UILabel *)v3->_label setBackgroundColor:v13];
+    clearColor4 = [MEMORY[0x1E69DC888] clearColor];
+    [(UILabel *)v3->_label setBackgroundColor:clearColor4];
 
-    v14 = [MEMORY[0x1E69DC888] whiteColor];
-    [(UILabel *)v3->_label setTextColor:v14];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [(UILabel *)v3->_label setTextColor:whiteColor];
 
     [(UILabel *)v3->_label setTextAlignment:1];
     [(UIView *)v3->_backgroundContainer addSubview:v3->_background];
@@ -61,17 +61,17 @@
   return v3;
 }
 
-- (void)setString:(id)a3
+- (void)setString:(id)string
 {
-  [(UILabel *)self->_label setText:a3];
+  [(UILabel *)self->_label setText:string];
   [(EKUITodayCirclePulseView *)self _updateLabelAttributedString];
 
   [(EKUITodayCirclePulseView *)self setNeedsLayout];
 }
 
-- (void)setAttributes:(id)a3
+- (void)setAttributes:(id)attributes
 {
-  objc_storeStrong(&self->_attributes, a3);
+  objc_storeStrong(&self->_attributes, attributes);
   [(EKUITodayCirclePulseView *)self _updateLabelAttributedString];
 
   [(EKUITodayCirclePulseView *)self setNeedsLayout];
@@ -79,8 +79,8 @@
 
 - (void)_updateLabelAttributedString
 {
-  v3 = [(UILabel *)self->_label text];
-  if (v3)
+  text = [(UILabel *)self->_label text];
+  if (text)
   {
   }
 
@@ -90,8 +90,8 @@
   }
 
   v4 = objc_alloc(MEMORY[0x1E696AAB0]);
-  v6 = [(UILabel *)self->_label text];
-  v5 = [v4 initWithString:v6 attributes:self->_attributes];
+  text2 = [(UILabel *)self->_label text];
+  v5 = [v4 initWithString:text2 attributes:self->_attributes];
   [(UILabel *)self->_label setAttributedText:v5];
 }
 
@@ -104,11 +104,11 @@
     v5 = self->_overlayLabel;
     self->_overlayLabel = v4;
 
-    v6 = [MEMORY[0x1E69DC888] clearColor];
-    [(UILabel *)self->_overlayLabel setBackgroundColor:v6];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(UILabel *)self->_overlayLabel setBackgroundColor:clearColor];
 
-    v7 = [MEMORY[0x1E69DC888] whiteColor];
-    [(UILabel *)self->_overlayLabel setTextColor:v7];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [(UILabel *)self->_overlayLabel setTextColor:whiteColor];
 
     [(UILabel *)self->_overlayLabel setTextAlignment:1];
     [(EKUITodayCirclePulseView *)self addSubview:self->_overlayLabel];
@@ -118,27 +118,27 @@
   return overlayLabel;
 }
 
-- (void)setOverlayString:(id)a3
+- (void)setOverlayString:(id)string
 {
-  v4 = a3;
-  v5 = [(EKUITodayCirclePulseView *)self _overlayLabel];
-  [v5 setText:v4];
+  stringCopy = string;
+  _overlayLabel = [(EKUITodayCirclePulseView *)self _overlayLabel];
+  [_overlayLabel setText:stringCopy];
 
   [(EKUITodayCirclePulseView *)self _updateOverlayLabelAttributedString];
 
   [(EKUITodayCirclePulseView *)self setNeedsLayout];
 }
 
-- (void)setOverlayFont:(id)a3
+- (void)setOverlayFont:(id)font
 {
-  v4 = a3;
-  v5 = [(EKUITodayCirclePulseView *)self _overlayLabel];
-  [v5 setFont:v4];
+  fontCopy = font;
+  _overlayLabel = [(EKUITodayCirclePulseView *)self _overlayLabel];
+  [_overlayLabel setFont:fontCopy];
 }
 
-- (void)setOverlayAttributes:(id)a3
+- (void)setOverlayAttributes:(id)attributes
 {
-  objc_storeStrong(&self->_overlayAttributes, a3);
+  objc_storeStrong(&self->_overlayAttributes, attributes);
   [(EKUITodayCirclePulseView *)self _updateOverlayLabelAttributedString];
 
   [(EKUITodayCirclePulseView *)self setNeedsLayout];
@@ -146,16 +146,16 @@
 
 - (void)_updateOverlayLabelAttributedString
 {
-  v3 = [(UILabel *)self->_overlayLabel text];
-  if (v3)
+  text = [(UILabel *)self->_overlayLabel text];
+  if (text)
   {
     overlayAttributes = self->_overlayAttributes;
 
     if (overlayAttributes)
     {
       v5 = objc_alloc(MEMORY[0x1E696AAB0]);
-      v7 = [(UILabel *)self->_overlayLabel text];
-      v6 = [v5 initWithString:v7 attributes:self->_overlayAttributes];
+      text2 = [(UILabel *)self->_overlayLabel text];
+      v6 = [v5 initWithString:text2 attributes:self->_overlayAttributes];
       [(UILabel *)self->_overlayLabel setAttributedText:v6];
     }
   }
@@ -176,9 +176,9 @@
   v15 = v4;
   if (![(EKUITodayCirclePulseView *)self dontApplyCenteringOffset])
   {
-    v16 = [(UILabel *)self->_label text];
-    v17 = [(UILabel *)self->_label font];
-    v15 = (v8 - v12) * 0.5 + CalOffsetToCenterNumberWithFont(v16, v17);
+    text = [(UILabel *)self->_label text];
+    font = [(UILabel *)self->_label font];
+    v15 = (v8 - v12) * 0.5 + CalOffsetToCenterNumberWithFont(text, font);
 
     v14 = v12;
   }
@@ -211,8 +211,8 @@
   v27 = v15 + v26;
   [(EKUITodayCirclePulseView *)self textOffsetFromCircle];
   v29 = textYOffset + v28;
-  v30 = [(UILabel *)self->_overlayLabel text];
-  v31 = [v30 length];
+  text2 = [(UILabel *)self->_overlayLabel text];
+  v31 = [text2 length];
 
   if (v31)
   {
@@ -258,9 +258,9 @@
   [(UIView *)backgroundContainer setFrame:v43];
 }
 
-- (void)pulse:(id)a3
+- (void)pulse:(id)pulse
 {
-  v4 = a3;
+  pulseCopy = pulse;
   [(EKUITodayCirclePulseView *)self _layoutSubviews];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
@@ -269,7 +269,7 @@
   v10[4] = self;
   [MEMORY[0x1E69DD250] animateWithDuration:0 delay:v10 options:0 animations:0.23 completion:0.07];
   v5 = MEMORY[0x1E69DD250];
-  v8 = v4;
+  v8 = pulseCopy;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __34__EKUITodayCirclePulseView_pulse___block_invoke_2;
@@ -279,7 +279,7 @@
   v7[1] = 3221225472;
   v7[2] = __34__EKUITodayCirclePulseView_pulse___block_invoke_3;
   v7[3] = &unk_1E843F2D0;
-  v6 = v4;
+  v6 = pulseCopy;
   [v5 _animateWithDuration:196608 delay:self options:v9 factory:v7 animations:1.29 completion:0.0];
 }
 
@@ -334,9 +334,9 @@ uint64_t __34__EKUITodayCirclePulseView_pulse___block_invoke_3(uint64_t a1)
   return result;
 }
 
-- (id)_basicAnimationForView:(id)a3 withKeyPath:(id)a4
+- (id)_basicAnimationForView:(id)view withKeyPath:(id)path
 {
-  v4 = [MEMORY[0x1E69794A8] animationWithKeyPath:a4];
+  v4 = [MEMORY[0x1E69794A8] animationWithKeyPath:path];
   [v4 setMass:1.2];
   [v4 setStiffness:400.0];
   [v4 setDamping:16.0];

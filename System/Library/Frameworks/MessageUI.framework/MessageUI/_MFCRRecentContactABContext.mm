@@ -1,8 +1,8 @@
 @interface _MFCRRecentContactABContext
 - (_MFCRRecentContactABContext)init;
 - (void)dealloc;
-- (void)setExistingPerson:(void *)a3;
-- (void)setInterimPerson:(void *)a3;
+- (void)setExistingPerson:(void *)person;
+- (void)setInterimPerson:(void *)person;
 @end
 
 @implementation _MFCRRecentContactABContext
@@ -41,31 +41,31 @@
   [(_MFCRRecentContactABContext *)&v5 dealloc];
 }
 
-- (void)setExistingPerson:(void *)a3
+- (void)setExistingPerson:(void *)person
 {
   existingPerson = self->_existingPerson;
-  if (existingPerson != a3)
+  if (existingPerson != person)
   {
     if (existingPerson)
     {
       CFRelease(existingPerson);
     }
 
-    self->_existingPerson = CFRetain(a3);
+    self->_existingPerson = CFRetain(person);
   }
 }
 
-- (void)setInterimPerson:(void *)a3
+- (void)setInterimPerson:(void *)person
 {
   interimPerson = self->_interimPerson;
-  if (interimPerson != a3)
+  if (interimPerson != person)
   {
     if (interimPerson)
     {
       CFRelease(interimPerson);
     }
 
-    self->_interimPerson = CFRetain(a3);
+    self->_interimPerson = CFRetain(person);
   }
 }
 

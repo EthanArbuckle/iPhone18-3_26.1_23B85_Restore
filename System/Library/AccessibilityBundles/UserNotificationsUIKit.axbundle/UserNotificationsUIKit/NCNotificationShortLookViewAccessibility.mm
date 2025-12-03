@@ -1,11 +1,11 @@
 @interface NCNotificationShortLookViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilityBannerIsSticky;
 - (BOOL)_accessibilityResetBannerTimer;
 - (BOOL)_axDismiss;
 - (BOOL)_axIsGrouped;
 - (BOOL)_axShowLongLook;
-- (BOOL)accessibilityScroll:(int64_t)a3;
+- (BOOL)accessibilityScroll:(int64_t)scroll;
 - (BOOL)isAccessibilityElement;
 - (id)_accessibilityListCellParent;
 - (id)_accessibilityListViewParent;
@@ -13,54 +13,54 @@
 - (id)accessibilityCustomActions;
 - (id)accessibilityIdentifier;
 - (id)accessibilityLabel;
-- (void)_axPerformBlockOnNotificationController:(id)a3;
+- (void)_axPerformBlockOnNotificationController:(id)controller;
 - (void)accessibilityElementDidBecomeFocused;
 - (void)accessibilityElementDidLoseFocus;
-- (void)setTitle:(id)a3;
+- (void)setTitle:(id)title;
 @end
 
 @implementation NCNotificationShortLookViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PLPlatterView"];
-  [v3 validateClass:@"PLPlatterHeaderContentView"];
-  [v3 validateClass:@"NCDimmableView"];
-  [v3 validateClass:@"NCNotificationContentView"];
-  [v3 validateClass:@"NCNotificationViewController"];
-  [v3 validateClass:@"NCNotificationRequestContentProvider"];
-  [v3 validateClass:@"NCNotificationStructuredListViewController"];
-  [v3 validateClass:@"NCNotificationSeamlessContentView"];
-  [v3 validateClass:@"NCNotificationListView"];
-  [v3 validateClass:@"NCNotificationShortLookView" hasInstanceMethod:@"setTitle:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"UILabel" hasInstanceMethod:@"text" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NCNotificationViewController" hasInstanceMethod:@"staticContentProvider" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NCNotificationRequestContentProvider" hasInstanceMethod:@"notificationRequest" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NCNotificationRequest" hasInstanceMethod:@"defaultEnvironmentActions" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NCNotificationAction" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NCNotificationViewController" hasInstanceMethod:@"_canPan" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"NCNotificationViewController" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PLPlatterView"];
+  [validationsCopy validateClass:@"PLPlatterHeaderContentView"];
+  [validationsCopy validateClass:@"NCDimmableView"];
+  [validationsCopy validateClass:@"NCNotificationContentView"];
+  [validationsCopy validateClass:@"NCNotificationViewController"];
+  [validationsCopy validateClass:@"NCNotificationRequestContentProvider"];
+  [validationsCopy validateClass:@"NCNotificationStructuredListViewController"];
+  [validationsCopy validateClass:@"NCNotificationSeamlessContentView"];
+  [validationsCopy validateClass:@"NCNotificationListView"];
+  [validationsCopy validateClass:@"NCNotificationShortLookView" hasInstanceMethod:@"setTitle:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"UILabel" hasInstanceMethod:@"text" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NCNotificationViewController" hasInstanceMethod:@"staticContentProvider" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NCNotificationRequestContentProvider" hasInstanceMethod:@"notificationRequest" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NCNotificationRequest" hasInstanceMethod:@"defaultEnvironmentActions" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NCNotificationAction" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NCNotificationViewController" hasInstanceMethod:@"_canPan" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"NCNotificationViewController" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
   if (AXProcessIsSpringBoard())
   {
-    [v3 validateClass:@"SBNotificationBannerDestination" hasInstanceMethod:@"_dismissPresentedBannerAnimated:reason:forceIfSticky:" withFullSignature:{"v", "B", "@", "B", 0}];
+    [validationsCopy validateClass:@"SBNotificationBannerDestination" hasInstanceMethod:@"_dismissPresentedBannerAnimated:reason:forceIfSticky:" withFullSignature:{"v", "B", "@", "B", 0}];
   }
 
-  [v3 validateClass:@"NCNotificationViewController" hasInstanceVariable:@"_notificationRequest" withType:"NCNotificationRequest"];
-  [v3 validateClass:@"NCNotificationShortLookView" hasInstanceVariable:@"_notificationContentView" withType:"UIView<NCNotificationContentDisplaying>"];
-  [v3 validateClass:@"PLPlatterHeaderContentView" hasInstanceVariable:@"_dateLabel" withType:"UILabel<BSUIDateLabel>"];
-  [v3 validateClass:@"PLPlatterHeaderContentView" hasInstanceMethod:@"_titleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PLPlatterHeaderContentView" hasInstanceMethod:@"_utilityButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NCNotificationRequest" hasInstanceMethod:@"options" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NCNotificationOptions" hasInstanceMethod:@"dismissAutomatically" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"NCNotificationShortLookViewController" hasInstanceMethod:@"presentLongLookAnimated:trigger:completion:" withFullSignature:{"v", "B", "q", "@?", 0}];
-  [v3 validateClass:@"NCNotificationShortLookView" hasInstanceVariable:@"_auxiliaryOptionsView" withType:"NCAuxiliaryOptionsView"];
-  [v3 validateClass:@"NCAuxiliaryOptionsView" hasInstanceMethod:@"auxiliaryOptionsVisible" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"NCNotificationListView" hasInstanceMethod:@"isGrouped" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"NCNotificationListView" hasInstanceMethod:@"count" withFullSignature:{"Q", 0}];
-  [v3 validateClass:@"NCNotificationRequest" hasInstanceMethod:@"sectionIdentifier" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NCNotificationListCell"];
-  [v3 validateClass:@"NCNotificationListView" hasInstanceMethod:@"model" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NCNotificationViewController" hasInstanceVariable:@"_notificationRequest" withType:"NCNotificationRequest"];
+  [validationsCopy validateClass:@"NCNotificationShortLookView" hasInstanceVariable:@"_notificationContentView" withType:"UIView<NCNotificationContentDisplaying>"];
+  [validationsCopy validateClass:@"PLPlatterHeaderContentView" hasInstanceVariable:@"_dateLabel" withType:"UILabel<BSUIDateLabel>"];
+  [validationsCopy validateClass:@"PLPlatterHeaderContentView" hasInstanceMethod:@"_titleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PLPlatterHeaderContentView" hasInstanceMethod:@"_utilityButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NCNotificationRequest" hasInstanceMethod:@"options" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NCNotificationOptions" hasInstanceMethod:@"dismissAutomatically" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"NCNotificationShortLookViewController" hasInstanceMethod:@"presentLongLookAnimated:trigger:completion:" withFullSignature:{"v", "B", "q", "@?", 0}];
+  [validationsCopy validateClass:@"NCNotificationShortLookView" hasInstanceVariable:@"_auxiliaryOptionsView" withType:"NCAuxiliaryOptionsView"];
+  [validationsCopy validateClass:@"NCAuxiliaryOptionsView" hasInstanceMethod:@"auxiliaryOptionsVisible" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"NCNotificationListView" hasInstanceMethod:@"isGrouped" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"NCNotificationListView" hasInstanceMethod:@"count" withFullSignature:{"Q", 0}];
+  [validationsCopy validateClass:@"NCNotificationRequest" hasInstanceMethod:@"sectionIdentifier" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NCNotificationListCell"];
+  [validationsCopy validateClass:@"NCNotificationListView" hasInstanceMethod:@"model" withFullSignature:{"@", 0}];
 }
 
 - (BOOL)_accessibilityBannerIsSticky
@@ -106,7 +106,7 @@
     v3 = 0;
   }
 
-  v4 = [(NCNotificationShortLookViewAccessibility *)self _accessibilityListCellParent];
+  _accessibilityListCellParent = [(NCNotificationShortLookViewAccessibility *)self _accessibilityListCellParent];
   NSClassFromString(&cfstr_Ncnotification_36.isa);
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -121,7 +121,7 @@
     else
     {
       objc_opt_class();
-      v7 = [(NCNotificationShortLookViewAccessibility *)self _accessibilityListCellParent];
+      _accessibilityListCellParent2 = [(NCNotificationShortLookViewAccessibility *)self _accessibilityListCellParent];
       v8 = __UIAccessibilityCastAsSafeCategory();
 
       if ([v8 _axIsInCollapsedStack])
@@ -146,27 +146,27 @@
   if (v10)
   {
     v12 = [v10 safeValueForKey:@"_dateLabel"];
-    v13 = [v12 accessibilityLabel];
+    accessibilityLabel = [v12 accessibilityLabel];
   }
 
   else
   {
-    v13 = 0;
+    accessibilityLabel = 0;
   }
 
   v14 = [(NCNotificationShortLookViewAccessibility *)self safeValueForKey:@"_notificationContentView"];
   NSClassFromString(&cfstr_Ncnotification_40.isa);
   if (objc_opt_isKindOfClass() & 1) != 0 || (NSClassFromString(&cfstr_Ncnotification_31.isa), (objc_opt_isKindOfClass()))
   {
-    v15 = [v14 accessibilityLabel];
+    accessibilityLabel2 = [v14 accessibilityLabel];
   }
 
   else
   {
-    v15 = 0;
+    accessibilityLabel2 = 0;
   }
 
-  v16 = [(NCNotificationShortLookViewAccessibility *)self _axShortViewTitle];
+  _axShortViewTitle = [(NCNotificationShortLookViewAccessibility *)self _axShortViewTitle];
   v17 = __UIAXStringForVariables();
 
   return v17;
@@ -194,11 +194,11 @@ uint64_t __62__NCNotificationShortLookViewAccessibility_accessibilityLabel__bloc
 {
   v7.receiver = self;
   v7.super_class = NCNotificationShortLookViewAccessibility;
-  v2 = [(NCNotificationShortLookViewAccessibility *)&v7 accessibilityIdentifier];
-  v3 = v2;
-  if (v2)
+  accessibilityIdentifier = [(NCNotificationShortLookViewAccessibility *)&v7 accessibilityIdentifier];
+  v3 = accessibilityIdentifier;
+  if (accessibilityIdentifier)
   {
-    v4 = v2;
+    v4 = accessibilityIdentifier;
   }
 
   else
@@ -273,11 +273,11 @@ void __54__NCNotificationShortLookViewAccessibility__axDismiss__block_invoke(uin
 
 - (id)accessibilityCustomActions
 {
-  v3 = [(NCNotificationShortLookViewAccessibility *)self _axNCNotificationViewController];
+  _axNCNotificationViewController = [(NCNotificationShortLookViewAccessibility *)self _axNCNotificationViewController];
   NSClassFromString(&cfstr_Ncnotification_38.isa);
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 safeValueForKey:@"_notificationRequest"];
+    v4 = [_axNCNotificationViewController safeValueForKey:@"_notificationRequest"];
     v5 = [v4 safeStringForKey:@"sectionIdentifier"];
   }
 
@@ -298,9 +298,9 @@ void __54__NCNotificationShortLookViewAccessibility__axDismiss__block_invoke(uin
 
   v7 = accessibilityLocalizedString(v6);
   v8 = [objc_alloc(MEMORY[0x29EDC78E0]) initWithName:v7 target:self selector:sel__axMore_];
-  v9 = [(NCNotificationShortLookViewAccessibility *)self _accessibilityListViewParent];
+  _accessibilityListViewParent = [(NCNotificationShortLookViewAccessibility *)self _accessibilityListViewParent];
 
-  if (v9)
+  if (_accessibilityListViewParent)
   {
     v10 = [MEMORY[0x29EDB8D80] axArrayByIgnoringNilElementsWithCount:{1, v8}];
   }
@@ -337,36 +337,36 @@ uint64_t __70__NCNotificationShortLookViewAccessibility_accessibilityCustomActio
 
 - (void)accessibilityElementDidBecomeFocused
 {
-  v2 = [(NCNotificationShortLookViewAccessibility *)self _axNCNotificationViewController];
-  [v2 _axNotifyWillBeginUserInteraction:1];
+  _axNCNotificationViewController = [(NCNotificationShortLookViewAccessibility *)self _axNCNotificationViewController];
+  [_axNCNotificationViewController _axNotifyWillBeginUserInteraction:1];
 }
 
 - (void)accessibilityElementDidLoseFocus
 {
-  v3 = [(NCNotificationShortLookViewAccessibility *)self _axNCNotificationViewController];
-  [v3 _axNotifyWillBeginUserInteraction:1];
+  _axNCNotificationViewController = [(NCNotificationShortLookViewAccessibility *)self _axNCNotificationViewController];
+  [_axNCNotificationViewController _axNotifyWillBeginUserInteraction:1];
 
-  v4 = [(NCNotificationShortLookViewAccessibility *)self _axNCNotificationViewController];
-  [v4 _axNotifyDidEndUserInteraction];
+  _axNCNotificationViewController2 = [(NCNotificationShortLookViewAccessibility *)self _axNCNotificationViewController];
+  [_axNCNotificationViewController2 _axNotifyDidEndUserInteraction];
 }
 
 - (BOOL)_accessibilityResetBannerTimer
 {
-  v3 = [(NCNotificationShortLookViewAccessibility *)self _axNCNotificationViewController];
-  [v3 _axNotifyWillBeginUserInteraction:1];
+  _axNCNotificationViewController = [(NCNotificationShortLookViewAccessibility *)self _axNCNotificationViewController];
+  [_axNCNotificationViewController _axNotifyWillBeginUserInteraction:1];
 
-  v4 = [(NCNotificationShortLookViewAccessibility *)self _axNCNotificationViewController];
-  [v4 _axNotifyDidEndUserInteraction];
+  _axNCNotificationViewController2 = [(NCNotificationShortLookViewAccessibility *)self _axNCNotificationViewController];
+  [_axNCNotificationViewController2 _axNotifyDidEndUserInteraction];
 
   return 1;
 }
 
 - (id)_accessibilityListViewParent
 {
-  v2 = [(NCNotificationShortLookViewAccessibility *)self _accessibilityListCellParent];
-  v3 = [v2 superview];
+  _accessibilityListCellParent = [(NCNotificationShortLookViewAccessibility *)self _accessibilityListCellParent];
+  superview = [_accessibilityListCellParent superview];
 
-  return v3;
+  return superview;
 }
 
 - (id)_accessibilityListCellParent
@@ -398,14 +398,14 @@ uint64_t __70__NCNotificationShortLookViewAccessibility_accessibilityCustomActio
   return v4;
 }
 
-- (BOOL)accessibilityScroll:(int64_t)a3
+- (BOOL)accessibilityScroll:(int64_t)scroll
 {
-  if (a3 != 4)
+  if (scroll != 4)
   {
-    if (a3 == 3)
+    if (scroll == 3)
     {
-      v5 = [(NCNotificationShortLookViewAccessibility *)self _axNCNotificationViewController];
-      v6 = [v5 safeBoolForKey:@"_canPan"];
+      _axNCNotificationViewController = [(NCNotificationShortLookViewAccessibility *)self _axNCNotificationViewController];
+      v6 = [_axNCNotificationViewController safeBoolForKey:@"_canPan"];
 
       if (v6)
       {
@@ -417,11 +417,11 @@ uint64_t __70__NCNotificationShortLookViewAccessibility_accessibilityCustomActio
 LABEL_11:
     v10.receiver = self;
     v10.super_class = NCNotificationShortLookViewAccessibility;
-    return [(NCNotificationShortLookViewAccessibility *)&v10 accessibilityScroll:a3];
+    return [(NCNotificationShortLookViewAccessibility *)&v10 accessibilityScroll:scroll];
   }
 
-  v8 = [(NCNotificationShortLookViewAccessibility *)self _axNCNotificationViewController];
-  v9 = [v8 safeBoolForKey:@"_canPan"];
+  _axNCNotificationViewController2 = [(NCNotificationShortLookViewAccessibility *)self _axNCNotificationViewController];
+  v9 = [_axNCNotificationViewController2 safeBoolForKey:@"_canPan"];
 
   if (!v9)
   {
@@ -433,10 +433,10 @@ LABEL_11:
 
 - (BOOL)_axIsGrouped
 {
-  v2 = [(NCNotificationShortLookViewAccessibility *)self _accessibilityListViewParent];
-  if ([v2 safeBoolForKey:@"isGrouped"])
+  _accessibilityListViewParent = [(NCNotificationShortLookViewAccessibility *)self _accessibilityListViewParent];
+  if ([_accessibilityListViewParent safeBoolForKey:@"isGrouped"])
   {
-    v3 = [v2 safeUnsignedIntegerForKey:@"count"] > 1;
+    v3 = [_accessibilityListViewParent safeUnsignedIntegerForKey:@"count"] > 1;
   }
 
   else
@@ -447,24 +447,24 @@ LABEL_11:
   return v3;
 }
 
-- (void)_axPerformBlockOnNotificationController:(id)a3
+- (void)_axPerformBlockOnNotificationController:(id)controller
 {
-  v5 = a3;
-  v4 = [(NCNotificationShortLookViewAccessibility *)self _axNCNotificationViewController];
+  controllerCopy = controller;
+  _axNCNotificationViewController = [(NCNotificationShortLookViewAccessibility *)self _axNCNotificationViewController];
   NSClassFromString(&cfstr_Ncnotification_38.isa);
   if (objc_opt_isKindOfClass())
   {
-    v5[2](v5, v4);
+    controllerCopy[2](controllerCopy, _axNCNotificationViewController);
   }
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
   v5.receiver = self;
   v5.super_class = NCNotificationShortLookViewAccessibility;
-  v4 = a3;
-  [(NCNotificationShortLookViewAccessibility *)&v5 setTitle:v4];
-  [(NCNotificationShortLookViewAccessibility *)self _axSetShortViewTitle:v4, v5.receiver, v5.super_class];
+  titleCopy = title;
+  [(NCNotificationShortLookViewAccessibility *)&v5 setTitle:titleCopy];
+  [(NCNotificationShortLookViewAccessibility *)self _axSetShortViewTitle:titleCopy, v5.receiver, v5.super_class];
 }
 
 @end

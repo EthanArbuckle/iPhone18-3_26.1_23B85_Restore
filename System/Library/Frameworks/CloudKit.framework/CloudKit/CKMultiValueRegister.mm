@@ -1,24 +1,24 @@
 @interface CKMultiValueRegister
 + (id)placeholderIdentifier;
 - (BOOL)isConsumedState;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)merge:(id)a3 error:(id *)a4;
-- (CKMultiValueRegister)initWithIdentifier:(id)a3 vector:(id)a4;
-- (CKMultiValueRegister)initWithIdentifier:(id)a3 vector:(id)a4 contents:(id)a5 error:(id *)a6;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)merge:(id)merge error:(id *)error;
+- (CKMultiValueRegister)initWithIdentifier:(id)identifier vector:(id)vector;
+- (CKMultiValueRegister)initWithIdentifier:(id)identifier vector:(id)vector contents:(id)contents error:(id *)error;
 - (NSArray)contents;
 - (id)siteIdentifier;
 - (unint64_t)hash;
 - (unint64_t)nextClockValue;
-- (void)CKDescribePropertiesUsing:(id)a3;
-- (void)setContents:(id)a3;
+- (void)CKDescribePropertiesUsing:(id)using;
+- (void)setContents:(id)contents;
 @end
 
 @implementation CKMultiValueRegister
 
-- (CKMultiValueRegister)initWithIdentifier:(id)a3 vector:(id)a4
+- (CKMultiValueRegister)initWithIdentifier:(id)identifier vector:(id)vector
 {
   v18 = 0;
-  v4 = objc_msgSend_initWithIdentifier_vector_contents_error_(self, a2, a3, a4, 0, &v18);
+  v4 = objc_msgSend_initWithIdentifier_vector_contents_error_(self, a2, identifier, vector, 0, &v18);
   v5 = v18;
   v6 = v4;
   v7 = v6;
@@ -40,11 +40,11 @@
   return v7;
 }
 
-- (CKMultiValueRegister)initWithIdentifier:(id)a3 vector:(id)a4 contents:(id)a5 error:(id *)a6
+- (CKMultiValueRegister)initWithIdentifier:(id)identifier vector:(id)vector contents:(id)contents error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  identifierCopy = identifier;
+  vectorCopy = vector;
+  contentsCopy = contents;
   v58.receiver = self;
   v58.super_class = CKMultiValueRegister;
   v15 = [(CKMultiValueRegister *)&v58 init];
@@ -53,8 +53,8 @@
     goto LABEL_14;
   }
 
-  v16 = objc_msgSend_mutableCopy(v11, v13, v14);
-  v19 = objc_msgSend_copy(v10, v17, v18);
+  v16 = objc_msgSend_mutableCopy(vectorCopy, v13, v14);
+  v19 = objc_msgSend_copy(identifierCopy, v17, v18);
   identifier = v15->_identifier;
   v15->_identifier = v19;
 
@@ -65,14 +65,14 @@
   v56[3] = &unk_1E70BBFC8;
   v22 = v21;
   v57 = v22;
-  objc_msgSend_enumerateKeysAndObjectsUsingBlock_(v12, v23, v56);
+  objc_msgSend_enumerateKeysAndObjectsUsingBlock_(contentsCopy, v23, v56);
   isEqual = objc_msgSend_isEqual_(v22, v24, v16);
   objc_storeStrong(&v15->_vector, v16);
   if (isEqual)
   {
-    if (v12)
+    if (contentsCopy)
     {
-      v28 = objc_msgSend_mutableCopy(v12, v26, v27);
+      v28 = objc_msgSend_mutableCopy(contentsCopy, v26, v27);
     }
 
     else
@@ -91,7 +91,7 @@
   v15->_timestampToContents = v30;
 
   objc_msgSend_replaceVectorStateForPresentOrTombstonedTimestamps_(v15, v32, 2);
-  if (objc_msgSend_count(v12, v33, v34))
+  if (objc_msgSend_count(contentsCopy, v33, v34))
   {
     v37 = objc_msgSend_mutableCopy(v22, v35, v36);
     v40 = objc_msgSend_clockVector(v15->_vector, v38, v39);
@@ -99,9 +99,9 @@
 
     if (objc_msgSend_timestampCount(v37, v42, v43))
     {
-      if (a6)
+      if (error)
       {
-        *a6 = objc_msgSend_errorWithDomain_code_format_(CKPrettyError, v44, @"CKErrorDomain", 12, @"Data dictionary includes timestamps that are not present in vector");
+        *error = objc_msgSend_errorWithDomain_code_format_(CKPrettyError, v44, @"CKErrorDomain", 12, @"Data dictionary includes timestamps that are not present in vector");
       }
 
       goto LABEL_16;
@@ -110,7 +110,7 @@
     v45 = [CKMultiValueRegister alloc];
     v46 = objc_opt_class();
     v49 = objc_msgSend_placeholderIdentifier(v46, v47, v48);
-    v51 = objc_msgSend_initWithIdentifier_vector_contents_error_(v45, v50, v49, v22, v12, a6);
+    v51 = objc_msgSend_initWithIdentifier_vector_contents_error_(v45, v50, v49, v22, contentsCopy, error);
 
     if (!v51)
     {
@@ -119,7 +119,7 @@ LABEL_16:
       goto LABEL_17;
     }
 
-    v53 = objc_msgSend_merge_error_(v15, v52, v51, a6);
+    v53 = objc_msgSend_merge_error_(v15, v52, v51, error);
 
     if (!v53)
     {
@@ -195,14 +195,14 @@ LABEL_15:
   return v6;
 }
 
-- (void)setContents:(id)a3
+- (void)setContents:(id)contents
 {
   v56 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  contentsCopy = contents;
   v7 = objc_msgSend_timestampToContents(self, v5, v6);
   objc_msgSend_removeAllObjects(v7, v8, v9);
 
-  if (v4)
+  if (contentsCopy)
   {
     if (objc_msgSend_replaceVectorStateForPresentOrTombstonedTimestamps_(self, v10, 3))
     {
@@ -217,8 +217,8 @@ LABEL_15:
     v54 = 0u;
     v51 = 0u;
     v52 = 0u;
-    v49 = v4;
-    obj = v4;
+    v49 = contentsCopy;
+    obj = contentsCopy;
     v24 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v23, &v51, v55, 16);
     if (v24)
     {
@@ -256,7 +256,7 @@ LABEL_15:
       while (v27);
     }
 
-    v4 = v49;
+    contentsCopy = v49;
   }
 
   else
@@ -267,26 +267,26 @@ LABEL_15:
   v48 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)merge:(id)a3 error:(id *)a4
+- (BOOL)merge:(id)merge error:(id *)error
 {
-  v6 = a3;
-  isConsumedState = objc_msgSend_isConsumedState(v6, v7, v8);
+  mergeCopy = merge;
+  isConsumedState = objc_msgSend_isConsumedState(mergeCopy, v7, v8);
   if (isConsumedState)
   {
-    if (a4)
+    if (error)
     {
-      *a4 = objc_msgSend_errorWithDomain_code_format_(CKPrettyError, v9, @"CKErrorDomain", 12, @"Other register is in consumed state and should not be merged");
+      *error = objc_msgSend_errorWithDomain_code_format_(CKPrettyError, v9, @"CKErrorDomain", 12, @"Other register is in consumed state and should not be merged");
     }
   }
 
   else
   {
     v12 = objc_msgSend_timestampToContents(self, v9, v10);
-    v15 = objc_msgSend_timestampToContents(v6, v13, v14);
+    v15 = objc_msgSend_timestampToContents(mergeCopy, v13, v14);
     objc_msgSend_addEntriesFromDictionary_(v12, v16, v15);
 
     v19 = objc_msgSend_vector(self, v17, v18);
-    v22 = objc_msgSend_vector(v6, v20, v21);
+    v22 = objc_msgSend_vector(mergeCopy, v20, v21);
     objc_msgSend_unionStateVector_(v19, v23, v22);
 
     v24 = objc_opt_new();
@@ -309,12 +309,12 @@ LABEL_15:
     v53 = 3221225472;
     v54 = sub_18851C454;
     v55 = &unk_1E70BC018;
-    v56 = self;
+    selfCopy = self;
     v57 = v34;
     v38 = v34;
     objc_msgSend_enumerateKeysAndObjectsUsingBlock_(v37, v39, &v52);
 
-    v42 = objc_msgSend_vector(self, v40, v41, v52, v53, v54, v55, v56);
+    v42 = objc_msgSend_vector(self, v40, v41, v52, v53, v54, v55, selfCopy);
     v45 = objc_msgSend_clockVector(v38, v43, v44);
     objc_msgSend_minusVector_(v42, v46, v45);
 
@@ -325,10 +325,10 @@ LABEL_15:
   return isConsumedState ^ 1;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     isEqual = 1;
   }
@@ -336,9 +336,9 @@ LABEL_15:
   else
   {
     v6 = objc_opt_class();
-    if (objc_msgSend_isMemberOfClass_(v5, v7, v6))
+    if (objc_msgSend_isMemberOfClass_(equalCopy, v7, v6))
     {
-      v8 = v5;
+      v8 = equalCopy;
       v11 = objc_msgSend_vector(self, v9, v10);
       v16 = objc_msgSend_vector(v8, v12, v13);
       if (v11 != v16)
@@ -398,15 +398,15 @@ LABEL_15:
   return v13 ^ v7;
 }
 
-- (void)CKDescribePropertiesUsing:(id)a3
+- (void)CKDescribePropertiesUsing:(id)using
 {
-  v4 = a3;
+  usingCopy = using;
   v7 = objc_msgSend_vector(self, v5, v6);
-  objc_msgSend_addProperty_value_shouldRedact_(v4, v8, @"vector", v7, 0);
+  objc_msgSend_addProperty_value_shouldRedact_(usingCopy, v8, @"vector", v7, 0);
 
   v15 = objc_msgSend_timestampToContents(self, v9, v10);
   v13 = objc_msgSend_allKeys(v15, v11, v12);
-  objc_msgSend_addProperty_value_shouldRedact_(v4, v14, @"timestamps", v13, 0);
+  objc_msgSend_addProperty_value_shouldRedact_(usingCopy, v14, @"timestamps", v13, 0);
 }
 
 + (id)placeholderIdentifier

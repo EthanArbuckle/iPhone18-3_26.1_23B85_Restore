@@ -1,23 +1,23 @@
 @interface HKObjectPickerDetailItem
-- (HKObjectPickerDetailItem)initWithPrimaryText:(id)a3 secondaryText:(id)a4;
+- (HKObjectPickerDetailItem)initWithPrimaryText:(id)text secondaryText:(id)secondaryText;
 @end
 
 @implementation HKObjectPickerDetailItem
 
-- (HKObjectPickerDetailItem)initWithPrimaryText:(id)a3 secondaryText:(id)a4
+- (HKObjectPickerDetailItem)initWithPrimaryText:(id)text secondaryText:(id)secondaryText
 {
-  v6 = a3;
-  v7 = a4;
+  textCopy = text;
+  secondaryTextCopy = secondaryText;
   v14.receiver = self;
   v14.super_class = HKObjectPickerDetailItem;
   v8 = [(HKObjectPickerDetailItem *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [textCopy copy];
     primaryText = v8->_primaryText;
     v8->_primaryText = v9;
 
-    v11 = [v7 copy];
+    v11 = [secondaryTextCopy copy];
     secondaryText = v8->_secondaryText;
     v8->_secondaryText = v11;
   }

@@ -1,41 +1,41 @@
 @interface RUIHeaderView
 + (UIImageSymbolConfiguration)symbolConfiguration;
-- (BOOL)_shouldHideLeadingSpacerForLabel:(id)a3;
-- (BOOL)_shouldHideTrailingSpacerForLabel:(id)a3;
-- (RUIHeaderView)initWithAttributes:(id)a3;
+- (BOOL)_shouldHideLeadingSpacerForLabel:(id)label;
+- (BOOL)_shouldHideTrailingSpacerForLabel:(id)label;
+- (RUIHeaderView)initWithAttributes:(id)attributes;
 - (UIEdgeInsets)margins;
-- (double)_headerOffsetInView:(id)a3;
+- (double)_headerOffsetInView:(id)view;
 - (id)_makeSpacer;
-- (id)_paddedStackViewWithArrangedSubviews:(id)a3;
+- (id)_paddedStackViewWithArrangedSubviews:(id)subviews;
 - (id)navSubHeaderLabel;
 - (id)navTitleLabel;
 - (id)subHeaderLabel;
 - (void)_arrangeItems;
 - (void)layoutSubviews;
-- (void)setDetailHeaderColor:(id)a3;
-- (void)setDetailText:(id)a3 attributes:(id)a4;
-- (void)setHeaderAlignment:(int64_t)a3;
-- (void)setHeaderColor:(id)a3;
-- (void)setIconImage:(id)a3;
-- (void)setImageSize:(CGSize)a3;
-- (void)setNavSubHeaderTitle:(id)a3;
-- (void)setNavTitle:(id)a3;
-- (void)setSectionIsFirst:(BOOL)a3;
-- (void)setSubHeaderAlignment:(int64_t)a3;
-- (void)setSubHeaderColor:(id)a3;
-- (void)setSubHeaderText:(id)a3 baseURL:(id)a4 attributes:(id)a5;
-- (void)setText:(id)a3 baseURL:(id)a4 attributes:(id)a5;
+- (void)setDetailHeaderColor:(id)color;
+- (void)setDetailText:(id)text attributes:(id)attributes;
+- (void)setHeaderAlignment:(int64_t)alignment;
+- (void)setHeaderColor:(id)color;
+- (void)setIconImage:(id)image;
+- (void)setImageSize:(CGSize)size;
+- (void)setNavSubHeaderTitle:(id)title;
+- (void)setNavTitle:(id)title;
+- (void)setSectionIsFirst:(BOOL)first;
+- (void)setSubHeaderAlignment:(int64_t)alignment;
+- (void)setSubHeaderColor:(id)color;
+- (void)setSubHeaderText:(id)text baseURL:(id)l attributes:(id)attributes;
+- (void)setText:(id)text baseURL:(id)l attributes:(id)attributes;
 @end
 
 @implementation RUIHeaderView
 
-- (double)_headerOffsetInView:(id)a3
+- (double)_headerOffsetInView:(id)view
 {
-  v4 = [a3 traitCollection];
-  v5 = [v4 horizontalSizeClass];
+  traitCollection = [view traitCollection];
+  horizontalSizeClass = [traitCollection horizontalSizeClass];
 
   result = 36.0;
-  if (v5 == 1)
+  if (horizontalSizeClass == 1)
   {
     result = 26.0;
   }
@@ -53,8 +53,8 @@
   v2 = objc_alloc_init(MEMORY[0x277D75D18]);
   [v2 setUserInteractionEnabled:0];
   [v2 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v3 = [v2 heightAnchor];
-  v4 = [v3 constraintEqualToConstant:1.0];
+  heightAnchor = [v2 heightAnchor];
+  v4 = [heightAnchor constraintEqualToConstant:1.0];
 
   LODWORD(v5) = 1132068864;
   [v4 setPriority:v5];
@@ -67,7 +67,7 @@
   return v2;
 }
 
-- (RUIHeaderView)initWithAttributes:(id)a3
+- (RUIHeaderView)initWithAttributes:(id)attributes
 {
   v103[3] = *MEMORY[0x277D85DE8];
   v95.receiver = self;
@@ -76,7 +76,7 @@
   v4 = *(MEMORY[0x277CBF3A0] + 8);
   v5 = *(MEMORY[0x277CBF3A0] + 16);
   v6 = *(MEMORY[0x277CBF3A0] + 24);
-  v7 = [(RUIHeaderView *)&v95 initWithFrame:a3, *MEMORY[0x277CBF3A0], v4, v5, v6];
+  v7 = [(RUIHeaderView *)&v95 initWithFrame:attributes, *MEMORY[0x277CBF3A0], v4, v5, v6];
   if (v7)
   {
     v8 = [objc_alloc(MEMORY[0x277D756B8]) initWithFrame:{v3, v4, v5, v6}];
@@ -89,8 +89,8 @@
     v11 = RemoteUIHeaderTextColor();
     [(UILabel *)v7->_headerLabel setTextColor:v11];
 
-    v12 = [MEMORY[0x277D75348] clearColor];
-    [(UILabel *)v7->_headerLabel setBackgroundColor:v12];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(UILabel *)v7->_headerLabel setBackgroundColor:clearColor];
 
     [(UILabel *)v7->_headerLabel setNumberOfLines:0];
     [(UILabel *)v7->_headerLabel setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -100,13 +100,13 @@
     iconView = v7->_iconView;
     v7->_iconView = v14;
 
-    v16 = [(RUIHeaderView *)v7 _makeSpacer];
+    _makeSpacer = [(RUIHeaderView *)v7 _makeSpacer];
     iconLeadingSpacer = v7->_iconLeadingSpacer;
-    v7->_iconLeadingSpacer = v16;
+    v7->_iconLeadingSpacer = _makeSpacer;
 
-    v18 = [(RUIHeaderView *)v7 _makeSpacer];
+    _makeSpacer2 = [(RUIHeaderView *)v7 _makeSpacer];
     iconTrailingSpacer = v7->_iconTrailingSpacer;
-    v7->_iconTrailingSpacer = v18;
+    v7->_iconTrailingSpacer = _makeSpacer2;
 
     v103[0] = v7->_iconLeadingSpacer;
     v103[1] = v7->_iconView;
@@ -118,13 +118,13 @@
 
     LODWORD(v23) = 1148846080;
     [(UIStackView *)v7->_iconStackView setContentHuggingPriority:0 forAxis:v23];
-    v24 = [(RUIHeaderView *)v7 _makeSpacer];
+    _makeSpacer3 = [(RUIHeaderView *)v7 _makeSpacer];
     headerLeadingSpacer = v7->_headerLeadingSpacer;
-    v7->_headerLeadingSpacer = v24;
+    v7->_headerLeadingSpacer = _makeSpacer3;
 
-    v26 = [(RUIHeaderView *)v7 _makeSpacer];
+    _makeSpacer4 = [(RUIHeaderView *)v7 _makeSpacer];
     headerTrailingSpacer = v7->_headerTrailingSpacer;
-    v7->_headerTrailingSpacer = v26;
+    v7->_headerTrailingSpacer = _makeSpacer4;
 
     v102[0] = v7->_headerLeadingSpacer;
     v102[1] = v7->_headerLabel;
@@ -134,34 +134,34 @@
     headerStackView = v7->_headerStackView;
     v7->_headerStackView = v29;
 
-    v31 = [(RUIHeaderView *)v7 _makeSpacer];
+    _makeSpacer5 = [(RUIHeaderView *)v7 _makeSpacer];
     subHeaderLeadingSpacer = v7->_subHeaderLeadingSpacer;
-    v7->_subHeaderLeadingSpacer = v31;
+    v7->_subHeaderLeadingSpacer = _makeSpacer5;
 
-    v33 = [(RUIHeaderView *)v7 _makeSpacer];
+    _makeSpacer6 = [(RUIHeaderView *)v7 _makeSpacer];
     subHeaderTrailingSpacer = v7->_subHeaderTrailingSpacer;
-    v7->_subHeaderTrailingSpacer = v33;
+    v7->_subHeaderTrailingSpacer = _makeSpacer6;
 
     v101[0] = v7->_subHeaderLeadingSpacer;
-    v35 = [(RUIHeaderView *)v7 subHeaderLabel];
-    v101[1] = v35;
+    subHeaderLabel = [(RUIHeaderView *)v7 subHeaderLabel];
+    v101[1] = subHeaderLabel;
     v101[2] = v7->_subHeaderTrailingSpacer;
     v36 = [MEMORY[0x277CBEA60] arrayWithObjects:v101 count:3];
     v37 = [(RUIHeaderView *)v7 _paddedStackViewWithArrangedSubviews:v36];
     subHeaderStackView = v7->_subHeaderStackView;
     v7->_subHeaderStackView = v37;
 
-    v39 = [(RUIHeaderView *)v7 _makeSpacer];
+    _makeSpacer7 = [(RUIHeaderView *)v7 _makeSpacer];
     navTitleLeadingSpacer = v7->_navTitleLeadingSpacer;
-    v7->_navTitleLeadingSpacer = v39;
+    v7->_navTitleLeadingSpacer = _makeSpacer7;
 
-    v41 = [(RUIHeaderView *)v7 _makeSpacer];
+    _makeSpacer8 = [(RUIHeaderView *)v7 _makeSpacer];
     navTitleTrailingSpacer = v7->_navTitleTrailingSpacer;
-    v7->_navTitleTrailingSpacer = v41;
+    v7->_navTitleTrailingSpacer = _makeSpacer8;
 
     v100[0] = v7->_navTitleLeadingSpacer;
-    v43 = [(RUIHeaderView *)v7 navTitleLabel];
-    v100[1] = v43;
+    navTitleLabel = [(RUIHeaderView *)v7 navTitleLabel];
+    v100[1] = navTitleLabel;
     v100[2] = v7->_navTitleTrailingSpacer;
     v44 = [MEMORY[0x277CBEA60] arrayWithObjects:v100 count:3];
     v45 = [(RUIHeaderView *)v7 _paddedStackViewWithArrangedSubviews:v44];
@@ -169,17 +169,17 @@
     v7->_navTitleStackView = v45;
 
     [(UIStackView *)v7->_navTitleStackView setHidden:1];
-    v47 = [(RUIHeaderView *)v7 _makeSpacer];
+    _makeSpacer9 = [(RUIHeaderView *)v7 _makeSpacer];
     navSubtitleLeadingSpacer = v7->_navSubtitleLeadingSpacer;
-    v7->_navSubtitleLeadingSpacer = v47;
+    v7->_navSubtitleLeadingSpacer = _makeSpacer9;
 
-    v49 = [(RUIHeaderView *)v7 _makeSpacer];
+    _makeSpacer10 = [(RUIHeaderView *)v7 _makeSpacer];
     navSubtitleTrailingSpacer = v7->_navSubtitleTrailingSpacer;
-    v7->_navSubtitleTrailingSpacer = v49;
+    v7->_navSubtitleTrailingSpacer = _makeSpacer10;
 
     v99[0] = v7->_navSubtitleLeadingSpacer;
-    v51 = [(RUIHeaderView *)v7 navSubHeaderLabel];
-    v99[1] = v51;
+    navSubHeaderLabel = [(RUIHeaderView *)v7 navSubHeaderLabel];
+    v99[1] = navSubHeaderLabel;
     v99[2] = v7->_navSubtitleTrailingSpacer;
     v52 = [MEMORY[0x277CBEA60] arrayWithObjects:v99 count:3];
     v53 = [(RUIHeaderView *)v7 _paddedStackViewWithArrangedSubviews:v52];
@@ -188,14 +188,14 @@
 
     [(UIStackView *)v7->_navSubtitleStackView setHidden:1];
     v55 = objc_alloc(MEMORY[0x277D75A68]);
-    v56 = [(RUIHeaderView *)v7 _makeSpacer];
-    v98[0] = v56;
+    _makeSpacer11 = [(RUIHeaderView *)v7 _makeSpacer];
+    v98[0] = _makeSpacer11;
     v98[1] = v7->_navTitleStackView;
     v98[2] = v7->_navSubtitleStackView;
     v98[3] = v7->_headerStackView;
     v98[4] = v7->_subHeaderStackView;
-    v57 = [(RUIHeaderView *)v7 _makeSpacer];
-    v98[5] = v57;
+    _makeSpacer12 = [(RUIHeaderView *)v7 _makeSpacer];
+    v98[5] = _makeSpacer12;
     v58 = [MEMORY[0x277CBEA60] arrayWithObjects:v98 count:6];
     v59 = [v55 initWithArrangedSubviews:v58];
     labelsStackView = v7->_labelsStackView;
@@ -212,23 +212,23 @@
     v7->_detailHeaderLabel = v62;
 
     v64 = RemoteUIHeaderFont();
-    v65 = [(RUILinkLabel *)v7->_detailHeaderLabel textLabel];
-    [v65 setFont:v64];
+    textLabel = [(RUILinkLabel *)v7->_detailHeaderLabel textLabel];
+    [textLabel setFont:v64];
 
-    v66 = [MEMORY[0x277D75348] clearColor];
-    v67 = [(RUILinkLabel *)v7->_detailHeaderLabel textLabel];
-    [v67 setBackgroundColor:v66];
+    clearColor2 = [MEMORY[0x277D75348] clearColor];
+    textLabel2 = [(RUILinkLabel *)v7->_detailHeaderLabel textLabel];
+    [textLabel2 setBackgroundColor:clearColor2];
 
     [(RUILinkLabel *)v7->_detailHeaderLabel setTranslatesAutoresizingMaskIntoConstraints:0];
     [(RUILinkLabel *)v7->_detailHeaderLabel setNumberOfLines:1];
     [(RUILinkLabel *)v7->_detailHeaderLabel setLineBreakMode:5];
-    v68 = [(RUILinkLabel *)v7->_detailHeaderLabel textLabel];
+    textLabel3 = [(RUILinkLabel *)v7->_detailHeaderLabel textLabel];
     LODWORD(v69) = 1148846080;
-    [v68 setContentCompressionResistancePriority:0 forAxis:v69];
+    [textLabel3 setContentCompressionResistancePriority:0 forAxis:v69];
 
-    v70 = [(RUILinkLabel *)v7->_detailHeaderLabel textLabel];
+    textLabel4 = [(RUILinkLabel *)v7->_detailHeaderLabel textLabel];
     LODWORD(v71) = 1132068864;
-    [v70 setContentHuggingPriority:0 forAxis:v71];
+    [textLabel4 setContentHuggingPriority:0 forAxis:v71];
 
     [(RUILinkLabel *)v7->_detailHeaderLabel setHidden:1];
     v72 = objc_alloc(MEMORY[0x277D75A68]);
@@ -252,25 +252,25 @@
     v7->_imageLabelPadding = 12.0;
     [(RUIHeaderView *)v7 addSubview:v7->_mainStackView];
     v87 = MEMORY[0x277CCAAD0];
-    v93 = [(UIStackView *)v7->_mainStackView leadingAnchor];
-    v94 = [(RUIHeaderView *)v7 layoutMarginsGuide];
-    v92 = [v94 leadingAnchor];
-    v91 = [v93 constraintEqualToAnchor:v92];
+    leadingAnchor = [(UIStackView *)v7->_mainStackView leadingAnchor];
+    layoutMarginsGuide = [(RUIHeaderView *)v7 layoutMarginsGuide];
+    leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+    v91 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v96[0] = v91;
-    v89 = [(UIStackView *)v7->_mainStackView topAnchor];
-    v90 = [(RUIHeaderView *)v7 layoutMarginsGuide];
-    v88 = [v90 topAnchor];
-    v86 = [v89 constraintEqualToAnchor:v88];
+    topAnchor = [(UIStackView *)v7->_mainStackView topAnchor];
+    layoutMarginsGuide2 = [(RUIHeaderView *)v7 layoutMarginsGuide];
+    topAnchor2 = [layoutMarginsGuide2 topAnchor];
+    v86 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v96[1] = v86;
-    v76 = [(UIStackView *)v7->_mainStackView bottomAnchor];
-    v77 = [(RUIHeaderView *)v7 layoutMarginsGuide];
-    v78 = [v77 bottomAnchor];
-    v79 = [v76 constraintEqualToAnchor:v78];
+    bottomAnchor = [(UIStackView *)v7->_mainStackView bottomAnchor];
+    layoutMarginsGuide3 = [(RUIHeaderView *)v7 layoutMarginsGuide];
+    bottomAnchor2 = [layoutMarginsGuide3 bottomAnchor];
+    v79 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v96[2] = v79;
-    v80 = [(UIStackView *)v7->_mainStackView trailingAnchor];
-    v81 = [(RUIHeaderView *)v7 layoutMarginsGuide];
-    v82 = [v81 trailingAnchor];
-    v83 = [v80 constraintEqualToAnchor:v82];
+    trailingAnchor = [(UIStackView *)v7->_mainStackView trailingAnchor];
+    layoutMarginsGuide4 = [(RUIHeaderView *)v7 layoutMarginsGuide];
+    trailingAnchor2 = [layoutMarginsGuide4 trailingAnchor];
+    v83 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v96[3] = v83;
     v84 = [MEMORY[0x277CBEA60] arrayWithObjects:v96 count:4];
     [v87 activateConstraints:v84];
@@ -281,11 +281,11 @@
   return v7;
 }
 
-- (id)_paddedStackViewWithArrangedSubviews:(id)a3
+- (id)_paddedStackViewWithArrangedSubviews:(id)subviews
 {
   v3 = MEMORY[0x277D75A68];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithArrangedSubviews:v4];
+  subviewsCopy = subviews;
+  v5 = [[v3 alloc] initWithArrangedSubviews:subviewsCopy];
 
   [v5 setAxis:0];
   [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -295,15 +295,15 @@
   return v5;
 }
 
-- (void)setText:(id)a3 baseURL:(id)a4 attributes:(id)a5
+- (void)setText:(id)text baseURL:(id)l attributes:(id)attributes
 {
   headerLabel = self->_headerLabel;
-  v9 = a5;
-  [(UILabel *)headerLabel setMarkdown:a3 baseURL:a4];
-  v10 = [v9 objectForKeyedSubscript:@"largeFont"];
+  attributesCopy = attributes;
+  [(UILabel *)headerLabel setMarkdown:text baseURL:l];
+  v10 = [attributesCopy objectForKeyedSubscript:@"largeFont"];
 
-  LODWORD(a3) = [v10 isEqualToString:@"true"];
-  if (a3)
+  LODWORD(text) = [v10 isEqualToString:@"true"];
+  if (text)
   {
     self->_hasLargeIcon = 1;
     v11 = [MEMORY[0x277D74300] systemFontOfSize:24.0 weight:*MEMORY[0x277D74420]];
@@ -320,16 +320,16 @@
   [(RUIHeaderView *)self setNeedsLayout];
 }
 
-- (void)setHeaderAlignment:(int64_t)a3
+- (void)setHeaderAlignment:(int64_t)alignment
 {
-  [(UILabel *)self->_headerLabel setTextAlignment:a3];
+  [(UILabel *)self->_headerLabel setTextAlignment:alignment];
 
   [(RUIHeaderView *)self _arrangeItems];
 }
 
-- (void)setHeaderColor:(id)a3
+- (void)setHeaderColor:(id)color
 {
-  if (a3)
+  if (color)
   {
     [(UILabel *)self->_headerLabel setTextColor:?];
   }
@@ -351,8 +351,8 @@
     v8 = RemoteUISubheaderTextColor();
     [(UILabel *)self->_subHeaderLabel setTextColor:v8];
 
-    v9 = [MEMORY[0x277D75348] clearColor];
-    [(UILabel *)self->_subHeaderLabel setBackgroundColor:v9];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(UILabel *)self->_subHeaderLabel setBackgroundColor:clearColor];
 
     [(UILabel *)self->_subHeaderLabel setLineBreakMode:0];
     [(UILabel *)self->_subHeaderLabel setNumberOfLines:0];
@@ -363,56 +363,56 @@
   return subHeaderLabel;
 }
 
-- (void)setSubHeaderText:(id)a3 baseURL:(id)a4 attributes:(id)a5
+- (void)setSubHeaderText:(id)text baseURL:(id)l attributes:(id)attributes
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [(RUIHeaderView *)self subHeaderLabel];
-  [v9 setMarkdown:v8 baseURL:v7];
+  lCopy = l;
+  textCopy = text;
+  subHeaderLabel = [(RUIHeaderView *)self subHeaderLabel];
+  [subHeaderLabel setMarkdown:textCopy baseURL:lCopy];
 
   [(RUIHeaderView *)self setNeedsLayout];
 }
 
-- (void)setSubHeaderAlignment:(int64_t)a3
+- (void)setSubHeaderAlignment:(int64_t)alignment
 {
-  v5 = [(RUIHeaderView *)self subHeaderLabel];
-  [v5 setTextAlignment:a3];
+  subHeaderLabel = [(RUIHeaderView *)self subHeaderLabel];
+  [subHeaderLabel setTextAlignment:alignment];
 
   [(RUIHeaderView *)self _arrangeItems];
 }
 
-- (void)setSubHeaderColor:(id)a3
+- (void)setSubHeaderColor:(id)color
 {
-  if (a3)
+  if (color)
   {
-    v4 = a3;
-    v5 = [(RUIHeaderView *)self subHeaderLabel];
-    [v5 setTextColor:v4];
+    colorCopy = color;
+    subHeaderLabel = [(RUIHeaderView *)self subHeaderLabel];
+    [subHeaderLabel setTextColor:colorCopy];
   }
 }
 
-- (void)setDetailText:(id)a3 attributes:(id)a4
+- (void)setDetailText:(id)text attributes:(id)attributes
 {
-  [(RUILinkLabel *)self->_detailHeaderLabel setText:a3, a4];
+  [(RUILinkLabel *)self->_detailHeaderLabel setText:text, attributes];
   [(RUILinkLabel *)self->_detailHeaderLabel setHidden:0];
 
   [(RUIHeaderView *)self _arrangeItems];
 }
 
-- (void)setDetailHeaderColor:(id)a3
+- (void)setDetailHeaderColor:(id)color
 {
-  if (a3)
+  if (color)
   {
     detailHeaderLabel = self->_detailHeaderLabel;
-    v4 = a3;
-    v5 = [(RUILinkLabel *)detailHeaderLabel textLabel];
-    [v5 setTextColor:v4];
+    colorCopy = color;
+    textLabel = [(RUILinkLabel *)detailHeaderLabel textLabel];
+    [textLabel setTextColor:colorCopy];
   }
 }
 
-- (void)setIconImage:(id)a3
+- (void)setIconImage:(id)image
 {
-  [(UIImageView *)self->_iconView setImage:a3];
+  [(UIImageView *)self->_iconView setImage:image];
   [(UIStackView *)self->_iconStackView setHidden:0];
 
   [(RUIHeaderView *)self _arrangeItems];
@@ -427,21 +427,21 @@
   return v4;
 }
 
-- (void)setImageSize:(CGSize)a3
+- (void)setImageSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v12[2] = *MEMORY[0x277D85DE8];
   [(UIImageView *)self->_iconView frame];
   [(UIImageView *)self->_iconView setFrame:?];
   self->_customIconSize = 1;
   [(UIStackView *)self->_iconStackView setHidden:0];
   v6 = MEMORY[0x277CCAAD0];
-  v7 = [(UIImageView *)self->_iconView widthAnchor];
-  v8 = [v7 constraintEqualToConstant:width];
+  widthAnchor = [(UIImageView *)self->_iconView widthAnchor];
+  v8 = [widthAnchor constraintEqualToConstant:width];
   v12[0] = v8;
-  v9 = [(UIImageView *)self->_iconView heightAnchor];
-  v10 = [v9 constraintEqualToConstant:height];
+  heightAnchor = [(UIImageView *)self->_iconView heightAnchor];
+  v10 = [heightAnchor constraintEqualToConstant:height];
   v12[1] = v10;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:2];
   [v6 activateConstraints:v11];
@@ -496,20 +496,20 @@
   [(RUIHeaderView *)self setNeedsLayout];
 }
 
-- (BOOL)_shouldHideLeadingSpacerForLabel:(id)a3
+- (BOOL)_shouldHideLeadingSpacerForLabel:(id)label
 {
-  v4 = [a3 textAlignment];
-  if ((v4 - 3) < 2)
+  textAlignment = [label textAlignment];
+  if ((textAlignment - 3) < 2)
   {
     return 1;
   }
 
-  if (v4 == 2)
+  if (textAlignment == 2)
   {
     return ![(RUIHeaderView *)self _isLeftToRight];
   }
 
-  if (v4)
+  if (textAlignment)
   {
     return 0;
   }
@@ -517,16 +517,16 @@
   return [(RUIHeaderView *)self _isLeftToRight];
 }
 
-- (BOOL)_shouldHideTrailingSpacerForLabel:(id)a3
+- (BOOL)_shouldHideTrailingSpacerForLabel:(id)label
 {
-  v4 = [a3 textAlignment];
-  if (v4 == 2)
+  textAlignment = [label textAlignment];
+  if (textAlignment == 2)
   {
 
     return [(RUIHeaderView *)self _isLeftToRight];
   }
 
-  else if (v4)
+  else if (textAlignment)
   {
     return 0;
   }
@@ -545,47 +545,47 @@
   [(UIStackView *)self->_mainStackView setSpacing:self->_imageLabelPadding];
   [(UIView *)self->_headerLeadingSpacer setHidden:[(RUIHeaderView *)self _shouldHideLeadingSpacerForLabel:self->_headerLabel]];
   [(UIView *)self->_headerTrailingSpacer setHidden:[(RUIHeaderView *)self _shouldHideTrailingSpacerForLabel:self->_headerLabel]];
-  v3 = [(RUIHeaderView *)self subHeaderLabel];
-  [(UIView *)self->_subHeaderLeadingSpacer setHidden:[(RUIHeaderView *)self _shouldHideLeadingSpacerForLabel:v3]];
+  subHeaderLabel = [(RUIHeaderView *)self subHeaderLabel];
+  [(UIView *)self->_subHeaderLeadingSpacer setHidden:[(RUIHeaderView *)self _shouldHideLeadingSpacerForLabel:subHeaderLabel]];
 
-  v4 = [(RUIHeaderView *)self subHeaderLabel];
-  [(UIView *)self->_subHeaderTrailingSpacer setHidden:[(RUIHeaderView *)self _shouldHideTrailingSpacerForLabel:v4]];
+  subHeaderLabel2 = [(RUIHeaderView *)self subHeaderLabel];
+  [(UIView *)self->_subHeaderTrailingSpacer setHidden:[(RUIHeaderView *)self _shouldHideTrailingSpacerForLabel:subHeaderLabel2]];
 
-  v5 = [(RUIHeaderView *)self navTitleLabel];
-  [(UIView *)self->_navTitleLeadingSpacer setHidden:[(RUIHeaderView *)self _shouldHideLeadingSpacerForLabel:v5]];
+  navTitleLabel = [(RUIHeaderView *)self navTitleLabel];
+  [(UIView *)self->_navTitleLeadingSpacer setHidden:[(RUIHeaderView *)self _shouldHideLeadingSpacerForLabel:navTitleLabel]];
 
-  v6 = [(RUIHeaderView *)self navTitleLabel];
-  [(UIView *)self->_navTitleTrailingSpacer setHidden:[(RUIHeaderView *)self _shouldHideTrailingSpacerForLabel:v6]];
+  navTitleLabel2 = [(RUIHeaderView *)self navTitleLabel];
+  [(UIView *)self->_navTitleTrailingSpacer setHidden:[(RUIHeaderView *)self _shouldHideTrailingSpacerForLabel:navTitleLabel2]];
 
-  v7 = [(RUIHeaderView *)self navSubHeaderLabel];
-  [(UIView *)self->_navSubtitleLeadingSpacer setHidden:[(RUIHeaderView *)self _shouldHideLeadingSpacerForLabel:v7]];
+  navSubHeaderLabel = [(RUIHeaderView *)self navSubHeaderLabel];
+  [(UIView *)self->_navSubtitleLeadingSpacer setHidden:[(RUIHeaderView *)self _shouldHideLeadingSpacerForLabel:navSubHeaderLabel]];
 
-  v8 = [(RUIHeaderView *)self navSubHeaderLabel];
-  [(UIView *)self->_navSubtitleTrailingSpacer setHidden:[(RUIHeaderView *)self _shouldHideTrailingSpacerForLabel:v8]];
+  navSubHeaderLabel2 = [(RUIHeaderView *)self navSubHeaderLabel];
+  [(UIView *)self->_navSubtitleTrailingSpacer setHidden:[(RUIHeaderView *)self _shouldHideTrailingSpacerForLabel:navSubHeaderLabel2]];
 
-  v9 = [(RUIHeaderView *)self navTitleLabel];
-  v10 = [v9 text];
-  -[UIStackView setHidden:](self->_navTitleStackView, "setHidden:", [v10 length] != 0);
+  navTitleLabel3 = [(RUIHeaderView *)self navTitleLabel];
+  text = [navTitleLabel3 text];
+  -[UIStackView setHidden:](self->_navTitleStackView, "setHidden:", [text length] != 0);
 
-  v11 = [(RUIHeaderView *)self navSubHeaderLabel];
-  v12 = [v11 text];
-  -[UIStackView setHidden:](self->_navSubtitleStackView, "setHidden:", [v12 length] != 0);
+  navSubHeaderLabel3 = [(RUIHeaderView *)self navSubHeaderLabel];
+  text2 = [navSubHeaderLabel3 text];
+  -[UIStackView setHidden:](self->_navSubtitleStackView, "setHidden:", [text2 length] != 0);
 }
 
-- (void)setSectionIsFirst:(BOOL)a3
+- (void)setSectionIsFirst:(BOOL)first
 {
-  if (self->_isFirstSection != a3)
+  if (self->_isFirstSection != first)
   {
-    self->_isFirstSection = a3;
+    self->_isFirstSection = first;
     [(RUIHeaderView *)self setNeedsLayout];
   }
 }
 
-- (void)setNavTitle:(id)a3
+- (void)setNavTitle:(id)title
 {
-  v4 = a3;
-  v5 = [(RUIHeaderView *)self navTitleLabel];
-  [v5 setText:v4];
+  titleCopy = title;
+  navTitleLabel = [(RUIHeaderView *)self navTitleLabel];
+  [navTitleLabel setText:titleCopy];
 
   [(RUIHeaderView *)self _arrangeItems];
 }
@@ -606,8 +606,8 @@
     v8 = RemoteUINavHeaderTextColor();
     [(UILabel *)self->_navTitleLabel setTextColor:v8];
 
-    v9 = [MEMORY[0x277D75348] clearColor];
-    [(UILabel *)self->_navTitleLabel setBackgroundColor:v9];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(UILabel *)self->_navTitleLabel setBackgroundColor:clearColor];
 
     [(UILabel *)self->_navTitleLabel setLineBreakMode:0];
     [(UILabel *)self->_navTitleLabel setTextAlignment:1];
@@ -618,11 +618,11 @@
   return navTitleLabel;
 }
 
-- (void)setNavSubHeaderTitle:(id)a3
+- (void)setNavSubHeaderTitle:(id)title
 {
-  v4 = a3;
-  v5 = [(RUIHeaderView *)self navSubHeaderLabel];
-  [v5 setText:v4];
+  titleCopy = title;
+  navSubHeaderLabel = [(RUIHeaderView *)self navSubHeaderLabel];
+  [navSubHeaderLabel setText:titleCopy];
 
   [(RUIHeaderView *)self _arrangeItems];
 }
@@ -643,8 +643,8 @@
     v8 = RemoteUINavSubHeaderTextColor();
     [(UILabel *)self->_navSubHeaderLabel setTextColor:v8];
 
-    v9 = [MEMORY[0x277D75348] clearColor];
-    [(UILabel *)self->_navSubHeaderLabel setBackgroundColor:v9];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(UILabel *)self->_navSubHeaderLabel setBackgroundColor:clearColor];
 
     [(UILabel *)self->_navSubHeaderLabel setLineBreakMode:0];
     [(UILabel *)self->_navSubHeaderLabel setTextAlignment:1];

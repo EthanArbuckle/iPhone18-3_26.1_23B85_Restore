@@ -1,20 +1,20 @@
 @interface NTKSeltzerAnalogHandsView
-- (id)initForDevice:(id)a3;
+- (id)initForDevice:(id)device;
 - (id)secondHandConfiguration;
 @end
 
 @implementation NTKSeltzerAnalogHandsView
 
-- (id)initForDevice:(id)a3
+- (id)initForDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v9.receiver = self;
   v9.super_class = NTKSeltzerAnalogHandsView;
-  v5 = [(NTKSeltzerAnalogHandsView *)&v9 initForDevice:v4];
+  v5 = [(NTKSeltzerAnalogHandsView *)&v9 initForDevice:deviceCopy];
   v6 = v5;
   if (v5)
   {
-    sub_4BE8(v5, v4);
+    sub_4BE8(v5, deviceCopy);
     [v6 setMinuteHandDotDiameter:v7];
   }
 
@@ -25,11 +25,11 @@
 {
   v6.receiver = self;
   v6.super_class = NTKSeltzerAnalogHandsView;
-  v3 = [(NTKSeltzerAnalogHandsView *)&v6 secondHandConfiguration];
-  v4 = [(NTKSeltzerAnalogHandsView *)self device];
-  [v3 setHandLength:{sub_4BE8(v4, v4)}];
+  secondHandConfiguration = [(NTKSeltzerAnalogHandsView *)&v6 secondHandConfiguration];
+  device = [(NTKSeltzerAnalogHandsView *)self device];
+  [secondHandConfiguration setHandLength:{sub_4BE8(device, device)}];
 
-  return v3;
+  return secondHandConfiguration;
 }
 
 @end

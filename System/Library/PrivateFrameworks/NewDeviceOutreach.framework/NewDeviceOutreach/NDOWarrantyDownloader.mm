@@ -1,19 +1,19 @@
 @interface NDOWarrantyDownloader
-- (NDOWarrantyDownloader)initWithCallingProcessBundleID:(id)a3;
-- (id)dictionaryFromURL:(id)a3 forSerialNumber:(id)a4;
-- (void)_downloadDeviceListForLocalDevices:(id)a3 sessionID:(id)a4 params:(id)a5 completionHandler:(id)a6;
-- (void)_downloadWarrantyForSerialNumber:(id)a3 sessionID:(id)a4 params:(id)a5 withCompletion:(id)a6;
-- (void)_scheduleConversionOutreachIfRequiredForWarranty:(id)a3 serialNumber:(id)a4 andCachedWarranty:(id)a5;
-- (void)_scheduleWeeklyOutreachIfRequiredForDefaultDeviceWarranty:(id)a3;
-- (void)downloadDeviceForLocalDevices:(id)a3 sessionID:(id)a4 params:(id)a5 completionHandler:(id)a6;
-- (void)downloadWarrantyForSerialNumber:(id)a3 sessionID:(id)a4 params:(id)a5 completionHandler:(id)a6;
+- (NDOWarrantyDownloader)initWithCallingProcessBundleID:(id)d;
+- (id)dictionaryFromURL:(id)l forSerialNumber:(id)number;
+- (void)_downloadDeviceListForLocalDevices:(id)devices sessionID:(id)d params:(id)params completionHandler:(id)handler;
+- (void)_downloadWarrantyForSerialNumber:(id)number sessionID:(id)d params:(id)params withCompletion:(id)completion;
+- (void)_scheduleConversionOutreachIfRequiredForWarranty:(id)warranty serialNumber:(id)number andCachedWarranty:(id)cachedWarranty;
+- (void)_scheduleWeeklyOutreachIfRequiredForDefaultDeviceWarranty:(id)warranty;
+- (void)downloadDeviceForLocalDevices:(id)devices sessionID:(id)d params:(id)params completionHandler:(id)handler;
+- (void)downloadWarrantyForSerialNumber:(id)number sessionID:(id)d params:(id)params completionHandler:(id)handler;
 @end
 
 @implementation NDOWarrantyDownloader
 
-- (NDOWarrantyDownloader)initWithCallingProcessBundleID:(id)a3
+- (NDOWarrantyDownloader)initWithCallingProcessBundleID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v11.receiver = self;
   v11.super_class = NDOWarrantyDownloader;
   v6 = [(NDOWarrantyDownloader *)&v11 init];
@@ -30,7 +30,7 @@
       sub_1000728D4();
     }
 
-    objc_storeStrong(&v6->_callingProcessBundleID, a3);
+    objc_storeStrong(&v6->_callingProcessBundleID, d);
     v8 = +[NDORequestProperties makePropertiesProvider];
     requestProperties = v6->_requestProperties;
     v6->_requestProperties = v8;
@@ -39,30 +39,30 @@
   return v6;
 }
 
-- (void)_scheduleConversionOutreachIfRequiredForWarranty:(id)a3 serialNumber:(id)a4 andCachedWarranty:(id)a5
+- (void)_scheduleConversionOutreachIfRequiredForWarranty:(id)warranty serialNumber:(id)number andCachedWarranty:(id)cachedWarranty
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (v7 && v9)
+  warrantyCopy = warranty;
+  numberCopy = number;
+  cachedWarrantyCopy = cachedWarranty;
+  v10 = cachedWarrantyCopy;
+  if (warrantyCopy && cachedWarrantyCopy)
   {
-    v11 = [v9 acOfferConversionDate];
-    if (v11)
+    acOfferConversionDate = [cachedWarrantyCopy acOfferConversionDate];
+    if (acOfferConversionDate)
     {
-      v12 = [v7 acOfferConversionDate];
-      if (!v12 || (v13 = v12, [v7 acOfferConversionDate], v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v11, "compare:", v14), v14, v13, !v15))
+      acOfferConversionDate2 = [warrantyCopy acOfferConversionDate];
+      if (!acOfferConversionDate2 || (v13 = acOfferConversionDate2, [warrantyCopy acOfferConversionDate], v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(acOfferConversionDate, "compare:", v14), v14, v13, !v15))
       {
 LABEL_12:
         v17 = _NDOLogSystem();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
         {
-          v20 = [v10 acOfferConversionDate];
-          v21 = [v7 acOfferConversionDate];
+          acOfferConversionDate3 = [v10 acOfferConversionDate];
+          acOfferConversionDate4 = [warrantyCopy acOfferConversionDate];
           v22 = 138412546;
-          v23 = v20;
+          v23 = acOfferConversionDate3;
           v24 = 2112;
-          v25 = v21;
+          v25 = acOfferConversionDate4;
           _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Not Scheduling conversion outreach %@ (%@)", &v22, 0x16u);
         }
 
@@ -73,39 +73,39 @@ LABEL_12:
 
   else
   {
-    v11 = 0;
-    if (!v7)
+    acOfferConversionDate = 0;
+    if (!warrantyCopy)
     {
       goto LABEL_12;
     }
   }
 
-  v16 = [v7 acOfferConversionDate];
-  if (!v16)
+  acOfferConversionDate5 = [warrantyCopy acOfferConversionDate];
+  if (!acOfferConversionDate5)
   {
     goto LABEL_12;
   }
 
-  v17 = v16;
+  v17 = acOfferConversionDate5;
   v18 = _NDOLogSystem();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
     v22 = 138412546;
     v23 = v17;
     v24 = 2112;
-    v25 = v8;
+    v25 = numberCopy;
     _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "Scheduling conversion outreach %@ (%@)", &v22, 0x16u);
   }
 
-  v19 = [NDOConversionOutreachActivity outreachActivityForSerialNumber:v8];
+  v19 = [NDOConversionOutreachActivity outreachActivityForSerialNumber:numberCopy];
   [NDOScheduler scheduleActivityWithDelegate:v19 forDate:v17];
 
 LABEL_14:
 }
 
-- (void)_scheduleWeeklyOutreachIfRequiredForDefaultDeviceWarranty:(id)a3
+- (void)_scheduleWeeklyOutreachIfRequiredForDefaultDeviceWarranty:(id)warranty
 {
-  v3 = a3;
+  warrantyCopy = warranty;
   if (+[NDOIntervalCallActivity isDeviceCountryEligibleForIntervalEvent])
   {
     v4 = objc_opt_new();
@@ -116,13 +116,13 @@ LABEL_14:
     [v7 doubleValue];
     v9 = v8;
 
-    if (v3)
+    if (warrantyCopy)
     {
       v10 = +[NSUserDefaults standardUserDefaults];
-      [v10 setBool:objc_msgSend(v3 forKey:{"scIntervalPairedDeviceAllowed"), @"lastStoredPairedDeviceCallAllowedValue"}];
+      [v10 setBool:objc_msgSend(warrantyCopy forKey:{"scIntervalPairedDeviceAllowed"), @"lastStoredPairedDeviceCallAllowedValue"}];
 
-      v11 = [v3 scIntervalInDays];
-      [v11 doubleValue];
+      scIntervalInDays = [warrantyCopy scIntervalInDays];
+      [scIntervalInDays doubleValue];
       v13 = v12;
 
       v14 = +[NSUserDefaults standardUserDefaults];
@@ -163,16 +163,16 @@ LABEL_14:
       [v22 doubleForKey:@"lastStoredIntervalDaysValue"];
       v24 = v23;
 
-      v25 = [v5 scheduledActivityDate];
-      if (!v25)
+      scheduledActivityDate = [v5 scheduledActivityDate];
+      if (!scheduledActivityDate)
       {
         goto LABEL_28;
       }
 
-      v26 = v25;
-      v27 = [v5 scheduledActivityDate];
-      v28 = v27;
-      if (v27 && v24 != v13)
+      v26 = scheduledActivityDate;
+      scheduledActivityDate2 = [v5 scheduledActivityDate];
+      v28 = scheduledActivityDate2;
+      if (scheduledActivityDate2 && v24 != v13)
       {
 
 LABEL_28:
@@ -190,22 +190,22 @@ LABEL_28:
         }
 
         [v5 scheduleActivityForDate:v47];
-        v52 = +[NSUserDefaults standardUserDefaults];
-        [v52 setDouble:@"lastStoredIntervalDaysValue" forKey:v13];
+        scheduledActivityDate5 = +[NSUserDefaults standardUserDefaults];
+        [scheduledActivityDate5 setDouble:@"lastStoredIntervalDaysValue" forKey:v13];
         goto LABEL_35;
       }
 
-      v48 = [v5 scheduledActivityDate];
+      scheduledActivityDate3 = [v5 scheduledActivityDate];
       v49 = +[NSDate date];
-      v50 = [v48 compare:v49];
+      v50 = [scheduledActivityDate3 compare:v49];
 
       if (v50 == -1)
       {
         goto LABEL_28;
       }
 
-      v51 = [v5 scheduledActivityDate];
-      if (v51)
+      scheduledActivityDate4 = [v5 scheduledActivityDate];
+      if (scheduledActivityDate4)
       {
 
         if (v24 == 0.0 || v24 == v13)
@@ -223,11 +223,11 @@ LABEL_28:
       v47 = _NDOLogSystem();
       if (os_log_type_enabled(v47, OS_LOG_TYPE_DEFAULT))
       {
-        v52 = [v5 scheduledActivityDate];
+        scheduledActivityDate5 = [v5 scheduledActivityDate];
         v59 = 136446722;
         v60 = "[NDOWarrantyDownloader _scheduleWeeklyOutreachIfRequiredForDefaultDeviceWarranty:]";
         v61 = 2112;
-        v62 = *&v52;
+        v62 = *&scheduledActivityDate5;
         v63 = 2048;
         v64 = v24;
         v53 = "%{public}s: Didn't schedule interval call with already scheduled activity: %@ and last interval value: %ld";
@@ -243,17 +243,17 @@ LABEL_35:
       goto LABEL_40;
     }
 
-    v29 = [v5 scheduledActivityDate];
-    if (v29)
+    scheduledActivityDate6 = [v5 scheduledActivityDate];
+    if (scheduledActivityDate6)
     {
-      v30 = v29;
-      v31 = [v5 scheduledActivityDate];
-      if (v31)
+      v30 = scheduledActivityDate6;
+      scheduledActivityDate7 = [v5 scheduledActivityDate];
+      if (scheduledActivityDate7)
       {
-        v32 = v31;
+        v32 = scheduledActivityDate7;
         v33 = +[NSDate date];
-        v34 = [v5 scheduledActivityDate];
-        v35 = [v33 compare:v34];
+        scheduledActivityDate8 = [v5 scheduledActivityDate];
+        v35 = [v33 compare:scheduledActivityDate8];
 
         if (v35 == 1)
         {
@@ -268,11 +268,11 @@ LABEL_35:
       v47 = _NDOLogSystem();
       if (os_log_type_enabled(v47, OS_LOG_TYPE_DEFAULT))
       {
-        v52 = [v5 scheduledActivityDate];
+        scheduledActivityDate5 = [v5 scheduledActivityDate];
         v59 = 136446466;
         v60 = "[NDOWarrantyDownloader _scheduleWeeklyOutreachIfRequiredForDefaultDeviceWarranty:]";
         v61 = 2112;
-        v62 = *&v52;
+        v62 = *&scheduledActivityDate5;
         v53 = "%{public}s: No warranty present. Found interval call already scheduled for: %@";
         v54 = v47;
         v55 = 22;
@@ -334,12 +334,12 @@ LABEL_18:
 LABEL_41:
 }
 
-- (void)_downloadDeviceListForLocalDevices:(id)a3 sessionID:(id)a4 params:(id)a5 completionHandler:(id)a6
+- (void)_downloadDeviceListForLocalDevices:(id)devices sessionID:(id)d params:(id)params completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  devicesCopy = devices;
+  dCopy = d;
+  paramsCopy = params;
+  handlerCopy = handler;
   v14 = _NDOLogSystem();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
@@ -353,8 +353,8 @@ LABEL_41:
   v17 = [NSURL URLWithString:v16];
 
   v18 = +[NDODeviceProvider sharedProvider];
-  v19 = [v18 defaultDevice];
-  v20 = [v19 serialNumber];
+  defaultDevice = [v18 defaultDevice];
+  serialNumber = [defaultDevice serialNumber];
 
   v21 = dispatch_group_create();
   dispatch_group_enter(v21);
@@ -371,26 +371,26 @@ LABEL_41:
   p_buf = &buf;
   v22 = v21;
   v29 = v22;
-  [(NDOWarrantyDownloader *)self _downloadDeviceListFromServerURL:v17 serialNumber:v20 localDevices:v10 sessionID:v11 params:v12 withRetries:2 completionBlock:v28];
+  [(NDOWarrantyDownloader *)self _downloadDeviceListFromServerURL:v17 serialNumber:serialNumber localDevices:devicesCopy sessionID:dCopy params:paramsCopy withRetries:2 completionBlock:v28];
   v23 = dispatch_get_global_queue(21, 0);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100007E28;
   block[3] = &unk_10009A750;
-  v26 = v13;
+  v26 = handlerCopy;
   v27 = &buf;
-  v24 = v13;
+  v24 = handlerCopy;
   dispatch_group_notify(v22, v23, block);
 
   _Block_object_dispose(&buf, 8);
 }
 
-- (void)_downloadWarrantyForSerialNumber:(id)a3 sessionID:(id)a4 params:(id)a5 withCompletion:(id)a6
+- (void)_downloadWarrantyForSerialNumber:(id)number sessionID:(id)d params:(id)params withCompletion:(id)completion
 {
-  v10 = a3;
-  v26 = a4;
-  v11 = a5;
-  v12 = a6;
+  numberCopy = number;
+  dCopy = d;
+  paramsCopy = params;
+  completionCopy = completion;
   v35 = 0;
   v36 = &v35;
   v37 = 0x3032000000;
@@ -398,10 +398,10 @@ LABEL_41:
   v39 = sub_100003F74;
   v40 = 0;
   v13 = +[NDODeviceProvider sharedProvider];
-  v14 = [v13 defaultDevice];
-  v15 = [v14 serialNumber];
+  defaultDevice = [v13 defaultDevice];
+  serialNumber = [defaultDevice serialNumber];
 
-  if (v10 && v15 && [v15 isEqualToString:v10])
+  if (numberCopy && serialNumber && [serialNumber isEqualToString:numberCopy])
   {
     v16 = +[NSUserDefaults standardUserDefaults];
     v17 = [v16 objectForKey:@"WarrantyURL"];
@@ -420,7 +420,7 @@ LABEL_41:
   v20 = dispatch_group_create();
   if ([v18 isFileURL])
   {
-    v21 = [(NDOWarrantyDownloader *)self dictionaryFromURL:v18 forSerialNumber:v10];
+    v21 = [(NDOWarrantyDownloader *)self dictionaryFromURL:v18 forSerialNumber:numberCopy];
     v22 = v36[5];
     v36[5] = v21;
   }
@@ -434,7 +434,7 @@ LABEL_41:
     v32[3] = &unk_10009A6D8;
     v34 = &v35;
     v33 = v20;
-    [(NDOWarrantyDownloader *)self _downloadWarrantyFromServerURL:v18 serialNumber:v10 sessionID:v26 params:v11 withRetries:2 completionBlock:v32];
+    [(NDOWarrantyDownloader *)self _downloadWarrantyFromServerURL:v18 serialNumber:numberCopy sessionID:dCopy params:paramsCopy withRetries:2 completionBlock:v32];
     v22 = v33;
   }
 
@@ -444,23 +444,23 @@ LABEL_41:
   block[2] = sub_1000086CC;
   block[3] = &unk_10009A7A0;
   v31 = v19;
-  v29 = v12;
+  v29 = completionCopy;
   v30 = &v35;
   block[4] = self;
-  v28 = v10;
-  v24 = v10;
-  v25 = v12;
+  v28 = numberCopy;
+  v24 = numberCopy;
+  v25 = completionCopy;
   dispatch_group_notify(v20, v23, block);
 
   _Block_object_dispose(&v35, 8);
 }
 
-- (void)downloadDeviceForLocalDevices:(id)a3 sessionID:(id)a4 params:(id)a5 completionHandler:(id)a6
+- (void)downloadDeviceForLocalDevices:(id)devices sessionID:(id)d params:(id)params completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  devicesCopy = devices;
+  dCopy = d;
+  paramsCopy = params;
+  handlerCopy = handler;
   v14 = _NDOLogSystem();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
@@ -473,31 +473,31 @@ LABEL_41:
   v19[1] = 3221225472;
   v19[2] = sub_100008E28;
   v19[3] = &unk_10009A7C8;
-  v22 = v12;
-  v23 = v13;
+  v22 = paramsCopy;
+  v23 = handlerCopy;
   v19[4] = self;
-  v20 = v10;
-  v21 = v11;
-  v15 = v12;
-  v16 = v11;
-  v17 = v10;
-  v18 = v13;
+  v20 = devicesCopy;
+  v21 = dCopy;
+  v15 = paramsCopy;
+  v16 = dCopy;
+  v17 = devicesCopy;
+  v18 = handlerCopy;
   [NDOServerVersionUtilities serverVersionSupported:v19];
 }
 
-- (void)downloadWarrantyForSerialNumber:(id)a3 sessionID:(id)a4 params:(id)a5 completionHandler:(id)a6
+- (void)downloadWarrantyForSerialNumber:(id)number sessionID:(id)d params:(id)params completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  numberCopy = number;
+  dCopy = d;
+  paramsCopy = params;
+  handlerCopy = handler;
   v14 = _NDOLogSystem();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446467;
     v26 = "[NDOWarrantyDownloader downloadWarrantyForSerialNumber:sessionID:params:completionHandler:]";
     v27 = 2113;
-    v28 = v10;
+    v28 = numberCopy;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "%{public}s: %{private}@", buf, 0x16u);
   }
 
@@ -508,27 +508,27 @@ LABEL_41:
   v20[1] = 3221225472;
   v20[2] = sub_1000090AC;
   v20[3] = &unk_10009A7C8;
-  v23 = v12;
-  v24 = v13;
+  v23 = paramsCopy;
+  v24 = handlerCopy;
   v20[4] = self;
-  v21 = v10;
-  v22 = v11;
-  v16 = v12;
-  v17 = v11;
-  v18 = v10;
-  v19 = v13;
+  v21 = numberCopy;
+  v22 = dCopy;
+  v16 = paramsCopy;
+  v17 = dCopy;
+  v18 = numberCopy;
+  v19 = handlerCopy;
   [NDOServerVersionUtilities serverVersionSupported:v20];
 }
 
-- (id)dictionaryFromURL:(id)a3 forSerialNumber:(id)a4
+- (id)dictionaryFromURL:(id)l forSerialNumber:(id)number
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 pathExtension];
-  v8 = [v5 URLByDeletingPathExtension];
-  v9 = [NSString stringWithFormat:@"%@.%@", v6, v7];
+  lCopy = l;
+  numberCopy = number;
+  pathExtension = [lCopy pathExtension];
+  uRLByDeletingPathExtension = [lCopy URLByDeletingPathExtension];
+  v9 = [NSString stringWithFormat:@"%@.%@", numberCopy, pathExtension];
 
-  v10 = [v8 URLByAppendingPathExtension:v9];
+  v10 = [uRLByDeletingPathExtension URLByAppendingPathExtension:v9];
 
   v11 = [NSData dataWithContentsOfURL:v10];
   v12 = _NDOLogSystem();
@@ -561,11 +561,11 @@ LABEL_8:
   if (v13)
   {
     *buf = 138412290;
-    v20 = v5;
+    v20 = lCopy;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "loading warranty from: %@", buf, 0xCu);
   }
 
-  v11 = [NSData dataWithContentsOfURL:v5];
+  v11 = [NSData dataWithContentsOfURL:lCopy];
   if (v11)
   {
     goto LABEL_8;
@@ -574,7 +574,7 @@ LABEL_8:
   v15 = _NDOLogSystem();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
   {
-    sub_100072BF4(v5, v15);
+    sub_100072BF4(lCopy, v15);
   }
 
   v11 = 0;

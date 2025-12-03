@@ -1,83 +1,83 @@
 @interface MXClientBoundFrame
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsPayload:(id)a3;
+- (int)StringAsPayload:(id)payload;
 - (int)payload;
 - (unint64_t)hash;
 - (void)clearOneofValuesForPayload;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setAsrResult:(id)a3;
-- (void)setProcessingError:(id)a3;
-- (void)setRequestComplete:(id)a3;
-- (void)setRequestMitigated:(id)a3;
-- (void)setSpeechProfileRebuildNeeded:(id)a3;
-- (void)setSpeechProfileResponse:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setAsrResult:(id)result;
+- (void)setProcessingError:(id)error;
+- (void)setRequestComplete:(id)complete;
+- (void)setRequestMitigated:(id)mitigated;
+- (void)setSpeechProfileRebuildNeeded:(id)needed;
+- (void)setSpeechProfileResponse:(id)response;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MXClientBoundFrame
 
-- (void)setRequestComplete:(id)a3
+- (void)setRequestComplete:(id)complete
 {
-  v4 = a3;
+  completeCopy = complete;
   [(MXClientBoundFrame *)self clearOneofValuesForPayload];
   *&self->_has |= 1u;
   self->_payload = 1;
   requestComplete = self->_requestComplete;
-  self->_requestComplete = v4;
+  self->_requestComplete = completeCopy;
 }
 
-- (void)setProcessingError:(id)a3
+- (void)setProcessingError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   [(MXClientBoundFrame *)self clearOneofValuesForPayload];
   *&self->_has |= 1u;
   self->_payload = 2;
   processingError = self->_processingError;
-  self->_processingError = v4;
+  self->_processingError = errorCopy;
 }
 
-- (void)setAsrResult:(id)a3
+- (void)setAsrResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   [(MXClientBoundFrame *)self clearOneofValuesForPayload];
   *&self->_has |= 1u;
   self->_payload = 3;
   asrResult = self->_asrResult;
-  self->_asrResult = v4;
+  self->_asrResult = resultCopy;
 }
 
-- (void)setSpeechProfileRebuildNeeded:(id)a3
+- (void)setSpeechProfileRebuildNeeded:(id)needed
 {
-  v4 = a3;
+  neededCopy = needed;
   [(MXClientBoundFrame *)self clearOneofValuesForPayload];
   *&self->_has |= 1u;
   self->_payload = 4;
   speechProfileRebuildNeeded = self->_speechProfileRebuildNeeded;
-  self->_speechProfileRebuildNeeded = v4;
+  self->_speechProfileRebuildNeeded = neededCopy;
 }
 
-- (void)setRequestMitigated:(id)a3
+- (void)setRequestMitigated:(id)mitigated
 {
-  v4 = a3;
+  mitigatedCopy = mitigated;
   [(MXClientBoundFrame *)self clearOneofValuesForPayload];
   *&self->_has |= 1u;
   self->_payload = 5;
   requestMitigated = self->_requestMitigated;
-  self->_requestMitigated = v4;
+  self->_requestMitigated = mitigatedCopy;
 }
 
-- (void)setSpeechProfileResponse:(id)a3
+- (void)setSpeechProfileResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   [(MXClientBoundFrame *)self clearOneofValuesForPayload];
   *&self->_has |= 1u;
   self->_payload = 6;
   speechProfileResponse = self->_speechProfileResponse;
-  self->_speechProfileResponse = v4;
+  self->_speechProfileResponse = responseCopy;
 }
 
 - (int)payload
@@ -93,40 +93,40 @@
   }
 }
 
-- (int)StringAsPayload:(id)a3
+- (int)StringAsPayload:(id)payload
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"PBUNSET"])
+  payloadCopy = payload;
+  if ([payloadCopy isEqualToString:@"PBUNSET"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"request_complete"])
+  else if ([payloadCopy isEqualToString:@"request_complete"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"processing_error"])
+  else if ([payloadCopy isEqualToString:@"processing_error"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"asr_result"])
+  else if ([payloadCopy isEqualToString:@"asr_result"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"speech_profile_rebuild_needed"])
+  else if ([payloadCopy isEqualToString:@"speech_profile_rebuild_needed"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"request_mitigated"])
+  else if ([payloadCopy isEqualToString:@"request_mitigated"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"speech_profile_response"])
+  else if ([payloadCopy isEqualToString:@"speech_profile_response"])
   {
     v4 = 6;
   }
@@ -168,55 +168,55 @@
   v8.receiver = self;
   v8.super_class = MXClientBoundFrame;
   v4 = [(MXClientBoundFrame *)&v8 description];
-  v5 = [(MXClientBoundFrame *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(MXClientBoundFrame *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   requestComplete = self->_requestComplete;
   if (requestComplete)
   {
-    v5 = [(MXRequestComplete *)requestComplete dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"request_complete"];
+    dictionaryRepresentation = [(MXRequestComplete *)requestComplete dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"request_complete"];
   }
 
   processingError = self->_processingError;
   if (processingError)
   {
-    v7 = [(MXProcessingError *)processingError dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"processing_error"];
+    dictionaryRepresentation2 = [(MXProcessingError *)processingError dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"processing_error"];
   }
 
   asrResult = self->_asrResult;
   if (asrResult)
   {
-    v9 = [(MXASRResult *)asrResult dictionaryRepresentation];
-    [v3 setObject:v9 forKey:@"asr_result"];
+    dictionaryRepresentation3 = [(MXASRResult *)asrResult dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation3 forKey:@"asr_result"];
   }
 
   speechProfileRebuildNeeded = self->_speechProfileRebuildNeeded;
   if (speechProfileRebuildNeeded)
   {
-    v11 = [(MXSpeechProfileRebuildNeeded *)speechProfileRebuildNeeded dictionaryRepresentation];
-    [v3 setObject:v11 forKey:@"speech_profile_rebuild_needed"];
+    dictionaryRepresentation4 = [(MXSpeechProfileRebuildNeeded *)speechProfileRebuildNeeded dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation4 forKey:@"speech_profile_rebuild_needed"];
   }
 
   requestMitigated = self->_requestMitigated;
   if (requestMitigated)
   {
-    v13 = [(MXRequestMitigated *)requestMitigated dictionaryRepresentation];
-    [v3 setObject:v13 forKey:@"request_mitigated"];
+    dictionaryRepresentation5 = [(MXRequestMitigated *)requestMitigated dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation5 forKey:@"request_mitigated"];
   }
 
   speechProfileResponse = self->_speechProfileResponse;
   if (speechProfileResponse)
   {
-    v15 = [(MXSpeechProfileBuildResponse *)speechProfileResponse dictionaryRepresentation];
-    [v3 setObject:v15 forKey:@"speech_profile_response"];
+    dictionaryRepresentation6 = [(MXSpeechProfileBuildResponse *)speechProfileResponse dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation6 forKey:@"speech_profile_response"];
   }
 
   if (*&self->_has)
@@ -232,103 +232,103 @@
       v17 = off_27991BD00[payload];
     }
 
-    [v3 setObject:v17 forKey:@"payload"];
+    [dictionary setObject:v17 forKey:@"payload"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_requestComplete)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_processingError)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_asrResult)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_speechProfileRebuildNeeded)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_requestMitigated)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_speechProfileResponse)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[4] = self->_payload;
-    *(v4 + 64) |= 1u;
+    toCopy[4] = self->_payload;
+    *(toCopy + 64) |= 1u;
   }
 
-  v5 = v4;
+  v5 = toCopy;
   if (self->_requestComplete)
   {
-    [v4 setRequestComplete:?];
-    v4 = v5;
+    [toCopy setRequestComplete:?];
+    toCopy = v5;
   }
 
   if (self->_processingError)
   {
     [v5 setProcessingError:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_asrResult)
   {
     [v5 setAsrResult:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_speechProfileRebuildNeeded)
   {
     [v5 setSpeechProfileRebuildNeeded:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_requestMitigated)
   {
     [v5 setRequestMitigated:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_speechProfileResponse)
   {
     [v5 setSpeechProfileResponse:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -336,51 +336,51 @@
     *(v5 + 64) |= 1u;
   }
 
-  v7 = [(MXRequestComplete *)self->_requestComplete copyWithZone:a3];
+  v7 = [(MXRequestComplete *)self->_requestComplete copyWithZone:zone];
   v8 = v6[4];
   v6[4] = v7;
 
-  v9 = [(MXProcessingError *)self->_processingError copyWithZone:a3];
+  v9 = [(MXProcessingError *)self->_processingError copyWithZone:zone];
   v10 = v6[3];
   v6[3] = v9;
 
-  v11 = [(MXASRResult *)self->_asrResult copyWithZone:a3];
+  v11 = [(MXASRResult *)self->_asrResult copyWithZone:zone];
   v12 = v6[1];
   v6[1] = v11;
 
-  v13 = [(MXSpeechProfileRebuildNeeded *)self->_speechProfileRebuildNeeded copyWithZone:a3];
+  v13 = [(MXSpeechProfileRebuildNeeded *)self->_speechProfileRebuildNeeded copyWithZone:zone];
   v14 = v6[6];
   v6[6] = v13;
 
-  v15 = [(MXRequestMitigated *)self->_requestMitigated copyWithZone:a3];
+  v15 = [(MXRequestMitigated *)self->_requestMitigated copyWithZone:zone];
   v16 = v6[5];
   v6[5] = v15;
 
-  v17 = [(MXSpeechProfileBuildResponse *)self->_speechProfileResponse copyWithZone:a3];
+  v17 = [(MXSpeechProfileBuildResponse *)self->_speechProfileResponse copyWithZone:zone];
   v18 = v6[7];
   v6[7] = v17;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_19;
   }
 
-  v5 = *(v4 + 64);
+  v5 = *(equalCopy + 64);
   if (*&self->_has)
   {
-    if ((*(v4 + 64) & 1) == 0 || self->_payload != *(v4 + 4))
+    if ((*(equalCopy + 64) & 1) == 0 || self->_payload != *(equalCopy + 4))
     {
       goto LABEL_19;
     }
   }
 
-  else if (*(v4 + 64))
+  else if (*(equalCopy + 64))
   {
 LABEL_19:
     v12 = 0;
@@ -388,13 +388,13 @@ LABEL_19:
   }
 
   requestComplete = self->_requestComplete;
-  if (requestComplete | *(v4 + 4) && ![(MXRequestComplete *)requestComplete isEqual:?])
+  if (requestComplete | *(equalCopy + 4) && ![(MXRequestComplete *)requestComplete isEqual:?])
   {
     goto LABEL_19;
   }
 
   processingError = self->_processingError;
-  if (processingError | *(v4 + 3))
+  if (processingError | *(equalCopy + 3))
   {
     if (![(MXProcessingError *)processingError isEqual:?])
     {
@@ -403,7 +403,7 @@ LABEL_19:
   }
 
   asrResult = self->_asrResult;
-  if (asrResult | *(v4 + 1))
+  if (asrResult | *(equalCopy + 1))
   {
     if (![(MXASRResult *)asrResult isEqual:?])
     {
@@ -412,7 +412,7 @@ LABEL_19:
   }
 
   speechProfileRebuildNeeded = self->_speechProfileRebuildNeeded;
-  if (speechProfileRebuildNeeded | *(v4 + 6))
+  if (speechProfileRebuildNeeded | *(equalCopy + 6))
   {
     if (![(MXSpeechProfileRebuildNeeded *)speechProfileRebuildNeeded isEqual:?])
     {
@@ -421,7 +421,7 @@ LABEL_19:
   }
 
   requestMitigated = self->_requestMitigated;
-  if (requestMitigated | *(v4 + 5))
+  if (requestMitigated | *(equalCopy + 5))
   {
     if (![(MXRequestMitigated *)requestMitigated isEqual:?])
     {
@@ -430,7 +430,7 @@ LABEL_19:
   }
 
   speechProfileResponse = self->_speechProfileResponse;
-  if (speechProfileResponse | *(v4 + 7))
+  if (speechProfileResponse | *(equalCopy + 7))
   {
     v12 = [(MXSpeechProfileBuildResponse *)speechProfileResponse isEqual:?];
   }
@@ -465,13 +465,13 @@ LABEL_20:
   return v6 ^ v8 ^ [(MXSpeechProfileBuildResponse *)self->_speechProfileResponse hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 64))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 64))
   {
-    self->_payload = *(v4 + 4);
+    self->_payload = *(fromCopy + 4);
     *&self->_has |= 1u;
   }
 

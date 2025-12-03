@@ -1,31 +1,31 @@
 @interface BLTSendQueueSerializer
-- (BLTSendQueueSerializer)initWithUsesMessageIdentifiers:(BOOL)a3;
-- (BOOL)handleFileURL:(id)a3 protobufHandler:(id)a4;
-- (void)add:(id)a3 type:(unsigned __int16)a4 messageIdentifier:(id *)a5;
+- (BLTSendQueueSerializer)initWithUsesMessageIdentifiers:(BOOL)identifiers;
+- (BOOL)handleFileURL:(id)l protobufHandler:(id)handler;
+- (void)add:(id)add type:(unsigned __int16)type messageIdentifier:(id *)identifier;
 - (void)cleanup;
-- (void)sendWithSender:(id)a3 timeout:(id)a4 responseHandlers:(id)a5 didSend:(id)a6 didQueue:(id)a7;
-- (void)setSendFileURL:(id)a3;
+- (void)sendWithSender:(id)sender timeout:(id)timeout responseHandlers:(id)handlers didSend:(id)send didQueue:(id)queue;
+- (void)setSendFileURL:(id)l;
 @end
 
 @implementation BLTSendQueueSerializer
 
-- (BLTSendQueueSerializer)initWithUsesMessageIdentifiers:(BOOL)a3
+- (BLTSendQueueSerializer)initWithUsesMessageIdentifiers:(BOOL)identifiers
 {
   v5.receiver = self;
   v5.super_class = BLTSendQueueSerializer;
   result = [(BLTSendQueueSerializer *)&v5 init];
   if (result)
   {
-    result->_usesMessageIdentifiers = a3;
+    result->_usesMessageIdentifiers = identifiers;
   }
 
   return result;
 }
 
-- (void)setSendFileURL:(id)a3
+- (void)setSendFileURL:(id)l
 {
-  v4 = a3;
-  if (!v4)
+  lCopy = l;
+  if (!lCopy)
   {
     v5 = blt_send_queue_log();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -34,7 +34,7 @@
     }
   }
 
-  v6 = [v4 copy];
+  v6 = [lCopy copy];
   sendFileURL = self->_sendFileURL;
   self->_sendFileURL = v6;
 
@@ -56,14 +56,14 @@
   v5 = self->_sendFileURL;
   if (v5)
   {
-    v6 = [(NSURL *)v5 lastPathComponent];
-    v7 = [(NSURL *)self->_sendFileURL URLByDeletingLastPathComponent];
-    v8 = [v7 path];
+    lastPathComponent = [(NSURL *)v5 lastPathComponent];
+    uRLByDeletingLastPathComponent = [(NSURL *)self->_sendFileURL URLByDeletingLastPathComponent];
+    path = [uRLByDeletingLastPathComponent path];
 
-    v9 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     v32 = 0;
-    v25 = v8;
-    v10 = [v9 contentsOfDirectoryAtPath:v8 error:&v32];
+    v25 = path;
+    v10 = [defaultManager contentsOfDirectoryAtPath:path error:&v32];
     v11 = v32;
 
     v30 = 0u;
@@ -88,12 +88,12 @@
           }
 
           v17 = *(*(&v28 + 1) + 8 * i);
-          if ([(NSURL *)v17 containsString:v6, v24])
+          if ([(NSURL *)v17 containsString:lastPathComponent, v24])
           {
-            v18 = [MEMORY[0x277CCAA00] defaultManager];
+            defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
             v19 = [v25 stringByAppendingPathComponent:v17];
             v27 = v11;
-            v20 = [v18 removeItemAtPath:v19 error:&v27];
+            v20 = [defaultManager2 removeItemAtPath:v19 error:&v27];
             v21 = v27;
 
             if ((v20 & 1) == 0)
@@ -123,32 +123,32 @@
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)add:(id)a3 type:(unsigned __int16)a4 messageIdentifier:(id *)a5
+- (void)add:(id)add type:(unsigned __int16)type messageIdentifier:(id *)identifier
 {
   v36[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v32 = a4;
-  v9 = [(BLTSendQueueSerializer *)self sendFileURL];
-  if (v9)
+  addCopy = add;
+  typeCopy = type;
+  sendFileURL = [(BLTSendQueueSerializer *)self sendFileURL];
+  if (sendFileURL)
   {
-    v10 = v9;
-    v11 = [v9 fileSystemRepresentation];
-    if (v11)
+    v10 = sendFileURL;
+    fileSystemRepresentation = [sendFileURL fileSystemRepresentation];
+    if (fileSystemRepresentation)
     {
-      v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:v11];
-      v13 = [MEMORY[0x277CCAA00] defaultManager];
-      v14 = [v13 fileExistsAtPath:v12];
+      v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:fileSystemRepresentation];
+      defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+      v14 = [defaultManager fileExistsAtPath:v12];
 
       if (v14)
       {
         goto LABEL_5;
       }
 
-      v15 = [MEMORY[0x277CCAA00] defaultManager];
+      defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
       v35 = *MEMORY[0x277CCA1B0];
       v36[0] = *MEMORY[0x277CCA1B8];
       v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v36 forKeys:&v35 count:1];
-      v17 = [v15 createFileAtPath:v12 contents:0 attributes:v16];
+      v17 = [defaultManager2 createFileAtPath:v12 contents:0 attributes:v16];
 
       if (v17)
       {
@@ -159,43 +159,43 @@ LABEL_5:
         if (v18)
         {
           [v18 seekToEndOfFile];
-          v20 = [MEMORY[0x277CBEA90] dataWithBytes:&v32 length:2];
+          v20 = [MEMORY[0x277CBEA90] dataWithBytes:&typeCopy length:2];
           _writeDataToFile(v20, v18);
 
-          v21 = [v8 data];
+          data = [addCopy data];
           v22 = blt_ids_log();
           if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
           {
-            v23 = [v21 length];
+            v23 = [data length];
             *buf = 134217984;
             v34 = v23;
             _os_log_impl(&dword_241FB3000, v22, OS_LOG_TYPE_DEFAULT, "Serializing protobuf bytes: %lu", buf, 0xCu);
           }
 
-          _writeDataToFile(v21, v18);
+          _writeDataToFile(data, v18);
           if ([(BLTSendQueueSerializer *)self usesMessageIdentifiers])
           {
-            v24 = [MEMORY[0x277CCAD78] UUID];
-            v25 = [v24 UUIDString];
-            v26 = [@"blt-" stringByAppendingString:v25];
+            uUID = [MEMORY[0x277CCAD78] UUID];
+            uUIDString = [uUID UUIDString];
+            v26 = [@"blt-" stringByAppendingString:uUIDString];
 
             v27 = [v26 dataUsingEncoding:4];
             _writeDataToFile(v27, v18);
 
-            if (a5)
+            if (identifier)
             {
               v28 = v26;
-              *a5 = v26;
+              *identifier = v26;
             }
           }
         }
 
         else
         {
-          v21 = blt_send_queue_log();
-          if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
+          data = blt_send_queue_log();
+          if (os_log_type_enabled(data, OS_LOG_TYPE_ERROR))
           {
-            [BLTSendQueueSerializer add:v19 type:v21 messageIdentifier:?];
+            [BLTSendQueueSerializer add:v19 type:data messageIdentifier:?];
           }
         }
       }
@@ -236,36 +236,36 @@ LABEL_5:
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sendWithSender:(id)a3 timeout:(id)a4 responseHandlers:(id)a5 didSend:(id)a6 didQueue:(id)a7
+- (void)sendWithSender:(id)sender timeout:(id)timeout responseHandlers:(id)handlers didSend:(id)send didQueue:(id)queue
 {
   v44 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = [(BLTSendQueueSerializer *)self sendFileURL];
-  v18 = [MEMORY[0x277CCAD78] UUID];
-  v19 = [v18 UUIDString];
-  v20 = [v17 URLByAppendingPathExtension:v19];
+  senderCopy = sender;
+  timeoutCopy = timeout;
+  handlersCopy = handlers;
+  sendCopy = send;
+  queueCopy = queue;
+  sendFileURL = [(BLTSendQueueSerializer *)self sendFileURL];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
+  v20 = [sendFileURL URLByAppendingPathExtension:uUIDString];
 
   if (v20)
   {
-    v31 = v13;
-    v21 = v12;
-    v22 = [MEMORY[0x277CCAA00] defaultManager];
+    v31 = timeoutCopy;
+    v21 = senderCopy;
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     v37 = 0;
-    v23 = [v22 linkItemAtURL:v17 toURL:v20 error:&v37];
+    v23 = [defaultManager linkItemAtURL:sendFileURL toURL:v20 error:&v37];
     v24 = v37;
 
     if (v23)
     {
-      v25 = [MEMORY[0x277CCAA00] defaultManager];
+      defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
       v36 = v24;
-      v26 = [v25 removeItemAtURL:v17 error:&v36];
+      v26 = [defaultManager2 removeItemAtURL:sendFileURL error:&v36];
       v27 = v36;
 
-      v12 = v21;
+      senderCopy = v21;
       if ((v26 & 1) == 0)
       {
         v28 = blt_send_queue_log();
@@ -280,17 +280,17 @@ LABEL_5:
       v32[2] = __83__BLTSendQueueSerializer_sendWithSender_timeout_responseHandlers_didSend_didQueue___block_invoke;
       v32[3] = &unk_278D31D38;
       v33 = v20;
-      v34 = v17;
-      v35 = v15;
-      v13 = v31;
-      [v21 sendFileURL:v33 withTimeout:v31 extraMetadata:0 responseHandlers:v14 didSend:v32 didQueue:v16];
+      v34 = sendFileURL;
+      v35 = sendCopy;
+      timeoutCopy = v31;
+      [v21 sendFileURL:v33 withTimeout:v31 extraMetadata:0 responseHandlers:handlersCopy didSend:v32 didQueue:queueCopy];
 
       v29 = v33;
       goto LABEL_12;
     }
 
     v27 = v24;
-    v12 = v21;
+    senderCopy = v21;
   }
 
   else
@@ -302,7 +302,7 @@ LABEL_5:
   if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412802;
-    v39 = v17;
+    v39 = sendFileURL;
     v40 = 2112;
     v41 = v20;
     v42 = 2112;
@@ -340,11 +340,11 @@ void __83__BLTSendQueueSerializer_sendWithSender_timeout_responseHandlers_didSen
   }
 }
 
-- (BOOL)handleFileURL:(id)a3 protobufHandler:(id)a4
+- (BOOL)handleFileURL:(id)l protobufHandler:(id)handler
 {
   v40 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  handlerCopy = handler;
   v8 = blt_send_queue_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -353,7 +353,7 @@ void __83__BLTSendQueueSerializer_sendWithSender_timeout_responseHandlers_didSen
   }
 
   v35 = 0;
-  v9 = [MEMORY[0x277CCA9F8] fileHandleForReadingFromURL:v6 error:&v35];
+  v9 = [MEMORY[0x277CCA9F8] fileHandleForReadingFromURL:lCopy error:&v35];
   v10 = v35;
   v11 = v10;
   if (v9)
@@ -399,20 +399,20 @@ void __83__BLTSendQueueSerializer_sendWithSender_timeout_responseHandlers_didSen
         if (v16)
         {
           v21 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v16 encoding:4];
-          v22 = [v20 context];
+          context = [v20 context];
 
-          if (!v22)
+          if (!context)
           {
             v23 = objc_alloc(MEMORY[0x277D189D8]);
             v24 = [v23 initWithDictionary:MEMORY[0x277CBEC10] boostContext:0];
             [v20 setContext:v24];
           }
 
-          v25 = [v20 context];
-          [v25 setOutgoingResponseIdentifier:v21];
+          context2 = [v20 context];
+          [context2 setOutgoingResponseIdentifier:v21];
         }
 
-        [v7 handleIDSProtobuf:v20];
+        [handlerCopy handleIDSProtobuf:v20];
         v26 = _readDataFromFile(v9);
 
         v27 = _readDataFromFile(v9);
@@ -456,7 +456,7 @@ LABEL_28:
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v37 = v6;
+      v37 = lCopy;
       v38 = 2112;
       v39 = v11;
       _os_log_impl(&dword_241FB3000, v17, OS_LOG_TYPE_ERROR, "Encountered error opening file %@: %@", buf, 0x16u);

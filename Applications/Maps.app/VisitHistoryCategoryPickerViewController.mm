@@ -1,12 +1,12 @@
 @interface VisitHistoryCategoryPickerViewController
-- (_TtC4Maps40VisitHistoryCategoryPickerViewController)initWithCoder:(id)a3;
-- (_TtC4Maps40VisitHistoryCategoryPickerViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC4Maps40VisitHistoryCategoryPickerViewController)initWithCoder:(id)coder;
+- (_TtC4Maps40VisitHistoryCategoryPickerViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLoad;
 @end
 
 @implementation VisitHistoryCategoryPickerViewController
 
-- (_TtC4Maps40VisitHistoryCategoryPickerViewController)initWithCoder:(id)a3
+- (_TtC4Maps40VisitHistoryCategoryPickerViewController)initWithCoder:(id)coder
 {
   *(&self->super.super._cardPresentationController + OBJC_IVAR____TtC4Maps40VisitHistoryCategoryPickerViewController_actionDelegate) = 0;
   swift_unknownObjectWeakInit();
@@ -21,17 +21,17 @@
   v7.super_class = swift_getObjectType();
   v2 = v7.receiver;
   [(MapsHostingContaineeViewController *)&v7 viewDidLoad];
-  v3 = [v2 cardPresentationController];
-  if (v3)
+  cardPresentationController = [v2 cardPresentationController];
+  if (cardPresentationController)
   {
-    v4 = v3;
-    [v3 setPresentedModally:1];
+    v4 = cardPresentationController;
+    [cardPresentationController setPresentedModally:1];
 
-    v5 = [v2 cardPresentationController];
-    if (v5)
+    cardPresentationController2 = [v2 cardPresentationController];
+    if (cardPresentationController2)
     {
-      v6 = v5;
-      [v5 setTakesAvailableHeight:1];
+      v6 = cardPresentationController2;
+      [cardPresentationController2 setTakesAvailableHeight:1];
 
       sub_100565AE0();
       return;
@@ -46,7 +46,7 @@
   __break(1u);
 }
 
-- (_TtC4Maps40VisitHistoryCategoryPickerViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC4Maps40VisitHistoryCategoryPickerViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,19 +1,19 @@
 @interface AirDropBrowserViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)browserDidUpdateMePeople:(id)a3 knownPeople:(id)a4 unknownPeople:(id)a5;
+- (void)browserDidUpdateMePeople:(id)people knownPeople:(id)knownPeople unknownPeople:(id)unknownPeople;
 - (void)viewDidLoad;
 @end
 
 @implementation AirDropBrowserViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"AirDropBrowserViewController" hasInstanceMethod:@"browserDidUpdateMePeople:knownPeople:unknownPeople:" withFullSignature:{"v", "@", "@", "@", 0}];
-  [v3 validateClass:@"AirDropBrowserViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"AirDropBrowserViewController" hasInstanceMethod:@"airDropNoContentView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AirDropNoContentView" hasInstanceMethod:@"actionButton" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"AirDropBrowserViewController" hasInstanceMethod:@"browserDidUpdateMePeople:knownPeople:unknownPeople:" withFullSignature:{"v", "@", "@", "@", 0}];
+  [validationsCopy validateClass:@"AirDropBrowserViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"AirDropBrowserViewController" hasInstanceMethod:@"airDropNoContentView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AirDropNoContentView" hasInstanceMethod:@"actionButton" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -51,11 +51,11 @@ BOOL __87__AirDropBrowserViewControllerAccessibility__accessibilityLoadAccessibi
   [(AirDropBrowserViewControllerAccessibility *)self _accessibilityLoadAccessibilityInformation];
 }
 
-- (void)browserDidUpdateMePeople:(id)a3 knownPeople:(id)a4 unknownPeople:(id)a5
+- (void)browserDidUpdateMePeople:(id)people knownPeople:(id)knownPeople unknownPeople:(id)unknownPeople
 {
   v6.receiver = self;
   v6.super_class = AirDropBrowserViewControllerAccessibility;
-  [(AirDropBrowserViewControllerAccessibility *)&v6 browserDidUpdateMePeople:a3 knownPeople:a4 unknownPeople:a5];
+  [(AirDropBrowserViewControllerAccessibility *)&v6 browserDidUpdateMePeople:people knownPeople:knownPeople unknownPeople:unknownPeople];
   v5 = dispatch_time(0, 500000000);
   dispatch_after(v5, MEMORY[0x29EDCA578], &__block_literal_global_0);
 }

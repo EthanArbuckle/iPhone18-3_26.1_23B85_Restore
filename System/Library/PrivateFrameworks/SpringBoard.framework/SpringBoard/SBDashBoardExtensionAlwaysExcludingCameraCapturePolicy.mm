@@ -1,26 +1,26 @@
 @interface SBDashBoardExtensionAlwaysExcludingCameraCapturePolicy
 - (SBDashBoardExtensionAlwaysExcludingCameraCapturePolicy)init;
-- (SBDashBoardExtensionAlwaysExcludingCameraCapturePolicy)initWithCaptureApplicationMonitor:(id)a3;
-- (id)prewarmingConfigurationForIdentifier:(id)a3 captureApplicationProvider:(id)a4;
-- (id)resolveCameraDestinationLaunchOf:(id)a3 fromSource:(id)a4;
+- (SBDashBoardExtensionAlwaysExcludingCameraCapturePolicy)initWithCaptureApplicationMonitor:(id)monitor;
+- (id)prewarmingConfigurationForIdentifier:(id)identifier captureApplicationProvider:(id)provider;
+- (id)resolveCameraDestinationLaunchOf:(id)of fromSource:(id)source;
 @end
 
 @implementation SBDashBoardExtensionAlwaysExcludingCameraCapturePolicy
 
-- (SBDashBoardExtensionAlwaysExcludingCameraCapturePolicy)initWithCaptureApplicationMonitor:(id)a3
+- (SBDashBoardExtensionAlwaysExcludingCameraCapturePolicy)initWithCaptureApplicationMonitor:(id)monitor
 {
-  v5 = a3;
+  monitorCopy = monitor;
   v11.receiver = self;
   v11.super_class = SBDashBoardExtensionAlwaysExcludingCameraCapturePolicy;
   v6 = [(SBDashBoardExtensionAlwaysExcludingCameraCapturePolicy *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_applicationMonitor, a3);
+    objc_storeStrong(&v6->_applicationMonitor, monitor);
     [(LCSCaptureApplicationMonitor *)v7->_applicationMonitor addObserver:v7];
-    v8 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     observers = v7->_observers;
-    v7->_observers = v8;
+    v7->_observers = weakObjectsHashTable;
   }
 
   return v7;
@@ -34,15 +34,15 @@
   return v4;
 }
 
-- (id)resolveCameraDestinationLaunchOf:(id)a3 fromSource:(id)a4
+- (id)resolveCameraDestinationLaunchOf:(id)of fromSource:(id)source
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 application];
-  v9 = [v8 bundleIdentifier];
+  ofCopy = of;
+  sourceCopy = source;
+  application = [ofCopy application];
+  bundleIdentifier = [application bundleIdentifier];
 
-  v10 = [(LCSCaptureApplicationMonitor *)self->_applicationMonitor knownCameraCaptureApplicationsByBundleIdentifier];
-  v11 = [v9 isEqualToString:@"com.apple.camera"];
+  knownCameraCaptureApplicationsByBundleIdentifier = [(LCSCaptureApplicationMonitor *)self->_applicationMonitor knownCameraCaptureApplicationsByBundleIdentifier];
+  v11 = [bundleIdentifier isEqualToString:@"com.apple.camera"];
   v12 = &SBDashBoardCapturePlacementCameraPage;
   if (!v11)
   {
@@ -50,7 +50,7 @@
   }
 
   v13 = *v12;
-  v14 = [v7 isEqualToString:SBDashBoardCaptureLaunchSourceCaptureButton];
+  v14 = [sourceCopy isEqualToString:SBDashBoardCaptureLaunchSourceCaptureButton];
 
   if (v14)
   {
@@ -59,12 +59,12 @@
     v13 = v15;
   }
 
-  v16 = [v10 objectForKeyedSubscript:v9];
+  v16 = [knownCameraCaptureApplicationsByBundleIdentifier objectForKeyedSubscript:bundleIdentifier];
   if (v16)
   {
     if (v11)
     {
-      v17 = [[SBDashBoardApplicationHostableEntity alloc] initWithApplicationSceneEntity:v6];
+      v17 = [[SBDashBoardApplicationHostableEntity alloc] initWithApplicationSceneEntity:ofCopy];
     }
 
     else
@@ -101,44 +101,44 @@ LABEL_16:
   return v20;
 }
 
-- (id)prewarmingConfigurationForIdentifier:(id)a3 captureApplicationProvider:(id)a4
+- (id)prewarmingConfigurationForIdentifier:(id)identifier captureApplicationProvider:(id)provider
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 prewarmType];
-  v8 = [v6 applicationBundleIdentifier];
+  providerCopy = provider;
+  identifierCopy = identifier;
+  prewarmType = [identifierCopy prewarmType];
+  applicationBundleIdentifier = [identifierCopy applicationBundleIdentifier];
 
-  v9 = [v8 isEqualToString:@"com.apple.camera"];
-  v10 = [v5 captureApplicationForBundleIdentifier:v8];
+  v9 = [applicationBundleIdentifier isEqualToString:@"com.apple.camera"];
+  v10 = [providerCopy captureApplicationForBundleIdentifier:applicationBundleIdentifier];
 
   if (v9)
   {
-    v11 = v8;
+    bundleIdentifier = applicationBundleIdentifier;
     v12 = 1;
   }
 
   else
   {
-    v13 = [v10 extension];
-    v11 = [v13 bundleIdentifier];
+    extension = [v10 extension];
+    bundleIdentifier = [extension bundleIdentifier];
 
     v12 = 2;
   }
 
-  if (v7 == 2)
+  if (prewarmType == 2)
   {
     v12 = 0;
   }
 
-  else if (v7 == 1)
+  else if (prewarmType == 1)
   {
-    v14 = v8;
+    v14 = applicationBundleIdentifier;
 
     v12 = 0;
-    v11 = v14;
+    bundleIdentifier = v14;
   }
 
-  v15 = [[SBDashBoardCameraPrewarmConfiguration alloc] initWithPrewarmCameraHardware:1 prewarmForCaptureLaunch:v9 ^ 1u backgroundLaunchTarget:v12 applicationBundleIdentifier:v8 prewarmingBundleIdentifier:v11];
+  v15 = [[SBDashBoardCameraPrewarmConfiguration alloc] initWithPrewarmCameraHardware:1 prewarmForCaptureLaunch:v9 ^ 1u backgroundLaunchTarget:v12 applicationBundleIdentifier:applicationBundleIdentifier prewarmingBundleIdentifier:bundleIdentifier];
 
   return v15;
 }

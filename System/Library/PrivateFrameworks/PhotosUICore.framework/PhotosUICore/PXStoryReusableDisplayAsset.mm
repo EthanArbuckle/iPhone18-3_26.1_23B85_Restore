@@ -1,11 +1,11 @@
 @interface PXStoryReusableDisplayAsset
-- (BOOL)respondsToSelector:(SEL)a3;
-- (void)configureWithDisplayResourceIndex:(int64_t)a3 resourcesDataSource:(id)a4;
+- (BOOL)respondsToSelector:(SEL)selector;
+- (void)configureWithDisplayResourceIndex:(int64_t)index resourcesDataSource:(id)source;
 @end
 
 @implementation PXStoryReusableDisplayAsset
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
   v5.receiver = self;
   v5.super_class = PXStoryReusableDisplayAsset;
@@ -22,15 +22,15 @@
   return v3 & 1;
 }
 
-- (void)configureWithDisplayResourceIndex:(int64_t)a3 resourcesDataSource:(id)a4
+- (void)configureWithDisplayResourceIndex:(int64_t)index resourcesDataSource:(id)source
 {
-  objc_storeStrong(&self->_resourcesDataSource, a4);
-  v7 = a4;
-  self->_resourceIndex = a3;
-  v10 = [(PXStoryResourcesDataSource *)self->_resourcesDataSource displayAssetResourceAtIndex:a3];
-  v8 = [v10 px_storyResourceDisplayAsset];
+  objc_storeStrong(&self->_resourcesDataSource, source);
+  sourceCopy = source;
+  self->_resourceIndex = index;
+  v10 = [(PXStoryResourcesDataSource *)self->_resourcesDataSource displayAssetResourceAtIndex:index];
+  px_storyResourceDisplayAsset = [v10 px_storyResourceDisplayAsset];
   displayAsset = self->_displayAsset;
-  self->_displayAsset = v8;
+  self->_displayAsset = px_storyResourceDisplayAsset;
 }
 
 @end

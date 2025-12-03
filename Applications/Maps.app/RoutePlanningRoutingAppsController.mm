@@ -1,13 +1,13 @@
 @interface RoutePlanningRoutingAppsController
-- (RoutePlanningRoutingAppsController)initWithDataCoordination:(id)a3;
-- (void)_updateWaypointSet:(id)a3;
-- (void)headerViewButtonTapped:(id)a3 buttonType:(unint64_t)a4;
-- (void)routingAppSelectionControllerDidCancel:(id)a3;
+- (RoutePlanningRoutingAppsController)initWithDataCoordination:(id)coordination;
+- (void)_updateWaypointSet:(id)set;
+- (void)headerViewButtonTapped:(id)tapped buttonType:(unint64_t)type;
+- (void)routingAppSelectionControllerDidCancel:(id)cancel;
 @end
 
 @implementation RoutePlanningRoutingAppsController
 
-- (void)routingAppSelectionControllerDidCancel:(id)a3
+- (void)routingAppSelectionControllerDidCancel:(id)cancel
 {
   v4 = sub_10006D178();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -33,63 +33,63 @@
     }
   }
 
-  v7 = [(RoutePlanningWrapperViewController *)self wrappedViewController];
-  [v7 reset];
+  wrappedViewController = [(RoutePlanningWrapperViewController *)self wrappedViewController];
+  [wrappedViewController reset];
 
-  v8 = [(ContaineeViewController *)self containeeDelegate];
-  [v8 containeeViewControllerGoToPreviousState:self withSender:0];
+  containeeDelegate = [(ContaineeViewController *)self containeeDelegate];
+  [containeeDelegate containeeViewControllerGoToPreviousState:self withSender:0];
 }
 
-- (void)headerViewButtonTapped:(id)a3 buttonType:(unint64_t)a4
+- (void)headerViewButtonTapped:(id)tapped buttonType:(unint64_t)type
 {
-  v6 = a3;
-  v7 = [(RoutePlanningWrapperViewController *)self wrappedViewController];
-  [v7 reset];
+  tappedCopy = tapped;
+  wrappedViewController = [(RoutePlanningWrapperViewController *)self wrappedViewController];
+  [wrappedViewController reset];
 
   v8.receiver = self;
   v8.super_class = RoutePlanningRoutingAppsController;
-  [(RoutePlanningWrapperViewController *)&v8 headerViewButtonTapped:v6 buttonType:a4];
+  [(RoutePlanningWrapperViewController *)&v8 headerViewButtonTapped:tappedCopy buttonType:type];
 }
 
-- (void)_updateWaypointSet:(id)a3
+- (void)_updateWaypointSet:(id)set
 {
-  v9 = a3;
-  if (v9)
+  setCopy = set;
+  if (setCopy)
   {
-    v4 = [(RoutePlanningWrapperViewController *)self wrappedViewController];
-    [v4 updateForWaypointSet:v9];
+    wrappedViewController = [(RoutePlanningWrapperViewController *)self wrappedViewController];
+    [wrappedViewController updateForWaypointSet:setCopy];
   }
 
   if ([(RoutePlanningRoutingAppsController *)self isViewLoaded])
   {
-    v5 = [(RoutePlanningWrapperViewController *)self wrappedViewController];
-    v6 = [v5 navigationItem];
-    v7 = [v6 title];
-    v8 = [(RoutePlanningWrapperViewController *)self titleHeaderView];
-    [v8 setTitle:v7];
+    wrappedViewController2 = [(RoutePlanningWrapperViewController *)self wrappedViewController];
+    navigationItem = [wrappedViewController2 navigationItem];
+    title = [navigationItem title];
+    titleHeaderView = [(RoutePlanningWrapperViewController *)self titleHeaderView];
+    [titleHeaderView setTitle:title];
   }
 }
 
-- (RoutePlanningRoutingAppsController)initWithDataCoordination:(id)a3
+- (RoutePlanningRoutingAppsController)initWithDataCoordination:(id)coordination
 {
-  v4 = a3;
+  coordinationCopy = coordination;
   v12.receiver = self;
   v12.super_class = RoutePlanningRoutingAppsController;
-  v5 = [(RoutePlanningWrapperViewController *)&v12 initWithDataCoordination:v4];
+  v5 = [(RoutePlanningWrapperViewController *)&v12 initWithDataCoordination:coordinationCopy];
   v6 = v5;
   if (v5)
   {
-    v7 = [(RoutePlanningWrapperViewController *)v5 dataCoordinator];
-    [v7 addObserver:v6];
+    dataCoordinator = [(RoutePlanningWrapperViewController *)v5 dataCoordinator];
+    [dataCoordinator addObserver:v6];
 
-    v8 = -[RoutingAppSelectionController initWithTransportType:]([RoutingAppSelectionController alloc], "initWithTransportType:", [v4 transportType]);
+    v8 = -[RoutingAppSelectionController initWithTransportType:]([RoutingAppSelectionController alloc], "initWithTransportType:", [coordinationCopy transportType]);
     [(RoutePlanningWrapperViewController *)v6 setWrappedViewController:v8];
 
-    v9 = [v4 resolvedWaypointSet];
-    [(RoutePlanningRoutingAppsController *)v6 _updateWaypointSet:v9];
+    resolvedWaypointSet = [coordinationCopy resolvedWaypointSet];
+    [(RoutePlanningRoutingAppsController *)v6 _updateWaypointSet:resolvedWaypointSet];
 
-    v10 = [(RoutePlanningWrapperViewController *)v6 wrappedViewController];
-    [v10 setDelegate:v6];
+    wrappedViewController = [(RoutePlanningWrapperViewController *)v6 wrappedViewController];
+    [wrappedViewController setDelegate:v6];
   }
 
   return v6;

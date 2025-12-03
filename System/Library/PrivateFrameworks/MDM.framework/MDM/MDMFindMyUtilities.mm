@@ -1,9 +1,9 @@
 @interface MDMFindMyUtilities
 + (BOOL)isActivationLockOn;
 + (BOOL)isManagedLostModeActive;
-+ (id)lockDeviceWithMessage:(id)a3 phoneNumber:(id)a4;
-+ (void)enableActivationLockWithCompletion:(id)a3;
-+ (void)enableManagedLostModeWithMessage:(id)a3 phoneNumber:(id)a4 footnoteText:(id)a5 completion:(id)a6;
++ (id)lockDeviceWithMessage:(id)message phoneNumber:(id)number;
++ (void)enableActivationLockWithCompletion:(id)completion;
++ (void)enableManagedLostModeWithMessage:(id)message phoneNumber:(id)number footnoteText:(id)text completion:(id)completion;
 + (void)lockDevice;
 @end
 
@@ -16,16 +16,16 @@
   JUMPOUT(0x259C5F210);
 }
 
-+ (id)lockDeviceWithMessage:(id)a3 phoneNumber:(id)a4
++ (id)lockDeviceWithMessage:(id)message phoneNumber:(id)number
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  [a1 lockDevice];
-  v8 = [MEMORY[0x277D77BF8] sharedManager];
-  v9 = [v8 isMultiUser];
+  messageCopy = message;
+  numberCopy = number;
+  [self lockDevice];
+  mEMORY[0x277D77BF8] = [MEMORY[0x277D77BF8] sharedManager];
+  isMultiUser = [mEMORY[0x277D77BF8] isMultiUser];
 
-  if ((v9 & 1) != 0 || !(v6 | v7))
+  if ((isMultiUser & 1) != 0 || !(messageCopy | numberCopy))
   {
     v16 = @"Success";
   }
@@ -33,11 +33,11 @@
   else
   {
     v10 = objc_opt_new();
-    [v10 setMessage:v6];
-    [v10 setPhoneNumber:v7];
+    [v10 setMessage:messageCopy];
+    [v10 setPhoneNumber:numberCopy];
     [v10 setLostModeEnabled:1];
-    v11 = [MEMORY[0x277D08F78] sharedInstance];
-    v12 = [v11 enableLostModeWithInfo:v10];
+    mEMORY[0x277D08F78] = [MEMORY[0x277D08F78] sharedInstance];
+    v12 = [mEMORY[0x277D08F78] enableLostModeWithInfo:v10];
 
     if (v12)
     {
@@ -45,9 +45,9 @@
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
         v14 = v13;
-        v15 = [v12 DMCVerboseDescription];
+        dMCVerboseDescription = [v12 DMCVerboseDescription];
         v19 = 138543362;
-        v20 = v15;
+        v20 = dMCVerboseDescription;
         _os_log_impl(&dword_2561F5000, v14, OS_LOG_TYPE_ERROR, "MDMFindMyUtilities failed to set lock screen message with error: %{public}@", &v19, 0xCu);
       }
 
@@ -79,23 +79,23 @@
 
 + (BOOL)isManagedLostModeActive
 {
-  v2 = [MEMORY[0x277D08F78] sharedInstance];
-  v3 = [v2 isManagedLostModeActive];
+  mEMORY[0x277D08F78] = [MEMORY[0x277D08F78] sharedInstance];
+  isManagedLostModeActive = [mEMORY[0x277D08F78] isManagedLostModeActive];
 
-  return v3;
+  return isManagedLostModeActive;
 }
 
-+ (void)enableManagedLostModeWithMessage:(id)a3 phoneNumber:(id)a4 footnoteText:(id)a5 completion:(id)a6
++ (void)enableManagedLostModeWithMessage:(id)message phoneNumber:(id)number footnoteText:(id)text completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  messageCopy = message;
+  numberCopy = number;
+  textCopy = text;
   v13 = MEMORY[0x277D08F78];
-  v14 = a6;
-  v15 = [v13 sharedInstance];
-  v16 = [v15 isManagedLostModeActive];
+  completionCopy = completion;
+  sharedInstance = [v13 sharedInstance];
+  isManagedLostModeActive = [sharedInstance isManagedLostModeActive];
 
-  if (v16)
+  if (isManagedLostModeActive)
   {
     v17 = *(DMCLogObjects() + 8);
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
@@ -104,20 +104,20 @@
       _os_log_impl(&dword_2561F5000, v17, OS_LOG_TYPE_DEFAULT, "MDMFindMyUtilities ignoring MDM Lost Mode request because Lost Mode is already enabled", v20, 2u);
     }
 
-    v14[2](v14, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
   else
   {
-    [a1 lockDevice];
+    [self lockDevice];
     v18 = objc_opt_new();
     [v18 setLostModeEnabled:1];
-    [v18 setMessage:v10];
-    [v18 setPhoneNumber:v11];
-    [v18 setFootnoteText:v12];
+    [v18 setMessage:messageCopy];
+    [v18 setPhoneNumber:numberCopy];
+    [v18 setFootnoteText:textCopy];
     [v18 setDisableSlideToUnlock:1];
-    v19 = [MEMORY[0x277D08F78] sharedInstance];
-    [v19 enableManagedLostModeWithInfo:v18 completion:v14];
+    mEMORY[0x277D08F78] = [MEMORY[0x277D08F78] sharedInstance];
+    [mEMORY[0x277D08F78] enableManagedLostModeWithInfo:v18 completion:completionCopy];
   }
 }
 
@@ -128,7 +128,7 @@
   v10 = &v9;
   v11 = 0x2020000000;
   v12 = 0;
-  v3 = [MEMORY[0x277D08F78] sharedInstance];
+  mEMORY[0x277D08F78] = [MEMORY[0x277D08F78] sharedInstance];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __40__MDMFindMyUtilities_isActivationLockOn__block_invoke;
@@ -136,13 +136,13 @@
   v8 = &v9;
   v4 = v2;
   v7 = v4;
-  [v3 isActivationLockedWithCompletion:v6];
+  [mEMORY[0x277D08F78] isActivationLockedWithCompletion:v6];
 
   dispatch_semaphore_wait(v4, 0xFFFFFFFFFFFFFFFFLL);
-  LOBYTE(v3) = *(v10 + 24);
+  LOBYTE(mEMORY[0x277D08F78]) = *(v10 + 24);
 
   _Block_object_dispose(&v9, 8);
-  return v3;
+  return mEMORY[0x277D08F78];
 }
 
 void __40__MDMFindMyUtilities_isActivationLockOn__block_invoke(uint64_t a1, char a2, void *a3)
@@ -166,17 +166,17 @@ void __40__MDMFindMyUtilities_isActivationLockOn__block_invoke(uint64_t a1, char
   v7 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)enableActivationLockWithCompletion:(id)a3
++ (void)enableActivationLockWithCompletion:(id)completion
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277D08F78] sharedInstance];
+  completionCopy = completion;
+  mEMORY[0x277D08F78] = [MEMORY[0x277D08F78] sharedInstance];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __57__MDMFindMyUtilities_enableActivationLockWithCompletion___block_invoke;
   v6[3] = &unk_27982BD28;
-  v7 = v3;
-  v5 = v3;
-  [v4 fmipStateWithCompletion:v6];
+  v7 = completionCopy;
+  v5 = completionCopy;
+  [mEMORY[0x277D08F78] fmipStateWithCompletion:v6];
 }
 
 void __57__MDMFindMyUtilities_enableActivationLockWithCompletion___block_invoke(uint64_t a1, unint64_t a2, void *a3)

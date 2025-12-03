@@ -1,5 +1,5 @@
 @interface PPSSQLitePredicate
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (unint64_t)hash;
 @end
 
@@ -12,9 +12,9 @@
   return [v2 hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v3 = a3;
+  equalCopy = equal;
   v4 = objc_opt_class();
   LOBYTE(v4) = v4 == objc_opt_class();
 

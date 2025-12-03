@@ -1,8 +1,8 @@
 @interface _PASInternPool
 - (BOOL)isEmpty;
-- (BOOL)isInterned:(id)a3;
-- (_PASInternPool)initWithBehavior:(unint64_t)a3 copyWithZone:(id)a4;
-- (id)_intern:(char)a3 copyInput:;
+- (BOOL)isInterned:(id)interned;
+- (_PASInternPool)initWithBehavior:(unint64_t)behavior copyWithZone:(id)zone;
+- (id)_intern:(char)_intern copyInput:;
 - (void)clear;
 @end
 
@@ -36,13 +36,13 @@
   return self;
 }
 
-- (BOOL)isInterned:(id)a3
+- (BOOL)isInterned:(id)interned
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  internedCopy = interned;
+  v5 = internedCopy;
+  if (internedCopy)
   {
-    if (malloc_size(v4))
+    if (malloc_size(internedCopy))
     {
       v6 = objc_autoreleasePoolPush();
       v13 = 0;
@@ -77,12 +77,12 @@
   return v8 & 1;
 }
 
-- (id)_intern:(char)a3 copyInput:
+- (id)_intern:(char)_intern copyInput:
 {
   v5 = a2;
   v6 = v5;
   v7 = 0;
-  if (a1 && v5)
+  if (self && v5)
   {
     if (malloc_size(v5))
     {
@@ -93,14 +93,14 @@
       v19 = __Block_byref_object_copy__2105;
       v20 = __Block_byref_object_dispose__2106;
       v21 = 0;
-      v9 = *(a1 + 8);
+      v9 = *(self + 8);
       v11[0] = MEMORY[0x1E69E9820];
       v11[1] = 3221225472;
       v11[2] = __36___PASInternPool__intern_copyInput___block_invoke;
       v11[3] = &unk_1E77F1E08;
-      v13 = a1;
+      selfCopy = self;
       v14 = &v16;
-      v15 = a3;
+      _internCopy = _intern;
       v12 = v6;
       [v9 runWithLockAcquired:v11];
       v7 = v17[5];
@@ -118,16 +118,16 @@
   return v7;
 }
 
-- (_PASInternPool)initWithBehavior:(unint64_t)a3 copyWithZone:(id)a4
+- (_PASInternPool)initWithBehavior:(unint64_t)behavior copyWithZone:(id)zone
 {
-  v6 = a4;
+  zoneCopy = zone;
   v17.receiver = self;
   v17.super_class = _PASInternPool;
   v7 = [(_PASInternPool *)&v17 init];
   v8 = v7;
   if (v7)
   {
-    if (a3 == 1)
+    if (behavior == 1)
     {
       v9 = 0;
     }
@@ -142,9 +142,9 @@
     lock = v8->_lock;
     v8->_lock = v11;
 
-    if (v6)
+    if (zoneCopy)
     {
-      v13 = v6;
+      v13 = zoneCopy;
     }
 
     else

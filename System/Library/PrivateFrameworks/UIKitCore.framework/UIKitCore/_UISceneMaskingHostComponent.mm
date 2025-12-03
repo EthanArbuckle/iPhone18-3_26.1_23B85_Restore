@@ -1,21 +1,21 @@
 @interface _UISceneMaskingHostComponent
 - (_UISceneMaskingDelegate)_sceneMaskingHost;
-- (id)handlePrivateActions:(id)a3;
-- (void)_handleMaskingAction:(id)a3;
+- (id)handlePrivateActions:(id)actions;
+- (void)_handleMaskingAction:(id)action;
 @end
 
 @implementation _UISceneMaskingHostComponent
 
-- (id)handlePrivateActions:(id)a3
+- (id)handlePrivateActions:(id)actions
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  actionsCopy = actions;
   v5 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = v4;
+  v6 = actionsCopy;
   v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
@@ -69,39 +69,39 @@
   return v5;
 }
 
-- (void)_handleMaskingAction:(id)a3
+- (void)_handleMaskingAction:(id)action
 {
   v24[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 info];
-  v6 = [v5 objectForSetting:0];
-  v7 = [v6 integerValue];
+  actionCopy = action;
+  info = [actionCopy info];
+  v6 = [info objectForSetting:0];
+  integerValue = [v6 integerValue];
 
-  if (v7 == 1)
+  if (integerValue == 1)
   {
-    v14 = [(_UISceneMaskingHostComponent *)self _sceneMaskingHost];
-    v15 = [(FBSSceneComponent *)self hostScene];
-    [v14 invalidateMasking:v15];
+    _sceneMaskingHost = [(_UISceneMaskingHostComponent *)self _sceneMaskingHost];
+    hostScene = [(FBSSceneComponent *)self hostScene];
+    [_sceneMaskingHost invalidateMasking:hostScene];
   }
 
-  else if (!v7)
+  else if (!integerValue)
   {
-    v8 = [v5 objectForSetting:1];
-    v9 = [v8 integerValue];
+    v8 = [info objectForSetting:1];
+    integerValue2 = [v8 integerValue];
 
     v18 = MEMORY[0x1E69E9820];
     v19 = 3221225472;
     v20 = __53___UISceneMaskingHostComponent__handleMaskingAction___block_invoke;
     v21 = &unk_1E70FD7F8;
-    v22 = v4;
+    v22 = actionCopy;
     v10 = _Block_copy(&v18);
     v11 = [(_UISceneMaskingHostComponent *)self _sceneMaskingHost:v18];
 
     if (v11)
     {
-      v12 = [(_UISceneMaskingHostComponent *)self _sceneMaskingHost];
-      v13 = [(FBSSceneComponent *)self hostScene];
-      [v12 beginMaskingForReason:v9 continuation:v10 scene:v13];
+      _sceneMaskingHost2 = [(_UISceneMaskingHostComponent *)self _sceneMaskingHost];
+      hostScene2 = [(FBSSceneComponent *)self hostScene];
+      [_sceneMaskingHost2 beginMaskingForReason:integerValue2 continuation:v10 scene:hostScene2];
     }
 
     else
@@ -110,9 +110,9 @@
       v23 = *MEMORY[0x1E696A578];
       v24[0] = @"Host does not implement scene masking.";
       v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v24 forKeys:&v23 count:1];
-      v12 = [v16 errorWithDomain:@"_UISceneMaskingErrorDomain" code:0 userInfo:v17];
+      _sceneMaskingHost2 = [v16 errorWithDomain:@"_UISceneMaskingErrorDomain" code:0 userInfo:v17];
 
-      v10[2](v10, v12);
+      v10[2](v10, _sceneMaskingHost2);
     }
   }
 }

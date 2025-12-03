@@ -1,6 +1,6 @@
 @interface OBSetupAssistantMultitaskingBulletedList
 - (double)bulletedListItemSpacing;
-- (void)addItemWithTitle:(id)a3 description:(id)a4 symbolName:(id)a5;
+- (void)addItemWithTitle:(id)title description:(id)description symbolName:(id)name;
 @end
 
 @implementation OBSetupAssistantMultitaskingBulletedList
@@ -8,15 +8,15 @@
 - (double)bulletedListItemSpacing
 {
   v3 = +[OBDevice currentDevice];
-  v4 = [v3 templateType];
+  templateType = [v3 templateType];
 
-  if (v4 == 6)
+  if (templateType == 6)
   {
     v5 = +[OBDevice currentDevice];
-    v6 = [v5 isMiniPad];
+    isMiniPad = [v5 isMiniPad];
 
     result = 22.0;
-    if (v6)
+    if (isMiniPad)
     {
       return 16.0;
     }
@@ -32,12 +32,12 @@
   return result;
 }
 
-- (void)addItemWithTitle:(id)a3 description:(id)a4 symbolName:(id)a5
+- (void)addItemWithTitle:(id)title description:(id)description symbolName:(id)name
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[OBBulletedListItem alloc] initWithTitle:v10 description:v9 symbolName:v8 tintColor:0];
+  nameCopy = name;
+  descriptionCopy = description;
+  titleCopy = title;
+  v11 = [[OBBulletedListItem alloc] initWithTitle:titleCopy description:descriptionCopy symbolName:nameCopy tintColor:0];
 
   [(OBBulletedListItem *)v11 setTranslatesAutoresizingMaskIntoConstraints:0];
   [(OBBulletedList *)self addBulletedListItem:v11];

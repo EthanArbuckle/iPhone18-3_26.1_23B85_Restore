@@ -17,13 +17,13 @@
 {
   v7.receiver = self;
   v7.super_class = PHASEMixerDefinition;
-  v2 = [(PHASEDefinition *)&v7 initInternal];
-  v3 = v2;
-  if (v2)
+  initInternal = [(PHASEDefinition *)&v7 initInternal];
+  v3 = initInternal;
+  if (initInternal)
   {
-    v2[2] = 0x3FF0000000000000;
-    v4 = v2[3];
-    v2[3] = 0;
+    initInternal[2] = 0x3FF0000000000000;
+    v4 = initInternal[3];
+    initInternal[3] = 0;
 
     v5 = v3;
   }

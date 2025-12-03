@@ -13,15 +13,15 @@
 - (uint64_t)compareStartAndSize:()IndexUtils
 {
   v4 = a3;
-  v5 = [a1 spans];
-  if ([v5 count])
+  spans = [self spans];
+  if ([spans count])
   {
   }
 
   else
   {
-    v6 = [v4 spans];
-    v7 = [v6 count];
+    spans2 = [v4 spans];
+    v7 = [spans2 count];
 
     if (!v7)
     {
@@ -30,30 +30,30 @@
     }
   }
 
-  v8 = [a1 spans];
-  v9 = [v8 count];
+  spans3 = [self spans];
+  v9 = [spans3 count];
 
   if (!v9)
   {
     goto LABEL_9;
   }
 
-  v10 = [v4 spans];
-  v11 = [v10 count];
+  spans4 = [v4 spans];
+  v11 = [spans4 count];
 
   if (v11)
   {
-    v12 = [a1 getStartIndex];
-    v13 = [a1 getEndIndex];
-    v14 = [v4 getStartIndex];
-    v15 = [v4 getEndIndex];
-    if (v12 >= v14)
+    getStartIndex = [self getStartIndex];
+    getEndIndex = [self getEndIndex];
+    getStartIndex2 = [v4 getStartIndex];
+    getEndIndex2 = [v4 getEndIndex];
+    if (getStartIndex >= getStartIndex2)
     {
-      if (v12 <= v14)
+      if (getStartIndex <= getStartIndex2)
       {
-        if (v13 <= v15)
+        if (getEndIndex <= getEndIndex2)
         {
-          v16 = v13 < v15;
+          v16 = getEndIndex < getEndIndex2;
           goto LABEL_13;
         }
 
@@ -76,8 +76,8 @@ LABEL_13:
 - (BOOL)equalIndexes:()IndexUtils
 {
   v4 = a3;
-  v5 = [v4 spans];
-  if (![v5 count])
+  spans = [v4 spans];
+  if (![spans count])
   {
 
 LABEL_6:
@@ -85,22 +85,22 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v6 = [a1 spans];
-  v7 = [v6 count];
+  spans2 = [self spans];
+  v7 = [spans2 count];
 
   if (!v7)
   {
     goto LABEL_6;
   }
 
-  v8 = [v4 getStartIndex];
-  if (v8 != [a1 getStartIndex])
+  getStartIndex = [v4 getStartIndex];
+  if (getStartIndex != [self getStartIndex])
   {
     goto LABEL_6;
   }
 
-  v9 = [v4 getEndIndex];
-  v10 = v9 == [a1 getEndIndex];
+  getEndIndex = [v4 getEndIndex];
+  v10 = getEndIndex == [self getEndIndex];
 LABEL_7:
 
   return v10;
@@ -109,8 +109,8 @@ LABEL_7:
 - (BOOL)overlaps:()IndexUtils
 {
   v4 = a3;
-  v5 = [v4 spans];
-  if (![v5 count])
+  spans = [v4 spans];
+  if (![spans count])
   {
 
 LABEL_6:
@@ -118,22 +118,22 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v6 = [a1 spans];
-  v7 = [v6 count];
+  spans2 = [self spans];
+  v7 = [spans2 count];
 
   if (!v7)
   {
     goto LABEL_6;
   }
 
-  v8 = [a1 getStartIndex];
-  if (v8 >= [v4 getEndIndex])
+  getStartIndex = [self getStartIndex];
+  if (getStartIndex >= [v4 getEndIndex])
   {
     goto LABEL_6;
   }
 
-  v9 = [a1 getEndIndex];
-  v10 = v9 > [v4 getStartIndex];
+  getEndIndex = [self getEndIndex];
+  v10 = getEndIndex > [v4 getStartIndex];
 LABEL_7:
 
   return v10;
@@ -142,8 +142,8 @@ LABEL_7:
 - (BOOL)subsumedBy:()IndexUtils
 {
   v4 = a3;
-  v5 = [v4 spans];
-  if (![v5 count])
+  spans = [v4 spans];
+  if (![spans count])
   {
 
 LABEL_6:
@@ -151,22 +151,22 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v6 = [a1 spans];
-  v7 = [v6 count];
+  spans2 = [self spans];
+  v7 = [spans2 count];
 
   if (!v7)
   {
     goto LABEL_6;
   }
 
-  v8 = [v4 getStartIndex];
-  if (v8 > [a1 getStartIndex])
+  getStartIndex = [v4 getStartIndex];
+  if (getStartIndex > [self getStartIndex])
   {
     goto LABEL_6;
   }
 
-  v9 = [v4 getEndIndex];
-  v10 = v9 >= [a1 getEndIndex];
+  getEndIndex = [v4 getEndIndex];
+  v10 = getEndIndex >= [self getEndIndex];
 LABEL_7:
 
   return v10;
@@ -179,8 +179,8 @@ LABEL_7:
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v1 = [a1 spans];
-  v2 = [v1 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  spans = [self spans];
+  v2 = [spans countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v2)
   {
     v3 = v2;
@@ -192,13 +192,13 @@ LABEL_7:
       {
         if (*v11 != v5)
         {
-          objc_enumerationMutation(v1);
+          objc_enumerationMutation(spans);
         }
 
-        v7 = [*(*(&v10 + 1) + 8 * i) endIndex];
-        if (v4 <= v7)
+        endIndex = [*(*(&v10 + 1) + 8 * i) endIndex];
+        if (v4 <= endIndex)
         {
-          v4 = v7;
+          v4 = endIndex;
         }
 
         else
@@ -207,7 +207,7 @@ LABEL_7:
         }
       }
 
-      v3 = [v1 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v3 = [spans countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v3);
@@ -225,8 +225,8 @@ LABEL_7:
 - (uint64_t)getStartIndex
 {
   v18 = *MEMORY[0x1E69E9840];
-  v2 = [a1 spans];
-  v3 = [v2 count];
+  spans = [self spans];
+  v3 = [spans count];
 
   if (v3)
   {
@@ -234,8 +234,8 @@ LABEL_7:
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v4 = [a1 spans];
-    v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    spans2 = [self spans];
+    v5 = [spans2 countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v5)
     {
       v6 = v5;
@@ -247,13 +247,13 @@ LABEL_7:
         {
           if (*v14 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(spans2);
           }
 
-          v10 = [*(*(&v13 + 1) + 8 * i) startIndex];
-          if (v8 >= v10)
+          startIndex = [*(*(&v13 + 1) + 8 * i) startIndex];
+          if (v8 >= startIndex)
           {
-            v8 = v10;
+            v8 = startIndex;
           }
 
           else
@@ -262,7 +262,7 @@ LABEL_7:
           }
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v6 = [spans2 countByEnumeratingWithState:&v13 objects:v17 count:16];
       }
 
       while (v6);

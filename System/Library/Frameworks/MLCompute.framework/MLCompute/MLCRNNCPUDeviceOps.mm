@@ -6,27 +6,27 @@
 
 - (void)dealloc
 {
-  v3 = [(MLCCPUDeviceOps *)self weightsMomentumData];
-  v4 = [v3 count];
+  weightsMomentumData = [(MLCCPUDeviceOps *)self weightsMomentumData];
+  v4 = [weightsMomentumData count];
 
   if (v4)
   {
     v5 = 0;
     do
     {
-      v6 = [(MLCCPUDeviceOps *)self weightsMomentumData];
-      v7 = [v6 objectAtIndexedSubscript:v5];
-      v8 = [v7 bytes];
+      weightsMomentumData2 = [(MLCCPUDeviceOps *)self weightsMomentumData];
+      v7 = [weightsMomentumData2 objectAtIndexedSubscript:v5];
+      bytes = [v7 bytes];
 
-      v9 = *(v8 + 136);
+      v9 = *(bytes + 136);
       if (v9)
       {
         free(v9);
       }
 
       ++v5;
-      v10 = [(MLCCPUDeviceOps *)self weightsMomentumData];
-      v11 = [v10 count];
+      weightsMomentumData3 = [(MLCCPUDeviceOps *)self weightsMomentumData];
+      v11 = [weightsMomentumData3 count];
     }
 
     while (v5 < v11);

@@ -1,30 +1,30 @@
 @interface _HKMobileAssetDownloadManager
-- (_HKMobileAssetDownloadManager)initWithMobileAssetTypeName:(id)a3 queue:(id)a4;
-- (id)_errorWithDomain:(id)a3 code:(int64_t)a4;
-- (id)_generateAssetQueryFromQueryParams:(id)a3 returnTypes:(int64_t)a4;
-- (void)_callDownloadCompletionHandlerWithAssets:(id)a3 queryParams:(id)a4;
-- (void)_callErrorHandlerWithError:(id)a3;
-- (void)_queue_downloadAssets:(id)a3 completion:(id)a4;
-- (void)_queue_fetchAssetsWithLocalInformation:(BOOL)a3 shouldRequery:(BOOL)a4 queryParams:(id)a5 returnTypes:(int64_t)a6;
-- (void)_queue_fetchAssetsWithQuery:(id)a3 onlyLocal:(BOOL)a4 completion:(id)a5;
-- (void)downloadAssetsWithQueryParams:(id)a3;
-- (void)downloadMobileAssets:(id)a3 completion:(id)a4;
-- (void)fetchAssetsWithQueryParams:(id)a3 onlyLocal:(BOOL)a4 returnTypes:(int64_t)a5 completion:(id)a6;
-- (void)removeMobileAssets:(id)a3 completion:(id)a4;
+- (_HKMobileAssetDownloadManager)initWithMobileAssetTypeName:(id)name queue:(id)queue;
+- (id)_errorWithDomain:(id)domain code:(int64_t)code;
+- (id)_generateAssetQueryFromQueryParams:(id)params returnTypes:(int64_t)types;
+- (void)_callDownloadCompletionHandlerWithAssets:(id)assets queryParams:(id)params;
+- (void)_callErrorHandlerWithError:(id)error;
+- (void)_queue_downloadAssets:(id)assets completion:(id)completion;
+- (void)_queue_fetchAssetsWithLocalInformation:(BOOL)information shouldRequery:(BOOL)requery queryParams:(id)params returnTypes:(int64_t)types;
+- (void)_queue_fetchAssetsWithQuery:(id)query onlyLocal:(BOOL)local completion:(id)completion;
+- (void)downloadAssetsWithQueryParams:(id)params;
+- (void)downloadMobileAssets:(id)assets completion:(id)completion;
+- (void)fetchAssetsWithQueryParams:(id)params onlyLocal:(BOOL)local returnTypes:(int64_t)types completion:(id)completion;
+- (void)removeMobileAssets:(id)assets completion:(id)completion;
 @end
 
 @implementation _HKMobileAssetDownloadManager
 
-- (_HKMobileAssetDownloadManager)initWithMobileAssetTypeName:(id)a3 queue:(id)a4
+- (_HKMobileAssetDownloadManager)initWithMobileAssetTypeName:(id)name queue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  queueCopy = queue;
   v18.receiver = self;
   v18.super_class = _HKMobileAssetDownloadManager;
   v8 = [(_HKMobileAssetDownloadManager *)&v18 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [nameCopy copy];
     mobileAssetTypeName = v8->_mobileAssetTypeName;
     v8->_mobileAssetTypeName = v9;
 
@@ -34,7 +34,7 @@
 
     *&v8->_shouldQueryLocalAssetsFirst = 256;
     v8->_maxNumberOfRetriesAllowed = 1;
-    objc_storeStrong(&v8->_queue, a4);
+    objc_storeStrong(&v8->_queue, queue);
     v13 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     downloadingQueryParams = v8->_downloadingQueryParams;
     v8->_downloadingQueryParams = v13;
@@ -49,61 +49,61 @@
   return v8;
 }
 
-- (void)downloadAssetsWithQueryParams:(id)a3
+- (void)downloadAssetsWithQueryParams:(id)params
 {
-  v4 = a3;
+  paramsCopy = params;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __63___HKMobileAssetDownloadManager_downloadAssetsWithQueryParams___block_invoke;
   v7[3] = &unk_1E7378400;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = paramsCopy;
+  v6 = paramsCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)fetchAssetsWithQueryParams:(id)a3 onlyLocal:(BOOL)a4 returnTypes:(int64_t)a5 completion:(id)a6
+- (void)fetchAssetsWithQueryParams:(id)params onlyLocal:(BOOL)local returnTypes:(int64_t)types completion:(id)completion
 {
-  v10 = a3;
-  v11 = a6;
+  paramsCopy = params;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __93___HKMobileAssetDownloadManager_fetchAssetsWithQueryParams_onlyLocal_returnTypes_completion___block_invoke;
   block[3] = &unk_1E7384A68;
   block[4] = self;
-  v16 = v10;
-  v19 = a4;
-  v17 = v11;
-  v18 = a5;
-  v13 = v11;
-  v14 = v10;
+  v16 = paramsCopy;
+  localCopy = local;
+  v17 = completionCopy;
+  typesCopy = types;
+  v13 = completionCopy;
+  v14 = paramsCopy;
   dispatch_async(queue, block);
 }
 
-- (void)downloadMobileAssets:(id)a3 completion:(id)a4
+- (void)downloadMobileAssets:(id)assets completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  assetsCopy = assets;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __65___HKMobileAssetDownloadManager_downloadMobileAssets_completion___block_invoke;
   block[3] = &unk_1E73766C8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = assetsCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = assetsCopy;
   dispatch_async(queue, block);
 }
 
-- (void)removeMobileAssets:(id)a3 completion:(id)a4
+- (void)removeMobileAssets:(id)assets completion:(id)completion
 {
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  assetsCopy = assets;
+  completionCopy = completion;
   v27[0] = 0;
   v27[1] = v27;
   v27[2] = 0x2020000000;
@@ -111,14 +111,14 @@
   v26[0] = 0;
   v26[1] = v26;
   v26[2] = 0x2020000000;
-  v26[3] = [v6 count];
+  v26[3] = [assetsCopy count];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __63___HKMobileAssetDownloadManager_removeMobileAssets_completion___block_invoke;
   aBlock[3] = &unk_1E7384A90;
   aBlock[4] = self;
   v24 = v26;
-  v8 = v7;
+  v8 = completionCopy;
   v23 = v8;
   v25 = v27;
   v9 = _Block_copy(aBlock);
@@ -129,7 +129,7 @@
     v11 = v10;
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
-      -[_HKMobileAssetDownloadManager removeMobileAssets:completion:].cold.1(buf, [v6 count], v11);
+      -[_HKMobileAssetDownloadManager removeMobileAssets:completion:].cold.1(buf, [assetsCopy count], v11);
     }
   }
 
@@ -140,11 +140,11 @@
   block[3] = &unk_1E7384AE0;
   v19 = v9;
   v20 = v26;
-  v17 = v6;
-  v18 = self;
+  v17 = assetsCopy;
+  selfCopy = self;
   v21 = v27;
   v13 = v9;
-  v14 = v6;
+  v14 = assetsCopy;
   dispatch_async(queue, block);
 
   _Block_object_dispose(v26, 8);
@@ -153,11 +153,11 @@
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_queue_fetchAssetsWithQuery:(id)a3 onlyLocal:(BOOL)a4 completion:(id)a5
+- (void)_queue_fetchAssetsWithQuery:(id)query onlyLocal:(BOOL)local completion:(id)completion
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
+  localCopy = local;
+  queryCopy = query;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_queue);
   v24[0] = 0;
   v24[1] = v24;
@@ -167,7 +167,7 @@
   v25 = 0;
   v10 = dispatch_group_create();
   dispatch_group_enter(v10);
-  if (v6)
+  if (localCopy)
   {
     dispatch_group_leave(v10);
   }
@@ -193,20 +193,20 @@
   block[2] = __82___HKMobileAssetDownloadManager__queue_fetchAssetsWithQuery_onlyLocal_completion___block_invoke_2;
   block[3] = &unk_1E7384B80;
   block[4] = self;
-  v18 = v8;
-  v19 = v9;
+  v18 = queryCopy;
+  v19 = completionCopy;
   v20 = v24;
-  v15 = v9;
-  v16 = v8;
+  v15 = completionCopy;
+  v16 = queryCopy;
   dispatch_group_notify(v10, queue, block);
 
   _Block_object_dispose(v24, 8);
 }
 
-- (void)_queue_fetchAssetsWithLocalInformation:(BOOL)a3 shouldRequery:(BOOL)a4 queryParams:(id)a5 returnTypes:(int64_t)a6
+- (void)_queue_fetchAssetsWithLocalInformation:(BOOL)information shouldRequery:(BOOL)requery queryParams:(id)params returnTypes:(int64_t)types
 {
-  v8 = a3;
-  v10 = a5;
+  informationCopy = information;
+  paramsCopy = params;
   dispatch_assert_queue_V2(self->_queue);
   v28[0] = 0;
   v28[1] = v28;
@@ -216,15 +216,15 @@
   v29 = 0;
   v11 = dispatch_group_create();
   dispatch_group_enter(v11);
-  if (v8)
+  if (informationCopy)
   {
     dispatch_group_leave(v11);
   }
 
   else
   {
-    v18 = a4;
-    v12 = a6;
+    requeryCopy = requery;
+    typesCopy = types;
     v13 = MEMORY[0x1E69B18D8];
     mobileAssetTypeName = self->_mobileAssetTypeName;
     mobileAssetDownloadOptions = self->_mobileAssetDownloadOptions;
@@ -237,8 +237,8 @@
     v26 = v11;
     [v13 startCatalogDownload:mobileAssetTypeName options:mobileAssetDownloadOptions then:v25];
 
-    a6 = v12;
-    a4 = v18;
+    types = typesCopy;
+    requery = requeryCopy;
   }
 
   queue = self->_queue;
@@ -247,22 +247,22 @@
   block[2] = __110___HKMobileAssetDownloadManager__queue_fetchAssetsWithLocalInformation_shouldRequery_queryParams_returnTypes___block_invoke_2;
   block[3] = &unk_1E7384C20;
   block[4] = self;
-  v20 = v10;
+  v20 = paramsCopy;
   v21 = v28;
-  v22 = a6;
-  v23 = a4;
-  v24 = v8;
-  v17 = v10;
+  typesCopy2 = types;
+  requeryCopy2 = requery;
+  v24 = informationCopy;
+  v17 = paramsCopy;
   dispatch_group_notify(v11, queue, block);
 
   _Block_object_dispose(v28, 8);
 }
 
-- (void)_queue_downloadAssets:(id)a3 completion:(id)a4
+- (void)_queue_downloadAssets:(id)assets completion:(id)completion
 {
   v41 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  assetsCopy = assets;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_queue);
   v38[0] = 0;
   v38[1] = v38;
@@ -279,13 +279,13 @@
   v35[0] = 0;
   v35[1] = v35;
   v35[2] = 0x2020000000;
-  v35[3] = [v6 count];
+  v35[3] = [assetsCopy count];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __66___HKMobileAssetDownloadManager__queue_downloadAssets_completion___block_invoke;
   aBlock[3] = &unk_1E7384C48;
   v32 = v35;
-  v18 = v7;
+  v18 = completionCopy;
   v31 = v18;
   v33 = v38;
   v34 = v36;
@@ -294,7 +294,7 @@
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  obj = v6;
+  obj = assetsCopy;
   v8 = [obj countByEnumeratingWithState:&v26 objects:v40 count:16];
   if (v8)
   {
@@ -313,7 +313,7 @@
         v12 = [_HKMobileAssetDownloadOperation alloc];
         queue = self->_queue;
         mobileAssetDownloadOptions = self->_mobileAssetDownloadOptions;
-        v15 = [(_HKMobileAssetDownloadManager *)self maxNumberOfRetriesAllowed];
+        maxNumberOfRetriesAllowed = [(_HKMobileAssetDownloadManager *)self maxNumberOfRetriesAllowed];
         v21[0] = MEMORY[0x1E69E9820];
         v21[1] = 3221225472;
         v21[2] = __66___HKMobileAssetDownloadManager__queue_downloadAssets_completion___block_invoke_2;
@@ -324,7 +324,7 @@
         v24 = v35;
         v25 = v36;
         v22 = v20;
-        v16 = [(_HKMobileAssetDownloadOperation *)v12 initWithAsset:v11 queue:queue downloadOptions:mobileAssetDownloadOptions maxNumberOfRetriesAllowed:v15 completion:v21];
+        v16 = [(_HKMobileAssetDownloadOperation *)v12 initWithAsset:v11 queue:queue downloadOptions:mobileAssetDownloadOptions maxNumberOfRetriesAllowed:maxNumberOfRetriesAllowed completion:v21];
         [(NSMutableArray *)self->_pendingOperations addObject:v16];
         [(_HKMobileAssetDownloadOperation *)v16 run];
 
@@ -346,14 +346,14 @@
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_generateAssetQueryFromQueryParams:(id)a3 returnTypes:(int64_t)a4
+- (id)_generateAssetQueryFromQueryParams:(id)params returnTypes:(int64_t)types
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  paramsCopy = params;
   v7 = [objc_alloc(MEMORY[0x1E69B18E8]) initWithType:self->_mobileAssetTypeName];
   [v7 setDoNotBlockBeforeFirstUnlock:1];
-  [v7 returnTypes:a4];
-  if (a4 == 1)
+  [v7 returnTypes:types];
+  if (types == 1)
   {
     [v7 setDoNotBlockOnNetworkStatus:1];
   }
@@ -362,7 +362,7 @@
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v8 = v6;
+  v8 = paramsCopy;
   v9 = [v8 countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v9)
   {
@@ -425,38 +425,38 @@ LABEL_14:
   return v7;
 }
 
-- (void)_callDownloadCompletionHandlerWithAssets:(id)a3 queryParams:(id)a4
+- (void)_callDownloadCompletionHandlerWithAssets:(id)assets queryParams:(id)params
 {
-  v6 = a3;
-  v7 = a4;
+  assetsCopy = assets;
+  paramsCopy = params;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __86___HKMobileAssetDownloadManager__callDownloadCompletionHandlerWithAssets_queryParams___block_invoke;
   block[3] = &unk_1E7376640;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = paramsCopy;
+  v13 = assetsCopy;
+  v9 = assetsCopy;
+  v10 = paramsCopy;
   dispatch_async(queue, block);
 }
 
-- (void)_callErrorHandlerWithError:(id)a3
+- (void)_callErrorHandlerWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __60___HKMobileAssetDownloadManager__callErrorHandlerWithError___block_invoke;
   v7[3] = &unk_1E7378400;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = errorCopy;
+  v6 = errorCopy;
   dispatch_async(queue, v7);
 }
 
-- (id)_errorWithDomain:(id)a3 code:(int64_t)a4
+- (id)_errorWithDomain:(id)domain code:(int64_t)code
 {
   v14[2] = *MEMORY[0x1E69E9840];
   v5 = MEMORY[0x1E696ABC0];
@@ -466,9 +466,9 @@ LABEL_14:
   v14[0] = self->_mobileAssetTypeName;
   v14[1] = mobileAssetDownloadOptions;
   v7 = MEMORY[0x1E695DF20];
-  v8 = a3;
+  domainCopy = domain;
   v9 = [v7 dictionaryWithObjects:v14 forKeys:v13 count:2];
-  v10 = [v5 errorWithDomain:v8 code:a4 userInfo:v9];
+  v10 = [v5 errorWithDomain:domainCopy code:code userInfo:v9];
 
   v11 = *MEMORY[0x1E69E9840];
 

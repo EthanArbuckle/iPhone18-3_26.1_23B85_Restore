@@ -1,17 +1,17 @@
 @interface BWStereoVideoMetadataNode
 + (void)initialize;
-- (BWStereoVideoMetadataNode)initWithPorts:(id)a3 secondaryPort:(id)a4 cameraInfoByPortType:(id)a5 errStatus:(int *)a6;
-- (void)_sendSpatialAggressorsSeenMarkerBufferForPTS:(double)a3 measuredDuration:;
+- (BWStereoVideoMetadataNode)initWithPorts:(id)ports secondaryPort:(id)port cameraInfoByPortType:(id)type errStatus:(int *)status;
+- (void)_sendSpatialAggressorsSeenMarkerBufferForPTS:(double)s measuredDuration:;
 - (void)dealloc;
-- (void)didReachEndOfDataForInput:(id)a3;
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4;
+- (void)didReachEndOfDataForInput:(id)input;
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input;
 @end
 
 @implementation BWStereoVideoMetadataNode
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     fig_note_initialize_category_with_default_work_cf();
 
@@ -19,9 +19,9 @@
   }
 }
 
-- (BWStereoVideoMetadataNode)initWithPorts:(id)a3 secondaryPort:(id)a4 cameraInfoByPortType:(id)a5 errStatus:(int *)a6
+- (BWStereoVideoMetadataNode)initWithPorts:(id)ports secondaryPort:(id)port cameraInfoByPortType:(id)type errStatus:(int *)status
 {
-  if ([a3 isEqualToString:a4])
+  if ([ports isEqualToString:port])
   {
     [BWStereoVideoMetadataNode initWithPorts:? secondaryPort:? cameraInfoByPortType:? errStatus:?];
     v17 = v19.i32[0];
@@ -34,7 +34,7 @@
     self = [(BWNode *)&v20 init];
     if (!self)
     {
-      *a6 = 0;
+      *status = 0;
       return self;
     }
 
@@ -53,7 +53,7 @@
     [(BWNode *)self addOutput:v13];
 
     v19 = 0uLL;
-    v15 = BWStereoUtilitiesComputeRectificationQuaternion(a3, a4, a5, &v19);
+    v15 = BWStereoUtilitiesComputeRectificationQuaternion(ports, port, type, &v19);
     if (v15)
     {
       v17 = v15;
@@ -78,7 +78,7 @@
     }
   }
 
-  *a6 = v17;
+  *status = v17;
   if (v17)
   {
 
@@ -101,20 +101,20 @@
   [(BWNode *)&v4 dealloc];
 }
 
-- (void)didReachEndOfDataForInput:(id)a3
+- (void)didReachEndOfDataForInput:(id)input
 {
   v3.receiver = self;
   v3.super_class = BWStereoVideoMetadataNode;
-  [(BWNode *)&v3 didReachEndOfDataForInput:a3];
+  [(BWNode *)&v3 didReachEndOfDataForInput:input];
 }
 
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input
 {
-  if (BWSampleBufferIsMarkerBuffer(a3))
+  if (BWSampleBufferIsMarkerBuffer(buffer))
   {
     memset(&v21, 0, sizeof(v21));
-    CMSampleBufferGetPresentationTimeStamp(&v21, a3);
-    v6 = CMGetAttachment(a3, @"FileWriterAction", 0);
+    CMSampleBufferGetPresentationTimeStamp(&v21, buffer);
+    v6 = CMGetAttachment(buffer, @"FileWriterAction", 0);
     if (v6)
     {
       v7 = v6;
@@ -127,7 +127,7 @@
           self->_numberOfFramesEvaluatedForAggressiveStatus = 0;
           self->_numberOfLuxLevelAggressiveFrames = 0;
           self->_numberOfFocusDistanceAggressiveFrames = 0;
-          CMSampleBufferGetPresentationTimeStamp(&v20, a3);
+          CMSampleBufferGetPresentationTimeStamp(&v20, buffer);
           self->_startingPTS = v20;
           self->_aggregateStereoVideoCaptureStatus = 0;
         }
@@ -154,17 +154,17 @@
       }
     }
 
-    [(BWNodeOutput *)self->super._output emitSampleBuffer:a3];
+    [(BWNodeOutput *)self->super._output emitSampleBuffer:buffer];
   }
 
   else
   {
-    v8 = [CMGetAttachment(a3 *off_1E798A3C8];
+    v8 = [CMGetAttachment(buffer *off_1E798A3C8];
     if (v8)
     {
-      v9 = [v8 intValue];
+      intValue = [v8 intValue];
       ++self->_numberOfFramesEvaluatedForAggressiveStatus;
-      if ((v9 & 2) != 0)
+      if ((intValue & 2) != 0)
       {
         consecutiveSpatiallyAggressiveFramesThreshold = self->_consecutiveSpatiallyAggressiveFramesThreshold;
         v11 = self->_numberOfConsecutiveLuxLevelAggressiveFrames + 1;
@@ -186,7 +186,7 @@
         self->_numberOfConsecutiveLuxLevelAggressiveFrames = 0;
       }
 
-      if ((v9 & 4) != 0)
+      if ((intValue & 4) != 0)
       {
         v13 = self->_consecutiveSpatiallyAggressiveFramesThreshold;
         v14 = self->_numberOfConsecutiveFocusDistanceAggressiveFrames + 1;
@@ -209,16 +209,16 @@
       }
     }
 
-    CMSetAttachment(a3, *off_1E798D450, self->_serializedRectificationQuaternion, 1u);
+    CMSetAttachment(buffer, *off_1E798D450, self->_serializedRectificationQuaternion, 1u);
     output = self->super._output;
 
-    [(BWNodeOutput *)output emitSampleBuffer:a3];
+    [(BWNodeOutput *)output emitSampleBuffer:buffer];
   }
 }
 
-- (void)_sendSpatialAggressorsSeenMarkerBufferForPTS:(double)a3 measuredDuration:
+- (void)_sendSpatialAggressorsSeenMarkerBufferForPTS:(double)s measuredDuration:
 {
-  if (a1)
+  if (self)
   {
     v15 = 0;
     memcpy(&__dst, MEMORY[0x1E6960CF0], sizeof(__dst));
@@ -230,7 +230,7 @@
 
     else
     {
-      v6 = *(a1 + 140);
+      v6 = *(self + 140);
       if (v6 < 1)
       {
         v8 = 0.0;
@@ -239,8 +239,8 @@
 
       else
       {
-        v7 = *(a1 + 148) / v6;
-        v8 = *(a1 + 156) / v6;
+        v7 = *(self + 148) / v6;
+        v8 = *(self + 156) / v6;
       }
 
       if (dword_1EB58E840)
@@ -253,13 +253,13 @@
       }
 
       CMSetAttachment(v15, @"FileWriterAction", @"SpatialAggressorsSeen", 1u);
-      OUTLINED_FUNCTION_23_0([MEMORY[0x1E696AD98] numberWithInt:*(a1 + 184)]);
-      OUTLINED_FUNCTION_23_0([MEMORY[0x1E696AD98] numberWithDouble:a3]);
+      OUTLINED_FUNCTION_23_0([MEMORY[0x1E696AD98] numberWithInt:*(self + 184)]);
+      OUTLINED_FUNCTION_23_0([MEMORY[0x1E696AD98] numberWithDouble:s]);
       *&v10 = v7;
       OUTLINED_FUNCTION_23_0([MEMORY[0x1E696AD98] numberWithFloat:v10]);
       *&v11 = v8;
       OUTLINED_FUNCTION_23_0([MEMORY[0x1E696AD98] numberWithFloat:v11]);
-      [*(a1 + 16) emitSampleBuffer:v15];
+      [*(self + 16) emitSampleBuffer:v15];
     }
 
     if (v15)

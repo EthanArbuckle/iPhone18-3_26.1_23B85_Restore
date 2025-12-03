@@ -3,9 +3,9 @@
 - (void)_cleanupSession;
 - (void)dealloc;
 - (void)invalidate;
-- (void)sessionHandleProgress:(unsigned int)a3 inInfo:(id)a4 session:(id)a5;
+- (void)sessionHandleProgress:(unsigned int)progress inInfo:(id)info session:(id)session;
 - (void)setCLIPromptsForStates;
-- (void)setSetupUserInputConfig:(id)a3;
+- (void)setSetupUserInputConfig:(id)config;
 @end
 
 @implementation CLISetupInteractor
@@ -42,9 +42,9 @@
   self->_setupSession = 0;
 }
 
-- (void)setSetupUserInputConfig:(id)a3
+- (void)setSetupUserInputConfig:(id)config
 {
-  v4 = a3;
+  configCopy = config;
   if (gLogCategory_CLISetupInteractor <= 30 && (gLogCategory_CLISetupInteractor != -1 || _LogCategory_Initialize()))
   {
     [CLISetupInteractor setSetupUserInputConfig:];
@@ -1024,24 +1024,24 @@ void __44__CLISetupInteractor_setCLIPromptsForStates__block_invoke_21(uint64_t a
   }
 }
 
-- (void)sessionHandleProgress:(unsigned int)a3 inInfo:(id)a4 session:(id)a5
+- (void)sessionHandleProgress:(unsigned int)progress inInfo:(id)info session:(id)session
 {
-  v25 = a4;
-  v8 = a5;
-  if (a3 > 123)
+  infoCopy = info;
+  sessionCopy = session;
+  if (progress > 123)
   {
-    if (a3 <= 229)
+    if (progress <= 229)
     {
-      if (a3 > 199)
+      if (progress > 199)
       {
-        if (a3 == 200)
+        if (progress == 200)
         {
           v21 = *MEMORY[0x277D85E08];
         }
 
         else
         {
-          if (a3 != 210)
+          if (progress != 210)
           {
             goto LABEL_55;
           }
@@ -1052,9 +1052,9 @@ void __44__CLISetupInteractor_setCLIPromptsForStates__block_invoke_21(uint64_t a
 
       else
       {
-        if (a3 != 124)
+        if (progress != 124)
         {
-          if (a3 == 140)
+          if (progress == 140)
           {
             if (self->_recognizeVoiceEnabled)
             {
@@ -1067,8 +1067,8 @@ void __44__CLISetupInteractor_setCLIPromptsForStates__block_invoke_21(uint64_t a
             }
 
             NSLog(&cfstr_Cmdhomedevices_22.isa, v9);
-            [v8 siriForiCloudRecognizeAnswered:self->_siriForICloudEnabled];
-            [v8 recognizeVoiceAnswered:self->_recognizeVoiceEnabled];
+            [sessionCopy siriForiCloudRecognizeAnswered:self->_siriForICloudEnabled];
+            [sessionCopy recognizeVoiceAnswered:self->_recognizeVoiceEnabled];
           }
 
           goto LABEL_55;
@@ -1082,11 +1082,11 @@ LABEL_54:
       goto LABEL_55;
     }
 
-    if (a3 > 235)
+    if (progress > 235)
     {
-      if (a3 != 236)
+      if (progress != 236)
       {
-        if (a3 != 250)
+        if (progress != 250)
         {
           goto LABEL_55;
         }
@@ -1100,13 +1100,13 @@ LABEL_54:
 
     else
     {
-      if (a3 == 230)
+      if (progress == 230)
       {
         v19 = *MEMORY[0x277D85E08];
         goto LABEL_54;
       }
 
-      if (a3 != 234)
+      if (progress != 234)
       {
         goto LABEL_55;
       }
@@ -1116,13 +1116,13 @@ LABEL_54:
     goto LABEL_54;
   }
 
-  if (a3 <= 79)
+  if (progress <= 79)
   {
-    if (a3 <= 34)
+    if (progress <= 34)
     {
-      if (a3 != 20)
+      if (progress != 20)
       {
-        if (a3 != 30)
+        if (progress != 30)
         {
           goto LABEL_55;
         }
@@ -1145,20 +1145,20 @@ LABEL_37:
       }
 
 LABEL_40:
-      v14 = [(HDSSetupSession *)self->_setupSession promptForSetupCompletionHandler];
-      v14[2]();
+      promptForSetupCompletionHandler = [(HDSSetupSession *)self->_setupSession promptForSetupCompletionHandler];
+      promptForSetupCompletionHandler[2]();
 
       goto LABEL_55;
     }
 
-    if (a3 == 35)
+    if (progress == 35)
     {
       v20 = *MEMORY[0x277D85E08];
     }
 
     else
     {
-      if (a3 != 40)
+      if (progress != 40)
       {
         goto LABEL_55;
       }
@@ -1169,16 +1169,16 @@ LABEL_40:
     goto LABEL_54;
   }
 
-  if (a3 > 119)
+  if (progress > 119)
   {
-    if (a3 == 120)
+    if (progress == 120)
     {
       v22 = *MEMORY[0x277D85E08];
     }
 
     else
     {
-      if (a3 != 122)
+      if (progress != 122)
       {
         goto LABEL_55;
       }
@@ -1189,7 +1189,7 @@ LABEL_40:
     goto LABEL_54;
   }
 
-  if (a3 == 80)
+  if (progress == 80)
   {
     if (self->_delayTime)
     {
@@ -1207,7 +1207,7 @@ LABEL_40:
     goto LABEL_54;
   }
 
-  if (a3 == 96)
+  if (progress == 96)
   {
     goto LABEL_37;
   }

@@ -1,11 +1,11 @@
 @interface ADMonocularStillsExecutor
-- (ADMonocularStillsExecutor)initWithParameters:(id)a3;
+- (ADMonocularStillsExecutor)initWithParameters:(id)parameters;
 - (__CVBuffer)createDepthBuffer;
 - (id)getIntermediates;
-- (id)initForDimensions:(id)a3;
+- (id)initForDimensions:(id)dimensions;
 - (int64_t)allocateIntermediateBuffers;
-- (int64_t)executeWithColor:(__CVBuffer *)a3 efl:(float)a4 outputDepth:(__CVBuffer *)a5;
-- (int64_t)prepareForEngineType:(unint64_t)a3 inputColorROI:(CGRect)a4;
+- (int64_t)executeWithColor:(__CVBuffer *)color efl:(float)efl outputDepth:(__CVBuffer *)depth;
+- (int64_t)prepareForEngineType:(unint64_t)type inputColorROI:(CGRect)i;
 - (void)dealloc;
 - (void)deallocateEspressoBuffers;
 @end
@@ -73,16 +73,16 @@
   [(ADExecutor *)&v3 dealloc];
 }
 
-- (int64_t)executeWithColor:(__CVBuffer *)a3 efl:(float)a4 outputDepth:(__CVBuffer *)a5
+- (int64_t)executeWithColor:(__CVBuffer *)color efl:(float)efl outputDepth:(__CVBuffer *)depth
 {
-  v8 = self;
-  objc_sync_enter(v8);
-  if (!a3)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!color)
   {
     if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
 LABEL_16:
-      v10 = -22953;
+      execute = -22953;
       goto LABEL_23;
     }
 
@@ -91,11 +91,11 @@ LABEL_16:
     v12 = "must provide an color buffer";
 LABEL_28:
     _os_log_error_impl(&dword_2402F6000, v11, OS_LOG_TYPE_ERROR, v12, buf, 2u);
-    v10 = -22953;
+    execute = -22953;
     goto LABEL_23;
   }
 
-  if (!a5)
+  if (!depth)
   {
     if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
@@ -108,11 +108,11 @@ LABEL_28:
     goto LABEL_28;
   }
 
-  if (!v8->_isPrepared)
+  if (!selfCopy->_isPrepared)
   {
-    Width = CVPixelBufferGetWidth(a3);
-    v10 = [(ADMonocularStillsExecutor *)v8 prepareForEngineType:v8->super._engineType inputColorROI:0.0, 0.0, Width, CVPixelBufferGetHeight(a3)];
-    if (v10)
+    Width = CVPixelBufferGetWidth(color);
+    execute = [(ADMonocularStillsExecutor *)selfCopy prepareForEngineType:selfCopy->super._engineType inputColorROI:0.0, 0.0, Width, CVPixelBufferGetHeight(color)];
+    if (execute)
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
       {
@@ -124,33 +124,33 @@ LABEL_28:
     }
   }
 
-  if (v8->super._espressoRunner)
+  if (selfCopy->super._espressoRunner)
   {
-    v13 = [(ADExecutor *)v8 executorParameters];
-    v14 = [v13 logger];
+    executorParameters = [(ADExecutor *)selfCopy executorParameters];
+    logger = [executorParameters logger];
 
-    v15 = [MEMORY[0x277CCAC38] processInfo];
-    [v15 systemUptime];
+    processInfo = [MEMORY[0x277CCAC38] processInfo];
+    [processInfo systemUptime];
     v17 = v16;
 
     *buf = 335682584;
     v36 = 0u;
     v37 = 0u;
     kdebug_trace();
-    [v14 logPixelBuffer:a3 name:"inputColor" timestamp:v17];
-    v18 = [(ADExecutor *)v8 executorParameters];
-    v19 = [v18 stepsToExecute];
+    [logger logPixelBuffer:color name:"inputColor" timestamp:v17];
+    executorParameters2 = [(ADExecutor *)selfCopy executorParameters];
+    stepsToExecute = [executorParameters2 stepsToExecute];
 
-    v20 = [(ADExecutor *)v8 executorParameters];
-    v21 = [v20 timeProfiler];
+    executorParameters3 = [(ADExecutor *)selfCopy executorParameters];
+    timeProfiler = [executorParameters3 timeProfiler];
 
-    if (v19 >= 1)
+    if (stepsToExecute >= 1)
     {
       kdebug_trace();
-      [v21 startWithUTFString:"preprocess color"];
-      [(ADExecutor *)v8 frameExecutionStart];
-      v10 = [ADUtils scaleConvertRotateImage:a3 rotateBy:LOBYTE(v8->super._rotationConstant) cropBy:v8->_itmPreProcessedColor scaleInto:&v8->_itmCroppedScaledColor intermediateScalingBuffer:&v8->_itmRotatedColor intermediateRotatingBuffer:1 useVT:v8->super._inputRoi.origin.x, v8->super._inputRoi.origin.y, v8->super._inputRoi.size.width, v8->super._inputRoi.size.height];
-      if (v10)
+      [timeProfiler startWithUTFString:"preprocess color"];
+      [(ADExecutor *)selfCopy frameExecutionStart];
+      execute = [ADUtils scaleConvertRotateImage:color rotateBy:LOBYTE(selfCopy->super._rotationConstant) cropBy:selfCopy->_itmPreProcessedColor scaleInto:&selfCopy->_itmCroppedScaledColor intermediateScalingBuffer:&selfCopy->_itmRotatedColor intermediateRotatingBuffer:1 useVT:selfCopy->super._inputRoi.origin.x, selfCopy->super._inputRoi.origin.y, selfCopy->super._inputRoi.size.width, selfCopy->super._inputRoi.size.height];
+      if (execute)
       {
         if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
         {
@@ -168,15 +168,15 @@ LABEL_14:
         goto LABEL_22;
       }
 
-      [v14 logPixelBuffer:v8->_itmPreProcessedColor name:"preProcessedColor" timestamp:v17];
-      [v21 stopWithUTFString:"preprocess color"];
+      [logger logPixelBuffer:selfCopy->_itmPreProcessedColor name:"preProcessedColor" timestamp:v17];
+      [timeProfiler stopWithUTFString:"preprocess color"];
       kdebug_trace();
-      if (v19 != 1)
+      if (stepsToExecute != 1)
       {
         kdebug_trace();
-        [v21 startWithUTFString:"network execution"];
-        v10 = [(ADEspressoRunnerProtocol *)v8->super._espressoRunner execute];
-        if (v10)
+        [timeProfiler startWithUTFString:"network execution"];
+        execute = [(ADEspressoRunnerProtocol *)selfCopy->super._espressoRunner execute];
+        if (execute)
         {
           if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
           {
@@ -189,17 +189,17 @@ LABEL_14:
           goto LABEL_14;
         }
 
-        [v14 logPixelBuffer:v8->_itmUnprocessedOutputDisparity name:"outputDisparity" timestamp:v17];
-        [v21 stopWithUTFString:"network execution"];
+        [logger logPixelBuffer:selfCopy->_itmUnprocessedOutputDisparity name:"outputDisparity" timestamp:v17];
+        [timeProfiler stopWithUTFString:"network execution"];
         kdebug_trace();
-        if (v19 >= 3)
+        if (stepsToExecute >= 3)
         {
           kdebug_trace();
-          [v21 startWithUTFString:"postprocess depth"];
-          if (a4 > 0.0)
+          [timeProfiler startWithUTFString:"postprocess depth"];
+          if (efl > 0.0)
           {
-            v25 = CVPixelBufferGetWidth(v8->_itmPreProcessedColor);
-            Height = CVPixelBufferGetHeight(v8->_itmPreProcessedColor);
+            v25 = CVPixelBufferGetWidth(selfCopy->_itmPreProcessedColor);
+            Height = CVPixelBufferGetHeight(selfCopy->_itmPreProcessedColor);
             if (v25 <= Height)
             {
               v27 = Height;
@@ -210,8 +210,8 @@ LABEL_14:
               v27 = v25;
             }
 
-            v28 = CVPixelBufferGetWidth(a3);
-            v29 = CVPixelBufferGetHeight(a3);
+            v28 = CVPixelBufferGetWidth(color);
+            v29 = CVPixelBufferGetHeight(color);
             if (v28 <= v29)
             {
               v31 = v29;
@@ -222,14 +222,14 @@ LABEL_14:
               v31 = v28;
             }
 
-            *&v30 = (v31 / v27) * a4;
-            itmUnprocessedOutputDisparity = v8->_itmUnprocessedOutputDisparity;
-            [(ADMonocularStillsPipeline *)v8->_pipeline getMetricScaleFactorForEFL:v30];
+            *&v30 = (v31 / v27) * efl;
+            itmUnprocessedOutputDisparity = selfCopy->_itmUnprocessedOutputDisparity;
+            [(ADMonocularStillsPipeline *)selfCopy->_pipeline getMetricScaleFactorForEFL:v30];
             PixelBufferUtils::inPlaceColorScaling(itmUnprocessedOutputDisparity, 1, v33, 0.0, 1);
           }
 
-          v10 = [ADUtils postProcessDepth:v8->_itmUnprocessedOutputDisparity depthOutput:a5];
-          if (v10)
+          execute = [ADUtils postProcessDepth:selfCopy->_itmUnprocessedOutputDisparity depthOutput:depth];
+          if (execute)
           {
             if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
             {
@@ -242,20 +242,20 @@ LABEL_14:
             goto LABEL_14;
           }
 
-          [v14 logPixelBuffer:a5 name:"outputConvertedUnits" timestamp:v17];
-          [v21 stopWithUTFString:"postprocess depth"];
+          [logger logPixelBuffer:depth name:"outputConvertedUnits" timestamp:v17];
+          [timeProfiler stopWithUTFString:"postprocess depth"];
           kdebug_trace();
-          if (v19 != 3)
+          if (stepsToExecute != 3)
           {
-            [(ADExecutor *)v8 frameExecutionEnd];
-            v10 = 0;
+            [(ADExecutor *)selfCopy frameExecutionEnd];
+            execute = 0;
             goto LABEL_22;
           }
         }
       }
     }
 
-    v10 = -22977;
+    execute = -22977;
     goto LABEL_22;
   }
 
@@ -265,26 +265,26 @@ LABEL_14:
     _os_log_error_impl(&dword_2402F6000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "executor could not be initialized", buf, 2u);
   }
 
-  v10 = -22960;
+  execute = -22960;
 LABEL_23:
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
 
-  return v10;
+  return execute;
 }
 
 - (__CVBuffer)createDepthBuffer
 {
-  v3 = [(ADMonocularStillsPipeline *)self->_pipeline inferenceDescriptor];
-  v4 = [v3 disparityOutput];
-  v5 = [v4 imageDescriptor];
+  inferenceDescriptor = [(ADMonocularStillsPipeline *)self->_pipeline inferenceDescriptor];
+  disparityOutput = [inferenceDescriptor disparityOutput];
+  imageDescriptor = [disparityOutput imageDescriptor];
 
-  [v5 sizeForLayout:{-[ADExecutor layout](self, "layout")}];
+  [imageDescriptor sizeForLayout:{-[ADExecutor layout](self, "layout")}];
   v7 = v6;
   v9 = v8;
-  LODWORD(v3) = [v5 pixelFormat];
+  LODWORD(inferenceDescriptor) = [imageDescriptor pixelFormat];
   pixelBufferOut = 0;
   BufferAttributes = getBufferAttributes();
-  if (CVPixelBufferCreate(*MEMORY[0x277CBECE8], v7, v9, v3, BufferAttributes, &pixelBufferOut))
+  if (CVPixelBufferCreate(*MEMORY[0x277CBECE8], v7, v9, inferenceDescriptor, BufferAttributes, &pixelBufferOut))
   {
     v11 = 0;
   }
@@ -297,25 +297,25 @@ LABEL_23:
   return v11;
 }
 
-- (int64_t)prepareForEngineType:(unint64_t)a3 inputColorROI:(CGRect)a4
+- (int64_t)prepareForEngineType:(unint64_t)type inputColorROI:(CGRect)i
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = self;
-  objc_sync_enter(v9);
+  height = i.size.height;
+  width = i.size.width;
+  y = i.origin.y;
+  x = i.origin.x;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v18 = 335682464;
   v19 = 0u;
   v20 = 0u;
   kdebug_trace();
-  v9->_isPrepared = 0;
-  v10 = [(ADMonocularStillsPipeline *)v9->_pipeline inferenceDescriptor];
-  v11 = [v10 colorInput];
-  v12 = [v11 imageDescriptor];
-  v13 = [(ADExecutor *)v9 prepareForEngineType:a3 roi:v12 descriptorForROI:1 exifOrientation:2 rotationPreference:v10 inferenceDescriptor:x, y, width, height];
+  selfCopy->_isPrepared = 0;
+  inferenceDescriptor = [(ADMonocularStillsPipeline *)selfCopy->_pipeline inferenceDescriptor];
+  colorInput = [inferenceDescriptor colorInput];
+  imageDescriptor = [colorInput imageDescriptor];
+  height = [(ADExecutor *)selfCopy prepareForEngineType:type roi:imageDescriptor descriptorForROI:1 exifOrientation:2 rotationPreference:inferenceDescriptor inferenceDescriptor:x, y, width, height];
 
-  if (v13)
+  if (height)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
@@ -329,10 +329,10 @@ LABEL_7:
 
   else
   {
-    v13 = [(ADMonocularStillsExecutor *)v9 allocateIntermediateBuffers];
-    if (!v13)
+    height = [(ADMonocularStillsExecutor *)selfCopy allocateIntermediateBuffers];
+    if (!height)
     {
-      v9->_isPrepared = 1;
+      selfCopy->_isPrepared = 1;
       goto LABEL_9;
     }
 
@@ -348,23 +348,23 @@ LABEL_7:
 LABEL_9:
 
   kdebug_trace();
-  objc_sync_exit(v9);
+  objc_sync_exit(selfCopy);
 
-  return v13;
+  return height;
 }
 
 - (int64_t)allocateIntermediateBuffers
 {
   [(ADMonocularStillsExecutor *)self deallocateEspressoBuffers];
   espressoRunner = self->super._espressoRunner;
-  v4 = [(ADMonocularStillsPipeline *)self->_pipeline inferenceDescriptor];
-  v5 = [v4 colorInput];
-  self->_itmPreProcessedColor = [(ADEspressoRunnerProtocol *)espressoRunner createAndRegisterPixelBufferForDescriptor:v5];
+  inferenceDescriptor = [(ADMonocularStillsPipeline *)self->_pipeline inferenceDescriptor];
+  colorInput = [inferenceDescriptor colorInput];
+  self->_itmPreProcessedColor = [(ADEspressoRunnerProtocol *)espressoRunner createAndRegisterPixelBufferForDescriptor:colorInput];
 
   v6 = self->super._espressoRunner;
-  v7 = [(ADMonocularStillsPipeline *)self->_pipeline inferenceDescriptor];
-  v8 = [v7 disparityOutput];
-  self->_itmUnprocessedOutputDisparity = [(ADEspressoRunnerProtocol *)v6 createAndRegisterPixelBufferForDescriptor:v8];
+  inferenceDescriptor2 = [(ADMonocularStillsPipeline *)self->_pipeline inferenceDescriptor];
+  disparityOutput = [inferenceDescriptor2 disparityOutput];
+  self->_itmUnprocessedOutputDisparity = [(ADEspressoRunnerProtocol *)v6 createAndRegisterPixelBufferForDescriptor:disparityOutput];
 
   if (self->_itmPreProcessedColor && self->_itmUnprocessedOutputDisparity)
   {
@@ -383,9 +383,9 @@ LABEL_9:
   self->_itmUnprocessedOutputDisparity = 0;
 }
 
-- (ADMonocularStillsExecutor)initWithParameters:(id)a3
+- (ADMonocularStillsExecutor)initWithParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   v13 = 335683744;
   v14 = 0u;
   v15 = 0u;
@@ -396,18 +396,18 @@ LABEL_9:
   if (v5)
   {
     v6 = [ADMonocularStillsPipeline alloc];
-    v7 = [v4 pipelineParameters];
-    v8 = [(ADMonocularStillsPipeline *)v6 initWithParameters:v7];
+    pipelineParameters = [parametersCopy pipelineParameters];
+    v8 = [(ADMonocularStillsPipeline *)v6 initWithParameters:pipelineParameters];
     pipeline = v5->_pipeline;
     v5->_pipeline = v8;
 
-    if (!v5->_pipeline || !v4 && (v4 = [[ADMonocularStillsExecutorParameters alloc] initForPipeline:v5->_pipeline]) == 0)
+    if (!v5->_pipeline || !parametersCopy && (parametersCopy = [[ADMonocularStillsExecutorParameters alloc] initForPipeline:v5->_pipeline]) == 0)
     {
       v10 = 0;
       goto LABEL_8;
     }
 
-    [(ADExecutor *)v5 setExecutorParameters:v4];
+    [(ADExecutor *)v5 setExecutorParameters:parametersCopy];
     v5->_itmPreProcessedColor = 0;
     v5->_itmUnprocessedOutputDisparity = 0;
     v5->_itmCroppedScaledColor = 0;
@@ -422,12 +422,12 @@ LABEL_8:
   return v10;
 }
 
-- (id)initForDimensions:(id)a3
+- (id)initForDimensions:(id)dimensions
 {
-  v4 = a3;
+  dimensionsCopy = dimensions;
   v5 = objc_opt_new();
-  v6 = [v5 pipelineParameters];
-  [v6 setRequestedDimensions:v4];
+  pipelineParameters = [v5 pipelineParameters];
+  [pipelineParameters setRequestedDimensions:dimensionsCopy];
 
   v7 = [(ADMonocularStillsExecutor *)self initWithParameters:v5];
   return v7;

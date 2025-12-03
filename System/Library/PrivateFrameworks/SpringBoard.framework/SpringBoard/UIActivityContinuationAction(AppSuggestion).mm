@@ -21,39 +21,39 @@
     [v12 setObject:v9 forKeyedSubscript:&unk_283370E38];
   }
 
-  v13 = [v10 originatingDeviceType];
+  originatingDeviceType = [v10 originatingDeviceType];
 
-  if (v13)
+  if (originatingDeviceType)
   {
-    v14 = [v10 originatingDeviceType];
-    [v12 setObject:v14 forKeyedSubscript:&unk_283370E50];
+    originatingDeviceType2 = [v10 originatingDeviceType];
+    [v12 setObject:originatingDeviceType2 forKeyedSubscript:&unk_283370E50];
   }
 
-  v15 = [v10 originatingDeviceName];
+  originatingDeviceName = [v10 originatingDeviceName];
 
-  if (v15)
+  if (originatingDeviceName)
   {
-    v16 = [v10 originatingDeviceName];
-    [v12 setObject:v16 forKeyedSubscript:&unk_283370E68];
+    originatingDeviceName2 = [v10 originatingDeviceName];
+    [v12 setObject:originatingDeviceName2 forKeyedSubscript:&unk_283370E68];
   }
 
-  v17 = [v10 activityType];
+  activityType = [v10 activityType];
 
-  if (v17)
+  if (activityType)
   {
-    v18 = [v10 activityType];
-    [v12 setObject:v18 forKeyedSubscript:&unk_283370E80];
+    activityType2 = [v10 activityType];
+    [v12 setObject:activityType2 forKeyedSubscript:&unk_283370E80];
   }
 
-  v19 = [v10 lastUpdateTime];
+  lastUpdateTime = [v10 lastUpdateTime];
 
-  if (v19)
+  if (lastUpdateTime)
   {
-    v20 = [v10 lastUpdateTime];
-    [v12 setObject:v20 forKeyedSubscript:&unk_283370E98];
+    lastUpdateTime2 = [v10 lastUpdateTime];
+    [v12 setObject:lastUpdateTime2 forKeyedSubscript:&unk_283370E98];
   }
 
-  v21 = [a1 initWithSettings:v12];
+  v21 = [self initWithSettings:v12];
 
   return v21;
 }

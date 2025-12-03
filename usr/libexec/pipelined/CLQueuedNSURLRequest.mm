@@ -1,53 +1,53 @@
 @interface CLQueuedNSURLRequest
-- (CLQueuedNSURLRequest)initWithRequest:(id)a3 withPriority:(int64_t)a4 andResumeData:(id)a5 andCountOfBytesClientExpectsToReceive:(int64_t)a6;
+- (CLQueuedNSURLRequest)initWithRequest:(id)request withPriority:(int64_t)priority andResumeData:(id)data andCountOfBytesClientExpectsToReceive:(int64_t)receive;
 - (id)description;
-- (id)downloadTaskWithSession:(id)a3;
+- (id)downloadTaskWithSession:(id)session;
 @end
 
 @implementation CLQueuedNSURLRequest
 
-- (CLQueuedNSURLRequest)initWithRequest:(id)a3 withPriority:(int64_t)a4 andResumeData:(id)a5 andCountOfBytesClientExpectsToReceive:(int64_t)a6
+- (CLQueuedNSURLRequest)initWithRequest:(id)request withPriority:(int64_t)priority andResumeData:(id)data andCountOfBytesClientExpectsToReceive:(int64_t)receive
 {
-  v11 = a3;
-  v12 = a5;
+  requestCopy = request;
+  dataCopy = data;
   v17.receiver = self;
   v17.super_class = CLQueuedNSURLRequest;
   v13 = [(CLQueuedNSURLRequest *)&v17 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_request, a3);
-    v14->_priority = a4;
-    objc_storeStrong(&v14->_resumeData, a5);
-    v14->_countOfBytesClientExpectsToReceive = a6;
+    objc_storeStrong(&v13->_request, request);
+    v14->_priority = priority;
+    objc_storeStrong(&v14->_resumeData, data);
+    v14->_countOfBytesClientExpectsToReceive = receive;
     v15 = v14;
   }
 
   return v14;
 }
 
-- (id)downloadTaskWithSession:(id)a3
+- (id)downloadTaskWithSession:(id)session
 {
-  v4 = a3;
-  v5 = [(CLQueuedNSURLRequest *)self resumeData];
+  sessionCopy = session;
+  resumeData = [(CLQueuedNSURLRequest *)self resumeData];
 
-  if (v5)
+  if (resumeData)
   {
-    v6 = [(CLQueuedNSURLRequest *)self resumeData];
-    [v4 downloadTaskWithResumeData:v6];
+    resumeData2 = [(CLQueuedNSURLRequest *)self resumeData];
+    [sessionCopy downloadTaskWithResumeData:resumeData2];
   }
 
   else
   {
-    v6 = [(CLQueuedNSURLRequest *)self request];
-    [v4 downloadTaskWithRequest:v6];
+    resumeData2 = [(CLQueuedNSURLRequest *)self request];
+    [sessionCopy downloadTaskWithRequest:resumeData2];
   }
   v7 = ;
 
-  v8 = [(CLQueuedNSURLRequest *)self priority];
-  if (v8 <= 2)
+  priority = [(CLQueuedNSURLRequest *)self priority];
+  if (priority <= 2)
   {
-    LODWORD(v9) = **(&off_10044B0F0 + v8);
+    LODWORD(v9) = **(&off_10044B0F0 + priority);
     [v7 setPriority:v9];
   }
 
@@ -58,8 +58,8 @@
 
 - (id)description
 {
-  v2 = [(CLQueuedNSURLRequest *)self request];
-  v3 = [v2 description];
+  request = [(CLQueuedNSURLRequest *)self request];
+  v3 = [request description];
 
   return v3;
 }

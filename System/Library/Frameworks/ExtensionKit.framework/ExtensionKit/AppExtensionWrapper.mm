@@ -1,19 +1,19 @@
 @interface AppExtensionWrapper
-- (BOOL)shouldAcceptConnection:(id)a3;
+- (BOOL)shouldAcceptConnection:(id)connection;
 - (_TtC12ExtensionKit19AppExtensionWrapper)init;
-- (id)makeSceneWithConfiguration:(id)a3;
+- (id)makeSceneWithConfiguration:(id)configuration;
 @end
 
 @implementation AppExtensionWrapper
 
-- (BOOL)shouldAcceptConnection:(id)a3
+- (BOOL)shouldAcceptConnection:(id)connection
 {
   sub_1D29F3724(&self->super._identity + OBJC_IVAR____TtC12ExtensionKit19AppExtensionWrapper_configurationScene, v9);
   if (v10)
   {
     __swift_project_boxed_opaque_existential_1(v9, v10);
-    v5 = a3;
-    v6 = self;
+    connectionCopy = connection;
+    selfCopy = self;
     v7 = sub_1D29FFD18();
 
     __swift_destroy_boxed_opaque_existential_1Tm(v9);
@@ -28,11 +28,11 @@
   return v7 & 1;
 }
 
-- (id)makeSceneWithConfiguration:(id)a3
+- (id)makeSceneWithConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_1D29F288C(v4);
+  configurationCopy = configuration;
+  selfCopy = self;
+  v6 = sub_1D29F288C(configurationCopy);
 
   return v6;
 }

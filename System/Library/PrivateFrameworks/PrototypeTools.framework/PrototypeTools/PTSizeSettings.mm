@@ -2,7 +2,7 @@
 + (id)settingsControllerModule;
 - (CGSize)sizeValue;
 - (id)drillDownSummary;
-- (void)setSizeValue:(CGSize)a3;
+- (void)setSizeValue:(CGSize)value;
 @end
 
 @implementation PTSizeSettings
@@ -35,10 +35,10 @@
   return [v3 stringWithFormat:@"(%.1g, %.1g)", v5, v6];
 }
 
-- (void)setSizeValue:(CGSize)a3
+- (void)setSizeValue:(CGSize)value
 {
-  height = a3.height;
-  [(PTSizeSettings *)self setWidth:a3.width];
+  height = value.height;
+  [(PTSizeSettings *)self setWidth:value.width];
 
   [(PTSizeSettings *)self setHeight:height];
 }

@@ -5,24 +5,24 @@
 - (id)attributeDescriptions;
 - (id)logIdentifier;
 - (void)cancel;
-- (void)startWithDelegate:(id)a3 delegateQueue:(id)a4 responseTime:(double)a5;
+- (void)startWithDelegate:(id)delegate delegateQueue:(id)queue responseTime:(double)time;
 @end
 
 @implementation HMDUserPresenceFeedRetryTimer
 
 - (id)logIdentifier
 {
-  v2 = [(HMDUserPresenceFeedRetryTimer *)self timerID];
-  v3 = [v2 UUIDString];
+  timerID = [(HMDUserPresenceFeedRetryTimer *)self timerID];
+  uUIDString = [timerID UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
 - (double)retryTimeInterval
 {
-  v2 = [(HMDUserPresenceFeedRetryTimer *)self retryCount];
+  retryCount = [(HMDUserPresenceFeedRetryTimer *)self retryCount];
   result = 300.0;
-  if (v2 <= 0xA)
+  if (retryCount <= 0xA)
   {
     return 30.0;
   }
@@ -32,26 +32,26 @@
 
 - (void)cancel
 {
-  v3 = [(HMDUserPresenceFeedRetryTimer *)self retryTimer];
-  [v3 cancel];
+  retryTimer = [(HMDUserPresenceFeedRetryTimer *)self retryTimer];
+  [retryTimer cancel];
 
   [(HMDUserPresenceFeedRetryTimer *)self setRetryTimer:0];
 }
 
-- (void)startWithDelegate:(id)a3 delegateQueue:(id)a4 responseTime:(double)a5
+- (void)startWithDelegate:(id)delegate delegateQueue:(id)queue responseTime:(double)time
 {
   v36 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  delegateCopy = delegate;
+  queueCopy = queue;
   v10 = objc_autoreleasePoolPush();
-  v11 = self;
+  selfCopy = self;
   v12 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
     v13 = HMFGetLogIdentifier();
-    v14 = [MEMORY[0x277CCABB0] numberWithDouble:a5];
+    v14 = [MEMORY[0x277CCABB0] numberWithDouble:time];
     v15 = MEMORY[0x277CCABB0];
-    [(HMDUserPresenceFeedRetryTimer *)v11 retryTimeInterval];
+    [(HMDUserPresenceFeedRetryTimer *)selfCopy retryTimeInterval];
     v16 = [v15 numberWithDouble:?];
     v30 = 138543874;
     v31 = v13;
@@ -63,15 +63,15 @@
   }
 
   objc_autoreleasePoolPop(v10);
-  if ([(HMDUserPresenceFeedRetryTimer *)v11 shouldRetryImmediately:a5])
+  if ([(HMDUserPresenceFeedRetryTimer *)selfCopy shouldRetryImmediately:time])
   {
     v17 = objc_autoreleasePoolPush();
-    v18 = v11;
+    v18 = selfCopy;
     v19 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
     {
       v20 = HMFGetLogIdentifier();
-      v21 = [MEMORY[0x277CCABB0] numberWithDouble:a5];
+      v21 = [MEMORY[0x277CCABB0] numberWithDouble:time];
       v22 = MEMORY[0x277CCABB0];
       [(HMDUserPresenceFeedRetryTimer *)v18 retryTimeInterval];
       v23 = [v22 numberWithDouble:?];
@@ -85,24 +85,24 @@
     }
 
     objc_autoreleasePoolPop(v17);
-    v24 = [(HMDUserPresenceFeedRetryTimer *)v18 retryTimer];
-    [v8 timerDidFire:v24];
+    retryTimer = [(HMDUserPresenceFeedRetryTimer *)v18 retryTimer];
+    [delegateCopy timerDidFire:retryTimer];
   }
 
   else
   {
-    [(HMDUserPresenceFeedRetryTimer *)v11 retryTimeInterval];
-    v26 = [objc_alloc(MEMORY[0x277D0F920]) initWithTimeInterval:1 options:v25 - a5];
-    [(HMDUserPresenceFeedRetryTimer *)v11 setRetryTimer:v26];
+    [(HMDUserPresenceFeedRetryTimer *)selfCopy retryTimeInterval];
+    time = [objc_alloc(MEMORY[0x277D0F920]) initWithTimeInterval:1 options:v25 - time];
+    [(HMDUserPresenceFeedRetryTimer *)selfCopy setRetryTimer:time];
 
-    v27 = [(HMDUserPresenceFeedRetryTimer *)v11 retryTimer];
-    [v27 setDelegate:v8];
+    retryTimer2 = [(HMDUserPresenceFeedRetryTimer *)selfCopy retryTimer];
+    [retryTimer2 setDelegate:delegateCopy];
 
-    v28 = [(HMDUserPresenceFeedRetryTimer *)v11 retryTimer];
-    [v28 setDelegateQueue:v9];
+    retryTimer3 = [(HMDUserPresenceFeedRetryTimer *)selfCopy retryTimer];
+    [retryTimer3 setDelegateQueue:queueCopy];
 
-    v24 = [(HMDUserPresenceFeedRetryTimer *)v11 retryTimer];
-    [v24 resume];
+    retryTimer = [(HMDUserPresenceFeedRetryTimer *)selfCopy retryTimer];
+    [retryTimer resume];
   }
 
   v29 = *MEMORY[0x277D85DE8];
@@ -112,8 +112,8 @@
 {
   v12[2] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277D0F778]);
-  v4 = [(HMDUserPresenceFeedRetryTimer *)self timerID];
-  v5 = [v3 initWithName:@"TID" value:v4];
+  timerID = [(HMDUserPresenceFeedRetryTimer *)self timerID];
+  v5 = [v3 initWithName:@"TID" value:timerID];
   v12[0] = v5;
   v6 = objc_alloc(MEMORY[0x277D0F778]);
   v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[HMDUserPresenceFeedRetryTimer retryCount](self, "retryCount")}];
@@ -133,9 +133,9 @@
   v2 = [(HMDUserPresenceFeedRetryTimer *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAD78] UUID];
+    uUID = [MEMORY[0x277CCAD78] UUID];
     timerID = v2->_timerID;
-    v2->_timerID = v3;
+    v2->_timerID = uUID;
   }
 
   return v2;

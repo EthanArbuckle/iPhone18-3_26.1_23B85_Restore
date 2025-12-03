@@ -1,10 +1,10 @@
 @interface ASTMouseZoomOptionsController
-- (id)_localizedDescriptionForPanningStyle:(unint64_t)a3;
-- (id)_localizedTitleForPanningStyle:(unint64_t)a3;
+- (id)_localizedDescriptionForPanningStyle:(unint64_t)style;
+- (id)_localizedTitleForPanningStyle:(unint64_t)style;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (unint64_t)_currentStyle;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation ASTMouseZoomOptionsController
@@ -44,54 +44,54 @@
 - (unint64_t)_currentStyle
 {
   v2 = +[AXSettings sharedInstance];
-  v3 = [v2 assistiveTouchMouseZoomPanningStyle];
+  assistiveTouchMouseZoomPanningStyle = [v2 assistiveTouchMouseZoomPanningStyle];
 
-  return v3;
+  return assistiveTouchMouseZoomPanningStyle;
 }
 
-- (id)_localizedTitleForPanningStyle:(unint64_t)a3
+- (id)_localizedTitleForPanningStyle:(unint64_t)style
 {
-  if (a3 <= 2)
+  if (style <= 2)
   {
-    self = settingsLocString(off_258F90[a3], @"HandSettings");
+    self = settingsLocString(off_258F90[style], @"HandSettings");
   }
 
   return self;
 }
 
-- (id)_localizedDescriptionForPanningStyle:(unint64_t)a3
+- (id)_localizedDescriptionForPanningStyle:(unint64_t)style
 {
-  if (a3 <= 2)
+  if (style <= 2)
   {
-    self = settingsLocString(off_258FA8[a3], @"HandSettings");
+    self = settingsLocString(off_258FA8[style], @"HandSettings");
   }
 
   return self;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v10.receiver = self;
   v10.super_class = ASTMouseZoomOptionsController;
-  v6 = a4;
-  v7 = [(ASTMouseZoomOptionsController *)&v10 tableView:a3 cellForRowAtIndexPath:v6];
-  v8 = [(ASTMouseZoomOptionsController *)self _panningStyleForIndexPath:v6, v10.receiver, v10.super_class];
+  pathCopy = path;
+  v7 = [(ASTMouseZoomOptionsController *)&v10 tableView:view cellForRowAtIndexPath:pathCopy];
+  v8 = [(ASTMouseZoomOptionsController *)self _panningStyleForIndexPath:pathCopy, v10.receiver, v10.super_class];
 
   [v7 setChecked:{v8 == -[ASTMouseZoomOptionsController _currentStyle](self, "_currentStyle")}];
 
   return v7;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(ASTMouseZoomOptionsController *)self _panningStyleForIndexPath:v6];
+  pathCopy = path;
+  viewCopy = view;
+  v8 = [(ASTMouseZoomOptionsController *)self _panningStyleForIndexPath:pathCopy];
   v9 = +[AXSettings sharedInstance];
   [v9 setAssistiveTouchMouseZoomPanningStyle:v8];
 
-  [(ASTMouseZoomOptionsController *)self updateTableCheckedSelection:v6];
-  [v7 deselectRowAtIndexPath:v6 animated:1];
+  [(ASTMouseZoomOptionsController *)self updateTableCheckedSelection:pathCopy];
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
 
   v11 = [(ASTMouseZoomOptionsController *)self specifierForID:@"GROUP_SPECIFIER"];
   v10 = [(ASTMouseZoomOptionsController *)self _localizedDescriptionForPanningStyle:v8];

@@ -31,25 +31,25 @@ uint64_t __34__DEDConfiguration_sharedInstance__block_invoke()
 - (id)errorDomain
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(DEDConfiguration *)self identifier];
-  v4 = [v2 stringWithFormat:@"%@-error", v3];
+  identifier = [(DEDConfiguration *)self identifier];
+  v4 = [v2 stringWithFormat:@"%@-error", identifier];
 
   return v4;
 }
 
 - (const)loggingSubsystem
 {
-  v2 = [(DEDConfiguration *)self identifier];
-  v3 = [v2 cStringUsingEncoding:4];
+  identifier = [(DEDConfiguration *)self identifier];
+  v3 = [identifier cStringUsingEncoding:4];
 
   return v3;
 }
 
 - (unint64_t)connectionType
 {
-  v2 = [MEMORY[0x277CCAC38] processInfo];
-  v3 = [v2 environment];
-  v4 = [v3 objectForKeyedSubscript:@"DED_CONNECTION"];
+  processInfo = [MEMORY[0x277CCAC38] processInfo];
+  environment = [processInfo environment];
+  v4 = [environment objectForKeyedSubscript:@"DED_CONNECTION"];
 
   v5 = v4 && ([v4 isEqualToString:&stru_285B72378] & 1) == 0 && (objc_msgSend(v4, "isEqualToString:", @"privileged") & 1) == 0 && (objc_msgSend(v4, "isEqualToString:", @"anonymous") & 1) != 0;
   return v5;
@@ -58,8 +58,8 @@ uint64_t __34__DEDConfiguration_sharedInstance__block_invoke()
 - (id)dedDirectory
 {
   v3 = [MEMORY[0x277D051E0] userLibraryDirectoryForApp:@"Logs"];
-  v4 = [(DEDConfiguration *)self identifier];
-  v5 = [v3 URLByAppendingPathComponent:v4];
+  identifier = [(DEDConfiguration *)self identifier];
+  v5 = [v3 URLByAppendingPathComponent:identifier];
 
   if (v5)
   {
@@ -84,9 +84,9 @@ uint64_t __34__DEDConfiguration_sharedInstance__block_invoke()
 
 - (id)sharedAnonymousListener
 {
-  v3 = [(DEDConfiguration *)self anonymousListener];
+  anonymousListener = [(DEDConfiguration *)self anonymousListener];
 
-  if (!v3)
+  if (!anonymousListener)
   {
     v4 = +[DEDUtils sharedLog];
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -94,13 +94,13 @@ uint64_t __34__DEDConfiguration_sharedInstance__block_invoke()
       [(DEDConfiguration *)v4 sharedAnonymousListener];
     }
 
-    v5 = [MEMORY[0x277CCAE98] anonymousListener];
-    [(DEDConfiguration *)self setAnonymousListener:v5];
+    anonymousListener2 = [MEMORY[0x277CCAE98] anonymousListener];
+    [(DEDConfiguration *)self setAnonymousListener:anonymousListener2];
   }
 
-  v6 = [(DEDConfiguration *)self anonymousListener];
+  anonymousListener3 = [(DEDConfiguration *)self anonymousListener];
 
-  return v6;
+  return anonymousListener3;
 }
 
 @end

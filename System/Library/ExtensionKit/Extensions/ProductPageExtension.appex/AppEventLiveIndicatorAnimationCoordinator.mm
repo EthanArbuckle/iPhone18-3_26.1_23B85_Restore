@@ -7,13 +7,13 @@
 
 - (void)appEnteredWhileAppeared
 {
-  v2 = self;
+  selfCopy = self;
   sub_10017841C();
 }
 
 - (void)appExitedWhileAppeared
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001776D4();
 }
 

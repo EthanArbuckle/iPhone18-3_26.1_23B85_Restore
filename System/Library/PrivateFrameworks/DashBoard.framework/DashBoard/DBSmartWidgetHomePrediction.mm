@@ -1,39 +1,39 @@
 @interface DBSmartWidgetHomePrediction
-- (BOOL)updateWithPrediction:(id)a3;
-- (DBSmartWidgetHomePrediction)initWithGarageDoor:(id)a3;
+- (BOOL)updateWithPrediction:(id)prediction;
+- (DBSmartWidgetHomePrediction)initWithGarageDoor:(id)door;
 - (double)value;
-- (id)backgroundColorWithTraitCollection:(id)a3;
-- (id)buttonCompositingFilterWithTraitCollection:(id)a3;
+- (id)backgroundColorWithTraitCollection:(id)collection;
+- (id)buttonCompositingFilterWithTraitCollection:(id)collection;
 - (id)debugScoreText;
-- (id)imageCompositingFilterWithTraitCollection:(id)a3;
-- (id)managerConfigurationWithAction:(id)a3;
+- (id)imageCompositingFilterWithTraitCollection:(id)collection;
+- (id)managerConfigurationWithAction:(id)action;
 - (id)primaryActionBlock;
 - (id)subtitle;
 - (id)symbol;
-- (id)tintColorWithTraitCollection:(id)a3;
+- (id)tintColorWithTraitCollection:(id)collection;
 - (id)title;
 - (id)uniqueIdentifier;
 - (int64_t)_iconType;
 - (int64_t)alert;
 - (int64_t)tieBreakScore;
-- (void)garageDoor:(id)a3 didUpdateDoorState:(int64_t)a4;
-- (void)garageDoor:(id)a3 didUpdateObstructionDetected:(BOOL)a4;
-- (void)garageDoor:(id)a3 didUpdateTargetDoorState:(int64_t)a4;
-- (void)serviceDidUpdate:(id)a3;
+- (void)garageDoor:(id)door didUpdateDoorState:(int64_t)state;
+- (void)garageDoor:(id)door didUpdateObstructionDetected:(BOOL)detected;
+- (void)garageDoor:(id)door didUpdateTargetDoorState:(int64_t)state;
+- (void)serviceDidUpdate:(id)update;
 @end
 
 @implementation DBSmartWidgetHomePrediction
 
-- (DBSmartWidgetHomePrediction)initWithGarageDoor:(id)a3
+- (DBSmartWidgetHomePrediction)initWithGarageDoor:(id)door
 {
-  v5 = a3;
+  doorCopy = door;
   v9.receiver = self;
   v9.super_class = DBSmartWidgetHomePrediction;
   v6 = [(DBSmartWidgetPrediction *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_garageDoor, a3);
+    objc_storeStrong(&v6->_garageDoor, door);
     [(DBGarageDoor *)v7->_garageDoor addObserver:v7];
   }
 
@@ -42,66 +42,66 @@
 
 - (id)uniqueIdentifier
 {
-  v2 = [(DBSmartWidgetHomePrediction *)self garageDoor];
-  v3 = [v2 uniqueIdentifier];
+  garageDoor = [(DBSmartWidgetHomePrediction *)self garageDoor];
+  uniqueIdentifier = [garageDoor uniqueIdentifier];
 
-  return v3;
+  return uniqueIdentifier;
 }
 
 - (int64_t)alert
 {
-  v2 = [(DBSmartWidgetHomePrediction *)self garageDoor];
-  v3 = [v2 doorState];
+  garageDoor = [(DBSmartWidgetHomePrediction *)self garageDoor];
+  doorState = [garageDoor doorState];
 
-  v4 = (v3 + 4) > 8 || ((1 << (v3 + 4)) & 0x107) == 0;
-  return !v4 || v3 == 100;
+  v4 = (doorState + 4) > 8 || ((1 << (doorState + 4)) & 0x107) == 0;
+  return !v4 || doorState == 100;
 }
 
 - (id)title
 {
-  v2 = [(DBSmartWidgetHomePrediction *)self garageDoor];
-  v3 = [v2 name];
+  garageDoor = [(DBSmartWidgetHomePrediction *)self garageDoor];
+  name = [garageDoor name];
 
-  return v3;
+  return name;
 }
 
 - (id)subtitle
 {
-  v3 = [(DBSmartWidgetHomePrediction *)self garageDoor];
-  v4 = [v3 home];
-  v5 = [v4 inAllowedPeriod];
+  garageDoor = [(DBSmartWidgetHomePrediction *)self garageDoor];
+  home = [garageDoor home];
+  inAllowedPeriod = [home inAllowedPeriod];
 
-  if ((v5 & 1) == 0)
+  if ((inAllowedPeriod & 1) == 0)
   {
     v7 = [MEMORY[0x277CCA8D8] bundleForClass:NSClassFromString(&cfstr_Dashboard_4.isa)];
     v17 = [v7 localizedStringForKey:@"SMARTWIDGET_GARGAGEDOOR_OUTSIDE_SCHEDULE" value:&stru_285A57218 table:@"CarPlayApp"];
     goto LABEL_8;
   }
 
-  v6 = [(DBSmartWidgetHomePrediction *)self garageDoor];
-  v7 = NSStringFromDoorState([v6 doorState]);
+  garageDoor2 = [(DBSmartWidgetHomePrediction *)self garageDoor];
+  v7 = NSStringFromDoorState([garageDoor2 doorState]);
 
-  v8 = [MEMORY[0x277CF89D0] smartWidgetRelaxHomeInRangeCheck];
-  v9 = [v8 valueBool];
+  smartWidgetRelaxHomeInRangeCheck = [MEMORY[0x277CF89D0] smartWidgetRelaxHomeInRangeCheck];
+  valueBool = [smartWidgetRelaxHomeInRangeCheck valueBool];
 
-  if (v9)
+  if (valueBool)
   {
-    v10 = [(DBSmartWidgetHomePrediction *)self garageDoor];
-    v11 = [v10 home];
-    v12 = [v11 inHomeRange];
+    garageDoor3 = [(DBSmartWidgetHomePrediction *)self garageDoor];
+    home2 = [garageDoor3 home];
+    inHomeRange = [home2 inHomeRange];
 
-    if ((v12 & 1) == 0)
+    if ((inHomeRange & 1) == 0)
     {
       v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"(!H) %@", v7];
 
       v7 = v13;
     }
 
-    v14 = [(DBSmartWidgetHomePrediction *)self garageDoor];
-    v15 = [v14 home];
-    v16 = [v15 inLocationRange];
+    garageDoor4 = [(DBSmartWidgetHomePrediction *)self garageDoor];
+    home3 = [garageDoor4 home];
+    inLocationRange = [home3 inLocationRange];
 
-    if ((v16 & 1) == 0)
+    if ((inLocationRange & 1) == 0)
     {
       v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"(!L) %@", v7];
 LABEL_8:
@@ -157,30 +157,30 @@ void __49__DBSmartWidgetHomePrediction_primaryActionBlock__block_invoke(uint64_t
   [v6 setTargetDoorState:v5];
 }
 
-- (id)managerConfigurationWithAction:(id)a3
+- (id)managerConfigurationWithAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   v5 = [DBSmartStackManagerConfiguration alloc];
   v6 = [MEMORY[0x277CCA8D8] bundleForClass:NSClassFromString(&cfstr_Dashboard_4.isa)];
   v7 = [v6 localizedStringForKey:@"SMARTSTACK_ACTIONSHEET_SIRI_SUGGESTIONS" value:&stru_285A57218 table:@"CarPlayApp"];
-  v8 = [(DBSmartWidgetHomePrediction *)self title];
+  title = [(DBSmartWidgetHomePrediction *)self title];
   v9 = [MEMORY[0x277CCA8D8] bundleForClass:NSClassFromString(&cfstr_Dashboard_4.isa)];
   v10 = [v9 localizedStringForKey:@"SMARTSTACK_ACTIONSHEET_CLEAR" value:&stru_285A57218 table:@"CarPlayApp"];
-  v11 = [(DBSmartStackManagerConfiguration *)v5 initWithAlertTitle:v7 alertSubtitle:v8 actionTitle:v10 action:v4];
+  v11 = [(DBSmartStackManagerConfiguration *)v5 initWithAlertTitle:v7 alertSubtitle:title actionTitle:v10 action:actionCopy];
 
   return v11;
 }
 
 - (int64_t)_iconType
 {
-  v2 = [(DBSmartWidgetHomePrediction *)self garageDoor];
-  v3 = [v2 doorState];
+  garageDoor = [(DBSmartWidgetHomePrediction *)self garageDoor];
+  doorState = [garageDoor doorState];
 
-  v4 = v3 + 4;
-  return (v3 + 4) <= 8 && (((1 << v4) & 0x10F) != 0 || ((1 << v4) & 0x60) != 0) || v3 == 100;
+  v4 = doorState + 4;
+  return (doorState + 4) <= 8 && (((1 << v4) & 0x10F) != 0 || ((1 << v4) & 0x60) != 0) || doorState == 100;
 }
 
-- (id)tintColorWithTraitCollection:(id)a3
+- (id)tintColorWithTraitCollection:(id)collection
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
@@ -219,7 +219,7 @@ LABEL_6:
   return v1;
 }
 
-- (id)backgroundColorWithTraitCollection:(id)a3
+- (id)backgroundColorWithTraitCollection:(id)collection
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
@@ -277,26 +277,26 @@ LABEL_11:
 
 - (id)symbol
 {
-  v3 = [(DBSmartWidgetHomePrediction *)self garageDoor];
-  v4 = [v3 doorType];
+  garageDoor = [(DBSmartWidgetHomePrediction *)self garageDoor];
+  doorType = [garageDoor doorType];
 
-  if (v4 < 2)
+  if (doorType < 2)
   {
-    v6 = [(DBSmartWidgetHomePrediction *)self _iconType];
-    if (!v6)
+    _iconType = [(DBSmartWidgetHomePrediction *)self _iconType];
+    if (!_iconType)
     {
       return @"door.garage.open";
     }
 
-    if (v6 == 1)
+    if (_iconType == 1)
     {
       return @"door.garage.closed";
     }
   }
 
-  else if (v4 != 2)
+  else if (doorType != 2)
   {
-    if (v4 != 3)
+    if (doorType != 3)
     {
       return result;
     }
@@ -304,13 +304,13 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  v7 = [(DBSmartWidgetHomePrediction *)self _iconType];
-  if (!v7)
+  _iconType2 = [(DBSmartWidgetHomePrediction *)self _iconType];
+  if (!_iconType2)
   {
     return @"door.garage.double.bay.open";
   }
 
-  if (v7 == 1)
+  if (_iconType2 == 1)
   {
     return @"door.garage.double.bay.closed";
   }
@@ -327,15 +327,15 @@ LABEL_11:
   }
 }
 
-- (id)buttonCompositingFilterWithTraitCollection:(id)a3
+- (id)buttonCompositingFilterWithTraitCollection:(id)collection
 {
-  v4 = a3;
+  collectionCopy = collection;
   if ([(DBSmartWidgetHomePrediction *)self _iconType]== 1)
   {
-    v5 = [v4 userInterfaceStyle];
-    if (v5 <= 2)
+    userInterfaceStyle = [collectionCopy userInterfaceStyle];
+    if (userInterfaceStyle <= 2)
     {
-      self = [MEMORY[0x277CD9EA0] filterWithType:**(&unk_278F01EA0 + v5)];
+      self = [MEMORY[0x277CD9EA0] filterWithType:**(&unk_278F01EA0 + userInterfaceStyle)];
     }
   }
 
@@ -347,10 +347,10 @@ LABEL_11:
   return self;
 }
 
-- (id)imageCompositingFilterWithTraitCollection:(id)a3
+- (id)imageCompositingFilterWithTraitCollection:(id)collection
 {
-  v4 = a3;
-  if (-[DBSmartWidgetHomePrediction _iconType](self, "_iconType") || [v4 userInterfaceStyle] > 2)
+  collectionCopy = collection;
+  if (-[DBSmartWidgetHomePrediction _iconType](self, "_iconType") || [collectionCopy userInterfaceStyle] > 2)
   {
     v5 = 0;
   }
@@ -365,17 +365,17 @@ LABEL_11:
 
 - (int64_t)tieBreakScore
 {
-  v2 = [(DBSmartWidgetHomePrediction *)self garageDoor];
-  v3 = [v2 lastWritten];
+  garageDoor = [(DBSmartWidgetHomePrediction *)self garageDoor];
+  lastWritten = [garageDoor lastWritten];
 
-  return v3;
+  return lastWritten;
 }
 
-- (BOOL)updateWithPrediction:(id)a3
+- (BOOL)updateWithPrediction:(id)prediction
 {
-  v4 = a3;
+  predictionCopy = prediction;
   objc_opt_class();
-  v5 = v4;
+  v5 = predictionCopy;
   if (v5 && (objc_opt_isKindOfClass() & 1) != 0)
   {
     v6 = v5;
@@ -389,9 +389,9 @@ LABEL_11:
   v10.receiver = self;
   v10.super_class = DBSmartWidgetHomePrediction;
   [(DBSmartWidgetPrediction *)&v10 updateWithPrediction:v6];
-  v7 = [v5 predictedObject];
+  predictedObject = [v5 predictedObject];
   garageDoor = self->_garageDoor;
-  self->_garageDoor = v7;
+  self->_garageDoor = predictedObject;
 
   [(DBSmartWidgetPrediction *)self predictionDidUpdate];
   return 1;
@@ -402,27 +402,27 @@ LABEL_11:
   v3 = MEMORY[0x277CCACA8];
   v12.receiver = self;
   v12.super_class = DBSmartWidgetHomePrediction;
-  v4 = [(DBSmartWidgetPrediction *)&v12 debugScoreText];
-  v5 = [(DBSmartWidgetHomePrediction *)self garageDoor];
-  v6 = [v5 home];
-  v7 = [v6 stateDescription];
-  v8 = [(DBSmartWidgetHomePrediction *)self garageDoor];
-  v9 = [v8 stateDescription];
-  v10 = [v3 stringWithFormat:@"%@\n%@\n%@", v4, v7, v9];
+  debugScoreText = [(DBSmartWidgetPrediction *)&v12 debugScoreText];
+  garageDoor = [(DBSmartWidgetHomePrediction *)self garageDoor];
+  home = [garageDoor home];
+  stateDescription = [home stateDescription];
+  garageDoor2 = [(DBSmartWidgetHomePrediction *)self garageDoor];
+  stateDescription2 = [garageDoor2 stateDescription];
+  v10 = [v3 stringWithFormat:@"%@\n%@\n%@", debugScoreText, stateDescription, stateDescription2];
 
   return v10;
 }
 
 - (double)value
 {
-  v2 = [(DBSmartWidgetHomePrediction *)self garageDoor];
-  [v2 distance];
+  garageDoor = [(DBSmartWidgetHomePrediction *)self garageDoor];
+  [garageDoor distance];
   v4 = v3;
 
   return v4;
 }
 
-- (void)serviceDidUpdate:(id)a3
+- (void)serviceDidUpdate:(id)update
 {
   v4 = DBLogForCategory(9uLL);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -433,34 +433,34 @@ LABEL_11:
   [(DBSmartWidgetPrediction *)self predictionDidUpdate];
 }
 
-- (void)garageDoor:(id)a3 didUpdateDoorState:(int64_t)a4
+- (void)garageDoor:(id)door didUpdateDoorState:(int64_t)state
 {
   v6 = DBLogForCategory(9uLL);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
-    [DBSmartWidgetHomePrediction garageDoor:a4 didUpdateDoorState:?];
+    [DBSmartWidgetHomePrediction garageDoor:state didUpdateDoorState:?];
   }
 
   [(DBSmartWidgetPrediction *)self predictionDidUpdate];
 }
 
-- (void)garageDoor:(id)a3 didUpdateTargetDoorState:(int64_t)a4
+- (void)garageDoor:(id)door didUpdateTargetDoorState:(int64_t)state
 {
   v6 = DBLogForCategory(9uLL);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
-    [DBSmartWidgetHomePrediction garageDoor:a4 didUpdateTargetDoorState:?];
+    [DBSmartWidgetHomePrediction garageDoor:state didUpdateTargetDoorState:?];
   }
 
   [(DBSmartWidgetPrediction *)self predictionDidUpdate];
 }
 
-- (void)garageDoor:(id)a3 didUpdateObstructionDetected:(BOOL)a4
+- (void)garageDoor:(id)door didUpdateObstructionDetected:(BOOL)detected
 {
   v6 = DBLogForCategory(9uLL);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
-    [(DBSmartWidgetHomePrediction *)self garageDoor:a4 didUpdateObstructionDetected:v6];
+    [(DBSmartWidgetHomePrediction *)self garageDoor:detected didUpdateObstructionDetected:v6];
   }
 
   [(DBSmartWidgetPrediction *)self predictionDidUpdate];

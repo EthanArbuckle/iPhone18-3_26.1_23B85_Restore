@@ -1,26 +1,26 @@
 @interface REMAutoCategorizationActivity
-- (BOOL)isEqual:(id)a3;
-- (REMAutoCategorizationActivity)initWithCoder:(id)a3;
-- (REMAutoCategorizationActivity)initWithListID:(id)a3 reminderIDs:(id)a4;
-- (REMAutoCategorizationActivity)initWithReminderIDsByListID:(id)a3;
-- (id)activityByMergingWithActivity:(id)a3;
-- (id)activityBySubtractingActivity:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (REMAutoCategorizationActivity)initWithCoder:(id)coder;
+- (REMAutoCategorizationActivity)initWithListID:(id)d reminderIDs:(id)ds;
+- (REMAutoCategorizationActivity)initWithReminderIDsByListID:(id)d;
+- (id)activityByMergingWithActivity:(id)activity;
+- (id)activityBySubtractingActivity:(id)activity;
 - (id)description;
-- (id)reminderIDsForListID:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)reminderIDsForListID:(id)d;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation REMAutoCategorizationActivity
 
-- (REMAutoCategorizationActivity)initWithReminderIDsByListID:(id)a3
+- (REMAutoCategorizationActivity)initWithReminderIDsByListID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v9.receiver = self;
   v9.super_class = REMAutoCategorizationActivity;
   v5 = [(REMAutoCategorizationActivity *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dCopy copy];
     reminderIDsByListID = v5->_reminderIDsByListID;
     v5->_reminderIDsByListID = v6;
   }
@@ -28,15 +28,15 @@
   return v5;
 }
 
-- (REMAutoCategorizationActivity)initWithListID:(id)a3 reminderIDs:(id)a4
+- (REMAutoCategorizationActivity)initWithListID:(id)d reminderIDs:(id)ds
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if ([v7 count])
+  dCopy = d;
+  dsCopy = ds;
+  if ([dsCopy count])
   {
-    v12 = v6;
-    v13[0] = v7;
+    v12 = dCopy;
+    v13[0] = dsCopy;
     v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:&v12 count:1];
     v9 = [(REMAutoCategorizationActivity *)self initWithReminderIDsByListID:v8];
   }
@@ -50,11 +50,11 @@
   return v9;
 }
 
-- (id)reminderIDsForListID:(id)a3
+- (id)reminderIDsForListID:(id)d
 {
-  v4 = a3;
-  v5 = [(REMAutoCategorizationActivity *)self reminderIDsByListID];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  dCopy = d;
+  reminderIDsByListID = [(REMAutoCategorizationActivity *)self reminderIDsByListID];
+  v6 = [reminderIDsByListID objectForKeyedSubscript:dCopy];
 
   if (v6)
   {
@@ -71,19 +71,19 @@
   return v8;
 }
 
-- (id)activityByMergingWithActivity:(id)a3
+- (id)activityByMergingWithActivity:(id)activity
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(REMAutoCategorizationActivity *)self reminderIDsByListID];
-  v6 = [v5 mutableCopy];
+  activityCopy = activity;
+  reminderIDsByListID = [(REMAutoCategorizationActivity *)self reminderIDsByListID];
+  v6 = [reminderIDsByListID mutableCopy];
 
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v7 = [v4 reminderIDsByListID];
-  v8 = [v7 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  reminderIDsByListID2 = [activityCopy reminderIDsByListID];
+  v8 = [reminderIDsByListID2 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v8)
   {
     v9 = v8;
@@ -94,12 +94,12 @@
       {
         if (*v22 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(reminderIDsByListID2);
         }
 
         v12 = *(*(&v21 + 1) + 8 * i);
-        v13 = [v4 reminderIDsByListID];
-        v14 = [v13 objectForKeyedSubscript:v12];
+        reminderIDsByListID3 = [activityCopy reminderIDsByListID];
+        v14 = [reminderIDsByListID3 objectForKeyedSubscript:v12];
 
         v15 = [v6 objectForKeyedSubscript:v12];
         v16 = v15;
@@ -115,7 +115,7 @@
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v9 = [reminderIDsByListID2 countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v9);
@@ -127,20 +127,20 @@
   return v18;
 }
 
-- (id)activityBySubtractingActivity:(id)a3
+- (id)activityBySubtractingActivity:(id)activity
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(REMAutoCategorizationActivity *)self reminderIDsByListID];
-  v6 = [v5 mutableCopy];
+  activityCopy = activity;
+  reminderIDsByListID = [(REMAutoCategorizationActivity *)self reminderIDsByListID];
+  v6 = [reminderIDsByListID mutableCopy];
 
   v24 = 0u;
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v21 = v4;
-  v7 = [v4 reminderIDsByListID];
-  v8 = [v7 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  v21 = activityCopy;
+  reminderIDsByListID2 = [activityCopy reminderIDsByListID];
+  v8 = [reminderIDsByListID2 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v8)
   {
     v9 = v8;
@@ -151,15 +151,15 @@
       {
         if (*v23 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(reminderIDsByListID2);
         }
 
         v12 = *(*(&v22 + 1) + 8 * i);
         v13 = [v6 objectForKeyedSubscript:v12];
         if (v13)
         {
-          v14 = [v21 reminderIDsByListID];
-          v15 = [v14 objectForKeyedSubscript:v12];
+          reminderIDsByListID3 = [v21 reminderIDsByListID];
+          v15 = [reminderIDsByListID3 objectForKeyedSubscript:v12];
 
           v16 = [v13 mutableCopy];
           [v16 minusSet:v15];
@@ -176,7 +176,7 @@
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v9 = [reminderIDsByListID2 countByEnumeratingWithState:&v22 objects:v26 count:16];
     }
 
     while (v9);
@@ -191,15 +191,15 @@
 - (id)description
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = [(REMAutoCategorizationActivity *)self reminderIDsByListID];
-  v4 = [v3 count];
+  reminderIDsByListID = [(REMAutoCategorizationActivity *)self reminderIDsByListID];
+  v4 = [reminderIDsByListID count];
 
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [(REMAutoCategorizationActivity *)self reminderIDsByListID];
-  v6 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  reminderIDsByListID2 = [(REMAutoCategorizationActivity *)self reminderIDsByListID];
+  v6 = [reminderIDsByListID2 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v6)
   {
     v7 = v6;
@@ -211,16 +211,16 @@
       {
         if (*v18 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(reminderIDsByListID2);
         }
 
         v11 = *(*(&v17 + 1) + 8 * i);
-        v12 = [(REMAutoCategorizationActivity *)self reminderIDsByListID];
-        v13 = [v12 objectForKeyedSubscript:v11];
+        reminderIDsByListID3 = [(REMAutoCategorizationActivity *)self reminderIDsByListID];
+        v13 = [reminderIDsByListID3 objectForKeyedSubscript:v11];
         v8 += [v13 count];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v7 = [reminderIDsByListID2 countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v7);
@@ -237,49 +237,49 @@
   return v14;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
 
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  v6 = REMDynamicCast(v5, v4);
+  v6 = REMDynamicCast(v5, equalCopy);
 
-  v7 = [(REMAutoCategorizationActivity *)self reminderIDsByListID];
-  v8 = [v6 reminderIDsByListID];
-  if (v7 == v8)
+  reminderIDsByListID = [(REMAutoCategorizationActivity *)self reminderIDsByListID];
+  reminderIDsByListID2 = [v6 reminderIDsByListID];
+  if (reminderIDsByListID == reminderIDsByListID2)
   {
     v11 = 1;
   }
 
   else
   {
-    v9 = [(REMAutoCategorizationActivity *)self reminderIDsByListID];
-    v10 = [v6 reminderIDsByListID];
-    v11 = [v9 isEqual:v10];
+    reminderIDsByListID3 = [(REMAutoCategorizationActivity *)self reminderIDsByListID];
+    reminderIDsByListID4 = [v6 reminderIDsByListID];
+    v11 = [reminderIDsByListID3 isEqual:reminderIDsByListID4];
   }
 
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(REMAutoCategorizationActivity *)self reminderIDsByListID];
-  [v4 encodeObject:v5 forKey:@"reminderIDsByListID"];
+  coderCopy = coder;
+  reminderIDsByListID = [(REMAutoCategorizationActivity *)self reminderIDsByListID];
+  [coderCopy encodeObject:reminderIDsByListID forKey:@"reminderIDsByListID"];
 }
 
-- (REMAutoCategorizationActivity)initWithCoder:(id)a3
+- (REMAutoCategorizationActivity)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E695DFD8];
-  v5 = a3;
+  coderCopy = coder;
   v6 = objc_opt_class();
   v7 = objc_opt_class();
   v8 = [v4 setWithObjects:{v6, v7, objc_opt_class(), 0}];
-  v9 = [v5 decodeObjectOfClasses:v8 forKey:@"reminderIDsByListID"];
+  v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"reminderIDsByListID"];
 
   v10 = [(REMAutoCategorizationActivity *)self initWithReminderIDsByListID:v9];
   return v10;

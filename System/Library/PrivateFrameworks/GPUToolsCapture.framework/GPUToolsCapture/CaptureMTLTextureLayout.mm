@@ -1,12 +1,12 @@
 @interface CaptureMTLTextureLayout
 - ($71D83D51AB0F57F7CF166351F850C832)watermark;
 - ($F99D9A4FB75BC57F3386B8DC8EE08D7A)copyGranularity;
-- (BOOL)conformsToProtocol:(id)a3;
-- (CaptureMTLTextureLayout)initWithBaseObject:(id)a3 captureContext:(GTTraceContext *)a4;
+- (BOOL)conformsToProtocol:(id)protocol;
+- (CaptureMTLTextureLayout)initWithBaseObject:(id)object captureContext:(GTTraceContext *)context;
 - (NSString)description;
 - (unint64_t)streamReference;
-- (void)copyFromLinearBytes:(const void *)a3 linearOffset:(unint64_t)a4 linearBytesPerRow:(unint64_t)a5 linearBytesPerImage:(unint64_t)a6 toTextureMemory:(void *)a7 textureSlice:(unint64_t)a8 textureLevel:(unint64_t)a9 textureRegion:(id *)a10;
-- (void)copyFromTextureMemory:(const void *)a3 textureSlice:(unint64_t)a4 textureLevel:(unint64_t)a5 textureRegion:(id *)a6 toLinearBytes:(void *)a7 linearOffset:(unint64_t)a8 linearBytesPerRow:(unint64_t)a9 linearBytesPerImage:(unint64_t)a10;
+- (void)copyFromLinearBytes:(const void *)bytes linearOffset:(unint64_t)offset linearBytesPerRow:(unint64_t)row linearBytesPerImage:(unint64_t)image toTextureMemory:(void *)memory textureSlice:(unint64_t)slice textureLevel:(unint64_t)level textureRegion:(id *)self0;
+- (void)copyFromTextureMemory:(const void *)memory textureSlice:(unint64_t)slice textureLevel:(unint64_t)level textureRegion:(id *)region toLinearBytes:(void *)bytes linearOffset:(unint64_t)offset linearBytesPerRow:(unint64_t)row linearBytesPerImage:(unint64_t)self0;
 - (void)dealloc;
 - (void)touch;
 @end
@@ -39,10 +39,10 @@
   }
 
   *(v4 + 13) = v5;
-  v9 = [(CaptureMTLTextureLayout *)self traceStream];
-  if (v9)
+  traceStream = [(CaptureMTLTextureLayout *)self traceStream];
+  if (traceStream)
   {
-    var0 = v9->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -61,31 +61,31 @@
   [(CaptureMTLTextureLayout *)&v13 dealloc];
 }
 
-- (void)copyFromTextureMemory:(const void *)a3 textureSlice:(unint64_t)a4 textureLevel:(unint64_t)a5 textureRegion:(id *)a6 toLinearBytes:(void *)a7 linearOffset:(unint64_t)a8 linearBytesPerRow:(unint64_t)a9 linearBytesPerImage:(unint64_t)a10
+- (void)copyFromTextureMemory:(const void *)memory textureSlice:(unint64_t)slice textureLevel:(unint64_t)level textureRegion:(id *)region toLinearBytes:(void *)bytes linearOffset:(unint64_t)offset linearBytesPerRow:(unint64_t)row linearBytesPerImage:(unint64_t)self0
 {
   baseObject = self->_baseObject;
-  v11 = *&a6->var0.var2;
-  v12[0] = *&a6->var0.var0;
+  v11 = *&region->var0.var2;
+  v12[0] = *&region->var0.var0;
   v12[1] = v11;
-  v12[2] = *&a6->var1.var1;
-  [(MTLTextureLayout *)baseObject copyFromTextureMemory:a3 textureSlice:a4 textureLevel:a5 textureRegion:v12 toLinearBytes:a7 linearOffset:a8 linearBytesPerRow:a9 linearBytesPerImage:a10];
+  v12[2] = *&region->var1.var1;
+  [(MTLTextureLayout *)baseObject copyFromTextureMemory:memory textureSlice:slice textureLevel:level textureRegion:v12 toLinearBytes:bytes linearOffset:offset linearBytesPerRow:row linearBytesPerImage:image];
 }
 
-- (void)copyFromLinearBytes:(const void *)a3 linearOffset:(unint64_t)a4 linearBytesPerRow:(unint64_t)a5 linearBytesPerImage:(unint64_t)a6 toTextureMemory:(void *)a7 textureSlice:(unint64_t)a8 textureLevel:(unint64_t)a9 textureRegion:(id *)a10
+- (void)copyFromLinearBytes:(const void *)bytes linearOffset:(unint64_t)offset linearBytesPerRow:(unint64_t)row linearBytesPerImage:(unint64_t)image toTextureMemory:(void *)memory textureSlice:(unint64_t)slice textureLevel:(unint64_t)level textureRegion:(id *)self0
 {
   baseObject = self->_baseObject;
-  v11 = *&a10->var0.var2;
-  v12[0] = *&a10->var0.var0;
+  v11 = *&region->var0.var2;
+  v12[0] = *&region->var0.var0;
   v12[1] = v11;
-  v12[2] = *&a10->var1.var1;
-  [(MTLTextureLayout *)baseObject copyFromLinearBytes:a3 linearOffset:a4 linearBytesPerRow:a5 linearBytesPerImage:a6 toTextureMemory:a7 textureSlice:a8 textureLevel:a9 textureRegion:v12];
+  v12[2] = *&region->var1.var1;
+  [(MTLTextureLayout *)baseObject copyFromLinearBytes:bytes linearOffset:offset linearBytesPerRow:row linearBytesPerImage:image toTextureMemory:memory textureSlice:slice textureLevel:level textureRegion:v12];
 }
 
 - ($71D83D51AB0F57F7CF166351F850C832)watermark
 {
-  v2 = [(MTLTextureLayout *)self->_baseObject watermark];
+  watermark = [(MTLTextureLayout *)self->_baseObject watermark];
   result.var0[1] = v3;
-  result.var0[0] = v2;
+  result.var0[0] = watermark;
   return result;
 }
 
@@ -103,13 +103,13 @@
   return result;
 }
 
-- (BOOL)conformsToProtocol:(id)a3
+- (BOOL)conformsToProtocol:(id)protocol
 {
   baseObject = self->_baseObject;
-  v4 = a3;
-  v5 = [(MTLTextureLayout *)baseObject conformsToProtocol:v4];
+  protocolCopy = protocol;
+  v5 = [(MTLTextureLayout *)baseObject conformsToProtocol:protocolCopy];
 
-  if (&OBJC_PROTOCOL___CaptureMTLObject == v4)
+  if (&OBJC_PROTOCOL___CaptureMTLObject == protocolCopy)
   {
     return 1;
   }
@@ -164,19 +164,19 @@
   }
 }
 
-- (CaptureMTLTextureLayout)initWithBaseObject:(id)a3 captureContext:(GTTraceContext *)a4
+- (CaptureMTLTextureLayout)initWithBaseObject:(id)object captureContext:(GTTraceContext *)context
 {
-  v7 = a3;
+  objectCopy = object;
   v12.receiver = self;
   v12.super_class = CaptureMTLTextureLayout;
   v8 = [(CaptureMTLTextureLayout *)&v12 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_baseObject, a3);
-    v9->_traceContext = a4;
-    v10 = DEVICEOBJECT(v7);
-    v9->_traceStream = GTTraceContext_openStream(a4, v10, v9);
+    objc_storeStrong(&v8->_baseObject, object);
+    v9->_traceContext = context;
+    v10 = DEVICEOBJECT(objectCopy);
+    v9->_traceStream = GTTraceContext_openStream(context, v10, v9);
   }
 
   return v9;

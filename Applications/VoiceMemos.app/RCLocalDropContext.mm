@@ -1,19 +1,19 @@
 @interface RCLocalDropContext
-+ (id)dropContextWithFolderType:(int64_t)a3 folderUUID:(id)a4 folderIndexPath:(id)a5 payloadType:(int64_t)a6;
++ (id)dropContextWithFolderType:(int64_t)type folderUUID:(id)d folderIndexPath:(id)path payloadType:(int64_t)payloadType;
 @end
 
 @implementation RCLocalDropContext
 
-+ (id)dropContextWithFolderType:(int64_t)a3 folderUUID:(id)a4 folderIndexPath:(id)a5 payloadType:(int64_t)a6
++ (id)dropContextWithFolderType:(int64_t)type folderUUID:(id)d folderIndexPath:(id)path payloadType:(int64_t)payloadType
 {
-  v9 = a5;
-  v10 = a4;
+  pathCopy = path;
+  dCopy = d;
   v11 = objc_opt_new();
-  [v11 setFolderType:a3];
-  [v11 setFolderUUID:v10];
+  [v11 setFolderType:type];
+  [v11 setFolderUUID:dCopy];
 
-  [v11 setFolderIndexPath:v9];
-  [v11 setPayloadType:a6];
+  [v11 setFolderIndexPath:pathCopy];
+  [v11 setPayloadType:payloadType];
 
   return v11;
 }

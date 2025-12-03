@@ -1,30 +1,30 @@
 @interface ODFUNNELSiriSchemaODFUNNELVoiceTriggerEnrollmentDimensions
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (ODFUNNELSiriSchemaODFUNNELVoiceTriggerEnrollmentDimensions)initWithDictionary:(id)a3;
-- (ODFUNNELSiriSchemaODFUNNELVoiceTriggerEnrollmentDimensions)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (ODFUNNELSiriSchemaODFUNNELVoiceTriggerEnrollmentDimensions)initWithDictionary:(id)dictionary;
+- (ODFUNNELSiriSchemaODFUNNELVoiceTriggerEnrollmentDimensions)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasEnrollmentOutcome:(BOOL)a3;
-- (void)setHasPageNumberCompleted:(BOOL)a3;
-- (void)setHasTrainingOutcome:(BOOL)a3;
-- (void)setHasVoiceTriggerType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasEnrollmentOutcome:(BOOL)outcome;
+- (void)setHasPageNumberCompleted:(BOOL)completed;
+- (void)setHasTrainingOutcome:(BOOL)outcome;
+- (void)setHasVoiceTriggerType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ODFUNNELSiriSchemaODFUNNELVoiceTriggerEnrollmentDimensions
 
-- (ODFUNNELSiriSchemaODFUNNELVoiceTriggerEnrollmentDimensions)initWithDictionary:(id)a3
+- (ODFUNNELSiriSchemaODFUNNELVoiceTriggerEnrollmentDimensions)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v15.receiver = self;
   v15.super_class = ODFUNNELSiriSchemaODFUNNELVoiceTriggerEnrollmentDimensions;
   v5 = [(ODFUNNELSiriSchemaODFUNNELVoiceTriggerEnrollmentDimensions *)&v15 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"coreDimensions"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"coreDimensions"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -32,35 +32,35 @@
       [(ODFUNNELSiriSchemaODFUNNELVoiceTriggerEnrollmentDimensions *)v5 setCoreDimensions:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"enrollmentMode"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"enrollmentMode"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ODFUNNELSiriSchemaODFUNNELVoiceTriggerEnrollmentDimensions setEnrollmentMode:](v5, "setEnrollmentMode:", [v8 intValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"voiceTriggerType"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"voiceTriggerType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ODFUNNELSiriSchemaODFUNNELVoiceTriggerEnrollmentDimensions setVoiceTriggerType:](v5, "setVoiceTriggerType:", [v9 intValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"enrollmentOutcome"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"enrollmentOutcome"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ODFUNNELSiriSchemaODFUNNELVoiceTriggerEnrollmentDimensions setEnrollmentOutcome:](v5, "setEnrollmentOutcome:", [v10 intValue]);
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"pageNumberCompleted"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"pageNumberCompleted"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ODFUNNELSiriSchemaODFUNNELVoiceTriggerEnrollmentDimensions setPageNumberCompleted:](v5, "setPageNumberCompleted:", [v11 unsignedIntValue]);
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"trainingOutcome"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"trainingOutcome"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -73,30 +73,30 @@
   return v5;
 }
 
-- (ODFUNNELSiriSchemaODFUNNELVoiceTriggerEnrollmentDimensions)initWithJSON:(id)a3
+- (ODFUNNELSiriSchemaODFUNNELVoiceTriggerEnrollmentDimensions)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(ODFUNNELSiriSchemaODFUNNELVoiceTriggerEnrollmentDimensions *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(ODFUNNELSiriSchemaODFUNNELVoiceTriggerEnrollmentDimensions *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(ODFUNNELSiriSchemaODFUNNELVoiceTriggerEnrollmentDimensions *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -109,20 +109,20 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_coreDimensions)
   {
-    v4 = [(ODFUNNELSiriSchemaODFUNNELVoiceTriggerEnrollmentDimensions *)self coreDimensions];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    coreDimensions = [(ODFUNNELSiriSchemaODFUNNELVoiceTriggerEnrollmentDimensions *)self coreDimensions];
+    dictionaryRepresentation = [coreDimensions dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"coreDimensions"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"coreDimensions"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"coreDimensions"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"coreDimensions"];
     }
   }
 
@@ -140,7 +140,7 @@
       v13 = off_1E78DDEB8[v12];
     }
 
-    [v3 setObject:v13 forKeyedSubscript:@"enrollmentMode"];
+    [dictionary setObject:v13 forKeyedSubscript:@"enrollmentMode"];
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -170,7 +170,7 @@ LABEL_8:
     v15 = off_1E78DDF00[v14];
   }
 
-  [v3 setObject:v15 forKeyedSubscript:@"enrollmentOutcome"];
+  [dictionary setObject:v15 forKeyedSubscript:@"enrollmentOutcome"];
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -185,7 +185,7 @@ LABEL_9:
 
 LABEL_28:
   v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[ODFUNNELSiriSchemaODFUNNELVoiceTriggerEnrollmentDimensions pageNumberCompleted](self, "pageNumberCompleted")}];
-  [v3 setObject:v16 forKeyedSubscript:@"pageNumberCompleted"];
+  [dictionary setObject:v16 forKeyedSubscript:@"pageNumberCompleted"];
 
   has = self->_has;
   if ((has & 0x10) == 0)
@@ -211,21 +211,21 @@ LABEL_29:
     v18 = off_1E78DDF20[v17];
   }
 
-  [v3 setObject:v18 forKeyedSubscript:@"trainingOutcome"];
+  [dictionary setObject:v18 forKeyedSubscript:@"trainingOutcome"];
   if ((*&self->_has & 2) == 0)
   {
     goto LABEL_17;
   }
 
 LABEL_11:
-  v8 = [(ODFUNNELSiriSchemaODFUNNELVoiceTriggerEnrollmentDimensions *)self voiceTriggerType];
+  voiceTriggerType = [(ODFUNNELSiriSchemaODFUNNELVoiceTriggerEnrollmentDimensions *)self voiceTriggerType];
   v9 = @"SIRISETUPENROLLMENTUIVOICETRIGGERTYPE_UNKNOWN";
-  if (v8 == 1)
+  if (voiceTriggerType == 1)
   {
     v9 = @"SIRISETUPENROLLMENTUIVOICETRIGGERTYPE_HS";
   }
 
-  if (v8 == 2)
+  if (voiceTriggerType == 2)
   {
     v10 = @"SIRISETUPENROLLMENTUIVOICETRIGGERTYPE_HS_JS";
   }
@@ -235,11 +235,11 @@ LABEL_11:
     v10 = v9;
   }
 
-  [v3 setObject:v10 forKeyedSubscript:@"voiceTriggerType"];
+  [dictionary setObject:v10 forKeyedSubscript:@"voiceTriggerType"];
 LABEL_17:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -311,30 +311,30 @@ LABEL_6:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_28;
   }
 
-  v5 = [(ODFUNNELSiriSchemaODFUNNELVoiceTriggerEnrollmentDimensions *)self coreDimensions];
-  v6 = [v4 coreDimensions];
-  v7 = v6;
-  if ((v5 != 0) == (v6 == 0))
+  coreDimensions = [(ODFUNNELSiriSchemaODFUNNELVoiceTriggerEnrollmentDimensions *)self coreDimensions];
+  coreDimensions2 = [equalCopy coreDimensions];
+  v7 = coreDimensions2;
+  if ((coreDimensions != 0) == (coreDimensions2 == 0))
   {
 
     goto LABEL_28;
   }
 
-  v8 = [(ODFUNNELSiriSchemaODFUNNELVoiceTriggerEnrollmentDimensions *)self coreDimensions];
-  if (v8)
+  coreDimensions3 = [(ODFUNNELSiriSchemaODFUNNELVoiceTriggerEnrollmentDimensions *)self coreDimensions];
+  if (coreDimensions3)
   {
-    v9 = v8;
-    v10 = [(ODFUNNELSiriSchemaODFUNNELVoiceTriggerEnrollmentDimensions *)self coreDimensions];
-    v11 = [v4 coreDimensions];
-    v12 = [v10 isEqual:v11];
+    v9 = coreDimensions3;
+    coreDimensions4 = [(ODFUNNELSiriSchemaODFUNNELVoiceTriggerEnrollmentDimensions *)self coreDimensions];
+    coreDimensions5 = [equalCopy coreDimensions];
+    v12 = [coreDimensions4 isEqual:coreDimensions5];
 
     if (!v12)
     {
@@ -347,7 +347,7 @@ LABEL_6:
   }
 
   has = self->_has;
-  v14 = v4[36];
+  v14 = equalCopy[36];
   if ((*&has & 1) != (v14 & 1))
   {
 LABEL_28:
@@ -358,13 +358,13 @@ LABEL_28:
   if (*&has)
   {
     enrollmentMode = self->_enrollmentMode;
-    if (enrollmentMode != [v4 enrollmentMode])
+    if (enrollmentMode != [equalCopy enrollmentMode])
     {
       goto LABEL_28;
     }
 
     has = self->_has;
-    v14 = v4[36];
+    v14 = equalCopy[36];
   }
 
   v16 = (*&has >> 1) & 1;
@@ -376,13 +376,13 @@ LABEL_28:
   if (v16)
   {
     voiceTriggerType = self->_voiceTriggerType;
-    if (voiceTriggerType != [v4 voiceTriggerType])
+    if (voiceTriggerType != [equalCopy voiceTriggerType])
     {
       goto LABEL_28;
     }
 
     has = self->_has;
-    v14 = v4[36];
+    v14 = equalCopy[36];
   }
 
   v18 = (*&has >> 2) & 1;
@@ -394,13 +394,13 @@ LABEL_28:
   if (v18)
   {
     enrollmentOutcome = self->_enrollmentOutcome;
-    if (enrollmentOutcome != [v4 enrollmentOutcome])
+    if (enrollmentOutcome != [equalCopy enrollmentOutcome])
     {
       goto LABEL_28;
     }
 
     has = self->_has;
-    v14 = v4[36];
+    v14 = equalCopy[36];
   }
 
   v20 = (*&has >> 3) & 1;
@@ -412,10 +412,10 @@ LABEL_28:
   if (v20)
   {
     pageNumberCompleted = self->_pageNumberCompleted;
-    if (pageNumberCompleted == [v4 pageNumberCompleted])
+    if (pageNumberCompleted == [equalCopy pageNumberCompleted])
     {
       has = self->_has;
-      v14 = v4[36];
+      v14 = equalCopy[36];
       goto LABEL_24;
     }
 
@@ -432,7 +432,7 @@ LABEL_24:
   if (v22)
   {
     trainingOutcome = self->_trainingOutcome;
-    if (trainingOutcome != [v4 trainingOutcome])
+    if (trainingOutcome != [equalCopy trainingOutcome])
     {
       goto LABEL_28;
     }
@@ -444,14 +444,14 @@ LABEL_29:
   return v24;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
-  v4 = [(ODFUNNELSiriSchemaODFUNNELVoiceTriggerEnrollmentDimensions *)self coreDimensions];
+  toCopy = to;
+  coreDimensions = [(ODFUNNELSiriSchemaODFUNNELVoiceTriggerEnrollmentDimensions *)self coreDimensions];
 
-  if (v4)
+  if (coreDimensions)
   {
-    v5 = [(ODFUNNELSiriSchemaODFUNNELVoiceTriggerEnrollmentDimensions *)self coreDimensions];
+    coreDimensions2 = [(ODFUNNELSiriSchemaODFUNNELVoiceTriggerEnrollmentDimensions *)self coreDimensions];
     PBDataWriterWriteSubmessage();
   }
 
@@ -462,11 +462,11 @@ LABEL_29:
     has = self->_has;
   }
 
-  v7 = v8;
+  v7 = toCopy;
   if ((has & 2) != 0)
   {
     PBDataWriterWriteInt32Field();
-    v7 = v8;
+    v7 = toCopy;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -486,7 +486,7 @@ LABEL_7:
   }
 
   PBDataWriterWriteInt32Field();
-  v7 = v8;
+  v7 = toCopy;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -501,20 +501,20 @@ LABEL_8:
 
 LABEL_15:
   PBDataWriterWriteUint32Field();
-  v7 = v8;
+  v7 = toCopy;
   if ((*&self->_has & 0x10) != 0)
   {
 LABEL_9:
     PBDataWriterWriteInt32Field();
-    v7 = v8;
+    v7 = toCopy;
   }
 
 LABEL_10:
 }
 
-- (void)setHasTrainingOutcome:(BOOL)a3
+- (void)setHasTrainingOutcome:(BOOL)outcome
 {
-  if (a3)
+  if (outcome)
   {
     v3 = 16;
   }
@@ -527,9 +527,9 @@ LABEL_10:
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasPageNumberCompleted:(BOOL)a3
+- (void)setHasPageNumberCompleted:(BOOL)completed
 {
-  if (a3)
+  if (completed)
   {
     v3 = 8;
   }
@@ -542,9 +542,9 @@ LABEL_10:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasEnrollmentOutcome:(BOOL)a3
+- (void)setHasEnrollmentOutcome:(BOOL)outcome
 {
-  if (a3)
+  if (outcome)
   {
     v3 = 4;
   }
@@ -557,9 +557,9 @@ LABEL_10:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasVoiceTriggerType:(BOOL)a3
+- (void)setHasVoiceTriggerType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }
@@ -572,17 +572,17 @@ LABEL_10:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = ODFUNNELSiriSchemaODFUNNELVoiceTriggerEnrollmentDimensions;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(ODFUNNELSiriSchemaODFUNNELVoiceTriggerEnrollmentDimensions *)self coreDimensions:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(ODFUNNELSiriSchemaODFUNNELVoiceTriggerEnrollmentDimensions *)self deleteCoreDimensions];
   }

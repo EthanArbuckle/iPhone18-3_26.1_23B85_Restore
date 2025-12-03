@@ -2,7 +2,7 @@
 - (CGAffineTransform)trackTransform;
 - (CGRect)barFrame;
 - (CGRect)trackBounds;
-- (void)setTrackTransform:(CGAffineTransform *)a3;
+- (void)setTrackTransform:(CGAffineTransform *)transform;
 @end
 
 @implementation _UIFluidSliderInteractionUpdate
@@ -42,11 +42,11 @@
   return result;
 }
 
-- (void)setTrackTransform:(CGAffineTransform *)a3
+- (void)setTrackTransform:(CGAffineTransform *)transform
 {
-  v3 = *&a3->a;
-  v4 = *&a3->tx;
-  *&self->_trackTransform.c = *&a3->c;
+  v3 = *&transform->a;
+  v4 = *&transform->tx;
+  *&self->_trackTransform.c = *&transform->c;
   *&self->_trackTransform.tx = v4;
   *&self->_trackTransform.a = v3;
 }

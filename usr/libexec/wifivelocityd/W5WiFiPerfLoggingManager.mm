@@ -1,40 +1,40 @@
 @interface W5WiFiPerfLoggingManager
-- (BOOL)__wlCLIWithArguments:(id)a3 outputFilePath:(id)a4 outputData:(id)a5;
-- (W5WiFiPerfLoggingManager)initWithStatusManager:(id)a3;
-- (id)__pendingRequestWithUUID:(id)a3;
-- (void)__cancelActiveRequestAndReply:(id)a3;
+- (BOOL)__wlCLIWithArguments:(id)arguments outputFilePath:(id)path outputData:(id)data;
+- (W5WiFiPerfLoggingManager)initWithStatusManager:(id)manager;
+- (id)__pendingRequestWithUUID:(id)d;
+- (void)__cancelActiveRequestAndReply:(id)reply;
 - (void)__collectNetworkCountersPOST;
 - (void)__collectNetworkCountersPRE;
 - (void)__collectWiFiCountersPOST;
 - (void)__collectWiFiCountersPRE;
 - (void)__collectWiFiDeviceConfig;
-- (void)__collectWiFiMemoryStatsWithFilename:(id)a3;
-- (void)__dumpCoreCaptureLogsWithReason:(id)a3;
+- (void)__collectWiFiMemoryStatsWithFilename:(id)filename;
+- (void)__dumpCoreCaptureLogsWithReason:(id)reason;
 - (void)__nextRequest;
-- (void)__runToolWithOutputFileHandle:(id)a3 readFromStandardError:(BOOL)a4 launchPath:(id)a5 arguments:(id)a6 addCommand:(BOOL)a7 addTimestamps:(BOOL)a8;
+- (void)__runToolWithOutputFileHandle:(id)handle readFromStandardError:(BOOL)error launchPath:(id)path arguments:(id)arguments addCommand:(BOOL)command addTimestamps:(BOOL)timestamps;
 - (void)__setupWatchdogTask;
 - (void)__startAWDLPerfLogging;
 - (void)__startAWDLQueryTimer;
-- (void)__startCoreCaptureTriggerTimerWithInterval:(unint64_t)a3;
+- (void)__startCoreCaptureTriggerTimerWithInterval:(unint64_t)interval;
 - (void)__startNANPerfLogging;
 - (void)__startNANQueryTimer;
 - (void)__startP2PPerfLogging;
 - (void)__startPerfLogging;
-- (void)addRequest:(id)a3;
-- (void)cancelRequestWithUUID:(id)a3 reply:(id)a4;
+- (void)addRequest:(id)request;
+- (void)cancelRequestWithUUID:(id)d reply:(id)reply;
 - (void)dealloc;
-- (void)teardownAndNotify:(id)a3;
+- (void)teardownAndNotify:(id)notify;
 @end
 
 @implementation W5WiFiPerfLoggingManager
 
-- (W5WiFiPerfLoggingManager)initWithStatusManager:(id)a3
+- (W5WiFiPerfLoggingManager)initWithStatusManager:(id)manager
 {
   v11.receiver = self;
   v11.super_class = W5WiFiPerfLoggingManager;
   v4 = [(W5WiFiPerfLoggingManager *)&v11 init];
   v5 = v4;
-  if (!a3)
+  if (!manager)
   {
     goto LABEL_9;
   }
@@ -44,7 +44,7 @@
     goto LABEL_9;
   }
 
-  v4->_status = a3;
+  v4->_status = manager;
   v6 = dispatch_queue_create("com.apple.wifivelocity.wifiperf", 0);
   v5->_queue = v6;
   if (!v6)
@@ -118,7 +118,7 @@ LABEL_9:
   [(W5WiFiPerfLoggingManager *)&v9 dealloc];
 }
 
-- (void)teardownAndNotify:(id)a3
+- (void)teardownAndNotify:(id)notify
 {
   queue = self->_queue;
   v4[0] = _NSConcreteStackBlock;
@@ -126,11 +126,11 @@ LABEL_9:
   v4[2] = sub_10001F738;
   v4[3] = &unk_1000E1C70;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = notify;
   dispatch_async(queue, v4);
 }
 
-- (void)addRequest:(id)a3
+- (void)addRequest:(id)request
 {
   queue = self->_queue;
   v4[0] = _NSConcreteStackBlock;
@@ -138,11 +138,11 @@ LABEL_9:
   v4[2] = sub_10001F848;
   v4[3] = &unk_1000E1C98;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = request;
   dispatch_async(queue, v4);
 }
 
-- (id)__pendingRequestWithUUID:(id)a3
+- (id)__pendingRequestWithUUID:(id)d
 {
   v11 = 0u;
   v12 = 0u;
@@ -185,7 +185,7 @@ LABEL_3:
   }
 }
 
-- (void)cancelRequestWithUUID:(id)a3 reply:(id)a4
+- (void)cancelRequestWithUUID:(id)d reply:(id)reply
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -193,23 +193,23 @@ LABEL_3:
   block[2] = sub_10001FA1C;
   block[3] = &unk_1000E1CC0;
   block[4] = self;
-  block[5] = a3;
-  block[6] = a4;
+  block[5] = d;
+  block[6] = reply;
   dispatch_async(queue, block);
 }
 
-- (void)__dumpCoreCaptureLogsWithReason:(id)a3
+- (void)__dumpCoreCaptureLogsWithReason:(id)reason
 {
   global_queue = dispatch_get_global_queue(0, 0);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10001FC5C;
   block[3] = &unk_1000E1CE8;
-  block[4] = a3;
+  block[4] = reason;
   dispatch_async(global_queue, block);
 }
 
-- (void)__startCoreCaptureTriggerTimerWithInterval:(unint64_t)a3
+- (void)__startCoreCaptureTriggerTimerWithInterval:(unint64_t)interval
 {
   v5 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, self->_queue);
   self->_coreCaptureTriggerTimer = v5;
@@ -220,9 +220,9 @@ LABEL_3:
   handler[4] = self;
   dispatch_source_set_event_handler(v5, handler);
   coreCaptureTriggerTimer = self->_coreCaptureTriggerTimer;
-  a3 *= 1000000000;
-  v7 = dispatch_time(0, a3);
-  dispatch_source_set_timer(coreCaptureTriggerTimer, v7, a3, 0);
+  interval *= 1000000000;
+  v7 = dispatch_time(0, interval);
+  dispatch_source_set_timer(coreCaptureTriggerTimer, v7, interval, 0);
   dispatch_resume(self->_coreCaptureTriggerTimer);
 }
 
@@ -367,12 +367,12 @@ LABEL_3:
   v13 = [(NSDictionary *)[(W5WiFiPerfLoggingRequest *)self->_activeRequest configuration] objectForKeyedSubscript:@"PowermetricsCPUSampleInterval"];
   if (v13)
   {
-    v14 = [v13 integerValue];
+    integerValue = [v13 integerValue];
   }
 
   else
   {
-    v14 = 0;
+    integerValue = 0;
   }
 
   dispatch_group_enter(self->_beginGroup);
@@ -380,7 +380,7 @@ LABEL_3:
   v37[0] = @"-b";
   v37[1] = @"/usr/local/bin/powermetrics";
   v37[2] = @"-i";
-  v37[3] = [NSString stringWithFormat:@"%ld", v14];
+  v37[3] = [NSString stringWithFormat:@"%ld", integerValue];
   v37[4] = @"--samplers";
   v37[5] = @"cpu_power,tasks,network,interrupts";
   v37[6] = @"--show-usage-summary";
@@ -433,10 +433,10 @@ LABEL_3:
 
 - (void)__startAWDLPerfLogging
 {
-  v3 = [(W5WiFiInterface *)[(W5StatusManager *)self->_status awdl] interfaceName];
-  if (v3)
+  interfaceName = [(W5WiFiInterface *)[(W5StatusManager *)self->_status awdl] interfaceName];
+  if (interfaceName)
   {
-    v4 = v3;
+    v4 = interfaceName;
     [(W5WiFiPerfLoggingManager *)self __startAWDLQueryTimer];
     dispatch_group_enter(self->_beginGroup);
     v5 = [objc_msgSend(@"/var/run/com.apple.wifivelocity/wifiperf" stringByAppendingPathComponent:{-[NSUUID UUIDString](-[W5WiFiPerfLoggingRequest uuid](self->_activeRequest, "uuid"), "UUIDString")), "stringByAppendingPathComponent:", +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@_%@", v4, @"io80211.pcap"}];
@@ -597,10 +597,10 @@ LABEL_3:
 
 - (void)__startNANPerfLogging
 {
-  v3 = [(W5WiFiInterface *)[(W5StatusManager *)self->_status nan] interfaceName];
-  if (v3)
+  interfaceName = [(W5WiFiInterface *)[(W5StatusManager *)self->_status nan] interfaceName];
+  if (interfaceName)
   {
-    v4 = v3;
+    v4 = interfaceName;
     [(W5WiFiPerfLoggingManager *)self __startNANQueryTimer];
     dispatch_group_enter(self->_beginGroup);
     v5 = [objc_msgSend(@"/var/run/com.apple.wifivelocity/wifiperf" stringByAppendingPathComponent:{-[NSUUID UUIDString](-[W5WiFiPerfLoggingRequest uuid](self->_activeRequest, "uuid"), "UUIDString")), "stringByAppendingPathComponent:", +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@_%@", v4, @"io80211.pcap"}];
@@ -831,122 +831,122 @@ LABEL_3:
   }
 }
 
-- (void)__runToolWithOutputFileHandle:(id)a3 readFromStandardError:(BOOL)a4 launchPath:(id)a5 arguments:(id)a6 addCommand:(BOOL)a7 addTimestamps:(BOOL)a8
+- (void)__runToolWithOutputFileHandle:(id)handle readFromStandardError:(BOOL)error launchPath:(id)path arguments:(id)arguments addCommand:(BOOL)command addTimestamps:(BOOL)timestamps
 {
-  v8 = a8;
-  v9 = a7;
-  v12 = a4;
-  if (a7)
+  timestampsCopy = timestamps;
+  commandCopy = command;
+  errorCopy = error;
+  if (command)
   {
-    if ([a5 hasPrefix:@"/wl"])
+    if ([path hasPrefix:@"/wl"])
     {
-      v15 = @"[wlan]";
+      pathCopy = @"[wlan]";
     }
 
     else
     {
-      v15 = a5;
+      pathCopy = path;
     }
 
     v16 = +[NSMutableString string];
     [v16 appendString:@"--------------------------------------------------------------------\n"];
-    [v16 appendFormat:@"%@ %@\n", -[__CFString lastPathComponent](v15, "lastPathComponent"), objc_msgSend(a6, "componentsJoinedByString:", @" "];
+    [v16 appendFormat:@"%@ %@\n", -[__CFString lastPathComponent](pathCopy, "lastPathComponent"), objc_msgSend(arguments, "componentsJoinedByString:", @" "];
     [v16 appendString:@"--------------------------------------------------------------------\n"];
-    [a3 writeData:{objc_msgSend(v16, "dataUsingEncoding:", 4)}];
+    [handle writeData:{objc_msgSend(v16, "dataUsingEncoding:", 4)}];
   }
 
-  v17 = [a3 offsetInFile];
+  offsetInFile = [handle offsetInFile];
   v18 = +[NSDate date];
-  if (v8)
+  if (timestampsCopy)
   {
     v19 = v18;
     v20 = +[NSMutableString string];
     [v20 appendFormat:@"BEGIN: %@, END: 00:00:00.000\n", -[NSDateFormatter stringFromDate:](self->_dateFormatter, "stringFromDate:", v19)];
     [v20 appendString:@"--------------------------------------------------------------------\n"];
-    [a3 writeData:{objc_msgSend(v20, "dataUsingEncoding:", 4)}];
-    if (v12)
+    [handle writeData:{objc_msgSend(v20, "dataUsingEncoding:", 4)}];
+    if (errorCopy)
     {
-      v21 = 0;
+      handleCopy = 0;
     }
 
     else
     {
-      v21 = a3;
+      handleCopy = handle;
     }
 
-    if (v12)
+    if (errorCopy)
     {
-      v22 = a3;
+      handleCopy2 = handle;
     }
 
     else
     {
-      v22 = 0;
+      handleCopy2 = 0;
     }
 
-    [NSTask runTaskWithLaunchPath:a5 arguments:a6 timeout:v21 outputFileHandle:v22 errorFileHandle:0 launchHandler:0 didLaunch:10.0 error:0];
-    [a3 seekToFileOffset:v17];
+    [NSTask runTaskWithLaunchPath:path arguments:arguments timeout:handleCopy outputFileHandle:handleCopy2 errorFileHandle:0 launchHandler:0 didLaunch:10.0 error:0];
+    [handle seekToFileOffset:offsetInFile];
     v23 = +[NSMutableString string];
     [v23 appendFormat:@"BEGIN: %@, END: %@\n", -[NSDateFormatter stringFromDate:](self->_dateFormatter, "stringFromDate:", v19), -[NSDateFormatter stringFromDate:](self->_dateFormatter, "stringFromDate:", +[NSDate date](NSDate, "date"))];
     [v23 appendString:@"--------------------------------------------------------------------\n"];
-    [a3 writeData:{objc_msgSend(v23, "dataUsingEncoding:", 4)}];
-    [a3 seekToEndOfFile];
+    [handle writeData:{objc_msgSend(v23, "dataUsingEncoding:", 4)}];
+    [handle seekToEndOfFile];
 LABEL_21:
-    [a3 writeData:{objc_msgSend(@"\n", "dataUsingEncoding:", 4)}];
+    [handle writeData:{objc_msgSend(@"\n", "dataUsingEncoding:", 4)}];
     return;
   }
 
-  if (v12)
+  if (errorCopy)
   {
-    v24 = 0;
+    handleCopy3 = 0;
   }
 
   else
   {
-    v24 = a3;
+    handleCopy3 = handle;
   }
 
-  if (v12)
+  if (errorCopy)
   {
-    v25 = a3;
+    handleCopy4 = handle;
   }
 
   else
   {
-    v25 = 0;
+    handleCopy4 = 0;
   }
 
-  [NSTask runTaskWithLaunchPath:a5 arguments:a6 timeout:v24 outputFileHandle:v25 errorFileHandle:0 launchHandler:0 didLaunch:10.0 error:0];
-  if (v9)
+  [NSTask runTaskWithLaunchPath:path arguments:arguments timeout:handleCopy3 outputFileHandle:handleCopy4 errorFileHandle:0 launchHandler:0 didLaunch:10.0 error:0];
+  if (commandCopy)
   {
     goto LABEL_21;
   }
 }
 
-- (BOOL)__wlCLIWithArguments:(id)a3 outputFilePath:(id)a4 outputData:(id)a5
+- (BOOL)__wlCLIWithArguments:(id)arguments outputFilePath:(id)path outputData:(id)data
 {
   if (![(CWFInterface *)[(W5StatusManager *)self->_status corewifi] SSID])
   {
     return 0;
   }
 
-  if (a4)
+  if (path)
   {
 
-    return [NSTask runTaskWithLaunchPath:@"/usr/local/bin/wl" arguments:a3 outputFilePath:a4 error:0];
+    return [NSTask runTaskWithLaunchPath:@"/usr/local/bin/wl" arguments:arguments outputFilePath:path error:0];
   }
 
-  if (!a5)
+  if (!data)
   {
     return 0;
   }
 
-  return [NSTask runTaskWithLaunchPath:@"/usr/local/bin/wl" arguments:a3 outputData:a5 error:0];
+  return [NSTask runTaskWithLaunchPath:@"/usr/local/bin/wl" arguments:arguments outputData:data error:0];
 }
 
-- (void)__collectWiFiMemoryStatsWithFilename:(id)a3
+- (void)__collectWiFiMemoryStatsWithFilename:(id)filename
 {
-  v4 = [objc_msgSend(@"/var/run/com.apple.wifivelocity/wifiperf" stringByAppendingPathComponent:{-[NSUUID UUIDString](-[W5WiFiPerfLoggingRequest uuid](self->_activeRequest, "uuid"), "UUIDString")), "stringByAppendingPathComponent:", a3}];
+  v4 = [objc_msgSend(@"/var/run/com.apple.wifivelocity/wifiperf" stringByAppendingPathComponent:{-[NSUUID UUIDString](-[W5WiFiPerfLoggingRequest uuid](self->_activeRequest, "uuid"), "UUIDString")), "stringByAppendingPathComponent:", filename}];
   [+[NSFileManager defaultManager](NSFileManager removeItemAtPath:"removeItemAtPath:error:" error:v4, 0];
   [+[NSFileManager defaultManager](NSFileManager createFileAtPath:"createFileAtPath:contents:attributes:" contents:v4 attributes:0, 0];
   v5 = [NSFileHandle fileHandleForUpdatingAtPath:v4];
@@ -1006,12 +1006,12 @@ LABEL_21:
 
 - (void)__collectWiFiCountersPRE
 {
-  v3 = [(W5WiFiInterface *)[(W5StatusManager *)self->_status wifi] interfaceName];
-  if (v3)
+  interfaceName = [(W5WiFiInterface *)[(W5StatusManager *)self->_status wifi] interfaceName];
+  if (interfaceName)
   {
-    v4 = v3;
-    v5 = [(W5WiFiInterface *)[(W5StatusManager *)self->_status awdl] interfaceName];
-    v6 = [(W5WiFiInterface *)[(W5StatusManager *)self->_status nan] interfaceName];
+    v4 = interfaceName;
+    interfaceName2 = [(W5WiFiInterface *)[(W5StatusManager *)self->_status awdl] interfaceName];
+    interfaceName3 = [(W5WiFiInterface *)[(W5StatusManager *)self->_status nan] interfaceName];
     v7 = [objc_msgSend(@"/var/run/com.apple.wifivelocity/wifiperf" stringByAppendingPathComponent:{-[NSUUID UUIDString](-[W5WiFiPerfLoggingRequest uuid](self->_activeRequest, "uuid"), "UUIDString")), "stringByAppendingPathComponent:", @"wifi_counters_pre.txt"}];
     [+[NSFileManager defaultManager](NSFileManager removeItemAtPath:"removeItemAtPath:error:" error:v7, 0];
     [+[NSFileManager defaultManager](NSFileManager createFileAtPath:"createFileAtPath:contents:attributes:" contents:v7 attributes:0, 0];
@@ -1074,16 +1074,16 @@ LABEL_21:
       v14[0] = v4;
       v14[1] = @"-dbg=proptx";
       [(W5WiFiPerfLoggingManager *)self __runToolWithOutputFileHandle:v8 launchPath:@"/usr/local/bin/apple80211" arguments:[NSArray arrayWithObjects:v14 count:2]];
-      if (v5)
+      if (interfaceName2)
       {
-        v13[0] = v5;
+        v13[0] = interfaceName2;
         v13[1] = @"-dbg=print_peers";
         [(W5WiFiPerfLoggingManager *)self __runToolWithOutputFileHandle:v8 launchPath:@"/usr/local/bin/apple80211" arguments:[NSArray arrayWithObjects:v13 count:2]];
       }
 
-      if (v6)
+      if (interfaceName3)
       {
-        v12[0] = v6;
+        v12[0] = interfaceName3;
         v12[1] = @"-dbg=print_peers";
         [(W5WiFiPerfLoggingManager *)self __runToolWithOutputFileHandle:v8 launchPath:@"/usr/local/bin/apple80211" arguments:[NSArray arrayWithObjects:v12 count:2]];
       }
@@ -1100,16 +1100,16 @@ LABEL_21:
 
 - (void)__collectWiFiCountersPOST
 {
-  v3 = [(W5WiFiInterface *)[(W5StatusManager *)self->_status wifi] interfaceName];
-  if (!v3)
+  interfaceName = [(W5WiFiInterface *)[(W5StatusManager *)self->_status wifi] interfaceName];
+  if (!interfaceName)
   {
     v8 = 0;
     goto LABEL_16;
   }
 
-  v4 = v3;
-  v5 = [(W5WiFiInterface *)[(W5StatusManager *)self->_status awdl] interfaceName];
-  v6 = [(W5WiFiInterface *)[(W5StatusManager *)self->_status nan] interfaceName];
+  v4 = interfaceName;
+  interfaceName2 = [(W5WiFiInterface *)[(W5StatusManager *)self->_status awdl] interfaceName];
+  interfaceName3 = [(W5WiFiInterface *)[(W5StatusManager *)self->_status nan] interfaceName];
   v7 = [objc_msgSend(@"/var/run/com.apple.wifivelocity/wifiperf" stringByAppendingPathComponent:{-[NSUUID UUIDString](-[W5WiFiPerfLoggingRequest uuid](self->_activeRequest, "uuid"), "UUIDString")), "stringByAppendingPathComponent:", @"wifi_counters_post.txt"}];
   [+[NSFileManager defaultManager](NSFileManager removeItemAtPath:"removeItemAtPath:error:" error:v7, 0];
   [+[NSFileManager defaultManager](NSFileManager createFileAtPath:"createFileAtPath:contents:attributes:" contents:v7 attributes:0, 0];
@@ -1161,16 +1161,16 @@ LABEL_8:
         v14[0] = v4;
         v14[1] = @"-dbg=proptx";
         [(W5WiFiPerfLoggingManager *)self __runToolWithOutputFileHandle:v8 launchPath:@"/usr/local/bin/apple80211" arguments:[NSArray arrayWithObjects:v14 count:2]];
-        if (v5)
+        if (interfaceName2)
         {
-          v13[0] = v5;
+          v13[0] = interfaceName2;
           v13[1] = @"-dbg=print_peers";
           [(W5WiFiPerfLoggingManager *)self __runToolWithOutputFileHandle:v8 launchPath:@"/usr/local/bin/apple80211" arguments:[NSArray arrayWithObjects:v13 count:2]];
         }
 
-        if (v6)
+        if (interfaceName3)
         {
-          v12[0] = v6;
+          v12[0] = interfaceName3;
           v12[1] = @"-dbg=print_peers";
           [(W5WiFiPerfLoggingManager *)self __runToolWithOutputFileHandle:v8 launchPath:@"/usr/local/bin/apple80211" arguments:[NSArray arrayWithObjects:v12 count:2]];
         }
@@ -1197,10 +1197,10 @@ LABEL_16:
 
 - (void)__collectWiFiDeviceConfig
 {
-  v3 = [(W5WiFiInterface *)[(W5StatusManager *)self->_status wifi] interfaceName];
-  if (v3)
+  interfaceName = [(W5WiFiInterface *)[(W5StatusManager *)self->_status wifi] interfaceName];
+  if (interfaceName)
   {
-    v4 = v3;
+    v4 = interfaceName;
     v5 = [objc_msgSend(@"/var/run/com.apple.wifivelocity/wifiperf" stringByAppendingPathComponent:{-[NSUUID UUIDString](-[W5WiFiPerfLoggingRequest uuid](self->_activeRequest, "uuid"), "UUIDString")), "stringByAppendingPathComponent:", @"wifi_device_config.txt"}];
     [+[NSFileManager defaultManager](NSFileManager removeItemAtPath:"removeItemAtPath:error:" error:v5, 0];
     [+[NSFileManager defaultManager](NSFileManager createFileAtPath:"createFileAtPath:contents:attributes:" contents:v5 attributes:0, 0];
@@ -1394,7 +1394,7 @@ LABEL_16:
   [(NSFileHandle *)v6 closeFile];
 }
 
-- (void)__cancelActiveRequestAndReply:(id)a3
+- (void)__cancelActiveRequestAndReply:(id)reply
 {
   if (self->_activeRequest)
   {
@@ -1463,18 +1463,18 @@ LABEL_16:
     v16[2] = sub_100025E30;
     v16[3] = &unk_1000E1C70;
     v16[4] = self;
-    v16[5] = a3;
+    v16[5] = reply;
     dispatch_group_notify(endGroup, queue, v16);
   }
 
   else
   {
     [(W5WiFiPerfLoggingManager *)self __nextRequest];
-    if (a3)
+    if (reply)
     {
-      v15 = *(a3 + 2);
+      v15 = *(reply + 2);
 
-      v15(a3, 0);
+      v15(reply, 0);
     }
   }
 }

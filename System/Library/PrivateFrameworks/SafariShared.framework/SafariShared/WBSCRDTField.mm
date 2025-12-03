@@ -1,14 +1,14 @@
 @interface WBSCRDTField
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSCopying)value;
-- (WBSCRDTField)initWithValue:(id)a3 valueSource:(id)a4 valueProvider:(id)a5 valueUpdater:(id)a6 generation:(id)a7 deviceIdentifier:(id)a8 metadata:(id)a9;
-- (id)copyWithValueSource:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (WBSCRDTField)initWithValue:(id)value valueSource:(id)source valueProvider:(id)provider valueUpdater:(id)updater generation:(id)generation deviceIdentifier:(id)identifier metadata:(id)metadata;
+- (id)copyWithValueSource:(id)source;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (int64_t)mergeWithField:(id)a3;
+- (int64_t)mergeWithField:(id)field;
 - (void)incrementGenerationIfNeeded;
-- (void)setValue:(id)a3;
-- (void)setValue:(id)a3 incrementGenerationIfNeeded:(BOOL)a4;
+- (void)setValue:(id)value;
+- (void)setValue:(id)value incrementGenerationIfNeeded:(BOOL)needed;
 @end
 
 @implementation WBSCRDTField
@@ -39,13 +39,13 @@
     v17 = v2;
     generation = self->_generation;
     deviceIdentifier = self->_deviceIdentifier;
-    v11 = deviceIdentifier;
+    deviceIdentifier = deviceIdentifier;
     if (!deviceIdentifier)
     {
-      v11 = [(WBSCRDTGeneration *)self->_generation deviceIdentifier];
+      deviceIdentifier = [(WBSCRDTGeneration *)self->_generation deviceIdentifier];
     }
 
-    v12 = [(WBSCRDTGeneration *)generation incrementedGenerationWithDeviceIdentifier:v11, v14, v15, v16, v17, v6, v7];
+    v12 = [(WBSCRDTGeneration *)generation incrementedGenerationWithDeviceIdentifier:deviceIdentifier, v14, v15, v16, v17, v6, v7];
     v13 = self->_generation;
     self->_generation = v12;
 
@@ -65,35 +65,35 @@ void __58__WBSCRDTField_initWithValue_generation_deviceIdentifier___block_invoke
   v4[1] = v5;
 }
 
-- (WBSCRDTField)initWithValue:(id)a3 valueSource:(id)a4 valueProvider:(id)a5 valueUpdater:(id)a6 generation:(id)a7 deviceIdentifier:(id)a8 metadata:(id)a9
+- (WBSCRDTField)initWithValue:(id)value valueSource:(id)source valueProvider:(id)provider valueUpdater:(id)updater generation:(id)generation deviceIdentifier:(id)identifier metadata:(id)metadata
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
+  valueCopy = value;
+  sourceCopy = source;
+  providerCopy = provider;
+  updaterCopy = updater;
+  generationCopy = generation;
+  identifierCopy = identifier;
+  metadataCopy = metadata;
   v40.receiver = self;
   v40.super_class = WBSCRDTField;
   v22 = [(WBSCRDTField *)&v40 init];
   v23 = v22;
   if (v22)
   {
-    objc_storeWeak(&v22->_valueSource, v16);
-    v24 = [v15 copyWithZone:0];
+    objc_storeWeak(&v22->_valueSource, sourceCopy);
+    v24 = [valueCopy copyWithZone:0];
     value = v23->_value;
     v23->_value = v24;
 
-    v26 = MEMORY[0x1BFB13CE0](v17);
+    v26 = MEMORY[0x1BFB13CE0](providerCopy);
     valueProvider = v23->_valueProvider;
     v23->_valueProvider = v26;
 
-    v28 = MEMORY[0x1BFB13CE0](v18);
+    v28 = MEMORY[0x1BFB13CE0](updaterCopy);
     valueUpdater = v23->_valueUpdater;
     v23->_valueUpdater = v28;
 
-    v30 = [v19 copy];
+    v30 = [generationCopy copy];
     v31 = v30;
     if (v30)
     {
@@ -108,13 +108,13 @@ void __58__WBSCRDTField_initWithValue_generation_deviceIdentifier___block_invoke
     generation = v23->_generation;
     v23->_generation = v32;
 
-    v34 = [v20 copy];
+    v34 = [identifierCopy copy];
     deviceIdentifier = v23->_deviceIdentifier;
     v23->_deviceIdentifier = v34;
 
-    if (v21)
+    if (metadataCopy)
     {
-      v36 = [v21 mutableCopy];
+      v36 = [metadataCopy mutableCopy];
     }
 
     else
@@ -132,10 +132,10 @@ void __58__WBSCRDTField_initWithValue_generation_deviceIdentifier___block_invoke
   return v23;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
@@ -145,17 +145,17 @@ void __58__WBSCRDTField_initWithValue_generation_deviceIdentifier___block_invoke
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(WBSCRDTField *)self value];
-      v7 = [(WBSCRDTField *)v5 value];
+      v5 = equalCopy;
+      value = [(WBSCRDTField *)self value];
+      value2 = [(WBSCRDTField *)v5 value];
       if (WBSIsEqual())
       {
-        v8 = [(WBSCRDTField *)self generation];
-        v9 = [(WBSCRDTField *)v5 generation];
+        generation = [(WBSCRDTField *)self generation];
+        generation2 = [(WBSCRDTField *)v5 generation];
         if (WBSIsEqual())
         {
-          v10 = [(WBSCRDTField *)self deviceIdentifier];
-          v11 = [(WBSCRDTField *)v5 deviceIdentifier];
+          deviceIdentifier = [(WBSCRDTField *)self deviceIdentifier];
+          deviceIdentifier2 = [(WBSCRDTField *)v5 deviceIdentifier];
           v12 = WBSIsEqual();
         }
 
@@ -180,30 +180,30 @@ void __58__WBSCRDTField_initWithValue_generation_deviceIdentifier___block_invoke
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   result = [v4 initWithValue:self->_value valueSource:v4 valueProvider:self->_valueProvider valueUpdater:self->_valueUpdater generation:self->_generation deviceIdentifier:self->_deviceIdentifier metadata:self->_metadata];
   *(result + 48) = self->_shouldIncrementGeneration;
   return result;
 }
 
-- (id)copyWithValueSource:(id)a3
+- (id)copyWithValueSource:(id)source
 {
-  v4 = a3;
-  v5 = [objc_alloc(objc_opt_class()) initWithValue:self->_value valueSource:v4 valueProvider:self->_valueProvider valueUpdater:self->_valueUpdater generation:self->_generation deviceIdentifier:self->_deviceIdentifier metadata:self->_metadata];
+  sourceCopy = source;
+  v5 = [objc_alloc(objc_opt_class()) initWithValue:self->_value valueSource:sourceCopy valueProvider:self->_valueProvider valueUpdater:self->_valueUpdater generation:self->_generation deviceIdentifier:self->_deviceIdentifier metadata:self->_metadata];
 
   v5[48] = self->_shouldIncrementGeneration;
   return v5;
 }
 
-- (void)setValue:(id)a3
+- (void)setValue:(id)value
 {
-  v7 = a3;
+  valueCopy = value;
   WeakRetained = objc_loadWeakRetained(&self->_valueSource);
   if (WeakRetained)
   {
-    v5 = [(WBSCRDTField *)self value];
+    value = [(WBSCRDTField *)self value];
     v6 = WBSIsEqual();
 
     if ((v6 & 1) == 0)
@@ -213,40 +213,40 @@ void __58__WBSCRDTField_initWithValue_generation_deviceIdentifier___block_invoke
   }
 }
 
-- (void)setValue:(id)a3 incrementGenerationIfNeeded:(BOOL)a4
+- (void)setValue:(id)value incrementGenerationIfNeeded:(BOOL)needed
 {
-  v4 = a4;
-  [(WBSCRDTField *)self setValue:a3];
-  if (v4)
+  neededCopy = needed;
+  [(WBSCRDTField *)self setValue:value];
+  if (neededCopy)
   {
 
     [(WBSCRDTField *)self incrementGenerationIfNeeded];
   }
 }
 
-- (int64_t)mergeWithField:(id)a3
+- (int64_t)mergeWithField:(id)field
 {
-  v4 = a3;
-  v5 = [(WBSCRDTField *)self generation];
-  v6 = [(WBSCRDTField *)v4 generation];
-  v7 = [v5 compare:v6];
+  fieldCopy = field;
+  generation = [(WBSCRDTField *)self generation];
+  generation2 = [(WBSCRDTField *)fieldCopy generation];
+  v7 = [generation compare:generation2];
 
   if (v7 == -1)
   {
-    v8 = v4;
+    selfCopy = fieldCopy;
   }
 
   else
   {
-    v8 = self;
+    selfCopy = self;
   }
 
-  v9 = [(WBSCRDTField *)v8 value];
-  v10 = [(WBSCRDTField *)v8 generation];
-  [(WBSCRDTField *)self setValue:v9];
-  [(WBSCRDTField *)self setGeneration:v10];
-  [(WBSCRDTField *)v4 setValue:v9];
-  [(WBSCRDTField *)v4 setGeneration:v10];
+  value = [(WBSCRDTField *)selfCopy value];
+  generation3 = [(WBSCRDTField *)selfCopy generation];
+  [(WBSCRDTField *)self setValue:value];
+  [(WBSCRDTField *)self setGeneration:generation3];
+  [(WBSCRDTField *)fieldCopy setValue:value];
+  [(WBSCRDTField *)fieldCopy setGeneration:generation3];
 
   return v7;
 }
@@ -255,9 +255,9 @@ void __58__WBSCRDTField_initWithValue_generation_deviceIdentifier___block_invoke
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(WBSCRDTField *)self value];
-  v6 = [(WBSCRDTField *)self generation];
-  v7 = [v3 stringWithFormat:@"<%@: %p value: %@; generation: %@; metadata: %@>", v4, self, v5, v6, self->_metadata];;
+  value = [(WBSCRDTField *)self value];
+  generation = [(WBSCRDTField *)self generation];
+  v7 = [v3 stringWithFormat:@"<%@: %p value: %@; generation: %@; metadata: %@>", v4, self, value, generation, self->_metadata];;
 
   return v7;
 }

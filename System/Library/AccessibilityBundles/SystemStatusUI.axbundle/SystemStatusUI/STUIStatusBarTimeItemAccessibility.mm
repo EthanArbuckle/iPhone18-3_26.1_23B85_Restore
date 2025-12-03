@@ -1,20 +1,20 @@
 @interface STUIStatusBarTimeItemAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (STUIStatusBarTimeItemAccessibility)init;
-- (id)applyUpdate:(id)a3 toDisplayItem:(id)a4;
+- (id)applyUpdate:(id)update toDisplayItem:(id)item;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation STUIStatusBarTimeItemAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"STUIStatusBarTimeItem" hasInstanceMethod:@"applyUpdate:toDisplayItem:" withFullSignature:{"@", "@", "@", 0}];
-  [v3 validateClass:@"STUIStatusBarTimeItem" hasInstanceMethod:@"timeView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"STUIStatusBarTimeItem" hasInstanceMethod:@"pillTimeView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"STUIStatusBarTimeItem" hasInstanceMethod:@"shortTimeView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"STUIStatusBarTimeItem" hasInstanceMethod:@"dateView" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"STUIStatusBarTimeItem" hasInstanceMethod:@"applyUpdate:toDisplayItem:" withFullSignature:{"@", "@", "@", 0}];
+  [validationsCopy validateClass:@"STUIStatusBarTimeItem" hasInstanceMethod:@"timeView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"STUIStatusBarTimeItem" hasInstanceMethod:@"pillTimeView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"STUIStatusBarTimeItem" hasInstanceMethod:@"shortTimeView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"STUIStatusBarTimeItem" hasInstanceMethod:@"dateView" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -46,11 +46,11 @@
   return v3;
 }
 
-- (id)applyUpdate:(id)a3 toDisplayItem:(id)a4
+- (id)applyUpdate:(id)update toDisplayItem:(id)item
 {
   v7.receiver = self;
   v7.super_class = STUIStatusBarTimeItemAccessibility;
-  v5 = [(STUIStatusBarTimeItemAccessibility *)&v7 applyUpdate:a3 toDisplayItem:a4];
+  v5 = [(STUIStatusBarTimeItemAccessibility *)&v7 applyUpdate:update toDisplayItem:item];
   [(STUIStatusBarTimeItemAccessibility *)self _accessibilityLoadAccessibilityInformation];
 
   return v5;

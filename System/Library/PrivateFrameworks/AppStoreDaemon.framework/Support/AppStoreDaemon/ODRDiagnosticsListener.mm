@@ -1,13 +1,13 @@
 @interface ODRDiagnosticsListener
-- (void)configureClientWithConnection:(id)a3;
+- (void)configureClientWithConnection:(id)connection;
 @end
 
 @implementation ODRDiagnosticsListener
 
-- (void)configureClientWithConnection:(id)a3
+- (void)configureClientWithConnection:(id)connection
 {
-  v3 = a3;
-  v4 = sub_10037B178([ODRDiagnosticsClient alloc], v3);
+  connectionCopy = connection;
+  v4 = sub_10037B178([ODRDiagnosticsClient alloc], connectionCopy);
 }
 
 @end

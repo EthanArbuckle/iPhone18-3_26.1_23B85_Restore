@@ -1,10 +1,10 @@
 @interface DDMain
 + (id)sharedInstance;
-- (BOOL)isValidMessage:(id)a3;
+- (BOOL)isValidMessage:(id)message;
 - (DDMain)init;
-- (void)addConnection:(id)a3;
-- (void)availableDestinationsWithCompletion:(id)a3;
-- (void)removeConnection:(id)a3;
+- (void)addConnection:(id)connection;
+- (void)availableDestinationsWithCompletion:(id)completion;
+- (void)removeConnection:(id)connection;
 @end
 
 @implementation DDMain
@@ -46,28 +46,28 @@
   return v3;
 }
 
-- (void)addConnection:(id)a3
+- (void)addConnection:(id)connection
 {
-  v4 = a3;
-  v5 = [(DDMain *)self connections];
-  objc_sync_enter(v5);
-  v6 = [(DDMain *)self connections];
-  [v6 addObject:v4];
+  connectionCopy = connection;
+  connections = [(DDMain *)self connections];
+  objc_sync_enter(connections);
+  connections2 = [(DDMain *)self connections];
+  [connections2 addObject:connectionCopy];
 
-  objc_sync_exit(v5);
-  v7 = [(DDMain *)self pendingTasks];
-  objc_sync_enter(v7);
-  v8 = [(DDMain *)self pendingTasks];
-  v9 = [v8 count];
+  objc_sync_exit(connections);
+  pendingTasks = [(DDMain *)self pendingTasks];
+  objc_sync_enter(pendingTasks);
+  pendingTasks2 = [(DDMain *)self pendingTasks];
+  v9 = [pendingTasks2 count];
 
   if (v9)
   {
     v10 = DiagnosticLogHandleForCategory();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [(DDMain *)self pendingTasks];
+      pendingTasks3 = [(DDMain *)self pendingTasks];
       *buf = 134217984;
-      v23 = [v11 count];
+      v23 = [pendingTasks3 count];
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "[DDMain] Executing pending tasks, count: %lu", buf, 0xCu);
     }
 
@@ -75,8 +75,8 @@
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v12 = [(DDMain *)self pendingTasks];
-    v13 = [v12 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    pendingTasks4 = [(DDMain *)self pendingTasks];
+    v13 = [pendingTasks4 countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v13)
     {
       v14 = *v18;
@@ -87,7 +87,7 @@
         {
           if (*v18 != v14)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(pendingTasks4);
           }
 
           (*(*(*(&v17 + 1) + 8 * v15) + 16))();
@@ -95,28 +95,28 @@
         }
 
         while (v13 != v15);
-        v13 = [v12 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v13 = [pendingTasks4 countByEnumeratingWithState:&v17 objects:v21 count:16];
       }
 
       while (v13);
     }
 
-    v16 = [(DDMain *)self pendingTasks];
-    [v16 removeAllObjects];
+    pendingTasks5 = [(DDMain *)self pendingTasks];
+    [pendingTasks5 removeAllObjects];
   }
 
-  objc_sync_exit(v7);
+  objc_sync_exit(pendingTasks);
 }
 
-- (void)removeConnection:(id)a3
+- (void)removeConnection:(id)connection
 {
-  v8 = a3;
-  v4 = [(DDMain *)self connections];
-  objc_sync_enter(v4);
-  v5 = [(DDMain *)self connections];
-  [v5 removeObject:v8];
+  connectionCopy = connection;
+  connections = [(DDMain *)self connections];
+  objc_sync_enter(connections);
+  connections2 = [(DDMain *)self connections];
+  [connections2 removeObject:connectionCopy];
 
-  v6 = [(DDMain *)self localReceiver];
+  localReceiver = [(DDMain *)self localReceiver];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -125,30 +125,30 @@
     [(DDMain *)self setLocalReceiver:0];
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(connections);
 }
 
-- (void)availableDestinationsWithCompletion:(id)a3
+- (void)availableDestinationsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = objc_opt_new();
-  v6 = [(DDMain *)self pairedService];
+  pairedService = [(DDMain *)self pairedService];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100005660;
   v9[3] = &unk_10001C8A0;
   v10 = v5;
-  v11 = v4;
-  v7 = v4;
+  v11 = completionCopy;
+  v7 = completionCopy;
   v8 = v5;
-  [v6 availableDestinationsWithCompletion:v9];
+  [pairedService availableDestinationsWithCompletion:v9];
 }
 
-- (BOOL)isValidMessage:(id)a3
+- (BOOL)isValidMessage:(id)message
 {
-  v3 = a3;
+  messageCopy = message;
   v4 = [NSSet setWithObjects:@"wakeDevice", @"idleDevice", @"endDevice", @"deviceState", @"requestDeviceState", @"requestAssessmentMode", @"requestSuiteFinish", 0];
-  v5 = [v4 containsObject:v3];
+  v5 = [v4 containsObject:messageCopy];
 
   return v5;
 }

@@ -1,19 +1,19 @@
 @interface PASetAppearance
-+ (void)setCarPlayAppearanceStyle:(id)a3;
-+ (void)setiOSAppearanceStyle:(id)a3;
-- (void)performWithCompletion:(id)a3;
++ (void)setCarPlayAppearanceStyle:(id)style;
++ (void)setiOSAppearanceStyle:(id)style;
+- (void)performWithCompletion:(id)completion;
 @end
 
 @implementation PASetAppearance
 
-- (void)performWithCompletion:(id)a3
+- (void)performWithCompletion:(id)completion
 {
-  v4 = a3;
-  v16 = [(PASetAppearance *)self appearance];
-  v5 = [[CARSessionStatus alloc] initAndWaitUntilSessionUpdated];
-  v6 = [v5 currentSession];
+  completionCopy = completion;
+  appearance = [(PASetAppearance *)self appearance];
+  initAndWaitUntilSessionUpdated = [[CARSessionStatus alloc] initAndWaitUntilSessionUpdated];
+  currentSession = [initAndWaitUntilSessionUpdated currentSession];
 
-  if (v6)
+  if (currentSession)
   {
     +[PAGetAppearance carPlayAppearanceStyle];
   }
@@ -23,9 +23,9 @@
     +[PAGetAppearance iOSAppearanceStyle];
   }
   v7 = ;
-  NSLog(@"Setting value to %@, previous value is %@", v16, v7);
-  v8 = [v16 isEqualToString:v7];
-  v9 = [(PASetAppearance *)self dryRun];
+  NSLog(@"Setting value to %@, previous value is %@", appearance, v7);
+  v8 = [appearance isEqualToString:v7];
+  dryRun = [(PASetAppearance *)self dryRun];
   if (v8)
   {
     v10 = objc_alloc_init(SACommandFailed);
@@ -46,7 +46,7 @@
 
   else
   {
-    v11 = v9;
+    v11 = dryRun;
   }
 
   if (v11)
@@ -59,41 +59,41 @@
     }
   }
 
-  else if (v6)
+  else if (currentSession)
   {
-    [PASetAppearance setCarPlayAppearanceStyle:v16];
+    [PASetAppearance setCarPlayAppearanceStyle:appearance];
   }
 
   else
   {
-    [PASetAppearance setiOSAppearanceStyle:v16];
+    [PASetAppearance setiOSAppearanceStyle:appearance];
   }
 
   v14 = objc_alloc_init(SASettingAppearanceEntity);
-  [v14 setValue:v16];
+  [v14 setValue:appearance];
   [v14 setPreviousValue:v7];
   v13 = objc_alloc_init(SASettingSetAppearanceResponse);
   [v13 setSetting:v14];
 
 LABEL_17:
-  v15 = [v13 dictionary];
-  v4[2](v4, v15);
+  dictionary = [v13 dictionary];
+  completionCopy[2](completionCopy, dictionary);
 }
 
-+ (void)setiOSAppearanceStyle:(id)a3
++ (void)setiOSAppearanceStyle:(id)style
 {
-  v7 = a3;
+  styleCopy = style;
   v3 = [[UISUserInterfaceStyleMode alloc] initWithDelegate:0];
   [v3 modeValue];
   if (UISUserInterfaceStyleModeValueIsAutomatic())
   {
     NSLog(@"User interface style is automatic");
-    if ([v7 isEqualToString:SASettingAppearanceDarkValue])
+    if ([styleCopy isEqualToString:SASettingAppearanceDarkValue])
     {
       v4 = 2;
     }
 
-    else if ([v7 isEqualToString:SASettingAppearanceLightValue])
+    else if ([styleCopy isEqualToString:SASettingAppearanceLightValue])
     {
       v4 = 1;
     }
@@ -108,7 +108,7 @@ LABEL_17:
     goto LABEL_13;
   }
 
-  if ([v7 isEqualToString:SASettingAppearanceDarkValue])
+  if ([styleCopy isEqualToString:SASettingAppearanceDarkValue])
   {
     v5 = v3;
     v6 = 2;
@@ -116,7 +116,7 @@ LABEL_17:
 
   else
   {
-    if (![v7 isEqualToString:SASettingAppearanceLightValue])
+    if (![styleCopy isEqualToString:SASettingAppearanceLightValue])
     {
       goto LABEL_13;
     }
@@ -129,17 +129,17 @@ LABEL_17:
 LABEL_13:
 }
 
-+ (void)setCarPlayAppearanceStyle:(id)a3
++ (void)setCarPlayAppearanceStyle:(id)style
 {
-  v5 = a3;
-  if ([v5 isEqualToString:SASettingAppearanceDarkValue])
+  styleCopy = style;
+  if ([styleCopy isEqualToString:SASettingAppearanceDarkValue])
   {
     v3 = &off_10EE8;
   }
 
   else
   {
-    if (![v5 isEqualToString:SASettingAppearanceLightValue])
+    if (![styleCopy isEqualToString:SASettingAppearanceLightValue])
     {
       goto LABEL_6;
     }

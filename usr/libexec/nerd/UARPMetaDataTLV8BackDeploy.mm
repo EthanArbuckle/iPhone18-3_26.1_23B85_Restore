@@ -1,6 +1,6 @@
 @interface UARPMetaDataTLV8BackDeploy
 - (UARPMetaDataTLV8BackDeploy)init;
-- (id)tlvValue:(unsigned __int8)a3;
+- (id)tlvValue:(unsigned __int8)value;
 @end
 
 @implementation UARPMetaDataTLV8BackDeploy
@@ -12,10 +12,10 @@
   return [(UARPMetaDataTLVBackDeploy *)&v3 init];
 }
 
-- (id)tlvValue:(unsigned __int8)a3
+- (id)tlvValue:(unsigned __int8)value
 {
-  v5 = a3;
-  v3 = [[NSData alloc] initWithBytes:&v5 length:1];
+  valueCopy = value;
+  v3 = [[NSData alloc] initWithBytes:&valueCopy length:1];
 
   return v3;
 }

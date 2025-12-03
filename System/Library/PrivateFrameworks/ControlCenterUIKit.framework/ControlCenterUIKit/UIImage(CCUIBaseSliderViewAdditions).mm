@@ -8,7 +8,7 @@
 {
   if (MEMORY[0x1D388ECD0]())
   {
-    v2 = MEMORY[0x1D388ECC0](a1);
+    v2 = MEMORY[0x1D388ECC0](self);
   }
 
   else

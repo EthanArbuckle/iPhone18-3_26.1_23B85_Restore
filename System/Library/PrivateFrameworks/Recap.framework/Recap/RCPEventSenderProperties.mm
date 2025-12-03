@@ -1,26 +1,26 @@
 @interface RCPEventSenderProperties
-+ (BOOL)_isMouseSender:(id)a3;
-+ (id)_cachedPropertiesOrCacheIfNeeded:(id)a3 senderID:(unint64_t)a4;
-+ (id)_senderWithProperties:(id)a3 senderID:(unint64_t)a4;
++ (BOOL)_isMouseSender:(id)sender;
++ (id)_cachedPropertiesOrCacheIfNeeded:(id)needed senderID:(unint64_t)d;
++ (id)_senderWithProperties:(id)properties senderID:(unint64_t)d;
 + (id)crownSender;
 + (id)gamepadSender;
 + (id)globalPositionSender;
 + (id)keyboardSender;
-+ (id)keyboardSenderForDisplayUUID:(id)a3;
++ (id)keyboardSenderForDisplayUUID:(id)d;
 + (id)mouseSender;
 + (id)naturalInputCollectionSender;
 + (id)pencilDigitizerSender;
 + (id)phoneButtonSender;
-+ (id)senderFromIOHIDService:(__IOHIDServiceClient *)a3;
-+ (id)senderWithProperties:(id)a3 senderID:(unint64_t)a4;
-+ (id)supplyMissingStandardProperties:(id)a3 senderID:(unint64_t)a4;
++ (id)senderFromIOHIDService:(__IOHIDServiceClient *)service;
++ (id)senderWithProperties:(id)properties senderID:(unint64_t)d;
++ (id)supplyMissingStandardProperties:(id)properties senderID:(unint64_t)d;
 + (id)touchScreenDigitizerSender;
-+ (id)touchScreenDigitizerSenderForDisplayUUID:(id)a3;
++ (id)touchScreenDigitizerSenderForDisplayUUID:(id)d;
 + (id)trackpadSender;
 + (id)tvRemoteSender;
-- (RCPEventSenderProperties)initWithCoder:(id)a3;
-- (RCPEventSenderProperties)senderPropertiesWithDisplayUUID:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (RCPEventSenderProperties)initWithCoder:(id)coder;
+- (RCPEventSenderProperties)senderPropertiesWithDisplayUUID:(id)d;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RCPEventSenderProperties
@@ -44,28 +44,28 @@ uint64_t __54__RCPEventSenderProperties_touchScreenDigitizerSender__block_invoke
   return MEMORY[0x2821F96F8]();
 }
 
-- (RCPEventSenderProperties)initWithCoder:(id)a3
+- (RCPEventSenderProperties)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"properties"];
-  v6 = [v4 decodeInt64ForKey:@"senderID"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"properties"];
+  v6 = [coderCopy decodeInt64ForKey:@"senderID"];
 
   v7 = [objc_opt_class() senderWithProperties:v5 senderID:v6];
 
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   properties = self->_properties;
-  v5 = a3;
-  [v5 encodeObject:properties forKey:@"properties"];
-  [v5 encodeInt64:self->_senderID forKey:@"senderID"];
+  coderCopy = coder;
+  [coderCopy encodeObject:properties forKey:@"properties"];
+  [coderCopy encodeInt64:self->_senderID forKey:@"senderID"];
 }
 
-+ (id)_cachedPropertiesOrCacheIfNeeded:(id)a3 senderID:(unint64_t)a4
++ (id)_cachedPropertiesOrCacheIfNeeded:(id)needed senderID:(unint64_t)d
 {
-  v5 = [a3 copy];
+  v5 = [needed copy];
   if (_cachedPropertiesOrCacheIfNeeded_senderID__onceToken != -1)
   {
     +[RCPEventSenderProperties _cachedPropertiesOrCacheIfNeeded:senderID:];
@@ -74,7 +74,7 @@ uint64_t __54__RCPEventSenderProperties_touchScreenDigitizerSender__block_invoke
   v6 = [_cachedPropertiesOrCacheIfNeeded_senderID__cache objectForKeyedSubscript:v5];
   if (!v6)
   {
-    v6 = [RCPEventSenderProperties _senderWithProperties:v5 senderID:a4];
+    v6 = [RCPEventSenderProperties _senderWithProperties:v5 senderID:d];
     [_cachedPropertiesOrCacheIfNeeded_senderID__cache setObject:v6 forKeyedSubscript:v5];
   }
 
@@ -88,17 +88,17 @@ uint64_t __70__RCPEventSenderProperties__cachedPropertiesOrCacheIfNeeded_senderI
   return MEMORY[0x2821F96F8]();
 }
 
-+ (id)supplyMissingStandardProperties:(id)a3 senderID:(unint64_t)a4
++ (id)supplyMissingStandardProperties:(id)properties senderID:(unint64_t)d
 {
   v50[2] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  propertiesCopy = properties;
   if (supplyMissingStandardProperties_senderID__onceToken != -1)
   {
     +[RCPEventSenderProperties supplyMissingStandardProperties:senderID:];
   }
 
   v6 = [supplyMissingStandardProperties_senderID__defaultProperties mutableCopy];
-  [v6 addEntriesFromDictionary:v5];
+  [v6 addEntriesFromDictionary:propertiesCopy];
   v7 = [v6 objectForKeyedSubscript:@"PrimaryUsagePage"];
 
   if (!v7)
@@ -128,9 +128,9 @@ uint64_t __70__RCPEventSenderProperties__cachedPropertiesOrCacheIfNeeded_senderI
     v12 = [v6 objectForKeyedSubscript:@"usagePairs"];
     if (v12)
     {
-      v37 = a4;
-      v38 = v5;
-      v13 = [MEMORY[0x277CBEB18] array];
+      dCopy = d;
+      v38 = propertiesCopy;
+      array = [MEMORY[0x277CBEB18] array];
       v14 = [v6 objectForKeyedSubscript:@"PrimaryUsagePage"];
       v36 = v6;
       [v6 objectForKeyedSubscript:@"PrimaryUsage"];
@@ -140,7 +140,7 @@ uint64_t __70__RCPEventSenderProperties__cachedPropertiesOrCacheIfNeeded_senderI
       v50[0] = v14;
       v50[1] = v33;
       v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v50 forKeys:v49 count:2];
-      [v13 addObject:v15];
+      [array addObject:v15];
 
       v41 = 0u;
       v42 = 0u;
@@ -170,7 +170,7 @@ uint64_t __70__RCPEventSenderProperties__cachedPropertiesOrCacheIfNeeded_senderI
             v47[0] = v22;
             v47[1] = v23;
             v24 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v47 forKeys:v46 count:2];
-            [v13 addObject:v24];
+            [array addObject:v24];
           }
 
           v18 = [v16 countByEnumeratingWithState:&v39 objects:v48 count:16];
@@ -180,9 +180,9 @@ uint64_t __70__RCPEventSenderProperties__cachedPropertiesOrCacheIfNeeded_senderI
       }
 
       v6 = v36;
-      [v36 setObject:v13 forKeyedSubscript:@"DeviceUsagePairs"];
-      a4 = v37;
-      v5 = v38;
+      [v36 setObject:array forKeyedSubscript:@"DeviceUsagePairs"];
+      d = dCopy;
+      propertiesCopy = v38;
       v25 = v34;
       v12 = v35;
       v26 = v33;
@@ -190,17 +190,17 @@ uint64_t __70__RCPEventSenderProperties__cachedPropertiesOrCacheIfNeeded_senderI
 
     else
     {
-      v13 = [v6 objectForKeyedSubscript:@"PrimaryUsagePage"];
+      array = [v6 objectForKeyedSubscript:@"PrimaryUsagePage"];
       v27 = [v6 objectForKeyedSubscript:@"PrimaryUsage"];
       v25 = v27;
-      if (!v13 || !v27)
+      if (!array || !v27)
       {
         goto LABEL_25;
       }
 
       v43[0] = @"DeviceUsagePage";
       v43[1] = @"DeviceUsage";
-      v44[0] = v13;
+      v44[0] = array;
       v44[1] = v27;
       v26 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v44 forKeys:v43 count:2];
       v45 = v26;
@@ -215,15 +215,15 @@ LABEL_25:
 
   if (!v29)
   {
-    v30 = [MEMORY[0x277CCACA8] stringWithFormat:@"recap-bus-%d", supplyMissingStandardProperties_senderID__deviceCount];
-    [v6 setObject:v30 forKeyedSubscript:@"LocationID"];
+    supplyMissingStandardProperties_senderID__deviceCount = [MEMORY[0x277CCACA8] stringWithFormat:@"recap-bus-%d", supplyMissingStandardProperties_senderID__deviceCount];
+    [v6 setObject:supplyMissingStandardProperties_senderID__deviceCount forKeyedSubscript:@"LocationID"];
 
     ++supplyMissingStandardProperties_senderID__deviceCount;
   }
 
-  if (a4)
+  if (d)
   {
-    v31 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a4];
+    v31 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:d];
     [v6 setObject:v31 forKeyedSubscript:@"recapSenderID"];
   }
 
@@ -246,12 +246,12 @@ void __69__RCPEventSenderProperties_supplyMissingStandardProperties_senderID___b
   supplyMissingStandardProperties_senderID__defaultProperties = v0;
 }
 
-+ (id)senderFromIOHIDService:(__IOHIDServiceClient *)a3
++ (id)senderFromIOHIDService:(__IOHIDServiceClient *)service
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = IOHIDServiceClientGetRegistryID(a3);
-  v5 = [v4 unsignedLongLongValue];
-  v6 = [MEMORY[0x277CBEB38] dictionary];
+  v4 = IOHIDServiceClientGetRegistryID(service);
+  unsignedLongLongValue = [v4 unsignedLongLongValue];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if (senderFromIOHIDService__onceToken != -1)
   {
     +[RCPEventSenderProperties senderFromIOHIDService:];
@@ -277,11 +277,11 @@ void __69__RCPEventSenderProperties_supplyMissingStandardProperties_senderID___b
         }
 
         v12 = *(*(&v18 + 1) + 8 * i);
-        v13 = IOHIDServiceClientCopyProperty(a3, v12);
+        v13 = IOHIDServiceClientCopyProperty(service, v12);
         if (v13)
         {
           v14 = v13;
-          [v6 setObject:v13 forKey:v12];
+          [dictionary setObject:v13 forKey:v12];
           CFRelease(v14);
         }
       }
@@ -292,7 +292,7 @@ void __69__RCPEventSenderProperties_supplyMissingStandardProperties_senderID___b
     while (v9);
   }
 
-  v15 = [a1 senderWithProperties:v6 senderID:v5];
+  v15 = [self senderWithProperties:dictionary senderID:unsignedLongLongValue];
 
   return v15;
 }
@@ -303,10 +303,10 @@ void __51__RCPEventSenderProperties_senderFromIOHIDService___block_invoke()
   senderFromIOHIDService__persistentPropertyKeys = &unk_287426B08;
 }
 
-+ (BOOL)_isMouseSender:(id)a3
++ (BOOL)_isMouseSender:(id)sender
 {
   v18 = *MEMORY[0x277D85DE8];
-  [a3 objectForKey:@"DeviceUsagePairs"];
+  [sender objectForKey:@"DeviceUsagePairs"];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -352,52 +352,52 @@ LABEL_12:
   return v11;
 }
 
-+ (id)_senderWithProperties:(id)a3 senderID:(unint64_t)a4
++ (id)_senderWithProperties:(id)properties senderID:(unint64_t)d
 {
-  v6 = a3;
+  propertiesCopy = properties;
   v7 = objc_alloc_init(RCPEventSenderProperties);
-  v8 = [v6 copy];
+  v8 = [propertiesCopy copy];
   properties = v7->_properties;
   v7->_properties = v8;
 
-  v7->_senderID = a4;
-  LOBYTE(a4) = [a1 _isMouseSender:v6];
+  v7->_senderID = d;
+  LOBYTE(d) = [self _isMouseSender:propertiesCopy];
 
-  v7->_sendsMousePointerEvents = a4;
+  v7->_sendsMousePointerEvents = d;
 
   return v7;
 }
 
-+ (id)senderWithProperties:(id)a3 senderID:(unint64_t)a4
++ (id)senderWithProperties:(id)properties senderID:(unint64_t)d
 {
-  v6 = a3;
-  [v6 enumerateKeysAndObjectsUsingBlock:&__block_literal_global_117];
-  v7 = [a1 supplyMissingStandardProperties:v6 senderID:a4];
+  propertiesCopy = properties;
+  [propertiesCopy enumerateKeysAndObjectsUsingBlock:&__block_literal_global_117];
+  v7 = [self supplyMissingStandardProperties:propertiesCopy senderID:d];
 
-  v8 = [a1 _cachedPropertiesOrCacheIfNeeded:v7 senderID:a4];
+  v8 = [self _cachedPropertiesOrCacheIfNeeded:v7 senderID:d];
 
   return v8;
 }
 
-+ (id)touchScreenDigitizerSenderForDisplayUUID:(id)a3
++ (id)touchScreenDigitizerSenderForDisplayUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   if (touchScreenDigitizerSenderForDisplayUUID__onceToken != -1)
   {
     +[RCPEventSenderProperties touchScreenDigitizerSenderForDisplayUUID:];
   }
 
-  v5 = [touchScreenDigitizerSenderForDisplayUUID__touchScreenDigitizerSenders objectForKeyedSubscript:v4];
+  v5 = [touchScreenDigitizerSenderForDisplayUUID__touchScreenDigitizerSenders objectForKeyedSubscript:dCopy];
   if (!v5)
   {
-    v6 = [a1 touchScreenDigitizerSender];
-    v7 = [v6 properties];
-    v8 = [v7 mutableCopy];
+    touchScreenDigitizerSender = [self touchScreenDigitizerSender];
+    properties = [touchScreenDigitizerSender properties];
+    v8 = [properties mutableCopy];
 
     [v8 setObject:MEMORY[0x277CBEC28] forKeyedSubscript:@"Built-In"];
-    [v8 setObject:v4 forKeyedSubscript:@"displayUUID"];
+    [v8 setObject:dCopy forKeyedSubscript:@"displayUUID"];
     v5 = [RCPEventSenderProperties senderWithProperties:v8];
-    [touchScreenDigitizerSenderForDisplayUUID__touchScreenDigitizerSenders setObject:v5 forKeyedSubscript:v4];
+    [touchScreenDigitizerSenderForDisplayUUID__touchScreenDigitizerSenders setObject:v5 forKeyedSubscript:dCopy];
   }
 
   return v5;
@@ -542,24 +542,24 @@ void __42__RCPEventSenderProperties_keyboardSender__block_invoke()
   keyboardSender_sender = v1;
 }
 
-+ (id)keyboardSenderForDisplayUUID:(id)a3
++ (id)keyboardSenderForDisplayUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   if (keyboardSenderForDisplayUUID__onceToken != -1)
   {
     +[RCPEventSenderProperties keyboardSenderForDisplayUUID:];
   }
 
-  v5 = [keyboardSenderForDisplayUUID__keyboardSenders objectForKeyedSubscript:v4];
+  v5 = [keyboardSenderForDisplayUUID__keyboardSenders objectForKeyedSubscript:dCopy];
   if (!v5)
   {
-    v6 = [a1 keyboardSender];
-    v7 = [v6 properties];
-    v8 = [v7 mutableCopy];
+    keyboardSender = [self keyboardSender];
+    properties = [keyboardSender properties];
+    v8 = [properties mutableCopy];
 
-    [v8 setObject:v4 forKeyedSubscript:@"displayUUID"];
+    [v8 setObject:dCopy forKeyedSubscript:@"displayUUID"];
     v5 = [RCPEventSenderProperties senderWithProperties:v8];
-    [keyboardSenderForDisplayUUID__keyboardSenders setObject:v5 forKeyedSubscript:v4];
+    [keyboardSenderForDisplayUUID__keyboardSenders setObject:v5 forKeyedSubscript:dCopy];
   }
 
   return v5;
@@ -668,13 +668,13 @@ void __45__RCPEventSenderProperties_phoneButtonSender__block_invoke()
   phoneButtonSender_sender = v1;
 }
 
-- (RCPEventSenderProperties)senderPropertiesWithDisplayUUID:(id)a3
+- (RCPEventSenderProperties)senderPropertiesWithDisplayUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(RCPEventSenderProperties *)self properties];
-  v6 = [v5 mutableCopy];
+  dCopy = d;
+  properties = [(RCPEventSenderProperties *)self properties];
+  v6 = [properties mutableCopy];
 
-  [v6 setObject:v4 forKeyedSubscript:@"displayUUID"];
+  [v6 setObject:dCopy forKeyedSubscript:@"displayUUID"];
   v7 = [RCPEventSenderProperties senderWithProperties:v6];
 
   return v7;

@@ -1,18 +1,18 @@
 @interface SearchHomePublishersLayoutProvider
 - (id)cellClasses;
-- (id)cellForRowAtIndexPath:(id)a3 collectionView:(id)a4 item:(id)a5;
-- (id)layoutSectionWithLayoutEnvironment:(id)a3 estimatedHeaderHeight:(double)a4 estimatedFooterHeight:(double)a5 deletionBlock:(id)a6 objectsCount:(unint64_t)a7 mapsTheme:(id)a8;
+- (id)cellForRowAtIndexPath:(id)path collectionView:(id)view item:(id)item;
+- (id)layoutSectionWithLayoutEnvironment:(id)environment estimatedHeaderHeight:(double)height estimatedFooterHeight:(double)footerHeight deletionBlock:(id)block objectsCount:(unint64_t)count mapsTheme:(id)theme;
 @end
 
 @implementation SearchHomePublishersLayoutProvider
 
-- (id)layoutSectionWithLayoutEnvironment:(id)a3 estimatedHeaderHeight:(double)a4 estimatedFooterHeight:(double)a5 deletionBlock:(id)a6 objectsCount:(unint64_t)a7 mapsTheme:(id)a8
+- (id)layoutSectionWithLayoutEnvironment:(id)environment estimatedHeaderHeight:(double)height estimatedFooterHeight:(double)footerHeight deletionBlock:(id)block objectsCount:(unint64_t)count mapsTheme:(id)theme
 {
-  v12 = a3;
-  v13 = a8;
-  v14 = [[_UICollectionViewListLayoutSectionConfiguration alloc] initWithAppearanceStyle:0 layoutEnvironment:v12];
-  v15 = [v12 traitCollection];
-  v16 = [v15 userInterfaceIdiom] != 5;
+  environmentCopy = environment;
+  themeCopy = theme;
+  v14 = [[_UICollectionViewListLayoutSectionConfiguration alloc] initWithAppearanceStyle:0 layoutEnvironment:environmentCopy];
+  traitCollection = [environmentCopy traitCollection];
+  v16 = [traitCollection userInterfaceIdiom] != 5;
 
   [v14 setSeparatorStyle:v16];
   +[TwoLineCollectionViewListCell estimatedCellHeight];
@@ -21,19 +21,19 @@
   v28[1] = 3221225472;
   v28[2] = sub_1005B1E78;
   v28[3] = &unk_101656500;
-  v28[4] = a7;
+  v28[4] = count;
   [v14 setSeparatorInsetProvider:v28];
   [v14 setHeaderTopPadding:0.0];
-  v17 = [v14 _separatorConfiguration];
-  v18 = [v17 copy];
+  _separatorConfiguration = [v14 _separatorConfiguration];
+  v18 = [_separatorConfiguration copy];
 
-  v19 = [v13 dynamicHairlineColor];
+  dynamicHairlineColor = [themeCopy dynamicHairlineColor];
 
-  [v18 _setColor:v19];
+  [v18 _setColor:dynamicHairlineColor];
   [v14 _setSeparatorConfiguration:v18];
-  v20 = [[_UICollectionViewListLayoutSection alloc] initWithConfiguration:v14 layoutEnvironment:v12];
+  v20 = [[_UICollectionViewListLayoutSection alloc] initWithConfiguration:v14 layoutEnvironment:environmentCopy];
   v21 = [NSCollectionLayoutDimension fractionalWidthDimension:1.0];
-  v22 = [NSCollectionLayoutDimension estimatedDimension:a4];
+  v22 = [NSCollectionLayoutDimension estimatedDimension:height];
   v23 = [NSCollectionLayoutSize sizeWithWidthDimension:v21 heightDimension:v22];
 
   v24 = [NSCollectionLayoutBoundarySupplementaryItem boundarySupplementaryItemWithLayoutSize:v23 elementKind:UICollectionElementKindSectionHeader alignment:1];
@@ -48,7 +48,7 @@
     if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v30 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_INFO, "The LayoutSection is nil for some reason in class - %@.", buf, 0xCu);
     }
   }
@@ -56,18 +56,18 @@
   return v20;
 }
 
-- (id)cellForRowAtIndexPath:(id)a3 collectionView:(id)a4 item:(id)a5
+- (id)cellForRowAtIndexPath:(id)path collectionView:(id)view item:(id)item
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(SearchHomePublishersLayoutProvider *)self cellReuseIdentifier];
-  v12 = [v9 dequeueReusableCellWithReuseIdentifier:v11 forIndexPath:v10];
+  itemCopy = item;
+  viewCopy = view;
+  pathCopy = path;
+  cellReuseIdentifier = [(SearchHomePublishersLayoutProvider *)self cellReuseIdentifier];
+  v12 = [viewCopy dequeueReusableCellWithReuseIdentifier:cellReuseIdentifier forIndexPath:pathCopy];
 
-  v13 = [(SearchHomePublishersLayoutProvider *)self cellReuseIdentifier];
-  [v12 setAccessibilityIdentifier:v13];
+  cellReuseIdentifier2 = [(SearchHomePublishersLayoutProvider *)self cellReuseIdentifier];
+  [v12 setAccessibilityIdentifier:cellReuseIdentifier2];
 
-  [v12 setViewModel:v8];
+  [v12 setViewModel:itemCopy];
 
   return v12;
 }

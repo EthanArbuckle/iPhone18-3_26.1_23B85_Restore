@@ -1,15 +1,15 @@
 @interface TSDRep
 - (BOOL)isDrawingInFlippedContext;
 - (BOOL)isLocked;
-- (CGAffineTransform)unRotatedTransform:(SEL)a3;
-- (CGPath)newPathInScaledCanvasFromNaturalRect:(CGRect)a3;
+- (CGAffineTransform)unRotatedTransform:(SEL)transform;
+- (CGPath)newPathInScaledCanvasFromNaturalRect:(CGRect)rect;
 - (CGPoint)centerForRotation;
-- (CGPoint)convertNaturalPointFromUnscaledCanvas:(CGPoint)a3;
-- (CGPoint)convertNaturalPointToUnscaledCanvas:(CGPoint)a3;
+- (CGPoint)convertNaturalPointFromUnscaledCanvas:(CGPoint)canvas;
+- (CGPoint)convertNaturalPointToUnscaledCanvas:(CGPoint)canvas;
 - (CGRect)boundsForStandardKnobs;
 - (CGRect)captionFrameInUnscaledCanvas;
-- (CGRect)convertNaturalRectFromUnscaledCanvas:(CGRect)a3;
-- (CGRect)convertNaturalRectToUnscaledCanvas:(CGRect)a3;
+- (CGRect)convertNaturalRectFromUnscaledCanvas:(CGRect)canvas;
+- (CGRect)convertNaturalRectToUnscaledCanvas:(CGRect)canvas;
 - (CGRect)frameForMagicMove;
 - (CGRect)frameInUnscaledCanvas;
 - (CGRect)frameInUnscaledCanvasForMarqueeSelecting;
@@ -28,29 +28,29 @@
 - (TSDCanvas)canvas;
 - (TSDInfo)info;
 - (TSDLayout)layout;
-- (TSDRep)initWithLayout:(id)a3 canvas:(id)a4;
+- (TSDRep)initWithLayout:(id)layout canvas:(id)canvas;
 - (TSDRep)parentRep;
 - (double)angleInRoot;
 - (double)contentsScale;
 - (id)description;
 - (id)p_comment;
-- (id)textureForDescription:(id)a3;
-- (void)addChildTexturesToTextureSet:(id)a3 forDescription:(id)a4 passingTest:(id)a5;
+- (id)textureForDescription:(id)description;
+- (void)addChildTexturesToTextureSet:(id)set forDescription:(id)description passingTest:(id)test;
 - (void)dealloc;
-- (void)enumerateChildTexturesForDescription:(id)a3 passingTest:(id)a4 withBlock:(id)a5;
+- (void)enumerateChildTexturesForDescription:(id)description passingTest:(id)test withBlock:(id)block;
 - (void)i_willBeRemoved;
-- (void)p_setChildReps:(id)a3;
-- (void)recursivelyDrawChildrenInContext:(CGContext *)a3 keepingChildrenPassingTest:(id)a4;
-- (void)recursivelyDrawInContext:(CGContext *)a3 keepingChildrenPassingTest:(id)a4;
-- (void)recursivelyPerformSelector:(SEL)a3;
-- (void)recursivelyPerformSelector:(SEL)a3 withObject:(id)a4;
-- (void)recursivelyPerformSelector:(SEL)a3 withObject:(id)a4 withObject:(id)a5;
-- (void)recursivelyPerformSelectorIfImplemented:(SEL)a3;
-- (void)recursivelyPerformSelectorIfImplemented:(SEL)a3 withObject:(id)a4;
-- (void)recursivelyPerformSelectorIfImplemented:(SEL)a3 withObject:(id)a4 withObject:(id)a5;
-- (void)removeChildRep:(id)a3;
-- (void)setParentRep:(id)a3;
-- (void)setTextureAttributes:(id)a3 textureBounds:(CGRect)a4;
+- (void)p_setChildReps:(id)reps;
+- (void)recursivelyDrawChildrenInContext:(CGContext *)context keepingChildrenPassingTest:(id)test;
+- (void)recursivelyDrawInContext:(CGContext *)context keepingChildrenPassingTest:(id)test;
+- (void)recursivelyPerformSelector:(SEL)selector;
+- (void)recursivelyPerformSelector:(SEL)selector withObject:(id)object;
+- (void)recursivelyPerformSelector:(SEL)selector withObject:(id)object withObject:(id)withObject;
+- (void)recursivelyPerformSelectorIfImplemented:(SEL)implemented;
+- (void)recursivelyPerformSelectorIfImplemented:(SEL)implemented withObject:(id)object;
+- (void)recursivelyPerformSelectorIfImplemented:(SEL)implemented withObject:(id)object withObject:(id)withObject;
+- (void)removeChildRep:(id)rep;
+- (void)setParentRep:(id)rep;
+- (void)setTextureAttributes:(id)attributes textureBounds:(CGRect)bounds;
 - (void)updateChildrenFromLayout;
 @end
 
@@ -129,11 +129,11 @@
   return result;
 }
 
-- (TSDRep)initWithLayout:(id)a3 canvas:(id)a4
+- (TSDRep)initWithLayout:(id)layout canvas:(id)canvas
 {
-  v7 = a3;
-  v9 = a4;
-  if (!v7)
+  layoutCopy = layout;
+  canvasCopy = canvas;
+  if (!layoutCopy)
   {
     v10 = MEMORY[0x277D81150];
     v11 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v8, "[TSDRep initWithLayout:canvas:]");
@@ -149,12 +149,12 @@
   v18 = v17;
   if (v17)
   {
-    if (v7)
+    if (layoutCopy)
     {
-      objc_storeStrong(&v17->mLayout, a3);
-      v19 = objc_storeWeak(&v18->mCanvas, v9);
-      objc_msgSend_i_registerRep_(v9, v20, v18);
-      v21 = v9;
+      objc_storeStrong(&v17->mLayout, layout);
+      v19 = objc_storeWeak(&v18->mCanvas, canvasCopy);
+      objc_msgSend_i_registerRep_(canvasCopy, v20, v18);
+      v21 = canvasCopy;
     }
 
     else
@@ -226,9 +226,9 @@
   return v6;
 }
 
-- (void)setParentRep:(id)a3
+- (void)setParentRep:(id)rep
 {
-  obj = a3;
+  obj = rep;
   WeakRetained = objc_loadWeakRetained(&self->mParentRep);
 
   v5 = obj;
@@ -252,12 +252,12 @@
   }
 }
 
-- (void)recursivelyPerformSelectorIfImplemented:(SEL)a3
+- (void)recursivelyPerformSelectorIfImplemented:(SEL)implemented
 {
   v19 = *MEMORY[0x277D85DE8];
   if (objc_opt_respondsToSelector())
   {
-    objc_msgSend_performSelector_(self, v5, a3);
+    objc_msgSend_performSelector_(self, v5, implemented);
   }
 
   v16 = 0u;
@@ -280,7 +280,7 @@
           objc_enumerationMutation(v7);
         }
 
-        objc_msgSend_recursivelyPerformSelectorIfImplemented_(*(*(&v14 + 1) + 8 * v13++), v10, a3);
+        objc_msgSend_recursivelyPerformSelectorIfImplemented_(*(*(&v14 + 1) + 8 * v13++), v10, implemented);
       }
 
       while (v11 != v13);
@@ -291,13 +291,13 @@
   }
 }
 
-- (void)recursivelyPerformSelectorIfImplemented:(SEL)a3 withObject:(id)a4
+- (void)recursivelyPerformSelectorIfImplemented:(SEL)implemented withObject:(id)object
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  objectCopy = object;
   if (objc_opt_respondsToSelector())
   {
-    objc_msgSend_performSelector_withObject_(self, v7, a3, v6);
+    objc_msgSend_performSelector_withObject_(self, v7, implemented, objectCopy);
   }
 
   v18 = 0u;
@@ -320,7 +320,7 @@
           objc_enumerationMutation(v9);
         }
 
-        objc_msgSend_recursivelyPerformSelectorIfImplemented_withObject_(*(*(&v16 + 1) + 8 * v15++), v12, a3, v6);
+        objc_msgSend_recursivelyPerformSelectorIfImplemented_withObject_(*(*(&v16 + 1) + 8 * v15++), v12, implemented, objectCopy);
       }
 
       while (v13 != v15);
@@ -331,14 +331,14 @@
   }
 }
 
-- (void)recursivelyPerformSelectorIfImplemented:(SEL)a3 withObject:(id)a4 withObject:(id)a5
+- (void)recursivelyPerformSelectorIfImplemented:(SEL)implemented withObject:(id)object withObject:(id)withObject
 {
   v24 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
+  objectCopy = object;
+  withObjectCopy = withObject;
   if (objc_opt_respondsToSelector())
   {
-    objc_msgSend_performSelector_withObject_withObject_(self, v10, a3, v8, v9);
+    objc_msgSend_performSelector_withObject_withObject_(self, v10, implemented, objectCopy, withObjectCopy);
   }
 
   v21 = 0u;
@@ -361,7 +361,7 @@
           objc_enumerationMutation(v12);
         }
 
-        objc_msgSend_recursivelyPerformSelectorIfImplemented_withObject_withObject_(*(*(&v19 + 1) + 8 * v18++), v15, a3, v8, v9);
+        objc_msgSend_recursivelyPerformSelectorIfImplemented_withObject_withObject_(*(*(&v19 + 1) + 8 * v18++), v15, implemented, objectCopy, withObjectCopy);
       }
 
       while (v16 != v18);
@@ -372,10 +372,10 @@
   }
 }
 
-- (void)recursivelyPerformSelector:(SEL)a3
+- (void)recursivelyPerformSelector:(SEL)selector
 {
   v19 = *MEMORY[0x277D85DE8];
-  objc_msgSend_performSelector_(self, a2, a3);
+  objc_msgSend_performSelector_(self, a2, selector);
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -396,7 +396,7 @@
           objc_enumerationMutation(v7);
         }
 
-        objc_msgSend_recursivelyPerformSelector_(*(*(&v14 + 1) + 8 * v13++), v10, a3);
+        objc_msgSend_recursivelyPerformSelector_(*(*(&v14 + 1) + 8 * v13++), v10, selector);
       }
 
       while (v11 != v13);
@@ -407,11 +407,11 @@
   }
 }
 
-- (void)recursivelyPerformSelector:(SEL)a3 withObject:(id)a4
+- (void)recursivelyPerformSelector:(SEL)selector withObject:(id)object
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  objc_msgSend_performSelector_withObject_(self, v7, a3, v6);
+  objectCopy = object;
+  objc_msgSend_performSelector_withObject_(self, v7, selector, objectCopy);
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -432,7 +432,7 @@
           objc_enumerationMutation(v10);
         }
 
-        objc_msgSend_recursivelyPerformSelector_withObject_(*(*(&v17 + 1) + 8 * v16++), v13, a3, v6);
+        objc_msgSend_recursivelyPerformSelector_withObject_(*(*(&v17 + 1) + 8 * v16++), v13, selector, objectCopy);
       }
 
       while (v14 != v16);
@@ -443,12 +443,12 @@
   }
 }
 
-- (void)recursivelyPerformSelector:(SEL)a3 withObject:(id)a4 withObject:(id)a5
+- (void)recursivelyPerformSelector:(SEL)selector withObject:(id)object withObject:(id)withObject
 {
   v25 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
-  objc_msgSend_performSelector_withObject_withObject_(self, v10, a3, v8, v9);
+  objectCopy = object;
+  withObjectCopy = withObject;
+  objc_msgSend_performSelector_withObject_withObject_(self, v10, selector, objectCopy, withObjectCopy);
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
@@ -469,7 +469,7 @@
           objc_enumerationMutation(v13);
         }
 
-        objc_msgSend_recursivelyPerformSelector_withObject_withObject_(*(*(&v20 + 1) + 8 * v19++), v16, a3, v8, v9);
+        objc_msgSend_recursivelyPerformSelector_withObject_withObject_(*(*(&v20 + 1) + 8 * v19++), v16, selector, objectCopy, withObjectCopy);
       }
 
       while (v17 != v19);
@@ -542,12 +542,12 @@
   return result;
 }
 
-- (CGRect)convertNaturalRectToUnscaledCanvas:(CGRect)a3
+- (CGRect)convertNaturalRectToUnscaledCanvas:(CGRect)canvas
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = canvas.size.height;
+  width = canvas.size.width;
+  y = canvas.origin.y;
+  x = canvas.origin.x;
   v8 = objc_msgSend_layout(self, a2, v3);
   objc_msgSend_convertNaturalRectToUnscaledCanvas_(v8, v9, v10, x, y, width, height);
   v12 = v11;
@@ -566,12 +566,12 @@
   return result;
 }
 
-- (CGRect)convertNaturalRectFromUnscaledCanvas:(CGRect)a3
+- (CGRect)convertNaturalRectFromUnscaledCanvas:(CGRect)canvas
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = canvas.size.height;
+  width = canvas.size.width;
+  y = canvas.origin.y;
+  x = canvas.origin.x;
   v8 = objc_msgSend_layout(self, a2, v3);
   objc_msgSend_convertNaturalRectFromUnscaledCanvas_(v8, v9, v10, x, y, width, height);
   v12 = v11;
@@ -590,12 +590,12 @@
   return result;
 }
 
-- (CGPath)newPathInScaledCanvasFromNaturalRect:(CGRect)a3
+- (CGPath)newPathInScaledCanvasFromNaturalRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   Mutable = CGPathCreateMutable();
   v11 = objc_msgSend_layout(self, v9, v10);
   v14 = v11;
@@ -655,10 +655,10 @@
   return Mutable;
 }
 
-- (CGPoint)convertNaturalPointToUnscaledCanvas:(CGPoint)a3
+- (CGPoint)convertNaturalPointToUnscaledCanvas:(CGPoint)canvas
 {
-  y = a3.y;
-  x = a3.x;
+  y = canvas.y;
+  x = canvas.x;
   v4 = objc_msgSend_layout(self, a2, v3);
   v7 = v4;
   if (v4)
@@ -685,10 +685,10 @@
   return result;
 }
 
-- (CGPoint)convertNaturalPointFromUnscaledCanvas:(CGPoint)a3
+- (CGPoint)convertNaturalPointFromUnscaledCanvas:(CGPoint)canvas
 {
-  y = a3.y;
-  x = a3.x;
+  y = canvas.y;
+  x = canvas.x;
   v6 = objc_msgSend_layout(self, a2, v3);
   objc_msgSend_convertNaturalPointFromUnscaledCanvas_(v6, v7, v8, x, y);
   v10 = v9;
@@ -1044,14 +1044,14 @@ LABEL_27:
   objc_msgSend_makeObjectsPerformSelector_(v52, v53, a2);
 }
 
-- (void)p_setChildReps:(id)a3
+- (void)p_setChildReps:(id)reps
 {
   v48 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ((objc_msgSend_isEqual_(v4, v5, self->mChildReps) & 1) == 0)
+  repsCopy = reps;
+  if ((objc_msgSend_isEqual_(repsCopy, v5, self->mChildReps) & 1) == 0)
   {
     v6 = objc_alloc(MEMORY[0x277CBEB98]);
-    v8 = objc_msgSend_initWithArray_(v6, v7, v4);
+    v8 = objc_msgSend_initWithArray_(v6, v7, repsCopy);
     v42 = 0u;
     v43 = 0u;
     v44 = 0u;
@@ -1104,7 +1104,7 @@ LABEL_27:
     v41 = 0u;
     v38 = 0u;
     v39 = 0u;
-    v22 = v4;
+    v22 = repsCopy;
     v24 = objc_msgSend_countByEnumeratingWithState_objects_count_(v22, v23, &v38, v46, 16);
     if (v24)
     {
@@ -1141,14 +1141,14 @@ LABEL_27:
   }
 }
 
-- (void)removeChildRep:(id)a3
+- (void)removeChildRep:(id)rep
 {
-  v8 = a3;
-  v5 = objc_msgSend_indexOfObjectIdenticalTo_(self->mChildReps, v4, v8);
+  repCopy = rep;
+  v5 = objc_msgSend_indexOfObjectIdenticalTo_(self->mChildReps, v4, repCopy);
   if (v5 != 0x7FFFFFFFFFFFFFFFLL)
   {
     objc_msgSend_removeObjectAtIndex_(self->mChildReps, v6, v5);
-    objc_msgSend_setParentRep_(v8, v7, 0);
+    objc_msgSend_setParentRep_(repCopy, v7, 0);
   }
 }
 
@@ -1285,10 +1285,10 @@ LABEL_27:
   return result;
 }
 
-- (void)recursivelyDrawInContext:(CGContext *)a3 keepingChildrenPassingTest:(id)a4
+- (void)recursivelyDrawInContext:(CGContext *)context keepingChildrenPassingTest:(id)test
 {
-  v6 = a4;
-  v7 = TSDCGContextGetPdfTagger(a3);
+  testCopy = test;
+  v7 = TSDCGContextGetPdfTagger(context);
   objc_msgSend_beginObject_(v7, v8, self);
   v11 = objc_msgSend_layout(self, v9, v10);
   v14 = objc_msgSend_geometry(v11, v12, v13);
@@ -1303,7 +1303,7 @@ LABEL_27:
     memset(&v35, 0, sizeof(v35));
   }
 
-  CGContextConcatCTM(a3, &v35);
+  CGContextConcatCTM(context, &v35);
 
   objc_msgSend_clipRect(self, v18, v19);
   v21 = v20;
@@ -1317,31 +1317,31 @@ LABEL_27:
     CGContextClipToRectSafe();
   }
 
-  ClipBoundingBox = CGContextGetClipBoundingBox(a3);
+  ClipBoundingBox = CGContextGetClipBoundingBox(context);
   v36.origin.x = v21;
   v36.origin.y = v23;
   v36.size.width = v25;
   v36.size.height = v27;
   if (CGRectIntersectsRect(v36, ClipBoundingBox))
   {
-    CGContextSaveGState(a3);
+    CGContextSaveGState(context);
     if ((v31 & 1) == 0)
     {
       CGContextClipToRectSafe();
     }
 
-    objc_msgSend_drawInContext_(self, v33, a3, *&v35.a, *&v35.c, *&v35.tx);
-    CGContextRestoreGState(a3);
+    objc_msgSend_drawInContext_(self, v33, context, *&v35.a, *&v35.c, *&v35.tx);
+    CGContextRestoreGState(context);
   }
 
-  objc_msgSend_recursivelyDrawChildrenInContext_keepingChildrenPassingTest_(self, v32, a3, v6, *&v35.a, *&v35.c, *&v35.tx);
+  objc_msgSend_recursivelyDrawChildrenInContext_keepingChildrenPassingTest_(self, v32, context, testCopy, *&v35.a, *&v35.c, *&v35.tx);
   objc_msgSend_endObject_(v7, v34, self);
 }
 
-- (void)recursivelyDrawChildrenInContext:(CGContext *)a3 keepingChildrenPassingTest:(id)a4
+- (void)recursivelyDrawChildrenInContext:(CGContext *)context keepingChildrenPassingTest:(id)test
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  testCopy = test;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
@@ -1363,11 +1363,11 @@ LABEL_27:
         }
 
         v15 = *(*(&v18 + 1) + 8 * v14);
-        if (!v6 || v6[2](v6, *(*(&v18 + 1) + 8 * v14)))
+        if (!testCopy || testCopy[2](testCopy, *(*(&v18 + 1) + 8 * v14)))
         {
-          CGContextSaveGState(a3);
-          objc_msgSend_recursivelyDrawInContext_keepingChildrenPassingTest_(v15, v17, a3, v6);
-          CGContextRestoreGState(a3);
+          CGContextSaveGState(context);
+          objc_msgSend_recursivelyDrawInContext_keepingChildrenPassingTest_(v15, v17, context, testCopy);
+          CGContextRestoreGState(context);
         }
 
         ++v14;
@@ -1410,7 +1410,7 @@ LABEL_27:
   return v7;
 }
 
-- (CGAffineTransform)unRotatedTransform:(SEL)a3
+- (CGAffineTransform)unRotatedTransform:(SEL)transform
 {
   v7 = *&a4->c;
   *&v24.a = *&a4->a;
@@ -1463,18 +1463,18 @@ LABEL_27:
   return CGAffineTransformConcat(retstr, &t1, &v22);
 }
 
-- (void)setTextureAttributes:(id)a3 textureBounds:(CGRect)a4
+- (void)setTextureAttributes:(id)attributes textureBounds:(CGRect)bounds
 {
-  v5 = a3;
+  attributesCopy = attributes;
   v8 = objc_msgSend_info(self, v6, v7);
   v11 = objc_msgSend_geometry(v8, v9, v10);
   objc_msgSend_angle(v11, v12, v13);
-  objc_msgSend_setTextureAngle_(v5, v15, v16, v14 * 0.0174532925);
+  objc_msgSend_setTextureAngle_(attributesCopy, v15, v16, v14 * 0.0174532925);
 
   v19 = objc_msgSend_canvas(self, v17, v18);
   v22 = objc_msgSend_topLevelReps(v19, v20, v21);
   v24 = objc_msgSend_indexOfObject_(v22, v23, self);
-  objc_msgSend_setTextureZOrder_(v5, v25, v24);
+  objc_msgSend_setTextureZOrder_(attributesCopy, v25, v24);
 
   v35 = 0u;
   v36 = 0u;
@@ -1494,13 +1494,13 @@ LABEL_27:
   }
 
   v32 = TSUIsTransformFlipped();
-  objc_msgSend_setIsFlippedHorizontally_(v5, v33, v32, v34, v35, v36);
+  objc_msgSend_setIsFlippedHorizontally_(attributesCopy, v33, v32, v34, v35, v36);
 }
 
-- (id)textureForDescription:(id)a3
+- (id)textureForDescription:(id)description
 {
-  v4 = a3;
-  isMagicMove = objc_msgSend_isMagicMove(v4, v5, v6);
+  descriptionCopy = description;
+  isMagicMove = objc_msgSend_isMagicMove(descriptionCopy, v5, v6);
   memset(&v77, 0, sizeof(v77));
   v10 = objc_msgSend_layout(self, v8, v9);
   v13 = v10;
@@ -1561,9 +1561,9 @@ LABEL_27:
   v72 = height;
   v73 = v19;
   v74 = v77;
-  v66 = v4;
-  v67 = self;
-  v39 = v4;
+  v66 = descriptionCopy;
+  selfCopy = self;
+  v39 = descriptionCopy;
   v40 = MEMORY[0x277C9C8B0](v65);
   v41 = objc_alloc_init(TSDTextureSet);
   objc_msgSend_setRep_(v41, v42, self);
@@ -1584,24 +1584,24 @@ LABEL_27:
   return v41;
 }
 
-- (void)addChildTexturesToTextureSet:(id)a3 forDescription:(id)a4 passingTest:(id)a5
+- (void)addChildTexturesToTextureSet:(id)set forDescription:(id)description passingTest:(id)test
 {
-  v8 = a3;
+  setCopy = set;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = sub_2767C2E20;
   v11[3] = &unk_27A6CDF40;
-  v12 = v8;
-  v9 = v8;
-  objc_msgSend_enumerateChildTexturesForDescription_passingTest_withBlock_(self, v10, a4, a5, v11);
+  v12 = setCopy;
+  v9 = setCopy;
+  objc_msgSend_enumerateChildTexturesForDescription_passingTest_withBlock_(self, v10, description, test, v11);
 }
 
-- (void)enumerateChildTexturesForDescription:(id)a3 passingTest:(id)a4 withBlock:(id)a5
+- (void)enumerateChildTexturesForDescription:(id)description passingTest:(id)test withBlock:(id)block
 {
   v71 = *MEMORY[0x277D85DE8];
-  v55 = a3;
-  v8 = a4;
-  v9 = a5;
+  descriptionCopy = description;
+  testCopy = test;
+  blockCopy = block;
   v12 = objc_msgSend_childReps(self, v10, v11);
   v15 = objc_msgSend_canvas(self, v13, v14);
   objc_msgSend_viewScale(v15, v16, v17);
@@ -1645,7 +1645,7 @@ LABEL_27:
         }
 
         v31 = *(*(&v63 + 1) + 8 * v29);
-        if (!v8 || (v32 = v8[2](v8, *(*(&v63 + 1) + 8 * v29), 0), v30 = 0uLL, v32))
+        if (!testCopy || (v32 = testCopy[2](testCopy, *(*(&v63 + 1) + 8 * v29), 0), v30 = 0uLL, v32))
         {
           *&v67.c = v30;
           *&v67.tx = v30;
@@ -1665,7 +1665,7 @@ LABEL_27:
           objc_msgSend_naturalBounds(v31, v37, v38);
           v62 = v67;
           CGRectApplyAffineTransform(v73, &v62);
-          v40 = objc_msgSend_textureForDescription_(v31, v39, v55);
+          v40 = objc_msgSend_textureForDescription_(v31, v39, descriptionCopy);
           v58 = 0u;
           v59 = 0u;
           v60 = 0u;
@@ -1691,7 +1691,7 @@ LABEL_27:
                 objc_msgSend_offset(v51, v47, v48);
                 TSUAddPoints();
                 objc_msgSend_setOffset_(v51, v52, v53);
-                v9[2](v9, v51);
+                blockCopy[2](blockCopy, v51);
               }
 
               v46 = objc_msgSend_countByEnumeratingWithState_objects_count_(v43, v47, &v58, v69, 16);

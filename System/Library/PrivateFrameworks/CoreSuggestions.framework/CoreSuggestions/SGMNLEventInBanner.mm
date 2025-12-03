@@ -1,185 +1,185 @@
 @interface SGMNLEventInBanner
 - (SGMNLEventInBanner)init;
-- (void)trackEventWithScalar:(unint64_t)a3 interface:(SGMNLEventInterface_)a4 actionType:(SGMNLEventActionType_)a5 eventType:(id)a6 languageID:(id)a7 daysFromStartDate:(unint64_t)a8 confidenceScore:(unint64_t)a9 significantSender:(SGMBoolOption_)a10 participantCount:(unint64_t)a11 extractionLevel:(SGMNLEventExtractionLevel_)a12 usedBubblesCount:(unint64_t)a13 titleSource:(SGMEventTitleSource_)a14 titleAdj:(SGMEventStringAdj_)a15 dateAdj:(SGMEventDateAdj_)a16 duraAdj:(SGMEventDurationAdj_)a17 locationAdj:(SGMEventLocationAdj_)a18 addedAttendeesCount:(id)a19 calendarAppUsageLevel:(id)a20 mailAppUsageLevel:(SGMAppUsageLevel_)a21 messagesAppUsageLevel:(SGMAppUsageLevel_)a22;
+- (void)trackEventWithScalar:(unint64_t)scalar interface:(SGMNLEventInterface_)interface actionType:(SGMNLEventActionType_)type eventType:(id)eventType languageID:(id)d daysFromStartDate:(unint64_t)date confidenceScore:(unint64_t)score significantSender:(SGMBoolOption_)self0 participantCount:(unint64_t)self1 extractionLevel:(SGMNLEventExtractionLevel_)self2 usedBubblesCount:(unint64_t)self3 titleSource:(SGMEventTitleSource_)self4 titleAdj:(SGMEventStringAdj_)self5 dateAdj:(SGMEventDateAdj_)self6 duraAdj:(SGMEventDurationAdj_)self7 locationAdj:(SGMEventLocationAdj_)self8 addedAttendeesCount:(id)self9 calendarAppUsageLevel:(id)usageLevel mailAppUsageLevel:(SGMAppUsageLevel_)appUsageLevel messagesAppUsageLevel:(SGMAppUsageLevel_)messagesAppUsageLevel;
 @end
 
 @implementation SGMNLEventInBanner
 
-- (void)trackEventWithScalar:(unint64_t)a3 interface:(SGMNLEventInterface_)a4 actionType:(SGMNLEventActionType_)a5 eventType:(id)a6 languageID:(id)a7 daysFromStartDate:(unint64_t)a8 confidenceScore:(unint64_t)a9 significantSender:(SGMBoolOption_)a10 participantCount:(unint64_t)a11 extractionLevel:(SGMNLEventExtractionLevel_)a12 usedBubblesCount:(unint64_t)a13 titleSource:(SGMEventTitleSource_)a14 titleAdj:(SGMEventStringAdj_)a15 dateAdj:(SGMEventDateAdj_)a16 duraAdj:(SGMEventDurationAdj_)a17 locationAdj:(SGMEventLocationAdj_)a18 addedAttendeesCount:(id)a19 calendarAppUsageLevel:(id)a20 mailAppUsageLevel:(SGMAppUsageLevel_)a21 messagesAppUsageLevel:(SGMAppUsageLevel_)a22
+- (void)trackEventWithScalar:(unint64_t)scalar interface:(SGMNLEventInterface_)interface actionType:(SGMNLEventActionType_)type eventType:(id)eventType languageID:(id)d daysFromStartDate:(unint64_t)date confidenceScore:(unint64_t)score significantSender:(SGMBoolOption_)self0 participantCount:(unint64_t)self1 extractionLevel:(SGMNLEventExtractionLevel_)self2 usedBubblesCount:(unint64_t)self3 titleSource:(SGMEventTitleSource_)self4 titleAdj:(SGMEventStringAdj_)self5 dateAdj:(SGMEventDateAdj_)self6 duraAdj:(SGMEventDurationAdj_)self7 locationAdj:(SGMEventLocationAdj_)self8 addedAttendeesCount:(id)self9 calendarAppUsageLevel:(id)usageLevel mailAppUsageLevel:(SGMAppUsageLevel_)appUsageLevel messagesAppUsageLevel:(SGMAppUsageLevel_)messagesAppUsageLevel
 {
   v86[19] = *MEMORY[0x1E69E9840];
-  v25 = a6;
-  v26 = a7;
-  v27 = a19;
-  v28 = a20;
-  if (a4.var0 >= 0x14)
+  eventTypeCopy = eventType;
+  dCopy = d;
+  attendeesCountCopy = attendeesCount;
+  usageLevelCopy = usageLevel;
+  if (interface.var0 >= 0x14)
   {
-    v30 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v31 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString * _Nonnull SGMNLEventInterface_toString(SGMNLEventInterface)"];
-    [v30 handleFailureInFunction:v31 file:@"SGMetricsDefines.h" lineNumber:479 description:{@"unrecognized tag %lu on SGMNLEventInterface", a4.var0}];
+    [currentHandler handleFailureInFunction:v31 file:@"SGMetricsDefines.h" lineNumber:479 description:{@"unrecognized tag %lu on SGMNLEventInterface", interface.var0}];
 
     v29 = @"ERR_UNMATCHED_TAG";
   }
 
   else
   {
-    v29 = off_1E7EFC130[a4.var0];
+    v29 = off_1E7EFC130[interface.var0];
   }
 
   v79 = v29;
-  if (a5.var0 >= 0xC)
+  if (type.var0 >= 0xC)
   {
-    v33 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
     v32 = 0x1E696A000uLL;
     v34 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString * _Nonnull SGMNLEventActionType_toString(SGMNLEventActionType)"];
-    [v33 handleFailureInFunction:v34 file:@"SGMetricsDefines.h" lineNumber:430 description:{@"unrecognized tag %lu on SGMNLEventActionType", a5.var0}];
+    [currentHandler2 handleFailureInFunction:v34 file:@"SGMetricsDefines.h" lineNumber:430 description:{@"unrecognized tag %lu on SGMNLEventActionType", type.var0}];
 
     v78 = @"ERR_UNMATCHED_TAG";
   }
 
   else
   {
-    v78 = off_1E7EFBFC8[a5.var0];
+    v78 = off_1E7EFBFC8[type.var0];
     v32 = 0x1E696A000;
   }
 
-  v81 = v25;
-  v80 = v26;
-  if (a10.var0 >= 3)
+  v81 = eventTypeCopy;
+  v80 = dCopy;
+  if (sender.var0 >= 3)
   {
     v35 = 0x1E696A000uLL;
-    v36 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
     v37 = [*(v32 + 3776) stringWithUTF8String:"NSString * _Nonnull SGMBoolOption_toString(SGMBoolOption)"];
-    [v36 handleFailureInFunction:v37 file:@"SGMetricsDefines.h" lineNumber:27 description:{@"unrecognized tag %lu on SGMBoolOption", a10.var0}];
+    [currentHandler3 handleFailureInFunction:v37 file:@"SGMetricsDefines.h" lineNumber:27 description:{@"unrecognized tag %lu on SGMBoolOption", sender.var0}];
 
     v77 = @"ERR_UNMATCHED_TAG";
   }
 
   else
   {
-    v77 = off_1E7EFC028[a10.var0];
+    v77 = off_1E7EFC028[sender.var0];
     v35 = 0x1E696A000;
   }
 
-  if (a12.var0 >= 6)
+  if (level.var0 >= 6)
   {
-    v39 = [*(v35 + 2728) currentHandler];
+    currentHandler4 = [*(v35 + 2728) currentHandler];
     v40 = [*(v32 + 3776) stringWithUTF8String:"NSString * _Nonnull SGMNLEventExtractionLevel_toString(SGMNLEventExtractionLevel)"];
-    [v39 handleFailureInFunction:v40 file:@"SGMetricsDefines.h" lineNumber:380 description:{@"unrecognized tag %lu on SGMNLEventExtractionLevel", a12.var0}];
+    [currentHandler4 handleFailureInFunction:v40 file:@"SGMetricsDefines.h" lineNumber:380 description:{@"unrecognized tag %lu on SGMNLEventExtractionLevel", level.var0}];
 
     v38 = @"ERR_UNMATCHED_TAG";
   }
 
   else
   {
-    v38 = off_1E7EFC040[a12.var0];
+    v38 = off_1E7EFC040[level.var0];
   }
 
   v76 = v38;
-  if (a14.var0 >= 4)
+  if (source.var0 >= 4)
   {
-    v42 = [*(v35 + 2728) currentHandler];
+    currentHandler5 = [*(v35 + 2728) currentHandler];
     v43 = [*(v32 + 3776) stringWithUTF8String:"NSString * _Nonnull SGMEventTitleSource_toString(SGMEventTitleSource)"];
-    [v42 handleFailureInFunction:v43 file:@"SGMetricsDefines.h" lineNumber:397 description:{@"unrecognized tag %lu on SGMEventTitleSource", a14.var0}];
+    [currentHandler5 handleFailureInFunction:v43 file:@"SGMetricsDefines.h" lineNumber:397 description:{@"unrecognized tag %lu on SGMEventTitleSource", source.var0}];
 
     v41 = @"ERR_UNMATCHED_TAG";
   }
 
   else
   {
-    v41 = off_1E7EFC070[a14.var0];
+    v41 = off_1E7EFC070[source.var0];
   }
 
   v75 = v41;
-  if (a15.var0 >= 5)
+  if (adj.var0 >= 5)
   {
-    v45 = [*(v35 + 2728) currentHandler];
+    currentHandler6 = [*(v35 + 2728) currentHandler];
     v46 = [*(v32 + 3776) stringWithUTF8String:"NSString * _Nonnull SGMEventStringAdj_toString(SGMEventStringAdj)"];
-    [v45 handleFailureInFunction:v46 file:@"SGMetricsDefines.h" lineNumber:290 description:{@"unrecognized tag %lu on SGMEventStringAdj", a15.var0}];
+    [currentHandler6 handleFailureInFunction:v46 file:@"SGMetricsDefines.h" lineNumber:290 description:{@"unrecognized tag %lu on SGMEventStringAdj", adj.var0}];
 
     v44 = @"ERR_UNMATCHED_TAG";
   }
 
   else
   {
-    v44 = off_1E7EFC090[a15.var0];
+    v44 = off_1E7EFC090[adj.var0];
   }
 
   v74 = v44;
-  if (a16.var0 >= 0xA)
+  if (dateAdj.var0 >= 0xA)
   {
-    v48 = [*(v35 + 2728) currentHandler];
+    currentHandler7 = [*(v35 + 2728) currentHandler];
     v49 = [*(v32 + 3776) stringWithUTF8String:"NSString * _Nonnull SGMEventDateAdj_toString(SGMEventDateAdj)"];
-    [v48 handleFailureInFunction:v49 file:@"SGMetricsDefines.h" lineNumber:319 description:{@"unrecognized tag %lu on SGMEventDateAdj", a16.var0}];
+    [currentHandler7 handleFailureInFunction:v49 file:@"SGMetricsDefines.h" lineNumber:319 description:{@"unrecognized tag %lu on SGMEventDateAdj", dateAdj.var0}];
 
     v47 = @"ERR_UNMATCHED_TAG";
   }
 
   else
   {
-    v47 = off_1E7EFBF60[a16.var0];
+    v47 = off_1E7EFBF60[dateAdj.var0];
   }
 
   v73 = v47;
-  if (a17.var0 >= 6)
+  if (duraAdj.var0 >= 6)
   {
-    v51 = [*(v35 + 2728) currentHandler];
+    currentHandler8 = [*(v35 + 2728) currentHandler];
     v52 = [*(v32 + 3776) stringWithUTF8String:"NSString * _Nonnull SGMEventDurationAdj_toString(SGMEventDurationAdj)"];
-    [v51 handleFailureInFunction:v52 file:@"SGMetricsDefines.h" lineNumber:340 description:{@"unrecognized tag %lu on SGMEventDurationAdj", a17.var0}];
+    [currentHandler8 handleFailureInFunction:v52 file:@"SGMetricsDefines.h" lineNumber:340 description:{@"unrecognized tag %lu on SGMEventDurationAdj", duraAdj.var0}];
 
     v50 = @"ERR_UNMATCHED_TAG";
   }
 
   else
   {
-    v50 = off_1E7EFC0B8[a17.var0];
+    v50 = off_1E7EFC0B8[duraAdj.var0];
   }
 
   v72 = v50;
-  if (a18.var0 >= 5)
+  if (locationAdj.var0 >= 5)
   {
-    v54 = [*(v35 + 2728) currentHandler];
+    currentHandler9 = [*(v35 + 2728) currentHandler];
     v55 = [*(v32 + 3776) stringWithUTF8String:"NSString * _Nonnull SGMEventLocationAdj_toString(SGMEventLocationAdj)"];
-    [v54 handleFailureInFunction:v55 file:@"SGMetricsDefines.h" lineNumber:359 description:{@"unrecognized tag %lu on SGMEventLocationAdj", a18.var0}];
+    [currentHandler9 handleFailureInFunction:v55 file:@"SGMetricsDefines.h" lineNumber:359 description:{@"unrecognized tag %lu on SGMEventLocationAdj", locationAdj.var0}];
 
     v53 = @"ERR_UNMATCHED_TAG";
   }
 
   else
   {
-    v53 = off_1E7EFC0E8[a18.var0];
+    v53 = off_1E7EFC0E8[locationAdj.var0];
   }
 
   v69 = v53;
-  v71 = v27;
-  v70 = v28;
-  if (a21.var0 >= 4)
+  v71 = attendeesCountCopy;
+  v70 = usageLevelCopy;
+  if (appUsageLevel.var0 >= 4)
   {
-    v57 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler10 = [MEMORY[0x1E696AAA8] currentHandler];
     v58 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString * _Nonnull SGMAppUsageLevel_toString(SGMAppUsageLevel)"];
-    [v57 handleFailureInFunction:v58 file:@"SGMetricsDefines.h" lineNumber:496 description:{@"unrecognized tag %lu on SGMAppUsageLevel", a21.var0}];
+    [currentHandler10 handleFailureInFunction:v58 file:@"SGMetricsDefines.h" lineNumber:496 description:{@"unrecognized tag %lu on SGMAppUsageLevel", appUsageLevel.var0}];
 
     v56 = @"ERR_UNMATCHED_TAG";
   }
 
   else
   {
-    v56 = off_1E7EFC110[a21.var0];
+    v56 = off_1E7EFC110[appUsageLevel.var0];
   }
 
   v68 = v56;
-  if (a22.var0 >= 4)
+  if (messagesAppUsageLevel.var0 >= 4)
   {
-    v60 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler11 = [MEMORY[0x1E696AAA8] currentHandler];
     v61 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString * _Nonnull SGMAppUsageLevel_toString(SGMAppUsageLevel)"];
-    [v60 handleFailureInFunction:v61 file:@"SGMetricsDefines.h" lineNumber:496 description:{@"unrecognized tag %lu on SGMAppUsageLevel", a22.var0}];
+    [currentHandler11 handleFailureInFunction:v61 file:@"SGMetricsDefines.h" lineNumber:496 description:{@"unrecognized tag %lu on SGMAppUsageLevel", messagesAppUsageLevel.var0}];
 
     v59 = @"ERR_UNMATCHED_TAG";
   }
 
   else
   {
-    v59 = off_1E7EFC110[a22.var0];
+    v59 = off_1E7EFC110[messagesAppUsageLevel.var0];
   }
 
   tracker = self->_tracker;
@@ -187,15 +187,15 @@
   v86[1] = v78;
   v86[2] = v81;
   v86[3] = v80;
-  v62 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a8];
+  v62 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:date];
   v86[4] = v62;
-  v63 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a9];
+  v63 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:score];
   v86[5] = v63;
   v86[6] = v77;
-  v64 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a11];
+  v64 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:count];
   v86[7] = v64;
   v86[8] = v76;
-  v65 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a13];
+  v65 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:bubblesCount];
   v86[9] = v65;
   v86[10] = v75;
   v86[11] = v74;
@@ -207,7 +207,7 @@
   v86[17] = v68;
   v86[18] = v59;
   v66 = [MEMORY[0x1E695DEC8] arrayWithObjects:v86 count:19];
-  [(PETScalarEventTracker *)tracker trackEventWithPropertyValues:v66 value:a3];
+  [(PETScalarEventTracker *)tracker trackEventWithPropertyValues:v66 value:scalar];
 
   v67 = *MEMORY[0x1E69E9840];
 }

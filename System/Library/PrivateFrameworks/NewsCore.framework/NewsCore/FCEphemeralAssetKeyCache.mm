@@ -1,8 +1,8 @@
 @interface FCEphemeralAssetKeyCache
 - (FCEphemeralAssetKeyCache)init;
-- (id)wrappingKeyForWrappingKeyID:(id)a3;
+- (id)wrappingKeyForWrappingKeyID:(id)d;
 - (void)removeAllWrappingKeys;
-- (void)setWrappingKey:(id)a3 forWrappingKeyID:(id)a4;
+- (void)setWrappingKey:(id)key forWrappingKeyID:(id)d;
 @end
 
 @implementation FCEphemeralAssetKeyCache
@@ -22,24 +22,24 @@
   return v2;
 }
 
-- (id)wrappingKeyForWrappingKeyID:(id)a3
+- (id)wrappingKeyForWrappingKeyID:(id)d
 {
   if (self)
   {
     self = self->_dictionary;
   }
 
-  return [(FCEphemeralAssetKeyCache *)self objectForKey:a3];
+  return [(FCEphemeralAssetKeyCache *)self objectForKey:d];
 }
 
-- (void)setWrappingKey:(id)a3 forWrappingKeyID:(id)a4
+- (void)setWrappingKey:(id)key forWrappingKeyID:(id)d
 {
   if (self)
   {
     self = self->_dictionary;
   }
 
-  [(FCEphemeralAssetKeyCache *)self setObject:a3 forKey:a4];
+  [(FCEphemeralAssetKeyCache *)self setObject:key forKey:d];
 }
 
 - (void)removeAllWrappingKeys

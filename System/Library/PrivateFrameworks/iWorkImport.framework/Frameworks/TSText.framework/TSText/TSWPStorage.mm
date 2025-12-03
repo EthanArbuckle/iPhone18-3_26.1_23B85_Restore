@@ -1,87 +1,87 @@
 @interface TSWPStorage
-+ (BOOL)shouldInvalidateForStylePropertyChangeSet:(id)a3;
-+ (Class)classForUnarchiver:(id)a3;
-+ (Class)pStringClassForWPKind:(unsigned __int8)a3;
-+ (TSWPAttributeArray)createAttributeArrayForKind:(unint64_t)a3 actionState:(void *)a4;
-+ (TSWPAttributeArray)createEmptyAttributeArrayForKind:(unint64_t)a3;
-+ (id)filterMarkAttributes:(id)a3;
-+ (id)filterText:(id)a3;
-+ (id)filterText:(id)a3 flags:(unint64_t)a4;
-+ (id)filterText:(id)a3 removingAttachments:(BOOL)a4;
-+ (id)filterText:(id)a3 removingAttachments:(BOOL)a4 removingControlCharacters:(BOOL)a5;
-+ (id)filterText:(id)a3 removingAttachments:(BOOL)a4 removingControlCharacters:(BOOL)a5 returnIndexSet:(BOOL)a6;
++ (BOOL)shouldInvalidateForStylePropertyChangeSet:(id)set;
++ (Class)classForUnarchiver:(id)unarchiver;
++ (Class)pStringClassForWPKind:(unsigned __int8)kind;
++ (TSWPAttributeArray)createAttributeArrayForKind:(unint64_t)kind actionState:(void *)state;
++ (TSWPAttributeArray)createEmptyAttributeArrayForKind:(unint64_t)kind;
++ (id)filterMarkAttributes:(id)attributes;
++ (id)filterText:(id)text;
++ (id)filterText:(id)text flags:(unint64_t)flags;
++ (id)filterText:(id)text removingAttachments:(BOOL)attachments;
++ (id)filterText:(id)text removingAttachments:(BOOL)attachments removingControlCharacters:(BOOL)characters;
++ (id)filterText:(id)text removingAttachments:(BOOL)attachments removingControlCharacters:(BOOL)characters returnIndexSet:(BOOL)set;
 + (void)initialize;
-+ (void)nonUndoableRemoveUnsupportedHyperlinksInInfos:(id)a3;
-+ (void)nonUndoableRemoveUnsupportedHyperlinksInInfos:(id)a3 forCrossDocumentPaste:(BOOL)a4;
-+ (void)resetAllTextAttributeUUIDStringsInInfo:(id)a3;
-+ (void)resetAllTextAttributeUUIDStringsInInfos:(id)a3;
++ (void)nonUndoableRemoveUnsupportedHyperlinksInInfos:(id)infos;
++ (void)nonUndoableRemoveUnsupportedHyperlinksInInfos:(id)infos forCrossDocumentPaste:(BOOL)paste;
++ (void)resetAllTextAttributeUUIDStringsInInfo:(id)info;
++ (void)resetAllTextAttributeUUIDStringsInInfos:(id)infos;
 + (void)resetDisallowedElementKinds;
 + (void)resetDisallowedSmartFieldKinds;
-- (BOOL)allowsElementKind:(unsigned int)a3;
-- (BOOL)allowsElementKind:(unsigned int)a3 nestingDepth:(int64_t)a4;
-- (BOOL)anchoredDrawableAttachmentCharacterAtCharIndex:(unint64_t)a3;
-- (BOOL)canAcceptAttachmentForDrawableInfo:(id)a3;
+- (BOOL)allowsElementKind:(unsigned int)kind;
+- (BOOL)allowsElementKind:(unsigned int)kind nestingDepth:(int64_t)depth;
+- (BOOL)anchoredDrawableAttachmentCharacterAtCharIndex:(unint64_t)index;
+- (BOOL)canAcceptAttachmentForDrawableInfo:(id)info;
 - (BOOL)canAcceptDrawableAttachments;
 - (BOOL)canBeAnnotatedWithPencil;
 - (BOOL)canBeStoredInAStringValueCell;
 - (BOOL)canPasteAsPlainText;
 - (BOOL)canPasteAsPlainTextWithUniformParagraphs;
-- (BOOL)canTransferAttributesForInitialization:(unint64_t)a3 withFlags:(unsigned int)a4;
+- (BOOL)canTransferAttributesForInitialization:(unint64_t)initialization withFlags:(unsigned int)flags;
 - (BOOL)containsOnlyInlineDrawableAttachments;
 - (BOOL)hasAnyCommentsRequiring2_2;
-- (BOOL)hasAttachmentsRequiring4_1InRange:(_NSRange)a3;
-- (BOOL)hasColumnBreakAtCharIndex:(unint64_t)a3;
-- (BOOL)hasColumnStyleForParagraphBreakAtCharIndex:(unint64_t)a3;
+- (BOOL)hasAttachmentsRequiring4_1InRange:(_NSRange)range;
+- (BOOL)hasColumnBreakAtCharIndex:(unint64_t)index;
+- (BOOL)hasColumnStyleForParagraphBreakAtCharIndex:(unint64_t)index;
 - (BOOL)hasComments;
-- (BOOL)hasData:(TSWPParagraphData)a3 attributeArrayKind:(unint64_t)a4 range:(_NSRange)a5;
-- (BOOL)hasDeletionInRange:(_NSRange)a3;
-- (BOOL)hasDrawableAttachmentOfClass:(Class)a3;
-- (BOOL)hasEmptyListAtCharIndex:(unint64_t)a3;
-- (BOOL)hasEmptyParagraphFillOrBordersAtCharIndex:(unint64_t)a3;
-- (BOOL)hasObject:(id)a3 attributeArrayKind:(unint64_t)a4 range:(_NSRange)a5 findUsingExactRangeLocation:(BOOL)a6;
-- (BOOL)hasPartitionableAttachmentAtStartOfTextRange:(_NSRange)a3;
-- (BOOL)hasSectionForParagraphBreakAtCharIndex:(unint64_t)a3;
+- (BOOL)hasData:(TSWPParagraphData)data attributeArrayKind:(unint64_t)kind range:(_NSRange)range;
+- (BOOL)hasDeletionInRange:(_NSRange)range;
+- (BOOL)hasDrawableAttachmentOfClass:(Class)class;
+- (BOOL)hasEmptyListAtCharIndex:(unint64_t)index;
+- (BOOL)hasEmptyParagraphFillOrBordersAtCharIndex:(unint64_t)index;
+- (BOOL)hasObject:(id)object attributeArrayKind:(unint64_t)kind range:(_NSRange)range findUsingExactRangeLocation:(BOOL)location;
+- (BOOL)hasPartitionableAttachmentAtStartOfTextRange:(_NSRange)range;
+- (BOOL)hasSectionForParagraphBreakAtCharIndex:(unint64_t)index;
 - (BOOL)hasSmartFields;
-- (BOOL)hasSmartFieldsInRange:(_NSRange)a3;
+- (BOOL)hasSmartFieldsInRange:(_NSRange)range;
 - (BOOL)hasUserGeneratedVisibleText;
 - (BOOL)hasVisibleContent;
 - (BOOL)hasVisibleTextOnlyContent;
 - (BOOL)highlightsAllowed;
-- (BOOL)isAllWhitespaceInSelection:(id)a3;
-- (BOOL)isAllowedToAddCaptionToChildInfo:(id)a3;
-- (BOOL)isCharRangeEntirelyDeleted:(_NSRange)a3;
-- (BOOL)isCharRangeEntirelyHidden:(_NSRange)a3;
-- (BOOL)isCharRangePartiallyDeleted:(_NSRange)a3;
-- (BOOL)isEmptyParagraphRange:(_NSRange)a3 ignoreAttachmentCharacters:(BOOL)a4 outRange:(_NSRange *)a5;
-- (BOOL)isEmptyParagraphSelection:(id)a3 ignoreAttachmentCharacters:(BOOL)a4 outRange:(_NSRange *)a5;
-- (BOOL)isObjectValid:(id)a3 forStyleKind:(int)a4;
-- (BOOL)isSingleAnchoredDrawableAttachmentForSelection:(id)a3;
+- (BOOL)isAllWhitespaceInSelection:(id)selection;
+- (BOOL)isAllowedToAddCaptionToChildInfo:(id)info;
+- (BOOL)isCharRangeEntirelyDeleted:(_NSRange)deleted;
+- (BOOL)isCharRangeEntirelyHidden:(_NSRange)hidden;
+- (BOOL)isCharRangePartiallyDeleted:(_NSRange)deleted;
+- (BOOL)isEmptyParagraphRange:(_NSRange)range ignoreAttachmentCharacters:(BOOL)characters outRange:(_NSRange *)outRange;
+- (BOOL)isEmptyParagraphSelection:(id)selection ignoreAttachmentCharacters:(BOOL)characters outRange:(_NSRange *)range;
+- (BOOL)isObjectValid:(id)valid forStyleKind:(int)kind;
+- (BOOL)isSingleAnchoredDrawableAttachmentForSelection:(id)selection;
 - (BOOL)isThemeContent;
 - (BOOL)isTopmostContainerInfo;
-- (BOOL)isWholeParagraphsForRange:(_NSRange)a3 ignoreAttachmentCharacters:(BOOL)a4 requireParagraphBreakSelected:(BOOL)a5;
-- (BOOL)isWritingDirectionRightToLeftForListAtParIndex:(unint64_t)a3;
-- (BOOL)isWritingDirectionRightToLeftForParagraphAtCharIndex:(unint64_t)a3;
-- (BOOL)isWritingDirectionRightToLeftForParagraphAtParIndex:(unint64_t)a3;
-- (BOOL)pAllowsAttachment:(id)a3 withNestingDepth:(int64_t)a4;
-- (BOOL)p_canTransferBookmark:(id)a3;
-- (BOOL)p_hasDeletedTextAtCharIndex:(unint64_t)a3 requireHidden:(BOOL)a4 range:(_NSRange *)a5;
+- (BOOL)isWholeParagraphsForRange:(_NSRange)range ignoreAttachmentCharacters:(BOOL)characters requireParagraphBreakSelected:(BOOL)selected;
+- (BOOL)isWritingDirectionRightToLeftForListAtParIndex:(unint64_t)index;
+- (BOOL)isWritingDirectionRightToLeftForParagraphAtCharIndex:(unint64_t)index;
+- (BOOL)isWritingDirectionRightToLeftForParagraphAtParIndex:(unint64_t)index;
+- (BOOL)pAllowsAttachment:(id)attachment withNestingDepth:(int64_t)depth;
+- (BOOL)p_canTransferBookmark:(id)bookmark;
+- (BOOL)p_hasDeletedTextAtCharIndex:(unint64_t)index requireHidden:(BOOL)hidden range:(_NSRange *)range;
 - (BOOL)p_hasGoodAttributesForPlainTextPaste;
-- (BOOL)p_hasVisibleTextInRange:(_NSRange)a3 graphicalAttachmentsIncluded:(BOOL)a4;
+- (BOOL)p_hasVisibleTextInRange:(_NSRange)range graphicalAttachmentsIncluded:(BOOL)included;
 - (BOOL)p_isRotatedInAnyParent;
 - (BOOL)p_nestedInHeaderFooter;
 - (BOOL)p_passesExtraTablesChecksForStoringInAStringValueCell;
-- (BOOL)p_shouldAcceptChangesForRange:(_NSRange)a3 copiedRanges:(id)a4 removeDeletedText:(BOOL *)a5;
-- (BOOL)p_shouldInsertionSplitChange:(id)a3 changeSession:(id)a4;
-- (BOOL)paragraphHasListLabelAtCharIndex:(unint64_t)a3;
-- (BOOL)phoneticsExistInSelection:(id)a3;
-- (BOOL)phoneticsExistOnRange:(_NSRange)a3;
-- (BOOL)selectionContainsExclusivelyEmptyParagraphs:(id)a3 ignoreAttachmentCharacters:(BOOL)a4;
-- (BOOL)setDOLCSuppressed:(BOOL)a3;
+- (BOOL)p_shouldAcceptChangesForRange:(_NSRange)range copiedRanges:(id)ranges removeDeletedText:(BOOL *)text;
+- (BOOL)p_shouldInsertionSplitChange:(id)change changeSession:(id)session;
+- (BOOL)paragraphHasListLabelAtCharIndex:(unint64_t)index;
+- (BOOL)phoneticsExistInSelection:(id)selection;
+- (BOOL)phoneticsExistOnRange:(_NSRange)range;
+- (BOOL)selectionContainsExclusivelyEmptyParagraphs:(id)paragraphs ignoreAttachmentCharacters:(BOOL)characters;
+- (BOOL)setDOLCSuppressed:(BOOL)suppressed;
 - (BOOL)supportsDropCaps;
 - (BOOL)supportsMultipleColumns;
 - (BOOL)supportsParentRotation;
-- (BOOL)textIsVerticalAtCharIndex:(unint64_t)a3;
-- (BOOL)validate:(unint64_t)a3;
+- (BOOL)textIsVerticalAtCharIndex:(unint64_t)index;
+- (BOOL)validate:(unint64_t)validate;
 - (Class)layoutClass;
 - (NSArray)childInfos;
 - (NSSet)referencedStyles;
@@ -89,376 +89,376 @@
 - (NSString)description;
 - (TSDContainerInfo)parentInfo;
 - (TSDDrawableInfo)parentDrawable;
-- (TSWPAttributeArray)attributeArrayForKind:(unint64_t)a3 withCreate:(BOOL)a4 fromUndo:(BOOL)a5 actionState:(void *)a6;
+- (TSWPAttributeArray)attributeArrayForKind:(unint64_t)kind withCreate:(BOOL)create fromUndo:(BOOL)undo actionState:(void *)state;
 - (TSWPCharacterStyle)hyperlinkStyle;
 - (TSWPDeletionRangeMap)rangeMap;
 - (TSWPDocumentRoot)documentRoot;
-- (TSWPParagraphEnumerator)paragraphEnumeratorAtCharIndex:(SEL)a3 styleProvider:(unint64_t)a4;
-- (TSWPParagraphEnumerator)paragraphEnumeratorAtParIndex:(SEL)a3 styleProvider:(unint64_t)a4;
-- (TSWPParagraphEnumerator)paragraphEnumeratorForCharRange:(SEL)a3 styleProvider:(_NSRange)a4 requireHidden:(id)a5;
-- (TSWPStorage)initWithContext:(id)a3 string:(id)a4 kind:(unsigned __int8)a5 stylesheet:(id)a6 paragraphStyle:(id)a7 listStyle:(id)a8 section:(id)a9 columnStyle:(id)a10;
-- (TSWPStorage)initWithContext:(id)a3 string:(id)a4 kind:(unsigned __int8)a5 stylesheet:(id)a6 paragraphStyle:(id)a7 listStyle:(id)a8 section:(id)a9 columnStyle:(id)a10 paragraphDirection:(int)a11;
-- (TSWPStorage)initWithContext:(id)a3 string:(id)a4 stylesheet:(id)a5 kind:(unsigned __int8)a6;
-- (_NSRange)annotationRangeForRange:(_NSRange)a3;
-- (_NSRange)appendString:(id)a3 undoTransaction:(void *)a4;
-- (_NSRange)attachmentIndexRangeForTextRange:(_NSRange)a3;
-- (_NSRange)attachmentRangeForCharIndex:(unint64_t)a3 forwards:(BOOL)a4;
-- (_NSRange)attachmentRangeForCharIndex:(unint64_t)a3 forwards:(BOOL)a4 attributeKind:(unint64_t)a5;
-- (_NSRange)attributeRangeForOverlappingField:(id)a3 atAttributeIndex:(unint64_t)a4 attributeKind:(unint64_t)a5;
-- (_NSRange)attributeRangeForOverlappingField:(id)a3 attributeKind:(unint64_t)a4;
-- (_NSRange)charRangeForAttributeRange:(_NSRange)a3 attributeKind:(unint64_t)a4;
-- (_NSRange)charRangeMappedFromStorage:(_NSRange)a3;
-- (_NSRange)charRangeMappedToStorage:(_NSRange)a3;
-- (_NSRange)charRangeRemappedFromStorage:(_NSRange)a3;
-- (_NSRange)footnoteRangeForTextRange:(_NSRange)a3;
-- (_NSRange)insertAttachmentOrFootnote:(id)a3 range:(_NSRange)a4;
-- (_NSRange)insertAttachmentOrFootnote:(id)a3 range:(_NSRange)a4 dolcContext:(id)a5 undoTransaction:(void *)a6 changeSession:(id)a7;
-- (_NSRange)insertAttachmentOrFootnote:(id)a3 range:(_NSRange)a4 placementIndex:(int)a5 dolcContext:(id)a6 undoTransaction:(void *)a7 changeSession:(id)a8;
-- (_NSRange)insertSection:(id)a3 atCharIndex:(unint64_t)a4 dolcContext:(id)a5 undoTransaction:(void *)a6 changeSession:(id)a7;
-- (_NSRange)insertSectionBreakAtCharIndex:(unint64_t)a3 replaceParagraphBreak:(BOOL)a4 sectionToInsert:(id)a5 changeSession:(id)a6 dolcContext:(id)a7 undoTransaction:(void *)a8;
-- (_NSRange)insertSpecialCharacter:(unsigned __int16)a3 object:(id)a4 kind:(unint64_t)a5 range:(_NSRange)a6 dolcContext:(id)a7 undoTransaction:(void *)a8 changeSession:(id)a9;
-- (_NSRange)insertSpecialCharacter:(unsigned __int16)a3 object:(id)a4 kind:(unint64_t)a5 range:(_NSRange)a6 placementIndex:(int)a7 dolcContext:(id)a8 undoTransaction:(void *)a9 changeSession:(id)a10;
-- (_NSRange)moveCharactersInRange:(_NSRange)a3 toLocation:(unint64_t)a4 undoTransaction:(void *)a5;
-- (_NSRange)nextWordFromIndex:(unint64_t)a3 forward:(BOOL)a4;
-- (_NSRange)p_extendRangeToIncludeSmartFields:(_NSRange)a3;
-- (_NSRange)p_extendRangeToIncludeSmartFields:(_NSRange)a3 ofKind:(unint64_t)a4;
-- (_NSRange)p_parIndexRangeForTextSourceForCharacterRange:(_NSRange)a3;
-- (_NSRange)p_rangeForOverlappingField:(id)a3 attributeKind:(unint64_t)a4;
-- (_NSRange)p_rangeForSelectionAtCharIndex:(unint64_t)a3 caretIndex:(unint64_t)a4 handleNextWordWhitespace:(BOOL)a5;
-- (_NSRange)p_rangeWithNonVisibleAttachmentsTrimmedForRange:(_NSRange)a3;
-- (_NSRange)p_relocateNonSelectedAnchorsInRange:(_NSRange)a3 selectedInfos:(id)a4 undoTransaction:(void *)a5;
-- (_NSRange)p_removeOverlappingFieldsInRange:(_NSRange)a3 attributeKind:(unint64_t)a4 undoTransaction:(void *)a5;
-- (_NSRange)p_replaceCharactersInLogicalSelection:(id)a3 withString:(id)a4 withFlags:(unsigned int)a5 replaceTextData:(id)a6 changeSession:(id)a7 undoTransaction:(void *)a8 outInsertedRange:(_NSRange *)a9;
-- (_NSRange)paragraphIndexRangeForCharRange:(_NSRange)a3;
-- (_NSRange)paragraphIndexRangeIncludingFinalEmptyParagraphForCharRange:(_NSRange)a3;
+- (TSWPParagraphEnumerator)paragraphEnumeratorAtCharIndex:(SEL)index styleProvider:(unint64_t)provider;
+- (TSWPParagraphEnumerator)paragraphEnumeratorAtParIndex:(SEL)index styleProvider:(unint64_t)provider;
+- (TSWPParagraphEnumerator)paragraphEnumeratorForCharRange:(SEL)range styleProvider:(_NSRange)provider requireHidden:(id)hidden;
+- (TSWPStorage)initWithContext:(id)context string:(id)string kind:(unsigned __int8)kind stylesheet:(id)stylesheet paragraphStyle:(id)style listStyle:(id)listStyle section:(id)section columnStyle:(id)self0;
+- (TSWPStorage)initWithContext:(id)context string:(id)string kind:(unsigned __int8)kind stylesheet:(id)stylesheet paragraphStyle:(id)style listStyle:(id)listStyle section:(id)section columnStyle:(id)self0 paragraphDirection:(int)self1;
+- (TSWPStorage)initWithContext:(id)context string:(id)string stylesheet:(id)stylesheet kind:(unsigned __int8)kind;
+- (_NSRange)annotationRangeForRange:(_NSRange)range;
+- (_NSRange)appendString:(id)string undoTransaction:(void *)transaction;
+- (_NSRange)attachmentIndexRangeForTextRange:(_NSRange)range;
+- (_NSRange)attachmentRangeForCharIndex:(unint64_t)index forwards:(BOOL)forwards;
+- (_NSRange)attachmentRangeForCharIndex:(unint64_t)index forwards:(BOOL)forwards attributeKind:(unint64_t)kind;
+- (_NSRange)attributeRangeForOverlappingField:(id)field atAttributeIndex:(unint64_t)index attributeKind:(unint64_t)kind;
+- (_NSRange)attributeRangeForOverlappingField:(id)field attributeKind:(unint64_t)kind;
+- (_NSRange)charRangeForAttributeRange:(_NSRange)range attributeKind:(unint64_t)kind;
+- (_NSRange)charRangeMappedFromStorage:(_NSRange)storage;
+- (_NSRange)charRangeMappedToStorage:(_NSRange)storage;
+- (_NSRange)charRangeRemappedFromStorage:(_NSRange)storage;
+- (_NSRange)footnoteRangeForTextRange:(_NSRange)range;
+- (_NSRange)insertAttachmentOrFootnote:(id)footnote range:(_NSRange)range;
+- (_NSRange)insertAttachmentOrFootnote:(id)footnote range:(_NSRange)range dolcContext:(id)context undoTransaction:(void *)transaction changeSession:(id)session;
+- (_NSRange)insertAttachmentOrFootnote:(id)footnote range:(_NSRange)range placementIndex:(int)index dolcContext:(id)context undoTransaction:(void *)transaction changeSession:(id)session;
+- (_NSRange)insertSection:(id)section atCharIndex:(unint64_t)index dolcContext:(id)context undoTransaction:(void *)transaction changeSession:(id)session;
+- (_NSRange)insertSectionBreakAtCharIndex:(unint64_t)index replaceParagraphBreak:(BOOL)break sectionToInsert:(id)insert changeSession:(id)session dolcContext:(id)context undoTransaction:(void *)transaction;
+- (_NSRange)insertSpecialCharacter:(unsigned __int16)character object:(id)object kind:(unint64_t)kind range:(_NSRange)range dolcContext:(id)context undoTransaction:(void *)transaction changeSession:(id)session;
+- (_NSRange)insertSpecialCharacter:(unsigned __int16)character object:(id)object kind:(unint64_t)kind range:(_NSRange)range placementIndex:(int)index dolcContext:(id)context undoTransaction:(void *)transaction changeSession:(id)self0;
+- (_NSRange)moveCharactersInRange:(_NSRange)range toLocation:(unint64_t)location undoTransaction:(void *)transaction;
+- (_NSRange)nextWordFromIndex:(unint64_t)index forward:(BOOL)forward;
+- (_NSRange)p_extendRangeToIncludeSmartFields:(_NSRange)fields;
+- (_NSRange)p_extendRangeToIncludeSmartFields:(_NSRange)fields ofKind:(unint64_t)kind;
+- (_NSRange)p_parIndexRangeForTextSourceForCharacterRange:(_NSRange)range;
+- (_NSRange)p_rangeForOverlappingField:(id)field attributeKind:(unint64_t)kind;
+- (_NSRange)p_rangeForSelectionAtCharIndex:(unint64_t)index caretIndex:(unint64_t)caretIndex handleNextWordWhitespace:(BOOL)whitespace;
+- (_NSRange)p_rangeWithNonVisibleAttachmentsTrimmedForRange:(_NSRange)range;
+- (_NSRange)p_relocateNonSelectedAnchorsInRange:(_NSRange)range selectedInfos:(id)infos undoTransaction:(void *)transaction;
+- (_NSRange)p_removeOverlappingFieldsInRange:(_NSRange)range attributeKind:(unint64_t)kind undoTransaction:(void *)transaction;
+- (_NSRange)p_replaceCharactersInLogicalSelection:(id)selection withString:(id)string withFlags:(unsigned int)flags replaceTextData:(id)data changeSession:(id)session undoTransaction:(void *)transaction outInsertedRange:(_NSRange *)range;
+- (_NSRange)paragraphIndexRangeForCharRange:(_NSRange)range;
+- (_NSRange)paragraphIndexRangeIncludingFinalEmptyParagraphForCharRange:(_NSRange)range;
 - (_NSRange)range;
-- (_NSRange)rangeByExpandingToIncludePartialWords:(_NSRange)a3;
-- (_NSRange)rangeByExtendingRangeToLineBreak:(_NSRange)a3;
-- (_NSRange)rangeByExtendingRangeToWhitespace:(_NSRange)a3;
-- (_NSRange)rangeByExtendingRangeToWhitespace:(_NSRange)a3 skipVisibleDeleted:(BOOL)a4;
-- (_NSRange)rangeByTrimmingRange:(_NSRange)a3 withBlock:(id)a4;
-- (_NSRange)rangeForAnnotation:(id)a3;
-- (_NSRange)rangeForChange:(id)a3;
-- (_NSRange)rangeForHighlight:(id)a3;
-- (_NSRange)rangeForPencilAnnotation:(id)a3;
-- (_NSRange)rangeForSelectionAtCharIndex:(unint64_t)a3 caretIndex:(unint64_t)a4;
-- (_NSRange)rangeForSelectionAtCharIndex:(unint64_t)a3 includePreviousWord:(BOOL)a4;
-- (_NSRange)rangeForSelectionWithInsertionLocation:(unint64_t)a3;
-- (_NSRange)rangeOfAnnotationWithOptions:(unint64_t)a3 range:(_NSRange)a4;
-- (_NSRange)rangeOfDropCapAtCharIndex:(unint64_t)a3;
-- (_NSRange)rangeOfDropCapAtCharIndex:(unint64_t)a3 actualCharacterCount:(unint64_t *)a4;
-- (_NSRange)rangeOfParagraphBreakingCharacter:(unsigned __int16)a3 backwards:(BOOL)a4 range:(_NSRange)a5;
-- (_NSRange)rangeOfString:(id)a3 searchOptions:(unint64_t)a4 range:(_NSRange)a5;
-- (_NSRange)rangeOfString:(id)a3 searchOptions:(unint64_t)a4 updatingSearchRange:(_NSRange *)a5;
-- (_NSRange)removePencilAnnotationsInRange:(_NSRange)a3 undoTransaction:(void *)a4;
-- (_NSRange)replaceAllOccurrencesOfObject:(id)a3 withObject:(id)a4 forKind:(unint64_t)a5 undoTransaction:(void *)a6;
-- (_NSRange)replaceAllOccurrencesOfStyle:(id)a3 withStyle:(id)a4 undoTransaction:(void *)a5;
-- (_NSRange)replaceCharactersInRange:(_NSRange)a3 withStorage:(id)a4;
-- (_NSRange)replaceCharactersInRange:(_NSRange)a3 withStorage:(id)a4 usePasteRules:(BOOL)a5 dolcContext:(id)a6 undoTransaction:(void *)a7;
-- (_NSRange)replaceCharactersInRange:(_NSRange)a3 withString:(id)a4 notifyObservers:(BOOL)a5 changeSession:(id)a6 undoTransaction:(void *)a7;
-- (_NSRange)replaceCharactersInRange:(_NSRange)a3 withString:(id)a4 notifyObservers:(BOOL)a5 undoTransaction:(void *)a6;
-- (_NSRange)replaceCharactersInRange:(_NSRange)a3 withString:(id)a4 undoTransaction:(void *)a5;
-- (_NSRange)replaceCharactersInSelection:(id)a3 withStorage:(id)a4 usePasteRules:(BOOL)a5 srcStylesAmbiguous:(BOOL)a6 dolcContext:(id)a7 changeSession:(id)a8 undoTransaction:(void *)a9;
-- (_NSRange)replaceCharactersInSelection:(id)a3 withString:(id)a4 withFlags:(unsigned int)a5 replaceTextData:(id)a6 changeSession:(id)a7 undoTransaction:(void *)a8 outInsertedRange:(_NSRange *)a9;
-- (_NSRange)replaceSectionAtSectionIndex:(unint64_t)a3 withSection:(id)a4 dolcContext:(id)a5 undoTransaction:(void *)a6;
-- (_NSRange)scanLeftForWordAtCharIndex:(unint64_t)a3;
-- (_NSRange)textRangeForListAtCharIndex:(unint64_t)a3;
-- (_NSRange)textRangeForListsInCharRange:(_NSRange)a3;
-- (_NSRange)textRangeForParagraphAtCharIndex:(unint64_t)a3;
-- (_NSRange)textRangeForParagraphAtIndex:(unint64_t)a3;
-- (_NSRange)textRangeForParagraphIndexRange:(_NSRange)a3;
-- (_NSRange)textRangeForParagraphsInCharRange:(_NSRange)a3;
-- (_NSRange)textRangeForSectionRange:(_NSRange)a3;
-- (_NSRange)textRangeIgnoringTrailingLineBreaksForParagraphAtIndex:(unint64_t)a3;
-- (_NSRange)whiteSpaceRangeAtCharIndex:(unint64_t)a3;
-- (_NSRange)whiteSpaceRangeAtCharIndex:(unint64_t)a3 includingBreaks:(BOOL)a4;
-- (_NSRange)wordAtCharIndex:(unint64_t)a3 includePreviousWord:(BOOL)a4;
-- (_NSRange)wordAtCharIndex:(unint64_t)a3 includePreviousWord:(BOOL)a4 includeHyphenation:(BOOL)a5;
-- (__CTFont)createFontAtCharIndex:(unint64_t)a3 scaleTextPercent:(unint64_t)a4 effectiveRange:(_NSRange *)a5 styleProvider:(id)a6;
-- (id)attachmentAtAttachmentIndex:(unint64_t)a3 outCharIndex:(unint64_t *)a4;
-- (id)attachmentAtCharIndex:(unint64_t)a3;
-- (id)attachmentOrFootnoteAtCharIndex:(unint64_t)a3;
+- (_NSRange)rangeByExpandingToIncludePartialWords:(_NSRange)words;
+- (_NSRange)rangeByExtendingRangeToLineBreak:(_NSRange)break;
+- (_NSRange)rangeByExtendingRangeToWhitespace:(_NSRange)whitespace;
+- (_NSRange)rangeByExtendingRangeToWhitespace:(_NSRange)whitespace skipVisibleDeleted:(BOOL)deleted;
+- (_NSRange)rangeByTrimmingRange:(_NSRange)range withBlock:(id)block;
+- (_NSRange)rangeForAnnotation:(id)annotation;
+- (_NSRange)rangeForChange:(id)change;
+- (_NSRange)rangeForHighlight:(id)highlight;
+- (_NSRange)rangeForPencilAnnotation:(id)annotation;
+- (_NSRange)rangeForSelectionAtCharIndex:(unint64_t)index caretIndex:(unint64_t)caretIndex;
+- (_NSRange)rangeForSelectionAtCharIndex:(unint64_t)index includePreviousWord:(BOOL)word;
+- (_NSRange)rangeForSelectionWithInsertionLocation:(unint64_t)location;
+- (_NSRange)rangeOfAnnotationWithOptions:(unint64_t)options range:(_NSRange)range;
+- (_NSRange)rangeOfDropCapAtCharIndex:(unint64_t)index;
+- (_NSRange)rangeOfDropCapAtCharIndex:(unint64_t)index actualCharacterCount:(unint64_t *)count;
+- (_NSRange)rangeOfParagraphBreakingCharacter:(unsigned __int16)character backwards:(BOOL)backwards range:(_NSRange)range;
+- (_NSRange)rangeOfString:(id)string searchOptions:(unint64_t)options range:(_NSRange)range;
+- (_NSRange)rangeOfString:(id)string searchOptions:(unint64_t)options updatingSearchRange:(_NSRange *)range;
+- (_NSRange)removePencilAnnotationsInRange:(_NSRange)range undoTransaction:(void *)transaction;
+- (_NSRange)replaceAllOccurrencesOfObject:(id)object withObject:(id)withObject forKind:(unint64_t)kind undoTransaction:(void *)transaction;
+- (_NSRange)replaceAllOccurrencesOfStyle:(id)style withStyle:(id)withStyle undoTransaction:(void *)transaction;
+- (_NSRange)replaceCharactersInRange:(_NSRange)range withStorage:(id)storage;
+- (_NSRange)replaceCharactersInRange:(_NSRange)range withStorage:(id)storage usePasteRules:(BOOL)rules dolcContext:(id)context undoTransaction:(void *)transaction;
+- (_NSRange)replaceCharactersInRange:(_NSRange)range withString:(id)string notifyObservers:(BOOL)observers changeSession:(id)session undoTransaction:(void *)transaction;
+- (_NSRange)replaceCharactersInRange:(_NSRange)range withString:(id)string notifyObservers:(BOOL)observers undoTransaction:(void *)transaction;
+- (_NSRange)replaceCharactersInRange:(_NSRange)range withString:(id)string undoTransaction:(void *)transaction;
+- (_NSRange)replaceCharactersInSelection:(id)selection withStorage:(id)storage usePasteRules:(BOOL)rules srcStylesAmbiguous:(BOOL)ambiguous dolcContext:(id)context changeSession:(id)session undoTransaction:(void *)transaction;
+- (_NSRange)replaceCharactersInSelection:(id)selection withString:(id)string withFlags:(unsigned int)flags replaceTextData:(id)data changeSession:(id)session undoTransaction:(void *)transaction outInsertedRange:(_NSRange *)range;
+- (_NSRange)replaceSectionAtSectionIndex:(unint64_t)index withSection:(id)section dolcContext:(id)context undoTransaction:(void *)transaction;
+- (_NSRange)scanLeftForWordAtCharIndex:(unint64_t)index;
+- (_NSRange)textRangeForListAtCharIndex:(unint64_t)index;
+- (_NSRange)textRangeForListsInCharRange:(_NSRange)range;
+- (_NSRange)textRangeForParagraphAtCharIndex:(unint64_t)index;
+- (_NSRange)textRangeForParagraphAtIndex:(unint64_t)index;
+- (_NSRange)textRangeForParagraphIndexRange:(_NSRange)range;
+- (_NSRange)textRangeForParagraphsInCharRange:(_NSRange)range;
+- (_NSRange)textRangeForSectionRange:(_NSRange)range;
+- (_NSRange)textRangeIgnoringTrailingLineBreaksForParagraphAtIndex:(unint64_t)index;
+- (_NSRange)whiteSpaceRangeAtCharIndex:(unint64_t)index;
+- (_NSRange)whiteSpaceRangeAtCharIndex:(unint64_t)index includingBreaks:(BOOL)breaks;
+- (_NSRange)wordAtCharIndex:(unint64_t)index includePreviousWord:(BOOL)word;
+- (_NSRange)wordAtCharIndex:(unint64_t)index includePreviousWord:(BOOL)word includeHyphenation:(BOOL)hyphenation;
+- (__CTFont)createFontAtCharIndex:(unint64_t)index scaleTextPercent:(unint64_t)percent effectiveRange:(_NSRange *)range styleProvider:(id)provider;
+- (id)attachmentAtAttachmentIndex:(unint64_t)index outCharIndex:(unint64_t *)charIndex;
+- (id)attachmentAtCharIndex:(unint64_t)index;
+- (id)attachmentOrFootnoteAtCharIndex:(unint64_t)index;
 - (id)attachments;
-- (id)bestCharacterLanguageForTextRange:(_NSRange)a3;
-- (id)changeAtCharIndex:(unint64_t)a3 attributeKind:(unint64_t)a4 effectiveRange:(_NSRange *)a5;
-- (id)changeAtCharIndex:(unint64_t)a3 outRange:(_NSRange *)a4;
-- (id)changeDetailsAtCharIndex:(unint64_t)a3 outRange:(_NSRange *)a4;
-- (id)changeDetailsForChange:(id)a3 withRange:(_NSRange)a4;
-- (id)characterStyleAtCharIndex:(unint64_t)a3 left:(BOOL)a4 effectiveRange:(_NSRange *)a5;
-- (id)characterStyleForDeletedRange:(_NSRange)a3;
-- (id)characterStyleForDropCapAtCharIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4;
+- (id)bestCharacterLanguageForTextRange:(_NSRange)range;
+- (id)changeAtCharIndex:(unint64_t)index attributeKind:(unint64_t)kind effectiveRange:(_NSRange *)range;
+- (id)changeAtCharIndex:(unint64_t)index outRange:(_NSRange *)range;
+- (id)changeDetailsAtCharIndex:(unint64_t)index outRange:(_NSRange *)range;
+- (id)changeDetailsForChange:(id)change withRange:(_NSRange)range;
+- (id)characterStyleAtCharIndex:(unint64_t)index left:(BOOL)left effectiveRange:(_NSRange *)range;
+- (id)characterStyleForDeletedRange:(_NSRange)range;
+- (id)characterStyleForDropCapAtCharIndex:(unint64_t)index effectiveRange:(_NSRange *)range;
 - (id)childEnumerator;
-- (id)columnStyleAtCharIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4;
-- (id)columnStyleAtColumnStyleIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4;
-- (id)copyWithContext:(id)a3;
-- (id)deletedRangesInRange:(_NSRange)a3;
-- (id)dictationAndAutocorrectionKeyAtCharIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4;
-- (id)dropCapCharIndexesInRange:(_NSRange)a3;
-- (id)dropCapCharIndexesInSelection:(id)a3;
-- (id)dropCapStyleAtCharIndex:(unint64_t)a3;
-- (id)dropCapStyleAtParIndex:(unint64_t)a3;
-- (id)dropCapStyleIfMatchingSelectionExactly:(id)a3;
-- (id)editableAnnotationForInsertionPointSelection:(id)a3 includeComments:(BOOL)a4 withOutRange:(_NSRange *)a5 selectionIsOnEdge:(BOOL *)a6;
-- (id)editableSmartFieldAtCharIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4;
-- (id)effectiveFontAtCharIndex:(unint64_t)a3;
-- (id)extendSelectionForTopicChildren:(id)a3;
-- (id)extendSelectionToIncludeSmartFields:(id)a3;
-- (id)filteredStorageForWritingToolsWithRange:(_NSRange)a3 expandRangeToParagraphBoundaries:(BOOL)a4;
-- (id)firstHighlightForSelection:(id)a3;
-- (id)firstHighlightForSelection:(id)a3 requireComment:(BOOL)a4;
-- (id)firstHighlightForSelectionRange:(_NSRange)a3 outRange:(_NSRange *)a4 requireComment:(BOOL)a5;
-- (id)fontNameAtCharIndex:(unint64_t)a3 size:(double *)a4 effectiveRange:(_NSRange *)a5 styleProvider:(id)a6;
-- (id)footnoteAtFootnoteIndex:(unint64_t)a3 outCharIndex:(unint64_t *)a4;
-- (id)footnoteMarkAtCharIndex:(unint64_t)a3;
-- (id)footnoteReferenceAtCharIndex:(unint64_t)a3;
-- (id)footnoteReferenceAttachmentOrFootnoteMarkAttachmentAtCharIndex:(unint64_t)a3;
+- (id)columnStyleAtCharIndex:(unint64_t)index effectiveRange:(_NSRange *)range;
+- (id)columnStyleAtColumnStyleIndex:(unint64_t)index effectiveRange:(_NSRange *)range;
+- (id)copyWithContext:(id)context;
+- (id)deletedRangesInRange:(_NSRange)range;
+- (id)dictationAndAutocorrectionKeyAtCharIndex:(unint64_t)index effectiveRange:(_NSRange *)range;
+- (id)dropCapCharIndexesInRange:(_NSRange)range;
+- (id)dropCapCharIndexesInSelection:(id)selection;
+- (id)dropCapStyleAtCharIndex:(unint64_t)index;
+- (id)dropCapStyleAtParIndex:(unint64_t)index;
+- (id)dropCapStyleIfMatchingSelectionExactly:(id)exactly;
+- (id)editableAnnotationForInsertionPointSelection:(id)selection includeComments:(BOOL)comments withOutRange:(_NSRange *)range selectionIsOnEdge:(BOOL *)edge;
+- (id)editableSmartFieldAtCharIndex:(unint64_t)index effectiveRange:(_NSRange *)range;
+- (id)effectiveFontAtCharIndex:(unint64_t)index;
+- (id)extendSelectionForTopicChildren:(id)children;
+- (id)extendSelectionToIncludeSmartFields:(id)fields;
+- (id)filteredStorageForWritingToolsWithRange:(_NSRange)range expandRangeToParagraphBoundaries:(BOOL)boundaries;
+- (id)firstHighlightForSelection:(id)selection;
+- (id)firstHighlightForSelection:(id)selection requireComment:(BOOL)comment;
+- (id)firstHighlightForSelectionRange:(_NSRange)range outRange:(_NSRange *)outRange requireComment:(BOOL)comment;
+- (id)fontNameAtCharIndex:(unint64_t)index size:(double *)size effectiveRange:(_NSRange *)range styleProvider:(id)provider;
+- (id)footnoteAtFootnoteIndex:(unint64_t)index outCharIndex:(unint64_t *)charIndex;
+- (id)footnoteMarkAtCharIndex:(unint64_t)index;
+- (id)footnoteReferenceAtCharIndex:(unint64_t)index;
+- (id)footnoteReferenceAttachmentOrFootnoteMarkAttachmentAtCharIndex:(unint64_t)index;
 - (id)footnoteStorages;
-- (id)glyphVariantDataAtCharIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4;
-- (id)hiddenRangesInRange:(_NSRange)a3;
-- (id)highlightSelectionForSelection:(id)a3;
-- (id)indexesSetForBIUProperties:(id)a3;
-- (id)indexesSetForBIUProperties:(id)a3 selection:(id)a4 insertionStyle:(id)a5;
-- (id)indexesSetForBIUProperties:(id)a3 styles:(id)a4;
-- (id)languageAtParIndex:(unint64_t)a3 useStringTokenizer:(BOOL)a4 useDocumentLanguage:(BOOL)a5;
-- (id)languageEntryAtCharIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4;
-- (id)languageForTextRange:(_NSRange)a3 useStringTokenizer:(BOOL)a4 useDocumentLanguage:(BOOL)a5;
-- (id)listStyleAtCharIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4;
-- (id)listStyleAtParIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4;
-- (id)newSubstorageWithRange:(_NSRange)a3 storageContext:(id)a4 objectsContext:(id)a5 flags:(unsigned int)a6;
-- (id)newSubstorageWithRange:(_NSRange)a3 storageContext:(id)a4 objectsContext:(id)a5 flags:(unsigned int)a6 kind:(unsigned __int8)a7;
-- (id)nextChangeFromCharIndex:(unint64_t)a3 afterChange:(id)a4 changeRange:(_NSRange *)a5;
-- (id)objectAtLocationAtExactCharIndex:(unint64_t)a3 forAttributeKind:(unint64_t)a4;
-- (id)objectAtLocationPriorToMappedCharIndex:(unint64_t)a3 forAttributeKind:(unint64_t)a4 effectiveRange:(_NSRange *)a5;
-- (id)overlappingFieldsAtAttributeIndex:(unint64_t)a3 attributeKind:(unint64_t)a4;
-- (id)pDefaultSectionForContext:(id)a3;
-- (id)pFindValidInsertionCharStyleFromCharIndex:(unint64_t)a3;
-- (id)pFlipStringForObject:(id)a3 insertLength:(unint64_t)a4 attributeArrayKind:(unint64_t)a5;
-- (id)pOverrideObjectBeforeReplacingCharactersInRange:(_NSRange)a3 withString:(id)a4 withInsertionBehavior:(int64_t)a5;
-- (id)pOverrideObjectBeforeReplacingCharactersInSelection:(id)a3 withString:(id)a4;
-- (id)p_highlightsForSelectionRange:(_NSRange)a3 outRange:(_NSRange *)a4 requireComment:(BOOL)a5 stopOnFirst:(BOOL)a6;
+- (id)glyphVariantDataAtCharIndex:(unint64_t)index effectiveRange:(_NSRange *)range;
+- (id)hiddenRangesInRange:(_NSRange)range;
+- (id)highlightSelectionForSelection:(id)selection;
+- (id)indexesSetForBIUProperties:(id)properties;
+- (id)indexesSetForBIUProperties:(id)properties selection:(id)selection insertionStyle:(id)style;
+- (id)indexesSetForBIUProperties:(id)properties styles:(id)styles;
+- (id)languageAtParIndex:(unint64_t)index useStringTokenizer:(BOOL)tokenizer useDocumentLanguage:(BOOL)language;
+- (id)languageEntryAtCharIndex:(unint64_t)index effectiveRange:(_NSRange *)range;
+- (id)languageForTextRange:(_NSRange)range useStringTokenizer:(BOOL)tokenizer useDocumentLanguage:(BOOL)language;
+- (id)listStyleAtCharIndex:(unint64_t)index effectiveRange:(_NSRange *)range;
+- (id)listStyleAtParIndex:(unint64_t)index effectiveRange:(_NSRange *)range;
+- (id)newSubstorageWithRange:(_NSRange)range storageContext:(id)context objectsContext:(id)objectsContext flags:(unsigned int)flags;
+- (id)newSubstorageWithRange:(_NSRange)range storageContext:(id)context objectsContext:(id)objectsContext flags:(unsigned int)flags kind:(unsigned __int8)kind;
+- (id)nextChangeFromCharIndex:(unint64_t)index afterChange:(id)change changeRange:(_NSRange *)range;
+- (id)objectAtLocationAtExactCharIndex:(unint64_t)index forAttributeKind:(unint64_t)kind;
+- (id)objectAtLocationPriorToMappedCharIndex:(unint64_t)index forAttributeKind:(unint64_t)kind effectiveRange:(_NSRange *)range;
+- (id)overlappingFieldsAtAttributeIndex:(unint64_t)index attributeKind:(unint64_t)kind;
+- (id)pDefaultSectionForContext:(id)context;
+- (id)pFindValidInsertionCharStyleFromCharIndex:(unint64_t)index;
+- (id)pFlipStringForObject:(id)object insertLength:(unint64_t)length attributeArrayKind:(unint64_t)kind;
+- (id)pOverrideObjectBeforeReplacingCharactersInRange:(_NSRange)range withString:(id)string withInsertionBehavior:(int64_t)behavior;
+- (id)pOverrideObjectBeforeReplacingCharactersInSelection:(id)selection withString:(id)string;
+- (id)p_highlightsForSelectionRange:(_NSRange)range outRange:(_NSRange *)outRange requireComment:(BOOL)comment stopOnFirst:(BOOL)first;
 - (id)p_kindDescription;
 - (id)p_lazyBroadcaster;
-- (id)p_replacementsForRange:(_NSRange)a3 withString:(id)a4 replaceTextData:(id)a5 changeSession:(id)a6 shouldTrackDeletions:(BOOL)a7;
-- (id)p_stringWithAttachmentCharacterSubstitutedWithCharacter:(id)a3;
-- (id)p_trackedChangesIntersectingRange:(_NSRange)a3;
-- (id)p_undeletedCharIndexesInRange:(_NSRange)a3;
-- (id)paragraphIndicesForSelection:(id)a3;
-- (id)paragraphStyleAtCharIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4;
-- (id)paragraphStyleAtParIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4;
-- (id)pencilAnnotationsInContainedTextRange:(_NSRange)a3;
-- (id)placeholderSmartFieldAtRange:(_NSRange)a3;
-- (id)previousChangeFromCharIndex:(unint64_t)a3 beforeChange:(id)a4 changeRange:(_NSRange *)a5;
-- (id)referencedStylesOfClass:(Class)a3;
-- (id)relocateNonSelectedAnchorsInSelection:(id)a3 undoTransaction:(void *)a4;
-- (id)replaceCharactersInSelection:(id)a3 withStorage:(id)a4 usePasteRules:(BOOL)a5 srcStylesAmbiguous:(BOOL)a6 dolcContext:(id)a7 changeSession:(id)a8 undoTransaction:(void *)a9 outInsertedRanges:(id *)a10;
-- (id)replaceCharactersInSelection:(id)a3 withString:(id)a4 withFlags:(unsigned int)a5 replaceTextData:(id)a6 changeSession:(id)a7 undoTransaction:(void *)a8 outInsertedRanges:(id *)a9;
-- (id)sectionAtCharIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4;
-- (id)sectionAtSectionIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4;
-- (id)smartFieldAtCharIndex:(unint64_t)a3 attributeKind:(unint64_t)a4 effectiveRange:(_NSRange *)a5;
-- (id)smartFieldsWithAttributeKind:(unint64_t)a3 inSelection:(id)a4;
-- (id)smartFieldsWithAttributeKind:(unint64_t)a3 intersectingRange:(_NSRange)a4 passingTest:(id)a5;
-- (id)smartFieldsWithAttributeKind:(unint64_t)a3 withClass:(Class)a4 intersectingRange:(_NSRange)a5;
-- (id)snapshotRubyStateInRange:(_NSRange)a3;
-- (id)storageByApplyingCustomFormat:(id)a3;
-- (id)stringForStatisticsInRange:(_NSRange)a3;
+- (id)p_replacementsForRange:(_NSRange)range withString:(id)string replaceTextData:(id)data changeSession:(id)session shouldTrackDeletions:(BOOL)deletions;
+- (id)p_stringWithAttachmentCharacterSubstitutedWithCharacter:(id)character;
+- (id)p_trackedChangesIntersectingRange:(_NSRange)range;
+- (id)p_undeletedCharIndexesInRange:(_NSRange)range;
+- (id)paragraphIndicesForSelection:(id)selection;
+- (id)paragraphStyleAtCharIndex:(unint64_t)index effectiveRange:(_NSRange *)range;
+- (id)paragraphStyleAtParIndex:(unint64_t)index effectiveRange:(_NSRange *)range;
+- (id)pencilAnnotationsInContainedTextRange:(_NSRange)range;
+- (id)placeholderSmartFieldAtRange:(_NSRange)range;
+- (id)previousChangeFromCharIndex:(unint64_t)index beforeChange:(id)change changeRange:(_NSRange *)range;
+- (id)referencedStylesOfClass:(Class)class;
+- (id)relocateNonSelectedAnchorsInSelection:(id)selection undoTransaction:(void *)transaction;
+- (id)replaceCharactersInSelection:(id)selection withStorage:(id)storage usePasteRules:(BOOL)rules srcStylesAmbiguous:(BOOL)ambiguous dolcContext:(id)context changeSession:(id)session undoTransaction:(void *)transaction outInsertedRanges:(id *)self0;
+- (id)replaceCharactersInSelection:(id)selection withString:(id)string withFlags:(unsigned int)flags replaceTextData:(id)data changeSession:(id)session undoTransaction:(void *)transaction outInsertedRanges:(id *)ranges;
+- (id)sectionAtCharIndex:(unint64_t)index effectiveRange:(_NSRange *)range;
+- (id)sectionAtSectionIndex:(unint64_t)index effectiveRange:(_NSRange *)range;
+- (id)smartFieldAtCharIndex:(unint64_t)index attributeKind:(unint64_t)kind effectiveRange:(_NSRange *)range;
+- (id)smartFieldsWithAttributeKind:(unint64_t)kind inSelection:(id)selection;
+- (id)smartFieldsWithAttributeKind:(unint64_t)kind intersectingRange:(_NSRange)range passingTest:(id)test;
+- (id)smartFieldsWithAttributeKind:(unint64_t)kind withClass:(Class)class intersectingRange:(_NSRange)range;
+- (id)snapshotRubyStateInRange:(_NSRange)range;
+- (id)storageByApplyingCustomFormat:(id)format;
+- (id)stringForStatisticsInRange:(_NSRange)range;
 - (id)stringValue;
 - (id)stringWithAttachmentCharacterSubstitution;
-- (id)stylesForResolvingBIUPropertiesWithSelection:(id)a3 charIndex:(unint64_t)a4 insertionStyle:(id)a5;
-- (id)substringWithSelection:(id)a3;
-- (id)textSourceForParagraphsContainingRange:(_NSRange)a3;
-- (id)textSourceForRange:(_NSRange)a3;
-- (id)trackedChangesIntersectingSelection:(id)a3;
-- (id)typesetterTextSourceForRange:(_NSRange)a3;
-- (id)valueForProperty:(int)a3 atCharIndex:(unint64_t)a4 effectiveRange:(_NSRange *)a5;
-- (id)visibleRangesInRange:(_NSRange)a3;
-- (int)compareAttributeArray1:(TSWPAttributeArray *)a3 array2:(TSWPAttributeArray *)a4 range1:(_NSRange)a5 range2:(_NSRange)a6 attributeIndex1:(unint64_t)a7 attributeIndex2:(unint64_t)a8 objectComparisonBlock:(id)a9;
-- (int)compareAttributeArray:(TSWPAttributeArray *)a3 range:(_NSRange)a4 otherStorage:(id)a5 otherRange:(_NSRange)a6 objectComparisonBlock:(id)a7;
-- (int)compareBreakingTablesWithStorage:(id)a3;
-- (int)compareRange:(_NSRange)a3 otherStorage:(id)a4 otherRange:(_NSRange)a5 options:(unint64_t)a6 objectComparisonBlock:(id)a7;
-- (int)writingDirectionForParagraphAtCharIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4;
-- (int)writingDirectionForParagraphAtParIndex:(unint64_t)a3;
-- (int)writingDirectionFromBidiAttributesTableForParagraphAtCharIndex:(unint64_t)a3;
+- (id)stylesForResolvingBIUPropertiesWithSelection:(id)selection charIndex:(unint64_t)index insertionStyle:(id)style;
+- (id)substringWithSelection:(id)selection;
+- (id)textSourceForParagraphsContainingRange:(_NSRange)range;
+- (id)textSourceForRange:(_NSRange)range;
+- (id)trackedChangesIntersectingSelection:(id)selection;
+- (id)typesetterTextSourceForRange:(_NSRange)range;
+- (id)valueForProperty:(int)property atCharIndex:(unint64_t)index effectiveRange:(_NSRange *)range;
+- (id)visibleRangesInRange:(_NSRange)range;
+- (int)compareAttributeArray1:(TSWPAttributeArray *)array1 array2:(TSWPAttributeArray *)array2 range1:(_NSRange)range1 range2:(_NSRange)range2 attributeIndex1:(unint64_t)index1 attributeIndex2:(unint64_t)index2 objectComparisonBlock:(id)block;
+- (int)compareAttributeArray:(TSWPAttributeArray *)array range:(_NSRange)range otherStorage:(id)storage otherRange:(_NSRange)otherRange objectComparisonBlock:(id)block;
+- (int)compareBreakingTablesWithStorage:(id)storage;
+- (int)compareRange:(_NSRange)range otherStorage:(id)storage otherRange:(_NSRange)otherRange options:(unint64_t)options objectComparisonBlock:(id)block;
+- (int)writingDirectionForParagraphAtCharIndex:(unint64_t)index effectiveRange:(_NSRange *)range;
+- (int)writingDirectionForParagraphAtParIndex:(unint64_t)index;
+- (int)writingDirectionFromBidiAttributesTableForParagraphAtCharIndex:(unint64_t)index;
 - (int64_t)contentWritingDirection;
-- (int64_t)hyphenationLocationBeforeIndex:(int64_t)a3 inRange:(_NSRange)a4 locale:(id)a5 hyphenChar:(unsigned int *)a6;
+- (int64_t)hyphenationLocationBeforeIndex:(int64_t)index inRange:(_NSRange)range locale:(id)locale hyphenChar:(unsigned int *)char;
 - (int64_t)nestedTextboxDepth;
-- (int64_t)pFlipSpecialCharacterForObject:(id)a3 range:(_NSRange)a4 insertLength:(unint64_t)a5 outChangeRange:(_NSRange *)a6 attributeArrayKind:(unint64_t)a7 actionState:(void *)a8;
+- (int64_t)pFlipSpecialCharacterForObject:(id)object range:(_NSRange)range insertLength:(unint64_t)length outChangeRange:(_NSRange *)changeRange attributeArrayKind:(unint64_t)kind actionState:(void *)state;
 - (unint64_t)attachmentCount;
-- (unint64_t)attachmentIndexAtCharIndex:(unint64_t)a3;
-- (unint64_t)attachmentIndexForInsertionAtCharIndex:(unint64_t)a3;
-- (unint64_t)attributeIndexForCharacterIndex:(unint64_t)a3 attributeKind:(unint64_t)a4;
-- (unint64_t)autoNumberFootnoteCountForRange:(_NSRange)a3;
-- (unint64_t)charIndexAfterAnyAnchoredAttachmentsAtCharIndex:(unint64_t)a3;
-- (unint64_t)charIndexBeforeAnyAnchoredAttachmentsAtCharIndex:(unint64_t)a3;
-- (unint64_t)charIndexForParagraphAtIndex:(unint64_t)a3;
+- (unint64_t)attachmentIndexAtCharIndex:(unint64_t)index;
+- (unint64_t)attachmentIndexForInsertionAtCharIndex:(unint64_t)index;
+- (unint64_t)attributeIndexForCharacterIndex:(unint64_t)index attributeKind:(unint64_t)kind;
+- (unint64_t)autoNumberFootnoteCountForRange:(_NSRange)range;
+- (unint64_t)charIndexAfterAnyAnchoredAttachmentsAtCharIndex:(unint64_t)index;
+- (unint64_t)charIndexBeforeAnyAnchoredAttachmentsAtCharIndex:(unint64_t)index;
+- (unint64_t)charIndexForParagraphAtIndex:(unint64_t)index;
 - (unint64_t)characterStyleAttributeCount;
 - (unint64_t)columnStyleCount;
-- (unint64_t)countTrackChangesInSelection:(id)a3;
+- (unint64_t)countTrackChangesInSelection:(id)selection;
 - (unint64_t)dropCapStyleCount;
-- (unint64_t)emptyParagraphCount:(_NSRange)a3;
-- (unint64_t)findCharIndexForAttachment:(id)a3 withHintIndex:(unint64_t *)a4;
-- (unint64_t)findCharIndexForFootnoteAttachment:(id)a3 withHintIndex:(unint64_t *)a4;
-- (unint64_t)findCharacterIndexForContainedInfo:(id)a3;
-- (unint64_t)findNextParagraphStyleChange:(unint64_t)a3 maxCharIndex:(unint64_t)a4;
+- (unint64_t)emptyParagraphCount:(_NSRange)count;
+- (unint64_t)findCharIndexForAttachment:(id)attachment withHintIndex:(unint64_t *)index;
+- (unint64_t)findCharIndexForFootnoteAttachment:(id)attachment withHintIndex:(unint64_t *)index;
+- (unint64_t)findCharacterIndexForContainedInfo:(id)info;
+- (unint64_t)findNextParagraphStyleChange:(unint64_t)change maxCharIndex:(unint64_t)index;
 - (unint64_t)footnoteCount;
-- (unint64_t)footnoteIndexForCharIndex:(unint64_t)a3;
-- (unint64_t)footnoteIndexForFootnote:(id)a3;
-- (unint64_t)footnoteIndexForFootnoteStorage:(id)a3;
-- (unint64_t)indexAfterLastVisibleCharInRange:(_NSRange)a3;
-- (unint64_t)listNumberForParagraphEnumerator:(const TSWPParagraphEnumerator *)a3 numberingData:(id *)a4;
-- (unint64_t)listNumberForParagraphIndex:(unint64_t)a3 numberingData:(id *)a4;
-- (unint64_t)listStartAtCharIndex:(unint64_t)a3;
-- (unint64_t)listStartAtParIndex:(unint64_t)a3;
+- (unint64_t)footnoteIndexForCharIndex:(unint64_t)index;
+- (unint64_t)footnoteIndexForFootnote:(id)footnote;
+- (unint64_t)footnoteIndexForFootnoteStorage:(id)storage;
+- (unint64_t)indexAfterLastVisibleCharInRange:(_NSRange)range;
+- (unint64_t)listNumberForParagraphEnumerator:(const TSWPParagraphEnumerator *)enumerator numberingData:(id *)data;
+- (unint64_t)listNumberForParagraphIndex:(unint64_t)index numberingData:(id *)data;
+- (unint64_t)listStartAtCharIndex:(unint64_t)index;
+- (unint64_t)listStartAtParIndex:(unint64_t)index;
 - (unint64_t)listStyleCount;
-- (unint64_t)moveByLineRange:(_NSRange)a3 up:(BOOL)a4;
-- (unint64_t)nextCharacterIndex:(unint64_t)a3;
-- (unint64_t)pFirstParIndexInListAtParIndex:(unint64_t)a3;
-- (unint64_t)p_indexOfFirstNonDeletedCharInRange:(_NSRange)a3 requireVisible:(BOOL)a4;
+- (unint64_t)moveByLineRange:(_NSRange)range up:(BOOL)up;
+- (unint64_t)nextCharacterIndex:(unint64_t)index;
+- (unint64_t)pFirstParIndexInListAtParIndex:(unint64_t)index;
+- (unint64_t)p_indexOfFirstNonDeletedCharInRange:(_NSRange)range requireVisible:(BOOL)visible;
 - (unint64_t)paragraphCount;
-- (unint64_t)paragraphIndexAtCharIndex:(unint64_t)a3;
-- (unint64_t)paragraphLevelAtCharIndex:(unint64_t)a3;
-- (unint64_t)paragraphLevelAtParIndex:(unint64_t)a3;
-- (unint64_t)previousCharacterIndex:(unint64_t)a3;
-- (unint64_t)previousDecomposedCharacterIndex:(unint64_t)a3;
+- (unint64_t)paragraphIndexAtCharIndex:(unint64_t)index;
+- (unint64_t)paragraphLevelAtCharIndex:(unint64_t)index;
+- (unint64_t)paragraphLevelAtParIndex:(unint64_t)index;
+- (unint64_t)previousCharacterIndex:(unint64_t)index;
+- (unint64_t)previousDecomposedCharacterIndex:(unint64_t)index;
 - (unint64_t)sectionCount;
-- (unint64_t)sectionIndexForCharIndex:(unint64_t)a3;
-- (unint64_t)sectionIndexForSection:(id)a3;
-- (unint64_t)selectedParagraphBreakCount:(_NSRange)a3;
+- (unint64_t)sectionIndexForCharIndex:(unint64_t)index;
+- (unint64_t)sectionIndexForSection:(id)section;
+- (unint64_t)selectedParagraphBreakCount:(_NSRange)count;
 - (unint64_t)wordCount;
 - (unsigned)disallowedElementKinds;
 - (unsigned)disallowedSmartFieldKinds;
-- (unsigned)paragraphFlagsAtCharIndex:(unint64_t)a3;
+- (unsigned)paragraphFlagsAtCharIndex:(unint64_t)index;
 - (vector<unsigned)p_charIndicesForAttributeArray:(vector<unsigned)long;
-- (vector<unsigned)p_charIndicesForString:(TSWPStorage *)self breakingCharacterSet:(SEL)a3;
-- (void)addAllDictationAndAutocorrectionKeyRangesInRange:(_NSRange)a3 toRanges:(id)a4;
-- (void)addDisallowedElementKind:(unsigned int)a3;
-- (void)addGlyphVariantData:(id)a3 toRange:(_NSRange)a4;
-- (void)addObserver:(id)a3;
-- (void)addOverlappingField:(id)a3 toRange:(_NSRange)a4 attributeKind:(unint64_t)a5 dolcContext:(id)a6 undoTransaction:(void *)a7;
-- (void)addParagraphObserver:(id)a3;
-- (void)addSmartField:(id)a3 toRange:(_NSRange)a4 dolcContext:(id)a5 undoTransaction:(void *)a6;
-- (void)adoptStylesheet:(id)a3 withMapper:(id)a4;
-- (void)applyChange:(id)a3 changeRange:(_NSRange)a4 accept:(BOOL)a5 undoTransaction:(void *)a6;
-- (void)applyChangeSet:(id)a3 tableKind:(unint64_t)a4 range:(_NSRange)a5 undoTransaction:(void *)a6;
-- (void)applyChanges:(BOOL)a3 inRange:(_NSRange)a4 inSelectionRange:(_NSRange)a5 outChangedRange:(_NSRange *)a6 outSelectionRange:(_NSRange *)a7 undoTransaction:(void *)a8 forceAll:(BOOL)a9 kind:(int)a10;
-- (void)applyFlags:(unsigned __int16)a3 level:(unint64_t)a4 toParagraphIndexRange:(_NSRange)a5 forKind:(unint64_t)a6 undoTransaction:(void *)a7;
-- (void)applyFlags:(unsigned __int16)a3 level:(unint64_t)a4 toParagraphsInCharRange:(_NSRange)a5 undoTransaction:(void *)a6;
-- (void)applyObject:(id)a3 toCharRange:(_NSRange)a4 forKind:(int)a5 actionBuilder:(void *)a6;
-- (void)applyObject:(id)a3 toCharRange:(_NSRange)a4 forKind:(int)a5 dolcContext:(id)a6 undoTransaction:(void *)a7;
-- (void)applyObject:(id)a3 toParagraphIndexRange:(_NSRange)a4 forKind:(unint64_t)a5 undoTransaction:(void *)a6;
-- (void)applyObject:(id)a3 toParagraphsInCharRange:(_NSRange)a4 forKind:(unint64_t)a5 undoTransaction:(void *)a6;
-- (void)applyParagraphData:(TSWPParagraphData)a3 toParagraphIndexRange:(_NSRange)a4 forKind:(unint64_t)a5 undoTransaction:(void *)a6;
-- (void)autoUpdateField:(id)a3 withRange:(_NSRange)a4 documentRoot:(id)a5 returningInsertedRange:(_NSRange *)a6;
-- (void)autoUpdateSmartFieldsWithDocumentRoot:(id)a3;
-- (void)cfRetainedNonUndoableFastCopyAttributeRecord:(TSWPAttributeRecord *)a3 shouldAddRecord:(BOOL *)a4 attributeArrayKind:(unint64_t)a5 atIndex:(unint64_t)a6 sourceStorage:(id)a7 objectContext:(id)a8 flags:(unsigned int)a9 actionState:(void *)a10;
-- (void)clearBackPointerToParentInfoIfNeeded:(id)a3;
+- (vector<unsigned)p_charIndicesForString:(TSWPStorage *)self breakingCharacterSet:(SEL)set;
+- (void)addAllDictationAndAutocorrectionKeyRangesInRange:(_NSRange)range toRanges:(id)ranges;
+- (void)addDisallowedElementKind:(unsigned int)kind;
+- (void)addGlyphVariantData:(id)data toRange:(_NSRange)range;
+- (void)addObserver:(id)observer;
+- (void)addOverlappingField:(id)field toRange:(_NSRange)range attributeKind:(unint64_t)kind dolcContext:(id)context undoTransaction:(void *)transaction;
+- (void)addParagraphObserver:(id)observer;
+- (void)addSmartField:(id)field toRange:(_NSRange)range dolcContext:(id)context undoTransaction:(void *)transaction;
+- (void)adoptStylesheet:(id)stylesheet withMapper:(id)mapper;
+- (void)applyChange:(id)change changeRange:(_NSRange)range accept:(BOOL)accept undoTransaction:(void *)transaction;
+- (void)applyChangeSet:(id)set tableKind:(unint64_t)kind range:(_NSRange)range undoTransaction:(void *)transaction;
+- (void)applyChanges:(BOOL)changes inRange:(_NSRange)range inSelectionRange:(_NSRange)selectionRange outChangedRange:(_NSRange *)changedRange outSelectionRange:(_NSRange *)outSelectionRange undoTransaction:(void *)transaction forceAll:(BOOL)all kind:(int)self0;
+- (void)applyFlags:(unsigned __int16)flags level:(unint64_t)level toParagraphIndexRange:(_NSRange)range forKind:(unint64_t)kind undoTransaction:(void *)transaction;
+- (void)applyFlags:(unsigned __int16)flags level:(unint64_t)level toParagraphsInCharRange:(_NSRange)range undoTransaction:(void *)transaction;
+- (void)applyObject:(id)object toCharRange:(_NSRange)range forKind:(int)kind actionBuilder:(void *)builder;
+- (void)applyObject:(id)object toCharRange:(_NSRange)range forKind:(int)kind dolcContext:(id)context undoTransaction:(void *)transaction;
+- (void)applyObject:(id)object toParagraphIndexRange:(_NSRange)range forKind:(unint64_t)kind undoTransaction:(void *)transaction;
+- (void)applyObject:(id)object toParagraphsInCharRange:(_NSRange)range forKind:(unint64_t)kind undoTransaction:(void *)transaction;
+- (void)applyParagraphData:(TSWPParagraphData)data toParagraphIndexRange:(_NSRange)range forKind:(unint64_t)kind undoTransaction:(void *)transaction;
+- (void)autoUpdateField:(id)field withRange:(_NSRange)range documentRoot:(id)root returningInsertedRange:(_NSRange *)insertedRange;
+- (void)autoUpdateSmartFieldsWithDocumentRoot:(id)root;
+- (void)cfRetainedNonUndoableFastCopyAttributeRecord:(TSWPAttributeRecord *)record shouldAddRecord:(BOOL *)addRecord attributeArrayKind:(unint64_t)kind atIndex:(unint64_t)index sourceStorage:(id)storage objectContext:(id)context flags:(unsigned int)flags actionState:(void *)self0;
+- (void)clearBackPointerToParentInfoIfNeeded:(id)needed;
 - (void)commonInit;
-- (void)compress:(void *)a3;
-- (void)compressAttributeArrayKind:(unint64_t)a3 actionState:(void *)a4;
+- (void)compress:(void *)compress;
+- (void)compressAttributeArrayKind:(unint64_t)kind actionState:(void *)state;
 - (void)dealloc;
-- (void)didChangeParagraphAttributeLocation:(unint64_t)a3 delta:(int64_t)a4;
-- (void)enumerateAllHyperlinksUsingBlock:(id)a3;
-- (void)enumerateAttachmentsInTextRange:(_NSRange)a3 usingBlock:(id)a4;
-- (void)enumerateAttachmentsOfClass:(Class)a3 inTextRange:(_NSRange)a4 usingBlock:(id)a5;
-- (void)enumerateBookmarksInRange:(_NSRange)a3 usingBlock:(id)a4;
-- (void)enumerateBookmarksInSelection:(id)a3 usingBlock:(id)a4;
-- (void)enumerateChangesInRange:(_NSRange)a3 usingBlock:(id)a4;
-- (void)enumerateFootnoteAttachmentsInTextRange:(_NSRange)a3 usingBlock:(id)a4;
-- (void)enumerateHighlightsInExpandedRange:(_NSRange)a3 usingBlock:(id)a4;
-- (void)enumerateHighlightsInSelection:(id)a3 usingBlock:(id)a4;
-- (void)enumerateHighlightsInSelectionExpandedRange:(id)a3 usingBlock:(id)a4;
-- (void)enumerateParagraphsIntersectingTextRange:(_NSRange)a3 usingBlock:(id)a4;
-- (void)enumeratePencilAnnotationsUsingBlock:(id)a3;
-- (void)enumerateSmartFieldsWithAttributeKind:(unint64_t)a3 inRange:(_NSRange)a4 usingBlock:(id)a5;
-- (void)enumerateTateChuYokoInRange:(_NSRange)a3 usingBlock:(id)a4;
-- (void)enumerateWithAttributeKind:(unint64_t)a3 inRange:(_NSRange)a4 withOptions:(unint64_t)a5 usingBlock:(id)a6;
-- (void)fixGlyphVariantFontsForRange:(_NSRange)a3;
-- (void)i_assignStylesheet:(id)a3;
+- (void)didChangeParagraphAttributeLocation:(unint64_t)location delta:(int64_t)delta;
+- (void)enumerateAllHyperlinksUsingBlock:(id)block;
+- (void)enumerateAttachmentsInTextRange:(_NSRange)range usingBlock:(id)block;
+- (void)enumerateAttachmentsOfClass:(Class)class inTextRange:(_NSRange)range usingBlock:(id)block;
+- (void)enumerateBookmarksInRange:(_NSRange)range usingBlock:(id)block;
+- (void)enumerateBookmarksInSelection:(id)selection usingBlock:(id)block;
+- (void)enumerateChangesInRange:(_NSRange)range usingBlock:(id)block;
+- (void)enumerateFootnoteAttachmentsInTextRange:(_NSRange)range usingBlock:(id)block;
+- (void)enumerateHighlightsInExpandedRange:(_NSRange)range usingBlock:(id)block;
+- (void)enumerateHighlightsInSelection:(id)selection usingBlock:(id)block;
+- (void)enumerateHighlightsInSelectionExpandedRange:(id)range usingBlock:(id)block;
+- (void)enumerateParagraphsIntersectingTextRange:(_NSRange)range usingBlock:(id)block;
+- (void)enumeratePencilAnnotationsUsingBlock:(id)block;
+- (void)enumerateSmartFieldsWithAttributeKind:(unint64_t)kind inRange:(_NSRange)range usingBlock:(id)block;
+- (void)enumerateTateChuYokoInRange:(_NSRange)range usingBlock:(id)block;
+- (void)enumerateWithAttributeKind:(unint64_t)kind inRange:(_NSRange)range withOptions:(unint64_t)options usingBlock:(id)block;
+- (void)fixGlyphVariantFontsForRange:(_NSRange)range;
+- (void)i_assignStylesheet:(id)stylesheet;
 - (void)i_repairParagraphArray;
-- (void)insertPlaceholderText:(id)a3 atCharIndex:(unint64_t)a4 undoTransaction:(void *)a5;
-- (void)invalidateCharIndexForAttachment:(id)a3;
+- (void)insertPlaceholderText:(id)text atCharIndex:(unint64_t)index undoTransaction:(void *)transaction;
+- (void)invalidateCharIndexForAttachment:(id)attachment;
 - (void)invalidateFootnoteAttachmentCharIndexes;
-- (void)invalidateForStyle:(id)a3;
-- (void)invalidatePageCountAttachmentCharIndexes:(BOOL)a3;
-- (void)loadFromUnarchiver:(id)a3;
-- (void)moveDropCapStyleFromParIndex:(unint64_t)a3 toParIndex:(unint64_t)a4 undoTransaction:(void *)a5;
-- (void)nonUndoableAppendSection:(id)a3 charIndex:(unint64_t)a4;
-- (void)nonUndoableFilterInvalidContentForStorage:(id)a3 keepHighlights:(BOOL)a4;
-- (void)nonUndoableFilterInvalidContentForStorage:(id)a3 keepHighlights:(BOOL)a4 nestingDepth:(int64_t)a5 rangesToUpdate:(id)a6;
+- (void)invalidateForStyle:(id)style;
+- (void)invalidatePageCountAttachmentCharIndexes:(BOOL)indexes;
+- (void)loadFromUnarchiver:(id)unarchiver;
+- (void)moveDropCapStyleFromParIndex:(unint64_t)index toParIndex:(unint64_t)parIndex undoTransaction:(void *)transaction;
+- (void)nonUndoableAppendSection:(id)section charIndex:(unint64_t)index;
+- (void)nonUndoableFilterInvalidContentForStorage:(id)storage keepHighlights:(BOOL)highlights;
+- (void)nonUndoableFilterInvalidContentForStorage:(id)storage keepHighlights:(BOOL)highlights nestingDepth:(int64_t)depth rangesToUpdate:(id)update;
 - (void)nonUndoableFilterParagraphStylesForHeaderFooter;
-- (void)nonUndoableInitializeAttributeArraySource:(TSWPAttributeArray *)a3 forSourceRange:(_NSRange)a4 toDestStorage:(id)a5 objectContext:(id)a6 dolcContext:(id)a7 flags:(unsigned int)a8;
-- (void)nonUndoableInsertObject:(id)a3 charIndex:(unint64_t)a4 attributeArray:(TSWPAttributeArray *)a5 attributeIndex:(unint64_t)a6 dolcContext:(id)a7;
-- (void)nonUndoableInsertParagraphData:(TSWPParagraphData)a3 charIndex:(unint64_t)a4 attributeArray:(TSWPAttributeArray *)a5 attributeIndex:(unint64_t)a6;
-- (void)nonUndoableRemoveUnsupportedHyperlinksForCrossDocumentPaste:(BOOL)a3;
-- (void)nonUndoableReplaceWithAttachment:(id)a3 forAttachmentIndex:(unint64_t)a4 dolcContext:(id)a5;
-- (void)nonUndoableSetWPKind:(unsigned __int8)a3 keepHighlights:(BOOL)a4;
-- (void)p_attributesAtCharIndex:(unint64_t)a3 attributesOfInterest:(BOOL)a4[23] attributesTable:(id)a5[23] effectiveRange:(_NSRange *)a6;
-- (void)p_createAttributeTablesIfNeededWithListStyleFlag:(BOOL)a3;
-- (void)p_deduplicateAttributeObjectsWithVersion:(unint64_t)a3 hasPreUFFVersion:(BOOL)a4;
-- (void)p_finalizeLoadingFromUnarchiverWithTimes:(const double *)a3 isInDocument:(BOOL)a4 isFromCopy:(BOOL)a5 hasTableListStyle:(BOOL)a6 isCrossAppPaste:(BOOL)a7 hasPreUFFVersion:(BOOL)a8 fileFormatVersion:(unint64_t)a9;
-- (void)p_handleChangeSplittingForInsertedRange:(_NSRange)a3 changeSession:(id)a4 actionBuilder:(TSWPStorageActionBuilder *)a5;
-- (void)p_mutateByWordWithUndoTransaction:(void *)a3 locale:(id)a4 transformer:(id)a5;
-- (void)p_nonUndoableFilterPageBreaksFromStorage:(id)a3;
-- (void)p_nonUndoableFilterSectionBreaksFromStorage:(id)a3;
+- (void)nonUndoableInitializeAttributeArraySource:(TSWPAttributeArray *)source forSourceRange:(_NSRange)range toDestStorage:(id)storage objectContext:(id)context dolcContext:(id)dolcContext flags:(unsigned int)flags;
+- (void)nonUndoableInsertObject:(id)object charIndex:(unint64_t)index attributeArray:(TSWPAttributeArray *)array attributeIndex:(unint64_t)attributeIndex dolcContext:(id)context;
+- (void)nonUndoableInsertParagraphData:(TSWPParagraphData)data charIndex:(unint64_t)index attributeArray:(TSWPAttributeArray *)array attributeIndex:(unint64_t)attributeIndex;
+- (void)nonUndoableRemoveUnsupportedHyperlinksForCrossDocumentPaste:(BOOL)paste;
+- (void)nonUndoableReplaceWithAttachment:(id)attachment forAttachmentIndex:(unint64_t)index dolcContext:(id)context;
+- (void)nonUndoableSetWPKind:(unsigned __int8)kind keepHighlights:(BOOL)highlights;
+- (void)p_attributesAtCharIndex:(unint64_t)index attributesOfInterest:(BOOL)interest[23] attributesTable:(id)table[23] effectiveRange:(_NSRange *)range;
+- (void)p_createAttributeTablesIfNeededWithListStyleFlag:(BOOL)flag;
+- (void)p_deduplicateAttributeObjectsWithVersion:(unint64_t)version hasPreUFFVersion:(BOOL)fVersion;
+- (void)p_finalizeLoadingFromUnarchiverWithTimes:(const double *)times isInDocument:(BOOL)document isFromCopy:(BOOL)copy hasTableListStyle:(BOOL)style isCrossAppPaste:(BOOL)paste hasPreUFFVersion:(BOOL)version fileFormatVersion:(unint64_t)formatVersion;
+- (void)p_handleChangeSplittingForInsertedRange:(_NSRange)range changeSession:(id)session actionBuilder:(TSWPStorageActionBuilder *)builder;
+- (void)p_mutateByWordWithUndoTransaction:(void *)transaction locale:(id)locale transformer:(id)transformer;
+- (void)p_nonUndoableFilterPageBreaksFromStorage:(id)storage;
+- (void)p_nonUndoableFilterSectionBreaksFromStorage:(id)storage;
 - (void)p_repairAttachments;
 - (void)p_repairAttributeArrays;
 - (void)p_repairComments;
-- (void)p_repairHyperlinksWithVersion:(unint64_t)a3 hasPreUFFVersion:(BOOL)a4;
+- (void)p_repairHyperlinksWithVersion:(unint64_t)version hasPreUFFVersion:(BOOL)fVersion;
 - (void)p_repairListLevels;
 - (void)p_repairSectionArray;
-- (void)p_replaceRange:(_NSRange)a3 withString:(id)a4 markers:(void *)a5 flags:(unsigned int)a6 actionState:(void *)a7;
-- (void)p_updateChangeTimestampForDeletedRange:(_NSRange)a3 actionBuilder:(TSWPStorageActionBuilder *)a4;
-- (void)paragraphFlags:(unsigned __int16 *)a3 andLevel:(unint64_t *)a4 atCharIndex:(unint64_t)a5;
-- (void)removeDisallowedElementKind:(unsigned int)a3;
-- (void)removeGlyphVariantDataFromRange:(_NSRange)a3;
-- (void)removeHighlight:(id)a3 dolcContext:(id)a4 undoTransaction:(void *)a5;
-- (void)removeHighlightsInRange:(_NSRange)a3 dolcContext:(id)a4 undoTransaction:(void *)a5 author:(id)a6;
-- (void)removeOverlappingField:(id)a3 fromRange:(_NSRange)a4 attributeKind:(unint64_t)a5 undoTransaction:(void *)a6;
+- (void)p_replaceRange:(_NSRange)range withString:(id)string markers:(void *)markers flags:(unsigned int)flags actionState:(void *)state;
+- (void)p_updateChangeTimestampForDeletedRange:(_NSRange)range actionBuilder:(TSWPStorageActionBuilder *)builder;
+- (void)paragraphFlags:(unsigned __int16 *)flags andLevel:(unint64_t *)level atCharIndex:(unint64_t)index;
+- (void)removeDisallowedElementKind:(unsigned int)kind;
+- (void)removeGlyphVariantDataFromRange:(_NSRange)range;
+- (void)removeHighlight:(id)highlight dolcContext:(id)context undoTransaction:(void *)transaction;
+- (void)removeHighlightsInRange:(_NSRange)range dolcContext:(id)context undoTransaction:(void *)transaction author:(id)author;
+- (void)removeOverlappingField:(id)field fromRange:(_NSRange)range attributeKind:(unint64_t)kind undoTransaction:(void *)transaction;
 - (void)removePencilAnnotations;
-- (void)removeSmartField:(id)a3 fromRange:(_NSRange)a4 undoTransaction:(void *)a5;
-- (void)replaceCharactersInRange:(_NSRange)a3 withString:(id)a4 options:(unint64_t)a5 changedRange:(_NSRange *)a6 changeDelta:(int64_t *)a7 undoTransaction:(void *)a8 changeSession:(id)a9;
-- (void)replaceReferencedStylesUsingBlock:(id)a3;
+- (void)removeSmartField:(id)field fromRange:(_NSRange)range undoTransaction:(void *)transaction;
+- (void)replaceCharactersInRange:(_NSRange)range withString:(id)string options:(unint64_t)options changedRange:(_NSRange *)changedRange changeDelta:(int64_t *)delta undoTransaction:(void *)transaction changeSession:(id)session;
+- (void)replaceReferencedStylesUsingBlock:(id)block;
 - (void)resetAllTextAttributeUUIDStrings;
-- (void)saveRange:(_NSRange)a3 toArchiver:(id)a4 styleProvider:(id)a5 archiveChanges:(BOOL)a6 removeDeletedText:(BOOL)a7 archivePencilAnnotations:(BOOL)a8;
-- (void)saveToArchiver:(id)a3;
-- (void)setCharacterStyle:(id)a3 range:(_NSRange)a4 undoTransaction:(void *)a5;
-- (void)setDictationAndAutocorrection:(id)a3 forCharRange:(_NSRange)a4 actionBuilder:(void *)a5;
-- (void)setDocumentRoot:(id)a3;
-- (void)setDropCapStyle:(id)a3 atParIndex:(unint64_t)a4 undoTransaction:(void *)a5;
-- (void)setDropCapStyle:(id)a3 forCharRange:(_NSRange)a4 undoTransaction:(void *)a5;
-- (void)setDropCapStyle:(id)a3 forParagraphIndexRange:(_NSRange)a4 undoTransaction:(void *)a5;
-- (void)setGeometry:(id)a3;
-- (void)setIngestingWTAttributedString:(BOOL)a3;
-- (void)setLanguage:(id)a3 forCharRange:(_NSRange)a4 actionBuilder:(void *)a5;
-- (void)setListStart:(unint64_t)a3 forCharRange:(_NSRange)a4 undoTransaction:(void *)a5;
-- (void)setParagraphFlags:(unsigned __int16)a3 forCharRange:(_NSRange)a4 undoTransaction:(void *)a5;
-- (void)setParagraphLevel:(unint64_t)a3 atParIndex:(unint64_t)a4 undoTransaction:(void *)a5;
-- (void)setParagraphLevel:(unint64_t)a3 forCharRange:(_NSRange)a4 undoTransaction:(void *)a5;
-- (void)setParagraphWritingDirection:(int)a3 forCharRange:(_NSRange)a4 undoTransaction:(void *)a5;
-- (void)setParagraphWritingDirection:(int)a3 forParagraphIndexRange:(_NSRange)a4 undoTransaction:(void *)a5;
-- (void)setParentInfo:(id)a3;
-- (void)setStylesheetForUpgradeToSingleStylesheet:(id)a3;
+- (void)saveRange:(_NSRange)range toArchiver:(id)archiver styleProvider:(id)provider archiveChanges:(BOOL)changes removeDeletedText:(BOOL)text archivePencilAnnotations:(BOOL)annotations;
+- (void)saveToArchiver:(id)archiver;
+- (void)setCharacterStyle:(id)style range:(_NSRange)range undoTransaction:(void *)transaction;
+- (void)setDictationAndAutocorrection:(id)autocorrection forCharRange:(_NSRange)range actionBuilder:(void *)builder;
+- (void)setDocumentRoot:(id)root;
+- (void)setDropCapStyle:(id)style atParIndex:(unint64_t)index undoTransaction:(void *)transaction;
+- (void)setDropCapStyle:(id)style forCharRange:(_NSRange)range undoTransaction:(void *)transaction;
+- (void)setDropCapStyle:(id)style forParagraphIndexRange:(_NSRange)range undoTransaction:(void *)transaction;
+- (void)setGeometry:(id)geometry;
+- (void)setIngestingWTAttributedString:(BOOL)string;
+- (void)setLanguage:(id)language forCharRange:(_NSRange)range actionBuilder:(void *)builder;
+- (void)setListStart:(unint64_t)start forCharRange:(_NSRange)range undoTransaction:(void *)transaction;
+- (void)setParagraphFlags:(unsigned __int16)flags forCharRange:(_NSRange)range undoTransaction:(void *)transaction;
+- (void)setParagraphLevel:(unint64_t)level atParIndex:(unint64_t)index undoTransaction:(void *)transaction;
+- (void)setParagraphLevel:(unint64_t)level forCharRange:(_NSRange)range undoTransaction:(void *)transaction;
+- (void)setParagraphWritingDirection:(int)direction forCharRange:(_NSRange)range undoTransaction:(void *)transaction;
+- (void)setParagraphWritingDirection:(int)direction forParagraphIndexRange:(_NSRange)range undoTransaction:(void *)transaction;
+- (void)setParentInfo:(id)info;
+- (void)setStylesheetForUpgradeToSingleStylesheet:(id)stylesheet;
 - (void)settingsDidChangeRequiringLayoutAndRendering;
-- (void)smartFieldDidChange:(id)a3;
-- (void)splitSmartFieldAtCharIndex:(unint64_t)a3 lengthToInsert:(unint64_t)a4 attributeKind:(unint64_t)a5 dolcContext:(id)a6 undoTransaction:(void *)a7;
-- (void)splitSmartFieldAtCharIndex:(unint64_t)a3 lengthToInsert:(unint64_t)a4 dolcContext:(id)a5 undoTransaction:(void *)a6;
-- (void)styleDidChangeInRange:(_NSRange)a3;
-- (void)transferAttributeArraySource:(TSWPAttributeArray *)a3 toAttributeArrayDest:(TSWPAttributeArray *)a4 atCharIndex:(unint64_t)a5 delta:(int64_t)a6 dolcContext:(id)a7 actionBuilder:(void *)a8;
-- (void)unarchiverAppendParagraphBreak:(unsigned __int16)a3;
-- (void)wasAddedToDocumentRoot:(id)a3 dolcContext:(id)a4;
-- (void)wasRemovedFromDocumentRoot:(id)a3;
-- (void)willBeAddedToDocumentRoot:(id)a3 dolcContext:(id)a4;
-- (void)willBeRemovedFromDocumentRoot:(id)a3;
+- (void)smartFieldDidChange:(id)change;
+- (void)splitSmartFieldAtCharIndex:(unint64_t)index lengthToInsert:(unint64_t)insert attributeKind:(unint64_t)kind dolcContext:(id)context undoTransaction:(void *)transaction;
+- (void)splitSmartFieldAtCharIndex:(unint64_t)index lengthToInsert:(unint64_t)insert dolcContext:(id)context undoTransaction:(void *)transaction;
+- (void)styleDidChangeInRange:(_NSRange)range;
+- (void)transferAttributeArraySource:(TSWPAttributeArray *)source toAttributeArrayDest:(TSWPAttributeArray *)dest atCharIndex:(unint64_t)index delta:(int64_t)delta dolcContext:(id)context actionBuilder:(void *)builder;
+- (void)unarchiverAppendParagraphBreak:(unsigned __int16)break;
+- (void)wasAddedToDocumentRoot:(id)root dolcContext:(id)context;
+- (void)wasRemovedFromDocumentRoot:(id)root;
+- (void)willBeAddedToDocumentRoot:(id)root dolcContext:(id)context;
+- (void)willBeRemovedFromDocumentRoot:(id)root;
 @end
 
 @implementation TSWPStorage
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
-    objc_msgSend_resetDisallowedElementKinds(a1, v3, v4);
+    objc_msgSend_resetDisallowedElementKinds(self, v3, v4);
 
-    MEMORY[0x2821F9670](a1, sel_resetDisallowedSmartFieldKinds, v5);
+    MEMORY[0x2821F9670](self, sel_resetDisallowedSmartFieldKinds, v5);
   }
 }
 
@@ -476,44 +476,44 @@
   dword_280A57E30 = 0;
 }
 
-+ (id)filterText:(id)a3
++ (id)filterText:(id)text
 {
-  v3 = objc_msgSend_filterText_removingAttachments_(a1, a2, a3, 1);
+  v3 = objc_msgSend_filterText_removingAttachments_(self, a2, text, 1);
 
   return v3;
 }
 
-+ (id)filterText:(id)a3 removingAttachments:(BOOL)a4
++ (id)filterText:(id)text removingAttachments:(BOOL)attachments
 {
-  v4 = objc_msgSend_filterText_removingAttachments_removingControlCharacters_(a1, a2, a3, a4, 1);
+  v4 = objc_msgSend_filterText_removingAttachments_removingControlCharacters_(self, a2, text, attachments, 1);
 
   return v4;
 }
 
-+ (id)filterText:(id)a3 removingAttachments:(BOOL)a4 removingControlCharacters:(BOOL)a5
++ (id)filterText:(id)text removingAttachments:(BOOL)attachments removingControlCharacters:(BOOL)characters
 {
-  v5 = objc_msgSend_filterText_removingAttachments_removingControlCharacters_returnIndexSet_(a1, a2, a3, a4, a5, 0);
+  v5 = objc_msgSend_filterText_removingAttachments_removingControlCharacters_returnIndexSet_(self, a2, text, attachments, characters, 0);
 
   return v5;
 }
 
-+ (id)filterText:(id)a3 removingAttachments:(BOOL)a4 removingControlCharacters:(BOOL)a5 returnIndexSet:(BOOL)a6
++ (id)filterText:(id)text removingAttachments:(BOOL)attachments removingControlCharacters:(BOOL)characters returnIndexSet:(BOOL)set
 {
-  v85 = a6;
-  v6 = a5;
-  v7 = a4;
-  v8 = a3;
+  setCopy = set;
+  charactersCopy = characters;
+  attachmentsCopy = attachments;
+  textCopy = text;
   if (qword_280A57E58 != -1)
   {
     sub_276F4EAF8();
   }
 
   v84 = qword_280A57E38;
-  if (!v7 || !v6)
+  if (!attachmentsCopy || !charactersCopy)
   {
-    if (v7 || v6)
+    if (attachmentsCopy || charactersCopy)
     {
-      if (!v7 || v6)
+      if (!attachmentsCopy || charactersCopy)
       {
         goto LABEL_12;
       }
@@ -561,7 +561,7 @@ LABEL_12:
   }
 
   v82 = v14;
-  v26 = v8;
+  v26 = textCopy;
   v27 = 0;
   v28 = v26;
   while (objc_msgSend_length(v16, v24, v25) && objc_msgSend_characterAtIndex_(v16, v29, 0) == 65279)
@@ -595,7 +595,7 @@ LABEL_12:
 
   v38 = objc_msgSend_length(v16, v29, v30);
   v41 = v38;
-  if (v85)
+  if (setCopy)
   {
     v42 = objc_opt_new();
 
@@ -686,7 +686,7 @@ LABEL_30:
       }
 
       v62 = objc_msgSend_length(v16, v39, v40);
-      if (((v27 | v85) & 1) == 0)
+      if (((v27 | setCopy) & 1) == 0)
       {
         objc_opt_class();
         if (objc_opt_isKindOfClass())
@@ -712,7 +712,7 @@ LABEL_30:
       }
 
       v57 = v62 - &v52[v50];
-      if (v85)
+      if (setCopy)
       {
         objc_msgSend_addIndexesInRange_(v83, v61, v50, v52);
         v50 += v52;
@@ -733,7 +733,7 @@ LABEL_60:
 LABEL_61:
   if (v82)
   {
-    if (!v85)
+    if (!setCopy)
     {
       v70 = objc_msgSend_string(v28, v39, v40);
       isEqualToString = objc_msgSend_isEqualToString_(v16, v71, v70);
@@ -753,13 +753,13 @@ LABEL_61:
   return v28;
 }
 
-+ (id)filterText:(id)a3 flags:(unint64_t)a4
++ (id)filterText:(id)text flags:(unint64_t)flags
 {
-  v6 = a3;
+  textCopy = text;
   objc_opt_class();
   v7 = TSUDynamicCast();
-  v8 = a4 & 3;
-  v10 = (a4 & 3) != 0 && v7 == 0;
+  v8 = flags & 3;
+  v10 = (flags & 3) != 0 && v7 == 0;
   v11 = v8 == 3 || v10;
   v66 = v11;
   v12 = v7;
@@ -785,7 +785,7 @@ LABEL_61:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v23, v24);
   }
 
-  v25 = v6;
+  v25 = textCopy;
   v28 = objc_msgSend_length(v17, v26, v27);
   v30 = v66;
   if ((v8 == 0) | v66 & 1)
@@ -793,14 +793,14 @@ LABEL_61:
     v31 = 0;
     v32 = v25;
     v67 = v15;
-    objc_msgSend_filterText_removingAttachments_removingControlCharacters_returnIndexSet_(a1, v29, v25, v66, (a4 >> 2) & 1, (a4 >> 3) & 1);
+    objc_msgSend_filterText_removingAttachments_removingControlCharacters_returnIndexSet_(self, v29, v25, v66, (flags >> 2) & 1, (flags >> 3) & 1);
     goto LABEL_40;
   }
 
   v33 = v28;
   v64 = v25;
   v36 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v29, @"%C", 65532);
-  v62 = a1;
+  selfCopy = self;
   if (v33)
   {
     v37 = v15;
@@ -853,12 +853,12 @@ LABEL_32:
       }
 
       v48 = (v47 - v38);
-      if ((objc_msgSend_hasAttachmentMatchingFlags_atCharIndex_(v67, v46, a4, v44) & 1) == 0)
+      if ((objc_msgSend_hasAttachmentMatchingFlags_atCharIndex_(v67, v46, flags, v44) & 1) == 0)
       {
         goto LABEL_32;
       }
 
-      if ((a4 & 8) != 0)
+      if ((flags & 8) != 0)
       {
         v49 = v39;
         if (!v39)
@@ -904,7 +904,7 @@ LABEL_37:
 LABEL_39:
 
   v25 = v64;
-  objc_msgSend_filterText_removingAttachments_removingControlCharacters_returnIndexSet_(v62, v54, v32, v30, (a4 >> 2) & 1, (a4 >> 3) & 1);
+  objc_msgSend_filterText_removingAttachments_removingControlCharacters_returnIndexSet_(selfCopy, v54, v32, v30, (flags >> 2) & 1, (flags >> 3) & 1);
   v55 = LABEL_40:;
 
   objc_opt_class();
@@ -923,14 +923,14 @@ LABEL_39:
   return v55;
 }
 
-+ (id)filterMarkAttributes:(id)a3
++ (id)filterMarkAttributes:(id)attributes
 {
-  v3 = a3;
+  attributesCopy = attributes;
   objc_opt_class();
   v4 = TSUDynamicCast();
   v7 = objc_msgSend_mutableCopy(v4, v5, v6);
 
-  v11 = v3;
+  v11 = attributesCopy;
   if (objc_msgSend_length(v7, v8, v9))
   {
     v12 = objc_msgSend_attributesAtIndex_effectiveRange_(v7, v10, 0, 0);
@@ -959,7 +959,7 @@ LABEL_39:
   return v11;
 }
 
-+ (BOOL)shouldInvalidateForStylePropertyChangeSet:(id)a3
++ (BOOL)shouldInvalidateForStylePropertyChangeSet:(id)set
 {
   v6 = 0;
   v7 = &v6;
@@ -970,60 +970,60 @@ LABEL_39:
   v5[2] = sub_276D160D4;
   v5[3] = &unk_27A6F35F0;
   v5[4] = &v6;
-  objc_msgSend_enumerateDefinedPropertiesWithBlock_(a3, a2, v5);
+  objc_msgSend_enumerateDefinedPropertiesWithBlock_(set, a2, v5);
   v3 = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
   return v3;
 }
 
-+ (Class)pStringClassForWPKind:(unsigned __int8)a3
++ (Class)pStringClassForWPKind:(unsigned __int8)kind
 {
   v3 = objc_opt_class();
 
   return v3;
 }
 
-- (TSWPStorage)initWithContext:(id)a3 string:(id)a4 kind:(unsigned __int8)a5 stylesheet:(id)a6 paragraphStyle:(id)a7 listStyle:(id)a8 section:(id)a9 columnStyle:(id)a10
+- (TSWPStorage)initWithContext:(id)context string:(id)string kind:(unsigned __int8)kind stylesheet:(id)stylesheet paragraphStyle:(id)style listStyle:(id)listStyle section:(id)section columnStyle:(id)self0
 {
-  v13 = a5;
-  v16 = a3;
-  v32 = a4;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = a9;
-  v21 = a10;
+  kindCopy = kind;
+  contextCopy = context;
+  stringCopy = string;
+  stylesheetCopy = stylesheet;
+  styleCopy = style;
+  listStyleCopy = listStyle;
+  sectionCopy = section;
+  columnStyleCopy = columnStyle;
   objc_opt_class();
-  v24 = objc_msgSend_documentObject(v16, v22, v23);
+  v24 = objc_msgSend_documentObject(contextCopy, v22, v23);
   v25 = TSUDynamicCast();
 
   if (v25)
   {
-    v28 = v32;
+    v28 = stringCopy;
     v29 = objc_msgSend_writingDirectionForStorage(v25, v26, v27) == 2;
   }
 
   else
   {
     v29 = 0;
-    v28 = v32;
+    v28 = stringCopy;
   }
 
-  v30 = objc_msgSend_initWithContext_string_kind_stylesheet_paragraphStyle_listStyle_section_columnStyle_paragraphDirection_(self, v26, v16, v28, v13, v17, v18, v19, v20, v21, v29);
+  v30 = objc_msgSend_initWithContext_string_kind_stylesheet_paragraphStyle_listStyle_section_columnStyle_paragraphDirection_(self, v26, contextCopy, v28, kindCopy, stylesheetCopy, styleCopy, listStyleCopy, sectionCopy, columnStyleCopy, v29);
 
   return v30;
 }
 
-- (TSWPStorage)initWithContext:(id)a3 string:(id)a4 kind:(unsigned __int8)a5 stylesheet:(id)a6 paragraphStyle:(id)a7 listStyle:(id)a8 section:(id)a9 columnStyle:(id)a10 paragraphDirection:(int)a11
+- (TSWPStorage)initWithContext:(id)context string:(id)string kind:(unsigned __int8)kind stylesheet:(id)stylesheet paragraphStyle:(id)style listStyle:(id)listStyle section:(id)section columnStyle:(id)self0 paragraphDirection:(int)self1
 {
-  v17 = a3;
-  v44 = a4;
-  v18 = a6;
-  v19 = a7;
-  v43 = a8;
-  v45 = a9;
-  v21 = a10;
-  if (!v18)
+  contextCopy = context;
+  stringCopy = string;
+  stylesheetCopy = stylesheet;
+  styleCopy = style;
+  listStyleCopy = listStyle;
+  sectionCopy = section;
+  columnStyleCopy = columnStyle;
+  if (!stylesheetCopy)
   {
     v22 = MEMORY[0x277D81150];
     v23 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v20, "[TSWPStorage initWithContext:string:kind:stylesheet:paragraphStyle:listStyle:section:columnStyle:paragraphDirection:]");
@@ -1033,14 +1033,14 @@ LABEL_39:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v27, v28);
   }
 
-  if (v19)
+  if (styleCopy)
   {
     v57.receiver = self;
     v57.super_class = TSWPStorage;
-    v29 = [(TSWPStorage *)&v57 initWithContext:v17];
+    v29 = [(TSWPStorage *)&v57 initWithContext:contextCopy];
     v30 = v29;
-    v32 = v43;
-    v31 = v44;
+    v32 = listStyleCopy;
+    v31 = stringCopy;
     if (v29)
     {
       v46[0] = MEMORY[0x277D85DD0];
@@ -1048,20 +1048,20 @@ LABEL_39:
       v46[2] = sub_276D1664C;
       v46[3] = &unk_27A6F3618;
       v47 = v29;
-      v48 = v18;
-      v56 = a5;
-      v49 = v19;
-      v55 = a11;
-      v50 = v43;
-      v51 = v45;
-      v52 = v17;
-      v53 = v21;
-      v54 = v44;
+      v48 = stylesheetCopy;
+      kindCopy = kind;
+      v49 = styleCopy;
+      directionCopy = direction;
+      v50 = listStyleCopy;
+      v51 = sectionCopy;
+      v52 = contextCopy;
+      v53 = columnStyleCopy;
+      v54 = stringCopy;
       objc_msgSend_performBlockIgnoringModifications_(v47, v33, v46);
     }
 
     self = v30;
-    v34 = self;
+    selfCopy = self;
   }
 
   else
@@ -1072,12 +1072,12 @@ LABEL_39:
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v35, v39, v36, v38, 702, 0, "initWithString: Missing paragraph style.");
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v40, v41);
-    v34 = 0;
-    v32 = v43;
-    v31 = v44;
+    selfCopy = 0;
+    v32 = listStyleCopy;
+    v31 = stringCopy;
   }
 
-  return v34;
+  return selfCopy;
 }
 
 - (void)commonInit
@@ -1090,15 +1090,15 @@ LABEL_39:
   self->_wordAtCharIndex = *MEMORY[0x277D81490];
 }
 
-- (TSWPStorage)initWithContext:(id)a3 string:(id)a4 stylesheet:(id)a5 kind:(unsigned __int8)a6
+- (TSWPStorage)initWithContext:(id)context string:(id)string stylesheet:(id)stylesheet kind:(unsigned __int8)kind
 {
-  v6 = a6;
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v15 = objc_msgSend_defaultParagraphStyle(v12, v13, v14);
-  v18 = objc_msgSend_defaultListStyle(v12, v16, v17);
-  v20 = objc_msgSend_initWithContext_string_kind_stylesheet_paragraphStyle_listStyle_section_columnStyle_(self, v19, v10, v11, v6, v12, v15, v18, 0, 0);
+  kindCopy = kind;
+  contextCopy = context;
+  stringCopy = string;
+  stylesheetCopy = stylesheet;
+  v15 = objc_msgSend_defaultParagraphStyle(stylesheetCopy, v13, v14);
+  v18 = objc_msgSend_defaultListStyle(stylesheetCopy, v16, v17);
+  v20 = objc_msgSend_initWithContext_string_kind_stylesheet_paragraphStyle_listStyle_section_columnStyle_(self, v19, contextCopy, stringCopy, kindCopy, stylesheetCopy, v15, v18, 0, 0);
 
   return v20;
 }
@@ -1125,14 +1125,14 @@ LABEL_39:
   [(TSWPStorage *)&v10 dealloc];
 }
 
-+ (Class)classForUnarchiver:(id)a3
++ (Class)classForUnarchiver:(id)unarchiver
 {
-  v3 = a3;
+  unarchiverCopy = unarchiver;
   google::protobuf::internal::AssignDescriptors();
-  v5 = objc_msgSend_messageWithDescriptor_(v3, v4, off_2812DC408[18]);
+  v5 = objc_msgSend_messageWithDescriptor_(unarchiverCopy, v4, off_2812DC408[18]);
 
   v8 = objc_opt_class();
-  if ((*(v5 + 19) & 2) != 0 && *(v5 + 236) == 5 && objc_msgSend_hasPreUFFVersion(v3, v6, v7))
+  if ((*(v5 + 19) & 2) != 0 && *(v5 + 236) == 5 && objc_msgSend_hasPreUFFVersion(unarchiverCopy, v6, v7))
   {
     v8 = objc_opt_class();
   }
@@ -1142,13 +1142,13 @@ LABEL_39:
   return v8;
 }
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
-  v4 = a3;
+  unarchiverCopy = unarchiver;
   google::protobuf::internal::AssignDescriptors();
-  v6 = objc_msgSend_messageWithDescriptor_(v4, v5, off_2812DC408[18]);
+  v6 = objc_msgSend_messageWithDescriptor_(unarchiverCopy, v5, off_2812DC408[18]);
 
-  if (objc_msgSend_preUFFVersion(v4, v7, v8) >= 0x2CBCCAD1CLL)
+  if (objc_msgSend_preUFFVersion(unarchiverCopy, v7, v8) >= 0x2CBCCAD1CLL)
   {
     v11 = *(v6 + 233);
   }
@@ -1189,7 +1189,7 @@ LABEL_39:
     v118[2] = sub_276D17CD0;
     v118[3] = &unk_27A6F3640;
     v118[4] = self;
-    v22 = v4;
+    v22 = unarchiverCopy;
     v23 = v118;
     v24 = objc_opt_class();
     objc_msgSend_readWeakReferenceMessage_class_protocol_completion_(v22, v25, v21, v24, 0, v23);
@@ -1240,7 +1240,7 @@ LABEL_39:
       v40 = &TSWP::_ObjectAttributeTable_default_instance_;
     }
 
-    (*(*v39 + 232))(v39, v40, v4);
+    (*(*v39 + 232))(v39, v40, unarchiverCopy);
     v38 = *(v6 + 16);
   }
 
@@ -1308,7 +1308,7 @@ LABEL_39:
       v48 = &TSWP::_ObjectAttributeTable_default_instance_;
     }
 
-    (*(*v47 + 232))(v47, v48, v4);
+    (*(*v47 + 232))(v47, v48, unarchiverCopy);
     v38 = *(v6 + 16);
   }
 
@@ -1325,7 +1325,7 @@ LABEL_39:
       v50 = &TSWP::_ObjectAttributeTable_default_instance_;
     }
 
-    (*(*v49 + 232))(v49, v50, v4);
+    (*(*v49 + 232))(v49, v50, unarchiverCopy);
     v38 = *(v6 + 16);
   }
 
@@ -1342,7 +1342,7 @@ LABEL_39:
       v52 = &TSWP::_StringAttributeTable_default_instance_;
     }
 
-    (*(*v51 + 272))(v51, v52, v4);
+    (*(*v51 + 272))(v51, v52, unarchiverCopy);
     v38 = *(v6 + 16);
   }
 
@@ -1359,7 +1359,7 @@ LABEL_39:
       v54 = &TSWP::_StringAttributeTable_default_instance_;
     }
 
-    (*(*v53 + 272))(v53, v54, v4);
+    (*(*v53 + 272))(v53, v54, unarchiverCopy);
     v38 = *(v6 + 16);
   }
 
@@ -1376,7 +1376,7 @@ LABEL_39:
       v56 = &TSWP::_ObjectAttributeTable_default_instance_;
     }
 
-    (*(*v55 + 232))(v55, v56, v4);
+    (*(*v55 + 232))(v55, v56, unarchiverCopy);
   }
 
   v57 = objc_msgSend_supportsSections(self, v36, v37);
@@ -1394,7 +1394,7 @@ LABEL_39:
       v62 = &TSWP::_ObjectAttributeTable_default_instance_;
     }
 
-    (*(*v61 + 232))(v61, v62, v4);
+    (*(*v61 + 232))(v61, v62, unarchiverCopy);
     v60 = *(v6 + 16);
   }
 
@@ -1411,7 +1411,7 @@ LABEL_39:
       v64 = &TSWP::_ObjectAttributeTable_default_instance_;
     }
 
-    (*(*v63 + 232))(v63, v64, v4);
+    (*(*v63 + 232))(v63, v64, unarchiverCopy);
     v60 = *(v6 + 16);
   }
 
@@ -1428,7 +1428,7 @@ LABEL_39:
       v66 = &TSWP::_ObjectAttributeTable_default_instance_;
     }
 
-    (*(*v65 + 232))(v65, v66, v4);
+    (*(*v65 + 232))(v65, v66, unarchiverCopy);
     v60 = *(v6 + 16);
   }
 
@@ -1445,7 +1445,7 @@ LABEL_39:
       v68 = &TSWP::_ObjectAttributeTable_default_instance_;
     }
 
-    (*(*v67 + 232))(v67, v68, v4);
+    (*(*v67 + 232))(v67, v68, unarchiverCopy);
     v60 = *(v6 + 16);
   }
 
@@ -1462,7 +1462,7 @@ LABEL_39:
       v70 = &TSWP::_ObjectAttributeTable_default_instance_;
     }
 
-    (*(*v69 + 232))(v69, v70, v4);
+    (*(*v69 + 232))(v69, v70, unarchiverCopy);
     v60 = *(v6 + 16);
   }
 
@@ -1479,7 +1479,7 @@ LABEL_39:
       v72 = &TSWP::_ObjectAttributeTable_default_instance_;
     }
 
-    (*(*v71 + 232))(v71, v72, v4);
+    (*(*v71 + 232))(v71, v72, unarchiverCopy);
     v60 = *(v6 + 16);
   }
 
@@ -1496,7 +1496,7 @@ LABEL_39:
       v74 = &TSWP::_ObjectAttributeTable_default_instance_;
     }
 
-    (*(*v73 + 232))(v73, v74, v4);
+    (*(*v73 + 232))(v73, v74, unarchiverCopy);
     v60 = *(v6 + 16);
   }
 
@@ -1513,7 +1513,7 @@ LABEL_39:
       v76 = &TSWP::_ObjectAttributeTable_default_instance_;
     }
 
-    (*(*v75 + 232))(v75, v76, v4);
+    (*(*v75 + 232))(v75, v76, unarchiverCopy);
     v60 = *(v6 + 16);
   }
 
@@ -1530,7 +1530,7 @@ LABEL_39:
       v78 = &TSWP::_ObjectAttributeTable_default_instance_;
     }
 
-    (*(*v77 + 232))(v77, v78, v4);
+    (*(*v77 + 232))(v77, v78, unarchiverCopy);
     v60 = *(v6 + 16);
   }
 
@@ -1538,7 +1538,7 @@ LABEL_39:
   {
     v79 = objc_msgSend_attributeArrayForKind_withCreate_(self, v58, 17, 1);
     v80 = *(v6 + 184) ? *(v6 + 184) : &TSWP::_ObjectAttributeTable_default_instance_;
-    (*(*v79 + 232))(v79, v80, v4);
+    (*(*v79 + 232))(v79, v80, unarchiverCopy);
     v60 = *(v6 + 16);
     if ((v60 & 0x80000) != 0)
     {
@@ -1575,7 +1575,7 @@ LABEL_39:
       v96 = &TSWP::_OverlappingFieldAttributeTable_default_instance_;
     }
 
-    (*(*v95 + 248))(v95, v96, v4);
+    (*(*v95 + 248))(v95, v96, unarchiverCopy);
     v60 = *(v6 + 16);
   }
 
@@ -1592,7 +1592,7 @@ LABEL_39:
       v98 = &TSWP::_OverlappingFieldAttributeTable_default_instance_;
     }
 
-    (*(*v97 + 248))(v97, v98, v4);
+    (*(*v97 + 248))(v97, v98, unarchiverCopy);
     v60 = *(v6 + 16);
   }
 
@@ -1609,14 +1609,14 @@ LABEL_39:
       v100 = &TSWP::_ObjectAttributeTable_default_instance_;
     }
 
-    (*(*v99 + 232))(v99, v100, v4);
+    (*(*v99 + 232))(v99, v100, unarchiverCopy);
     v60 = *(v6 + 16);
   }
 
-  v101 = objc_msgSend_isFromCopy(v4, v58, v59);
-  isCrossAppPaste = objc_msgSend_isCrossAppPaste(v4, v102, v103);
-  hasPreUFFVersion = objc_msgSend_hasPreUFFVersion(v4, v105, v106);
-  v110 = objc_msgSend_fileFormatVersion(v4, v108, v109);
+  v101 = objc_msgSend_isFromCopy(unarchiverCopy, v58, v59);
+  isCrossAppPaste = objc_msgSend_isCrossAppPaste(unarchiverCopy, v102, v103);
+  hasPreUFFVersion = objc_msgSend_hasPreUFFVersion(unarchiverCopy, v105, v106);
+  v110 = objc_msgSend_fileFormatVersion(unarchiverCopy, v108, v109);
   v112[0] = MEMORY[0x277D85DD0];
   v112[1] = 3221225472;
   v112[2] = sub_276D17CE4;
@@ -1628,18 +1628,18 @@ LABEL_39:
   v117 = hasPreUFFVersion;
   v112[4] = self;
   v112[5] = v110;
-  objc_msgSend_addFinalizeHandler_(v4, v111, v112);
+  objc_msgSend_addFinalizeHandler_(unarchiverCopy, v111, v112);
 }
 
-- (void)p_finalizeLoadingFromUnarchiverWithTimes:(const double *)a3 isInDocument:(BOOL)a4 isFromCopy:(BOOL)a5 hasTableListStyle:(BOOL)a6 isCrossAppPaste:(BOOL)a7 hasPreUFFVersion:(BOOL)a8 fileFormatVersion:(unint64_t)a9
+- (void)p_finalizeLoadingFromUnarchiverWithTimes:(const double *)times isInDocument:(BOOL)document isFromCopy:(BOOL)copy hasTableListStyle:(BOOL)style isCrossAppPaste:(BOOL)paste hasPreUFFVersion:(BOOL)version fileFormatVersion:(unint64_t)formatVersion
 {
-  v9 = a8;
-  v10 = a7;
-  v11 = a6;
-  v12 = a5;
-  if (a4 || (objc_opt_class(), objc_msgSend_parentInfo(self, v14, v15), v16 = objc_claimAutoreleasedReturnValue(), TSUDynamicCast(), v17 = objc_claimAutoreleasedReturnValue(), v20 = objc_msgSend_tsp_isInDocument(v17, v18, v19), v17, v16, (v20 & 1) != 0))
+  versionCopy = version;
+  pasteCopy = paste;
+  styleCopy = style;
+  copyCopy = copy;
+  if (document || (objc_opt_class(), objc_msgSend_parentInfo(self, v14, v15), v16 = objc_claimAutoreleasedReturnValue(), TSUDynamicCast(), v17 = objc_claimAutoreleasedReturnValue(), v20 = objc_msgSend_tsp_isInDocument(v17, v18, v19), v17, v16, (v20 & 1) != 0))
   {
-    if (v12)
+    if (copyCopy)
     {
       p_documentRoot = &self->_documentRoot;
       objc_storeWeak(&self->_documentRoot, 0);
@@ -1663,10 +1663,10 @@ LABEL_39:
     }
   }
 
-  objc_msgSend_p_createAttributeTablesIfNeededWithListStyleFlag_(self, v21, v11);
+  objc_msgSend_p_createAttributeTablesIfNeededWithListStyleFlag_(self, v21, styleCopy);
   objc_msgSend_p_repairAttachments(self, v35, v36);
   objc_msgSend_p_repairComments(self, v37, v38);
-  objc_msgSend_p_deduplicateAttributeObjectsWithVersion_hasPreUFFVersion_(self, v39, a9, v9);
+  objc_msgSend_p_deduplicateAttributeObjectsWithVersion_hasPreUFFVersion_(self, v39, formatVersion, versionCopy);
   objc_msgSend_p_repairAttributeArrays(self, v40, v41);
   if (objc_msgSend_supportsSections(self, v42, v43))
   {
@@ -1674,9 +1674,9 @@ LABEL_39:
   }
 
   objc_msgSend_p_repairListLevels(self, v44, v45);
-  objc_msgSend_p_repairHyperlinksWithVersion_hasPreUFFVersion_(self, v46, a9, v9);
+  objc_msgSend_p_repairHyperlinksWithVersion_hasPreUFFVersion_(self, v46, formatVersion, versionCopy);
   objc_msgSend_i_repairParagraphArray(self, v47, v48);
-  if (v10)
+  if (pasteCopy)
   {
     v50 = objc_msgSend_validate_(self, v49, 16);
   }
@@ -1699,9 +1699,9 @@ LABEL_39:
   objc_msgSend_compress_(self, v51, 0);
 }
 
-- (void)p_createAttributeTablesIfNeededWithListStyleFlag:(BOOL)a3
+- (void)p_createAttributeTablesIfNeededWithListStyleFlag:(BOOL)flag
 {
-  if (!a3 && objc_msgSend_supportsListStyles(self, a2, a3))
+  if (!flag && objc_msgSend_supportsListStyles(self, a2, flag))
   {
     objc_msgSend_willModifyForUpgrade(self, a2, v4);
     v6 = objc_msgSend_attributeArrayForKind_withCreate_(self, v5, 2, 1);
@@ -1744,9 +1744,9 @@ LABEL_39:
   }
 }
 
-- (void)p_deduplicateAttributeObjectsWithVersion:(unint64_t)a3 hasPreUFFVersion:(BOOL)a4
+- (void)p_deduplicateAttributeObjectsWithVersion:(unint64_t)version hasPreUFFVersion:(BOOL)fVersion
 {
-  if (*MEMORY[0x277D80970] > a3 || a4)
+  if (*MEMORY[0x277D80970] > version || fVersion)
   {
     for (i = 0; i != 23; ++i)
     {
@@ -1788,12 +1788,12 @@ LABEL_39:
   }
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
-  v4 = a3;
+  archiverCopy = archiver;
   v16 = 0;
   objc_msgSend_validate_(self, v5, 4);
-  v10 = objc_msgSend_targetType(v4, v6, v7);
+  v10 = objc_msgSend_targetType(archiverCopy, v6, v7);
   if (v10 == 1)
   {
     v12 = objc_msgSend_range(self, v8, v9);
@@ -1806,21 +1806,21 @@ LABEL_39:
   }
 
   v14 = objc_msgSend_range(self, v8, v9);
-  objc_msgSend_saveRange_toArchiver_styleProvider_archiveChanges_removeDeletedText_archivePencilAnnotations_(self, v15, v14, v15, v4, 0, v11, v16, v10 != 1);
+  objc_msgSend_saveRange_toArchiver_styleProvider_archiveChanges_removeDeletedText_archivePencilAnnotations_(self, v15, v14, v15, archiverCopy, 0, v11, v16, v10 != 1);
 }
 
-- (void)saveRange:(_NSRange)a3 toArchiver:(id)a4 styleProvider:(id)a5 archiveChanges:(BOOL)a6 removeDeletedText:(BOOL)a7 archivePencilAnnotations:(BOOL)a8
+- (void)saveRange:(_NSRange)range toArchiver:(id)archiver styleProvider:(id)provider archiveChanges:(BOOL)changes removeDeletedText:(BOOL)text archivePencilAnnotations:(BOOL)annotations
 {
-  v8 = a7;
-  v9 = a6;
-  range2 = a3.length;
-  location = a3.location;
+  textCopy = text;
+  changesCopy = changes;
+  range2 = range.length;
+  location = range.location;
   v177 = *MEMORY[0x277D85DE8];
-  v161 = a4;
-  v157 = a5;
+  archiverCopy = archiver;
+  providerCopy = provider;
   v14 = 0x277CCA000uLL;
-  v160 = v9;
-  if (v9 && v8)
+  v160 = changesCopy;
+  if (changesCopy && textCopy)
   {
     v15 = MEMORY[0x277D81150];
     v16 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v13, "[TSWPStorage saveRange:toArchiver:styleProvider:archiveChanges:removeDeletedText:archivePencilAnnotations:]");
@@ -1854,7 +1854,7 @@ LABEL_39:
     }
   }
 
-  if (!v8 || v160 || !objc_msgSend_hasTrackedChanges(self, v23, v24) || (v37 = self->_attributesTable[16]) == 0)
+  if (!textCopy || v160 || !objc_msgSend_hasTrackedChanges(self, v23, v24) || (v37 = self->_attributesTable[16]) == 0)
   {
     v52 = objc_msgSend_length(self->_string, v23, v24);
     if (location + range2 >= v52)
@@ -1899,7 +1899,7 @@ LABEL_39:
     }
 
     v59 = v58;
-    if (v58 && !objc_msgSend_targetType(v161, v53, v54))
+    if (v58 && !objc_msgSend_targetType(archiverCopy, v53, v54))
     {
       for (j = 0; j != 23; ++j)
       {
@@ -1927,7 +1927,7 @@ LABEL_39:
       }
     }
 
-    v64 = v161;
+    v64 = archiverCopy;
     google::protobuf::internal::AssignDescriptors();
     v66 = objc_msgSend_messageWithNewFunction_descriptor_(v64, v65, sub_276D34E6C, off_2812DC408[18]);
     v156 = v59;
@@ -2419,7 +2419,7 @@ LABEL_70:
       objc_msgSend_requiresDocumentVersion_featureIdentifier_(v64, v132, *MEMORY[0x277D80998], @"TSWPChangeTrackingInTextBoxes");
     }
 
-    if (a8)
+    if (annotations)
     {
       v134 = self->_attributesTable[20];
       if (v134)
@@ -2579,16 +2579,16 @@ LABEL_70:
   }
 
   v144 = objc_msgSend_range(v44, v45, v46);
-  LOBYTE(usedBufLen) = a8;
-  objc_msgSend_saveRange_toArchiver_styleProvider_archiveChanges_removeDeletedText_archivePencilAnnotations_(v44, v145, v144, v145, v161, v157, 1, 0, usedBufLen);
+  LOBYTE(usedBufLen) = annotations;
+  objc_msgSend_saveRange_toArchiver_styleProvider_archiveChanges_removeDeletedText_archivePencilAnnotations_(v44, v145, v144, v145, archiverCopy, providerCopy, 1, 0, usedBufLen);
 
 LABEL_229:
 }
 
-- (void)unarchiverAppendParagraphBreak:(unsigned __int16)a3
+- (void)unarchiverAppendParagraphBreak:(unsigned __int16)break
 {
-  chars = a3;
-  v4 = objc_msgSend_length(self->_string, a2, a3);
+  chars = break;
+  v4 = objc_msgSend_length(self->_string, a2, break);
   v6 = CFStringCreateWithCharactersNoCopy(0, &chars, 1, *MEMORY[0x277CBED00]);
   if (v6)
   {
@@ -2599,7 +2599,7 @@ LABEL_229:
   }
 }
 
-- (vector<unsigned)p_charIndicesForString:(TSWPStorage *)self breakingCharacterSet:(SEL)a3
+- (vector<unsigned)p_charIndicesForString:(TSWPStorage *)self breakingCharacterSet:(SEL)set
 {
   v7 = a4;
   v8 = a5;
@@ -2985,11 +2985,11 @@ LABEL_229:
   }
 }
 
-- (void)p_repairHyperlinksWithVersion:(unint64_t)a3 hasPreUFFVersion:(BOOL)a4
+- (void)p_repairHyperlinksWithVersion:(unint64_t)version hasPreUFFVersion:(BOOL)fVersion
 {
-  if (*MEMORY[0x277D809A0] > a3 || a4)
+  if (*MEMORY[0x277D809A0] > version || fVersion)
   {
-    MEMORY[0x2821F9670](self, sel_nonUndoableRemoveUnsupportedHyperlinks, a3);
+    MEMORY[0x2821F9670](self, sel_nonUndoableRemoveUnsupportedHyperlinks, version);
   }
 }
 
@@ -3033,39 +3033,39 @@ LABEL_229:
 
 - (id)p_lazyBroadcaster
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_broadcaster)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_broadcaster)
   {
     v3 = objc_alloc_init(TSWPStorageBroadcaster);
-    broadcaster = v2->_broadcaster;
-    v2->_broadcaster = v3;
+    broadcaster = selfCopy->_broadcaster;
+    selfCopy->_broadcaster = v3;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  v5 = v2->_broadcaster;
+  v5 = selfCopy->_broadcaster;
 
   return v5;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v8 = a3;
+  observerCopy = observer;
   v6 = objc_msgSend_p_lazyBroadcaster(self, v4, v5);
-  objc_msgSend_addObserver_(v6, v7, v8);
+  objc_msgSend_addObserver_(v6, v7, observerCopy);
 }
 
-- (void)addParagraphObserver:(id)a3
+- (void)addParagraphObserver:(id)observer
 {
-  v8 = a3;
+  observerCopy = observer;
   v6 = objc_msgSend_p_lazyBroadcaster(self, v4, v5);
-  objc_msgSend_addParagraphObserver_(v6, v7, v8);
+  objc_msgSend_addParagraphObserver_(v6, v7, observerCopy);
 }
 
-- (void)setDocumentRoot:(id)a3
+- (void)setDocumentRoot:(id)root
 {
-  obj = a3;
+  obj = root;
   WeakRetained = objc_loadWeakRetained(&self->_documentRoot);
 
   if (WeakRetained != obj)
@@ -3076,12 +3076,12 @@ LABEL_229:
   objc_storeWeak(&self->_documentRoot, obj);
 }
 
-- (void)nonUndoableSetWPKind:(unsigned __int8)a3 keepHighlights:(BOOL)a4
+- (void)nonUndoableSetWPKind:(unsigned __int8)kind keepHighlights:(BOOL)highlights
 {
   v4 = *(self + 302);
-  if ((v4 & 0xF) != a3)
+  if ((v4 & 0xF) != kind)
   {
-    if (!a3)
+    if (!kind)
     {
       v7 = MEMORY[0x277D81150];
       v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSWPStorage nonUndoableSetWPKind:keepHighlights:]");
@@ -3092,8 +3092,8 @@ LABEL_229:
       v4 = *(self + 302);
     }
 
-    *(self + 302) = v4 & 0xF0 | a3 & 0xF;
-    if ((objc_msgSend_supportsColumnStyles(self, a2, a3) & 1) == 0)
+    *(self + 302) = v4 & 0xF0 | kind & 0xF;
+    if ((objc_msgSend_supportsColumnStyles(self, a2, kind) & 1) == 0)
     {
       v16 = objc_msgSend_attributeArrayForKind_withCreate_(self, v14, 9, 0);
       if (v16)
@@ -3143,19 +3143,19 @@ LABEL_229:
   }
 }
 
-- (void)addDisallowedElementKind:(unsigned int)a3
+- (void)addDisallowedElementKind:(unsigned int)kind
 {
   v3 = *(self + 148);
-  v4 = v3 | (*(self + 298) << 16) | a3;
-  *(self + 148) = v3 | a3;
+  v4 = v3 | (*(self + 298) << 16) | kind;
+  *(self + 148) = v3 | kind;
   *(self + 298) = BYTE2(v4);
 }
 
-- (void)removeDisallowedElementKind:(unsigned int)a3
+- (void)removeDisallowedElementKind:(unsigned int)kind
 {
   v3 = *(self + 148);
-  v4 = (v3 | (*(self + 298) << 16)) & ~a3;
-  *(self + 148) = v3 & ~a3;
+  v4 = (v3 | (*(self + 298) << 16)) & ~kind;
+  *(self + 148) = v3 & ~kind;
   *(self + 298) = BYTE2(v4);
 }
 
@@ -3229,17 +3229,17 @@ LABEL_229:
   return v7;
 }
 
-- (BOOL)allowsElementKind:(unsigned int)a3
+- (BOOL)allowsElementKind:(unsigned int)kind
 {
-  v3 = *&a3;
-  v6 = objc_msgSend_nestedTextboxDepth(self, a2, *&a3);
+  v3 = *&kind;
+  v6 = objc_msgSend_nestedTextboxDepth(self, a2, *&kind);
 
   return objc_msgSend_allowsElementKind_nestingDepth_(self, v5, v3, v6);
 }
 
-- (BOOL)allowsElementKind:(unsigned int)a3 nestingDepth:(int64_t)a4
+- (BOOL)allowsElementKind:(unsigned int)kind nestingDepth:(int64_t)depth
 {
-  if ((objc_msgSend_disallowedElementKinds(self, a2, *&a3) & a3) != 0)
+  if ((objc_msgSend_disallowedElementKinds(self, a2, *&kind) & kind) != 0)
   {
     LOBYTE(v9) = 0;
     return v9;
@@ -3247,8 +3247,8 @@ LABEL_229:
 
   if ((*(self + 302) & 0xF) == 3)
   {
-    v9 = (a3 & 2) == 0 || a4 < 3;
-    if ((a3 & 0x2000) == 0)
+    v9 = (kind & 2) == 0 || depth < 3;
+    if ((kind & 0x2000) == 0)
     {
       goto LABEL_15;
     }
@@ -3263,13 +3263,13 @@ LABEL_13:
   }
 
   v9 = 1;
-  if ((a3 & 0x2000) != 0)
+  if ((kind & 0x2000) != 0)
   {
     goto LABEL_13;
   }
 
 LABEL_15:
-  if ((a3 & 0x12000) != 0 && v9)
+  if ((kind & 0x12000) != 0 && v9)
   {
     LOBYTE(v9) = objc_msgSend_p_isRotatedInAnyParent(self, v7, v8) ^ 1;
   }
@@ -3279,13 +3279,13 @@ LABEL_15:
 
 - (BOOL)p_isRotatedInAnyParent
 {
-  v2 = self;
-  if (!v2)
+  selfCopy = self;
+  if (!selfCopy)
   {
-    return v2;
+    return selfCopy;
   }
 
-  v5 = v2;
+  v5 = selfCopy;
   while (1)
   {
     v6 = objc_msgSend_parentInfo(v5, v3, v4);
@@ -3308,8 +3308,8 @@ LABEL_12:
     v5 = v6;
     if (!v6)
     {
-      LOBYTE(v2) = 0;
-      return v2;
+      LOBYTE(selfCopy) = 0;
+      return selfCopy;
     }
   }
 
@@ -3322,13 +3322,13 @@ LABEL_12:
   }
 
 LABEL_15:
-  LOBYTE(v2) = 1;
-  return v2;
+  LOBYTE(selfCopy) = 1;
+  return selfCopy;
 }
 
-- (BOOL)isAllowedToAddCaptionToChildInfo:(id)a3
+- (BOOL)isAllowedToAddCaptionToChildInfo:(id)info
 {
-  if (objc_msgSend_nestedTextboxDepth(self, a2, a3) > 1)
+  if (objc_msgSend_nestedTextboxDepth(self, a2, info) > 1)
   {
     return 0;
   }
@@ -3357,9 +3357,9 @@ LABEL_15:
   return objc_msgSend_allowsElementKind_(self, v5, 8);
 }
 
-- (BOOL)canAcceptAttachmentForDrawableInfo:(id)a3
+- (BOOL)canAcceptAttachmentForDrawableInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v7 = objc_msgSend_nestedTextboxDepth(self, v5, v6);
   objc_opt_class();
   v8 = TSUDynamicCast();
@@ -3368,7 +3368,7 @@ LABEL_15:
     ++v7;
   }
 
-  v17 = objc_msgSend_elementKind(v4, v11, v12);
+  v17 = objc_msgSend_elementKind(infoCopy, v11, v12);
   v19 = objc_msgSend_allowsElementKind_nestingDepth_(self, v18, v17, v7);
 
   return v19;
@@ -3376,14 +3376,14 @@ LABEL_15:
 
 - (unsigned)disallowedSmartFieldKinds
 {
-  v3 = self;
+  selfCopy = self;
   v4 = *(self + 150);
   v5 = *(&xmmword_280A57E10 + (*(self + 302) & 0xF));
   v6 = objc_msgSend_documentRoot(self, a2, v2);
-  LODWORD(v3) = objc_msgSend_isSectionTemplateInfo_(v6, v7, v3);
+  LODWORD(selfCopy) = objc_msgSend_isSectionTemplateInfo_(v6, v7, selfCopy);
   v8 = v5 | v4;
 
-  if (v3)
+  if (selfCopy)
   {
     return v8 | 0x40;
   }
@@ -3394,9 +3394,9 @@ LABEL_15:
   }
 }
 
-- (BOOL)pAllowsAttachment:(id)a3 withNestingDepth:(int64_t)a4
+- (BOOL)pAllowsAttachment:(id)attachment withNestingDepth:(int64_t)depth
 {
-  v6 = a3;
+  attachmentCopy = attachment;
   objc_opt_class();
   v7 = TSUDynamicCast();
   if (objc_msgSend_isAnchored(v7, v8, v9) && (objc_msgSend_isHTMLWrap(v7, v10, v11) & 1) == 0)
@@ -3406,22 +3406,22 @@ LABEL_15:
 
   else
   {
-    v12 = objc_msgSend_elementKind(v6, v10, v11);
-    v16 = objc_msgSend_allowsElementKind_nestingDepth_(self, v13, v12, a4);
+    v12 = objc_msgSend_elementKind(attachmentCopy, v10, v11);
+    v16 = objc_msgSend_allowsElementKind_nestingDepth_(self, v13, v12, depth);
   }
 
   if (objc_msgSend_wpKind(self, v14, v15) == 5)
   {
-    v16 &= objc_msgSend_elementKind(v6, v17, v18) != 8;
+    v16 &= objc_msgSend_elementKind(attachmentCopy, v17, v18) != 8;
   }
 
   return v16;
 }
 
-- (void)p_nonUndoableFilterSectionBreaksFromStorage:(id)a3
+- (void)p_nonUndoableFilterSectionBreaksFromStorage:(id)storage
 {
-  v4 = a3;
-  if ((objc_msgSend_supportsSectionCopying(v4, v5, v6) & 1) == 0)
+  storageCopy = storage;
+  if ((objc_msgSend_supportsSectionCopying(storageCopy, v5, v6) & 1) == 0)
   {
     v8 = objc_msgSend_attributeArrayForKind_withCreate_(self, v7, 8, 0);
     if (v8)
@@ -3448,9 +3448,9 @@ LABEL_15:
   }
 }
 
-- (void)p_nonUndoableFilterPageBreaksFromStorage:(id)a3
+- (void)p_nonUndoableFilterPageBreaksFromStorage:(id)storage
 {
-  if ((objc_msgSend_supportsPageBreaks(a3, a2, a3) & 1) == 0)
+  if ((objc_msgSend_supportsPageBreaks(storage, a2, storage) & 1) == 0)
   {
     v17 = 5;
     v4 = objc_alloc(MEMORY[0x277CCACA8]);
@@ -3471,22 +3471,22 @@ LABEL_15:
   }
 }
 
-- (void)nonUndoableFilterInvalidContentForStorage:(id)a3 keepHighlights:(BOOL)a4
+- (void)nonUndoableFilterInvalidContentForStorage:(id)storage keepHighlights:(BOOL)highlights
 {
-  v4 = a4;
-  v10 = a3;
+  highlightsCopy = highlights;
+  storageCopy = storage;
   v8 = objc_msgSend_nestedTextboxDepth(self, v6, v7);
-  objc_msgSend_nonUndoableFilterInvalidContentForStorage_keepHighlights_nestingDepth_(self, v9, v10, v4, v8);
+  objc_msgSend_nonUndoableFilterInvalidContentForStorage_keepHighlights_nestingDepth_(self, v9, storageCopy, highlightsCopy, v8);
 }
 
-- (void)nonUndoableFilterInvalidContentForStorage:(id)a3 keepHighlights:(BOOL)a4 nestingDepth:(int64_t)a5 rangesToUpdate:(id)a6
+- (void)nonUndoableFilterInvalidContentForStorage:(id)storage keepHighlights:(BOOL)highlights nestingDepth:(int64_t)depth rangesToUpdate:(id)update
 {
   v190[1] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v187 = a6;
-  v11 = v9;
-  v185 = v9;
-  if (!v9)
+  storageCopy = storage;
+  updateCopy = update;
+  selfCopy = storageCopy;
+  v185 = storageCopy;
+  if (!storageCopy)
   {
     v12 = MEMORY[0x277D81150];
     v13 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v10, "[TSWPStorage nonUndoableFilterInvalidContentForStorage:keepHighlights:nestingDepth:rangesToUpdate:]");
@@ -3494,11 +3494,11 @@ LABEL_15:
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v12, v16, v13, v15, 2093, 0, "invalid nil value for '%{public}s'", "inTargetStorage");
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v17, v18);
-    v11 = self;
+    selfCopy = self;
   }
 
-  v184 = a4;
-  v19 = v11;
+  highlightsCopy = highlights;
+  v19 = selfCopy;
   objc_msgSend_p_nonUndoableFilterSectionBreaksFromStorage_(self, v20, v19);
   objc_msgSend_p_nonUndoableFilterPageBreaksFromStorage_(self, v21, v19);
   if ((objc_msgSend_allowsElementKind_(v19, v22, 784895) & 1) == 0)
@@ -3516,7 +3516,7 @@ LABEL_15:
           goto LABEL_32;
         }
 
-        if ((objc_msgSend_pAllowsAttachment_withNestingDepth_(v19, v29, v30, a5) & 1) == 0)
+        if ((objc_msgSend_pAllowsAttachment_withNestingDepth_(v19, v29, v30, depth) & 1) == 0)
         {
           v37 = &stru_28860A0F0;
           if (objc_opt_respondsToSelector())
@@ -3527,7 +3527,7 @@ LABEL_15:
           var0 = v189.var0;
           objc_msgSend_replaceCharactersInRange_withString_notifyObservers_undoTransaction_(self, v73, v189.var0, 1, v37, 0, 0);
           v78 = objc_msgSend_length(v37, v76, v77);
-          objc_msgSend_updateForTextReplacementInRange_delta_(v187, v79, var0, 1, v78 - 1);
+          objc_msgSend_updateForTextReplacementInRange_delta_(updateCopy, v79, var0, 1, v78 - 1);
           goto LABEL_31;
         }
 
@@ -3642,7 +3642,7 @@ LABEL_32:
       {
         v71 = v189.var0;
         objc_msgSend_replaceCharactersInRange_withString_notifyObservers_undoTransaction_(self, v69, v189.var0, 1, &stru_28860A0F0, 0, 0);
-        objc_msgSend_updateForTextReplacementInRange_delta_(v187, v72, v71, 1, -1);
+        objc_msgSend_updateForTextReplacementInRange_delta_(updateCopy, v72, v71, 1, -1);
       }
 
       else
@@ -3703,7 +3703,7 @@ LABEL_45:
               v152 = v189.var0;
               objc_msgSend_replaceCharactersInRange_withString_notifyObservers_undoTransaction_(self, v149, v189.var0, 1, v151, 0, 0);
               v155 = objc_msgSend_length(v151, v153, v154);
-              objc_msgSend_updateForTextReplacementInRange_delta_(v187, v156, v152, 1, v155 - 1);
+              objc_msgSend_updateForTextReplacementInRange_delta_(updateCopy, v156, v152, 1, v155 - 1);
             }
           }
         }
@@ -3775,7 +3775,7 @@ LABEL_67:
     ;
   }
 
-  if (!v184)
+  if (!highlightsCopy)
   {
     goto LABEL_71;
   }
@@ -3814,11 +3814,11 @@ LABEL_76:
   objc_msgSend_compress_(self, v23, 0);
 }
 
-- (id)typesetterTextSourceForRange:(_NSRange)a3
+- (id)typesetterTextSourceForRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v6 = objc_msgSend_textSourceForRange_(self, a2, a3.location);
+  length = range.length;
+  location = range.location;
+  v6 = objc_msgSend_textSourceForRange_(self, a2, range.location);
   if (objc_msgSend_hasTrackedChanges(self, v7, v8))
   {
     location = objc_msgSend_charRangeMappedFromStorage_(v6, v9, location, length);
@@ -3831,34 +3831,34 @@ LABEL_76:
   return v13;
 }
 
-- (id)textSourceForRange:(_NSRange)a3
+- (id)textSourceForRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v5 = self;
-  if (objc_msgSend_hasTrackedChanges(v5, v6, v7))
+  length = range.length;
+  location = range.location;
+  selfCopy = self;
+  if (objc_msgSend_hasTrackedChanges(selfCopy, v6, v7))
   {
     v8 = [TSWPFilteredStorage alloc];
-    v10 = objc_msgSend_initWithStorage_subRange_(v8, v9, v5, location, length);
+    v10 = objc_msgSend_initWithStorage_subRange_(v8, v9, selfCopy, location, length);
 
-    v5 = v10;
+    selfCopy = v10;
   }
 
-  return v5;
+  return selfCopy;
 }
 
-- (id)filteredStorageForWritingToolsWithRange:(_NSRange)a3 expandRangeToParagraphBoundaries:(BOOL)a4
+- (id)filteredStorageForWritingToolsWithRange:(_NSRange)range expandRangeToParagraphBoundaries:(BOOL)boundaries
 {
-  length = a3.length;
-  location = a3.location;
-  if (a4)
+  length = range.length;
+  location = range.location;
+  if (boundaries)
   {
-    v7 = objc_msgSend_p_parIndexRangeForTextSourceForCharacterRange_(self, a2, a3.location, a3.length);
+    v7 = objc_msgSend_p_parIndexRangeForTextSourceForCharacterRange_(self, a2, range.location, range.length);
     location = objc_msgSend_textRangeForParagraphIndexRange_(self, v8, v7, v8);
     length = a2;
   }
 
-  if (objc_msgSend_hasTrackedChanges(self, a2, a3.location))
+  if (objc_msgSend_hasTrackedChanges(self, a2, range.location))
   {
     v10 = objc_msgSend_deletedRangesInRange_(self, v9, location, length);
     v13 = objc_msgSend_mutableCopy(v10, v11, v12);
@@ -3886,21 +3886,21 @@ LABEL_76:
   return v19;
 }
 
-- (id)textSourceForParagraphsContainingRange:(_NSRange)a3
+- (id)textSourceForParagraphsContainingRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v5 = self;
-  if (objc_msgSend_hasTrackedChanges(v5, v6, v7))
+  length = range.length;
+  location = range.location;
+  selfCopy = self;
+  if (objc_msgSend_hasTrackedChanges(selfCopy, v6, v7))
   {
-    v9 = objc_msgSend_p_parIndexRangeForTextSourceForCharacterRange_(v5, v8, location, length);
-    v11 = objc_msgSend_textRangeForParagraphIndexRange_(v5, v10, v9, v10);
-    v13 = objc_msgSend_textSourceForRange_(v5, v12, v11, v12);
+    v9 = objc_msgSend_p_parIndexRangeForTextSourceForCharacterRange_(selfCopy, v8, location, length);
+    v11 = objc_msgSend_textRangeForParagraphIndexRange_(selfCopy, v10, v9, v10);
+    v13 = objc_msgSend_textSourceForRange_(selfCopy, v12, v11, v12);
 
-    v5 = v13;
+    selfCopy = v13;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (TSWPDeletionRangeMap)rangeMap
@@ -3914,9 +3914,9 @@ LABEL_76:
   return v12;
 }
 
-- (_NSRange)p_parIndexRangeForTextSourceForCharacterRange:(_NSRange)a3
+- (_NSRange)p_parIndexRangeForTextSourceForCharacterRange:(_NSRange)range
 {
-  v4 = objc_msgSend_paragraphIndexRangeForCharRange_(self, a2, a3.location, a3.length);
+  v4 = objc_msgSend_paragraphIndexRangeForCharRange_(self, a2, range.location, range.length);
   v7 = &v5[v4];
   v8 = v5 - 1;
   while (1)
@@ -3974,39 +3974,39 @@ LABEL_6:
   return result;
 }
 
-- (TSWPParagraphEnumerator)paragraphEnumeratorAtCharIndex:(SEL)a3 styleProvider:(unint64_t)a4
+- (TSWPParagraphEnumerator)paragraphEnumeratorAtCharIndex:(SEL)index styleProvider:(unint64_t)provider
 {
   v13 = a5;
   v9 = objc_msgSend_length(self, v7, v8);
-  if (v9 <= a4)
+  if (v9 <= provider)
   {
-    v11 = a4;
+    providerCopy = provider;
   }
 
   else
   {
-    v11 = v9;
+    providerCopy = v9;
   }
 
-  if (v9 >= a4)
+  if (v9 >= provider)
   {
-    objc_msgSend_paragraphEnumeratorForCharRange_styleProvider_(self, v10, a4, v11 - a4, v13);
+    objc_msgSend_paragraphEnumeratorForCharRange_styleProvider_(self, v10, provider, providerCopy - provider, v13);
   }
 
   else
   {
-    objc_msgSend_paragraphEnumeratorForCharRange_styleProvider_(self, v10, v9, v11 - v9, v13);
+    objc_msgSend_paragraphEnumeratorForCharRange_styleProvider_(self, v10, v9, providerCopy - v9, v13);
   }
 
   return result;
 }
 
-- (TSWPParagraphEnumerator)paragraphEnumeratorForCharRange:(SEL)a3 styleProvider:(_NSRange)a4 requireHidden:(id)a5
+- (TSWPParagraphEnumerator)paragraphEnumeratorForCharRange:(SEL)range styleProvider:(_NSRange)provider requireHidden:(id)hidden
 {
   v6 = a6;
-  length = a4.length;
-  location = a4.location;
-  v19 = a5;
+  length = provider.length;
+  location = provider.location;
+  hiddenCopy = hidden;
   v12 = objc_msgSend_paragraphIndexAtCharIndex_(self, v11, location);
   if (location + length == objc_msgSend_length(self, v13, v14))
   {
@@ -4023,24 +4023,24 @@ LABEL_6:
     v17 = v12 + 1;
   }
 
-  TSWPParagraphEnumerator::TSWPParagraphEnumerator(retstr, self, v19, v12, v17, v6);
+  TSWPParagraphEnumerator::TSWPParagraphEnumerator(retstr, self, hiddenCopy, v12, v17, v6);
 
   return result;
 }
 
-- (TSWPParagraphEnumerator)paragraphEnumeratorAtParIndex:(SEL)a3 styleProvider:(unint64_t)a4
+- (TSWPParagraphEnumerator)paragraphEnumeratorAtParIndex:(SEL)index styleProvider:(unint64_t)provider
 {
   v12 = a5;
   v10 = objc_msgSend_paragraphCount(self, v8, v9);
-  TSWPParagraphEnumerator::TSWPParagraphEnumerator(retstr, self, v12, a4, v10, 1);
+  TSWPParagraphEnumerator::TSWPParagraphEnumerator(retstr, self, v12, provider, v10, 1);
 
   return result;
 }
 
-- (BOOL)setDOLCSuppressed:(BOOL)a3
+- (BOOL)setDOLCSuppressed:(BOOL)suppressed
 {
   v3 = *(self + 303);
-  *(self + 303) = v3 & 0xFE | a3;
+  *(self + 303) = v3 & 0xFE | suppressed;
   return v3 & 1;
 }
 
@@ -4087,10 +4087,10 @@ LABEL_6:
   return v8;
 }
 
-- (id)p_stringWithAttachmentCharacterSubstitutedWithCharacter:(id)a3
+- (id)p_stringWithAttachmentCharacterSubstitutedWithCharacter:(id)character
 {
-  v4 = a3;
-  if (objc_msgSend_length(v4, v5, v6) != 1)
+  characterCopy = character;
+  if (objc_msgSend_length(characterCopy, v5, v6) != 1)
   {
     v9 = MEMORY[0x277D81150];
     v10 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, "[TSWPStorage p_stringWithAttachmentCharacterSubstitutedWithCharacter:]");
@@ -4101,7 +4101,7 @@ LABEL_6:
   }
 
   v18 = objc_msgSend_attachmentCount(self, v7, v8);
-  if (v18 && objc_msgSend_length(v4, v16, v17) == 1)
+  if (v18 && objc_msgSend_length(characterCopy, v16, v17) == 1)
   {
     v19 = MEMORY[0x277CCAB68];
     v20 = objc_msgSend_string(self, v16, v17);
@@ -4114,7 +4114,7 @@ LABEL_6:
       v26 = v29;
       if (v29 != 0x7FFFFFFFFFFFFFFFLL)
       {
-        objc_msgSend_replaceCharactersInRange_withString_(v22, v23, v29, 1, v4);
+        objc_msgSend_replaceCharactersInRange_withString_(v22, v23, v29, 1, characterCopy);
       }
     }
 
@@ -4129,11 +4129,11 @@ LABEL_6:
   return v27;
 }
 
-- (id)stringForStatisticsInRange:(_NSRange)a3
+- (id)stringForStatisticsInRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  if (objc_msgSend_hasTrackedChanges(self, a2, a3.location))
+  length = range.length;
+  location = range.location;
+  if (objc_msgSend_hasTrackedChanges(self, a2, range.location))
   {
     v7 = objc_msgSend_stringWithCapacity_(MEMORY[0x277CCAB68], v6, length);
     sub_276E0A8BC(v29, self, location, length);
@@ -4213,14 +4213,14 @@ LABEL_6:
   return v7;
 }
 
-- (unint64_t)previousCharacterIndex:(unint64_t)a3
+- (unint64_t)previousCharacterIndex:(unint64_t)index
 {
-  v3 = a3;
-  if (a3)
+  indexCopy = index;
+  if (index)
   {
-    if (objc_msgSend_length(self, a2, a3) >= a3)
+    if (objc_msgSend_length(self, a2, index) >= index)
     {
-      return CFStringGetRangeOfComposedCharactersAtIndex(self->_string, v3 - 1).location;
+      return CFStringGetRangeOfComposedCharactersAtIndex(self->_string, indexCopy - 1).location;
     }
 
     else
@@ -4229,26 +4229,26 @@ LABEL_6:
       v7 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v5, "[TSWPStorage previousCharacterIndex:]");
       v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v8, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/text/TSWPStorage.mm");
       v12 = objc_msgSend_length(self, v10, v11);
-      objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v6, v13, v7, v9, 2512, 0, "Character index is outside storage bounds %lu / %lu", v3, v12);
+      objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v6, v13, v7, v9, 2512, 0, "Character index is outside storage bounds %lu / %lu", indexCopy, v12);
 
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v14, v15);
     }
   }
 
-  return v3;
+  return indexCopy;
 }
 
-- (unint64_t)previousDecomposedCharacterIndex:(unint64_t)a3
+- (unint64_t)previousDecomposedCharacterIndex:(unint64_t)index
 {
-  v3 = a3;
-  if (a3)
+  indexCopy = index;
+  if (index)
   {
-    if (objc_msgSend_length(self, a2, a3) >= a3)
+    if (objc_msgSend_length(self, a2, index) >= index)
     {
-      v16 = self;
-      if (objc_msgSend_hasTrackedChanges(v16, v17, v18))
+      selfCopy = self;
+      if (objc_msgSend_hasTrackedChanges(selfCopy, v17, v18))
       {
-        objc_msgSend_paragraphEnumeratorAtCharIndex_styleProvider_(v16, v19, v3, 0);
+        objc_msgSend_paragraphEnumeratorAtCharIndex_styleProvider_(selfCopy, v19, indexCopy, 0);
         v21 = TSWPParagraphEnumerator::paragraphTextRange(&v37, v20);
         v23 = v22;
         v24 = [TSWPFilteredStorage alloc];
@@ -4257,28 +4257,28 @@ LABEL_6:
         v39.location = v21;
         v39.length = v23;
         v25 = NSUnionRange(v38, v39);
-        v26 = objc_msgSend_initWithStorage_subRange_(v24, v25.length, v16, v25.location, v25.length);
+        v26 = objc_msgSend_initWithStorage_subRange_(v24, v25.length, selfCopy, v25.location, v25.length);
 
         TSWPParagraphEnumerator::~TSWPParagraphEnumerator(&v37);
-        v16 = v26;
+        selfCopy = v26;
       }
 
-      v27 = objc_msgSend_charIndexMappedFromStorage_(v16, v19, v3);
+      v27 = objc_msgSend_charIndexMappedFromStorage_(selfCopy, v19, indexCopy);
       v37.var0 = 0;
       v37.var1 = &v37;
       v37.var2 = 0x2020000000;
-      v37.var3 = v3;
-      v30 = objc_msgSend_string(v16, v28, v29);
+      v37.var3 = indexCopy;
+      v30 = objc_msgSend_string(selfCopy, v28, v29);
       v34[0] = MEMORY[0x277D85DD0];
       v34[1] = 3221225472;
       v34[2] = sub_276D1DC70;
       v34[3] = &unk_27A6F3778;
       v36 = &v37;
-      v31 = v16;
+      v31 = selfCopy;
       v35 = v31;
       objc_msgSend_enumerateSubstringsInRange_options_usingBlock_(v30, v32, 0, v27, 262, v34);
 
-      v3 = *(v37.var1 + 3);
+      indexCopy = *(v37.var1 + 3);
       _Block_object_dispose(&v37, 8);
     }
 
@@ -4288,20 +4288,20 @@ LABEL_6:
       v7 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v5, "[TSWPStorage previousDecomposedCharacterIndex:]");
       v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v8, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/text/TSWPStorage.mm");
       v12 = objc_msgSend_length(self, v10, v11);
-      objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v6, v13, v7, v9, 2529, 0, "Character index is outside storage bounds %lu / %lu", v3, v12);
+      objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v6, v13, v7, v9, 2529, 0, "Character index is outside storage bounds %lu / %lu", indexCopy, v12);
 
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v14, v15);
     }
   }
 
-  return v3;
+  return indexCopy;
 }
 
-- (unint64_t)nextCharacterIndex:(unint64_t)a3
+- (unint64_t)nextCharacterIndex:(unint64_t)index
 {
-  v3 = a3;
-  v6 = objc_msgSend_characterCount(self, a2, a3);
-  if (v6 < v3)
+  indexCopy = index;
+  v6 = objc_msgSend_characterCount(self, a2, index);
+  if (v6 < indexCopy)
   {
     v7 = MEMORY[0x277D81150];
     v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v5, "[TSWPStorage nextCharacterIndex:]");
@@ -4311,24 +4311,24 @@ LABEL_6:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v12, v13);
   }
 
-  if (v6 > v3)
+  if (v6 > indexCopy)
   {
-    RangeOfComposedCharactersAtIndex = CFStringGetRangeOfComposedCharactersAtIndex(self->_string, v3);
+    RangeOfComposedCharactersAtIndex = CFStringGetRangeOfComposedCharactersAtIndex(self->_string, indexCopy);
     return RangeOfComposedCharactersAtIndex.location + RangeOfComposedCharactersAtIndex.length;
   }
 
-  return v3;
+  return indexCopy;
 }
 
-- (BOOL)selectionContainsExclusivelyEmptyParagraphs:(id)a3 ignoreAttachmentCharacters:(BOOL)a4
+- (BOOL)selectionContainsExclusivelyEmptyParagraphs:(id)paragraphs ignoreAttachmentCharacters:(BOOL)characters
 {
-  v4 = a4;
-  v8 = a3;
+  charactersCopy = characters;
+  paragraphsCopy = paragraphs;
   v27 = 0;
   v28 = &v27;
   v29 = 0x2020000000;
   v30 = 0;
-  if (!v8)
+  if (!paragraphsCopy)
   {
     v9 = MEMORY[0x277D81150];
     v10 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, "[TSWPStorage selectionContainsExclusivelyEmptyParagraphs:ignoreAttachmentCharacters:]");
@@ -4338,12 +4338,12 @@ LABEL_6:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v14, v15);
   }
 
-  if (objc_msgSend_isValid(v8, v6, v7))
+  if (objc_msgSend_isValid(paragraphsCopy, v6, v7))
   {
-    if (objc_msgSend_isInsertionPoint(v8, v16, v17))
+    if (objc_msgSend_isInsertionPoint(paragraphsCopy, v16, v17))
     {
-      Range = objc_msgSend_firstRange(v8, v18, v19);
-      isEmptyParagraphRange_ignoreAttachmentCharacters_outRange = objc_msgSend_isEmptyParagraphRange_ignoreAttachmentCharacters_outRange_(self, v21, Range, v21, v4, 0);
+      Range = objc_msgSend_firstRange(paragraphsCopy, v18, v19);
+      isEmptyParagraphRange_ignoreAttachmentCharacters_outRange = objc_msgSend_isEmptyParagraphRange_ignoreAttachmentCharacters_outRange_(self, v21, Range, v21, charactersCopy, 0);
       *(v28 + 24) = isEmptyParagraphRange_ignoreAttachmentCharacters_outRange;
     }
 
@@ -4355,8 +4355,8 @@ LABEL_6:
       v25[3] = &unk_27A6F37A0;
       v25[4] = self;
       v25[5] = &v27;
-      v26 = v4;
-      objc_msgSend_enumerateRanges_(v8, v18, v25);
+      v26 = charactersCopy;
+      objc_msgSend_enumerateRanges_(paragraphsCopy, v18, v25);
     }
   }
 
@@ -4366,14 +4366,14 @@ LABEL_6:
   return v23;
 }
 
-- (BOOL)isEmptyParagraphSelection:(id)a3 ignoreAttachmentCharacters:(BOOL)a4 outRange:(_NSRange *)a5
+- (BOOL)isEmptyParagraphSelection:(id)selection ignoreAttachmentCharacters:(BOOL)characters outRange:(_NSRange *)range
 {
-  v6 = a4;
-  v8 = a3;
-  if (objc_msgSend_isInsertionPoint(v8, v9, v10))
+  charactersCopy = characters;
+  selectionCopy = selection;
+  if (objc_msgSend_isInsertionPoint(selectionCopy, v9, v10))
   {
-    Range = objc_msgSend_firstRange(v8, v11, v12);
-    isEmptyParagraphRange_ignoreAttachmentCharacters_outRange = objc_msgSend_isEmptyParagraphRange_ignoreAttachmentCharacters_outRange_(self, v14, Range, v14, v6, a5);
+    Range = objc_msgSend_firstRange(selectionCopy, v11, v12);
+    isEmptyParagraphRange_ignoreAttachmentCharacters_outRange = objc_msgSend_isEmptyParagraphRange_ignoreAttachmentCharacters_outRange_(self, v14, Range, v14, charactersCopy, range);
   }
 
   else
@@ -4384,15 +4384,15 @@ LABEL_6:
   return isEmptyParagraphRange_ignoreAttachmentCharacters_outRange;
 }
 
-- (BOOL)isEmptyParagraphRange:(_NSRange)a3 ignoreAttachmentCharacters:(BOOL)a4 outRange:(_NSRange *)a5
+- (BOOL)isEmptyParagraphRange:(_NSRange)range ignoreAttachmentCharacters:(BOOL)characters outRange:(_NSRange *)outRange
 {
   v5 = 0;
-  if (!a3.length && a3.location != 0x7FFFFFFFFFFFFFFFLL)
+  if (!range.length && range.location != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v7 = a4;
-    objc_msgSend_paragraphEnumeratorAtCharIndex_styleProvider_(self, a2, a3.location, 0);
+    charactersCopy = characters;
+    objc_msgSend_paragraphEnumeratorAtCharIndex_styleProvider_(self, a2, range.location, 0);
     v12 = TSWPParagraphEnumerator::paragraphString(&v30, v9);
-    if (v7)
+    if (charactersCopy)
     {
       v13 = TSWPParagraphEnumerator::paragraphTextRange(&v30, v10);
       v26 = 0;
@@ -4418,10 +4418,10 @@ LABEL_6:
 
     if (!objc_msgSend_length(v12, v10, v11) || objc_msgSend_length(v12, v19, v20) == 1 && (v22 = objc_msgSend_characterAtIndex_(v12, v21, 0), IsParagraphBreakingCharacter(v22)))
     {
-      if (a5)
+      if (outRange)
       {
-        a5->location = TSWPParagraphEnumerator::paragraphTextRange(&v30, v19);
-        a5->length = v23;
+        outRange->location = TSWPParagraphEnumerator::paragraphTextRange(&v30, v19);
+        outRange->length = v23;
       }
 
       v5 = 1;
@@ -4438,7 +4438,7 @@ LABEL_6:
   return v5;
 }
 
-- (BOOL)isAllWhitespaceInSelection:(id)a3
+- (BOOL)isAllWhitespaceInSelection:(id)selection
 {
   v6 = 0;
   v7 = &v6;
@@ -4450,31 +4450,31 @@ LABEL_6:
   v5[3] = &unk_27A6F37F0;
   v5[4] = self;
   v5[5] = &v6;
-  objc_msgSend_enumerateRanges_(a3, a2, v5);
+  objc_msgSend_enumerateRanges_(selection, a2, v5);
   v3 = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
   return v3;
 }
 
-- (_NSRange)whiteSpaceRangeAtCharIndex:(unint64_t)a3
+- (_NSRange)whiteSpaceRangeAtCharIndex:(unint64_t)index
 {
-  v3 = objc_msgSend_whiteSpaceRangeAtCharIndex_includingBreaks_(self, a2, a3, 1);
+  v3 = objc_msgSend_whiteSpaceRangeAtCharIndex_includingBreaks_(self, a2, index, 1);
   result.length = v4;
   result.location = v3;
   return result;
 }
 
-- (_NSRange)whiteSpaceRangeAtCharIndex:(unint64_t)a3 includingBreaks:(BOOL)a4
+- (_NSRange)whiteSpaceRangeAtCharIndex:(unint64_t)index includingBreaks:(BOOL)breaks
 {
-  v5 = a3;
-  v7 = objc_msgSend_range(self, a2, a3);
+  indexCopy = index;
+  v7 = objc_msgSend_range(self, a2, index);
   v9 = v8;
-  if (objc_msgSend_length(self, v8, v10) > v5 && (v12 = objc_msgSend_characterAtIndex_(self, v11, v5), IsWhitespaceCharacter(v12, v13)))
+  if (objc_msgSend_length(self, v8, v10) > indexCopy && (v12 = objc_msgSend_characterAtIndex_(self, v11, indexCopy), IsWhitespaceCharacter(v12, v13)))
   {
-    v15 = v5;
-    if (v7 < v5)
+    v15 = indexCopy;
+    if (v7 < indexCopy)
     {
-      v15 = v5;
+      v15 = indexCopy;
       while (1)
       {
         v16 = v15 - 1;
@@ -4484,7 +4484,7 @@ LABEL_6:
           break;
         }
 
-        if (!a4)
+        if (!breaks)
         {
           v19 = IsParagraphBreakingCharacter(v17);
           if (v17 == 8232 || (v19 & 1) != 0)
@@ -4503,17 +4503,17 @@ LABEL_6:
     }
 
     v20 = &v9[v7];
-    if (v20 > v5)
+    if (v20 > indexCopy)
     {
       while (1)
       {
-        v21 = objc_msgSend_characterAtIndex_(self, v14, v5);
+        v21 = objc_msgSend_characterAtIndex_(self, v14, indexCopy);
         if (!IsWhitespaceCharacter(v21, v22))
         {
           break;
         }
 
-        if (!a4)
+        if (!breaks)
         {
           v23 = IsParagraphBreakingCharacter(v21);
           if (v21 == 8232 || (v23 & 1) != 0)
@@ -4522,15 +4522,15 @@ LABEL_6:
           }
         }
 
-        if (v20 == ++v5)
+        if (v20 == ++indexCopy)
         {
-          v5 = v20;
+          indexCopy = v20;
           break;
         }
       }
     }
 
-    v24 = v5 - v15;
+    v24 = indexCopy - v15;
   }
 
   else
@@ -4545,11 +4545,11 @@ LABEL_6:
   return result;
 }
 
-- (_NSRange)rangeForSelectionWithInsertionLocation:(unint64_t)a3
+- (_NSRange)rangeForSelectionWithInsertionLocation:(unint64_t)location
 {
   v5 = *MEMORY[0x277D81490];
   v6 = *(MEMORY[0x277D81490] + 8);
-  if (objc_msgSend_length(self, a2, a3) < a3)
+  if (objc_msgSend_length(self, a2, location) < location)
   {
     v9 = MEMORY[0x277D81150];
     v10 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, "[TSWPStorage rangeForSelectionWithInsertionLocation:]");
@@ -4559,11 +4559,11 @@ LABEL_6:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v14, v15);
   }
 
-  if (objc_msgSend_length(self, v7, v8) >= a3)
+  if (objc_msgSend_length(self, v7, v8) >= location)
   {
-    if (a3)
+    if (location)
     {
-      WordWhitespace = objc_msgSend_p_rangeForSelectionAtCharIndex_caretIndex_handleNextWordWhitespace_(self, v16, a3 - 1, a3, 1);
+      WordWhitespace = objc_msgSend_p_rangeForSelectionAtCharIndex_caretIndex_handleNextWordWhitespace_(self, v16, location - 1, location, 1);
     }
 
     else
@@ -4582,26 +4582,26 @@ LABEL_6:
   return result;
 }
 
-- (_NSRange)rangeByExtendingRangeToWhitespace:(_NSRange)a3
+- (_NSRange)rangeByExtendingRangeToWhitespace:(_NSRange)whitespace
 {
-  v3 = MEMORY[0x2821F9670](self, sel_rangeByExtendingRangeToWhitespace_skipVisibleDeleted_, a3.location);
+  v3 = MEMORY[0x2821F9670](self, sel_rangeByExtendingRangeToWhitespace_skipVisibleDeleted_, whitespace.location);
   result.length = v4;
   result.location = v3;
   return result;
 }
 
-- (_NSRange)rangeByExtendingRangeToWhitespace:(_NSRange)a3 skipVisibleDeleted:(BOOL)a4
+- (_NSRange)rangeByExtendingRangeToWhitespace:(_NSRange)whitespace skipVisibleDeleted:(BOOL)deleted
 {
-  v4 = a4;
-  length = a3.length;
-  location = a3.location;
-  objc_msgSend_paragraphEnumeratorForCharRange_styleProvider_requireHidden_(self, a2, a3.location, a3.length, 0, !a4);
+  deletedCopy = deleted;
+  length = whitespace.length;
+  location = whitespace.location;
+  objc_msgSend_paragraphEnumeratorForCharRange_styleProvider_requireHidden_(self, a2, whitespace.location, whitespace.length, 0, !deleted);
   if (objc_msgSend_hasTrackedChanges(self, v8, v9))
   {
     v11 = TSWPParagraphEnumerator::paragraphTextRange(&v30, v10);
     v13 = v12;
     v15 = [TSWPFilteredStorage alloc];
-    if (v4)
+    if (deletedCopy)
     {
       objc_msgSend_deletedRangesInRange_(self, v14, v11, v13);
     }
@@ -4611,19 +4611,19 @@ LABEL_6:
       objc_msgSend_hiddenRangesInRange_(self, v14, v11, v13);
     }
     v20 = ;
-    v16 = objc_msgSend_initWithStorage_subRange_removeRanges_(v15, v21, self, v11, v13, v20);
+    selfCopy = objc_msgSend_initWithStorage_subRange_removeRanges_(v15, v21, self, v11, v13, v20);
 
-    v18 = objc_msgSend_charRangeMappedFromStorage_(v16, v22, location, length);
+    v18 = objc_msgSend_charRangeMappedFromStorage_(selfCopy, v22, location, length);
   }
 
   else
   {
-    v16 = self;
-    v18 = objc_msgSend_charRangeMappedFromStorage_(v16, v17, location, length);
+    selfCopy = self;
+    v18 = objc_msgSend_charRangeMappedFromStorage_(selfCopy, v17, location, length);
   }
 
-  v23 = sub_276D37B98(v18, v19, v16);
-  v25 = objc_msgSend_charRangeMappedToStorage_(v16, v24, v23, v24);
+  v23 = sub_276D37B98(v18, v19, selfCopy);
+  v25 = objc_msgSend_charRangeMappedToStorage_(selfCopy, v24, v23, v24);
   v27 = v26;
   TSWPParagraphEnumerator::~TSWPParagraphEnumerator(&v30);
 
@@ -4634,11 +4634,11 @@ LABEL_6:
   return result;
 }
 
-- (_NSRange)rangeByExtendingRangeToLineBreak:(_NSRange)a3
+- (_NSRange)rangeByExtendingRangeToLineBreak:(_NSRange)break
 {
-  location = a3.location;
-  v5 = a3.location + a3.length;
-  v7 = objc_msgSend_range(self, a2, a3.location);
+  location = break.location;
+  v5 = break.location + break.length;
+  v7 = objc_msgSend_range(self, a2, break.location);
   v8 = v6;
   v24 = *MEMORY[0x277D81490];
   if (location > v7)
@@ -4717,69 +4717,69 @@ LABEL_6:
   return result;
 }
 
-- (_NSRange)scanLeftForWordAtCharIndex:(unint64_t)a3
+- (_NSRange)scanLeftForWordAtCharIndex:(unint64_t)index
 {
-  v5 = objc_msgSend_range(self, a2, a3);
-  v7 = a3;
-  if (&v6[v5] > a3)
+  v5 = objc_msgSend_range(self, a2, index);
+  indexCopy3 = index;
+  if (&v6[v5] > index)
   {
-    v8 = objc_msgSend_characterAtIndex_(self, v6, a3);
-    v7 = a3;
+    v8 = objc_msgSend_characterAtIndex_(self, v6, index);
+    indexCopy3 = index;
     if (IsWhitespaceCharacter(v8, v9))
     {
-      v10 = objc_msgSend_whiteSpaceRangeAtCharIndex_(self, v6, a3);
+      v10 = objc_msgSend_whiteSpaceRangeAtCharIndex_(self, v6, index);
       if (v10 == 0x7FFFFFFFFFFFFFFFLL)
       {
-        v7 = a3;
+        indexCopy3 = index;
       }
 
       else
       {
-        v7 = v10;
+        indexCopy3 = v10;
       }
     }
   }
 
-  v11 = objc_msgSend_wordAtCharIndex_includePreviousWord_(self, v6, a3, 1);
+  v11 = objc_msgSend_wordAtCharIndex_includePreviousWord_(self, v6, index, 1);
   if (v11 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v11 = v7;
+    v11 = indexCopy3;
   }
 
-  v12 = a3 - v11;
+  v12 = index - v11;
   result.length = v12;
   result.location = v11;
   return result;
 }
 
-- (_NSRange)wordAtCharIndex:(unint64_t)a3 includePreviousWord:(BOOL)a4
+- (_NSRange)wordAtCharIndex:(unint64_t)index includePreviousWord:(BOOL)word
 {
-  v4 = objc_msgSend_wordAtCharIndex_includePreviousWord_includeHyphenation_(self, a2, a3, a4, 0);
+  v4 = objc_msgSend_wordAtCharIndex_includePreviousWord_includeHyphenation_(self, a2, index, word, 0);
   result.length = v5;
   result.location = v4;
   return result;
 }
 
-- (_NSRange)wordAtCharIndex:(unint64_t)a3 includePreviousWord:(BOOL)a4 includeHyphenation:(BOOL)a5
+- (_NSRange)wordAtCharIndex:(unint64_t)index includePreviousWord:(BOOL)word includeHyphenation:(BOOL)hyphenation
 {
-  v5 = a5;
-  v6 = a4;
+  hyphenationCopy = hyphenation;
+  wordCopy = word;
   wordAtCharIndexChangeCount = self->_wordAtCharIndexChangeCount;
   v10 = atomic_load(&self->_changeCount.__a_.__a_value);
-  if (wordAtCharIndexChangeCount != v10 || self->_charIndexForWord != a3 || ((*(self + 302) & 0x40) == 0) == a4 || *(self + 302) >= 0 == a5)
+  if (wordAtCharIndexChangeCount != v10 || self->_charIndexForWord != index || ((*(self + 302) & 0x40) == 0) == word || *(self + 302) >= 0 == hyphenation)
   {
-    v13 = objc_msgSend_textRangeForParagraphAtCharIndex_(self, a2, a3);
+    v13 = objc_msgSend_textRangeForParagraphAtCharIndex_(self, a2, index);
     v15 = v14;
     v16 = objc_msgSend_languageForTextRange_useStringTokenizer_useDocumentLanguage_(self, v14, v13, v14, 1, 1);
     v17 = objc_alloc(MEMORY[0x277CBEAF8]);
     v19 = objc_msgSend_initWithLocaleIdentifier_(v17, v18, v16);
-    v21 = objc_msgSend_tswp_rangeOfWordAtCharacterIndex_range_includePreviousWord_includeHyphenation_forLocale_(self->_string, v20, a3, v13, v15, v6, v5, v19);
+    v21 = objc_msgSend_tswp_rangeOfWordAtCharacterIndex_range_includePreviousWord_includeHyphenation_forLocale_(self->_string, v20, index, v13, v15, wordCopy, hyphenationCopy, v19);
     location = v21;
     length = v22;
     v23 = atomic_load(&self->_changeCount.__a_.__a_value);
     self->_wordAtCharIndexChangeCount = v23;
-    self->_charIndexForWord = a3;
-    if (v6)
+    self->_charIndexForWord = index;
+    if (wordCopy)
     {
       v24 = 64;
     }
@@ -4790,7 +4790,7 @@ LABEL_6:
     }
 
     *(self + 302) = *(self + 302) & 0xBF | v24;
-    if (v5)
+    if (hyphenationCopy)
     {
       v25 = 0x80;
     }
@@ -4818,19 +4818,19 @@ LABEL_6:
   return result;
 }
 
-- (_NSRange)rangeForSelectionAtCharIndex:(unint64_t)a3 includePreviousWord:(BOOL)a4
+- (_NSRange)rangeForSelectionAtCharIndex:(unint64_t)index includePreviousWord:(BOOL)word
 {
-  v4 = a4;
-  v5 = a3;
+  wordCopy = word;
+  indexCopy = index;
   v7 = *MEMORY[0x277D81490];
   v8 = *(MEMORY[0x277D81490] + 8);
-  v9 = objc_msgSend_range(self, a2, a3);
+  v9 = objc_msgSend_range(self, a2, index);
   v11 = v10;
   string = self->_string;
-  if (CFStringGetLength(string) > v5 && ((CharacterAtIndex = CFStringGetCharacterAtIndex(string, v5), CharacterAtIndex) ? (v15 = v9 + v11 > v5) : (v15 = 0), v15))
+  if (CFStringGetLength(string) > indexCopy && ((CharacterAtIndex = CFStringGetCharacterAtIndex(string, indexCopy), CharacterAtIndex) ? (v15 = v9 + v11 > indexCopy) : (v15 = 0), v15))
   {
     v16 = IsWhitespaceCharacter(CharacterAtIndex, v14) ^ 1;
-    if (!v4)
+    if (!wordCopy)
     {
       goto LABEL_12;
     }
@@ -4839,20 +4839,20 @@ LABEL_6:
   else
   {
     LOBYTE(v16) = 0;
-    if (!v4)
+    if (!wordCopy)
     {
       goto LABEL_12;
     }
   }
 
-  if (v9 < v5)
+  if (v9 < indexCopy)
   {
-    v17 = CFStringGetCharacterAtIndex(string, v5 - 1);
+    v17 = CFStringGetCharacterAtIndex(string, indexCopy - 1);
     v19 = IsWhitespaceCharacter(v17, v18);
     LOBYTE(v16) = v19 ^ 1 | v16;
     if (!v19)
     {
-      --v5;
+      --indexCopy;
     }
   }
 
@@ -4867,7 +4867,7 @@ LABEL_12:
       if (v20)
       {
         v21 = v20;
-        if (CFStringTokenizerGoToTokenAtIndex(v20, v5))
+        if (CFStringTokenizerGoToTokenAtIndex(v20, indexCopy))
         {
           CurrentTokenRange = CFStringTokenizerGetCurrentTokenRange(v21);
           length = CurrentTokenRange.length;
@@ -4898,20 +4898,20 @@ LABEL_12:
   return result;
 }
 
-- (_NSRange)rangeForSelectionAtCharIndex:(unint64_t)a3 caretIndex:(unint64_t)a4
+- (_NSRange)rangeForSelectionAtCharIndex:(unint64_t)index caretIndex:(unint64_t)caretIndex
 {
-  WordWhitespace = objc_msgSend_p_rangeForSelectionAtCharIndex_caretIndex_handleNextWordWhitespace_(self, a2, a3, a4, 1);
+  WordWhitespace = objc_msgSend_p_rangeForSelectionAtCharIndex_caretIndex_handleNextWordWhitespace_(self, a2, index, caretIndex, 1);
   result.length = v5;
   result.location = WordWhitespace;
   return result;
 }
 
-- (_NSRange)p_rangeForSelectionAtCharIndex:(unint64_t)a3 caretIndex:(unint64_t)a4 handleNextWordWhitespace:(BOOL)a5
+- (_NSRange)p_rangeForSelectionAtCharIndex:(unint64_t)index caretIndex:(unint64_t)caretIndex handleNextWordWhitespace:(BOOL)whitespace
 {
-  v52 = a5;
-  v6 = a3;
-  v8 = a4 - 1;
-  if (a3 != a4 && v8 != a3)
+  whitespaceCopy = whitespace;
+  caretIndexCopy = index;
+  v8 = caretIndex - 1;
+  if (index != caretIndex && v8 != index)
   {
     v9 = MEMORY[0x277D81150];
     v10 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSWPStorage p_rangeForSelectionAtCharIndex:caretIndex:handleNextWordWhitespace:]");
@@ -4921,15 +4921,15 @@ LABEL_12:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v14, v15);
   }
 
-  v16 = objc_msgSend_range(self, a2, a3);
+  v16 = objc_msgSend_range(self, a2, index);
   v18 = v16;
   v19 = v17;
-  if (v16 > v6)
+  if (v16 > caretIndexCopy)
   {
-    v6 = v16;
+    caretIndexCopy = v16;
   }
 
-  if ((v17 - 1) < v6 - v16)
+  if ((v17 - 1) < caretIndexCopy - v16)
   {
     v20 = MEMORY[0x277D81150];
     v21 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v17, "[TSWPStorage p_rangeForSelectionAtCharIndex:caretIndex:handleNextWordWhitespace:]");
@@ -4940,43 +4940,43 @@ LABEL_12:
   }
 
   v27 = &v19[v18];
-  if (v6 >= &v19[v18])
+  if (caretIndexCopy >= &v19[v18])
   {
     v28 = 0;
   }
 
   else
   {
-    v28 = objc_msgSend_characterAtIndex_(self, v17, v6);
+    v28 = objc_msgSend_characterAtIndex_(self, v17, caretIndexCopy);
   }
 
   if (sub_276D36AEC(v28))
   {
-    v30 = objc_msgSend_attachmentOrFootnoteAtCharIndex_(self, v29, v6);
+    v30 = objc_msgSend_attachmentOrFootnoteAtCharIndex_(self, v29, caretIndexCopy);
     v33 = v30;
     if (v30)
     {
       if (objc_msgSend_isDrawable(v30, v31, v32) && (objc_msgSend_isAnchored(v33, v34, v35) & 1) != 0)
       {
-        if (v27 <= a4)
+        if (v27 <= caretIndex)
         {
           v28 = 0;
         }
 
         else
         {
-          v28 = objc_msgSend_characterAtIndex_(self, v36, a4);
+          v28 = objc_msgSend_characterAtIndex_(self, v36, caretIndex);
         }
 
         v37 = 0;
         v38 = 0x7FFFFFFFFFFFFFFFLL;
-        v6 = a4;
+        caretIndexCopy = caretIndex;
       }
 
       else
       {
         v37 = 1;
-        v38 = v6;
+        v38 = caretIndexCopy;
       }
     }
 
@@ -4995,31 +4995,31 @@ LABEL_12:
 
   if (!sub_276D36AEC(v28))
   {
-    if (!v52 || !IsWhitespaceCharacter(v28, v39))
+    if (!whitespaceCopy || !IsWhitespaceCharacter(v28, v39))
     {
       goto LABEL_39;
     }
 
-    if (v6 != a4 || !v6 || v6 <= v18)
+    if (caretIndexCopy != caretIndex || !caretIndexCopy || caretIndexCopy <= v18)
     {
-      if (v27 <= a4)
+      if (v27 <= caretIndex)
       {
-        v40 = v6;
+        caretIndexCopy2 = caretIndexCopy;
       }
 
       else
       {
-        v40 = a4;
+        caretIndexCopy2 = caretIndex;
       }
 
-      if (v6 + 1 != a4)
+      if (caretIndexCopy + 1 != caretIndex)
       {
-        v8 = v6;
-        v41 = objc_msgSend_characterAtIndex_(self, v39, v6);
+        v8 = caretIndexCopy;
+        v41 = objc_msgSend_characterAtIndex_(self, v39, caretIndexCopy);
         goto LABEL_36;
       }
 
-      v8 = v40;
+      v8 = caretIndexCopy2;
     }
 
     v41 = objc_msgSend_characterAtIndex_(self, v39, v8);
@@ -5056,10 +5056,10 @@ LABEL_40:
       goto LABEL_47;
     }
 
-    v38 = objc_msgSend_whiteSpaceRangeAtCharIndex_includingBreaks_(self, v39, v6, 0);
+    v38 = objc_msgSend_whiteSpaceRangeAtCharIndex_includingBreaks_(self, v39, caretIndexCopy, 0);
     v37 = v39;
 LABEL_39:
-    v8 = v6;
+    v8 = caretIndexCopy;
     goto LABEL_40;
   }
 
@@ -5071,20 +5071,20 @@ LABEL_47:
   return result;
 }
 
-- (_NSRange)nextWordFromIndex:(unint64_t)a3 forward:(BOOL)a4
+- (_NSRange)nextWordFromIndex:(unint64_t)index forward:(BOOL)forward
 {
-  v4 = a4;
+  forwardCopy = forward;
   v8 = *MEMORY[0x277D81490];
   length = *(MEMORY[0x277D81490] + 8);
-  v9 = objc_msgSend_wordAtCharIndex_includePreviousWord_(self, a2, a3);
+  v9 = objc_msgSend_wordAtCharIndex_includePreviousWord_(self, a2, index);
   v11 = v10;
   v13 = objc_msgSend_range(self, v10, v12);
   v15 = v14;
-  v16 = objc_msgSend_textRangeForParagraphAtCharIndex_(self, v14, a3);
+  v16 = objc_msgSend_textRangeForParagraphAtCharIndex_(self, v14, index);
   v17 = v16;
   v19 = v18;
   string = self->_string;
-  if (v4)
+  if (forwardCopy)
   {
     v13 += v15;
     v34.length = v13 - v16;
@@ -5094,25 +5094,25 @@ LABEL_47:
     {
       v22 = v21;
       v23 = 0;
-      v24 = a3;
+      indexCopy = index;
       do
       {
-        v25 = v24 - 1;
+        v25 = indexCopy - 1;
         ++v23;
-        if (CFStringTokenizerGoToTokenAtIndex(v22, v24))
+        if (CFStringTokenizerGoToTokenAtIndex(v22, indexCopy))
         {
           break;
         }
 
-        if (v24 <= v17)
+        if (indexCopy <= v17)
         {
           break;
         }
 
-        --v24;
+        --indexCopy;
       }
 
-      while (v13 == a3);
+      while (v13 == index);
       do
       {
         ++v25;
@@ -5156,22 +5156,22 @@ LABEL_30:
     if (v28)
     {
       v22 = v28;
-      v29 = a3;
+      indexCopy2 = index;
       while (1)
       {
-        while (!CFStringTokenizerGoToTokenAtIndex(v22, v29))
+        while (!CFStringTokenizerGoToTokenAtIndex(v22, indexCopy2))
         {
-          if (v29 <= v13)
+          if (indexCopy2 <= v13)
           {
             goto LABEL_28;
           }
 
-          --v29;
+          --indexCopy2;
         }
 
         v30 = CFStringTokenizerGetCurrentTokenRange(v22);
         length = v30.length;
-        if (v30.location + v30.length < a3 || v30.location + v30.length == v9)
+        if (v30.location + v30.length < index || v30.location + v30.length == v9)
         {
           break;
         }
@@ -5181,14 +5181,14 @@ LABEL_30:
           goto LABEL_28;
         }
 
-        if (v30.location - 1 >= v29 - 1)
+        if (v30.location - 1 >= indexCopy2 - 1)
         {
-          --v29;
+          --indexCopy2;
         }
 
         else
         {
-          v29 = v30.location - 1;
+          indexCopy2 = v30.location - 1;
         }
       }
 
@@ -5204,18 +5204,18 @@ LABEL_30:
   return result;
 }
 
-- (_NSRange)rangeByExpandingToIncludePartialWords:(_NSRange)a3
+- (_NSRange)rangeByExpandingToIncludePartialWords:(_NSRange)words
 {
-  length = a3.length;
-  location = a3.location;
-  v5 = self;
-  v9 = v5;
-  if (objc_msgSend_hasTrackedChanges(v5, v6, v7))
+  length = words.length;
+  location = words.location;
+  selfCopy = self;
+  v9 = selfCopy;
+  if (objc_msgSend_hasTrackedChanges(selfCopy, v6, v7))
   {
-    objc_msgSend_paragraphEnumeratorForCharRange_styleProvider_requireHidden_(v5, v8, location, length, 0, 0);
+    objc_msgSend_paragraphEnumeratorForCharRange_styleProvider_requireHidden_(selfCopy, v8, location, length, 0, 0);
     v10 = [TSWPFilteredStorage alloc];
     v12 = TSWPParagraphEnumerator::paragraphTextRange(&v47, v11);
-    v9 = objc_msgSend_initWithStorage_subRange_(v10, v13, v5, v12, v13);
+    v9 = objc_msgSend_initWithStorage_subRange_(v10, v13, selfCopy, v12, v13);
 
     TSWPParagraphEnumerator::~TSWPParagraphEnumerator(&v47);
   }
@@ -5271,12 +5271,12 @@ LABEL_30:
 LABEL_7:
   v23 = &v18[v17];
   v24 = location + length;
-  if (location + length > objc_msgSend_length(v5, v15, v16))
+  if (location + length > objc_msgSend_length(selfCopy, v15, v16))
   {
     v25 = MEMORY[0x277D81150];
     v26 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v22, "[TSWPStorage rangeByExpandingToIncludePartialWords:]");
     v28 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v27, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/text/TSWPStorage.mm");
-    v31 = objc_msgSend_length(v5, v29, v30);
+    v31 = objc_msgSend_length(selfCopy, v29, v30);
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v25, v32, v26, v28, 3025, 0, "Illegal range past end of storage: %lu vs %lu", v24, v31);
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v33, v34);
@@ -5337,11 +5337,11 @@ LABEL_21:
   return result;
 }
 
-- (_NSRange)rangeByTrimmingRange:(_NSRange)a3 withBlock:(id)a4
+- (_NSRange)rangeByTrimmingRange:(_NSRange)range withBlock:(id)block
 {
-  length = a3.length;
-  location = a3.location;
-  v8 = a4;
+  length = range.length;
+  location = range.location;
+  blockCopy = block;
   if (length)
   {
     v9 = length;
@@ -5349,7 +5349,7 @@ LABEL_21:
     while (1)
     {
       v11 = objc_msgSend_characterAtIndex_(self, v7, v10);
-      if (!v8[2](v8, v11))
+      if (!blockCopy[2](blockCopy, v11))
       {
         break;
       }
@@ -5365,7 +5365,7 @@ LABEL_21:
     do
     {
       v13 = objc_msgSend_characterAtIndex_(self, v7, v12);
-      if (!v8[2](v8, v13))
+      if (!blockCopy[2](blockCopy, v13))
       {
         break;
       }
@@ -5391,52 +5391,52 @@ LABEL_10:
   return result;
 }
 
-- (id)objectAtLocationPriorToMappedCharIndex:(unint64_t)a3 forAttributeKind:(unint64_t)a4 effectiveRange:(_NSRange *)a5
+- (id)objectAtLocationPriorToMappedCharIndex:(unint64_t)index forAttributeKind:(unint64_t)kind effectiveRange:(_NSRange *)range
 {
-  v6 = a3;
-  if (a5)
+  indexCopy = index;
+  if (range)
   {
-    *a5 = xmmword_276F98AE0;
+    *range = xmmword_276F98AE0;
   }
 
-  if (a3)
+  if (index)
   {
-    v7 = objc_msgSend_attributeArrayForKind_(self, a2, a4);
-    if (v7 && (v8 = v7, v9 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(v7, v6 - 1), v9 < *(v8 + 6)))
+    v7 = objc_msgSend_attributeArrayForKind_(self, a2, kind);
+    if (v7 && (v8 = v7, v9 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(v7, indexCopy - 1), v9 < *(v8 + 6)))
     {
       v10 = v9;
-      v6 = TSWPAttributeArray::objectForAttributeIndex(v8, v9);
-      if (a5)
+      indexCopy = TSWPAttributeArray::objectForAttributeIndex(v8, v9);
+      if (range)
       {
-        a5->location = TSWPAttributeArray::rangeForAttributeIndex(v8, v10);
-        a5->length = v11;
+        range->location = TSWPAttributeArray::rangeForAttributeIndex(v8, v10);
+        range->length = v11;
       }
     }
 
     else
     {
-      v6 = 0;
+      indexCopy = 0;
     }
   }
 
-  return v6;
+  return indexCopy;
 }
 
-- (id)objectAtLocationAtExactCharIndex:(unint64_t)a3 forAttributeKind:(unint64_t)a4
+- (id)objectAtLocationAtExactCharIndex:(unint64_t)index forAttributeKind:(unint64_t)kind
 {
-  if (objc_msgSend_length(self, a2, a3) <= a3)
+  if (objc_msgSend_length(self, a2, index) <= index)
   {
     goto LABEL_5;
   }
 
-  v8 = objc_msgSend_attributeArrayForKind_(self, v7, a4);
+  v8 = objc_msgSend_attributeArrayForKind_(self, v7, kind);
   if (!v8)
   {
     goto LABEL_6;
   }
 
   v9 = v8;
-  v10 = TSWPAttributeArray::exactAttributeIndexForCharIndex(v8, a3);
+  v10 = TSWPAttributeArray::exactAttributeIndexForCharIndex(v8, index);
   if (v10 >= *(v9 + 6))
   {
 LABEL_5:
@@ -5453,12 +5453,12 @@ LABEL_6:
   return v8;
 }
 
-- (BOOL)hasObject:(id)a3 attributeArrayKind:(unint64_t)a4 range:(_NSRange)a5 findUsingExactRangeLocation:(BOOL)a6
+- (BOOL)hasObject:(id)object attributeArrayKind:(unint64_t)kind range:(_NSRange)range findUsingExactRangeLocation:(BOOL)location
 {
-  v6 = a6;
-  length = a5.length;
-  location = a5.location;
-  v12 = a3;
+  locationCopy = location;
+  length = range.length;
+  location = range.location;
+  objectCopy = object;
   if (location == 0x7FFFFFFFFFFFFFFFLL)
   {
     v13 = MEMORY[0x277D81150];
@@ -5469,18 +5469,18 @@ LABEL_6:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v18, v19);
   }
 
-  v20 = objc_msgSend_attributeArrayForKind_(self, v11, a4);
+  v20 = objc_msgSend_attributeArrayForKind_(self, v11, kind);
   v21 = v20;
   if (v20)
   {
-    if (location == 0x7FFFFFFFFFFFFFFFLL || (!v6 ? (v22 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(v20, location)) : (v22 = TSWPAttributeArray::exactAttributeIndexForCharIndex(v20, location)), v24 = v22, v22 == 0x7FFFFFFFFFFFFFFFLL))
+    if (location == 0x7FFFFFFFFFFFFFFFLL || (!locationCopy ? (v22 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(v20, location)) : (v22 = TSWPAttributeArray::exactAttributeIndexForCharIndex(v20, location)), v24 = v22, v22 == 0x7FFFFFFFFFFFFFFFLL))
     {
       v23 = 0;
       goto LABEL_26;
     }
 
     v25 = TSWPAttributeArray::objectForAttributeIndex(v21, v22);
-    if (!TSWPAttributeArray::objectIsEquivalentToObject(a4, v25, v12))
+    if (!TSWPAttributeArray::objectIsEquivalentToObject(kind, v25, objectCopy))
     {
       goto LABEL_24;
     }
@@ -5488,7 +5488,7 @@ LABEL_6:
     v26 = TSWPAttributeArray::rangeForAttributeIndex(v21, v24);
     v28 = v26;
     v29 = v27;
-    if (v6 && (v26 > location || &v27[v26] < location + length))
+    if (locationCopy && (v26 > location || &v27[v26] < location + length))
     {
       v30 = MEMORY[0x277D81150];
       v31 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v27, "[TSWPStorage hasObject:attributeArrayKind:range:findUsingExactRangeLocation:]");
@@ -5498,7 +5498,7 @@ LABEL_6:
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v35, v36);
     }
 
-    if (TSWPAttributeArray::supportsSparseNonCollapsingEntries(a4))
+    if (TSWPAttributeArray::supportsSparseNonCollapsingEntries(kind))
     {
       v23 = v28 == location && v29 == length;
       goto LABEL_25;
@@ -5520,24 +5520,24 @@ LABEL_25:
     goto LABEL_26;
   }
 
-  v23 = v12 == 0;
+  v23 = objectCopy == 0;
 LABEL_26:
 
   return v23;
 }
 
-- (BOOL)hasData:(TSWPParagraphData)a3 attributeArrayKind:(unint64_t)a4 range:(_NSRange)a5
+- (BOOL)hasData:(TSWPParagraphData)data attributeArrayKind:(unint64_t)kind range:(_NSRange)range
 {
-  listStart = a3.var0.var0.listStart;
-  if (a5.location == 0x7FFFFFFFFFFFFFFFLL)
+  listStart = data.var0.var0.listStart;
+  if (range.location == 0x7FFFFFFFFFFFFFFFLL)
   {
     v7 = MEMORY[0x277D81150];
-    v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSWPStorage hasData:attributeArrayKind:range:]", a4, 0x7FFFFFFFFFFFFFFFLL, a5.length);
+    v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSWPStorage hasData:attributeArrayKind:range:]", kind, 0x7FFFFFFFFFFFFFFFLL, range.length);
     v10 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v9, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/text/TSWPStorage.mm");
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v7, v11, v8, v10, 3135, 0, "Bad input range.");
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v12, v13);
-    if (!objc_msgSend_attributeArrayForKind_(self, v14, a4))
+    if (!objc_msgSend_attributeArrayForKind_(self, v14, kind))
     {
       goto LABEL_7;
     }
@@ -5547,14 +5547,14 @@ LABEL_6:
     return v20;
   }
 
-  length = a5.length;
-  location = a5.location;
-  v17 = objc_msgSend_attributeArrayForKind_(self, a2, a4);
+  length = range.length;
+  location = range.location;
+  v17 = objc_msgSend_attributeArrayForKind_(self, a2, kind);
   if (!v17)
   {
 LABEL_7:
     v25 = 0;
-    LOBYTE(v20) = TSWPAttributeArray::paragraphDataIsSame(a4, &listStart, &v25);
+    LOBYTE(v20) = TSWPAttributeArray::paragraphDataIsSame(kind, &listStart, &v25);
     return v20;
   }
 
@@ -5567,7 +5567,7 @@ LABEL_7:
 
   v21 = v19;
   v24 = *TSWPAttributeRecord::paragraphData(&v18->var1[v19], *(v18 + 28));
-  LODWORD(v20) = TSWPAttributeArray::paragraphDataIsSame(a4, &v24, &listStart);
+  LODWORD(v20) = TSWPAttributeArray::paragraphDataIsSame(kind, &v24, &listStart);
   if (v20)
   {
     v20 = TSWPAttributeArray::rangeForAttributeIndex(v18, v21);
@@ -5577,10 +5577,10 @@ LABEL_7:
   return v20;
 }
 
-- (int64_t)hyphenationLocationBeforeIndex:(int64_t)a3 inRange:(_NSRange)a4 locale:(id)a5 hyphenChar:(unsigned int *)a6
+- (int64_t)hyphenationLocationBeforeIndex:(int64_t)index inRange:(_NSRange)range locale:(id)locale hyphenChar:(unsigned int *)char
 {
   v6 = MEMORY[0x277D81150];
-  v7 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSWPStorage hyphenationLocationBeforeIndex:inRange:locale:hyphenChar:]", a4.location, a4.length, a5, a6);
+  v7 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSWPStorage hyphenationLocationBeforeIndex:inRange:locale:hyphenChar:]", range.location, range.length, locale, char);
   v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v8, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/text/TSWPStorage.mm");
   objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v6, v10, v7, v9, 3167, 0, "not reached");
 
@@ -5588,44 +5588,44 @@ LABEL_7:
   return -1;
 }
 
-- (_NSRange)charRangeMappedToStorage:(_NSRange)a3
+- (_NSRange)charRangeMappedToStorage:(_NSRange)storage
 {
-  length = a3.length;
-  location = a3.location;
+  length = storage.length;
+  location = storage.location;
   result.length = length;
   result.location = location;
   return result;
 }
 
-- (_NSRange)charRangeMappedFromStorage:(_NSRange)a3
+- (_NSRange)charRangeMappedFromStorage:(_NSRange)storage
 {
-  length = a3.length;
-  location = a3.location;
+  length = storage.length;
+  location = storage.location;
   result.length = length;
   result.location = location;
   return result;
 }
 
-- (_NSRange)charRangeRemappedFromStorage:(_NSRange)a3
+- (_NSRange)charRangeRemappedFromStorage:(_NSRange)storage
 {
-  length = a3.length;
-  location = a3.location;
+  length = storage.length;
+  location = storage.location;
   result.length = length;
   result.location = location;
   return result;
 }
 
-- (id)relocateNonSelectedAnchorsInSelection:(id)a3 undoTransaction:(void *)a4
+- (id)relocateNonSelectedAnchorsInSelection:(id)selection undoTransaction:(void *)transaction
 {
-  v6 = a3;
-  v11 = v6;
-  if (objc_msgSend_isRange(v6, v7, v8))
+  selectionCopy = selection;
+  v11 = selectionCopy;
+  if (objc_msgSend_isRange(selectionCopy, v7, v8))
   {
     v25 = 0;
     v26 = &v25;
     v27 = 0x2020000000;
     v28 = 0;
-    v12 = objc_msgSend_ranges(v6, v9, v10);
+    v12 = objc_msgSend_ranges(selectionCopy, v9, v10);
     v15 = objc_msgSend_mutableCopy(v12, v13, v14);
 
     v20[0] = MEMORY[0x277D85DD0];
@@ -5633,11 +5633,11 @@ LABEL_7:
     v20[2] = sub_276D1FE3C;
     v20[3] = &unk_27A6F3818;
     v20[4] = self;
-    v11 = v6;
+    v11 = selectionCopy;
     v21 = v11;
     v22 = v15;
     v23 = &v25;
-    v24 = a4;
+    transactionCopy = transaction;
     objc_msgSend_enumerateRanges_(v11, v16, v20);
     if (*(v26 + 24) == 1)
     {
@@ -5652,11 +5652,11 @@ LABEL_7:
   return v11;
 }
 
-- (_NSRange)p_relocateNonSelectedAnchorsInRange:(_NSRange)a3 selectedInfos:(id)a4 undoTransaction:(void *)a5
+- (_NSRange)p_relocateNonSelectedAnchorsInRange:(_NSRange)range selectedInfos:(id)infos undoTransaction:(void *)transaction
 {
-  length = a3.length;
-  location = a3.location;
-  v36 = a4;
+  length = range.length;
+  location = range.location;
+  infosCopy = infos;
   if (length >= 2)
   {
     v9 = objc_msgSend_attachmentIndexRangeForTextRange_(self, v8, location, length);
@@ -5675,14 +5675,14 @@ LABEL_7:
           if ((objc_msgSend_isHTMLWrap(v14, v17, v18) & 1) == 0)
           {
             v21 = objc_msgSend_drawable(v14, v19, v20);
-            v23 = objc_msgSend_containsObject_(v36, v22, v21);
+            v23 = objc_msgSend_containsObject_(infosCopy, v22, v21);
 
             if ((v23 & 1) == 0)
             {
-              v25 = a5;
-              if (a5)
+              transactionCopy2 = transaction;
+              if (transaction)
               {
-                v28 = sub_276E3EAC8(a5);
+                v28 = sub_276E3EAC8(transaction);
                 if (v28)
                 {
                   v29 = objc_msgSend_drawable(v14, v26, v27);
@@ -5694,7 +5694,7 @@ LABEL_7:
                   v31 = 0xFFFFFFFFLL;
                 }
 
-                v25 = a5;
+                transactionCopy2 = transaction;
               }
 
               else
@@ -5702,8 +5702,8 @@ LABEL_7:
                 v31 = 0xFFFFFFFFLL;
               }
 
-              objc_msgSend_replaceCharactersInRange_withString_undoTransaction_(self, v24, v37, 1, 0, v25);
-              objc_msgSend_insertAttachmentOrFootnote_range_placementIndex_dolcContext_undoTransaction_changeSession_(self, v32, v14, location++, 0, v31, 0, v25, 0);
+              objc_msgSend_replaceCharactersInRange_withString_undoTransaction_(self, v24, v37, 1, 0, transactionCopy2);
+              objc_msgSend_insertAttachmentOrFootnote_range_placementIndex_dolcContext_undoTransaction_changeSession_(self, v32, v14, location++, 0, v31, 0, transactionCopy2, 0);
               --length;
             }
           }
@@ -5724,13 +5724,13 @@ LABEL_7:
   return result;
 }
 
-- (id)extendSelectionForTopicChildren:(id)a3
+- (id)extendSelectionForTopicChildren:(id)children
 {
-  v4 = a3;
-  v9 = v4;
-  if (objc_msgSend_type(v4, v5, v6) == 2)
+  childrenCopy = children;
+  v9 = childrenCopy;
+  if (objc_msgSend_type(childrenCopy, v5, v6) == 2)
   {
-    v10 = objc_msgSend_superRange(v4, v7, v8);
+    v10 = objc_msgSend_superRange(childrenCopy, v7, v8);
     v12 = objc_msgSend_paragraphIndexAtCharIndex_(self, v11, v10);
     v15 = objc_msgSend_paragraphCount(self, v13, v14);
     TSWPParagraphEnumerator::TSWPParagraphEnumerator(&v32, self, 0, v12, v15, 1);
@@ -5754,7 +5754,7 @@ LABEL_7:
       }
     }
 
-    v9 = v4;
+    v9 = childrenCopy;
     if (v19)
     {
       v24 = TSWPParagraphEnumerator::paragraphTextRange(&v32, v20);
@@ -5785,19 +5785,19 @@ LABEL_7:
   return v9;
 }
 
-- (_NSRange)replaceCharactersInRange:(_NSRange)a3 withString:(id)a4 undoTransaction:(void *)a5
+- (_NSRange)replaceCharactersInRange:(_NSRange)range withString:(id)string undoTransaction:(void *)transaction
 {
-  v5 = objc_msgSend_replaceCharactersInRange_withString_notifyObservers_undoTransaction_(self, a2, a3.location, a3.length, a4, 1, a5);
+  v5 = objc_msgSend_replaceCharactersInRange_withString_notifyObservers_undoTransaction_(self, a2, range.location, range.length, string, 1, transaction);
   result.length = v6;
   result.location = v5;
   return result;
 }
 
-- (_NSRange)appendString:(id)a3 undoTransaction:(void *)a4
+- (_NSRange)appendString:(id)string undoTransaction:(void *)transaction
 {
-  v6 = a3;
+  stringCopy = string;
   v9 = objc_msgSend_length(self, v7, v8);
-  v11 = objc_msgSend_replaceCharactersInRange_withString_notifyObservers_undoTransaction_(self, v10, v9, 0, v6, 1, a4);
+  v11 = objc_msgSend_replaceCharactersInRange_withString_notifyObservers_undoTransaction_(self, v10, v9, 0, stringCopy, 1, transaction);
   v13 = v12;
 
   v14 = v11;
@@ -5807,24 +5807,24 @@ LABEL_7:
   return result;
 }
 
-- (_NSRange)replaceCharactersInRange:(_NSRange)a3 withString:(id)a4 notifyObservers:(BOOL)a5 undoTransaction:(void *)a6
+- (_NSRange)replaceCharactersInRange:(_NSRange)range withString:(id)string notifyObservers:(BOOL)observers undoTransaction:(void *)transaction
 {
-  v6 = MEMORY[0x2821F9670](self, sel_replaceCharactersInRange_withString_notifyObservers_changeSession_undoTransaction_, a3.location);
+  v6 = MEMORY[0x2821F9670](self, sel_replaceCharactersInRange_withString_notifyObservers_changeSession_undoTransaction_, range.location);
   result.length = v7;
   result.location = v6;
   return result;
 }
 
-- (_NSRange)replaceCharactersInRange:(_NSRange)a3 withString:(id)a4 notifyObservers:(BOOL)a5 changeSession:(id)a6 undoTransaction:(void *)a7
+- (_NSRange)replaceCharactersInRange:(_NSRange)range withString:(id)string notifyObservers:(BOOL)observers changeSession:(id)session undoTransaction:(void *)transaction
 {
-  v9 = a5;
-  length = a3.length;
-  location = a3.location;
-  v13 = a4;
-  v14 = a6;
+  observersCopy = observers;
+  length = range.length;
+  location = range.location;
+  stringCopy = string;
+  sessionCopy = session;
   v15 = [TSWPSelection alloc];
   v17 = objc_msgSend_initWithRange_(v15, v16, location, length);
-  v19 = objc_msgSend_p_replaceCharactersInLogicalSelection_withString_withFlags_replaceTextData_changeSession_undoTransaction_outInsertedRange_(self, v18, v17, v13, v9, 0, v14, a7, 0);
+  v19 = objc_msgSend_p_replaceCharactersInLogicalSelection_withString_withFlags_replaceTextData_changeSession_undoTransaction_outInsertedRange_(self, v18, v17, stringCopy, observersCopy, 0, sessionCopy, transaction, 0);
   v21 = v20;
 
   v22 = v19;
@@ -5834,16 +5834,16 @@ LABEL_7:
   return result;
 }
 
-- (_NSRange)replaceCharactersInSelection:(id)a3 withString:(id)a4 withFlags:(unsigned int)a5 replaceTextData:(id)a6 changeSession:(id)a7 undoTransaction:(void *)a8 outInsertedRange:(_NSRange *)a9
+- (_NSRange)replaceCharactersInSelection:(id)selection withString:(id)string withFlags:(unsigned int)flags replaceTextData:(id)data changeSession:(id)session undoTransaction:(void *)transaction outInsertedRange:(_NSRange *)range
 {
   v19 = 0;
-  v9 = objc_msgSend_replaceCharactersInSelection_withString_withFlags_replaceTextData_changeSession_undoTransaction_outInsertedRanges_(self, a2, a3, a4, *&a5, a6, a7, a8, &v19);
+  v9 = objc_msgSend_replaceCharactersInSelection_withString_withFlags_replaceTextData_changeSession_undoTransaction_outInsertedRanges_(self, a2, selection, string, *&flags, data, session, transaction, &v19);
   v10 = v19;
   v13 = v10;
-  if (a9)
+  if (range)
   {
-    a9->location = objc_msgSend_firstRange(v10, v11, v12);
-    a9->length = v11;
+    range->location = objc_msgSend_firstRange(v10, v11, v12);
+    range->length = v11;
   }
 
   v14 = objc_msgSend_superRange(v9, v11, v12);
@@ -5856,25 +5856,25 @@ LABEL_7:
   return result;
 }
 
-- (id)replaceCharactersInSelection:(id)a3 withString:(id)a4 withFlags:(unsigned int)a5 replaceTextData:(id)a6 changeSession:(id)a7 undoTransaction:(void *)a8 outInsertedRanges:(id *)a9
+- (id)replaceCharactersInSelection:(id)selection withString:(id)string withFlags:(unsigned int)flags replaceTextData:(id)data changeSession:(id)session undoTransaction:(void *)transaction outInsertedRanges:(id *)ranges
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a6;
-  v18 = a7;
+  selectionCopy = selection;
+  stringCopy = string;
+  dataCopy = data;
+  sessionCopy = session;
   v62[0] = 0;
   v62[1] = v62;
   v62[2] = 0x3032000000;
   v62[3] = sub_276D208C8;
   v62[4] = sub_276D208D8;
-  v29 = v16;
+  v29 = stringCopy;
   v63 = v29;
   v60[0] = 0;
   v60[1] = v60;
   v60[2] = 0x3032000000;
   v60[3] = sub_276D208C8;
   v60[4] = sub_276D208D8;
-  v28 = v17;
+  v28 = dataCopy;
   v61 = v28;
   v51 = 0;
   v52 = &v51;
@@ -5904,23 +5904,23 @@ LABEL_7:
   v30[3] = &unk_27A6F3840;
   v34 = v41;
   v35 = v62;
-  v19 = v15;
+  v19 = selectionCopy;
   v31 = v19;
-  v32 = self;
-  v40 = a5;
+  selfCopy = self;
+  flagsCopy = flags;
   v36 = v60;
-  v20 = v18;
+  v20 = sessionCopy;
   v33 = v20;
   v37 = &v51;
   v38 = &v42;
-  v39 = a8;
+  transactionCopy = transaction;
   objc_msgSend_enumerateRanges_(v19, v21, v30);
   v22 = [TSWPRangeArray alloc];
   v24 = objc_msgSend_initWithRangeVector_(v22, v23, (v43 + 6));
-  if (a9)
+  if (ranges)
   {
     v25 = [TSWPRangeArray alloc];
-    *a9 = objc_msgSend_initWithRangeVector_(v25, v26, (v52 + 6));
+    *ranges = objc_msgSend_initWithRangeVector_(v25, v26, (v52 + 6));
   }
 
   _Block_object_dispose(v41, 8);
@@ -5945,14 +5945,14 @@ LABEL_7:
   return v24;
 }
 
-- (_NSRange)p_replaceCharactersInLogicalSelection:(id)a3 withString:(id)a4 withFlags:(unsigned int)a5 replaceTextData:(id)a6 changeSession:(id)a7 undoTransaction:(void *)a8 outInsertedRange:(_NSRange *)a9
+- (_NSRange)p_replaceCharactersInLogicalSelection:(id)selection withString:(id)string withFlags:(unsigned int)flags replaceTextData:(id)data changeSession:(id)session undoTransaction:(void *)transaction outInsertedRange:(_NSRange *)range
 {
   v186 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v167 = a4;
-  v168 = a6;
-  v166 = a7;
-  v16 = objc_msgSend_ranges(v13, v14, v15);
+  selectionCopy = selection;
+  stringCopy = string;
+  dataCopy = data;
+  sessionCopy = session;
+  v16 = objc_msgSend_ranges(selectionCopy, v14, v15);
   v19 = objc_msgSend_rangeCount(v16, v17, v18);
 
   if (v19 != 1)
@@ -5965,30 +5965,30 @@ LABEL_7:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v27, v28);
   }
 
-  location = objc_msgSend_superRange(v13, v20, v21);
+  location = objc_msgSend_superRange(selectionCopy, v20, v21);
   length = v30;
-  objc_msgSend_superRange(v13, v30, v32);
-  if (v33 || objc_msgSend_length(v167, 0, v34))
+  objc_msgSend_superRange(selectionCopy, v30, v32);
+  if (v33 || objc_msgSend_length(stringCopy, 0, v34))
   {
-    v35 = objc_msgSend_superRange(v13, v33, v34);
-    if (v35 > objc_msgSend_length(self, v36, v37) || (v40 = objc_msgSend_superRange(v13, v38, v39), &v43[v40] > objc_msgSend_length(self, v43, v41)))
+    v35 = objc_msgSend_superRange(selectionCopy, v33, v34);
+    if (v35 > objc_msgSend_length(self, v36, v37) || (v40 = objc_msgSend_superRange(selectionCopy, v38, v39), &v43[v40] > objc_msgSend_length(self, v43, v41)))
     {
       v44 = MEMORY[0x277D81150];
       v45 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v38, "[TSWPStorage p_replaceCharactersInLogicalSelection:withString:withFlags:replaceTextData:changeSession:undoTransaction:outInsertedRange:]");
       v47 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v46, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/text/TSWPStorage.mm");
-      v187.location = objc_msgSend_superRange(v13, v48, v49);
+      v187.location = objc_msgSend_superRange(selectionCopy, v48, v49);
       v50 = NSStringFromRange(v187);
       v53 = objc_msgSend_length(self, v51, v52);
-      v56 = objc_msgSend_length(v167, v54, v55);
+      v56 = objc_msgSend_length(stringCopy, v54, v55);
       objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v44, v57, v45, v47, 3449, 0, "Bad selection superRange: %@, storage length=%lu, insertion length=%lu", v50, v53, v56);
 
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v58, v59);
     }
 
-    v60 = objc_msgSend_superRange(v13, v38, v42);
+    v60 = objc_msgSend_superRange(selectionCopy, v38, v42);
     if (v60 != objc_msgSend_length(self, v61, v62))
     {
-      v65 = objc_msgSend_superRange(v13, v63, v64);
+      v65 = objc_msgSend_superRange(selectionCopy, v63, v64);
       if (objc_msgSend_characterAtIndex_(self, v66, v65) >> 10 == 55)
       {
         v67 = MEMORY[0x277D81150];
@@ -6000,7 +6000,7 @@ LABEL_7:
       }
     }
 
-    v171 = objc_msgSend_relocateNonSelectedAnchorsInSelection_undoTransaction_(self, v63, v13, a8);
+    v171 = objc_msgSend_relocateNonSelectedAnchorsInSelection_undoTransaction_(self, v63, selectionCopy, transaction);
 
     v76 = objc_msgSend_ranges(v171, v74, v75);
     v79 = objc_msgSend_rangeCount(v76, v77, v78);
@@ -6016,7 +6016,7 @@ LABEL_7:
     }
 
     v89 = objc_msgSend_defaultContext(MEMORY[0x277D805F0], v80, v81);
-    sub_276F32CA8(v181, 1, self, a8, v89);
+    sub_276F32CA8(v181, 1, self, transaction, v89);
     v181[0] = &unk_288609A08;
 
     if (v182)
@@ -6042,7 +6042,7 @@ LABEL_7:
 
     ++*v93;
     Range = objc_msgSend_firstRange(v171, v91, v92);
-    v165 = objc_msgSend_p_replacementsForRange_withString_replaceTextData_changeSession_shouldTrackDeletions_(self, v95, Range, v95, v167, v168, v166, (a5 & 2) == 0);
+    v165 = objc_msgSend_p_replacementsForRange_withString_replaceTextData_changeSession_shouldTrackDeletions_(self, v95, Range, v95, stringCopy, dataCopy, sessionCopy, (flags & 2) == 0);
     v173 = objc_msgSend_rangeArray(TSWPMutableRangeArray, v96, v97);
     v98 = *MEMORY[0x277D81490];
     v99 = *(MEMORY[0x277D81490] + 8);
@@ -6072,7 +6072,7 @@ LABEL_7:
           v174[3] = &unk_27A6F3868;
           v176 = v181;
           v175 = v171;
-          objc_msgSend_performWithStorage_delta_actionBuilder_withFlags_replaceBlock_(v105, v106, self, v102, v181, a5, v174);
+          objc_msgSend_performWithStorage_delta_actionBuilder_withFlags_replaceBlock_(v105, v106, self, v102, v181, flags, v174);
           v109 = objc_msgSend_delta(v105, v107, v108);
           v112 = objc_msgSend_insertedRange(v105, v110, v111);
           objc_msgSend_concatenateRange_(v173, v113, v112, v113);
@@ -6092,42 +6092,42 @@ LABEL_7:
       while (v101);
     }
 
-    v122 = objc_msgSend_attachments(v168, v120, v121);
+    v122 = objc_msgSend_attachments(dataCopy, v120, v121);
     v125 = objc_msgSend_count(v122, v123, v124) == 0;
 
     if (v125)
     {
       if (v99)
       {
-        v128 = objc_msgSend_language(v168, v126, v127);
+        v128 = objc_msgSend_language(dataCopy, v126, v127);
         isEqualToString = objc_msgSend_isEqualToString_(v128, v129, @"TSWPShouldExtendStoredLanguage");
 
         if ((isEqualToString & 1) == 0)
         {
-          if (objc_msgSend_isEqualToString_(v167, v131, @"\t") && objc_msgSend_writingDirectionForParagraphAtCharIndex_(self, v133, v98) == 1 && (v135 = MEMORY[0x277CBEAF8], objc_msgSend_language(v168, v133, v134), v136 = objc_claimAutoreleasedReturnValue(), LOBYTE(v135) = objc_msgSend_characterDirectionForLanguage_(v135, v137, v136) == 2, v136, (v135 & 1) == 0))
+          if (objc_msgSend_isEqualToString_(stringCopy, v131, @"\t") && objc_msgSend_writingDirectionForParagraphAtCharIndex_(self, v133, v98) == 1 && (v135 = MEMORY[0x277CBEAF8], objc_msgSend_language(dataCopy, v133, v134), v136 = objc_claimAutoreleasedReturnValue(), LOBYTE(v135) = objc_msgSend_characterDirectionForLanguage_(v135, v137, v136) == 2, v136, (v135 & 1) == 0))
           {
             objc_msgSend_setLanguage_forCharRange_actionBuilder_(self, v133, *MEMORY[0x277D813C0], v98, v99, v181);
           }
 
           else
           {
-            v138 = objc_msgSend_language(v168, v133, v134);
+            v138 = objc_msgSend_language(dataCopy, v133, v134);
             v141 = objc_msgSend_length(v138, v139, v140) == 0;
 
-            if (!v141 || (a5 & 4) == 0)
+            if (!v141 || (flags & 4) == 0)
             {
-              v142 = objc_msgSend_language(v168, v131, v132);
+              v142 = objc_msgSend_language(dataCopy, v131, v132);
               objc_msgSend_setLanguage_forCharRange_actionBuilder_(self, v143, v142, v98, v99, v181);
             }
           }
         }
 
-        v144 = objc_msgSend_dictationAndAutocorrection(v168, v131, v132);
+        v144 = objc_msgSend_dictationAndAutocorrection(dataCopy, v131, v132);
         objc_msgSend_setDictationAndAutocorrection_forCharRange_actionBuilder_(self, v145, v144, v98, v99, v181);
       }
     }
 
-    else if ((a5 & 4) == 0 && v99)
+    else if ((flags & 4) == 0 && v99)
     {
       objc_msgSend_setLanguage_forCharRange_actionBuilder_(self, v126, 0, v98, v99, v181);
     }
@@ -6174,7 +6174,7 @@ LABEL_7:
       --*v156;
     }
 
-    if ((a5 & 1) != 0 && length | v102)
+    if ((flags & 1) != 0 && length | v102)
     {
       if (v155)
       {
@@ -6200,9 +6200,9 @@ LABEL_7:
       v158 = v183;
     }
 
-    sub_276E3EBD0(v158, v181, a5 & 1);
+    sub_276E3EBD0(v158, v181, flags & 1);
     sub_276F2F2FC(v181);
-    if (a9)
+    if (range)
     {
       v161 = 0;
       do
@@ -6212,8 +6212,8 @@ LABEL_7:
           break;
         }
 
-        a9->location = objc_msgSend_rangeAtIndex_(v173, v162, v161);
-        a9->length = v159;
+        range->location = objc_msgSend_rangeAtIndex_(v173, v162, v161);
+        range->length = v159;
         ++v161;
       }
 
@@ -6221,7 +6221,7 @@ LABEL_7:
     }
 
     sub_276F32E10(v181);
-    v13 = v171;
+    selectionCopy = v171;
   }
 
   v163 = location;
@@ -6231,7 +6231,7 @@ LABEL_7:
   return result;
 }
 
-- (_NSRange)moveCharactersInRange:(_NSRange)a3 toLocation:(unint64_t)a4 undoTransaction:(void *)a5
+- (_NSRange)moveCharactersInRange:(_NSRange)range toLocation:(unint64_t)location undoTransaction:(void *)transaction
 {
   v5 = *MEMORY[0x277D81490];
   v6 = *(MEMORY[0x277D81490] + 8);
@@ -6240,7 +6240,7 @@ LABEL_7:
   return result;
 }
 
-- (id)substringWithSelection:(id)a3
+- (id)substringWithSelection:(id)selection
 {
   v6 = 0;
   v7 = &v6;
@@ -6254,29 +6254,29 @@ LABEL_7:
   v5[3] = &unk_27A6F37F0;
   v5[4] = self;
   v5[5] = &v6;
-  objc_msgSend_enumerateRanges_(a3, a2, v5);
+  objc_msgSend_enumerateRanges_(selection, a2, v5);
   v3 = v7[5];
   _Block_object_dispose(&v6, 8);
 
   return v3;
 }
 
-- (void)insertPlaceholderText:(id)a3 atCharIndex:(unint64_t)a4 undoTransaction:(void *)a5
+- (void)insertPlaceholderText:(id)text atCharIndex:(unint64_t)index undoTransaction:(void *)transaction
 {
-  v19 = a3;
-  objc_msgSend_insertString_atCharIndex_undoTransaction_(self, v8, v19, a4, a5);
+  textCopy = text;
+  objc_msgSend_insertString_atCharIndex_undoTransaction_(self, v8, textCopy, index, transaction);
   v9 = [TSWPPlaceholderSmartField alloc];
   v12 = objc_msgSend_context(self, v10, v11);
   v14 = objc_msgSend_initWithContext_(v9, v13, v12);
 
-  v17 = objc_msgSend_length(v19, v15, v16);
-  objc_msgSend_addSmartField_toRange_dolcContext_undoTransaction_(self, v18, v14, a4, v17, 0, a5);
+  v17 = objc_msgSend_length(textCopy, v15, v16);
+  objc_msgSend_addSmartField_toRange_dolcContext_undoTransaction_(self, v18, v14, index, v17, 0, transaction);
 }
 
-- (void)willBeAddedToDocumentRoot:(id)a3 dolcContext:(id)a4
+- (void)willBeAddedToDocumentRoot:(id)root dolcContext:(id)context
 {
-  v14 = a3;
-  v6 = a4;
+  rootCopy = root;
+  contextCopy = context;
   objc_msgSend_willModify(self, v7, v8);
   *(self + 303) &= ~2u;
   objc_opt_class();
@@ -6288,17 +6288,17 @@ LABEL_7:
     v13 = objc_msgSend_attributeArrayForKind_(self, v11, i);
     if (v13)
     {
-      (*(*v13 + 176))(v13, v14, v6);
+      (*(*v13 + 176))(v13, rootCopy, contextCopy);
     }
   }
 }
 
-- (void)wasAddedToDocumentRoot:(id)a3 dolcContext:(id)a4
+- (void)wasAddedToDocumentRoot:(id)root dolcContext:(id)context
 {
   v25[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v10 = objc_msgSend_context(v6, v8, v9);
+  rootCopy = root;
+  contextCopy = context;
+  v10 = objc_msgSend_context(rootCopy, v8, v9);
   objc_msgSend_wasAddedToDocumentWithContext_(self, v11, v10);
 
   v14 = objc_msgSend_parentInfo(self, v12, v13);
@@ -6316,38 +6316,38 @@ LABEL_7:
   }
 
   v19 = objc_msgSend_defaultCenter(MEMORY[0x277CCAB98], v15, v16);
-  objc_msgSend_postNotificationName_object_userInfo_(v19, v20, *MEMORY[0x277D807C8], v6, v18);
+  objc_msgSend_postNotificationName_object_userInfo_(v19, v20, *MEMORY[0x277D807C8], rootCopy, v18);
 
   for (i = 0; i != 23; ++i)
   {
     v23 = objc_msgSend_attributeArrayForKind_(self, v21, i);
     if (v23)
     {
-      (*(*v23 + 184))(v23, v6, v7);
+      (*(*v23 + 184))(v23, rootCopy, contextCopy);
     }
   }
 }
 
-- (void)willBeRemovedFromDocumentRoot:(id)a3
+- (void)willBeRemovedFromDocumentRoot:(id)root
 {
-  v10 = a3;
+  rootCopy = root;
   for (i = 0; i != 23; ++i)
   {
     v6 = objc_msgSend_attributeArrayForKind_(self, v4, i);
     if (v6)
     {
-      (*(*v6 + 192))(v6, v10);
+      (*(*v6 + 192))(v6, rootCopy);
     }
   }
 
-  v8 = objc_msgSend_context(v10, v4, v7);
+  v8 = objc_msgSend_context(rootCopy, v4, v7);
   objc_msgSend_willBeRemovedFromDocumentWithContext_(self, v9, v8);
 }
 
-- (void)wasRemovedFromDocumentRoot:(id)a3
+- (void)wasRemovedFromDocumentRoot:(id)root
 {
   v20[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  rootCopy = root;
   objc_msgSend_willModify(self, v5, v6);
   v9 = objc_msgSend_parentInfo(self, v7, v8);
   v12 = v9;
@@ -6364,14 +6364,14 @@ LABEL_7:
   }
 
   v14 = objc_msgSend_defaultCenter(MEMORY[0x277CCAB98], v10, v11);
-  objc_msgSend_postNotificationName_object_userInfo_(v14, v15, *MEMORY[0x277D807D0], v4, v13);
+  objc_msgSend_postNotificationName_object_userInfo_(v14, v15, *MEMORY[0x277D807D0], rootCopy, v13);
 
   for (i = 0; i != 23; ++i)
   {
     v18 = objc_msgSend_attributeArrayForKind_(self, v16, i);
     if (v18)
     {
-      (*(*v18 + 200))(v18, v4);
+      (*(*v18 + 200))(v18, rootCopy);
     }
   }
 
@@ -6379,29 +6379,29 @@ LABEL_7:
   *(self + 303) |= 2u;
 }
 
-- (_NSRange)rangeOfString:(id)a3 searchOptions:(unint64_t)a4 updatingSearchRange:(_NSRange *)a5
+- (_NSRange)rangeOfString:(id)string searchOptions:(unint64_t)options updatingSearchRange:(_NSRange *)range
 {
-  v5 = objc_msgSend_tsk_rangeOfString_searchOptions_updatingSearchRange_(self->_string, a2, a3, a4, a5);
+  v5 = objc_msgSend_tsk_rangeOfString_searchOptions_updatingSearchRange_(self->_string, a2, string, options, range);
   result.length = v6;
   result.location = v5;
   return result;
 }
 
-- (_NSRange)rangeOfString:(id)a3 searchOptions:(unint64_t)a4 range:(_NSRange)a5
+- (_NSRange)rangeOfString:(id)string searchOptions:(unint64_t)options range:(_NSRange)range
 {
-  v7 = a5;
-  v5 = objc_msgSend_tsk_rangeOfString_searchOptions_updatingSearchRange_(self->_string, a2, a3, a4, &v7);
+  rangeCopy = range;
+  v5 = objc_msgSend_tsk_rangeOfString_searchOptions_updatingSearchRange_(self->_string, a2, string, options, &rangeCopy);
   result.length = v6;
   result.location = v5;
   return result;
 }
 
-- (_NSRange)rangeOfParagraphBreakingCharacter:(unsigned __int16)a3 backwards:(BOOL)a4 range:(_NSRange)a5
+- (_NSRange)rangeOfParagraphBreakingCharacter:(unsigned __int16)character backwards:(BOOL)backwards range:(_NSRange)range
 {
-  length = a5.length;
-  location = a5.location;
-  v7 = a4;
-  if ((IsParagraphBreakingCharacter(a3) & 1) == 0)
+  length = range.length;
+  location = range.location;
+  backwardsCopy = backwards;
+  if ((IsParagraphBreakingCharacter(character) & 1) == 0)
   {
     v11 = MEMORY[0x277D81150];
     v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v10, "[TSWPStorage rangeOfParagraphBreakingCharacter:backwards:range:]");
@@ -6411,9 +6411,9 @@ LABEL_7:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v16, v17);
   }
 
-  v26 = a3;
-  v19 = objc_msgSend_stringWithCharacters_length_(MEMORY[0x277CCACA8], v10, &v26, 1);
-  if (v7)
+  characterCopy = character;
+  v19 = objc_msgSend_stringWithCharacters_length_(MEMORY[0x277CCACA8], v10, &characterCopy, 1);
+  if (backwardsCopy)
   {
     v20 = objc_msgSend_rangeOfString_options_range_(self->_string, v18, v19, 6, location, length);
   }
@@ -6441,10 +6441,10 @@ LABEL_7:
   return v5;
 }
 
-- (void)enumeratePencilAnnotationsUsingBlock:(id)a3
+- (void)enumeratePencilAnnotationsUsingBlock:(id)block
 {
-  v6 = a3;
-  if (v6)
+  blockCopy = block;
+  if (blockCopy)
   {
     v7 = objc_msgSend_range(self, v4, v5);
     v9 = v8;
@@ -6452,7 +6452,7 @@ LABEL_7:
     v11[1] = 3221225472;
     v11[2] = sub_276D22324;
     v11[3] = &unk_27A6F3890;
-    v12 = v6;
+    v12 = blockCopy;
     objc_msgSend_enumeratePencilAnnotationsInRange_usingBlock_(self, v10, v7, v9, v11);
   }
 }
@@ -6491,16 +6491,16 @@ LABEL_7:
   MEMORY[0x2821F9670](self, sel_removePencilAnnotationsInRange_undoTransaction_, v4);
 }
 
-- (_NSRange)replaceAllOccurrencesOfStyle:(id)a3 withStyle:(id)a4 undoTransaction:(void *)a5
+- (_NSRange)replaceAllOccurrencesOfStyle:(id)style withStyle:(id)withStyle undoTransaction:(void *)transaction
 {
-  v8 = a3;
-  v9 = a4;
+  styleCopy = style;
+  withStyleCopy = withStyle;
   v10 = *MEMORY[0x277D81490];
   v11 = *(MEMORY[0x277D81490] + 8);
   v12 = objc_opt_class();
-  if (objc_msgSend_isMemberOfClass_(v8, v13, v12))
+  if (objc_msgSend_isMemberOfClass_(styleCopy, v13, v12))
   {
-    v15 = objc_msgSend_replaceAllOccurrencesOfObject_withObject_forKind_undoTransaction_(self, v14, v8, v9, 0, a5);
+    v15 = objc_msgSend_replaceAllOccurrencesOfObject_withObject_forKind_undoTransaction_(self, v14, styleCopy, withStyleCopy, 0, transaction);
 LABEL_11:
     v10 = v15;
     v11 = v16;
@@ -6508,30 +6508,30 @@ LABEL_11:
   }
 
   v17 = objc_opt_class();
-  if (objc_msgSend_isMemberOfClass_(v8, v18, v17))
+  if (objc_msgSend_isMemberOfClass_(styleCopy, v18, v17))
   {
-    v15 = objc_msgSend_replaceAllOccurrencesOfObject_withObject_forKind_undoTransaction_(self, v19, v8, v9, 2, a5);
+    v15 = objc_msgSend_replaceAllOccurrencesOfObject_withObject_forKind_undoTransaction_(self, v19, styleCopy, withStyleCopy, 2, transaction);
     goto LABEL_11;
   }
 
   v20 = objc_opt_class();
-  if (objc_msgSend_isMemberOfClass_(v8, v21, v20))
+  if (objc_msgSend_isMemberOfClass_(styleCopy, v21, v20))
   {
-    v15 = objc_msgSend_replaceAllOccurrencesOfObject_withObject_forKind_undoTransaction_(self, v22, v8, v9, 3, a5);
+    v15 = objc_msgSend_replaceAllOccurrencesOfObject_withObject_forKind_undoTransaction_(self, v22, styleCopy, withStyleCopy, 3, transaction);
     goto LABEL_11;
   }
 
   v23 = objc_opt_class();
-  if (objc_msgSend_isMemberOfClass_(v8, v24, v23))
+  if (objc_msgSend_isMemberOfClass_(styleCopy, v24, v23))
   {
-    v15 = objc_msgSend_replaceAllOccurrencesOfObject_withObject_forKind_undoTransaction_(self, v25, v8, v9, 9, a5);
+    v15 = objc_msgSend_replaceAllOccurrencesOfObject_withObject_forKind_undoTransaction_(self, v25, styleCopy, withStyleCopy, 9, transaction);
     goto LABEL_11;
   }
 
   v26 = objc_opt_class();
-  if (objc_msgSend_isMemberOfClass_(v8, v27, v26))
+  if (objc_msgSend_isMemberOfClass_(styleCopy, v27, v26))
   {
-    v15 = objc_msgSend_replaceAllOccurrencesOfObject_withObject_forKind_undoTransaction_(self, v28, v8, v9, 22, a5);
+    v15 = objc_msgSend_replaceAllOccurrencesOfObject_withObject_forKind_undoTransaction_(self, v28, styleCopy, withStyleCopy, 22, transaction);
     goto LABEL_11;
   }
 
@@ -6544,45 +6544,45 @@ LABEL_12:
   return result;
 }
 
-- (void)adoptStylesheet:(id)a3 withMapper:(id)a4
+- (void)adoptStylesheet:(id)stylesheet withMapper:(id)mapper
 {
-  v13 = a3;
-  v8 = a4;
-  if (self->_stylesheet != v13 || objc_msgSend_clientsMustRemap(v8, v6, v7))
+  stylesheetCopy = stylesheet;
+  mapperCopy = mapper;
+  if (self->_stylesheet != stylesheetCopy || objc_msgSend_clientsMustRemap(mapperCopy, v6, v7))
   {
-    objc_msgSend_pushMappingContext_(v8, v6, self);
+    objc_msgSend_pushMappingContext_(mapperCopy, v6, self);
     for (i = 0; i != 23; ++i)
     {
       v11 = objc_msgSend_attributeArrayForKind_(self, v9, i);
       if (v11)
       {
-        (*(*v11 + 168))(v11, v13, v8);
+        (*(*v11 + 168))(v11, stylesheetCopy, mapperCopy);
       }
     }
 
-    objc_msgSend_setStylesheet_(self, v9, v13);
-    objc_msgSend_popMappingContext_(v8, v12, self);
+    objc_msgSend_setStylesheet_(self, v9, stylesheetCopy);
+    objc_msgSend_popMappingContext_(mapperCopy, v12, self);
   }
 }
 
-- (void)setStylesheetForUpgradeToSingleStylesheet:(id)a3
+- (void)setStylesheetForUpgradeToSingleStylesheet:(id)stylesheet
 {
-  v7 = a3;
-  if (self->_stylesheet != v7)
+  stylesheetCopy = stylesheet;
+  if (self->_stylesheet != stylesheetCopy)
   {
     objc_msgSend_willModifyForUpgrade(self, v4, v5);
-    objc_msgSend_setStylesheet_(self, v6, v7);
+    objc_msgSend_setStylesheet_(self, v6, stylesheetCopy);
   }
 }
 
-- (_NSRange)textRangeForListsInCharRange:(_NSRange)a3
+- (_NSRange)textRangeForListsInCharRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v6 = MEMORY[0x277D81490];
   v7 = *MEMORY[0x277D81490];
   v8 = *(MEMORY[0x277D81490] + 8);
-  v9 = objc_msgSend_textRangeForListAtCharIndex_(self, a2, a3.location);
+  v9 = objc_msgSend_textRangeForListAtCharIndex_(self, a2, range.location);
   if (v9 != *v6 || v10 != v6[1])
   {
     v21.location = v9;
@@ -6638,9 +6638,9 @@ LABEL_12:
   return result;
 }
 
-- (_NSRange)textRangeForListAtCharIndex:(unint64_t)a3
+- (_NSRange)textRangeForListAtCharIndex:(unint64_t)index
 {
-  objc_msgSend_paragraphEnumeratorAtCharIndex_styleProvider_(self, a2, a3, 0);
+  objc_msgSend_paragraphEnumeratorAtCharIndex_styleProvider_(self, a2, index, 0);
   v4 = TSWPParagraphEnumerator::paragraphListStyle(&v33, v3);
   v6 = TSWPParagraphEnumerator::paragraphLevel(&v33, v5);
   if (v4 && objc_msgSend_labelTypeForLevel_(v4, v7, v6))
@@ -6727,10 +6727,10 @@ LABEL_11:
   return result;
 }
 
-- (unint64_t)pFirstParIndexInListAtParIndex:(unint64_t)a3
+- (unint64_t)pFirstParIndexInListAtParIndex:(unint64_t)index
 {
-  v3 = a3;
-  objc_msgSend_paragraphEnumeratorAtParIndex_styleProvider_(self, a2, a3, 0);
+  indexCopy = index;
+  objc_msgSend_paragraphEnumeratorAtParIndex_styleProvider_(self, a2, index, 0);
   v5 = TSWPParagraphEnumerator::paragraphListStyle(&v18, v4);
   v7 = TSWPParagraphEnumerator::paragraphLevel(&v18, v6);
   if (v5 && objc_msgSend_labelTypeForLevel_(v5, v8, v7))
@@ -6738,7 +6738,7 @@ LABEL_11:
     while (1)
     {
       isFirstParagraph = TSWPParagraphEnumerator::isFirstParagraph(&v18);
-      if (!v3 || isFirstParagraph)
+      if (!indexCopy || isFirstParagraph)
       {
         break;
       }
@@ -6759,13 +6759,13 @@ LABEL_11:
         break;
       }
 
-      --v3;
+      --indexCopy;
       v5 = v13;
     }
   }
 
   TSWPParagraphEnumerator::~TSWPParagraphEnumerator(&v18);
-  return v3;
+  return indexCopy;
 }
 
 - (unint64_t)paragraphCount
@@ -6779,7 +6779,7 @@ LABEL_11:
   return result;
 }
 
-- (unint64_t)paragraphIndexAtCharIndex:(unint64_t)a3
+- (unint64_t)paragraphIndexAtCharIndex:(unint64_t)index
 {
   v5 = objc_msgSend_attributeArrayForKind_(self, a2, 0);
   if (!v5)
@@ -6792,16 +6792,16 @@ LABEL_11:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v11, v12);
   }
 
-  return TSWPAttributeArray::effectiveAttributeIndexForCharIndex(v5, a3);
+  return TSWPAttributeArray::effectiveAttributeIndexForCharIndex(v5, index);
 }
 
-- (unint64_t)charIndexForParagraphAtIndex:(unint64_t)a3
+- (unint64_t)charIndexForParagraphAtIndex:(unint64_t)index
 {
   v4 = objc_msgSend_attributeArrayForKind_(self, a2, 0);
   if (v4)
   {
 
-    return TSWPAttributeArray::charIndexForAttributeIndex(v4, a3);
+    return TSWPAttributeArray::charIndexForAttributeIndex(v4, index);
   }
 
   else
@@ -6816,15 +6816,15 @@ LABEL_11:
   }
 }
 
-- (_NSRange)textRangeForParagraphAtIndex:(unint64_t)a3
+- (_NSRange)textRangeForParagraphAtIndex:(unint64_t)index
 {
   v5 = objc_msgSend_attributeArrayForKind_(self, a2, 0);
   if (v5)
   {
     v7 = v5;
-    v9 = TSWPAttributeArray::charIndexForAttributeIndex(v5, a3);
-    v10 = (a3 + 1);
-    if (a3 + 1 >= *(v7 + 6))
+    v9 = TSWPAttributeArray::charIndexForAttributeIndex(v5, index);
+    v10 = (index + 1);
+    if (index + 1 >= *(v7 + 6))
     {
       v11 = objc_msgSend_characterCount(self, v10, v8);
     }
@@ -6855,13 +6855,13 @@ LABEL_11:
   return result;
 }
 
-- (_NSRange)textRangeForParagraphIndexRange:(_NSRange)a3
+- (_NSRange)textRangeForParagraphIndexRange:(_NSRange)range
 {
-  location = a3.location;
-  v5 = a3.location + a3.length;
-  if (a3.location > 0x7FFFFFFFFFFFFFFELL || a3.length == 0 || v5 >= 0x7FFFFFFFFFFFFFFFLL)
+  location = range.location;
+  v5 = range.location + range.length;
+  if (range.location > 0x7FFFFFFFFFFFFFFELL || range.length == 0 || v5 >= 0x7FFFFFFFFFFFFFFFLL)
   {
-    length = a3.length;
+    length = range.length;
     v9 = MEMORY[0x277D81150];
     v10 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSWPStorage textRangeForParagraphIndexRange:]");
     v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v11, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/text/TSWPStorage.mm");
@@ -6874,7 +6874,7 @@ LABEL_11:
     v5 = location + length;
   }
 
-  v17 = objc_msgSend_length(self, a2, a3.location);
+  v17 = objc_msgSend_length(self, a2, range.location);
   v20 = objc_msgSend_paragraphCount(self, v18, v19);
   v22 = objc_msgSend_textRangeForParagraphAtIndex_(self, v21, location);
   v24 = v23;
@@ -6925,7 +6925,7 @@ LABEL_11:
   return result;
 }
 
-- (_NSRange)textRangeForParagraphAtCharIndex:(unint64_t)a3
+- (_NSRange)textRangeForParagraphAtCharIndex:(unint64_t)index
 {
   v6 = objc_msgSend_attributeArrayForKind_(self, a2, 0);
   if (!v6)
@@ -6938,7 +6938,7 @@ LABEL_11:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v12, v13);
   }
 
-  v15 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(v6, a3);
+  v15 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(v6, index);
 
   v16 = objc_msgSend_textRangeForParagraphAtIndex_(self, v14, v15);
   result.length = v17;
@@ -6946,16 +6946,16 @@ LABEL_11:
   return result;
 }
 
-- (unint64_t)selectedParagraphBreakCount:(_NSRange)a3
+- (unint64_t)selectedParagraphBreakCount:(_NSRange)count
 {
-  if (!a3.length)
+  if (!count.length)
   {
     return 0;
   }
 
-  length = a3.length;
-  location = a3.location;
-  v6 = objc_msgSend_paragraphIndexRangeForCharRange_(self, a2, a3.location);
+  length = count.length;
+  location = count.location;
+  v6 = objc_msgSend_paragraphIndexRangeForCharRange_(self, a2, count.location);
   if (v6 >= &v7[v6])
   {
     return 0;
@@ -6984,14 +6984,14 @@ LABEL_11:
   return v10;
 }
 
-- (unint64_t)emptyParagraphCount:(_NSRange)a3
+- (unint64_t)emptyParagraphCount:(_NSRange)count
 {
-  if (!a3.length)
+  if (!count.length)
   {
     return 0;
   }
 
-  v4 = objc_msgSend_paragraphIndexRangeForCharRange_(self, a2, a3.location);
+  v4 = objc_msgSend_paragraphIndexRangeForCharRange_(self, a2, count.location);
   if (v4 >= &v5[v4])
   {
     return 0;
@@ -7016,10 +7016,10 @@ LABEL_11:
   return v8;
 }
 
-- (_NSRange)p_rangeWithNonVisibleAttachmentsTrimmedForRange:(_NSRange)a3
+- (_NSRange)p_rangeWithNonVisibleAttachmentsTrimmedForRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v42 = *MEMORY[0x277D85DE8];
   v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v8 = v6;
@@ -7161,13 +7161,13 @@ LABEL_28:
   return result;
 }
 
-- (BOOL)isWholeParagraphsForRange:(_NSRange)a3 ignoreAttachmentCharacters:(BOOL)a4 requireParagraphBreakSelected:(BOOL)a5
+- (BOOL)isWholeParagraphsForRange:(_NSRange)range ignoreAttachmentCharacters:(BOOL)characters requireParagraphBreakSelected:(BOOL)selected
 {
-  v6 = a4;
-  length = a3.length;
-  location = a3.location;
-  v10 = a3.location + a3.length;
-  if (a3.location + a3.length > objc_msgSend_length(self, a2, a3.location))
+  charactersCopy = characters;
+  length = range.length;
+  location = range.location;
+  v10 = range.location + range.length;
+  if (range.location + range.length > objc_msgSend_length(self, a2, range.location))
   {
     v12 = MEMORY[0x277D81150];
     v13 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v11, "[TSWPStorage isWholeParagraphsForRange:ignoreAttachmentCharacters:requireParagraphBreakSelected:]");
@@ -7181,7 +7181,7 @@ LABEL_28:
   {
     objc_msgSend_paragraphEnumeratorAtCharIndex_styleProvider_(self, v11, location, 0);
     v21 = TSWPParagraphEnumerator::paragraphTextRange(&v36, v19);
-    if (v6)
+    if (charactersCopy)
     {
       v21 = objc_msgSend_p_rangeWithNonVisibleAttachmentsTrimmedForRange_(self, v20, v21, v20);
     }
@@ -7192,7 +7192,7 @@ LABEL_28:
       v24 = TSWPParagraphEnumerator::paragraphTextRange(&v35, v23);
       v26 = v24;
       v27 = v25;
-      if (!a5)
+      if (!selected)
       {
         v28 = objc_msgSend_characterAtIndex_(self, v25, &v25[v24 - 1]);
         v29 = IsParagraphBreakingCharacter(v28);
@@ -7206,7 +7206,7 @@ LABEL_28:
           v31 = v27;
         }
 
-        if (v6)
+        if (charactersCopy)
         {
           if (v29)
           {
@@ -7240,9 +7240,9 @@ LABEL_28:
     TSWPParagraphEnumerator::~TSWPParagraphEnumerator(&v36);
   }
 
-  else if (objc_msgSend_isEmptyParagraphRange_ignoreAttachmentCharacters_outRange_(self, v11, location, 0, v6, &v36))
+  else if (objc_msgSend_isEmptyParagraphRange_ignoreAttachmentCharacters_outRange_(self, v11, location, 0, charactersCopy, &v36))
   {
-    return !v36.var1 || !a5;
+    return !v36.var1 || !selected;
   }
 
   else
@@ -7253,11 +7253,11 @@ LABEL_28:
   return v22;
 }
 
-- (_NSRange)textRangeForParagraphsInCharRange:(_NSRange)a3
+- (_NSRange)textRangeForParagraphsInCharRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v6 = objc_msgSend_paragraphIndexAtCharIndex_(self, a2, a3.location);
+  length = range.length;
+  location = range.location;
+  v6 = objc_msgSend_paragraphIndexAtCharIndex_(self, a2, range.location);
   TSWPParagraphEnumerator::TSWPParagraphEnumerator(&v18, self, 0, v6, v6, 0);
   v9 = TSWPParagraphEnumerator::paragraphTextRange(&v18, v7);
   v10 = v8;
@@ -7286,10 +7286,10 @@ LABEL_28:
   return result;
 }
 
-- (_NSRange)paragraphIndexRangeForCharRange:(_NSRange)a3
+- (_NSRange)paragraphIndexRangeForCharRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v6 = objc_msgSend_attributeArrayForKind_(self, a2, 0);
   if (!v6)
   {
@@ -7310,15 +7310,15 @@ LABEL_28:
   return result;
 }
 
-- (id)paragraphIndicesForSelection:(id)a3
+- (id)paragraphIndicesForSelection:(id)selection
 {
-  v4 = a3;
+  selectionCopy = selection;
   v7 = objc_msgSend_indexSet(MEMORY[0x277CCAB58], v5, v6);
-  if (objc_msgSend_isValid(v4, v8, v9))
+  if (objc_msgSend_isValid(selectionCopy, v8, v9))
   {
-    if (objc_msgSend_isInsertionPoint(v4, v10, v11))
+    if (objc_msgSend_isInsertionPoint(selectionCopy, v10, v11))
     {
-      v14 = objc_msgSend_leadingCharIndex(v4, v12, v13);
+      v14 = objc_msgSend_leadingCharIndex(selectionCopy, v12, v13);
       v16 = objc_msgSend_paragraphIndexRangeForCharRange_(self, v15, v14, 0);
       objc_msgSend_addIndexesInRange_(v7, v17, v16, v17);
     }
@@ -7331,17 +7331,17 @@ LABEL_28:
       v19[3] = &unk_27A6F38E0;
       v19[4] = v7;
       v19[5] = self;
-      objc_msgSend_enumerateRanges_(v4, v12, v19);
+      objc_msgSend_enumerateRanges_(selectionCopy, v12, v19);
     }
   }
 
   return v7;
 }
 
-- (_NSRange)paragraphIndexRangeIncludingFinalEmptyParagraphForCharRange:(_NSRange)a3
+- (_NSRange)paragraphIndexRangeIncludingFinalEmptyParagraphForCharRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v7 = objc_msgSend_attributeArrayForKind_(self, a2, 0);
   if (!v7)
   {
@@ -7377,12 +7377,12 @@ LABEL_28:
   return result;
 }
 
-- (BOOL)paragraphHasListLabelAtCharIndex:(unint64_t)a3
+- (BOOL)paragraphHasListLabelAtCharIndex:(unint64_t)index
 {
-  v6 = objc_msgSend_listStyleAtCharIndex_effectiveRange_(self, a2, a3, 0);
+  v6 = objc_msgSend_listStyleAtCharIndex_effectiveRange_(self, a2, index, 0);
   if (v6)
   {
-    v7 = objc_msgSend_paragraphLevelAtCharIndex_(self, v5, a3);
+    v7 = objc_msgSend_paragraphLevelAtCharIndex_(self, v5, index);
     v9 = objc_msgSend_labelTypeForLevel_(v6, v8, v7) != 0;
   }
 
@@ -7394,16 +7394,16 @@ LABEL_28:
   return v9;
 }
 
-- (BOOL)isWritingDirectionRightToLeftForParagraphAtCharIndex:(unint64_t)a3
+- (BOOL)isWritingDirectionRightToLeftForParagraphAtCharIndex:(unint64_t)index
 {
-  v5 = objc_msgSend_paragraphIndexAtCharIndex_(self, a2, a3);
+  v5 = objc_msgSend_paragraphIndexAtCharIndex_(self, a2, index);
 
   return objc_msgSend_isWritingDirectionRightToLeftForParagraphAtParIndex_(self, v4, v5);
 }
 
-- (BOOL)isWritingDirectionRightToLeftForParagraphAtParIndex:(unint64_t)a3
+- (BOOL)isWritingDirectionRightToLeftForParagraphAtParIndex:(unint64_t)index
 {
-  v4 = objc_msgSend_writingDirectionForParagraphAtParIndex_(self, a2, a3);
+  v4 = objc_msgSend_writingDirectionForParagraphAtParIndex_(self, a2, index);
   if (v4 >= 2)
   {
     if (v4 != -1)
@@ -7468,9 +7468,9 @@ LABEL_13:
   return v4;
 }
 
-- (BOOL)isWritingDirectionRightToLeftForListAtParIndex:(unint64_t)a3
+- (BOOL)isWritingDirectionRightToLeftForListAtParIndex:(unint64_t)index
 {
-  v5 = objc_msgSend_listStyleAtParIndex_effectiveRange_(self, a2, a3, 0);
+  v5 = objc_msgSend_listStyleAtParIndex_effectiveRange_(self, a2, index, 0);
   v7 = v5;
   if (v5 && objc_msgSend_containsProperty_(v5, v6, 44) && (v8 = objc_msgSend_intValueForProperty_(v7, v6, 44), v8 != -1))
   {
@@ -7486,7 +7486,7 @@ LABEL_13:
 
     else
     {
-      ParIndexInListAtParIndex = objc_msgSend_pFirstParIndexInListAtParIndex_(self, v10, a3);
+      ParIndexInListAtParIndex = objc_msgSend_pFirstParIndexInListAtParIndex_(self, v10, index);
       isWritingDirectionRightToLeftForParagraphAtParIndex = objc_msgSend_isWritingDirectionRightToLeftForParagraphAtParIndex_(self, v13, ParIndexInListAtParIndex);
     }
 
@@ -7496,13 +7496,13 @@ LABEL_13:
   return v9;
 }
 
-- (int)writingDirectionForParagraphAtCharIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4
+- (int)writingDirectionForParagraphAtCharIndex:(unint64_t)index effectiveRange:(_NSRange *)range
 {
-  v6 = objc_msgSend_paragraphStyleAtCharIndex_effectiveRange_(self, a2, a3, a4);
+  v6 = objc_msgSend_paragraphStyleAtCharIndex_effectiveRange_(self, a2, index, range);
   isDirectionRightToLeft = objc_msgSend_intValueForProperty_(v6, v7, 44);
   if (isDirectionRightToLeft == -1)
   {
-    isDirectionRightToLeft = objc_msgSend_writingDirectionFromBidiAttributesTableForParagraphAtCharIndex_(self, v8, a3);
+    isDirectionRightToLeft = objc_msgSend_writingDirectionFromBidiAttributesTableForParagraphAtCharIndex_(self, v8, index);
     if (isDirectionRightToLeft == -1)
     {
       WeakRetained = objc_loadWeakRetained(&self->_documentRoot);
@@ -7513,7 +7513,7 @@ LABEL_13:
   return isDirectionRightToLeft;
 }
 
-- (int)writingDirectionFromBidiAttributesTableForParagraphAtCharIndex:(unint64_t)a3
+- (int)writingDirectionFromBidiAttributesTableForParagraphAtCharIndex:(unint64_t)index
 {
   v4 = objc_msgSend_attributeArrayForKind_(self, a2, 18);
   if (!v4)
@@ -7533,7 +7533,7 @@ LABEL_13:
     return -1;
   }
 
-  v8 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(v4, a3);
+  v8 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(v4, index);
   if (v8 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v9 = MEMORY[0x277D81150];
@@ -7547,17 +7547,17 @@ LABEL_13:
   return *TSWPAttributeRecord::paragraphData(*(v6 + 8) + 16 * v8, *(v6 + 28));
 }
 
-- (int)writingDirectionForParagraphAtParIndex:(unint64_t)a3
+- (int)writingDirectionForParagraphAtParIndex:(unint64_t)index
 {
-  v5 = objc_msgSend_charIndexForParagraphAtIndex_(self, a2, a3);
+  v5 = objc_msgSend_charIndexForParagraphAtIndex_(self, a2, index);
 
   return objc_msgSend_writingDirectionForParagraphAtCharIndex_(self, v4, v5);
 }
 
-- (void)setParagraphWritingDirection:(int)a3 forCharRange:(_NSRange)a4 undoTransaction:(void *)a5
+- (void)setParagraphWritingDirection:(int)direction forCharRange:(_NSRange)range undoTransaction:(void *)transaction
 {
-  v5 = *&a3;
-  objc_msgSend_paragraphIndexRangeForCharRange_(self, a2, a4.location, a4.length);
+  v5 = *&direction;
+  objc_msgSend_paragraphIndexRangeForCharRange_(self, a2, range.location, range.length);
   if (v7)
   {
 
@@ -7565,25 +7565,25 @@ LABEL_13:
   }
 }
 
-- (void)setParagraphWritingDirection:(int)a3 forParagraphIndexRange:(_NSRange)a4 undoTransaction:(void *)a5
+- (void)setParagraphWritingDirection:(int)direction forParagraphIndexRange:(_NSRange)range undoTransaction:(void *)transaction
 {
-  if (a4.length)
+  if (range.length)
   {
-    MEMORY[0x2821F9670](self, sel_applyWritingDirection_toParagraphIndexRange_forKind_undoTransaction_, *&a3);
+    MEMORY[0x2821F9670](self, sel_applyWritingDirection_toParagraphIndexRange_forKind_undoTransaction_, *&direction);
   }
 }
 
-- (id)languageEntryAtCharIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4
+- (id)languageEntryAtCharIndex:(unint64_t)index effectiveRange:(_NSRange *)range
 {
   v7 = objc_msgSend_attributeArrayForKind_(self, a2, 13);
   if (!v7)
   {
-    if (a4)
+    if (range)
     {
       v15 = objc_msgSend_range(self, v8, v9);
       v14 = 0;
-      a4->location = v15;
-      a4->length = v16;
+      range->location = v15;
+      range->length = v16;
       goto LABEL_9;
     }
 
@@ -7591,7 +7591,7 @@ LABEL_13:
   }
 
   v10 = v7;
-  v11 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(v7, a3);
+  v11 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(v7, index);
   if (v11 >= *(v10 + 6))
   {
 LABEL_8:
@@ -7600,10 +7600,10 @@ LABEL_8:
   }
 
   v12 = v11;
-  if (a4)
+  if (range)
   {
-    a4->location = TSWPAttributeArray::rangeForAttributeIndex(v10, v11);
-    a4->length = v13;
+    range->location = TSWPAttributeArray::rangeForAttributeIndex(v10, v11);
+    range->length = v13;
   }
 
   v14 = TSWPAttributeArray::objectForAttributeIndex(v10, v12);
@@ -7612,10 +7612,10 @@ LABEL_9:
   return v14;
 }
 
-- (id)bestCharacterLanguageForTextRange:(_NSRange)a3
+- (id)bestCharacterLanguageForTextRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v53[7] = *MEMORY[0x277D85DE8];
   v3 = objc_msgSend_attributeArrayForKind_(self, a2, 13);
   if (!v3)
@@ -7840,13 +7840,13 @@ LABEL_61:
   return v41;
 }
 
-- (id)languageForTextRange:(_NSRange)a3 useStringTokenizer:(BOOL)a4 useDocumentLanguage:(BOOL)a5
+- (id)languageForTextRange:(_NSRange)range useStringTokenizer:(BOOL)tokenizer useDocumentLanguage:(BOOL)language
 {
-  v5 = a5;
-  v6 = a4;
-  length = a3.length;
-  location = a3.location;
-  v10 = objc_msgSend_paragraphIndexAtCharIndex_(self, a2, a3.location);
+  languageCopy = language;
+  tokenizerCopy = tokenizer;
+  length = range.length;
+  location = range.location;
+  v10 = objc_msgSend_paragraphIndexAtCharIndex_(self, a2, range.location);
   v53 = location + length;
   v13 = objc_msgSend_paragraphIndexAtCharIndex_(self, v11, location + length);
   if (v13 > v10)
@@ -7905,9 +7905,9 @@ LABEL_18:
     goto LABEL_45;
   }
 
-  v49 = v6;
+  v49 = tokenizerCopy;
   v51 = length;
-  v52 = v5;
+  v52 = languageCopy;
   v22 = 0;
   v23 = MEMORY[0x277D81490];
   v24 = *MEMORY[0x277D81490];
@@ -7930,10 +7930,10 @@ LABEL_37:
 
       v22 = 0;
 LABEL_38:
-      v5 = v52;
+      languageCopy = v52;
       location = v50;
       length = v51;
-      v6 = v49;
+      tokenizerCopy = v49;
       goto LABEL_45;
     }
 
@@ -7997,8 +7997,8 @@ LABEL_38:
 LABEL_40:
   location = v50;
   length = v51;
-  v5 = v52;
-  v6 = v49;
+  languageCopy = v52;
+  tokenizerCopy = v49;
   if (v35 == v50 && v34 == v51 || v35 <= v50 && v34 + v35 >= v53)
   {
     v22 = v22;
@@ -8021,7 +8021,7 @@ LABEL_45:
   {
     v39 = 0;
 LABEL_58:
-    if (v6)
+    if (tokenizerCopy)
     {
       v39 = 0;
       v43 = length == *(MEMORY[0x277D81490] + 8) && location == *MEMORY[0x277D81490];
@@ -8044,7 +8044,7 @@ LABEL_58:
   }
 
 LABEL_65:
-  if (!v39 && v5)
+  if (!v39 && languageCopy)
   {
     WeakRetained = objc_loadWeakRetained(&self->_documentRoot);
     v39 = objc_msgSend_documentLanguage(WeakRetained, v45, v46);
@@ -8056,29 +8056,29 @@ LABEL_68:
   return v39;
 }
 
-- (id)languageAtParIndex:(unint64_t)a3 useStringTokenizer:(BOOL)a4 useDocumentLanguage:(BOOL)a5
+- (id)languageAtParIndex:(unint64_t)index useStringTokenizer:(BOOL)tokenizer useDocumentLanguage:(BOOL)language
 {
-  v5 = a5;
-  v6 = a4;
-  v8 = objc_msgSend_textRangeForParagraphAtIndex_(self, a2, a3);
+  languageCopy = language;
+  tokenizerCopy = tokenizer;
+  v8 = objc_msgSend_textRangeForParagraphAtIndex_(self, a2, index);
   v12 = (__PAIR128__(v9, &v9[v8]) - objc_msgSend_length(self, v9, v10)) >> 64;
 
-  return objc_msgSend_languageForTextRange_useStringTokenizer_useDocumentLanguage_(self, v11, v8, v12, v6, v5);
+  return objc_msgSend_languageForTextRange_useStringTokenizer_useDocumentLanguage_(self, v11, v8, v12, tokenizerCopy, languageCopy);
 }
 
-- (id)dictationAndAutocorrectionKeyAtCharIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4
+- (id)dictationAndAutocorrectionKeyAtCharIndex:(unint64_t)index effectiveRange:(_NSRange *)range
 {
-  if (a4)
+  if (range)
   {
-    a4->location = 0;
-    a4->length = 0;
+    range->location = 0;
+    range->length = 0;
   }
 
   v6 = objc_msgSend_attributeArrayForKind_(self, a2, 14);
   if (v6)
   {
     v7 = v6;
-    v8 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(v6, a3);
+    v8 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(v6, index);
     if (v8 >= *(v7 + 6))
     {
       v6 = 0;
@@ -8087,10 +8087,10 @@ LABEL_68:
     else
     {
       v9 = v8;
-      if (a4)
+      if (range)
       {
-        a4->location = TSWPAttributeArray::rangeForAttributeIndex(v7, v8);
-        a4->length = v10;
+        range->location = TSWPAttributeArray::rangeForAttributeIndex(v7, v8);
+        range->length = v10;
       }
 
       v6 = TSWPAttributeArray::objectForAttributeIndex(v7, v9);
@@ -8100,11 +8100,11 @@ LABEL_68:
   return v6;
 }
 
-- (void)addAllDictationAndAutocorrectionKeyRangesInRange:(_NSRange)a3 toRanges:(id)a4
+- (void)addAllDictationAndAutocorrectionKeyRangesInRange:(_NSRange)range toRanges:(id)ranges
 {
-  length = a3.length;
-  location = a3.location;
-  v17 = a4;
+  length = range.length;
+  location = range.location;
+  rangesCopy = ranges;
   v8 = objc_msgSend_attributeArrayForKind_(self, v7, 14);
   v9 = v8;
   if (v8)
@@ -8125,7 +8125,7 @@ LABEL_68:
         v16 = NSIntersectionRange(v19, v20);
         if (v16.length && v15)
         {
-          objc_msgSend_concatenateRange_(v17, v16.length, v12, v14);
+          objc_msgSend_concatenateRange_(rangesCopy, v16.length, v12, v14);
         }
 
         ++v10;
@@ -8136,7 +8136,7 @@ LABEL_68:
   }
 }
 
-- (id)paragraphStyleAtParIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4
+- (id)paragraphStyleAtParIndex:(unint64_t)index effectiveRange:(_NSRange *)range
 {
   v8 = objc_msgSend_attributeArrayForKind_(self, a2, 0);
   if (!v8)
@@ -8149,15 +8149,15 @@ LABEL_68:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v14, v15);
   }
 
-  if (a4)
+  if (range)
   {
-    a4->location = objc_msgSend_textRangeForParagraphAtIndex_(self, v7, a3);
-    a4->length = v16;
+    range->location = objc_msgSend_textRangeForParagraphAtIndex_(self, v7, index);
+    range->length = v16;
   }
 
-  if (v8 && *(v8 + 24) > a3)
+  if (v8 && *(v8 + 24) > index)
   {
-    v17 = TSWPAttributeArray::objectForAttributeIndex(v8, a3);
+    v17 = TSWPAttributeArray::objectForAttributeIndex(v8, index);
   }
 
   else
@@ -8168,14 +8168,14 @@ LABEL_68:
   return v17;
 }
 
-- (id)paragraphStyleAtCharIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4
+- (id)paragraphStyleAtCharIndex:(unint64_t)index effectiveRange:(_NSRange *)range
 {
-  v7 = objc_msgSend_paragraphIndexAtCharIndex_(self, a2, a3);
+  v7 = objc_msgSend_paragraphIndexAtCharIndex_(self, a2, index);
 
-  return objc_msgSend_paragraphStyleAtParIndex_effectiveRange_(self, v6, v7, a4);
+  return objc_msgSend_paragraphStyleAtParIndex_effectiveRange_(self, v6, v7, range);
 }
 
-- (unint64_t)findNextParagraphStyleChange:(unint64_t)a3 maxCharIndex:(unint64_t)a4
+- (unint64_t)findNextParagraphStyleChange:(unint64_t)change maxCharIndex:(unint64_t)index
 {
   v7 = objc_msgSend_attributeArrayForKind_(self, a2, 0);
   if (!v7)
@@ -8188,7 +8188,7 @@ LABEL_68:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v13, v14);
   }
 
-  v15 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(v7, a3);
+  v15 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(v7, change);
   v16 = *(v7 + 24);
   v17 = TSWPAttributeArray::objectForAttributeIndex(v7, v15);
   v18 = (v15 + 1);
@@ -8199,14 +8199,14 @@ LABEL_68:
       v19 = TSWPAttributeArray::charIndexForAttributeIndex(v7, v18);
       v20 = TSWPAttributeArray::objectForAttributeIndex(v7, v18);
       v21 = v20;
-      if (v19 >= a4)
+      if (v19 >= index)
       {
         break;
       }
 
       if (v20 != v17)
       {
-        a4 = TSWPAttributeArray::charIndexForAttributeIndex(v7, v18);
+        index = TSWPAttributeArray::charIndexForAttributeIndex(v7, v18);
         break;
       }
 
@@ -8219,7 +8219,7 @@ LABEL_68:
 
 LABEL_10:
 
-  return a4;
+  return index;
 }
 
 - (void)nonUndoableFilterParagraphStylesForHeaderFooter
@@ -8257,11 +8257,11 @@ LABEL_10:
   }
 }
 
-- (void)enumerateParagraphsIntersectingTextRange:(_NSRange)a3 usingBlock:(id)a4
+- (void)enumerateParagraphsIntersectingTextRange:(_NSRange)range usingBlock:(id)block
 {
-  length = a3.length;
-  location = a3.location;
-  v7 = a4;
+  length = range.length;
+  location = range.location;
+  blockCopy = block;
   v9 = objc_msgSend_attributeArrayForKind_(self, v8, 0);
   if (v9)
   {
@@ -8272,7 +8272,7 @@ LABEL_10:
     for (i = &v11[v12]; v12 < i; ++v12)
     {
       v14 = objc_msgSend_paragraphStyleAtParIndex_effectiveRange_(self, v11, v12, v26);
-      (*(v7 + 2))(v7, v12, v26[0], v26[1], v14, &v27);
+      (*(blockCopy + 2))(blockCopy, v12, v26[0], v26[1], v14, &v27);
 
       if (v27)
       {
@@ -8294,11 +8294,11 @@ LABEL_10:
   }
 }
 
-- (id)dropCapCharIndexesInRange:(_NSRange)a3
+- (id)dropCapCharIndexesInRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v6 = objc_msgSend_indexSet(MEMORY[0x277CCAB58], a2, a3.location);
+  length = range.length;
+  location = range.location;
+  v6 = objc_msgSend_indexSet(MEMORY[0x277CCAB58], a2, range.location);
   if (objc_msgSend_WPKindSupportsDropCaps(self, v7, v8))
   {
     v10 = objc_msgSend_attributeArrayForKind_(self, v9, 22);
@@ -8346,9 +8346,9 @@ LABEL_10:
   return v6;
 }
 
-- (id)dropCapCharIndexesInSelection:(id)a3
+- (id)dropCapCharIndexesInSelection:(id)selection
 {
-  v4 = a3;
+  selectionCopy = selection;
   v7 = objc_msgSend_indexSet(MEMORY[0x277CCAB58], v5, v6);
   if (objc_msgSend_WPKindSupportsDropCaps(self, v8, v9))
   {
@@ -8358,21 +8358,21 @@ LABEL_10:
     v12[3] = &unk_27A6F38E0;
     v12[4] = self;
     v12[5] = v7;
-    objc_msgSend_enumerateRanges_(v4, v10, v12);
+    objc_msgSend_enumerateRanges_(selectionCopy, v10, v12);
   }
 
   return v7;
 }
 
-- (id)dropCapStyleAtParIndex:(unint64_t)a3
+- (id)dropCapStyleAtParIndex:(unint64_t)index
 {
-  if (objc_msgSend_WPKindSupportsDropCaps(self, a2, a3))
+  if (objc_msgSend_WPKindSupportsDropCaps(self, a2, index))
   {
     v6 = objc_msgSend_attributeArrayForKind_(self, v5, 22);
     if (v6)
     {
       v9 = v6;
-      v10 = objc_msgSend_charIndexForParagraphAtIndex_(self, v7, a3);
+      v10 = objc_msgSend_charIndexForParagraphAtIndex_(self, v7, index);
       v11 = TSWPAttributeArray::exactAttributeIndexForCharIndex(v9, v10);
       if (v11 != 0x7FFFFFFFFFFFFFFFLL)
       {
@@ -8403,14 +8403,14 @@ LABEL_8:
   return v12;
 }
 
-- (id)characterStyleForDropCapAtCharIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4
+- (id)characterStyleForDropCapAtCharIndex:(unint64_t)index effectiveRange:(_NSRange *)range
 {
-  v8 = objc_msgSend_rangeOfDropCapAtCharIndex_(self, a2, a3);
+  v8 = objc_msgSend_rangeOfDropCapAtCharIndex_(self, a2, index);
   v9 = 0;
-  if (a3 >= v8)
+  if (index >= v8)
   {
     v10 = v7;
-    if (a3 - v8 < v7)
+    if (index - v8 < v7)
     {
       if (v8 >= &v7[v8])
       {
@@ -8435,7 +8435,7 @@ LABEL_7:
           }
         }
 
-        v9 = objc_msgSend_characterStyleAtCharIndex_effectiveRange_(self, v7, v8, a4);
+        v9 = objc_msgSend_characterStyleAtCharIndex_effectiveRange_(self, v7, v8, range);
       }
     }
   }
@@ -8443,29 +8443,29 @@ LABEL_7:
   return v9;
 }
 
-- (_NSRange)rangeOfDropCapAtCharIndex:(unint64_t)a3
+- (_NSRange)rangeOfDropCapAtCharIndex:(unint64_t)index
 {
-  v3 = MEMORY[0x2821F9670](self, sel_rangeOfDropCapAtCharIndex_actualCharacterCount_, a3);
+  v3 = MEMORY[0x2821F9670](self, sel_rangeOfDropCapAtCharIndex_actualCharacterCount_, index);
   result.length = v4;
   result.location = v3;
   return result;
 }
 
-- (_NSRange)rangeOfDropCapAtCharIndex:(unint64_t)a3 actualCharacterCount:(unint64_t *)a4
+- (_NSRange)rangeOfDropCapAtCharIndex:(unint64_t)index actualCharacterCount:(unint64_t *)count
 {
   v7 = *MEMORY[0x277D81490];
   v8 = *(MEMORY[0x277D81490] + 8);
-  v10 = objc_msgSend_dropCapStyleAtCharIndex_(self, a2, a3);
-  if (!v10 || (v11 = objc_msgSend_textRangeForParagraphAtCharIndex_(self, v9, a3), v7 = v11, !v12))
+  v10 = objc_msgSend_dropCapStyleAtCharIndex_(self, a2, index);
+  if (!v10 || (v11 = objc_msgSend_textRangeForParagraphAtCharIndex_(self, v9, index), v7 = v11, !v12))
   {
     v14 = 0;
-    if (!a4)
+    if (!count)
     {
       goto LABEL_18;
     }
 
 LABEL_17:
-    *a4 = v14;
+    *count = v14;
     goto LABEL_18;
   }
 
@@ -8508,7 +8508,7 @@ LABEL_17:
 
 LABEL_20:
   v8 = i - v7;
-  if (a4)
+  if (count)
   {
     goto LABEL_17;
   }
@@ -8522,20 +8522,20 @@ LABEL_18:
   return result;
 }
 
-- (void)setDropCapStyle:(id)a3 atParIndex:(unint64_t)a4 undoTransaction:(void *)a5
+- (void)setDropCapStyle:(id)style atParIndex:(unint64_t)index undoTransaction:(void *)transaction
 {
-  v11 = a3;
+  styleCopy = style;
   if (objc_msgSend_WPKindSupportsDropCaps(self, v8, v9))
   {
-    objc_msgSend_applyObject_toParagraphIndexRange_forKind_undoTransaction_(self, v10, v11, a4, 1, 22, a5);
+    objc_msgSend_applyObject_toParagraphIndexRange_forKind_undoTransaction_(self, v10, styleCopy, index, 1, 22, transaction);
   }
 }
 
-- (id)dropCapStyleAtCharIndex:(unint64_t)a3
+- (id)dropCapStyleAtCharIndex:(unint64_t)index
 {
-  if (objc_msgSend_WPKindSupportsDropCaps(self, a2, a3))
+  if (objc_msgSend_WPKindSupportsDropCaps(self, a2, index))
   {
-    v6 = objc_msgSend_paragraphIndexAtCharIndex_(self, v5, a3);
+    v6 = objc_msgSend_paragraphIndexAtCharIndex_(self, v5, index);
     v8 = objc_msgSend_dropCapStyleAtParIndex_(self, v7, v6);
   }
 
@@ -8547,11 +8547,11 @@ LABEL_18:
   return v8;
 }
 
-- (void)setDropCapStyle:(id)a3 forCharRange:(_NSRange)a4 undoTransaction:(void *)a5
+- (void)setDropCapStyle:(id)style forCharRange:(_NSRange)range undoTransaction:(void *)transaction
 {
-  length = a4.length;
-  location = a4.location;
-  v21 = a3;
+  length = range.length;
+  location = range.location;
+  styleCopy = style;
   if ((objc_msgSend_WPKindSupportsDropCaps(self, v9, v10) & 1) == 0)
   {
     v13 = MEMORY[0x277D81150];
@@ -8564,15 +8564,15 @@ LABEL_18:
 
   if (objc_msgSend_WPKindSupportsDropCaps(self, v11, v12))
   {
-    objc_msgSend_applyObject_toParagraphsInCharRange_forKind_undoTransaction_(self, v20, v21, location, length, 22, a5);
+    objc_msgSend_applyObject_toParagraphsInCharRange_forKind_undoTransaction_(self, v20, styleCopy, location, length, 22, transaction);
   }
 }
 
-- (void)setDropCapStyle:(id)a3 forParagraphIndexRange:(_NSRange)a4 undoTransaction:(void *)a5
+- (void)setDropCapStyle:(id)style forParagraphIndexRange:(_NSRange)range undoTransaction:(void *)transaction
 {
-  length = a4.length;
-  location = a4.location;
-  v21 = a3;
+  length = range.length;
+  location = range.location;
+  styleCopy = style;
   if ((objc_msgSend_WPKindSupportsDropCaps(self, v9, v10) & 1) == 0)
   {
     v13 = MEMORY[0x277D81150];
@@ -8585,7 +8585,7 @@ LABEL_18:
 
   if (objc_msgSend_WPKindSupportsDropCaps(self, v11, v12))
   {
-    objc_msgSend_applyObject_toParagraphIndexRange_forKind_undoTransaction_(self, v20, v21, location, length, 22, a5);
+    objc_msgSend_applyObject_toParagraphIndexRange_forKind_undoTransaction_(self, v20, styleCopy, location, length, 22, transaction);
   }
 }
 
@@ -8623,23 +8623,23 @@ LABEL_18:
   return result;
 }
 
-- (void)moveDropCapStyleFromParIndex:(unint64_t)a3 toParIndex:(unint64_t)a4 undoTransaction:(void *)a5
+- (void)moveDropCapStyleFromParIndex:(unint64_t)index toParIndex:(unint64_t)parIndex undoTransaction:(void *)transaction
 {
-  if (objc_msgSend_WPKindSupportsDropCaps(self, a2, a3))
+  if (objc_msgSend_WPKindSupportsDropCaps(self, a2, index))
   {
-    v12 = objc_msgSend_dropCapStyleAtParIndex_(self, v9, a3);
+    v12 = objc_msgSend_dropCapStyleAtParIndex_(self, v9, index);
     if (v12)
     {
-      objc_msgSend_setDropCapStyle_atParIndex_undoTransaction_(self, v10, v12, a4, a5);
-      objc_msgSend_setDropCapStyle_atParIndex_undoTransaction_(self, v11, 0, a3, a5);
+      objc_msgSend_setDropCapStyle_atParIndex_undoTransaction_(self, v10, v12, parIndex, transaction);
+      objc_msgSend_setDropCapStyle_atParIndex_undoTransaction_(self, v11, 0, index, transaction);
     }
   }
 }
 
-- (id)dropCapStyleIfMatchingSelectionExactly:(id)a3
+- (id)dropCapStyleIfMatchingSelectionExactly:(id)exactly
 {
-  v4 = a3;
-  if (objc_msgSend_isValid(v4, v5, v6) && (v9 = objc_msgSend_superRange(v4, v7, v8), v11 = v10, v12 = objc_msgSend_rangeOfDropCapAtCharIndex_(self, v10, v9), v12 <= v9) && (v15 = &v13[v12], v16 = &v11[v9], &v13[v12] >= v16) && ((isInsertionPoint = objc_msgSend_isInsertionPoint(v4, v13, v14), v15 == v16) ? (v19 = isInsertionPoint) : (v19 = 0), (v19 & 1) == 0))
+  exactlyCopy = exactly;
+  if (objc_msgSend_isValid(exactlyCopy, v5, v6) && (v9 = objc_msgSend_superRange(exactlyCopy, v7, v8), v11 = v10, v12 = objc_msgSend_rangeOfDropCapAtCharIndex_(self, v10, v9), v12 <= v9) && (v15 = &v13[v12], v16 = &v11[v9], &v13[v12] >= v16) && ((isInsertionPoint = objc_msgSend_isInsertionPoint(exactlyCopy, v13, v14), v15 == v16) ? (v19 = isInsertionPoint) : (v19 = 0), (v19 & 1) == 0))
   {
     v20 = objc_msgSend_dropCapStyleAtCharIndex_(self, v18, v9);
   }
@@ -8663,17 +8663,17 @@ LABEL_18:
   return result;
 }
 
-- (id)listStyleAtCharIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4
+- (id)listStyleAtCharIndex:(unint64_t)index effectiveRange:(_NSRange *)range
 {
   v6 = objc_msgSend_attributeArrayForKind_(self, a2, 2);
-  if (v6 && (v7 = v6, v8 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(v6, a3), v8 != 0x7FFFFFFFFFFFFFFFLL))
+  if (v6 && (v7 = v6, v8 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(v6, index), v8 != 0x7FFFFFFFFFFFFFFFLL))
   {
     v10 = v8;
     v9 = TSWPAttributeArray::objectForAttributeIndex(v7, v8);
-    if (a4)
+    if (range)
     {
-      a4->location = TSWPAttributeArray::rangeForAttributeIndex(v7, v10);
-      a4->length = v11;
+      range->location = TSWPAttributeArray::rangeForAttributeIndex(v7, v10);
+      range->length = v11;
     }
   }
 
@@ -8685,30 +8685,30 @@ LABEL_18:
   return v9;
 }
 
-- (id)listStyleAtParIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4
+- (id)listStyleAtParIndex:(unint64_t)index effectiveRange:(_NSRange *)range
 {
-  v6 = objc_msgSend_textRangeForParagraphAtIndex_(self, a2, a3);
-  if (a4)
+  v6 = objc_msgSend_textRangeForParagraphAtIndex_(self, a2, index);
+  if (range)
   {
-    a4->location = v6;
-    a4->length = v7;
+    range->location = v6;
+    range->length = v7;
   }
 
   return objc_msgSend_listStyleAtCharIndex_effectiveRange_(self, v7, v6, 0);
 }
 
-- (unint64_t)listNumberForParagraphIndex:(unint64_t)a3 numberingData:(id *)a4
+- (unint64_t)listNumberForParagraphIndex:(unint64_t)index numberingData:(id *)data
 {
-  objc_msgSend_paragraphEnumeratorAtParIndex_styleProvider_(self, a2, a3, 0);
-  v7 = objc_msgSend_listNumberForParagraphEnumerator_numberingData_(self, v6, &v9, a4);
+  objc_msgSend_paragraphEnumeratorAtParIndex_styleProvider_(self, a2, index, 0);
+  v7 = objc_msgSend_listNumberForParagraphEnumerator_numberingData_(self, v6, &v9, data);
   TSWPParagraphEnumerator::~TSWPParagraphEnumerator(&v9);
   return v7;
 }
 
-- (unint64_t)listNumberForParagraphEnumerator:(const TSWPParagraphEnumerator *)a3 numberingData:(id *)a4
+- (unint64_t)listNumberForParagraphEnumerator:(const TSWPParagraphEnumerator *)enumerator numberingData:(id *)data
 {
-  v7 = TSWPParagraphEnumerator::paragraphListStyle(a3, a2);
-  v11 = TSWPParagraphEnumerator::paragraphLevel(a3, v8);
+  v7 = TSWPParagraphEnumerator::paragraphListStyle(enumerator, a2);
+  v11 = TSWPParagraphEnumerator::paragraphLevel(enumerator, v8);
   if (v7)
   {
     v44 = objc_msgSend_labelTypeForLevel_(v7, v9, v11);
@@ -8720,18 +8720,18 @@ LABEL_18:
   }
 
   v13 = objc_msgSend_baseStyleForTopicNumbers(v7, v9, v10);
-  if (v44 != 3 || (v14 = TSWPParagraphEnumerator::paragraphTextRange(a3, v12), (objc_msgSend_hasPartitionableAttachmentAtStartOfTextRange_(self, v15, v14, v15) & 1) != 0))
+  if (v44 != 3 || (v14 = TSWPParagraphEnumerator::paragraphTextRange(enumerator, v12), (objc_msgSend_hasPartitionableAttachmentAtStartOfTextRange_(self, v15, v14, v15) & 1) != 0))
   {
     v16 = 0;
     goto LABEL_7;
   }
 
-  v16 = TSWPParagraphEnumerator::paragraphListStart(a3, v12);
+  v16 = TSWPParagraphEnumerator::paragraphListStart(enumerator, v12);
   if (!v16)
   {
     v42 = v11;
     v43 = v13;
-    TSWPParagraphEnumerator::TSWPParagraphEnumerator(&v45, a3);
+    TSWPParagraphEnumerator::TSWPParagraphEnumerator(&v45, enumerator);
     v41 = 0;
     for (i = 1; ; i = v16 + 1)
     {
@@ -8811,25 +8811,25 @@ LABEL_32:
   }
 
 LABEL_7:
-  v17 = TSWPParagraphEnumerator::paragraphListStart(a3, v12);
-  if (a4)
+  v17 = TSWPParagraphEnumerator::paragraphListStart(enumerator, v12);
+  if (data)
   {
-    a4->var0 = v44;
-    a4->var1 = v11;
-    a4->var2 = v17 == 0;
+    data->var0 = v44;
+    data->var1 = v11;
+    data->var2 = v17 == 0;
   }
 
   return v16;
 }
 
-- (void)setListStart:(unint64_t)a3 forCharRange:(_NSRange)a4 undoTransaction:(void *)a5
+- (void)setListStart:(unint64_t)start forCharRange:(_NSRange)range undoTransaction:(void *)transaction
 {
-  v8 = objc_msgSend_paragraphIndexRangeForCharRange_(self, a2, a4.location, a4.length);
+  v8 = objc_msgSend_paragraphIndexRangeForCharRange_(self, a2, range.location, range.length);
   if (v9)
   {
     v10 = v8;
     v11 = v9;
-    if (HIDWORD(a3))
+    if (HIDWORD(start))
     {
       v12 = MEMORY[0x277D81150];
       v13 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v9, "[TSWPStorage setListStart:forCharRange:undoTransaction:]");
@@ -8837,14 +8837,14 @@ LABEL_7:
       objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v12, v16, v13, v15, 5227, 0, "Out-of-bounds type assignment was clamped to max");
 
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v17, v18);
-      a3 = 0xFFFFFFFFLL;
+      start = 0xFFFFFFFFLL;
     }
 
-    objc_msgSend_applyDataValue_toParagraphIndexRange_forKind_undoTransaction_(self, v9, a3, v10, v11, 11, a5);
+    objc_msgSend_applyDataValue_toParagraphIndexRange_forKind_undoTransaction_(self, v9, start, v10, v11, 11, transaction);
   }
 }
 
-- (unint64_t)listStartAtCharIndex:(unint64_t)a3
+- (unint64_t)listStartAtCharIndex:(unint64_t)index
 {
   v4 = objc_msgSend_attributeArrayForKind_(self, a2, 11);
   if (v4)
@@ -8853,7 +8853,7 @@ LABEL_7:
     v7 = 0x7FFFFFFFFFFFFFFFLL;
     if (*(v4 + 24))
     {
-      v9 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(v4, a3);
+      v9 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(v4, index);
       if (v9 == 0x7FFFFFFFFFFFFFFFLL)
       {
         v10 = MEMORY[0x277D81150];
@@ -8882,20 +8882,20 @@ LABEL_7:
   return v7;
 }
 
-- (unint64_t)listStartAtParIndex:(unint64_t)a3
+- (unint64_t)listStartAtParIndex:(unint64_t)index
 {
-  v5 = objc_msgSend_charIndexForParagraphAtIndex_(self, a2, a3);
+  v5 = objc_msgSend_charIndexForParagraphAtIndex_(self, a2, index);
 
   return objc_msgSend_listStartAtCharIndex_(self, v4, v5);
 }
 
-- (void)paragraphFlags:(unsigned __int16 *)a3 andLevel:(unint64_t *)a4 atCharIndex:(unint64_t)a5
+- (void)paragraphFlags:(unsigned __int16 *)flags andLevel:(unint64_t *)level atCharIndex:(unint64_t)index
 {
   v8 = objc_msgSend_attributeArrayForKind_(self, a2, 1);
   if (v8)
   {
     v9 = v8;
-    v11 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(v8, a5);
+    v11 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(v8, index);
     if (v11 == 0x7FFFFFFFFFFFFFFFLL)
     {
       v12 = MEMORY[0x277D81150];
@@ -8909,7 +8909,7 @@ LABEL_7:
     v19 = TSWPAttributeRecord::paragraphData(&v9->var1[v11], *(v9 + 28));
     v20 = *v19;
     v21 = v19[1];
-    if (a3)
+    if (flags)
     {
       goto LABEL_5;
     }
@@ -8919,26 +8919,26 @@ LABEL_7:
   {
     v20 = 0;
     v21 = 0;
-    if (a3)
+    if (flags)
     {
 LABEL_5:
-      *a3 = v21;
+      *flags = v21;
     }
   }
 
-  if (a4)
+  if (level)
   {
-    *a4 = v20;
+    *level = v20;
   }
 }
 
-- (unsigned)paragraphFlagsAtCharIndex:(unint64_t)a3
+- (unsigned)paragraphFlagsAtCharIndex:(unint64_t)index
 {
   v4 = objc_msgSend_attributeArrayForKind_(self, a2, 1);
   if (v4)
   {
     v6 = v4;
-    v8 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(v4, a3);
+    v8 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(v4, index);
     if (v8 == 0x7FFFFFFFFFFFFFFFLL)
     {
       v9 = MEMORY[0x277D81150];
@@ -8964,15 +8964,15 @@ LABEL_5:
   }
 }
 
-- (void)setParagraphFlags:(unsigned __int16)a3 forCharRange:(_NSRange)a4 undoTransaction:(void *)a5
+- (void)setParagraphFlags:(unsigned __int16)flags forCharRange:(_NSRange)range undoTransaction:(void *)transaction
 {
-  v5 = a3;
-  objc_msgSend_paragraphLevelAtCharIndex_(self, a2, a4.location);
+  flagsCopy = flags;
+  objc_msgSend_paragraphLevelAtCharIndex_(self, a2, range.location);
 
-  MEMORY[0x2821F9670](self, sel_applyFlags_level_toParagraphsInCharRange_undoTransaction_, v5);
+  MEMORY[0x2821F9670](self, sel_applyFlags_level_toParagraphsInCharRange_undoTransaction_, flagsCopy);
 }
 
-- (unint64_t)paragraphLevelAtCharIndex:(unint64_t)a3
+- (unint64_t)paragraphLevelAtCharIndex:(unint64_t)index
 {
   v4 = objc_msgSend_attributeArrayForKind_(self, a2, 1);
   if (!v4)
@@ -8992,7 +8992,7 @@ LABEL_5:
     return 0;
   }
 
-  v8 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(v4, a3);
+  v8 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(v4, index);
   if (v8 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v9 = MEMORY[0x277D81150];
@@ -9006,23 +9006,23 @@ LABEL_5:
   return *TSWPAttributeRecord::paragraphData(*(v6 + 8) + 16 * v8, *(v6 + 28));
 }
 
-- (unint64_t)paragraphLevelAtParIndex:(unint64_t)a3
+- (unint64_t)paragraphLevelAtParIndex:(unint64_t)index
 {
-  v5 = objc_msgSend_charIndexForParagraphAtIndex_(self, a2, a3);
+  v5 = objc_msgSend_charIndexForParagraphAtIndex_(self, a2, index);
 
   return objc_msgSend_paragraphLevelAtCharIndex_(self, v4, v5);
 }
 
-- (void)setParagraphLevel:(unint64_t)a3 forCharRange:(_NSRange)a4 undoTransaction:(void *)a5
+- (void)setParagraphLevel:(unint64_t)level forCharRange:(_NSRange)range undoTransaction:(void *)transaction
 {
-  v6 = objc_msgSend_paragraphFlagsAtCharIndex_(self, a2, a4.location);
+  v6 = objc_msgSend_paragraphFlagsAtCharIndex_(self, a2, range.location);
 
   MEMORY[0x2821F9670](self, sel_applyFlags_level_toParagraphsInCharRange_undoTransaction_, v6);
 }
 
-- (void)setParagraphLevel:(unint64_t)a3 atParIndex:(unint64_t)a4 undoTransaction:(void *)a5
+- (void)setParagraphLevel:(unint64_t)level atParIndex:(unint64_t)index undoTransaction:(void *)transaction
 {
-  v6 = objc_msgSend_textRangeForParagraphAtIndex_(self, a2, a4);
+  v6 = objc_msgSend_textRangeForParagraphAtIndex_(self, a2, index);
   v8 = objc_msgSend_paragraphFlagsAtCharIndex_(self, v7, v6);
 
   MEMORY[0x2821F9670](self, sel_applyFlags_level_toParagraphsInCharRange_undoTransaction_, v8);
@@ -9039,11 +9039,11 @@ LABEL_5:
   return result;
 }
 
-- (id)characterStyleAtCharIndex:(unint64_t)a3 left:(BOOL)a4 effectiveRange:(_NSRange *)a5
+- (id)characterStyleAtCharIndex:(unint64_t)index left:(BOOL)left effectiveRange:(_NSRange *)range
 {
-  v6 = a4;
-  v7 = a3;
-  if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+  leftCopy = left;
+  indexCopy = index;
+  if (index == 0x7FFFFFFFFFFFFFFFLL)
   {
     v9 = MEMORY[0x277D81150];
     v10 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSWPStorage characterStyleAtCharIndex:left:effectiveRange:]");
@@ -9056,7 +9056,7 @@ LABEL_5:
   v16 = objc_msgSend_attributeArrayForKind_(self, a2, 3);
   if (!v16 || (v19 = v16, !*(v16 + 24)))
   {
-    if (a5)
+    if (range)
     {
       v22 = objc_msgSend_range(self, v17, v18);
       goto LABEL_13;
@@ -9065,29 +9065,29 @@ LABEL_5:
     goto LABEL_15;
   }
 
-  if (v6)
+  if (leftCopy)
   {
-    if (!v7)
+    if (!indexCopy)
     {
       goto LABEL_9;
     }
 
-    --v7;
+    --indexCopy;
   }
 
-  v20 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(v16, v7);
+  v20 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(v16, indexCopy);
   if (v20 == 0x7FFFFFFFFFFFFFFFLL)
   {
 LABEL_9:
-    if (a5)
+    if (range)
     {
       v21 = TSWPAttributeArray::charIndexForAttributeIndex(v19, 0);
       v22 = 0;
 LABEL_13:
       v23 = 0;
 LABEL_14:
-      a5->location = v22;
-      a5->length = v21;
+      range->location = v22;
+      range->length = v21;
       goto LABEL_16;
     }
 
@@ -9098,7 +9098,7 @@ LABEL_15:
 
   v25 = v20;
   v23 = TSWPAttributeArray::objectForAttributeIndex(v19, v20);
-  if (a5)
+  if (range)
   {
     v22 = TSWPAttributeArray::rangeForAttributeIndex(v19, v25);
     goto LABEL_14;
@@ -9109,20 +9109,20 @@ LABEL_16:
   return v23;
 }
 
-- (void)applyChangeSet:(id)a3 tableKind:(unint64_t)a4 range:(_NSRange)a5 undoTransaction:(void *)a6
+- (void)applyChangeSet:(id)set tableKind:(unint64_t)kind range:(_NSRange)range undoTransaction:(void *)transaction
 {
-  length = a5.length;
-  location = a5.location;
-  v38 = a3;
+  length = range.length;
+  location = range.location;
+  setCopy = set;
   v11 = [TSWPStyleDiff alloc];
   v14 = objc_msgSend_context(self, v12, v13);
-  v16 = objc_msgSend_initWithContext_changeSet_(v11, v15, v14, v38);
+  v16 = objc_msgSend_initWithContext_changeSet_(v11, v15, v14, setCopy);
 
-  if (a4)
+  if (kind)
   {
-    if (a4 == 3)
+    if (kind == 3)
     {
-      objc_msgSend_applyObject_toCharRange_forKind_dolcContext_undoTransaction_(self, v17, v16, location, length, 3, 0, a6);
+      objc_msgSend_applyObject_toCharRange_forKind_dolcContext_undoTransaction_(self, v17, v16, location, length, 3, 0, transaction);
     }
 
     else
@@ -9138,7 +9138,7 @@ LABEL_16:
 
   else
   {
-    v18 = objc_msgSend_variationPropertyMapFromStyle_(v38, v17, 0);
+    v18 = objc_msgSend_variationPropertyMapFromStyle_(setCopy, v17, 0);
     v20 = objc_msgSend_boxedObjectForProperty_(v18, v19, 44);
     v23 = v20;
     if (v20 && objc_msgSend_unsignedIntegerValue(v20, v21, v22) != -1)
@@ -9151,33 +9151,33 @@ LABEL_16:
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v29, v30);
     }
 
-    objc_msgSend_applyObject_toParagraphsInCharRange_forKind_undoTransaction_(self, v21, v16, location, length, 0, a6);
+    objc_msgSend_applyObject_toParagraphsInCharRange_forKind_undoTransaction_(self, v21, v16, location, length, 0, transaction);
   }
 }
 
-- (void)setCharacterStyle:(id)a3 range:(_NSRange)a4 undoTransaction:(void *)a5
+- (void)setCharacterStyle:(id)style range:(_NSRange)range undoTransaction:(void *)transaction
 {
-  length = a4.length;
-  location = a4.location;
-  v16 = a3;
+  length = range.length;
+  location = range.location;
+  styleCopy = style;
   v11 = objc_msgSend_stylesheet(self, v9, v10);
   v14 = objc_msgSend_defaultCharacterStyle(v11, v12, v13);
 
-  v15 = v16;
-  if (v14 == v16)
+  v15 = styleCopy;
+  if (v14 == styleCopy)
   {
 
     v15 = 0;
   }
 
   v17 = v15;
-  objc_msgSend_applyObject_toCharRange_forKind_dolcContext_undoTransaction_(self, v15, v15, location, length, 3, 0, a5);
+  objc_msgSend_applyObject_toCharRange_forKind_dolcContext_undoTransaction_(self, v15, v15, location, length, 3, 0, transaction);
 }
 
-- (id)valueForProperty:(int)a3 atCharIndex:(unint64_t)a4 effectiveRange:(_NSRange *)a5
+- (id)valueForProperty:(int)property atCharIndex:(unint64_t)index effectiveRange:(_NSRange *)range
 {
-  v7 = *&a3;
-  v9 = objc_msgSend_characterStyleAtCharIndex_left_effectiveRange_(self, a2, a4, 0);
+  v7 = *&property;
+  v9 = objc_msgSend_characterStyleAtCharIndex_left_effectiveRange_(self, a2, index, 0);
   v12 = v9;
   if (v9 && objc_msgSend_definesProperty_(v9, v10, v7))
   {
@@ -9190,7 +9190,7 @@ LABEL_16:
 
   if (v18)
   {
-    v21 = objc_msgSend_paragraphStyleAtCharIndex_effectiveRange_(self, v19, a4, a5);
+    v21 = objc_msgSend_paragraphStyleAtCharIndex_effectiveRange_(self, v19, index, range);
     v23 = objc_msgSend_boxedValueForProperty_(v21, v22, v7);
 LABEL_8:
     v15 = v23;
@@ -9203,7 +9203,7 @@ LABEL_8:
 
   if (v26)
   {
-    v21 = objc_msgSend_columnStyleAtCharIndex_effectiveRange_(self, v27, a4, a5);
+    v21 = objc_msgSend_columnStyleAtCharIndex_effectiveRange_(self, v27, index, range);
     v23 = objc_msgSend_valueForProperty_(v21, v28, v7);
     goto LABEL_8;
   }
@@ -9256,25 +9256,25 @@ LABEL_10:
   return result;
 }
 
-- (BOOL)hasColumnStyleForParagraphBreakAtCharIndex:(unint64_t)a3
+- (BOOL)hasColumnStyleForParagraphBreakAtCharIndex:(unint64_t)index
 {
-  LODWORD(v5) = objc_msgSend_supportsColumnStyles(self, a2, a3);
+  LODWORD(v5) = objc_msgSend_supportsColumnStyles(self, a2, index);
   if (v5)
   {
     v5 = objc_msgSend_attributeArrayForKind_(self, v6, 9);
     if (v5)
     {
-      LOBYTE(v5) = TSWPAttributeArray::exactAttributeIndexForCharIndex(v5, a3 + 1) != 0x7FFFFFFFFFFFFFFFLL;
+      LOBYTE(v5) = TSWPAttributeArray::exactAttributeIndexForCharIndex(v5, index + 1) != 0x7FFFFFFFFFFFFFFFLL;
     }
   }
 
   return v5;
 }
 
-- (BOOL)hasColumnBreakAtCharIndex:(unint64_t)a3
+- (BOOL)hasColumnBreakAtCharIndex:(unint64_t)index
 {
-  v5 = objc_msgSend_characterAtIndex_(self, a2, a3);
-  if ((v5 - 4) < 0xC && ((0x907u >> (v5 - 4)) & 1) != 0 || (hasSectionForParagraphBreakAtCharIndex = IsParagraphBreakingCharacter(v5)) != 0 && ((objc_msgSend_hasColumnStyleForParagraphBreakAtCharIndex_(self, v7, a3) & 1) != 0 || (hasSectionForParagraphBreakAtCharIndex = objc_msgSend_hasSectionForParagraphBreakAtCharIndex_(self, v8, a3)) != 0))
+  v5 = objc_msgSend_characterAtIndex_(self, a2, index);
+  if ((v5 - 4) < 0xC && ((0x907u >> (v5 - 4)) & 1) != 0 || (hasSectionForParagraphBreakAtCharIndex = IsParagraphBreakingCharacter(v5)) != 0 && ((objc_msgSend_hasColumnStyleForParagraphBreakAtCharIndex_(self, v7, index) & 1) != 0 || (hasSectionForParagraphBreakAtCharIndex = objc_msgSend_hasSectionForParagraphBreakAtCharIndex_(self, v8, index)) != 0))
   {
     LOBYTE(hasSectionForParagraphBreakAtCharIndex) = 1;
   }
@@ -9282,12 +9282,12 @@ LABEL_10:
   return hasSectionForParagraphBreakAtCharIndex;
 }
 
-- (id)columnStyleAtCharIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4
+- (id)columnStyleAtCharIndex:(unint64_t)index effectiveRange:(_NSRange *)range
 {
   v7 = objc_msgSend_attributeArrayForKind_(self, a2, 9);
   if (v7)
   {
-    v8 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(v7, a3);
+    v8 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(v7, index);
     if (v8 == 0x7FFFFFFFFFFFFFFFLL)
     {
       v7 = 0;
@@ -9295,21 +9295,21 @@ LABEL_10:
 
     else
     {
-      v7 = objc_msgSend_columnStyleAtColumnStyleIndex_effectiveRange_(self, v9, v8, a4);
+      v7 = objc_msgSend_columnStyleAtColumnStyleIndex_effectiveRange_(self, v9, v8, range);
     }
   }
 
   return v7;
 }
 
-- (id)columnStyleAtColumnStyleIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4
+- (id)columnStyleAtColumnStyleIndex:(unint64_t)index effectiveRange:(_NSRange *)range
 {
   v6 = objc_msgSend_attributeArrayForKind_(self, a2, 9);
   if (v6)
   {
     v8 = v6;
     v9 = v6[6];
-    if (v9 <= a3)
+    if (v9 <= index)
     {
       v10 = MEMORY[0x277D81150];
       v11 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, "[TSWPStorage columnStyleAtColumnStyleIndex:effectiveRange:]");
@@ -9320,40 +9320,40 @@ LABEL_10:
       v9 = v8[6];
     }
 
-    if (v9 <= a3)
+    if (v9 <= index)
     {
       v6 = 0;
     }
 
     else
     {
-      if (a4)
+      if (range)
       {
-        a4->location = TSWPAttributeArray::rangeForAttributeIndex(v8, a3);
-        a4->length = v17;
+        range->location = TSWPAttributeArray::rangeForAttributeIndex(v8, index);
+        range->length = v17;
       }
 
-      v6 = TSWPAttributeArray::objectForAttributeIndex(v8, a3);
+      v6 = TSWPAttributeArray::objectForAttributeIndex(v8, index);
     }
   }
 
   return v6;
 }
 
-- (void)styleDidChangeInRange:(_NSRange)a3
+- (void)styleDidChangeInRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  objc_msgSend_didChangeRange_delta_broadcastKind_attributeKindChanges_(self, a2, a3.location, a3.length, 0, 0, 0);
+  length = range.length;
+  location = range.location;
+  objc_msgSend_didChangeRange_delta_broadcastKind_attributeKindChanges_(self, a2, range.location, range.length, 0, 0, 0);
   v8 = objc_msgSend_paragraphIndexRangeForCharRange_(self, v6, location, length);
 
   objc_msgSend_didChangeParagraphsInIndexRange_(self, v7, v8, v7);
 }
 
-- (void)invalidateForStyle:(id)a3
+- (void)invalidateForStyle:(id)style
 {
   v42 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  styleCopy = style;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
@@ -9379,8 +9379,8 @@ LABEL_10:
           v34[1] = 3221225472;
           v34[2] = sub_276D27D70;
           v34[3] = &unk_27A6F3908;
-          v35 = v4;
-          v36 = self;
+          v35 = styleCopy;
+          selfCopy = self;
           TSWPAttributeArray::enumerateObjectAttributes(v13, v34);
         }
       }
@@ -9442,7 +9442,7 @@ LABEL_10:
   return result;
 }
 
-- (BOOL)hasSectionForParagraphBreakAtCharIndex:(unint64_t)a3
+- (BOOL)hasSectionForParagraphBreakAtCharIndex:(unint64_t)index
 {
   if ((*(self + 302) & 0xF) != 0)
   {
@@ -9454,35 +9454,35 @@ LABEL_10:
     v3 = objc_msgSend_attributeArrayForKind_(self, a2, 8);
     if (v3)
     {
-      LOBYTE(v3) = TSWPAttributeArray::exactAttributeIndexForCharIndex(v3, a3 + 1) != 0x7FFFFFFFFFFFFFFFLL;
+      LOBYTE(v3) = TSWPAttributeArray::exactAttributeIndexForCharIndex(v3, index + 1) != 0x7FFFFFFFFFFFFFFFLL;
     }
   }
 
   return v3;
 }
 
-- (id)sectionAtSectionIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4
+- (id)sectionAtSectionIndex:(unint64_t)index effectiveRange:(_NSRange *)range
 {
   v6 = objc_msgSend_attributeArrayForKind_(self, a2, 8);
   if (v6)
   {
     v7 = v6;
-    if (a4)
+    if (range)
     {
-      a4->location = TSWPAttributeArray::rangeForAttributeIndex(v6, a3);
-      a4->length = v8;
+      range->location = TSWPAttributeArray::rangeForAttributeIndex(v6, index);
+      range->length = v8;
     }
 
-    v6 = TSWPAttributeArray::objectForAttributeIndex(v7, a3);
+    v6 = TSWPAttributeArray::objectForAttributeIndex(v7, index);
   }
 
   return v6;
 }
 
-- (_NSRange)textRangeForSectionRange:(_NSRange)a3
+- (_NSRange)textRangeForSectionRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v5 = objc_msgSend_attributeArrayForKind_(self, a2, 8);
   if (v5)
   {
@@ -9509,26 +9509,26 @@ LABEL_10:
   return result;
 }
 
-- (_NSRange)insertSectionBreakAtCharIndex:(unint64_t)a3 replaceParagraphBreak:(BOOL)a4 sectionToInsert:(id)a5 changeSession:(id)a6 dolcContext:(id)a7 undoTransaction:(void *)a8
+- (_NSRange)insertSectionBreakAtCharIndex:(unint64_t)index replaceParagraphBreak:(BOOL)break sectionToInsert:(id)insert changeSession:(id)session dolcContext:(id)context undoTransaction:(void *)transaction
 {
-  v10 = a4;
-  v53 = a5;
-  v51 = a6;
-  v49 = a7;
+  breakCopy = break;
+  insertCopy = insert;
+  sessionCopy = session;
+  contextCopy = context;
   v14 = 0;
   v15 = *MEMORY[0x277D81490];
   range1 = *(MEMORY[0x277D81490] + 8);
-  v16 = a3 + 1;
-  if (a3 && v10)
+  v16 = index + 1;
+  if (index && breakCopy)
   {
-    v17 = objc_msgSend_characterAtIndex_(self, v13, a3 - 1);
+    v17 = objc_msgSend_characterAtIndex_(self, v13, index - 1);
     if (IsParagraphBreakingCharacter(v17))
     {
-      v18 = objc_msgSend_paragraphStyleAtCharIndex_effectiveRange_(self, v13, a3, 0);
-      v14 = objc_msgSend_listStyleAtCharIndex_effectiveRange_(self, v19, a3, 0);
-      v47 = objc_msgSend_listStartAtCharIndex_(self, v20, a3);
-      objc_msgSend_deleteRange_undoTransaction_(self, v21, a3 - 1, 1, a8);
-      v16 = a3--;
+      v18 = objc_msgSend_paragraphStyleAtCharIndex_effectiveRange_(self, v13, index, 0);
+      v14 = objc_msgSend_listStyleAtCharIndex_effectiveRange_(self, v19, index, 0);
+      v47 = objc_msgSend_listStartAtCharIndex_(self, v20, index);
+      objc_msgSend_deleteRange_undoTransaction_(self, v21, index - 1, 1, transaction);
+      v16 = index--;
     }
 
     else
@@ -9545,14 +9545,14 @@ LABEL_10:
     v18 = 0;
   }
 
-  if (!v53)
+  if (!insertCopy)
   {
-    v22 = objc_msgSend_sectionAtCharIndex_effectiveRange_(self, v13, a3, 0);
+    v22 = objc_msgSend_sectionAtCharIndex_effectiveRange_(self, v13, index, 0);
     v25 = objc_msgSend_context(self, v23, v24);
-    v53 = objc_msgSend_copyWithContext_(v22, v26, v25);
+    insertCopy = objc_msgSend_copyWithContext_(v22, v26, v25);
   }
 
-  v27 = objc_msgSend_insertSection_atCharIndex_dolcContext_undoTransaction_changeSession_(self, v13, v53, a3, 0, a8, v51, v47);
+  v27 = objc_msgSend_insertSection_atCharIndex_dolcContext_undoTransaction_changeSession_(self, v13, insertCopy, index, 0, transaction, sessionCopy, v47);
   location = v27;
   v30 = length;
   v31 = *(MEMORY[0x277D81490] + 8);
@@ -9586,7 +9586,7 @@ LABEL_10:
   }
 
 LABEL_21:
-  objc_msgSend_setParagraphStyle_forCharRange_undoTransaction_(self, length, v18, v16, 1, a8);
+  objc_msgSend_setParagraphStyle_forCharRange_undoTransaction_(self, length, v18, v16, 1, transaction);
   v36 = objc_msgSend_textRangeForParagraphAtCharIndex_(self, v35, v16);
   v37.location = v36;
   v37.length = length;
@@ -9601,8 +9601,8 @@ LABEL_21:
     }
 
 LABEL_28:
-    objc_msgSend_setListStyle_forCharRange_undoTransaction_(self, length, v14, v16, 1, a8);
-    objc_msgSend_setListStart_forCharRange_undoTransaction_(self, v39, v48, v16, 1, a8);
+    objc_msgSend_setListStyle_forCharRange_undoTransaction_(self, length, v14, v16, 1, transaction);
+    objc_msgSend_setListStart_forCharRange_undoTransaction_(self, v39, v48, v16, 1, transaction);
     goto LABEL_29;
   }
 
@@ -9633,9 +9633,9 @@ LABEL_29:
   v41 = *(MEMORY[0x277D81490] + 8);
   if (location != *MEMORY[0x277D81490] || v30 != v41)
   {
-    if (a3 == *MEMORY[0x277D81490] && v41 == 1)
+    if (index == *MEMORY[0x277D81490] && v41 == 1)
     {
-      a3 = location;
+      index = location;
       v40 = v30;
     }
 
@@ -9643,42 +9643,42 @@ LABEL_29:
     {
       v55.location = location;
       v55.length = v30;
-      v59.location = a3;
+      v59.location = index;
       v59.length = 1;
       v43 = NSUnionRange(v55, v59);
-      a3 = v43.location;
+      index = v43.location;
       v40 = v43.length;
     }
   }
 
-  v44 = a3;
+  indexCopy = index;
   v45 = v40;
   result.length = v45;
-  result.location = v44;
+  result.location = indexCopy;
   return result;
 }
 
-- (_NSRange)replaceSectionAtSectionIndex:(unint64_t)a3 withSection:(id)a4 dolcContext:(id)a5 undoTransaction:(void *)a6
+- (_NSRange)replaceSectionAtSectionIndex:(unint64_t)index withSection:(id)section dolcContext:(id)context undoTransaction:(void *)transaction
 {
-  v10 = a4;
-  v11 = a5;
+  sectionCopy = section;
+  contextCopy = context;
   v12 = MEMORY[0x277D81490];
   v13 = *MEMORY[0x277D81490];
   v14 = *(MEMORY[0x277D81490] + 8);
   v16 = objc_msgSend_attributeArrayForKind_(self, v15, 8);
-  if (v16 && *(v16 + 24) > a3)
+  if (v16 && *(v16 + 24) > index)
   {
-    v13 = TSWPAttributeArray::rangeForAttributeIndex(v16, a3);
-    if (a3)
+    v13 = TSWPAttributeArray::rangeForAttributeIndex(v16, index);
+    if (index)
     {
-      v13 = objc_msgSend_insertSectionBreakAtCharIndex_replaceParagraphBreak_sectionToInsert_changeSession_dolcContext_undoTransaction_(self, v18, v13, 1, v10, 0, v11, a6);
+      v13 = objc_msgSend_insertSectionBreakAtCharIndex_replaceParagraphBreak_sectionToInsert_changeSession_dolcContext_undoTransaction_(self, v18, v13, 1, sectionCopy, 0, contextCopy, transaction);
       v14 = v17;
     }
 
     else
     {
       v14 = v18;
-      objc_msgSend_applyObject_toParagraphsInCharRange_forKind_undoTransaction_(self, v18, v10, v13, v18, 8, a6);
+      objc_msgSend_applyObject_toParagraphsInCharRange_forKind_undoTransaction_(self, v18, sectionCopy, v13, v18, 8, transaction);
     }
   }
 
@@ -9687,7 +9687,7 @@ LABEL_29:
     v20 = MEMORY[0x277D81150];
     v21 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v17, "[TSWPStorage replaceSectionAtSectionIndex:withSection:dolcContext:undoTransaction:]");
     v23 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v22, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/text/TSWPStorage.mm");
-    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v20, v24, v21, v23, 5671, 0, "Expected the the requested section index (%tu) to replace be within the section attribute array", a3);
+    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v20, v24, v21, v23, 5671, 0, "Expected the the requested section index (%tu) to replace be within the section attribute array", index);
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v25, v26);
   }
@@ -9699,7 +9699,7 @@ LABEL_29:
   return result;
 }
 
-- (unint64_t)sectionIndexForCharIndex:(unint64_t)a3
+- (unint64_t)sectionIndexForCharIndex:(unint64_t)index
 {
   v4 = objc_msgSend_attributeArrayForKind_(self, a2, 8);
   if (!v4)
@@ -9707,16 +9707,16 @@ LABEL_29:
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  return TSWPAttributeArray::effectiveAttributeIndexForCharIndex(v4, a3);
+  return TSWPAttributeArray::effectiveAttributeIndexForCharIndex(v4, index);
 }
 
-- (unint64_t)sectionIndexForSection:(id)a3
+- (unint64_t)sectionIndexForSection:(id)section
 {
-  v4 = a3;
+  sectionCopy = section;
   v6 = objc_msgSend_attributeArrayForKind_(self, v5, 8);
   if (v6)
   {
-    v7 = (*(*v6 + 112))(v6, v4, 0);
+    v7 = (*(*v6 + 112))(v6, sectionCopy, 0);
   }
 
   else
@@ -9727,12 +9727,12 @@ LABEL_29:
   return v7;
 }
 
-- (id)sectionAtCharIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4
+- (id)sectionAtCharIndex:(unint64_t)index effectiveRange:(_NSRange *)range
 {
   v7 = objc_msgSend_attributeArrayForKind_(self, a2, 8);
   if (v7)
   {
-    v8 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(v7, a3);
+    v8 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(v7, index);
     if (v8 == 0x7FFFFFFFFFFFFFFFLL)
     {
       v7 = 0;
@@ -9740,20 +9740,20 @@ LABEL_29:
 
     else
     {
-      v7 = objc_msgSend_sectionAtSectionIndex_effectiveRange_(self, v9, v8, a4);
+      v7 = objc_msgSend_sectionAtSectionIndex_effectiveRange_(self, v9, v8, range);
     }
   }
 
   return v7;
 }
 
-- (_NSRange)insertSection:(id)a3 atCharIndex:(unint64_t)a4 dolcContext:(id)a5 undoTransaction:(void *)a6 changeSession:(id)a7
+- (_NSRange)insertSection:(id)section atCharIndex:(unint64_t)index dolcContext:(id)context undoTransaction:(void *)transaction changeSession:(id)session
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a7;
-  objc_msgSend_splitSmartFieldAtCharIndex_lengthToInsert_dolcContext_undoTransaction_(self, v15, a4, 1, v13, a6);
-  objc_msgSend_insertSpecialCharacter_object_kind_range_dolcContext_undoTransaction_changeSession_(self, v16, 4, v12, 8, a4, 0, v13, a6, v14);
+  sectionCopy = section;
+  contextCopy = context;
+  sessionCopy = session;
+  objc_msgSend_splitSmartFieldAtCharIndex_lengthToInsert_dolcContext_undoTransaction_(self, v15, index, 1, contextCopy, transaction);
+  objc_msgSend_insertSpecialCharacter_object_kind_range_dolcContext_undoTransaction_changeSession_(self, v16, 4, sectionCopy, 8, index, 0, contextCopy, transaction, sessionCopy);
   v19 = objc_msgSend_attributeArrayForKind_(self, v17, 8);
   if (!v19)
   {
@@ -9765,8 +9765,8 @@ LABEL_29:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v25, v26);
   }
 
-  v28 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(v19, a4 + 1);
-  if (v28 == 0x7FFFFFFFFFFFFFFFLL || (TSWPAttributeArray::objectForAttributeIndex(v19, v28), v29 = objc_claimAutoreleasedReturnValue(), v29, v29 != v12))
+  v28 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(v19, index + 1);
+  if (v28 == 0x7FFFFFFFFFFFFFFFLL || (TSWPAttributeArray::objectForAttributeIndex(v19, v28), v29 = objc_claimAutoreleasedReturnValue(), v29, v29 != sectionCopy))
   {
     v30 = MEMORY[0x277D81150];
     v31 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v27, "[TSWPStorage insertSection:atCharIndex:dolcContext:undoTransaction:changeSession:]");
@@ -9786,10 +9786,10 @@ LABEL_29:
   return result;
 }
 
-- (void)nonUndoableAppendSection:(id)a3 charIndex:(unint64_t)a4
+- (void)nonUndoableAppendSection:(id)section charIndex:(unint64_t)index
 {
-  v21 = a3;
-  v7 = objc_msgSend_sectionIndexForCharIndex_(self, v6, a4);
+  sectionCopy = section;
+  v7 = objc_msgSend_sectionIndexForCharIndex_(self, v6, index);
   if (v7 + 1 != objc_msgSend_sectionCount(self, v8, v9))
   {
     v12 = MEMORY[0x277D81150];
@@ -9801,7 +9801,7 @@ LABEL_29:
   }
 
   v19 = objc_msgSend_length(self, v10, v11);
-  objc_msgSend_applyObject_toParagraphsInCharRange_forKind_undoTransaction_(self, v20, v21, a4, v19 - a4, 8, 0);
+  objc_msgSend_applyObject_toParagraphsInCharRange_forKind_undoTransaction_(self, v20, sectionCopy, index, v19 - index, 8, 0);
 }
 
 - (unint64_t)footnoteCount
@@ -9815,16 +9815,16 @@ LABEL_29:
   return result;
 }
 
-- (unint64_t)footnoteIndexForCharIndex:(unint64_t)a3
+- (unint64_t)footnoteIndexForCharIndex:(unint64_t)index
 {
   result = objc_msgSend_attributeArrayForKind_(self, a2, 5);
   if (result)
   {
     v5 = result;
-    if (*(result + 24) && (v6 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(result, a3), v6 != 0x7FFFFFFFFFFFFFFFLL))
+    if (*(result + 24) && (v6 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(result, index), v6 != 0x7FFFFFFFFFFFFFFFLL))
     {
       v7 = v6;
-      if (TSWPAttributeArray::charIndexForAttributeIndex(v5, v6) == a3)
+      if (TSWPAttributeArray::charIndexForAttributeIndex(v5, v6) == index)
       {
         return v7;
       }
@@ -9844,12 +9844,12 @@ LABEL_29:
   return result;
 }
 
-- (id)footnoteReferenceAttachmentOrFootnoteMarkAttachmentAtCharIndex:(unint64_t)a3
+- (id)footnoteReferenceAttachmentOrFootnoteMarkAttachmentAtCharIndex:(unint64_t)index
 {
   v5 = objc_msgSend_attributeArrayForKind_(self, a2, 5);
-  if (!v5 || (v8 = v5, !*(v5 + 24)) || (v9 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(v5, a3), v9 == 0x7FFFFFFFFFFFFFFFLL) || (v10 = v9, TSWPAttributeArray::charIndexForAttributeIndex(v8, v9) != a3) || (TSWPAttributeArray::objectForAttributeIndex(v8, v10), (v11 = objc_claimAutoreleasedReturnValue()) == 0))
+  if (!v5 || (v8 = v5, !*(v5 + 24)) || (v9 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(v5, index), v9 == 0x7FFFFFFFFFFFFFFFLL) || (v10 = v9, TSWPAttributeArray::charIndexForAttributeIndex(v8, v9) != index) || (TSWPAttributeArray::objectForAttributeIndex(v8, v10), (v11 = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    if (objc_msgSend_wpKind(self, v6, v7) == 2 && (v13 = objc_msgSend_attributeArrayForKind_(self, v12, 4)) != 0 && (v14 = v13, *(v13 + 24)) && (v15 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(v13, a3), v15 != 0x7FFFFFFFFFFFFFFFLL) && (v16 = v15, TSWPAttributeArray::charIndexForAttributeIndex(v14, v15) == a3))
+    if (objc_msgSend_wpKind(self, v6, v7) == 2 && (v13 = objc_msgSend_attributeArrayForKind_(self, v12, 4)) != 0 && (v14 = v13, *(v13 + 24)) && (v15 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(v13, index), v15 != 0x7FFFFFFFFFFFFFFFLL) && (v16 = v15, TSWPAttributeArray::charIndexForAttributeIndex(v14, v15) == index))
     {
       v17 = TSWPAttributeArray::objectForAttributeIndex(v14, v16);
       objc_opt_class();
@@ -9873,13 +9873,13 @@ LABEL_29:
   return v11;
 }
 
-- (id)footnoteMarkAtCharIndex:(unint64_t)a3
+- (id)footnoteMarkAtCharIndex:(unint64_t)index
 {
   v4 = objc_msgSend_attributeArrayForKind_(self, a2, 4);
   v5 = v4;
   if (v4)
   {
-    if (*(v4 + 24) && (v6 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(v4, a3), v6 != 0x7FFFFFFFFFFFFFFFLL) && (v7 = v6, TSWPAttributeArray::charIndexForAttributeIndex(v5, v6) == a3))
+    if (*(v4 + 24) && (v6 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(v4, index), v6 != 0x7FFFFFFFFFFFFFFFLL) && (v7 = v6, TSWPAttributeArray::charIndexForAttributeIndex(v5, v6) == index))
     {
       objc_opt_class();
       v8 = TSWPAttributeArray::objectForAttributeIndex(v5, v7);
@@ -9895,13 +9895,13 @@ LABEL_29:
   return v5;
 }
 
-- (id)footnoteReferenceAtCharIndex:(unint64_t)a3
+- (id)footnoteReferenceAtCharIndex:(unint64_t)index
 {
   v4 = objc_msgSend_attributeArrayForKind_(self, a2, 5);
   if (v4)
   {
     v5 = v4;
-    if (*(v4 + 24) && (v6 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(v4, a3), v6 != 0x7FFFFFFFFFFFFFFFLL) && (v7 = v6, TSWPAttributeArray::charIndexForAttributeIndex(v5, v6) == a3))
+    if (*(v4 + 24) && (v6 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(v4, index), v6 != 0x7FFFFFFFFFFFFFFFLL) && (v7 = v6, TSWPAttributeArray::charIndexForAttributeIndex(v5, v6) == index))
     {
       v4 = TSWPAttributeArray::objectForAttributeIndex(v5, v7);
     }
@@ -9915,16 +9915,16 @@ LABEL_29:
   return v4;
 }
 
-- (id)footnoteAtFootnoteIndex:(unint64_t)a3 outCharIndex:(unint64_t *)a4
+- (id)footnoteAtFootnoteIndex:(unint64_t)index outCharIndex:(unint64_t *)charIndex
 {
   v6 = objc_msgSend_attributeArrayForKind_(self, a2, 5);
   v7 = v6;
-  if (v6 && *(v6 + 24) > a3)
+  if (v6 && *(v6 + 24) > index)
   {
-    v8 = TSWPAttributeArray::objectForAttributeIndex(v6, a3);
-    if (a4)
+    v8 = TSWPAttributeArray::objectForAttributeIndex(v6, index);
+    if (charIndex)
     {
-      *a4 = TSWPAttributeArray::charIndexForAttributeIndex(v7, a3);
+      *charIndex = TSWPAttributeArray::charIndexForAttributeIndex(v7, index);
     }
   }
 
@@ -9936,10 +9936,10 @@ LABEL_29:
   return v8;
 }
 
-- (_NSRange)footnoteRangeForTextRange:(_NSRange)a3
+- (_NSRange)footnoteRangeForTextRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v5 = objc_msgSend_attributeArrayForKind_(self, a2, 5);
   if (v5)
   {
@@ -9959,9 +9959,9 @@ LABEL_29:
   return result;
 }
 
-- (unint64_t)autoNumberFootnoteCountForRange:(_NSRange)a3
+- (unint64_t)autoNumberFootnoteCountForRange:(_NSRange)range
 {
-  v4 = objc_msgSend_footnoteRangeForTextRange_(self, a2, a3.location, a3.length);
+  v4 = objc_msgSend_footnoteRangeForTextRange_(self, a2, range.location, range.length);
   if (v4 >= &v5[v4])
   {
     return 0;
@@ -9988,13 +9988,13 @@ LABEL_29:
   return v8;
 }
 
-- (unint64_t)footnoteIndexForFootnote:(id)a3
+- (unint64_t)footnoteIndexForFootnote:(id)footnote
 {
-  v4 = a3;
+  footnoteCopy = footnote;
   v6 = objc_msgSend_attributeArrayForKind_(self, v5, 5);
   if (v6)
   {
-    v7 = (*(*v6 + 112))(v6, v4, 0);
+    v7 = (*(*v6 + 112))(v6, footnoteCopy, 0);
   }
 
   else
@@ -10005,10 +10005,10 @@ LABEL_29:
   return v7;
 }
 
-- (unint64_t)footnoteIndexForFootnoteStorage:(id)a3
+- (unint64_t)footnoteIndexForFootnoteStorage:(id)storage
 {
-  v6 = a3;
-  if (!v6)
+  storageCopy = storage;
+  if (!storageCopy)
   {
     v7 = MEMORY[0x277D81150];
     v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v4, "[TSWPStorage footnoteIndexForFootnoteStorage:]");
@@ -10018,7 +10018,7 @@ LABEL_29:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v12, v13);
   }
 
-  if (objc_msgSend_wpKind(v6, v4, v5) != 2)
+  if (objc_msgSend_wpKind(storageCopy, v4, v5) != 2)
   {
     v15 = MEMORY[0x277D81150];
     v16 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v14, "[TSWPStorage footnoteIndexForFootnoteStorage:]");
@@ -10029,7 +10029,7 @@ LABEL_29:
   }
 
   objc_opt_class();
-  v24 = objc_msgSend_owningAttachment(v6, v22, v23);
+  v24 = objc_msgSend_owningAttachment(storageCopy, v22, v23);
   v25 = TSUDynamicCast();
 
   if (!v25)
@@ -10077,16 +10077,16 @@ LABEL_29:
   return v4;
 }
 
-- (unint64_t)findCharIndexForFootnoteAttachment:(id)a3 withHintIndex:(unint64_t *)a4
+- (unint64_t)findCharIndexForFootnoteAttachment:(id)attachment withHintIndex:(unint64_t *)index
 {
-  v6 = a3;
+  attachmentCopy = attachment;
   v8 = objc_msgSend_attributeArrayForKind_(self, v7, 5);
   v9 = v8;
   if (v8)
   {
-    if (a4)
+    if (index)
     {
-      v10 = *a4;
+      v10 = *index;
     }
 
     else
@@ -10094,10 +10094,10 @@ LABEL_29:
       v10 = 0;
     }
 
-    v12 = (*(*v8 + 112))(v8, v6, v10);
-    if (a4)
+    v12 = (*(*v8 + 112))(v8, attachmentCopy, v10);
+    if (index)
     {
-      *a4 = v12;
+      *index = v12;
     }
 
     v11 = 0x7FFFFFFFFFFFFFFFLL;
@@ -10133,9 +10133,9 @@ LABEL_29:
   }
 }
 
-- (void)invalidatePageCountAttachmentCharIndexes:(BOOL)a3
+- (void)invalidatePageCountAttachmentCharIndexes:(BOOL)indexes
 {
-  v3 = a3;
+  indexesCopy = indexes;
   v5 = objc_msgSend_attributeArrayForKind_(self, a2, 4);
   if (v5)
   {
@@ -10144,7 +10144,7 @@ LABEL_29:
     if (v8)
     {
       v9 = 0;
-      v10 = !v3;
+      v10 = !indexesCopy;
       do
       {
         v11 = objc_msgSend_attachmentAtAttachmentIndex_outCharIndex_(self, v6, v9, 0);
@@ -10194,21 +10194,21 @@ LABEL_29:
   }
 }
 
-- (void)invalidateCharIndexForAttachment:(id)a3
+- (void)invalidateCharIndexForAttachment:(id)attachment
 {
-  v8 = a3;
-  CharIndex = objc_msgSend_findCharIndex(v8, v4, v5);
+  attachmentCopy = attachment;
+  CharIndex = objc_msgSend_findCharIndex(attachmentCopy, v4, v5);
   if (CharIndex != 0x7FFFFFFFFFFFFFFFLL)
   {
     objc_msgSend_broadcastStorage_didChangeRange_delta_broadcastKind_(self->_broadcaster, v6, self, CharIndex, 1, 0, 1);
   }
 }
 
-- (_NSRange)insertAttachmentOrFootnote:(id)a3 range:(_NSRange)a4
+- (_NSRange)insertAttachmentOrFootnote:(id)footnote range:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v7 = a3;
+  length = range.length;
+  location = range.location;
+  footnoteCopy = footnote;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   if (isKindOfClass)
@@ -10231,7 +10231,7 @@ LABEL_29:
     v12 = -4;
   }
 
-  if ((isKindOfClass & 1) == 0 && objc_msgSend_isAnchored(v7, v9, v10) && (objc_msgSend_allowsElementKind_(self, v9, 0x40000) & 1) == 0)
+  if ((isKindOfClass & 1) == 0 && objc_msgSend_isAnchored(footnoteCopy, v9, v10) && (objc_msgSend_allowsElementKind_(self, v9, 0x40000) & 1) == 0)
   {
     v28 = objc_msgSend_p_kindDescription(self, v9, v13);
     TSUSetCrashReporterInfo();
@@ -10246,7 +10246,7 @@ LABEL_29:
     abort();
   }
 
-  v14 = objc_msgSend_insertSpecialCharacter_object_kind_range_dolcContext_undoTransaction_changeSession_(self, v9, v12, v7, v11, location, length, 0, 0, 0);
+  v14 = objc_msgSend_insertSpecialCharacter_object_kind_range_dolcContext_undoTransaction_changeSession_(self, v9, v12, footnoteCopy, v11, location, length, 0, 0, 0);
   v16 = v15;
 
   v17 = v14;
@@ -10256,22 +10256,22 @@ LABEL_29:
   return result;
 }
 
-- (_NSRange)insertAttachmentOrFootnote:(id)a3 range:(_NSRange)a4 dolcContext:(id)a5 undoTransaction:(void *)a6 changeSession:(id)a7
+- (_NSRange)insertAttachmentOrFootnote:(id)footnote range:(_NSRange)range dolcContext:(id)context undoTransaction:(void *)transaction changeSession:(id)session
 {
-  v7 = objc_msgSend_insertAttachmentOrFootnote_range_placementIndex_dolcContext_undoTransaction_changeSession_(self, a2, a3, a4.location, a4.length, 0xFFFFFFFFLL, a5, a6, a7);
+  v7 = objc_msgSend_insertAttachmentOrFootnote_range_placementIndex_dolcContext_undoTransaction_changeSession_(self, a2, footnote, range.location, range.length, 0xFFFFFFFFLL, context, transaction, session);
   result.length = v8;
   result.location = v7;
   return result;
 }
 
-- (_NSRange)insertAttachmentOrFootnote:(id)a3 range:(_NSRange)a4 placementIndex:(int)a5 dolcContext:(id)a6 undoTransaction:(void *)a7 changeSession:(id)a8
+- (_NSRange)insertAttachmentOrFootnote:(id)footnote range:(_NSRange)range placementIndex:(int)index dolcContext:(id)context undoTransaction:(void *)transaction changeSession:(id)session
 {
-  v10 = *&a5;
-  length = a4.length;
-  location = a4.location;
-  v14 = a3;
-  v15 = a6;
-  v16 = a8;
+  v10 = *&index;
+  length = range.length;
+  location = range.location;
+  footnoteCopy = footnote;
+  contextCopy = context;
+  sessionCopy = session;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   if (isKindOfClass)
@@ -10286,12 +10286,12 @@ LABEL_29:
 
   if (isKindOfClass)
   {
-    v20 = objc_msgSend_insertSpecialCharacter_object_kind_range_placementIndex_dolcContext_undoTransaction_changeSession_(self, v18, 14, v14, v19, location, length, v10, v15, a7, v16);
+    v20 = objc_msgSend_insertSpecialCharacter_object_kind_range_placementIndex_dolcContext_undoTransaction_changeSession_(self, v18, 14, footnoteCopy, v19, location, length, v10, contextCopy, transaction, sessionCopy);
   }
 
   else
   {
-    v20 = objc_msgSend_insertSpecialCharacter_object_kind_range_placementIndex_dolcContext_undoTransaction_changeSession_(self, v18, 65532, v14, v19, location, length, v10, v15, a7, v16);
+    v20 = objc_msgSend_insertSpecialCharacter_object_kind_range_placementIndex_dolcContext_undoTransaction_changeSession_(self, v18, 65532, footnoteCopy, v19, location, length, v10, contextCopy, transaction, sessionCopy);
   }
 
   v22 = v20;
@@ -10304,16 +10304,16 @@ LABEL_29:
   return result;
 }
 
-- (id)attachmentOrFootnoteAtCharIndex:(unint64_t)a3
+- (id)attachmentOrFootnoteAtCharIndex:(unint64_t)index
 {
   v5 = objc_msgSend_attributeArrayForKind_(self, a2, 4);
-  if (!v5 || (v7 = v5, !*(v5 + 24)) || (v8 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(v5, a3), v8 == 0x7FFFFFFFFFFFFFFFLL) || (v9 = v8, TSWPAttributeArray::charIndexForAttributeIndex(v7, v8) != a3) || (TSWPAttributeArray::objectForAttributeIndex(v7, v9), (v10 = objc_claimAutoreleasedReturnValue()) == 0))
+  if (!v5 || (v7 = v5, !*(v5 + 24)) || (v8 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(v5, index), v8 == 0x7FFFFFFFFFFFFFFFLL) || (v9 = v8, TSWPAttributeArray::charIndexForAttributeIndex(v7, v8) != index) || (TSWPAttributeArray::objectForAttributeIndex(v7, v9), (v10 = objc_claimAutoreleasedReturnValue()) == 0))
   {
     v10 = objc_msgSend_attributeArrayForKind_(self, v6, 5);
     if (v10)
     {
       v11 = v10;
-      if (*(v10 + 24) && (v12 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(v10, a3), v12 != 0x7FFFFFFFFFFFFFFFLL) && (v13 = v12, TSWPAttributeArray::charIndexForAttributeIndex(v11, v12) == a3))
+      if (*(v10 + 24) && (v12 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(v10, index), v12 != 0x7FFFFFFFFFFFFFFFLL) && (v13 = v12, TSWPAttributeArray::charIndexForAttributeIndex(v11, v12) == index))
       {
         v10 = TSWPAttributeArray::objectForAttributeIndex(v11, v13);
       }
@@ -10328,15 +10328,15 @@ LABEL_29:
   return v10;
 }
 
-- (BOOL)hasPartitionableAttachmentAtStartOfTextRange:(_NSRange)a3
+- (BOOL)hasPartitionableAttachmentAtStartOfTextRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = sub_276D29C64;
   v12[3] = &unk_27A6F3928;
-  v13 = a3;
+  rangeCopy = range;
   v8 = _Block_copy(v12);
   if (length)
   {
@@ -10355,11 +10355,11 @@ LABEL_29:
   return length;
 }
 
-- (unint64_t)findCharacterIndexForContainedInfo:(id)a3
+- (unint64_t)findCharacterIndexForContainedInfo:(id)info
 {
-  v4 = a3;
-  v7 = objc_msgSend_parentInfo(v4, v5, v6);
-  v8 = v4;
+  infoCopy = info;
+  v7 = objc_msgSend_parentInfo(infoCopy, v5, v6);
+  v8 = infoCopy;
   v10 = v8;
   if (!v7 || v7 == self)
   {
@@ -10440,16 +10440,16 @@ LABEL_18:
   return result;
 }
 
-- (id)attachmentAtAttachmentIndex:(unint64_t)a3 outCharIndex:(unint64_t *)a4
+- (id)attachmentAtAttachmentIndex:(unint64_t)index outCharIndex:(unint64_t *)charIndex
 {
   v6 = objc_msgSend_attributeArrayForKind_(self, a2, 4);
   v7 = v6;
-  if (v6 && *(v6 + 24) > a3)
+  if (v6 && *(v6 + 24) > index)
   {
-    v8 = TSWPAttributeArray::objectForAttributeIndex(v6, a3);
-    if (a4)
+    v8 = TSWPAttributeArray::objectForAttributeIndex(v6, index);
+    if (charIndex)
     {
-      *a4 = TSWPAttributeArray::charIndexForAttributeIndex(v7, a3);
+      *charIndex = TSWPAttributeArray::charIndexForAttributeIndex(v7, index);
     }
   }
 
@@ -10461,13 +10461,13 @@ LABEL_18:
   return v8;
 }
 
-- (id)attachmentAtCharIndex:(unint64_t)a3
+- (id)attachmentAtCharIndex:(unint64_t)index
 {
   v4 = objc_msgSend_attributeArrayForKind_(self, a2, 4);
   if (v4)
   {
     v5 = v4;
-    if (*(v4 + 24) && (v6 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(v4, a3), v6 != 0x7FFFFFFFFFFFFFFFLL) && (v7 = v6, TSWPAttributeArray::charIndexForAttributeIndex(v5, v6) == a3))
+    if (*(v4 + 24) && (v6 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(v4, index), v6 != 0x7FFFFFFFFFFFFFFFLL) && (v7 = v6, TSWPAttributeArray::charIndexForAttributeIndex(v5, v6) == index))
     {
       v4 = TSWPAttributeArray::objectForAttributeIndex(v5, v7);
     }
@@ -10481,7 +10481,7 @@ LABEL_18:
   return v4;
 }
 
-- (unint64_t)attachmentIndexAtCharIndex:(unint64_t)a3
+- (unint64_t)attachmentIndexAtCharIndex:(unint64_t)index
 {
   v4 = objc_msgSend_attributeArrayForKind_(self, a2, 4);
   if (!v4)
@@ -10493,11 +10493,11 @@ LABEL_18:
   v6 = 0x7FFFFFFFFFFFFFFFLL;
   if (*(v4 + 24))
   {
-    v7 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(v4, a3);
+    v7 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(v4, index);
     if (v7 != 0x7FFFFFFFFFFFFFFFLL)
     {
       v8 = v7;
-      if (TSWPAttributeArray::charIndexForAttributeIndex(v5, v7) == a3)
+      if (TSWPAttributeArray::charIndexForAttributeIndex(v5, v7) == index)
       {
         return v8;
       }
@@ -10512,25 +10512,25 @@ LABEL_18:
   return v6;
 }
 
-- (void)nonUndoableReplaceWithAttachment:(id)a3 forAttachmentIndex:(unint64_t)a4 dolcContext:(id)a5
+- (void)nonUndoableReplaceWithAttachment:(id)attachment forAttachmentIndex:(unint64_t)index dolcContext:(id)context
 {
-  v11 = a3;
-  v8 = a5;
+  attachmentCopy = attachment;
+  contextCopy = context;
   v10 = objc_msgSend_attributeArrayForKind_(self, v9, 4);
-  if (v10 && *(v10 + 24) > a4)
+  if (v10 && *(v10 + 24) > index)
   {
-    TSWPAttributeArray::nonUndoableReplaceObjectForAttributeIndex(v10, v11, a4, v8, 0);
+    TSWPAttributeArray::nonUndoableReplaceObjectForAttributeIndex(v10, attachmentCopy, index, contextCopy, 0);
   }
 }
 
-- (unint64_t)attachmentIndexForInsertionAtCharIndex:(unint64_t)a3
+- (unint64_t)attachmentIndexForInsertionAtCharIndex:(unint64_t)index
 {
   result = objc_msgSend_attributeArrayForKind_(self, a2, 4);
   if (result)
   {
     v5 = result;
-    v6 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(result, a3);
-    if (v6 >= *(v5 + 24) || TSWPAttributeArray::charIndexForAttributeIndex(v5, v6) >= a3)
+    v6 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(result, index);
+    if (v6 >= *(v5 + 24) || TSWPAttributeArray::charIndexForAttributeIndex(v5, v6) >= index)
     {
       if (v6 == 0x7FFFFFFFFFFFFFFFLL)
       {
@@ -10552,12 +10552,12 @@ LABEL_18:
   return result;
 }
 
-- (void)enumerateAttachmentsOfClass:(Class)a3 inTextRange:(_NSRange)a4 usingBlock:(id)a5
+- (void)enumerateAttachmentsOfClass:(Class)class inTextRange:(_NSRange)range usingBlock:(id)block
 {
-  length = a4.length;
-  location = a4.location;
-  v9 = a5;
-  if (objc_opt_class() == a3)
+  length = range.length;
+  location = range.location;
+  blockCopy = block;
+  if (objc_opt_class() == class)
   {
     v11 = objc_msgSend_attributeArrayForKind_(self, v10, 5);
   }
@@ -10580,8 +10580,8 @@ LABEL_18:
     v13[3] = &unk_27A6F3950;
     v16 = location;
     v17 = length;
-    v18 = a3;
-    v14 = v9;
+    classCopy = class;
+    v14 = blockCopy;
     v15 = v19;
     TSWPAttributeArray::enumerateObjectAttributesInCharacterRange(v12, location, length, v13);
 
@@ -10589,25 +10589,25 @@ LABEL_18:
   }
 }
 
-- (void)enumerateAttachmentsInTextRange:(_NSRange)a3 usingBlock:(id)a4
+- (void)enumerateAttachmentsInTextRange:(_NSRange)range usingBlock:(id)block
 {
-  length = a3.length;
-  location = a3.location;
-  v9 = a4;
+  length = range.length;
+  location = range.location;
+  blockCopy = block;
   v7 = objc_opt_class();
-  objc_msgSend_enumerateAttachmentsOfClass_inTextRange_usingBlock_(self, v8, v7, location, length, v9);
+  objc_msgSend_enumerateAttachmentsOfClass_inTextRange_usingBlock_(self, v8, v7, location, length, blockCopy);
 }
 
-- (void)enumerateFootnoteAttachmentsInTextRange:(_NSRange)a3 usingBlock:(id)a4
+- (void)enumerateFootnoteAttachmentsInTextRange:(_NSRange)range usingBlock:(id)block
 {
-  length = a3.length;
-  location = a3.location;
-  v9 = a4;
+  length = range.length;
+  location = range.location;
+  blockCopy = block;
   v7 = objc_opt_class();
-  objc_msgSend_enumerateAttachmentsOfClass_inTextRange_usingBlock_(self, v8, v7, location, length, v9);
+  objc_msgSend_enumerateAttachmentsOfClass_inTextRange_usingBlock_(self, v8, v7, location, length, blockCopy);
 }
 
-- (_NSRange)attachmentIndexRangeForTextRange:(_NSRange)a3
+- (_NSRange)attachmentIndexRangeForTextRange:(_NSRange)range
 {
   v9 = 0;
   v10 = &v9;
@@ -10621,7 +10621,7 @@ LABEL_18:
   v8[2] = sub_276D2A65C;
   v8[3] = &unk_27A6F3978;
   v8[4] = &v9;
-  objc_msgSend_enumerateAttachmentsInTextRange_usingBlock_(self, a2, a3.location, a3.length, v8);
+  objc_msgSend_enumerateAttachmentsInTextRange_usingBlock_(self, a2, range.location, range.length, v8);
   v3 = v10;
   v4 = v10[6];
   if (v4 == 0x7FFFFFFFFFFFFFFFLL)
@@ -10639,16 +10639,16 @@ LABEL_18:
   return result;
 }
 
-- (unint64_t)findCharIndexForAttachment:(id)a3 withHintIndex:(unint64_t *)a4
+- (unint64_t)findCharIndexForAttachment:(id)attachment withHintIndex:(unint64_t *)index
 {
-  v6 = a3;
+  attachmentCopy = attachment;
   v8 = objc_msgSend_attributeArrayForKind_(self, v7, 4);
   v9 = v8;
   if (v8)
   {
-    if (a4)
+    if (index)
     {
-      v10 = *a4;
+      v10 = *index;
     }
 
     else
@@ -10656,10 +10656,10 @@ LABEL_18:
       v10 = 0;
     }
 
-    v12 = (*(*v8 + 112))(v8, v6, v10);
-    if (a4)
+    v12 = (*(*v8 + 112))(v8, attachmentCopy, v10);
+    if (index)
     {
-      *a4 = v12;
+      *index = v12;
     }
 
     v11 = 0x7FFFFFFFFFFFFFFFLL;
@@ -10677,18 +10677,18 @@ LABEL_18:
   return v11;
 }
 
-- (_NSRange)attachmentRangeForCharIndex:(unint64_t)a3 forwards:(BOOL)a4
+- (_NSRange)attachmentRangeForCharIndex:(unint64_t)index forwards:(BOOL)forwards
 {
-  v4 = MEMORY[0x2821F9670](self, sel_attachmentRangeForCharIndex_forwards_attributeKind_, a3);
+  v4 = MEMORY[0x2821F9670](self, sel_attachmentRangeForCharIndex_forwards_attributeKind_, index);
   result.length = v5;
   result.location = v4;
   return result;
 }
 
-- (_NSRange)attachmentRangeForCharIndex:(unint64_t)a3 forwards:(BOOL)a4 attributeKind:(unint64_t)a5
+- (_NSRange)attachmentRangeForCharIndex:(unint64_t)index forwards:(BOOL)forwards attributeKind:(unint64_t)kind
 {
-  v6 = a4;
-  if ((a5 & 0xFFFFFFFFFFFFFFFELL) != 4)
+  forwardsCopy = forwards;
+  if ((kind & 0xFFFFFFFFFFFFFFFELL) != 4)
   {
     v9 = MEMORY[0x277D81150];
     v10 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSWPStorage attachmentRangeForCharIndex:forwards:attributeKind:]");
@@ -10698,10 +10698,10 @@ LABEL_18:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v14, v15);
   }
 
-  v16 = objc_msgSend_attributeArrayForKind_(self, a2, a5);
+  v16 = objc_msgSend_attributeArrayForKind_(self, a2, kind);
   if (!v16 || (v19 = v16, !*(v16 + 24)))
   {
-    if (!v6)
+    if (!forwardsCopy)
     {
       goto LABEL_20;
     }
@@ -10709,10 +10709,10 @@ LABEL_18:
     goto LABEL_10;
   }
 
-  v20 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(v16, a3);
+  v20 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(v16, index);
   if (v20 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    if (v6)
+    if (forwardsCopy)
     {
       v21 = v19;
       v17 = 0;
@@ -10720,23 +10720,23 @@ LABEL_8:
       v22 = TSWPAttributeArray::charIndexForAttributeIndex(v21, v17);
 LABEL_11:
       v23 = v22;
-      v24 = a3;
-      a3 = v23 - a3;
+      indexCopy2 = index;
+      index = v23 - index;
       goto LABEL_21;
     }
 
 LABEL_20:
-    v24 = 0;
+    indexCopy2 = 0;
     goto LABEL_21;
   }
 
   v25 = v20;
   v26 = TSWPAttributeArray::charIndexForAttributeIndex(v19, v20);
-  if (v6)
+  if (forwardsCopy)
   {
-    if (v26 == a3)
+    if (v26 == index)
     {
-      v24 = a3;
+      indexCopy2 = index;
       goto LABEL_19;
     }
 
@@ -10752,7 +10752,7 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if (v26 == a3)
+  if (v26 == index)
   {
     if (!v25)
     {
@@ -10760,47 +10760,47 @@ LABEL_10:
     }
 
     v27 = TSWPAttributeArray::charIndexForAttributeIndex(v19, v25 - 1);
-    v24 = a3 - 1;
-    if (v27 != a3 - 1)
+    indexCopy2 = index - 1;
+    if (v27 != index - 1)
     {
-      v24 = v27 + 1;
-      a3 -= v27 + 1;
+      indexCopy2 = v27 + 1;
+      index -= v27 + 1;
       goto LABEL_21;
     }
 
 LABEL_19:
-    a3 = 1;
+    index = 1;
     goto LABEL_21;
   }
 
-  v24 = TSWPAttributeArray::charIndexForAttributeIndex(v19, v25);
-  v29 = a3 - (v24 + 1);
-  if (v24 == a3 - 1)
+  indexCopy2 = TSWPAttributeArray::charIndexForAttributeIndex(v19, v25);
+  v29 = index - (indexCopy2 + 1);
+  if (indexCopy2 == index - 1)
   {
-    a3 = 1;
+    index = 1;
   }
 
   else
   {
-    ++v24;
-    a3 = v29;
+    ++indexCopy2;
+    index = v29;
   }
 
 LABEL_21:
-  v28 = a3;
-  result.length = v28;
-  result.location = v24;
+  indexCopy3 = index;
+  result.length = indexCopy3;
+  result.location = indexCopy2;
   return result;
 }
 
-- (BOOL)anchoredDrawableAttachmentCharacterAtCharIndex:(unint64_t)a3
+- (BOOL)anchoredDrawableAttachmentCharacterAtCharIndex:(unint64_t)index
 {
-  if (objc_msgSend_characterAtIndex_(self, a2, a3) != 65532)
+  if (objc_msgSend_characterAtIndex_(self, a2, index) != 65532)
   {
     return 0;
   }
 
-  v6 = objc_msgSend_attachmentAtCharIndex_(self, v5, a3);
+  v6 = objc_msgSend_attachmentAtCharIndex_(self, v5, index);
   if (objc_msgSend_isDrawable(v6, v7, v8))
   {
     isAnchored = objc_msgSend_isAnchored(v6, v9, v10);
@@ -10814,47 +10814,47 @@ LABEL_21:
   return isAnchored;
 }
 
-- (unint64_t)charIndexBeforeAnyAnchoredAttachmentsAtCharIndex:(unint64_t)a3
+- (unint64_t)charIndexBeforeAnyAnchoredAttachmentsAtCharIndex:(unint64_t)index
 {
-  v3 = a3;
-  if (a3 - 1 < objc_msgSend_length(self, a2, a3))
+  indexCopy = index;
+  if (index - 1 < objc_msgSend_length(self, a2, index))
   {
     do
     {
-      v6 = v3 - 1;
-      if (!objc_msgSend_anchoredDrawableAttachmentCharacterAtCharIndex_(self, v5, v3 - 1))
+      v6 = indexCopy - 1;
+      if (!objc_msgSend_anchoredDrawableAttachmentCharacterAtCharIndex_(self, v5, indexCopy - 1))
       {
         break;
       }
 
-      --v3;
+      --indexCopy;
     }
 
     while (v6);
   }
 
-  return v3;
+  return indexCopy;
 }
 
-- (unint64_t)charIndexAfterAnyAnchoredAttachmentsAtCharIndex:(unint64_t)a3
+- (unint64_t)charIndexAfterAnyAnchoredAttachmentsAtCharIndex:(unint64_t)index
 {
-  v3 = a3;
-  if (objc_msgSend_length(self, a2, a3) >= a3 && objc_msgSend_length(self, v5, v6) > v3)
+  indexCopy = index;
+  if (objc_msgSend_length(self, a2, index) >= index && objc_msgSend_length(self, v5, v6) > indexCopy)
   {
     do
     {
-      if (!objc_msgSend_anchoredDrawableAttachmentCharacterAtCharIndex_(self, v7, v3))
+      if (!objc_msgSend_anchoredDrawableAttachmentCharacterAtCharIndex_(self, v7, indexCopy))
       {
         break;
       }
 
-      ++v3;
+      ++indexCopy;
     }
 
-    while (v3 < objc_msgSend_length(self, v8, v9));
+    while (indexCopy < objc_msgSend_length(self, v8, v9));
   }
 
-  return v3;
+  return indexCopy;
 }
 
 - (id)attachments
@@ -10904,7 +10904,7 @@ LABEL_21:
   return result;
 }
 
-- (BOOL)hasAttachmentsRequiring4_1InRange:(_NSRange)a3
+- (BOOL)hasAttachmentsRequiring4_1InRange:(_NSRange)range
 {
   v14 = 0;
   v15 = &v14;
@@ -10913,9 +10913,9 @@ LABEL_21:
   v3 = *(self + 302) & 0xF;
   if (v3 >= 2)
   {
-    length = a3.length;
-    location = a3.location;
-    if (v3 != 5 || (objc_msgSend_sharedPropertiesProvider(MEMORY[0x277D80610], a2, a3.location), v7 = objc_claimAutoreleasedReturnValue(), WarningForInlineDrawables = objc_msgSend_requiresFourOneDocumentReadWarningForInlineDrawables(v7, v8, v9), v7, (WarningForInlineDrawables & 1) != 0))
+    length = range.length;
+    location = range.location;
+    if (v3 != 5 || (objc_msgSend_sharedPropertiesProvider(MEMORY[0x277D80610], a2, range.location), v7 = objc_claimAutoreleasedReturnValue(), WarningForInlineDrawables = objc_msgSend_requiresFourOneDocumentReadWarningForInlineDrawables(v7, v8, v9), v7, (WarningForInlineDrawables & 1) != 0))
     {
       v13[0] = MEMORY[0x277D85DD0];
       v13[1] = 3221225472;
@@ -10931,11 +10931,11 @@ LABEL_21:
   return v11;
 }
 
-- (_NSRange)p_extendRangeToIncludeSmartFields:(_NSRange)a3
+- (_NSRange)p_extendRangeToIncludeSmartFields:(_NSRange)fields
 {
-  length = a3.length;
-  location = a3.location;
-  v6 = objc_msgSend_p_extendRangeToIncludeSmartFields_ofKind_(self, a2, a3.location, a3.length, 6);
+  length = fields.length;
+  location = fields.location;
+  v6 = objc_msgSend_p_extendRangeToIncludeSmartFields_ofKind_(self, a2, fields.location, fields.length, 6);
   v8 = v7;
   v9.location = objc_msgSend_p_extendRangeToIncludeSmartFields_ofKind_(self, v7, location, length, 21);
   v10 = *(MEMORY[0x277D81490] + 8);
@@ -10977,12 +10977,12 @@ LABEL_21:
   return result;
 }
 
-- (_NSRange)p_extendRangeToIncludeSmartFields:(_NSRange)a3 ofKind:(unint64_t)a4
+- (_NSRange)p_extendRangeToIncludeSmartFields:(_NSRange)fields ofKind:(unint64_t)kind
 {
-  length = a3.length;
-  location = a3.location;
+  length = fields.length;
+  location = fields.location;
   range2 = 0uLL;
-  v8 = objc_msgSend_smartFieldAtCharIndex_attributeKind_effectiveRange_(self, a2, a3.location, a4, &range2);
+  v8 = objc_msgSend_smartFieldAtCharIndex_attributeKind_effectiveRange_(self, a2, fields.location, kind, &range2);
   v10 = v8;
   v11 = location + length;
   v26.location = 0;
@@ -11037,7 +11037,7 @@ LABEL_16:
     goto LABEL_25;
   }
 
-  v12 = objc_msgSend_smartFieldAtCharIndex_attributeKind_effectiveRange_(self, v9, v11 - 1, a4, &v26);
+  v12 = objc_msgSend_smartFieldAtCharIndex_attributeKind_effectiveRange_(self, v9, v11 - 1, kind, &v26);
   v15 = v12;
   if (v10 == v12)
   {
@@ -11097,18 +11097,18 @@ LABEL_25:
   return result;
 }
 
-- (id)extendSelectionToIncludeSmartFields:(id)a3
+- (id)extendSelectionToIncludeSmartFields:(id)fields
 {
-  v4 = a3;
-  v7 = v4;
-  if (objc_msgSend_isValid(v4, v5, v6))
+  fieldsCopy = fields;
+  v7 = fieldsCopy;
+  if (objc_msgSend_isValid(fieldsCopy, v5, v6))
   {
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = sub_276D2B3C4;
     aBlock[3] = &unk_27A6F39C8;
     aBlock[4] = self;
-    v7 = v4;
+    v7 = fieldsCopy;
     v39 = v7;
     v8 = _Block_copy(aBlock);
     if (objc_msgSend_type(v7, v9, v10) == 7 && (objc_msgSend_validVisualRanges(v7, v11, v12) & 1) == 0)
@@ -11164,17 +11164,17 @@ LABEL_25:
   return v7;
 }
 
-- (id)smartFieldAtCharIndex:(unint64_t)a3 attributeKind:(unint64_t)a4 effectiveRange:(_NSRange *)a5
+- (id)smartFieldAtCharIndex:(unint64_t)index attributeKind:(unint64_t)kind effectiveRange:(_NSRange *)range
 {
-  v6 = self->_attributesTable[a4];
+  v6 = self->_attributesTable[kind];
   if (v6)
   {
-    v7 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(self->_attributesTable[a4], a3);
+    v7 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(self->_attributesTable[kind], index);
     if (v7 != 0x7FFFFFFFFFFFFFFFLL)
     {
       v11 = v7;
       v10 = TSWPAttributeArray::objectForAttributeIndex(v6, v7);
-      if (!a5)
+      if (!range)
       {
         goto LABEL_12;
       }
@@ -11183,22 +11183,22 @@ LABEL_25:
       goto LABEL_10;
     }
 
-    if (a5)
+    if (range)
     {
       v8 = TSWPAttributeArray::charIndexForAttributeIndex(v6, 0);
       v9 = 0;
 LABEL_7:
       v10 = 0;
 LABEL_10:
-      a5->location = v9;
-      a5->length = v8;
+      range->location = v9;
+      range->length = v8;
       goto LABEL_12;
     }
   }
 
-  else if (a5)
+  else if (range)
   {
-    v9 = objc_msgSend_range(self, a2, a3);
+    v9 = objc_msgSend_range(self, a2, index);
     goto LABEL_7;
   }
 
@@ -11208,9 +11208,9 @@ LABEL_12:
   return v10;
 }
 
-- (id)editableSmartFieldAtCharIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4
+- (id)editableSmartFieldAtCharIndex:(unint64_t)index effectiveRange:(_NSRange *)range
 {
-  v4 = objc_msgSend_smartFieldAtCharIndex_attributeKind_effectiveRange_(self, a2, a3, 6, 0);
+  v4 = objc_msgSend_smartFieldAtCharIndex_attributeKind_effectiveRange_(self, a2, index, 6, 0);
   v7 = v4;
   if (v4)
   {
@@ -11235,23 +11235,23 @@ LABEL_12:
   return v8;
 }
 
-- (void)addSmartField:(id)a3 toRange:(_NSRange)a4 dolcContext:(id)a5 undoTransaction:(void *)a6
+- (void)addSmartField:(id)field toRange:(_NSRange)range dolcContext:(id)context undoTransaction:(void *)transaction
 {
-  length = a4.length;
-  location = a4.location;
-  v16 = a3;
-  v11 = a5;
-  v14 = objc_msgSend_styleAttributeArrayKind(v16, v12, v13);
-  objc_msgSend_applyObject_toCharRange_forKind_dolcContext_undoTransaction_(self, v15, v16, location, length, v14, v11, a6);
+  length = range.length;
+  location = range.location;
+  fieldCopy = field;
+  contextCopy = context;
+  v14 = objc_msgSend_styleAttributeArrayKind(fieldCopy, v12, v13);
+  objc_msgSend_applyObject_toCharRange_forKind_dolcContext_undoTransaction_(self, v15, fieldCopy, location, length, v14, contextCopy, transaction);
 }
 
-- (void)removeSmartField:(id)a3 fromRange:(_NSRange)a4 undoTransaction:(void *)a5
+- (void)removeSmartField:(id)field fromRange:(_NSRange)range undoTransaction:(void *)transaction
 {
-  length = a4.length;
-  location = a4.location;
-  v13 = a3;
-  v11 = objc_msgSend_styleAttributeArrayKind(v13, v9, v10);
-  objc_msgSend_applyObject_toCharRange_forKind_dolcContext_undoTransaction_(self, v12, 0, location, length, v11, 0, a5);
+  length = range.length;
+  location = range.location;
+  fieldCopy = field;
+  v11 = objc_msgSend_styleAttributeArrayKind(fieldCopy, v9, v10);
+  objc_msgSend_applyObject_toCharRange_forKind_dolcContext_undoTransaction_(self, v12, 0, location, length, v11, 0, transaction);
 }
 
 - (BOOL)hasSmartFields
@@ -11261,16 +11261,16 @@ LABEL_12:
   return objc_msgSend_hasSmartFieldsInRange_(self, v4, v5, v4);
 }
 
-- (BOOL)hasSmartFieldsInRange:(_NSRange)a3
+- (BOOL)hasSmartFieldsInRange:(_NSRange)range
 {
   if (!self->_attributesTable[6])
   {
     return 0;
   }
 
-  length = a3.length;
-  location = a3.location;
-  TSWPAttributeEnumerator::TSWPAttributeEnumerator(&v12, self, a3.location, a3.length, 6, 0);
+  length = range.length;
+  location = range.location;
+  TSWPAttributeEnumerator::TSWPAttributeEnumerator(&v12, self, range.location, range.length, 6, 0);
   v11.location = 0;
   v11.length = 0;
   while (1)
@@ -11300,14 +11300,14 @@ LABEL_12:
   return v7;
 }
 
-- (void)enumerateWithAttributeKind:(unint64_t)a3 inRange:(_NSRange)a4 withOptions:(unint64_t)a5 usingBlock:(id)a6
+- (void)enumerateWithAttributeKind:(unint64_t)kind inRange:(_NSRange)range withOptions:(unint64_t)options usingBlock:(id)block
 {
-  length = a4.length;
-  location = a4.location;
-  v11 = a6;
-  if (TSWPAttributeArray::attributeKindIsOverlapping(a3))
+  length = range.length;
+  location = range.location;
+  blockCopy = block;
+  if (TSWPAttributeArray::attributeKindIsOverlapping(kind))
   {
-    sub_276E32B04(&v25, self, location, length, a3);
+    sub_276E32B04(&v25, self, location, length, kind);
     v24 = 0;
     v23 = *MEMORY[0x277D81490];
     while (1)
@@ -11321,9 +11321,9 @@ LABEL_12:
       v13 = v12;
       v26.location = location;
       v26.length = length;
-      if (NSIntersectionRange(v26, v23).length || ((TSWPAttributeArray::attributeKindIsBreaking(a3) & 1) != 0 || TSWPAttributeArray::supportsObjectsStartingAtEndOfStorage(a3)) && (v16 = v23.location, v16 == objc_msgSend_length(self, v14, v15, v23.location)) || !length && v23.length && sub_276D39898(location, 0, v23.location, v23.length, a5))
+      if (NSIntersectionRange(v26, v23).length || ((TSWPAttributeArray::attributeKindIsBreaking(kind) & 1) != 0 || TSWPAttributeArray::supportsObjectsStartingAtEndOfStorage(kind)) && (v16 = v23.location, v16 == objc_msgSend_length(self, v14, v15, v23.location)) || !length && v23.length && sub_276D39898(location, 0, v23.location, v23.length, options))
       {
-        v11[2](v11, v13, v23.location, v23.length, &v24);
+        blockCopy[2](blockCopy, v13, v23.location, v23.length, &v24);
         if (v24 == 1)
         {
 
@@ -11337,7 +11337,7 @@ LABEL_12:
 
   else
   {
-    TSWPAttributeEnumerator::TSWPAttributeEnumerator(&v25, self, location, length, a3, 1);
+    TSWPAttributeEnumerator::TSWPAttributeEnumerator(&v25, self, location, length, kind, 1);
     v23 = 0;
     v24 = 0;
     while (1)
@@ -11348,12 +11348,12 @@ LABEL_12:
         break;
       }
 
-      v19 = TSWPAttributeRecord::object(v18, a3);
+      v19 = TSWPAttributeRecord::object(v18, kind);
       v27.location = location;
       v27.length = length;
-      if (NSIntersectionRange(v27, v23).length || ((TSWPAttributeArray::attributeKindIsBreaking(a3) & 1) != 0 || TSWPAttributeArray::supportsObjectsStartingAtEndOfStorage(a3)) && (v22 = v23.location, v22 == objc_msgSend_length(self, v20, v21, v23.location)) || !length && v23.length && sub_276D39898(location, 0, v23.location, v23.length, a5))
+      if (NSIntersectionRange(v27, v23).length || ((TSWPAttributeArray::attributeKindIsBreaking(kind) & 1) != 0 || TSWPAttributeArray::supportsObjectsStartingAtEndOfStorage(kind)) && (v22 = v23.location, v22 == objc_msgSend_length(self, v20, v21, v23.location)) || !length && v23.length && sub_276D39898(location, 0, v23.location, v23.length, options))
       {
-        v11[2](v11, v19, v23.location, v23.length, &v24);
+        blockCopy[2](blockCopy, v19, v23.location, v23.length, &v24);
         if (v24 == 1)
         {
 
@@ -11366,13 +11366,13 @@ LABEL_12:
   }
 }
 
-- (void)enumerateSmartFieldsWithAttributeKind:(unint64_t)a3 inRange:(_NSRange)a4 usingBlock:(id)a5
+- (void)enumerateSmartFieldsWithAttributeKind:(unint64_t)kind inRange:(_NSRange)range usingBlock:(id)block
 {
-  length = a4.length;
-  location = a4.location;
-  v42 = a5;
+  length = range.length;
+  location = range.location;
+  blockCopy = block;
   v11 = 0x277D81000uLL;
-  if ((TSWPAttributeArray::attributeKindIsSmartField(a3) & 1) == 0)
+  if ((TSWPAttributeArray::attributeKindIsSmartField(kind) & 1) == 0)
   {
     v12 = MEMORY[0x277D81150];
     v13 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v9, "[TSWPStorage enumerateSmartFieldsWithAttributeKind:inRange:usingBlock:]");
@@ -11383,15 +11383,15 @@ LABEL_12:
   }
 
   v19 = objc_msgSend_length(self, v9, v10);
-  if (self->_attributesTable[a3])
+  if (self->_attributesTable[kind])
   {
     v20 = v19;
-    TSWPAttributeEnumerator::TSWPAttributeEnumerator(&v45, self, location, length, a3, 0);
+    TSWPAttributeEnumerator::TSWPAttributeEnumerator(&v45, self, location, length, kind, 0);
     v44.location = 0;
     v44.length = 0;
-    v22 = v42 + 16;
+    v22 = blockCopy + 16;
     v43 = 0;
-    v41 = a3;
+    kindCopy = kind;
     while (1)
     {
       v23 = TSWPAttributeEnumerator::nextAttributeIndex(&v45, &v44, v21);
@@ -11400,14 +11400,14 @@ LABEL_12:
         break;
       }
 
-      v24 = TSWPAttributeRecord::object(v23, a3);
+      v24 = TSWPAttributeRecord::object(v23, kind);
       if (v24)
       {
         v46.location = location;
         v46.length = length;
         if (NSIntersectionRange(v46, v44).length || !length && sub_276D39898(location, 0, v44.location, v44.length, 0))
         {
-          (*(v42 + 2))(v42, v24, v44.location, v44.length, &v43);
+          (*(blockCopy + 2))(blockCopy, v24, v44.location, v44.length, &v43);
           if (v43 == 1)
           {
 
@@ -11422,19 +11422,19 @@ LABEL_12:
             v31 = location;
             v32 = v22;
             v33 = v20;
-            v34 = self;
+            selfCopy = self;
             v35 = v11;
             v37 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v36, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/text/TSWPStorage.mm");
             objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v28, v38, v29, v37, 6636, 0, "Storage was modified while enumerating attributes");
 
             v11 = v35;
             objc_msgSend_logBacktraceThrottled(*(v35 + 336), v39, v40);
-            self = v34;
+            self = selfCopy;
             v20 = v33;
             v22 = v32;
             location = v31;
             length = v30;
-            a3 = v41;
+            kind = kindCopy;
           }
         }
       }
@@ -11485,23 +11485,23 @@ LABEL_12:
   objc_msgSend_enumerateHighlightsInRange_usingBlock_(self, v15, v14, v15, &unk_2885FDCF0);
 }
 
-+ (void)resetAllTextAttributeUUIDStringsInInfo:(id)a3
++ (void)resetAllTextAttributeUUIDStringsInInfo:(id)info
 {
-  v7 = a3;
+  infoCopy = info;
   v3 = objc_alloc(MEMORY[0x277D80660]);
-  v5 = objc_msgSend_initWithRootModelObject_filter_(v3, v4, v7, 0);
+  v5 = objc_msgSend_initWithRootModelObject_filter_(v3, v4, infoCopy, 0);
   objc_msgSend_enumerateUsingBlock_(v5, v6, &unk_2885FDD10);
 }
 
-+ (void)resetAllTextAttributeUUIDStringsInInfos:(id)a3
++ (void)resetAllTextAttributeUUIDStringsInInfos:(id)infos
 {
   v15 = *MEMORY[0x277D85DE8];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = a3;
-  v7 = objc_msgSend_countByEnumeratingWithState_objects_count_(v4, v5, &v10, v14, 16);
+  infosCopy = infos;
+  v7 = objc_msgSend_countByEnumeratingWithState_objects_count_(infosCopy, v5, &v10, v14, 16);
   if (v7)
   {
     v8 = *v11;
@@ -11512,25 +11512,25 @@ LABEL_12:
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(infosCopy);
         }
 
-        objc_msgSend_resetAllTextAttributeUUIDStringsInInfo_(a1, v6, *(*(&v10 + 1) + 8 * v9++), v10);
+        objc_msgSend_resetAllTextAttributeUUIDStringsInInfo_(self, v6, *(*(&v10 + 1) + 8 * v9++), v10);
       }
 
       while (v7 != v9);
-      v7 = objc_msgSend_countByEnumeratingWithState_objects_count_(v4, v6, &v10, v14, 16);
+      v7 = objc_msgSend_countByEnumeratingWithState_objects_count_(infosCopy, v6, &v10, v14, 16);
     }
 
     while (v7);
   }
 }
 
-- (id)smartFieldsWithAttributeKind:(unint64_t)a3 intersectingRange:(_NSRange)a4 passingTest:(id)a5
+- (id)smartFieldsWithAttributeKind:(unint64_t)kind intersectingRange:(_NSRange)range passingTest:(id)test
 {
-  length = a4.length;
-  location = a4.location;
-  v9 = a5;
+  length = range.length;
+  location = range.location;
+  testCopy = test;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -11541,10 +11541,10 @@ LABEL_12:
   v14[1] = 3221225472;
   v14[2] = sub_276D2C334;
   v14[3] = &unk_27A6F3A58;
-  v15 = v9;
+  v15 = testCopy;
   v16 = &v17;
-  v10 = v9;
-  objc_msgSend_enumerateSmartFieldsWithAttributeKind_inRange_usingBlock_(self, v11, a3, location, length, v14);
+  v10 = testCopy;
+  objc_msgSend_enumerateSmartFieldsWithAttributeKind_inRange_usingBlock_(self, v11, kind, location, length, v14);
   v12 = v18[5];
 
   _Block_object_dispose(&v17, 8);
@@ -11552,10 +11552,10 @@ LABEL_12:
   return v12;
 }
 
-- (void)nonUndoableRemoveUnsupportedHyperlinksForCrossDocumentPaste:(BOOL)a3
+- (void)nonUndoableRemoveUnsupportedHyperlinksForCrossDocumentPaste:(BOOL)paste
 {
   v50 = *MEMORY[0x277D85DE8];
-  v39 = objc_msgSend_array(MEMORY[0x277CBEB18], a2, a3);
+  v39 = objc_msgSend_array(MEMORY[0x277CBEB18], a2, paste);
   v7 = objc_msgSend_context(self, v5, v6);
   v40 = objc_msgSend_documentRoot(v7, v8, v9);
 
@@ -11564,7 +11564,7 @@ LABEL_12:
   v47[1] = 3221225472;
   v47[2] = sub_276D2C72C;
   v47[3] = &unk_27A6F3A80;
-  v48 = a3;
+  pasteCopy = paste;
   v47[4] = v40;
   v47[5] = v39;
   objc_msgSend_enumerateSmartFieldsWithAttributeKind_inRange_usingBlock_(self, v13, 6, v12, v13, v47);
@@ -11616,15 +11616,15 @@ LABEL_12:
   }
 }
 
-+ (void)nonUndoableRemoveUnsupportedHyperlinksInInfos:(id)a3 forCrossDocumentPaste:(BOOL)a4
++ (void)nonUndoableRemoveUnsupportedHyperlinksInInfos:(id)infos forCrossDocumentPaste:(BOOL)paste
 {
   v23 = *MEMORY[0x277D85DE8];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v5 = a3;
-  v7 = objc_msgSend_countByEnumeratingWithState_objects_count_(v5, v6, &v18, v22, 16);
+  infosCopy = infos;
+  v7 = objc_msgSend_countByEnumeratingWithState_objects_count_(infosCopy, v6, &v18, v22, 16);
   if (v7)
   {
     v8 = *v19;
@@ -11635,7 +11635,7 @@ LABEL_12:
       {
         if (*v19 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(infosCopy);
         }
 
         v10 = *(*(&v18 + 1) + 8 * v9);
@@ -11645,28 +11645,28 @@ LABEL_12:
         v16[1] = 3221225472;
         v16[2] = sub_276D2CA54;
         v16[3] = &unk_27A6F3AA0;
-        v17 = a4;
+        pasteCopy = paste;
         objc_msgSend_enumerateUsingBlock_(v13, v14, v16);
 
         ++v9;
       }
 
       while (v7 != v9);
-      v7 = objc_msgSend_countByEnumeratingWithState_objects_count_(v5, v15, &v18, v22, 16);
+      v7 = objc_msgSend_countByEnumeratingWithState_objects_count_(infosCopy, v15, &v18, v22, 16);
     }
 
     while (v7);
   }
 }
 
-+ (void)nonUndoableRemoveUnsupportedHyperlinksInInfos:(id)a3
++ (void)nonUndoableRemoveUnsupportedHyperlinksInInfos:(id)infos
 {
-  v5 = a3;
+  infosCopy = infos;
   v3 = objc_opt_class();
-  objc_msgSend_nonUndoableRemoveUnsupportedHyperlinksInInfos_forCrossDocumentPaste_(v3, v4, v5, 0);
+  objc_msgSend_nonUndoableRemoveUnsupportedHyperlinksInInfos_forCrossDocumentPaste_(v3, v4, infosCopy, 0);
 }
 
-- (id)smartFieldsWithAttributeKind:(unint64_t)a3 inSelection:(id)a4
+- (id)smartFieldsWithAttributeKind:(unint64_t)kind inSelection:(id)selection
 {
   v7 = 0;
   v8 = &v7;
@@ -11679,29 +11679,29 @@ LABEL_12:
   v6[2] = sub_276D2CC5C;
   v6[3] = &unk_27A6F3AC8;
   v6[5] = &v7;
-  v6[6] = a3;
+  v6[6] = kind;
   v6[4] = self;
-  objc_msgSend_enumerateRanges_(a4, a2, v6);
+  objc_msgSend_enumerateRanges_(selection, a2, v6);
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
 
   return v4;
 }
 
-- (id)smartFieldsWithAttributeKind:(unint64_t)a3 withClass:(Class)a4 intersectingRange:(_NSRange)a5
+- (id)smartFieldsWithAttributeKind:(unint64_t)kind withClass:(Class)class intersectingRange:(_NSRange)range
 {
-  v6 = objc_msgSend_smartFieldsWithAttributeKind_intersectingRange_(self, a2, a3, a5.location, a5.length);
-  v8 = objc_msgSend_predicateWithFormat_(MEMORY[0x277CCAC30], v7, @"class == %@", a4);
+  v6 = objc_msgSend_smartFieldsWithAttributeKind_intersectingRange_(self, a2, kind, range.location, range.length);
+  v8 = objc_msgSend_predicateWithFormat_(MEMORY[0x277CCAC30], v7, @"class == %@", class);
   v10 = objc_msgSend_filteredArrayUsingPredicate_(v6, v9, v8);
 
   return v10;
 }
 
-- (id)placeholderSmartFieldAtRange:(_NSRange)a3
+- (id)placeholderSmartFieldAtRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v5 = objc_msgSend_placeholderSmartFieldsIntersectingRange_(self, a2, a3.location);
+  length = range.length;
+  location = range.location;
+  v5 = objc_msgSend_placeholderSmartFieldsIntersectingRange_(self, a2, range.location);
   if (objc_msgSend_count(v5, v6, v7) != 1)
   {
     goto LABEL_5;
@@ -11718,24 +11718,24 @@ LABEL_5:
   return v9;
 }
 
-- (void)enumerateAllHyperlinksUsingBlock:(id)a3
+- (void)enumerateAllHyperlinksUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v7 = objc_msgSend_range(self, v5, v6);
   v9 = v8;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = sub_276D2CFA4;
   v12[3] = &unk_27A6F3B10;
-  v10 = v4;
+  v10 = blockCopy;
   v13 = v10;
   objc_msgSend_enumerateSmartFieldsWithAttributeKind_inRange_usingBlock_(self, v11, 6, v7, v9, v12);
 }
 
-- (void)smartFieldDidChange:(id)a3
+- (void)smartFieldDidChange:(id)change
 {
-  v18 = a3;
-  v6 = objc_msgSend_parentStorage(v18, v4, v5);
+  changeCopy = change;
+  v6 = objc_msgSend_parentStorage(changeCopy, v4, v5);
 
   if (v6 != self)
   {
@@ -11747,14 +11747,14 @@ LABEL_5:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v14, v15);
   }
 
-  v16 = objc_msgSend_range(v18, v7, v8);
+  v16 = objc_msgSend_range(changeCopy, v7, v8);
   objc_msgSend_didChangeRange_delta_broadcastKind_attributeKindChanges_(self, v17, v16, v17, 0, 0, 0);
 }
 
-- (void)autoUpdateField:(id)a3 withRange:(_NSRange)a4 documentRoot:(id)a5 returningInsertedRange:(_NSRange *)a6
+- (void)autoUpdateField:(id)field withRange:(_NSRange)range documentRoot:(id)root returningInsertedRange:(_NSRange *)insertedRange
 {
   v6 = MEMORY[0x277D81150];
-  v7 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSWPStorage autoUpdateField:withRange:documentRoot:returningInsertedRange:]", a4.location, a4.length, a5, a6);
+  v7 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSWPStorage autoUpdateField:withRange:documentRoot:returningInsertedRange:]", range.location, range.length, root, insertedRange);
   v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v8, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/text/TSWPStorage.mm");
   objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v6, v10, v7, v9, 6814, 0, "unimplemented");
 
@@ -11763,7 +11763,7 @@ LABEL_5:
   objc_msgSend_logBacktraceThrottled(v13, v11, v12);
 }
 
-- (void)autoUpdateSmartFieldsWithDocumentRoot:(id)a3
+- (void)autoUpdateSmartFieldsWithDocumentRoot:(id)root
 {
   v3 = MEMORY[0x277D81150];
   v4 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSWPStorage autoUpdateSmartFieldsWithDocumentRoot:]");
@@ -11775,11 +11775,11 @@ LABEL_5:
   objc_msgSend_logBacktraceThrottled(v10, v8, v9);
 }
 
-- (void)enumerateBookmarksInRange:(_NSRange)a3 usingBlock:(id)a4
+- (void)enumerateBookmarksInRange:(_NSRange)range usingBlock:(id)block
 {
-  length = a3.length;
-  location = a3.location;
-  v7 = a4;
+  length = range.length;
+  location = range.location;
+  blockCopy = block;
   v10 = objc_msgSend_length(self, v8, v9);
   if (self->_attributesTable[12])
   {
@@ -11816,7 +11816,7 @@ LABEL_5:
           v29.length = 0;
         }
 
-        v7[2](v7, v15, v29.location, v18, &v30);
+        blockCopy[2](blockCopy, v15, v29.location, v18, &v30);
         if (objc_msgSend_length(self, v19, v20) != v11)
         {
           v22 = MEMORY[0x277D81150];
@@ -11840,11 +11840,11 @@ LABEL_14:
   }
 }
 
-- (void)enumerateBookmarksInSelection:(id)a3 usingBlock:(id)a4
+- (void)enumerateBookmarksInSelection:(id)selection usingBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  selectionCopy = selection;
+  blockCopy = block;
+  v8 = blockCopy;
   if (self->_attributesTable[12])
   {
     v10[0] = MEMORY[0x277D85DD0];
@@ -11852,16 +11852,16 @@ LABEL_14:
     v10[2] = sub_276D2D61C;
     v10[3] = &unk_27A6F3B38;
     v10[4] = self;
-    v11 = v7;
-    objc_msgSend_enumerateRanges_(v6, v9, v10);
+    v11 = blockCopy;
+    objc_msgSend_enumerateRanges_(selectionCopy, v9, v10);
   }
 }
 
-- (void)enumerateTateChuYokoInRange:(_NSRange)a3 usingBlock:(id)a4
+- (void)enumerateTateChuYokoInRange:(_NSRange)range usingBlock:(id)block
 {
-  length = a3.length;
-  location = a3.location;
-  v7 = a4;
+  length = range.length;
+  location = range.location;
+  blockCopy = block;
   v10 = objc_msgSend_length(self, v8, v9);
   if (self->_attributesTable[21])
   {
@@ -11882,7 +11882,7 @@ LABEL_14:
 
       if (v15)
       {
-        v7[2](v7, v15, v26.location, v26.length, &v27);
+        blockCopy[2](blockCopy, v15, v26.location, v26.length, &v27);
         if (objc_msgSend_length(self, v16, v17) != v11)
         {
           v19 = MEMORY[0x277D81150];
@@ -11905,11 +11905,11 @@ LABEL_14:
   }
 }
 
-- (void)addOverlappingField:(id)a3 toRange:(_NSRange)a4 attributeKind:(unint64_t)a5 dolcContext:(id)a6 undoTransaction:(void *)a7
+- (void)addOverlappingField:(id)field toRange:(_NSRange)range attributeKind:(unint64_t)kind dolcContext:(id)context undoTransaction:(void *)transaction
 {
-  v20 = a4;
-  v10 = a3;
-  if (!TSWPAttributeArray::attributeKindIsOverlapping(a5))
+  rangeCopy = range;
+  fieldCopy = field;
+  if (!TSWPAttributeArray::attributeKindIsOverlapping(kind))
   {
     v12 = MEMORY[0x277D81150];
     v13 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v11, "[TSWPStorage addOverlappingField:toRange:attributeKind:dolcContext:undoTransaction:]");
@@ -11919,18 +11919,18 @@ LABEL_14:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v17, v18);
   }
 
-  sub_276F32CA8(v19, 2, self, a7, 0);
+  sub_276F32CA8(v19, 2, self, transaction, 0);
   v19[0] = &unk_288609A08;
-  sub_276F33A24(v19, a5, &v20, v10, 1, 0xFFFFFFFFLL);
+  sub_276F33A24(v19, kind, &rangeCopy, fieldCopy, 1, 0xFFFFFFFFLL);
   sub_276F32E84(v19);
   sub_276F32E10(v19);
 }
 
-- (void)removeOverlappingField:(id)a3 fromRange:(_NSRange)a4 attributeKind:(unint64_t)a5 undoTransaction:(void *)a6
+- (void)removeOverlappingField:(id)field fromRange:(_NSRange)range attributeKind:(unint64_t)kind undoTransaction:(void *)transaction
 {
-  v19 = a4;
-  v9 = a3;
-  if (!TSWPAttributeArray::attributeKindIsOverlapping(a5))
+  rangeCopy = range;
+  fieldCopy = field;
+  if (!TSWPAttributeArray::attributeKindIsOverlapping(kind))
   {
     v11 = MEMORY[0x277D81150];
     v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v10, "[TSWPStorage removeOverlappingField:fromRange:attributeKind:undoTransaction:]");
@@ -11940,48 +11940,48 @@ LABEL_14:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v16, v17);
   }
 
-  sub_276F32CA8(v18, 2, self, a6, 0);
+  sub_276F32CA8(v18, 2, self, transaction, 0);
   v18[0] = &unk_288609A08;
-  sub_276F33A24(v18, a5, &v19, v9, 2, 0xFFFFFFFFLL);
+  sub_276F33A24(v18, kind, &rangeCopy, fieldCopy, 2, 0xFFFFFFFFLL);
   sub_276F32E84(v18);
   sub_276F32E10(v18);
 }
 
-- (unint64_t)attributeIndexForCharacterIndex:(unint64_t)a3 attributeKind:(unint64_t)a4
+- (unint64_t)attributeIndexForCharacterIndex:(unint64_t)index attributeKind:(unint64_t)kind
 {
-  v5 = objc_msgSend_attributeArrayForKind_withCreate_(self, a2, a4, 0);
+  v5 = objc_msgSend_attributeArrayForKind_withCreate_(self, a2, kind, 0);
   if (!v5)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  return TSWPAttributeArray::effectiveAttributeIndexForCharIndex(v5, a3);
+  return TSWPAttributeArray::effectiveAttributeIndexForCharIndex(v5, index);
 }
 
-- (id)overlappingFieldsAtAttributeIndex:(unint64_t)a3 attributeKind:(unint64_t)a4
+- (id)overlappingFieldsAtAttributeIndex:(unint64_t)index attributeKind:(unint64_t)kind
 {
-  v5 = objc_msgSend_attributeArrayForKind_withCreate_(self, a2, a4, 0);
+  v5 = objc_msgSend_attributeArrayForKind_withCreate_(self, a2, kind, 0);
   if (v5)
   {
-    v5 = (*(*v5 + 136))(v5, a3);
+    v5 = (*(*v5 + 136))(v5, index);
   }
 
   return v5;
 }
 
-- (_NSRange)attributeRangeForOverlappingField:(id)a3 attributeKind:(unint64_t)a4
+- (_NSRange)attributeRangeForOverlappingField:(id)field attributeKind:(unint64_t)kind
 {
-  v6 = a3;
+  fieldCopy = field;
   v7 = *MEMORY[0x277D81490];
   v8 = *(MEMORY[0x277D81490] + 8);
-  v10 = objc_msgSend_attributeArrayForKind_withCreate_(self, v9, a4, 0);
+  v10 = objc_msgSend_attributeArrayForKind_withCreate_(self, v9, kind, 0);
   v11 = v10;
   if (v10)
   {
-    v12 = (*(*v10 + 112))(v10, v6, 0);
+    v12 = (*(*v10 + 112))(v10, fieldCopy, 0);
     if (v12 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v7 = (*(*v11 + 152))(v11, v6, v12);
+      v7 = (*(*v11 + 152))(v11, fieldCopy, v12);
       v8 = v13;
     }
   }
@@ -11993,15 +11993,15 @@ LABEL_14:
   return result;
 }
 
-- (_NSRange)attributeRangeForOverlappingField:(id)a3 atAttributeIndex:(unint64_t)a4 attributeKind:(unint64_t)a5
+- (_NSRange)attributeRangeForOverlappingField:(id)field atAttributeIndex:(unint64_t)index attributeKind:(unint64_t)kind
 {
-  v8 = a3;
+  fieldCopy = field;
   v9 = *MEMORY[0x277D81490];
   v10 = *(MEMORY[0x277D81490] + 8);
-  v12 = objc_msgSend_attributeArrayForKind_withCreate_(self, v11, a5, 0);
+  v12 = objc_msgSend_attributeArrayForKind_withCreate_(self, v11, kind, 0);
   if (v12)
   {
-    v9 = (*(*v12 + 152))(v12, v8, a4);
+    v9 = (*(*v12 + 152))(v12, fieldCopy, index);
     v10 = v13;
   }
 
@@ -12012,13 +12012,13 @@ LABEL_14:
   return result;
 }
 
-- (_NSRange)charRangeForAttributeRange:(_NSRange)a3 attributeKind:(unint64_t)a4
+- (_NSRange)charRangeForAttributeRange:(_NSRange)range attributeKind:(unint64_t)kind
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v6 = *MEMORY[0x277D81490];
   v7 = *(MEMORY[0x277D81490] + 8);
-  v8 = objc_msgSend_attributeArrayForKind_withCreate_(self, a2, a4, 0);
+  v8 = objc_msgSend_attributeArrayForKind_withCreate_(self, a2, kind, 0);
   if (v8)
   {
     v13.location = location;
@@ -12034,15 +12034,15 @@ LABEL_14:
   return result;
 }
 
-- (BOOL)phoneticsExistOnRange:(_NSRange)a3
+- (BOOL)phoneticsExistOnRange:(_NSRange)range
 {
-  v3 = objc_msgSend_smartFieldsWithAttributeKind_intersectingRange_(self, a2, 7, a3.location, a3.length);
+  v3 = objc_msgSend_smartFieldsWithAttributeKind_intersectingRange_(self, a2, 7, range.location, range.length);
   v6 = objc_msgSend_count(v3, v4, v5) != 0;
 
   return v6;
 }
 
-- (BOOL)phoneticsExistInSelection:(id)a3
+- (BOOL)phoneticsExistInSelection:(id)selection
 {
   v6 = 0;
   v7 = &v6;
@@ -12054,17 +12054,17 @@ LABEL_14:
   v5[3] = &unk_27A6F3B60;
   v5[4] = self;
   v5[5] = &v6;
-  objc_msgSend_enumerateRanges_(a3, a2, v5);
+  objc_msgSend_enumerateRanges_(selection, a2, v5);
   v3 = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
   return v3;
 }
 
-- (id)snapshotRubyStateInRange:(_NSRange)a3
+- (id)snapshotRubyStateInRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v6 = objc_msgSend_array(MEMORY[0x277CBEB18], a2, a3.location);
+  length = range.length;
+  location = range.location;
+  v6 = objc_msgSend_array(MEMORY[0x277CBEB18], a2, range.location);
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = sub_276D2E040;
@@ -12076,10 +12076,10 @@ LABEL_14:
   return v7;
 }
 
-- (void)addGlyphVariantData:(id)a3 toRange:(_NSRange)a4
+- (void)addGlyphVariantData:(id)data toRange:(_NSRange)range
 {
   v4 = MEMORY[0x277D81150];
-  v5 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSWPStorage addGlyphVariantData:toRange:]", a4.location, a4.length);
+  v5 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSWPStorage addGlyphVariantData:toRange:]", range.location, range.length);
   v7 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/text/TSWPStorage.mm");
   objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v4, v8, v5, v7, 6993, 0, "unimplemented");
 
@@ -12088,10 +12088,10 @@ LABEL_14:
   objc_msgSend_logBacktraceThrottled(v11, v9, v10);
 }
 
-- (void)removeGlyphVariantDataFromRange:(_NSRange)a3
+- (void)removeGlyphVariantDataFromRange:(_NSRange)range
 {
   v3 = MEMORY[0x277D81150];
-  v4 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSWPStorage removeGlyphVariantDataFromRange:]", a3.length);
+  v4 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSWPStorage removeGlyphVariantDataFromRange:]", range.length);
   v6 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v5, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/text/TSWPStorage.mm");
   objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v3, v7, v4, v6, 6999, 0, "unimplemented");
 
@@ -12100,10 +12100,10 @@ LABEL_14:
   objc_msgSend_logBacktraceThrottled(v10, v8, v9);
 }
 
-- (id)glyphVariantDataAtCharIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4
+- (id)glyphVariantDataAtCharIndex:(unint64_t)index effectiveRange:(_NSRange *)range
 {
   v4 = MEMORY[0x277D81150];
-  v5 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSWPStorage glyphVariantDataAtCharIndex:effectiveRange:]", a4);
+  v5 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSWPStorage glyphVariantDataAtCharIndex:effectiveRange:]", range);
   v7 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/text/TSWPStorage.mm");
   objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v4, v8, v5, v7, 7004, 0, "unimplemented");
 
@@ -12111,10 +12111,10 @@ LABEL_14:
   return 0;
 }
 
-- (void)fixGlyphVariantFontsForRange:(_NSRange)a3
+- (void)fixGlyphVariantFontsForRange:(_NSRange)range
 {
   v3 = MEMORY[0x277D81150];
-  v4 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSWPStorage fixGlyphVariantFontsForRange:]", a3.length);
+  v4 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSWPStorage fixGlyphVariantFontsForRange:]", range.length);
   v6 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v5, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/text/TSWPStorage.mm");
   objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v3, v7, v4, v6, 7010, 0, "unimplemented");
 
@@ -12123,13 +12123,13 @@ LABEL_14:
   objc_msgSend_logBacktraceThrottled(v10, v8, v9);
 }
 
-- (id)fontNameAtCharIndex:(unint64_t)a3 size:(double *)a4 effectiveRange:(_NSRange *)a5 styleProvider:(id)a6
+- (id)fontNameAtCharIndex:(unint64_t)index size:(double *)size effectiveRange:(_NSRange *)range styleProvider:(id)provider
 {
-  FontAtCharIndex_scaleTextPercent_effectiveRange_styleProvider = objc_msgSend_createFontAtCharIndex_scaleTextPercent_effectiveRange_styleProvider_(self, a2, a3, 100, a5, a6);
+  FontAtCharIndex_scaleTextPercent_effectiveRange_styleProvider = objc_msgSend_createFontAtCharIndex_scaleTextPercent_effectiveRange_styleProvider_(self, a2, index, 100, range, provider);
   v8 = CTFontCopyPostScriptName(FontAtCharIndex_scaleTextPercent_effectiveRange_styleProvider);
-  if (a4)
+  if (size)
   {
-    *a4 = CTFontGetSize(FontAtCharIndex_scaleTextPercent_effectiveRange_styleProvider);
+    *size = CTFontGetSize(FontAtCharIndex_scaleTextPercent_effectiveRange_styleProvider);
   }
 
   CFRelease(FontAtCharIndex_scaleTextPercent_effectiveRange_styleProvider);
@@ -12137,22 +12137,22 @@ LABEL_14:
   return v8;
 }
 
-- (id)effectiveFontAtCharIndex:(unint64_t)a3
+- (id)effectiveFontAtCharIndex:(unint64_t)index
 {
   v10 = 0.0;
-  v3 = objc_msgSend_fontNameAtCharIndex_size_effectiveRange_styleProvider_(self, a2, a3, &v10, 0, self);
+  v3 = objc_msgSend_fontNameAtCharIndex_size_effectiveRange_styleProvider_(self, a2, index, &v10, 0, self);
   v6 = objc_msgSend_sharedInstance(TSWPFontList, v4, v5);
   v8 = objc_msgSend_fontForPostscriptName_atSize_(v6, v7, v3, v10);
 
   return v8;
 }
 
-- (BOOL)textIsVerticalAtCharIndex:(unint64_t)a3
+- (BOOL)textIsVerticalAtCharIndex:(unint64_t)index
 {
-  if (objc_msgSend_wpKind(self, a2, a3))
+  if (objc_msgSend_wpKind(self, a2, index))
   {
     v7 = objc_msgSend_parentInfo(self, v5, v6);
-    IsVerticalAtCharIndex = objc_msgSend_textIsVerticalAtCharIndex_(v7, v8, a3);
+    IsVerticalAtCharIndex = objc_msgSend_textIsVerticalAtCharIndex_(v7, v8, index);
   }
 
   else
@@ -12183,7 +12183,7 @@ LABEL_14:
   return v10;
 }
 
-- (void)setGeometry:(id)a3
+- (void)setGeometry:(id)geometry
 {
   v3 = MEMORY[0x277D81150];
   v4 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSWPStorage setGeometry:]");
@@ -12195,9 +12195,9 @@ LABEL_14:
   objc_msgSend_logBacktraceThrottled(v10, v8, v9);
 }
 
-- (void)setParentInfo:(id)a3
+- (void)setParentInfo:(id)info
 {
-  obj = a3;
+  obj = info;
   objc_opt_class();
   v4 = TSUClassAndProtocolCast();
   v5 = obj;
@@ -12210,12 +12210,12 @@ LABEL_14:
   objc_storeWeak(&self->_parentInfo, v5);
 }
 
-- (void)clearBackPointerToParentInfoIfNeeded:(id)a3
+- (void)clearBackPointerToParentInfoIfNeeded:(id)needed
 {
-  v8 = a3;
+  neededCopy = needed;
   v6 = objc_msgSend_parentInfo(self, v4, v5);
 
-  if (v6 == v8)
+  if (v6 == neededCopy)
   {
     objc_msgSend_setParentInfo_(self, v7, 0);
   }
@@ -12249,13 +12249,13 @@ LABEL_14:
   return isThemeContent;
 }
 
-- (id)copyWithContext:(id)a3
+- (id)copyWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v7 = objc_msgSend_range(self, v5, v6);
   v9 = v8;
   v11 = objc_msgSend_wpKind(self, v8, v10);
-  v13 = objc_msgSend_newSubstorageWithRange_storageContext_objectsContext_flags_kind_(self, v12, v7, v9, v4, v4, 33, v11);
+  v13 = objc_msgSend_newSubstorageWithRange_storageContext_objectsContext_flags_kind_(self, v12, v7, v9, contextCopy, contextCopy, 33, v11);
 
   return v13;
 }
@@ -12355,32 +12355,32 @@ LABEL_14:
   return MEMORY[0x2821E99B0](v3, self);
 }
 
-- (id)referencedStylesOfClass:(Class)a3
+- (id)referencedStylesOfClass:(Class)class
 {
-  v5 = objc_msgSend_set(MEMORY[0x277D81258], a2, a3);
-  if (objc_opt_class() == a3)
+  v5 = objc_msgSend_set(MEMORY[0x277D81258], a2, class);
+  if (objc_opt_class() == class)
   {
     v18 = objc_msgSend_attributeArrayForKind_(self, v6, 0);
   }
 
-  else if (objc_opt_class() == a3)
+  else if (objc_opt_class() == class)
   {
     v18 = objc_msgSend_attributeArrayForKind_(self, v7, 2);
   }
 
-  else if (objc_opt_class() == a3)
+  else if (objc_opt_class() == class)
   {
     v18 = objc_msgSend_attributeArrayForKind_(self, v8, 3);
   }
 
-  else if (objc_opt_class() == a3)
+  else if (objc_opt_class() == class)
   {
     v18 = objc_msgSend_attributeArrayForKind_(self, v9, 9);
   }
 
   else
   {
-    if (objc_opt_class() != a3)
+    if (objc_opt_class() != class)
     {
       v11 = MEMORY[0x277D81150];
       v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v10, "[TSWPStorage referencedStylesOfClass:]");
@@ -12460,10 +12460,10 @@ LABEL_19:
   return v4;
 }
 
-- (void)replaceReferencedStylesUsingBlock:(id)a3
+- (void)replaceReferencedStylesUsingBlock:(id)block
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  blockCopy = block;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
@@ -12494,7 +12494,7 @@ LABEL_19:
           v15[1] = 3221225472;
           v15[2] = sub_276D2F3A8;
           v15[3] = &unk_27A6F3BB0;
-          v14 = v4;
+          v14 = blockCopy;
           v15[4] = self;
           v16 = v14;
           v17 = &v19;
@@ -12534,12 +12534,12 @@ LABEL_19:
   return v6;
 }
 
-- (void)didChangeParagraphAttributeLocation:(unint64_t)a3 delta:(int64_t)a4
+- (void)didChangeParagraphAttributeLocation:(unint64_t)location delta:(int64_t)delta
 {
-  if (a4)
+  if (delta)
   {
     broadcaster = self->_broadcaster;
-    if (a4 < 1)
+    if (delta < 1)
     {
 
       MEMORY[0x2821F9670](broadcaster, sel_broadcastStorage_didDeleteParagraphsInIndexRange_, self);
@@ -12565,13 +12565,13 @@ LABEL_19:
   }
 }
 
-- (BOOL)isSingleAnchoredDrawableAttachmentForSelection:(id)a3
+- (BOOL)isSingleAnchoredDrawableAttachmentForSelection:(id)selection
 {
-  v4 = a3;
-  if (objc_msgSend_isRange(v4, v5, v6) && (objc_msgSend_superRange(v4, v7, v8), v9 == 1))
+  selectionCopy = selection;
+  if (objc_msgSend_isRange(selectionCopy, v5, v6) && (objc_msgSend_superRange(selectionCopy, v7, v8), v9 == 1))
   {
     objc_opt_class();
-    Range = objc_msgSend_firstRange(v4, v10, v11);
+    Range = objc_msgSend_firstRange(selectionCopy, v10, v11);
     v14 = objc_msgSend_attachmentAtCharIndex_(self, v13, Range);
     v15 = TSUDynamicCast();
     isAnchored = objc_msgSend_isAnchored(v15, v16, v17);
@@ -12585,10 +12585,10 @@ LABEL_19:
   return isAnchored;
 }
 
-- (void)p_mutateByWordWithUndoTransaction:(void *)a3 locale:(id)a4 transformer:(id)a5
+- (void)p_mutateByWordWithUndoTransaction:(void *)transaction locale:(id)locale transformer:(id)transformer
 {
-  locale = a4;
-  v38 = a5;
+  locale = locale;
+  transformerCopy = transformer;
   v9 = objc_msgSend_range(self, v7, v8);
   v11 = v10;
   v35 = objc_msgSend_copy(self->_string, v10, v12);
@@ -12617,18 +12617,18 @@ LABEL_19:
             v24 = objc_msgSend_substringWithRange_(self, CurrentTokenRange.length, CurrentTokenRange.location + v17, CurrentTokenRange.length);
             if (v24)
             {
-              v25 = self;
-              v26 = v38[2](v38, v24);
+              selfCopy = self;
+              v26 = transformerCopy[2](transformerCopy, v24);
               if ((objc_msgSend_isEqualToString_(v26, v27, v24) & 1) == 0)
               {
                 v36 = objc_msgSend_length(v26, v28, v29);
                 v32 = objc_msgSend_length(v24, v30, v31);
-                objc_msgSend_replaceCharactersInRange_withString_undoTransaction_(v25, v33, CurrentTokenRange.location + v17, CurrentTokenRange.length, v26, a3);
+                objc_msgSend_replaceCharactersInRange_withString_undoTransaction_(selfCopy, v33, CurrentTokenRange.location + v17, CurrentTokenRange.length, v26, transaction);
                 v17 += v36 - v32;
                 v15 = v35;
               }
 
-              self = v25;
+              self = selfCopy;
               v14 = v37;
             }
           }
@@ -12644,28 +12644,28 @@ LABEL_19:
   }
 }
 
-- (BOOL)p_hasVisibleTextInRange:(_NSRange)a3 graphicalAttachmentsIncluded:(BOOL)a4
+- (BOOL)p_hasVisibleTextInRange:(_NSRange)range graphicalAttachmentsIncluded:(BOOL)included
 {
-  length = a3.length;
+  length = range.length;
   v44 = *MEMORY[0x277D85DE8];
-  if (!a3.length)
+  if (!range.length)
   {
     return length;
   }
 
-  v5 = a4;
-  location = a3.location;
-  v8 = a3.length > 8;
-  if (a3.length >= 8)
+  includedCopy = included;
+  location = range.location;
+  v8 = range.length > 8;
+  if (range.length >= 8)
   {
     v9 = 8;
-    objc_msgSend_getCharacters_range_(self->_string, a2, v43, a3.location, 8);
+    objc_msgSend_getCharacters_range_(self->_string, a2, v43, range.location, 8);
   }
 
   else
   {
-    v9 = a3.length;
-    objc_msgSend_getCharacters_range_(self->_string, a2, v43, a3.location, a3.length);
+    v9 = range.length;
+    objc_msgSend_getCharacters_range_(self->_string, a2, v43, range.location, range.length);
   }
 
   v12 = 0;
@@ -12791,7 +12791,7 @@ LABEL_24:
   objc_opt_class();
   v33 = TSUDynamicCast();
   v36 = v33;
-  if (!v33 || !v5 || (objc_msgSend_isAnchored(v33, v34, v35) & 1) != 0)
+  if (!v33 || !includedCopy || (objc_msgSend_isAnchored(v33, v34, v35) & 1) != 0)
   {
 
     goto LABEL_24;
@@ -12879,14 +12879,14 @@ LABEL_35:
   return v15;
 }
 
-- (BOOL)hasEmptyParagraphFillOrBordersAtCharIndex:(unint64_t)a3
+- (BOOL)hasEmptyParagraphFillOrBordersAtCharIndex:(unint64_t)index
 {
-  if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+  if (index == 0x7FFFFFFFFFFFFFFFLL)
   {
     return 0;
   }
 
-  objc_msgSend_paragraphEnumeratorAtCharIndex_styleProvider_(self, a2, a3, 0);
+  objc_msgSend_paragraphEnumeratorAtCharIndex_styleProvider_(self, a2, index, 0);
   v4 = TSWPParagraphEnumerator::paragraphStyle(&v12, 0);
   if (objc_msgSend_intValueForProperty_(v4, v5, 105))
   {
@@ -12904,14 +12904,14 @@ LABEL_35:
   return v3;
 }
 
-- (BOOL)hasEmptyListAtCharIndex:(unint64_t)a3
+- (BOOL)hasEmptyListAtCharIndex:(unint64_t)index
 {
-  if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+  if (index == 0x7FFFFFFFFFFFFFFFLL)
   {
     return 0;
   }
 
-  objc_msgSend_paragraphEnumeratorAtCharIndex_styleProvider_(self, a2, a3, 0);
+  objc_msgSend_paragraphEnumeratorAtCharIndex_styleProvider_(self, a2, index, 0);
   v6 = TSWPParagraphEnumerator::paragraphListStyle(&v10, v4);
   if (v6)
   {
@@ -13028,13 +13028,13 @@ LABEL_7:
   return MEMORY[0x2821F9670](self, sel_p_hasGoodAttributesForPlainTextPaste, v19);
 }
 
-- (unint64_t)moveByLineRange:(_NSRange)a3 up:(BOOL)a4
+- (unint64_t)moveByLineRange:(_NSRange)range up:(BOOL)up
 {
-  v4 = a4;
-  length = a3.length;
-  location = a3.location;
-  v8 = objc_msgSend_range(self, a2, a3.location);
-  if (v4)
+  upCopy = up;
+  length = range.length;
+  location = range.location;
+  v8 = objc_msgSend_range(self, a2, range.location);
+  if (upCopy)
   {
     v10 = location;
     if (location > v8)
@@ -13091,31 +13091,31 @@ LABEL_7:
   return v10;
 }
 
-- (id)newSubstorageWithRange:(_NSRange)a3 storageContext:(id)a4 objectsContext:(id)a5 flags:(unsigned int)a6
+- (id)newSubstorageWithRange:(_NSRange)range storageContext:(id)context objectsContext:(id)objectsContext flags:(unsigned int)flags
 {
-  v6 = *&a6;
-  length = a3.length;
-  location = a3.location;
-  v11 = a4;
-  v12 = a5;
+  v6 = *&flags;
+  length = range.length;
+  location = range.location;
+  contextCopy = context;
+  objectsContextCopy = objectsContext;
   v15 = objc_msgSend_wpKind(self, v13, v14);
-  v17 = objc_msgSend_newSubstorageWithRange_storageContext_objectsContext_flags_kind_(self, v16, location, length, v11, v12, v6, v15);
+  v17 = objc_msgSend_newSubstorageWithRange_storageContext_objectsContext_flags_kind_(self, v16, location, length, contextCopy, objectsContextCopy, v6, v15);
 
   return v17;
 }
 
-- (id)newSubstorageWithRange:(_NSRange)a3 storageContext:(id)a4 objectsContext:(id)a5 flags:(unsigned int)a6 kind:(unsigned __int8)a7
+- (id)newSubstorageWithRange:(_NSRange)range storageContext:(id)context objectsContext:(id)objectsContext flags:(unsigned int)flags kind:(unsigned __int8)kind
 {
-  v7 = a7;
-  v8 = *&a6;
-  length = a3.length;
-  location = a3.location;
-  v136 = a4;
-  v13 = a5;
-  if (location == objc_msgSend_range(self, v14, v15) && length == v16 && (*(self + 302) & 0xF) == v7)
+  kindCopy = kind;
+  v8 = *&flags;
+  length = range.length;
+  location = range.location;
+  contextCopy = context;
+  objectsContextCopy = objectsContext;
+  if (location == objc_msgSend_range(self, v14, v15) && length == v16 && (*(self + 302) & 0xF) == kindCopy)
   {
     v17 = objc_alloc(objc_opt_class());
-    v19 = objc_msgSend_initWithContext_(v17, v18, v13);
+    v19 = objc_msgSend_initWithContext_(v17, v18, objectsContextCopy);
     v21 = v19;
     if (v19)
     {
@@ -13151,7 +13151,7 @@ LABEL_7:
           EmptyAttributeArrayForKind = objc_msgSend_createEmptyAttributeArrayForKind_(TSWPStorage, v36, v39 + 23);
           *(v21 + v38) = EmptyAttributeArrayForKind;
           TSWPAttributeArray::setStorage(EmptyAttributeArrayForKind, v21);
-          (*(EmptyAttributeArrayForKind->var0 + 10))(EmptyAttributeArrayForKind, v40, v13, v8, 0);
+          (*(EmptyAttributeArrayForKind->var0 + 10))(EmptyAttributeArrayForKind, v40, objectsContextCopy, v8, 0);
         }
 
         v38 += 8;
@@ -13223,7 +13223,7 @@ LABEL_7:
     if ((v8 & 4) != 0 && objc_msgSend_supportsSections(self, v53, v54) && objc_msgSend_sectionCount(self, v53, v56))
     {
       v57 = objc_msgSend_sectionAtCharIndex_effectiveRange_(self, v53, location, 0);
-      v59 = objc_msgSend_copyWithContext_(v57, v58, v136);
+      v59 = objc_msgSend_copyWithContext_(v57, v58, contextCopy);
     }
 
     else
@@ -13234,7 +13234,7 @@ LABEL_7:
     objc_msgSend_paragraphFlags_andLevel_atCharIndex_(self, v53, &v137, &v138, location);
     v61 = objc_msgSend_listStartAtCharIndex_(self, v60, location);
     v62 = objc_alloc(objc_opt_class());
-    v21 = objc_msgSend_initWithContext_string_kind_stylesheet_paragraphStyle_listStyle_section_columnStyle_paragraphDirection_(v62, v63, v136, v134, v7, self->_stylesheet, v133, v132, v59, v131, v55);
+    v21 = objc_msgSend_initWithContext_string_kind_stylesheet_paragraphStyle_listStyle_section_columnStyle_paragraphDirection_(v62, v63, contextCopy, v134, kindCopy, self->_stylesheet, v133, v132, v59, v131, v55);
     v66 = objc_msgSend_WPKindSupportsDropCaps(v21, v64, v65);
     if (v135)
     {
@@ -13297,7 +13297,7 @@ LABEL_7:
       if (v86)
       {
         LODWORD(v130) = v8;
-        objc_msgSend_nonUndoableInitializeAttributeArraySource_forSourceRange_toDestStorage_objectContext_dolcContext_flags_(self, v82, v86, location, length, v21, v13, v84, v130);
+        objc_msgSend_nonUndoableInitializeAttributeArraySource_forSourceRange_toDestStorage_objectContext_dolcContext_flags_(self, v82, v86, location, length, v21, objectsContextCopy, v84, v130);
       }
     }
 
@@ -13368,29 +13368,29 @@ LABEL_7:
   return v21;
 }
 
-- (int)compareRange:(_NSRange)a3 otherStorage:(id)a4 otherRange:(_NSRange)a5 options:(unint64_t)a6 objectComparisonBlock:(id)a7
+- (int)compareRange:(_NSRange)range otherStorage:(id)storage otherRange:(_NSRange)otherRange options:(unint64_t)options objectComparisonBlock:(id)block
 {
-  length = a5.length;
-  location = a5.location;
-  v10 = a3.length;
-  v11 = a3.location;
-  v13 = a4;
-  v29 = a7;
-  if (location == objc_msgSend_range(v13, v14, v15) && length == v16)
+  length = otherRange.length;
+  location = otherRange.location;
+  v10 = range.length;
+  v11 = range.location;
+  storageCopy = storage;
+  blockCopy = block;
+  if (location == objc_msgSend_range(storageCopy, v14, v15) && length == v16)
   {
-    v19 = objc_msgSend_string(v13, v16, v17);
+    v19 = objc_msgSend_string(storageCopy, v16, v17);
   }
 
   else
   {
-    v20 = objc_msgSend_string(v13, v16, v17);
+    v20 = objc_msgSend_string(storageCopy, v16, v17);
     v22 = objc_msgSend_substringWithRange_(v20, v21, location, length);
 
     v19 = v22;
   }
 
   v28 = v19;
-  v24 = objc_msgSend_compare_options_range_(self->_string, v18, v19, a6, v11, v10);
+  v24 = objc_msgSend_compare_options_range_(self->_string, v18, v19, options, v11, v10);
   if (!v24)
   {
     v25 = 0;
@@ -13401,7 +13401,7 @@ LABEL_7:
         v26 = objc_msgSend_attributeArrayForKind_(self, v23, v25);
         if (v26)
         {
-          v24 = objc_msgSend_compareAttributeArray_range_otherStorage_otherRange_objectComparisonBlock_(self, v23, v26, v11, v10, v13, location, length, v29);
+          v24 = objc_msgSend_compareAttributeArray_range_otherStorage_otherRange_objectComparisonBlock_(self, v23, v26, v11, v10, storageCopy, location, length, blockCopy);
           if (v24)
           {
             break;
@@ -13420,9 +13420,9 @@ LABEL_7:
   return v24;
 }
 
-- (int)compareBreakingTablesWithStorage:(id)a3
+- (int)compareBreakingTablesWithStorage:(id)storage
 {
-  v5 = a3;
+  storageCopy = storage;
   v6 = 0;
   while (1)
   {
@@ -13444,13 +13444,13 @@ LABEL_8:
     }
   }
 
-  actionState = objc_msgSend_attributeArrayForKind_withCreate_actionState_(v5, v4, *(v7 + 28), 0, 0);
+  actionState = objc_msgSend_attributeArrayForKind_withCreate_actionState_(storageCopy, v4, *(v7 + 28), 0, 0);
   if (actionState && *(actionState + 24) == *(v8 + 24))
   {
     v12 = objc_msgSend_range(self, v10, v11);
     v14 = v13;
-    v16 = objc_msgSend_range(v5, v13, v15);
-    v18 = objc_msgSend_compareAttributeArray_range_otherStorage_otherRange_objectComparisonBlock_(self, v17, v8, v12, v14, v5, v16, v17, &unk_2885FDDF0);
+    v16 = objc_msgSend_range(storageCopy, v13, v15);
+    v18 = objc_msgSend_compareAttributeArray_range_otherStorage_otherRange_objectComparisonBlock_(self, v17, v8, v12, v14, storageCopy, v16, v17, &unk_2885FDDF0);
     if (v18)
     {
       goto LABEL_11;
@@ -13525,15 +13525,15 @@ LABEL_11:
   return v11;
 }
 
-- (BOOL)validate:(unint64_t)a3
+- (BOOL)validate:(unint64_t)validate
 {
   if (self->_isInInit)
   {
     return 1;
   }
 
-  v309 = a3;
-  if ((a3 & 4) != 0 && (*(self + 302) & 0xF) == 8)
+  validateCopy = validate;
+  if ((validate & 4) != 0 && (*(self + 302) & 0xF) == 8)
   {
     TSUSetCrashReporterInfo();
     v275 = MEMORY[0x277D81150];
@@ -13566,12 +13566,12 @@ LABEL_11:
     v10 = 0;
   }
 
-  v303 = self;
+  selfCopy = self;
   v302 = objc_msgSend_characterCount(self, v8, v9);
   v20 = v10 != 0;
   if (!v10)
   {
-    if ((v309 & 4) != 0)
+    if ((validateCopy & 4) != 0)
     {
       TSUSetCrashReporterInfo();
       v281 = MEMORY[0x277D81150];
@@ -13590,9 +13590,9 @@ LABEL_11:
   }
 
   v21 = v10 == 0;
-  if ((v309 & 1) == 0)
+  if ((validateCopy & 1) == 0)
   {
-    string = v303->_string;
+    string = selfCopy->_string;
     theString = string;
     v314 = 0;
     v315 = v302;
@@ -13691,7 +13691,7 @@ LABEL_26:
 
             objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v54, v55);
 LABEL_37:
-            if ((v309 & 4) != 0)
+            if ((validateCopy & 4) != 0)
             {
               TSUSetCrashReporterInfo();
               v239 = MEMORY[0x277D81150];
@@ -13736,7 +13736,7 @@ LABEL_39:
         {
           if (v31 == 14)
           {
-            v33 = objc_msgSend_attachmentOrFootnoteAtCharIndex_(v303, v18, v25);
+            v33 = objc_msgSend_attachmentOrFootnoteAtCharIndex_(selfCopy, v18, v25);
             if (v33)
             {
               objc_opt_class();
@@ -13775,7 +13775,7 @@ LABEL_63:
               objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v63, v64);
             }
 
-            if ((v309 & 4) != 0)
+            if ((validateCopy & 4) != 0)
             {
               TSUSetCrashReporterInfo();
               v257 = MEMORY[0x277D81150];
@@ -13804,7 +13804,7 @@ LABEL_63:
 
           if (v31 == 65532)
           {
-            v33 = objc_msgSend_attachmentOrFootnoteAtCharIndex_(v303, v18, v25);
+            v33 = objc_msgSend_attachmentOrFootnoteAtCharIndex_(selfCopy, v18, v25);
             if (!v33)
             {
               v34 = MEMORY[0x277D81150];
@@ -13834,7 +13834,7 @@ LABEL_63:
             }
 
 LABEL_51:
-            if ((v309 & 4) != 0)
+            if ((validateCopy & 4) != 0)
             {
               TSUSetCrashReporterInfo();
               v263 = MEMORY[0x277D81150];
@@ -13899,7 +13899,7 @@ LABEL_78:
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v86, v87);
     }
 
-    if ((v309 & 4) != 0)
+    if ((validateCopy & 4) != 0)
     {
       TSUSetCrashReporterInfo();
       v287 = MEMORY[0x277D81150];
@@ -13968,7 +13968,7 @@ LABEL_100:
       v108 = v106;
       if (v92 != 0x7FFFFFFFFFFFFFFFLL && v106 <= v92)
       {
-        if ((v309 & 4) != 0)
+        if ((validateCopy & 4) != 0)
         {
           TSUSetCrashReporterInfo();
           v245 = MEMORY[0x277D81150];
@@ -13998,9 +13998,9 @@ LABEL_113:
         goto LABEL_116;
       }
 
-      if (!v96 || v90 && (v106 - 1 >= v302 || (v109 = objc_msgSend_characterAtIndex_(v303, v107, v106 - 1), (IsParagraphBreakingCharacter(v109) & 1) == 0)))
+      if (!v96 || v90 && (v106 - 1 >= v302 || (v109 = objc_msgSend_characterAtIndex_(selfCopy, v107, v106 - 1), (IsParagraphBreakingCharacter(v109) & 1) == 0)))
       {
-        if ((v309 & 4) != 0)
+        if ((validateCopy & 4) != 0)
         {
           TSUSetCrashReporterInfo();
           v251 = MEMORY[0x277D81150];
@@ -14053,7 +14053,7 @@ LABEL_117:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v104, v105);
     v91 = v100;
 LABEL_94:
-    if ((v309 & 4) != 0)
+    if ((validateCopy & 4) != 0)
     {
       TSUSetCrashReporterInfo();
       v233 = MEMORY[0x277D81150];
@@ -14106,7 +14106,7 @@ LABEL_141:
         goto LABEL_149;
       }
 
-      if ((v309 & 4) != 0)
+      if ((validateCopy & 4) != 0)
       {
         TSUSetCrashReporterInfo();
         v215 = MEMORY[0x277D81150];
@@ -14169,7 +14169,7 @@ LABEL_140:
       v120 = v127;
     }
 
-    if ((v309 & 4) != 0)
+    if ((validateCopy & 4) != 0)
     {
       TSUSetCrashReporterInfo();
       v227 = MEMORY[0x277D81150];
@@ -14260,7 +14260,7 @@ LABEL_170:
         objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v156, v157);
         v137 = v152;
 LABEL_164:
-        if ((v309 & 4) != 0)
+        if ((validateCopy & 4) != 0)
         {
           TSUSetCrashReporterInfo();
           v221 = MEMORY[0x277D81150];
@@ -14290,7 +14290,7 @@ LABEL_169:
       }
 
 LABEL_174:
-      if (objc_msgSend_WPKindSupportsDropCaps(v303, v18, v19))
+      if (objc_msgSend_WPKindSupportsDropCaps(selfCopy, v18, v19))
       {
         if (!v305)
         {
@@ -14326,8 +14326,8 @@ LABEL_173:
 
   v163 = 0;
 LABEL_182:
-  v171 = objc_msgSend_documentRoot(v303, v18, v19);
-  if (!v171 || !objc_msgSend_supportsSections(v303, v169, v170))
+  v171 = objc_msgSend_documentRoot(selfCopy, v18, v19);
+  if (!v171 || !objc_msgSend_supportsSections(selfCopy, v169, v170))
   {
 
     if ((v163 & 1) == 0)
@@ -14361,10 +14361,10 @@ LABEL_209:
   if (v163)
   {
 LABEL_189:
-    if (!objc_msgSend_hasTrackedChanges(v303, v173, v174) || objc_msgSend_supportsChangeTracking(v303, v175, v176))
+    if (!objc_msgSend_hasTrackedChanges(selfCopy, v173, v174) || objc_msgSend_supportsChangeTracking(selfCopy, v175, v176))
     {
       v177 = 0;
-      v178 = v303;
+      v178 = selfCopy;
       do
       {
         v179 = objc_msgSend_attributeArrayForKind_(v178, v175, v177);
@@ -14381,13 +14381,13 @@ LABEL_189:
             if (v182 != v184 && v184 && (objc_opt_respondsToSelector() & 1) != 0)
             {
               v190 = objc_msgSend_parentStorage(v185, v186, v187);
-              if (v190 == v303)
+              if (v190 == selfCopy)
               {
               }
 
               else
               {
-                v191 = objc_msgSend_documentRoot(v303, v188, v189);
+                v191 = objc_msgSend_documentRoot(selfCopy, v188, v189);
 
                 if (v191)
                 {
@@ -14399,7 +14399,7 @@ LABEL_189:
                   v199 = NSStringFromClass(v198);
                   v200 = TSWPAttributeArray::charIndexForAttributeIndex(v180, v181);
                   v203 = objc_msgSend_parentStorage(v185, v201, v202);
-                  objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v193, v204, v308, v306, 8496, 0, "Expected parentStorage to be %@ but got %@ for %{public}@ at %lu. Is parent storage nil (%d)? ", v303, v197, v199, v200, v203 == 0);
+                  objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v193, v204, v308, v306, 8496, 0, "Expected parentStorage to be %@ but got %@ for %{public}@ at %lu. Is parent storage nil (%d)? ", selfCopy, v197, v199, v200, v203 == 0);
 
                   objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v205, v206);
                 }
@@ -14413,7 +14413,7 @@ LABEL_189:
 
           while (v181 < *(v180 + 24));
 
-          v178 = v303;
+          v178 = selfCopy;
         }
 
         ++v177;
@@ -14423,7 +14423,7 @@ LABEL_189:
       return 1;
     }
 
-    if ((v309 & 4) == 0)
+    if ((validateCopy & 4) == 0)
     {
       if (v21)
       {
@@ -14451,7 +14451,7 @@ LABEL_235:
   }
 
 LABEL_210:
-  if ((v309 & 4) != 0)
+  if ((validateCopy & 4) != 0)
   {
     TSUSetCrashReporterInfo();
     v269 = MEMORY[0x277D81150];
@@ -14491,18 +14491,18 @@ LABEL_210:
   return WeakRetained;
 }
 
-- (void)splitSmartFieldAtCharIndex:(unint64_t)a3 lengthToInsert:(unint64_t)a4 attributeKind:(unint64_t)a5 dolcContext:(id)a6 undoTransaction:(void *)a7
+- (void)splitSmartFieldAtCharIndex:(unint64_t)index lengthToInsert:(unint64_t)insert attributeKind:(unint64_t)kind dolcContext:(id)context undoTransaction:(void *)transaction
 {
-  v11 = a6;
-  v13 = objc_msgSend_smartFieldAtCharIndex_attributeKind_effectiveRange_(self, v12, a3, a5, &v24);
+  contextCopy = context;
+  v13 = objc_msgSend_smartFieldAtCharIndex_attributeKind_effectiveRange_(self, v12, index, kind, &v24);
   if (v13)
   {
-    if (a3 > v24 && a3 - v24 != v25)
+    if (index > v24 && index - v24 != v25)
     {
-      v14 = v25 + v24 - a3;
-      if (v25 + v24 != a3)
+      v14 = v25 + v24 - index;
+      if (v25 + v24 != index)
       {
-        if (TSWPAttributeArray::attributeKindMustCopyOnSplit(a5))
+        if (TSWPAttributeArray::attributeKindMustCopyOnSplit(kind))
         {
           v17 = objc_msgSend_context(self, v15, v16);
           v19 = objc_msgSend_copyWithContext_(v13, v18, v17);
@@ -14516,84 +14516,84 @@ LABEL_210:
         }
 
         v22 = objc_msgSend_styleAttributeArrayKind(v13, v15, v16);
-        objc_msgSend_applyObject_toCharRange_forKind_dolcContext_undoTransaction_(self, v23, v19, a3, v14, v22, v11, a7);
+        objc_msgSend_applyObject_toCharRange_forKind_dolcContext_undoTransaction_(self, v23, v19, index, v14, v22, contextCopy, transaction);
       }
     }
   }
 }
 
-- (void)splitSmartFieldAtCharIndex:(unint64_t)a3 lengthToInsert:(unint64_t)a4 dolcContext:(id)a5 undoTransaction:(void *)a6
+- (void)splitSmartFieldAtCharIndex:(unint64_t)index lengthToInsert:(unint64_t)insert dolcContext:(id)context undoTransaction:(void *)transaction
 {
-  v13 = a5;
-  objc_msgSend_splitSmartFieldAtCharIndex_lengthToInsert_attributeKind_dolcContext_undoTransaction_(self, v10, a3, a4, 6);
-  objc_msgSend_splitSmartFieldAtCharIndex_lengthToInsert_attributeKind_dolcContext_undoTransaction_(self, v11, a3, a4, 12, v13, a6);
-  objc_msgSend_splitSmartFieldAtCharIndex_lengthToInsert_attributeKind_dolcContext_undoTransaction_(self, v12, a3, a4, 21, v13, a6);
+  contextCopy = context;
+  objc_msgSend_splitSmartFieldAtCharIndex_lengthToInsert_attributeKind_dolcContext_undoTransaction_(self, v10, index, insert, 6);
+  objc_msgSend_splitSmartFieldAtCharIndex_lengthToInsert_attributeKind_dolcContext_undoTransaction_(self, v11, index, insert, 12, contextCopy, transaction);
+  objc_msgSend_splitSmartFieldAtCharIndex_lengthToInsert_attributeKind_dolcContext_undoTransaction_(self, v12, index, insert, 21, contextCopy, transaction);
 }
 
-- (__CTFont)createFontAtCharIndex:(unint64_t)a3 scaleTextPercent:(unint64_t)a4 effectiveRange:(_NSRange *)a5 styleProvider:(id)a6
+- (__CTFont)createFontAtCharIndex:(unint64_t)index scaleTextPercent:(unint64_t)percent effectiveRange:(_NSRange *)range styleProvider:(id)provider
 {
-  v10 = a6;
-  v12 = objc_msgSend_characterStyleAtCharIndex_left_effectiveRange_(self, v11, a3, 0, 0);
-  v14 = objc_msgSend_paragraphIndexAtCharIndex_(self, v13, a3);
-  v16 = objc_msgSend_paragraphStyleAtParIndex_effectiveRange_(v10, v15, v14, a5);
-  FontForStyle = TSWPFastCreateFontForStyle(v12, v16, a4);
+  providerCopy = provider;
+  v12 = objc_msgSend_characterStyleAtCharIndex_left_effectiveRange_(self, v11, index, 0, 0);
+  v14 = objc_msgSend_paragraphIndexAtCharIndex_(self, v13, index);
+  v16 = objc_msgSend_paragraphStyleAtParIndex_effectiveRange_(providerCopy, v15, v14, range);
+  FontForStyle = TSWPFastCreateFontForStyle(v12, v16, percent);
 
   return FontForStyle;
 }
 
-- (void)replaceCharactersInRange:(_NSRange)a3 withString:(id)a4 options:(unint64_t)a5 changedRange:(_NSRange *)a6 changeDelta:(int64_t *)a7 undoTransaction:(void *)a8 changeSession:(id)a9
+- (void)replaceCharactersInRange:(_NSRange)range withString:(id)string options:(unint64_t)options changedRange:(_NSRange *)changedRange changeDelta:(int64_t *)delta undoTransaction:(void *)transaction changeSession:(id)session
 {
-  length = a3.length;
-  location = a3.location;
-  v15 = a4;
-  v18 = a9;
-  if (!v15)
+  length = range.length;
+  location = range.location;
+  stringCopy = string;
+  sessionCopy = session;
+  if (!stringCopy)
   {
-    v15 = &stru_28860A0F0;
+    stringCopy = &stru_28860A0F0;
   }
 
   v19 = objc_msgSend_string(self, v16, v17);
-  v29 = objc_msgSend_tsk_stringByCapitalizingToMatchString_range_searchOptions_(v15, v20, v19, location, length, a5);
+  v29 = objc_msgSend_tsk_stringByCapitalizingToMatchString_range_searchOptions_(stringCopy, v20, v19, location, length, options);
 
   v23 = objc_msgSend_length(self, v21, v22);
   v25 = objc_msgSend_selectionWithRange_(TSWPSelection, v24, location, length);
-  objc_msgSend_replaceCharactersInSelection_withString_withFlags_replaceTextData_changeSession_undoTransaction_outInsertedRange_(self, v26, v25, v29, 1, 0, v18, a8, 0);
+  objc_msgSend_replaceCharactersInSelection_withString_withFlags_replaceTextData_changeSession_undoTransaction_outInsertedRange_(self, v26, v25, v29, 1, 0, sessionCopy, transaction, 0);
 
-  if (a7)
+  if (delta)
   {
-    *a7 = objc_msgSend_length(self, v27, v28) - v23;
+    *delta = objc_msgSend_length(self, v27, v28) - v23;
   }
 
-  if (a6)
+  if (changedRange)
   {
-    a6->location = location;
-    a6->length = objc_msgSend_length(v29, v27, v28);
+    changedRange->location = location;
+    changedRange->length = objc_msgSend_length(v29, v27, v28);
   }
 }
 
-- (id)indexesSetForBIUProperties:(id)a3 selection:(id)a4 insertionStyle:(id)a5
+- (id)indexesSetForBIUProperties:(id)properties selection:(id)selection insertionStyle:(id)style
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v13 = objc_msgSend_superRange(v9, v11, v12);
-  v15 = objc_msgSend_stylesForResolvingBIUPropertiesWithSelection_charIndex_insertionStyle_(self, v14, v9, v13, v10);
-  v17 = objc_msgSend_indexesSetForBIUProperties_styles_(self, v16, v8, v15);
+  propertiesCopy = properties;
+  selectionCopy = selection;
+  styleCopy = style;
+  v13 = objc_msgSend_superRange(selectionCopy, v11, v12);
+  v15 = objc_msgSend_stylesForResolvingBIUPropertiesWithSelection_charIndex_insertionStyle_(self, v14, selectionCopy, v13, styleCopy);
+  v17 = objc_msgSend_indexesSetForBIUProperties_styles_(self, v16, propertiesCopy, v15);
 
   return v17;
 }
 
-- (id)indexesSetForBIUProperties:(id)a3 styles:(id)a4
+- (id)indexesSetForBIUProperties:(id)properties styles:(id)styles
 {
   v37 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  propertiesCopy = properties;
+  stylesCopy = styles;
   v9 = objc_msgSend_indexSet(MEMORY[0x277CCAB58], v7, v8);
   v34 = 0u;
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v10 = v5;
+  v10 = propertiesCopy;
   v14 = objc_msgSend_countByEnumeratingWithState_objects_count_(v10, v11, &v32, v36, 16);
   if (v14)
   {
@@ -14640,7 +14640,7 @@ LABEL_210:
           {
             v20 = 65093;
 LABEL_20:
-            v23 = TSWPResolvePropertyForStyles(v6, 45);
+            v23 = TSWPResolvePropertyForStyles(stylesCopy, 45);
             if (objc_msgSend_length(v23, v24, v25) == 1 && v20 == objc_msgSend_characterAtIndex_(v23, v26, 0))
             {
               objc_msgSend_addIndex_(v9, v27, v15);
@@ -14669,7 +14669,7 @@ LABEL_16:
         v22 = 0;
         v21 = 27;
 LABEL_25:
-        v28 = sub_276D38764(v6, v21, 0x80000000);
+        v28 = sub_276D38764(stylesCopy, v21, 0x80000000);
         if ((v28 & 0x7FFFFFFF) != 0)
         {
           if (!v22 || (v19 == 2 ? (v29 = v28 == 1) : (v29 = 0), v29 || (v19 == 6 ? (v30 = v28 == 3) : (v30 = 0), v30)))
@@ -14691,17 +14691,17 @@ LABEL_37:
   return v9;
 }
 
-- (id)stylesForResolvingBIUPropertiesWithSelection:(id)a3 charIndex:(unint64_t)a4 insertionStyle:(id)a5
+- (id)stylesForResolvingBIUPropertiesWithSelection:(id)selection charIndex:(unint64_t)index insertionStyle:(id)style
 {
-  v8 = a3;
-  v9 = a5;
-  isInsertionPoint = objc_msgSend_isInsertionPoint(v8, v10, v11);
-  v14 = objc_msgSend_characterStyleAtCharIndex_left_effectiveRange_(self, v13, a4, isInsertionPoint, 0);
-  v16 = objc_msgSend_paragraphStyleAtCharIndex_effectiveRange_(self, v15, a4, 0);
+  selectionCopy = selection;
+  styleCopy = style;
+  isInsertionPoint = objc_msgSend_isInsertionPoint(selectionCopy, v10, v11);
+  v14 = objc_msgSend_characterStyleAtCharIndex_left_effectiveRange_(self, v13, index, isInsertionPoint, 0);
+  v16 = objc_msgSend_paragraphStyleAtCharIndex_effectiveRange_(self, v15, index, 0);
   v17 = objc_opt_new();
-  if (objc_msgSend_isInsertionPoint(v8, v18, v19))
+  if (objc_msgSend_isInsertionPoint(selectionCopy, v18, v19))
   {
-    objc_msgSend_tsu_addNonNilObject_(v17, v20, v9);
+    objc_msgSend_tsu_addNonNilObject_(v17, v20, styleCopy);
   }
 
   else
@@ -14709,12 +14709,12 @@ LABEL_37:
     objc_msgSend_tsu_addNonNilObject_(v17, v20, 0);
   }
 
-  if (!objc_msgSend_isInsertionPoint(v8, v21, v22) || (objc_msgSend_documentRoot(self, v23, v24), v25 = objc_claimAutoreleasedReturnValue(), objc_msgSend_theme(v25, v26, v27), v28 = objc_claimAutoreleasedReturnValue(), objc_msgSend_defaultCharacterStyle(v28, v29, v30), v31 = objc_claimAutoreleasedReturnValue(), v31, v28, v25, v31 != v9))
+  if (!objc_msgSend_isInsertionPoint(selectionCopy, v21, v22) || (objc_msgSend_documentRoot(self, v23, v24), v25 = objc_claimAutoreleasedReturnValue(), objc_msgSend_theme(v25, v26, v27), v28 = objc_claimAutoreleasedReturnValue(), objc_msgSend_defaultCharacterStyle(v28, v29, v30), v31 = objc_claimAutoreleasedReturnValue(), v31, v28, v25, v31 != styleCopy))
   {
     objc_msgSend_tsu_addNonNilObject_(v17, v23, v14);
   }
 
-  v32 = objc_msgSend_dropCapStyleIfMatchingSelectionExactly_(self, v23, v8);
+  v32 = objc_msgSend_dropCapStyleIfMatchingSelectionExactly_(self, v23, selectionCopy);
   objc_msgSend_tsu_addNonNilObject_(v17, v33, v32);
 
   objc_msgSend_tsu_addNonNilObject_(v17, v34, v16);
@@ -14722,9 +14722,9 @@ LABEL_37:
   return v17;
 }
 
-- (void)setIngestingWTAttributedString:(BOOL)a3
+- (void)setIngestingWTAttributedString:(BOOL)string
 {
-  if (a3)
+  if (string)
   {
     v3 = 8;
   }
@@ -14776,7 +14776,7 @@ LABEL_37:
   return canPasteAsPlainTextWithUniformParagraphs;
 }
 
-- (BOOL)hasDrawableAttachmentOfClass:(Class)a3
+- (BOOL)hasDrawableAttachmentOfClass:(Class)class
 {
   v12 = 0;
   v13 = &v12;
@@ -14789,36 +14789,36 @@ LABEL_37:
   v11[2] = sub_276D34418;
   v11[3] = &unk_27A6F3C88;
   v11[4] = &v12;
-  v11[5] = a3;
+  v11[5] = class;
   objc_msgSend_enumerateAttachmentsOfClass_inTextRange_usingBlock_(self, v9, v5, v8, v9, v11);
   LOBYTE(self) = *(v13 + 24);
   _Block_object_dispose(&v12, 8);
   return self;
 }
 
-- (id)indexesSetForBIUProperties:(id)a3
+- (id)indexesSetForBIUProperties:(id)properties
 {
-  v4 = a3;
+  propertiesCopy = properties;
   v5 = [TSWPSelection alloc];
   v8 = objc_msgSend_range(self, v6, v7);
   v10 = objc_msgSend_initWithRange_(v5, v9, v8, v9);
-  v12 = objc_msgSend_indexesSetForBIUProperties_selection_insertionStyle_(self, v11, v4, v10, 0);
+  v12 = objc_msgSend_indexesSetForBIUProperties_selection_insertionStyle_(self, v11, propertiesCopy, v10, 0);
 
   return v12;
 }
 
-- (id)storageByApplyingCustomFormat:(id)a3
+- (id)storageByApplyingCustomFormat:(id)format
 {
-  v4 = a3;
-  v5 = self;
-  v8 = v5;
-  if (v4)
+  formatCopy = format;
+  selfCopy = self;
+  v8 = selfCopy;
+  if (formatCopy)
   {
-    v9 = objc_msgSend_context(v5, v6, v7);
+    v9 = objc_msgSend_context(selfCopy, v6, v7);
     v11 = objc_msgSend_copyWithContext_(v8, v10, v9);
 
     v13 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v12, @"%C", *MEMORY[0x277D81400]);
-    v15 = objc_msgSend_rangeOfString_(v4, v14, v13);
+    v15 = objc_msgSend_rangeOfString_(formatCopy, v14, v13);
 
     if (v15 == 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -14828,8 +14828,8 @@ LABEL_37:
 
     else
     {
-      v17 = objc_msgSend_substringToIndex_(v4, v16, v15);
-      v18 = objc_msgSend_substringFromIndex_(v4, v19, v15 + 1);
+      v17 = objc_msgSend_substringToIndex_(formatCopy, v16, v15);
+      v18 = objc_msgSend_substringFromIndex_(formatCopy, v19, v15 + 1);
       if (v17)
       {
         objc_msgSend_insertString_atCharIndex_undoTransaction_(v11, v20, v17, 0, 0);
@@ -14845,7 +14845,7 @@ LABEL_37:
 
   else
   {
-    v11 = v5;
+    v11 = selfCopy;
   }
 
   return v11;
@@ -14895,10 +14895,10 @@ LABEL_11:
   return v10;
 }
 
-+ (TSWPAttributeArray)createEmptyAttributeArrayForKind:(unint64_t)a3
++ (TSWPAttributeArray)createEmptyAttributeArrayForKind:(unint64_t)kind
 {
-  v3 = a3;
-  switch(a3)
+  kindCopy = kind;
+  switch(kind)
   {
     case 0uLL:
     case 1uLL:
@@ -14910,7 +14910,7 @@ LABEL_11:
       v5 = v4;
       if (v4)
       {
-        TSWPAttributeArray::TSWPAttributeArray(v4, v3);
+        TSWPAttributeArray::TSWPAttributeArray(v4, kindCopy);
         goto LABEL_4;
       }
 
@@ -14954,7 +14954,7 @@ LABEL_28:
       v5 = v8;
       if (v8)
       {
-        TSWPAttributeArray::TSWPAttributeArray(v8, v3);
+        TSWPAttributeArray::TSWPAttributeArray(v8, kindCopy);
         goto LABEL_19;
       }
 
@@ -14995,7 +14995,7 @@ LABEL_28:
       v5 = v7;
       if (v7)
       {
-        TSWPAttributeArray::TSWPAttributeArray(v7, v3);
+        TSWPAttributeArray::TSWPAttributeArray(v7, kindCopy);
         v6 = &unk_288606FD0;
         goto LABEL_29;
       }
@@ -15087,14 +15087,14 @@ LABEL_29:
   return v5;
 }
 
-- (void)p_attributesAtCharIndex:(unint64_t)a3 attributesOfInterest:(BOOL)a4[23] attributesTable:(id)a5[23] effectiveRange:(_NSRange *)a6
+- (void)p_attributesAtCharIndex:(unint64_t)index attributesOfInterest:(BOOL)interest[23] attributesTable:(id)table[23] effectiveRange:(_NSRange *)range
 {
   v10 = 0;
-  v11 = objc_msgSend_characterCount(self, a2, a3) - a3;
-  v12 = a3;
+  v11 = objc_msgSend_characterCount(self, a2, index) - index;
+  indexCopy = index;
   do
   {
-    if (a4[v10] && (v13 = self->_attributesTable[v10]) != 0 && *(v13 + 6) && (!TSWPAttributeArray::appliesToRange(*(v13 + 28)) ? (v15 = TSWPAttributeArray::exactAttributeIndexForCharIndex(v13, a3), v12 = a3, v11 = 1) : (TSWPAttributeArray::rangeForCharIndex(v13, a3), v12 = NSIntersectionRangeInclusive(), v11 = v14, v15 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(v13, a3)), v15 != 0x7FFFFFFFFFFFFFFFLL))
+    if (interest[v10] && (v13 = self->_attributesTable[v10]) != 0 && *(v13 + 6) && (!TSWPAttributeArray::appliesToRange(*(v13 + 28)) ? (v15 = TSWPAttributeArray::exactAttributeIndexForCharIndex(v13, index), indexCopy = index, v11 = 1) : (TSWPAttributeArray::rangeForCharIndex(v13, index), indexCopy = NSIntersectionRangeInclusive(), v11 = v14, v15 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(v13, index)), v15 != 0x7FFFFFFFFFFFFFFFLL))
     {
       v16 = TSWPAttributeArray::objectForAttributeIndex(v13, v15);
     }
@@ -15105,25 +15105,25 @@ LABEL_29:
     }
 
     v17 = v16;
-    a5[v10] = v17;
+    table[v10] = v17;
 
     ++v10;
   }
 
   while (v10 != 23);
-  a6->location = v12;
-  a6->length = v11;
+  range->location = indexCopy;
+  range->length = v11;
 }
 
-- (_NSRange)insertSpecialCharacter:(unsigned __int16)a3 object:(id)a4 kind:(unint64_t)a5 range:(_NSRange)a6 dolcContext:(id)a7 undoTransaction:(void *)a8 changeSession:(id)a9
+- (_NSRange)insertSpecialCharacter:(unsigned __int16)character object:(id)object kind:(unint64_t)kind range:(_NSRange)range dolcContext:(id)context undoTransaction:(void *)transaction changeSession:(id)session
 {
-  v9 = objc_msgSend_insertSpecialCharacter_object_kind_range_placementIndex_dolcContext_undoTransaction_changeSession_(self, a2, a3, a4, a5, a6.location, a6.length, 0xFFFFFFFFLL, a7, a8, a9);
+  v9 = objc_msgSend_insertSpecialCharacter_object_kind_range_placementIndex_dolcContext_undoTransaction_changeSession_(self, a2, character, object, kind, range.location, range.length, 0xFFFFFFFFLL, context, transaction, session);
   result.length = v10;
   result.location = v9;
   return result;
 }
 
-- (_NSRange)insertSpecialCharacter:(unsigned __int16)a3 object:(id)a4 kind:(unint64_t)a5 range:(_NSRange)a6 placementIndex:(int)a7 dolcContext:(id)a8 undoTransaction:(void *)a9 changeSession:(id)a10
+- (_NSRange)insertSpecialCharacter:(unsigned __int16)character object:(id)object kind:(unint64_t)kind range:(_NSRange)range placementIndex:(int)index dolcContext:(id)context undoTransaction:(void *)transaction changeSession:(id)self0
 {
   v10 = *MEMORY[0x277D81490];
   v11 = *(MEMORY[0x277D81490] + 8);
@@ -15132,27 +15132,27 @@ LABEL_29:
   return result;
 }
 
-- (BOOL)isObjectValid:(id)a3 forStyleKind:(int)a4
+- (BOOL)isObjectValid:(id)valid forStyleKind:(int)kind
 {
-  v7 = a3;
-  if (!v7)
+  validCopy = valid;
+  if (!validCopy)
   {
     goto LABEL_25;
   }
 
   v8 = objc_msgSend_null(MEMORY[0x277CBEB68], v5, v6);
 
-  if (v8 == v7)
+  if (v8 == validCopy)
   {
     goto LABEL_25;
   }
 
   isKindOfClass = 0;
-  if (a4 > 14)
+  if (kind > 14)
   {
-    if (a4 > 18)
+    if (kind > 18)
     {
-      if (a4 == 19 || a4 == 20 || a4 == 21)
+      if (kind == 19 || kind == 20 || kind == 21)
       {
         goto LABEL_26;
       }
@@ -15160,9 +15160,9 @@ LABEL_29:
       goto LABEL_27;
     }
 
-    if (a4 != 15 && a4 != 16)
+    if (kind != 15 && kind != 16)
     {
-      if (a4 != 17)
+      if (kind != 17)
       {
         goto LABEL_27;
       }
@@ -15181,12 +15181,12 @@ LABEL_26:
     goto LABEL_27;
   }
 
-  if (a4 > 11)
+  if (kind > 11)
   {
     goto LABEL_26;
   }
 
-  if (a4 == 3)
+  if (kind == 3)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -15199,7 +15199,7 @@ LABEL_25:
     goto LABEL_27;
   }
 
-  if (a4 == 6 || a4 == 7)
+  if (kind == 6 || kind == 7)
   {
     goto LABEL_26;
   }
@@ -15209,13 +15209,13 @@ LABEL_27:
   return isKindOfClass & 1;
 }
 
-- (void)nonUndoableInsertObject:(id)a3 charIndex:(unint64_t)a4 attributeArray:(TSWPAttributeArray *)a5 attributeIndex:(unint64_t)a6 dolcContext:(id)a7
+- (void)nonUndoableInsertObject:(id)object charIndex:(unint64_t)index attributeArray:(TSWPAttributeArray *)array attributeIndex:(unint64_t)attributeIndex dolcContext:(id)context
 {
   v38[1] = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a7;
+  objectCopy = object;
+  contextCopy = context;
   objc_msgSend_willModify(self, v14, v15);
-  if (!a5)
+  if (!array)
   {
     v17 = MEMORY[0x277D81150];
     v18 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v16, "[TSWPStorage(AttributeTables) nonUndoableInsertObject:charIndex:attributeArray:attributeIndex:dolcContext:]");
@@ -15225,7 +15225,7 @@ LABEL_27:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v22, v23);
   }
 
-  if (a6 == 0x7FFFFFFFFFFFFFFFLL)
+  if (attributeIndex == 0x7FFFFFFFFFFFFFFFLL)
   {
     v24 = MEMORY[0x277D81150];
     v25 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v16, "[TSWPStorage(AttributeTables) nonUndoableInsertObject:charIndex:attributeArray:attributeIndex:dolcContext:]");
@@ -15235,20 +15235,20 @@ LABEL_27:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v29, v30);
   }
 
-  (*(a5->var0 + 7))(a5, v12, a4, a6, v13, 0);
-  v31 = TSWPAttributeArray::rangeForAttributeIndex(a5, a6);
+  (*(array->var0 + 7))(array, objectCopy, index, attributeIndex, contextCopy, 0);
+  v31 = TSWPAttributeArray::rangeForAttributeIndex(array, attributeIndex);
   v33 = v32;
-  v34 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x277CCABB0], v32, *(a5 + 28));
+  v34 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x277CCABB0], v32, *(array + 28));
   v38[0] = v34;
   v36 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v35, v38, 1);
   objc_msgSend_didChangeRange_delta_broadcastKind_attributeKindChanges_(self, v37, v31, v33, 0, 0, v36);
 }
 
-- (void)nonUndoableInsertParagraphData:(TSWPParagraphData)a3 charIndex:(unint64_t)a4 attributeArray:(TSWPAttributeArray *)a5 attributeIndex:(unint64_t)a6
+- (void)nonUndoableInsertParagraphData:(TSWPParagraphData)data charIndex:(unint64_t)index attributeArray:(TSWPAttributeArray *)array attributeIndex:(unint64_t)attributeIndex
 {
   v35[1] = *MEMORY[0x277D85DE8];
-  objc_msgSend_willModify(self, a2, *&a3.var0.var0.listStart);
-  if (!a5)
+  objc_msgSend_willModify(self, a2, *&data.var0.var0.listStart);
+  if (!array)
   {
     v12 = MEMORY[0x277D81150];
     v13 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v11, "[TSWPStorage(AttributeTables) nonUndoableInsertParagraphData:charIndex:attributeArray:attributeIndex:]");
@@ -15258,7 +15258,7 @@ LABEL_27:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v17, v18);
   }
 
-  if (a6 == 0x7FFFFFFFFFFFFFFFLL)
+  if (attributeIndex == 0x7FFFFFFFFFFFFFFFLL)
   {
     v19 = MEMORY[0x277D81150];
     v20 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v11, "[TSWPStorage(AttributeTables) nonUndoableInsertParagraphData:charIndex:attributeArray:attributeIndex:]");
@@ -15268,38 +15268,38 @@ LABEL_27:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v24, v25);
   }
 
-  v26.var0.var0.listStart = a3.var0.var0.listStart;
-  TSWPAttributeRecord::TSWPAttributeRecord(&v34, a4, v26);
-  TSWPAttributeArray::nonUndoableInsertAttribute(a5, &v34, a6, 0, 0);
-  v27 = TSWPAttributeArray::rangeForAttributeIndex(a5, a6);
+  v26.var0.var0.listStart = data.var0.var0.listStart;
+  TSWPAttributeRecord::TSWPAttributeRecord(&v34, index, v26);
+  TSWPAttributeArray::nonUndoableInsertAttribute(array, &v34, attributeIndex, 0, 0);
+  v27 = TSWPAttributeArray::rangeForAttributeIndex(array, attributeIndex);
   v29 = v28;
-  v30 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x277CCABB0], v28, *(a5 + 28));
+  v30 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x277CCABB0], v28, *(array + 28));
   v35[0] = v30;
   v32 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v31, v35, 1);
   objc_msgSend_didChangeRange_delta_broadcastKind_attributeKindChanges_(self, v33, v27, v29, 0, 0, v32);
 }
 
-- (void)applyObject:(id)a3 toCharRange:(_NSRange)a4 forKind:(int)a5 actionBuilder:(void *)a6
+- (void)applyObject:(id)object toCharRange:(_NSRange)range forKind:(int)kind actionBuilder:(void *)builder
 {
-  v7 = *&a5;
-  v27 = a4;
-  v9 = a3;
-  if ((objc_msgSend_isObjectValid_forStyleKind_(self, v10, v9, v7) & 1) == 0)
+  v7 = *&kind;
+  rangeCopy = range;
+  objectCopy = object;
+  if ((objc_msgSend_isObjectValid_forStyleKind_(self, v10, objectCopy, v7) & 1) == 0)
   {
     TSUSetCrashReporterInfo();
     v21 = MEMORY[0x277D81150];
-    v23 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v22, "[TSWPStorage(AttributeTables) applyObject:toCharRange:forKind:actionBuilder:]", "[TSWPStorage(AttributeTables) applyObject:toCharRange:forKind:actionBuilder:]", "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/text/TSWPStorage_attributeTables.mm", 257, v9, v7);
+    v23 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v22, "[TSWPStorage(AttributeTables) applyObject:toCharRange:forKind:actionBuilder:]", "[TSWPStorage(AttributeTables) applyObject:toCharRange:forKind:actionBuilder:]", "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/text/TSWPStorage_attributeTables.mm", 257, objectCopy, v7);
     v25 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v24, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/text/TSWPStorage_attributeTables.mm");
-    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v21, v26, v23, v25, 257, 1, "Object %@ not allowed for style kind: %d in WPStorage", v9, v7);
+    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v21, v26, v23, v25, 257, 1, "Object %@ not allowed for style kind: %d in WPStorage", objectCopy, v7);
 
     TSUCrashBreakpoint();
     abort();
   }
 
-  if (a6)
+  if (builder)
   {
-    sub_276F33868(a6, v7, &v27, v9);
-    (*(*a6 + 16))(a6);
+    sub_276F33868(builder, v7, &rangeCopy, objectCopy);
+    (*(*builder + 16))(builder);
   }
 
   else
@@ -15316,30 +15316,30 @@ LABEL_27:
   v20 = TSUDynamicCast();
   if (v20)
   {
-    objc_msgSend_didChangeRange_delta_broadcastKind_(self, v19, v27.location, v27.length, 0, 1);
+    objc_msgSend_didChangeRange_delta_broadcastKind_(self, v19, rangeCopy.location, rangeCopy.length, 0, 1);
   }
 }
 
-- (void)applyObject:(id)a3 toCharRange:(_NSRange)a4 forKind:(int)a5 dolcContext:(id)a6 undoTransaction:(void *)a7
+- (void)applyObject:(id)object toCharRange:(_NSRange)range forKind:(int)kind dolcContext:(id)context undoTransaction:(void *)transaction
 {
-  v9 = *&a5;
-  length = a4.length;
-  location = a4.location;
-  v13 = a3;
-  sub_276F32CA8(v15, 2, self, a7, a6);
+  v9 = *&kind;
+  length = range.length;
+  location = range.location;
+  objectCopy = object;
+  sub_276F32CA8(v15, 2, self, transaction, context);
   v15[0] = &unk_288609A08;
-  objc_msgSend_applyObject_toCharRange_forKind_actionBuilder_(self, v14, v13, location, length, v9, v15);
+  objc_msgSend_applyObject_toCharRange_forKind_actionBuilder_(self, v14, objectCopy, location, length, v9, v15);
   sub_276F32E10(v15);
 }
 
-- (void)applyObject:(id)a3 toParagraphIndexRange:(_NSRange)a4 forKind:(unint64_t)a5 undoTransaction:(void *)a6
+- (void)applyObject:(id)object toParagraphIndexRange:(_NSRange)range forKind:(unint64_t)kind undoTransaction:(void *)transaction
 {
-  length = a4.length;
-  location = a4.location;
-  v11 = a3;
+  length = range.length;
+  location = range.location;
+  objectCopy = object;
   v18[0] = objc_msgSend_textRangeForParagraphIndexRange_(self, v12, location, length);
   v18[1] = v13;
-  sub_276F32CA8(v17, 2, self, a6, 0);
+  sub_276F32CA8(v17, 2, self, transaction, 0);
   v17[0] = &unk_288609A08;
   if (length)
   {
@@ -15352,16 +15352,16 @@ LABEL_27:
     v16 = 2048;
   }
 
-  sub_276F33A24(v17, a5, v18, v11, v16, 0xFFFFFFFFLL);
+  sub_276F33A24(v17, kind, v18, objectCopy, v16, 0xFFFFFFFFLL);
   sub_276F32E84(v17);
   sub_276F32E10(v17);
 }
 
-- (void)applyObject:(id)a3 toParagraphsInCharRange:(_NSRange)a4 forKind:(unint64_t)a5 undoTransaction:(void *)a6
+- (void)applyObject:(id)object toParagraphsInCharRange:(_NSRange)range forKind:(unint64_t)kind undoTransaction:(void *)transaction
 {
-  length = a4.length;
-  location = a4.location;
-  v11 = a3;
+  length = range.length;
+  location = range.location;
+  objectCopy = object;
   v13 = objc_msgSend_attributeArrayForKind_(self, v12, 0);
   if (v13)
   {
@@ -15370,9 +15370,9 @@ LABEL_27:
     v15 = TSWPParagraphAttributeArray::paragraphRangeForCharRange(v13, v27);
     v26[0] = objc_msgSend_textRangeForParagraphIndexRange_(self, v16, v15, v16);
     v26[1] = v17;
-    sub_276F32CA8(v25, 2, self, a6, 0);
+    sub_276F32CA8(v25, 2, self, transaction, 0);
     v25[0] = &unk_288609A08;
-    sub_276F33A24(v25, a5, v26, v11, (length == 0) << 11, 0xFFFFFFFFLL);
+    sub_276F33A24(v25, kind, v26, objectCopy, (length == 0) << 11, 0xFFFFFFFFLL);
     sub_276F32E84(v25);
     sub_276F32E10(v25);
   }
@@ -15388,12 +15388,12 @@ LABEL_27:
   }
 }
 
-- (void)applyParagraphData:(TSWPParagraphData)a3 toParagraphIndexRange:(_NSRange)a4 forKind:(unint64_t)a5 undoTransaction:(void *)a6
+- (void)applyParagraphData:(TSWPParagraphData)data toParagraphIndexRange:(_NSRange)range forKind:(unint64_t)kind undoTransaction:(void *)transaction
 {
-  length = a4.length;
-  location = a4.location;
-  listStart = a3.var0.var0.listStart;
-  v15[0] = objc_msgSend_textRangeForParagraphIndexRange_(self, a2, a4.location, a4.length);
+  length = range.length;
+  location = range.location;
+  listStart = data.var0.var0.listStart;
+  v15[0] = objc_msgSend_textRangeForParagraphIndexRange_(self, a2, range.location, range.length);
   v15[1] = v11;
   if (length)
   {
@@ -15406,46 +15406,46 @@ LABEL_27:
     v13 = 2048;
   }
 
-  sub_276F32CA8(v14, 2, self, a6, 0);
+  sub_276F32CA8(v14, 2, self, transaction, 0);
   v14[0] = &unk_288609A08;
-  sub_276F33818(v14, a5, v15, &listStart, v13);
+  sub_276F33818(v14, kind, v15, &listStart, v13);
   sub_276F32E84(v14);
   sub_276F32E10(v14);
 }
 
-- (void)applyFlags:(unsigned __int16)a3 level:(unint64_t)a4 toParagraphIndexRange:(_NSRange)a5 forKind:(unint64_t)a6 undoTransaction:(void *)a7
+- (void)applyFlags:(unsigned __int16)flags level:(unint64_t)level toParagraphIndexRange:(_NSRange)range forKind:(unint64_t)kind undoTransaction:(void *)transaction
 {
-  v8 = a3;
-  if (a4 >= 9)
+  flagsCopy = flags;
+  if (level >= 9)
   {
     v10 = MEMORY[0x277D81150];
     v11 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSWPStorage(AttributeTables) applyFlags:level:toParagraphIndexRange:forKind:undoTransaction:]");
     v13 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v12, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/text/TSWPStorage_attributeTables.mm");
-    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v10, v14, v11, v13, 337, 0, "illegal list level %lu", a4);
+    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v10, v14, v11, v13, 337, 0, "illegal list level %lu", level);
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v15, v16);
   }
 
-  v17 = 8;
-  if (a4 < 8)
+  levelCopy = 8;
+  if (level < 8)
   {
-    v17 = a4;
+    levelCopy = level;
   }
 
-  MEMORY[0x2821F9670](self, sel_applyParagraphData_toParagraphIndexRange_forKind_undoTransaction_, v17 | (v8 << 16));
+  MEMORY[0x2821F9670](self, sel_applyParagraphData_toParagraphIndexRange_forKind_undoTransaction_, levelCopy | (flagsCopy << 16));
 }
 
-- (void)applyFlags:(unsigned __int16)a3 level:(unint64_t)a4 toParagraphsInCharRange:(_NSRange)a5 undoTransaction:(void *)a6
+- (void)applyFlags:(unsigned __int16)flags level:(unint64_t)level toParagraphsInCharRange:(_NSRange)range undoTransaction:(void *)transaction
 {
-  length = a5.length;
-  location = a5.location;
-  v9 = a4;
-  if (a4 >= 9)
+  length = range.length;
+  location = range.location;
+  levelCopy = level;
+  if (level >= 9)
   {
     v12 = MEMORY[0x277D81150];
     v13 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSWPStorage(AttributeTables) applyFlags:level:toParagraphsInCharRange:undoTransaction:]");
     v15 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v14, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/text/TSWPStorage_attributeTables.mm");
-    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v12, v16, v13, v15, 347, 0, "illegal list level %lu", v9);
+    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v12, v16, v13, v15, 347, 0, "illegal list level %lu", levelCopy);
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v17, v18);
   }
@@ -15453,19 +15453,19 @@ LABEL_27:
   v19 = objc_msgSend_attributeArrayForKind_(self, a2, 0);
   if (v19)
   {
-    if (v9 >= 8)
+    if (levelCopy >= 8)
     {
-      LOWORD(v9) = 8;
+      LOWORD(levelCopy) = 8;
     }
 
     v36.location = location;
     v36.length = length;
     v21 = TSWPParagraphAttributeArray::paragraphRangeForCharRange(v19, v36);
-    v34[0] = v9;
-    v34[1] = a3;
+    v34[0] = levelCopy;
+    v34[1] = flags;
     v33[0] = objc_msgSend_textRangeForParagraphIndexRange_(self, v22, v21, v22);
     v33[1] = v23;
-    sub_276F32CA8(v32, 2, self, a6, 0);
+    sub_276F32CA8(v32, 2, self, transaction, 0);
     v32[0] = &unk_288609A08;
     sub_276F33818(v32, 1, v33, v34, (length == 0) << 11);
     sub_276F32E84(v32);
@@ -15485,13 +15485,13 @@ LABEL_27:
   }
 }
 
-- (_NSRange)replaceAllOccurrencesOfObject:(id)a3 withObject:(id)a4 forKind:(unint64_t)a5 undoTransaction:(void *)a6
+- (_NSRange)replaceAllOccurrencesOfObject:(id)object withObject:(id)withObject forKind:(unint64_t)kind undoTransaction:(void *)transaction
 {
-  v10 = a3;
-  v11 = a4;
-  sub_276F32CA8(v32, 2, self, a6, 0);
+  objectCopy = object;
+  withObjectCopy = withObject;
+  sub_276F32CA8(v32, 2, self, transaction, 0);
   v32[0] = &unk_288609A08;
-  if (!v11)
+  if (!withObjectCopy)
   {
     v13 = MEMORY[0x277D81150];
     v14 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v12, "[TSWPStorage(AttributeTables) replaceAllOccurrencesOfObject:withObject:forKind:undoTransaction:]");
@@ -15501,7 +15501,7 @@ LABEL_27:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v18, v19);
   }
 
-  actionState = objc_msgSend_attributeArrayForKind_withCreate_actionState_(self, v12, a5, 0, v32);
+  actionState = objc_msgSend_attributeArrayForKind_withCreate_actionState_(self, v12, kind, 0, v32);
   v21 = actionState;
   if (!actionState || !*(actionState + 24))
   {
@@ -15517,13 +15517,13 @@ LABEL_17:
   do
   {
     v25 = TSWPAttributeArray::objectForAttributeIndex(v21, v23);
-    if (v25 == v10)
+    if (v25 == objectCopy)
     {
       v31.location = 0;
       v31.length = 0;
       v31.location = TSWPAttributeArray::rangeForAttributeIndex(v21, v23);
       v31.length = v26;
-      sub_276F33A24(v32, a5, &v31, v11, 2048, 0xFFFFFFFFLL);
+      sub_276F33A24(v32, kind, &v31, withObjectCopy, 2048, 0xFFFFFFFFLL);
       v27 = v31;
       if (location != 0x7FFFFFFFFFFFFFFFLL)
       {
@@ -15567,19 +15567,19 @@ LABEL_18:
   return result;
 }
 
-- (BOOL)canTransferAttributesForInitialization:(unint64_t)a3 withFlags:(unsigned int)a4
+- (BOOL)canTransferAttributesForInitialization:(unint64_t)initialization withFlags:(unsigned int)flags
 {
-  if (((1 << a3) & 0x18000) != 0)
+  if (((1 << initialization) & 0x18000) != 0)
   {
-    v4 = (a4 >> 1) & 1;
+    v4 = (flags >> 1) & 1;
   }
 
   else
   {
-    LOBYTE(v4) = a3 == 20;
+    LOBYTE(v4) = initialization == 20;
   }
 
-  if (((1 << a3) & 0x6E3BFF) != 0)
+  if (((1 << initialization) & 0x6E3BFF) != 0)
   {
     v5 = 1;
   }
@@ -15589,17 +15589,17 @@ LABEL_18:
     v5 = v4;
   }
 
-  return a3 <= 0x16 && v5;
+  return initialization <= 0x16 && v5;
 }
 
-- (void)cfRetainedNonUndoableFastCopyAttributeRecord:(TSWPAttributeRecord *)a3 shouldAddRecord:(BOOL *)a4 attributeArrayKind:(unint64_t)a5 atIndex:(unint64_t)a6 sourceStorage:(id)a7 objectContext:(id)a8 flags:(unsigned int)a9 actionState:(void *)a10
+- (void)cfRetainedNonUndoableFastCopyAttributeRecord:(TSWPAttributeRecord *)record shouldAddRecord:(BOOL *)addRecord attributeArrayKind:(unint64_t)kind atIndex:(unint64_t)index sourceStorage:(id)storage objectContext:(id)context flags:(unsigned int)flags actionState:(void *)self0
 {
-  v16 = a7;
-  v17 = a8;
-  *a4 = 1;
-  if (TSWPAttributeArray::hasObjects(a5))
+  storageCopy = storage;
+  contextCopy = context;
+  *addRecord = 1;
+  if (TSWPAttributeArray::hasObjects(kind))
   {
-    v20 = TSWPAttributeRecord::object(a3, a5);
+    v20 = TSWPAttributeRecord::object(record, kind);
   }
 
   else
@@ -15608,16 +15608,16 @@ LABEL_18:
   }
 
   v21 = 0;
-  if (a5 <= 7)
+  if (kind <= 7)
   {
-    if (a5 - 4 < 2)
+    if (kind - 4 < 2)
     {
-      if (v20 && (a9 & 1) != 0)
+      if (v20 && (flags & 1) != 0)
       {
-        v29 = objc_msgSend_copyWithContext_(v20, v18, v17);
+        v29 = objc_msgSend_copyWithContext_(v20, v18, contextCopy);
 
         v21 = CFRetain(v29);
-        TSWPAttributeRecord::setObject(a3, a5, v29);
+        TSWPAttributeRecord::setObject(record, kind, v29);
         v20 = v29;
         goto LABEL_51;
       }
@@ -15625,7 +15625,7 @@ LABEL_18:
       goto LABEL_50;
     }
 
-    if (a5 - 6 >= 2 && a5 != 3)
+    if (kind - 6 >= 2 && kind != 3)
     {
       goto LABEL_51;
     }
@@ -15633,34 +15633,34 @@ LABEL_18:
 
   else
   {
-    if (a5 > 0x15)
+    if (kind > 0x15)
     {
 LABEL_33:
-      if (a5 != 8)
+      if (kind != 8)
       {
         goto LABEL_51;
       }
 
       if (v20)
       {
-        if (a6)
+        if (index)
         {
           if (objc_msgSend_supportsSectionCopying(self, v18, v19))
           {
-            v32 = objc_msgSend_copyWithContext_(v20, v31, v17);
+            v32 = objc_msgSend_copyWithContext_(v20, v31, contextCopy);
 
             v21 = CFRetain(v32);
             v35 = objc_msgSend_stylesheet(self, v33, v34);
             objc_msgSend_i_ensureHeaderFooterStoragesExistWithStylesheet_(v32, v36, v35);
 
-            TSWPAttributeRecord::setObject(a3, 8uLL, v32);
+            TSWPAttributeRecord::setObject(record, 8uLL, v32);
             v20 = v32;
           }
 
           else
           {
             v21 = 0;
-            *a4 = 0;
+            *addRecord = 0;
           }
         }
 
@@ -15668,14 +15668,14 @@ LABEL_33:
         {
           if (objc_msgSend_supportsSections(self, v18, v19))
           {
-            if ((a9 & 4) != 0)
+            if ((flags & 4) != 0)
             {
-              v38 = objc_msgSend_copyWithContext_(v20, v37, v17);
+              v38 = objc_msgSend_copyWithContext_(v20, v37, contextCopy);
             }
 
             else
             {
-              v38 = objc_msgSend_pDefaultSectionForContext_(self, v37, v17);
+              v38 = objc_msgSend_pDefaultSectionForContext_(self, v37, contextCopy);
             }
 
             v39 = CFRetain(v38);
@@ -15689,7 +15689,7 @@ LABEL_33:
             objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v43, v47, v44, v46, 476, 0, "Must support sections if a section array exists.");
 
             objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v48, v49);
-            v38 = objc_msgSend_pDefaultSectionForContext_(self, v50, v17);
+            v38 = objc_msgSend_pDefaultSectionForContext_(self, v50, contextCopy);
 
             v39 = CFRetain(v38);
           }
@@ -15699,7 +15699,7 @@ LABEL_33:
           v51 = objc_msgSend_stylesheet(self, v40, v41);
           objc_msgSend_i_ensureHeaderFooterStoragesExistWithStylesheet_(v38, v52, v51);
 
-          TSWPAttributeRecord::setObject(a3, 8uLL, v38);
+          TSWPAttributeRecord::setObject(record, 8uLL, v38);
         }
 
         goto LABEL_51;
@@ -15710,14 +15710,14 @@ LABEL_50:
       goto LABEL_51;
     }
 
-    if (((1 << a5) & 0x23B000) == 0)
+    if (((1 << kind) & 0x23B000) == 0)
     {
-      if (((1 << a5) & 0x180000) != 0)
+      if (((1 << kind) & 0x180000) != 0)
       {
         v20 = v20;
         if (v20)
         {
-          if ((a9 & 8) != 0 || !TSWPAttributeArray::attributeKindIsOverlapping(a5))
+          if ((flags & 8) != 0 || !TSWPAttributeArray::attributeKindIsOverlapping(kind))
           {
             v21 = 0;
             v24 = v20;
@@ -15725,13 +15725,13 @@ LABEL_50:
 
           else
           {
-            v24 = objc_msgSend_copyWithContext_(v20, v22, v17);
+            v24 = objc_msgSend_copyWithContext_(v20, v22, contextCopy);
 
             v21 = CFRetain(v24);
-            TSWPAttributeRecord::setObject(a3, a5, v24);
+            TSWPAttributeRecord::setObject(record, kind, v24);
           }
 
-          if ((a9 & 0x10) != 0)
+          if ((flags & 0x10) != 0)
           {
             objc_msgSend_resetTextAttributeUUIDString(v24, v22, v23);
           }
@@ -15746,22 +15746,22 @@ LABEL_50:
         goto LABEL_51;
       }
 
-      if (a5 == 18)
+      if (kind == 18)
       {
-        if (!a6)
+        if (!index)
         {
-          if ((a9 & 0x20) != 0)
+          if ((flags & 0x20) != 0)
           {
-            v30 = objc_msgSend_writingDirectionFromBidiAttributesTableForParagraphAtCharIndex_(v16, v18, 0);
+            v30 = objc_msgSend_writingDirectionFromBidiAttributesTableForParagraphAtCharIndex_(storageCopy, v18, 0);
           }
 
           else
           {
-            v30 = objc_msgSend_writingDirectionForParagraphAtCharIndex_(v16, v18, 0);
+            v30 = objc_msgSend_writingDirectionForParagraphAtCharIndex_(storageCopy, v18, 0);
           }
 
           v53 = v30;
-          TSWPAttributeRecord::setParagraphData(a3, 0x12uLL, &v53);
+          TSWPAttributeRecord::setParagraphData(record, 0x12uLL, &v53);
         }
 
         goto LABEL_50;
@@ -15777,18 +15777,18 @@ LABEL_50:
   }
 
   v21 = 0;
-  if ((a9 & 8) == 0 && a5 <= 0x15 && ((1 << a5) & 0x2390C0) != 0)
+  if ((flags & 8) == 0 && kind <= 0x15 && ((1 << kind) & 0x2390C0) != 0)
   {
-    v25 = objc_msgSend_copyWithContext_(v20, v18, v17);
+    v25 = objc_msgSend_copyWithContext_(v20, v18, contextCopy);
 
     v21 = CFRetain(v25);
     v20 = v25;
   }
 
-  if ((a9 & 0x10) != 0)
+  if ((flags & 0x10) != 0)
   {
     v28 = objc_msgSend_conformsToProtocol_(v20, v18, &unk_288643E30) ^ 1;
-    if (a5 == 12)
+    if (kind == 12)
     {
       LOBYTE(v28) = 1;
     }
@@ -15799,30 +15799,30 @@ LABEL_50:
     }
   }
 
-  TSWPAttributeRecord::setObject(a3, a5, v20);
+  TSWPAttributeRecord::setObject(record, kind, v20);
 LABEL_51:
 
   return v21;
 }
 
-- (void)nonUndoableInitializeAttributeArraySource:(TSWPAttributeArray *)a3 forSourceRange:(_NSRange)a4 toDestStorage:(id)a5 objectContext:(id)a6 dolcContext:(id)a7 flags:(unsigned int)a8
+- (void)nonUndoableInitializeAttributeArraySource:(TSWPAttributeArray *)source forSourceRange:(_NSRange)range toDestStorage:(id)storage objectContext:(id)context dolcContext:(id)dolcContext flags:(unsigned int)flags
 {
-  range1 = a4.length;
-  location = a4.location;
-  v98 = a5;
-  v95 = a6;
-  v97 = a7;
-  if (a3)
+  range1 = range.length;
+  location = range.location;
+  storageCopy = storage;
+  contextCopy = context;
+  dolcContextCopy = dolcContext;
+  if (source)
   {
     if (range1)
     {
-      v14 = *(a3 + 14);
+      v14 = *(source + 14);
       v100 = v14;
       if (objc_msgSend_canTransferAttributesForInitialization_withFlags_(self, v13, v14))
       {
-        v15 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(a3, location);
+        v15 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(source, location);
         v16 = v15 == 0x7FFFFFFFFFFFFFFFLL ? 0 : v15;
-        if (v16 < *(a3 + 6))
+        if (v16 < *(source + 6))
         {
           v92 = 0;
           actionState = 0;
@@ -15831,12 +15831,12 @@ LABEL_51:
           v91 = v14 - 15;
           while (1)
           {
-            v17 = TSWPAttributeArray::charIndexForAttributeIndex(a3, v16);
-            v18 = TSWPAttributeArray::rangeForAttributeIndex(a3, v16);
+            v17 = TSWPAttributeArray::charIndexForAttributeIndex(source, v16);
+            v18 = TSWPAttributeArray::rangeForAttributeIndex(source, v16);
             v20 = v19;
-            if (TSWPAttributeArray::hasObjects(*(a3 + 28)))
+            if (TSWPAttributeArray::hasObjects(*(source + 28)))
             {
-              v101 = TSWPAttributeArray::objectForAttributeIndex(a3, v16);
+              v101 = TSWPAttributeArray::objectForAttributeIndex(source, v16);
             }
 
             else
@@ -15862,14 +15862,14 @@ LABEL_51:
                 {
                   if (!actionState)
                   {
-                    actionState = objc_msgSend_attributeArrayForKind_withCreate_actionState_(v98, v21, v100, 0, 0);
+                    actionState = objc_msgSend_attributeArrayForKind_withCreate_actionState_(storageCopy, v21, v100, 0, 0);
                     if (!actionState)
                     {
                       goto LABEL_109;
                     }
                   }
 
-                  v32.var0.var0.listStart = *TSWPAttributeRecord::paragraphData(&a3->var1[v16], *(a3 + 28));
+                  v32.var0.var0.listStart = *TSWPAttributeRecord::paragraphData(&source->var1[v16], *(source + 28));
                   TSWPAttributeRecord::TSWPAttributeRecord(&__p, v17 - location, v32);
                   TSWPAttributeArray::nonUndoableInsertAttribute(actionState, &__p, ++v92, 0, 0);
                 }
@@ -15885,19 +15885,19 @@ LABEL_51:
 
                 if (!v92)
                 {
-                  v29 = TSWPAttributeArray::supportsSingleSparseBreakingTableEntries(*(a3 + 28));
+                  v29 = TSWPAttributeArray::supportsSingleSparseBreakingTableEntries(*(source + 28));
                   if (v17 == location && v29)
                   {
                     v31 = actionState;
                     if (!actionState)
                     {
-                      v31 = objc_msgSend_attributeArrayForKind_withCreate_actionState_(v98, v21, v100, 0, 0);
+                      v31 = objc_msgSend_attributeArrayForKind_withCreate_actionState_(storageCopy, v21, v100, 0, 0);
                     }
 
                     actionState = v31;
                     if (*(v31 + 24))
                     {
-                      TSWPAttributeArray::nonUndoableReplaceObjectForAttributeIndex(v31, v101, 0, v97, 0);
+                      TSWPAttributeArray::nonUndoableReplaceObjectForAttributeIndex(v31, v101, 0, dolcContextCopy, 0);
                     }
 
                     else
@@ -15917,7 +15917,7 @@ LABEL_51:
                   v79 = actionState;
                   if (!actionState)
                   {
-                    v79 = objc_msgSend_attributeArrayForKind_withCreate_actionState_(v98, v21, v100, 0, 0);
+                    v79 = objc_msgSend_attributeArrayForKind_withCreate_actionState_(storageCopy, v21, v100, 0, 0);
                     if (!v79)
                     {
                       goto LABEL_109;
@@ -15991,7 +15991,7 @@ LABEL_51:
                   v27 = v24.location;
                 }
 
-                if ((a8 & 8) != 0)
+                if ((flags & 8) != 0)
                 {
                   if (v91 >= 3)
                   {
@@ -16006,11 +16006,11 @@ LABEL_25:
                   goto LABEL_78;
                 }
 
-                v28 = objc_msgSend_copyWithContext_(v101, v24.length, v95);
+                v28 = objc_msgSend_copyWithContext_(v101, v24.length, contextCopy);
 
                 v101 = v28;
 LABEL_78:
-                if ((a8 & 0x10) != 0)
+                if ((flags & 0x10) != 0)
                 {
                   v55 = objc_msgSend_conformsToProtocol_(v101, length, &unk_288643E30);
                   v57 = v100 == 12 ? 0 : v55;
@@ -16020,16 +16020,16 @@ LABEL_78:
                   }
                 }
 
-                objc_msgSend_applyObject_toCharRange_forKind_dolcContext_undoTransaction_(v98, length, v101, v27 - location, v26, v100, v97, 0);
+                objc_msgSend_applyObject_toCharRange_forKind_dolcContext_undoTransaction_(storageCopy, length, v101, v27 - location, v26, v100, dolcContextCopy, 0);
 
 LABEL_113:
-                if (++v16 < *(a3 + 6) && TSWPAttributeArray::charIndexForAttributeIndex(a3, v16) > v94)
+                if (++v16 < *(source + 6) && TSWPAttributeArray::charIndexForAttributeIndex(source, v16) > v94)
                 {
 
                   goto LABEL_118;
                 }
 
-                if (v16 >= *(a3 + 6))
+                if (v16 >= *(source + 6))
                 {
                   goto LABEL_118;
                 }
@@ -16042,15 +16042,15 @@ LABEL_113:
                   if (v17 >= location && v17 < v94)
                   {
                     v33 = actionState;
-                    if (actionState || (v33 = objc_msgSend_attributeArrayForKind_withCreate_actionState_(v98, v21, v100, 1, 0)) != 0)
+                    if (actionState || (v33 = objc_msgSend_attributeArrayForKind_withCreate_actionState_(storageCopy, v21, v100, 1, 0)) != 0)
                     {
                       actionState = v33;
                       if (v92 < *(v33 + 24))
                       {
-                        if (a8)
+                        if (flags)
                         {
-                          v58 = objc_msgSend_copyWithContext_(v101, v101, v95);
-                          TSWPAttributeArray::nonUndoableReplaceObjectForAttributeIndex(actionState, v58, v92++, v97, 0);
+                          v58 = objc_msgSend_copyWithContext_(v101, v101, contextCopy);
+                          TSWPAttributeArray::nonUndoableReplaceObjectForAttributeIndex(actionState, v58, v92++, dolcContextCopy, 0);
                           goto LABEL_112;
                         }
 
@@ -16074,7 +16074,7 @@ LABEL_49:
 
                 goto LABEL_113;
               case 8u:
-                v59 = objc_msgSend_supportsSectionCopying(v98, v21, v22);
+                v59 = objc_msgSend_supportsSectionCopying(storageCopy, v21, v22);
                 if (v101)
                 {
                   v61 = v59;
@@ -16087,14 +16087,14 @@ LABEL_49:
 
                 if (v61)
                 {
-                  v58 = objc_msgSend_copyWithContext_(v101, v60, v95);
+                  v58 = objc_msgSend_copyWithContext_(v101, v60, contextCopy);
 
                   v101 = v58;
 LABEL_92:
                   if (v17 > location && v17 <= v94)
                   {
                     v62 = actionState;
-                    if (actionState || (v62 = objc_msgSend_attributeArrayForKind_withCreate_actionState_(v98, v21, v100, 0, 0)) != 0)
+                    if (actionState || (v62 = objc_msgSend_attributeArrayForKind_withCreate_actionState_(storageCopy, v21, v100, 0, 0)) != 0)
                     {
                       v63 = v92 + 1;
                       actionState = v62;
@@ -16112,7 +16112,7 @@ LABEL_92:
 
                       if (v63 < v64)
                       {
-                        TSWPAttributeArray::nonUndoableReplaceObjectForAttributeIndex(actionState, v101, v63, v97, 0);
+                        TSWPAttributeArray::nonUndoableReplaceObjectForAttributeIndex(actionState, v101, v63, dolcContextCopy, 0);
                         ++v92;
                       }
                     }
@@ -16132,19 +16132,19 @@ LABEL_112:
                 __p.var0 = 0;
                 __p.var1.var0 = 0;
                 v103 = 0;
-                v34 = (*(a3->var0 + 20))(a3, v17, 1, &__p);
+                v34 = (*(source->var0 + 20))(source, v17, 1, &__p);
                 if (objc_msgSend_count(v34, v35, v36))
                 {
                   for (i = 0; i < objc_msgSend_count(v34, v37, v38); ++i)
                   {
                     v41 = objc_msgSend_objectAtIndexedSubscript_(v34, v40, i);
-                    if (!v16 || ((*(a3->var0 + 18))(a3, v41, v16 - 1) & 1) == 0)
+                    if (!v16 || ((*(source->var0 + 18))(source, v41, v16 - 1) & 1) == 0)
                     {
-                      v42 = (*(a3->var0 + 19))(a3, v41, v16);
+                      v42 = (*(source->var0 + 19))(source, v41, v16);
                       v44 = v43;
                       v106.location = v42;
                       v106.length = v44;
-                      v108.location = TSWPAttributeArray::rangeForAttributeRange(a3, v106);
+                      v108.location = TSWPAttributeArray::rangeForAttributeRange(source, v106);
                       v46 = v45;
                       v105.location = location;
                       v105.length = range1;
@@ -16164,19 +16164,19 @@ LABEL_112:
                           v50 = *MEMORY[0x277D81490];
                         }
 
-                        if ((a8 & 8) != 0 || !TSWPAttributeArray::attributeKindIsOverlapping(v100))
+                        if ((flags & 8) != 0 || !TSWPAttributeArray::attributeKindIsOverlapping(v100))
                         {
                           v51 = 0;
                         }
 
                         else
                         {
-                          v51 = objc_msgSend_copyWithContext_(v41, v47, v95);
+                          v51 = objc_msgSend_copyWithContext_(v41, v47, contextCopy);
 
                           v41 = v51;
                         }
 
-                        if ((a8 & 0x10) != 0)
+                        if ((flags & 0x10) != 0)
                         {
                           v52 = objc_msgSend_conformsToProtocol_(v41, v47, &unk_288643E30);
                           v54 = v100 == 12 ? 0 : v52;
@@ -16186,7 +16186,7 @@ LABEL_112:
                           }
                         }
 
-                        objc_msgSend_applyObject_toCharRange_forKind_dolcContext_undoTransaction_(v98, v47, v41, v50 - location, v49, v100, v97, 0);
+                        objc_msgSend_applyObject_toCharRange_forKind_dolcContext_undoTransaction_(storageCopy, v47, v41, v50 - location, v49, v100, dolcContextCopy, 0);
                       }
                     }
                   }
@@ -16211,17 +16211,17 @@ LABEL_112:
 LABEL_118:
 }
 
-- (int)compareAttributeArray:(TSWPAttributeArray *)a3 range:(_NSRange)a4 otherStorage:(id)a5 otherRange:(_NSRange)a6 objectComparisonBlock:(id)a7
+- (int)compareAttributeArray:(TSWPAttributeArray *)array range:(_NSRange)range otherStorage:(id)storage otherRange:(_NSRange)otherRange objectComparisonBlock:(id)block
 {
-  length = a6.length;
-  location = a6.location;
-  v9 = a4.length;
-  v10 = a4.location;
-  v13 = a5;
-  v15 = a7;
-  if (a3 && (actionState = objc_msgSend_attributeArrayForKind_withCreate_actionState_(v13, v14, *(a3 + 28), 0, 0)) != 0)
+  length = otherRange.length;
+  location = otherRange.location;
+  v9 = range.length;
+  v10 = range.location;
+  storageCopy = storage;
+  blockCopy = block;
+  if (array && (actionState = objc_msgSend_attributeArrayForKind_withCreate_actionState_(storageCopy, v14, *(array + 28), 0, 0)) != 0)
   {
-    v17 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(a3, v10);
+    v17 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(array, v10);
     v18 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(actionState, location);
     if (v17 == 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -16243,27 +16243,27 @@ LABEL_118:
       v21 = v18;
     }
 
-    v22 = *(a3 + 6) - v20;
+    v22 = *(array + 6) - v20;
     v23 = *(actionState + 24) - v21;
     v24 = v22 > v23;
     if (v22 <= v23)
     {
-      v25 = a3;
+      arrayCopy = array;
     }
 
     else
     {
-      v25 = actionState;
+      arrayCopy = actionState;
     }
 
     if (v22 <= v23)
     {
-      v26 = actionState;
+      arrayCopy2 = actionState;
     }
 
     else
     {
-      v26 = a3;
+      arrayCopy2 = array;
     }
 
     if (v22 <= v23)
@@ -16309,12 +16309,12 @@ LABEL_118:
 
     if (v24)
     {
-      v31 = objc_msgSend_compareAttributeArray1_array2_range1_range2_attributeIndex1_attributeIndex2_objectComparisonBlock_(self, v19, v25, v26, v30, length, v28, v27, v29, v21, v15);
+      v31 = objc_msgSend_compareAttributeArray1_array2_range1_range2_attributeIndex1_attributeIndex2_objectComparisonBlock_(self, v19, arrayCopy, arrayCopy2, v30, length, v28, v27, v29, v21, blockCopy);
     }
 
     else
     {
-      v31 = objc_msgSend_compareAttributeArray1_array2_range1_range2_attributeIndex1_attributeIndex2_objectComparisonBlock_(self, v19, v25, v26, v30, v9, v28, v27, v29, v21, v15);
+      v31 = objc_msgSend_compareAttributeArray1_array2_range1_range2_attributeIndex1_attributeIndex2_objectComparisonBlock_(self, v19, arrayCopy, arrayCopy2, v30, v9, v28, v27, v29, v21, blockCopy);
     }
 
     v32 = v31;
@@ -16328,39 +16328,39 @@ LABEL_118:
   return v32;
 }
 
-- (int)compareAttributeArray1:(TSWPAttributeArray *)a3 array2:(TSWPAttributeArray *)a4 range1:(_NSRange)a5 range2:(_NSRange)a6 attributeIndex1:(unint64_t)a7 attributeIndex2:(unint64_t)a8 objectComparisonBlock:(id)a9
+- (int)compareAttributeArray1:(TSWPAttributeArray *)array1 array2:(TSWPAttributeArray *)array2 range1:(_NSRange)range1 range2:(_NSRange)range2 attributeIndex1:(unint64_t)index1 attributeIndex2:(unint64_t)index2 objectComparisonBlock:(id)block
 {
-  v36 = a9;
+  blockCopy = block;
   v11 = 0;
-  if (a3)
+  if (array1)
   {
-    v34 = a4;
-    if (a4)
+    array2Copy = array2;
+    if (array2)
     {
-      v12 = a7;
-      if (*(a3 + 6) > a7)
+      index1Copy = index1;
+      if (*(array1 + 6) > index1)
       {
-        v13 = a8;
-        if (*(a4 + 6) > a8)
+        index2Copy = index2;
+        if (*(array2 + 6) > index2)
         {
           v11 = 0;
-          v37 = a5.location + a5.length;
-          v39 = a7;
-          v14 = a8;
+          v37 = range1.location + range1.length;
+          index1Copy2 = index1;
+          index2Copy2 = index2;
           while (1)
           {
-            v15 = TSWPAttributeArray::charIndexForAttributeIndex(a3, v12);
+            v15 = TSWPAttributeArray::charIndexForAttributeIndex(array1, index1Copy);
             if (v11 || v15 > v37)
             {
               goto LABEL_62;
             }
 
-            v16 = TSWPAttributeArray::charIndexForAttributeIndex(a3, v12);
-            v17 = TSWPAttributeArray::rangeForAttributeIndex(a3, v12);
+            v16 = TSWPAttributeArray::charIndexForAttributeIndex(array1, index1Copy);
+            v17 = TSWPAttributeArray::rangeForAttributeIndex(array1, index1Copy);
             v19 = v18;
-            if (TSWPAttributeArray::hasObjects(*(a3 + 28)))
+            if (TSWPAttributeArray::hasObjects(*(array1 + 28)))
             {
-              v35 = TSWPAttributeArray::objectForAttributeIndex(a3, v12);
+              v35 = TSWPAttributeArray::objectForAttributeIndex(array1, index1Copy);
             }
 
             else
@@ -16368,8 +16368,8 @@ LABEL_118:
               v35 = 0;
             }
 
-            v20 = *(v34 + 6);
-            if (v13 >= v20)
+            v20 = *(array2Copy + 6);
+            if (index2Copy >= v20)
             {
               v23 = 0;
               v21 = 0x7FFFFFFFFFFFFFFFLL;
@@ -16377,14 +16377,14 @@ LABEL_118:
 
             else
             {
-              v21 = TSWPAttributeArray::rangeForAttributeIndex(v34, v13);
+              v21 = TSWPAttributeArray::rangeForAttributeIndex(array2Copy, index2Copy);
               v23 = v22;
-              v20 = *(v34 + 6);
+              v20 = *(array2Copy + 6);
             }
 
-            if (v13 < v20 && TSWPAttributeArray::hasObjects(*(v34 + 28)))
+            if (index2Copy < v20 && TSWPAttributeArray::hasObjects(*(array2Copy + 28)))
             {
-              v40 = TSWPAttributeArray::objectForAttributeIndex(v34, v13);
+              v40 = TSWPAttributeArray::objectForAttributeIndex(array2Copy, index2Copy);
             }
 
             else
@@ -16396,15 +16396,15 @@ LABEL_118:
             aBlock[1] = 3221225472;
             aBlock[2] = sub_276D9C44C;
             aBlock[3] = &unk_27A6F43B8;
-            v46 = v36;
+            v46 = blockCopy;
             v41 = v35;
             v45 = v41;
             v38 = _Block_copy(aBlock);
             v11 = 0;
-            v24 = *(a3 + 28);
+            v24 = *(array1 + 28);
             if (v24 > 0xA)
             {
-              if (*(a3 + 28) > 0x12u)
+              if (*(array1 + 28) > 0x12u)
               {
                 if (v24 - 19 < 2)
                 {
@@ -16415,10 +16415,10 @@ LABEL_118:
 
                   v53.location = v17;
                   v53.length = v19;
-                  length = NSIntersectionRange(v53, a5).length;
+                  length = NSIntersectionRange(v53, range1).length;
                   v54.location = v21;
                   v54.length = v23;
-                  if (length != NSIntersectionRange(v54, a6).length)
+                  if (length != NSIntersectionRange(v54, range2).length)
                   {
                     goto LABEL_58;
                   }
@@ -16433,7 +16433,7 @@ LABEL_118:
                     goto LABEL_58;
                   }
 
-                  IsEquivalentToObject = TSWPAttributeArray::objectIsEquivalentToObject(*(a3 + 28), v41, v40);
+                  IsEquivalentToObject = TSWPAttributeArray::objectIsEquivalentToObject(*(array1 + 28), v41, v40);
                 }
 
                 else
@@ -16456,10 +16456,10 @@ LABEL_32:
 
                   v47.location = v17;
                   v47.length = v19;
-                  v25 = NSIntersectionRange(v47, a5).length;
+                  v25 = NSIntersectionRange(v47, range1).length;
                   v48.location = v21;
                   v48.length = v23;
-                  if (v25 != NSIntersectionRange(v48, a6).length)
+                  if (v25 != NSIntersectionRange(v48, range2).length)
                   {
                     goto LABEL_58;
                   }
@@ -16498,7 +16498,7 @@ LABEL_32:
 
             else
             {
-              if (*(a3 + 28) > 2u)
+              if (*(array1 + 28) > 2u)
               {
                 if (v24 - 3 >= 4)
                 {
@@ -16512,10 +16512,10 @@ LABEL_40:
                   {
                     v49.location = v17;
                     v49.length = v19;
-                    v27 = NSIntersectionRange(v49, a5).length;
+                    v27 = NSIntersectionRange(v49, range1).length;
                     v50.location = v21;
                     v50.length = v23;
-                    if (v27 != NSIntersectionRange(v50, a6).length)
+                    if (v27 != NSIntersectionRange(v50, range2).length)
                     {
                       goto LABEL_58;
                     }
@@ -16533,7 +16533,7 @@ LABEL_40:
                 goto LABEL_32;
               }
 
-              if (!*(a3 + 28) || v24 != 1)
+              if (!*(array1 + 28) || v24 != 1)
               {
                 goto LABEL_40;
               }
@@ -16543,14 +16543,14 @@ LABEL_40:
             {
               v51.location = v17;
               v51.length = v19;
-              v29 = NSIntersectionRange(v51, a5).length;
+              v29 = NSIntersectionRange(v51, range1).length;
               v52.location = v21;
               v52.length = v23;
-              if (v29 == NSIntersectionRange(v52, a6).length)
+              if (v29 == NSIntersectionRange(v52, range2).length)
               {
-                v43.var0.var0.listStart = *TSWPAttributeRecord::paragraphData(&a3->var1[v39], *(a3 + 28));
-                v42.var0.var0.listStart = *TSWPAttributeRecord::paragraphData(&v34->var1[v14], *(v34 + 28));
-                IsSame = TSWPParagraphAttributeArray::dataIsSame(a3, &v43, &v42);
+                v43.var0.var0.listStart = *TSWPAttributeRecord::paragraphData(&array1->var1[index1Copy2], *(array1 + 28));
+                v42.var0.var0.listStart = *TSWPAttributeRecord::paragraphData(&array2Copy->var1[index2Copy2], *(array2Copy + 28));
+                IsSame = TSWPParagraphAttributeArray::dataIsSame(array1, &v43, &v42);
 LABEL_47:
                 if (IsSame)
                 {
@@ -16573,12 +16573,12 @@ LABEL_58:
 LABEL_57:
             v11 = 0;
 LABEL_59:
-            ++v12;
-            ++v13;
+            ++index1Copy;
+            ++index2Copy;
 
-            ++v39;
-            ++v14;
-            if (v12 >= *(a3 + 6))
+            ++index1Copy2;
+            ++index2Copy2;
+            if (index1Copy >= *(array1 + 6))
             {
               goto LABEL_62;
             }
@@ -16595,11 +16595,11 @@ LABEL_62:
   return v11;
 }
 
-- (id)pFindValidInsertionCharStyleFromCharIndex:(unint64_t)a3
+- (id)pFindValidInsertionCharStyleFromCharIndex:(unint64_t)index
 {
-  v3 = a3;
-  v5 = objc_msgSend_paragraphStartAtCharIndex_(self, a2, a3);
-  if (v3 == 0x7FFFFFFFFFFFFFFFLL)
+  indexCopy = index;
+  v5 = objc_msgSend_paragraphStartAtCharIndex_(self, a2, index);
+  if (indexCopy == 0x7FFFFFFFFFFFFFFFLL)
   {
 LABEL_8:
     v14 = 0;
@@ -16610,8 +16610,8 @@ LABEL_8:
     v7 = v5;
     while (1)
     {
-      v8 = objc_msgSend_smartFieldAtCharIndex_attributeKind_effectiveRange_(self, v6, v3, 6, &v18);
-      v10 = objc_msgSend_footnoteReferenceAttachmentOrFootnoteMarkAttachmentAtCharIndex_(self, v9, v3);
+      v8 = objc_msgSend_smartFieldAtCharIndex_attributeKind_effectiveRange_(self, v6, indexCopy, 6, &v18);
+      v10 = objc_msgSend_footnoteReferenceAttachmentOrFootnoteMarkAttachmentAtCharIndex_(self, v9, indexCopy);
       v12 = v10;
       if (!(v8 | v10))
       {
@@ -16621,7 +16621,7 @@ LABEL_8:
       v13 = v18;
       if (!v8)
       {
-        v13 = v3;
+        v13 = indexCopy;
       }
 
       if (v13 <= v7)
@@ -16630,15 +16630,15 @@ LABEL_8:
         goto LABEL_12;
       }
 
-      v3 = v13 - 1;
+      indexCopy = v13 - 1;
 
-      if (v3 == 0x7FFFFFFFFFFFFFFFLL)
+      if (indexCopy == 0x7FFFFFFFFFFFFFFFLL)
       {
         goto LABEL_8;
       }
     }
 
-    v14 = objc_msgSend_characterStyleAtCharIndex_effectiveRange_(self, v11, v3, 0);
+    v14 = objc_msgSend_characterStyleAtCharIndex_effectiveRange_(self, v11, indexCopy, 0);
     if (!v14)
     {
       v14 = objc_msgSend_null(MEMORY[0x277CBEB68], v15, v16);
@@ -16650,34 +16650,34 @@ LABEL_12:
   return v14;
 }
 
-- (id)pOverrideObjectBeforeReplacingCharactersInSelection:(id)a3 withString:(id)a4
+- (id)pOverrideObjectBeforeReplacingCharactersInSelection:(id)selection withString:(id)string
 {
-  v6 = a3;
-  v7 = a4;
-  Range = objc_msgSend_firstRange(v6, v8, v9);
+  selectionCopy = selection;
+  stringCopy = string;
+  Range = objc_msgSend_firstRange(selectionCopy, v8, v9);
   v12 = v11;
-  v14 = objc_msgSend_styleInsertionBehavior(v6, v11, v13);
-  v16 = objc_msgSend_pOverrideObjectBeforeReplacingCharactersInRange_withString_withInsertionBehavior_(self, v15, Range, v12, v7, v14);
+  v14 = objc_msgSend_styleInsertionBehavior(selectionCopy, v11, v13);
+  v16 = objc_msgSend_pOverrideObjectBeforeReplacingCharactersInRange_withString_withInsertionBehavior_(self, v15, Range, v12, stringCopy, v14);
 
   return v16;
 }
 
-- (id)pOverrideObjectBeforeReplacingCharactersInRange:(_NSRange)a3 withString:(id)a4 withInsertionBehavior:(int64_t)a5
+- (id)pOverrideObjectBeforeReplacingCharactersInRange:(_NSRange)range withString:(id)string withInsertionBehavior:(int64_t)behavior
 {
-  length = a3.length;
-  location = a3.location;
-  v9 = a4;
+  length = range.length;
+  location = range.location;
+  stringCopy = string;
   v35 = *MEMORY[0x277D81490];
-  if (!objc_msgSend_length(v9, v10, v11) || !length)
+  if (!objc_msgSend_length(stringCopy, v10, v11) || !length)
   {
     v14 = 0;
     v15 = 0;
-    if (!objc_msgSend_length(v9, v12, v13) || length)
+    if (!objc_msgSend_length(stringCopy, v12, v13) || length)
     {
       goto LABEL_44;
     }
 
-    if (a5 == 2)
+    if (behavior == 2)
     {
       v14 = objc_msgSend_smartFieldAtCharIndex_attributeKind_effectiveRange_(self, v16, location, 6, &v35);
       if (!v14 || v35 != location)
@@ -16694,9 +16694,9 @@ LABEL_12:
 
     else
     {
-      if (a5 != 1)
+      if (behavior != 1)
       {
-        if (a5)
+        if (behavior)
         {
           goto LABEL_4;
         }
@@ -16790,7 +16790,7 @@ LABEL_43:
     goto LABEL_44;
   }
 
-  if (a5)
+  if (behavior)
   {
 LABEL_4:
     v14 = 0;
@@ -16819,18 +16819,18 @@ LABEL_44:
   return v15;
 }
 
-- (id)pDefaultSectionForContext:(id)a3
+- (id)pDefaultSectionForContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   if (objc_opt_respondsToSelector())
   {
-    v6 = objc_msgSend_defaultSectionForContext_(self, v5, v4);
+    v6 = objc_msgSend_defaultSectionForContext_(self, v5, contextCopy);
   }
 
   else
   {
     v7 = [TSWPSectionPlaceholder alloc];
-    v6 = objc_msgSend_initWithContext_(v7, v8, v4);
+    v6 = objc_msgSend_initWithContext_(v7, v8, contextCopy);
   }
 
   v9 = v6;
@@ -16838,11 +16838,11 @@ LABEL_44:
   return v9;
 }
 
-- (void)p_replaceRange:(_NSRange)a3 withString:(id)a4 markers:(void *)a5 flags:(unsigned int)a6 actionState:(void *)a7
+- (void)p_replaceRange:(_NSRange)range withString:(id)string markers:(void *)markers flags:(unsigned int)flags actionState:(void *)state
 {
-  length = a3.length;
-  location = a3.location;
-  v13 = a4;
+  length = range.length;
+  location = range.location;
+  stringCopy = string;
   if (location + length > objc_msgSend_length(self->_string, v14, v15))
   {
     v18 = MEMORY[0x277D81150];
@@ -16853,17 +16853,17 @@ LABEL_44:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v23, v24);
   }
 
-  if ((a6 & 0x20) != 0)
+  if ((flags & 0x20) != 0)
   {
     v25 = 2;
   }
 
   else
   {
-    v25 = (a6 >> 4) & 1;
+    v25 = (flags >> 4) & 1;
   }
 
-  v27 = objc_msgSend_length(v13, v16, v17);
+  v27 = objc_msgSend_length(stringCopy, v16, v17);
   for (i = 0; i != 552; i += 24)
   {
     v29 = &v52[i];
@@ -16878,24 +16878,24 @@ LABEL_44:
   {
     if (v30)
     {
-      if (a5 && v30 == 4)
+      if (markers && v30 == 4)
       {
-        v31 = *(a5 + 24);
+        v31 = *(markers + 24);
       }
 
       else
       {
         v31 = 0;
-        if (a5 && v30 == 5)
+        if (markers && v30 == 5)
         {
-          v31 = *(a5 + 25);
+          v31 = *(markers + 25);
         }
       }
 
-      actionState = objc_msgSend_attributeArrayForKind_withCreate_actionState_(self, v26, v30, v31 & 1, a7);
+      actionState = objc_msgSend_attributeArrayForKind_withCreate_actionState_(self, v26, v30, v31 & 1, state);
       if (actionState)
       {
-        (*(*actionState + 16))(actionState, location, length, v13, v27, a5, a7, v52);
+        (*(*actionState + 16))(actionState, location, length, stringCopy, v27, markers, state, v52);
       }
     }
 
@@ -16904,19 +16904,19 @@ LABEL_44:
   }
 
   while (v51[0] < 0x17uLL);
-  v33 = objc_msgSend_attributeArrayForKind_withCreate_actionState_(self, v26, 0, 0, a7);
+  v33 = objc_msgSend_attributeArrayForKind_withCreate_actionState_(self, v26, 0, 0, state);
   if (v33)
   {
-    (*(*v33 + 16))(v33, location, length, v13, v27, a5, a7, v52);
+    (*(*v33 + 16))(v33, location, length, stringCopy, v27, markers, state, v52);
   }
 
-  if (a7)
+  if (state)
   {
-    sub_276F2F46C(a7, v34);
-    v37 = a7 + 24;
-    if (*(a7 + 2))
+    sub_276F2F46C(state, v34);
+    v37 = state + 24;
+    if (*(state + 2))
     {
-      v37 = *(a7 + 2);
+      v37 = *(state + 2);
     }
 
     if (v37[320] != 1 || length == 0)
@@ -16929,7 +16929,7 @@ LABEL_44:
       v39 = objc_msgSend_substringWithRange_(self->_string, v35, location, length);
     }
 
-    if ((*(a7 + 472) & 1) == 0 && *(a7 + 57) && *(a7 + 58))
+    if ((*(state + 472) & 1) == 0 && *(state + 57) && *(state + 58))
     {
       if (length)
       {
@@ -16942,19 +16942,19 @@ LABEL_44:
       }
 
       v39 = v50;
-      sub_276F4070C(v51, *(a7 + 58), location, v27, v50);
-      sub_276F2F6C0(a7, v51, 0);
+      sub_276F4070C(v51, *(state + 58), location, v27, v50);
+      sub_276F2F6C0(state, v51, 0);
       sub_276F40794(v51);
     }
 
-    v40 = objc_msgSend_length(v13, v35, v36);
-    sub_276F2F680(a7, 1, v39, location, v40);
+    v40 = objc_msgSend_length(stringCopy, v35, v36);
+    sub_276F2F680(state, 1, v39, location, v40);
   }
 
   string = self->_string;
-  if (v13)
+  if (stringCopy)
   {
-    objc_msgSend_replaceCharactersInRange_withString_(string, v34, location, length, v13);
+    objc_msgSend_replaceCharactersInRange_withString_(string, v34, location, length, stringCopy);
   }
 
   else
@@ -16965,19 +16965,19 @@ LABEL_44:
   v43 = objc_msgSend_attributeArrayForKind_(self, v42, 0);
   if (v43)
   {
-    (*(*v43 + 24))(v43, location, length, v13, v27, a5, a7, v25, v52);
+    (*(*v43 + 24))(v43, location, length, stringCopy, v27, markers, state, v25, v52);
   }
 
   v45 = 0;
   v51[0] = 0;
-  if ((a6 & 0x100) != 0)
+  if ((flags & 0x100) != 0)
   {
     v46 = 2;
   }
 
   else
   {
-    v46 = (a6 >> 7) & 1;
+    v46 = (flags >> 7) & 1;
   }
 
   do
@@ -16997,7 +16997,7 @@ LABEL_44:
           v48 = v25;
         }
 
-        (*(*v47 + 24))(v47, location, length, v13, v27, a5, a7, v48, v52);
+        (*(*v47 + 24))(v47, location, length, stringCopy, v27, markers, state, v48, v52);
       }
     }
 
@@ -17011,19 +17011,19 @@ LABEL_44:
   }
 }
 
-- (id)pFlipStringForObject:(id)a3 insertLength:(unint64_t)a4 attributeArrayKind:(unint64_t)a5
+- (id)pFlipStringForObject:(id)object insertLength:(unint64_t)length attributeArrayKind:(unint64_t)kind
 {
-  v7 = a3;
-  v8 = v7;
-  if (!a4)
+  objectCopy = object;
+  v8 = objectCopy;
+  if (!length)
   {
     v11 = objc_alloc_init(MEMORY[0x277CCACA8]);
     goto LABEL_17;
   }
 
-  if (!v7)
+  if (!objectCopy)
   {
-    switch(a5)
+    switch(kind)
     {
       case 4uLL:
         v25 = 32;
@@ -17047,7 +17047,7 @@ LABEL_12:
     goto LABEL_18;
   }
 
-  if (a5 == 4)
+  if (kind == 4)
   {
     v28 = -4;
     v17 = objc_alloc(MEMORY[0x277CCACA8]);
@@ -17055,7 +17055,7 @@ LABEL_12:
     goto LABEL_17;
   }
 
-  if (a5 == 8)
+  if (kind == 8)
   {
     v27 = 4;
     v15 = objc_alloc(MEMORY[0x277CCACA8]);
@@ -17063,7 +17063,7 @@ LABEL_12:
     goto LABEL_17;
   }
 
-  if (a5 != 5)
+  if (kind != 5)
   {
     goto LABEL_12;
   }
@@ -17078,12 +17078,12 @@ LABEL_18:
   return v14;
 }
 
-- (int64_t)pFlipSpecialCharacterForObject:(id)a3 range:(_NSRange)a4 insertLength:(unint64_t)a5 outChangeRange:(_NSRange *)a6 attributeArrayKind:(unint64_t)a7 actionState:(void *)a8
+- (int64_t)pFlipSpecialCharacterForObject:(id)object range:(_NSRange)range insertLength:(unint64_t)length outChangeRange:(_NSRange *)changeRange attributeArrayKind:(unint64_t)kind actionState:(void *)state
 {
-  length = a4.length;
-  location = a4.location;
-  v14 = a3;
-  v46 = v14;
+  length = range.length;
+  location = range.location;
+  objectCopy = object;
+  v46 = objectCopy;
   if (length >= 2)
   {
     TSUSetCrashReporterInfo();
@@ -17096,7 +17096,7 @@ LABEL_18:
     goto LABEL_25;
   }
 
-  if (a5 >= 2)
+  if (length >= 2)
   {
     TSUSetCrashReporterInfo();
     v40 = MEMORY[0x277D81150];
@@ -17109,9 +17109,9 @@ LABEL_25:
     abort();
   }
 
-  v16 = objc_msgSend_pFlipStringForObject_insertLength_attributeArrayKind_(self, v15, v14, a5, a7);
+  v16 = objc_msgSend_pFlipStringForObject_insertLength_attributeArrayKind_(self, v15, objectCopy, length, kind);
   v20 = objc_msgSend_length(v16, v17, v18);
-  if (v20 != a5)
+  if (v20 != length)
   {
     v21 = MEMORY[0x277D81150];
     v22 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v19, "[TSWPStorage(TSWPStorage_private) pFlipSpecialCharacterForObject:range:insertLength:outChangeRange:attributeArrayKind:actionState:]");
@@ -17121,13 +17121,13 @@ LABEL_25:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v26, v27);
   }
 
-  if (a8)
+  if (state)
   {
-    sub_276F2F46C(a8, v19);
-    v29 = a8 + 24;
-    if (*(a8 + 2))
+    sub_276F2F46C(state, v19);
+    v29 = state + 24;
+    if (*(state + 2))
     {
-      v29 = *(a8 + 2);
+      v29 = *(state + 2);
     }
 
     if (v29[320] != 1 || length == 0)
@@ -17140,11 +17140,11 @@ LABEL_25:
       v31 = objc_msgSend_substringWithRange_(self->_string, v28, location, length);
     }
 
-    sub_276F2F680(a8, 1, v31, location, v20);
+    sub_276F2F680(state, 1, v31, location, v20);
   }
 
-  a6->location = location;
-  a6->length = v20;
+  changeRange->location = location;
+  changeRange->length = v20;
   if ((v20 || length != 1) && (!v20 || length))
   {
     objc_msgSend_replaceCharactersInRange_withString_(self->_string, v19, location, length, v16);
@@ -17157,7 +17157,7 @@ LABEL_25:
     v50 = 0;
     v49 = 0;
     sub_276F31920(&__p, v16);
-    objc_msgSend_p_replaceRange_withString_markers_flags_actionState_(self, v32, location, length, v16, &__p, 0, a8);
+    objc_msgSend_p_replaceRange_withString_markers_flags_actionState_(self, v32, location, length, v16, &__p, 0, state);
     if (__p)
     {
       v48 = __p;
@@ -17168,20 +17168,20 @@ LABEL_25:
   return v20 - length;
 }
 
-- (BOOL)p_shouldAcceptChangesForRange:(_NSRange)a3 copiedRanges:(id)a4 removeDeletedText:(BOOL *)a5
+- (BOOL)p_shouldAcceptChangesForRange:(_NSRange)range copiedRanges:(id)ranges removeDeletedText:(BOOL *)text
 {
-  length = a3.length;
-  location = a3.location;
-  v9 = a4;
+  length = range.length;
+  location = range.location;
+  rangesCopy = ranges;
   hasTrackedChanges = objc_msgSend_hasTrackedChanges(self, v10, v11);
-  if (objc_msgSend_rangeCount(v9, v13, v14) > 1)
+  if (objc_msgSend_rangeCount(rangesCopy, v13, v14) > 1)
   {
     goto LABEL_2;
   }
 
-  if (objc_msgSend_rangeCount(v9, v15, v16) == 1)
+  if (objc_msgSend_rangeCount(rangesCopy, v15, v16) == 1)
   {
-    v21 = objc_msgSend_firstRange(v9, v18, v19) == location && v18 == length;
+    v21 = objc_msgSend_firstRange(rangesCopy, v18, v19) == location && v18 == length;
     if ((v21 & hasTrackedChanges & 1) == 0)
     {
       goto LABEL_2;
@@ -17207,7 +17207,7 @@ LABEL_25:
         v27 = TSWPAttributeArray::objectForAttributeIndex(v23, v24);
         if (!v27)
         {
-          *a5 = 1;
+          *text = 1;
           break;
         }
 
@@ -17227,17 +17227,17 @@ LABEL_2:
   return hasTrackedChanges;
 }
 
-- (void)i_assignStylesheet:(id)a3
+- (void)i_assignStylesheet:(id)stylesheet
 {
-  v4 = a3;
+  stylesheetCopy = stylesheet;
   objc_msgSend_willModify(self, v5, v6);
   stylesheet = self->_stylesheet;
-  self->_stylesheet = v4;
+  self->_stylesheet = stylesheetCopy;
 }
 
-- (_NSRange)textRangeIgnoringTrailingLineBreaksForParagraphAtIndex:(unint64_t)a3
+- (_NSRange)textRangeIgnoringTrailingLineBreaksForParagraphAtIndex:(unint64_t)index
 {
-  v4 = objc_msgSend_textRangeForParagraphAtIndex_(self, a2, a3);
+  v4 = objc_msgSend_textRangeForParagraphAtIndex_(self, a2, index);
   v6 = v4;
   if (v5)
   {
@@ -17264,16 +17264,16 @@ LABEL_2:
   return result;
 }
 
-- (BOOL)p_canTransferBookmark:(id)a3
+- (BOOL)p_canTransferBookmark:(id)bookmark
 {
-  v4 = a3;
+  bookmarkCopy = bookmark;
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
   v20 = objc_msgSend_supportsBookmarks(self, v5, v6);
   if (*(v18 + 24) == 1)
   {
-    v9 = objc_msgSend_url(v4, v7, v8);
+    v9 = objc_msgSend_url(bookmarkCopy, v7, v8);
     v12 = objc_msgSend_range(self, v10, v11);
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
@@ -17296,29 +17296,29 @@ LABEL_2:
   return v14 & 1;
 }
 
-- (void)transferAttributeArraySource:(TSWPAttributeArray *)a3 toAttributeArrayDest:(TSWPAttributeArray *)a4 atCharIndex:(unint64_t)a5 delta:(int64_t)a6 dolcContext:(id)a7 actionBuilder:(void *)a8
+- (void)transferAttributeArraySource:(TSWPAttributeArray *)source toAttributeArrayDest:(TSWPAttributeArray *)dest atCharIndex:(unint64_t)index delta:(int64_t)delta dolcContext:(id)context actionBuilder:(void *)builder
 {
-  v14 = a7;
-  if (a3 && a4)
+  contextCopy = context;
+  if (source && dest)
   {
-    v15 = *(a3 + 6);
-    v90 = TSWPAttributeArray::supportsSingleSparseBreakingTableEntries(*(a3 + 28));
+    v15 = *(source + 6);
+    v90 = TSWPAttributeArray::supportsSingleSparseBreakingTableEntries(*(source + 28));
     v96 = v15;
     if (v15)
     {
       v16 = 0;
-      v95 = a6 + a5;
+      v95 = delta + index;
       v93 = 0;
       v94 = 0x7FFFFFFFFFFFFFFFLL;
-      v91 = v14;
+      v91 = contextCopy;
       while (2)
       {
         v97 = v16;
-        v17 = TSWPAttributeArray::rangeForAttributeIndex(a3, v16);
+        v17 = TSWPAttributeArray::rangeForAttributeIndex(source, v16);
         v19 = v18;
-        if (TSWPAttributeArray::hasObjects(*(a3 + 28)))
+        if (TSWPAttributeArray::hasObjects(*(source + 28)))
         {
-          v98 = TSWPAttributeArray::objectForAttributeIndex(a3, v97);
+          v98 = TSWPAttributeArray::objectForAttributeIndex(source, v97);
         }
 
         else
@@ -17328,23 +17328,23 @@ LABEL_2:
 
         v103 = v95 + v17;
         v104 = v19;
-        v21 = *(a3 + 14);
+        v21 = *(source + 14);
         v22 = v21;
         switch(v21)
         {
           case 0:
             if (v94 == 0x7FFFFFFFFFFFFFFFLL)
             {
-              v94 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(a4, a5);
+              v94 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(dest, index);
             }
 
-            if (v97 || TSWPAttributeArray::charIndexForAttributeIndex(a4, v94) >= a5)
+            if (v97 || TSWPAttributeArray::charIndexForAttributeIndex(dest, v94) >= index)
             {
               __p = 0;
               v101 = 0;
               __p = objc_msgSend_textRangeForParagraphIndexRange_(self, v22, v94 + v97, 1);
               v101 = v79;
-              if ((objc_msgSend_hasObject_attributeArrayKind_range_(self, v79, v98, *(a3 + 28), __p, v79) & 1) == 0)
+              if ((objc_msgSend_hasObject_attributeArrayKind_range_(self, v79, v98, *(source + 28), __p, v79) & 1) == 0)
               {
                 goto LABEL_94;
               }
@@ -17374,7 +17374,7 @@ LABEL_2:
 
             if (v94 == 0x7FFFFFFFFFFFFFFFLL)
             {
-              v94 = objc_msgSend_paragraphIndexAtCharIndex_(self, v21, a5);
+              v94 = objc_msgSend_paragraphIndexAtCharIndex_(self, v21, index);
             }
 
             if (!v93)
@@ -17402,7 +17402,7 @@ LABEL_2:
 
             else
             {
-              v72 = (TSWPAttributeArray::charIndexForAttributeIndex(v93, v28) < a5) & (v33 != 0);
+              v72 = (TSWPAttributeArray::charIndexForAttributeIndex(v93, v28) < index) & (v33 != 0);
               if (v72)
               {
                 v33 = v32;
@@ -17414,24 +17414,24 @@ LABEL_2:
               }
 
               v28 += v72;
-              if (TSWPAttributeArray::charIndexForAttributeIndex(v93, v28) < a5)
+              if (TSWPAttributeArray::charIndexForAttributeIndex(v93, v28) < index)
               {
                 goto LABEL_88;
               }
             }
 
-            v73 = *(a3 + 14);
+            v73 = *(source + 14);
             if (v73 <= 0x12u && (v31 = v73, ((1 << v73) & 0x40802) != 0))
             {
-              LODWORD(v99.location) = *TSWPAttributeRecord::paragraphData(&a3->var1[v97], v73);
+              LODWORD(v99.location) = *TSWPAttributeRecord::paragraphData(&source->var1[v97], v73);
               __p = 0;
               v101 = 0;
               __p = objc_msgSend_textRangeForParagraphIndexRange_(self, v74, v28, v33);
               v101 = v75;
-              if ((objc_msgSend_hasData_attributeArrayKind_range_(self, v75, LODWORD(v99.location), *(a3 + 28), __p, v75) & 1) == 0)
+              if ((objc_msgSend_hasData_attributeArrayKind_range_(self, v75, LODWORD(v99.location), *(source + 28), __p, v75) & 1) == 0)
               {
-                sub_276F33818(a8, *(a3 + 28), &__p, &v99, 0);
-                (*(*a8 + 16))(a8);
+                sub_276F33818(builder, *(source + 28), &__p, &v99, 0);
+                (*(*builder + 16))(builder);
               }
             }
 
@@ -17452,7 +17452,7 @@ LABEL_2:
 
               __p = v80;
               v101 = v82;
-              if ((objc_msgSend_hasObject_attributeArrayKind_range_findUsingExactRangeLocation_(self, v81, v98, *(a3 + 28), v80) & 1) == 0)
+              if ((objc_msgSend_hasObject_attributeArrayKind_range_findUsingExactRangeLocation_(self, v81, v98, *(source + 28), v80) & 1) == 0)
               {
                 goto LABEL_94;
               }
@@ -17471,13 +17471,13 @@ LABEL_2:
           case 5:
             __p = (v95 + v17);
             v101 = 1;
-            sub_276F33A24(a8, v21, &__p, v98, 0, 0xFFFFFFFFLL);
-            (*(*a8 + 16))(a8);
+            sub_276F33A24(builder, v21, &__p, v98, 0, 0xFFFFFFFFLL);
+            (*(*builder + 16))(builder);
             goto LABEL_88;
           case 8:
             if (v94 == 0x7FFFFFFFFFFFFFFFLL)
             {
-              v94 = objc_msgSend_paragraphIndexAtCharIndex_(self, v21, a5);
+              v94 = objc_msgSend_paragraphIndexAtCharIndex_(self, v21, index);
             }
 
             if (!v93)
@@ -17492,28 +17492,28 @@ LABEL_2:
               v101 = 0;
               __p = objc_msgSend_textRangeForParagraphAtIndex_(self, v76, v77);
               v101 = v78;
-              if ((objc_msgSend_hasObject_attributeArrayKind_range_(self, v78, v98, *(a3 + 28), __p, v78) & 1) == 0)
+              if ((objc_msgSend_hasObject_attributeArrayKind_range_(self, v78, v98, *(source + 28), __p, v78) & 1) == 0)
               {
 LABEL_94:
-                sub_276F33A24(a8, *(a3 + 28), &__p, v98, 0, 0xFFFFFFFFLL);
-                (*(*a8 + 16))(a8);
+                sub_276F33A24(builder, *(source + 28), &__p, v98, 0, 0xFFFFFFFFLL);
+                (*(*builder + 16))(builder);
               }
             }
 
             goto LABEL_88;
           case 15:
           case 16:
-            if (!objc_msgSend_preserveChangeTracking(v14, v21, v20))
+            if (!objc_msgSend_preserveChangeTracking(contextCopy, v21, v20))
             {
               goto LABEL_88;
             }
 
-            v21 = *(a3 + 14);
+            v21 = *(source + 14);
 LABEL_9:
             if (v21 == 17)
             {
               v23 = objc_msgSend_highlightsAllowed(self, v22, v20);
-              v21 = *(a3 + 14);
+              v21 = *(source + 14);
             }
 
             else
@@ -17528,7 +17528,7 @@ LABEL_9:
               goto LABEL_88;
             }
 
-            v37 = *(a3 + 28);
+            v37 = *(source + 28);
             if (v37 <= 0x15 && ((1 << v37) & 0x2390C0) != 0)
             {
               v38 = objc_msgSend_context(self, v22, v20);
@@ -17542,7 +17542,7 @@ LABEL_9:
               }
 
               v42 = 0;
-              v37 = *(a3 + 28);
+              v37 = *(source + 28);
               v35 = v104;
             }
 
@@ -17559,8 +17559,8 @@ LABEL_9:
             }
 
 LABEL_86:
-            sub_276F33A24(a8, *(a3 + 28), &v103, v98, 0, 0xFFFFFFFFLL);
-            (*(*a8 + 16))(a8);
+            sub_276F33A24(builder, *(source + 28), &v103, v98, 0, 0xFFFFFFFFLL);
+            (*(*builder + 16))(builder);
 LABEL_87:
 
 LABEL_88:
@@ -17576,27 +17576,27 @@ LABEL_88:
             __p = 0;
             v101 = 0;
             v102 = 0;
-            v43 = (*(a3->var0 + 20))(a3, v17, 1, &__p);
+            v43 = (*(source->var0 + 20))(source, v17, 1, &__p);
             v48 = v97;
             if (objc_msgSend_count(v43, v44, v45))
             {
               for (i = 0; i < objc_msgSend_count(v43, v46, v47); ++i)
               {
                 v51 = objc_msgSend_objectAtIndexedSubscript_(v43, v50, i);
-                if (!v48 || ((*(a3->var0 + 18))(a3, v51, v97 - 1) & 1) == 0)
+                if (!v48 || ((*(source->var0 + 18))(source, v51, v97 - 1) & 1) == 0)
                 {
-                  v52 = (*(a3->var0 + 19))(a3, v51, v48);
+                  v52 = (*(source->var0 + 19))(source, v51, v48);
                   v54 = v53;
-                  v55 = self;
+                  selfCopy = self;
                   v99.location = 0;
                   v99.length = 0;
                   v106.location = v52;
                   v106.length = v54;
-                  TSWPAttributeArray::rangeForAttributeRange(a3, v106);
+                  TSWPAttributeArray::rangeForAttributeRange(source, v106);
                   v99.location = v103;
                   v99.length = v56;
-                  v57 = a8;
-                  v58 = *(a8 + 1);
+                  builderCopy = builder;
+                  v58 = *(builder + 1);
                   v61 = objc_msgSend_range(v58, v59, v60);
                   v63 = v62;
 
@@ -17605,11 +17605,11 @@ LABEL_88:
                   v66 = NSIntersectionRange(v105, v99);
                   length = v66.length;
                   v99 = v66;
-                  a8 = v57;
-                  self = v55;
-                  if (*(a3 + 28) == 19)
+                  builder = builderCopy;
+                  self = selfCopy;
+                  if (*(source + 28) == 19)
                   {
-                    v67 = objc_msgSend_highlightsAllowed(v55, v66.length, v65);
+                    v67 = objc_msgSend_highlightsAllowed(selfCopy, v66.length, v65);
                   }
 
                   else
@@ -17619,14 +17619,14 @@ LABEL_88:
 
                   if (v104 && v67)
                   {
-                    v68 = objc_msgSend_context(v55, length, v65);
+                    v68 = objc_msgSend_context(selfCopy, length, v65);
                     v70 = objc_msgSend_copyWithContext_(v51, v69, v68);
 
                     v71 = v70;
-                    sub_276F33A24(v57, *(a3 + 28), &v99, v71, 1, 0xFFFFFFFFLL);
-                    (*(*v57 + 16))(v57);
+                    sub_276F33A24(builderCopy, *(source + 28), &v99, v71, 1, 0xFFFFFFFFLL);
+                    (*(*builderCopy + 16))(builderCopy);
 
-                    self = v55;
+                    self = selfCopy;
                   }
 
                   else
@@ -17646,7 +17646,7 @@ LABEL_88:
               operator delete(__p);
             }
 
-            v14 = v91;
+            contextCopy = v91;
             goto LABEL_88;
           default:
             goto LABEL_88;
@@ -17668,13 +17668,13 @@ LABEL_88:
   }
 }
 
-- (_NSRange)replaceCharactersInRange:(_NSRange)a3 withStorage:(id)a4
+- (_NSRange)replaceCharactersInRange:(_NSRange)range withStorage:(id)storage
 {
-  length = a3.length;
-  location = a3.location;
-  v7 = a4;
+  length = range.length;
+  location = range.location;
+  storageCopy = storage;
   sub_276E3E8D0(v14, 0);
-  v9 = objc_msgSend_replaceCharactersInRange_withStorage_usePasteRules_dolcContext_undoTransaction_(self, v8, location, length, v7, 0, 0, v14);
+  v9 = objc_msgSend_replaceCharactersInRange_withStorage_usePasteRules_dolcContext_undoTransaction_(self, v8, location, length, storageCopy, 0, 0, v14);
   v11 = v10;
   sub_276E3EAC4(v14);
 
@@ -17685,16 +17685,16 @@ LABEL_88:
   return result;
 }
 
-- (_NSRange)replaceCharactersInRange:(_NSRange)a3 withStorage:(id)a4 usePasteRules:(BOOL)a5 dolcContext:(id)a6 undoTransaction:(void *)a7
+- (_NSRange)replaceCharactersInRange:(_NSRange)range withStorage:(id)storage usePasteRules:(BOOL)rules dolcContext:(id)context undoTransaction:(void *)transaction
 {
-  v9 = a5;
-  length = a3.length;
-  location = a3.location;
-  v13 = a4;
-  v14 = a6;
+  rulesCopy = rules;
+  length = range.length;
+  location = range.location;
+  storageCopy = storage;
+  contextCopy = context;
   v15 = [TSWPSelection alloc];
   v17 = objc_msgSend_initWithRange_(v15, v16, location, length);
-  v19 = objc_msgSend_replaceCharactersInSelection_withStorage_usePasteRules_srcStylesAmbiguous_dolcContext_changeSession_undoTransaction_(self, v18, v17, v13, v9, 0, v14, 0, a7);
+  v19 = objc_msgSend_replaceCharactersInSelection_withStorage_usePasteRules_srcStylesAmbiguous_dolcContext_changeSession_undoTransaction_(self, v18, v17, storageCopy, rulesCopy, 0, contextCopy, 0, transaction);
   v21 = v20;
 
   v22 = v19;
@@ -17704,9 +17704,9 @@ LABEL_88:
   return result;
 }
 
-- (_NSRange)replaceCharactersInSelection:(id)a3 withStorage:(id)a4 usePasteRules:(BOOL)a5 srcStylesAmbiguous:(BOOL)a6 dolcContext:(id)a7 changeSession:(id)a8 undoTransaction:(void *)a9
+- (_NSRange)replaceCharactersInSelection:(id)selection withStorage:(id)storage usePasteRules:(BOOL)rules srcStylesAmbiguous:(BOOL)ambiguous dolcContext:(id)context changeSession:(id)session undoTransaction:(void *)transaction
 {
-  v9 = objc_msgSend_replaceCharactersInSelection_withStorage_usePasteRules_srcStylesAmbiguous_dolcContext_changeSession_undoTransaction_outInsertedRanges_(self, a2, a3, a4, a5, a6, a7, a8, a9, 0);
+  v9 = objc_msgSend_replaceCharactersInSelection_withStorage_usePasteRules_srcStylesAmbiguous_dolcContext_changeSession_undoTransaction_outInsertedRanges_(self, a2, selection, storage, rules, ambiguous, context, session, transaction, 0);
   v12 = objc_msgSend_superRange(v9, v10, v11);
   v14 = v13;
 
@@ -17717,7 +17717,7 @@ LABEL_88:
   return result;
 }
 
-- (id)replaceCharactersInSelection:(id)a3 withStorage:(id)a4 usePasteRules:(BOOL)a5 srcStylesAmbiguous:(BOOL)a6 dolcContext:(id)a7 changeSession:(id)a8 undoTransaction:(void *)a9 outInsertedRanges:(id *)a10
+- (id)replaceCharactersInSelection:(id)selection withStorage:(id)storage usePasteRules:(BOOL)rules srcStylesAmbiguous:(BOOL)ambiguous dolcContext:(id)context changeSession:(id)session undoTransaction:(void *)transaction outInsertedRanges:(id *)self0
 {
   v10 = [TSWPRangeArray alloc];
   v12 = objc_msgSend_initWithRange_(v10, v11, 0, 0);
@@ -17725,9 +17725,9 @@ LABEL_88:
   return v12;
 }
 
-- (_NSRange)rangeForChange:(id)a3
+- (_NSRange)rangeForChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v7 = objc_msgSend_length(self, v5, v6);
   sub_276E0A8BC(v14, self, 0, v7);
   while (1)
@@ -17742,7 +17742,7 @@ LABEL_88:
 
     v9 = sub_276E0AA14(v14);
 
-    if (v9 == v4)
+    if (v9 == changeCopy)
     {
       break;
     }
@@ -17762,32 +17762,32 @@ LABEL_7:
   return result;
 }
 
-- (id)changeAtCharIndex:(unint64_t)a3 attributeKind:(unint64_t)a4 effectiveRange:(_NSRange *)a5
+- (id)changeAtCharIndex:(unint64_t)index attributeKind:(unint64_t)kind effectiveRange:(_NSRange *)range
 {
-  v6 = self->_attributesTable[a4];
+  v6 = self->_attributesTable[kind];
   if (!v6 || !*(v6 + 6))
   {
-    if (a5)
+    if (range)
     {
-      v9 = objc_msgSend_range(self, a2, a3);
+      v9 = objc_msgSend_range(self, a2, index);
       goto LABEL_8;
     }
 
     goto LABEL_10;
   }
 
-  v7 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(self->_attributesTable[a4], a3);
+  v7 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(self->_attributesTable[kind], index);
   if (v7 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    if (a5)
+    if (range)
     {
       v8 = TSWPAttributeArray::charIndexForAttributeIndex(v6, 0);
       v9 = 0;
 LABEL_8:
       v10 = 0;
 LABEL_9:
-      a5->location = v9;
-      a5->length = v8;
+      range->location = v9;
+      range->length = v8;
       goto LABEL_11;
     }
 
@@ -17798,7 +17798,7 @@ LABEL_10:
 
   v12 = v7;
   v10 = TSWPAttributeArray::objectForAttributeIndex(v6, v7);
-  if (a5)
+  if (range)
   {
     v9 = TSWPAttributeArray::rangeForAttributeIndex(v6, v12);
     goto LABEL_9;
@@ -17809,21 +17809,21 @@ LABEL_11:
   return v10;
 }
 
-- (id)changeAtCharIndex:(unint64_t)a3 outRange:(_NSRange *)a4
+- (id)changeAtCharIndex:(unint64_t)index outRange:(_NSRange *)range
 {
-  v7 = objc_msgSend_changeAtCharIndex_attributeKind_effectiveRange_(self, a2, a3, 15, a4);
+  v7 = objc_msgSend_changeAtCharIndex_attributeKind_effectiveRange_(self, a2, index, 15, range);
   if (!v7)
   {
-    v7 = objc_msgSend_changeAtCharIndex_attributeKind_effectiveRange_(self, v8, a3, 16, a4);
+    v7 = objc_msgSend_changeAtCharIndex_attributeKind_effectiveRange_(self, v8, index, 16, range);
   }
 
   return v7;
 }
 
-- (id)deletedRangesInRange:(_NSRange)a3
+- (id)deletedRangesInRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v6 = objc_opt_new();
   sub_276E0A8BC(v13, self, location, length);
   while (1)
@@ -17856,11 +17856,11 @@ LABEL_11:
   return v11;
 }
 
-- (id)hiddenRangesInRange:(_NSRange)a3
+- (id)hiddenRangesInRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  sub_276E0A8BC(v13, self, a3.location, a3.length);
+  length = range.length;
+  location = range.location;
+  sub_276E0A8BC(v13, self, range.location, range.length);
   v5 = 0;
   while (1)
   {
@@ -17898,10 +17898,10 @@ LABEL_11:
   return v11;
 }
 
-- (id)visibleRangesInRange:(_NSRange)a3
+- (id)visibleRangesInRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v6 = [TSWPMutableRangeArray alloc];
   v8 = objc_msgSend_initWithRange_(v6, v7, location, length);
   sub_276E0A8BC(v16, self, location, length);
@@ -17929,14 +17929,14 @@ LABEL_11:
   return v14;
 }
 
-- (BOOL)p_hasDeletedTextAtCharIndex:(unint64_t)a3 requireHidden:(BOOL)a4 range:(_NSRange *)a5
+- (BOOL)p_hasDeletedTextAtCharIndex:(unint64_t)index requireHidden:(BOOL)hidden range:(_NSRange *)range
 {
-  v6 = a4;
-  v8 = objc_msgSend_deletionChangesTable(self, a2, a3);
+  hiddenCopy = hidden;
+  v8 = objc_msgSend_deletionChangesTable(self, a2, index);
   v9 = v8;
   if (v8)
   {
-    v10 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(v8, a3);
+    v10 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(v8, index);
     if (v10 > 0x7FFFFFFFFFFFFFFELL)
     {
       v15 = 0;
@@ -17947,16 +17947,16 @@ LABEL_11:
       v11 = v10;
       v12 = TSWPAttributeArray::objectForAttributeIndex(v9, v10);
       v15 = v12;
-      if (v12 && (!v6 || objc_msgSend_isHidden(v12, v13, v14)))
+      if (v12 && (!hiddenCopy || objc_msgSend_isHidden(v12, v13, v14)))
       {
         v16 = TSWPAttributeArray::rangeForAttributeIndex(v9, v11);
         LOBYTE(v9) = 0;
-        if (a3 >= v16 && a3 - v16 < v17)
+        if (index >= v16 && index - v16 < v17)
         {
-          if (a5)
+          if (range)
           {
-            a5->location = v16;
-            a5->length = v17;
+            range->location = v16;
+            range->length = v17;
           }
 
           LOBYTE(v9) = 1;
@@ -17973,24 +17973,24 @@ LABEL_13:
   return v9;
 }
 
-- (unint64_t)p_indexOfFirstNonDeletedCharInRange:(_NSRange)a3 requireVisible:(BOOL)a4
+- (unint64_t)p_indexOfFirstNonDeletedCharInRange:(_NSRange)range requireVisible:(BOOL)visible
 {
-  v4 = a4;
-  location = a3.location;
-  v20 = a3;
-  v6 = objc_msgSend_deletionChangesTable(self, a2, a3.location);
+  visibleCopy = visible;
+  location = range.location;
+  rangeCopy = range;
+  v6 = objc_msgSend_deletionChangesTable(self, a2, range.location);
   if (v6)
   {
     v7 = v6;
-    TSWPAttributeArray::begin(v6, &v20, &v18);
-    TSWPAttributeArray::end(v7, &v20, v8, &v16);
+    TSWPAttributeArray::begin(v6, &rangeCopy, &v18);
+    TSWPAttributeArray::end(v7, &rangeCopy, v8, &v16);
     if (v19 != v17)
     {
       while (1)
       {
         v9 = TSWPAttributeArray::iterator::operator*(&v18);
         v12 = v9;
-        if (!v9 || v4 && (objc_msgSend_isHidden(v9, v10, v11) & 1) == 0)
+        if (!v9 || visibleCopy && (objc_msgSend_isHidden(v9, v10, v11) & 1) == 0)
         {
           break;
         }
@@ -18001,7 +18001,7 @@ LABEL_13:
         }
       }
 
-      v13 = v20.location;
+      v13 = rangeCopy.location;
       v14 = TSWPAttributeArray::rangeForAttributeIndex(v18, v19);
       if (v13 <= v14)
       {
@@ -18018,16 +18018,16 @@ LABEL_13:
   return location;
 }
 
-- (unint64_t)indexAfterLastVisibleCharInRange:(_NSRange)a3
+- (unint64_t)indexAfterLastVisibleCharInRange:(_NSRange)range
 {
-  v21 = a3;
-  v3 = a3.location + a3.length;
-  v4 = objc_msgSend_deletionChangesTable(self, a2, a3.location);
+  rangeCopy = range;
+  v3 = range.location + range.length;
+  v4 = objc_msgSend_deletionChangesTable(self, a2, range.location);
   if (v4)
   {
     v6 = v4;
-    TSWPAttributeArray::end(v4, &v21, v5, &v19);
-    TSWPAttributeArray::begin(v6, &v21, &v17);
+    TSWPAttributeArray::end(v4, &rangeCopy, v5, &v19);
+    TSWPAttributeArray::begin(v6, &rangeCopy, &v17);
     v7 = v20;
     if (v20 != v18)
     {
@@ -18052,8 +18052,8 @@ LABEL_13:
         }
       }
 
-      location = v21.location;
-      length = v21.length;
+      location = rangeCopy.location;
+      length = rangeCopy.length;
       v14 = TSWPAttributeArray::rangeForAttributeIndex(v19, v20);
       if (v14 + v15 >= length + location)
       {
@@ -18070,11 +18070,11 @@ LABEL_13:
   return v3;
 }
 
-- (BOOL)hasDeletionInRange:(_NSRange)a3
+- (BOOL)hasDeletionInRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v5 = objc_msgSend_deletionChangesTable(self, a2, a3.location);
+  length = range.length;
+  location = range.location;
+  v5 = objc_msgSend_deletionChangesTable(self, a2, range.location);
   if (v5)
   {
     v6 = v5;
@@ -18096,11 +18096,11 @@ LABEL_13:
   return v5;
 }
 
-- (id)p_undeletedCharIndexesInRange:(_NSRange)a3
+- (id)p_undeletedCharIndexesInRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v6 = objc_msgSend_range(self, a2, a3.location);
+  length = range.length;
+  location = range.location;
+  v6 = objc_msgSend_range(self, a2, range.location);
   v8 = v6;
   v9 = v7;
   if (v6 > location || &v7[v6] < location + length)
@@ -18150,38 +18150,38 @@ LABEL_13:
   return v22;
 }
 
-- (BOOL)isCharRangePartiallyDeleted:(_NSRange)a3
+- (BOOL)isCharRangePartiallyDeleted:(_NSRange)deleted
 {
-  length = a3.length;
-  v4 = objc_msgSend_p_undeletedCharIndexesInRange_(self, a2, a3.location);
+  length = deleted.length;
+  v4 = objc_msgSend_p_undeletedCharIndexesInRange_(self, a2, deleted.location);
   LOBYTE(length) = objc_msgSend_count(v4, v5, v6) < length;
 
   return length;
 }
 
-- (BOOL)isCharRangeEntirelyDeleted:(_NSRange)a3
+- (BOOL)isCharRangeEntirelyDeleted:(_NSRange)deleted
 {
-  v3 = objc_msgSend_p_undeletedCharIndexesInRange_(self, a2, a3.location, a3.length);
+  v3 = objc_msgSend_p_undeletedCharIndexesInRange_(self, a2, deleted.location, deleted.length);
   v6 = objc_msgSend_count(v3, v4, v5) == 0;
 
   return v6;
 }
 
-- (BOOL)isCharRangeEntirelyHidden:(_NSRange)a3
+- (BOOL)isCharRangeEntirelyHidden:(_NSRange)hidden
 {
-  v3 = objc_msgSend_visibleRangesInRange_(self, a2, a3.location, a3.length);
+  v3 = objc_msgSend_visibleRangesInRange_(self, a2, hidden.location, hidden.length);
   v6 = objc_msgSend_rangeCount(v3, v4, v5) == 0;
 
   return v6;
 }
 
-- (void)applyChange:(id)a3 changeRange:(_NSRange)a4 accept:(BOOL)a5 undoTransaction:(void *)a6
+- (void)applyChange:(id)change changeRange:(_NSRange)range accept:(BOOL)accept undoTransaction:(void *)transaction
 {
-  v7 = a5;
-  length = a4.length;
-  location = a4.location;
-  v32 = a3;
-  if ((objc_msgSend_isInsertion(v32, v11, v12) & 1) == 0 && (objc_msgSend_isDeletion(v32, v13, v14) & 1) == 0)
+  acceptCopy = accept;
+  length = range.length;
+  location = range.location;
+  changeCopy = change;
+  if ((objc_msgSend_isInsertion(changeCopy, v11, v12) & 1) == 0 && (objc_msgSend_isDeletion(changeCopy, v13, v14) & 1) == 0)
   {
     v15 = MEMORY[0x277D81150];
     v16 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v13, "[TSWPStorage(ChangeTracking) applyChange:changeRange:accept:undoTransaction:]");
@@ -18191,31 +18191,31 @@ LABEL_13:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v20, v21);
   }
 
-  if ((objc_msgSend_isInsertion(v32, v13, v14) & 1) != 0 || objc_msgSend_isDeletion(v32, v22, v23))
+  if ((objc_msgSend_isInsertion(changeCopy, v13, v14) & 1) != 0 || objc_msgSend_isDeletion(changeCopy, v22, v23))
   {
-    if (objc_msgSend_isInsertion(v32, v22, v23))
+    if (objc_msgSend_isInsertion(changeCopy, v22, v23))
     {
-      objc_msgSend_applyObject_toCharRange_forKind_dolcContext_undoTransaction_(self, v24, 0, location, length, 15, 0, a6);
+      objc_msgSend_applyObject_toCharRange_forKind_dolcContext_undoTransaction_(self, v24, 0, location, length, 15, 0, transaction);
     }
 
     else
     {
-      objc_msgSend_applyObject_toCharRange_forKind_dolcContext_undoTransaction_(self, v24, 0, location, length, 16, 0, a6);
+      objc_msgSend_applyObject_toCharRange_forKind_dolcContext_undoTransaction_(self, v24, 0, location, length, 16, 0, transaction);
     }
 
-    if (v7)
+    if (acceptCopy)
     {
-      if ((objc_msgSend_isInsertion(v32, v25, v26) & 1) != 0 || (objc_msgSend_isDeletion(v32, v27, v28) & 1) == 0)
+      if ((objc_msgSend_isInsertion(changeCopy, v25, v26) & 1) != 0 || (objc_msgSend_isDeletion(changeCopy, v27, v28) & 1) == 0)
       {
         goto LABEL_16;
       }
 
 LABEL_15:
-      objc_msgSend_deleteRange_undoTransaction_(self, v29, location, length, a6);
+      objc_msgSend_deleteRange_undoTransaction_(self, v29, location, length, transaction);
       goto LABEL_16;
     }
 
-    if ((objc_msgSend_isDeletion(v32, v25, v26) & 1) == 0 && objc_msgSend_isInsertion(v32, v30, v31))
+    if ((objc_msgSend_isDeletion(changeCopy, v25, v26) & 1) == 0 && objc_msgSend_isInsertion(changeCopy, v30, v31))
     {
       goto LABEL_15;
     }
@@ -18224,18 +18224,18 @@ LABEL_15:
 LABEL_16:
 }
 
-- (void)applyChanges:(BOOL)a3 inRange:(_NSRange)a4 inSelectionRange:(_NSRange)a5 outChangedRange:(_NSRange *)a6 outSelectionRange:(_NSRange *)a7 undoTransaction:(void *)a8 forceAll:(BOOL)a9 kind:(int)a10
+- (void)applyChanges:(BOOL)changes inRange:(_NSRange)range inSelectionRange:(_NSRange)selectionRange outChangedRange:(_NSRange *)changedRange outSelectionRange:(_NSRange *)outSelectionRange undoTransaction:(void *)transaction forceAll:(BOOL)all kind:(int)self0
 {
-  v10 = a6;
-  length = a5.length;
-  location = a5.location;
-  v13 = a4.length;
-  v14 = a4.location;
-  v15 = a3;
+  changedRangeCopy = changedRange;
+  length = selectionRange.length;
+  location = selectionRange.location;
+  v13 = range.length;
+  v14 = range.location;
+  changesCopy = changes;
   v111 = *MEMORY[0x277D85DE8];
-  *a6 = a4;
-  *a7 = a5;
-  v86 = a7;
+  *changedRange = range;
+  *outSelectionRange = selectionRange;
+  outSelectionRangeCopy = outSelectionRange;
   v17 = *MEMORY[0x277D81490];
   v18 = *(MEMORY[0x277D81490] + 8);
   v98 = objc_opt_new();
@@ -18249,7 +18249,7 @@ LABEL_16:
   v91 = v17;
   v87 = v18;
   v88 = v17;
-  p_location = &v10->location;
+  p_location = &changedRangeCopy->location;
   v94 = location;
   while (1)
   {
@@ -18264,15 +18264,15 @@ LABEL_16:
     v23 = sub_276E0AA14(v108);
     v26 = v23;
     v99 = v18;
-    if (!a10 || objc_msgSend_kind(v23, v24, v25) == a10)
+    if (!kind || objc_msgSend_kind(v23, v24, v25) == kind)
     {
       v27 = sub_276E0AA48(v108);
       v29 = v28;
       v120.location = v27;
       v120.length = v28;
-      v31 = NSUnionRange(*v10, v120);
-      *v10 = v31;
-      if (v15)
+      v31 = NSUnionRange(*changedRangeCopy, v120);
+      *changedRangeCopy = v31;
+      if (changesCopy)
       {
         if ((objc_msgSend_isDeletion(v26, v31.length, v30) & 1) == 0)
         {
@@ -18300,7 +18300,7 @@ LABEL_9:
       }
 
 LABEL_10:
-      if (!a9 && v27 <= location && v27 + v29 >= v92)
+      if (!all && v27 <= location && v27 + v29 >= v92)
       {
         if (objc_msgSend_isDeletion(v26, v32, v33))
         {
@@ -18329,8 +18329,8 @@ LABEL_16:
         }
       }
 
-      objc_msgSend_addObject_(v98, v32, v26, v86);
-      v10 = p_location;
+      objc_msgSend_addObject_(v98, v32, v26, outSelectionRangeCopy);
+      changedRangeCopy = p_location;
       location = v94;
     }
 
@@ -18341,9 +18341,9 @@ LABEL_16:
 
   if (v90)
   {
-    v10->location = v88;
-    v10->length = v87;
-    if (v15)
+    changedRangeCopy->location = v88;
+    changedRangeCopy->length = v87;
+    if (changesCopy)
     {
       v114.location = v88;
       v114.length = v87;
@@ -18365,15 +18365,15 @@ LABEL_16:
       v97 = 0;
     }
 
-    objc_msgSend_removeAllObjects(v98, v21, v22, v86);
+    objc_msgSend_removeAllObjects(v98, v21, v22, outSelectionRangeCopy);
     objc_msgSend_addObject_(v98, v43, v90);
   }
 
   else if (v93)
   {
-    v10->location = v91;
-    v10->length = v18;
-    if (v15)
+    changedRangeCopy->location = v91;
+    changedRangeCopy->length = v18;
+    if (changesCopy)
     {
       v96 = 0;
       v97 = 0;
@@ -18395,15 +18395,15 @@ LABEL_16:
       v96 = -v21;
     }
 
-    objc_msgSend_removeAllObjects(v98, v21, v22, v86);
+    objc_msgSend_removeAllObjects(v98, v21, v22, outSelectionRangeCopy);
     objc_msgSend_addObject_(v98, v45, v93);
   }
 
-  if (v86->location != 0x7FFFFFFFFFFFFFFFLL)
+  if (outSelectionRangeCopy->location != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v46 = v86->length + v96;
-    v86->location += v97;
-    v86->length = v46;
+    v46 = outSelectionRangeCopy->length + v96;
+    outSelectionRangeCopy->location += v97;
+    outSelectionRangeCopy->length = v46;
   }
 
   v106 = 0u;
@@ -18425,10 +18425,10 @@ LABEL_16:
         }
 
         v54 = *(*(&v104 + 1) + 8 * i);
-        if (objc_msgSend_isInsertion(v54, v49, v50, v86))
+        if (objc_msgSend_isInsertion(v54, v49, v50, outSelectionRangeCopy))
         {
           v55 = objc_msgSend_rangeForChange_(self, v49, v54);
-          objc_msgSend_applyChange_changeRange_accept_undoTransaction_(self, v56, v54, v55, v56, v15, a8);
+          objc_msgSend_applyChange_changeRange_accept_undoTransaction_(self, v56, v54, v55, v56, changesCopy, transaction);
         }
       }
 
@@ -18457,12 +18457,12 @@ LABEL_16:
         }
 
         v64 = *(*(&v100 + 1) + 8 * j);
-        if (objc_msgSend_isDeletion(v64, v59, v60, v86))
+        if (objc_msgSend_isDeletion(v64, v59, v60, outSelectionRangeCopy))
         {
           v65 = objc_msgSend_rangeForChange_(self, v59, v64);
           if (v65 <= 0x7FFFFFFFFFFFFFFELL)
           {
-            objc_msgSend_applyChange_changeRange_accept_undoTransaction_(self, v59, v64, v65, v59, v15, a8);
+            objc_msgSend_applyChange_changeRange_accept_undoTransaction_(self, v59, v64, v65, v59, changesCopy, transaction);
           }
         }
       }
@@ -18473,10 +18473,10 @@ LABEL_16:
     while (v61);
   }
 
-  if (v86->location != 0x7FFFFFFFFFFFFFFFLL)
+  if (outSelectionRangeCopy->location != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v69 = v86->length;
-    v68 = v86->location;
+    v69 = outSelectionRangeCopy->length;
+    v68 = outSelectionRangeCopy->location;
     if (v69 + v68 > objc_msgSend_length(self, v66, v67))
     {
       v70 = MEMORY[0x277D81150];
@@ -18485,15 +18485,15 @@ LABEL_16:
       objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v70, v74, v71, v73, 437, 0, "bad selection range");
 
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v75, v76);
-      v77 = v86->location;
-      v78 = v86->length;
+      v77 = outSelectionRangeCopy->location;
+      v78 = outSelectionRangeCopy->length;
       v127.location = objc_msgSend_range(self, v79, v80);
       v127.length = v81;
       v118.location = v77;
       v118.length = v78;
       v82 = NSIntersectionRange(v118, v127);
       v66 = v82.length;
-      *v86 = v82;
+      *outSelectionRangeCopy = v82;
     }
   }
 
@@ -18511,31 +18511,31 @@ LABEL_16:
   nullsub_7(v108);
 }
 
-- (id)nextChangeFromCharIndex:(unint64_t)a3 afterChange:(id)a4 changeRange:(_NSRange *)a5
+- (id)nextChangeFromCharIndex:(unint64_t)index afterChange:(id)change changeRange:(_NSRange *)range
 {
-  v8 = a4;
+  changeCopy = change;
   v11 = objc_msgSend_length(self, v9, v10);
-  if (v11 <= a3)
+  if (v11 <= index)
   {
-    v12 = a3;
+    indexCopy = index;
   }
 
   else
   {
-    v12 = v11;
+    indexCopy = v11;
   }
 
-  if (v11 >= a3)
+  if (v11 >= index)
   {
-    v13 = a3;
+    indexCopy2 = index;
   }
 
   else
   {
-    v13 = v11;
+    indexCopy2 = v11;
   }
 
-  sub_276E0A8BC(v29, self, v13, v12 - v13);
+  sub_276E0A8BC(v29, self, indexCopy2, indexCopy - indexCopy2);
   v14 = 0;
   v15 = 0;
   v16 = 0x7FFFFFFFFFFFFFFFLL;
@@ -18548,9 +18548,9 @@ LABEL_16:
       break;
     }
 
-    if (v8)
+    if (changeCopy)
     {
-      v18 = v15 == v8;
+      v18 = v15 == changeCopy;
     }
 
     else
@@ -18575,10 +18575,10 @@ LABEL_16:
   v20 = v15;
 LABEL_18:
   nullsub_7(v29);
-  if (v20 != v8)
+  if (v20 != changeCopy)
   {
     v24 = v20;
-    if (!a5)
+    if (!range)
     {
       goto LABEL_21;
     }
@@ -18593,11 +18593,11 @@ LABEL_18:
   v16 = sub_276E0AA48(v29);
   v14 = v28;
   nullsub_7(v29);
-  if (a5)
+  if (range)
   {
 LABEL_20:
-    a5->location = v16;
-    a5->length = v14;
+    range->location = v16;
+    range->length = v14;
   }
 
 LABEL_21:
@@ -18605,10 +18605,10 @@ LABEL_21:
   return v24;
 }
 
-- (id)previousChangeFromCharIndex:(unint64_t)a3 beforeChange:(id)a4 changeRange:(_NSRange *)a5
+- (id)previousChangeFromCharIndex:(unint64_t)index beforeChange:(id)change changeRange:(_NSRange *)range
 {
-  v8 = a4;
-  sub_276E0A8BC(v26, self, 0, a3);
+  changeCopy = change;
+  sub_276E0A8BC(v26, self, 0, index);
   v9 = 0;
   v10 = 0;
   for (i = 0x7FFFFFFFFFFFFFFFLL; ; i = v16)
@@ -18622,7 +18622,7 @@ LABEL_21:
 
     v13 = sub_276E0AA14(v26);
     v14 = sub_276E0AA48(v26);
-    if (v13 == v8 || (v16 = v14, v14 > a3))
+    if (v13 == changeCopy || (v16 = v14, v14 > index))
     {
 
       break;
@@ -18661,33 +18661,33 @@ LABEL_21:
     nullsub_7(v26);
   }
 
-  if (a5)
+  if (range)
   {
-    a5->location = i;
-    a5->length = v9;
+    range->location = i;
+    range->length = v9;
   }
 
   return v10;
 }
 
-- (id)changeDetailsAtCharIndex:(unint64_t)a3 outRange:(_NSRange *)a4
+- (id)changeDetailsAtCharIndex:(unint64_t)index outRange:(_NSRange *)range
 {
-  if (objc_msgSend_range(self, a2, a3) > a3 || (v9 = objc_msgSend_range(self, v7, v8), &v7[v9] < a3))
+  if (objc_msgSend_range(self, a2, index) > index || (v9 = objc_msgSend_range(self, v7, v8), &v7[v9] < index))
   {
     v10 = MEMORY[0x277D81150];
     v11 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, "[TSWPStorage(ChangeTracking) changeDetailsAtCharIndex:outRange:]");
     v13 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v12, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/text/TSWPStorage_annotation.mm");
     v25.location = objc_msgSend_range(self, v14, v15);
     v16 = NSStringFromRange(v25);
-    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v10, v17, v11, v13, 520, 0, "charIndex %lu not within storage range %@", a3, v16);
+    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v10, v17, v11, v13, 520, 0, "charIndex %lu not within storage range %@", index, v16);
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v18, v19);
   }
 
-  v21 = objc_msgSend_changeAtCharIndex_outRange_(self, v7, a3, a4);
+  v21 = objc_msgSend_changeAtCharIndex_outRange_(self, v7, index, range);
   if (v21)
   {
-    v22 = objc_msgSend_changeDetailsForChange_withRange_(self, v20, v21, a4->location, a4->length);
+    v22 = objc_msgSend_changeDetailsForChange_withRange_(self, v20, v21, range->location, range->length);
   }
 
   else
@@ -18698,11 +18698,11 @@ LABEL_21:
   return v22;
 }
 
-- (id)changeDetailsForChange:(id)a3 withRange:(_NSRange)a4
+- (id)changeDetailsForChange:(id)change withRange:(_NSRange)range
 {
-  length = a4.length;
-  v6 = a3;
-  if (!v6)
+  length = range.length;
+  changeCopy = change;
+  if (!changeCopy)
   {
     v7 = MEMORY[0x277D81150];
     v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v5, "[TSWPStorage(ChangeTracking) changeDetailsForChange:withRange:]");
@@ -18723,18 +18723,18 @@ LABEL_21:
   }
 
   v21 = [TSWPChangeDetails alloc];
-  v23 = objc_msgSend_initWithChange_(v21, v22, v6);
+  v23 = objc_msgSend_initWithChange_(v21, v22, changeCopy);
 
   return v23;
 }
 
-- (_NSRange)annotationRangeForRange:(_NSRange)a3
+- (_NSRange)annotationRangeForRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  if (!a3.length)
+  length = range.length;
+  location = range.location;
+  if (!range.length)
   {
-    v5 = objc_msgSend_rangeForSelectionWithInsertionLocation_(self, a2, a3.location);
+    v5 = objc_msgSend_rangeForSelectionWithInsertionLocation_(self, a2, range.location);
     v7 = location - 1;
     if (!location)
     {
@@ -18754,19 +18754,19 @@ LABEL_21:
   return result;
 }
 
-- (id)trackedChangesIntersectingSelection:(id)a3
+- (id)trackedChangesIntersectingSelection:(id)selection
 {
-  v4 = a3;
-  if (objc_msgSend_isValid(v4, v5, v6) && (v9 = objc_msgSend_superRange(v4, v7, v8), v11 = v10, v13 = objc_msgSend_range(self, v10, v12), &v11[v9] <= &v14[v13]) && objc_msgSend_hasTrackedChanges(self, v14, v15))
+  selectionCopy = selection;
+  if (objc_msgSend_isValid(selectionCopy, v5, v6) && (v9 = objc_msgSend_superRange(selectionCopy, v7, v8), v11 = v10, v13 = objc_msgSend_range(self, v10, v12), &v11[v9] <= &v14[v13]) && objc_msgSend_hasTrackedChanges(self, v14, v15))
   {
-    if (objc_msgSend_isInsertionPoint(v4, v16, v17))
+    if (objc_msgSend_isInsertionPoint(selectionCopy, v16, v17))
     {
-      v20 = objc_msgSend_leadingCharIndex(v4, v18, v19);
+      v20 = objc_msgSend_leadingCharIndex(selectionCopy, v18, v19);
       v22 = objc_msgSend_annotationRangeForRange_(self, v21, v20, 0);
       v24 = objc_msgSend_p_trackedChangesIntersectingRange_(self, v23, v22, v23);
       if (!objc_msgSend_count(v24, v25, v26))
       {
-        Range = objc_msgSend_firstRange(v4, v27, v28);
+        Range = objc_msgSend_firstRange(selectionCopy, v27, v28);
         v31 = objc_msgSend_p_trackedChangesIntersectingRange_(self, v30, Range, v30);
 
         v24 = v31;
@@ -18782,8 +18782,8 @@ LABEL_21:
       v41 = &unk_27A6F38E0;
       v34 = v33;
       v42 = v34;
-      v43 = self;
-      objc_msgSend_enumerateRanges_(v4, v35, &v38);
+      selfCopy = self;
+      objc_msgSend_enumerateRanges_(selectionCopy, v35, &v38);
       v24 = objc_msgSend_copy(v34, v36, v37, v38, v39, v40, v41);
     }
   }
@@ -18796,10 +18796,10 @@ LABEL_21:
   return v24;
 }
 
-- (id)p_trackedChangesIntersectingRange:(_NSRange)a3
+- (id)p_trackedChangesIntersectingRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v26 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v7 = 0;
   v8 = location + length;
@@ -18860,15 +18860,15 @@ LABEL_21:
   return v26;
 }
 
-- (unint64_t)countTrackChangesInSelection:(id)a3
+- (unint64_t)countTrackChangesInSelection:(id)selection
 {
-  v4 = a3;
-  if (objc_msgSend_isValid(v4, v5, v6) && (v9 = objc_msgSend_superRange(v4, v7, v8), v11 = v10, v13 = objc_msgSend_range(self, v10, v12), &v11[v9] <= &v14[v13]) && objc_msgSend_hasTrackedChanges(self, v14, v15))
+  selectionCopy = selection;
+  if (objc_msgSend_isValid(selectionCopy, v5, v6) && (v9 = objc_msgSend_superRange(selectionCopy, v7, v8), v11 = v10, v13 = objc_msgSend_range(self, v10, v12), &v11[v9] <= &v14[v13]) && objc_msgSend_hasTrackedChanges(self, v14, v15))
   {
-    v20 = v4;
-    if (objc_msgSend_isInsertionPoint(v4, v16, v17))
+    v20 = selectionCopy;
+    if (objc_msgSend_isInsertionPoint(selectionCopy, v16, v17))
     {
-      Range = objc_msgSend_firstRange(v4, v18, v19);
+      Range = objc_msgSend_firstRange(selectionCopy, v18, v19);
       v23 = objc_msgSend_annotationRangeForRange_(self, v22, Range, v22);
       v20 = objc_msgSend_selectionWithRange_(TSWPSelection, v24, v23, v24);
     }
@@ -18880,7 +18880,7 @@ LABEL_21:
   else
   {
     v28 = 0;
-    v20 = v4;
+    v20 = selectionCopy;
   }
 
   return v28;
@@ -18895,11 +18895,11 @@ LABEL_21:
   objc_msgSend_didChangeParagraphsInIndexRange_(self, v8, 0, v9);
 }
 
-- (id)characterStyleForDeletedRange:(_NSRange)a3
+- (id)characterStyleForDeletedRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v6 = objc_msgSend_smartFieldAtCharIndex_attributeKind_effectiveRange_(self, a2, a3.location, 6, &v19);
+  length = range.length;
+  location = range.location;
+  v6 = objc_msgSend_smartFieldAtCharIndex_attributeKind_effectiveRange_(self, a2, range.location, 6, &v19);
   objc_opt_class();
   v7 = TSUDynamicCast();
   v8 = v19;
@@ -18933,11 +18933,11 @@ LABEL_21:
   return v14;
 }
 
-- (void)enumerateChangesInRange:(_NSRange)a3 usingBlock:(id)a4
+- (void)enumerateChangesInRange:(_NSRange)range usingBlock:(id)block
 {
-  length = a3.length;
-  location = a3.location;
-  v7 = a4;
+  length = range.length;
+  location = range.location;
+  blockCopy = block;
   TSWPAttributeEnumerator::TSWPAttributeEnumerator(&v18, self, location, length, 16, 0);
   v16 = 0;
   while (1)
@@ -18950,7 +18950,7 @@ LABEL_21:
 
     v16 = 0;
     v10 = TSWPAttributeRecord::object(v9, 0x10uLL);
-    v7[2](v7, v10, v17.location, v17.length, &v16);
+    blockCopy[2](blockCopy, v10, v17.location, v17.length, &v16);
 
     if (v16)
     {
@@ -18971,7 +18971,7 @@ LABEL_21:
 
       v16 = 0;
       v13 = TSWPAttributeRecord::object(v12, 0xFuLL);
-      v7[2](v7, v13, v14.location, v14.length, &v16);
+      blockCopy[2](blockCopy, v13, v14.location, v14.length, &v16);
     }
 
     while ((v16 & 1) == 0);
@@ -19150,22 +19150,22 @@ LABEL_17:
   return v7;
 }
 
-- (_NSRange)rangeForHighlight:(id)a3
+- (_NSRange)rangeForHighlight:(id)highlight
 {
-  v3 = MEMORY[0x2821F9670](self, sel_p_rangeForOverlappingField_attributeKind_, a3);
+  v3 = MEMORY[0x2821F9670](self, sel_p_rangeForOverlappingField_attributeKind_, highlight);
   result.length = v4;
   result.location = v3;
   return result;
 }
 
-- (id)firstHighlightForSelection:(id)a3
+- (id)firstHighlightForSelection:(id)selection
 {
-  v3 = objc_msgSend_firstHighlightForSelection_requireComment_(self, a2, a3, 0);
+  v3 = objc_msgSend_firstHighlightForSelection_requireComment_(self, a2, selection, 0);
 
   return v3;
 }
 
-- (id)firstHighlightForSelection:(id)a3 requireComment:(BOOL)a4
+- (id)firstHighlightForSelection:(id)selection requireComment:(BOOL)comment
 {
   v8 = 0;
   v9 = &v8;
@@ -19179,27 +19179,27 @@ LABEL_17:
   v6[3] = &unk_27A6F4E20;
   v6[4] = self;
   v6[5] = &v8;
-  v7 = a4;
-  objc_msgSend_enumerateRanges_(a3, a2, v6);
+  commentCopy = comment;
+  objc_msgSend_enumerateRanges_(selection, a2, v6);
   v4 = v9[5];
   _Block_object_dispose(&v8, 8);
 
   return v4;
 }
 
-- (id)firstHighlightForSelectionRange:(_NSRange)a3 outRange:(_NSRange *)a4 requireComment:(BOOL)a5
+- (id)firstHighlightForSelectionRange:(_NSRange)range outRange:(_NSRange *)outRange requireComment:(BOOL)comment
 {
-  v5 = objc_msgSend_p_highlightsForSelectionRange_outRange_requireComment_stopOnFirst_(self, a2, a3.location, a3.length, a4, a5, 1);
+  v5 = objc_msgSend_p_highlightsForSelectionRange_outRange_requireComment_stopOnFirst_(self, a2, range.location, range.length, outRange, comment, 1);
   v8 = objc_msgSend_firstObject(v5, v6, v7);
 
   return v8;
 }
 
-- (void)enumerateHighlightsInExpandedRange:(_NSRange)a3 usingBlock:(id)a4
+- (void)enumerateHighlightsInExpandedRange:(_NSRange)range usingBlock:(id)block
 {
-  length = a3.length;
-  location = a3.location;
-  v9 = a4;
+  length = range.length;
+  location = range.location;
+  blockCopy = block;
   if (location != 0x7FFFFFFFFFFFFFFFLL && !length)
   {
     objc_msgSend_range(self, v7, v8);
@@ -19209,15 +19209,15 @@ LABEL_17:
 
   if (location != 0x7FFFFFFFFFFFFFFFLL)
   {
-    objc_msgSend_enumerateHighlightsInRange_usingBlock_(self, v7, location, length, v9);
+    objc_msgSend_enumerateHighlightsInRange_usingBlock_(self, v7, location, length, blockCopy);
   }
 }
 
-- (void)enumerateHighlightsInSelectionExpandedRange:(id)a3 usingBlock:(id)a4
+- (void)enumerateHighlightsInSelectionExpandedRange:(id)range usingBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  v22 = v6;
+  rangeCopy = range;
+  blockCopy = block;
+  v22 = rangeCopy;
   v10 = objc_msgSend_superRange(v22, v8, v9);
   v12 = v22;
   v13 = v22;
@@ -19242,42 +19242,42 @@ LABEL_17:
 
   if (objc_msgSend_superRange(v15, v12, v11) != 0x7FFFFFFFFFFFFFFFLL)
   {
-    objc_msgSend_enumerateHighlightsInSelection_usingBlock_(self, v21, v13, v7);
+    objc_msgSend_enumerateHighlightsInSelection_usingBlock_(self, v21, v13, blockCopy);
   }
 }
 
-- (void)enumerateHighlightsInSelection:(id)a3 usingBlock:(id)a4
+- (void)enumerateHighlightsInSelection:(id)selection usingBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = sub_276E12740;
   v9[3] = &unk_27A6F3B38;
   v9[4] = self;
-  v10 = v6;
-  v7 = v6;
-  objc_msgSend_enumerateRanges_(a3, v8, v9);
+  v10 = blockCopy;
+  v7 = blockCopy;
+  objc_msgSend_enumerateRanges_(selection, v8, v9);
 }
 
-- (void)removeHighlightsInRange:(_NSRange)a3 dolcContext:(id)a4 undoTransaction:(void *)a5 author:(id)a6
+- (void)removeHighlightsInRange:(_NSRange)range dolcContext:(id)context undoTransaction:(void *)transaction author:(id)author
 {
-  length = a3.length;
-  location = a3.location;
-  v11 = a4;
-  v12 = a6;
+  length = range.length;
+  location = range.location;
+  contextCopy = context;
+  authorCopy = author;
   v15 = objc_msgSend_array(MEMORY[0x277CBEB18], v13, v14);
   v18 = objc_msgSend_array(MEMORY[0x277CBEB18], v16, v17);
   v36[0] = MEMORY[0x277D85DD0];
   v36[1] = 3221225472;
   v36[2] = sub_276E12980;
   v36[3] = &unk_27A6F4E48;
-  v35 = v12;
+  v35 = authorCopy;
   v37 = v35;
   v19 = v15;
   v38 = v19;
   v20 = v18;
   v39 = v20;
-  objc_msgSend_enumerateHighlightsInExpandedRange_usingBlock_(self, v21, location, length, v36, v15, v12);
+  objc_msgSend_enumerateHighlightsInExpandedRange_usingBlock_(self, v21, location, length, v36, v15, authorCopy);
   for (i = 0; i < objc_msgSend_count(v19, v22, v23); ++i)
   {
     v26 = objc_msgSend_objectAtIndexedSubscript_(v19, v25, i);
@@ -19285,15 +19285,15 @@ LABEL_17:
     v31 = objc_msgSend_rangeValue(v28, v29, v30);
     v33 = v32;
 
-    objc_msgSend_removeHighlight_atRange_dolcContext_undoTransaction_(self, v34, v26, v31, v33, v11, a5);
+    objc_msgSend_removeHighlight_atRange_dolcContext_undoTransaction_(self, v34, v26, v31, v33, contextCopy, transaction);
   }
 }
 
-- (void)removeHighlight:(id)a3 dolcContext:(id)a4 undoTransaction:(void *)a5
+- (void)removeHighlight:(id)highlight dolcContext:(id)context undoTransaction:(void *)transaction
 {
-  v20 = a3;
-  v8 = a4;
-  v11 = objc_msgSend_rangeForHighlight_(self, v9, v20);
+  highlightCopy = highlight;
+  contextCopy = context;
+  v11 = objc_msgSend_rangeForHighlight_(self, v9, highlightCopy);
   if (v11 == *MEMORY[0x277D81490] && v10 == *(MEMORY[0x277D81490] + 8))
   {
     v13 = MEMORY[0x277D81150];
@@ -19306,15 +19306,15 @@ LABEL_17:
 
   else
   {
-    objc_msgSend_removeHighlight_atRange_dolcContext_undoTransaction_(self, v10, v20, v11, v10, v8, a5);
+    objc_msgSend_removeHighlight_atRange_dolcContext_undoTransaction_(self, v10, highlightCopy, v11, v10, contextCopy, transaction);
   }
 }
 
-- (id)p_highlightsForSelectionRange:(_NSRange)a3 outRange:(_NSRange *)a4 requireComment:(BOOL)a5 stopOnFirst:(BOOL)a6
+- (id)p_highlightsForSelectionRange:(_NSRange)range outRange:(_NSRange *)outRange requireComment:(BOOL)comment stopOnFirst:(BOOL)first
 {
-  length = a3.length;
-  location = a3.location;
-  v12 = objc_msgSend_array(MEMORY[0x277CBEB18], a2, a3.location);
+  length = range.length;
+  location = range.location;
+  v12 = objc_msgSend_array(MEMORY[0x277CBEB18], a2, range.location);
   v13 = v12;
   if (location != 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -19322,31 +19322,31 @@ LABEL_17:
     v16[1] = 3221225472;
     v16[2] = sub_276E12CE4;
     v16[3] = &unk_27A6F4E70;
-    v19 = a5;
+    commentCopy = comment;
     v17 = v12;
-    v18 = a4;
-    v20 = a6;
+    outRangeCopy = outRange;
+    firstCopy = first;
     objc_msgSend_enumerateHighlightsInExpandedRange_usingBlock_(self, v14, location, length, v16);
   }
 
   return v13;
 }
 
-- (id)highlightSelectionForSelection:(id)a3
+- (id)highlightSelectionForSelection:(id)selection
 {
-  v4 = a3;
-  if (objc_msgSend_isValid(v4, v5, v6))
+  selectionCopy = selection;
+  if (objc_msgSend_isValid(selectionCopy, v5, v6))
   {
-    if (objc_msgSend_isInsertionPoint(v4, v7, v8))
+    if (objc_msgSend_isInsertionPoint(selectionCopy, v7, v8))
     {
-      v11 = objc_msgSend_leadingCharIndex(v4, v9, v10);
+      v11 = objc_msgSend_leadingCharIndex(selectionCopy, v9, v10);
       v13 = objc_msgSend_rangeForSelectionWithInsertionLocation_(self, v12, v11);
       v15 = objc_msgSend_selectionWithRange_(TSWPSelection, v14, v13, v14);
     }
 
     else
     {
-      v15 = v4;
+      v15 = selectionCopy;
     }
 
     v18 = v15;
@@ -19375,15 +19375,15 @@ LABEL_17:
 
   else
   {
-    v18 = v4;
+    v18 = selectionCopy;
   }
 
   return v18;
 }
 
-- (_NSRange)rangeForAnnotation:(id)a3
+- (_NSRange)rangeForAnnotation:(id)annotation
 {
-  v4 = a3;
+  annotationCopy = annotation;
   v5 = *MEMORY[0x277D81490];
   v6 = *(MEMORY[0x277D81490] + 8);
   objc_opt_class();
@@ -19414,11 +19414,11 @@ LABEL_17:
   return result;
 }
 
-- (_NSRange)rangeOfAnnotationWithOptions:(unint64_t)a3 range:(_NSRange)a4
+- (_NSRange)rangeOfAnnotationWithOptions:(unint64_t)options range:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v6 = a3;
+  length = range.length;
+  location = range.location;
+  optionsCopy = options;
   v35 = 0;
   v36 = &v35;
   v37 = 0x2020000000;
@@ -19434,13 +19434,13 @@ LABEL_17:
   v25[1] = 3221225472;
   v25[2] = sub_276E13454;
   v25[3] = &unk_27A6F4E98;
-  v26 = a4;
-  v27 = (a3 & 4) != 0;
+  rangeCopy = range;
+  v27 = (options & 4) != 0;
   v25[4] = &v35;
   v25[5] = &v28;
-  objc_msgSend_enumerateHighlightsInRange_usingBlock_(self, a2, a4.location, a4.length, v25);
+  objc_msgSend_enumerateHighlightsInRange_usingBlock_(self, a2, range.location, range.length, v25);
   TSWPAttributeEnumerator::TSWPAttributeEnumerator(&v24, self, location, length, 15, 0);
-  v9 = v6 & 4;
+  v9 = optionsCopy & 4;
   while (1)
   {
     v10 = TSWPAttributeEnumerator::nextAttributeIndex(&v24, &v23, v8);
@@ -19522,22 +19522,22 @@ LABEL_17:
   return result;
 }
 
-- (id)editableAnnotationForInsertionPointSelection:(id)a3 includeComments:(BOOL)a4 withOutRange:(_NSRange *)a5 selectionIsOnEdge:(BOOL *)a6
+- (id)editableAnnotationForInsertionPointSelection:(id)selection includeComments:(BOOL)comments withOutRange:(_NSRange *)range selectionIsOnEdge:(BOOL *)edge
 {
-  v8 = a4;
-  v10 = a3;
-  if (!objc_msgSend_isInsertionPoint(v10, v11, v12))
+  commentsCopy = comments;
+  selectionCopy = selection;
+  if (!objc_msgSend_isInsertionPoint(selectionCopy, v11, v12))
   {
     v19 = 0;
     goto LABEL_17;
   }
 
-  v14 = objc_msgSend_trackedChangesIntersectingSelection_(self, v13, v10);
+  v14 = objc_msgSend_trackedChangesIntersectingSelection_(self, v13, selectionCopy);
   if (!objc_msgSend_count(v14, v15, v16))
   {
     v19 = 0;
 LABEL_7:
-    if (v8)
+    if (commentsCopy)
     {
       v34 = 0;
       v35 = &v34;
@@ -19549,16 +19549,16 @@ LABEL_7:
       v33[1] = v33;
       v33[2] = 0x2020000000;
       v33[3] = 0x7FFFFFFFFFFFFFFFLL;
-      Range = objc_msgSend_firstRange(v10, v17, v18);
+      Range = objc_msgSend_firstRange(selectionCopy, v17, v18);
       v22 = v21;
       v28[0] = MEMORY[0x277D85DD0];
       v28[1] = 3221225472;
       v28[2] = sub_276E13768;
       v28[3] = &unk_27A6F4EC0;
-      v29 = v10;
+      v29 = selectionCopy;
       v30 = &v34;
       v31 = v33;
-      v32 = a5;
+      rangeCopy = range;
       objc_msgSend_enumerateHighlightsInExpandedRange_usingBlock_(self, v23, Range, v22, v28);
       if (v35[5])
       {
@@ -19584,12 +19584,12 @@ LABEL_7:
   }
 
 LABEL_12:
-  if (a6)
+  if (edge)
   {
-    v24 = objc_msgSend_firstRange(v10, v17, v18);
-    if (&v25[v24] == (a5->length + a5->location) || objc_msgSend_firstRange(v10, v25, v26) == a5->location)
+    v24 = objc_msgSend_firstRange(selectionCopy, v17, v18);
+    if (&v25[v24] == (range->length + range->location) || objc_msgSend_firstRange(selectionCopy, v25, v26) == range->location)
     {
-      *a6 = 1;
+      *edge = 1;
     }
   }
 
@@ -19598,36 +19598,36 @@ LABEL_17:
   return v19;
 }
 
-- (id)p_replacementsForRange:(_NSRange)a3 withString:(id)a4 replaceTextData:(id)a5 changeSession:(id)a6 shouldTrackDeletions:(BOOL)a7
+- (id)p_replacementsForRange:(_NSRange)range withString:(id)string replaceTextData:(id)data changeSession:(id)session shouldTrackDeletions:(BOOL)deletions
 {
-  v7 = a7;
-  v134 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  deletionsCopy = deletions;
+  rangeCopy = range;
+  stringCopy = string;
+  dataCopy = data;
+  sessionCopy = session;
   v16 = objc_msgSend_array(MEMORY[0x277CBEB18], v14, v15);
-  if (v13)
+  if (sessionCopy)
   {
     v17 = [TSWPMutableRangeArray alloc];
-    v19 = objc_msgSend_initWithRange_(v17, v18, v134.location, v134.length);
+    v19 = objc_msgSend_initWithRange_(v17, v18, rangeCopy.location, rangeCopy.length);
     v107 = objc_opt_new();
-    if (v134.length)
+    if (rangeCopy.length)
     {
-      if (v7)
+      if (deletionsCopy)
       {
-        objc_msgSend_addRange_(v107, v20, v134.location);
+        objc_msgSend_addRange_(v107, v20, rangeCopy.location);
       }
 
       v22 = objc_msgSend_insertionChangesTable(self, v20, v21);
       v24 = v22;
       if (v22)
       {
-        TSWPAttributeArray::begin(v22, &v134, &v122);
-        TSWPAttributeArray::end(v24, &v134, v25, &v132);
+        TSWPAttributeArray::begin(v22, &rangeCopy, &v122);
+        TSWPAttributeArray::end(v24, &rangeCopy, v25, &v132);
         for (i = v123; i != v133; i = ++v123)
         {
           v27 = TSWPAttributeArray::iterator::operator*(&v122);
-          if (objc_msgSend_isFromChangeSession_(v27, v28, v13))
+          if (objc_msgSend_isFromChangeSession_(v27, v28, sessionCopy))
           {
             v29 = TSWPAttributeArray::rangeForAttributeIndex(v122, v123);
             objc_msgSend_removeRange_(v107, v30, v29, v30);
@@ -19639,8 +19639,8 @@ LABEL_17:
       v33 = v31;
       if (v31)
       {
-        TSWPAttributeArray::begin(v31, &v134, &v122);
-        TSWPAttributeArray::end(v33, &v134, v34, &v132);
+        TSWPAttributeArray::begin(v31, &rangeCopy, &v122);
+        TSWPAttributeArray::end(v33, &rangeCopy, v34, &v132);
         for (; v123 != v133; ++v123)
         {
           v35 = TSWPAttributeArray::iterator::operator*(&v122);
@@ -19659,8 +19659,8 @@ LABEL_17:
       v41 = v40;
       if (v40)
       {
-        TSWPAttributeArray::begin(v40, &v134, &v122);
-        TSWPAttributeArray::end(v41, &v134, v42, &v132);
+        TSWPAttributeArray::begin(v40, &rangeCopy, &v122);
+        TSWPAttributeArray::end(v41, &rangeCopy, v42, &v132);
         for (; v123 != v133; ++v123)
         {
           v43 = TSWPAttributeArray::iterator::operator*(&v122);
@@ -19683,8 +19683,8 @@ LABEL_17:
       v52 = v51;
       if (v51)
       {
-        TSWPAttributeArray::begin(v51, &v134, &v122);
-        TSWPAttributeArray::end(v52, &v134, v53, &v132);
+        TSWPAttributeArray::begin(v51, &rangeCopy, &v122);
+        TSWPAttributeArray::end(v52, &rangeCopy, v53, &v132);
         for (j = v123; j != v133; j = ++v123)
         {
           v55 = TSWPAttributeArray::iterator::object(&v122);
@@ -19697,7 +19697,7 @@ LABEL_17:
         }
       }
 
-      length = v134.length;
+      length = rangeCopy.length;
     }
 
     else
@@ -19711,14 +19711,14 @@ LABEL_17:
     v125 = sub_276E13444;
     v126 = nullsub_9;
     v127 = &unk_276FDE562;
-    v128 = length + v134.location;
+    v128 = length + rangeCopy.location;
     v129 = 0;
     v117[0] = MEMORY[0x277D85DD0];
     v117[1] = 3221225472;
     v117[2] = sub_276E141B0;
     v117[3] = &unk_27A6F4F10;
-    v121 = v134;
-    v66 = v11;
+    v121 = rangeCopy;
+    v66 = stringCopy;
     v118 = v66;
     v120 = &v122;
     v67 = v16;
@@ -19728,7 +19728,7 @@ LABEL_17:
     v114[1] = 3221225472;
     v114[2] = sub_276E142B4;
     v114[3] = &unk_27A6F38E0;
-    v69 = v13;
+    v69 = sessionCopy;
     v115 = v69;
     v70 = v67;
     v116 = v70;
@@ -19736,10 +19736,10 @@ LABEL_17:
     if (objc_msgSend_length(v66, v72, v73))
     {
       v102 = v19;
-      v105 = v12;
-      v106 = v11;
+      v105 = dataCopy;
+      v106 = stringCopy;
       v103 = v16;
-      v104 = v13;
+      v104 = sessionCopy;
       v108 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v74, @"%C", 65532);
       v77 = objc_msgSend_length(v66, v75, v76);
       aBlock[0] = MEMORY[0x277D85DD0];
@@ -19754,7 +19754,7 @@ LABEL_17:
       v79 = _Block_copy(aBlock);
       v81 = *MEMORY[0x277D81510];
       v80 = *(MEMORY[0x277D81510] + 8);
-      v84 = objc_msgSend_attachments(v12, v82, v83);
+      v84 = objc_msgSend_attachments(dataCopy, v82, v83);
       v85 = 0;
       for (k = objc_msgSend_rangeOfString_options_range_(v78, v86, v108, 0, 0, v77); ; k = objc_msgSend_rangeOfString_options_range_(v78, v98, v108, 0, v100, v99 - v100))
       {
@@ -19816,10 +19816,10 @@ LABEL_17:
         (v79)[2](v79, &v80[v81], v77 - &v80[v81], 1);
       }
 
-      v12 = v105;
-      v11 = v106;
+      dataCopy = v105;
+      stringCopy = v106;
       v16 = v103;
-      v13 = v104;
+      sessionCopy = v104;
       v19 = v102;
     }
 
@@ -19829,8 +19829,8 @@ LABEL_17:
   else
   {
     v59 = [TSWPTextReplacement alloc];
-    v61 = objc_msgSend_selectionWithRange_(TSWPSelection, v60, v134.location, v134.length);
-    v63 = objc_msgSend_initWithSelection_string_(v59, v62, v61, v11);
+    v61 = objc_msgSend_selectionWithRange_(TSWPSelection, v60, rangeCopy.location, rangeCopy.length);
+    v63 = objc_msgSend_initWithSelection_string_(v59, v62, v61, stringCopy);
 
     objc_msgSend_addObject_(v16, v64, v63);
   }
@@ -19840,17 +19840,17 @@ LABEL_17:
   return v16;
 }
 
-- (void)p_updateChangeTimestampForDeletedRange:(_NSRange)a3 actionBuilder:(TSWPStorageActionBuilder *)a4
+- (void)p_updateChangeTimestampForDeletedRange:(_NSRange)range actionBuilder:(TSWPStorageActionBuilder *)builder
 {
-  v21 = a3;
-  if (a3.length)
+  rangeCopy = range;
+  if (range.length)
   {
     v6 = objc_msgSend_attributeArrayForKind_(self, a2, 15);
     if (v6)
     {
       v7 = v6;
-      TSWPAttributeArray::begin(v6, &v21, &v19);
-      TSWPAttributeArray::end(v7, &v21, v8, &v17);
+      TSWPAttributeArray::begin(v6, &rangeCopy, &v19);
+      TSWPAttributeArray::end(v7, &rangeCopy, v8, &v17);
       for (; v20 != v18; ++v20)
       {
         v9 = TSWPAttributeArray::iterator::object(&v19);
@@ -19860,7 +19860,7 @@ LABEL_17:
           v22.location = TSWPAttributeArray::rangeForAttributeIndex(v19, v20);
           location = v22.location;
           length = v22.length;
-          v13 = NSIntersectionRange(v22, v21);
+          v13 = NSIntersectionRange(v22, rangeCopy);
           if (v13.length)
           {
             v14 = v13.length >= length;
@@ -19874,7 +19874,7 @@ LABEL_17:
           if (!v14)
           {
             v15 = objc_msgSend_date(MEMORY[0x277CBEAA8], v13.length, v12);
-            objc_msgSend_applyObject_toCharRange_forKind_actionBuilder_(self, v16, v15, location, length, 15, a4);
+            objc_msgSend_applyObject_toCharRange_forKind_actionBuilder_(self, v16, v15, location, length, 15, builder);
           }
         }
       }
@@ -19882,11 +19882,11 @@ LABEL_17:
   }
 }
 
-- (void)p_handleChangeSplittingForInsertedRange:(_NSRange)a3 changeSession:(id)a4 actionBuilder:(TSWPStorageActionBuilder *)a5
+- (void)p_handleChangeSplittingForInsertedRange:(_NSRange)range changeSession:(id)session actionBuilder:(TSWPStorageActionBuilder *)builder
 {
-  length = a3.length;
-  v45 = a3;
-  v9 = a4;
+  length = range.length;
+  rangeCopy = range;
+  sessionCopy = session;
   if (length)
   {
     v10 = 0;
@@ -19899,54 +19899,54 @@ LABEL_17:
       v15 = v14;
       if (v14)
       {
-        TSWPAttributeArray::begin(v14, &v45, &v43);
-        TSWPAttributeArray::end(v15, &v45, v16, v42);
+        TSWPAttributeArray::begin(v14, &rangeCopy, &v43);
+        TSWPAttributeArray::end(v15, &rangeCopy, v16, v42);
         for (i = v44; i != v42[1]; i = ++v44)
         {
           v19 = TSWPAttributeArray::iterator::object(&v43);
           if (v19)
           {
-            if (objc_msgSend_p_shouldInsertionSplitChange_changeSession_(self, v18, v19, v9))
+            if (objc_msgSend_p_shouldInsertionSplitChange_changeSession_(self, v18, v19, sessionCopy))
             {
               v20 = TSWPAttributeArray::rangeForAttributeIndex(v43, v44);
               v23 = v20;
-              if (v20 < v45.location)
+              if (v20 < rangeCopy.location)
               {
                 v24 = &v21[v20];
-                if (&v21[v20] > v45.length + v45.location)
+                if (&v21[v20] > rangeCopy.length + rangeCopy.location)
                 {
                   v25 = objc_msgSend_context(self, v21, v22);
                   v27 = objc_msgSend_copyWithContext_(v19, v26, v25);
 
                   objc_msgSend_resetTextAttributeUUIDString(v27, v28, v29);
-                  if (v45.length + v45.location <= v24)
+                  if (rangeCopy.length + rangeCopy.location <= v24)
                   {
                     v31 = v24;
                   }
 
                   else
                   {
-                    v31 = v45.length + v45.location;
+                    v31 = rangeCopy.length + rangeCopy.location;
                   }
 
-                  if (v45.length + v45.location >= v24)
+                  if (rangeCopy.length + rangeCopy.location >= v24)
                   {
-                    objc_msgSend_applyObject_toCharRange_forKind_actionBuilder_(self, v30, v27, v24, v31 - v24, v13, a5);
+                    objc_msgSend_applyObject_toCharRange_forKind_actionBuilder_(self, v30, v27, v24, v31 - v24, v13, builder);
                   }
 
                   else
                   {
-                    objc_msgSend_applyObject_toCharRange_forKind_actionBuilder_(self, v30, v27, v45.length + v45.location, v31 - (v45.length + v45.location), v13, a5);
+                    objc_msgSend_applyObject_toCharRange_forKind_actionBuilder_(self, v30, v27, rangeCopy.length + rangeCopy.location, v31 - (rangeCopy.length + rangeCopy.location), v13, builder);
                   }
 
-                  objc_msgSend_applyObject_toCharRange_forKind_actionBuilder_(self, v32, 0, v45.location, v45.length, v13, a5);
+                  objc_msgSend_applyObject_toCharRange_forKind_actionBuilder_(self, v32, 0, rangeCopy.location, rangeCopy.length, v13, builder);
                   v35 = objc_msgSend_context(self, v33, v34);
                   v37 = objc_msgSend_copyWithContext_(v19, v36, v35);
 
                   objc_msgSend_resetTextAttributeUUIDString(v37, v38, v39);
-                  if (v23 <= v45.location)
+                  if (v23 <= rangeCopy.location)
                   {
-                    location = v45.location;
+                    location = rangeCopy.location;
                   }
 
                   else
@@ -19954,14 +19954,14 @@ LABEL_17:
                     location = v23;
                   }
 
-                  if (v23 >= v45.location)
+                  if (v23 >= rangeCopy.location)
                   {
-                    objc_msgSend_applyObject_toCharRange_forKind_actionBuilder_(self, v40, v37, v45.location, location - v45.location, v13, a5);
+                    objc_msgSend_applyObject_toCharRange_forKind_actionBuilder_(self, v40, v37, rangeCopy.location, location - rangeCopy.location, v13, builder);
                   }
 
                   else
                   {
-                    objc_msgSend_applyObject_toCharRange_forKind_actionBuilder_(self, v40, v37, v23, location - v23, v13, a5);
+                    objc_msgSend_applyObject_toCharRange_forKind_actionBuilder_(self, v40, v37, v23, location - v23, v13, builder);
                   }
                 }
               }
@@ -19978,10 +19978,10 @@ LABEL_17:
   }
 }
 
-- (id)pencilAnnotationsInContainedTextRange:(_NSRange)a3
+- (id)pencilAnnotationsInContainedTextRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
   if (location != 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -20004,26 +20004,26 @@ LABEL_17:
   return v7;
 }
 
-- (_NSRange)rangeForPencilAnnotation:(id)a3
+- (_NSRange)rangeForPencilAnnotation:(id)annotation
 {
-  v3 = MEMORY[0x2821F9670](self, sel_p_rangeForOverlappingField_attributeKind_, a3);
+  v3 = MEMORY[0x2821F9670](self, sel_p_rangeForOverlappingField_attributeKind_, annotation);
   result.length = v4;
   result.location = v3;
   return result;
 }
 
-- (_NSRange)removePencilAnnotationsInRange:(_NSRange)a3 undoTransaction:(void *)a4
+- (_NSRange)removePencilAnnotationsInRange:(_NSRange)range undoTransaction:(void *)transaction
 {
-  v4 = MEMORY[0x2821F9670](self, sel_p_removeOverlappingFieldsInRange_attributeKind_undoTransaction_, a3.location);
+  v4 = MEMORY[0x2821F9670](self, sel_p_removeOverlappingFieldsInRange_attributeKind_undoTransaction_, range.location);
   result.length = v5;
   result.location = v4;
   return result;
 }
 
-- (_NSRange)p_removeOverlappingFieldsInRange:(_NSRange)a3 attributeKind:(unint64_t)a4 undoTransaction:(void *)a5
+- (_NSRange)p_removeOverlappingFieldsInRange:(_NSRange)range attributeKind:(unint64_t)kind undoTransaction:(void *)transaction
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v39 = 0;
   v40 = &v39;
   v41 = 0x4012000000;
@@ -20031,7 +20031,7 @@ LABEL_17:
   v43 = nullsub_9;
   v44 = &unk_276FDE562;
   v45 = *MEMORY[0x277D81490];
-  v10 = objc_msgSend_array(MEMORY[0x277CBEB18], a2, a3.location);
+  v10 = objc_msgSend_array(MEMORY[0x277CBEB18], a2, range.location);
   v13 = objc_msgSend_array(MEMORY[0x277CBEB18], v11, v12);
   v35[0] = MEMORY[0x277D85DD0];
   v35[1] = 3221225472;
@@ -20043,7 +20043,7 @@ LABEL_17:
   v15 = v13;
   v37 = v15;
   v38 = &v39;
-  objc_msgSend_enumerateWithAttributeKind_inRange_usingBlock_(self, v16, a4, location, length, v35, v34);
+  objc_msgSend_enumerateWithAttributeKind_inRange_usingBlock_(self, v16, kind, location, length, v35, v34);
   for (i = 0; i < objc_msgSend_count(v14, v17, v18); ++i)
   {
     v21 = objc_msgSend_objectAtIndexedSubscript_(v14, v20, i);
@@ -20051,7 +20051,7 @@ LABEL_17:
     v26 = objc_msgSend_rangeValue(v23, v24, v25);
     v28 = v27;
 
-    objc_msgSend_removeOverlappingField_fromRange_attributeKind_undoTransaction_(self, v29, v21, v26, v28, a4, a5);
+    objc_msgSend_removeOverlappingField_fromRange_attributeKind_undoTransaction_(self, v29, v21, v26, v28, kind, transaction);
   }
 
   v30 = v40[6];
@@ -20065,15 +20065,15 @@ LABEL_17:
   return result;
 }
 
-- (_NSRange)p_rangeForOverlappingField:(id)a3 attributeKind:(unint64_t)a4
+- (_NSRange)p_rangeForOverlappingField:(id)field attributeKind:(unint64_t)kind
 {
   v6 = MEMORY[0x277D81490];
   v7 = *MEMORY[0x277D81490];
   v8 = *(MEMORY[0x277D81490] + 8);
-  v9 = objc_msgSend_attributeRangeForOverlappingField_attributeKind_(self, a2, a3);
+  v9 = objc_msgSend_attributeRangeForOverlappingField_attributeKind_(self, a2, field);
   if (v9 != *v6 || v10 != v6[1])
   {
-    v7 = objc_msgSend_charRangeForAttributeRange_attributeKind_(self, v10, v9, v10, a4);
+    v7 = objc_msgSend_charRangeForAttributeRange_attributeKind_(self, v10, v9, v10, kind);
     v8 = v12;
   }
 
@@ -20084,13 +20084,13 @@ LABEL_17:
   return result;
 }
 
-- (BOOL)p_shouldInsertionSplitChange:(id)a3 changeSession:(id)a4
+- (BOOL)p_shouldInsertionSplitChange:(id)change changeSession:(id)session
 {
-  v5 = a3;
-  v7 = a4;
-  if (v7)
+  changeCopy = change;
+  sessionCopy = session;
+  if (sessionCopy)
   {
-    v8 = objc_msgSend_canMergeWithKind_session_(v5, v6, 1, v7) ^ 1;
+    v8 = objc_msgSend_canMergeWithKind_session_(changeCopy, v6, 1, sessionCopy) ^ 1;
   }
 
   else
@@ -20101,11 +20101,11 @@ LABEL_17:
   return v8;
 }
 
-+ (TSWPAttributeArray)createAttributeArrayForKind:(unint64_t)a3 actionState:(void *)a4
++ (TSWPAttributeArray)createAttributeArrayForKind:(unint64_t)kind actionState:(void *)state
 {
-  EmptyAttributeArrayForKind = objc_msgSend_createEmptyAttributeArrayForKind_(TSWPStorage, a2, a3);
+  EmptyAttributeArrayForKind = objc_msgSend_createEmptyAttributeArrayForKind_(TSWPStorage, a2, kind);
   v8 = EmptyAttributeArrayForKind;
-  if (a3 > 0x16)
+  if (kind > 0x16)
   {
     v10 = MEMORY[0x277D81150];
     v11 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, "+[TSWPStorage(ActionBuilderAndActionState) createAttributeArrayForKind:actionState:]");
@@ -20115,20 +20115,20 @@ LABEL_17:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v15, v16);
   }
 
-  else if (((1 << a3) & 0x3BF0C8) != 0)
+  else if (((1 << kind) & 0x3BF0C8) != 0)
   {
-    (*(*EmptyAttributeArrayForKind + 56))(EmptyAttributeArrayForKind, 0, 0, 0, 0, a4);
+    (*(*EmptyAttributeArrayForKind + 56))(EmptyAttributeArrayForKind, 0, 0, 0, 0, state);
   }
 
   return v8;
 }
 
-- (TSWPAttributeArray)attributeArrayForKind:(unint64_t)a3 withCreate:(BOOL)a4 fromUndo:(BOOL)a5 actionState:(void *)a6
+- (TSWPAttributeArray)attributeArrayForKind:(unint64_t)kind withCreate:(BOOL)create fromUndo:(BOOL)undo actionState:(void *)state
 {
-  if (a3 == -1)
+  if (kind == -1)
   {
     v14 = MEMORY[0x277D81150];
-    v15 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSWPStorage(ActionBuilderAndActionState) attributeArrayForKind:withCreate:fromUndo:actionState:]", a4, a5, a6);
+    v15 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSWPStorage(ActionBuilderAndActionState) attributeArrayForKind:withCreate:fromUndo:actionState:]", create, undo, state);
     v17 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v16, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/text/TSWPStorage_action.mm");
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v14, v18, v15, v17, 78, 0, "Illegal attribute kind.");
 
@@ -20137,31 +20137,31 @@ LABEL_17:
 
   else
   {
-    if (self->_attributesTable[a3])
+    if (self->_attributesTable[kind])
     {
       v8 = 1;
     }
 
     else
     {
-      v8 = !a4;
+      v8 = !create;
     }
 
     if (!v8)
     {
-      v10 = a5;
+      undoCopy = undo;
       v11 = objc_opt_class();
-      if (v10)
+      if (undoCopy)
       {
-        EmptyAttributeArrayForKind = objc_msgSend_createEmptyAttributeArrayForKind_(v11, v12, a3);
+        EmptyAttributeArrayForKind = objc_msgSend_createEmptyAttributeArrayForKind_(v11, v12, kind);
       }
 
       else
       {
-        EmptyAttributeArrayForKind = objc_msgSend_createAttributeArrayForKind_actionState_(v11, v12, a3, a6);
+        EmptyAttributeArrayForKind = objc_msgSend_createAttributeArrayForKind_actionState_(v11, v12, kind, state);
       }
 
-      self->_attributesTable[a3] = EmptyAttributeArrayForKind;
+      self->_attributesTable[kind] = EmptyAttributeArrayForKind;
       if (EmptyAttributeArrayForKind)
       {
         TSWPAttributeArray::setStorage(EmptyAttributeArrayForKind, self);
@@ -20169,20 +20169,20 @@ LABEL_17:
     }
   }
 
-  return self->_attributesTable[a3];
+  return self->_attributesTable[kind];
 }
 
-- (void)compressAttributeArrayKind:(unint64_t)a3 actionState:(void *)a4
+- (void)compressAttributeArrayKind:(unint64_t)kind actionState:(void *)state
 {
   attributesTable = self->_attributesTable;
-  v5 = self->_attributesTable[a3];
+  v5 = self->_attributesTable[kind];
   if (v5)
   {
-    (*(v5->var0 + 6))(self->_attributesTable[a3], a4);
+    (*(v5->var0 + 6))(self->_attributesTable[kind], state);
     if ((*(v5->var0 + 12))(v5))
     {
       (*(v5->var0 + 1))(v5);
-      attributesTable[a3] = 0;
+      attributesTable[kind] = 0;
     }
 
     else
@@ -20193,25 +20193,25 @@ LABEL_17:
   }
 }
 
-- (void)compress:(void *)a3
+- (void)compress:(void *)compress
 {
   for (i = 0; i != 23; ++i)
   {
-    objc_msgSend_compressAttributeArrayKind_actionState_(self, a2, i, a3);
+    objc_msgSend_compressAttributeArrayKind_actionState_(self, a2, i, compress);
   }
 }
 
-- (void)setLanguage:(id)a3 forCharRange:(_NSRange)a4 actionBuilder:(void *)a5
+- (void)setLanguage:(id)language forCharRange:(_NSRange)range actionBuilder:(void *)builder
 {
-  length = a4.length;
-  location = a4.location;
-  v44 = a3;
+  length = range.length;
+  location = range.location;
+  languageCopy = language;
   v10 = objc_msgSend_attributeArrayForKind_(self, v9, 13);
   v12 = v10;
   if (!v10)
   {
-    v14 = v44 != 0;
-    if (!a5)
+    v14 = languageCopy != 0;
+    if (!builder)
     {
 LABEL_19:
       v37 = MEMORY[0x277D81150];
@@ -20244,7 +20244,7 @@ LABEL_6:
     v35 = TSWPAttributeArray::rangeForAttributeIndex(v12, v13);
     if (v35 <= location && &v36[v35] >= location + length)
     {
-      if (v34 == v44 || (v14 = 1, v44) && v34 && objc_msgSend_isEqualToString_(v34, v36, v44))
+      if (v34 == languageCopy || (v14 = 1, languageCopy) && v34 && objc_msgSend_isEqualToString_(v34, v36, languageCopy))
       {
         v14 = 0;
       }
@@ -20255,7 +20255,7 @@ LABEL_6:
       v14 = 1;
     }
 
-    if (!a5)
+    if (!builder)
     {
       goto LABEL_19;
     }
@@ -20263,7 +20263,7 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  if (!a5)
+  if (!builder)
   {
     goto LABEL_19;
   }
@@ -20280,7 +20280,7 @@ LABEL_8:
   }
 
 LABEL_11:
-  objc_msgSend_applyObject_toCharRange_forKind_actionBuilder_(self, v11, v44, location, length, 13, a5);
+  objc_msgSend_applyObject_toCharRange_forKind_actionBuilder_(self, v11, languageCopy, location, length, 13, builder);
   v24 = objc_msgSend_attributeArrayForKind_(self, v23, 13);
   if (v24)
   {
@@ -20301,11 +20301,11 @@ LABEL_11:
 LABEL_20:
 }
 
-- (void)setDictationAndAutocorrection:(id)a3 forCharRange:(_NSRange)a4 actionBuilder:(void *)a5
+- (void)setDictationAndAutocorrection:(id)autocorrection forCharRange:(_NSRange)range actionBuilder:(void *)builder
 {
-  length = a4.length;
-  location = a4.location;
-  v25 = a3;
+  length = range.length;
+  location = range.location;
+  autocorrectionCopy = autocorrection;
   v10 = objc_msgSend_attributeArrayForKind_(self, v9, 14);
   v12 = v10;
   if (v10)
@@ -20313,13 +20313,13 @@ LABEL_20:
     v13 = TSWPAttributeArray::effectiveAttributeIndexForCharIndex(v10, location);
     if (v13 == *(v12 + 6))
     {
-      if (!a5)
+      if (!builder)
       {
         goto LABEL_12;
       }
 
 LABEL_7:
-      objc_msgSend_applyObject_toCharRange_forKind_actionBuilder_(self, v11, v25, location, length, 14, a5);
+      objc_msgSend_applyObject_toCharRange_forKind_actionBuilder_(self, v11, autocorrectionCopy, location, length, 14, builder);
       goto LABEL_13;
     }
 
@@ -20327,7 +20327,7 @@ LABEL_7:
     v16 = TSWPAttributeArray::rangeForAttributeIndex(v12, v13);
     if (v16 <= location && &v17[v16] >= location + length)
     {
-      if (v15 == v25 || (v14 = 1, v25) && v15 && objc_msgSend_isEqualToString_(v15, v17, v25))
+      if (v15 == autocorrectionCopy || (v14 = 1, autocorrectionCopy) && v15 && objc_msgSend_isEqualToString_(v15, v17, autocorrectionCopy))
       {
         v14 = 0;
       }
@@ -20338,7 +20338,7 @@ LABEL_7:
       v14 = 1;
     }
 
-    if (!a5)
+    if (!builder)
     {
       goto LABEL_12;
     }
@@ -20352,8 +20352,8 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v14 = v25 != 0;
-  if (a5)
+  v14 = autocorrectionCopy != 0;
+  if (builder)
   {
     goto LABEL_6;
   }

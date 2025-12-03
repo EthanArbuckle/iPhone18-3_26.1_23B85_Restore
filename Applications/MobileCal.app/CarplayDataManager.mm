@@ -1,20 +1,20 @@
 @interface CarplayDataManager
 - (CUIKOccurrencesCollection)loadedEventCollection;
 - (CUIKOccurrencesCollection)tomorrowLoadedEventCollection;
-- (CarplayDataManager)initWithEventStore:(id)a3;
-- (id)_calendarOccurrencesCollectionFromPredicate:(id)a3;
+- (CarplayDataManager)initWithEventStore:(id)store;
+- (id)_calendarOccurrencesCollectionFromPredicate:(id)predicate;
 - (id)_selectedCalendars;
-- (id)collectionForDayType:(int64_t)a3;
-- (void)_fetchUpcomingOccurrences:(id)a3;
-- (void)_timeZoneChanged:(id)a3;
-- (void)reloadEvents:(id)a3;
+- (id)collectionForDayType:(int64_t)type;
+- (void)_fetchUpcomingOccurrences:(id)occurrences;
+- (void)_timeZoneChanged:(id)changed;
+- (void)reloadEvents:(id)events;
 @end
 
 @implementation CarplayDataManager
 
-- (CarplayDataManager)initWithEventStore:(id)a3
+- (CarplayDataManager)initWithEventStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v11.receiver = self;
   v11.super_class = CarplayDataManager;
   v6 = [(CarplayDataManager *)&v11 init];
@@ -24,7 +24,7 @@
     eventLoadingQueue = v6->_eventLoadingQueue;
     v6->_eventLoadingQueue = v7;
 
-    objc_storeStrong(&v6->_eventStore, a3);
+    objc_storeStrong(&v6->_eventStore, store);
     v9 = +[NSNotificationCenter defaultCenter];
     [v9 addObserver:v6 selector:"_timeZoneChanged:" name:kCalTimeZoneChangedNotification object:0];
   }
@@ -32,9 +32,9 @@
   return v6;
 }
 
-- (id)collectionForDayType:(int64_t)a3
+- (id)collectionForDayType:(int64_t)type
 {
-  if (a3)
+  if (type)
   {
     [(CarplayDataManager *)self tomorrowLoadedEventCollection];
   }
@@ -51,22 +51,22 @@
 - (id)_selectedCalendars
 {
   v3 = [[EKCalendarVisibilityManager alloc] initWithEventStore:self->_eventStore visibilityChangedCallback:0 queue:0];
-  v4 = [v3 visibleCalendars];
+  visibleCalendars = [v3 visibleCalendars];
   v5 = [EKCalendarVisibilityManager unselectedCalendarsForFocusModeInEventStore:self->_eventStore];
   if (v5)
   {
-    v6 = [NSMutableSet setWithArray:v4];
+    v6 = [NSMutableSet setWithArray:visibleCalendars];
     [v6 minusSet:v5];
-    v7 = [v6 allObjects];
+    allObjects = [v6 allObjects];
 
-    v4 = v7;
+    visibleCalendars = allObjects;
   }
 
   v8 = kCalUILogCarplayHandle;
   if (os_log_type_enabled(kCalUILogCarplayHandle, OS_LOG_TYPE_INFO))
   {
     v9 = v8;
-    v10 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v4 count]);
+    v10 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [visibleCalendars count]);
     v12 = 136315394;
     v13 = "[CarplayDataManager _selectedCalendars]";
     v14 = 2112;
@@ -74,7 +74,7 @@
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "%s found [%@] selected calendars", &v12, 0x16u);
   }
 
-  return v4;
+  return visibleCalendars;
 }
 
 - (CUIKOccurrencesCollection)loadedEventCollection
@@ -121,48 +121,48 @@
   return v3;
 }
 
-- (void)reloadEvents:(id)a3
+- (void)reloadEvents:(id)events
 {
-  v4 = a3;
+  eventsCopy = events;
   eventLoadingQueue = self->_eventLoadingQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100054D40;
   v7[3] = &unk_10020EC68;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = eventsCopy;
+  v6 = eventsCopy;
   dispatch_async(eventLoadingQueue, v7);
 }
 
-- (void)_fetchUpcomingOccurrences:(id)a3
+- (void)_fetchUpcomingOccurrences:(id)occurrences
 {
-  v4 = a3;
+  occurrencesCopy = occurrences;
   v5 = CUIKCalendar();
-  v6 = [v4 copy];
+  v6 = [occurrencesCopy copy];
   [v6 setHour:23];
   [v6 setMinute:59];
   [v6 setSecond:59];
-  v7 = [v5 dateFromComponents:v4];
+  v7 = [v5 dateFromComponents:occurrencesCopy];
   v8 = [v5 dateFromComponents:v6];
-  v9 = [v4 date];
+  date = [occurrencesCopy date];
 
-  v46 = v9;
-  v10 = [v9 dateByAddingDays:1 inCalendar:v5];
+  v46 = date;
+  v10 = [date dateByAddingDays:1 inCalendar:v5];
   v11 = [v5 components:254 fromDate:v10];
   [v11 setHour:23];
   [v11 setMinute:59];
   [v11 setSecond:59];
   v12 = [v5 startOfDayForDate:v10];
   v13 = [v5 dateFromComponents:v11];
-  v14 = [(CarplayDataManager *)self _selectedCalendars];
+  _selectedCalendars = [(CarplayDataManager *)self _selectedCalendars];
   v47 = v8;
   v48 = v7;
   v45 = v12;
-  if ([v14 count])
+  if ([_selectedCalendars count])
   {
-    v15 = [(EKEventStore *)self->_eventStore predicateForEventsWithStartDate:v7 endDate:v8 calendars:v14];
-    v16 = [(EKEventStore *)self->_eventStore predicateForEventsWithStartDate:v12 endDate:v13 calendars:v14];
+    v15 = [(EKEventStore *)self->_eventStore predicateForEventsWithStartDate:v7 endDate:v8 calendars:_selectedCalendars];
+    v16 = [(EKEventStore *)self->_eventStore predicateForEventsWithStartDate:v12 endDate:v13 calendars:_selectedCalendars];
     v17 = [(CarplayDataManager *)self _calendarOccurrencesCollectionFromPredicate:v15];
     loadedEventCollection = self->_loadedEventCollection;
     self->_loadedEventCollection = v17;
@@ -188,8 +188,8 @@
   {
     v25 = self->_loadedEventCollection;
     v26 = v24;
-    v27 = [(CUIKOccurrencesCollection *)v25 timedOccurrences];
-    v28 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v27 count]);
+    timedOccurrences = [(CUIKOccurrencesCollection *)v25 timedOccurrences];
+    v28 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [timedOccurrences count]);
     *buf = 136315394;
     v50 = "[CarplayDataManager _fetchUpcomingOccurrences:]";
     v51 = 2112;
@@ -202,8 +202,8 @@
   {
     v30 = self->_loadedEventCollection;
     v31 = v29;
-    v32 = [(CUIKOccurrencesCollection *)v30 allDayOccurrences];
-    v33 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v32 count]);
+    allDayOccurrences = [(CUIKOccurrencesCollection *)v30 allDayOccurrences];
+    v33 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [allDayOccurrences count]);
     *buf = 136315394;
     v50 = "[CarplayDataManager _fetchUpcomingOccurrences:]";
     v51 = 2112;
@@ -216,8 +216,8 @@
   {
     v35 = self->_tomorrowLoadedEventCollection;
     v36 = v34;
-    v37 = [(CUIKOccurrencesCollection *)v35 timedOccurrences];
-    v38 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v37 count]);
+    timedOccurrences2 = [(CUIKOccurrencesCollection *)v35 timedOccurrences];
+    v38 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [timedOccurrences2 count]);
     *buf = 136315394;
     v50 = "[CarplayDataManager _fetchUpcomingOccurrences:]";
     v51 = 2112;
@@ -230,8 +230,8 @@
   {
     v40 = self->_tomorrowLoadedEventCollection;
     v41 = v39;
-    v42 = [(CUIKOccurrencesCollection *)v40 allDayOccurrences];
-    v43 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v42 count]);
+    allDayOccurrences2 = [(CUIKOccurrencesCollection *)v40 allDayOccurrences];
+    v43 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [allDayOccurrences2 count]);
     *buf = 136315394;
     v50 = "[CarplayDataManager _fetchUpcomingOccurrences:]";
     v51 = 2112;
@@ -244,12 +244,12 @@
   [v44 postNotificationName:@"com.apple.mobilecal.carplay.kEventFetchCompletedNotification" object:0];
 }
 
-- (id)_calendarOccurrencesCollectionFromPredicate:(id)a3
+- (id)_calendarOccurrencesCollectionFromPredicate:(id)predicate
 {
-  v4 = a3;
+  predicateCopy = predicate;
   v5 = objc_alloc_init(NSMutableArray);
   v6 = objc_alloc_init(NSMutableArray);
-  v7 = [(EKEventStore *)self->_eventStore eventsMatchingPredicate:v4];
+  v7 = [(EKEventStore *)self->_eventStore eventsMatchingPredicate:predicateCopy];
   v8 = [v7 mutableCopy];
   if (([(EKEventStore *)self->_eventStore showDeclinedEvents]& 1) == 0)
   {
@@ -302,16 +302,16 @@
   return v17;
 }
 
-- (void)_timeZoneChanged:(id)a3
+- (void)_timeZoneChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   v5 = kCalUILogCarplayHandle;
   if (os_log_type_enabled(kCalUILogCarplayHandle, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v9 = self;
+    selfCopy = self;
     v10 = 2112;
-    v11 = v4;
+    v11 = changedCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[%@] received notification: [%@]", buf, 0x16u);
   }
 

@@ -1,22 +1,22 @@
 @interface AAUIAchievementResourceProvider
 - (AAUIAchievementResourceProvider)init;
-- (BOOL)_queue_decompressZipFileAtPath:(id)a3 toDirectory:(id)a4;
-- (CGPoint)glyphPositionOffsetScaleForAchievement:(id)a3;
-- (id)_assetBundleForAchievement:(id)a3;
-- (id)_badgeModelFilenames:(id)a3;
+- (BOOL)_queue_decompressZipFileAtPath:(id)path toDirectory:(id)directory;
+- (CGPoint)glyphPositionOffsetScaleForAchievement:(id)achievement;
+- (id)_assetBundleForAchievement:(id)achievement;
+- (id)_badgeModelFilenames:(id)filenames;
 - (id)_cachedModelsPath;
-- (id)_compressedBadgeModelPathsForAchievement:(id)a3;
-- (id)_modelDirectoryForCompressedModelPaths:(id)a3 andAchievement:(id)a4;
-- (id)_modelFilePathsForCompressedModelPaths:(id)a3 andAchievement:(id)a4;
-- (id)backSideIconImageForAchievement:(id)a3;
-- (id)badgeConfigurationForAchievement:(id)a3;
-- (id)badgeModelPathsForAchievement:(id)a3;
-- (id)enamelColorForAchievement:(id)a3;
-- (id)glyphTexturePathForAchievement:(id)a3;
-- (id)metalColorForAchievement:(id)a3;
-- (id)stickerURLsForAchievement:(id)a3;
-- (id)stickersBundlePathForAchievement:(id)a3;
-- (id)texturePathsForAchievement:(id)a3;
+- (id)_compressedBadgeModelPathsForAchievement:(id)achievement;
+- (id)_modelDirectoryForCompressedModelPaths:(id)paths andAchievement:(id)achievement;
+- (id)_modelFilePathsForCompressedModelPaths:(id)paths andAchievement:(id)achievement;
+- (id)backSideIconImageForAchievement:(id)achievement;
+- (id)badgeConfigurationForAchievement:(id)achievement;
+- (id)badgeModelPathsForAchievement:(id)achievement;
+- (id)enamelColorForAchievement:(id)achievement;
+- (id)glyphTexturePathForAchievement:(id)achievement;
+- (id)metalColorForAchievement:(id)achievement;
+- (id)stickerURLsForAchievement:(id)achievement;
+- (id)stickersBundlePathForAchievement:(id)achievement;
+- (id)texturePathsForAchievement:(id)achievement;
 @end
 
 @implementation AAUIAchievementResourceProvider
@@ -36,12 +36,12 @@
   return v2;
 }
 
-- (id)badgeModelPathsForAchievement:(id)a3
+- (id)badgeModelPathsForAchievement:(id)achievement
 {
-  v4 = a3;
+  achievementCopy = achievement;
   dispatch_assert_queue_not_V2(self->_queue);
-  v5 = [(AAUIAchievementResourceProvider *)self _compressedBadgeModelPathsForAchievement:v4];
-  v6 = [(AAUIAchievementResourceProvider *)self _modelFilePathsForCompressedModelPaths:v5 andAchievement:v4];
+  v5 = [(AAUIAchievementResourceProvider *)self _compressedBadgeModelPathsForAchievement:achievementCopy];
+  v6 = [(AAUIAchievementResourceProvider *)self _modelFilePathsForCompressedModelPaths:v5 andAchievement:achievementCopy];
   v7 = [v6 count];
   if (v7 == [v5 count])
   {
@@ -53,8 +53,8 @@
     v9 = v6;
     v14 = v9;
     v15 = v5;
-    v16 = self;
-    v17 = v4;
+    selfCopy = self;
+    v17 = achievementCopy;
     dispatch_sync(queue, v13);
     v10 = v9;
 
@@ -66,7 +66,7 @@
     v11 = ACHLogAssets();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      [(AAUIAchievementResourceProvider *)v4 badgeModelPathsForAchievement:v11];
+      [(AAUIAchievementResourceProvider *)achievementCopy badgeModelPathsForAchievement:v11];
     }
 
     v10 = MEMORY[0x277CBEBF8];
@@ -138,16 +138,16 @@ void __65__AAUIAchievementResourceProvider_badgeModelPathsForAchievement___block
   }
 }
 
-- (id)texturePathsForAchievement:(id)a3
+- (id)texturePathsForAchievement:(id)achievement
 {
   v38[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 textureFilenames];
-  v6 = v5;
+  achievementCopy = achievement;
+  textureFilenames = [achievementCopy textureFilenames];
+  v6 = textureFilenames;
   v7 = &unk_2850CFBB0;
-  if (v5)
+  if (textureFilenames)
   {
-    v7 = v5;
+    v7 = textureFilenames;
   }
 
   v8 = v7;
@@ -155,8 +155,8 @@ void __65__AAUIAchievementResourceProvider_badgeModelPathsForAchievement___block
   v38[0] = @"png";
   v38[1] = @"png.pvrtc";
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v38 count:2];
-  v22 = v4;
-  v10 = [(AAUIAchievementResourceProvider *)self _assetBundleForAchievement:v4];
+  v22 = achievementCopy;
+  v10 = [(AAUIAchievementResourceProvider *)self _assetBundleForAchievement:achievementCopy];
   v11 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v29 = 0u;
   v30 = 0u;
@@ -198,10 +198,10 @@ void __65__AAUIAchievementResourceProvider_badgeModelPathsForAchievement___block
           v19 = ACHLogAssets();
           if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
           {
-            v24 = [v22 template];
-            v23 = [v24 uniqueName];
+            template = [v22 template];
+            uniqueName = [template uniqueName];
             *buf = 138412546;
-            v34 = v23;
+            v34 = uniqueName;
             v35 = 2112;
             v36 = v16;
             _os_log_error_impl(&dword_23E4A3000, v19, OS_LOG_TYPE_ERROR, "Error loading badge texture for achievement %@ with asset name %@", buf, 0x16u);
@@ -233,23 +233,23 @@ uint64_t __62__AAUIAchievementResourceProvider_texturePathsForAchievement___bloc
   return v5;
 }
 
-- (id)glyphTexturePathForAchievement:(id)a3
+- (id)glyphTexturePathForAchievement:(id)achievement
 {
   v16[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 glyphTextureFilename];
-  if (v5)
+  achievementCopy = achievement;
+  glyphTextureFilename = [achievementCopy glyphTextureFilename];
+  if (glyphTextureFilename)
   {
     v16[0] = @"png";
     v16[1] = @"png.pvrtc";
     v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:2];
-    v7 = [(AAUIAchievementResourceProvider *)self _assetBundleForAchievement:v4];
+    v7 = [(AAUIAchievementResourceProvider *)self _assetBundleForAchievement:achievementCopy];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __66__AAUIAchievementResourceProvider_glyphTexturePathForAchievement___block_invoke;
     v13[3] = &unk_278C436C0;
     v14 = v7;
-    v15 = v5;
+    v15 = glyphTextureFilename;
     v8 = v7;
     v9 = [v6 hk_map:v13];
     v10 = [v9 hk_firstObjectPassingTest:&__block_literal_global_313];
@@ -259,7 +259,7 @@ uint64_t __62__AAUIAchievementResourceProvider_texturePathsForAchievement___bloc
       v11 = ACHLogAssets();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
-        [(AAUIAchievementResourceProvider *)v4 glyphTexturePathForAchievement:v11];
+        [(AAUIAchievementResourceProvider *)achievementCopy glyphTexturePathForAchievement:v11];
       }
     }
   }
@@ -282,35 +282,35 @@ uint64_t __66__AAUIAchievementResourceProvider_glyphTexturePathForAchievement___
   return v5;
 }
 
-- (id)stickersBundlePathForAchievement:(id)a3
+- (id)stickersBundlePathForAchievement:(id)achievement
 {
-  v3 = a3;
-  v4 = [v3 stickerBundleURL];
+  achievementCopy = achievement;
+  stickerBundleURL = [achievementCopy stickerBundleURL];
 
-  if (v4)
+  if (stickerBundleURL)
   {
     v5 = MEMORY[0x277CCA8D8];
-    v6 = [v3 stickerBundleURL];
-    v7 = [v5 bundleWithURL:v6];
+    stickerBundleURL2 = [achievementCopy stickerBundleURL];
+    v7 = [v5 bundleWithURL:stickerBundleURL2];
 
-    v4 = [v7 resourcePath];
+    stickerBundleURL = [v7 resourcePath];
   }
 
-  return v4;
+  return stickerBundleURL;
 }
 
-- (id)stickerURLsForAchievement:(id)a3
+- (id)stickerURLsForAchievement:(id)achievement
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  achievementCopy = achievement;
   v4 = [MEMORY[0x277CBEB98] set];
-  v5 = [v3 stickerBundleURL];
+  stickerBundleURL = [achievementCopy stickerBundleURL];
 
-  if (v5)
+  if (stickerBundleURL)
   {
     v6 = MEMORY[0x277CCA8D8];
-    v7 = [v3 stickerBundleURL];
-    v8 = [v6 bundleWithURL:v7];
+    stickerBundleURL2 = [achievementCopy stickerBundleURL];
+    v8 = [v6 bundleWithURL:stickerBundleURL2];
 
     if (v8)
     {
@@ -360,16 +360,16 @@ uint64_t __66__AAUIAchievementResourceProvider_glyphTexturePathForAchievement___
   return v15;
 }
 
-- (id)backSideIconImageForAchievement:(id)a3
+- (id)backSideIconImageForAchievement:(id)achievement
 {
-  v4 = a3;
+  achievementCopy = achievement;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
   v22 = __Block_byref_object_copy__0;
   v23 = __Block_byref_object_dispose__0;
   v24 = 0;
-  v5 = [(AAUIAchievementResourceProvider *)self _assetBundleForAchievement:v4];
+  v5 = [(AAUIAchievementResourceProvider *)self _assetBundleForAchievement:achievementCopy];
   v6 = v5;
   if (v5)
   {
@@ -428,9 +428,9 @@ void __67__AAUIAchievementResourceProvider_backSideIconImageForAchievement___blo
   }
 }
 
-- (id)metalColorForAchievement:(id)a3
+- (id)metalColorForAchievement:(id)achievement
 {
-  [a3 badgeMetalColor];
+  [achievement badgeMetalColor];
   v3 = MEMORY[0x277D75348];
   v5 = v4;
   v7 = v6;
@@ -439,9 +439,9 @@ void __67__AAUIAchievementResourceProvider_backSideIconImageForAchievement___blo
   return [v3 colorWithRed:v5 green:v7 blue:v9 alpha:1.0];
 }
 
-- (id)enamelColorForAchievement:(id)a3
+- (id)enamelColorForAchievement:(id)achievement
 {
-  [a3 badgeEnamelColor];
+  [achievement badgeEnamelColor];
   v3 = MEMORY[0x277D75348];
   v5 = v4;
   v7 = v6;
@@ -450,12 +450,12 @@ void __67__AAUIAchievementResourceProvider_backSideIconImageForAchievement___blo
   return [v3 colorWithRed:v5 green:v7 blue:v9 alpha:1.0];
 }
 
-- (CGPoint)glyphPositionOffsetScaleForAchievement:(id)a3
+- (CGPoint)glyphPositionOffsetScaleForAchievement:(id)achievement
 {
-  v3 = a3;
-  [v3 glyphPositionOffsetX];
+  achievementCopy = achievement;
+  [achievementCopy glyphPositionOffsetX];
   v5 = v4;
-  [v3 glyphPositionOffsetY];
+  [achievementCopy glyphPositionOffsetY];
   v7 = v6;
 
   v8 = v5;
@@ -465,29 +465,29 @@ void __67__AAUIAchievementResourceProvider_backSideIconImageForAchievement___blo
   return result;
 }
 
-- (id)badgeConfigurationForAchievement:(id)a3
+- (id)badgeConfigurationForAchievement:(id)achievement
 {
   v36[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v35 = [(AAUIAchievementResourceProvider *)self badgeModelPathsForAchievement:v4];
-  v5 = [(AAUIAchievementResourceProvider *)self texturePathsForAchievement:v4];
-  v6 = [(AAUIAchievementResourceProvider *)self glyphTexturePathForAchievement:v4];
-  v7 = [(AAUIAchievementResourceProvider *)self metalColorForAchievement:v4];
-  v8 = [(AAUIAchievementResourceProvider *)self enamelColorForAchievement:v4];
-  [(AAUIAchievementResourceProvider *)self glyphTextureScaleForAchievement:v4];
+  achievementCopy = achievement;
+  v35 = [(AAUIAchievementResourceProvider *)self badgeModelPathsForAchievement:achievementCopy];
+  v5 = [(AAUIAchievementResourceProvider *)self texturePathsForAchievement:achievementCopy];
+  v6 = [(AAUIAchievementResourceProvider *)self glyphTexturePathForAchievement:achievementCopy];
+  v7 = [(AAUIAchievementResourceProvider *)self metalColorForAchievement:achievementCopy];
+  v8 = [(AAUIAchievementResourceProvider *)self enamelColorForAchievement:achievementCopy];
+  [(AAUIAchievementResourceProvider *)self glyphTextureScaleForAchievement:achievementCopy];
   v10 = v9;
-  [(AAUIAchievementResourceProvider *)self glyphPositionOffsetScaleForAchievement:v4];
+  [(AAUIAchievementResourceProvider *)self glyphPositionOffsetScaleForAchievement:achievementCopy];
   v12 = v11;
   v14 = v13;
-  if ([v4 badgeUsesTriColorEnamel])
+  if ([achievementCopy badgeUsesTriColorEnamel])
   {
-    [v4 enamelTriColor1];
+    [achievementCopy enamelTriColor1];
     v18 = [MEMORY[0x277D75348] colorWithRed:v15 green:v16 blue:v17 alpha:1.0];
     v36[0] = v18;
-    [v4 enamelTriColor2];
+    [achievementCopy enamelTriColor2];
     v22 = [MEMORY[0x277D75348] colorWithRed:v19 green:v20 blue:v21 alpha:1.0];
     v36[1] = v22;
-    [v4 enamelTriColor3];
+    [achievementCopy enamelTriColor3];
     v26 = [MEMORY[0x277D75348] colorWithRed:v23 green:v24 blue:v25 alpha:1.0];
     v36[2] = v26;
     v27 = [MEMORY[0x277CBEA60] arrayWithObjects:v36 count:3];
@@ -499,27 +499,27 @@ void __67__AAUIAchievementResourceProvider_backSideIconImageForAchievement___blo
   }
 
   v28 = [AAUIBadgeModelConfiguration alloc];
-  v29 = [v4 badgeShapeName];
-  v30 = [v4 badgeUsesFullColorEnamel];
-  v31 = [v4 unearnedUsesTwoToneEnamel];
-  BYTE1(v34) = [v4 faceHasMetalInlay];
-  LOBYTE(v34) = v31;
-  v32 = [(AAUIBadgeModelConfiguration *)v28 initWithModelPaths:v35 texturePaths:v5 shapeName:v29 metalColor:v7 useFullColorEnamel:v30 modelEnamelColor:v8 unearnedUsesTwoToneEnamel:v10 faceHasMetalInlay:v12 enamelTricolors:v14 glyphTexturePath:v34 glyphTextureScale:v27 glyphPositionOffset:v6];
+  badgeShapeName = [achievementCopy badgeShapeName];
+  badgeUsesFullColorEnamel = [achievementCopy badgeUsesFullColorEnamel];
+  unearnedUsesTwoToneEnamel = [achievementCopy unearnedUsesTwoToneEnamel];
+  BYTE1(v34) = [achievementCopy faceHasMetalInlay];
+  LOBYTE(v34) = unearnedUsesTwoToneEnamel;
+  v32 = [(AAUIBadgeModelConfiguration *)v28 initWithModelPaths:v35 texturePaths:v5 shapeName:badgeShapeName metalColor:v7 useFullColorEnamel:badgeUsesFullColorEnamel modelEnamelColor:v8 unearnedUsesTwoToneEnamel:v10 faceHasMetalInlay:v12 enamelTricolors:v14 glyphTexturePath:v34 glyphTextureScale:v27 glyphPositionOffset:v6];
 
   return v32;
 }
 
-- (id)_assetBundleForAchievement:(id)a3
+- (id)_assetBundleForAchievement:(id)achievement
 {
   v12 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 resourceBundleURL];
+  achievementCopy = achievement;
+  resourceBundleURL = [achievementCopy resourceBundleURL];
 
-  if (v4)
+  if (resourceBundleURL)
   {
     v5 = MEMORY[0x277CCA8D8];
-    v6 = [v3 resourceBundleURL];
-    v7 = [v5 bundleWithURL:v6];
+    resourceBundleURL2 = [achievementCopy resourceBundleURL];
+    v7 = [v5 bundleWithURL:resourceBundleURL2];
   }
 
   else
@@ -528,7 +528,7 @@ void __67__AAUIAchievementResourceProvider_backSideIconImageForAchievement___blo
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 138412290;
-      v11 = v3;
+      v11 = achievementCopy;
       _os_log_impl(&dword_23E4A3000, v8, OS_LOG_TYPE_DEFAULT, "resourceBundleURL is nil for achievement: %@", &v10, 0xCu);
     }
 
@@ -538,19 +538,19 @@ void __67__AAUIAchievementResourceProvider_backSideIconImageForAchievement___blo
   return v7;
 }
 
-- (BOOL)_queue_decompressZipFileAtPath:(id)a3 toDirectory:(id)a4
+- (BOOL)_queue_decompressZipFileAtPath:(id)path toDirectory:(id)directory
 {
   v16[3] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  pathCopy = path;
+  directoryCopy = directory;
   dispatch_assert_queue_V2(self->_queue);
-  v8 = [MEMORY[0x277CCAA00] defaultManager];
-  v9 = [v8 fileExistsAtPath:v6];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v9 = [defaultManager fileExistsAtPath:pathCopy];
 
   if (v9)
   {
-    [v6 fileSystemRepresentation];
-    [v7 fileSystemRepresentation];
+    [pathCopy fileSystemRepresentation];
+    [directoryCopy fileSystemRepresentation];
     v10 = *MEMORY[0x277CBED28];
     v15[0] = @"extractPKZip";
     v15[1] = @"sequesterResources";
@@ -576,21 +576,21 @@ void __67__AAUIAchievementResourceProvider_backSideIconImageForAchievement___blo
 - (id)_cachedModelsPath
 {
   v2 = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, 1uLL, 1);
-  v3 = [v2 firstObject];
-  v4 = [v3 stringByAppendingPathComponent:@"AchievementBadgeModels"];
+  firstObject = [v2 firstObject];
+  v4 = [firstObject stringByAppendingPathComponent:@"AchievementBadgeModels"];
 
   return v4;
 }
 
-- (id)_badgeModelFilenames:(id)a3
+- (id)_badgeModelFilenames:(id)filenames
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = [a3 badgeModelFilenames];
-  v4 = v3;
+  badgeModelFilenames = [filenames badgeModelFilenames];
+  v4 = badgeModelFilenames;
   v5 = &unk_2850CFBE0;
-  if (v3)
+  if (badgeModelFilenames)
   {
-    v5 = v3;
+    v5 = badgeModelFilenames;
   }
 
   v6 = v5;
@@ -630,12 +630,12 @@ void __67__AAUIAchievementResourceProvider_backSideIconImageForAchievement___blo
   return v14;
 }
 
-- (id)_modelDirectoryForCompressedModelPaths:(id)a3 andAchievement:(id)a4
+- (id)_modelDirectoryForCompressedModelPaths:(id)paths andAchievement:(id)achievement
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(AAUIAchievementResourceProvider *)self _cachedModelsPath];
-  v9 = [v7 sortedArrayUsingSelector:sel_compare_];
+  achievementCopy = achievement;
+  pathsCopy = paths;
+  _cachedModelsPath = [(AAUIAchievementResourceProvider *)self _cachedModelsPath];
+  v9 = [pathsCopy sortedArrayUsingSelector:sel_compare_];
 
   v10 = [v9 componentsJoinedByString:&stru_2850CB9E8];
 
@@ -653,24 +653,24 @@ void __67__AAUIAchievementResourceProvider_backSideIconImageForAchievement___blo
 
   v14 = [v11 stringWithFormat:@"%d", v13];
   v15 = MEMORY[0x277CCACA8];
-  v16 = [v6 template];
-  v17 = [v16 uniqueName];
-  v18 = [v6 badgeModelVersion];
+  template = [achievementCopy template];
+  uniqueName = [template uniqueName];
+  badgeModelVersion = [achievementCopy badgeModelVersion];
 
-  v19 = [v15 stringWithFormat:@"%@_%@_v%ld", v17, v14, v18];
+  v19 = [v15 stringWithFormat:@"%@_%@_v%ld", uniqueName, v14, badgeModelVersion];
 
-  v20 = [v8 stringByAppendingPathComponent:v19];
+  v20 = [_cachedModelsPath stringByAppendingPathComponent:v19];
 
   return v20;
 }
 
-- (id)_modelFilePathsForCompressedModelPaths:(id)a3 andAchievement:(id)a4
+- (id)_modelFilePathsForCompressedModelPaths:(id)paths andAchievement:(id)achievement
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(AAUIAchievementResourceProvider *)self _badgeModelFilenames:v7];
-  v9 = [(AAUIAchievementResourceProvider *)self _modelDirectoryForCompressedModelPaths:v6 andAchievement:v7];
+  pathsCopy = paths;
+  achievementCopy = achievement;
+  v8 = [(AAUIAchievementResourceProvider *)self _badgeModelFilenames:achievementCopy];
+  v9 = [(AAUIAchievementResourceProvider *)self _modelDirectoryForCompressedModelPaths:pathsCopy andAchievement:achievementCopy];
   v10 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v19 = 0u;
   v20 = 0u;
@@ -706,22 +706,22 @@ void __67__AAUIAchievementResourceProvider_backSideIconImageForAchievement___blo
   return v17;
 }
 
-- (id)_compressedBadgeModelPathsForAchievement:(id)a3
+- (id)_compressedBadgeModelPathsForAchievement:(id)achievement
 {
   v35 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 badgeModelFilenames];
-  v6 = v5;
+  achievementCopy = achievement;
+  badgeModelFilenames = [achievementCopy badgeModelFilenames];
+  v6 = badgeModelFilenames;
   v7 = &unk_2850CFBF8;
-  if (v5)
+  if (badgeModelFilenames)
   {
-    v7 = v5;
+    v7 = badgeModelFilenames;
   }
 
   v8 = v7;
 
-  v23 = v4;
-  v9 = [(AAUIAchievementResourceProvider *)self _assetBundleForAchievement:v4];
+  v23 = achievementCopy;
+  v9 = [(AAUIAchievementResourceProvider *)self _assetBundleForAchievement:achievementCopy];
   v10 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v26 = 0u;
   v27 = 0u;
@@ -756,10 +756,10 @@ void __67__AAUIAchievementResourceProvider_backSideIconImageForAchievement___blo
           v19 = ACHLogAssets();
           if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
           {
-            v25 = [v23 template];
-            v24 = [v25 uniqueName];
+            template = [v23 template];
+            uniqueName = [template uniqueName];
             *buf = v22;
-            v31 = v24;
+            v31 = uniqueName;
             v32 = 2112;
             v33 = v17;
             _os_log_error_impl(&dword_23E4A3000, v19, OS_LOG_TYPE_ERROR, "Could not determined compressedBadgeModelPath for achievement: %@, assetName = %@", buf, 0x16u);

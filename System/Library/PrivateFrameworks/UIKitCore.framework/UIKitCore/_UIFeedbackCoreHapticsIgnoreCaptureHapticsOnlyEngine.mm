@@ -1,5 +1,5 @@
 @interface _UIFeedbackCoreHapticsIgnoreCaptureHapticsOnlyEngine
-+ (BOOL)_supportsPlayingIndividualFeedback:(id)a3;
++ (BOOL)_supportsPlayingIndividualFeedback:(id)feedback;
 + (id)sharedEngine;
 - (id)_internal_createCoreHapticsEngine;
 @end
@@ -12,7 +12,7 @@
   block[1] = 3221225472;
   block[2] = __68___UIFeedbackCoreHapticsIgnoreCaptureHapticsOnlyEngine_sharedEngine__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1ED49A140 != -1)
   {
     dispatch_once(&qword_1ED49A140, block);
@@ -23,12 +23,12 @@
   return v2;
 }
 
-+ (BOOL)_supportsPlayingIndividualFeedback:(id)a3
++ (BOOL)_supportsPlayingIndividualFeedback:(id)feedback
 {
-  v4 = a3;
-  if ([a1 _supportsPlayingIndividualFeedback:v4 allowsIgnoreCapture:1])
+  feedbackCopy = feedback;
+  if ([self _supportsPlayingIndividualFeedback:feedbackCopy allowsIgnoreCapture:1])
   {
-    v5 = [v4 _effectiveFeedbackTypes] == 2;
+    v5 = [feedbackCopy _effectiveFeedbackTypes] == 2;
   }
 
   else
@@ -43,17 +43,17 @@
 {
   v7.receiver = self;
   v7.super_class = _UIFeedbackCoreHapticsIgnoreCaptureHapticsOnlyEngine;
-  v3 = [(_UIFeedbackCoreHapticsEngine *)&v7 _internal_createCoreHapticsEngine];
-  if (!v3)
+  _internal_createCoreHapticsEngine = [(_UIFeedbackCoreHapticsEngine *)&v7 _internal_createCoreHapticsEngine];
+  if (!_internal_createCoreHapticsEngine)
   {
-    v4 = [(_UIFeedbackCoreHapticsEngine *)self coreHapticsEngine];
-    [v4 setMuteHapticsWhileRecordingAudio:0];
+    coreHapticsEngine = [(_UIFeedbackCoreHapticsEngine *)self coreHapticsEngine];
+    [coreHapticsEngine setMuteHapticsWhileRecordingAudio:0];
 
-    v5 = [(_UIFeedbackCoreHapticsEngine *)self coreHapticsEngine];
-    [v5 setPlaysHapticsOnly:1];
+    coreHapticsEngine2 = [(_UIFeedbackCoreHapticsEngine *)self coreHapticsEngine];
+    [coreHapticsEngine2 setPlaysHapticsOnly:1];
   }
 
-  return v3;
+  return _internal_createCoreHapticsEngine;
 }
 
 @end

@@ -1,24 +1,24 @@
 @interface FBWaitForProcessDeathTransaction
-- (FBWaitForProcessDeathTransaction)initWithProcess:(id)a3 timeout:(double)a4;
+- (FBWaitForProcessDeathTransaction)initWithProcess:(id)process timeout:(double)timeout;
 - (id)_customizedDescriptionProperties;
 - (void)_begin;
 - (void)_didComplete;
-- (void)processManager:(id)a3 didRemoveProcess:(id)a4;
+- (void)processManager:(id)manager didRemoveProcess:(id)process;
 @end
 
 @implementation FBWaitForProcessDeathTransaction
 
-- (FBWaitForProcessDeathTransaction)initWithProcess:(id)a3 timeout:(double)a4
+- (FBWaitForProcessDeathTransaction)initWithProcess:(id)process timeout:(double)timeout
 {
-  v7 = a3;
+  processCopy = process;
   v11.receiver = self;
   v11.super_class = FBWaitForProcessDeathTransaction;
   v8 = [(FBTransaction *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_process, a3);
-    v9->_timeout = a4;
+    objc_storeStrong(&v8->_process, process);
+    v9->_timeout = timeout;
   }
 
   return v9;
@@ -44,13 +44,13 @@
 
         v8 = self->_timer;
         timeout = self->_timeout;
-        v10 = [(FBWaitForProcessDeathTransaction *)self queue];
+        queue = [(FBWaitForProcessDeathTransaction *)self queue];
         v12[0] = MEMORY[0x1E69E9820];
         v12[1] = 3221225472;
         v12[2] = __42__FBWaitForProcessDeathTransaction__begin__block_invoke;
         v12[3] = &unk_1E783CC48;
         v12[4] = self;
-        [(BSAbsoluteMachTimer *)v8 scheduleWithFireInterval:v10 leewayInterval:v12 queue:timeout handler:1.0];
+        [(BSAbsoluteMachTimer *)v8 scheduleWithFireInterval:queue leewayInterval:v12 queue:timeout handler:1.0];
       }
 
       v11.receiver = self;
@@ -78,8 +78,8 @@
 
 - (id)_customizedDescriptionProperties
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   if (self->_process)
   {
     process = self->_process;
@@ -90,23 +90,23 @@
     process = @"(none)";
   }
 
-  [v3 setObject:process forKey:@"Process"];
+  [dictionary setObject:process forKey:@"Process"];
 
   return v4;
 }
 
-- (void)processManager:(id)a3 didRemoveProcess:(id)a4
+- (void)processManager:(id)manager didRemoveProcess:(id)process
 {
-  v5 = a4;
-  v6 = [(FBWaitForProcessDeathTransaction *)self queue];
+  processCopy = process;
+  queue = [(FBWaitForProcessDeathTransaction *)self queue];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __68__FBWaitForProcessDeathTransaction_processManager_didRemoveProcess___block_invoke;
   v8[3] = &unk_1E783B240;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
-  dispatch_async(v6, v8);
+  v9 = processCopy;
+  v7 = processCopy;
+  dispatch_async(queue, v8);
 }
 
 void __68__FBWaitForProcessDeathTransaction_processManager_didRemoveProcess___block_invoke(uint64_t a1)

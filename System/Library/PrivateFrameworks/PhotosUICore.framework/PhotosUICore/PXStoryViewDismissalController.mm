@@ -6,7 +6,7 @@
 - (CGSize)sourceSize;
 - (CGSize)targetSize;
 - (PXStoryViewDismissalController)init;
-- (PXStoryViewDismissalController)initWithViewModel:(id)a3;
+- (PXStoryViewDismissalController)initWithViewModel:(id)model;
 - (void)_invalidateCurrentPlacement;
 - (void)_invalidateInitialItemPlacement;
 - (void)_invalidateSwipeDownTracker;
@@ -14,13 +14,13 @@
 - (void)_updateCurrentPlacement;
 - (void)_updateInitialItemPlacement;
 - (void)_updateSwipeDownTracker;
-- (void)handlePanDownGestureRecognizer:(id)a3;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)setCenterOffsetAnimator:(id)a3;
-- (void)setCurrentGestureLocation:(CGPoint)a3;
-- (void)setCurrentGestureVelocity:(CGPoint)a3;
-- (void)setInitialItemPlacement:(id)a3;
-- (void)setViewControllerTransition:(id)a3;
+- (void)handlePanDownGestureRecognizer:(id)recognizer;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)setCenterOffsetAnimator:(id)animator;
+- (void)setCurrentGestureLocation:(CGPoint)location;
+- (void)setCurrentGestureVelocity:(CGPoint)velocity;
+- (void)setInitialItemPlacement:(id)placement;
+- (void)setViewControllerTransition:(id)transition;
 @end
 
 @implementation PXStoryViewDismissalController
@@ -79,36 +79,36 @@
   return result;
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v6 = a4;
-  v9 = a3;
-  if (ViewControllerTransitionObservationContext == a5)
+  changeCopy = change;
+  observableCopy = observable;
+  if (ViewControllerTransitionObservationContext == context)
   {
-    if ((v6 & 2) == 0)
+    if ((changeCopy & 2) == 0)
     {
       goto LABEL_8;
     }
 
-    v11 = v9;
+    v11 = observableCopy;
     [(PXStoryViewDismissalController *)self _invalidateInitialItemPlacement];
     goto LABEL_7;
   }
 
-  if (FinalAnimatorObservationContext != a5)
+  if (FinalAnimatorObservationContext != context)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PXStoryViewDismissalController.m" lineNumber:412 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryViewDismissalController.m" lineNumber:412 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  if ((v6 & 6) != 0)
+  if ((changeCopy & 6) != 0)
   {
-    v11 = v9;
+    v11 = observableCopy;
     [(PXStoryViewDismissalController *)self _invalidateCurrentPlacement];
 LABEL_7:
-    v9 = v11;
+    observableCopy = v11;
   }
 
 LABEL_8:
@@ -116,25 +116,25 @@ LABEL_8:
 
 - (void)_updateCurrentPlacement
 {
-  v3 = [(PXStoryViewDismissalController *)self viewControllerTransition];
+  viewControllerTransition = [(PXStoryViewDismissalController *)self viewControllerTransition];
   v4 = *MEMORY[0x1E695F050];
   v5 = *(MEMORY[0x1E695F050] + 8);
   v6 = *(MEMORY[0x1E695F050] + 16);
   v7 = *(MEMORY[0x1E695F050] + 24);
-  v8 = [(PXStoryViewDismissalController *)self state];
-  if (v8 == 2)
+  state = [(PXStoryViewDismissalController *)self state];
+  if (state == 2)
   {
-    v11 = [(PXStoryViewDismissalController *)self releaseAnimationProgressAnimator];
-    [v11 presentationValue];
+    releaseAnimationProgressAnimator = [(PXStoryViewDismissalController *)self releaseAnimationProgressAnimator];
+    [releaseAnimationProgressAnimator presentationValue];
     v13 = v12;
-    v14 = [(PXStoryViewDismissalController *)self centerOffsetAnimator];
-    v15 = [(PXStoryViewDismissalController *)self releaseAnimationDismissalProgressAnimator];
-    [v15 presentationValue];
+    centerOffsetAnimator = [(PXStoryViewDismissalController *)self centerOffsetAnimator];
+    releaseAnimationDismissalProgressAnimator = [(PXStoryViewDismissalController *)self releaseAnimationDismissalProgressAnimator];
+    [releaseAnimationDismissalProgressAnimator presentationValue];
     v17 = v16;
-    if (([v11 isAnimating] & 1) != 0 || (objc_msgSend(v14, "isAnimating") & 1) != 0 || objc_msgSend(v15, "isAnimating"))
+    if (([releaseAnimationProgressAnimator isAnimating] & 1) != 0 || (objc_msgSend(centerOffsetAnimator, "isAnimating") & 1) != 0 || objc_msgSend(releaseAnimationDismissalProgressAnimator, "isAnimating"))
     {
       [(PXStoryViewDismissalController *)self targetCenter];
-      [v14 presentationValue];
+      [centerOffsetAnimator presentationValue];
       PXPointAdd();
     }
 
@@ -144,13 +144,13 @@ LABEL_8:
 
   else
   {
-    if (v8 == 1)
+    if (state == 1)
     {
-      v9 = [(PXStoryViewDismissalController *)self swipeDownTracker];
-      v10 = v9;
-      if (v9)
+      swipeDownTracker = [(PXStoryViewDismissalController *)self swipeDownTracker];
+      v10 = swipeDownTracker;
+      if (swipeDownTracker)
       {
-        [v9 trackedCenter];
+        [swipeDownTracker trackedCenter];
         [v10 trackedBounds];
         PXRectWithCenterAndSize();
       }
@@ -172,11 +172,11 @@ LABEL_8:
   v24 = v6;
   v25 = v7;
   v20[4] = self;
-  v21 = v3;
+  v21 = viewControllerTransition;
   v26 = v17;
   v27 = v13;
   v28 = v18;
-  v19 = v3;
+  v19 = viewControllerTransition;
   [v19 performChanges:v20];
 }
 
@@ -259,22 +259,22 @@ id __57__PXStoryViewDismissalController__updateCurrentPlacement__block_invoke_2(
 
 - (void)_invalidateCurrentPlacement
 {
-  v2 = [(PXStoryViewDismissalController *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateCurrentPlacement];
+  updater = [(PXStoryViewDismissalController *)self updater];
+  [updater setNeedsUpdateOf:sel__updateCurrentPlacement];
 }
 
 - (void)_updateSwipeDownTracker
 {
-  v3 = [(PXStoryViewDismissalController *)self initialItemPlacement];
-  v4 = [(PXStoryViewDismissalController *)self referenceView];
-  v5 = v4;
+  initialItemPlacement = [(PXStoryViewDismissalController *)self initialItemPlacement];
+  referenceView = [(PXStoryViewDismissalController *)self referenceView];
+  v5 = referenceView;
   v6 = *MEMORY[0x1E695F050];
   v7 = *(MEMORY[0x1E695F050] + 8);
   v8 = *(MEMORY[0x1E695F050] + 16);
   v9 = *(MEMORY[0x1E695F050] + 24);
-  if (v3 && v4)
+  if (initialItemPlacement && referenceView)
   {
-    [v3 rectInCoordinateSpace:v4 velocity:0];
+    [initialItemPlacement rectInCoordinateSpace:referenceView velocity:0];
     v6 = v10;
     v7 = v11;
     v8 = v12;
@@ -282,7 +282,7 @@ id __57__PXStoryViewDismissalController__updateCurrentPlacement__block_invoke_2(
   }
 
   [(PXStoryViewDismissalController *)self currentGestureLocation];
-  v14 = [(PXStoryViewDismissalController *)self swipeDownTracker];
+  swipeDownTracker = [(PXStoryViewDismissalController *)self swipeDownTracker];
   if ([(PXStoryViewDismissalController *)self state]== 1)
   {
     v18.origin.x = v6;
@@ -297,14 +297,14 @@ id __57__PXStoryViewDismissalController__updateCurrentPlacement__block_invoke_2(
     v15 = 0;
   }
 
-  v16 = [(PXStoryViewDismissalController *)self viewControllerTransition];
-  v17 = [v16 isVerticalOnly];
+  viewControllerTransition = [(PXStoryViewDismissalController *)self viewControllerTransition];
+  isVerticalOnly = [viewControllerTransition isVerticalOnly];
 
   if (v15)
   {
-    if (!v14)
+    if (!swipeDownTracker)
     {
-      [[PXSwipeDownTracker alloc] initWithOptions:v17];
+      [[PXSwipeDownTracker alloc] initWithOptions:isVerticalOnly];
       [(PXStoryViewDismissalController *)self initialGestureLocation];
       PXPointIsNull();
     }
@@ -348,21 +348,21 @@ uint64_t __57__PXStoryViewDismissalController__updateSwipeDownTracker__block_inv
 
 - (void)_invalidateSwipeDownTracker
 {
-  v2 = [(PXStoryViewDismissalController *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateSwipeDownTracker];
+  updater = [(PXStoryViewDismissalController *)self updater];
+  [updater setNeedsUpdateOf:sel__updateSwipeDownTracker];
 }
 
 - (void)_updateInitialItemPlacement
 {
-  v4 = [(PXStoryViewDismissalController *)self viewControllerTransition];
-  v3 = [v4 detailItemOriginalPlacement];
-  [(PXStoryViewDismissalController *)self setInitialItemPlacement:v3];
+  viewControllerTransition = [(PXStoryViewDismissalController *)self viewControllerTransition];
+  detailItemOriginalPlacement = [viewControllerTransition detailItemOriginalPlacement];
+  [(PXStoryViewDismissalController *)self setInitialItemPlacement:detailItemOriginalPlacement];
 }
 
 - (void)_invalidateInitialItemPlacement
 {
-  v2 = [(PXStoryViewDismissalController *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateInitialItemPlacement];
+  updater = [(PXStoryViewDismissalController *)self updater];
+  [updater setNeedsUpdateOf:sel__updateInitialItemPlacement];
 }
 
 - (void)_setNeedsUpdate
@@ -385,101 +385,101 @@ void __49__PXStoryViewDismissalController__setNeedsUpdate__block_invoke(uint64_t
   [v1 updateIfNeeded];
 }
 
-- (void)setCenterOffsetAnimator:(id)a3
+- (void)setCenterOffsetAnimator:(id)animator
 {
-  v5 = a3;
+  animatorCopy = animator;
   centerOffsetAnimator = self->_centerOffsetAnimator;
-  if (centerOffsetAnimator != v5)
+  if (centerOffsetAnimator != animatorCopy)
   {
-    v7 = v5;
+    v7 = animatorCopy;
     [(PXPointAnimator *)centerOffsetAnimator unregisterChangeObserver:self context:FinalAnimatorObservationContext];
-    objc_storeStrong(&self->_centerOffsetAnimator, a3);
+    objc_storeStrong(&self->_centerOffsetAnimator, animator);
     [(PXPointAnimator *)self->_centerOffsetAnimator registerChangeObserver:self context:FinalAnimatorObservationContext];
     [(PXStoryViewDismissalController *)self _invalidateCurrentPlacement];
-    v5 = v7;
+    animatorCopy = v7;
   }
 }
 
-- (void)setInitialItemPlacement:(id)a3
+- (void)setInitialItemPlacement:(id)placement
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_initialItemPlacement != v5)
+  placementCopy = placement;
+  v6 = placementCopy;
+  if (self->_initialItemPlacement != placementCopy)
   {
-    v8 = v5;
-    v7 = [(PXGItemPlacement *)v5 isEqual:?];
+    v8 = placementCopy;
+    v7 = [(PXGItemPlacement *)placementCopy isEqual:?];
     v6 = v8;
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_initialItemPlacement, a3);
+      objc_storeStrong(&self->_initialItemPlacement, placement);
       [(PXStoryViewDismissalController *)self _invalidateSwipeDownTracker];
       v6 = v8;
     }
   }
 }
 
-- (void)setCurrentGestureVelocity:(CGPoint)a3
+- (void)setCurrentGestureVelocity:(CGPoint)velocity
 {
-  if (a3.x != self->_currentGestureVelocity.x || a3.y != self->_currentGestureVelocity.y)
+  if (velocity.x != self->_currentGestureVelocity.x || velocity.y != self->_currentGestureVelocity.y)
   {
-    self->_currentGestureVelocity = a3;
+    self->_currentGestureVelocity = velocity;
     [(PXStoryViewDismissalController *)self _invalidateSwipeDownTracker];
   }
 }
 
-- (void)setCurrentGestureLocation:(CGPoint)a3
+- (void)setCurrentGestureLocation:(CGPoint)location
 {
-  if (a3.x != self->_currentGestureLocation.x || a3.y != self->_currentGestureLocation.y)
+  if (location.x != self->_currentGestureLocation.x || location.y != self->_currentGestureLocation.y)
   {
-    self->_currentGestureLocation = a3;
+    self->_currentGestureLocation = location;
     [(PXStoryViewDismissalController *)self _invalidateSwipeDownTracker];
   }
 }
 
-- (void)setViewControllerTransition:(id)a3
+- (void)setViewControllerTransition:(id)transition
 {
-  v5 = a3;
+  transitionCopy = transition;
   viewControllerTransition = self->_viewControllerTransition;
-  if (viewControllerTransition != v5)
+  if (viewControllerTransition != transitionCopy)
   {
-    v9 = v5;
+    v9 = transitionCopy;
     [(PXGViewControllerTransition *)viewControllerTransition unregisterChangeObserver:self context:ViewControllerTransitionObservationContext];
-    objc_storeStrong(&self->_viewControllerTransition, a3);
+    objc_storeStrong(&self->_viewControllerTransition, transition);
     [(PXGViewControllerTransition *)self->_viewControllerTransition registerChangeObserver:self context:ViewControllerTransitionObservationContext];
     [(PXStoryViewDismissalController *)self _invalidateInitialItemPlacement];
-    v7 = [(PXGViewControllerTransition *)v9 detailViewController];
-    v8 = [v7 view];
-    [(PXStoryViewDismissalController *)self setReferenceView:v8];
+    detailViewController = [(PXGViewControllerTransition *)v9 detailViewController];
+    view = [detailViewController view];
+    [(PXStoryViewDismissalController *)self setReferenceView:view];
 
-    v5 = v9;
+    transitionCopy = v9;
   }
 }
 
-- (void)handlePanDownGestureRecognizer:(id)a3
+- (void)handlePanDownGestureRecognizer:(id)recognizer
 {
-  v4 = a3;
+  recognizerCopy = recognizer;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __65__PXStoryViewDismissalController_handlePanDownGestureRecognizer___block_invoke;
   aBlock[3] = &unk_1E774C620;
   aBlock[4] = self;
-  v5 = v4;
+  v5 = recognizerCopy;
   v22 = v5;
   v6 = _Block_copy(aBlock);
-  v7 = [v5 state];
-  if (v7 > 2)
+  state = [v5 state];
+  if (state > 2)
   {
-    if ((v7 - 3) >= 3)
+    if ((state - 3) >= 3)
     {
       goto LABEL_22;
     }
   }
 
-  else if (v7)
+  else if (state)
   {
-    if (v7 != 1)
+    if (state != 1)
     {
-      if (v7 == 2 && [(PXStoryViewDismissalController *)self state]== 1)
+      if (state == 2 && [(PXStoryViewDismissalController *)self state]== 1)
       {
         v6[2](v6);
       }
@@ -489,26 +489,26 @@ void __49__PXStoryViewDismissalController__setNeedsUpdate__block_invoke(uint64_t
 
     if ([(PXStoryViewDismissalController *)self state]|| ([(PXStoryViewDismissalController *)self viewControllerTransition], v8 = objc_claimAutoreleasedReturnValue(), v8, v8))
     {
-      v9 = PLStoryGetLog();
-      if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+      viewModel = PLStoryGetLog();
+      if (os_log_type_enabled(viewModel, OS_LOG_TYPE_DEFAULT))
       {
         *v14 = 0;
-        _os_log_impl(&dword_1A3C1C000, v9, OS_LOG_TYPE_DEFAULT, "Pan down began before previous dismissal completed, ignoring.", v14, 2u);
+        _os_log_impl(&dword_1A3C1C000, viewModel, OS_LOG_TYPE_DEFAULT, "Pan down began before previous dismissal completed, ignoring.", v14, 2u);
       }
 
       goto LABEL_21;
     }
 
-    v9 = [(PXStoryViewDismissalController *)self viewModel];
-    v10 = [v9 actionPerformer];
-    v11 = [v9 requestImmediateNavigationPermission];
-    if (v11)
+    viewModel = [(PXStoryViewDismissalController *)self viewModel];
+    actionPerformer = [viewModel actionPerformer];
+    requestImmediateNavigationPermission = [viewModel requestImmediateNavigationPermission];
+    if (requestImmediateNavigationPermission)
     {
-      v12 = [v10 dismissStoryViewControllerInteractively];
-      if (v12)
+      dismissStoryViewControllerInteractively = [actionPerformer dismissStoryViewControllerInteractively];
+      if (dismissStoryViewControllerInteractively)
       {
-        v13 = v12;
-        [(PXStoryViewDismissalController *)self setViewControllerTransition:v12];
+        v13 = dismissStoryViewControllerInteractively;
+        [(PXStoryViewDismissalController *)self setViewControllerTransition:dismissStoryViewControllerInteractively];
         v6[2](v6);
         [(PXStoryViewDismissalController *)self currentGestureLocation];
         [(PXStoryViewDismissalController *)self setInitialGestureLocation:?];
@@ -517,9 +517,9 @@ void __49__PXStoryViewDismissalController__setNeedsUpdate__block_invoke(uint64_t
         v18[1] = 3221225472;
         v18[2] = __65__PXStoryViewDismissalController_handlePanDownGestureRecognizer___block_invoke_2;
         v18[3] = &unk_1E773E390;
-        v19 = v11;
-        v20 = v10;
-        [v9 performChanges:v18];
+        v19 = requestImmediateNavigationPermission;
+        v20 = actionPerformer;
+        [viewModel performChanges:v18];
 
 LABEL_20:
 LABEL_21:
@@ -527,7 +527,7 @@ LABEL_21:
         goto LABEL_22;
       }
 
-      [v11 cancelled];
+      [requestImmediateNavigationPermission cancelled];
     }
 
     else
@@ -536,8 +536,8 @@ LABEL_21:
       v15[1] = 3221225472;
       v15[2] = __65__PXStoryViewDismissalController_handlePanDownGestureRecognizer___block_invoke_3;
       v15[3] = &unk_1E77331E8;
-      v16 = v9;
-      v17 = v10;
+      v16 = viewModel;
+      v17 = actionPerformer;
       [v16 requestNavigationPermission:v15];
     }
 
@@ -590,16 +590,16 @@ void __65__PXStoryViewDismissalController_handlePanDownGestureRecognizer___block
   }
 }
 
-- (PXStoryViewDismissalController)initWithViewModel:(id)a3
+- (PXStoryViewDismissalController)initWithViewModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v11.receiver = self;
   v11.super_class = PXStoryViewDismissalController;
   v6 = [(PXStoryViewDismissalController *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_viewModel, a3);
+    objc_storeStrong(&v6->_viewModel, model);
     v7->_currentGestureLocation = *off_1E77221E8;
     v8 = [[off_1E7721940 alloc] initWithTarget:v7 needsUpdateSelector:sel__setNeedsUpdate];
     updater = v7->_updater;
@@ -615,8 +615,8 @@ void __65__PXStoryViewDismissalController_handlePanDownGestureRecognizer___block
 
 - (PXStoryViewDismissalController)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXStoryViewDismissalController.m" lineNumber:61 description:{@"%s is not available as initializer", "-[PXStoryViewDismissalController init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryViewDismissalController.m" lineNumber:61 description:{@"%s is not available as initializer", "-[PXStoryViewDismissalController init]"}];
 
   abort();
 }

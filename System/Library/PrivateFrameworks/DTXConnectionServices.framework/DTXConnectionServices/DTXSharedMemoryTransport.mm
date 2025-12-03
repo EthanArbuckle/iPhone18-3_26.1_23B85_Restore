@@ -1,45 +1,45 @@
 @interface DTXSharedMemoryTransport
-+ (id)addressForMemory:(unint64_t)a3 inProcess:(int)a4;
-+ (id)addressForPosixSharedMemoryWithName:(id)a3;
-- (BOOL)_setupCreatingSharedMemory:(id)a3 size:(int)a4;
-- (BOOL)_setupWithShm:(DTXSharedMemory *)a3 asCreator:(BOOL)a4;
-- (DTXSharedMemoryTransport)initWithMappedMemory:(DTXSharedMemory *)a3;
-- (DTXSharedMemoryTransport)initWithMemoryAddress:(unint64_t)a3 inTask:(unsigned int)a4;
-- (DTXSharedMemoryTransport)initWithRemoteAddress:(id)a3;
++ (id)addressForMemory:(unint64_t)memory inProcess:(int)process;
++ (id)addressForPosixSharedMemoryWithName:(id)name;
+- (BOOL)_setupCreatingSharedMemory:(id)memory size:(int)size;
+- (BOOL)_setupWithShm:(DTXSharedMemory *)shm asCreator:(BOOL)creator;
+- (DTXSharedMemoryTransport)initWithMappedMemory:(DTXSharedMemory *)memory;
+- (DTXSharedMemoryTransport)initWithMemoryAddress:(unint64_t)address inTask:(unsigned int)task;
+- (DTXSharedMemoryTransport)initWithRemoteAddress:(id)address;
 - (id)localAddresses;
 - (int)remotePid;
-- (unint64_t)transmit:(const void *)a3 ofLength:(unint64_t)a4;
+- (unint64_t)transmit:(const void *)transmit ofLength:(unint64_t)length;
 - (void)dealloc;
 - (void)disconnect;
-- (void)setRemotePid:(int)a3;
+- (void)setRemotePid:(int)pid;
 @end
 
 @implementation DTXSharedMemoryTransport
 
-+ (id)addressForPosixSharedMemoryWithName:(id)a3
++ (id)addressForPosixSharedMemoryWithName:(id)name
 {
   v3 = MEMORY[0x277CBEBC0];
-  v4 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], a2, @"%@://%@", @"shm", a3);
+  v4 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], a2, @"%@://%@", @"shm", name);
   v6 = objc_msgSend_URLWithString_(v3, v5, v4);
 
   return v6;
 }
 
-+ (id)addressForMemory:(unint64_t)a3 inProcess:(int)a4
++ (id)addressForMemory:(unint64_t)memory inProcess:(int)process
 {
   v4 = MEMORY[0x277CBEBC0];
-  v5 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], a2, @"%@://%d/%#llx", @"mmap", a4, a3);
+  v5 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], a2, @"%@://%d/%#llx", @"mmap", process, memory);
   v7 = objc_msgSend_URLWithString_(v4, v6, v5);
 
   return v7;
 }
 
-- (BOOL)_setupWithShm:(DTXSharedMemory *)a3 asCreator:(BOOL)a4
+- (BOOL)_setupWithShm:(DTXSharedMemory *)shm asCreator:(BOOL)creator
 {
-  if (a3)
+  if (shm)
   {
-    self->_shm = a3;
-    self->_creator = a4;
+    self->_shm = shm;
+    self->_creator = creator;
     v6 = dispatch_queue_create("shared memory transport listener queue", 0);
     listenQueue = self->_listenQueue;
     self->_listenQueue = v6;
@@ -53,15 +53,15 @@
     dispatch_async(v8, block);
   }
 
-  return a3 != 0;
+  return shm != 0;
 }
 
-- (BOOL)_setupCreatingSharedMemory:(id)a3 size:(int)a4
+- (BOOL)_setupCreatingSharedMemory:(id)memory size:(int)size
 {
   v33 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v10 = objc_msgSend_UTF8String(a3, v8, v9);
-  v11 = (2 * a4);
+  memoryCopy = memory;
+  v10 = objc_msgSend_UTF8String(memory, v8, v9);
+  v11 = (2 * size);
   if (!v10)
   {
     v15 = (v11 + 16463) & 0x1FFFFC000;
@@ -125,9 +125,9 @@ LABEL_14:
   strlcpy(v18 + v11 + 80, v12, v14);
 LABEL_9:
   *(v18 + 6) = 0;
-  *(v18 + 7) = a4;
-  *(v18 + 8) = a4;
-  *(v18 + 9) = a4;
+  *(v18 + 7) = size;
+  *(v18 + 8) = size;
+  *(v18 + 9) = size;
   atomic_store(0, v18 + 13);
   atomic_store(0, v18 + 14);
   atomic_store(0, v18 + 15);
@@ -140,24 +140,24 @@ LABEL_9:
   return objc_msgSend__setupWithShm_asCreator_(self, v20, v18, 1);
 }
 
-- (DTXSharedMemoryTransport)initWithRemoteAddress:(id)a3
+- (DTXSharedMemoryTransport)initWithRemoteAddress:(id)address
 {
   v86 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  addressCopy = address;
   v70.receiver = self;
   v70.super_class = DTXSharedMemoryTransport;
-  v7 = [(DTXTransport *)&v70 initWithRemoteAddress:v4];
+  v7 = [(DTXTransport *)&v70 initWithRemoteAddress:addressCopy];
   if (!v7)
   {
     goto LABEL_40;
   }
 
-  v8 = objc_msgSend_scheme(v4, v5, v6);
+  v8 = objc_msgSend_scheme(addressCopy, v5, v6);
   if (objc_msgSend_isEqualToString_(v8, v9, @"shm"))
   {
 
 LABEL_5:
-    v17 = objc_msgSend_host(v4, v12, v13);
+    v17 = objc_msgSend_host(addressCopy, v12, v13);
     v18 = v17;
     v21 = objc_msgSend_UTF8String(v17, v19, v20);
     v22 = v21;
@@ -267,7 +267,7 @@ LABEL_37:
     goto LABEL_36;
   }
 
-  v14 = objc_msgSend_scheme(v4, v10, v11);
+  v14 = objc_msgSend_scheme(addressCopy, v10, v11);
   isEqualToString = objc_msgSend_isEqualToString_(v14, v15, @"shmem");
 
   if (isEqualToString)
@@ -275,10 +275,10 @@ LABEL_37:
     goto LABEL_5;
   }
 
-  v29 = objc_msgSend_host(v4, v12, v13);
+  v29 = objc_msgSend_host(addressCopy, v12, v13);
   v32 = objc_msgSend_intValue(v29, v30, v31);
 
-  v35 = objc_msgSend_path(v4, v33, v34);
+  v35 = objc_msgSend_path(addressCopy, v33, v34);
   if (objc_msgSend_length(v35, v36, v37) <= 1)
   {
 
@@ -287,7 +287,7 @@ LABEL_37:
 
   else
   {
-    v40 = objc_msgSend_path(v4, v38, v39);
+    v40 = objc_msgSend_path(addressCopy, v38, v39);
     v41 = v40;
     v44 = objc_msgSend_UTF8String(v40, v42, v43);
 
@@ -478,15 +478,15 @@ LABEL_40:
   return v7;
 }
 
-- (DTXSharedMemoryTransport)initWithMemoryAddress:(unint64_t)a3 inTask:(unsigned int)a4
+- (DTXSharedMemoryTransport)initWithMemoryAddress:(unint64_t)address inTask:(unsigned int)task
 {
   v35 = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!address)
   {
     goto LABEL_21;
   }
 
-  if (a4 - 1 > 0xFFFFFFFD)
+  if (task - 1 > 0xFFFFFFFD)
   {
     goto LABEL_21;
   }
@@ -508,9 +508,9 @@ LABEL_40:
   v21 = &unk_278EEEFC8;
   v22 = &v23;
   v9 = v19;
-  if (mach_task_is_self(a4))
+  if (mach_task_is_self(task))
   {
-    v20(v9, a3);
+    v20(v9, address);
   }
 
   else
@@ -518,15 +518,15 @@ LABEL_40:
     v10 = *v6;
     *cur_protection = 0;
     target_address = 0;
-    v11 = mach_vm_remap(v10, &target_address, 0x50uLL, 0, 1048577, a4, a3, 0, &cur_protection[1], cur_protection, 2u);
+    v11 = mach_vm_remap(v10, &target_address, 0x50uLL, 0, 1048577, task, address, 0, &cur_protection[1], cur_protection, 2u);
     if (v11)
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
       {
         *buf = 134218496;
-        v30 = a3;
+        addressCopy4 = address;
         v31 = 1024;
-        v32 = a4;
+        taskCopy4 = task;
         v33 = 1024;
         v34 = v11;
         _os_log_impl(&dword_247F3D000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "Unable to map memory for address: %#llx in task: 0x%x (%d)\n", buf, 0x18u);
@@ -542,9 +542,9 @@ LABEL_40:
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
         {
           *buf = 134218496;
-          v30 = a3;
+          addressCopy4 = address;
           v31 = 1024;
-          v32 = a4;
+          taskCopy4 = task;
           v33 = 1024;
           v34 = cur_protection[1];
           _os_log_impl(&dword_247F3D000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "Unable to map memory r/w for address: %#llx in task: 0x%x (%d)\n", buf, 0x18u);
@@ -566,21 +566,21 @@ LABEL_40:
 LABEL_20:
     _Block_object_dispose(&v23, 8);
 LABEL_21:
-    v15 = 0;
+    selfCopy = 0;
     goto LABEL_22;
   }
 
   *cur_protection = 0;
   target_address = 0;
-  v14 = mach_vm_remap(v7, &target_address, v13, 0, 1048577, a4, a3, 0, &cur_protection[1], cur_protection, 2u);
+  v14 = mach_vm_remap(v7, &target_address, v13, 0, 1048577, task, address, 0, &cur_protection[1], cur_protection, 2u);
   if (v14)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
       *buf = 134218496;
-      v30 = a3;
+      addressCopy4 = address;
       v31 = 1024;
-      v32 = a4;
+      taskCopy4 = task;
       v33 = 1024;
       v34 = v14;
       _os_log_impl(&dword_247F3D000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "Unable to map memory for address: %#llx in task: 0x%x (%d)\n", buf, 0x18u);
@@ -594,9 +594,9 @@ LABEL_21:
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
       *buf = 134218496;
-      v30 = a3;
+      addressCopy4 = address;
       v31 = 1024;
-      v32 = a4;
+      taskCopy4 = task;
       v33 = 1024;
       v34 = cur_protection[1];
       _os_log_impl(&dword_247F3D000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "Unable to map memory r/w for address: %#llx in task: 0x%x (%d)\n", buf, 0x18u);
@@ -605,21 +605,21 @@ LABEL_21:
     mach_vm_deallocate(v7, target_address, v13);
   }
 
-  v15 = target_address;
+  selfCopy = target_address;
   _Block_object_dispose(&v23, 8);
-  if (v15)
+  if (selfCopy)
   {
-    self = objc_msgSend_initWithMappedMemory_(self, v18, v15);
-    v15 = self;
+    self = objc_msgSend_initWithMappedMemory_(self, v18, selfCopy);
+    selfCopy = self;
   }
 
 LABEL_22:
 
   v16 = *MEMORY[0x277D85DE8];
-  return v15;
+  return selfCopy;
 }
 
-- (DTXSharedMemoryTransport)initWithMappedMemory:(DTXSharedMemory *)a3
+- (DTXSharedMemoryTransport)initWithMappedMemory:(DTXSharedMemory *)memory
 {
   v13 = *MEMORY[0x277D85DE8];
   v10.receiver = self;
@@ -627,9 +627,9 @@ LABEL_22:
   v5 = [(DTXTransport *)&v10 init];
   if (v5)
   {
-    if (a3)
+    if (memory)
     {
-      v6 = atomic_load(&a3->var8);
+      v6 = atomic_load(&memory->var8);
       if (v6 && v6 != getpid())
       {
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
@@ -639,21 +639,21 @@ LABEL_22:
           _os_log_impl(&dword_247F3D000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "Unable to attach to shared memory - process %d already attached.\n", buf, 8u);
         }
 
-        a3 = 0;
+        memory = 0;
       }
 
       else
       {
-        atomic_store(getpid(), &a3->var8);
-        var2 = a3->var2;
+        atomic_store(getpid(), &memory->var8);
+        var2 = memory->var2;
         if (var2)
         {
-          shm_unlink(a3 + var2);
+          shm_unlink(memory + var2);
         }
       }
     }
 
-    if ((objc_msgSend__setupWithShm_asCreator_(v5, v4, a3, 0) & 1) == 0)
+    if ((objc_msgSend__setupWithShm_asCreator_(v5, v4, memory, 0) & 1) == 0)
     {
 
       v5 = 0;
@@ -698,7 +698,7 @@ LABEL_22:
   return atomic_load((self->_shm + v2));
 }
 
-- (void)setRemotePid:(int)a3
+- (void)setRemotePid:(int)pid
 {
   v3 = 40;
   if (self->_creator)
@@ -706,10 +706,10 @@ LABEL_22:
     v3 = 44;
   }
 
-  atomic_store(a3, (self->_shm + v3));
+  atomic_store(pid, (self->_shm + v3));
 }
 
-- (unint64_t)transmit:(const void *)a3 ofLength:(unint64_t)a4
+- (unint64_t)transmit:(const void *)transmit ofLength:(unint64_t)length
 {
   shm = self->_shm;
   if (!shm)
@@ -751,16 +751,16 @@ LABEL_22:
     v9 = 28;
   }
 
-  if (a4)
+  if (length)
   {
-    v10 = a3;
+    transmitCopy = transmit;
     v11 = 0;
     v12 = &shm->var17[*(&shm->var0 + v7)];
     v13 = *(&shm->var0 + v9);
     v31 = v12;
     v32 = (shm + v6);
     v30 = (shm + v8);
-    v14 = a4;
+    lengthCopy = length;
     v15 = 64;
     while (!atomic_load_explicit(&shm->var9, memory_order_acquire))
     {
@@ -791,21 +791,21 @@ LABEL_22:
           v21 = v21;
         }
 
-        if (v14 >= v21)
+        if (lengthCopy >= v21)
         {
           v22 = v21;
         }
 
         else
         {
-          v22 = v14;
+          v22 = lengthCopy;
         }
 
-        memcpy(&v12[v20], v10, v22);
-        v10 += v22;
-        v14 -= v22;
+        memcpy(&v12[v20], transmitCopy, v22);
+        transmitCopy += v22;
+        lengthCopy -= v22;
         v11 += v22;
-        if (v14)
+        if (lengthCopy)
         {
           v23 = v19 == v22;
         }
@@ -822,19 +822,19 @@ LABEL_22:
 
         else
         {
-          if (v14 >= v19 - v22)
+          if (lengthCopy >= v19 - v22)
           {
             v22 = v19 - v22;
           }
 
           else
           {
-            v22 = v14;
+            v22 = lengthCopy;
           }
 
-          memmove(v12, v10, v22);
-          v10 += v22;
-          v14 -= v22;
+          memmove(v12, transmitCopy, v22);
+          transmitCopy += v22;
+          lengthCopy -= v22;
           v11 += v22;
         }
 
@@ -885,7 +885,7 @@ LABEL_22:
       }
 
       v12 = v31;
-      if (!v14)
+      if (!lengthCopy)
       {
         break;
       }
@@ -898,9 +898,9 @@ LABEL_49:
     v11 = 0;
   }
 
-  if (v11 < a4)
+  if (v11 < length)
   {
-    objc_msgSend_disconnect(self, a2, a3);
+    objc_msgSend_disconnect(self, a2, transmit);
   }
 
   return v11;

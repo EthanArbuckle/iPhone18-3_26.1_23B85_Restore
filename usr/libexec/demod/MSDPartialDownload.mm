@@ -1,12 +1,12 @@
 @interface MSDPartialDownload
 - (BOOL)isDownloadComplete;
 - (MSDPartialDownload)init;
-- (MSDPartialDownload)initWithFilePath:(id)a3;
+- (MSDPartialDownload)initWithFilePath:(id)path;
 - (id)description;
 - (id)getRangeHeaderForDownload;
-- (void)appendDownloadedFileSize:(int64_t)a3;
-- (void)processServerRangeResponse:(id)a3;
-- (void)pushToTestLog:(id)a3;
+- (void)appendDownloadedFileSize:(int64_t)size;
+- (void)processServerRangeResponse:(id)response;
+- (void)pushToTestLog:(id)log;
 - (void)recordDownloadedBytes;
 @end
 
@@ -21,18 +21,18 @@
   return self;
 }
 
-- (MSDPartialDownload)initWithFilePath:(id)a3
+- (MSDPartialDownload)initWithFilePath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v10.receiver = self;
   v10.super_class = MSDPartialDownload;
   v5 = [(MSDPartialDownload *)&v10 init];
   if (v5)
   {
     v6 = +[NSFileManager defaultManager];
-    if ([v6 fileExistsAtPath:v4])
+    if ([v6 fileExistsAtPath:pathCopy])
     {
-      v7 = [v6 attributesOfItemAtPath:v4 error:0];
+      v7 = [v6 attributesOfItemAtPath:pathCopy error:0];
       -[MSDPartialDownload setExistingFileSize:](v5, "setExistingFileSize:", [v7 fileSize]);
     }
 
@@ -52,11 +52,11 @@
 
 - (BOOL)isDownloadComplete
 {
-  v3 = [(MSDPartialDownload *)self downloadedBytes];
-  v4 = [(MSDPartialDownload *)self existingFileSize];
+  downloadedBytes = [(MSDPartialDownload *)self downloadedBytes];
+  existingFileSize = [(MSDPartialDownload *)self existingFileSize];
   if ([(MSDPartialDownload *)self totalFileSize]!= -1)
   {
-    v5 = (v4 + v3);
+    v5 = (existingFileSize + downloadedBytes);
     if ([(MSDPartialDownload *)self totalFileSize]== v5)
     {
       return 1;
@@ -69,11 +69,11 @@
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134218496;
-        v10 = [(MSDPartialDownload *)self totalFileSize];
+        totalFileSize = [(MSDPartialDownload *)self totalFileSize];
         v11 = 2048;
-        v12 = [(MSDPartialDownload *)self downloadedBytes];
+        downloadedBytes2 = [(MSDPartialDownload *)self downloadedBytes];
         v13 = 2048;
-        v14 = [(MSDPartialDownload *)self existingFileSize];
+        existingFileSize2 = [(MSDPartialDownload *)self existingFileSize];
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Error happened totalFileSize = %ld downloadContentSize=%ld existingFileSize=%ld", buf, 0x20u);
       }
 
@@ -86,9 +86,9 @@
 
 - (void)recordDownloadedBytes
 {
-  v3 = [(MSDPartialDownload *)self downloadedBytes];
+  downloadedBytes = [(MSDPartialDownload *)self downloadedBytes];
 
-  [(MSDPartialDownload *)self setLastDownloadedByte:v3];
+  [(MSDPartialDownload *)self setLastDownloadedByte:downloadedBytes];
 }
 
 - (id)getRangeHeaderForDownload
@@ -99,21 +99,21 @@
   return v3;
 }
 
-- (void)processServerRangeResponse:(id)a3
+- (void)processServerRangeResponse:(id)response
 {
-  v9 = a3;
+  responseCopy = response;
   if ([(MSDPartialDownload *)self totalFileSize]== -1)
   {
-    v5 = [v9 componentsSeparatedByString:@"/"];
+    v5 = [responseCopy componentsSeparatedByString:@"/"];
     v4 = v5;
     if (v5)
     {
       if ([v5 count] == 2)
       {
         v6 = [v4 objectAtIndexedSubscript:1];
-        v7 = [v6 longLongValue];
+        longLongValue = [v6 longLongValue];
 
-        if (v7)
+        if (longLongValue)
         {
           v8 = [v4 objectAtIndexedSubscript:1];
           -[MSDPartialDownload setTotalFileSize:](self, "setTotalFileSize:", [v8 longLongValue]);
@@ -128,9 +128,9 @@
   }
 }
 
-- (void)appendDownloadedFileSize:(int64_t)a3
+- (void)appendDownloadedFileSize:(int64_t)size
 {
-  v4 = [(MSDPartialDownload *)self downloadedBytes]+ a3;
+  v4 = [(MSDPartialDownload *)self downloadedBytes]+ size;
 
   [(MSDPartialDownload *)self setDownloadedBytes:v4];
 }
@@ -143,19 +143,19 @@
   return v3;
 }
 
-- (void)pushToTestLog:(id)a3
+- (void)pushToTestLog:(id)log
 {
-  v11 = a3;
+  logCopy = log;
   if (os_variant_has_internal_content())
   {
-    v4 = [(MSDPartialDownload *)self fileDownloading];
-    v5 = [v4 stringByAppendingString:@" -> "];
+    fileDownloading = [(MSDPartialDownload *)self fileDownloading];
+    v5 = [fileDownloading stringByAppendingString:@" -> "];
     v6 = [(MSDPartialDownload *)self description];
     v7 = [v5 stringByAppendingString:v6];
 
-    if (v11)
+    if (logCopy)
     {
-      v8 = [v11 mutableCopy];
+      v8 = [logCopy mutableCopy];
     }
 
     else

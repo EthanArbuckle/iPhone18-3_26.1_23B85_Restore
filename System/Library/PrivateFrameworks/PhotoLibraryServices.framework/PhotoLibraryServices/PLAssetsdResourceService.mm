@@ -1,33 +1,33 @@
 @interface PLAssetsdResourceService
-- (BOOL)_allowSandboxExtensionForAsset:(id)a3;
-- (BOOL)_allowSandboxExtensionForSessionIdentifier:(id)a3 captureSessionState:(id)a4;
-- (BOOL)_consolidateResource:(id)a3 assetUUID:(id)a4 bundleScope:(unsigned __int16)a5 error:(id *)a6;
-- (PLAssetsdResourceService)initWithLibraryServicesManager:(id)a3 connectionAuthorization:(id)a4 resourceDownloader:(id)a5;
-- (id)_typeFromPathConstrainedToImageOrMovie:(id)a3;
-- (id)consolidateAssets:(id)a3 reply:(id)a4;
-- (void)addAssetGroupWithName:(id)a3 reply:(id)a4;
-- (void)addAssetWithURL:(id)a3 toAlbum:(id)a4 reply:(id)a5;
-- (void)asynchronousAdjustmentDataForAsset:(id)a3 networkAccessAllowed:(BOOL)a4 reply:(id)a5;
-- (void)downloadCloudSharedAsset:(id)a3 wantedPlaceholderkind:(signed __int16)a4 shouldPrioritize:(BOOL)a5 shouldExtendTimer:(BOOL)a6 reply:(id)a7;
-- (void)estimatedFileLengthOfVideo:(id)a3 fallbackFilePath:(id)a4 exportPreset:(id)a5 exportProperties:(id)a6 reply:(id)a7;
-- (void)fileDescriptorForPersistentURL:(id)a3 withAdjustments:(BOOL)a4 reply:(id)a5;
-- (void)filePathForPersistentURL:(id)a3 withAdjustments:(BOOL)a4 reply:(id)a5;
-- (void)getSandboxExtensionForFileSystemBookmark:(id)a3 reply:(id)a4;
-- (void)getSandboxExtensionsForAssetWithUUID:(id)a3 reply:(id)a4;
-- (void)imageDataForAssetWithObjectURI:(id)a3 formatID:(unsigned __int16)a4 allowPlaceholder:(BOOL)a5 wantURLOnly:(BOOL)a6 networkAccessAllowed:(BOOL)a7 trackCPLDownload:(BOOL)a8 reply:(id)a9;
-- (void)projectExtensionDataForProjectUuid:(id)a3 reply:(id)a4;
-- (void)sandboxExtensionURLForPersistentURL:(id)a3 withAdjustments:(BOOL)a4 reply:(id)a5;
-- (void)saveAssetWithDataAndPorts:(id)a3 imageSurface:(id)a4 previewImageSurface:(id)a5 reply:(id)a6;
-- (void)translatePersistentURL:(id)a3 withAdjustments:(BOOL)a4 handler:(id)a5;
-- (void)updateInternalResourcePath:(id)a3 objectURI:(id)a4 sandboxExtension:(id)a5 reply:(id)a6;
+- (BOOL)_allowSandboxExtensionForAsset:(id)asset;
+- (BOOL)_allowSandboxExtensionForSessionIdentifier:(id)identifier captureSessionState:(id)state;
+- (BOOL)_consolidateResource:(id)resource assetUUID:(id)d bundleScope:(unsigned __int16)scope error:(id *)error;
+- (PLAssetsdResourceService)initWithLibraryServicesManager:(id)manager connectionAuthorization:(id)authorization resourceDownloader:(id)downloader;
+- (id)_typeFromPathConstrainedToImageOrMovie:(id)movie;
+- (id)consolidateAssets:(id)assets reply:(id)reply;
+- (void)addAssetGroupWithName:(id)name reply:(id)reply;
+- (void)addAssetWithURL:(id)l toAlbum:(id)album reply:(id)reply;
+- (void)asynchronousAdjustmentDataForAsset:(id)asset networkAccessAllowed:(BOOL)allowed reply:(id)reply;
+- (void)downloadCloudSharedAsset:(id)asset wantedPlaceholderkind:(signed __int16)placeholderkind shouldPrioritize:(BOOL)prioritize shouldExtendTimer:(BOOL)timer reply:(id)reply;
+- (void)estimatedFileLengthOfVideo:(id)video fallbackFilePath:(id)path exportPreset:(id)preset exportProperties:(id)properties reply:(id)reply;
+- (void)fileDescriptorForPersistentURL:(id)l withAdjustments:(BOOL)adjustments reply:(id)reply;
+- (void)filePathForPersistentURL:(id)l withAdjustments:(BOOL)adjustments reply:(id)reply;
+- (void)getSandboxExtensionForFileSystemBookmark:(id)bookmark reply:(id)reply;
+- (void)getSandboxExtensionsForAssetWithUUID:(id)d reply:(id)reply;
+- (void)imageDataForAssetWithObjectURI:(id)i formatID:(unsigned __int16)d allowPlaceholder:(BOOL)placeholder wantURLOnly:(BOOL)only networkAccessAllowed:(BOOL)allowed trackCPLDownload:(BOOL)download reply:(id)reply;
+- (void)projectExtensionDataForProjectUuid:(id)uuid reply:(id)reply;
+- (void)sandboxExtensionURLForPersistentURL:(id)l withAdjustments:(BOOL)adjustments reply:(id)reply;
+- (void)saveAssetWithDataAndPorts:(id)ports imageSurface:(id)surface previewImageSurface:(id)imageSurface reply:(id)reply;
+- (void)translatePersistentURL:(id)l withAdjustments:(BOOL)adjustments handler:(id)handler;
+- (void)updateInternalResourcePath:(id)path objectURI:(id)i sandboxExtension:(id)extension reply:(id)reply;
 @end
 
 @implementation PLAssetsdResourceService
 
-- (void)projectExtensionDataForProjectUuid:(id)a3 reply:(id)a4
+- (void)projectExtensionDataForProjectUuid:(id)uuid reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  uuidCopy = uuid;
+  replyCopy = reply;
   v8 = [(PLAbstractLibraryServicesManagerService *)self newShortLivedLibraryWithName:"[PLAssetsdResourceService projectExtensionDataForProjectUuid:reply:]"];
   v9 = v8;
   if (v8)
@@ -44,13 +44,13 @@
     v22[3] = __Block_byref_object_copy__62036;
     v22[4] = __Block_byref_object_dispose__62037;
     v23 = 0;
-    v10 = [v8 managedObjectContext];
+    managedObjectContext = [v8 managedObjectContext];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __69__PLAssetsdResourceService_projectExtensionDataForProjectUuid_reply___block_invoke;
     v17[3] = &unk_1E7578898;
-    v18 = v6;
-    v11 = v10;
+    v18 = uuidCopy;
+    v11 = managedObjectContext;
     v19 = v11;
     v20 = v24;
     v21 = v22;
@@ -58,7 +58,7 @@
     v13[1] = 3221225472;
     v13[2] = __69__PLAssetsdResourceService_projectExtensionDataForProjectUuid_reply___block_invoke_2;
     v13[3] = &unk_1E7575F50;
-    v14 = v7;
+    v14 = replyCopy;
     v15 = v24;
     v16 = v22;
     [v9 performBlock:v17 completionHandler:v13];
@@ -70,7 +70,7 @@
   else
   {
     v12 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E69BFF48] code:41012 userInfo:0];
-    (*(v7 + 2))(v7, 0, v12);
+    (*(replyCopy + 2))(replyCopy, 0, v12);
   }
 }
 
@@ -113,19 +113,19 @@ void __69__PLAssetsdResourceService_projectExtensionDataForProjectUuid_reply___b
   }
 }
 
-- (void)updateInternalResourcePath:(id)a3 objectURI:(id)a4 sandboxExtension:(id)a5 reply:(id)a6
+- (void)updateInternalResourcePath:(id)path objectURI:(id)i sandboxExtension:(id)extension reply:(id)reply
 {
   v44 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  pathCopy = path;
+  iCopy = i;
+  extensionCopy = extension;
+  replyCopy = reply;
   v38 = 0u;
   *sel = 0u;
   v37 = 0u;
-  v14 = [MEMORY[0x1E69BF350] enabled];
-  LOBYTE(v37) = v14;
-  if (v14)
+  enabled = [MEMORY[0x1E69BF350] enabled];
+  LOBYTE(v37) = enabled;
+  if (enabled)
   {
     v15 = _os_activity_create(&dword_19BF1F000, "PLXPC Service: updateInternalResourcePath:objectURI:sandboxExtension:reply:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
     v16 = *(&v37 + 1);
@@ -134,20 +134,20 @@ void __69__PLAssetsdResourceService_projectExtensionDataForProjectUuid_reply___b
     os_activity_scope_enter(v15, (&v38 + 8));
   }
 
-  v17 = v12;
-  [v12 bytes];
+  v17 = extensionCopy;
+  [extensionCopy bytes];
   v18 = sandbox_extension_consume();
   if (v18 == -1)
   {
     v22 = *__error();
     v23 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    v20 = v23;
-    if (v10)
+    databaseContext = v23;
+    if (pathCopy)
     {
-      [v23 setObject:v10 forKeyedSubscript:*MEMORY[0x1E696A368]];
+      [v23 setObject:pathCopy forKeyedSubscript:*MEMORY[0x1E696A368]];
     }
 
-    v21 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:v22 userInfo:v20];
+    v21 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:v22 userInfo:databaseContext];
     v24 = PLBackendGetLog();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
     {
@@ -156,25 +156,25 @@ void __69__PLAssetsdResourceService_projectExtensionDataForProjectUuid_reply___b
       _os_log_impl(&dword_19BF1F000, v24, OS_LOG_TYPE_ERROR, "sandbox_extension_consume failed with error %@", buf, 0xCu);
     }
 
-    v13[2](v13, 0, v21);
+    replyCopy[2](replyCopy, 0, v21);
   }
 
   else
   {
-    v19 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
-    v20 = [v19 databaseContext];
+    libraryServicesManager = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
+    databaseContext = [libraryServicesManager databaseContext];
 
-    if (v20)
+    if (databaseContext)
     {
       v32[0] = MEMORY[0x1E69E9820];
       v32[1] = 3221225472;
       v32[2] = __88__PLAssetsdResourceService_updateInternalResourcePath_objectURI_sandboxExtension_reply___block_invoke;
       v32[3] = &unk_1E756EE08;
-      v33 = v11;
-      v34 = v10;
+      v33 = iCopy;
+      v34 = pathCopy;
       v36 = v18;
-      v35 = v13;
-      [v20 perform:v32 withName:"-[PLAssetsdResourceService updateInternalResourcePath:objectURI:sandboxExtension:reply:]"];
+      v35 = replyCopy;
+      [databaseContext perform:v32 withName:"-[PLAssetsdResourceService updateInternalResourcePath:objectURI:sandboxExtension:reply:]"];
 
       v21 = v33;
     }
@@ -196,8 +196,8 @@ void __69__PLAssetsdResourceService_projectExtensionDataForProjectUuid_reply___b
         _os_log_impl(&dword_19BF1F000, v27, OS_LOG_TYPE_ERROR, "Error updating internal resource: %@", buf, 0xCu);
       }
 
-      v13[2](v13, 0, v21);
-      v20 = 0;
+      replyCopy[2](replyCopy, 0, v21);
+      databaseContext = 0;
     }
   }
 
@@ -344,17 +344,17 @@ LABEL_20:
   (*(*(a1 + 48) + 16))(*(a1 + 48), v18 == 0, v18);
 }
 
-- (id)consolidateAssets:(id)a3 reply:(id)a4
+- (id)consolidateAssets:(id)assets reply:(id)reply
 {
   v46 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  assetsCopy = assets;
+  replyCopy = reply;
   v41 = 0u;
   *sel = 0u;
   v40 = 0u;
-  v8 = [MEMORY[0x1E69BF350] enabled];
-  LOBYTE(v40) = v8;
-  if (v8)
+  enabled = [MEMORY[0x1E69BF350] enabled];
+  LOBYTE(v40) = enabled;
+  if (enabled)
   {
     v9 = _os_activity_create(&dword_19BF1F000, "PLXPC Service: consolidateAssets:reply:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
     v10 = *(&v40 + 1);
@@ -363,7 +363,7 @@ LABEL_20:
     os_activity_scope_enter(v9, (&v41 + 8));
   }
 
-  v11 = [MEMORY[0x1E696AE38] discreteProgressWithTotalUnitCount:{objc_msgSend(v6, "count")}];
+  v11 = [MEMORY[0x1E696AE38] discreteProgressWithTotalUnitCount:{objc_msgSend(assetsCopy, "count")}];
   v12 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v13 = [(PLAbstractLibraryServicesManagerService *)self newShortLivedLibraryWithName:"[PLAssetsdResourceService consolidateAssets:reply:]"];
   if (v13)
@@ -372,13 +372,13 @@ LABEL_20:
     v29[1] = 3221225472;
     v29[2] = __52__PLAssetsdResourceService_consolidateAssets_reply___block_invoke;
     v29[3] = &unk_1E75738F8;
-    v30 = v6;
+    v30 = assetsCopy;
     v31 = v13;
     v14 = v11;
     v32 = v14;
-    v33 = self;
+    selfCopy = self;
     v34 = v12;
-    v35 = v7;
+    v35 = replyCopy;
     [v31 performBlock:v29];
     v15 = v14;
 
@@ -388,13 +388,13 @@ LABEL_20:
   else
   {
     v16 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E69BFF48] code:41012 userInfo:0];
-    v17 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v6, "count")}];
-    v28 = v7;
+    v17 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(assetsCopy, "count")}];
+    v28 = replyCopy;
     v38 = 0u;
     v39 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v18 = v6;
+    v18 = assetsCopy;
     v19 = [v18 countByEnumeratingWithState:&v36 objects:v43 count:16];
     if (v19)
     {
@@ -418,7 +418,7 @@ LABEL_20:
       while (v19);
     }
 
-    v7 = v28;
+    replyCopy = v28;
     v28[2](v28, v17);
     v22 = v11;
   }
@@ -658,47 +658,47 @@ LABEL_36:
   (*(*(a1 + 72) + 16))();
 }
 
-- (BOOL)_consolidateResource:(id)a3 assetUUID:(id)a4 bundleScope:(unsigned __int16)a5 error:(id *)a6
+- (BOOL)_consolidateResource:(id)resource assetUUID:(id)d bundleScope:(unsigned __int16)scope error:(id *)error
 {
-  v29 = a5;
+  scopeCopy = scope;
   v49 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v31 = a4;
+  resourceCopy = resource;
+  dCopy = d;
   v39 = 0;
   v40 = &v39;
   v41 = 0x3032000000;
   v42 = __Block_byref_object_copy__62036;
   v43 = __Block_byref_object_dispose__62037;
   v44 = 0;
-  v9 = [v8 fileSystemBookmark];
-  v10 = [v9 fileSystemURL];
+  fileSystemBookmark = [resourceCopy fileSystemBookmark];
+  fileSystemURL = [fileSystemBookmark fileSystemURL];
 
-  if (v10)
+  if (fileSystemURL)
   {
-    v11 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
-    v28 = [v11 pathManager];
+    libraryServicesManager = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
+    pathManager = [libraryServicesManager pathManager];
 
     v12 = objc_alloc(MEMORY[0x1E69BF298]);
-    v13 = [v8 uniformTypeIdentifier];
-    v14 = [v13 identifier];
-    v15 = [v8 version];
-    v16 = [v8 resourceType];
-    v17 = [v8 recipeID];
-    v18 = [v10 lastPathComponent];
-    v19 = [v8 customSuffix];
-    v20 = [v12 initWithAssetUuid:v31 bundleScope:v29 uti:v14 resourceVersion:v15 resourceType:v16 recipeID:v17 originalFilename:v18 customSuffix:v19];
+    uniformTypeIdentifier = [resourceCopy uniformTypeIdentifier];
+    identifier = [uniformTypeIdentifier identifier];
+    version = [resourceCopy version];
+    resourceType = [resourceCopy resourceType];
+    recipeID = [resourceCopy recipeID];
+    lastPathComponent = [fileSystemURL lastPathComponent];
+    customSuffix = [resourceCopy customSuffix];
+    v20 = [v12 initWithAssetUuid:dCopy bundleScope:scopeCopy uti:identifier resourceVersion:version resourceType:resourceType recipeID:recipeID originalFilename:lastPathComponent customSuffix:customSuffix];
 
     v32[0] = MEMORY[0x1E69E9820];
     v32[1] = 3221225472;
     v32[2] = __77__PLAssetsdResourceService__consolidateResource_assetUUID_bundleScope_error___block_invoke;
     v32[3] = &unk_1E756EDE0;
-    v33 = v10;
-    v34 = v8;
-    v38 = v29;
-    v21 = v28;
+    v33 = fileSystemURL;
+    v34 = resourceCopy;
+    v38 = scopeCopy;
+    v21 = pathManager;
     v35 = v21;
     v37 = &v39;
-    v36 = v31;
+    v36 = dCopy;
     [v21 obtainAccessAndWaitWithFileWithIdentifier:v20 mode:2 toURLWithHandler:v32];
   }
 
@@ -707,11 +707,11 @@ LABEL_36:
     v22 = PLBackendGetLog();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
-      v23 = [v8 objectID];
+      objectID = [resourceCopy objectID];
       *buf = 138543618;
-      v46 = v23;
+      v46 = objectID;
       v47 = 2114;
-      v48 = v31;
+      v48 = dCopy;
       _os_log_impl(&dword_19BF1F000, v22, OS_LOG_TYPE_DEFAULT, "No source URL for internal resource %{public}@ for asset uuid %{public}@", buf, 0x16u);
     }
 
@@ -721,10 +721,10 @@ LABEL_36:
   }
 
   v25 = v40[5];
-  if (a6 && v25)
+  if (error && v25)
   {
     v25 = v25;
-    *a6 = v25;
+    *error = v25;
   }
 
   v26 = v25 == 0;
@@ -783,45 +783,45 @@ void __77__PLAssetsdResourceService__consolidateResource_assetUUID_bundleScope_e
   }
 }
 
-- (void)translatePersistentURL:(id)a3 withAdjustments:(BOOL)a4 handler:(id)a5
+- (void)translatePersistentURL:(id)l withAdjustments:(BOOL)adjustments handler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = v9;
-  if (!v8)
+  lCopy = l;
+  handlerCopy = handler;
+  v10 = handlerCopy;
+  if (!lCopy)
   {
-    (*(v9 + 2))(v9, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 
-  v11 = [v8 scheme];
-  if (([v11 isEqualToString:@"ipod-library"] & 1) == 0)
+  scheme = [lCopy scheme];
+  if (([scheme isEqualToString:@"ipod-library"] & 1) == 0)
   {
 
     goto LABEL_8;
   }
 
-  v12 = [getMPMediaLibraryClass() defaultMediaLibrary];
-  v13 = [v12 isValidAssetURL:v8];
+  defaultMediaLibrary = [getMPMediaLibraryClass() defaultMediaLibrary];
+  v13 = [defaultMediaLibrary isValidAssetURL:lCopy];
 
   if (!v13)
   {
 LABEL_8:
-    v17 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
-    v18 = [v17 databaseContext];
+    libraryServicesManager = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
+    databaseContext = [libraryServicesManager databaseContext];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __75__PLAssetsdResourceService_translatePersistentURL_withAdjustments_handler___block_invoke;
     v19[3] = &unk_1E756EDB8;
-    v22 = a4;
-    v20 = v8;
+    adjustmentsCopy = adjustments;
+    v20 = lCopy;
     v21 = v10;
-    [v18 perform:v19 withName:"-[PLAssetsdResourceService translatePersistentURL:withAdjustments:handler:]"];
+    [databaseContext perform:v19 withName:"-[PLAssetsdResourceService translatePersistentURL:withAdjustments:handler:]"];
 
     goto LABEL_11;
   }
 
-  v14 = [getMPMediaLibraryClass() defaultMediaLibrary];
-  v15 = [v14 pathForAssetURL:v8];
+  defaultMediaLibrary2 = [getMPMediaLibraryClass() defaultMediaLibrary];
+  v15 = [defaultMediaLibrary2 pathForAssetURL:lCopy];
 
   if (v15)
   {
@@ -885,14 +885,14 @@ LABEL_11:
   (*(*(a1 + 40) + 16))();
 }
 
-- (id)_typeFromPathConstrainedToImageOrMovie:(id)a3
+- (id)_typeFromPathConstrainedToImageOrMovie:(id)movie
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  movieCopy = movie;
+  v4 = movieCopy;
+  if (movieCopy)
   {
-    v5 = [v3 pathExtension];
+    pathExtension = [movieCopy pathExtension];
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
@@ -915,7 +915,7 @@ LABEL_4:
           objc_enumerationMutation(v7);
         }
 
-        v12 = [MEMORY[0x1E6982C40] typeWithFilenameExtension:v5 conformingToType:*(*(&v15 + 1) + 8 * v11)];
+        v12 = [MEMORY[0x1E6982C40] typeWithFilenameExtension:pathExtension conformingToType:*(*(&v15 + 1) + 8 * v11)];
         v13 = v12;
         if (v12)
         {
@@ -953,17 +953,17 @@ LABEL_11:
   return v13;
 }
 
-- (void)downloadCloudSharedAsset:(id)a3 wantedPlaceholderkind:(signed __int16)a4 shouldPrioritize:(BOOL)a5 shouldExtendTimer:(BOOL)a6 reply:(id)a7
+- (void)downloadCloudSharedAsset:(id)asset wantedPlaceholderkind:(signed __int16)placeholderkind shouldPrioritize:(BOOL)prioritize shouldExtendTimer:(BOOL)timer reply:(id)reply
 {
   v47 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a7;
+  assetCopy = asset;
+  replyCopy = reply;
   v40 = 0u;
   *sel = 0u;
   v39 = 0u;
-  v14 = [MEMORY[0x1E69BF350] enabled];
-  LOBYTE(v39) = v14;
-  if (v14)
+  enabled = [MEMORY[0x1E69BF350] enabled];
+  LOBYTE(v39) = enabled;
+  if (enabled)
   {
     v15 = _os_activity_create(&dword_19BF1F000, "PLXPC Service: downloadCloudSharedAsset:wantedPlaceholderkind:shouldPrioritize:shouldExtendTimer:reply:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
     v16 = *(&v39 + 1);
@@ -972,10 +972,10 @@ LABEL_11:
     os_activity_scope_enter(v15, (&v40 + 8));
   }
 
-  v17 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
-  v18 = [v17 persistentStoreCoordinator];
+  libraryServicesManager = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
+  persistentStoreCoordinator = [libraryServicesManager persistentStoreCoordinator];
 
-  v19 = [v18 managedObjectIDForURIRepresentation:v12];
+  v19 = [persistentStoreCoordinator managedObjectIDForURIRepresentation:assetCopy];
   v20 = v19;
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -983,20 +983,20 @@ LABEL_11:
   v46 = 0;
   if (v19 && ([v19 isTemporaryID] & 1) == 0)
   {
-    v21 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
-    v22 = [v21 databaseContext];
+    libraryServicesManager2 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
+    databaseContext = [libraryServicesManager2 databaseContext];
     v31[0] = MEMORY[0x1E69E9820];
     v31[1] = 3221225472;
     v31[2] = __116__PLAssetsdResourceService_downloadCloudSharedAsset_wantedPlaceholderkind_shouldPrioritize_shouldExtendTimer_reply___block_invoke;
     v31[3] = &unk_1E756ED90;
     v32 = v20;
     p_buf = &buf;
-    v36 = a4;
-    v33 = self;
-    v34 = v13;
-    v37 = a5;
-    v38 = a6;
-    [v22 performSync:v31 withName:"-[PLAssetsdResourceService downloadCloudSharedAsset:wantedPlaceholderkind:shouldPrioritize:shouldExtendTimer:reply:]"];
+    placeholderkindCopy = placeholderkind;
+    selfCopy = self;
+    v34 = replyCopy;
+    prioritizeCopy = prioritize;
+    timerCopy = timer;
+    [databaseContext performSync:v31 withName:"-[PLAssetsdResourceService downloadCloudSharedAsset:wantedPlaceholderkind:shouldPrioritize:shouldExtendTimer:reply:]"];
   }
 
   if ((*(*(&buf + 1) + 24) & 1) == 0)
@@ -1008,7 +1008,7 @@ LABEL_11:
     v25 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v43 forKeys:&v42 count:1];
     v26 = [v23 errorWithDomain:*MEMORY[0x1E69BFF48] code:41008 userInfo:v25];
 
-    (*(v13 + 2))(v13, 0, 0, v26);
+    (*(replyCopy + 2))(replyCopy, 0, 0, v26);
   }
 
   _Block_object_dispose(&buf, 8);
@@ -1193,31 +1193,31 @@ void __116__PLAssetsdResourceService_downloadCloudSharedAsset_wantedPlaceholderk
   NavdRecentLocationsEntitlment_block_invoke_mediaStreamDownloadQueue = v0;
 }
 
-- (void)estimatedFileLengthOfVideo:(id)a3 fallbackFilePath:(id)a4 exportPreset:(id)a5 exportProperties:(id)a6 reply:(id)a7
+- (void)estimatedFileLengthOfVideo:(id)video fallbackFilePath:(id)path exportPreset:(id)preset exportProperties:(id)properties reply:(id)reply
 {
   v30 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  videoCopy = video;
+  pathCopy = path;
+  presetCopy = preset;
+  propertiesCopy = properties;
+  replyCopy = reply;
   v26 = 0u;
   *sel = 0u;
   v24 = 0u;
-  v17 = [MEMORY[0x1E69BF350] enabled];
-  LOBYTE(v24) = v17;
-  if (v17)
+  enabled = [MEMORY[0x1E69BF350] enabled];
+  LOBYTE(v24) = enabled;
+  if (enabled)
   {
     *(&v24 + 1) = _os_activity_create(&dword_19BF1F000, "PLXPC Service: estimatedFileLengthOfVideo:fallbackFilePath:exportPreset:exportProperties:reply:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
 
     os_activity_scope_enter(*(&v24 + 1), (&v26 + 8));
   }
 
-  v18 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
-  v19 = [v18 databaseContext];
-  v20 = [v19 newShortLivedLibraryWithName:"-[PLAssetsdResourceService estimatedFileLengthOfVideo:fallbackFilePath:exportPreset:exportProperties:reply:]"];
+  libraryServicesManager = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
+  databaseContext = [libraryServicesManager databaseContext];
+  v20 = [databaseContext newShortLivedLibraryWithName:"-[PLAssetsdResourceService estimatedFileLengthOfVideo:fallbackFilePath:exportPreset:exportProperties:reply:]"];
 
-  v16[2](v16, [PLAssetSharingUtilities estimatedOutputFileLengthForVideoURL:v12 library:v20 fallbackFilePath:v13 exportPreset:v14 exportProperties:v15]);
+  replyCopy[2](replyCopy, [PLAssetSharingUtilities estimatedOutputFileLengthForVideoURL:videoCopy library:v20 fallbackFilePath:pathCopy exportPreset:presetCopy exportProperties:propertiesCopy]);
   if (v25 == 1)
   {
     os_activity_scope_leave((&v26 + 8));
@@ -1237,17 +1237,17 @@ void __116__PLAssetsdResourceService_downloadCloudSharedAsset_wantedPlaceholderk
   }
 }
 
-- (void)asynchronousAdjustmentDataForAsset:(id)a3 networkAccessAllowed:(BOOL)a4 reply:(id)a5
+- (void)asynchronousAdjustmentDataForAsset:(id)asset networkAccessAllowed:(BOOL)allowed reply:(id)reply
 {
   v31 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  assetCopy = asset;
+  replyCopy = reply;
   v27 = 0u;
   *sel = 0u;
   v26 = 0u;
-  v10 = [MEMORY[0x1E69BF350] enabled];
-  LOBYTE(v26) = v10;
-  if (v10)
+  enabled = [MEMORY[0x1E69BF350] enabled];
+  LOBYTE(v26) = enabled;
+  if (enabled)
   {
     v11 = _os_activity_create(&dword_19BF1F000, "PLXPC Service: asynchronousAdjustmentDataForAsset:networkAccessAllowed:reply:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
     v12 = *(&v26 + 1);
@@ -1256,19 +1256,19 @@ void __116__PLAssetsdResourceService_downloadCloudSharedAsset_wantedPlaceholderk
     os_activity_scope_enter(v11, (&v27 + 8));
   }
 
-  v13 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
-  v14 = [v13 databaseContext];
+  libraryServicesManager = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
+  databaseContext = [libraryServicesManager databaseContext];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __90__PLAssetsdResourceService_asynchronousAdjustmentDataForAsset_networkAccessAllowed_reply___block_invoke;
   v21[3] = &unk_1E756ED18;
-  v15 = v8;
-  v25 = a4;
+  v15 = assetCopy;
+  allowedCopy = allowed;
   v22 = v15;
-  v23 = self;
-  v16 = v9;
+  selfCopy = self;
+  v16 = replyCopy;
   v24 = v16;
-  [v14 perform:v21 withName:"-[PLAssetsdResourceService asynchronousAdjustmentDataForAsset:networkAccessAllowed:reply:]"];
+  [databaseContext perform:v21 withName:"-[PLAssetsdResourceService asynchronousAdjustmentDataForAsset:networkAccessAllowed:reply:]"];
 
   if (v26 == 1)
   {
@@ -1808,11 +1808,11 @@ void __90__PLAssetsdResourceService_asynchronousAdjustmentDataForAsset_networkAc
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)getSandboxExtensionForFileSystemBookmark:(id)a3 reply:(id)a4
+- (void)getSandboxExtensionForFileSystemBookmark:(id)bookmark reply:(id)reply
 {
   v45[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  bookmarkCopy = bookmark;
+  replyCopy = reply;
   v36 = 0;
   v37 = &v36;
   v38 = 0x3032000000;
@@ -1825,17 +1825,17 @@ void __90__PLAssetsdResourceService_asynchronousAdjustmentDataForAsset_networkAc
   v33 = __Block_byref_object_copy__62036;
   v34 = __Block_byref_object_dispose__62037;
   v35 = 0;
-  v8 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
-  v9 = [v8 databaseContext];
+  libraryServicesManager = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
+  databaseContext = [libraryServicesManager databaseContext];
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __75__PLAssetsdResourceService_getSandboxExtensionForFileSystemBookmark_reply___block_invoke;
   v26[3] = &unk_1E756EC08;
-  v10 = v6;
+  v10 = bookmarkCopy;
   v27 = v10;
   v28 = &v30;
   v29 = &v36;
-  [v9 performSync:v26 withName:"-[PLAssetsdResourceService getSandboxExtensionForFileSystemBookmark:reply:]"];
+  [databaseContext performSync:v26 withName:"-[PLAssetsdResourceService getSandboxExtensionForFileSystemBookmark:reply:]"];
 
   v11 = v31[5];
   if (!v11)
@@ -1854,14 +1854,14 @@ void __90__PLAssetsdResourceService_asynchronousAdjustmentDataForAsset_networkAc
     goto LABEL_9;
   }
 
-  v12 = [v11 path];
-  v13 = v12;
-  [v12 fileSystemRepresentation];
-  v14 = [(PLAssetsdResourceWriteOnlyService *)self connectionAuthorization];
-  v15 = v14;
-  if (v14)
+  path = [v11 path];
+  v13 = path;
+  [path fileSystemRepresentation];
+  connectionAuthorization = [(PLAssetsdResourceWriteOnlyService *)self connectionAuthorization];
+  v15 = connectionAuthorization;
+  if (connectionAuthorization)
   {
-    [v14 clientAuditToken];
+    [connectionAuthorization clientAuditToken];
   }
 
   v20 = sandbox_extension_issue_file_to_process();
@@ -1884,7 +1884,7 @@ LABEL_9:
   v21 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v20];
   free(v20);
 LABEL_10:
-  v7[2](v7, v21 != 0, v31[5], v21, v37[5]);
+  replyCopy[2](replyCopy, v21 != 0, v31[5], v21, v37[5]);
 
   _Block_object_dispose(&v30, 8);
   _Block_object_dispose(&v36, 8);
@@ -1923,27 +1923,27 @@ void __75__PLAssetsdResourceService_getSandboxExtensionForFileSystemBookmark_rep
   }
 }
 
-- (BOOL)_allowSandboxExtensionForSessionIdentifier:(id)a3 captureSessionState:(id)a4
+- (BOOL)_allowSandboxExtensionForSessionIdentifier:(id)identifier captureSessionState:(id)state
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 type];
+  identifierCopy = identifier;
+  stateCopy = state;
+  type = [stateCopy type];
   v8 = 1;
-  if (v7 > 1)
+  if (type > 1)
   {
-    if (v7 == 3)
+    if (type == 3)
     {
       goto LABEL_19;
     }
 
-    if (v7 != 2)
+    if (type != 2)
     {
       goto LABEL_15;
     }
 
     v9 = objc_opt_class();
-    v10 = v6;
+    v10 = stateCopy;
     if (v10)
     {
       if (objc_opt_isKindOfClass())
@@ -1962,35 +1962,35 @@ void __75__PLAssetsdResourceService_getSandboxExtensionForFileSystemBookmark_rep
         goto LABEL_14;
       }
 
-      v13 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v14 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"id  _Nullable _PLAssertCast(Class  _Nonnull __unsafe_unretained, id  _Nullable __strong)"}];
-      [v13 handleFailureInFunction:v14 file:@"PLHelperExtension.h" lineNumber:78 description:{@"Expected class of %@ but was %@", v9, objc_opt_class()}];
+      [currentHandler handleFailureInFunction:v14 file:@"PLHelperExtension.h" lineNumber:78 description:{@"Expected class of %@ but was %@", v9, objc_opt_class()}];
     }
 
     v12 = 0;
 LABEL_14:
 
-    v15 = [v12 sessionIdentifier];
-    v8 = [v15 isEqual:v5];
+    sessionIdentifier = [v12 sessionIdentifier];
+    v8 = [sessionIdentifier isEqual:identifierCopy];
 
     goto LABEL_19;
   }
 
-  if (!v7)
+  if (!type)
   {
 LABEL_18:
     v8 = 0;
     goto LABEL_19;
   }
 
-  if (v7 != 1)
+  if (type != 1)
   {
 LABEL_15:
     v16 = PLGatekeeperXPCGetLog();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
-      v19 = v6;
+      v19 = stateCopy;
       _os_log_impl(&dword_19BF1F000, v16, OS_LOG_TYPE_ERROR, "Capture Session: Unexpected state for sandbox extensions: %{public}@", buf, 0xCu);
     }
 
@@ -2002,18 +2002,18 @@ LABEL_19:
   return v8;
 }
 
-- (BOOL)_allowSandboxExtensionForAsset:(id)a3
+- (BOOL)_allowSandboxExtensionForAsset:(id)asset
 {
-  v4 = a3;
-  if (v4)
+  assetCopy = asset;
+  if (assetCopy)
   {
-    v5 = [(PLAssetsdResourceWriteOnlyService *)self connectionAuthorization];
-    v6 = [v5 captureSessionState];
+    connectionAuthorization = [(PLAssetsdResourceWriteOnlyService *)self connectionAuthorization];
+    captureSessionState = [connectionAuthorization captureSessionState];
 
-    if (v6)
+    if (captureSessionState)
     {
-      v7 = [v4 captureSessionIdentifier];
-      v8 = [(PLAssetsdResourceService *)self _allowSandboxExtensionForSessionIdentifier:v7 captureSessionState:v6];
+      captureSessionIdentifier = [assetCopy captureSessionIdentifier];
+      v8 = [(PLAssetsdResourceService *)self _allowSandboxExtensionForSessionIdentifier:captureSessionIdentifier captureSessionState:captureSessionState];
     }
 
     else
@@ -2037,17 +2037,17 @@ LABEL_19:
   return v8;
 }
 
-- (void)getSandboxExtensionsForAssetWithUUID:(id)a3 reply:(id)a4
+- (void)getSandboxExtensionsForAssetWithUUID:(id)d reply:(id)reply
 {
   v72 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v35 = a4;
+  dCopy = d;
+  replyCopy = reply;
   v60 = 0u;
   *sel = 0u;
   v59 = 0u;
-  v7 = [MEMORY[0x1E69BF350] enabled];
-  LOBYTE(v59) = v7;
-  if (v7)
+  enabled = [MEMORY[0x1E69BF350] enabled];
+  LOBYTE(v59) = enabled;
+  if (enabled)
   {
     v8 = _os_activity_create(&dword_19BF1F000, "PLXPC Service: getSandboxExtensionsForAssetWithUUID:reply:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
     v9 = *(&v59 + 1);
@@ -2071,33 +2071,33 @@ LABEL_19:
   v51 = 0x3032000000;
   v52 = __Block_byref_object_copy__62036;
   v53 = __Block_byref_object_dispose__62037;
-  v54 = [MEMORY[0x1E695DF70] array];
-  v10 = [(PLAssetsdResourceWriteOnlyService *)self connectionAuthorization];
-  v11 = [v10 fetchFilterIdentifier];
+  array = [MEMORY[0x1E695DF70] array];
+  connectionAuthorization = [(PLAssetsdResourceWriteOnlyService *)self connectionAuthorization];
+  fetchFilterIdentifier = [connectionAuthorization fetchFilterIdentifier];
 
-  v12 = [(PLAssetsdResourceWriteOnlyService *)self connectionAuthorization];
-  LOBYTE(v10) = [v12 isClientInFullLibraryMode];
+  connectionAuthorization2 = [(PLAssetsdResourceWriteOnlyService *)self connectionAuthorization];
+  LOBYTE(connectionAuthorization) = [connectionAuthorization2 isClientInFullLibraryMode];
 
-  v13 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
-  v14 = [v13 databaseContext];
+  libraryServicesManager = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
+  databaseContext = [libraryServicesManager databaseContext];
   v41[0] = MEMORY[0x1E69E9820];
   v41[1] = 3221225472;
   v41[2] = __71__PLAssetsdResourceService_getSandboxExtensionsForAssetWithUUID_reply___block_invoke;
   v41[3] = &unk_1E756EBE0;
-  v48 = v10;
-  v34 = v11;
+  v48 = connectionAuthorization;
+  v34 = fetchFilterIdentifier;
   v42 = v34;
-  v33 = v6;
+  v33 = dCopy;
   v43 = v33;
-  v44 = self;
+  selfCopy = self;
   v45 = &v67;
   v46 = &v49;
   v47 = &v55;
-  [v14 performSync:v41 withName:"-[PLAssetsdResourceService getSandboxExtensionsForAssetWithUUID:reply:]"];
+  [databaseContext performSync:v41 withName:"-[PLAssetsdResourceService getSandboxExtensionsForAssetWithUUID:reply:]"];
 
   if (*(v56 + 24) == 1)
   {
-    v15 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v39 = 0u;
     v40 = 0u;
     v37 = 0u;
@@ -2117,23 +2117,23 @@ LABEL_19:
           }
 
           v19 = *(*(&v37 + 1) + 8 * i);
-          v20 = [v19 path];
+          path = [v19 path];
           v21 = PLGetSandboxExtensionToken();
 
           if (v21)
           {
-            v22 = [v19 path];
-            [v15 setObject:v21 forKey:v22];
+            path2 = [v19 path];
+            [dictionary setObject:v21 forKey:path2];
           }
 
           else
           {
-            v23 = [MEMORY[0x1E696AC08] defaultManager];
-            v24 = [v19 path];
-            v25 = [v23 fileExistsAtPath:v24];
+            defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+            path3 = [v19 path];
+            v25 = [defaultManager fileExistsAtPath:path3];
 
-            v22 = PLGatekeeperXPCGetLog();
-            if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
+            path2 = PLGatekeeperXPCGetLog();
+            if (os_log_type_enabled(path2, OS_LOG_TYPE_ERROR))
             {
               v26 = [MEMORY[0x1E69BF220] descriptionWithFileURL:v19];
               v27 = v26;
@@ -2147,7 +2147,7 @@ LABEL_19:
               v63 = v28;
               v64 = 2112;
               v65 = v26;
-              _os_log_impl(&dword_19BF1F000, v22, OS_LOG_TYPE_ERROR, "No sandbox extension (fileExists=%{public}@) for %@", buf, 0x16u);
+              _os_log_impl(&dword_19BF1F000, path2, OS_LOG_TYPE_ERROR, "No sandbox extension (fileExists=%{public}@) for %@", buf, 0x16u);
             }
           }
         }
@@ -2158,12 +2158,12 @@ LABEL_19:
       while (v16);
     }
 
-    v35[2](v35, 1, v15, 0);
+    replyCopy[2](replyCopy, 1, dictionary, 0);
   }
 
   else
   {
-    v35[2](v35, 0, 0, *(*(&v67 + 1) + 40));
+    replyCopy[2](replyCopy, 0, 0, *(*(&v67 + 1) + 40));
   }
 
   _Block_object_dispose(&v49, 8);
@@ -2289,18 +2289,18 @@ void __71__PLAssetsdResourceService_getSandboxExtensionsForAssetWithUUID_reply__
 LABEL_19:
 }
 
-- (void)imageDataForAssetWithObjectURI:(id)a3 formatID:(unsigned __int16)a4 allowPlaceholder:(BOOL)a5 wantURLOnly:(BOOL)a6 networkAccessAllowed:(BOOL)a7 trackCPLDownload:(BOOL)a8 reply:(id)a9
+- (void)imageDataForAssetWithObjectURI:(id)i formatID:(unsigned __int16)d allowPlaceholder:(BOOL)placeholder wantURLOnly:(BOOL)only networkAccessAllowed:(BOOL)allowed trackCPLDownload:(BOOL)download reply:(id)reply
 {
-  v35 = a4;
+  dCopy = d;
   v52 = *MEMORY[0x1E69E9840];
-  v33 = a3;
-  v14 = a9;
+  iCopy = i;
+  replyCopy = reply;
   v48 = 0u;
   *sel = 0u;
   v47 = 0u;
-  v15 = [MEMORY[0x1E69BF350] enabled];
-  LOBYTE(v47) = v15;
-  if (v15)
+  enabled = [MEMORY[0x1E69BF350] enabled];
+  LOBYTE(v47) = enabled;
+  if (enabled)
   {
     v16 = _os_activity_create(&dword_19BF1F000, "PLXPC Service: imageDataForAssetWithObjectURI:formatID:allowPlaceholder:wantURLOnly:networkAccessAllowed:trackCPLDownload:reply:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
     v17 = *(&v47 + 1);
@@ -2309,34 +2309,34 @@ LABEL_19:
     os_activity_scope_enter(v16, (&v48 + 8));
   }
 
-  v18 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
-  v34 = [v18 persistentStoreCoordinator];
+  libraryServicesManager = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
+  persistentStoreCoordinator = [libraryServicesManager persistentStoreCoordinator];
 
-  v32 = v14;
-  v19 = [v34 managedObjectIDForURIRepresentation:v33];
-  v20 = a8;
-  v21 = [MEMORY[0x1E69BF260] formatWithID:v35];
-  v22 = [v21 isThumbnail];
-  v23 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
-  v24 = [v23 databaseContext];
+  v32 = replyCopy;
+  v19 = [persistentStoreCoordinator managedObjectIDForURIRepresentation:iCopy];
+  downloadCopy = download;
+  v21 = [MEMORY[0x1E69BF260] formatWithID:dCopy];
+  isThumbnail = [v21 isThumbnail];
+  libraryServicesManager2 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
+  databaseContext = [libraryServicesManager2 databaseContext];
   v36[0] = MEMORY[0x1E69E9820];
   v36[1] = 3221225472;
   v36[2] = __141__PLAssetsdResourceService_imageDataForAssetWithObjectURI_formatID_allowPlaceholder_wantURLOnly_networkAccessAllowed_trackCPLDownload_reply___block_invoke;
   v36[3] = &unk_1E756EBB8;
   v25 = v19;
-  v41 = v35;
+  v41 = dCopy;
   v37 = v25;
-  v38 = self;
+  selfCopy = self;
   v26 = v21;
   v39 = v26;
-  v42 = v22;
-  v43 = a5;
-  v44 = a6;
-  v45 = a7;
-  v46 = v20;
+  v42 = isThumbnail;
+  placeholderCopy = placeholder;
+  onlyCopy = only;
+  allowedCopy = allowed;
+  v46 = downloadCopy;
   v27 = v32;
   v40 = v27;
-  [v24 perform:v36 withName:"-[PLAssetsdResourceService imageDataForAssetWithObjectURI:formatID:allowPlaceholder:wantURLOnly:networkAccessAllowed:trackCPLDownload:reply:]"];
+  [databaseContext perform:v36 withName:"-[PLAssetsdResourceService imageDataForAssetWithObjectURI:formatID:allowPlaceholder:wantURLOnly:networkAccessAllowed:trackCPLDownload:reply:]"];
 
   if (v47 == 1)
   {
@@ -2745,18 +2745,18 @@ LABEL_17:
   (*(*(a1 + 64) + 16))(*(a1 + 64), v24, v10, a5);
 }
 
-- (void)fileDescriptorForPersistentURL:(id)a3 withAdjustments:(BOOL)a4 reply:(id)a5
+- (void)fileDescriptorForPersistentURL:(id)l withAdjustments:(BOOL)adjustments reply:(id)reply
 {
-  v6 = a4;
+  adjustmentsCopy = adjustments;
   v25 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  lCopy = l;
+  replyCopy = reply;
   v21 = 0u;
   *sel = 0u;
   v20 = 0u;
-  v10 = [MEMORY[0x1E69BF350] enabled];
-  LOBYTE(v20) = v10;
-  if (v10)
+  enabled = [MEMORY[0x1E69BF350] enabled];
+  LOBYTE(v20) = enabled;
+  if (enabled)
   {
     v11 = _os_activity_create(&dword_19BF1F000, "PLXPC Service: fileDescriptorForPersistentURL:withAdjustments:reply:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
     v12 = *(&v20 + 1);
@@ -2769,9 +2769,9 @@ LABEL_17:
   v18[1] = 3221225472;
   v18[2] = __81__PLAssetsdResourceService_fileDescriptorForPersistentURL_withAdjustments_reply___block_invoke;
   v18[3] = &unk_1E756EB40;
-  v13 = v9;
+  v13 = replyCopy;
   v19 = v13;
-  [(PLAssetsdResourceService *)self translatePersistentURL:v8 withAdjustments:v6 handler:v18];
+  [(PLAssetsdResourceService *)self translatePersistentURL:lCopy withAdjustments:adjustmentsCopy handler:v18];
 
   if (v20 == 1)
   {
@@ -2858,18 +2858,18 @@ LABEL_10:
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)sandboxExtensionURLForPersistentURL:(id)a3 withAdjustments:(BOOL)a4 reply:(id)a5
+- (void)sandboxExtensionURLForPersistentURL:(id)l withAdjustments:(BOOL)adjustments reply:(id)reply
 {
-  v6 = a4;
+  adjustmentsCopy = adjustments;
   v25 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  lCopy = l;
+  replyCopy = reply;
   v21 = 0u;
   *sel = 0u;
   v20 = 0u;
-  v10 = [MEMORY[0x1E69BF350] enabled];
-  LOBYTE(v20) = v10;
-  if (v10)
+  enabled = [MEMORY[0x1E69BF350] enabled];
+  LOBYTE(v20) = enabled;
+  if (enabled)
   {
     v11 = _os_activity_create(&dword_19BF1F000, "PLXPC Service: sandboxExtensionURLForPersistentURL:withAdjustments:reply:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
     v12 = *(&v20 + 1);
@@ -2883,9 +2883,9 @@ LABEL_10:
   v18[2] = __86__PLAssetsdResourceService_sandboxExtensionURLForPersistentURL_withAdjustments_reply___block_invoke;
   v18[3] = &unk_1E756EB68;
   v18[4] = self;
-  v13 = v9;
+  v13 = replyCopy;
   v19 = v13;
-  [(PLAssetsdResourceService *)self translatePersistentURL:v8 withAdjustments:v6 handler:v18];
+  [(PLAssetsdResourceService *)self translatePersistentURL:lCopy withAdjustments:adjustmentsCopy handler:v18];
 
   if (v20 == 1)
   {
@@ -2947,18 +2947,18 @@ void __86__PLAssetsdResourceService_sandboxExtensionURLForPersistentURL_withAdju
   }
 }
 
-- (void)filePathForPersistentURL:(id)a3 withAdjustments:(BOOL)a4 reply:(id)a5
+- (void)filePathForPersistentURL:(id)l withAdjustments:(BOOL)adjustments reply:(id)reply
 {
-  v6 = a4;
+  adjustmentsCopy = adjustments;
   v25 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  lCopy = l;
+  replyCopy = reply;
   v21 = 0u;
   *sel = 0u;
   v20 = 0u;
-  v10 = [MEMORY[0x1E69BF350] enabled];
-  LOBYTE(v20) = v10;
-  if (v10)
+  enabled = [MEMORY[0x1E69BF350] enabled];
+  LOBYTE(v20) = enabled;
+  if (enabled)
   {
     v11 = _os_activity_create(&dword_19BF1F000, "PLXPC Service: filePathForPersistentURL:withAdjustments:reply:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
     v12 = *(&v20 + 1);
@@ -2971,9 +2971,9 @@ void __86__PLAssetsdResourceService_sandboxExtensionURLForPersistentURL_withAdju
   v18[1] = 3221225472;
   v18[2] = __75__PLAssetsdResourceService_filePathForPersistentURL_withAdjustments_reply___block_invoke;
   v18[3] = &unk_1E756EB40;
-  v13 = v9;
+  v13 = replyCopy;
   v19 = v13;
-  [(PLAssetsdResourceService *)self translatePersistentURL:v8 withAdjustments:v6 handler:v18];
+  [(PLAssetsdResourceService *)self translatePersistentURL:lCopy withAdjustments:adjustmentsCopy handler:v18];
 
   if (v20 == 1)
   {
@@ -2995,18 +2995,18 @@ void __86__PLAssetsdResourceService_sandboxExtensionURLForPersistentURL_withAdju
   }
 }
 
-- (void)addAssetWithURL:(id)a3 toAlbum:(id)a4 reply:(id)a5
+- (void)addAssetWithURL:(id)l toAlbum:(id)album reply:(id)reply
 {
   v47 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  lCopy = l;
+  albumCopy = album;
+  replyCopy = reply;
   v38 = 0u;
   *sel = 0u;
   v37 = 0u;
-  v11 = [MEMORY[0x1E69BF350] enabled];
-  LOBYTE(v37) = v11;
-  if (v11)
+  enabled = [MEMORY[0x1E69BF350] enabled];
+  LOBYTE(v37) = enabled;
+  if (enabled)
   {
     v12 = _os_activity_create(&dword_19BF1F000, "PLXPC Service: addAssetWithURL:toAlbum:reply:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
     v13 = *(&v37 + 1);
@@ -3015,19 +3015,19 @@ void __86__PLAssetsdResourceService_sandboxExtensionURLForPersistentURL_withAdju
     os_activity_scope_enter(v12, (&v38 + 8));
   }
 
-  v14 = [(PLAssetsdResourceWriteOnlyService *)self connectionAuthorization];
-  v15 = [v14 isClientInLimitedLibraryMode];
+  connectionAuthorization = [(PLAssetsdResourceWriteOnlyService *)self connectionAuthorization];
+  isClientInLimitedLibraryMode = [connectionAuthorization isClientInLimitedLibraryMode];
 
-  if (v15)
+  if (isClientInLimitedLibraryMode)
   {
-    v10[2](v10, 1, 0);
+    replyCopy[2](replyCopy, 1, 0);
   }
 
   else
   {
     v16 = [(PLAbstractLibraryServicesManagerService *)self newShortLivedLibraryWithName:"[PLAssetsdResourceService addAssetWithURL:toAlbum:reply:]"];
     v17 = v16;
-    if (v8 && v9)
+    if (lCopy && albumCopy)
     {
       v35[0] = 0;
       v35[1] = v35;
@@ -3044,15 +3044,15 @@ void __86__PLAssetsdResourceService_sandboxExtensionURLForPersistentURL_withAdju
       v29[2] = __58__PLAssetsdResourceService_addAssetWithURL_toAlbum_reply___block_invoke;
       v29[3] = &unk_1E75787D0;
       v30 = v16;
-      v31 = v9;
-      v32 = v8;
+      v31 = albumCopy;
+      v32 = lCopy;
       v33 = v35;
       p_buf = &buf;
       v25[0] = MEMORY[0x1E69E9820];
       v25[1] = 3221225472;
       v25[2] = __58__PLAssetsdResourceService_addAssetWithURL_toAlbum_reply___block_invoke_2;
       v25[3] = &unk_1E7575F50;
-      v26 = v10;
+      v26 = replyCopy;
       v27 = v35;
       v28 = &buf;
       [v30 performTransaction:v29 completionHandler:v25];
@@ -3069,7 +3069,7 @@ void __86__PLAssetsdResourceService_sandboxExtensionURLForPersistentURL_withAdju
       v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v41 forKeys:&v40 count:1];
       v20 = [v18 errorWithDomain:*MEMORY[0x1E69BFF48] code:41008 userInfo:v19];
 
-      (v10)[2](v10, 0, v20);
+      (replyCopy)[2](replyCopy, 0, v20);
     }
   }
 
@@ -3131,17 +3131,17 @@ void __58__PLAssetsdResourceService_addAssetWithURL_toAlbum_reply___block_invoke
   }
 }
 
-- (void)addAssetGroupWithName:(id)a3 reply:(id)a4
+- (void)addAssetGroupWithName:(id)name reply:(id)reply
 {
   v34 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  replyCopy = reply;
   v28 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v8 = [MEMORY[0x1E69BF350] enabled];
-  LOBYTE(v26) = v8;
-  if (v8)
+  enabled = [MEMORY[0x1E69BF350] enabled];
+  LOBYTE(v26) = enabled;
+  if (enabled)
   {
     v9 = _os_activity_create(&dword_19BF1F000, "PLXPC Service: addAssetGroupWithName:reply:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
     v10 = *(&v26 + 1);
@@ -3150,12 +3150,12 @@ void __58__PLAssetsdResourceService_addAssetWithURL_toAlbum_reply___block_invoke
     os_activity_scope_enter(v9, (&v27 + 8));
   }
 
-  v11 = [(PLAssetsdResourceWriteOnlyService *)self connectionAuthorization];
-  v12 = [v11 isClientInLimitedLibraryMode];
+  connectionAuthorization = [(PLAssetsdResourceWriteOnlyService *)self connectionAuthorization];
+  isClientInLimitedLibraryMode = [connectionAuthorization isClientInLimitedLibraryMode];
 
-  if (v12)
+  if (isClientInLimitedLibraryMode)
   {
-    v7[2](v7, 1, 0);
+    replyCopy[2](replyCopy, 1, 0);
   }
 
   else
@@ -3171,7 +3171,7 @@ void __58__PLAssetsdResourceService_addAssetWithURL_toAlbum_reply___block_invoke
     v22[1] = 3221225472;
     v22[2] = __56__PLAssetsdResourceService_addAssetGroupWithName_reply___block_invoke;
     v22[3] = &unk_1E7578820;
-    v23 = v6;
+    v23 = nameCopy;
     v14 = v13;
     v24 = v14;
     p_buf = &buf;
@@ -3180,7 +3180,7 @@ void __58__PLAssetsdResourceService_addAssetWithURL_toAlbum_reply___block_invoke
     v19[2] = __56__PLAssetsdResourceService_addAssetGroupWithName_reply___block_invoke_2;
     v19[3] = &unk_1E7573998;
     v21 = &buf;
-    v20 = v7;
+    v20 = replyCopy;
     [v14 performTransaction:v22 completionHandler:v19];
 
     _Block_object_dispose(&buf, 8);
@@ -3236,27 +3236,27 @@ void __56__PLAssetsdResourceService_addAssetGroupWithName_reply___block_invoke_2
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)saveAssetWithDataAndPorts:(id)a3 imageSurface:(id)a4 previewImageSurface:(id)a5 reply:(id)a6
+- (void)saveAssetWithDataAndPorts:(id)ports imageSurface:(id)surface previewImageSurface:(id)imageSurface reply:(id)reply
 {
   v25 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  portsCopy = ports;
+  surfaceCopy = surface;
+  imageSurfaceCopy = imageSurface;
+  replyCopy = reply;
   v21 = 0u;
   *sel = 0u;
   v19 = 0u;
-  v14 = [MEMORY[0x1E69BF350] enabled];
-  LOBYTE(v19) = v14;
-  if (v14)
+  enabled = [MEMORY[0x1E69BF350] enabled];
+  LOBYTE(v19) = enabled;
+  if (enabled)
   {
     *(&v19 + 1) = _os_activity_create(&dword_19BF1F000, "PLXPC Service: saveAssetWithDataAndPorts:imageSurface:previewImageSurface:reply:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
 
     os_activity_scope_enter(*(&v19 + 1), (&v21 + 8));
   }
 
-  v15 = [MEMORY[0x1E696B0B8] currentConnection];
-  [(PLAssetsdResourceWriteOnlyService *)self saveAssetWithDataAndPorts:v10 clientConnection:v15 imageSurface:v11 previewImageSurface:v12 reply:v13];
+  currentConnection = [MEMORY[0x1E696B0B8] currentConnection];
+  [(PLAssetsdResourceWriteOnlyService *)self saveAssetWithDataAndPorts:portsCopy clientConnection:currentConnection imageSurface:surfaceCopy previewImageSurface:imageSurfaceCopy reply:replyCopy];
 
   if (v20 == 1)
   {
@@ -3277,16 +3277,16 @@ void __56__PLAssetsdResourceService_addAssetGroupWithName_reply___block_invoke_2
   }
 }
 
-- (PLAssetsdResourceService)initWithLibraryServicesManager:(id)a3 connectionAuthorization:(id)a4 resourceDownloader:(id)a5
+- (PLAssetsdResourceService)initWithLibraryServicesManager:(id)manager connectionAuthorization:(id)authorization resourceDownloader:(id)downloader
 {
-  v9 = a5;
+  downloaderCopy = downloader;
   v16.receiver = self;
   v16.super_class = PLAssetsdResourceService;
-  v10 = [(PLAssetsdResourceWriteOnlyService *)&v16 initWithLibraryServicesManager:a3 connectionAuthorization:a4];
+  v10 = [(PLAssetsdResourceWriteOnlyService *)&v16 initWithLibraryServicesManager:manager connectionAuthorization:authorization];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_resourceDownloader, a5);
+    objc_storeStrong(&v10->_resourceDownloader, downloader);
     v12 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v13 = dispatch_queue_create("com.apple.photos.backend.resourceService.imageDataQueue", v12);
     asyncImageDataQueue = v11->_asyncImageDataQueue;

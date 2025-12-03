@@ -6,9 +6,9 @@
 
 - (int)_uvPreviewShellHostProcessPid
 {
-  v2 = [(FBSScene *)self hostHandle];
-  v3 = [v2 auditToken];
-  v4 = [v3 pid];
+  hostHandle = [(FBSScene *)self hostHandle];
+  auditToken = [hostHandle auditToken];
+  v4 = [auditToken pid];
 
   return v4;
 }

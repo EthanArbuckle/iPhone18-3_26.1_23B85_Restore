@@ -1,42 +1,42 @@
 @interface IMCTSMSUtilities
-+ (BOOL)IMIsEagerUploadEnabledForPhoneNumber:(id)a3 simID:(id)a4;
-+ (BOOL)IMMMSEagerUploadDisabledInCarrierBundleForPhoneNumber:(id)a3 simID:(id)a4;
-+ (BOOL)IMMMSEnabledForPhoneNumber:(id)a3 simID:(id)a4;
-+ (BOOL)IMMMSGroupTextOnlyMessagesSendAsMMSForPhoneNumber:(id)a3 simID:(id)a4;
-+ (BOOL)IMMMSGroupTextReplicationSupportedForPhoneNumber:(id)a3 simID:(id)a4;
-+ (BOOL)IMMMSGroupTextReplicationSupportsSMILContentLocationForPhoneNumber:(id)a3 simID:(id)a4;
-+ (BOOL)IMMMSRestrictedModeEnabledForPhoneNumber:(id)a3 simID:(id)a4;
-+ (BOOL)IMMMSSupportedAndConfiguredForPhoneNumber:(id)a3 simID:(id)a4;
-+ (BOOL)IMMMSSupportsH264VideoForPhoneNumber:(id)a3 simID:(id)a4;
++ (BOOL)IMIsEagerUploadEnabledForPhoneNumber:(id)number simID:(id)d;
++ (BOOL)IMMMSEagerUploadDisabledInCarrierBundleForPhoneNumber:(id)number simID:(id)d;
++ (BOOL)IMMMSEnabledForPhoneNumber:(id)number simID:(id)d;
++ (BOOL)IMMMSGroupTextOnlyMessagesSendAsMMSForPhoneNumber:(id)number simID:(id)d;
++ (BOOL)IMMMSGroupTextReplicationSupportedForPhoneNumber:(id)number simID:(id)d;
++ (BOOL)IMMMSGroupTextReplicationSupportsSMILContentLocationForPhoneNumber:(id)number simID:(id)d;
++ (BOOL)IMMMSRestrictedModeEnabledForPhoneNumber:(id)number simID:(id)d;
++ (BOOL)IMMMSSupportedAndConfiguredForPhoneNumber:(id)number simID:(id)d;
++ (BOOL)IMMMSSupportsH264VideoForPhoneNumber:(id)number simID:(id)d;
 + (BOOL)IMMessagesFilteringSettingForPreferedSubscription;
-+ (BOOL)IMReadDisablePreviewTranscodingQualityOnWRMCarrierValueForPhoneNumber:(id)a3 simID:(id)a4;
-+ (BOOL)IMReadDisablePreviewTranscodingQualityOnWiFiCarrierValueForPhoneNumber:(id)a3 simID:(id)a4;
-+ (BOOL)IMReadEnablePreviewTranscodingQualityCarrierValueForPhoneNumber:(id)a3 simID:(id)a4;
-+ (BOOL)IMReadMMSUserOverrideForPhoneNumber:(id)a3 simID:(id)a4;
-+ (BOOL)IMShouldShowMMSEmailAddress:(id)a3 simID:(id)a4;
-+ (BOOL)SMSAllowCaseSensitiveSenderIDForPhoneNumber:(id)a3;
++ (BOOL)IMReadDisablePreviewTranscodingQualityOnWRMCarrierValueForPhoneNumber:(id)number simID:(id)d;
++ (BOOL)IMReadDisablePreviewTranscodingQualityOnWiFiCarrierValueForPhoneNumber:(id)number simID:(id)d;
++ (BOOL)IMReadEnablePreviewTranscodingQualityCarrierValueForPhoneNumber:(id)number simID:(id)d;
++ (BOOL)IMReadMMSUserOverrideForPhoneNumber:(id)number simID:(id)d;
++ (BOOL)IMShouldShowMMSEmailAddress:(id)address simID:(id)d;
++ (BOOL)SMSAllowCaseSensitiveSenderIDForPhoneNumber:(id)number;
 + (BOOL)isMessagesTheDefaultTextApp;
-+ (BOOL)shouldUploadToMMCS:(id)a3;
-+ (double)IMMMSMaximumAudioDurationForPhoneNumber:(id)a3 simID:(id)a4;
-+ (double)IMMMSMaximumVideoDurationForPhoneNumber:(id)a3 simID:(id)a4;
-+ (id)IMCountryCodeForPhoneNumber:(id)a3 simID:(id)a4;
-+ (id)IMCountryCodeForSimSlot:(int64_t)a3;
-+ (id)IMMMSEmailAddressToMatchForPhoneNumber:(id)a3 simID:(id)a4;
++ (BOOL)shouldUploadToMMCS:(id)s;
++ (double)IMMMSMaximumAudioDurationForPhoneNumber:(id)number simID:(id)d;
++ (double)IMMMSMaximumVideoDurationForPhoneNumber:(id)number simID:(id)d;
++ (id)IMCountryCodeForPhoneNumber:(id)number simID:(id)d;
++ (id)IMCountryCodeForSimSlot:(int64_t)slot;
++ (id)IMMMSEmailAddressToMatchForPhoneNumber:(id)number simID:(id)d;
 + (id)IMPhoneNumbersEnabledForMultipleSubscriptionDevice;
-+ (id)IMUniqueIdentifierForPhoneNumber:(id)a3 simID:(id)a4;
-+ (id)carrierBundleValueForKeyHierarchy:(id)a3 phoneNumber:(id)a4 simID:(id)a5;
-+ (id)carrierNameForPhoneNumber:(id)a3;
++ (id)IMUniqueIdentifierForPhoneNumber:(id)number simID:(id)d;
++ (id)carrierBundleValueForKeyHierarchy:(id)hierarchy phoneNumber:(id)number simID:(id)d;
++ (id)carrierNameForPhoneNumber:(id)number;
 + (id)myCTPhoneNumber;
-+ (int)IMMMSMaxImageDimensionForPhoneNumber:(id)a3 simID:(id)a4;
-+ (int)IMMMSMaxRecipientsForPhoneNumber:(id)a3 simID:(id)a4;
-+ (int)IMMMSMaximumMessageByteCountForPhoneNumber:(id)a3 simID:(id)a4;
-+ (int)IMMMSMaximumSlideCountForPhoneNumber:(id)a3 simID:(id)a4;
-+ (unint64_t)IMReadAttachmentPreviewTranscodingQualitySizeCarrierValueForPhoneNumber:(id)a3 simID:(id)a4;
-+ (unint64_t)IMiMessageMaxTransferAudioFileSizeForWifiForPhoneNumber:(unint64_t *)a3 cellSize:(unint64_t *)a4 serverConfigurationBag:(id)a5 phoneNumber:(id)a6 simID:(id)a7;
-+ (unint64_t)IMiMessageMaxTransferVideoFileSizeForWifiForPhoneNumber:(unint64_t *)a3 cellSize:(unint64_t *)a4 serverConfigurationBag:(id)a5 phoneNumber:(id)a6 simID:(id)a7;
-+ (void)IMSynchronizeMMSCapabilityToWatch:(BOOL)a3;
++ (int)IMMMSMaxImageDimensionForPhoneNumber:(id)number simID:(id)d;
++ (int)IMMMSMaxRecipientsForPhoneNumber:(id)number simID:(id)d;
++ (int)IMMMSMaximumMessageByteCountForPhoneNumber:(id)number simID:(id)d;
++ (int)IMMMSMaximumSlideCountForPhoneNumber:(id)number simID:(id)d;
++ (unint64_t)IMReadAttachmentPreviewTranscodingQualitySizeCarrierValueForPhoneNumber:(id)number simID:(id)d;
++ (unint64_t)IMiMessageMaxTransferAudioFileSizeForWifiForPhoneNumber:(unint64_t *)number cellSize:(unint64_t *)size serverConfigurationBag:(id)bag phoneNumber:(id)phoneNumber simID:(id)d;
++ (unint64_t)IMiMessageMaxTransferVideoFileSizeForWifiForPhoneNumber:(unint64_t *)number cellSize:(unint64_t *)size serverConfigurationBag:(id)bag phoneNumber:(id)phoneNumber simID:(id)d;
++ (void)IMSynchronizeMMSCapabilityToWatch:(BOOL)watch;
 + (void)IMSynchronizePreferredSubscriptionMMSCapabilityToWatch;
-+ (void)IMiMessageMaxTransferFileSizeForWifiForPhoneNumber:(unint64_t *)a3 cellSize:(unint64_t *)a4 serverConfigurationBag:(id)a5 phoneNumber:(id)a6 simID:(id)a7;
++ (void)IMiMessageMaxTransferFileSizeForWifiForPhoneNumber:(unint64_t *)number cellSize:(unint64_t *)size serverConfigurationBag:(id)bag phoneNumber:(id)phoneNumber simID:(id)d;
 @end
 
 @implementation IMCTSMSUtilities
@@ -44,27 +44,27 @@
 + (BOOL)isMessagesTheDefaultTextApp
 {
   v2 = +[IMCTSMSUtilitiesManager sharedManager];
-  v3 = [v2 isMessagesTheDefaultTextApp];
+  isMessagesTheDefaultTextApp = [v2 isMessagesTheDefaultTextApp];
 
-  return v3;
+  return isMessagesTheDefaultTextApp;
 }
 
-+ (id)IMUniqueIdentifierForPhoneNumber:(id)a3 simID:(id)a4
++ (id)IMUniqueIdentifierForPhoneNumber:(id)number simID:(id)d
 {
-  v5 = a4;
-  v6 = a3;
+  dCopy = d;
+  numberCopy = number;
   v7 = +[IMCTSMSUtilitiesManager sharedManager];
-  v8 = [v7 uniqueIdentifierForPhoneNumber:v6 simID:v5];
+  v8 = [v7 uniqueIdentifierForPhoneNumber:numberCopy simID:dCopy];
 
   return v8;
 }
 
-+ (BOOL)IMReadMMSUserOverrideForPhoneNumber:(id)a3 simID:(id)a4
++ (BOOL)IMReadMMSUserOverrideForPhoneNumber:(id)number simID:(id)d
 {
-  v5 = a4;
-  v6 = a3;
+  dCopy = d;
+  numberCopy = number;
   v7 = +[IMCTSMSUtilitiesManager sharedManager];
-  v8 = [v7 readMMSUserOverrideForPhoneNumber:v6 simID:v5];
+  v8 = [v7 readMMSUserOverrideForPhoneNumber:numberCopy simID:dCopy];
 
   return v8;
 }
@@ -72,259 +72,259 @@
 + (id)IMPhoneNumbersEnabledForMultipleSubscriptionDevice
 {
   v2 = +[IMCTSMSUtilitiesManager sharedManager];
-  v3 = [v2 phoneNumbersEnabledForMultipleSubscriptionDevice];
+  phoneNumbersEnabledForMultipleSubscriptionDevice = [v2 phoneNumbersEnabledForMultipleSubscriptionDevice];
 
-  return v3;
+  return phoneNumbersEnabledForMultipleSubscriptionDevice;
 }
 
-+ (BOOL)IMMMSEnabledForPhoneNumber:(id)a3 simID:(id)a4
++ (BOOL)IMMMSEnabledForPhoneNumber:(id)number simID:(id)d
 {
-  v5 = a4;
-  v6 = a3;
+  dCopy = d;
+  numberCopy = number;
   v7 = +[IMCTSMSUtilitiesManager sharedManager];
-  v8 = [v7 mmsEnabledForPhoneNumber:v6 simID:v5];
+  v8 = [v7 mmsEnabledForPhoneNumber:numberCopy simID:dCopy];
 
   return v8;
 }
 
-+ (BOOL)IMReadEnablePreviewTranscodingQualityCarrierValueForPhoneNumber:(id)a3 simID:(id)a4
++ (BOOL)IMReadEnablePreviewTranscodingQualityCarrierValueForPhoneNumber:(id)number simID:(id)d
 {
-  v5 = a4;
-  v6 = a3;
+  dCopy = d;
+  numberCopy = number;
   v7 = +[IMCTSMSUtilitiesManager sharedManager];
-  v8 = [v7 readEnablePreviewTranscodingQualityCarrierValueForPhoneNumber:v6 simID:v5];
+  v8 = [v7 readEnablePreviewTranscodingQualityCarrierValueForPhoneNumber:numberCopy simID:dCopy];
 
   return v8;
 }
 
-+ (BOOL)IMReadDisablePreviewTranscodingQualityOnWiFiCarrierValueForPhoneNumber:(id)a3 simID:(id)a4
++ (BOOL)IMReadDisablePreviewTranscodingQualityOnWiFiCarrierValueForPhoneNumber:(id)number simID:(id)d
 {
-  v5 = a4;
-  v6 = a3;
+  dCopy = d;
+  numberCopy = number;
   v7 = +[IMCTSMSUtilitiesManager sharedManager];
-  v8 = [v7 readDisablePreviewTranscodingQualityOnWiFiCarrierValueForPhoneNumber:v6 simID:v5];
+  v8 = [v7 readDisablePreviewTranscodingQualityOnWiFiCarrierValueForPhoneNumber:numberCopy simID:dCopy];
 
   return v8;
 }
 
-+ (BOOL)IMReadDisablePreviewTranscodingQualityOnWRMCarrierValueForPhoneNumber:(id)a3 simID:(id)a4
++ (BOOL)IMReadDisablePreviewTranscodingQualityOnWRMCarrierValueForPhoneNumber:(id)number simID:(id)d
 {
-  v5 = a4;
-  v6 = a3;
+  dCopy = d;
+  numberCopy = number;
   v7 = +[IMCTSMSUtilitiesManager sharedManager];
-  v8 = [v7 readDisablePreviewTranscodingQualityOnWRMCarrierValueForPhoneNumber:v6 simID:v5];
+  v8 = [v7 readDisablePreviewTranscodingQualityOnWRMCarrierValueForPhoneNumber:numberCopy simID:dCopy];
 
   return v8;
 }
 
-+ (BOOL)IMMMSSupportedAndConfiguredForPhoneNumber:(id)a3 simID:(id)a4
++ (BOOL)IMMMSSupportedAndConfiguredForPhoneNumber:(id)number simID:(id)d
 {
-  v5 = a4;
-  v6 = a3;
+  dCopy = d;
+  numberCopy = number;
   v7 = +[IMCTSMSUtilitiesManager sharedManager];
-  v8 = [v7 mmsSupportedAndConfiguredForPhoneNumber:v6 simID:v5];
+  v8 = [v7 mmsSupportedAndConfiguredForPhoneNumber:numberCopy simID:dCopy];
 
   return v8;
 }
 
-+ (unint64_t)IMReadAttachmentPreviewTranscodingQualitySizeCarrierValueForPhoneNumber:(id)a3 simID:(id)a4
++ (unint64_t)IMReadAttachmentPreviewTranscodingQualitySizeCarrierValueForPhoneNumber:(id)number simID:(id)d
 {
-  v5 = a4;
-  v6 = a3;
+  dCopy = d;
+  numberCopy = number;
   v7 = +[IMCTSMSUtilitiesManager sharedManager];
-  v8 = [v7 readAttachmentPreviewTranscodingQualitySizeCarrierValueForPhoneNumber:v6 simID:v5];
+  v8 = [v7 readAttachmentPreviewTranscodingQualitySizeCarrierValueForPhoneNumber:numberCopy simID:dCopy];
 
   return v8;
 }
 
-+ (int)IMMMSMaximumSlideCountForPhoneNumber:(id)a3 simID:(id)a4
++ (int)IMMMSMaximumSlideCountForPhoneNumber:(id)number simID:(id)d
 {
-  v5 = a4;
-  v6 = a3;
+  dCopy = d;
+  numberCopy = number;
   v7 = +[IMCTSMSUtilitiesManager sharedManager];
-  v8 = [v7 mmsMaximumSlideCountForPhoneNumber:v6 simID:v5];
+  v8 = [v7 mmsMaximumSlideCountForPhoneNumber:numberCopy simID:dCopy];
 
   return v8;
 }
 
-+ (int)IMMMSMaximumMessageByteCountForPhoneNumber:(id)a3 simID:(id)a4
++ (int)IMMMSMaximumMessageByteCountForPhoneNumber:(id)number simID:(id)d
 {
-  v5 = a4;
-  v6 = a3;
+  dCopy = d;
+  numberCopy = number;
   v7 = +[IMCTSMSUtilitiesManager sharedManager];
-  v8 = [v7 mmsMaximumMessageByteCountForPhoneNumber:v6 simID:v5];
+  v8 = [v7 mmsMaximumMessageByteCountForPhoneNumber:numberCopy simID:dCopy];
 
   return v8;
 }
 
-+ (BOOL)IMMMSGroupTextOnlyMessagesSendAsMMSForPhoneNumber:(id)a3 simID:(id)a4
++ (BOOL)IMMMSGroupTextOnlyMessagesSendAsMMSForPhoneNumber:(id)number simID:(id)d
 {
-  v5 = a4;
-  v6 = a3;
+  dCopy = d;
+  numberCopy = number;
   v7 = +[IMCTSMSUtilitiesManager sharedManager];
-  v8 = [v7 mmsGroupTextOnlyMessagesSendAsMMSForPhoneNumber:v6 simID:v5];
+  v8 = [v7 mmsGroupTextOnlyMessagesSendAsMMSForPhoneNumber:numberCopy simID:dCopy];
 
   return v8;
 }
 
-+ (BOOL)IMMMSGroupTextReplicationSupportedForPhoneNumber:(id)a3 simID:(id)a4
++ (BOOL)IMMMSGroupTextReplicationSupportedForPhoneNumber:(id)number simID:(id)d
 {
-  v5 = a4;
-  v6 = a3;
+  dCopy = d;
+  numberCopy = number;
   v7 = +[IMCTSMSUtilitiesManager sharedManager];
-  v8 = [v7 mmsGroupTextReplicationSupportedForPhoneNumber:v6 simID:v5];
+  v8 = [v7 mmsGroupTextReplicationSupportedForPhoneNumber:numberCopy simID:dCopy];
 
   return v8;
 }
 
-+ (BOOL)IMMMSGroupTextReplicationSupportsSMILContentLocationForPhoneNumber:(id)a3 simID:(id)a4
++ (BOOL)IMMMSGroupTextReplicationSupportsSMILContentLocationForPhoneNumber:(id)number simID:(id)d
 {
-  v5 = a4;
-  v6 = a3;
+  dCopy = d;
+  numberCopy = number;
   v7 = +[IMCTSMSUtilitiesManager sharedManager];
-  v8 = [v7 mmsGroupTextReplicationSupportsSMILContentLocationForPhoneNumber:v6 simID:v5];
+  v8 = [v7 mmsGroupTextReplicationSupportsSMILContentLocationForPhoneNumber:numberCopy simID:dCopy];
 
   return v8;
 }
 
-+ (int)IMMMSMaxRecipientsForPhoneNumber:(id)a3 simID:(id)a4
++ (int)IMMMSMaxRecipientsForPhoneNumber:(id)number simID:(id)d
 {
-  v5 = a4;
-  v6 = a3;
+  dCopy = d;
+  numberCopy = number;
   v7 = +[IMCTSMSUtilitiesManager sharedManager];
-  v8 = [v7 mmsMaxRecipientsForPhoneNumber:v6 simID:v5];
+  v8 = [v7 mmsMaxRecipientsForPhoneNumber:numberCopy simID:dCopy];
 
   return v8;
 }
 
-+ (int)IMMMSMaxImageDimensionForPhoneNumber:(id)a3 simID:(id)a4
++ (int)IMMMSMaxImageDimensionForPhoneNumber:(id)number simID:(id)d
 {
-  v5 = a4;
-  v6 = a3;
+  dCopy = d;
+  numberCopy = number;
   v7 = +[IMCTSMSUtilitiesManager sharedManager];
-  v8 = [v7 mmsMaxImageDimensionForPhoneNumber:v6 simID:v5];
+  v8 = [v7 mmsMaxImageDimensionForPhoneNumber:numberCopy simID:dCopy];
 
   return v8;
 }
 
-+ (BOOL)IMMMSSupportsH264VideoForPhoneNumber:(id)a3 simID:(id)a4
++ (BOOL)IMMMSSupportsH264VideoForPhoneNumber:(id)number simID:(id)d
 {
-  v5 = a4;
-  v6 = a3;
+  dCopy = d;
+  numberCopy = number;
   v7 = +[IMCTSMSUtilitiesManager sharedManager];
-  v8 = [v7 mmsSupportsH264VideoForPhoneNumber:v6 simID:v5];
+  v8 = [v7 mmsSupportsH264VideoForPhoneNumber:numberCopy simID:dCopy];
 
   return v8;
 }
 
-+ (double)IMMMSMaximumAudioDurationForPhoneNumber:(id)a3 simID:(id)a4
++ (double)IMMMSMaximumAudioDurationForPhoneNumber:(id)number simID:(id)d
 {
-  v5 = a4;
-  v6 = a3;
+  dCopy = d;
+  numberCopy = number;
   v7 = +[IMCTSMSUtilitiesManager sharedManager];
-  [v7 mmsMaximumAudioDurationForPhoneNumber:v6 simID:v5];
+  [v7 mmsMaximumAudioDurationForPhoneNumber:numberCopy simID:dCopy];
   v9 = v8;
 
   return v9;
 }
 
-+ (double)IMMMSMaximumVideoDurationForPhoneNumber:(id)a3 simID:(id)a4
++ (double)IMMMSMaximumVideoDurationForPhoneNumber:(id)number simID:(id)d
 {
-  v5 = a4;
-  v6 = a3;
+  dCopy = d;
+  numberCopy = number;
   v7 = +[IMCTSMSUtilitiesManager sharedManager];
-  [v7 mmsMaximumVideoDurationForPhoneNumber:v6 simID:v5];
+  [v7 mmsMaximumVideoDurationForPhoneNumber:numberCopy simID:dCopy];
   v9 = v8;
 
   return v9;
 }
 
-+ (void)IMiMessageMaxTransferFileSizeForWifiForPhoneNumber:(unint64_t *)a3 cellSize:(unint64_t *)a4 serverConfigurationBag:(id)a5 phoneNumber:(id)a6 simID:(id)a7
++ (void)IMiMessageMaxTransferFileSizeForWifiForPhoneNumber:(unint64_t *)number cellSize:(unint64_t *)size serverConfigurationBag:(id)bag phoneNumber:(id)phoneNumber simID:(id)d
 {
-  v11 = a7;
-  v12 = a6;
-  v13 = a5;
+  dCopy = d;
+  phoneNumberCopy = phoneNumber;
+  bagCopy = bag;
   v14 = +[IMCTSMSUtilitiesManager sharedManager];
-  [v14 iMessageMaxTransferFileSizeForWifiForPhoneNumber:a3 cellSize:a4 serverConfigurationBag:v13 phoneNumber:v12 simID:v11];
+  [v14 iMessageMaxTransferFileSizeForWifiForPhoneNumber:number cellSize:size serverConfigurationBag:bagCopy phoneNumber:phoneNumberCopy simID:dCopy];
 }
 
-+ (unint64_t)IMiMessageMaxTransferAudioFileSizeForWifiForPhoneNumber:(unint64_t *)a3 cellSize:(unint64_t *)a4 serverConfigurationBag:(id)a5 phoneNumber:(id)a6 simID:(id)a7
++ (unint64_t)IMiMessageMaxTransferAudioFileSizeForWifiForPhoneNumber:(unint64_t *)number cellSize:(unint64_t *)size serverConfigurationBag:(id)bag phoneNumber:(id)phoneNumber simID:(id)d
 {
-  v11 = a7;
-  v12 = a6;
-  v13 = a5;
+  dCopy = d;
+  phoneNumberCopy = phoneNumber;
+  bagCopy = bag;
   v14 = +[IMCTSMSUtilitiesManager sharedManager];
-  v15 = [v14 iMessageMaxTransferAudioFileSizeForWifiForPhoneNumber:a3 cellSize:a4 serverConfigurationBag:v13 phoneNumber:v12 simID:v11];
+  v15 = [v14 iMessageMaxTransferAudioFileSizeForWifiForPhoneNumber:number cellSize:size serverConfigurationBag:bagCopy phoneNumber:phoneNumberCopy simID:dCopy];
 
   return v15;
 }
 
-+ (unint64_t)IMiMessageMaxTransferVideoFileSizeForWifiForPhoneNumber:(unint64_t *)a3 cellSize:(unint64_t *)a4 serverConfigurationBag:(id)a5 phoneNumber:(id)a6 simID:(id)a7
++ (unint64_t)IMiMessageMaxTransferVideoFileSizeForWifiForPhoneNumber:(unint64_t *)number cellSize:(unint64_t *)size serverConfigurationBag:(id)bag phoneNumber:(id)phoneNumber simID:(id)d
 {
-  v11 = a7;
-  v12 = a6;
-  v13 = a5;
+  dCopy = d;
+  phoneNumberCopy = phoneNumber;
+  bagCopy = bag;
   v14 = +[IMCTSMSUtilitiesManager sharedManager];
-  v15 = [v14 iMessageMaxTransferVideoFileSizeForWifiForPhoneNumber:a3 cellSize:a4 serverConfigurationBag:v13 phoneNumber:v12 simID:v11];
+  v15 = [v14 iMessageMaxTransferVideoFileSizeForWifiForPhoneNumber:number cellSize:size serverConfigurationBag:bagCopy phoneNumber:phoneNumberCopy simID:dCopy];
 
   return v15;
 }
 
-+ (id)IMMMSEmailAddressToMatchForPhoneNumber:(id)a3 simID:(id)a4
++ (id)IMMMSEmailAddressToMatchForPhoneNumber:(id)number simID:(id)d
 {
-  v5 = a4;
-  v6 = a3;
+  dCopy = d;
+  numberCopy = number;
   v7 = +[IMCTSMSUtilitiesManager sharedManager];
-  v8 = [v7 mmsEmailAddressToMatchForPhoneNumber:v6 simID:v5];
+  v8 = [v7 mmsEmailAddressToMatchForPhoneNumber:numberCopy simID:dCopy];
 
   return v8;
 }
 
-+ (BOOL)IMShouldShowMMSEmailAddress:(id)a3 simID:(id)a4
++ (BOOL)IMShouldShowMMSEmailAddress:(id)address simID:(id)d
 {
-  v5 = a4;
-  v6 = a3;
+  dCopy = d;
+  addressCopy = address;
   v7 = +[IMCTSMSUtilitiesManager sharedManager];
-  v8 = [v7 shouldShowMMSEmailAddress:v6 simID:v5];
+  v8 = [v7 shouldShowMMSEmailAddress:addressCopy simID:dCopy];
 
   return v8;
 }
 
-+ (BOOL)IMIsEagerUploadEnabledForPhoneNumber:(id)a3 simID:(id)a4
++ (BOOL)IMIsEagerUploadEnabledForPhoneNumber:(id)number simID:(id)d
 {
-  v5 = a4;
-  v6 = a3;
+  dCopy = d;
+  numberCopy = number;
   v7 = +[IMCTSMSUtilitiesManager sharedManager];
-  v8 = [v7 isEagerUploadEnabledForPhoneNumber:v6 simID:v5];
+  v8 = [v7 isEagerUploadEnabledForPhoneNumber:numberCopy simID:dCopy];
 
   return v8;
 }
 
-+ (BOOL)IMMMSEagerUploadDisabledInCarrierBundleForPhoneNumber:(id)a3 simID:(id)a4
++ (BOOL)IMMMSEagerUploadDisabledInCarrierBundleForPhoneNumber:(id)number simID:(id)d
 {
-  v5 = a4;
-  v6 = a3;
+  dCopy = d;
+  numberCopy = number;
   v7 = +[IMCTSMSUtilitiesManager sharedManager];
-  v8 = [v7 mmsEagerUploadDisabledInCarrierBundleForPhoneNumber:v6 simID:v5];
+  v8 = [v7 mmsEagerUploadDisabledInCarrierBundleForPhoneNumber:numberCopy simID:dCopy];
 
   return v8;
 }
 
-+ (BOOL)IMMMSRestrictedModeEnabledForPhoneNumber:(id)a3 simID:(id)a4
++ (BOOL)IMMMSRestrictedModeEnabledForPhoneNumber:(id)number simID:(id)d
 {
-  v5 = a4;
-  v6 = a3;
+  dCopy = d;
+  numberCopy = number;
   v7 = +[IMCTSMSUtilitiesManager sharedManager];
-  v8 = [v7 mmsRestrictedModeEnabledForPhoneNumber:v6 simID:v5];
+  v8 = [v7 mmsRestrictedModeEnabledForPhoneNumber:numberCopy simID:dCopy];
 
   return v8;
 }
 
-+ (void)IMSynchronizeMMSCapabilityToWatch:(BOOL)a3
++ (void)IMSynchronizeMMSCapabilityToWatch:(BOOL)watch
 {
-  v3 = a3;
+  watchCopy = watch;
   v4 = +[IMCTSMSUtilitiesManager sharedManager];
-  [v4 synchronizeMMSCapabilityToWatch:v3];
+  [v4 synchronizeMMSCapabilityToWatch:watchCopy];
 }
 
 + (void)IMSynchronizePreferredSubscriptionMMSCapabilityToWatch
@@ -333,20 +333,20 @@
   [v2 synchronizePreferredSubscriptionMMSCapabilityToWatch];
 }
 
-+ (id)IMCountryCodeForSimSlot:(int64_t)a3
++ (id)IMCountryCodeForSimSlot:(int64_t)slot
 {
   v4 = +[IMCTSMSUtilitiesManager sharedManager];
-  v5 = [v4 countryCodeForSimSlot:a3];
+  v5 = [v4 countryCodeForSimSlot:slot];
 
   return v5;
 }
 
-+ (id)IMCountryCodeForPhoneNumber:(id)a3 simID:(id)a4
++ (id)IMCountryCodeForPhoneNumber:(id)number simID:(id)d
 {
-  v5 = a4;
-  v6 = a3;
+  dCopy = d;
+  numberCopy = number;
   v7 = +[IMCTSMSUtilitiesManager sharedManager];
-  v8 = [v7 countryCodeForPhoneNumber:v6 simID:v5];
+  v8 = [v7 countryCodeForPhoneNumber:numberCopy simID:dCopy];
 
   return v8;
 }
@@ -354,45 +354,45 @@
 + (BOOL)IMMessagesFilteringSettingForPreferedSubscription
 {
   v2 = +[IMCTSMSUtilitiesManager sharedManager];
-  v3 = [v2 messagesFilteringSettingForPreferedSubscription];
+  messagesFilteringSettingForPreferedSubscription = [v2 messagesFilteringSettingForPreferedSubscription];
 
-  return v3;
+  return messagesFilteringSettingForPreferedSubscription;
 }
 
-+ (id)carrierBundleValueForKeyHierarchy:(id)a3 phoneNumber:(id)a4 simID:(id)a5
++ (id)carrierBundleValueForKeyHierarchy:(id)hierarchy phoneNumber:(id)number simID:(id)d
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  dCopy = d;
+  numberCopy = number;
+  hierarchyCopy = hierarchy;
   v10 = +[IMCTSMSUtilitiesManager sharedManager];
-  v11 = [v10 carrierBundleValueForKeyHierarchy:v9 phoneNumber:v8 simID:v7];
+  v11 = [v10 carrierBundleValueForKeyHierarchy:hierarchyCopy phoneNumber:numberCopy simID:dCopy];
 
   return v11;
 }
 
-+ (id)carrierNameForPhoneNumber:(id)a3
++ (id)carrierNameForPhoneNumber:(id)number
 {
-  v3 = a3;
+  numberCopy = number;
   v4 = +[IMCTSMSUtilitiesManager sharedManager];
-  v5 = [v4 carrierNameForPhoneNumber:v3];
+  v5 = [v4 carrierNameForPhoneNumber:numberCopy];
 
   return v5;
 }
 
-+ (BOOL)SMSAllowCaseSensitiveSenderIDForPhoneNumber:(id)a3
++ (BOOL)SMSAllowCaseSensitiveSenderIDForPhoneNumber:(id)number
 {
-  v3 = a3;
+  numberCopy = number;
   v4 = +[IMCTSMSUtilitiesManager sharedManager];
-  v5 = [v4 smsAllowCaseSensitiveSenderIDForPhoneNumber:v3];
+  v5 = [v4 smsAllowCaseSensitiveSenderIDForPhoneNumber:numberCopy];
 
   return v5;
 }
 
-+ (BOOL)shouldUploadToMMCS:(id)a3
++ (BOOL)shouldUploadToMMCS:(id)s
 {
-  v3 = a3;
+  sCopy = s;
   v4 = +[IMCTSMSUtilitiesManager sharedManager];
-  v5 = [v4 shouldUploadToMMCS:v3];
+  v5 = [v4 shouldUploadToMMCS:sCopy];
 
   return v5;
 }
@@ -400,9 +400,9 @@
 + (id)myCTPhoneNumber
 {
   v2 = +[IMCTSMSUtilitiesManager sharedManager];
-  v3 = [v2 myCTPhoneNumber];
+  myCTPhoneNumber = [v2 myCTPhoneNumber];
 
-  return v3;
+  return myCTPhoneNumber;
 }
 
 @end

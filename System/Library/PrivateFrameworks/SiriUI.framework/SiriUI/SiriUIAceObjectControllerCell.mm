@@ -1,29 +1,29 @@
 @interface SiriUIAceObjectControllerCell
 + (id)reuseIdentifier;
-- (SiriUIAceObjectControllerCell)initWithFrame:(CGRect)a3;
-- (id)_flyInAnimationForAceViewController:(id)a3;
+- (SiriUIAceObjectControllerCell)initWithFrame:(CGRect)frame;
+- (id)_flyInAnimationForAceViewController:(id)controller;
 - (void)_animateInsertionFadeIn;
 - (void)_animateInsertionFlyIn;
 - (void)_animateReplacementCrossFade;
 - (void)_parentPreviousViewInCell;
 - (void)_parentViewInCell;
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4;
+- (void)animationDidStop:(id)stop finished:(BOOL)finished;
 - (void)beginAnimation;
 - (void)configureSubviewsForAnimationType;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setAceViewController:(id)a3;
-- (void)setReplacedView:(id)a3;
+- (void)setAceViewController:(id)controller;
+- (void)setReplacedView:(id)view;
 @end
 
 @implementation SiriUIAceObjectControllerCell
 
-- (SiriUIAceObjectControllerCell)initWithFrame:(CGRect)a3
+- (SiriUIAceObjectControllerCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v22.receiver = self;
   v22.super_class = SiriUIAceObjectControllerCell;
   v7 = [(SiriUIClearBackgroundCell *)&v22 initWithFrame:?];
@@ -33,7 +33,7 @@
     animationView = v7->_animationView;
     v7->_animationView = v8;
 
-    v10 = [(UIView *)v7->_animationView layer];
+    layer = [(UIView *)v7->_animationView layer];
     v11 = *(MEMORY[0x277CD9DE8] + 48);
     v17[2] = *(MEMORY[0x277CD9DE8] + 32);
     v17[3] = v11;
@@ -47,10 +47,10 @@
     v14 = *(MEMORY[0x277CD9DE8] + 112);
     v20 = *(MEMORY[0x277CD9DE8] + 96);
     v21 = v14;
-    [v10 setSublayerTransform:v17];
+    [layer setSublayerTransform:v17];
 
-    v15 = [(UIView *)v7->_animationView layer];
-    [v15 setAnchorPoint:{0.5, 0.6}];
+    layer2 = [(UIView *)v7->_animationView layer];
+    [layer2 setAnchorPoint:{0.5, 0.6}];
   }
 
   return v7;
@@ -63,8 +63,8 @@
   [(SiriUIAceObjectControllerCell *)&v4 prepareForReuse];
   self->_topPadding = 0.0;
   [(UIView *)self->_animationView removeFromSuperview];
-  v3 = [(UIView *)self->_animationView subviews];
-  [v3 makeObjectsPerformSelector:sel_removeFromSuperview];
+  subviews = [(UIView *)self->_animationView subviews];
+  [subviews makeObjectsPerformSelector:sel_removeFromSuperview];
 
   [(SiriUIAceObjectControllerCell *)self setReplacedView:0];
   [(SiriUIAceObjectControllerCell *)self setAceViewController:0];
@@ -82,67 +82,67 @@
   v8 = v7;
   v10 = v9;
   [(UIView *)self->_animationView setFrame:?];
-  v11 = [(SiriUIAceObjectControllerCell *)self aceViewController];
-  v12 = [v11 view];
-  [v12 setFrame:{v4, v6, v8, v10}];
+  aceViewController = [(SiriUIAceObjectControllerCell *)self aceViewController];
+  view = [aceViewController view];
+  [view setFrame:{v4, v6, v8, v10}];
 }
 
-- (void)setAceViewController:(id)a3
+- (void)setAceViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   aceViewController = self->_aceViewController;
-  if (aceViewController != v5)
+  if (aceViewController != controllerCopy)
   {
-    v12 = v5;
-    v7 = [(SiriUIAceObjectViewController *)aceViewController view];
-    v8 = [v7 layer];
-    [v8 removeAllAnimations];
+    v12 = controllerCopy;
+    view = [(SiriUIAceObjectViewController *)aceViewController view];
+    layer = [view layer];
+    [layer removeAllAnimations];
 
-    v9 = [(SiriUIAceObjectViewController *)self->_aceViewController view];
-    v10 = [(SiriUIAceObjectControllerCell *)self contentView];
-    v11 = [v9 isDescendantOfView:v10];
+    view2 = [(SiriUIAceObjectViewController *)self->_aceViewController view];
+    contentView = [(SiriUIAceObjectControllerCell *)self contentView];
+    v11 = [view2 isDescendantOfView:contentView];
 
     if (v11)
     {
-      [v9 removeFromSuperview];
+      [view2 removeFromSuperview];
     }
 
-    objc_storeStrong(&self->_aceViewController, a3);
+    objc_storeStrong(&self->_aceViewController, controller);
 
-    v5 = v12;
+    controllerCopy = v12;
   }
 
-  MEMORY[0x2821F96F8](aceViewController, v5);
+  MEMORY[0x2821F96F8](aceViewController, controllerCopy);
 }
 
-- (void)setReplacedView:(id)a3
+- (void)setReplacedView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   replacedView = self->_replacedView;
-  if (replacedView != v5)
+  if (replacedView != viewCopy)
   {
-    v10 = v5;
-    v7 = [(UIView *)replacedView superview];
-    v8 = [(SiriUIAceObjectControllerCell *)self contentView];
+    v10 = viewCopy;
+    superview = [(UIView *)replacedView superview];
+    contentView = [(SiriUIAceObjectControllerCell *)self contentView];
 
-    if (v7 == v8)
+    if (superview == contentView)
     {
       [(UIView *)self->_replacedView removeFromSuperview];
-      v9 = [(UIView *)self->_replacedView layer];
-      [v9 removeAllAnimations];
+      layer = [(UIView *)self->_replacedView layer];
+      [layer removeAllAnimations];
     }
 
-    objc_storeStrong(&self->_replacedView, a3);
-    v5 = v10;
+    objc_storeStrong(&self->_replacedView, view);
+    viewCopy = v10;
   }
 
-  MEMORY[0x2821F96F8](replacedView, v5);
+  MEMORY[0x2821F96F8](replacedView, viewCopy);
 }
 
 - (void)configureSubviewsForAnimationType
 {
-  v3 = [(UIView *)self->_animationView layer];
-  [v3 removeAllAnimations];
+  layer = [(UIView *)self->_animationView layer];
+  [layer removeAllAnimations];
 
   [(UIView *)self->_animationView removeFromSuperview];
   if (*&self->_insertionAnimationType == 0)
@@ -160,20 +160,20 @@
 
 - (void)_parentViewInCell
 {
-  v4 = [(SiriUIAceObjectControllerCell *)self contentView];
-  v3 = [(SiriUIAceObjectViewController *)self->_aceViewController view];
-  [v4 addSubview:v3];
+  contentView = [(SiriUIAceObjectControllerCell *)self contentView];
+  view = [(SiriUIAceObjectViewController *)self->_aceViewController view];
+  [contentView addSubview:view];
 }
 
 - (void)_parentPreviousViewInCell
 {
-  v3 = [(SiriUIAceObjectControllerCell *)self contentView];
-  [v3 addSubview:self->_replacedView];
+  contentView = [(SiriUIAceObjectControllerCell *)self contentView];
+  [contentView addSubview:self->_replacedView];
 }
 
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4
+- (void)animationDidStop:(id)stop finished:(BOOL)finished
 {
-  v5 = [(SiriUIAceObjectViewController *)self->_aceViewController view:a3];
+  v5 = [(SiriUIAceObjectViewController *)self->_aceViewController view:stop];
   v6 = [v5 isDescendantOfView:self->_animationView];
 
   if (v6)
@@ -182,8 +182,8 @@
   }
 
   [(UIView *)self->_animationView removeFromSuperview];
-  v7 = [(UIView *)self->_animationView subviews];
-  [v7 makeObjectsPerformSelector:sel_removeFromSuperview];
+  subviews = [(UIView *)self->_animationView subviews];
+  [subviews makeObjectsPerformSelector:sel_removeFromSuperview];
 }
 
 + (id)reuseIdentifier
@@ -217,8 +217,8 @@
 - (void)_animateInsertionFadeIn
 {
   [(SiriUIAceObjectControllerCell *)self _parentViewInCell];
-  v3 = [(SiriUIAceObjectViewController *)self->_aceViewController view];
-  [v3 setAlpha:0.0];
+  view = [(SiriUIAceObjectViewController *)self->_aceViewController view];
+  [view setAlpha:0.0];
 
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
@@ -238,24 +238,24 @@ void __56__SiriUIAceObjectControllerCell__animateInsertionFadeIn__block_invoke(u
 {
   [(SiriUIAceObjectControllerCell *)self _parentViewInCell];
   v3 = self->_aceViewController;
-  v4 = [(SiriUIAceObjectViewController *)v3 view];
-  [v4 setAlpha:0.0];
+  view = [(SiriUIAceObjectViewController *)v3 view];
+  [view setAlpha:0.0];
 
   [(SiriUIAceObjectControllerCell *)self _parentPreviousViewInCell];
   v5 = self->_replacedView;
   replacedView = self->_replacedView;
   self->_replacedView = 0;
 
-  v7 = [(UIView *)v5 layer];
-  [v7 removeAllAnimations];
+  layer = [(UIView *)v5 layer];
+  [layer removeAllAnimations];
 
   [(UIView *)v5 setAlpha:1.0];
-  v8 = [(UIView *)v5 layer];
+  layer2 = [(UIView *)v5 layer];
   LODWORD(v9) = 1.0;
-  [v8 setOpacity:v9];
+  [layer2 setOpacity:v9];
 
-  v10 = [(UIView *)v5 layer];
-  [v10 setZPosition:0.0];
+  layer3 = [(UIView *)v5 layer];
+  [layer3 setZPosition:0.0];
 
   v11 = MEMORY[0x277D75D18];
   v16[0] = MEMORY[0x277D85DD0];
@@ -300,74 +300,74 @@ void __61__SiriUIAceObjectControllerCell__animateReplacementCrossFade__block_inv
 
 - (void)_animateInsertionFlyIn
 {
-  v3 = [(SiriUIAceObjectControllerCell *)self contentView];
-  [v3 addSubview:self->_animationView];
+  contentView = [(SiriUIAceObjectControllerCell *)self contentView];
+  [contentView addSubview:self->_animationView];
 
   animationView = self->_animationView;
   v5 = *MEMORY[0x277CBF348];
   v6 = *(MEMORY[0x277CBF348] + 8);
-  v7 = [MEMORY[0x277D759A0] mainScreen];
-  [v7 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   [(UIView *)animationView setFrame:v5, v6];
 
-  v8 = [(SiriUIAceObjectControllerCell *)self aceViewController];
-  v14 = [v8 view];
+  aceViewController = [(SiriUIAceObjectControllerCell *)self aceViewController];
+  view = [aceViewController view];
 
-  [(UIView *)self->_animationView addSubview:v14];
-  [v14 frame];
-  [v14 setFrame:{v5, v6}];
-  v9 = [(SiriUIAceObjectControllerCell *)self aceViewController];
-  v10 = [(SiriUIAceObjectControllerCell *)self _flyInAnimationForAceViewController:v9];
+  [(UIView *)self->_animationView addSubview:view];
+  [view frame];
+  [view setFrame:{v5, v6}];
+  aceViewController2 = [(SiriUIAceObjectControllerCell *)self aceViewController];
+  v10 = [(SiriUIAceObjectControllerCell *)self _flyInAnimationForAceViewController:aceViewController2];
 
   [v10 setDelegate:self];
-  v11 = [v14 layer];
-  [v11 addAnimation:v10 forKey:@"Insertion Animation"];
+  layer = [view layer];
+  [layer addAnimation:v10 forKey:@"Insertion Animation"];
 
-  v12 = [v14 layer];
+  layer2 = [view layer];
   LODWORD(v13) = 1.0;
-  [v12 setOpacity:v13];
+  [layer2 setOpacity:v13];
 }
 
-- (id)_flyInAnimationForAceViewController:(id)a3
+- (id)_flyInAnimationForAceViewController:(id)controller
 {
   v15[2] = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CD9E00];
-  v4 = a3;
-  v5 = [v3 animation];
-  [v5 setRemovedOnCompletion:1];
+  controllerCopy = controller;
+  animation = [v3 animation];
+  [animation setRemovedOnCompletion:1];
   [MEMORY[0x277D60100] defaultAnimationDuration];
-  [v5 setDuration:?];
-  [v5 setBeginTime:CACurrentMediaTime()];
-  [v5 setFillMode:*MEMORY[0x277CDA228]];
-  v6 = [MEMORY[0x277D60100] defaultTimingFunction];
-  [v5 setTimingFunction:v6];
+  [animation setDuration:?];
+  [animation setBeginTime:CACurrentMediaTime()];
+  [animation setFillMode:*MEMORY[0x277CDA228]];
+  defaultTimingFunction = [MEMORY[0x277D60100] defaultTimingFunction];
+  [animation setTimingFunction:defaultTimingFunction];
 
-  v7 = [MEMORY[0x277CD9FA0] animation];
-  [v7 setKeyPath:@"zPosition"];
+  animation2 = [MEMORY[0x277CD9FA0] animation];
+  [animation2 setKeyPath:@"zPosition"];
   v8 = MEMORY[0x277CCABB0];
-  [v4 _insertionAnimatedZPosition];
+  [controllerCopy _insertionAnimatedZPosition];
   v10 = v9;
 
   v11 = [v8 numberWithDouble:v10];
-  [v7 setFromValue:v11];
+  [animation2 setFromValue:v11];
 
-  [v7 setToValue:&unk_287A0D558];
-  [v7 setMass:4.0];
-  [v7 setStiffness:600.0];
-  [v7 setDamping:800.0];
-  v12 = [MEMORY[0x277CD9FA0] animation];
-  [v12 setKeyPath:@"opacity"];
-  [v12 setFromValue:&unk_287A0D558];
-  [v12 setToValue:&unk_287A0D568];
-  [v12 setMass:4.0];
-  [v12 setStiffness:600.0];
-  [v12 setDamping:800.0];
-  v15[0] = v7;
-  v15[1] = v12;
+  [animation2 setToValue:&unk_287A0D558];
+  [animation2 setMass:4.0];
+  [animation2 setStiffness:600.0];
+  [animation2 setDamping:800.0];
+  animation3 = [MEMORY[0x277CD9FA0] animation];
+  [animation3 setKeyPath:@"opacity"];
+  [animation3 setFromValue:&unk_287A0D558];
+  [animation3 setToValue:&unk_287A0D568];
+  [animation3 setMass:4.0];
+  [animation3 setStiffness:600.0];
+  [animation3 setDamping:800.0];
+  v15[0] = animation2;
+  v15[1] = animation3;
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:2];
-  [v5 setAnimations:v13];
+  [animation setAnimations:v13];
 
-  return v5;
+  return animation;
 }
 
 @end

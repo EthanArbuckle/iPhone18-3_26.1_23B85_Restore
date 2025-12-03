@@ -1,12 +1,12 @@
 @interface ResizableLabel
 - (CGRect)frame;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (void)setFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (void)setFrame:(CGRect)frame;
 @end
 
 @implementation ResizableLabel
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   [*(&self->super.super.super.isa + OBJC_IVAR____TtC12PhotosUICore14ResizableLabel_targetLabel) sizeThatFits_];
   result.height = v4;
@@ -26,16 +26,16 @@
   return result;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8 = type metadata accessor for ResizableLabel();
   v15.receiver = self;
   v15.super_class = v8;
-  v9 = self;
+  selfCopy = self;
   [(ResizableLabel *)&v15 frame];
   v17.origin.x = v10;
   v17.origin.y = v11;
@@ -50,7 +50,7 @@
     sub_1A3F4BBA0(0.0, 0.0, width, height);
   }
 
-  v14.receiver = v9;
+  v14.receiver = selfCopy;
   v14.super_class = v8;
   [(ResizableLabel *)&v14 setFrame:x, y, width, height];
 }

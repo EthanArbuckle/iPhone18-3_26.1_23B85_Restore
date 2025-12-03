@@ -1,13 +1,13 @@
 @interface WFDiagnosticsManager
 - (NSArray)noInternetTestRequests;
 - (WFDiagnosticsManager)init;
-- (WFDiagnosticsManager)initWithCustomTests:(id)a3;
-- (id)_joinFailureDiagnosticsResultFromW5Results:(id)a3;
-- (id)_noInternetDiagnosticsResultFromW5Results:(id)a3;
-- (id)joinFailureTestRequestsFor:(id)a3;
-- (void)runCustomDiagnosticsFor:(id)a3 withUpdate:(id)a4 result:(id)a5;
-- (void)runJoinFailureDiagnosticsFor:(id)a3 withUpdate:(id)a4 result:(id)a5;
-- (void)runNoInternetDiagnosticsFor:(id)a3 withUpdate:(id)a4 result:(id)a5;
+- (WFDiagnosticsManager)initWithCustomTests:(id)tests;
+- (id)_joinFailureDiagnosticsResultFromW5Results:(id)results;
+- (id)_noInternetDiagnosticsResultFromW5Results:(id)results;
+- (id)joinFailureTestRequestsFor:(id)for;
+- (void)runCustomDiagnosticsFor:(id)for withUpdate:(id)update result:(id)result;
+- (void)runJoinFailureDiagnosticsFor:(id)for withUpdate:(id)update result:(id)result;
+- (void)runNoInternetDiagnosticsFor:(id)for withUpdate:(id)update result:(id)result;
 @end
 
 @implementation WFDiagnosticsManager
@@ -37,24 +37,24 @@
 
     v4 = v3;
     _Block_object_dispose(&v9, 8);
-    v5 = [v3 sharedClient];
-    [(WFDiagnosticsManager *)v2 setClient:v5];
+    sharedClient = [v3 sharedClient];
+    [(WFDiagnosticsManager *)v2 setClient:sharedClient];
   }
 
   return v2;
 }
 
-- (WFDiagnosticsManager)initWithCustomTests:(id)a3
+- (WFDiagnosticsManager)initWithCustomTests:(id)tests
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  testsCopy = tests;
   v5 = [(WFDiagnosticsManager *)self init];
   v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = v4;
+  v7 = testsCopy;
   v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
@@ -88,15 +88,15 @@
   return v5;
 }
 
-- (id)joinFailureTestRequestsFor:(id)a3
+- (id)joinFailureTestRequestsFor:(id)for
 {
   v11[2] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  forCopy = for;
   v4 = [getW5DiagnosticsTestRequestClass() requestWithTestID:24 configuration:0];
-  if (v3)
+  if (forCopy)
   {
     v5 = objc_opt_new();
-    [v5 setObject:v3 forKeyedSubscript:@"NetworkName"];
+    [v5 setObject:forCopy forKeyedSubscript:@"NetworkName"];
     v6 = [getW5DiagnosticsTestRequestClass() requestWithTestID:24 configuration:v5];
 
     v4 = v6;
@@ -128,10 +128,10 @@
   return v5;
 }
 
-- (id)_joinFailureDiagnosticsResultFromW5Results:(id)a3
+- (id)_joinFailureDiagnosticsResultFromW5Results:(id)results
 {
-  v3 = a3;
-  v4 = [[WFDiagnosticsResultItemBT alloc] initWithResults:v3];
+  resultsCopy = results;
+  v4 = [[WFDiagnosticsResultItemBT alloc] initWithResults:resultsCopy];
   v5 = v4;
   if (v4 && ![(WFDiagnosticsResultItemBT *)v4 didPassTest])
   {
@@ -141,7 +141,7 @@
 
   else
   {
-    v6 = [[WFDiagnosticsResultItemCongestion alloc] initWithResults:v3];
+    v6 = [[WFDiagnosticsResultItemCongestion alloc] initWithResults:resultsCopy];
     v7 = v6;
     if (v6 && ![(WFDiagnosticsResultItemCongestion *)v6 didPassTest])
     {
@@ -151,7 +151,7 @@
 
     else
     {
-      v8 = [[WFDiagnosticsResultItemTestPass alloc] initWithResults:v3];
+      v8 = [[WFDiagnosticsResultItemTestPass alloc] initWithResults:resultsCopy];
       v9 = 0;
     }
   }
@@ -159,22 +159,22 @@
   return v8;
 }
 
-- (id)_noInternetDiagnosticsResultFromW5Results:(id)a3
+- (id)_noInternetDiagnosticsResultFromW5Results:(id)results
 {
-  v3 = a3;
-  v4 = [[WFDiagnosticsResultItemNoInternet alloc] initWithResults:v3];
+  resultsCopy = results;
+  v4 = [[WFDiagnosticsResultItemNoInternet alloc] initWithResults:resultsCopy];
 
   return v4;
 }
 
-- (void)runCustomDiagnosticsFor:(id)a3 withUpdate:(id)a4 result:(id)a5
+- (void)runCustomDiagnosticsFor:(id)for withUpdate:(id)update result:(id)result
 {
   v30 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(WFDiagnosticsManager *)self customTestRequests];
-  v12 = [v11 count] == 0;
+  forCopy = for;
+  updateCopy = update;
+  resultCopy = result;
+  customTestRequests = [(WFDiagnosticsManager *)self customTestRequests];
+  v12 = [customTestRequests count] == 0;
 
   v13 = WFLogForCategory(0);
   if (v12)
@@ -195,7 +195,7 @@
       *buf = 136315394;
       v27 = "[WFDiagnosticsManager runCustomDiagnosticsFor:withUpdate:result:]";
       v28 = 2112;
-      v29 = v8;
+      v29 = forCopy;
       _os_log_impl(&dword_273ECD000, v13, v14, "%s: Running a Custom test for %@", buf, 0x16u);
     }
 
@@ -206,14 +206,14 @@
     v24[1] = 3221225472;
     v24[2] = __66__WFDiagnosticsManager_runCustomDiagnosticsFor_withUpdate_result___block_invoke;
     v24[3] = &unk_279EBE1F8;
-    v25 = v9;
+    v25 = updateCopy;
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __66__WFDiagnosticsManager_runCustomDiagnosticsFor_withUpdate_result___block_invoke_3;
     v20[3] = &unk_279EBE248;
-    v21 = v8;
+    v21 = forCopy;
     objc_copyWeak(&v23, buf);
-    v22 = v10;
+    v22 = resultCopy;
     v17 = [(W5Client *)client runDiagnostics:customTestRequests configuration:0 update:v24 reply:v20];
 
     objc_destroyWeak(&v23);
@@ -386,13 +386,13 @@ LABEL_34:
   v33 = *MEMORY[0x277D85DE8];
 }
 
-- (void)runJoinFailureDiagnosticsFor:(id)a3 withUpdate:(id)a4 result:(id)a5
+- (void)runJoinFailureDiagnosticsFor:(id)for withUpdate:(id)update result:(id)result
 {
   v31 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(WFDiagnosticsManager *)self joinFailureTestRequestsFor:v8];
+  forCopy = for;
+  updateCopy = update;
+  resultCopy = result;
+  v11 = [(WFDiagnosticsManager *)self joinFailureTestRequestsFor:forCopy];
   objc_initWeak(&location, self);
   v12 = WFLogForCategory(0);
   v13 = OSLogForWFLogLevel(3uLL);
@@ -401,27 +401,27 @@ LABEL_34:
     *buf = 136315394;
     v28 = "[WFDiagnosticsManager runJoinFailureDiagnosticsFor:withUpdate:result:]";
     v29 = 2112;
-    v30 = v8;
+    v30 = forCopy;
     _os_log_impl(&dword_273ECD000, v12, v13, "%s: Running a Join Failure test for %@", buf, 0x16u);
   }
 
-  v14 = [(WFDiagnosticsManager *)self client];
+  client = [(WFDiagnosticsManager *)self client];
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __71__WFDiagnosticsManager_runJoinFailureDiagnosticsFor_withUpdate_result___block_invoke;
   v24[3] = &unk_279EBE1F8;
-  v15 = v9;
+  v15 = updateCopy;
   v25 = v15;
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __71__WFDiagnosticsManager_runJoinFailureDiagnosticsFor_withUpdate_result___block_invoke_3;
   v20[3] = &unk_279EBE248;
-  v16 = v8;
+  v16 = forCopy;
   v21 = v16;
   objc_copyWeak(&v23, &location);
-  v17 = v10;
+  v17 = resultCopy;
   v22 = v17;
-  v18 = [v14 runDiagnostics:v11 configuration:0 update:v24 reply:v20];
+  v18 = [client runDiagnostics:v11 configuration:0 update:v24 reply:v20];
 
   objc_destroyWeak(&v23);
   objc_destroyWeak(&location);
@@ -583,12 +583,12 @@ LABEL_31:
   v31 = *MEMORY[0x277D85DE8];
 }
 
-- (void)runNoInternetDiagnosticsFor:(id)a3 withUpdate:(id)a4 result:(id)a5
+- (void)runNoInternetDiagnosticsFor:(id)for withUpdate:(id)update result:(id)result
 {
   v31 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  forCopy = for;
+  updateCopy = update;
+  resultCopy = result;
   objc_initWeak(&location, self);
   v11 = WFLogForCategory(0);
   v12 = OSLogForWFLogLevel(3uLL);
@@ -597,28 +597,28 @@ LABEL_31:
     *buf = 136315394;
     v28 = "[WFDiagnosticsManager runNoInternetDiagnosticsFor:withUpdate:result:]";
     v29 = 2112;
-    v30 = v8;
+    v30 = forCopy;
     _os_log_impl(&dword_273ECD000, v11, v12, "%s: Running a No Internet test for %@", buf, 0x16u);
   }
 
-  v13 = [(WFDiagnosticsManager *)self client];
-  v14 = [(WFDiagnosticsManager *)self noInternetTestRequests];
+  client = [(WFDiagnosticsManager *)self client];
+  noInternetTestRequests = [(WFDiagnosticsManager *)self noInternetTestRequests];
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __70__WFDiagnosticsManager_runNoInternetDiagnosticsFor_withUpdate_result___block_invoke;
   v24[3] = &unk_279EBE1F8;
-  v15 = v9;
+  v15 = updateCopy;
   v25 = v15;
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __70__WFDiagnosticsManager_runNoInternetDiagnosticsFor_withUpdate_result___block_invoke_3;
   v20[3] = &unk_279EBE248;
-  v16 = v8;
+  v16 = forCopy;
   v21 = v16;
   objc_copyWeak(&v23, &location);
-  v17 = v10;
+  v17 = resultCopy;
   v22 = v17;
-  v18 = [v13 runDiagnostics:v14 configuration:0 update:v24 reply:v20];
+  v18 = [client runDiagnostics:noInternetTestRequests configuration:0 update:v24 reply:v20];
 
   objc_destroyWeak(&v23);
   objc_destroyWeak(&location);

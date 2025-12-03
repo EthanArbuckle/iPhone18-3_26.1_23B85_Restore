@@ -1,18 +1,18 @@
 @interface TLKTextAreaViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation TLKTextAreaViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"TLKTextAreaView" hasInstanceMethod:@"titleContainer" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"TLKTextAreaView" hasInstanceMethod:@"detailsFields" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"TLKTextAreaView" hasInstanceMethod:@"footnoteLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"TLKTitleContainerView" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"TLKTitleContainerView" hasInstanceMethod:@"secondaryLabel" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"TLKTextAreaView" hasInstanceMethod:@"titleContainer" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"TLKTextAreaView" hasInstanceMethod:@"detailsFields" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"TLKTextAreaView" hasInstanceMethod:@"footnoteLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"TLKTitleContainerView" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"TLKTitleContainerView" hasInstanceMethod:@"secondaryLabel" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel
@@ -61,24 +61,24 @@
 
   v26 = v3;
   v15 = [v3 safeValueForKey:@"titleLabel"];
-  v16 = [v15 accessibilityLabel];
-  v17 = [v4 _accessibilityViewIsVisible];
+  accessibilityLabel = [v15 accessibilityLabel];
+  _accessibilityViewIsVisible = [v4 _accessibilityViewIsVisible];
   v25 = v4;
-  if (v17)
+  if (_accessibilityViewIsVisible)
   {
-    v18 = [v4 accessibilityLabel];
+    accessibilityLabel2 = [v4 accessibilityLabel];
   }
 
   else
   {
-    v18 = 0;
+    accessibilityLabel2 = 0;
   }
 
   v19 = MEMORY[0x29ED3C080](v6);
   v20 = v5;
   if ([v5 _accessibilityViewIsVisible])
   {
-    v24 = [v5 accessibilityLabel];
+    accessibilityLabel3 = [v5 accessibilityLabel];
     v21 = __UIAXStringForVariables();
   }
 
@@ -87,7 +87,7 @@
     v21 = __UIAXStringForVariables();
   }
 
-  if (v17)
+  if (_accessibilityViewIsVisible)
   {
   }
 

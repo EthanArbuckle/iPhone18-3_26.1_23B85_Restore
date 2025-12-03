@@ -1,18 +1,18 @@
 @interface PGFeatureExtractorAssetSourceType
 - (id)featureNames;
-- (id)floatVectorWithEntity:(id)a3 error:(id *)a4;
+- (id)floatVectorWithEntity:(id)entity error:(id *)error;
 @end
 
 @implementation PGFeatureExtractorAssetSourceType
 
-- (id)floatVectorWithEntity:(id)a3 error:(id *)a4
+- (id)floatVectorWithEntity:(id)entity error:(id *)error
 {
   v5 = MEMORY[0x277D22C68];
-  v6 = a3;
+  entityCopy = entity;
   v7 = [v5 zerosOfCount:{-[PGFeatureExtractorAssetSourceType featureLength](self, "featureLength")}];
-  v8 = [v6 sourceType];
+  sourceType = [entityCopy sourceType];
 
-  if (!v8)
+  if (!sourceType)
   {
     v10 = 0;
 LABEL_10:
@@ -21,9 +21,9 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if ((v8 & 1) == 0)
+  if ((sourceType & 1) == 0)
   {
-    if ((v8 & 2) == 0)
+    if ((sourceType & 2) == 0)
     {
       goto LABEL_4;
     }
@@ -31,7 +31,7 @@ LABEL_10:
 LABEL_8:
     LODWORD(v9) = 1.0;
     [v7 setFloat:2 atIndex:v9];
-    if ((v8 & 4) == 0)
+    if ((sourceType & 4) == 0)
     {
       goto LABEL_11;
     }
@@ -41,13 +41,13 @@ LABEL_8:
 
   LODWORD(v9) = 1.0;
   [v7 setFloat:1 atIndex:v9];
-  if ((v8 & 2) != 0)
+  if ((sourceType & 2) != 0)
   {
     goto LABEL_8;
   }
 
 LABEL_4:
-  if ((v8 & 4) != 0)
+  if ((sourceType & 4) != 0)
   {
 LABEL_9:
     v10 = 3;

@@ -3,11 +3,11 @@
 - (id)_pressFeedbackImage;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setShowsTouchOnTopWhenHighlighted:(BOOL)a3;
-- (void)setTouchImage:(id)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setShowsTouchOnTopWhenHighlighted:(BOOL)highlighted;
+- (void)setTouchImage:(id)image;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
 @end
 
 @implementation TSASingleTouchButton
@@ -19,23 +19,23 @@
   [(TSASingleTouchButton *)&v3 dealloc];
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  if ([objc_msgSend(a4 "allTouches")] == 1)
+  if ([objc_msgSend(event "allTouches")] == 1)
   {
     v7.receiver = self;
     v7.super_class = TSASingleTouchButton;
-    [(TSASingleTouchButton *)&v7 touchesBegan:a3 withEvent:a4];
+    [(TSASingleTouchButton *)&v7 touchesBegan:began withEvent:event];
   }
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  if ([objc_msgSend(a4 "allTouches")] == 1)
+  if ([objc_msgSend(event "allTouches")] == 1)
   {
     v7.receiver = self;
     v7.super_class = TSASingleTouchButton;
-    [(TSASingleTouchButton *)&v7 touchesEnded:a3 withEvent:a4];
+    [(TSASingleTouchButton *)&v7 touchesEnded:ended withEvent:event];
   }
 
   else if ([(TSASingleTouchButton *)self isHighlighted])
@@ -87,14 +87,14 @@
   }
 }
 
-- (void)setShowsTouchOnTopWhenHighlighted:(BOOL)a3
+- (void)setShowsTouchOnTopWhenHighlighted:(BOOL)highlighted
 {
-  if (self->_showsTouchOnTopWhenHighlighted != a3)
+  if (self->_showsTouchOnTopWhenHighlighted != highlighted)
   {
-    v3 = a3;
-    self->_showsTouchOnTopWhenHighlighted = a3;
+    highlightedCopy = highlighted;
+    self->_showsTouchOnTopWhenHighlighted = highlighted;
     v5 = [(TSASingleTouchButton *)self viewWithTag:1];
-    if (v5 || !v3)
+    if (v5 || !highlightedCopy)
     {
       if (v5)
       {
@@ -105,13 +105,13 @@
 
     else
     {
-      v6 = [(TSASingleTouchButton *)self _pressFeedbackImage];
-      v7 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:v6];
+      _pressFeedbackImage = [(TSASingleTouchButton *)self _pressFeedbackImage];
+      v7 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:_pressFeedbackImage];
       [v7 setUserInteractionEnabled:0];
       [v7 setOpaque:0];
-      v8 = [(TSASingleTouchButton *)self isHighlighted];
+      isHighlighted = [(TSASingleTouchButton *)self isHighlighted];
       v9 = 0.0;
-      if (v8)
+      if (isHighlighted)
       {
         v9 = 1.0;
       }
@@ -127,37 +127,37 @@
   }
 }
 
-- (void)setTouchImage:(id)a3
+- (void)setTouchImage:(id)image
 {
-  if (self->_touchImage != a3)
+  if (self->_touchImage != image)
   {
-    v5 = a3;
+    imageCopy = image;
 
-    self->_touchImage = a3;
+    self->_touchImage = image;
     v6 = [(TSASingleTouchButton *)self viewWithTag:1];
     if (v6)
     {
       v7 = v6;
-      v8 = [(TSASingleTouchButton *)self _pressFeedbackImage];
-      [v8 size];
+      _pressFeedbackImage = [(TSASingleTouchButton *)self _pressFeedbackImage];
+      [_pressFeedbackImage size];
       [v7 setBounds:TSDRectWithSize()];
-      [v7 setImage:v8];
+      [v7 setImage:_pressFeedbackImage];
 
       [(TSASingleTouchButton *)self setNeedsLayout];
     }
   }
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v8.receiver = self;
   v8.super_class = TSASingleTouchButton;
   [(TSASingleTouchButton *)&v8 setHighlighted:?];
   if (self->_showsTouchOnTopWhenHighlighted)
   {
     v5 = [(TSASingleTouchButton *)self viewWithTag:1];
-    if (v3)
+    if (highlightedCopy)
     {
       if ([-[TSASingleTouchButton subviews](self "subviews")] != v5)
       {

@@ -1,14 +1,14 @@
 @interface AXSetLeftRightBalanceValueResolutionResult
-+ (id)unsupportedForReason:(int64_t)a3;
++ (id)unsupportedForReason:(int64_t)reason;
 @end
 
 @implementation AXSetLeftRightBalanceValueResolutionResult
 
-+ (id)unsupportedForReason:(int64_t)a3
++ (id)unsupportedForReason:(int64_t)reason
 {
-  v5.receiver = a1;
+  v5.receiver = self;
   v5.super_class = &OBJC_METACLASS___AXSetLeftRightBalanceValueResolutionResult;
-  v3 = objc_msgSendSuper2(&v5, "unsupportedWithReason:", a3);
+  v3 = objc_msgSendSuper2(&v5, "unsupportedWithReason:", reason);
 
   return v3;
 }

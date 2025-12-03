@@ -1,23 +1,23 @@
 @interface NTKOlympusTimeContentView
-+ (double)scaleForViewDuringColorChangeTransitionWithFraction:(double)a3;
-- (BOOL)containsSubview:(id)a3;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
++ (double)scaleForViewDuringColorChangeTransitionWithFraction:(double)fraction;
+- (BOOL)containsSubview:(id)subview;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (CGSize)logoImageSizeForCircularDial;
 - (NTKOlympusContentViewDelegate)delegate;
-- (NTKOlympusTimeContentView)initWithDevice:(id)a3 dial:(unint64_t)a4 style:(unint64_t)a5 colorPalette:(id)a6 useSmallFont:(BOOL)a7 circularLogoImage:(id)a8;
+- (NTKOlympusTimeContentView)initWithDevice:(id)device dial:(unint64_t)dial style:(unint64_t)style colorPalette:(id)palette useSmallFont:(BOOL)font circularLogoImage:(id)image;
 - (UIImage)circularLogoImage;
-- (id)createLogoButtonWithBackgroundImage:(id)a3;
-- (id)createTimeLabelWithFont:(id)a3 option:(unint64_t)a4;
+- (id)createLogoButtonWithBackgroundImage:(id)image;
+- (id)createTimeLabelWithFont:(id)font option:(unint64_t)option;
 - (id)fontForCircularDial;
 - (id)fontForDigitalFullscreen;
 - (id)fontForHybridFullscreen;
 - (id)monospacedFontForCircularDial;
-- (void)_applyAnimationPopTransitionWithFraction:(double)a3;
-- (void)_applyTransitionFraction:(double)a3 fromColor:(id)a4 toColor:(id)a5 fromBackgroundColor:(id)a6 toBackgroundColor:(id)a7 fromLogoColor:(id)a8 toLogoColor:(id)a9;
-- (void)_applyTransitionFraction:(double)a3 fromTextColor:(id)a4 toTextColor:(id)a5;
-- (void)applyTransitionFraction:(double)a3 fromColorPalette:(id)a4 toColorPalette:(id)a5 animateElements:(BOOL)a6;
-- (void)applyTransitionFraction:(double)a3 fromDial:(unint64_t)a4 toDial:(unint64_t)a5;
-- (void)applyTransitionFraction:(double)a3 fromStyle:(unint64_t)a4 toStyle:(unint64_t)a5;
+- (void)_applyAnimationPopTransitionWithFraction:(double)fraction;
+- (void)_applyTransitionFraction:(double)fraction fromColor:(id)color toColor:(id)toColor fromBackgroundColor:(id)backgroundColor toBackgroundColor:(id)toBackgroundColor fromLogoColor:(id)logoColor toLogoColor:(id)toLogoColor;
+- (void)_applyTransitionFraction:(double)fraction fromTextColor:(id)color toTextColor:(id)textColor;
+- (void)applyTransitionFraction:(double)fraction fromColorPalette:(id)palette toColorPalette:(id)colorPalette animateElements:(BOOL)elements;
+- (void)applyTransitionFraction:(double)fraction fromDial:(unint64_t)dial toDial:(unint64_t)toDial;
+- (void)applyTransitionFraction:(double)fraction fromStyle:(unint64_t)style toStyle:(unint64_t)toStyle;
 - (void)configureViewsForEditing;
 - (void)createAndRemoveViewsForCurrentStateIfNeeded;
 - (void)createCircularViewsIfNeeded;
@@ -25,49 +25,49 @@
 - (void)createFullscreenHybridViewsIfNeeded;
 - (void)createFullscreenLogoIfNeeded;
 - (void)dealloc;
-- (void)ensureVisibleIfNeeded:(id)a3;
-- (void)handleLogoButtonHighlighted:(id)a3;
-- (void)handleLogoButtonResetHighlight:(id)a3;
-- (void)handleLogoButtonTouchUpInside:(id)a3;
+- (void)ensureVisibleIfNeeded:(id)needed;
+- (void)handleLogoButtonHighlighted:(id)highlighted;
+- (void)handleLogoButtonResetHighlight:(id)highlight;
+- (void)handleLogoButtonTouchUpInside:(id)inside;
 - (void)layoutSubviews;
 - (void)removeCircularViews;
 - (void)removeFullscreenViews;
-- (void)setColorPalette:(id)a3;
-- (void)setDial:(unint64_t)a3;
-- (void)setInvertedColors:(BOOL)a3;
-- (void)setLabelOutlineAlpha:(double)a3;
-- (void)setLabelOutlineColor:(id)a3;
-- (void)setLogoButtonHighlighted:(BOOL)a3;
-- (void)setStyle:(unint64_t)a3;
-- (void)setViewsVisibilityForDial:(unint64_t)a3 style:(unint64_t)a4;
+- (void)setColorPalette:(id)palette;
+- (void)setDial:(unint64_t)dial;
+- (void)setInvertedColors:(BOOL)colors;
+- (void)setLabelOutlineAlpha:(double)alpha;
+- (void)setLabelOutlineColor:(id)color;
+- (void)setLogoButtonHighlighted:(BOOL)highlighted;
+- (void)setStyle:(unint64_t)style;
+- (void)setViewsVisibilityForDial:(unint64_t)dial style:(unint64_t)style;
 - (void)setViewsVisibleForDialTransition;
 - (void)setViewsVisibleForStyleTransition;
-- (void)timeFormatterTextDidChange:(id)a3;
+- (void)timeFormatterTextDidChange:(id)change;
 - (void)updateColors;
 - (void)updateLogosFrame;
-- (void)updateStylesFraction:(double)a3 fromStyle:(unint64_t)a4 toStyle:(unint64_t)a5;
+- (void)updateStylesFraction:(double)fraction fromStyle:(unint64_t)style toStyle:(unint64_t)toStyle;
 - (void)updateTimeLabelsFrame;
 @end
 
 @implementation NTKOlympusTimeContentView
 
-- (NTKOlympusTimeContentView)initWithDevice:(id)a3 dial:(unint64_t)a4 style:(unint64_t)a5 colorPalette:(id)a6 useSmallFont:(BOOL)a7 circularLogoImage:(id)a8
+- (NTKOlympusTimeContentView)initWithDevice:(id)device dial:(unint64_t)dial style:(unint64_t)style colorPalette:(id)palette useSmallFont:(BOOL)font circularLogoImage:(id)image
 {
-  v14 = a3;
-  v15 = a6;
-  v16 = a8;
+  deviceCopy = device;
+  paletteCopy = palette;
+  imageCopy = image;
   v33.receiver = self;
   v33.super_class = NTKOlympusTimeContentView;
   v17 = [(NTKOlympusTimeContentView *)&v33 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   v18 = v17;
   if (v17)
   {
-    [(NTKOlympusTimeContentView *)v17 setDevice:v14];
-    v18->_style = a5;
-    v18->_dial = a4;
-    objc_storeStrong(&v18->_colorPalette, a6);
-    v18->_useSmallFont = a7;
-    objc_storeStrong(&v18->_circularLogoImage, a8);
+    [(NTKOlympusTimeContentView *)v17 setDevice:deviceCopy];
+    v18->_style = style;
+    v18->_dial = dial;
+    objc_storeStrong(&v18->_colorPalette, palette);
+    v18->_useSmallFont = font;
+    objc_storeStrong(&v18->_circularLogoImage, image);
     v19 = [objc_alloc(MEMORY[0x277CBBBA8]) initWithForcesLatinNumbers:1];
     timeFormatter = v18->_timeFormatter;
     v18->_timeFormatter = v19;
@@ -86,18 +86,18 @@
     v25 = [v24 initWithFrame:?];
     [(NTKOlympusTimeContentView *)v18 setFullscreenDigitsContainerView:v25];
 
-    v26 = [(NTKOlympusTimeContentView *)v18 contentView];
-    v27 = [(NTKOlympusTimeContentView *)v18 fullscreenDigitsContainerView];
-    [v26 addSubview:v27];
+    contentView = [(NTKOlympusTimeContentView *)v18 contentView];
+    fullscreenDigitsContainerView = [(NTKOlympusTimeContentView *)v18 fullscreenDigitsContainerView];
+    [contentView addSubview:fullscreenDigitsContainerView];
 
     v28 = objc_alloc(MEMORY[0x277D75D18]);
     [(NTKOlympusTimeContentView *)v18 bounds];
     v29 = [v28 initWithFrame:?];
     [(NTKOlympusTimeContentView *)v18 setCircularDigitsContainerView:v29];
 
-    v30 = [(NTKOlympusTimeContentView *)v18 contentView];
-    v31 = [(NTKOlympusTimeContentView *)v18 circularDigitsContainerView];
-    [v30 addSubview:v31];
+    contentView2 = [(NTKOlympusTimeContentView *)v18 contentView];
+    circularDigitsContainerView = [(NTKOlympusTimeContentView *)v18 circularDigitsContainerView];
+    [contentView2 addSubview:circularDigitsContainerView];
 
     [(NTKOlympusTimeContentView *)v18 createAndRemoveViewsForCurrentStateIfNeeded];
     [(NTKOlympusTimeContentView *)v18 updateColors];
@@ -174,13 +174,13 @@
 {
   if (!self->_circularLogoButton)
   {
-    v3 = [(NTKOlympusTimeContentView *)self circularLogoImage];
-    v4 = [(NTKOlympusTimeContentView *)self createLogoButtonWithBackgroundImage:v3];
+    circularLogoImage = [(NTKOlympusTimeContentView *)self circularLogoImage];
+    v4 = [(NTKOlympusTimeContentView *)self createLogoButtonWithBackgroundImage:circularLogoImage];
     circularLogoButton = self->_circularLogoButton;
     self->_circularLogoButton = v4;
 
-    v6 = [(NTKOlympusTimeContentView *)self contentView];
-    [v6 addSubview:self->_circularLogoButton];
+    contentView = [(NTKOlympusTimeContentView *)self contentView];
+    [contentView addSubview:self->_circularLogoButton];
   }
 
   if (!self->_circularUpperTimeLabel)
@@ -189,20 +189,20 @@
     circularUpperTimeLabel = self->_circularUpperTimeLabel;
     self->_circularUpperTimeLabel = v7;
 
-    v9 = [(NTKOlympusTimeContentView *)self device];
-    ___LayoutConstants_block_invoke_14(v9, v24);
+    device = [(NTKOlympusTimeContentView *)self device];
+    ___LayoutConstants_block_invoke_14(device, v24);
     [(NTKVictoryLabel *)self->_circularUpperTimeLabel setAdditionalPaddingInsets:v24[0]];
 
-    v10 = [(NTKOlympusTimeContentView *)self device];
-    ___LayoutConstants_block_invoke_14(v10, v22);
+    device2 = [(NTKOlympusTimeContentView *)self device];
+    ___LayoutConstants_block_invoke_14(device2, v22);
     [(NTKVictoryLabel *)self->_circularUpperTimeLabel setDrawingRectOffset:v23, 0.0];
 
-    v11 = [(NTKOlympusTimeContentView *)self fontForCircularDial];
-    [(CLKUIColoringLabel *)self->_circularUpperTimeLabel setFont:v11];
+    fontForCircularDial = [(NTKOlympusTimeContentView *)self fontForCircularDial];
+    [(CLKUIColoringLabel *)self->_circularUpperTimeLabel setFont:fontForCircularDial];
 
     [(NTKVictoryLabel *)self->_circularUpperTimeLabel setTextAlignment:2];
-    v12 = [(NTKOlympusTimeContentView *)self circularDigitsContainerView];
-    [v12 addSubview:self->_circularUpperTimeLabel];
+    circularDigitsContainerView = [(NTKOlympusTimeContentView *)self circularDigitsContainerView];
+    [circularDigitsContainerView addSubview:self->_circularUpperTimeLabel];
   }
 
   if (!self->_circularLowerTimeLabel)
@@ -211,28 +211,28 @@
     circularLowerTimeLabel = self->_circularLowerTimeLabel;
     self->_circularLowerTimeLabel = v13;
 
-    v15 = [(NTKOlympusTimeContentView *)self device];
-    ___LayoutConstants_block_invoke_14(v15, v21);
+    device3 = [(NTKOlympusTimeContentView *)self device];
+    ___LayoutConstants_block_invoke_14(device3, v21);
     [(NTKVictoryLabel *)self->_circularLowerTimeLabel setAdditionalPaddingInsets:v21[0]];
 
-    v16 = [(NTKOlympusTimeContentView *)self device];
-    ___LayoutConstants_block_invoke_14(v16, v19);
+    device4 = [(NTKOlympusTimeContentView *)self device];
+    ___LayoutConstants_block_invoke_14(device4, v19);
     [(NTKVictoryLabel *)self->_circularLowerTimeLabel setDrawingRectOffset:v20, 0.0];
 
-    v17 = [(NTKOlympusTimeContentView *)self fontForCircularDial];
-    [(CLKUIColoringLabel *)self->_circularLowerTimeLabel setFont:v17];
+    fontForCircularDial2 = [(NTKOlympusTimeContentView *)self fontForCircularDial];
+    [(CLKUIColoringLabel *)self->_circularLowerTimeLabel setFont:fontForCircularDial2];
 
     [(NTKVictoryLabel *)self->_circularLowerTimeLabel setTextAlignment:2];
-    v18 = [(NTKOlympusTimeContentView *)self circularDigitsContainerView];
-    [v18 addSubview:self->_circularLowerTimeLabel];
+    circularDigitsContainerView2 = [(NTKOlympusTimeContentView *)self circularDigitsContainerView];
+    [circularDigitsContainerView2 addSubview:self->_circularLowerTimeLabel];
   }
 }
 
-- (id)createLogoButtonWithBackgroundImage:(id)a3
+- (id)createLogoButtonWithBackgroundImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   v5 = [NTKVictoryLogoButton buttonWithType:0];
-  [v5 setBackgroundImage:v4 forState:0];
+  [v5 setBackgroundImage:imageCopy forState:0];
 
   [v5 setUserInteractionEnabled:1];
   [v5 addTarget:self action:sel_handleLogoButtonHighlighted_ forControlEvents:1];
@@ -251,20 +251,20 @@
     fullscreenDigitalUpperTimeLabel = self->_fullscreenDigitalUpperTimeLabel;
     self->_fullscreenDigitalUpperTimeLabel = v3;
 
-    v5 = [(NTKOlympusTimeContentView *)self device];
-    ___LayoutConstants_block_invoke_14(v5, v20);
+    device = [(NTKOlympusTimeContentView *)self device];
+    ___LayoutConstants_block_invoke_14(device, v20);
     [(NTKVictoryLabel *)self->_fullscreenDigitalUpperTimeLabel setAdditionalPaddingInsets:v20[0]];
 
-    v6 = [(NTKOlympusTimeContentView *)self device];
-    ___LayoutConstants_block_invoke_14(v6, v18);
+    device2 = [(NTKOlympusTimeContentView *)self device];
+    ___LayoutConstants_block_invoke_14(device2, v18);
     [(NTKVictoryLabel *)self->_fullscreenDigitalUpperTimeLabel setDrawingRectOffset:v19, 0.0];
 
-    v7 = [(NTKOlympusTimeContentView *)self fontForDigitalFullscreen];
-    [(CLKUIColoringLabel *)self->_fullscreenDigitalUpperTimeLabel setFont:v7];
+    fontForDigitalFullscreen = [(NTKOlympusTimeContentView *)self fontForDigitalFullscreen];
+    [(CLKUIColoringLabel *)self->_fullscreenDigitalUpperTimeLabel setFont:fontForDigitalFullscreen];
 
     [(NTKVictoryLabel *)self->_fullscreenDigitalUpperTimeLabel setTextAlignment:2];
-    v8 = [(NTKOlympusTimeContentView *)self fullscreenDigitsContainerView];
-    [v8 addSubview:self->_fullscreenDigitalUpperTimeLabel];
+    fullscreenDigitsContainerView = [(NTKOlympusTimeContentView *)self fullscreenDigitsContainerView];
+    [fullscreenDigitsContainerView addSubview:self->_fullscreenDigitalUpperTimeLabel];
   }
 
   if (!self->_fullscreenDigitalLowerTimeLabel)
@@ -273,20 +273,20 @@
     fullscreenDigitalLowerTimeLabel = self->_fullscreenDigitalLowerTimeLabel;
     self->_fullscreenDigitalLowerTimeLabel = v9;
 
-    v11 = [(NTKOlympusTimeContentView *)self device];
-    ___LayoutConstants_block_invoke_14(v11, v17);
+    device3 = [(NTKOlympusTimeContentView *)self device];
+    ___LayoutConstants_block_invoke_14(device3, v17);
     [(NTKVictoryLabel *)self->_fullscreenDigitalLowerTimeLabel setAdditionalPaddingInsets:v17[0]];
 
-    v12 = [(NTKOlympusTimeContentView *)self device];
-    ___LayoutConstants_block_invoke_14(v12, v15);
+    device4 = [(NTKOlympusTimeContentView *)self device];
+    ___LayoutConstants_block_invoke_14(device4, v15);
     [(NTKVictoryLabel *)self->_fullscreenDigitalLowerTimeLabel setDrawingRectOffset:v16, 0.0];
 
-    v13 = [(NTKOlympusTimeContentView *)self fontForDigitalFullscreen];
-    [(CLKUIColoringLabel *)self->_fullscreenDigitalLowerTimeLabel setFont:v13];
+    fontForDigitalFullscreen2 = [(NTKOlympusTimeContentView *)self fontForDigitalFullscreen];
+    [(CLKUIColoringLabel *)self->_fullscreenDigitalLowerTimeLabel setFont:fontForDigitalFullscreen2];
 
     [(NTKVictoryLabel *)self->_fullscreenDigitalLowerTimeLabel setTextAlignment:2];
-    v14 = [(NTKOlympusTimeContentView *)self fullscreenDigitsContainerView];
-    [v14 addSubview:self->_fullscreenDigitalLowerTimeLabel];
+    fullscreenDigitsContainerView2 = [(NTKOlympusTimeContentView *)self fullscreenDigitsContainerView];
+    [fullscreenDigitsContainerView2 addSubview:self->_fullscreenDigitalLowerTimeLabel];
   }
 }
 
@@ -294,13 +294,13 @@
 {
   if (!self->_fullscreenHybridUpperTimeLabel)
   {
-    v3 = [(NTKOlympusTimeContentView *)self fontForHybridFullscreen];
-    v4 = [(NTKOlympusTimeContentView *)self createTimeLabelWithFont:v3 option:1024];
+    fontForHybridFullscreen = [(NTKOlympusTimeContentView *)self fontForHybridFullscreen];
+    v4 = [(NTKOlympusTimeContentView *)self createTimeLabelWithFont:fontForHybridFullscreen option:1024];
     fullscreenHybridUpperTimeLabel = self->_fullscreenHybridUpperTimeLabel;
     self->_fullscreenHybridUpperTimeLabel = v4;
 
-    v6 = [(NTKOlympusTimeContentView *)self fullscreenDigitsContainerView];
-    [v6 addSubview:self->_fullscreenHybridUpperTimeLabel];
+    fullscreenDigitsContainerView = [(NTKOlympusTimeContentView *)self fullscreenDigitsContainerView];
+    [fullscreenDigitsContainerView addSubview:self->_fullscreenHybridUpperTimeLabel];
   }
 
   if (!self->_fullscreenHybridLowerTimeLabel)
@@ -309,16 +309,16 @@
     fullscreenHybridLowerTimeLabel = self->_fullscreenHybridLowerTimeLabel;
     self->_fullscreenHybridLowerTimeLabel = v7;
 
-    v9 = [(NTKOlympusTimeContentView *)self device];
-    ___LayoutConstants_block_invoke_14(v9, v12);
+    device = [(NTKOlympusTimeContentView *)self device];
+    ___LayoutConstants_block_invoke_14(device, v12);
     [(NTKVictoryLabel *)self->_fullscreenHybridLowerTimeLabel setAdditionalPaddingInsets:v12[0]];
 
-    v10 = [(NTKOlympusTimeContentView *)self fontForHybridFullscreen];
-    [(CLKUIColoringLabel *)self->_fullscreenHybridLowerTimeLabel setFont:v10];
+    fontForHybridFullscreen2 = [(NTKOlympusTimeContentView *)self fontForHybridFullscreen];
+    [(CLKUIColoringLabel *)self->_fullscreenHybridLowerTimeLabel setFont:fontForHybridFullscreen2];
 
     [(NTKVictoryLabel *)self->_fullscreenHybridLowerTimeLabel setTextAlignment:1];
-    v11 = [(NTKOlympusTimeContentView *)self fullscreenDigitsContainerView];
-    [v11 addSubview:self->_fullscreenHybridLowerTimeLabel];
+    fullscreenDigitsContainerView2 = [(NTKOlympusTimeContentView *)self fullscreenDigitsContainerView];
+    [fullscreenDigitsContainerView2 addSubview:self->_fullscreenHybridLowerTimeLabel];
   }
 }
 
@@ -437,14 +437,14 @@
   return [NTKVictoryLabel victoryFontWithSize:0 style:v3];
 }
 
-- (id)createTimeLabelWithFont:(id)a3 option:(unint64_t)a4
+- (id)createTimeLabelWithFont:(id)font option:(unint64_t)option
 {
-  v6 = [(NTKOlympusTimeContentView *)self styleWithFont:a3];
+  v6 = [(NTKOlympusTimeContentView *)self styleWithFont:font];
   v7 = [NTKVictoryTimeLabel alloc];
   device = self->_device;
-  v9 = [(NTKOlympusTimeContentView *)self device];
-  ___LayoutConstants_block_invoke_14(v9, v12);
-  v10 = [(NTKVictoryTimeLabel *)v7 initWithTimeLabelOptions:a4 forDevice:device additionalPaddingInsets:v12[0]];
+  device = [(NTKOlympusTimeContentView *)self device];
+  ___LayoutConstants_block_invoke_14(device, v12);
+  v10 = [(NTKVictoryTimeLabel *)v7 initWithTimeLabelOptions:option forDevice:device additionalPaddingInsets:v12[0]];
 
   [(NTKDigitalTimeLabel *)v10 setStyle:v6];
 
@@ -456,19 +456,19 @@
   v8.receiver = self;
   v8.super_class = NTKOlympusTimeContentView;
   [(NTKOlympusTimeContentView *)&v8 layoutSubviews];
-  v3 = [(NTKOlympusTimeContentView *)self contentView];
+  contentView = [(NTKOlympusTimeContentView *)self contentView];
   [(NTKOlympusTimeContentView *)self bounds];
-  [v3 ntk_setBoundsAndPositionFromFrame:?];
+  [contentView ntk_setBoundsAndPositionFromFrame:?];
 
-  v4 = [(NTKOlympusTimeContentView *)self fullscreenDigitsContainerView];
-  v5 = [(NTKOlympusTimeContentView *)self contentView];
-  [v5 bounds];
-  [v4 ntk_setBoundsAndPositionFromFrame:?];
+  fullscreenDigitsContainerView = [(NTKOlympusTimeContentView *)self fullscreenDigitsContainerView];
+  contentView2 = [(NTKOlympusTimeContentView *)self contentView];
+  [contentView2 bounds];
+  [fullscreenDigitsContainerView ntk_setBoundsAndPositionFromFrame:?];
 
-  v6 = [(NTKOlympusTimeContentView *)self circularDigitsContainerView];
-  v7 = [(NTKOlympusTimeContentView *)self contentView];
-  [v7 bounds];
-  [v6 ntk_setBoundsAndPositionFromFrame:?];
+  circularDigitsContainerView = [(NTKOlympusTimeContentView *)self circularDigitsContainerView];
+  contentView3 = [(NTKOlympusTimeContentView *)self contentView];
+  [contentView3 bounds];
+  [circularDigitsContainerView ntk_setBoundsAndPositionFromFrame:?];
 
   [(NTKOlympusTimeContentView *)self updateLogosFrame];
   [(NTKOlympusTimeContentView *)self updateTimeLabelsFrame];
@@ -477,8 +477,8 @@
 - (void)updateLogosFrame
 {
   memset(v22, 0, sizeof(v22));
-  v3 = [(NTKOlympusTimeContentView *)self device];
-  ___LayoutConstants_block_invoke_14(v3, v22);
+  device = [(NTKOlympusTimeContentView *)self device];
+  ___LayoutConstants_block_invoke_14(device, v22);
 
   [(UIButton *)self->_fullscreenLogoButton bounds];
   CGRectGetWidth(v23);
@@ -550,8 +550,8 @@
   v92 = 0u;
   v93 = 0u;
   memset(v91, 0, sizeof(v91));
-  v3 = [(NTKOlympusTimeContentView *)self device];
-  ___LayoutConstants_block_invoke_14(v3, v91);
+  device = [(NTKOlympusTimeContentView *)self device];
+  ___LayoutConstants_block_invoke_14(device, v91);
 
   if (self->_useSmallFont)
   {
@@ -694,58 +694,58 @@
   }
 }
 
-- (void)setInvertedColors:(BOOL)a3
+- (void)setInvertedColors:(BOOL)colors
 {
-  if (self->_invertedColors != a3)
+  if (self->_invertedColors != colors)
   {
-    self->_invertedColors = a3;
+    self->_invertedColors = colors;
     [(NTKOlympusTimeContentView *)self updateColors];
   }
 }
 
-- (void)setDial:(unint64_t)a3
+- (void)setDial:(unint64_t)dial
 {
-  self->_dial = a3;
+  self->_dial = dial;
   v4 = 0.0;
-  if (!a3)
+  if (!dial)
   {
     v4 = 1.0;
   }
 
   self->_dialFraction = v4;
   [NTKOlympusTimeContentView setViewsVisibilityForDial:"setViewsVisibilityForDial:style:" style:?];
-  v5 = [(NTKOlympusTimeContentView *)self fullscreenDigitsContainerView];
+  fullscreenDigitsContainerView = [(NTKOlympusTimeContentView *)self fullscreenDigitsContainerView];
   v8 = *(MEMORY[0x277CBF2C0] + 16);
   v10 = *MEMORY[0x277CBF2C0];
   v9 = v10;
   v11 = v8;
   v12 = *(MEMORY[0x277CBF2C0] + 32);
   v7 = v12;
-  [v5 setTransform:&v10];
+  [fullscreenDigitsContainerView setTransform:&v10];
 
-  v6 = [(NTKOlympusTimeContentView *)self circularDigitsContainerView];
+  circularDigitsContainerView = [(NTKOlympusTimeContentView *)self circularDigitsContainerView];
   v10 = v9;
   v11 = v8;
   v12 = v7;
-  [v6 setTransform:&v10];
+  [circularDigitsContainerView setTransform:&v10];
 
   [(NTKOlympusTimeContentView *)self updateLogosFrame];
 }
 
-- (void)setStyle:(unint64_t)a3
+- (void)setStyle:(unint64_t)style
 {
-  self->_style = a3;
-  [(NTKOlympusTimeContentView *)self updateStylesFraction:a3 fromStyle:a3 toStyle:1.0];
+  self->_style = style;
+  [(NTKOlympusTimeContentView *)self updateStylesFraction:style fromStyle:style toStyle:1.0];
   [(NTKOlympusTimeContentView *)self setViewsVisibilityForDial:self->_dial style:self->_style];
   [(NTKOlympusTimeContentView *)self updateLogosFrame];
 
   [(NTKOlympusTimeContentView *)self updateTimeLabelsFrame];
 }
 
-- (void)setColorPalette:(id)a3
+- (void)setColorPalette:(id)palette
 {
-  objc_storeStrong(&self->_colorPalette, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_colorPalette, palette);
+  paletteCopy = palette;
   objc_storeStrong(&self->_palette, self->_colorPalette);
 
   [(NTKOlympusTimeContentView *)self updateColors];
@@ -771,8 +771,8 @@
   height = self->_logoImageSizeForCircularDial.height;
   if (width == *MEMORY[0x277CBF3A8] && height == *(MEMORY[0x277CBF3A8] + 8))
   {
-    v6 = [(NTKOlympusTimeContentView *)self circularLogoImage];
-    [v6 size];
+    circularLogoImage = [(NTKOlympusTimeContentView *)self circularLogoImage];
+    [circularLogoImage size];
     p_logoImageSizeForCircularDial->width = v7;
     p_logoImageSizeForCircularDial->height = v8;
 
@@ -788,69 +788,69 @@
 - (void)updateColors
 {
   v11 = self->_palette;
-  v3 = [(NTKOlympusColorPalette *)v11 primaryTextColor];
-  v4 = [(NTKOlympusColorPalette *)v11 primaryBackgroundColor];
-  v5 = [(NTKOlympusColorPalette *)v11 primaryLogoColor];
+  primaryTextColor = [(NTKOlympusColorPalette *)v11 primaryTextColor];
+  primaryBackgroundColor = [(NTKOlympusColorPalette *)v11 primaryBackgroundColor];
+  primaryLogoColor = [(NTKOlympusColorPalette *)v11 primaryLogoColor];
   if (self->_invertedColors)
   {
-    v6 = [(NTKOlympusColorPalette *)v11 secondaryTextColor];
+    secondaryTextColor = [(NTKOlympusColorPalette *)v11 secondaryTextColor];
 
-    v7 = [(NTKOlympusColorPalette *)v11 secondaryBackgroundColor];
+    secondaryBackgroundColor = [(NTKOlympusColorPalette *)v11 secondaryBackgroundColor];
 
-    v8 = [(NTKOlympusColorPalette *)v11 secondaryLogoColor];
+    secondaryLogoColor = [(NTKOlympusColorPalette *)v11 secondaryLogoColor];
 
-    v3 = v6;
-    v4 = v7;
-    v5 = v8;
+    primaryTextColor = secondaryTextColor;
+    primaryBackgroundColor = secondaryBackgroundColor;
+    primaryLogoColor = secondaryLogoColor;
   }
 
-  objc_storeStrong(&self->_currentForegroundColor, v3);
-  objc_storeStrong(&self->_currentBackgroundColor, v4);
-  objc_storeStrong(&self->_currentLogoColor, v5);
+  objc_storeStrong(&self->_currentForegroundColor, primaryTextColor);
+  objc_storeStrong(&self->_currentBackgroundColor, primaryBackgroundColor);
+  objc_storeStrong(&self->_currentLogoColor, primaryLogoColor);
   style = self->_style;
-  v10 = v5;
+  tritiumLogoColor = primaryLogoColor;
   if (!style)
   {
-    v10 = [(NTKOlympusColorPalette *)v11 tritiumLogoColor];
+    tritiumLogoColor = [(NTKOlympusColorPalette *)v11 tritiumLogoColor];
   }
 
-  objc_storeStrong(&self->_tritiumLogoColor, v10);
+  objc_storeStrong(&self->_tritiumLogoColor, tritiumLogoColor);
   if (!style)
   {
   }
 
-  [(NTKOlympusTimeContentView *)self setBackgroundColor:v4];
-  [(CLKUIColoringLabel *)self->_circularUpperTimeLabel setColor:v3];
-  [(CLKUIColoringLabel *)self->_circularLowerTimeLabel setColor:v3];
-  [(UIButton *)self->_circularLogoButton setTintColor:v5];
-  [(UIButton *)self->_fullscreenLogoButton setTintColor:v5];
-  [(NTKDigitalTimeLabel *)self->_fullscreenHybridUpperTimeLabel setColor:v3];
-  [(NTKVictoryLabel *)self->_fullscreenHybridLowerTimeLabel setFillColor:v3];
-  [(CLKUIColoringLabel *)self->_fullscreenDigitalUpperTimeLabel setColor:v3];
-  [(CLKUIColoringLabel *)self->_fullscreenDigitalLowerTimeLabel setColor:v3];
+  [(NTKOlympusTimeContentView *)self setBackgroundColor:primaryBackgroundColor];
+  [(CLKUIColoringLabel *)self->_circularUpperTimeLabel setColor:primaryTextColor];
+  [(CLKUIColoringLabel *)self->_circularLowerTimeLabel setColor:primaryTextColor];
+  [(UIButton *)self->_circularLogoButton setTintColor:primaryLogoColor];
+  [(UIButton *)self->_fullscreenLogoButton setTintColor:primaryLogoColor];
+  [(NTKDigitalTimeLabel *)self->_fullscreenHybridUpperTimeLabel setColor:primaryTextColor];
+  [(NTKVictoryLabel *)self->_fullscreenHybridLowerTimeLabel setFillColor:primaryTextColor];
+  [(CLKUIColoringLabel *)self->_fullscreenDigitalUpperTimeLabel setColor:primaryTextColor];
+  [(CLKUIColoringLabel *)self->_fullscreenDigitalLowerTimeLabel setColor:primaryTextColor];
 }
 
-- (void)applyTransitionFraction:(double)a3 fromDial:(unint64_t)a4 toDial:(unint64_t)a5
+- (void)applyTransitionFraction:(double)fraction fromDial:(unint64_t)dial toDial:(unint64_t)toDial
 {
-  if (a4 == a5)
+  if (dial == toDial)
   {
 
-    [(NTKOlympusTimeContentView *)self setDial:a3];
+    [(NTKOlympusTimeContentView *)self setDial:fraction];
   }
 
   else
   {
-    if (a5 == 1 && a4 == 0)
+    if (toDial == 1 && dial == 0)
     {
-      v7 = 1.0 - a3;
+      fractionCopy = 1.0 - fraction;
     }
 
     else
     {
-      v7 = a3;
+      fractionCopy = fraction;
     }
 
-    self->_dialFraction = v7;
+    self->_dialFraction = fractionCopy;
     [(NTKOlympusTimeContentView *)self setViewsVisibleForDialTransition];
     CLKCompressFraction();
     v9 = v8;
@@ -866,19 +866,19 @@
     memset(&v21, 0, sizeof(v21));
     CGAffineTransformMakeScale(&v21, v12, v12);
     v20 = v21;
-    v13 = [(NTKOlympusTimeContentView *)self fullscreenDigitsContainerView];
+    fullscreenDigitsContainerView = [(NTKOlympusTimeContentView *)self fullscreenDigitsContainerView];
     v19 = v20;
-    [v13 setTransform:&v19];
+    [fullscreenDigitsContainerView setTransform:&v19];
 
     CLKInterpolateBetweenFloatsClipped();
     CGAffineTransformMakeScale(&v19, v14, v14);
     v21 = v19;
     v18 = v19;
-    v15 = [(NTKOlympusTimeContentView *)self circularDigitsContainerView];
+    circularDigitsContainerView = [(NTKOlympusTimeContentView *)self circularDigitsContainerView];
     v19 = v18;
-    [v15 setTransform:&v19];
+    [circularDigitsContainerView setTransform:&v19];
 
-    if (v7 >= 1.0)
+    if (fractionCopy >= 1.0)
     {
       v16 = 0.0;
     }
@@ -888,7 +888,7 @@
       v16 = 1.0;
     }
 
-    if (v7 >= 1.0)
+    if (fractionCopy >= 1.0)
     {
       v17 = 1.0;
     }
@@ -904,18 +904,18 @@
   }
 }
 
-- (void)applyTransitionFraction:(double)a3 fromStyle:(unint64_t)a4 toStyle:(unint64_t)a5
+- (void)applyTransitionFraction:(double)fraction fromStyle:(unint64_t)style toStyle:(unint64_t)toStyle
 {
-  if (a4 == a5)
+  if (style == toStyle)
   {
 
-    [(NTKOlympusTimeContentView *)self setStyle:a3];
+    [(NTKOlympusTimeContentView *)self setStyle:fraction];
   }
 
   else
   {
     [(NTKOlympusTimeContentView *)self setViewsVisibleForStyleTransition];
-    [(NTKOlympusTimeContentView *)self updateStylesFraction:a4 fromStyle:a5 toStyle:a3];
+    [(NTKOlympusTimeContentView *)self updateStylesFraction:style fromStyle:toStyle toStyle:fraction];
     [(NTKOlympusTimeContentView *)self updateTimeLabelsFrame];
     [(NTKOlympusTimeContentView *)self updateLogosFrame];
     [(NTKVictoryTimeLabel *)self->_fullscreenHybridUpperTimeLabel setAlpha:self->_olympusDigitalStyleFraction];
@@ -939,21 +939,21 @@
     [(UIButton *)self->_fullscreenLogoButton setAlpha:1.0 - self->_analogStyleFraction];
     [(UIButton *)self->_fullscreenLogoButton alpha];
     [(UIButton *)self->_circularLogoButton setAlpha:?];
-    if ((a4 == 1 || a5 == 1) && (a4 == 2 || a5 == 2) && self->_olympusDigitalLabelsPositionFraction == 1.0)
+    if ((style == 1 || toStyle == 1) && (style == 2 || toStyle == 2) && self->_olympusDigitalLabelsPositionFraction == 1.0)
     {
       CLKCompressFraction();
       CLKInterpolateBetweenFloatsClipped();
       memset(&v19, 0, sizeof(v19));
       CGAffineTransformMakeScale(&v19, v11, v11);
       v18 = v19;
-      v12 = [(NTKOlympusTimeContentView *)self fullscreenDigitsContainerView];
+      fullscreenDigitsContainerView = [(NTKOlympusTimeContentView *)self fullscreenDigitsContainerView];
       v17 = v18;
-      [v12 setTransform:&v17];
+      [fullscreenDigitsContainerView setTransform:&v17];
 
       v16 = v19;
-      v13 = [(NTKOlympusTimeContentView *)self circularDigitsContainerView];
+      circularDigitsContainerView = [(NTKOlympusTimeContentView *)self circularDigitsContainerView];
       v17 = v16;
-      [v13 setTransform:&v17];
+      [circularDigitsContainerView setTransform:&v17];
 
       CLKInterpolateBetweenFloatsClipped();
       v15 = v14;
@@ -965,93 +965,93 @@
   }
 }
 
-- (void)updateStylesFraction:(double)a3 fromStyle:(unint64_t)a4 toStyle:(unint64_t)a5
+- (void)updateStylesFraction:(double)fraction fromStyle:(unint64_t)style toStyle:(unint64_t)toStyle
 {
   self->_digitalStyleFraction = 0.0;
   self->_olympusDigitalStyleFraction = 0.0;
   self->_olympusAnalogStyleFraction = 0.0;
   self->_analogStyleFraction = 0.0;
   self->_olympusDigitalLabelsPositionFraction = 0.0;
-  if (!a4 || !a5)
+  if (!style || !toStyle)
   {
-    v5 = 1.0 - a3;
-    if (!a5)
+    fractionCopy = 1.0 - fraction;
+    if (!toStyle)
     {
-      v5 = a3;
+      fractionCopy = fraction;
     }
 
-    self->_digitalStyleFraction = v5;
+    self->_digitalStyleFraction = fractionCopy;
   }
 
-  if (a4 == 1 || a5 == 1)
+  if (style == 1 || toStyle == 1)
   {
-    v6 = 1.0 - a3;
-    if (a5 == 1)
+    fractionCopy2 = 1.0 - fraction;
+    if (toStyle == 1)
     {
-      v6 = a3;
+      fractionCopy2 = fraction;
     }
 
-    self->_olympusDigitalStyleFraction = v6;
-    self->_olympusDigitalLabelsPositionFraction = v6;
+    self->_olympusDigitalStyleFraction = fractionCopy2;
+    self->_olympusDigitalLabelsPositionFraction = fractionCopy2;
   }
 
-  if (a4 != 2)
+  if (style != 2)
   {
     v7 = 0.0;
-    if (a5 != 2)
+    if (toStyle != 2)
     {
       goto LABEL_13;
     }
   }
 
   v7 = 1.0;
-  v8 = 1.0 - a3;
-  if (a5 == 2)
+  fractionCopy3 = 1.0 - fraction;
+  if (toStyle == 2)
   {
-    v8 = a3;
+    fractionCopy3 = fraction;
   }
 
-  self->_olympusAnalogStyleFraction = v8;
-  self->_analogStyleSwooshPositionFraction = v8;
+  self->_olympusAnalogStyleFraction = fractionCopy3;
+  self->_analogStyleSwooshPositionFraction = fractionCopy3;
   self->_olympusDigitalLabelsPositionFraction = 1.0;
-  if (a4 == 3 || a5 == 3)
+  if (style == 3 || toStyle == 3)
   {
 LABEL_13:
     self->_analogStyleSwooshPositionFraction = v7;
   }
 
-  if (a4 == 3 || a5 == 3)
+  if (style == 3 || toStyle == 3)
   {
-    if (a5 != 3)
+    if (toStyle != 3)
     {
-      a3 = 1.0 - a3;
+      fraction = 1.0 - fraction;
     }
 
-    self->_analogStyleFraction = a3;
+    self->_analogStyleFraction = fraction;
   }
 }
 
-- (void)setViewsVisibilityForDial:(unint64_t)a3 style:(unint64_t)a4
+- (void)setViewsVisibilityForDial:(unint64_t)dial style:(unint64_t)style
 {
-  v6 = a3 == 0;
-  v7 = a4 != 1 || a3 == 0;
-  v8 = a3 != 0;
+  v6 = dial == 0;
+  v7 = style != 1 || dial == 0;
+  v8 = dial != 0;
   fullscreenHybridUpperTimeLabel = self->_fullscreenHybridUpperTimeLabel;
-  if (a3)
+  if (dial)
   {
     v10 = 1;
   }
 
   else
   {
-    v10 = a4 > 1;
+    v10 = style > 1;
   }
 
   [(CLKUITimeLabel *)fullscreenHybridUpperTimeLabel setHidden:v7];
   [(NTKVictoryLabel *)self->_fullscreenHybridLowerTimeLabel setHidden:v7];
   [(NTKOlympusTimeContentView *)self ensureVisibleIfNeeded:self->_fullscreenHybridUpperTimeLabel];
   [(NTKOlympusTimeContentView *)self ensureVisibleIfNeeded:self->_fullscreenHybridLowerTimeLabel];
-  if (a4)
+  if (style)
   {
     v11 = 1;
   }
@@ -1113,94 +1113,94 @@ LABEL_13:
   [(NTKOlympusTimeContentView *)self ensureVisibleIfNeeded:fullscreenDigitalUpperTimeLabel];
 }
 
-- (void)ensureVisibleIfNeeded:(id)a3
+- (void)ensureVisibleIfNeeded:(id)needed
 {
-  v5 = a3;
-  v3 = [v5 isHidden];
+  neededCopy = needed;
+  isHidden = [neededCopy isHidden];
   v4 = 1.0;
-  if (v3)
+  if (isHidden)
   {
     v4 = 0.0;
   }
 
-  [v5 setAlpha:v4];
+  [neededCopy setAlpha:v4];
 }
 
-- (void)applyTransitionFraction:(double)a3 fromColorPalette:(id)a4 toColorPalette:(id)a5 animateElements:(BOOL)a6
+- (void)applyTransitionFraction:(double)fraction fromColorPalette:(id)palette toColorPalette:(id)colorPalette animateElements:(BOOL)elements
 {
-  v6 = a6;
-  v23 = a4;
-  v10 = a5;
-  if ([v23 isEqual:v10])
+  elementsCopy = elements;
+  paletteCopy = palette;
+  colorPaletteCopy = colorPalette;
+  if ([paletteCopy isEqual:colorPaletteCopy])
   {
-    [(NTKOlympusTimeContentView *)self setPalette:v10];
+    [(NTKOlympusTimeContentView *)self setPalette:colorPaletteCopy];
   }
 
   else
   {
-    v11 = [v23 primaryTextColor];
-    v12 = [v10 primaryTextColor];
-    v13 = [v23 primaryBackgroundColor];
-    v14 = [v10 primaryBackgroundColor];
-    v15 = [v10 primaryLogoColor];
-    v16 = [v23 primaryLogoColor];
+    primaryTextColor = [paletteCopy primaryTextColor];
+    primaryTextColor2 = [colorPaletteCopy primaryTextColor];
+    primaryBackgroundColor = [paletteCopy primaryBackgroundColor];
+    primaryBackgroundColor2 = [colorPaletteCopy primaryBackgroundColor];
+    primaryLogoColor = [colorPaletteCopy primaryLogoColor];
+    primaryLogoColor2 = [paletteCopy primaryLogoColor];
     if (self->_invertedColors)
     {
-      v22 = [v23 secondaryTextColor];
+      secondaryTextColor = [paletteCopy secondaryTextColor];
 
-      v21 = [v10 secondaryTextColor];
+      secondaryTextColor2 = [colorPaletteCopy secondaryTextColor];
 
-      v20 = [v23 secondaryBackgroundColor];
+      secondaryBackgroundColor = [paletteCopy secondaryBackgroundColor];
 
-      v19 = [v10 secondaryBackgroundColor];
+      secondaryBackgroundColor2 = [colorPaletteCopy secondaryBackgroundColor];
 
-      v17 = [v23 secondaryLogoColor];
+      secondaryLogoColor = [paletteCopy secondaryLogoColor];
 
-      v18 = [v10 secondaryLogoColor];
+      secondaryLogoColor2 = [colorPaletteCopy secondaryLogoColor];
 
-      v12 = v21;
-      v11 = v22;
-      v14 = v19;
-      v13 = v20;
-      v15 = v18;
-      v16 = v17;
+      primaryTextColor2 = secondaryTextColor2;
+      primaryTextColor = secondaryTextColor;
+      primaryBackgroundColor2 = secondaryBackgroundColor2;
+      primaryBackgroundColor = secondaryBackgroundColor;
+      primaryLogoColor = secondaryLogoColor2;
+      primaryLogoColor2 = secondaryLogoColor;
     }
 
-    [(NTKOlympusTimeContentView *)self _applyTransitionFraction:v11 fromColor:v12 toColor:v13 fromBackgroundColor:v14 toBackgroundColor:v16 fromLogoColor:v15 toLogoColor:a3];
-    if (v6)
+    [(NTKOlympusTimeContentView *)self _applyTransitionFraction:primaryTextColor fromColor:primaryTextColor2 toColor:primaryBackgroundColor fromBackgroundColor:primaryBackgroundColor2 toBackgroundColor:primaryLogoColor2 fromLogoColor:primaryLogoColor toLogoColor:fraction];
+    if (elementsCopy)
     {
-      [(NTKOlympusTimeContentView *)self _applyAnimationPopTransitionWithFraction:a3];
+      [(NTKOlympusTimeContentView *)self _applyAnimationPopTransitionWithFraction:fraction];
     }
   }
 }
 
-- (void)setLabelOutlineAlpha:(double)a3
+- (void)setLabelOutlineAlpha:(double)alpha
 {
   [(NTKVictoryLabel *)self->_fullscreenHybridLowerTimeLabel setOutlineAlpha:?];
-  [(NTKVictoryTimeLabel *)self->_fullscreenHybridUpperTimeLabel setOutlineAlpha:a3];
-  [(NTKVictoryLabel *)self->_fullscreenDigitalUpperTimeLabel setOutlineAlpha:a3];
-  [(NTKVictoryLabel *)self->_fullscreenDigitalLowerTimeLabel setOutlineAlpha:a3];
-  [(NTKVictoryLabel *)self->_circularUpperTimeLabel setOutlineAlpha:a3];
+  [(NTKVictoryTimeLabel *)self->_fullscreenHybridUpperTimeLabel setOutlineAlpha:alpha];
+  [(NTKVictoryLabel *)self->_fullscreenDigitalUpperTimeLabel setOutlineAlpha:alpha];
+  [(NTKVictoryLabel *)self->_fullscreenDigitalLowerTimeLabel setOutlineAlpha:alpha];
+  [(NTKVictoryLabel *)self->_circularUpperTimeLabel setOutlineAlpha:alpha];
   circularLowerTimeLabel = self->_circularLowerTimeLabel;
 
-  [(NTKVictoryLabel *)circularLowerTimeLabel setOutlineAlpha:a3];
+  [(NTKVictoryLabel *)circularLowerTimeLabel setOutlineAlpha:alpha];
 }
 
-- (void)setLabelOutlineColor:(id)a3
+- (void)setLabelOutlineColor:(id)color
 {
   fullscreenHybridLowerTimeLabel = self->_fullscreenHybridLowerTimeLabel;
-  v5 = a3;
-  [(NTKVictoryLabel *)fullscreenHybridLowerTimeLabel setOutlineColor:v5];
-  [(NTKVictoryTimeLabel *)self->_fullscreenHybridUpperTimeLabel setOutlineColor:v5];
-  [(NTKVictoryLabel *)self->_fullscreenDigitalUpperTimeLabel setOutlineColor:v5];
-  [(NTKVictoryLabel *)self->_fullscreenDigitalLowerTimeLabel setOutlineColor:v5];
-  [(NTKVictoryLabel *)self->_circularUpperTimeLabel setOutlineColor:v5];
-  [(NTKVictoryLabel *)self->_circularLowerTimeLabel setOutlineColor:v5];
+  colorCopy = color;
+  [(NTKVictoryLabel *)fullscreenHybridLowerTimeLabel setOutlineColor:colorCopy];
+  [(NTKVictoryTimeLabel *)self->_fullscreenHybridUpperTimeLabel setOutlineColor:colorCopy];
+  [(NTKVictoryLabel *)self->_fullscreenDigitalUpperTimeLabel setOutlineColor:colorCopy];
+  [(NTKVictoryLabel *)self->_fullscreenDigitalLowerTimeLabel setOutlineColor:colorCopy];
+  [(NTKVictoryLabel *)self->_circularUpperTimeLabel setOutlineColor:colorCopy];
+  [(NTKVictoryLabel *)self->_circularLowerTimeLabel setOutlineColor:colorCopy];
 }
 
-- (void)_applyAnimationPopTransitionWithFraction:(double)a3
+- (void)_applyAnimationPopTransitionWithFraction:(double)fraction
 {
-  [objc_opt_class() scaleForViewDuringColorChangeTransitionWithFraction:a3];
+  [objc_opt_class() scaleForViewDuringColorChangeTransitionWithFraction:fraction];
   memset(&v6, 0, sizeof(v6));
   CGAffineTransformMakeScale(&v6, v4, v4);
   v5 = v6;
@@ -1221,13 +1221,13 @@ LABEL_13:
   [(NTKVictoryLabel *)self->_fullscreenDigitalLowerTimeLabel setTransform:&v5];
 }
 
-- (void)_applyTransitionFraction:(double)a3 fromColor:(id)a4 toColor:(id)a5 fromBackgroundColor:(id)a6 toBackgroundColor:(id)a7 fromLogoColor:(id)a8 toLogoColor:(id)a9
+- (void)_applyTransitionFraction:(double)fraction fromColor:(id)color toColor:(id)toColor fromBackgroundColor:(id)backgroundColor toBackgroundColor:(id)toBackgroundColor fromLogoColor:(id)logoColor toLogoColor:(id)toLogoColor
 {
-  v16 = a9;
-  v17 = a8;
-  v18 = a7;
-  v19 = a6;
-  [(NTKOlympusTimeContentView *)self _applyTransitionFraction:a4 fromTextColor:a5 toTextColor:a3];
+  toLogoColorCopy = toLogoColor;
+  logoColorCopy = logoColor;
+  toBackgroundColorCopy = toBackgroundColor;
+  backgroundColorCopy = backgroundColor;
+  [(NTKOlympusTimeContentView *)self _applyTransitionFraction:color fromTextColor:toColor toTextColor:fraction];
   v20 = NTKInterpolateBetweenColors();
 
   [(UIButton *)self->_circularLogoButton setTintColor:v20];
@@ -1236,7 +1236,7 @@ LABEL_13:
   aBlock[1] = 3221225472;
   aBlock[2] = __136__NTKOlympusTimeContentView__applyTransitionFraction_fromColor_toColor_fromBackgroundColor_toBackgroundColor_fromLogoColor_toLogoColor___block_invoke;
   aBlock[3] = &__block_descriptor_40_e8_f12__0f8l;
-  *&aBlock[4] = a3;
+  *&aBlock[4] = fraction;
   v21 = _Block_copy(aBlock);
   v21[2](0.0);
   v22 = NTKInterpolateBetweenColors();
@@ -1255,7 +1255,7 @@ float __136__NTKOlympusTimeContentView__applyTransitionFraction_fromColor_toColo
   return fmax(v2, 0.0);
 }
 
-- (void)_applyTransitionFraction:(double)a3 fromTextColor:(id)a4 toTextColor:(id)a5
+- (void)_applyTransitionFraction:(double)fraction fromTextColor:(id)color toTextColor:(id)textColor
 {
   v6 = NTKInterpolateBetweenColors();
   [(NTKDigitalTimeLabel *)self->_fullscreenHybridUpperTimeLabel setColor:v6];
@@ -1266,11 +1266,11 @@ float __136__NTKOlympusTimeContentView__applyTransitionFraction_fromColor_toColo
   [(CLKUIColoringLabel *)self->_circularLowerTimeLabel setColor:v6];
 }
 
-+ (double)scaleForViewDuringColorChangeTransitionWithFraction:(double)a3
++ (double)scaleForViewDuringColorChangeTransitionWithFraction:(double)fraction
 {
   v4 = NTKVictoryTransitionTimingFunction();
   v5 = v4;
-  *&v6 = a3;
+  *&v6 = fraction;
   *&v6 = fabsf((*&v6 + -0.4) / 0.4);
   if (*&v6 > 1.0)
   {
@@ -1283,52 +1283,52 @@ float __136__NTKOlympusTimeContentView__applyTransitionFraction_fromColor_toColo
   return v8;
 }
 
-- (void)setLogoButtonHighlighted:(BOOL)a3
+- (void)setLogoButtonHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   [(UIButton *)self->_fullscreenLogoButton setHighlighted:?];
   circularLogoButton = self->_circularLogoButton;
 
-  [(UIButton *)circularLogoButton setHighlighted:v3];
+  [(UIButton *)circularLogoButton setHighlighted:highlightedCopy];
 }
 
-- (void)handleLogoButtonHighlighted:(id)a3
+- (void)handleLogoButtonHighlighted:(id)highlighted
 {
-  v4 = [(NTKOlympusTimeContentView *)self delegate];
-  [v4 olympusContentViewDidHandleLogoHighlighted:self];
+  delegate = [(NTKOlympusTimeContentView *)self delegate];
+  [delegate olympusContentViewDidHandleLogoHighlighted:self];
 }
 
-- (void)handleLogoButtonResetHighlight:(id)a3
+- (void)handleLogoButtonResetHighlight:(id)highlight
 {
-  v4 = [(NTKOlympusTimeContentView *)self delegate];
-  [v4 olympusContentViewDidHandleLogoResetHighlight:self];
+  delegate = [(NTKOlympusTimeContentView *)self delegate];
+  [delegate olympusContentViewDidHandleLogoResetHighlight:self];
 }
 
-- (void)handleLogoButtonTouchUpInside:(id)a3
+- (void)handleLogoButtonTouchUpInside:(id)inside
 {
-  v4 = a3;
-  [v4 bounds];
-  [v4 convertRect:self toView:?];
+  insideCopy = inside;
+  [insideCopy bounds];
+  [insideCopy convertRect:self toView:?];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
 
-  v13 = [(NTKOlympusTimeContentView *)self delegate];
-  [v13 olympusContentView:self didHandleLogoTouchUpInsideFromRect:{v6, v8, v10, v12}];
+  delegate = [(NTKOlympusTimeContentView *)self delegate];
+  [delegate olympusContentView:self didHandleLogoTouchUpInsideFromRect:{v6, v8, v10, v12}];
 
-  v14 = [(NTKOlympusTimeContentView *)self delegate];
-  [v14 olympusContentViewDidHandleLogoResetHighlight:self];
+  delegate2 = [(NTKOlympusTimeContentView *)self delegate];
+  [delegate2 olympusContentViewDidHandleLogoResetHighlight:self];
 }
 
-- (BOOL)containsSubview:(id)a3
+- (BOOL)containsSubview:(id)subview
 {
-  v4 = a3;
+  subviewCopy = subview;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
-  v5 = [v4 superview];
-  v6 = v5 == self;
+  superview = [subviewCopy superview];
+  v6 = superview == self;
 
   v16 = v6;
   if (v14[3])
@@ -1338,14 +1338,14 @@ float __136__NTKOlympusTimeContentView__applyTransitionFraction_fromColor_toColo
 
   else
   {
-    v8 = [(NTKOlympusTimeContentView *)self subviews];
+    subviews = [(NTKOlympusTimeContentView *)self subviews];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __45__NTKOlympusTimeContentView_containsSubview___block_invoke;
     v10[3] = &unk_278780528;
     v12 = &v13;
-    v11 = v4;
-    [v8 enumerateObjectsUsingBlock:v10];
+    v11 = subviewCopy;
+    [subviews enumerateObjectsUsingBlock:v10];
 
     v7 = *(v14 + 24);
   }
@@ -1362,27 +1362,27 @@ uint64_t __45__NTKOlympusTimeContentView_containsSubview___block_invoke(uint64_t
   return result;
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [(NTKOlympusTimeContentView *)self layer];
-  v9 = [v8 mask];
-  v10 = [v9 path];
+  y = inside.y;
+  x = inside.x;
+  eventCopy = event;
+  layer = [(NTKOlympusTimeContentView *)self layer];
+  mask = [layer mask];
+  path = [mask path];
 
-  if (v10)
+  if (path)
   {
     v15.x = x;
     v15.y = y;
-    v11 = CGPathContainsPoint(v10, 0, v15, 0);
+    v11 = CGPathContainsPoint(path, 0, v15, 0);
   }
 
   else
   {
     v14.receiver = self;
     v14.super_class = NTKOlympusTimeContentView;
-    v11 = [(NTKOlympusTimeContentView *)&v14 pointInside:v7 withEvent:x, y];
+    v11 = [(NTKOlympusTimeContentView *)&v14 pointInside:eventCopy withEvent:x, y];
   }
 
   v12 = v11;
@@ -1390,17 +1390,17 @@ uint64_t __45__NTKOlympusTimeContentView_containsSubview___block_invoke(uint64_t
   return v12;
 }
 
-- (void)timeFormatterTextDidChange:(id)a3
+- (void)timeFormatterTextDidChange:(id)change
 {
   fullscreenHybridUpperTimeLabel = self->_fullscreenHybridUpperTimeLabel;
-  v5 = [a3 overrideDate];
-  [(NTKDigitalTimeLabel *)fullscreenHybridUpperTimeLabel setOverrideDate:v5 duration:0.0];
+  overrideDate = [change overrideDate];
+  [(NTKDigitalTimeLabel *)fullscreenHybridUpperTimeLabel setOverrideDate:overrideDate duration:0.0];
 
-  v16 = [(CLKTimeFormatter *)self->_timeFormatter timeSubstringToSeparatorText];
-  v6 = [objc_alloc(MEMORY[0x277CCAB48]) initWithString:v16];
-  v7 = [v16 hasSuffix:@"1"];
-  v8 = [(NTKOlympusTimeContentView *)self monospacedFontForCircularDial];
-  v9 = v8;
+  timeSubstringToSeparatorText = [(CLKTimeFormatter *)self->_timeFormatter timeSubstringToSeparatorText];
+  v6 = [objc_alloc(MEMORY[0x277CCAB48]) initWithString:timeSubstringToSeparatorText];
+  v7 = [timeSubstringToSeparatorText hasSuffix:@"1"];
+  monospacedFontForCircularDial = [(NTKOlympusTimeContentView *)self monospacedFontForCircularDial];
+  v9 = monospacedFontForCircularDial;
   if (v7)
   {
     v10 = 1;
@@ -1408,41 +1408,41 @@ uint64_t __45__NTKOlympusTimeContentView_containsSubview___block_invoke(uint64_t
 
   else
   {
-    v10 = v8 == 0;
+    v10 = monospacedFontForCircularDial == 0;
   }
 
   if (!v10)
   {
-    [v6 addAttribute:*MEMORY[0x277D740A8] value:v8 range:{objc_msgSend(v16, "length") - 1, 1}];
+    [v6 addAttribute:*MEMORY[0x277D740A8] value:monospacedFontForCircularDial range:{objc_msgSend(timeSubstringToSeparatorText, "length") - 1, 1}];
   }
 
-  v11 = [(CLKUIColoringLabel *)self->_circularUpperTimeLabel color];
+  color = [(CLKUIColoringLabel *)self->_circularUpperTimeLabel color];
   v12 = MEMORY[0x277D740C0];
-  if (v11)
+  if (color)
   {
-    [v6 addAttribute:*MEMORY[0x277D740C0] value:v11 range:{0, objc_msgSend(v16, "length")}];
+    [v6 addAttribute:*MEMORY[0x277D740C0] value:color range:{0, objc_msgSend(timeSubstringToSeparatorText, "length")}];
   }
 
   [(NTKVictoryLabel *)self->_circularUpperTimeLabel setAttributedText:v6];
   [(NTKVictoryLabel *)self->_circularUpperTimeLabel sizeToFit];
-  [(NTKVictoryLabel *)self->_fullscreenDigitalUpperTimeLabel setText:v16];
+  [(NTKVictoryLabel *)self->_fullscreenDigitalUpperTimeLabel setText:timeSubstringToSeparatorText];
   [(NTKVictoryLabel *)self->_fullscreenDigitalUpperTimeLabel sizeToFit];
   [(CLKTimeFormatter *)self->_timeFormatter setIncludeSeparatorInTimeSubstringFromSeparatorText:0];
-  v13 = [(CLKTimeFormatter *)self->_timeFormatter timeSubstringFromSeparatorText];
-  [(NTKVictoryLabel *)self->_fullscreenHybridLowerTimeLabel setText:v13];
+  timeSubstringFromSeparatorText = [(CLKTimeFormatter *)self->_timeFormatter timeSubstringFromSeparatorText];
+  [(NTKVictoryLabel *)self->_fullscreenHybridLowerTimeLabel setText:timeSubstringFromSeparatorText];
   [(NTKVictoryLabel *)self->_fullscreenHybridLowerTimeLabel sizeToFit];
-  [(NTKVictoryLabel *)self->_fullscreenDigitalLowerTimeLabel setText:v13];
+  [(NTKVictoryLabel *)self->_fullscreenDigitalLowerTimeLabel setText:timeSubstringFromSeparatorText];
   [(NTKVictoryLabel *)self->_fullscreenDigitalLowerTimeLabel sizeToFit];
-  v14 = [objc_alloc(MEMORY[0x277CCAB48]) initWithString:v13];
-  if (![v13 hasPrefix:@"1"] && v9)
+  v14 = [objc_alloc(MEMORY[0x277CCAB48]) initWithString:timeSubstringFromSeparatorText];
+  if (![timeSubstringFromSeparatorText hasPrefix:@"1"] && v9)
   {
     [v14 addAttribute:*MEMORY[0x277D740A8] value:v9 range:{0, 1}];
   }
 
-  v15 = [(CLKUIColoringLabel *)self->_circularLowerTimeLabel color];
-  if (v15)
+  color2 = [(CLKUIColoringLabel *)self->_circularLowerTimeLabel color];
+  if (color2)
   {
-    [v14 addAttribute:*v12 value:v15 range:{0, objc_msgSend(v13, "length")}];
+    [v14 addAttribute:*v12 value:color2 range:{0, objc_msgSend(timeSubstringFromSeparatorText, "length")}];
   }
 
   [(NTKVictoryLabel *)self->_circularLowerTimeLabel setAttributedText:v14];

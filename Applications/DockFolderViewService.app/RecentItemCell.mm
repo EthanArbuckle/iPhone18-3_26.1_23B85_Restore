@@ -2,39 +2,39 @@
 - (FPItem)accessibilityItem;
 - (UILabel)accessibilitySubtitle;
 - (UILabel)accessibilityTitle;
-- (_TtC21DockFolderViewService14RecentItemCell)initWithFrame:(CGRect)a3;
-- (id)dragInteraction:(id)a3 itemsForAddingToSession:(id)a4 withTouchAtPoint:(CGPoint)a5;
-- (id)dragInteraction:(id)a3 itemsForBeginningSession:(id)a4;
-- (id)dragInteraction:(id)a3 previewForLiftingItem:(id)a4 session:(id)a5;
-- (int64_t)_dragInteraction:(id)a3 dataOwnerForSession:(id)a4;
+- (_TtC21DockFolderViewService14RecentItemCell)initWithFrame:(CGRect)frame;
+- (id)dragInteraction:(id)interaction itemsForAddingToSession:(id)session withTouchAtPoint:(CGPoint)point;
+- (id)dragInteraction:(id)interaction itemsForBeginningSession:(id)session;
+- (id)dragInteraction:(id)interaction previewForLiftingItem:(id)item session:(id)session;
+- (int64_t)_dragInteraction:(id)interaction dataOwnerForSession:(id)session;
 - (void)didMoveToWindow;
-- (void)handleTap:(id)a3;
+- (void)handleTap:(id)tap;
 - (void)layoutSubviews;
-- (void)thumbnailLoaded:(id)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)thumbnailLoaded:(id)loaded;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation RecentItemCell
 
 - (void)didMoveToWindow
 {
-  v2 = self;
+  selfCopy = self;
   sub_100078A9C();
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_100078D90();
 }
 
-- (void)handleTap:(id)a3
+- (void)handleTap:(id)tap
 {
-  if (a3)
+  if (tap)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -43,7 +43,7 @@
   else
   {
     memset(v6, 0, sizeof(v6));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   sub_1000792AC();
@@ -51,11 +51,11 @@
   sub_100006390(v6, &qword_1000BCA30, &unk_100090E80);
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_10007943C(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_10007943C(change);
 }
 
 - (FPItem)accessibilityItem
@@ -70,7 +70,7 @@
   {
     v4 = *(&self->super.super.super.isa + OBJC_IVAR____TtC21DockFolderViewService14RecentItemCell_kind);
     swift_getObjectType();
-    v5 = self;
+    selfCopy = self;
     sub_10007B494(v4, v2);
     v6 = DOCNode.fpfs_syncFetchFPItem()();
 
@@ -83,7 +83,7 @@
 
 - (UILabel)accessibilityTitle
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100076264(&OBJC_IVAR____TtC21DockFolderViewService14RecentItemCell____lazy_storage___title, sub_1000762C8);
 
   return v3;
@@ -91,28 +91,28 @@
 
 - (UILabel)accessibilitySubtitle
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100076264(&OBJC_IVAR____TtC21DockFolderViewService14RecentItemCell____lazy_storage___subtitle, sub_100076620);
 
   return v3;
 }
 
-- (_TtC21DockFolderViewService14RecentItemCell)initWithFrame:(CGRect)a3
+- (_TtC21DockFolderViewService14RecentItemCell)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)thumbnailLoaded:(id)a3
+- (void)thumbnailLoaded:(id)loaded
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_100079FDC(a3);
+  selfCopy = self;
+  sub_100079FDC(loaded);
   swift_unknownObjectRelease();
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   ObjectType = swift_getObjectType();
   sub_10001A2A8(0, &qword_1000BD168, UITouch_ptr);
@@ -129,33 +129,33 @@
   aBlock[2] = sub_10000D508;
   aBlock[3] = &unk_1000B0498;
   v9 = _Block_copy(aBlock);
-  v10 = self;
-  v11 = a4;
+  selfCopy = self;
+  eventCopy = event;
 
   [v7 animateWithDuration:v9 animations:0.1];
   _Block_release(v9);
   isa = Set._bridgeToObjectiveC()().super.isa;
 
-  v13.receiver = v10;
+  v13.receiver = selfCopy;
   v13.super_class = ObjectType;
-  [(RecentItemCell *)&v13 touchesEnded:isa withEvent:v11];
+  [(RecentItemCell *)&v13 touchesEnded:isa withEvent:eventCopy];
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
   sub_10001A2A8(0, &qword_1000BD168, UITouch_ptr);
   sub_10007D008();
   v6 = static Set._unconditionallyBridgeFromObjectiveC(_:)();
-  v7 = a4;
-  v8 = self;
-  sub_10007AA48(v6, a4);
+  eventCopy = event;
+  selfCopy = self;
+  sub_10007AA48(v6, event);
 }
 
-- (id)dragInteraction:(id)a3 itemsForBeginningSession:(id)a4
+- (id)dragInteraction:(id)interaction itemsForBeginningSession:(id)session
 {
-  v5 = a3;
+  interactionCopy = interaction;
   swift_unknownObjectRetain();
-  v6 = self;
+  selfCopy = self;
   sub_10007C650();
 
   swift_unknownObjectRelease();
@@ -165,11 +165,11 @@
   return v7.super.isa;
 }
 
-- (id)dragInteraction:(id)a3 itemsForAddingToSession:(id)a4 withTouchAtPoint:(CGPoint)a5
+- (id)dragInteraction:(id)interaction itemsForAddingToSession:(id)session withTouchAtPoint:(CGPoint)point
 {
-  v6 = a3;
+  interactionCopy = interaction;
   swift_unknownObjectRetain();
-  v7 = self;
+  selfCopy = self;
   sub_10007C8AC();
 
   swift_unknownObjectRelease();
@@ -179,12 +179,12 @@
   return v8.super.isa;
 }
 
-- (id)dragInteraction:(id)a3 previewForLiftingItem:(id)a4 session:(id)a5
+- (id)dragInteraction:(id)interaction previewForLiftingItem:(id)item session:(id)session
 {
-  v7 = a3;
-  v8 = a4;
+  interactionCopy = interaction;
+  itemCopy = item;
   swift_unknownObjectRetain();
-  v9 = self;
+  selfCopy = self;
   v10 = sub_10007CCCC();
 
   swift_unknownObjectRelease();
@@ -192,7 +192,7 @@
   return v10;
 }
 
-- (int64_t)_dragInteraction:(id)a3 dataOwnerForSession:(id)a4
+- (int64_t)_dragInteraction:(id)interaction dataOwnerForSession:(id)session
 {
   v4 = self->layoutScale[OBJC_IVAR____TtC21DockFolderViewService14RecentItemCell_kind];
   if (v4 >= 2)
@@ -202,7 +202,7 @@
 
   v6 = *(&self->super.super.super.isa + OBJC_IVAR____TtC21DockFolderViewService14RecentItemCell_kind);
   swift_getObjectType();
-  v7 = self;
+  selfCopy = self;
   sub_10007B494(v6, v4);
   v8 = DOCNode.dataOwner.getter();
 

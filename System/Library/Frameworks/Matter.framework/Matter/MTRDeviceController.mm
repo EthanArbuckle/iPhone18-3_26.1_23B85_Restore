@@ -1,5 +1,5 @@
 @interface MTRDeviceController
-+ (BOOL)checkForError:(ChipError)a3 logMsg:(id)a4 error:(id *)a5;
++ (BOOL)checkForError:(ChipError)error logMsg:(id)msg error:(id *)a5;
 + (MTRDeviceController)sharedControllerWithID:(id)controllerID xpcConnectBlock:(MTRXPCConnectBlock)xpcConnectBlock;
 + (MTRDeviceController)sharedControllerWithId:(id)controllerID xpcConnectBlock:(MTRXPCConnectBlock)xpcConnectBlock;
 + (MTRReadParams)decodeXPCReadParams:(NSDictionary *)params;
@@ -11,7 +11,7 @@
 + (NSDictionary)encodeXPCSubscribeParams:(MTRSubscribeParams *)params;
 + (NSXPCInterface)xpcInterfaceForClientProtocol;
 + (NSXPCInterface)xpcInterfaceForServerProtocol;
-- (BOOL)addServerEndpoint:(id)a3;
+- (BOOL)addServerEndpoint:(id)endpoint;
 - (BOOL)cancelCommissioningForNodeID:(NSNumber *)nodeID error:(NSError *)error;
 - (BOOL)commissionDevice:(uint64_t)deviceId commissioningParams:(MTRCommissioningParameters *)commissioningParams error:(NSError *)error;
 - (BOOL)commissionNodeWithID:(NSNumber *)nodeID commissioningParams:(MTRCommissioningParameters *)commissioningParams error:(NSError *)error;
@@ -22,7 +22,7 @@
 - (BOOL)pairDevice:(uint64_t)deviceID address:(NSString *)address port:(uint16_t)port setupPINCode:(uint32_t)setupPINCode error:(NSError *)error;
 - (BOOL)pairDevice:(uint64_t)deviceID discriminator:(uint16_t)discriminator setupPINCode:(uint32_t)setupPINCode error:(NSError *)error;
 - (BOOL)pairDevice:(uint64_t)deviceID onboardingPayload:(NSString *)onboardingPayload error:(NSError *)error;
-- (BOOL)setOperationalCertificateIssuer:(id)a3 queue:(id)a4;
+- (BOOL)setOperationalCertificateIssuer:(id)issuer queue:(id)queue;
 - (BOOL)setupCommissioningSessionWithDiscoveredDevice:(MTRCommissionableBrowserResult *)discoveredDevice payload:(MTRSetupPayload *)payload newNodeID:(NSNumber *)newNodeID error:(NSError *)error;
 - (BOOL)setupCommissioningSessionWithPayload:(MTRSetupPayload *)payload newNodeID:(NSNumber *)newNodeID error:(NSError *)error;
 - (BOOL)startBrowseForCommissionables:(id)delegate queue:(dispatch_queue_t)queue;
@@ -30,7 +30,7 @@
 - (BOOL)stopDevicePairing:(uint64_t)deviceID error:(NSError *)error;
 - (MTRBaseDevice)deviceBeingCommissionedWithNodeID:(NSNumber *)nodeID error:(NSError *)error;
 - (MTRBaseDevice)getDeviceBeingCommissioned:(uint64_t)deviceId error:(NSError *)error;
-- (MTRDeviceController)initWithParameters:(id)a3 error:(id *)a4;
+- (MTRDeviceController)initWithParameters:(id)parameters error:(id *)error;
 - (NSArray)devices;
 - (NSArray)nodesWithStoredData;
 - (NSData)attestationChallengeForDeviceID:(NSNumber *)deviceID;
@@ -39,29 +39,29 @@
 - (NSNumber)controllerNodeID;
 - (NSString)description;
 - (NSString)openPairingWindowWithPIN:(uint64_t)deviceID duration:(NSUInteger)duration discriminator:(NSUInteger)discriminator setupPIN:(NSUInteger)setupPIN error:(NSError *)error;
-- (id)_deviceForNodeID:(id)a3 createIfNeeded:(BOOL)a4;
-- (id)_setupDeviceForNodeID:(id)a3 prefetchedClusterData:(id)a4;
-- (id)baseDeviceForNodeID:(id)a3;
-- (id)deviceForNodeID:(id)a3;
-- (id)initForSubclasses:(BOOL)a3 uniqueIdentifier:(id)a4;
-- (unint64_t)_iterateDelegateInfoWithBlock:(id)a3;
-- (void)_callDelegatesWithBlock:(id)a3 logString:(const char *)a4;
+- (id)_deviceForNodeID:(id)d createIfNeeded:(BOOL)needed;
+- (id)_setupDeviceForNodeID:(id)d prefetchedClusterData:(id)data;
+- (id)baseDeviceForNodeID:(id)d;
+- (id)deviceForNodeID:(id)d;
+- (id)initForSubclasses:(BOOL)subclasses uniqueIdentifier:(id)identifier;
+- (unint64_t)_iterateDelegateInfoWithBlock:(id)block;
+- (void)_callDelegatesWithBlock:(id)block logString:(const char *)string;
 - (void)_clearDeviceControllerDelegates;
 - (void)_notifyDelegatesOfSuspendState;
-- (void)addDeviceControllerDelegate:(id)a3 queue:(id)a4;
-- (void)asyncDispatchToMatterQueue:(id)a3 errorHandler:(id)a4;
-- (void)controller:(id)a3 commissioneeHasReceivedNetworkCredentials:(id)a4;
-- (void)controller:(id)a3 commissioningComplete:(id)a4 nodeID:(id)a5 metrics:(id)a6;
-- (void)controller:(id)a3 commissioningSessionEstablishmentDone:(id)a4;
-- (void)controller:(id)a3 readCommissioneeInfo:(id)a4;
-- (void)controller:(id)a3 statusUpdate:(int64_t)a4;
+- (void)addDeviceControllerDelegate:(id)delegate queue:(id)queue;
+- (void)asyncDispatchToMatterQueue:(id)queue errorHandler:(id)handler;
+- (void)controller:(id)controller commissioneeHasReceivedNetworkCredentials:(id)credentials;
+- (void)controller:(id)controller commissioningComplete:(id)complete nodeID:(id)d metrics:(id)metrics;
+- (void)controller:(id)controller commissioningSessionEstablishmentDone:(id)done;
+- (void)controller:(id)controller readCommissioneeInfo:(id)info;
+- (void)controller:(id)controller statusUpdate:(int64_t)update;
 - (void)dealloc;
 - (void)deviceDeallocated;
-- (void)forgetDeviceWithNodeID:(id)a3;
+- (void)forgetDeviceWithNodeID:(id)d;
 - (void)preWarmCommissioningSession;
-- (void)removeDevice:(id)a3;
-- (void)removeDeviceControllerDelegate:(id)a3;
-- (void)removeServerEndpointInternal:(id)a3 queue:(id)a4 completion:(id)a5;
+- (void)removeDevice:(id)device;
+- (void)removeDeviceControllerDelegate:(id)delegate;
+- (void)removeServerEndpointInternal:(id)internal queue:(id)queue completion:(id)completion;
 - (void)resume;
 - (void)setDeviceControllerDelegate:(id)delegate queue:(dispatch_queue_t)queue;
 - (void)setNocChainIssuer:(id)nocChainIssuer queue:(dispatch_queue_t)queue;
@@ -71,18 +71,18 @@
 
 @implementation MTRDeviceController
 
-- (id)initForSubclasses:(BOOL)a3 uniqueIdentifier:(id)a4
+- (id)initForSubclasses:(BOOL)subclasses uniqueIdentifier:(id)identifier
 {
-  v6 = a4;
+  identifierCopy = identifier;
   v13.receiver = self;
   v13.super_class = MTRDeviceController;
   v7 = [(MTRDeviceController *)&v13 init];
-  [(MTRDeviceController *)v7 setUniqueIdentifier:v6];
+  [(MTRDeviceController *)v7 setUniqueIdentifier:identifierCopy];
   v7->_underlyingDeviceMapLock._os_unfair_lock_opaque = 0;
-  atomic_store(a3, &v7->_suspended);
-  v8 = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
+  atomic_store(subclasses, &v7->_suspended);
+  strongToWeakObjectsMapTable = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
   nodeIDToDeviceMap = v7->_nodeIDToDeviceMap;
-  v7->_nodeIDToDeviceMap = v8;
+  v7->_nodeIDToDeviceMap = strongToWeakObjectsMapTable;
 
   v10 = [[MTRDelegateManager alloc] initWithOwner:v7];
   delegateManager = v7->_delegateManager;
@@ -91,10 +91,10 @@
   return v7;
 }
 
-- (MTRDeviceController)initWithParameters:(id)a3 error:(id *)a4
+- (MTRDeviceController)initWithParameters:(id)parameters error:(id *)error
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  parametersCopy = parameters;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -102,7 +102,7 @@
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v20 = v6;
+      v20 = parametersCopy;
       _os_log_impl(&dword_238DAE000, v7, OS_LOG_TYPE_DEFAULT, "Starting up with XPC Device Controller Parameters: %@", buf, 0xCu);
     }
 
@@ -113,14 +113,14 @@
 
     v8 = off_278A6FDA8;
 LABEL_7:
-    v9 = [objc_alloc(*v8) initWithParameters:v6 error:a4];
+    v9 = [objc_alloc(*v8) initWithParameters:parametersCopy error:error];
     goto LABEL_27;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = v6;
+    v10 = parametersCopy;
     v11 = sub_2393D9044(0);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
@@ -135,8 +135,8 @@ LABEL_7:
     }
 
     v12 = [MTRDeviceController_XPC alloc];
-    v13 = [v10 machServiceName];
-    v9 = -[MTRDeviceController_XPC initWithMachServiceName:options:](v12, "initWithMachServiceName:options:", v13, [v10 connectionOptions]);
+    machServiceName = [v10 machServiceName];
+    v9 = -[MTRDeviceController_XPC initWithMachServiceName:options:](v12, "initWithMachServiceName:options:", machServiceName, [v10 connectionOptions]);
   }
 
   else
@@ -150,7 +150,7 @@ LABEL_7:
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v20 = v6;
+        v20 = parametersCopy;
         _os_log_impl(&dword_238DAE000, v16, OS_LOG_TYPE_DEFAULT, "Starting up with Device Controller Parameters: %@", buf, 0xCu);
       }
 
@@ -166,7 +166,7 @@ LABEL_7:
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v20 = v6;
+      v20 = parametersCopy;
       _os_log_impl(&dword_238DAE000, v16, OS_LOG_TYPE_ERROR, "Unsupported type of MTRDeviceControllerAbstractParameters: %@", buf, 0xCu);
     }
 
@@ -175,10 +175,10 @@ LABEL_7:
       sub_2393D5320(0, 1);
     }
 
-    if (a4)
+    if (error)
     {
       sub_23921C1E4(MTRError, 0xAF0000002FLL, "/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/MTRDeviceController.mm");
-      *a4 = v9 = 0;
+      *error = v9 = 0;
     }
 
     else
@@ -200,13 +200,13 @@ LABEL_27:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_238DAE000, v3, OS_LOG_TYPE_DEFAULT, "%@ dealloc", buf, 0xCu);
   }
 
   if (sub_2393D5398(2u))
   {
-    v5 = self;
+    selfCopy2 = self;
     sub_2393D5320(0, 2);
   }
 
@@ -221,15 +221,15 @@ LABEL_27:
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(MTRDeviceController *)self uniqueIdentifier];
-  v7 = [(MTRDeviceController *)self isSuspended];
+  uniqueIdentifier = [(MTRDeviceController *)self uniqueIdentifier];
+  isSuspended = [(MTRDeviceController *)self isSuspended];
   v8 = @"NO";
-  if (v7)
+  if (isSuspended)
   {
     v8 = @"YES";
   }
 
-  v9 = [v3 stringWithFormat:@"<%@: %p, uuid: %@, suspended: %@>", v5, self, v6, v8];
+  v9 = [v3 stringWithFormat:@"<%@: %p, uuid: %@, suspended: %@>", v5, self, uniqueIdentifier, v8];
 
   return v9;
 }
@@ -262,13 +262,13 @@ LABEL_27:
 
 - (void)_notifyDelegatesOfSuspendState
 {
-  v3 = [(MTRDeviceController *)self isSuspended];
+  isSuspended = [(MTRDeviceController *)self isSuspended];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = sub_238F3A768;
   v4[3] = &unk_278A73028;
   v4[4] = self;
-  v5 = v3;
+  v5 = isSuspended;
   [(MTRDeviceController *)self _callDelegatesWithBlock:v4 logString:"[MTRDeviceController _notifyDelegatesOfSuspendState]"];
 }
 
@@ -279,27 +279,27 @@ LABEL_27:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v24 = self;
+    selfCopy6 = self;
     _os_log_impl(&dword_238DAE000, v3, OS_LOG_TYPE_DEFAULT, "%@ suspending", buf, 0xCu);
   }
 
   if (sub_2393D5398(2u))
   {
-    v15 = self;
+    selfCopy2 = self;
     sub_2393D5320(0, 2);
   }
 
   if ([(MTRDeviceController *)self isRunning])
   {
-    v4 = [(MTRDeviceController *)self deviceMapLock];
-    os_unfair_lock_lock(v4);
+    deviceMapLock = [(MTRDeviceController *)self deviceMapLock];
+    os_unfair_lock_lock(deviceMapLock);
     v5 = atomic_load(&self->_suspended);
     if (v5)
     {
       if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v24 = self;
+        selfCopy6 = self;
         _os_log_impl(&dword_238DAE000, v3, OS_LOG_TYPE_DEFAULT, "%@ already suspended", buf, 0xCu);
       }
 
@@ -308,23 +308,23 @@ LABEL_27:
         sub_2393D5320(0, 2);
       }
 
-      os_unfair_lock_unlock(v4);
+      os_unfair_lock_unlock(deviceMapLock);
       v6 = 0;
     }
 
     else
     {
       atomic_store(1u, &self->_suspended);
-      v7 = [(MTRDeviceController *)self nodeIDToDeviceMap];
-      v8 = [v7 objectEnumerator];
-      v9 = [v8 allObjects];
+      nodeIDToDeviceMap = [(MTRDeviceController *)self nodeIDToDeviceMap];
+      objectEnumerator = [nodeIDToDeviceMap objectEnumerator];
+      allObjects = [objectEnumerator allObjects];
 
-      os_unfair_lock_unlock(v4);
+      os_unfair_lock_unlock(deviceMapLock);
       if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
       {
-        v10 = [v9 count];
+        v10 = [allObjects count];
         *buf = 138412546;
-        v24 = self;
+        selfCopy6 = self;
         v25 = 2048;
         v26 = v10;
         _os_log_impl(&dword_238DAE000, v3, OS_LOG_TYPE_DEFAULT, "%@ found %lu devices to suspend", buf, 0x16u);
@@ -332,8 +332,8 @@ LABEL_27:
 
       if (sub_2393D5398(2u))
       {
-        v16 = self;
-        v17 = [v9 count];
+        selfCopy5 = self;
+        v17 = [allObjects count];
         sub_2393D5320(0, 2);
       }
 
@@ -341,7 +341,7 @@ LABEL_27:
       v21 = 0u;
       v18 = 0u;
       v19 = 0u;
-      v6 = v9;
+      v6 = allObjects;
       v11 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
       if (v11)
       {
@@ -374,7 +374,7 @@ LABEL_27:
     if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v24 = self;
+      selfCopy6 = self;
       _os_log_impl(&dword_238DAE000, v3, OS_LOG_TYPE_ERROR, "%@ not running; can't suspend", buf, 0xCu);
     }
 
@@ -394,34 +394,34 @@ LABEL_27:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v24 = self;
+    selfCopy6 = self;
     _os_log_impl(&dword_238DAE000, v3, OS_LOG_TYPE_DEFAULT, "%@ resuming", buf, 0xCu);
   }
 
   if (sub_2393D5398(2u))
   {
-    v15 = self;
+    selfCopy2 = self;
     sub_2393D5320(0, 2);
   }
 
   if ([(MTRDeviceController *)self isRunning])
   {
-    v4 = [(MTRDeviceController *)self deviceMapLock];
-    os_unfair_lock_lock(v4);
+    deviceMapLock = [(MTRDeviceController *)self deviceMapLock];
+    os_unfair_lock_lock(deviceMapLock);
     v5 = atomic_load(&self->_suspended);
     if (v5)
     {
       atomic_store(0, &self->_suspended);
-      v6 = [(MTRDeviceController *)self nodeIDToDeviceMap];
-      v7 = [v6 objectEnumerator];
-      v8 = [v7 allObjects];
+      nodeIDToDeviceMap = [(MTRDeviceController *)self nodeIDToDeviceMap];
+      objectEnumerator = [nodeIDToDeviceMap objectEnumerator];
+      allObjects = [objectEnumerator allObjects];
 
-      os_unfair_lock_unlock(v4);
+      os_unfair_lock_unlock(deviceMapLock);
       if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
       {
-        v9 = [v8 count];
+        v9 = [allObjects count];
         *buf = 138412546;
-        v24 = self;
+        selfCopy6 = self;
         v25 = 2048;
         v26 = v9;
         _os_log_impl(&dword_238DAE000, v3, OS_LOG_TYPE_DEFAULT, "%@ found %lu devices to resume", buf, 0x16u);
@@ -429,8 +429,8 @@ LABEL_27:
 
       if (sub_2393D5398(2u))
       {
-        v16 = self;
-        v17 = [v8 count];
+        selfCopy4 = self;
+        v17 = [allObjects count];
         sub_2393D5320(0, 2);
       }
 
@@ -438,7 +438,7 @@ LABEL_27:
       v21 = 0u;
       v18 = 0u;
       v19 = 0u;
-      v10 = v8;
+      v10 = allObjects;
       v11 = [v10 countByEnumeratingWithState:&v18 objects:v22 count:16];
       if (v11)
       {
@@ -470,7 +470,7 @@ LABEL_27:
       if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v24 = self;
+        selfCopy6 = self;
         _os_log_impl(&dword_238DAE000, v3, OS_LOG_TYPE_DEFAULT, "%@ already not suspended", buf, 0xCu);
       }
 
@@ -479,7 +479,7 @@ LABEL_27:
         sub_2393D5320(0, 2);
       }
 
-      os_unfair_lock_unlock(v4);
+      os_unfair_lock_unlock(deviceMapLock);
       v10 = 0;
     }
   }
@@ -489,7 +489,7 @@ LABEL_27:
     if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v24 = self;
+      selfCopy6 = self;
       _os_log_impl(&dword_238DAE000, v3, OS_LOG_TYPE_ERROR, "%@ not running; can't resume", buf, 0xCu);
     }
 
@@ -802,19 +802,19 @@ LABEL_27:
   return 0;
 }
 
-- (id)baseDeviceForNodeID:(id)a3
+- (id)baseDeviceForNodeID:(id)d
 {
-  v4 = a3;
-  v5 = [[MTRBaseDevice alloc] initWithNodeID:v4 controller:self];
+  dCopy = d;
+  v5 = [[MTRBaseDevice alloc] initWithNodeID:dCopy controller:self];
 
   return v5;
 }
 
-- (id)_setupDeviceForNodeID:(id)a3 prefetchedClusterData:(id)a4
+- (id)_setupDeviceForNodeID:(id)d prefetchedClusterData:(id)data
 {
   v20 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  dataCopy = data;
   v9 = sub_2393D9044(0);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
   {
@@ -834,20 +834,20 @@ LABEL_27:
     sub_2393D5320(0, 1);
   }
 
-  v12 = [[MTRDevice alloc] initForSubclassesWithNodeID:v7 controller:self];
+  v12 = [[MTRDevice alloc] initForSubclassesWithNodeID:dCopy controller:self];
 
   v13 = *MEMORY[0x277D85DE8];
 
   return v12;
 }
 
-- (id)_deviceForNodeID:(id)a3 createIfNeeded:(BOOL)a4
+- (id)_deviceForNodeID:(id)d createIfNeeded:(BOOL)needed
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(MTRDeviceController *)self deviceMapLock];
-  os_unfair_lock_lock(v7);
-  v8 = [(NSMapTable *)self->_nodeIDToDeviceMap objectForKey:v6];
+  neededCopy = needed;
+  dCopy = d;
+  deviceMapLock = [(MTRDeviceController *)self deviceMapLock];
+  os_unfair_lock_lock(deviceMapLock);
+  v8 = [(NSMapTable *)self->_nodeIDToDeviceMap objectForKey:dCopy];
   if (v8)
   {
     v9 = 1;
@@ -855,12 +855,12 @@ LABEL_27:
 
   else
   {
-    v9 = !v4;
+    v9 = !neededCopy;
   }
 
   if (!v9)
   {
-    v8 = [(MTRDeviceController *)self _setupDeviceForNodeID:v6 prefetchedClusterData:0];
+    v8 = [(MTRDeviceController *)self _setupDeviceForNodeID:dCopy prefetchedClusterData:0];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = sub_238F3C170;
@@ -869,44 +869,44 @@ LABEL_27:
     [(MTRDeviceController *)self _callDelegatesWithBlock:v11 logString:"[MTRDeviceController _deviceForNodeID:createIfNeeded:]"];
   }
 
-  os_unfair_lock_unlock(v7);
+  os_unfair_lock_unlock(deviceMapLock);
 
   return v8;
 }
 
-- (id)deviceForNodeID:(id)a3
+- (id)deviceForNodeID:(id)d
 {
-  v3 = [(MTRDeviceController *)self _deviceForNodeID:a3 createIfNeeded:1];
+  v3 = [(MTRDeviceController *)self _deviceForNodeID:d createIfNeeded:1];
 
   return v3;
 }
 
-- (void)forgetDeviceWithNodeID:(id)a3
+- (void)forgetDeviceWithNodeID:(id)d
 {
-  v6 = a3;
-  v4 = [(MTRDeviceController *)self deviceMapLock];
-  os_unfair_lock_lock(v4);
-  v5 = [(NSMapTable *)self->_nodeIDToDeviceMap objectForKey:v6];
-  os_unfair_lock_unlock(v4);
+  dCopy = d;
+  deviceMapLock = [(MTRDeviceController *)self deviceMapLock];
+  os_unfair_lock_lock(deviceMapLock);
+  v5 = [(NSMapTable *)self->_nodeIDToDeviceMap objectForKey:dCopy];
+  os_unfair_lock_unlock(deviceMapLock);
   if (v5)
   {
     [(MTRDeviceController *)self removeDevice:v5];
   }
 }
 
-- (void)removeDevice:(id)a3
+- (void)removeDevice:(id)device
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(MTRDeviceController *)self deviceMapLock];
-  os_unfair_lock_lock(v5);
-  v6 = [v4 nodeID];
-  v7 = [(NSMapTable *)self->_nodeIDToDeviceMap objectForKey:v6];
+  deviceCopy = device;
+  deviceMapLock = [(MTRDeviceController *)self deviceMapLock];
+  os_unfair_lock_lock(deviceMapLock);
+  nodeID = [deviceCopy nodeID];
+  v7 = [(NSMapTable *)self->_nodeIDToDeviceMap objectForKey:nodeID];
   v8 = v7;
-  if (v7 == v4)
+  if (v7 == deviceCopy)
   {
     [v7 invalidate];
-    [(NSMapTable *)self->_nodeIDToDeviceMap removeObjectForKey:v6];
+    [(NSMapTable *)self->_nodeIDToDeviceMap removeObjectForKey:nodeID];
   }
 
   else
@@ -915,37 +915,37 @@ LABEL_27:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412802;
-      v12 = self;
+      selfCopy = self;
       v13 = 2048;
-      v14 = v4;
+      v14 = deviceCopy;
       v15 = 2048;
-      v16 = [v6 unsignedLongLongValue];
+      unsignedLongLongValue = [nodeID unsignedLongLongValue];
       _os_log_impl(&dword_238DAE000, v9, OS_LOG_TYPE_ERROR, "%@ Error: Cannot remove device %p with nodeID %llu", buf, 0x20u);
     }
 
     if (sub_2393D5398(1u))
     {
-      [v6 unsignedLongLongValue];
+      [nodeID unsignedLongLongValue];
       sub_2393D5320(0, 1);
     }
   }
 
-  os_unfair_lock_unlock(v5);
+  os_unfair_lock_unlock(deviceMapLock);
   v10 = *MEMORY[0x277D85DE8];
 }
 
 - (NSArray)devices
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [(MTRDeviceController *)self deviceMapLock];
-  os_unfair_lock_lock(v3);
-  v4 = [MEMORY[0x277CBEB18] array];
+  deviceMapLock = [(MTRDeviceController *)self deviceMapLock];
+  os_unfair_lock_lock(deviceMapLock);
+  array = [MEMORY[0x277CBEB18] array];
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [(NSMapTable *)self->_nodeIDToDeviceMap objectEnumerator];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  objectEnumerator = [(NSMapTable *)self->_nodeIDToDeviceMap objectEnumerator];
+  v6 = [objectEnumerator countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = *v12;
@@ -955,22 +955,22 @@ LABEL_27:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(objectEnumerator);
         }
 
-        [v4 addObject:*(*(&v11 + 1) + 8 * i)];
+        [array addObject:*(*(&v11 + 1) + 8 * i)];
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [objectEnumerator countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
   }
 
-  os_unfair_lock_unlock(v3);
+  os_unfair_lock_unlock(deviceMapLock);
   v9 = *MEMORY[0x277D85DE8];
 
-  return v4;
+  return array;
 }
 
 - (void)deviceDeallocated
@@ -983,11 +983,11 @@ LABEL_27:
   [(MTRDeviceController *)self _callDelegatesWithBlock:v2 logString:"[MTRDeviceController deviceDeallocated]"];
 }
 
-- (BOOL)setOperationalCertificateIssuer:(id)a3 queue:(id)a4
+- (BOOL)setOperationalCertificateIssuer:(id)issuer queue:(id)queue
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  issuerCopy = issuer;
+  queueCopy = queue;
   v8 = sub_2393D9044(0);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
   {
@@ -1017,12 +1017,12 @@ LABEL_27:
   v9 = setupPasscode;
   v10 = iterations;
   v11 = salt;
-  v12 = [(NSNumber *)v10 unsignedIntValue];
+  unsignedIntValue = [(NSNumber *)v10 unsignedIntValue];
   v13 = v11;
   sub_238DB6950(&v25, [(NSData *)v13 bytes], [(NSData *)v13 length]);
 
   v22 = v25;
-  v23 = sub_2393F2748(v27, v12, &v22, [(NSNumber *)v9 unsignedIntValue]);
+  v23 = sub_2393F2748(v27, unsignedIntValue, &v22, [(NSNumber *)v9 unsignedIntValue]);
   v24 = v14;
   *&v22 = "dwnfw_pase_verifier_for_code";
   *(&v22 + 1) = &v23;
@@ -1075,10 +1075,10 @@ LABEL_27:
   return 0;
 }
 
-- (BOOL)addServerEndpoint:(id)a3
+- (BOOL)addServerEndpoint:(id)endpoint
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  endpointCopy = endpoint;
   v5 = sub_2393D9044(0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
@@ -1102,12 +1102,12 @@ LABEL_27:
   return 0;
 }
 
-- (void)removeServerEndpointInternal:(id)a3 queue:(id)a4 completion:(id)a5
+- (void)removeServerEndpointInternal:(id)internal queue:(id)queue completion:(id)completion
 {
   v20 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  internalCopy = internal;
+  queueCopy = queue;
+  completionCopy = completion;
   v11 = sub_2393D9044(0);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
   {
@@ -1127,20 +1127,20 @@ LABEL_27:
     sub_2393D5320(0, 1);
   }
 
-  if (v9 && v10)
+  if (queueCopy && completionCopy)
   {
-    dispatch_async(v9, v10);
+    dispatch_async(queueCopy, completionCopy);
   }
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-+ (BOOL)checkForError:(ChipError)a3 logMsg:(id)a4 error:(id *)a5
++ (BOOL)checkForError:(ChipError)error logMsg:(id)msg error:(id *)a5
 {
-  mFile = a3.mFile;
-  v7 = *&a3.mError;
+  mFile = error.mFile;
+  v7 = *&error.mError;
   v20 = *MEMORY[0x277D85DE8];
-  v9 = a4;
+  msgCopy = msg;
   if (v7)
   {
     v10 = sub_2393D9044(0);
@@ -1149,17 +1149,17 @@ LABEL_27:
       *buf = 136315650;
       v15 = sub_2393C9138();
       v16 = 2112;
-      v17 = a1;
+      selfCopy = self;
       v18 = 2080;
-      v19 = [v9 UTF8String];
+      uTF8String = [msgCopy UTF8String];
       _os_log_impl(&dword_238DAE000, v10, OS_LOG_TYPE_ERROR, "Error(%s): %@ %s", buf, 0x20u);
     }
 
     if (sub_2393D5398(1u))
     {
       sub_2393C9138();
-      v11 = v9;
-      [v9 UTF8String];
+      v11 = msgCopy;
+      [msgCopy UTF8String];
       sub_2393D5320(0, 1);
     }
 
@@ -1173,11 +1173,11 @@ LABEL_27:
   return v7 != 0;
 }
 
-- (void)asyncDispatchToMatterQueue:(id)a3 errorHandler:(id)a4
+- (void)asyncDispatchToMatterQueue:(id)queue errorHandler:(id)handler
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  queueCopy = queue;
+  handlerCopy = handler;
   v8 = sub_2393D9044(0);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
   {
@@ -1198,7 +1198,7 @@ LABEL_27:
   }
 
   v11 = sub_23921C1E4(MTRError, 0x22600000003, "/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/MTRDeviceController.mm");
-  v7[2](v7, v11);
+  handlerCopy[2](handlerCopy, v11);
 
   v12 = *MEMORY[0x277D85DE8];
 }
@@ -1260,14 +1260,14 @@ LABEL_27:
   v23 = *MEMORY[0x277D85DE8];
   v7 = delegate;
   v8 = queue;
-  v9 = self;
-  objc_sync_enter(v9);
-  strongDelegateForSetDelegateAPI = v9->_strongDelegateForSetDelegateAPI;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  strongDelegateForSetDelegateAPI = selfCopy->_strongDelegateForSetDelegateAPI;
   if (!strongDelegateForSetDelegateAPI)
   {
 LABEL_8:
-    objc_storeStrong(&v9->_strongDelegateForSetDelegateAPI, delegate);
-    [(MTRDeviceController *)v9 addDeviceControllerDelegate:v7 queue:v8];
+    objc_storeStrong(&selfCopy->_strongDelegateForSetDelegateAPI, delegate);
+    [(MTRDeviceController *)selfCopy addDeviceControllerDelegate:v7 queue:v8];
     goto LABEL_9;
   }
 
@@ -1278,7 +1278,7 @@ LABEL_8:
     if (v12)
     {
       *buf = 138412802;
-      v18 = v9;
+      v18 = selfCopy;
       v19 = 2048;
       v20 = strongDelegateForSetDelegateAPI;
       v21 = 2048;
@@ -1288,20 +1288,20 @@ LABEL_8:
 
     if (sub_2393D5398(2u))
     {
-      v15 = v9->_strongDelegateForSetDelegateAPI;
+      v15 = selfCopy->_strongDelegateForSetDelegateAPI;
       v16 = v7;
-      v14 = v9;
+      v14 = selfCopy;
       sub_2393D5320(0, 2);
     }
 
-    [(MTRDeviceController *)v9 removeDeviceControllerDelegate:v9->_strongDelegateForSetDelegateAPI, v14, v15, v16];
+    [(MTRDeviceController *)selfCopy removeDeviceControllerDelegate:selfCopy->_strongDelegateForSetDelegateAPI, v14, v15, v16];
     goto LABEL_8;
   }
 
   if (v12)
   {
     *buf = 138412546;
-    v18 = v9;
+    v18 = selfCopy;
     v19 = 2048;
     v20 = v7;
     _os_log_impl(&dword_238DAE000, v11, OS_LOG_TYPE_DEFAULT, "%@ setDeviceControllerDelegate: delegate %p is already set", buf, 0x16u);
@@ -1313,39 +1313,39 @@ LABEL_8:
   }
 
 LABEL_9:
-  objc_sync_exit(v9);
+  objc_sync_exit(selfCopy);
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addDeviceControllerDelegate:(id)a3 queue:(id)a4
+- (void)addDeviceControllerDelegate:(id)delegate queue:(id)queue
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = self;
-  objc_sync_enter(v7);
-  v8 = [[MTRDelegateInfo alloc] initWithDelegate:v9 queue:v6];
-  [(MTRDelegateManager *)v7->_delegateManager addDelegateInfo:v8];
+  delegateCopy = delegate;
+  queueCopy = queue;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v8 = [[MTRDelegateInfo alloc] initWithDelegate:delegateCopy queue:queueCopy];
+  [(MTRDelegateManager *)selfCopy->_delegateManager addDelegateInfo:v8];
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)removeDeviceControllerDelegate:(id)a3
+- (void)removeDeviceControllerDelegate:(id)delegate
 {
-  v7 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = v7;
-  strongDelegateForSetDelegateAPI = v4->_strongDelegateForSetDelegateAPI;
-  if (strongDelegateForSetDelegateAPI == v7)
+  delegateCopy = delegate;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = delegateCopy;
+  strongDelegateForSetDelegateAPI = selfCopy->_strongDelegateForSetDelegateAPI;
+  if (strongDelegateForSetDelegateAPI == delegateCopy)
   {
-    v4->_strongDelegateForSetDelegateAPI = 0;
+    selfCopy->_strongDelegateForSetDelegateAPI = 0;
 
-    v5 = v7;
+    v5 = delegateCopy;
   }
 
-  [(MTRDelegateManager *)v4->_delegateManager removeDelegate:v5];
-  objc_sync_exit(v4);
+  [(MTRDelegateManager *)selfCopy->_delegateManager removeDelegate:v5];
+  objc_sync_exit(selfCopy);
 }
 
 - (void)_clearDeviceControllerDelegates
@@ -1359,103 +1359,103 @@ LABEL_9:
   objc_sync_exit(obj);
 }
 
-- (unint64_t)_iterateDelegateInfoWithBlock:(id)a3
+- (unint64_t)_iterateDelegateInfoWithBlock:(id)block
 {
-  v4 = self;
-  v5 = a3;
-  objc_sync_enter(v4);
-  v6 = [(MTRDelegateManager *)v4->_delegateManager iterateDelegatesWithBlock:v5];
+  selfCopy = self;
+  blockCopy = block;
+  objc_sync_enter(selfCopy);
+  v6 = [(MTRDelegateManager *)selfCopy->_delegateManager iterateDelegatesWithBlock:blockCopy];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
   return v6;
 }
 
-- (void)_callDelegatesWithBlock:(id)a3 logString:(const char *)a4
+- (void)_callDelegatesWithBlock:(id)block logString:(const char *)string
 {
   obj = self;
-  v6 = a3;
+  blockCopy = block;
   objc_sync_enter(obj);
-  [(MTRDelegateManager *)obj->_delegateManager callDelegatesWithBlock:v6 logString:a4];
+  [(MTRDelegateManager *)obj->_delegateManager callDelegatesWithBlock:blockCopy logString:string];
 
   objc_sync_exit(obj);
 }
 
-- (void)controller:(id)a3 statusUpdate:(int64_t)a4
+- (void)controller:(id)controller statusUpdate:(int64_t)update
 {
-  v6 = a3;
+  controllerCopy = controller;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = sub_238F3DA84;
   v8[3] = &unk_278A73078;
-  v9 = v6;
-  v10 = a4;
-  v7 = v6;
+  v9 = controllerCopy;
+  updateCopy = update;
+  v7 = controllerCopy;
   [(MTRDeviceController *)self _callDelegatesWithBlock:v8 logString:"[MTRDeviceController controller:statusUpdate:]"];
 }
 
-- (void)controller:(id)a3 commissioningSessionEstablishmentDone:(id)a4
+- (void)controller:(id)controller commissioningSessionEstablishmentDone:(id)done
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  doneCopy = done;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = sub_238F3DBE0;
   v10[3] = &unk_278A730A0;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = controllerCopy;
+  v12 = doneCopy;
+  v8 = doneCopy;
+  v9 = controllerCopy;
   [(MTRDeviceController *)self _callDelegatesWithBlock:v10 logString:"[MTRDeviceController controller:commissioningSessionEstablishmentDone:]"];
 }
 
-- (void)controller:(id)a3 commissioningComplete:(id)a4 nodeID:(id)a5 metrics:(id)a6
+- (void)controller:(id)controller commissioningComplete:(id)complete nodeID:(id)d metrics:(id)metrics
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  controllerCopy = controller;
+  completeCopy = complete;
+  dCopy = d;
+  metricsCopy = metrics;
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = sub_238F3DDA0;
   v18[3] = &unk_278A730C8;
-  v19 = v10;
-  v20 = v11;
-  v21 = v12;
-  v22 = v13;
-  v14 = v13;
-  v15 = v12;
-  v16 = v11;
-  v17 = v10;
+  v19 = controllerCopy;
+  v20 = completeCopy;
+  v21 = dCopy;
+  v22 = metricsCopy;
+  v14 = metricsCopy;
+  v15 = dCopy;
+  v16 = completeCopy;
+  v17 = controllerCopy;
   [(MTRDeviceController *)self _callDelegatesWithBlock:v18 logString:"[MTRDeviceController controller:commissioningComplete:nodeID:metrics:]"];
 }
 
-- (void)controller:(id)a3 readCommissioneeInfo:(id)a4
+- (void)controller:(id)controller readCommissioneeInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  infoCopy = info;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = sub_238F3DF4C;
   v10[3] = &unk_278A730A0;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = controllerCopy;
+  v12 = infoCopy;
+  v8 = infoCopy;
+  v9 = controllerCopy;
   [(MTRDeviceController *)self _callDelegatesWithBlock:v10 logString:"[MTRDeviceController controller:readCommissioneeInfo:]"];
 }
 
-- (void)controller:(id)a3 commissioneeHasReceivedNetworkCredentials:(id)a4
+- (void)controller:(id)controller commissioneeHasReceivedNetworkCredentials:(id)credentials
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  credentialsCopy = credentials;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = sub_238F3E0F0;
   v10[3] = &unk_278A730A0;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = controllerCopy;
+  v12 = credentialsCopy;
+  v8 = credentialsCopy;
+  v9 = controllerCopy;
   [(MTRDeviceController *)self _callDelegatesWithBlock:v10 logString:"[MTRDeviceController controller:commissioneeHasReceivedNetworkCredentials:]"];
 }
 
@@ -1706,7 +1706,7 @@ LABEL_9:
   v28 = values;
   if (v28)
   {
-    v31 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v35 = 0u;
     v36 = 0u;
     v33 = 0u;
@@ -1733,7 +1733,7 @@ LABEL_9:
         if (!v5)
         {
 LABEL_14:
-          [v31 addObject:v5];
+          [array addObject:v5];
           continue;
         }
 
@@ -1764,12 +1764,12 @@ LABEL_14:
           v13 = v12;
           if (v12)
           {
-            v14 = [v12 endpoint];
-            v38 = v14;
-            v15 = [v13 cluster];
-            v39 = v15;
-            v16 = [v13 attribute];
-            v40 = v16;
+            endpoint = [v12 endpoint];
+            v38 = endpoint;
+            cluster = [v13 cluster];
+            v39 = cluster;
+            attribute = [v13 attribute];
+            v40 = attribute;
             v17 = [MEMORY[0x277CBEA60] arrayWithObjects:&v38 count:3];
           }
 
@@ -1790,12 +1790,12 @@ LABEL_14:
           v21 = v20;
           if (v20)
           {
-            v22 = [v20 endpoint];
-            v38 = v22;
-            v23 = [v21 cluster];
-            v39 = v23;
-            v24 = [v21 command];
-            v40 = v24;
+            endpoint2 = [v20 endpoint];
+            v38 = endpoint2;
+            cluster2 = [v21 cluster];
+            v39 = cluster2;
+            command = [v21 command];
+            v40 = command;
             v25 = [MEMORY[0x277CBEA60] arrayWithObjects:&v38 count:3];
           }
 
@@ -1807,7 +1807,7 @@ LABEL_14:
           [v9 setObject:v25 forKeyedSubscript:@"commandPath"];
         }
 
-        [v31 addObject:v9];
+        [array addObject:v9];
       }
 
       v3 = [(NSArray *)obj countByEnumeratingWithState:&v33 objects:v37 count:16];
@@ -1820,12 +1820,12 @@ LABEL_25:
     }
   }
 
-  v31 = 0;
+  array = 0;
 LABEL_27:
 
   v26 = *MEMORY[0x277D85DE8];
 
-  return v31;
+  return array;
 }
 
 + (NSArray)decodeXPCResponseValues:(NSArray *)values
@@ -1834,7 +1834,7 @@ LABEL_27:
   v28 = values;
   if (v28)
   {
-    v32 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v35 = 0u;
     v36 = 0u;
     v33 = 0u;
@@ -1876,7 +1876,7 @@ LABEL_27:
         if (v8)
         {
 LABEL_11:
-          [v32 addObject:v5];
+          [array addObject:v5];
         }
 
 LABEL_12:
@@ -1928,7 +1928,7 @@ LABEL_12:
           [v9 setObject:v25 forKeyedSubscript:@"commandPath"];
         }
 
-        [v32 addObject:v9];
+        [array addObject:v9];
       }
 
       v3 = [(NSArray *)obj countByEnumeratingWithState:&v33 objects:v37 count:16];
@@ -1941,12 +1941,12 @@ LABEL_26:
     }
   }
 
-  v32 = 0;
+  array = 0;
 LABEL_28:
 
   v26 = *MEMORY[0x277D85DE8];
 
-  return v32;
+  return array;
 }
 
 + (NSDictionary)encodeXPCReadParams:(MTRReadParams *)params
@@ -1954,17 +1954,17 @@ LABEL_28:
   v3 = params;
   if (v3)
   {
-    v4 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v5 = [MEMORY[0x277CCABB0] numberWithBool:{-[MTRReadParams shouldFilterByFabric](v3, "shouldFilterByFabric")}];
-    [v4 setObject:v5 forKeyedSubscript:@"fabricFiltered"];
+    [dictionary setObject:v5 forKeyedSubscript:@"fabricFiltered"];
   }
 
   else
   {
-    v4 = 0;
+    dictionary = 0;
   }
 
-  return v4;
+  return dictionary;
 }
 
 + (MTRReadParams)decodeXPCReadParams:(NSDictionary *)params
@@ -1999,11 +1999,11 @@ LABEL_28:
     v8 = [MEMORY[0x277CCABB0] numberWithBool:{-[MTRSubscribeParams shouldResubscribeAutomatically](v3, "shouldResubscribeAutomatically")}];
     [v6 setObject:v8 forKeyedSubscript:@"autoResubscribe"];
 
-    v9 = [(MTRSubscribeParams *)v3 minInterval];
-    [v6 setObject:v9 forKeyedSubscript:@"minInterval"];
+    minInterval = [(MTRSubscribeParams *)v3 minInterval];
+    [v6 setObject:minInterval forKeyedSubscript:@"minInterval"];
 
-    v10 = [(MTRSubscribeParams *)v3 maxInterval];
-    [v6 setObject:v10 forKeyedSubscript:@"maxInterval"];
+    maxInterval = [(MTRSubscribeParams *)v3 maxInterval];
+    [v6 setObject:maxInterval forKeyedSubscript:@"maxInterval"];
   }
 
   else
@@ -2042,15 +2042,15 @@ LABEL_28:
     v12 = v11;
     if (v11)
     {
-      v13 = [v11 BOOLValue];
+      bOOLValue = [v11 BOOLValue];
     }
 
     else
     {
-      v13 = 1;
+      bOOLValue = 1;
     }
 
-    [(MTRSubscribeParams *)v7 setResubscribeAutomatically:v13];
+    [(MTRSubscribeParams *)v7 setResubscribeAutomatically:bOOLValue];
   }
 
   else

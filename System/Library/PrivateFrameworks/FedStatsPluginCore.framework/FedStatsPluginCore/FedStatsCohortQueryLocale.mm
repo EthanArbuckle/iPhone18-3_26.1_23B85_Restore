@@ -12,10 +12,10 @@
   v2 = [(FedStatsCohortQueryLocale *)&v7 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEAF8] autoupdatingCurrentLocale];
-    v4 = [v3 languageIdentifier];
+    autoupdatingCurrentLocale = [MEMORY[0x277CBEAF8] autoupdatingCurrentLocale];
+    languageIdentifier = [autoupdatingCurrentLocale languageIdentifier];
     deviceLocale = v2->_deviceLocale;
-    v2->_deviceLocale = v4;
+    v2->_deviceLocale = languageIdentifier;
   }
 
   return v2;
@@ -23,7 +23,7 @@
 
 + (id)cohortInstance
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }

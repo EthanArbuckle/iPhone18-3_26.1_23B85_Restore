@@ -1,25 +1,25 @@
 @interface MRDIDSCompanionRemoteControlService
-- (MRDIDSCompanionRemoteControlService)initWithRoutingDataSource:(id)a3;
+- (MRDIDSCompanionRemoteControlService)initWithRoutingDataSource:(id)source;
 - (MRDIDSCompanionRemoteControlServiceDelegate)delegate;
 - (MRDIDSServerClientConnection)discoveryChannel;
 - (NSString)description;
-- (void)_addAuthorizationCallbackForOutputDevice:(id)a3 destination:(id)a4 session:(id)a5;
-- (void)_handleCompanionDeviceConnectedNotification:(id)a3;
-- (void)_handleCompanionDeviceDisconnectedNotification:(id)a3;
-- (void)_handleDeviceInfoDidChangeNotification:(id)a3;
-- (void)_handleOutputDevicesDidChangeNotification:(id)a3;
-- (void)_onWorkerQueue_connectDiscoveryChannelWithReason:(id)a3;
-- (void)_onWorkerQueue_connectRemoteControlChannelForDestination:(id)a3 session:(id)a4 userInfo:(id)a5 completion:(id)a6;
-- (void)_onWorkerQueue_disconnectAllRemoteControlChannelsWithError:(id)a3;
+- (void)_addAuthorizationCallbackForOutputDevice:(id)device destination:(id)destination session:(id)session;
+- (void)_handleCompanionDeviceConnectedNotification:(id)notification;
+- (void)_handleCompanionDeviceDisconnectedNotification:(id)notification;
+- (void)_handleDeviceInfoDidChangeNotification:(id)notification;
+- (void)_handleOutputDevicesDidChangeNotification:(id)notification;
+- (void)_onWorkerQueue_connectDiscoveryChannelWithReason:(id)reason;
+- (void)_onWorkerQueue_connectRemoteControlChannelForDestination:(id)destination session:(id)session userInfo:(id)info completion:(id)completion;
+- (void)_onWorkerQueue_disconnectAllRemoteControlChannelsWithError:(id)error;
 - (void)_onWorkerQueue_disconnectDiscoveryChannel;
-- (void)_onWorkerQueue_disconnectRemoteControlChannelsForDestination:(id)a3 error:(id)a4;
+- (void)_onWorkerQueue_disconnectRemoteControlChannelsForDestination:(id)destination error:(id)error;
 - (void)_onWorkerQueue_initializeDiscoveryChannel;
-- (void)_onWorkerQueue_sendEndpoint:(id)a3 toClient:(id)a4 options:(id)a5;
-- (void)_removeAuthorizationCallbackForOutputDevice:(id)a3;
-- (void)_sendEndpoint:(id)a3 toClient:(id)a4 options:(id)a5;
-- (void)clientConnection:(id)a3 didReceiveMessage:(id)a4;
-- (void)handleSetConnectionStateMessage:(id)a3 forClient:(id)a4;
-- (void)handleSetDiscoveryModeMessage:(id)a3 forClient:(id)a4;
+- (void)_onWorkerQueue_sendEndpoint:(id)endpoint toClient:(id)client options:(id)options;
+- (void)_removeAuthorizationCallbackForOutputDevice:(id)device;
+- (void)_sendEndpoint:(id)endpoint toClient:(id)client options:(id)options;
+- (void)clientConnection:(id)connection didReceiveMessage:(id)message;
+- (void)handleSetConnectionStateMessage:(id)message forClient:(id)client;
+- (void)handleSetDiscoveryModeMessage:(id)message forClient:(id)client;
 - (void)start;
 - (void)stop;
 @end
@@ -44,9 +44,9 @@
   return discoveryChannel;
 }
 
-- (MRDIDSCompanionRemoteControlService)initWithRoutingDataSource:(id)a3
+- (MRDIDSCompanionRemoteControlService)initWithRoutingDataSource:(id)source
 {
-  v5 = a3;
+  sourceCopy = source;
   v36.receiver = self;
   v36.super_class = MRDIDSCompanionRemoteControlService;
   v6 = [(MRDIDSCompanionRemoteControlService *)&v36 init];
@@ -61,7 +61,7 @@
     configuration = v6->_configuration;
     v6->_configuration = v10;
 
-    objc_storeStrong(&v6->_routingDataSource, a3);
+    objc_storeStrong(&v6->_routingDataSource, source);
     v12 = +[MRIDSCompanionConnection sharedManager];
     v34[0] = _NSConcreteStackBlock;
     v34[1] = 3221225472;
@@ -135,61 +135,61 @@
 
 - (void)start
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_started)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_started)
   {
-    v2->_started = 1;
-    workerQueue = v2->_workerQueue;
+    selfCopy->_started = 1;
+    workerQueue = selfCopy->_workerQueue;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_1000D1A24;
     block[3] = &unk_1004B6D08;
-    block[4] = v2;
+    block[4] = selfCopy;
     dispatch_async(workerQueue, block);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)stop
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (v2->_started)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_started)
   {
-    v2->_started = 0;
-    workerQueue = v2->_workerQueue;
+    selfCopy->_started = 0;
+    workerQueue = selfCopy->_workerQueue;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_1000D1AD4;
     block[3] = &unk_1004B6D08;
-    block[4] = v2;
+    block[4] = selfCopy;
     dispatch_async(workerQueue, block);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)_handleCompanionDeviceConnectedNotification:(id)a3
+- (void)_handleCompanionDeviceConnectedNotification:(id)notification
 {
-  v3 = self;
-  objc_sync_enter(v3);
-  if (v3->_started)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_started)
   {
-    workerQueue = v3->_workerQueue;
+    workerQueue = selfCopy->_workerQueue;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_1000D1B78;
     block[3] = &unk_1004B6D08;
-    block[4] = v3;
+    block[4] = selfCopy;
     dispatch_async(workerQueue, block);
   }
 
-  objc_sync_exit(v3);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)_handleCompanionDeviceDisconnectedNotification:(id)a3
+- (void)_handleCompanionDeviceDisconnectedNotification:(id)notification
 {
   workerQueue = self->_workerQueue;
   block[0] = _NSConcreteStackBlock;
@@ -200,62 +200,62 @@
   dispatch_async(workerQueue, block);
 }
 
-- (void)_handleDeviceInfoDidChangeNotification:(id)a3
+- (void)_handleDeviceInfoDidChangeNotification:(id)notification
 {
-  v4 = [a3 playerPath];
-  v5 = [v4 origin];
-  v6 = [v5 isLocal];
+  playerPath = [notification playerPath];
+  origin = [playerPath origin];
+  isLocal = [origin isLocal];
 
-  if (v6)
+  if (isLocal)
   {
     v8 = +[MRAVLocalEndpoint sharedLocalEndpoint];
-    v7 = [(MRDIDSCompanionRemoteControlService *)self discoveryChannel];
-    [(MRDIDSCompanionRemoteControlService *)self _sendEndpoint:v8 toClient:v7 options:0];
+    discoveryChannel = [(MRDIDSCompanionRemoteControlService *)self discoveryChannel];
+    [(MRDIDSCompanionRemoteControlService *)self _sendEndpoint:v8 toClient:discoveryChannel options:0];
   }
 }
 
-- (void)_handleOutputDevicesDidChangeNotification:(id)a3
+- (void)_handleOutputDevicesDidChangeNotification:(id)notification
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (!v5->_sendEndpointScheduled)
+  notificationCopy = notification;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_sendEndpointScheduled)
   {
-    v5->_sendEndpointScheduled = 1;
-    v6 = [v4 object];
+    selfCopy->_sendEndpointScheduled = 1;
+    object = [notificationCopy object];
     v7 = dispatch_time(0, 300000000);
-    workerQueue = v5->_workerQueue;
+    workerQueue = selfCopy->_workerQueue;
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_1000D1E44;
     v10[3] = &unk_1004B68F0;
-    v10[4] = v5;
-    v11 = v6;
-    v9 = v6;
+    v10[4] = selfCopy;
+    v11 = object;
+    v9 = object;
     dispatch_after(v7, workerQueue, v10);
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)clientConnection:(id)a3 didReceiveMessage:(id)a4
+- (void)clientConnection:(id)connection didReceiveMessage:(id)message
 {
-  v6 = a3;
-  v7 = a4;
-  v9 = v6;
-  v8 = [v7 type];
-  if (v8 == 101)
+  connectionCopy = connection;
+  messageCopy = message;
+  v9 = connectionCopy;
+  type = [messageCopy type];
+  if (type == 101)
   {
-    [(MRDIDSCompanionRemoteControlService *)self handleSetDiscoveryModeMessage:v7 forClient:v9];
+    [(MRDIDSCompanionRemoteControlService *)self handleSetDiscoveryModeMessage:messageCopy forClient:v9];
   }
 
-  else if (v8 == 38)
+  else if (type == 38)
   {
-    [(MRDIDSCompanionRemoteControlService *)self handleSetConnectionStateMessage:v7 forClient:v9];
+    [(MRDIDSCompanionRemoteControlService *)self handleSetConnectionStateMessage:messageCopy forClient:v9];
   }
 }
 
-- (void)handleSetConnectionStateMessage:(id)a3 forClient:(id)a4
+- (void)handleSetConnectionStateMessage:(id)message forClient:(id)client
 {
   workerQueue = self->_workerQueue;
   block[0] = _NSConcreteStackBlock;
@@ -266,61 +266,61 @@
   dispatch_async(workerQueue, block);
 }
 
-- (void)handleSetDiscoveryModeMessage:(id)a3 forClient:(id)a4
+- (void)handleSetDiscoveryModeMessage:(id)message forClient:(id)client
 {
-  v6 = a4;
-  v7 = [a3 mode];
-  [v6 setDiscoveryMode:v7];
+  clientCopy = client;
+  mode = [message mode];
+  [clientCopy setDiscoveryMode:mode];
 
-  if (v7)
+  if (mode)
   {
     v10 = objc_alloc_init(MRProtocolMessageOptions);
     [v10 setPriority:5];
     [v10 setWaking:1];
     v8 = +[MRAVLocalEndpoint sharedLocalEndpoint];
-    v9 = [(MRDIDSCompanionRemoteControlService *)self discoveryChannel];
-    [(MRDIDSCompanionRemoteControlService *)self _sendEndpoint:v8 toClient:v9 options:v10];
+    discoveryChannel = [(MRDIDSCompanionRemoteControlService *)self discoveryChannel];
+    [(MRDIDSCompanionRemoteControlService *)self _sendEndpoint:v8 toClient:discoveryChannel options:v10];
   }
 }
 
-- (void)_sendEndpoint:(id)a3 toClient:(id)a4 options:(id)a5
+- (void)_sendEndpoint:(id)endpoint toClient:(id)client options:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  endpointCopy = endpoint;
+  clientCopy = client;
+  optionsCopy = options;
   workerQueue = self->_workerQueue;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_1000D221C;
   v15[3] = &unk_1004B7310;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = endpointCopy;
+  v17 = clientCopy;
+  v18 = optionsCopy;
+  v12 = optionsCopy;
+  v13 = clientCopy;
+  v14 = endpointCopy;
   dispatch_async(workerQueue, v15);
 }
 
-- (void)_onWorkerQueue_sendEndpoint:(id)a3 toClient:(id)a4 options:(id)a5
+- (void)_onWorkerQueue_sendEndpoint:(id)endpoint toClient:(id)client options:(id)options
 {
-  v19 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([v8 discoveryMode])
+  endpointCopy = endpoint;
+  clientCopy = client;
+  optionsCopy = options;
+  if ([clientCopy discoveryMode])
   {
-    v10 = [v8 connection];
-    v11 = [v10 exportEndpoint:v19];
+    connection = [clientCopy connection];
+    v11 = [connection exportEndpoint:endpointCopy];
 
     if (v11)
     {
       v12 = [MRDiscoveryUpdateOutputDevicesMessage alloc];
-      v13 = [v11 outputDevices];
-      v14 = [v12 initWithOutputDevices:v13 configuration:self->_configuration];
+      outputDevices = [v11 outputDevices];
+      v14 = [v12 initWithOutputDevices:outputDevices configuration:self->_configuration];
 
-      [v14 setTransportOptions:v9];
-      [v8 sendMessage:v14];
+      [v14 setTransportOptions:optionsCopy];
+      [clientCopy sendMessage:v14];
       lastSentEndpoint = self->_lastSentEndpoint;
       self->_lastSentEndpoint = v11;
       v16 = v11;
@@ -332,27 +332,27 @@
   }
 }
 
-- (void)_onWorkerQueue_connectDiscoveryChannelWithReason:(id)a3
+- (void)_onWorkerQueue_connectDiscoveryChannelWithReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   dispatch_assert_queue_V2(self->_workerQueue);
   [(MRDIDSCompanionRemoteControlService *)self _onWorkerQueue_disconnectDiscoveryChannel];
   v5 = +[MRIDSCompanionConnection sharedManager];
-  v6 = [v5 isConnected];
+  isConnected = [v5 isConnected];
 
   v7 = MRLogCategoryConnections();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
-  if (v6)
+  if (isConnected)
   {
     if (v8)
     {
       v9 = +[MRIDSCompanionConnection sharedManager];
-      v10 = [v9 deviceInfo];
-      v11 = [v10 name];
+      deviceInfo = [v9 deviceInfo];
+      name = [deviceInfo name];
       v14 = 138412546;
-      v15 = v11;
+      v15 = name;
       v16 = 2112;
-      v17 = v4;
+      v17 = reasonCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "[IDSCompanionRemoteControlService] Connecting discoveryChannel to <%@> for reason <%@>...", &v14, 0x16u);
     }
 
@@ -360,8 +360,8 @@
     [v12 resetConnection];
 
     v7 = +[MRIDSCompanionConnection sharedManager];
-    v13 = [v7 deviceInfo];
-    [(MRDIDSServerClientConnection *)self->_discoveryChannel setDeviceInfo:v13];
+    deviceInfo2 = [v7 deviceInfo];
+    [(MRDIDSServerClientConnection *)self->_discoveryChannel setDeviceInfo:deviceInfo2];
   }
 
   else if (v8)
@@ -369,7 +369,7 @@
     v14 = 138412546;
     v15 = IDSDefaultPairedDevice;
     v16 = 2112;
-    v17 = v4;
+    v17 = reasonCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "[IDSCompanionRemoteControlService] No device avaiable to connect discoveryChannel to <%@> for reason <%@>", &v14, 0x16u);
   }
 }
@@ -405,64 +405,64 @@
 
   [(MRDIDSServerClientConnection *)self->_discoveryChannel setDelegate:self];
   [(MRDIDSServerClientConnection *)self->_discoveryChannel setLabel:@"IDSDiscoveryChannel"];
-  v8 = [[MRSupportedProtocolMessages alloc] initWithAllSupportedMessages];
-  [(MRDIDSServerClientConnection *)self->_discoveryChannel setSupportedMessages:v8];
+  initWithAllSupportedMessages = [[MRSupportedProtocolMessages alloc] initWithAllSupportedMessages];
+  [(MRDIDSServerClientConnection *)self->_discoveryChannel setSupportedMessages:initWithAllSupportedMessages];
 }
 
-- (void)_onWorkerQueue_connectRemoteControlChannelForDestination:(id)a3 session:(id)a4 userInfo:(id)a5 completion:(id)a6
+- (void)_onWorkerQueue_connectRemoteControlChannelForDestination:(id)destination session:(id)session userInfo:(id)info completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v41 = a6;
+  destinationCopy = destination;
+  sessionCopy = session;
+  infoCopy = info;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_workerQueue);
-  v13 = [(NSMutableDictionary *)self->_remoteControlConnections objectForKeyedSubscript:v10];
-  v14 = [v13 objectForKeyedSubscript:v11];
+  v13 = [(NSMutableDictionary *)self->_remoteControlConnections objectForKeyedSubscript:destinationCopy];
+  v14 = [v13 objectForKeyedSubscript:sessionCopy];
 
-  v15 = [[NSError alloc] initWithMRError:121 format:{@"New replacement connection %@-%@ established", v10, v11}];
-  [(MRDIDSCompanionRemoteControlService *)self _onWorkerQueue_disconnectRemoteControlChannelsForDestination:v10 error:v15];
+  v15 = [[NSError alloc] initWithMRError:121 format:{@"New replacement connection %@-%@ established", destinationCopy, sessionCopy}];
+  [(MRDIDSCompanionRemoteControlService *)self _onWorkerQueue_disconnectRemoteControlChannelsForDestination:destinationCopy error:v15];
 
   v16 = MRLogCategoryConnections();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v56 = v10;
+    v56 = destinationCopy;
     v57 = 2112;
-    v58 = v11;
+    v58 = sessionCopy;
     v59 = 2112;
-    v60 = v12;
+    v60 = infoCopy;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "[IDSCompanionRemoteControlService] Connecting remoteControlChannel to <%@-%@> with userInfo %@...", buf, 0x20u);
   }
 
   v17 = [MRIDSCompanionTransportConnection alloc];
   v18 = +[MRIDSCompanionConnection sharedManager];
-  v19 = [v17 initWithConnection:v18 type:MRIDSServiceMessageTypeRemoteControl destination:v10 session:v11];
+  v19 = [v17 initWithConnection:v18 type:MRIDSServiceMessageTypeRemoteControl destination:destinationCopy session:sessionCopy];
 
-  v20 = [[NSString alloc] initWithFormat:@"IDSRemoteControlChannel-<%@/%@>", v10, v11];
-  [v19 setLabel:v20];
+  sessionCopy = [[NSString alloc] initWithFormat:@"IDSRemoteControlChannel-<%@/%@>", destinationCopy, sessionCopy];
+  [v19 setLabel:sessionCopy];
 
-  [v19 setDestinationOutputDeviceUID:v10];
-  [v19 setConnectUserInfo:v12];
+  [v19 setDestinationOutputDeviceUID:destinationCopy];
+  [v19 setConnectUserInfo:infoCopy];
   v21 = objc_alloc_init(MRDIDSCompanionRemoteControlServiceConnection);
 
-  [(MRDIDSCompanionRemoteControlServiceConnection *)v21 setDestination:v10];
+  [(MRDIDSCompanionRemoteControlServiceConnection *)v21 setDestination:destinationCopy];
   v22 = +[NSDate now];
   [(MRDIDSCompanionRemoteControlServiceConnection *)v21 setConnectionAttemptDate:v22];
 
   [(MRDIDSCompanionRemoteControlServiceConnection *)v21 setConnection:v19];
   objc_initWeak(buf, self);
   v23 = +[NSNotificationCenter defaultCenter];
-  v24 = [(MRDIDSCompanionRemoteControlServiceConnection *)v21 connection];
+  connection = [(MRDIDSCompanionRemoteControlServiceConnection *)v21 connection];
   v51[0] = _NSConcreteStackBlock;
   v51[1] = 3221225472;
   v51[2] = sub_1000D2C4C;
   v51[3] = &unk_1004BB900;
   objc_copyWeak(&v54, buf);
-  v25 = v10;
+  v25 = destinationCopy;
   v52 = v25;
-  v42 = v11;
+  v42 = sessionCopy;
   v53 = v42;
-  v26 = [v23 addObserverForName:@"MRDMediaRemoteExternalDeviceServerClientInvalidatedNotification" object:v24 queue:0 usingBlock:v51];
+  v26 = [v23 addObserverForName:@"MRDMediaRemoteExternalDeviceServerClientInvalidatedNotification" object:connection queue:0 usingBlock:v51];
   [(MRDIDSCompanionRemoteControlServiceConnection *)v21 setNotificationToken:v26];
 
   remoteControlConnections = self->_remoteControlConnections;
@@ -483,11 +483,11 @@
   }
 
   [v30 setObject:v21 forKeyedSubscript:v42];
-  v31 = [(MRDIDSCompanionRemoteControlService *)self delegate];
-  v32 = [(MRDIDSCompanionRemoteControlServiceConnection *)v21 connection];
-  v33 = [v31 idsCompanionRemoteControlService:self didAcceptConnection:v32];
+  delegate = [(MRDIDSCompanionRemoteControlService *)self delegate];
+  connection2 = [(MRDIDSCompanionRemoteControlServiceConnection *)v21 connection];
+  v33 = [delegate idsCompanionRemoteControlService:self didAcceptConnection:connection2];
 
-  v34 = v12;
+  v34 = infoCopy;
   v35 = [v33 connectOptions] & 1;
   v43[0] = _NSConcreteStackBlock;
   v43[1] = 3221225472;
@@ -497,12 +497,12 @@
   v44 = v36;
   v37 = v25;
   v45 = v37;
-  v38 = v41;
+  v38 = completionCopy;
   v49 = v38;
   v39 = v33;
   v50 = v35;
   v46 = v39;
-  v47 = self;
+  selfCopy = self;
   v40 = v42;
   v48 = v40;
   [v39 requestDestinationEndpoint:v43];
@@ -511,54 +511,54 @@
   objc_destroyWeak(buf);
 }
 
-- (void)_addAuthorizationCallbackForOutputDevice:(id)a3 destination:(id)a4 session:(id)a5
+- (void)_addAuthorizationCallbackForOutputDevice:(id)device destination:(id)destination session:(id)session
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  deviceCopy = device;
+  destinationCopy = destination;
+  sessionCopy = session;
   routingDataSource = self->_routingDataSource;
-  v12 = [v8 primaryID];
+  primaryID = [deviceCopy primaryID];
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_1000D31F8;
   v16[3] = &unk_1004BA338;
-  v17 = v8;
-  v18 = v9;
-  v19 = v10;
-  v13 = v10;
-  v14 = v9;
-  v15 = v8;
-  [(MRDAVRoutingDataSource *)routingDataSource addAuthorizationCallbackForRouteID:v12 requestCallback:v16];
+  v17 = deviceCopy;
+  v18 = destinationCopy;
+  v19 = sessionCopy;
+  v13 = sessionCopy;
+  v14 = destinationCopy;
+  v15 = deviceCopy;
+  [(MRDAVRoutingDataSource *)routingDataSource addAuthorizationCallbackForRouteID:primaryID requestCallback:v16];
 }
 
-- (void)_removeAuthorizationCallbackForOutputDevice:(id)a3
+- (void)_removeAuthorizationCallbackForOutputDevice:(id)device
 {
   routingDataSource = self->_routingDataSource;
-  v4 = [a3 primaryID];
-  [(MRDAVRoutingDataSource *)routingDataSource removeAuthorizationCallbackForRouteID:v4];
+  primaryID = [device primaryID];
+  [(MRDAVRoutingDataSource *)routingDataSource removeAuthorizationCallbackForRouteID:primaryID];
 }
 
-- (void)_onWorkerQueue_disconnectRemoteControlChannelsForDestination:(id)a3 error:(id)a4
+- (void)_onWorkerQueue_disconnectRemoteControlChannelsForDestination:(id)destination error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  destinationCopy = destination;
+  errorCopy = error;
   dispatch_assert_queue_V2(self->_workerQueue);
-  v8 = [(NSMutableDictionary *)self->_remoteControlConnections objectForKeyedSubscript:v6];
+  v8 = [(NSMutableDictionary *)self->_remoteControlConnections objectForKeyedSubscript:destinationCopy];
   v11 = _NSConcreteStackBlock;
   v12 = 3221225472;
   v13 = sub_1000D3558;
   v14 = &unk_1004BB950;
-  v15 = v6;
-  v16 = v7;
-  v9 = v7;
-  v10 = v6;
+  v15 = destinationCopy;
+  v16 = errorCopy;
+  v9 = errorCopy;
+  v10 = destinationCopy;
   [v8 enumerateKeysAndObjectsUsingBlock:&v11];
   [(NSMutableDictionary *)self->_remoteControlConnections setObject:0 forKeyedSubscript:v10, v11, v12, v13, v14];
 }
 
-- (void)_onWorkerQueue_disconnectAllRemoteControlChannelsWithError:(id)a3
+- (void)_onWorkerQueue_disconnectAllRemoteControlChannelsWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   dispatch_assert_queue_V2(self->_workerQueue);
   v5 = [(NSMutableDictionary *)self->_remoteControlConnections copy];
   v7[0] = _NSConcreteStackBlock;
@@ -566,8 +566,8 @@
   v7[2] = sub_1000D3708;
   v7[3] = &unk_1004BB978;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = errorCopy;
+  v6 = errorCopy;
   [v5 enumerateKeysAndObjectsUsingBlock:v7];
 }
 

@@ -1,28 +1,28 @@
 @interface WFCompactStatusViewController
 - (void)loadView;
-- (void)setAttribution:(id)a3;
-- (void)setProgress:(id)a3;
-- (void)transitionToCompleted:(BOOL)a3 animated:(BOOL)a4;
+- (void)setAttribution:(id)attribution;
+- (void)setProgress:(id)progress;
+- (void)transitionToCompleted:(BOOL)completed animated:(BOOL)animated;
 @end
 
 @implementation WFCompactStatusViewController
 
-- (void)transitionToCompleted:(BOOL)a3 animated:(BOOL)a4
+- (void)transitionToCompleted:(BOOL)completed animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
+  animatedCopy = animated;
+  completedCopy = completed;
   [(WFCompactStatusViewController *)self loadViewIfNeeded];
-  v7 = [(WFCompactStatusViewController *)self stopButton];
-  [v7 transitionToCompleted:v5 animated:v4];
+  stopButton = [(WFCompactStatusViewController *)self stopButton];
+  [stopButton transitionToCompleted:completedCopy animated:animatedCopy];
 }
 
-- (void)setAttribution:(id)a3
+- (void)setAttribution:(id)attribution
 {
-  v5 = a3;
-  v6 = self->_attribution;
-  v7 = v5;
+  attributionCopy = attribution;
+  platterView = self->_attribution;
+  v7 = attributionCopy;
   v10 = v7;
-  if (v6 == v7)
+  if (platterView == v7)
   {
 
 LABEL_9:
@@ -30,33 +30,33 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (!v7 || !v6)
+  if (!v7 || !platterView)
   {
 
     goto LABEL_8;
   }
 
-  v8 = [(WFDialogAttribution *)v6 isEqual:v7];
+  v8 = [(WFDialogAttribution *)platterView isEqual:v7];
 
   v9 = v10;
   if ((v8 & 1) == 0)
   {
 LABEL_8:
-    objc_storeStrong(&self->_attribution, a3);
-    v6 = [(WFCompactPlatterViewController *)self platterView];
-    [(WFDialogAttribution *)v6 setAttribution:v10];
+    objc_storeStrong(&self->_attribution, attribution);
+    platterView = [(WFCompactPlatterViewController *)self platterView];
+    [(WFDialogAttribution *)platterView setAttribution:v10];
     goto LABEL_9;
   }
 
 LABEL_10:
 }
 
-- (void)setProgress:(id)a3
+- (void)setProgress:(id)progress
 {
-  objc_storeStrong(&self->_progress, a3);
-  v5 = a3;
-  v6 = [(WFCompactStatusViewController *)self stopButton];
-  [v6 setProgress:v5];
+  objc_storeStrong(&self->_progress, progress);
+  progressCopy = progress;
+  stopButton = [(WFCompactStatusViewController *)self stopButton];
+  [stopButton setProgress:progressCopy];
 }
 
 - (void)loadView
@@ -66,36 +66,36 @@ LABEL_10:
   v24.super_class = WFCompactStatusViewController;
   [(WFCompactPlatterViewController *)&v24 loadView];
   v23 = objc_opt_new();
-  v3 = [v23 view];
+  view = [v23 view];
   [(WFCompactPlatterViewController *)self setContentViewController:v23];
   v4 = [WFCompactStopButton buttonWithType:1];
-  v5 = [(WFCompactStatusViewController *)self progress];
-  [(WFCompactStopButton *)v4 setProgress:v5];
+  progress = [(WFCompactStatusViewController *)self progress];
+  [(WFCompactStopButton *)v4 setProgress:progress];
 
   [(WFCompactStopButton *)v4 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [v3 addSubview:v4];
+  [view addSubview:v4];
   stopButton = self->_stopButton;
   self->_stopButton = v4;
   v7 = v4;
 
   v17 = MEMORY[0x277CCAAD0];
-  v22 = [(WFCompactStopButton *)v7 widthAnchor];
-  v21 = [v22 constraintEqualToConstant:36.0];
+  widthAnchor = [(WFCompactStopButton *)v7 widthAnchor];
+  v21 = [widthAnchor constraintEqualToConstant:36.0];
   v25[0] = v21;
-  v20 = [(WFCompactStopButton *)v7 heightAnchor];
-  v19 = [v20 constraintEqualToConstant:36.0];
+  heightAnchor = [(WFCompactStopButton *)v7 heightAnchor];
+  v19 = [heightAnchor constraintEqualToConstant:36.0];
   v25[1] = v19;
-  v18 = [(WFCompactStopButton *)v7 topAnchor];
-  v16 = [v3 topAnchor];
-  v8 = [v18 constraintEqualToAnchor:v16 constant:8.0];
+  topAnchor = [(WFCompactStopButton *)v7 topAnchor];
+  topAnchor2 = [view topAnchor];
+  v8 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:8.0];
   v25[2] = v8;
-  v9 = [(WFCompactStopButton *)v7 bottomAnchor];
-  v10 = [v3 bottomAnchor];
-  v11 = [v9 constraintEqualToAnchor:v10 constant:-18.0];
+  bottomAnchor = [(WFCompactStopButton *)v7 bottomAnchor];
+  bottomAnchor2 = [view bottomAnchor];
+  v11 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-18.0];
   v25[3] = v11;
-  v12 = [(WFCompactStopButton *)v7 centerXAnchor];
-  v13 = [v3 centerXAnchor];
-  v14 = [v12 constraintEqualToAnchor:v13];
+  centerXAnchor = [(WFCompactStopButton *)v7 centerXAnchor];
+  centerXAnchor2 = [view centerXAnchor];
+  v14 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v25[4] = v14;
   v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v25 count:5];
   [v17 activateConstraints:v15];

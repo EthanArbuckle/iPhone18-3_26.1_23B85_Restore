@@ -1,30 +1,30 @@
 @interface MSDDataController
 + (id)sharedInstance;
-- (MSDDataController)initWithCloudDataManager:(id)a3 homeManager:(id)a4;
-- (void)_findServicesForUser:(id)a3 homeID:(id)a4 completion:(id)a5;
-- (void)_servicesForUser:(id)a3 homeID:(id)a4 publicInfo:(id)a5 currentUser:(BOOL)a6 completion:(id)a7;
-- (void)addMediaService:(id)a3 usingSetupBundles:(id)a4 transaction:(id)a5 completion:(id)a6;
-- (void)getAvailableServices:(id)a3 completion:(id)a4;
-- (void)getCachedAvailableServices:(id)a3 homeID:(id)a4 completion:(id)a5;
-- (void)getDefaultMediaService:(id)a3 completion:(id)a4;
-- (void)getServiceConfigurationInfo:(id)a3 serviceID:(id)a4 completion:(id)a5;
-- (void)refreshDataForReason:(unint64_t)a3 completion:(id)a4;
-- (void)removeMediaService:(id)a3 withUserInfo:(id)a4 completion:(id)a5;
-- (void)removeMediaServices:(id)a3 withUserInfo:(id)a4 completion:(id)a5;
-- (void)switchUserAccountInfo:(id)a3 homeID:(id)a4 homeUserID:(id)a5 completion:(id)a6;
-- (void)updateDefaultMediaService:(id)a3 withUserInfo:(id)a4 completion:(id)a5;
-- (void)updateProperty:(id)a3 propertyInfo:(id)a4 withUserInfo:(id)a5 completion:(id)a6;
+- (MSDDataController)initWithCloudDataManager:(id)manager homeManager:(id)homeManager;
+- (void)_findServicesForUser:(id)user homeID:(id)d completion:(id)completion;
+- (void)_servicesForUser:(id)user homeID:(id)d publicInfo:(id)info currentUser:(BOOL)currentUser completion:(id)completion;
+- (void)addMediaService:(id)service usingSetupBundles:(id)bundles transaction:(id)transaction completion:(id)completion;
+- (void)getAvailableServices:(id)services completion:(id)completion;
+- (void)getCachedAvailableServices:(id)services homeID:(id)d completion:(id)completion;
+- (void)getDefaultMediaService:(id)service completion:(id)completion;
+- (void)getServiceConfigurationInfo:(id)info serviceID:(id)d completion:(id)completion;
+- (void)refreshDataForReason:(unint64_t)reason completion:(id)completion;
+- (void)removeMediaService:(id)service withUserInfo:(id)info completion:(id)completion;
+- (void)removeMediaServices:(id)services withUserInfo:(id)info completion:(id)completion;
+- (void)switchUserAccountInfo:(id)info homeID:(id)d homeUserID:(id)iD completion:(id)completion;
+- (void)updateDefaultMediaService:(id)service withUserInfo:(id)info completion:(id)completion;
+- (void)updateProperty:(id)property propertyInfo:(id)info withUserInfo:(id)userInfo completion:(id)completion;
 @end
 
 @implementation MSDDataController
 
-- (MSDDataController)initWithCloudDataManager:(id)a3 homeManager:(id)a4
+- (MSDDataController)initWithCloudDataManager:(id)manager homeManager:(id)homeManager
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  v10 = 0;
-  if (v7 && v8)
+  managerCopy = manager;
+  homeManagerCopy = homeManager;
+  v9 = homeManagerCopy;
+  selfCopy = 0;
+  if (managerCopy && homeManagerCopy)
   {
     v14.receiver = self;
     v14.super_class = MSDDataController;
@@ -32,17 +32,17 @@
     v12 = v11;
     if (v11)
     {
-      objc_storeStrong(&v11->_cloudManager, a3);
-      objc_storeStrong(&v12->_homeManager, a4);
+      objc_storeStrong(&v11->_cloudManager, manager);
+      objc_storeStrong(&v12->_homeManager, homeManager);
       v12->_isPerformingRefresh = 0;
       v12->_refreshLock._os_unfair_lock_opaque = 0;
     }
 
     self = v12;
-    v10 = self;
+    selfCopy = self;
   }
 
-  return v10;
+  return selfCopy;
 }
 
 + (id)sharedInstance
@@ -51,7 +51,7 @@
   block[1] = 3221225472;
   block[2] = sub_1000017D8;
   block[3] = &unk_1000508C0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100059A20 != -1)
   {
     dispatch_once(&qword_100059A20, block);
@@ -62,9 +62,9 @@
   return v2;
 }
 
-- (void)refreshDataForReason:(unint64_t)a3 completion:(id)a4
+- (void)refreshDataForReason:(unint64_t)reason completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   os_unfair_lock_lock(&self->_refreshLock);
   if (self->_isPerformingRefresh)
   {
@@ -72,27 +72,27 @@
     v7 = sub_100030FE4();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = MSDDataRefreshReasonToString(a3);
+      v8 = MSDDataRefreshReasonToString(reason);
       *buf = 138412290;
       v14 = v8;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Skipping request (reason: %@) to perform refresh. One underway", buf, 0xCu);
     }
 
-    (*(v6 + 2))(v6, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 
   else
   {
     self->_isPerformingRefresh = 1;
     os_unfair_lock_unlock(&self->_refreshLock);
-    v9 = [[MSDDataRefresh alloc] initWithReason:a3];
+    v9 = [[MSDDataRefresh alloc] initWithReason:reason];
     objc_initWeak(buf, self);
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_100001A64;
     v10[3] = &unk_1000508E8;
     objc_copyWeak(&v12, buf);
-    v11 = v6;
+    v11 = completionCopy;
     [(MSDDataRefresh *)v9 performRefreshWithCompletion:v10];
 
     objc_destroyWeak(&v12);
@@ -100,74 +100,74 @@
   }
 }
 
-- (void)addMediaService:(id)a3 usingSetupBundles:(id)a4 transaction:(id)a5 completion:(id)a6
+- (void)addMediaService:(id)service usingSetupBundles:(id)bundles transaction:(id)transaction completion:(id)completion
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
+  completionCopy = completion;
+  transactionCopy = transaction;
+  bundlesCopy = bundles;
+  serviceCopy = service;
   v14 = +[CKContainer MSDCloudKitContainer];
-  v13 = [v14 privateCloudDatabase];
-  [v13 addMediaService:v12 usingSetupBundles:v11 transaction:v10 completion:v9];
+  privateCloudDatabase = [v14 privateCloudDatabase];
+  [privateCloudDatabase addMediaService:serviceCopy usingSetupBundles:bundlesCopy transaction:transactionCopy completion:completionCopy];
 }
 
-- (void)getAvailableServices:(id)a3 completion:(id)a4
+- (void)getAvailableServices:(id)services completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  servicesCopy = services;
   v8 = +[CKContainer MSDCloudKitContainer];
-  v7 = [v8 privateCloudDatabase];
-  [v7 getAvailableServices:v6 completion:v5];
+  privateCloudDatabase = [v8 privateCloudDatabase];
+  [privateCloudDatabase getAvailableServices:servicesCopy completion:completionCopy];
 }
 
-- (void)updateDefaultMediaService:(id)a3 withUserInfo:(id)a4 completion:(id)a5
+- (void)updateDefaultMediaService:(id)service withUserInfo:(id)info completion:(id)completion
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  completionCopy = completion;
+  infoCopy = info;
+  serviceCopy = service;
   v11 = +[CKContainer MSDCloudKitContainer];
-  v10 = [v11 privateCloudDatabase];
-  [v10 updateDefaultMediaService:v9 withUserInfo:v8 completion:v7];
+  privateCloudDatabase = [v11 privateCloudDatabase];
+  [privateCloudDatabase updateDefaultMediaService:serviceCopy withUserInfo:infoCopy completion:completionCopy];
 }
 
-- (void)getDefaultMediaService:(id)a3 completion:(id)a4
+- (void)getDefaultMediaService:(id)service completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  serviceCopy = service;
   v8 = +[CKContainer MSDCloudKitContainer];
-  v7 = [v8 privateCloudDatabase];
-  [v7 getDefaultMediaService:v6 completion:v5];
+  privateCloudDatabase = [v8 privateCloudDatabase];
+  [privateCloudDatabase getDefaultMediaService:serviceCopy completion:completionCopy];
 }
 
-- (void)updateProperty:(id)a3 propertyInfo:(id)a4 withUserInfo:(id)a5 completion:(id)a6
+- (void)updateProperty:(id)property propertyInfo:(id)info withUserInfo:(id)userInfo completion:(id)completion
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
+  completionCopy = completion;
+  userInfoCopy = userInfo;
+  infoCopy = info;
+  propertyCopy = property;
   v14 = +[CKContainer MSDCloudKitContainer];
-  v13 = [v14 privateCloudDatabase];
-  [v13 updateProperty:v12 propertyInfo:v11 withUserInfo:v10 completion:v9];
+  privateCloudDatabase = [v14 privateCloudDatabase];
+  [privateCloudDatabase updateProperty:propertyCopy propertyInfo:infoCopy withUserInfo:userInfoCopy completion:completionCopy];
 }
 
-- (void)removeMediaService:(id)a3 withUserInfo:(id)a4 completion:(id)a5
+- (void)removeMediaService:(id)service withUserInfo:(id)info completion:(id)completion
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  completionCopy = completion;
+  infoCopy = info;
+  serviceCopy = service;
   v11 = +[CKContainer MSDCloudKitContainer];
-  v10 = [v11 privateCloudDatabase];
-  [v10 removeMediaService:v9 withUserInfo:v8 completion:v7];
+  privateCloudDatabase = [v11 privateCloudDatabase];
+  [privateCloudDatabase removeMediaService:serviceCopy withUserInfo:infoCopy completion:completionCopy];
 }
 
-- (void)removeMediaServices:(id)a3 withUserInfo:(id)a4 completion:(id)a5
+- (void)removeMediaServices:(id)services withUserInfo:(id)info completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (!v7 || ![v7 count])
+  servicesCopy = services;
+  infoCopy = info;
+  completionCopy = completion;
+  if (!servicesCopy || ![servicesCopy count])
   {
-    if (!v9)
+    if (!completionCopy)
     {
       goto LABEL_13;
     }
@@ -180,16 +180,16 @@
 LABEL_12:
     v16 = [NSDictionary dictionaryWithObjects:v13 forKeys:v14 count:1];
     v17 = [NSError errorWithDomain:v12 code:1 userInfo:v16];
-    v9[2](v9, 0, v17);
+    completionCopy[2](completionCopy, 0, v17);
 
     goto LABEL_13;
   }
 
-  if (v8 && [v8 count])
+  if (infoCopy && [infoCopy count])
   {
     v10 = +[CKContainer MSDCloudKitContainer];
-    v11 = [v10 privateCloudDatabase];
-    [v11 removeMediaServices:v7 withUserInfo:v8 completion:v9];
+    privateCloudDatabase = [v10 privateCloudDatabase];
+    [privateCloudDatabase removeMediaServices:servicesCopy withUserInfo:infoCopy completion:completionCopy];
 
     goto LABEL_13;
   }
@@ -200,7 +200,7 @@ LABEL_12:
     sub_10001A824(v15);
   }
 
-  if (v9)
+  if (completionCopy)
   {
     v12 = MSErrorDomain;
     v18 = MSUserInfoErrorStringKey;
@@ -213,28 +213,28 @@ LABEL_12:
 LABEL_13:
 }
 
-- (void)getServiceConfigurationInfo:(id)a3 serviceID:(id)a4 completion:(id)a5
+- (void)getServiceConfigurationInfo:(id)info serviceID:(id)d completion:(id)completion
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  completionCopy = completion;
+  dCopy = d;
+  infoCopy = info;
   v11 = +[CKContainer MSDCloudKitContainer];
-  v10 = [v11 privateCloudDatabase];
-  [v10 getServiceConfigurationInfo:v9 serviceID:v8 completion:v7];
+  privateCloudDatabase = [v11 privateCloudDatabase];
+  [privateCloudDatabase getServiceConfigurationInfo:infoCopy serviceID:dCopy completion:completionCopy];
 }
 
-- (void)getCachedAvailableServices:(id)a3 homeID:(id)a4 completion:(id)a5
+- (void)getCachedAvailableServices:(id)services homeID:(id)d completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  servicesCopy = services;
+  dCopy = d;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (v8)
+    if (servicesCopy)
     {
-      if (v9)
+      if (dCopy)
       {
-        [(MSDDataController *)self _findServicesForUser:v8 homeID:v9 completion:v10];
+        [(MSDDataController *)self _findServicesForUser:servicesCopy homeID:dCopy completion:completionCopy];
         goto LABEL_8;
       }
 
@@ -256,52 +256,52 @@ LABEL_13:
 
     v14 = [NSDictionary dictionaryWithObjects:v12 forKeys:v13 count:1];
     v15 = [NSError errorWithDomain:v11 code:1 userInfo:v14];
-    v10[2](v10, 0, v15);
+    completionCopy[2](completionCopy, 0, v15);
   }
 
 LABEL_8:
 }
 
-- (void)switchUserAccountInfo:(id)a3 homeID:(id)a4 homeUserID:(id)a5 completion:(id)a6
+- (void)switchUserAccountInfo:(id)info homeID:(id)d homeUserID:(id)iD completion:(id)completion
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
+  completionCopy = completion;
+  iDCopy = iD;
+  dCopy = d;
+  infoCopy = info;
   v14 = +[CKContainer MSDCloudKitContainer];
-  v13 = [v14 privateCloudDatabase];
-  [v13 switchUserAccountInfo:v12 homeID:v11 homeUserID:v10 completion:v9];
+  privateCloudDatabase = [v14 privateCloudDatabase];
+  [privateCloudDatabase switchUserAccountInfo:infoCopy homeID:dCopy homeUserID:iDCopy completion:completionCopy];
 }
 
-- (void)_findServicesForUser:(id)a3 homeID:(id)a4 completion:(id)a5
+- (void)_findServicesForUser:(id)user homeID:(id)d completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  completionCopy = completion;
+  dCopy = d;
+  userCopy = user;
   v11 = +[MSDHomeManager sharedManager];
-  v12 = [v11 homeWithIdentifier:v9];
+  v12 = [v11 homeWithIdentifier:dCopy];
 
-  v13 = [v12 currentUser];
-  v14 = [v13 uniqueIdentifier];
-  v15 = [v10 isEqual:v14];
+  currentUser = [v12 currentUser];
+  uniqueIdentifier = [currentUser uniqueIdentifier];
+  v15 = [userCopy isEqual:uniqueIdentifier];
 
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_10001A1B0;
   v17[3] = &unk_100051558;
-  v18 = v8;
-  v16 = v8;
-  [(MSDDataController *)self _servicesForUser:v10 homeID:v9 publicInfo:0 currentUser:v15 completion:v17];
+  v18 = completionCopy;
+  v16 = completionCopy;
+  [(MSDDataController *)self _servicesForUser:userCopy homeID:dCopy publicInfo:0 currentUser:v15 completion:v17];
 }
 
-- (void)_servicesForUser:(id)a3 homeID:(id)a4 publicInfo:(id)a5 currentUser:(BOOL)a6 completion:(id)a7
+- (void)_servicesForUser:(id)user homeID:(id)d publicInfo:(id)info currentUser:(BOOL)currentUser completion:(id)completion
 {
-  v8 = a6;
-  v10 = a3;
-  v11 = a5;
-  v12 = a7;
+  currentUserCopy = currentUser;
+  userCopy = user;
+  infoCopy = info;
+  completionCopy = completion;
   v13 = kPrivateDatabaseKeyData;
-  if (!v8)
+  if (!currentUserCopy)
   {
     v13 = kSharedDatabaseKeyData;
   }
@@ -311,13 +311,13 @@ LABEL_8:
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     v16 = @"is NOT";
-    if (v8)
+    if (currentUserCopy)
     {
       v16 = @"is";
     }
 
     v17 = @"Shared";
-    if (v8)
+    if (currentUserCopy)
     {
       v17 = @"Private";
     }
@@ -338,14 +338,14 @@ LABEL_8:
     v30[1] = 3221225472;
     v30[2] = sub_10001A728;
     v30[3] = &unk_100050B10;
-    v20 = v10;
+    v20 = userCopy;
     v31 = v20;
-    v32 = v11;
+    v32 = infoCopy;
     v21 = [v19 na_filter:v30];
     v22 = v21;
     if (v21 && [v21 count])
     {
-      v12[2](v12, v22, 0);
+      completionCopy[2](completionCopy, v22, 0);
     }
 
     else
@@ -356,7 +356,7 @@ LABEL_8:
       v34 = v23;
       v25 = [NSDictionary dictionaryWithObjects:&v34 forKeys:&v33 count:1];
       v26 = [NSError errorWithDomain:v24 code:5 userInfo:v25];
-      (v12)[2](v12, 0, v26);
+      (completionCopy)[2](completionCopy, 0, v26);
     }
 
     v27 = v31;
@@ -369,7 +369,7 @@ LABEL_8:
     v36 = @"No service configured in home";
     v27 = [NSDictionary dictionaryWithObjects:&v36 forKeys:&v35 count:1];
     v29 = [NSError errorWithDomain:v28 code:2 userInfo:v27];
-    (v12)[2](v12, 0, v29);
+    (completionCopy)[2](completionCopy, 0, v29);
   }
 }
 

@@ -1,21 +1,21 @@
 @interface PLModelMigrationAction_ReevaluateAllowedForAnalysisForMontageAssets
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4;
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error;
 @end
 
 @implementation PLModelMigrationAction_ReevaluateAllowedForAnalysisForMontageAssets
 
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error
 {
   v74[1] = *MEMORY[0x1E69E9840];
   v6 = MEMORY[0x1E696AE18];
-  v7 = a3;
+  contextCopy = context;
   v8 = [v6 predicateWithFormat:@"%K != nil", @"montage"];
   v73 = @"allowedForAnalysis";
   v74[0] = MEMORY[0x1E695E110];
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v74 forKeys:&v73 count:1];
   v10 = +[PLAdditionalAssetAttributes entityName];
   v37 = 0;
-  v11 = [PLModelMigrator executeBatchUpdateWithEntityName:v10 predicate:v8 propertiesToUpdate:v9 managedObjectContext:v7 error:&v37];
+  v11 = [PLModelMigrator executeBatchUpdateWithEntityName:v10 predicate:v8 propertiesToUpdate:v9 managedObjectContext:contextCopy error:&v37];
 
   v12 = v37;
   if (v11)
@@ -25,9 +25,9 @@
 
     if (v14)
     {
-      v15 = [(PLModelMigrationActionCore *)self logger];
+      logger = [(PLModelMigrationActionCore *)self logger];
 
-      if (v15)
+      if (logger)
       {
         v71 = 0u;
         v72 = 0u;
@@ -93,10 +93,10 @@
 
   else
   {
-    if (a4)
+    if (error)
     {
       v19 = v12;
-      *a4 = v12;
+      *error = v12;
     }
 
     v20 = PLMigrationGetLog();
@@ -104,9 +104,9 @@
 
     if (v21)
     {
-      v22 = [(PLModelMigrationActionCore *)self logger];
+      logger2 = [(PLModelMigrationActionCore *)self logger];
 
-      if (v22)
+      if (logger2)
       {
         v71 = 0u;
         v72 = 0u;
@@ -177,9 +177,9 @@
 
     [(PLModelMigrationActionCore *)self finalizeProgress];
     v34 = v12;
-    if (a4)
+    if (error)
     {
-      *a4 = v34;
+      *error = v34;
     }
 
     v30 = 3;

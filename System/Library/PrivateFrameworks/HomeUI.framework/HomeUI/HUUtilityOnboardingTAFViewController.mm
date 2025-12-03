@@ -1,56 +1,56 @@
 @interface HUUtilityOnboardingTAFViewController
 - (HUConfigurationViewControllerDelegate)delegate;
-- (HUUtilityOnboardingTAFViewController)initWithContext:(id)a3;
+- (HUUtilityOnboardingTAFViewController)initWithContext:(id)context;
 - (id)_updateRightBarButton;
-- (void)_cancelOnboarding:(id)a3;
-- (void)_continueTAFWithFutures:(id)a3;
-- (void)_doneAccountDetails:(id)a3;
+- (void)_cancelOnboarding:(id)onboarding;
+- (void)_continueTAFWithFutures:(id)futures;
+- (void)_doneAccountDetails:(id)details;
 - (void)_presentErrorAlert;
 - (void)_showSpinner;
-- (void)didCompleteAllFields:(BOOL)a3;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)selectedTextField:(id)a3;
+- (void)didCompleteAllFields:(BOOL)fields;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)selectedTextField:(id)field;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation HUUtilityOnboardingTAFViewController
 
-- (HUUtilityOnboardingTAFViewController)initWithContext:(id)a3
+- (HUUtilityOnboardingTAFViewController)initWithContext:(id)context
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  contextCopy = context;
   v5 = [HUUtilityOnboardingTAFItemManager alloc];
-  v6 = [v4 config];
-  v7 = [v6 fields];
-  v8 = [v4 config];
-  v9 = [v8 sections];
-  v10 = [(HUUtilityOnboardingTAFItemManager *)v5 initWithDelegate:self fields:v7 sections:v9];
+  config = [contextCopy config];
+  fields = [config fields];
+  config2 = [contextCopy config];
+  sections = [config2 sections];
+  v10 = [(HUUtilityOnboardingTAFItemManager *)v5 initWithDelegate:self fields:fields sections:sections];
 
   v11 = HFLogForCategory();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v21 = self;
+    selfCopy = self;
     v22 = 2080;
     v23 = "[HUUtilityOnboardingTAFViewController initWithContext:]";
     _os_log_impl(&dword_20CEB6000, v11, OS_LOG_TYPE_DEFAULT, "%@:%s created item manager", buf, 0x16u);
   }
 
-  v12 = [[HUUtilityOnboardingTAFTableViewController alloc] initWithContext:v4 itemManager:v10 tableViewStyle:1];
+  v12 = [[HUUtilityOnboardingTAFTableViewController alloc] initWithContext:contextCopy itemManager:v10 tableViewStyle:1];
   [(HUUtilityOnboardingTAFViewController *)self setTableViewController:v12];
 
   v13 = _HULocalizedStringWithDefaultValue(@"HUUtilityOnboardingAccountLookup_Title", @"HUUtilityOnboardingAccountLookup_Title", 1);
   v14 = _HULocalizedStringWithDefaultValue(@"HUUtilityDiscoveryTAF_Detail", @"HUUtilityDiscoveryTAF_Detail", 1);
-  v15 = [(HUUtilityOnboardingTAFViewController *)self tableViewController];
+  tableViewController = [(HUUtilityOnboardingTAFViewController *)self tableViewController];
   v19.receiver = self;
   v19.super_class = HUUtilityOnboardingTAFViewController;
-  v16 = [(HUItemTableOBWelcomeController *)&v19 initWithTitle:v13 detailText:v14 icon:0 contentLayout:2 itemTableViewController:v15];
+  v16 = [(HUItemTableOBWelcomeController *)&v19 initWithTitle:v13 detailText:v14 icon:0 contentLayout:2 itemTableViewController:tableViewController];
 
-  [(HUUtilityOnboardingTAFViewController *)v16 setContext:v4];
-  v17 = [(HUUtilityOnboardingTAFViewController *)v16 tableViewController];
-  [v17 setDelegate:v16];
+  [(HUUtilityOnboardingTAFViewController *)v16 setContext:contextCopy];
+  tableViewController2 = [(HUUtilityOnboardingTAFViewController *)v16 tableViewController];
+  [tableViewController2 setDelegate:v16];
 
   return v16;
 }
@@ -61,60 +61,60 @@
   v32.receiver = self;
   v32.super_class = HUUtilityOnboardingTAFViewController;
   [(HUItemTableOBWelcomeController *)&v32 viewDidLoad];
-  v3 = [(HUUtilityOnboardingTAFViewController *)self headerView];
-  v4 = [v3 subviews];
-  [HUAccessibilityIdentifierUtilities setAccessibilityIDForViews:v4 withIDDictionary:&unk_2824930A8];
+  headerView = [(HUUtilityOnboardingTAFViewController *)self headerView];
+  subviews = [headerView subviews];
+  [HUAccessibilityIdentifierUtilities setAccessibilityIDForViews:subviews withIDDictionary:&unk_2824930A8];
 
-  v5 = [(HUUtilityOnboardingTAFViewController *)self context];
-  [v5 setOnboardingMethod:1];
+  context = [(HUUtilityOnboardingTAFViewController *)self context];
+  [context setOnboardingMethod:1];
 
-  v6 = [(HUUtilityOnboardingTAFViewController *)self context];
-  [v6 setDidAttemptPasswordlessMethod:1];
+  context2 = [(HUUtilityOnboardingTAFViewController *)self context];
+  [context2 setDidAttemptPasswordlessMethod:1];
 
-  v7 = [(HUUtilityOnboardingTAFViewController *)self navigationController];
-  v8 = [v7 viewControllers];
-  v9 = [v8 indexOfObject:self];
+  navigationController = [(HUUtilityOnboardingTAFViewController *)self navigationController];
+  viewControllers = [navigationController viewControllers];
+  v9 = [viewControllers indexOfObject:self];
 
   if (v9)
   {
-    v10 = [(HUUtilityOnboardingTAFViewController *)self navigationController];
-    v11 = [v10 viewControllers];
-    v12 = [v11 objectAtIndex:v9 - 1];
+    navigationController2 = [(HUUtilityOnboardingTAFViewController *)self navigationController];
+    viewControllers2 = [navigationController2 viewControllers];
+    v12 = [viewControllers2 objectAtIndex:v9 - 1];
     [(HUUtilityOnboardingTAFViewController *)self setPresentingVC:v12];
   }
 
-  v13 = [(HUUtilityOnboardingTAFViewController *)self _updateRightBarButton];
-  v14 = [(UtilityOnboardingContext *)self->_context allRequiredFieldsComplete];
-  [v13 setEnabled:v14];
+  _updateRightBarButton = [(HUUtilityOnboardingTAFViewController *)self _updateRightBarButton];
+  allRequiredFieldsComplete = [(UtilityOnboardingContext *)self->_context allRequiredFieldsComplete];
+  [_updateRightBarButton setEnabled:allRequiredFieldsComplete];
   v15 = HFLogForCategory();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v34 = self;
+    selfCopy2 = self;
     v35 = 2080;
     v36 = "[HUUtilityOnboardingTAFViewController viewDidLoad]";
     v37 = 1024;
-    v38 = v14;
+    v38 = allRequiredFieldsComplete;
     _os_log_impl(&dword_20CEB6000, v15, OS_LOG_TYPE_DEFAULT, "%@:%s ENABLING BUTTON --> %{BOOL}d", buf, 0x1Cu);
   }
 
-  v16 = [(OBBaseWelcomeController *)self navigationItem];
-  [v16 setRightBarButtonItem:v13];
+  navigationItem = [(OBBaseWelcomeController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:_updateRightBarButton];
 
-  v17 = [(OBBaseWelcomeController *)self navigationItem];
-  [v17 setHidesBackButton:1];
+  navigationItem2 = [(OBBaseWelcomeController *)self navigationItem];
+  [navigationItem2 setHidesBackButton:1];
 
   v18 = objc_alloc(MEMORY[0x277D751E0]);
   v19 = _HULocalizedStringWithDefaultValue(@"HUCancelTitle", @"HUCancelTitle", 1);
   v20 = [v18 initWithTitle:v19 style:0 target:self action:sel__cancelOnboarding_];
-  v21 = [(OBBaseWelcomeController *)self navigationItem];
-  [v21 setLeftBarButtonItem:v20];
+  navigationItem3 = [(OBBaseWelcomeController *)self navigationItem];
+  [navigationItem3 setLeftBarButtonItem:v20];
 
   v22 = HFLogForCategory();
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v34 = self;
+    selfCopy2 = self;
     v35 = 2080;
     v36 = "[HUUtilityOnboardingTAFViewController viewDidLoad]";
     _os_log_impl(&dword_20CEB6000, v22, OS_LOG_TYPE_DEFAULT, "%@:%s: presented: HUUtilityOnboardingTAFViewController", buf, 0x16u);
@@ -127,7 +127,7 @@
 
   else
   {
-    v28 = [(HUUtilityOnboardingTAFViewController *)self presentingVC];
+    presentingVC = [(HUUtilityOnboardingTAFViewController *)self presentingVC];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -142,14 +142,14 @@
     }
   }
 
-  v30 = [(HUUtilityOnboardingTAFViewController *)self context];
-  v31 = [v30 utilityID];
-  [HUHomeEnergyAnalyticsHelper sendUtilityAccountLookupViewEventWithUtilityID:v31 presentingVC:v27];
+  context3 = [(HUUtilityOnboardingTAFViewController *)self context];
+  utilityID = [context3 utilityID];
+  [HUHomeEnergyAnalyticsHelper sendUtilityAccountLookupViewEventWithUtilityID:utilityID presentingVC:v27];
 }
 
 - (id)_updateRightBarButton
 {
-  v3 = [(HUUtilityOnboardingTAFViewController *)self presentingVC];
+  presentingVC = [(HUUtilityOnboardingTAFViewController *)self presentingVC];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -160,9 +160,9 @@
     v7 = [v5 initWithTitle:v6 style:2 target:self action:sel__doneAccountDetails_];
 
     [v7 setAccessibilityIdentifier:@"Home.OnboardingView.Utility.TAF.DoneButton"];
-    v8 = [(OBBaseWelcomeController *)self navigationItem];
-    v9 = [v8 leftBarButtonItem];
-    [v9 setEnabled:0];
+    navigationItem = [(OBBaseWelcomeController *)self navigationItem];
+    leftBarButtonItem = [navigationItem leftBarButtonItem];
+    [leftBarButtonItem setEnabled:0];
   }
 
   else
@@ -214,10 +214,10 @@ void __58__HUUtilityOnboardingTAFViewController__presentErrorAlert__block_invoke
   }
 }
 
-- (void)_continueTAFWithFutures:(id)a3
+- (void)_continueTAFWithFutures:(id)futures
 {
   v24 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  futuresCopy = futures;
   v6 = HFLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -227,7 +227,7 @@ void __58__HUUtilityOnboardingTAFViewController__presentErrorAlert__block_invoke
     *&buf[12] = 2112;
     *&buf[14] = v7;
     *&buf[22] = 2112;
-    v23 = v5;
+    v23 = futuresCopy;
     _os_log_impl(&dword_20CEB6000, v6, OS_LOG_TYPE_DEFAULT, "%@:%@ User tapped %@ button", buf, 0x20u);
   }
 
@@ -235,21 +235,21 @@ void __58__HUUtilityOnboardingTAFViewController__presentErrorAlert__block_invoke
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = NSStringFromSelector(a2);
-    v10 = [(HUUtilityOnboardingTAFViewController *)self context];
-    v11 = [v10 tafResponses];
+    context = [(HUUtilityOnboardingTAFViewController *)self context];
+    tafResponses = [context tafResponses];
     *buf = 138412802;
     *&buf[4] = self;
     *&buf[12] = 2112;
     *&buf[14] = v9;
     *&buf[22] = 2112;
-    v23 = v11;
+    v23 = tafResponses;
     _os_log_impl(&dword_20CEB6000, v8, OS_LOG_TYPE_DEFAULT, "*** %@:%@ Retrieving TAF RESPONSES %@", buf, 0x20u);
   }
 
-  v12 = [(HUUtilityOnboardingTAFViewController *)self context];
-  v13 = [v12 showInvalidEmailAlert];
+  context2 = [(HUUtilityOnboardingTAFViewController *)self context];
+  showInvalidEmailAlert = [context2 showInvalidEmailAlert];
 
-  if (v13)
+  if (showInvalidEmailAlert)
   {
     [(HUUtilityOnboardingTAFViewController *)self _presentErrorAlert];
   }
@@ -267,8 +267,8 @@ void __58__HUUtilityOnboardingTAFViewController__presentErrorAlert__block_invoke
     v21[3] = &unk_277DB7580;
     v21[4] = self;
     v14 = [MEMORY[0x277D2C900] futureWithBlock:v21];
-    v15 = [MEMORY[0x277D2C938] mainThreadScheduler];
-    v16 = [v14 reschedule:v15];
+    mainThreadScheduler = [MEMORY[0x277D2C938] mainThreadScheduler];
+    v16 = [v14 reschedule:mainThreadScheduler];
 
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
@@ -417,9 +417,9 @@ void __64__HUUtilityOnboardingTAFViewController__continueTAFWithFutures___block_
   [v12 setHidesBackButton:0];
 }
 
-- (void)_doneAccountDetails:(id)a3
+- (void)_doneAccountDetails:(id)details
 {
-  v6 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if (_os_feature_enabled_impl())
   {
     v4 = &unk_282491C88;
@@ -430,98 +430,98 @@ void __64__HUUtilityOnboardingTAFViewController__continueTAFWithFutures___block_
     v4 = &unk_282491CA0;
   }
 
-  [v6 setObject:v4 forKeyedSubscript:@"HUUtilityDiscoveryOnboardingKey_UserInput"];
-  v5 = [(HUUtilityOnboardingTAFViewController *)self delegate];
-  [v5 viewController:self didFinishWithConfigurationResults:v6];
+  [dictionary setObject:v4 forKeyedSubscript:@"HUUtilityDiscoveryOnboardingKey_UserInput"];
+  delegate = [(HUUtilityOnboardingTAFViewController *)self delegate];
+  [delegate viewController:self didFinishWithConfigurationResults:dictionary];
 }
 
-- (void)_cancelOnboarding:(id)a3
+- (void)_cancelOnboarding:(id)onboarding
 {
-  v5 = [MEMORY[0x277CBEB38] dictionary];
-  [v5 setObject:&unk_282491CB8 forKeyedSubscript:@"HUUtilityDiscoveryOnboardingKey_UserInput"];
-  v4 = [(HUUtilityOnboardingTAFViewController *)self delegate];
-  [v4 viewController:self didFinishWithConfigurationResults:v5];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  [dictionary setObject:&unk_282491CB8 forKeyedSubscript:@"HUUtilityDiscoveryOnboardingKey_UserInput"];
+  delegate = [(HUUtilityOnboardingTAFViewController *)self delegate];
+  [delegate viewController:self didFinishWithConfigurationResults:dictionary];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v5 = [(HUUtilityOnboardingTAFViewController *)self context];
-  v4 = [(HUUtilityOnboardingTAFViewController *)self headerView];
-  [v5 updateIconWithHeaderView:v4 axID:@"Home.OnboardingView.Utility.TAF.Icon"];
+  context = [(HUUtilityOnboardingTAFViewController *)self context];
+  headerView = [(HUUtilityOnboardingTAFViewController *)self headerView];
+  [context updateIconWithHeaderView:headerView axID:@"Home.OnboardingView.Utility.TAF.Icon"];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v11 = *MEMORY[0x277D85DE8];
   v6.receiver = self;
   v6.super_class = HUUtilityOnboardingTAFViewController;
-  [(OBBaseWelcomeController *)&v6 viewWillDisappear:a3];
+  [(OBBaseWelcomeController *)&v6 viewWillDisappear:disappear];
   if ([(HUUtilityOnboardingTAFViewController *)self isMovingFromParentViewController])
   {
     v4 = HFLogForCategory();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v8 = self;
+      selfCopy = self;
       v9 = 2080;
       v10 = "[HUUtilityOnboardingTAFViewController viewWillDisappear:]";
       _os_log_impl(&dword_20CEB6000, v4, OS_LOG_TYPE_DEFAULT, "%@:%s User tapped BACK button", buf, 0x16u);
     }
 
-    v5 = [(HUUtilityOnboardingTAFViewController *)self delegate];
-    [v5 viewControllerDidGoBack:self];
+    delegate = [(HUUtilityOnboardingTAFViewController *)self delegate];
+    [delegate viewControllerDidGoBack:self];
   }
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
-  v4 = [(HUUtilityOnboardingTAFViewController *)self focusedTextField];
+  focusedTextField = [(HUUtilityOnboardingTAFViewController *)self focusedTextField];
 
-  if (v4)
+  if (focusedTextField)
   {
-    v5 = [(HUUtilityOnboardingTAFViewController *)self focusedTextField];
-    [v5 resignFirstResponder];
+    focusedTextField2 = [(HUUtilityOnboardingTAFViewController *)self focusedTextField];
+    [focusedTextField2 resignFirstResponder];
 
     [(HUUtilityOnboardingTAFViewController *)self setFocusedTextField:0];
   }
 }
 
-- (void)didCompleteAllFields:(BOOL)a3
+- (void)didCompleteAllFields:(BOOL)fields
 {
-  v3 = a3;
-  v5 = [(OBBaseWelcomeController *)self navigationItem];
-  v4 = [v5 rightBarButtonItem];
-  [v4 setEnabled:v3];
+  fieldsCopy = fields;
+  navigationItem = [(OBBaseWelcomeController *)self navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
+  [rightBarButtonItem setEnabled:fieldsCopy];
 }
 
-- (void)selectedTextField:(id)a3
+- (void)selectedTextField:(id)field
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fieldCopy = field;
   v5 = HFLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412802;
-    v7 = self;
+    selfCopy = self;
     v8 = 2080;
     v9 = "[HUUtilityOnboardingTAFViewController selectedTextField:]";
     v10 = 2112;
-    v11 = v4;
+    v11 = fieldCopy;
     _os_log_impl(&dword_20CEB6000, v5, OS_LOG_TYPE_DEFAULT, "%@:%s Selected text field %@", &v6, 0x20u);
   }
 
-  [(HUUtilityOnboardingTAFViewController *)self setFocusedTextField:v4];
+  [(HUUtilityOnboardingTAFViewController *)self setFocusedTextField:fieldCopy];
 }
 
 - (void)_showSpinner
 {
   v6 = [objc_alloc(MEMORY[0x277D750E8]) initWithActivityIndicatorStyle:100];
   v3 = [objc_alloc(MEMORY[0x277D751E0]) initWithCustomView:v6];
-  v4 = [(OBBaseWelcomeController *)self navigationItem];
-  [v4 setRightBarButtonItem:v3];
+  navigationItem = [(OBBaseWelcomeController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:v3];
 
-  v5 = [(OBBaseWelcomeController *)self navigationItem];
-  [v5 setHidesBackButton:1];
+  navigationItem2 = [(OBBaseWelcomeController *)self navigationItem];
+  [navigationItem2 setHidesBackButton:1];
 
   [v6 startAnimating];
 }

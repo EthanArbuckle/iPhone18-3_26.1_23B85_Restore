@@ -1,33 +1,33 @@
 @interface PDSProtoBatchRegisterReq
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addUserPushTokenRegRequests:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addUserPushTokenRegRequests:(id)requests;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PDSProtoBatchRegisterReq
 
-- (void)addUserPushTokenRegRequests:(id)a3
+- (void)addUserPushTokenRegRequests:(id)requests
 {
-  v4 = a3;
+  requestsCopy = requests;
   userPushTokenRegRequests = self->_userPushTokenRegRequests;
-  v8 = v4;
+  v8 = requestsCopy;
   if (!userPushTokenRegRequests)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_userPushTokenRegRequests;
     self->_userPushTokenRegRequests = v6;
 
-    v4 = v8;
+    requestsCopy = v8;
     userPushTokenRegRequests = self->_userPushTokenRegRequests;
   }
 
-  [(NSMutableArray *)userPushTokenRegRequests addObject:v4];
+  [(NSMutableArray *)userPushTokenRegRequests addObject:requestsCopy];
 }
 
 - (id)description
@@ -36,8 +36,8 @@
   v8.receiver = self;
   v8.super_class = PDSProtoBatchRegisterReq;
   v4 = [(PDSProtoBatchRegisterReq *)&v8 description];
-  v5 = [(PDSProtoBatchRegisterReq *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(PDSProtoBatchRegisterReq *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -45,7 +45,7 @@
 - (id)dictionaryRepresentation
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if ([(NSMutableArray *)self->_userPushTokenRegRequests count])
   {
     v4 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{-[NSMutableArray count](self->_userPushTokenRegRequests, "count")}];
@@ -68,8 +68,8 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v14 + 1) + 8 * i) dictionaryRepresentation];
-          [v4 addObject:v10];
+          dictionaryRepresentation = [*(*(&v14 + 1) + 8 * i) dictionaryRepresentation];
+          [v4 addObject:dictionaryRepresentation];
         }
 
         v7 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -78,24 +78,24 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKey:@"user_push_token_reg_requests"];
+    [dictionary setObject:v4 forKey:@"user_push_token_reg_requests"];
   }
 
   if (*&self->_has)
   {
     v11 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_requestTtl];
-    [v3 setObject:v11 forKey:@"request_ttl"];
+    [dictionary setObject:v11 forKey:@"request_ttl"];
   }
 
   v12 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -137,35 +137,35 @@
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if ([(PDSProtoBatchRegisterReq *)self userPushTokenRegRequestsCount])
   {
-    [v8 clearUserPushTokenRegRequests];
-    v4 = [(PDSProtoBatchRegisterReq *)self userPushTokenRegRequestsCount];
-    if (v4)
+    [toCopy clearUserPushTokenRegRequests];
+    userPushTokenRegRequestsCount = [(PDSProtoBatchRegisterReq *)self userPushTokenRegRequestsCount];
+    if (userPushTokenRegRequestsCount)
     {
-      v5 = v4;
+      v5 = userPushTokenRegRequestsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(PDSProtoBatchRegisterReq *)self userPushTokenRegRequestsAtIndex:i];
-        [v8 addUserPushTokenRegRequests:v7];
+        [toCopy addUserPushTokenRegRequests:v7];
       }
     }
   }
 
   if (*&self->_has)
   {
-    *(v8 + 1) = self->_requestTtl;
-    *(v8 + 24) |= 1u;
+    *(toCopy + 1) = self->_requestTtl;
+    *(toCopy + 24) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -186,7 +186,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v14 + 1) + 8 * v10) copyWithZone:{a3, v14}];
+        v11 = [*(*(&v14 + 1) + 8 * v10) copyWithZone:{zone, v14}];
         [v5 addUserPushTokenRegRequests:v11];
 
         ++v10;
@@ -209,16 +209,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_8;
   }
 
   userPushTokenRegRequests = self->_userPushTokenRegRequests;
-  if (userPushTokenRegRequests | *(v4 + 2))
+  if (userPushTokenRegRequests | *(equalCopy + 2))
   {
     if (![(NSMutableArray *)userPushTokenRegRequests isEqual:?])
     {
@@ -226,10 +226,10 @@
     }
   }
 
-  v6 = (*(v4 + 24) & 1) == 0;
+  v6 = (*(equalCopy + 24) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 24) & 1) != 0 && self->_requestTtl == *(v4 + 1))
+    if ((*(equalCopy + 24) & 1) != 0 && self->_requestTtl == *(equalCopy + 1))
     {
       v6 = 1;
       goto LABEL_9;
@@ -260,15 +260,15 @@ LABEL_9:
   return v4 ^ v3;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fromCopy = from;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = *(v4 + 2);
+  v5 = *(fromCopy + 2);
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
@@ -294,9 +294,9 @@ LABEL_9:
     while (v7);
   }
 
-  if (*(v4 + 24))
+  if (*(fromCopy + 24))
   {
-    self->_requestTtl = *(v4 + 1);
+    self->_requestTtl = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 

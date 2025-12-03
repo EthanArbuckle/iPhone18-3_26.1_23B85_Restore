@@ -1,24 +1,24 @@
 @interface _BESwiftCBridge
-+ (BOOL)checkEntitlement:(id)a3 forAuditToken:(id *)a4;
-+ (BOOL)checkEntitlementForCurrentProcess:(id)a3;
++ (BOOL)checkEntitlement:(id)entitlement forAuditToken:(id *)token;
++ (BOOL)checkEntitlementForCurrentProcess:(id)process;
 - (_BESwiftCBridge)init;
 @end
 
 @implementation _BESwiftCBridge
 
-+ (BOOL)checkEntitlement:(id)a3 forAuditToken:(id *)a4
++ (BOOL)checkEntitlement:(id)entitlement forAuditToken:(id *)token
 {
-  v4 = *a4->var0;
-  v5 = *&a4->var0[2];
-  v6 = *&a4->var0[4];
-  v7 = *&a4->var0[6];
+  v4 = *token->var0;
+  v5 = *&token->var0[2];
+  v6 = *&token->var0[4];
+  v7 = *&token->var0[6];
   v8 = sub_236E9D0F8();
   LOBYTE(v4) = sub_236E9CE88(v8, v9);
 
   return v4 & 1;
 }
 
-+ (BOOL)checkEntitlementForCurrentProcess:(id)a3
++ (BOOL)checkEntitlementForCurrentProcess:(id)process
 {
   v3 = sub_236E9D0F8();
   v5 = sub_236E9CFA0(v3, v4);

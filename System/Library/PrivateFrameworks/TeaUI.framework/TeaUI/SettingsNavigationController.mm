@@ -1,16 +1,16 @@
 @interface SettingsNavigationController
-- (_TtC5TeaUI28SettingsNavigationController)initWithNavigationBarClass:(Class)a3 toolbarClass:(Class)a4;
-- (_TtC5TeaUI28SettingsNavigationController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC5TeaUI28SettingsNavigationController)initWithNavigationBarClass:(Class)class toolbarClass:(Class)toolbarClass;
+- (_TtC5TeaUI28SettingsNavigationController)initWithNibName:(id)name bundle:(id)bundle;
 @end
 
 @implementation SettingsNavigationController
 
-- (_TtC5TeaUI28SettingsNavigationController)initWithNavigationBarClass:(Class)a3 toolbarClass:(Class)a4
+- (_TtC5TeaUI28SettingsNavigationController)initWithNavigationBarClass:(Class)class toolbarClass:(Class)toolbarClass
 {
-  if (!a3)
+  if (!class)
   {
     ObjCClassMetadata = 0;
-    if (a4)
+    if (toolbarClass)
     {
       goto LABEL_3;
     }
@@ -21,7 +21,7 @@ LABEL_5:
   }
 
   ObjCClassMetadata = swift_getObjCClassMetadata();
-  if (!a4)
+  if (!toolbarClass)
   {
     goto LABEL_5;
   }
@@ -31,9 +31,9 @@ LABEL_3:
   return SettingsNavigationController.init(navigationBarClass:toolbarClass:)(ObjCClassMetadata, v6);
 }
 
-- (_TtC5TeaUI28SettingsNavigationController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC5TeaUI28SettingsNavigationController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_1D8190F14();
     v7 = v6;
@@ -45,8 +45,8 @@ LABEL_3:
     v7 = 0;
   }
 
-  v8 = a4;
-  return SettingsNavigationController.init(nibName:bundle:)(v5, v7, a4);
+  bundleCopy = bundle;
+  return SettingsNavigationController.init(nibName:bundle:)(v5, v7, bundle);
 }
 
 @end

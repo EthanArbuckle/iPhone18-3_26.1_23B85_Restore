@@ -1,12 +1,12 @@
 @interface _UIGradientCarouselView
-- (_TtC5UIKit23_UIGradientCarouselView)initWithCoder:(id)a3;
-- (_TtC5UIKit23_UIGradientCarouselView)initWithFrame:(CGRect)a3;
+- (_TtC5UIKit23_UIGradientCarouselView)initWithCoder:(id)coder;
+- (_TtC5UIKit23_UIGradientCarouselView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation _UIGradientCarouselView
 
-- (_TtC5UIKit23_UIGradientCarouselView)initWithCoder:(id)a3
+- (_TtC5UIKit23_UIGradientCarouselView)initWithCoder:(id)coder
 {
   v3 = (&self->super.super.super.isa + OBJC_IVAR____TtC5UIKit23_UIGradientCarouselView_animationKey);
   *v3 = 0xD000000000000010;
@@ -39,7 +39,7 @@
   sub_1891EE638();
 }
 
-- (_TtC5UIKit23_UIGradientCarouselView)initWithFrame:(CGRect)a3
+- (_TtC5UIKit23_UIGradientCarouselView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

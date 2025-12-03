@@ -1,37 +1,37 @@
 @interface CCToolKitToolCompoundPredicate
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4;
-- (CCToolKitToolCompoundPredicate)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (CCToolKitToolCompoundPredicate)initWithOperatorType:(unsigned int)a3 operands:(id)a4 error:(id *)a5;
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error;
+- (CCToolKitToolCompoundPredicate)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (CCToolKitToolCompoundPredicate)initWithOperatorType:(unsigned int)type operands:(id)operands error:(id *)error;
 - (NSArray)operands;
 - (id)jsonDictionary;
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4;
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type;
 @end
 
 @implementation CCToolKitToolCompoundPredicate
 
-- (CCToolKitToolCompoundPredicate)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (CCToolKitToolCompoundPredicate)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v41 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   v39 = 0;
   IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
   v8 = 0;
   if (IsInstanceOfExpectedClass)
   {
-    v9 = [v6 objectForKeyedSubscript:@"operatorType"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"operatorType"];
     v10 = v9;
     if (v9)
     {
-      v11 = [v9 unsignedIntegerValue];
+      unsignedIntegerValue = [v9 unsignedIntegerValue];
     }
 
     else
     {
-      v11 = 0;
+      unsignedIntegerValue = 0;
     }
 
-    v13 = [v6 objectForKeyedSubscript:@"operands"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"operands"];
     if (v13)
     {
       v14 = v13;
@@ -47,7 +47,7 @@
         goto LABEL_24;
       }
 
-      v30 = v11;
+      v30 = unsignedIntegerValue;
       v31 = v16;
       v32 = v10;
       v17 = objc_opt_new();
@@ -106,7 +106,7 @@
       }
 
       v10 = v32;
-      v11 = v30;
+      unsignedIntegerValue = v30;
       v16 = v31;
     }
 
@@ -116,7 +116,7 @@
       v16 = v8;
     }
 
-    v12 = [[CCToolKitToolCompoundPredicate alloc] initWithOperatorType:v11 operands:v17 error:a4];
+    v12 = [[CCToolKitToolCompoundPredicate alloc] initWithOperatorType:unsignedIntegerValue operands:v17 error:error];
     v14 = v17;
 LABEL_24:
 
@@ -146,8 +146,8 @@ LABEL_25:
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v6 = [(CCToolKitToolCompoundPredicate *)self operands];
-    v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    operands = [(CCToolKitToolCompoundPredicate *)self operands];
+    v7 = [operands countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v7)
     {
       v8 = v7;
@@ -158,14 +158,14 @@ LABEL_25:
         {
           if (*v16 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(operands);
           }
 
-          v11 = [*(*(&v15 + 1) + 8 * i) jsonDictionary];
-          [v5 addObject:v11];
+          jsonDictionary = [*(*(&v15 + 1) + 8 * i) jsonDictionary];
+          [v5 addObject:jsonDictionary];
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v8 = [operands countByEnumeratingWithState:&v15 objects:v19 count:16];
       }
 
       while (v8);
@@ -181,18 +181,18 @@ LABEL_25:
   return v12;
 }
 
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type
 {
-  v9 = a3;
+  blockCopy = block;
   v5 = objc_alloc(MEMORY[0x1E69939F0]);
   v6 = *MEMORY[0x1E69939A8];
   v7 = [v5 initWithFieldType:v6 enumValue:self->_operatorType];
-  v9[2](v9, v7);
+  blockCopy[2](blockCopy, v7);
 
   if (self->_operands)
   {
     v8 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:v6 repeatedSubMessageValue:self->_operands];
-    v9[2](v9, v8);
+    blockCopy[2](blockCopy, v8);
   }
 }
 
@@ -203,10 +203,10 @@ LABEL_25:
   return v2;
 }
 
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error
 {
-  v45 = a3;
-  v5 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:v45];
+  dataCopy = data;
+  v5 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:dataCopy];
   v6 = MEMORY[0x1E6993AB8];
   v7 = MEMORY[0x1E6993AB0];
   if (*&v5[*MEMORY[0x1E6993AB8]] < *&v5[*MEMORY[0x1E6993AB0]])
@@ -387,13 +387,13 @@ LABEL_48:
   {
     CCSetError();
     v37 = 0;
-    v38 = v45;
+    v38 = dataCopy;
   }
 
   else
   {
     v39 = MEMORY[0x1E6993AA8];
-    v38 = v45;
+    v38 = dataCopy;
     if (*&v5[*MEMORY[0x1E6993AA8]])
     {
       v40 = objc_opt_class();
@@ -414,15 +414,15 @@ LABEL_48:
   return v37;
 }
 
-- (CCToolKitToolCompoundPredicate)initWithOperatorType:(unsigned int)a3 operands:(id)a4 error:(id *)a5
+- (CCToolKitToolCompoundPredicate)initWithOperatorType:(unsigned int)type operands:(id)operands error:(id *)error
 {
   v31 = *MEMORY[0x1E69E9840];
-  v8 = a4;
+  operandsCopy = operands;
   v9 = objc_opt_new();
-  if (!a3)
+  if (!type)
   {
     v11 = 0;
-    if (!v8)
+    if (!operandsCopy)
     {
       goto LABEL_15;
     }
@@ -436,7 +436,7 @@ LABEL_6:
     if (!v12)
     {
       CCSetError();
-      v21 = 0;
+      selfCopy = 0;
       v11 = v13;
       goto LABEL_18;
     }
@@ -445,7 +445,7 @@ LABEL_6:
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v14 = v8;
+    v14 = operandsCopy;
     v15 = [v14 countByEnumeratingWithState:&v24 objects:v30 count:16];
     if (v15)
     {
@@ -461,7 +461,7 @@ LABEL_6:
             objc_enumerationMutation(v14);
           }
 
-          v19 = [*(*(&v24 + 1) + 8 * v18) data];
+          data = [*(*(&v24 + 1) + 8 * v18) data];
           CCPBDataWriterWriteDataField();
 
           ++v18;
@@ -484,25 +484,25 @@ LABEL_6:
   if (!v10)
   {
     CCSetError();
-    v21 = 0;
+    selfCopy = 0;
     goto LABEL_18;
   }
 
   CCPBDataWriterWriteUint32Field();
-  if (v8)
+  if (operandsCopy)
   {
     goto LABEL_6;
   }
 
 LABEL_15:
-  v20 = [v9 immutableData];
-  self = [(CCItemMessage *)self initWithData:v20 error:a5];
+  immutableData = [v9 immutableData];
+  self = [(CCItemMessage *)self initWithData:immutableData error:error];
 
-  v21 = self;
+  selfCopy = self;
 LABEL_18:
 
   v22 = *MEMORY[0x1E69E9840];
-  return v21;
+  return selfCopy;
 }
 
 @end

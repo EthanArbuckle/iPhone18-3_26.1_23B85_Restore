@@ -8,11 +8,11 @@
 
 + (void)_rebuildMoments
 {
-  v2 = [MEMORY[0x277D3AD38] systemPhotoLibrary];
-  v3 = [v2 assetsdClient];
-  v4 = [v3 debugClient];
+  systemPhotoLibrary = [MEMORY[0x277D3AD38] systemPhotoLibrary];
+  assetsdClient = [systemPhotoLibrary assetsdClient];
+  debugClient = [assetsdClient debugClient];
   v7 = 0;
-  v5 = [v4 rebuildMomentsDeletingExistingMoments:0 error:&v7];
+  v5 = [debugClient rebuildMomentsDeletingExistingMoments:0 error:&v7];
   v6 = v7;
 
   if ((v5 & 1) == 0)
@@ -38,7 +38,7 @@
   v23[1] = 3221225472;
   v23[2] = __42__PHRootSettings_settingsControllerModule__block_invoke;
   v23[3] = &__block_descriptor_40_e40_B24__0__PTRow_8__PTUIModuleController_16l;
-  v23[4] = a1;
+  v23[4] = self;
   v6 = [MEMORY[0x277D43248] actionWithHandler:v23];
   v7 = [v5 rowWithTitle:@"Rebuild Moments" action:v6];
   v25 = v7;
@@ -65,7 +65,7 @@
   block[1] = 3221225472;
   block[2] = __32__PHRootSettings_sharedSettings__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedSettings_onceToken != -1)
   {
     dispatch_once(&sharedSettings_onceToken, block);

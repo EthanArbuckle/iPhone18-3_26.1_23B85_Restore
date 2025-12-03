@@ -1,7 +1,7 @@
 @interface FavoriteItem_VIPMailbox
-- (BOOL)isEqual:(id)a3;
-- (FavoriteItem_VIPMailbox)initWithDictionary:(id)a3;
-- (FavoriteItem_VIPMailbox)initWithVIP:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (FavoriteItem_VIPMailbox)initWithDictionary:(id)dictionary;
+- (FavoriteItem_VIPMailbox)initWithVIP:(id)p;
 - (id)additionalPredicate;
 - (id)countQueryPredicate;
 - (id)dictionaryRepresentation;
@@ -12,37 +12,37 @@
 
 @implementation FavoriteItem_VIPMailbox
 
-- (FavoriteItem_VIPMailbox)initWithVIP:(id)a3
+- (FavoriteItem_VIPMailbox)initWithVIP:(id)p
 {
-  v5 = a3;
+  pCopy = p;
   v9.receiver = self;
   v9.super_class = FavoriteItem_VIPMailbox;
   v6 = [(FavoriteItem *)&v9 initWithType:5];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_VIP, a3);
+    objc_storeStrong(&v6->_VIP, p);
   }
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v10 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = [(FavoriteItem_VIPMailbox *)self VIP];
-    v7 = [v6 identifier];
+    identifier = [v6 identifier];
     v8 = [(FavoriteItem_VIPMailbox *)v5 VIP];
-    v9 = [v8 identifier];
-    v10 = [v7 isEqualToString:v9];
+    identifier2 = [v8 identifier];
+    v10 = [identifier isEqualToString:identifier2];
   }
 
   else
@@ -56,31 +56,31 @@
 - (unint64_t)hash
 {
   v2 = [(FavoriteItem_VIPMailbox *)self VIP];
-  v3 = [v2 identifier];
-  v4 = [v3 hash];
+  identifier = [v2 identifier];
+  v4 = [identifier hash];
 
   return v4;
 }
 
-- (FavoriteItem_VIPMailbox)initWithDictionary:(id)a3
+- (FavoriteItem_VIPMailbox)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v16.receiver = self;
   v16.super_class = FavoriteItem_VIPMailbox;
-  v5 = [(FavoriteItem *)&v16 initWithDictionary:v4];
+  v5 = [(FavoriteItem *)&v16 initWithDictionary:dictionaryCopy];
   if (!v5)
   {
     goto LABEL_3;
   }
 
   v6 = +[MFMailMessageLibrary defaultInstance];
-  v7 = [v6 persistence];
-  v8 = [v7 vipManager];
+  persistence = [v6 persistence];
+  vipManager = [persistence vipManager];
 
-  v9 = [v4 objectForKey:@"VIPIdentifier"];
-  v10 = [v9 stringValue];
+  v9 = [dictionaryCopy objectForKey:@"VIPIdentifier"];
+  stringValue = [v9 stringValue];
 
-  v11 = [v8 vipWithIdentifier:v10];
+  v11 = [vipManager vipWithIdentifier:stringValue];
   VIP = v5->_VIP;
   v5->_VIP = v11;
 
@@ -103,19 +103,19 @@ LABEL_3:
 {
   v7.receiver = self;
   v7.super_class = FavoriteItem_VIPMailbox;
-  v3 = [(FavoriteItem *)&v7 dictionaryRepresentation];
+  dictionaryRepresentation = [(FavoriteItem *)&v7 dictionaryRepresentation];
   v4 = [(FavoriteItem_VIPMailbox *)self VIP];
-  v5 = [v4 identifier];
-  [v3 setObject:v5 forKey:@"VIPIdentifier"];
+  identifier = [v4 identifier];
+  [dictionaryRepresentation setObject:identifier forKey:@"VIPIdentifier"];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
 - (id)persistentIDForMigration
 {
   v2 = [(FavoriteItem_VIPMailbox *)self VIP];
-  v3 = [v2 identifier];
-  v4 = [NSString stringWithFormat:@"VIPMailbox-%@", v3];
+  identifier = [v2 identifier];
+  v4 = [NSString stringWithFormat:@"VIPMailbox-%@", identifier];
 
   return v4;
 }
@@ -123,19 +123,19 @@ LABEL_3:
 - (id)displayName
 {
   v2 = [(FavoriteItem_VIPMailbox *)self VIP];
-  v3 = [v2 displayName];
+  displayName = [v2 displayName];
 
-  return v3;
+  return displayName;
 }
 
 - (id)countQueryPredicate
 {
   v3 = +[EMMessageListItemPredicates predicateForUnreadMessages];
-  v4 = [(FavoriteItem_VIPMailbox *)self mailboxScope];
-  v5 = [EMMessageListItemPredicates predicateForMessagesWithMailboxScope:v4];
+  mailboxScope = [(FavoriteItem_VIPMailbox *)self mailboxScope];
+  v5 = [EMMessageListItemPredicates predicateForMessagesWithMailboxScope:mailboxScope];
 
-  v6 = [(FavoriteItem_VIPMailbox *)self additionalPredicate];
-  v10[0] = v6;
+  additionalPredicate = [(FavoriteItem_VIPMailbox *)self additionalPredicate];
+  v10[0] = additionalPredicate;
   v10[1] = v3;
   v10[2] = v5;
   v7 = [NSArray arrayWithObjects:v10 count:3];
@@ -156,9 +156,9 @@ LABEL_3:
     v15 = 0u;
     v16 = 0u;
     v5 = [(FavoriteItem_VIPMailbox *)self VIP];
-    v6 = [v5 emailAddresses];
+    emailAddresses = [v5 emailAddresses];
 
-    v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    v7 = [emailAddresses countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v7)
     {
       v8 = *v16;
@@ -168,14 +168,14 @@ LABEL_3:
         {
           if (*v16 != v8)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(emailAddresses);
           }
 
           v10 = [EMMessageListItemPredicates predicateForMessagesWithSender:*(*(&v15 + 1) + 8 * i)];
           [v4 addObject:v10];
         }
 
-        v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v7 = [emailAddresses countByEnumeratingWithState:&v15 objects:v19 count:16];
       }
 
       while (v7);

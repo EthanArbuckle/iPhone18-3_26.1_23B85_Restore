@@ -1,34 +1,34 @@
 @interface TSCH3DLabelBitmapContextInfo
-+ (TSCH3DLabelBitmapContextInfo)contextInfoWithIsPrinting:(BOOL)a3 isPDF:(BOOL)a4 hasSuppressedBackgrounds:(BOOL)a5;
-+ (id)contextInfoForScene:(id)a3;
-+ (void)setIsPrinting:(BOOL)a3 isPDF:(BOOL)a4 hasSuppressedBackgrounds:(BOOL)a5 forScene:(id)a6;
-- (BOOL)isEqual:(id)a3;
-- (TSCH3DLabelBitmapContextInfo)initWithIsPrinting:(BOOL)a3 isPDF:(BOOL)a4 hasSuppressedBackgrounds:(BOOL)a5;
++ (TSCH3DLabelBitmapContextInfo)contextInfoWithIsPrinting:(BOOL)printing isPDF:(BOOL)f hasSuppressedBackgrounds:(BOOL)backgrounds;
++ (id)contextInfoForScene:(id)scene;
++ (void)setIsPrinting:(BOOL)printing isPDF:(BOOL)f hasSuppressedBackgrounds:(BOOL)backgrounds forScene:(id)scene;
+- (BOOL)isEqual:(id)equal;
+- (TSCH3DLabelBitmapContextInfo)initWithIsPrinting:(BOOL)printing isPDF:(BOOL)f hasSuppressedBackgrounds:(BOOL)backgrounds;
 - (unint64_t)hash;
 @end
 
 @implementation TSCH3DLabelBitmapContextInfo
 
-+ (id)contextInfoForScene:(id)a3
++ (id)contextInfoForScene:(id)scene
 {
-  v4 = a3;
-  v10 = objc_msgSend_propertiesForType_(v4, v5, v6, v7, v8, a1);
+  sceneCopy = scene;
+  v10 = objc_msgSend_propertiesForType_(sceneCopy, v5, v6, v7, v8, self);
   if (!v10)
   {
-    v10 = objc_msgSend_context(a1, v9, v11, v12, v13);
-    objc_msgSend_setProperties_forType_(v4, v14, v15, v16, v17, v10, a1);
+    v10 = objc_msgSend_context(self, v9, v11, v12, v13);
+    objc_msgSend_setProperties_forType_(sceneCopy, v14, v15, v16, v17, v10, self);
   }
 
   return v10;
 }
 
-+ (void)setIsPrinting:(BOOL)a3 isPDF:(BOOL)a4 hasSuppressedBackgrounds:(BOOL)a5 forScene:(id)a6
++ (void)setIsPrinting:(BOOL)printing isPDF:(BOOL)f hasSuppressedBackgrounds:(BOOL)backgrounds forScene:(id)scene
 {
-  v6 = a5;
-  v7 = a4;
-  v8 = a3;
-  v34 = a6;
-  if (!v34)
+  backgroundsCopy = backgrounds;
+  fCopy = f;
+  printingCopy = printing;
+  sceneCopy = scene;
+  if (!sceneCopy)
   {
     v14 = MEMORY[0x277D81150];
     v15 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v10, v11, v12, v13, "+[TSCH3DLabelBitmapContextInfo setIsPrinting:isPDF:hasSuppressedBackgrounds:forScene:]");
@@ -38,40 +38,40 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v25, v26, v27, v28);
   }
 
-  v29 = objc_msgSend_contextInfoWithIsPrinting_isPDF_hasSuppressedBackgrounds_(a1, v10, v11, v12, v13, v8, v7, v6);
-  objc_msgSend_setProperties_forType_(v34, v30, v31, v32, v33, v29, a1);
+  v29 = objc_msgSend_contextInfoWithIsPrinting_isPDF_hasSuppressedBackgrounds_(self, v10, v11, v12, v13, printingCopy, fCopy, backgroundsCopy);
+  objc_msgSend_setProperties_forType_(sceneCopy, v30, v31, v32, v33, v29, self);
 }
 
-+ (TSCH3DLabelBitmapContextInfo)contextInfoWithIsPrinting:(BOOL)a3 isPDF:(BOOL)a4 hasSuppressedBackgrounds:(BOOL)a5
++ (TSCH3DLabelBitmapContextInfo)contextInfoWithIsPrinting:(BOOL)printing isPDF:(BOOL)f hasSuppressedBackgrounds:(BOOL)backgrounds
 {
-  v5 = a5;
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 alloc];
-  hasSuppressedBackgrounds = objc_msgSend_initWithIsPrinting_isPDF_hasSuppressedBackgrounds_(v8, v9, v10, v11, v12, v7, v6, v5);
+  backgroundsCopy = backgrounds;
+  fCopy = f;
+  printingCopy = printing;
+  v8 = [self alloc];
+  hasSuppressedBackgrounds = objc_msgSend_initWithIsPrinting_isPDF_hasSuppressedBackgrounds_(v8, v9, v10, v11, v12, printingCopy, fCopy, backgroundsCopy);
 
   return hasSuppressedBackgrounds;
 }
 
-- (TSCH3DLabelBitmapContextInfo)initWithIsPrinting:(BOOL)a3 isPDF:(BOOL)a4 hasSuppressedBackgrounds:(BOOL)a5
+- (TSCH3DLabelBitmapContextInfo)initWithIsPrinting:(BOOL)printing isPDF:(BOOL)f hasSuppressedBackgrounds:(BOOL)backgrounds
 {
   v9.receiver = self;
   v9.super_class = TSCH3DLabelBitmapContextInfo;
   result = [(TSCH3DLabelBitmapContextInfo *)&v9 init];
   if (result)
   {
-    result->_isPrinting = a3;
-    result->_isPDF = a4;
-    result->_hasSuppressedBackgrounds = a5;
+    result->_isPrinting = printing;
+    result->_isPDF = f;
+    result->_hasSuppressedBackgrounds = backgrounds;
   }
 
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }

@@ -1,11 +1,11 @@
 @interface MapsSuggestionsMapsSyncSource
-- (BOOL)canProduceEntriesOfType:(int64_t)a3;
-- (BOOL)removeEntry:(id)a3 behavior:(int64_t)a4 handler:(id)a5;
-- (MapsSuggestionsMapsSyncSource)initWithMapsSync:(id)a3 delegate:(id)a4 name:(id)a5;
-- (double)updateSuggestionEntriesWithHandler:(id)a3;
-- (id)initFromResourceDepot:(id)a3 name:(id)a4;
-- (void)_q_updateRecentHistoryEntriesWithHandler:(uint64_t)a1;
-- (void)mapsSync:(id)a3 didChangeForContentType:(int64_t)a4;
+- (BOOL)canProduceEntriesOfType:(int64_t)type;
+- (BOOL)removeEntry:(id)entry behavior:(int64_t)behavior handler:(id)handler;
+- (MapsSuggestionsMapsSyncSource)initWithMapsSync:(id)sync delegate:(id)delegate name:(id)name;
+- (double)updateSuggestionEntriesWithHandler:(id)handler;
+- (id)initFromResourceDepot:(id)depot name:(id)name;
+- (void)_q_updateRecentHistoryEntriesWithHandler:(uint64_t)handler;
+- (void)mapsSync:(id)sync didChangeForContentType:(int64_t)type;
 - (void)start;
 - (void)stop;
 @end
@@ -25,15 +25,15 @@
   [(MapsSuggestionsMapsSyncSource *)self updateSuggestionEntriesWithHandler:0];
 }
 
-- (MapsSuggestionsMapsSyncSource)initWithMapsSync:(id)a3 delegate:(id)a4 name:(id)a5
+- (MapsSuggestionsMapsSyncSource)initWithMapsSync:(id)sync delegate:(id)delegate name:(id)name
 {
   v26 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  if (v9)
+  syncCopy = sync;
+  if (syncCopy)
   {
     v17.receiver = self;
     v17.super_class = MapsSuggestionsMapsSyncSource;
-    v10 = [(MapsSuggestionsBaseSource *)&v17 initWithDelegate:a4 name:a5];
+    v10 = [(MapsSuggestionsBaseSource *)&v17 initWithDelegate:delegate name:name];
     if (v10)
     {
       v11 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
@@ -41,11 +41,11 @@
       queue = v10->_queue;
       v10->_queue = v12;
 
-      objc_storeStrong(&v10->_mapsSync, a3);
+      objc_storeStrong(&v10->_mapsSync, sync);
     }
 
     self = v10;
-    v14 = self;
+    selfCopy = self;
   }
 
   else
@@ -64,18 +64,18 @@
       _os_log_impl(&dword_1C5126000, v15, OS_LOG_TYPE_ERROR, "At %{public}s:%d, %{public}s forbids: %{public}s. This version requires a MapsSync", buf, 0x26u);
     }
 
-    v14 = 0;
+    selfCopy = 0;
   }
 
-  return v14;
+  return selfCopy;
 }
 
-- (id)initFromResourceDepot:(id)a3 name:(id)a4
+- (id)initFromResourceDepot:(id)depot name:(id)name
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  depotCopy = depot;
+  nameCopy = name;
+  if (!depotCopy)
   {
     v13 = GEOFindOrCreateLog();
     if (!os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -97,9 +97,9 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v8 = [v6 oneSourceDelegate];
+  oneSourceDelegate = [depotCopy oneSourceDelegate];
 
-  if (!v8)
+  if (!oneSourceDelegate)
   {
     v13 = GEOFindOrCreateLog();
     if (!os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -119,9 +119,9 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  v9 = [v6 oneMapsSync];
+  oneMapsSync = [depotCopy oneMapsSync];
 
-  if (!v9)
+  if (!oneMapsSync)
   {
     v13 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -140,18 +140,18 @@ LABEL_11:
 
 LABEL_12:
 
-    v12 = 0;
+    selfCopy = 0;
     goto LABEL_13;
   }
 
-  v10 = [v6 oneMapsSync];
-  v11 = [v6 oneSourceDelegate];
-  self = [(MapsSuggestionsMapsSyncSource *)self initWithMapsSync:v10 delegate:v11 name:v7];
+  oneMapsSync2 = [depotCopy oneMapsSync];
+  oneSourceDelegate2 = [depotCopy oneSourceDelegate];
+  self = [(MapsSuggestionsMapsSyncSource *)self initWithMapsSync:oneMapsSync2 delegate:oneSourceDelegate2 name:nameCopy];
 
-  v12 = self;
+  selfCopy = self;
 LABEL_13:
 
-  return v12;
+  return selfCopy;
 }
 
 - (void)stop
@@ -166,16 +166,16 @@ LABEL_13:
   [(MapsSuggestionsMapsSync *)self->_mapsSync removeMapsSyncObserver:self forContentType:1];
 }
 
-- (double)updateSuggestionEntriesWithHandler:(id)a3
+- (double)updateSuggestionEntriesWithHandler:(id)handler
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    v6 = [(MapsSuggestionsBaseSource *)self uniqueName];
+    uniqueName = [(MapsSuggestionsBaseSource *)self uniqueName];
     *buf = 138412546;
-    v15 = v6;
+    v15 = uniqueName;
     v16 = 2080;
     v17 = "updateSuggestionEntries";
     _os_log_impl(&dword_1C5126000, v5, OS_LOG_TYPE_DEBUG, "{MSgDebug} OBJECT{%@} %s BEGIN", buf, 0x16u);
@@ -195,8 +195,8 @@ LABEL_13:
   v11[2] = __68__MapsSuggestionsMapsSyncSource_updateSuggestionEntriesWithHandler___block_invoke;
   v11[3] = &unk_1E81F5CB0;
   objc_copyWeak(&v13, buf);
-  v12 = v4;
-  v9 = v4;
+  v12 = handlerCopy;
+  v9 = handlerCopy;
   dispatch_async(queue, v11);
 
   objc_destroyWeak(&v13);
@@ -247,21 +247,21 @@ void __68__MapsSuggestionsMapsSyncSource_updateSuggestionEntriesWithHandler___bl
   }
 }
 
-- (void)_q_updateRecentHistoryEntriesWithHandler:(uint64_t)a1
+- (void)_q_updateRecentHistoryEntriesWithHandler:(uint64_t)handler
 {
   v21 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (handler)
   {
-    dispatch_assert_queue_V2(*(a1 + 24));
+    dispatch_assert_queue_V2(*(handler + 24));
     v4 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
     {
-      v5 = [a1 uniqueName];
+      uniqueName = [handler uniqueName];
       v6 = NSStringFromMapsSuggestionsEntryType(5uLL);
       v7 = NSStringFromMapsSuggestionsCurrentBestLocation();
       *buf = 138412802;
-      v16 = v5;
+      v16 = uniqueName;
       v17 = 2112;
       v18 = v6;
       v19 = 2112;
@@ -269,8 +269,8 @@ void __68__MapsSuggestionsMapsSyncSource_updateSuggestionEntriesWithHandler___bl
       _os_log_impl(&dword_1C5126000, v4, OS_LOG_TYPE_DEBUG, "{MSgDebug} UPDATING SOURCE{%@} for TYPE{%@} at LATLONG{%@}", buf, 0x20u);
     }
 
-    objc_initWeak(buf, a1);
-    v8 = *(a1 + 32);
+    objc_initWeak(buf, handler);
+    v8 = *(handler + 32);
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __74__MapsSuggestionsMapsSyncSource__q_updateRecentHistoryEntriesWithHandler___block_invoke;
@@ -287,7 +287,7 @@ void __68__MapsSuggestionsMapsSyncSource_updateSuggestionEntriesWithHandler___bl
         _os_log_impl(&dword_1C5126000, v10, OS_LOG_TYPE_ERROR, "MapsSuggestionsMapsSync did not call back?", v11, 2u);
       }
 
-      [a1 addOrUpdateMySuggestionEntries:MEMORY[0x1E695E0F0]];
+      [handler addOrUpdateMySuggestionEntries:MEMORY[0x1E695E0F0]];
       if (v9)
       {
         v9[2](v9);
@@ -299,10 +299,10 @@ void __68__MapsSuggestionsMapsSyncSource_updateSuggestionEntriesWithHandler___bl
   }
 }
 
-- (BOOL)canProduceEntriesOfType:(int64_t)a3
+- (BOOL)canProduceEntriesOfType:(int64_t)type
 {
   v14 = *MEMORY[0x1E69E9840];
-  if (a3 >= 0x1A)
+  if (type >= 0x1A)
   {
     v4 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -323,17 +323,17 @@ void __68__MapsSuggestionsMapsSyncSource_updateSuggestionEntriesWithHandler___bl
 
   else
   {
-    v3 = 0x820u >> a3;
+    v3 = 0x820u >> type;
   }
 
   return v3 & 1;
 }
 
-- (BOOL)removeEntry:(id)a3 behavior:(int64_t)a4 handler:(id)a5
+- (BOOL)removeEntry:(id)entry behavior:(int64_t)behavior handler:(id)handler
 {
   v26 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  entryCopy = entry;
+  handlerCopy = handler;
   v10 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
@@ -341,7 +341,7 @@ void __68__MapsSuggestionsMapsSyncSource_updateSuggestionEntriesWithHandler___bl
     _os_log_impl(&dword_1C5126000, v10, OS_LOG_TYPE_DEBUG, "removeEntry", buf, 2u);
   }
 
-  if (!v9)
+  if (!handlerCopy)
   {
     v13 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -364,7 +364,7 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  if (!v8)
+  if (!entryCopy)
   {
     v13 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -384,15 +384,15 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  if (a4 == 8 && -[MapsSuggestionsMapsSyncSource canProduceEntriesOfType:](self, "canProduceEntriesOfType:", [v8 type]))
+  if (behavior == 8 && -[MapsSuggestionsMapsSyncSource canProduceEntriesOfType:](self, "canProduceEntriesOfType:", [entryCopy type]))
   {
     mapsSync = self->_mapsSync;
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __62__MapsSuggestionsMapsSyncSource_removeEntry_behavior_handler___block_invoke;
     v16[3] = &unk_1E81F6408;
-    v17 = v9;
-    v12 = [(MapsSuggestionsMapsSync *)mapsSync deleteEntry:v8 handler:v16];
+    v17 = handlerCopy;
+    v12 = [(MapsSuggestionsMapsSync *)mapsSync deleteEntry:entryCopy handler:v16];
     v13 = v17;
 LABEL_15:
 
@@ -475,12 +475,12 @@ void __74__MapsSuggestionsMapsSyncSource__q_updateRecentHistoryEntriesWithHandle
   }
 }
 
-- (void)mapsSync:(id)a3 didChangeForContentType:(int64_t)a4
+- (void)mapsSync:(id)sync didChangeForContentType:(int64_t)type
 {
   v19 = *MEMORY[0x1E69E9840];
   v6 = GEOFindOrCreateLog();
   v7 = v6;
-  if (a4 == 1)
+  if (type == 1)
   {
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
     {

@@ -1,62 +1,62 @@
 @interface ATXInfoEngineCachedSuggestions
-- (ATXInfoEngineCachedSuggestions)initWithProto:(id)a3;
-- (ATXInfoEngineCachedSuggestions)initWithProtoData:(id)a3;
+- (ATXInfoEngineCachedSuggestions)initWithProto:(id)proto;
+- (ATXInfoEngineCachedSuggestions)initWithProtoData:(id)data;
 - (id)encodeAsProto;
 - (id)proto;
 @end
 
 @implementation ATXInfoEngineCachedSuggestions
 
-- (ATXInfoEngineCachedSuggestions)initWithProtoData:(id)a3
+- (ATXInfoEngineCachedSuggestions)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[ATXPBInfoEngineCachedSuggestions alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[ATXPBInfoEngineCachedSuggestions alloc] initWithData:dataCopy];
 
     self = [(ATXInfoEngineCachedSuggestions *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)encodeAsProto
 {
-  v2 = [(ATXInfoEngineCachedSuggestions *)self proto];
-  v3 = [v2 data];
+  proto = [(ATXInfoEngineCachedSuggestions *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
-- (ATXInfoEngineCachedSuggestions)initWithProto:(id)a3
+- (ATXInfoEngineCachedSuggestions)initWithProto:(id)proto
 {
-  v4 = a3;
-  if (v4)
+  protoCopy = proto;
+  if (protoCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = protoCopy;
       v6 = [(ATXPBInfoEngineCachedSuggestions *)v5 length];
-      v7 = [(ATXPBInfoEngineCachedSuggestions *)v5 cachedSuggestionIds];
-      v8 = [(ATXPBInfoEngineCachedSuggestions *)v5 cachedSuggestionSourceIds];
-      if ([v7 count] == v6 && objc_msgSend(v8, "count") == v6)
+      cachedSuggestionIds = [(ATXPBInfoEngineCachedSuggestions *)v5 cachedSuggestionIds];
+      cachedSuggestionSourceIds = [(ATXPBInfoEngineCachedSuggestions *)v5 cachedSuggestionSourceIds];
+      if ([cachedSuggestionIds count] == v6 && objc_msgSend(cachedSuggestionSourceIds, "count") == v6)
       {
         v9 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v6];
         v16[0] = MEMORY[0x1E69E9820];
         v16[1] = 3221225472;
         v16[2] = __48__ATXInfoEngineCachedSuggestions_initWithProto___block_invoke;
         v16[3] = &unk_1E80C3C88;
-        v17 = v8;
+        v17 = cachedSuggestionSourceIds;
         v10 = v9;
         v18 = v10;
-        [v7 enumerateObjectsUsingBlock:v16];
+        [cachedSuggestionIds enumerateObjectsUsingBlock:v16];
         v15.receiver = self;
         v15.super_class = ATXInfoEngineCachedSuggestions;
         v11 = [(ATXInfoEngineCachedSuggestions *)&v15 init];
@@ -68,7 +68,7 @@
 
         self = v12;
 
-        v13 = self;
+        selfCopy = self;
       }
 
       else
@@ -79,7 +79,7 @@
           [ATXInfoEngineCachedSuggestions initWithProto:v10];
         }
 
-        v13 = 0;
+        selfCopy = 0;
       }
     }
 
@@ -91,16 +91,16 @@
         [(ATXInfoEngineCachedSuggestions *)self initWithProto:v5];
       }
 
-      v13 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v13 = 0;
+    selfCopy = 0;
   }
 
-  return v13;
+  return selfCopy;
 }
 
 void __48__ATXInfoEngineCachedSuggestions_initWithProto___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -140,11 +140,11 @@ void __48__ATXInfoEngineCachedSuggestions_initWithProto___block_invoke(uint64_t 
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        v11 = [v10 suggestionId];
-        [v3 addObject:v11];
+        suggestionId = [v10 suggestionId];
+        [v3 addObject:suggestionId];
 
-        v12 = [v10 sourceId];
-        [v4 addObject:v12];
+        sourceId = [v10 sourceId];
+        [v4 addObject:sourceId];
       }
 
       v7 = [(NSArray *)v5 countByEnumeratingWithState:&v15 objects:v19 count:16];

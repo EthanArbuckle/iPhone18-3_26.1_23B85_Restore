@@ -1,18 +1,18 @@
 @interface _UIPreviewInteractionDecayTouchForceProvider
-- (CGPoint)locationInCoordinateSpace:(id)a3;
-- (_UIPreviewInteractionDecayTouchForceProvider)initWithTouchForceProvider:(id)a3;
+- (CGPoint)locationInCoordinateSpace:(id)space;
+- (_UIPreviewInteractionDecayTouchForceProvider)initWithTouchForceProvider:(id)provider;
 - (void)cancelInteraction;
 @end
 
 @implementation _UIPreviewInteractionDecayTouchForceProvider
 
-- (_UIPreviewInteractionDecayTouchForceProvider)initWithTouchForceProvider:(id)a3
+- (_UIPreviewInteractionDecayTouchForceProvider)initWithTouchForceProvider:(id)provider
 {
-  v6 = a3;
-  if (!v6)
+  providerCopy = provider;
+  if (!providerCopy)
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"_UIPreviewInteractionDecayTouchForceProvider.m" lineNumber:34 description:{@"Invalid parameter not satisfying: %@", @"touchForceProvider"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIPreviewInteractionDecayTouchForceProvider.m" lineNumber:34 description:{@"Invalid parameter not satisfying: %@", @"touchForceProvider"}];
   }
 
   v18.receiver = self;
@@ -22,15 +22,15 @@
   if (v7)
   {
     v7->_active = 1;
-    objc_storeStrong(&v7->_touchForceProvider, a3);
-    [v6 touchForce];
+    objc_storeStrong(&v7->_touchForceProvider, provider);
+    [providerCopy touchForce];
     v8->_initialTouchForce = v9;
-    v10 = [objc_opt_self() mainScreen];
-    v11 = [v10 fixedCoordinateSpace];
+    mainScreen = [objc_opt_self() mainScreen];
+    fixedCoordinateSpace = [mainScreen fixedCoordinateSpace];
     coordinateSpace = v8->_coordinateSpace;
-    v8->_coordinateSpace = v11;
+    v8->_coordinateSpace = fixedCoordinateSpace;
 
-    [v6 locationInCoordinateSpace:v8->_coordinateSpace];
+    [providerCopy locationInCoordinateSpace:v8->_coordinateSpace];
     v8->_location.x = v13;
     v8->_location.y = v14;
     v15 = v8;
@@ -39,9 +39,9 @@
   return v8;
 }
 
-- (CGPoint)locationInCoordinateSpace:(id)a3
+- (CGPoint)locationInCoordinateSpace:(id)space
 {
-  [(UICoordinateSpace *)self->_coordinateSpace convertPoint:a3 toCoordinateSpace:self->_location.x, self->_location.y];
+  [(UICoordinateSpace *)self->_coordinateSpace convertPoint:space toCoordinateSpace:self->_location.x, self->_location.y];
   result.y = v4;
   result.x = v3;
   return result;

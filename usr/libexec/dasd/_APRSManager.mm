@@ -1,7 +1,7 @@
 @interface _APRSManager
 + (_APRSManager)sharedInstance;
 - (_APRSManager)init;
-- (void)extractResumeLaunchSignposts:(id)a3;
+- (void)extractResumeLaunchSignposts:(id)signposts;
 - (void)freezeNewlyRecommendedApps;
 - (void)prewarmNewlyRecommendedApps;
 - (void)registerForTrial;
@@ -14,9 +14,9 @@
 
 @implementation _APRSManager
 
-- (void)extractResumeLaunchSignposts:(id)a3
+- (void)extractResumeLaunchSignposts:(id)signposts
 {
-  v4 = a3;
+  signpostsCopy = signposts;
   v5 = os_transaction_create();
   v6 = +[NSDate date];
   signpostReaderDate = self->_signpostReaderDate;
@@ -44,7 +44,7 @@
   v23[2] = sub_1000FC214;
   v23[3] = &unk_1001B5798;
   v23[4] = &buf;
-  [v4 setExpirationHandler:v23];
+  [signpostsCopy setExpirationHandler:v23];
   [(_APRSSignpostReader *)self->_signpostReader begin];
   *&v12 = 134217984;
   v21 = v12;
@@ -76,7 +76,7 @@
   if (*(*(&buf + 1) + 24) == 1)
   {
     v22 = 0;
-    v18 = [v4 setTaskExpiredWithRetryAfter:&v22 error:0.0];
+    v18 = [signpostsCopy setTaskExpiredWithRetryAfter:&v22 error:0.0];
     v19 = v22;
     if ((v18 & 1) == 0)
     {
@@ -86,13 +86,13 @@
         sub_10012C81C(v19, v20);
       }
 
-      [v4 setTaskCompleted];
+      [signpostsCopy setTaskCompleted];
     }
   }
 
   else
   {
-    [v4 setTaskCompleted];
+    [signpostsCopy setTaskCompleted];
   }
 
   _Block_object_dispose(&buf, 8);
@@ -160,14 +160,14 @@
   [v3 registerForTaskWithIdentifier:@"com.apple.appResume.prewarm" usingQueue:0 launchHandler:v16];
 
   out_token = 0;
-  v4 = [@"com.apple.appResume.prewarm" UTF8String];
+  uTF8String = [@"com.apple.appResume.prewarm" UTF8String];
   queue = self->_queue;
   handler[0] = _NSConcreteStackBlock;
   handler[1] = 3221225472;
   handler[2] = sub_1000FC768;
   handler[3] = &unk_1001B5B78;
   handler[4] = self;
-  notify_register_dispatch(v4, &out_token, queue, handler);
+  notify_register_dispatch(uTF8String, &out_token, queue, handler);
   v6 = +[BGSystemTaskScheduler sharedScheduler];
   v7 = [v6 taskRequestForIdentifier:@"com.apple.appResume.prewarm"];
 
@@ -207,14 +207,14 @@
   [v3 registerForTaskWithIdentifier:@"com.apple.appResume.freezer" usingQueue:0 launchHandler:v16];
 
   out_token = 0;
-  v4 = [@"com.apple.appResume.freezer" UTF8String];
+  uTF8String = [@"com.apple.appResume.freezer" UTF8String];
   queue = self->_queue;
   handler[0] = _NSConcreteStackBlock;
   handler[1] = 3221225472;
   handler[2] = sub_1000FCA10;
   handler[3] = &unk_1001B5B78;
   handler[4] = self;
-  notify_register_dispatch(v4, &out_token, queue, handler);
+  notify_register_dispatch(uTF8String, &out_token, queue, handler);
   v6 = +[BGSystemTaskScheduler sharedScheduler];
   v7 = [v6 taskRequestForIdentifier:@"com.apple.appResume.freezer"];
 
@@ -334,7 +334,7 @@
     {
       v7 = log;
       v8 = 134217984;
-      v9 = [v4 BOOLeanValue];
+      bOOLeanValue = [v4 BOOLeanValue];
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Trial: frezeDockOption set to %ld", &v8, 0xCu);
     }
 
@@ -379,8 +379,8 @@
       [(_APRSRecommendationEngine *)self->_engine evaluateFreezerRecommendations];
       [(_APRSRecommendationEngine *)self->_engine updateCurrentRecommendations];
       freezer = self->_freezer;
-      v6 = [(_APRSRecommendationEngine *)self->_engine freezerRecommendations];
-      [(_APRSFreezerInterface *)freezer updateFreezer:v6];
+      freezerRecommendations = [(_APRSRecommendationEngine *)self->_engine freezerRecommendations];
+      [(_APRSFreezerInterface *)freezer updateFreezer:freezerRecommendations];
 
       v4 = v7;
     }
@@ -395,8 +395,8 @@
   [(_APRSRecommendationEngine *)self->_engine evaluatePrewarmRecommendations];
   [(_APRSRecommendationEngine *)self->_engine updateCurrentRecommendations];
   prewarmLauncher = self->_prewarmLauncher;
-  v4 = [(_APRSRecommendationEngine *)self->_engine prewarmRecommendations];
-  [(_APRSPrewarmInterface *)prewarmLauncher prewarmRecommendations:v4];
+  prewarmRecommendations = [(_APRSRecommendationEngine *)self->_engine prewarmRecommendations];
+  [(_APRSPrewarmInterface *)prewarmLauncher prewarmRecommendations:prewarmRecommendations];
 }
 
 @end

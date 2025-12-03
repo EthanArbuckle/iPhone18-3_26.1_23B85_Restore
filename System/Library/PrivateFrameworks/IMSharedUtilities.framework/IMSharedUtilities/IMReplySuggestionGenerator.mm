@@ -1,23 +1,23 @@
 @interface IMReplySuggestionGenerator
 + (BOOL)includeSmartReplies;
-+ (id)combinedPlainTextOfMessageItem:(id)a3;
-+ (id)repliesForMessages:(id)a3 senderMessages:(id)a4 recipientHandles:(id)a5 languageCode:(id)a6 languageCodeChangeDate:(id)a7;
-+ (id)textMessageItemsFilteredByIsOutgoing:(id)a3 isOutgoingContent:(BOOL)a4;
-+ (void)_annotatedRepliesForMessages:(id)a3 senderMessages:(id)a4 recipientHandles:(id)a5 languageCode:(id)a6 languageCodeChangeDate:(id)a7 loadAsync:(BOOL)a8 actionsOnly:(BOOL)a9 completion:(id)a10;
-+ (void)_contextualRepliesForMessages:(id)a3 senderMessages:(id)a4 recipientHandles:(id)a5 languageCode:(id)a6 languageCodeChangeDate:(id)a7 loadAsync:(BOOL)a8 includeDynamicSuggestions:(BOOL)a9 requestType:(unint64_t)a10 completion:(id)a11;
-+ (void)_repliesForMessages:(id)a3 senderMessages:(id)a4 recipientHandles:(id)a5 languageCode:(id)a6 languageCodeChangeDate:(id)a7 loadAsync:(BOOL)a8 fetchUsingContactsFramework:(BOOL)a9 completion:(id)a10;
++ (id)combinedPlainTextOfMessageItem:(id)item;
++ (id)repliesForMessages:(id)messages senderMessages:(id)senderMessages recipientHandles:(id)handles languageCode:(id)code languageCodeChangeDate:(id)date;
++ (id)textMessageItemsFilteredByIsOutgoing:(id)outgoing isOutgoingContent:(BOOL)content;
++ (void)_annotatedRepliesForMessages:(id)messages senderMessages:(id)senderMessages recipientHandles:(id)handles languageCode:(id)code languageCodeChangeDate:(id)date loadAsync:(BOOL)async actionsOnly:(BOOL)only completion:(id)self0;
++ (void)_contextualRepliesForMessages:(id)messages senderMessages:(id)senderMessages recipientHandles:(id)handles languageCode:(id)code languageCodeChangeDate:(id)date loadAsync:(BOOL)async includeDynamicSuggestions:(BOOL)suggestions requestType:(unint64_t)self0 completion:(id)self1;
++ (void)_repliesForMessages:(id)messages senderMessages:(id)senderMessages recipientHandles:(id)handles languageCode:(id)code languageCodeChangeDate:(id)date loadAsync:(BOOL)async fetchUsingContactsFramework:(BOOL)framework completion:(id)self0;
 + (void)primeResponseKitIfNeeded;
 @end
 
 @implementation IMReplySuggestionGenerator
 
-+ (id)repliesForMessages:(id)a3 senderMessages:(id)a4 recipientHandles:(id)a5 languageCode:(id)a6 languageCodeChangeDate:(id)a7
++ (id)repliesForMessages:(id)messages senderMessages:(id)senderMessages recipientHandles:(id)handles languageCode:(id)code languageCodeChangeDate:(id)date
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  messagesCopy = messages;
+  senderMessagesCopy = senderMessages;
+  handlesCopy = handles;
+  codeCopy = code;
+  dateCopy = date;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
@@ -30,36 +30,36 @@
   v20[3] = &unk_1E78286C8;
   v20[4] = &v21;
   LOBYTE(v19) = 1;
-  [a1 _repliesForMessages:v12 senderMessages:v13 recipientHandles:v14 languageCode:v15 languageCodeChangeDate:v16 loadAsync:0 fetchUsingContactsFramework:v19 completion:v20];
+  [self _repliesForMessages:messagesCopy senderMessages:senderMessagesCopy recipientHandles:handlesCopy languageCode:codeCopy languageCodeChangeDate:dateCopy loadAsync:0 fetchUsingContactsFramework:v19 completion:v20];
   v17 = v22[5];
   _Block_object_dispose(&v21, 8);
 
   return v17;
 }
 
-+ (void)_annotatedRepliesForMessages:(id)a3 senderMessages:(id)a4 recipientHandles:(id)a5 languageCode:(id)a6 languageCodeChangeDate:(id)a7 loadAsync:(BOOL)a8 actionsOnly:(BOOL)a9 completion:(id)a10
++ (void)_annotatedRepliesForMessages:(id)messages senderMessages:(id)senderMessages recipientHandles:(id)handles languageCode:(id)code languageCodeChangeDate:(id)date loadAsync:(BOOL)async actionsOnly:(BOOL)only completion:(id)self0
 {
-  v37 = a8;
+  asyncCopy = async;
   v51 = *MEMORY[0x1E69E9840];
-  v41 = a3;
-  v40 = a4;
-  v15 = a5;
-  v16 = a6;
-  v36 = a7;
-  v17 = a10;
-  v18 = [MEMORY[0x1E695DF70] array];
+  messagesCopy = messages;
+  senderMessagesCopy = senderMessages;
+  handlesCopy = handles;
+  codeCopy = code;
+  dateCopy = date;
+  completionCopy = completion;
+  array = [MEMORY[0x1E695DF70] array];
   v19 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-  v38 = v16;
-  v39 = v15;
-  if (a9)
+  v38 = codeCopy;
+  v39 = handlesCopy;
+  if (only)
   {
     v20 = 2;
   }
 
   else
   {
-    v35 = a1;
-    v21 = sub_1A8680188(v15, v16, 1);
+    selfCopy = self;
+    v21 = sub_1A8680188(handlesCopy, codeCopy, 1);
     v46 = 0u;
     v47 = 0u;
     v48 = 0u;
@@ -82,10 +82,10 @@
           v26 = *(*(&v46 + 1) + 8 * v25);
           v27 = [[IMReplySuggestion alloc] initWithType:2 text:v26 version:0];
           [(IMReplySuggestion *)v27 setStringRepresentation:v26];
-          v28 = [v26 localizedLowercaseString];
-          [v19 addObject:v28];
+          localizedLowercaseString = [v26 localizedLowercaseString];
+          [v19 addObject:localizedLowercaseString];
 
-          [v18 addObject:v27];
+          [array addObject:v27];
           ++v25;
         }
 
@@ -97,60 +97,60 @@
     }
 
     v20 = 0;
-    a1 = v35;
+    self = selfCopy;
   }
 
   v29 = objc_opt_class();
-  v30 = [a1 includeSmartReplies];
+  includeSmartReplies = [self includeSmartReplies];
   v42[0] = MEMORY[0x1E69E9820];
   v42[1] = 3221225472;
   v42[2] = sub_1A86805EC;
   v42[3] = &unk_1E78286F0;
   v43 = v19;
-  v44 = v18;
-  v45 = v17;
-  v31 = v17;
-  v32 = v18;
+  v44 = array;
+  v45 = completionCopy;
+  v31 = completionCopy;
+  v32 = array;
   v33 = v19;
-  LOBYTE(v34) = v30;
-  [v29 _contextualRepliesForMessages:v41 senderMessages:v40 recipientHandles:v39 languageCode:v38 languageCodeChangeDate:v36 loadAsync:v37 includeDynamicSuggestions:v34 requestType:v20 completion:v42];
+  LOBYTE(v34) = includeSmartReplies;
+  [v29 _contextualRepliesForMessages:messagesCopy senderMessages:senderMessagesCopy recipientHandles:v39 languageCode:v38 languageCodeChangeDate:dateCopy loadAsync:asyncCopy includeDynamicSuggestions:v34 requestType:v20 completion:v42];
 }
 
-+ (void)_repliesForMessages:(id)a3 senderMessages:(id)a4 recipientHandles:(id)a5 languageCode:(id)a6 languageCodeChangeDate:(id)a7 loadAsync:(BOOL)a8 fetchUsingContactsFramework:(BOOL)a9 completion:(id)a10
++ (void)_repliesForMessages:(id)messages senderMessages:(id)senderMessages recipientHandles:(id)handles languageCode:(id)code languageCodeChangeDate:(id)date loadAsync:(BOOL)async fetchUsingContactsFramework:(BOOL)framework completion:(id)self0
 {
-  v31 = a8;
-  v16 = a10;
+  asyncCopy = async;
+  completionCopy = completion;
   v17 = MEMORY[0x1E695DF70];
-  v30 = a7;
-  v18 = a6;
-  v19 = a5;
-  v29 = a4;
-  v20 = a3;
-  v21 = [v17 array];
+  dateCopy = date;
+  codeCopy = code;
+  handlesCopy = handles;
+  senderMessagesCopy = senderMessages;
+  messagesCopy = messages;
+  array = [v17 array];
   v22 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-  v23 = sub_1A8680188(v19, v18, a9);
-  sub_1A8680BDC(v21, v22, v23);
+  v23 = sub_1A8680188(handlesCopy, codeCopy, framework);
+  sub_1A8680BDC(array, v22, v23);
 
   v24 = objc_opt_class();
-  LOBYTE(a7) = [a1 includeSmartReplies];
+  LOBYTE(date) = [self includeSmartReplies];
   v32[0] = MEMORY[0x1E69E9820];
   v32[1] = 3221225472;
   v32[2] = sub_1A8680D2C;
   v32[3] = &unk_1E78286F0;
-  v33 = v21;
+  v33 = array;
   v34 = v22;
-  v35 = v16;
-  v25 = v16;
+  v35 = completionCopy;
+  v25 = completionCopy;
   v26 = v22;
-  v27 = v21;
-  LOBYTE(v28) = a7;
-  [v24 _contextualRepliesForMessages:v20 senderMessages:v29 recipientHandles:v19 languageCode:v18 languageCodeChangeDate:v30 loadAsync:v31 includeDynamicSuggestions:v28 requestType:1 completion:v32];
+  v27 = array;
+  LOBYTE(v28) = date;
+  [v24 _contextualRepliesForMessages:messagesCopy senderMessages:senderMessagesCopy recipientHandles:handlesCopy languageCode:codeCopy languageCodeChangeDate:dateCopy loadAsync:asyncCopy includeDynamicSuggestions:v28 requestType:1 completion:v32];
 }
 
 + (BOOL)includeSmartReplies
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 objectForKey:@"IncludeSmartRepliesKey"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults objectForKey:@"IncludeSmartRepliesKey"];
   v4 = v3;
   v5 = MEMORY[0x1E695E118];
   if (v3)
@@ -160,22 +160,22 @@
 
   v6 = v5;
 
-  v7 = [v6 BOOLValue];
-  return v7;
+  bOOLValue = [v6 BOOLValue];
+  return bOOLValue;
 }
 
-+ (void)_contextualRepliesForMessages:(id)a3 senderMessages:(id)a4 recipientHandles:(id)a5 languageCode:(id)a6 languageCodeChangeDate:(id)a7 loadAsync:(BOOL)a8 includeDynamicSuggestions:(BOOL)a9 requestType:(unint64_t)a10 completion:(id)a11
++ (void)_contextualRepliesForMessages:(id)messages senderMessages:(id)senderMessages recipientHandles:(id)handles languageCode:(id)code languageCodeChangeDate:(id)date loadAsync:(BOOL)async includeDynamicSuggestions:(BOOL)suggestions requestType:(unint64_t)self0 completion:(id)self1
 {
-  v57 = a8;
+  asyncCopy = async;
   v84 = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v16 = a4;
-  v55 = a5;
-  v17 = a6;
-  v59 = a7;
-  v58 = a11;
-  v63 = v17;
-  if (![v17 length])
+  messagesCopy = messages;
+  senderMessagesCopy = senderMessages;
+  handlesCopy = handles;
+  codeCopy = code;
+  dateCopy = date;
+  completionCopy = completion;
+  v63 = codeCopy;
+  if (![codeCopy length])
   {
     v18 = IMLogHandleForCategory("IMReplySuggestionGenerator");
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
@@ -186,17 +186,17 @@
     v63 = 0;
   }
 
-  v19 = [v15 firstObject];
-  v20 = [v19 time];
+  firstObject = [messagesCopy firstObject];
+  time = [firstObject time];
 
-  v21 = [v16 firstObject];
-  v62 = [v21 time];
+  firstObject2 = [senderMessagesCopy firstObject];
+  time2 = [firstObject2 time];
 
-  v61 = v20;
+  v61 = time;
   v60 = v61;
-  if ([v61 compare:v62] == -1)
+  if ([v61 compare:time2] == -1)
   {
-    v60 = v62;
+    v60 = time2;
   }
 
   v66 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -204,7 +204,7 @@
   v76 = 0u;
   v73 = 0u;
   v74 = 0u;
-  obj = v15;
+  obj = messagesCopy;
   v22 = [obj countByEnumeratingWithState:&v73 objects:v83 count:16];
   if (v22)
   {
@@ -228,12 +228,12 @@
         [v26 setTapBack:v30];
         [v26 setRead:{objc_msgSend(v25, "isRead")}];
         [v26 setEmote:{objc_msgSend(v25, "isEmote")}];
-        v31 = [v25 sender];
-        v32 = [v31 copy];
+        sender = [v25 sender];
+        v32 = [sender copy];
         [v26 setSenderIdentifier:v32];
 
-        v33 = [v25 time];
-        [v26 setDateSent:v33];
+        time3 = [v25 time];
+        [v26 setDateSent:time3];
 
         [v66 addObject:v26];
       }
@@ -249,7 +249,7 @@
   v72 = 0u;
   v69 = 0u;
   v70 = 0u;
-  v64 = v16;
+  v64 = senderMessagesCopy;
   v35 = [v64 countByEnumeratingWithState:&v69 objects:v82 count:16];
   if (v35)
   {
@@ -273,12 +273,12 @@
         [v39 setTapBack:v43];
         [v39 setRead:{objc_msgSend(v38, "isRead")}];
         [v39 setEmote:{objc_msgSend(v38, "isEmote")}];
-        v44 = [v38 sender];
-        v45 = [v44 copy];
+        sender2 = [v38 sender];
+        v45 = [sender2 copy];
         [v39 setSenderIdentifier:v45];
 
-        v46 = [v38 time];
-        [v39 setDateSent:v46];
+        time4 = [v38 time];
+        [v39 setDateSent:time4];
 
         [v34 addObject:v39];
       }
@@ -307,33 +307,33 @@
 
   v48 = v47;
   _Block_object_dispose(&v78, 8);
-  v49 = [[v47 alloc] initWithType:a10 receivedMessages:v66];
+  v49 = [[v47 alloc] initWithType:type receivedMessages:v66];
   [v49 setSenderMessages:v34];
   [v49 setLanguageCode:v63];
-  [v49 setIncludesDynamicSuggestions:a9];
+  [v49 setIncludesDynamicSuggestions:suggestions];
   [v49 setRequestDate:v60];
-  [v49 setLanguageLastChangedDate:v59];
-  v50 = [sub_1A8681664() sharedManager];
-  v51 = v50;
-  if (v57)
+  [v49 setLanguageLastChangedDate:dateCopy];
+  sharedManager = [sub_1A8681664() sharedManager];
+  v51 = sharedManager;
+  if (asyncCopy)
   {
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = sub_1A8681744;
     aBlock[3] = &unk_1E7828718;
-    v68 = v58;
+    v68 = completionCopy;
     v52 = _Block_copy(aBlock);
     [v51 suggestionsForRequest:v49 withCompletion:v52];
 
-    v53 = v68;
+    suggestions = v68;
   }
 
   else
   {
-    v54 = [v50 suggestionsForRequest:v49];
-    v53 = [v54 suggestions];
+    v54 = [sharedManager suggestionsForRequest:v49];
+    suggestions = [v54 suggestions];
 
-    (*(v58 + 2))(v58, v53);
+    (*(completionCopy + 2))(completionCopy, suggestions);
   }
 }
 
@@ -345,13 +345,13 @@
   }
 }
 
-+ (id)combinedPlainTextOfMessageItem:(id)a3
++ (id)combinedPlainTextOfMessageItem:(id)item
 {
-  v3 = a3;
-  v4 = [v3 balloonBundleID];
-  v5 = [v4 length];
+  itemCopy = item;
+  balloonBundleID = [itemCopy balloonBundleID];
+  v5 = [balloonBundleID length];
 
-  v6 = &stru_1F1BB91F0;
+  trimmedString = &stru_1F1BB91F0;
   if (!v5)
   {
     v10 = 0;
@@ -360,50 +360,50 @@
     v13 = sub_1A8601F34;
     v14 = sub_1A8602188;
     v15 = &stru_1F1BB91F0;
-    v7 = [v3 body];
+    body = [itemCopy body];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = sub_1A86819B4;
     v9[3] = &unk_1E7828740;
     v9[4] = &v10;
-    [v7 __im_visitMessageParts:v9];
+    [body __im_visitMessageParts:v9];
 
-    v6 = [v11[5] trimmedString];
+    trimmedString = [v11[5] trimmedString];
     _Block_object_dispose(&v10, 8);
   }
 
-  return v6;
+  return trimmedString;
 }
 
-+ (id)textMessageItemsFilteredByIsOutgoing:(id)a3 isOutgoingContent:(BOOL)a4
++ (id)textMessageItemsFilteredByIsOutgoing:(id)outgoing isOutgoingContent:(BOOL)content
 {
-  v4 = a4;
+  contentCopy = content;
   v27 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  outgoingCopy = outgoing;
   v21 = objc_opt_new();
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v6 = [v5 reverseObjectEnumerator];
-  v7 = [v6 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  reverseObjectEnumerator = [outgoingCopy reverseObjectEnumerator];
+  v7 = [reverseObjectEnumerator countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (!v7)
   {
-    v9 = 0;
+    time2 = 0;
     goto LABEL_24;
   }
 
   v8 = v7;
-  v9 = 0;
+  time2 = 0;
   v10 = *v23;
-  v20 = v5;
+  v20 = outgoingCopy;
   while (2)
   {
     for (i = 0; i != v8; ++i)
     {
       if (*v23 != v10)
       {
-        objc_enumerationMutation(v6);
+        objc_enumerationMutation(reverseObjectEnumerator);
       }
 
       v12 = *(*(&v22 + 1) + 8 * i);
@@ -426,11 +426,11 @@
       }
 
       v16 = [IMReplySuggestionGenerator combinedPlainTextOfMessageItem:v15];
-      if ([v15 isFromMe] != v4 || (objc_msgSend(v15, "isTypingMessage") & 1) != 0 || !objc_msgSend(v16, "length"))
+      if ([v15 isFromMe] != contentCopy || (objc_msgSend(v15, "isTypingMessage") & 1) != 0 || !objc_msgSend(v16, "length"))
       {
 
 LABEL_19:
-        if (v9)
+        if (time2)
         {
           goto LABEL_24;
         }
@@ -438,26 +438,26 @@ LABEL_19:
         continue;
       }
 
-      v17 = [v15 time];
-      if (!v9)
+      time = [v15 time];
+      if (!time2)
       {
-        v9 = [v15 time];
+        time2 = [v15 time];
       }
 
-      [v9 timeIntervalSinceDate:{v17, v20}];
+      [time2 timeIntervalSinceDate:{time, v20}];
       if (v18 > 120.0)
       {
 
-        v5 = v20;
+        outgoingCopy = v20;
         goto LABEL_24;
       }
 
       [v21 insertObject:v15 atIndex:0];
 
-      v5 = v20;
+      outgoingCopy = v20;
     }
 
-    v8 = [v6 countByEnumeratingWithState:&v22 objects:v26 count:16];
+    v8 = [reverseObjectEnumerator countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v8)
     {
       continue;

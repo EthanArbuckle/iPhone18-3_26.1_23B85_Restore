@@ -1,27 +1,27 @@
 @interface RoutePlanningTipkitCollectionViewCell
-- (_TtC4Maps37RoutePlanningTipkitCollectionViewCell)initWithFrame:(CGRect)a3;
-- (void)setShowBubbleIndicator:(BOOL)a3;
-- (void)updateViewModel:(id)a3;
+- (_TtC4Maps37RoutePlanningTipkitCollectionViewCell)initWithFrame:(CGRect)frame;
+- (void)setShowBubbleIndicator:(BOOL)indicator;
+- (void)updateViewModel:(id)model;
 @end
 
 @implementation RoutePlanningTipkitCollectionViewCell
 
-- (void)setShowBubbleIndicator:(BOOL)a3
+- (void)setShowBubbleIndicator:(BOOL)indicator
 {
-  v3 = a3;
-  v5 = self;
+  indicatorCopy = indicator;
+  selfCopy = self;
   v4 = sub_1004271C8();
-  [v4 setShowBubbleIndicator:v3];
+  [v4 setShowBubbleIndicator:indicatorCopy];
 
-  *(&v5->super.super.super.super.super.isa + OBJC_IVAR____TtC4Maps37RoutePlanningTipkitCollectionViewCell_showBubbleIndicator) = v3;
+  *(&selfCopy->super.super.super.super.super.isa + OBJC_IVAR____TtC4Maps37RoutePlanningTipkitCollectionViewCell_showBubbleIndicator) = indicatorCopy;
 }
 
-- (_TtC4Maps37RoutePlanningTipkitCollectionViewCell)initWithFrame:(CGRect)a3
+- (_TtC4Maps37RoutePlanningTipkitCollectionViewCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v7 = (&self->super.super.super.super.super.isa + OBJC_IVAR____TtC4Maps37RoutePlanningTipkitCollectionViewCell_dismissHandler);
   *v7 = 0;
   v7[1] = 0;
@@ -29,20 +29,20 @@
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC4Maps37RoutePlanningTipkitCollectionViewCell_showBubbleIndicator) = 0;
   v10.receiver = self;
   v10.super_class = type metadata accessor for RoutePlanningTipkitCollectionViewCell();
-  v8 = [(RoutePlanningTipkitCollectionViewCell *)&v10 initWithFrame:x, y, width, height];
+  height = [(RoutePlanningTipkitCollectionViewCell *)&v10 initWithFrame:x, y, width, height];
   sub_10042743C();
 
-  return v8;
+  return height;
 }
 
-- (void)updateViewModel:(id)a3
+- (void)updateViewModel:(id)model
 {
-  v4 = a3;
-  v6 = self;
+  modelCopy = model;
+  selfCopy = self;
   v5 = sub_1004271C8();
-  sub_1002162E0(v4);
+  sub_1002162E0(modelCopy);
 
-  [(RoutePlanningTipkitCollectionViewCell *)v6 setNeedsUpdateConfiguration];
+  [(RoutePlanningTipkitCollectionViewCell *)selfCopy setNeedsUpdateConfiguration];
 }
 
 @end

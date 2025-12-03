@@ -1,10 +1,10 @@
 @interface UNSDaemonLauncher
 - (UNSDaemonLauncher)init;
-- (id)_queue_ensureConnectionForBundleIdentifier:(id)a3;
-- (void)_queue_invalidatedConnectionForBundleIdentifier:(id)a3;
-- (void)didChangeSettings:(id)a3 forBundleIdentifier:(id)a4;
-- (void)didOpenApplicationForResponse:(id)a3 forBundleIdentifier:(id)a4;
-- (void)didReceiveNotificationResponse:(id)a3 forBundleIdentifier:(id)a4 withCompletionHandler:(id)a5;
+- (id)_queue_ensureConnectionForBundleIdentifier:(id)identifier;
+- (void)_queue_invalidatedConnectionForBundleIdentifier:(id)identifier;
+- (void)didChangeSettings:(id)settings forBundleIdentifier:(id)identifier;
+- (void)didOpenApplicationForResponse:(id)response forBundleIdentifier:(id)identifier;
+- (void)didReceiveNotificationResponse:(id)response forBundleIdentifier:(id)identifier withCompletionHandler:(id)handler;
 @end
 
 @implementation UNSDaemonLauncher
@@ -34,17 +34,17 @@
   return v2;
 }
 
-- (void)didReceiveNotificationResponse:(id)a3 forBundleIdentifier:(id)a4 withCompletionHandler:(id)a5
+- (void)didReceiveNotificationResponse:(id)response forBundleIdentifier:(id)identifier withCompletionHandler:(id)handler
 {
   v23 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  responseCopy = response;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v11 = *MEMORY[0x277CE2078];
   if (os_log_type_enabled(*MEMORY[0x277CE2078], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v22 = v9;
+    v22 = identifierCopy;
     _os_log_impl(&dword_270AA8000, v11, OS_LOG_TYPE_DEFAULT, "[%{public}@] Sending didReceiveNotificationResponse:forBundleIdentifier:", buf, 0xCu);
   }
 
@@ -54,12 +54,12 @@
   v17[2] = __94__UNSDaemonLauncher_didReceiveNotificationResponse_forBundleIdentifier_withCompletionHandler___block_invoke;
   v17[3] = &unk_279E106B0;
   v17[4] = self;
-  v18 = v9;
-  v19 = v8;
-  v20 = v10;
-  v13 = v8;
-  v14 = v10;
-  v15 = v9;
+  v18 = identifierCopy;
+  v19 = responseCopy;
+  v20 = handlerCopy;
+  v13 = responseCopy;
+  v14 = handlerCopy;
+  v15 = identifierCopy;
   dispatch_async(queue, v17);
 
   v16 = *MEMORY[0x277D85DE8];
@@ -155,16 +155,16 @@ uint64_t __94__UNSDaemonLauncher_didReceiveNotificationResponse_forBundleIdentif
   return result;
 }
 
-- (void)didOpenApplicationForResponse:(id)a3 forBundleIdentifier:(id)a4
+- (void)didOpenApplicationForResponse:(id)response forBundleIdentifier:(id)identifier
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  responseCopy = response;
+  identifierCopy = identifier;
   v8 = *MEMORY[0x277CE2078];
   if (os_log_type_enabled(*MEMORY[0x277CE2078], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v17 = v7;
+    v17 = identifierCopy;
     _os_log_impl(&dword_270AA8000, v8, OS_LOG_TYPE_DEFAULT, "[%{public}@] Sending didOpenApplicationForResponse:forBundleIdentifier:", buf, 0xCu);
   }
 
@@ -174,10 +174,10 @@ uint64_t __94__UNSDaemonLauncher_didReceiveNotificationResponse_forBundleIdentif
   block[2] = __71__UNSDaemonLauncher_didOpenApplicationForResponse_forBundleIdentifier___block_invoke;
   block[3] = &unk_279E10700;
   block[4] = self;
-  v14 = v7;
-  v15 = v6;
-  v10 = v6;
-  v11 = v7;
+  v14 = identifierCopy;
+  v15 = responseCopy;
+  v10 = responseCopy;
+  v11 = identifierCopy;
   dispatch_async(queue, block);
 
   v12 = *MEMORY[0x277D85DE8];
@@ -204,16 +204,16 @@ void __71__UNSDaemonLauncher_didOpenApplicationForResponse_forBundleIdentifier__
   }
 }
 
-- (void)didChangeSettings:(id)a3 forBundleIdentifier:(id)a4
+- (void)didChangeSettings:(id)settings forBundleIdentifier:(id)identifier
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  settingsCopy = settings;
+  identifierCopy = identifier;
   v8 = *MEMORY[0x277CE2078];
   if (os_log_type_enabled(*MEMORY[0x277CE2078], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v17 = v7;
+    v17 = identifierCopy;
     _os_log_impl(&dword_270AA8000, v8, OS_LOG_TYPE_DEFAULT, "[%{public}@] Sending didChangeSettings:forBundleIdentifier:", buf, 0xCu);
   }
 
@@ -223,10 +223,10 @@ void __71__UNSDaemonLauncher_didOpenApplicationForResponse_forBundleIdentifier__
   block[2] = __59__UNSDaemonLauncher_didChangeSettings_forBundleIdentifier___block_invoke;
   block[3] = &unk_279E10700;
   block[4] = self;
-  v14 = v7;
-  v15 = v6;
-  v10 = v6;
-  v11 = v7;
+  v14 = identifierCopy;
+  v15 = settingsCopy;
+  v10 = settingsCopy;
+  v11 = identifierCopy;
   dispatch_async(queue, block);
 
   v12 = *MEMORY[0x277D85DE8];
@@ -253,19 +253,19 @@ void __59__UNSDaemonLauncher_didChangeSettings_forBundleIdentifier___block_invok
   }
 }
 
-- (id)_queue_ensureConnectionForBundleIdentifier:(id)a3
+- (id)_queue_ensureConnectionForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   dispatch_assert_queue_V2(self->_queue);
-  v5 = [(NSMutableDictionary *)self->_connectionByBundleIdentifier objectForKey:v4];
+  v5 = [(NSMutableDictionary *)self->_connectionByBundleIdentifier objectForKey:identifierCopy];
   if (!v5)
   {
     objc_initWeak(&location, self);
-    v6 = [MEMORY[0x277CE2038] serviceNameForBundleIdentifier:v4];
+    v6 = [MEMORY[0x277CE2038] serviceNameForBundleIdentifier:identifierCopy];
     v5 = [objc_alloc(MEMORY[0x277CCAE80]) initWithMachServiceName:v6 options:0];
-    [(NSMutableDictionary *)self->_connectionByBundleIdentifier setObject:v5 forKey:v4];
-    v7 = [MEMORY[0x277CE2038] serverInterface];
-    [v5 setRemoteObjectInterface:v7];
+    [(NSMutableDictionary *)self->_connectionByBundleIdentifier setObject:v5 forKey:identifierCopy];
+    serverInterface = [MEMORY[0x277CE2038] serverInterface];
+    [v5 setRemoteObjectInterface:serverInterface];
 
     objc_initWeak(&from, self->_queue);
     v17[0] = MEMORY[0x277D85DD0];
@@ -274,7 +274,7 @@ void __59__UNSDaemonLauncher_didChangeSettings_forBundleIdentifier___block_invok
     v17[3] = &unk_279E10750;
     objc_copyWeak(&v19, &from);
     objc_copyWeak(&v20, &location);
-    v8 = v4;
+    v8 = identifierCopy;
     v18 = v8;
     [v5 setInterruptionHandler:v17];
     v10 = MEMORY[0x277D85DD0];
@@ -346,17 +346,17 @@ void __64__UNSDaemonLauncher__queue_ensureConnectionForBundleIdentifier___block_
   [WeakRetained _queue_invalidatedConnectionForBundleIdentifier:*(a1 + 32)];
 }
 
-- (void)_queue_invalidatedConnectionForBundleIdentifier:(id)a3
+- (void)_queue_invalidatedConnectionForBundleIdentifier:(id)identifier
 {
   queue = self->_queue;
-  v5 = a3;
+  identifierCopy = identifier;
   dispatch_assert_queue_V2(queue);
-  v6 = [(NSMutableDictionary *)self->_connectionByBundleIdentifier objectForKey:v5];
+  v6 = [(NSMutableDictionary *)self->_connectionByBundleIdentifier objectForKey:identifierCopy];
   [v6 invalidate];
   [v6 setInterruptionHandler:0];
   [v6 setInvalidationHandler:0];
   [v6 setExportedObject:0];
-  [(NSMutableDictionary *)self->_connectionByBundleIdentifier removeObjectForKey:v5];
+  [(NSMutableDictionary *)self->_connectionByBundleIdentifier removeObjectForKey:identifierCopy];
 }
 
 void __94__UNSDaemonLauncher_didReceiveNotificationResponse_forBundleIdentifier_withCompletionHandler___block_invoke_2_cold_1(uint64_t a1)

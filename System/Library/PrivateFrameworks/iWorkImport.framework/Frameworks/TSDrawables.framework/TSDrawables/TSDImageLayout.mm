@@ -6,15 +6,15 @@
 - (CGAffineTransform)layoutToImageTransform;
 - (CGAffineTransform)layoutToMaskTransform;
 - (CGRect)boundsInfluencingExteriorWrap;
-- (CGRect)computeAlignmentFrameInRoot:(BOOL)a3;
+- (CGRect)computeAlignmentFrameInRoot:(BOOL)root;
 - (CGRect)pathBoundsWithoutStroke;
 - (CGSize)sizeOfFrameRectIncludingCoverage;
 - (TSDImageInfo)imageInfo;
-- (TSDImageLayout)initWithInfo:(id)a3;
+- (TSDImageLayout)initWithInfo:(id)info;
 - (TSDInfoGeometry)currentInfoGeometry;
 - (TSDLayoutGeometry)imageGeometryInRoot;
 - (double)descentForInlineLayout;
-- (double)scaleForInlineClampingUnrotatedSize:(CGSize)a3 withTransform:(CGAffineTransform *)a4;
+- (double)scaleForInlineClampingUnrotatedSize:(CGSize)size withTransform:(CGAffineTransform *)transform;
 - (id)childInfosForChildLayouts;
 - (id)computeLayoutGeometry;
 - (id)i_computeWrapPath;
@@ -24,23 +24,23 @@
 - (void)dealloc;
 - (void)dynamicImageAdjustmentsChangeDidBegin;
 - (void)dynamicImageAdjustmentsChangeDidEnd;
-- (void)dynamicImageAdjustmentsUpdateToValue:(id)a3;
-- (void)offsetGeometryBy:(CGPoint)a3;
-- (void)p_calculateClampModelValuesWithAdditionalTransform:(CGAffineTransform *)a3 andPerformBlock:(id)a4;
+- (void)dynamicImageAdjustmentsUpdateToValue:(id)value;
+- (void)offsetGeometryBy:(CGPoint)by;
+- (void)p_calculateClampModelValuesWithAdditionalTransform:(CGAffineTransform *)transform andPerformBlock:(id)block;
 - (void)p_createDynamicCopies;
 - (void)p_destroyDynamicCopies;
-- (void)p_setDynamicInfoGeometry:(id)a3;
-- (void)transferLayoutGeometryToInfo:(id)a3 withAdditionalTransform:(CGAffineTransform *)a4 assertIfInDocument:(BOOL)a5;
+- (void)p_setDynamicInfoGeometry:(id)geometry;
+- (void)transferLayoutGeometryToInfo:(id)info withAdditionalTransform:(CGAffineTransform *)transform assertIfInDocument:(BOOL)document;
 - (void)updateChildrenFromInfo;
 @end
 
 @implementation TSDImageLayout
 
-- (TSDImageLayout)initWithInfo:(id)a3
+- (TSDImageLayout)initWithInfo:(id)info
 {
   v13.receiver = self;
   v13.super_class = TSDImageLayout;
-  v3 = [(TSDMediaLayout *)&v13 initWithInfo:a3];
+  v3 = [(TSDMediaLayout *)&v13 initWithInfo:info];
   v6 = v3;
   if (v3)
   {
@@ -139,18 +139,18 @@
   v14 = objc_msgSend_maskLayout(self, v7, v8);
   if (v14)
   {
-    v15 = objc_msgSend_layoutGeometryFromInfo(self, v12, v13);
+    computeLayoutGeometry = objc_msgSend_layoutGeometryFromInfo(self, v12, v13);
   }
 
   else
   {
     v278.receiver = self;
     v278.super_class = TSDImageLayout;
-    v15 = [(TSDLayout *)&v278 computeLayoutGeometry];
+    computeLayoutGeometry = [(TSDLayout *)&v278 computeLayoutGeometry];
   }
 
-  v16 = v15;
-  objc_storeStrong(&self->mImageGeometry, v15);
+  v16 = computeLayoutGeometry;
+  objc_storeStrong(&self->mImageGeometry, computeLayoutGeometry);
   objc_opt_class();
   v19 = objc_msgSend_stroke(self, v17, v18);
   v20 = TSUDynamicCast();
@@ -564,11 +564,11 @@ LABEL_59:
   return v160;
 }
 
-- (double)scaleForInlineClampingUnrotatedSize:(CGSize)a3 withTransform:(CGAffineTransform *)a4
+- (double)scaleForInlineClampingUnrotatedSize:(CGSize)size withTransform:(CGAffineTransform *)transform
 {
-  height = a3.height;
-  width = a3.width;
-  v8 = objc_msgSend_imageInfo(self, a2, a4);
+  height = size.height;
+  width = size.width;
+  v8 = objc_msgSend_imageInfo(self, a2, transform);
   v11 = objc_msgSend_maskInfo(v8, v9, v10);
 
   if (v11)
@@ -588,10 +588,10 @@ LABEL_59:
     v25 = objc_msgSend_initWithNaturalSize_(v29, v30, v31, width, height);
   }
 
-  v32 = *&a4->c;
-  v36[0] = *&a4->a;
+  v32 = *&transform->c;
+  v36[0] = *&transform->a;
   v36[1] = v32;
-  v36[2] = *&a4->tx;
+  v36[2] = *&transform->tx;
   objc_msgSend_scaleToApplyToPathSourceNaturalSizeApplyingLayoutTransform_withStartingPathSource_(self, v28, v36, v25);
   v34 = v33;
 
@@ -602,18 +602,18 @@ LABEL_59:
 {
   v13.receiver = self;
   v13.super_class = TSDImageLayout;
-  v3 = [(TSDLayout *)&v13 childInfosForChildLayouts];
+  childInfosForChildLayouts = [(TSDLayout *)&v13 childInfosForChildLayouts];
   v6 = objc_msgSend_imageInfo(self, v4, v5);
   v9 = objc_msgSend_maskInfo(v6, v7, v8);
 
   if (v9)
   {
-    v11 = objc_msgSend_arrayByAddingObject_(v3, v10, v9);
+    v11 = objc_msgSend_arrayByAddingObject_(childInfosForChildLayouts, v10, v9);
 
-    v3 = v11;
+    childInfosForChildLayouts = v11;
   }
 
-  return v3;
+  return childInfosForChildLayouts;
 }
 
 - (void)updateChildrenFromInfo
@@ -713,9 +713,9 @@ LABEL_17:
 LABEL_19:
 }
 
-- (CGRect)computeAlignmentFrameInRoot:(BOOL)a3
+- (CGRect)computeAlignmentFrameInRoot:(BOOL)root
 {
-  v3 = a3;
+  rootCopy = root;
   if (self->mMaskLayout)
   {
     if (!self->mPathToStroke)
@@ -731,7 +731,7 @@ LABEL_6:
     v15 = objc_msgSend_bezierPathWithCGPath_(MEMORY[0x277D81160], v14, self->mPathToStroke);
     memset(&v60, 0, sizeof(v60));
     objc_msgSend_layoutToMaskTransform(self, v16, v17);
-    if (v3)
+    if (rootCopy)
     {
       objc_msgSend_transformInRoot(self, v18, v19);
     }
@@ -778,7 +778,7 @@ LABEL_25:
     goto LABEL_25;
   }
 
-  v5 = objc_msgSend_imageInfo(self, a2, a3);
+  v5 = objc_msgSend_imageInfo(self, a2, root);
   v8 = objc_msgSend_instantAlphaPath(v5, v6, v7);
   if (v8)
   {
@@ -796,7 +796,7 @@ LABEL_25:
 
 LABEL_16:
   memset(&v60, 0, sizeof(v60));
-  v38 = objc_msgSend_geometry(self, a2, a3);
+  v38 = objc_msgSend_geometry(self, a2, root);
   v41 = v38;
   if (v38)
   {
@@ -808,7 +808,7 @@ LABEL_16:
     memset(&v60, 0, sizeof(v60));
   }
 
-  if (v3)
+  if (rootCopy)
   {
     v44 = objc_msgSend_parent(self, v42, v43);
 
@@ -854,13 +854,13 @@ LABEL_29:
   return result;
 }
 
-- (void)offsetGeometryBy:(CGPoint)a3
+- (void)offsetGeometryBy:(CGPoint)by
 {
-  y = a3.y;
-  x = a3.x;
-  if (a3.x != *MEMORY[0x277CBF348] || a3.y != *(MEMORY[0x277CBF348] + 8))
+  y = by.y;
+  x = by.x;
+  if (by.x != *MEMORY[0x277CBF348] || by.y != *(MEMORY[0x277CBF348] + 8))
   {
-    v8 = objc_msgSend_geometryByTranslatingBy_(self->mImageGeometry, a2, v3, a3.x, a3.y);
+    v8 = objc_msgSend_geometryByTranslatingBy_(self->mImageGeometry, a2, v3, by.x, by.y);
     mImageGeometry = self->mImageGeometry;
     self->mImageGeometry = v8;
   }
@@ -941,29 +941,29 @@ LABEL_29:
   return CGRectIsNull(*&v18);
 }
 
-- (void)transferLayoutGeometryToInfo:(id)a3 withAdditionalTransform:(CGAffineTransform *)a4 assertIfInDocument:(BOOL)a5
+- (void)transferLayoutGeometryToInfo:(id)info withAdditionalTransform:(CGAffineTransform *)transform assertIfInDocument:(BOOL)document
 {
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = sub_27669435C;
   v10[3] = &unk_27A6CCA28;
-  v10[4] = a3;
-  v6 = *&a4->c;
-  v9[0] = *&a4->a;
+  v10[4] = info;
+  v6 = *&transform->c;
+  v9[0] = *&transform->a;
   v9[1] = v6;
-  v9[2] = *&a4->tx;
-  v7 = a3;
+  v9[2] = *&transform->tx;
+  infoCopy = info;
   objc_msgSend_p_calculateClampModelValuesWithAdditionalTransform_andPerformBlock_(self, v8, v9, v10);
 }
 
-- (void)p_calculateClampModelValuesWithAdditionalTransform:(CGAffineTransform *)a3 andPerformBlock:(id)a4
+- (void)p_calculateClampModelValuesWithAdditionalTransform:(CGAffineTransform *)transform andPerformBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v9 = objc_msgSend_imageGeometry(self, v7, v8);
-  v10 = *&a3->c;
-  v43 = *&a3->a;
+  v10 = *&transform->c;
+  v43 = *&transform->a;
   v44 = v10;
-  v45 = *&a3->tx;
+  v45 = *&transform->tx;
   v12 = objc_msgSend_geometryByTransformingBy_(v9, v11, &v43);
 
   if (v12)
@@ -995,12 +995,12 @@ LABEL_29:
 
     objc_msgSend_size(v29, v39, v40);
     objc_msgSend_scaleToNaturalSize_(v38, v41, v42);
-    v6[2](v6, v15, v29, v38);
+    blockCopy[2](blockCopy, v15, v29, v38);
   }
 
   else
   {
-    v6[2](v6, v15, 0, 0);
+    blockCopy[2](blockCopy, v15, 0, 0);
   }
 }
 
@@ -1215,9 +1215,9 @@ LABEL_29:
   self->mDynamicImageAdjustments = v9;
 }
 
-- (void)dynamicImageAdjustmentsUpdateToValue:(id)a3
+- (void)dynamicImageAdjustmentsUpdateToValue:(id)value
 {
-  v4 = objc_msgSend_copy(a3, a2, a3);
+  v4 = objc_msgSend_copy(value, a2, value);
   mDynamicImageAdjustments = self->mDynamicImageAdjustments;
   self->mDynamicImageAdjustments = v4;
 }
@@ -1507,9 +1507,9 @@ LABEL_32:
   self->mDynamicInfoGeometry = v15;
 }
 
-- (void)p_setDynamicInfoGeometry:(id)a3
+- (void)p_setDynamicInfoGeometry:(id)geometry
 {
-  v4 = objc_msgSend_copy(a3, a2, a3);
+  v4 = objc_msgSend_copy(geometry, a2, geometry);
   mDynamicInfoGeometry = self->mDynamicInfoGeometry;
   self->mDynamicInfoGeometry = v4;
 

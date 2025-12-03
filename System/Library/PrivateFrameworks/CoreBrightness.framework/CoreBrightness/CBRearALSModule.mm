@@ -1,18 +1,18 @@
 @interface CBRearALSModule
-- (BOOL)AABSensorOverridePropertyHandler:(id)a3;
-- (BOOL)addHIDServiceClient:(__IOHIDServiceClient *)a3;
-- (BOOL)displayBrightnessFactorPropertyHandler:(id)a3;
-- (BOOL)handleHIDEvent:(__IOHIDEvent *)a3 from:(__IOHIDServiceClient *)a4;
+- (BOOL)AABSensorOverridePropertyHandler:(id)handler;
+- (BOOL)addHIDServiceClient:(__IOHIDServiceClient *)client;
+- (BOOL)displayBrightnessFactorPropertyHandler:(id)handler;
+- (BOOL)handleHIDEvent:(__IOHIDEvent *)event from:(__IOHIDServiceClient *)from;
 - (BOOL)isMitigationActive;
 - (BOOL)isRearALSSupported;
-- (BOOL)rLuxOverridePropertyHandler:(id)a3;
-- (BOOL)removeHIDServiceClient:(__IOHIDServiceClient *)a3;
-- (BOOL)setProperty:(id)a3 forKey:(id)a4;
-- (CBRearALSModule)initWithQueue:(id)a3 andGrimaldiFactory:(id)a4;
-- (id)copyParam:(id)a3;
+- (BOOL)rLuxOverridePropertyHandler:(id)handler;
+- (BOOL)removeHIDServiceClient:(__IOHIDServiceClient *)client;
+- (BOOL)setProperty:(id)property forKey:(id)key;
+- (CBRearALSModule)initWithQueue:(id)queue andGrimaldiFactory:(id)factory;
+- (id)copyParam:(id)param;
 - (id)copyRearLux;
 - (void)dealloc;
-- (void)startSamplingWithFrequency:(float)a3;
+- (void)startSamplingWithFrequency:(float)frequency;
 - (void)stopSampling;
 @end
 
@@ -32,14 +32,14 @@
 - (id)copyRearLux
 {
   v28 = *MEMORY[0x1E69E9840];
-  v21 = 0;
+  copyRearLux = 0;
   if (self->_providerType == 1 && self->_rearALS)
   {
     if (self->_started)
     {
       if (self->_enableIlluminanceOverride)
       {
-        v21 = [objc_alloc(MEMORY[0x1E696AD98]) initWithDouble:self->_illuminanceOverride];
+        copyRearLux = [objc_alloc(MEMORY[0x1E696AD98]) initWithDouble:self->_illuminanceOverride];
         if (self->super._logHandle)
         {
           logHandle = self->super._logHandle;
@@ -69,7 +69,7 @@
 
       else if ([(CBRearALSModule *)self isMitigationActive])
       {
-        v21 = [(NSNumber *)self->_lastLux copy];
+        copyRearLux = [(NSNumber *)self->_lastLux copy];
         if (self->super._logHandle)
         {
           v11 = self->super._logHandle;
@@ -100,8 +100,8 @@
 
       else
       {
-        v2 = [(CBALSNode *)self->_rearALS currentALSEvent];
-        v20 = MEMORY[0x1E69E5928](v2);
+        currentALSEvent = [(CBALSNode *)self->_rearALS currentALSEvent];
+        v20 = MEMORY[0x1E69E5928](currentALSEvent);
         v19 = mach_time_now_in_seconds();
         if (!v20 || ([v20 timestamp], vabds_f32(v19, v3) >= 1.0))
         {
@@ -130,8 +130,8 @@
         {
           v14 = objc_alloc(MEMORY[0x1E696AD98]);
           [v20 illuminance];
-          v21 = [v14 initWithDouble:?];
-          self->_lastLux = [v21 copy];
+          copyRearLux = [v14 initWithDouble:?];
+          self->_lastLux = [copyRearLux copy];
           if (self->super._logHandle)
           {
             v13 = self->super._logHandle;
@@ -158,10 +158,10 @@
 
   else if (self->_providerType == 2 && self->_Grimaldi)
   {
-    v21 = [(CBGrimaldiModule *)self->_Grimaldi copyRearLux];
+    copyRearLux = [(CBGrimaldiModule *)self->_Grimaldi copyRearLux];
   }
 
-  if (v21)
+  if (copyRearLux)
   {
     if (self->super._logHandle)
     {
@@ -185,43 +185,43 @@
 
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
-      __os_log_helper_16_2_1_8_64(v23, v21);
+      __os_log_helper_16_2_1_8_64(v23, copyRearLux);
       _os_log_debug_impl(&dword_1DE8E5000, v9, OS_LOG_TYPE_DEBUG, "Copy Grimaldi Lux = %@", v23, 0xCu);
     }
   }
 
   *MEMORY[0x1E69E9840];
-  return v21;
+  return copyRearLux;
 }
 
-- (CBRearALSModule)initWithQueue:(id)a3 andGrimaldiFactory:(id)a4
+- (CBRearALSModule)initWithQueue:(id)queue andGrimaldiFactory:(id)factory
 {
   v29 = *MEMORY[0x1E69E9840];
-  v26 = self;
+  selfCopy = self;
   v25 = a2;
-  v24 = a3;
-  v23 = a4;
+  queueCopy = queue;
+  factoryCopy = factory;
   v22.receiver = self;
   v22.super_class = CBRearALSModule;
-  v26 = [(CBModule *)&v22 initWithQueue:a3];
-  if (!v26)
+  selfCopy = [(CBModule *)&v22 initWithQueue:queue];
+  if (!selfCopy)
   {
 LABEL_20:
-    v27 = v26;
+    v27 = selfCopy;
     goto LABEL_21;
   }
 
-  *(v26 + 2) = os_log_create("com.apple.CoreBrightness.AABRear.CBRearALSModule", "default");
-  if (*(v26 + 2))
+  *(selfCopy + 2) = os_log_create("com.apple.CoreBrightness.AABRear.CBRearALSModule", "default");
+  if (*(selfCopy + 2))
   {
-    *(v26 + 6) = 0;
+    *(selfCopy + 6) = 0;
     v18 = objc_alloc_init(GrimaldiAPDSEventSource);
-    [v23 setQueue:v24];
-    [v23 setEventSource:v18];
-    *(v26 + 4) = [v23 newInstance];
-    if (*(v26 + 2))
+    [factoryCopy setQueue:queueCopy];
+    [factoryCopy setEventSource:v18];
+    *(selfCopy + 4) = [factoryCopy newInstance];
+    if (*(selfCopy + 2))
     {
-      v6 = *(v26 + 2);
+      v6 = *(selfCopy + 2);
     }
 
     else
@@ -243,32 +243,32 @@ LABEL_20:
     v16 = OS_LOG_TYPE_DEBUG;
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
     {
-      __os_log_helper_16_2_2_8_64_8_64(v28, v26, *(v26 + 4));
+      __os_log_helper_16_2_2_8_64_8_64(v28, selfCopy, *(selfCopy + 4));
       _os_log_debug_impl(&dword_1DE8E5000, v17, v16, "RearALS: obj (%@) initialized with ALS: %@", v28, 0x16u);
     }
 
-    if (*(v26 + 4))
+    if (*(selfCopy + 4))
     {
-      *(v26 + 6) = 2;
+      *(selfCopy + 6) = 2;
       v10[0] = 0;
       v10[1] = v10;
       v11 = 1375731712;
       v12 = 48;
       v13 = __Block_byref_object_copy__4;
       v14 = __Block_byref_object_dispose__4;
-      v15 = v26;
-      [*(v26 + 4) registerNotificationBlock:?];
+      v15 = selfCopy;
+      [*(selfCopy + 4) registerNotificationBlock:?];
       _Block_object_dispose(v10, 8);
     }
 
-    *(v26 + 5) = 0;
-    *(v26 + 56) = 0;
-    *(v26 + 57) = 1;
-    *(v26 + 58) = 0;
-    *(v26 + 59) = 0;
-    *(v26 + 72) = 0;
-    *(v26 + 19) = -1.0;
-    *(v26 + 8) = 0;
+    *(selfCopy + 5) = 0;
+    *(selfCopy + 56) = 0;
+    *(selfCopy + 57) = 1;
+    *(selfCopy + 58) = 0;
+    *(selfCopy + 59) = 0;
+    *(selfCopy + 72) = 0;
+    *(selfCopy + 19) = -1.0;
+    *(selfCopy + 8) = 0;
     goto LABEL_20;
   }
 
@@ -292,7 +292,7 @@ LABEL_20:
     _os_log_error_impl(&dword_1DE8E5000, log, type, "failed to create log handle", v19, 2u);
   }
 
-  MEMORY[0x1E69E5920](v26);
+  MEMORY[0x1E69E5920](selfCopy);
   v27 = 0;
 LABEL_21:
   *MEMORY[0x1E69E9840];
@@ -314,25 +314,25 @@ uint64_t __52__CBRearALSModule_initWithQueue_andGrimaldiFactory___block_invoke(u
 
 - (void)dealloc
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   [(CBGrimaldiModule *)self->_Grimaldi unregisterNotificationBlock];
-  MEMORY[0x1E69E5920](v5->_Grimaldi);
-  MEMORY[0x1E69E5920](v5->_rearALS);
-  v2 = MEMORY[0x1E69E5920](v5->_lastLux).n128_u64[0];
-  v5->_lastLux = 0;
-  if (v5->super._logHandle)
+  MEMORY[0x1E69E5920](selfCopy->_Grimaldi);
+  MEMORY[0x1E69E5920](selfCopy->_rearALS);
+  v2 = MEMORY[0x1E69E5920](selfCopy->_lastLux).n128_u64[0];
+  selfCopy->_lastLux = 0;
+  if (selfCopy->super._logHandle)
   {
-    v2 = MEMORY[0x1E69E5920](v5->super._logHandle).n128_u64[0];
-    v5->super._logHandle = 0;
+    v2 = MEMORY[0x1E69E5920](selfCopy->super._logHandle).n128_u64[0];
+    selfCopy->super._logHandle = 0;
   }
 
-  v3.receiver = v5;
+  v3.receiver = selfCopy;
   v3.super_class = CBRearALSModule;
   [(CBModule *)&v3 dealloc];
 }
 
-- (void)startSamplingWithFrequency:(float)a3
+- (void)startSamplingWithFrequency:(float)frequency
 {
   v9 = *MEMORY[0x1E69E9840];
   if (!self->_started)
@@ -359,11 +359,11 @@ uint64_t __52__CBRearALSModule_initWithQueue_andGrimaldiFactory___block_invoke(u
 
     if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
     {
-      __os_log_helper_16_0_1_8_0(v8, COERCE__INT64(a3));
+      __os_log_helper_16_0_1_8_0(v8, COERCE__INT64(frequency));
       _os_log_impl(&dword_1DE8E5000, logHandle, OS_LOG_TYPE_DEFAULT, "Start rear ALS with freq %f.", v8, 0xCu);
     }
 
-    *&v3 = a3;
+    *&v3 = frequency;
     [(CBGrimaldiModule *)self->_Grimaldi startWithFrequency:v3];
     self->_started = 1;
   }
@@ -373,13 +373,13 @@ uint64_t __52__CBRearALSModule_initWithQueue_andGrimaldiFactory___block_invoke(u
 
 - (void)stopSampling
 {
-  v10 = self;
+  selfCopy = self;
   v9 = a2;
   if (self->_started)
   {
-    if (v10->super._logHandle)
+    if (selfCopy->super._logHandle)
     {
-      logHandle = v10->super._logHandle;
+      logHandle = selfCopy->super._logHandle;
     }
 
     else
@@ -407,21 +407,21 @@ uint64_t __52__CBRearALSModule_initWithQueue_andGrimaldiFactory___block_invoke(u
       _os_log_impl(&dword_1DE8E5000, log, type, "Stop sampling.", v6, 2u);
     }
 
-    [(CBGrimaldiModule *)v10->_Grimaldi stop];
-    v10->_started = 0;
-    MEMORY[0x1E69E5920](v10->_lastLux);
-    v10->_lastLux = 0;
+    [(CBGrimaldiModule *)selfCopy->_Grimaldi stop];
+    selfCopy->_started = 0;
+    MEMORY[0x1E69E5920](selfCopy->_lastLux);
+    selfCopy->_lastLux = 0;
   }
 }
 
-- (id)copyParam:(id)a3
+- (id)copyParam:(id)param
 {
-  if ([a3 isEqualToString:@"lux"])
+  if ([param isEqualToString:@"lux"])
   {
     return [(CBRearALSModule *)self copyRearLux];
   }
 
-  if ([a3 isEqualToString:@"GainChanged"])
+  if ([param isEqualToString:@"GainChanged"])
   {
     return [(CBGrimaldiModule *)self->_Grimaldi copyGainChanged];
   }
@@ -432,10 +432,10 @@ uint64_t __52__CBRearALSModule_initWithQueue_andGrimaldiFactory___block_invoke(u
 - (BOOL)isMitigationActive
 {
   v9 = *MEMORY[0x1E69E9840];
-  v6 = [(CBGrimaldiModule *)self->_Grimaldi strobeCoex];
-  if (v6 != self->_strobeCoex)
+  strobeCoex = [(CBGrimaldiModule *)self->_Grimaldi strobeCoex];
+  if (strobeCoex != self->_strobeCoex)
   {
-    self->_strobeCoex = v6;
+    self->_strobeCoex = strobeCoex;
     if (self->super._logHandle)
     {
       logHandle = self->super._logHandle;
@@ -458,7 +458,7 @@ uint64_t __52__CBRearALSModule_initWithQueue_andGrimaldiFactory___block_invoke(u
 
     if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
     {
-      if (v6)
+      if (strobeCoex)
       {
         v2 = "activated";
       }
@@ -477,55 +477,55 @@ uint64_t __52__CBRearALSModule_initWithQueue_andGrimaldiFactory___block_invoke(u
   return self->_strobeCoex;
 }
 
-- (BOOL)setProperty:(id)a3 forKey:(id)a4
+- (BOOL)setProperty:(id)property forKey:(id)key
 {
   v5 = 0;
-  if ([a4 isEqualToString:@"DisplayBrightnessFactor"] & 1) != 0 || (objc_msgSend(a4, "isEqualToString:", @"DisplayBrightnessFactorWithFade"))
+  if ([key isEqualToString:@"DisplayBrightnessFactor"] & 1) != 0 || (objc_msgSend(key, "isEqualToString:", @"DisplayBrightnessFactorWithFade"))
   {
-    v5 = [(CBRearALSModule *)self displayBrightnessFactorPropertyHandler:a3];
+    v5 = [(CBRearALSModule *)self displayBrightnessFactorPropertyHandler:property];
   }
 
-  else if ([a4 isEqualToString:@"AABSensorOverride"])
+  else if ([key isEqualToString:@"AABSensorOverride"])
   {
-    v5 = [(CBRearALSModule *)self AABSensorOverridePropertyHandler:a3];
+    v5 = [(CBRearALSModule *)self AABSensorOverridePropertyHandler:property];
   }
 
-  else if ([a4 isEqualToString:@"RLuxOverride"])
+  else if ([key isEqualToString:@"RLuxOverride"])
   {
-    v5 = [(CBRearALSModule *)self rLuxOverridePropertyHandler:a3];
+    v5 = [(CBRearALSModule *)self rLuxOverridePropertyHandler:property];
   }
 
-  else if ([a4 isEqualToString:@"RLuxOverrideEnabled"])
+  else if ([key isEqualToString:@"RLuxOverrideEnabled"])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      self->_enableIlluminanceOverride = [a3 BOOLValue];
+      self->_enableIlluminanceOverride = [property BOOLValue];
       v5 = 1;
     }
   }
 
-  return (v5 | [(CBGrimaldiModule *)self->_Grimaldi setProperty:a3 forKey:a4]) != 0;
+  return (v5 | [(CBGrimaldiModule *)self->_Grimaldi setProperty:property forKey:key]) != 0;
 }
 
-- (BOOL)displayBrightnessFactorPropertyHandler:(id)a3
+- (BOOL)displayBrightnessFactorPropertyHandler:(id)handler
 {
   v6 = 0;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [a3 objectForKey:@"DisplayBrightnessFactor"];
+    handlerCopy = [handler objectForKey:@"DisplayBrightnessFactor"];
   }
 
   else
   {
-    v5 = a3;
+    handlerCopy = handler;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v5 floatValue];
+    [handlerCopy floatValue];
     if (v3 <= 0.0)
     {
       self->_displayOn = 0;
@@ -553,17 +553,17 @@ uint64_t __52__CBRearALSModule_initWithQueue_andGrimaldiFactory___block_invoke(u
   return v6;
 }
 
-- (BOOL)rLuxOverridePropertyHandler:(id)a3
+- (BOOL)rLuxOverridePropertyHandler:(id)handler
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     self->_enableIlluminanceOverride = 1;
-    [a3 objectForKey:@"lux"];
+    [handler objectForKey:@"lux"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [objc_msgSend(a3 objectForKey:{@"lux", "floatValue"}];
+      [objc_msgSend(handler objectForKey:{@"lux", "floatValue"}];
       self->_illuminanceOverride = v3;
     }
   }
@@ -571,15 +571,15 @@ uint64_t __52__CBRearALSModule_initWithQueue_andGrimaldiFactory___block_invoke(u
   return 1;
 }
 
-- (BOOL)AABSensorOverridePropertyHandler:(id)a3
+- (BOOL)AABSensorOverridePropertyHandler:(id)handler
 {
   v16 = *MEMORY[0x1E69E9840];
-  v12 = 0;
+  intValue = 0;
   v11 = -1.0;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [a3 floatValue];
+    [handler floatValue];
     v11 = v3;
   }
 
@@ -588,8 +588,8 @@ uint64_t __52__CBRearALSModule_initWithQueue_andGrimaldiFactory___block_invoke(u
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v10 = [a3 objectForKey:@"AABSensorOverrideValue"];
-      v9 = [a3 objectForKey:@"AABSensorOverrideOrientation"];
+      v10 = [handler objectForKey:@"AABSensorOverrideValue"];
+      v9 = [handler objectForKey:@"AABSensorOverrideOrientation"];
       if (v10)
       {
         [v10 floatValue];
@@ -598,12 +598,12 @@ uint64_t __52__CBRearALSModule_initWithQueue_andGrimaldiFactory___block_invoke(u
 
       if (v9)
       {
-        v12 = [v9 intValue];
+        intValue = [v9 intValue];
       }
     }
   }
 
-  if (!v12 || [(CBALSNode *)self->_rearALS orientation]== v12)
+  if (!intValue || [(CBALSNode *)self->_rearALS orientation]== intValue)
   {
     self->_illuminanceOverride = v11;
     self->_enableIlluminanceOverride = v11 >= 0.0;
@@ -639,13 +639,13 @@ uint64_t __52__CBRearALSModule_initWithQueue_andGrimaldiFactory___block_invoke(u
   return 1;
 }
 
-- (BOOL)addHIDServiceClient:(__IOHIDServiceClient *)a3
+- (BOOL)addHIDServiceClient:(__IOHIDServiceClient *)client
 {
   v11 = *MEMORY[0x1E69E9840];
   v7 = 0;
-  if (IOHIDServiceClientConformsTo(a3, 0xFF00u, 4u))
+  if (IOHIDServiceClientConformsTo(client, 0xFF00u, 4u))
   {
-    v6 = [[CBALSNode alloc] initWithALSServiceClient:a3];
+    v6 = [[CBALSNode alloc] initWithALSServiceClient:client];
     if ([(CBALSNode *)v6 placement]== 2)
     {
       self->_rearALS = MEMORY[0x1E69E5928](v6);
@@ -692,12 +692,12 @@ uint64_t __52__CBRearALSModule_initWithQueue_andGrimaldiFactory___block_invoke(u
   return v7 & 1;
 }
 
-- (BOOL)handleHIDEvent:(__IOHIDEvent *)a3 from:(__IOHIDServiceClient *)a4
+- (BOOL)handleHIDEvent:(__IOHIDEvent *)event from:(__IOHIDServiceClient *)from
 {
   v11 = *MEMORY[0x1E69E9840];
-  if ([(CBALSNode *)self->_rearALS conformsToHIDServiceClient:a4])
+  if ([(CBALSNode *)self->_rearALS conformsToHIDServiceClient:from])
   {
-    v7 = [[CBALSEvent alloc] initWithHIDEvent:a3 andNode:self->_rearALS];
+    v7 = [[CBALSEvent alloc] initWithHIDEvent:event andNode:self->_rearALS];
     [(CBALSNode *)self->_rearALS handleALSEvent:v7];
     if (self->super._logHandle)
     {
@@ -732,10 +732,10 @@ uint64_t __52__CBRearALSModule_initWithQueue_andGrimaldiFactory___block_invoke(u
   return 0;
 }
 
-- (BOOL)removeHIDServiceClient:(__IOHIDServiceClient *)a3
+- (BOOL)removeHIDServiceClient:(__IOHIDServiceClient *)client
 {
   v8 = *MEMORY[0x1E69E9840];
-  if ([(CBALSNode *)self->_rearALS conformsToHIDServiceClient:a3])
+  if ([(CBALSNode *)self->_rearALS conformsToHIDServiceClient:client])
   {
     MEMORY[0x1E69E5920](self->_rearALS);
     self->_rearALS = 0;

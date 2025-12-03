@@ -1,11 +1,11 @@
 @interface SeymourCatalogMediaTypeHelper
-+ (id)guidedTypeStringFrom:(id)a3;
++ (id)guidedTypeStringFrom:(id)from;
 - (SeymourCatalogMediaTypeHelper)init;
 @end
 
 @implementation SeymourCatalogMediaTypeHelper
 
-+ (id)guidedTypeStringFrom:(id)a3
++ (id)guidedTypeStringFrom:(id)from
 {
   v3 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
   v4 = specialized static WOCatalogMediaTypeHelper.guidedTypeString(from:)(v3);

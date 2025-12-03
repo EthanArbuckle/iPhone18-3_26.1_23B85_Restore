@@ -2,15 +2,15 @@
 - (CarCompressionTestCardDelegate)delegate;
 - (CarCompressionTestCardViewController)init;
 - (NSArray)focusOrderSubItems;
-- (id)_buttonWithTitle:(id)a3;
+- (id)_buttonWithTitle:(id)title;
 - (void)_decreaseHeight;
 - (void)_disappearAndReturn;
 - (void)_dismiss;
 - (void)_increaseHeight;
 - (void)_incrementPriority;
 - (void)_updateLabel;
-- (void)setSpacerHeight:(double)a3;
-- (void)setSpacerPriority:(float)a3;
+- (void)setSpacerHeight:(double)height;
+- (void)setSpacerPriority:(float)priority;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
@@ -73,18 +73,18 @@
 
 - (void)_disappearAndReturn
 {
-  v7 = [(CarCompressionTestCardViewController *)self delegate];
+  delegate = [(CarCompressionTestCardViewController *)self delegate];
   [(CarCompressionTestCardViewController *)self spacerHeight];
   v4 = v3;
   [(CarCompressionTestCardViewController *)self spacerPriority];
   LODWORD(v6) = v5;
-  [v7 compressionTestCard:self reloadWithSpacerHeight:v4 priority:v6];
+  [delegate compressionTestCard:self reloadWithSpacerHeight:v4 priority:v6];
 }
 
 - (void)_dismiss
 {
-  v3 = [(CarCompressionTestCardViewController *)self delegate];
-  [v3 compressionTestCardRequestsDismiss:self];
+  delegate = [(CarCompressionTestCardViewController *)self delegate];
+  [delegate compressionTestCardRequestsDismiss:self];
 }
 
 - (void)_decreaseHeight
@@ -103,43 +103,43 @@
   [(CarCompressionTestCardViewController *)self setSpacerHeight:v4];
 }
 
-- (void)setSpacerPriority:(float)a3
+- (void)setSpacerPriority:(float)priority
 {
-  if (self->_spacerPriority != a3)
+  if (self->_spacerPriority != priority)
   {
-    self->_spacerPriority = fmaxf(a3, 0.0);
-    v5 = [(CarCompressionTestCardViewController *)self spacerHeightConstraint];
-    [v5 setActive:0];
+    self->_spacerPriority = fmaxf(priority, 0.0);
+    spacerHeightConstraint = [(CarCompressionTestCardViewController *)self spacerHeightConstraint];
+    [spacerHeightConstraint setActive:0];
 
-    v6 = [(CarCompressionTestCardViewController *)self spacerHeightConstraint];
-    *&v7 = a3;
-    [v6 setPriority:v7];
+    spacerHeightConstraint2 = [(CarCompressionTestCardViewController *)self spacerHeightConstraint];
+    *&v7 = priority;
+    [spacerHeightConstraint2 setPriority:v7];
 
-    v8 = [(CarCompressionTestCardViewController *)self spacerHeightConstraint];
-    [v8 setActive:1];
+    spacerHeightConstraint3 = [(CarCompressionTestCardViewController *)self spacerHeightConstraint];
+    [spacerHeightConstraint3 setActive:1];
 
-    v9 = [(CarCompressionTestCardViewController *)self priorityButton];
-    *&v10 = a3;
+    priorityButton = [(CarCompressionTestCardViewController *)self priorityButton];
+    *&v10 = priority;
     v11 = [NSNumber numberWithFloat:v10];
-    v12 = [v11 stringValue];
-    [v9 setTitle:v12 forState:0];
+    stringValue = [v11 stringValue];
+    [priorityButton setTitle:stringValue forState:0];
 
     [(CarCompressionTestCardViewController *)self _updateLabel];
   }
 }
 
-- (void)setSpacerHeight:(double)a3
+- (void)setSpacerHeight:(double)height
 {
-  if (self->_spacerHeight != a3)
+  if (self->_spacerHeight != height)
   {
-    v4 = fmax(a3, 0.0);
+    v4 = fmax(height, 0.0);
     self->_spacerHeight = v4;
-    v5 = [(CarCompressionTestCardViewController *)self spacerHeightConstraint];
-    [v5 setConstant:v4];
+    spacerHeightConstraint = [(CarCompressionTestCardViewController *)self spacerHeightConstraint];
+    [spacerHeightConstraint setConstant:v4];
 
     v6 = self->_spacerHeight != 0.0;
-    v7 = [(CarCompressionTestCardViewController *)self shorterButton];
-    [v7 setEnabled:v6];
+    shorterButton = [(CarCompressionTestCardViewController *)self shorterButton];
+    [shorterButton setEnabled:v6];
 
     [(CarCompressionTestCardViewController *)self _updateLabel];
   }
@@ -159,23 +159,23 @@
   v4 = v3;
   [(UIView *)self->_spacerView bounds];
   Height = CGRectGetHeight(v10);
-  v8 = [(CarCompressionTestCardViewController *)self view];
-  [v8 bounds];
+  view = [(CarCompressionTestCardViewController *)self view];
+  [view bounds];
   v6 = [NSString stringWithFormat:@"Height=%.1f (=%.1f/%.1f)", v4, *&Height, CGRectGetHeight(v11)];
-  v7 = [(CarCompressionTestCardViewController *)self heightLabel];
-  [v7 setText:v6];
+  heightLabel = [(CarCompressionTestCardViewController *)self heightLabel];
+  [heightLabel setText:v6];
 }
 
-- (id)_buttonWithTitle:(id)a3
+- (id)_buttonWithTitle:(id)title
 {
-  v3 = a3;
+  titleCopy = title;
   v4 = +[CarFocusableButton button];
   [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v4 setModifiesBackgroundColor:1];
-  [v4 setTitle:v3 forState:0];
+  [v4 setTitle:titleCopy forState:0];
   v5 = [UIFont systemFontOfSize:11.0 weight:UIFontWeightBold];
-  v6 = [v4 titleLabel];
-  [v6 setFont:v5];
+  titleLabel = [v4 titleLabel];
+  [titleLabel setFont:v5];
 
   [v4 setContentHorizontalAlignment:0];
 
@@ -203,8 +203,8 @@
   [(UIView *)self->_spacerView setContentHuggingPriority:1 forAxis:v10];
   LODWORD(v11) = 1112014848;
   [(UIView *)self->_spacerView setContentHuggingPriority:0 forAxis:v11];
-  v12 = [(CarCompressionTestCardViewController *)self view];
-  [v12 addSubview:self->_spacerView];
+  view = [(CarCompressionTestCardViewController *)self view];
+  [view addSubview:self->_spacerView];
 
   v13 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
   heightLabel = self->_heightLabel;
@@ -228,16 +228,16 @@
   self->_tallerButton = v19;
 
   [(CarFocusableButton *)self->_tallerButton addTarget:self action:"_increaseHeight" forControlEvents:64];
-  v21 = [(CarCompressionTestCardViewController *)self view];
-  [v21 addSubview:self->_tallerButton];
+  view2 = [(CarCompressionTestCardViewController *)self view];
+  [view2 addSubview:self->_tallerButton];
 
   v22 = [(CarCompressionTestCardViewController *)self _buttonWithTitle:@"▼11"];
   shorterButton = self->_shorterButton;
   self->_shorterButton = v22;
 
   [(CarFocusableButton *)self->_shorterButton addTarget:self action:"_decreaseHeight" forControlEvents:64];
-  v24 = [(CarCompressionTestCardViewController *)self view];
-  [v24 addSubview:self->_shorterButton];
+  view3 = [(CarCompressionTestCardViewController *)self view];
+  [view3 addSubview:self->_shorterButton];
 
   [(CarCompressionTestCardViewController *)self spacerHeight];
   [(CarFocusableButton *)self->_shorterButton setEnabled:v25 > 0.0];
@@ -246,27 +246,27 @@
   self->_reloadButton = v26;
 
   [(CarFocusableButton *)self->_reloadButton addTarget:self action:"_disappearAndReturn" forControlEvents:64];
-  v28 = [(CarCompressionTestCardViewController *)self view];
-  [v28 addSubview:self->_reloadButton];
+  view4 = [(CarCompressionTestCardViewController *)self view];
+  [view4 addSubview:self->_reloadButton];
 
   [(CarCompressionTestCardViewController *)self spacerPriority];
   v29 = [NSNumber numberWithFloat:?];
-  v30 = [v29 stringValue];
-  v31 = [(CarCompressionTestCardViewController *)self _buttonWithTitle:v30];
+  stringValue = [v29 stringValue];
+  v31 = [(CarCompressionTestCardViewController *)self _buttonWithTitle:stringValue];
   priorityButton = self->_priorityButton;
   self->_priorityButton = v31;
 
   [(CarFocusableButton *)self->_priorityButton addTarget:self action:"_incrementPriority" forControlEvents:64];
-  v33 = [(CarCompressionTestCardViewController *)self view];
-  [v33 addSubview:self->_priorityButton];
+  view5 = [(CarCompressionTestCardViewController *)self view];
+  [view5 addSubview:self->_priorityButton];
 
   v34 = [(CarCompressionTestCardViewController *)self _buttonWithTitle:@"Dismiss"];
   dismissButton = self->_dismissButton;
   self->_dismissButton = v34;
 
   [(CarFocusableButton *)self->_dismissButton addTarget:self action:"_dismiss" forControlEvents:64];
-  v36 = [(CarCompressionTestCardViewController *)self view];
-  [v36 addSubview:self->_dismissButton];
+  view6 = [(CarCompressionTestCardViewController *)self view];
+  [view6 addSubview:self->_dismissButton];
 
   v37 = [UIStackView alloc];
   v156[0] = self->_tallerButton;
@@ -291,150 +291,150 @@
   [v45 setAxis:0];
   v149 = v45;
   [v45 setSpacing:0.0];
-  v46 = [(CarCompressionTestCardViewController *)self view];
-  [v46 addSubview:v45];
+  view7 = [(CarCompressionTestCardViewController *)self view];
+  [view7 addSubview:v45];
 
   v151 = [CarHairlineView hairlineViewAlongAxis:0];
   [v151 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v47 = [(CarCompressionTestCardViewController *)self view];
-  [v47 addSubview:v151];
+  view8 = [(CarCompressionTestCardViewController *)self view];
+  [view8 addSubview:v151];
 
   v150 = [CarHairlineView hairlineViewAlongAxis:0];
   [v150 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v48 = [(CarCompressionTestCardViewController *)self view];
-  [v48 addSubview:v150];
+  view9 = [(CarCompressionTestCardViewController *)self view];
+  [view9 addSubview:v150];
 
   v152 = objc_opt_new();
-  v147 = [(UILabel *)self->_heightLabel topAnchor];
-  v144 = [(UIView *)self->_spacerView topAnchor];
-  v142 = [v147 constraintGreaterThanOrEqualToAnchor:v144];
+  topAnchor = [(UILabel *)self->_heightLabel topAnchor];
+  topAnchor2 = [(UIView *)self->_spacerView topAnchor];
+  v142 = [topAnchor constraintGreaterThanOrEqualToAnchor:topAnchor2];
   v155[0] = v142;
-  v139 = [(UILabel *)self->_heightLabel leadingAnchor];
-  v135 = [(UIView *)self->_spacerView leadingAnchor];
-  v133 = [v139 constraintGreaterThanOrEqualToAnchor:v135];
+  leadingAnchor = [(UILabel *)self->_heightLabel leadingAnchor];
+  leadingAnchor2 = [(UIView *)self->_spacerView leadingAnchor];
+  v133 = [leadingAnchor constraintGreaterThanOrEqualToAnchor:leadingAnchor2];
   v155[1] = v133;
-  v131 = [(UILabel *)self->_heightLabel trailingAnchor];
-  v129 = [(UIView *)self->_spacerView trailingAnchor];
-  v127 = [v131 constraintLessThanOrEqualToAnchor:v129];
+  trailingAnchor = [(UILabel *)self->_heightLabel trailingAnchor];
+  trailingAnchor2 = [(UIView *)self->_spacerView trailingAnchor];
+  v127 = [trailingAnchor constraintLessThanOrEqualToAnchor:trailingAnchor2];
   v155[2] = v127;
-  v125 = [(UILabel *)self->_heightLabel bottomAnchor];
-  v123 = [(UIView *)self->_spacerView bottomAnchor];
-  v49 = [v125 constraintLessThanOrEqualToAnchor:v123];
+  bottomAnchor = [(UILabel *)self->_heightLabel bottomAnchor];
+  bottomAnchor2 = [(UIView *)self->_spacerView bottomAnchor];
+  v49 = [bottomAnchor constraintLessThanOrEqualToAnchor:bottomAnchor2];
   v155[3] = v49;
-  v50 = [(UILabel *)self->_heightLabel centerXAnchor];
-  v51 = [(UIView *)self->_spacerView centerXAnchor];
-  v52 = [v50 constraintEqualToAnchor:v51];
+  centerXAnchor = [(UILabel *)self->_heightLabel centerXAnchor];
+  centerXAnchor2 = [(UIView *)self->_spacerView centerXAnchor];
+  v52 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v155[4] = v52;
-  v53 = [(UILabel *)self->_heightLabel centerYAnchor];
-  v54 = [(UIView *)self->_spacerView centerYAnchor];
-  v55 = [v53 constraintEqualToAnchor:v54];
+  centerYAnchor = [(UILabel *)self->_heightLabel centerYAnchor];
+  centerYAnchor2 = [(UIView *)self->_spacerView centerYAnchor];
+  v55 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v155[5] = v55;
   v56 = [NSArray arrayWithObjects:v155 count:6];
   [v152 addObjectsFromArray:v56];
 
-  v57 = [(UIView *)self->_spacerView heightAnchor];
+  heightAnchor = [(UIView *)self->_spacerView heightAnchor];
   [(CarCompressionTestCardViewController *)self spacerHeight];
   v59 = v58;
   [(CarCompressionTestCardViewController *)self spacerPriority];
   LODWORD(v61) = v60;
-  v62 = [v57 constraintEqualToConstant:v59 priority:v61];
+  v62 = [heightAnchor constraintEqualToConstant:v59 priority:v61];
   spacerHeightConstraint = self->_spacerHeightConstraint;
   self->_spacerHeightConstraint = v62;
 
   v154[0] = self->_spacerHeightConstraint;
-  v148 = [(CarFocusableButton *)self->_tallerButton widthAnchor];
-  v146 = [(CarFocusableButton *)self->_shorterButton widthAnchor];
-  v145 = [v148 constraintEqualToAnchor:v146];
+  widthAnchor = [(CarFocusableButton *)self->_tallerButton widthAnchor];
+  widthAnchor2 = [(CarFocusableButton *)self->_shorterButton widthAnchor];
+  v145 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
   v154[1] = v145;
-  v143 = [(CarFocusableButton *)self->_tallerButton widthAnchor];
-  v141 = [(CarFocusableButton *)self->_reloadButton widthAnchor];
-  v140 = [v143 constraintEqualToAnchor:v141];
+  widthAnchor3 = [(CarFocusableButton *)self->_tallerButton widthAnchor];
+  widthAnchor4 = [(CarFocusableButton *)self->_reloadButton widthAnchor];
+  v140 = [widthAnchor3 constraintEqualToAnchor:widthAnchor4];
   v154[2] = v140;
-  v138 = [(CarFocusableButton *)self->_tallerButton widthAnchor];
-  v137 = [(CarFocusableButton *)self->_priorityButton widthAnchor];
-  v136 = [v138 constraintEqualToAnchor:v137];
+  widthAnchor5 = [(CarFocusableButton *)self->_tallerButton widthAnchor];
+  widthAnchor6 = [(CarFocusableButton *)self->_priorityButton widthAnchor];
+  v136 = [widthAnchor5 constraintEqualToAnchor:widthAnchor6];
   v154[3] = v136;
-  v132 = [(UIView *)self->_spacerView topAnchor];
-  v134 = [(CarCompressionTestCardViewController *)self view];
-  v130 = [v134 topAnchor];
-  v128 = [v132 constraintEqualToAnchor:v130];
+  topAnchor3 = [(UIView *)self->_spacerView topAnchor];
+  view10 = [(CarCompressionTestCardViewController *)self view];
+  topAnchor4 = [view10 topAnchor];
+  v128 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   v154[4] = v128;
-  v124 = [(UIView *)self->_spacerView leftAnchor];
-  v126 = [(CarCompressionTestCardViewController *)self view];
-  v122 = [v126 leftAnchor];
-  v121 = [v124 constraintEqualToAnchor:v122];
+  leftAnchor = [(UIView *)self->_spacerView leftAnchor];
+  view11 = [(CarCompressionTestCardViewController *)self view];
+  leftAnchor2 = [view11 leftAnchor];
+  v121 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
   v154[5] = v121;
-  v119 = [(UIView *)self->_spacerView rightAnchor];
-  v120 = [(CarCompressionTestCardViewController *)self view];
-  v118 = [v120 rightAnchor];
-  v117 = [v119 constraintEqualToAnchor:v118];
+  rightAnchor = [(UIView *)self->_spacerView rightAnchor];
+  view12 = [(CarCompressionTestCardViewController *)self view];
+  rightAnchor2 = [view12 rightAnchor];
+  v117 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
   v154[6] = v117;
-  v116 = [(UIView *)self->_spacerView bottomAnchor];
-  v115 = [v151 topAnchor];
-  v114 = [v116 constraintEqualToAnchor:v115];
+  bottomAnchor3 = [(UIView *)self->_spacerView bottomAnchor];
+  topAnchor5 = [v151 topAnchor];
+  v114 = [bottomAnchor3 constraintEqualToAnchor:topAnchor5];
   v154[7] = v114;
-  v112 = [v151 leftAnchor];
-  v113 = [(CarCompressionTestCardViewController *)self view];
-  v111 = [v113 leftAnchor];
-  v110 = [v112 constraintEqualToAnchor:v111];
+  leftAnchor3 = [v151 leftAnchor];
+  view13 = [(CarCompressionTestCardViewController *)self view];
+  leftAnchor4 = [view13 leftAnchor];
+  v110 = [leftAnchor3 constraintEqualToAnchor:leftAnchor4];
   v154[8] = v110;
-  v108 = [v151 rightAnchor];
-  v109 = [(CarCompressionTestCardViewController *)self view];
-  v107 = [v109 rightAnchor];
-  v106 = [v108 constraintEqualToAnchor:v107];
+  rightAnchor3 = [v151 rightAnchor];
+  view14 = [(CarCompressionTestCardViewController *)self view];
+  rightAnchor4 = [view14 rightAnchor];
+  v106 = [rightAnchor3 constraintEqualToAnchor:rightAnchor4];
   v154[9] = v106;
-  v105 = [v149 topAnchor];
-  v104 = [v151 bottomAnchor];
-  v103 = [v105 constraintEqualToAnchor:v104];
+  topAnchor6 = [v149 topAnchor];
+  bottomAnchor4 = [v151 bottomAnchor];
+  v103 = [topAnchor6 constraintEqualToAnchor:bottomAnchor4];
   v154[10] = v103;
-  v101 = [v149 leadingAnchor];
-  v102 = [(CarCompressionTestCardViewController *)self view];
-  v100 = [v102 leadingAnchor];
-  v99 = [v101 constraintEqualToAnchor:v100];
+  leadingAnchor3 = [v149 leadingAnchor];
+  view15 = [(CarCompressionTestCardViewController *)self view];
+  leadingAnchor4 = [view15 leadingAnchor];
+  v99 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v154[11] = v99;
-  v97 = [v149 trailingAnchor];
-  v98 = [(CarCompressionTestCardViewController *)self view];
-  v96 = [v98 trailingAnchor];
-  v95 = [v97 constraintEqualToAnchor:v96];
+  trailingAnchor3 = [v149 trailingAnchor];
+  view16 = [(CarCompressionTestCardViewController *)self view];
+  trailingAnchor4 = [view16 trailingAnchor];
+  v95 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v154[12] = v95;
-  v94 = [v149 bottomAnchor];
-  v93 = [v150 topAnchor];
-  v92 = [v94 constraintEqualToAnchor:v93];
+  bottomAnchor5 = [v149 bottomAnchor];
+  topAnchor7 = [v150 topAnchor];
+  v92 = [bottomAnchor5 constraintEqualToAnchor:topAnchor7];
   v154[13] = v92;
-  v91 = [v149 heightAnchor];
-  v90 = [v91 constraintEqualToConstant:20.0];
+  heightAnchor2 = [v149 heightAnchor];
+  v90 = [heightAnchor2 constraintEqualToConstant:20.0];
   v154[14] = v90;
-  v88 = [v150 leftAnchor];
-  v89 = [(CarCompressionTestCardViewController *)self view];
-  v87 = [v89 leftAnchor];
-  v86 = [v88 constraintEqualToAnchor:v87];
+  leftAnchor5 = [v150 leftAnchor];
+  view17 = [(CarCompressionTestCardViewController *)self view];
+  leftAnchor6 = [view17 leftAnchor];
+  v86 = [leftAnchor5 constraintEqualToAnchor:leftAnchor6];
   v154[15] = v86;
-  v84 = [v150 rightAnchor];
-  v85 = [(CarCompressionTestCardViewController *)self view];
-  v83 = [v85 rightAnchor];
-  v82 = [v84 constraintEqualToAnchor:v83];
+  rightAnchor5 = [v150 rightAnchor];
+  view18 = [(CarCompressionTestCardViewController *)self view];
+  rightAnchor6 = [view18 rightAnchor];
+  v82 = [rightAnchor5 constraintEqualToAnchor:rightAnchor6];
   v154[16] = v82;
-  v81 = [v150 bottomAnchor];
-  v80 = [(CarFocusableButton *)self->_dismissButton topAnchor];
-  v79 = [v81 constraintEqualToAnchor:v80];
+  bottomAnchor6 = [v150 bottomAnchor];
+  topAnchor8 = [(CarFocusableButton *)self->_dismissButton topAnchor];
+  v79 = [bottomAnchor6 constraintEqualToAnchor:topAnchor8];
   v154[17] = v79;
-  v77 = [(CarFocusableButton *)self->_dismissButton leadingAnchor];
-  v78 = [(CarCompressionTestCardViewController *)self view];
-  v76 = [v78 leadingAnchor];
-  v75 = [v77 constraintEqualToAnchor:v76];
+  leadingAnchor5 = [(CarFocusableButton *)self->_dismissButton leadingAnchor];
+  view19 = [(CarCompressionTestCardViewController *)self view];
+  leadingAnchor6 = [view19 leadingAnchor];
+  v75 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
   v154[18] = v75;
-  v74 = [(CarFocusableButton *)self->_dismissButton trailingAnchor];
-  v64 = [(CarCompressionTestCardViewController *)self view];
-  v65 = [v64 trailingAnchor];
-  v66 = [v74 constraintEqualToAnchor:v65];
+  trailingAnchor5 = [(CarFocusableButton *)self->_dismissButton trailingAnchor];
+  view20 = [(CarCompressionTestCardViewController *)self view];
+  trailingAnchor6 = [view20 trailingAnchor];
+  v66 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
   v154[19] = v66;
-  v67 = [(CarFocusableButton *)self->_dismissButton heightAnchor];
-  v68 = [v67 constraintEqualToConstant:20.0];
+  heightAnchor3 = [(CarFocusableButton *)self->_dismissButton heightAnchor];
+  v68 = [heightAnchor3 constraintEqualToConstant:20.0];
   v154[20] = v68;
-  v69 = [(CarFocusableButton *)self->_dismissButton bottomAnchor];
-  v70 = [(CarCompressionTestCardViewController *)self view];
-  v71 = [v70 bottomAnchor];
-  v72 = [v69 constraintEqualToAnchor:v71];
+  bottomAnchor7 = [(CarFocusableButton *)self->_dismissButton bottomAnchor];
+  view21 = [(CarCompressionTestCardViewController *)self view];
+  bottomAnchor8 = [view21 bottomAnchor];
+  v72 = [bottomAnchor7 constraintEqualToAnchor:bottomAnchor8];
   v154[21] = v72;
   v73 = [NSArray arrayWithObjects:v154 count:22];
   [v152 addObjectsFromArray:v73];

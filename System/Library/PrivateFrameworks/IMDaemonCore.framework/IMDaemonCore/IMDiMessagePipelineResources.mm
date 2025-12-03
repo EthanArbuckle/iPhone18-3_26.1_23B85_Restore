@@ -1,33 +1,33 @@
 @interface IMDiMessagePipelineResources
-- (IMDiMessagePipelineResources)initWithIMDAccount:(id)a3 service:(id)a4 messageStore:(id)a5 storageController:(id)a6 broadcaster:(id)a7 recentsController:(id)a8 chatRegistry:(id)a9 attachmentStore:(id)a10;
+- (IMDiMessagePipelineResources)initWithIMDAccount:(id)account service:(id)service messageStore:(id)store storageController:(id)controller broadcaster:(id)broadcaster recentsController:(id)recentsController chatRegistry:(id)registry attachmentStore:(id)self0;
 @end
 
 @implementation IMDiMessagePipelineResources
 
-- (IMDiMessagePipelineResources)initWithIMDAccount:(id)a3 service:(id)a4 messageStore:(id)a5 storageController:(id)a6 broadcaster:(id)a7 recentsController:(id)a8 chatRegistry:(id)a9 attachmentStore:(id)a10
+- (IMDiMessagePipelineResources)initWithIMDAccount:(id)account service:(id)service messageStore:(id)store storageController:(id)controller broadcaster:(id)broadcaster recentsController:(id)recentsController chatRegistry:(id)registry attachmentStore:(id)self0
 {
-  v27 = a3;
-  v26 = a4;
-  v25 = a5;
-  v24 = a6;
-  v23 = a7;
-  v22 = a8;
-  v17 = a9;
-  v18 = a10;
+  accountCopy = account;
+  serviceCopy = service;
+  storeCopy = store;
+  controllerCopy = controller;
+  broadcasterCopy = broadcaster;
+  recentsControllerCopy = recentsController;
+  registryCopy = registry;
+  attachmentStoreCopy = attachmentStore;
   v28.receiver = self;
   v28.super_class = IMDiMessagePipelineResources;
   v19 = [(IMDiMessagePipelineResources *)&v28 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_imdAccount, a3);
-    objc_storeStrong(&v20->_service, a4);
-    objc_storeStrong(&v20->_messageStore, a5);
-    objc_storeStrong(&v20->_storageController, a6);
-    objc_storeStrong(&v20->_broadcaster, a7);
-    objc_storeStrong(&v20->_recentsController, a8);
-    objc_storeStrong(&v20->_chatRegistry, a9);
-    objc_storeStrong(&v20->_attachmentStore, a10);
+    objc_storeStrong(&v19->_imdAccount, account);
+    objc_storeStrong(&v20->_service, service);
+    objc_storeStrong(&v20->_messageStore, store);
+    objc_storeStrong(&v20->_storageController, controller);
+    objc_storeStrong(&v20->_broadcaster, broadcaster);
+    objc_storeStrong(&v20->_recentsController, recentsController);
+    objc_storeStrong(&v20->_chatRegistry, registry);
+    objc_storeStrong(&v20->_attachmentStore, attachmentStore);
   }
 
   return v20;

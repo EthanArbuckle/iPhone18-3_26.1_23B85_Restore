@@ -1,25 +1,25 @@
 @interface MCNewEmailAccountPayloadHandler
-+ (id)MCACAccountIdentifierWithIncomingAccountInfo:(id)a3;
-+ (id)MCACAccountIdentifierWithOutgoingAccountInfo:(id)a3;
-+ (id)unhashedAccountIdentifierWithType:(id)a3 hostname:(id)a4 username:(id)a5;
-- (BOOL)installWithInstaller:(id)a3 options:(id)a4 interactionClient:(id)a5 outError:(id *)a6;
++ (id)MCACAccountIdentifierWithIncomingAccountInfo:(id)info;
++ (id)MCACAccountIdentifierWithOutgoingAccountInfo:(id)info;
++ (id)unhashedAccountIdentifierWithType:(id)type hostname:(id)hostname username:(id)username;
+- (BOOL)installWithInstaller:(id)installer options:(id)options interactionClient:(id)client outError:(id *)error;
 - (BOOL)isInstalled;
-- (BOOL)preflightUserInputResponses:(id)a3 outError:(id *)a4;
-- (MCNewEmailAccountPayloadHandler)initWithPayload:(id)a3 profileHandler:(id)a4;
-- (id)_authSchemeForAuthenticationMethod:(id)a3;
-- (id)_errorFromValidationError:(id)a3;
-- (id)_incomingAccountInfoDictionaryWithUserInput:(id)a3 isPreflight:(BOOL)a4 outError:(id *)a5;
-- (id)_incomingAccountWithAccountInfo:(id)a3;
-- (id)_installWithIncomingAccountInfo:(id)a3 outgoingAccountInfo:(id)a4 isInstalledByMDM:(BOOL)a5 personaID:(id)a6 rmAccountIdentifier:(id)a7;
-- (id)_outgoingAccountInfoDictionaryWithUserInput:(id)a3;
-- (id)_outgoingAccountWithAccountInfo:(id)a3;
-- (id)_persistentIDForCertificateUUID:(id)a3 notFoundLocErrorString:(id)a4 badLocErrorString:(id)a5 outError:(id *)a6;
-- (id)_removeAccountWithPersistentResourceID:(id)a3 fromArray:(id)a4 outArray:(id *)a5;
+- (BOOL)preflightUserInputResponses:(id)responses outError:(id *)error;
+- (MCNewEmailAccountPayloadHandler)initWithPayload:(id)payload profileHandler:(id)handler;
+- (id)_authSchemeForAuthenticationMethod:(id)method;
+- (id)_errorFromValidationError:(id)error;
+- (id)_incomingAccountInfoDictionaryWithUserInput:(id)input isPreflight:(BOOL)preflight outError:(id *)error;
+- (id)_incomingAccountWithAccountInfo:(id)info;
+- (id)_installWithIncomingAccountInfo:(id)info outgoingAccountInfo:(id)accountInfo isInstalledByMDM:(BOOL)m personaID:(id)d rmAccountIdentifier:(id)identifier;
+- (id)_outgoingAccountInfoDictionaryWithUserInput:(id)input;
+- (id)_outgoingAccountWithAccountInfo:(id)info;
+- (id)_persistentIDForCertificateUUID:(id)d notFoundLocErrorString:(id)string badLocErrorString:(id)errorString outError:(id *)error;
+- (id)_removeAccountWithPersistentResourceID:(id)d fromArray:(id)array outArray:(id *)outArray;
 - (id)userInputFields;
 - (void)_remove;
-- (void)_removePersonaIDForMailAccountWithPersistentResourceID:(id)a3;
+- (void)_removePersonaIDForMailAccountWithPersistentResourceID:(id)d;
 - (void)_validateIncomingAccountOnThread;
-- (void)accountValidator:(id)a3 finishedValidationOfAccount:(id)a4 usedSSL:(BOOL)a5;
+- (void)accountValidator:(id)validator finishedValidationOfAccount:(id)account usedSSL:(BOOL)l;
 - (void)remove;
 - (void)setAside;
 - (void)unsetAside;
@@ -27,11 +27,11 @@
 
 @implementation MCNewEmailAccountPayloadHandler
 
-- (MCNewEmailAccountPayloadHandler)initWithPayload:(id)a3 profileHandler:(id)a4
+- (MCNewEmailAccountPayloadHandler)initWithPayload:(id)payload profileHandler:(id)handler
 {
   v8.receiver = self;
   v8.super_class = MCNewEmailAccountPayloadHandler;
-  v4 = [(MCNewPayloadHandler *)&v8 initWithPayload:a3 profileHandler:a4];
+  v4 = [(MCNewPayloadHandler *)&v8 initWithPayload:payload profileHandler:handler];
   if (v4)
   {
     v5 = [[NSConditionLock alloc] initWithCondition:0];
@@ -45,44 +45,44 @@
 - (id)userInputFields
 {
   v3 = +[NSMutableArray array];
-  v4 = [(MCNewPayloadHandler *)self payload];
-  v5 = [v4 emailAccountName];
+  payload = [(MCNewPayloadHandler *)self payload];
+  emailAccountName = [payload emailAccountName];
 
-  if (!v5)
+  if (!emailAccountName)
   {
     v6 = kMCEAPEmailAccountNameKey;
     v7 = MCLocalizedString();
-    v8 = [v4 emailAccountDescription];
+    emailAccountDescription = [payload emailAccountDescription];
     v9 = MCLocalizedFormat();
     v10 = [MCNewPayloadHandler promptDictionaryForKey:v6 title:v7 description:v9 retypeDescription:0 finePrint:0 defaultValue:0 placeholderValue:0 minimumLength:0 fieldType:6 flags:?];
     [v3 addObject:v10];
   }
 
-  v11 = [v4 emailAddress];
+  emailAddress = [payload emailAddress];
 
-  if (!v11)
+  if (!emailAddress)
   {
     v12 = kMCEAPEmailAddressKey;
     v13 = MCLocalizedString();
-    v14 = [v4 displayName];
+    displayName = [payload displayName];
     v15 = MCLocalizedFormat();
     v16 = [MCNewPayloadHandler promptDictionaryForKey:v12 title:v13 description:v15 retypeDescription:0 finePrint:0 defaultValue:0 placeholderValue:0 minimumLength:0 fieldType:2 flags:?];
     [v3 addObject:v16];
   }
 
-  v17 = [v4 incomingMailServerUsername];
+  incomingMailServerUsername = [payload incomingMailServerUsername];
 
-  if (!v17)
+  if (!incomingMailServerUsername)
   {
-    v18 = [v4 emailAccountDescription];
-    if (v18)
+    emailAccountDescription2 = [payload emailAccountDescription];
+    if (emailAccountDescription2)
     {
-      [v4 emailAccountDescription];
+      [payload emailAccountDescription];
     }
 
     else
     {
-      [v4 incomingMailServerHostname];
+      [payload incomingMailServerHostname];
     }
     v19 = ;
     v20 = MCLocalizedFormat();
@@ -93,62 +93,62 @@
     [v3 addObject:v23];
   }
 
-  v24 = [v4 incomingMailServerAuthentication];
+  incomingMailServerAuthentication = [payload incomingMailServerAuthentication];
   v25 = kMCEmailAccountPayloadAuthenticationTypeNone;
-  if (([v24 isEqualToString:kMCEmailAccountPayloadAuthenticationTypeNone] & 1) == 0)
+  if (([incomingMailServerAuthentication isEqualToString:kMCEmailAccountPayloadAuthenticationTypeNone] & 1) == 0)
   {
-    v26 = [v4 incomingPassword];
+    incomingPassword = [payload incomingPassword];
 
-    if (v26)
+    if (incomingPassword)
     {
       goto LABEL_17;
     }
 
-    v27 = [v4 emailAccountDescription];
-    if (v27)
+    emailAccountDescription3 = [payload emailAccountDescription];
+    if (emailAccountDescription3)
     {
-      [v4 emailAccountDescription];
+      [payload emailAccountDescription];
     }
 
     else
     {
-      [v4 incomingMailServerHostname];
+      [payload incomingMailServerHostname];
     }
     v28 = ;
-    v24 = MCLocalizedFormat();
+    incomingMailServerAuthentication = MCLocalizedFormat();
 
     v29 = kMCEAPIncomingPasswordKey;
     v30 = MCLocalizedString();
     v31 = MCLocalizedString();
-    v32 = [MCNewPayloadHandler promptDictionaryForKey:v29 title:v30 description:v24 retypeDescription:0 finePrint:0 defaultValue:0 placeholderValue:v31 minimumLength:0 fieldType:3 flags:?];
+    v32 = [MCNewPayloadHandler promptDictionaryForKey:v29 title:v30 description:incomingMailServerAuthentication retypeDescription:0 finePrint:0 defaultValue:0 placeholderValue:v31 minimumLength:0 fieldType:3 flags:?];
     [v3 addObject:v32];
   }
 
 LABEL_17:
-  v33 = [v4 outgoingMailServerAuthentication];
-  v34 = [v33 isEqualToString:v25];
+  outgoingMailServerAuthentication = [payload outgoingMailServerAuthentication];
+  v34 = [outgoingMailServerAuthentication isEqualToString:v25];
 
   if (v34)
   {
     goto LABEL_32;
   }
 
-  v35 = [v4 emailAccountDescription];
-  if (v35)
+  emailAccountDescription4 = [payload emailAccountDescription];
+  if (emailAccountDescription4)
   {
-    [v4 emailAccountDescription];
+    [payload emailAccountDescription];
   }
 
   else
   {
-    [v4 outgoingMailServerHostname];
+    [payload outgoingMailServerHostname];
   }
   v49 = ;
   v36 = MCLocalizedFormat();
 
-  v37 = [v4 outgoingMailServerUsername];
+  outgoingMailServerUsername = [payload outgoingMailServerUsername];
 
-  if (!v37)
+  if (!outgoingMailServerUsername)
   {
     v38 = kMCEAPOutgoingMailServerUsernameKey;
     v39 = MCLocalizedString();
@@ -156,26 +156,26 @@ LABEL_17:
     [v3 addObject:v40];
   }
 
-  v41 = [v4 outgoingPassword];
-  if (v41)
+  outgoingPassword = [payload outgoingPassword];
+  if (outgoingPassword)
   {
-    v42 = v41;
+    v42 = outgoingPassword;
 LABEL_30:
 
     goto LABEL_31;
   }
 
-  if (([v4 outgoingPasswordSameAsIncomingPassword] & 1) == 0)
+  if (([payload outgoingPasswordSameAsIncomingPassword] & 1) == 0)
   {
-    v43 = [v4 emailAccountDescription];
-    if (v43)
+    emailAccountDescription5 = [payload emailAccountDescription];
+    if (emailAccountDescription5)
     {
-      [v4 emailAccountDescription];
+      [payload emailAccountDescription];
     }
 
     else
     {
-      [v4 outgoingMailServerHostname];
+      [payload outgoingMailServerHostname];
     }
     v44 = ;
     v45 = MCLocalizedFormat();
@@ -196,10 +196,10 @@ LABEL_32:
   return v3;
 }
 
-- (id)_authSchemeForAuthenticationMethod:(id)a3
+- (id)_authSchemeForAuthenticationMethod:(id)method
 {
-  v3 = a3;
-  if ([v3 isEqualToString:kMCEmailAccountPayloadAuthenticationTypeCRAMMD5])
+  methodCopy = method;
+  if ([methodCopy isEqualToString:kMCEmailAccountPayloadAuthenticationTypeCRAMMD5])
   {
     v4 = &MFAuthSchemeCramMd5;
 LABEL_7:
@@ -207,13 +207,13 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if ([v3 isEqualToString:kMCEmailAccountPayloadAuthenticationTypeNTLM])
+  if ([methodCopy isEqualToString:kMCEmailAccountPayloadAuthenticationTypeNTLM])
   {
     v4 = &MFAuthSchemeNTLM;
     goto LABEL_7;
   }
 
-  if ([v3 isEqualToString:kMCEmailAccountPayloadAuthenticationTypeHTTPMD5])
+  if ([methodCopy isEqualToString:kMCEmailAccountPayloadAuthenticationTypeHTTPMD5])
   {
     v4 = &MFAuthSchemeDigestMD5;
     goto LABEL_7;
@@ -225,25 +225,25 @@ LABEL_8:
   return v5;
 }
 
-- (id)_persistentIDForCertificateUUID:(id)a3 notFoundLocErrorString:(id)a4 badLocErrorString:(id)a5 outError:(id *)a6
+- (id)_persistentIDForCertificateUUID:(id)d notFoundLocErrorString:(id)string badLocErrorString:(id)errorString outError:(id *)error
 {
-  v10 = a4;
-  v11 = a5;
-  if (!a3)
+  stringCopy = string;
+  errorStringCopy = errorString;
+  if (!d)
   {
     v18 = 0;
     goto LABEL_13;
   }
 
-  v12 = a3;
-  v13 = [(MCNewPayloadHandler *)self profileHandler];
-  v14 = [v13 persistentIDForCertificateUUID:v12];
+  dCopy = d;
+  profileHandler = [(MCNewPayloadHandler *)self profileHandler];
+  v14 = [profileHandler persistentIDForCertificateUUID:dCopy];
 
   if (v14)
   {
-    v15 = [(MCNewPayloadHandler *)self profileHandler];
-    v16 = [v15 profile];
-    v17 = +[MCKeychain copyIdentityWithPersistentID:useSystemKeychain:](MCKeychain, "copyIdentityWithPersistentID:useSystemKeychain:", v14, [v16 isInstalledForSystem]);
+    profileHandler2 = [(MCNewPayloadHandler *)self profileHandler];
+    profile = [profileHandler2 profile];
+    v17 = +[MCKeychain copyIdentityWithPersistentID:useSystemKeychain:](MCKeychain, "copyIdentityWithPersistentID:useSystemKeychain:", v14, [profile isInstalledForSystem]);
 
     if (v17)
     {
@@ -251,29 +251,29 @@ LABEL_8:
       goto LABEL_11;
     }
 
-    v27 = a6;
+    errorCopy2 = error;
     v19 = 7004;
   }
 
   else
   {
-    v27 = a6;
+    errorCopy2 = error;
     v19 = 7003;
   }
 
   v20 = MCEmailErrorDomain;
-  v21 = [(MCNewPayloadHandler *)self payload];
-  v22 = [v21 friendlyName];
+  payload = [(MCNewPayloadHandler *)self payload];
+  friendlyName = [payload friendlyName];
   v23 = MCErrorArray();
-  v24 = [NSError MCErrorWithDomain:v20 code:v19 descriptionArray:v23 errorType:MCErrorTypeFatal, v22, 0];
+  v24 = [NSError MCErrorWithDomain:v20 code:v19 descriptionArray:v23 errorType:MCErrorTypeFatal, friendlyName, 0];
 
   if (v24)
   {
-    if (v27)
+    if (errorCopy2)
     {
       v25 = v24;
       v18 = 0;
-      *v27 = v24;
+      *errorCopy2 = v24;
     }
 
     else
@@ -294,49 +294,49 @@ LABEL_13:
   return v18;
 }
 
-+ (id)MCACAccountIdentifierWithIncomingAccountInfo:(id)a3
++ (id)MCACAccountIdentifierWithIncomingAccountInfo:(id)info
 {
-  v3 = a3;
-  v4 = [v3 objectForKey:@"MCNewEmailAccountPayloadHandlerAccountType"];
-  v5 = [v3 objectForKey:MailAccountHostname];
-  v6 = [v3 objectForKey:MFMailAccountUsername];
+  infoCopy = info;
+  v4 = [infoCopy objectForKey:@"MCNewEmailAccountPayloadHandlerAccountType"];
+  v5 = [infoCopy objectForKey:MailAccountHostname];
+  v6 = [infoCopy objectForKey:MFMailAccountUsername];
 
   v7 = [MCNewEmailAccountPayloadHandler unhashedAccountIdentifierWithType:v4 hostname:v5 username:v6];
-  v8 = [v7 MCHashedIdentifier];
+  mCHashedIdentifier = [v7 MCHashedIdentifier];
 
-  return v8;
+  return mCHashedIdentifier;
 }
 
-+ (id)MCACAccountIdentifierWithOutgoingAccountInfo:(id)a3
++ (id)MCACAccountIdentifierWithOutgoingAccountInfo:(id)info
 {
   v3 = MailAccountHostname;
-  v4 = a3;
-  v5 = [v4 objectForKey:v3];
-  v6 = [v4 objectForKey:MFMailAccountUsername];
+  infoCopy = info;
+  v5 = [infoCopy objectForKey:v3];
+  v6 = [infoCopy objectForKey:MFMailAccountUsername];
 
   v7 = [MCNewEmailAccountPayloadHandler unhashedAccountIdentifierWithType:@"smtp" hostname:v5 username:v6];
-  v8 = [v7 MCHashedIdentifier];
+  mCHashedIdentifier = [v7 MCHashedIdentifier];
 
-  return v8;
+  return mCHashedIdentifier;
 }
 
-+ (id)unhashedAccountIdentifierWithType:(id)a3 hostname:(id)a4 username:(id)a5
++ (id)unhashedAccountIdentifierWithType:(id)type hostname:(id)hostname username:(id)username
 {
-  v7 = a5;
+  usernameCopy = username;
   v8 = 0;
-  if (a3)
+  if (type)
   {
-    if (a4)
+    if (hostname)
     {
-      v9 = [NSString stringWithFormat:@"%@|%@", a3, a4];
-      v8 = v9;
-      if (v7)
+      hostname = [NSString stringWithFormat:@"%@|%@", type, hostname];
+      v8 = hostname;
+      if (usernameCopy)
       {
-        if (v9)
+        if (hostname)
         {
-          v10 = [v9 stringByAppendingFormat:@"|%@", v7];
+          usernameCopy = [hostname stringByAppendingFormat:@"|%@", usernameCopy];
 
-          v8 = v10;
+          v8 = usernameCopy;
         }
       }
     }
@@ -345,35 +345,35 @@ LABEL_13:
   return v8;
 }
 
-- (id)_incomingAccountInfoDictionaryWithUserInput:(id)a3 isPreflight:(BOOL)a4 outError:(id *)a5
+- (id)_incomingAccountInfoDictionaryWithUserInput:(id)input isPreflight:(BOOL)preflight outError:(id *)error
 {
-  v70 = a4;
-  v6 = a3;
+  preflightCopy = preflight;
+  inputCopy = input;
   v7 = +[NSMutableDictionary dictionary];
-  v8 = [(MCNewPayloadHandler *)self payload];
+  payload = [(MCNewPayloadHandler *)self payload];
   v9 = kMCEAPEmailAddressKey;
-  v10 = [v8 emailAddress];
-  v11 = [MCNewPayloadHandler prioritizeUserInput:v6 key:v9 overField:v10];
+  emailAddress = [payload emailAddress];
+  v11 = [MCNewPayloadHandler prioritizeUserInput:inputCopy key:v9 overField:emailAddress];
 
   v12 = kMCEAPIncomingMailServerUsernameKey;
-  v13 = [v8 incomingMailServerUsername];
-  v76 = [MCNewPayloadHandler prioritizeUserInput:v6 key:v12 overField:v13];
+  incomingMailServerUsername = [payload incomingMailServerUsername];
+  v76 = [MCNewPayloadHandler prioritizeUserInput:inputCopy key:v12 overField:incomingMailServerUsername];
 
   v14 = kMCEAPIncomingMailServerHostnameKey;
-  v15 = [v8 incomingMailServerHostname];
-  v16 = [MCNewPayloadHandler prioritizeUserInput:v6 key:v14 overField:v15];
+  incomingMailServerHostname = [payload incomingMailServerHostname];
+  v16 = [MCNewPayloadHandler prioritizeUserInput:inputCopy key:v14 overField:incomingMailServerHostname];
 
   v17 = kMCEAPIncomingPasswordKey;
-  v18 = [v8 incomingPassword];
-  v75 = [MCNewPayloadHandler prioritizeUserInput:v6 key:v17 overField:v18];
+  incomingPassword = [payload incomingPassword];
+  v75 = [MCNewPayloadHandler prioritizeUserInput:inputCopy key:v17 overField:incomingPassword];
 
   v19 = kMCEAPEmailAccountDescriptionKey;
-  v20 = [v8 emailAccountDescription];
-  v74 = [MCNewPayloadHandler prioritizeUserInput:v6 key:v19 overField:v20];
+  emailAccountDescription = [payload emailAccountDescription];
+  v74 = [MCNewPayloadHandler prioritizeUserInput:inputCopy key:v19 overField:emailAccountDescription];
 
   v21 = kMCEAPEmailAccountNameKey;
-  v22 = [v8 emailAccountName];
-  v23 = [MCNewPayloadHandler prioritizeUserInput:v6 key:v21 overField:v22];
+  emailAccountName = [payload emailAccountName];
+  v23 = [MCNewPayloadHandler prioritizeUserInput:inputCopy key:v21 overField:emailAccountName];
 
   if (v11)
   {
@@ -388,42 +388,42 @@ LABEL_13:
   [v7 MCSetObjectIfNotNil:v74 forKey:MFMailAccountDescription];
   v72 = v23;
   [v7 MCSetObjectIfNotNil:v23 forKey:MailAccountFullUserName];
-  v26 = [v8 incomingMailServerPortNumber];
-  [v7 MCSetObjectIfNotNil:v26 forKey:MailAccountPortNumber];
+  incomingMailServerPortNumber = [payload incomingMailServerPortNumber];
+  [v7 MCSetObjectIfNotNil:incomingMailServerPortNumber forKey:MailAccountPortNumber];
 
-  if ([v8 incomingMailServerUseSSL])
+  if ([payload incomingMailServerUseSSL])
   {
     v27 = [NSNumber numberWithInt:1];
     [v7 setObject:v27 forKey:MailAccountSSLEnabled];
   }
 
-  if ([v8 preventMove])
+  if ([payload preventMove])
   {
-    v28 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v8 preventMove]);
+    v28 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [payload preventMove]);
     [v7 setObject:v28 forKey:MFMailAccountRestrictMessageTransfersToOtherAccounts];
   }
 
-  if ([v8 preventAppSheet])
+  if ([payload preventAppSheet])
   {
-    v29 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v8 preventAppSheet]);
+    v29 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [payload preventAppSheet]);
     [v7 setObject:v29 forKey:MFMailAccountRestrictSendingFromExternalProcesses];
   }
 
-  if ([v8 isRecentsSyncingDisabled])
+  if ([payload isRecentsSyncingDisabled])
   {
     v30 = [NSNumber numberWithBool:1];
     [v7 setObject:v30 forKey:MFMailAccountRestrictRecentsSyncing];
   }
 
-  if ([v8 isMailDropEnabled])
+  if ([payload isMailDropEnabled])
   {
     v31 = [NSNumber numberWithBool:1];
     [v7 setObject:v31 forKey:MFMailAccountSupportsMailDrop];
   }
 
   v73 = v11;
-  v32 = [v8 emailAccountType];
-  v33 = [v32 isEqualToString:kMCEmailAccountPayloadTypeIMAP];
+  emailAccountType = [payload emailAccountType];
+  v33 = [emailAccountType isEqualToString:kMCEmailAccountPayloadTypeIMAP];
 
   if (v33)
   {
@@ -436,8 +436,8 @@ LABEL_13:
   }
 
   [v7 setValue:v34 forKey:@"MCNewEmailAccountPayloadHandlerAccountType"];
-  v35 = [v8 incomingMailServerAuthentication];
-  v36 = [(MCNewEmailAccountPayloadHandler *)self _authSchemeForAuthenticationMethod:v35];
+  incomingMailServerAuthentication = [payload incomingMailServerAuthentication];
+  v36 = [(MCNewEmailAccountPayloadHandler *)self _authSchemeForAuthenticationMethod:incomingMailServerAuthentication];
   [v7 setObject:v36 forKey:MFMailAccountAuthenticationScheme];
 
   v37 = [v7 objectForKey:v25];
@@ -453,44 +453,44 @@ LABEL_13:
   }
 
   [v7 setObject:v38 forKey:ACAccountPropertyShouldNeverUseSyncableCredential];
-  v39 = [v8 incomingMailServerIMAPPathPrefix];
-  if (v39 && [(__CFString *)v34 isEqualToString:@"imap"])
+  incomingMailServerIMAPPathPrefix = [payload incomingMailServerIMAPPathPrefix];
+  if (incomingMailServerIMAPPathPrefix && [(__CFString *)v34 isEqualToString:@"imap"])
   {
-    [v7 setObject:v39 forKey:IMAPServerPathPrefix];
+    [v7 setObject:incomingMailServerIMAPPathPrefix forKey:IMAPServerPathPrefix];
   }
 
   v40 = [MCNewEmailAccountPayloadHandler unhashedAccountIdentifierWithType:v34 hostname:v16 username:v76];
-  v41 = [v8 profile];
-  v42 = [v41 displayName];
-  v43 = [NSString stringWithFormat:@"%@|%@", v40, v42];
+  profile = [payload profile];
+  displayName = [profile displayName];
+  v43 = [NSString stringWithFormat:@"%@|%@", v40, displayName];
 
   [v7 setObject:v43 forKey:MailAccountManagedTag];
-  if (![v8 SMIMEEnabled])
+  if (![payload SMIMEEnabled])
   {
     v48 = 0;
     goto LABEL_52;
   }
 
-  v44 = [v8 SMIMESigningIdentityUUID];
+  sMIMESigningIdentityUUID = [payload SMIMESigningIdentityUUID];
 
-  if (v44)
+  if (sMIMESigningIdentityUUID)
   {
-    v45 = [v8 SMIMESigningIdentityUUID];
-    if (v70)
+    sMIMESigningIdentityUUID2 = [payload SMIMESigningIdentityUUID];
+    if (preflightCopy)
     {
       v80 = 0;
       v46 = &v80;
-      v47 = [(MCNewPayloadHandler *)self _temporaryPersistentIDForIdentityUUID:v45 outError:&v80];
+      v47 = [(MCNewPayloadHandler *)self _temporaryPersistentIDForIdentityUUID:sMIMESigningIdentityUUID2 outError:&v80];
     }
 
     else
     {
       v79 = 0;
       v46 = &v79;
-      v47 = [(MCNewEmailAccountPayloadHandler *)self _persistentIDForCertificateUUID:v45 notFoundLocErrorString:@"EMAIL_ERROR_SMIME_SIGNING_CERT_NOT_FOUND_P_PAYLOAD" badLocErrorString:@"EMAIL_ERROR_SMIME_SIGNING_CERT_BAD_P_PAYLOAD" outError:&v79];
+      v47 = [(MCNewEmailAccountPayloadHandler *)self _persistentIDForCertificateUUID:sMIMESigningIdentityUUID2 notFoundLocErrorString:@"EMAIL_ERROR_SMIME_SIGNING_CERT_NOT_FOUND_P_PAYLOAD" badLocErrorString:@"EMAIL_ERROR_SMIME_SIGNING_CERT_BAD_P_PAYLOAD" outError:&v79];
     }
 
-    v49 = v47;
+    sMIMESigningEnabled = v47;
     v48 = *v46;
 
     if (v48)
@@ -498,102 +498,102 @@ LABEL_13:
       goto LABEL_51;
     }
 
-    if (!v49)
+    if (!sMIMESigningEnabled)
     {
       v61 = MCEmailErrorDomain;
-      v52 = [(MCNewPayloadHandler *)self payload];
-      v69 = [v52 friendlyName];
-      v57 = MCErrorArray();
-      v48 = [NSError MCErrorWithDomain:v61 code:7003 descriptionArray:v57 errorType:MCErrorTypeFatal, v69, 0];
+      payload2 = [(MCNewPayloadHandler *)self payload];
+      friendlyName = [payload2 friendlyName];
+      sMIMEEncryptionEnabled = MCErrorArray();
+      v48 = [NSError MCErrorWithDomain:v61 code:7003 descriptionArray:sMIMEEncryptionEnabled errorType:MCErrorTypeFatal, friendlyName, 0];
       goto LABEL_50;
     }
 
-    [v7 setObject:v49 forKey:@"MCSMIMESigningIdentityPersistentID"];
+    [v7 setObject:sMIMESigningEnabled forKey:@"MCSMIMESigningIdentityPersistentID"];
   }
 
-  v49 = [v8 SMIMESigningEnabled];
-  if (v49)
+  sMIMESigningEnabled = [payload SMIMESigningEnabled];
+  if (sMIMESigningEnabled)
   {
-    [v7 setObject:v49 forKey:MFMailAccountSigningEnabled];
+    [v7 setObject:sMIMESigningEnabled forKey:MFMailAccountSigningEnabled];
   }
 
   else
   {
-    v50 = [v8 SMIMESigningIdentityUUID];
+    sMIMESigningIdentityUUID3 = [payload SMIMESigningIdentityUUID];
 
-    if (v50)
+    if (sMIMESigningIdentityUUID3)
     {
       v51 = [NSNumber numberWithBool:1];
       [v7 setObject:v51 forKey:MFMailAccountSigningEnabled];
     }
   }
 
-  v52 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v8 SMIMESigningUserOverrideable]);
-  [v7 setObject:v52 forKey:MFMailAccountSigningUserOverrideable];
-  v69 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v8 SMIMESigningIdentityUserOverrideable]);
+  payload2 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [payload SMIMESigningUserOverrideable]);
+  [v7 setObject:payload2 forKey:MFMailAccountSigningUserOverrideable];
+  friendlyName = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [payload SMIMESigningIdentityUserOverrideable]);
   [v7 setObject:? forKey:?];
-  v53 = [v8 SMIMEEncryptionIdentityUUID];
+  sMIMEEncryptionIdentityUUID = [payload SMIMEEncryptionIdentityUUID];
 
-  if (!v53)
+  if (!sMIMEEncryptionIdentityUUID)
   {
 LABEL_42:
-    v57 = [v8 SMIMEEncryptionEnabled];
-    if (v57)
+    sMIMEEncryptionEnabled = [payload SMIMEEncryptionEnabled];
+    if (sMIMEEncryptionEnabled)
     {
-      [v7 setObject:v57 forKey:MFMailAccountEncryptionEnabled];
+      [v7 setObject:sMIMEEncryptionEnabled forKey:MFMailAccountEncryptionEnabled];
     }
 
     else
     {
-      v58 = [v8 SMIMEEncryptionIdentityUUID];
+      sMIMEEncryptionIdentityUUID2 = [payload SMIMEEncryptionIdentityUUID];
 
-      if (v58)
+      if (sMIMEEncryptionIdentityUUID2)
       {
         v59 = [NSNumber numberWithBool:1];
         [v7 setObject:v59 forKey:MFMailAccountEncryptionEnabled];
       }
     }
 
-    if ([v8 SMIMEEncryptByDefaultUserOverrideable])
+    if ([payload SMIMEEncryptByDefaultUserOverrideable])
     {
       [v7 setObject:&__kCFBooleanTrue forKey:MFMailAccountEncryptByDefaultUserOverrideable];
     }
 
-    v60 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v8 SMIMEEncryptionIdentityUserOverrideable]);
+    v60 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [payload SMIMEEncryptionIdentityUserOverrideable]);
     [v7 setObject:v60 forKey:MFMailAccountEncryptionIdentityUserOverrideable];
 
     v48 = 0;
     goto LABEL_50;
   }
 
-  v68 = v52;
-  v54 = [v8 SMIMEEncryptionIdentityUUID];
-  if (v70)
+  v68 = payload2;
+  sMIMEEncryptionIdentityUUID3 = [payload SMIMEEncryptionIdentityUUID];
+  if (preflightCopy)
   {
     v78 = 0;
     v55 = &v78;
-    v56 = [(MCNewPayloadHandler *)self _temporaryPersistentIDForIdentityUUID:v54 outError:&v78];
+    v56 = [(MCNewPayloadHandler *)self _temporaryPersistentIDForIdentityUUID:sMIMEEncryptionIdentityUUID3 outError:&v78];
   }
 
   else
   {
     v77 = 0;
     v55 = &v77;
-    v56 = [(MCNewEmailAccountPayloadHandler *)self _persistentIDForCertificateUUID:v54 notFoundLocErrorString:@"EMAIL_ERROR_SMIME_ENCRYPTION_CERT_NOT_FOUND_P_PAYLOAD" badLocErrorString:@"EMAIL_ERROR_SMIME_ENCRYPTION_CERT_BAD_P_PAYLOAD" outError:&v77];
+    v56 = [(MCNewEmailAccountPayloadHandler *)self _persistentIDForCertificateUUID:sMIMEEncryptionIdentityUUID3 notFoundLocErrorString:@"EMAIL_ERROR_SMIME_ENCRYPTION_CERT_NOT_FOUND_P_PAYLOAD" badLocErrorString:@"EMAIL_ERROR_SMIME_ENCRYPTION_CERT_BAD_P_PAYLOAD" outError:&v77];
   }
 
-  v57 = v56;
+  sMIMEEncryptionEnabled = v56;
   v48 = *v55;
 
   if (!v48)
   {
-    [v7 setObject:v57 forKey:@"MCSMIMEEncryptionIdentityPersistentID"];
+    [v7 setObject:sMIMEEncryptionEnabled forKey:@"MCSMIMEEncryptionIdentityPersistentID"];
 
-    v52 = v68;
+    payload2 = v68;
     goto LABEL_42;
   }
 
-  v52 = v68;
+  payload2 = v68;
 LABEL_50:
 
 LABEL_51:
@@ -605,17 +605,17 @@ LABEL_52:
     if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_ERROR))
     {
       v63 = v62;
-      v64 = [v48 MCVerboseDescription];
+      mCVerboseDescription = [v48 MCVerboseDescription];
       *buf = 138543362;
-      v82 = v64;
+      v82 = mCVerboseDescription;
       _os_log_impl(&_mh_execute_header, v63, OS_LOG_TYPE_ERROR, "Cannot create incoming account dictionary. Error: %{public}@", buf, 0xCu);
     }
 
-    if (a5)
+    if (error)
     {
       v65 = v48;
       v66 = 0;
-      *a5 = v48;
+      *error = v48;
     }
 
     else
@@ -632,10 +632,10 @@ LABEL_52:
   return v66;
 }
 
-- (id)_incomingAccountWithAccountInfo:(id)a3
+- (id)_incomingAccountWithAccountInfo:(id)info
 {
-  v4 = a3;
-  v5 = [v4 objectForKey:@"MCNewEmailAccountPayloadHandlerAccountType"];
+  infoCopy = info;
+  v5 = [infoCopy objectForKey:@"MCNewEmailAccountPayloadHandlerAccountType"];
   v6 = [v5 isEqualToString:@"imap"];
   v7 = IMAPAccount_ptr;
   if (!v6)
@@ -646,9 +646,9 @@ LABEL_52:
   v8 = *v7;
   v9 = objc_opt_class();
   v10 = +[MDMCloudConfiguration sharedConfiguration];
-  v11 = [v10 userMode];
+  userMode = [v10 userMode];
 
-  if (v11 == 1)
+  if (userMode == 1)
   {
     v47 = v5;
     v12 = +[ACAccountStore defaultStore];
@@ -662,15 +662,15 @@ LABEL_52:
     v15 = [v12 accountTypeWithAccountTypeIdentifier:*v14];
     v16 = [[ACAccount alloc] initWithAccountType:v15];
     [v16 setManagingOwnerIdentifier:kMCAccountManagingOwnerIdentifier];
-    v17 = [(MCNewPayloadHandler *)self payload];
-    v18 = [v17 friendlyName];
-    [v16 setManagingSourceName:v18];
+    payload = [(MCNewPayloadHandler *)self payload];
+    friendlyName = [payload friendlyName];
+    [v16 setManagingSourceName:friendlyName];
 
-    v19 = [MCNewEmailAccountPayloadHandler MCACAccountIdentifierWithIncomingAccountInfo:v4];
+    v19 = [MCNewEmailAccountPayloadHandler MCACAccountIdentifierWithIncomingAccountInfo:infoCopy];
     if (v19)
     {
-      v20 = [v16 identifier];
-      [v16 setAccountProperty:v20 forKey:@"MCAccountIdentifer"];
+      identifier = [v16 identifier];
+      [v16 setAccountProperty:identifier forKey:@"MCAccountIdentifer"];
 
       [v16 setIdentifier:v19];
     }
@@ -704,7 +704,7 @@ LABEL_52:
     }
 
     [v16 setAuthenticated:1];
-    v26 = [v4 mutableCopy];
+    v26 = [infoCopy mutableCopy];
     v27 = NSStringFromClass(v9);
     [v26 setObject:v27 forKey:MFMailAccountClass];
 
@@ -716,25 +716,25 @@ LABEL_52:
 
   else
   {
-    v28 = [(objc_class *)v9 newAccountWithDictionary:v4];
+    v28 = [(objc_class *)v9 newAccountWithDictionary:infoCopy];
     v29 = kMCAccountManagingOwnerIdentifier;
-    v30 = [v28 persistentAccount];
-    [v30 setManagingOwnerIdentifier:v29];
+    persistentAccount = [v28 persistentAccount];
+    [persistentAccount setManagingOwnerIdentifier:v29];
 
-    v31 = [(MCNewPayloadHandler *)self payload];
-    v32 = [v31 friendlyName];
-    v33 = [v28 persistentAccount];
-    [v33 setManagingSourceName:v32];
+    payload2 = [(MCNewPayloadHandler *)self payload];
+    friendlyName2 = [payload2 friendlyName];
+    persistentAccount2 = [v28 persistentAccount];
+    [persistentAccount2 setManagingSourceName:friendlyName2];
   }
 
   v50 = 0u;
   v51 = 0u;
   v48 = 0u;
   v49 = 0u;
-  v34 = [v28 persistentAccount];
-  v35 = [v34 provisionedDataclasses];
+  persistentAccount3 = [v28 persistentAccount];
+  provisionedDataclasses = [persistentAccount3 provisionedDataclasses];
 
-  v36 = [v35 countByEnumeratingWithState:&v48 objects:v56 count:16];
+  v36 = [provisionedDataclasses countByEnumeratingWithState:&v48 objects:v56 count:16];
   if (v36)
   {
     v37 = v36;
@@ -745,55 +745,55 @@ LABEL_52:
       {
         if (*v49 != v38)
         {
-          objc_enumerationMutation(v35);
+          objc_enumerationMutation(provisionedDataclasses);
         }
 
         v40 = *(*(&v48 + 1) + 8 * j);
-        v41 = [v28 persistentAccount];
-        [v41 setEnabled:1 forDataclass:v40];
+        persistentAccount4 = [v28 persistentAccount];
+        [persistentAccount4 setEnabled:1 forDataclass:v40];
       }
 
-      v37 = [v35 countByEnumeratingWithState:&v48 objects:v56 count:16];
+      v37 = [provisionedDataclasses countByEnumeratingWithState:&v48 objects:v56 count:16];
     }
 
     while (v37);
   }
 
-  v42 = [v28 persistentAccount];
-  v43 = [v42 identifier];
+  persistentAccount5 = [v28 persistentAccount];
+  identifier2 = [persistentAccount5 identifier];
   incomingACAccountIdentifier = self->_incomingACAccountIdentifier;
-  self->_incomingACAccountIdentifier = v43;
+  self->_incomingACAccountIdentifier = identifier2;
 
   return v28;
 }
 
-- (id)_outgoingAccountInfoDictionaryWithUserInput:(id)a3
+- (id)_outgoingAccountInfoDictionaryWithUserInput:(id)input
 {
-  v4 = a3;
-  v5 = [(MCNewPayloadHandler *)self payload];
+  inputCopy = input;
+  payload = [(MCNewPayloadHandler *)self payload];
   v6 = +[NSMutableDictionary dictionary];
   v7 = kMCEAPOutgoingMailServerUsernameKey;
-  v8 = [v5 outgoingMailServerUsername];
-  v9 = [MCNewPayloadHandler prioritizeUserInput:v4 key:v7 overField:v8];
+  outgoingMailServerUsername = [payload outgoingMailServerUsername];
+  v9 = [MCNewPayloadHandler prioritizeUserInput:inputCopy key:v7 overField:outgoingMailServerUsername];
 
   v10 = kMCEAPOutgoingMailServerHostnameKey;
-  v11 = [v5 outgoingMailServerHostname];
-  v12 = [MCNewPayloadHandler prioritizeUserInput:v4 key:v10 overField:v11];
+  outgoingMailServerHostname = [payload outgoingMailServerHostname];
+  v12 = [MCNewPayloadHandler prioritizeUserInput:inputCopy key:v10 overField:outgoingMailServerHostname];
 
   v13 = kMCEAPIncomingPasswordKey;
-  v14 = [v5 incomingPassword];
-  v15 = [MCNewPayloadHandler prioritizeUserInput:v4 key:v13 overField:v14];
+  incomingPassword = [payload incomingPassword];
+  v15 = [MCNewPayloadHandler prioritizeUserInput:inputCopy key:v13 overField:incomingPassword];
 
   v16 = kMCEAPOutgoingPasswordKey;
-  v17 = [v5 outgoingPassword];
-  v18 = [MCNewPayloadHandler prioritizeUserInput:v4 key:v16 overField:v17];
+  outgoingPassword = [payload outgoingPassword];
+  v18 = [MCNewPayloadHandler prioritizeUserInput:inputCopy key:v16 overField:outgoingPassword];
 
   [v6 MCSetObjectIfNotNil:v9 forKey:MFMailAccountUsername];
   [v6 MCSetObjectIfNotNil:v12 forKey:MailAccountHostname];
-  v19 = [v5 outgoingMailServerPortNumber];
-  [v6 MCSetObjectIfNotNil:v19 forKey:MailAccountPortNumber];
+  outgoingMailServerPortNumber = [payload outgoingMailServerPortNumber];
+  [v6 MCSetObjectIfNotNil:outgoingMailServerPortNumber forKey:MailAccountPortNumber];
 
-  if (v15 && [v5 outgoingPasswordSameAsIncomingPassword])
+  if (v15 && [payload outgoingPasswordSameAsIncomingPassword])
   {
     v20 = MailAccountPassword;
     v21 = v6;
@@ -814,8 +814,8 @@ LABEL_52:
 
   [v21 setObject:v22 forKey:v20];
 LABEL_7:
-  v23 = [v5 outgoingMailServerAuthentication];
-  v24 = [(MCNewEmailAccountPayloadHandler *)self _authSchemeForAuthenticationMethod:v23];
+  outgoingMailServerAuthentication = [payload outgoingMailServerAuthentication];
+  v24 = [(MCNewEmailAccountPayloadHandler *)self _authSchemeForAuthenticationMethod:outgoingMailServerAuthentication];
   [v6 setObject:v24 forKey:MFMailAccountAuthenticationScheme];
 
   v25 = [v6 objectForKey:v20];
@@ -832,21 +832,21 @@ LABEL_7:
 
   [v6 setObject:v26 forKey:ACAccountPropertyShouldNeverUseSyncableCredential];
   v27 = [MCNewEmailAccountPayloadHandler unhashedAccountIdentifierWithType:@"smtp" hostname:v12 username:v9];
-  v28 = [v5 profile];
-  v29 = [v28 displayName];
-  v30 = [NSString stringWithFormat:@"%@|%@", v27, v29];
+  profile = [payload profile];
+  displayName = [profile displayName];
+  v30 = [NSString stringWithFormat:@"%@|%@", v27, displayName];
 
   [v6 setObject:v30 forKey:MailAccountManagedTag];
-  v31 = [v5 outgoingMailServerAuthentication];
-  LOBYTE(v29) = [v31 isEqualToString:kMCEmailAccountPayloadAuthenticationTypeNone];
+  outgoingMailServerAuthentication2 = [payload outgoingMailServerAuthentication];
+  LOBYTE(displayName) = [outgoingMailServerAuthentication2 isEqualToString:kMCEmailAccountPayloadAuthenticationTypeNone];
 
-  if ((v29 & 1) == 0)
+  if ((displayName & 1) == 0)
   {
     v32 = [NSNumber numberWithInt:1];
     [v6 setObject:v32 forKey:DeliveryAccountShouldUseAuthentication];
   }
 
-  if ([v5 outgoingMailServerUseSSL])
+  if ([payload outgoingMailServerUseSSL])
   {
     v33 = [NSNumber numberWithInt:1];
     [v6 setObject:v33 forKey:MailAccountSSLEnabled];
@@ -855,32 +855,32 @@ LABEL_7:
   return v6;
 }
 
-- (id)_outgoingAccountWithAccountInfo:(id)a3
+- (id)_outgoingAccountWithAccountInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v5 = +[MDMCloudConfiguration sharedConfiguration];
-  v6 = [v5 userMode];
+  userMode = [v5 userMode];
 
-  if (v6 == 1)
+  if (userMode == 1)
   {
-    v7 = +[ACAccountStore defaultStore];
-    v8 = [v7 accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierSMTP];
-    v9 = [[ACAccount alloc] initWithAccountType:v8];
-    [v9 setManagingOwnerIdentifier:kMCAccountManagingOwnerIdentifier];
-    v10 = [(MCNewPayloadHandler *)self payload];
-    v11 = [v10 friendlyName];
-    [v9 setManagingSourceName:v11];
+    payload2 = +[ACAccountStore defaultStore];
+    friendlyName2 = [payload2 accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierSMTP];
+    persistentAccount2 = [[ACAccount alloc] initWithAccountType:friendlyName2];
+    [persistentAccount2 setManagingOwnerIdentifier:kMCAccountManagingOwnerIdentifier];
+    payload = [(MCNewPayloadHandler *)self payload];
+    friendlyName = [payload friendlyName];
+    [persistentAccount2 setManagingSourceName:friendlyName];
 
-    v12 = [MCNewEmailAccountPayloadHandler MCACAccountIdentifierWithOutgoingAccountInfo:v4];
+    v12 = [MCNewEmailAccountPayloadHandler MCACAccountIdentifierWithOutgoingAccountInfo:infoCopy];
     if (v12)
     {
-      v13 = [v9 identifier];
-      [v9 setAccountProperty:v13 forKey:@"MCAccountIdentifer"];
+      identifier = [persistentAccount2 identifier];
+      [persistentAccount2 setAccountProperty:identifier forKey:@"MCAccountIdentifer"];
 
-      [v9 setIdentifier:v12];
+      [persistentAccount2 setIdentifier:v12];
     }
 
-    v14 = [v7 supportedDataclassesForAccountType:v8];
+    v14 = [payload2 supportedDataclassesForAccountType:friendlyName2];
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
@@ -899,7 +899,7 @@ LABEL_7:
             objc_enumerationMutation(v14);
           }
 
-          [v9 setProvisioned:1 forDataclass:*(*(&v29 + 1) + 8 * i)];
+          [persistentAccount2 setProvisioned:1 forDataclass:*(*(&v29 + 1) + 8 * i)];
         }
 
         v16 = [v14 countByEnumeratingWithState:&v29 objects:v33 count:16];
@@ -908,33 +908,33 @@ LABEL_7:
       while (v16);
     }
 
-    [v9 setAuthenticated:1];
-    v19 = [v4 mutableCopy];
+    [persistentAccount2 setAuthenticated:1];
+    v19 = [infoCopy mutableCopy];
     v20 = objc_opt_class();
     v21 = NSStringFromClass(v20);
     [v19 setObject:v21 forKey:MFMailAccountClass];
 
-    v22 = [[SMTPAccount alloc] initWithPersistentAccount:v9];
+    v22 = [[SMTPAccount alloc] initWithPersistentAccount:persistentAccount2];
     [v22 _setAccountProperties:v19];
   }
 
   else
   {
-    v22 = [SMTPAccount newAccountWithDictionary:v4];
+    v22 = [SMTPAccount newAccountWithDictionary:infoCopy];
     v23 = kMCAccountManagingOwnerIdentifier;
-    v24 = [v22 persistentAccount];
-    [v24 setManagingOwnerIdentifier:v23];
+    persistentAccount = [v22 persistentAccount];
+    [persistentAccount setManagingOwnerIdentifier:v23];
 
-    v7 = [(MCNewPayloadHandler *)self payload];
-    v8 = [v7 friendlyName];
-    v9 = [v22 persistentAccount];
-    [v9 setManagingSourceName:v8];
+    payload2 = [(MCNewPayloadHandler *)self payload];
+    friendlyName2 = [payload2 friendlyName];
+    persistentAccount2 = [v22 persistentAccount];
+    [persistentAccount2 setManagingSourceName:friendlyName2];
   }
 
-  v25 = [v22 persistentAccount];
-  v26 = [v25 identifier];
+  persistentAccount3 = [v22 persistentAccount];
+  identifier2 = [persistentAccount3 identifier];
   outgoingACAccountIdentifier = self->_outgoingACAccountIdentifier;
-  self->_outgoingACAccountIdentifier = v26;
+  self->_outgoingACAccountIdentifier = identifier2;
 
   return v22;
 }
@@ -960,27 +960,27 @@ LABEL_7:
   objc_autoreleasePoolPop(v3);
 }
 
-- (id)_errorFromValidationError:(id)a3
+- (id)_errorFromValidationError:(id)error
 {
-  if (!a3)
+  if (!error)
   {
     v8 = 0;
     goto LABEL_15;
   }
 
-  v3 = a3;
-  v4 = [v3 code];
+  errorCopy = error;
+  code = [errorCopy code];
   v5 = MCErrorTypeSkippable;
-  if ((v4 - 1043) >= 3)
+  if ((code - 1043) >= 3)
   {
-    if (v4 == 1030)
+    if (code == 1030)
     {
       v7 = 7002;
       goto LABEL_10;
     }
 
     v6 = &MCErrorTypeFatal;
-    if (v4 == 1032)
+    if (code == 1032)
     {
       v6 = &MCErrorTypeRetryable;
       v7 = 7001;
@@ -1002,19 +1002,19 @@ LABEL_7:
 
   v5 = v9;
 LABEL_10:
-  v10 = [v3 localizedDescription];
+  localizedDescription = [errorCopy localizedDescription];
 
-  if (!v10)
+  if (!localizedDescription)
   {
     v11 = _MCLogObjects[0];
     if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_ERROR))
     {
       *buf = 67109120;
-      v16 = v4;
+      v16 = code;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_ERROR, "Validation error %u does not have a description.", buf, 8u);
     }
 
-    v10 = MCLocalizedFormat();
+    localizedDescription = MCLocalizedFormat();
   }
 
   v12 = MCEmailErrorDomain;
@@ -1026,14 +1026,14 @@ LABEL_15:
   return v8;
 }
 
-- (void)accountValidator:(id)a3 finishedValidationOfAccount:(id)a4 usedSSL:(BOOL)a5
+- (void)accountValidator:(id)validator finishedValidationOfAccount:(id)account usedSSL:(BOOL)l
 {
-  v7 = a3;
-  v8 = a4;
-  if (![v7 accountIsValid])
+  validatorCopy = validator;
+  accountCopy = account;
+  if (![validatorCopy accountIsValid])
   {
     self->_validationResult = 0;
-    if (self->_incomingAccount == v8)
+    if (self->_incomingAccount == accountCopy)
     {
       v15 = _MCLogObjects[0];
       if (!os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_ERROR))
@@ -1042,16 +1042,16 @@ LABEL_15:
       }
 
       v11 = v15;
-      v12 = [v7 error];
-      v13 = [v12 MCVerboseDescription];
+      error = [validatorCopy error];
+      mCVerboseDescription = [error MCVerboseDescription];
       v19 = 138543362;
-      v20 = v13;
+      v20 = mCVerboseDescription;
       v14 = "Error validating incoming server information: %{public}@";
     }
 
     else
     {
-      if (self->_outgoingAccount != v8)
+      if (self->_outgoingAccount != accountCopy)
       {
         goto LABEL_13;
       }
@@ -1063,10 +1063,10 @@ LABEL_15:
       }
 
       v11 = v10;
-      v12 = [v7 error];
-      v13 = [v12 MCVerboseDescription];
+      error = [validatorCopy error];
+      mCVerboseDescription = [error MCVerboseDescription];
       v19 = 138543362;
-      v20 = v13;
+      v20 = mCVerboseDescription;
       v14 = "Error validating outgoing server information: %{public}@";
     }
 
@@ -1076,20 +1076,20 @@ LABEL_15:
   }
 
   outgoingAccount = self->_outgoingAccount;
-  if (self->_incomingAccount == v8)
+  if (self->_incomingAccount == accountCopy)
   {
-    [v7 validateAccount:outgoingAccount useSSL:self->_outgoingAccountUsesSSL];
+    [validatorCopy validateAccount:outgoingAccount useSSL:self->_outgoingAccountUsesSSL];
     goto LABEL_16;
   }
 
-  if (outgoingAccount == v8)
+  if (outgoingAccount == accountCopy)
   {
     self->_validationResult = 1;
 LABEL_13:
     if (!self->_validationResult)
     {
-      v16 = [v7 error];
-      v17 = [(MCNewEmailAccountPayloadHandler *)self _errorFromValidationError:v16];
+      error2 = [validatorCopy error];
+      v17 = [(MCNewEmailAccountPayloadHandler *)self _errorFromValidationError:error2];
       validationError = self->_validationError;
       self->_validationError = v17;
     }
@@ -1100,12 +1100,12 @@ LABEL_13:
 LABEL_16:
 }
 
-- (BOOL)preflightUserInputResponses:(id)a3 outError:(id *)a4
+- (BOOL)preflightUserInputResponses:(id)responses outError:(id *)error
 {
-  v6 = a3;
-  v7 = [(MCNewPayloadHandler *)self payload];
+  responsesCopy = responses;
+  payload = [(MCNewPayloadHandler *)self payload];
   v46 = 0;
-  v8 = [(MCNewEmailAccountPayloadHandler *)self _incomingAccountInfoDictionaryWithUserInput:v6 isPreflight:1 outError:&v46];
+  v8 = [(MCNewEmailAccountPayloadHandler *)self _incomingAccountInfoDictionaryWithUserInput:responsesCopy isPreflight:1 outError:&v46];
   v9 = v46;
   if (v9)
   {
@@ -1114,25 +1114,25 @@ LABEL_16:
     goto LABEL_18;
   }
 
-  v11 = [(MCNewEmailAccountPayloadHandler *)self _outgoingAccountInfoDictionaryWithUserInput:v6];
+  v11 = [(MCNewEmailAccountPayloadHandler *)self _outgoingAccountInfoDictionaryWithUserInput:responsesCopy];
   v12 = [(MCNewEmailAccountPayloadHandler *)self _incomingAccountWithAccountInfo:v8];
   incomingAccount = self->_incomingAccount;
   self->_incomingAccount = v12;
 
-  self->_incomingAccountUsesSSL = [v7 incomingMailServerUseSSL];
+  self->_incomingAccountUsesSSL = [payload incomingMailServerUseSSL];
   v14 = [(MCNewEmailAccountPayloadHandler *)self _outgoingAccountWithAccountInfo:v11];
   outgoingAccount = self->_outgoingAccount;
   self->_outgoingAccount = v14;
 
-  self->_outgoingAccountUsesSSL = [v7 outgoingMailServerUseSSL];
+  self->_outgoingAccountUsesSSL = [payload outgoingMailServerUseSSL];
   if (!self->_incomingAccount)
   {
-    v31 = [v7 emailAccountType];
-    v32 = [v31 isEqualToString:kMCEmailAccountPayloadTypeIMAP];
+    emailAccountType = [payload emailAccountType];
+    v32 = [emailAccountType isEqualToString:kMCEmailAccountPayloadTypeIMAP];
 
     v33 = MCEmailErrorDomain;
-    v29 = [v7 emailAccountDescription];
-    v45 = v29;
+    emailAccountDescription = [payload emailAccountDescription];
+    v45 = emailAccountDescription;
     MCErrorArray();
     if (v32)
       v34 = {;
@@ -1154,8 +1154,8 @@ LABEL_16:
   if (!self->_outgoingAccount)
   {
     v38 = MCEmailErrorDomain;
-    v29 = [v7 emailAccountDescription];
-    v45 = v29;
+    emailAccountDescription = [payload emailAccountDescription];
+    v45 = emailAccountDescription;
     v34 = MCErrorArray();
     v35 = MCErrorTypeFatal;
     v36 = v38;
@@ -1170,9 +1170,9 @@ LABEL_16:
   if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_INFO))
   {
     v17 = v16;
-    v18 = [v7 emailAccountDescription];
+    emailAccountDescription2 = [payload emailAccountDescription];
     *buf = 138543362;
-    v48 = v18;
+    v48 = emailAccountDescription2;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_INFO, "Validating account “%{public}@”", buf, 0xCu);
   }
 
@@ -1198,17 +1198,17 @@ LABEL_16:
   if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_INFO))
   {
     v25 = v24;
-    v26 = [v7 emailAccountDescription];
+    emailAccountDescription3 = [payload emailAccountDescription];
     validationResult = self->_validationResult;
     v28 = MCStringForBool();
     *buf = 138543618;
-    v48 = v26;
+    v48 = emailAccountDescription3;
     v49 = 2114;
     v50 = v28;
     _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_INFO, "Validation of account “%{public}@” done. Result: %{public}@", buf, 0x16u);
   }
 
-  v29 = self->_validationError;
+  emailAccountDescription = self->_validationError;
   validationError = self->_validationError;
   self->_validationError = 0;
 
@@ -1219,8 +1219,8 @@ LABEL_16:
 
   else
   {
-    v29 = v29;
-    v10 = v29;
+    emailAccountDescription = emailAccountDescription;
+    v10 = emailAccountDescription;
   }
 
 LABEL_17:
@@ -1236,17 +1236,17 @@ LABEL_18:
   if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_ERROR))
   {
     v40 = v39;
-    v41 = [v10 MCVerboseDescription];
+    mCVerboseDescription = [v10 MCVerboseDescription];
     *buf = 138543362;
-    v48 = v41;
+    v48 = mCVerboseDescription;
     _os_log_impl(&_mh_execute_header, v40, OS_LOG_TYPE_ERROR, "Account validation failed. Error: %{public}@", buf, 0xCu);
   }
 
-  if (a4)
+  if (error)
   {
     v42 = v10;
     v43 = 0;
-    *a4 = v10;
+    *error = v10;
   }
 
   else
@@ -1259,48 +1259,48 @@ LABEL_24:
   return v43;
 }
 
-- (id)_installWithIncomingAccountInfo:(id)a3 outgoingAccountInfo:(id)a4 isInstalledByMDM:(BOOL)a5 personaID:(id)a6 rmAccountIdentifier:(id)a7
+- (id)_installWithIncomingAccountInfo:(id)info outgoingAccountInfo:(id)accountInfo isInstalledByMDM:(BOOL)m personaID:(id)d rmAccountIdentifier:(id)identifier
 {
-  v74 = a5;
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  v73 = a7;
-  v78 = v11;
-  v14 = [(MCNewEmailAccountPayloadHandler *)self _incomingAccountWithAccountInfo:v11];
-  v15 = [(MCNewPayloadHandler *)self payload];
-  v16 = [v15 profile];
-  v17 = [v16 UUID];
+  mCopy = m;
+  infoCopy = info;
+  accountInfoCopy = accountInfo;
+  dCopy = d;
+  identifierCopy = identifier;
+  v78 = infoCopy;
+  v14 = [(MCNewEmailAccountPayloadHandler *)self _incomingAccountWithAccountInfo:infoCopy];
+  payload = [(MCNewPayloadHandler *)self payload];
+  profile = [payload profile];
+  uUID = [profile UUID];
   v18 = kMCAccountProfileUUIDKey;
-  [v14 setAccountProperty:v17 forKey:kMCAccountProfileUUIDKey];
+  [v14 setAccountProperty:uUID forKey:kMCAccountProfileUUIDKey];
 
-  v19 = [(MCNewPayloadHandler *)self payload];
-  v20 = [v19 UUID];
+  payload2 = [(MCNewPayloadHandler *)self payload];
+  uUID2 = [payload2 UUID];
   v21 = kMCAccountPayloadUUIDKey;
-  [v14 setAccountProperty:v20 forKey:kMCAccountPayloadUUIDKey];
+  [v14 setAccountProperty:uUID2 forKey:kMCAccountPayloadUUIDKey];
 
-  v22 = [(MCNewPayloadHandler *)self payload];
-  v23 = [v22 profile];
-  v24 = [v23 identifier];
+  payload3 = [(MCNewPayloadHandler *)self payload];
+  profile2 = [payload3 profile];
+  identifier = [profile2 identifier];
   v25 = ACAccountPropertyConfigurationProfileIdentifier;
-  [v14 setAccountProperty:v24 forKey:ACAccountPropertyConfigurationProfileIdentifier];
+  [v14 setAccountProperty:identifier forKey:ACAccountPropertyConfigurationProfileIdentifier];
 
-  v77 = v12;
-  v26 = [(MCNewEmailAccountPayloadHandler *)self _outgoingAccountWithAccountInfo:v12];
-  v27 = [(MCNewPayloadHandler *)self payload];
-  v28 = [v27 profile];
-  v29 = [v28 UUID];
-  [v26 setAccountProperty:v29 forKey:v18];
+  v77 = accountInfoCopy;
+  v26 = [(MCNewEmailAccountPayloadHandler *)self _outgoingAccountWithAccountInfo:accountInfoCopy];
+  payload4 = [(MCNewPayloadHandler *)self payload];
+  profile3 = [payload4 profile];
+  uUID3 = [profile3 UUID];
+  [v26 setAccountProperty:uUID3 forKey:v18];
 
-  v30 = v13;
-  v31 = [(MCNewPayloadHandler *)self payload];
-  v32 = [v31 UUID];
-  [v26 setAccountProperty:v32 forKey:v21];
+  v30 = dCopy;
+  payload5 = [(MCNewPayloadHandler *)self payload];
+  uUID4 = [payload5 UUID];
+  [v26 setAccountProperty:uUID4 forKey:v21];
 
-  v33 = [(MCNewPayloadHandler *)self payload];
-  v34 = [v33 profile];
-  v35 = [v34 identifier];
-  [v26 setAccountProperty:v35 forKey:v25];
+  payload6 = [(MCNewPayloadHandler *)self payload];
+  profile4 = [payload6 profile];
+  identifier2 = [profile4 identifier];
+  [v26 setAccountProperty:identifier2 forKey:v25];
 
   [v14 setDeliveryAccount:v26];
   v36 = +[MailAccount mailAccounts];
@@ -1308,17 +1308,17 @@ LABEL_24:
 
   [v37 addObject:v14];
   v72 = v37;
-  if ([v13 length])
+  if ([dCopy length])
   {
     v38 = ACAccountPropertyPersonaIdentifier;
-    [v14 setAccountProperty:v13 forKey:ACAccountPropertyPersonaIdentifier];
-    [v26 setAccountProperty:v13 forKey:v38];
+    [v14 setAccountProperty:dCopy forKey:ACAccountPropertyPersonaIdentifier];
+    [v26 setAccountProperty:dCopy forKey:v38];
     v91[0] = _NSConcreteStackBlock;
     v91[1] = 3221225472;
     v91[2] = sub_100029FFC;
     v91[3] = &unk_10011B688;
     v92 = v37;
-    v39 = [DMCPersonaHelper performBlockUnderPersona:v13 block:v91];
+    v39 = [DMCPersonaHelper performBlockUnderPersona:dCopy block:v91];
   }
 
   else
@@ -1326,34 +1326,34 @@ LABEL_24:
     [MailAccount setMailAccounts:v37];
   }
 
-  v40 = v73;
-  if (v73)
+  v40 = identifierCopy;
+  if (identifierCopy)
   {
     v41 = ACAccountPropertyRemoteManagingAccountIdentifier;
-    [v14 setAccountProperty:v73 forKey:ACAccountPropertyRemoteManagingAccountIdentifier];
-    [v26 setAccountProperty:v73 forKey:v41];
+    [v14 setAccountProperty:identifierCopy forKey:ACAccountPropertyRemoteManagingAccountIdentifier];
+    [v26 setAccountProperty:identifierCopy forKey:v41];
   }
 
-  v42 = [(MCNewPayloadHandler *)self payload];
-  if (v74)
+  payload7 = [(MCNewPayloadHandler *)self payload];
+  if (mCopy)
   {
     [v14 setValueInAccountProperties:&__kCFBooleanTrue forKey:@"MCAccountIsManaged"];
   }
 
-  if ([v42 SMIMEEnabled])
+  if ([payload7 SMIMEEnabled])
   {
-    v43 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v42 SMIMEPerMessageSwitchEnabled]);
+    v43 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [payload7 SMIMEPerMessageSwitchEnabled]);
     [v14 setAccountProperty:v43 forKey:MFMailAccountPerMessageEncryptionEnabled];
   }
 
-  if ([v13 length])
+  if ([dCopy length])
   {
     v89[0] = _NSConcreteStackBlock;
     v89[1] = 3221225472;
     v89[2] = sub_10002A010;
     v89[3] = &unk_10011B688;
     v90 = v14;
-    v44 = [DMCPersonaHelper performBlockUnderPersona:v13 block:v89];
+    v44 = [DMCPersonaHelper performBlockUnderPersona:dCopy block:v89];
   }
 
   else
@@ -1362,25 +1362,25 @@ LABEL_24:
   }
 
   [DeliveryAccount addDeliveryAccount:v26];
-  if (v74)
+  if (mCopy)
   {
     [v26 setValueInAccountProperties:&__kCFBooleanTrue forKey:@"MCAccountIsManaged"];
   }
 
-  if ([v42 SMIMEEnabled])
+  if ([payload7 SMIMEEnabled])
   {
-    v45 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v42 SMIMEPerMessageSwitchEnabled]);
+    v45 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [payload7 SMIMEPerMessageSwitchEnabled]);
     [v26 setAccountProperty:v45 forKey:MFMailAccountPerMessageEncryptionEnabled];
   }
 
-  if ([v13 length])
+  if ([dCopy length])
   {
     v87[0] = _NSConcreteStackBlock;
     v87[1] = 3221225472;
     v87[2] = sub_10002A018;
     v87[3] = &unk_10011B688;
     v88 = v26;
-    v46 = [DMCPersonaHelper performBlockUnderPersona:v13 block:v87];
+    v46 = [DMCPersonaHelper performBlockUnderPersona:dCopy block:v87];
   }
 
   else
@@ -1389,13 +1389,13 @@ LABEL_24:
   }
 
   v47 = v78;
-  if ([v42 SMIMEEnabled])
+  if ([payload7 SMIMEEnabled])
   {
     v75 = v30;
     v48 = [v78 objectForKey:@"MCSMIMESigningIdentityPersistentID"];
     if (v48)
     {
-      v49 = v42;
+      v49 = payload7;
       v50 = [v78 objectForKey:MailAccountEmailAddresses];
       v83 = 0u;
       v84 = 0u;
@@ -1424,7 +1424,7 @@ LABEL_24:
         while (v52);
       }
 
-      v42 = v49;
+      payload7 = v49;
       [v49 setSMIMESigningIdentityPersistentID:v48];
 
       v47 = v78;
@@ -1433,7 +1433,7 @@ LABEL_24:
     v55 = [v47 objectForKey:@"MCSMIMEEncryptionIdentityPersistentID"];
     if (v55)
     {
-      v71 = v42;
+      v71 = payload7;
       v56 = [v47 objectForKey:MailAccountEmailAddresses];
       v79 = 0u;
       v80 = 0u;
@@ -1462,7 +1462,7 @@ LABEL_24:
         while (v58);
       }
 
-      v42 = v71;
+      payload7 = v71;
       [v71 setSMIMEEncryptionIdentityPersistentID:v55];
 
       v47 = v78;
@@ -1481,18 +1481,18 @@ LABEL_24:
   {
     [(MCNewPayloadHandler *)self payload];
     v76 = v26;
-    v64 = v63 = v42;
+    v64 = v63 = payload7;
     [v64 UUID];
     v66 = v65 = v30;
-    v67 = [(MCNewPayloadHandler *)self profileHandler];
-    v68 = [v67 profile];
-    +[MCKeychain setData:forService:account:label:description:useSystemKeychain:outError:](MCKeychain, "setData:forService:account:label:description:useSystemKeychain:outError:", v62, @"MCEmailAccount", v66, 0, 0, [v68 isInstalledForSystem], 0);
+    profileHandler = [(MCNewPayloadHandler *)self profileHandler];
+    profile5 = [profileHandler profile];
+    +[MCKeychain setData:forService:account:label:description:useSystemKeychain:outError:](MCKeychain, "setData:forService:account:label:description:useSystemKeychain:outError:", v62, @"MCEmailAccount", v66, 0, 0, [profile5 isInstalledForSystem], 0);
 
     v47 = v78;
     v30 = v65;
-    v40 = v73;
+    v40 = identifierCopy;
 
-    v42 = v63;
+    payload7 = v63;
     v26 = v76;
   }
 
@@ -1501,24 +1501,24 @@ LABEL_24:
   return v69;
 }
 
-- (BOOL)installWithInstaller:(id)a3 options:(id)a4 interactionClient:(id)a5 outError:(id *)a6
+- (BOOL)installWithInstaller:(id)installer options:(id)options interactionClient:(id)client outError:(id *)error
 {
-  v8 = a4;
-  v9 = [v8 objectForKeyedSubscript:kMCInstallProfileOptionIsInstalledByMDM];
-  v10 = [v9 BOOLValue];
+  optionsCopy = options;
+  v9 = [optionsCopy objectForKeyedSubscript:kMCInstallProfileOptionIsInstalledByMDM];
+  bOOLValue = [v9 BOOLValue];
 
-  if (!v10)
+  if (!bOOLValue)
   {
     v13 = 0;
     goto LABEL_5;
   }
 
   v11 = kMDMPersonaKey;
-  v12 = [v8 objectForKeyedSubscript:kMDMPersonaKey];
+  v12 = [optionsCopy objectForKeyedSubscript:kMDMPersonaKey];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v13 = [v8 objectForKeyedSubscript:v11];
+    v13 = [optionsCopy objectForKeyedSubscript:v11];
   }
 
   else
@@ -1527,35 +1527,35 @@ LABEL_24:
   }
 
   v15 = kMCInstallProfileOptionManagingProfileIdentifier;
-  v16 = [v8 objectForKeyedSubscript:kMCInstallProfileOptionManagingProfileIdentifier];
+  v16 = [optionsCopy objectForKeyedSubscript:kMCInstallProfileOptionManagingProfileIdentifier];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v14 = 0;
+    identifier = 0;
     goto LABEL_11;
   }
 
-  v17 = [v8 objectForKeyedSubscript:v15];
+  v17 = [optionsCopy objectForKeyedSubscript:v15];
 
   if (!v17)
   {
 LABEL_5:
-    v14 = 0;
+    identifier = 0;
     goto LABEL_12;
   }
 
   v18 = +[ACAccountStore defaultStore];
   v19 = [v18 dmc_remoteManagementAccountForManagementProfileIdentifier:v17];
 
-  v14 = [v19 identifier];
+  identifier = [v19 identifier];
 
   v16 = v17;
 LABEL_11:
 
 LABEL_12:
-  v20 = [(MCNewPayloadHandler *)self userInputResponses];
+  userInputResponses = [(MCNewPayloadHandler *)self userInputResponses];
   v32 = 0;
-  v21 = [(MCNewEmailAccountPayloadHandler *)self _incomingAccountInfoDictionaryWithUserInput:v20 isPreflight:0 outError:&v32];
+  v21 = [(MCNewEmailAccountPayloadHandler *)self _incomingAccountInfoDictionaryWithUserInput:userInputResponses isPreflight:0 outError:&v32];
   v22 = v32;
 
   if (v22)
@@ -1565,31 +1565,31 @@ LABEL_12:
     if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_ERROR))
     {
       v24 = v23;
-      v25 = [(MCNewPayloadHandler *)self payload];
-      v26 = [v25 friendlyName];
+      payload = [(MCNewPayloadHandler *)self payload];
+      friendlyName = [payload friendlyName];
       *buf = 138543618;
-      v34 = v26;
+      v34 = friendlyName;
       v35 = 2114;
       v36 = v22;
       _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_ERROR, "Could not install email payload %{public}@. Error: %{public}@", buf, 0x16u);
     }
 
-    if (a6)
+    if (error)
     {
-      *a6 = [v22 MCCopyAsPrimaryError];
+      *error = [v22 MCCopyAsPrimaryError];
     }
   }
 
   else
   {
-    v27 = [(MCNewPayloadHandler *)self userInputResponses];
-    v28 = [(MCNewEmailAccountPayloadHandler *)self _outgoingAccountInfoDictionaryWithUserInput:v27];
+    userInputResponses2 = [(MCNewPayloadHandler *)self userInputResponses];
+    v28 = [(MCNewEmailAccountPayloadHandler *)self _outgoingAccountInfoDictionaryWithUserInput:userInputResponses2];
 
-    v29 = [(MCNewEmailAccountPayloadHandler *)self _installWithIncomingAccountInfo:v21 outgoingAccountInfo:v28 isInstalledByMDM:v10 personaID:v13 rmAccountIdentifier:v14];
-    v30 = [(MCNewPayloadHandler *)self payload];
-    [v30 setPersistentResourceID:v29];
-    [v30 setIncomingACAccountIdentifier:self->_incomingACAccountIdentifier];
-    [v30 setOutgoingACAccountIdentifier:self->_outgoingACAccountIdentifier];
+    v29 = [(MCNewEmailAccountPayloadHandler *)self _installWithIncomingAccountInfo:v21 outgoingAccountInfo:v28 isInstalledByMDM:bOOLValue personaID:v13 rmAccountIdentifier:identifier];
+    payload2 = [(MCNewPayloadHandler *)self payload];
+    [payload2 setPersistentResourceID:v29];
+    [payload2 setIncomingACAccountIdentifier:self->_incomingACAccountIdentifier];
+    [payload2 setOutgoingACAccountIdentifier:self->_outgoingACAccountIdentifier];
   }
 
   return v22 == 0;
@@ -1597,8 +1597,8 @@ LABEL_12:
 
 - (BOOL)isInstalled
 {
-  v2 = [(MCNewPayloadHandler *)self payload];
-  v3 = [v2 persistentResourceID];
+  payload = [(MCNewPayloadHandler *)self payload];
+  persistentResourceID = [payload persistentResourceID];
 
   +[MailAccount mailAccounts];
   v13 = 0u;
@@ -1621,7 +1621,7 @@ LABEL_12:
         }
 
         v10 = [*(*(&v13 + 1) + 8 * i) accountPropertyForKey:{v8, v13}];
-        if (v10 && ([v3 isEqualToString:v10] & 1) != 0)
+        if (v10 && ([persistentResourceID isEqualToString:v10] & 1) != 0)
         {
 
           v11 = 1;
@@ -1645,16 +1645,16 @@ LABEL_12:
   return v11;
 }
 
-- (id)_removeAccountWithPersistentResourceID:(id)a3 fromArray:(id)a4 outArray:(id *)a5
+- (id)_removeAccountWithPersistentResourceID:(id)d fromArray:(id)array outArray:(id *)outArray
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  arrayCopy = array;
   v8 = +[NSMutableArray array];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v9 = v7;
+  v9 = arrayCopy;
   v10 = [v9 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v10)
   {
@@ -1673,7 +1673,7 @@ LABEL_12:
 
         v16 = *(*(&v22 + 1) + 8 * i);
         v17 = [v16 accountPropertyForKey:v14];
-        if (v17 && ([v6 isEqualToString:v17] & 1) != 0)
+        if (v17 && ([dCopy isEqualToString:v17] & 1) != 0)
         {
           v18 = v16;
 
@@ -1697,18 +1697,18 @@ LABEL_12:
     v12 = 0;
   }
 
-  if (a5)
+  if (outArray)
   {
     v19 = v8;
-    *a5 = v8;
+    *outArray = v8;
   }
 
   return v12;
 }
 
-- (void)_removePersonaIDForMailAccountWithPersistentResourceID:(id)a3
+- (void)_removePersonaIDForMailAccountWithPersistentResourceID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = +[ACAccountStore defaultStore];
   v33[0] = ACAccountTypeIdentifierPOP;
   v33[1] = ACAccountTypeIdentifierAol;
@@ -1747,11 +1747,11 @@ LABEL_12:
         v15 = [v14 accountPropertyForKey:{v12, v20}];
         if (v15)
         {
-          if ([v3 isEqualToString:v15])
+          if ([dCopy isEqualToString:v15])
           {
-            v16 = [v14 personaIdentifier];
+            personaIdentifier = [v14 personaIdentifier];
 
-            if (v16)
+            if (personaIdentifier)
             {
               v17 = _MCLogObjects[0];
               if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_INFO))
@@ -1791,37 +1791,37 @@ LABEL_12:
 
 - (void)_remove
 {
-  v3 = [(MCNewPayloadHandler *)self payload];
-  v4 = [v3 persistentResourceID];
+  payload = [(MCNewPayloadHandler *)self payload];
+  persistentResourceID = [payload persistentResourceID];
 
-  [(MCNewEmailAccountPayloadHandler *)self _removePersonaIDForMailAccountWithPersistentResourceID:v4];
+  [(MCNewEmailAccountPayloadHandler *)self _removePersonaIDForMailAccountWithPersistentResourceID:persistentResourceID];
   +[MailAccount reloadAccounts];
   v5 = +[MailAccount mailAccounts];
   v13 = 0;
-  v6 = [(MCNewEmailAccountPayloadHandler *)self _removeAccountWithPersistentResourceID:v4 fromArray:v5 outArray:&v13];
+  v6 = [(MCNewEmailAccountPayloadHandler *)self _removeAccountWithPersistentResourceID:persistentResourceID fromArray:v5 outArray:&v13];
   v7 = v13;
 
   if (v6)
   {
-    v8 = [v6 deliveryAccount];
-    [DeliveryAccount removeDeliveryAccount:v8];
+    deliveryAccount = [v6 deliveryAccount];
+    [DeliveryAccount removeDeliveryAccount:deliveryAccount];
 
     [MailAccount setMailAccounts:v7];
     [v6 removePersistentAccount];
-    v9 = [(MCNewPayloadHandler *)self payload];
-    v10 = [v9 UUID];
-    v11 = [(MCNewPayloadHandler *)self profileHandler];
-    v12 = [v11 profile];
-    +[MCKeychain removeItemForService:account:label:description:useSystemKeychain:group:](MCKeychain, "removeItemForService:account:label:description:useSystemKeychain:group:", @"MCEmailAccount", v10, 0, 0, [v12 isInstalledForSystem], 0);
+    payload2 = [(MCNewPayloadHandler *)self payload];
+    uUID = [payload2 UUID];
+    profileHandler = [(MCNewPayloadHandler *)self profileHandler];
+    profile = [profileHandler profile];
+    +[MCKeychain removeItemForService:account:label:description:useSystemKeychain:group:](MCKeychain, "removeItemForService:account:label:description:useSystemKeychain:group:", @"MCEmailAccount", uUID, 0, 0, [profile isInstalledForSystem], 0);
   }
 }
 
 - (void)remove
 {
-  v3 = [(MCNewPayloadHandler *)self profileHandler];
-  v4 = [v3 isSetAside];
+  profileHandler = [(MCNewPayloadHandler *)self profileHandler];
+  isSetAside = [profileHandler isSetAside];
 
-  if (v4)
+  if (isSetAside)
   {
     setAsideAccountInfo = self->_setAsideAccountInfo;
     self->_setAsideAccountInfo = 0;
@@ -1832,17 +1832,17 @@ LABEL_12:
     [(MCNewEmailAccountPayloadHandler *)self _remove];
   }
 
-  v6 = [(MCNewPayloadHandler *)self payload];
-  [v6 setPersistentResourceID:0];
+  payload = [(MCNewPayloadHandler *)self payload];
+  [payload setPersistentResourceID:0];
 }
 
 - (void)setAside
 {
-  v3 = [(MCNewPayloadHandler *)self payload];
-  v4 = [v3 UUID];
-  v5 = [(MCNewPayloadHandler *)self profileHandler];
-  v6 = [v5 profile];
-  v7 = +[MCKeychain dataFromService:account:label:description:useSystemKeychain:outError:](MCKeychain, "dataFromService:account:label:description:useSystemKeychain:outError:", @"MCEmailAccount", v4, 0, 0, [v6 isInstalledForSystem], 0);
+  payload = [(MCNewPayloadHandler *)self payload];
+  uUID = [payload UUID];
+  profileHandler = [(MCNewPayloadHandler *)self profileHandler];
+  profile = [profileHandler profile];
+  v7 = +[MCKeychain dataFromService:account:label:description:useSystemKeychain:outError:](MCKeychain, "dataFromService:account:label:description:useSystemKeychain:outError:", @"MCEmailAccount", uUID, 0, 0, [profile isInstalledForSystem], 0);
 
   +[MailAccount mailAccounts];
   v26 = 0u;
@@ -1868,20 +1868,20 @@ LABEL_12:
         v13 = [v12 accountPropertyForKey:{v10, v24}];
         if (v13)
         {
-          v14 = [(MCNewPayloadHandler *)self payload];
-          v15 = [v14 persistentResourceID];
-          v16 = [v15 isEqualToString:v13];
+          payload2 = [(MCNewPayloadHandler *)self payload];
+          persistentResourceID = [payload2 persistentResourceID];
+          v16 = [persistentResourceID isEqualToString:v13];
 
           if (v16)
           {
             v19 = [v12 valueInAccountPropertiesForKey:@"MCAccountIsManaged"];
             LOBYTE(v8) = [v19 BOOLValue];
 
-            v20 = [v12 persistentAccount];
-            v18 = [v20 objectForKeyedSubscript:ACAccountPropertyPersonaIdentifier];
+            persistentAccount = [v12 persistentAccount];
+            v18 = [persistentAccount objectForKeyedSubscript:ACAccountPropertyPersonaIdentifier];
 
-            v21 = [v12 persistentAccount];
-            v17 = [v21 objectForKeyedSubscript:ACAccountPropertyRemoteManagingAccountIdentifier];
+            persistentAccount2 = [v12 persistentAccount];
+            v17 = [persistentAccount2 objectForKeyedSubscript:ACAccountPropertyRemoteManagingAccountIdentifier];
 
             goto LABEL_12;
           }

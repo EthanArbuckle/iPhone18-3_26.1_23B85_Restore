@@ -7,7 +7,7 @@
 - (id)eligibilitySampleInterval;
 - (id)eligibilitySampleNumber;
 - (id)kbInfoArticleUrl;
-- (int)ktFailureInteger:(id)a3 defaultValue:(int)a4;
+- (int)ktFailureInteger:(id)integer defaultValue:(int)value;
 @end
 
 @implementation TransparencyIDSConfigBag
@@ -74,9 +74,9 @@
     if (objc_opt_isKindOfClass())
     {
       v5 = _IDSIDProtocolVersionNumber();
-      v6 = [v5 stringValue];
+      stringValue = [v5 stringValue];
       v12 = 0;
-      v7 = [TransparencyIDSConfigBagSupport parseConfigInput:v4 forVersion:v6 error:&v12];
+      v7 = [TransparencyIDSConfigBagSupport parseConfigInput:v4 forVersion:stringValue error:&v12];
       v8 = v12;
 
       if (v7)
@@ -128,9 +128,9 @@
     if (objc_opt_isKindOfClass())
     {
       v5 = _IDSIDProtocolVersionNumber();
-      v6 = [v5 stringValue];
+      stringValue = [v5 stringValue];
       v12 = 0;
-      v7 = [TransparencyIDSConfigBagSupport parseConfigInput:v4 forVersion:v6 error:&v12];
+      v7 = [TransparencyIDSConfigBagSupport parseConfigInput:v4 forVersion:stringValue error:&v12];
       v8 = v12;
 
       if (v7)
@@ -182,9 +182,9 @@
     if (objc_opt_isKindOfClass())
     {
       v5 = _IDSIDProtocolVersionNumber();
-      v6 = [v5 stringValue];
+      stringValue = [v5 stringValue];
       v12 = 0;
-      v7 = [TransparencyIDSConfigBagSupport parseConfigInput:v4 forVersion:v6 error:&v12];
+      v7 = [TransparencyIDSConfigBagSupport parseConfigInput:v4 forVersion:stringValue error:&v12];
       v8 = v12;
 
       if (v7)
@@ -236,9 +236,9 @@
     if (objc_opt_isKindOfClass())
     {
       v5 = _IDSIDProtocolVersionNumber();
-      v6 = [v5 stringValue];
+      stringValue = [v5 stringValue];
       v12 = 0;
-      v7 = [TransparencyIDSConfigBagSupport parseConfigInput:v4 forVersion:v6 error:&v12];
+      v7 = [TransparencyIDSConfigBagSupport parseConfigInput:v4 forVersion:stringValue error:&v12];
       v8 = v12;
 
       if (v7)
@@ -290,9 +290,9 @@
     if (objc_opt_isKindOfClass())
     {
       v5 = _IDSIDProtocolVersionNumber();
-      v6 = [v5 stringValue];
+      stringValue = [v5 stringValue];
       v12 = 0;
-      v7 = [TransparencyIDSConfigBagSupport parseConfigInput:v4 forVersion:v6 error:&v12];
+      v7 = [TransparencyIDSConfigBagSupport parseConfigInput:v4 forVersion:stringValue error:&v12];
       v8 = v12;
 
       if (v7)
@@ -333,39 +333,39 @@
   return v9;
 }
 
-- (int)ktFailureInteger:(id)a3 defaultValue:(int)a4
+- (int)ktFailureInteger:(id)integer defaultValue:(int)value
 {
-  v6 = a3;
+  integerCopy = integer;
   v7 = [(TransparencyIDSConfigBag *)self bag];
   v8 = [v7 objectForKey:@"kt-enforcement-failure-reporting"];
 
   if (v8 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && ![v8 BOOLValue])
   {
-    a4 = -1;
+    value = -1;
   }
 
   else
   {
     v9 = [(TransparencyIDSConfigBag *)self bag];
-    v10 = [v9 objectForKey:v6];
+    v10 = [v9 objectForKey:integerCopy];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v11 = [v10 intValue];
-      if (v11 < 0)
+      intValue = [v10 intValue];
+      if (intValue < 0)
       {
-        a4 = -1;
+        value = -1;
       }
 
       else
       {
-        a4 = v11;
+        value = intValue;
       }
     }
   }
 
-  return a4;
+  return value;
 }
 
 @end

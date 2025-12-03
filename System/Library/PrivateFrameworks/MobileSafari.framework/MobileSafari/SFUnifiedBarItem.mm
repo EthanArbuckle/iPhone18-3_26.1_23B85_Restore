@@ -1,14 +1,14 @@
 @interface SFUnifiedBarItem
-- (void)setHidden:(BOOL)a3;
+- (void)setHidden:(BOOL)hidden;
 @end
 
 @implementation SFUnifiedBarItem
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
-  if (self->_hidden != a3)
+  if (self->_hidden != hidden)
   {
-    self->_hidden = a3;
+    self->_hidden = hidden;
     [(SFUnifiedBarItemView *)self->_reusableView setHidden:?];
   }
 }

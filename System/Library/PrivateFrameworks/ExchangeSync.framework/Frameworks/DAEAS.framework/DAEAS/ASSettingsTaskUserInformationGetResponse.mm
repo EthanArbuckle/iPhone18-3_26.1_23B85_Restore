@@ -6,7 +6,7 @@
 + (BOOL)parsingWithSubItems;
 + (id)asParseRules;
 - (id)description;
-- (void)parseASParseContext:(id)a3 root:(id)a4 parent:(id)a5 callbackDict:(id)a6 streamCallbackDict:(id)a7 account:(id)a8;
+- (void)parseASParseContext:(id)context root:(id)root parent:(id)parent callbackDict:(id)dict streamCallbackDict:(id)callbackDict account:(id)account;
 @end
 
 @implementation ASSettingsTaskUserInformationGetResponse
@@ -20,7 +20,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D64D60];
+    v2 = [self conformsToProtocol:&unk_285D64D60];
     acceptsTopLevelLeaves___result_164 = v2;
     acceptsTopLevelLeaves___haveChecked_163 = 1;
   }
@@ -37,7 +37,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D5E660];
+    v2 = [self conformsToProtocol:&unk_285D5E660];
     parsingLeafNode___result_166 = v2;
     parsingLeafNode___haveChecked_165 = 1;
   }
@@ -54,7 +54,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D64A10];
+    v2 = [self conformsToProtocol:&unk_285D64A10];
     parsingWithSubItems___result_168 = v2;
     parsingWithSubItems___haveChecked_167 = 1;
   }
@@ -71,7 +71,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D5F9B0];
+    v2 = [self conformsToProtocol:&unk_285D5F9B0];
     frontingBasicTypes___result_170 = v2;
     frontingBasicTypes___haveChecked_169 = 1;
   }
@@ -88,7 +88,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D6EED0];
+    v2 = [self conformsToProtocol:&unk_285D6EED0];
     notifyOfUnknownTokens___result_172 = v2;
     notifyOfUnknownTokens___haveChecked_171 = 1;
   }
@@ -101,9 +101,9 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(ASSettingsTaskUserInformationGetResponse *)self emailAddresses];
-  v7 = [(ASSettingsTaskUserInformationGetResponse *)self primarySMTPAddress];
-  v8 = [v3 stringWithFormat:@"%@ %p: emailAddresses: %@ primary address %@", v5, self, v6, v7];
+  emailAddresses = [(ASSettingsTaskUserInformationGetResponse *)self emailAddresses];
+  primarySMTPAddress = [(ASSettingsTaskUserInformationGetResponse *)self primarySMTPAddress];
+  v8 = [v3 stringWithFormat:@"%@ %p: emailAddresses: %@ primary address %@", v5, self, emailAddresses, primarySMTPAddress];
 
   return v8;
 }
@@ -111,7 +111,7 @@
 + (id)asParseRules
 {
   v3 = +[ASItem parseRuleCache];
-  v4 = NSStringFromClass(a1);
+  v4 = NSStringFromClass(self);
   v5 = [v3 objectForKey:v4];
 
   if (!v5)
@@ -136,25 +136,25 @@
     v5 = [v25 dictionaryWithObjectsAndKeys:{v9, v10, v17, v18, 0}];
 
     v19 = +[ASItem parseRuleCache];
-    v20 = NSStringFromClass(a1);
+    v20 = NSStringFromClass(self);
     [v19 setObject:v5 forKey:v20];
   }
 
   return v5;
 }
 
-- (void)parseASParseContext:(id)a3 root:(id)a4 parent:(id)a5 callbackDict:(id)a6 streamCallbackDict:(id)a7 account:(id)a8
+- (void)parseASParseContext:(id)context root:(id)root parent:(id)parent callbackDict:(id)dict streamCallbackDict:(id)callbackDict account:(id)account
 {
   v56 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  contextCopy = context;
+  rootCopy = root;
+  parentCopy = parent;
+  dictCopy = dict;
+  callbackDictCopy = callbackDict;
+  accountCopy = account;
   v52.receiver = self;
   v52.super_class = ASSettingsTaskUserInformationGetResponse;
-  [(ASItem *)&v52 parseASParseContext:v14 root:v15 parent:v16 callbackDict:v17 streamCallbackDict:v18 account:v19];
+  [(ASItem *)&v52 parseASParseContext:contextCopy root:rootCopy parent:parentCopy callbackDict:dictCopy streamCallbackDict:callbackDictCopy account:accountCopy];
   parsingState = self->super._parsingState;
   if (parsingState < 2)
   {
@@ -169,26 +169,26 @@
 
   else
   {
-    v46 = v15;
-    v47 = v14;
+    v46 = rootCopy;
+    v47 = contextCopy;
     v22 = DALoggingwithCategory();
     v23 = *(MEMORY[0x277D03988] + 7);
     if (os_log_type_enabled(v22, v23))
     {
       *buf = 138412290;
-      v55 = self;
+      selfCopy = self;
       _os_log_impl(&dword_24A0AC000, v22, v23, "%@ Parsed its context.", buf, 0xCu);
     }
 
-    v42 = v17;
-    v44 = v16;
+    v42 = dictCopy;
+    v44 = parentCopy;
 
     v50 = 0u;
     v51 = 0u;
     v48 = 0u;
     v49 = 0u;
-    v24 = [(ASSettingsTaskUserInformationGetResponse *)self accounts];
-    v25 = [v24 countByEnumeratingWithState:&v48 objects:v53 count:16];
+    accounts = [(ASSettingsTaskUserInformationGetResponse *)self accounts];
+    v25 = [accounts countByEnumeratingWithState:&v48 objects:v53 count:16];
     if (v25)
     {
       v26 = v25;
@@ -200,15 +200,15 @@
         {
           if (*v49 != v27)
           {
-            objc_enumerationMutation(v24);
+            objc_enumerationMutation(accounts);
           }
 
           v29 = *(*(&v48 + 1) + 8 * i);
           if (v21)
           {
-            v30 = [*(*(&v48 + 1) + 8 * i) accountId];
+            accountId = [*(*(&v48 + 1) + 8 * i) accountId];
 
-            if (v30)
+            if (accountId)
             {
               continue;
             }
@@ -219,7 +219,7 @@
           v21 = v31;
         }
 
-        v26 = [v24 countByEnumeratingWithState:&v48 objects:v53 count:16];
+        v26 = [accounts countByEnumeratingWithState:&v48 objects:v53 count:16];
       }
 
       while (v26);
@@ -230,31 +230,31 @@
       v21 = 0;
     }
 
-    v32 = [v21 emailAddressList];
-    v33 = [v32 emailAddresses];
-    v34 = [v33 count];
+    emailAddressList = [v21 emailAddressList];
+    emailAddresses = [emailAddressList emailAddresses];
+    v34 = [emailAddresses count];
 
     if (v34)
     {
-      v35 = [v21 emailAddressList];
-      v36 = [v35 emailAddresses];
-      [(ASSettingsTaskUserInformationGetResponse *)self setEmailAddresses:v36];
+      emailAddressList2 = [v21 emailAddressList];
+      emailAddresses2 = [emailAddressList2 emailAddresses];
+      [(ASSettingsTaskUserInformationGetResponse *)self setEmailAddresses:emailAddresses2];
     }
 
-    v37 = [v21 emailAddressList];
-    v38 = [v37 primarySMTPAddress];
+    emailAddressList3 = [v21 emailAddressList];
+    primarySMTPAddress = [emailAddressList3 primarySMTPAddress];
 
-    v16 = v45;
-    v15 = v46;
-    v17 = v43;
-    if (v38)
+    parentCopy = v45;
+    rootCopy = v46;
+    dictCopy = v43;
+    if (primarySMTPAddress)
     {
-      v39 = [v21 emailAddressList];
-      v40 = [v39 primarySMTPAddress];
-      [(ASSettingsTaskUserInformationGetResponse *)self setPrimarySMTPAddress:v40];
+      emailAddressList4 = [v21 emailAddressList];
+      primarySMTPAddress2 = [emailAddressList4 primarySMTPAddress];
+      [(ASSettingsTaskUserInformationGetResponse *)self setPrimarySMTPAddress:primarySMTPAddress2];
     }
 
-    v14 = v47;
+    contextCopy = v47;
   }
 
   v41 = *MEMORY[0x277D85DE8];

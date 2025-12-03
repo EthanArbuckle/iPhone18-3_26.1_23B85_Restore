@@ -1,20 +1,20 @@
 @interface CKNameAndPhotoMenuElement
-+ (id)menuElementWithNickname:(id)a3;
++ (id)menuElementWithNickname:(id)nickname;
 @end
 
 @implementation CKNameAndPhotoMenuElement
 
-+ (id)menuElementWithNickname:(id)a3
++ (id)menuElementWithNickname:(id)nickname
 {
-  v4 = a3;
+  nicknameCopy = nickname;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __53__CKNameAndPhotoMenuElement_menuElementWithNickname___block_invoke;
   v9[3] = &unk_1E72ECBE8;
-  v10 = v4;
-  v8.receiver = a1;
+  v10 = nicknameCopy;
+  v8.receiver = self;
   v8.super_class = &OBJC_METACLASS___CKNameAndPhotoMenuElement;
-  v5 = v4;
+  v5 = nicknameCopy;
   v6 = objc_msgSendSuper2(&v8, sel_elementWithViewProvider_, v9);
 
   return v6;

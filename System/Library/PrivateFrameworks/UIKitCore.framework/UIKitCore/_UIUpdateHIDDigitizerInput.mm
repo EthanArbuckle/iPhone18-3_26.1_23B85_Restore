@@ -1,14 +1,14 @@
 @interface _UIUpdateHIDDigitizerInput
-+ (char)inputWithProfileName:(uint64_t)a1;
-- (__IOHIDEvent)stopEventForModelTime:(int64_t)a3 alignment:(int)a4;
-- (void)addEvent:(__IOHIDEvent *)a3;
++ (char)inputWithProfileName:(uint64_t)name;
+- (__IOHIDEvent)stopEventForModelTime:(int64_t)time alignment:(int)alignment;
+- (void)addEvent:(__IOHIDEvent *)event;
 - (void)dealloc;
-- (void)removeEvent:(__IOHIDEvent *)a3;
+- (void)removeEvent:(__IOHIDEvent *)event;
 @end
 
 @implementation _UIUpdateHIDDigitizerInput
 
-+ (char)inputWithProfileName:(uint64_t)a1
++ (char)inputWithProfileName:(uint64_t)name
 {
   v25 = *MEMORY[0x1E69E9840];
   objc_opt_self();
@@ -96,7 +96,7 @@
   [(_UIUpdateHIDDigitizerInput *)&v3 dealloc];
 }
 
-- (void)addEvent:(__IOHIDEvent *)a3
+- (void)addEvent:(__IOHIDEvent *)event
 {
   v74 = *MEMORY[0x1E69E9840];
   TimeStamp = IOHIDEventGetTimeStamp();
@@ -107,9 +107,9 @@
   nextEventExpected = self->_nextEventExpected;
   v11 = BKSHIDEventGetDigitizerAttributes();
   v12 = v9 & 0x40;
-  v13 = [v11 options];
+  options = [v11 options];
 
-  if ((v13 & 0x200) == 0 && self->_input._state.latestModelTime < eventModelTimeDifferenceMax + TimeStamp)
+  if ((options & 0x200) == 0 && self->_input._state.latestModelTime < eventModelTimeDifferenceMax + TimeStamp)
   {
     self->_input._state.latestModelTime = eventModelTimeDifferenceMax + TimeStamp;
   }
@@ -132,7 +132,7 @@
     v38[4] = self;
     v38[5] = &v43;
     v38[6] = &v39;
-    _UIEventHIDEnumerateChildren(a3, 1, v38);
+    _UIEventHIDEnumerateChildren(event, 1, v38);
   }
 
   v37[0] = MEMORY[0x1E69E9820];
@@ -140,8 +140,8 @@
   v37[2] = __39___UIUpdateHIDDigitizerInput_addEvent___block_invoke_2;
   v37[3] = &unk_1E71200B8;
   v37[4] = self;
-  v37[5] = a3;
-  _UIEventHIDEnumerateChildren(a3, 11, v37);
+  v37[5] = event;
+  _UIEventHIDEnumerateChildren(event, 11, v37);
   v16 = [(NSMutableSet *)self->_touches count];
   v17 = v40[3];
   v18 = v17 == 0;
@@ -180,7 +180,7 @@
       self->_input._state.mode = 2;
     }
 
-    [(NSMutableArray *)self->_events addObject:a3];
+    [(NSMutableArray *)self->_events addObject:event];
   }
 
   if (_UIUpdateCycleDebugTracingCheck && _UIUpdateCycleDebugTracingCheck())
@@ -215,7 +215,7 @@
         v52 = 1024;
         v53 = v33;
         v54 = 1024;
-        v55 = (v13 & 0x200) >> 9;
+        v55 = (options & 0x200) >> 9;
         v56 = 1024;
         v57 = v12 >> 6;
         v58 = 1024;
@@ -244,9 +244,9 @@
   _Block_object_dispose(&v43, 8);
 }
 
-- (void)removeEvent:(__IOHIDEvent *)a3
+- (void)removeEvent:(__IOHIDEvent *)event
 {
-  [(NSMutableArray *)self->_events removeObjectIdenticalTo:a3];
+  [(NSMutableArray *)self->_events removeObjectIdenticalTo:event];
   if ([(NSMutableArray *)self->_events count])
   {
     [(NSMutableArray *)self->_events firstObject];
@@ -264,11 +264,11 @@
   _UIUpdateInputSetInputChanged(set, &self->_input);
 }
 
-- (__IOHIDEvent)stopEventForModelTime:(int64_t)a3 alignment:(int)a4
+- (__IOHIDEvent)stopEventForModelTime:(int64_t)time alignment:(int)alignment
 {
   v20 = *MEMORY[0x1E69E9840];
   eventModelTimeDifferenceMin = self->_eventModelTimeDifferenceMin;
-  shiftDuration = self->_input._alignments[a4].shiftDuration;
+  shiftDuration = self->_input._alignments[alignment].shiftDuration;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -278,7 +278,7 @@
   if (v8)
   {
     v9 = v8;
-    v10 = a3 - eventModelTimeDifferenceMin - shiftDuration;
+    v10 = time - eventModelTimeDifferenceMin - shiftDuration;
     v11 = *v16;
 LABEL_3:
     v12 = 0;

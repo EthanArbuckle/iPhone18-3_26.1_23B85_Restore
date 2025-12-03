@@ -1,24 +1,24 @@
 @interface PKPeerPaymentMessagesNumberPadView
-+ (CGSize)referenceSizeForSizeCategory:(unint64_t)a3;
-+ (double)buttonHorizontalPaddingForSizeCategory:(unint64_t)a3;
-+ (double)buttonVerticalPaddingForSizeCategory:(unint64_t)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKPeerPaymentMessagesNumberPadView)initWithSizeCategory:(unint64_t)a3;
-- (id)_buttonForAction:(unint64_t)a3;
-- (void)_handleActionButton:(id)a3;
++ (CGSize)referenceSizeForSizeCategory:(unint64_t)category;
++ (double)buttonHorizontalPaddingForSizeCategory:(unint64_t)category;
++ (double)buttonVerticalPaddingForSizeCategory:(unint64_t)category;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKPeerPaymentMessagesNumberPadView)initWithSizeCategory:(unint64_t)category;
+- (id)_buttonForAction:(unint64_t)action;
+- (void)_handleActionButton:(id)button;
 - (void)layoutSubviews;
-- (void)setSizeCategory:(unint64_t)a3;
+- (void)setSizeCategory:(unint64_t)category;
 @end
 
 @implementation PKPeerPaymentMessagesNumberPadView
 
-+ (CGSize)referenceSizeForSizeCategory:(unint64_t)a3
++ (CGSize)referenceSizeForSizeCategory:(unint64_t)category
 {
-  [a1 buttonHorizontalPaddingForSizeCategory:?];
+  [self buttonHorizontalPaddingForSizeCategory:?];
   v6 = v5;
-  [a1 buttonVerticalPaddingForSizeCategory:a3];
+  [self buttonVerticalPaddingForSizeCategory:category];
   v8 = v7;
-  [PKPeerPaymentNumberPadActionButton referenceSizeForSizeCategory:a3];
+  [PKPeerPaymentNumberPadActionButton referenceSizeForSizeCategory:category];
   v10 = v6 + v6 + v9 * 3.0;
   v12 = v8 * 3.0 + v11 * 4.0 + 16.0 + 16.0;
   result.height = v12;
@@ -26,42 +26,42 @@
   return result;
 }
 
-+ (double)buttonVerticalPaddingForSizeCategory:(unint64_t)a3
++ (double)buttonVerticalPaddingForSizeCategory:(unint64_t)category
 {
   if (PKIsVision())
   {
-    if (a3 - 1 < 3)
+    if (category - 1 < 3)
     {
-      return dbl_1BE1151A8[a3 - 1];
+      return dbl_1BE1151A8[category - 1];
     }
   }
 
   else
   {
     v5 = PKIsPad();
-    if (a3 == 3 && (v5 & 1) != 0)
+    if (category == 3 && (v5 & 1) != 0)
     {
       return 48.0;
     }
   }
 
-  [PKPeerPaymentNumberPadActionButton adjustSize:a3 forSizeCategory:12.0];
+  [PKPeerPaymentNumberPadActionButton adjustSize:category forSizeCategory:12.0];
   return result;
 }
 
-+ (double)buttonHorizontalPaddingForSizeCategory:(unint64_t)a3
++ (double)buttonHorizontalPaddingForSizeCategory:(unint64_t)category
 {
   v4 = PKIsPad();
-  if (a3 == 3 && (v4 & 1) != 0)
+  if (category == 3 && (v4 & 1) != 0)
   {
     return 36.0;
   }
 
-  [PKPeerPaymentNumberPadActionButton adjustSize:a3 forSizeCategory:24.0];
+  [PKPeerPaymentNumberPadActionButton adjustSize:category forSizeCategory:24.0];
   return result;
 }
 
-- (PKPeerPaymentMessagesNumberPadView)initWithSizeCategory:(unint64_t)a3
+- (PKPeerPaymentMessagesNumberPadView)initWithSizeCategory:(unint64_t)category
 {
   [PKPeerPaymentMessagesNumberPadView referenceSizeForSizeCategory:?];
   v6 = v5;
@@ -73,13 +73,13 @@
   v11 = [(PKPeerPaymentMessagesNumberPadView *)&v24 initWithFrame:v9, v10, v6, v8];
   if (v11)
   {
-    v12 = [MEMORY[0x1E69DC888] clearColor];
-    [(PKPeerPaymentMessagesNumberPadView *)v11 setBackgroundColor:v12];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(PKPeerPaymentMessagesNumberPadView *)v11 setBackgroundColor:clearColor];
 
     v13 = 1;
     [(PKPeerPaymentMessagesNumberPadView *)v11 setClipsToBounds:1];
     v11->_enabled = 1;
-    v11->_sizeCategory = a3;
+    v11->_sizeCategory = category;
     v14 = objc_alloc_init(MEMORY[0x1E69DD250]);
     buttonContainerView = v11->_buttonContainerView;
     v11->_buttonContainerView = v14;
@@ -114,7 +114,7 @@
   return v11;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   v4 = objc_opt_class();
   sizeCategory = self->_sizeCategory;
@@ -169,12 +169,12 @@
   [(UIView *)buttonContainerView setFrame:?];
 }
 
-- (void)setSizeCategory:(unint64_t)a3
+- (void)setSizeCategory:(unint64_t)category
 {
-  if (self->_sizeCategory != a3)
+  if (self->_sizeCategory != category)
   {
     v4 = 0;
-    self->_sizeCategory = a3;
+    self->_sizeCategory = category;
     buttons = self->_buttons;
     do
     {
@@ -193,11 +193,11 @@
   }
 }
 
-- (id)_buttonForAction:(unint64_t)a3
+- (id)_buttonForAction:(unint64_t)action
 {
   v5 = [[PKPeerPaymentNumberPadActionButton alloc] initWithSizeCategory:self->_sizeCategory];
   [(PKPeerPaymentNumberPadActionButton *)v5 addTarget:self action:sel__handleActionButton_ forControlEvents:64];
-  [(PKPeerPaymentNumberPadActionButton *)v5 setAction:a3];
+  [(PKPeerPaymentNumberPadActionButton *)v5 setAction:action];
   v6 = +[PKPeerPaymentTheme primaryTextColor];
   [(PKPeerPaymentNumberPadActionButton *)v5 setTitleColor:v6 forState:0];
 
@@ -207,15 +207,15 @@
   return v5;
 }
 
-- (void)_handleActionButton:(id)a3
+- (void)_handleActionButton:(id)button
 {
-  v4 = a3;
+  buttonCopy = button;
   actionHandler = self->_actionHandler;
   if (actionHandler && self->_enabled)
   {
-    v6 = v4;
-    actionHandler[2](actionHandler, self, [v4 action]);
-    v4 = v6;
+    v6 = buttonCopy;
+    actionHandler[2](actionHandler, self, [buttonCopy action]);
+    buttonCopy = v6;
   }
 }
 

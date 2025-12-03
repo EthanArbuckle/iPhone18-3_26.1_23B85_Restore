@@ -1,12 +1,12 @@
 @interface CRLRemoveImageBackgroundData
 - (CGPoint)offset;
 - (void)dealloc;
-- (void)setImage:(CGImage *)a3;
+- (void)setImage:(CGImage *)image;
 @end
 
 @implementation CRLRemoveImageBackgroundData
 
-- (void)setImage:(CGImage *)a3
+- (void)setImage:(CGImage *)image
 {
   image = self->_image;
   if (image)
@@ -15,7 +15,7 @@
     self->_image = 0;
   }
 
-  self->_image = CGImageRetain(a3);
+  self->_image = CGImageRetain(image);
 }
 
 - (void)dealloc

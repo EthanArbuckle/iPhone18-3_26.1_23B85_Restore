@@ -3,15 +3,15 @@
 - (NSDate)fileCreationDate;
 - (NSString)fileTypeIdentifier;
 - (WFOnScreenContentNode)init;
-- (WFOnScreenContentNode)initWithCoder:(id)a3;
-- (WFOnScreenContentNode)initWithContentItem:(id)a3 file:(id)a4 applicationBundleIdentifier:(id)a5 applicationFrame:(CGRect)a6 applicationLevel:(id)a7 source:(id)a8 linkPresentationMetadata:(id)a9;
-- (WFOnScreenContentNode)initWithFile:(id)a3 applicationBundleIdentifier:(id)a4 source:(id)a5;
-- (void)addChild:(id)a3;
-- (void)addChildren:(id)a3;
+- (WFOnScreenContentNode)initWithCoder:(id)coder;
+- (WFOnScreenContentNode)initWithContentItem:(id)item file:(id)file applicationBundleIdentifier:(id)identifier applicationFrame:(CGRect)frame applicationLevel:(id)level source:(id)source linkPresentationMetadata:(id)metadata;
+- (WFOnScreenContentNode)initWithFile:(id)file applicationBundleIdentifier:(id)identifier source:(id)source;
+- (void)addChild:(id)child;
+- (void)addChildren:(id)children;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)populateObjectsFromContentItem:(id)a3;
-- (void)removeChild:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)populateObjectsFromContentItem:(id)item;
+- (void)removeChild:(id)child;
 @end
 
 @implementation WFOnScreenContentNode
@@ -29,41 +29,41 @@
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(WFOnScreenContentNode *)self string];
-  [v4 encodeObject:v5 forKey:@"string"];
+  coderCopy = coder;
+  string = [(WFOnScreenContentNode *)self string];
+  [coderCopy encodeObject:string forKey:@"string"];
 
   v6 = [(WFOnScreenContentNode *)self URL];
-  [v4 encodeObject:v6 forKey:@"URL"];
+  [coderCopy encodeObject:v6 forKey:@"URL"];
 
-  v7 = [(WFOnScreenContentNode *)self file];
-  [v4 encodeObject:v7 forKey:@"file"];
+  file = [(WFOnScreenContentNode *)self file];
+  [coderCopy encodeObject:file forKey:@"file"];
 
-  v8 = [(WFOnScreenContentNode *)self contentItem];
-  [v4 encodeObject:v8 forKey:@"contentItem"];
+  contentItem = [(WFOnScreenContentNode *)self contentItem];
+  [coderCopy encodeObject:contentItem forKey:@"contentItem"];
 
-  v9 = [(WFOnScreenContentNode *)self applicationBundleIdentifier];
-  [v4 encodeObject:v9 forKey:@"applicationBundleIdentifier"];
+  applicationBundleIdentifier = [(WFOnScreenContentNode *)self applicationBundleIdentifier];
+  [coderCopy encodeObject:applicationBundleIdentifier forKey:@"applicationBundleIdentifier"];
 
-  v10 = [(WFOnScreenContentNode *)self applicationLevel];
-  [v4 encodeObject:v10 forKey:@"applicationLevel"];
+  applicationLevel = [(WFOnScreenContentNode *)self applicationLevel];
+  [coderCopy encodeObject:applicationLevel forKey:@"applicationLevel"];
 
-  v11 = [(WFOnScreenContentNode *)self source];
-  [v4 encodeObject:v11 forKey:@"source"];
+  source = [(WFOnScreenContentNode *)self source];
+  [coderCopy encodeObject:source forKey:@"source"];
 
-  v12 = [(WFOnScreenContentNode *)self chatRegistryContinuityKey];
-  [v4 encodeObject:v12 forKey:@"chatRegistryContinuityKey"];
+  chatRegistryContinuityKey = [(WFOnScreenContentNode *)self chatRegistryContinuityKey];
+  [coderCopy encodeObject:chatRegistryContinuityKey forKey:@"chatRegistryContinuityKey"];
 
-  v13 = [(WFOnScreenContentNode *)self contactIdentifier];
-  [v4 encodeObject:v13 forKey:@"contactIdentifier"];
+  contactIdentifier = [(WFOnScreenContentNode *)self contactIdentifier];
+  [coderCopy encodeObject:contactIdentifier forKey:@"contactIdentifier"];
 
-  v14 = [(WFOnScreenContentNode *)self photoAssetIdentifier];
-  [v4 encodeObject:v14 forKey:@"photoAssetIdentifier"];
+  photoAssetIdentifier = [(WFOnScreenContentNode *)self photoAssetIdentifier];
+  [coderCopy encodeObject:photoAssetIdentifier forKey:@"photoAssetIdentifier"];
 
-  v15 = [(WFOnScreenContentNode *)self linkPresentationMetadata];
-  [v4 encodeObject:v15 forKey:@"linkPresentationMetadata"];
+  linkPresentationMetadata = [(WFOnScreenContentNode *)self linkPresentationMetadata];
+  [coderCopy encodeObject:linkPresentationMetadata forKey:@"linkPresentationMetadata"];
 
   [(WFOnScreenContentNode *)self applicationFrame];
   v22[0] = v16;
@@ -71,29 +71,29 @@
   v22[2] = v18;
   v22[3] = v19;
   v20 = [MEMORY[0x1E696B098] valueWithBytes:v22 objCType:"{CGRect={CGPoint=dd}{CGSize=dd}}"];
-  [v4 encodeObject:v20 forKey:@"applicationFrame"];
+  [coderCopy encodeObject:v20 forKey:@"applicationFrame"];
 
-  v21 = [(WFOnScreenContentNode *)self children];
-  [v4 encodeObject:v21 forKey:@"children"];
+  children = [(WFOnScreenContentNode *)self children];
+  [coderCopy encodeObject:children forKey:@"children"];
 }
 
-- (WFOnScreenContentNode)initWithCoder:(id)a3
+- (WFOnScreenContentNode)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v42.receiver = self;
   v42.super_class = WFOnScreenContentNode;
   v5 = [(WFOnScreenContentNode *)&v42 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"string"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"string"];
     v7 = *(v5 + 2);
     *(v5 + 2) = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"URL"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"URL"];
     v9 = *(v5 + 1);
     *(v5 + 1) = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"file"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"file"];
     v11 = *(v5 + 3);
     *(v5 + 3) = v10;
 
@@ -117,28 +117,28 @@
     v14 = v13;
     _Block_object_dispose(&sizep, 8);
     v15 = [v12 setWithObjects:{v13, 0}];
-    v16 = [v4 decodeObjectOfClasses:v15 forKey:@"contentItem"];
+    v16 = [coderCopy decodeObjectOfClasses:v15 forKey:@"contentItem"];
     v17 = *(v5 + 11);
     *(v5 + 11) = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"applicationBundleIdentifier"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"applicationBundleIdentifier"];
     v19 = *(v5 + 8);
     *(v5 + 8) = v18;
 
-    *(v5 + 9) = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"applicationLevel"];
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"source"];
+    *(v5 + 9) = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"applicationLevel"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"source"];
     v21 = *(v5 + 12);
     *(v5 + 12) = v20;
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"chatRegistryContinuityKey"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"chatRegistryContinuityKey"];
     v23 = *(v5 + 5);
     *(v5 + 5) = v22;
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"contactIdentifier"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"contactIdentifier"];
     v25 = *(v5 + 6);
     *(v5 + 6) = v24;
 
-    v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"photoAssetIdentifier"];
+    v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"photoAssetIdentifier"];
     v27 = *(v5 + 7);
     *(v5 + 7) = v26;
 
@@ -160,11 +160,11 @@
 
     v29 = v28;
     _Block_object_dispose(&sizep, 8);
-    v30 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"linkPresentationMetadata"];
+    v30 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"linkPresentationMetadata"];
     v31 = *(v5 + 10);
     *(v5 + 10) = v30;
 
-    v32 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"applicationFrame"];
+    v32 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"applicationFrame"];
     v33 = *(MEMORY[0x1E695F050] + 16);
     v43 = *MEMORY[0x1E695F050];
     v44 = v33;
@@ -181,7 +181,7 @@
     v35 = MEMORY[0x1E695DFD8];
     v36 = objc_opt_class();
     v37 = [v35 setWithObjects:{v36, objc_opt_class(), 0}];
-    v38 = [v4 decodeObjectOfClasses:v37 forKey:@"children"];
+    v38 = [coderCopy decodeObjectOfClasses:v37 forKey:@"children"];
     v39 = *(v5 + 4);
     *(v5 + 4) = v38;
 
@@ -191,9 +191,9 @@
   return v5;
 }
 
-- (void)populateObjectsFromContentItem:(id)a3
+- (void)populateObjectsFromContentItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v29 = 0;
   v30 = &v29;
   v31 = 0x2050000000;
@@ -214,9 +214,9 @@
   _Block_object_dispose(&v29, 8);
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v4 string];
+    string = [itemCopy string];
     string = self->_string;
-    self->_string = v7;
+    self->_string = string;
 LABEL_17:
 
     goto LABEL_18;
@@ -242,7 +242,7 @@ LABEL_17:
   _Block_object_dispose(&v29, 8);
   if (objc_opt_isKindOfClass())
   {
-    v11 = [v4 URL];
+    v11 = [itemCopy URL];
     string = self->_URL;
     self->_URL = v11;
     goto LABEL_17;
@@ -268,8 +268,8 @@ LABEL_17:
   _Block_object_dispose(&v29, 8);
   if (objc_opt_isKindOfClass())
   {
-    string = v4;
-    v14 = [string contact];
+    string = itemCopy;
+    contact = [string contact];
     v29 = 0;
     v30 = &v29;
     v31 = 0x2050000000;
@@ -290,9 +290,9 @@ LABEL_17:
     _Block_object_dispose(&v29, 8);
     if (objc_opt_isKindOfClass())
     {
-      v17 = [v14 contactIdentifier];
+      contactIdentifier = [contact contactIdentifier];
       contactIdentifier = self->_contactIdentifier;
-      self->_contactIdentifier = v17;
+      self->_contactIdentifier = contactIdentifier;
     }
 
     goto LABEL_17;
@@ -319,50 +319,50 @@ LABEL_18:
   _Block_object_dispose(&v29, 8);
   if (objc_opt_isKindOfClass())
   {
-    v21 = [v4 asset];
-    v22 = [v21 localIdentifier];
+    asset = [itemCopy asset];
+    localIdentifier = [asset localIdentifier];
     photoAssetIdentifier = self->_photoAssetIdentifier;
-    self->_photoAssetIdentifier = v22;
+    self->_photoAssetIdentifier = localIdentifier;
   }
 }
 
-- (void)addChildren:(id)a3
+- (void)addChildren:(id)children
 {
-  v7 = a3;
-  if ([v7 count])
+  childrenCopy = children;
+  if ([childrenCopy count])
   {
-    v4 = [(WFOnScreenContentNode *)self children];
-    v5 = [v4 mutableCopy];
+    children = [(WFOnScreenContentNode *)self children];
+    v5 = [children mutableCopy];
 
-    [(NSArray *)v5 addObjectsFromArray:v7];
+    [(NSArray *)v5 addObjectsFromArray:childrenCopy];
     children = self->_children;
     self->_children = v5;
   }
 }
 
-- (void)removeChild:(id)a3
+- (void)removeChild:(id)child
 {
-  if (a3)
+  if (child)
   {
-    v4 = a3;
-    v5 = [(WFOnScreenContentNode *)self children];
-    v6 = [v5 mutableCopy];
+    childCopy = child;
+    children = [(WFOnScreenContentNode *)self children];
+    v6 = [children mutableCopy];
 
-    [(NSArray *)v6 removeObject:v4];
+    [(NSArray *)v6 removeObject:childCopy];
     children = self->_children;
     self->_children = v6;
   }
 }
 
-- (void)addChild:(id)a3
+- (void)addChild:(id)child
 {
-  if (a3)
+  if (child)
   {
-    v4 = a3;
-    v5 = [(WFOnScreenContentNode *)self children];
-    v6 = [v5 mutableCopy];
+    childCopy = child;
+    children = [(WFOnScreenContentNode *)self children];
+    v6 = [children mutableCopy];
 
-    [(NSArray *)v6 addObject:v4];
+    [(NSArray *)v6 addObject:childCopy];
     children = self->_children;
     self->_children = v6;
   }
@@ -370,14 +370,14 @@ LABEL_18:
 
 - (NSDate)fileCreationDate
 {
-  v3 = [(WFOnScreenContentNode *)self file];
+  file = [(WFOnScreenContentNode *)self file];
 
-  if (v3)
+  if (file)
   {
-    v4 = [(WFOnScreenContentNode *)self file];
-    v5 = [v4 fileURL];
+    file2 = [(WFOnScreenContentNode *)self file];
+    fileURL = [file2 fileURL];
     v8 = 0;
-    [v5 getResourceValue:&v8 forKey:*MEMORY[0x1E695DAA8] error:0];
+    [fileURL getResourceValue:&v8 forKey:*MEMORY[0x1E695DAA8] error:0];
     v6 = v8;
   }
 
@@ -391,44 +391,44 @@ LABEL_18:
 
 - (NSString)fileTypeIdentifier
 {
-  v3 = [(WFOnScreenContentNode *)self file];
-  v4 = [v3 fileURL];
+  file = [(WFOnScreenContentNode *)self file];
+  fileURL = [file fileURL];
 
-  if (v4)
+  if (fileURL)
   {
-    v5 = [(WFOnScreenContentNode *)self file];
-    v6 = [v5 fileURL];
-    v7 = [v6 pathExtension];
-    v8 = [WFFileType typeFromFileExtension:v7];
+    file2 = [(WFOnScreenContentNode *)self file];
+    fileURL2 = [file2 fileURL];
+    pathExtension = [fileURL2 pathExtension];
+    v8 = [WFFileType typeFromFileExtension:pathExtension];
 
-    v9 = [v8 string];
+    string = [v8 string];
   }
 
   else
   {
-    v9 = 0;
+    string = 0;
   }
 
-  return v9;
+  return string;
 }
 
 - (void)dealloc
 {
-  v3 = [(WFOnScreenContentNode *)self file];
-  v4 = [v3 fileURL];
+  file = [(WFOnScreenContentNode *)self file];
+  fileURL = [file fileURL];
 
-  if (v4)
+  if (fileURL)
   {
-    v5 = [(WFOnScreenContentNode *)self file];
-    v6 = [v5 fileURL];
-    [v6 startAccessingSecurityScopedResource];
+    file2 = [(WFOnScreenContentNode *)self file];
+    fileURL2 = [file2 fileURL];
+    [fileURL2 startAccessingSecurityScopedResource];
 
     file = self->_file;
     self->_file = 0;
 
-    v8 = [(WFOnScreenContentNode *)self file];
-    v9 = [v8 fileURL];
-    [v9 stopAccessingSecurityScopedResource];
+    file3 = [(WFOnScreenContentNode *)self file];
+    fileURL3 = [file3 fileURL];
+    [fileURL3 stopAccessingSecurityScopedResource];
   }
 
   v10.receiver = self;
@@ -436,53 +436,53 @@ LABEL_18:
   [(WFOnScreenContentNode *)&v10 dealloc];
 }
 
-- (WFOnScreenContentNode)initWithFile:(id)a3 applicationBundleIdentifier:(id)a4 source:(id)a5
+- (WFOnScreenContentNode)initWithFile:(id)file applicationBundleIdentifier:(id)identifier source:(id)source
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  fileCopy = file;
+  identifierCopy = identifier;
+  sourceCopy = source;
   v16.receiver = self;
   v16.super_class = WFOnScreenContentNode;
   v12 = [(WFOnScreenContentNode *)&v16 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_file, a3);
-    objc_storeStrong(&v13->_applicationBundleIdentifier, a4);
-    objc_storeStrong(&v13->_source, a5);
+    objc_storeStrong(&v12->_file, file);
+    objc_storeStrong(&v13->_applicationBundleIdentifier, identifier);
+    objc_storeStrong(&v13->_source, source);
     v14 = v13;
   }
 
   return v13;
 }
 
-- (WFOnScreenContentNode)initWithContentItem:(id)a3 file:(id)a4 applicationBundleIdentifier:(id)a5 applicationFrame:(CGRect)a6 applicationLevel:(id)a7 source:(id)a8 linkPresentationMetadata:(id)a9
+- (WFOnScreenContentNode)initWithContentItem:(id)item file:(id)file applicationBundleIdentifier:(id)identifier applicationFrame:(CGRect)frame applicationLevel:(id)level source:(id)source linkPresentationMetadata:(id)metadata
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v20 = a3;
-  v29 = a4;
-  v28 = a5;
-  v21 = a7;
-  v22 = a8;
-  v23 = a9;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  itemCopy = item;
+  fileCopy = file;
+  identifierCopy = identifier;
+  levelCopy = level;
+  sourceCopy = source;
+  metadataCopy = metadata;
   v24 = [(WFOnScreenContentNode *)self init];
   v25 = v24;
   if (v24)
   {
-    objc_storeStrong(&v24->_contentItem, a3);
-    objc_storeStrong(&v25->_file, a4);
-    objc_storeStrong(&v25->_applicationBundleIdentifier, a5);
+    objc_storeStrong(&v24->_contentItem, item);
+    objc_storeStrong(&v25->_file, file);
+    objc_storeStrong(&v25->_applicationBundleIdentifier, identifier);
     v25->_applicationFrame.origin.x = x;
     v25->_applicationFrame.origin.y = y;
     v25->_applicationFrame.size.width = width;
     v25->_applicationFrame.size.height = height;
-    v25->_applicationLevel = v21;
-    objc_storeStrong(&v25->_source, a8);
-    objc_storeStrong(&v25->_linkPresentationMetadata, a9);
-    [(WFOnScreenContentNode *)v25 populateObjectsFromContentItem:v20, v28, v29];
+    v25->_applicationLevel = levelCopy;
+    objc_storeStrong(&v25->_source, source);
+    objc_storeStrong(&v25->_linkPresentationMetadata, metadata);
+    [(WFOnScreenContentNode *)v25 populateObjectsFromContentItem:itemCopy, identifierCopy, fileCopy];
     v26 = v25;
   }
 

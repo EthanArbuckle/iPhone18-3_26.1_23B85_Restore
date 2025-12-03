@@ -1,36 +1,36 @@
 @interface FollowerDetailsLinkCell
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 @end
 
 @implementation FollowerDetailsLinkCell
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   v13.receiver = self;
   v13.super_class = FollowerDetailsLinkCell;
-  [(PSTableCell *)&v13 refreshCellContentsWithSpecifier:v4];
-  v5 = [v4 propertyForKey:@"PSFollowerDetailsTitleTextColorKey"];
-  v6 = [(FollowerDetailsLinkCell *)self textLabel];
-  v7 = v6;
+  [(PSTableCell *)&v13 refreshCellContentsWithSpecifier:specifierCopy];
+  v5 = [specifierCopy propertyForKey:@"PSFollowerDetailsTitleTextColorKey"];
+  textLabel = [(FollowerDetailsLinkCell *)self textLabel];
+  v7 = textLabel;
   if (v5)
   {
-    [v6 setTextColor:v5];
+    [textLabel setTextColor:v5];
   }
 
   else
   {
-    v8 = [MEMORY[0x277D75348] labelColor];
-    [v7 setTextColor:v8];
+    labelColor = [MEMORY[0x277D75348] labelColor];
+    [v7 setTextColor:labelColor];
   }
 
-  v9 = [(FollowerDetailsLinkCell *)self detailTextLabel];
-  v10 = [v4 propertyForKey:*MEMORY[0x277D40160]];
-  [v9 setText:v10];
+  detailTextLabel = [(FollowerDetailsLinkCell *)self detailTextLabel];
+  v10 = [specifierCopy propertyForKey:*MEMORY[0x277D40160]];
+  [detailTextLabel setText:v10];
 
-  v11 = [(FollowerDetailsLinkCell *)self detailTextLabel];
-  v12 = [MEMORY[0x277D75348] tableCellGrayTextColor];
-  [v11 setTextColor:v12];
+  detailTextLabel2 = [(FollowerDetailsLinkCell *)self detailTextLabel];
+  tableCellGrayTextColor = [MEMORY[0x277D75348] tableCellGrayTextColor];
+  [detailTextLabel2 setTextColor:tableCellGrayTextColor];
 
   [(FollowerDetailsLinkCell *)self setNeedsLayout];
 }

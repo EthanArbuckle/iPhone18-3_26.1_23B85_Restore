@@ -2,9 +2,9 @@
 - (AntBlockPowerLimitPolicyClientUwb)init;
 - (id)constructXpcMessage;
 - (id)constructXpcMessagePolicyEntries;
-- (void)addPriorityClassPolicy:(id)a3;
-- (void)extractPolicy:(id)a3;
-- (void)extractPolicyEntries:(id)a3;
+- (void)addPriorityClassPolicy:(id)policy;
+- (void)extractPolicy:(id)policy;
+- (void)extractPolicyEntries:(id)entries;
 @end
 
 @implementation AntBlockPowerLimitPolicyClientUwb
@@ -21,13 +21,13 @@
   return v2;
 }
 
-- (void)extractPolicyEntries:(id)a3
+- (void)extractPolicyEntries:(id)entries
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  entriesCopy = entries;
+  v5 = entriesCopy;
+  if (entriesCopy)
   {
-    +[WCM_Logging logLevel:message:](WCM_Logging, "logLevel:message:", 3, @"Extracted %lu policies for client UWB", [v4 count]);
+    +[WCM_Logging logLevel:message:](WCM_Logging, "logLevel:message:", 3, @"Extracted %lu policies for client UWB", [entriesCopy count]);
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
@@ -50,11 +50,11 @@
           v11 = *(*(&v16 + 1) + 8 * i);
           v12 = objc_alloc_init(AntBlockPowerLimitUwbBasePolicy);
           [(AntBlockPowerLimitUwbBasePolicy *)v12 extractPolicy:v11];
-          v13 = [(AntBlockPowerLimitPolicyClient *)self mPolicy];
+          mPolicy = [(AntBlockPowerLimitPolicyClient *)self mPolicy];
 
           if (v12)
           {
-            v14 = v13 == 0;
+            v14 = mPolicy == 0;
           }
 
           else
@@ -64,8 +64,8 @@
 
           if (!v14)
           {
-            v15 = [(AntBlockPowerLimitPolicyClient *)self mPolicy];
-            [v15 addObject:v12];
+            mPolicy2 = [(AntBlockPowerLimitPolicyClient *)self mPolicy];
+            [mPolicy2 addObject:v12];
           }
         }
 
@@ -82,15 +82,15 @@
   }
 }
 
-- (void)extractPolicy:(id)a3
+- (void)extractPolicy:(id)policy
 {
-  v4 = a3;
-  [(AntBlockPowerLimitPolicyClient *)self extractPolicyGlobalParam:v4];
-  [v4 objectForKey:@"Policy"];
+  policyCopy = policy;
+  [(AntBlockPowerLimitPolicyClient *)self extractPolicyGlobalParam:policyCopy];
+  [policyCopy objectForKey:@"Policy"];
   v16 = v20 = self;
   [(AntBlockPowerLimitPolicyClientUwb *)self extractPolicyEntries:?];
-  v17 = v4;
-  obj = [v4 objectForKey:@"Priority_Class_Policy"];
+  v17 = policyCopy;
+  obj = [policyCopy objectForKey:@"Priority_Class_Policy"];
   if (obj)
   {
     v25 = 0u;
@@ -114,15 +114,15 @@
           v6 = *(*(&v23 + 1) + 8 * v5);
           v7 = objc_alloc_init(AntBlockPowerLimitUwbPriorityClassPolicy);
           v8 = [v6 objectForKey:@"Enable"];
-          v22 = [v8 BOOLValue];
+          bOOLValue = [v8 BOOLValue];
           v9 = [v6 objectForKey:@"Priority_Class"];
-          v10 = [v9 integerValue];
+          integerValue = [v9 integerValue];
           v11 = [v6 objectForKey:@"Mitigation_Required"];
-          v12 = [v11 BOOLValue];
+          bOOLValue2 = [v11 BOOLValue];
           v13 = [v6 objectForKey:@"Deny_Voice_Protect"];
-          v14 = [v13 BOOLValue];
+          bOOLValue3 = [v13 BOOLValue];
           v15 = [v6 objectForKey:@"Mitigation_Timer_ms"];
-          -[AntBlockPowerLimitUwbPriorityClassPolicy setParameterEnable:PriorityClass:MitigationRequired:DenyVoiceProtect:MitigationTimer:](v7, "setParameterEnable:PriorityClass:MitigationRequired:DenyVoiceProtect:MitigationTimer:", v22, v10, v12, v14, [v15 integerValue]);
+          -[AntBlockPowerLimitUwbPriorityClassPolicy setParameterEnable:PriorityClass:MitigationRequired:DenyVoiceProtect:MitigationTimer:](v7, "setParameterEnable:PriorityClass:MitigationRequired:DenyVoiceProtect:MitigationTimer:", bOOLValue, integerValue, bOOLValue2, bOOLValue3, [v15 integerValue]);
 
           [(AntBlockPowerLimitPolicyClientUwb *)v20 addPriorityClassPolicy:v7];
           v5 = v5 + 1;
@@ -137,9 +137,9 @@
   }
 }
 
-- (void)addPriorityClassPolicy:(id)a3
+- (void)addPriorityClassPolicy:(id)policy
 {
-  if (a3)
+  if (policy)
   {
     mPriorityClassPolicy = self->_mPriorityClassPolicy;
     if (mPriorityClassPolicy)
@@ -156,8 +156,8 @@
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(AntBlockPowerLimitPolicyClient *)self mPolicy];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  mPolicy = [(AntBlockPowerLimitPolicyClient *)self mPolicy];
+  v5 = [mPolicy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -168,14 +168,14 @@
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(mPolicy);
         }
 
-        v9 = [*(*(&v11 + 1) + 8 * i) constructXpcMessage];
-        xpc_array_append_value(v3, v9);
+        constructXpcMessage = [*(*(&v11 + 1) + 8 * i) constructXpcMessage];
+        xpc_array_append_value(v3, constructXpcMessage);
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [mPolicy countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -188,11 +188,11 @@
 {
   v19.receiver = self;
   v19.super_class = AntBlockPowerLimitPolicyClientUwb;
-  v3 = [(AntBlockPowerLimitPolicyClient *)&v19 constructXpcMessage];
-  v4 = v3;
-  if (v3)
+  constructXpcMessage = [(AntBlockPowerLimitPolicyClient *)&v19 constructXpcMessage];
+  v4 = constructXpcMessage;
+  if (constructXpcMessage)
   {
-    xdict = v3;
+    xdict = constructXpcMessage;
     v5 = xpc_array_create(0, 0);
     v15 = 0u;
     v16 = 0u;

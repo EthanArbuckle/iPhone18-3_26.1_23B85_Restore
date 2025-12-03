@@ -1,29 +1,29 @@
 @interface TPSContent
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)debugDescription;
 - (NSString)description;
-- (TPSContent)initWithCoder:(id)a3;
-- (TPSContent)initWithDictionary:(id)a3 metadata:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (TPSContent)initWithCoder:(id)coder;
+- (TPSContent)initWithDictionary:(id)dictionary metadata:(id)metadata;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TPSContent
 
-- (TPSContent)initWithDictionary:(id)a3 metadata:(id)a4
+- (TPSContent)initWithDictionary:(id)dictionary metadata:(id)metadata
 {
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  metadataCopy = metadata;
   v30.receiver = self;
   v30.super_class = TPSContent;
-  v8 = [(TPSSerializableObject *)&v30 initWithDictionary:v6];
+  v8 = [(TPSSerializableObject *)&v30 initWithDictionary:dictionaryCopy];
   if (!v8)
   {
     goto LABEL_17;
   }
 
-  v9 = [v6 TPSSafeObjectForKey:@"title"];
+  v9 = [dictionaryCopy TPSSafeObjectForKey:@"title"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -58,13 +58,13 @@
   }
 
 LABEL_9:
-  v16 = [v6 TPSSafeStringForKey:@"text"];
+  v16 = [dictionaryCopy TPSSafeStringForKey:@"text"];
   bodyText = v8->_bodyText;
   v8->_bodyText = v16;
 
   if (!v8->_bodyText)
   {
-    v18 = [v6 TPSSafeDictionaryForKey:@"body"];
+    v18 = [dictionaryCopy TPSSafeDictionaryForKey:@"body"];
     v19 = v18;
     if (v18)
     {
@@ -92,10 +92,10 @@ LABEL_9:
     }
   }
 
-  v25 = [v6 TPSSafeStringForKey:@"labelStyle"];
+  v25 = [dictionaryCopy TPSSafeStringForKey:@"labelStyle"];
   v8->_labelStyle = [v25 isEqualToString:@"white"];
-  v26 = [TPSAssets assetsFromDictionary:v6];
-  v27 = [[TPSAssets alloc] initWithDictionary:v26 metadata:v7];
+  v26 = [TPSAssets assetsFromDictionary:dictionaryCopy];
+  v27 = [[TPSAssets alloc] initWithDictionary:v26 metadata:metadataCopy];
   assets = v8->_assets;
   v8->_assets = v27;
 
@@ -103,41 +103,41 @@ LABEL_17:
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v11.receiver = self;
   v11.super_class = TPSContent;
-  v4 = [(TPSSerializableObject *)&v11 copyWithZone:a3];
+  v4 = [(TPSSerializableObject *)&v11 copyWithZone:zone];
   [v4 setLabelStyle:{-[TPSContent labelStyle](self, "labelStyle")}];
-  v5 = [(TPSContent *)self title];
-  [v4 setTitle:v5];
+  title = [(TPSContent *)self title];
+  [v4 setTitle:title];
 
-  v6 = [(TPSContent *)self titleContent];
-  [v4 setTitleContent:v6];
+  titleContent = [(TPSContent *)self titleContent];
+  [v4 setTitleContent:titleContent];
 
-  v7 = [(TPSContent *)self bodyText];
-  [v4 setBodyText:v7];
+  bodyText = [(TPSContent *)self bodyText];
+  [v4 setBodyText:bodyText];
 
-  v8 = [(TPSContent *)self bodyContent];
-  [v4 setBodyContent:v8];
+  bodyContent = [(TPSContent *)self bodyContent];
+  [v4 setBodyContent:bodyContent];
 
   [v4 setBodyContainsLink:{-[TPSContent bodyContainsLink](self, "bodyContainsLink")}];
-  v9 = [(TPSContent *)self assets];
-  [v4 setAssets:v9];
+  assets = [(TPSContent *)self assets];
+  [v4 setAssets:assets];
 
   return v4;
 }
 
-- (TPSContent)initWithCoder:(id)a3
+- (TPSContent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v23.receiver = self;
   v23.super_class = TPSContent;
-  v5 = [(TPSSerializableObject *)&v23 initWithCoder:v4];
+  v5 = [(TPSSerializableObject *)&v23 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_labelStyle = [v4 decodeIntegerForKey:@"labelStyle"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"title"];
+    v5->_labelStyle = [coderCopy decodeIntegerForKey:@"labelStyle"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"title"];
     title = v5->_title;
     v5->_title = v6;
 
@@ -147,20 +147,20 @@ LABEL_17:
     v11 = objc_opt_class();
     v12 = objc_opt_class();
     v13 = [v8 setWithObjects:{v9, v10, v11, v12, objc_opt_class(), 0}];
-    v14 = [v4 decodeObjectOfClasses:v13 forKey:@"titleContent"];
+    v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"titleContent"];
     titleContent = v5->_titleContent;
     v5->_titleContent = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"text"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"text"];
     bodyText = v5->_bodyText;
     v5->_bodyText = v16;
 
-    v18 = [v4 decodeObjectOfClasses:v13 forKey:@"body"];
+    v18 = [coderCopy decodeObjectOfClasses:v13 forKey:@"body"];
     bodyContent = v5->_bodyContent;
     v5->_bodyContent = v18;
 
-    v5->_bodyContainsLink = [v4 decodeBoolForKey:@"bodyContainsLink"];
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"asset"];
+    v5->_bodyContainsLink = [coderCopy decodeBoolForKey:@"bodyContainsLink"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"asset"];
     assets = v5->_assets;
     v5->_assets = v20;
   }
@@ -168,28 +168,28 @@ LABEL_17:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v10.receiver = self;
   v10.super_class = TPSContent;
-  v4 = a3;
-  [(TPSSerializableObject *)&v10 encodeWithCoder:v4];
-  [v4 encodeInteger:-[TPSContent labelStyle](self forKey:{"labelStyle", v10.receiver, v10.super_class), @"labelStyle"}];
-  v5 = [(TPSContent *)self title];
-  [v4 encodeObject:v5 forKey:@"title"];
+  coderCopy = coder;
+  [(TPSSerializableObject *)&v10 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:-[TPSContent labelStyle](self forKey:{"labelStyle", v10.receiver, v10.super_class), @"labelStyle"}];
+  title = [(TPSContent *)self title];
+  [coderCopy encodeObject:title forKey:@"title"];
 
-  v6 = [(TPSContent *)self titleContent];
-  [v4 encodeObject:v6 forKey:@"titleContent"];
+  titleContent = [(TPSContent *)self titleContent];
+  [coderCopy encodeObject:titleContent forKey:@"titleContent"];
 
-  v7 = [(TPSContent *)self bodyText];
-  [v4 encodeObject:v7 forKey:@"text"];
+  bodyText = [(TPSContent *)self bodyText];
+  [coderCopy encodeObject:bodyText forKey:@"text"];
 
-  v8 = [(TPSContent *)self bodyContent];
-  [v4 encodeObject:v8 forKey:@"body"];
+  bodyContent = [(TPSContent *)self bodyContent];
+  [coderCopy encodeObject:bodyContent forKey:@"body"];
 
-  [v4 encodeBool:-[TPSContent bodyContainsLink](self forKey:{"bodyContainsLink"), @"bodyContainsLink"}];
-  v9 = [(TPSContent *)self assets];
-  [v4 encodeObject:v9 forKey:@"asset"];
+  [coderCopy encodeBool:-[TPSContent bodyContainsLink](self forKey:{"bodyContainsLink"), @"bodyContainsLink"}];
+  assets = [(TPSContent *)self assets];
+  [coderCopy encodeObject:assets forKey:@"asset"];
 }
 
 - (NSString)description
@@ -200,30 +200,30 @@ LABEL_17:
   v4 = [(TPSContent *)&v12 description];
   v5 = [v3 initWithString:v4];
 
-  v6 = [(TPSContent *)self title];
+  title = [(TPSContent *)self title];
 
-  if (v6)
+  if (title)
   {
-    v7 = [(TPSContent *)self title];
-    v8 = v7;
+    title2 = [(TPSContent *)self title];
+    v8 = title2;
     v9 = @"title";
   }
 
   else
   {
-    v10 = [(TPSContent *)self titleContent];
+    titleContent = [(TPSContent *)self titleContent];
 
-    if (!v10)
+    if (!titleContent)
     {
       goto LABEL_6;
     }
 
-    v7 = [(TPSContent *)self titleContent];
-    v8 = v7;
+    title2 = [(TPSContent *)self titleContent];
+    v8 = title2;
     v9 = @"titleContent";
   }
 
-  [v5 appendFormat:@" %@ = %@\n", v9, v7];
+  [v5 appendFormat:@" %@ = %@\n", v9, title2];
 
 LABEL_6:
 
@@ -239,20 +239,20 @@ LABEL_6:
   v5 = [v3 initWithString:v4];
 
   [v5 appendString:@"\n"];
-  v6 = [(TPSContent *)self title];
+  title = [(TPSContent *)self title];
 
-  if (v6)
+  if (title)
   {
-    v7 = [(TPSContent *)self title];
-    [v5 appendFormat:@"\n  %@ = %@\n", @"title", v7];
+    title2 = [(TPSContent *)self title];
+    [v5 appendFormat:@"\n  %@ = %@\n", @"title", title2];
   }
 
-  v8 = [(TPSContent *)self titleContent];
+  titleContent = [(TPSContent *)self titleContent];
 
-  if (v8)
+  if (titleContent)
   {
-    v9 = [(TPSContent *)self titleContent];
-    [v5 appendFormat:@"  %@ = %@\n", @"titleContent", v9];
+    titleContent2 = [(TPSContent *)self titleContent];
+    [v5 appendFormat:@"  %@ = %@\n", @"titleContent", titleContent2];
   }
 
   if ([(TPSContent *)self labelStyle]>= 1)
@@ -260,28 +260,28 @@ LABEL_6:
     [v5 appendFormat:@"\n  %@ = %ld\n", @"labelStyle", -[TPSContent labelStyle](self, "labelStyle")];
   }
 
-  v10 = [(TPSContent *)self bodyText];
+  bodyText = [(TPSContent *)self bodyText];
 
-  if (v10)
+  if (bodyText)
   {
-    v11 = [(TPSContent *)self bodyText];
-    [v5 appendFormat:@"  %@ = %@\n", @"text", v11];
+    bodyText2 = [(TPSContent *)self bodyText];
+    [v5 appendFormat:@"  %@ = %@\n", @"text", bodyText2];
   }
 
-  v12 = [(TPSContent *)self bodyContent];
+  bodyContent = [(TPSContent *)self bodyContent];
 
-  if (v12)
+  if (bodyContent)
   {
-    v13 = [(TPSContent *)self bodyContent];
-    [v5 appendFormat:@"  %@ = %@\n", @"body", v13];
+    bodyContent2 = [(TPSContent *)self bodyContent];
+    [v5 appendFormat:@"  %@ = %@\n", @"body", bodyContent2];
   }
 
-  v14 = [(TPSContent *)self assets];
+  assets = [(TPSContent *)self assets];
 
-  if (v14)
+  if (assets)
   {
-    v15 = [(TPSContent *)self assets];
-    v16 = [v15 debugDescription];
+    assets2 = [(TPSContent *)self assets];
+    v16 = [assets2 debugDescription];
     [v5 appendFormat:@"%@ = %@\n", @"asset", v16];
   }
 
@@ -340,19 +340,19 @@ uint64_t __25__TPSContent_na_identity__block_invoke_9(uint64_t a1, void *a2)
   return [v2 numberWithBool:v3];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [objc_opt_class() na_identity];
-  LOBYTE(self) = [v5 isObject:self equalToObject:v4];
+  equalCopy = equal;
+  na_identity = [objc_opt_class() na_identity];
+  LOBYTE(self) = [na_identity isObject:self equalToObject:equalCopy];
 
   return self;
 }
 
 - (unint64_t)hash
 {
-  v3 = [objc_opt_class() na_identity];
-  v4 = [v3 hashOfObject:self];
+  na_identity = [objc_opt_class() na_identity];
+  v4 = [na_identity hashOfObject:self];
 
   return v4;
 }

@@ -1,20 +1,20 @@
 @interface FTShortcutFuzzyMatchRequest_StringTokenPair
-- (FTShortcutFuzzyMatchRequest_StringTokenPair)initWithFlatbuffData:(id)a3 root:(const StringTokenPair *)a4 verify:(BOOL)a5;
+- (FTShortcutFuzzyMatchRequest_StringTokenPair)initWithFlatbuffData:(id)data root:(const StringTokenPair *)root verify:(BOOL)verify;
 - (NSArray)tokens;
 - (NSString)raw_string;
-- (Offset<siri::speech::schema_fb::ShortcutFuzzyMatchRequest_::StringTokenPair>)addObjectToBuffer:(void *)a3;
+- (Offset<siri::speech::schema_fb::ShortcutFuzzyMatchRequest_::StringTokenPair>)addObjectToBuffer:(void *)buffer;
 - (id)flatbuffData;
-- (id)tokens_objectAtIndex:(unint64_t)a3;
+- (id)tokens_objectAtIndex:(unint64_t)index;
 - (unint64_t)tokens_count;
-- (void)tokens_enumerateObjectsUsingBlock:(id)a3;
+- (void)tokens_enumerateObjectsUsingBlock:(id)block;
 @end
 
 @implementation FTShortcutFuzzyMatchRequest_StringTokenPair
 
-- (FTShortcutFuzzyMatchRequest_StringTokenPair)initWithFlatbuffData:(id)a3 root:(const StringTokenPair *)a4 verify:(BOOL)a5
+- (FTShortcutFuzzyMatchRequest_StringTokenPair)initWithFlatbuffData:(id)data root:(const StringTokenPair *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v25.receiver = self;
   v25.super_class = FTShortcutFuzzyMatchRequest_StringTokenPair;
   v10 = [(FTShortcutFuzzyMatchRequest_StringTokenPair *)&v25 init];
@@ -23,35 +23,35 @@
     goto LABEL_13;
   }
 
-  if (!v9 || ![v9 length])
+  if (!dataCopy || ![dataCopy length])
   {
     goto LABEL_14;
   }
 
-  objc_storeStrong(&v10->_data, a3);
-  if (!a4)
+  objc_storeStrong(&v10->_data, data);
+  if (!root)
   {
-    v11 = [(NSData *)v10->_data bytes];
-    a4 = v11 + *v11;
+    bytes = [(NSData *)v10->_data bytes];
+    root = bytes + *bytes;
   }
 
-  v10->_root = a4;
-  if (!v5)
+  v10->_root = root;
+  if (!verifyCopy)
   {
     goto LABEL_13;
   }
 
-  v12 = [(NSData *)v10->_data bytes];
+  bytes2 = [(NSData *)v10->_data bytes];
   v13 = [(NSData *)v10->_data length];
   root = v10->_root;
-  if (root < v12 || root > v12 + v13)
+  if (root < bytes2 || root > bytes2 + v13)
   {
     goto LABEL_14;
   }
 
-  v16 = [(NSData *)v10->_data bytes];
+  bytes3 = [(NSData *)v10->_data bytes];
   v17 = [(NSData *)v10->_data length];
-  v21[0] = v16;
+  v21[0] = bytes3;
   v21[1] = v17;
   v22 = xmmword_233005E20;
   v23 = 0;
@@ -105,12 +105,12 @@ LABEL_13:
   v3 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"tokens"];
   if (!v3)
   {
-    v4 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __53__FTShortcutFuzzyMatchRequest_StringTokenPair_tokens__block_invoke;
     v6[3] = &unk_2789B8AD8;
-    v3 = v4;
+    v3 = array;
     v7 = v3;
     [(FTShortcutFuzzyMatchRequest_StringTokenPair *)self tokens_enumerateObjectsUsingBlock:v6];
     [(NSMutableDictionary *)self->_storage setObject:v3 forKeyedSubscript:@"tokens"];
@@ -119,13 +119,13 @@ LABEL_13:
   return v3;
 }
 
-- (id)tokens_objectAtIndex:(unint64_t)a3
+- (id)tokens_objectAtIndex:(unint64_t)index
 {
   v5 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"tokens"];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 objectAtIndexedSubscript:a3];
+    v7 = [v5 objectAtIndexedSubscript:index];
 LABEL_3:
     v8 = v7;
     goto LABEL_8;
@@ -138,7 +138,7 @@ LABEL_3:
     v11 = *v10[6].var0;
     if (v11)
     {
-      v12 = &root[4 * a3 + v11 + *root[v11].var0];
+      v12 = &root[4 * index + v11 + *root[v11].var0];
       v13 = (v12 + 4 + *(v12 + 4));
       v7 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:v13 + 1 length:*v13 encoding:4];
       goto LABEL_3;
@@ -178,14 +178,14 @@ LABEL_8:
   return v5;
 }
 
-- (void)tokens_enumerateObjectsUsingBlock:(id)a3
+- (void)tokens_enumerateObjectsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"tokens"];
   v6 = v5;
   if (v5)
   {
-    [v5 enumerateObjectsUsingBlock:v4];
+    [v5 enumerateObjectsUsingBlock:blockCopy];
   }
 
   else
@@ -209,7 +209,7 @@ LABEL_8:
           do
           {
             v16 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:&v14[*v14[-4].var0] length:*v13[4 * v12 + 4 + *v14[-4].var0].var0 encoding:4];
-            v4[2](v4, v16, v12, &v19);
+            blockCopy[2](blockCopy, v16, v12, &v19);
             v17 = v19;
 
             if (v17)
@@ -230,30 +230,30 @@ LABEL_8:
   }
 }
 
-- (Offset<siri::speech::schema_fb::ShortcutFuzzyMatchRequest_::StringTokenPair>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::schema_fb::ShortcutFuzzyMatchRequest_::StringTokenPair>)addObjectToBuffer:(void *)buffer
 {
   v32 = *MEMORY[0x277D85DE8];
-  v5 = [(FTShortcutFuzzyMatchRequest_StringTokenPair *)self raw_string];
-  v6 = v5;
-  if (!v5)
+  raw_string = [(FTShortcutFuzzyMatchRequest_StringTokenPair *)self raw_string];
+  v6 = raw_string;
+  if (!raw_string)
   {
-    v5 = &stru_284834138;
+    raw_string = &stru_284834138;
   }
 
-  v7 = [(__CFString *)v5 UTF8String];
-  v8 = strlen(v7);
-  String = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(a3, v7, v8);
+  uTF8String = [(__CFString *)raw_string UTF8String];
+  v8 = strlen(uTF8String);
+  String = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(buffer, uTF8String, v8);
 
   memset(&v30, 0, sizeof(v30));
-  v10 = [(FTShortcutFuzzyMatchRequest_StringTokenPair *)self tokens];
-  std::vector<apple::aiml::flatbuffers2::Offset<siri::speech::schema_fb::RecognitionToken>>::reserve(&v30, [v10 count]);
+  tokens = [(FTShortcutFuzzyMatchRequest_StringTokenPair *)self tokens];
+  std::vector<apple::aiml::flatbuffers2::Offset<siri::speech::schema_fb::RecognitionToken>>::reserve(&v30, [tokens count]);
 
   v28 = 0u;
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v11 = [(FTShortcutFuzzyMatchRequest_StringTokenPair *)self tokens];
-  v12 = [v11 countByEnumeratingWithState:&v26 objects:v31 count:16];
+  tokens2 = [(FTShortcutFuzzyMatchRequest_StringTokenPair *)self tokens];
+  v12 = [tokens2 countByEnumeratingWithState:&v26 objects:v31 count:16];
   if (v12)
   {
     v13 = *v27;
@@ -263,16 +263,16 @@ LABEL_8:
       {
         if (*v27 != v13)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(tokens2);
         }
 
-        v15 = [*(*(&v26 + 1) + 8 * i) UTF8String];
-        v16 = strlen(v15);
-        v25 = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(a3, v15, v16);
+        uTF8String2 = [*(*(&v26 + 1) + 8 * i) UTF8String];
+        v16 = strlen(uTF8String2);
+        v25 = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(buffer, uTF8String2, v16);
         std::vector<apple::aiml::flatbuffers2::Offset<siri::speech::schema_fb::RecognitionToken>>::push_back[abi:ne200100](&v30.__begin_, &v25);
       }
 
-      v12 = [v11 countByEnumeratingWithState:&v26 objects:v31 count:16];
+      v12 = [tokens2 countByEnumeratingWithState:&v26 objects:v31 count:16];
     }
 
     while (v12);
@@ -288,14 +288,14 @@ LABEL_8:
     begin = v30.__begin_;
   }
 
-  v18 = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateVector<apple::aiml::flatbuffers2::String>(a3, begin, v30.__end_ - v30.__begin_);
-  *(a3 + 70) = 1;
-  v19 = *(a3 + 8);
-  v20 = *(a3 + 12);
-  v21 = *(a3 + 10);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 4, String);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 6, v18);
-  v22.var0 = apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(a3, v19 - v20 + v21);
+  v18 = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateVector<apple::aiml::flatbuffers2::String>(buffer, begin, v30.__end_ - v30.__begin_);
+  *(buffer + 70) = 1;
+  v19 = *(buffer + 8);
+  v20 = *(buffer + 12);
+  v21 = *(buffer + 10);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 4, String);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 6, v18);
+  v22.var0 = apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(buffer, v19 - v20 + v21);
   if (v30.__begin_)
   {
     v30.__end_ = v30.__begin_;

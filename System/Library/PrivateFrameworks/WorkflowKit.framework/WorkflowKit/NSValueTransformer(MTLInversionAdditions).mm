@@ -8,24 +8,24 @@
 {
   if (([objc_opt_class() allowsReverseTransformation] & 1) == 0)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:a1 file:@"NSValueTransformer+MTLInversionAdditions.m" lineNumber:16 description:{@"Invalid parameter not satisfying: %@", @"self.class.allowsReverseTransformation"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"NSValueTransformer+MTLInversionAdditions.m" lineNumber:16 description:{@"Invalid parameter not satisfying: %@", @"self.class.allowsReverseTransformation"}];
   }
 
-  if ([a1 conformsToProtocol:&unk_1F4AAC500])
+  if ([self conformsToProtocol:&unk_1F4AAC500])
   {
     if ((objc_opt_respondsToSelector() & 1) == 0)
     {
-      v9 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v9 handleFailureInMethod:a2 object:a1 file:@"NSValueTransformer+MTLInversionAdditions.m" lineNumber:19 description:{@"Invalid parameter not satisfying: %@", @"[self respondsToSelector:@selector(reverseTransformedValue:success:error:)]"}];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"NSValueTransformer+MTLInversionAdditions.m" lineNumber:19 description:{@"Invalid parameter not satisfying: %@", @"[self respondsToSelector:@selector(reverseTransformedValue:success:error:)]"}];
     }
 
-    v4 = a1;
+    selfCopy = self;
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __68__NSValueTransformer_MTLInversionAdditions__mtl_invertedTransformer__block_invoke;
     v14[3] = &unk_1E8379F80;
-    v15 = v4;
+    v15 = selfCopy;
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __68__NSValueTransformer_MTLInversionAdditions__mtl_invertedTransformer__block_invoke_2;
@@ -37,12 +37,12 @@
 
   else
   {
-    v10[4] = a1;
+    v10[4] = self;
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __68__NSValueTransformer_MTLInversionAdditions__mtl_invertedTransformer__block_invoke_3;
     v11[3] = &unk_1E8379F80;
-    v11[4] = a1;
+    v11[4] = self;
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __68__NSValueTransformer_MTLInversionAdditions__mtl_invertedTransformer__block_invoke_4;

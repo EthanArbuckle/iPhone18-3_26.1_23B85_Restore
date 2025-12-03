@@ -1,27 +1,27 @@
 @interface TBPreferLocalFetchDataSource
-- (TBPreferLocalFetchDataSource)initWithLocalDataSource:(id)a3 remoteDataSource:(id)a4 cacheProvider:(id)a5;
+- (TBPreferLocalFetchDataSource)initWithLocalDataSource:(id)source remoteDataSource:(id)dataSource cacheProvider:(id)provider;
 @end
 
 @implementation TBPreferLocalFetchDataSource
 
-- (TBPreferLocalFetchDataSource)initWithLocalDataSource:(id)a3 remoteDataSource:(id)a4 cacheProvider:(id)a5
+- (TBPreferLocalFetchDataSource)initWithLocalDataSource:(id)source remoteDataSource:(id)dataSource cacheProvider:(id)provider
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  sourceCopy = source;
+  dataSourceCopy = dataSource;
+  providerCopy = provider;
   v18.receiver = self;
   v18.super_class = TBPreferLocalFetchDataSource;
   v11 = [(TBPreferLocalFetchDataSource *)&v18 init];
   localDataSource = v11->_localDataSource;
-  v11->_localDataSource = v8;
-  v13 = v8;
+  v11->_localDataSource = sourceCopy;
+  v13 = sourceCopy;
 
   remoteDataSource = v11->_remoteDataSource;
-  v11->_remoteDataSource = v9;
-  v15 = v9;
+  v11->_remoteDataSource = dataSourceCopy;
+  v15 = dataSourceCopy;
 
   cacheProvider = v11->_cacheProvider;
-  v11->_cacheProvider = v10;
+  v11->_cacheProvider = providerCopy;
 
   return v11;
 }

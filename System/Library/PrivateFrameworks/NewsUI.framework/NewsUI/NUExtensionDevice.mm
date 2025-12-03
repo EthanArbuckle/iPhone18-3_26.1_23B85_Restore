@@ -1,23 +1,23 @@
 @interface NUExtensionDevice
 - (BOOL)isSplitScreen;
-- (NUExtensionDevice)initWithScreen:(id)a3 hostViewController:(id)a4;
+- (NUExtensionDevice)initWithScreen:(id)screen hostViewController:(id)controller;
 - (UIViewController)hostViewController;
 @end
 
 @implementation NUExtensionDevice
 
-- (NUExtensionDevice)initWithScreen:(id)a3 hostViewController:(id)a4
+- (NUExtensionDevice)initWithScreen:(id)screen hostViewController:(id)controller
 {
-  v7 = a3;
-  v8 = a4;
+  screenCopy = screen;
+  controllerCopy = controller;
   v12.receiver = self;
   v12.super_class = NUExtensionDevice;
   v9 = [(NUExtensionDevice *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_screen, a3);
-    objc_storeWeak(&v10->_hostViewController, v8);
+    objc_storeStrong(&v9->_screen, screen);
+    objc_storeWeak(&v10->_hostViewController, controllerCopy);
   }
 
   return v10;
@@ -25,13 +25,13 @@
 
 - (BOOL)isSplitScreen
 {
-  v3 = [(NUExtensionDevice *)self hostViewController];
-  v4 = [v3 view];
-  v5 = [v4 window];
-  [v5 frame];
+  hostViewController = [(NUExtensionDevice *)self hostViewController];
+  view = [hostViewController view];
+  window = [view window];
+  [window frame];
   Width = CGRectGetWidth(v10);
-  v7 = [(NUExtensionDevice *)self screen];
-  [v7 bounds];
+  screen = [(NUExtensionDevice *)self screen];
+  [screen bounds];
   v8 = Width != CGRectGetWidth(v11);
 
   return v8;

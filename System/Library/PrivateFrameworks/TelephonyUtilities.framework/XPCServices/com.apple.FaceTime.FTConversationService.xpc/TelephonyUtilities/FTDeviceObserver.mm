@@ -1,35 +1,35 @@
 @interface FTDeviceObserver
 - (BOOL)isBootLockEnabled;
-- (FTDeviceObserver)initWithQueue:(id)a3;
-- (FTDeviceObserver)initWithQueue:(id)a3 dataSource:(id)a4;
-- (void)addDelegate:(id)a3 queue:(id)a4;
-- (void)removeDelegate:(id)a3;
-- (void)setBootLockEnabled:(BOOL)a3;
+- (FTDeviceObserver)initWithQueue:(id)queue;
+- (FTDeviceObserver)initWithQueue:(id)queue dataSource:(id)source;
+- (void)addDelegate:(id)delegate queue:(id)queue;
+- (void)removeDelegate:(id)delegate;
+- (void)setBootLockEnabled:(BOOL)enabled;
 @end
 
 @implementation FTDeviceObserver
 
-- (FTDeviceObserver)initWithQueue:(id)a3
+- (FTDeviceObserver)initWithQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v5 = objc_alloc_init(FTDeviceDataSource);
-  v6 = [(FTDeviceObserver *)self initWithQueue:v4 dataSource:v5];
+  v6 = [(FTDeviceObserver *)self initWithQueue:queueCopy dataSource:v5];
 
   return v6;
 }
 
-- (FTDeviceObserver)initWithQueue:(id)a3 dataSource:(id)a4
+- (FTDeviceObserver)initWithQueue:(id)queue dataSource:(id)source
 {
-  v7 = a3;
-  v8 = a4;
+  queueCopy = queue;
+  sourceCopy = source;
   v18.receiver = self;
   v18.super_class = FTDeviceObserver;
   v9 = [(FTDeviceObserver *)&v18 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_queue, a3);
-    objc_storeStrong(&v10->_dataSource, a4);
+    objc_storeStrong(&v9->_queue, queue);
+    objc_storeStrong(&v10->_dataSource, source);
     v11 = objc_alloc_init(TUDelegateController);
     delegateController = v10->_delegateController;
     v10->_delegateController = v11;
@@ -51,57 +51,57 @@
 
 - (BOOL)isBootLockEnabled
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(FTDeviceObserver *)self queue];
+  queue = [(FTDeviceObserver *)self queue];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_10000BC3C;
   v5[3] = &unk_100018820;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  dispatch_sync(v3, v5);
+  dispatch_sync(queue, v5);
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
-- (void)setBootLockEnabled:(BOOL)a3
+- (void)setBootLockEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v5 = [(FTDeviceObserver *)self queue];
-  dispatch_assert_queue_V2(v5);
+  enabledCopy = enabled;
+  queue = [(FTDeviceObserver *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  if (self->_bootLockEnabled != v3)
+  if (self->_bootLockEnabled != enabledCopy)
   {
-    self->_bootLockEnabled = v3;
-    v6 = [(FTDeviceObserver *)self delegateController];
+    self->_bootLockEnabled = enabledCopy;
+    delegateController = [(FTDeviceObserver *)self delegateController];
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_10000BD0C;
     v7[3] = &unk_100018848;
     v7[4] = self;
-    [v6 enumerateDelegatesUsingBlock:v7];
+    [delegateController enumerateDelegatesUsingBlock:v7];
   }
 }
 
-- (void)addDelegate:(id)a3 queue:(id)a4
+- (void)addDelegate:(id)delegate queue:(id)queue
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(FTDeviceObserver *)self delegateController];
-  [v8 addDelegate:v7 queue:v6];
+  queueCopy = queue;
+  delegateCopy = delegate;
+  delegateController = [(FTDeviceObserver *)self delegateController];
+  [delegateController addDelegate:delegateCopy queue:queueCopy];
 }
 
-- (void)removeDelegate:(id)a3
+- (void)removeDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(FTDeviceObserver *)self delegateController];
-  [v5 removeDelegate:v4];
+  delegateCopy = delegate;
+  delegateController = [(FTDeviceObserver *)self delegateController];
+  [delegateController removeDelegate:delegateCopy];
 }
 
 @end

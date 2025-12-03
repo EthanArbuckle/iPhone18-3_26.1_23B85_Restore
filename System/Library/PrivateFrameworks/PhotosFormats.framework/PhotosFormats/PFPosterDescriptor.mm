@@ -1,16 +1,16 @@
 @interface PFPosterDescriptor
-+ (id)descriptorIdentifierForDescriptorType:(int64_t)a3 uuids:(id)a4;
-+ (id)descriptorTypeStringWithType:(int64_t)a3;
-+ (id)loadFromURL:(id)a3 error:(id *)a4;
-+ (int64_t)descriptorTypeFromTypeString:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)saveToURL:(id)a3 error:(id *)a4;
-- (PFPosterDescriptor)initWithCoder:(id)a3;
-- (PFPosterDescriptor)initWithDescriptorType:(int64_t)a3 media:(id)a4 photoLibraryPath:(id)a5;
++ (id)descriptorIdentifierForDescriptorType:(int64_t)type uuids:(id)uuids;
++ (id)descriptorTypeStringWithType:(int64_t)type;
++ (id)loadFromURL:(id)l error:(id *)error;
++ (int64_t)descriptorTypeFromTypeString:(id)string;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)saveToURL:(id)l error:(id *)error;
+- (PFPosterDescriptor)initWithCoder:(id)coder;
+- (PFPosterDescriptor)initWithDescriptorType:(int64_t)type media:(id)media photoLibraryPath:(id)path;
 - (id)description;
 - (int64_t)posterType;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PFPosterDescriptor
@@ -21,14 +21,14 @@
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
   v5 = [PFPosterDescriptor descriptorTypeStringWithType:[(PFPosterDescriptor *)self descriptorType]];
-  v6 = [(PFPosterDescriptor *)self identifier];
-  v7 = [(PFPosterDescriptor *)self version];
-  v8 = [(PFPosterDescriptor *)self media];
-  v9 = [(PFPosterDescriptor *)self displayNameLocalizationKey];
-  v10 = [(PFPosterDescriptor *)self styleCategory];
-  v11 = [(PFPosterDescriptor *)self shuffleConfiguration];
-  v12 = [(PFPosterDescriptor *)self photoLibraryPath];
-  v13 = [v15 initWithFormat:@"<%@ %p; type: %@; identifier: %@; version: %lu; media: %@; displayName: %@; styleCategory: %@; shuffleConfig: %@; photoLibraryPath: %@>", v4, self, v5, v6, v7, v8, v9, v10, v11, v12];
+  identifier = [(PFPosterDescriptor *)self identifier];
+  version = [(PFPosterDescriptor *)self version];
+  media = [(PFPosterDescriptor *)self media];
+  displayNameLocalizationKey = [(PFPosterDescriptor *)self displayNameLocalizationKey];
+  styleCategory = [(PFPosterDescriptor *)self styleCategory];
+  shuffleConfiguration = [(PFPosterDescriptor *)self shuffleConfiguration];
+  photoLibraryPath = [(PFPosterDescriptor *)self photoLibraryPath];
+  v13 = [v15 initWithFormat:@"<%@ %p; type: %@; identifier: %@; version: %lu; media: %@; displayName: %@; styleCategory: %@; shuffleConfig: %@; photoLibraryPath: %@>", v4, self, v5, identifier, version, media, displayNameLocalizationKey, styleCategory, shuffleConfiguration, photoLibraryPath];
 
   return v13;
 }
@@ -42,14 +42,14 @@
   return v5 ^ v4;
 }
 
-- (PFPosterDescriptor)initWithCoder:(id)a3
+- (PFPosterDescriptor)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"media"];
-  v6 = [v4 decodeIntegerForKey:@"descriptorType"];
-  if ([v4 containsValueForKey:@"photoLibraryPath"])
+  coderCopy = coder;
+  v5 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"media"];
+  v6 = [coderCopy decodeIntegerForKey:@"descriptorType"];
+  if ([coderCopy containsValueForKey:@"photoLibraryPath"])
   {
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"photoLibraryPath"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"photoLibraryPath"];
   }
 
   else
@@ -58,54 +58,54 @@
   }
 
   v8 = [(PFPosterDescriptor *)self initWithDescriptorType:v6 media:v5 photoLibraryPath:v7];
-  -[PFPosterDescriptor setVersion:](v8, "setVersion:", [v4 decodeIntegerForKey:@"version"]);
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  -[PFPosterDescriptor setVersion:](v8, "setVersion:", [coderCopy decodeIntegerForKey:@"version"]);
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
   [(PFPosterDescriptor *)v8 setIdentifier:v9];
 
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"displayNameLocalizationKey"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"displayNameLocalizationKey"];
   [(PFPosterDescriptor *)v8 setDisplayNameLocalizationKey:v10];
 
-  v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"styleCategory"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"styleCategory"];
   [(PFPosterDescriptor *)v8 setStyleCategory:v11];
 
-  v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"shuffleConfiguration"];
+  v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"shuffleConfiguration"];
   [(PFPosterDescriptor *)v8 setShuffleConfiguration:v12];
 
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:-[PFPosterDescriptor descriptorType](self forKey:{"descriptorType"), @"descriptorType"}];
-  v5 = [(PFPosterDescriptor *)self media];
-  [v4 encodeObject:v5 forKey:@"media"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[PFPosterDescriptor descriptorType](self forKey:{"descriptorType"), @"descriptorType"}];
+  media = [(PFPosterDescriptor *)self media];
+  [coderCopy encodeObject:media forKey:@"media"];
 
-  [v4 encodeInteger:-[PFPosterDescriptor version](self forKey:{"version"), @"version"}];
-  v6 = [(PFPosterDescriptor *)self identifier];
-  [v4 encodeObject:v6 forKey:@"identifier"];
+  [coderCopy encodeInteger:-[PFPosterDescriptor version](self forKey:{"version"), @"version"}];
+  identifier = [(PFPosterDescriptor *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 
-  v7 = [(PFPosterDescriptor *)self displayNameLocalizationKey];
-  [v4 encodeObject:v7 forKey:@"displayNameLocalizationKey"];
+  displayNameLocalizationKey = [(PFPosterDescriptor *)self displayNameLocalizationKey];
+  [coderCopy encodeObject:displayNameLocalizationKey forKey:@"displayNameLocalizationKey"];
 
-  v8 = [(PFPosterDescriptor *)self styleCategory];
-  [v4 encodeObject:v8 forKey:@"styleCategory"];
+  styleCategory = [(PFPosterDescriptor *)self styleCategory];
+  [coderCopy encodeObject:styleCategory forKey:@"styleCategory"];
 
-  v9 = [(PFPosterDescriptor *)self shuffleConfiguration];
-  [v4 encodeObject:v9 forKey:@"shuffleConfiguration"];
+  shuffleConfiguration = [(PFPosterDescriptor *)self shuffleConfiguration];
+  [coderCopy encodeObject:shuffleConfiguration forKey:@"shuffleConfiguration"];
 
-  v10 = [(PFPosterDescriptor *)self photoLibraryPath];
-  [v4 encodeObject:v10 forKey:@"photoLibraryPath"];
+  photoLibraryPath = [(PFPosterDescriptor *)self photoLibraryPath];
+  [coderCopy encodeObject:photoLibraryPath forKey:@"photoLibraryPath"];
 }
 
-- (BOOL)saveToURL:(id)a3 error:(id *)a4
+- (BOOL)saveToURL:(id)l error:(id *)error
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = [a3 URLByAppendingPathComponent:@"DescriptorModel.plist"];
-  v7 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:self requiringSecureCoding:1 error:a4];
+  v6 = [l URLByAppendingPathComponent:@"DescriptorModel.plist"];
+  v7 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:self requiringSecureCoding:1 error:error];
   v8 = v7;
-  v9 = *a4;
-  if (*a4)
+  v9 = *error;
+  if (*error)
   {
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
@@ -124,8 +124,8 @@ LABEL_9:
   }
 
   v12 = 1;
-  [v7 writeToURL:v6 options:1 error:a4];
-  v13 = *a4;
+  [v7 writeToURL:v6 options:1 error:error];
+  v13 = *error;
   if (v13)
   {
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -146,10 +146,10 @@ LABEL_6:
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v20 = 1;
   }
@@ -159,49 +159,49 @@ LABEL_6:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(PFPosterDescriptor *)self descriptorType];
-      if (v6 == [(PFPosterDescriptor *)v5 descriptorType])
+      v5 = equalCopy;
+      descriptorType = [(PFPosterDescriptor *)self descriptorType];
+      if (descriptorType == [(PFPosterDescriptor *)v5 descriptorType])
       {
-        v7 = [(PFPosterDescriptor *)self media];
-        v8 = [(PFPosterDescriptor *)v5 media];
-        if ((v7 == v8 || [v7 isEqual:v8]) && (v9 = -[PFPosterDescriptor version](self, "version"), v9 == -[PFPosterDescriptor version](v5, "version")))
+        media = [(PFPosterDescriptor *)self media];
+        media2 = [(PFPosterDescriptor *)v5 media];
+        if ((media == media2 || [media isEqual:media2]) && (v9 = -[PFPosterDescriptor version](self, "version"), v9 == -[PFPosterDescriptor version](v5, "version")))
         {
-          v10 = [(PFPosterDescriptor *)self photoLibraryPath];
-          v11 = [(PFPosterDescriptor *)v5 photoLibraryPath];
-          if (v10 == v11 || [v10 isEqual:v11])
+          photoLibraryPath = [(PFPosterDescriptor *)self photoLibraryPath];
+          photoLibraryPath2 = [(PFPosterDescriptor *)v5 photoLibraryPath];
+          if (photoLibraryPath == photoLibraryPath2 || [photoLibraryPath isEqual:photoLibraryPath2])
           {
-            v12 = [(PFPosterDescriptor *)self identifier];
-            v13 = [(PFPosterDescriptor *)v5 identifier];
-            if (v12 == v13 || [v12 isEqual:v13])
+            identifier = [(PFPosterDescriptor *)self identifier];
+            identifier2 = [(PFPosterDescriptor *)v5 identifier];
+            if (identifier == identifier2 || [identifier isEqual:identifier2])
             {
-              v26 = v13;
-              v14 = [(PFPosterDescriptor *)self displayNameLocalizationKey];
-              v15 = [(PFPosterDescriptor *)v5 displayNameLocalizationKey];
-              if (v14 == v15 || [v14 isEqual:v15])
+              v26 = identifier2;
+              displayNameLocalizationKey = [(PFPosterDescriptor *)self displayNameLocalizationKey];
+              displayNameLocalizationKey2 = [(PFPosterDescriptor *)v5 displayNameLocalizationKey];
+              if (displayNameLocalizationKey == displayNameLocalizationKey2 || [displayNameLocalizationKey isEqual:displayNameLocalizationKey2])
               {
-                v24 = v10;
-                v25 = v15;
-                v16 = [(PFPosterDescriptor *)self styleCategory];
-                v17 = [(PFPosterDescriptor *)v5 styleCategory];
-                if (v16 == v17 || [v16 isEqual:v17])
+                v24 = photoLibraryPath;
+                v25 = displayNameLocalizationKey2;
+                styleCategory = [(PFPosterDescriptor *)self styleCategory];
+                styleCategory2 = [(PFPosterDescriptor *)v5 styleCategory];
+                if (styleCategory == styleCategory2 || [styleCategory isEqual:styleCategory2])
                 {
-                  v22 = v14;
-                  v23 = v12;
-                  v18 = [(PFPosterDescriptor *)self shuffleConfiguration];
-                  v19 = [(PFPosterDescriptor *)v5 shuffleConfiguration];
-                  if (v18 == v19)
+                  v22 = displayNameLocalizationKey;
+                  v23 = identifier;
+                  shuffleConfiguration = [(PFPosterDescriptor *)self shuffleConfiguration];
+                  shuffleConfiguration2 = [(PFPosterDescriptor *)v5 shuffleConfiguration];
+                  if (shuffleConfiguration == shuffleConfiguration2)
                   {
                     v20 = 1;
                   }
 
                   else
                   {
-                    v20 = [v18 isEqual:v19];
+                    v20 = [shuffleConfiguration isEqual:shuffleConfiguration2];
                   }
 
-                  v14 = v22;
-                  v12 = v23;
+                  displayNameLocalizationKey = v22;
+                  identifier = v23;
                 }
 
                 else
@@ -209,8 +209,8 @@ LABEL_6:
                   v20 = 0;
                 }
 
-                v10 = v24;
-                v15 = v25;
+                photoLibraryPath = v24;
+                displayNameLocalizationKey2 = v25;
               }
 
               else
@@ -218,7 +218,7 @@ LABEL_6:
                 v20 = 0;
               }
 
-              v13 = v26;
+              identifier2 = v26;
             }
 
             else
@@ -254,32 +254,32 @@ LABEL_6:
   return v20;
 }
 
-- (PFPosterDescriptor)initWithDescriptorType:(int64_t)a3 media:(id)a4 photoLibraryPath:(id)a5
+- (PFPosterDescriptor)initWithDescriptorType:(int64_t)type media:(id)media photoLibraryPath:(id)path
 {
-  v9 = a4;
-  v10 = a5;
+  mediaCopy = media;
+  pathCopy = path;
   v15.receiver = self;
   v15.super_class = PFPosterDescriptor;
   v11 = [(PFPosterDescriptor *)&v15 init];
   v12 = v11;
   if (v11)
   {
-    v11->_descriptorType = a3;
-    objc_storeStrong(&v11->_media, a4);
+    v11->_descriptorType = type;
+    objc_storeStrong(&v11->_media, media);
     v12->_version = 0;
     styleCategory = v12->_styleCategory;
     v12->_styleCategory = 0;
 
-    objc_storeStrong(&v12->_photoLibraryPath, a5);
+    objc_storeStrong(&v12->_photoLibraryPath, path);
   }
 
   return v12;
 }
 
-+ (id)loadFromURL:(id)a3 error:(id *)a4
++ (id)loadFromURL:(id)l error:(id *)error
 {
   v25 = *MEMORY[0x1E69E9840];
-  v5 = [a3 URLByAppendingPathComponent:@"DescriptorModel.plist"];
+  v5 = [l URLByAppendingPathComponent:@"DescriptorModel.plist"];
   v20 = 0;
   v6 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:v5 options:1 error:&v20];
   v7 = v20;
@@ -307,19 +307,19 @@ LABEL_10:
       *buf = 138412290;
       v22 = v14;
       _os_log_error_impl(&dword_1B35C1000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed to unarchive data error:%@", buf, 0xCu);
-      if (!a4)
+      if (!error)
       {
         goto LABEL_10;
       }
     }
 
-    else if (!a4)
+    else if (!error)
     {
       goto LABEL_10;
     }
 
     v17 = v14;
-    *a4 = v14;
+    *error = v14;
     goto LABEL_10;
   }
 
@@ -330,7 +330,7 @@ LABEL_10:
     v23 = 2112;
     v24 = v7;
     _os_log_error_impl(&dword_1B35C1000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed to read descriptor data at path:%@ error:%@", buf, 0x16u);
-    if (a4)
+    if (error)
     {
       goto LABEL_6;
     }
@@ -340,7 +340,7 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  if (!a4)
+  if (!error)
   {
     goto LABEL_12;
   }
@@ -348,7 +348,7 @@ LABEL_12:
 LABEL_6:
   v16 = v7;
   v13 = 0;
-  *a4 = v7;
+  *error = v7;
 LABEL_13:
   v14 = v7;
 LABEL_14:
@@ -356,70 +356,70 @@ LABEL_14:
   return v13;
 }
 
-+ (int64_t)descriptorTypeFromTypeString:(id)a3
++ (int64_t)descriptorTypeFromTypeString:(id)string
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Undefined"])
+  stringCopy = string;
+  if ([stringCopy isEqualToString:@"Undefined"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"FeaturedPhoto"])
+  else if ([stringCopy isEqualToString:@"FeaturedPhoto"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"SmartAlbum"])
+  else if ([stringCopy isEqualToString:@"SmartAlbum"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"SettlingEffect"])
+  else if ([stringCopy isEqualToString:@"SettlingEffect"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"SpatialPhoto"])
+  else if ([stringCopy isEqualToString:@"SpatialPhoto"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"Fallback"])
+  else if ([stringCopy isEqualToString:@"Fallback"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"CreateAFacePhotos"])
+  else if ([stringCopy isEqualToString:@"CreateAFacePhotos"])
   {
     v4 = 101;
   }
 
-  else if ([v3 isEqualToString:@"CreateAFaceShuffle"])
+  else if ([stringCopy isEqualToString:@"CreateAFaceShuffle"])
   {
     v4 = 102;
   }
 
-  else if ([v3 isEqualToString:@"CreateAFacePeople"])
+  else if ([stringCopy isEqualToString:@"CreateAFacePeople"])
   {
     v4 = 103;
   }
 
-  else if ([v3 isEqualToString:@"CreateAFaceLivePhoto"])
+  else if ([stringCopy isEqualToString:@"CreateAFaceLivePhoto"])
   {
     v4 = 104;
   }
 
-  else if ([v3 isEqualToString:@"UpgradeSuggestionGyroPosterAdaptiveTime"])
+  else if ([stringCopy isEqualToString:@"UpgradeSuggestionGyroPosterAdaptiveTime"])
   {
     v4 = 201;
   }
 
-  else if ([v3 isEqualToString:@"UpgradeSuggestionGyroPoster"])
+  else if ([stringCopy isEqualToString:@"UpgradeSuggestionGyroPoster"])
   {
     v4 = 202;
   }
 
-  else if ([v3 isEqualToString:@"UpgradeSuggestionAdaptiveTime"])
+  else if ([stringCopy isEqualToString:@"UpgradeSuggestionAdaptiveTime"])
   {
     v4 = 203;
   }
@@ -432,13 +432,13 @@ LABEL_14:
   return v4;
 }
 
-+ (id)descriptorTypeStringWithType:(int64_t)a3
++ (id)descriptorTypeStringWithType:(int64_t)type
 {
-  if (a3 <= 100)
+  if (type <= 100)
   {
-    if (a3 > 2)
+    if (type > 2)
     {
-      switch(a3)
+      switch(type)
       {
         case 3:
           return @"SettlingEffect";
@@ -451,7 +451,7 @@ LABEL_14:
 
     else
     {
-      switch(a3)
+      switch(type)
       {
         case 0:
           return @"Undefined";
@@ -465,16 +465,16 @@ LABEL_14:
     return @"??";
   }
 
-  if (a3 > 103)
+  if (type > 103)
   {
-    if (a3 > 201)
+    if (type > 201)
     {
-      if (a3 == 202)
+      if (type == 202)
       {
         return @"UpgradeSuggestionGyroPoster";
       }
 
-      if (a3 == 203)
+      if (type == 203)
       {
         return @"UpgradeSuggestionAdaptiveTime";
       }
@@ -482,12 +482,12 @@ LABEL_14:
 
     else
     {
-      if (a3 == 104)
+      if (type == 104)
       {
         return @"CreateAFaceLivePhoto";
       }
 
-      if (a3 == 201)
+      if (type == 201)
       {
         return @"UpgradeSuggestionGyroPosterAdaptiveTime";
       }
@@ -496,12 +496,12 @@ LABEL_14:
     return @"??";
   }
 
-  if (a3 == 101)
+  if (type == 101)
   {
     return @"CreateAFacePhotos";
   }
 
-  if (a3 == 102)
+  if (type == 102)
   {
     return @"CreateAFaceShuffle";
   }
@@ -509,14 +509,14 @@ LABEL_14:
   return @"CreateAFacePeople";
 }
 
-+ (id)descriptorIdentifierForDescriptorType:(int64_t)a3 uuids:(id)a4
++ (id)descriptorIdentifierForDescriptorType:(int64_t)type uuids:(id)uuids
 {
-  v6 = a4;
-  v7 = [a1 descriptorTypeStringWithType:a3];
+  uuidsCopy = uuids;
+  v7 = [self descriptorTypeStringWithType:type];
   v8 = v7;
-  if (a3 > 100)
+  if (type > 100)
   {
-    if ((a3 - 101) < 4 || (a3 - 201) < 3)
+    if ((type - 101) < 4 || (type - 201) < 3)
     {
       v9 = v7;
       goto LABEL_13;
@@ -525,20 +525,20 @@ LABEL_14:
     goto LABEL_17;
   }
 
-  if (a3 > 2)
+  if (type > 2)
   {
-    if ((a3 - 3) >= 3)
+    if ((type - 3) >= 3)
     {
       goto LABEL_17;
     }
 
 LABEL_11:
     v10 = MEMORY[0x1E696AEC0];
-    v11 = [v6 firstObject];
+    firstObject = [uuidsCopy firstObject];
     goto LABEL_12;
   }
 
-  switch(a3)
+  switch(type)
   {
     case 0:
       v9 = @"Undefined";
@@ -547,10 +547,10 @@ LABEL_11:
       goto LABEL_11;
     case 2:
       v10 = MEMORY[0x1E696AEC0];
-      v11 = [v6 componentsJoinedByString:@"|"];
+      firstObject = [uuidsCopy componentsJoinedByString:@"|"];
 LABEL_12:
-      v12 = v11;
-      v9 = [v10 stringWithFormat:@"%@|%@", v8, v11];
+      v12 = firstObject;
+      v9 = [v10 stringWithFormat:@"%@|%@", v8, firstObject];
 
       goto LABEL_13;
   }
@@ -564,16 +564,16 @@ LABEL_13:
 
 - (int64_t)posterType
 {
-  v2 = [(PFPosterDescriptor *)self descriptorType];
+  descriptorType = [(PFPosterDescriptor *)self descriptorType];
   result = 0;
-  if (v2 > 101)
+  if (descriptorType > 101)
   {
-    if ((v2 - 201) < 3 || (v2 - 103) < 2)
+    if ((descriptorType - 201) < 3 || (descriptorType - 103) < 2)
     {
       return 1;
     }
 
-    if (v2 != 102)
+    if (descriptorType != 102)
     {
       return result;
     }
@@ -581,14 +581,14 @@ LABEL_13:
     return 2;
   }
 
-  if (v2 <= 2)
+  if (descriptorType <= 2)
   {
-    if (v2 == 1)
+    if (descriptorType == 1)
     {
       return 1;
     }
 
-    if (v2 != 2)
+    if (descriptorType != 2)
     {
       return result;
     }
@@ -596,7 +596,7 @@ LABEL_13:
     return 2;
   }
 
-  if ((v2 - 3) < 3 || v2 == 101)
+  if ((descriptorType - 3) < 3 || descriptorType == 101)
   {
     return 1;
   }

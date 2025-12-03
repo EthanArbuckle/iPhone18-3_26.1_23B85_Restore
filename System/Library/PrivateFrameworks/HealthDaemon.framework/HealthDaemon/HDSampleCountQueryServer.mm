@@ -1,20 +1,20 @@
 @interface HDSampleCountQueryServer
-- (HDSampleCountQueryServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6;
+- (HDSampleCountQueryServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate;
 - (void)_queue_start;
 @end
 
 @implementation HDSampleCountQueryServer
 
-- (HDSampleCountQueryServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6
+- (HDSampleCountQueryServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate
 {
-  v10 = a4;
+  configurationCopy = configuration;
   v16.receiver = self;
   v16.super_class = HDSampleCountQueryServer;
-  v11 = [(HDQueryServer *)&v16 initWithUUID:a3 configuration:v10 client:a5 delegate:a6];
+  v11 = [(HDQueryServer *)&v16 initWithUUID:d configuration:configurationCopy client:client delegate:delegate];
   if (v11)
   {
-    v12 = [v10 queryDescriptors];
-    v13 = [v12 copy];
+    queryDescriptors = [configurationCopy queryDescriptors];
+    v13 = [queryDescriptors copy];
     queryDescriptors = v11->_queryDescriptors;
     v11->_queryDescriptors = v13;
   }
@@ -30,8 +30,8 @@
   [(HDQueryServer *)&v32 _queue_start];
   if ([(NSArray *)self->_queryDescriptors count])
   {
-    v3 = [(HDQueryServer *)self clientProxy];
-    v22 = [v3 remoteObjectProxy];
+    clientProxy = [(HDQueryServer *)self clientProxy];
+    remoteObjectProxy = [clientProxy remoteObjectProxy];
 
     v4 = MEMORY[0x277CBEB38];
     v5 = [(NSArray *)self->_queryDescriptors count];
@@ -73,14 +73,14 @@ LABEL_7:
         v12 = 0;
         if (v11)
         {
-          v13 = [MEMORY[0x277CCABB0] numberWithInteger:v25[3]];
-          [v21 setObject:v13 forKeyedSubscript:v10];
+          queryUUID = [MEMORY[0x277CCABB0] numberWithInteger:v25[3]];
+          [v21 setObject:queryUUID forKeyedSubscript:v10];
         }
 
         else
         {
-          v13 = [(HDQueryServer *)self queryUUID];
-          [v22 client_deliverError:v12 forQuery:v13];
+          queryUUID = [(HDQueryServer *)self queryUUID];
+          [remoteObjectProxy client_deliverError:v12 forQuery:queryUUID];
         }
 
         _Block_object_dispose(&v24, 8);
@@ -107,29 +107,29 @@ LABEL_7:
 LABEL_16:
 
       obj = [(HDQueryServer *)self queryUUID];
-      [v22 client_deliverSampleCountDictionary:v21 forQuery:obj];
+      [remoteObjectProxy client_deliverSampleCountDictionary:v21 forQuery:obj];
     }
   }
 
   else
   {
-    v14 = [(HDQueryServer *)self clientProxy];
-    v15 = [v14 remoteObjectProxy];
+    clientProxy2 = [(HDQueryServer *)self clientProxy];
+    remoteObjectProxy2 = [clientProxy2 remoteObjectProxy];
 
-    v16 = [(HDQueryServer *)self profile];
+    profile = [(HDQueryServer *)self profile];
     v24 = 0;
-    v17 = [HDSampleEntity sampleCountsByTypeForProfile:v16 error:&v24];
+    v17 = [HDSampleEntity sampleCountsByTypeForProfile:profile error:&v24];
     v18 = v24;
 
-    v19 = [(HDQueryServer *)self queryUUID];
+    queryUUID2 = [(HDQueryServer *)self queryUUID];
     if (v17)
     {
-      [v15 client_deliverSampleTypeCountDictionary:v17 forQuery:v19];
+      [remoteObjectProxy2 client_deliverSampleTypeCountDictionary:v17 forQuery:queryUUID2];
     }
 
     else
     {
-      [v15 client_deliverError:v18 forQuery:v19];
+      [remoteObjectProxy2 client_deliverError:v18 forQuery:queryUUID2];
     }
   }
 

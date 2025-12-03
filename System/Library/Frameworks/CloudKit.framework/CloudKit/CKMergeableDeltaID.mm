@@ -1,10 +1,10 @@
 @interface CKMergeableDeltaID
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CKMergeableDeltaID)init;
-- (CKMergeableDeltaID)initWithCoder:(id)a3;
-- (CKMergeableDeltaID)initWithDeltaIdentifier:(id)a3 valueID:(id)a4;
+- (CKMergeableDeltaID)initWithCoder:(id)coder;
+- (CKMergeableDeltaID)initWithDeltaIdentifier:(id)identifier valueID:(id)d;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CKMergeableDeltaID
@@ -19,14 +19,14 @@
   return 0;
 }
 
-- (CKMergeableDeltaID)initWithDeltaIdentifier:(id)a3 valueID:(id)a4
+- (CKMergeableDeltaID)initWithDeltaIdentifier:(id)identifier valueID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  dCopy = d;
   v34 = 0;
-  v8 = _CKCheckArgument("deltaIdentifier", v6, 0, 0, 0, &v34);
+  v8 = _CKCheckArgument("deltaIdentifier", identifierCopy, 0, 0, 0, &v34);
   v9 = v34;
-  if ((v8 & 1) == 0 || (v9, v33 = 0, v10 = _CKCheckArgument("valueID", v7, 0, 0, 0, &v33), v9 = v33, (v10 & 1) == 0))
+  if ((v8 & 1) == 0 || (v9, v33 = 0, v10 = _CKCheckArgument("valueID", dCopy, 0, 0, 0, &v33), v9 = v33, (v10 & 1) == 0))
   {
     v21 = v9;
     v22 = [CKException alloc];
@@ -43,11 +43,11 @@
   v13 = [(CKMergeableDeltaID *)&v32 init];
   if (v13)
   {
-    v14 = objc_msgSend_copy(v6, v11, v12);
+    v14 = objc_msgSend_copy(identifierCopy, v11, v12);
     deltaIdentifier = v13->_deltaIdentifier;
     v13->_deltaIdentifier = v14;
 
-    v18 = objc_msgSend_copy(v7, v16, v17);
+    v18 = objc_msgSend_copy(dCopy, v16, v17);
     valueID = v13->_valueID;
     v13->_valueID = v18;
   }
@@ -55,10 +55,10 @@
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     isEqual = 1;
   }
@@ -66,10 +66,10 @@
   else
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && (objc_msgSend_deltaIdentifier(self, v5, v6), v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend_deltaIdentifier(v4, v8, v9), v10 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend_isEqual_(v7, v11, v10), v10, v7, v12))
+    if ((objc_opt_isKindOfClass() & 1) != 0 && (objc_msgSend_deltaIdentifier(self, v5, v6), v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend_deltaIdentifier(equalCopy, v8, v9), v10 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend_isEqual_(v7, v11, v10), v10, v7, v12))
     {
       v15 = objc_msgSend_valueID(self, v13, v14);
-      v18 = objc_msgSend_valueID(v4, v16, v17);
+      v18 = objc_msgSend_valueID(equalCopy, v16, v17);
       isEqual = objc_msgSend_isEqual_(v15, v19, v18);
     }
 
@@ -92,17 +92,17 @@
   return v13 ^ v7;
 }
 
-- (CKMergeableDeltaID)initWithCoder:(id)a3
+- (CKMergeableDeltaID)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_autoreleasePoolPush();
   v6 = objc_opt_class();
   v7 = NSStringFromSelector(sel_deltaIdentifier);
-  v9 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v8, v6, v7);
+  v9 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v8, v6, v7);
 
   v10 = objc_opt_class();
   v11 = NSStringFromSelector(sel_valueID);
-  v13 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v12, v10, v11);
+  v13 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v12, v10, v11);
 
   objc_autoreleasePoolPop(v5);
   v15 = objc_msgSend_initWithDeltaIdentifier_valueID_(self, v14, v9, v13);
@@ -110,17 +110,17 @@
   return v15;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v15 = a3;
+  coderCopy = coder;
   v4 = objc_autoreleasePoolPush();
   v7 = objc_msgSend_deltaIdentifier(self, v5, v6);
   v8 = NSStringFromSelector(sel_deltaIdentifier);
-  objc_msgSend_encodeObject_forKey_(v15, v9, v7, v8);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v9, v7, v8);
 
   v12 = objc_msgSend_valueID(self, v10, v11);
   v13 = NSStringFromSelector(sel_valueID);
-  objc_msgSend_encodeObject_forKey_(v15, v14, v12, v13);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v14, v12, v13);
 
   objc_autoreleasePoolPop(v4);
 }

@@ -1,31 +1,31 @@
 @interface SBMirroringDisplayProfileFactory
-- (BOOL)displayProfile:(id)a3 shouldConnectToDisplay:(id)a4;
+- (BOOL)displayProfile:(id)profile shouldConnectToDisplay:(id)display;
 @end
 
 @implementation SBMirroringDisplayProfileFactory
 
-- (BOOL)displayProfile:(id)a3 shouldConnectToDisplay:(id)a4
+- (BOOL)displayProfile:(id)profile shouldConnectToDisplay:(id)display
 {
-  v4 = [a4 identity];
-  if ([v4 isRootIdentity])
+  identity = [display identity];
+  if ([identity isRootIdentity])
   {
-    if ([v4 isAirPlayDisplay] & 1) != 0 || (objc_msgSend(v4, "isRestrictedAirPlayDisplay") & 1) != 0 || (objc_msgSend(v4, "isiPodOnlyDisplay"))
+    if ([identity isAirPlayDisplay] & 1) != 0 || (objc_msgSend(identity, "isRestrictedAirPlayDisplay") & 1) != 0 || (objc_msgSend(identity, "isiPodOnlyDisplay"))
     {
-      v5 = 1;
+      isMusicOnlyDisplay = 1;
     }
 
     else
     {
-      v5 = [v4 isMusicOnlyDisplay];
+      isMusicOnlyDisplay = [identity isMusicOnlyDisplay];
     }
   }
 
   else
   {
-    v5 = 0;
+    isMusicOnlyDisplay = 0;
   }
 
-  return v5;
+  return isMusicOnlyDisplay;
 }
 
 @end

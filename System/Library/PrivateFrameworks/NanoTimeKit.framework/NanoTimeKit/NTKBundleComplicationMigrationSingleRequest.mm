@@ -1,40 +1,40 @@
 @interface NTKBundleComplicationMigrationSingleRequest
-+ (id)requestWithComplication:(id)a3 family:(int64_t)a4 device:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (NTKBundleComplicationMigrationSingleRequest)initWithCoder:(id)a3;
++ (id)requestWithComplication:(id)complication family:(int64_t)family device:(id)device;
+- (BOOL)isEqual:(id)equal;
+- (NTKBundleComplicationMigrationSingleRequest)initWithCoder:(id)coder;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NTKBundleComplicationMigrationSingleRequest
 
-+ (id)requestWithComplication:(id)a3 family:(int64_t)a4 device:(id)a5
++ (id)requestWithComplication:(id)complication family:(int64_t)family device:(id)device
 {
-  v7 = a3;
-  v8 = a5;
+  complicationCopy = complication;
+  deviceCopy = device;
   v9 = objc_alloc_init(objc_opt_class());
   v10 = v9[1];
-  v9[1] = v7;
-  v11 = v7;
+  v9[1] = complicationCopy;
+  v11 = complicationCopy;
 
-  v9[2] = a4;
+  v9[2] = family;
   v12 = v9[3];
-  v9[3] = v8;
+  v9[3] = deviceCopy;
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CF0C20] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
+  equalCopy = equal;
+  v5 = [MEMORY[0x277CF0C20] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
   complication = self->_complication;
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __55__NTKBundleComplicationMigrationSingleRequest_isEqual___block_invoke;
   v20[3] = &unk_278780340;
-  v7 = v4;
+  v7 = equalCopy;
   v21 = v7;
   v8 = [v5 appendObject:complication counterpart:v20];
   family = self->_family;
@@ -60,11 +60,11 @@
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x277CF0C40] builder];
-  v4 = [v3 appendObject:self->_complication];
-  v5 = [v3 appendUnsignedInteger:self->_family];
-  v6 = [v3 appendObject:self->_device];
-  v7 = [v3 hash];
+  builder = [MEMORY[0x277CF0C40] builder];
+  v4 = [builder appendObject:self->_complication];
+  v5 = [builder appendUnsignedInteger:self->_family];
+  v6 = [builder appendObject:self->_device];
+  v7 = [builder hash];
 
   return v7;
 }
@@ -76,27 +76,27 @@
   v5 = CLKComplicationFamilyDescription();
   [v3 appendString:v5 withName:@"family"];
 
-  v6 = [(CLKDevice *)self->_device pairingID];
-  v7 = [v6 UUIDString];
-  [v3 appendString:v7 withName:@"deviceUUID" skipIfEmpty:1];
+  pairingID = [(CLKDevice *)self->_device pairingID];
+  uUIDString = [pairingID UUIDString];
+  [v3 appendString:uUIDString withName:@"deviceUUID" skipIfEmpty:1];
 
-  v8 = [v3 build];
+  build = [v3 build];
 
-  return v8;
+  return build;
 }
 
-- (NTKBundleComplicationMigrationSingleRequest)initWithCoder:(id)a3
+- (NTKBundleComplicationMigrationSingleRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(NTKBundleComplicationMigrationSingleRequest *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"NTKBundleComplicationMigrationSingleRequestComplicationKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"NTKBundleComplicationMigrationSingleRequestComplicationKey"];
     complication = v5->_complication;
     v5->_complication = v6;
 
-    v5->_family = [v4 decodeIntegerForKey:@"NTKBundleComplicationMigrationSingleRequestFamilyKey"];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"NTKBundleComplicationMigrationSingleRequestDeviceDescriptorKey"];
+    v5->_family = [coderCopy decodeIntegerForKey:@"NTKBundleComplicationMigrationSingleRequestFamilyKey"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"NTKBundleComplicationMigrationSingleRequestDeviceDescriptorKey"];
     v9 = [MEMORY[0x277CBBAE8] deviceForDescriptor:v8];
     device = v5->_device;
     v5->_device = v9;
@@ -105,14 +105,14 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   complication = self->_complication;
-  v5 = a3;
-  [v5 encodeObject:complication forKey:@"NTKBundleComplicationMigrationSingleRequestComplicationKey"];
-  [v5 encodeInteger:self->_family forKey:@"NTKBundleComplicationMigrationSingleRequestFamilyKey"];
-  v6 = [(CLKDevice *)self->_device descriptor];
-  [v5 encodeObject:v6 forKey:@"NTKBundleComplicationMigrationSingleRequestDeviceDescriptorKey"];
+  coderCopy = coder;
+  [coderCopy encodeObject:complication forKey:@"NTKBundleComplicationMigrationSingleRequestComplicationKey"];
+  [coderCopy encodeInteger:self->_family forKey:@"NTKBundleComplicationMigrationSingleRequestFamilyKey"];
+  descriptor = [(CLKDevice *)self->_device descriptor];
+  [coderCopy encodeObject:descriptor forKey:@"NTKBundleComplicationMigrationSingleRequestDeviceDescriptorKey"];
 }
 
 @end

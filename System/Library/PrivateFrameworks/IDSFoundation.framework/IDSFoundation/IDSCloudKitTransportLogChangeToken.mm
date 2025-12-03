@@ -1,39 +1,39 @@
 @interface IDSCloudKitTransportLogChangeToken
-- (IDSCloudKitTransportLogChangeToken)initWithCKToken:(id)a3;
-- (IDSCloudKitTransportLogChangeToken)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (IDSCloudKitTransportLogChangeToken)initWithCKToken:(id)token;
+- (IDSCloudKitTransportLogChangeToken)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IDSCloudKitTransportLogChangeToken
 
-- (IDSCloudKitTransportLogChangeToken)initWithCKToken:(id)a3
+- (IDSCloudKitTransportLogChangeToken)initWithCKToken:(id)token
 {
-  v5 = a3;
+  tokenCopy = token;
   v9.receiver = self;
   v9.super_class = IDSCloudKitTransportLogChangeToken;
   v6 = [(IDSCloudKitTransportLogChangeToken *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_ckToken, a3);
+    objc_storeStrong(&v6->_ckToken, token);
   }
 
   return v7;
 }
 
-- (IDSCloudKitTransportLogChangeToken)initWithCoder:(id)a3
+- (IDSCloudKitTransportLogChangeToken)initWithCoder:(id)coder
 {
-  v4 = [a3 decodeObjectForKey:@"IDSCloudKitTransportLogChangeTokenCKToken"];
+  v4 = [coder decodeObjectForKey:@"IDSCloudKitTransportLogChangeTokenCKToken"];
   v5 = [(IDSCloudKitTransportLogChangeToken *)self initWithCKToken:v4];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(IDSCloudKitTransportLogChangeToken *)self ckToken];
-  [v4 encodeObject:v5 forKey:@"IDSCloudKitTransportLogChangeTokenCKToken"];
+  coderCopy = coder;
+  ckToken = [(IDSCloudKitTransportLogChangeToken *)self ckToken];
+  [coderCopy encodeObject:ckToken forKey:@"IDSCloudKitTransportLogChangeTokenCKToken"];
 }
 
 @end

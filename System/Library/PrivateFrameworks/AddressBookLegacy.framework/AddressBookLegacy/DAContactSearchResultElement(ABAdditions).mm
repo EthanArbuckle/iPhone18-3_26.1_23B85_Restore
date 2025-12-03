@@ -10,142 +10,142 @@
   v5 = ABPersonCreate();
   if (v5)
   {
-    if ([a1 displayName])
+    if ([self displayName])
     {
-      ABRecordSetValue(v5, kABCPersonDisplayNameProperty, [a1 displayName], 0);
+      ABRecordSetValue(v5, kABCPersonDisplayNameProperty, [self displayName], 0);
     }
 
-    if ([a1 firstName])
+    if ([self firstName])
     {
-      ABRecordSetValue(v5, kABPersonFirstNameProperty, [a1 firstName], 0);
+      ABRecordSetValue(v5, kABPersonFirstNameProperty, [self firstName], 0);
     }
 
-    if ([a1 lastName])
+    if ([self lastName])
     {
-      ABRecordSetValue(v5, kABPersonLastNameProperty, [a1 lastName], 0);
+      ABRecordSetValue(v5, kABPersonLastNameProperty, [self lastName], 0);
     }
 
-    if ([a1 emailAddress])
+    if ([self emailAddress])
     {
       Mutable = ABMultiValueCreateMutable(1u);
-      ABMultiValueAddValueAndLabel(Mutable, [a1 emailAddress], @"_$!<Work>!$_", 0);
+      ABMultiValueAddValueAndLabel(Mutable, [self emailAddress], @"_$!<Work>!$_", 0);
       ABRecordSetValue(v5, kABPersonEmailProperty, Mutable, 0);
       CFRelease(Mutable);
     }
 
-    if ([a1 workPhone] || objc_msgSend(a1, "mobilePhone") || objc_msgSend(a1, "homePhone") || objc_msgSend(a1, "faxPhone") || objc_msgSend(a1, "pagerNumber") || objc_msgSend(a1, "iPhone") || objc_msgSend(a1, "mainPhone") || objc_msgSend(a1, "workFaxPhone"))
+    if ([self workPhone] || objc_msgSend(self, "mobilePhone") || objc_msgSend(self, "homePhone") || objc_msgSend(self, "faxPhone") || objc_msgSend(self, "pagerNumber") || objc_msgSend(self, "iPhone") || objc_msgSend(self, "mainPhone") || objc_msgSend(self, "workFaxPhone"))
     {
       v7 = ABMultiValueCreateMutable(1u);
-      if ([a1 workPhone])
+      if ([self workPhone])
       {
-        ABMultiValueAddValueAndLabel(v7, [a1 workPhone], @"_$!<Work>!$_", 0);
+        ABMultiValueAddValueAndLabel(v7, [self workPhone], @"_$!<Work>!$_", 0);
       }
 
-      if ([a1 mobilePhone])
+      if ([self mobilePhone])
       {
-        ABMultiValueAddValueAndLabel(v7, [a1 mobilePhone], @"_$!<Mobile>!$_", 0);
+        ABMultiValueAddValueAndLabel(v7, [self mobilePhone], @"_$!<Mobile>!$_", 0);
       }
 
-      if ([a1 homePhone])
+      if ([self homePhone])
       {
-        ABMultiValueAddValueAndLabel(v7, [a1 homePhone], @"_$!<Home>!$_", 0);
+        ABMultiValueAddValueAndLabel(v7, [self homePhone], @"_$!<Home>!$_", 0);
       }
 
-      if ([a1 faxPhone])
+      if ([self faxPhone])
       {
-        ABMultiValueAddValueAndLabel(v7, [a1 faxPhone], @"_$!<HomeFAX>!$_", 0);
+        ABMultiValueAddValueAndLabel(v7, [self faxPhone], @"_$!<HomeFAX>!$_", 0);
       }
 
-      if ([a1 pagerNumber])
+      if ([self pagerNumber])
       {
-        ABMultiValueAddValueAndLabel(v7, [a1 pagerNumber], @"_$!<Pager>!$_", 0);
+        ABMultiValueAddValueAndLabel(v7, [self pagerNumber], @"_$!<Pager>!$_", 0);
       }
 
-      if ([a1 iPhone])
+      if ([self iPhone])
       {
-        ABMultiValueAddValueAndLabel(v7, [a1 iPhone], @"iPhone", 0);
+        ABMultiValueAddValueAndLabel(v7, [self iPhone], @"iPhone", 0);
       }
 
-      if ([a1 mainPhone])
+      if ([self mainPhone])
       {
-        ABMultiValueAddValueAndLabel(v7, [a1 mainPhone], @"_$!<Main>!$_", 0);
+        ABMultiValueAddValueAndLabel(v7, [self mainPhone], @"_$!<Main>!$_", 0);
       }
 
-      if ([a1 workFaxPhone])
+      if ([self workFaxPhone])
       {
-        ABMultiValueAddValueAndLabel(v7, [a1 workFaxPhone], @"_$!<WorkFAX>!$_", 0);
+        ABMultiValueAddValueAndLabel(v7, [self workFaxPhone], @"_$!<WorkFAX>!$_", 0);
       }
 
       ABRecordSetValue(v5, kABPersonPhoneProperty, v7, 0);
       CFRelease(v7);
     }
 
-    if ([a1 company])
+    if ([self company])
     {
-      ABRecordSetValue(v5, kABPersonOrganizationProperty, [a1 company], 0);
+      ABRecordSetValue(v5, kABPersonOrganizationProperty, [self company], 0);
     }
 
-    if ([a1 title])
+    if ([self title])
     {
-      ABRecordSetValue(v5, kABPersonJobTitleProperty, [a1 title], 0);
+      ABRecordSetValue(v5, kABPersonJobTitleProperty, [self title], 0);
     }
 
     v8 = ABMultiValueCreateMutable(5u);
-    if ([a1 city] || objc_msgSend(a1, "state") || objc_msgSend(a1, "zip") || objc_msgSend(a1, "country"))
+    if ([self city] || objc_msgSend(self, "state") || objc_msgSend(self, "zip") || objc_msgSend(self, "country"))
     {
       v9 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:6];
-      if ([a1 street])
+      if ([self street])
       {
-        [v9 setObject:objc_msgSend(a1 forKey:{"street"), @"Street"}];
+        [v9 setObject:objc_msgSend(self forKey:{"street"), @"Street"}];
       }
 
-      if ([a1 city])
+      if ([self city])
       {
-        [v9 setObject:objc_msgSend(a1 forKey:{"city"), @"City"}];
+        [v9 setObject:objc_msgSend(self forKey:{"city"), @"City"}];
       }
 
-      if ([a1 state])
+      if ([self state])
       {
-        [v9 setObject:objc_msgSend(a1 forKey:{"state"), @"State"}];
+        [v9 setObject:objc_msgSend(self forKey:{"state"), @"State"}];
       }
 
-      if ([a1 zip])
+      if ([self zip])
       {
-        [v9 setObject:objc_msgSend(a1 forKey:{"zip"), @"ZIP"}];
+        [v9 setObject:objc_msgSend(self forKey:{"zip"), @"ZIP"}];
       }
 
-      if ([a1 country])
+      if ([self country])
       {
-        [v9 setObject:objc_msgSend(a1 forKey:{"country"), @"Country"}];
+        [v9 setObject:objc_msgSend(self forKey:{"country"), @"Country"}];
       }
 
       ABMultiValueAddValueAndLabel(v8, v9, @"_$!<Work>!$_", 0);
     }
 
-    else if ([a1 postalAddress] || objc_msgSend(a1, "street"))
+    else if ([self postalAddress] || objc_msgSend(self, "street"))
     {
-      v16 = [a1 street];
-      if (!v16)
+      street = [self street];
+      if (!street)
       {
-        v16 = [a1 postalAddress];
+        street = [self postalAddress];
       }
 
-      v17 = ABCreateAddressDictionaryWithString(v16);
+      v17 = ABCreateAddressDictionaryWithString(street);
       if (!v17)
       {
-        v17 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{v16, @"Street", 0}];
+        v17 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{street, @"Street", 0}];
       }
 
       ABMultiValueAddValueAndLabel(v8, v17, @"_$!<Work>!$_", 0);
       CFRelease(v17);
     }
 
-    if ([a1 homePostalAddress])
+    if ([self homePostalAddress])
     {
-      v10 = ABCreateAddressDictionaryWithString([a1 homePostalAddress]);
+      v10 = ABCreateAddressDictionaryWithString([self homePostalAddress]);
       if (!v10)
       {
-        v10 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{objc_msgSend(a1, "homePostalAddress"), @"Street", 0}];
+        v10 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{objc_msgSend(self, "homePostalAddress"), @"Street", 0}];
       }
 
       ABMultiValueAddValueAndLabel(v8, v10, @"_$!<Home>!$_", 0);
@@ -158,18 +158,18 @@
     }
 
     CFRelease(v8);
-    if ([a1 jpegPhoto])
+    if ([self jpegPhoto])
     {
-      ABPersonSetImageData(v5, [a1 jpegPhoto], 0);
+      ABPersonSetImageData(v5, [self jpegPhoto], 0);
     }
 
-    if ([a1 imUsername])
+    if ([self imUsername])
     {
       v11 = ABMultiValueCreateMutable(1u);
-      v12 = [a1 imService];
-      if (v12)
+      imService = [self imService];
+      if (imService)
       {
-        v13 = v12;
+        v13 = imService;
       }
 
       else
@@ -177,26 +177,26 @@
         v13 = @"AIM";
       }
 
-      ABMultiValueAddValueAndLabel(v11, [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{objc_msgSend(a1, "imUsername"), @"username", v13, @"service", 0}], @"_$!<Work>!$_", 0);
+      ABMultiValueAddValueAndLabel(v11, [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{objc_msgSend(self, "imUsername"), @"username", v13, @"service", 0}], @"_$!<Work>!$_", 0);
       ABRecordSetValue(v5, kABPersonInstantMessageProperty, v11, 0);
       CFRelease(v11);
     }
 
-    if ([a1 buildingName] || objc_msgSend(a1, "appleFloor"))
+    if ([self buildingName] || objc_msgSend(self, "appleFloor"))
     {
       v14 = objc_alloc_init(MEMORY[0x1E696AD60]);
-      if ([a1 buildingName])
+      if ([self buildingName])
       {
-        [v14 appendString:{objc_msgSend(a1, "localizedStringForKey:formatArg:", @"NOTES_BUILDING_NAME_FORMAT", objc_msgSend(a1, "buildingName"))}];
-        if ([a1 appleFloor])
+        [v14 appendString:{objc_msgSend(self, "localizedStringForKey:formatArg:", @"NOTES_BUILDING_NAME_FORMAT", objc_msgSend(self, "buildingName"))}];
+        if ([self appleFloor])
         {
           [v14 appendString:@"\n"];
         }
       }
 
-      if ([a1 appleFloor])
+      if ([self appleFloor])
       {
-        [v14 appendString:{objc_msgSend(a1, "localizedStringForKey:formatArg:", @"NOTES_APPLE_FLOOR_FORMAT", objc_msgSend(a1, "appleFloor"))}];
+        [v14 appendString:{objc_msgSend(self, "localizedStringForKey:formatArg:", @"NOTES_APPLE_FLOOR_FORMAT", objc_msgSend(self, "appleFloor"))}];
       }
 
       ABRecordSetValue(v5, kABPersonNoteProperty, v14, 0);
@@ -206,9 +206,9 @@
     {
       ABSourceSetShouldIgnoreCapabilitiesRestrictions(a3, 1);
       ABRecordSetValue(v5, kABPersonStoreReferenceProperty, a3, 0);
-      if ([a1 identifierOnServer])
+      if ([self identifierOnServer])
       {
-        ABRecordSetValue(v5, kABPersonExternalIdentifierProperty, [a1 identifierOnServer], 0);
+        ABRecordSetValue(v5, kABPersonExternalIdentifierProperty, [self identifierOnServer], 0);
       }
 
       ABSourceSetShouldIgnoreCapabilitiesRestrictions(a3, 0);

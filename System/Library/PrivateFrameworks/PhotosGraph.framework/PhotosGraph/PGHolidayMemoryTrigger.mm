@@ -1,19 +1,19 @@
 @interface PGHolidayMemoryTrigger
-- (PGHolidayMemoryTrigger)initWithLoggingConnection:(id)a3 holidayService:(id)a4;
+- (PGHolidayMemoryTrigger)initWithLoggingConnection:(id)connection holidayService:(id)service;
 @end
 
 @implementation PGHolidayMemoryTrigger
 
-- (PGHolidayMemoryTrigger)initWithLoggingConnection:(id)a3 holidayService:(id)a4
+- (PGHolidayMemoryTrigger)initWithLoggingConnection:(id)connection holidayService:(id)service
 {
-  v7 = a4;
+  serviceCopy = service;
   v11.receiver = self;
   v11.super_class = PGHolidayMemoryTrigger;
-  v8 = [(PGMemoryTrigger *)&v11 initWithLoggingConnection:a3];
+  v8 = [(PGMemoryTrigger *)&v11 initWithLoggingConnection:connection];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_holidayService, a4);
+    objc_storeStrong(&v8->_holidayService, service);
   }
 
   return v9;

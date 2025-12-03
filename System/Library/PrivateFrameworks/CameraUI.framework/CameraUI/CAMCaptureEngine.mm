@@ -1,161 +1,161 @@
 @interface CAMCaptureEngine
 + (void)preheatCaptureResources;
-- ($42FF7B9720B8FFE93045C4EB8F3F13A3)_previewFilterSetForRequest:(SEL)a3 photo:(id)a4;
-- ($42FF7B9720B8FFE93045C4EB8F3F13A3)_previewFilterSetForRequest:(SEL)a3 previewSize:(id)a4;
-- (BOOL)_isSessionModificationRequiredByCommand:(id)a3 logReason:(id *)a4 minimumExecutionTime:(double *)a5;
+- ($42FF7B9720B8FFE93045C4EB8F3F13A3)_previewFilterSetForRequest:(SEL)request photo:(id)photo;
+- ($42FF7B9720B8FFE93045C4EB8F3F13A3)_previewFilterSetForRequest:(SEL)request previewSize:(id)size;
+- (BOOL)_isSessionModificationRequiredByCommand:(id)command logReason:(id *)reason minimumExecutionTime:(double *)time;
 - (BOOL)_lockAllEngineManagedDevices;
-- (BOOL)_lockManagedCapturedDevice:(id)a3;
-- (BOOL)_updatePanoramaSubgraphForEnteringBackground:(BOOL)a3;
-- (CAMCaptureEngine)initWithPowerController:(id)a3 captureController:(id)a4 options:(int64_t)a5;
+- (BOOL)_lockManagedCapturedDevice:(id)device;
+- (BOOL)_updatePanoramaSubgraphForEnteringBackground:(BOOL)background;
+- (CAMCaptureEngine)initWithPowerController:(id)controller captureController:(id)captureController options:(int64_t)options;
 - (CUCaptureController)_captureController;
 - (NSDate)_lastTapToRadarTime;
-- (__CVBuffer)_createOutputPixelBufferWithSize:(CGSize)a3 matchingInputPixelBuffer:(__CVBuffer *)a4;
-- (__CVBuffer)_newFilteredPixelBufferFromPixelBuffer:(__CVBuffer *)a3 metadata:(id)a4 filters:(id)a5;
-- (double)_delayForRecoveryAttempt:(unint64_t)a3;
-- (id)_TTRKeywordIDsFromCaptureRequest:(id)a3;
-- (id)_accumulatedUserInfoFromCommand:(id)a3;
-- (id)_captureEngineDeviceForDeviceType:(id)a3 position:(int64_t)a4;
-- (id)_coordinationInfoForCTMVideoRequest:(id)a3 videoOutputURL:(id)a4 resolvedMomentCaptureMovieSettings:(id)a5;
-- (id)_coordinationInfoForRequest:(id)a3 photo:(id)a4;
-- (id)_coordinationInfoForRequest:(id)a3 resolvedSettings:(id)a4 videoComplementURL:(id)a5 isFiltered:(BOOL)a6;
+- (__CVBuffer)_createOutputPixelBufferWithSize:(CGSize)size matchingInputPixelBuffer:(__CVBuffer *)buffer;
+- (__CVBuffer)_newFilteredPixelBufferFromPixelBuffer:(__CVBuffer *)buffer metadata:(id)metadata filters:(id)filters;
+- (double)_delayForRecoveryAttempt:(unint64_t)attempt;
+- (id)_TTRKeywordIDsFromCaptureRequest:(id)request;
+- (id)_accumulatedUserInfoFromCommand:(id)command;
+- (id)_captureEngineDeviceForDeviceType:(id)type position:(int64_t)position;
+- (id)_coordinationInfoForCTMVideoRequest:(id)request videoOutputURL:(id)l resolvedMomentCaptureMovieSettings:(id)settings;
+- (id)_coordinationInfoForRequest:(id)request photo:(id)photo;
+- (id)_coordinationInfoForRequest:(id)request resolvedSettings:(id)settings videoComplementURL:(id)l isFiltered:(BOOL)filtered;
 - (id)_currentNotificationCenter;
-- (id)_expectedResultSpecifiersForResolvedMomentCaptureMovieSettings:(id)a3;
-- (id)_expectedResultSpecifiersForResolvedPhotoSettings:(id)a3;
-- (id)_newStylePickerWithStyles:(id)a3;
-- (id)_photoOutputFromSession:(id)a3;
-- (id)_previewFiltersForFilterSet:(id *)a3;
-- (id)_secondaryVideoDeviceInputFromSession:(id)a3;
-- (id)_validateVideoAtURL:(id)a3 forCaptureRequest:(id)a4 captureID:(int64_t)a5 captureError:(id)a6 isVideoComplement:(BOOL)a7 stillImageDisplayTime:(id *)a8 reportedDuration:(id *)a9 outActualDuration:(id *)a10 outVideoRecordingStoppedReason:(int64_t *)a11 outSlowWriterFrameDrops:(BOOL *)a12;
-- (id)_videoDeviceInputFromSession:(id)a3;
+- (id)_expectedResultSpecifiersForResolvedMomentCaptureMovieSettings:(id)settings;
+- (id)_expectedResultSpecifiersForResolvedPhotoSettings:(id)settings;
+- (id)_newStylePickerWithStyles:(id)styles;
+- (id)_photoOutputFromSession:(id)session;
+- (id)_previewFiltersForFilterSet:(id *)set;
+- (id)_secondaryVideoDeviceInputFromSession:(id)session;
+- (id)_validateVideoAtURL:(id)l forCaptureRequest:(id)request captureID:(int64_t)d captureError:(id)error isVideoComplement:(BOOL)complement stillImageDisplayTime:(id *)time reportedDuration:(id *)duration outActualDuration:(id *)self0 outVideoRecordingStoppedReason:(int64_t *)self1 outSlowWriterFrameDrops:(BOOL *)self2;
+- (id)_videoDeviceInputFromSession:(id)session;
 - (id)audioCaptureDevice;
 - (id)audioCaptureDeviceInput;
-- (id)cachedMomentCaptureSettingsForIdentifier:(id)a3;
+- (id)cachedMomentCaptureSettingsForIdentifier:(id)identifier;
 - (id)colorBiasSlider;
-- (id)creativeStylePickerWithStyles:(id)a3;
+- (id)creativeStylePickerWithStyles:(id)styles;
 - (id)effectsPreviewVideoDataOutput;
 - (id)intensitySlider;
 - (id)metadataOutput;
 - (id)movieFileOutput;
 - (id)panoramaVideoDataOutput;
-- (id)prewarmedAudioDeviceInput:(id)a3 device:(id)a4;
+- (id)prewarmedAudioDeviceInput:(id)input device:(id)device;
 - (id)prewarmedCaptureSession;
-- (id)prewarmedVideoDeviceInput:(id)a3 position:(int64_t)a4 device:(id)a5;
+- (id)prewarmedVideoDeviceInput:(id)input position:(int64_t)position device:(id)device;
 - (id)stillImageOutput;
 - (id)systemPreferredCameraDevice;
 - (id)systemStylePicker;
 - (id)toneBiasSlider;
 - (id)videoThumbnailOutput;
-- (int64_t)_notificationForError:(__CFString *)a3;
-- (void)_beginSessionConfigurationIfRequiredByCommand:(id)a3 withContext:(id)a4 logReason:(id *)a5 minimumExecutionTime:(double *)a6;
+- (int64_t)_notificationForError:(__CFString *)error;
+- (void)_beginSessionConfigurationIfRequiredByCommand:(id)command withContext:(id)context logReason:(id *)reason minimumExecutionTime:(double *)time;
 - (void)_cancelDelayedSessionNonstartRecovery;
-- (void)_captureOutput:(id)a3 didFinishRecordingToOutputFileAtURL:(id)a4 fromConnections:(id)a5 forVideoCaptureRequest:(id)a6 videoZoomFactor:(double)a7 error:(id)a8;
-- (void)_checkCallbacksForUniqueID:(int64_t)a3 afterDelay:(double)a4 startTime:(double)a5;
-- (void)_commitSessionConfigurationIfNecessaryWithLogReason:(id)a3;
-- (void)_didFinishStillImageCaptureForUniqueID:(int64_t)a3 error:(id)a4;
-- (void)_ensureApertureSliderForGraphConfiguration:(id)a3;
-- (void)_ensureEmulatedZoomSliderForGraphConfiguration:(id)a3;
-- (void)_enumerateCaptureServicesUsingBlock:(id)a3 completion:(id)a4;
-- (void)_executeCommand:(id)a3 withContext:(id)a4;
-- (void)_handleApplicationDidEnterBackground:(id)a3;
-- (void)_handleApplicationWillEnterForeground:(id)a3;
-- (void)_handleCaptureOutputDidFinishCapturingPhoto:(id)a3 deferredPhotoProxy:(id)a4 error:(id)a5;
-- (void)_handleFailedSessionRecoveryAttemptAfterDelay:(BOOL)a3;
-- (void)_handleSessionDidStartRunning:(id)a3;
-- (void)_handleSessionDidStopRunning:(id)a3;
-- (void)_handleSessionInterruption:(id)a3;
-- (void)_handleSessionInterruptionEnded:(id)a3;
-- (void)_handleSessionRuntimeError:(id)a3;
-- (void)_handleSessionWasPrewarmed:(id)a3;
-- (void)_notifyServicesOfPanoramaConfigurationChangeWithImageQueue:(_CAImageQueue *)a3 direction:(int64_t)a4;
-- (void)_panoramaSampleBufferQueue_stopPanoramaCaptureIfNecessaryInterrupted:(BOOL)a3;
+- (void)_captureOutput:(id)output didFinishRecordingToOutputFileAtURL:(id)l fromConnections:(id)connections forVideoCaptureRequest:(id)request videoZoomFactor:(double)factor error:(id)error;
+- (void)_checkCallbacksForUniqueID:(int64_t)d afterDelay:(double)delay startTime:(double)time;
+- (void)_commitSessionConfigurationIfNecessaryWithLogReason:(id)reason;
+- (void)_didFinishStillImageCaptureForUniqueID:(int64_t)d error:(id)error;
+- (void)_ensureApertureSliderForGraphConfiguration:(id)configuration;
+- (void)_ensureEmulatedZoomSliderForGraphConfiguration:(id)configuration;
+- (void)_enumerateCaptureServicesUsingBlock:(id)block completion:(id)completion;
+- (void)_executeCommand:(id)command withContext:(id)context;
+- (void)_handleApplicationDidEnterBackground:(id)background;
+- (void)_handleApplicationWillEnterForeground:(id)foreground;
+- (void)_handleCaptureOutputDidFinishCapturingPhoto:(id)photo deferredPhotoProxy:(id)proxy error:(id)error;
+- (void)_handleFailedSessionRecoveryAttemptAfterDelay:(BOOL)delay;
+- (void)_handleSessionDidStartRunning:(id)running;
+- (void)_handleSessionDidStopRunning:(id)running;
+- (void)_handleSessionInterruption:(id)interruption;
+- (void)_handleSessionInterruptionEnded:(id)ended;
+- (void)_handleSessionRuntimeError:(id)error;
+- (void)_handleSessionWasPrewarmed:(id)prewarmed;
+- (void)_notifyServicesOfPanoramaConfigurationChangeWithImageQueue:(_CAImageQueue *)queue direction:(int64_t)direction;
+- (void)_panoramaSampleBufferQueue_stopPanoramaCaptureIfNecessaryInterrupted:(BOOL)interrupted;
 - (void)_performSessionNonstartRecoveryIfNeeded;
-- (void)_performSessionRuntimeRecovery:(id)a3;
+- (void)_performSessionRuntimeRecovery:(id)recovery;
 - (void)_recoverFromSessionRuntimeError;
 - (void)_resetPerformingRecoveryState;
-- (void)_resultsQueue_logReceivedCallbacksForID:(int64_t)a3 withIntroString:(id)a4;
-- (void)_resultsQueue_performPostprocessingForPreviewBuffer:(__CVBuffer *)a3 metadata:(id)a4 filters:(id *)a5 stillImageCaptureRequestKey:(id)a6 completionHandler:(id)a7;
+- (void)_resultsQueue_logReceivedCallbacksForID:(int64_t)d withIntroString:(id)string;
+- (void)_resultsQueue_performPostprocessingForPreviewBuffer:(__CVBuffer *)buffer metadata:(id)metadata filters:(id *)filters stillImageCaptureRequestKey:(id)key completionHandler:(id)handler;
 - (void)_scheduleDelayedRecoveryCheckIfNecessary;
 - (void)_scheduleDelayedSessionNonstartRecovery;
 - (void)_sessionQueuePanoramaSetup;
 - (void)_sessionQueuePanoramaTeardown;
-- (void)_sessionQueue_startWithRetryCount:(unint64_t)a3 retryInterval:(double)a4 logReason:(id)a5 completion:(id)a6;
-- (void)_setPanoramaImageQueue:(_CAImageQueue *)a3;
+- (void)_sessionQueue_startWithRetryCount:(unint64_t)count retryInterval:(double)interval logReason:(id)reason completion:(id)completion;
+- (void)_setPanoramaImageQueue:(_CAImageQueue *)queue;
 - (void)_showAccidentalLaunchNotificationIfNecessary;
 - (void)_subgraphQueueCreatePanoramaImageQueueIfNecessary;
-- (void)_subgraphQueueCreatePanoramaProcessorIfNecessaryWithEncodingBehavior:(int64_t)a3;
-- (void)_subgraphQueueHandlePanoramaErrorNotification:(__CFString *)a3;
-- (void)_subgraphQueueHandlePanoramaStatusNotification:(__CFString *)a3;
-- (void)_subgraphQueueHandlePanoramaWarningNotification:(__CFString *)a3;
+- (void)_subgraphQueueCreatePanoramaProcessorIfNecessaryWithEncodingBehavior:(int64_t)behavior;
+- (void)_subgraphQueueHandlePanoramaErrorNotification:(__CFString *)notification;
+- (void)_subgraphQueueHandlePanoramaStatusNotification:(__CFString *)notification;
+- (void)_subgraphQueueHandlePanoramaWarningNotification:(__CFString *)notification;
 - (void)_unlockAllEngineManagedDevices;
-- (void)_unlockManagedCaptureDevice:(id)a3;
-- (void)_updateContext:(id)a3;
+- (void)_unlockManagedCaptureDevice:(id)device;
+- (void)_updateContext:(id)context;
 - (void)_updateCurrentlyConfiguredObjects;
 - (void)_updateEffectsSubgraph;
 - (void)_updateVideoThumbnailSubgraph;
 - (void)_validateSessionRecovery;
-- (void)cacheMomentCaptureSettings:(id)a3 forIdentifier:(id)a4;
-- (void)cancelAutoResumeAfterDate:(id)a3;
-- (void)captureEngineDevice:(id)a3 didChangeLensSelectorZoomFactor:(float)a4;
-- (void)captureEngineDevice:(id)a3 didChangeSystemExposureTargetBias:(float)a4;
-- (void)captureOutput:(id)a3 didBeginMovieCaptureForResolvedSettings:(id)a4;
-- (void)captureOutput:(id)a3 didCapturePhotoForResolvedSettings:(id)a4;
-- (void)captureOutput:(id)a3 didDropSampleBuffer:(opaqueCMSampleBuffer *)a4 fromConnection:(id)a5;
-- (void)captureOutput:(id)a3 didFinishCaptureForResolvedSettings:(id)a4 error:(id)a5;
-- (void)captureOutput:(id)a3 didFinishCapturingDeferredPhotoProxy:(id)a4 error:(id)a5;
-- (void)captureOutput:(id)a3 didFinishMovieCaptureForResolvedSettings:(id)a4 error:(id)a5;
-- (void)captureOutput:(id)a3 didFinishProcessingLivePhotoToMovieFileAtURL:(id)a4 duration:(id *)a5 photoDisplayTime:(id *)a6 metadataIdentifiers:(id)a7 resolvedSettings:(id)a8 error:(id)a9;
-- (void)captureOutput:(id)a3 didFinishProcessingLivePhotoToMovieFileAtURL:(id)a4 duration:(id *)a5 photoDisplayTime:(id *)a6 resolvedSettings:(id)a7 error:(id)a8;
-- (void)captureOutput:(id)a3 didFinishProcessingPhoto:(id)a4 error:(id)a5;
-- (void)captureOutput:(id)a3 didFinishRecordingLivePhotoMovieForEventualFileAtURL:(id)a4 resolvedSettings:(id)a5;
-- (void)captureOutput:(id)a3 didFinishRecordingMovie:(id)a4;
-- (void)captureOutput:(id)a3 didFinishRecordingToOutputFileAtURL:(id)a4 fromConnections:(id)a5 error:(id)a6;
-- (void)captureOutput:(id)a3 didFinishWritingMovie:(id)a4 error:(id)a5;
-- (void)captureOutput:(id)a3 didOutputMetadataObjects:(id)a4 forMetadataObjectTypes:(id)a5 fromConnection:(id)a6;
-- (void)captureOutput:(id)a3 didOutputSampleBuffer:(opaqueCMSampleBuffer *)a4 fromConnection:(id)a5;
-- (void)captureOutput:(id)a3 didPauseRecordingToOutputFileAtURL:(id)a4 fromConnections:(id)a5;
-- (void)captureOutput:(id)a3 didResumeRecordingToOutputFileAtURL:(id)a4 fromConnections:(id)a5;
-- (void)captureOutput:(id)a3 didStartRecordingToOutputFileAtURL:(id)a4 fromConnections:(id)a5;
-- (void)captureOutput:(id)a3 readyForClientCompositingForOutputFileAtURL:(id)a4 compositingData:(id)a5;
-- (void)captureOutput:(id)a3 readyForClientCompositingForResolvedSettings:(id)a4 compositingData:(id)a5;
-- (void)captureOutput:(id)a3 readyForResponsiveRequestAfterResolvedSettings:(id)a4;
-- (void)captureOutput:(id)a3 willBeginCaptureBeforeResolvingSettingsForUniqueID:(int64_t)a4;
-- (void)captureOutput:(id)a3 willBeginCaptureForResolvedSettings:(id)a4;
-- (void)captureOutput:(id)a3 willCapturePhotoForResolvedSettings:(id)a4;
-- (void)changePanoramaEncodingBehaviorIfNeeded:(int64_t)a3;
-- (void)changeToPanoramaDirection:(int64_t)a3;
-- (void)clearCachedMomentCaptureSettingsForIdentifier:(id)a3;
-- (void)currentInflightCapturesStringWithCompletionHandler:(id)a3;
+- (void)cacheMomentCaptureSettings:(id)settings forIdentifier:(id)identifier;
+- (void)cancelAutoResumeAfterDate:(id)date;
+- (void)captureEngineDevice:(id)device didChangeLensSelectorZoomFactor:(float)factor;
+- (void)captureEngineDevice:(id)device didChangeSystemExposureTargetBias:(float)bias;
+- (void)captureOutput:(id)output didBeginMovieCaptureForResolvedSettings:(id)settings;
+- (void)captureOutput:(id)output didCapturePhotoForResolvedSettings:(id)settings;
+- (void)captureOutput:(id)output didDropSampleBuffer:(opaqueCMSampleBuffer *)buffer fromConnection:(id)connection;
+- (void)captureOutput:(id)output didFinishCaptureForResolvedSettings:(id)settings error:(id)error;
+- (void)captureOutput:(id)output didFinishCapturingDeferredPhotoProxy:(id)proxy error:(id)error;
+- (void)captureOutput:(id)output didFinishMovieCaptureForResolvedSettings:(id)settings error:(id)error;
+- (void)captureOutput:(id)output didFinishProcessingLivePhotoToMovieFileAtURL:(id)l duration:(id *)duration photoDisplayTime:(id *)time metadataIdentifiers:(id)identifiers resolvedSettings:(id)settings error:(id)error;
+- (void)captureOutput:(id)output didFinishProcessingLivePhotoToMovieFileAtURL:(id)l duration:(id *)duration photoDisplayTime:(id *)time resolvedSettings:(id)settings error:(id)error;
+- (void)captureOutput:(id)output didFinishProcessingPhoto:(id)photo error:(id)error;
+- (void)captureOutput:(id)output didFinishRecordingLivePhotoMovieForEventualFileAtURL:(id)l resolvedSettings:(id)settings;
+- (void)captureOutput:(id)output didFinishRecordingMovie:(id)movie;
+- (void)captureOutput:(id)output didFinishRecordingToOutputFileAtURL:(id)l fromConnections:(id)connections error:(id)error;
+- (void)captureOutput:(id)output didFinishWritingMovie:(id)movie error:(id)error;
+- (void)captureOutput:(id)output didOutputMetadataObjects:(id)objects forMetadataObjectTypes:(id)types fromConnection:(id)connection;
+- (void)captureOutput:(id)output didOutputSampleBuffer:(opaqueCMSampleBuffer *)buffer fromConnection:(id)connection;
+- (void)captureOutput:(id)output didPauseRecordingToOutputFileAtURL:(id)l fromConnections:(id)connections;
+- (void)captureOutput:(id)output didResumeRecordingToOutputFileAtURL:(id)l fromConnections:(id)connections;
+- (void)captureOutput:(id)output didStartRecordingToOutputFileAtURL:(id)l fromConnections:(id)connections;
+- (void)captureOutput:(id)output readyForClientCompositingForOutputFileAtURL:(id)l compositingData:(id)data;
+- (void)captureOutput:(id)output readyForClientCompositingForResolvedSettings:(id)settings compositingData:(id)data;
+- (void)captureOutput:(id)output readyForResponsiveRequestAfterResolvedSettings:(id)settings;
+- (void)captureOutput:(id)output willBeginCaptureBeforeResolvingSettingsForUniqueID:(int64_t)d;
+- (void)captureOutput:(id)output willBeginCaptureForResolvedSettings:(id)settings;
+- (void)captureOutput:(id)output willCapturePhotoForResolvedSettings:(id)settings;
+- (void)changePanoramaEncodingBehaviorIfNeeded:(int64_t)needed;
+- (void)changeToPanoramaDirection:(int64_t)direction;
+- (void)clearCachedMomentCaptureSettingsForIdentifier:(id)identifier;
+- (void)currentInflightCapturesStringWithCompletionHandler:(id)handler;
 - (void)dealloc;
-- (void)enqueueCommand:(id)a3;
-- (void)enqueueCommands:(id)a3;
-- (void)panoramaProcessor:(id)a3 didProcessSampleBuffer:(opaqueCMSampleBuffer *)a4 withStatus:(int)a5 forRequest:(id)a6;
-- (void)registerCaptureService:(id)a3;
-- (void)registerEffectsPreviewSampleBufferDelegate:(id)a3;
-- (void)registerStillImageCaptureRequest:(id)a3 withSettings:(id)a4;
-- (void)registerVideoCaptureRequest:(id)a3;
-- (void)registerVideoEndZoomFactor:(double)a3;
-- (void)registerVideoThumbnailContentsDelegate:(id)a3;
-- (void)requestCurrentCameraDeviceWithHandler:(id)a3;
-- (void)session:(id)a3 controlsDidChangeAutoFocusLocked:(BOOL)a4;
-- (void)session:(id)a3 didChangeActiveControl:(id)a4;
-- (void)sessionControlsDidBecomeActive:(id)a3;
-- (void)sessionControlsDidBecomeInactive:(id)a3;
-- (void)sessionControlsWillEnterFullscreenAppearance:(id)a3;
-- (void)sessionControlsWillExitFullscreenAppearance:(id)a3;
-- (void)setMultiCamPictureInPictureMetrics:(id)a3;
-- (void)setMultiCamPictureInPictureMotionBlurDisabled:(BOOL)a3;
+- (void)enqueueCommand:(id)command;
+- (void)enqueueCommands:(id)commands;
+- (void)panoramaProcessor:(id)processor didProcessSampleBuffer:(opaqueCMSampleBuffer *)buffer withStatus:(int)status forRequest:(id)request;
+- (void)registerCaptureService:(id)service;
+- (void)registerEffectsPreviewSampleBufferDelegate:(id)delegate;
+- (void)registerStillImageCaptureRequest:(id)request withSettings:(id)settings;
+- (void)registerVideoCaptureRequest:(id)request;
+- (void)registerVideoEndZoomFactor:(double)factor;
+- (void)registerVideoThumbnailContentsDelegate:(id)delegate;
+- (void)requestCurrentCameraDeviceWithHandler:(id)handler;
+- (void)session:(id)session controlsDidChangeAutoFocusLocked:(BOOL)locked;
+- (void)session:(id)session didChangeActiveControl:(id)control;
+- (void)sessionControlsDidBecomeActive:(id)active;
+- (void)sessionControlsDidBecomeInactive:(id)inactive;
+- (void)sessionControlsWillEnterFullscreenAppearance:(id)appearance;
+- (void)sessionControlsWillExitFullscreenAppearance:(id)appearance;
+- (void)setMultiCamPictureInPictureMetrics:(id)metrics;
+- (void)setMultiCamPictureInPictureMotionBlurDisabled:(BOOL)disabled;
 - (void)setupLayoutMonitor;
-- (void)startPanoramaCaptureWithRequest:(id)a3;
-- (void)startWithRetryCount:(unint64_t)a3 retryInterval:(double)a4 logReason:(id)a5 completion:(id)a6;
+- (void)startPanoramaCaptureWithRequest:(id)request;
+- (void)startWithRetryCount:(unint64_t)count retryInterval:(double)interval logReason:(id)reason completion:(id)completion;
 - (void)stopMonitoringForAccidentalLaunch;
-- (void)stopPanoramaCaptureInterrupted:(BOOL)a3;
+- (void)stopPanoramaCaptureInterrupted:(BOOL)interrupted;
 - (void)stopRecording;
-- (void)stopWithCompletion:(id)a3;
+- (void)stopWithCompletion:(id)completion;
 - (void)systemPreferredCameraDevice;
-- (void)unregisterCaptureService:(id)a3;
-- (void)unregisterEffectsPreviewSampleBufferDelegate:(id)a3;
-- (void)unregisterVideoThumbnailContentsDelegate:(id)a3;
-- (void)videoThumbnailOutput:(id)a3 willBeginRenderingThumbnailsWithContents:(id)a4;
+- (void)unregisterCaptureService:(id)service;
+- (void)unregisterEffectsPreviewSampleBufferDelegate:(id)delegate;
+- (void)unregisterVideoThumbnailContentsDelegate:(id)delegate;
+- (void)videoThumbnailOutput:(id)output willBeginRenderingThumbnailsWithContents:(id)contents;
 @end
 
 @implementation CAMCaptureEngine
@@ -217,8 +217,8 @@ void __43__CAMCaptureEngine_preheatCaptureResources__block_invoke_4()
     v6 = self->_stillImageOutput;
     self->_stillImageOutput = v5;
 
-    v7 = [MEMORY[0x1E6987100] photoSettings];
-    [(AVCapturePhotoOutput *)self->_stillImageOutput setPhotoSettingsForSceneMonitoring:v7];
+    photoSettings = [MEMORY[0x1E6987100] photoSettings];
+    [(AVCapturePhotoOutput *)self->_stillImageOutput setPhotoSettingsForSceneMonitoring:photoSettings];
     [(AVCapturePhotoOutput *)self->_stillImageOutput setPrivatePhotoDimensionsEnabled:1];
     [(CAMCaptureEngine *)self didChangeValueForKey:v4];
 
@@ -285,8 +285,8 @@ void __43__CAMCaptureEngine_preheatCaptureResources__block_invoke_4()
     self->__metadataObjectsQueue = v8;
 
     v10 = self->_metadataOutput;
-    v11 = [(CAMCaptureEngine *)self _metadataObjectsQueue];
-    [(AVCaptureMetadataOutput *)v10 setMetadataObjectsDelegate:self queue:v11];
+    _metadataObjectsQueue = [(CAMCaptureEngine *)self _metadataObjectsQueue];
+    [(AVCaptureMetadataOutput *)v10 setMetadataObjectsDelegate:self queue:_metadataObjectsQueue];
 
     metadataOutput = self->_metadataOutput;
   }
@@ -315,13 +315,13 @@ void __50__CAMCaptureEngine__unlockAllEngineManagedDevices__block_invoke(uint64_
 
 - (void)_updateEffectsSubgraph
 {
-  v10 = [(AVCaptureSession *)self->__captureSession outputs];
-  v3 = [v10 containsObject:self->_effectsPreviewVideoDataOutput];
-  v4 = [(AVCaptureVideoDataOutput *)self->_effectsPreviewVideoDataOutput sampleBufferDelegate];
-  v5 = v4;
+  outputs = [(AVCaptureSession *)self->__captureSession outputs];
+  v3 = [outputs containsObject:self->_effectsPreviewVideoDataOutput];
+  sampleBufferDelegate = [(AVCaptureVideoDataOutput *)self->_effectsPreviewVideoDataOutput sampleBufferDelegate];
+  v5 = sampleBufferDelegate;
   if (v3)
   {
-    v6 = v4 == 0;
+    v6 = sampleBufferDelegate == 0;
   }
 
   else
@@ -331,14 +331,14 @@ void __50__CAMCaptureEngine__unlockAllEngineManagedDevices__block_invoke(uint64_
 
   if (v6)
   {
-    v8 = [(CAMCaptureEngine *)self effectsPreviewVideoDataOutput];
-    v9 = [(CAMCaptureEngine *)self _effectsPreviewSampleBufferQueue];
-    [v8 setSampleBufferDelegate:self queue:v9];
+    effectsPreviewVideoDataOutput = [(CAMCaptureEngine *)self effectsPreviewVideoDataOutput];
+    _effectsPreviewSampleBufferQueue = [(CAMCaptureEngine *)self _effectsPreviewSampleBufferQueue];
+    [effectsPreviewVideoDataOutput setSampleBufferDelegate:self queue:_effectsPreviewSampleBufferQueue];
   }
 
   else
   {
-    if (v4)
+    if (sampleBufferDelegate)
     {
       v7 = v3;
     }
@@ -357,16 +357,16 @@ void __50__CAMCaptureEngine__unlockAllEngineManagedDevices__block_invoke(uint64_
 
 - (void)_updateVideoThumbnailSubgraph
 {
-  v3 = [(CAMCaptureEngine *)self _captureSessionQueue];
-  dispatch_assert_queue_V2(v3);
+  _captureSessionQueue = [(CAMCaptureEngine *)self _captureSessionQueue];
+  dispatch_assert_queue_V2(_captureSessionQueue);
 
-  v10 = [(AVCaptureSession *)self->__captureSession outputs];
-  v4 = [v10 containsObject:self->_videoThumbnailOutput];
-  v5 = [(AVCaptureVideoThumbnailOutput *)self->_videoThumbnailOutput thumbnailContentsDelegate];
-  v6 = v5;
+  outputs = [(AVCaptureSession *)self->__captureSession outputs];
+  v4 = [outputs containsObject:self->_videoThumbnailOutput];
+  thumbnailContentsDelegate = [(AVCaptureVideoThumbnailOutput *)self->_videoThumbnailOutput thumbnailContentsDelegate];
+  v6 = thumbnailContentsDelegate;
   if (v4)
   {
-    v7 = v5 == 0;
+    v7 = thumbnailContentsDelegate == 0;
   }
 
   else
@@ -376,13 +376,13 @@ void __50__CAMCaptureEngine__unlockAllEngineManagedDevices__block_invoke(uint64_
 
   if (v7)
   {
-    v9 = [(CAMCaptureEngine *)self videoThumbnailOutput];
-    [v9 setThumbnailContentsDelegate:self];
+    videoThumbnailOutput = [(CAMCaptureEngine *)self videoThumbnailOutput];
+    [videoThumbnailOutput setThumbnailContentsDelegate:self];
   }
 
   else
   {
-    if (v5)
+    if (thumbnailContentsDelegate)
     {
       v8 = v4;
     }
@@ -433,19 +433,19 @@ uint64_t __59__CAMCaptureEngine__scheduleDelayedSessionNonstartRecovery__block_i
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(CAMCaptureEngine *)self _recoveryMutexQueue];
+  _recoveryMutexQueue = [(CAMCaptureEngine *)self _recoveryMutexQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __60__CAMCaptureEngine__scheduleDelayedRecoveryCheckIfNecessary__block_invoke;
   block[3] = &unk_1E76FAFF0;
   block[4] = self;
   block[5] = &v6;
-  dispatch_sync(v3, block);
+  dispatch_sync(_recoveryMutexQueue, block);
 
   if (*(v7 + 24) == 1)
   {
     dispatch_time(0, 250000000);
-    v4 = [(CAMCaptureEngine *)self _captureSessionQueue];
+    _captureSessionQueue = [(CAMCaptureEngine *)self _captureSessionQueue];
     pl_dispatch_after();
   }
 
@@ -470,18 +470,18 @@ void __48__CAMCaptureEngine__lockAllEngineManagedDevices__block_invoke(uint64_t 
 
 - (void)_performSessionNonstartRecoveryIfNeeded
 {
-  v3 = [(CAMCaptureEngine *)self _captureSession];
-  v4 = [v3 isRunning];
-  v5 = [v3 isInterrupted];
-  if ((v4 & 1) == 0 && (v5 & 1) == 0)
+  _captureSession = [(CAMCaptureEngine *)self _captureSession];
+  isRunning = [_captureSession isRunning];
+  isInterrupted = [_captureSession isInterrupted];
+  if ((isRunning & 1) == 0 && (isInterrupted & 1) == 0)
   {
-    v6 = [(CAMCaptureEngine *)self _recoveryMutexQueue];
+    _recoveryMutexQueue = [(CAMCaptureEngine *)self _recoveryMutexQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __59__CAMCaptureEngine__performSessionNonstartRecoveryIfNeeded__block_invoke;
     block[3] = &unk_1E76F77B0;
     block[4] = self;
-    dispatch_sync(v6, block);
+    dispatch_sync(_recoveryMutexQueue, block);
 
     [(CAMCaptureEngine *)self _handleFailedSessionRecoveryAttemptAfterDelay:0];
   }
@@ -489,10 +489,10 @@ void __48__CAMCaptureEngine__lockAllEngineManagedDevices__block_invoke(uint64_t 
 
 - (void)_sessionQueuePanoramaTeardown
 {
-  v3 = [(CAMCaptureEngine *)self panoramaVideoDataOutput];
-  [v3 setSampleBufferDelegate:0 queue:0];
-  v4 = self;
-  v5 = [(CAMCaptureEngine *)v4 _panoramaSampleBufferQueue];
+  panoramaVideoDataOutput = [(CAMCaptureEngine *)self panoramaVideoDataOutput];
+  [panoramaVideoDataOutput setSampleBufferDelegate:0 queue:0];
+  selfCopy = self;
+  _panoramaSampleBufferQueue = [(CAMCaptureEngine *)selfCopy _panoramaSampleBufferQueue];
   pl_dispatch_async();
 }
 
@@ -575,16 +575,16 @@ void __49__CAMCaptureEngine__sessionQueuePanoramaTeardown__block_invoke_2(uint64
   CFNotificationCenterRemoveObserver(v8, v5, v9, 0);
 }
 
-- (id)prewarmedVideoDeviceInput:(id)a3 position:(int64_t)a4 device:(id)a5
+- (id)prewarmedVideoDeviceInput:(id)input position:(int64_t)position device:(id)device
 {
-  v7 = a3;
-  v8 = a5;
+  inputCopy = input;
+  deviceCopy = device;
   if (_prewarmAudioVideoDeviceTypes_onceToken != -1)
   {
     __43__CAMCaptureEngine_preheatCaptureResources__block_invoke_3_cold_1();
   }
 
-  if (prewarmedVideoDeviceType != v7 || prewarmedVideoDevicePosition != a4)
+  if (prewarmedVideoDeviceType != inputCopy || prewarmedVideoDevicePosition != position)
   {
     goto LABEL_11;
   }
@@ -594,7 +594,7 @@ void __49__CAMCaptureEngine__sessionQueuePanoramaTeardown__block_invoke_2(uint64
     _prewarmAudioVideoDevices_cold_1();
   }
 
-  if (prewarmedVideoDevice == v8)
+  if (prewarmedVideoDevice == deviceCopy)
   {
     v10 = prewarmedVideoDeviceInput;
     v12 = prewarmedVideoDeviceInput;
@@ -610,16 +610,16 @@ LABEL_11:
   return v10;
 }
 
-- (id)prewarmedAudioDeviceInput:(id)a3 device:(id)a4
+- (id)prewarmedAudioDeviceInput:(id)input device:(id)device
 {
-  v5 = a3;
-  v6 = a4;
+  inputCopy = input;
+  deviceCopy = device;
   if (_prewarmAudioVideoDeviceTypes_onceToken != -1)
   {
     __43__CAMCaptureEngine_preheatCaptureResources__block_invoke_3_cold_1();
   }
 
-  if (prewarmedAudioDeviceType != v5)
+  if (prewarmedAudioDeviceType != inputCopy)
   {
     goto LABEL_7;
   }
@@ -629,7 +629,7 @@ LABEL_11:
     _prewarmAudioVideoDevices_cold_1();
   }
 
-  if (prewarmedAudioDevice == v6)
+  if (prewarmedAudioDevice == deviceCopy)
   {
     v7 = prewarmedAudioDeviceInput;
     v9 = prewarmedAudioDeviceInput;
@@ -645,29 +645,29 @@ LABEL_7:
   return v7;
 }
 
-- (CAMCaptureEngine)initWithPowerController:(id)a3 captureController:(id)a4 options:(int64_t)a5
+- (CAMCaptureEngine)initWithPowerController:(id)controller captureController:(id)captureController options:(int64_t)options
 {
-  v9 = a3;
-  v10 = a4;
+  controllerCopy = controller;
+  captureControllerCopy = captureController;
   v92.receiver = self;
   v92.super_class = CAMCaptureEngine;
   v11 = [(CAMCaptureEngine *)&v92 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->__captureController, v10);
-    objc_storeStrong(&v12->__powerController, a3);
-    v12->__engineOptions = a5;
+    objc_storeWeak(&v11->__captureController, captureControllerCopy);
+    objc_storeStrong(&v12->__powerController, controller);
+    v12->__engineOptions = options;
     v13 = +[CAMCaptureCapabilities capabilities];
-    v14 = [(CAMCaptureEngine *)v12 prewarmedCaptureSession];
+    prewarmedCaptureSession = [(CAMCaptureEngine *)v12 prewarmedCaptureSession];
     captureSession = v12->__captureSession;
-    v12->__captureSession = v14;
+    v12->__captureSession = prewarmedCaptureSession;
 
     if (!v12->__captureSession)
     {
-      v16 = [v13 useMultiCamSession];
+      useMultiCamSession = [v13 useMultiCamSession];
       v17 = 0x1E69870E0;
-      if (!v16)
+      if (!useMultiCamSession)
       {
         v17 = 0x1E6987110;
       }
@@ -709,21 +709,21 @@ LABEL_7:
     captureEngineDeviceCache = v12->__captureEngineDeviceCache;
     v12->__captureEngineDeviceCache = v26;
 
-    v28 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v28 addObserver:v12 selector:sel__handleSessionDidStartRunning_ name:*MEMORY[0x1E6986A90] object:v12->__captureSession];
-    [v28 addObserver:v12 selector:sel__handleSessionDidStopRunning_ name:*MEMORY[0x1E6986A98] object:v12->__captureSession];
-    [v28 addObserver:v12 selector:sel__handleSessionRuntimeError_ name:*MEMORY[0x1E6986B20] object:v12->__captureSession];
-    [v28 addObserver:v12 selector:sel__handleSessionInterruption_ name:*MEMORY[0x1E6986B28] object:v12->__captureSession];
-    [v28 addObserver:v12 selector:sel__handleSessionInterruptionEnded_ name:*MEMORY[0x1E6986AA8] object:v12->__captureSession];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v12 selector:sel__handleSessionDidStartRunning_ name:*MEMORY[0x1E6986A90] object:v12->__captureSession];
+    [defaultCenter addObserver:v12 selector:sel__handleSessionDidStopRunning_ name:*MEMORY[0x1E6986A98] object:v12->__captureSession];
+    [defaultCenter addObserver:v12 selector:sel__handleSessionRuntimeError_ name:*MEMORY[0x1E6986B20] object:v12->__captureSession];
+    [defaultCenter addObserver:v12 selector:sel__handleSessionInterruption_ name:*MEMORY[0x1E6986B28] object:v12->__captureSession];
+    [defaultCenter addObserver:v12 selector:sel__handleSessionInterruptionEnded_ name:*MEMORY[0x1E6986AA8] object:v12->__captureSession];
     v29 = +[CAMCaptureCapabilities capabilities];
-    v30 = [v29 isInternalInstall];
+    isInternalInstall = [v29 isInternalInstall];
 
-    if (v30)
+    if (isInternalInstall)
     {
-      [v28 addObserver:v12 selector:sel__handleSessionWasPrewarmed_ name:@"AVCaptureSessionWasPrewarmedNotification" object:v12->__captureSession];
+      [defaultCenter addObserver:v12 selector:sel__handleSessionWasPrewarmed_ name:@"AVCaptureSessionWasPrewarmedNotification" object:v12->__captureSession];
     }
 
-    v76 = v28;
+    v76 = defaultCenter;
     v31 = +[CAMPriorityNotificationCenter defaultCenter];
     [v31 addObserver:v12 selector:sel__handleApplicationWillEnterForeground_ name:*MEMORY[0x1E69DDBC0] object:0];
     v75 = v31;
@@ -739,7 +739,7 @@ LABEL_7:
       captureSessionQueue = v12->__captureSessionQueue;
     }
 
-    v78 = v10;
+    v78 = captureControllerCopy;
     [(AVCaptureSession *)v12->__captureSession setControlsDelegate:v12 queue:captureSessionQueue];
     v87 = MEMORY[0x1E69E9820];
     v88 = 3221225472;
@@ -789,7 +789,7 @@ LABEL_7:
     }
 
     v77 = v13;
-    v79 = v9;
+    v79 = controllerCopy;
     v73 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_USER_INITIATED, 0);
     v50 = dispatch_queue_create("com.apple.camera.capture-engine.panorama-first-image-semaphore-queue", v73);
     panoramaFirstImageQueueUpdateSemaphoreQueue = v42->__panoramaFirstImageQueueUpdateSemaphoreQueue;
@@ -832,17 +832,17 @@ LABEL_7:
     }
 
     v69 = +[CAMCaptureCapabilities capabilities];
-    v70 = [v69 shouldEnableUserNotifications];
+    shouldEnableUserNotifications = [v69 shouldEnableUserNotifications];
 
-    if (v70 && v68)
+    if (shouldEnableUserNotifications && v68)
     {
       [(CAMCaptureEngine *)v42 setupLayoutMonitor];
     }
 
     v71 = v42;
 
-    v10 = v78;
-    v9 = v79;
+    captureControllerCopy = v78;
+    controllerCopy = v79;
   }
 
   return v12;
@@ -897,16 +897,16 @@ uint64_t __70__CAMCaptureEngine_initWithPowerController_captureController_option
     _os_log_impl(&dword_1A3640000, v3, OS_LOG_TYPE_DEFAULT, "setupLayoutMonitor as enabled", buf, 2u);
   }
 
-  v4 = [MEMORY[0x1E699FAF8] configurationForDefaultMainDisplayMonitor];
-  [v4 setNeedsUserInteractivePriority:1];
+  configurationForDefaultMainDisplayMonitor = [MEMORY[0x1E699FAF8] configurationForDefaultMainDisplayMonitor];
+  [configurationForDefaultMainDisplayMonitor setNeedsUserInteractivePriority:1];
   objc_initWeak(buf, self);
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __38__CAMCaptureEngine_setupLayoutMonitor__block_invoke;
   v6[3] = &unk_1E76FD128;
   objc_copyWeak(&v7, buf);
-  [v4 setTransitionHandler:v6];
-  v5 = [MEMORY[0x1E699FAE0] monitorWithConfiguration:v4];
+  [configurationForDefaultMainDisplayMonitor setTransitionHandler:v6];
+  v5 = [MEMORY[0x1E699FAE0] monitorWithConfiguration:configurationForDefaultMainDisplayMonitor];
   [(CAMCaptureEngine *)self set_layoutMonitor:v5];
 
   objc_destroyWeak(&v7);
@@ -1011,11 +1011,11 @@ void __38__CAMCaptureEngine_setupLayoutMonitor__block_invoke_2(uint64_t a1)
 
 - (void)dealloc
 {
-  v3 = [(CAMCaptureEngine *)self _layoutMonitor];
-  [v3 invalidate];
+  _layoutMonitor = [(CAMCaptureEngine *)self _layoutMonitor];
+  [_layoutMonitor invalidate];
 
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v5 = +[CAMPriorityNotificationCenter defaultCenter];
   [v5 removeObserver:self];
@@ -1025,36 +1025,36 @@ void __38__CAMCaptureEngine_setupLayoutMonitor__block_invoke_2(uint64_t a1)
   [(CAMCaptureEngine *)&v6 dealloc];
 }
 
-- (void)startWithRetryCount:(unint64_t)a3 retryInterval:(double)a4 logReason:(id)a5 completion:(id)a6
+- (void)startWithRetryCount:(unint64_t)count retryInterval:(double)interval logReason:(id)reason completion:(id)completion
 {
-  v8 = a5;
-  v9 = a6;
-  v10 = [(CAMCaptureEngine *)self _captureSessionQueue];
-  v13 = v9;
-  v11 = v9;
-  v12 = v8;
+  reasonCopy = reason;
+  completionCopy = completion;
+  _captureSessionQueue = [(CAMCaptureEngine *)self _captureSessionQueue];
+  v13 = completionCopy;
+  v11 = completionCopy;
+  v12 = reasonCopy;
   pl_dispatch_async();
 }
 
-- (void)_sessionQueue_startWithRetryCount:(unint64_t)a3 retryInterval:(double)a4 logReason:(id)a5 completion:(id)a6
+- (void)_sessionQueue_startWithRetryCount:(unint64_t)count retryInterval:(double)interval logReason:(id)reason completion:(id)completion
 {
   *&v27[13] = *MEMORY[0x1E69E9840];
-  v10 = a5;
-  v11 = a6;
-  v12 = [(CAMCaptureEngine *)self _captureSessionQueue];
-  dispatch_assert_queue_V2(v12);
+  reasonCopy = reason;
+  completionCopy = completion;
+  _captureSessionQueue = [(CAMCaptureEngine *)self _captureSessionQueue];
+  dispatch_assert_queue_V2(_captureSessionQueue);
 
-  v13 = [(CAMCaptureEngine *)self _captureSession];
-  v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"CAMCaptureEngine start (id=%ld: \"%@\"", ++_sessionQueue_startWithRetryCount_retryInterval_logReason_completion__uniqueID, v10];
-  LODWORD(v12) = [v13 isRunning];
+  _captureSession = [(CAMCaptureEngine *)self _captureSession];
+  reasonCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"CAMCaptureEngine start (id=%ld: \"%@\"", ++_sessionQueue_startWithRetryCount_retryInterval_logReason_completion__uniqueID, reasonCopy];
+  LODWORD(_captureSessionQueue) = [_captureSession isRunning];
   v15 = os_log_create("com.apple.camera", "CaptureSession");
   v16 = os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT);
-  if (v12)
+  if (_captureSessionQueue)
   {
     if (v16)
     {
       *buf = 138543362;
-      v25 = v14;
+      v25 = reasonCopy;
       _os_log_impl(&dword_1A3640000, v15, OS_LOG_TYPE_DEFAULT, "%{public}@: Session is already running. Skipping call to [AVCaptureSession startRunning].", buf, 0xCu);
     }
   }
@@ -1064,24 +1064,24 @@ void __38__CAMCaptureEngine_setupLayoutMonitor__block_invoke_2(uint64_t a1)
     if (v16)
     {
       *buf = 138543362;
-      v25 = v14;
+      v25 = reasonCopy;
       _os_log_impl(&dword_1A3640000, v15, OS_LOG_TYPE_DEFAULT, "%{public}@: Session is not running. Calling [AVCaptureSession startRunning].", buf, 0xCu);
     }
 
     [(CAMCaptureEngine *)self _scheduleDelayedSessionNonstartRecovery];
     Current = CFAbsoluteTimeGetCurrent();
-    if (a3 == -1)
+    if (count == -1)
     {
 LABEL_7:
       v18 = CFAbsoluteTimeGetCurrent();
       v15 = os_log_create("com.apple.camera", "CaptureSession");
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
-        v19 = [v13 isInterrupted];
+        isInterrupted = [_captureSession isInterrupted];
         *buf = 138543874;
-        v25 = v14;
+        v25 = reasonCopy;
         v26 = 1024;
-        *v27 = v19;
+        *v27 = isInterrupted;
         v27[2] = 2048;
         *&v27[3] = v18 - Current;
         _os_log_impl(&dword_1A3640000, v15, OS_LOG_TYPE_DEFAULT, "%{public}@: [AVCaptureSession startRunning] finished with failure - session could not be started after retries. isInterrupted=%d (took %.3f seconds)", buf, 0x1Cu);
@@ -1094,14 +1094,14 @@ LABEL_7:
       {
         CAMSignpostWithIDAndArgs(4, 0xEEEEB0B5B2B2EEEELL, 0, 0, 0, 0);
         CAMSignpostWithIDAndArgs(15, 0xEEEEB0B5B2B2EEEELL, 0, 0, 0, 0);
-        [v13 startRunning];
+        [_captureSession startRunning];
         CAMSignpostWithIDAndArgs(16, 0xEEEEB0B5B2B2EEEELL, 0, 0, 0, 0);
-        if ([v13 isRunning])
+        if ([_captureSession isRunning])
         {
           break;
         }
 
-        if (i - a3 == 2)
+        if (i - count == 2)
         {
           goto LABEL_7;
         }
@@ -1110,18 +1110,18 @@ LABEL_7:
         if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543618;
-          v25 = v14;
+          v25 = reasonCopy;
           v26 = 2048;
-          *v27 = a4;
+          *v27 = interval;
           _os_log_impl(&dword_1A3640000, v21, OS_LOG_TYPE_DEFAULT, "%{public}@: [AVCaptureSession startRunning] finished with failure. Waiting %.3f seconds for retry.", buf, 0x16u);
         }
 
-        [MEMORY[0x1E696AF00] sleepForTimeInterval:a4];
+        [MEMORY[0x1E696AF00] sleepForTimeInterval:interval];
         v22 = os_log_create("com.apple.camera", "CaptureSession");
         if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543618;
-          v25 = v14;
+          v25 = reasonCopy;
           v26 = 2048;
           *v27 = i;
           _os_log_impl(&dword_1A3640000, v22, OS_LOG_TYPE_DEFAULT, "%{public}@: Calling [AVCaptureSession startRunning] for attempt #%ld", buf, 0x16u);
@@ -1133,7 +1133,7 @@ LABEL_7:
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543618;
-        v25 = v14;
+        v25 = reasonCopy;
         v26 = 2048;
         *v27 = v23 - Current;
         _os_log_impl(&dword_1A3640000, v15, OS_LOG_TYPE_DEFAULT, "%{public}@: [AVCaptureSession startRunning] finished with success. (took %.3f seconds)", buf, 0x16u);
@@ -1141,29 +1141,29 @@ LABEL_7:
     }
   }
 
-  if (v11)
+  if (completionCopy)
   {
-    v11[2](v11);
+    completionCopy[2](completionCopy);
   }
 }
 
-- (void)stopWithCompletion:(id)a3
+- (void)stopWithCompletion:(id)completion
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   [(CAMCaptureEngine *)self _cancelDelayedSessionNonstartRecovery];
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
   v15 = 0;
-  v5 = [(CAMCaptureEngine *)self _recoveryMutexQueue];
+  _recoveryMutexQueue = [(CAMCaptureEngine *)self _recoveryMutexQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __39__CAMCaptureEngine_stopWithCompletion___block_invoke;
   block[3] = &unk_1E76FAFF0;
   block[4] = self;
   block[5] = &v12;
-  dispatch_sync(v5, block);
+  dispatch_sync(_recoveryMutexQueue, block);
 
   if (*(v13 + 24) == 1)
   {
@@ -1180,8 +1180,8 @@ LABEL_7:
     [(CAMCaptureEngine *)self _resetPerformingRecoveryState];
   }
 
-  v9 = [(CAMCaptureEngine *)self _captureSessionQueue];
-  v10 = v4;
+  _captureSessionQueue = [(CAMCaptureEngine *)self _captureSessionQueue];
+  v10 = completionCopy;
   pl_dispatch_async();
 
   _Block_object_dispose(&v12, 8);
@@ -1216,11 +1216,11 @@ void __39__CAMCaptureEngine_stopWithCompletion___block_invoke_112(uint64_t a1)
   }
 }
 
-- (void)cancelAutoResumeAfterDate:(id)a3
+- (void)cancelAutoResumeAfterDate:(id)date
 {
-  v4 = a3;
-  v5 = [(CAMCaptureEngine *)self _captureSessionQueue];
-  v6 = v4;
+  dateCopy = date;
+  _captureSessionQueue = [(CAMCaptureEngine *)self _captureSessionQueue];
+  v6 = dateCopy;
   pl_dispatch_async();
 }
 
@@ -1230,7 +1230,7 @@ void __46__CAMCaptureEngine_cancelAutoResumeAfterDate___block_invoke(uint64_t a1
   [v2 cancelForegroundAutoResumeAfterDate:*(a1 + 40)];
 }
 
-- (void)_handleSessionDidStartRunning:(id)a3
+- (void)_handleSessionDidStartRunning:(id)running
 {
   v10 = *MEMORY[0x1E69E9840];
   v4 = os_log_create("com.apple.camera", "CaptureSession");
@@ -1242,13 +1242,13 @@ void __46__CAMCaptureEngine_cancelAutoResumeAfterDate___block_invoke(uint64_t a1
     _os_log_impl(&dword_1A3640000, v4, OS_LOG_TYPE_DEFAULT, "[%{public}@] AVCaptureSession started running!", buf, 0xCu);
   }
 
-  v6 = [(CAMCaptureEngine *)self _captureResultsQueue];
+  _captureResultsQueue = [(CAMCaptureEngine *)self _captureResultsQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __50__CAMCaptureEngine__handleSessionDidStartRunning___block_invoke;
   block[3] = &unk_1E76F77B0;
   block[4] = self;
-  dispatch_async(v6, block);
+  dispatch_async(_captureResultsQueue, block);
 
   [(CAMCaptureEngine *)self _scheduleDelayedRecoveryCheckIfNecessary];
   [(CAMCaptureEngine *)self _enumerateCaptureServicesUsingBlock:&__block_literal_global_115];
@@ -1263,10 +1263,10 @@ void __50__CAMCaptureEngine__handleSessionDidStartRunning___block_invoke_2(uint6
   }
 }
 
-- (void)_handleSessionDidStopRunning:(id)a3
+- (void)_handleSessionDidStopRunning:(id)running
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  runningCopy = running;
   v5 = os_log_create("com.apple.camera", "CaptureSession");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1281,14 +1281,14 @@ void __50__CAMCaptureEngine__handleSessionDidStartRunning___block_invoke_2(uint6
   *(&buf + 1) = &buf;
   v10 = 0x2020000000;
   v11 = 0;
-  v7 = [(CAMCaptureEngine *)self _recoveryMutexQueue];
+  _recoveryMutexQueue = [(CAMCaptureEngine *)self _recoveryMutexQueue];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __49__CAMCaptureEngine__handleSessionDidStopRunning___block_invoke_2;
   v8[3] = &unk_1E76FAFF0;
   v8[4] = self;
   v8[5] = &buf;
-  dispatch_sync(v7, v8);
+  dispatch_sync(_recoveryMutexQueue, v8);
 
   if (*(*(&buf + 1) + 24) == 1 && ![(CAMCaptureEngine *)self isInterrupted])
   {
@@ -1314,24 +1314,24 @@ uint64_t __49__CAMCaptureEngine__handleSessionDidStopRunning___block_invoke_2(ui
   return result;
 }
 
-- (void)_handleSessionRuntimeError:(id)a3
+- (void)_handleSessionRuntimeError:(id)error
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKey:*MEMORY[0x1E6986AA0]];
+  errorCopy = error;
+  userInfo = [errorCopy userInfo];
+  v6 = [userInfo objectForKey:*MEMORY[0x1E6986AA0]];
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;
   v22 = 0;
-  v7 = [(CAMCaptureEngine *)self _recoveryMutexQueue];
+  _recoveryMutexQueue = [(CAMCaptureEngine *)self _recoveryMutexQueue];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __47__CAMCaptureEngine__handleSessionRuntimeError___block_invoke;
   v18[3] = &unk_1E76FAFF0;
   v18[4] = self;
   v18[5] = &v19;
-  dispatch_sync(v7, v18);
+  dispatch_sync(_recoveryMutexQueue, v18);
 
   if (*(v20 + 24))
   {
@@ -1370,7 +1370,7 @@ uint64_t __49__CAMCaptureEngine__handleSessionDidStopRunning___block_invoke_2(ui
     v25 = 2114;
     v26 = v9;
     v27 = 2114;
-    v28 = v4;
+    v28 = errorCopy;
     v15 = v14;
     _os_log_impl(&dword_1A3640000, v11, OS_LOG_TYPE_DEFAULT, "[%{public}@] Received a session runtime error notification %{public}@without an explicit error: %{public}@", buf, 0x20u);
   }
@@ -1414,29 +1414,29 @@ uint64_t __59__CAMCaptureEngine__performSessionNonstartRecoveryIfNeeded__block_i
   return result;
 }
 
-- (void)_performSessionRuntimeRecovery:(id)a3
+- (void)_performSessionRuntimeRecovery:(id)recovery
 {
-  v4 = a3;
+  recoveryCopy = recovery;
   v5 = os_log_create("com.apple.camera", "CaptureSession");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
     [CAMCaptureEngine _performSessionRuntimeRecovery:];
   }
 
-  v6 = [(CAMCaptureEngine *)self _recoveryMutexQueue];
+  _recoveryMutexQueue = [(CAMCaptureEngine *)self _recoveryMutexQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __51__CAMCaptureEngine__performSessionRuntimeRecovery___block_invoke;
   block[3] = &unk_1E76F77B0;
   block[4] = self;
-  dispatch_sync(v6, block);
+  dispatch_sync(_recoveryMutexQueue, block);
 
   v8 = MEMORY[0x1E69E9820];
   v9 = 3221225472;
   v10 = __51__CAMCaptureEngine__performSessionRuntimeRecovery___block_invoke_2;
   v11 = &unk_1E76FD198;
-  v12 = v4;
-  v7 = v4;
+  v12 = recoveryCopy;
+  v7 = recoveryCopy;
   [(CAMCaptureEngine *)self _enumerateCaptureServicesUsingBlock:&v8];
   [(CAMCaptureEngine *)self _recoverFromSessionRuntimeError:v8];
 }
@@ -1450,11 +1450,11 @@ void __51__CAMCaptureEngine__performSessionRuntimeRecovery___block_invoke_2(uint
   }
 }
 
-- (void)_handleSessionInterruption:(id)a3
+- (void)_handleSessionInterruption:(id)interruption
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CAMCaptureEngine *)self _panoramaSampleBufferQueue];
+  interruptionCopy = interruption;
+  _panoramaSampleBufferQueue = [(CAMCaptureEngine *)self _panoramaSampleBufferQueue];
   block[5] = MEMORY[0x1E69E9820];
   block[6] = 3221225472;
   block[7] = __47__CAMCaptureEngine__handleSessionInterruption___block_invoke;
@@ -1462,19 +1462,19 @@ void __51__CAMCaptureEngine__performSessionRuntimeRecovery___block_invoke_2(uint
   block[9] = self;
   pl_dispatch_async();
 
-  v6 = [v4 userInfo];
-  v7 = [v6 objectForKey:*MEMORY[0x1E6986AB0]];
-  v8 = [v7 integerValue];
-  v9 = v8;
-  if (v8 > 3)
+  userInfo = [interruptionCopy userInfo];
+  v7 = [userInfo objectForKey:*MEMORY[0x1E6986AB0]];
+  integerValue = [v7 integerValue];
+  v9 = integerValue;
+  if (integerValue > 3)
   {
-    switch(v8)
+    switch(integerValue)
     {
       case 4:
         v12 = @"VideoDeviceNotAvailableWithMultipleForegroundApps";
         break;
       case 5:
-        v13 = [v6 objectForKeyedSubscript:*MEMORY[0x1E6986AB8]];
+        v13 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E6986AB8]];
         v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"VideoDeviceNotAvailableDueToSystemPressure(%@)", v13];
 
         break;
@@ -1491,17 +1491,17 @@ void __51__CAMCaptureEngine__performSessionRuntimeRecovery___block_invoke_2(uint
   {
     v10 = @"AudioDeviceInUseByAnotherClient";
     v11 = @"VideoDeviceInUseByAnotherClient";
-    if (v8 != 3)
+    if (integerValue != 3)
     {
       v11 = 0;
     }
 
-    if (v8 != 2)
+    if (integerValue != 2)
     {
       v10 = v11;
     }
 
-    if (v8 == 1)
+    if (integerValue == 1)
     {
       v12 = @"VideoDeviceNotAvailableInBackground";
     }
@@ -1520,19 +1520,19 @@ void __51__CAMCaptureEngine__performSessionRuntimeRecovery___block_invoke_2(uint
     v21 = 2114;
     v22 = v12;
     v23 = 2114;
-    v24 = v4;
+    v24 = interruptionCopy;
     v15 = v20;
     _os_log_impl(&dword_1A3640000, v14, OS_LOG_TYPE_DEFAULT, "[%{public}@] AVCaptureSession was interrupted for %{public}@! (%{public}@)", buf, 0x20u);
   }
 
   [(CAMCaptureEngine *)self _setInterrupted:1];
-  v16 = [(CAMCaptureEngine *)self _recoveryMutexQueue];
+  _recoveryMutexQueue = [(CAMCaptureEngine *)self _recoveryMutexQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __47__CAMCaptureEngine__handleSessionInterruption___block_invoke_148;
   block[3] = &unk_1E76F77B0;
   block[4] = self;
-  dispatch_sync(v16, block);
+  dispatch_sync(_recoveryMutexQueue, block);
 
   [(CAMCaptureEngine *)self _cancelDelayedSessionNonstartRecovery];
   v17[0] = MEMORY[0x1E69E9820];
@@ -1574,7 +1574,7 @@ void __47__CAMCaptureEngine__handleSessionInterruption___block_invoke_149(uint64
   }
 }
 
-- (void)_handleSessionInterruptionEnded:(id)a3
+- (void)_handleSessionInterruptionEnded:(id)ended
 {
   v8 = *MEMORY[0x1E69E9840];
   v4 = os_log_create("com.apple.camera", "CaptureSession");
@@ -1599,15 +1599,15 @@ void __52__CAMCaptureEngine__handleSessionInterruptionEnded___block_invoke(uint6
   }
 }
 
-- (double)_delayForRecoveryAttempt:(unint64_t)a3
+- (double)_delayForRecoveryAttempt:(unint64_t)attempt
 {
-  v3 = 4;
-  if (a3 < 4)
+  attemptCopy = 4;
+  if (attempt < 4)
   {
-    v3 = a3;
+    attemptCopy = attempt;
   }
 
-  return _delayForRecoveryAttempt__delayForAttempt[v3];
+  return _delayForRecoveryAttempt__delayForAttempt[attemptCopy];
 }
 
 - (void)_recoverFromSessionRuntimeError
@@ -1621,13 +1621,13 @@ void __52__CAMCaptureEngine__handleSessionInterruptionEnded___block_invoke(uint6
 
 - (void)_resetPerformingRecoveryState
 {
-  v3 = [(CAMCaptureEngine *)self _recoveryMutexQueue];
+  _recoveryMutexQueue = [(CAMCaptureEngine *)self _recoveryMutexQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __49__CAMCaptureEngine__resetPerformingRecoveryState__block_invoke;
   block[3] = &unk_1E76F77B0;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(_recoveryMutexQueue, block);
 }
 
 uint64_t __49__CAMCaptureEngine__resetPerformingRecoveryState__block_invoke(uint64_t a1)
@@ -1638,22 +1638,22 @@ uint64_t __49__CAMCaptureEngine__resetPerformingRecoveryState__block_invoke(uint
   return [v2 _setNumberOfRecoveryAttempts:0];
 }
 
-- (void)_handleFailedSessionRecoveryAttemptAfterDelay:(BOOL)a3
+- (void)_handleFailedSessionRecoveryAttemptAfterDelay:(BOOL)delay
 {
-  v3 = a3;
+  delayCopy = delay;
   v26 = *MEMORY[0x1E69E9840];
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
   v24 = 0;
-  v5 = [(CAMCaptureEngine *)self _recoveryMutexQueue];
+  _recoveryMutexQueue = [(CAMCaptureEngine *)self _recoveryMutexQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __66__CAMCaptureEngine__handleFailedSessionRecoveryAttemptAfterDelay___block_invoke;
   block[3] = &unk_1E76FAFF0;
   block[4] = self;
   block[5] = &v21;
-  dispatch_sync(v5, block);
+  dispatch_sync(_recoveryMutexQueue, block);
 
   if (v22[3])
   {
@@ -1661,14 +1661,14 @@ uint64_t __49__CAMCaptureEngine__resetPerformingRecoveryState__block_invoke(uint
     v17 = &v16;
     v18 = 0x2020000000;
     v19 = 0;
-    v6 = [(CAMCaptureEngine *)self _recoveryMutexQueue];
+    _recoveryMutexQueue2 = [(CAMCaptureEngine *)self _recoveryMutexQueue];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __66__CAMCaptureEngine__handleFailedSessionRecoveryAttemptAfterDelay___block_invoke_2;
     v15[3] = &unk_1E76FAFF0;
     v15[4] = self;
     v15[5] = &v16;
-    dispatch_sync(v6, v15);
+    dispatch_sync(_recoveryMutexQueue2, v15);
 
     v7 = v17[3];
     if (v7 == 5)
@@ -1685,7 +1685,7 @@ uint64_t __49__CAMCaptureEngine__resetPerformingRecoveryState__block_invoke(uint
     {
       if (v7 < 6)
       {
-        if (v3)
+        if (delayCopy)
         {
           [(CAMCaptureEngine *)self _delayForRecoveryAttempt:?];
           v10 = v9;
@@ -1697,13 +1697,13 @@ uint64_t __49__CAMCaptureEngine__resetPerformingRecoveryState__block_invoke(uint
           }
 
           dispatch_time(0, (v10 * 1000000000.0));
-          v13 = [(CAMCaptureEngine *)self _captureSessionQueue];
+          _captureSessionQueue = [(CAMCaptureEngine *)self _captureSessionQueue];
           pl_dispatch_after();
         }
 
         else
         {
-          v14 = [(CAMCaptureEngine *)self _captureSessionQueue];
+          _captureSessionQueue2 = [(CAMCaptureEngine *)self _captureSessionQueue];
           pl_dispatch_async();
         }
 
@@ -1744,8 +1744,8 @@ uint64_t __66__CAMCaptureEngine__handleFailedSessionRecoveryAttemptAfterDelay___
 - (void)_validateSessionRecovery
 {
   v8 = *MEMORY[0x1E69E9840];
-  v3 = [(CAMCaptureEngine *)self _captureSession];
-  if ([v3 isRunning])
+  _captureSession = [(CAMCaptureEngine *)self _captureSession];
+  if ([_captureSession isRunning])
   {
     v4 = os_log_create("com.apple.camera", "CaptureSession");
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -1765,46 +1765,46 @@ uint64_t __66__CAMCaptureEngine__handleFailedSessionRecoveryAttemptAfterDelay___
   }
 }
 
-- (void)_handleApplicationWillEnterForeground:(id)a3
+- (void)_handleApplicationWillEnterForeground:(id)foreground
 {
-  v3 = [(CAMCaptureEngine *)self _captureSessionQueue];
+  _captureSessionQueue = [(CAMCaptureEngine *)self _captureSessionQueue];
   pl_dispatch_async();
 }
 
-- (void)_handleApplicationDidEnterBackground:(id)a3
+- (void)_handleApplicationDidEnterBackground:(id)background
 {
   [(CAMCaptureEngine *)self _showAccidentalLaunchNotificationIfNecessary];
-  v4 = [(CAMCaptureEngine *)self _captureSessionQueue];
+  _captureSessionQueue = [(CAMCaptureEngine *)self _captureSessionQueue];
   pl_dispatch_async();
 }
 
 - (id)_currentNotificationCenter
 {
-  v2 = [MEMORY[0x1E696AAE8] mainBundle];
-  v3 = [v2 bundleIdentifier];
-  if ([v3 isEqualToString:@"com.apple.camera.CameraMessagesApp"])
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  if ([bundleIdentifier isEqualToString:@"com.apple.camera.CameraMessagesApp"])
   {
-    v4 = [objc_alloc(MEMORY[0x1E6983308]) initWithBundleIdentifier:v3];
+    currentNotificationCenter = [objc_alloc(MEMORY[0x1E6983308]) initWithBundleIdentifier:bundleIdentifier];
   }
 
   else
   {
-    v4 = [MEMORY[0x1E6983308] currentNotificationCenter];
+    currentNotificationCenter = [MEMORY[0x1E6983308] currentNotificationCenter];
   }
 
-  v5 = v4;
+  v5 = currentNotificationCenter;
 
   return v5;
 }
 
-- (void)_handleSessionWasPrewarmed:(id)a3
+- (void)_handleSessionWasPrewarmed:(id)prewarmed
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  prewarmedCopy = prewarmed;
   Current = CFAbsoluteTimeGetCurrent();
-  v6 = [v4 userInfo];
+  userInfo = [prewarmedCopy userInfo];
 
-  v7 = [v6 objectForKeyedSubscript:*MEMORY[0x1E6986A38]];
+  v7 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E6986A38]];
 
   v8 = os_log_create("com.apple.camera", "CaptureSession");
   v9 = v8;
@@ -1904,9 +1904,9 @@ void __64__CAMCaptureEngine__showAccidentalLaunchNotificationIfNecessary__block_
     v7 = self->__lastTapToRadarTime;
     if (!v7 || ([(NSDate *)v7 timeIntervalSinceNow], v8 > 0.0))
     {
-      v9 = [MEMORY[0x1E695DF00] distantPast];
+      distantPast = [MEMORY[0x1E695DF00] distantPast];
       v10 = self->__lastTapToRadarTime;
-      self->__lastTapToRadarTime = v9;
+      self->__lastTapToRadarTime = distantPast;
     }
   }
 
@@ -1915,22 +1915,22 @@ void __64__CAMCaptureEngine__showAccidentalLaunchNotificationIfNecessary__block_
   return v11;
 }
 
-- (id)_videoDeviceInputFromSession:(id)a3
+- (id)_videoDeviceInputFromSession:(id)session
 {
-  v3 = a3;
+  sessionCopy = session;
   v8 = 0;
   v9 = &v8;
   v10 = 0x3032000000;
   v11 = __Block_byref_object_copy__26;
   v12 = __Block_byref_object_dispose__26;
   v13 = 0;
-  v4 = [v3 inputs];
+  inputs = [sessionCopy inputs];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __49__CAMCaptureEngine__videoDeviceInputFromSession___block_invoke;
   v7[3] = &unk_1E76FD208;
   v7[4] = &v8;
-  [v4 enumerateObjectsUsingBlock:v7];
+  [inputs enumerateObjectsUsingBlock:v7];
   v5 = v9[5];
 
   _Block_object_dispose(&v8, 8);
@@ -1960,9 +1960,9 @@ uint64_t __49__CAMCaptureEngine__videoDeviceInputFromSession___block_invoke(uint
   return MEMORY[0x1EEE66BB8](isKindOfClass, v8);
 }
 
-- (id)_secondaryVideoDeviceInputFromSession:(id)a3
+- (id)_secondaryVideoDeviceInputFromSession:(id)session
 {
-  v3 = a3;
+  sessionCopy = session;
   v10 = 0;
   v11 = &v10;
   v12 = 0x3032000000;
@@ -1975,14 +1975,14 @@ uint64_t __49__CAMCaptureEngine__videoDeviceInputFromSession___block_invoke(uint
   v8[3] = __Block_byref_object_copy__26;
   v8[4] = __Block_byref_object_dispose__26;
   v9 = 0;
-  v4 = [v3 inputs];
+  inputs = [sessionCopy inputs];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __58__CAMCaptureEngine__secondaryVideoDeviceInputFromSession___block_invoke;
   v7[3] = &unk_1E76FD230;
   v7[4] = v8;
   v7[5] = &v10;
-  [v4 enumerateObjectsUsingBlock:v7];
+  [inputs enumerateObjectsUsingBlock:v7];
   v5 = v11[5];
 
   _Block_object_dispose(v8, 8);
@@ -2024,22 +2024,22 @@ uint64_t __58__CAMCaptureEngine__secondaryVideoDeviceInputFromSession___block_in
   return MEMORY[0x1EEE66BB8](isKindOfClass, v8);
 }
 
-- (id)_photoOutputFromSession:(id)a3
+- (id)_photoOutputFromSession:(id)session
 {
-  v3 = a3;
+  sessionCopy = session;
   v8 = 0;
   v9 = &v8;
   v10 = 0x3032000000;
   v11 = __Block_byref_object_copy__26;
   v12 = __Block_byref_object_dispose__26;
   v13 = 0;
-  v4 = [v3 outputs];
+  outputs = [sessionCopy outputs];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __44__CAMCaptureEngine__photoOutputFromSession___block_invoke;
   v7[3] = &unk_1E76FD258;
   v7[4] = &v8;
-  [v4 enumerateObjectsUsingBlock:v7];
+  [outputs enumerateObjectsUsingBlock:v7];
 
   v5 = v9[5];
   _Block_object_dispose(&v8, 8);
@@ -2058,51 +2058,51 @@ void __44__CAMCaptureEngine__photoOutputFromSession___block_invoke(uint64_t a1, 
   }
 }
 
-- (void)_updateContext:(id)a3
+- (void)_updateContext:(id)context
 {
-  v4 = a3;
-  [v4 clear];
-  v5 = [(CAMCaptureEngine *)self _captureSession];
-  [v4 setCurrentCaptureSession:v5];
-  v6 = [v5 inputs];
-  v7 = [v5 outputs];
-  v8 = [v5 controls];
+  contextCopy = context;
+  [contextCopy clear];
+  _captureSession = [(CAMCaptureEngine *)self _captureSession];
+  [contextCopy setCurrentCaptureSession:_captureSession];
+  inputs = [_captureSession inputs];
+  outputs = [_captureSession outputs];
+  controls = [_captureSession controls];
   v46[0] = MEMORY[0x1E69E9820];
   v46[1] = 3221225472;
   v46[2] = __35__CAMCaptureEngine__updateContext___block_invoke;
   v46[3] = &unk_1E76FD280;
   v46[4] = self;
-  v9 = v4;
+  v9 = contextCopy;
   v47 = v9;
-  [v6 enumerateObjectsUsingBlock:v46];
-  v10 = [(CAMCaptureEngine *)self _videoDeviceInputFromSession:v5];
+  [inputs enumerateObjectsUsingBlock:v46];
+  v10 = [(CAMCaptureEngine *)self _videoDeviceInputFromSession:_captureSession];
   v11 = v10;
   if (v10)
   {
-    v12 = [v10 device];
-    [v9 setCurrentVideoDevice:v12];
-    [v12 activeFormat];
-    v14 = v13 = v8;
+    device = [v10 device];
+    [v9 setCurrentVideoDevice:device];
+    [device activeFormat];
+    v14 = v13 = controls;
     [v9 setCurrentVideoDeviceFormat:v14];
 
-    v15 = [v12 activeDepthDataFormat];
-    [v9 setCurrentDepthDataFormat:v15];
+    activeDepthDataFormat = [device activeDepthDataFormat];
+    [v9 setCurrentDepthDataFormat:activeDepthDataFormat];
 
-    v16 = [v5 sessionPreset];
-    [v9 setCurrentVideoDevicePreset:v16];
+    sessionPreset = [_captureSession sessionPreset];
+    [v9 setCurrentVideoDevicePreset:sessionPreset];
 
-    v8 = v13;
+    controls = v13;
     [v9 setCurrentVideoDeviceInput:v11];
   }
 
-  v17 = [(CAMCaptureEngine *)self _secondaryVideoDeviceInputFromSession:v5];
+  v17 = [(CAMCaptureEngine *)self _secondaryVideoDeviceInputFromSession:_captureSession];
   v18 = v17;
   if (v17)
   {
-    v19 = [v17 device];
-    [v9 setCurrentSecondaryVideoDevice:v19];
-    v20 = [v19 activeFormat];
-    [v9 setCurrentSecondaryVideoDeviceFormat:v20];
+    device2 = [v17 device];
+    [v9 setCurrentSecondaryVideoDevice:device2];
+    activeFormat = [device2 activeFormat];
+    [v9 setCurrentSecondaryVideoDeviceFormat:activeFormat];
 
     [v9 setCurrentSecondaryVideoDeviceInput:v18];
   }
@@ -2115,51 +2115,51 @@ void __44__CAMCaptureEngine__photoOutputFromSession___block_invoke(uint64_t a1, 
   v44[4] = self;
   v21 = v9;
   v45 = v21;
-  v37 = v7;
-  [v7 enumerateObjectsUsingBlock:v44];
+  v37 = outputs;
+  [outputs enumerateObjectsUsingBlock:v44];
   v36 = v11;
   if (v11)
   {
-    v22 = [v11 device];
-    v23 = [v22 deviceType];
-    -[CAMCaptureEngine _captureEngineDeviceForDeviceType:position:](self, "_captureEngineDeviceForDeviceType:position:", v23, [v22 position]);
-    v24 = v8;
-    v26 = v25 = v6;
+    device3 = [v11 device];
+    deviceType = [device3 deviceType];
+    -[CAMCaptureEngine _captureEngineDeviceForDeviceType:position:](self, "_captureEngineDeviceForDeviceType:position:", deviceType, [device3 position]);
+    v24 = controls;
+    v26 = v25 = inputs;
 
-    v27 = [v26 systemZoomSlider];
-    v28 = [v26 systemLensSelector];
-    v29 = [v26 systemExposureSlider];
+    systemZoomSlider = [v26 systemZoomSlider];
+    systemLensSelector = [v26 systemLensSelector];
+    systemExposureSlider = [v26 systemExposureSlider];
     [v26 setSystemDeviceActionDelegate:self];
 
-    v6 = v25;
-    v8 = v24;
+    inputs = v25;
+    controls = v24;
   }
 
   else
   {
-    v29 = 0;
-    v28 = 0;
-    v27 = 0;
+    systemExposureSlider = 0;
+    systemLensSelector = 0;
+    systemZoomSlider = 0;
   }
 
   v38[0] = MEMORY[0x1E69E9820];
   v38[1] = 3221225472;
   v38[2] = __35__CAMCaptureEngine__updateContext___block_invoke_3;
   v38[3] = &unk_1E76FD2D0;
-  v30 = v27;
+  v30 = systemZoomSlider;
   v39 = v30;
   v31 = v21;
   v40 = v31;
-  v32 = v28;
+  v32 = systemLensSelector;
   v41 = v32;
-  v33 = v29;
+  v33 = systemExposureSlider;
   v42 = v33;
-  v43 = self;
-  [v8 enumerateObjectsUsingBlock:v38];
+  selfCopy = self;
+  [controls enumerateObjectsUsingBlock:v38];
   [v31 setCurrentVideoPreviewLayer:self->__videoPreviewLayer];
-  v34 = [(AVCaptureVideoPreviewLayer *)self->__secondaryVideoPreviewLayer session];
+  session = [(AVCaptureVideoPreviewLayer *)self->__secondaryVideoPreviewLayer session];
 
-  if (v34 == v5)
+  if (session == _captureSession)
   {
     [v31 setCurrentSecondaryVideoPreviewLayer:self->__secondaryVideoPreviewLayer];
   }
@@ -2265,13 +2265,13 @@ void __35__CAMCaptureEngine__updateContext___block_invoke_3(uint64_t a1, void *a
 LABEL_12:
 }
 
-- (BOOL)_isSessionModificationRequiredByCommand:(id)a3 logReason:(id *)a4 minimumExecutionTime:(double *)a5
+- (BOOL)_isSessionModificationRequiredByCommand:(id)command logReason:(id *)reason minimumExecutionTime:(double *)time
 {
-  v8 = a3;
+  commandCopy = command;
   v26 = 0;
   v27 = &v26;
   v28 = 0x2020000000;
-  v29 = [v8 requiresSessionModification];
+  requiresSessionModification = [commandCopy requiresSessionModification];
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -2284,7 +2284,7 @@ LABEL_12:
   v19 = 0;
   if (*(v27 + 24) != 1)
   {
-    v12 = [v8 subcommands];
+    subcommands = [commandCopy subcommands];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __91__CAMCaptureEngine__isSessionModificationRequiredByCommand_logReason_minimumExecutionTime___block_invoke;
@@ -2293,9 +2293,9 @@ LABEL_12:
     v15[5] = &v26;
     v15[6] = &v20;
     v15[7] = &v16;
-    [v12 enumerateObjectsUsingBlock:v15];
+    [subcommands enumerateObjectsUsingBlock:v15];
 
-    if (!a4)
+    if (!reason)
     {
       goto LABEL_6;
     }
@@ -2303,22 +2303,22 @@ LABEL_12:
     goto LABEL_5;
   }
 
-  v9 = [v8 sessionModificationLogReason];
+  sessionModificationLogReason = [commandCopy sessionModificationLogReason];
   v10 = v21[5];
-  v21[5] = v9;
+  v21[5] = sessionModificationLogReason;
 
-  [v8 sessionModificationMinimumExecutionTime];
+  [commandCopy sessionModificationMinimumExecutionTime];
   *(v17 + 3) = v11;
-  if (a4)
+  if (reason)
   {
 LABEL_5:
-    *a4 = v21[5];
+    *reason = v21[5];
   }
 
 LABEL_6:
-  if (a5)
+  if (time)
   {
-    *a5 = v17[3];
+    *time = v17[3];
   }
 
   v13 = *(v27 + 24);
@@ -2344,38 +2344,38 @@ void __91__CAMCaptureEngine__isSessionModificationRequiredByCommand_logReason_mi
   }
 }
 
-- (id)_accumulatedUserInfoFromCommand:(id)a3
+- (id)_accumulatedUserInfoFromCommand:(id)command
 {
-  v4 = a3;
-  v5 = [v4 subcommands];
-  v6 = v5;
-  if (v5 && [v5 count])
+  commandCopy = command;
+  subcommands = [commandCopy subcommands];
+  v6 = subcommands;
+  if (subcommands && [subcommands count])
   {
     v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
     v12 = MEMORY[0x1E69E9820];
     v13 = 3221225472;
     v14 = __52__CAMCaptureEngine__accumulatedUserInfoFromCommand___block_invoke;
     v15 = &unk_1E76FD320;
-    v16 = self;
+    selfCopy = self;
     v8 = v7;
     v17 = v8;
     [v6 enumerateObjectsUsingBlock:&v12];
     v9 = [v8 count];
-    v10 = [v4 userInfo];
+    userInfo = [commandCopy userInfo];
     if (v9)
     {
-      [v8 addEntriesFromDictionary:v10];
+      [v8 addEntriesFromDictionary:userInfo];
 
-      v10 = v8;
+      userInfo = v8;
     }
   }
 
   else
   {
-    v10 = [v4 userInfo];
+    userInfo = [commandCopy userInfo];
   }
 
-  return v10;
+  return userInfo;
 }
 
 uint64_t __52__CAMCaptureEngine__accumulatedUserInfoFromCommand___block_invoke(uint64_t a1, uint64_t a2)
@@ -2392,22 +2392,22 @@ uint64_t __52__CAMCaptureEngine__accumulatedUserInfoFromCommand___block_invoke(u
   return MEMORY[0x1EEE66BB8](v3, v4);
 }
 
-- (void)_beginSessionConfigurationIfRequiredByCommand:(id)a3 withContext:(id)a4 logReason:(id *)a5 minimumExecutionTime:(double *)a6
+- (void)_beginSessionConfigurationIfRequiredByCommand:(id)command withContext:(id)context logReason:(id *)reason minimumExecutionTime:(double *)time
 {
   v26 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
+  commandCopy = command;
+  contextCopy = context;
   v21 = 0;
-  v12 = [(CAMCaptureEngine *)self _captureSession];
+  _captureSession = [(CAMCaptureEngine *)self _captureSession];
   v13 = 0;
-  if (([v12 isBeingConfigured] & 1) == 0)
+  if (([_captureSession isBeingConfigured] & 1) == 0)
   {
     v20 = 0;
-    v14 = [(CAMCaptureEngine *)self _isSessionModificationRequiredByCommand:v10 logReason:&v20 minimumExecutionTime:&v21];
+    v14 = [(CAMCaptureEngine *)self _isSessionModificationRequiredByCommand:commandCopy logReason:&v20 minimumExecutionTime:&v21];
     v13 = v20;
     if (v14)
     {
-      [v11 setCurrentCaptureSession:v12];
+      [contextCopy setCurrentCaptureSession:_captureSession];
       v15 = os_log_create("com.apple.camera", "CaptureSession");
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
@@ -2418,7 +2418,7 @@ uint64_t __52__CAMCaptureEngine__accumulatedUserInfoFromCommand___block_invoke(u
 
       Current = CFAbsoluteTimeGetCurrent();
       CAMSignpostWithIDAndArgs(19, 0xEEEEB0B5B2B2EEEELL, 0, 0, 0, 0);
-      [v12 beginConfiguration];
+      [_captureSession beginConfiguration];
       CAMSignpostWithIDAndArgs(20, 0xEEEEB0B5B2B2EEEELL, 0, 0, 0, 0);
       v17 = CFAbsoluteTimeGetCurrent();
       v18 = os_log_create("com.apple.camera", "CaptureSession");
@@ -2433,43 +2433,43 @@ uint64_t __52__CAMCaptureEngine__accumulatedUserInfoFromCommand___block_invoke(u
     }
   }
 
-  if (a5)
+  if (reason)
   {
     v19 = v13;
-    *a5 = v13;
+    *reason = v13;
   }
 
-  if (a6)
+  if (time)
   {
-    *a6 = v21;
+    *time = v21;
   }
 }
 
-- (void)_commitSessionConfigurationIfNecessaryWithLogReason:(id)a3
+- (void)_commitSessionConfigurationIfNecessaryWithLogReason:(id)reason
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CAMCaptureEngine *)self _captureSession];
-  if ([v5 isBeingConfigured])
+  reasonCopy = reason;
+  _captureSession = [(CAMCaptureEngine *)self _captureSession];
+  if ([_captureSession isBeingConfigured])
   {
     v6 = os_log_create("com.apple.camera", "CaptureSession");
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v26 = v4;
+      v26 = reasonCopy;
       _os_log_impl(&dword_1A3640000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: Calling [AVCaptureSession commitConfiguration]", buf, 0xCu);
     }
 
     Current = CFAbsoluteTimeGetCurrent();
     CAMSignpostWithIDAndArgs(21, 0xEEEEB0B5B2B2EEEELL, 0, 0, 0, 0);
-    [v5 commitConfiguration];
+    [_captureSession commitConfiguration];
     CAMSignpostWithIDAndArgs(22, 0xEEEEB0B5B2B2EEEELL, 0, 0, 0, 0);
     v8 = CFAbsoluteTimeGetCurrent();
     v9 = os_log_create("com.apple.camera", "CaptureSession");
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v26 = v4;
+      v26 = reasonCopy;
       v27 = 2048;
       v28 = v8 - Current;
       _os_log_impl(&dword_1A3640000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@: [AVCaptureSession commitConfiguration] finished. (took %.3f seconds)", buf, 0x16u);
@@ -2479,20 +2479,20 @@ uint64_t __52__CAMCaptureEngine__accumulatedUserInfoFromCommand___block_invoke(u
     v10 = [(CAMCaptureEngine *)self _updatePanoramaSubgraphForEnteringBackground:0];
     [(CAMCaptureEngine *)self _updateEffectsSubgraph];
     [(CAMCaptureEngine *)self _updateVideoThumbnailSubgraph];
-    v11 = [v5 isRunning];
-    v12 = [v5 isInterrupted];
-    v13 = [(CAMCaptureEngine *)self _shouldStartSessionOnConfigurationChanges];
-    if (((v12 ^ 1) & v11 & 1) == 0 && v13)
+    isRunning = [_captureSession isRunning];
+    isInterrupted = [_captureSession isInterrupted];
+    _shouldStartSessionOnConfigurationChanges = [(CAMCaptureEngine *)self _shouldStartSessionOnConfigurationChanges];
+    if (((isInterrupted ^ 1) & isRunning & 1) == 0 && _shouldStartSessionOnConfigurationChanges)
     {
       [(CAMCaptureEngine *)self _sessionQueue_startWithRetryCount:0 retryInterval:@"post commitConfiguration" logReason:0 completion:0.0];
     }
 
-    v14 = [v5 isRunning];
-    v15 = [v5 isInterrupted];
-    if (v10 && (v15 & 1) == 0 && v14)
+    isRunning2 = [_captureSession isRunning];
+    isInterrupted2 = [_captureSession isInterrupted];
+    if (v10 && (isInterrupted2 & 1) == 0 && isRunning2)
     {
       v16 = dispatch_semaphore_create(0);
-      v17 = [(CAMCaptureEngine *)self _panoramaFirstImageQueueUpdateSemaphoreQueue];
+      _panoramaFirstImageQueueUpdateSemaphoreQueue = [(CAMCaptureEngine *)self _panoramaFirstImageQueueUpdateSemaphoreQueue];
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __72__CAMCaptureEngine__commitSessionConfigurationIfNecessaryWithLogReason___block_invoke;
@@ -2500,7 +2500,7 @@ uint64_t __52__CAMCaptureEngine__accumulatedUserInfoFromCommand___block_invoke(u
       block[4] = self;
       v18 = v16;
       v24 = v18;
-      dispatch_sync(v17, block);
+      dispatch_sync(_panoramaFirstImageQueueUpdateSemaphoreQueue, block);
 
       v19 = dispatch_time(0, 4000000000);
       if (dispatch_semaphore_wait(v18, v19))
@@ -2514,25 +2514,25 @@ uint64_t __52__CAMCaptureEngine__accumulatedUserInfoFromCommand___block_invoke(u
         }
       }
 
-      v21 = [(CAMCaptureEngine *)self _panoramaFirstImageQueueUpdateSemaphoreQueue];
+      _panoramaFirstImageQueueUpdateSemaphoreQueue2 = [(CAMCaptureEngine *)self _panoramaFirstImageQueueUpdateSemaphoreQueue];
       v22[0] = MEMORY[0x1E69E9820];
       v22[1] = 3221225472;
       v22[2] = __72__CAMCaptureEngine__commitSessionConfigurationIfNecessaryWithLogReason___block_invoke_221;
       v22[3] = &unk_1E76F77B0;
       v22[4] = self;
-      dispatch_sync(v21, v22);
+      dispatch_sync(_panoramaFirstImageQueueUpdateSemaphoreQueue2, v22);
     }
   }
 }
 
-- (BOOL)_lockManagedCapturedDevice:(id)a3
+- (BOOL)_lockManagedCapturedDevice:(id)device
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  deviceCopy = device;
+  v4 = deviceCopy;
+  if (deviceCopy)
   {
     v9 = 0;
-    v5 = [v3 lockForConfiguration:&v9];
+    v5 = [deviceCopy lockForConfiguration:&v9];
     v6 = v9;
     if ((v5 & 1) == 0)
     {
@@ -2552,52 +2552,52 @@ uint64_t __52__CAMCaptureEngine__accumulatedUserInfoFromCommand___block_invoke(u
   return v5;
 }
 
-- (void)_unlockManagedCaptureDevice:(id)a3
+- (void)_unlockManagedCaptureDevice:(id)device
 {
-  v3 = a3;
-  if ([v3 isLockedForConfiguration])
+  deviceCopy = device;
+  if ([deviceCopy isLockedForConfiguration])
   {
-    [v3 unlockForConfiguration];
+    [deviceCopy unlockForConfiguration];
   }
 }
 
 - (void)_updateCurrentlyConfiguredObjects
 {
-  v3 = [(CAMCaptureEngine *)self _captureSession];
-  v9 = [(CAMCaptureEngine *)self _videoDeviceInputFromSession:v3];
+  _captureSession = [(CAMCaptureEngine *)self _captureSession];
+  v9 = [(CAMCaptureEngine *)self _videoDeviceInputFromSession:_captureSession];
 
-  v4 = [v9 device];
-  v5 = [(CAMCaptureEngine *)self _captureSession];
-  v6 = [(CAMCaptureEngine *)self _photoOutputFromSession:v5];
+  device = [v9 device];
+  _captureSession2 = [(CAMCaptureEngine *)self _captureSession];
+  v6 = [(CAMCaptureEngine *)self _photoOutputFromSession:_captureSession2];
 
-  v7 = [(CAMCaptureEngine *)self currentCameraDevice];
+  currentCameraDevice = [(CAMCaptureEngine *)self currentCameraDevice];
 
-  if (v7 != v4)
+  if (currentCameraDevice != device)
   {
-    [(CAMCaptureEngine *)self setCurrentCameraDevice:v4];
+    [(CAMCaptureEngine *)self setCurrentCameraDevice:device];
   }
 
-  v8 = [(CAMCaptureEngine *)self currentStillImageOutput];
+  currentStillImageOutput = [(CAMCaptureEngine *)self currentStillImageOutput];
 
-  if (v8 != v6)
+  if (currentStillImageOutput != v6)
   {
     [(CAMCaptureEngine *)self setCurrentStillImageOutput:v6];
   }
 }
 
-- (void)requestCurrentCameraDeviceWithHandler:(id)a3
+- (void)requestCurrentCameraDeviceWithHandler:(id)handler
 {
-  v4 = a3;
-  if (v4)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v5 = [(CAMCaptureEngine *)self _captureSessionQueue];
+    _captureSessionQueue = [(CAMCaptureEngine *)self _captureSessionQueue];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __58__CAMCaptureEngine_requestCurrentCameraDeviceWithHandler___block_invoke;
     v6[3] = &unk_1E76F83B0;
     v6[4] = self;
-    v7 = v4;
-    dispatch_async(v5, v6);
+    v7 = handlerCopy;
+    dispatch_async(_captureSessionQueue, v6);
   }
 }
 
@@ -2608,24 +2608,24 @@ void __58__CAMCaptureEngine_requestCurrentCameraDeviceWithHandler___block_invoke
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)_executeCommand:(id)a3 withContext:(id)a4
+- (void)_executeCommand:(id)command withContext:(id)context
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CAMCaptureEngine *)self _captureSessionQueue];
-  dispatch_assert_queue_V2(v8);
+  commandCopy = command;
+  contextCopy = context;
+  _captureSessionQueue = [(CAMCaptureEngine *)self _captureSessionQueue];
+  dispatch_assert_queue_V2(_captureSessionQueue);
 
-  [(CAMCaptureEngine *)self _updateContext:v7];
+  [(CAMCaptureEngine *)self _updateContext:contextCopy];
   CAMSignpostWithIDAndArgs(23, 0xEEEEB0B5B2B2EEEELL, 0, 0, 0, 0);
-  [v6 executeWithContext:v7];
+  [commandCopy executeWithContext:contextCopy];
   CAMSignpostWithIDAndArgs(24, 0xEEEEB0B5B2B2EEEELL, 0, 0, 0, 0);
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v9 = [v6 subcommands];
-  v10 = [v9 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  subcommands = [commandCopy subcommands];
+  v10 = [subcommands countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v10)
   {
     v11 = v10;
@@ -2637,25 +2637,25 @@ void __58__CAMCaptureEngine_requestCurrentCameraDeviceWithHandler___block_invoke
       {
         if (*v15 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(subcommands);
         }
 
-        [(CAMCaptureEngine *)self _executeCommand:*(*(&v14 + 1) + 8 * v13++) withContext:v7];
+        [(CAMCaptureEngine *)self _executeCommand:*(*(&v14 + 1) + 8 * v13++) withContext:contextCopy];
       }
 
       while (v11 != v13);
-      v11 = [v9 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v11 = [subcommands countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v11);
   }
 }
 
-- (void)enqueueCommand:(id)a3
+- (void)enqueueCommand:(id)command
 {
-  v4 = [a3 copy];
+  v4 = [command copy];
   v5 = [[CAMCaptureCommandContext alloc] initWithCaptureEngine:self];
-  v6 = [(CAMCaptureEngine *)self _captureSessionQueue];
+  _captureSessionQueue = [(CAMCaptureEngine *)self _captureSessionQueue];
   v9 = v4;
   v7 = v5;
   v8 = v4;
@@ -2709,26 +2709,26 @@ void __35__CAMCaptureEngine_enqueueCommand___block_invoke_224(uint64_t a1)
   [v2 postNotificationName:@"CAMCaptureEngineExecutedCommandWithContextNotification" object:*(a1 + 32) userInfo:*(a1 + 40)];
 }
 
-- (void)enqueueCommands:(id)a3
+- (void)enqueueCommands:(id)commands
 {
-  v4 = a3;
-  v5 = [[CAMCaptureCommand alloc] initWithSubcommands:v4];
+  commandsCopy = commands;
+  v5 = [[CAMCaptureCommand alloc] initWithSubcommands:commandsCopy];
 
   [(CAMCaptureEngine *)self enqueueCommand:v5];
 }
 
-- (void)registerCaptureService:(id)a3
+- (void)registerCaptureService:(id)service
 {
-  v4 = a3;
-  v5 = [(CAMCaptureEngine *)self _captureServicesQueue];
+  serviceCopy = service;
+  _captureServicesQueue = [(CAMCaptureEngine *)self _captureServicesQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __43__CAMCaptureEngine_registerCaptureService___block_invoke;
   v7[3] = &unk_1E76F7960;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = serviceCopy;
+  v6 = serviceCopy;
+  dispatch_sync(_captureServicesQueue, v7);
 }
 
 void __43__CAMCaptureEngine_registerCaptureService___block_invoke(uint64_t a1)
@@ -2737,18 +2737,18 @@ void __43__CAMCaptureEngine_registerCaptureService___block_invoke(uint64_t a1)
   [v2 addObject:*(a1 + 40)];
 }
 
-- (void)unregisterCaptureService:(id)a3
+- (void)unregisterCaptureService:(id)service
 {
-  v4 = a3;
-  v5 = [(CAMCaptureEngine *)self _captureServicesQueue];
+  serviceCopy = service;
+  _captureServicesQueue = [(CAMCaptureEngine *)self _captureServicesQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __45__CAMCaptureEngine_unregisterCaptureService___block_invoke;
   v7[3] = &unk_1E76F7960;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = serviceCopy;
+  v6 = serviceCopy;
+  dispatch_sync(_captureServicesQueue, v7);
 }
 
 void __45__CAMCaptureEngine_unregisterCaptureService___block_invoke(uint64_t a1)
@@ -2757,21 +2757,21 @@ void __45__CAMCaptureEngine_unregisterCaptureService___block_invoke(uint64_t a1)
   [v2 removeObject:*(a1 + 40)];
 }
 
-- (void)_enumerateCaptureServicesUsingBlock:(id)a3 completion:(id)a4
+- (void)_enumerateCaptureServicesUsingBlock:(id)block completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CAMCaptureEngine *)self _captureServicesQueue];
+  blockCopy = block;
+  completionCopy = completion;
+  _captureServicesQueue = [(CAMCaptureEngine *)self _captureServicesQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __67__CAMCaptureEngine__enumerateCaptureServicesUsingBlock_completion___block_invoke;
   block[3] = &unk_1E76FD3C0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_sync(v8, block);
+  v12 = blockCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = blockCopy;
+  dispatch_sync(_captureServicesQueue, block);
 }
 
 void __67__CAMCaptureEngine__enumerateCaptureServicesUsingBlock_completion___block_invoke(uint64_t a1)
@@ -2790,14 +2790,14 @@ void __67__CAMCaptureEngine__enumerateCaptureServicesUsingBlock_completion___blo
   }
 }
 
-- (void)registerStillImageCaptureRequest:(id)a3 withSettings:(id)a4
+- (void)registerStillImageCaptureRequest:(id)request withSettings:(id)settings
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CAMCaptureEngine *)self _captureResultsQueue];
-  v11 = v7;
-  v9 = v6;
-  v10 = v7;
+  requestCopy = request;
+  settingsCopy = settings;
+  _captureResultsQueue = [(CAMCaptureEngine *)self _captureResultsQueue];
+  v11 = settingsCopy;
+  v9 = requestCopy;
+  v10 = settingsCopy;
   pl_dispatch_async();
 }
 
@@ -2815,19 +2815,19 @@ uint64_t __66__CAMCaptureEngine_registerStillImageCaptureRequest_withSettings___
   return [v5 _checkCallbacksForUniqueID:v6 afterDelay:5.0 startTime:Current];
 }
 
-- (void)_checkCallbacksForUniqueID:(int64_t)a3 afterDelay:(double)a4 startTime:(double)a5
+- (void)_checkCallbacksForUniqueID:(int64_t)d afterDelay:(double)delay startTime:(double)time
 {
-  v9 = dispatch_time(0, (a4 * 1000000000.0));
-  v10 = [(CAMCaptureEngine *)self _captureResultsQueue];
+  v9 = dispatch_time(0, (delay * 1000000000.0));
+  _captureResultsQueue = [(CAMCaptureEngine *)self _captureResultsQueue];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __68__CAMCaptureEngine__checkCallbacksForUniqueID_afterDelay_startTime___block_invoke;
   v11[3] = &unk_1E76F9B50;
   v11[4] = self;
-  v11[5] = a3;
-  *&v11[6] = a5;
-  *&v11[7] = a4;
-  dispatch_after(v9, v10, v11);
+  v11[5] = d;
+  *&v11[6] = time;
+  *&v11[7] = delay;
+  dispatch_after(v9, _captureResultsQueue, v11);
 }
 
 void __68__CAMCaptureEngine__checkCallbacksForUniqueID_afterDelay_startTime___block_invoke(uint64_t a1)
@@ -2844,30 +2844,30 @@ void __68__CAMCaptureEngine__checkCallbacksForUniqueID_afterDelay_startTime___bl
   }
 }
 
-- (void)_resultsQueue_logReceivedCallbacksForID:(int64_t)a3 withIntroString:(id)a4
+- (void)_resultsQueue_logReceivedCallbacksForID:(int64_t)d withIntroString:(id)string
 {
   v36 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [(CAMCaptureEngine *)self _captureResultsQueue];
-  dispatch_assert_queue_V2(v7);
+  stringCopy = string;
+  _captureResultsQueue = [(CAMCaptureEngine *)self _captureResultsQueue];
+  dispatch_assert_queue_V2(_captureResultsQueue);
 
-  v8 = [(CAMCaptureEngine *)self _resultsQueueRegisteredStillImageRequests];
-  v9 = [MEMORY[0x1E696AD98] numberWithLongLong:a3];
-  v10 = [v8 objectForKey:v9];
+  _resultsQueueRegisteredStillImageRequests = [(CAMCaptureEngine *)self _resultsQueueRegisteredStillImageRequests];
+  v9 = [MEMORY[0x1E696AD98] numberWithLongLong:d];
+  v10 = [_resultsQueueRegisteredStillImageRequests objectForKey:v9];
 
-  v11 = [MEMORY[0x1E696AD60] stringWithString:v6];
-  v12 = [v10 callbackReceipts];
+  v11 = [MEMORY[0x1E696AD60] stringWithString:stringCopy];
+  callbackReceipts = [v10 callbackReceipts];
   [v11 appendString:@"Callbacks received:\n"];
-  if ([v12 count])
+  if ([callbackReceipts count])
   {
     v27 = v10;
-    v28 = v6;
+    v28 = stringCopy;
     v31 = 0u;
     v32 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v26 = v12;
-    v13 = v12;
+    v26 = callbackReceipts;
+    v13 = callbackReceipts;
     v14 = [v13 countByEnumeratingWithState:&v29 objects:v33 count:16];
     if (v14)
     {
@@ -2886,15 +2886,15 @@ void __68__CAMCaptureEngine__checkCallbacksForUniqueID_afterDelay_startTime___bl
           }
 
           v20 = *(*(&v29 + 1) + 8 * v18);
-          v21 = [v20 callback];
-          if (v21 > 0xC)
+          callback = [v20 callback];
+          if (callback > 0xC)
           {
             v22 = 0;
           }
 
           else
           {
-            v22 = off_1E76FD7B0[v21];
+            v22 = off_1E76FD7B0[callback];
           }
 
           [v20 secondsSinceBegin];
@@ -2931,8 +2931,8 @@ void __68__CAMCaptureEngine__checkCallbacksForUniqueID_afterDelay_startTime___bl
     }
 
     v10 = v27;
-    v6 = v28;
-    v12 = v26;
+    stringCopy = v28;
+    callbackReceipts = v26;
   }
 
   else
@@ -2948,11 +2948,11 @@ void __68__CAMCaptureEngine__checkCallbacksForUniqueID_afterDelay_startTime___bl
   }
 }
 
-- (void)currentInflightCapturesStringWithCompletionHandler:(id)a3
+- (void)currentInflightCapturesStringWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(CAMCaptureEngine *)self _captureResultsQueue];
-  v6 = v4;
+  handlerCopy = handler;
+  _captureResultsQueue = [(CAMCaptureEngine *)self _captureResultsQueue];
+  v6 = handlerCopy;
   pl_dispatch_async();
 }
 
@@ -3007,39 +3007,39 @@ void __71__CAMCaptureEngine_currentInflightCapturesStringWithCompletionHandler__
   [v2 appendFormat:@"%@, ", v3];
 }
 
-- (void)cacheMomentCaptureSettings:(id)a3 forIdentifier:(id)a4
+- (void)cacheMomentCaptureSettings:(id)settings forIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CAMCaptureEngine *)self _captureSessionQueue];
-  dispatch_assert_queue_V2(v8);
+  settingsCopy = settings;
+  identifierCopy = identifier;
+  _captureSessionQueue = [(CAMCaptureEngine *)self _captureSessionQueue];
+  dispatch_assert_queue_V2(_captureSessionQueue);
 
-  if (v7)
+  if (identifierCopy)
   {
-    v9 = [(CAMCaptureEngine *)self _sessionQueueCachedPhotoInitiationSettings];
-    [v9 setObject:v6 forKeyedSubscript:v7];
+    _sessionQueueCachedPhotoInitiationSettings = [(CAMCaptureEngine *)self _sessionQueueCachedPhotoInitiationSettings];
+    [_sessionQueueCachedPhotoInitiationSettings setObject:settingsCopy forKeyedSubscript:identifierCopy];
   }
 
   else
   {
-    v9 = os_log_create("com.apple.camera", "Capture");
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    _sessionQueueCachedPhotoInitiationSettings = os_log_create("com.apple.camera", "Capture");
+    if (os_log_type_enabled(_sessionQueueCachedPhotoInitiationSettings, OS_LOG_TYPE_ERROR))
     {
       [CAMCaptureEngine cacheMomentCaptureSettings:forIdentifier:];
     }
   }
 }
 
-- (id)cachedMomentCaptureSettingsForIdentifier:(id)a3
+- (id)cachedMomentCaptureSettingsForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CAMCaptureEngine *)self _captureSessionQueue];
-  dispatch_assert_queue_V2(v5);
+  identifierCopy = identifier;
+  _captureSessionQueue = [(CAMCaptureEngine *)self _captureSessionQueue];
+  dispatch_assert_queue_V2(_captureSessionQueue);
 
-  if (v4)
+  if (identifierCopy)
   {
-    v6 = [(CAMCaptureEngine *)self _sessionQueueCachedPhotoInitiationSettings];
-    v7 = [v6 objectForKeyedSubscript:v4];
+    _sessionQueueCachedPhotoInitiationSettings = [(CAMCaptureEngine *)self _sessionQueueCachedPhotoInitiationSettings];
+    v7 = [_sessionQueueCachedPhotoInitiationSettings objectForKeyedSubscript:identifierCopy];
   }
 
   else
@@ -3056,44 +3056,44 @@ void __71__CAMCaptureEngine_currentInflightCapturesStringWithCompletionHandler__
   return v7;
 }
 
-- (void)clearCachedMomentCaptureSettingsForIdentifier:(id)a3
+- (void)clearCachedMomentCaptureSettingsForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CAMCaptureEngine *)self _captureSessionQueue];
-  dispatch_assert_queue_V2(v5);
+  identifierCopy = identifier;
+  _captureSessionQueue = [(CAMCaptureEngine *)self _captureSessionQueue];
+  dispatch_assert_queue_V2(_captureSessionQueue);
 
-  if (v4)
+  if (identifierCopy)
   {
-    v6 = [(CAMCaptureEngine *)self _sessionQueueCachedPhotoInitiationSettings];
-    [v6 setObject:0 forKeyedSubscript:v4];
+    _sessionQueueCachedPhotoInitiationSettings = [(CAMCaptureEngine *)self _sessionQueueCachedPhotoInitiationSettings];
+    [_sessionQueueCachedPhotoInitiationSettings setObject:0 forKeyedSubscript:identifierCopy];
   }
 
   else
   {
-    v6 = os_log_create("com.apple.camera", "Capture");
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    _sessionQueueCachedPhotoInitiationSettings = os_log_create("com.apple.camera", "Capture");
+    if (os_log_type_enabled(_sessionQueueCachedPhotoInitiationSettings, OS_LOG_TYPE_ERROR))
     {
       [CAMCaptureEngine clearCachedMomentCaptureSettingsForIdentifier:];
     }
   }
 }
 
-- (void)captureOutput:(id)a3 willBeginCaptureBeforeResolvingSettingsForUniqueID:(int64_t)a4
+- (void)captureOutput:(id)output willBeginCaptureBeforeResolvingSettingsForUniqueID:(int64_t)d
 {
-  CAMSignpostWithIDAndArgs(76, a4, a4, 0, 0, 0);
-  CAMSignpostWithIDAndArgs(70, a4, a4, 0, 0, 0);
-  CAMSignpostWithIDAndArgs(72, a4, a4, 0, 0, 0);
+  CAMSignpostWithIDAndArgs(76, d, d, 0, 0, 0);
+  CAMSignpostWithIDAndArgs(70, d, d, 0, 0, 0);
+  CAMSignpostWithIDAndArgs(72, d, d, 0, 0, 0);
   mach_absolute_time();
-  v6 = [(CAMCaptureEngine *)self _signpostMutexQueue];
+  _signpostMutexQueue = [(CAMCaptureEngine *)self _signpostMutexQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __85__CAMCaptureEngine_captureOutput_willBeginCaptureBeforeResolvingSettingsForUniqueID___block_invoke;
   block[3] = &unk_1E76F7A38;
   block[4] = self;
-  block[5] = a4;
-  dispatch_sync(v6, block);
+  block[5] = d;
+  dispatch_sync(_signpostMutexQueue, block);
 
-  v7 = [(CAMCaptureEngine *)self _captureResultsQueue];
+  _captureResultsQueue = [(CAMCaptureEngine *)self _captureResultsQueue];
   pl_dispatch_async();
 }
 
@@ -3132,53 +3132,53 @@ void __85__CAMCaptureEngine_captureOutput_willBeginCaptureBeforeResolvingSetting
   }
 }
 
-- (void)captureOutput:(id)a3 willBeginCaptureForResolvedSettings:(id)a4
+- (void)captureOutput:(id)output willBeginCaptureForResolvedSettings:(id)settings
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 uniqueID];
+  outputCopy = output;
+  settingsCopy = settings;
+  uniqueID = [settingsCopy uniqueID];
   mach_absolute_time();
-  CAMSignpostWithIDAndArgs(35, v8, v8, 0, 0, 0);
+  CAMSignpostWithIDAndArgs(35, uniqueID, uniqueID, 0, 0, 0);
   [(CAMCaptureEngine *)self stopMonitoringForAccidentalLaunch];
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
   v17 = 0;
-  v9 = [(CAMCaptureEngine *)self _signpostMutexQueue];
+  _signpostMutexQueue = [(CAMCaptureEngine *)self _signpostMutexQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __70__CAMCaptureEngine_captureOutput_willBeginCaptureForResolvedSettings___block_invoke;
   block[3] = &unk_1E76FCCB8;
   block[5] = &v14;
-  block[6] = v8;
+  block[6] = uniqueID;
   block[4] = self;
-  dispatch_sync(v9, block);
+  dispatch_sync(_signpostMutexQueue, block);
 
   if (*(v15 + 24) == 1)
   {
-    CAMSignpostWithIDAndArgs(70, v8, v8, 0, 0, 0);
-    CAMSignpostWithIDAndArgs(72, v8, v8, 0, 0, 0);
+    CAMSignpostWithIDAndArgs(70, uniqueID, uniqueID, 0, 0, 0);
+    CAMSignpostWithIDAndArgs(72, uniqueID, uniqueID, 0, 0, 0);
   }
 
-  if ([v7 cam_isRecordingMovieForLivePhoto])
+  if ([settingsCopy cam_isRecordingMovieForLivePhoto])
   {
     v10 = os_log_create("com.apple.camera", "Capture");
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v19 = v8;
+      v19 = uniqueID;
       _os_log_impl(&dword_1A3640000, v10, OS_LOG_TYPE_DEFAULT, "captureID:%lld captureOutput:willBeginCaptureForResolvedSettings: with video", buf, 0xCu);
     }
 
-    v11 = [(CAMCaptureEngine *)self _captureResultsQueue];
-    v12 = v7;
+    _captureResultsQueue = [(CAMCaptureEngine *)self _captureResultsQueue];
+    v12 = settingsCopy;
     pl_dispatch_async();
   }
 
   else
   {
-    CAMSignpostWithIDAndArgs(36, v8, v8, 0, 0, 0);
+    CAMSignpostWithIDAndArgs(36, uniqueID, uniqueID, 0, 0, 0);
   }
 
   _Block_object_dispose(&v14, 8);
@@ -3231,18 +3231,18 @@ void __70__CAMCaptureEngine_captureOutput_willBeginCaptureForResolvedSettings___
   }
 }
 
-- (void)captureOutput:(id)a3 willCapturePhotoForResolvedSettings:(id)a4
+- (void)captureOutput:(id)output willCapturePhotoForResolvedSettings:(id)settings
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 uniqueID];
-  CAMSignpostWithIDAndArgs(37, v8, v8, 0, 0, 0);
+  outputCopy = output;
+  settingsCopy = settings;
+  uniqueID = [settingsCopy uniqueID];
+  CAMSignpostWithIDAndArgs(37, uniqueID, uniqueID, 0, 0, 0);
   mach_absolute_time();
-  v9 = [(CAMCaptureEngine *)self _captureResultsQueue];
-  v12 = v7;
-  v13 = v6;
-  v10 = v6;
-  v11 = v7;
+  _captureResultsQueue = [(CAMCaptureEngine *)self _captureResultsQueue];
+  v12 = settingsCopy;
+  v13 = outputCopy;
+  v10 = outputCopy;
+  v11 = settingsCopy;
   pl_dispatch_async();
 }
 
@@ -3358,24 +3358,24 @@ void __70__CAMCaptureEngine_captureOutput_willCapturePhotoForResolvedSettings___
   }
 }
 
-- (void)captureOutput:(id)a3 didCapturePhotoForResolvedSettings:(id)a4
+- (void)captureOutput:(id)output didCapturePhotoForResolvedSettings:(id)settings
 {
   v12 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [v5 uniqueID];
-  CAMSignpostWithIDAndArgs(39, v6, v6, 0, 0, 0);
-  CAMSignpostWithIDAndArgs(71, v6, v6, 0, 0, 0);
+  settingsCopy = settings;
+  uniqueID = [settingsCopy uniqueID];
+  CAMSignpostWithIDAndArgs(39, uniqueID, uniqueID, 0, 0, 0);
+  CAMSignpostWithIDAndArgs(71, uniqueID, uniqueID, 0, 0, 0);
   v7 = os_log_create("com.apple.camera", "Capture");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v11 = v6;
+    v11 = uniqueID;
     _os_log_impl(&dword_1A3640000, v7, OS_LOG_TYPE_DEFAULT, "captureID:%lld captureOutput:didCapturePhotoForResolvedSettings:", buf, 0xCu);
   }
 
   mach_absolute_time();
-  v8 = [(CAMCaptureEngine *)self _captureResultsQueue];
-  v9 = v5;
+  _captureResultsQueue = [(CAMCaptureEngine *)self _captureResultsQueue];
+  v9 = settingsCopy;
   pl_dispatch_async();
 }
 
@@ -3409,21 +3409,21 @@ void __69__CAMCaptureEngine_captureOutput_didCapturePhotoForResolvedSettings___b
   }
 }
 
-- (void)captureOutput:(id)a3 readyForResponsiveRequestAfterResolvedSettings:(id)a4
+- (void)captureOutput:(id)output readyForResponsiveRequestAfterResolvedSettings:(id)settings
 {
   v10 = *MEMORY[0x1E69E9840];
-  v5 = [a4 uniqueID];
-  CAMSignpostWithIDAndArgs(99, v5, v5, 0, 0, 0);
+  uniqueID = [settings uniqueID];
+  CAMSignpostWithIDAndArgs(99, uniqueID, uniqueID, 0, 0, 0);
   v6 = os_log_create("com.apple.camera", "Capture");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v9 = v5;
+    v9 = uniqueID;
     _os_log_impl(&dword_1A3640000, v6, OS_LOG_TYPE_DEFAULT, "captureID:%lld captureOutput:readyForResponsiveRequestAfterResolvedSettings:", buf, 0xCu);
   }
 
   mach_absolute_time();
-  v7 = [(CAMCaptureEngine *)self _captureResultsQueue];
+  _captureResultsQueue = [(CAMCaptureEngine *)self _captureResultsQueue];
   pl_dispatch_async();
 }
 
@@ -3457,12 +3457,12 @@ void __81__CAMCaptureEngine_captureOutput_readyForResponsiveRequestAfterResolved
   }
 }
 
-- (void)captureOutput:(id)a3 readyForClientCompositingForResolvedSettings:(id)a4 compositingData:(id)a5
+- (void)captureOutput:(id)output readyForClientCompositingForResolvedSettings:(id)settings compositingData:(id)data
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  [v9 uniqueID];
+  outputCopy = output;
+  settingsCopy = settings;
+  dataCopy = data;
+  [settingsCopy uniqueID];
   v16[0] = 0;
   v16[1] = v16;
   v16[2] = 0x2020000000;
@@ -3471,11 +3471,11 @@ void __81__CAMCaptureEngine_captureOutput_readyForResponsiveRequestAfterResolved
   v14[1] = v14;
   v14[2] = 0x2020000000;
   v15 = 0;
-  v11 = [(CAMCaptureEngine *)self _captureResultsQueue];
+  _captureResultsQueue = [(CAMCaptureEngine *)self _captureResultsQueue];
   pl_dispatch_sync();
 
-  v12 = [(CAMCaptureEngine *)self _multiCamPIPCompositingQueue];
-  v13 = v10;
+  _multiCamPIPCompositingQueue = [(CAMCaptureEngine *)self _multiCamPIPCompositingQueue];
+  v13 = dataCopy;
   pl_dispatch_sync();
 
   _Block_object_dispose(v14, 8);
@@ -3499,75 +3499,75 @@ void __95__CAMCaptureEngine_captureOutput_readyForClientCompositingForResolvedSe
   [v2 compositeWithCompositingData:*(a1 + 40) strategy:1 captureOrientation:*(*(*(a1 + 48) + 8) + 24) mirrorPIP:*(*(*(a1 + 56) + 8) + 24)];
 }
 
-- (void)captureOutput:(id)a3 didFinishProcessingPhoto:(id)a4 error:(id)a5
+- (void)captureOutput:(id)output didFinishProcessingPhoto:(id)photo error:(id)error
 {
   v16 = *MEMORY[0x1E69E9840];
-  v7 = a5;
-  v8 = a4;
-  v9 = [v8 resolvedSettings];
-  v10 = [v9 uniqueID];
+  errorCopy = error;
+  photoCopy = photo;
+  resolvedSettings = [photoCopy resolvedSettings];
+  uniqueID = [resolvedSettings uniqueID];
 
-  CAMSignpostWithIDAndArgs(41, v10, v10, 0, 0, 0);
+  CAMSignpostWithIDAndArgs(41, uniqueID, uniqueID, 0, 0, 0);
   v11 = os_log_create("com.apple.camera", "Capture");
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 134218242;
-    v13 = v10;
+    v13 = uniqueID;
     v14 = 2114;
-    v15 = v7;
+    v15 = errorCopy;
     _os_log_impl(&dword_1A3640000, v11, OS_LOG_TYPE_DEFAULT, "captureID:%lld captureOutput:didFinishProcessingPhoto:error:, error=%{public}@", &v12, 0x16u);
   }
 
-  [(CAMCaptureEngine *)self _handleCaptureOutputDidFinishCapturingPhoto:v8 deferredPhotoProxy:0 error:v7];
+  [(CAMCaptureEngine *)self _handleCaptureOutputDidFinishCapturingPhoto:photoCopy deferredPhotoProxy:0 error:errorCopy];
 }
 
-- (void)captureOutput:(id)a3 didFinishCapturingDeferredPhotoProxy:(id)a4 error:(id)a5
+- (void)captureOutput:(id)output didFinishCapturingDeferredPhotoProxy:(id)proxy error:(id)error
 {
   v16 = *MEMORY[0x1E69E9840];
-  v7 = a5;
-  v8 = a4;
-  v9 = [v8 resolvedSettings];
-  v10 = [v9 uniqueID];
+  errorCopy = error;
+  proxyCopy = proxy;
+  resolvedSettings = [proxyCopy resolvedSettings];
+  uniqueID = [resolvedSettings uniqueID];
 
-  CAMSignpostWithIDAndArgs(61, v10, v10, 0, 0, 0);
+  CAMSignpostWithIDAndArgs(61, uniqueID, uniqueID, 0, 0, 0);
   v11 = os_log_create("com.apple.camera", "Capture");
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 134218242;
-    v13 = v10;
+    v13 = uniqueID;
     v14 = 2114;
-    v15 = v7;
+    v15 = errorCopy;
     _os_log_impl(&dword_1A3640000, v11, OS_LOG_TYPE_DEFAULT, "captureID:%lld captureOutput:didFinishCapturingDeferredPhotoProxy:error:, error=%{public}@", &v12, 0x16u);
   }
 
-  [(CAMCaptureEngine *)self _handleCaptureOutputDidFinishCapturingPhoto:0 deferredPhotoProxy:v8 error:v7];
+  [(CAMCaptureEngine *)self _handleCaptureOutputDidFinishCapturingPhoto:0 deferredPhotoProxy:proxyCopy error:errorCopy];
 }
 
-- (void)_handleCaptureOutputDidFinishCapturingPhoto:(id)a3 deferredPhotoProxy:(id)a4 error:(id)a5
+- (void)_handleCaptureOutputDidFinishCapturingPhoto:(id)photo deferredPhotoProxy:(id)proxy error:(id)error
 {
-  v26 = self;
+  selfCopy = self;
   v36 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v7)
+  photoCopy = photo;
+  proxyCopy = proxy;
+  errorCopy = error;
+  if (photoCopy)
   {
-    v10 = v7;
+    v10 = photoCopy;
   }
 
   else
   {
-    v10 = v8;
+    v10 = proxyCopy;
   }
 
   v11 = v10;
-  v12 = [v11 resolvedSettings];
+  resolvedSettings = [v11 resolvedSettings];
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v13 = [v12 photoManifest];
-  v14 = [v13 countByEnumeratingWithState:&v31 objects:v35 count:16];
+  photoManifest = [resolvedSettings photoManifest];
+  v14 = [photoManifest countByEnumeratingWithState:&v31 objects:v35 count:16];
   if (v14)
   {
     v15 = v14;
@@ -3578,18 +3578,18 @@ void __95__CAMCaptureEngine_captureOutput_readyForClientCompositingForResolvedSe
       {
         if (*v32 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(photoManifest);
         }
 
-        v18 = [*(*(&v31 + 1) + 8 * i) intValue];
-        if (v18 > [v11 expectedPhotoProcessingFlags])
+        intValue = [*(*(&v31 + 1) + 8 * i) intValue];
+        if (intValue > [v11 expectedPhotoProcessingFlags])
         {
 
           goto LABEL_14;
         }
       }
 
-      v15 = [v13 countByEnumeratingWithState:&v31 objects:v35 count:16];
+      v15 = [photoManifest countByEnumeratingWithState:&v31 objects:v35 count:16];
       if (v15)
       {
         continue;
@@ -3599,21 +3599,21 @@ void __95__CAMCaptureEngine_captureOutput_readyForClientCompositingForResolvedSe
     }
   }
 
-  v19 = [v12 uniqueID];
-  CAMSignpostWithIDAndArgs(73, v19, v19, 0, 0, 0);
-  CAMSignpostWithIDAndArgs(74, v19, v19, 0, 0, 0);
+  uniqueID = [resolvedSettings uniqueID];
+  CAMSignpostWithIDAndArgs(73, uniqueID, uniqueID, 0, 0, 0);
+  CAMSignpostWithIDAndArgs(74, uniqueID, uniqueID, 0, 0, 0);
 LABEL_14:
   mach_absolute_time();
-  v20 = [(CAMCaptureEngine *)v26 _captureResultsQueue];
+  _captureResultsQueue = [(CAMCaptureEngine *)selfCopy _captureResultsQueue];
   v27 = v11;
-  v28 = v9;
-  v30 = v8;
-  v29 = v7;
-  v21 = v8;
-  v22 = v7;
-  v23 = v9;
+  v28 = errorCopy;
+  v30 = proxyCopy;
+  v29 = photoCopy;
+  v21 = proxyCopy;
+  v22 = photoCopy;
+  v23 = errorCopy;
   v24 = v11;
-  v25 = v12;
+  v25 = resolvedSettings;
   pl_dispatch_async();
 }
 
@@ -3783,12 +3783,12 @@ void __89__CAMCaptureEngine__handleCaptureOutputDidFinishCapturingPhoto_deferred
   }
 }
 
-- (id)_expectedResultSpecifiersForResolvedPhotoSettings:(id)a3
+- (id)_expectedResultSpecifiersForResolvedPhotoSettings:(id)settings
 {
   v3 = MEMORY[0x1E695DFA8];
-  v4 = a3;
+  settingsCopy = settings;
   v5 = objc_alloc_init(v3);
-  v6 = [v4 photoManifest];
+  photoManifest = [settingsCopy photoManifest];
 
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
@@ -3796,7 +3796,7 @@ void __89__CAMCaptureEngine__handleCaptureOutputDidFinishCapturingPhoto_deferred
   v9[3] = &unk_1E76FBB58;
   v7 = v5;
   v10 = v7;
-  [v6 enumerateObjectsUsingBlock:v9];
+  [photoManifest enumerateObjectsUsingBlock:v9];
 
   return v7;
 }
@@ -3809,39 +3809,39 @@ void __70__CAMCaptureEngine__expectedResultSpecifiersForResolvedPhotoSettings___
   [v4 addObject:v5];
 }
 
-- (id)_coordinationInfoForRequest:(id)a3 photo:(id)a4
+- (id)_coordinationInfoForRequest:(id)request photo:(id)photo
 {
-  v5 = a4;
-  v6 = [v5 resolvedSettings];
-  v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"captureID:%lld", objc_msgSend(v6, "uniqueID")];
-  v8 = [(CAMCaptureEngine *)self _expectedResultSpecifiersForResolvedPhotoSettings:v6];
-  v9 = [v5 expectedPhotoProcessingFlags];
+  photoCopy = photo;
+  resolvedSettings = [photoCopy resolvedSettings];
+  v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"captureID:%lld", objc_msgSend(resolvedSettings, "uniqueID")];
+  v8 = [(CAMCaptureEngine *)self _expectedResultSpecifiersForResolvedPhotoSettings:resolvedSettings];
+  expectedPhotoProcessingFlags = [photoCopy expectedPhotoProcessingFlags];
 
-  v10 = [[CAMCaptureCoordinationInfo alloc] initWithIdentifier:v7 allExpectedResultSpecifiers:v8 resultSpecifiers:(v9 >> 2) & 2 | (v9 >> 1) & 1];
+  v10 = [[CAMCaptureCoordinationInfo alloc] initWithIdentifier:v7 allExpectedResultSpecifiers:v8 resultSpecifiers:(expectedPhotoProcessingFlags >> 2) & 2 | (expectedPhotoProcessingFlags >> 1) & 1];
 
   return v10;
 }
 
-- (id)_coordinationInfoForRequest:(id)a3 resolvedSettings:(id)a4 videoComplementURL:(id)a5 isFiltered:(BOOL)a6
+- (id)_coordinationInfoForRequest:(id)request resolvedSettings:(id)settings videoComplementURL:(id)l isFiltered:(BOOL)filtered
 {
-  v6 = a6;
+  filteredCopy = filtered;
   v10 = MEMORY[0x1E696AEC0];
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [v10 stringWithFormat:@"captureID:%lld", objc_msgSend(v12, "uniqueID")];
-  v15 = [(CAMCaptureEngine *)self _expectedResultSpecifiersForResolvedPhotoSettings:v12];
-  v16 = [v12 isHDREnabled];
+  lCopy = l;
+  settingsCopy = settings;
+  requestCopy = request;
+  v14 = [v10 stringWithFormat:@"captureID:%lld", objc_msgSend(settingsCopy, "uniqueID")];
+  v15 = [(CAMCaptureEngine *)self _expectedResultSpecifiersForResolvedPhotoSettings:settingsCopy];
+  isHDREnabled = [settingsCopy isHDREnabled];
 
-  v17 = [v13 isEV0LocalVideoDestinationURL:v11];
-  if (v6)
+  v17 = [requestCopy isEV0LocalVideoDestinationURL:lCopy];
+  if (filteredCopy)
   {
-    v18 = v16 & (v17 ^ 1u) | 2;
+    v18 = isHDREnabled & (v17 ^ 1u) | 2;
   }
 
   else
   {
-    v18 = v16 & (v17 ^ 1u);
+    v18 = isHDREnabled & (v17 ^ 1u);
   }
 
   v19 = [[CAMCaptureCoordinationInfo alloc] initWithIdentifier:v14 allExpectedResultSpecifiers:v15 resultSpecifiers:v18];
@@ -3849,26 +3849,26 @@ void __70__CAMCaptureEngine__expectedResultSpecifiersForResolvedPhotoSettings___
   return v19;
 }
 
-- (id)_coordinationInfoForCTMVideoRequest:(id)a3 videoOutputURL:(id)a4 resolvedMomentCaptureMovieSettings:(id)a5
+- (id)_coordinationInfoForCTMVideoRequest:(id)request videoOutputURL:(id)l resolvedMomentCaptureMovieSettings:(id)settings
 {
   v6 = MEMORY[0x1E696AEC0];
-  v7 = a5;
-  v8 = [v6 stringWithFormat:@"captureID:%lld", objc_msgSend(v7, "uniqueID")];
-  v9 = [(CAMCaptureEngine *)self _expectedResultSpecifiersForResolvedMomentCaptureMovieSettings:v7];
+  settingsCopy = settings;
+  v8 = [v6 stringWithFormat:@"captureID:%lld", objc_msgSend(settingsCopy, "uniqueID")];
+  v9 = [(CAMCaptureEngine *)self _expectedResultSpecifiersForResolvedMomentCaptureMovieSettings:settingsCopy];
 
   v10 = [[CAMCaptureCoordinationInfo alloc] initWithIdentifier:v8 allExpectedResultSpecifiers:v9 resultSpecifiers:0];
 
   return v10;
 }
 
-- (id)_expectedResultSpecifiersForResolvedMomentCaptureMovieSettings:(id)a3
+- (id)_expectedResultSpecifiersForResolvedMomentCaptureMovieSettings:(id)settings
 {
   v3 = MEMORY[0x1E695DFA8];
-  v4 = a3;
+  settingsCopy = settings;
   v5 = objc_alloc_init(v3);
-  v6 = [v4 movieURL];
+  movieURL = [settingsCopy movieURL];
 
-  if (v6)
+  if (movieURL)
   {
     [v5 addObject:&unk_1F16C8570];
   }
@@ -3876,26 +3876,26 @@ void __70__CAMCaptureEngine__expectedResultSpecifiersForResolvedPhotoSettings___
   return v5;
 }
 
-- (void)captureOutput:(id)a3 didFinishRecordingLivePhotoMovieForEventualFileAtURL:(id)a4 resolvedSettings:(id)a5
+- (void)captureOutput:(id)output didFinishRecordingLivePhotoMovieForEventualFileAtURL:(id)l resolvedSettings:(id)settings
 {
   v17 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a5;
-  v9 = [v8 uniqueID];
-  CAMSignpostWithIDAndArgs(43, v9, v9, 0, 0, 0);
+  lCopy = l;
+  settingsCopy = settings;
+  uniqueID = [settingsCopy uniqueID];
+  CAMSignpostWithIDAndArgs(43, uniqueID, uniqueID, 0, 0, 0);
   v10 = os_log_create("com.apple.camera", "Capture");
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v16 = [v8 uniqueID];
+    uniqueID2 = [settingsCopy uniqueID];
     _os_log_impl(&dword_1A3640000, v10, OS_LOG_TYPE_DEFAULT, "captureID:%lld captureOutput:didFinishRecordingLivePhotoMovieForEventualFileAtURL:resolvedSettings:", buf, 0xCu);
   }
 
   mach_absolute_time();
-  v11 = [(CAMCaptureEngine *)self _captureResultsQueue];
-  v14 = v7;
-  v12 = v7;
-  v13 = v8;
+  _captureResultsQueue = [(CAMCaptureEngine *)self _captureResultsQueue];
+  v14 = lCopy;
+  v12 = lCopy;
+  v13 = settingsCopy;
   pl_dispatch_async();
 }
 
@@ -3932,42 +3932,42 @@ void __104__CAMCaptureEngine_captureOutput_didFinishRecordingLivePhotoMovieForEv
   }
 }
 
-- (void)captureOutput:(id)a3 didFinishProcessingLivePhotoToMovieFileAtURL:(id)a4 duration:(id *)a5 photoDisplayTime:(id *)a6 resolvedSettings:(id)a7 error:(id)a8
+- (void)captureOutput:(id)output didFinishProcessingLivePhotoToMovieFileAtURL:(id)l duration:(id *)duration photoDisplayTime:(id *)time resolvedSettings:(id)settings error:(id)error
 {
-  v9 = *a5;
-  v8 = *a6;
-  [(CAMCaptureEngine *)self captureOutput:a3 didFinishProcessingLivePhotoToMovieFileAtURL:a4 duration:&v9 photoDisplayTime:&v8 metadataIdentifiers:MEMORY[0x1E695E0F8] resolvedSettings:a7 error:a8];
+  v9 = *duration;
+  v8 = *time;
+  [(CAMCaptureEngine *)self captureOutput:output didFinishProcessingLivePhotoToMovieFileAtURL:l duration:&v9 photoDisplayTime:&v8 metadataIdentifiers:MEMORY[0x1E695E0F8] resolvedSettings:settings error:error];
 }
 
-- (void)captureOutput:(id)a3 didFinishProcessingLivePhotoToMovieFileAtURL:(id)a4 duration:(id *)a5 photoDisplayTime:(id *)a6 metadataIdentifiers:(id)a7 resolvedSettings:(id)a8 error:(id)a9
+- (void)captureOutput:(id)output didFinishProcessingLivePhotoToMovieFileAtURL:(id)l duration:(id *)duration photoDisplayTime:(id *)time metadataIdentifiers:(id)identifiers resolvedSettings:(id)settings error:(id)error
 {
   v31 = *MEMORY[0x1E69E9840];
-  v12 = a4;
-  v13 = a7;
-  v14 = a8;
-  v15 = a9;
-  v16 = [v14 uniqueID];
-  CAMSignpostWithIDAndArgs(45, v16, v16, 0, 0, 0);
+  lCopy = l;
+  identifiersCopy = identifiers;
+  settingsCopy = settings;
+  errorCopy = error;
+  uniqueID = [settingsCopy uniqueID];
+  CAMSignpostWithIDAndArgs(45, uniqueID, uniqueID, 0, 0, 0);
   v17 = os_log_create("com.apple.camera", "Capture");
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218498;
-    v26 = [v14 uniqueID];
+    uniqueID2 = [settingsCopy uniqueID];
     v27 = 2114;
-    v28 = v12;
+    v28 = lCopy;
     v29 = 2114;
-    v30 = v15;
+    v30 = errorCopy;
     _os_log_impl(&dword_1A3640000, v17, OS_LOG_TYPE_DEFAULT, "captureID:%lld captureOutput:didFinishProcessingLivePhotoToMovieFileAtURL:, url=%{public}@, error: %{public}@", buf, 0x20u);
   }
 
   mach_absolute_time();
-  v18 = [(CAMCaptureEngine *)self _captureResultsQueue];
-  v23 = v14;
-  v24 = v12;
-  v19 = v13;
-  v20 = v15;
-  v21 = v12;
-  v22 = v14;
+  _captureResultsQueue = [(CAMCaptureEngine *)self _captureResultsQueue];
+  v23 = settingsCopy;
+  v24 = lCopy;
+  v19 = identifiersCopy;
+  v20 = errorCopy;
+  v21 = lCopy;
+  v22 = settingsCopy;
   pl_dispatch_async();
 }
 
@@ -4046,31 +4046,31 @@ void __148__CAMCaptureEngine_captureOutput_didFinishProcessingLivePhotoToMovieFi
   }
 }
 
-- (void)captureOutput:(id)a3 didFinishCaptureForResolvedSettings:(id)a4 error:(id)a5
+- (void)captureOutput:(id)output didFinishCaptureForResolvedSettings:(id)settings error:(id)error
 {
   v14 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a5;
+  settingsCopy = settings;
+  errorCopy = error;
   v9 = os_log_create("com.apple.camera", "Capture");
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 134218242;
-    v11 = [v7 uniqueID];
+    uniqueID = [settingsCopy uniqueID];
     v12 = 2114;
-    v13 = v8;
+    v13 = errorCopy;
     _os_log_impl(&dword_1A3640000, v9, OS_LOG_TYPE_DEFAULT, "captureID:%lld captureOutput:didFinishCaptureForResolvedSettings:, error: %{public}@", &v10, 0x16u);
   }
 
-  -[CAMCaptureEngine _didFinishStillImageCaptureForUniqueID:error:](self, "_didFinishStillImageCaptureForUniqueID:error:", [v7 uniqueID], v8);
+  -[CAMCaptureEngine _didFinishStillImageCaptureForUniqueID:error:](self, "_didFinishStillImageCaptureForUniqueID:error:", [settingsCopy uniqueID], errorCopy);
 }
 
-- (void)_didFinishStillImageCaptureForUniqueID:(int64_t)a3 error:(id)a4
+- (void)_didFinishStillImageCaptureForUniqueID:(int64_t)d error:(id)error
 {
-  v6 = a4;
-  CAMSignpostWithIDAndArgs(47, a3, a3, 0, 0, 0);
+  errorCopy = error;
+  CAMSignpostWithIDAndArgs(47, d, d, 0, 0, 0);
   mach_absolute_time();
-  v7 = [(CAMCaptureEngine *)self _captureResultsQueue];
-  v8 = v6;
+  _captureResultsQueue = [(CAMCaptureEngine *)self _captureResultsQueue];
+  v8 = errorCopy;
   pl_dispatch_async();
 }
 
@@ -4137,26 +4137,26 @@ void __65__CAMCaptureEngine__didFinishStillImageCaptureForUniqueID_error___block
   }
 }
 
-- (void)captureOutput:(id)a3 didBeginMovieCaptureForResolvedSettings:(id)a4
+- (void)captureOutput:(id)output didBeginMovieCaptureForResolvedSettings:(id)settings
 {
   v14 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [v5 uniqueID];
-  CAMSignpostWithIDAndArgs(57, v6, v6, 0, 0, 0);
+  settingsCopy = settings;
+  uniqueID = [settingsCopy uniqueID];
+  CAMSignpostWithIDAndArgs(57, uniqueID, uniqueID, 0, 0, 0);
   v7 = os_log_create("com.apple.camera", "Capture");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218242;
-    v11 = v6;
+    v11 = uniqueID;
     v12 = 2114;
-    v13 = v5;
+    v13 = settingsCopy;
     _os_log_impl(&dword_1A3640000, v7, OS_LOG_TYPE_DEFAULT, "captureID:%lld captureOutput:didBeginMovieCaptureForResolvedSettings:, %{public}@", buf, 0x16u);
   }
 
   mach_absolute_time();
   [(CAMCaptureEngine *)self stopMonitoringForAccidentalLaunch];
-  v8 = [(CAMCaptureEngine *)self _captureResultsQueue];
-  v9 = v5;
+  _captureResultsQueue = [(CAMCaptureEngine *)self _captureResultsQueue];
+  v9 = settingsCopy;
   pl_dispatch_async();
 }
 
@@ -4189,27 +4189,27 @@ void __74__CAMCaptureEngine_captureOutput_didBeginMovieCaptureForResolvedSetting
   }
 }
 
-- (void)captureOutput:(id)a3 didFinishRecordingMovie:(id)a4
+- (void)captureOutput:(id)output didFinishRecordingMovie:(id)movie
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [v5 resolvedSettings];
-  v7 = [v6 uniqueID];
+  movieCopy = movie;
+  resolvedSettings = [movieCopy resolvedSettings];
+  uniqueID = [resolvedSettings uniqueID];
 
   v8 = os_log_create("com.apple.camera", "Capture");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v5 outputFileURL];
+    outputFileURL = [movieCopy outputFileURL];
     *buf = 134218242;
-    v13 = v7;
+    v13 = uniqueID;
     v14 = 2114;
-    v15 = v9;
+    v15 = outputFileURL;
     _os_log_impl(&dword_1A3640000, v8, OS_LOG_TYPE_DEFAULT, "captureID:%lld captureOutput:didFinishRecordingMovie:, url=%{public}@", buf, 0x16u);
   }
 
   mach_absolute_time();
-  v10 = [(CAMCaptureEngine *)self _captureResultsQueue];
-  v11 = v5;
+  _captureResultsQueue = [(CAMCaptureEngine *)self _captureResultsQueue];
+  v11 = movieCopy;
   pl_dispatch_async();
 }
 
@@ -4247,36 +4247,36 @@ void __58__CAMCaptureEngine_captureOutput_didFinishRecordingMovie___block_invoke
   }
 }
 
-- (void)captureOutput:(id)a3 didFinishWritingMovie:(id)a4 error:(id)a5
+- (void)captureOutput:(id)output didFinishWritingMovie:(id)movie error:(id)error
 {
   v25 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a5;
-  v9 = [v7 resolvedSettings];
-  v10 = [v9 uniqueID];
+  movieCopy = movie;
+  errorCopy = error;
+  resolvedSettings = [movieCopy resolvedSettings];
+  uniqueID = [resolvedSettings uniqueID];
 
-  CAMSignpostWithIDAndArgs(59, v10, v10, 0, 0, 0);
-  v11 = [v7 outputFileURL];
+  CAMSignpostWithIDAndArgs(59, uniqueID, uniqueID, 0, 0, 0);
+  outputFileURL = [movieCopy outputFileURL];
   v12 = os_log_create("com.apple.camera", "Capture");
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218498;
-    v20 = v10;
+    v20 = uniqueID;
     v21 = 2114;
-    v22 = v11;
+    v22 = outputFileURL;
     v23 = 2114;
-    v24 = v8;
+    v24 = errorCopy;
     _os_log_impl(&dword_1A3640000, v12, OS_LOG_TYPE_DEFAULT, "captureID:%lld captureOutput:didFinishWritingMovie:, url=%{public}@, error: %{public}@", buf, 0x20u);
   }
 
-  CVPixelBufferRetain([v7 previewPixelBuffer]);
+  CVPixelBufferRetain([movieCopy previewPixelBuffer]);
   mach_absolute_time();
-  v13 = [(CAMCaptureEngine *)self _captureResultsQueue];
-  v17 = v7;
-  v18 = v8;
-  v14 = v8;
-  v15 = v7;
-  v16 = v11;
+  _captureResultsQueue = [(CAMCaptureEngine *)self _captureResultsQueue];
+  v17 = movieCopy;
+  v18 = errorCopy;
+  v14 = errorCopy;
+  v15 = movieCopy;
+  v16 = outputFileURL;
   pl_dispatch_async();
 }
 
@@ -4449,83 +4449,83 @@ void __62__CAMCaptureEngine_captureOutput_didFinishWritingMovie_error___block_in
   }
 }
 
-- (void)captureOutput:(id)a3 didFinishMovieCaptureForResolvedSettings:(id)a4 error:(id)a5
+- (void)captureOutput:(id)output didFinishMovieCaptureForResolvedSettings:(id)settings error:(id)error
 {
   v14 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a5;
+  settingsCopy = settings;
+  errorCopy = error;
   v9 = os_log_create("com.apple.camera", "Capture");
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 134218242;
-    v11 = [v7 uniqueID];
+    uniqueID = [settingsCopy uniqueID];
     v12 = 2114;
-    v13 = v8;
+    v13 = errorCopy;
     _os_log_impl(&dword_1A3640000, v9, OS_LOG_TYPE_DEFAULT, "captureID:%lld captureOutput:didFinishMovieCaptureForResolvedSettings:, error: %{public}@", &v10, 0x16u);
   }
 
-  -[CAMCaptureEngine _didFinishStillImageCaptureForUniqueID:error:](self, "_didFinishStillImageCaptureForUniqueID:error:", [v7 uniqueID], v8);
+  -[CAMCaptureEngine _didFinishStillImageCaptureForUniqueID:error:](self, "_didFinishStillImageCaptureForUniqueID:error:", [settingsCopy uniqueID], errorCopy);
 }
 
-- ($42FF7B9720B8FFE93045C4EB8F3F13A3)_previewFilterSetForRequest:(SEL)a3 photo:(id)a4
+- ($42FF7B9720B8FFE93045C4EB8F3F13A3)_previewFilterSetForRequest:(SEL)request photo:(id)photo
 {
   v16 = a5;
-  v8 = a4;
-  v9 = [v16 resolvedSettings];
-  v10 = [v9 previewDimensions];
-  v11 = v10;
-  v12 = HIDWORD(v10);
+  photoCopy = photo;
+  resolvedSettings = [v16 resolvedSettings];
+  previewDimensions = [resolvedSettings previewDimensions];
+  v11 = previewDimensions;
+  v12 = HIDWORD(previewDimensions);
 
   retstr->var3 = 0;
   *&retstr->var0 = 0u;
   retstr->var2 = 0u;
-  [(CAMCaptureEngine *)self _previewFilterSetForRequest:v8 previewSize:v11, v12];
-  LODWORD(self) = [v8 wantsSemanticSceneFilter];
+  [(CAMCaptureEngine *)self _previewFilterSetForRequest:photoCopy previewSize:v11, v12];
+  LODWORD(self) = [photoCopy wantsSemanticSceneFilter];
 
   if (self)
   {
     v13 = MEMORY[0x1E69C0868];
-    v14 = [v16 privateClientMetadata];
-    retstr->var3 = [v13 semanticEnhanceSceneForPrivateClientMetadata:v14];
+    privateClientMetadata = [v16 privateClientMetadata];
+    retstr->var3 = [v13 semanticEnhanceSceneForPrivateClientMetadata:privateClientMetadata];
   }
 
   return result;
 }
 
-- ($42FF7B9720B8FFE93045C4EB8F3F13A3)_previewFilterSetForRequest:(SEL)a3 previewSize:(id)a4
+- ($42FF7B9720B8FFE93045C4EB8F3F13A3)_previewFilterSetForRequest:(SEL)request previewSize:(id)size
 {
   height = a5.height;
   width = a5.width;
-  v11 = a4;
+  sizeCopy = size;
   retstr->var3 = 0;
-  retstr->var1 = [v11 aspectRatioCrop];
+  retstr->var1 = [sizeCopy aspectRatioCrop];
   retstr->var2.width = width;
   retstr->var2.height = height;
-  v8 = [v11 adjustmentFilters];
-  v9 = 0;
-  if (!v8)
+  adjustmentFilters = [sizeCopy adjustmentFilters];
+  effectFilterType = 0;
+  if (!adjustmentFilters)
   {
-    v9 = [v11 effectFilterType];
+    effectFilterType = [sizeCopy effectFilterType];
   }
 
-  retstr->var0 = v9;
+  retstr->var0 = effectFilterType;
 
   return result;
 }
 
-- (id)_previewFiltersForFilterSet:(id *)a3
+- (id)_previewFiltersForFilterSet:(id *)set
 {
-  if (a3->var0)
+  if (set->var0)
   {
-    v4 = (a3->var1 != 0) + 1;
+    v4 = (set->var1 != 0) + 1;
   }
 
   else
   {
-    v4 = a3->var1 != 0;
+    v4 = set->var1 != 0;
   }
 
-  if ((a3->var3 - 1) >= 0xFFFFFFFFFFFFFFFELL)
+  if ((set->var3 - 1) >= 0xFFFFFFFFFFFFFFFELL)
   {
     v5 = v4;
   }
@@ -4543,17 +4543,17 @@ void __62__CAMCaptureEngine_captureOutput_didFinishWritingMovie_error___block_in
   v7 = v6;
   v22 = v7;
   v8 = _Block_copy(aBlock);
-  v9 = [MEMORY[0x1E69C0868] filterForSemanticEnhanceScene:a3->var3];
+  v9 = [MEMORY[0x1E69C0868] filterForSemanticEnhanceScene:set->var3];
   if (v9)
   {
     v10 = +[CAMCaptureCapabilities capabilities];
-    v11 = [v10 enableSemanticDevelopmentFilterDebugging];
+    enableSemanticDevelopmentFilterDebugging = [v10 enableSemanticDevelopmentFilterDebugging];
 
-    if (v11)
+    if (enableSemanticDevelopmentFilterDebugging)
     {
       v12 = MEMORY[0x1E695F648];
-      v13 = [v9 name];
-      v14 = [v12 filterWithName:v13 withInputParameters:&unk_1F16C9060];
+      name = [v9 name];
+      v14 = [v12 filterWithName:name withInputParameters:&unk_1F16C9060];
 
       v9 = v14;
     }
@@ -4561,11 +4561,11 @@ void __62__CAMCaptureEngine_captureOutput_didFinishWritingMovie_error___block_in
 
   v8[2](v8, v9);
   v15 = MEMORY[0x1E695F648];
-  v16 = [CAMEffectFilterManager ciFilterNameForFilterType:a3->var0];
+  v16 = [CAMEffectFilterManager ciFilterNameForFilterType:set->var0];
   v17 = [v15 filterWithName:v16];
   v8[2](v8, v17);
 
-  v18 = [CAMAspectCropUtilities cropFilterForAspectRatio:a3->var1 imageSize:a3->var2.width, a3->var2.height];
+  v18 = [CAMAspectCropUtilities cropFilterForAspectRatio:set->var1 imageSize:set->var2.width, set->var2.height];
   v8[2](v8, v18);
 
   v19 = v7;
@@ -4582,10 +4582,10 @@ uint64_t __48__CAMCaptureEngine__previewFiltersForFilterSet___block_invoke(uint6
   return result;
 }
 
-- (__CVBuffer)_createOutputPixelBufferWithSize:(CGSize)a3 matchingInputPixelBuffer:(__CVBuffer *)a4
+- (__CVBuffer)_createOutputPixelBufferWithSize:(CGSize)size matchingInputPixelBuffer:(__CVBuffer *)buffer
 {
   v6 = *MEMORY[0x1E69E9840];
-  CVPixelBufferGetPixelFormatType(a4);
+  CVPixelBufferGetPixelFormatType(buffer);
   CVPixelBufferGetAttributes();
   FigCreateIOSurfaceBackedCVPixelBufferWithAttributes();
   v4 = os_log_create("com.apple.camera", "Capture");
@@ -4598,15 +4598,15 @@ uint64_t __48__CAMCaptureEngine__previewFiltersForFilterSet___block_invoke(uint6
   return 0;
 }
 
-- (__CVBuffer)_newFilteredPixelBufferFromPixelBuffer:(__CVBuffer *)a3 metadata:(id)a4 filters:(id)a5
+- (__CVBuffer)_newFilteredPixelBufferFromPixelBuffer:(__CVBuffer *)buffer metadata:(id)metadata filters:(id)filters
 {
   v47[1] = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
-  if (v8)
+  metadataCopy = metadata;
+  filtersCopy = filters;
+  if (metadataCopy)
   {
     v46 = *MEMORY[0x1E695F9E0];
-    v47[0] = v8;
+    v47[0] = metadataCopy;
     v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v47 forKeys:&v46 count:1];
   }
 
@@ -4615,16 +4615,16 @@ uint64_t __48__CAMCaptureEngine__previewFiltersForFilterSet___block_invoke(uint6
     v10 = 0;
   }
 
-  v36 = self;
-  v37 = v8;
-  v34 = a3;
+  selfCopy = self;
+  v37 = metadataCopy;
+  bufferCopy = buffer;
   v35 = v10;
-  v11 = [objc_alloc(MEMORY[0x1E695F658]) initWithCVPixelBuffer:a3 options:v10];
+  v11 = [objc_alloc(MEMORY[0x1E695F658]) initWithCVPixelBuffer:buffer options:v10];
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v12 = v9;
+  v12 = filtersCopy;
   v13 = [v12 countByEnumeratingWithState:&v41 objects:v45 count:16];
   if (v13)
   {
@@ -4642,22 +4642,22 @@ uint64_t __48__CAMCaptureEngine__previewFiltersForFilterSet___block_invoke(uint6
 
         v18 = *(*(&v41 + 1) + 8 * i);
         [v18 setValue:v11 forKey:v16];
-        v19 = [v18 outputImage];
+        outputImage = [v18 outputImage];
 
-        v20 = [v18 name];
-        v21 = [v20 isEqualToString:@"CICrop"];
+        name = [v18 name];
+        v21 = [name isEqualToString:@"CICrop"];
 
         if (v21)
         {
           v22 = [v18 valueForKey:@"inputRectangle"];
           [v22 CGRectValue];
           CGAffineTransformMakeTranslation(&v40, -v23, -v24);
-          v11 = [v19 imageByApplyingTransform:&v40];
+          v11 = [outputImage imageByApplyingTransform:&v40];
         }
 
         else
         {
-          v11 = v19;
+          v11 = outputImage;
         }
       }
 
@@ -4675,17 +4675,17 @@ uint64_t __48__CAMCaptureEngine__previewFiltersForFilterSet___block_invoke(uint6
   v39 = v25;
   v26 = _Block_copy(aBlock);
   [v11 extent];
-  v29 = [(CAMCaptureEngine *)v36 _createOutputPixelBufferWithSize:v34 matchingInputPixelBuffer:v27, v28];
+  v29 = [(CAMCaptureEngine *)selfCopy _createOutputPixelBufferWithSize:bufferCopy matchingInputPixelBuffer:v27, v28];
   if (v29)
   {
-    effectsPreviewSurfaceFilteringContext = v36->__effectsPreviewSurfaceFilteringContext;
+    effectsPreviewSurfaceFilteringContext = selfCopy->__effectsPreviewSurfaceFilteringContext;
     if (!effectsPreviewSurfaceFilteringContext)
     {
       v31 = objc_alloc_init(MEMORY[0x1E695F620]);
-      v32 = v36->__effectsPreviewSurfaceFilteringContext;
-      v36->__effectsPreviewSurfaceFilteringContext = v31;
+      v32 = selfCopy->__effectsPreviewSurfaceFilteringContext;
+      selfCopy->__effectsPreviewSurfaceFilteringContext = v31;
 
-      effectsPreviewSurfaceFilteringContext = v36->__effectsPreviewSurfaceFilteringContext;
+      effectsPreviewSurfaceFilteringContext = selfCopy->__effectsPreviewSurfaceFilteringContext;
     }
 
     [(CIContext *)effectsPreviewSurfaceFilteringContext render:v11 toCVPixelBuffer:v29];
@@ -4696,16 +4696,16 @@ uint64_t __48__CAMCaptureEngine__previewFiltersForFilterSet___block_invoke(uint6
   return v29;
 }
 
-- (void)_resultsQueue_performPostprocessingForPreviewBuffer:(__CVBuffer *)a3 metadata:(id)a4 filters:(id *)a5 stillImageCaptureRequestKey:(id)a6 completionHandler:(id)a7
+- (void)_resultsQueue_performPostprocessingForPreviewBuffer:(__CVBuffer *)buffer metadata:(id)metadata filters:(id *)filters stillImageCaptureRequestKey:(id)key completionHandler:(id)handler
 {
-  v10 = a4;
-  v11 = a7;
-  v12 = a6;
-  v13 = [(CAMCaptureEngine *)self _captureResultsQueue];
-  dispatch_assert_queue_V2(v13);
+  metadataCopy = metadata;
+  handlerCopy = handler;
+  keyCopy = key;
+  _captureResultsQueue = [(CAMCaptureEngine *)self _captureResultsQueue];
+  dispatch_assert_queue_V2(_captureResultsQueue);
 
-  v14 = [(CAMCaptureEngine *)self _resultsQueueRegisteredStillImageRequestsDispatchedToFilteringQueue];
-  [v14 addObject:v12];
+  _resultsQueueRegisteredStillImageRequestsDispatchedToFilteringQueue = [(CAMCaptureEngine *)self _resultsQueueRegisteredStillImageRequestsDispatchedToFilteringQueue];
+  [_resultsQueueRegisteredStillImageRequestsDispatchedToFilteringQueue addObject:keyCopy];
 
   if (!self->__effectsPreviewSurfaceFilteringQueue)
   {
@@ -4715,10 +4715,10 @@ uint64_t __48__CAMCaptureEngine__previewFiltersForFilterSet___block_invoke(uint6
     self->__effectsPreviewSurfaceFilteringQueue = v16;
   }
 
-  v18 = [(CAMCaptureEngine *)self _effectsPreviewSurfaceFilteringQueue];
-  v21 = v10;
-  v19 = v11;
-  v20 = v10;
+  _effectsPreviewSurfaceFilteringQueue = [(CAMCaptureEngine *)self _effectsPreviewSurfaceFilteringQueue];
+  v21 = metadataCopy;
+  v19 = handlerCopy;
+  v20 = metadataCopy;
   pl_dispatch_async();
 }
 
@@ -4735,11 +4735,11 @@ void __135__CAMCaptureEngine__resultsQueue_performPostprocessingForPreviewBuffer
   CVPixelBufferRelease(v5);
 }
 
-- (void)registerVideoCaptureRequest:(id)a3
+- (void)registerVideoCaptureRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(CAMCaptureEngine *)self _captureResultsQueue];
-  v6 = v4;
+  requestCopy = request;
+  _captureResultsQueue = [(CAMCaptureEngine *)self _captureResultsQueue];
+  v6 = requestCopy;
   pl_dispatch_async();
 }
 
@@ -4751,23 +4751,23 @@ void __48__CAMCaptureEngine_registerVideoCaptureRequest___block_invoke(uint64_t 
   [v4 setObject:v2 forKeyedSubscript:v3];
 }
 
-- (void)registerVideoEndZoomFactor:(double)a3
+- (void)registerVideoEndZoomFactor:(double)factor
 {
-  v3 = [(CAMCaptureEngine *)self _captureResultsQueue];
+  _captureResultsQueue = [(CAMCaptureEngine *)self _captureResultsQueue];
   pl_dispatch_async();
 }
 
 - (void)stopRecording
 {
-  v3 = [(CAMCaptureEngine *)self movieFileOutput];
-  v4 = [v3 outputFileURL];
-  v5 = [v3 currentRequest];
-  v6 = [(CAMCaptureEngine *)self _captureResultsQueue];
-  v10 = v4;
-  v11 = v3;
-  v7 = v3;
-  v8 = v5;
-  v9 = v4;
+  movieFileOutput = [(CAMCaptureEngine *)self movieFileOutput];
+  outputFileURL = [movieFileOutput outputFileURL];
+  currentRequest = [movieFileOutput currentRequest];
+  _captureResultsQueue = [(CAMCaptureEngine *)self _captureResultsQueue];
+  v10 = outputFileURL;
+  v11 = movieFileOutput;
+  v7 = movieFileOutput;
+  v8 = currentRequest;
+  v9 = outputFileURL;
   pl_dispatch_async();
 }
 
@@ -4836,20 +4836,20 @@ uint64_t __33__CAMCaptureEngine_stopRecording__block_invoke_319(uint64_t a1)
   return [*(a1 + 40) captureOutput:*(a1 + 48) didFinishRecordingToOutputFileAtURL:*(a1 + 32) fromConnections:*(a1 + 56) error:*(a1 + 64)];
 }
 
-- (void)setMultiCamPictureInPictureMetrics:(id)a3
+- (void)setMultiCamPictureInPictureMetrics:(id)metrics
 {
-  v4 = a3;
+  metricsCopy = metrics;
   v5 = +[CAMCaptureCapabilities capabilities];
   if ([v5 isFrontRearSimultaneousVideoSupported])
   {
-    v6 = [(CAMCaptureEngine *)self _multiCamPIPCompositingQueue];
+    _multiCamPIPCompositingQueue = [(CAMCaptureEngine *)self _multiCamPIPCompositingQueue];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __55__CAMCaptureEngine_setMultiCamPictureInPictureMetrics___block_invoke;
     v7[3] = &unk_1E76F7960;
     v7[4] = self;
-    v8 = v4;
-    dispatch_async(v6, v7);
+    v8 = metricsCopy;
+    dispatch_async(_multiCamPIPCompositingQueue, v7);
   }
 }
 
@@ -4859,19 +4859,19 @@ void __55__CAMCaptureEngine_setMultiCamPictureInPictureMetrics___block_invoke(ui
   [v2 setPictureInPictureMetrics:*(a1 + 40)];
 }
 
-- (void)setMultiCamPictureInPictureMotionBlurDisabled:(BOOL)a3
+- (void)setMultiCamPictureInPictureMotionBlurDisabled:(BOOL)disabled
 {
   v5 = +[CAMCaptureCapabilities capabilities];
   if ([v5 isFrontRearSimultaneousVideoSupported])
   {
-    v6 = [(CAMCaptureEngine *)self _multiCamPIPCompositingQueue];
+    _multiCamPIPCompositingQueue = [(CAMCaptureEngine *)self _multiCamPIPCompositingQueue];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __66__CAMCaptureEngine_setMultiCamPictureInPictureMotionBlurDisabled___block_invoke;
     v7[3] = &unk_1E76F7850;
     v7[4] = self;
-    v8 = a3;
-    dispatch_async(v6, v7);
+    disabledCopy = disabled;
+    dispatch_async(_multiCamPIPCompositingQueue, v7);
   }
 }
 
@@ -4881,9 +4881,9 @@ void __66__CAMCaptureEngine_setMultiCamPictureInPictureMotionBlurDisabled___bloc
   [v2 setMotionBlurDisabled:*(a1 + 40)];
 }
 
-- (void)captureOutput:(id)a3 didPauseRecordingToOutputFileAtURL:(id)a4 fromConnections:(id)a5
+- (void)captureOutput:(id)output didPauseRecordingToOutputFileAtURL:(id)l fromConnections:(id)connections
 {
-  v6 = a3;
+  outputCopy = output;
   v7 = os_log_create("com.apple.camera", "Capture");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -4891,16 +4891,16 @@ void __66__CAMCaptureEngine_setMultiCamPictureInPictureMotionBlurDisabled___bloc
     _os_log_impl(&dword_1A3640000, v7, OS_LOG_TYPE_DEFAULT, "CAMCaptureEngine didPauseRecordingToOutputFileAtURL:", buf, 2u);
   }
 
-  v8 = [v6 currentRequest];
+  currentRequest = [outputCopy currentRequest];
 
-  if ([v8 isFrontRearSimultaneousVideoEnabled])
+  if ([currentRequest isFrontRearSimultaneousVideoEnabled])
   {
-    v9 = [(CAMCaptureEngine *)self _multiCamPIPCompositingQueue];
+    _multiCamPIPCompositingQueue = [(CAMCaptureEngine *)self _multiCamPIPCompositingQueue];
     pl_dispatch_async();
   }
 
-  v10 = [(CAMCaptureEngine *)self _captureResultsQueue];
-  v11 = v8;
+  _captureResultsQueue = [(CAMCaptureEngine *)self _captureResultsQueue];
+  v11 = currentRequest;
   pl_dispatch_async();
 }
 
@@ -4930,9 +4930,9 @@ void __85__CAMCaptureEngine_captureOutput_didPauseRecordingToOutputFileAtURL_fro
   }
 }
 
-- (void)captureOutput:(id)a3 didResumeRecordingToOutputFileAtURL:(id)a4 fromConnections:(id)a5
+- (void)captureOutput:(id)output didResumeRecordingToOutputFileAtURL:(id)l fromConnections:(id)connections
 {
-  v6 = a3;
+  outputCopy = output;
   v7 = os_log_create("com.apple.camera", "Capture");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -4940,10 +4940,10 @@ void __85__CAMCaptureEngine_captureOutput_didPauseRecordingToOutputFileAtURL_fro
     _os_log_impl(&dword_1A3640000, v7, OS_LOG_TYPE_DEFAULT, "CAMCaptureEngine didResumeRecordingToOutputFileAtURL:", buf, 2u);
   }
 
-  v8 = [v6 currentRequest];
+  currentRequest = [outputCopy currentRequest];
 
-  v9 = [(CAMCaptureEngine *)self _captureResultsQueue];
-  v10 = v8;
+  _captureResultsQueue = [(CAMCaptureEngine *)self _captureResultsQueue];
+  v10 = currentRequest;
   pl_dispatch_async();
 }
 
@@ -4967,16 +4967,16 @@ void __86__CAMCaptureEngine_captureOutput_didResumeRecordingToOutputFileAtURL_fr
   }
 }
 
-- (void)captureOutput:(id)a3 didStartRecordingToOutputFileAtURL:(id)a4 fromConnections:(id)a5
+- (void)captureOutput:(id)output didStartRecordingToOutputFileAtURL:(id)l fromConnections:(id)connections
 {
   v22 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a3;
+  lCopy = l;
+  outputCopy = output;
   Current = CFAbsoluteTimeGetCurrent();
   [(CAMCaptureEngine *)self stopMonitoringForAccidentalLaunch];
-  v10 = [v8 currentRequest];
+  currentRequest = [outputCopy currentRequest];
 
-  [v10 userInitiationTimestamp];
+  [currentRequest userInitiationTimestamp];
   if (v11 != 0.0)
   {
     v12 = v11;
@@ -4984,17 +4984,17 @@ void __86__CAMCaptureEngine_captureOutput_didResumeRecordingToOutputFileAtURL_fr
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v19 = v7;
+      v19 = lCopy;
       v20 = 2048;
       v21 = Current - v12;
       _os_log_impl(&dword_1A3640000, v13, OS_LOG_TYPE_DEFAULT, "CAMCaptureEngine captureOutput:didStartRecordingToOutputFileAtURL: url=%{public}@ (after %.3f seconds)", buf, 0x16u);
     }
   }
 
-  v14 = [(CAMCaptureEngine *)self _captureResultsQueue];
-  v17 = v7;
-  v15 = v7;
-  v16 = v10;
+  _captureResultsQueue = [(CAMCaptureEngine *)self _captureResultsQueue];
+  v17 = lCopy;
+  v15 = lCopy;
+  v16 = currentRequest;
   pl_dispatch_async();
 }
 
@@ -5095,24 +5095,24 @@ void __85__CAMCaptureEngine_captureOutput_didStartRecordingToOutputFileAtURL_fro
   [v1 prepareForCompositing];
 }
 
-- (void)_captureOutput:(id)a3 didFinishRecordingToOutputFileAtURL:(id)a4 fromConnections:(id)a5 forVideoCaptureRequest:(id)a6 videoZoomFactor:(double)a7 error:(id)a8
+- (void)_captureOutput:(id)output didFinishRecordingToOutputFileAtURL:(id)l fromConnections:(id)connections forVideoCaptureRequest:(id)request videoZoomFactor:(double)factor error:(id)error
 {
   v40 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a4;
-  v15 = a6;
-  v16 = a8;
+  outputCopy = output;
+  lCopy = l;
+  requestCopy = request;
+  errorCopy = error;
   v17 = os_log_create("com.apple.camera", "Capture");
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138544130;
-    v33 = v14;
+    v33 = lCopy;
     v34 = 2114;
-    v35 = v15;
+    v35 = requestCopy;
     v36 = 2048;
-    v37 = a7;
+    factorCopy = factor;
     v38 = 2114;
-    v39 = v16;
+    v39 = errorCopy;
     _os_log_impl(&dword_1A3640000, v17, OS_LOG_TYPE_DEFAULT, "CAMCaptureEngine _captureOutput:didFinishRecordingToOutputFileAtURL:fromConnections:forVideoCaptureRequest:videoZoomFactor:error url=%{public}@, request=%{public}@, videoZoomFactor=%.2f, error=%{public}@", buf, 0x2Au);
   }
 
@@ -5120,20 +5120,20 @@ void __85__CAMCaptureEngine_captureOutput_didStartRecordingToOutputFileAtURL_fro
   v30[1] = 3221225472;
   v30[2] = __132__CAMCaptureEngine__captureOutput_didFinishRecordingToOutputFileAtURL_fromConnections_forVideoCaptureRequest_videoZoomFactor_error___block_invoke;
   v30[3] = &unk_1E76FD198;
-  v18 = v15;
+  v18 = requestCopy;
   v31 = v18;
   [(CAMCaptureEngine *)self _enumerateCaptureServicesUsingBlock:v30];
-  v19 = [v13 metadata];
-  v20 = [(CAMCaptureEngine *)self _captureResultsQueue];
-  v26 = v13;
-  v27 = v14;
-  v28 = v16;
-  v29 = v19;
-  v21 = v19;
-  v22 = v16;
+  metadata = [outputCopy metadata];
+  _captureResultsQueue = [(CAMCaptureEngine *)self _captureResultsQueue];
+  v26 = outputCopy;
+  v27 = lCopy;
+  v28 = errorCopy;
+  v29 = metadata;
+  v21 = metadata;
+  v22 = errorCopy;
   v23 = v18;
-  v24 = v14;
-  v25 = v13;
+  v24 = lCopy;
+  v25 = outputCopy;
   pl_dispatch_async();
 }
 
@@ -5271,16 +5271,16 @@ void __132__CAMCaptureEngine__captureOutput_didFinishRecordingToOutputFileAtURL_
   }
 }
 
-- (id)_validateVideoAtURL:(id)a3 forCaptureRequest:(id)a4 captureID:(int64_t)a5 captureError:(id)a6 isVideoComplement:(BOOL)a7 stillImageDisplayTime:(id *)a8 reportedDuration:(id *)a9 outActualDuration:(id *)a10 outVideoRecordingStoppedReason:(int64_t *)a11 outSlowWriterFrameDrops:(BOOL *)a12
+- (id)_validateVideoAtURL:(id)l forCaptureRequest:(id)request captureID:(int64_t)d captureError:(id)error isVideoComplement:(BOOL)complement stillImageDisplayTime:(id *)time reportedDuration:(id *)duration outActualDuration:(id *)self0 outVideoRecordingStoppedReason:(int64_t *)self1 outSlowWriterFrameDrops:(BOOL *)self2
 {
-  v13 = a7;
+  complementCopy = complement;
   v127 = *MEMORY[0x1E69E9840];
-  v16 = a3;
-  v111 = a4;
-  v17 = a6;
-  v18 = [v17 code];
-  v115 = v17;
-  if (!v17)
+  lCopy = l;
+  requestCopy = request;
+  errorCopy = error;
+  code = [errorCopy code];
+  v115 = errorCopy;
+  if (!errorCopy)
   {
     v108 = 0;
     v20 = 0;
@@ -5288,15 +5288,15 @@ void __132__CAMCaptureEngine__captureOutput_didFinishRecordingToOutputFileAtURL_
     goto LABEL_23;
   }
 
-  if (v18 <= -11812)
+  if (code <= -11812)
   {
-    if (v18 <= -11905)
+    if (code <= -11905)
     {
-      if (v18 != -28000)
+      if (code != -28000)
       {
-        if (v18 == -11911)
+        if (code == -11911)
         {
-          v19 = CAMVideoCaptureRequestError(-28003, v17);
+          v19 = CAMVideoCaptureRequestError(-28003, errorCopy);
           v108 = 0;
           v20 = 1;
           goto LABEL_23;
@@ -5306,21 +5306,21 @@ void __132__CAMCaptureEngine__captureOutput_didFinishRecordingToOutputFileAtURL_
       }
 
 LABEL_17:
-      v19 = v17;
+      v19 = errorCopy;
       v20 = 1;
 LABEL_21:
       v21 = 5;
       goto LABEL_22;
     }
 
-    if (v18 == -11904)
+    if (code == -11904)
     {
       goto LABEL_17;
     }
 
-    if (v18 == -11818)
+    if (code == -11818)
     {
-      v19 = v17;
+      v19 = errorCopy;
       v20 = 0;
       v21 = 4;
       goto LABEL_22;
@@ -5329,9 +5329,9 @@ LABEL_21:
     goto LABEL_20;
   }
 
-  if (v18 > -11808)
+  if (code > -11808)
   {
-    if (v18 == -11807)
+    if (code == -11807)
     {
       v20 = 0;
       v19 = 0;
@@ -5339,7 +5339,7 @@ LABEL_21:
       goto LABEL_22;
     }
 
-    if (v18 == -11805)
+    if (code == -11805)
     {
       goto LABEL_17;
     }
@@ -5347,7 +5347,7 @@ LABEL_21:
     goto LABEL_20;
   }
 
-  if (v18 == -11811)
+  if (code == -11811)
   {
     v20 = 0;
     v19 = 0;
@@ -5355,10 +5355,10 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  if (v18 != -11810)
+  if (code != -11810)
   {
 LABEL_20:
-    v19 = v17;
+    v19 = errorCopy;
     v20 = 0;
     goto LABEL_21;
   }
@@ -5369,26 +5369,26 @@ LABEL_20:
 LABEL_22:
   v108 = v21;
 LABEL_23:
-  var0 = a9->var0;
-  var2 = a9->var2;
-  var1 = a9->var1;
-  var3 = a9->var3;
+  var0 = duration->var0;
+  var2 = duration->var2;
+  var1 = duration->var1;
+  var3 = duration->var3;
   flags = var2;
   v23 = var2 & 0x1D;
   Seconds = 0.0;
   if (v23 == 1)
   {
-    time.value = a9->var0;
-    time.timescale = a9->var1;
+    time.value = duration->var0;
+    time.timescale = duration->var1;
     time.flags = var2;
     time.epoch = var3;
     Seconds = CMTimeGetSeconds(&time);
   }
 
-  if (v16)
+  if (lCopy)
   {
-    v25 = [v16 path];
-    v26 = [v25 length] == 0;
+    path = [lCopy path];
+    v26 = [path length] == 0;
   }
 
   else
@@ -5396,11 +5396,11 @@ LABEL_23:
     v26 = 1;
   }
 
-  v27 = a9->var2;
-  v112 = v16;
+  v27 = duration->var2;
+  v112 = lCopy;
   if (v23 != 1)
   {
-    if (v13)
+    if (complementCopy)
     {
       v33 = @"Live Photo movie";
     }
@@ -5429,7 +5429,7 @@ LABEL_45:
   time.flags = flags;
   time.epoch = var3;
   v28 = CMTimeGetSeconds(&time);
-  if (v13)
+  if (complementCopy)
   {
     v29 = @"Live Photo movie";
   }
@@ -5486,7 +5486,7 @@ LABEL_46:
       HIWORD(time.epoch) = 2114;
       v122 = v32;
       v123 = 2114;
-      v124 = v16;
+      v124 = lCopy;
       v39 = "Encountered an error during %{public}@ recording! (duration: %{public}@ error: %{public}@, file: %{public}@)";
       v40 = v37;
       v41 = 42;
@@ -5504,7 +5504,7 @@ LABEL_46:
       LOWORD(time.flags) = 2114;
       *(&time.flags + 2) = v31;
       HIWORD(time.epoch) = 2114;
-      v122 = v16;
+      v122 = lCopy;
       v39 = "Encountered a reported %{public}@ duration of %{public}@! (file: %{public}@)";
       v40 = v37;
       v41 = 32;
@@ -5513,9 +5513,9 @@ LABEL_46:
     _os_log_error_impl(&dword_1A3640000, v40, OS_LOG_TYPE_ERROR, v39, &time, v41);
 LABEL_58:
 
-    v42 = [MEMORY[0x1E696AC08] defaultManager];
-    v43 = [v16 path];
-    v44 = [v42 fileExistsAtPath:v43];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    path2 = [lCopy path];
+    v44 = [defaultManager fileExistsAtPath:path2];
 
     if ((v44 & 1) == 0)
     {
@@ -5533,17 +5533,17 @@ LABEL_58:
 
     if (v115)
     {
-      v45 = [v115 userInfo];
-      v46 = [v45 objectForKeyedSubscript:*MEMORY[0x1E6987420]];
+      userInfo = [v115 userInfo];
+      v46 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E6987420]];
       if (v46)
       {
         v47 = v46;
-        v48 = [v46 BOOLValue];
+        bOOLValue = [v46 BOOLValue];
 
-        if ((v48 & 1) != 0 || !v13)
+        if ((bOOLValue & 1) != 0 || !complementCopy)
         {
           v32 = v115;
-          if ((v48 & 1) == 0)
+          if ((bOOLValue & 1) == 0)
           {
             v56 = v115;
 
@@ -5564,7 +5564,7 @@ LABEL_114:
               LOWORD(time.flags) = 2114;
               *(&time.flags + 2) = v109;
               HIWORD(time.epoch) = 2114;
-              v122 = v16;
+              v122 = lCopy;
               _os_log_error_impl(&dword_1A3640000, v61, OS_LOG_TYPE_ERROR, "Encountered a reported %{public}@ duration of %{public}@! (file: %{public}@)", &time, 0x20u);
             }
 
@@ -5574,8 +5574,8 @@ LABEL_114:
           goto LABEL_66;
         }
 
-        v45 = os_log_create("com.apple.camera", "Capture");
-        if (os_log_type_enabled(v45, OS_LOG_TYPE_ERROR))
+        userInfo = os_log_create("com.apple.camera", "Capture");
+        if (os_log_type_enabled(userInfo, OS_LOG_TYPE_ERROR))
         {
           [CAMCaptureEngine _validateVideoAtURL:forCaptureRequest:captureID:captureError:isVideoComplement:stillImageDisplayTime:reportedDuration:outActualDuration:outVideoRecordingStoppedReason:outSlowWriterFrameDrops:];
         }
@@ -5590,7 +5590,7 @@ LABEL_66:
     }
 
     v120 = 0;
-    v50 = [MEMORY[0x1E69870D8] consolidateMovieFragmentsInFile:v16 error:&v120];
+    v50 = [MEMORY[0x1E69870D8] consolidateMovieFragmentsInFile:lCopy error:&v120];
     v51 = v120;
     v52 = os_log_create("com.apple.camera", "Capture");
     v53 = os_log_type_enabled(v52, OS_LOG_TYPE_ERROR);
@@ -5601,7 +5601,7 @@ LABEL_66:
         [CAMCaptureEngine _validateVideoAtURL:forCaptureRequest:captureID:captureError:isVideoComplement:stillImageDisplayTime:reportedDuration:outActualDuration:outVideoRecordingStoppedReason:outSlowWriterFrameDrops:];
       }
 
-      v54 = [MEMORY[0x1E6988168] URLAssetWithURL:v16 options:0];
+      v54 = [MEMORY[0x1E6988168] URLAssetWithURL:lCopy options:0];
       v19 = v54;
       if (v54)
       {
@@ -5659,14 +5659,14 @@ LABEL_87:
     goto LABEL_101;
   }
 
-  if (!v32 || !v13)
+  if (!v32 || !complementCopy)
   {
     v59 = flags & 0x1D;
     goto LABEL_98;
   }
 
   v59 = flags & 0x1D;
-  if ((a8->var2 & 1) == 0 || v59 != 1)
+  if ((time->var2 & 1) == 0 || v59 != 1)
   {
 LABEL_98:
     if (v59 == 1)
@@ -5684,7 +5684,7 @@ LABEL_98:
     goto LABEL_100;
   }
 
-  time = *a8;
+  time = *time;
   time2.value = var0;
   time2.timescale = var1;
   time2.flags = flags;
@@ -5697,7 +5697,7 @@ LABEL_98:
   v60 = os_log_create("com.apple.camera", "Capture");
   if (os_log_type_enabled(v60, OS_LOG_TYPE_ERROR))
   {
-    time = *a8;
+    time = *time;
     v99 = CMTimeGetSeconds(&time);
     LODWORD(time.value) = 138543618;
     *(&time.value + 4) = v109;
@@ -5721,7 +5721,7 @@ LABEL_101:
         LOWORD(time.flags) = 2114;
         *(&time.flags + 2) = v109;
         HIWORD(time.epoch) = 2114;
-        v122 = v16;
+        v122 = lCopy;
         v123 = 2114;
         v124 = v56;
         _os_log_error_impl(&dword_1A3640000, v61, OS_LOG_TYPE_ERROR, "Encountered an error during %{public}@ recording! (duration: %{public}@, file: %{public}@, error: %{public}@)", &time, 0x2Au);
@@ -5732,10 +5732,10 @@ LABEL_116:
 
       v64 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{&unk_1F16C8588, &unk_1F16C85A0, &unk_1F16C85B8, &unk_1F16C85D0, &unk_1F16C85E8, 0}];
       v68 = +[CAMCaptureCapabilities capabilities];
-      v69 = [v68 shouldEnableUserNotifications];
+      shouldEnableUserNotifications = [v68 shouldEnableUserNotifications];
 
-      v70 = [v32 userInfo];
-      v71 = [v70 objectForKeyedSubscript:*v36];
+      userInfo2 = [v32 userInfo];
+      v71 = [userInfo2 objectForKeyedSubscript:*v36];
 
       v72 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v71, "code")}];
       v73 = [v64 containsObject:v72];
@@ -5748,7 +5748,7 @@ LABEL_116:
 
       else
       {
-        v75 = v69;
+        v75 = shouldEnableUserNotifications;
       }
 
       if (((v20 | v73) & 1) != 0 || !v75)
@@ -5759,17 +5759,17 @@ LABEL_116:
       else
       {
         v76 = AppBooleanValue;
-        v77 = [v115 userInfo];
-        v78 = [v77 objectForKeyedSubscript:*MEMORY[0x1E6987418]];
+        userInfo3 = [v115 userInfo];
+        v78 = [userInfo3 objectForKeyedSubscript:*MEMORY[0x1E6987418]];
 
         v104 = v78;
-        v79 = [v78 unsignedIntegerValue];
+        unsignedIntegerValue = [v78 unsignedIntegerValue];
         if (!v62)
         {
-          if ((v79 - 2) >= 3)
+          if ((unsignedIntegerValue - 2) >= 3)
           {
             v80 = @"Video Error:";
-            if (v13)
+            if (complementCopy)
             {
               v80 = @"Live Photo Error:";
             }
@@ -5779,14 +5779,14 @@ LABEL_116:
 
           else
           {
-            v62 = off_1E76FD818[v79 - 2];
+            v62 = off_1E76FD818[unsignedIntegerValue - 2];
           }
         }
 
         v81 = -[__CFString stringByAppendingFormat:](v62, "stringByAppendingFormat:", @" %ld, %ld", [v56 code], objc_msgSend(v71, "code"));
-        v82 = [MEMORY[0x1E696AC08] defaultManager];
-        v83 = [v112 path];
-        v84 = [v82 fileExistsAtPath:v83];
+        defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+        path3 = [v112 path];
+        v84 = [defaultManager2 fileExistsAtPath:path3];
 
         if (v84)
         {
@@ -5795,7 +5795,7 @@ LABEL_116:
 
         else
         {
-          if ([v111 persistenceOptions] == 3)
+          if ([requestCopy persistenceOptions] == 3)
           {
             v85 = @"An error occurred, the storage drive might have been disconnected. Tap to file a Radar.";
           }
@@ -5818,18 +5818,18 @@ LABEL_116:
         }
 
         v87 = objc_alloc_init(MEMORY[0x1E695DF90]);
-        v88 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%lld", a5];
+        v88 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%lld", d];
         [v87 setObject:v88 forKeyedSubscript:@"captureID"];
 
         v89 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%ld%ld", objc_msgSend(v56, "code"), objc_msgSend(v71, "code")];
         [v87 setObject:v89 forKeyedSubscript:@"error"];
 
-        v90 = [(CAMCaptureEngine *)self _TTRKeywordIDsFromCaptureRequest:v111];
+        v90 = [(CAMCaptureEngine *)self _TTRKeywordIDsFromCaptureRequest:requestCopy];
         [v87 setObject:v90 forKeyedSubscript:@"keywordIDs"];
 
-        v91 = [(CAMCaptureEngine *)self _currentNotificationCenter];
+        _currentNotificationCenter = [(CAMCaptureEngine *)self _currentNotificationCenter];
         v92 = objc_alloc_init(MEMORY[0x1E6983220]);
-        v93 = [MEMORY[0x1E696AEC0] stringWithFormat:@"validateVideoURLErrorNotificationID%ld%ld%lld", objc_msgSend(v56, "code"), objc_msgSend(v71, "code"), a5];
+        v93 = [MEMORY[0x1E696AEC0] stringWithFormat:@"validateVideoURLErrorNotificationID%ld%ld%lld", objc_msgSend(v56, "code"), objc_msgSend(v71, "code"), d];
         [v92 setTitle:v81];
         [v92 setBody:v86];
         [v92 setUserInfo:v87];
@@ -5842,13 +5842,13 @@ LABEL_116:
         v118 = v86;
         v95 = v86;
         v96 = v81;
-        [v91 addNotificationRequest:v94 withCompletionHandler:v116];
+        [_currentNotificationCenter addNotificationRequest:v94 withCompletionHandler:v116];
 
         v32 = v115;
         v62 = v105;
       }
 
-      v16 = v112;
+      lCopy = v112;
       goto LABEL_137;
     }
 
@@ -5856,23 +5856,23 @@ LABEL_116:
   }
 
 LABEL_106:
-  v63 = [v32 userInfo];
-  v64 = [v63 objectForKeyedSubscript:*v36];
+  userInfo4 = [v32 userInfo];
+  v64 = [userInfo4 objectForKeyedSubscript:*v36];
 
-  v65 = [v64 code];
-  if (v65 == -15437)
+  code2 = [v64 code];
+  if (code2 == -15437)
   {
     v67 = v32;
-    if (a12)
+    if (drops)
     {
-      *a12 = 1;
+      *drops = 1;
     }
 
     v62 = @"Frame Drops Reported (Slow Writer):";
     goto LABEL_112;
   }
 
-  if (v65 == -15435)
+  if (code2 == -15435)
   {
     v66 = v32;
     v62 = @"Frame Drops Reported:";
@@ -5893,17 +5893,17 @@ LABEL_112:
 LABEL_137:
 
 LABEL_138:
-  if (a10)
+  if (actualDuration)
   {
-    a10->var0 = var0;
-    a10->var1 = var1;
-    a10->var2 = flags;
-    a10->var3 = var3;
+    actualDuration->var0 = var0;
+    actualDuration->var1 = var1;
+    actualDuration->var2 = flags;
+    actualDuration->var3 = var3;
   }
 
-  if (a11)
+  if (reason)
   {
-    *a11 = v108;
+    *reason = v108;
   }
 
   return v56;
@@ -5922,13 +5922,13 @@ void __211__CAMCaptureEngine__validateVideoAtURL_forCaptureRequest_captureID_cap
   }
 }
 
-- (id)_TTRKeywordIDsFromCaptureRequest:(id)a3
+- (id)_TTRKeywordIDsFromCaptureRequest:(id)request
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  requestCopy = request;
   v4 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && [v3 videoEncodingBehavior] == 2)
+  if ((objc_opt_isKindOfClass() & 1) != 0 && [requestCopy videoEncodingBehavior] == 2)
   {
     [v4 addObject:&unk_1F16C8600];
   }
@@ -5980,20 +5980,20 @@ void __211__CAMCaptureEngine__validateVideoAtURL_forCaptureRequest_captureID_cap
   return v8;
 }
 
-- (void)captureOutput:(id)a3 didFinishRecordingToOutputFileAtURL:(id)a4 fromConnections:(id)a5 error:(id)a6
+- (void)captureOutput:(id)output didFinishRecordingToOutputFileAtURL:(id)l fromConnections:(id)connections error:(id)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(CAMCaptureEngine *)self _captureResultsQueue];
-  v19 = v11;
-  v20 = v13;
-  v21 = v12;
-  v15 = v12;
-  v16 = v10;
-  v17 = v13;
-  v18 = v11;
+  outputCopy = output;
+  lCopy = l;
+  connectionsCopy = connections;
+  errorCopy = error;
+  _captureResultsQueue = [(CAMCaptureEngine *)self _captureResultsQueue];
+  v19 = lCopy;
+  v20 = errorCopy;
+  v21 = connectionsCopy;
+  v15 = connectionsCopy;
+  v16 = outputCopy;
+  v17 = errorCopy;
+  v18 = lCopy;
   pl_dispatch_async();
 }
 
@@ -6089,14 +6089,14 @@ LABEL_15:
 LABEL_16:
 }
 
-- (void)captureOutput:(id)a3 readyForClientCompositingForOutputFileAtURL:(id)a4 compositingData:(id)a5
+- (void)captureOutput:(id)output readyForClientCompositingForOutputFileAtURL:(id)l compositingData:(id)data
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [(CAMCaptureEngine *)self _multiCamPIPCompositingQueue];
-  v12 = v8;
-  v10 = v8;
-  v11 = v7;
+  outputCopy = output;
+  dataCopy = data;
+  _multiCamPIPCompositingQueue = [(CAMCaptureEngine *)self _multiCamPIPCompositingQueue];
+  v12 = dataCopy;
+  v10 = dataCopy;
+  v11 = outputCopy;
   pl_dispatch_sync();
 }
 
@@ -6109,7 +6109,7 @@ void __94__CAMCaptureEngine_captureOutput_readyForClientCompositingForOutputFile
   [v4 compositeWithCompositingData:*(a1 + 48) strategy:0 captureOrientation:v2 mirrorPIP:v3];
 }
 
-- (void)_setPanoramaImageQueue:(_CAImageQueue *)a3
+- (void)_setPanoramaImageQueue:(_CAImageQueue *)queue
 {
   panoramaImageQueue = self->__panoramaImageQueue;
   if (panoramaImageQueue)
@@ -6117,26 +6117,26 @@ void __94__CAMCaptureEngine_captureOutput_readyForClientCompositingForOutputFile
     CFRelease(panoramaImageQueue);
   }
 
-  self->__panoramaImageQueue = a3;
-  if (a3)
+  self->__panoramaImageQueue = queue;
+  if (queue)
   {
 
-    CFRetain(a3);
+    CFRetain(queue);
   }
 }
 
-- (void)_subgraphQueueHandlePanoramaStatusNotification:(__CFString *)a3
+- (void)_subgraphQueueHandlePanoramaStatusNotification:(__CFString *)notification
 {
-  if (CFEqual(a3, *MEMORY[0x1E6985EA8]))
+  if (CFEqual(notification, *MEMORY[0x1E6985EA8]))
   {
-    v4 = [(CAMCaptureEngine *)self _panoramaProcessor];
-    v5 = [v4 request];
+    _panoramaProcessor = [(CAMCaptureEngine *)self _panoramaProcessor];
+    request = [_panoramaProcessor request];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __67__CAMCaptureEngine__subgraphQueueHandlePanoramaStatusNotification___block_invoke;
     v7[3] = &unk_1E76FD198;
-    v8 = v5;
-    v6 = v5;
+    v8 = request;
+    v6 = request;
     [(CAMCaptureEngine *)self _enumerateCaptureServicesUsingBlock:v7];
   }
 }
@@ -6156,26 +6156,26 @@ uint64_t __67__CAMCaptureEngine__subgraphQueueHandlePanoramaStatusNotification__
   return MEMORY[0x1EEE66C30]();
 }
 
-- (void)_subgraphQueueHandlePanoramaWarningNotification:(__CFString *)a3
+- (void)_subgraphQueueHandlePanoramaWarningNotification:(__CFString *)notification
 {
   v7 = *MEMORY[0x1E69E9840];
   v4 = os_log_create("com.apple.camera", "Camera");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138543362;
-    v6 = a3;
+    notificationCopy = notification;
     _os_log_impl(&dword_1A3640000, v4, OS_LOG_TYPE_DEFAULT, "Received panorama warning %{public}@", &v5, 0xCu);
   }
 }
 
-- (int64_t)_notificationForError:(__CFString *)a3
+- (int64_t)_notificationForError:(__CFString *)error
 {
-  if (CFEqual(a3, *MEMORY[0x1E6985EE0]))
+  if (CFEqual(error, *MEMORY[0x1E6985EE0]))
   {
     return -6000;
   }
 
-  if (CFEqual(a3, *MEMORY[0x1E6985F50]))
+  if (CFEqual(error, *MEMORY[0x1E6985F50]))
   {
     return -6001;
   }
@@ -6183,7 +6183,7 @@ uint64_t __67__CAMCaptureEngine__subgraphQueueHandlePanoramaStatusNotification__
   return 0;
 }
 
-- (void)_subgraphQueueHandlePanoramaErrorNotification:(__CFString *)a3
+- (void)_subgraphQueueHandlePanoramaErrorNotification:(__CFString *)notification
 {
   v5 = os_log_create("com.apple.camera", "Camera");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -6191,9 +6191,9 @@ uint64_t __67__CAMCaptureEngine__subgraphQueueHandlePanoramaStatusNotification__
     [CAMCaptureEngine _subgraphQueueHandlePanoramaErrorNotification:];
   }
 
-  v6 = [(CAMCaptureEngine *)self _panoramaProcessor];
-  v7 = [v6 request];
-  v8 = [(CAMCaptureEngine *)self _notificationForError:a3];
+  _panoramaProcessor = [(CAMCaptureEngine *)self _panoramaProcessor];
+  request = [_panoramaProcessor request];
+  v8 = [(CAMCaptureEngine *)self _notificationForError:notification];
   if (v8)
   {
     v9 = v8;
@@ -6201,7 +6201,7 @@ uint64_t __67__CAMCaptureEngine__subgraphQueueHandlePanoramaStatusNotification__
     v10[1] = 3221225472;
     v10[2] = __66__CAMCaptureEngine__subgraphQueueHandlePanoramaErrorNotification___block_invoke;
     v10[3] = &unk_1E76FD638;
-    v11 = v7;
+    v11 = request;
     v12 = v9;
     [(CAMCaptureEngine *)self _enumerateCaptureServicesUsingBlock:v10];
   }
@@ -6222,9 +6222,9 @@ uint64_t __66__CAMCaptureEngine__subgraphQueueHandlePanoramaErrorNotification___
   return MEMORY[0x1EEE66C38]();
 }
 
-- (BOOL)_updatePanoramaSubgraphForEnteringBackground:(BOOL)a3
+- (BOOL)_updatePanoramaSubgraphForEnteringBackground:(BOOL)background
 {
-  v5 = [(AVCaptureSession *)self->__captureSession outputs];
+  outputs = [(AVCaptureSession *)self->__captureSession outputs];
   v6 = self->_panoramaVideoDataOutput;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
@@ -6232,10 +6232,10 @@ uint64_t __66__CAMCaptureEngine__subgraphQueueHandlePanoramaErrorNotification___
   v15[3] = &unk_1E76FD660;
   v7 = v6;
   v16 = v7;
-  v8 = [v5 indexOfObjectPassingTest:v15];
-  v9 = [(AVCaptureVideoDataOutput *)v7 sampleBufferDelegate];
-  v10 = v9;
-  if (a3 || (v8 == 0x7FFFFFFFFFFFFFFFLL ? (v11 = v9 == 0) : (v11 = 1), !v11))
+  v8 = [outputs indexOfObjectPassingTest:v15];
+  sampleBufferDelegate = [(AVCaptureVideoDataOutput *)v7 sampleBufferDelegate];
+  v10 = sampleBufferDelegate;
+  if (background || (v8 == 0x7FFFFFFFFFFFFFFFLL ? (v11 = sampleBufferDelegate == 0) : (v11 = 1), !v11))
   {
     [(CAMCaptureEngine *)self _sessionQueuePanoramaTeardown];
 LABEL_14:
@@ -6243,7 +6243,7 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  if (v8 == 0x7FFFFFFFFFFFFFFFLL || v9 != 0)
+  if (v8 == 0x7FFFFFFFFFFFFFFFLL || sampleBufferDelegate != 0)
   {
     goto LABEL_14;
   }
@@ -6257,15 +6257,15 @@ LABEL_15:
 
 - (void)_sessionQueuePanoramaSetup
 {
-  v3 = [(CAMCaptureEngine *)self panoramaVideoDataOutput];
-  v4 = [v3 photoEncodingBehavior];
-  v5 = [(CAMCaptureEngine *)self _panoramaSampleBufferQueue];
+  panoramaVideoDataOutput = [(CAMCaptureEngine *)self panoramaVideoDataOutput];
+  photoEncodingBehavior = [panoramaVideoDataOutput photoEncodingBehavior];
+  _panoramaSampleBufferQueue = [(CAMCaptureEngine *)self _panoramaSampleBufferQueue];
   v8 = MEMORY[0x1E69E9820];
   pl_dispatch_async();
 
   v6 = [(CAMCaptureEngine *)self panoramaVideoDataOutput:v8];
-  v7 = [(CAMCaptureEngine *)self _panoramaSampleBufferQueue];
-  [v6 setSampleBufferDelegate:self queue:v7];
+  _panoramaSampleBufferQueue2 = [(CAMCaptureEngine *)self _panoramaSampleBufferQueue];
+  [v6 setSampleBufferDelegate:self queue:_panoramaSampleBufferQueue2];
 }
 
 void __46__CAMCaptureEngine__sessionQueuePanoramaSetup__block_invoke(uint64_t a1)
@@ -6329,24 +6329,24 @@ void __46__CAMCaptureEngine__sessionQueuePanoramaSetup__block_invoke_2(uint64_t 
   CFNotificationCenterAddObserver(LocalCenter, v5, _PanoramaNotificationCallback, *MEMORY[0x1E6985EB8], 0, CFNotificationSuspensionBehaviorDeliverImmediately);
 }
 
-- (void)_notifyServicesOfPanoramaConfigurationChangeWithImageQueue:(_CAImageQueue *)a3 direction:(int64_t)a4
+- (void)_notifyServicesOfPanoramaConfigurationChangeWithImageQueue:(_CAImageQueue *)queue direction:(int64_t)direction
 {
-  if (a3)
+  if (queue)
   {
-    CFRetain(a3);
+    CFRetain(queue);
   }
 
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __89__CAMCaptureEngine__notifyServicesOfPanoramaConfigurationChangeWithImageQueue_direction___block_invoke;
   v8[3] = &__block_descriptor_48_e29_v16__0___CAMCaptureService__8l;
-  v8[4] = a3;
-  v8[5] = a4;
+  v8[4] = queue;
+  v8[5] = direction;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __89__CAMCaptureEngine__notifyServicesOfPanoramaConfigurationChangeWithImageQueue_direction___block_invoke_2;
   v7[3] = &__block_descriptor_40_e5_v8__0l;
-  v7[4] = a3;
+  v7[4] = queue;
   [(CAMCaptureEngine *)self _enumerateCaptureServicesUsingBlock:v8 completion:v7];
 }
 
@@ -6368,11 +6368,11 @@ void __89__CAMCaptureEngine__notifyServicesOfPanoramaConfigurationChangeWithImag
   }
 }
 
-- (void)_subgraphQueueCreatePanoramaProcessorIfNecessaryWithEncodingBehavior:(int64_t)a3
+- (void)_subgraphQueueCreatePanoramaProcessorIfNecessaryWithEncodingBehavior:(int64_t)behavior
 {
   if (!self->__panoramaProcessor)
   {
-    v5 = [[CAMPanoramaProcessor alloc] initWithDelegate:self encodingBehavior:a3];
+    v5 = [[CAMPanoramaProcessor alloc] initWithDelegate:self encodingBehavior:behavior];
     panoramaProcessor = self->__panoramaProcessor;
     self->__panoramaProcessor = v5;
 
@@ -6387,9 +6387,9 @@ void __89__CAMCaptureEngine__notifyServicesOfPanoramaConfigurationChangeWithImag
   _os_log_error_impl(v0, v1, v2, v3, v4, 2u);
 }
 
-- (void)changeToPanoramaDirection:(int64_t)a3
+- (void)changeToPanoramaDirection:(int64_t)direction
 {
-  v3 = [(CAMCaptureEngine *)self _panoramaSampleBufferQueue];
+  _panoramaSampleBufferQueue = [(CAMCaptureEngine *)self _panoramaSampleBufferQueue];
   pl_dispatch_async();
 }
 
@@ -6424,9 +6424,9 @@ uint64_t __46__CAMCaptureEngine_changeToPanoramaDirection___block_invoke_2(uint6
   return MEMORY[0x1EEE66BB8](v2, v4);
 }
 
-- (void)changePanoramaEncodingBehaviorIfNeeded:(int64_t)a3
+- (void)changePanoramaEncodingBehaviorIfNeeded:(int64_t)needed
 {
-  v3 = [(CAMCaptureEngine *)self _panoramaSampleBufferQueue];
+  _panoramaSampleBufferQueue = [(CAMCaptureEngine *)self _panoramaSampleBufferQueue];
   pl_dispatch_async();
 }
 
@@ -6462,12 +6462,12 @@ uint64_t __59__CAMCaptureEngine_changePanoramaEncodingBehaviorIfNeeded___block_i
   return [v2 _sessionQueuePanoramaSetup];
 }
 
-- (void)startPanoramaCaptureWithRequest:(id)a3
+- (void)startPanoramaCaptureWithRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   [(CAMCaptureEngine *)self stopMonitoringForAccidentalLaunch];
-  v5 = [(CAMCaptureEngine *)self _panoramaSampleBufferQueue];
-  v6 = v4;
+  _panoramaSampleBufferQueue = [(CAMCaptureEngine *)self _panoramaSampleBufferQueue];
+  v6 = requestCopy;
   pl_dispatch_async();
 }
 
@@ -6502,16 +6502,16 @@ uint64_t __52__CAMCaptureEngine_startPanoramaCaptureWithRequest___block_invoke_2
   return MEMORY[0x1EEE66BB8](v2, v4);
 }
 
-- (void)stopPanoramaCaptureInterrupted:(BOOL)a3
+- (void)stopPanoramaCaptureInterrupted:(BOOL)interrupted
 {
-  v3 = [(CAMCaptureEngine *)self _panoramaSampleBufferQueue];
+  _panoramaSampleBufferQueue = [(CAMCaptureEngine *)self _panoramaSampleBufferQueue];
   pl_dispatch_async();
 }
 
-- (void)_panoramaSampleBufferQueue_stopPanoramaCaptureIfNecessaryInterrupted:(BOOL)a3
+- (void)_panoramaSampleBufferQueue_stopPanoramaCaptureIfNecessaryInterrupted:(BOOL)interrupted
 {
-  v5 = [(CAMCaptureEngine *)self _panoramaSampleBufferQueue];
-  dispatch_assert_queue_V2(v5);
+  _panoramaSampleBufferQueue = [(CAMCaptureEngine *)self _panoramaSampleBufferQueue];
+  dispatch_assert_queue_V2(_panoramaSampleBufferQueue);
 
   v19 = 0;
   v20 = &v19;
@@ -6525,7 +6525,7 @@ uint64_t __52__CAMCaptureEngine_startPanoramaCaptureWithRequest___block_invoke_2
   v16 = __Block_byref_object_copy__26;
   v17 = __Block_byref_object_dispose__26;
   v18 = 0;
-  v6 = [(CAMCaptureEngine *)self _panoramaSubgraphQueue];
+  _panoramaSubgraphQueue = [(CAMCaptureEngine *)self _panoramaSubgraphQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __89__CAMCaptureEngine__panoramaSampleBufferQueue_stopPanoramaCaptureIfNecessaryInterrupted___block_invoke;
@@ -6533,7 +6533,7 @@ uint64_t __52__CAMCaptureEngine_startPanoramaCaptureWithRequest___block_invoke_2
   block[4] = self;
   block[5] = &v13;
   block[6] = &v19;
-  dispatch_sync(v6, block);
+  dispatch_sync(_panoramaSubgraphQueue, block);
 
   if ([v14[5] isCapturingPanorama])
   {
@@ -6543,7 +6543,7 @@ uint64_t __52__CAMCaptureEngine_startPanoramaCaptureWithRequest___block_invoke_2
     v10[2] = __89__CAMCaptureEngine__panoramaSampleBufferQueue_stopPanoramaCaptureIfNecessaryInterrupted___block_invoke_2;
     v10[3] = &unk_1E76FD6A8;
     v10[4] = &v19;
-    v11 = a3;
+    interruptedCopy = interrupted;
     [(CAMCaptureEngine *)self _enumerateCaptureServicesUsingBlock:v10];
     v7 = v14[5];
     v8 = v20[5];
@@ -6615,31 +6615,31 @@ void __89__CAMCaptureEngine__panoramaSampleBufferQueue_stopPanoramaCaptureIfNece
   }
 }
 
-- (void)panoramaProcessor:(id)a3 didProcessSampleBuffer:(opaqueCMSampleBuffer *)a4 withStatus:(int)a5 forRequest:(id)a6
+- (void)panoramaProcessor:(id)processor didProcessSampleBuffer:(opaqueCMSampleBuffer *)buffer withStatus:(int)status forRequest:(id)request
 {
-  v9 = a3;
-  v10 = a6;
+  processorCopy = processor;
+  requestCopy = request;
   v49 = 0;
   v50 = &v49;
   v51 = 0x2020000000;
   v52 = 0;
-  v11 = [(CAMCaptureEngine *)self _panoramaSubgraphQueue];
+  _panoramaSubgraphQueue = [(CAMCaptureEngine *)self _panoramaSubgraphQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __83__CAMCaptureEngine_panoramaProcessor_didProcessSampleBuffer_withStatus_forRequest___block_invoke;
   block[3] = &unk_1E76FAFF0;
   block[4] = self;
   block[5] = &v49;
-  dispatch_sync(v11, block);
+  dispatch_sync(_panoramaSubgraphQueue, block);
 
   if (v50[3])
   {
     CAImageQueueCollect();
   }
 
-  if (a4)
+  if (buffer)
   {
-    ImageBuffer = CMSampleBufferGetImageBuffer(a4);
+    ImageBuffer = CMSampleBufferGetImageBuffer(buffer);
     v13 = ImageBuffer;
     if (ImageBuffer)
     {
@@ -6652,20 +6652,20 @@ void __89__CAMCaptureEngine__panoramaSampleBufferQueue_stopPanoramaCaptureIfNece
       Value = CFDictionaryGetValue(v14, *MEMORY[0x1E6985F38]);
       if (Value)
       {
-        v16 = [Value integerValue];
+        integerValue = [Value integerValue];
       }
 
       else
       {
-        v16 = 0.0;
+        integerValue = 0.0;
       }
 
       v17 = +[CAMPanoramaConfiguration sharedInstance];
-      v18 = [v17 sampleBufferWidth];
+      sampleBufferWidth = [v17 sampleBufferWidth];
 
-      if (v18)
+      if (sampleBufferWidth)
       {
-        v19 = v16 / v18;
+        v19 = integerValue / sampleBufferWidth;
       }
 
       else
@@ -6682,8 +6682,8 @@ void __89__CAMCaptureEngine__panoramaSampleBufferQueue_stopPanoramaCaptureIfNece
         CGRectMakeWithDictionaryRepresentation(v21, &rect);
       }
 
-      v22 = [MEMORY[0x1E69DCEB0] mainScreen];
-      [v22 scale];
+      mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+      [mainScreen scale];
       v33 = 1.0 / v23;
 
       rect.origin = vmulq_n_f64(rect.origin, v33);
@@ -6707,7 +6707,7 @@ void __89__CAMCaptureEngine__panoramaSampleBufferQueue_stopPanoramaCaptureIfNece
       v42 = 3221225472;
       v43 = __83__CAMCaptureEngine_panoramaProcessor_didProcessSampleBuffer_withStatus_forRequest___block_invoke_2;
       v44 = &unk_1E76F7960;
-      v45 = v10;
+      v45 = requestCopy;
       v30 = v28;
       v46 = v30;
       pl_dispatch_async();
@@ -6719,14 +6719,14 @@ void __89__CAMCaptureEngine__panoramaSampleBufferQueue_stopPanoramaCaptureIfNece
       v38 = __Block_byref_object_copy__26;
       v39 = __Block_byref_object_dispose__26;
       v40 = 0;
-      v31 = [(CAMCaptureEngine *)self _panoramaFirstImageQueueUpdateSemaphoreQueue];
+      _panoramaFirstImageQueueUpdateSemaphoreQueue = [(CAMCaptureEngine *)self _panoramaFirstImageQueueUpdateSemaphoreQueue];
       v34[0] = MEMORY[0x1E69E9820];
       v34[1] = 3221225472;
       v34[2] = __83__CAMCaptureEngine_panoramaProcessor_didProcessSampleBuffer_withStatus_forRequest___block_invoke_3;
       v34[3] = &unk_1E76FAFF0;
       v34[4] = self;
       v34[5] = &v35;
-      dispatch_sync(v31, v34);
+      dispatch_sync(_panoramaFirstImageQueueUpdateSemaphoreQueue, v34);
 
       v32 = v36[5];
       if (v32)
@@ -6773,13 +6773,13 @@ uint64_t __83__CAMCaptureEngine_panoramaProcessor_didProcessSampleBuffer_withSta
   return MEMORY[0x1EEE66BB8](v2, v4);
 }
 
-- (void)registerEffectsPreviewSampleBufferDelegate:(id)a3
+- (void)registerEffectsPreviewSampleBufferDelegate:(id)delegate
 {
-  v4 = a3;
-  if (v4)
+  delegateCopy = delegate;
+  if (delegateCopy)
   {
-    v5 = [(CAMCaptureEngine *)self _effectsPreviewSampleBufferQueue];
-    v6 = v4;
+    _effectsPreviewSampleBufferQueue = [(CAMCaptureEngine *)self _effectsPreviewSampleBufferQueue];
+    v6 = delegateCopy;
     pl_dispatch_async();
   }
 }
@@ -6802,53 +6802,53 @@ uint64_t __63__CAMCaptureEngine_registerEffectsPreviewSampleBufferDelegate___blo
   return [v2 addObject:v6];
 }
 
-- (void)unregisterEffectsPreviewSampleBufferDelegate:(id)a3
+- (void)unregisterEffectsPreviewSampleBufferDelegate:(id)delegate
 {
-  v4 = a3;
-  if (v4)
+  delegateCopy = delegate;
+  if (delegateCopy)
   {
-    v5 = [(CAMCaptureEngine *)self _effectsPreviewSampleBufferQueue];
-    v6 = v4;
+    _effectsPreviewSampleBufferQueue = [(CAMCaptureEngine *)self _effectsPreviewSampleBufferQueue];
+    v6 = delegateCopy;
     pl_dispatch_async();
   }
 }
 
-- (void)registerVideoThumbnailContentsDelegate:(id)a3
+- (void)registerVideoThumbnailContentsDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  delegateCopy = delegate;
+  v5 = delegateCopy;
+  if (delegateCopy)
   {
     videoThumbnailContentsDelegates = self->__videoThumbnailContentsDelegates;
     v9 = v5;
     if (!videoThumbnailContentsDelegates)
     {
-      v7 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+      weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
       v8 = self->__videoThumbnailContentsDelegates;
-      self->__videoThumbnailContentsDelegates = v7;
+      self->__videoThumbnailContentsDelegates = weakObjectsHashTable;
 
       videoThumbnailContentsDelegates = self->__videoThumbnailContentsDelegates;
     }
 
-    v4 = [(NSHashTable *)videoThumbnailContentsDelegates addObject:v9];
+    delegateCopy = [(NSHashTable *)videoThumbnailContentsDelegates addObject:v9];
     v5 = v9;
   }
 
-  MEMORY[0x1EEE66BB8](v4, v5);
+  MEMORY[0x1EEE66BB8](delegateCopy, v5);
 }
 
-- (void)unregisterVideoThumbnailContentsDelegate:(id)a3
+- (void)unregisterVideoThumbnailContentsDelegate:(id)delegate
 {
-  if (a3)
+  if (delegate)
   {
     [(NSHashTable *)self->__videoThumbnailContentsDelegates removeObject:?];
   }
 }
 
-- (void)videoThumbnailOutput:(id)a3 willBeginRenderingThumbnailsWithContents:(id)a4
+- (void)videoThumbnailOutput:(id)output willBeginRenderingThumbnailsWithContents:(id)contents
 {
-  v5 = a4;
-  v4 = v5;
+  contentsCopy = contents;
+  v4 = contentsCopy;
   pl_dispatch_async();
 }
 
@@ -6920,12 +6920,12 @@ void __67__CAMCaptureEngine_videoThumbnailOutputWillEndRenderingThumbnails___blo
   }
 }
 
-- (void)captureOutput:(id)a3 didOutputSampleBuffer:(opaqueCMSampleBuffer *)a4 fromConnection:(id)a5
+- (void)captureOutput:(id)output didOutputSampleBuffer:(opaqueCMSampleBuffer *)buffer fromConnection:(id)connection
 {
   v28 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  if (self->_panoramaVideoDataOutput == v8)
+  outputCopy = output;
+  connectionCopy = connection;
+  if (self->_panoramaVideoDataOutput == outputCopy)
   {
     v21 = 0;
     v22 = &v21;
@@ -6933,35 +6933,35 @@ void __67__CAMCaptureEngine_videoThumbnailOutputWillEndRenderingThumbnails___blo
     v24 = __Block_byref_object_copy__26;
     v25 = __Block_byref_object_dispose__26;
     v26 = 0;
-    v14 = [(CAMCaptureEngine *)self _panoramaSubgraphQueue];
+    _panoramaSubgraphQueue = [(CAMCaptureEngine *)self _panoramaSubgraphQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __71__CAMCaptureEngine_captureOutput_didOutputSampleBuffer_fromConnection___block_invoke;
     block[3] = &unk_1E76FAFF0;
     block[4] = self;
     block[5] = &v21;
-    dispatch_sync(v14, block);
+    dispatch_sync(_panoramaSubgraphQueue, block);
 
-    if (a4)
+    if (buffer)
     {
       v15 = v22[5];
       if (v15)
       {
-        [v15 processSampleBuffer:a4];
+        [v15 processSampleBuffer:buffer];
       }
     }
 
     _Block_object_dispose(&v21, 8);
   }
 
-  else if (self->_effectsPreviewVideoDataOutput == v8)
+  else if (self->_effectsPreviewVideoDataOutput == outputCopy)
   {
-    v10 = [(CAMCaptureEngine *)self _effectsPreviewSampleBufferDelegates];
+    _effectsPreviewSampleBufferDelegates = [(CAMCaptureEngine *)self _effectsPreviewSampleBufferDelegates];
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v11 = [v10 countByEnumeratingWithState:&v16 objects:v27 count:16];
+    v11 = [_effectsPreviewSampleBufferDelegates countByEnumeratingWithState:&v16 objects:v27 count:16];
     if (v11)
     {
       v12 = *v17;
@@ -6972,14 +6972,14 @@ void __67__CAMCaptureEngine_videoThumbnailOutputWillEndRenderingThumbnails___blo
         {
           if (*v17 != v12)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(_effectsPreviewSampleBufferDelegates);
           }
 
-          [*(*(&v16 + 1) + 8 * v13++) effectsPreviewVideoDataOutputDidOutputSampleBuffer:a4];
+          [*(*(&v16 + 1) + 8 * v13++) effectsPreviewVideoDataOutputDidOutputSampleBuffer:buffer];
         }
 
         while (v11 != v13);
-        v11 = [v10 countByEnumeratingWithState:&v16 objects:v27 count:16];
+        v11 = [_effectsPreviewSampleBufferDelegates countByEnumeratingWithState:&v16 objects:v27 count:16];
       }
 
       while (v11);
@@ -6997,17 +6997,17 @@ uint64_t __71__CAMCaptureEngine_captureOutput_didOutputSampleBuffer_fromConnecti
   return MEMORY[0x1EEE66BB8](v2, v4);
 }
 
-- (void)captureOutput:(id)a3 didDropSampleBuffer:(opaqueCMSampleBuffer *)a4 fromConnection:(id)a5
+- (void)captureOutput:(id)output didDropSampleBuffer:(opaqueCMSampleBuffer *)buffer fromConnection:(id)connection
 {
   v16 = *MEMORY[0x1E69E9840];
-  if (self->_effectsPreviewVideoDataOutput == a3)
+  if (self->_effectsPreviewVideoDataOutput == output)
   {
-    v6 = [(CAMCaptureEngine *)self _effectsPreviewSampleBufferDelegates];
+    _effectsPreviewSampleBufferDelegates = [(CAMCaptureEngine *)self _effectsPreviewSampleBufferDelegates];
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    v7 = [_effectsPreviewSampleBufferDelegates countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v7)
     {
       v8 = v7;
@@ -7019,14 +7019,14 @@ uint64_t __71__CAMCaptureEngine_captureOutput_didOutputSampleBuffer_fromConnecti
         {
           if (*v12 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(_effectsPreviewSampleBufferDelegates);
           }
 
-          [*(*(&v11 + 1) + 8 * v10++) effectsPreviewVideoDataOutputDidDropSampleBuffer:a4];
+          [*(*(&v11 + 1) + 8 * v10++) effectsPreviewVideoDataOutputDidDropSampleBuffer:buffer];
         }
 
         while (v8 != v10);
-        v8 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v8 = [_effectsPreviewSampleBufferDelegates countByEnumeratingWithState:&v11 objects:v15 count:16];
       }
 
       while (v8);
@@ -7034,14 +7034,14 @@ uint64_t __71__CAMCaptureEngine_captureOutput_didOutputSampleBuffer_fromConnecti
   }
 }
 
-- (void)captureOutput:(id)a3 didOutputMetadataObjects:(id)a4 forMetadataObjectTypes:(id)a5 fromConnection:(id)a6
+- (void)captureOutput:(id)output didOutputMetadataObjects:(id)objects forMetadataObjectTypes:(id)types fromConnection:(id)connection
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [(CAMCaptureEngine *)self _captureSessionQueue];
-  v13 = v9;
-  v11 = v9;
-  v12 = v8;
+  objectsCopy = objects;
+  typesCopy = types;
+  _captureSessionQueue = [(CAMCaptureEngine *)self _captureSessionQueue];
+  v13 = typesCopy;
+  v11 = typesCopy;
+  v12 = objectsCopy;
   pl_dispatch_async();
 }
 
@@ -7071,23 +7071,23 @@ void __97__CAMCaptureEngine_captureOutput_didOutputMetadataObjects_forMetadataOb
   }
 }
 
-- (id)_captureEngineDeviceForDeviceType:(id)a3 position:(int64_t)a4
+- (id)_captureEngineDeviceForDeviceType:(id)type position:(int64_t)position
 {
-  v6 = a3;
-  v7 = [(CAMCaptureEngine *)self _captureEngineDeviceCache];
-  v8 = [objc_opt_class() _cacheKeyForDeviceType:v6 position:a4];
+  typeCopy = type;
+  _captureEngineDeviceCache = [(CAMCaptureEngine *)self _captureEngineDeviceCache];
+  v8 = [objc_opt_class() _cacheKeyForDeviceType:typeCopy position:position];
   v9 = +[CAMCaptureCapabilities capabilities];
-  v10 = [v9 featureDevelopmentEmulateSuperWide];
+  featureDevelopmentEmulateSuperWide = [v9 featureDevelopmentEmulateSuperWide];
 
-  if (v10)
+  if (featureDevelopmentEmulateSuperWide)
   {
-    if (*MEMORY[0x1E6986938] == v6 || *MEMORY[0x1E6986908] == v6)
+    if (*MEMORY[0x1E6986938] == typeCopy || *MEMORY[0x1E6986908] == typeCopy)
     {
       v12 = +[CAMCaptureCapabilities capabilities];
-      v13 = [v12 isBackDualSupported];
+      isBackDualSupported = [v12 isBackDualSupported];
 
       v14 = MEMORY[0x1E6986950];
-      if (v13)
+      if (isBackDualSupported)
       {
         v14 = MEMORY[0x1E6986900];
       }
@@ -7095,7 +7095,7 @@ void __97__CAMCaptureEngine_captureOutput_didOutputMetadataObjects_forMetadataOb
 
     else
     {
-      if (*MEMORY[0x1E6986948] != v6)
+      if (*MEMORY[0x1E6986948] != typeCopy)
       {
         goto LABEL_13;
       }
@@ -7105,7 +7105,7 @@ void __97__CAMCaptureEngine_captureOutput_didOutputMetadataObjects_forMetadataOb
 
     v15 = *v14;
 
-    v6 = v15;
+    typeCopy = v15;
   }
 
 LABEL_13:
@@ -7113,11 +7113,11 @@ LABEL_13:
   v19[1] = 3221225472;
   v19[2] = __63__CAMCaptureEngine__captureEngineDeviceForDeviceType_position___block_invoke;
   v19[3] = &unk_1E76FD748;
-  v21 = self;
-  v22 = a4;
-  v20 = v6;
-  v16 = v6;
-  v17 = [v7 objectForKey:v8 memoizationBlock:v19];
+  selfCopy = self;
+  positionCopy = position;
+  v20 = typeCopy;
+  v16 = typeCopy;
+  v17 = [_captureEngineDeviceCache objectForKey:v8 memoizationBlock:v19];
 
   return v17;
 }
@@ -7173,13 +7173,13 @@ void __63__CAMCaptureEngine__captureEngineDeviceForDeviceType_position___block_i
 
 - (id)systemPreferredCameraDevice
 {
-  v3 = [MEMORY[0x1E69870A0] systemPreferredCamera];
-  if (v3)
+  systemPreferredCamera = [MEMORY[0x1E69870A0] systemPreferredCamera];
+  if (systemPreferredCamera)
   {
-    v4 = [[CAMCaptureEngineDevice alloc] initWithEngine:self captureDevice:v3];
+    v4 = [[CAMCaptureEngineDevice alloc] initWithEngine:self captureDevice:systemPreferredCamera];
     if ([(CAMCaptureEngine *)self areManagedDevicesLockedForConfiguration])
     {
-      [(CAMCaptureEngine *)self _lockManagedCapturedDevice:v3];
+      [(CAMCaptureEngine *)self _lockManagedCapturedDevice:systemPreferredCamera];
     }
   }
 
@@ -7225,18 +7225,18 @@ void __63__CAMCaptureEngine__captureEngineDeviceForDeviceType_position___block_i
   audioCaptureDeviceInput = self->_audioCaptureDeviceInput;
   if (!audioCaptureDeviceInput)
   {
-    v5 = [(CAMCaptureEngine *)self audioCaptureDevice];
+    audioCaptureDevice = [(CAMCaptureEngine *)self audioCaptureDevice];
     v6 = NSStringFromSelector(a2);
     [(CAMCaptureEngine *)self willChangeValueForKey:v6];
-    v7 = [v5 deviceType];
-    v8 = [(CAMCaptureEngine *)self prewarmedAudioDeviceInput:v7 device:v5];
+    deviceType = [audioCaptureDevice deviceType];
+    v8 = [(CAMCaptureEngine *)self prewarmedAudioDeviceInput:deviceType device:audioCaptureDevice];
     v9 = self->_audioCaptureDeviceInput;
     self->_audioCaptureDeviceInput = v8;
 
     if (!self->_audioCaptureDeviceInput)
     {
       v15 = 0;
-      v10 = [MEMORY[0x1E69870B0] deviceInputWithDevice:v5 error:&v15];
+      v10 = [MEMORY[0x1E69870B0] deviceInputWithDevice:audioCaptureDevice error:&v15];
       v11 = v15;
       v12 = self->_audioCaptureDeviceInput;
       self->_audioCaptureDeviceInput = v10;
@@ -7314,17 +7314,17 @@ void __63__CAMCaptureEngine__captureEngineDeviceForDeviceType_position___block_i
   return systemStylePicker;
 }
 
-- (id)creativeStylePickerWithStyles:(id)a3
+- (id)creativeStylePickerWithStyles:(id)styles
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  stylesCopy = styles;
+  v5 = stylesCopy;
+  if (!stylesCopy)
   {
     p_creativeStylePicker = &self->_creativeStylePicker;
     goto LABEL_7;
   }
 
-  if (([v4 isEqualToArray:self->_cachedStylesForCreativeStylePicker] & 1) == 0)
+  if (([stylesCopy isEqualToArray:self->_cachedStylesForCreativeStylePicker] & 1) == 0)
   {
     creativeStylePicker = self->_creativeStylePicker;
     self->_creativeStylePicker = 0;
@@ -7354,16 +7354,16 @@ LABEL_7:
   return v8;
 }
 
-- (id)_newStylePickerWithStyles:(id)a3
+- (id)_newStylePickerWithStyles:(id)styles
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v4, "count")}];
+  stylesCopy = styles;
+  v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(stylesCopy, "count")}];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v6 = v4;
+  v6 = stylesCopy;
   v7 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v7)
   {
@@ -7394,9 +7394,9 @@ LABEL_7:
     while (v7);
   }
 
-  v11 = [(CAMCaptureEngine *)self _captureSession];
-  v12 = [(CAMCaptureEngine *)self _captureController];
-  objc_initWeak(&location, v12);
+  _captureSession = [(CAMCaptureEngine *)self _captureSession];
+  _captureController = [(CAMCaptureEngine *)self _captureController];
+  objc_initWeak(&location, _captureController);
 
   v13 = objc_alloc(MEMORY[0x1E6987160]);
   v16[0] = MEMORY[0x1E69E9820];
@@ -7404,7 +7404,7 @@ LABEL_7:
   v16[2] = __46__CAMCaptureEngine__newStylePickerWithStyles___block_invoke;
   v16[3] = &unk_1E76FD770;
   objc_copyWeak(&v17, &location);
-  v14 = [v13 initWithSession:v11 styles:v5 action:v16];
+  v14 = [v13 initWithSession:_captureSession styles:v5 action:v16];
   objc_destroyWeak(&v17);
   objc_destroyWeak(&location);
 
@@ -7428,9 +7428,9 @@ void __46__CAMCaptureEngine__newStylePickerWithStyles___block_invoke(uint64_t a1
   {
     v4 = NSStringFromSelector(a2);
     [(CAMCaptureEngine *)self willChangeValueForKey:v4];
-    v5 = [(CAMCaptureEngine *)self _captureSession];
-    v6 = [(CAMCaptureEngine *)self _captureController];
-    objc_initWeak(&location, v6);
+    _captureSession = [(CAMCaptureEngine *)self _captureSession];
+    _captureController = [(CAMCaptureEngine *)self _captureController];
+    objc_initWeak(&location, _captureController);
 
     v7 = objc_alloc(MEMORY[0x1E6987168]);
     v11 = MEMORY[0x1E69E9820];
@@ -7438,7 +7438,7 @@ void __46__CAMCaptureEngine__newStylePickerWithStyles___block_invoke(uint64_t a1
     v13 = __34__CAMCaptureEngine_toneBiasSlider__block_invoke;
     v14 = &unk_1E76FD770;
     objc_copyWeak(&v15, &location);
-    v8 = [v7 initWithSession:v5 parameter:2 action:&v11];
+    v8 = [v7 initWithSession:_captureSession parameter:2 action:&v11];
     v9 = self->_toneBiasSlider;
     self->_toneBiasSlider = v8;
 
@@ -7469,9 +7469,9 @@ void __34__CAMCaptureEngine_toneBiasSlider__block_invoke(uint64_t a1, void *a2)
   {
     v4 = NSStringFromSelector(a2);
     [(CAMCaptureEngine *)self willChangeValueForKey:v4];
-    v5 = [(CAMCaptureEngine *)self _captureSession];
-    v6 = [(CAMCaptureEngine *)self _captureController];
-    objc_initWeak(&location, v6);
+    _captureSession = [(CAMCaptureEngine *)self _captureSession];
+    _captureController = [(CAMCaptureEngine *)self _captureController];
+    objc_initWeak(&location, _captureController);
 
     v7 = objc_alloc(MEMORY[0x1E6987168]);
     v11 = MEMORY[0x1E69E9820];
@@ -7479,7 +7479,7 @@ void __34__CAMCaptureEngine_toneBiasSlider__block_invoke(uint64_t a1, void *a2)
     v13 = __35__CAMCaptureEngine_colorBiasSlider__block_invoke;
     v14 = &unk_1E76FD770;
     objc_copyWeak(&v15, &location);
-    v8 = [v7 initWithSession:v5 parameter:1 action:&v11];
+    v8 = [v7 initWithSession:_captureSession parameter:1 action:&v11];
     v9 = self->_colorBiasSlider;
     self->_colorBiasSlider = v8;
 
@@ -7510,9 +7510,9 @@ void __35__CAMCaptureEngine_colorBiasSlider__block_invoke(uint64_t a1, void *a2)
   {
     v4 = NSStringFromSelector(a2);
     [(CAMCaptureEngine *)self willChangeValueForKey:v4];
-    v5 = [(CAMCaptureEngine *)self _captureSession];
-    v6 = [(CAMCaptureEngine *)self _captureController];
-    objc_initWeak(&location, v6);
+    _captureSession = [(CAMCaptureEngine *)self _captureSession];
+    _captureController = [(CAMCaptureEngine *)self _captureController];
+    objc_initWeak(&location, _captureController);
 
     v7 = objc_alloc(MEMORY[0x1E6987168]);
     v11 = MEMORY[0x1E69E9820];
@@ -7520,7 +7520,7 @@ void __35__CAMCaptureEngine_colorBiasSlider__block_invoke(uint64_t a1, void *a2)
     v13 = __35__CAMCaptureEngine_intensitySlider__block_invoke;
     v14 = &unk_1E76FD770;
     objc_copyWeak(&v15, &location);
-    v8 = [v7 initWithSession:v5 parameter:0 action:&v11];
+    v8 = [v7 initWithSession:_captureSession parameter:0 action:&v11];
     v9 = self->_intensitySlider;
     self->_intensitySlider = v8;
 
@@ -7544,47 +7544,47 @@ void __35__CAMCaptureEngine_intensitySlider__block_invoke(uint64_t a1, void *a2)
   [v5 captureController:WeakRetained receivedOverlayUpdateSmartStyle:v4];
 }
 
-- (void)_ensureApertureSliderForGraphConfiguration:(id)a3
+- (void)_ensureApertureSliderForGraphConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v5 = +[CAMCaptureCapabilities capabilities];
   if ([v5 isDepthEffectApertureSupported])
   {
     v6 = self->_apertureSlider;
-    v7 = [v4 mode];
-    v8 = [v4 device];
-    if ((v8 - 1) > 0xA)
+    mode = [configurationCopy mode];
+    device = [configurationCopy device];
+    if ((device - 1) > 0xA)
     {
       v9 = 0;
     }
 
     else
     {
-      v9 = qword_1A3A6A7A8[v8 - 1];
+      v9 = qword_1A3A6A7A8[device - 1];
     }
 
-    if ([v5 isDepthEffectApertureSupportedForMode:v7 devicePosition:v9 depthSuggestionEnabled:{objc_msgSend(v4, "enableDepthSuggestion")}])
+    if ([v5 isDepthEffectApertureSupportedForMode:mode devicePosition:v9 depthSuggestionEnabled:{objc_msgSend(configurationCopy, "enableDepthSuggestion")}])
     {
-      v10 = v7;
+      v10 = mode;
     }
 
     else
     {
-      v8 = 0;
+      device = 0;
       v10 = 0;
     }
 
-    [v5 minimumDepthEffectApertureForMode:v10 device:v8];
+    [v5 minimumDepthEffectApertureForMode:v10 device:device];
     v12 = v11;
-    [v5 maximumDepthEffectApertureForMode:v10 device:v8];
+    [v5 maximumDepthEffectApertureForMode:v10 device:device];
     v14 = v13;
     v15 = [MEMORY[0x1E6993828] indexOfClosestValidValueForAperture:v12];
     v16 = [MEMORY[0x1E6993828] indexOfClosestValidValueForAperture:v14] - v15;
-    v17 = [MEMORY[0x1E6993828] validApertureValues];
-    v18 = [v17 subarrayWithRange:{v15, v16 + 1}];
+    validApertureValues = [MEMORY[0x1E6993828] validApertureValues];
+    v18 = [validApertureValues subarrayWithRange:{v15, v16 + 1}];
 
-    [v5 defaultZoomFactorForGraphConfiguration:v4 captureOrientation:1 customLens:0 outputToExternalStorage:0 overrodeWithForcedZoomValue:0];
-    [v5 defaultDepthEffectApertureForMode:v10 device:v8 zoomFactor:?];
+    [v5 defaultZoomFactorForGraphConfiguration:configurationCopy captureOrientation:1 customLens:0 outputToExternalStorage:0 overrodeWithForcedZoomValue:0];
+    [v5 defaultDepthEffectApertureForMode:v10 device:device zoomFactor:?];
     v20 = v19;
     if (v6 && ([v18 isEqualToArray:self->_apertureSliderValues] & 1) != 0)
     {
@@ -7593,8 +7593,8 @@ void __35__CAMCaptureEngine_intensitySlider__block_invoke(uint64_t a1, void *a2)
 
     else
     {
-      v23 = [(CAMCaptureEngine *)self _captureController];
-      objc_initWeak(&location, v23);
+      _captureController = [(CAMCaptureEngine *)self _captureController];
+      objc_initWeak(&location, _captureController);
 
       v24 = objc_alloc(MEMORY[0x1E6987118]);
       v25 = CAMLocalizedFrameworkString(@"CAMERA_OVERLAY_APERTURE_SLIDER_TITLE", 0);
@@ -7648,9 +7648,9 @@ void __63__CAMCaptureEngine__ensureApertureSliderForGraphConfiguration___block_i
   [v2 captureController:WeakRetained receivedOverlaySimulatedAperture:v3];
 }
 
-- (void)_ensureEmulatedZoomSliderForGraphConfiguration:(id)a3
+- (void)_ensureEmulatedZoomSliderForGraphConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   emulatedZoomSlider = self->_emulatedZoomSlider;
   if (emulatedZoomSlider)
   {
@@ -7658,17 +7658,17 @@ void __63__CAMCaptureEngine__ensureApertureSliderForGraphConfiguration___block_i
   }
 
   v21 = 0;
-  v6 = +[CAMZoomControlUtilities shouldApplyContinuousZoomForMode:device:videoConfiguration:videoStabilizationStrength:frontRearSimultaneousVideoEnabled:zoomFactors:displayZoomFactors:](CAMZoomControlUtilities, "shouldApplyContinuousZoomForMode:device:videoConfiguration:videoStabilizationStrength:frontRearSimultaneousVideoEnabled:zoomFactors:displayZoomFactors:", [v4 mode], objc_msgSend(v4, "device"), objc_msgSend(v4, "videoConfiguration"), objc_msgSend(v4, "videoStabilizationStrength"), objc_msgSend(v4, "frontRearSimultaneousVideoEnabled"), &v21, 0);
+  v6 = +[CAMZoomControlUtilities shouldApplyContinuousZoomForMode:device:videoConfiguration:videoStabilizationStrength:frontRearSimultaneousVideoEnabled:zoomFactors:displayZoomFactors:](CAMZoomControlUtilities, "shouldApplyContinuousZoomForMode:device:videoConfiguration:videoStabilizationStrength:frontRearSimultaneousVideoEnabled:zoomFactors:displayZoomFactors:", [configurationCopy mode], objc_msgSend(configurationCopy, "device"), objc_msgSend(configurationCopy, "videoConfiguration"), objc_msgSend(configurationCopy, "videoStabilizationStrength"), objc_msgSend(configurationCopy, "frontRearSimultaneousVideoEnabled"), &v21, 0);
   v7 = v21;
   v8 = v7;
   if (v6 && [v7 count])
   {
-    v9 = [v8 firstObject];
-    [v9 floatValue];
+    firstObject = [v8 firstObject];
+    [firstObject floatValue];
     v11 = v10;
 
-    v12 = [v8 lastObject];
-    [v12 floatValue];
+    lastObject = [v8 lastObject];
+    [lastObject floatValue];
     v14 = v13;
 
     v15 = objc_alloc(MEMORY[0x1E6987118]);
@@ -7684,15 +7684,15 @@ void __63__CAMCaptureEngine__ensureApertureSliderForGraphConfiguration___block_i
   }
 }
 
-- (void)sessionControlsDidBecomeActive:(id)a3
+- (void)sessionControlsDidBecomeActive:(id)active
 {
-  v3 = [(CAMCaptureEngine *)self _captureController];
+  _captureController = [(CAMCaptureEngine *)self _captureController];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __51__CAMCaptureEngine_sessionControlsDidBecomeActive___block_invoke;
   block[3] = &unk_1E76F77B0;
-  v6 = v3;
-  v4 = v3;
+  v6 = _captureController;
+  v4 = _captureController;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
@@ -7702,15 +7702,15 @@ void __51__CAMCaptureEngine_sessionControlsDidBecomeActive___block_invoke(uint64
   [v2 captureController:*(a1 + 32) receivedOverlayVisible:1];
 }
 
-- (void)sessionControlsDidBecomeInactive:(id)a3
+- (void)sessionControlsDidBecomeInactive:(id)inactive
 {
-  v3 = [(CAMCaptureEngine *)self _captureController];
+  _captureController = [(CAMCaptureEngine *)self _captureController];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __53__CAMCaptureEngine_sessionControlsDidBecomeInactive___block_invoke;
   block[3] = &unk_1E76F77B0;
-  v6 = v3;
-  v4 = v3;
+  v6 = _captureController;
+  v4 = _captureController;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
@@ -7720,15 +7720,15 @@ void __53__CAMCaptureEngine_sessionControlsDidBecomeInactive___block_invoke(uint
   [v2 captureController:*(a1 + 32) receivedOverlayVisible:0];
 }
 
-- (void)sessionControlsWillEnterFullscreenAppearance:(id)a3
+- (void)sessionControlsWillEnterFullscreenAppearance:(id)appearance
 {
-  v3 = [(CAMCaptureEngine *)self _captureController];
+  _captureController = [(CAMCaptureEngine *)self _captureController];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __65__CAMCaptureEngine_sessionControlsWillEnterFullscreenAppearance___block_invoke;
   block[3] = &unk_1E76F77B0;
-  v6 = v3;
-  v4 = v3;
+  v6 = _captureController;
+  v4 = _captureController;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
@@ -7738,15 +7738,15 @@ void __65__CAMCaptureEngine_sessionControlsWillEnterFullscreenAppearance___block
   [v2 captureController:*(a1 + 32) receivedQuietUIActive:1];
 }
 
-- (void)sessionControlsWillExitFullscreenAppearance:(id)a3
+- (void)sessionControlsWillExitFullscreenAppearance:(id)appearance
 {
-  v3 = [(CAMCaptureEngine *)self _captureController];
+  _captureController = [(CAMCaptureEngine *)self _captureController];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __64__CAMCaptureEngine_sessionControlsWillExitFullscreenAppearance___block_invoke;
   block[3] = &unk_1E76F77B0;
-  v6 = v3;
-  v4 = v3;
+  v6 = _captureController;
+  v4 = _captureController;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
@@ -7756,16 +7756,16 @@ void __64__CAMCaptureEngine_sessionControlsWillExitFullscreenAppearance___block_
   [v2 captureController:*(a1 + 32) receivedQuietUIActive:0];
 }
 
-- (void)session:(id)a3 controlsDidChangeAutoFocusLocked:(BOOL)a4
+- (void)session:(id)session controlsDidChangeAutoFocusLocked:(BOOL)locked
 {
-  v5 = [(CAMCaptureEngine *)self _captureController];
+  _captureController = [(CAMCaptureEngine *)self _captureController];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __61__CAMCaptureEngine_session_controlsDidChangeAutoFocusLocked___block_invoke;
   v7[3] = &unk_1E76F7850;
-  v8 = v5;
-  v9 = a4;
-  v6 = v5;
+  v8 = _captureController;
+  lockedCopy = locked;
+  v6 = _captureController;
   dispatch_async(MEMORY[0x1E69E96A0], v7);
 }
 
@@ -7775,53 +7775,53 @@ void __61__CAMCaptureEngine_session_controlsDidChangeAutoFocusLocked___block_inv
   [v2 captureController:*(a1 + 32) receivedFocusLocked:*(a1 + 40)];
 }
 
-- (void)session:(id)a3 didChangeActiveControl:(id)a4
+- (void)session:(id)session didChangeActiveControl:(id)control
 {
-  v5 = a4;
-  v6 = [(CAMCaptureEngine *)self _captureController];
-  if (v5)
+  controlCopy = control;
+  _captureController = [(CAMCaptureEngine *)self _captureController];
+  if (controlCopy)
   {
-    v7 = [(CAMCaptureEngine *)self creativeStylePicker];
-    if (v7 == v5)
+    creativeStylePicker = [(CAMCaptureEngine *)self creativeStylePicker];
+    if (creativeStylePicker == controlCopy)
     {
       v12 = 1;
     }
 
     else
     {
-      v8 = [(CAMCaptureEngine *)self systemStylePicker];
-      if (v8 == v5)
+      systemStylePicker = [(CAMCaptureEngine *)self systemStylePicker];
+      if (systemStylePicker == controlCopy)
       {
         v12 = 1;
       }
 
       else
       {
-        v9 = [(CAMCaptureEngine *)self intensitySlider];
-        if (v9 == v5)
+        intensitySlider = [(CAMCaptureEngine *)self intensitySlider];
+        if (intensitySlider == controlCopy)
         {
           v12 = 1;
         }
 
         else
         {
-          v10 = [(CAMCaptureEngine *)self colorBiasSlider];
-          if (v10 == v5)
+          colorBiasSlider = [(CAMCaptureEngine *)self colorBiasSlider];
+          if (colorBiasSlider == controlCopy)
           {
             v12 = 1;
           }
 
           else
           {
-            v11 = [(CAMCaptureEngine *)self toneBiasSlider];
-            v12 = v11 == v5;
+            toneBiasSlider = [(CAMCaptureEngine *)self toneBiasSlider];
+            v12 = toneBiasSlider == controlCopy;
           }
         }
       }
     }
 
-    v14 = [(CAMCaptureEngine *)self apertureSlider];
-    v13 = v14 == v5;
+    apertureSlider = [(CAMCaptureEngine *)self apertureSlider];
+    v13 = apertureSlider == controlCopy;
   }
 
   else
@@ -7834,10 +7834,10 @@ void __61__CAMCaptureEngine_session_controlsDidChangeAutoFocusLocked___block_inv
   v16[1] = 3221225472;
   v16[2] = __51__CAMCaptureEngine_session_didChangeActiveControl___block_invoke;
   v16[3] = &unk_1E76F9818;
-  v17 = v6;
+  v17 = _captureController;
   v18 = v12;
   v19 = v13;
-  v15 = v6;
+  v15 = _captureController;
   dispatch_async(MEMORY[0x1E69E96A0], v16);
 }
 
@@ -7850,16 +7850,16 @@ void __51__CAMCaptureEngine_session_didChangeActiveControl___block_invoke(uint64
   [v3 captureController:*(a1 + 32) receivedOverlayApertureControlActive:*(a1 + 41)];
 }
 
-- (void)captureEngineDevice:(id)a3 didChangeSystemExposureTargetBias:(float)a4
+- (void)captureEngineDevice:(id)device didChangeSystemExposureTargetBias:(float)bias
 {
-  v5 = [(CAMCaptureEngine *)self _captureController];
+  _captureController = [(CAMCaptureEngine *)self _captureController];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __74__CAMCaptureEngine_captureEngineDevice_didChangeSystemExposureTargetBias___block_invoke;
   v7[3] = &unk_1E76FC3A8;
-  v8 = v5;
-  v9 = a4;
-  v6 = v5;
+  v8 = _captureController;
+  biasCopy = bias;
+  v6 = _captureController;
   dispatch_async(MEMORY[0x1E69E96A0], v7);
 }
 
@@ -7869,16 +7869,16 @@ void __74__CAMCaptureEngine_captureEngineDevice_didChangeSystemExposureTargetBia
   [v2 captureController:*(a1 + 32) receivedSystemOverlayUpdateExposureBias:*(a1 + 40)];
 }
 
-- (void)captureEngineDevice:(id)a3 didChangeLensSelectorZoomFactor:(float)a4
+- (void)captureEngineDevice:(id)device didChangeLensSelectorZoomFactor:(float)factor
 {
-  v5 = [(CAMCaptureEngine *)self _captureController];
+  _captureController = [(CAMCaptureEngine *)self _captureController];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __72__CAMCaptureEngine_captureEngineDevice_didChangeLensSelectorZoomFactor___block_invoke;
   v7[3] = &unk_1E76FC3A8;
-  v8 = v5;
-  v9 = a4;
-  v6 = v5;
+  v8 = _captureController;
+  factorCopy = factor;
+  v6 = _captureController;
   cam_perform_on_main_asap(v7);
 }
 

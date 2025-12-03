@@ -1,24 +1,24 @@
 @interface TUIFeedAutoScrollController
-- (TUIFeedAutoScrollController)initWithDelegate:(id)a3;
+- (TUIFeedAutoScrollController)initWithDelegate:(id)delegate;
 - (TUIFeedAutoScrollDelegate)delegate;
-- (void)addScrollQuery:(id)a3 animated:(BOOL)a4 skipVoiceOverFocus:(BOOL)a5;
+- (void)addScrollQuery:(id)query animated:(BOOL)animated skipVoiceOverFocus:(BOOL)focus;
 - (void)attemptPendingScrolls;
 - (void)invalidatePendingScrolls;
-- (void)invalidateQuery:(id)a3;
+- (void)invalidateQuery:(id)query;
 @end
 
 @implementation TUIFeedAutoScrollController
 
-- (TUIFeedAutoScrollController)initWithDelegate:(id)a3
+- (TUIFeedAutoScrollController)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v14.receiver = self;
   v14.super_class = TUIFeedAutoScrollController;
   v5 = [(TUIFeedAutoScrollController *)&v14 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     v7 = [NSHashTable hashTableWithOptions:512];
     pendingQueries = v6->_pendingQueries;
     v6->_pendingQueries = v7;
@@ -35,40 +35,40 @@
   return v6;
 }
 
-- (void)addScrollQuery:(id)a3 animated:(BOOL)a4 skipVoiceOverFocus:(BOOL)a5
+- (void)addScrollQuery:(id)query animated:(BOOL)animated skipVoiceOverFocus:(BOOL)focus
 {
-  v5 = a5;
-  v6 = a4;
+  focusCopy = focus;
+  animatedCopy = animated;
   pendingQueries = self->_pendingQueries;
-  v9 = a3;
-  [(NSHashTable *)pendingQueries addObject:v9];
+  queryCopy = query;
+  [(NSHashTable *)pendingQueries addObject:queryCopy];
   animated = self->_animated;
-  v11 = [NSNumber numberWithBool:v6];
-  [(NSMapTable *)animated setObject:v11 forKey:v9];
+  v11 = [NSNumber numberWithBool:animatedCopy];
+  [(NSMapTable *)animated setObject:v11 forKey:queryCopy];
 
   skipVoiceOverFocus = self->_skipVoiceOverFocus;
-  v13 = [NSNumber numberWithBool:v5];
-  [(NSMapTable *)skipVoiceOverFocus setObject:v13 forKey:v9];
+  v13 = [NSNumber numberWithBool:focusCopy];
+  [(NSMapTable *)skipVoiceOverFocus setObject:v13 forKey:queryCopy];
 }
 
-- (void)invalidateQuery:(id)a3
+- (void)invalidateQuery:(id)query
 {
   pendingQueries = self->_pendingQueries;
-  v5 = a3;
-  [(NSHashTable *)pendingQueries removeObject:v5];
-  [(NSMapTable *)self->_animated removeObjectForKey:v5];
-  [(NSMapTable *)self->_skipVoiceOverFocus removeObjectForKey:v5];
+  queryCopy = query;
+  [(NSHashTable *)pendingQueries removeObject:queryCopy];
+  [(NSMapTable *)self->_animated removeObjectForKey:queryCopy];
+  [(NSMapTable *)self->_skipVoiceOverFocus removeObjectForKey:queryCopy];
 }
 
 - (void)attemptPendingScrolls
 {
-  v3 = [(NSHashTable *)self->_pendingQueries allObjects];
+  allObjects = [(NSHashTable *)self->_pendingQueries allObjects];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_7C75C;
   v4[3] = &unk_2603D8;
   v4[4] = self;
-  [v3 enumerateObjectsUsingBlock:v4];
+  [allObjects enumerateObjectsUsingBlock:v4];
 }
 
 - (void)invalidatePendingScrolls

@@ -7,7 +7,7 @@
 - (BOOL)_mapsUI_isWithinMUPlatterView
 {
   v2 = objc_opt_self();
-  v3 = [a1 valueForNSIntegerTrait:v2];
+  v3 = [self valueForNSIntegerTrait:v2];
 
   return v3 != 0;
 }

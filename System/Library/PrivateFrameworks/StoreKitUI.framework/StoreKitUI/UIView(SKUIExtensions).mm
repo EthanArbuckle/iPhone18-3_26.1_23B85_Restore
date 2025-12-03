@@ -18,7 +18,7 @@
     }
   }
 
-  return a1;
+  return self;
 }
 
 @end

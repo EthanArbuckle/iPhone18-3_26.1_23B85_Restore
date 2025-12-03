@@ -1,5 +1,5 @@
 @interface FTPronGuessResponse
-- (FTPronGuessResponse)initWithFlatbuffData:(id)a3 root:(const PronGuessResponse *)a4 verify:(BOOL)a5;
+- (FTPronGuessResponse)initWithFlatbuffData:(id)data root:(const PronGuessResponse *)root verify:(BOOL)verify;
 - (FTVocToken)voc_token;
 - (NSArray)human_readable_prons;
 - (NSArray)tts_pronunciations;
@@ -7,23 +7,23 @@
 - (NSString)error_str;
 - (NSString)session_id;
 - (NSString)speech_id;
-- (Offset<siri::speech::schema_fb::PronGuessResponse>)addObjectToBuffer:(void *)a3;
+- (Offset<siri::speech::schema_fb::PronGuessResponse>)addObjectToBuffer:(void *)buffer;
 - (id)flatbuffData;
-- (id)human_readable_prons_objectAtIndex:(unint64_t)a3;
-- (id)tts_pronunciations_objectAtIndex:(unint64_t)a3;
+- (id)human_readable_prons_objectAtIndex:(unint64_t)index;
+- (id)tts_pronunciations_objectAtIndex:(unint64_t)index;
 - (int)error_code;
 - (unint64_t)human_readable_prons_count;
 - (unint64_t)tts_pronunciations_count;
-- (void)human_readable_prons_enumerateObjectsUsingBlock:(id)a3;
-- (void)tts_pronunciations_enumerateObjectsUsingBlock:(id)a3;
+- (void)human_readable_prons_enumerateObjectsUsingBlock:(id)block;
+- (void)tts_pronunciations_enumerateObjectsUsingBlock:(id)block;
 @end
 
 @implementation FTPronGuessResponse
 
-- (FTPronGuessResponse)initWithFlatbuffData:(id)a3 root:(const PronGuessResponse *)a4 verify:(BOOL)a5
+- (FTPronGuessResponse)initWithFlatbuffData:(id)data root:(const PronGuessResponse *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v25.receiver = self;
   v25.super_class = FTPronGuessResponse;
   v10 = [(FTPronGuessResponse *)&v25 init];
@@ -32,35 +32,35 @@
     goto LABEL_13;
   }
 
-  if (!v9 || ![v9 length])
+  if (!dataCopy || ![dataCopy length])
   {
     goto LABEL_14;
   }
 
-  objc_storeStrong(&v10->_data, a3);
-  if (!a4)
+  objc_storeStrong(&v10->_data, data);
+  if (!root)
   {
-    v11 = [(NSData *)v10->_data bytes];
-    a4 = v11 + *v11;
+    bytes = [(NSData *)v10->_data bytes];
+    root = bytes + *bytes;
   }
 
-  v10->_root = a4;
-  if (!v5)
+  v10->_root = root;
+  if (!verifyCopy)
   {
     goto LABEL_13;
   }
 
-  v12 = [(NSData *)v10->_data bytes];
+  bytes2 = [(NSData *)v10->_data bytes];
   v13 = [(NSData *)v10->_data length];
   root = v10->_root;
-  if (root < v12 || root > v12 + v13)
+  if (root < bytes2 || root > bytes2 + v13)
   {
     goto LABEL_14;
   }
 
-  v16 = [(NSData *)v10->_data bytes];
+  bytes3 = [(NSData *)v10->_data bytes];
   v17 = [(NSData *)v10->_data length];
-  v21[0] = v16;
+  v21[0] = bytes3;
   v21[1] = v17;
   v22 = xmmword_233005E20;
   v23 = 0;
@@ -223,12 +223,12 @@ LABEL_13:
   v3 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"tts_pronunciations"];
   if (!v3)
   {
-    v4 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __41__FTPronGuessResponse_tts_pronunciations__block_invoke;
     v6[3] = &unk_2789B8AD8;
-    v3 = v4;
+    v3 = array;
     v7 = v3;
     [(FTPronGuessResponse *)self tts_pronunciations_enumerateObjectsUsingBlock:v6];
     [(NSMutableDictionary *)self->_storage setObject:v3 forKeyedSubscript:@"tts_pronunciations"];
@@ -237,13 +237,13 @@ LABEL_13:
   return v3;
 }
 
-- (id)tts_pronunciations_objectAtIndex:(unint64_t)a3
+- (id)tts_pronunciations_objectAtIndex:(unint64_t)index
 {
   v5 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"tts_pronunciations"];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 objectAtIndexedSubscript:a3];
+    v7 = [v5 objectAtIndexedSubscript:index];
 LABEL_3:
     v8 = v7;
     goto LABEL_8;
@@ -256,7 +256,7 @@ LABEL_3:
     v11 = *v10[16].var0;
     if (v11)
     {
-      v12 = &root[4 * a3 + v11 + *root[v11].var0];
+      v12 = &root[4 * index + v11 + *root[v11].var0];
       v7 = [[FTPronunciation alloc] initWithFlatbuffData:self->_data root:v12 + 4 + *(v12 + 4) verify:0];
       goto LABEL_3;
     }
@@ -295,14 +295,14 @@ LABEL_8:
   return v5;
 }
 
-- (void)tts_pronunciations_enumerateObjectsUsingBlock:(id)a3
+- (void)tts_pronunciations_enumerateObjectsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"tts_pronunciations"];
   v6 = v5;
   if (v5)
   {
-    [v5 enumerateObjectsUsingBlock:v4];
+    [v5 enumerateObjectsUsingBlock:blockCopy];
   }
 
   else
@@ -325,7 +325,7 @@ LABEL_8:
           do
           {
             v15 = [[FTPronunciation alloc] initWithFlatbuffData:self->_data root:&v13[*v13->var0] verify:0];
-            v4[2](v4, v15, v12, &v18);
+            blockCopy[2](blockCopy, v15, v12, &v18);
             v16 = v18;
 
             if (v16)
@@ -351,12 +351,12 @@ LABEL_8:
   v3 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"human_readable_prons"];
   if (!v3)
   {
-    v4 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __43__FTPronGuessResponse_human_readable_prons__block_invoke;
     v6[3] = &unk_2789B8AD8;
-    v3 = v4;
+    v3 = array;
     v7 = v3;
     [(FTPronGuessResponse *)self human_readable_prons_enumerateObjectsUsingBlock:v6];
     [(NSMutableDictionary *)self->_storage setObject:v3 forKeyedSubscript:@"human_readable_prons"];
@@ -365,13 +365,13 @@ LABEL_8:
   return v3;
 }
 
-- (id)human_readable_prons_objectAtIndex:(unint64_t)a3
+- (id)human_readable_prons_objectAtIndex:(unint64_t)index
 {
   v5 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"human_readable_prons"];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 objectAtIndexedSubscript:a3];
+    v7 = [v5 objectAtIndexedSubscript:index];
 LABEL_3:
     v8 = v7;
     goto LABEL_8;
@@ -384,7 +384,7 @@ LABEL_3:
     v11 = *v10[18].var0;
     if (v11)
     {
-      v12 = &root[4 * a3 + v11 + *root[v11].var0];
+      v12 = &root[4 * index + v11 + *root[v11].var0];
       v13 = (v12 + 4 + *(v12 + 4));
       v7 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:v13 + 1 length:*v13 encoding:4];
       goto LABEL_3;
@@ -424,14 +424,14 @@ LABEL_8:
   return v5;
 }
 
-- (void)human_readable_prons_enumerateObjectsUsingBlock:(id)a3
+- (void)human_readable_prons_enumerateObjectsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"human_readable_prons"];
   v6 = v5;
   if (v5)
   {
-    [v5 enumerateObjectsUsingBlock:v4];
+    [v5 enumerateObjectsUsingBlock:blockCopy];
   }
 
   else
@@ -455,7 +455,7 @@ LABEL_8:
           do
           {
             v16 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:&v14[*v14[-4].var0] length:*v13[4 * v12 + 4 + *v14[-4].var0].var0 encoding:4];
-            v4[2](v4, v16, v12, &v19);
+            blockCopy[2](blockCopy, v16, v12, &v19);
             v17 = v19;
 
             if (v17)
@@ -476,67 +476,67 @@ LABEL_8:
   }
 }
 
-- (Offset<siri::speech::schema_fb::PronGuessResponse>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::schema_fb::PronGuessResponse>)addObjectToBuffer:(void *)buffer
 {
   v74 = *MEMORY[0x277D85DE8];
-  v5 = [(FTPronGuessResponse *)self speech_id];
-  v6 = v5;
-  if (!v5)
+  speech_id = [(FTPronGuessResponse *)self speech_id];
+  v6 = speech_id;
+  if (!speech_id)
   {
-    v5 = &stru_284834138;
+    speech_id = &stru_284834138;
   }
 
-  v7 = [(__CFString *)v5 UTF8String];
-  v8 = strlen(v7);
-  String = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(a3, v7, v8);
+  uTF8String = [(__CFString *)speech_id UTF8String];
+  v8 = strlen(uTF8String);
+  String = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(buffer, uTF8String, v8);
 
-  v9 = [(FTPronGuessResponse *)self session_id];
-  v10 = v9;
-  if (!v9)
+  session_id = [(FTPronGuessResponse *)self session_id];
+  v10 = session_id;
+  if (!session_id)
   {
-    v9 = &stru_284834138;
+    session_id = &stru_284834138;
   }
 
-  v11 = [(__CFString *)v9 UTF8String];
-  v12 = strlen(v11);
-  v59 = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(a3, v11, v12);
+  uTF8String2 = [(__CFString *)session_id UTF8String];
+  v12 = strlen(uTF8String2);
+  v59 = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(buffer, uTF8String2, v12);
 
-  v58 = [(FTPronGuessResponse *)self error_code];
-  v13 = [(FTPronGuessResponse *)self error_str];
-  v14 = v13;
-  if (!v13)
+  error_code = [(FTPronGuessResponse *)self error_code];
+  error_str = [(FTPronGuessResponse *)self error_str];
+  v14 = error_str;
+  if (!error_str)
   {
-    v13 = &stru_284834138;
+    error_str = &stru_284834138;
   }
 
-  v15 = [(__CFString *)v13 UTF8String];
-  v16 = strlen(v15);
-  v57 = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(a3, v15, v16);
+  uTF8String3 = [(__CFString *)error_str UTF8String];
+  v16 = strlen(uTF8String3);
+  v57 = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(buffer, uTF8String3, v16);
 
-  v17 = [(FTPronGuessResponse *)self apg_id];
-  v18 = v17;
-  if (!v17)
+  apg_id = [(FTPronGuessResponse *)self apg_id];
+  v18 = apg_id;
+  if (!apg_id)
   {
-    v17 = &stru_284834138;
+    apg_id = &stru_284834138;
   }
 
-  v19 = [(__CFString *)v17 UTF8String];
-  v20 = strlen(v19);
-  v56 = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(a3, v19, v20);
+  uTF8String4 = [(__CFString *)apg_id UTF8String];
+  v20 = strlen(uTF8String4);
+  v56 = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(buffer, uTF8String4, v20);
 
-  v21 = [(FTPronGuessResponse *)self voc_token];
-  v55 = [v21 addObjectToBuffer:a3];
+  voc_token = [(FTPronGuessResponse *)self voc_token];
+  v55 = [voc_token addObjectToBuffer:buffer];
 
   memset(&v71, 0, sizeof(v71));
-  v22 = [(FTPronGuessResponse *)self tts_pronunciations];
-  std::vector<apple::aiml::flatbuffers2::Offset<siri::speech::schema_fb::RecognitionToken>>::reserve(&v71, [v22 count]);
+  tts_pronunciations = [(FTPronGuessResponse *)self tts_pronunciations];
+  std::vector<apple::aiml::flatbuffers2::Offset<siri::speech::schema_fb::RecognitionToken>>::reserve(&v71, [tts_pronunciations count]);
 
   v69 = 0u;
   v70 = 0u;
   v67 = 0u;
   v68 = 0u;
-  v23 = [(FTPronGuessResponse *)self tts_pronunciations];
-  v24 = [v23 countByEnumeratingWithState:&v67 objects:v73 count:16];
+  tts_pronunciations2 = [(FTPronGuessResponse *)self tts_pronunciations];
+  v24 = [tts_pronunciations2 countByEnumeratingWithState:&v67 objects:v73 count:16];
   if (v24)
   {
     v25 = *v68;
@@ -546,10 +546,10 @@ LABEL_8:
       {
         if (*v68 != v25)
         {
-          objc_enumerationMutation(v23);
+          objc_enumerationMutation(tts_pronunciations2);
         }
 
-        v27 = [*(*(&v67 + 1) + 8 * i) addObjectToBuffer:a3];
+        v27 = [*(*(&v67 + 1) + 8 * i) addObjectToBuffer:buffer];
         end = v71.__end_;
         if (v71.__end_ >= v71.__end_cap_.__value_)
         {
@@ -602,7 +602,7 @@ LABEL_8:
         v71.__end_ = v29;
       }
 
-      v24 = [v23 countByEnumeratingWithState:&v67 objects:v73 count:16];
+      v24 = [tts_pronunciations2 countByEnumeratingWithState:&v67 objects:v73 count:16];
     }
 
     while (v24);
@@ -618,17 +618,17 @@ LABEL_8:
     v38 = v71.__begin_;
   }
 
-  v39 = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateVector<apple::aiml::flatbuffers2::String>(a3, v38, v71.__end_ - v71.__begin_);
+  v39 = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateVector<apple::aiml::flatbuffers2::String>(buffer, v38, v71.__end_ - v71.__begin_);
   memset(&v66, 0, sizeof(v66));
-  v40 = [(FTPronGuessResponse *)self human_readable_prons];
-  std::vector<apple::aiml::flatbuffers2::Offset<siri::speech::schema_fb::RecognitionToken>>::reserve(&v66, [v40 count]);
+  human_readable_prons = [(FTPronGuessResponse *)self human_readable_prons];
+  std::vector<apple::aiml::flatbuffers2::Offset<siri::speech::schema_fb::RecognitionToken>>::reserve(&v66, [human_readable_prons count]);
 
   v64 = 0u;
   v65 = 0u;
   v62 = 0u;
   v63 = 0u;
-  v41 = [(FTPronGuessResponse *)self human_readable_prons];
-  v42 = [v41 countByEnumeratingWithState:&v62 objects:v72 count:16];
+  human_readable_prons2 = [(FTPronGuessResponse *)self human_readable_prons];
+  v42 = [human_readable_prons2 countByEnumeratingWithState:&v62 objects:v72 count:16];
   if (v42)
   {
     v43 = *v63;
@@ -638,16 +638,16 @@ LABEL_8:
       {
         if (*v63 != v43)
         {
-          objc_enumerationMutation(v41);
+          objc_enumerationMutation(human_readable_prons2);
         }
 
-        v45 = [*(*(&v62 + 1) + 8 * j) UTF8String];
-        v46 = strlen(v45);
-        v61 = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(a3, v45, v46);
+        uTF8String5 = [*(*(&v62 + 1) + 8 * j) UTF8String];
+        v46 = strlen(uTF8String5);
+        v61 = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(buffer, uTF8String5, v46);
         std::vector<apple::aiml::flatbuffers2::Offset<siri::speech::schema_fb::RecognitionToken>>::push_back[abi:ne200100](&v66.__begin_, &v61);
       }
 
-      v42 = [v41 countByEnumeratingWithState:&v62 objects:v72 count:16];
+      v42 = [human_readable_prons2 countByEnumeratingWithState:&v62 objects:v72 count:16];
     }
 
     while (v42);
@@ -663,20 +663,20 @@ LABEL_8:
     v47 = v66.__begin_;
   }
 
-  v48 = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateVector<apple::aiml::flatbuffers2::String>(a3, v47, v66.__end_ - v66.__begin_);
-  *(a3 + 70) = 1;
-  v49 = *(a3 + 8);
-  v50 = *(a3 + 12);
-  v51 = *(a3 + 10);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 4, String);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 6, v59);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned int>(a3, 8, v58, 0);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 10, v57);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 12, v56);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 14, v55);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 16, v39);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 18, v48);
-  v52.var0 = apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(a3, v49 - v50 + v51);
+  v48 = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateVector<apple::aiml::flatbuffers2::String>(buffer, v47, v66.__end_ - v66.__begin_);
+  *(buffer + 70) = 1;
+  v49 = *(buffer + 8);
+  v50 = *(buffer + 12);
+  v51 = *(buffer + 10);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 4, String);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 6, v59);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned int>(buffer, 8, error_code, 0);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 10, v57);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 12, v56);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 14, v55);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 16, v39);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 18, v48);
+  v52.var0 = apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(buffer, v49 - v50 + v51);
   if (v66.__begin_)
   {
     v66.__end_ = v66.__begin_;

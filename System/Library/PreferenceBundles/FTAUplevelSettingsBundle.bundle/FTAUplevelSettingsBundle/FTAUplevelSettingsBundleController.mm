@@ -1,20 +1,20 @@
 @interface FTAUplevelSettingsBundleController
-+ (id)localizedStringForKey:(id)a3;
-- (FTAUplevelSettingsBundleController)initWithParentListController:(id)a3;
++ (id)localizedStringForKey:(id)key;
+- (FTAUplevelSettingsBundleController)initWithParentListController:(id)controller;
 - (PSListController)parentListController;
-- (id)mainSwitchOn:(id)a3;
-- (id)specifiersWithSpecifier:(id)a3;
-- (void)handleSettingDidChangeNotification:(id)a3;
-- (void)setMainSwitchOn:(id)a3 specifier:(id)a4;
+- (id)mainSwitchOn:(id)on;
+- (id)specifiersWithSpecifier:(id)specifier;
+- (void)handleSettingDidChangeNotification:(id)notification;
+- (void)setMainSwitchOn:(id)on specifier:(id)specifier;
 @end
 
 @implementation FTAUplevelSettingsBundleController
 
-- (FTAUplevelSettingsBundleController)initWithParentListController:(id)a3
+- (FTAUplevelSettingsBundleController)initWithParentListController:(id)controller
 {
   v7.receiver = self;
   v7.super_class = FTAUplevelSettingsBundleController;
-  v3 = [(FTAUplevelSettingsBundleController *)&v7 initWithParentListController:a3];
+  v3 = [(FTAUplevelSettingsBundleController *)&v7 initWithParentListController:controller];
   if (v3)
   {
     v4 = objc_alloc_init(TUConfigurationProvider);
@@ -25,27 +25,27 @@
   return v3;
 }
 
-- (id)specifiersWithSpecifier:(id)a3
+- (id)specifiersWithSpecifier:(id)specifier
 {
   v4 = +[NSMutableArray array];
-  v5 = [(FTAUplevelSettingsBundleController *)self configurationProvider];
-  v6 = [v5 isUplevelFTAAvailable];
+  configurationProvider = [(FTAUplevelSettingsBundleController *)self configurationProvider];
+  isUplevelFTAAvailable = [configurationProvider isUplevelFTAAvailable];
 
-  if (v6)
+  if (isUplevelFTAAvailable)
   {
-    v7 = [(FTAUplevelSettingsBundleController *)self activeSpecifier];
+    activeSpecifier = [(FTAUplevelSettingsBundleController *)self activeSpecifier];
 
-    if (!v7)
+    if (!activeSpecifier)
     {
       v8 = objc_alloc_init(FTNUServiceNames);
       v9 = [FTAUplevelSettingsBundleController localizedStringForKey:@"FTA_AUTO_UPGRADE_TITLE_%@"];
-      v10 = [v8 faceTimeAudioServiceName];
-      v11 = [NSString stringWithFormat:v9, v10];
+      faceTimeAudioServiceName = [v8 faceTimeAudioServiceName];
+      v11 = [NSString stringWithFormat:v9, faceTimeAudioServiceName];
 
       v12 = [PSSpecifier preferenceSpecifierNamed:v11 target:self set:"setMainSwitchOn:specifier:" get:"mainSwitchOn:" detail:0 cell:6 edit:0];
       v13 = [FTAUplevelSettingsBundleController localizedStringForKey:@"FTA_AUTO_UPGRADE_EXPLANATION_%@"];
-      v14 = [v8 faceTimeAudioServiceName];
-      v15 = [NSString stringWithFormat:v13, v14];
+      faceTimeAudioServiceName2 = [v8 faceTimeAudioServiceName];
+      v15 = [NSString stringWithFormat:v13, faceTimeAudioServiceName2];
 
       [v12 setProperty:v15 forKey:PSTableCellSubtitleTextKey];
       [v12 setProperty:objc_opt_class() forKey:PSCellClassKey];
@@ -69,12 +69,12 @@
   return v17;
 }
 
-+ (id)localizedStringForKey:(id)a3
++ (id)localizedStringForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = [NSBundle bundleForClass:objc_opt_class()];
-  v6 = [a1 localizationTableName];
-  v7 = [v5 localizedStringForKey:v4 value:&stru_4190 table:v6];
+  localizationTableName = [self localizationTableName];
+  v7 = [v5 localizedStringForKey:keyCopy value:&stru_4190 table:localizationTableName];
 
   return v7;
 }
@@ -86,26 +86,26 @@
   return WeakRetained;
 }
 
-- (id)mainSwitchOn:(id)a3
+- (id)mainSwitchOn:(id)on
 {
-  v3 = [(FTAUplevelSettingsBundleController *)self configurationProvider];
-  v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 isUplevelFTAEnabled]);
+  configurationProvider = [(FTAUplevelSettingsBundleController *)self configurationProvider];
+  v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [configurationProvider isUplevelFTAEnabled]);
 
   return v4;
 }
 
-- (void)setMainSwitchOn:(id)a3 specifier:(id)a4
+- (void)setMainSwitchOn:(id)on specifier:(id)specifier
 {
-  v5 = [a3 BOOLValue];
-  v6 = [(FTAUplevelSettingsBundleController *)self configurationProvider];
-  [v6 setUplevelFTAEnabled:v5];
+  bOOLValue = [on BOOLValue];
+  configurationProvider = [(FTAUplevelSettingsBundleController *)self configurationProvider];
+  [configurationProvider setUplevelFTAEnabled:bOOLValue];
 }
 
-- (void)handleSettingDidChangeNotification:(id)a3
+- (void)handleSettingDidChangeNotification:(id)notification
 {
-  v5 = [(FTAUplevelSettingsBundleController *)self parentListController];
-  v4 = [(FTAUplevelSettingsBundleController *)self activeSpecifier];
-  [v5 reloadSpecifier:v4];
+  parentListController = [(FTAUplevelSettingsBundleController *)self parentListController];
+  activeSpecifier = [(FTAUplevelSettingsBundleController *)self activeSpecifier];
+  [parentListController reloadSpecifier:activeSpecifier];
 }
 
 @end

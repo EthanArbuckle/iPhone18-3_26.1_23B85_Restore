@@ -1,18 +1,18 @@
 @interface SummaryActivityRingsView
-- (_TtC9SeymourUI24SummaryActivityRingsView)initWithFrame:(CGRect)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (_TtC9SeymourUI24SummaryActivityRingsView)initWithFrame:(CGRect)frame;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation SummaryActivityRingsView
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_20BC57A04(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_20BC57A04(change);
 }
 
-- (_TtC9SeymourUI24SummaryActivityRingsView)initWithFrame:(CGRect)a3
+- (_TtC9SeymourUI24SummaryActivityRingsView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

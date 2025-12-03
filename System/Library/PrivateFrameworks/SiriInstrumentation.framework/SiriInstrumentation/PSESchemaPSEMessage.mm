@@ -1,38 +1,38 @@
 @interface PSESchemaPSEMessage
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (PSESchemaPSEMessage)initWithDictionary:(id)a3;
-- (PSESchemaPSEMessage)initWithJSON:(id)a3;
+- (PSESchemaPSEMessage)initWithDictionary:(id)dictionary;
+- (PSESchemaPSEMessage)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasContactFirstNamePhoneticScore:(BOOL)a3;
-- (void)setHasContactFullNamePhoneticScore:(BOOL)a3;
-- (void)setHasContactLastNamePhoneticScore:(BOOL)a3;
-- (void)setHasContactMatch:(BOOL)a3;
-- (void)setHasMessageUserFollowupAction:(BOOL)a3;
-- (void)setHasUserFollowupEventDonationTimeInSecondsSince2001:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasContactFirstNamePhoneticScore:(BOOL)score;
+- (void)setHasContactFullNamePhoneticScore:(BOOL)score;
+- (void)setHasContactLastNamePhoneticScore:(BOOL)score;
+- (void)setHasContactMatch:(BOOL)match;
+- (void)setHasMessageUserFollowupAction:(BOOL)action;
+- (void)setHasUserFollowupEventDonationTimeInSecondsSince2001:(BOOL)since2001;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PSESchemaPSEMessage
 
-- (PSESchemaPSEMessage)initWithDictionary:(id)a3
+- (PSESchemaPSEMessage)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v15.receiver = self;
   v15.super_class = PSESchemaPSEMessage;
   v5 = [(PSESchemaPSEMessage *)&v15 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"hasUserInitiatedFollowup"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"hasUserInitiatedFollowup"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PSESchemaPSEMessage setHasUserInitiatedFollowup:](v5, "setHasUserInitiatedFollowup:", [v6 BOOLValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"userFollowupEventDonationTimeInSecondsSince2001"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"userFollowupEventDonationTimeInSecondsSince2001"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -40,21 +40,21 @@
       [(PSESchemaPSEMessage *)v5 setUserFollowupEventDonationTimeInSecondsSince2001:?];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"messageUserFollowupAction"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"messageUserFollowupAction"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PSESchemaPSEMessage setMessageUserFollowupAction:](v5, "setMessageUserFollowupAction:", [v8 intValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"contactMatch"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"contactMatch"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PSESchemaPSEMessage setContactMatch:](v5, "setContactMatch:", [v9 intValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"contactFullNamePhoneticScore"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"contactFullNamePhoneticScore"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -62,7 +62,7 @@
       [(PSESchemaPSEMessage *)v5 setContactFullNamePhoneticScore:?];
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"contactFirstNamePhoneticScore"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"contactFirstNamePhoneticScore"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -70,7 +70,7 @@
       [(PSESchemaPSEMessage *)v5 setContactFirstNamePhoneticScore:?];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"contactLastNamePhoneticScore"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"contactLastNamePhoneticScore"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -84,30 +84,30 @@
   return v5;
 }
 
-- (PSESchemaPSEMessage)initWithJSON:(id)a3
+- (PSESchemaPSEMessage)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(PSESchemaPSEMessage *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(PSESchemaPSEMessage *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(PSESchemaPSEMessage *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -120,14 +120,14 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 0x20) != 0)
   {
     v8 = MEMORY[0x1E696AD98];
     [(PSESchemaPSEMessage *)self contactFirstNamePhoneticScore];
     v9 = [v8 numberWithDouble:?];
-    [v3 setObject:v9 forKeyedSubscript:@"contactFirstNamePhoneticScore"];
+    [dictionary setObject:v9 forKeyedSubscript:@"contactFirstNamePhoneticScore"];
 
     has = self->_has;
     if ((has & 0x10) == 0)
@@ -150,7 +150,7 @@ LABEL_3:
   v10 = MEMORY[0x1E696AD98];
   [(PSESchemaPSEMessage *)self contactFullNamePhoneticScore];
   v11 = [v10 numberWithDouble:?];
-  [v3 setObject:v11 forKeyedSubscript:@"contactFullNamePhoneticScore"];
+  [dictionary setObject:v11 forKeyedSubscript:@"contactFullNamePhoneticScore"];
 
   has = self->_has;
   if ((has & 0x40) == 0)
@@ -168,7 +168,7 @@ LABEL_14:
   v12 = MEMORY[0x1E696AD98];
   [(PSESchemaPSEMessage *)self contactLastNamePhoneticScore];
   v13 = [v12 numberWithDouble:?];
-  [v3 setObject:v13 forKeyedSubscript:@"contactLastNamePhoneticScore"];
+  [dictionary setObject:v13 forKeyedSubscript:@"contactLastNamePhoneticScore"];
 
   has = self->_has;
   if ((has & 8) == 0)
@@ -194,7 +194,7 @@ LABEL_15:
     v15 = off_1E78E1618[v14];
   }
 
-  [v3 setObject:v15 forKeyedSubscript:@"contactMatch"];
+  [dictionary setObject:v15 forKeyedSubscript:@"contactMatch"];
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -209,7 +209,7 @@ LABEL_6:
 
 LABEL_19:
   v16 = [MEMORY[0x1E696AD98] numberWithBool:{-[PSESchemaPSEMessage hasUserInitiatedFollowup](self, "hasUserInitiatedFollowup")}];
-  [v3 setObject:v16 forKeyedSubscript:@"hasUserInitiatedFollowup"];
+  [dictionary setObject:v16 forKeyedSubscript:@"hasUserInitiatedFollowup"];
 
   has = self->_has;
   if ((has & 4) == 0)
@@ -235,7 +235,7 @@ LABEL_20:
     v18 = off_1E78E1630[v17];
   }
 
-  [v3 setObject:v18 forKeyedSubscript:@"messageUserFollowupAction"];
+  [dictionary setObject:v18 forKeyedSubscript:@"messageUserFollowupAction"];
   if ((*&self->_has & 2) == 0)
   {
     goto LABEL_9;
@@ -245,12 +245,12 @@ LABEL_8:
   v5 = MEMORY[0x1E696AD98];
   [(PSESchemaPSEMessage *)self userFollowupEventDonationTimeInSecondsSince2001];
   v6 = [v5 numberWithDouble:?];
-  [v3 setObject:v6 forKeyedSubscript:@"userFollowupEventDonationTimeInSecondsSince2001"];
+  [dictionary setObject:v6 forKeyedSubscript:@"userFollowupEventDonationTimeInSecondsSince2001"];
 
 LABEL_9:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -433,16 +433,16 @@ LABEL_19:
   return v8 ^ v4 ^ v9 ^ v10 ^ v14 ^ v15 ^ v19;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_29;
   }
 
   has = self->_has;
-  v6 = v4[56];
+  v6 = equalCopy[56];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_29;
@@ -451,13 +451,13 @@ LABEL_19:
   if (*&has)
   {
     hasUserInitiatedFollowup = self->_hasUserInitiatedFollowup;
-    if (hasUserInitiatedFollowup != [v4 hasUserInitiatedFollowup])
+    if (hasUserInitiatedFollowup != [equalCopy hasUserInitiatedFollowup])
     {
       goto LABEL_29;
     }
 
     has = self->_has;
-    v6 = v4[56];
+    v6 = equalCopy[56];
   }
 
   v8 = (*&has >> 1) & 1;
@@ -466,14 +466,14 @@ LABEL_19:
     if (v8)
     {
       userFollowupEventDonationTimeInSecondsSince2001 = self->_userFollowupEventDonationTimeInSecondsSince2001;
-      [v4 userFollowupEventDonationTimeInSecondsSince2001];
+      [equalCopy userFollowupEventDonationTimeInSecondsSince2001];
       if (userFollowupEventDonationTimeInSecondsSince2001 != v10)
       {
         goto LABEL_29;
       }
 
       has = self->_has;
-      v6 = v4[56];
+      v6 = equalCopy[56];
     }
 
     v11 = (*&has >> 2) & 1;
@@ -482,13 +482,13 @@ LABEL_19:
       if (v11)
       {
         messageUserFollowupAction = self->_messageUserFollowupAction;
-        if (messageUserFollowupAction != [v4 messageUserFollowupAction])
+        if (messageUserFollowupAction != [equalCopy messageUserFollowupAction])
         {
           goto LABEL_29;
         }
 
         has = self->_has;
-        v6 = v4[56];
+        v6 = equalCopy[56];
       }
 
       v13 = (*&has >> 3) & 1;
@@ -497,13 +497,13 @@ LABEL_19:
         if (v13)
         {
           contactMatch = self->_contactMatch;
-          if (contactMatch != [v4 contactMatch])
+          if (contactMatch != [equalCopy contactMatch])
           {
             goto LABEL_29;
           }
 
           has = self->_has;
-          v6 = v4[56];
+          v6 = equalCopy[56];
         }
 
         v15 = (*&has >> 4) & 1;
@@ -512,14 +512,14 @@ LABEL_19:
           if (v15)
           {
             contactFullNamePhoneticScore = self->_contactFullNamePhoneticScore;
-            [v4 contactFullNamePhoneticScore];
+            [equalCopy contactFullNamePhoneticScore];
             if (contactFullNamePhoneticScore != v17)
             {
               goto LABEL_29;
             }
 
             has = self->_has;
-            v6 = v4[56];
+            v6 = equalCopy[56];
           }
 
           v18 = (*&has >> 5) & 1;
@@ -528,20 +528,20 @@ LABEL_19:
             if (v18)
             {
               contactFirstNamePhoneticScore = self->_contactFirstNamePhoneticScore;
-              [v4 contactFirstNamePhoneticScore];
+              [equalCopy contactFirstNamePhoneticScore];
               if (contactFirstNamePhoneticScore != v20)
               {
                 goto LABEL_29;
               }
 
               has = self->_has;
-              v6 = v4[56];
+              v6 = equalCopy[56];
             }
 
             v21 = (*&has >> 6) & 1;
             if (v21 == ((v6 >> 6) & 1))
             {
-              if (!v21 || (contactLastNamePhoneticScore = self->_contactLastNamePhoneticScore, [v4 contactLastNamePhoneticScore], contactLastNamePhoneticScore == v23))
+              if (!v21 || (contactLastNamePhoneticScore = self->_contactLastNamePhoneticScore, [equalCopy contactLastNamePhoneticScore], contactLastNamePhoneticScore == v23))
               {
                 v24 = 1;
                 goto LABEL_30;
@@ -560,9 +560,9 @@ LABEL_30:
   return v24;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -651,9 +651,9 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)setHasContactLastNamePhoneticScore:(BOOL)a3
+- (void)setHasContactLastNamePhoneticScore:(BOOL)score
 {
-  if (a3)
+  if (score)
   {
     v3 = 64;
   }
@@ -666,9 +666,9 @@ LABEL_9:
   *&self->_has = *&self->_has & 0xBF | v3;
 }
 
-- (void)setHasContactFirstNamePhoneticScore:(BOOL)a3
+- (void)setHasContactFirstNamePhoneticScore:(BOOL)score
 {
-  if (a3)
+  if (score)
   {
     v3 = 32;
   }
@@ -681,9 +681,9 @@ LABEL_9:
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasContactFullNamePhoneticScore:(BOOL)a3
+- (void)setHasContactFullNamePhoneticScore:(BOOL)score
 {
-  if (a3)
+  if (score)
   {
     v3 = 16;
   }
@@ -696,9 +696,9 @@ LABEL_9:
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasContactMatch:(BOOL)a3
+- (void)setHasContactMatch:(BOOL)match
 {
-  if (a3)
+  if (match)
   {
     v3 = 8;
   }
@@ -711,9 +711,9 @@ LABEL_9:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasMessageUserFollowupAction:(BOOL)a3
+- (void)setHasMessageUserFollowupAction:(BOOL)action
 {
-  if (a3)
+  if (action)
   {
     v3 = 4;
   }
@@ -726,9 +726,9 @@ LABEL_9:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasUserFollowupEventDonationTimeInSecondsSince2001:(BOOL)a3
+- (void)setHasUserFollowupEventDonationTimeInSecondsSince2001:(BOOL)since2001
 {
-  if (a3)
+  if (since2001)
   {
     v3 = 2;
   }

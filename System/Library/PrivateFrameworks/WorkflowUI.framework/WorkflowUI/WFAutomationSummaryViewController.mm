@@ -1,25 +1,25 @@
 @interface WFAutomationSummaryViewController
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4;
-- (WFAutomationSummaryViewController)initWithTrigger:(id)a3 triggerIdentifier:(id)a4 workflow:(id)a5 mode:(unint64_t)a6;
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path;
+- (WFAutomationSummaryViewController)initWithTrigger:(id)trigger triggerIdentifier:(id)identifier workflow:(id)workflow mode:(unint64_t)mode;
 - (WFAutomationSummaryViewControllerDelegate)delegate;
-- (id)infoForSection:(int64_t)a3;
+- (id)infoForSection:(int64_t)section;
 - (id)menuForTrigger;
 - (id)sections;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)didTapDone:(id)a3;
-- (void)handleRunSelection:(int64_t)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)didTapDone:(id)done;
+- (void)handleRunSelection:(int64_t)selection;
 - (void)loadActionDescriptionIcons;
 - (void)loadView;
-- (void)notifySwitchChanged:(id)a3;
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)notifySwitchChanged:(id)changed;
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)testAutomation;
 - (void)updateUI;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation WFAutomationSummaryViewController
@@ -31,36 +31,36 @@
   return WeakRetained;
 }
 
-- (void)didTapDone:(id)a3
+- (void)didTapDone:(id)done
 {
-  v5 = [(WFAutomationSummaryViewController *)self delegate];
-  v4 = [(WFAutomationSummaryViewController *)self triggerRecord];
-  [v5 automationSummaryViewController:self didFinishWithTrigger:v4];
+  delegate = [(WFAutomationSummaryViewController *)self delegate];
+  triggerRecord = [(WFAutomationSummaryViewController *)self triggerRecord];
+  [delegate automationSummaryViewController:self didFinishWithTrigger:triggerRecord];
 }
 
-- (void)notifySwitchChanged:(id)a3
+- (void)notifySwitchChanged:(id)changed
 {
-  v4 = [a3 isOn];
-  v5 = [(WFAutomationSummaryViewController *)self triggerRecord];
-  [v5 setShouldNotify:v4];
+  isOn = [changed isOn];
+  triggerRecord = [(WFAutomationSummaryViewController *)self triggerRecord];
+  [triggerRecord setShouldNotify:isOn];
 }
 
-- (void)handleRunSelection:(int64_t)a3
+- (void)handleRunSelection:(int64_t)selection
 {
   v4 = 0;
-  if (!a3)
+  if (!selection)
   {
 LABEL_5:
-    v5 = [(WFAutomationSummaryViewController *)self triggerRecord];
-    [v5 setShouldPrompt:v4];
+    triggerRecord = [(WFAutomationSummaryViewController *)self triggerRecord];
+    [triggerRecord setShouldPrompt:v4];
 
     v4 = 1;
     goto LABEL_6;
   }
 
-  if (a3 != 2)
+  if (selection != 2)
   {
-    if (a3 != 1)
+    if (selection != 1)
     {
       return;
     }
@@ -70,23 +70,23 @@ LABEL_5:
   }
 
 LABEL_6:
-  v6 = [(WFAutomationSummaryViewController *)self triggerRecord];
-  [v6 setEnabled:v4];
+  triggerRecord2 = [(WFAutomationSummaryViewController *)self triggerRecord];
+  [triggerRecord2 setEnabled:v4];
 
-  v7 = [(WFAutomationSummaryViewController *)self tableView];
-  [v7 reloadData];
+  tableView = [(WFAutomationSummaryViewController *)self tableView];
+  [tableView reloadData];
 }
 
 - (void)testAutomation
 {
-  v3 = [MEMORY[0x277D79D98] standardClient];
-  v4 = [(WFAutomationSummaryViewController *)self triggerIdentifier];
+  standardClient = [MEMORY[0x277D79D98] standardClient];
+  triggerIdentifier = [(WFAutomationSummaryViewController *)self triggerIdentifier];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __51__WFAutomationSummaryViewController_testAutomation__block_invoke;
   v5[3] = &unk_279EE8710;
   v5[4] = self;
-  [v3 fireTriggerWithIdentifier:v4 force:1 completion:v5];
+  [standardClient fireTriggerWithIdentifier:triggerIdentifier force:1 completion:v5];
 }
 
 void __51__WFAutomationSummaryViewController_testAutomation__block_invoke(uint64_t a1, uint64_t a2, uint64_t a3)
@@ -99,30 +99,30 @@ void __51__WFAutomationSummaryViewController_testAutomation__block_invoke(uint64
   }
 }
 
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path
 {
   v19 = *MEMORY[0x277D85DE8];
-  if (a4 != 1)
+  if (style != 1)
   {
     return;
   }
 
-  v6 = [(WFAutomationSummaryViewController *)self workflow:a3];
-  v7 = [v6 workflowID];
+  v6 = [(WFAutomationSummaryViewController *)self workflow:view];
+  workflowID = [v6 workflowID];
 
-  if (!v7)
+  if (!workflowID)
   {
     return;
   }
 
-  v16 = [MEMORY[0x277D7C2F0] defaultDatabase];
-  v8 = [(WFAutomationSummaryViewController *)self workflow];
-  v9 = [v8 workflowID];
-  v10 = [v16 referenceForWorkflowID:v9];
+  defaultDatabase = [MEMORY[0x277D7C2F0] defaultDatabase];
+  workflow = [(WFAutomationSummaryViewController *)self workflow];
+  workflowID2 = [workflow workflowID];
+  v10 = [defaultDatabase referenceForWorkflowID:workflowID2];
 
   if ([v10 hiddenFromLibraryAndSync])
   {
-    if (([v16 deleteReference:v10 error:0] & 1) == 0)
+    if (([defaultDatabase deleteReference:v10 error:0] & 1) == 0)
     {
       v11 = getWFTriggersLogObject();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -138,39 +138,39 @@ void __51__WFAutomationSummaryViewController_testAutomation__block_invoke(uint64
 
   else
   {
-    v12 = [(WFAutomationSummaryViewController *)self triggerIdentifier];
-    v13 = [v16 configuredTriggerForTriggerID:v12];
+    triggerIdentifier = [(WFAutomationSummaryViewController *)self triggerIdentifier];
+    v13 = [defaultDatabase configuredTriggerForTriggerID:triggerIdentifier];
 
-    v14 = [v16 associateWorkflowToTrigger:v13 workflow:0 error:0];
+    v14 = [defaultDatabase associateWorkflowToTrigger:v13 workflow:0 error:0];
   }
 
   [(WFAutomationSummaryViewController *)self setWorkflow:0];
-  v15 = [(WFAutomationSummaryViewController *)self tableView];
-  [v15 reloadData];
+  tableView = [(WFAutomationSummaryViewController *)self tableView];
+  [tableView reloadData];
 }
 
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path
 {
-  v4 = -[WFAutomationSummaryViewController infoForSection:](self, "infoForSection:", [a4 section]);
+  v4 = -[WFAutomationSummaryViewController infoForSection:](self, "infoForSection:", [path section]);
   v5 = [v4 objectForKeyedSubscript:@"identifier"];
   v6 = [v5 isEqual:@"workflowSummary"];
 
   return v6;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  [a3 deselectRowAtIndexPath:v6 animated:1];
-  v7 = [v6 section];
+  pathCopy = path;
+  [view deselectRowAtIndexPath:pathCopy animated:1];
+  section = [pathCopy section];
 
-  v16 = [(WFAutomationSummaryViewController *)self infoForSection:v7];
+  v16 = [(WFAutomationSummaryViewController *)self infoForSection:section];
   v8 = [v16 objectForKeyedSubscript:@"identifier"];
-  LODWORD(v6) = [v8 isEqual:@"triggerSummary"];
+  LODWORD(pathCopy) = [v8 isEqual:@"triggerSummary"];
 
-  if (v6)
+  if (pathCopy)
   {
-    v9 = [(WFAutomationSummaryViewController *)self delegate];
+    delegate = [(WFAutomationSummaryViewController *)self delegate];
     if ((objc_opt_respondsToSelector() & 1) == 0)
     {
 LABEL_13:
@@ -178,8 +178,8 @@ LABEL_13:
       goto LABEL_14;
     }
 
-    v10 = [(WFAutomationSummaryViewController *)self triggerRecord];
-    [v9 automationSummaryViewController:self editTrigger:v10];
+    triggerRecord = [(WFAutomationSummaryViewController *)self triggerRecord];
+    [delegate automationSummaryViewController:self editTrigger:triggerRecord];
 LABEL_8:
 
     goto LABEL_13;
@@ -190,19 +190,19 @@ LABEL_8:
 
   if (v12)
   {
-    v9 = [(WFAutomationSummaryViewController *)self delegate];
+    delegate = [(WFAutomationSummaryViewController *)self delegate];
     if ((objc_opt_respondsToSelector() & 1) == 0 || ([(WFAutomationSummaryViewController *)self workflow], v13 = objc_claimAutoreleasedReturnValue(), v13, !v13))
     {
       if (objc_opt_respondsToSelector())
       {
-        [v9 automationSummaryViewControllerChooseShortcut:self];
+        [delegate automationSummaryViewControllerChooseShortcut:self];
       }
 
       goto LABEL_13;
     }
 
-    v10 = [(WFAutomationSummaryViewController *)self workflow];
-    [v9 automationSummaryViewController:self editWorkflow:v10];
+    triggerRecord = [(WFAutomationSummaryViewController *)self workflow];
+    [delegate automationSummaryViewController:self editWorkflow:triggerRecord];
     goto LABEL_8;
   }
 
@@ -217,9 +217,9 @@ LABEL_8:
 LABEL_14:
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
-  v4 = [(WFAutomationSummaryViewController *)self infoForSection:a4];
+  v4 = [(WFAutomationSummaryViewController *)self infoForSection:section];
   v5 = [v4 objectForKeyedSubscript:@"sectionTitle"];
   v6 = WFAutomationTableSectionHeaderViewWithTitle(v5);
 
@@ -253,11 +253,11 @@ LABEL_14:
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v25 count:2];
   v11 = [v9 arrayWithArray:v10];
 
-  v12 = [(WFAutomationSummaryViewController *)self trigger];
-  v13 = [objc_opt_class() isAllowedToRunAutomatically];
+  trigger = [(WFAutomationSummaryViewController *)self trigger];
+  isAllowedToRunAutomatically = [objc_opt_class() isAllowedToRunAutomatically];
 
   v14 = 0;
-  if (v13)
+  if (isAllowedToRunAutomatically)
   {
     v15 = MEMORY[0x277D750C8];
     v16 = WFLocalizedString(@"Run Immediately");
@@ -271,8 +271,8 @@ LABEL_14:
     [v11 insertObject:v14 atIndex:0];
   }
 
-  v17 = [(WFAutomationSummaryViewController *)self triggerRecord];
-  v18 = WFRunSelectionForTrigger(v17);
+  triggerRecord = [(WFAutomationSummaryViewController *)self triggerRecord];
+  v18 = WFRunSelectionForTrigger(triggerRecord);
 
   v19 = v14;
   if (v18)
@@ -290,17 +290,17 @@ LABEL_14:
   return v20;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v73 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
-  v8 = -[WFAutomationSummaryViewController infoForSection:](self, "infoForSection:", [v6 section]);
+  pathCopy = path;
+  viewCopy = view;
+  v8 = -[WFAutomationSummaryViewController infoForSection:](self, "infoForSection:", [pathCopy section]);
   v9 = [v8 objectForKeyedSubscript:@"sectionRows"];
-  v10 = [v9 objectAtIndexedSubscript:{objc_msgSend(v6, "row")}];
+  v10 = [v9 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
 
   v11 = [v10 objectForKeyedSubscript:@"cellIdentifier"];
-  v12 = [v7 dequeueReusableCellWithIdentifier:v11 forIndexPath:v6];
+  v12 = [viewCopy dequeueReusableCellWithIdentifier:v11 forIndexPath:pathCopy];
 
   v13 = [v8 objectForKeyedSubscript:@"identifier"];
   v14 = [v13 isEqual:@"runImmediately"];
@@ -308,11 +308,11 @@ LABEL_14:
   if (v14)
   {
     [v12 setSelectionStyle:0];
-    if ([v6 row])
+    if ([pathCopy row])
     {
       v15 = [v10 objectForKeyedSubscript:@"cellTitle"];
-      v16 = [v12 textLabel];
-      [v16 setText:v15];
+      textLabel = [v12 textLabel];
+      [textLabel setText:v15];
 
       [v12 setSelectionStyle:0];
       v12 = v12;
@@ -337,12 +337,12 @@ LABEL_14:
 
       v48 = v17;
 
-      v49 = [v48 switchControl];
+      switchControl = [v48 switchControl];
 
-      v50 = [(WFAutomationSummaryViewController *)self triggerRecord];
-      [v49 setOn:{objc_msgSend(v50, "shouldNotify")}];
+      triggerRecord = [(WFAutomationSummaryViewController *)self triggerRecord];
+      [switchControl setOn:{objc_msgSend(triggerRecord, "shouldNotify")}];
 
-      [v49 addTarget:self action:sel_notifySwitchChanged_ forControlEvents:4096];
+      [switchControl addTarget:self action:sel_notifySwitchChanged_ forControlEvents:4096];
     }
 
     else
@@ -371,11 +371,11 @@ LABEL_14:
       v51 = v38;
 
       v52 = [v10 objectForKeyedSubscript:@"cellTitle"];
-      v53 = [v51 textLabel];
-      [v53 setText:v52];
+      textLabel2 = [v51 textLabel];
+      [textLabel2 setText:v52];
 
-      v54 = [(WFAutomationSummaryViewController *)self menuForTrigger];
-      [v12 setMenu:v54];
+      menuForTrigger = [(WFAutomationSummaryViewController *)self menuForTrigger];
+      [v12 setMenu:menuForTrigger];
 
       v11 = v37;
     }
@@ -388,20 +388,20 @@ LABEL_14:
 
     if (v19)
     {
-      v20 = [(WFAutomationSummaryViewController *)self triggerRecord];
-      v21 = [v20 triggerData];
+      triggerRecord2 = [(WFAutomationSummaryViewController *)self triggerRecord];
+      triggerData = [triggerRecord2 triggerData];
 
-      if ([v21 length] && (objc_msgSend(MEMORY[0x277D7C970], "triggerWithSerializedData:", v21), (v22 = objc_claimAutoreleasedReturnValue()) != 0))
+      if ([triggerData length] && (objc_msgSend(MEMORY[0x277D7C970], "triggerWithSerializedData:", triggerData), (v22 = objc_claimAutoreleasedReturnValue()) != 0))
       {
         v23 = v22;
-        v65 = [v22 displayGlyph];
-        [v65 UIImage];
+        displayGlyph = [v22 displayGlyph];
+        [displayGlyph UIImage];
         v24 = v66 = v10;
-        v25 = [v23 displayGlyphTintColor];
-        [v25 UIColor];
+        displayGlyphTintColor = [v23 displayGlyphTintColor];
+        [displayGlyphTintColor UIColor];
         v26 = v68 = v11;
-        v27 = [v23 localizedDescriptionWithConfigurationSummary];
-        [v12 configureWithImage:v24 tintColor:v26 title:v27 numberOfLines:3 withTrigger:v23];
+        localizedDescriptionWithConfigurationSummary = [v23 localizedDescriptionWithConfigurationSummary];
+        [v12 configureWithImage:v24 tintColor:v26 title:localizedDescriptionWithConfigurationSummary numberOfLines:3 withTrigger:v23];
 
         v11 = v68;
         v10 = v66;
@@ -418,9 +418,9 @@ LABEL_14:
         }
       }
 
-      v39 = [(WFAutomationSummaryViewController *)self mode];
-      v40 = v39 != 0;
-      if (v39)
+      mode = [(WFAutomationSummaryViewController *)self mode];
+      v40 = mode != 0;
+      if (mode)
       {
         v41 = 3;
       }
@@ -441,33 +441,33 @@ LABEL_14:
 
       if (v29)
       {
-        v30 = [(WFAutomationSummaryViewController *)self workflow];
+        workflow = [(WFAutomationSummaryViewController *)self workflow];
 
-        if (v30)
+        if (workflow)
         {
-          v31 = [(WFAutomationSummaryViewController *)self workflow];
-          v32 = [v31 hiddenFromLibraryAndSync];
+          workflow2 = [(WFAutomationSummaryViewController *)self workflow];
+          hiddenFromLibraryAndSync = [workflow2 hiddenFromLibraryAndSync];
 
-          v33 = [(WFAutomationSummaryViewController *)self workflow];
-          v34 = v33;
-          if (v32)
+          workflow3 = [(WFAutomationSummaryViewController *)self workflow];
+          v34 = workflow3;
+          if (hiddenFromLibraryAndSync)
           {
-            v35 = [v33 actionsDescription];
-            v36 = [(WFAutomationSummaryViewController *)self actionIcons];
-            [v12 configureWithTitle:v35 actionIcons:v36];
+            actionsDescription = [workflow3 actionsDescription];
+            actionIcons = [(WFAutomationSummaryViewController *)self actionIcons];
+            [v12 configureWithTitle:actionsDescription actionIcons:actionIcons];
           }
 
           else
           {
-            v35 = [v33 name];
-            v67 = [(WFAutomationSummaryViewController *)self workflow];
-            v60 = [v67 icon];
-            [v60 icon];
+            actionsDescription = [workflow3 name];
+            workflow4 = [(WFAutomationSummaryViewController *)self workflow];
+            icon = [workflow4 icon];
+            [icon icon];
             v70 = v69 = v11;
             v61 = v70;
             [MEMORY[0x277CBEA60] arrayWithObjects:&v70 count:1];
             v63 = v62 = v10;
-            [v12 configureWithTitle:v35 actionIcons:v63];
+            [v12 configureWithTitle:actionsDescription actionIcons:v63];
 
             v10 = v62;
             v11 = v69;
@@ -490,13 +490,13 @@ LABEL_14:
           v55 = [objc_alloc(MEMORY[0x277D75B48]) initWithStyle:1 reuseIdentifier:0];
 
           [v55 setSelectionStyle:0];
-          v56 = [MEMORY[0x277D75348] systemBlueColor];
-          v57 = [v55 textLabel];
-          [v57 setTextColor:v56];
+          systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
+          textLabel3 = [v55 textLabel];
+          [textLabel3 setTextColor:systemBlueColor];
 
           v58 = WFLocalizedString(@"Choose…");
-          v59 = [v55 textLabel];
-          [v59 setText:v58];
+          textLabel4 = [v55 textLabel];
+          [textLabel4 setText:v58];
 
           v12 = v55;
         }
@@ -510,12 +510,12 @@ LABEL_14:
         if (v43)
         {
           v44 = [v10 objectForKeyedSubscript:@"cellTitle"];
-          v45 = [v12 textLabel];
-          [v45 setText:v44];
+          textLabel5 = [v12 textLabel];
+          [textLabel5 setText:v44];
 
-          v46 = [MEMORY[0x277D75348] systemBlueColor];
-          v47 = [v12 textLabel];
-          [v47 setTextColor:v46];
+          systemBlueColor2 = [MEMORY[0x277D75348] systemBlueColor];
+          textLabel6 = [v12 textLabel];
+          [textLabel6 setTextColor:systemBlueColor2];
         }
       }
     }
@@ -524,27 +524,27 @@ LABEL_14:
   return v12;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v4 = [(WFAutomationSummaryViewController *)self infoForSection:a4];
+  v4 = [(WFAutomationSummaryViewController *)self infoForSection:section];
   v5 = [v4 objectForKeyedSubscript:@"sectionRows"];
   v6 = [v5 count];
 
   return v6;
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
-  v3 = [(WFAutomationSummaryViewController *)self sections];
-  v4 = [v3 count];
+  sections = [(WFAutomationSummaryViewController *)self sections];
+  v4 = [sections count];
 
   return v4;
 }
 
-- (id)infoForSection:(int64_t)a3
+- (id)infoForSection:(int64_t)section
 {
-  v4 = [(WFAutomationSummaryViewController *)self sections];
-  v5 = [v4 objectAtIndexedSubscript:a3];
+  sections = [(WFAutomationSummaryViewController *)self sections];
+  v5 = [sections objectAtIndexedSubscript:section];
 
   return v5;
 }
@@ -557,21 +557,21 @@ LABEL_14:
   [(WFAutomationSummaryViewController *)self loadActionDescriptionIcons];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = WFAutomationSummaryViewController;
-  [(WFAutomationSummaryViewController *)&v4 viewWillAppear:a3];
+  [(WFAutomationSummaryViewController *)&v4 viewWillAppear:appear];
   [(WFAutomationSummaryViewController *)self loadActionDescriptionIcons];
 }
 
 - (void)loadActionDescriptionIcons
 {
-  v3 = [(WFAutomationSummaryViewController *)self workflow];
-  v4 = [v3 actions];
-  v5 = [(WFAutomationSummaryViewController *)self workflow];
-  v6 = [v5 actions];
-  v7 = [v6 count];
+  workflow = [(WFAutomationSummaryViewController *)self workflow];
+  actions = [workflow actions];
+  workflow2 = [(WFAutomationSummaryViewController *)self workflow];
+  actions2 = [workflow2 actions];
+  v7 = [actions2 count];
 
   if (v7 >= 8)
   {
@@ -583,13 +583,13 @@ LABEL_14:
     v8 = v7;
   }
 
-  v11 = [v4 subarrayWithRange:{0, v8}];
+  v11 = [actions subarrayWithRange:{0, v8}];
 
   v9 = [v11 if_compactMap:&__block_literal_global_13000];
   [(WFAutomationSummaryViewController *)self setActionIcons:v9];
 
-  v10 = [(WFAutomationSummaryViewController *)self tableView];
-  [v10 reloadData];
+  tableView = [(WFAutomationSummaryViewController *)self tableView];
+  [tableView reloadData];
 }
 
 - (void)loadView
@@ -597,8 +597,8 @@ LABEL_14:
   v35 = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277D75B40]);
   v4 = [v3 initWithFrame:2 style:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
-  v5 = [MEMORY[0x277D75348] systemGroupedBackgroundColor];
-  [(UITableView *)v4 setBackgroundColor:v5];
+  systemGroupedBackgroundColor = [MEMORY[0x277D75348] systemGroupedBackgroundColor];
+  [(UITableView *)v4 setBackgroundColor:systemGroupedBackgroundColor];
 
   [(UITableView *)v4 setDataSource:self];
   [(UITableView *)v4 setDelegate:self];
@@ -606,7 +606,7 @@ LABEL_14:
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v21 = self;
+  selfCopy = self;
   obj = [(WFAutomationSummaryViewController *)self sections];
   v24 = [obj countByEnumeratingWithState:&v29 objects:v34 count:16];
   if (v24)
@@ -665,17 +665,17 @@ LABEL_14:
   v18 = NSStringFromClass(v17);
   [(UITableView *)v4 registerClass:v16 forCellReuseIdentifier:v18];
 
-  tableView = v21->_tableView;
-  v21->_tableView = v4;
+  tableView = selfCopy->_tableView;
+  selfCopy->_tableView = v4;
   v20 = v4;
 
-  [(WFAutomationSummaryViewController *)v21 setView:v20];
+  [(WFAutomationSummaryViewController *)selfCopy setView:v20];
 }
 
 - (void)updateUI
 {
-  v2 = [(WFAutomationSummaryViewController *)self tableView];
-  [v2 reloadData];
+  tableView = [(WFAutomationSummaryViewController *)self tableView];
+  [tableView reloadData];
 }
 
 - (id)sections
@@ -697,15 +697,15 @@ LABEL_14:
     v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v58 forKeys:v57 count:3];
     v9 = [v4 arrayWithObject:v8];
 
-    v10 = [(WFAutomationSummaryViewController *)self triggerRecord];
-    v11 = WFRunSelectionForTrigger(v10);
+    triggerRecord = [(WFAutomationSummaryViewController *)self triggerRecord];
+    v11 = WFRunSelectionForTrigger(triggerRecord);
 
     if (!v11)
     {
-      v12 = [(WFAutomationSummaryViewController *)self trigger];
-      v13 = [objc_opt_class() requiresNotification];
+      trigger = [(WFAutomationSummaryViewController *)self trigger];
+      requiresNotification = [objc_opt_class() requiresNotification];
 
-      if ((v13 & 1) == 0)
+      if ((requiresNotification & 1) == 0)
       {
         v55[0] = @"cellTitle";
         v14 = WFLocalizedString(@"Notify When Run");
@@ -767,8 +767,8 @@ LABEL_14:
   v30 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v47 forKeys:v46 count:3];
   [v3 addObject:v30];
 
-  v31 = [MEMORY[0x277CBEBD0] workflowUserDefaults];
-  LODWORD(v27) = [v31 BOOLForKey:@"WFShowTestAutomationButton"];
+  workflowUserDefaults = [MEMORY[0x277CBEBD0] workflowUserDefaults];
+  LODWORD(v27) = [workflowUserDefaults BOOLForKey:@"WFShowTestAutomationButton"];
 
   if (v27)
   {
@@ -794,15 +794,15 @@ LABEL_14:
   return v3;
 }
 
-- (WFAutomationSummaryViewController)initWithTrigger:(id)a3 triggerIdentifier:(id)a4 workflow:(id)a5 mode:(unint64_t)a6
+- (WFAutomationSummaryViewController)initWithTrigger:(id)trigger triggerIdentifier:(id)identifier workflow:(id)workflow mode:(unint64_t)mode
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  if (!v12)
+  triggerCopy = trigger;
+  identifierCopy = identifier;
+  workflowCopy = workflow;
+  if (!triggerCopy)
   {
-    v29 = [MEMORY[0x277CCA890] currentHandler];
-    [v29 handleFailureInMethod:a2 object:self file:@"WFAutomationSummaryViewController.m" lineNumber:79 description:{@"Invalid parameter not satisfying: %@", @"triggerRecord"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFAutomationSummaryViewController.m" lineNumber:79 description:{@"Invalid parameter not satisfying: %@", @"triggerRecord"}];
   }
 
   v32.receiver = self;
@@ -811,31 +811,31 @@ LABEL_14:
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_triggerRecord, a3);
-    v17 = [v13 copy];
+    objc_storeStrong(&v15->_triggerRecord, trigger);
+    v17 = [identifierCopy copy];
     triggerIdentifier = v16->_triggerIdentifier;
     v16->_triggerIdentifier = v17;
 
     v19 = MEMORY[0x277D7C970];
-    v20 = [v12 triggerData];
-    v21 = [v19 triggerWithSerializedData:v20];
+    triggerData = [triggerCopy triggerData];
+    v21 = [v19 triggerWithSerializedData:triggerData];
     trigger = v16->_trigger;
     v16->_trigger = v21;
 
     if (!v16->_trigger)
     {
-      v30 = [MEMORY[0x277CCA890] currentHandler];
-      v31 = [v12 triggerData];
-      [v30 handleFailureInMethod:a2 object:v16 file:@"WFAutomationSummaryViewController.m" lineNumber:88 description:{@"Failed to deserialize trigger from data (%@)", v31}];
+      currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+      triggerData2 = [triggerCopy triggerData];
+      [currentHandler2 handleFailureInMethod:a2 object:v16 file:@"WFAutomationSummaryViewController.m" lineNumber:88 description:{@"Failed to deserialize trigger from data (%@)", triggerData2}];
     }
 
-    objc_storeStrong(&v16->_workflow, a5);
-    v16->_mode = a6;
+    objc_storeStrong(&v16->_workflow, workflow);
+    v16->_mode = mode;
     v23 = objc_alloc(MEMORY[0x277D751E0]);
     v24 = WFLocalizedString(@"Done");
     v25 = [v23 initWithTitle:v24 style:2 target:v16 action:sel_didTapDone_];
-    v26 = [(WFAutomationSummaryViewController *)v16 navigationItem];
-    [v26 setRightBarButtonItem:v25];
+    navigationItem = [(WFAutomationSummaryViewController *)v16 navigationItem];
+    [navigationItem setRightBarButtonItem:v25];
 
     v27 = v16;
   }

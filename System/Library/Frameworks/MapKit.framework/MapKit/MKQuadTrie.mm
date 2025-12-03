@@ -1,20 +1,20 @@
 @interface MKQuadTrie
-- (BOOL)contains:(id)a3;
-- (BOOL)remove:(id)a3;
-- (MKQuadTrie)initWithInitialRegion:(id)a3 minimumSize:(id)a4 maximumItems:(unsigned int)a5;
-- (id)_itemsInMapRect:(id)a3;
+- (BOOL)contains:(id)contains;
+- (BOOL)remove:(id)remove;
+- (MKQuadTrie)initWithInitialRegion:(id)region minimumSize:(id)size maximumItems:(unsigned int)items;
+- (id)_itemsInMapRect:(id)rect;
 - (id)allItems;
 - (id)breadthFirstDescription;
 - (id)depthFirstDescription;
 - (id)description;
 - (id)itemDescriptions;
-- (id)itemsInMapRect:(id)a3;
-- (id)itemsPassingRectTest:(id)a3 coordinateTest:(id)a4;
+- (id)itemsInMapRect:(id)rect;
+- (id)itemsPassingRectTest:(id)test coordinateTest:(id)coordinateTest;
 - (unint64_t)count;
-- (void)clearAllItemsPerforming:(id)a3;
+- (void)clearAllItemsPerforming:(id)performing;
 - (void)dealloc;
-- (void)foreach:(id)a3;
-- (void)insert:(id)a3;
+- (void)foreach:(id)foreach;
+- (void)insert:(id)insert;
 @end
 
 @implementation MKQuadTrie
@@ -22,9 +22,9 @@
 - (id)allItems
 {
   v2 = [(MKQuadTrie *)self itemsInMapRect:self->_initialRegion.origin.x, self->_initialRegion.origin.y, self->_initialRegion.size.width, self->_initialRegion.size.height];
-  v3 = [v2 allObjects];
+  allObjects = [v2 allObjects];
 
-  return v3;
+  return allObjects;
 }
 
 - (id)itemDescriptions
@@ -82,9 +82,9 @@ uint64_t __30__MKQuadTrie_itemDescriptions__block_invoke(uint64_t a1, uint64_t a
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(MKQuadTrie *)self breadthFirstDescription];
-  v5 = [(MKQuadTrie *)self depthFirstDescription];
-  v6 = [v3 stringWithFormat:@"Breadth first description:\n%@\n\nDepth first description:\n%@", v4, v5];
+  breadthFirstDescription = [(MKQuadTrie *)self breadthFirstDescription];
+  depthFirstDescription = [(MKQuadTrie *)self depthFirstDescription];
+  v6 = [v3 stringWithFormat:@"Breadth first description:\n%@\n\nDepth first description:\n%@", breadthFirstDescription, depthFirstDescription];
 
   return v6;
 }
@@ -171,15 +171,15 @@ uint64_t __35__MKQuadTrie_depthFirstDescription__block_invoke(uint64_t a1, uint6
   return 0;
 }
 
-- (void)clearAllItemsPerforming:(id)a3
+- (void)clearAllItemsPerforming:(id)performing
 {
-  v4 = a3;
+  performingCopy = performing;
   root = self->__root;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __38__MKQuadTrie_clearAllItemsPerforming___block_invoke;
   v8[3] = &unk_1E76C8AF0;
-  v8[4] = v4;
+  v8[4] = performingCopy;
   _breadthFirstApply(root, v8);
   initialRegion = self->_initialRegion;
   v6 = malloc_type_calloc(1uLL, 0x30uLL, 0x10A00405CA67C4CuLL);
@@ -256,16 +256,16 @@ uint64_t __19__MKQuadTrie_count__block_invoke(uint64_t a1, uint64_t a2)
   return 0;
 }
 
-- (void)foreach:(id)a3
+- (void)foreach:(id)foreach
 {
-  v4 = a3;
+  foreachCopy = foreach;
   root = self->__root;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __22__MKQuadTrie_foreach___block_invoke;
   v7[3] = &unk_1E76C8AF0;
-  v8 = v4;
-  v6 = v4;
+  v8 = foreachCopy;
+  v6 = foreachCopy;
   _breadthFirstApply(root, v7);
 }
 
@@ -305,13 +305,13 @@ uint64_t __22__MKQuadTrie_foreach___block_invoke(uint64_t a1, uint64_t a2)
   return 2;
 }
 
-- (id)itemsPassingRectTest:(id)a3 coordinateTest:(id)a4
+- (id)itemsPassingRectTest:(id)test coordinateTest:(id)coordinateTest
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  testCopy = test;
+  coordinateTestCopy = coordinateTest;
+  v8 = coordinateTestCopy;
   v9 = 0;
-  if (v6 && v7)
+  if (testCopy && coordinateTestCopy)
   {
     v10 = [objc_alloc(MEMORY[0x1E696AC70]) initWithOptions:512 capacity:10];
     root = self->__root;
@@ -319,7 +319,7 @@ uint64_t __22__MKQuadTrie_foreach___block_invoke(uint64_t a1, uint64_t a2)
     v15[1] = 3221225472;
     v15[2] = __50__MKQuadTrie_itemsPassingRectTest_coordinateTest___block_invoke;
     v15[3] = &unk_1E76C8AC8;
-    v17 = v6;
+    v17 = testCopy;
     v12 = v10;
     v16 = v12;
     v18 = v8;
@@ -386,19 +386,19 @@ uint64_t __50__MKQuadTrie_itemsPassingRectTest_coordinateTest___block_invoke(uin
   return 0;
 }
 
-- (id)itemsInMapRect:(id)a3
+- (id)itemsInMapRect:(id)rect
 {
-  var1 = a3.var1.var1;
-  v4 = a3.var0.var1;
-  var0 = a3.var0.var0;
-  v7 = a3.var0.var0 + a3.var1.var0;
-  if (a3.var0.var0 < 0.0 && v7 > 0.0 || (v7 > 268435456.0 ? (v8 = a3.var0.var0 < 268435456.0) : (v8 = 0), v8))
+  var1 = rect.var1.var1;
+  v4 = rect.var0.var1;
+  var0 = rect.var0.var0;
+  v7 = rect.var0.var0 + rect.var1.var0;
+  if (rect.var0.var0 < 0.0 && v7 > 0.0 || (v7 > 268435456.0 ? (v8 = rect.var0.var0 < 268435456.0) : (v8 = 0), v8))
   {
     v22.size.width = 268435456.0;
     v22.origin.x = 0.0;
     v22.origin.y = 0.0;
     v22.size.height = 268435456.0;
-    v21 = MKMapRectIntersection(a3, v22);
+    v21 = MKMapRectIntersection(rect, v22);
     v10 = INFINITY;
     v11 = v7 + -268435456.0;
     if (v7 > 268435456.0)
@@ -465,27 +465,27 @@ uint64_t __50__MKQuadTrie_itemsPassingRectTest_coordinateTest___block_invoke(uin
       v9 = [MEMORY[0x1E695DFA8] set];
     }
 
-    v18 = [(MKQuadTrie *)self _itemsInMapRect:v16, v4, v17, var1];
-    if (v18)
+    var1 = [(MKQuadTrie *)self _itemsInMapRect:v16, v4, v17, var1];
+    if (var1)
     {
-      [v9 unionSet:v18];
+      [v9 unionSet:var1];
     }
   }
 
   else
   {
-    v9 = [(MKQuadTrie *)self _itemsInMapRect:a3.var0.var0, a3.var0.var1];
+    v9 = [(MKQuadTrie *)self _itemsInMapRect:rect.var0.var0, rect.var0.var1];
   }
 
   return v9;
 }
 
-- (id)_itemsInMapRect:(id)a3
+- (id)_itemsInMapRect:(id)rect
 {
-  var1 = a3.var1.var1;
-  var0 = a3.var1.var0;
-  v5 = a3.var0.var1;
-  v6 = a3.var0.var0;
+  var1 = rect.var1.var1;
+  var0 = rect.var1.var0;
+  v5 = rect.var0.var1;
+  v6 = rect.var0.var0;
   v8 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v17.origin.x = v6;
   v17.origin.y = v5;
@@ -599,15 +599,15 @@ uint64_t __30__MKQuadTrie__itemsInMapRect___block_invoke(uint64_t a1, uint64_t a
   return 0;
 }
 
-- (BOOL)contains:(id)a3
+- (BOOL)contains:(id)contains
 {
-  v4 = a3;
+  containsCopy = contains;
   root = self->__root;
   v6 = *root;
   v7 = root[1];
   v8 = root[2];
   v9 = root[3];
-  v10 = v4;
+  v10 = containsCopy;
   [v10 coordinate];
   v12 = v11;
   v14 = v13;
@@ -676,15 +676,15 @@ LABEL_15:
   return v26;
 }
 
-- (BOOL)remove:(id)a3
+- (BOOL)remove:(id)remove
 {
-  v4 = a3;
+  removeCopy = remove;
   root = self->__root;
   v6 = *root;
   v7 = root[1];
   v8 = root[2];
   v9 = root[3];
-  v10 = v4;
+  v10 = removeCopy;
   [v10 coordinate];
   v12 = v11;
   v14 = v13;
@@ -874,10 +874,10 @@ uint64_t __21__MKQuadTrie_remove___block_invoke(uint64_t a1, uint64_t a2)
   return 2;
 }
 
-- (void)insert:(id)a3
+- (void)insert:(id)insert
 {
-  v14 = a3;
-  [v14 coordinate];
+  insertCopy = insert;
+  [insertCopy coordinate];
   v5 = v4;
   v7 = v6;
 
@@ -894,7 +894,7 @@ uint64_t __21__MKQuadTrie_remove___block_invoke(uint64_t a1, uint64_t a2)
   v17.size.height = v12;
   if (MKMapRectContainsPoint(v17, v16))
   {
-    _insert(v14, root, self);
+    _insert(insertCopy, root, self);
   }
 }
 
@@ -907,14 +907,14 @@ uint64_t __21__MKQuadTrie_remove___block_invoke(uint64_t a1, uint64_t a2)
   [(MKQuadTrie *)&v3 dealloc];
 }
 
-- (MKQuadTrie)initWithInitialRegion:(id)a3 minimumSize:(id)a4 maximumItems:(unsigned int)a5
+- (MKQuadTrie)initWithInitialRegion:(id)region minimumSize:(id)size maximumItems:(unsigned int)items
 {
-  var1 = a4.var1;
-  var0 = a4.var0;
-  v8 = a3.var1.var1;
-  v9 = a3.var1.var0;
-  v10 = a3.var0.var1;
-  v11 = a3.var0.var0;
+  var1 = size.var1;
+  var0 = size.var0;
+  v8 = region.var1.var1;
+  v9 = region.var1.var0;
+  v10 = region.var0.var1;
+  v11 = region.var0.var0;
   v16.receiver = self;
   v16.super_class = MKQuadTrie;
   v12 = [(MKQuadTrie *)&v16 init];
@@ -923,7 +923,7 @@ uint64_t __21__MKQuadTrie_remove___block_invoke(uint64_t a1, uint64_t a2)
   {
     v12->_minSize.width = var0;
     v12->_minSize.height = var1;
-    v12->_maxItems = a5;
+    v12->_maxItems = items;
     v12->_initialRegion.origin.x = v11;
     v12->_initialRegion.origin.y = v10;
     v12->_initialRegion.size.width = v9;

@@ -4,18 +4,18 @@
 + (NSURL)sharedAnnouncementsDirectoryURL;
 - (WFAnnounceWrapper)init;
 - (void)invalidate;
-- (void)prewarmWithHandler:(id)a3;
-- (void)requestAnnouncementWithAudioFileURL:(id)a3 homeAreaDescriptor:(id)a4 completionHandler:(id)a5;
+- (void)prewarmWithHandler:(id)handler;
+- (void)requestAnnouncementWithAudioFileURL:(id)l homeAreaDescriptor:(id)descriptor completionHandler:(id)handler;
 @end
 
 @implementation WFAnnounceWrapper
 
-- (void)requestAnnouncementWithAudioFileURL:(id)a3 homeAreaDescriptor:(id)a4 completionHandler:(id)a5
+- (void)requestAnnouncementWithAudioFileURL:(id)l homeAreaDescriptor:(id)descriptor completionHandler:(id)handler
 {
   v42[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  lCopy = l;
+  descriptorCopy = descriptor;
+  handlerCopy = handler;
   v37 = 0;
   v38 = &v37;
   v39 = 0x2050000000;
@@ -34,32 +34,32 @@
 
   v12 = v11;
   _Block_object_dispose(&v37, 8);
-  v13 = [v11 contentWithAudioFileURL:v8];
-  v14 = [v9 areaType];
-  switch(v14)
+  v13 = [v11 contentWithAudioFileURL:lCopy];
+  areaType = [descriptorCopy areaType];
+  switch(areaType)
   {
     case 2:
       ANAnnouncementDestinationClass = getANAnnouncementDestinationClass();
-      v16 = [v9 homeIdentifier];
-      v22 = [v9 uniqueIdentifier];
-      v41 = v22;
+      homeIdentifier = [descriptorCopy homeIdentifier];
+      uniqueIdentifier = [descriptorCopy uniqueIdentifier];
+      v41 = uniqueIdentifier;
       v23 = [MEMORY[0x277CBEA60] arrayWithObjects:&v41 count:1];
-      v17 = [ANAnnouncementDestinationClass destinationWithHomeIdentifier:v16 zoneIdentifiers:MEMORY[0x277CBEBF8] roomIdentifiers:v23];
+      v17 = [ANAnnouncementDestinationClass destinationWithHomeIdentifier:homeIdentifier zoneIdentifiers:MEMORY[0x277CBEBF8] roomIdentifiers:v23];
 
       goto LABEL_9;
     case 1:
       v18 = getANAnnouncementDestinationClass();
-      v16 = [v9 homeIdentifier];
-      v19 = [v9 uniqueIdentifier];
-      v42[0] = v19;
+      homeIdentifier = [descriptorCopy homeIdentifier];
+      uniqueIdentifier2 = [descriptorCopy uniqueIdentifier];
+      v42[0] = uniqueIdentifier2;
       v20 = [MEMORY[0x277CBEA60] arrayWithObjects:v42 count:1];
-      v17 = [v18 destinationWithHomeIdentifier:v16 zoneIdentifiers:v20 roomIdentifiers:MEMORY[0x277CBEBF8]];
+      v17 = [v18 destinationWithHomeIdentifier:homeIdentifier zoneIdentifiers:v20 roomIdentifiers:MEMORY[0x277CBEBF8]];
 
       goto LABEL_9;
     case 0:
       v15 = getANAnnouncementDestinationClass();
-      v16 = [v9 homeIdentifier];
-      v17 = [v15 destinationWithHomeIdentifier:v16];
+      homeIdentifier = [descriptorCopy homeIdentifier];
+      v17 = [v15 destinationWithHomeIdentifier:homeIdentifier];
 LABEL_9:
 
       goto LABEL_11;
@@ -86,29 +86,29 @@ LABEL_11:
   v25 = v24;
   _Block_object_dispose(&v37, 8);
   v26 = [v24 requestWithContent:v13 destination:v17];
-  v27 = [(WFAnnounceWrapper *)self announce];
+  announce = [(WFAnnounceWrapper *)self announce];
   v30[0] = MEMORY[0x277D85DD0];
   v30[1] = 3221225472;
   v30[2] = __94__WFAnnounceWrapper_requestAnnouncementWithAudioFileURL_homeAreaDescriptor_completionHandler___block_invoke;
   v30[3] = &unk_278C19ED0;
-  v31 = v10;
-  v28 = v10;
-  [v27 sendRequest:v26 completion:v30];
+  v31 = handlerCopy;
+  v28 = handlerCopy;
+  [announce sendRequest:v26 completion:v30];
 
   v29 = *MEMORY[0x277D85DE8];
 }
 
 - (void)invalidate
 {
-  v2 = [(WFAnnounceWrapper *)self announce];
-  [v2 invalidate];
+  announce = [(WFAnnounceWrapper *)self announce];
+  [announce invalidate];
 }
 
-- (void)prewarmWithHandler:(id)a3
+- (void)prewarmWithHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(WFAnnounceWrapper *)self announce];
-  [v5 prewarmWithHandler:v4];
+  handlerCopy = handler;
+  announce = [(WFAnnounceWrapper *)self announce];
+  [announce prewarmWithHandler:handlerCopy];
 }
 
 - (WFAnnounceWrapper)init
@@ -148,20 +148,20 @@ LABEL_11:
 
 + (NSString)currentSiriVoiceVSAssetName
 {
-  v2 = [getAFPreferencesClass() sharedPreferences];
-  v3 = [v2 outputVoice];
-  v4 = [v3 name];
+  sharedPreferences = [getAFPreferencesClass() sharedPreferences];
+  outputVoice = [sharedPreferences outputVoice];
+  name = [outputVoice name];
 
-  return v4;
+  return name;
 }
 
 + (NSString)afPreferencesLanguageCode
 {
-  v2 = [getAFPreferencesClass() sharedPreferences];
-  v3 = [v2 outputVoice];
-  v4 = [v3 languageCode];
+  sharedPreferences = [getAFPreferencesClass() sharedPreferences];
+  outputVoice = [sharedPreferences outputVoice];
+  languageCode = [outputVoice languageCode];
 
-  return v4;
+  return languageCode;
 }
 
 + (NSURL)sharedAnnouncementsDirectoryURL
@@ -184,9 +184,9 @@ LABEL_11:
 
   v3 = v2;
   _Block_object_dispose(&v7, 8);
-  v4 = [v2 sharedAnnouncementsDirectoryURL];
+  sharedAnnouncementsDirectoryURL = [v2 sharedAnnouncementsDirectoryURL];
 
-  return v4;
+  return sharedAnnouncementsDirectoryURL;
 }
 
 @end

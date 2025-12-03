@@ -1,12 +1,12 @@
 @interface InfoLayerOverlayContainerView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC8AppStore29InfoLayerOverlayContainerView)initWithCoder:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC8AppStore29InfoLayerOverlayContainerView)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 @end
 
 @implementation InfoLayerOverlayContainerView
 
-- (_TtC8AppStore29InfoLayerOverlayContainerView)initWithCoder:(id)a3
+- (_TtC8AppStore29InfoLayerOverlayContainerView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC8AppStore29InfoLayerOverlayContainerView_overlayView) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC8AppStore29InfoLayerOverlayContainerView_sizeCategory) = 5;
@@ -21,13 +21,13 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_10068666C();
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v3 = self;
+  selfCopy = self;
   sub_100686978();
   v5 = v4;
   v7 = v6;

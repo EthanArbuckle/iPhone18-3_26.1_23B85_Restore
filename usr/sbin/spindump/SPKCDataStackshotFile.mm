@@ -1,12 +1,12 @@
 @interface SPKCDataStackshotFile
-+ (id)sampleStoreForFile:(const char *)a3;
++ (id)sampleStoreForFile:(const char *)file;
 @end
 
 @implementation SPKCDataStackshotFile
 
-+ (id)sampleStoreForFile:(const char *)a3
++ (id)sampleStoreForFile:(const char *)file
 {
-  v4 = open(a3, 0);
+  v4 = open(file, 0);
   if (v4 == -1)
   {
     if (byte_100117E80 == 1)
@@ -30,7 +30,7 @@
     v21 = *__error();
     v22 = __error();
     v23 = strerror(*v22);
-    v24 = CFStringCreateWithFormat(kCFAllocatorDefault, 0, @"Unable to open %s: %d (%s)", a3, v21, v23);
+    v24 = CFStringCreateWithFormat(kCFAllocatorDefault, 0, @"Unable to open %s: %d (%s)", file, v21, v23);
     if (v24)
     {
       v25 = v24;
@@ -89,7 +89,7 @@ LABEL_59:
 
     fwrite("UNABLE TO FORMAT STRING\n", 0x18uLL, 1uLL, v47);
 LABEL_71:
-    v50 = 0;
+    initForFileParsing = 0;
     *__error() = v20;
     goto LABEL_113;
   }
@@ -119,7 +119,7 @@ LABEL_71:
     v10 = *__error();
     v11 = __error();
     v12 = strerror(*v11);
-    v13 = CFStringCreateWithFormat(kCFAllocatorDefault, 0, @"Unable to stat %s: %d (%s)", a3, v10, v12);
+    v13 = CFStringCreateWithFormat(kCFAllocatorDefault, 0, @"Unable to stat %s: %d (%s)", file, v10, v12);
     if (v13)
     {
       v14 = v13;
@@ -154,7 +154,7 @@ LABEL_103:
       v30 = sub_100035B80();
       if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
       {
-        sub_1000B5E48(a3, &v82.st_size);
+        sub_1000B5E48(file, &v82.st_size);
       }
 
       *__error() = v29;
@@ -166,7 +166,7 @@ LABEL_103:
     }
 
     v9 = *__error();
-    v32 = CFStringCreateWithFormat(kCFAllocatorDefault, 0, @"%s isn't big enough for a kcdata header (only %lld bytes)", a3, v82.st_size);
+    v32 = CFStringCreateWithFormat(kCFAllocatorDefault, 0, @"%s isn't big enough for a kcdata header (only %lld bytes)", file, v82.st_size);
     if (v32)
     {
       v14 = v32;
@@ -204,7 +204,7 @@ LABEL_104:
     v45 = sub_100035B80();
     if (os_log_type_enabled(v45, OS_LOG_TYPE_FAULT))
     {
-      sub_1000B5EBC(a3, &v82.st_size);
+      sub_1000B5EBC(file, &v82.st_size);
     }
 
 LABEL_86:
@@ -225,7 +225,7 @@ LABEL_110:
 LABEL_111:
     close(v5);
 LABEL_112:
-    v50 = 0;
+    initForFileParsing = 0;
     goto LABEL_113;
   }
 
@@ -254,7 +254,7 @@ LABEL_112:
     v54 = *__error();
     v55 = __error();
     v56 = strerror(*v55);
-    v57 = CFStringCreateWithFormat(kCFAllocatorDefault, 0, @"Unable to map %s: %d (%s)", a3, v54, v56);
+    v57 = CFStringCreateWithFormat(kCFAllocatorDefault, 0, @"Unable to map %s: %d (%s)", file, v54, v56);
     if (v57)
     {
       v25 = v57;
@@ -285,7 +285,7 @@ LABEL_112:
       v37 = sub_100035B80();
       if (os_log_type_enabled(v37, OS_LOG_TYPE_DEBUG))
       {
-        sub_1000B5C40(a3, &v82.st_size);
+        sub_1000B5C40(file, &v82.st_size);
       }
 
       *__error() = v36;
@@ -297,7 +297,7 @@ LABEL_112:
     }
 
     v39 = *__error();
-    v40 = CFStringCreateWithFormat(kCFAllocatorDefault, 0, @"Not a kcdata file: kcdata in %s not valid (file length %lld)", a3, v82.st_size);
+    v40 = CFStringCreateWithFormat(kCFAllocatorDefault, 0, @"Not a kcdata file: kcdata in %s not valid (file length %lld)", file, v82.st_size);
     if (v40)
     {
       v41 = v40;
@@ -339,7 +339,7 @@ LABEL_137:
     v68 = sub_100035B80();
     if (os_log_type_enabled(v68, OS_LOG_TYPE_FAULT))
     {
-      sub_1000B5CB4(a3, &v82.st_size);
+      sub_1000B5CB4(file, &v82.st_size);
     }
 
     goto LABEL_118;
@@ -353,7 +353,7 @@ LABEL_137:
       v71 = sub_100035B80();
       if (os_log_type_enabled(v71, OS_LOG_TYPE_ERROR))
       {
-        sub_1000B5B04(a3, v35);
+        sub_1000B5B04(file, v35);
       }
 
       *__error() = v70;
@@ -376,7 +376,7 @@ LABEL_137:
       v72 = v72;
     }
 
-    v73 = CFStringCreateWithFormat(kCFAllocatorDefault, 0, @"%s isn't a kcdata stackshot file (header type %#x)", a3, v72);
+    v73 = CFStringCreateWithFormat(kCFAllocatorDefault, 0, @"%s isn't a kcdata stackshot file (header type %#x)", file, v72);
     if (v73)
     {
       v41 = v73;
@@ -393,7 +393,7 @@ LABEL_137:
     v68 = sub_100035B80();
     if (os_log_type_enabled(v68, OS_LOG_TYPE_FAULT))
     {
-      sub_1000B5B80(a3, v35);
+      sub_1000B5B80(file, v35);
     }
 
 LABEL_118:
@@ -416,7 +416,7 @@ LABEL_145:
     goto LABEL_112;
   }
 
-  v50 = [[SASampleStore alloc] initForFileParsing];
+  initForFileParsing = [[SASampleStore alloc] initForFileParsing];
   if ((byte_100117E94 & 2) != 0 && sub_10002B3E4())
   {
     if (byte_100117E80 == 1)
@@ -491,18 +491,18 @@ LABEL_145:
       *__error() = v61;
     }
 
-    [v50 setDataGatheringOptions:{objc_msgSend(v50, "dataGatheringOptions") & 0xFFFFFFFFFFFFFFFDLL}];
+    [initForFileParsing setDataGatheringOptions:{objc_msgSend(initForFileParsing, "dataGatheringOptions") & 0xFFFFFFFFFFFFFFFDLL}];
   }
 
-  sub_100077DF8(v50, (byte_100117E94 >> 3) & 1, (byte_100117E94 >> 2) & 1, (byte_100117E94 & 0x10) == 0);
+  sub_100077DF8(initForFileParsing, (byte_100117E94 >> 3) & 1, (byte_100117E94 >> 2) & 1, (byte_100117E94 & 0x10) == 0);
   v79 = [NSData alloc];
   v80 = [v79 initWithBytesNoCopy:v35 length:v82.st_size deallocator:&stru_100109A20];
-  [v50 addKCDataStackshots:v80 createSeparateSamplePerStackshot:1];
-  [v50 postprocess];
+  [initForFileParsing addKCDataStackshots:v80 createSeparateSamplePerStackshot:1];
+  [initForFileParsing postprocess];
 
 LABEL_113:
 
-  return v50;
+  return initForFileParsing;
 }
 
 @end

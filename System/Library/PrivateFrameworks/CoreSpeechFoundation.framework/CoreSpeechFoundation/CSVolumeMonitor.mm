@@ -1,69 +1,69 @@
 @interface CSVolumeMonitor
 + (id)sharedInstance;
-- (BOOL)_fetchSystemVolumeForCategory:(id)a3 usingSystemController:(id)a4 volume:(float *)a5;
+- (BOOL)_fetchSystemVolumeForCategory:(id)category usingSystemController:(id)controller volume:(float *)volume;
 - (CSVolumeMonitor)init;
-- (float)_getNewSystemVolumesWithNotification:(id)a3 category:(id)a4;
+- (float)_getNewSystemVolumesWithNotification:(id)notification category:(id)category;
 - (float)alarmVolume;
 - (float)musicVolume;
-- (void)_notifyObserver:(id)a3 volumeDidChanged:(float)a4 forAudioCategory:(id)a5;
-- (void)_startMonitoringWithQueue:(id)a3;
+- (void)_notifyObserver:(id)observer volumeDidChanged:(float)changed forAudioCategory:(id)category;
+- (void)_startMonitoringWithQueue:(id)queue;
 - (void)_startObservingSystemControllerLifecycle;
 - (void)_stopMonitoring;
 - (void)dealloc;
-- (void)fetchVolumeFromAVSystemControllerForAudioCategory:(id)a3;
-- (void)musicVolumeWithCompletion:(id)a3;
+- (void)fetchVolumeFromAVSystemControllerForAudioCategory:(id)category;
+- (void)musicVolumeWithCompletion:(id)completion;
 - (void)startObservingSystemVolumes;
-- (void)systemControllerDied:(id)a3;
-- (void)systemVolumeDidChange:(id)a3;
+- (void)systemControllerDied:(id)died;
+- (void)systemVolumeDidChange:(id)change;
 @end
 
 @implementation CSVolumeMonitor
 
 - (void)_startObservingSystemControllerLifecycle
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v4 = MEMORY[0x1E69AECB0];
-  [v3 removeObserver:self name:*MEMORY[0x1E69AECB0] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69AECB0] object:0];
 
   v9 = [MEMORY[0x1E695DEC8] arrayWithObject:*v4];
-  v5 = [MEMORY[0x1E69AED08] sharedAVSystemController];
-  [v5 setAttribute:v9 forKey:*MEMORY[0x1E69AECE0] error:0];
+  mEMORY[0x1E69AED08] = [MEMORY[0x1E69AED08] sharedAVSystemController];
+  [mEMORY[0x1E69AED08] setAttribute:v9 forKey:*MEMORY[0x1E69AECE0] error:0];
 
-  v6 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
   v7 = *v4;
-  v8 = [MEMORY[0x1E69AED08] sharedAVSystemController];
-  [v6 addObserver:self selector:sel_systemControllerDied_ name:v7 object:v8];
+  mEMORY[0x1E69AED08]2 = [MEMORY[0x1E69AED08] sharedAVSystemController];
+  [defaultCenter2 addObserver:self selector:sel_systemControllerDied_ name:v7 object:mEMORY[0x1E69AED08]2];
 }
 
 - (void)startObservingSystemVolumes
 {
   [(CSVolumeMonitor *)self fetchVolumeFromAVSystemControllerForAudioCategory:@"Audio/Video"];
   [(CSVolumeMonitor *)self fetchVolumeFromAVSystemControllerForAudioCategory:@"Alarm"];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v4 = MEMORY[0x1E69AECF0];
-  [v3 removeObserver:self name:*MEMORY[0x1E69AECF0] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69AECF0] object:0];
 
   v9 = [MEMORY[0x1E695DEC8] arrayWithObject:*v4];
-  v5 = [MEMORY[0x1E69AED08] sharedAVSystemController];
-  [v5 setAttribute:v9 forKey:*MEMORY[0x1E69AECE0] error:0];
+  mEMORY[0x1E69AED08] = [MEMORY[0x1E69AED08] sharedAVSystemController];
+  [mEMORY[0x1E69AED08] setAttribute:v9 forKey:*MEMORY[0x1E69AECE0] error:0];
 
-  v6 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
   v7 = *v4;
-  v8 = [MEMORY[0x1E69AED08] sharedAVSystemController];
-  [v6 addObserver:self selector:sel_systemVolumeDidChange_ name:v7 object:v8];
+  mEMORY[0x1E69AED08]2 = [MEMORY[0x1E69AED08] sharedAVSystemController];
+  [defaultCenter2 addObserver:self selector:sel_systemVolumeDidChange_ name:v7 object:mEMORY[0x1E69AED08]2];
 }
 
-- (void)systemControllerDied:(id)a3
+- (void)systemControllerDied:(id)died
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  diedCopy = died;
   v5 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 136315394;
     v8 = "[CSVolumeMonitor systemControllerDied:]";
     v9 = 2114;
-    v10 = v4;
+    v10 = diedCopy;
     _os_log_impl(&dword_1DDA4B000, v5, OS_LOG_TYPE_DEFAULT, "%s notification = %{public}@", &v7, 0x16u);
   }
 
@@ -72,12 +72,12 @@
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (float)_getNewSystemVolumesWithNotification:(id)a3 category:(id)a4
+- (float)_getNewSystemVolumesWithNotification:(id)notification category:(id)category
 {
   v47 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  if ([v9 isEqualToString:@"Audio/Video"])
+  notificationCopy = notification;
+  categoryCopy = category;
+  if ([categoryCopy isEqualToString:@"Audio/Video"])
   {
     v10 = &OBJC_IVAR___CSVolumeMonitor__musicVolumeLevel;
   }
@@ -85,7 +85,7 @@
   else
   {
     v11 = 0.0;
-    if (![v9 isEqualToString:@"Alarm"])
+    if (![categoryCopy isEqualToString:@"Alarm"])
     {
       goto LABEL_6;
     }
@@ -95,16 +95,16 @@
 
   v11 = *(&self->super.super.isa + *v10);
 LABEL_6:
-  v12 = [v8 userInfo];
+  userInfo = [notificationCopy userInfo];
   v13 = MEMORY[0x1E69AEA20];
-  v14 = [v12 objectForKey:*MEMORY[0x1E69AEA20]];
+  v14 = [userInfo objectForKey:*MEMORY[0x1E69AEA20]];
   [v14 floatValue];
   v16 = v15;
   v17 = 1.0;
   if (v15 <= 1.0)
   {
-    v4 = [v8 userInfo];
-    v5 = [v4 objectForKey:*v13];
+    userInfo2 = [notificationCopy userInfo];
+    v5 = [userInfo2 objectForKey:*v13];
     [v5 floatValue];
     v18 = 0.0;
     if (v19 < 0.0)
@@ -113,25 +113,25 @@ LABEL_6:
     }
   }
 
-  v20 = [v8 userInfo];
-  v21 = [v20 objectForKey:*v13];
+  userInfo3 = [notificationCopy userInfo];
+  v21 = [userInfo3 objectForKey:*v13];
   [v21 floatValue];
   if (v22 <= 1.0)
   {
-    [v8 userInfo];
+    [notificationCopy userInfo];
     v35 = v5;
-    v23 = v8;
-    v24 = v4;
-    v25 = v9;
+    v23 = notificationCopy;
+    v24 = userInfo2;
+    v25 = categoryCopy;
     v27 = v26 = self;
     v28 = [v27 objectForKey:*v13];
     [v28 floatValue];
     v17 = v29;
 
     self = v26;
-    v9 = v25;
-    v4 = v24;
-    v8 = v23;
+    categoryCopy = v25;
+    userInfo2 = v24;
+    notificationCopy = v23;
     v5 = v35;
   }
 
@@ -168,7 +168,7 @@ LABEL_11:
     v36[3] = &unk_1E865AC90;
     v36[4] = self;
     v38 = v17;
-    v30 = COERCE_DOUBLE(v9);
+    v30 = COERCE_DOUBLE(categoryCopy);
     v37 = v30;
     [(CSEventMonitor *)self enumerateObserversInQueue:v36];
     v31 = CSLogContextFacilityCoreSpeech;
@@ -190,17 +190,17 @@ LABEL_11:
   return v17;
 }
 
-- (void)systemVolumeDidChange:(id)a3
+- (void)systemVolumeDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __41__CSVolumeMonitor_systemVolumeDidChange___block_invoke;
   v7[3] = &unk_1E865C970;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = changeCopy;
+  v6 = changeCopy;
   dispatch_async(queue, v7);
 }
 
@@ -279,20 +279,20 @@ void __41__CSVolumeMonitor_systemVolumeDidChange___block_invoke_2(uint64_t a1, v
   }
 }
 
-- (BOOL)_fetchSystemVolumeForCategory:(id)a3 usingSystemController:(id)a4 volume:(float *)a5
+- (BOOL)_fetchSystemVolumeForCategory:(id)category usingSystemController:(id)controller volume:(float *)volume
 {
   v23 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (!a5)
+  categoryCopy = category;
+  controllerCopy = controller;
+  v10 = controllerCopy;
+  if (!volume)
   {
     goto LABEL_11;
   }
 
   v11 = 0;
-  *a5 = 0.5;
-  if (!v8 || !v9)
+  *volume = 0.5;
+  if (!categoryCopy || !controllerCopy)
   {
     goto LABEL_12;
   }
@@ -310,7 +310,7 @@ void __41__CSVolumeMonitor_systemVolumeDidChange___block_invoke_2(uint64_t a1, v
     goto LABEL_11;
   }
 
-  if (![v10 getVolume:a5 category:v8 mode:0 route:@"Speaker" deviceIdentifier:@"PuffinOutput" routeSubtype:0])
+  if (![v10 getVolume:volume category:categoryCopy mode:0 route:@"Speaker" deviceIdentifier:@"PuffinOutput" routeSubtype:0])
   {
 LABEL_11:
     v11 = 0;
@@ -320,11 +320,11 @@ LABEL_11:
   v12 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = *a5;
+    v13 = *volume;
     v17 = 136315650;
     v18 = "[CSVolumeMonitor _fetchSystemVolumeForCategory:usingSystemController:volume:]";
     v19 = 2114;
-    v20 = v8;
+    v20 = categoryCopy;
     v21 = 2050;
     v22 = v13;
     _os_log_impl(&dword_1DDA4B000, v12, OS_LOG_TYPE_DEFAULT, "%s Fetched system volume for %{public}@ as %{public}f.", &v17, 0x20u);
@@ -337,17 +337,17 @@ LABEL_12:
   return v11;
 }
 
-- (void)fetchVolumeFromAVSystemControllerForAudioCategory:(id)a3
+- (void)fetchVolumeFromAVSystemControllerForAudioCategory:(id)category
 {
-  v4 = a3;
+  categoryCopy = category;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __69__CSVolumeMonitor_fetchVolumeFromAVSystemControllerForAudioCategory___block_invoke;
   v7[3] = &unk_1E865C970;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = categoryCopy;
+  selfCopy = self;
+  v6 = categoryCopy;
   dispatch_async(queue, v7);
 }
 
@@ -464,11 +464,11 @@ float __30__CSVolumeMonitor_alarmVolume__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)musicVolumeWithCompletion:(id)a3
+- (void)musicVolumeWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  completionCopy = completion;
+  v5 = completionCopy;
+  if (completionCopy)
   {
     queue = self->_queue;
     v7[0] = MEMORY[0x1E69E9820];
@@ -476,7 +476,7 @@ float __30__CSVolumeMonitor_alarmVolume__block_invoke(uint64_t a1)
     v7[2] = __45__CSVolumeMonitor_musicVolumeWithCompletion___block_invoke;
     v7[3] = &unk_1E865CB90;
     v7[4] = self;
-    v8 = v4;
+    v8 = completionCopy;
     dispatch_async(queue, v7);
   }
 }
@@ -507,36 +507,36 @@ float __30__CSVolumeMonitor_musicVolume__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)_notifyObserver:(id)a3 volumeDidChanged:(float)a4 forAudioCategory:(id)a5
+- (void)_notifyObserver:(id)observer volumeDidChanged:(float)changed forAudioCategory:(id)category
 {
-  v11 = a3;
-  v8 = a5;
-  [(CSEventMonitor *)self notifyObserver:v11];
-  if ([v8 isEqualToString:@"Audio/Video"])
+  observerCopy = observer;
+  categoryCopy = category;
+  [(CSEventMonitor *)self notifyObserver:observerCopy];
+  if ([categoryCopy isEqualToString:@"Audio/Video"])
   {
-    self->_musicVolumeLevel = a4;
+    self->_musicVolumeLevel = changed;
     if (objc_opt_respondsToSelector())
     {
-      *&v9 = a4;
-      [v11 CSVolumeMonitor:self didReceiveMusicVolumeChanged:v9];
+      *&v9 = changed;
+      [observerCopy CSVolumeMonitor:self didReceiveMusicVolumeChanged:v9];
     }
   }
 
-  else if ([v8 isEqualToString:@"Alarm"])
+  else if ([categoryCopy isEqualToString:@"Alarm"])
   {
-    self->_alarmVolumeLevel = a4;
+    self->_alarmVolumeLevel = changed;
     if (objc_opt_respondsToSelector())
     {
-      *&v10 = a4;
-      [v11 CSVolumeMonitor:self didReceiveAlarmVolumeChanged:v10];
+      *&v10 = changed;
+      [observerCopy CSVolumeMonitor:self didReceiveAlarmVolumeChanged:v10];
     }
   }
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = CSVolumeMonitor;
@@ -557,7 +557,7 @@ float __30__CSVolumeMonitor_musicVolume__block_invoke(uint64_t a1)
   v3 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_startMonitoringWithQueue:(id)a3
+- (void)_startMonitoringWithQueue:(id)queue
 {
   v8 = *MEMORY[0x1E69E9840];
   v4 = CSLogContextFacilityCoreSpeech;

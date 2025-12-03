@@ -1,16 +1,16 @@
 @interface SYShowBacklinkIndicatorCommand
 - (BOOL)isActive;
-- (SYShowBacklinkIndicatorCommand)initWithDomainIdentifiers:(id)a3 linkIdentifiers:(id)a4;
+- (SYShowBacklinkIndicatorCommand)initWithDomainIdentifiers:(id)identifiers linkIdentifiers:(id)linkIdentifiers;
 - (void)invalidate;
-- (void)runWithCompletion:(id)a3;
+- (void)runWithCompletion:(id)completion;
 @end
 
 @implementation SYShowBacklinkIndicatorCommand
 
-- (SYShowBacklinkIndicatorCommand)initWithDomainIdentifiers:(id)a3 linkIdentifiers:(id)a4
+- (SYShowBacklinkIndicatorCommand)initWithDomainIdentifiers:(id)identifiers linkIdentifiers:(id)linkIdentifiers
 {
-  v6 = a3;
-  v7 = a4;
+  identifiersCopy = identifiers;
+  linkIdentifiersCopy = linkIdentifiers;
   v14.receiver = self;
   v14.super_class = SYShowBacklinkIndicatorCommand;
   v8 = [(SYShowBacklinkIndicatorCommand *)&v14 init];
@@ -23,7 +23,7 @@
       v10 = off_27856B060;
     }
 
-    v11 = [objc_alloc(*v10) initWithDomainIdentifiers:v6 linkIdentifiers:v7];
+    v11 = [objc_alloc(*v10) initWithDomainIdentifiers:identifiersCopy linkIdentifiers:linkIdentifiersCopy];
     impl = v8->__impl;
     v8->__impl = v11;
   }
@@ -33,23 +33,23 @@
 
 - (BOOL)isActive
 {
-  v2 = [(SYShowBacklinkIndicatorCommand *)self _impl];
-  v3 = [v2 isActive];
+  _impl = [(SYShowBacklinkIndicatorCommand *)self _impl];
+  isActive = [_impl isActive];
 
-  return v3;
+  return isActive;
 }
 
-- (void)runWithCompletion:(id)a3
+- (void)runWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(SYShowBacklinkIndicatorCommand *)self _impl];
-  [v5 runWithCompletion:v4];
+  completionCopy = completion;
+  _impl = [(SYShowBacklinkIndicatorCommand *)self _impl];
+  [_impl runWithCompletion:completionCopy];
 }
 
 - (void)invalidate
 {
-  v2 = [(SYShowBacklinkIndicatorCommand *)self _impl];
-  [v2 invalidate];
+  _impl = [(SYShowBacklinkIndicatorCommand *)self _impl];
+  [_impl invalidate];
 }
 
 @end

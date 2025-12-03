@@ -1,32 +1,32 @@
 @interface EKUIRecurrenceDifferenceViewController
-+ (BOOL)shouldShowRecurrenceDiff:(id)a3;
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4;
-- (EKUIRecurrenceDifferenceViewController)initWithEvent:(id)a3 andSummary:(id)a4;
-- (id)dateTimeStringForEvent:(id)a3;
-- (id)descriptionForDiffType:(int64_t)a3 row:(BOOL)a4;
-- (id)stringForAlarms:(id)a3;
-- (id)stringForAttendees:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForDeleteConfirmationButtonForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (id)titleForDiffType:(int64_t)a3;
-- (int64_t)diffTypeForIndexPath:(id)a3;
-- (int64_t)diffTypeForSection:(int64_t)a3;
-- (int64_t)rowCountForDiffType:(int64_t)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)findSemanticAlarmDifferenceFromOriginal:(id)a3;
-- (void)findSemanticAttendeeDifferenceFromOriginal:(id)a3;
++ (BOOL)shouldShowRecurrenceDiff:(id)diff;
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path;
+- (EKUIRecurrenceDifferenceViewController)initWithEvent:(id)event andSummary:(id)summary;
+- (id)dateTimeStringForEvent:(id)event;
+- (id)descriptionForDiffType:(int64_t)type row:(BOOL)row;
+- (id)stringForAlarms:(id)alarms;
+- (id)stringForAttendees:(id)attendees;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForDeleteConfirmationButtonForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (id)titleForDiffType:(int64_t)type;
+- (int64_t)diffTypeForIndexPath:(id)path;
+- (int64_t)diffTypeForSection:(int64_t)section;
+- (int64_t)rowCountForDiffType:(int64_t)type;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)findSemanticAlarmDifferenceFromOriginal:(id)original;
+- (void)findSemanticAttendeeDifferenceFromOriginal:(id)original;
 - (void)loadView;
-- (void)revertChangeForDiffType:(int64_t)a3 row:(int64_t)a4;
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5;
+- (void)revertChangeForDiffType:(int64_t)type row:(int64_t)row;
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path;
 @end
 
 @implementation EKUIRecurrenceDifferenceViewController
 
-- (EKUIRecurrenceDifferenceViewController)initWithEvent:(id)a3 andSummary:(id)a4
+- (EKUIRecurrenceDifferenceViewController)initWithEvent:(id)event andSummary:(id)summary
 {
-  v7 = a3;
-  v8 = a4;
+  eventCopy = event;
+  summaryCopy = summary;
   v13.receiver = self;
   v13.super_class = EKUIRecurrenceDifferenceViewController;
   v9 = [(EKUIRecurrenceDifferenceViewController *)&v13 initWithStyle:2];
@@ -36,8 +36,8 @@
     v11 = [v10 localizedStringForKey:@"Event Changes" value:&stru_1F4EF6790 table:0];
     [(EKUIRecurrenceDifferenceViewController *)v9 setTitle:v11];
 
-    objc_storeStrong(&v9->_event, a3);
-    objc_storeStrong(&v9->_diffSummary, a4);
+    objc_storeStrong(&v9->_event, event);
+    objc_storeStrong(&v9->_diffSummary, summary);
     [(EKUIRecurrenceDifferenceViewController *)v9 findSemanticAlarmDifferenceFromOriginal:v9->_event];
     [(EKUIRecurrenceDifferenceViewController *)v9 findSemanticAttendeeDifferenceFromOriginal:v9->_event];
   }
@@ -45,9 +45,9 @@
   return v9;
 }
 
-+ (BOOL)shouldShowRecurrenceDiff:(id)a3
++ (BOOL)shouldShowRecurrenceDiff:(id)diff
 {
-  v3 = a3;
+  diffCopy = diff;
   if (shouldShowRecurrenceDiff__onceToken != -1)
   {
     +[EKUIRecurrenceDifferenceViewController shouldShowRecurrenceDiff:];
@@ -62,7 +62,7 @@
   v6[2] = __67__EKUIRecurrenceDifferenceViewController_shouldShowRecurrenceDiff___block_invoke_2;
   v6[3] = &unk_1E8441328;
   v6[4] = &v7;
-  [v3 enumerateKeysAndObjectsUsingBlock:v6];
+  [diffCopy enumerateKeysAndObjectsUsingBlock:v6];
   v4 = *(v8 + 24);
   _Block_object_dispose(&v7, 8);
 
@@ -126,30 +126,30 @@ uint64_t __67__EKUIRecurrenceDifferenceViewController_shouldShowRecurrenceDiff__
   changedRows = self->_changedRows;
   self->_changedRows = v4;
 
-  v6 = [(NSDictionary *)self->_diffSummary allKeys];
-  v7 = [v6 containsObject:*MEMORY[0x1E69668F8]];
+  allKeys = [(NSDictionary *)self->_diffSummary allKeys];
+  v7 = [allKeys containsObject:*MEMORY[0x1E69668F8]];
 
   if (v7)
   {
     [(NSMutableArray *)self->_changedRows addObject:&unk_1F4F32500];
   }
 
-  v8 = [(NSDictionary *)self->_diffSummary allKeys];
-  v9 = [v8 containsObject:*MEMORY[0x1E69668A0]];
+  allKeys2 = [(NSDictionary *)self->_diffSummary allKeys];
+  v9 = [allKeys2 containsObject:*MEMORY[0x1E69668A0]];
 
   if (v9)
   {
     [(NSMutableArray *)self->_changedRows addObject:&unk_1F4F32518];
   }
 
-  v10 = [(NSDictionary *)self->_diffSummary allKeys];
-  if ([v10 containsObject:*MEMORY[0x1E6966830]])
+  allKeys3 = [(NSDictionary *)self->_diffSummary allKeys];
+  if ([allKeys3 containsObject:*MEMORY[0x1E6966830]])
   {
     goto LABEL_12;
   }
 
-  v11 = [(NSDictionary *)self->_diffSummary allKeys];
-  if ([v11 containsObject:*MEMORY[0x1E69668E8]])
+  allKeys4 = [(NSDictionary *)self->_diffSummary allKeys];
+  if ([allKeys4 containsObject:*MEMORY[0x1E69668E8]])
   {
 LABEL_11:
 
@@ -159,23 +159,23 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v2 = [(NSDictionary *)self->_diffSummary allKeys];
-  if ([v2 containsObject:*MEMORY[0x1E6966888]])
+  allKeys5 = [(NSDictionary *)self->_diffSummary allKeys];
+  if ([allKeys5 containsObject:*MEMORY[0x1E6966888]])
   {
 LABEL_10:
 
     goto LABEL_11;
   }
 
-  v12 = [(NSDictionary *)self->_diffSummary allKeys];
-  if ([v12 containsObject:*MEMORY[0x1E69668F0]])
+  allKeys6 = [(NSDictionary *)self->_diffSummary allKeys];
+  if ([allKeys6 containsObject:*MEMORY[0x1E69668F0]])
   {
 
     goto LABEL_10;
   }
 
-  v27 = [(NSDictionary *)self->_diffSummary allKeys];
-  v28 = [v27 containsObject:*MEMORY[0x1E6966890]];
+  allKeys7 = [(NSDictionary *)self->_diffSummary allKeys];
+  v28 = [allKeys7 containsObject:*MEMORY[0x1E6966890]];
 
   if (v28)
   {
@@ -183,52 +183,52 @@ LABEL_10:
   }
 
 LABEL_14:
-  v13 = [(NSDictionary *)self->_diffSummary allKeys];
-  v14 = [v13 containsObject:*MEMORY[0x1E6966900]];
+  allKeys8 = [(NSDictionary *)self->_diffSummary allKeys];
+  v14 = [allKeys8 containsObject:*MEMORY[0x1E6966900]];
 
   if (v14)
   {
     [(NSMutableArray *)self->_changedRows addObject:&unk_1F4F32548];
   }
 
-  v15 = [(NSDictionary *)self->_diffSummary allKeys];
-  v16 = [v15 containsObject:*MEMORY[0x1E6966868]];
+  allKeys9 = [(NSDictionary *)self->_diffSummary allKeys];
+  v16 = [allKeys9 containsObject:*MEMORY[0x1E6966868]];
 
   if (v16)
   {
     [(NSMutableArray *)self->_changedRows addObject:&unk_1F4F32560];
   }
 
-  v17 = [(NSDictionary *)self->_diffSummary allKeys];
-  v18 = [v17 containsObject:*MEMORY[0x1E69668A8]];
+  allKeys10 = [(NSDictionary *)self->_diffSummary allKeys];
+  v18 = [allKeys10 containsObject:*MEMORY[0x1E69668A8]];
 
   if (v18)
   {
     [(NSMutableArray *)self->_changedRows addObject:&unk_1F4F32578];
   }
 
-  v19 = [(NSDictionary *)self->_diffSummary allKeys];
-  v20 = [v19 containsObject:*MEMORY[0x1E6966908]];
+  allKeys11 = [(NSDictionary *)self->_diffSummary allKeys];
+  originalItem = [allKeys11 containsObject:*MEMORY[0x1E6966908]];
 
-  if (v20)
+  if (originalItem)
   {
     v21 = [(EKEvent *)self->_event URL];
     if (!v21)
     {
-      v20 = [(EKEvent *)self->_event originalItem];
-      v22 = [v20 URL];
+      originalItem = [(EKEvent *)self->_event originalItem];
+      v22 = [originalItem URL];
       if (!v22)
       {
 
         goto LABEL_30;
       }
 
-      v2 = v22;
+      allKeys5 = v22;
     }
 
     v23 = [(EKEvent *)self->_event URL];
-    v24 = [(EKEvent *)self->_event originalItem];
-    v25 = [v24 URL];
+    originalItem2 = [(EKEvent *)self->_event originalItem];
+    v25 = [originalItem2 URL];
     v26 = [v23 isEqual:v25];
 
     if (v21)
@@ -261,16 +261,16 @@ LABEL_30:
   }
 }
 
-- (id)titleForDiffType:(int64_t)a3
+- (id)titleForDiffType:(int64_t)type
 {
-  if (a3 > 8)
+  if (type > 8)
   {
     v5 = 0;
   }
 
   else
   {
-    v3 = off_1E8441398[a3];
+    v3 = off_1E8441398[type];
     v4 = EventKitUIBundle();
     v5 = [v4 localizedStringForKey:v3 value:&stru_1F4EF6790 table:0];
   }
@@ -278,17 +278,17 @@ LABEL_30:
   return v5;
 }
 
-- (int64_t)rowCountForDiffType:(int64_t)a3
+- (int64_t)rowCountForDiffType:(int64_t)type
 {
-  v5 = [(EKEvent *)self->_event originalItem];
+  originalItem = [(EKEvent *)self->_event originalItem];
   v6 = 2;
-  if (a3 > 3)
+  if (type > 3)
   {
-    if (a3 > 5)
+    if (type > 5)
     {
-      if (a3 != 6)
+      if (type != 6)
       {
-        if (a3 == 7)
+        if (type == 7)
         {
           v7 = [(NSArray *)self->_alarmsAdded count];
           v8 = 1072;
@@ -307,7 +307,7 @@ LABEL_26:
           goto LABEL_30;
         }
 
-        if (a3 == 8)
+        if (type == 8)
         {
           v7 = [(NSArray *)self->_attendeesAdded count];
           v8 = 1088;
@@ -319,12 +319,12 @@ LABEL_29:
         goto LABEL_30;
       }
 
-      v9 = [(EKEvent *)self->_event URL];
-      v15 = [v9 absoluteString];
-      v17 = [v15 length];
-      v18 = [v5 URL];
-      v19 = [v18 absoluteString];
-      v20 = [v19 length];
+      displayNotes = [(EKEvent *)self->_event URL];
+      absoluteString = [displayNotes absoluteString];
+      v17 = [absoluteString length];
+      v18 = [originalItem URL];
+      absoluteString2 = [v18 absoluteString];
+      v20 = [absoluteString2 length];
       if (v17)
       {
         v6 = (v20 != 0) + 1;
@@ -339,17 +339,17 @@ LABEL_24:
       goto LABEL_30;
     }
 
-    if (a3 == 4)
+    if (type == 4)
     {
       goto LABEL_30;
     }
 
-    v9 = [(EKEvent *)self->_event displayNotes];
-    v10 = [v9 length];
-    v11 = [v5 displayNotes];
+    displayNotes = [(EKEvent *)self->_event displayNotes];
+    v10 = [displayNotes length];
+    displayNotes2 = [originalItem displayNotes];
 LABEL_17:
-    v15 = v11;
-    v16 = [v11 length];
+    absoluteString = displayNotes2;
+    v16 = [displayNotes2 length];
     if (v10)
     {
       v6 = (v16 != 0) + 1;
@@ -363,29 +363,29 @@ LABEL_17:
     goto LABEL_24;
   }
 
-  if (a3 <= 1)
+  if (type <= 1)
   {
-    if (!a3)
+    if (!type)
     {
       goto LABEL_30;
     }
 
-    if (a3 != 1)
+    if (type != 1)
     {
       goto LABEL_29;
     }
 
-    v9 = [(EKEvent *)self->_event location];
-    v10 = [v9 length];
-    v11 = [v5 location];
+    displayNotes = [(EKEvent *)self->_event location];
+    v10 = [displayNotes length];
+    displayNotes2 = [originalItem location];
     goto LABEL_17;
   }
 
-  if (a3 != 2)
+  if (type != 2)
   {
     [(EKEvent *)self->_event travelTime];
     v13 = v12;
-    [v5 travelTime];
+    [originalItem travelTime];
     if (v13 <= 0.0)
     {
       v6 = v14 > 0.0;
@@ -402,27 +402,27 @@ LABEL_30:
   return v6;
 }
 
-- (id)dateTimeStringForEvent:(id)a3
+- (id)dateTimeStringForEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(EKUIRecurrenceDifferenceViewController *)self traitCollection];
-  v6 = [v5 horizontalSizeClass];
+  eventCopy = event;
+  traitCollection = [(EKUIRecurrenceDifferenceViewController *)self traitCollection];
+  horizontalSizeClass = [traitCollection horizontalSizeClass];
 
   v17 = 0;
   v18 = 0;
-  if (v6 <= 1)
+  if (horizontalSizeClass <= 1)
   {
     v7 = 1;
   }
 
   else
   {
-    v7 = v6;
+    v7 = horizontalSizeClass;
   }
 
   v15 = 0;
   v16 = 0;
-  CalDetailStringsForCalendarEvent(v4, v7, &v18, &v17, &v16, &v15, 0, 0, 0, 0, 0, 0);
+  CalDetailStringsForCalendarEvent(eventCopy, v7, &v18, &v17, &v16, &v15, 0, 0, 0, 0, 0, 0);
 
   v8 = v18;
   v9 = v17;
@@ -474,19 +474,19 @@ LABEL_17:
   return v13;
 }
 
-- (void)findSemanticAlarmDifferenceFromOriginal:(id)a3
+- (void)findSemanticAlarmDifferenceFromOriginal:(id)original
 {
   v41 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  originalCopy = original;
   v4 = MEMORY[0x1E695DF70];
-  v5 = [v3 alarms];
-  v30 = [v4 arrayWithArray:v5];
+  alarms = [originalCopy alarms];
+  v30 = [v4 arrayWithArray:alarms];
 
   v6 = MEMORY[0x1E695DF70];
-  v25 = v3;
-  v7 = [v3 originalItem];
-  v8 = [v7 alarms];
-  v9 = [v6 arrayWithArray:v8];
+  v25 = originalCopy;
+  originalItem = [originalCopy originalItem];
+  alarms2 = [originalItem alarms];
+  v9 = [v6 arrayWithArray:alarms2];
 
   v37 = 0u;
   v38 = 0u;
@@ -528,9 +528,9 @@ LABEL_17:
               }
 
               v17 = *(*(&v31 + 1) + 8 * j);
-              v18 = [v11 semanticIdentifier];
-              v19 = [v17 semanticIdentifier];
-              v20 = [v18 isEqualToString:v19];
+              semanticIdentifier = [v11 semanticIdentifier];
+              semanticIdentifier2 = [v17 semanticIdentifier];
+              v20 = [semanticIdentifier isEqualToString:semanticIdentifier2];
 
               if (v20)
               {
@@ -567,22 +567,22 @@ LABEL_16:
   self->_alarmsRemoved = v27;
 }
 
-- (void)findSemanticAttendeeDifferenceFromOriginal:(id)a3
+- (void)findSemanticAttendeeDifferenceFromOriginal:(id)original
 {
-  v36 = self;
+  selfCopy = self;
   v59 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  originalCopy = original;
   v4 = MEMORY[0x1E695DF70];
-  v5 = [v3 attendees];
-  v43 = [v4 arrayWithArray:v5];
+  attendees = [originalCopy attendees];
+  v43 = [v4 arrayWithArray:attendees];
 
   v6 = MEMORY[0x1E695DF70];
-  v7 = [v3 originalItem];
-  v8 = [v7 attendees];
-  v9 = [v6 arrayWithArray:v8];
+  originalItem = [originalCopy originalItem];
+  attendees2 = [originalItem attendees];
+  v9 = [v6 arrayWithArray:attendees2];
 
-  v41 = v3;
-  v37 = [v3 selfAttendee];
+  v41 = originalCopy;
+  selfAttendee = [originalCopy selfAttendee];
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
@@ -623,9 +623,9 @@ LABEL_16:
               }
 
               v17 = *(*(&v48 + 1) + 8 * j);
-              v18 = [v11 semanticIdentifier];
-              v19 = [v17 semanticIdentifier];
-              v20 = [v18 isEqualToString:v19];
+              semanticIdentifier = [v11 semanticIdentifier];
+              semanticIdentifier2 = [v17 semanticIdentifier];
+              v20 = [semanticIdentifier isEqualToString:semanticIdentifier2];
 
               if (v20)
               {
@@ -649,9 +649,9 @@ LABEL_16:
 
         if (([v41 isExternallyOrganizedInvitation] & 1) == 0)
         {
-          v21 = [v11 semanticIdentifier];
-          v22 = [v37 semanticIdentifier];
-          v23 = [v21 isEqualToString:v22];
+          semanticIdentifier3 = [v11 semanticIdentifier];
+          semanticIdentifier4 = [selfAttendee semanticIdentifier];
+          v23 = [semanticIdentifier3 isEqualToString:semanticIdentifier4];
 
           if (v23)
           {
@@ -688,9 +688,9 @@ LABEL_16:
           }
 
           v29 = *(*(&v44 + 1) + 8 * k);
-          v30 = [v29 semanticIdentifier];
-          v31 = [v37 semanticIdentifier];
-          v32 = [v30 isEqualToString:v31];
+          semanticIdentifier5 = [v29 semanticIdentifier];
+          semanticIdentifier6 = [selfAttendee semanticIdentifier];
+          v32 = [semanticIdentifier5 isEqualToString:semanticIdentifier6];
 
           if (v32)
           {
@@ -712,17 +712,17 @@ LABEL_16:
 LABEL_32:
   }
 
-  attendeesAdded = v36->_attendeesAdded;
-  v36->_attendeesAdded = v43;
+  attendeesAdded = selfCopy->_attendeesAdded;
+  selfCopy->_attendeesAdded = v43;
   v34 = v43;
 
-  attendeesRemoved = v36->_attendeesRemoved;
-  v36->_attendeesRemoved = v39;
+  attendeesRemoved = selfCopy->_attendeesRemoved;
+  selfCopy->_attendeesRemoved = v39;
 }
 
-- (id)stringForAlarms:(id)a3
+- (id)stringForAlarms:(id)alarms
 {
-  v4 = a3;
+  alarmsCopy = alarms;
   v5 = objc_opt_new();
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -730,9 +730,9 @@ LABEL_32:
   v11[3] = &unk_1E8441350;
   v6 = v5;
   v12 = v6;
-  v13 = self;
-  v14 = v4;
-  v7 = v4;
+  selfCopy = self;
+  v14 = alarmsCopy;
+  v7 = alarmsCopy;
   [v7 enumerateObjectsUsingBlock:v11];
   v8 = v14;
   v9 = v6;
@@ -759,9 +759,9 @@ uint64_t __58__EKUIRecurrenceDifferenceViewController_stringForAlarms___block_in
   return result;
 }
 
-- (id)stringForAttendees:(id)a3
+- (id)stringForAttendees:(id)attendees
 {
-  v3 = a3;
+  attendeesCopy = attendees;
   v4 = objc_opt_new();
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
@@ -769,8 +769,8 @@ uint64_t __58__EKUIRecurrenceDifferenceViewController_stringForAlarms___block_in
   v10[3] = &unk_1E8441378;
   v5 = v4;
   v11 = v5;
-  v12 = v3;
-  v6 = v3;
+  v12 = attendeesCopy;
+  v6 = attendeesCopy;
   [v6 enumerateObjectsUsingBlock:v10];
   v7 = v12;
   v8 = v5;
@@ -792,7 +792,7 @@ void __61__EKUIRecurrenceDifferenceViewController_stringForAttendees___block_inv
   }
 }
 
-- (id)descriptionForDiffType:(int64_t)a3 row:(BOOL)a4
+- (id)descriptionForDiffType:(int64_t)type row:(BOOL)row
 {
   v54[2] = *MEMORY[0x1E69E9840];
   v48 = objc_opt_new();
@@ -802,24 +802,24 @@ void __61__EKUIRecurrenceDifferenceViewController_stringForAttendees___block_inv
   v54[0] = v8;
   v53 = *MEMORY[0x1E69DB650];
   v9 = v53;
-  v10 = [MEMORY[0x1E69DC888] labelColor];
-  v54[1] = v10;
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  v54[1] = labelColor;
   v49 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v54 forKeys:&v52 count:2];
 
   v50[0] = v7;
   v11 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDD28]];
   v50[1] = v9;
   v51[0] = v11;
-  v12 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  v51[1] = v12;
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  v51[1] = secondaryLabelColor;
   v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v51 forKeys:v50 count:2];
 
-  v14 = [(EKEvent *)self->_event originalItem];
-  v15 = v14;
-  if (a4)
+  originalItem = [(EKEvent *)self->_event originalItem];
+  v15 = originalItem;
+  if (row)
   {
     v16 = v48;
-    if ((a3 - 7) < 2)
+    if ((type - 7) < 2)
     {
 LABEL_3:
       v17 = objc_alloc(MEMORY[0x1E696AAB0]);
@@ -847,14 +847,14 @@ LABEL_22:
   }
 
   v22 = 0;
-  if (a3 <= 3)
+  if (type <= 3)
   {
     v16 = v48;
-    if (a3 > 1)
+    if (type > 1)
     {
-      if (a3 != 2)
+      if (type != 2)
       {
-        [(EKEvent *)v14 travelTime];
+        [(EKEvent *)originalItem travelTime];
         if (v25 <= 0.0)
         {
           goto LABEL_22;
@@ -864,32 +864,32 @@ LABEL_22:
       goto LABEL_20;
     }
 
-    if (!a3)
+    if (!type)
     {
       goto LABEL_20;
     }
 
-    if (a3 != 1)
+    if (type != 1)
     {
       goto LABEL_25;
     }
 
-    v24 = [(EKEvent *)v14 location];
+    location = [(EKEvent *)originalItem location];
     goto LABEL_19;
   }
 
   v16 = v48;
-  if (a3 <= 5)
+  if (type <= 5)
   {
-    if (a3 == 4)
+    if (type == 4)
     {
       goto LABEL_20;
     }
 
-    v24 = [(EKEvent *)v14 displayNotes];
+    location = [(EKEvent *)originalItem displayNotes];
 LABEL_19:
-    v26 = v24;
-    v27 = [v24 length];
+    v26 = location;
+    v27 = [location length];
 
     if (!v27)
     {
@@ -908,12 +908,12 @@ LABEL_20:
     goto LABEL_26;
   }
 
-  switch(a3)
+  switch(type)
   {
     case 6:
-      v33 = [(EKEvent *)v14 URL];
-      v34 = [v33 absoluteString];
-      v35 = [v34 length];
+      v33 = [(EKEvent *)originalItem URL];
+      absoluteString = [v33 absoluteString];
+      v35 = [absoluteString length];
 
       if (!v35)
       {
@@ -945,13 +945,13 @@ LABEL_25:
 LABEL_26:
   v38 = event;
   v39 = v38;
-  if (a3 > 3)
+  if (type > 3)
   {
-    if (a3 > 5)
+    if (type > 5)
     {
-      if (a3 != 6)
+      if (type != 6)
       {
-        if (a3 == 7)
+        if (type == 7)
         {
           v44 = &OBJC_IVAR___EKUIRecurrenceDifferenceViewController__alarmsRemoved;
           if (v22)
@@ -959,12 +959,12 @@ LABEL_26:
             v44 = &OBJC_IVAR___EKUIRecurrenceDifferenceViewController__alarmsAdded;
           }
 
-          v41 = [(EKUIRecurrenceDifferenceViewController *)self stringForAlarms:*(&self->super.super.super.super.isa + *v44)];
+          location2 = [(EKUIRecurrenceDifferenceViewController *)self stringForAlarms:*(&self->super.super.super.super.isa + *v44)];
         }
 
         else
         {
-          if (a3 != 8)
+          if (type != 8)
           {
             goto LABEL_53;
           }
@@ -975,12 +975,12 @@ LABEL_26:
             v40 = &OBJC_IVAR___EKUIRecurrenceDifferenceViewController__attendeesAdded;
           }
 
-          v41 = [(EKUIRecurrenceDifferenceViewController *)self stringForAttendees:*(&self->super.super.super.super.isa + *v40)];
+          location2 = [(EKUIRecurrenceDifferenceViewController *)self stringForAttendees:*(&self->super.super.super.super.isa + *v40)];
         }
 
 LABEL_51:
-        v43 = v41;
-        if (!v41)
+        absoluteString2 = location2;
+        if (!location2)
         {
           goto LABEL_53;
         }
@@ -989,12 +989,12 @@ LABEL_51:
       }
 
       v42 = [(EKEvent *)v38 URL];
-      v43 = [v42 absoluteString];
+      absoluteString2 = [v42 absoluteString];
 
-      if (v43)
+      if (absoluteString2)
       {
 LABEL_52:
-        v45 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v43 attributes:v49];
+        v45 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:absoluteString2 attributes:v49];
         [v16 appendAttributedString:v45];
 
         goto LABEL_53;
@@ -1003,21 +1003,21 @@ LABEL_52:
       goto LABEL_53;
     }
 
-    if (a3 == 4)
+    if (type == 4)
     {
       [(EKEvent *)v38 availability];
-      v41 = CUIKDisplayStringForAvailability();
+      location2 = CUIKDisplayStringForAvailability();
       goto LABEL_51;
     }
 
 LABEL_42:
-    v41 = [(EKEvent *)v38 location];
+    location2 = [(EKEvent *)v38 location];
     goto LABEL_51;
   }
 
-  if (a3 > 1)
+  if (type > 1)
   {
-    if (a3 == 2)
+    if (type == 2)
     {
       [(EKUIRecurrenceDifferenceViewController *)self dateTimeStringForEvent:v38];
     }
@@ -1027,17 +1027,17 @@ LABEL_42:
       [(EKEvent *)v38 travelTime];
       CUIKDisplayStringTravelTimeAndDuration();
     }
-    v41 = ;
+    location2 = ;
     goto LABEL_51;
   }
 
-  if (!a3)
+  if (!type)
   {
-    v41 = [(EKEvent *)v38 title];
+    location2 = [(EKEvent *)v38 title];
     goto LABEL_51;
   }
 
-  if (a3 == 1)
+  if (type == 1)
   {
     goto LABEL_42;
   }
@@ -1047,77 +1047,77 @@ LABEL_53:
   return v16;
 }
 
-- (void)revertChangeForDiffType:(int64_t)a3 row:(int64_t)a4
+- (void)revertChangeForDiffType:(int64_t)type row:(int64_t)row
 {
   v83 = *MEMORY[0x1E69E9840];
-  v6 = [(EKEvent *)self->_event shallowCopyWithoutChanges];
-  v7 = [v6 originalItem];
-  v8 = v7;
-  if (a3 <= 3)
+  shallowCopyWithoutChanges = [(EKEvent *)self->_event shallowCopyWithoutChanges];
+  originalItem = [shallowCopyWithoutChanges originalItem];
+  v8 = originalItem;
+  if (type <= 3)
   {
-    if (a3 > 1)
+    if (type > 1)
     {
-      if (a3 != 2)
+      if (type != 2)
       {
-        [v7 travelTime];
-        [v6 setTravelTime:?];
+        [originalItem travelTime];
+        [shallowCopyWithoutChanges setTravelTime:?];
         goto LABEL_74;
       }
 
-      v11 = [v6 originalStartDate];
-      [v6 setStartDate:v11];
+      originalStartDate = [shallowCopyWithoutChanges originalStartDate];
+      [shallowCopyWithoutChanges setStartDate:originalStartDate];
 
-      v9 = [v6 startDate];
+      startDate = [shallowCopyWithoutChanges startDate];
       [v8 duration];
-      v10 = [(NSArray *)v9 dateByAddingTimeInterval:?];
-      [v6 setEndDate:v10];
+      structuredLocationWithoutPrediction = [(NSArray *)startDate dateByAddingTimeInterval:?];
+      [shallowCopyWithoutChanges setEndDate:structuredLocationWithoutPrediction];
     }
 
     else
     {
-      if (!a3)
+      if (!type)
       {
-        v9 = [v7 title];
-        [v6 setTitle:v9];
+        startDate = [originalItem title];
+        [shallowCopyWithoutChanges setTitle:startDate];
         goto LABEL_73;
       }
 
-      if (a3 != 1)
+      if (type != 1)
       {
         goto LABEL_74;
       }
 
-      v9 = [v6 originalItem];
-      v10 = [(NSArray *)v9 structuredLocationWithoutPrediction];
-      [v6 setStructuredLocationWithoutPrediction:v10];
+      startDate = [shallowCopyWithoutChanges originalItem];
+      structuredLocationWithoutPrediction = [(NSArray *)startDate structuredLocationWithoutPrediction];
+      [shallowCopyWithoutChanges setStructuredLocationWithoutPrediction:structuredLocationWithoutPrediction];
     }
 
     goto LABEL_73;
   }
 
-  if (a3 <= 5)
+  if (type <= 5)
   {
-    if (a3 == 4)
+    if (type == 4)
     {
-      [v6 setAvailability:{objc_msgSend(v7, "availability")}];
+      [shallowCopyWithoutChanges setAvailability:{objc_msgSend(originalItem, "availability")}];
       goto LABEL_74;
     }
 
-    v9 = [v7 displayNotes];
-    [v6 setDisplayNotes:v9];
+    startDate = [originalItem displayNotes];
+    [shallowCopyWithoutChanges setDisplayNotes:startDate];
 LABEL_73:
 
     goto LABEL_74;
   }
 
-  switch(a3)
+  switch(type)
   {
     case 6:
-      v9 = [v7 URL];
-      [v6 setURL:v9];
+      startDate = [originalItem URL];
+      [shallowCopyWithoutChanges setURL:startDate];
       goto LABEL_73;
     case 7:
-      if (a4 == 1 || ![(NSArray *)self->_alarmsAdded count])
+      if (row == 1 || ![(NSArray *)self->_alarmsAdded count])
       {
         v75 = 0u;
         v76 = 0u;
@@ -1138,7 +1138,7 @@ LABEL_73:
                 objc_enumerationMutation(obj);
               }
 
-              [v6 addAlarm:*(*(&v73 + 1) + 8 * i)];
+              [shallowCopyWithoutChanges addAlarm:*(*(&v73 + 1) + 8 * i)];
             }
 
             v24 = [(NSArray *)obj countByEnumeratingWithState:&v73 objects:v82 count:16];
@@ -1154,11 +1154,11 @@ LABEL_73:
         v72 = 0u;
         v69 = 0u;
         v70 = 0u;
-        obj = [v6 alarms];
+        obj = [shallowCopyWithoutChanges alarms];
         v49 = [(NSArray *)obj countByEnumeratingWithState:&v69 objects:v81 count:16];
         if (v49)
         {
-          v43 = a4;
+          rowCopy = row;
           v44 = v8;
           v46 = *v70;
           do
@@ -1191,13 +1191,13 @@ LABEL_73:
                     }
 
                     v19 = *(*(&v65 + 1) + 8 * k);
-                    v20 = [v13 semanticIdentifier];
-                    v21 = [v19 semanticIdentifier];
-                    v22 = [v20 isEqualToString:v21];
+                    semanticIdentifier = [v13 semanticIdentifier];
+                    semanticIdentifier2 = [v19 semanticIdentifier];
+                    v22 = [semanticIdentifier isEqualToString:semanticIdentifier2];
 
                     if (v22)
                     {
-                      [v6 removeAlarm:v13];
+                      [shallowCopyWithoutChanges removeAlarm:v13];
                     }
                   }
 
@@ -1212,7 +1212,7 @@ LABEL_73:
           }
 
           while (v49);
-          a4 = v43;
+          row = rowCopy;
           v8 = v44;
         }
       }
@@ -1224,14 +1224,14 @@ LABEL_73:
       goto LABEL_74;
   }
 
-  if (a4 == 1 || ![(NSArray *)self->_attendeesAdded count])
+  if (row == 1 || ![(NSArray *)self->_attendeesAdded count])
   {
     v63 = 0u;
     v64 = 0u;
     v61 = 0u;
     v62 = 0u;
-    v9 = self->_attendeesRemoved;
-    v38 = [(NSArray *)v9 countByEnumeratingWithState:&v61 objects:v79 count:16];
+    startDate = self->_attendeesRemoved;
+    v38 = [(NSArray *)startDate countByEnumeratingWithState:&v61 objects:v79 count:16];
     if (v38)
     {
       v39 = v38;
@@ -1242,13 +1242,13 @@ LABEL_73:
         {
           if (*v62 != v40)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(startDate);
           }
 
-          [v6 addAttendee:*(*(&v61 + 1) + 8 * m)];
+          [shallowCopyWithoutChanges addAttendee:*(*(&v61 + 1) + 8 * m)];
         }
 
-        v39 = [(NSArray *)v9 countByEnumeratingWithState:&v61 objects:v79 count:16];
+        v39 = [(NSArray *)startDate countByEnumeratingWithState:&v61 objects:v79 count:16];
       }
 
       while (v39);
@@ -1262,8 +1262,8 @@ LABEL_73:
   v60 = 0u;
   v57 = 0u;
   v58 = 0u;
-  v47 = [v6 attendees];
-  obja = [v47 countByEnumeratingWithState:&v57 objects:v78 count:16];
+  attendees = [shallowCopyWithoutChanges attendees];
+  obja = [attendees countByEnumeratingWithState:&v57 objects:v78 count:16];
   if (obja)
   {
     v48 = *v58;
@@ -1273,7 +1273,7 @@ LABEL_73:
       {
         if (*v58 != v48)
         {
-          objc_enumerationMutation(v47);
+          objc_enumerationMutation(attendees);
         }
 
         v28 = *(*(&v57 + 1) + 8 * n);
@@ -1297,13 +1297,13 @@ LABEL_73:
               }
 
               v34 = *(*(&v53 + 1) + 8 * ii);
-              v35 = [v28 semanticIdentifier];
-              v36 = [v34 semanticIdentifier];
-              v37 = [v35 isEqualToString:v36];
+              semanticIdentifier3 = [v28 semanticIdentifier];
+              semanticIdentifier4 = [v34 semanticIdentifier];
+              v37 = [semanticIdentifier3 isEqualToString:semanticIdentifier4];
 
               if (v37)
               {
-                [v6 removeAttendee:v28];
+                [shallowCopyWithoutChanges removeAttendee:v28];
               }
             }
 
@@ -1314,7 +1314,7 @@ LABEL_73:
         }
       }
 
-      obja = [v47 countByEnumeratingWithState:&v57 objects:v78 count:16];
+      obja = [attendees countByEnumeratingWithState:&v57 objects:v78 count:16];
     }
 
     while (obja);
@@ -1322,72 +1322,72 @@ LABEL_73:
 
   v8 = v45;
 LABEL_74:
-  v42 = [v6 eventStore];
-  [v42 saveEvent:v6 span:0 error:0];
+  eventStore = [shallowCopyWithoutChanges eventStore];
+  [eventStore saveEvent:shallowCopyWithoutChanges span:0 error:0];
 }
 
-- (int64_t)diffTypeForSection:(int64_t)a3
+- (int64_t)diffTypeForSection:(int64_t)section
 {
-  v3 = a3 - 1;
-  if (a3 < 1 || [(NSMutableArray *)self->_changedRows count]< a3)
+  v3 = section - 1;
+  if (section < 1 || [(NSMutableArray *)self->_changedRows count]< section)
   {
     return 0;
   }
 
   v6 = [(NSMutableArray *)self->_changedRows objectAtIndexedSubscript:v3];
-  v7 = [v6 integerValue];
+  integerValue = [v6 integerValue];
 
-  return v7;
+  return integerValue;
 }
 
-- (int64_t)diffTypeForIndexPath:(id)a3
+- (int64_t)diffTypeForIndexPath:(id)path
 {
-  v4 = [a3 section];
+  section = [path section];
 
-  return [(EKUIRecurrenceDifferenceViewController *)self diffTypeForSection:v4];
+  return [(EKUIRecurrenceDifferenceViewController *)self diffTypeForSection:section];
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  if (!a4)
+  if (!section)
   {
     return 0;
   }
 
-  v5 = [(EKUIRecurrenceDifferenceViewController *)self diffTypeForSection:a4];
+  v5 = [(EKUIRecurrenceDifferenceViewController *)self diffTypeForSection:section];
 
   return [(EKUIRecurrenceDifferenceViewController *)self rowCountForDiffType:v5];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v5 = MEMORY[0x1E69DD028];
-  v6 = a4;
+  pathCopy = path;
   v7 = [[v5 alloc] initWithStyle:0 reuseIdentifier:@"DifferenceCell"];
-  v8 = [(EKUIRecurrenceDifferenceViewController *)self diffTypeForIndexPath:v6];
-  v9 = [v6 row];
+  v8 = [(EKUIRecurrenceDifferenceViewController *)self diffTypeForIndexPath:pathCopy];
+  v9 = [pathCopy row];
 
   v10 = [(EKUIRecurrenceDifferenceViewController *)self descriptionForDiffType:v8 row:v9 != 0];
-  v11 = [v7 textLabel];
-  [v11 setAttributedText:v10];
+  textLabel = [v7 textLabel];
+  [textLabel setAttributedText:v10];
 
-  v12 = [v7 textLabel];
-  [v12 setNumberOfLines:0];
+  textLabel2 = [v7 textLabel];
+  [textLabel2 setNumberOfLines:0];
 
-  v13 = [v7 textLabel];
-  [v13 setLineBreakMode:0];
+  textLabel3 = [v7 textLabel];
+  [textLabel3 setLineBreakMode:0];
 
-  v14 = [v7 textLabel];
-  [v14 sizeToFit];
+  textLabel4 = [v7 textLabel];
+  [textLabel4 sizeToFit];
 
   return v7;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  if (a4)
+  if (section)
   {
-    v4 = [(EKUIRecurrenceDifferenceViewController *)self titleForDiffType:[(EKUIRecurrenceDifferenceViewController *)self diffTypeForSection:a4]];
+    v4 = [(EKUIRecurrenceDifferenceViewController *)self titleForDiffType:[(EKUIRecurrenceDifferenceViewController *)self diffTypeForSection:section]];
   }
 
   else
@@ -1399,7 +1399,7 @@ LABEL_74:
   return v4;
 }
 
-- (id)tableView:(id)a3 titleForDeleteConfirmationButtonForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view titleForDeleteConfirmationButtonForRowAtIndexPath:(id)path
 {
   v4 = EventKitUIBundle();
   v5 = [v4 localizedStringForKey:@"Revert" value:&stru_1F4EF6790 table:0];
@@ -1407,13 +1407,13 @@ LABEL_74:
   return v5;
 }
 
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path
 {
-  v5 = a4;
+  pathCopy = path;
   if ([(EKEvent *)self->_event isEditable]&& ([(EKEvent *)self->_event isExternallyOrganizedInvitation]& 1) == 0)
   {
-    v8 = [(EKUIRecurrenceDifferenceViewController *)self diffTypeForIndexPath:v5];
-    v6 = (v8 - 7) < 2 || (v9 = v8, [v5 row] == 1) || -[EKUIRecurrenceDifferenceViewController rowCountForDiffType:](self, "rowCountForDiffType:", v9) == 1;
+    v8 = [(EKUIRecurrenceDifferenceViewController *)self diffTypeForIndexPath:pathCopy];
+    v6 = (v8 - 7) < 2 || (v9 = v8, [pathCopy row] == 1) || -[EKUIRecurrenceDifferenceViewController rowCountForDiffType:](self, "rowCountForDiffType:", v9) == 1;
   }
 
   else
@@ -1424,37 +1424,37 @@ LABEL_74:
   return v6;
 }
 
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  if (a4 == 1)
+  viewCopy = view;
+  pathCopy = path;
+  if (style == 1)
   {
-    v10 = [(EKUIRecurrenceDifferenceViewController *)self diffTypeForIndexPath:v9];
-    -[EKUIRecurrenceDifferenceViewController revertChangeForDiffType:row:](self, "revertChangeForDiffType:row:", v10, [v9 row]);
-    -[NSMutableArray removeObjectAtIndex:](self->_changedRows, "removeObjectAtIndex:", [v9 section] - 1);
-    [v8 beginUpdates];
+    v10 = [(EKUIRecurrenceDifferenceViewController *)self diffTypeForIndexPath:pathCopy];
+    -[EKUIRecurrenceDifferenceViewController revertChangeForDiffType:row:](self, "revertChangeForDiffType:row:", v10, [pathCopy row]);
+    -[NSMutableArray removeObjectAtIndex:](self->_changedRows, "removeObjectAtIndex:", [pathCopy section] - 1);
+    [viewCopy beginUpdates];
     v11 = [(EKUIRecurrenceDifferenceViewController *)self rowCountForDiffType:v10];
     if (v11 == 2)
     {
       if ((v10 - 7) > 1)
       {
-        v13 = [MEMORY[0x1E696AC88] indexPathForRow:0 inSection:{objc_msgSend(v9, "section")}];
+        v13 = [MEMORY[0x1E696AC88] indexPathForRow:0 inSection:{objc_msgSend(pathCopy, "section")}];
         v16[0] = v13;
-        v16[1] = v9;
+        v16[1] = pathCopy;
         v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:2];
-        [v8 deleteRowsAtIndexPaths:v14 withRowAnimation:100];
+        [viewCopy deleteRowsAtIndexPaths:v14 withRowAnimation:100];
 
-        v15 = [MEMORY[0x1E696AC90] indexSetWithIndex:{objc_msgSend(v9, "section")}];
-        [v8 deleteSections:v15 withRowAnimation:100];
+        v15 = [MEMORY[0x1E696AC90] indexSetWithIndex:{objc_msgSend(pathCopy, "section")}];
+        [viewCopy deleteSections:v15 withRowAnimation:100];
       }
 
       else
       {
-        v17 = v9;
+        v17 = pathCopy;
         v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v17 count:1];
-        [v8 deleteRowsAtIndexPaths:v13 withRowAnimation:100];
+        [viewCopy deleteRowsAtIndexPaths:v13 withRowAnimation:100];
       }
     }
 
@@ -1463,16 +1463,16 @@ LABEL_74:
       if (v11 != 1)
       {
 LABEL_9:
-        [v8 endUpdates];
+        [viewCopy endUpdates];
         goto LABEL_10;
       }
 
-      v18[0] = v9;
+      v18[0] = pathCopy;
       v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:1];
-      [v8 deleteRowsAtIndexPaths:v12 withRowAnimation:100];
+      [viewCopy deleteRowsAtIndexPaths:v12 withRowAnimation:100];
 
-      v13 = [MEMORY[0x1E696AC90] indexSetWithIndex:{objc_msgSend(v9, "section")}];
-      [v8 deleteSections:v13 withRowAnimation:100];
+      v13 = [MEMORY[0x1E696AC90] indexSetWithIndex:{objc_msgSend(pathCopy, "section")}];
+      [viewCopy deleteSections:v13 withRowAnimation:100];
     }
 
     goto LABEL_9;

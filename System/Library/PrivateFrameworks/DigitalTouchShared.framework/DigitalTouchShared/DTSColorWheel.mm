@@ -1,45 +1,45 @@
 @interface DTSColorWheel
 - (DTSColorWheelDelegate)delegate;
-- (void)beganTouches:(id)a3;
-- (void)createDoneButtonWithFrame:(CGRect)a3;
+- (void)beganTouches:(id)touches;
+- (void)createDoneButtonWithFrame:(CGRect)frame;
 - (void)finishedTouches;
-- (void)updatePickerPositionForPoint:(CGPoint)a3;
+- (void)updatePickerPositionForPoint:(CGPoint)point;
 @end
 
 @implementation DTSColorWheel
 
-- (void)beganTouches:(id)a3
+- (void)beganTouches:(id)touches
 {
-  v4 = [a3 anyObject];
-  [v4 locationInView:self];
+  anyObject = [touches anyObject];
+  [anyObject locationInView:self];
   [(DTSColorWheel *)self updatePickerPositionForPoint:?];
 }
 
 - (void)finishedTouches
 {
-  v2 = [(DTSColorWheel *)self pickerCircle];
-  RoundViewOriginToViewScale(v2);
+  pickerCircle = [(DTSColorWheel *)self pickerCircle];
+  RoundViewOriginToViewScale(pickerCircle);
 }
 
-- (void)createDoneButtonWithFrame:(CGRect)a3
+- (void)createDoneButtonWithFrame:(CGRect)frame
 {
-  v7 = [objc_alloc(MEMORY[0x277D75220]) initWithFrame:{a3.origin.x, a3.origin.y, a3.size.width, a3.size.height}];
+  v7 = [objc_alloc(MEMORY[0x277D75220]) initWithFrame:{frame.origin.x, frame.origin.y, frame.size.width, frame.size.height}];
   v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v5 = [v4 localizedStringForKey:@"COLOR_PICKER_DONE_TEXT" value:&stru_285BBA338 table:@"DigitalTouchShared-Localizable"];
 
   [v7 setTitle:v5 forState:0];
-  v6 = [MEMORY[0x277D75348] whiteColor];
-  [v7 setTitleColor:v6 forState:0];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  [v7 setTitleColor:whiteColor forState:0];
 
   [v7 addTarget:self action:sel_doneButtonTapped_ forControlEvents:64];
   [(DTSColorWheel *)self addSubview:v7];
   [(DTSColorWheel *)self setDoneButton:v7];
 }
 
-- (void)updatePickerPositionForPoint:(CGPoint)a3
+- (void)updatePickerPositionForPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   [(DTSColorWheel *)self bounds];
   v6 = v25.origin.x;
   v7 = v25.origin.y;
@@ -63,12 +63,12 @@
     v19 = (v17 + v18 * -0.5) / v15;
     v20 = v12 * v19;
     v21 = v13 * v19;
-    v23 = [(DTSColorWheel *)self pickerCircle];
+    pickerCircle = [(DTSColorWheel *)self pickerCircle];
     [(DTSColorWheel *)self setPickerRotation:atan2(v21, v20)];
-    v22 = [(DTSColorWheel *)self pickerViewHighlightedColor];
-    [v23 setBackgroundColor:v22];
+    pickerViewHighlightedColor = [(DTSColorWheel *)self pickerViewHighlightedColor];
+    [pickerCircle setBackgroundColor:pickerViewHighlightedColor];
 
-    [v23 setCenter:{(v10 + v20), (v11 + v21)}];
+    [pickerCircle setCenter:{(v10 + v20), (v11 + v21)}];
   }
 }
 

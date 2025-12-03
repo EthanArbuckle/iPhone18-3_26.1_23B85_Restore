@@ -1,9 +1,9 @@
 @interface CRLiOSCanvasZoomPinchGestureRecognizer
 - (void)reset;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation CRLiOSCanvasZoomPinchGestureRecognizer
@@ -17,15 +17,15 @@
   [(CRLiOSCanvasZoomPinchGestureRecognizer *)&v3 reset];
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
+  beganCopy = began;
+  eventCopy = event;
   if (!self->_zoomTimedOut)
   {
     v8.receiver = self;
     v8.super_class = CRLiOSCanvasZoomPinchGestureRecognizer;
-    [(CRLiOSCanvasZoomPinchGestureRecognizer *)&v8 touchesBegan:v6 withEvent:v7];
+    [(CRLiOSCanvasZoomPinchGestureRecognizer *)&v8 touchesBegan:beganCopy withEvent:eventCopy];
     if ([(CRLiOSCanvasZoomPinchGestureRecognizer *)self numberOfTouches]== 1)
     {
       [(CRLiOSCanvasZoomPinchGestureRecognizer *)self p_startCancellationTimer];
@@ -38,21 +38,21 @@
   }
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
   if (!self->_zoomTimedOut)
   {
     v4.receiver = self;
     v4.super_class = CRLiOSCanvasZoomPinchGestureRecognizer;
-    [(CRLiOSCanvasZoomPinchGestureRecognizer *)&v4 touchesMoved:a3 withEvent:a4];
+    [(CRLiOSCanvasZoomPinchGestureRecognizer *)&v4 touchesMoved:moved withEvent:event];
   }
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
   v5.receiver = self;
   v5.super_class = CRLiOSCanvasZoomPinchGestureRecognizer;
-  [(CRLiOSCanvasZoomPinchGestureRecognizer *)&v5 touchesEnded:a3 withEvent:a4];
+  [(CRLiOSCanvasZoomPinchGestureRecognizer *)&v5 touchesEnded:ended withEvent:event];
   [(CRLiOSCanvasZoomPinchGestureRecognizer *)self p_stopCancellationTimer];
   if (self->_zoomTimedOut)
   {
@@ -60,11 +60,11 @@
   }
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
   v5.receiver = self;
   v5.super_class = CRLiOSCanvasZoomPinchGestureRecognizer;
-  [(CRLiOSCanvasZoomPinchGestureRecognizer *)&v5 touchesCancelled:a3 withEvent:a4];
+  [(CRLiOSCanvasZoomPinchGestureRecognizer *)&v5 touchesCancelled:cancelled withEvent:event];
   [(CRLiOSCanvasZoomPinchGestureRecognizer *)self p_stopCancellationTimer];
   if (self->_zoomTimedOut)
   {

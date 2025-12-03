@@ -1,45 +1,45 @@
 @interface NCNotificationSummaryPlatterContainingView
 - (BOOL)supportsMitosis;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (NCNotificationSummaryPlatterContainingView)initWithSummaryPlatterView:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (NCNotificationSummaryPlatterContainingView)initWithSummaryPlatterView:(id)view;
 - (double)glassSmoothness;
 - (int64_t)backgroundGlassId;
 - (unint64_t)backgroundGlassState;
 - (void)layoutSubviews;
 - (void)removeLightEffectsIfNeeded;
-- (void)setApparentZDistanceToUser:(int64_t)a3;
-- (void)setGlassMode:(unint64_t)a3;
-- (void)setRootScrollVelocity:(double)a3;
-- (void)setSummaryPlatterView:(id)a3;
-- (void)setSupportsMitosis:(BOOL)a3;
-- (void)setUnmanagedBackdropContrast:(BOOL)a3;
+- (void)setApparentZDistanceToUser:(int64_t)user;
+- (void)setGlassMode:(unint64_t)mode;
+- (void)setRootScrollVelocity:(double)velocity;
+- (void)setSummaryPlatterView:(id)view;
+- (void)setSupportsMitosis:(BOOL)mitosis;
+- (void)setUnmanagedBackdropContrast:(BOOL)contrast;
 @end
 
 @implementation NCNotificationSummaryPlatterContainingView
 
-- (NCNotificationSummaryPlatterContainingView)initWithSummaryPlatterView:(id)a3
+- (NCNotificationSummaryPlatterContainingView)initWithSummaryPlatterView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   v9.receiver = self;
   v9.super_class = NCNotificationSummaryPlatterContainingView;
   v6 = [(NCNotificationSummaryPlatterContainingView *)&v9 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   v7 = v6;
   if (v6)
   {
-    [(NCNotificationSummaryPlatterContainingView *)v6 addSubview:v5];
-    objc_storeStrong(&v7->_summaryPlatterView, a3);
+    [(NCNotificationSummaryPlatterContainingView *)v6 addSubview:viewCopy];
+    objc_storeStrong(&v7->_summaryPlatterView, view);
     v7->_apparentZDistanceToUser = 0x7FFFFFFFFFFFFFFFLL;
   }
 
   return v7;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [(NCNotificationSummaryPlatterContainingView *)self summaryPlatterView];
-  [v5 sizeThatFits:{width, height}];
+  height = fits.height;
+  width = fits.width;
+  summaryPlatterView = [(NCNotificationSummaryPlatterContainingView *)self summaryPlatterView];
+  [summaryPlatterView sizeThatFits:{width, height}];
   v7 = v6;
   v9 = v8;
 
@@ -58,34 +58,34 @@
   [(NCNotificationSummaryPlatterContainingView *)self bounds];
   v4 = v3;
   v6 = v5;
-  v7 = [(NCNotificationSummaryPlatterContainingView *)self summaryPlatterView];
-  [v7 frame];
+  summaryPlatterView = [(NCNotificationSummaryPlatterContainingView *)self summaryPlatterView];
+  [summaryPlatterView frame];
   v9 = v8;
   v11 = v10;
 
-  v12 = [(NCNotificationSummaryPlatterContainingView *)self summaryPlatterView];
-  [v12 setFrame:{v9, v11, v4, v6}];
+  summaryPlatterView2 = [(NCNotificationSummaryPlatterContainingView *)self summaryPlatterView];
+  [summaryPlatterView2 setFrame:{v9, v11, v4, v6}];
 }
 
-- (void)setSummaryPlatterView:(id)a3
+- (void)setSummaryPlatterView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   if ((BSEqualObjects() & 1) == 0)
   {
     [(UIView *)self->_summaryPlatterView removeFromSuperview];
-    [(NCNotificationSummaryPlatterContainingView *)self addSubview:v5];
-    objc_storeStrong(&self->_summaryPlatterView, a3);
+    [(NCNotificationSummaryPlatterContainingView *)self addSubview:viewCopy];
+    objc_storeStrong(&self->_summaryPlatterView, view);
   }
 }
 
-- (void)setApparentZDistanceToUser:(int64_t)a3
+- (void)setApparentZDistanceToUser:(int64_t)user
 {
-  if (self->_apparentZDistanceToUser != a3)
+  if (self->_apparentZDistanceToUser != user)
   {
-    self->_apparentZDistanceToUser = a3;
-    v5 = [(NCNotificationSummaryPlatterContainingView *)self summaryPlatterView];
+    self->_apparentZDistanceToUser = user;
+    summaryPlatterView = [(NCNotificationSummaryPlatterContainingView *)self summaryPlatterView];
     v6 = objc_opt_class();
-    v7 = v5;
+    v7 = summaryPlatterView;
     if (v6)
     {
       if (objc_opt_isKindOfClass())
@@ -109,20 +109,20 @@
     v9 = v10;
     if (v10)
     {
-      [v10 updateWithApparentZDistanceToUser:a3];
+      [v10 updateWithApparentZDistanceToUser:user];
       v9 = v10;
     }
   }
 }
 
-- (void)setRootScrollVelocity:(double)a3
+- (void)setRootScrollVelocity:(double)velocity
 {
-  if (self->_rootScrollVelocity != a3)
+  if (self->_rootScrollVelocity != velocity)
   {
-    self->_rootScrollVelocity = a3;
-    v4 = [(NCNotificationSummaryPlatterContainingView *)self summaryPlatterView];
+    self->_rootScrollVelocity = velocity;
+    summaryPlatterView = [(NCNotificationSummaryPlatterContainingView *)self summaryPlatterView];
     v5 = objc_opt_class();
-    v6 = v4;
+    v6 = summaryPlatterView;
     if (v5)
     {
       if (objc_opt_isKindOfClass())
@@ -146,20 +146,20 @@
     v8 = v9;
     if (v9)
     {
-      [v9 updateWithRootListScrollVelocity:a3];
+      [v9 updateWithRootListScrollVelocity:velocity];
       v8 = v9;
     }
   }
 }
 
-- (void)setGlassMode:(unint64_t)a3
+- (void)setGlassMode:(unint64_t)mode
 {
-  if (self->_glassMode != a3)
+  if (self->_glassMode != mode)
   {
-    self->_glassMode = a3;
-    v5 = [(NCNotificationSummaryPlatterContainingView *)self summaryPlatterView];
+    self->_glassMode = mode;
+    summaryPlatterView = [(NCNotificationSummaryPlatterContainingView *)self summaryPlatterView];
     v6 = objc_opt_class();
-    v7 = v5;
+    v7 = summaryPlatterView;
     if (v6)
     {
       if (objc_opt_isKindOfClass())
@@ -183,7 +183,7 @@
     v9 = v10;
     if (v10)
     {
-      [v10 updateWithGlassMode:a3];
+      [v10 updateWithGlassMode:mode];
       v9 = v10;
     }
   }
@@ -191,9 +191,9 @@
 
 - (BOOL)supportsMitosis
 {
-  v2 = [(NCNotificationSummaryPlatterContainingView *)self summaryPlatterView];
+  summaryPlatterView = [(NCNotificationSummaryPlatterContainingView *)self summaryPlatterView];
   v3 = objc_opt_class();
-  v4 = v2;
+  v4 = summaryPlatterView;
   if (v3)
   {
     if (objc_opt_isKindOfClass())
@@ -214,16 +214,16 @@
 
   v6 = v5;
 
-  v7 = [v6 supportsMitosis];
-  return v7;
+  supportsMitosis = [v6 supportsMitosis];
+  return supportsMitosis;
 }
 
-- (void)setSupportsMitosis:(BOOL)a3
+- (void)setSupportsMitosis:(BOOL)mitosis
 {
-  v3 = a3;
-  v4 = [(NCNotificationSummaryPlatterContainingView *)self summaryPlatterView];
+  mitosisCopy = mitosis;
+  summaryPlatterView = [(NCNotificationSummaryPlatterContainingView *)self summaryPlatterView];
   v5 = objc_opt_class();
-  v6 = v4;
+  v6 = summaryPlatterView;
   if (v5)
   {
     if (objc_opt_isKindOfClass())
@@ -244,18 +244,18 @@
 
   v8 = v7;
 
-  [v8 setSupportsMitosis:v3];
+  [v8 setSupportsMitosis:mitosisCopy];
 }
 
-- (void)setUnmanagedBackdropContrast:(BOOL)a3
+- (void)setUnmanagedBackdropContrast:(BOOL)contrast
 {
-  if (self->_unmanagedBackdropContrast != a3)
+  if (self->_unmanagedBackdropContrast != contrast)
   {
-    v4 = a3;
-    self->_unmanagedBackdropContrast = a3;
-    v5 = [(NCNotificationSummaryPlatterContainingView *)self summaryPlatterView];
+    contrastCopy = contrast;
+    self->_unmanagedBackdropContrast = contrast;
+    summaryPlatterView = [(NCNotificationSummaryPlatterContainingView *)self summaryPlatterView];
     v6 = objc_opt_class();
-    v7 = v5;
+    v7 = summaryPlatterView;
     if (v6)
     {
       if (objc_opt_isKindOfClass())
@@ -279,7 +279,7 @@
     v9 = v10;
     if (v10)
     {
-      [v10 setUnmanagedBackdropContrast:v4];
+      [v10 setUnmanagedBackdropContrast:contrastCopy];
       v9 = v10;
     }
   }
@@ -287,9 +287,9 @@
 
 - (unint64_t)backgroundGlassState
 {
-  v2 = [(NCNotificationSummaryPlatterContainingView *)self summaryPlatterView];
+  summaryPlatterView = [(NCNotificationSummaryPlatterContainingView *)self summaryPlatterView];
   v3 = objc_opt_class();
-  v4 = v2;
+  v4 = summaryPlatterView;
   if (v3)
   {
     if (objc_opt_isKindOfClass())
@@ -312,22 +312,22 @@
 
   if (v6)
   {
-    v7 = [v6 backgroundGlassState];
+    backgroundGlassState = [v6 backgroundGlassState];
   }
 
   else
   {
-    v7 = 0;
+    backgroundGlassState = 0;
   }
 
-  return v7;
+  return backgroundGlassState;
 }
 
 - (int64_t)backgroundGlassId
 {
-  v2 = [(NCNotificationSummaryPlatterContainingView *)self summaryPlatterView];
+  summaryPlatterView = [(NCNotificationSummaryPlatterContainingView *)self summaryPlatterView];
   v3 = objc_opt_class();
-  v4 = v2;
+  v4 = summaryPlatterView;
   if (v3)
   {
     if (objc_opt_isKindOfClass())
@@ -350,22 +350,22 @@
 
   if (v6)
   {
-    v7 = [v6 backgroundGlassId];
+    backgroundGlassId = [v6 backgroundGlassId];
   }
 
   else
   {
-    v7 = 0;
+    backgroundGlassId = 0;
   }
 
-  return v7;
+  return backgroundGlassId;
 }
 
 - (double)glassSmoothness
 {
-  v2 = [(NCNotificationSummaryPlatterContainingView *)self summaryPlatterView];
+  summaryPlatterView = [(NCNotificationSummaryPlatterContainingView *)self summaryPlatterView];
   v3 = objc_opt_class();
-  v4 = v2;
+  v4 = summaryPlatterView;
   if (v3)
   {
     if (objc_opt_isKindOfClass())
@@ -402,9 +402,9 @@
 
 - (void)removeLightEffectsIfNeeded
 {
-  v2 = [(NCNotificationSummaryPlatterContainingView *)self summaryPlatterView];
+  summaryPlatterView = [(NCNotificationSummaryPlatterContainingView *)self summaryPlatterView];
   v3 = objc_opt_class();
-  v4 = v2;
+  v4 = summaryPlatterView;
   if (v3)
   {
     if (objc_opt_isKindOfClass())

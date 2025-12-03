@@ -2,7 +2,7 @@
 - (GSSorterDescriptor)init;
 - (id).cxx_construct;
 - (shared_ptr<apple3dgs::SorterDescriptor>)impl;
-- (void)setImpl:(shared_ptr<apple3dgs::SorterDescriptor>)a3;
+- (void)setImpl:(shared_ptr<apple3dgs::SorterDescriptor>)impl;
 @end
 
 @implementation GSSorterDescriptor
@@ -30,10 +30,10 @@
   return result;
 }
 
-- (void)setImpl:(shared_ptr<apple3dgs::SorterDescriptor>)a3
+- (void)setImpl:(shared_ptr<apple3dgs::SorterDescriptor>)impl
 {
-  v4 = *a3.__ptr_;
-  v3 = *(a3.__ptr_ + 1);
+  v4 = *impl.__ptr_;
+  v3 = *(impl.__ptr_ + 1);
   if (v3)
   {
     atomic_fetch_add_explicit((v3 + 8), 1uLL, memory_order_relaxed);

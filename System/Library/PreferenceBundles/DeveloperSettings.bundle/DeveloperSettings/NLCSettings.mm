@@ -2,19 +2,19 @@
 - (BOOL)hasActiveNetworkCondition;
 - (NLCSettings)init;
 - (id)currentProfile;
-- (id)isNLCRunning:(id)a3;
-- (id)selectedProfile:(id)a3;
+- (id)isNLCRunning:(id)running;
+- (id)selectedProfile:(id)profile;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path;
 - (void)dealloc;
-- (void)enableNLC:(BOOL)a3;
+- (void)enableNLC:(BOOL)c;
 - (void)loadFromSelectedProfile;
 - (void)presentAddProfile;
-- (void)setCurrentProfile:(id)a3;
-- (void)setNLCRunning:(id)a3 specifier:(id)a4;
-- (void)tableView:(id)a3 accessoryButtonTappedForRowWithIndexPath:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)setCurrentProfile:(id)profile;
+- (void)setNLCRunning:(id)running specifier:(id)specifier;
+- (void)tableView:(id)view accessoryButtonTappedForRowWithIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)updateFromSelectedProfile;
 - (void)updateNLCProfilesList;
 - (void)viewDidLoad;
@@ -84,8 +84,8 @@
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [v2 allKeys];
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  allKeys = [v2 allKeys];
+  v4 = [allKeys countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -96,7 +96,7 @@
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allKeys);
         }
 
         v8 = *(*(&v11 + 1) + 8 * i);
@@ -112,7 +112,7 @@
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [allKeys countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v5)
       {
         continue;
@@ -130,22 +130,22 @@ LABEL_13:
 
 - (id)specifiers
 {
-  v2 = self;
+  selfCopy = self;
   if (dword_49FB0)
   {
     WeakRetained = objc_loadWeakRetained(&self->PSListController_opaque[OBJC_IVAR___PSViewController__parentController]);
-    NSLog(@"NLCSettings specifiers %p parent %p", v2, WeakRetained);
+    NSLog(@"NLCSettings specifiers %p parent %p", selfCopy, WeakRetained);
   }
 
   v4 = objc_alloc_init(NSMutableArray);
-  [PSSpecifier preferenceSpecifierNamed:&stru_3E0D8 target:v2 set:0 get:0 detail:0 cell:0 edit:0];
+  [PSSpecifier preferenceSpecifierNamed:&stru_3E0D8 target:selfCopy set:0 get:0 detail:0 cell:0 edit:0];
   v42 = v48 = v4;
   [v4 addObject:?];
   v5 = [NSBundle bundleForClass:objc_opt_class()];
   v6 = [v5 localizedStringForKey:@"ENABLE" value:&stru_3E0D8 table:@"NLCSettings"];
-  v7 = [PSSpecifier preferenceSpecifierNamed:v6 target:v2 set:"setNLCRunning:specifier:" get:"isNLCRunning:" detail:0 cell:6 edit:0];
+  v7 = [PSSpecifier preferenceSpecifierNamed:v6 target:selfCopy set:"setNLCRunning:specifier:" get:"isNLCRunning:" detail:0 cell:6 edit:0];
 
-  if ([(NLCSettings *)v2 hasActiveNetworkCondition])
+  if ([(NLCSettings *)selfCopy hasActiveNetworkCondition])
   {
     if (dword_49FB0)
     {
@@ -161,7 +161,7 @@ LABEL_13:
   v45 = [NSNumber numberWithBool:1];
   v8 = [NSBundle bundleForClass:objc_opt_class()];
   v9 = [v8 localizedStringForKey:@"CHOOSE_PROFILE" value:&stru_3E0D8 table:@"NLCSettings"];
-  v10 = [PSSpecifier preferenceSpecifierNamed:v9 target:v2 set:0 get:0 detail:0 cell:0 edit:0];
+  v10 = [PSSpecifier preferenceSpecifierNamed:v9 target:selfCopy set:0 get:0 detail:0 cell:0 edit:0];
 
   v40 = v10;
   [v48 addObject:v10];
@@ -188,8 +188,8 @@ LABEL_13:
         }
 
         v16 = *(*(&v49 + 1) + 8 * i);
-        v17 = v2;
-        v18 = [PSSpecifier preferenceSpecifierNamed:v16 target:v2 set:0 get:0 detail:objc_opt_class() cell:1 edit:0];
+        v17 = selfCopy;
+        v18 = [PSSpecifier preferenceSpecifierNamed:v16 target:selfCopy set:0 get:0 detail:objc_opt_class() cell:1 edit:0];
         v19 = objc_opt_class();
         v20 = [NSNumber numberWithInt:50];
         v21 = [NSDictionary dictionaryWithObjectsAndKeys:@"NLCProfileDetailController", v46, v19, v13, v20, v14, 0];
@@ -207,7 +207,7 @@ LABEL_13:
         [v18 setUserInfo:v27];
         [v48 addObject:v18];
 
-        v2 = v17;
+        selfCopy = v17;
       }
 
       v12 = [obj countByEnumeratingWithState:&v49 objects:v53 count:16];
@@ -216,24 +216,24 @@ LABEL_13:
     while (v12);
   }
 
-  v28 = [PSSpecifier preferenceSpecifierNamed:&stru_3E0D8 target:v2 set:0 get:0 detail:0 cell:0 edit:0];
+  v28 = [PSSpecifier preferenceSpecifierNamed:&stru_3E0D8 target:selfCopy set:0 get:0 detail:0 cell:0 edit:0];
   [v48 addObject:v28];
   v29 = [NSBundle bundleForClass:objc_opt_class()];
   v30 = [v29 localizedStringForKey:@"ADD_PROFILE" value:&stru_3E0D8 table:@"NLCSettings"];
-  v31 = [PSSpecifier preferenceSpecifierNamed:v30 target:v2 set:0 get:0 detail:objc_opt_class() cell:4 edit:0];
+  v31 = [PSSpecifier preferenceSpecifierNamed:v30 target:selfCopy set:0 get:0 detail:objc_opt_class() cell:4 edit:0];
 
   [v31 setButtonAction:"presentAddProfile"];
-  addProfileSpecifier = v2->_addProfileSpecifier;
-  v2->_addProfileSpecifier = v31;
+  addProfileSpecifier = selfCopy->_addProfileSpecifier;
+  selfCopy->_addProfileSpecifier = v31;
   v33 = v31;
 
-  [v48 addObject:v2->_addProfileSpecifier];
+  [v48 addObject:selfCopy->_addProfileSpecifier];
   v34 = OBJC_IVAR___PSListController__specifiers;
-  v35 = *&v2->PSListController_opaque[OBJC_IVAR___PSListController__specifiers];
-  *&v2->PSListController_opaque[OBJC_IVAR___PSListController__specifiers] = v48;
+  v35 = *&selfCopy->PSListController_opaque[OBJC_IVAR___PSListController__specifiers];
+  *&selfCopy->PSListController_opaque[OBJC_IVAR___PSListController__specifiers] = v48;
   v36 = v48;
 
-  v37 = *&v2->PSListController_opaque[v34];
+  v37 = *&selfCopy->PSListController_opaque[v34];
   v38 = v37;
 
   return v37;
@@ -250,9 +250,9 @@ LABEL_13:
   [(NLCSettings *)self presentViewController:v4 animated:1 completion:0];
 }
 
-- (void)enableNLC:(BOOL)a3
+- (void)enableNLC:(BOOL)c
 {
-  v3 = a3;
+  cCopy = c;
   if (![(NLCSettings *)self hasActiveNetworkCondition])
   {
     v5 = 0uLL;
@@ -261,7 +261,7 @@ LABEL_13:
     if (dword_49FB0)
     {
       v6 = "off";
-      if (v3)
+      if (cCopy)
       {
         v6 = "on";
       }
@@ -284,7 +284,7 @@ LABEL_13:
     *(&v27[1] + 4) = v5;
     *(v27 + 4) = v5;
     LODWORD(v27[0]) = 21;
-    if (v3)
+    if (cCopy)
     {
       v30 = 0;
       v28 = v5;
@@ -293,11 +293,11 @@ LABEL_13:
       v27[16] = v5;
       v27[13] = v5;
       v27[14] = v5;
-      v7 = [(NSString *)self->_values[0] intValue];
+      intValue = [(NSString *)self->_values[0] intValue];
       [(NSString *)self->_values[1] floatValue];
       v9 = v8 / 100.0;
-      v10 = [(NSString *)self->_values[2] intValue];
-      if (!v7 && (v9 == 0.0 ? (v11 = v10 == 0) : (v11 = 0), v11))
+      intValue2 = [(NSString *)self->_values[2] intValue];
+      if (!intValue && (v9 == 0.0 ? (v11 = intValue2 == 0) : (v11 = 0), v11))
       {
         v12 = 5;
       }
@@ -305,23 +305,23 @@ LABEL_13:
       else
       {
         LODWORD(v27[13]) = 9;
-        *&v28 = v7;
-        *(&v28 + 1) = __PAIR64__(v10, LODWORD(v9));
+        *&v28 = intValue;
+        *(&v28 + 1) = __PAIR64__(intValue2, LODWORD(v9));
         v29 = 0uLL;
         v12 = 13;
         v30 = 0;
       }
 
-      v13 = [(NSString *)self->_values[3] intValue];
+      intValue3 = [(NSString *)self->_values[3] intValue];
       [(NSString *)self->_values[4] floatValue];
       v15 = v14 / 100.0;
-      v16 = [(NSString *)self->_values[5] intValue];
-      if (v13 || (v15 == 0.0 ? (v17 = v16 == 0) : (v17 = 0), !v17))
+      intValue4 = [(NSString *)self->_values[5] intValue];
+      if (intValue3 || (v15 == 0.0 ? (v17 = intValue4 == 0) : (v17 = 0), !v17))
       {
         LODWORD(v27[13]) = v12;
-        HIDWORD(v27[14]) = v13;
+        HIDWORD(v27[14]) = intValue3;
         LODWORD(v27[15]) = 0;
-        *(&v27[15] + 4) = __PAIR64__(v16, LODWORD(v15));
+        *(&v27[15] + 4) = __PAIR64__(intValue4, LODWORD(v15));
         memset(&v27[15] + 12, 0, 20);
       }
 
@@ -357,12 +357,12 @@ LABEL_13:
         v28 = 0u;
         v29 = 0u;
         memset(&v27[13], 0, 64);
-        v19 = [(NSString *)self->_values[6] intValue];
+        intValue5 = [(NSString *)self->_values[6] intValue];
         memset(&v27[13] + 4, 0, 36);
         *(&v27[15] + 12) = 0;
         *(&v27[16] + 4) = 0x3500000011;
         HIDWORD(v27[16]) = 0;
-        DWORD2(v27[15]) = v19;
+        DWORD2(v27[15]) = intValue5;
         LODWORD(v27[13]) = 6;
         DWORD2(v27[13]) = [(NSString *)self->_values[9] intValue];
         *(&v27[3] + 8) = v27[16];
@@ -446,14 +446,14 @@ LABEL_48:
   }
 }
 
-- (void)setNLCRunning:(id)a3 specifier:(id)a4
+- (void)setNLCRunning:(id)running specifier:(id)specifier
 {
-  v5 = [a3 BOOLValue];
+  bOOLValue = [running BOOLValue];
 
-  [(NLCSettings *)self enableNLC:v5];
+  [(NLCSettings *)self enableNLC:bOOLValue];
 }
 
-- (id)isNLCRunning:(id)a3
+- (id)isNLCRunning:(id)running
 {
   CFPreferencesAppSynchronize(@"com.apple.network.prefPaneSimulate");
   if (dword_49FB0)
@@ -467,7 +467,7 @@ LABEL_48:
   if (v5)
   {
     v6 = CFPreferencesCopyAppValue(@"TimeAtLastRun", @"com.apple.network.prefPaneSimulate");
-    v7 = [v6 longValue];
+    longValue = [v6 longValue];
 
     v8 = +[NSProcessInfo processInfo];
     [v8 systemUptime];
@@ -479,12 +479,12 @@ LABEL_48:
 
     if (dword_49FB0)
     {
-      NSLog(@"%s: timeSince1970 %ld lastRunTime %f systemUpTime %f", "-[NLCSettings isNLCRunning:]", [v13 longValue], *&v7, *&v10);
+      NSLog(@"%s: timeSince1970 %ld lastRunTime %f systemUpTime %f", "-[NLCSettings isNLCRunning:]", [v13 longValue], *&longValue, *&v10);
     }
 
     v14 = +[NSDate date];
     [v14 timeIntervalSince1970];
-    v16 = v15 - v7;
+    v16 = v15 - longValue;
 
     if (v16 > v10)
     {
@@ -527,30 +527,30 @@ LABEL_48:
 - (void)loadFromSelectedProfile
 {
   v3 = qword_49FB8;
-  v4 = [qword_49FB8 selectedProfileName];
-  v54 = [v3 profileDictionaryWithName:v4];
+  selectedProfileName = [qword_49FB8 selectedProfileName];
+  v54 = [v3 profileDictionaryWithName:selectedProfileName];
 
   if (dword_49FB0)
   {
-    v5 = [qword_49FB8 selectedProfileName];
-    NSLog(@"%s selectedProfileName: %@", "[NLCSettings loadFromSelectedProfile]", v5);
+    selectedProfileName2 = [qword_49FB8 selectedProfileName];
+    NSLog(@"%s selectedProfileName: %@", "[NLCSettings loadFromSelectedProfile]", selectedProfileName2);
   }
 
   v6 = [v54 objectForKey:@"DownlinkBandwidth"];
-  v7 = [v6 intValue];
+  intValue = [v6 intValue];
 
   v8 = [v54 objectForKey:@"DownlinkBandwidthUnit"];
-  v9 = [v8 intValue];
+  intValue2 = [v8 intValue];
 
-  LODWORD(v10) = 1000 * v7;
-  if (v9)
+  LODWORD(v10) = 1000 * intValue;
+  if (intValue2)
   {
     v10 = v10;
   }
 
   else
   {
-    v10 = v7;
+    v10 = intValue;
   }
 
   v11 = [NSString stringWithFormat:@"%u", v10];
@@ -567,27 +567,27 @@ LABEL_48:
   values[1] = v17;
 
   v19 = [v54 objectForKey:@"DownlinkDelay"];
-  v20 = [v19 intValue];
+  intValue3 = [v19 intValue];
 
-  v21 = [NSString stringWithFormat:@"%u", v20];
+  v21 = [NSString stringWithFormat:@"%u", intValue3];
   v22 = values[2];
   values[2] = v21;
 
   v23 = [v54 objectForKey:@"UplinkBandwidth"];
-  v24 = [v23 intValue];
+  intValue4 = [v23 intValue];
 
   v25 = [v54 objectForKey:@"UplinkBandwidthUnit"];
-  v26 = [v25 intValue];
+  intValue5 = [v25 intValue];
 
-  LODWORD(v27) = 1000 * v24;
-  if (v26)
+  LODWORD(v27) = 1000 * intValue4;
+  if (intValue5)
   {
     v27 = v27;
   }
 
   else
   {
-    v27 = v24;
+    v27 = intValue4;
   }
 
   v28 = [NSString stringWithFormat:@"%u", v27];
@@ -603,23 +603,23 @@ LABEL_48:
   values[4] = v33;
 
   v35 = [v54 objectForKey:@"UplinkDelay"];
-  v36 = [v35 intValue];
+  intValue6 = [v35 intValue];
 
-  v37 = [NSString stringWithFormat:@"%u", v36];
+  v37 = [NSString stringWithFormat:@"%u", intValue6];
   v38 = values[5];
   values[5] = v37;
 
   v39 = [v54 objectForKey:@"DNSDelayValue"];
-  v40 = [v39 intValue];
+  intValue7 = [v39 intValue];
 
-  v41 = [NSString stringWithFormat:@"%u", v40];
+  v41 = [NSString stringWithFormat:@"%u", intValue7];
   v42 = values[6];
   values[6] = v41;
 
   v43 = [v54 objectForKey:@"ProtocolFamily"];
-  v44 = [v43 intValue];
+  intValue8 = [v43 intValue];
 
-  v45 = [NSString stringWithFormat:@"%u", v44];
+  v45 = [NSString stringWithFormat:@"%u", intValue8];
   v46 = values[8];
   values[8] = v45;
 
@@ -631,15 +631,15 @@ LABEL_48:
   v50 = v49;
   if (v49)
   {
-    v51 = [v49 intValue];
+    intValue9 = [v49 intValue];
   }
 
   else
   {
-    v51 = &dword_0 + 1;
+    intValue9 = &dword_0 + 1;
   }
 
-  v52 = [NSString stringWithFormat:@"%u", v51];
+  v52 = [NSString stringWithFormat:@"%u", intValue9];
   v53 = values[9];
   values[9] = v52;
 }
@@ -648,8 +648,8 @@ LABEL_48:
 {
   if (dword_49FB0)
   {
-    v3 = [qword_49FB8 selectedProfileName];
-    NSLog(@"%s updateFromSelectedProfile: %@", "[NLCSettings updateFromSelectedProfile]", v3);
+    selectedProfileName = [qword_49FB8 selectedProfileName];
+    NSLog(@"%s updateFromSelectedProfile: %@", "[NLCSettings updateFromSelectedProfile]", selectedProfileName);
   }
 
   [(NLCSettings *)self loadFromSelectedProfile];
@@ -657,13 +657,13 @@ LABEL_48:
   [(NLCSettings *)self reloadSpecifiers];
 }
 
-- (id)selectedProfile:(id)a3
+- (id)selectedProfile:(id)profile
 {
-  v4 = [qword_49FB8 selectedProfileName];
-  v5 = v4;
+  selectedProfileName = [qword_49FB8 selectedProfileName];
+  v5 = selectedProfileName;
   if (dword_49FB0)
   {
-    NSLog(@"NLCSettings %s: %@", "[NLCSettings selectedProfile:]", v4);
+    NSLog(@"NLCSettings %s: %@", "[NLCSettings selectedProfile:]", selectedProfileName);
   }
 
   [(NLCSettings *)self updateFromSelectedProfile];
@@ -701,13 +701,13 @@ LABEL_48:
   return currentProfile;
 }
 
-- (void)setCurrentProfile:(id)a3
+- (void)setCurrentProfile:(id)profile
 {
-  v4 = a3;
-  v5 = v4;
+  profileCopy = profile;
+  v5 = profileCopy;
   if (dword_49FB0)
   {
-    NSLog(@"NLCSettings %s: %@", "[NLCSettings setCurrentProfile:]", v4);
+    NSLog(@"NLCSettings %s: %@", "[NLCSettings setCurrentProfile:]", profileCopy);
   }
 
   currentProfile = self->_currentProfile;
@@ -719,30 +719,30 @@ LABEL_48:
   [v8 postNotificationName:@"com.apple.Preferences.nlcChanges" object:0];
 }
 
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(NLCSettings *)self indexForIndexPath:v5];
+  pathCopy = path;
+  v6 = [(NLCSettings *)self indexForIndexPath:pathCopy];
   if (v6 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v7 = v6;
     v8 = [*&self->PSListController_opaque[OBJC_IVAR___PSListController__specifiers] objectAtIndex:v6];
-    v9 = [v8 userInfo];
+    userInfo = [v8 userInfo];
     if (dword_49FB0)
     {
-      v10 = [v8 name];
-      NSLog(@"NLCSettings: willSelectRowAtIndexPath, row: %ld, name: %@ userInfo: %p", v7, v10, v9);
+      name = [v8 name];
+      NSLog(@"NLCSettings: willSelectRowAtIndexPath, row: %ld, name: %@ userInfo: %p", v7, name, userInfo);
     }
   }
 
-  return v5;
+  return pathCopy;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NLCSettings *)self indexForIndexPath:v7];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(NLCSettings *)self indexForIndexPath:pathCopy];
   if (v8 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v9 = v8;
@@ -750,8 +750,8 @@ LABEL_48:
     v11 = v10;
     if (dword_49FB0)
     {
-      v12 = [(PSSpecifier *)v10 name];
-      v13 = v12;
+      name = [(PSSpecifier *)v10 name];
+      v13 = name;
       if (self->_nlcRunning)
       {
         v14 = "YES";
@@ -762,17 +762,17 @@ LABEL_48:
         v14 = "NO";
       }
 
-      NSLog(@"%s: didSelectRowAtIndexPath, row: %ld, name: %@ _nlcRunning: %s", "[NLCSettings tableView:didSelectRowAtIndexPath:]", v9, v12, v14);
+      NSLog(@"%s: didSelectRowAtIndexPath, row: %ld, name: %@ _nlcRunning: %s", "[NLCSettings tableView:didSelectRowAtIndexPath:]", v9, name, v14);
     }
 
-    v15 = [(PSSpecifier *)v11 userInfo];
-    v16 = [v15 objectForKey:@"user-created"];
+    userInfo = [(PSSpecifier *)v11 userInfo];
+    v16 = [userInfo objectForKey:@"user-created"];
 
     if (v16)
     {
       v17 = qword_49FB8;
-      v18 = [(PSSpecifier *)v11 name];
-      [v17 setSelectedProfileName:v18];
+      name2 = [(PSSpecifier *)v11 name];
+      [v17 setSelectedProfileName:name2];
 
       if (self->_nlcRunning)
       {
@@ -798,41 +798,41 @@ LABEL_48:
 
       v21.receiver = self;
       v21.super_class = NLCSettings;
-      [(NLCSettings *)&v21 tableView:v6 didSelectRowAtIndexPath:v7];
+      [(NLCSettings *)&v21 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
     }
   }
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v21.receiver = self;
   v21.super_class = NLCSettings;
-  v6 = a4;
-  v7 = [(NLCSettings *)&v21 tableView:a3 cellForRowAtIndexPath:v6];
-  v8 = [(NLCSettings *)self indexForIndexPath:v6];
+  pathCopy = path;
+  v7 = [(NLCSettings *)&v21 tableView:view cellForRowAtIndexPath:pathCopy];
+  v8 = [(NLCSettings *)self indexForIndexPath:pathCopy];
 
   v9 = [*&self->PSListController_opaque[OBJC_IVAR___PSListController__specifiers] objectAtIndex:v8];
-  v10 = [v9 name];
-  v11 = v10;
+  name = [v9 name];
+  v11 = name;
   if (dword_49FB0)
   {
-    NSLog(@"NLCSettings: cellForRowAtIndexPath, row: %ld, name: %@", v8, v10, v21.receiver, v21.super_class);
+    NSLog(@"NLCSettings: cellForRowAtIndexPath, row: %ld, name: %@", v8, name, v21.receiver, v21.super_class);
   }
 
-  v12 = [v9 userInfo];
-  v13 = [v12 objectForKey:@"user-created"];
+  userInfo = [v9 userInfo];
+  v13 = [userInfo objectForKey:@"user-created"];
   if (v13)
   {
     [v7 setAccessoryType:2];
-    v14 = [qword_49FB8 selectedProfileName];
-    [v7 setChecked:{objc_msgSend(v11, "isEqualToString:", v14)}];
+    selectedProfileName = [qword_49FB8 selectedProfileName];
+    [v7 setChecked:{objc_msgSend(v11, "isEqualToString:", selectedProfileName)}];
 
     if (objc_opt_respondsToSelector())
     {
-      v15 = [v13 BOOLValue];
+      bOOLValue = [v13 BOOLValue];
       v16 = [NSBundle bundleForClass:objc_opt_class()];
       v17 = v16;
-      if (v15)
+      if (bOOLValue)
       {
         v18 = @"CUSTOM";
       }
@@ -855,28 +855,28 @@ LABEL_48:
   return v7;
 }
 
-- (void)tableView:(id)a3 accessoryButtonTappedForRowWithIndexPath:(id)a4
+- (void)tableView:(id)view accessoryButtonTappedForRowWithIndexPath:(id)path
 {
-  v5 = [(NLCSettings *)self indexForIndexPath:a4];
+  v5 = [(NLCSettings *)self indexForIndexPath:path];
   v6 = [*&self->PSListController_opaque[OBJC_IVAR___PSListController__specifiers] objectAtIndex:v5];
   v15 = v6;
   if (dword_49FB0)
   {
-    v7 = [v6 name];
-    NSLog(@"NLCSettings: cellForRowAtIndexPath, row: %ld, name: %@", v5, v7);
+    name = [v6 name];
+    NSLog(@"NLCSettings: cellForRowAtIndexPath, row: %ld, name: %@", v5, name);
 
     v6 = v15;
   }
 
-  v8 = [v6 userInfo];
-  v9 = [v8 objectForKey:@"user-created"];
+  userInfo = [v6 userInfo];
+  v9 = [userInfo objectForKey:@"user-created"];
 
   v10 = +[NLCSettings sharedInstance];
   v11 = v10;
   if (v9)
   {
-    v12 = [v15 name];
-    [v11 setCurrentProfile:v12];
+    name2 = [v15 name];
+    [v11 setCurrentProfile:name2];
   }
 
   else

@@ -14,7 +14,7 @@
 
 - (void)cellularDataStateChanged
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B4DCDCCC();
   sub_1B4DCDE40();
   if (swift_unknownObjectWeakLoadStrong())

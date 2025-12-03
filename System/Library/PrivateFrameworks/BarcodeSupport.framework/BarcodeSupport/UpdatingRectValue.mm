@@ -1,19 +1,19 @@
 @interface UpdatingRectValue
 - (CGRect)CGRectValue;
-- (UpdatingRectValue)initWithUpdateBlock:(id)a3;
+- (UpdatingRectValue)initWithUpdateBlock:(id)block;
 @end
 
 @implementation UpdatingRectValue
 
-- (UpdatingRectValue)initWithUpdateBlock:(id)a3
+- (UpdatingRectValue)initWithUpdateBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v10.receiver = self;
   v10.super_class = UpdatingRectValue;
   v5 = [(UpdatingRectValue *)&v10 init];
   if (v5)
   {
-    v6 = MEMORY[0x245CF4600](v4);
+    v6 = MEMORY[0x245CF4600](blockCopy);
     updateBlock = v5->_updateBlock;
     v5->_updateBlock = v6;
 

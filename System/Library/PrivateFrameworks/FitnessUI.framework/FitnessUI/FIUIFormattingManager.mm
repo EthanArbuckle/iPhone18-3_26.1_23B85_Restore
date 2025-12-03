@@ -1,18 +1,18 @@
 @interface FIUIFormattingManager
 - (FIUIFormattingManager)init;
-- (FIUIFormattingManager)initWithUnitManager:(id)a3;
-- (id)localizedCompactGoalDescriptionForGoalType:(unint64_t)a3 goalValue:(double)a4 activityType:(id)a5;
-- (id)localizedDepthUnit:(unint64_t)a3;
-- (id)localizedGoalDescriptionForDive:(id)a3 outValue:(id *)a4;
-- (id)localizedGoalDescriptionForGoalType:(unint64_t)a3 goalValue:(double)a4 activityType:(id)a5;
-- (id)localizedGoalDescriptionForWorkout:(id)a3 withValue:(id *)a4 appendActivityType:(BOOL)a5;
-- (id)localizedGoalUnitForWorkout:(id)a3;
-- (id)localizedGoalValueForWorkout:(id)a3;
-- (id)localizedPaceAndUnitStringForSpeed:(double)a3 activityType:(id)a4;
-- (id)localizedPaceValueForSplit:(id)a3 activityType:(id)a4;
-- (id)localizedSpeedUnitStringForActivityType:(id)a3;
-- (id)localizedTitleForSplit:(id)a3 unit:(id)a4 lapIndex:(int64_t)a5 useShortFormat:(BOOL)a6;
-- (id)localizedZeroDepthWithOutValue:(id *)a3;
+- (FIUIFormattingManager)initWithUnitManager:(id)manager;
+- (id)localizedCompactGoalDescriptionForGoalType:(unint64_t)type goalValue:(double)value activityType:(id)activityType;
+- (id)localizedDepthUnit:(unint64_t)unit;
+- (id)localizedGoalDescriptionForDive:(id)dive outValue:(id *)value;
+- (id)localizedGoalDescriptionForGoalType:(unint64_t)type goalValue:(double)value activityType:(id)activityType;
+- (id)localizedGoalDescriptionForWorkout:(id)workout withValue:(id *)value appendActivityType:(BOOL)type;
+- (id)localizedGoalUnitForWorkout:(id)workout;
+- (id)localizedGoalValueForWorkout:(id)workout;
+- (id)localizedPaceAndUnitStringForSpeed:(double)speed activityType:(id)type;
+- (id)localizedPaceValueForSplit:(id)split activityType:(id)type;
+- (id)localizedSpeedUnitStringForActivityType:(id)type;
+- (id)localizedTitleForSplit:(id)split unit:(id)unit lapIndex:(int64_t)index useShortFormat:(BOOL)format;
+- (id)localizedZeroDepthWithOutValue:(id *)value;
 @end
 
 @implementation FIUIFormattingManager
@@ -26,23 +26,23 @@
   return v5;
 }
 
-- (FIUIFormattingManager)initWithUnitManager:(id)a3
+- (FIUIFormattingManager)initWithUnitManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v15.receiver = self;
   v15.super_class = FIUIFormattingManager;
   v6 = [(FIUIFormattingManager *)&v15 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_unitManager, a3);
+    objc_storeStrong(&v6->_unitManager, manager);
     v8 = objc_alloc(MEMORY[0x1E699C9D0]);
-    v9 = [v5 unitManager];
-    v10 = [v8 initWithUnitManager:v9];
+    unitManager = [managerCopy unitManager];
+    v10 = [v8 initWithUnitManager:unitManager];
     formattingManager = v7->_formattingManager;
     v7->_formattingManager = v10;
 
-    v12 = [[FIUIDepthFormatter alloc] initWithUnitManager:v5];
+    v12 = [[FIUIDepthFormatter alloc] initWithUnitManager:managerCopy];
     depthFormatter = v7->_depthFormatter;
     v7->_depthFormatter = v12;
   }
@@ -50,69 +50,69 @@
   return v7;
 }
 
-- (id)localizedPaceAndUnitStringForSpeed:(double)a3 activityType:(id)a4
+- (id)localizedPaceAndUnitStringForSpeed:(double)speed activityType:(id)type
 {
   formattingManager = self->_formattingManager;
-  v6 = [a4 workoutActivityType];
-  v7 = [(FIFormattingManager *)formattingManager localizedPaceAndUnitStringForSpeed:v6 activityType:a3];
+  workoutActivityType = [type workoutActivityType];
+  v7 = [(FIFormattingManager *)formattingManager localizedPaceAndUnitStringForSpeed:workoutActivityType activityType:speed];
 
   return v7;
 }
 
-- (id)localizedSpeedUnitStringForActivityType:(id)a3
+- (id)localizedSpeedUnitStringForActivityType:(id)type
 {
   formattingManager = self->_formattingManager;
-  v4 = [a3 workoutActivityType];
-  v5 = [(FIFormattingManager *)formattingManager localizedSpeedUnitStringForActivityType:v4];
+  workoutActivityType = [type workoutActivityType];
+  v5 = [(FIFormattingManager *)formattingManager localizedSpeedUnitStringForActivityType:workoutActivityType];
 
   return v5;
 }
 
-- (id)localizedGoalDescriptionForWorkout:(id)a3 withValue:(id *)a4 appendActivityType:(BOOL)a5
+- (id)localizedGoalDescriptionForWorkout:(id)workout withValue:(id *)value appendActivityType:(BOOL)type
 {
-  v5 = a5;
-  v8 = a3;
-  if ([v8 workoutActivityType] == 84)
+  typeCopy = type;
+  workoutCopy = workout;
+  if ([workoutCopy workoutActivityType] == 84)
   {
-    [(FIUIFormattingManager *)self localizedGoalDescriptionForDive:v8 outValue:a4];
+    [(FIUIFormattingManager *)self localizedGoalDescriptionForDive:workoutCopy outValue:value];
   }
 
   else
   {
-    [(FIFormattingManager *)self->_formattingManager localizedGoalDescriptionForWorkout:v8 withValue:a4 appendActivityType:v5];
+    [(FIFormattingManager *)self->_formattingManager localizedGoalDescriptionForWorkout:workoutCopy withValue:value appendActivityType:typeCopy];
   }
   v9 = ;
 
   return v9;
 }
 
-- (id)localizedGoalValueForWorkout:(id)a3
+- (id)localizedGoalValueForWorkout:(id)workout
 {
-  v4 = a3;
-  if ([v4 workoutActivityType] == 84)
+  workoutCopy = workout;
+  if ([workoutCopy workoutActivityType] == 84)
   {
-    v5 = [(FIUIDepthFormatter *)self->_depthFormatter formatGoalValueForDive:v4];
+    v5 = [(FIUIDepthFormatter *)self->_depthFormatter formatGoalValueForDive:workoutCopy];
 
-    v6 = [v5 formattedString];
-    v4 = v5;
+    formattedString = [v5 formattedString];
+    workoutCopy = v5;
   }
 
   else
   {
-    v6 = [(FIFormattingManager *)self->_formattingManager localizedGoalValueForWorkout:v4];
+    formattedString = [(FIFormattingManager *)self->_formattingManager localizedGoalValueForWorkout:workoutCopy];
   }
 
-  return v6;
+  return formattedString;
 }
 
-- (id)localizedGoalUnitForWorkout:(id)a3
+- (id)localizedGoalUnitForWorkout:(id)workout
 {
-  v4 = a3;
-  if ([v4 workoutActivityType] == 84)
+  workoutCopy = workout;
+  if ([workoutCopy workoutActivityType] == 84)
   {
-    v5 = [(FIUIUnitManager *)self->_unitManager userDepthHKUnit];
-    v6 = [MEMORY[0x1E696C510] meterUnit];
-    if (v5 == v6)
+    userDepthHKUnit = [(FIUIUnitManager *)self->_unitManager userDepthHKUnit];
+    meterUnit = [MEMORY[0x1E696C510] meterUnit];
+    if (userDepthHKUnit == meterUnit)
     {
       v7 = 1;
     }
@@ -127,7 +127,7 @@
 
   else
   {
-    v8 = [(FIFormattingManager *)self->_formattingManager localizedGoalUnitForWorkout:v4];
+    v8 = [(FIFormattingManager *)self->_formattingManager localizedGoalUnitForWorkout:workoutCopy];
   }
 
   v9 = v8;
@@ -135,68 +135,68 @@
   return v9;
 }
 
-- (id)localizedCompactGoalDescriptionForGoalType:(unint64_t)a3 goalValue:(double)a4 activityType:(id)a5
+- (id)localizedCompactGoalDescriptionForGoalType:(unint64_t)type goalValue:(double)value activityType:(id)activityType
 {
   formattingManager = self->_formattingManager;
-  v8 = [a5 workoutActivityType];
-  v9 = [(FIFormattingManager *)formattingManager localizedCompactGoalDescriptionForGoalType:a3 goalValue:v8 activityType:a4];
+  workoutActivityType = [activityType workoutActivityType];
+  v9 = [(FIFormattingManager *)formattingManager localizedCompactGoalDescriptionForGoalType:type goalValue:workoutActivityType activityType:value];
 
   return v9;
 }
 
-- (id)localizedGoalDescriptionForGoalType:(unint64_t)a3 goalValue:(double)a4 activityType:(id)a5
+- (id)localizedGoalDescriptionForGoalType:(unint64_t)type goalValue:(double)value activityType:(id)activityType
 {
   formattingManager = self->_formattingManager;
-  v8 = [a5 workoutActivityType];
-  v9 = [(FIFormattingManager *)formattingManager localizedGoalDescriptionForGoalType:a3 goalValue:v8 activityType:a4];
+  workoutActivityType = [activityType workoutActivityType];
+  v9 = [(FIFormattingManager *)formattingManager localizedGoalDescriptionForGoalType:type goalValue:workoutActivityType activityType:value];
 
   return v9;
 }
 
-- (id)localizedPaceValueForSplit:(id)a3 activityType:(id)a4
+- (id)localizedPaceValueForSplit:(id)split activityType:(id)type
 {
   formattingManager = self->_formattingManager;
-  v6 = a4;
-  v7 = [a3 workoutSplit];
-  v8 = [v6 workoutActivityType];
+  typeCopy = type;
+  workoutSplit = [split workoutSplit];
+  workoutActivityType = [typeCopy workoutActivityType];
 
-  v9 = [(FIFormattingManager *)formattingManager localizedPaceValueForSplit:v7 activityType:v8];
+  v9 = [(FIFormattingManager *)formattingManager localizedPaceValueForSplit:workoutSplit activityType:workoutActivityType];
 
   return v9;
 }
 
-- (id)localizedTitleForSplit:(id)a3 unit:(id)a4 lapIndex:(int64_t)a5 useShortFormat:(BOOL)a6
+- (id)localizedTitleForSplit:(id)split unit:(id)unit lapIndex:(int64_t)index useShortFormat:(BOOL)format
 {
-  v6 = a6;
+  formatCopy = format;
   formattingManager = self->_formattingManager;
-  v10 = a4;
-  v11 = [a3 workoutSplit];
-  v12 = [(FIFormattingManager *)formattingManager localizedTitleForSplit:v11 unit:v10 lapIndex:a5 useShortFormat:v6];
+  unitCopy = unit;
+  workoutSplit = [split workoutSplit];
+  v12 = [(FIFormattingManager *)formattingManager localizedTitleForSplit:workoutSplit unit:unitCopy lapIndex:index useShortFormat:formatCopy];
 
   return v12;
 }
 
-- (id)localizedGoalDescriptionForDive:(id)a3 outValue:(id *)a4
+- (id)localizedGoalDescriptionForDive:(id)dive outValue:(id *)value
 {
-  v5 = [(FIUIDepthFormatter *)self->_depthFormatter formatGoalValueForDive:a3];
-  *a4 = [v5 valueString];
-  v6 = [v5 formattedString];
+  v5 = [(FIUIDepthFormatter *)self->_depthFormatter formatGoalValueForDive:dive];
+  *value = [v5 valueString];
+  formattedString = [v5 formattedString];
 
-  return v6;
+  return formattedString;
 }
 
-- (id)localizedZeroDepthWithOutValue:(id *)a3
+- (id)localizedZeroDepthWithOutValue:(id *)value
 {
-  v4 = [(FIUIDepthFormatter *)self->_depthFormatter formatZeroDepth];
-  *a3 = [v4 valueString];
-  v5 = [v4 formattedString];
+  formatZeroDepth = [(FIUIDepthFormatter *)self->_depthFormatter formatZeroDepth];
+  *value = [formatZeroDepth valueString];
+  formattedString = [formatZeroDepth formattedString];
 
-  return v5;
+  return formattedString;
 }
 
-- (id)localizedDepthUnit:(unint64_t)a3
+- (id)localizedDepthUnit:(unint64_t)unit
 {
-  if (a3 == 1)
+  if (unit == 1)
   {
     v3 = 1;
   }
@@ -207,9 +207,9 @@
   }
 
   v4 = [(FIUIFormattingManager *)self localizedShortUnitStringForDistanceUnit:v3];
-  v5 = [v4 localizedUppercaseString];
+  localizedUppercaseString = [v4 localizedUppercaseString];
 
-  return v5;
+  return localizedUppercaseString;
 }
 
 @end

@@ -5,8 +5,8 @@
 - (CGRect)_lockFrame;
 - (CGRect)_substituteLockElementContainerFrame;
 - (CGRect)sensorRegionFrame;
-- (CGRect)systemApertureContainerView:(id)a3 hitRectForBounds:(CGRect)a4 debugColor:(id *)a5;
-- (SBSubstituteSystemApertureViewController)initWithSensorRegionFrame:(CGRect)a3;
+- (CGRect)systemApertureContainerView:(id)view hitRectForBounds:(CGRect)bounds debugColor:(id *)color;
+- (SBSubstituteSystemApertureViewController)initWithSensorRegionFrame:(CGRect)frame;
 - (SBSystemApertureWindowScene)activeWindowScene;
 - (UIEdgeInsets)_currentEdgeInsets;
 - (double)_lockPadding;
@@ -15,21 +15,21 @@
 - (void)_postLayoutDidChangeNotificationIfNecessary;
 - (void)_updateKeylineMode;
 - (void)_updateLockViewHidden;
-- (void)setActiveWindowScene:(id)a3;
-- (void)setSensorRegionFrame:(CGRect)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)setActiveWindowScene:(id)scene;
+- (void)setSensorRegionFrame:(CGRect)frame;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
 
 @implementation SBSubstituteSystemApertureViewController
 
-- (SBSubstituteSystemApertureViewController)initWithSensorRegionFrame:(CGRect)a3
+- (SBSubstituteSystemApertureViewController)initWithSensorRegionFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v12.receiver = self;
   v12.super_class = SBSubstituteSystemApertureViewController;
   v7 = [(SBSubstituteSystemApertureViewController *)&v12 initWithNibName:0 bundle:0];
@@ -48,38 +48,38 @@
   return v8;
 }
 
-- (void)setSensorRegionFrame:(CGRect)a3
+- (void)setSensorRegionFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   p_sensorRegionFrame = &self->_sensorRegionFrame;
-  if (!CGRectEqualToRect(self->_sensorRegionFrame, a3))
+  if (!CGRectEqualToRect(self->_sensorRegionFrame, frame))
   {
     p_sensorRegionFrame->origin.x = x;
     p_sensorRegionFrame->origin.y = y;
     p_sensorRegionFrame->size.width = width;
     p_sensorRegionFrame->size.height = height;
-    v9 = [(SBSubstituteSystemApertureViewController *)self viewIfLoaded];
-    [v9 setNeedsLayout];
+    viewIfLoaded = [(SBSubstituteSystemApertureViewController *)self viewIfLoaded];
+    [viewIfLoaded setNeedsLayout];
   }
 }
 
-- (void)setActiveWindowScene:(id)a3
+- (void)setActiveWindowScene:(id)scene
 {
-  obj = a3;
+  obj = scene;
   WeakRetained = objc_loadWeakRetained(&self->_activeWindowScene);
   if (WeakRetained != obj)
   {
-    v5 = [WeakRetained associatedWindowScene];
-    v6 = [v5 ambientPresentationController];
-    [v6 removeObserver:self];
+    associatedWindowScene = [WeakRetained associatedWindowScene];
+    ambientPresentationController = [associatedWindowScene ambientPresentationController];
+    [ambientPresentationController removeObserver:self];
 
     objc_storeWeak(&self->_activeWindowScene, obj);
-    v7 = [obj associatedWindowScene];
-    v8 = [v7 ambientPresentationController];
-    [v8 addObserver:self];
+    associatedWindowScene2 = [obj associatedWindowScene];
+    ambientPresentationController2 = [associatedWindowScene2 ambientPresentationController];
+    [ambientPresentationController2 addObserver:self];
 
     [(SBSubstituteSystemApertureViewController *)self _ensureStatusBarAvoidanceFrame];
     [(SBSubstituteSystemApertureViewController *)self _updateLockViewHidden];
@@ -92,8 +92,8 @@
   v35.receiver = self;
   v35.super_class = SBSubstituteSystemApertureViewController;
   [(SBSubstituteSystemApertureViewController *)&v35 viewDidLoad];
-  v3 = [(SBSubstituteSystemApertureViewController *)self view];
-  [v3 bounds];
+  view = [(SBSubstituteSystemApertureViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -104,26 +104,26 @@
   self->_containerSubBackgroundParent = v12;
 
   [(UIView *)self->_containerSubBackgroundParent setUserInteractionEnabled:0];
-  v14 = [(UIView *)self->_containerSubBackgroundParent layer];
-  [v14 setDisableUpdateMask:32];
+  layer = [(UIView *)self->_containerSubBackgroundParent layer];
+  [layer setDisableUpdateMask:32];
 
-  v15 = [(SBSubstituteSystemApertureViewController *)self view];
-  [v15 addSubview:self->_containerSubBackgroundParent];
+  view2 = [(SBSubstituteSystemApertureViewController *)self view];
+  [view2 addSubview:self->_containerSubBackgroundParent];
 
   v16 = [objc_alloc(MEMORY[0x277D75D18]) initWithFrame:{v5, v7, v9, v11}];
   containerBackgroundParent = self->_containerBackgroundParent;
   self->_containerBackgroundParent = v16;
 
   [(UIView *)self->_containerBackgroundParent setUserInteractionEnabled:0];
-  v18 = [(SBSubstituteSystemApertureViewController *)self view];
-  [v18 addSubview:self->_containerBackgroundParent];
+  view3 = [(SBSubstituteSystemApertureViewController *)self view];
+  [view3 addSubview:self->_containerBackgroundParent];
 
   v19 = [objc_alloc(MEMORY[0x277D65F80]) initWithFrame:{v5, v7, v9, v11}];
   containerParent = self->_containerParent;
   self->_containerParent = v19;
 
-  v21 = [(SBSubstituteSystemApertureViewController *)self view];
-  [v21 addSubview:self->_containerParent];
+  view4 = [(SBSubstituteSystemApertureViewController *)self view];
+  [view4 addSubview:self->_containerParent];
 
   v22 = objc_alloc(MEMORY[0x277D67D88]);
   v23 = [v22 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
@@ -159,8 +159,8 @@
   v21.receiver = self;
   v21.super_class = SBSubstituteSystemApertureViewController;
   [(SBSubstituteSystemApertureViewController *)&v21 viewDidLayoutSubviews];
-  v3 = [(SBSubstituteSystemApertureViewController *)self view];
-  [v3 bounds];
+  view = [(SBSubstituteSystemApertureViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -186,17 +186,17 @@
   [(SBSubstituteSystemApertureViewController *)self _postLayoutDidChangeNotificationIfNecessary];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = SBSubstituteSystemApertureViewController;
-  [(SBSubstituteSystemApertureViewController *)&v4 viewDidAppear:a3];
+  [(SBSubstituteSystemApertureViewController *)&v4 viewDidAppear:appear];
   [(SBSubstituteSystemApertureViewController *)self _ensureStatusBarAvoidanceFrame];
 }
 
-- (CGRect)systemApertureContainerView:(id)a3 hitRectForBounds:(CGRect)a4 debugColor:(id *)a5
+- (CGRect)systemApertureContainerView:(id)view hitRectForBounds:(CGRect)bounds debugColor:(id *)color
 {
-  [a3 bounds];
+  [view bounds];
   result.size.height = v8;
   result.size.width = v7;
   result.origin.y = v6;
@@ -291,22 +291,22 @@
 - (BOOL)_isStandbyPresented
 {
   WeakRetained = objc_loadWeakRetained(&self->_activeWindowScene);
-  v3 = [WeakRetained associatedWindowScene];
-  v4 = [v3 ambientPresentationController];
-  v5 = [v4 isPresented];
+  associatedWindowScene = [WeakRetained associatedWindowScene];
+  ambientPresentationController = [associatedWindowScene ambientPresentationController];
+  isPresented = [ambientPresentationController isPresented];
 
-  return v5;
+  return isPresented;
 }
 
 - (void)_updateLockViewHidden
 {
-  v3 = [(SBSubstituteSystemApertureViewController *)self _isLockHidden];
-  if (v3 != [(SBUIProudLockIconView *)self->_lockView isHidden])
+  _isLockHidden = [(SBSubstituteSystemApertureViewController *)self _isLockHidden];
+  if (_isLockHidden != [(SBUIProudLockIconView *)self->_lockView isHidden])
   {
     [(SBUIProudLockIconView *)self->_lockView setHidden:[(SBSubstituteSystemApertureViewController *)self _isLockHidden]];
     [(SBSubstituteSystemApertureViewController *)self _updateKeylineMode];
-    v4 = [(SBSubstituteSystemApertureViewController *)self view];
-    [v4 setNeedsLayout];
+    view = [(SBSubstituteSystemApertureViewController *)self view];
+    [view setNeedsLayout];
   }
 }
 
@@ -336,19 +336,19 @@
 - (BOOL)_isOnContinuityDisplay
 {
   WeakRetained = objc_loadWeakRetained(&self->_activeWindowScene);
-  v3 = [WeakRetained associatedWindowScene];
-  v4 = [v3 isContinuityDisplayWindowScene];
+  associatedWindowScene = [WeakRetained associatedWindowScene];
+  isContinuityDisplayWindowScene = [associatedWindowScene isContinuityDisplayWindowScene];
 
-  return v4;
+  return isContinuityDisplayWindowScene;
 }
 
 - (id)_statusBarManager
 {
   WeakRetained = objc_loadWeakRetained(&self->_activeWindowScene);
-  v3 = [WeakRetained associatedWindowScene];
-  v4 = [v3 statusBarManager];
+  associatedWindowScene = [WeakRetained associatedWindowScene];
+  statusBarManager = [associatedWindowScene statusBarManager];
   v5 = objc_opt_class();
-  v6 = v4;
+  v6 = statusBarManager;
   if (v5)
   {
     if (objc_opt_isKindOfClass())
@@ -369,15 +369,15 @@
 
 - (void)_ensureStatusBarAvoidanceFrame
 {
-  v13 = [(SBSubstituteSystemApertureViewController *)self _statusBarManager];
+  _statusBarManager = [(SBSubstituteSystemApertureViewController *)self _statusBarManager];
   [(SBSubstituteSystemApertureViewController *)self _substituteLockElementContainerFrame];
   v4 = v3;
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [objc_alloc(MEMORY[0x277D65E60]) initWithDefaultValues];
-  v12 = [v11 BSAnimationSettings];
-  [v13 setAvoidanceFrame:@"SBSubstituteSystemApertureViewController" reason:0 statusBar:v12 animationSettings:2 options:{v4, v6, v8, v10}];
+  initWithDefaultValues = [objc_alloc(MEMORY[0x277D65E60]) initWithDefaultValues];
+  bSAnimationSettings = [initWithDefaultValues BSAnimationSettings];
+  [_statusBarManager setAvoidanceFrame:@"SBSubstituteSystemApertureViewController" reason:0 statusBar:bSAnimationSettings animationSettings:2 options:{v4, v6, v8, v10}];
 }
 
 - (UIEdgeInsets)_currentEdgeInsets
@@ -463,9 +463,9 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(SBSubstituteSystemApertureViewController *)self _isLockHidden];
+  _isLockHidden = [(SBSubstituteSystemApertureViewController *)self _isLockHidden];
   v12 = &unk_28336E0E8;
-  if (v11)
+  if (_isLockHidden)
   {
     v12 = MEMORY[0x277CBEBF8];
   }
@@ -495,13 +495,13 @@
   v21 = [v14 dictionaryWithDictionary:v20];
 
   WeakRetained = objc_loadWeakRetained(&self->_activeWindowScene);
-  v23 = [WeakRetained associatedWindowScene];
-  v24 = [v23 _sbDisplayConfiguration];
-  v25 = [v24 identity];
+  associatedWindowScene = [WeakRetained associatedWindowScene];
+  _sbDisplayConfiguration = [associatedWindowScene _sbDisplayConfiguration];
+  identity = [_sbDisplayConfiguration identity];
 
-  if (v25)
+  if (identity)
   {
-    [v21 setObject:v25 forKey:@"SBSystemApertureOriginatingDisplayIdentity"];
+    [v21 setObject:identity forKey:@"SBSystemApertureOriginatingDisplayIdentity"];
   }
 
   if ((BSEqualObjects() & 1) == 0)
@@ -510,8 +510,8 @@
     cachedLayoutDidChangeUserInfo = self->_cachedLayoutDidChangeUserInfo;
     self->_cachedLayoutDidChangeUserInfo = v26;
 
-    v28 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v28 postNotificationName:@"SBSystemApertureLayoutDidChangeNotification" object:self userInfo:self->_cachedLayoutDidChangeUserInfo];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"SBSystemApertureLayoutDidChangeNotification" object:self userInfo:self->_cachedLayoutDidChangeUserInfo];
   }
 }
 

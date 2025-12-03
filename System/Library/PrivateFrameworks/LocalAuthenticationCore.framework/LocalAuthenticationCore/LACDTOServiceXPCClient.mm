@@ -4,27 +4,27 @@
 - (BOOL)isFeatureStrictModeEnabled;
 - (BOOL)isFeatureSupported;
 - (BOOL)isSensorTrusted;
-- (LACDTOServiceXPCClient)initWithEndpointProvider:(id)a3;
-- (id)_connectionWithErrorHandler:(id)a3;
-- (id)_remoteObjectProxyWithErrorHandler:(id)a3;
-- (id)_synchronousRemoteObjectProxyWithErrorHandler:(id)a3;
+- (LACDTOServiceXPCClient)initWithEndpointProvider:(id)provider;
+- (id)_connectionWithErrorHandler:(id)handler;
+- (id)_remoteObjectProxyWithErrorHandler:(id)handler;
+- (id)_synchronousRemoteObjectProxyWithErrorHandler:(id)handler;
 - (id)ratchetState;
 - (void)_handleConnectionClose;
-- (void)cancelPendingEvaluationWithRatchetIdentifier:(id)a3 reason:(id)a4 completion:(id)a5;
-- (void)checkCanEnableFeatureWithCompletion:(id)a3;
-- (void)checkIsFeatureAvailableWithCompletion:(id)a3;
-- (void)checkIsFeatureEnabledWithCompletion:(id)a3;
-- (void)checkIsFeatureStrictModeEnabledWithCompletion:(id)a3;
-- (void)checkIsFeatureSupportedWithCompletion:(id)a3;
-- (void)checkIsSensorTrustedWithCompletion:(id)a3;
+- (void)cancelPendingEvaluationWithRatchetIdentifier:(id)identifier reason:(id)reason completion:(id)completion;
+- (void)checkCanEnableFeatureWithCompletion:(id)completion;
+- (void)checkIsFeatureAvailableWithCompletion:(id)completion;
+- (void)checkIsFeatureEnabledWithCompletion:(id)completion;
+- (void)checkIsFeatureStrictModeEnabledWithCompletion:(id)completion;
+- (void)checkIsFeatureSupportedWithCompletion:(id)completion;
+- (void)checkIsSensorTrustedWithCompletion:(id)completion;
 - (void)dealloc;
-- (void)disableFeatureStrictModeWithContext:(id)a3 completion:(id)a4;
-- (void)disableFeatureWithContext:(id)a3 completion:(id)a4;
-- (void)enableFeatureActivatingGracePeriodWithCompletion:(id)a3;
-- (void)enableFeatureStrictModeWithCompletion:(id)a3;
-- (void)enableFeatureWithCompletion:(id)a3;
-- (void)ratchetStateCompositeWithCompletion:(id)a3;
-- (void)ratchetStateWithCompletion:(id)a3;
+- (void)disableFeatureStrictModeWithContext:(id)context completion:(id)completion;
+- (void)disableFeatureWithContext:(id)context completion:(id)completion;
+- (void)enableFeatureActivatingGracePeriodWithCompletion:(id)completion;
+- (void)enableFeatureStrictModeWithCompletion:(id)completion;
+- (void)enableFeatureWithCompletion:(id)completion;
+- (void)ratchetStateCompositeWithCompletion:(id)completion;
+- (void)ratchetStateWithCompletion:(id)completion;
 @end
 
 @implementation LACDTOServiceXPCClient
@@ -53,16 +53,16 @@
   return v2;
 }
 
-- (LACDTOServiceXPCClient)initWithEndpointProvider:(id)a3
+- (LACDTOServiceXPCClient)initWithEndpointProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v9.receiver = self;
   v9.super_class = LACDTOServiceXPCClient;
   v6 = [(LACDTOServiceXPCClient *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_endpointProvider, a3);
+    objc_storeStrong(&v6->_endpointProvider, provider);
     v7->_connectionLock._os_unfair_lock_opaque = 0;
   }
 
@@ -367,207 +367,207 @@ void __41__LACDTOServiceXPCClient_isSensorTrusted__block_invoke_10(uint64_t a1, 
   *(*(*(a1 + 32) + 8) + 24) = a2;
 }
 
-- (void)ratchetStateWithCompletion:(id)a3
+- (void)ratchetStateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __53__LACDTOServiceXPCClient_ratchetStateWithCompletion___block_invoke;
   v7[3] = &unk_1E7A95A10;
-  v8 = v4;
-  v5 = v4;
+  v8 = completionCopy;
+  v5 = completionCopy;
   v6 = [(LACDTOServiceXPCClient *)self _remoteObjectProxyWithErrorHandler:v7];
   [v6 ratchetStateWithCompletion:v5];
 }
 
-- (void)ratchetStateCompositeWithCompletion:(id)a3
+- (void)ratchetStateCompositeWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __62__LACDTOServiceXPCClient_ratchetStateCompositeWithCompletion___block_invoke;
   v7[3] = &unk_1E7A95A10;
-  v8 = v4;
-  v5 = v4;
+  v8 = completionCopy;
+  v5 = completionCopy;
   v6 = [(LACDTOServiceXPCClient *)self _remoteObjectProxyWithErrorHandler:v7];
   [v6 ratchetStateCompositeWithCompletion:v5];
 }
 
-- (void)checkIsFeatureEnabledWithCompletion:(id)a3
+- (void)checkIsFeatureEnabledWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __62__LACDTOServiceXPCClient_checkIsFeatureEnabledWithCompletion___block_invoke;
   v7[3] = &unk_1E7A95A10;
-  v8 = v4;
-  v5 = v4;
+  v8 = completionCopy;
+  v5 = completionCopy;
   v6 = [(LACDTOServiceXPCClient *)self _synchronousRemoteObjectProxyWithErrorHandler:v7];
   [v6 checkIsFeatureEnabledWithCompletion:v5];
 }
 
-- (void)checkIsFeatureSupportedWithCompletion:(id)a3
+- (void)checkIsFeatureSupportedWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __64__LACDTOServiceXPCClient_checkIsFeatureSupportedWithCompletion___block_invoke;
   v7[3] = &unk_1E7A95A10;
-  v8 = v4;
-  v5 = v4;
+  v8 = completionCopy;
+  v5 = completionCopy;
   v6 = [(LACDTOServiceXPCClient *)self _synchronousRemoteObjectProxyWithErrorHandler:v7];
   [v6 checkIsFeatureSupportedWithCompletion:v5];
 }
 
-- (void)checkIsFeatureAvailableWithCompletion:(id)a3
+- (void)checkIsFeatureAvailableWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __64__LACDTOServiceXPCClient_checkIsFeatureAvailableWithCompletion___block_invoke;
   v7[3] = &unk_1E7A95A10;
-  v8 = v4;
-  v5 = v4;
+  v8 = completionCopy;
+  v5 = completionCopy;
   v6 = [(LACDTOServiceXPCClient *)self _synchronousRemoteObjectProxyWithErrorHandler:v7];
   [v6 checkIsFeatureAvailableWithCompletion:v5];
 }
 
-- (void)checkIsFeatureStrictModeEnabledWithCompletion:(id)a3
+- (void)checkIsFeatureStrictModeEnabledWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __72__LACDTOServiceXPCClient_checkIsFeatureStrictModeEnabledWithCompletion___block_invoke;
   v7[3] = &unk_1E7A95A10;
-  v8 = v4;
-  v5 = v4;
+  v8 = completionCopy;
+  v5 = completionCopy;
   v6 = [(LACDTOServiceXPCClient *)self _synchronousRemoteObjectProxyWithErrorHandler:v7];
   [v6 checkIsFeatureStrictModeEnabledWithCompletion:v5];
 }
 
-- (void)disableFeatureWithContext:(id)a3 completion:(id)a4
+- (void)disableFeatureWithContext:(id)context completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(LACDTOServiceXPCClient *)self _remoteObjectProxyWithErrorHandler:v6];
-  [v8 disableFeatureWithContext:v7 completion:v6];
+  completionCopy = completion;
+  contextCopy = context;
+  v8 = [(LACDTOServiceXPCClient *)self _remoteObjectProxyWithErrorHandler:completionCopy];
+  [v8 disableFeatureWithContext:contextCopy completion:completionCopy];
 }
 
-- (void)checkCanEnableFeatureWithCompletion:(id)a3
+- (void)checkCanEnableFeatureWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __62__LACDTOServiceXPCClient_checkCanEnableFeatureWithCompletion___block_invoke;
   v7[3] = &unk_1E7A95A10;
-  v8 = v4;
-  v5 = v4;
+  v8 = completionCopy;
+  v5 = completionCopy;
   v6 = [(LACDTOServiceXPCClient *)self _remoteObjectProxyWithErrorHandler:v7];
   [v6 checkCanEnableFeatureWithCompletion:v5];
 }
 
-- (void)enableFeatureWithCompletion:(id)a3
+- (void)enableFeatureWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __54__LACDTOServiceXPCClient_enableFeatureWithCompletion___block_invoke;
   v7[3] = &unk_1E7A95A10;
-  v8 = v4;
-  v5 = v4;
+  v8 = completionCopy;
+  v5 = completionCopy;
   v6 = [(LACDTOServiceXPCClient *)self _remoteObjectProxyWithErrorHandler:v7];
   [v6 enableFeatureWithCompletion:v5];
 }
 
-- (void)enableFeatureActivatingGracePeriodWithCompletion:(id)a3
+- (void)enableFeatureActivatingGracePeriodWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __75__LACDTOServiceXPCClient_enableFeatureActivatingGracePeriodWithCompletion___block_invoke;
   v7[3] = &unk_1E7A95A10;
-  v8 = v4;
-  v5 = v4;
+  v8 = completionCopy;
+  v5 = completionCopy;
   v6 = [(LACDTOServiceXPCClient *)self _remoteObjectProxyWithErrorHandler:v7];
   [v6 enableFeatureActivatingGracePeriodWithCompletion:v5];
 }
 
-- (void)enableFeatureStrictModeWithCompletion:(id)a3
+- (void)enableFeatureStrictModeWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __64__LACDTOServiceXPCClient_enableFeatureStrictModeWithCompletion___block_invoke;
   v7[3] = &unk_1E7A95A10;
-  v8 = v4;
-  v5 = v4;
+  v8 = completionCopy;
+  v5 = completionCopy;
   v6 = [(LACDTOServiceXPCClient *)self _remoteObjectProxyWithErrorHandler:v7];
   [v6 enableFeatureStrictModeWithCompletion:v5];
 }
 
-- (void)disableFeatureStrictModeWithContext:(id)a3 completion:(id)a4
+- (void)disableFeatureStrictModeWithContext:(id)context completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __73__LACDTOServiceXPCClient_disableFeatureStrictModeWithContext_completion___block_invoke;
   v10[3] = &unk_1E7A95A10;
-  v11 = v6;
-  v7 = v6;
-  v8 = a3;
+  v11 = completionCopy;
+  v7 = completionCopy;
+  contextCopy = context;
   v9 = [(LACDTOServiceXPCClient *)self _remoteObjectProxyWithErrorHandler:v10];
-  [v9 disableFeatureStrictModeWithContext:v8 completion:v7];
+  [v9 disableFeatureStrictModeWithContext:contextCopy completion:v7];
 }
 
-- (void)cancelPendingEvaluationWithRatchetIdentifier:(id)a3 reason:(id)a4 completion:(id)a5
+- (void)cancelPendingEvaluationWithRatchetIdentifier:(id)identifier reason:(id)reason completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __89__LACDTOServiceXPCClient_cancelPendingEvaluationWithRatchetIdentifier_reason_completion___block_invoke;
   v13[3] = &unk_1E7A95A10;
-  v14 = v8;
-  v9 = v8;
-  v10 = a4;
-  v11 = a3;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  reasonCopy = reason;
+  identifierCopy = identifier;
   v12 = [(LACDTOServiceXPCClient *)self _remoteObjectProxyWithErrorHandler:v13];
-  [v12 cancelPendingEvaluationWithRatchetIdentifier:v11 reason:v10 completion:v9];
+  [v12 cancelPendingEvaluationWithRatchetIdentifier:identifierCopy reason:reasonCopy completion:v9];
 }
 
-- (void)checkIsSensorTrustedWithCompletion:(id)a3
+- (void)checkIsSensorTrustedWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __61__LACDTOServiceXPCClient_checkIsSensorTrustedWithCompletion___block_invoke;
   v7[3] = &unk_1E7A95A10;
-  v8 = v4;
-  v5 = v4;
+  v8 = completionCopy;
+  v5 = completionCopy;
   v6 = [(LACDTOServiceXPCClient *)self _remoteObjectProxyWithErrorHandler:v7];
   [v6 checkIsSensorTrustedWithCompletion:v5];
 }
 
-- (id)_remoteObjectProxyWithErrorHandler:(id)a3
+- (id)_remoteObjectProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(LACDTOServiceXPCClient *)self _connectionWithErrorHandler:v4];
-  v6 = [v5 remoteObjectProxyWithErrorHandler:v4];
+  handlerCopy = handler;
+  v5 = [(LACDTOServiceXPCClient *)self _connectionWithErrorHandler:handlerCopy];
+  v6 = [v5 remoteObjectProxyWithErrorHandler:handlerCopy];
 
   return v6;
 }
 
-- (id)_synchronousRemoteObjectProxyWithErrorHandler:(id)a3
+- (id)_synchronousRemoteObjectProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(LACDTOServiceXPCClient *)self _connectionWithErrorHandler:v4];
-  v6 = [v5 synchronousRemoteObjectProxyWithErrorHandler:v4];
+  handlerCopy = handler;
+  v5 = [(LACDTOServiceXPCClient *)self _connectionWithErrorHandler:handlerCopy];
+  v6 = [v5 synchronousRemoteObjectProxyWithErrorHandler:handlerCopy];
 
   return v6;
 }
 
-- (id)_connectionWithErrorHandler:(id)a3
+- (id)_connectionWithErrorHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   os_unfair_lock_lock(&self->_connectionLock);
   if (self->_connection)
   {
@@ -611,7 +611,7 @@ void __41__LACDTOServiceXPCClient_isSensorTrusted__block_invoke_10(uint64_t a1, 
 
     if (v5)
     {
-      v4[2](v4, v5);
+      handlerCopy[2](handlerCopy, v5);
     }
   }
 

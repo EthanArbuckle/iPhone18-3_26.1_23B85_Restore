@@ -1,21 +1,21 @@
 @interface FMPlatterButton
-- (_TtC6FindMy15FMPlatterButton)initWithCoder:(id)a3;
-- (_TtC6FindMy15FMPlatterButton)initWithFrame:(CGRect)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
-- (void)traitCollectionDidChange:(id)a3;
+- (_TtC6FindMy15FMPlatterButton)initWithCoder:(id)coder;
+- (_TtC6FindMy15FMPlatterButton)initWithFrame:(CGRect)frame;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation FMPlatterButton
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v3 = *((swift_isaMask & self->super.super.super.isa) + 0xE0);
-  v4 = self;
+  selfCopy = self;
   v3();
 }
 
-- (_TtC6FindMy15FMPlatterButton)initWithCoder:(id)a3
+- (_TtC6FindMy15FMPlatterButton)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC6FindMy15FMPlatterButton_alignment) = 3;
   v4 = OBJC_IVAR____TtC6FindMy15FMPlatterButton_bottomSeparator;
@@ -27,34 +27,34 @@
   return result;
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   sub_10000905C(0, &qword_1006B0C30);
   sub_1000D5BCC();
   static Set._unconditionallyBridgeFromObjectiveC(_:)();
-  v6 = a4;
-  v7 = self;
+  eventCopy = event;
+  selfCopy = self;
   isa = Set._bridgeToObjectiveC()().super.isa;
 
-  v10.receiver = v7;
+  v10.receiver = selfCopy;
   v10.super_class = type metadata accessor for FMPlatterButton();
-  [(FMPlatterButton *)&v10 touchesBegan:isa withEvent:v6];
+  [(FMPlatterButton *)&v10 touchesBegan:isa withEvent:eventCopy];
 
-  v9 = [objc_opt_self() secondarySystemFillColor];
-  [(FMPlatterButton *)v7 setBackgroundColor:v9];
+  secondarySystemFillColor = [objc_opt_self() secondarySystemFillColor];
+  [(FMPlatterButton *)selfCopy setBackgroundColor:secondarySystemFillColor];
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
   sub_10000905C(0, &qword_1006B0C30);
   sub_1000D5BCC();
   v6 = static Set._unconditionallyBridgeFromObjectiveC(_:)();
-  v7 = a4;
-  v8 = self;
-  sub_1004F465C(v6, a4);
+  eventCopy = event;
+  selfCopy = self;
+  sub_1004F465C(v6, event);
 }
 
-- (_TtC6FindMy15FMPlatterButton)initWithFrame:(CGRect)a3
+- (_TtC6FindMy15FMPlatterButton)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,9 +1,9 @@
 @interface DiagnosticExtensionCaller
-+ (BOOL)getAttachmentsFrom:(id)a3 forBundleID:(id)a4 withParameters:(id)a5 queue:(id)a6 reply:(id)a7;
++ (BOOL)getAttachmentsFrom:(id)from forBundleID:(id)d withParameters:(id)parameters queue:(id)queue reply:(id)reply;
 + (id)sharedInstance;
-- (BOOL)_getAttachmentsFrom:(id)a3 forBundleID:(id)a4 withParameters:(id)a5 queue:(id)a6 reply:(id)a7;
+- (BOOL)_getAttachmentsFrom:(id)from forBundleID:(id)d withParameters:(id)parameters queue:(id)queue reply:(id)reply;
 - (DiagnosticExtensionCaller)init;
-- (id)_getDEExtensionWithIdentifier:(id)a3;
+- (id)_getDEExtensionWithIdentifier:(id)identifier;
 @end
 
 @implementation DiagnosticExtensionCaller
@@ -14,7 +14,7 @@
   block[1] = 3221225472;
   block[2] = __43__DiagnosticExtensionCaller_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_pred_0 != -1)
   {
     dispatch_once(&sharedInstance_pred_0, block);
@@ -39,19 +39,19 @@ uint64_t __43__DiagnosticExtensionCaller_sharedInstance__block_invoke(uint64_t a
   v2 = [(DiagnosticExtensionCaller *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     liveDEs = v2->_liveDEs;
-    v2->_liveDEs = v3;
+    v2->_liveDEs = array;
   }
 
   return v2;
 }
 
-- (id)_getDEExtensionWithIdentifier:(id)a3
+- (id)_getDEExtensionWithIdentifier:(id)identifier
 {
   v24[2] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 length])
+  identifierCopy = identifier;
+  if ([identifierCopy length])
   {
     v17 = 0;
     v18 = &v17;
@@ -64,7 +64,7 @@ uint64_t __43__DiagnosticExtensionCaller_sharedInstance__block_invoke(uint64_t a
     v23[0] = *MEMORY[0x277CCA0F8];
     v23[1] = v5;
     v24[0] = @"com.apple.diagnosticextensions-service";
-    v24[1] = v3;
+    v24[1] = identifierCopy;
     v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v24 forKeys:v23 count:2];
     v7 = MEMORY[0x277CCA9C8];
     v13[0] = MEMORY[0x277D85DD0];
@@ -72,7 +72,7 @@ uint64_t __43__DiagnosticExtensionCaller_sharedInstance__block_invoke(uint64_t a
     v13[2] = __59__DiagnosticExtensionCaller__getDEExtensionWithIdentifier___block_invoke;
     v13[3] = &unk_278CF07E8;
     v16 = &v17;
-    v14 = v3;
+    v14 = identifierCopy;
     v8 = v4;
     v15 = v8;
     [v7 extensionsWithMatchingAttributes:v6 completion:v13];
@@ -205,29 +205,29 @@ uint64_t __59__DiagnosticExtensionCaller__getDEExtensionWithIdentifier___block_i
   return v7;
 }
 
-- (BOOL)_getAttachmentsFrom:(id)a3 forBundleID:(id)a4 withParameters:(id)a5 queue:(id)a6 reply:(id)a7
+- (BOOL)_getAttachmentsFrom:(id)from forBundleID:(id)d withParameters:(id)parameters queue:(id)queue reply:(id)reply
 {
   v59 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v34 = a4;
-  v36 = a5;
-  v13 = a6;
-  v14 = a7;
-  v15 = v14;
-  if (v12 && v14)
+  fromCopy = from;
+  dCopy = d;
+  parametersCopy = parameters;
+  queueCopy = queue;
+  replyCopy = reply;
+  v15 = replyCopy;
+  if (fromCopy && replyCopy)
   {
-    v16 = [(DiagnosticExtensionCaller *)self _getDEExtensionWithIdentifier:v12];
+    v16 = [(DiagnosticExtensionCaller *)self _getDEExtensionWithIdentifier:fromCopy];
     v35 = v16 != 0;
     if (v16)
     {
       [(NSMutableArray *)self->_liveDEs addObject:v16];
-      v33 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:v36];
+      v33 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:parametersCopy];
       *buf = 0;
       *&buf[8] = buf;
       *&buf[16] = 0x2020000000;
       v58 = 0;
       objc_initWeak(&location, v16);
-      v17 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, v13);
+      v17 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, queueCopy);
       if (v17)
       {
         v18 = dispatch_time(0, 900000000000);
@@ -238,8 +238,8 @@ uint64_t __59__DiagnosticExtensionCaller__getDEExtensionWithIdentifier___block_i
         handler[3] = &unk_278CF0810;
         objc_copyWeak(&v52, &location);
         v51 = buf;
-        v48 = v12;
-        v49 = self;
+        v48 = fromCopy;
+        selfCopy = self;
         v50 = v15;
         dispatch_source_set_event_handler(v17, handler);
         dispatch_resume(v17);
@@ -291,12 +291,12 @@ uint64_t __59__DiagnosticExtensionCaller__getDEExtensionWithIdentifier___block_i
       v39 = v21;
       v27 = v17;
       v40 = v27;
-      v41 = v13;
+      v41 = queueCopy;
       objc_copyWeak(&v46, &location);
-      v28 = v12;
+      v28 = fromCopy;
       v42 = v28;
       v45 = buf;
-      v43 = self;
+      selfCopy2 = self;
       v44 = v15;
       v29 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, v25, 0, block);
       v30 = diagextLogHandle();
@@ -322,7 +322,7 @@ uint64_t __59__DiagnosticExtensionCaller__getDEExtensionWithIdentifier___block_i
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        *&buf[4] = v12;
+        *&buf[4] = fromCopy;
         _os_log_impl(&dword_241804000, v20, OS_LOG_TYPE_DEFAULT, "DECaller failing to find extension with name: %@", buf, 0xCu);
       }
 
@@ -339,7 +339,7 @@ uint64_t __59__DiagnosticExtensionCaller__getDEExtensionWithIdentifier___block_i
     {
       v19 = _Block_copy(v15);
       *buf = 138412546;
-      *&buf[4] = v12;
+      *&buf[4] = fromCopy;
       *&buf[12] = 2048;
       *&buf[14] = v19;
       _os_log_impl(&dword_241804000, v16, OS_LOG_TYPE_DEFAULT, "DECaller given a nil name (%@) or nil reply block (%p)", buf, 0x16u);
@@ -520,18 +520,18 @@ void __88__DiagnosticExtensionCaller__getAttachmentsFrom_forBundleID_withParamet
   v17 = *MEMORY[0x277D85DE8];
 }
 
-+ (BOOL)getAttachmentsFrom:(id)a3 forBundleID:(id)a4 withParameters:(id)a5 queue:(id)a6 reply:(id)a7
++ (BOOL)getAttachmentsFrom:(id)from forBundleID:(id)d withParameters:(id)parameters queue:(id)queue reply:(id)reply
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  fromCopy = from;
+  dCopy = d;
+  parametersCopy = parameters;
+  queueCopy = queue;
+  replyCopy = reply;
   v16 = +[DiagnosticExtensionCaller sharedInstance];
   v17 = v16;
   if (v16)
   {
-    v18 = [v16 _getAttachmentsFrom:v11 forBundleID:v12 withParameters:v13 queue:v14 reply:v15];
+    v18 = [v16 _getAttachmentsFrom:fromCopy forBundleID:dCopy withParameters:parametersCopy queue:queueCopy reply:replyCopy];
   }
 
   else

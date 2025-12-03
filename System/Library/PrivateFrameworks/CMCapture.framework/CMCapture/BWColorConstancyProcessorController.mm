@@ -1,29 +1,29 @@
 @interface BWColorConstancyProcessorController
-- (BWColorConstancyProcessorController)initWithConfiguration:(id)a3;
-- (CMAttachmentBearerRef)_newOutputSampleBufferFromSampleBuffer:(__CVBuffer *)a3 pixelBuffer:(__CVBuffer *)a4 confidenceMap:(void *)a5 metadata:(unsigned int)a6 processingFlags:(CFTypeRef *)a7 formatDescriptionInOut:;
-- (id)requestForInput:(id)a3 delegate:(id)a4 errOut:(int *)a5;
+- (BWColorConstancyProcessorController)initWithConfiguration:(id)configuration;
+- (CMAttachmentBearerRef)_newOutputSampleBufferFromSampleBuffer:(__CVBuffer *)buffer pixelBuffer:(__CVBuffer *)pixelBuffer confidenceMap:(void *)map metadata:(unsigned int)metadata processingFlags:(CFTypeRef *)flags formatDescriptionInOut:;
+- (id)requestForInput:(id)input delegate:(id)delegate errOut:(int *)out;
 - (int)prepare;
 - (int)process;
-- (uint64_t)_addFrame:(uint64_t)a3 type:;
+- (uint64_t)_addFrame:(uint64_t)frame type:;
 - (uint64_t)_loadSetupAndPrepareProcessor;
 - (uint64_t)process;
 - (void)dealloc;
-- (void)input:(id)a3 addAmbientFrame:(opaqueCMSampleBuffer *)a4;
-- (void)input:(id)a3 addFlashFrame:(opaqueCMSampleBuffer *)a4;
+- (void)input:(id)input addAmbientFrame:(opaqueCMSampleBuffer *)frame;
+- (void)input:(id)input addFlashFrame:(opaqueCMSampleBuffer *)frame;
 - (void)reset;
 @end
 
 @implementation BWColorConstancyProcessorController
 
-- (BWColorConstancyProcessorController)initWithConfiguration:(id)a3
+- (BWColorConstancyProcessorController)initWithConfiguration:(id)configuration
 {
   v8.receiver = self;
   v8.super_class = BWColorConstancyProcessorController;
-  v4 = [(BWStillImageProcessorController *)&v8 initWithName:@"ColourConstancy" type:17 configuration:a3];
+  v4 = [(BWStillImageProcessorController *)&v8 initWithName:@"ColourConstancy" type:17 configuration:configuration];
   if (v4)
   {
-    v4->_version = [a3 version];
-    v4->_outputPixelFormat = FigCaptureCompressedPixelFormatForPixelFormat(1751527984, 4, [a3 lossyCompressionLevel]);
+    v4->_version = [configuration version];
+    v4->_outputPixelFormat = FigCaptureCompressedPixelFormatForPixelFormat(1751527984, 4, [configuration lossyCompressionLevel]);
     v6 = objc_autoreleasePoolPush();
     SetupAndPrepare = [(BWColorConstancyProcessorController *)v4 _loadSetupAndPrepareProcessor];
     objc_autoreleasePoolPop(v6);
@@ -58,9 +58,9 @@
   [(BWStillImageProcessorController *)&v5 dealloc];
 }
 
-- (void)input:(id)a3 addFlashFrame:(opaqueCMSampleBuffer *)a4
+- (void)input:(id)input addFlashFrame:(opaqueCMSampleBuffer *)frame
 {
-  [(BWColorConstancyProcessorController *)self _addFrame:a4 type:1];
+  [(BWColorConstancyProcessorController *)self _addFrame:frame type:1];
 
   [(BWStillImageProcessorController *)self currentRequestChanged];
 }
@@ -79,9 +79,9 @@
   }
 }
 
-- (id)requestForInput:(id)a3 delegate:(id)a4 errOut:(int *)a5
+- (id)requestForInput:(id)input delegate:(id)delegate errOut:(int *)out
 {
-  v6 = [(BWStillImageProcessorControllerRequest *)[BWColorConstancyProcessorControllerRequest alloc] initWithInput:a3 delegate:a4];
+  v6 = [(BWStillImageProcessorControllerRequest *)[BWColorConstancyProcessorControllerRequest alloc] initWithInput:input delegate:delegate];
   if (v6)
   {
     v7 = 0;
@@ -92,9 +92,9 @@
     v7 = -12786;
   }
 
-  if (a5)
+  if (out)
   {
-    *a5 = v7;
+    *out = v7;
   }
 
   return v6;
@@ -102,8 +102,8 @@
 
 - (int)process
 {
-  v3 = [(BWStillImageProcessorController *)self currentRequest];
-  v4 = [(CMIColourConstancyProcessorProtocol *)self->_processor process];
+  currentRequest = [(BWStillImageProcessorController *)self currentRequest];
+  process = [(CMIColourConstancyProcessorProtocol *)self->_processor process];
   if (dword_1EB58E320)
   {
     v14 = 0;
@@ -113,9 +113,9 @@
     fig_log_call_emit_and_clean_up_after_send_and_compose();
   }
 
-  if (v4 || (v6 = [(BWColorConstancyProcessorController *)self _newOutputSampleBufferFromSampleBuffer:[(CMIColourConstancyProcessorProtocol *)self->_processor outputImagePixelBuffer] pixelBuffer:[(CMIColourConstancyProcessorProtocol *)self->_processor outputColourAccuracyConfidenceImagePixelBuffer] confidenceMap:[(CMIColourConstancyProcessorProtocol *)self->_processor outputImageMetadata] metadata:0 processingFlags:&self->_outputFormatDescription formatDescriptionInOut:?]) == 0)
+  if (process || (v6 = [(BWColorConstancyProcessorController *)self _newOutputSampleBufferFromSampleBuffer:[(CMIColourConstancyProcessorProtocol *)self->_processor outputImagePixelBuffer] pixelBuffer:[(CMIColourConstancyProcessorProtocol *)self->_processor outputColourAccuracyConfidenceImagePixelBuffer] confidenceMap:[(CMIColourConstancyProcessorProtocol *)self->_processor outputImageMetadata] metadata:0 processingFlags:&self->_outputFormatDescription formatDescriptionInOut:?]) == 0)
   {
-    [(BWColorConstancyProcessorController *)v3 process];
+    [(BWColorConstancyProcessorController *)currentRequest process];
   }
 
   else
@@ -128,7 +128,7 @@
     CMSetAttachment(v7, *off_1E798D2A0, [MEMORY[0x1E695DF20] dictionaryWithObjects:&v12 forKeys:&v11 count:1], 1u);
     v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(CMGetAttachment(v7, @"StillImageProcessingFlags", 0), "unsignedIntValue") | 0x80000}];
     CMSetAttachment(v7, @"StillImageProcessingFlags", v9, 1u);
-    [(BWStillImageProcessorControllerDelegate *)[(BWStillImageProcessorControllerRequest *)v3 delegate] processorController:self didFinishProcessingSampleBuffer:v7 type:1 processorInput:[(BWStillImageProcessorControllerRequest *)v3 input] err:0];
+    [(BWStillImageProcessorControllerDelegate *)[(BWStillImageProcessorControllerRequest *)currentRequest delegate] processorController:self didFinishProcessingSampleBuffer:v7 type:1 processorInput:[(BWStillImageProcessorControllerRequest *)currentRequest input] err:0];
     CFRelease(v7);
   }
 
@@ -166,9 +166,9 @@
   return result;
 }
 
-- (uint64_t)_addFrame:(uint64_t)a3 type:
+- (uint64_t)_addFrame:(uint64_t)frame type:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
@@ -183,12 +183,12 @@
     {
       v12 = CMSampleBufferGetImageBuffer(AttachedMedia);
       v13 = CMGetAttachment(v11, *off_1E798A3B0, 0);
-      v11 = objc_alloc_init(NSClassFromString([MEMORY[0x1E696AEC0] stringWithFormat:@"CMIColourConstancyFrameParamsV%d", *(a1 + 64)]));
+      v11 = objc_alloc_init(NSClassFromString([MEMORY[0x1E696AEC0] stringWithFormat:@"CMIColourConstancyFrameParamsV%d", *(self + 64)]));
       [(opaqueCMSampleBuffer *)v11 setLscGains:v12];
       [(opaqueCMSampleBuffer *)v11 setLscParams:v13];
     }
 
-    v14 = [*(a1 + 72) addFrame:v7 metadata:v9 frameType:a3 frameParams:v11];
+    v14 = [*(self + 72) addFrame:v7 metadata:v9 frameType:frame frameParams:v11];
   }
 
   else
@@ -200,24 +200,24 @@
   return v14;
 }
 
-- (void)input:(id)a3 addAmbientFrame:(opaqueCMSampleBuffer *)a4
+- (void)input:(id)input addAmbientFrame:(opaqueCMSampleBuffer *)frame
 {
-  [(BWColorConstancyProcessorController *)self _addFrame:a4 type:0];
+  [(BWColorConstancyProcessorController *)self _addFrame:frame type:0];
 
   [(BWStillImageProcessorController *)self currentRequestChanged];
 }
 
 - (int)prepare
 {
-  v3 = [(BWStillImageProcessorController *)self currentRequest];
-  v4 = [(BWStillImageProcessorControllerDelegate *)[(BWStillImageProcessorControllerRequest *)v3 delegate] processorController:self newOutputPixelBufferForProcessorInput:[(BWStillImageProcessorControllerRequest *)v3 input] type:1];
+  currentRequest = [(BWStillImageProcessorController *)self currentRequest];
+  v4 = [(BWStillImageProcessorControllerDelegate *)[(BWStillImageProcessorControllerRequest *)currentRequest delegate] processorController:self newOutputPixelBufferForProcessorInput:[(BWStillImageProcessorControllerRequest *)currentRequest input] type:1];
   if (!v4)
   {
     v5 = 0;
     goto LABEL_6;
   }
 
-  v5 = [(BWStillImageProcessorControllerDelegate *)[(BWStillImageProcessorControllerRequest *)v3 delegate] processorController:self newOutputPixelBufferForProcessorInput:[(BWStillImageProcessorControllerRequest *)v3 input] type:2002];
+  v5 = [(BWStillImageProcessorControllerDelegate *)[(BWStillImageProcessorControllerRequest *)currentRequest delegate] processorController:self newOutputPixelBufferForProcessorInput:[(BWStillImageProcessorControllerRequest *)currentRequest input] type:2002];
   if (!v5)
   {
 LABEL_6:
@@ -236,17 +236,17 @@ LABEL_4:
   return v6;
 }
 
-- (CMAttachmentBearerRef)_newOutputSampleBufferFromSampleBuffer:(__CVBuffer *)a3 pixelBuffer:(__CVBuffer *)a4 confidenceMap:(void *)a5 metadata:(unsigned int)a6 processingFlags:(CFTypeRef *)a7 formatDescriptionInOut:
+- (CMAttachmentBearerRef)_newOutputSampleBufferFromSampleBuffer:(__CVBuffer *)buffer pixelBuffer:(__CVBuffer *)pixelBuffer confidenceMap:(void *)map metadata:(unsigned int)metadata processingFlags:(CFTypeRef *)flags formatDescriptionInOut:
 {
   if (result)
   {
     v7 = 0;
     target = 0;
     v8 = 1;
-    if (a2 && a3)
+    if (a2 && buffer)
     {
       v12 = result;
-      if (BWCMSampleBufferCreateCopyWithNewPixelBuffer(a2, a3, a7, &target))
+      if (BWCMSampleBufferCreateCopyWithNewPixelBuffer(a2, buffer, flags, &target))
       {
         v7 = 0;
       }
@@ -255,19 +255,19 @@ LABEL_4:
       {
         v13 = *off_1E798A3C8;
         v7 = [CMGetAttachment(target *off_1E798A3C8];
-        if ([a5 count])
+        if ([map count])
         {
-          [v7 addEntriesFromDictionary:a5];
+          [v7 addEntriesFromDictionary:map];
         }
 
         CMSetAttachment(target, v13, v7, 1u);
-        if (a6)
+        if (metadata)
         {
           v14 = [CMGetAttachment(target @"StillImageProcessingFlags"];
-          CMSetAttachment(target, @"StillImageProcessingFlags", [MEMORY[0x1E696AD98] numberWithUnsignedInt:v14 | a6], 1u);
+          CMSetAttachment(target, @"StillImageProcessingFlags", [MEMORY[0x1E696AD98] numberWithUnsignedInt:v14 | metadata], 1u);
         }
 
-        BWSampleBufferSetAttachedMediaFromPixelBuffer(target, 0x1F21AB170, a4, v12 + 11, [*(v12 + 9) confidenceMapMetadata], 0, 0);
+        BWSampleBufferSetAttachedMediaFromPixelBuffer(target, 0x1F21AB170, pixelBuffer, v12 + 11, [*(v12 + 9) confidenceMapMetadata], 0, 0);
         v8 = 0;
       }
     }
@@ -288,12 +288,12 @@ LABEL_4:
 
 - (uint64_t)process
 {
-  v4 = [objc_msgSend(a1 "input")];
+  v4 = [objc_msgSend(self "input")];
   v5 = *off_1E798A3C8;
   v6 = [CMGetAttachment(v4 *off_1E798A3C8];
-  CMSetAttachment([objc_msgSend(a1 "input")], v5, v6, 1u);
+  CMSetAttachment([objc_msgSend(self "input")], v5, v6, 1u);
 
-  return [objc_msgSend(a1 "delegate")];
+  return [objc_msgSend(self "delegate")];
 }
 
 @end

@@ -1,8 +1,8 @@
 @interface BuddyEnrollmentSpinnerViewController
 - (BuddyEnrollmentSpinnerViewController)init;
-- (id)_messageForError:(id)a3;
-- (id)alertControllerForError:(id)a3 dismissAction:(id)a4;
-- (void)_presentMoreInfoForError:(id)a3 dismissAction:(id)a4;
+- (id)_messageForError:(id)error;
+- (id)alertControllerForError:(id)error dismissAction:(id)action;
+- (void)_presentMoreInfoForError:(id)error dismissAction:(id)action;
 @end
 
 @implementation BuddyEnrollmentSpinnerViewController
@@ -23,18 +23,18 @@
   return v5;
 }
 
-- (id)alertControllerForError:(id)a3 dismissAction:(id)a4
+- (id)alertControllerForError:(id)error dismissAction:(id)action
 {
-  v26 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, error);
   v24 = 0;
-  objc_storeStrong(&v24, a4);
-  v23 = [(BuddyEnrollmentSpinnerViewController *)v26 _messageForError:location[0]];
+  objc_storeStrong(&v24, action);
+  v23 = [(BuddyEnrollmentSpinnerViewController *)selfCopy _messageForError:location[0]];
   if (v23)
   {
-    objc_initWeak(&from, v26);
+    objc_initWeak(&from, selfCopy);
     v5 = +[NSBundle mainBundle];
     v6 = [(NSBundle *)v5 localizedStringForKey:@"REMOTE_MANAGEMENT_MIGRATION_NETWORK_ERROR_MORE_INFO" value:&stru_10032F900 table:@"Localizable"];
     v12 = _NSConcreteStackBlock;
@@ -77,12 +77,12 @@
   return v9;
 }
 
-- (id)_messageForError:(id)a3
+- (id)_messageForError:(id)error
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, error);
   v18 = 0;
   v19 = &v18;
   v20 = 838860800;
@@ -128,22 +128,22 @@
   return v4;
 }
 
-- (void)_presentMoreInfoForError:(id)a3 dismissAction:(id)a4
+- (void)_presentMoreInfoForError:(id)error dismissAction:(id)action
 {
-  v19 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, error);
   v17 = 0;
-  objc_storeStrong(&v17, a4);
-  v16 = [location[0] localizedDescription];
+  objc_storeStrong(&v17, action);
+  localizedDescription = [location[0] localizedDescription];
   v14 = 0;
   v5 = 0;
   if (os_variant_has_internal_ui())
   {
-    v15 = [location[0] underlyingErrors];
+    underlyingErrors = [location[0] underlyingErrors];
     v14 = 1;
-    v5 = v15 != 0;
+    v5 = underlyingErrors != 0;
   }
 
   if (v14)
@@ -152,22 +152,22 @@
 
   if (v5)
   {
-    v6 = [location[0] underlyingErrors];
-    v7 = [v6 firstObject];
-    v8 = [v7 description];
-    v9 = [NSString stringWithFormat:@"%@\n\n[Internal only]\n%@", v16, v8];
-    v10 = v16;
-    v16 = v9;
+    underlyingErrors2 = [location[0] underlyingErrors];
+    firstObject = [underlyingErrors2 firstObject];
+    v8 = [firstObject description];
+    v9 = [NSString stringWithFormat:@"%@\n\n[Internal only]\n%@", localizedDescription, v8];
+    v10 = localizedDescription;
+    localizedDescription = v9;
   }
 
   v11 = +[NSBundle mainBundle];
   v12 = [(NSBundle *)v11 localizedStringForKey:@"REMOTE_MANAGEMENT_MIGRATION_NETWORK_ERROR_TITLE" value:&stru_10032F900 table:@"Localizable"];
-  v13 = [UIAlertController alertControllerWithTitle:v12 message:v16 preferredStyle:1];
+  v13 = [UIAlertController alertControllerWithTitle:v12 message:localizedDescription preferredStyle:1];
 
   [v13 addAction:v17];
-  [(BuddyEnrollmentSpinnerViewController *)v19 presentViewController:v13 animated:1 completion:0];
+  [(BuddyEnrollmentSpinnerViewController *)selfCopy presentViewController:v13 animated:1 completion:0];
   objc_storeStrong(&v13, 0);
-  objc_storeStrong(&v16, 0);
+  objc_storeStrong(&localizedDescription, 0);
   objc_storeStrong(&v17, 0);
   objc_storeStrong(location, 0);
 }

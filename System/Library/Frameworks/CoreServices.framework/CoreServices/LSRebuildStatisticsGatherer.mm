@@ -9,8 +9,8 @@
 - (uint64_t)setMigratorRunning:(uint64_t)result;
 - (uint64_t)setOnlyCryptexContent:(uint64_t)result;
 - (uint64_t)setRebuildReasonFlags:(uint64_t)result;
-- (void)registeredBundleOfType:(uint64_t)a1;
-- (void)setRebuildError:(void *)a1;
+- (void)registeredBundleOfType:(uint64_t)type;
+- (void)setRebuildError:(void *)error;
 - (void)submitAnalytics;
 @end
 
@@ -95,11 +95,11 @@ void __46__LSRebuildStatisticsGatherer_submitAnalytics__block_invoke()
   return result;
 }
 
-- (void)registeredBundleOfType:(uint64_t)a1
+- (void)registeredBundleOfType:(uint64_t)type
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (type)
   {
     v7 = v3;
     if ([v3 isEqualToString:@"PluginKitPlugin"])
@@ -108,7 +108,7 @@ void __46__LSRebuildStatisticsGatherer_submitAnalytics__block_invoke()
 LABEL_10:
       v4 = v7;
 LABEL_11:
-      ++*(a1 + v5);
+      ++*(type + v5);
       goto LABEL_12;
     }
 
@@ -132,7 +132,7 @@ LABEL_12:
 
 - (void)submitAnalytics
 {
-  if (a1)
+  if (self)
   {
     if (qword_1ED4452F8 != -1)
     {
@@ -147,7 +147,7 @@ LABEL_12:
       v5[1] = 3221225472;
       v5[2] = __46__LSRebuildStatisticsGatherer_submitAnalytics__block_invoke_21;
       v5[3] = &unk_1E6A18F50;
-      v5[4] = a1;
+      v5[4] = self;
       v6 = v2;
       v4 = v2;
       dispatch_async(v3, v5);
@@ -340,11 +340,11 @@ void __46__LSRebuildStatisticsGatherer_submitAnalytics__block_invoke_21(uint64_t
   return result;
 }
 
-- (void)setRebuildError:(void *)a1
+- (void)setRebuildError:(void *)error
 {
-  if (a1)
+  if (error)
   {
-    objc_setProperty_nonatomic_copy(a1, newValue, newValue, 72);
+    objc_setProperty_nonatomic_copy(error, newValue, newValue, 72);
   }
 }
 

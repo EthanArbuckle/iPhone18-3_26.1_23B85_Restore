@@ -1,38 +1,38 @@
 @interface _UITextItemActionSheet
-- (CGRect)initialPresentationRectInHostViewForSheet:(id)a3;
-- (CGRect)presentationRectInHostViewForSheet:(id)a3;
-- (_UITextItemActionSheet)initWithTitle:(id)a3 dataDetectorActions:(id)a4 fromRect:(CGRect)a5 inView:(id)a6;
-- (id)_alertActionsWithController:(id)a3;
-- (id)hostViewForSheet:(id)a3;
+- (CGRect)initialPresentationRectInHostViewForSheet:(id)sheet;
+- (CGRect)presentationRectInHostViewForSheet:(id)sheet;
+- (_UITextItemActionSheet)initWithTitle:(id)title dataDetectorActions:(id)actions fromRect:(CGRect)rect inView:(id)view;
+- (id)_alertActionsWithController:(id)controller;
+- (id)hostViewForSheet:(id)sheet;
 - (void)dealloc;
 - (void)present;
 @end
 
 @implementation _UITextItemActionSheet
 
-- (_UITextItemActionSheet)initWithTitle:(id)a3 dataDetectorActions:(id)a4 fromRect:(CGRect)a5 inView:(id)a6
+- (_UITextItemActionSheet)initWithTitle:(id)title dataDetectorActions:(id)actions fromRect:(CGRect)rect inView:(id)view
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v14 = a3;
-  v15 = a4;
-  v16 = a6;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  titleCopy = title;
+  actionsCopy = actions;
+  viewCopy = view;
   v27.receiver = self;
   v27.super_class = _UITextItemActionSheet;
   v17 = [(_UITextItemActionSheet *)&v27 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_title, a3);
-    v19 = [v15 copy];
+    objc_storeStrong(&v17->_title, title);
+    v19 = [actionsCopy copy];
     ddActions = v18->_ddActions;
     v18->_ddActions = v19;
 
-    objc_storeWeak(&v18->_view, v16);
-    v21 = [v16 _screen];
-    [v21 scale];
+    objc_storeWeak(&v18->_view, viewCopy);
+    _screen = [viewCopy _screen];
+    [_screen scale];
     v18->_rect.origin.x = UIRectIntegralWithScale(x, y, width, height, v22);
     v18->_rect.origin.y = v23;
     v18->_rect.size.width = v24;
@@ -73,11 +73,11 @@
   }
 }
 
-- (id)_alertActionsWithController:(id)a3
+- (id)_alertActionsWithController:(id)controller
 {
   v30 = *MEMORY[0x1E69E9840];
-  val = a3;
-  v18 = [MEMORY[0x1E695DF70] array];
+  val = controller;
+  array = [MEMORY[0x1E695DF70] array];
   objc_initWeak(&location, val);
   objc_copyWeak(&to, &self->_view);
   v25 = 0u;
@@ -113,11 +113,11 @@
         v19[3] = &unk_1E70F3CB0;
         v19[4] = v6;
         v8 = _Block_copy(v19);
-        v9 = [v6 localizedName];
-        v10 = [v6 icon];
-        v11 = [UIAlertAction _actionWithTitle:v9 image:v10 style:0 handler:v7 shouldDismissHandler:v8];
+        localizedName = [v6 localizedName];
+        icon = [v6 icon];
+        v11 = [UIAlertAction _actionWithTitle:localizedName image:icon style:0 handler:v7 shouldDismissHandler:v8];
 
-        [v18 addObject:v11];
+        [array addObject:v11];
         objc_destroyWeak(&v22);
         objc_destroyWeak(&v21);
       }
@@ -128,25 +128,25 @@
     while (v4);
   }
 
-  if ([v18 count])
+  if ([array count])
   {
     v12 = _UINSLocalizedStringWithDefaultValue(@"Cancel", @"Cancel");
     v13 = [UIAlertAction actionWithTitle:v12 style:1 handler:&__block_literal_global_235];
 
-    [v18 addObject:v13];
+    [array addObject:v13];
   }
 
   objc_destroyWeak(&to);
   objc_destroyWeak(&location);
 
-  return v18;
+  return array;
 }
 
-- (id)hostViewForSheet:(id)a3
+- (id)hostViewForSheet:(id)sheet
 {
-  v4 = a3;
-  v5 = [v4 popoverPresentationController];
-  if (v5 && ([v4 presentationController], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "presentationStyle"), v6, v7 == 7) || (dyld_program_sdk_at_least() & 1) != 0)
+  sheetCopy = sheet;
+  popoverPresentationController = [sheetCopy popoverPresentationController];
+  if (popoverPresentationController && ([sheetCopy presentationController], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "presentationStyle"), v6, v7 == 7) || (dyld_program_sdk_at_least() & 1) != 0)
   {
     WeakRetained = objc_loadWeakRetained(&self->_view);
   }
@@ -158,9 +158,9 @@
     {
       v10 = [_UIAlertControllerShimPresenterWindow alloc];
       v11 = objc_loadWeakRetained(&self->_view);
-      v12 = [v11 window];
-      v13 = [v12 windowScene];
-      v14 = [(_UIAlertControllerShimPresenterWindow *)v10 initWithWindowScene:v13];
+      window = [v11 window];
+      windowScene = [window windowScene];
+      v14 = [(_UIAlertControllerShimPresenterWindow *)v10 initWithWindowScene:windowScene];
       v15 = self->_alertWindow;
       self->_alertWindow = v14;
 
@@ -177,7 +177,7 @@
   return v16;
 }
 
-- (CGRect)initialPresentationRectInHostViewForSheet:(id)a3
+- (CGRect)initialPresentationRectInHostViewForSheet:(id)sheet
 {
   x = self->_rect.origin.x;
   y = self->_rect.origin.y;
@@ -190,7 +190,7 @@
   return result;
 }
 
-- (CGRect)presentationRectInHostViewForSheet:(id)a3
+- (CGRect)presentationRectInHostViewForSheet:(id)sheet
 {
   x = self->_rect.origin.x;
   y = self->_rect.origin.y;

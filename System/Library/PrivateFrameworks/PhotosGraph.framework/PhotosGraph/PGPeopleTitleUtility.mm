@@ -1,26 +1,26 @@
 @interface PGPeopleTitleUtility
-+ (id)_placeDisplayNameForPeopleAddressNodeLabel:(id)a3 titleComponent:(id)a4 containsMe:(BOOL)a5;
-+ (id)beautifiedLocationStringWithPersonNode:(id)a3 peopleAddressEdge:(id)a4 titleComponent:(id)a5 insertLineBreak:(BOOL)a6 allowFamilyHome:(BOOL)a7 serviceManager:(id)a8;
-+ (id)nameFromPersonNode:(id)a3 serviceManager:(id)a4;
-+ (id)nameStringForPersonNodes:(id)a3 includeMe:(BOOL)a4 allowUnnamed:(BOOL)a5 allowedGroupsFormat:(unint64_t)a6 insertLineBreaks:(BOOL)a7 serviceManager:(id)a8;
-+ (id)peopleGroupNameForPersonNodes:(id)a3 allowedGroupsFormat:(unint64_t)a4;
-+ (id)peopleGroupNameForPersonNodes:(id)a3 allowedGroupsFormat:(unint64_t)a4 fallbackToGeneric:(BOOL)a5;
++ (id)_placeDisplayNameForPeopleAddressNodeLabel:(id)label titleComponent:(id)component containsMe:(BOOL)me;
++ (id)beautifiedLocationStringWithPersonNode:(id)node peopleAddressEdge:(id)edge titleComponent:(id)component insertLineBreak:(BOOL)break allowFamilyHome:(BOOL)home serviceManager:(id)manager;
++ (id)nameFromPersonNode:(id)node serviceManager:(id)manager;
++ (id)nameStringForPersonNodes:(id)nodes includeMe:(BOOL)me allowUnnamed:(BOOL)unnamed allowedGroupsFormat:(unint64_t)format insertLineBreaks:(BOOL)breaks serviceManager:(id)manager;
++ (id)peopleGroupNameForPersonNodes:(id)nodes allowedGroupsFormat:(unint64_t)format;
++ (id)peopleGroupNameForPersonNodes:(id)nodes allowedGroupsFormat:(unint64_t)format fallbackToGeneric:(BOOL)generic;
 @end
 
 @implementation PGPeopleTitleUtility
 
-+ (id)_placeDisplayNameForPeopleAddressNodeLabel:(id)a3 titleComponent:(id)a4 containsMe:(BOOL)a5
++ (id)_placeDisplayNameForPeopleAddressNodeLabel:(id)label titleComponent:(id)component containsMe:(BOOL)me
 {
-  v5 = a5;
+  meCopy = me;
   v20 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if ([v7 isEqualToString:@"Home"])
+  labelCopy = label;
+  componentCopy = component;
+  if ([labelCopy isEqualToString:@"Home"])
   {
     v9 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-    v10 = [v9 localizedStringForKey:@"PGPeoplePlaceFormatHome" value:@"PGPeoplePlaceFormatHome" table:@"Localizable"];
+    capitalizedString = [v9 localizedStringForKey:@"PGPeoplePlaceFormatHome" value:@"PGPeoplePlaceFormatHome" table:@"Localizable"];
 
-    if (v5)
+    if (meCopy)
     {
       v11 = 1;
     }
@@ -30,18 +30,18 @@
       v11 = 3;
     }
 
-    v12 = v8;
+    v12 = componentCopy;
     goto LABEL_6;
   }
 
-  if ([v7 isEqualToString:@"Work"])
+  if ([labelCopy isEqualToString:@"Work"])
   {
     v13 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-    v10 = [v13 localizedStringForKey:@"PGPeoplePlaceFormatWork" value:@"PGPeoplePlaceFormatWork" table:@"Localizable"];
+    capitalizedString = [v13 localizedStringForKey:@"PGPeoplePlaceFormatWork" value:@"PGPeoplePlaceFormatWork" table:@"Localizable"];
 
-    if (v5)
+    if (meCopy)
     {
-      v12 = v8;
+      v12 = componentCopy;
       v11 = 2;
 LABEL_6:
       [v12 setType:v11];
@@ -50,53 +50,53 @@ LABEL_6:
 
   else
   {
-    v10 = [v7 capitalizedString];
+    capitalizedString = [labelCopy capitalizedString];
     v14 = +[PGLogging sharedLogging];
-    v15 = [v14 loggingConnection];
+    loggingConnection = [v14 loggingConnection];
 
-    if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
     {
       v18 = 138412290;
-      v19 = v7;
-      _os_log_error_impl(&dword_22F0FC000, v15, OS_LOG_TYPE_ERROR, "Could not find place name for edge with label %@. Falling back to edge label", &v18, 0xCu);
+      v19 = labelCopy;
+      _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "Could not find place name for edge with label %@. Falling back to edge label", &v18, 0xCu);
     }
   }
 
   v16 = *MEMORY[0x277D85DE8];
 
-  return v10;
+  return capitalizedString;
 }
 
-+ (id)nameFromPersonNode:(id)a3 serviceManager:(id)a4
++ (id)nameFromPersonNode:(id)node serviceManager:(id)manager
 {
   v22[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 contactIdentifier];
+  nodeCopy = node;
+  managerCopy = manager;
+  contactIdentifier = [nodeCopy contactIdentifier];
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
   v19 = __Block_byref_object_copy__68424;
   v20 = __Block_byref_object_dispose__68425;
   v21 = 0;
-  if ([v7 length])
+  if ([contactIdentifier length])
   {
-    v22[0] = v7;
+    v22[0] = contactIdentifier;
     v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v22 count:1];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __58__PGPeopleTitleUtility_nameFromPersonNode_serviceManager___block_invoke;
     v15[3] = &unk_278889A28;
     v15[4] = &v16;
-    [v6 enumeratePersonsForIdentifiers:v8 usingBlock:v15];
+    [managerCopy enumeratePersonsForIdentifiers:v8 usingBlock:v15];
   }
 
   v9 = v17[5];
   if (!v9)
   {
-    v10 = [v5 name];
+    name = [nodeCopy name];
     v11 = v17[5];
-    v17[5] = v10;
+    v17[5] = name;
 
     v9 = v17[5];
   }
@@ -150,30 +150,30 @@ void __58__PGPeopleTitleUtility_nameFromPersonNode_serviceManager___block_invoke
 LABEL_8:
 }
 
-+ (id)peopleGroupNameForPersonNodes:(id)a3 allowedGroupsFormat:(unint64_t)a4
++ (id)peopleGroupNameForPersonNodes:(id)nodes allowedGroupsFormat:(unint64_t)format
 {
-  v4 = a4;
+  formatCopy = format;
   v53 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (![v5 count])
+  nodesCopy = nodes;
+  if (![nodesCopy count])
   {
     v11 = +[PGLogging sharedLogging];
-    v7 = [v11 loggingConnection];
+    loggingConnection = [v11 loggingConnection];
 
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
     {
       *buf = 0;
-      _os_log_error_impl(&dword_22F0FC000, v7, OS_LOG_TYPE_ERROR, "+[PGPeopleTitleUtility peopleGroupNameForPersonNodes:allowedGroupsFormat:] personNodes.count == 0", buf, 2u);
+      _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "+[PGPeopleTitleUtility peopleGroupNameForPersonNodes:allowedGroupsFormat:] personNodes.count == 0", buf, 2u);
     }
 
     goto LABEL_13;
   }
 
-  v38 = v4;
-  v6 = [v5 anyObject];
-  v7 = [v6 graph];
+  v38 = formatCopy;
+  anyObject = [nodesCopy anyObject];
+  loggingConnection = [anyObject graph];
 
-  if (!v7)
+  if (!loggingConnection)
   {
     v12 = +[PGLogging sharedLogging];
     p_super = [v12 loggingConnection];
@@ -188,24 +188,24 @@ LABEL_8:
     goto LABEL_51;
   }
 
-  if ((v38 & 0xF) == 0 || ![v5 count])
+  if ((v38 & 0xF) == 0 || ![nodesCopy count])
   {
 LABEL_13:
     v10 = 0;
     goto LABEL_52;
   }
 
-  v8 = [(MAElementCollection *)[PGGraphPersonNodeCollection alloc] initWithSet:v5 graph:v7];
-  v36 = [(PGGraphNodeCollection *)PGGraphMeNodeCollection nodesInGraph:v7];
+  v8 = [(MAElementCollection *)[PGGraphPersonNodeCollection alloc] initWithSet:nodesCopy graph:loggingConnection];
+  v36 = [(PGGraphNodeCollection *)PGGraphMeNodeCollection nodesInGraph:loggingConnection];
   if (![v36 count])
   {
     v14 = +[PGLogging sharedLogging];
-    v15 = [v14 loggingConnection];
+    loggingConnection2 = [v14 loggingConnection];
 
-    if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
+    if (os_log_type_enabled(loggingConnection2, OS_LOG_TYPE_INFO))
     {
       *buf = 0;
-      _os_log_impl(&dword_22F0FC000, v15, OS_LOG_TYPE_INFO, "+[PGPeopleTitleUtility peopleGroupNameForPersonNodes:allowedGroupsFormat:] No me node found in graph, not using group name", buf, 2u);
+      _os_log_impl(&dword_22F0FC000, loggingConnection2, OS_LOG_TYPE_INFO, "+[PGPeopleTitleUtility peopleGroupNameForPersonNodes:allowedGroupsFormat:] No me node found in graph, not using group name", buf, 2u);
     }
 
     v10 = 0;
@@ -242,7 +242,7 @@ LABEL_48:
 
       _Block_object_dispose(buf, 8);
       v8 = v37;
-      v15 = v34;
+      loggingConnection2 = v34;
 LABEL_49:
 
       v37 = v8;
@@ -400,12 +400,12 @@ void __74__PGPeopleTitleUtility_peopleGroupNameForPersonNodes_allowedGroupsForma
   v18 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)peopleGroupNameForPersonNodes:(id)a3 allowedGroupsFormat:(unint64_t)a4 fallbackToGeneric:(BOOL)a5
++ (id)peopleGroupNameForPersonNodes:(id)nodes allowedGroupsFormat:(unint64_t)format fallbackToGeneric:(BOOL)generic
 {
-  v5 = a5;
-  v6 = [a1 peopleGroupNameForPersonNodes:a3 allowedGroupsFormat:a4];
+  genericCopy = generic;
+  v6 = [self peopleGroupNameForPersonNodes:nodes allowedGroupsFormat:format];
   v7 = v6;
-  if (v5 && !v6)
+  if (genericCopy && !v6)
   {
     v8 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v7 = [v8 localizedStringForKey:@"PGPeopleTitleFormatGenericSocialGroup" value:@"PGPeopleTitleFormatGenericSocialGroup" table:@"Localizable"];
@@ -414,46 +414,46 @@ void __74__PGPeopleTitleUtility_peopleGroupNameForPersonNodes_allowedGroupsForma
   return v7;
 }
 
-+ (id)nameStringForPersonNodes:(id)a3 includeMe:(BOOL)a4 allowUnnamed:(BOOL)a5 allowedGroupsFormat:(unint64_t)a6 insertLineBreaks:(BOOL)a7 serviceManager:(id)a8
++ (id)nameStringForPersonNodes:(id)nodes includeMe:(BOOL)me allowUnnamed:(BOOL)unnamed allowedGroupsFormat:(unint64_t)format insertLineBreaks:(BOOL)breaks serviceManager:(id)manager
 {
-  v11 = a5;
+  unnamedCopy = unnamed;
   v75[1] = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a8;
-  if (![v14 count])
+  nodesCopy = nodes;
+  managerCopy = manager;
+  if (![nodesCopy count])
   {
-    v22 = 0;
+    firstObject2 = 0;
     goto LABEL_53;
   }
 
-  v66 = a7;
-  v67 = v11;
-  v16 = [v14 mutableCopy];
-  v17 = [v14 anyObject];
-  v18 = [v17 graph];
-  v19 = [(PGGraphNodeCollection *)PGGraphMeNodeCollection nodesInGraph:v18];
-  v20 = [v19 anyNode];
+  breaksCopy = breaks;
+  v67 = unnamedCopy;
+  v16 = [nodesCopy mutableCopy];
+  anyObject = [nodesCopy anyObject];
+  graph = [anyObject graph];
+  v19 = [(PGGraphNodeCollection *)PGGraphMeNodeCollection nodesInGraph:graph];
+  anyNode = [v19 anyNode];
 
-  if (v20)
+  if (anyNode)
   {
-    [v16 removeObject:v20];
+    [v16 removeObject:anyNode];
     if (![v16 count])
     {
-      [v16 addObject:v20];
-      a4 = 0;
+      [v16 addObject:anyNode];
+      me = 0;
     }
   }
 
   v21 = [v16 count];
-  if (a6 == 1 || v21 < 2 || ([a1 peopleGroupNameForPersonNodes:v16 allowedGroupsFormat:a6], (v22 = objc_claimAutoreleasedReturnValue()) == 0))
+  if (format == 1 || v21 < 2 || ([self peopleGroupNameForPersonNodes:v16 allowedGroupsFormat:format], (firstObject2 = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v69 = v20;
+    v69 = anyNode;
     v23 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"name" ascending:1];
     v75[0] = v23;
     v24 = [MEMORY[0x277CBEA60] arrayWithObjects:v75 count:1];
     v25 = [v16 sortedArrayUsingDescriptors:v24];
 
-    v26 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v70 = 0u;
     v71 = 0u;
     v72 = 0u;
@@ -463,9 +463,9 @@ void __74__PGPeopleTitleUtility_peopleGroupNameForPersonNodes_allowedGroupsForma
     if (v28)
     {
       v29 = v28;
-      v59 = a4;
+      meCopy = me;
       v62 = v16;
-      v64 = v14;
+      v64 = nodesCopy;
       v30 = 0;
       v31 = *v71;
       do
@@ -477,13 +477,13 @@ void __74__PGPeopleTitleUtility_peopleGroupNameForPersonNodes_allowedGroupsForma
             objc_enumerationMutation(v27);
           }
 
-          v33 = [a1 nameFromPersonNode:*(*(&v70 + 1) + 8 * i) serviceManager:v15];
+          v33 = [self nameFromPersonNode:*(*(&v70 + 1) + 8 * i) serviceManager:managerCopy];
           v34 = v33;
           if (v33)
           {
             if ([v33 length])
             {
-              [v26 addObject:v34];
+              [array addObject:v34];
             }
 
             else
@@ -498,30 +498,30 @@ void __74__PGPeopleTitleUtility_peopleGroupNameForPersonNodes_allowedGroupsForma
 
       while (v29);
 
-      v14 = v64;
+      nodesCopy = v64;
       if (v67)
       {
-        a4 = v59;
+        me = meCopy;
         if (v30 == 1)
         {
-          if ([v26 count])
+          if ([array count])
           {
             v35 = 1;
           }
 
           else
           {
-            v35 = v59;
+            v35 = meCopy;
           }
 
           if ((v35 & 1) == 0)
           {
-            v50 = [v64 anyObject];
-            v51 = [v50 ageCategory];
+            anyObject2 = [v64 anyObject];
+            ageCategory = [anyObject2 ageCategory];
 
             v52 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
             v53 = v52;
-            if (v51 == 1)
+            if (ageCategory == 1)
             {
               v54 = @"PGPeopleTitleFormatGenericUnnamedChild";
             }
@@ -531,7 +531,7 @@ void __74__PGPeopleTitleUtility_peopleGroupNameForPersonNodes_allowedGroupsForma
               v54 = @"PGPeopleTitleFormatGenericUnnamedPerson";
             }
 
-            v22 = [v52 localizedStringForKey:v54 value:v54 table:@"Localizable"];
+            firstObject2 = [v52 localizedStringForKey:v54 value:v54 table:@"Localizable"];
 
             v16 = v62;
             goto LABEL_50;
@@ -543,18 +543,18 @@ void __74__PGPeopleTitleUtility_peopleGroupNameForPersonNodes_allowedGroupsForma
 
       else
       {
-        a4 = v59;
+        me = meCopy;
       }
 
-      v36 = a6 & 1;
+      v36 = format & 1;
       v16 = v62;
-      if ((a6 & 1) != 0 && v30)
+      if ((format & 1) != 0 && v30)
       {
         v37 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-        v22 = [v37 localizedStringForKey:@"PGPeopleTitleFormatGenericSocialGroup" value:@"PGPeopleTitleFormatGenericSocialGroup" table:@"Localizable"];
+        firstObject2 = [v37 localizedStringForKey:@"PGPeopleTitleFormatGenericSocialGroup" value:@"PGPeopleTitleFormatGenericSocialGroup" table:@"Localizable"];
 
 LABEL_50:
-        v20 = v69;
+        anyNode = v69;
         goto LABEL_51;
       }
     }
@@ -562,12 +562,12 @@ LABEL_50:
     else
     {
 
-      v36 = a6 & 1;
+      v36 = format & 1;
     }
 
     v65 = v36;
-    v20 = v69;
-    v38 = !a4;
+    anyNode = v69;
+    v38 = !me;
     if (!v69)
     {
       v38 = 1;
@@ -577,56 +577,56 @@ LABEL_50:
     {
       v39 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v40 = [v39 localizedStringForKey:@"PGPeopleTitleFormatMePerson" value:@"PGPeopleTitleFormatMePerson" table:@"Localizable"];
-      [v26 addObject:v40];
+      [array addObject:v40];
     }
 
-    if ([v26 count] == 2)
+    if ([array count] == 2)
     {
-      v68 = [v26 firstObject];
-      v41 = [v26 lastObject];
+      firstObject = [array firstObject];
+      lastObject = [array lastObject];
       v60 = MEMORY[0x277CCACA8];
       v42 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v43 = [v42 localizedStringForKey:@"PGPeopleTitleFormatTwoPeopleWithPersonName %@ otherPersonName %@" value:@"PGPeopleTitleFormatTwoPeopleWithPersonName %@ otherPersonName %@" table:@"Localizable"];
-      v63 = v41;
-      v22 = [v60 localizedStringWithFormat:v43, v68, v41];
+      lastObject2 = lastObject;
+      firstObject2 = [v60 localizedStringWithFormat:v43, firstObject, lastObject];
     }
 
     else
     {
-      if ([v26 count] < 3)
+      if ([array count] < 3)
       {
-        v22 = [v26 firstObject];
+        firstObject2 = [array firstObject];
 LABEL_51:
 
         goto LABEL_52;
       }
 
-      v68 = [v26 subarrayWithRange:{0, objc_msgSend(v26, "count") - 1}];
-      v63 = [v26 lastObject];
+      firstObject = [array subarrayWithRange:{0, objc_msgSend(array, "count") - 1}];
+      lastObject2 = [array lastObject];
       v58 = MEMORY[0x277CCACA8];
       v61 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v44 = [v61 localizedStringForKey:@"PGPeopleTitleFormatMultiplePeopleWithConcatenatedPersonNames %@ lastPersonName %@" value:@"PGPeopleTitleFormatMultiplePeopleWithConcatenatedPersonNames %@ lastPersonName %@" table:@"Localizable"];
       v57 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v45 = [v57 localizedStringForKey:@"PGPeopleTitleFormatMultiplePeoplePersonNameConcatenator" value:@"PGPeopleTitleFormatMultiplePeoplePersonNameConcatenator" table:@"Localizable"];
-      v46 = [v68 componentsJoinedByString:v45];
-      v22 = [v58 localizedStringWithFormat:v44, v46, v63];
+      v46 = [firstObject componentsJoinedByString:v45];
+      firstObject2 = [v58 localizedStringWithFormat:v44, v46, lastObject2];
 
-      v20 = v69;
+      anyNode = v69;
     }
 
-    if (v66)
+    if (breaksCopy)
     {
-      v47 = [PGCommonTitleUtility titleWithLineBreakForTitle:v22 andUsedNames:v26];
+      v47 = [PGCommonTitleUtility titleWithLineBreakForTitle:firstObject2 andUsedNames:array];
 
-      v22 = v47;
+      firstObject2 = v47;
     }
 
-    if (v65 && [v22 length] >= 0x17)
+    if (v65 && [firstObject2 length] >= 0x17)
     {
       v48 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v49 = [v48 localizedStringForKey:@"PGPeopleTitleFormatGenericSocialGroup" value:@"PGPeopleTitleFormatGenericSocialGroup" table:@"Localizable"];
 
-      v22 = v49;
+      firstObject2 = v49;
     }
 
     goto LABEL_51;
@@ -637,49 +637,49 @@ LABEL_52:
 LABEL_53:
   v55 = *MEMORY[0x277D85DE8];
 
-  return v22;
+  return firstObject2;
 }
 
-+ (id)beautifiedLocationStringWithPersonNode:(id)a3 peopleAddressEdge:(id)a4 titleComponent:(id)a5 insertLineBreak:(BOOL)a6 allowFamilyHome:(BOOL)a7 serviceManager:(id)a8
++ (id)beautifiedLocationStringWithPersonNode:(id)node peopleAddressEdge:(id)edge titleComponent:(id)component insertLineBreak:(BOOL)break allowFamilyHome:(BOOL)home serviceManager:(id)manager
 {
-  v9 = a7;
-  v40 = a6;
+  homeCopy = home;
+  breakCopy = break;
   v54 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v42 = a8;
-  v16 = [v14 targetNode];
-  v17 = [v16 label];
+  nodeCopy = node;
+  edgeCopy = edge;
+  componentCopy = component;
+  managerCopy = manager;
+  targetNode = [edgeCopy targetNode];
+  label = [targetNode label];
 
-  v18 = [v13 isMeNode];
-  v19 = [a1 _placeDisplayNameForPeopleAddressNodeLabel:v17 titleComponent:v15 containsMe:v18];
+  isMeNode = [nodeCopy isMeNode];
+  v19 = [self _placeDisplayNameForPeopleAddressNodeLabel:label titleComponent:componentCopy containsMe:isMeNode];
   v20 = v19;
-  if (v18)
+  if (isMeNode)
   {
     v21 = v19;
     goto LABEL_22;
   }
 
-  v22 = [v14 sourceNode];
-  v23 = [v13 graph];
-  v41 = [(PGGraphNodeCollection *)PGGraphMeNodeCollection nodesInGraph:v23];
+  sourceNode = [edgeCopy sourceNode];
+  graph = [nodeCopy graph];
+  v41 = [(PGGraphNodeCollection *)PGGraphMeNodeCollection nodesInGraph:graph];
 
   v47 = 0;
   v48 = &v47;
   v49 = 0x2020000000;
   v50 = 0;
-  v24 = [v41 anyNode];
+  anyNode = [v41 anyNode];
   v43[0] = MEMORY[0x277D85DD0];
   v43[1] = 3221225472;
   v43[2] = __143__PGPeopleTitleUtility_beautifiedLocationStringWithPersonNode_peopleAddressEdge_titleComponent_insertLineBreak_allowFamilyHome_serviceManager___block_invoke;
   v43[3] = &unk_2788899D8;
-  v39 = v22;
+  v39 = sourceNode;
   v44 = v39;
-  v25 = v17;
+  v25 = label;
   v45 = v25;
   v46 = &v47;
-  [v24 enumerateHomeOrWorkAddressNodesUsingBlock:v43];
+  [anyNode enumerateHomeOrWorkAddressNodesUsingBlock:v43];
 
   if (*(v48 + 24) == 1)
   {
@@ -693,62 +693,62 @@ LABEL_53:
       v26 = 2;
     }
 
-    [v15 setType:v26];
+    [componentCopy setType:v26];
     v21 = v20;
     goto LABEL_21;
   }
 
-  if ((v9 & [v25 isEqualToString:@"Home"]) != 1 || !objc_msgSend(v13, "isMemberOfMyFamily"))
+  if ((homeCopy & [v25 isEqualToString:@"Home"]) != 1 || !objc_msgSend(nodeCopy, "isMemberOfMyFamily"))
   {
-    v38 = [a1 nameFromPersonNode:v13 serviceManager:v42];
+    v38 = [self nameFromPersonNode:nodeCopy serviceManager:managerCopy];
     if ([v38 length])
     {
-      if ([v15 type] == 3)
+      if ([componentCopy type] == 3)
       {
         v28 = MEMORY[0x277CCACA8];
         v29 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
         v30 = [v29 localizedStringForKey:@"PGPeoplePlaceTitleFormatHomeWithPersonName %@" value:@"PGPeoplePlaceTitleFormatHomeWithPersonName %@" table:@"Localizable"];
-        v31 = [v28 localizedStringWithFormat:v30, v38];
+        loggingConnection = [v28 localizedStringWithFormat:v30, v38];
 
-        [v15 setPersonName:v38];
-        if (v40)
+        [componentCopy setPersonName:v38];
+        if (breakCopy)
         {
           v51[0] = v38;
           v51[1] = v20;
           v32 = [MEMORY[0x277CBEA60] arrayWithObjects:v51 count:2];
-          v21 = [PGCommonTitleUtility titleWithLineBreakForTitle:v31 andUsedNames:v32];
+          v21 = [PGCommonTitleUtility titleWithLineBreakForTitle:loggingConnection andUsedNames:v32];
         }
 
         else
         {
-          v31 = v31;
-          v21 = v31;
+          loggingConnection = loggingConnection;
+          v21 = loggingConnection;
         }
 
         goto LABEL_20;
       }
 
       v34 = +[PGLogging sharedLogging];
-      v31 = [v34 loggingConnection];
+      loggingConnection = [v34 loggingConnection];
 
-      if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
+      if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
       {
-        v37 = [v15 type];
+        type = [componentCopy type];
         *buf = 67109120;
-        v53 = v37;
-        _os_log_error_impl(&dword_22F0FC000, v31, OS_LOG_TYPE_ERROR, "Expected titleComponent.type to be PGLocationTitleComponentTypeOthersHome at this point, but it is type %d. Returning nil.", buf, 8u);
+        v53 = type;
+        _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "Expected titleComponent.type to be PGLocationTitleComponentTypeOthersHome at this point, but it is type %d. Returning nil.", buf, 8u);
       }
     }
 
     else
     {
       v33 = +[PGLogging sharedLogging];
-      v31 = [v33 loggingConnection];
+      loggingConnection = [v33 loggingConnection];
 
-      if (os_log_type_enabled(v31, OS_LOG_TYPE_INFO))
+      if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_INFO))
       {
         *buf = 0;
-        _os_log_impl(&dword_22F0FC000, v31, OS_LOG_TYPE_INFO, "Could not find any person name for people", buf, 2u);
+        _os_log_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_INFO, "Could not find any person name for people", buf, 2u);
       }
     }
 
@@ -758,7 +758,7 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  [v15 setType:4];
+  [componentCopy setType:4];
   v27 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v21 = [v27 localizedStringForKey:@"PGPeoplePlaceTitleFormatFamilyHome" value:@"PGPeoplePlaceTitleFormatFamilyHome" table:@"Localizable"];
 

@@ -1,15 +1,15 @@
 @interface UITableViewAccessibility__ScreenTimeUI__UIKit
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_accessibilityHeaderElement;
 @end
 
 @implementation UITableViewAccessibility__ScreenTimeUI__UIKit
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"STUsageDetailListController"];
-  [v3 validateClass:@"STUsageDetailListController" hasInstanceMethod:@"datePickerBar" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"STUsageDetailListController"];
+  [validationsCopy validateClass:@"STUsageDetailListController" hasInstanceMethod:@"datePickerBar" withFullSignature:{"@", 0}];
 }
 
 - (id)_accessibilityHeaderElement
@@ -21,17 +21,17 @@
   if (isKindOfClass)
   {
     v5 = [(UITableViewAccessibility__ScreenTimeUI__UIKit *)self safeValueForKey:@"delegate"];
-    v6 = [v5 safeValueForKey:@"datePickerBar"];
+    _accessibilityHeaderElement = [v5 safeValueForKey:@"datePickerBar"];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = UITableViewAccessibility__ScreenTimeUI__UIKit;
-    v6 = [(UITableViewAccessibility__ScreenTimeUI__UIKit *)&v8 _accessibilityHeaderElement];
+    _accessibilityHeaderElement = [(UITableViewAccessibility__ScreenTimeUI__UIKit *)&v8 _accessibilityHeaderElement];
   }
 
-  return v6;
+  return _accessibilityHeaderElement;
 }
 
 @end

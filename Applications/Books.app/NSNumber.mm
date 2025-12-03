@@ -8,15 +8,15 @@
 {
   if ([(NSNumber *)self intValue])
   {
-    v3 = [(NSNumber *)self stringValue];
+    stringValue = [(NSNumber *)self stringValue];
   }
 
   else
   {
-    v3 = 0;
+    stringValue = 0;
   }
 
-  return v3;
+  return stringValue;
 }
 
 @end

@@ -1,21 +1,21 @@
 @interface AXVKCImageTextSelectionViewAccessibilityElement
-- (AXVKCImageTextSelectionViewAccessibilityElement)initWithAccessibilityContainer:(id)a3 textRange:(_NSRange)a4;
+- (AXVKCImageTextSelectionViewAccessibilityElement)initWithAccessibilityContainer:(id)container textRange:(_NSRange)range;
 - (CGRect)accessibilityFrame;
 - (_NSRange)_accessibilitySelectedTextRange;
 - (_NSRange)textRange;
-- (void)_accessibilitySetSelectedTextRange:(_NSRange)a3;
+- (void)_accessibilitySetSelectedTextRange:(_NSRange)range;
 @end
 
 @implementation AXVKCImageTextSelectionViewAccessibilityElement
 
-- (AXVKCImageTextSelectionViewAccessibilityElement)initWithAccessibilityContainer:(id)a3 textRange:(_NSRange)a4
+- (AXVKCImageTextSelectionViewAccessibilityElement)initWithAccessibilityContainer:(id)container textRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v7 = a3;
+  length = range.length;
+  location = range.location;
+  containerCopy = container;
   v15.receiver = self;
   v15.super_class = AXVKCImageTextSelectionViewAccessibilityElement;
-  v8 = [(AXVKCImageTextSelectionViewAccessibilityElement *)&v15 initWithAccessibilityContainer:v7];
+  v8 = [(AXVKCImageTextSelectionViewAccessibilityElement *)&v15 initWithAccessibilityContainer:containerCopy];
   v9 = v8;
   if (v8)
   {
@@ -24,7 +24,7 @@
     v14.receiver = v8;
     v14.super_class = AXVKCImageTextSelectionViewAccessibilityElement;
     v10 = *MEMORY[0x29EDC7FD0] | [(AXVKCImageTextSelectionViewAccessibilityElement *)&v14 accessibilityTraits];
-    v11 = [v7 safeBoolForKey:@"selectable"];
+    v11 = [containerCopy safeBoolForKey:@"selectable"];
     v12 = *MEMORY[0x29EDBDC00];
     if (!v11)
     {
@@ -41,13 +41,13 @@
 {
   v20 = 0;
   objc_opt_class();
-  v3 = [(AXVKCImageTextSelectionViewAccessibilityElement *)self accessibilityContainer];
+  accessibilityContainer = [(AXVKCImageTextSelectionViewAccessibilityElement *)self accessibilityContainer];
   v4 = __UIAccessibilityCastAsSafeCategory();
 
   if (v4)
   {
-    v5 = [(AXVKCImageTextSelectionViewAccessibilityElement *)self textRange];
-    [v4 _accessibilityBoundsForRange:{v5, v6}];
+    textRange = [(AXVKCImageTextSelectionViewAccessibilityElement *)self textRange];
+    [v4 _accessibilityBoundsForRange:{textRange, v6}];
   }
 
   else
@@ -75,44 +75,44 @@
 
 - (_NSRange)_accessibilitySelectedTextRange
 {
-  v3 = [(AXVKCImageTextSelectionViewAccessibilityElement *)self accessibilityContainer];
-  v4 = [v3 _accessibilitySelectedTextRange];
+  accessibilityContainer = [(AXVKCImageTextSelectionViewAccessibilityElement *)self accessibilityContainer];
+  _accessibilitySelectedTextRange = [accessibilityContainer _accessibilitySelectedTextRange];
   v6 = v5;
-  if (([v3 safeBoolForKey:@"isEditable"] & 1) == 0)
+  if (([accessibilityContainer safeBoolForKey:@"isEditable"] & 1) == 0)
   {
-    v7 = [v3 safeStringForKey:@"text"];
+    v7 = [accessibilityContainer safeStringForKey:@"text"];
     v8 = [v7 length];
 
-    if (v4 == v8)
+    if (_accessibilitySelectedTextRange == v8)
     {
-      v4 = 0;
+      _accessibilitySelectedTextRange = 0;
     }
   }
 
   location = self->_textRange.location;
-  v10 = (v4 - location);
-  if (v4 < location || v4 > self->_textRange.length + location)
+  _accessibilitySelectedTextRange2 = (_accessibilitySelectedTextRange - location);
+  if (_accessibilitySelectedTextRange < location || _accessibilitySelectedTextRange > self->_textRange.length + location)
   {
     v14.receiver = self;
     v14.super_class = AXVKCImageTextSelectionViewAccessibilityElement;
-    v10 = [(AXVKCImageTextSelectionViewAccessibilityElement *)&v14 _accessibilitySelectedTextRange];
+    _accessibilitySelectedTextRange2 = [(AXVKCImageTextSelectionViewAccessibilityElement *)&v14 _accessibilitySelectedTextRange];
     v6 = v11;
   }
 
-  v12 = v10;
+  v12 = _accessibilitySelectedTextRange2;
   v13 = v6;
   result.length = v13;
   result.location = v12;
   return result;
 }
 
-- (void)_accessibilitySetSelectedTextRange:(_NSRange)a3
+- (void)_accessibilitySetSelectedTextRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v5 = self->_textRange.location;
-  v6 = [(AXVKCImageTextSelectionViewAccessibilityElement *)self accessibilityContainer];
-  [v6 _accessibilitySetSelectedTextRange:{v5 + location, length}];
+  accessibilityContainer = [(AXVKCImageTextSelectionViewAccessibilityElement *)self accessibilityContainer];
+  [accessibilityContainer _accessibilitySetSelectedTextRange:{v5 + location, length}];
 }
 
 - (_NSRange)textRange

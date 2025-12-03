@@ -1,9 +1,9 @@
 @interface TUSimulatedParticipantUpdate
 - (TUSimulatedParticipantUpdate)init;
-- (TUSimulatedParticipantUpdate)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (TUSimulatedParticipantUpdate)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TUSimulatedParticipantUpdate
@@ -35,16 +35,16 @@
   return v4;
 }
 
-- (TUSimulatedParticipantUpdate)initWithCoder:(id)a3
+- (TUSimulatedParticipantUpdate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(TUSimulatedParticipantUpdate *)self init];
   if (v5)
   {
     v12 = 0;
-    v6 = v4;
+    v6 = coderCopy;
     v7 = NSStringFromSelector(sel_hasSet);
-    v8 = [v4 decodeBytesForKey:v7 returnedLength:&v12];
+    v8 = [coderCopy decodeBytesForKey:v7 returnedLength:&v12];
 
     if (v12 != 4)
     {
@@ -56,7 +56,7 @@
     if (([(TUSimulatedParticipantUpdate *)v5 hasSet]& 1) != 0)
     {
       v9 = NSStringFromSelector(sel_isSpatialPersonaEnabled);
-      v5->_spatialPersonaEnabled = [v4 decodeBoolForKey:v9];
+      v5->_spatialPersonaEnabled = [coderCopy decodeBoolForKey:v9];
     }
   }
 
@@ -66,21 +66,21 @@ LABEL_7:
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
+  coderCopy = coder;
   v4 = NSStringFromSelector(sel_hasSet);
-  [v7 encodeBytes:&self->_hasSet length:4 forKey:v4];
+  [coderCopy encodeBytes:&self->_hasSet length:4 forKey:v4];
 
   if (([(TUSimulatedParticipantUpdate *)self hasSet]& 1) != 0)
   {
-    v5 = [(TUSimulatedParticipantUpdate *)self isSpatialPersonaEnabled];
+    isSpatialPersonaEnabled = [(TUSimulatedParticipantUpdate *)self isSpatialPersonaEnabled];
     v6 = NSStringFromSelector(sel_isSpatialPersonaEnabled);
-    [v7 encodeBool:v5 forKey:v6];
+    [coderCopy encodeBool:isSpatialPersonaEnabled forKey:v6];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[TUSimulatedParticipantUpdate allocWithZone:?]];
   if (([(TUSimulatedParticipantUpdate *)self hasSet]& 1) != 0)

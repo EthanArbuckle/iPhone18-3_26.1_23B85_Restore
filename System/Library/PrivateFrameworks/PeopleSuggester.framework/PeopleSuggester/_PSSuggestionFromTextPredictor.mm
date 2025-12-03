@@ -1,27 +1,27 @@
 @interface _PSSuggestionFromTextPredictor
-+ (BOOL)isEligibleUnstructuredEvent:(id)a3;
-- (_PSSuggestionFromTextPredictor)initWithEventStore:(id)a3 interactionStore:(id)a4;
-- (id)suggestionFromContactPriors:(id)a3 priorScoreThreshold:(float)a4 bundleID:(id)a5 reason:(id)a6;
-- (id)suggestionFromText:(id)a3 priorScoreThreshold:(float)a4 bundleID:(id)a5 reason:(id)a6;
-- (id)suggestionsFromIncompleteRemindersWithContext:(id)a3 startDate:(id)a4 endDate:(id)a5 priorScoreThreshold:(float)a6;
-- (id)suggestionsFromPortraitExtractionsWithContext:(id)a3 startDate:(id)a4 endDate:(id)a5 priorScoreThreshold:(float)a6 reason:(id)a7;
-- (id)suggestionsFromUnstructuredCalendarEventsWithContext:(id)a3 startDate:(id)a4 endDate:(id)a5 priorScoreThreshold:(float)a6;
++ (BOOL)isEligibleUnstructuredEvent:(id)event;
+- (_PSSuggestionFromTextPredictor)initWithEventStore:(id)store interactionStore:(id)interactionStore;
+- (id)suggestionFromContactPriors:(id)priors priorScoreThreshold:(float)threshold bundleID:(id)d reason:(id)reason;
+- (id)suggestionFromText:(id)text priorScoreThreshold:(float)threshold bundleID:(id)d reason:(id)reason;
+- (id)suggestionsFromIncompleteRemindersWithContext:(id)context startDate:(id)date endDate:(id)endDate priorScoreThreshold:(float)threshold;
+- (id)suggestionsFromPortraitExtractionsWithContext:(id)context startDate:(id)date endDate:(id)endDate priorScoreThreshold:(float)threshold reason:(id)reason;
+- (id)suggestionsFromUnstructuredCalendarEventsWithContext:(id)context startDate:(id)date endDate:(id)endDate priorScoreThreshold:(float)threshold;
 @end
 
 @implementation _PSSuggestionFromTextPredictor
 
-- (_PSSuggestionFromTextPredictor)initWithEventStore:(id)a3 interactionStore:(id)a4
+- (_PSSuggestionFromTextPredictor)initWithEventStore:(id)store interactionStore:(id)interactionStore
 {
-  v7 = a3;
-  v8 = a4;
+  storeCopy = store;
+  interactionStoreCopy = interactionStore;
   v20.receiver = self;
   v20.super_class = _PSSuggestionFromTextPredictor;
   v9 = [(_PSSuggestionFromTextPredictor *)&v20 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_eventStore, a3);
-    objc_storeStrong(&v10->_interactionStore, a4);
+    objc_storeStrong(&v9->_eventStore, store);
+    objc_storeStrong(&v10->_interactionStore, interactionStore);
     v26 = 0;
     v27 = &v26;
     v28 = 0x2050000000;
@@ -70,17 +70,17 @@
   return v10;
 }
 
-- (id)suggestionFromContactPriors:(id)a3 priorScoreThreshold:(float)a4 bundleID:(id)a5 reason:(id)a6
+- (id)suggestionFromContactPriors:(id)priors priorScoreThreshold:(float)threshold bundleID:(id)d reason:(id)reason
 {
   v39[7] = *MEMORY[0x1E69E9840];
-  v10 = a5;
-  v11 = a6;
+  dCopy = d;
+  reasonCopy = reason;
   v37[0] = MEMORY[0x1E69E9820];
   v37[1] = 3221225472;
   v37[2] = __98___PSSuggestionFromTextPredictor_suggestionFromContactPriors_priorScoreThreshold_bundleID_reason___block_invoke;
   v37[3] = &__block_descriptor_36_e25_B16__0___PSContactPrior_8l;
-  v38 = a4;
-  v12 = [a3 _pas_filteredArrayWithTest:v37];
+  thresholdCopy = threshold;
+  v12 = [priors _pas_filteredArrayWithTest:v37];
   v13 = +[_PSLogging generalChannel];
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
@@ -89,8 +89,8 @@
 
   if ([v12 count])
   {
-    v31 = v11;
-    v32 = v10;
+    v31 = reasonCopy;
+    v32 = dCopy;
     v14 = +[_PSConstants mobileFacetimeBundleId];
     v39[0] = v14;
     v15 = +[_PSConstants macFacetimeBundleId];
@@ -128,8 +128,8 @@
       v33[3] = &unk_1E7C25ED0;
       v33[4] = self;
       v27 = [v26 _pas_mappedArrayWithTransform:v33];
-      v11 = v31;
-      v10 = v32;
+      reasonCopy = v31;
+      dCopy = v32;
       if ([v27 count])
       {
         v28 = [[_PSSuggestion alloc] initWithBundleID:v32 conversationIdentifier:0 groupName:0 recipients:v27 reason:v31 reasonType:0];
@@ -144,8 +144,8 @@
     else
     {
       v28 = 0;
-      v11 = v31;
-      v10 = v32;
+      reasonCopy = v31;
+      dCopy = v32;
     }
   }
 
@@ -159,20 +159,20 @@
   return v28;
 }
 
-- (id)suggestionFromText:(id)a3 priorScoreThreshold:(float)a4 bundleID:(id)a5 reason:(id)a6
+- (id)suggestionFromText:(id)text priorScoreThreshold:(float)threshold bundleID:(id)d reason:(id)reason
 {
   v23 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  if ([v10 length])
+  textCopy = text;
+  dCopy = d;
+  reasonCopy = reason;
+  if ([textCopy length])
   {
-    v13 = [_PSContactSuggester contactPriorSuggestionsForText:v10];
+    v13 = [_PSContactSuggester contactPriorSuggestionsForText:textCopy];
     v14 = +[_PSLogging generalChannel];
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       v19 = 138412546;
-      v20 = v10;
+      v20 = textCopy;
       v21 = 2112;
       v22 = v13;
       _os_log_impl(&dword_1B5ED1000, v14, OS_LOG_TYPE_DEFAULT, "For text %@ found contacts %@", &v19, 0x16u);
@@ -180,8 +180,8 @@
 
     if ([v13 count])
     {
-      *&v15 = a4;
-      v16 = [(_PSSuggestionFromTextPredictor *)self suggestionFromContactPriors:v13 priorScoreThreshold:v11 bundleID:v12 reason:v15];
+      *&v15 = threshold;
+      v16 = [(_PSSuggestionFromTextPredictor *)self suggestionFromContactPriors:v13 priorScoreThreshold:dCopy bundleID:reasonCopy reason:v15];
     }
 
     else
@@ -200,13 +200,13 @@
   return v16;
 }
 
-+ (BOOL)isEligibleUnstructuredEvent:(id)a3
++ (BOOL)isEligibleUnstructuredEvent:(id)event
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  eventCopy = event;
+  v4 = eventCopy;
+  if (eventCopy)
   {
-    if ([v3 isAllDay])
+    if ([eventCopy isAllDay])
     {
       v5 = +[_PSLogging generalChannel];
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -226,8 +226,8 @@
 
     else
     {
-      v6 = [v4 attendees];
-      v7 = [v6 count];
+      attendees = [v4 attendees];
+      v7 = [attendees count];
 
       if (!v7)
       {
@@ -249,11 +249,11 @@ LABEL_13:
   return v8;
 }
 
-- (id)suggestionsFromIncompleteRemindersWithContext:(id)a3 startDate:(id)a4 endDate:(id)a5 priorScoreThreshold:(float)a6
+- (id)suggestionsFromIncompleteRemindersWithContext:(id)context startDate:(id)date endDate:(id)endDate priorScoreThreshold:(float)threshold
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  contextCopy = context;
+  dateCopy = date;
+  endDateCopy = endDate;
   remStore = self->_remStore;
   v28 = 0;
   v14 = [(REMStore *)remStore fetchListsForEventKitBridgingWithError:&v28];
@@ -274,7 +274,7 @@ LABEL_13:
     v16 = [v14 _pas_mappedArrayWithTransform:&__block_literal_global_25];
     v18 = self->_remStore;
     v27 = 0;
-    v19 = [(REMStore *)v18 fetchIncompleteRemindersForEventKitBridgingWithDueDateFrom:v11 to:v12 withListIDs:v16 error:&v27];
+    v19 = [(REMStore *)v18 fetchIncompleteRemindersForEventKitBridgingWithDueDateFrom:dateCopy to:endDateCopy withListIDs:v16 error:&v27];
     v15 = v27;
     if (v15 || ![v19 count])
     {
@@ -306,8 +306,8 @@ LABEL_13:
       v24[2] = __118___PSSuggestionFromTextPredictor_suggestionsFromIncompleteRemindersWithContext_startDate_endDate_priorScoreThreshold___block_invoke_93;
       v24[3] = &unk_1E7C25F18;
       v24[4] = self;
-      v26 = a6;
-      v25 = v10;
+      thresholdCopy = threshold;
+      v25 = contextCopy;
       v17 = [v20 _pas_mappedArrayWithTransform:v24];
     }
   }
@@ -315,13 +315,13 @@ LABEL_13:
   return v17;
 }
 
-- (id)suggestionsFromPortraitExtractionsWithContext:(id)a3 startDate:(id)a4 endDate:(id)a5 priorScoreThreshold:(float)a6 reason:(id)a7
+- (id)suggestionsFromPortraitExtractionsWithContext:(id)context startDate:(id)date endDate:(id)endDate priorScoreThreshold:(float)threshold reason:(id)reason
 {
   v47[2] = *MEMORY[0x1E69E9840];
-  v32 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a7;
+  contextCopy = context;
+  dateCopy = date;
+  endDateCopy = endDate;
+  reasonCopy = reason;
   v43 = 0;
   v44 = &v43;
   v45 = 0x2050000000;
@@ -352,8 +352,8 @@ LABEL_13:
   v22 = [v18 setWithArray:v21];
   [v17 setSourceBundleIds:v22];
 
-  [v17 setStartDate:v12];
-  [v17 setEndDate:v13];
+  [v17 setStartDate:dateCopy];
+  [v17 setEndDate:endDateCopy];
   [v17 setOnlyAddressBook:1];
   v43 = 0;
   v44 = &v43;
@@ -398,9 +398,9 @@ LABEL_13:
     v33[2] = __125___PSSuggestionFromTextPredictor_suggestionsFromPortraitExtractionsWithContext_startDate_endDate_priorScoreThreshold_reason___block_invoke_2;
     v33[3] = &unk_1E7C25F60;
     v33[4] = self;
-    v36 = a6;
-    v34 = v32;
-    v35 = v14;
+    thresholdCopy = threshold;
+    v34 = contextCopy;
+    v35 = reasonCopy;
     v29 = [v28 _pas_mappedArrayWithTransform:v33];
   }
 
@@ -409,14 +409,14 @@ LABEL_13:
   return v29;
 }
 
-- (id)suggestionsFromUnstructuredCalendarEventsWithContext:(id)a3 startDate:(id)a4 endDate:(id)a5 priorScoreThreshold:(float)a6
+- (id)suggestionsFromUnstructuredCalendarEventsWithContext:(id)context startDate:(id)date endDate:(id)endDate priorScoreThreshold:(float)threshold
 {
-  v10 = a3;
+  contextCopy = context;
   eventStore = self->_eventStore;
-  v12 = a5;
-  v13 = a4;
+  endDateCopy = endDate;
+  dateCopy = date;
   v14 = [(EKEventStore *)eventStore calendarsForEntityType:0];
-  v15 = [(EKEventStore *)self->_eventStore predicateForEventsWithStartDate:v13 endDate:v12 calendars:v14];
+  v15 = [(EKEventStore *)self->_eventStore predicateForEventsWithStartDate:dateCopy endDate:endDateCopy calendars:v14];
 
   v16 = objc_opt_new();
   v17 = self->_eventStore;
@@ -446,8 +446,8 @@ LABEL_13:
     v24[2] = __125___PSSuggestionFromTextPredictor_suggestionsFromUnstructuredCalendarEventsWithContext_startDate_endDate_priorScoreThreshold___block_invoke_2;
     v24[3] = &unk_1E7C25FB0;
     v24[4] = self;
-    v26 = a6;
-    v25 = v10;
+    thresholdCopy = threshold;
+    v25 = contextCopy;
     v22 = [v21 _pas_mappedArrayWithTransform:v24];
   }
 

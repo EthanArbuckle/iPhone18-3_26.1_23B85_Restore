@@ -1,15 +1,15 @@
 @interface BLRestoreContentItem
 - (BLRestoreContentItem)init;
-- (BLRestoreContentItem)initWithRestoreRequestItem:(id)a3;
+- (BLRestoreContentItem)initWithRestoreRequestItem:(id)item;
 - (BOOL)isDRMFree;
-- (BOOL)isEligibleForRestore:(id *)a3;
-- (id)_restoreKeyForAssetProperty:(id)a3;
-- (id)_restoreKeyForDownloadProperty:(id)a3;
+- (BOOL)isEligibleForRestore:(id *)restore;
+- (id)_restoreKeyForAssetProperty:(id)property;
+- (id)_restoreKeyForDownloadProperty:(id)property;
 - (id)copyRestoreDictionary;
-- (void)_setValue:(id)a3 forProperty:(id)a4;
-- (void)setDRMFree:(BOOL)a3;
-- (void)setValue:(id)a3 forAssetProperty:(id)a4;
-- (void)setValue:(id)a3 forDownloadProperty:(id)a4;
+- (void)_setValue:(id)value forProperty:(id)property;
+- (void)setDRMFree:(BOOL)free;
+- (void)setValue:(id)value forAssetProperty:(id)property;
+- (void)setValue:(id)value forDownloadProperty:(id)property;
 @end
 
 @implementation BLRestoreContentItem
@@ -29,9 +29,9 @@
   return v2;
 }
 
-- (BLRestoreContentItem)initWithRestoreRequestItem:(id)a3
+- (BLRestoreContentItem)initWithRestoreRequestItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v5 = [(BLRestoreContentItem *)self init];
   if (v5)
   {
@@ -45,7 +45,7 @@
     v37[7] = BLSSDownloadPropertyStoreSoftwareVersionIdentifier;
     v37[8] = BLSSDownloadPropertyTitle;
     v6 = [NSArray arrayWithObjects:v37 count:9];
-    v7 = [v4 downloadDictionary];
+    downloadDictionary = [itemCopy downloadDictionary];
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
@@ -66,7 +66,7 @@
           }
 
           v13 = *(*(&v30 + 1) + 8 * i);
-          v14 = [v7 objectForKeyedSubscript:v13];
+          v14 = [downloadDictionary objectForKeyedSubscript:v13];
           [(BLRestoreContentItem *)v5 setValue:v14 forDownloadProperty:v13];
         }
 
@@ -80,8 +80,8 @@
     v35[1] = BLSSDownloadAssetPropertyStoreFlavor;
     v35[2] = BLSSDownloadAssetPropertyVideoDimensions;
     v15 = [NSArray arrayWithObjects:v35 count:3];
-    v25 = v4;
-    v16 = [v4 assetDictionary];
+    v25 = itemCopy;
+    assetDictionary = [itemCopy assetDictionary];
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
@@ -102,7 +102,7 @@
           }
 
           v22 = *(*(&v26 + 1) + 8 * j);
-          v23 = [v16 objectForKeyedSubscript:v22];
+          v23 = [assetDictionary objectForKeyedSubscript:v22];
           [(BLRestoreContentItem *)v5 setValue:v23 forAssetProperty:v22];
         }
 
@@ -112,7 +112,7 @@
       while (v19);
     }
 
-    v4 = v25;
+    itemCopy = v25;
   }
 
   return v5;
@@ -154,18 +154,18 @@
 - (BOOL)isDRMFree
 {
   v2 = [(NSMutableDictionary *)self->_properties objectForKeyedSubscript:@"drm-free"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-- (BOOL)isEligibleForRestore:(id *)a3
+- (BOOL)isEligibleForRestore:(id *)restore
 {
   if (!self->_isRestore)
   {
     v12 = sub_1000A8F44(0, 0, 0);
     v13 = 0;
-    if (!a3)
+    if (!restore)
     {
       goto LABEL_22;
     }
@@ -236,11 +236,11 @@ LABEL_19:
   v13 = 0;
 LABEL_20:
 
-  if (a3)
+  if (restore)
   {
 LABEL_21:
     v18 = v12;
-    *a3 = v12;
+    *restore = v12;
   }
 
 LABEL_22:
@@ -248,101 +248,101 @@ LABEL_22:
   return v13;
 }
 
-- (void)setDRMFree:(BOOL)a3
+- (void)setDRMFree:(BOOL)free
 {
-  v4 = [NSNumber numberWithBool:a3];
+  v4 = [NSNumber numberWithBool:free];
   [(BLRestoreContentItem *)self _setValue:v4 forProperty:@"drm-free"];
 }
 
-- (void)setValue:(id)a3 forAssetProperty:(id)a4
+- (void)setValue:(id)value forAssetProperty:(id)property
 {
-  v6 = a3;
-  v7 = [(BLRestoreContentItem *)self _restoreKeyForAssetProperty:a4];
-  [(BLRestoreContentItem *)self _setValue:v6 forProperty:v7];
+  valueCopy = value;
+  v7 = [(BLRestoreContentItem *)self _restoreKeyForAssetProperty:property];
+  [(BLRestoreContentItem *)self _setValue:valueCopy forProperty:v7];
 }
 
-- (void)setValue:(id)a3 forDownloadProperty:(id)a4
+- (void)setValue:(id)value forDownloadProperty:(id)property
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [(BLRestoreContentItem *)self _restoreKeyForDownloadProperty:v6];
+  valueCopy = value;
+  propertyCopy = property;
+  v7 = [(BLRestoreContentItem *)self _restoreKeyForDownloadProperty:propertyCopy];
   if (v7)
   {
-    [(BLRestoreContentItem *)self _setValue:v8 forProperty:v7];
+    [(BLRestoreContentItem *)self _setValue:valueCopy forProperty:v7];
   }
 
-  else if ([v6 isEqualToString:BLSSDownloadPropertyIsRestore])
+  else if ([propertyCopy isEqualToString:BLSSDownloadPropertyIsRestore])
   {
-    self->_isRestore = [v8 BOOLValue];
+    self->_isRestore = [valueCopy BOOLValue];
   }
 
-  else if ([v6 isEqualToString:BLSSDownloadPropertyStoreAccountAppleID])
+  else if ([propertyCopy isEqualToString:BLSSDownloadPropertyStoreAccountAppleID])
   {
-    [(BLRestoreContentItem *)self setStoreAccountAppleID:v8];
+    [(BLRestoreContentItem *)self setStoreAccountAppleID:valueCopy];
   }
 
-  else if ([v6 isEqualToString:BLSSDownloadPropertyStoreAccountIdentifier])
+  else if ([propertyCopy isEqualToString:BLSSDownloadPropertyStoreAccountIdentifier])
   {
-    [(BLRestoreContentItem *)self setStoreAccountID:v8];
+    [(BLRestoreContentItem *)self setStoreAccountID:valueCopy];
   }
 
-  else if ([v6 isEqualToString:BLSSDownloadPropertyTitle])
+  else if ([propertyCopy isEqualToString:BLSSDownloadPropertyTitle])
   {
-    [(BLRestoreContentItem *)self setTitle:v8];
+    [(BLRestoreContentItem *)self setTitle:valueCopy];
   }
 }
 
-- (id)_restoreKeyForAssetProperty:(id)a3
+- (id)_restoreKeyForAssetProperty:(id)property
 {
   v3 = qword_10013ECD0;
-  v4 = a3;
+  propertyCopy = property;
   if (v3 != -1)
   {
     sub_1000CB49C();
   }
 
-  v5 = [qword_10013ECC8 objectForKeyedSubscript:v4];
+  v5 = [qword_10013ECC8 objectForKeyedSubscript:propertyCopy];
 
   return v5;
 }
 
-- (id)_restoreKeyForDownloadProperty:(id)a3
+- (id)_restoreKeyForDownloadProperty:(id)property
 {
   v3 = qword_10013ECE0;
-  v4 = a3;
+  propertyCopy = property;
   if (v3 != -1)
   {
     sub_1000CB4B0();
   }
 
-  v5 = [qword_10013ECD8 objectForKeyedSubscript:v4];
+  v5 = [qword_10013ECD8 objectForKeyedSubscript:propertyCopy];
 
   return v5;
 }
 
-- (void)_setValue:(id)a3 forProperty:(id)a4
+- (void)_setValue:(id)value forProperty:(id)property
 {
-  v8 = a3;
-  v6 = a4;
-  if (v6)
+  valueCopy = value;
+  propertyCopy = property;
+  if (propertyCopy)
   {
-    if (v8)
+    if (valueCopy)
     {
-      if ([v8 conformsToProtocol:&OBJC_PROTOCOL___NSCopying])
+      if ([valueCopy conformsToProtocol:&OBJC_PROTOCOL___NSCopying])
       {
-        v7 = [v8 copy];
-        [(NSMutableDictionary *)self->_properties setObject:v7 forKeyedSubscript:v6];
+        v7 = [valueCopy copy];
+        [(NSMutableDictionary *)self->_properties setObject:v7 forKeyedSubscript:propertyCopy];
       }
 
       else
       {
-        [(NSMutableDictionary *)self->_properties setObject:v8 forKeyedSubscript:v6];
+        [(NSMutableDictionary *)self->_properties setObject:valueCopy forKeyedSubscript:propertyCopy];
       }
     }
 
     else
     {
-      [(NSMutableDictionary *)self->_properties removeObjectForKey:v6];
+      [(NSMutableDictionary *)self->_properties removeObjectForKey:propertyCopy];
     }
   }
 }

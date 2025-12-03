@@ -1,22 +1,22 @@
 @interface _UIBacklightEnvironment
 + (BOOL)_backlightEnvironmentSupported;
 + (id)_postSynchronizeQueue;
-+ (void)_performOnChildViewControllersForAlwaysOnTimelines:(id)a3 performBlock:(id)a4 withCompletion:(id)a5;
++ (void)_performOnChildViewControllersForAlwaysOnTimelines:(id)timelines performBlock:(id)block withCompletion:(id)completion;
 - (UIScene)_scene;
 - (UITraitCollection)_traitOverrides;
-- (_UIBacklightEnvironment)initWithScene:(id)a3;
+- (_UIBacklightEnvironment)initWithScene:(id)scene;
 - (id)_windowScene;
-- (void)_commit:(BOOL)a3 andPerformPostSynchronizeBlock:(id)a4;
-- (void)_enumerateAllObserversWithBlock:(id)a3;
-- (void)_notifyObserversEnvironmentVisualStateWillChangeToState:(id)a3;
-- (void)_notifyObserversIfEnvironmentVisualStateDidChangeFromActiveOn:(id)a3;
-- (void)_notifyObserversIfEnvironmentVisualStateDidChangeToActiveOn:(id)a3;
-- (void)_setScene:(id)a3;
-- (void)addObserver:(id)a3;
-- (void)environment:(id)a3 performBacklightSceneUpdate:(id)a4;
-- (void)environment:(id)a3 timelinesForDateInterval:(id)a4 previousSpecifier:(id)a5 completion:(id)a6;
-- (void)transitionTraitsInUpdate:(id)a3 animations:(id)a4 completion:(id)a5;
-- (void)updateSceneWithFrameSpecifier:(id)a3 layout:(BOOL)a4 completion:(id)a5;
+- (void)_commit:(BOOL)_commit andPerformPostSynchronizeBlock:(id)block;
+- (void)_enumerateAllObserversWithBlock:(id)block;
+- (void)_notifyObserversEnvironmentVisualStateWillChangeToState:(id)state;
+- (void)_notifyObserversIfEnvironmentVisualStateDidChangeFromActiveOn:(id)on;
+- (void)_notifyObserversIfEnvironmentVisualStateDidChangeToActiveOn:(id)on;
+- (void)_setScene:(id)scene;
+- (void)addObserver:(id)observer;
+- (void)environment:(id)environment performBacklightSceneUpdate:(id)update;
+- (void)environment:(id)environment timelinesForDateInterval:(id)interval previousSpecifier:(id)specifier completion:(id)completion;
+- (void)transitionTraitsInUpdate:(id)update animations:(id)animations completion:(id)completion;
+- (void)updateSceneWithFrameSpecifier:(id)specifier layout:(BOOL)layout completion:(id)completion;
 @end
 
 @implementation _UIBacklightEnvironment
@@ -29,15 +29,15 @@
     visualState = self->_visualState;
     if (visualState)
     {
-      v4 = [(BLSBacklightSceneVisualState *)visualState updateFidelity];
-      v5 = [(BLSBacklightSceneVisualState *)self->_visualState adjustedLuminance];
+      updateFidelity = [(BLSBacklightSceneVisualState *)visualState updateFidelity];
+      adjustedLuminance = [(BLSBacklightSceneVisualState *)self->_visualState adjustedLuminance];
       v6 = 1;
-      if (v5 != 1)
+      if (adjustedLuminance != 1)
       {
         v6 = 2;
       }
 
-      if (!v5)
+      if (!adjustedLuminance)
       {
         v6 = 0;
       }
@@ -46,14 +46,14 @@
     else
     {
       v6 = 2;
-      v4 = 3;
+      updateFidelity = 3;
     }
 
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __42___UIBacklightEnvironment__traitOverrides__block_invoke;
     v10[3] = &__block_descriptor_48_e27_v16__0___UIMutableTraits__8l;
-    v10[4] = v4;
+    v10[4] = updateFidelity;
     v10[5] = v6;
     v7 = [UITraitCollection traitCollectionWithTraits:v10];
     v8 = *(__UILogGetCategoryCachedImpl("UIBacklightEnvironment", &_traitOverrides___s_category) + 8);
@@ -87,11 +87,11 @@
 
 - (id)_windowScene
 {
-  v2 = [(_UIBacklightEnvironment *)self _scene];
+  _scene = [(_UIBacklightEnvironment *)self _scene];
   v3 = objc_opt_self();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v2;
+    v4 = _scene;
   }
 
   else
@@ -123,58 +123,58 @@
   return v3;
 }
 
-- (_UIBacklightEnvironment)initWithScene:(id)a3
+- (_UIBacklightEnvironment)initWithScene:(id)scene
 {
-  v4 = a3;
+  sceneCopy = scene;
   v10.receiver = self;
   v10.super_class = _UIBacklightEnvironment;
   v5 = [(_UIBacklightEnvironment *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_scene, v4);
-    v7 = [v4 _backlightSceneEnvironment];
-    v8 = [v7 delegate];
+    objc_storeWeak(&v5->_scene, sceneCopy);
+    _backlightSceneEnvironment = [sceneCopy _backlightSceneEnvironment];
+    delegate = [_backlightSceneEnvironment delegate];
 
-    if (!v8)
+    if (!delegate)
     {
-      [v7 setDelegate:v6];
-      [v7 setSupportsAlwaysOn:{objc_msgSend(objc_opt_class(), "_alwaysOnSupported")}];
+      [_backlightSceneEnvironment setDelegate:v6];
+      [_backlightSceneEnvironment setSupportsAlwaysOn:{objc_msgSend(objc_opt_class(), "_alwaysOnSupported")}];
     }
   }
 
   return v6;
 }
 
-- (void)_setScene:(id)a3
+- (void)_setScene:(id)scene
 {
-  objc_storeWeak(&self->_scene, a3);
-  v4 = [(_UIBacklightEnvironment *)self _windowScene];
-  [v4 _componentDidUpdateTraitOverrides:self];
+  objc_storeWeak(&self->_scene, scene);
+  _windowScene = [(_UIBacklightEnvironment *)self _windowScene];
+  [_windowScene _componentDidUpdateTraitOverrides:self];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   observers = self->_observers;
-  v8 = v4;
+  v8 = observerCopy;
   if (!observers)
   {
-    v6 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     v7 = self->_observers;
-    self->_observers = v6;
+    self->_observers = weakObjectsHashTable;
 
-    v4 = v8;
+    observerCopy = v8;
     observers = self->_observers;
   }
 
-  [(NSHashTable *)observers addObject:v4];
+  [(NSHashTable *)observers addObject:observerCopy];
 }
 
-- (void)_enumerateAllObserversWithBlock:(id)a3
+- (void)_enumerateAllObserversWithBlock:(id)block
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   v5 = [(NSHashTable *)self->_observers copy];
   v13 = 0u;
   v14 = 0u;
@@ -197,7 +197,7 @@ LABEL_3:
 
       v11 = *(*(&v13 + 1) + 8 * v10);
       v12 = 0;
-      v4[2](v4, v11, &v12);
+      blockCopy[2](blockCopy, v11, &v12);
       if (v12)
       {
         break;
@@ -217,7 +217,7 @@ LABEL_3:
   }
 }
 
-- (void)_notifyObserversEnvironmentVisualStateWillChangeToState:(id)a3
+- (void)_notifyObserversEnvironmentVisualStateWillChangeToState:(id)state
 {
   if (BLSBacklightStateForVisuaState() == 2)
   {
@@ -232,9 +232,9 @@ LABEL_3:
   [(_UIBacklightEnvironment *)self _enumerateAllObserversWithBlock:v4];
 }
 
-- (void)_notifyObserversIfEnvironmentVisualStateDidChangeToActiveOn:(id)a3
+- (void)_notifyObserversIfEnvironmentVisualStateDidChangeToActiveOn:(id)on
 {
-  v4 = [a3 visualState];
+  visualState = [on visualState];
   v5 = BLSBacklightStateForVisuaState();
 
   if (v5 == 2)
@@ -244,9 +244,9 @@ LABEL_3:
   }
 }
 
-- (void)_notifyObserversIfEnvironmentVisualStateDidChangeFromActiveOn:(id)a3
+- (void)_notifyObserversIfEnvironmentVisualStateDidChangeFromActiveOn:(id)on
 {
-  v4 = [a3 visualState];
+  visualState = [on visualState];
   v5 = BLSBacklightStateForVisuaState();
 
   if (v5 != 2)
@@ -256,25 +256,25 @@ LABEL_3:
   }
 }
 
-- (void)transitionTraitsInUpdate:(id)a3 animations:(id)a4 completion:(id)a5
+- (void)transitionTraitsInUpdate:(id)update animations:(id)animations completion:(id)completion
 {
   v59 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 context];
-  v12 = [v11 previousVisualState];
-  v13 = [v8 context];
-  v14 = [v13 visualState];
+  updateCopy = update;
+  animationsCopy = animations;
+  completionCopy = completion;
+  context = [updateCopy context];
+  previousVisualState = [context previousVisualState];
+  context2 = [updateCopy context];
+  visualState = [context2 visualState];
   kdebug_trace();
 
-  v15 = [v8 context];
-  v16 = [v15 visualState];
+  context3 = [updateCopy context];
+  visualState2 = [context3 visualState];
 
-  v17 = [(BLSBacklightSceneVisualState *)self->_visualState isEqual:v16];
+  v17 = [(BLSBacklightSceneVisualState *)self->_visualState isEqual:visualState2];
   if ((v17 & 1) == 0)
   {
-    objc_storeStrong(&self->_visualState, v16);
+    objc_storeStrong(&self->_visualState, visualState2);
   }
 
   aBlock[0] = MEMORY[0x1E69E9820];
@@ -282,25 +282,25 @@ LABEL_3:
   aBlock[2] = __74___UIBacklightEnvironment_transitionTraitsInUpdate_animations_completion___block_invoke;
   aBlock[3] = &unk_1E70F3798;
   v57 = v17 ^ 1;
-  v18 = v8;
+  v18 = updateCopy;
   v54 = v18;
-  v55 = self;
-  v19 = v9;
+  selfCopy = self;
+  v19 = animationsCopy;
   v56 = v19;
   v20 = _Block_copy(aBlock);
-  v21 = [v18 context];
-  v22 = [v21 isAnimated];
+  context4 = [v18 context];
+  isAnimated = [context4 isAnimated];
 
-  if (v22)
+  if (isAnimated)
   {
     v51 = 0u;
     v52 = 0u;
     v49 = 0u;
     v50 = 0u;
     WeakRetained = objc_loadWeakRetained(&self->_scene);
-    v24 = [WeakRetained windows];
+    windows = [WeakRetained windows];
 
-    v25 = [v24 countByEnumeratingWithState:&v49 objects:v58 count:16];
+    v25 = [windows countByEnumeratingWithState:&v49 objects:v58 count:16];
     if (v25)
     {
       v26 = v25;
@@ -311,13 +311,13 @@ LABEL_3:
         {
           if (*v50 != v27)
           {
-            objc_enumerationMutation(v24);
+            objc_enumerationMutation(windows);
           }
 
           [*(*(&v49 + 1) + 8 * i) layoutIfNeeded];
         }
 
-        v26 = [v24 countByEnumeratingWithState:&v49 objects:v58 count:16];
+        v26 = [windows countByEnumeratingWithState:&v49 objects:v58 count:16];
       }
 
       while (v26);
@@ -328,14 +328,14 @@ LABEL_3:
     [objc_opt_class() _defaultAnimationDuration];
     [v29 setAnimationDuration:?];
     [MEMORY[0x1E6979518] begin];
-    if (v10)
+    if (completionCopy)
     {
       v30 = MEMORY[0x1E6979518];
       v47[0] = MEMORY[0x1E69E9820];
       v47[1] = 3221225472;
       v47[2] = __74___UIBacklightEnvironment_transitionTraitsInUpdate_animations_completion___block_invoke_148;
       v47[3] = &unk_1E70F0F78;
-      v48 = v10;
+      v48 = completionCopy;
       [v30 setCompletionBlock:v47];
     }
 
@@ -345,8 +345,8 @@ LABEL_3:
     [v31 setFromValue:&unk_1EFE2E548];
     [v31 setToValue:&unk_1EFE2E558];
     v32 = objc_loadWeakRetained(&self->_scene);
-    v33 = [v32 keyWindow];
-    [v33 addAnimation:v31 forKey:@"uikit.backlightTransition"];
+    keyWindow = [v32 keyWindow];
+    [keyWindow addAnimation:v31 forKey:@"uikit.backlightTransition"];
 
     [objc_opt_class() _defaultAnimationDuration];
     [v18 performBacklightRampWithDuration:?];
@@ -361,10 +361,10 @@ LABEL_3:
     v46 = v20;
     [UIView animateWithDuration:v45 animations:v35];
     [MEMORY[0x1E6979518] commit];
-    v36 = [v18 context];
-    v37 = [v36 previousVisualState];
-    v38 = [v18 context];
-    v39 = [v38 visualState];
+    context5 = [v18 context];
+    previousVisualState2 = [context5 previousVisualState];
+    context6 = [v18 context];
+    visualState3 = [context6 visualState];
     kdebug_trace();
 
     v19 = v44;
@@ -375,36 +375,36 @@ LABEL_3:
     [MEMORY[0x1E6979518] begin];
     v20[2](v20);
     [MEMORY[0x1E6979518] commit];
-    v40 = [v18 context];
-    v41 = [v40 previousVisualState];
-    v42 = [v18 context];
-    v43 = [v42 visualState];
+    context7 = [v18 context];
+    previousVisualState3 = [context7 previousVisualState];
+    context8 = [v18 context];
+    visualState4 = [context8 visualState];
     kdebug_trace();
 
     [v18 performBacklightRampWithDuration:0.0];
-    if (v10)
+    if (completionCopy)
     {
-      v10[2](v10);
+      completionCopy[2](completionCopy);
     }
   }
 }
 
-+ (void)_performOnChildViewControllersForAlwaysOnTimelines:(id)a3 performBlock:(id)a4 withCompletion:(id)a5
++ (void)_performOnChildViewControllersForAlwaysOnTimelines:(id)timelines performBlock:(id)block withCompletion:(id)completion
 {
   v34 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v17 = a5;
+  timelinesCopy = timelines;
+  blockCopy = block;
+  completionCopy = completion;
   v29 = 0;
   v30 = &v29;
   v31 = 0x2020000000;
   v32 = 0;
-  v11 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v27 = 0u;
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  obj = v9;
+  obj = timelinesCopy;
   v12 = [obj countByEnumeratingWithState:&v25 objects:v33 count:16];
   if (v12)
   {
@@ -419,18 +419,18 @@ LABEL_3:
         }
 
         v15 = *(*(&v25 + 1) + 8 * i);
-        [v11 addObject:v15];
+        [array addObject:v15];
         v18[0] = MEMORY[0x1E69E9820];
         v18[1] = 3221225472;
         v18[2] = __106___UIBacklightEnvironment__performOnChildViewControllersForAlwaysOnTimelines_performBlock_withCompletion___block_invoke;
         v18[3] = &unk_1E710C838;
         v23 = a2;
-        v24 = a1;
-        v19 = v11;
+        selfCopy = self;
+        v19 = array;
         v20 = v15;
         v22 = &v29;
-        v21 = v17;
-        v10[2](v10, v15, v18);
+        v21 = completionCopy;
+        blockCopy[2](blockCopy, v15, v18);
       }
 
       v12 = [obj countByEnumeratingWithState:&v25 objects:v33 count:16];
@@ -439,9 +439,9 @@ LABEL_3:
     while (v12);
   }
 
-  if (![v11 count])
+  if (![array count])
   {
-    v17[2]();
+    completionCopy[2]();
   }
 
   *(v30 + 24) = 1;
@@ -449,22 +449,22 @@ LABEL_3:
   _Block_object_dispose(&v29, 8);
 }
 
-- (void)updateSceneWithFrameSpecifier:(id)a3 layout:(BOOL)a4 completion:(id)a5
+- (void)updateSceneWithFrameSpecifier:(id)specifier layout:(BOOL)layout completion:(id)completion
 {
   v46 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a5;
-  v9 = [MEMORY[0x1E695DF70] array];
+  specifierCopy = specifier;
+  completionCopy = completion;
+  array = [MEMORY[0x1E695DF70] array];
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v25 = self;
+  selfCopy = self;
   WeakRetained = objc_loadWeakRetained(&self->_scene);
-  v11 = [WeakRetained windows];
+  windows = [WeakRetained windows];
 
-  obj = v11;
-  v28 = [v11 countByEnumeratingWithState:&v40 objects:v45 count:16];
+  obj = windows;
+  v28 = [windows countByEnumeratingWithState:&v40 objects:v45 count:16];
   if (v28)
   {
     v27 = *v41;
@@ -479,14 +479,14 @@ LABEL_3:
         }
 
         v29 = v12;
-        v13 = [*(*(&v40 + 1) + 8 * v12) rootViewController];
-        v14 = [v13 _effectiveControllersForAlwaysOnTimelines];
+        rootViewController = [*(*(&v40 + 1) + 8 * v12) rootViewController];
+        _effectiveControllersForAlwaysOnTimelines = [rootViewController _effectiveControllersForAlwaysOnTimelines];
 
         v38 = 0u;
         v39 = 0u;
         v36 = 0u;
         v37 = 0u;
-        v15 = v14;
+        v15 = _effectiveControllersForAlwaysOnTimelines;
         v16 = [v15 countByEnumeratingWithState:&v36 objects:v44 count:16];
         if (v16)
         {
@@ -503,19 +503,19 @@ LABEL_3:
               }
 
               v20 = *(*(&v36 + 1) + 8 * v19);
-              if (v8 && (objc_opt_respondsToSelector() & 1) != 0)
+              if (completionCopy && (objc_opt_respondsToSelector() & 1) != 0)
               {
-                [v9 addObject:v20];
+                [array addObject:v20];
               }
 
               else if (objc_opt_respondsToSelector())
               {
-                [v20 performSelector:sel_puic_updateWithFrameSpecifier_ withObject:v7];
+                [v20 performSelector:sel_puic_updateWithFrameSpecifier_ withObject:specifierCopy];
               }
 
               else
               {
-                [v20 _updateWithFrameSpecifier:v7];
+                [v20 _updateWithFrameSpecifier:specifierCopy];
               }
 
               ++v19;
@@ -542,13 +542,13 @@ LABEL_3:
   v32[1] = 3221225472;
   v32[2] = __75___UIBacklightEnvironment_updateSceneWithFrameSpecifier_layout_completion___block_invoke;
   v32[3] = &unk_1E710C860;
-  v21 = v7;
-  v34 = v9;
-  v35 = v8;
+  v21 = specifierCopy;
+  v34 = array;
+  v35 = completionCopy;
   v33 = v21;
-  v22 = v9;
-  v23 = v8;
-  [(_UIBacklightEnvironment *)v25 _enumerateAllObserversWithBlock:v32];
+  v22 = array;
+  v23 = completionCopy;
+  [(_UIBacklightEnvironment *)selfCopy _enumerateAllObserversWithBlock:v32];
   v30[0] = MEMORY[0x1E69E9820];
   v30[1] = 3221225472;
   v30[2] = __75___UIBacklightEnvironment_updateSceneWithFrameSpecifier_layout_completion___block_invoke_2;
@@ -558,14 +558,14 @@ LABEL_3:
   [_UIBacklightEnvironment _performOnChildViewControllersForAlwaysOnTimelines:v22 performBlock:v30 withCompletion:v23];
 }
 
-- (void)_commit:(BOOL)a3 andPerformPostSynchronizeBlock:(id)a4
+- (void)_commit:(BOOL)_commit andPerformPostSynchronizeBlock:(id)block
 {
-  v4 = a3;
-  v5 = a4;
+  _commitCopy = _commit;
+  blockCopy = block;
   v6 = +[_UIBacklightEnvironment _postSynchronizeQueue];
-  [v6 enqueuePostSynchronizeBlock:v5];
+  [v6 enqueuePostSynchronizeBlock:blockCopy];
 
-  if (v4)
+  if (_commitCopy)
   {
     v7 = MEMORY[0x1E6979518];
 
@@ -573,22 +573,22 @@ LABEL_3:
   }
 }
 
-- (void)environment:(id)a3 performBacklightSceneUpdate:(id)a4
+- (void)environment:(id)environment performBacklightSceneUpdate:(id)update
 {
   v76 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 context];
-  v39 = [v8 frameSpecifier];
-  v9 = [v8 visualState];
+  environmentCopy = environment;
+  updateCopy = update;
+  context = [updateCopy context];
+  frameSpecifier = [context frameSpecifier];
+  visualState = [context visualState];
   v10 = BLSBacklightStateForVisuaState();
   v11 = v10 == 2;
 
-  v12 = [v8 previousVisualState];
+  previousVisualState = [context previousVisualState];
 
-  if (v12)
+  if (previousVisualState)
   {
-    v13 = [v8 previousVisualState];
+    previousVisualState2 = [context previousVisualState];
     v14 = BLSBacklightStateForVisuaState() == 2;
   }
 
@@ -610,7 +610,7 @@ LABEL_3:
   v16 = (v10 == 2) ^ v14 ^ 1;
   if ((v10 != 2) | v16 & 1)
   {
-    v17 = v6;
+    v17 = environmentCopy;
     if ((v10 == 2) | v16 & 1)
     {
       aBlock[0] = MEMORY[0x1E69E9820];
@@ -619,15 +619,15 @@ LABEL_3:
       aBlock[3] = &unk_1E70F36D0;
       v46 = a2;
       aBlock[4] = self;
-      v45 = v7;
+      v45 = updateCopy;
       v18 = _Block_copy(aBlock);
       v40[0] = MEMORY[0x1E69E9820];
       v40[1] = 3221225472;
       v40[2] = __67___UIBacklightEnvironment_environment_performBacklightSceneUpdate___block_invoke_16;
       v40[3] = &unk_1E70FCE28;
-      v19 = v39;
-      v41 = v39;
-      v42 = self;
+      v19 = frameSpecifier;
+      v41 = frameSpecifier;
+      selfCopy = self;
       v43 = v18;
       v20 = v18;
       [UIView performWithoutAnimation:v40];
@@ -635,42 +635,42 @@ LABEL_3:
 
     else
     {
-      v35 = [v8 visualState];
-      [(_UIBacklightEnvironment *)self _notifyObserversEnvironmentVisualStateWillChangeToState:v35];
+      visualState2 = [context visualState];
+      [(_UIBacklightEnvironment *)self _notifyObserversEnvironmentVisualStateWillChangeToState:visualState2];
 
       v47[0] = MEMORY[0x1E69E9820];
       v47[1] = 3221225472;
       v47[2] = __67___UIBacklightEnvironment_environment_performBacklightSceneUpdate___block_invoke_11;
       v47[3] = &unk_1E70F6228;
-      v36 = v7;
+      v36 = updateCopy;
       v48 = v36;
-      v49 = self;
-      v50 = v6;
+      selfCopy2 = self;
+      v50 = environmentCopy;
       [(_UIBacklightEnvironment *)self transitionTraitsInUpdate:v36 animations:&__block_literal_global_171_0 completion:v47];
       [v36 sceneContentsDidUpdate];
 
-      v19 = v39;
+      v19 = frameSpecifier;
     }
   }
 
   else
   {
-    v21 = [v8 previousVisualState];
-    v22 = [v8 visualState];
+    previousVisualState3 = [context previousVisualState];
+    visualState3 = [context visualState];
     kdebug_trace();
 
-    v23 = [v8 visualState];
-    [(_UIBacklightEnvironment *)self _notifyObserversEnvironmentVisualStateWillChangeToState:v23];
+    visualState4 = [context visualState];
+    [(_UIBacklightEnvironment *)self _notifyObserversEnvironmentVisualStateWillChangeToState:visualState4];
 
     v69[0] = MEMORY[0x1E69E9820];
     v69[1] = 3221225472;
     v69[2] = __67___UIBacklightEnvironment_environment_performBacklightSceneUpdate___block_invoke;
     v69[3] = &unk_1E70F6228;
     v69[4] = self;
-    v24 = v8;
+    v24 = context;
     v70 = v24;
-    v37 = v7;
-    v25 = v7;
+    v37 = updateCopy;
+    v25 = updateCopy;
     v71 = v25;
     v26 = _Block_copy(v69);
     v62[0] = MEMORY[0x1E69E9820];
@@ -685,8 +685,8 @@ LABEL_3:
     v68 = v11;
     v28 = v26;
     v65 = v28;
-    v17 = v6;
-    v64 = v6;
+    v17 = environmentCopy;
+    v64 = environmentCopy;
     v29 = _Block_copy(v62);
     v56[0] = MEMORY[0x1E69E9820];
     v56[1] = 3221225472;
@@ -695,9 +695,9 @@ LABEL_3:
     v57 = v24;
     v30 = v28;
     v60 = v30;
-    v58 = self;
-    v19 = v39;
-    v31 = v39;
+    selfCopy3 = self;
+    v19 = frameSpecifier;
+    v31 = frameSpecifier;
     v59 = v31;
     v32 = v29;
     v61 = v32;
@@ -724,39 +724,39 @@ LABEL_3:
       (*(v33 + 2))(v33);
     }
 
-    v7 = v37;
+    updateCopy = v37;
   }
 }
 
-- (void)environment:(id)a3 timelinesForDateInterval:(id)a4 previousSpecifier:(id)a5 completion:(id)a6
+- (void)environment:(id)environment timelinesForDateInterval:(id)interval previousSpecifier:(id)specifier completion:(id)completion
 {
   v66 = *MEMORY[0x1E69E9840];
-  v9 = a4;
-  v10 = a5;
-  v34 = a6;
+  intervalCopy = interval;
+  specifierCopy = specifier;
+  completionCopy = completion;
   v11 = *(__UILogGetCategoryCachedImpl("UIBacklightEnvironment", &environment_timelinesForDateInterval_previousSpecifier_completion____s_category) + 8);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v63 = v9;
+    v63 = intervalCopy;
     v64 = 2114;
-    v65 = v10;
+    v65 = specifierCopy;
     _os_log_impl(&dword_188A29000, v11, OS_LOG_TYPE_DEFAULT, "Fetching timelines for dateInterval : %{public}@ previousSpecifier : %{public}@", buf, 0x16u);
   }
 
-  v35 = v10;
-  v12 = [MEMORY[0x1E695DF70] array];
+  v35 = specifierCopy;
+  array = [MEMORY[0x1E695DF70] array];
   v13 = objc_opt_new();
   v56 = 0u;
   v57 = 0u;
   v58 = 0u;
   v59 = 0u;
-  v33 = self;
+  selfCopy = self;
   WeakRetained = objc_loadWeakRetained(&self->_scene);
-  v15 = [WeakRetained windows];
+  windows = [WeakRetained windows];
 
-  obj = v15;
-  v38 = [v15 countByEnumeratingWithState:&v56 objects:v61 count:16];
+  obj = windows;
+  v38 = [windows countByEnumeratingWithState:&v56 objects:v61 count:16];
   if (v38)
   {
     v37 = *v57;
@@ -771,14 +771,14 @@ LABEL_3:
         }
 
         v39 = v16;
-        v17 = [*(*(&v56 + 1) + 8 * v16) rootViewController];
-        v18 = [v17 _effectiveControllersForAlwaysOnTimelines];
+        rootViewController = [*(*(&v56 + 1) + 8 * v16) rootViewController];
+        _effectiveControllersForAlwaysOnTimelines = [rootViewController _effectiveControllersForAlwaysOnTimelines];
 
         v54 = 0u;
         v55 = 0u;
         v52 = 0u;
         v53 = 0u;
-        v19 = v18;
+        v19 = _effectiveControllersForAlwaysOnTimelines;
         v20 = [v19 countByEnumeratingWithState:&v52 objects:v60 count:16];
         if (v20)
         {
@@ -797,12 +797,12 @@ LABEL_3:
               v24 = *(*(&v52 + 1) + 8 * v23);
               if (objc_opt_respondsToSelector())
               {
-                [v12 addObject:v24];
+                [array addObject:v24];
               }
 
               else
               {
-                v25 = [v24 _timelinesForDateInterval:v9];
+                v25 = [v24 _timelinesForDateInterval:intervalCopy];
                 [v13 addObjectsFromArray:v25];
               }
 
@@ -830,30 +830,30 @@ LABEL_3:
   v48[1] = 3221225472;
   v48[2] = __93___UIBacklightEnvironment_environment_timelinesForDateInterval_previousSpecifier_completion___block_invoke;
   v48[3] = &unk_1E710C900;
-  v26 = v9;
+  v26 = intervalCopy;
   v49 = v26;
   v27 = v13;
   v50 = v27;
-  v51 = v12;
-  v28 = v12;
-  [(_UIBacklightEnvironment *)v33 _enumerateAllObserversWithBlock:v48];
+  v51 = array;
+  v28 = array;
+  [(_UIBacklightEnvironment *)selfCopy _enumerateAllObserversWithBlock:v48];
   v43[0] = MEMORY[0x1E69E9820];
   v43[1] = 3221225472;
   v43[2] = __93___UIBacklightEnvironment_environment_timelinesForDateInterval_previousSpecifier_completion___block_invoke_2;
   v43[3] = &unk_1E710C950;
   v47 = a2;
   v44 = v26;
-  v45 = v33;
+  v45 = selfCopy;
   v46 = v27;
   v40[0] = MEMORY[0x1E69E9820];
   v40[1] = 3221225472;
   v40[2] = __93___UIBacklightEnvironment_environment_timelinesForDateInterval_previousSpecifier_completion___block_invoke_4;
   v40[3] = &unk_1E70F37C0;
   v41 = v46;
-  v42 = v34;
+  v42 = completionCopy;
   v29 = v26;
   v30 = v46;
-  v31 = v34;
+  v31 = completionCopy;
   [_UIBacklightEnvironment _performOnChildViewControllersForAlwaysOnTimelines:v28 performBlock:v43 withCompletion:v40];
 }
 

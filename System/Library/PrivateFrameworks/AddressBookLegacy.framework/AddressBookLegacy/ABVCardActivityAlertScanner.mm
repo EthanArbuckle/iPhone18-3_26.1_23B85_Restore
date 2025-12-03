@@ -1,9 +1,9 @@
 @interface ABVCardActivityAlertScanner
-+ (BOOL)characterIsStringValueCharacter:(unsigned __int16)a3;
-+ (id)scanAlertValueFromString:(id)a3;
-+ (id)scannerWithString:(id)a3;
-- (ABVCardActivityAlertScanner)initWithString:(id)a3;
-- (BOOL)scanPastCharacter:(unsigned __int16)a3;
++ (BOOL)characterIsStringValueCharacter:(unsigned __int16)character;
++ (id)scanAlertValueFromString:(id)string;
++ (id)scannerWithString:(id)string;
+- (ABVCardActivityAlertScanner)initWithString:(id)string;
+- (BOOL)scanPastCharacter:(unsigned __int16)character;
 - (id)scanAlertValue;
 - (id)scanKeyValuePair;
 - (id)scanQuotedStringValue;
@@ -11,35 +11,35 @@
 - (id)scanUnquotedStringValue;
 - (unsigned)nextCharacter;
 - (unsigned)nextUnescapedCharacter;
-- (unsigned)scanCharacterWithEscaping:(BOOL)a3;
+- (unsigned)scanCharacterWithEscaping:(BOOL)escaping;
 - (void)dealloc;
 - (void)scanPastWhitespace;
 @end
 
 @implementation ABVCardActivityAlertScanner
 
-+ (id)scanAlertValueFromString:(id)a3
++ (id)scanAlertValueFromString:(id)string
 {
-  v3 = [a1 scannerWithString:a3];
+  v3 = [self scannerWithString:string];
 
   return [v3 scanAlertValue];
 }
 
-+ (id)scannerWithString:(id)a3
++ (id)scannerWithString:(id)string
 {
-  v3 = [[a1 alloc] initWithString:a3];
+  v3 = [[self alloc] initWithString:string];
 
   return v3;
 }
 
-- (ABVCardActivityAlertScanner)initWithString:(id)a3
+- (ABVCardActivityAlertScanner)initWithString:(id)string
 {
   v6.receiver = self;
   v6.super_class = ABVCardActivityAlertScanner;
   v4 = [(ABVCardActivityAlertScanner *)&v6 init];
   if (v4)
   {
-    v4->_string = [a3 copy];
+    v4->_string = [string copy];
     v4->_position = 0;
   }
 
@@ -55,29 +55,29 @@
 
 - (id)scanAlertValue
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   do
   {
-    [v3 addEntriesFromDictionary:{-[ABVCardActivityAlertScanner scanKeyValuePair](self, "scanKeyValuePair")}];
+    [dictionary addEntriesFromDictionary:{-[ABVCardActivityAlertScanner scanKeyValuePair](self, "scanKeyValuePair")}];
   }
 
   while ([(ABVCardActivityAlertScanner *)self scanPastItemDelimiter]);
-  return v3;
+  return dictionary;
 }
 
 - (id)scanKeyValuePair
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v3 = [(ABVCardActivityAlertScanner *)self scanStringValue];
+  scanStringValue = [(ABVCardActivityAlertScanner *)self scanStringValue];
   [(ABVCardActivityAlertScanner *)self scanPastKeyValueSeparator];
-  v4 = [(ABVCardActivityAlertScanner *)self scanStringValue];
-  if (!v3)
+  scanStringValue2 = [(ABVCardActivityAlertScanner *)self scanStringValue];
+  if (!scanStringValue)
   {
     return 0;
   }
 
-  v5 = v4;
-  v6 = [v3 isEqualToString:&stru_1F2FE2718];
+  v5 = scanStringValue2;
+  v6 = [scanStringValue isEqualToString:&stru_1F2FE2718];
   result = 0;
   if ((v6 & 1) == 0 && v5)
   {
@@ -86,7 +86,7 @@
       return 0;
     }
 
-    v8 = v3;
+    v8 = scanStringValue;
     v9[0] = v5;
     return [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:&v8 count:1];
   }
@@ -116,7 +116,7 @@
 
 - (id)scanUnquotedStringValue
 {
-  v3 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   if (![(ABVCardActivityAlertScanner *)self atEnd])
   {
     do
@@ -126,24 +126,24 @@
         break;
       }
 
-      [v3 appendFormat:@"%c", -[ABVCardActivityAlertScanner scanCharacter](self, "scanCharacter")];
+      [string appendFormat:@"%c", -[ABVCardActivityAlertScanner scanCharacter](self, "scanCharacter")];
     }
 
     while (![(ABVCardActivityAlertScanner *)self atEnd]);
   }
 
-  if (!v3 || [v3 isEqualToString:&stru_1F2FE2718])
+  if (!string || [string isEqualToString:&stru_1F2FE2718])
   {
     return 0;
   }
 
-  return v3;
+  return string;
 }
 
 - (id)scanQuotedStringValue
 {
   [(ABVCardActivityAlertScanner *)self scanCharacter];
-  v3 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   if (![(ABVCardActivityAlertScanner *)self atEnd])
   {
     do
@@ -153,30 +153,30 @@
         break;
       }
 
-      [v3 appendFormat:@"%c", -[ABVCardActivityAlertScanner scanCharacter](self, "scanCharacter")];
+      [string appendFormat:@"%c", -[ABVCardActivityAlertScanner scanCharacter](self, "scanCharacter")];
     }
 
     while (![(ABVCardActivityAlertScanner *)self atEnd]);
   }
 
   [(ABVCardActivityAlertScanner *)self scanCharacter];
-  return v3;
+  return string;
 }
 
-+ (BOOL)characterIsStringValueCharacter:(unsigned __int16)a3
++ (BOOL)characterIsStringValueCharacter:(unsigned __int16)character
 {
-  v3 = a3;
+  characterCopy = character;
   if ([objc_msgSend(MEMORY[0x1E696AB08] "whitespaceCharacterSet")])
   {
     return 0;
   }
 
-  return v3 != 61 && v3 != 44;
+  return characterCopy != 61 && characterCopy != 44;
 }
 
-- (unsigned)scanCharacterWithEscaping:(BOOL)a3
+- (unsigned)scanCharacterWithEscaping:(BOOL)escaping
 {
-  v3 = a3;
+  escapingCopy = escaping;
   if ([(ABVCardActivityAlertScanner *)self atEnd])
   {
     LOWORD(v5) = 0;
@@ -187,7 +187,7 @@
     string = self->_string;
     ++self->_position;
     v5 = [(NSString *)string characterAtIndex:?];
-    if (v5 == 92 && v3)
+    if (v5 == 92 && escapingCopy)
     {
 
       LOWORD(v5) = [(ABVCardActivityAlertScanner *)self scanCharacterWithEscaping:0];
@@ -197,13 +197,13 @@
   return v5;
 }
 
-- (BOOL)scanPastCharacter:(unsigned __int16)a3
+- (BOOL)scanPastCharacter:(unsigned __int16)character
 {
-  v3 = a3;
+  characterCopy = character;
   [(ABVCardActivityAlertScanner *)self scanPastWhitespace];
   position = self->_position;
-  v6 = [(ABVCardActivityAlertScanner *)self scanCharacter];
-  if (v6 == v3)
+  scanCharacter = [(ABVCardActivityAlertScanner *)self scanCharacter];
+  if (scanCharacter == characterCopy)
   {
     [(ABVCardActivityAlertScanner *)self scanPastWhitespace];
   }
@@ -213,15 +213,15 @@
     self->_position = position;
   }
 
-  return v6 == v3;
+  return scanCharacter == characterCopy;
 }
 
 - (void)scanPastWhitespace
 {
-  v3 = [(ABVCardActivityAlertScanner *)self nextCharacter];
-  if (v3)
+  nextCharacter = [(ABVCardActivityAlertScanner *)self nextCharacter];
+  if (nextCharacter)
   {
-    v4 = v3;
+    v4 = nextCharacter;
     do
     {
       if (![objc_msgSend(MEMORY[0x1E696AB08] "whitespaceCharacterSet")])
@@ -230,11 +230,11 @@
       }
 
       [(ABVCardActivityAlertScanner *)self scanCharacter];
-      v5 = [(ABVCardActivityAlertScanner *)self nextCharacter];
-      v4 = v5;
+      nextCharacter2 = [(ABVCardActivityAlertScanner *)self nextCharacter];
+      v4 = nextCharacter2;
     }
 
-    while (v5);
+    while (nextCharacter2);
   }
 }
 

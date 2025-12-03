@@ -1,17 +1,17 @@
 @interface SKUIDeveloperInfoView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (SKUIDeveloperInfoView)initWithDeveloperInfo:(id)a3 clientContext:(id)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (SKUIDeveloperInfoView)initWithDeveloperInfo:(id)info clientContext:(id)context;
 - (void)layoutSubviews;
-- (void)setBackgroundColor:(id)a3;
+- (void)setBackgroundColor:(id)color;
 @end
 
 @implementation SKUIDeveloperInfoView
 
-- (SKUIDeveloperInfoView)initWithDeveloperInfo:(id)a3 clientContext:(id)a4
+- (SKUIDeveloperInfoView)initWithDeveloperInfo:(id)info clientContext:(id)context
 {
   v53[2] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  infoCopy = info;
+  contextCopy = context;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIDeveloperInfoView initWithDeveloperInfo:clientContext:];
@@ -23,9 +23,9 @@
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_clientContext, a4);
-    objc_storeStrong(&v10->_developerInfo, a3);
-    v11 = SKUIUserInterfaceIdiom(v8);
+    objc_storeStrong(&v9->_clientContext, context);
+    objc_storeStrong(&v10->_developerInfo, info);
+    v11 = SKUIUserInterfaceIdiom(contextCopy);
     if (v11 == 1)
     {
       v12 = 0.0;
@@ -37,12 +37,12 @@
     }
 
     v13 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v14 = [v7 tradeName];
-    if (v14)
+    tradeName = [infoCopy tradeName];
+    if (tradeName)
     {
-      if (v8)
+      if (contextCopy)
       {
-        [v8 localizedStringForKey:@"DEVELOPER_INFO_LABEL_TRADE_NAME" inTable:@"ProductPage"];
+        [contextCopy localizedStringForKey:@"DEVELOPER_INFO_LABEL_TRADE_NAME" inTable:@"ProductPage"];
       }
 
       else
@@ -51,18 +51,18 @@
       }
       v15 = ;
       v53[0] = v15;
-      v53[1] = v14;
+      v53[1] = tradeName;
       v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v53 count:2];
       [v13 addObject:v16];
     }
 
-    v17 = [v7 tradeRepresentativeName];
+    tradeRepresentativeName = [infoCopy tradeRepresentativeName];
 
-    if (v17)
+    if (tradeRepresentativeName)
     {
-      if (v8)
+      if (contextCopy)
       {
-        [v8 localizedStringForKey:@"DEVELOPER_INFO_LABEL_TRADE_REP" inTable:@"ProductPage"];
+        [contextCopy localizedStringForKey:@"DEVELOPER_INFO_LABEL_TRADE_REP" inTable:@"ProductPage"];
       }
 
       else
@@ -71,18 +71,18 @@
       }
       v18 = ;
       v52[0] = v18;
-      v52[1] = v17;
+      v52[1] = tradeRepresentativeName;
       v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v52 count:2];
       [v13 addObject:v19];
     }
 
-    v20 = [v7 formattedAddressString];
+    formattedAddressString = [infoCopy formattedAddressString];
 
-    if (v20)
+    if (formattedAddressString)
     {
-      if (v8)
+      if (contextCopy)
       {
-        [v8 localizedStringForKey:@"DEVELOPER_INFO_LABEL_ADDRESS" inTable:@"ProductPage"];
+        [contextCopy localizedStringForKey:@"DEVELOPER_INFO_LABEL_ADDRESS" inTable:@"ProductPage"];
       }
 
       else
@@ -91,18 +91,18 @@
       }
       v21 = ;
       v51[0] = v21;
-      v51[1] = v20;
+      v51[1] = formattedAddressString;
       v22 = [MEMORY[0x277CBEA60] arrayWithObjects:v51 count:2];
       [v13 addObject:v22];
     }
 
-    v23 = [v7 phoneNumber];
+    phoneNumber = [infoCopy phoneNumber];
 
-    if (v23)
+    if (phoneNumber)
     {
-      if (v8)
+      if (contextCopy)
       {
-        [v8 localizedStringForKey:@"DEVELOPER_INFO_LABEL_PHONE" inTable:@"ProductPage"];
+        [contextCopy localizedStringForKey:@"DEVELOPER_INFO_LABEL_PHONE" inTable:@"ProductPage"];
       }
 
       else
@@ -111,18 +111,18 @@
       }
       v24 = ;
       v50[0] = v24;
-      v50[1] = v23;
+      v50[1] = phoneNumber;
       v25 = [MEMORY[0x277CBEA60] arrayWithObjects:v50 count:2];
       [v13 addObject:v25];
     }
 
-    v26 = [v7 emailAddress];
+    emailAddress = [infoCopy emailAddress];
 
-    if (v26)
+    if (emailAddress)
     {
-      if (v8)
+      if (contextCopy)
       {
-        [v8 localizedStringForKey:@"DEVELOPER_INFO_LABEL_EMAIL" inTable:@"ProductPage"];
+        [contextCopy localizedStringForKey:@"DEVELOPER_INFO_LABEL_EMAIL" inTable:@"ProductPage"];
       }
 
       else
@@ -131,7 +131,7 @@
       }
       v27 = ;
       v49[0] = v27;
-      v49[1] = v26;
+      v49[1] = emailAddress;
       v28 = [MEMORY[0x277CBEA60] arrayWithObjects:v49 count:2];
       [v13 addObject:v28];
     }
@@ -152,8 +152,8 @@
       [(SKUIProductInformationView *)v10->_infoView setHidesSeparatorView:1];
       [(SKUIProductInformationView *)v10->_infoView setInformationLines:v13];
       [(SKUIDeveloperInfoView *)v10 addSubview:v10->_infoView];
-      v32 = [MEMORY[0x277D759A0] mainScreen];
-      [v32 scale];
+      mainScreen = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen scale];
       v34 = 1.0 / v33;
 
       v35 = [objc_alloc(MEMORY[0x277D75D18]) initWithFrame:{v12, 0.0, 0.0, v34}];
@@ -171,12 +171,12 @@
     lineViews = v10->_lineViews;
     v10->_lineViews = v39;
 
-    v41 = [v7 ECommerceRegistrationIdentifier];
-    if (v41)
+    eCommerceRegistrationIdentifier = [infoCopy ECommerceRegistrationIdentifier];
+    if (eCommerceRegistrationIdentifier)
     {
-      if (v8)
+      if (contextCopy)
       {
-        [v8 localizedStringForKey:@"DEVELOPER_INFO_LABEL_ECOMMERCE_REGISTRATION_ID" inTable:@"ProductPage"];
+        [contextCopy localizedStringForKey:@"DEVELOPER_INFO_LABEL_ECOMMERCE_REGISTRATION_ID" inTable:@"ProductPage"];
       }
 
       else
@@ -184,19 +184,19 @@
         [SKUIClientContext localizedStringForKey:@"DEVELOPER_INFO_LABEL_ECOMMERCE_REGISTRATION_ID" inBundles:0 inTable:@"ProductPage"];
       }
       v42 = ;
-      v43 = [[SKUIDeveloperInfoLineItemView alloc] initWithLabel:v42 value:v41];
+      v43 = [[SKUIDeveloperInfoLineItemView alloc] initWithLabel:v42 value:eCommerceRegistrationIdentifier];
       [(SKUIDeveloperInfoLineItemView *)v43 setContentInset:11.0, v12, 11.0, 15.0];
       [(NSMutableArray *)v10->_lineViews addObject:v43];
       [(SKUIDeveloperInfoView *)v10 addSubview:v43];
     }
 
-    v44 = [v7 businessRegistrationIdentifier];
+    businessRegistrationIdentifier = [infoCopy businessRegistrationIdentifier];
 
-    if (v44)
+    if (businessRegistrationIdentifier)
     {
-      if (v8)
+      if (contextCopy)
       {
-        [v8 localizedStringForKey:@"DEVELOPER_INFO_LABEL_BUSINESS_REGISTRATION_ID" inTable:@"ProductPage"];
+        [contextCopy localizedStringForKey:@"DEVELOPER_INFO_LABEL_BUSINESS_REGISTRATION_ID" inTable:@"ProductPage"];
       }
 
       else
@@ -204,7 +204,7 @@
         [SKUIClientContext localizedStringForKey:@"DEVELOPER_INFO_LABEL_BUSINESS_REGISTRATION_ID" inBundles:0 inTable:@"ProductPage"];
       }
       v45 = ;
-      v46 = [[SKUIDeveloperInfoLineItemView alloc] initWithLabel:v45 value:v44];
+      v46 = [[SKUIDeveloperInfoLineItemView alloc] initWithLabel:v45 value:businessRegistrationIdentifier];
       [(SKUIDeveloperInfoLineItemView *)v46 setContentInset:11.0, v12, 11.0, 15.0];
       [(NSMutableArray *)v10->_lineViews addObject:v46];
       [(SKUIDeveloperInfoView *)v10 addSubview:v46];
@@ -275,11 +275,11 @@
   }
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  [(SKUIProductInformationView *)self->_infoView setBackgroundColor:v4];
+  colorCopy = color;
+  [(SKUIProductInformationView *)self->_infoView setBackgroundColor:colorCopy];
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
@@ -300,7 +300,7 @@
           objc_enumerationMutation(v5);
         }
 
-        [*(*(&v11 + 1) + 8 * v9++) setBackgroundColor:v4];
+        [*(*(&v11 + 1) + 8 * v9++) setBackgroundColor:colorCopy];
       }
 
       while (v7 != v9);
@@ -312,13 +312,13 @@
 
   v10.receiver = self;
   v10.super_class = SKUIDeveloperInfoView;
-  [(SKUIDeveloperInfoView *)&v10 setBackgroundColor:v4];
+  [(SKUIDeveloperInfoView *)&v10 setBackgroundColor:colorCopy];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   v23 = *MEMORY[0x277D85DE8];
   [(SKUIProductInformationView *)self->_infoView sizeThatFits:?];
   v7 = v6;

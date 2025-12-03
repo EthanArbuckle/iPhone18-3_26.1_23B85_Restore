@@ -1,71 +1,71 @@
 @interface CKDPSubscriptionNotificationAlert
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addLocalizedArguments:(id)a3;
-- (void)addSubtitleLocalizedArguments:(id)a3;
-- (void)addTitleLocalizedArguments:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addLocalizedArguments:(id)arguments;
+- (void)addSubtitleLocalizedArguments:(id)arguments;
+- (void)addTitleLocalizedArguments:(id)arguments;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CKDPSubscriptionNotificationAlert
 
-- (void)addLocalizedArguments:(id)a3
+- (void)addLocalizedArguments:(id)arguments
 {
-  v4 = a3;
+  argumentsCopy = arguments;
   localizedArguments = self->_localizedArguments;
-  v8 = v4;
+  v8 = argumentsCopy;
   if (!localizedArguments)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_localizedArguments;
     self->_localizedArguments = v6;
 
-    v4 = v8;
+    argumentsCopy = v8;
     localizedArguments = self->_localizedArguments;
   }
 
-  objc_msgSend_addObject_(localizedArguments, v4, v4);
+  objc_msgSend_addObject_(localizedArguments, argumentsCopy, argumentsCopy);
 }
 
-- (void)addTitleLocalizedArguments:(id)a3
+- (void)addTitleLocalizedArguments:(id)arguments
 {
-  v4 = a3;
+  argumentsCopy = arguments;
   titleLocalizedArguments = self->_titleLocalizedArguments;
-  v8 = v4;
+  v8 = argumentsCopy;
   if (!titleLocalizedArguments)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_titleLocalizedArguments;
     self->_titleLocalizedArguments = v6;
 
-    v4 = v8;
+    argumentsCopy = v8;
     titleLocalizedArguments = self->_titleLocalizedArguments;
   }
 
-  objc_msgSend_addObject_(titleLocalizedArguments, v4, v4);
+  objc_msgSend_addObject_(titleLocalizedArguments, argumentsCopy, argumentsCopy);
 }
 
-- (void)addSubtitleLocalizedArguments:(id)a3
+- (void)addSubtitleLocalizedArguments:(id)arguments
 {
-  v4 = a3;
+  argumentsCopy = arguments;
   subtitleLocalizedArguments = self->_subtitleLocalizedArguments;
-  v8 = v4;
+  v8 = argumentsCopy;
   if (!subtitleLocalizedArguments)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_subtitleLocalizedArguments;
     self->_subtitleLocalizedArguments = v6;
 
-    v4 = v8;
+    argumentsCopy = v8;
     subtitleLocalizedArguments = self->_subtitleLocalizedArguments;
   }
 
-  objc_msgSend_addObject_(subtitleLocalizedArguments, v4, v4);
+  objc_msgSend_addObject_(subtitleLocalizedArguments, argumentsCopy, argumentsCopy);
 }
 
 - (id)description
@@ -165,10 +165,10 @@
   return v6;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v45 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (self->_text)
   {
     PBDataWriterWriteStringField();
@@ -318,24 +318,24 @@
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v43 = a3;
+  toCopy = to;
   text = self->_text;
   if (text)
   {
-    objc_msgSend_setText_(v43, v4, text);
+    objc_msgSend_setText_(toCopy, v4, text);
   }
 
   localizedKey = self->_localizedKey;
   if (localizedKey)
   {
-    objc_msgSend_setLocalizedKey_(v43, v4, localizedKey);
+    objc_msgSend_setLocalizedKey_(toCopy, v4, localizedKey);
   }
 
   if (objc_msgSend_localizedArgumentsCount(self, v4, localizedKey))
   {
-    objc_msgSend_clearLocalizedArguments(v43, v7, v8);
+    objc_msgSend_clearLocalizedArguments(toCopy, v7, v8);
     v11 = objc_msgSend_localizedArgumentsCount(self, v9, v10);
     if (v11)
     {
@@ -343,7 +343,7 @@
       for (i = 0; i != v12; ++i)
       {
         v14 = objc_msgSend_localizedArgumentsAtIndex_(self, v7, i);
-        objc_msgSend_addLocalizedArguments_(v43, v15, v14);
+        objc_msgSend_addLocalizedArguments_(toCopy, v15, v14);
       }
     }
   }
@@ -351,42 +351,42 @@
   actionLocKey = self->_actionLocKey;
   if (actionLocKey)
   {
-    objc_msgSend_setActionLocKey_(v43, v7, actionLocKey);
+    objc_msgSend_setActionLocKey_(toCopy, v7, actionLocKey);
   }
 
   launchImage = self->_launchImage;
   if (launchImage)
   {
-    objc_msgSend_setLaunchImage_(v43, v7, launchImage);
+    objc_msgSend_setLaunchImage_(toCopy, v7, launchImage);
   }
 
   soundName = self->_soundName;
   if (soundName)
   {
-    objc_msgSend_setSoundName_(v43, v7, soundName);
+    objc_msgSend_setSoundName_(toCopy, v7, soundName);
   }
 
   category = self->_category;
   if (category)
   {
-    objc_msgSend_setCategory_(v43, v7, category);
+    objc_msgSend_setCategory_(toCopy, v7, category);
   }
 
   title = self->_title;
   if (title)
   {
-    objc_msgSend_setTitle_(v43, v7, title);
+    objc_msgSend_setTitle_(toCopy, v7, title);
   }
 
   titleLocalizedKey = self->_titleLocalizedKey;
   if (titleLocalizedKey)
   {
-    objc_msgSend_setTitleLocalizedKey_(v43, v7, titleLocalizedKey);
+    objc_msgSend_setTitleLocalizedKey_(toCopy, v7, titleLocalizedKey);
   }
 
   if (objc_msgSend_titleLocalizedArgumentsCount(self, v7, titleLocalizedKey))
   {
-    objc_msgSend_clearTitleLocalizedArguments(v43, v22, v23);
+    objc_msgSend_clearTitleLocalizedArguments(toCopy, v22, v23);
     v26 = objc_msgSend_titleLocalizedArgumentsCount(self, v24, v25);
     if (v26)
     {
@@ -394,7 +394,7 @@
       for (j = 0; j != v27; ++j)
       {
         v29 = objc_msgSend_titleLocalizedArgumentsAtIndex_(self, v22, j);
-        objc_msgSend_addTitleLocalizedArguments_(v43, v30, v29);
+        objc_msgSend_addTitleLocalizedArguments_(toCopy, v30, v29);
       }
     }
   }
@@ -402,18 +402,18 @@
   subtitle = self->_subtitle;
   if (subtitle)
   {
-    objc_msgSend_setSubtitle_(v43, v22, subtitle);
+    objc_msgSend_setSubtitle_(toCopy, v22, subtitle);
   }
 
   subtitleLocalizedKey = self->_subtitleLocalizedKey;
   if (subtitleLocalizedKey)
   {
-    objc_msgSend_setSubtitleLocalizedKey_(v43, v22, subtitleLocalizedKey);
+    objc_msgSend_setSubtitleLocalizedKey_(toCopy, v22, subtitleLocalizedKey);
   }
 
   if (objc_msgSend_subtitleLocalizedArgumentsCount(self, v22, subtitleLocalizedKey))
   {
-    objc_msgSend_clearSubtitleLocalizedArguments(v43, v33, v34);
+    objc_msgSend_clearSubtitleLocalizedArguments(toCopy, v33, v34);
     v37 = objc_msgSend_subtitleLocalizedArgumentsCount(self, v35, v36);
     if (v37)
     {
@@ -421,23 +421,23 @@
       for (k = 0; k != v39; ++k)
       {
         v41 = objc_msgSend_subtitleLocalizedArgumentsAtIndex_(self, v38, k);
-        objc_msgSend_addSubtitleLocalizedArguments_(v43, v42, v41);
+        objc_msgSend_addSubtitleLocalizedArguments_(toCopy, v42, v41);
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v85 = *MEMORY[0x277D85DE8];
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_init(v7, v8, v9);
-  v12 = objc_msgSend_copyWithZone_(self->_text, v11, a3);
+  v12 = objc_msgSend_copyWithZone_(self->_text, v11, zone);
   v13 = v10[10];
   v10[10] = v12;
 
-  v15 = objc_msgSend_copyWithZone_(self->_localizedKey, v14, a3);
+  v15 = objc_msgSend_copyWithZone_(self->_localizedKey, v14, zone);
   v16 = v10[5];
   v10[5] = v15;
 
@@ -461,7 +461,7 @@
           objc_enumerationMutation(v17);
         }
 
-        v24 = objc_msgSend_copyWithZone_(*(*(&v78 + 1) + 8 * v23), v20, a3);
+        v24 = objc_msgSend_copyWithZone_(*(*(&v78 + 1) + 8 * v23), v20, zone);
         objc_msgSend_addLocalizedArguments_(v10, v25, v24);
 
         ++v23;
@@ -474,27 +474,27 @@
     while (v21);
   }
 
-  v27 = objc_msgSend_copyWithZone_(self->_actionLocKey, v26, a3);
+  v27 = objc_msgSend_copyWithZone_(self->_actionLocKey, v26, zone);
   v28 = v10[1];
   v10[1] = v27;
 
-  v30 = objc_msgSend_copyWithZone_(self->_launchImage, v29, a3);
+  v30 = objc_msgSend_copyWithZone_(self->_launchImage, v29, zone);
   v31 = v10[3];
   v10[3] = v30;
 
-  v33 = objc_msgSend_copyWithZone_(self->_soundName, v32, a3);
+  v33 = objc_msgSend_copyWithZone_(self->_soundName, v32, zone);
   v34 = v10[6];
   v10[6] = v33;
 
-  v36 = objc_msgSend_copyWithZone_(self->_category, v35, a3);
+  v36 = objc_msgSend_copyWithZone_(self->_category, v35, zone);
   v37 = v10[2];
   v10[2] = v36;
 
-  v39 = objc_msgSend_copyWithZone_(self->_title, v38, a3);
+  v39 = objc_msgSend_copyWithZone_(self->_title, v38, zone);
   v40 = v10[11];
   v10[11] = v39;
 
-  v42 = objc_msgSend_copyWithZone_(self->_titleLocalizedKey, v41, a3);
+  v42 = objc_msgSend_copyWithZone_(self->_titleLocalizedKey, v41, zone);
   v43 = v10[13];
   v10[13] = v42;
 
@@ -518,7 +518,7 @@
           objc_enumerationMutation(v44);
         }
 
-        v51 = objc_msgSend_copyWithZone_(*(*(&v74 + 1) + 8 * v50), v47, a3);
+        v51 = objc_msgSend_copyWithZone_(*(*(&v74 + 1) + 8 * v50), v47, zone);
         objc_msgSend_addTitleLocalizedArguments_(v10, v52, v51);
 
         ++v50;
@@ -531,11 +531,11 @@
     while (v48);
   }
 
-  v54 = objc_msgSend_copyWithZone_(self->_subtitle, v53, a3);
+  v54 = objc_msgSend_copyWithZone_(self->_subtitle, v53, zone);
   v55 = v10[7];
   v10[7] = v54;
 
-  v57 = objc_msgSend_copyWithZone_(self->_subtitleLocalizedKey, v56, a3);
+  v57 = objc_msgSend_copyWithZone_(self->_subtitleLocalizedKey, v56, zone);
   v58 = v10[9];
   v10[9] = v57;
 
@@ -559,7 +559,7 @@
           objc_enumerationMutation(v59);
         }
 
-        v66 = objc_msgSend_copyWithZone_(*(*(&v70 + 1) + 8 * v65), v62, a3, v70);
+        v66 = objc_msgSend_copyWithZone_(*(*(&v70 + 1) + 8 * v65), v62, zone, v70);
         objc_msgSend_addSubtitleLocalizedArguments_(v10, v67, v66);
 
         ++v65;
@@ -576,17 +576,17 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (!objc_msgSend_isMemberOfClass_(v4, v6, v5))
+  if (!objc_msgSend_isMemberOfClass_(equalCopy, v6, v5))
   {
     goto LABEL_28;
   }
 
   text = self->_text;
-  v9 = v4[10];
+  v9 = equalCopy[10];
   if (text | v9)
   {
     if (!objc_msgSend_isEqual_(text, v7, v9))
@@ -596,7 +596,7 @@
   }
 
   localizedKey = self->_localizedKey;
-  v11 = v4[5];
+  v11 = equalCopy[5];
   if (localizedKey | v11)
   {
     if (!objc_msgSend_isEqual_(localizedKey, v7, v11))
@@ -606,7 +606,7 @@
   }
 
   localizedArguments = self->_localizedArguments;
-  v13 = v4[4];
+  v13 = equalCopy[4];
   if (localizedArguments | v13)
   {
     if (!objc_msgSend_isEqual_(localizedArguments, v7, v13))
@@ -616,7 +616,7 @@
   }
 
   actionLocKey = self->_actionLocKey;
-  v15 = v4[1];
+  v15 = equalCopy[1];
   if (actionLocKey | v15)
   {
     if (!objc_msgSend_isEqual_(actionLocKey, v7, v15))
@@ -626,7 +626,7 @@
   }
 
   launchImage = self->_launchImage;
-  v17 = v4[3];
+  v17 = equalCopy[3];
   if (launchImage | v17)
   {
     if (!objc_msgSend_isEqual_(launchImage, v7, v17))
@@ -636,7 +636,7 @@
   }
 
   soundName = self->_soundName;
-  v19 = v4[6];
+  v19 = equalCopy[6];
   if (soundName | v19)
   {
     if (!objc_msgSend_isEqual_(soundName, v7, v19))
@@ -646,7 +646,7 @@
   }
 
   category = self->_category;
-  v21 = v4[2];
+  v21 = equalCopy[2];
   if (category | v21)
   {
     if (!objc_msgSend_isEqual_(category, v7, v21))
@@ -656,7 +656,7 @@
   }
 
   title = self->_title;
-  v23 = v4[11];
+  v23 = equalCopy[11];
   if (title | v23)
   {
     if (!objc_msgSend_isEqual_(title, v7, v23))
@@ -666,7 +666,7 @@
   }
 
   titleLocalizedKey = self->_titleLocalizedKey;
-  v25 = v4[13];
+  v25 = equalCopy[13];
   if (titleLocalizedKey | v25)
   {
     if (!objc_msgSend_isEqual_(titleLocalizedKey, v7, v25))
@@ -675,10 +675,10 @@
     }
   }
 
-  if (((titleLocalizedArguments = self->_titleLocalizedArguments, v27 = v4[12], !(titleLocalizedArguments | v27)) || objc_msgSend_isEqual_(titleLocalizedArguments, v7, v27)) && ((subtitle = self->_subtitle, v29 = v4[7], !(subtitle | v29)) || objc_msgSend_isEqual_(subtitle, v7, v29)) && ((subtitleLocalizedKey = self->_subtitleLocalizedKey, v31 = v4[9], !(subtitleLocalizedKey | v31)) || objc_msgSend_isEqual_(subtitleLocalizedKey, v7, v31)))
+  if (((titleLocalizedArguments = self->_titleLocalizedArguments, v27 = equalCopy[12], !(titleLocalizedArguments | v27)) || objc_msgSend_isEqual_(titleLocalizedArguments, v7, v27)) && ((subtitle = self->_subtitle, v29 = equalCopy[7], !(subtitle | v29)) || objc_msgSend_isEqual_(subtitle, v7, v29)) && ((subtitleLocalizedKey = self->_subtitleLocalizedKey, v31 = equalCopy[9], !(subtitleLocalizedKey | v31)) || objc_msgSend_isEqual_(subtitleLocalizedKey, v7, v31)))
   {
     subtitleLocalizedArguments = self->_subtitleLocalizedArguments;
-    v33 = v4[8];
+    v33 = equalCopy[8];
     if (subtitleLocalizedArguments | v33)
     {
       isEqual = objc_msgSend_isEqual_(subtitleLocalizedArguments, v7, v33);
@@ -716,17 +716,17 @@ LABEL_28:
   return v34 ^ v37 ^ objc_msgSend_hash(self->_subtitleLocalizedArguments, v38, v39);
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v55 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = *(v5 + 10);
+  fromCopy = from;
+  v6 = *(fromCopy + 10);
   if (v6)
   {
     objc_msgSend_setText_(self, v4, v6);
   }
 
-  v7 = *(v5 + 5);
+  v7 = *(fromCopy + 5);
   if (v7)
   {
     objc_msgSend_setLocalizedKey_(self, v4, v7);
@@ -736,7 +736,7 @@ LABEL_28:
   v51 = 0u;
   v48 = 0u;
   v49 = 0u;
-  v8 = *(v5 + 4);
+  v8 = *(fromCopy + 4);
   v10 = objc_msgSend_countByEnumeratingWithState_objects_count_(v8, v9, &v48, v54, 16);
   if (v10)
   {
@@ -760,37 +760,37 @@ LABEL_28:
     while (v12);
   }
 
-  v16 = *(v5 + 1);
+  v16 = *(fromCopy + 1);
   if (v16)
   {
     objc_msgSend_setActionLocKey_(self, v15, v16);
   }
 
-  v17 = *(v5 + 3);
+  v17 = *(fromCopy + 3);
   if (v17)
   {
     objc_msgSend_setLaunchImage_(self, v15, v17);
   }
 
-  v18 = *(v5 + 6);
+  v18 = *(fromCopy + 6);
   if (v18)
   {
     objc_msgSend_setSoundName_(self, v15, v18);
   }
 
-  v19 = *(v5 + 2);
+  v19 = *(fromCopy + 2);
   if (v19)
   {
     objc_msgSend_setCategory_(self, v15, v19);
   }
 
-  v20 = *(v5 + 11);
+  v20 = *(fromCopy + 11);
   if (v20)
   {
     objc_msgSend_setTitle_(self, v15, v20);
   }
 
-  v21 = *(v5 + 13);
+  v21 = *(fromCopy + 13);
   if (v21)
   {
     objc_msgSend_setTitleLocalizedKey_(self, v15, v21);
@@ -800,7 +800,7 @@ LABEL_28:
   v47 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v22 = *(v5 + 12);
+  v22 = *(fromCopy + 12);
   v24 = objc_msgSend_countByEnumeratingWithState_objects_count_(v22, v23, &v44, v53, 16);
   if (v24)
   {
@@ -824,13 +824,13 @@ LABEL_28:
     while (v26);
   }
 
-  v30 = *(v5 + 7);
+  v30 = *(fromCopy + 7);
   if (v30)
   {
     objc_msgSend_setSubtitle_(self, v29, v30);
   }
 
-  v31 = *(v5 + 9);
+  v31 = *(fromCopy + 9);
   if (v31)
   {
     objc_msgSend_setSubtitleLocalizedKey_(self, v29, v31);
@@ -840,7 +840,7 @@ LABEL_28:
   v43 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v32 = *(v5 + 8);
+  v32 = *(fromCopy + 8);
   v34 = objc_msgSend_countByEnumeratingWithState_objects_count_(v32, v33, &v40, v52, 16);
   if (v34)
   {

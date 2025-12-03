@@ -1,52 +1,52 @@
 @interface PLCacheDeleteSupport
-+ (BOOL)clearPurgeableFlagForResource:(id)a3;
-+ (BOOL)clearPurgeableFlagsForAllResourcesInPhotoLibraryURL:(id)a3;
-+ (BOOL)isPurgeableFile:(id)a3 outIsPhotoType:(BOOL *)a4 outUrgencyLevel:(int64_t *)a5 error:(id *)a6;
-+ (BOOL)markChildrenPurgeableForDirectoryAtURL:(id)a3 withUrgency:(int64_t)a4 error:(id *)a5;
-+ (BOOL)markPurgeableForFileAtURL:(id)a3 withUrgency:(int64_t)a4 outInode:(unint64_t *)a5 error:(id *)a6;
-+ (BOOL)readInodeAtURL:(id)a3 outInode:(unint64_t *)a4 error:(id *)a5;
-+ (BOOL)setClearPurgeableIsCloneStateOnPurgeableResourcesOnceWithPathManager:(id)a3 error:(id *)a4;
-+ (BOOL)verifyAndFixLocalAvailabilityForMissingResourcesUsingFileIDInManagedObjectContext:(id)a3 countPresent:(int64_t *)a4 countMissing:(int64_t *)a5 countUnableToVerify:(int64_t *)a6 error:(id *)a7;
-+ (fsid)fsidForURL:(id)a3;
-+ (id)_allChildrenPurgeableResourceDirectoryTypesForPathManager:(id)a3 libraryIdentifier:(int64_t)a4;
-+ (id)_clearablePurgeableResourceDirectoriesForPathManager:(id)a3;
-+ (id)_purgeableResourceDirectoriesForPathManager:(id)a3;
-+ (id)_unclearablePurgeableResourceDirectoriesForPathManager:(id)a3;
-+ (id)purgeableStateDescriptionForFile:(id)a3;
-+ (unint64_t)_flagsFromUrgency:(int64_t)a3 markDirectoryChildren:(BOOL)a4;
-+ (void)clearPurgeableIsCloneStateOnPurgeableResourcesOnceIfNecessaryInManagedObjectContext:(id)a3 pathManager:(id)a4;
++ (BOOL)clearPurgeableFlagForResource:(id)resource;
++ (BOOL)clearPurgeableFlagsForAllResourcesInPhotoLibraryURL:(id)l;
++ (BOOL)isPurgeableFile:(id)file outIsPhotoType:(BOOL *)type outUrgencyLevel:(int64_t *)level error:(id *)error;
++ (BOOL)markChildrenPurgeableForDirectoryAtURL:(id)l withUrgency:(int64_t)urgency error:(id *)error;
++ (BOOL)markPurgeableForFileAtURL:(id)l withUrgency:(int64_t)urgency outInode:(unint64_t *)inode error:(id *)error;
++ (BOOL)readInodeAtURL:(id)l outInode:(unint64_t *)inode error:(id *)error;
++ (BOOL)setClearPurgeableIsCloneStateOnPurgeableResourcesOnceWithPathManager:(id)manager error:(id *)error;
++ (BOOL)verifyAndFixLocalAvailabilityForMissingResourcesUsingFileIDInManagedObjectContext:(id)context countPresent:(int64_t *)present countMissing:(int64_t *)missing countUnableToVerify:(int64_t *)verify error:(id *)error;
++ (fsid)fsidForURL:(id)l;
++ (id)_allChildrenPurgeableResourceDirectoryTypesForPathManager:(id)manager libraryIdentifier:(int64_t)identifier;
++ (id)_clearablePurgeableResourceDirectoriesForPathManager:(id)manager;
++ (id)_purgeableResourceDirectoriesForPathManager:(id)manager;
++ (id)_unclearablePurgeableResourceDirectoriesForPathManager:(id)manager;
++ (id)purgeableStateDescriptionForFile:(id)file;
++ (unint64_t)_flagsFromUrgency:(int64_t)urgency markDirectoryChildren:(BOOL)children;
++ (void)clearPurgeableIsCloneStateOnPurgeableResourcesOnceIfNecessaryInManagedObjectContext:(id)context pathManager:(id)manager;
 - (BOOL)clearPurgeableFlagsForAllResources;
-- (BOOL)isFilePurgedForFileID:(id)a3 purgedPath:(id)a4;
-- (BOOL)markResourceAsPurgeable:(id)a3 withUrgency:(int64_t)a4;
-- (PLCacheDeleteSupport)initWithLibraryServicesManager:(id)a3 cplStatus:(id)a4;
+- (BOOL)isFilePurgedForFileID:(id)d purgedPath:(id)path;
+- (BOOL)markResourceAsPurgeable:(id)purgeable withUrgency:(int64_t)urgency;
+- (PLCacheDeleteSupport)initWithLibraryServicesManager:(id)manager cplStatus:(id)status;
 - (id)_newShortLivedPhotoLibrary;
 - (id)markChildrenPurgeableDirectories;
 - (id)purgeableDirectories;
-- (void)_markAsNotLocallyAvailableForResourcesWithFileIDsToPath:(id)a3 inLibrary:(id)a4;
+- (void)_markAsNotLocallyAvailableForResourcesWithFileIDsToPath:(id)path inLibrary:(id)library;
 - (void)dealloc;
 - (void)invalidate;
-- (void)markAsNotLocallyAvailableForResourcesWithFileIDsToPath:(id)a3;
+- (void)markAsNotLocallyAvailableForResourcesWithFileIDsToPath:(id)path;
 - (void)rescanResourcesFromFileSystem;
 @end
 
 @implementation PLCacheDeleteSupport
 
-- (void)_markAsNotLocallyAvailableForResourcesWithFileIDsToPath:(id)a3 inLibrary:(id)a4
+- (void)_markAsNotLocallyAvailableForResourcesWithFileIDsToPath:(id)path inLibrary:(id)library
 {
   v51 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v40 = v5;
-  v7 = [v5 allKeys];
+  pathCopy = path;
+  libraryCopy = library;
+  v40 = pathCopy;
+  allKeys = [pathCopy allKeys];
   v8 = MEMORY[0x1E695D5E0];
   v9 = +[PLInternalResource entityName];
   v10 = [v8 fetchRequestWithEntityName:v9];
 
-  v11 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K IN %@", @"fileID", v7];
+  v11 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K IN %@", @"fileID", allKeys];
   [v10 setPredicate:v11];
-  v12 = [v6 managedObjectContext];
+  managedObjectContext = [libraryCopy managedObjectContext];
   v45 = 0;
-  v13 = [v12 executeFetchRequest:v10 error:&v45];
+  v13 = [managedObjectContext executeFetchRequest:v10 error:&v45];
   v14 = v45;
   if (!v13)
   {
@@ -57,7 +57,7 @@
     }
 
     *buf = 138412546;
-    v47 = v7;
+    v47 = allKeys;
     v48 = 2112;
     v49 = v14;
     v30 = "Failed to fetch resources with fileIDs %@: %@";
@@ -78,7 +78,7 @@ LABEL_22:
     }
 
     *buf = 138412290;
-    v47 = v7;
+    v47 = allKeys;
     v30 = "Do not find any resources matching fileIDs: %@";
     v31 = v15;
     v32 = OS_LOG_TYPE_INFO;
@@ -96,11 +96,11 @@ LABEL_22:
   {
     v17 = v16;
     v34 = v13;
-    v35 = v12;
+    v35 = managedObjectContext;
     v36 = v11;
     v37 = v10;
-    v38 = v7;
-    v39 = v6;
+    v38 = allKeys;
+    v39 = libraryCopy;
     v18 = *v42;
     while (1)
     {
@@ -112,14 +112,14 @@ LABEL_22:
         }
 
         v20 = *(*(&v41 + 1) + 8 * i);
-        v21 = [v20 cplFileURL];
-        v22 = [v21 path];
+        cplFileURL = [v20 cplFileURL];
+        path = [cplFileURL path];
 
-        v23 = [v20 fileID];
-        v24 = [MEMORY[0x1E696AD98] numberWithLongLong:v23];
+        fileID = [v20 fileID];
+        v24 = [MEMORY[0x1E696AD98] numberWithLongLong:fileID];
         v25 = [v40 objectForKeyedSubscript:v24];
 
-        if ([v22 length] && objc_msgSend(v25, "containsString:", v22))
+        if ([path length] && objc_msgSend(v25, "containsString:", path))
         {
           v26 = PLResourceCachingGetLog();
           if (!os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
@@ -128,7 +128,7 @@ LABEL_22:
           }
 
           *buf = 134218242;
-          v47 = v23;
+          v47 = fileID;
           v48 = 2112;
           v49 = v25;
           v27 = v26;
@@ -145,7 +145,7 @@ LABEL_22:
           }
 
           *buf = 138412546;
-          v47 = v22;
+          v47 = path;
           v48 = 2112;
           v49 = v25;
           v27 = v26;
@@ -162,12 +162,12 @@ LABEL_15:
       v17 = [v15 countByEnumeratingWithState:&v41 objects:v50 count:16];
       if (!v17)
       {
-        v7 = v38;
-        v6 = v39;
+        allKeys = v38;
+        libraryCopy = v39;
         v11 = v36;
         v10 = v37;
         v13 = v34;
-        v12 = v35;
+        managedObjectContext = v35;
         break;
       }
     }
@@ -176,19 +176,19 @@ LABEL_15:
 LABEL_23:
 }
 
-- (void)markAsNotLocallyAvailableForResourcesWithFileIDsToPath:(id)a3
+- (void)markAsNotLocallyAvailableForResourcesWithFileIDsToPath:(id)path
 {
-  v4 = a3;
-  if ([v4 count])
+  pathCopy = path;
+  if ([pathCopy count])
   {
-    v5 = [(PLCacheDeleteSupport *)self _newShortLivedPhotoLibrary];
+    _newShortLivedPhotoLibrary = [(PLCacheDeleteSupport *)self _newShortLivedPhotoLibrary];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __79__PLCacheDeleteSupport_markAsNotLocallyAvailableForResourcesWithFileIDsToPath___block_invoke;
     v9[3] = &unk_1E75761B8;
-    v10 = v4;
-    v11 = self;
-    v12 = v5;
+    v10 = pathCopy;
+    selfCopy = self;
+    v12 = _newShortLivedPhotoLibrary;
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __79__PLCacheDeleteSupport_markAsNotLocallyAvailableForResourcesWithFileIDsToPath___block_invoke_74;
@@ -223,24 +223,24 @@ void __79__PLCacheDeleteSupport_markAsNotLocallyAvailableForResourcesWithFileIDs
   [v1 touch];
 }
 
-- (BOOL)isFilePurgedForFileID:(id)a3 purgedPath:(id)a4
+- (BOOL)isFilePurgedForFileID:(id)d purgedPath:(id)path
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if ([v5 longLongValue] < 0)
+  dCopy = d;
+  pathCopy = path;
+  if ([dCopy longLongValue] < 0)
   {
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid fileID %@ for purgedPath %@", v5, v6];
+    pathCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid fileID %@ for purgedPath %@", dCopy, pathCopy];
     PLSimulateCrash();
 
-    LOBYTE(v8) = 0;
+    LOBYTE(pathCopy) = 0;
   }
 
   else
   {
-    [v5 unsignedLongLongValue];
+    [dCopy unsignedLongLongValue];
     v7 = openbyid_np();
-    LODWORD(v8) = v7 >> 31;
+    LODWORD(pathCopy) = v7 >> 31;
     if ((v7 & 0x80000000) == 0)
     {
       v9 = v7;
@@ -248,9 +248,9 @@ void __79__PLCacheDeleteSupport_markAsNotLocallyAvailableForResourcesWithFileIDs
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        v13 = v5;
+        v13 = dCopy;
         v14 = 2112;
-        v15 = v6;
+        v15 = pathCopy;
         _os_log_impl(&dword_19BF1F000, v10, OS_LOG_TYPE_ERROR, "Received purging notification for fileID %@ purgedPath %@ that still exists", buf, 0x16u);
       }
 
@@ -258,13 +258,13 @@ void __79__PLCacheDeleteSupport_markAsNotLocallyAvailableForResourcesWithFileIDs
     }
   }
 
-  return v8;
+  return pathCopy;
 }
 
 - (void)rescanResourcesFromFileSystem
 {
   v27 = *MEMORY[0x1E69E9840];
-  v3 = [(PLCacheDeleteSupport *)self _newShortLivedPhotoLibrary];
+  _newShortLivedPhotoLibrary = [(PLCacheDeleteSupport *)self _newShortLivedPhotoLibrary];
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -281,7 +281,7 @@ void __79__PLCacheDeleteSupport_markAsNotLocallyAvailableForResourcesWithFileIDs
   v11[3] = &unk_1E7578898;
   v13 = &v15;
   v11[4] = self;
-  v4 = v3;
+  v4 = _newShortLivedPhotoLibrary;
   v12 = v4;
   v14 = &v19;
   [v4 performTransactionAndWait:v11];
@@ -336,8 +336,8 @@ void __53__PLCacheDeleteSupport_rescanResourcesFromFileSystem__block_invoke(uint
   v24 = *MEMORY[0x1E69E9840];
   v3 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v4 = objc_opt_class();
-  v5 = [(PLLibraryServicesManager *)self->_lsm pathManager];
-  v6 = [v4 _allChildrenPurgeableResourceDirectoryTypesForPathManager:v5 libraryIdentifier:{-[PLLibraryServicesManager wellKnownPhotoLibraryIdentifier](self->_lsm, "wellKnownPhotoLibraryIdentifier")}];
+  pathManager = [(PLLibraryServicesManager *)self->_lsm pathManager];
+  v6 = [v4 _allChildrenPurgeableResourceDirectoryTypesForPathManager:pathManager libraryIdentifier:{-[PLLibraryServicesManager wellKnownPhotoLibraryIdentifier](self->_lsm, "wellKnownPhotoLibraryIdentifier")}];
 
   v21 = 0u;
   v22 = 0u;
@@ -358,18 +358,18 @@ void __53__PLCacheDeleteSupport_rescanResourcesFromFileSystem__block_invoke(uint
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v19 + 1) + 8 * i) unsignedIntValue];
-        v13 = [(PLLibraryServicesManager *)self->_lsm pathManager];
+        unsignedIntValue = [*(*(&v19 + 1) + 8 * i) unsignedIntValue];
+        pathManager2 = [(PLLibraryServicesManager *)self->_lsm pathManager];
         if ([(PLLibraryServicesManager *)self->_lsm wellKnownPhotoLibraryIdentifier]== 3)
         {
           v14 = objc_alloc(MEMORY[0x1E69BF2A0]);
-          v15 = [v13 libraryURL];
-          v16 = [v14 initWithLibraryURL:v15 bundleScope:3];
+          libraryURL = [pathManager2 libraryURL];
+          v16 = [v14 initWithLibraryURL:libraryURL bundleScope:3];
 
-          v13 = v16;
+          pathManager2 = v16;
         }
 
-        v17 = [v13 purgeableSubdirectoriesWithType:v12 createIfNeeded:1 error:0];
+        v17 = [pathManager2 purgeableSubdirectoriesWithType:unsignedIntValue createIfNeeded:1 error:0];
         [v3 addObjectsFromArray:v17];
       }
 
@@ -385,8 +385,8 @@ void __53__PLCacheDeleteSupport_rescanResourcesFromFileSystem__block_invoke(uint
 - (id)purgeableDirectories
 {
   v3 = objc_opt_class();
-  v4 = [(PLLibraryServicesManager *)self->_lsm pathManager];
-  v5 = [v3 _purgeableResourceDirectoriesForPathManager:v4];
+  pathManager = [(PLLibraryServicesManager *)self->_lsm pathManager];
+  v5 = [v3 _purgeableResourceDirectoriesForPathManager:pathManager];
 
   return v5;
 }
@@ -394,13 +394,13 @@ void __53__PLCacheDeleteSupport_rescanResourcesFromFileSystem__block_invoke(uint
 - (BOOL)clearPurgeableFlagsForAllResources
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = [(PLLibraryServicesManager *)self->_lsm pathManager];
-  v4 = [v3 libraryURL];
+  pathManager = [(PLLibraryServicesManager *)self->_lsm pathManager];
+  libraryURL = [pathManager libraryURL];
 
-  v5 = v4 != 0;
-  if (v4)
+  v5 = libraryURL != 0;
+  if (libraryURL)
   {
-    if (![objc_opt_class() clearPurgeableFlagsForAllResourcesInPhotoLibraryURL:v4])
+    if (![objc_opt_class() clearPurgeableFlagsForAllResourcesInPhotoLibraryURL:libraryURL])
     {
       v5 = 0;
       goto LABEL_10;
@@ -413,13 +413,13 @@ void __53__PLCacheDeleteSupport_rescanResourcesFromFileSystem__block_invoke(uint
       _os_log_impl(&dword_19BF1F000, v6, OS_LOG_TYPE_DEFAULT, "Resetting fileID for all resources", buf, 2u);
     }
 
-    v7 = [(PLCacheDeleteSupport *)self _newShortLivedPhotoLibrary];
+    _newShortLivedPhotoLibrary = [(PLCacheDeleteSupport *)self _newShortLivedPhotoLibrary];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __58__PLCacheDeleteSupport_clearPurgeableFlagsForAllResources__block_invoke;
     v11[3] = &unk_1E75781E8;
-    v12 = v7;
-    v8 = v7;
+    v12 = _newShortLivedPhotoLibrary;
+    v8 = _newShortLivedPhotoLibrary;
     [v8 performTransactionAndWait:v11];
   }
 
@@ -475,29 +475,29 @@ LABEL_6:
   }
 }
 
-- (BOOL)markResourceAsPurgeable:(id)a3 withUrgency:(int64_t)a4
+- (BOOL)markResourceAsPurgeable:(id)purgeable withUrgency:(int64_t)urgency
 {
   v33 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(PLLibraryServicesManager *)self->_lsm pathManager];
-  v8 = [v7 capabilities];
-  v9 = [v8 isCentralizedCacheDeleteCapable];
+  purgeableCopy = purgeable;
+  pathManager = [(PLLibraryServicesManager *)self->_lsm pathManager];
+  capabilities = [pathManager capabilities];
+  isCentralizedCacheDeleteCapable = [capabilities isCentralizedCacheDeleteCapable];
 
-  if (v9)
+  if (isCentralizedCacheDeleteCapable)
   {
-    v10 = [(PLLibraryServicesManager *)self->_lsm cplSettings];
-    v11 = [v10 isKeepOriginalsEnabled];
+    cplSettings = [(PLLibraryServicesManager *)self->_lsm cplSettings];
+    isKeepOriginalsEnabled = [cplSettings isKeepOriginalsEnabled];
 
-    if (v11 && (+[PLInternalResource originalCPLResourceTypes](PLInternalResource, "originalCPLResourceTypes"), v12 = objc_claimAutoreleasedReturnValue(), [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v6, "cplType")}], v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v12, "containsObject:", v13), v13, v12, v14))
+    if (isKeepOriginalsEnabled && (+[PLInternalResource originalCPLResourceTypes](PLInternalResource, "originalCPLResourceTypes"), v12 = objc_claimAutoreleasedReturnValue(), [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(purgeableCopy, "cplType")}], v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v12, "containsObject:", v13), v13, v12, v14))
     {
-      v15 = PLResourceCachingGetLog();
-      if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
+      fileURL = PLResourceCachingGetLog();
+      if (os_log_type_enabled(fileURL, OS_LOG_TYPE_DEBUG))
       {
-        v16 = [v6 singleLineDescription];
+        singleLineDescription = [purgeableCopy singleLineDescription];
         *buf = 138412290;
-        v30 = v16;
+        v30 = singleLineDescription;
         v17 = "Download & Keep Originals mode, skip marking original resource %@ as purgeable";
-        v18 = v15;
+        v18 = fileURL;
         v19 = 12;
 LABEL_10:
         _os_log_impl(&dword_19BF1F000, v18, OS_LOG_TYPE_DEBUG, v17, buf, v19);
@@ -508,19 +508,19 @@ LABEL_10:
     {
       if (!self->_exitDeleteTime)
       {
-        v15 = [v6 fileURL];
+        fileURL = [purgeableCopy fileURL];
         v28 = 0;
         v27 = 0;
-        v20 = [objc_opt_class() markPurgeableForFileAtURL:v15 withUrgency:a4 outInode:&v28 error:&v27];
+        v20 = [objc_opt_class() markPurgeableForFileAtURL:fileURL withUrgency:urgency outInode:&v28 error:&v27];
         v22 = v27;
         if (v20)
         {
           if (v28)
           {
-            v23 = [v6 fileID];
-            if (v23 != v28)
+            fileID = [purgeableCopy fileID];
+            if (fileID != v28)
             {
-              [v6 setFileID:?];
+              [purgeableCopy setFileID:?];
             }
           }
 
@@ -530,34 +530,34 @@ LABEL_10:
             if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
             {
               *buf = 138412290;
-              v30 = v15;
+              v30 = fileURL;
               _os_log_impl(&dword_19BF1F000, v24, OS_LOG_TYPE_ERROR, "Unexpected inode value of 0 for %@", buf, 0xCu);
             }
 
-            v25 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unexpected inode value of 0 for %@", v15];
+            v25 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unexpected inode value of 0 for %@", fileURL];
             PLSimulateCrash();
           }
         }
 
         else if (PLIsErrorEqualToCode())
         {
-          [v6 markAsNotLocallyAvailable];
+          [purgeableCopy markAsNotLocallyAvailable];
         }
 
         goto LABEL_22;
       }
 
-      v15 = PLResourceCachingGetLog();
-      if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
+      fileURL = PLResourceCachingGetLog();
+      if (os_log_type_enabled(fileURL, OS_LOG_TYPE_DEBUG))
       {
         exitDeleteTime = self->_exitDeleteTime;
-        v16 = [v6 singleLineDescription];
+        singleLineDescription = [purgeableCopy singleLineDescription];
         *buf = 138412546;
         v30 = exitDeleteTime;
         v31 = 2112;
-        v32 = v16;
+        v32 = singleLineDescription;
         v17 = "In exit mode (%@), skip marking resource %@ as purgeable";
-        v18 = v15;
+        v18 = fileURL;
         v19 = 22;
         goto LABEL_10;
       }
@@ -577,8 +577,8 @@ LABEL_23:
 
 - (id)_newShortLivedPhotoLibrary
 {
-  v2 = [(PLLibraryServicesManager *)self->_lsm databaseContext];
-  v3 = [v2 newShortLivedCplLibraryWithNameSuffix:"-[PLCacheDeleteSupport _newShortLivedPhotoLibrary]"];
+  databaseContext = [(PLLibraryServicesManager *)self->_lsm databaseContext];
+  v3 = [databaseContext newShortLivedCplLibraryWithNameSuffix:"-[PLCacheDeleteSupport _newShortLivedPhotoLibrary]"];
 
   return v3;
 }
@@ -592,7 +592,7 @@ LABEL_23:
     *buf = 138412546;
     v6 = objc_opt_class();
     v7 = 2048;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19BF1F000, v3, OS_LOG_TYPE_DEBUG, "%@ %p dealloc", buf, 0x16u);
   }
 
@@ -610,26 +610,26 @@ LABEL_23:
     v5 = 138412546;
     v6 = objc_opt_class();
     v7 = 2048;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19BF1F000, v3, OS_LOG_TYPE_DEBUG, "%@ %p invalidate", &v5, 0x16u);
   }
 
-  v4 = [(PLLibraryServicesManager *)self->_lsm cacheDeleteRegistration];
-  [v4 unregisterCacheDeleteSupport:self withLibraryServicesManager:self->_lsm];
+  cacheDeleteRegistration = [(PLLibraryServicesManager *)self->_lsm cacheDeleteRegistration];
+  [cacheDeleteRegistration unregisterCacheDeleteSupport:self withLibraryServicesManager:self->_lsm];
 }
 
-- (PLCacheDeleteSupport)initWithLibraryServicesManager:(id)a3 cplStatus:(id)a4
+- (PLCacheDeleteSupport)initWithLibraryServicesManager:(id)manager cplStatus:(id)status
 {
   v28 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  statusCopy = status;
   v21.receiver = self;
   v21.super_class = PLCacheDeleteSupport;
   v9 = [(PLCacheDeleteSupport *)&v21 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_lsm, a3);
+    objc_storeStrong(&v9->_lsm, manager);
     lsm = v10->_lsm;
     if (!lsm)
     {
@@ -643,16 +643,16 @@ LABEL_23:
       lsm = v10->_lsm;
     }
 
-    v13 = [(PLLibraryServicesManager *)lsm pathManager];
-    v14 = [v13 libraryURL];
+    pathManager = [(PLLibraryServicesManager *)lsm pathManager];
+    libraryURL = [pathManager libraryURL];
 
-    v10->_fsid = [objc_opt_class() fsidForURL:v14];
-    v15 = [v8 exitDeleteTime];
+    v10->_fsid = [objc_opt_class() fsidForURL:libraryURL];
+    exitDeleteTime = [statusCopy exitDeleteTime];
     exitDeleteTime = v10->_exitDeleteTime;
-    v10->_exitDeleteTime = v15;
+    v10->_exitDeleteTime = exitDeleteTime;
 
-    v17 = [v7 cacheDeleteRegistration];
-    [v17 registerCacheDeleteSupport:v10 withLibraryServicesManager:v7];
+    cacheDeleteRegistration = [managerCopy cacheDeleteRegistration];
+    [cacheDeleteRegistration registerCacheDeleteSupport:v10 withLibraryServicesManager:managerCopy];
   }
 
   v18 = PLPhotosObjectLifecycleGetLog();
@@ -664,26 +664,26 @@ LABEL_23:
     v24 = 2048;
     v25 = v10;
     v26 = 2112;
-    v27 = v7;
+    v27 = managerCopy;
     _os_log_impl(&dword_19BF1F000, v18, OS_LOG_TYPE_DEBUG, "%@ %p initWithLibraryServicesManager:%@", buf, 0x20u);
   }
 
   return v10;
 }
 
-+ (void)clearPurgeableIsCloneStateOnPurgeableResourcesOnceIfNecessaryInManagedObjectContext:(id)a3 pathManager:(id)a4
++ (void)clearPurgeableIsCloneStateOnPurgeableResourcesOnceIfNecessaryInManagedObjectContext:(id)context pathManager:(id)manager
 {
   v38 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  contextCopy = context;
+  managerCopy = manager;
   v7 = MEMORY[0x1E69BF188];
-  v8 = [v6 libraryURL];
-  v9 = [v7 appPrivateDataForLibraryURL:v8];
+  libraryURL = [managerCopy libraryURL];
+  v9 = [v7 appPrivateDataForLibraryURL:libraryURL];
 
   v10 = [v9 valueForKey:@"CacheDeleteSupport.clearPurgeableIsCloneStateOnPurgeableResourcesOnce"];
-  v11 = [v10 BOOLValue];
+  bOOLValue = [v10 BOOLValue];
 
-  if (!v11)
+  if (!bOOLValue)
   {
     goto LABEL_15;
   }
@@ -712,7 +712,7 @@ LABEL_23:
   v28[2] = __120__PLCacheDeleteSupport_clearPurgeableIsCloneStateOnPurgeableResourcesOnceIfNecessaryInManagedObjectContext_pathManager___block_invoke;
   v28[3] = &unk_1E75741F0;
   v28[4] = buf;
-  v17 = [v5 enumerateObjectsFromFetchRequest:v15 count:&v33 usingDefaultBatchSizeWithBlock:v28];
+  v17 = [contextCopy enumerateObjectsFromFetchRequest:v15 count:&v33 usingDefaultBatchSizeWithBlock:v28];
   if (v17)
   {
     v18 = PLResourceCachingGetLog();
@@ -794,20 +794,20 @@ void __120__PLCacheDeleteSupport_clearPurgeableIsCloneStateOnPurgeableResourcesO
   }
 }
 
-+ (BOOL)setClearPurgeableIsCloneStateOnPurgeableResourcesOnceWithPathManager:(id)a3 error:(id *)a4
++ (BOOL)setClearPurgeableIsCloneStateOnPurgeableResourcesOnceWithPathManager:(id)manager error:(id *)error
 {
   v5 = MEMORY[0x1E69BF188];
-  v6 = [a3 libraryURL];
-  v7 = [v5 appPrivateDataForLibraryURL:v6];
+  libraryURL = [manager libraryURL];
+  v7 = [v5 appPrivateDataForLibraryURL:libraryURL];
 
-  LOBYTE(a4) = [v7 setValue:MEMORY[0x1E695E118] forKey:@"CacheDeleteSupport.clearPurgeableIsCloneStateOnPurgeableResourcesOnce" error:a4];
-  return a4;
+  LOBYTE(error) = [v7 setValue:MEMORY[0x1E695E118] forKey:@"CacheDeleteSupport.clearPurgeableIsCloneStateOnPurgeableResourcesOnce" error:error];
+  return error;
 }
 
-+ (BOOL)verifyAndFixLocalAvailabilityForMissingResourcesUsingFileIDInManagedObjectContext:(id)a3 countPresent:(int64_t *)a4 countMissing:(int64_t *)a5 countUnableToVerify:(int64_t *)a6 error:(id *)a7
++ (BOOL)verifyAndFixLocalAvailabilityForMissingResourcesUsingFileIDInManagedObjectContext:(id)context countPresent:(int64_t *)present countMissing:(int64_t *)missing countUnableToVerify:(int64_t *)verify error:(id *)error
 {
   v91[1] = *MEMORY[0x1E69E9840];
-  v42 = a3;
+  contextCopy = context;
   v78 = 0;
   v79 = &v78;
   v80 = 0x2020000000;
@@ -827,7 +827,7 @@ void __120__PLCacheDeleteSupport_clearPurgeableIsCloneStateOnPurgeableResourcesO
   v76 = __Block_byref_object_dispose__92397;
   v77 = 0;
   obj = 0;
-  v41 = [v42 executeFetchRequest:v43 error:&obj];
+  v41 = [contextCopy executeFetchRequest:v43 error:&obj];
   objc_storeStrong(&v77, obj);
   if (v41)
   {
@@ -853,15 +853,15 @@ void __120__PLCacheDeleteSupport_clearPurgeableIsCloneStateOnPurgeableResourcesO
     v61 = 0x2020000000;
     v62 = 0;
     v13 = objc_alloc_init(MEMORY[0x1E696AB50]);
-    v14 = [v42 pathManager];
-    v37 = [v14 libraryURL];
+    pathManager = [contextCopy pathManager];
+    libraryURL = [pathManager libraryURL];
 
     v57[0] = 0;
     v57[1] = v57;
     v57[2] = 0x2810000000;
     v57[3] = &unk_19C721442;
     v58 = 0;
-    v58 = [PLCacheDeleteSupport fsidForURL:v37];
+    v58 = [PLCacheDeleteSupport fsidForURL:libraryURL];
     v15 = malloc_type_calloc(1uLL, 0x400uLL, 0xAE92277FuLL);
     v48[0] = MEMORY[0x1E69E9820];
     v48[1] = 3221225472;
@@ -876,29 +876,29 @@ void __120__PLCacheDeleteSupport_clearPurgeableIsCloneStateOnPurgeableResourcesO
     v53 = &v78;
     v54 = &v72;
     v55 = &v63;
-    v16 = [v42 enumerateWithIncrementalSaveUsingObjects:v41 shouldRefreshAfterSave:0 withBlock:v48];
+    v16 = [contextCopy enumerateWithIncrementalSaveUsingObjects:v41 shouldRefreshAfterSave:0 withBlock:v48];
     v17 = v73[5];
     v73[5] = v16;
 
     free(v15);
-    if (a4)
+    if (present)
     {
-      *a4 = v64[3];
+      *present = v64[3];
     }
 
-    if (a5)
+    if (missing)
     {
-      *a5 = v68[3];
+      *missing = v68[3];
     }
 
-    if (a6)
+    if (verify)
     {
-      *a6 = v60[3];
+      *verify = v60[3];
     }
 
     if ([v38 count])
     {
-      v18 = [MEMORY[0x1E696AD60] string];
+      string = [MEMORY[0x1E696AD60] string];
       v46 = 0u;
       v47 = 0u;
       v44 = 0u;
@@ -920,7 +920,7 @@ void __120__PLCacheDeleteSupport_clearPurgeableIsCloneStateOnPurgeableResourcesO
             v23 = *(*(&v44 + 1) + 8 * i);
             v24 = strerror([v23 intValue]);
             v25 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v19, "countForObject:", v23)}];
-            [v18 appendFormat:@"[error: %@/%s, count: %@] ", v23, v24, v25];
+            [string appendFormat:@"[error: %@/%s, count: %@] ", v23, v24, v25];
           }
 
           v20 = [v19 countByEnumeratingWithState:&v44 objects:v90 count:16];
@@ -935,7 +935,7 @@ void __120__PLCacheDeleteSupport_clearPurgeableIsCloneStateOnPurgeableResourcesO
         *buf = 136315394;
         v83 = "+[PLCacheDeleteSupport verifyAndFixLocalAvailabilityForMissingResourcesUsingFileIDInManagedObjectContext:countPresent:countMissing:countUnableToVerify:error:]";
         v84 = 2114;
-        v85 = v18;
+        v85 = string;
         _os_log_impl(&dword_19BF1F000, v26, OS_LOG_TYPE_ERROR, "%s: Encountered errors while verifying local availbility: %{public}@", buf, 0x16u);
       }
     }
@@ -993,9 +993,9 @@ void __120__PLCacheDeleteSupport_clearPurgeableIsCloneStateOnPurgeableResourcesO
     }
   }
 
-  if (a7)
+  if (error)
   {
-    *a7 = v73[5];
+    *error = v73[5];
   }
 
   v35 = *(v79 + 24);
@@ -1113,18 +1113,18 @@ LABEL_14:
 LABEL_17:
 }
 
-+ (fsid)fsidForURL:(id)a3
++ (fsid)fsidForURL:(id)l
 {
   v9 = *MEMORY[0x1E69E9840];
   memset(&v6, 0, sizeof(v6));
-  v3 = [a3 fileSystemRepresentation];
-  if (stat(v3, &v6))
+  fileSystemRepresentation = [l fileSystemRepresentation];
+  if (stat(fileSystemRepresentation, &v6))
   {
     v4 = PLResourceCachingGetLog();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
     {
       *buf = 136315138;
-      v8 = v3;
+      v8 = fileSystemRepresentation;
       _os_log_impl(&dword_19BF1F000, v4, OS_LOG_TYPE_ERROR, "could not get device ID for %s", buf, 0xCu);
     }
 
@@ -1137,11 +1137,11 @@ LABEL_17:
   }
 }
 
-+ (id)_allChildrenPurgeableResourceDirectoryTypesForPathManager:(id)a3 libraryIdentifier:(int64_t)a4
++ (id)_allChildrenPurgeableResourceDirectoryTypesForPathManager:(id)manager libraryIdentifier:(int64_t)identifier
 {
   v5 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v6 = v5;
-  if (a4 == 3)
+  if (identifier == 3)
   {
     [v5 addObject:&unk_1F0FBDEE8];
     [v6 addObject:&unk_1F0FBDF00];
@@ -1150,64 +1150,64 @@ LABEL_17:
   return v6;
 }
 
-+ (id)_purgeableResourceDirectoriesForPathManager:(id)a3
++ (id)_purgeableResourceDirectoriesForPathManager:(id)manager
 {
-  v4 = a3;
-  v5 = [a1 _clearablePurgeableResourceDirectoriesForPathManager:v4];
-  v6 = [a1 _unclearablePurgeableResourceDirectoriesForPathManager:v4];
+  managerCopy = manager;
+  v5 = [self _clearablePurgeableResourceDirectoriesForPathManager:managerCopy];
+  v6 = [self _unclearablePurgeableResourceDirectoriesForPathManager:managerCopy];
 
   v7 = [v5 setByAddingObjectsFromSet:v6];
 
   return v7;
 }
 
-+ (id)_unclearablePurgeableResourceDirectoriesForPathManager:(id)a3
++ (id)_unclearablePurgeableResourceDirectoriesForPathManager:(id)manager
 {
   v11[2] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  managerCopy = manager;
   v4 = objc_alloc(MEMORY[0x1E695DFA8]);
-  v5 = [v3 photoDirectoryWithType:28];
+  v5 = [managerCopy photoDirectoryWithType:28];
   v11[0] = v5;
-  v6 = [v3 photoDirectoryWithType:19];
+  v6 = [managerCopy photoDirectoryWithType:19];
   v11[1] = v6;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:2];
   v8 = [v4 initWithArray:v7];
 
-  if ([v3 isDCIM])
+  if ([managerCopy isDCIM])
   {
-    v9 = [v3 photoDirectoryWithType:31];
+    v9 = [managerCopy photoDirectoryWithType:31];
     [v8 addObject:v9];
   }
 
   return v8;
 }
 
-+ (id)_clearablePurgeableResourceDirectoriesForPathManager:(id)a3
++ (id)_clearablePurgeableResourceDirectoriesForPathManager:(id)manager
 {
   v15[5] = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E695DFA8];
-  v4 = a3;
+  managerCopy = manager;
   v5 = [v3 alloc];
-  v6 = [v4 photoDirectoryWithType:4];
-  v7 = [v4 photoDirectoryWithType:{30, v6}];
+  v6 = [managerCopy photoDirectoryWithType:4];
+  v7 = [managerCopy photoDirectoryWithType:{30, v6}];
   v15[1] = v7;
-  v8 = [v4 photoDirectoryWithType:10];
+  v8 = [managerCopy photoDirectoryWithType:10];
   v15[2] = v8;
-  v9 = [v4 photoDirectoryWithType:9];
+  v9 = [managerCopy photoDirectoryWithType:9];
   v15[3] = v9;
-  v10 = [v4 photoDirectoryWithType:27];
+  v10 = [managerCopy photoDirectoryWithType:27];
   v15[4] = v10;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:5];
   v12 = [v5 initWithArray:v11];
 
-  if ([v4 isDCIM])
+  if ([managerCopy isDCIM])
   {
-    [v4 privateDirectoryWithSubType:7];
+    [managerCopy privateDirectoryWithSubType:7];
   }
 
   else
   {
-    [v4 photoDirectoryWithType:26];
+    [managerCopy photoDirectoryWithType:26];
   }
   v13 = ;
 
@@ -1216,17 +1216,17 @@ LABEL_17:
   return v12;
 }
 
-+ (id)purgeableStateDescriptionForFile:(id)a3
++ (id)purgeableStateDescriptionForFile:(id)file
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E696AC08] defaultManager];
-  v5 = [v4 fileExistsAtPath:v3];
+  fileCopy = file;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v5 = [defaultManager fileExistsAtPath:fileCopy];
 
   if (v5)
   {
     v9 = 0;
     v8 = -1;
-    if (![PLCacheDeleteSupport isPurgeableFile:v3 outIsPhotoType:&v9 outUrgencyLevel:&v8 error:0])
+    if (![PLCacheDeleteSupport isPurgeableFile:fileCopy outIsPhotoType:&v9 outUrgencyLevel:&v8 error:0])
     {
       goto LABEL_7;
     }
@@ -1259,12 +1259,12 @@ LABEL_9:
   return v6;
 }
 
-+ (BOOL)isPurgeableFile:(id)a3 outIsPhotoType:(BOOL *)a4 outUrgencyLevel:(int64_t *)a5 error:(id *)a6
++ (BOOL)isPurgeableFile:(id)file outIsPhotoType:(BOOL *)type outUrgencyLevel:(int64_t *)level error:(id *)error
 {
   v33[1] = *MEMORY[0x1E69E9840];
-  v9 = a3;
+  fileCopy = file;
   v25 = 0;
-  v10 = fsctl([v9 fileSystemRepresentation], 0x40084A47uLL, &v25, 0);
+  v10 = fsctl([fileCopy fileSystemRepresentation], 0x40084A47uLL, &v25, 0);
   if (v10)
   {
     v11 = v10;
@@ -1282,7 +1282,7 @@ LABEL_9:
     {
       v19 = strerror(v12);
       *buf = 138412802;
-      v27 = v9;
+      v27 = fileCopy;
       v28 = 1024;
       v29 = v11;
       v30 = 2080;
@@ -1290,10 +1290,10 @@ LABEL_9:
       _os_log_impl(&dword_19BF1F000, v18, OS_LOG_TYPE_ERROR, "Unable to check purgeable flag for %@ %d (%s)", buf, 0x1Cu);
     }
 
-    if (a6)
+    if (error)
     {
       v20 = v17;
-      *a6 = v17;
+      *error = v17;
     }
   }
 
@@ -1302,16 +1302,16 @@ LABEL_9:
     v22 = v25;
     if (v25)
     {
-      if (a4)
+      if (type)
       {
-        *a4 = v25 & 1;
+        *type = v25 & 1;
       }
 
-      if (a5)
+      if (level)
       {
         if ((v22 & 0x200) != 0)
         {
-          *a5 = 0;
+          *level = 0;
         }
 
         else
@@ -1319,7 +1319,7 @@ LABEL_9:
           if ((v22 & 0x400) != 0)
           {
             v21 = 1;
-            *a5 = 1;
+            *level = 1;
             goto LABEL_21;
           }
 
@@ -1333,7 +1333,7 @@ LABEL_9:
             v23 = -1;
           }
 
-          *a5 = v23;
+          *level = v23;
         }
       }
 
@@ -1348,20 +1348,20 @@ LABEL_21:
   return v21;
 }
 
-+ (BOOL)clearPurgeableFlagsForAllResourcesInPhotoLibraryURL:(id)a3
++ (BOOL)clearPurgeableFlagsForAllResourcesInPhotoLibraryURL:(id)l
 {
   buf[5] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  lCopy = l;
   v4 = PLResourceCachingGetLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf[0]) = 138412290;
-    *(buf + 4) = v3;
+    *(buf + 4) = lCopy;
     _os_log_impl(&dword_19BF1F000, v4, OS_LOG_TYPE_DEFAULT, "Clearing purgeable flags for all resources in %@.", buf, 0xCu);
   }
 
-  v25 = v3;
-  v24 = [objc_alloc(MEMORY[0x1E69BF2A0]) initWithLibraryURL:v3];
+  v25 = lCopy;
+  v24 = [objc_alloc(MEMORY[0x1E69BF2A0]) initWithLibraryURL:lCopy];
   v5 = [objc_opt_class() _clearablePurgeableResourceDirectoriesForPathManager:v24];
   memset(&buf[1], 0, 24);
   buf[0] = 0x100000002;
@@ -1456,21 +1456,21 @@ LABEL_22:
   return v9 & 1;
 }
 
-+ (BOOL)clearPurgeableFlagForResource:(id)a3
++ (BOOL)clearPurgeableFlagForResource:(id)resource
 {
   v32 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 pathManager];
-  v5 = [v4 capabilities];
-  v6 = [v5 isCentralizedCacheDeleteCapable];
+  resourceCopy = resource;
+  pathManager = [resourceCopy pathManager];
+  capabilities = [pathManager capabilities];
+  isCentralizedCacheDeleteCapable = [capabilities isCentralizedCacheDeleteCapable];
 
-  if (v6)
+  if (isCentralizedCacheDeleteCapable)
   {
-    v7 = [v3 fileURL];
-    v8 = v7;
-    if (v7)
+    fileURL = [resourceCopy fileURL];
+    v8 = fileURL;
+    if (fileURL)
     {
-      v9 = open([v7 fileSystemRepresentation], 0);
+      v9 = open([fileURL fileSystemRepresentation], 0);
       if (v9 < 0)
       {
         v19 = PLResourceCachingGetLog();
@@ -1479,11 +1479,11 @@ LABEL_22:
           v31.st_dev = 138412546;
           *&v31.st_mode = v8;
           WORD2(v31.st_ino) = 2112;
-          *(&v31.st_ino + 6) = v3;
+          *(&v31.st_ino + 6) = resourceCopy;
           _os_log_impl(&dword_19BF1F000, v19, OS_LOG_TYPE_ERROR, "Missing file %@ to clear purgeable flag for %@, marking as not locally available", &v31, 0x16u);
         }
 
-        [v3 markAsNotLocallyAvailable];
+        [resourceCopy markAsNotLocallyAvailable];
       }
 
       else
@@ -1493,13 +1493,13 @@ LABEL_22:
         if (fstat(v9, &v31) != -1)
         {
           st_ino = v31.st_ino;
-          if ([v3 fileID] != st_ino)
+          if ([resourceCopy fileID] != st_ino)
           {
             v12 = PLResourceCachingGetLog();
             if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
             {
               *buf = 134218498;
-              v26 = [v3 fileID];
+              fileID = [resourceCopy fileID];
               v27 = 2048;
               v28 = st_ino;
               v29 = 2112;
@@ -1510,7 +1510,7 @@ LABEL_22:
 
           v24 = 0;
           v13 = ffsctl(v10, 0xC0084A44uLL, &v24, 0);
-          LOBYTE(v6) = v13 == 0;
+          LOBYTE(isCentralizedCacheDeleteCapable) = v13 == 0;
           v14 = PLResourceCachingGetLog();
           v15 = v14;
           if (v13)
@@ -1520,7 +1520,7 @@ LABEL_22:
               v16 = __error();
               v17 = strerror(*v16);
               *buf = 138413058;
-              v26 = v8;
+              fileID = v8;
               v27 = 2048;
               v28 = st_ino;
               v29 = 1024;
@@ -1536,13 +1536,13 @@ LABEL_22:
             if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
             {
               *buf = 138412546;
-              v26 = v8;
+              fileID = v8;
               v27 = 2048;
               v28 = st_ino;
               _os_log_impl(&dword_19BF1F000, v15, OS_LOG_TYPE_INFO, "Cleared purgeable flag for %@ (%lld)", buf, 0x16u);
             }
 
-            [v3 setFileID:-1];
+            [resourceCopy setFileID:-1];
           }
 
           close(v10);
@@ -1555,7 +1555,7 @@ LABEL_22:
           v21 = __error();
           v22 = strerror(*v21);
           *buf = 138412546;
-          v26 = v8;
+          fileID = v8;
           v27 = 2080;
           v28 = v22;
           _os_log_impl(&dword_19BF1F000, v20, OS_LOG_TYPE_ERROR, "Failed to get inode from %@ (%s), skip marking it as purgeable", buf, 0x16u);
@@ -1571,31 +1571,31 @@ LABEL_22:
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
         v31.st_dev = 138412290;
-        *&v31.st_mode = v3;
+        *&v31.st_mode = resourceCopy;
         _os_log_impl(&dword_19BF1F000, v18, OS_LOG_TYPE_ERROR, "Missing fileURL to clear purgeable flag for %@", &v31, 0xCu);
       }
     }
 
-    LOBYTE(v6) = 0;
+    LOBYTE(isCentralizedCacheDeleteCapable) = 0;
 LABEL_27:
   }
 
-  return v6;
+  return isCentralizedCacheDeleteCapable;
 }
 
-+ (BOOL)readInodeAtURL:(id)a3 outInode:(unint64_t *)a4 error:(id *)a5
++ (BOOL)readInodeAtURL:(id)l outInode:(unint64_t *)inode error:(id *)error
 {
   v45[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = v7;
-  if (!v7)
+  lCopy = l;
+  v8 = lCopy;
+  if (!lCopy)
   {
 LABEL_13:
     v12 = 0;
     goto LABEL_20;
   }
 
-  v9 = open([v7 fileSystemRepresentation], 0);
+  v9 = open([lCopy fileSystemRepresentation], 0);
   if (v9 < 0)
   {
     v16 = *__error();
@@ -1620,10 +1620,10 @@ LABEL_13:
       _os_log_impl(&dword_19BF1F000, v22, OS_LOG_TYPE_ERROR, "Missing file to read inode for %@ (%{public}s [%d])", &v43, 0x1Cu);
     }
 
-    if (a5)
+    if (error)
     {
       v24 = v21;
-      *a5 = v21;
+      *error = v21;
     }
 
     goto LABEL_13;
@@ -1657,10 +1657,10 @@ LABEL_13:
       _os_log_impl(&dword_19BF1F000, v31, OS_LOG_TYPE_ERROR, "Failed to get inode from %@ (%{public}s [%d])", &v35, 0x1Cu);
     }
 
-    if (a5)
+    if (error)
     {
       v33 = v30;
-      *a5 = v30;
+      *error = v30;
     }
 
     close(v10);
@@ -1680,9 +1680,9 @@ LABEL_13:
       _os_log_impl(&dword_19BF1F000, v14, OS_LOG_TYPE_INFO, "Read inode for %@ with fileID %lld", &v35, 0x16u);
     }
 
-    if (a4)
+    if (inode)
     {
-      *a4 = st_ino;
+      *inode = st_ino;
     }
   }
 
@@ -1692,11 +1692,11 @@ LABEL_20:
   return v12;
 }
 
-+ (BOOL)markChildrenPurgeableForDirectoryAtURL:(id)a3 withUrgency:(int64_t)a4 error:(id *)a5
++ (BOOL)markChildrenPurgeableForDirectoryAtURL:(id)l withUrgency:(int64_t)urgency error:(id *)error
 {
   v48[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = open([v8 fileSystemRepresentation], 0);
+  lCopy = l;
+  v9 = open([lCopy fileSystemRepresentation], 0);
   if (v9 < 0)
   {
     v24 = *__error();
@@ -1711,7 +1711,7 @@ LABEL_20:
     v30 = PLResourceCachingGetLog();
     if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
     {
-      v31 = [MEMORY[0x1E69BF220] descriptionWithFileURL:v8];
+      v31 = [MEMORY[0x1E69BF220] descriptionWithFileURL:lCopy];
       *buf = 138412802;
       v38 = v31;
       v39 = 2082;
@@ -1721,10 +1721,10 @@ LABEL_20:
       _os_log_impl(&dword_19BF1F000, v30, OS_LOG_TYPE_ERROR, "Missing dir to mark purgeable for %@ (%{public}s [%d])", buf, 0x1Cu);
     }
 
-    if (a5)
+    if (error)
     {
       v32 = v29;
-      *a5 = v29;
+      *error = v29;
     }
 
     v12 = 0;
@@ -1733,13 +1733,13 @@ LABEL_20:
   else
   {
     v10 = v9;
-    v36 = [a1 _flagsFromUrgency:a4 markDirectoryChildren:1];
+    v36 = [self _flagsFromUrgency:urgency markDirectoryChildren:1];
     v11 = ffsctl(v10, 0xC0084A44uLL, &v36, 0);
     v12 = v11 == 0;
     if (v11)
     {
       v13 = v11;
-      v35 = a5;
+      errorCopy = error;
       v14 = *__error();
       v15 = MEMORY[0x1E696ABC0];
       v16 = *MEMORY[0x1E696A798];
@@ -1752,7 +1752,7 @@ LABEL_20:
       v20 = PLResourceCachingGetLog();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
       {
-        v21 = [MEMORY[0x1E69BF220] descriptionWithFileURL:v8];
+        v21 = [MEMORY[0x1E69BF220] descriptionWithFileURL:lCopy];
         v22 = strerror(v14);
         *buf = 138413314;
         v38 = v21;
@@ -1767,10 +1767,10 @@ LABEL_20:
         _os_log_impl(&dword_19BF1F000, v20, OS_LOG_TYPE_ERROR, "Failed to mark %@ as purgeable %d (%{public}s [%d]) (flags 0x%llx)", buf, 0x2Cu);
       }
 
-      if (v35)
+      if (errorCopy)
       {
         v23 = v19;
-        *v35 = v19;
+        *errorCopy = v19;
       }
     }
 
@@ -1779,7 +1779,7 @@ LABEL_20:
       v19 = PLResourceCachingGetLog();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
       {
-        v33 = [MEMORY[0x1E69BF220] descriptionWithFileURL:v8];
+        v33 = [MEMORY[0x1E69BF220] descriptionWithFileURL:lCopy];
         *buf = 138412546;
         v38 = v33;
         v39 = 2048;
@@ -1794,12 +1794,12 @@ LABEL_20:
   return v12;
 }
 
-+ (BOOL)markPurgeableForFileAtURL:(id)a3 withUrgency:(int64_t)a4 outInode:(unint64_t *)a5 error:(id *)a6
++ (BOOL)markPurgeableForFileAtURL:(id)l withUrgency:(int64_t)urgency outInode:(unint64_t *)inode error:(id *)error
 {
   v60[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = v10;
-  if (!v10)
+  lCopy = l;
+  v11 = lCopy;
+  if (!lCopy)
   {
     v26 = PLResourceCachingGetLog();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
@@ -1812,7 +1812,7 @@ LABEL_20:
     goto LABEL_23;
   }
 
-  v12 = open([v10 fileSystemRepresentation], 0);
+  v12 = open([lCopy fileSystemRepresentation], 0);
   if (v12 < 0)
   {
     v27 = *__error();
@@ -1836,10 +1836,10 @@ LABEL_20:
       _os_log_impl(&dword_19BF1F000, v33, OS_LOG_TYPE_ERROR, "Missing file to mark purgeable for %@ (%{public}s [%d])", &v58, 0x1Cu);
     }
 
-    if (a6)
+    if (error)
     {
       v34 = v32;
-      *a6 = v32;
+      *error = v32;
     }
 
     goto LABEL_23;
@@ -1870,10 +1870,10 @@ LABEL_20:
       _os_log_impl(&dword_19BF1F000, v41, OS_LOG_TYPE_ERROR, "Failed to get inode from %@ (%{public}s [%d]), skip marking it as purgeable", buf, 0x1Cu);
     }
 
-    if (a6)
+    if (error)
     {
       v42 = v40;
-      *a6 = v40;
+      *error = v40;
     }
 
     close(v13);
@@ -1883,13 +1883,13 @@ LABEL_23:
     goto LABEL_29;
   }
 
-  v47 = [a1 _flagsFromUrgency:a4 markDirectoryChildren:0];
+  v47 = [self _flagsFromUrgency:urgency markDirectoryChildren:0];
   v14 = ffsctl(v13, 0xC0084A44uLL, &v47, 0);
   v15 = v14 == 0;
   if (v14)
   {
     v16 = v14;
-    v46 = a6;
+    errorCopy = error;
     v17 = *__error();
     v18 = MEMORY[0x1E696ABC0];
     v19 = *MEMORY[0x1E696A798];
@@ -1916,10 +1916,10 @@ LABEL_23:
       _os_log_impl(&dword_19BF1F000, v23, OS_LOG_TYPE_ERROR, "Failed to mark %@ as purgeable %d (%{public}s [%d]) (flags 0x%llx)", buf, 0x2Cu);
     }
 
-    if (v46)
+    if (errorCopy)
     {
       v25 = v22;
-      *v46 = v22;
+      *errorCopy = v22;
     }
   }
 
@@ -1938,9 +1938,9 @@ LABEL_23:
       _os_log_impl(&dword_19BF1F000, v44, OS_LOG_TYPE_INFO, "Marked %@ as purgeable with fileID %lld flags 0x%llx", buf, 0x20u);
     }
 
-    if (a5)
+    if (inode)
     {
-      *a5 = st_ino;
+      *inode = st_ino;
     }
   }
 
@@ -1950,15 +1950,15 @@ LABEL_29:
   return v15;
 }
 
-+ (unint64_t)_flagsFromUrgency:(int64_t)a3 markDirectoryChildren:(BOOL)a4
++ (unint64_t)_flagsFromUrgency:(int64_t)urgency markDirectoryChildren:(BOOL)children
 {
   v4 = 65537;
-  if (a3 > 0)
+  if (urgency > 0)
   {
     v5 = 536936449;
     v6 = 1024;
     v8 = 2048;
-    if (a3 == 2)
+    if (urgency == 2)
     {
       v4 = 805371905;
     }
@@ -1968,8 +1968,8 @@ LABEL_29:
       v8 = 0;
     }
 
-    v7 = a3 == 1;
-    if (a3 != 1)
+    v7 = urgency == 1;
+    if (urgency != 1)
     {
       v6 = v8;
     }
@@ -1977,9 +1977,9 @@ LABEL_29:
 
   else
   {
-    if (a3 == -1)
+    if (urgency == -1)
     {
-      if (a4)
+      if (children)
       {
         return 73729;
       }
@@ -1992,8 +1992,8 @@ LABEL_29:
 
     v5 = 268500993;
     v6 = 512;
-    v7 = a3 == 0;
-    if (a3)
+    v7 = urgency == 0;
+    if (urgency)
     {
       v6 = 0;
     }
@@ -2004,7 +2004,7 @@ LABEL_29:
     v4 = v5;
   }
 
-  if (a4)
+  if (children)
   {
     v6 |= 0x2000uLL;
   }

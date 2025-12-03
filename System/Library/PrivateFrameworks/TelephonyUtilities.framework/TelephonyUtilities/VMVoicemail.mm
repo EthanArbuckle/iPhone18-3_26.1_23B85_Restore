@@ -7,11 +7,11 @@
 
 - (TUHandle)csd_callbackHandle
 {
-  v3 = [(VMVoicemail *)self callbackDestinationID];
-  if ([v3 length])
+  callbackDestinationID = [(VMVoicemail *)self callbackDestinationID];
+  if ([callbackDestinationID length])
   {
-    v4 = [(VMVoicemail *)self callbackISOCountryCode];
-    v5 = [TUHandle normalizedPhoneNumberHandleForValue:v3 isoCountryCode:v4];
+    callbackISOCountryCode = [(VMVoicemail *)self callbackISOCountryCode];
+    v5 = [TUHandle normalizedPhoneNumberHandleForValue:callbackDestinationID isoCountryCode:callbackISOCountryCode];
   }
 
   else
@@ -24,11 +24,11 @@
 
 - (TUHandle)csd_senderHandle
 {
-  v3 = [(VMVoicemail *)self senderDestinationID];
-  if ([v3 length])
+  senderDestinationID = [(VMVoicemail *)self senderDestinationID];
+  if ([senderDestinationID length])
   {
-    v4 = [(VMVoicemail *)self senderISOCountryCode];
-    v5 = [TUHandle normalizedPhoneNumberHandleForValue:v3 isoCountryCode:v4];
+    senderISOCountryCode = [(VMVoicemail *)self senderISOCountryCode];
+    v5 = [TUHandle normalizedPhoneNumberHandleForValue:senderDestinationID isoCountryCode:senderISOCountryCode];
   }
 
   else

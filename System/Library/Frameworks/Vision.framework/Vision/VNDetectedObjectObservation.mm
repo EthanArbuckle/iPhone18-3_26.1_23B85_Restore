@@ -1,19 +1,19 @@
 @interface VNDetectedObjectObservation
 + (VNDetectedObjectObservation)observationWithRequestRevision:(NSUInteger)requestRevision boundingBox:(CGRect)boundingBox;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)providesBoundsNormalizedToROI;
 - (CGRect)boundingBox;
-- (CGRect)boundingBoxInTopLeftOrigin:(BOOL)a3 orientation:(unsigned int)a4;
-- (VNDetectedObjectObservation)initWithCoder:(id)a3;
-- (VNDetectedObjectObservation)initWithOriginatingRequestSpecifier:(id)a3 boundingBox:(CGRect)a4 groupId:(id)a5;
-- (VNDetectedObjectObservation)initWithRequestRevision:(unint64_t)a3 boundingBox:(CGRect)a4;
+- (CGRect)boundingBoxInTopLeftOrigin:(BOOL)origin orientation:(unsigned int)orientation;
+- (VNDetectedObjectObservation)initWithCoder:(id)coder;
+- (VNDetectedObjectObservation)initWithOriginatingRequestSpecifier:(id)specifier boundingBox:(CGRect)box groupId:(id)id;
+- (VNDetectedObjectObservation)initWithRequestRevision:(unint64_t)revision boundingBox:(CGRect)box;
 - (id)debugQuickLookObject;
 - (id)description;
 - (id)vn_cloneObject;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setGroupId:(uint64_t)a1;
-- (void)setInstanceSegmentationMask:(uint64_t)a1;
+- (void)encodeWithCoder:(id)coder;
+- (void)setGroupId:(uint64_t)id;
+- (void)setInstanceSegmentationMask:(uint64_t)mask;
 @end
 
 @implementation VNDetectedObjectObservation
@@ -33,10 +33,10 @@
 
 - (BOOL)providesBoundsNormalizedToROI
 {
-  v2 = [(VNObservation *)self originatingRequestSpecifier];
-  v3 = [v2 observationProvidesBoundsNormalizedToROI];
+  originatingRequestSpecifier = [(VNObservation *)self originatingRequestSpecifier];
+  observationProvidesBoundsNormalizedToROI = [originatingRequestSpecifier observationProvidesBoundsNormalizedToROI];
 
-  return v3;
+  return observationProvidesBoundsNormalizedToROI;
 }
 
 - (id)debugQuickLookObject
@@ -49,13 +49,13 @@
     v4 = v3;
     v9.receiver = self;
     v9.super_class = VNDetectedObjectObservation;
-    v5 = [(VNObservation *)&v9 debugQuickLookObject];
-    if (v5)
+    debugQuickLookObject = [(VNObservation *)&v9 debugQuickLookObject];
+    if (debugQuickLookObject)
     {
       v10[0] = xmmword_1A6052440;
       v10[1] = unk_1A6052450;
       v6 = VNDebugColorFromValues(v10);
-      VNDebugImageRenderNormalizedCGPathOnImage(v4, v5, v6);
+      VNDebugImageRenderNormalizedCGPathOnImage(v4, debugQuickLookObject, v6);
     }
 
     else
@@ -75,10 +75,10 @@
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -87,13 +87,13 @@
   {
     v10.receiver = self;
     v10.super_class = VNDetectedObjectObservation;
-    if ([(VNObservation *)&v10 isEqual:v4]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+    if ([(VNObservation *)&v10 isEqual:equalCopy]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v5 = v4;
+      v5 = equalCopy;
       if (([objc_opt_class() boundingBoxIsCalculatedProperty] & 1) != 0 || CGRectEqualToRect(self->_boundingBox, v5[3]))
       {
-        v6 = [(VNDetectedObjectObservation *)self groupId];
-        v7 = [(CGRect *)v5 groupId];
+        groupId = [(VNDetectedObjectObservation *)self groupId];
+        groupId2 = [(CGRect *)v5 groupId];
         v8 = VisionCoreEqualOrNilObjects();
       }
 
@@ -121,8 +121,8 @@
   y = self->_boundingBox.origin.y;
   width = self->_boundingBox.size.width;
   height = self->_boundingBox.size.height;
-  v8 = [(VNDetectedObjectObservation *)self groupId];
-  v9 = [v8 hash];
+  groupId = [(VNDetectedObjectObservation *)self groupId];
+  v9 = [groupId hash];
   v10 = x;
   if (x == 0.0)
   {
@@ -171,13 +171,13 @@
 {
   v9.receiver = self;
   v9.super_class = VNDetectedObjectObservation;
-  v3 = [(VNObservation *)&v9 vn_cloneObject];
-  v4 = v3;
-  if (v3)
+  vn_cloneObject = [(VNObservation *)&v9 vn_cloneObject];
+  v4 = vn_cloneObject;
+  if (vn_cloneObject)
   {
     size = self->_boundingBox.size;
-    *(v3 + 96) = self->_boundingBox.origin;
-    *(v3 + 112) = size;
+    *(vn_cloneObject + 96) = self->_boundingBox.origin;
+    *(vn_cloneObject + 112) = size;
     v6 = [(NSUUID *)self->_groupId copy];
     v7 = v4[16];
     v4[16] = v6;
@@ -186,31 +186,31 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5.receiver = self;
   v5.super_class = VNDetectedObjectObservation;
-  [(VNObservation *)&v5 encodeWithCoder:v4];
-  [v4 vn_encodeCodingVersion:0 forKey:@"VNDetectedObjectObservation"];
+  [(VNObservation *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy vn_encodeCodingVersion:0 forKey:@"VNDetectedObjectObservation"];
   if (([objc_opt_class() boundingBoxIsCalculatedProperty] & 1) == 0)
   {
-    [v4 encodeDouble:@"BBX" forKey:self->_boundingBox.origin.x];
-    [v4 encodeDouble:@"BBY" forKey:self->_boundingBox.origin.y];
-    [v4 encodeDouble:@"BBW" forKey:self->_boundingBox.size.width];
-    [v4 encodeDouble:@"BBH" forKey:self->_boundingBox.size.height];
+    [coderCopy encodeDouble:@"BBX" forKey:self->_boundingBox.origin.x];
+    [coderCopy encodeDouble:@"BBY" forKey:self->_boundingBox.origin.y];
+    [coderCopy encodeDouble:@"BBW" forKey:self->_boundingBox.size.width];
+    [coderCopy encodeDouble:@"BBH" forKey:self->_boundingBox.size.height];
   }
 
-  [v4 encodeObject:self->_groupId forKey:@"groupId"];
+  [coderCopy encodeObject:self->_groupId forKey:@"groupId"];
 }
 
-- (VNDetectedObjectObservation)initWithCoder:(id)a3
+- (VNDetectedObjectObservation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = VNDetectedObjectObservation;
-  v5 = [(VNObservation *)&v15 initWithCoder:v4];
-  if (v5 && ![v4 vn_decodeCodingVersionForKey:@"VNDetectedObjectObservation"])
+  v5 = [(VNObservation *)&v15 initWithCoder:coderCopy];
+  if (v5 && ![coderCopy vn_decodeCodingVersionForKey:@"VNDetectedObjectObservation"])
   {
     if ([objc_opt_class() boundingBoxIsCalculatedProperty])
     {
@@ -221,17 +221,17 @@
 
     else
     {
-      [v4 decodeDoubleForKey:@"BBX"];
+      [coderCopy decodeDoubleForKey:@"BBX"];
       v5->_boundingBox.origin.x = v8;
-      [v4 decodeDoubleForKey:@"BBY"];
+      [coderCopy decodeDoubleForKey:@"BBY"];
       v5->_boundingBox.origin.y = v9;
-      [v4 decodeDoubleForKey:@"BBW"];
+      [coderCopy decodeDoubleForKey:@"BBW"];
       v5->_boundingBox.size.width = v10;
-      [v4 decodeDoubleForKey:@"BBH"];
+      [coderCopy decodeDoubleForKey:@"BBH"];
       v5->_boundingBox.size.height = v11;
     }
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"groupId"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"groupId"];
     groupId = v5->_groupId;
     v5->_groupId = v12;
 
@@ -246,13 +246,13 @@
   return v6;
 }
 
-- (VNDetectedObjectObservation)initWithRequestRevision:(unint64_t)a3 boundingBox:(CGRect)a4
+- (VNDetectedObjectObservation)initWithRequestRevision:(unint64_t)revision boundingBox:(CGRect)box
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = [(VNObservation *)self initWithRequestRevision:a3];
+  height = box.size.height;
+  width = box.size.width;
+  y = box.origin.y;
+  x = box.origin.x;
+  v8 = [(VNObservation *)self initWithRequestRevision:revision];
   v9 = v8;
   if (v8)
   {
@@ -269,16 +269,16 @@
   return v9;
 }
 
-- (VNDetectedObjectObservation)initWithOriginatingRequestSpecifier:(id)a3 boundingBox:(CGRect)a4 groupId:(id)a5
+- (VNDetectedObjectObservation)initWithOriginatingRequestSpecifier:(id)specifier boundingBox:(CGRect)box groupId:(id)id
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v12 = a5;
+  height = box.size.height;
+  width = box.size.width;
+  y = box.origin.y;
+  x = box.origin.x;
+  idCopy = id;
   v17.receiver = self;
   v17.super_class = VNDetectedObjectObservation;
-  v13 = [(VNObservation *)&v17 initWithOriginatingRequestSpecifier:a3];
+  v13 = [(VNObservation *)&v17 initWithOriginatingRequestSpecifier:specifier];
   v14 = v13;
   if (v13)
   {
@@ -286,7 +286,7 @@
     v13->_boundingBox.origin.y = y;
     v13->_boundingBox.size.width = width;
     v13->_boundingBox.size.height = height;
-    objc_storeStrong(&v13->_groupId, a5);
+    objc_storeStrong(&v13->_groupId, id);
     v15 = v14;
   }
 
@@ -295,39 +295,39 @@
 
 + (VNDetectedObjectObservation)observationWithRequestRevision:(NSUInteger)requestRevision boundingBox:(CGRect)boundingBox
 {
-  v4 = [[a1 alloc] initWithRequestRevision:requestRevision boundingBox:{boundingBox.origin.x, boundingBox.origin.y, boundingBox.size.width, boundingBox.size.height}];
+  v4 = [[self alloc] initWithRequestRevision:requestRevision boundingBox:{boundingBox.origin.x, boundingBox.origin.y, boundingBox.size.width, boundingBox.size.height}];
 
   return v4;
 }
 
-- (void)setInstanceSegmentationMask:(uint64_t)a1
+- (void)setInstanceSegmentationMask:(uint64_t)mask
 {
   v4 = a2;
-  if (a1)
+  if (mask)
   {
-    objc_storeStrong((a1 + 152), a2);
+    objc_storeStrong((mask + 152), a2);
   }
 }
 
-- (void)setGroupId:(uint64_t)a1
+- (void)setGroupId:(uint64_t)id
 {
   v4 = a2;
-  if (a1)
+  if (id)
   {
-    objc_storeStrong((a1 + 128), a2);
+    objc_storeStrong((id + 128), a2);
   }
 }
 
-- (CGRect)boundingBoxInTopLeftOrigin:(BOOL)a3 orientation:(unsigned int)a4
+- (CGRect)boundingBoxInTopLeftOrigin:(BOOL)origin orientation:(unsigned int)orientation
 {
-  v5 = a3;
+  originCopy = origin;
   [(VNDetectedObjectObservation *)self boundingBox];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
   memset(&v15, 0, sizeof(v15));
-  VNAffineTransformForVisionToTopLeftOriginOrientation(v5, a4, &v15);
+  VNAffineTransformForVisionToTopLeftOriginOrientation(originCopy, orientation, &v15);
   v14 = v15;
   v16.origin.x = v7;
   v16.origin.y = v9;

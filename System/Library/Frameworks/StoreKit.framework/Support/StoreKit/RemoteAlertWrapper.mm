@@ -1,38 +1,38 @@
 @interface RemoteAlertWrapper
-- (RemoteAlertWrapper)initWithServiceName:(id)a3 viewControllerClassName:(id)a4;
+- (RemoteAlertWrapper)initWithServiceName:(id)name viewControllerClassName:(id)className;
 - (SBSRemoteAlertHandleObserver)observer;
-- (void)activateForTargetXPCConnection:(id)a3 sceneID:(id)a4 shouldDismissOnUILock:(BOOL)a5 userInfo:(id)a6;
+- (void)activateForTargetXPCConnection:(id)connection sceneID:(id)d shouldDismissOnUILock:(BOOL)lock userInfo:(id)info;
 @end
 
 @implementation RemoteAlertWrapper
 
-- (RemoteAlertWrapper)initWithServiceName:(id)a3 viewControllerClassName:(id)a4
+- (RemoteAlertWrapper)initWithServiceName:(id)name viewControllerClassName:(id)className
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  classNameCopy = className;
   v11.receiver = self;
   v11.super_class = RemoteAlertWrapper;
   v8 = [(RemoteAlertWrapper *)&v11 init];
   if (v8)
   {
-    v9 = [[SBSRemoteAlertDefinition alloc] initWithServiceName:v6 viewControllerClassName:v7];
+    v9 = [[SBSRemoteAlertDefinition alloc] initWithServiceName:nameCopy viewControllerClassName:classNameCopy];
     [(RemoteAlertWrapper *)v8 setDefinition:v9];
   }
 
   return v8;
 }
 
-- (void)activateForTargetXPCConnection:(id)a3 sceneID:(id)a4 shouldDismissOnUILock:(BOOL)a5 userInfo:(id)a6
+- (void)activateForTargetXPCConnection:(id)connection sceneID:(id)d shouldDismissOnUILock:(BOOL)lock userInfo:(id)info
 {
-  v6 = a5;
-  v10 = a6;
-  v11 = a4;
-  [(RemoteAlertWrapper *)self setXpcConnection:a3];
+  lockCopy = lock;
+  infoCopy = info;
+  dCopy = d;
+  [(RemoteAlertWrapper *)self setXpcConnection:connection];
   v12 = objc_opt_new();
-  [v12 setUserInfo:v10];
+  [v12 setUserInfo:infoCopy];
 
-  v13 = [(RemoteAlertWrapper *)self definition];
-  v14 = [SBSRemoteAlertHandle newHandleWithDefinition:v13 configurationContext:v12];
+  definition = [(RemoteAlertWrapper *)self definition];
+  v14 = [SBSRemoteAlertHandle newHandleWithDefinition:definition configurationContext:v12];
   [(RemoteAlertWrapper *)self setHandle:v14];
 
   if (self->_handle && (v15 = objc_loadWeakRetained(&self->_observer), v15, v15))
@@ -40,7 +40,7 @@
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
       v28 = 138543362;
-      v29 = self;
+      selfCopy2 = self;
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "[%{public}@]: Registering handle observer", &v28, 0xCu);
     }
 
@@ -52,32 +52,32 @@
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v28 = 138543362;
-    v29 = self;
+    selfCopy2 = self;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "[%{public}@]: Not registering handle observer", &v28, 0xCu);
   }
 
-  v18 = [(RemoteAlertWrapper *)self xpcConnection];
-  v19 = [BSProcessHandle processHandleForNSXPCConnection:v18];
+  xpcConnection = [(RemoteAlertWrapper *)self xpcConnection];
+  v19 = [BSProcessHandle processHandleForNSXPCConnection:xpcConnection];
 
   v20 = [[SBSRemoteAlertPresentationTarget alloc] initWithTargetProcess:v19];
   [(RemoteAlertWrapper *)self setPresentationTarget:v20];
 
-  v21 = [(RemoteAlertWrapper *)self presentationTarget];
-  [v21 setScenePersistentIdentifier:v11];
+  presentationTarget = [(RemoteAlertWrapper *)self presentationTarget];
+  [presentationTarget setScenePersistentIdentifier:dCopy];
 
-  v22 = [(RemoteAlertWrapper *)self presentationTarget];
-  [v22 setShouldDismissOnUILock:v6];
+  presentationTarget2 = [(RemoteAlertWrapper *)self presentationTarget];
+  [presentationTarget2 setShouldDismissOnUILock:lockCopy];
 
   v23 = objc_opt_new();
   [(RemoteAlertWrapper *)self setActivationContext:v23];
 
-  v24 = [(RemoteAlertWrapper *)self activationContext];
-  v25 = [(RemoteAlertWrapper *)self presentationTarget];
-  [v24 setPresentationTarget:v25];
+  activationContext = [(RemoteAlertWrapper *)self activationContext];
+  presentationTarget3 = [(RemoteAlertWrapper *)self presentationTarget];
+  [activationContext setPresentationTarget:presentationTarget3];
 
-  v26 = [(RemoteAlertWrapper *)self handle];
-  v27 = [(RemoteAlertWrapper *)self activationContext];
-  [v26 activateWithContext:v27];
+  handle = [(RemoteAlertWrapper *)self handle];
+  activationContext2 = [(RemoteAlertWrapper *)self activationContext];
+  [handle activateWithContext:activationContext2];
 }
 
 - (SBSRemoteAlertHandleObserver)observer

@@ -1,19 +1,19 @@
 @interface OKPresentationCanvas
 - (NSString)description;
-- (OKPresentationCanvas)canvasWithName:(id)a3;
+- (OKPresentationCanvas)canvasWithName:(id)name;
 - (OKPresentationCanvas)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionary;
 - (id)keyPath;
 - (id)mergedSettings;
 - (void)dealloc;
-- (void)parentApplyValueForKeyPath:(id)a3;
+- (void)parentApplyValueForKeyPath:(id)path;
 - (void)resolveIfNeeded;
-- (void)setParent:(id)a3;
-- (void)setPresentation:(id)a3;
-- (void)setPropertiesObject:(id)a3 forKeyPath:(id)a4;
-- (void)setSettingsObject:(id)a3 forKeyPath:(id)a4;
-- (void)setUserDataObject:(id)a3 forKeyPath:(id)a4;
+- (void)setParent:(id)parent;
+- (void)setPresentation:(id)presentation;
+- (void)setPropertiesObject:(id)object forKeyPath:(id)path;
+- (void)setSettingsObject:(id)object forKeyPath:(id)path;
+- (void)setUserDataObject:(id)object forKeyPath:(id)path;
 @end
 
 @implementation OKPresentationCanvas
@@ -91,23 +91,23 @@
   [(OKPresentationCanvas *)&v9 dealloc];
 }
 
-- (void)setPresentation:(id)a3
+- (void)setPresentation:(id)presentation
 {
-  if ([(OKPresentationCanvas *)self presentation]!= a3)
+  if ([(OKPresentationCanvas *)self presentation]!= presentation)
   {
     self->_isResolved = 0;
 
-    objc_storeWeak(&self->_presentation, a3);
+    objc_storeWeak(&self->_presentation, presentation);
   }
 }
 
-- (void)setParent:(id)a3
+- (void)setParent:(id)parent
 {
-  if ([(OKPresentationCanvas *)self parent]!= a3)
+  if ([(OKPresentationCanvas *)self parent]!= parent)
   {
     self->_isResolved = 0;
 
-    objc_storeWeak(&self->_parent, a3);
+    objc_storeWeak(&self->_parent, parent);
   }
 }
 
@@ -144,9 +144,9 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if (v4)
   {
     [v4 setPresentation:{-[OKPresentationCanvas presentation](self, "presentation")}];
@@ -207,7 +207,7 @@
   return v3;
 }
 
-- (OKPresentationCanvas)canvasWithName:(id)a3
+- (OKPresentationCanvas)canvasWithName:(id)name
 {
   if (*MEMORY[0x277D62808] >= 4)
   {
@@ -220,63 +220,63 @@
   return 0;
 }
 
-- (void)setSettingsObject:(id)a3 forKeyPath:(id)a4
+- (void)setSettingsObject:(id)object forKeyPath:(id)path
 {
-  v7 = [a4 componentsSeparatedByString:@"."];
+  v7 = [path componentsSeparatedByString:@"."];
   if ([v7 count] < 2)
   {
-    v12 = self;
-    v13 = a3;
-    v11 = a4;
+    selfCopy = self;
+    objectCopy2 = object;
+    pathCopy = path;
     goto LABEL_6;
   }
 
-  v8 = [v7 firstObject];
-  v9 = [(OKPresentationCanvas *)self canvasWithName:v8];
+  firstObject = [v7 firstObject];
+  v9 = [(OKPresentationCanvas *)self canvasWithName:firstObject];
   if (v9)
   {
     v10 = v9;
     if ([v7 count] == 2)
     {
-      v11 = [v7 lastObject];
-      v12 = v10;
-      v13 = a3;
+      pathCopy = [v7 lastObject];
+      selfCopy = v10;
+      objectCopy2 = object;
 LABEL_6:
 
-      [(OKPresentationCanvas *)v12 _setSettingsObject:v13 forKey:v11];
+      [(OKPresentationCanvas *)selfCopy _setSettingsObject:objectCopy2 forKey:pathCopy];
       return;
     }
 
-    v14 = [a4 substringFromIndex:{objc_msgSend(a4, "rangeOfString:", @"."}];
+    v14 = [path substringFromIndex:{objc_msgSend(path, "rangeOfString:", @"."}];
 
-    [(OKPresentationCanvas *)v10 setSettingsObject:a3 forKeyPath:v14];
+    [(OKPresentationCanvas *)v10 setSettingsObject:object forKeyPath:v14];
   }
 
   else if (*MEMORY[0x277D62808] >= 5)
   {
-    [MEMORY[0x277D627B8] logMessageWithLevel:5 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Model/OKPresentationCanvas.m" line:256 andFormat:@"Cannot find static canvas %@ for %@", v8, self->_name];
+    [MEMORY[0x277D627B8] logMessageWithLevel:5 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Model/OKPresentationCanvas.m" line:256 andFormat:@"Cannot find static canvas %@ for %@", firstObject, self->_name];
   }
 }
 
-- (void)setUserDataObject:(id)a3 forKeyPath:(id)a4
+- (void)setUserDataObject:(id)object forKeyPath:(id)path
 {
-  v7 = [a4 componentsSeparatedByString:@"."];
+  v7 = [path componentsSeparatedByString:@"."];
   if ([v7 count] < 2)
   {
 LABEL_7:
-    v12 = self;
-    v13 = a3;
-    v11 = a4;
+    selfCopy = self;
+    objectCopy2 = object;
+    pathCopy = path;
     goto LABEL_8;
   }
 
-  v8 = [v7 firstObject];
-  v9 = [(OKPresentationCanvas *)self canvasWithName:v8];
+  firstObject = [v7 firstObject];
+  v9 = [(OKPresentationCanvas *)self canvasWithName:firstObject];
   if (!v9)
   {
     if (*MEMORY[0x277D62808] >= 5)
     {
-      [MEMORY[0x277D627B8] logMessageWithLevel:5 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Model/OKPresentationCanvas.m" line:294 andFormat:@"Cannot find static canvas %@ for %@, this will be resolved at runtime if possible", v8, self->_name];
+      [MEMORY[0x277D627B8] logMessageWithLevel:5 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Model/OKPresentationCanvas.m" line:294 andFormat:@"Cannot find static canvas %@ for %@, this will be resolved at runtime if possible", firstObject, self->_name];
     }
 
     goto LABEL_7;
@@ -285,79 +285,79 @@ LABEL_7:
   v10 = v9;
   if ([v7 count] == 2)
   {
-    v11 = [v7 lastObject];
-    v12 = v10;
-    v13 = a3;
+    pathCopy = [v7 lastObject];
+    selfCopy = v10;
+    objectCopy2 = object;
 LABEL_8:
 
-    [(OKPresentationCanvas *)v12 _setUserDataObject:v13 forKey:v11];
+    [(OKPresentationCanvas *)selfCopy _setUserDataObject:objectCopy2 forKey:pathCopy];
     return;
   }
 
-  v14 = [a4 substringFromIndex:{objc_msgSend(a4, "rangeOfString:", @"."}];
+  v14 = [path substringFromIndex:{objc_msgSend(path, "rangeOfString:", @"."}];
 
-  [(OKPresentationCanvas *)v10 setUserDataObject:a3 forKeyPath:v14];
+  [(OKPresentationCanvas *)v10 setUserDataObject:object forKeyPath:v14];
 }
 
-- (void)setPropertiesObject:(id)a3 forKeyPath:(id)a4
+- (void)setPropertiesObject:(id)object forKeyPath:(id)path
 {
-  v7 = [a4 componentsSeparatedByString:@"."];
+  v7 = [path componentsSeparatedByString:@"."];
   if ([v7 count] < 2)
   {
-    v12 = self;
-    v13 = a3;
-    v11 = a4;
+    selfCopy = self;
+    objectCopy2 = object;
+    pathCopy = path;
     goto LABEL_6;
   }
 
-  v8 = [v7 firstObject];
-  v9 = [(OKPresentationCanvas *)self canvasWithName:v8];
+  firstObject = [v7 firstObject];
+  v9 = [(OKPresentationCanvas *)self canvasWithName:firstObject];
   if (v9)
   {
     v10 = v9;
     if ([v7 count] == 2)
     {
-      v11 = [v7 lastObject];
-      v12 = v10;
-      v13 = a3;
+      pathCopy = [v7 lastObject];
+      selfCopy = v10;
+      objectCopy2 = object;
 LABEL_6:
 
-      [(OKPresentationCanvas *)v12 _setPropertiesObject:v13 forKey:v11];
+      [(OKPresentationCanvas *)selfCopy _setPropertiesObject:objectCopy2 forKey:pathCopy];
       return;
     }
 
-    v14 = [a4 substringFromIndex:{objc_msgSend(a4, "rangeOfString:", @"."}];
+    v14 = [path substringFromIndex:{objc_msgSend(path, "rangeOfString:", @"."}];
 
-    [(OKPresentationCanvas *)v10 setPropertiesObject:a3 forKeyPath:v14];
+    [(OKPresentationCanvas *)v10 setPropertiesObject:object forKeyPath:v14];
   }
 
   else if (*MEMORY[0x277D62808] >= 5)
   {
-    [MEMORY[0x277D627B8] logMessageWithLevel:5 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Model/OKPresentationCanvas.m" line:338 andFormat:@"Cannot find static canvas %@ for %@", v8, self->_name];
+    [MEMORY[0x277D627B8] logMessageWithLevel:5 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Model/OKPresentationCanvas.m" line:338 andFormat:@"Cannot find static canvas %@ for %@", firstObject, self->_name];
   }
 }
 
-- (void)parentApplyValueForKeyPath:(id)a3
+- (void)parentApplyValueForKeyPath:(id)path
 {
-  if (a3)
+  if (path)
   {
-    v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@", -[OKPresentationCanvas name](self, "name"), a3];
+    path = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@", -[OKPresentationCanvas name](self, "name"), path];
   }
 
   else
   {
-    v5 = [(OKPresentationCanvas *)self name];
+    path = [(OKPresentationCanvas *)self name];
   }
 
   [-[OKPresentationCanvas parent](self "parent")];
-  v6 = [(OKPresentationCanvas *)self properties];
+  properties = [(OKPresentationCanvas *)self properties];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __51__OKPresentationCanvas_parentApplyValueForKeyPath___block_invoke;
   v7[3] = &unk_279C8ED48;
-  v7[4] = a3;
+  v7[4] = path;
   v7[5] = self;
-  [(NSMutableDictionary *)v6 enumerateKeysAndObjectsUsingBlock:v7];
+  [(NSMutableDictionary *)properties enumerateKeysAndObjectsUsingBlock:v7];
 }
 
 uint64_t __51__OKPresentationCanvas_parentApplyValueForKeyPath___block_invoke(uint64_t a1, void *a2, uint64_t a3)

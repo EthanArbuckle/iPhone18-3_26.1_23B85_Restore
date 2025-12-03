@@ -1,17 +1,17 @@
 @interface WLKStoreOfferPeriod
-- (WLKStoreOfferPeriod)initWithString:(id)a3;
-- (id)_offerPeriodForString:(id)a3;
+- (WLKStoreOfferPeriod)initWithString:(id)string;
+- (id)_offerPeriodForString:(id)string;
 @end
 
 @implementation WLKStoreOfferPeriod
 
-- (WLKStoreOfferPeriod)initWithString:(id)a3
+- (WLKStoreOfferPeriod)initWithString:(id)string
 {
-  v3 = self;
-  v4 = [(WLKStoreOfferPeriod *)self _offerPeriodForString:a3];
+  selfCopy = self;
+  v4 = [(WLKStoreOfferPeriod *)self _offerPeriodForString:string];
   if (v4)
   {
-    v14.receiver = v3;
+    v14.receiver = selfCopy;
     v14.super_class = WLKStoreOfferPeriod;
     v5 = [(WLKStoreOfferPeriod *)&v14 init];
     if (v5)
@@ -27,8 +27,8 @@
       v5->_type = v10;
     }
 
-    v3 = v5;
-    v12 = v3;
+    selfCopy = v5;
+    v12 = selfCopy;
   }
 
   else
@@ -39,23 +39,23 @@
   return v12;
 }
 
-- (id)_offerPeriodForString:(id)a3
+- (id)_offerPeriodForString:(id)string
 {
   v3 = _offerPeriodForString__onceToken;
-  v4 = a3;
+  stringCopy = string;
   if (v3 != -1)
   {
     [WLKStoreOfferPeriod _offerPeriodForString:];
   }
 
-  v5 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-  v6 = [v4 stringByTrimmingCharactersInSet:v5];
+  whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+  v6 = [stringCopy stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
-  v7 = [v6 uppercaseString];
+  uppercaseString = [v6 uppercaseString];
 
-  if ([v7 length] >= 3 && objc_msgSend(v7, "characterAtIndex:", 0) == 80)
+  if ([uppercaseString length] >= 3 && objc_msgSend(uppercaseString, "characterAtIndex:", 0) == 80)
   {
-    v8 = [v7 substringFromIndex:1];
+    v8 = [uppercaseString substringFromIndex:1];
     if ([v8 length] < 2)
     {
       v13 = 0;

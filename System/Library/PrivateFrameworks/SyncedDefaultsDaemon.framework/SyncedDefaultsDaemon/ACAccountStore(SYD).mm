@@ -19,7 +19,7 @@
   v31[0] = *MEMORY[0x277CB8BA0];
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v31 count:1];
   v29 = 0;
-  v9 = [a1 accountsWithAccountTypeIdentifiers:v8 error:&v29];
+  v9 = [self accountsWithAccountTypeIdentifiers:v8 error:&v29];
   v10 = v29;
 
   if (v10)
@@ -50,8 +50,8 @@
         }
 
         v16 = *(*(&v25 + 1) + 8 * i);
-        v17 = [v16 personaIdentifier];
-        v18 = [v17 isEqualToString:v6];
+        personaIdentifier = [v16 personaIdentifier];
+        v18 = [personaIdentifier isEqualToString:v6];
 
         if (v18)
         {
@@ -108,11 +108,11 @@ LABEL_17:
 
   if (SYDIsDataSeparatedPersona())
   {
-    v6 = [MEMORY[0x277D77C08] currentPersona];
-    v7 = [v6 userPersonaUniqueString];
+    currentPersona = [MEMORY[0x277D77C08] currentPersona];
+    userPersonaUniqueString = [currentPersona userPersonaUniqueString];
 
     v14 = 0;
-    v8 = [a1 syd_accountForPersonaIdentifier:v7 error:&v14];
+    aa_primaryAppleAccount = [self syd_accountForPersonaIdentifier:userPersonaUniqueString error:&v14];
     v9 = v14;
     if (v9)
     {
@@ -138,18 +138,18 @@ LABEL_17:
       [ACAccountStore(SYD) syd_accountForCurrentPersonaWithError:v12];
     }
 
-    v8 = [a1 aa_primaryAppleAccount];
+    aa_primaryAppleAccount = [self aa_primaryAppleAccount];
   }
 
-  return v8;
+  return aa_primaryAppleAccount;
 }
 
 - (id)syd_accountIdentifierForCurrentPersona
 {
-  v1 = [a1 syd_accountForCurrentPersonaWithError:0];
-  v2 = [v1 identifier];
+  v1 = [self syd_accountForCurrentPersonaWithError:0];
+  identifier = [v1 identifier];
 
-  return v2;
+  return identifier;
 }
 
 - (void)syd_accountForPersonaIdentifier:()SYD error:.cold.1()

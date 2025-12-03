@@ -1,8 +1,8 @@
 @interface _UISceneSafeAreaCornerInsetCompositeResolver
-- (_UICornerInsets)safeAreaCornerInsetsForOrientation:(SEL)a3;
+- (_UICornerInsets)safeAreaCornerInsetsForOrientation:(SEL)orientation;
 - (_UISceneSafeAreaCornerInsetCompositeResolver)init;
-- (_UISceneSafeAreaCornerInsetCompositeResolver)initWithResolvers:(id)a3;
-- (void)encodeWithBSXPCCoder:(id)a3;
+- (_UISceneSafeAreaCornerInsetCompositeResolver)initWithResolvers:(id)resolvers;
+- (void)encodeWithBSXPCCoder:(id)coder;
 @end
 
 @implementation _UISceneSafeAreaCornerInsetCompositeResolver
@@ -15,7 +15,7 @@
   return [(_UISceneSafeAreaCornerInsetResolver *)&v3 init];
 }
 
-- (_UISceneSafeAreaCornerInsetCompositeResolver)initWithResolvers:(id)a3
+- (_UISceneSafeAreaCornerInsetCompositeResolver)initWithResolvers:(id)resolvers
 {
   type metadata accessor for _UISceneSafeAreaCornerInsetResolver(self);
   *(&self->super.super.isa + OBJC_IVAR____UISceneSafeAreaCornerInsetCompositeResolver_resolvers) = sub_18A4A7548();
@@ -24,9 +24,9 @@
   return [(_UISceneSafeAreaCornerInsetResolver *)&v5 init];
 }
 
-- (_UICornerInsets)safeAreaCornerInsetsForOrientation:(SEL)a3
+- (_UICornerInsets)safeAreaCornerInsetsForOrientation:(SEL)orientation
 {
-  v6 = self;
+  selfCopy = self;
   _UISceneSafeAreaCornerInsetCompositeResolver.safeAreaCornerInsets(for:)(a4, v11);
 
   v8 = v11[1];
@@ -39,14 +39,14 @@
   return result;
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
   type metadata accessor for _UISceneSafeAreaCornerInsetResolver(self);
   swift_unknownObjectRetain();
-  v7 = self;
+  selfCopy = self;
   v5 = sub_18A4A7518();
   v6 = sub_18A4A7258();
-  [a3 encodeCollection:v5 forKey:v6];
+  [coder encodeCollection:v5 forKey:v6];
 
   swift_unknownObjectRelease();
 }

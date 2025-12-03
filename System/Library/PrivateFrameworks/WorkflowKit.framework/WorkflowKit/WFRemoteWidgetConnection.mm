@@ -1,46 +1,46 @@
 @interface WFRemoteWidgetConnection
-+ (id)connectionToDevice:(id)a3;
-+ (id)connectionToDevice:(id)a3 connectionType:(int64_t)a4;
-- (WFRemoteWidgetConnection)initWithConnectionType:(int64_t)a3 deviceIdentifier:(id)a4;
-- (WFRemoteWidgetConnection)initWithDeviceIdentifier:(id)a3;
-- (id)setupBrowseConnectionType:(int64_t)a3 deviceIdentifier:(id)a4;
-- (void)_browserDiscoveredDeviceEndpoint:(id)a3;
++ (id)connectionToDevice:(id)device;
++ (id)connectionToDevice:(id)device connectionType:(int64_t)type;
+- (WFRemoteWidgetConnection)initWithConnectionType:(int64_t)type deviceIdentifier:(id)identifier;
+- (WFRemoteWidgetConnection)initWithDeviceIdentifier:(id)identifier;
+- (id)setupBrowseConnectionType:(int64_t)type deviceIdentifier:(id)identifier;
+- (void)_browserDiscoveredDeviceEndpoint:(id)endpoint;
 - (void)_receiveResponseOnConnection;
 - (void)_sendPendingData;
 - (void)_tearDownConnection;
 - (void)dealloc;
 - (void)invalidate;
-- (void)sendData:(id)a3 completionHandler:(id)a4;
-- (void)sendRemoteConfigurationRequest:(id)a3 completion:(id)a4;
+- (void)sendData:(id)data completionHandler:(id)handler;
+- (void)sendRemoteConfigurationRequest:(id)request completion:(id)completion;
 @end
 
 @implementation WFRemoteWidgetConnection
 
-- (void)sendRemoteConfigurationRequest:(id)a3 completion:(id)a4
+- (void)sendRemoteConfigurationRequest:(id)request completion:(id)completion
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   v8 = getWFWidgetConfigurationLogObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v17 = "[WFRemoteWidgetConnection(ConfigurationRequest) sendRemoteConfigurationRequest:completion:]";
     v18 = 2114;
-    v19 = v6;
+    v19 = requestCopy;
     _os_log_impl(&dword_1CA256000, v8, OS_LOG_TYPE_DEFAULT, "%s Sending remote widget configuration request: %{public}@", buf, 0x16u);
   }
 
-  v9 = [v6 secureData];
+  secureData = [requestCopy secureData];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __92__WFRemoteWidgetConnection_ConfigurationRequest__sendRemoteConfigurationRequest_completion___block_invoke;
   v13[3] = &unk_1E8378908;
-  v14 = v6;
-  v15 = v7;
-  v10 = v6;
-  v11 = v7;
-  [(WFRemoteWidgetConnection *)self sendData:v9 completionHandler:v13];
+  v14 = requestCopy;
+  v15 = completionCopy;
+  v10 = requestCopy;
+  v11 = completionCopy;
+  [(WFRemoteWidgetConnection *)self sendData:secureData completionHandler:v13];
 
   v12 = *MEMORY[0x1E69E9840];
 }
@@ -98,13 +98,13 @@ void __92__WFRemoteWidgetConnection_ConfigurationRequest__sendRemoteConfiguratio
 - (void)_receiveResponseOnConnection
 {
   objc_initWeak(&location, self);
-  v3 = [(WFRemoteWidgetConnection *)self connection];
+  connection = [(WFRemoteWidgetConnection *)self connection];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __56__WFRemoteWidgetConnection__receiveResponseOnConnection__block_invoke;
   v4[3] = &unk_1E837A778;
   objc_copyWeak(&v5, &location);
-  nw_connection_receive_message(v3, v4);
+  nw_connection_receive_message(connection, v4);
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -204,11 +204,11 @@ void __56__WFRemoteWidgetConnection__receiveResponseOnConnection__block_invoke(u
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (void)sendData:(id)a3 completionHandler:(id)a4
+- (void)sendData:(id)data completionHandler:(id)handler
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  handlerCopy = handler;
   if ([(WFRemoteWidgetConnection *)self invalidated])
   {
     v8 = getWFWidgetConfigurationLogObject();
@@ -220,7 +220,7 @@ void __56__WFRemoteWidgetConnection__receiveResponseOnConnection__block_invoke(u
     }
 
     v9 = [MEMORY[0x1E696ABC0] errorWithDomain:@"WFRemoteWidgetConnectionErrorDomain" code:1 userInfo:0];
-    v7[2](v7, 0, v9);
+    handlerCopy[2](handlerCopy, 0, v9);
   }
 
   else if ([(WFRemoteWidgetConnection *)self isConnectedToDevice]&& ([(WFRemoteWidgetConnection *)self connection], v10 = objc_claimAutoreleasedReturnValue(), v10, !v10))
@@ -234,20 +234,20 @@ void __56__WFRemoteWidgetConnection__receiveResponseOnConnection__block_invoke(u
     }
 
     v9 = [MEMORY[0x1E696ABC0] errorWithDomain:@"WFRemoteWidgetConnectionErrorDomain" code:0 userInfo:0];
-    v7[2](v7, 0, v9);
+    handlerCopy[2](handlerCopy, 0, v9);
   }
 
   else
   {
-    v11 = [(WFRemoteWidgetConnection *)self completionHandlers];
-    v12 = _Block_copy(v7);
-    [v11 addObject:v12];
+    completionHandlers = [(WFRemoteWidgetConnection *)self completionHandlers];
+    v12 = _Block_copy(handlerCopy);
+    [completionHandlers addObject:v12];
 
-    v13 = [v6 bytes];
-    v14 = [v6 length];
-    v9 = dispatch_data_create(v13, v14, MEMORY[0x1E69E96A0], 0);
-    v15 = [(WFRemoteWidgetConnection *)self connection];
-    v16 = v15 == 0;
+    bytes = [dataCopy bytes];
+    v14 = [dataCopy length];
+    v9 = dispatch_data_create(bytes, v14, MEMORY[0x1E69E96A0], 0);
+    connection = [(WFRemoteWidgetConnection *)self connection];
+    v16 = connection == 0;
 
     v17 = getWFWidgetConfigurationLogObject();
     v18 = os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT);
@@ -279,13 +279,13 @@ void __56__WFRemoteWidgetConnection__receiveResponseOnConnection__block_invoke(u
       v21 = nw_content_context_create("Request");
       nw_content_context_set_metadata_for_protocol(v21, message);
       objc_initWeak(buf, self);
-      v22 = [(WFRemoteWidgetConnection *)self connection];
+      connection2 = [(WFRemoteWidgetConnection *)self connection];
       completion[0] = MEMORY[0x1E69E9820];
       completion[1] = 3221225472;
       completion[2] = __55__WFRemoteWidgetConnection_sendData_completionHandler___block_invoke;
       completion[3] = &unk_1E837A750;
       objc_copyWeak(&v26, buf);
-      nw_connection_send(v22, v9, v21, 1, completion);
+      nw_connection_send(connection2, v9, v21, 1, completion);
 
       objc_destroyWeak(&v26);
       objc_destroyWeak(buf);
@@ -363,13 +363,13 @@ void __55__WFRemoteWidgetConnection_sendData_completionHandler___block_invoke(ui
 
         v10 = nw_content_context_create("Request");
         nw_content_context_set_metadata_for_protocol(v10, message);
-        v11 = [(WFRemoteWidgetConnection *)self connection];
+        connection = [(WFRemoteWidgetConnection *)self connection];
         completion[0] = MEMORY[0x1E69E9820];
         completion[1] = 3221225472;
         completion[2] = __44__WFRemoteWidgetConnection__sendPendingData__block_invoke;
         completion[3] = &unk_1E837A750;
         objc_copyWeak(&v15, buf);
-        nw_connection_send(v11, v7, v10, 1, completion);
+        nw_connection_send(connection, v7, v10, 1, completion);
 
         objc_destroyWeak(&v15);
         objc_destroyWeak(buf);
@@ -417,13 +417,13 @@ void __44__WFRemoteWidgetConnection__sendPendingData__block_invoke(uint64_t a1, 
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_browserDiscoveredDeviceEndpoint:(id)a3
+- (void)_browserDiscoveredDeviceEndpoint:(id)endpoint
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(WFRemoteWidgetConnection *)self connection];
+  endpointCopy = endpoint;
+  connection = [(WFRemoteWidgetConnection *)self connection];
 
-  if (v5)
+  if (connection)
   {
     v6 = getWFWidgetConfigurationLogObject();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -436,8 +436,8 @@ void __44__WFRemoteWidgetConnection__sendPendingData__block_invoke(uint64_t a1, 
 
   else
   {
-    v7 = [(WFRemoteWidgetConnection *)self nwBrowser];
-    nw_browser_cancel(v7);
+    nwBrowser = [(WFRemoteWidgetConnection *)self nwBrowser];
+    nw_browser_cancel(nwBrowser);
 
     connectionType = self->_connectionType;
     if (connectionType)
@@ -450,25 +450,25 @@ void __44__WFRemoteWidgetConnection__sendPendingData__block_invoke(uint64_t a1, 
       WFCreateAdvertiseParametersForConnectionType(0);
     }
     v6 = ;
-    v9 = nw_connection_create(v4, v6);
+    v9 = nw_connection_create(endpointCopy, v6);
     [(WFRemoteWidgetConnection *)self setConnection:v9];
 
-    v10 = [(WFRemoteWidgetConnection *)self connection];
-    v11 = [(WFRemoteWidgetConnection *)self queue];
-    nw_connection_set_queue(v10, v11);
+    connection2 = [(WFRemoteWidgetConnection *)self connection];
+    queue = [(WFRemoteWidgetConnection *)self queue];
+    nw_connection_set_queue(connection2, queue);
 
     objc_initWeak(&location, self);
-    v12 = [(WFRemoteWidgetConnection *)self connection];
+    connection3 = [(WFRemoteWidgetConnection *)self connection];
     handler[0] = MEMORY[0x1E69E9820];
     handler[1] = 3221225472;
     handler[2] = __61__WFRemoteWidgetConnection__browserDiscoveredDeviceEndpoint___block_invoke;
     handler[3] = &unk_1E837A728;
     objc_copyWeak(&v18, &location);
-    v17 = v4;
-    nw_connection_set_state_changed_handler(v12, handler);
+    v17 = endpointCopy;
+    nw_connection_set_state_changed_handler(connection3, handler);
 
-    v13 = [(WFRemoteWidgetConnection *)self connection];
-    nw_connection_start(v13);
+    connection4 = [(WFRemoteWidgetConnection *)self connection];
+    nw_connection_start(connection4);
 
     v14 = getWFWidgetConfigurationLogObject();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -580,8 +580,8 @@ void __61__WFRemoteWidgetConnection__browserDiscoveredDeviceEndpoint___block_inv
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v5 = [(WFRemoteWidgetConnection *)self completionHandlers];
-    v6 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    completionHandlers = [(WFRemoteWidgetConnection *)self completionHandlers];
+    v6 = [completionHandlers countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v6)
     {
       v7 = v6;
@@ -593,7 +593,7 @@ void __61__WFRemoteWidgetConnection__browserDiscoveredDeviceEndpoint___block_inv
         {
           if (*v19 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(completionHandlers);
           }
 
           v10 = *(*(&v18 + 1) + 8 * v9);
@@ -604,31 +604,31 @@ void __61__WFRemoteWidgetConnection__browserDiscoveredDeviceEndpoint___block_inv
         }
 
         while (v7 != v9);
-        v7 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        v7 = [completionHandlers countByEnumeratingWithState:&v18 objects:v22 count:16];
       }
 
       while (v7);
     }
 
-    v12 = [(WFRemoteWidgetConnection *)self completionHandlers];
-    [v12 removeAllObjects];
+    completionHandlers2 = [(WFRemoteWidgetConnection *)self completionHandlers];
+    [completionHandlers2 removeAllObjects];
 
-    v13 = [(WFRemoteWidgetConnection *)self nwBrowser];
+    nwBrowser = [(WFRemoteWidgetConnection *)self nwBrowser];
 
-    if (v13)
+    if (nwBrowser)
     {
-      v14 = [(WFRemoteWidgetConnection *)self nwBrowser];
-      nw_browser_cancel(v14);
+      nwBrowser2 = [(WFRemoteWidgetConnection *)self nwBrowser];
+      nw_browser_cancel(nwBrowser2);
 
       [(WFRemoteWidgetConnection *)self setNwBrowser:0];
     }
 
-    v15 = [(WFRemoteWidgetConnection *)self connection];
+    connection = [(WFRemoteWidgetConnection *)self connection];
 
-    if (v15)
+    if (connection)
     {
-      v16 = [(WFRemoteWidgetConnection *)self connection];
-      nw_connection_cancel(v16);
+      connection2 = [(WFRemoteWidgetConnection *)self connection];
+      nw_connection_cancel(connection2);
 
       [(WFRemoteWidgetConnection *)self setConnection:0];
     }
@@ -648,8 +648,8 @@ void __61__WFRemoteWidgetConnection__browserDiscoveredDeviceEndpoint___block_inv
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = [(WFRemoteWidgetConnection *)self completionHandlers];
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  completionHandlers = [(WFRemoteWidgetConnection *)self completionHandlers];
+  v4 = [completionHandlers countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -661,7 +661,7 @@ void __61__WFRemoteWidgetConnection__browserDiscoveredDeviceEndpoint___block_inv
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(completionHandlers);
         }
 
         v8 = *(*(&v12 + 1) + 8 * v7);
@@ -672,14 +672,14 @@ void __61__WFRemoteWidgetConnection__browserDiscoveredDeviceEndpoint___block_inv
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [completionHandlers countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v5);
   }
 
-  v10 = [(WFRemoteWidgetConnection *)self completionHandlers];
-  [v10 removeAllObjects];
+  completionHandlers2 = [(WFRemoteWidgetConnection *)self completionHandlers];
+  [completionHandlers2 removeAllObjects];
 
   [(WFRemoteWidgetConnection *)self invalidate];
   v11 = *MEMORY[0x1E69E9840];
@@ -688,16 +688,16 @@ void __61__WFRemoteWidgetConnection__browserDiscoveredDeviceEndpoint___block_inv
 - (void)dealloc
 {
   v10 = *MEMORY[0x1E69E9840];
-  v3 = [(WFRemoteWidgetConnection *)self nwBrowser];
-  if (v3)
+  nwBrowser = [(WFRemoteWidgetConnection *)self nwBrowser];
+  if (nwBrowser)
   {
   }
 
   else
   {
-    v4 = [(WFRemoteWidgetConnection *)self connection];
+    connection = [(WFRemoteWidgetConnection *)self connection];
 
-    if (!v4)
+    if (!connection)
     {
       goto LABEL_7;
     }
@@ -719,27 +719,27 @@ LABEL_7:
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (id)setupBrowseConnectionType:(int64_t)a3 deviceIdentifier:(id)a4
+- (id)setupBrowseConnectionType:(int64_t)type deviceIdentifier:(id)identifier
 {
   v35 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  self->_connectionType = a3;
-  v8 = [MEMORY[0x1E695DF70] array];
+  identifierCopy = identifier;
+  self->_connectionType = type;
+  array = [MEMORY[0x1E695DF70] array];
   completionHandlers = self->_completionHandlers;
-  self->_completionHandlers = v8;
+  self->_completionHandlers = array;
 
-  v10 = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   dataToSend = self->_dataToSend;
-  self->_dataToSend = v10;
+  self->_dataToSend = array2;
 
-  objc_storeStrong(&self->_deviceIdentifier, a4);
+  objc_storeStrong(&self->_deviceIdentifier, identifier);
   v12 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
   v13 = dispatch_queue_attr_make_with_qos_class(v12, QOS_CLASS_USER_INITIATED, 0);
   v14 = dispatch_queue_create("com.apple.shortcuts.WFRemoteWidgetConnection", v13);
   queue = self->_queue;
   self->_queue = v14;
 
-  v16 = WFCreateBrowseParametersForConnectionType(a3);
+  v16 = WFCreateBrowseParametersForConnectionType(type);
   application_service = nw_browse_descriptor_create_application_service("com.apple.workflow.remotewidgets");
   nw_browse_descriptor_set_device_types();
   nw_browse_descriptor_set_browse_scope();
@@ -751,7 +751,7 @@ LABEL_7:
   handler[2] = __71__WFRemoteWidgetConnection_setupBrowseConnectionType_deviceIdentifier___block_invoke_165;
   handler[3] = &unk_1E837A700;
   objc_copyWeak(&v29, &location);
-  v19 = v7;
+  v19 = identifierCopy;
   v28 = v19;
   nw_browser_set_browse_results_changed_handler(v18, handler);
   v20 = getWFWidgetConfigurationLogObject();
@@ -926,16 +926,16 @@ LABEL_8:
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (WFRemoteWidgetConnection)initWithDeviceIdentifier:(id)a3
+- (WFRemoteWidgetConnection)initWithDeviceIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = WFRemoteWidgetConnection;
   v5 = [(WFRemoteWidgetConnection *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    v7 = [(WFRemoteWidgetConnection *)v5 setupBrowseConnectionType:0 deviceIdentifier:v4];
+    v7 = [(WFRemoteWidgetConnection *)v5 setupBrowseConnectionType:0 deviceIdentifier:identifierCopy];
   }
 
   else
@@ -946,16 +946,16 @@ LABEL_8:
   return v7;
 }
 
-- (WFRemoteWidgetConnection)initWithConnectionType:(int64_t)a3 deviceIdentifier:(id)a4
+- (WFRemoteWidgetConnection)initWithConnectionType:(int64_t)type deviceIdentifier:(id)identifier
 {
-  v6 = a4;
+  identifierCopy = identifier;
   v11.receiver = self;
   v11.super_class = WFRemoteWidgetConnection;
   v7 = [(WFRemoteWidgetConnection *)&v11 init];
   v8 = v7;
   if (v7)
   {
-    v9 = [(WFRemoteWidgetConnection *)v7 setupBrowseConnectionType:a3 deviceIdentifier:v6];
+    v9 = [(WFRemoteWidgetConnection *)v7 setupBrowseConnectionType:type deviceIdentifier:identifierCopy];
   }
 
   else
@@ -966,18 +966,18 @@ LABEL_8:
   return v9;
 }
 
-+ (id)connectionToDevice:(id)a3 connectionType:(int64_t)a4
++ (id)connectionToDevice:(id)device connectionType:(int64_t)type
 {
-  v5 = a3;
-  v6 = [[WFRemoteWidgetConnection alloc] initWithConnectionType:a4 deviceIdentifier:v5];
+  deviceCopy = device;
+  v6 = [[WFRemoteWidgetConnection alloc] initWithConnectionType:type deviceIdentifier:deviceCopy];
 
   return v6;
 }
 
-+ (id)connectionToDevice:(id)a3
++ (id)connectionToDevice:(id)device
 {
-  v3 = a3;
-  v4 = [[WFRemoteWidgetConnection alloc] initWithConnectionType:0 deviceIdentifier:v3];
+  deviceCopy = device;
+  v4 = [[WFRemoteWidgetConnection alloc] initWithConnectionType:0 deviceIdentifier:deviceCopy];
 
   return v4;
 }

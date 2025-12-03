@@ -1,17 +1,17 @@
 @interface DurationDatePickerCollectionViewCell
-- (_TtC19HealthMedicationsUI36DurationDatePickerCollectionViewCell)initWithCoder:(id)a3;
-- (_TtC19HealthMedicationsUI36DurationDatePickerCollectionViewCell)initWithFrame:(CGRect)a3;
-- (void)pickerDateChanged:(id)a3;
+- (_TtC19HealthMedicationsUI36DurationDatePickerCollectionViewCell)initWithCoder:(id)coder;
+- (_TtC19HealthMedicationsUI36DurationDatePickerCollectionViewCell)initWithFrame:(CGRect)frame;
+- (void)pickerDateChanged:(id)changed;
 @end
 
 @implementation DurationDatePickerCollectionViewCell
 
-- (_TtC19HealthMedicationsUI36DurationDatePickerCollectionViewCell)initWithFrame:(CGRect)a3
+- (_TtC19HealthMedicationsUI36DurationDatePickerCollectionViewCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8 = self + OBJC_IVAR____TtC19HealthMedicationsUI36DurationDatePickerCollectionViewCell_item;
   *v8 = 0u;
   *(v8 + 1) = 0u;
@@ -22,13 +22,13 @@
   *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC19HealthMedicationsUI36DurationDatePickerCollectionViewCell_currentLayoutConstraints) = MEMORY[0x277D84F90];
   v12.receiver = self;
   v12.super_class = type metadata accessor for DurationDatePickerCollectionViewCell();
-  v10 = [(DurationDatePickerCollectionViewCell *)&v12 initWithFrame:x, y, width, height];
+  height = [(DurationDatePickerCollectionViewCell *)&v12 initWithFrame:x, y, width, height];
   sub_22822CFDC();
 
-  return v10;
+  return height;
 }
 
-- (_TtC19HealthMedicationsUI36DurationDatePickerCollectionViewCell)initWithCoder:(id)a3
+- (_TtC19HealthMedicationsUI36DurationDatePickerCollectionViewCell)initWithCoder:(id)coder
 {
   v4 = self + OBJC_IVAR____TtC19HealthMedicationsUI36DurationDatePickerCollectionViewCell_item;
   *v4 = 0u;
@@ -43,11 +43,11 @@
   return result;
 }
 
-- (void)pickerDateChanged:(id)a3
+- (void)pickerDateChanged:(id)changed
 {
-  v4 = a3;
-  v5 = self;
-  sub_22822D9EC(v4);
+  changedCopy = changed;
+  selfCopy = self;
+  sub_22822D9EC(changedCopy);
 }
 
 @end

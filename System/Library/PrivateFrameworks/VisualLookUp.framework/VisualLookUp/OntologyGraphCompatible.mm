@@ -1,38 +1,38 @@
 @interface OntologyGraphCompatible
-- (BOOL)isDescendentWithDescendent:(id)a3 ancestor:(id)a4;
+- (BOOL)isDescendentWithDescendent:(id)descendent ancestor:(id)ancestor;
 - (_TtC12VisualLookUp23OntologyGraphCompatible)init;
-- (id)findLeastCommonAncestorWithNode1:(id)a3 node2:(id)a4;
-- (id)ontologyNodeWithKnowledgeGraphID:(id)a3;
+- (id)findLeastCommonAncestorWithNode1:(id)node1 node2:(id)node2;
+- (id)ontologyNodeWithKnowledgeGraphID:(id)d;
 @end
 
 @implementation OntologyGraphCompatible
 
-- (BOOL)isDescendentWithDescendent:(id)a3 ancestor:(id)a4
+- (BOOL)isDescendentWithDescendent:(id)descendent ancestor:(id)ancestor
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_1D9B791E8(v6, v7);
+  descendentCopy = descendent;
+  ancestorCopy = ancestor;
+  selfCopy = self;
+  v9 = sub_1D9B791E8(descendentCopy, ancestorCopy);
 
   return v9 & 1;
 }
 
-- (id)ontologyNodeWithKnowledgeGraphID:(id)a3
+- (id)ontologyNodeWithKnowledgeGraphID:(id)d
 {
   v4 = sub_1D9C7DC7C();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   v8 = sub_1D9B793A4(v4, v6);
 
   return v8;
 }
 
-- (id)findLeastCommonAncestorWithNode1:(id)a3 node2:(id)a4
+- (id)findLeastCommonAncestorWithNode1:(id)node1 node2:(id)node2
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_1D9B79540(v6, v7);
+  node1Copy = node1;
+  node2Copy = node2;
+  selfCopy = self;
+  v9 = sub_1D9B79540(node1Copy, node2Copy);
 
   return v9;
 }

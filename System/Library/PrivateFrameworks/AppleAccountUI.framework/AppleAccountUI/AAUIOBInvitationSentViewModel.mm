@@ -1,16 +1,16 @@
 @interface AAUIOBInvitationSentViewModel
-- (AAUIOBInvitationSentViewModel)initWithModel:(id)a3;
-- (AAUIOBInvitationSentViewModel)initWithType:(int64_t)a3 recipientHandle:(id)a4;
+- (AAUIOBInvitationSentViewModel)initWithModel:(id)model;
+- (AAUIOBInvitationSentViewModel)initWithType:(int64_t)type recipientHandle:(id)handle;
 - (void)_setupAAUIOBWelcomeControllerProtocolProperties;
 @end
 
 @implementation AAUIOBInvitationSentViewModel
 
-- (AAUIOBInvitationSentViewModel)initWithType:(int64_t)a3 recipientHandle:(id)a4
+- (AAUIOBInvitationSentViewModel)initWithType:(int64_t)type recipientHandle:(id)handle
 {
   v7.receiver = self;
   v7.super_class = AAUIOBInvitationSentViewModel;
-  v4 = [(AAOBInvitationSentModel *)&v7 initWithType:a3 recipientHandle:a4];
+  v4 = [(AAOBInvitationSentModel *)&v7 initWithType:type recipientHandle:handle];
   v5 = v4;
   if (v4)
   {
@@ -20,28 +20,28 @@
   return v5;
 }
 
-- (AAUIOBInvitationSentViewModel)initWithModel:(id)a3
+- (AAUIOBInvitationSentViewModel)initWithModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   v12.receiver = self;
   v12.super_class = AAUIOBInvitationSentViewModel;
   v5 = [(AAUIOBInvitationSentViewModel *)&v12 init];
   if (v5)
   {
-    v6 = [v4 detailText];
-    [(AAOBInvitationSentModel *)v5 setDetailText:v6];
+    detailText = [modelCopy detailText];
+    [(AAOBInvitationSentModel *)v5 setDetailText:detailText];
 
-    v7 = [v4 title];
-    [(AAOBInvitationSentModel *)v5 setTitle:v7];
+    title = [modelCopy title];
+    [(AAOBInvitationSentModel *)v5 setTitle:title];
 
-    v8 = [v4 primaryButton];
-    [(AAOBInvitationSentModel *)v5 setPrimaryButton:v8];
+    primaryButton = [modelCopy primaryButton];
+    [(AAOBInvitationSentModel *)v5 setPrimaryButton:primaryButton];
 
-    v9 = [v4 secondaryButton];
-    [(AAOBInvitationSentModel *)v5 setSecondaryButton:v9];
+    secondaryButton = [modelCopy secondaryButton];
+    [(AAOBInvitationSentModel *)v5 setSecondaryButton:secondaryButton];
 
-    v10 = [v4 recipientHandle];
-    [(AAOBInvitationSentModel *)v5 setRecipientHandle:v10];
+    recipientHandle = [modelCopy recipientHandle];
+    [(AAOBInvitationSentModel *)v5 setRecipientHandle:recipientHandle];
 
     [(AAUIOBInvitationSentViewModel *)v5 _setupAAUIOBWelcomeControllerProtocolProperties];
   }
@@ -52,13 +52,13 @@
 - (void)_setupAAUIOBWelcomeControllerProtocolProperties
 {
   v3 = MEMORY[0x1E698B930];
-  v4 = [(AAOBInvitationSentModel *)self recipientHandle];
-  v9 = [v3 contactInfoForHandle:v4];
+  recipientHandle = [(AAOBInvitationSentModel *)self recipientHandle];
+  v9 = [v3 contactInfoForHandle:recipientHandle];
 
   v5 = MEMORY[0x1E696AEC0];
-  v6 = [(AAOBInvitationSentModel *)self detailText];
-  v7 = [v9 displayName];
-  v8 = [v5 stringWithFormat:v6, v7];
+  detailText = [(AAOBInvitationSentModel *)self detailText];
+  displayName = [v9 displayName];
+  v8 = [v5 stringWithFormat:detailText, displayName];
   [(AAOBInvitationSentModel *)self setDetailText:v8];
 
   self->_contentViewLayout = 2;

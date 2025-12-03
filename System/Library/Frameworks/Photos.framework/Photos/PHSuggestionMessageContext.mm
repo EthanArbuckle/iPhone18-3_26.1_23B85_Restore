@@ -1,33 +1,33 @@
 @interface PHSuggestionMessageContext
 - (NSArray)messageTokens;
 - (NSArray)resolvedParticipants;
-- (PHSuggestionMessageContext)initWithMessages:(id)a3;
-- (PHSuggestionMessageContext)initWithMessages:(id)a3 participantsFromContacts:(id)a4 photoLibrary:(id)a5;
-- (PHSuggestionMessageContext)initWithMessages:(id)a3 participantsFromPersons:(id)a4 photoLibrary:(id)a5;
-- (id)_mostRecentSuggestionFromSuggestions:(id)a3;
-- (id)_suggestionsMatchingType:(int64_t)a3;
-- (id)confidentMatchSuggestionUsingStrategy:(unint64_t)a3;
+- (PHSuggestionMessageContext)initWithMessages:(id)messages;
+- (PHSuggestionMessageContext)initWithMessages:(id)messages participantsFromContacts:(id)contacts photoLibrary:(id)library;
+- (PHSuggestionMessageContext)initWithMessages:(id)messages participantsFromPersons:(id)persons photoLibrary:(id)library;
+- (id)_mostRecentSuggestionFromSuggestions:(id)suggestions;
+- (id)_suggestionsMatchingType:(int64_t)type;
+- (id)confidentMatchSuggestionUsingStrategy:(unint64_t)strategy;
 - (id)description;
 - (id)detailedDescription;
-- (id)matchingResultWithSuggestion:(id)a3;
-- (void)matchWithSuggestions:(id)a3;
-- (void)setCnParticipants:(id)a3;
-- (void)setPhParticipants:(id)a3;
+- (id)matchingResultWithSuggestion:(id)suggestion;
+- (void)matchWithSuggestions:(id)suggestions;
+- (void)setCnParticipants:(id)participants;
+- (void)setPhParticipants:(id)participants;
 @end
 
 @implementation PHSuggestionMessageContext
 
-- (id)_mostRecentSuggestionFromSuggestions:(id)a3
+- (id)_mostRecentSuggestionFromSuggestions:(id)suggestions
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 anyObject];
-  v5 = [v4 startDate];
+  suggestionsCopy = suggestions;
+  anyObject = [suggestionsCopy anyObject];
+  startDate = [anyObject startDate];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = v3;
+  v6 = suggestionsCopy;
   v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
@@ -43,14 +43,14 @@
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
-        v12 = [v11 startDate];
-        if ([v12 compare:v5] >= 1)
+        startDate2 = [v11 startDate];
+        if ([startDate2 compare:startDate] >= 1)
         {
-          v13 = v12;
+          v13 = startDate2;
 
           v14 = v11;
-          v5 = v13;
-          v4 = v14;
+          startDate = v13;
+          anyObject = v14;
         }
       }
 
@@ -60,27 +60,27 @@
     while (v8);
   }
 
-  return v4;
+  return anyObject;
 }
 
-- (id)confidentMatchSuggestionUsingStrategy:(unint64_t)a3
+- (id)confidentMatchSuggestionUsingStrategy:(unint64_t)strategy
 {
   v107 = *MEMORY[0x1E69E9840];
   v5 = PLPhotoKitGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(PHSuggestionMessageContext *)self suggestionMatchingResultsBySuggestionIdentifier];
-    v7 = [v6 count];
-    v8 = [(PHSuggestionMessageContext *)self numberOfParticipants];
-    v9 = [(PHSuggestionMessageContext *)self messages];
+    suggestionMatchingResultsBySuggestionIdentifier = [(PHSuggestionMessageContext *)self suggestionMatchingResultsBySuggestionIdentifier];
+    v7 = [suggestionMatchingResultsBySuggestionIdentifier count];
+    numberOfParticipants = [(PHSuggestionMessageContext *)self numberOfParticipants];
+    messages = [(PHSuggestionMessageContext *)self messages];
     *buf = 134218752;
-    v100 = a3;
+    strategyCopy = strategy;
     v101 = 2048;
     v102 = *&v7;
     v103 = 2048;
-    v104 = v8;
+    v104 = numberOfParticipants;
     v105 = 1024;
-    v106 = [v9 count] != 0;
+    v106 = [messages count] != 0;
     _os_log_impl(&dword_19C86F000, v5, OS_LOG_TYPE_DEFAULT, "Message sharing suggestion: Searching confident match suggestion using strategy %lu among %lu suggestions using message context (%lu participants, message string available: %d)", buf, 0x26u);
   }
 
@@ -93,26 +93,26 @@
       _os_log_impl(&dword_19C86F000, v27, OS_LOG_TYPE_DEFAULT, "Message sharing suggestion: Error no suggestions are found", buf, 2u);
     }
 
-    v26 = 0;
+    suggestion2 = 0;
     goto LABEL_90;
   }
 
-  v10 = [(NSMutableDictionary *)self->_suggestionMatchingResultsBySuggestionIdentifier allValues];
-  v76 = self;
-  v11 = [(PHSuggestionMessageContext *)self dateInterval];
+  allValues = [(NSMutableDictionary *)self->_suggestionMatchingResultsBySuggestionIdentifier allValues];
+  selfCopy = self;
+  dateInterval = [(PHSuggestionMessageContext *)self dateInterval];
 
   v12 = [MEMORY[0x1E695DFA8] set];
   v13 = [MEMORY[0x1E695DFA8] set];
-  v75 = v11;
-  v77 = v10;
-  if (v11)
+  v75 = dateInterval;
+  v77 = allValues;
+  if (dateInterval)
   {
     v14 = [MEMORY[0x1E695DFA8] set];
     v92 = 0u;
     v93 = 0u;
     v94 = 0u;
     v95 = 0u;
-    v15 = v10;
+    v15 = allValues;
     v16 = [v15 countByEnumeratingWithState:&v92 objects:v98 count:16];
     if (v16)
     {
@@ -132,8 +132,8 @@
           if (v21 > 0.0)
           {
             [v14 addObject:v20];
-            v22 = [v20 suggestion];
-            [v12 addObject:v22];
+            suggestion = [v20 suggestion];
+            [v12 addObject:suggestion];
           }
         }
 
@@ -144,7 +144,7 @@
     }
 
     v23 = [v14 count];
-    if (!(a3 | v23))
+    if (!(strategy | v23))
     {
       v83 = v14;
       v24 = PLPhotoKitGetLog();
@@ -155,7 +155,7 @@
         _os_log_impl(&dword_19C86F000, v24, OS_LOG_TYPE_DEFAULT, "Message sharing suggestion: No result - NLP Date range is found and no suggestion is matching it", buf, 2u);
       }
 
-      v26 = 0;
+      suggestion2 = 0;
       v27 = v77;
       goto LABEL_89;
     }
@@ -167,15 +167,15 @@
       if (v23 == 1)
       {
         v83 = v14;
-        v28 = [v14 anyObject];
-        v26 = [v28 suggestion];
+        anyObject = [v14 anyObject];
+        suggestion2 = [anyObject suggestion];
 
         v24 = PLPhotoKitGetLog();
         if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
         {
-          v29 = [v26 localIdentifier];
+          localIdentifier = [suggestion2 localIdentifier];
           *buf = 138412290;
-          v100 = v29;
+          strategyCopy = localIdentifier;
           _os_log_impl(&dword_19C86F000, v24, OS_LOG_TYPE_DEFAULT, "Message sharing suggestion: found a matching suggestion (%@) - unique suggestion matching NLP Date Range", buf, 0xCu);
         }
 
@@ -188,7 +188,7 @@
       {
         v31 = [v14 count];
         *buf = 134217984;
-        v100 = v31;
+        strategyCopy = v31;
         _os_log_impl(&dword_19C86F000, v30, OS_LOG_TYPE_DEFAULT, "Message sharing suggestion: filtering out the candidate set to the %lu suggestions matching NLP Date Range", buf, 0xCu);
       }
     }
@@ -196,15 +196,15 @@
 
   else
   {
-    v25 = [v10 mutableCopy];
+    v25 = [allValues mutableCopy];
     v14 = v13;
   }
 
   v24 = [MEMORY[0x1E695DFA8] set];
   v82 = [MEMORY[0x1E695DFA8] set];
   v81 = [MEMORY[0x1E695DFA8] set];
-  v80 = [MEMORY[0x1E695DF70] array];
-  v79 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   v88 = 0u;
   v89 = 0u;
   v90 = 0u;
@@ -234,7 +234,7 @@
       }
 
       v38 = *(*(&v88 + 1) + 8 * j);
-      v39 = [v38 suggestion];
+      suggestion3 = [v38 suggestion];
       [v38 scoreForSuggestionMatchingType:2];
       if (v40 > 0.0)
       {
@@ -242,9 +242,9 @@
         v42 = PLPhotoKitGetLog();
         if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
         {
-          v43 = [v39 localIdentifier];
+          localIdentifier2 = [suggestion3 localIdentifier];
           *buf = 138412546;
-          v100 = v43;
+          strategyCopy = localIdentifier2;
           v101 = 2048;
           v102 = v41;
           _os_log_impl(&dword_19C86F000, v42, OS_LOG_TYPE_DEFAULT, "Message sharing suggestion: suggestion %@ matching nlp context with score %f", buf, 0x16u);
@@ -253,12 +253,12 @@
         }
 
         v44 = [MEMORY[0x1E696AD98] numberWithDouble:v41];
-        [v80 addObject:v44];
+        [array addObject:v44];
 
-        [v82 addObject:v39];
+        [v82 addObject:suggestion3];
         if (v41 > v36)
         {
-          v45 = v39;
+          v45 = suggestion3;
 
           v83 = v45;
           v36 = v41;
@@ -272,18 +272,18 @@
         v48 = PLPhotoKitGetLog();
         if (os_log_type_enabled(v48, OS_LOG_TYPE_DEFAULT))
         {
-          v49 = [v39 localIdentifier];
+          localIdentifier3 = [suggestion3 localIdentifier];
           *buf = 138412546;
-          v100 = v49;
+          strategyCopy = localIdentifier3;
           v101 = 2048;
           v102 = v47;
           _os_log_impl(&dword_19C86F000, v48, OS_LOG_TYPE_DEFAULT, "Message sharing suggestion: suggestion %@ matching participant with score %f", buf, 0x16u);
         }
 
         v50 = [MEMORY[0x1E696AD98] numberWithDouble:v47];
-        [v79 addObject:v50];
+        [array2 addObject:v50];
 
-        [v81 addObject:v39];
+        [v81 addObject:suggestion3];
         if (v47 <= v35)
         {
           if (v47 != v35)
@@ -298,7 +298,7 @@
           v35 = v47;
         }
 
-        [v24 addObject:v39];
+        [v24 addObject:suggestion3];
       }
 
 LABEL_46:
@@ -318,7 +318,7 @@ LABEL_50:
     {
       if (v56 == 1)
       {
-        v26 = [v81 anyObject];
+        suggestion2 = [v81 anyObject];
         v53 = PLPhotoKitGetLog();
         v27 = v77;
         if (!os_log_type_enabled(v53, OS_LOG_TYPE_DEFAULT))
@@ -326,16 +326,16 @@ LABEL_50:
           goto LABEL_87;
         }
 
-        v54 = [v83 localIdentifier];
+        localIdentifier4 = [v83 localIdentifier];
         *buf = 138412290;
-        v100 = v54;
+        strategyCopy = localIdentifier4;
         v55 = "Message sharing suggestion: found a matching suggestion (%@) - unique suggestion matching participants";
       }
 
       else
       {
         v27 = v77;
-        if ([(PHSuggestionMessageContext *)v76 numberOfParticipants]>= 2)
+        if ([(PHSuggestionMessageContext *)selfCopy numberOfParticipants]>= 2)
         {
           v68 = [v24 count];
           v69 = PLPhotoKitGetLog();
@@ -344,42 +344,42 @@ LABEL_50:
           {
             if (v70)
             {
-              v71 = [v83 localIdentifier];
+              localIdentifier5 = [v83 localIdentifier];
               *buf = 138412290;
-              v100 = v71;
+              strategyCopy = localIdentifier5;
               _os_log_impl(&dword_19C86F000, v69, OS_LOG_TYPE_DEFAULT, "Message sharing suggestion: found a matching suggestion (%@) - suggestion that matches the most participants in the group thread", buf, 0xCu);
             }
 
-            v72 = [v24 anyObject];
+            anyObject2 = [v24 anyObject];
           }
 
           else
           {
             if (v70)
             {
-              v74 = [v83 localIdentifier];
+              localIdentifier6 = [v83 localIdentifier];
               *buf = 138412290;
-              v100 = v74;
+              strategyCopy = localIdentifier6;
               _os_log_impl(&dword_19C86F000, v69, OS_LOG_TYPE_DEFAULT, "Message sharing suggestion: found a matching suggestion (%@) - suggestion that matches the most participants in the group thread and is the most recent", buf, 0xCu);
             }
 
-            v72 = [(PHSuggestionMessageContext *)v76 _mostRecentSuggestionFromSuggestions:v24];
+            anyObject2 = [(PHSuggestionMessageContext *)selfCopy _mostRecentSuggestionFromSuggestions:v24];
           }
 
-          v26 = v72;
+          suggestion2 = anyObject2;
           goto LABEL_88;
         }
 
-        v26 = [(PHSuggestionMessageContext *)v76 _mostRecentSuggestionFromSuggestions:v81];
+        suggestion2 = [(PHSuggestionMessageContext *)selfCopy _mostRecentSuggestionFromSuggestions:v81];
         v53 = PLPhotoKitGetLog();
         if (!os_log_type_enabled(v53, OS_LOG_TYPE_DEFAULT))
         {
           goto LABEL_87;
         }
 
-        v54 = [v26 localIdentifier];
+        localIdentifier4 = [suggestion2 localIdentifier];
         *buf = 138412290;
-        v100 = v54;
+        strategyCopy = localIdentifier4;
         v55 = "Message sharing suggestion: found a matching suggestion (%@) - most recent suggestion matching participants";
       }
     }
@@ -389,20 +389,20 @@ LABEL_50:
       v27 = v77;
       if (!v75)
       {
-        v26 = 0;
+        suggestion2 = 0;
         goto LABEL_88;
       }
 
-      v26 = [(PHSuggestionMessageContext *)v76 _mostRecentSuggestionFromSuggestions:v12];
+      suggestion2 = [(PHSuggestionMessageContext *)selfCopy _mostRecentSuggestionFromSuggestions:v12];
       v53 = PLPhotoKitGetLog();
       if (!os_log_type_enabled(v53, OS_LOG_TYPE_DEFAULT))
       {
         goto LABEL_87;
       }
 
-      v54 = [v26 localIdentifier];
+      localIdentifier4 = [suggestion2 localIdentifier];
       *buf = 138412290;
-      v100 = v54;
+      strategyCopy = localIdentifier4;
       v55 = "Message sharing suggestion: found several matching suggestions matching NLP Date Range - returning the most recent one %@";
     }
 
@@ -415,14 +415,14 @@ LABEL_86:
   v52 = v51;
   if (v51 == 1)
   {
-    v26 = [v82 anyObject];
+    suggestion2 = [v82 anyObject];
     v53 = PLPhotoKitGetLog();
     v27 = v77;
     if (os_log_type_enabled(v53, OS_LOG_TYPE_DEFAULT))
     {
-      v54 = [v83 localIdentifier];
+      localIdentifier4 = [v83 localIdentifier];
       *buf = 138412290;
-      v100 = v54;
+      strategyCopy = localIdentifier4;
       v55 = "Message sharing suggestion: found a matching suggestion (%@) - unique suggestion matching NLP Context";
       goto LABEL_86;
     }
@@ -436,7 +436,7 @@ LABEL_87:
     v87 = 0u;
     v84 = 0u;
     v85 = 0u;
-    v57 = v80;
+    v57 = array;
     v58 = [v57 countByEnumeratingWithState:&v84 objects:v96 count:16];
     v27 = v77;
     if (v58)
@@ -468,13 +468,13 @@ LABEL_87:
           {
 LABEL_72:
 
-            v26 = [(PHSuggestionMessageContext *)v76 _mostRecentSuggestionFromSuggestions:v82];
+            suggestion2 = [(PHSuggestionMessageContext *)selfCopy _mostRecentSuggestionFromSuggestions:v82];
             v66 = PLPhotoKitGetLog();
             if (os_log_type_enabled(v66, OS_LOG_TYPE_DEFAULT))
             {
-              v67 = [v26 localIdentifier];
+              localIdentifier7 = [suggestion2 localIdentifier];
               *buf = 138412546;
-              v100 = v67;
+              strategyCopy = localIdentifier7;
               v101 = 2048;
               v102 = *&v52;
               _os_log_impl(&dword_19C86F000, v66, OS_LOG_TYPE_DEFAULT, "Message sharing suggestion: found a matching suggestion (%@) - most recent suggestion among the %lu suggestions matching NLP context", buf, 0x16u);
@@ -497,15 +497,15 @@ LABEL_72:
     v64 = PLPhotoKitGetLog();
     if (os_log_type_enabled(v64, OS_LOG_TYPE_DEFAULT))
     {
-      v65 = [v83 localIdentifier];
+      localIdentifier8 = [v83 localIdentifier];
       *buf = 138412546;
-      v100 = v65;
+      strategyCopy = localIdentifier8;
       v101 = 2048;
       v102 = *&v52;
       _os_log_impl(&dword_19C86F000, v64, OS_LOG_TYPE_DEFAULT, "Message sharing suggestion: found a matching suggestion (%@) - outlier high score among %lu suggestions matching NLP context", buf, 0x16u);
     }
 
-    v26 = v83;
+    suggestion2 = v83;
 LABEL_75:
     v25 = v78;
   }
@@ -515,28 +515,28 @@ LABEL_88:
 LABEL_89:
 LABEL_90:
 
-  return v26;
+  return suggestion2;
 }
 
-- (id)matchingResultWithSuggestion:(id)a3
+- (id)matchingResultWithSuggestion:(id)suggestion
 {
   v90 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v62 = [[PHSuggestionMessageMatchingResult alloc] initWithSuggestion:v4 messageContext:self];
+  suggestionCopy = suggestion;
+  v62 = [[PHSuggestionMessageMatchingResult alloc] initWithSuggestion:suggestionCopy messageContext:self];
   v5 = self->_dateInterval;
   if (v5)
   {
-    v6 = [v4 startDate];
-    v7 = [v4 endDate];
-    v8 = [objc_alloc(MEMORY[0x1E696AB80]) initWithStartDate:v6 endDate:v7];
+    startDate = [suggestionCopy startDate];
+    endDate = [suggestionCopy endDate];
+    v8 = [objc_alloc(MEMORY[0x1E696AB80]) initWithStartDate:startDate endDate:endDate];
     if ([(NSDateInterval *)v5 intersectsDateInterval:v8])
     {
       [(PHSuggestionMessageMatchingResult *)v62 registerMatchingType:3 weight:1.0];
     }
   }
 
-  v9 = [v4 featuresProperties];
-  v10 = [v9 objectForKeyedSubscript:@"features"];
+  featuresProperties = [suggestionCopy featuresProperties];
+  v10 = [featuresProperties objectForKeyedSubscript:@"features"];
   if ([v10 count])
   {
     v61 = [MEMORY[0x1E695DFA8] set];
@@ -544,10 +544,10 @@ LABEL_90:
     numberOfParticipants = self->_numberOfParticipants;
     if (numberOfParticipants | [(NSArray *)self->_messages count])
     {
-      v63 = self;
-      v56 = v9;
+      selfCopy = self;
+      v56 = featuresProperties;
       v57 = v5;
-      v58 = v4;
+      v58 = suggestionCopy;
       v80 = 0u;
       v81 = 0u;
       v78 = 0u;
@@ -571,12 +571,12 @@ LABEL_90:
             v17 = [PHTextFeature textFeatureWithData:*(*(&v78 + 1) + 8 * i)];
             if (!v17)
             {
-              v18 = PLPhotoKitGetLog();
-              if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
+              string = PLPhotoKitGetLog();
+              if (os_log_type_enabled(string, OS_LOG_TYPE_ERROR))
               {
                 *buf = 138412290;
-                v85 = v4;
-                _os_log_impl(&dword_19C86F000, v18, OS_LOG_TYPE_ERROR, "Failure reading text features from data for suggestion %@", buf, 0xCu);
+                v85 = suggestionCopy;
+                _os_log_impl(&dword_19C86F000, string, OS_LOG_TYPE_ERROR, "Failure reading text features from data for suggestion %@", buf, 0xCu);
               }
 
               goto LABEL_18;
@@ -585,8 +585,8 @@ LABEL_90:
             [v61 addObject:v17];
             if (numberOfParticipants && [v17 type] == 1)
             {
-              v18 = [v17 string];
-              [v60 addObject:v18];
+              string = [v17 string];
+              [v60 addObject:string];
 LABEL_18:
             }
           }
@@ -599,12 +599,12 @@ LABEL_18:
 
       if (numberOfParticipants && [v60 count])
       {
-        v19 = [(PHSuggestionMessageContext *)v63 resolvedParticipants];
+        resolvedParticipants = [(PHSuggestionMessageContext *)selfCopy resolvedParticipants];
         v74 = 0u;
         v75 = 0u;
         v76 = 0u;
         v77 = 0u;
-        v20 = [v19 countByEnumeratingWithState:&v74 objects:v88 count:16];
+        v20 = [resolvedParticipants countByEnumeratingWithState:&v74 objects:v88 count:16];
         if (v20)
         {
           v21 = v20;
@@ -615,25 +615,25 @@ LABEL_18:
             {
               if (*v75 != v22)
               {
-                objc_enumerationMutation(v19);
+                objc_enumerationMutation(resolvedParticipants);
               }
 
               v24 = *(*(&v74 + 1) + 8 * j);
-              v25 = [v24 localIdentifier];
-              v26 = [v25 lowercaseString];
-              v27 = [v60 containsObject:v26];
+              localIdentifier = [v24 localIdentifier];
+              lowercaseString = [localIdentifier lowercaseString];
+              v27 = [v60 containsObject:lowercaseString];
 
               if (v27)
               {
                 v28 = PLPhotoKitGetLog();
                 if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
                 {
-                  v29 = [v24 localIdentifier];
-                  v30 = [v4 localIdentifier];
+                  localIdentifier2 = [v24 localIdentifier];
+                  localIdentifier3 = [suggestionCopy localIdentifier];
                   *buf = 138412546;
-                  v85 = v29;
+                  v85 = localIdentifier2;
                   v86 = 2112;
-                  v87 = v30;
+                  v87 = localIdentifier3;
                   _os_log_impl(&dword_19C86F000, v28, OS_LOG_TYPE_DEFAULT, "PHSuggestionMessageContext: Matched participant %@ between message context and suggestion %@", buf, 0x16u);
                 }
 
@@ -641,14 +641,14 @@ LABEL_18:
               }
             }
 
-            v21 = [v19 countByEnumeratingWithState:&v74 objects:v88 count:16];
+            v21 = [resolvedParticipants countByEnumeratingWithState:&v74 objects:v88 count:16];
           }
 
           while (v21);
         }
       }
 
-      v31 = [(PHSuggestionMessageContext *)v63 messageTokens];
+      messageTokens = [(PHSuggestionMessageContext *)selfCopy messageTokens];
       v70 = 0u;
       v71 = 0u;
       v72 = 0u;
@@ -667,9 +667,9 @@ LABEL_18:
               objc_enumerationMutation(obj);
             }
 
-            v33 = [*(*(&v70 + 1) + 8 * k) string];
-            v34 = [v33 componentsSeparatedByString:@"_"];
-            v35 = [MEMORY[0x1E695DF70] array];
+            string2 = [*(*(&v70 + 1) + 8 * k) string];
+            v34 = [string2 componentsSeparatedByString:@"_"];
+            array = [MEMORY[0x1E695DF70] array];
             v66 = 0u;
             v67 = 0u;
             v68 = 0u;
@@ -691,9 +691,9 @@ LABEL_18:
                   }
 
                   v42 = *(*(&v66 + 1) + 8 * m);
-                  if ([v31 containsObject:v42])
+                  if ([messageTokens containsObject:v42])
                   {
-                    [v35 addObject:v42];
+                    [array addObject:v42];
                     v43 = [v42 length];
                     if (v43 > v39)
                     {
@@ -714,7 +714,7 @@ LABEL_18:
               v44 = 0;
             }
 
-            v45 = [v35 count];
+            v45 = [array count];
             if (v45)
             {
               v46 = v45;
@@ -724,11 +724,11 @@ LABEL_18:
                 v48 = PLPhotoKitGetLog();
                 if (os_log_type_enabled(v48, OS_LOG_TYPE_DEFAULT))
                 {
-                  v49 = [v35 componentsJoinedByString:{@", "}];
+                  v49 = [array componentsJoinedByString:{@", "}];
                   *buf = 138412546;
                   v85 = v49;
                   v86 = 2112;
-                  v87 = v33;
+                  v87 = string2;
                   _os_log_impl(&dword_19C86F000, v48, OS_LOG_TYPE_DEFAULT, "PHSuggestionMessageContext: Matched message tokens [%@] between message context and suggestion text feature %@", buf, 0x16u);
                 }
 
@@ -746,11 +746,11 @@ LABEL_18:
                 v52 = PLPhotoKitGetLog();
                 if (os_log_type_enabled(v52, OS_LOG_TYPE_DEFAULT))
                 {
-                  v53 = [v35 componentsJoinedByString:{@", "}];
+                  v53 = [array componentsJoinedByString:{@", "}];
                   *buf = 138412546;
                   v85 = v53;
                   v86 = 2112;
-                  v87 = v33;
+                  v87 = string2;
                   _os_log_impl(&dword_19C86F000, v52, OS_LOG_TYPE_DEFAULT, "PHSuggestionMessageContext: Matched message tokens [%@] between message context and suggestion text feature %@", buf, 0x16u);
                 }
 
@@ -769,8 +769,8 @@ LABEL_62:
         while (v65);
       }
 
-      v4 = v58;
-      v9 = v56;
+      suggestionCopy = v58;
+      featuresProperties = v56;
       v5 = v57;
       v10 = v55;
     }
@@ -779,20 +779,20 @@ LABEL_62:
   return v62;
 }
 
-- (void)matchWithSuggestions:(id)a3
+- (void)matchWithSuggestions:(id)suggestions
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  suggestionsCopy = suggestions;
   v5 = self->_suggestionMatchingResultsBySuggestionIdentifier;
-  v6 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   suggestionMatchingResultsBySuggestionIdentifier = self->_suggestionMatchingResultsBySuggestionIdentifier;
-  self->_suggestionMatchingResultsBySuggestionIdentifier = v6;
+  self->_suggestionMatchingResultsBySuggestionIdentifier = dictionary;
 
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v8 = v4;
+  v8 = suggestionsCopy;
   v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v9)
   {
@@ -808,17 +808,17 @@ LABEL_62:
         }
 
         v13 = *(*(&v17 + 1) + 8 * i);
-        v14 = [v13 localIdentifier];
-        v15 = [(NSMutableDictionary *)v5 objectForKeyedSubscript:v14];
+        localIdentifier = [v13 localIdentifier];
+        v15 = [(NSMutableDictionary *)v5 objectForKeyedSubscript:localIdentifier];
         if (v15)
         {
-          [(NSMutableDictionary *)self->_suggestionMatchingResultsBySuggestionIdentifier setObject:v15 forKeyedSubscript:v14];
+          [(NSMutableDictionary *)self->_suggestionMatchingResultsBySuggestionIdentifier setObject:v15 forKeyedSubscript:localIdentifier];
         }
 
         else
         {
           v16 = [(PHSuggestionMessageContext *)self matchingResultWithSuggestion:v13];
-          [(NSMutableDictionary *)self->_suggestionMatchingResultsBySuggestionIdentifier setObject:v16 forKeyedSubscript:v14];
+          [(NSMutableDictionary *)self->_suggestionMatchingResultsBySuggestionIdentifier setObject:v16 forKeyedSubscript:localIdentifier];
         }
       }
 
@@ -829,16 +829,16 @@ LABEL_62:
   }
 }
 
-- (id)_suggestionsMatchingType:(int64_t)a3
+- (id)_suggestionsMatchingType:(int64_t)type
 {
   v20 = *MEMORY[0x1E69E9840];
   v5 = [MEMORY[0x1E695DFA8] set];
-  v6 = [(NSMutableDictionary *)self->_suggestionMatchingResultsBySuggestionIdentifier allValues];
+  allValues = [(NSMutableDictionary *)self->_suggestionMatchingResultsBySuggestionIdentifier allValues];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v7 = [allValues countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -849,19 +849,19 @@ LABEL_62:
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allValues);
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
-        [v11 scoreForSuggestionMatchingType:a3];
+        [v11 scoreForSuggestionMatchingType:type];
         if (v12 != 0.0)
         {
-          v13 = [v11 suggestion];
-          [v5 addObject:v13];
+          suggestion = [v11 suggestion];
+          [v5 addObject:suggestion];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [allValues countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v8);
@@ -881,8 +881,8 @@ LABEL_62:
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v4 = [(PHSuggestionMessageContext *)self resolvedParticipants];
-  v5 = [v4 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  resolvedParticipants = [(PHSuggestionMessageContext *)self resolvedParticipants];
+  v5 = [resolvedParticipants countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v5)
   {
     v6 = v5;
@@ -893,16 +893,16 @@ LABEL_62:
       {
         if (*v24 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(resolvedParticipants);
         }
 
         v9 = *(*(&v23 + 1) + 8 * i);
-        v10 = [v9 localIdentifier];
-        v11 = [v9 name];
-        [v3 appendFormat:@" %@ (%@)", v11, v10];
+        localIdentifier = [v9 localIdentifier];
+        name = [v9 name];
+        [v3 appendFormat:@" %@ (%@)", name, localIdentifier];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v6 = [resolvedParticipants countByEnumeratingWithState:&v23 objects:v27 count:16];
     }
 
     while (v6);
@@ -917,8 +917,8 @@ LABEL_62:
   }
 
   v18 = dateInterval;
-  v14 = [(PHSuggestionMessageContext *)self messageTokens];
-  v15 = [v14 componentsJoinedByString:@" "];
+  messageTokens = [(PHSuggestionMessageContext *)self messageTokens];
+  v15 = [messageTokens componentsJoinedByString:@" "];
   v16 = [v19 stringWithFormat:@"Message Context:\n\tParticipants: %@\n\tMessages: %@\n\tTime constraint: %@\n\tTokens:%@\n\tSuggestions: %lu\n\tSuggestions matching time constraints: %lu\n\tSuggestions matching message: %lu\n\tSuggestions matching participants: %lu", v3, v12, v18, v15, self->_suggestionMatchingResultsBySuggestionIdentifier, objc_msgSend(v22, "count"), objc_msgSend(v21, "count"), objc_msgSend(v20, "count")];
 
   return v16;
@@ -930,9 +930,9 @@ LABEL_62:
   v9.receiver = self;
   v9.super_class = PHSuggestionMessageContext;
   v4 = [(PHSuggestionMessageContext *)&v9 description];
-  v5 = [(PHSuggestionMessageContext *)self numberOfParticipants];
+  numberOfParticipants = [(PHSuggestionMessageContext *)self numberOfParticipants];
   v6 = [(NSArray *)self->_messages componentsJoinedByString:@" "];
-  v7 = [v3 stringWithFormat:@"%@ Participants=%lu, messages=%@", v4, v5, v6];
+  v7 = [v3 stringWithFormat:@"%@ Participants=%lu, messages=%@", v4, numberOfParticipants, v6];
 
   return v7;
 }
@@ -943,7 +943,7 @@ LABEL_62:
   messageTokens = self->_messageTokens;
   if (!messageTokens)
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
@@ -965,10 +965,10 @@ LABEL_62:
           }
 
           v10 = MEMORY[0x1E69BE5E0];
-          v11 = [*(*(&v16 + 1) + 8 * v9) lowercaseString];
-          v12 = [v10 tokensFromString:v11 options:14];
+          lowercaseString = [*(*(&v16 + 1) + 8 * v9) lowercaseString];
+          v12 = [v10 tokensFromString:lowercaseString options:14];
 
-          [v4 addObjectsFromArray:v12];
+          [array addObjectsFromArray:v12];
           ++v9;
         }
 
@@ -979,7 +979,7 @@ LABEL_62:
       while (v7);
     }
 
-    v13 = [MEMORY[0x1E695DEC8] arrayWithArray:v4];
+    v13 = [MEMORY[0x1E695DEC8] arrayWithArray:array];
     v14 = self->_messageTokens;
     self->_messageTokens = v13;
 
@@ -1006,23 +1006,23 @@ LABEL_62:
       if ([(NSArray *)self->_cnParticipants count])
       {
         cnParticipants = self->_cnParticipants;
-        v7 = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
-        v8 = [PHPerson fetchPersonsForContacts:cnParticipants options:v7];
+        librarySpecificFetchOptions = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
+        v8 = [PHPerson fetchPersonsForContacts:cnParticipants options:librarySpecificFetchOptions];
       }
 
       else
       {
         v9 = [PHManualFetchResult alloc];
         photoLibrary = self->_photoLibrary;
-        v7 = +[PHPerson fetchType];
-        v8 = [(PHManualFetchResult *)v9 initWithOids:MEMORY[0x1E695E0F0] photoLibrary:photoLibrary fetchType:v7 fetchPropertySets:0 identifier:0 registerIfNeeded:0];
+        librarySpecificFetchOptions = +[PHPerson fetchType];
+        v8 = [(PHManualFetchResult *)v9 initWithOids:MEMORY[0x1E695E0F0] photoLibrary:photoLibrary fetchType:librarySpecificFetchOptions fetchPropertySets:0 identifier:0 registerIfNeeded:0];
       }
 
       v5 = v8;
 
-      v11 = [(NSArray *)v5 fetchedObjects];
+      fetchedObjects = [(NSArray *)v5 fetchedObjects];
       v12 = self->_resolvedParticipants;
-      self->_resolvedParticipants = v11;
+      self->_resolvedParticipants = fetchedObjects;
     }
 
     resolvedParticipants = self->_resolvedParticipants;
@@ -1031,86 +1031,86 @@ LABEL_62:
   return resolvedParticipants;
 }
 
-- (void)setPhParticipants:(id)a3
+- (void)setPhParticipants:(id)participants
 {
-  objc_storeStrong(&self->_phParticipants, a3);
-  v6 = a3;
+  objc_storeStrong(&self->_phParticipants, participants);
+  participantsCopy = participants;
   resolvedParticipants = self->_resolvedParticipants;
   self->_resolvedParticipants = 0;
 }
 
-- (void)setCnParticipants:(id)a3
+- (void)setCnParticipants:(id)participants
 {
-  objc_storeStrong(&self->_cnParticipants, a3);
-  v6 = a3;
+  objc_storeStrong(&self->_cnParticipants, participants);
+  participantsCopy = participants;
   resolvedParticipants = self->_resolvedParticipants;
   self->_resolvedParticipants = 0;
 }
 
-- (PHSuggestionMessageContext)initWithMessages:(id)a3 participantsFromPersons:(id)a4 photoLibrary:(id)a5
+- (PHSuggestionMessageContext)initWithMessages:(id)messages participantsFromPersons:(id)persons photoLibrary:(id)library
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = [(PHSuggestionMessageContext *)self initWithMessages:a3];
+  personsCopy = persons;
+  libraryCopy = library;
+  v11 = [(PHSuggestionMessageContext *)self initWithMessages:messages];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_photoLibrary, a5);
-    objc_storeStrong(&v12->_phParticipants, a4);
-    v12->_numberOfParticipants = [v9 count];
-    v13 = [MEMORY[0x1E695DF90] dictionary];
+    objc_storeStrong(&v11->_photoLibrary, library);
+    objc_storeStrong(&v12->_phParticipants, persons);
+    v12->_numberOfParticipants = [personsCopy count];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     suggestionMatchingResultsBySuggestionIdentifier = v12->_suggestionMatchingResultsBySuggestionIdentifier;
-    v12->_suggestionMatchingResultsBySuggestionIdentifier = v13;
+    v12->_suggestionMatchingResultsBySuggestionIdentifier = dictionary;
   }
 
   return v12;
 }
 
-- (PHSuggestionMessageContext)initWithMessages:(id)a3
+- (PHSuggestionMessageContext)initWithMessages:(id)messages
 {
-  v4 = a3;
+  messagesCopy = messages;
   v15.receiver = self;
   v15.super_class = PHSuggestionMessageContext;
   v5 = [(PHSuggestionMessageContext *)&v15 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [messagesCopy copy];
     messages = v5->_messages;
     v5->_messages = v6;
 
     messageTokens = v5->_messageTokens;
     v5->_messageTokens = 0;
 
-    v9 = [v4 componentsJoinedByString:@"\n"];
-    v10 = [MEMORY[0x1E695DF00] date];
-    v11 = [MEMORY[0x1E69BE5E0] dateIntervalsFromMessage:v9 onDate:v10];
-    v12 = [v11 count];
-    if (v12)
+    v9 = [messagesCopy componentsJoinedByString:@"\n"];
+    date = [MEMORY[0x1E695DF00] date];
+    v11 = [MEMORY[0x1E69BE5E0] dateIntervalsFromMessage:v9 onDate:date];
+    firstObject = [v11 count];
+    if (firstObject)
     {
-      v12 = [v11 firstObject];
+      firstObject = [v11 firstObject];
     }
 
     dateInterval = v5->_dateInterval;
-    v5->_dateInterval = v12;
+    v5->_dateInterval = firstObject;
   }
 
   return v5;
 }
 
-- (PHSuggestionMessageContext)initWithMessages:(id)a3 participantsFromContacts:(id)a4 photoLibrary:(id)a5
+- (PHSuggestionMessageContext)initWithMessages:(id)messages participantsFromContacts:(id)contacts photoLibrary:(id)library
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = [(PHSuggestionMessageContext *)self initWithMessages:a3];
+  contactsCopy = contacts;
+  libraryCopy = library;
+  v11 = [(PHSuggestionMessageContext *)self initWithMessages:messages];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_photoLibrary, a5);
-    objc_storeStrong(&v12->_cnParticipants, a4);
-    v12->_numberOfParticipants = [v9 count];
-    v13 = [MEMORY[0x1E695DF90] dictionary];
+    objc_storeStrong(&v11->_photoLibrary, library);
+    objc_storeStrong(&v12->_cnParticipants, contacts);
+    v12->_numberOfParticipants = [contactsCopy count];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     suggestionMatchingResultsBySuggestionIdentifier = v12->_suggestionMatchingResultsBySuggestionIdentifier;
-    v12->_suggestionMatchingResultsBySuggestionIdentifier = v13;
+    v12->_suggestionMatchingResultsBySuggestionIdentifier = dictionary;
   }
 
   return v12;

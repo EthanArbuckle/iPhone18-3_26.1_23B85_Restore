@@ -1,8 +1,8 @@
 @interface MTRNetworkCommissioningClusterAddOrUpdateWiFiNetworkParams
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3;
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader;
 - (MTRNetworkCommissioningClusterAddOrUpdateWiFiNetworkParams)init;
-- (id)_encodeAsDataValue:(id *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_encodeAsDataValue:(id *)value;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -15,13 +15,13 @@
   v2 = [(MTRNetworkCommissioningClusterAddOrUpdateWiFiNetworkParams *)&v14 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEA90] data];
+    data = [MEMORY[0x277CBEA90] data];
     ssid = v2->_ssid;
-    v2->_ssid = v3;
+    v2->_ssid = data;
 
-    v5 = [MEMORY[0x277CBEA90] data];
+    data2 = [MEMORY[0x277CBEA90] data];
     credentials = v2->_credentials;
-    v2->_credentials = v5;
+    v2->_credentials = data2;
 
     breadcrumb = v2->_breadcrumb;
     v2->_breadcrumb = 0;
@@ -45,32 +45,32 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRNetworkCommissioningClusterAddOrUpdateWiFiNetworkParams);
-  v5 = [(MTRNetworkCommissioningClusterAddOrUpdateWiFiNetworkParams *)self ssid];
-  [(MTRNetworkCommissioningClusterAddOrUpdateWiFiNetworkParams *)v4 setSsid:v5];
+  ssid = [(MTRNetworkCommissioningClusterAddOrUpdateWiFiNetworkParams *)self ssid];
+  [(MTRNetworkCommissioningClusterAddOrUpdateWiFiNetworkParams *)v4 setSsid:ssid];
 
-  v6 = [(MTRNetworkCommissioningClusterAddOrUpdateWiFiNetworkParams *)self credentials];
-  [(MTRNetworkCommissioningClusterAddOrUpdateWiFiNetworkParams *)v4 setCredentials:v6];
+  credentials = [(MTRNetworkCommissioningClusterAddOrUpdateWiFiNetworkParams *)self credentials];
+  [(MTRNetworkCommissioningClusterAddOrUpdateWiFiNetworkParams *)v4 setCredentials:credentials];
 
-  v7 = [(MTRNetworkCommissioningClusterAddOrUpdateWiFiNetworkParams *)self breadcrumb];
-  [(MTRNetworkCommissioningClusterAddOrUpdateWiFiNetworkParams *)v4 setBreadcrumb:v7];
+  breadcrumb = [(MTRNetworkCommissioningClusterAddOrUpdateWiFiNetworkParams *)self breadcrumb];
+  [(MTRNetworkCommissioningClusterAddOrUpdateWiFiNetworkParams *)v4 setBreadcrumb:breadcrumb];
 
-  v8 = [(MTRNetworkCommissioningClusterAddOrUpdateWiFiNetworkParams *)self networkIdentity];
-  [(MTRNetworkCommissioningClusterAddOrUpdateWiFiNetworkParams *)v4 setNetworkIdentity:v8];
+  networkIdentity = [(MTRNetworkCommissioningClusterAddOrUpdateWiFiNetworkParams *)self networkIdentity];
+  [(MTRNetworkCommissioningClusterAddOrUpdateWiFiNetworkParams *)v4 setNetworkIdentity:networkIdentity];
 
-  v9 = [(MTRNetworkCommissioningClusterAddOrUpdateWiFiNetworkParams *)self clientIdentifier];
-  [(MTRNetworkCommissioningClusterAddOrUpdateWiFiNetworkParams *)v4 setClientIdentifier:v9];
+  clientIdentifier = [(MTRNetworkCommissioningClusterAddOrUpdateWiFiNetworkParams *)self clientIdentifier];
+  [(MTRNetworkCommissioningClusterAddOrUpdateWiFiNetworkParams *)v4 setClientIdentifier:clientIdentifier];
 
-  v10 = [(MTRNetworkCommissioningClusterAddOrUpdateWiFiNetworkParams *)self possessionNonce];
-  [(MTRNetworkCommissioningClusterAddOrUpdateWiFiNetworkParams *)v4 setPossessionNonce:v10];
+  possessionNonce = [(MTRNetworkCommissioningClusterAddOrUpdateWiFiNetworkParams *)self possessionNonce];
+  [(MTRNetworkCommissioningClusterAddOrUpdateWiFiNetworkParams *)v4 setPossessionNonce:possessionNonce];
 
-  v11 = [(MTRNetworkCommissioningClusterAddOrUpdateWiFiNetworkParams *)self timedInvokeTimeoutMs];
-  [(MTRNetworkCommissioningClusterAddOrUpdateWiFiNetworkParams *)v4 setTimedInvokeTimeoutMs:v11];
+  timedInvokeTimeoutMs = [(MTRNetworkCommissioningClusterAddOrUpdateWiFiNetworkParams *)self timedInvokeTimeoutMs];
+  [(MTRNetworkCommissioningClusterAddOrUpdateWiFiNetworkParams *)v4 setTimedInvokeTimeoutMs:timedInvokeTimeoutMs];
 
-  v12 = [(MTRNetworkCommissioningClusterAddOrUpdateWiFiNetworkParams *)self serverSideProcessingTimeout];
-  [(MTRNetworkCommissioningClusterAddOrUpdateWiFiNetworkParams *)v4 setServerSideProcessingTimeout:v12];
+  serverSideProcessingTimeout = [(MTRNetworkCommissioningClusterAddOrUpdateWiFiNetworkParams *)self serverSideProcessingTimeout];
+  [(MTRNetworkCommissioningClusterAddOrUpdateWiFiNetworkParams *)v4 setServerSideProcessingTimeout:serverSideProcessingTimeout];
 
   return v4;
 }
@@ -91,7 +91,7 @@
   return v12;
 }
 
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader
 {
   v35 = 0;
   v37 = 0;
@@ -102,56 +102,56 @@
   v30[0] = 0;
   v30[1] = 0;
   v29 = v30;
-  v5 = [(MTRNetworkCommissioningClusterAddOrUpdateWiFiNetworkParams *)self ssid];
-  sub_238DB6950(v23, [v5 bytes], objc_msgSend(v5, "length"));
+  ssid = [(MTRNetworkCommissioningClusterAddOrUpdateWiFiNetworkParams *)self ssid];
+  sub_238DB6950(v23, [ssid bytes], objc_msgSend(ssid, "length"));
 
   v31 = v23[0];
-  v6 = [(MTRNetworkCommissioningClusterAddOrUpdateWiFiNetworkParams *)self credentials];
-  sub_238DB6950(v23, [v6 bytes], objc_msgSend(v6, "length"));
+  credentials = [(MTRNetworkCommissioningClusterAddOrUpdateWiFiNetworkParams *)self credentials];
+  sub_238DB6950(v23, [credentials bytes], objc_msgSend(credentials, "length"));
 
   v32 = v23[0];
-  v7 = [(MTRNetworkCommissioningClusterAddOrUpdateWiFiNetworkParams *)self breadcrumb];
+  breadcrumb = [(MTRNetworkCommissioningClusterAddOrUpdateWiFiNetworkParams *)self breadcrumb];
 
-  if (v7)
+  if (breadcrumb)
   {
     v33 = 1;
-    v34 = 0;
-    v8 = [(MTRNetworkCommissioningClusterAddOrUpdateWiFiNetworkParams *)self breadcrumb];
-    v34 = [v8 unsignedLongLongValue];
+    unsignedLongLongValue = 0;
+    breadcrumb2 = [(MTRNetworkCommissioningClusterAddOrUpdateWiFiNetworkParams *)self breadcrumb];
+    unsignedLongLongValue = [breadcrumb2 unsignedLongLongValue];
   }
 
-  v9 = [(MTRNetworkCommissioningClusterAddOrUpdateWiFiNetworkParams *)self networkIdentity];
+  networkIdentity = [(MTRNetworkCommissioningClusterAddOrUpdateWiFiNetworkParams *)self networkIdentity];
 
-  if (v9)
+  if (networkIdentity)
   {
     v35 = 1;
     v36 = 0uLL;
-    v10 = [(MTRNetworkCommissioningClusterAddOrUpdateWiFiNetworkParams *)self networkIdentity];
-    sub_238DB6950(v23, [v10 bytes], objc_msgSend(v10, "length"));
+    networkIdentity2 = [(MTRNetworkCommissioningClusterAddOrUpdateWiFiNetworkParams *)self networkIdentity];
+    sub_238DB6950(v23, [networkIdentity2 bytes], objc_msgSend(networkIdentity2, "length"));
 
     v36 = v23[0];
   }
 
-  v11 = [(MTRNetworkCommissioningClusterAddOrUpdateWiFiNetworkParams *)self clientIdentifier];
+  clientIdentifier = [(MTRNetworkCommissioningClusterAddOrUpdateWiFiNetworkParams *)self clientIdentifier];
 
-  if (v11)
+  if (clientIdentifier)
   {
     v37 = 1;
     v38 = 0uLL;
-    v12 = [(MTRNetworkCommissioningClusterAddOrUpdateWiFiNetworkParams *)self clientIdentifier];
-    sub_238DB6950(v23, [v12 bytes], objc_msgSend(v12, "length"));
+    clientIdentifier2 = [(MTRNetworkCommissioningClusterAddOrUpdateWiFiNetworkParams *)self clientIdentifier];
+    sub_238DB6950(v23, [clientIdentifier2 bytes], objc_msgSend(clientIdentifier2, "length"));
 
     v38 = v23[0];
   }
 
-  v13 = [(MTRNetworkCommissioningClusterAddOrUpdateWiFiNetworkParams *)self possessionNonce];
+  possessionNonce = [(MTRNetworkCommissioningClusterAddOrUpdateWiFiNetworkParams *)self possessionNonce];
 
-  if (v13)
+  if (possessionNonce)
   {
     v39 = 1;
     v40 = 0uLL;
-    v14 = [(MTRNetworkCommissioningClusterAddOrUpdateWiFiNetworkParams *)self possessionNonce];
-    sub_238DB6950(v23, [v14 bytes], objc_msgSend(v14, "length"));
+    possessionNonce2 = [(MTRNetworkCommissioningClusterAddOrUpdateWiFiNetworkParams *)self possessionNonce];
+    sub_238DB6950(v23, [possessionNonce2 bytes], objc_msgSend(possessionNonce2, "length"));
 
     v40 = v23[0];
   }
@@ -175,8 +175,8 @@
 
     else
     {
-      sub_238DD2F90(a3, &v28);
-      v15 = sub_2393C7114(a3, 21, 256);
+      sub_238DD2F90(reader, &v28);
+      v15 = sub_2393C7114(reader, 21, 256);
       v18 = v22;
       v17 = v15;
     }
@@ -204,19 +204,19 @@
   return result;
 }
 
-- (id)_encodeAsDataValue:(id *)a3
+- (id)_encodeAsDataValue:(id *)value
 {
   v5 = sub_2393C5AAC(v12);
   v13 = 0;
   v7 = [(MTRNetworkCommissioningClusterAddOrUpdateWiFiNetworkParams *)self _encodeToTLVReader:v12, v5];
   if (v7)
   {
-    if (a3)
+    if (value)
     {
       v8 = sub_23921C1E4(MTRError, v7, v6);
       v9 = 0;
 LABEL_7:
-      *a3 = v8;
+      *value = v8;
       goto LABEL_9;
     }
 
@@ -227,7 +227,7 @@ LABEL_7:
   {
     v10 = sub_238EE60DC(v12, 0);
     v9 = v10;
-    if (a3 && !v10)
+    if (value && !v10)
     {
       v8 = sub_23921C1E4(MTRError, 0x16A800000003, "/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/zap-generated/MTRCommandPayloadsObjc.mm");
       goto LABEL_7;

@@ -1,9 +1,9 @@
 @interface FMRequestRegister
-- (BOOL)canReplace:(id)a3;
+- (BOOL)canReplace:(id)replace;
 - (BOOL)canRequestBeRetriedNow;
-- (FMRequestRegister)initWithProvider:(id)a3 andCause:(id)a4;
-- (id)_informationDigestForDeviceInfoDictionary:(id)a3 keysToExclude:(id)a4;
-- (id)flattenedArrayFromObject:(id)a3 parentIndices:(id)a4;
+- (FMRequestRegister)initWithProvider:(id)provider andCause:(id)cause;
+- (id)_informationDigestForDeviceInfoDictionary:(id)dictionary keysToExclude:(id)exclude;
+- (id)flattenedArrayFromObject:(id)object parentIndices:(id)indices;
 - (id)newRequestBody;
 - (id)registrationInformationDigestIncludingKeys;
 - (id)requestUrl;
@@ -20,36 +20,36 @@
   [(FMRequest *)&v2 deinitializeRequest];
 }
 
-- (FMRequestRegister)initWithProvider:(id)a3 andCause:(id)a4
+- (FMRequestRegister)initWithProvider:(id)provider andCause:(id)cause
 {
-  v6 = a4;
+  causeCopy = cause;
   v14.receiver = self;
   v14.super_class = FMRequestRegister;
-  v7 = [(FMRequest *)&v14 initWithProvider:a3];
+  v7 = [(FMRequest *)&v14 initWithProvider:provider];
   v8 = v7;
   if (v7)
   {
-    [(FMRequestRegister *)v7 setCause:v6];
-    v9 = [NSMutableSet setWithObject:v6];
+    [(FMRequestRegister *)v7 setCause:causeCopy];
+    v9 = [NSMutableSet setWithObject:causeCopy];
     [(FMRequestRegister *)v8 setRegisteredCauses:v9];
 
-    v10 = [(FMRequestRegister *)v8 newRequestBody];
-    [(FMRequestRegister *)v8 setRequestBody:v10];
+    newRequestBody = [(FMRequestRegister *)v8 newRequestBody];
+    [(FMRequestRegister *)v8 setRequestBody:newRequestBody];
 
-    if ([v6 isEqualToString:@"wristStateChanged"])
+    if ([causeCopy isEqualToString:@"wristStateChanged"])
     {
       v11 = +[PreferencesMgr sharedInstance];
-      v12 = [v11 wristRegisterRetryCount];
+      wristRegisterRetryCount = [v11 wristRegisterRetryCount];
 LABEL_6:
-      [(FMRequestRegister *)v8 setNonEssentialRetryCount:v12];
+      [(FMRequestRegister *)v8 setNonEssentialRetryCount:wristRegisterRetryCount];
 
       goto LABEL_7;
     }
 
-    if ([v6 isEqualToString:@"networkStateChanged"])
+    if ([causeCopy isEqualToString:@"networkStateChanged"])
     {
       v11 = +[PreferencesMgr sharedInstance];
-      v12 = [v11 networkRegisterRetryCount];
+      wristRegisterRetryCount = [v11 networkRegisterRetryCount];
       goto LABEL_6;
     }
   }
@@ -61,8 +61,8 @@ LABEL_7:
 
 - (id)requestUrl
 {
-  v2 = [(FMRequest *)self provider];
-  v3 = [v2 formattedURLForTemplate:@"${scheme}://${hostname}/fmipservice/${service}/${dsid}/${udid}/register"];
+  provider = [(FMRequest *)self provider];
+  v3 = [provider formattedURLForTemplate:@"${scheme}://${hostname}/fmipservice/${service}/${dsid}/${udid}/register"];
 
   return v3;
 }
@@ -71,30 +71,30 @@ LABEL_7:
 {
   v12.receiver = self;
   v12.super_class = FMRequestRegister;
-  v3 = [(FMRequest *)&v12 requestBody];
-  v4 = [(FMRequest *)self provider];
-  v5 = [v4 registerDeviceContext];
+  requestBody = [(FMRequest *)&v12 requestBody];
+  provider = [(FMRequest *)self provider];
+  registerDeviceContext = [provider registerDeviceContext];
 
-  v6 = [(FMRequestRegister *)self cause];
-  [v5 fm_safelyMapKey:@"cause" toObject:v6];
+  cause = [(FMRequestRegister *)self cause];
+  [registerDeviceContext fm_safelyMapKey:@"cause" toObject:cause];
 
-  v7 = [(FMRequestRegister *)self registeredCauses];
-  v8 = [v7 allObjects];
-  [v5 fm_safelyMapKey:@"registeredCauses" toObject:v8];
+  registeredCauses = [(FMRequestRegister *)self registeredCauses];
+  allObjects = [registeredCauses allObjects];
+  [registerDeviceContext fm_safelyMapKey:@"registeredCauses" toObject:allObjects];
 
-  [v3 setObject:v5 forKeyedSubscript:@"deviceContext"];
-  v9 = [(FMRequest *)self provider];
-  v10 = [v9 fullDeviceInfo];
-  [v3 setObject:v10 forKeyedSubscript:@"deviceInfo"];
+  [requestBody setObject:registerDeviceContext forKeyedSubscript:@"deviceContext"];
+  provider2 = [(FMRequest *)self provider];
+  fullDeviceInfo = [provider2 fullDeviceInfo];
+  [requestBody setObject:fullDeviceInfo forKeyedSubscript:@"deviceInfo"];
 
-  return v3;
+  return requestBody;
 }
 
 - (BOOL)canRequestBeRetriedNow
 {
-  v3 = [(FMRequestRegister *)self nonEssentialRetryCount];
-  [(FMRequestRegister *)self setNonEssentialRetryCount:v3 - 1];
-  if (v3 < 1)
+  nonEssentialRetryCount = [(FMRequestRegister *)self nonEssentialRetryCount];
+  [(FMRequestRegister *)self setNonEssentialRetryCount:nonEssentialRetryCount - 1];
+  if (nonEssentialRetryCount < 1)
   {
     return 0;
   }
@@ -104,9 +104,9 @@ LABEL_7:
   return [(FMRequest *)&v5 canRequestBeRetriedNow];
 }
 
-- (BOOL)canReplace:(id)a3
+- (BOOL)canReplace:(id)replace
 {
-  v4 = a3;
+  replaceCopy = replace;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
@@ -114,28 +114,28 @@ LABEL_7:
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
 LABEL_14:
-      v10 = [(FMRequest *)self delegate];
-      v15 = [v4 delegate];
-      v11 = v10 == v15;
+      delegate = [(FMRequest *)self delegate];
+      delegate2 = [replaceCopy delegate];
+      v11 = delegate == delegate2;
 
       goto LABEL_15;
     }
 
-    v5 = v4;
-    v6 = [(FMRequestRegister *)self registeredCauses];
-    v7 = [v5 registeredCauses];
-    v8 = [v7 allObjects];
-    [v6 addObjectsFromArray:v8];
+    v5 = replaceCopy;
+    registeredCauses = [(FMRequestRegister *)self registeredCauses];
+    registeredCauses2 = [v5 registeredCauses];
+    allObjects = [registeredCauses2 allObjects];
+    [registeredCauses addObjectsFromArray:allObjects];
 
-    v9 = [(FMRequestRegister *)self registeredCauses];
-    if ([v9 containsObject:@"wristStateChanged"])
+    registeredCauses3 = [(FMRequestRegister *)self registeredCauses];
+    if ([registeredCauses3 containsObject:@"wristStateChanged"])
     {
     }
 
     else
     {
-      v12 = [(FMRequestRegister *)self registeredCauses];
-      v13 = [v12 containsObject:@"networkStateChanged"];
+      registeredCauses4 = [(FMRequestRegister *)self registeredCauses];
+      v13 = [registeredCauses4 containsObject:@"networkStateChanged"];
 
       if (!v13)
       {
@@ -155,11 +155,11 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  v10 = sub_100002830();
-  if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+  delegate = sub_100002830();
+  if (os_log_type_enabled(delegate, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
-    _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Request not FMRequestRegister or FMRequestQueueCheck. Not replacing.", buf, 2u);
+    _os_log_impl(&_mh_execute_header, delegate, OS_LOG_TYPE_DEFAULT, "Request not FMRequestRegister or FMRequestQueueCheck. Not replacing.", buf, 2u);
   }
 
   v11 = 0;
@@ -181,8 +181,8 @@ LABEL_15:
 
 - (id)registrationInformationDigestIncludingKeys
 {
-  v3 = [(FMRequestRegister *)self requestBody];
-  v4 = [v3 objectForKeyedSubscript:@"deviceInfo"];
+  requestBody = [(FMRequestRegister *)self requestBody];
+  v4 = [requestBody objectForKeyedSubscript:@"deviceInfo"];
 
   v8[0] = @"lastActiveTime";
   v8[1] = @"processId";
@@ -196,20 +196,20 @@ LABEL_15:
   return v6;
 }
 
-- (id)_informationDigestForDeviceInfoDictionary:(id)a3 keysToExclude:(id)a4
+- (id)_informationDigestForDeviceInfoDictionary:(id)dictionary keysToExclude:(id)exclude
 {
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  excludeCopy = exclude;
   v8 = objc_autoreleasePoolPush();
-  v9 = [v6 mutableCopy];
-  [v9 removeObjectsForKeys:v7];
+  v9 = [dictionaryCopy mutableCopy];
+  [v9 removeObjectsForKeys:excludeCopy];
   v10 = [v9 objectForKeyedSubscript:@"otherDevices"];
   v11 = +[NSMutableArray array];
   v38[0] = _NSConcreteStackBlock;
   v38[1] = 3221225472;
   v38[2] = sub_100024F34;
   v38[3] = &unk_10005E3F0;
-  v36 = v7;
+  v36 = excludeCopy;
   v39 = v36;
   v12 = v11;
   v40 = v12;
@@ -218,11 +218,11 @@ LABEL_15:
   v13 = [(FMRequestRegister *)self flattenedArrayFromObject:v9 parentIndices:&off_1000631C0];
   v14 = [v13 mutableCopy];
 
-  v32 = self;
-  v15 = [(FMRequest *)self provider];
-  v16 = [v15 lastForcedRegisterTimePrefKey];
+  selfCopy = self;
+  provider = [(FMRequest *)self provider];
+  lastForcedRegisterTimePrefKey = [provider lastForcedRegisterTimePrefKey];
 
-  v17 = [FMPreferencesUtil dateForKey:v16 inDomain:@"com.apple.icloud.fmflocatord.notbackedup"];
+  v17 = [FMPreferencesUtil dateForKey:lastForcedRegisterTimePrefKey inDomain:@"com.apple.icloud.fmflocatord.notbackedup"];
   [v14 addObject:@"lastForcedTime"];
   if (!v17)
   {
@@ -247,8 +247,8 @@ LABEL_13:
 
 LABEL_3:
   v33 = v12;
-  v34 = v16;
-  v19 = v6;
+  v34 = lastForcedRegisterTimePrefKey;
+  v19 = dictionaryCopy;
   v20 = v8;
   v35 = v10;
   v21 = [v14 componentsJoinedByString:{@", "}];
@@ -269,7 +269,7 @@ LABEL_3:
     v27 = sub_100002830();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
     {
-      sub_100038B1C(v32, v26, v27);
+      sub_100038B1C(selfCopy, v26, v27);
     }
 
     v28 = sub_10001BAE0();
@@ -281,10 +281,10 @@ LABEL_3:
     v20 = v31;
   }
 
-  v16 = v34;
+  lastForcedRegisterTimePrefKey = v34;
   v10 = v35;
   v8 = v20;
-  v6 = v19;
+  dictionaryCopy = v19;
   v12 = v33;
 LABEL_14:
   CC_SHA1([v25 bytes], objc_msgSend(v25, "length"), md);
@@ -295,20 +295,20 @@ LABEL_14:
   return v29;
 }
 
-- (id)flattenedArrayFromObject:(id)a3 parentIndices:(id)a4
+- (id)flattenedArrayFromObject:(id)object parentIndices:(id)indices
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  objectCopy = object;
+  indicesCopy = indices;
+  v8 = indicesCopy;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
   v27 = sub_10002524C;
   v28 = sub_10002525C;
   v9 = &__NSArray0__struct;
-  if (v7)
+  if (indicesCopy)
   {
-    v9 = v7;
+    v9 = indicesCopy;
   }
 
   v29 = v9;
@@ -317,7 +317,7 @@ LABEL_14:
   v12 = objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v13 = v6;
+    v13 = objectCopy;
     v22[0] = _NSConcreteStackBlock;
     v22[1] = 3221225472;
     v22[2] = sub_100025264;
@@ -330,14 +330,14 @@ LABEL_14:
     [v13 enumerateKeysAndObjectsUsingBlock:v22];
     v14 = v23;
 LABEL_7:
-    v16 = *v14;
-    v17 = v6;
+    objectCopy = *v14;
+    v17 = objectCopy;
     goto LABEL_9;
   }
 
   if (objc_opt_isKindOfClass())
   {
-    v15 = v6;
+    v15 = objectCopy;
     v20[0] = _NSConcreteStackBlock;
     v20[1] = 3221225472;
     v20[2] = sub_10002539C;
@@ -351,8 +351,8 @@ LABEL_7:
   }
 
   v17 = [v25[5] componentsJoinedByString:@"_"];
-  v16 = [NSString stringWithFormat:@"%@_%@", v17, v6];
-  [v10 addObject:v16];
+  objectCopy = [NSString stringWithFormat:@"%@_%@", v17, objectCopy];
+  [v10 addObject:objectCopy];
 LABEL_9:
 
   v18 = [v10 sortedArrayUsingSelector:"compare:"];

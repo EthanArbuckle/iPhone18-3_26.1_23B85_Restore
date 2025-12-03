@@ -1,67 +1,67 @@
 @interface OTClique
-+ (BOOL)clearCliqueFromAccount:(id)a3 error:(id *)a4;
++ (BOOL)clearCliqueFromAccount:(id)account error:(id *)error;
 + (BOOL)isCloudServicesAvailable;
-+ (BOOL)performCKServerUnreadableDataRemoval:(id)a3 error:(id *)a4;
++ (BOOL)performCKServerUnreadableDataRemoval:(id)removal error:(id *)error;
 + (BOOL)platformSupportsSOS;
-+ (BOOL)setCDPEnabled:(id)a3 error:(id *)a4;
-+ (id)fetchEscrowRecordsInternal:(id)a3 error:(id *)a4;
-+ (id)findOptimalBottleIDsWithContextData:(id)a3 error:(id *)a4;
-+ (id)newFriendsWithContextData:(id)a3 resetReason:(int64_t)a4 error:(id *)a5;
-+ (id)performEscrowRecoveryWithContextData:(id)a3 escrowArguments:(id)a4 error:(id *)a5;
-+ (id)recoverWithContextData:(id)a3 bottleID:(id)a4 escrowedEntropy:(id)a5 error:(id *)a6;
-+ (id)resetProtectedData:(id)a3 idmsTargetContext:(id)a4 idmsCuttlefishPassword:(id)a5 notifyIdMS:(BOOL)a6 error:(id *)a7;
-+ (int64_t)getCDPStatus:(id)a3 error:(id *)a4;
-+ (void)checkCustodianRecoveryKey:(id)a3 custodianRecoveryKeyUUID:(id)a4 reply:(id)a5;
-+ (void)checkInheritanceKey:(id)a3 inheritanceKeyUUID:(id)a4 reply:(id)a5;
-+ (void)createCustodianRecoveryKey:(id)a3 uuid:(id)a4 reply:(id)a5;
-+ (void)createInheritanceKey:(id)a3 uuid:(id)a4 claimTokenData:(id)a5 wrappingKeyData:(id)a6 reply:(id)a7;
-+ (void)createInheritanceKey:(id)a3 uuid:(id)a4 reply:(id)a5;
-+ (void)generateInheritanceKey:(id)a3 uuid:(id)a4 reply:(id)a5;
-+ (void)preflightRecoverOctagonUsingCustodianRecoveryKey:(id)a3 custodianRecoveryKey:(id)a4 reply:(id)a5;
-+ (void)preflightRecoverOctagonUsingInheritanceKey:(id)a3 inheritanceKey:(id)a4 reply:(id)a5;
-+ (void)recoverOctagonUsingCustodianRecoveryKey:(id)a3 custodianRecoveryKey:(id)a4 reply:(id)a5;
-+ (void)recoverOctagonUsingInheritanceKey:(id)a3 inheritanceKey:(id)a4 reply:(id)a5;
-+ (void)recreateInheritanceKey:(id)a3 uuid:(id)a4 oldIK:(id)a5 reply:(id)a6;
-+ (void)removeCustodianRecoveryKey:(id)a3 custodianRecoveryKeyUUID:(id)a4 reply:(id)a5;
-+ (void)removeInheritanceKey:(id)a3 inheritanceKeyUUID:(id)a4 reply:(id)a5;
-+ (void)setNewRecoveryKeyWithData:(id)a3 recoveryKey:(id)a4 reply:(id)a5;
-+ (void)storeInheritanceKey:(id)a3 ik:(id)a4 reply:(id)a5;
++ (BOOL)setCDPEnabled:(id)enabled error:(id *)error;
++ (id)fetchEscrowRecordsInternal:(id)internal error:(id *)error;
++ (id)findOptimalBottleIDsWithContextData:(id)data error:(id *)error;
++ (id)newFriendsWithContextData:(id)data resetReason:(int64_t)reason error:(id *)error;
++ (id)performEscrowRecoveryWithContextData:(id)data escrowArguments:(id)arguments error:(id *)error;
++ (id)recoverWithContextData:(id)data bottleID:(id)d escrowedEntropy:(id)entropy error:(id *)error;
++ (id)resetProtectedData:(id)data idmsTargetContext:(id)context idmsCuttlefishPassword:(id)password notifyIdMS:(BOOL)s error:(id *)error;
++ (int64_t)getCDPStatus:(id)status error:(id *)error;
++ (void)checkCustodianRecoveryKey:(id)key custodianRecoveryKeyUUID:(id)d reply:(id)reply;
++ (void)checkInheritanceKey:(id)key inheritanceKeyUUID:(id)d reply:(id)reply;
++ (void)createCustodianRecoveryKey:(id)key uuid:(id)uuid reply:(id)reply;
++ (void)createInheritanceKey:(id)key uuid:(id)uuid claimTokenData:(id)data wrappingKeyData:(id)keyData reply:(id)reply;
++ (void)createInheritanceKey:(id)key uuid:(id)uuid reply:(id)reply;
++ (void)generateInheritanceKey:(id)key uuid:(id)uuid reply:(id)reply;
++ (void)preflightRecoverOctagonUsingCustodianRecoveryKey:(id)key custodianRecoveryKey:(id)recoveryKey reply:(id)reply;
++ (void)preflightRecoverOctagonUsingInheritanceKey:(id)key inheritanceKey:(id)inheritanceKey reply:(id)reply;
++ (void)recoverOctagonUsingCustodianRecoveryKey:(id)key custodianRecoveryKey:(id)recoveryKey reply:(id)reply;
++ (void)recoverOctagonUsingInheritanceKey:(id)key inheritanceKey:(id)inheritanceKey reply:(id)reply;
++ (void)recreateInheritanceKey:(id)key uuid:(id)uuid oldIK:(id)k reply:(id)reply;
++ (void)removeCustodianRecoveryKey:(id)key custodianRecoveryKeyUUID:(id)d reply:(id)reply;
++ (void)removeInheritanceKey:(id)key inheritanceKeyUUID:(id)d reply:(id)reply;
++ (void)setNewRecoveryKeyWithData:(id)data recoveryKey:(id)key reply:(id)reply;
++ (void)storeInheritanceKey:(id)key ik:(id)ik reply:(id)reply;
 - (BOOL)accountUserKeyAvailable;
-- (BOOL)establish:(id *)a3;
-- (BOOL)establish:(id)a3 error:(id *)a4;
-- (BOOL)fetchUserControllableViewsSyncingEnabled:(id *)a3;
-- (BOOL)joinAfterRestore:(id *)a3;
-- (BOOL)leaveClique:(id *)a3;
-- (BOOL)peersHaveViewsEnabled:(id)a3 error:(id *)a4;
-- (BOOL)removeFriendsInClique:(id)a3 error:(id *)a4;
-- (BOOL)requestToJoinCircle:(id *)a3;
-- (BOOL)setUserCredentialsAndDSID:(id)a3 password:(id)a4 error:(id *)a5;
-- (BOOL)setUserCredentialsWithLabel:(id)a3 password:(id)a4 dsid:(id)a5 error:(id *)a6;
-- (BOOL)tryUserCredentialsAndDSID:(id)a3 password:(id)a4 error:(id *)a5;
-- (BOOL)tryUserCredentialsWithLabel:(id)a3 password:(id)a4 dsid:(id)a5 error:(id *)a6;
-- (BOOL)waitForInitialSync:(id *)a3;
-- (BOOL)waitForOctagonUpgrade:(id *)a3;
-- (OTClique)initWithContextData:(id)a3;
-- (id)cliqueMemberIdentifier:(id *)a3;
-- (id)copyPeerPeerInfo:(id *)a3;
-- (id)copyViewUnawarePeerInfo:(id *)a3;
+- (BOOL)establish:(id *)establish;
+- (BOOL)establish:(id)establish error:(id *)error;
+- (BOOL)fetchUserControllableViewsSyncingEnabled:(id *)enabled;
+- (BOOL)joinAfterRestore:(id *)restore;
+- (BOOL)leaveClique:(id *)clique;
+- (BOOL)peersHaveViewsEnabled:(id)enabled error:(id *)error;
+- (BOOL)removeFriendsInClique:(id)clique error:(id *)error;
+- (BOOL)requestToJoinCircle:(id *)circle;
+- (BOOL)setUserCredentialsAndDSID:(id)d password:(id)password error:(id *)error;
+- (BOOL)setUserCredentialsWithLabel:(id)label password:(id)password dsid:(id)dsid error:(id *)error;
+- (BOOL)tryUserCredentialsAndDSID:(id)d password:(id)password error:(id *)error;
+- (BOOL)tryUserCredentialsWithLabel:(id)label password:(id)password dsid:(id)dsid error:(id *)error;
+- (BOOL)waitForInitialSync:(id *)sync;
+- (BOOL)waitForOctagonUpgrade:(id *)upgrade;
+- (OTClique)initWithContextData:(id)data;
+- (id)cliqueMemberIdentifier:(id *)identifier;
+- (id)copyPeerPeerInfo:(id *)info;
+- (id)copyViewUnawarePeerInfo:(id *)info;
 - (id)description;
-- (id)makeOTControl:(id *)a3;
-- (id)peerDeviceNamesByPeerID:(id *)a3;
-- (id)setupPairingChannelAsAcceptor:(id)a3;
-- (id)setupPairingChannelAsAcceptor:(id)a3 error:(id *)a4;
-- (id)setupPairingChannelAsInitator:(id)a3 error:(id *)a4;
-- (id)setupPairingChannelAsInitiator:(id)a3;
-- (int64_t)_fetchCliqueStatus:(id)a3 error:(id *)a4;
-- (int64_t)cachedCliqueStatus:(BOOL)a3 error:(id *)a4;
-- (int64_t)fetchCliqueStatus:(id *)a3;
-- (void)fetchEscrowContents:(id)a3;
-- (void)fetchUserControllableViewsSyncingEnabledAsync:(id)a3;
+- (id)makeOTControl:(id *)control;
+- (id)peerDeviceNamesByPeerID:(id *)d;
+- (id)setupPairingChannelAsAcceptor:(id)acceptor;
+- (id)setupPairingChannelAsAcceptor:(id)acceptor error:(id *)error;
+- (id)setupPairingChannelAsInitator:(id)initator error:(id *)error;
+- (id)setupPairingChannelAsInitiator:(id)initiator;
+- (int64_t)_fetchCliqueStatus:(id)status error:(id *)error;
+- (int64_t)cachedCliqueStatus:(BOOL)status error:(id *)error;
+- (int64_t)fetchCliqueStatus:(id *)status;
+- (void)fetchEscrowContents:(id)contents;
+- (void)fetchUserControllableViewsSyncingEnabledAsync:(id)async;
 @end
 
 @implementation OTClique
 
-- (BOOL)waitForOctagonUpgrade:(id *)a3
+- (BOOL)waitForOctagonUpgrade:(id *)upgrade
 {
   v48 = *MEMORY[0x1E69E9840];
   v5 = _OctagonSignpostLogSystem();
@@ -111,12 +111,12 @@
     v32[5] = &v33;
     [v12 waitForOctagonUpgrade:v16 reply:v32];
 
-    if (a3)
+    if (upgrade)
     {
       v17 = *(*&buf[8] + 40);
       if (v17)
       {
-        *a3 = v17;
+        *upgrade = v17;
       }
     }
 
@@ -159,10 +159,10 @@
       _os_log_impl(&dword_1887D2000, v24, OS_LOG_TYPE_DEFAULT, "octagon, failed to fetch OTControl object: %@", buf, 0xCu);
     }
 
-    if (a3)
+    if (upgrade)
     {
       v25 = v13;
-      *a3 = v13;
+      *upgrade = v13;
     }
 
     v26 = _OctagonSignpostGetNanoseconds(v6, v7);
@@ -347,21 +347,21 @@ LABEL_21:
   v28 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchEscrowContents:(id)a3
+- (void)fetchEscrowContents:(id)contents
 {
   v42 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  contentsCopy = contents;
   v5 = secLogObjForScope("clique-fetchescrow");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = [(OTClique *)self ctx];
-    v7 = [v6 context];
+    context = [v6 context];
     v8 = [(OTClique *)self ctx];
-    v9 = [v8 altDSID];
+    altDSID = [v8 altDSID];
     *buf = 138412546;
-    *&buf[4] = v7;
+    *&buf[4] = context;
     *&buf[12] = 2112;
-    *&buf[14] = v9;
+    *&buf[14] = altDSID;
     _os_log_impl(&dword_1887D2000, v5, OS_LOG_TYPE_DEFAULT, "fetching entropy for bottling for context:%@, altdsid:%@", buf, 0x16u);
   }
 
@@ -404,7 +404,7 @@ LABEL_21:
     v30 = buf;
     v31 = v11;
     v32 = v12;
-    v29 = v4;
+    v29 = contentsCopy;
     [v16 fetchEscrowContents:v20 reply:v28];
   }
 
@@ -434,7 +434,7 @@ LABEL_21:
       _os_log_impl(&dword_1887D2000, v25, OS_LOG_TYPE_DEFAULT, "END [%lld] %fs: FetchEscrowContents  OctagonSignpostNameFetchEscrowContents=%{public,signpost.telemetry:number1,name=OctagonSignpostNameFetchEscrowContents}d ", v34, 0x1Cu);
     }
 
-    (*(v4 + 2))(v4, 0, 0, 0, v17);
+    (*(contentsCopy + 2))(contentsCopy, 0, 0, 0, v17);
   }
 
   _Block_object_dispose(buf, 8);
@@ -510,13 +510,13 @@ LABEL_6:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v4 = [(OTClique *)self ctx];
-    v5 = [v4 context];
+    context = [v4 context];
     v6 = [(OTClique *)self ctx];
-    v7 = [v6 altDSID];
+    altDSID = [v6 altDSID];
     v27 = 138412546;
-    v28 = v5;
+    v28 = context;
     v29 = 2112;
-    v30 = *&v7;
+    v30 = *&altDSID;
     _os_log_impl(&dword_1887D2000, v3, OS_LOG_TYPE_DEFAULT, "accountUserKeyAvailable for context:%@, altdsid:%@", &v27, 0x16u);
   }
 
@@ -615,7 +615,7 @@ LABEL_6:
   return v15;
 }
 
-- (BOOL)requestToJoinCircle:(id *)a3
+- (BOOL)requestToJoinCircle:(id *)circle
 {
   v54 = *MEMORY[0x1E69E9840];
   v5 = _OctagonSignpostLogSystem();
@@ -643,13 +643,13 @@ LABEL_6:
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     v13 = [(OTClique *)self ctx];
-    v14 = [v13 context];
+    context = [v13 context];
     v15 = [(OTClique *)self ctx];
-    v16 = [v15 altDSID];
+    altDSID = [v15 altDSID];
     *buf = 138412546;
-    *v51 = v14;
+    *v51 = context;
     *&v51[8] = 2112;
-    *&v51[10] = v16;
+    *&v51[10] = altDSID;
     _os_log_impl(&dword_1887D2000, v12, OS_LOG_TYPE_DEFAULT, "requestToJoinCircle for context:%@, altdsid:%@", buf, 0x16u);
   }
 
@@ -667,10 +667,10 @@ LABEL_6:
       _os_log_impl(&dword_1887D2000, v20, OS_LOG_TYPE_DEFAULT, "fetching clique status failed: %@", buf, 0xCu);
     }
 
-    if (a3)
+    if (circle)
     {
       v21 = v19;
-      *a3 = v19;
+      *circle = v19;
     }
 
     Nanoseconds = _OctagonSignpostGetNanoseconds(v6, v7);
@@ -732,10 +732,10 @@ LABEL_6:
   if (v31)
   {
     v19 = v31;
-    if (a3)
+    if (circle)
     {
       v32 = v31;
-      *a3 = v19;
+      *circle = v19;
     }
 
     Nanoseconds = _OctagonSignpostGetNanoseconds(v6, v7);
@@ -797,9 +797,9 @@ LABEL_39:
         _os_log_impl(&dword_1887D2000, v39, OS_LOG_TYPE_DEFAULT, "sos requestToJoinCircle complete: %d %@", buf, 0x12u);
       }
 
-      if (a3)
+      if (circle)
       {
-        *a3 = v47;
+        *circle = v47;
       }
 
       else
@@ -875,21 +875,21 @@ LABEL_19:
   return v26;
 }
 
-- (BOOL)peersHaveViewsEnabled:(id)a3 error:(id *)a4
+- (BOOL)peersHaveViewsEnabled:(id)enabled error:(id *)error
 {
   v43 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  enabledCopy = enabled;
   v7 = secLogObjForScope("clique-legacy");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = [(OTClique *)self ctx];
-    v9 = [v8 context];
+    context = [v8 context];
     v10 = [(OTClique *)self ctx];
-    v11 = [v10 altDSID];
+    altDSID = [v10 altDSID];
     *buf = 138412546;
-    *v40 = v9;
+    *v40 = context;
     *&v40[8] = 2112;
-    *&v40[10] = v11;
+    *&v40[10] = altDSID;
     _os_log_impl(&dword_1887D2000, v7, OS_LOG_TYPE_DEFAULT, "peersHaveViewsEnabled for context:%@, altdsid:%@", buf, 0x16u);
   }
 
@@ -917,7 +917,7 @@ LABEL_19:
   if (+[OTClique platformSupportsSOS])
   {
     v36 = 0;
-    HaveViewsEnabled = SOSCCPeersHaveViewsEnabled(v6, &v36);
+    HaveViewsEnabled = SOSCCPeersHaveViewsEnabled(enabledCopy, &v36);
     if (HaveViewsEnabled)
     {
       v20 = CFBooleanGetValue(HaveViewsEnabled) != 0;
@@ -938,9 +938,9 @@ LABEL_19:
       _os_log_impl(&dword_1887D2000, v29, OS_LOG_TYPE_DEFAULT, "peersHaveViewsEnabled results: %{BOOL}d (%@)", buf, 0x12u);
     }
 
-    if (a4)
+    if (error)
     {
-      *a4 = v36;
+      *error = v36;
     }
 
     else
@@ -979,14 +979,14 @@ LABEL_19:
       _os_log_impl(&dword_1887D2000, v21, OS_LOG_TYPE_DEFAULT, "SOS disabled for this platform, returning NO", buf, 2u);
     }
 
-    if (a4)
+    if (error)
     {
       v22 = MEMORY[0x1E696ABC0];
       v23 = *MEMORY[0x1E696A768];
       v37 = *MEMORY[0x1E696A578];
       v38 = @"peers have views enabled unimplemented";
       v24 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v38 forKeys:&v37 count:1];
-      *a4 = [v22 errorWithDomain:v23 code:-4 userInfo:v24];
+      *error = [v22 errorWithDomain:v23 code:-4 userInfo:v24];
     }
 
     v25 = _OctagonSignpostGetNanoseconds(v13, v14);
@@ -1018,20 +1018,20 @@ LABEL_19:
   return v20;
 }
 
-- (id)copyPeerPeerInfo:(id *)a3
+- (id)copyPeerPeerInfo:(id *)info
 {
   v42 = *MEMORY[0x1E69E9840];
   v5 = secLogObjForScope("clique-legacy");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = [(OTClique *)self ctx];
-    v7 = [v6 context];
+    context = [v6 context];
     v8 = [(OTClique *)self ctx];
-    v9 = [v8 altDSID];
+    altDSID = [v8 altDSID];
     *buf = 138412546;
-    v37 = v7;
+    v37 = context;
     v38 = 2112;
-    v39 = *&v9;
+    v39 = *&altDSID;
     _os_log_impl(&dword_1887D2000, v5, OS_LOG_TYPE_DEFAULT, "copyPeerPeerInfo for context:%@, altdsid:%@", buf, 0x16u);
   }
 
@@ -1070,9 +1070,9 @@ LABEL_19:
       _os_log_impl(&dword_1887D2000, v18, OS_LOG_TYPE_DEFAULT, "copyPeerPeerInfo results: %@ (%@)", buf, 0x16u);
     }
 
-    if (a3)
+    if (info)
     {
-      *a3 = v33;
+      *info = v33;
     }
 
     else
@@ -1111,14 +1111,14 @@ LABEL_19:
       _os_log_impl(&dword_1887D2000, v19, OS_LOG_TYPE_DEFAULT, "SOS disabled for this platform, returning NO", buf, 2u);
     }
 
-    if (a3)
+    if (info)
     {
       v20 = MEMORY[0x1E696ABC0];
       v21 = *MEMORY[0x1E696A768];
       v34 = *MEMORY[0x1E696A578];
       v35 = @"copy peer peer info unimplemented";
       v22 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v35 forKeys:&v34 count:1];
-      *a3 = [v20 errorWithDomain:v21 code:-4 userInfo:v22];
+      *info = [v20 errorWithDomain:v21 code:-4 userInfo:v22];
     }
 
     v23 = _OctagonSignpostGetNanoseconds(v11, v12);
@@ -1150,34 +1150,34 @@ LABEL_19:
   return v17;
 }
 
-- (BOOL)tryUserCredentialsAndDSID:(id)a3 password:(id)a4 error:(id *)a5
+- (BOOL)tryUserCredentialsAndDSID:(id)d password:(id)password error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
+  passwordCopy = password;
+  dCopy = d;
   v10 = [(OTClique *)self ctx];
-  v11 = [v10 dsid];
-  LOBYTE(a5) = [(OTClique *)self tryUserCredentialsWithLabel:v9 password:v8 dsid:v11 error:a5];
+  dsid = [v10 dsid];
+  LOBYTE(error) = [(OTClique *)self tryUserCredentialsWithLabel:dCopy password:passwordCopy dsid:dsid error:error];
 
-  return a5;
+  return error;
 }
 
-- (BOOL)tryUserCredentialsWithLabel:(id)a3 password:(id)a4 dsid:(id)a5 error:(id *)a6
+- (BOOL)tryUserCredentialsWithLabel:(id)label password:(id)password dsid:(id)dsid error:(id *)error
 {
   v48 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  labelCopy = label;
+  passwordCopy = password;
+  dsidCopy = dsid;
   v13 = secLogObjForScope("clique-legacy");
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     v14 = [(OTClique *)self ctx];
-    v15 = [v14 context];
+    context = [v14 context];
     v16 = [(OTClique *)self ctx];
-    v17 = [v16 altDSID];
+    altDSID = [v16 altDSID];
     *buf = 138412546;
-    *v45 = v15;
+    *v45 = context;
     *&v45[8] = 2112;
-    *&v45[10] = v17;
+    *&v45[10] = altDSID;
     _os_log_impl(&dword_1887D2000, v13, OS_LOG_TYPE_DEFAULT, "tryUserCredentialsAndDSID for context:%@, altdsid:%@", buf, 0x16u);
   }
 
@@ -1205,7 +1205,7 @@ LABEL_19:
   if (+[OTClique platformSupportsSOS])
   {
     v41 = 0;
-    v25 = SOSCCTryUserCredentialsAndDSID(v10, v11, v12, &v41);
+    v25 = SOSCCTryUserCredentialsAndDSID(labelCopy, passwordCopy, dsidCopy, &v41);
     v26 = secLogObjForScope("clique-legacy");
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
     {
@@ -1216,9 +1216,9 @@ LABEL_19:
       _os_log_impl(&dword_1887D2000, v26, OS_LOG_TYPE_DEFAULT, "tryUserCredentialsAndDSID results: %d %@", buf, 0x12u);
     }
 
-    if (a6)
+    if (error)
     {
-      *a6 = v41;
+      *error = v41;
     }
 
     else
@@ -1257,14 +1257,14 @@ LABEL_19:
       _os_log_impl(&dword_1887D2000, v27, OS_LOG_TYPE_DEFAULT, "SOS disabled for this platform, returning NO", buf, 2u);
     }
 
-    if (a6)
+    if (error)
     {
       v28 = MEMORY[0x1E696ABC0];
       v29 = *MEMORY[0x1E696A768];
       v42 = *MEMORY[0x1E696A578];
       v43 = @"try user credentials unimplemented";
       v30 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v43 forKeys:&v42 count:1];
-      *a6 = [v28 errorWithDomain:v29 code:-4 userInfo:v30];
+      *error = [v28 errorWithDomain:v29 code:-4 userInfo:v30];
     }
 
     v31 = _OctagonSignpostGetNanoseconds(v19, v20);
@@ -1296,34 +1296,34 @@ LABEL_19:
   return v25;
 }
 
-- (BOOL)setUserCredentialsAndDSID:(id)a3 password:(id)a4 error:(id *)a5
+- (BOOL)setUserCredentialsAndDSID:(id)d password:(id)password error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
+  passwordCopy = password;
+  dCopy = d;
   v10 = [(OTClique *)self ctx];
-  v11 = [v10 dsid];
-  LOBYTE(a5) = [(OTClique *)self setUserCredentialsWithLabel:v9 password:v8 dsid:v11 error:a5];
+  dsid = [v10 dsid];
+  LOBYTE(error) = [(OTClique *)self setUserCredentialsWithLabel:dCopy password:passwordCopy dsid:dsid error:error];
 
-  return a5;
+  return error;
 }
 
-- (BOOL)setUserCredentialsWithLabel:(id)a3 password:(id)a4 dsid:(id)a5 error:(id *)a6
+- (BOOL)setUserCredentialsWithLabel:(id)label password:(id)password dsid:(id)dsid error:(id *)error
 {
   v48 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  labelCopy = label;
+  passwordCopy = password;
+  dsidCopy = dsid;
   v13 = secLogObjForScope("clique-legacy");
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     v14 = [(OTClique *)self ctx];
-    v15 = [v14 context];
+    context = [v14 context];
     v16 = [(OTClique *)self ctx];
-    v17 = [v16 altDSID];
+    altDSID = [v16 altDSID];
     *buf = 138412546;
-    *v45 = v15;
+    *v45 = context;
     *&v45[8] = 2112;
-    *&v45[10] = v17;
+    *&v45[10] = altDSID;
     _os_log_impl(&dword_1887D2000, v13, OS_LOG_TYPE_DEFAULT, "setUserCredentialsAndDSID for context:%@, altdsid:%@", buf, 0x16u);
   }
 
@@ -1351,7 +1351,7 @@ LABEL_19:
   if (+[OTClique platformSupportsSOS])
   {
     v41 = 0;
-    v25 = SOSCCSetUserCredentialsAndDSID(v10, v11, v12, &v41);
+    v25 = SOSCCSetUserCredentialsAndDSID(labelCopy, passwordCopy, dsidCopy, &v41);
     v26 = secLogObjForScope("clique-legacy");
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
     {
@@ -1362,9 +1362,9 @@ LABEL_19:
       _os_log_impl(&dword_1887D2000, v26, OS_LOG_TYPE_DEFAULT, "setUserCredentialsAndDSID results: %d %@", buf, 0x12u);
     }
 
-    if (a6)
+    if (error)
     {
-      *a6 = v41;
+      *error = v41;
     }
 
     else
@@ -1403,14 +1403,14 @@ LABEL_19:
       _os_log_impl(&dword_1887D2000, v27, OS_LOG_TYPE_DEFAULT, "SOS disabled for this platform, returning NO", buf, 2u);
     }
 
-    if (a6)
+    if (error)
     {
       v28 = MEMORY[0x1E696ABC0];
       v29 = *MEMORY[0x1E696A768];
       v42 = *MEMORY[0x1E696A578];
       v43 = @"set user credentials unimplemented";
       v30 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v43 forKeys:&v42 count:1];
-      *a6 = [v28 errorWithDomain:v29 code:-4 userInfo:v30];
+      *error = [v28 errorWithDomain:v29 code:-4 userInfo:v30];
     }
 
     v31 = _OctagonSignpostGetNanoseconds(v19, v20);
@@ -1442,20 +1442,20 @@ LABEL_19:
   return v25;
 }
 
-- (id)copyViewUnawarePeerInfo:(id *)a3
+- (id)copyViewUnawarePeerInfo:(id *)info
 {
   v41 = *MEMORY[0x1E69E9840];
   v5 = secLogObjForScope("clique-legacy");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = [(OTClique *)self ctx];
-    v7 = [v6 context];
+    context = [v6 context];
     v8 = [(OTClique *)self ctx];
-    v9 = [v8 altDSID];
+    altDSID = [v8 altDSID];
     *buf = 138412546;
-    v36 = v7;
+    v36 = context;
     v37 = 2112;
-    v38 = *&v9;
+    v38 = *&altDSID;
     _os_log_impl(&dword_1887D2000, v5, OS_LOG_TYPE_DEFAULT, "copyViewUnawarePeerInfo for context:%@, altdsid:%@", buf, 0x16u);
   }
 
@@ -1484,9 +1484,9 @@ LABEL_19:
   {
     v32 = 0;
     v17 = SOSCCCopyViewUnawarePeerInfo(&v32);
-    if (a3)
+    if (info)
     {
-      *a3 = v32;
+      *info = v32;
     }
 
     else
@@ -1525,14 +1525,14 @@ LABEL_19:
       _os_log_impl(&dword_1887D2000, v18, OS_LOG_TYPE_DEFAULT, "SOS disabled for this platform, returning NULL", buf, 2u);
     }
 
-    if (a3)
+    if (info)
     {
       v19 = MEMORY[0x1E696ABC0];
       v20 = *MEMORY[0x1E696A768];
       v33 = *MEMORY[0x1E696A578];
       v34 = @"copy view unaware peer info unimplemented";
       v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v34 forKeys:&v33 count:1];
-      *a3 = [v19 errorWithDomain:v20 code:-4 userInfo:v21];
+      *info = [v19 errorWithDomain:v20 code:-4 userInfo:v21];
     }
 
     v22 = _OctagonSignpostGetNanoseconds(v11, v12);
@@ -1564,20 +1564,20 @@ LABEL_19:
   return v17;
 }
 
-- (BOOL)waitForInitialSync:(id *)a3
+- (BOOL)waitForInitialSync:(id *)sync
 {
   v41 = *MEMORY[0x1E69E9840];
   v5 = secLogObjForScope("clique-legacy");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = [(OTClique *)self ctx];
-    v7 = [v6 context];
+    context = [v6 context];
     v8 = [(OTClique *)self ctx];
-    v9 = [v8 altDSID];
+    altDSID = [v8 altDSID];
     *buf = 138412546;
-    *v38 = v7;
+    *v38 = context;
     *&v38[8] = 2112;
-    *&v38[10] = v9;
+    *&v38[10] = altDSID;
     _os_log_impl(&dword_1887D2000, v5, OS_LOG_TYPE_DEFAULT, "waitForInitialSync for context:%@, altdsid:%@", buf, 0x16u);
   }
 
@@ -1606,9 +1606,9 @@ LABEL_19:
   {
     v34 = 0;
     v17 = SOSCCWaitForInitialSync(&v34);
-    if (a3)
+    if (sync)
     {
-      *a3 = v34;
+      *sync = v34;
     }
 
     else
@@ -1618,9 +1618,9 @@ LABEL_19:
     v26 = secLogObjForScope("clique-legacy");
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
     {
-      if (a3)
+      if (sync)
       {
-        v27 = *a3;
+        v27 = *sync;
       }
 
       else
@@ -1667,14 +1667,14 @@ LABEL_19:
       _os_log_impl(&dword_1887D2000, v18, OS_LOG_TYPE_DEFAULT, "SOS disabled for this platform, returning NO", buf, 2u);
     }
 
-    if (a3)
+    if (sync)
     {
       v19 = MEMORY[0x1E696ABC0];
       v20 = *MEMORY[0x1E696A768];
       v35 = *MEMORY[0x1E696A578];
       v36 = @"wait for initial sync unimplemented";
       v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v36 forKeys:&v35 count:1];
-      *a3 = [v19 errorWithDomain:v20 code:-4 userInfo:v21];
+      *sync = [v19 errorWithDomain:v20 code:-4 userInfo:v21];
     }
 
     v22 = _OctagonSignpostGetNanoseconds(v11, v12);
@@ -1706,9 +1706,9 @@ LABEL_19:
   return v17;
 }
 
-- (void)fetchUserControllableViewsSyncingEnabledAsync:(id)a3
+- (void)fetchUserControllableViewsSyncingEnabledAsync:(id)async
 {
-  v4 = a3;
+  asyncCopy = async;
   v12 = 0;
   v5 = [(OTClique *)self makeOTControl:&v12];
   v6 = v12;
@@ -1721,13 +1721,13 @@ LABEL_19:
     v10[1] = 3221225472;
     v10[2] = __58__OTClique_fetchUserControllableViewsSyncingEnabledAsync___block_invoke;
     v10[3] = &unk_1E70DECE8;
-    v11 = v4;
+    v11 = asyncCopy;
     [v5 fetchUserControllableViewsSyncStatusAsync:v9 reply:v10];
   }
 
   else
   {
-    (*(v4 + 2))(v4, 0, v6);
+    (*(asyncCopy + 2))(asyncCopy, 0, v6);
   }
 }
 
@@ -1767,7 +1767,7 @@ LABEL_8:
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)fetchUserControllableViewsSyncingEnabled:(id *)a3
+- (BOOL)fetchUserControllableViewsSyncingEnabled:(id *)enabled
 {
   v19 = 0;
   v20 = &v19;
@@ -1794,9 +1794,9 @@ LABEL_8:
     [v5 fetchUserControllableViewsSyncStatus:v8 reply:v12];
 
     v9 = v14[5];
-    if (v9 && a3)
+    if (v9 && enabled)
     {
-      *a3 = v9;
+      *enabled = v9;
     }
 
     v10 = *(v20 + 24);
@@ -1889,20 +1889,20 @@ void __61__OTClique_setOctagonUserControllableViewsSyncEnabled_error___block_inv
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)joinAfterRestore:(id *)a3
+- (BOOL)joinAfterRestore:(id *)restore
 {
   v41 = *MEMORY[0x1E69E9840];
   v5 = secLogObjForScope("clique-recovery");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = [(OTClique *)self ctx];
-    v7 = [v6 context];
+    context = [v6 context];
     v8 = [(OTClique *)self ctx];
-    v9 = [v8 altDSID];
+    altDSID = [v8 altDSID];
     *buf = 138412546;
-    *v38 = v7;
+    *v38 = context;
     *&v38[8] = 2112;
-    *&v38[10] = v9;
+    *&v38[10] = altDSID;
     _os_log_impl(&dword_1887D2000, v5, OS_LOG_TYPE_DEFAULT, "joinAfterRestore for context:%@, altdsid:%@", buf, 0x16u);
   }
 
@@ -1931,9 +1931,9 @@ void __61__OTClique_setOctagonUserControllableViewsSyncEnabled_error___block_inv
   {
     v34 = 0;
     v17 = SOSCCRequestToJoinCircleAfterRestore(&v34);
-    if (a3)
+    if (restore)
     {
-      *a3 = v34;
+      *restore = v34;
     }
 
     else
@@ -1943,9 +1943,9 @@ void __61__OTClique_setOctagonUserControllableViewsSyncEnabled_error___block_inv
     v26 = secLogObjForScope("clique-recovery");
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
     {
-      if (a3)
+      if (restore)
       {
-        v27 = *a3;
+        v27 = *restore;
       }
 
       else
@@ -1992,14 +1992,14 @@ void __61__OTClique_setOctagonUserControllableViewsSyncEnabled_error___block_inv
       _os_log_impl(&dword_1887D2000, v18, OS_LOG_TYPE_DEFAULT, "SOS disabled for this platform, returning NO", buf, 2u);
     }
 
-    if (a3)
+    if (restore)
     {
       v19 = MEMORY[0x1E696ABC0];
       v20 = *MEMORY[0x1E696A768];
       v35 = *MEMORY[0x1E696A578];
       v36 = @"join after restore unimplemented";
       v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v36 forKeys:&v35 count:1];
-      *a3 = [v19 errorWithDomain:v20 code:-4 userInfo:v21];
+      *restore = [v19 errorWithDomain:v20 code:-4 userInfo:v21];
     }
 
     v22 = _OctagonSignpostGetNanoseconds(v11, v12);
@@ -2031,20 +2031,20 @@ void __61__OTClique_setOctagonUserControllableViewsSyncEnabled_error___block_inv
   return v17;
 }
 
-- (id)peerDeviceNamesByPeerID:(id *)a3
+- (id)peerDeviceNamesByPeerID:(id *)d
 {
   v58 = *MEMORY[0x1E69E9840];
   v5 = secLogObjForScope("clique");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = [(OTClique *)self ctx];
-    v7 = [v6 context];
+    context = [v6 context];
     v8 = [(OTClique *)self ctx];
-    v9 = [v8 altDSID];
+    altDSID = [v8 altDSID];
     *buf = 138412546;
-    *&buf[4] = v7;
+    *&buf[4] = context;
     *&buf[12] = 2112;
-    *&buf[14] = v9;
+    *&buf[14] = altDSID;
     _os_log_impl(&dword_1887D2000, v5, OS_LOG_TYPE_DEFAULT, "peerDeviceNamesByPeerID invoked using context:%@, altdsid:%@", buf, 0x16u);
   }
 
@@ -2069,8 +2069,8 @@ void __61__OTClique_setOctagonUserControllableViewsSyncEnabled_error___block_inv
     _os_log_impl(&dword_1887D2000, v16, OS_LOG_TYPE_DEFAULT, "BEGIN [%lld]: PeerDeviceNamesByPeerID  enableTelemetry=YES ", buf, 0xCu);
   }
 
-  v17 = [MEMORY[0x1E695DF90] dictionary];
-  v18 = [(OTClique *)self makeOTControl:a3];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v18 = [(OTClique *)self makeOTControl:d];
   if (v18)
   {
     *buf = 0;
@@ -2097,12 +2097,12 @@ void __61__OTClique_setOctagonUserControllableViewsSyncEnabled_error___block_inv
     [v18 peerDeviceNamesByPeerID:v21 reply:v41];
 
     v22 = *&buf[8];
-    if (a3)
+    if (d)
     {
       v23 = *(*&buf[8] + 40);
       if (v23)
       {
-        *a3 = v23;
+        *d = v23;
         v22 = *&buf[8];
       }
     }
@@ -2136,7 +2136,7 @@ void __61__OTClique_setOctagonUserControllableViewsSyncEnabled_error___block_inv
 
     else
     {
-      [v17 addEntriesFromDictionary:v43[5]];
+      [dictionary addEntriesFromDictionary:v43[5]];
       v33 = secLogObjForScope("clique");
       if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
       {
@@ -2168,7 +2168,7 @@ void __61__OTClique_setOctagonUserControllableViewsSyncEnabled_error___block_inv
         _os_log_impl(&dword_1887D2000, v38, OS_LOG_TYPE_DEFAULT, "END [%lld] %fs: PeerDeviceNamesByPeerID  OctagonSignpostNamePeerDeviceNamesByPeerID=%{public,signpost.telemetry:number1,name=OctagonSignpostNamePeerDeviceNamesByPeerID}d ", v48, 0x1Cu);
       }
 
-      v28 = v17;
+      v28 = dictionary;
     }
 
     _Block_object_dispose(&v42, 8);
@@ -2247,20 +2247,20 @@ LABEL_6:
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)leaveClique:(id *)a3
+- (BOOL)leaveClique:(id *)clique
 {
   v74 = *MEMORY[0x1E69E9840];
   v5 = secLogObjForScope("clique-leaveClique");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = [(OTClique *)self ctx];
-    v7 = [v6 context];
+    context = [v6 context];
     v8 = [(OTClique *)self ctx];
-    v9 = [v8 altDSID];
+    altDSID = [v8 altDSID];
     *buf = 138412546;
-    *&buf[4] = v7;
+    *&buf[4] = context;
     *&buf[12] = 2112;
-    *&buf[14] = v9;
+    *&buf[14] = altDSID;
     _os_log_impl(&dword_1887D2000, v5, OS_LOG_TYPE_DEFAULT, "leaveClique invoked using context:%@, altdsid:%@", buf, 0x16u);
   }
 
@@ -2285,7 +2285,7 @@ LABEL_6:
     _os_log_impl(&dword_1887D2000, v15, OS_LOG_TYPE_DEFAULT, "BEGIN [%lld]: LeaveClique  enableTelemetry=YES ", buf, 0xCu);
   }
 
-  v16 = [(OTClique *)self makeOTControl:a3];
+  v16 = [(OTClique *)self makeOTControl:clique];
   if (v16)
   {
     *buf = 0;
@@ -2311,9 +2311,9 @@ LABEL_6:
         _os_log_impl(&dword_1887D2000, v20, OS_LOG_TYPE_DEFAULT, "fetching current status errored: %@", v64, 0xCu);
       }
 
-      if (a3)
+      if (clique)
       {
-        *a3 = *(*&buf[8] + 40);
+        *clique = *(*&buf[8] + 40);
       }
 
       Nanoseconds = _OctagonSignpostGetNanoseconds(v11, v61);
@@ -2386,26 +2386,26 @@ LABEL_6:
       v62[4] = buf;
       [v16 leaveClique:v37 reply:v62];
 
-      if (a3)
+      if (clique)
       {
-        *a3 = *(*&buf[8] + 40);
+        *clique = *(*&buf[8] + 40);
       }
 
       v56 = *(*&buf[8] + 40);
       v26 = v56 == 0;
       v55 = objc_alloc(getAAFAnalyticsEventSecurityClass());
       v60 = [(OTClique *)self ctx];
-      v58 = [v60 altDSID];
+      altDSID2 = [v60 altDSID];
       v59 = [(OTClique *)self ctx];
-      v57 = [v59 flowID];
+      flowID = [v59 flowID];
       v38 = [(OTClique *)self ctx];
-      v39 = [v38 deviceSessionID];
+      deviceSessionID = [v38 deviceSessionID];
       v40 = getkSecurityRTCEventNameOctagonTrustLost();
       v41 = [(OTClique *)self ctx];
-      v42 = [v41 testsEnabled];
+      testsEnabled = [v41 testsEnabled];
       v43 = getkSecurityRTCEventCategoryAccountDataAccessRecovery();
       LOBYTE(v54) = 1;
-      v25 = [v55 initWithKeychainCircleMetrics:0 altDSID:v58 flowID:v57 deviceSessionID:v39 eventName:v40 testsAreEnabled:v42 canSendMetrics:v54 category:v43];
+      v25 = [v55 initWithKeychainCircleMetrics:0 altDSID:altDSID2 flowID:flowID deviceSessionID:deviceSessionID eventName:v40 testsAreEnabled:testsEnabled canSendMetrics:v54 category:v43];
 
       v44 = MEMORY[0x1E696ABC0];
       v45 = getkSecurityRTCErrorDomain();
@@ -2506,21 +2506,21 @@ void __24__OTClique_leaveClique___block_invoke(uint64_t a1, void *a2)
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)removeFriendsInClique:(id)a3 error:(id *)a4
+- (BOOL)removeFriendsInClique:(id)clique error:(id *)error
 {
   v63 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  cliqueCopy = clique;
   v6 = secLogObjForScope("clique-removefriends");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = [(OTClique *)self ctx];
-    v8 = [v7 context];
+    context = [v7 context];
     v9 = [(OTClique *)self ctx];
-    v10 = [v9 altDSID];
+    altDSID = [v9 altDSID];
     *buf = 138412546;
-    *&buf[4] = v8;
+    *&buf[4] = context;
     *&buf[12] = 2112;
-    *&buf[14] = v10;
+    *&buf[14] = altDSID;
     _os_log_impl(&dword_1887D2000, v6, OS_LOG_TYPE_DEFAULT, "removeFriendsInClique invoked using context:%@, altdsid:%@", buf, 0x16u);
   }
 
@@ -2545,13 +2545,13 @@ void __24__OTClique_leaveClique___block_invoke(uint64_t a1, void *a2)
     _os_log_impl(&dword_1887D2000, v15, OS_LOG_TYPE_DEFAULT, "BEGIN [%lld]: RemoveFriendsInClique  enableTelemetry=YES ", buf, 0xCu);
   }
 
-  v16 = [MEMORY[0x1E695DF70] array];
-  v17 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   v50 = 0u;
   v51 = 0u;
   v48 = 0u;
   v49 = 0u;
-  v18 = v5;
+  v18 = cliqueCopy;
   v19 = [v18 countByEnumeratingWithState:&v48 objects:v62 count:16];
   if (v19)
   {
@@ -2568,12 +2568,12 @@ void __24__OTClique_leaveClique___block_invoke(uint64_t a1, void *a2)
         v22 = *(*(&v48 + 1) + 8 * i);
         if ([v22 hasPrefix:@"SHA256:"])
         {
-          v23 = v16;
+          v23 = array;
         }
 
         else
         {
-          v23 = v17;
+          v23 = array2;
         }
 
         [v23 addObject:v22];
@@ -2591,19 +2591,19 @@ void __24__OTClique_leaveClique___block_invoke(uint64_t a1, void *a2)
   v59 = __Block_byref_object_copy__5565;
   v60 = __Block_byref_object_dispose__5566;
   v61 = 0;
-  if (![v16 count])
+  if (![array count])
   {
     goto LABEL_23;
   }
 
-  v24 = [(OTClique *)self makeOTControl:a4];
+  v24 = [(OTClique *)self makeOTControl:error];
   if (v24)
   {
     v25 = secLogObjForScope("clique-removefriends");
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
     {
       *v52 = 138412290;
-      v53 = v16;
+      v53 = array;
       _os_log_impl(&dword_1887D2000, v25, OS_LOG_TYPE_DEFAULT, "octagon: removing octagon friends: %@", v52, 0xCu);
     }
 
@@ -2615,16 +2615,16 @@ void __24__OTClique_leaveClique___block_invoke(uint64_t a1, void *a2)
     v45[2] = __40__OTClique_removeFriendsInClique_error___block_invoke;
     v45[3] = &unk_1E70D6DA0;
     v47 = buf;
-    v46 = v16;
+    v46 = array;
     [v24 removeFriendsInClique:v28 peerIDs:v46 reply:v45];
 
 LABEL_23:
-    if (a4)
+    if (error)
     {
       v29 = *(*&buf[8] + 40);
       if (v29)
       {
-        *a4 = v29;
+        *error = v29;
       }
     }
 
@@ -2724,34 +2724,34 @@ void __40__OTClique_removeFriendsInClique_error___block_invoke(uint64_t a1, void
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (int64_t)cachedCliqueStatus:(BOOL)a3 error:(id *)a4
+- (int64_t)cachedCliqueStatus:(BOOL)status error:(id *)error
 {
-  v5 = a3;
+  statusCopy = status;
   v7 = objc_alloc_init(OTOperationConfiguration);
   [(OTOperationConfiguration *)v7 setTimeoutWaitForCKAccount:0];
-  if (v5)
+  if (statusCopy)
   {
     [(OTOperationConfiguration *)v7 setUseCachedAccountStatus:1];
   }
 
-  v8 = [(OTClique *)self _fetchCliqueStatus:v7 error:a4];
+  v8 = [(OTClique *)self _fetchCliqueStatus:v7 error:error];
 
   return v8;
 }
 
-- (int64_t)fetchCliqueStatus:(id *)a3
+- (int64_t)fetchCliqueStatus:(id *)status
 {
   v5 = objc_alloc_init(OTOperationConfiguration);
   [(OTOperationConfiguration *)v5 setTimeoutWaitForCKAccount:0];
-  v6 = [(OTClique *)self _fetchCliqueStatus:v5 error:a3];
+  v6 = [(OTClique *)self _fetchCliqueStatus:v5 error:status];
 
   return v6;
 }
 
-- (int64_t)_fetchCliqueStatus:(id)a3 error:(id *)a4
+- (int64_t)_fetchCliqueStatus:(id)status error:(id *)error
 {
   v76 = *MEMORY[0x1E69E9840];
-  v50 = a3;
+  statusCopy = status;
   v63 = 0;
   v64 = &v63;
   v65 = 0x2020000000;
@@ -2777,7 +2777,7 @@ void __40__OTClique_removeFriendsInClique_error___block_invoke(uint64_t a1, void
     _os_log_impl(&dword_1887D2000, v11, OS_LOG_TYPE_DEFAULT, "BEGIN [%lld]: FetchCliqueStatus  enableTelemetry=YES ", buf, 0xCu);
   }
 
-  v12 = [(OTClique *)self makeOTControl:a4];
+  v12 = [(OTClique *)self makeOTControl:error];
   if (v12)
   {
     v57 = 0;
@@ -2795,7 +2795,7 @@ void __40__OTClique_removeFriendsInClique_error___block_invoke(uint64_t a1, void
     v56[3] = &unk_1E70D6D50;
     v56[4] = &v63;
     v56[5] = &v57;
-    [v12 fetchCliqueStatus:v15 configuration:v50 reply:v56];
+    [v12 fetchCliqueStatus:v15 configuration:statusCopy reply:v56];
 
     if (_fetchCliqueStatus_error__onceToken != -1)
     {
@@ -2814,12 +2814,12 @@ void __40__OTClique_removeFriendsInClique_error___block_invoke(uint64_t a1, void
     block[5] = &v52;
     block[6] = &v63;
     dispatch_sync(_fetchCliqueStatus_error__statusReturnsQueue, block);
-    if (v58[5] || ![v50 useCachedAccountStatus] || *(v53 + 24) == 1)
+    if (v58[5] || ![statusCopy useCachedAccountStatus] || *(v53 + 24) == 1)
     {
       v16 = secLogObjForScope("clique-status");
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
-        if ([v50 useCachedAccountStatus])
+        if ([statusCopy useCachedAccountStatus])
         {
           v17 = &unk_188967DD7;
         }
@@ -2830,10 +2830,10 @@ void __40__OTClique_removeFriendsInClique_error___block_invoke(uint64_t a1, void
         }
 
         v18 = [(OTClique *)self ctx];
-        v19 = [v18 context];
+        context = [v18 context];
         v20 = [(OTClique *)self ctx];
-        v21 = [v20 altDSID];
-        v22 = v21;
+        altDSID = [v20 altDSID];
+        v22 = altDSID;
         v23 = v64[3] + 1;
         if (v23 > 5)
         {
@@ -2849,9 +2849,9 @@ void __40__OTClique_removeFriendsInClique_error___block_invoke(uint64_t a1, void
         *buf = 136447234;
         *&buf[4] = v17;
         v68 = 2112;
-        v69 = *&v19;
+        v69 = *&context;
         v70 = 2112;
-        v71 = v21;
+        v71 = altDSID;
         v72 = 2112;
         v73 = v24;
         v74 = 2112;
@@ -2865,7 +2865,7 @@ void __40__OTClique_removeFriendsInClique_error___block_invoke(uint64_t a1, void
       v16 = secLogObjForScope("clique-status");
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
       {
-        if ([v50 useCachedAccountStatus])
+        if ([statusCopy useCachedAccountStatus])
         {
           v40 = &unk_188967DD7;
         }
@@ -2876,10 +2876,10 @@ void __40__OTClique_removeFriendsInClique_error___block_invoke(uint64_t a1, void
         }
 
         v41 = [(OTClique *)self ctx];
-        v42 = [v41 context];
+        context2 = [v41 context];
         v43 = [(OTClique *)self ctx];
-        v44 = [v43 altDSID];
-        v45 = v44;
+        altDSID2 = [v43 altDSID];
+        v45 = altDSID2;
         v46 = v64[3] + 1;
         if (v46 > 5)
         {
@@ -2895,9 +2895,9 @@ void __40__OTClique_removeFriendsInClique_error___block_invoke(uint64_t a1, void
         *buf = 136447234;
         *&buf[4] = v40;
         v68 = 2112;
-        v69 = *&v42;
+        v69 = *&context2;
         v70 = 2112;
-        v71 = v44;
+        v71 = altDSID2;
         v72 = 2112;
         v73 = v47;
         v74 = 2112;
@@ -2908,13 +2908,13 @@ void __40__OTClique_removeFriendsInClique_error___block_invoke(uint64_t a1, void
 
     _Block_object_dispose(&v52, 8);
     v32 = 1;
-    if (a4)
+    if (error)
     {
       v33 = v58[5];
       if (v33)
       {
         v32 = 0;
-        *a4 = v33;
+        *error = v33;
       }
     }
 
@@ -3058,60 +3058,60 @@ uint64_t __37__OTClique__fetchCliqueStatus_error___block_invoke_303()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)setupPairingChannelAsAcceptor:(id)a3 error:(id *)a4
+- (id)setupPairingChannelAsAcceptor:(id)acceptor error:(id *)error
 {
-  if (a4)
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
-  return [(OTClique *)self setupPairingChannelAsAcceptor:a3];
+  return [(OTClique *)self setupPairingChannelAsAcceptor:acceptor];
 }
 
-- (id)setupPairingChannelAsAcceptor:(id)a3
+- (id)setupPairingChannelAsAcceptor:(id)acceptor
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 altDSID];
-  if (v5)
+  acceptorCopy = acceptor;
+  altDSID = [acceptorCopy altDSID];
+  if (altDSID)
   {
   }
 
   else
   {
     v14 = [(OTClique *)self ctx];
-    v15 = [v14 altDSID];
+    altDSID2 = [v14 altDSID];
 
-    if (v15)
+    if (altDSID2)
     {
       v16 = secLogObjForScope("octagon-account");
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
         v17 = [(OTClique *)self ctx];
-        v18 = [v17 altDSID];
+        altDSID3 = [v17 altDSID];
         v25 = 138412290;
-        v26 = v18;
+        v26 = altDSID3;
         _os_log_impl(&dword_1887D2000, v16, OS_LOG_TYPE_DEFAULT, "Configuring pairing channel with configured altDSID: %@", &v25, 0xCu);
       }
 
       v11 = [(OTClique *)self ctx];
-      v13 = [v11 altDSID];
-      [v4 setAltDSID:v13];
+      altDSID4 = [v11 altDSID];
+      [acceptorCopy setAltDSID:altDSID4];
       goto LABEL_11;
     }
   }
 
-  v6 = [v4 altDSID];
+  altDSID5 = [acceptorCopy altDSID];
 
-  if (!v6)
+  if (!altDSID5)
   {
     goto LABEL_15;
   }
 
-  v7 = [v4 altDSID];
+  altDSID6 = [acceptorCopy altDSID];
   v8 = [(OTClique *)self ctx];
-  v9 = [v8 altDSID];
-  v10 = [v7 isEqualToString:v9];
+  altDSID7 = [v8 altDSID];
+  v10 = [altDSID6 isEqualToString:altDSID7];
 
   v11 = secLogObjForScope("octagon-account");
   v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
@@ -3119,13 +3119,13 @@ uint64_t __37__OTClique__fetchCliqueStatus_error___block_invoke_303()
   {
     if (v12)
     {
-      v19 = [v4 altDSID];
+      altDSID8 = [acceptorCopy altDSID];
       v20 = [(OTClique *)self ctx];
-      v21 = [v20 altDSID];
+      altDSID9 = [v20 altDSID];
       v25 = 138412546;
-      v26 = v19;
+      v26 = altDSID8;
       v27 = 2112;
-      v28 = v21;
+      v28 = altDSID9;
       _os_log_impl(&dword_1887D2000, v11, OS_LOG_TYPE_DEFAULT, "Pairing channel context configured with altDSID (%@) which does not match Clique altDSID (%@), possible issues ahead", &v25, 0x16u);
     }
 
@@ -3134,9 +3134,9 @@ uint64_t __37__OTClique__fetchCliqueStatus_error___block_invoke_303()
 
   if (v12)
   {
-    v13 = [v4 altDSID];
+    altDSID4 = [acceptorCopy altDSID];
     v25 = 138412290;
-    v26 = v13;
+    v26 = altDSID4;
     _os_log_impl(&dword_1887D2000, v11, OS_LOG_TYPE_DEFAULT, "Pairing channel context already configured with altDSID: %@", &v25, 0xCu);
 LABEL_11:
   }
@@ -3144,67 +3144,67 @@ LABEL_11:
 LABEL_14:
 
 LABEL_15:
-  v22 = [getKCPairingChannelClass() pairingChannelAcceptor:v4];
+  v22 = [getKCPairingChannelClass() pairingChannelAcceptor:acceptorCopy];
 
   v23 = *MEMORY[0x1E69E9840];
 
   return v22;
 }
 
-- (id)setupPairingChannelAsInitator:(id)a3 error:(id *)a4
+- (id)setupPairingChannelAsInitator:(id)initator error:(id *)error
 {
-  if (a4)
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
-  return [(OTClique *)self setupPairingChannelAsInitiator:a3];
+  return [(OTClique *)self setupPairingChannelAsInitiator:initator];
 }
 
-- (id)setupPairingChannelAsInitiator:(id)a3
+- (id)setupPairingChannelAsInitiator:(id)initiator
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 altDSID];
-  if (v5)
+  initiatorCopy = initiator;
+  altDSID = [initiatorCopy altDSID];
+  if (altDSID)
   {
   }
 
   else
   {
     v14 = [(OTClique *)self ctx];
-    v15 = [v14 altDSID];
+    altDSID2 = [v14 altDSID];
 
-    if (v15)
+    if (altDSID2)
     {
       v16 = secLogObjForScope("octagon-account");
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
         v17 = [(OTClique *)self ctx];
-        v18 = [v17 altDSID];
+        altDSID3 = [v17 altDSID];
         v25 = 138412290;
-        v26 = v18;
+        v26 = altDSID3;
         _os_log_impl(&dword_1887D2000, v16, OS_LOG_TYPE_DEFAULT, "Configuring pairing channel with configured altDSID: %@", &v25, 0xCu);
       }
 
       v11 = [(OTClique *)self ctx];
-      v13 = [v11 altDSID];
-      [v4 setAltDSID:v13];
+      altDSID4 = [v11 altDSID];
+      [initiatorCopy setAltDSID:altDSID4];
       goto LABEL_11;
     }
   }
 
-  v6 = [v4 altDSID];
+  altDSID5 = [initiatorCopy altDSID];
 
-  if (!v6)
+  if (!altDSID5)
   {
     goto LABEL_15;
   }
 
-  v7 = [v4 altDSID];
+  altDSID6 = [initiatorCopy altDSID];
   v8 = [(OTClique *)self ctx];
-  v9 = [v8 altDSID];
-  v10 = [v7 isEqualToString:v9];
+  altDSID7 = [v8 altDSID];
+  v10 = [altDSID6 isEqualToString:altDSID7];
 
   v11 = secLogObjForScope("octagon-account");
   v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
@@ -3212,13 +3212,13 @@ LABEL_15:
   {
     if (v12)
     {
-      v19 = [v4 altDSID];
+      altDSID8 = [initiatorCopy altDSID];
       v20 = [(OTClique *)self ctx];
-      v21 = [v20 altDSID];
+      altDSID9 = [v20 altDSID];
       v25 = 138412546;
-      v26 = v19;
+      v26 = altDSID8;
       v27 = 2112;
-      v28 = v21;
+      v28 = altDSID9;
       _os_log_impl(&dword_1887D2000, v11, OS_LOG_TYPE_DEFAULT, "Pairing channel context configured with altDSID (%@) which does not match Clique altDSID (%@), possible issues ahead", &v25, 0x16u);
     }
 
@@ -3227,9 +3227,9 @@ LABEL_15:
 
   if (v12)
   {
-    v13 = [v4 altDSID];
+    altDSID4 = [initiatorCopy altDSID];
     v25 = 138412290;
-    v26 = v13;
+    v26 = altDSID4;
     _os_log_impl(&dword_1887D2000, v11, OS_LOG_TYPE_DEFAULT, "Pairing channel context already configured with altDSID: %@", &v25, 0xCu);
 LABEL_11:
   }
@@ -3237,7 +3237,7 @@ LABEL_11:
 LABEL_14:
 
 LABEL_15:
-  v22 = [getKCPairingChannelClass() pairingChannelInitiator:v4];
+  v22 = [getKCPairingChannelClass() pairingChannelInitiator:initiatorCopy];
 
   v23 = *MEMORY[0x1E69E9840];
 
@@ -3267,10 +3267,10 @@ void __174__OTClique_resetAndEstablish_idmsTargetContext_idmsCuttlefishPassword_
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)establish:(id)a3 error:(id *)a4
+- (BOOL)establish:(id)establish error:(id *)error
 {
   v82 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  establishCopy = establish;
   v71 = 0;
   v72 = &v71;
   v73 = 0x2020000000;
@@ -3283,9 +3283,9 @@ void __174__OTClique_resetAndEstablish_idmsTargetContext_idmsCuttlefishPassword_
   }
 
   v7 = objc_alloc(getAAFAnalyticsEventSecurityClass());
-  v8 = [v5 altDSID];
-  v9 = [v5 flowID];
-  v10 = [v5 deviceSessionID];
+  altDSID = [establishCopy altDSID];
+  flowID = [establishCopy flowID];
+  deviceSessionID = [establishCopy deviceSessionID];
   *v80 = 0;
   *&v80[8] = v80;
   *&v80[16] = 0x2020000000;
@@ -3308,19 +3308,19 @@ void __174__OTClique_resetAndEstablish_idmsTargetContext_idmsCuttlefishPassword_
   _Block_object_dispose(v80, 8);
   if (!v11)
   {
-    v64 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v65 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getkSecurityRTCEventNameEstablish(void)"];
-    [v64 handleFailureInFunction:v65 file:@"OTClique.m" lineNumber:82 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v65 file:@"OTClique.m" lineNumber:82 description:{@"%s", dlerror()}];
 
     __break(1u);
   }
 
   v14 = *v11;
   v15 = [(OTClique *)self ctx];
-  v16 = [v15 testsEnabled];
+  testsEnabled = [v15 testsEnabled];
   v17 = getkSecurityRTCEventCategoryAccountDataAccessRecovery();
   LOBYTE(v66) = 1;
-  v18 = [v7 initWithKeychainCircleMetrics:0 altDSID:v8 flowID:v9 deviceSessionID:v10 eventName:v14 testsAreEnabled:v16 canSendMetrics:v66 category:v17];
+  v18 = [v7 initWithKeychainCircleMetrics:0 altDSID:altDSID flowID:flowID deviceSessionID:deviceSessionID eventName:v14 testsAreEnabled:testsEnabled canSendMetrics:v66 category:v17];
 
   v19 = _OctagonSignpostLogSystem();
   v20 = os_signpost_id_generate(v19);
@@ -3368,10 +3368,10 @@ void __174__OTClique_resetAndEstablish_idmsTargetContext_idmsCuttlefishPassword_
       }
 
       v35 = v33;
-      if (a4)
+      if (error)
       {
         v36 = v33;
-        *a4 = v33;
+        *error = v33;
       }
 
       Nanoseconds = _OctagonSignpostGetNanoseconds(v20, v21);
@@ -3425,10 +3425,10 @@ void __174__OTClique_resetAndEstablish_idmsTargetContext_idmsCuttlefishPassword_
       v46 = *(*(&buf + 1) + 40);
       if (v46)
       {
-        if (a4)
+        if (error)
         {
           v47 = v46;
-          *a4 = v46;
+          *error = v46;
           v46 = *(*(&buf + 1) + 40);
         }
 
@@ -3590,23 +3590,23 @@ void __28__OTClique_establish_error___block_invoke(uint64_t a1, void *a2)
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)establish:(id *)a3
+- (BOOL)establish:(id *)establish
 {
   v5 = objc_alloc_init(OTConfigurationContext);
-  LOBYTE(a3) = [(OTClique *)self establish:v5 error:a3];
+  LOBYTE(establish) = [(OTClique *)self establish:v5 error:establish];
 
-  return a3;
+  return establish;
 }
 
-- (id)makeOTControl:(id *)a3
+- (id)makeOTControl:(id *)control
 {
   v4 = [(OTClique *)self ctx];
-  v5 = [v4 makeOTControl:a3];
+  v5 = [v4 makeOTControl:control];
 
   return v5;
 }
 
-- (id)cliqueMemberIdentifier:(id *)a3
+- (id)cliqueMemberIdentifier:(id *)identifier
 {
   v73 = *MEMORY[0x1E69E9840];
   v60 = 0;
@@ -3638,11 +3638,11 @@ void __28__OTClique_establish_error___block_invoke(uint64_t a1, void *a2)
 
   v51 = objc_alloc(getAAFAnalyticsEventSecurityClass());
   v53 = [(OTClique *)self ctx];
-  v8 = [v53 altDSID];
+  altDSID = [v53 altDSID];
   v9 = [(OTClique *)self ctx];
-  v10 = [v9 flowID];
+  flowID = [v9 flowID];
   v11 = [(OTClique *)self ctx];
-  v12 = [v11 deviceSessionID];
+  deviceSessionID = [v11 deviceSessionID];
   *v71 = 0;
   *&v71[8] = v71;
   *&v71[16] = 0x2020000000;
@@ -3665,19 +3665,19 @@ void __28__OTClique_establish_error___block_invoke(uint64_t a1, void *a2)
   _Block_object_dispose(v71, 8);
   if (!v13)
   {
-    v45 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v46 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getkSecurityRTCEventNameCliqueMemberIdentifier(void)"];
-    [v45 handleFailureInFunction:v46 file:@"OTClique.m" lineNumber:78 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v46 file:@"OTClique.m" lineNumber:78 description:{@"%s", dlerror()}];
 
     __break(1u);
   }
 
   v16 = *v13;
   v17 = [(OTClique *)self ctx];
-  v18 = [v17 testsEnabled];
+  testsEnabled = [v17 testsEnabled];
   v19 = getkSecurityRTCEventCategoryAccountDataAccessRecovery();
   LOBYTE(v47) = 1;
-  v52 = [v51 initWithKeychainCircleMetrics:0 altDSID:v8 flowID:v10 deviceSessionID:v12 eventName:v16 testsAreEnabled:v18 canSendMetrics:v47 category:v19];
+  v52 = [v51 initWithKeychainCircleMetrics:0 altDSID:altDSID flowID:flowID deviceSessionID:deviceSessionID eventName:v16 testsAreEnabled:testsEnabled canSendMetrics:v47 category:v19];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -3705,9 +3705,9 @@ void __28__OTClique_establish_error___block_invoke(uint64_t a1, void *a2)
     v24 = *(*(&buf + 1) + 40);
     if (v24)
     {
-      if (a3)
+      if (identifier)
       {
-        *a3 = v24;
+        *identifier = v24;
       }
 
       Nanoseconds = _OctagonSignpostGetNanoseconds(spid, v50);
@@ -3854,18 +3854,18 @@ void __35__OTClique_cliqueMemberIdentifier___block_invoke(void *a1, void *a2, vo
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = [(OTClique *)self ctx];
-  v5 = [v4 altDSID];
+  altDSID = [v4 altDSID];
   v6 = [(OTClique *)self ctx];
-  v7 = [v6 context];
-  v8 = [(OTClique *)self cliqueMemberIdentifier];
-  v9 = [v3 stringWithFormat:@"<OTClique: altDSID:%@ contextID:%@ memberID:%@>", v5, v7, v8];
+  context = [v6 context];
+  cliqueMemberIdentifier = [(OTClique *)self cliqueMemberIdentifier];
+  v9 = [v3 stringWithFormat:@"<OTClique: altDSID:%@ contextID:%@ memberID:%@>", altDSID, context, cliqueMemberIdentifier];
 
   return v9;
 }
 
-- (OTClique)initWithContextData:(id)a3
+- (OTClique)initWithContextData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v24.receiver = self;
   v24.super_class = OTClique;
   v5 = [(OTClique *)&v24 init];
@@ -3875,11 +3875,11 @@ void __35__OTClique_cliqueMemberIdentifier___block_invoke(void *a1, void *a2, vo
     ctx = v5->_ctx;
     v5->_ctx = v6;
 
-    v8 = [v4 context];
-    v9 = v8;
-    if (v8)
+    context = [dataCopy context];
+    v9 = context;
+    if (context)
     {
-      v10 = v8;
+      v10 = context;
     }
 
     else
@@ -3889,47 +3889,47 @@ void __35__OTClique_cliqueMemberIdentifier___block_invoke(void *a1, void *a2, vo
 
     [(OTConfigurationContext *)v5->_ctx setContext:v10];
 
-    v11 = [v4 containerName];
-    [(OTConfigurationContext *)v5->_ctx setContainerName:v11];
+    containerName = [dataCopy containerName];
+    [(OTConfigurationContext *)v5->_ctx setContainerName:containerName];
 
-    v12 = [v4 dsid];
-    v13 = [v12 copy];
+    dsid = [dataCopy dsid];
+    v13 = [dsid copy];
     [(OTConfigurationContext *)v5->_ctx setDsid:v13];
 
-    v14 = [v4 altDSID];
-    v15 = [v14 copy];
+    altDSID = [dataCopy altDSID];
+    v15 = [altDSID copy];
     [(OTConfigurationContext *)v5->_ctx setAltDSID:v15];
 
-    v16 = [v4 otControl];
-    [(OTConfigurationContext *)v5->_ctx setOtControl:v16];
+    otControl = [dataCopy otControl];
+    [(OTConfigurationContext *)v5->_ctx setOtControl:otControl];
 
-    v17 = [v4 ckksControl];
-    [(OTConfigurationContext *)v5->_ctx setCkksControl:v17];
+    ckksControl = [dataCopy ckksControl];
+    [(OTConfigurationContext *)v5->_ctx setCkksControl:ckksControl];
 
-    -[OTConfigurationContext setEscrowFetchSource:](v5->_ctx, "setEscrowFetchSource:", [v4 escrowFetchSource]);
-    -[OTConfigurationContext setOverrideForSetupAccountScript:](v5->_ctx, "setOverrideForSetupAccountScript:", [v4 overrideForSetupAccountScript]);
-    v18 = [v4 sbd];
+    -[OTConfigurationContext setEscrowFetchSource:](v5->_ctx, "setEscrowFetchSource:", [dataCopy escrowFetchSource]);
+    -[OTConfigurationContext setOverrideForSetupAccountScript:](v5->_ctx, "setOverrideForSetupAccountScript:", [dataCopy overrideForSetupAccountScript]);
+    v18 = [dataCopy sbd];
     [(OTConfigurationContext *)v5->_ctx setSbd:v18];
 
-    v19 = [v4 flowID];
-    v20 = [v19 copy];
+    flowID = [dataCopy flowID];
+    v20 = [flowID copy];
     [(OTConfigurationContext *)v5->_ctx setFlowID:v20];
 
-    v21 = [v4 deviceSessionID];
-    v22 = [v21 copy];
+    deviceSessionID = [dataCopy deviceSessionID];
+    v22 = [deviceSessionID copy];
     [(OTConfigurationContext *)v5->_ctx setDeviceSessionID:v22];
   }
 
   return v5;
 }
 
-+ (BOOL)performCKServerUnreadableDataRemoval:(id)a3 error:(id *)a4
++ (BOOL)performCKServerUnreadableDataRemoval:(id)removal error:(id *)error
 {
   v63[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 isGuitarfish];
+  removalCopy = removal;
+  isGuitarfish = [removalCopy isGuitarfish];
   v6 = MEMORY[0x1E695E110];
-  if (v5)
+  if (isGuitarfish)
   {
     v7 = MEMORY[0x1E695E118];
   }
@@ -3947,9 +3947,9 @@ void __35__OTClique_cliqueMemberIdentifier___block_invoke(void *a1, void *a2, vo
   v62[1] = v9;
   v63[1] = v6;
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v63 forKeys:v62 count:2];
-  v11 = [v4 altDSID];
-  v12 = [v4 flowID];
-  v13 = [v4 deviceSessionID];
+  altDSID = [removalCopy altDSID];
+  flowID = [removalCopy flowID];
+  deviceSessionID = [removalCopy deviceSessionID];
   v48 = 0;
   v49 = &v48;
   v50 = 0x2020000000;
@@ -3972,21 +3972,21 @@ void __35__OTClique_cliqueMemberIdentifier___block_invoke(void *a1, void *a2, vo
   _Block_object_dispose(&v48, 8);
   if (!v14)
   {
-    v41 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v42 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getkSecurityRTCEventNamePerformCKServerUnreadableDataRemoval(void)"];
-    [v41 handleFailureInFunction:v42 file:@"OTClique.m" lineNumber:83 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v42 file:@"OTClique.m" lineNumber:83 description:{@"%s", dlerror()}];
 
     __break(1u);
   }
 
   v17 = *v14;
-  v18 = [v4 testsEnabled];
+  testsEnabled = [removalCopy testsEnabled];
   v19 = getkSecurityRTCEventCategoryAccountDataAccessRecovery();
   LOBYTE(v43) = 1;
-  v20 = [v44 initWithKeychainCircleMetrics:v10 altDSID:v11 flowID:v12 deviceSessionID:v13 eventName:v17 testsAreEnabled:v18 canSendMetrics:v43 category:v19];
+  v20 = [v44 initWithKeychainCircleMetrics:v10 altDSID:altDSID flowID:flowID deviceSessionID:deviceSessionID eventName:v17 testsAreEnabled:testsEnabled canSendMetrics:v43 category:v19];
 
   v54 = 0;
-  v21 = [v4 makeOTControl:&v54];
+  v21 = [removalCopy makeOTControl:&v54];
   v22 = v54;
   if (v21)
   {
@@ -4002,21 +4002,21 @@ void __35__OTClique_cliqueMemberIdentifier___block_invoke(void *a1, void *a2, vo
     v51 = __Block_byref_object_copy__5565;
     v52 = __Block_byref_object_dispose__5566;
     v53 = 0;
-    v23 = [[OTControlArguments alloc] initWithConfiguration:v4];
+    v23 = [[OTControlArguments alloc] initWithConfiguration:removalCopy];
     v47[0] = MEMORY[0x1E69E9820];
     v47[1] = 3221225472;
     v47[2] = __55__OTClique_performCKServerUnreadableDataRemoval_error___block_invoke;
     v47[3] = &unk_1E70D6FA8;
     v47[4] = &v48;
     [v21 fetchAccountWideSettingsWithForceFetch:1 arguments:v23 reply:v47];
-    v24 = [v49[5] hasWalrus];
+    hasWalrus = [v49[5] hasWalrus];
     v25 = MEMORY[0x1E695E110];
-    if (v24)
+    if (hasWalrus)
     {
-      v26 = [v49[5] walrus];
-      v27 = [v26 enabled];
+      walrus = [v49[5] walrus];
+      enabled = [walrus enabled];
       v28 = MEMORY[0x1E695E118];
-      if (!v27)
+      if (!enabled)
       {
         v28 = v25;
       }
@@ -4030,24 +4030,24 @@ void __35__OTClique_cliqueMemberIdentifier___block_invoke(void *a1, void *a2, vo
     v30 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v56 forKeys:&v55 count:1];
     [v20 addMetrics:v30];
 
-    v31 = [v4 isGuitarfish];
+    isGuitarfish2 = [removalCopy isGuitarfish];
     v32 = [v25 isEqualToNumber:MEMORY[0x1E695E118]];
-    v33 = [v4 altDSID];
+    altDSID2 = [removalCopy altDSID];
     v46[0] = MEMORY[0x1E69E9820];
     v46[1] = 3221225472;
     v46[2] = __55__OTClique_performCKServerUnreadableDataRemoval_error___block_invoke_403;
     v46[3] = &unk_1E70E0B18;
     v46[4] = &buf;
-    [v21 performCKServerUnreadableDataRemoval:v23 isGuitarfish:v31 accountIsW:v32 altDSID:v33 reply:v46];
+    [v21 performCKServerUnreadableDataRemoval:v23 isGuitarfish:isGuitarfish2 accountIsW:v32 altDSID:altDSID2 reply:v46];
 
     v34 = *(*(&buf + 1) + 40);
     v35 = v34 == 0;
     if (v34)
     {
-      if (a4)
+      if (error)
       {
         v34 = v34;
-        *a4 = v34;
+        *error = v34;
       }
 
       v36 = *(*(&buf + 1) + 40);
@@ -4074,10 +4074,10 @@ void __35__OTClique_cliqueMemberIdentifier___block_invoke(void *a1, void *a2, vo
       _os_log_impl(&dword_1887D2000, v37, OS_LOG_TYPE_DEFAULT, "clique-perform-ckserver-unreadable-data-removal: unable to create otcontrol: %@", &buf, 0xCu);
     }
 
-    if (a4)
+    if (error)
     {
       v38 = v22;
-      *a4 = v22;
+      *error = v22;
     }
 
     [v20 sendMetricWithResult:0 error:v22];
@@ -4156,13 +4156,13 @@ void __55__OTClique_performCKServerUnreadableDataRemoval_error___block_invoke_40
   v8 = *MEMORY[0x1E69E9840];
 }
 
-+ (BOOL)clearCliqueFromAccount:(id)a3 error:(id *)a4
++ (BOOL)clearCliqueFromAccount:(id)account error:(id *)error
 {
   v87 = *MEMORY[0x1E69E9840];
-  v72 = a3;
-  v4 = [v72 isGuitarfish];
+  accountCopy = account;
+  isGuitarfish = [accountCopy isGuitarfish];
   v5 = MEMORY[0x1E695E110];
-  if (v4)
+  if (isGuitarfish)
   {
     v6 = MEMORY[0x1E695E118];
   }
@@ -4180,9 +4180,9 @@ void __55__OTClique_performCKServerUnreadableDataRemoval_error___block_invoke_40
   v82[1] = v9;
   v83[1] = v5;
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v83 forKeys:v82 count:2];
-  v11 = [v72 altDSID];
-  v12 = [v72 flowID];
-  v13 = [v72 deviceSessionID];
+  altDSID = [accountCopy altDSID];
+  flowID = [accountCopy flowID];
+  deviceSessionID = [accountCopy deviceSessionID];
   *&v84 = 0;
   *(&v84 + 1) = &v84;
   v85 = 0x2020000000;
@@ -4204,23 +4204,23 @@ void __55__OTClique_performCKServerUnreadableDataRemoval_error___block_invoke_40
   _Block_object_dispose(&v84, 8);
   if (!v14)
   {
-    v68 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v69 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getkSecurityRTCEventNameClearCliqueFromAccount(void)"];
-    [v68 handleFailureInFunction:v69 file:@"OTClique.m" lineNumber:84 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v69 file:@"OTClique.m" lineNumber:84 description:{@"%s", dlerror()}];
 
     __break(1u);
   }
 
   v16 = *v14;
-  v17 = [v72 testsEnabled];
+  testsEnabled = [accountCopy testsEnabled];
   v18 = getkSecurityRTCEventCategoryAccountDataAccessRecovery();
   LOBYTE(v70) = 1;
-  v19 = [v7 initWithKeychainCircleMetrics:v10 altDSID:v11 flowID:v12 deviceSessionID:v13 eventName:v16 testsAreEnabled:v17 canSendMetrics:v70 category:v18];
+  v19 = [v7 initWithKeychainCircleMetrics:v10 altDSID:altDSID flowID:flowID deviceSessionID:deviceSessionID eventName:v16 testsAreEnabled:testsEnabled canSendMetrics:v70 category:v18];
 
   if (+[OTClique isCloudServicesAvailable])
   {
     v74 = 0;
-    v20 = [v72 makeOTControl:&v74];
+    v20 = [accountCopy makeOTControl:&v74];
     v21 = v74;
     if (!v20)
     {
@@ -4232,10 +4232,10 @@ void __55__OTClique_performCKServerUnreadableDataRemoval_error___block_invoke_40
         _os_log_impl(&dword_1887D2000, v29, OS_LOG_TYPE_DEFAULT, "clique-reset-account-data: unable to create otcontrol: %@", &buf, 0xCu);
       }
 
-      if (a4)
+      if (error)
       {
         v30 = v21;
-        *a4 = v21;
+        *error = v21;
       }
 
       [v19 sendMetricWithResult:0 error:v21];
@@ -4243,7 +4243,7 @@ void __55__OTClique_performCKServerUnreadableDataRemoval_error___block_invoke_40
       goto LABEL_47;
     }
 
-    v22 = [v72 sbd];
+    v22 = [accountCopy sbd];
     v24 = v22;
     if (v22)
     {
@@ -4258,8 +4258,8 @@ void __55__OTClique_performCKServerUnreadableDataRemoval_error___block_invoke_40
 
     v32 = v25;
 
-    v33 = [v72 authenticationAppleID];
-    v34 = v33 == 0;
+    authenticationAppleID = [accountCopy authenticationAppleID];
+    v34 = authenticationAppleID == 0;
 
     if (v34)
     {
@@ -4276,19 +4276,19 @@ void __55__OTClique_performCKServerUnreadableDataRemoval_error___block_invoke_40
 
     else
     {
-      v35 = [v72 passwordEquivalentToken];
-      v36 = v35 == 0;
+      passwordEquivalentToken = [accountCopy passwordEquivalentToken];
+      v36 = passwordEquivalentToken == 0;
 
       if (!v36)
       {
         Helper_x8__kSecureBackupAuthenticationAppleID = gotLoadHelper_x8__kSecureBackupAuthenticationAppleID(v37);
         v80[0] = **(v39 + 3528);
-        v40 = [v72 authenticationAppleID];
-        v81[0] = v40;
+        authenticationAppleID2 = [accountCopy authenticationAppleID];
+        v81[0] = authenticationAppleID2;
         Helper_x8__kSecureBackupAuthenticationPassword = gotLoadHelper_x8__kSecureBackupAuthenticationPassword(v41);
         v80[1] = **(v43 + 3592);
-        v44 = [v72 passwordEquivalentToken];
-        v81[1] = v44;
+        passwordEquivalentToken2 = [accountCopy passwordEquivalentToken];
+        v81[1] = passwordEquivalentToken2;
         v46 = gotLoadHelper_x8__kSecureBackupiCloudDataProtectionDeleteAllRecordsKey(v45);
         v48 = **(v47 + 4008);
         Helper_x9__kSecureBackupContainsiCDPDataKey = gotLoadHelper_x9__kSecureBackupContainsiCDPDataKey(v46);
@@ -4310,10 +4310,10 @@ void __55__OTClique_performCKServerUnreadableDataRemoval_error___block_invoke_40
             _os_log_impl(&dword_1887D2000, v55, OS_LOG_TYPE_DEFAULT, "clique-reset-account-data: secure backup escrow record deletion failed: %@", &buf, 0xCu);
           }
 
-          if (a4)
+          if (error)
           {
             v56 = v54;
-            *a4 = v54;
+            *error = v54;
           }
 
           [v19 sendMetricWithResult:0 error:v54];
@@ -4335,14 +4335,14 @@ void __55__OTClique_performCKServerUnreadableDataRemoval_error___block_invoke_40
           v77 = __Block_byref_object_copy__5565;
           v78 = __Block_byref_object_dispose__5566;
           v79 = 0;
-          v60 = [[OTControlArguments alloc] initWithConfiguration:v72];
-          v61 = [v72 isGuitarfish];
+          v60 = [[OTControlArguments alloc] initWithConfiguration:accountCopy];
+          isGuitarfish2 = [accountCopy isGuitarfish];
           v73[0] = MEMORY[0x1E69E9820];
           v73[1] = 3221225472;
           v73[2] = __41__OTClique_clearCliqueFromAccount_error___block_invoke;
           v73[3] = &unk_1E70E0B18;
           v73[4] = &buf;
-          [v20 clearCliqueFromAccount:v60 resetReason:1 isGuitarfish:v61 reply:v73];
+          [v20 clearCliqueFromAccount:v60 resetReason:1 isGuitarfish:isGuitarfish2 reply:v73];
 
           v62 = *(*(&buf + 1) + 40);
           v28 = v62 == 0;
@@ -4357,9 +4357,9 @@ void __55__OTClique_performCKServerUnreadableDataRemoval_error___block_invoke_40
               _os_log_impl(&dword_1887D2000, v63, OS_LOG_TYPE_DEFAULT, "clique-reset-account-data: account reset failed: %@", &v84, 0xCu);
             }
 
-            if (a4)
+            if (error)
             {
-              *a4 = *(*(&buf + 1) + 40);
+              *error = *(*(&buf + 1) + 40);
             }
 
             v65 = *(*(&buf + 1) + 40);
@@ -4397,10 +4397,10 @@ LABEL_47:
 
   v26 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:-4 userInfo:0];
   v21 = v26;
-  if (a4)
+  if (error)
   {
     v27 = v26;
-    *a4 = v21;
+    *error = v21;
   }
 
   [v19 sendMetricWithResult:0 error:v21];
@@ -4444,17 +4444,17 @@ void __41__OTClique_clearCliqueFromAccount_error___block_invoke(uint64_t a1, voi
   v8 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)resetProtectedData:(id)a3 idmsTargetContext:(id)a4 idmsCuttlefishPassword:(id)a5 notifyIdMS:(BOOL)a6 error:(id *)a7
++ (id)resetProtectedData:(id)data idmsTargetContext:(id)context idmsCuttlefishPassword:(id)password notifyIdMS:(BOOL)s error:(id *)error
 {
-  v149 = a6;
+  sCopy = s;
   v194 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v154 = a4;
-  v155 = a5;
-  v161 = v9;
-  v10 = [v9 isGuitarfish];
+  dataCopy = data;
+  contextCopy = context;
+  passwordCopy = password;
+  v161 = dataCopy;
+  isGuitarfish = [dataCopy isGuitarfish];
   v11 = MEMORY[0x1E695E110];
-  if (v10)
+  if (isGuitarfish)
   {
     v11 = MEMORY[0x1E695E118];
   }
@@ -4468,9 +4468,9 @@ void __41__OTClique_clearCliqueFromAccount_error___block_invoke(uint64_t a1, voi
   v188[1] = v14;
   v189[1] = MEMORY[0x1E695E110];
   v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v189 forKeys:v188 count:2];
-  v16 = [v161 altDSID];
-  v17 = [v161 flowID];
-  v18 = [v161 deviceSessionID];
+  altDSID = [v161 altDSID];
+  flowID = [v161 flowID];
+  deviceSessionID = [v161 deviceSessionID];
   *&v190 = 0;
   *(&v190 + 1) = &v190;
   v191 = 0x2020000000;
@@ -4492,18 +4492,18 @@ void __41__OTClique_clearCliqueFromAccount_error___block_invoke(uint64_t a1, voi
   _Block_object_dispose(&v190, 8);
   if (!v19)
   {
-    v125 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v126 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getkSecurityRTCEventNameResetProtectedData(void)"];
-    [v125 handleFailureInFunction:v126 file:@"OTClique.m" lineNumber:81 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v126 file:@"OTClique.m" lineNumber:81 description:{@"%s", dlerror()}];
 
     goto LABEL_76;
   }
 
   v21 = *v19;
-  v22 = [v161 testsEnabled];
+  testsEnabled = [v161 testsEnabled];
   v23 = getkSecurityRTCEventCategoryAccountDataAccessRecovery();
   LOBYTE(v131) = 1;
-  v24 = [v12 initWithKeychainCircleMetrics:v15 altDSID:v16 flowID:v17 deviceSessionID:v18 eventName:v21 testsAreEnabled:v22 canSendMetrics:v131 category:v23];
+  v24 = [v12 initWithKeychainCircleMetrics:v15 altDSID:altDSID flowID:flowID deviceSessionID:deviceSessionID eventName:v21 testsAreEnabled:testsEnabled canSendMetrics:v131 category:v23];
 
   v164 = 0;
   v25 = [v161 makeOTControl:&v164];
@@ -4528,10 +4528,10 @@ void __41__OTClique_clearCliqueFromAccount_error___block_invoke(uint64_t a1, voi
     {
       v27 = getkSecurityRTCFieldAccountIsW();
       v179 = v27;
-      v28 = [*(*(&buf + 1) + 40) walrus];
-      v29 = [v28 enabled];
+      walrus = [*(*(&buf + 1) + 40) walrus];
+      enabled = [walrus enabled];
       v30 = MEMORY[0x1E695E110];
-      if (v29)
+      if (enabled)
       {
         v30 = MEMORY[0x1E695E118];
       }
@@ -4540,10 +4540,10 @@ void __41__OTClique_clearCliqueFromAccount_error___block_invoke(uint64_t a1, voi
       v31 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v180 forKeys:&v179 count:1];
       [v24 addMetrics:v31];
 
-      v32 = [*(*(&buf + 1) + 40) walrus];
-      v33 = [v32 enabled];
+      walrus2 = [*(*(&buf + 1) + 40) walrus];
+      enabled2 = [walrus2 enabled];
       v34 = MEMORY[0x1E695E110];
-      if (v33)
+      if (enabled2)
       {
         v34 = MEMORY[0x1E695E118];
       }
@@ -4553,8 +4553,8 @@ void __41__OTClique_clearCliqueFromAccount_error___block_invoke(uint64_t a1, voi
 
     else
     {
-      v32 = getkSecurityRTCFieldAccountIsW();
-      v177 = v32;
+      walrus2 = getkSecurityRTCFieldAccountIsW();
+      v177 = walrus2;
       v178 = MEMORY[0x1E695E110];
       v40 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v178 forKeys:&v177 count:1];
       [v24 addMetrics:v40];
@@ -4577,8 +4577,8 @@ void __41__OTClique_clearCliqueFromAccount_error___block_invoke(uint64_t a1, voi
         v153 = [objc_alloc(*(v48 + 3448)) initWithUserActivityLabel:@"clique-reset-protected-data"];
       }
 
-      v49 = [v161 authenticationAppleID];
-      v50 = v49 == 0;
+      authenticationAppleID = [v161 authenticationAppleID];
+      v50 = authenticationAppleID == 0;
 
       if (v50)
       {
@@ -4595,8 +4595,8 @@ void __41__OTClique_clearCliqueFromAccount_error___block_invoke(uint64_t a1, voi
 
       else
       {
-        v51 = [v161 passwordEquivalentToken];
-        v52 = v51 == 0;
+        passwordEquivalentToken = [v161 passwordEquivalentToken];
+        v52 = passwordEquivalentToken == 0;
 
         if (!v52)
         {
@@ -4611,9 +4611,9 @@ void __41__OTClique_clearCliqueFromAccount_error___block_invoke(uint64_t a1, voi
           v175[2] = v53;
           v176[2] = v152;
           v54 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v176 forKeys:v175 count:3];
-          v55 = [v161 altDSID];
-          v56 = [v161 flowID];
-          v57 = [v161 deviceSessionID];
+          altDSID2 = [v161 altDSID];
+          flowID2 = [v161 flowID];
+          deviceSessionID2 = [v161 deviceSessionID];
           cf = 0;
           p_cf = &cf;
           v167 = 0x2020000000;
@@ -4640,18 +4640,18 @@ void __41__OTClique_clearCliqueFromAccount_error___block_invoke(uint64_t a1, voi
           }
 
           v61 = *v58;
-          v62 = [v161 testsEnabled];
+          testsEnabled2 = [v161 testsEnabled];
           v63 = getkSecurityRTCEventCategoryAccountDataAccessRecovery();
           LOBYTE(v132) = 1;
-          v143 = [v142 initWithKeychainCircleMetrics:v54 altDSID:v55 flowID:v56 deviceSessionID:v57 eventName:v61 testsAreEnabled:v62 canSendMetrics:v132 category:v63];
+          v143 = [v142 initWithKeychainCircleMetrics:v54 altDSID:altDSID2 flowID:flowID2 deviceSessionID:deviceSessionID2 eventName:v61 testsAreEnabled:testsEnabled2 canSendMetrics:v132 category:v63];
 
           Helper_x8__kSecureBackupAuthenticationAppleID = gotLoadHelper_x8__kSecureBackupAuthenticationAppleID(v64);
           v173[0] = **(v66 + 3528);
-          v67 = [v161 authenticationAppleID];
-          v174[0] = v67;
+          authenticationAppleID2 = [v161 authenticationAppleID];
+          v174[0] = authenticationAppleID2;
           Helper_x8__kSecureBackupAuthenticationPassword = gotLoadHelper_x8__kSecureBackupAuthenticationPassword(v68);
           v173[1] = **(v70 + 3592);
-          v71 = [v161 passwordEquivalentToken];
+          passwordEquivalentToken2 = [v161 passwordEquivalentToken];
           v73 = gotLoadHelper_x8__kSecureBackupiCloudDataProtectionDeleteAllRecordsKey(v72);
           v75 = **(v74 + 4008);
           Helper_x9__kSecureBackupContainsiCDPDataKey = gotLoadHelper_x9__kSecureBackupContainsiCDPDataKey(v73);
@@ -4676,11 +4676,11 @@ void __41__OTClique_clearCliqueFromAccount_error___block_invoke(uint64_t a1, voi
             }
 
             v84 = v82;
-            if (a7)
+            if (error)
             {
               v85 = v82;
               v84 = v82;
-              *a7 = v82;
+              *error = v82;
             }
 
             [v143 sendMetricWithResult:0 error:v84];
@@ -4723,9 +4723,9 @@ LABEL_74:
           v171[2] = v137;
           v172[2] = v152;
           v136 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v172 forKeys:v171 count:3];
-          v92 = [v161 altDSID];
-          v93 = [v161 flowID];
-          v94 = [v161 deviceSessionID];
+          altDSID3 = [v161 altDSID];
+          flowID3 = [v161 flowID];
+          deviceSessionID3 = [v161 deviceSessionID];
           cf = 0;
           p_cf = &cf;
           v167 = 0x2020000000;
@@ -4749,10 +4749,10 @@ LABEL_74:
           if (v95)
           {
             v98 = *v95;
-            v99 = [v161 testsEnabled];
+            testsEnabled3 = [v161 testsEnabled];
             v100 = getkSecurityRTCEventCategoryAccountDataAccessRecovery();
             LOBYTE(v133) = 1;
-            v101 = [v91 initWithKeychainCircleMetrics:v136 altDSID:v92 flowID:v93 deviceSessionID:v94 eventName:v98 testsAreEnabled:v99 canSendMetrics:v133 category:v100];
+            v101 = [v91 initWithKeychainCircleMetrics:v136 altDSID:altDSID3 flowID:flowID3 deviceSessionID:deviceSessionID3 eventName:v98 testsAreEnabled:testsEnabled3 canSendMetrics:v133 category:v100];
 
             cf = 0;
             v102 = SOSCCResetToOffering(&cf);
@@ -4791,15 +4791,15 @@ LABEL_64:
 
             v146 = [[OTClique alloc] initWithContextData:v161];
             v106 = *(*(&buf + 1) + 40);
-            v107 = [v161 isGuitarfish];
+            isGuitarfish2 = [v161 isGuitarfish];
             v108 = [v152 isEqualToNumber:MEMORY[0x1E695E118]];
-            v109 = [v161 altDSID];
-            v110 = [v161 flowID];
-            v111 = [v161 deviceSessionID];
+            altDSID4 = [v161 altDSID];
+            flowID4 = [v161 flowID];
+            deviceSessionID4 = [v161 deviceSessionID];
             v162 = 0;
             LOBYTE(v135) = 1;
             LOBYTE(v133) = v108;
-            [(OTClique *)v146 resetAndEstablish:1 idmsTargetContext:v154 idmsCuttlefishPassword:v155 notifyIdMS:v149 accountSettings:v106 isGuitarfish:v107 accountIsW:v133 altDSID:v109 flowID:v110 deviceSessionID:v111 canSendMetrics:v135 error:&v162];
+            [(OTClique *)v146 resetAndEstablish:1 idmsTargetContext:contextCopy idmsCuttlefishPassword:passwordCopy notifyIdMS:sCopy accountSettings:v106 isGuitarfish:isGuitarfish2 accountIsW:v133 altDSID:altDSID4 flowID:flowID4 deviceSessionID:deviceSessionID4 canSendMetrics:v135 error:&v162];
             v47 = v162;
 
             if (v47)
@@ -4812,10 +4812,10 @@ LABEL_64:
                 _os_log_impl(&dword_1887D2000, v112, OS_LOG_TYPE_DEFAULT, "clique-reset-protected-data: account reset failed: %@", &v190, 0xCu);
               }
 
-              if (a7)
+              if (error)
               {
                 v113 = v47;
-                *a7 = v47;
+                *error = v47;
               }
 
               [v24 sendMetricWithResult:0 error:v47];
@@ -4831,8 +4831,8 @@ LABEL_64:
                 _os_log_impl(&dword_1887D2000, v114, OS_LOG_TYPE_DEFAULT, "Octagon account reset succeeded", &v190, 2u);
               }
 
-              v115 = [MEMORY[0x1E696ABB0] defaultCenter];
-              [v115 postNotificationName:@"com.apple.security.resetprotecteddata.complete" object:0 userInfo:0 deliverImmediately:1];
+              defaultCenter = [MEMORY[0x1E696ABB0] defaultCenter];
+              [defaultCenter postNotificationName:@"com.apple.security.resetprotecteddata.complete" object:0 userInfo:0 deliverImmediately:1];
 
               [v24 sendMetricWithResult:1 error:0];
               v138 = objc_alloc(getAAFAnalyticsEventSecurityClass());
@@ -4846,14 +4846,14 @@ LABEL_64:
               v169[2] = v150;
               v170[2] = v152;
               v141 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v170 forKeys:v169 count:3];
-              v116 = [v161 altDSID];
-              v117 = [v161 flowID];
-              v118 = [v161 deviceSessionID];
+              altDSID5 = [v161 altDSID];
+              flowID5 = [v161 flowID];
+              deviceSessionID5 = [v161 deviceSessionID];
               v119 = getkSecurityRTCEventNameOctagonTrustLost();
-              v120 = [v161 testsEnabled];
+              testsEnabled4 = [v161 testsEnabled];
               v121 = getkSecurityRTCEventCategoryAccountDataAccessRecovery();
               LOBYTE(v134) = 1;
-              v139 = [v138 initWithKeychainCircleMetrics:v141 altDSID:v116 flowID:v117 deviceSessionID:v118 eventName:v119 testsAreEnabled:v120 canSendMetrics:v134 category:v121];
+              v139 = [v138 initWithKeychainCircleMetrics:v141 altDSID:altDSID5 flowID:flowID5 deviceSessionID:deviceSessionID5 eventName:v119 testsAreEnabled:testsEnabled4 canSendMetrics:v134 category:v121];
 
               v122 = MEMORY[0x1E696ABC0];
               v123 = getkSecurityRTCErrorDomain();
@@ -4866,18 +4866,18 @@ LABEL_64:
             goto LABEL_74;
           }
 
-          v129 = [MEMORY[0x1E696AAA8] currentHandler];
+          currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
           v130 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getkSecurityRTCEventNameResetSOS(void)"];
-          [v129 handleFailureInFunction:v130 file:@"OTClique.m" lineNumber:89 description:{@"%s", dlerror()}];
+          [currentHandler2 handleFailureInFunction:v130 file:@"OTClique.m" lineNumber:89 description:{@"%s", dlerror()}];
 
           while (1)
           {
 LABEL_76:
             __break(1u);
 LABEL_77:
-            v127 = [MEMORY[0x1E696AAA8] currentHandler];
+            currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
             v128 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getkSecurityRTCEventNameRPDDeleteAllRecords(void)"];
-            [v127 handleFailureInFunction:v128 file:@"OTClique.m" lineNumber:80 description:{@"%s", dlerror()}];
+            [currentHandler3 handleFailureInFunction:v128 file:@"OTClique.m" lineNumber:80 description:{@"%s", dlerror()}];
           }
         }
 
@@ -4898,11 +4898,11 @@ LABEL_77:
       v44 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:-4 userInfo:0];
       v153 = v44;
       v45 = v44;
-      if (a7)
+      if (error)
       {
         v46 = v44;
         v45 = v153;
-        *a7 = v153;
+        *error = v153;
       }
 
       [v24 sendMetricWithResult:0 error:v45];
@@ -4924,10 +4924,10 @@ LABEL_44:
     _os_log_impl(&dword_1887D2000, v35, OS_LOG_TYPE_DEFAULT, "clique-reset-protected-data: unable to create otcontrol: %@", &buf, 0xCu);
   }
 
-  if (a7)
+  if (error)
   {
     v36 = v160;
-    *a7 = v160;
+    *error = v160;
   }
 
   v37 = getkSecurityRTCFieldAccountIsW();
@@ -4980,12 +4980,12 @@ void __89__OTClique_resetProtectedData_idmsTargetContext_idmsCuttlefishPassword_
   v11 = *MEMORY[0x1E69E9840];
 }
 
-+ (int64_t)getCDPStatus:(id)a3 error:(id *)a4
++ (int64_t)getCDPStatus:(id)status error:(id *)error
 {
   v26 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  statusCopy = status;
   v20 = 0;
-  v6 = [v5 makeOTControl:&v20];
+  v6 = [statusCopy makeOTControl:&v20];
   v7 = v20;
   if (v6)
   {
@@ -4999,7 +4999,7 @@ void __89__OTClique_resetProtectedData_idmsTargetContext_idmsCuttlefishPassword_
     v17 = &v16;
     v18 = 0x2020000000;
     v19 = 0;
-    v8 = [[OTControlArguments alloc] initWithConfiguration:v5];
+    v8 = [[OTControlArguments alloc] initWithConfiguration:statusCopy];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __31__OTClique_getCDPStatus_error___block_invoke;
@@ -5008,12 +5008,12 @@ void __89__OTClique_resetProtectedData_idmsTargetContext_idmsCuttlefishPassword_
     v15[5] = &v16;
     [v6 getCDPStatus:v8 reply:v15];
 
-    if (a4)
+    if (error)
     {
       v9 = *(*(&buf + 1) + 40);
       if (v9)
       {
-        *a4 = v9;
+        *error = v9;
       }
     }
 
@@ -5032,11 +5032,11 @@ void __89__OTClique_resetProtectedData_idmsTargetContext_idmsCuttlefishPassword_
       _os_log_impl(&dword_1887D2000, v11, OS_LOG_TYPE_DEFAULT, "octagon-cdp-status: failed to fetch OTControl object: %@", &buf, 0xCu);
     }
 
-    if (a4)
+    if (error)
     {
       v12 = v7;
       v10 = 0;
-      *a4 = v7;
+      *error = v7;
     }
 
     else
@@ -5094,12 +5094,12 @@ void __31__OTClique_getCDPStatus_error___block_invoke(uint64_t a1, uint64_t a2, 
   v11 = *MEMORY[0x1E69E9840];
 }
 
-+ (BOOL)setCDPEnabled:(id)a3 error:(id *)a4
++ (BOOL)setCDPEnabled:(id)enabled error:(id *)error
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  enabledCopy = enabled;
   v16 = 0;
-  v6 = [v5 makeOTControl:&v16];
+  v6 = [enabledCopy makeOTControl:&v16];
   v7 = v16;
   if (v6)
   {
@@ -5109,7 +5109,7 @@ void __31__OTClique_getCDPStatus_error___block_invoke(uint64_t a1, uint64_t a2, 
     v19 = __Block_byref_object_copy__5565;
     v20 = __Block_byref_object_dispose__5566;
     v21 = 0;
-    v8 = [[OTControlArguments alloc] initWithConfiguration:v5];
+    v8 = [[OTControlArguments alloc] initWithConfiguration:enabledCopy];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __32__OTClique_setCDPEnabled_error___block_invoke;
@@ -5118,9 +5118,9 @@ void __31__OTClique_getCDPStatus_error___block_invoke(uint64_t a1, uint64_t a2, 
     [v6 setCDPEnabled:v8 reply:v15];
 
     v9 = *(*(&buf + 1) + 40);
-    if (a4 && v9)
+    if (error && v9)
     {
-      *a4 = v9;
+      *error = v9;
       v9 = *(*(&buf + 1) + 40);
     }
 
@@ -5138,11 +5138,11 @@ void __31__OTClique_getCDPStatus_error___block_invoke(uint64_t a1, uint64_t a2, 
       _os_log_impl(&dword_1887D2000, v11, OS_LOG_TYPE_DEFAULT, "octagon-setcdpenabled: failed to fetch OTControl object: %@", &buf, 0xCu);
     }
 
-    if (a4)
+    if (error)
     {
       v12 = v7;
       v10 = 0;
-      *a4 = v7;
+      *error = v7;
     }
 
     else
@@ -5185,20 +5185,20 @@ void __32__OTClique_setCDPEnabled_error___block_invoke(uint64_t a1, void *a2)
   v8 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)createInheritanceKey:(id)a3 uuid:(id)a4 claimTokenData:(id)a5 wrappingKeyData:(id)a6 reply:(id)a7
++ (void)createInheritanceKey:(id)key uuid:(id)uuid claimTokenData:(id)data wrappingKeyData:(id)keyData reply:(id)reply
 {
   v50 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v34 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
+  keyCopy = key;
+  uuidCopy = uuid;
+  dataCopy = data;
+  keyDataCopy = keyData;
+  replyCopy = reply;
   v15 = secLogObjForScope("octagon-createinheritancekeyclaimtokenwrappingkey");
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
-    v16 = [v11 context];
+    context = [keyCopy context];
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v16;
+    *(&buf + 4) = context;
     _os_log_impl(&dword_1887D2000, v15, OS_LOG_TYPE_DEFAULT, "createInheritanceKey w/claimToken+wrappingKey invoked for context: %@", &buf, 0xCu);
   }
 
@@ -5227,11 +5227,11 @@ void __32__OTClique_setCDPEnabled_error___block_invoke(uint64_t a1, void *a2)
   v48 = 0x2020000000;
   v49 = 0;
   v40 = 0;
-  v23 = [v11 makeOTControl:&v40];
+  v23 = [keyCopy makeOTControl:&v40];
   v24 = v40;
   if (v23)
   {
-    v25 = [[OTControlArguments alloc] initWithConfiguration:v11];
+    v25 = [[OTControlArguments alloc] initWithConfiguration:keyCopy];
     v35[0] = MEMORY[0x1E69E9820];
     v35[1] = 3221225472;
     v35[2] = __75__OTClique_createInheritanceKey_uuid_claimTokenData_wrappingKeyData_reply___block_invoke;
@@ -5239,8 +5239,8 @@ void __32__OTClique_setCDPEnabled_error___block_invoke(uint64_t a1, void *a2)
     v38 = v18;
     v39 = v19;
     p_buf = &buf;
-    v36 = v14;
-    [v23 createInheritanceKey:v25 uuid:v34 claimTokenData:v12 wrappingKeyData:v13 reply:v35];
+    v36 = replyCopy;
+    [v23 createInheritanceKey:v25 uuid:uuidCopy claimTokenData:dataCopy wrappingKeyData:keyDataCopy reply:v35];
   }
 
   else
@@ -5277,7 +5277,7 @@ void __32__OTClique_setCDPEnabled_error___block_invoke(uint64_t a1, void *a2)
       _os_log_impl(&dword_1887D2000, v31, OS_LOG_TYPE_DEFAULT, "END [%lld] %fs: CreateInheritanceKeyWithClaimTokenAndWrappingKey  OctagonSignpostNameCreateInheritanceKeyWithClaimTokenAndWrappingKey=%{public,signpost.telemetry:number1,name=OctagonSignpostNameCreateInheritanceKeyWithClaimTokenAndWrappingKey}d ", v41, 0x1Cu);
     }
 
-    (*(v14 + 2))(v14, 0, v24);
+    (*(replyCopy + 2))(replyCopy, 0, v24);
   }
 
   _Block_object_dispose(&buf, 8);
@@ -5364,19 +5364,19 @@ void __75__OTClique_createInheritanceKey_uuid_claimTokenData_wrappingKeyData_rep
   v22 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)recreateInheritanceKey:(id)a3 uuid:(id)a4 oldIK:(id)a5 reply:(id)a6
++ (void)recreateInheritanceKey:(id)key uuid:(id)uuid oldIK:(id)k reply:(id)reply
 {
   v47 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  keyCopy = key;
+  uuidCopy = uuid;
+  kCopy = k;
+  replyCopy = reply;
   v13 = secLogObjForScope("octagon-recreateinheritancekey");
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = [v9 context];
+    context = [keyCopy context];
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v14;
+    *(&buf + 4) = context;
     _os_log_impl(&dword_1887D2000, v13, OS_LOG_TYPE_DEFAULT, "recreateInheritanceKey invoked for context: %@", &buf, 0xCu);
   }
 
@@ -5405,11 +5405,11 @@ void __75__OTClique_createInheritanceKey_uuid_claimTokenData_wrappingKeyData_rep
   v45 = 0x2020000000;
   v46 = 0;
   v37 = 0;
-  v21 = [v9 makeOTControl:&v37];
+  v21 = [keyCopy makeOTControl:&v37];
   v22 = v37;
   if (v21)
   {
-    v23 = [[OTControlArguments alloc] initWithConfiguration:v9];
+    v23 = [[OTControlArguments alloc] initWithConfiguration:keyCopy];
     v32[0] = MEMORY[0x1E69E9820];
     v32[1] = 3221225472;
     v32[2] = __52__OTClique_recreateInheritanceKey_uuid_oldIK_reply___block_invoke;
@@ -5417,8 +5417,8 @@ void __75__OTClique_createInheritanceKey_uuid_claimTokenData_wrappingKeyData_rep
     v35 = v16;
     v36 = v17;
     p_buf = &buf;
-    v33 = v12;
-    [v21 recreateInheritanceKey:v23 uuid:v10 oldIK:v11 reply:v32];
+    v33 = replyCopy;
+    [v21 recreateInheritanceKey:v23 uuid:uuidCopy oldIK:kCopy reply:v32];
   }
 
   else
@@ -5455,7 +5455,7 @@ void __75__OTClique_createInheritanceKey_uuid_claimTokenData_wrappingKeyData_rep
       _os_log_impl(&dword_1887D2000, v29, OS_LOG_TYPE_DEFAULT, "END [%lld] %fs: RecreateInheritanceKey  OctagonSignpostNameRecreateInheritanceKey=%{public,signpost.telemetry:number1,name=OctagonSignpostNameRecreateInheritanceKey}d ", v38, 0x1Cu);
     }
 
-    (*(v12 + 2))(v12, 0, v22);
+    (*(replyCopy + 2))(replyCopy, 0, v22);
   }
 
   _Block_object_dispose(&buf, 8);
@@ -5542,18 +5542,18 @@ void __52__OTClique_recreateInheritanceKey_uuid_oldIK_reply___block_invoke(void 
   v22 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)checkInheritanceKey:(id)a3 inheritanceKeyUUID:(id)a4 reply:(id)a5
++ (void)checkInheritanceKey:(id)key inheritanceKeyUUID:(id)d reply:(id)reply
 {
   v44 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  keyCopy = key;
+  dCopy = d;
+  replyCopy = reply;
   v10 = secLogObjForScope("octagon-checkinheritancekey");
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v7 context];
+    context = [keyCopy context];
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v11;
+    *(&buf + 4) = context;
     _os_log_impl(&dword_1887D2000, v10, OS_LOG_TYPE_DEFAULT, "checkInheritanceKey invoked for context: %@", &buf, 0xCu);
   }
 
@@ -5582,11 +5582,11 @@ void __52__OTClique_recreateInheritanceKey_uuid_oldIK_reply___block_invoke(void 
   v42 = 0x2020000000;
   v43 = 0;
   v34 = 0;
-  v18 = [v7 makeOTControl:&v34];
+  v18 = [keyCopy makeOTControl:&v34];
   v19 = v34;
   if (v18)
   {
-    v20 = [[OTControlArguments alloc] initWithConfiguration:v7];
+    v20 = [[OTControlArguments alloc] initWithConfiguration:keyCopy];
     v29[0] = MEMORY[0x1E69E9820];
     v29[1] = 3221225472;
     v29[2] = __57__OTClique_checkInheritanceKey_inheritanceKeyUUID_reply___block_invoke;
@@ -5594,8 +5594,8 @@ void __52__OTClique_recreateInheritanceKey_uuid_oldIK_reply___block_invoke(void 
     v32 = v13;
     v33 = v14;
     p_buf = &buf;
-    v30 = v9;
-    [v18 checkInheritanceKey:v20 uuid:v8 reply:v29];
+    v30 = replyCopy;
+    [v18 checkInheritanceKey:v20 uuid:dCopy reply:v29];
   }
 
   else
@@ -5632,7 +5632,7 @@ void __52__OTClique_recreateInheritanceKey_uuid_oldIK_reply___block_invoke(void 
       _os_log_impl(&dword_1887D2000, v26, OS_LOG_TYPE_DEFAULT, "END [%lld] %fs: CheckInheritanceKey  OctagonSignpostNameCheckInheritanceKey=%{public,signpost.telemetry:number1,name=OctagonSignpostNameCheckInheritanceKey}d ", v35, 0x1Cu);
     }
 
-    (*(v9 + 2))(v9, 0, v19);
+    (*(replyCopy + 2))(replyCopy, 0, v19);
   }
 
   _Block_object_dispose(&buf, 8);
@@ -5723,18 +5723,18 @@ void __57__OTClique_checkInheritanceKey_inheritanceKeyUUID_reply___block_invoke(
   v22 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)removeInheritanceKey:(id)a3 inheritanceKeyUUID:(id)a4 reply:(id)a5
++ (void)removeInheritanceKey:(id)key inheritanceKeyUUID:(id)d reply:(id)reply
 {
   v44 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  keyCopy = key;
+  dCopy = d;
+  replyCopy = reply;
   v10 = secLogObjForScope("octagon-removeinheritancekey");
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v7 context];
+    context = [keyCopy context];
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v11;
+    *(&buf + 4) = context;
     _os_log_impl(&dword_1887D2000, v10, OS_LOG_TYPE_DEFAULT, "removeInheritanceKey invoked for context: %@", &buf, 0xCu);
   }
 
@@ -5763,11 +5763,11 @@ void __57__OTClique_checkInheritanceKey_inheritanceKeyUUID_reply___block_invoke(
   v42 = 0x2020000000;
   v43 = 0;
   v34 = 0;
-  v18 = [v7 makeOTControl:&v34];
+  v18 = [keyCopy makeOTControl:&v34];
   v19 = v34;
   if (v18)
   {
-    v20 = [[OTControlArguments alloc] initWithConfiguration:v7];
+    v20 = [[OTControlArguments alloc] initWithConfiguration:keyCopy];
     v29[0] = MEMORY[0x1E69E9820];
     v29[1] = 3221225472;
     v29[2] = __58__OTClique_removeInheritanceKey_inheritanceKeyUUID_reply___block_invoke;
@@ -5775,8 +5775,8 @@ void __57__OTClique_checkInheritanceKey_inheritanceKeyUUID_reply___block_invoke(
     v32 = v13;
     v33 = v14;
     p_buf = &buf;
-    v30 = v9;
-    [v18 removeInheritanceKey:v20 uuid:v8 reply:v29];
+    v30 = replyCopy;
+    [v18 removeInheritanceKey:v20 uuid:dCopy reply:v29];
   }
 
   else
@@ -5813,7 +5813,7 @@ void __57__OTClique_checkInheritanceKey_inheritanceKeyUUID_reply___block_invoke(
       _os_log_impl(&dword_1887D2000, v26, OS_LOG_TYPE_DEFAULT, "END [%lld] %fs: RemoveInheritanceKey  OctagonSignpostNameRemoveInheritanceKey=%{public,signpost.telemetry:number1,name=OctagonSignpostNameRemoveInheritanceKey}d ", v35, 0x1Cu);
     }
 
-    (*(v9 + 2))(v9, v19);
+    (*(replyCopy + 2))(replyCopy, v19);
   }
 
   _Block_object_dispose(&buf, 8);
@@ -5899,12 +5899,12 @@ void __58__OTClique_removeInheritanceKey_inheritanceKeyUUID_reply___block_invoke
   v19 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)preflightRecoverOctagonUsingInheritanceKey:(id)a3 inheritanceKey:(id)a4 reply:(id)a5
++ (void)preflightRecoverOctagonUsingInheritanceKey:(id)key inheritanceKey:(id)inheritanceKey reply:(id)reply
 {
   v43 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  keyCopy = key;
+  inheritanceKeyCopy = inheritanceKey;
+  replyCopy = reply;
   v10 = _OctagonSignpostLogSystem();
   v11 = os_signpost_id_generate(v10);
   v12 = mach_continuous_time();
@@ -5930,7 +5930,7 @@ void __58__OTClique_removeInheritanceKey_inheritanceKeyUUID_reply___block_invoke
   v41 = 0x2020000000;
   v42 = 0;
   v33 = 0;
-  v16 = [v7 makeOTControl:&v33];
+  v16 = [keyCopy makeOTControl:&v33];
   v17 = v33;
   v18 = secLogObjForScope("clique-inheritancekey");
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
@@ -5941,7 +5941,7 @@ void __58__OTClique_removeInheritanceKey_inheritanceKeyUUID_reply___block_invoke
 
   if (v16)
   {
-    v19 = [[OTControlArguments alloc] initWithConfiguration:v7];
+    v19 = [[OTControlArguments alloc] initWithConfiguration:keyCopy];
     v28[0] = MEMORY[0x1E69E9820];
     v28[1] = 3221225472;
     v28[2] = __76__OTClique_preflightRecoverOctagonUsingInheritanceKey_inheritanceKey_reply___block_invoke;
@@ -5949,8 +5949,8 @@ void __58__OTClique_removeInheritanceKey_inheritanceKeyUUID_reply___block_invoke
     v31 = v11;
     v32 = v12;
     p_buf = &buf;
-    v29 = v9;
-    [v16 preflightJoinWithInheritanceKey:v19 inheritanceKey:v8 reply:v28];
+    v29 = replyCopy;
+    [v16 preflightJoinWithInheritanceKey:v19 inheritanceKey:inheritanceKeyCopy reply:v28];
   }
 
   else
@@ -5987,7 +5987,7 @@ void __58__OTClique_removeInheritanceKey_inheritanceKeyUUID_reply___block_invoke
       _os_log_impl(&dword_1887D2000, v25, OS_LOG_TYPE_DEFAULT, "END [%lld] %fs: PreflightRecoverOctagonUsingInheritanceKey  OctagonSignpostNamePreflightRecoverOctagonUsingInheritanceKey=%{public,signpost.telemetry:number1,name=OctagonSignpostNamePreflightRecoverOctagonUsingInheritanceKey}d ", v34, 0x1Cu);
     }
 
-    (*(v9 + 2))(v9, v17);
+    (*(replyCopy + 2))(replyCopy, v17);
   }
 
   _Block_object_dispose(&buf, 8);
@@ -6074,12 +6074,12 @@ void __76__OTClique_preflightRecoverOctagonUsingInheritanceKey_inheritanceKey_re
   v19 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)recoverOctagonUsingInheritanceKey:(id)a3 inheritanceKey:(id)a4 reply:(id)a5
++ (void)recoverOctagonUsingInheritanceKey:(id)key inheritanceKey:(id)inheritanceKey reply:(id)reply
 {
   v43 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  keyCopy = key;
+  inheritanceKeyCopy = inheritanceKey;
+  replyCopy = reply;
   v10 = _OctagonSignpostLogSystem();
   v11 = os_signpost_id_generate(v10);
   v12 = mach_continuous_time();
@@ -6105,7 +6105,7 @@ void __76__OTClique_preflightRecoverOctagonUsingInheritanceKey_inheritanceKey_re
   v41 = 0x2020000000;
   v42 = 0;
   v33 = 0;
-  v16 = [v7 makeOTControl:&v33];
+  v16 = [keyCopy makeOTControl:&v33];
   v17 = v33;
   v18 = secLogObjForScope("clique-inheritancekey");
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
@@ -6116,7 +6116,7 @@ void __76__OTClique_preflightRecoverOctagonUsingInheritanceKey_inheritanceKey_re
 
   if (v16)
   {
-    v19 = [[OTControlArguments alloc] initWithConfiguration:v7];
+    v19 = [[OTControlArguments alloc] initWithConfiguration:keyCopy];
     v28[0] = MEMORY[0x1E69E9820];
     v28[1] = 3221225472;
     v28[2] = __67__OTClique_recoverOctagonUsingInheritanceKey_inheritanceKey_reply___block_invoke;
@@ -6124,8 +6124,8 @@ void __76__OTClique_preflightRecoverOctagonUsingInheritanceKey_inheritanceKey_re
     v31 = v11;
     v32 = v12;
     p_buf = &buf;
-    v29 = v9;
-    [v16 joinWithInheritanceKey:v19 inheritanceKey:v8 reply:v28];
+    v29 = replyCopy;
+    [v16 joinWithInheritanceKey:v19 inheritanceKey:inheritanceKeyCopy reply:v28];
   }
 
   else
@@ -6162,7 +6162,7 @@ void __76__OTClique_preflightRecoverOctagonUsingInheritanceKey_inheritanceKey_re
       _os_log_impl(&dword_1887D2000, v25, OS_LOG_TYPE_DEFAULT, "END [%lld] %fs: RecoverOctagonUsingInheritanceKey  OctagonSignpostNameRecoverOctagonUsingInheritanceKey=%{public,signpost.telemetry:number1,name=OctagonSignpostNameRecoverOctagonUsingInheritanceKey}d ", v34, 0x1Cu);
     }
 
-    (*(v9 + 2))(v9, v17);
+    (*(replyCopy + 2))(replyCopy, v17);
   }
 
   _Block_object_dispose(&buf, 8);
@@ -6249,18 +6249,18 @@ void __67__OTClique_recoverOctagonUsingInheritanceKey_inheritanceKey_reply___blo
   v19 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)storeInheritanceKey:(id)a3 ik:(id)a4 reply:(id)a5
++ (void)storeInheritanceKey:(id)key ik:(id)ik reply:(id)reply
 {
   v44 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  keyCopy = key;
+  ikCopy = ik;
+  replyCopy = reply;
   v10 = secLogObjForScope("octagon-storeinheritancekey");
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v7 context];
+    context = [keyCopy context];
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v11;
+    *(&buf + 4) = context;
     _os_log_impl(&dword_1887D2000, v10, OS_LOG_TYPE_DEFAULT, "storeInheritanceKey invoked for context: %@", &buf, 0xCu);
   }
 
@@ -6289,11 +6289,11 @@ void __67__OTClique_recoverOctagonUsingInheritanceKey_inheritanceKey_reply___blo
   v42 = 0x2020000000;
   v43 = 0;
   v34 = 0;
-  v18 = [v7 makeOTControl:&v34];
+  v18 = [keyCopy makeOTControl:&v34];
   v19 = v34;
   if (v18)
   {
-    v20 = [[OTControlArguments alloc] initWithConfiguration:v7];
+    v20 = [[OTControlArguments alloc] initWithConfiguration:keyCopy];
     v29[0] = MEMORY[0x1E69E9820];
     v29[1] = 3221225472;
     v29[2] = __41__OTClique_storeInheritanceKey_ik_reply___block_invoke;
@@ -6301,8 +6301,8 @@ void __67__OTClique_recoverOctagonUsingInheritanceKey_inheritanceKey_reply___blo
     v32 = v13;
     v33 = v14;
     p_buf = &buf;
-    v30 = v9;
-    [v18 storeInheritanceKey:v20 ik:v8 reply:v29];
+    v30 = replyCopy;
+    [v18 storeInheritanceKey:v20 ik:ikCopy reply:v29];
   }
 
   else
@@ -6339,7 +6339,7 @@ void __67__OTClique_recoverOctagonUsingInheritanceKey_inheritanceKey_reply___blo
       _os_log_impl(&dword_1887D2000, v26, OS_LOG_TYPE_DEFAULT, "END [%lld] %fs: StoreInheritanceKey  OctagonSignpostNameStoreInheritanceKey=%{public,signpost.telemetry:number1,name=OctagonSignpostNameStoreInheritanceKey}d ", v35, 0x1Cu);
     }
 
-    (*(v9 + 2))(v9, v19);
+    (*(replyCopy + 2))(replyCopy, v19);
   }
 
   _Block_object_dispose(&buf, 8);
@@ -6425,18 +6425,18 @@ void __41__OTClique_storeInheritanceKey_ik_reply___block_invoke(void *a1, void *
   v19 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)generateInheritanceKey:(id)a3 uuid:(id)a4 reply:(id)a5
++ (void)generateInheritanceKey:(id)key uuid:(id)uuid reply:(id)reply
 {
   v44 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  keyCopy = key;
+  uuidCopy = uuid;
+  replyCopy = reply;
   v10 = secLogObjForScope("octagon-generateinheritancekey");
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v7 context];
+    context = [keyCopy context];
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v11;
+    *(&buf + 4) = context;
     _os_log_impl(&dword_1887D2000, v10, OS_LOG_TYPE_DEFAULT, "generateInheritanceKey invoked for context: %@", &buf, 0xCu);
   }
 
@@ -6465,11 +6465,11 @@ void __41__OTClique_storeInheritanceKey_ik_reply___block_invoke(void *a1, void *
   v42 = 0x2020000000;
   v43 = 0;
   v34 = 0;
-  v18 = [v7 makeOTControl:&v34];
+  v18 = [keyCopy makeOTControl:&v34];
   v19 = v34;
   if (v18)
   {
-    v20 = [[OTControlArguments alloc] initWithConfiguration:v7];
+    v20 = [[OTControlArguments alloc] initWithConfiguration:keyCopy];
     v29[0] = MEMORY[0x1E69E9820];
     v29[1] = 3221225472;
     v29[2] = __46__OTClique_generateInheritanceKey_uuid_reply___block_invoke;
@@ -6477,8 +6477,8 @@ void __41__OTClique_storeInheritanceKey_ik_reply___block_invoke(void *a1, void *
     v32 = v13;
     v33 = v14;
     p_buf = &buf;
-    v30 = v9;
-    [v18 generateInheritanceKey:v20 uuid:v8 reply:v29];
+    v30 = replyCopy;
+    [v18 generateInheritanceKey:v20 uuid:uuidCopy reply:v29];
   }
 
   else
@@ -6515,7 +6515,7 @@ void __41__OTClique_storeInheritanceKey_ik_reply___block_invoke(void *a1, void *
       _os_log_impl(&dword_1887D2000, v26, OS_LOG_TYPE_DEFAULT, "END [%lld] %fs: GenerateInheritanceKey  OctagonSignpostNameGenerateInheritanceKey=%{public,signpost.telemetry:number1,name=OctagonSignpostNameGenerateInheritanceKey}d ", v35, 0x1Cu);
     }
 
-    (*(v9 + 2))(v9, 0, v19);
+    (*(replyCopy + 2))(replyCopy, 0, v19);
   }
 
   _Block_object_dispose(&buf, 8);
@@ -6602,18 +6602,18 @@ void __46__OTClique_generateInheritanceKey_uuid_reply___block_invoke(void *a1, v
   v22 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)createInheritanceKey:(id)a3 uuid:(id)a4 reply:(id)a5
++ (void)createInheritanceKey:(id)key uuid:(id)uuid reply:(id)reply
 {
   v44 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  keyCopy = key;
+  uuidCopy = uuid;
+  replyCopy = reply;
   v10 = secLogObjForScope("octagon-createinheritancekey");
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v7 context];
+    context = [keyCopy context];
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v11;
+    *(&buf + 4) = context;
     _os_log_impl(&dword_1887D2000, v10, OS_LOG_TYPE_DEFAULT, "createInheritanceKey invoked for context: %@", &buf, 0xCu);
   }
 
@@ -6642,11 +6642,11 @@ void __46__OTClique_generateInheritanceKey_uuid_reply___block_invoke(void *a1, v
   v42 = 0x2020000000;
   v43 = 0;
   v34 = 0;
-  v18 = [v7 makeOTControl:&v34];
+  v18 = [keyCopy makeOTControl:&v34];
   v19 = v34;
   if (v18)
   {
-    v20 = [[OTControlArguments alloc] initWithConfiguration:v7];
+    v20 = [[OTControlArguments alloc] initWithConfiguration:keyCopy];
     v29[0] = MEMORY[0x1E69E9820];
     v29[1] = 3221225472;
     v29[2] = __44__OTClique_createInheritanceKey_uuid_reply___block_invoke;
@@ -6654,8 +6654,8 @@ void __46__OTClique_generateInheritanceKey_uuid_reply___block_invoke(void *a1, v
     v32 = v13;
     v33 = v14;
     p_buf = &buf;
-    v30 = v9;
-    [v18 createInheritanceKey:v20 uuid:v8 reply:v29];
+    v30 = replyCopy;
+    [v18 createInheritanceKey:v20 uuid:uuidCopy reply:v29];
   }
 
   else
@@ -6692,7 +6692,7 @@ void __46__OTClique_generateInheritanceKey_uuid_reply___block_invoke(void *a1, v
       _os_log_impl(&dword_1887D2000, v26, OS_LOG_TYPE_DEFAULT, "END [%lld] %fs: CreateInheritanceKey  OctagonSignpostNameCreateInheritanceKey=%{public,signpost.telemetry:number1,name=OctagonSignpostNameCreateInheritanceKey}d ", v35, 0x1Cu);
     }
 
-    (*(v9 + 2))(v9, 0, v19);
+    (*(replyCopy + 2))(replyCopy, 0, v19);
   }
 
   _Block_object_dispose(&buf, 8);
@@ -6779,18 +6779,18 @@ void __44__OTClique_createInheritanceKey_uuid_reply___block_invoke(void *a1, voi
   v22 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)checkCustodianRecoveryKey:(id)a3 custodianRecoveryKeyUUID:(id)a4 reply:(id)a5
++ (void)checkCustodianRecoveryKey:(id)key custodianRecoveryKeyUUID:(id)d reply:(id)reply
 {
   v44 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  keyCopy = key;
+  dCopy = d;
+  replyCopy = reply;
   v10 = secLogObjForScope("octagon-checkcustodianrecoverykey");
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v7 context];
+    context = [keyCopy context];
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v11;
+    *(&buf + 4) = context;
     _os_log_impl(&dword_1887D2000, v10, OS_LOG_TYPE_DEFAULT, "checkCustodianRecoveryKey invoked for context: %@", &buf, 0xCu);
   }
 
@@ -6819,11 +6819,11 @@ void __44__OTClique_createInheritanceKey_uuid_reply___block_invoke(void *a1, voi
   v42 = 0x2020000000;
   v43 = 0;
   v34 = 0;
-  v18 = [v7 makeOTControl:&v34];
+  v18 = [keyCopy makeOTControl:&v34];
   v19 = v34;
   if (v18)
   {
-    v20 = [[OTControlArguments alloc] initWithConfiguration:v7];
+    v20 = [[OTControlArguments alloc] initWithConfiguration:keyCopy];
     v29[0] = MEMORY[0x1E69E9820];
     v29[1] = 3221225472;
     v29[2] = __69__OTClique_checkCustodianRecoveryKey_custodianRecoveryKeyUUID_reply___block_invoke;
@@ -6831,8 +6831,8 @@ void __44__OTClique_createInheritanceKey_uuid_reply___block_invoke(void *a1, voi
     v32 = v13;
     v33 = v14;
     p_buf = &buf;
-    v30 = v9;
-    [v18 checkCustodianRecoveryKey:v20 uuid:v8 reply:v29];
+    v30 = replyCopy;
+    [v18 checkCustodianRecoveryKey:v20 uuid:dCopy reply:v29];
   }
 
   else
@@ -6869,7 +6869,7 @@ void __44__OTClique_createInheritanceKey_uuid_reply___block_invoke(void *a1, voi
       _os_log_impl(&dword_1887D2000, v26, OS_LOG_TYPE_DEFAULT, "END [%lld] %fs: CheckCustodianRecoveryKey  OctagonSignpostNameCheckCustodianRecoveryKey=%{public,signpost.telemetry:number1,name=OctagonSignpostNameCheckCustodianRecoveryKey}d ", v35, 0x1Cu);
     }
 
-    (*(v9 + 2))(v9, 0, v19);
+    (*(replyCopy + 2))(replyCopy, 0, v19);
   }
 
   _Block_object_dispose(&buf, 8);
@@ -6960,18 +6960,18 @@ void __69__OTClique_checkCustodianRecoveryKey_custodianRecoveryKeyUUID_reply___b
   v22 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)removeCustodianRecoveryKey:(id)a3 custodianRecoveryKeyUUID:(id)a4 reply:(id)a5
++ (void)removeCustodianRecoveryKey:(id)key custodianRecoveryKeyUUID:(id)d reply:(id)reply
 {
   v44 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  keyCopy = key;
+  dCopy = d;
+  replyCopy = reply;
   v10 = secLogObjForScope("octagon-removecustodianrecoverykey");
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v7 context];
+    context = [keyCopy context];
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v11;
+    *(&buf + 4) = context;
     _os_log_impl(&dword_1887D2000, v10, OS_LOG_TYPE_DEFAULT, "removeCustodianRecoveryKey invoked for context: %@", &buf, 0xCu);
   }
 
@@ -7000,11 +7000,11 @@ void __69__OTClique_checkCustodianRecoveryKey_custodianRecoveryKeyUUID_reply___b
   v42 = 0x2020000000;
   v43 = 0;
   v34 = 0;
-  v18 = [v7 makeOTControl:&v34];
+  v18 = [keyCopy makeOTControl:&v34];
   v19 = v34;
   if (v18)
   {
-    v20 = [[OTControlArguments alloc] initWithConfiguration:v7];
+    v20 = [[OTControlArguments alloc] initWithConfiguration:keyCopy];
     v29[0] = MEMORY[0x1E69E9820];
     v29[1] = 3221225472;
     v29[2] = __70__OTClique_removeCustodianRecoveryKey_custodianRecoveryKeyUUID_reply___block_invoke;
@@ -7012,8 +7012,8 @@ void __69__OTClique_checkCustodianRecoveryKey_custodianRecoveryKeyUUID_reply___b
     v32 = v13;
     v33 = v14;
     p_buf = &buf;
-    v30 = v9;
-    [v18 removeCustodianRecoveryKey:v20 uuid:v8 reply:v29];
+    v30 = replyCopy;
+    [v18 removeCustodianRecoveryKey:v20 uuid:dCopy reply:v29];
   }
 
   else
@@ -7050,7 +7050,7 @@ void __69__OTClique_checkCustodianRecoveryKey_custodianRecoveryKeyUUID_reply___b
       _os_log_impl(&dword_1887D2000, v26, OS_LOG_TYPE_DEFAULT, "END [%lld] %fs: RemoveCustodianRecoveryKey  OctagonSignpostNameRemoveCustodianRecoveryKey=%{public,signpost.telemetry:number1,name=OctagonSignpostNameRemoveCustodianRecoveryKey}d ", v35, 0x1Cu);
     }
 
-    (*(v9 + 2))(v9, v19);
+    (*(replyCopy + 2))(replyCopy, v19);
   }
 
   _Block_object_dispose(&buf, 8);
@@ -7136,12 +7136,12 @@ void __70__OTClique_removeCustodianRecoveryKey_custodianRecoveryKeyUUID_reply___
   v19 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)preflightRecoverOctagonUsingCustodianRecoveryKey:(id)a3 custodianRecoveryKey:(id)a4 reply:(id)a5
++ (void)preflightRecoverOctagonUsingCustodianRecoveryKey:(id)key custodianRecoveryKey:(id)recoveryKey reply:(id)reply
 {
   v43 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  keyCopy = key;
+  recoveryKeyCopy = recoveryKey;
+  replyCopy = reply;
   v10 = _OctagonSignpostLogSystem();
   v11 = os_signpost_id_generate(v10);
   v12 = mach_continuous_time();
@@ -7167,7 +7167,7 @@ void __70__OTClique_removeCustodianRecoveryKey_custodianRecoveryKeyUUID_reply___
   v41 = 0x2020000000;
   v42 = 0;
   v33 = 0;
-  v16 = [v7 makeOTControl:&v33];
+  v16 = [keyCopy makeOTControl:&v33];
   v17 = v33;
   v18 = secLogObjForScope("clique-custodianrecoverykey");
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
@@ -7178,7 +7178,7 @@ void __70__OTClique_removeCustodianRecoveryKey_custodianRecoveryKeyUUID_reply___
 
   if (v16)
   {
-    v19 = [[OTControlArguments alloc] initWithConfiguration:v7];
+    v19 = [[OTControlArguments alloc] initWithConfiguration:keyCopy];
     v28[0] = MEMORY[0x1E69E9820];
     v28[1] = 3221225472;
     v28[2] = __88__OTClique_preflightRecoverOctagonUsingCustodianRecoveryKey_custodianRecoveryKey_reply___block_invoke;
@@ -7186,8 +7186,8 @@ void __70__OTClique_removeCustodianRecoveryKey_custodianRecoveryKeyUUID_reply___
     v31 = v11;
     v32 = v12;
     p_buf = &buf;
-    v29 = v9;
-    [v16 preflightJoinWithCustodianRecoveryKey:v19 custodianRecoveryKey:v8 reply:v28];
+    v29 = replyCopy;
+    [v16 preflightJoinWithCustodianRecoveryKey:v19 custodianRecoveryKey:recoveryKeyCopy reply:v28];
   }
 
   else
@@ -7224,7 +7224,7 @@ void __70__OTClique_removeCustodianRecoveryKey_custodianRecoveryKeyUUID_reply___
       _os_log_impl(&dword_1887D2000, v25, OS_LOG_TYPE_DEFAULT, "END [%lld] %fs: PreflightRecoverOctagonUsingCustodianRecoveryKey  OctagonSignpostNamePreflightRecoverOctagonUsingCustodianRecoveryKey=%{public,signpost.telemetry:number1,name=OctagonSignpostNamePreflightRecoverOctagonUsingCustodianRecoveryKey}d ", v34, 0x1Cu);
     }
 
-    (*(v9 + 2))(v9, v17);
+    (*(replyCopy + 2))(replyCopy, v17);
   }
 
   _Block_object_dispose(&buf, 8);
@@ -7311,12 +7311,12 @@ void __88__OTClique_preflightRecoverOctagonUsingCustodianRecoveryKey_custodianRe
   v19 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)recoverOctagonUsingCustodianRecoveryKey:(id)a3 custodianRecoveryKey:(id)a4 reply:(id)a5
++ (void)recoverOctagonUsingCustodianRecoveryKey:(id)key custodianRecoveryKey:(id)recoveryKey reply:(id)reply
 {
   v43 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  keyCopy = key;
+  recoveryKeyCopy = recoveryKey;
+  replyCopy = reply;
   v10 = _OctagonSignpostLogSystem();
   v11 = os_signpost_id_generate(v10);
   v12 = mach_continuous_time();
@@ -7342,7 +7342,7 @@ void __88__OTClique_preflightRecoverOctagonUsingCustodianRecoveryKey_custodianRe
   v41 = 0x2020000000;
   v42 = 0;
   v33 = 0;
-  v16 = [v7 makeOTControl:&v33];
+  v16 = [keyCopy makeOTControl:&v33];
   v17 = v33;
   v18 = secLogObjForScope("clique-custodianrecoverykey");
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
@@ -7353,7 +7353,7 @@ void __88__OTClique_preflightRecoverOctagonUsingCustodianRecoveryKey_custodianRe
 
   if (v16)
   {
-    v19 = [[OTControlArguments alloc] initWithConfiguration:v7];
+    v19 = [[OTControlArguments alloc] initWithConfiguration:keyCopy];
     v28[0] = MEMORY[0x1E69E9820];
     v28[1] = 3221225472;
     v28[2] = __79__OTClique_recoverOctagonUsingCustodianRecoveryKey_custodianRecoveryKey_reply___block_invoke;
@@ -7361,8 +7361,8 @@ void __88__OTClique_preflightRecoverOctagonUsingCustodianRecoveryKey_custodianRe
     v31 = v11;
     v32 = v12;
     p_buf = &buf;
-    v29 = v9;
-    [v16 joinWithCustodianRecoveryKey:v19 custodianRecoveryKey:v8 reply:v28];
+    v29 = replyCopy;
+    [v16 joinWithCustodianRecoveryKey:v19 custodianRecoveryKey:recoveryKeyCopy reply:v28];
   }
 
   else
@@ -7399,7 +7399,7 @@ void __88__OTClique_preflightRecoverOctagonUsingCustodianRecoveryKey_custodianRe
       _os_log_impl(&dword_1887D2000, v25, OS_LOG_TYPE_DEFAULT, "END [%lld] %fs: RecoverOctagonUsingCustodianRecoveryKey  OctagonSignpostNameRecoverOctagonUsingCustodianRecoveryKey=%{public,signpost.telemetry:number1,name=OctagonSignpostNameRecoverOctagonUsingCustodianRecoveryKey}d ", v34, 0x1Cu);
     }
 
-    (*(v9 + 2))(v9, v17);
+    (*(replyCopy + 2))(replyCopy, v17);
   }
 
   _Block_object_dispose(&buf, 8);
@@ -7486,18 +7486,18 @@ void __79__OTClique_recoverOctagonUsingCustodianRecoveryKey_custodianRecoveryKey
   v19 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)createCustodianRecoveryKey:(id)a3 uuid:(id)a4 reply:(id)a5
++ (void)createCustodianRecoveryKey:(id)key uuid:(id)uuid reply:(id)reply
 {
   v44 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  keyCopy = key;
+  uuidCopy = uuid;
+  replyCopy = reply;
   v10 = secLogObjForScope("octagon-createcustodianrecoverykey");
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v7 context];
+    context = [keyCopy context];
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v11;
+    *(&buf + 4) = context;
     _os_log_impl(&dword_1887D2000, v10, OS_LOG_TYPE_DEFAULT, "createCustodianRecoveryKey invoked for context: %@", &buf, 0xCu);
   }
 
@@ -7526,11 +7526,11 @@ void __79__OTClique_recoverOctagonUsingCustodianRecoveryKey_custodianRecoveryKey
   v42 = 0x2020000000;
   v43 = 0;
   v34 = 0;
-  v18 = [v7 makeOTControl:&v34];
+  v18 = [keyCopy makeOTControl:&v34];
   v19 = v34;
   if (v18)
   {
-    v20 = [[OTControlArguments alloc] initWithConfiguration:v7];
+    v20 = [[OTControlArguments alloc] initWithConfiguration:keyCopy];
     v29[0] = MEMORY[0x1E69E9820];
     v29[1] = 3221225472;
     v29[2] = __50__OTClique_createCustodianRecoveryKey_uuid_reply___block_invoke;
@@ -7538,8 +7538,8 @@ void __79__OTClique_recoverOctagonUsingCustodianRecoveryKey_custodianRecoveryKey
     v32 = v13;
     v33 = v14;
     p_buf = &buf;
-    v30 = v9;
-    [v18 createCustodianRecoveryKey:v20 uuid:v8 reply:v29];
+    v30 = replyCopy;
+    [v18 createCustodianRecoveryKey:v20 uuid:uuidCopy reply:v29];
   }
 
   else
@@ -7576,7 +7576,7 @@ void __79__OTClique_recoverOctagonUsingCustodianRecoveryKey_custodianRecoveryKey
       _os_log_impl(&dword_1887D2000, v26, OS_LOG_TYPE_DEFAULT, "END [%lld] %fs: CreateCustodianRecoveryKey  OctagonSignpostNameCreateCustodianRecoveryKey=%{public,signpost.telemetry:number1,name=OctagonSignpostNameCreateCustodianRecoveryKey}d ", v35, 0x1Cu);
     }
 
-    (*(v9 + 2))(v9, 0, v19);
+    (*(replyCopy + 2))(replyCopy, 0, v19);
   }
 
   _Block_object_dispose(&buf, 8);
@@ -7663,18 +7663,18 @@ void __50__OTClique_createCustodianRecoveryKey_uuid_reply___block_invoke(void *a
   v22 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)setNewRecoveryKeyWithData:(id)a3 recoveryKey:(id)a4 reply:(id)a5
++ (void)setNewRecoveryKeyWithData:(id)data recoveryKey:(id)key reply:(id)reply
 {
   v66 = *MEMORY[0x1E69E9840];
-  v48 = a3;
-  v47 = a4;
-  v7 = a5;
+  dataCopy = data;
+  keyCopy = key;
+  replyCopy = reply;
   v8 = secLogObjForScope("octagon-setrecoverykey");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v48 context];
+    context = [dataCopy context];
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v9;
+    *(&buf + 4) = context;
     _os_log_impl(&dword_1887D2000, v8, OS_LOG_TYPE_DEFAULT, "setNewRecoveryKeyWithData invoked for context: %@", &buf, 0xCu);
   }
 
@@ -7705,16 +7705,16 @@ void __50__OTClique_createCustodianRecoveryKey_uuid_reply___block_invoke(void *a
   v64 = 0x2020000000;
   v65 = 0;
   v56 = 0;
-  v18 = SecRKCreateRecoveryKeyWithError(v47, &v56);
+  v18 = SecRKCreateRecoveryKeyWithError(keyCopy, &v56);
   v19 = v56;
   if (v18)
   {
     v55 = 0;
-    v20 = [v48 makeOTControl:&v55];
+    v20 = [dataCopy makeOTControl:&v55];
     v21 = v55;
     if (v20)
     {
-      v22 = [[OTControlArguments alloc] initWithConfiguration:v48];
+      v22 = [[OTControlArguments alloc] initWithConfiguration:dataCopy];
       v49[0] = MEMORY[0x1E69E9820];
       v49[1] = 3221225472;
       v49[2] = __56__OTClique_setNewRecoveryKeyWithData_recoveryKey_reply___block_invoke;
@@ -7722,9 +7722,9 @@ void __50__OTClique_createCustodianRecoveryKey_uuid_reply___block_invoke(void *a
       v53 = v12;
       v54 = v13;
       p_buf = &buf;
-      v51 = v7;
+      v51 = replyCopy;
       v50 = v18;
-      [v20 createRecoveryKey:v22 recoveryKey:v47 reply:v49];
+      [v20 createRecoveryKey:v22 recoveryKey:keyCopy reply:v49];
     }
 
     else
@@ -7761,7 +7761,7 @@ void __50__OTClique_createCustodianRecoveryKey_uuid_reply___block_invoke(void *a
         _os_log_impl(&dword_1887D2000, v44, OS_LOG_TYPE_DEFAULT, "END [%lld] %fs: SetNewRecoveryKeyWithData  OctagonSignpostNameSetNewRecoveryKeyWithData=%{public,signpost.telemetry:number1,name=OctagonSignpostNameSetNewRecoveryKeyWithData}d ", v57, 0x1Cu);
       }
 
-      (*(v7 + 2))(v7, 0, v21);
+      (*(replyCopy + 2))(replyCopy, 0, v21);
     }
 
     v32 = 0;
@@ -7818,7 +7818,7 @@ void __50__OTClique_createCustodianRecoveryKey_uuid_reply___block_invoke(void *a
       _os_log_impl(&dword_1887D2000, v37, OS_LOG_TYPE_DEFAULT, "END [%lld] %fs: SetNewRecoveryKeyWithData  OctagonSignpostNameSetNewRecoveryKeyWithData=%{public,signpost.telemetry:number1,name=OctagonSignpostNameSetNewRecoveryKeyWithData}d ", v57, 0x1Cu);
     }
 
-    (*(v7 + 2))(v7, 0, v32);
+    (*(replyCopy + 2))(replyCopy, 0, v32);
   }
 
   _Block_object_dispose(&buf, 8);
@@ -7910,7 +7910,7 @@ void __56__OTClique_setNewRecoveryKeyWithData_recoveryKey_reply___block_invoke(v
   v22 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)recoverWithContextData:(id)a3 bottleID:(id)a4 escrowedEntropy:(id)a5 error:(id *)a6
++ (id)recoverWithContextData:(id)data bottleID:(id)d escrowedEntropy:(id)entropy error:(id *)error
 {
   v6 = secLogObjForScope("octagon");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -7922,19 +7922,19 @@ void __56__OTClique_setNewRecoveryKeyWithData_recoveryKey_reply___block_invoke(v
   return 0;
 }
 
-+ (id)findOptimalBottleIDsWithContextData:(id)a3 error:(id *)a4
++ (id)findOptimalBottleIDsWithContextData:(id)data error:(id *)error
 {
   v57[2] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  dataCopy = data;
   v6 = secLogObjForScope("clique-findbottle");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v5 context];
-    v8 = [v5 altDSID];
+    context = [dataCopy context];
+    altDSID = [dataCopy altDSID];
     *buf = 138412546;
-    *&buf[4] = v7;
+    *&buf[4] = context;
     *&buf[12] = 2112;
-    *&buf[14] = v8;
+    *&buf[14] = altDSID;
     _os_log_impl(&dword_1887D2000, v6, OS_LOG_TYPE_DEFAULT, "finding optimal bottles for context:%@, altdsid:%@", buf, 0x16u);
   }
 
@@ -7978,12 +7978,12 @@ void __56__OTClique_setNewRecoveryKeyWithData_recoveryKey_reply___block_invoke(v
   v40 = __Block_byref_object_dispose__5566;
   v41 = 0;
   obj = 0;
-  v16 = [v5 makeOTControl:&obj];
+  v16 = [dataCopy makeOTControl:&obj];
   objc_storeStrong(v57, obj);
   if (v16)
   {
-    v17 = [[OTControlArguments alloc] initWithConfiguration:v5];
-    v18 = [v5 escrowFetchSource];
+    v17 = [[OTControlArguments alloc] initWithConfiguration:dataCopy];
+    escrowFetchSource = [dataCopy escrowFetchSource];
     v34[0] = MEMORY[0x1E69E9820];
     v34[1] = 3221225472;
     v34[2] = __54__OTClique_findOptimalBottleIDsWithContextData_error___block_invoke;
@@ -7991,14 +7991,14 @@ void __56__OTClique_setNewRecoveryKeyWithData_recoveryKey_reply___block_invoke(v
     v34[4] = buf;
     v34[5] = &v42;
     v34[6] = &v36;
-    [v16 fetchAllViableBottles:v17 source:v18 reply:v34];
+    [v16 fetchAllViableBottles:v17 source:escrowFetchSource reply:v34];
 
-    if (a4)
+    if (error)
     {
       v19 = *(*&buf[8] + 40);
       if (v19)
       {
-        *a4 = v19;
+        *error = v19;
       }
     }
 
@@ -8047,9 +8047,9 @@ void __56__OTClique_setNewRecoveryKeyWithData_recoveryKey_reply___block_invoke(v
       _os_log_impl(&dword_1887D2000, v27, OS_LOG_TYPE_DEFAULT, "unable to create otcontrol: %@", v48, 0xCu);
     }
 
-    if (a4)
+    if (error)
     {
-      *a4 = *(*&buf[8] + 40);
+      *error = *(*&buf[8] + 40);
     }
 
     v29 = _OctagonSignpostGetNanoseconds(v10, v11);
@@ -8137,19 +8137,19 @@ LABEL_6:
   v23 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)fetchEscrowRecordsInternal:(id)a3 error:(id *)a4
++ (id)fetchEscrowRecordsInternal:(id)internal error:(id *)error
 {
   v32[2] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  internalCopy = internal;
   v6 = secLogObjForScope("clique-fetchrecords");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v5 context];
-    v8 = [v5 altDSID];
+    context = [internalCopy context];
+    altDSID = [internalCopy altDSID];
     *buf = 138412546;
-    *&buf[4] = v7;
+    *&buf[4] = context;
     *&buf[12] = 2112;
-    *&buf[14] = v8;
+    *&buf[14] = altDSID;
     _os_log_impl(&dword_1887D2000, v6, OS_LOG_TYPE_DEFAULT, "fetching escrow records for context:%@, altdsid:%@", buf, 0x16u);
   }
 
@@ -8166,26 +8166,26 @@ LABEL_6:
   v25 = __Block_byref_object_dispose__5566;
   v26 = 0;
   obj = 0;
-  v9 = [v5 makeOTControl:&obj];
+  v9 = [internalCopy makeOTControl:&obj];
   objc_storeStrong(v32, obj);
   if (v9)
   {
-    v10 = [[OTControlArguments alloc] initWithConfiguration:v5];
-    v11 = [v5 escrowFetchSource];
+    v10 = [[OTControlArguments alloc] initWithConfiguration:internalCopy];
+    escrowFetchSource = [internalCopy escrowFetchSource];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __45__OTClique_fetchEscrowRecordsInternal_error___block_invoke;
     v19[3] = &unk_1E70D6E40;
     v19[4] = buf;
     v19[5] = &v21;
-    [v9 fetchEscrowRecords:v10 source:v11 reply:v19];
+    [v9 fetchEscrowRecords:v10 source:escrowFetchSource reply:v19];
 
-    if (a4)
+    if (error)
     {
       v12 = *(*&buf[8] + 40);
       if (v12)
       {
-        *a4 = v12;
+        *error = v12;
       }
     }
 
@@ -8211,9 +8211,9 @@ LABEL_6:
     }
 
     v14 = 0;
-    if (a4)
+    if (error)
     {
-      *a4 = *(*&buf[8] + 40);
+      *error = *(*&buf[8] + 40);
     }
   }
 
@@ -8264,11 +8264,11 @@ LABEL_6:
   v15 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)performEscrowRecoveryWithContextData:(id)a3 escrowArguments:(id)a4 error:(id *)a5
++ (id)performEscrowRecoveryWithContextData:(id)data escrowArguments:(id)arguments error:(id *)error
 {
   v152 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  dataCopy = data;
+  argumentsCopy = arguments;
   if (+[OTClique isCloudServicesAvailable])
   {
     v9 = _OctagonSignpostLogSystem();
@@ -8293,20 +8293,20 @@ LABEL_6:
       _os_log_impl(&dword_1887D2000, v13, OS_LOG_TYPE_DEFAULT, "BEGIN [%lld]: PerformEscrowRecovery  enableTelemetry=YES ", buf, 0xCu);
     }
 
-    v131 = [[OTClique alloc] initWithContextData:v7];
+    v131 = [[OTClique alloc] initWithContextData:dataCopy];
     v14 = secLogObjForScope("clique-recovery");
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [v7 context];
-      v16 = [v7 altDSID];
+      context = [dataCopy context];
+      altDSID = [dataCopy altDSID];
       *buf = 138412546;
-      *&buf[4] = v15;
+      *&buf[4] = context;
       *&buf[12] = 2112;
-      *&buf[14] = v16;
+      *&buf[14] = altDSID;
       _os_log_impl(&dword_1887D2000, v14, OS_LOG_TYPE_DEFAULT, "attempting an escrow recovery for context:%@, altdsid:%@", buf, 0x16u);
     }
 
-    v17 = [v7 sbd];
+    v17 = [dataCopy sbd];
     v19 = v17;
     if (v17)
     {
@@ -8340,7 +8340,7 @@ LABEL_6:
     }
 
     v138 = 0;
-    v28 = [v130 recoverWithInfo:v8 results:&v138];
+    v28 = [v130 recoverWithInfo:argumentsCopy results:&v138];
     v129 = v138;
     Nanoseconds = _OctagonSignpostGetNanoseconds(v23, v24);
     v30 = _OctagonSignpostLogSystem();
@@ -8374,10 +8374,10 @@ LABEL_6:
         _os_log_impl(&dword_1887D2000, v34, OS_LOG_TYPE_DEFAULT, "sbd escrow recovery failed: %@", buf, 0xCu);
       }
 
-      if (a5)
+      if (error)
       {
         v35 = v28;
-        *a5 = v28;
+        *error = v28;
       }
 
       v36 = _OctagonSignpostGetNanoseconds(v10, v127);
@@ -8407,9 +8407,9 @@ LABEL_6:
     }
 
     Helper_x8__kSecureBackupRecoveryKeyKey = gotLoadHelper_x8__kSecureBackupRecoveryKeyKey(v33);
-    v125 = [v8 objectForKeyedSubscript:{**(v41 + 3896), Helper_x8__kSecureBackupRecoveryKeyKey}];
+    v125 = [argumentsCopy objectForKeyedSubscript:{**(v41 + 3896), Helper_x8__kSecureBackupRecoveryKeyKey}];
     Helper_x8__kSecureBackupUsesRecoveryKeyKey = gotLoadHelper_x8__kSecureBackupUsesRecoveryKeyKey(v42);
-    v123 = [v8 objectForKeyedSubscript:{**(v44 + 4000), Helper_x8__kSecureBackupUsesRecoveryKeyKey}];
+    v123 = [argumentsCopy objectForKeyedSubscript:{**(v44 + 4000), Helper_x8__kSecureBackupUsesRecoveryKeyKey}];
     if (v125 || [v123 BOOLValue])
     {
       v137 = 0;
@@ -8481,10 +8481,10 @@ LABEL_6:
         _os_log_impl(&dword_1887D2000, v76, OS_LOG_TYPE_DEFAULT, "unable to create otcontrol: %@", buf, 0xCu);
       }
 
-      if (a5)
+      if (error)
       {
         v77 = v128;
-        *a5 = v128;
+        *error = v128;
       }
 
       v78 = _OctagonSignpostGetNanoseconds(v10, v127);
@@ -8553,7 +8553,7 @@ LABEL_6:
         _os_log_impl(&dword_1887D2000, v61, OS_LOG_TYPE_DEFAULT, "BEGIN [%lld]: PerformOctagonJoin  enableTelemetry=YES ", v144, 0xCu);
       }
 
-      v62 = [[OTControlArguments alloc] initWithConfiguration:v7];
+      v62 = [[OTControlArguments alloc] initWithConfiguration:dataCopy];
       v135[0] = MEMORY[0x1E69E9820];
       v135[1] = 3221225472;
       v135[2] = __71__OTClique_performEscrowRecoveryWithContextData_escrowArguments_error___block_invoke;
@@ -8587,9 +8587,9 @@ LABEL_6:
       v68 = *(*&buf[8] + 40);
       if (v68)
       {
-        if (a5)
+        if (error)
         {
-          *a5 = v68;
+          *error = v68;
         }
 
         v69 = _OctagonSignpostGetNanoseconds(v10, v127);
@@ -8630,7 +8630,7 @@ LABEL_6:
       _os_log_impl(&dword_1887D2000, v73, OS_LOG_TYPE_DEFAULT, "bottle %@ is not valid, resetting octagon", buf, 0xCu);
     }
 
-    v118 = [[OTControlArguments alloc] initWithConfiguration:v7];
+    v118 = [[OTControlArguments alloc] initWithConfiguration:dataCopy];
     *buf = 0;
     *&buf[8] = buf;
     *&buf[16] = 0x3032000000;
@@ -8652,13 +8652,13 @@ LABEL_6:
     [v124 fetchAccountWideSettingsWithForceFetch:1 arguments:v118 reply:v134];
     if ([*(*&buf[8] + 40) hasWalrus])
     {
-      v74 = [*(*&buf[8] + 40) walrus];
-      v75 = [v74 enabled];
+      walrus = [*(*&buf[8] + 40) walrus];
+      enabled = [walrus enabled];
     }
 
     else
     {
-      v75 = 0;
+      enabled = 0;
     }
 
     v82 = _OctagonSignpostLogSystem();
@@ -8681,21 +8681,21 @@ LABEL_6:
       _os_log_impl(&dword_1887D2000, v86, OS_LOG_TYPE_DEFAULT, "BEGIN [%lld]: PerformResetAndEstablishAfterFailedBottle  enableTelemetry=YES ", v139, 0xCu);
     }
 
-    v87 = v8;
+    v87 = argumentsCopy;
     v88 = v83;
     v89 = *(*&buf[8] + 40);
-    v90 = [v7 isGuitarfish];
-    v91 = [v7 altDSID];
-    v92 = [v7 flowID];
-    v93 = [v7 deviceSessionID];
+    isGuitarfish = [dataCopy isGuitarfish];
+    altDSID2 = [dataCopy altDSID];
+    flowID = [dataCopy flowID];
+    deviceSessionID = [dataCopy deviceSessionID];
     v133 = 0;
     LOBYTE(v117) = 1;
-    LOBYTE(v116) = v75;
-    [(OTClique *)v131 resetAndEstablish:3 idmsTargetContext:0 idmsCuttlefishPassword:0 notifyIdMS:0 accountSettings:v89 isGuitarfish:v90 accountIsW:v116 altDSID:v91 flowID:v92 deviceSessionID:v93 canSendMetrics:v117 error:&v133];
+    LOBYTE(v116) = enabled;
+    [(OTClique *)v131 resetAndEstablish:3 idmsTargetContext:0 idmsCuttlefishPassword:0 notifyIdMS:0 accountSettings:v89 isGuitarfish:isGuitarfish accountIsW:v116 altDSID:altDSID2 flowID:flowID deviceSessionID:deviceSessionID canSendMetrics:v117 error:&v133];
     v94 = v133;
 
     v95 = v88;
-    v8 = v87;
+    argumentsCopy = v87;
     v28 = 0;
 
     v96 = _OctagonSignpostGetNanoseconds(v121, v95);
@@ -8731,10 +8731,10 @@ LABEL_6:
         _os_log_impl(&dword_1887D2000, v100, OS_LOG_TYPE_DEFAULT, "failed to reset octagon: %@", v139, 0xCu);
       }
 
-      if (a5)
+      if (error)
       {
         v102 = v94;
-        *a5 = v94;
+        *error = v94;
       }
 
       v103 = _OctagonSignpostGetNanoseconds(spid, v127);
@@ -8833,10 +8833,10 @@ LABEL_117:
     goto LABEL_114;
   }
 
-  if (a5)
+  if (error)
   {
     [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:-4 userInfo:0];
-    *a5 = v20 = 0;
+    *error = v20 = 0;
   }
 
   else
@@ -8924,19 +8924,19 @@ void __36__OTClique_isCloudServicesAvailable__block_invoke()
   }
 }
 
-+ (id)newFriendsWithContextData:(id)a3 resetReason:(int64_t)a4 error:(id *)a5
++ (id)newFriendsWithContextData:(id)data resetReason:(int64_t)reason error:(id *)error
 {
   v67 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  dataCopy = data;
   v7 = secLogObjForScope("clique-newfriends");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v6 context];
-    v9 = [v6 altDSID];
+    context = [dataCopy context];
+    altDSID = [dataCopy altDSID];
     *buf = 138412546;
-    *&buf[4] = v8;
+    *&buf[4] = context;
     *&buf[12] = 2112;
-    *&buf[14] = v9;
+    *&buf[14] = altDSID;
     _os_log_impl(&dword_1887D2000, v7, OS_LOG_TYPE_DEFAULT, "makeNewFriends invoked using context: %@, altdsid: %@", buf, 0x16u);
   }
 
@@ -8962,7 +8962,7 @@ void __36__OTClique_isCloudServicesAvailable__block_invoke()
   }
 
   v56 = 0;
-  v51 = [v6 makeOTControl:&v56];
+  v51 = [dataCopy makeOTControl:&v56];
   v50 = v56;
   if (v51)
   {
@@ -8978,7 +8978,7 @@ void __36__OTClique_isCloudServicesAvailable__block_invoke()
     v54[3] = __Block_byref_object_copy__5565;
     v54[4] = __Block_byref_object_dispose__5566;
     v55 = 0;
-    v17 = [[OTControlArguments alloc] initWithConfiguration:v6];
+    v17 = [[OTControlArguments alloc] initWithConfiguration:dataCopy];
     v53[0] = MEMORY[0x1E69E9820];
     v53[1] = 3221225472;
     v53[2] = __56__OTClique_newFriendsWithContextData_resetReason_error___block_invoke;
@@ -8989,25 +8989,25 @@ void __36__OTClique_isCloudServicesAvailable__block_invoke()
 
     if ([*(*&buf[8] + 40) hasWalrus])
     {
-      v18 = [*(*&buf[8] + 40) walrus];
-      v19 = [v18 enabled];
+      walrus = [*(*&buf[8] + 40) walrus];
+      enabled = [walrus enabled];
     }
 
     else
     {
-      v19 = 0;
+      enabled = 0;
     }
 
     v26 = v12;
-    v49 = [[OTClique alloc] initWithContextData:v6];
-    v27 = [v6 isGuitarfish];
-    v28 = [v6 altDSID];
-    v29 = [v6 flowID];
-    v30 = [v6 deviceSessionID];
+    v49 = [[OTClique alloc] initWithContextData:dataCopy];
+    isGuitarfish = [dataCopy isGuitarfish];
+    altDSID2 = [dataCopy altDSID];
+    flowID = [dataCopy flowID];
+    deviceSessionID = [dataCopy deviceSessionID];
     v52 = 0;
     LOBYTE(v47) = 1;
-    LOBYTE(v46) = v19;
-    [(OTClique *)v49 resetAndEstablish:a4 idmsTargetContext:0 idmsCuttlefishPassword:0 notifyIdMS:0 accountSettings:0 isGuitarfish:v27 accountIsW:v46 altDSID:v28 flowID:v29 deviceSessionID:v30 canSendMetrics:v47 error:&v52];
+    LOBYTE(v46) = enabled;
+    [(OTClique *)v49 resetAndEstablish:reason idmsTargetContext:0 idmsCuttlefishPassword:0 notifyIdMS:0 accountSettings:0 isGuitarfish:isGuitarfish accountIsW:v46 altDSID:altDSID2 flowID:flowID deviceSessionID:deviceSessionID canSendMetrics:v47 error:&v52];
     v31 = v52;
 
     v32 = secLogObjForScope("clique-newfriends");
@@ -9021,10 +9021,10 @@ void __36__OTClique_isCloudServicesAvailable__block_invoke()
         _os_log_impl(&dword_1887D2000, v32, OS_LOG_TYPE_DEFAULT, "account reset failed: %@", v57, 0xCu);
       }
 
-      if (a5)
+      if (error)
       {
         v34 = v31;
-        *a5 = v31;
+        *error = v31;
       }
 
       Nanoseconds = _OctagonSignpostGetNanoseconds(v11, v26);

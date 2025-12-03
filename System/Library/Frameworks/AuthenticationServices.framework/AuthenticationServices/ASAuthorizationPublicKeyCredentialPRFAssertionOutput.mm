@@ -1,8 +1,8 @@
 @interface ASAuthorizationPublicKeyCredentialPRFAssertionOutput
 - (ASAuthorizationPublicKeyCredentialPRFAssertionOutput)init;
-- (ASAuthorizationPublicKeyCredentialPRFAssertionOutput)initWithFirst:(id)a3 second:(id)a4;
+- (ASAuthorizationPublicKeyCredentialPRFAssertionOutput)initWithFirst:(id)first second:(id)second;
 - (NSData)first;
-- (void)setFirst:(id)a3;
+- (void)setFirst:(id)first;
 @end
 
 @implementation ASAuthorizationPublicKeyCredentialPRFAssertionOutput
@@ -20,14 +20,14 @@
   return v5;
 }
 
-- (void)setFirst:(id)a3
+- (void)setFirst:(id)first
 {
-  v4 = a3;
-  v5 = self;
+  firstCopy = first;
+  selfCopy = self;
   v6 = sub_1B1D7B4EC();
   v8 = v7;
 
-  v9 = (v5 + OBJC_IVAR___ASAuthorizationPublicKeyCredentialPRFAssertionOutput_first);
+  v9 = (selfCopy + OBJC_IVAR___ASAuthorizationPublicKeyCredentialPRFAssertionOutput_first);
   swift_beginAccess();
   v10 = *v9;
   v11 = v9[1];
@@ -36,14 +36,14 @@
   sub_1B1CDEFDC(v10, v11);
 }
 
-- (ASAuthorizationPublicKeyCredentialPRFAssertionOutput)initWithFirst:(id)a3 second:(id)a4
+- (ASAuthorizationPublicKeyCredentialPRFAssertionOutput)initWithFirst:(id)first second:(id)second
 {
-  v6 = a3;
-  v7 = a4;
+  firstCopy = first;
+  secondCopy = second;
   v8 = sub_1B1D7B4EC();
   v10 = v9;
 
-  if (v7)
+  if (secondCopy)
   {
     v11 = sub_1B1D7B4EC();
     v13 = v12;

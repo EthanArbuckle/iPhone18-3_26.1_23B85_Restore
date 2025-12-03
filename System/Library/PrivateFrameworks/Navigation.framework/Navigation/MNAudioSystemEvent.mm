@@ -1,6 +1,6 @@
 @interface MNAudioSystemEvent
-- (BOOL)isEqualToEvent:(id)a3;
-- (MNAudioSystemEvent)initWithUtterance:(id)a3 andShortPrompt:(unint64_t)a4 andVoiceGuidanceLevel:(unint64_t)a5 andCompletion:(id)a6;
+- (BOOL)isEqualToEvent:(id)event;
+- (MNAudioSystemEvent)initWithUtterance:(id)utterance andShortPrompt:(unint64_t)prompt andVoiceGuidanceLevel:(unint64_t)level andCompletion:(id)completion;
 - (id)description;
 @end
 
@@ -8,7 +8,7 @@
 
 - (id)description
 {
-  v2 = self;
+  selfCopy = self;
   v49[5] = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E696AD60];
   v35.receiver = self;
@@ -16,20 +16,20 @@
   v4 = [(MNAudioSystemEvent *)&v35 description];
   v5 = [v3 stringWithString:v4];
 
-  v6 = [(MNAudioSystemEvent *)v2 utterance];
-  v7 = [v6 length];
+  utterance = [(MNAudioSystemEvent *)selfCopy utterance];
+  v7 = [utterance length];
 
   if (v7)
   {
-    v8 = [(MNAudioSystemEvent *)v2 utterance];
-    [v5 appendFormat:@" utterance: '%@'", v8];
+    utterance2 = [(MNAudioSystemEvent *)selfCopy utterance];
+    [v5 appendFormat:@" utterance: '%@'", utterance2];
   }
 
-  if ([(MNAudioSystemEvent *)v2 shortPrompt])
+  if ([(MNAudioSystemEvent *)selfCopy shortPrompt])
   {
-    v33 = v2;
+    v33 = selfCopy;
     v34 = v5;
-    v9 = [(MNAudioSystemEvent *)v2 shortPrompt];
+    shortPrompt = [(MNAudioSystemEvent *)selfCopy shortPrompt];
     v48[0] = &unk_1F4EE28C0;
     v48[1] = &unk_1F4EE28D8;
     v49[0] = @"Continuation";
@@ -53,8 +53,8 @@
     v41 = 0u;
     v42 = 0u;
     v43 = 0u;
-    v13 = [v10 allKeys];
-    v14 = [v13 countByEnumeratingWithState:&v40 objects:v45 count:16];
+    allKeys = [v10 allKeys];
+    v14 = [allKeys countByEnumeratingWithState:&v40 objects:v45 count:16];
     if (v14)
     {
       v15 = v14;
@@ -65,18 +65,18 @@
         {
           if (*v41 != v16)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(allKeys);
           }
 
           v18 = *(*(&v40 + 1) + 8 * i);
-          if ((v9 & 0xF) == [v18 unsignedIntegerValue])
+          if ((shortPrompt & 0xF) == [v18 unsignedIntegerValue])
           {
             v19 = [v10 objectForKeyedSubscript:v18];
             [v12 addObject:v19];
           }
         }
 
-        v15 = [v13 countByEnumeratingWithState:&v40 objects:v45 count:16];
+        v15 = [allKeys countByEnumeratingWithState:&v40 objects:v45 count:16];
       }
 
       while (v15);
@@ -86,8 +86,8 @@
     v39 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v20 = [v11 allKeys];
-    v21 = [v20 countByEnumeratingWithState:&v36 objects:v44 count:16];
+    allKeys2 = [v11 allKeys];
+    v21 = [allKeys2 countByEnumeratingWithState:&v36 objects:v44 count:16];
     if (v21)
     {
       v22 = v21;
@@ -98,18 +98,18 @@
         {
           if (*v37 != v23)
           {
-            objc_enumerationMutation(v20);
+            objc_enumerationMutation(allKeys2);
           }
 
           v25 = *(*(&v36 + 1) + 8 * j);
-          if (([v25 unsignedIntegerValue] & ~v9) == 0)
+          if (([v25 unsignedIntegerValue] & ~shortPrompt) == 0)
           {
             v26 = [v11 objectForKeyedSubscript:v25];
             [v12 addObject:v26];
           }
         }
 
-        v22 = [v20 countByEnumeratingWithState:&v36 objects:v44 count:16];
+        v22 = [allKeys2 countByEnumeratingWithState:&v36 objects:v44 count:16];
       }
 
       while (v22);
@@ -120,12 +120,12 @@
     v5 = v34;
     [v34 appendFormat:@" instructions: %@", v27];
 
-    v2 = v33;
+    selfCopy = v33;
   }
 
-  v28 = [(MNAudioSystemEvent *)v2 handler];
+  handler = [(MNAudioSystemEvent *)selfCopy handler];
   v29 = @"with completion handler";
-  if (!v28)
+  if (!handler)
   {
     v29 = @"with no completion handler";
   }
@@ -138,31 +138,31 @@
   return v30;
 }
 
-- (BOOL)isEqualToEvent:(id)a3
+- (BOOL)isEqualToEvent:(id)event
 {
-  v4 = a3;
-  if (!v4 || ![v4 isMemberOfClass:objc_opt_class()])
+  eventCopy = event;
+  if (!eventCopy || ![eventCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_9;
   }
 
-  v5 = [(MNAudioSystemEvent *)self utterance];
-  v6 = [v5 length];
+  utterance = [(MNAudioSystemEvent *)self utterance];
+  v6 = [utterance length];
 
-  v7 = [v4 utterance];
-  v8 = v7;
+  utterance2 = [eventCopy utterance];
+  v8 = utterance2;
   if (!v6)
   {
-    if ([v7 length])
+    if ([utterance2 length])
     {
     }
 
     else
     {
-      v12 = [v4 shortPrompt];
-      v13 = [(MNAudioSystemEvent *)self shortPrompt];
+      shortPrompt = [eventCopy shortPrompt];
+      shortPrompt2 = [(MNAudioSystemEvent *)self shortPrompt];
 
-      if (v12 == v13)
+      if (shortPrompt == shortPrompt2)
       {
         goto LABEL_5;
       }
@@ -173,8 +173,8 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v9 = [(MNAudioSystemEvent *)self utterance];
-  v10 = [v8 isEqualToString:v9];
+  utterance3 = [(MNAudioSystemEvent *)self utterance];
+  v10 = [v8 isEqualToString:utterance3];
 
   if ((v10 & 1) == 0)
   {
@@ -188,33 +188,33 @@ LABEL_10:
   return v11;
 }
 
-- (MNAudioSystemEvent)initWithUtterance:(id)a3 andShortPrompt:(unint64_t)a4 andVoiceGuidanceLevel:(unint64_t)a5 andCompletion:(id)a6
+- (MNAudioSystemEvent)initWithUtterance:(id)utterance andShortPrompt:(unint64_t)prompt andVoiceGuidanceLevel:(unint64_t)level andCompletion:(id)completion
 {
-  v10 = a3;
-  v11 = a6;
-  if ([v10 length] | a4 && (v18.receiver = self, v18.super_class = MNAudioSystemEvent, (self = -[MNAudioSystemEvent init](&v18, sel_init)) != 0))
+  utteranceCopy = utterance;
+  completionCopy = completion;
+  if ([utteranceCopy length] | prompt && (v18.receiver = self, v18.super_class = MNAudioSystemEvent, (self = -[MNAudioSystemEvent init](&v18, sel_init)) != 0))
   {
-    self->_isPrivate = [v10 _navigation_isPrivate];
-    v12 = [v10 _navigation_stringByStrippingPrivateTag];
+    self->_isPrivate = [utteranceCopy _navigation_isPrivate];
+    _navigation_stringByStrippingPrivateTag = [utteranceCopy _navigation_stringByStrippingPrivateTag];
     utterance = self->_utterance;
-    self->_utterance = v12;
+    self->_utterance = _navigation_stringByStrippingPrivateTag;
 
-    self->_shortPrompt = a4;
-    self->_guidanceLevel = a5;
-    v14 = [v11 copy];
+    self->_shortPrompt = prompt;
+    self->_guidanceLevel = level;
+    v14 = [completionCopy copy];
     handler = self->_handler;
     self->_handler = v14;
 
     self = self;
-    v16 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v16 = 0;
+    selfCopy = 0;
   }
 
-  return v16;
+  return selfCopy;
 }
 
 @end

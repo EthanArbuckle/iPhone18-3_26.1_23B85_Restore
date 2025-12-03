@@ -1,17 +1,17 @@
 @interface SKButtonNode
-+ (id)buttonWithFontNamed:(id)a3;
++ (id)buttonWithFontNamed:(id)named;
 - (SKButtonNode)init;
-- (SKButtonNode)initWithCoder:(id)a3;
+- (SKButtonNode)initWithCoder:(id)coder;
 - (SKButtonNodeDelegate)delegate;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)onTouchDownInside:(id)a3;
-- (void)onTouchUp:(id)a3;
-- (void)onTouchUpInside:(id)a3;
-- (void)touchBegan:(unint64_t)a3 location:(CGPoint)a4;
-- (void)touchEnded:(unint64_t)a3 location:(CGPoint)a4;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
+- (void)onTouchDownInside:(id)inside;
+- (void)onTouchUp:(id)up;
+- (void)onTouchUpInside:(id)inside;
+- (void)touchBegan:(unint64_t)began location:(CGPoint)location;
+- (void)touchEnded:(unint64_t)ended location:(CGPoint)location;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
 @end
 
 @implementation SKButtonNode
@@ -48,54 +48,54 @@
   return v3;
 }
 
-+ (id)buttonWithFontNamed:(id)a3
++ (id)buttonWithFontNamed:(id)named
 {
-  v3 = a3;
-  v4 = [objc_opt_class() labelNodeWithFontNamed:v3];
+  namedCopy = named;
+  v4 = [objc_opt_class() labelNodeWithFontNamed:namedCopy];
 
   return v4;
 }
 
-- (SKButtonNode)initWithCoder:(id)a3
+- (SKButtonNode)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = SKButtonNode;
-  v5 = [(SKLabelNode *)&v10 initWithCoder:v4];
+  v5 = [(SKLabelNode *)&v10 initWithCoder:coderCopy];
   v6 = v5;
   if (v5)
   {
     [(SKNode *)v5 setUserInteractionEnabled:1];
     v6->_touches = 0;
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_downAction"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_downAction"];
     [(SKButtonNode *)v6 setDownAction:v7];
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_upAction"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_upAction"];
     [(SKButtonNode *)v6 setUpAction:v8];
   }
 
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = SKButtonNode;
-  v4 = a3;
-  [(SKLabelNode *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_downAction forKey:{@"_downAction", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_upAction forKey:@"_upAction"];
+  coderCopy = coder;
+  [(SKLabelNode *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_downAction forKey:{@"_downAction", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_upAction forKey:@"_upAction"];
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  beganCopy = began;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  v6 = [beganCopy countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v6)
   {
     v7 = v6;
@@ -109,17 +109,17 @@
       {
         if (*v19 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(beganCopy);
         }
 
         v12 = *(*(&v18 + 1) + 8 * v11);
-        v13 = [(SKNode *)self scene];
+        scene = [(SKNode *)self scene];
         v14 = v10;
         v15 = v9;
-        if (v13)
+        if (scene)
         {
-          [v12 locationInNode:v13];
-          [(SKNode *)self convertPoint:v13 fromNode:?];
+          [v12 locationInNode:scene];
+          [(SKNode *)self convertPoint:scene fromNode:?];
           v15 = v16;
           v14 = v17;
         }
@@ -130,22 +130,22 @@
       }
 
       while (v7 != v11);
-      v7 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v7 = [beganCopy countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  endedCopy = ended;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  v6 = [endedCopy countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v6)
   {
     v7 = v6;
@@ -159,17 +159,17 @@
       {
         if (*v19 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(endedCopy);
         }
 
         v12 = *(*(&v18 + 1) + 8 * v11);
-        v13 = [(SKNode *)self scene];
+        scene = [(SKNode *)self scene];
         v14 = v10;
         v15 = v9;
-        if (v13)
+        if (scene)
         {
-          [v12 locationInNode:v13];
-          [(SKNode *)self convertPoint:v13 fromNode:?];
+          [v12 locationInNode:scene];
+          [(SKNode *)self convertPoint:scene fromNode:?];
           v15 = v16;
           v14 = v17;
         }
@@ -180,14 +180,14 @@
       }
 
       while (v7 != v11);
-      v7 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v7 = [endedCopy countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)touchBegan:(unint64_t)a3 location:(CGPoint)a4
+- (void)touchBegan:(unint64_t)began location:(CGPoint)location
 {
   touches = self->_touches;
   self->_touches = touches + 1;
@@ -195,7 +195,7 @@
   {
     if (self->_downAction)
     {
-      [(SKNode *)self removeActionForKey:@"SKButtonNode.action.up", a4.x, a4.y];
+      [(SKNode *)self removeActionForKey:@"SKButtonNode.action.up", location.x, location.y];
       [(SKNode *)self runAction:self->_downAction withKey:@"SKButtonNode.action.down"];
     }
 
@@ -217,15 +217,15 @@
   }
 }
 
-- (void)touchEnded:(unint64_t)a3 location:(CGPoint)a4
+- (void)touchEnded:(unint64_t)ended location:(CGPoint)location
 {
   touches = self->_touches;
   v5 = __OFSUB__(touches--, 1);
   self->_touches = touches;
   if ((touches < 0) ^ v5 | (touches == 0))
   {
-    y = a4.y;
-    x = a4.x;
+    y = location.y;
+    x = location.x;
     self->_touches = 0;
     upAction = self->_upAction;
     if (upAction)
@@ -261,32 +261,32 @@
   }
 }
 
-- (void)onTouchUpInside:(id)a3
+- (void)onTouchUpInside:(id)inside
 {
-  v4 = MEMORY[0x21CF0AB10](a3, a2);
+  v4 = MEMORY[0x21CF0AB10](inside, a2);
   upInsideBlock = self->_upInsideBlock;
   self->_upInsideBlock = v4;
 }
 
-- (void)onTouchUp:(id)a3
+- (void)onTouchUp:(id)up
 {
-  v4 = MEMORY[0x21CF0AB10](a3, a2);
+  v4 = MEMORY[0x21CF0AB10](up, a2);
   upBlock = self->_upBlock;
   self->_upBlock = v4;
 }
 
-- (void)onTouchDownInside:(id)a3
+- (void)onTouchDownInside:(id)inside
 {
-  v4 = MEMORY[0x21CF0AB10](a3, a2);
+  v4 = MEMORY[0x21CF0AB10](inside, a2);
   downBlock = self->_downBlock;
   self->_downBlock = v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = SKButtonNode;
-  v4 = [(SKLabelNode *)&v7 copyWithZone:a3];
+  v4 = [(SKLabelNode *)&v7 copyWithZone:zone];
   objc_storeStrong(v4 + 19, self->_downAction);
   objc_storeStrong(v4 + 20, self->_upAction);
   WeakRetained = objc_loadWeakRetained(&self->_delegate);

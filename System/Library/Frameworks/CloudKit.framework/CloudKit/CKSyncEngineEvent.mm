@@ -58,7 +58,7 @@
   v7[13] = objc_opt_class();
   v7[14] = objc_opt_class();
   v5 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v4, v7, 15);
-  sub_1886CEE50(a1, v3, v5, 0, 1);
+  sub_1886CEE50(self, v3, v5, 0, 1);
 
   v6 = *MEMORY[0x1E69E9840];
 }

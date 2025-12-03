@@ -1,47 +1,47 @@
 @interface PMLTrainingStore
-+ (BOOL)_runQueries:(id)a3 andUpdateVersionTo:(unsigned int)a4 inTransactionOnDb:(id)a5 forStore:(id)a6;
-+ (id)_sessionDataToBatchWithNumberOfColumns:(unint64_t)a3 rowsData:(id)a4 labelsData:(id)a5;
-+ (id)getSchema:(unint64_t *)a3;
++ (BOOL)_runQueries:(id)queries andUpdateVersionTo:(unsigned int)to inTransactionOnDb:(id)db forStore:(id)store;
++ (id)_sessionDataToBatchWithNumberOfColumns:(unint64_t)columns rowsData:(id)data labelsData:(id)labelsData;
++ (id)getSchema:(unint64_t *)schema;
 + (id)inMemoryStoreForTesting;
-+ (int64_t)_migrate:(id)a3 forStore:(id)a4;
-+ (int64_t)migrate:(id)a3 to:(id)a4 forStore:(id)a5;
-+ (void)setLastUsedTimestampLimit:(double)a3;
++ (int64_t)_migrate:(id)_migrate forStore:(id)store;
++ (int64_t)migrate:(id)migrate to:(id)to forStore:(id)store;
++ (void)setLastUsedTimestampLimit:(double)limit;
 - (BOOL)_truncateDbIfCorrupted;
-- (PMLTrainingStore)initWithPath:(id)a3 allowSkipSchema:(BOOL)a4;
-- (id)getSchema:(unint64_t *)a3;
-- (id)lastTrainingFeaturizationForModelName:(id)a3 andLocale:(id)a4;
-- (id)sessionDimensionsForModel:(id)a3 startingRowId:(unint64_t)a4 onlyAppleInternal:(BOOL)a5 labelFilter:(id)a6;
+- (PMLTrainingStore)initWithPath:(id)path allowSkipSchema:(BOOL)schema;
+- (id)getSchema:(unint64_t *)schema;
+- (id)lastTrainingFeaturizationForModelName:(id)name andLocale:(id)locale;
+- (id)sessionDimensionsForModel:(id)model startingRowId:(unint64_t)id onlyAppleInternal:(BOOL)internal labelFilter:(id)filter;
 - (id)sessionStats;
-- (id)sessionStatsForSessionDescriptor:(id)a3;
+- (id)sessionStatsForSessionDescriptor:(id)descriptor;
 - (int64_t)_openDbIfUnlocked;
 - (int64_t)_unsafeOpenDbIfUnlocked;
-- (unint64_t)numberOfRowsInTable:(id)a3;
-- (unint64_t)sessionDescriptorIdFor:(id)a3;
-- (void)_loadBatchForModel:(id)a3 privacyBudgetRefreshPeriod:(double)a4 labels:(id)a5 batchSize:(unint64_t)a6 block:(id)a7;
-- (void)_loadDataForModel:(id)a3 positiveRowId:(unint64_t)a4 negativeRowId:(unint64_t)a5 excludeItemIdsUsedWithin:(double)a6 limit:(unint64_t)a7 onlyAppleInternal:(BOOL)a8 positiveLabel:(unint64_t)a9 skew:(double)a10 block:(id)a11;
-- (void)_loadDataForModel:(id)a3 privacyBudgetRefreshPeriod:(double)a4 labelAndStartRows:(id)a5 batchSize:(unint64_t)a6 supportPerLabel:(unint64_t)a7 block:(id)a8;
-- (void)_loadDataFromLabelAndTuples:(id)a3 model:(id)a4 numberOfRows:(unint64_t)a5 numberOfColumns:(unint64_t)a6 lastUsedMax:(double)a7 block:(id)a8;
+- (unint64_t)numberOfRowsInTable:(id)table;
+- (unint64_t)sessionDescriptorIdFor:(id)for;
+- (void)_loadBatchForModel:(id)model privacyBudgetRefreshPeriod:(double)period labels:(id)labels batchSize:(unint64_t)size block:(id)block;
+- (void)_loadDataForModel:(id)model positiveRowId:(unint64_t)id negativeRowId:(unint64_t)rowId excludeItemIdsUsedWithin:(double)within limit:(unint64_t)limit onlyAppleInternal:(BOOL)internal positiveLabel:(unint64_t)label skew:(double)self0 block:(id)self1;
+- (void)_loadDataForModel:(id)model privacyBudgetRefreshPeriod:(double)period labelAndStartRows:(id)rows batchSize:(unint64_t)size supportPerLabel:(unint64_t)label block:(id)block;
+- (void)_loadDataFromLabelAndTuples:(id)tuples model:(id)model numberOfRows:(unint64_t)rows numberOfColumns:(unint64_t)columns lastUsedMax:(double)max block:(id)block;
 - (void)_registerUnlockHandler;
 - (void)_unregisterUnlockHandler;
 - (void)closeDbForTesting;
-- (void)convertToBagOfIdsVectorForModel:(id)a3;
+- (void)convertToBagOfIdsVectorForModel:(id)model;
 - (void)dealloc;
-- (void)deleteSessionsWithBundleId:(id)a3;
-- (void)deleteSessionsWithBundleId:(id)a3 domainId:(id)a4;
-- (void)deleteSessionsWithBundleId:(id)a3 itemId:(id)a4;
-- (void)enumerateSessionDescriptorsUsingBlock:(id)a3;
-- (void)limitSessionsByLastUsedTTL:(double)a3;
+- (void)deleteSessionsWithBundleId:(id)id;
+- (void)deleteSessionsWithBundleId:(id)id domainId:(id)domainId;
+- (void)deleteSessionsWithBundleId:(id)id itemId:(id)itemId;
+- (void)enumerateSessionDescriptorsUsingBlock:(id)block;
+- (void)limitSessionsByLastUsedTTL:(double)l;
 - (void)limitSessionsByMaxTimesAccessed;
-- (void)limitSessionsForEachLabelWithSessionDescriptor:(id)a3 totalSessionLimit:(unint64_t)a4;
-- (void)limitSessionsWithSessionDescriptor:(id)a3 withLabel:(id)a4 limit:(unint64_t)a5;
-- (void)loadDataForModel:(id)a3 privacyBudgetRefreshPeriod:(double)a4 labels:(id)a5 batchSize:(unint64_t)a6 block:(id)a7;
-- (void)loadSessionsForModel:(id)a3 privacyBudgetRefreshPeriod:(double)a4 labels:(id)a5 batchSize:(unint64_t)a6 block:(id)a7;
+- (void)limitSessionsForEachLabelWithSessionDescriptor:(id)descriptor totalSessionLimit:(unint64_t)limit;
+- (void)limitSessionsWithSessionDescriptor:(id)descriptor withLabel:(id)label limit:(unint64_t)limit;
+- (void)loadDataForModel:(id)model privacyBudgetRefreshPeriod:(double)period labels:(id)labels batchSize:(unint64_t)size block:(id)block;
+- (void)loadSessionsForModel:(id)model privacyBudgetRefreshPeriod:(double)period labels:(id)labels batchSize:(unint64_t)size block:(id)block;
 - (void)logDbNotOpenEvent;
-- (void)setMaxTimesAccessed:(unint64_t)a3;
-- (void)storeSession:(id)a3 label:(int64_t)a4 model:(id)a5;
-- (void)storeSession:(id)a3 label:(int64_t)a4 model:(id)a5 bundleId:(id)a6 domainId:(id)a7 itemIds:(id)a8 isAppleInternal:(BOOL)a9;
-- (void)updateLastTrainingFeaturizationForModel:(id)a3 andData:(id)a4;
-- (void)vacuumDbWithDeferralBlock:(id)a3;
+- (void)setMaxTimesAccessed:(unint64_t)accessed;
+- (void)storeSession:(id)session label:(int64_t)label model:(id)model;
+- (void)storeSession:(id)session label:(int64_t)label model:(id)model bundleId:(id)id domainId:(id)domainId itemIds:(id)ids isAppleInternal:(BOOL)internal;
+- (void)updateLastTrainingFeaturizationForModel:(id)model andData:(id)data;
+- (void)vacuumDbWithDeferralBlock:(id)block;
 @end
 
 @implementation PMLTrainingStore
@@ -53,15 +53,15 @@
   self->_db = 0;
 }
 
-- (unint64_t)numberOfRowsInTable:(id)a3
+- (unint64_t)numberOfRowsInTable:(id)table
 {
-  v4 = a3;
+  tableCopy = table;
   v5 = objc_autoreleasePoolPush();
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0x7FFFFFFFFFFFFFFFLL;
-  v6 = [@"SELECT count(*) FROM " stringByAppendingString:v4];
+  v6 = [@"SELECT count(*) FROM " stringByAppendingString:tableCopy];
   db = self->_db;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
@@ -77,17 +77,17 @@
   return v8;
 }
 
-- (void)storeSession:(id)a3 label:(int64_t)a4 model:(id)a5
+- (void)storeSession:(id)session label:(int64_t)label model:(id)model
 {
   v15[1] = *MEMORY[0x277D85DE8];
   v8 = MEMORY[0x277CCACA8];
-  v9 = a5;
-  v10 = a3;
+  modelCopy = model;
+  sessionCopy = session;
   v11 = [v8 stringWithFormat:@"%d", arc4random_uniform(0x2710u)];
   v15[0] = v11;
   v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:1];
   LOBYTE(v14) = 1;
-  [(PMLTrainingStore *)self storeSession:v10 label:a4 model:v9 bundleId:@"test" domainId:@"foo" itemIds:v12 isAppleInternal:v14];
+  [(PMLTrainingStore *)self storeSession:sessionCopy label:label model:modelCopy bundleId:@"test" domainId:@"foo" itemIds:v12 isAppleInternal:v14];
 
   v13 = *MEMORY[0x277D85DE8];
 }
@@ -102,16 +102,16 @@
     v6 = 138412802;
     v7 = db;
     v8 = 1024;
-    v9 = [MEMORY[0x277D42598] isUnlocked];
+    isUnlocked = [MEMORY[0x277D42598] isUnlocked];
     v10 = 1024;
-    v11 = [MEMORY[0x277D42598] isClassCLocked];
+    isClassCLocked = [MEMORY[0x277D42598] isClassCLocked];
     _os_log_impl(&dword_260D68000, v3, OS_LOG_TYPE_DEFAULT, "db: %@, isUnlocked: %d, isClassCLocked: %d", &v6, 0x18u);
   }
 
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setMaxTimesAccessed:(unint64_t)a3
+- (void)setMaxTimesAccessed:(unint64_t)accessed
 {
   v3 = PML_LogHandle();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_FAULT))
@@ -121,7 +121,7 @@
   }
 }
 
-- (id)getSchema:(unint64_t *)a3
+- (id)getSchema:(unint64_t *)schema
 {
   if (getSchema___pasOnceToken828 != -1)
   {
@@ -149,9 +149,9 @@
   v10[3] = &unk_279AC0110;
   v10[4] = &v14;
   [(_PASSqliteDatabase *)db prepAndRunQuery:@"SELECT sql FROM sqlite_master WHERE sql IS NOT NULL AND tbl_name NOT LIKE 'sqlite_%' " onPrep:0 onRow:v11 onError:v10];
-  if (a3)
+  if (schema)
   {
-    *a3 = [(_PASSqliteDatabase *)self->_db userVersion];
+    *schema = [(_PASSqliteDatabase *)self->_db userVersion];
   }
 
   v8 = v15[5];
@@ -212,9 +212,9 @@ void __30__PMLTrainingStore_getSchema___block_invoke()
   objc_autoreleasePoolPop(v0);
 }
 
-- (void)convertToBagOfIdsVectorForModel:(id)a3
+- (void)convertToBagOfIdsVectorForModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   v5 = objc_autoreleasePoolPush();
   db = self->_db;
   v8[0] = MEMORY[0x277D85DD0];
@@ -222,7 +222,7 @@ void __30__PMLTrainingStore_getSchema___block_invoke()
   v8[2] = __52__PMLTrainingStore_convertToBagOfIdsVectorForModel___block_invoke;
   v8[3] = &unk_279AC00C0;
   v8[4] = self;
-  v7 = v4;
+  v7 = modelCopy;
   v9 = v7;
   [(_PASSqliteDatabase *)db writeTransaction:v8];
 
@@ -322,20 +322,20 @@ uint64_t __52__PMLTrainingStore_convertToBagOfIdsVectorForModel___block_invoke_3
   return *MEMORY[0x277D42690];
 }
 
-- (void)updateLastTrainingFeaturizationForModel:(id)a3 andData:(id)a4
+- (void)updateLastTrainingFeaturizationForModel:(id)model andData:(id)data
 {
-  v6 = a3;
-  v7 = a4;
+  modelCopy = model;
+  dataCopy = data;
   db = self->_db;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __68__PMLTrainingStore_updateLastTrainingFeaturizationForModel_andData___block_invoke;
   v11[3] = &unk_279AC0098;
   v11[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = modelCopy;
+  v13 = dataCopy;
+  v9 = dataCopy;
+  v10 = modelCopy;
   [(_PASSqliteDatabase *)db writeTransaction:v11];
 }
 
@@ -411,10 +411,10 @@ uint64_t __68__PMLTrainingStore_updateLastTrainingFeaturizationForModel_andData_
   return *MEMORY[0x277D42698];
 }
 
-- (id)lastTrainingFeaturizationForModelName:(id)a3 andLocale:(id)a4
+- (id)lastTrainingFeaturizationForModelName:(id)name andLocale:(id)locale
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  localeCopy = locale;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -426,8 +426,8 @@ uint64_t __68__PMLTrainingStore_updateLastTrainingFeaturizationForModel_andData_
   v17[1] = 3221225472;
   v17[2] = __68__PMLTrainingStore_lastTrainingFeaturizationForModelName_andLocale___block_invoke;
   v17[3] = &unk_279ABFE98;
-  v18 = v6;
-  v19 = v7;
+  v18 = nameCopy;
+  v19 = localeCopy;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __68__PMLTrainingStore_lastTrainingFeaturizationForModelName_andLocale___block_invoke_2;
@@ -519,16 +519,16 @@ uint64_t __68__PMLTrainingStore_lastTrainingFeaturizationForModelName_andLocale_
   return *MEMORY[0x277D42698];
 }
 
-- (void)vacuumDbWithDeferralBlock:(id)a3
+- (void)vacuumDbWithDeferralBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   db = self->_db;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __46__PMLTrainingStore_vacuumDbWithDeferralBlock___block_invoke;
   v7[3] = &unk_279ABFFF8;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   [(_PASSqliteDatabase *)db vacuumWithShouldContinueBlock:v7 error:0];
 }
 
@@ -539,7 +539,7 @@ uint64_t __68__PMLTrainingStore_lastTrainingFeaturizationForModelName_andLocale_
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v7 = self;
+    selfCopy = self;
     _os_log_debug_impl(&dword_260D68000, v3, OS_LOG_TYPE_DEBUG, "%@ deallocating", buf, 0xCu);
   }
 
@@ -562,8 +562,8 @@ uint64_t __68__PMLTrainingStore_lastTrainingFeaturizationForModelName_andLocale_
   else
   {
     v4 = [MEMORY[0x277D42630] corruptionMarkerPathForPath:self->_dbPath];
-    v5 = [MEMORY[0x277CCAA00] defaultManager];
-    v3 = [v5 fileExistsAtPath:v4];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    v3 = [defaultManager fileExistsAtPath:v4];
 
     if (v3)
     {
@@ -577,8 +577,8 @@ uint64_t __68__PMLTrainingStore_lastTrainingFeaturizationForModelName_andLocale_
       }
 
       [MEMORY[0x277D42630] truncateDatabaseAtPath:self->_dbPath];
-      v8 = [MEMORY[0x277CCAA00] defaultManager];
-      [v8 removeItemAtPath:v4 error:0];
+      defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+      [defaultManager2 removeItemAtPath:v4 error:0];
     }
   }
 
@@ -685,9 +685,9 @@ uint64_t __43__PMLTrainingStore__unsafeOpenDbIfUnlocked__block_invoke()
 - (int64_t)_openDbIfUnlocked
 {
   pthread_mutex_lock(&_openDbIfUnlocked_openDbMutex);
-  v3 = [(PMLTrainingStore *)self _unsafeOpenDbIfUnlocked];
+  _unsafeOpenDbIfUnlocked = [(PMLTrainingStore *)self _unsafeOpenDbIfUnlocked];
   pthread_mutex_unlock(&_openDbIfUnlocked_openDbMutex);
-  return v3;
+  return _unsafeOpenDbIfUnlocked;
 }
 
 - (void)_unregisterUnlockHandler
@@ -704,8 +704,8 @@ uint64_t __43__PMLTrainingStore__unsafeOpenDbIfUnlocked__block_invoke()
 {
   if (self->_lockStateNotificationToken)
   {
-    v7 = [MEMORY[0x277CCA890] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"PMLTrainingStore.m" lineNumber:1005 description:{@"Invalid parameter not satisfying: %@", @"!_lockStateNotificationToken"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PMLTrainingStore.m" lineNumber:1005 description:{@"Invalid parameter not satisfying: %@", @"!_lockStateNotificationToken"}];
   }
 
   objc_initWeak(&location, self);
@@ -743,9 +743,9 @@ void __42__PMLTrainingStore__registerUnlockHandler__block_invoke(uint64_t a1, in
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (unint64_t)sessionDescriptorIdFor:(id)a3
+- (unint64_t)sessionDescriptorIdFor:(id)for
 {
-  v4 = a3;
+  forCopy = for;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -756,7 +756,7 @@ void __42__PMLTrainingStore__registerUnlockHandler__block_invoke(uint64_t a1, in
   v9[2] = __43__PMLTrainingStore_sessionDescriptorIdFor___block_invoke;
   v9[3] = &unk_279ABFFA8;
   v9[4] = self;
-  v6 = v4;
+  v6 = forCopy;
   v10 = v6;
   v11 = &v12;
   [(_PASSqliteDatabase *)db writeTransaction:v9];
@@ -817,16 +817,16 @@ void __43__PMLTrainingStore_sessionDescriptorIdFor___block_invoke_2(uint64_t a1,
   [v4 bindNamedParam:":locale" toNSString:v7];
 }
 
-- (void)enumerateSessionDescriptorsUsingBlock:(id)a3
+- (void)enumerateSessionDescriptorsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   db = self->_db;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __58__PMLTrainingStore_enumerateSessionDescriptorsUsingBlock___block_invoke_2;
   v7[3] = &unk_279ABFF80;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   [(_PASSqliteDatabase *)db prepAndRunQuery:@"SELECT name onPrep:version onRow:locale FROM sessionsDescriptors" onError:&__block_literal_global_237, v7, 0];
 }
 
@@ -883,11 +883,11 @@ uint64_t __58__PMLTrainingStore_enumerateSessionDescriptorsUsingBlock___block_in
   return v10;
 }
 
-- (id)sessionStatsForSessionDescriptor:(id)a3
+- (id)sessionStatsForSessionDescriptor:(id)descriptor
 {
-  v4 = a3;
-  v5 = [(PMLTrainingStore *)self sessionStats];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  descriptorCopy = descriptor;
+  sessionStats = [(PMLTrainingStore *)self sessionStats];
+  v6 = [sessionStats objectForKeyedSubscript:descriptorCopy];
 
   return v6;
 }
@@ -997,17 +997,17 @@ uint64_t __32__PMLTrainingStore_sessionStats__block_invoke_230(uint64_t a1, void
   return *MEMORY[0x277D42698];
 }
 
-- (void)deleteSessionsWithBundleId:(id)a3 domainId:(id)a4
+- (void)deleteSessionsWithBundleId:(id)id domainId:(id)domainId
 {
-  v6 = a3;
-  v7 = a4;
+  idCopy = id;
+  domainIdCopy = domainId;
   db = self->_db;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __56__PMLTrainingStore_deleteSessionsWithBundleId_domainId___block_invoke;
   v14[3] = &unk_279ABFE98;
-  v15 = v6;
-  v16 = v7;
+  v15 = idCopy;
+  v16 = domainIdCopy;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __56__PMLTrainingStore_deleteSessionsWithBundleId_domainId___block_invoke_2;
@@ -1049,17 +1049,17 @@ uint64_t __56__PMLTrainingStore_deleteSessionsWithBundleId_domainId___block_invo
   return *MEMORY[0x277D42698];
 }
 
-- (void)deleteSessionsWithBundleId:(id)a3 itemId:(id)a4
+- (void)deleteSessionsWithBundleId:(id)id itemId:(id)itemId
 {
-  v6 = a3;
-  v7 = a4;
+  idCopy = id;
+  itemIdCopy = itemId;
   db = self->_db;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __54__PMLTrainingStore_deleteSessionsWithBundleId_itemId___block_invoke;
   v14[3] = &unk_279ABFE98;
-  v15 = v6;
-  v16 = v7;
+  v15 = idCopy;
+  v16 = itemIdCopy;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __54__PMLTrainingStore_deleteSessionsWithBundleId_itemId___block_invoke_2;
@@ -1101,15 +1101,15 @@ uint64_t __54__PMLTrainingStore_deleteSessionsWithBundleId_itemId___block_invoke
   return *MEMORY[0x277D42698];
 }
 
-- (void)deleteSessionsWithBundleId:(id)a3
+- (void)deleteSessionsWithBundleId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   db = self->_db;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __47__PMLTrainingStore_deleteSessionsWithBundleId___block_invoke;
   v9[3] = &unk_279ABFDB0;
-  v10 = v4;
+  v10 = idCopy;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __47__PMLTrainingStore_deleteSessionsWithBundleId___block_invoke_2;
@@ -1138,12 +1138,12 @@ uint64_t __47__PMLTrainingStore_deleteSessionsWithBundleId___block_invoke_2(uint
   return *MEMORY[0x277D42698];
 }
 
-- (void)limitSessionsWithSessionDescriptor:(id)a3 withLabel:(id)a4 limit:(unint64_t)a5
+- (void)limitSessionsWithSessionDescriptor:(id)descriptor withLabel:(id)label limit:(unint64_t)limit
 {
-  v8 = a3;
-  v9 = a4;
+  descriptorCopy = descriptor;
+  labelCopy = label;
   v10 = @"label = :label AND";
-  if (!v9)
+  if (!labelCopy)
   {
     v10 = &stru_28734BC68;
   }
@@ -1162,15 +1162,15 @@ uint64_t __47__PMLTrainingStore_deleteSessionsWithBundleId___block_invoke_2(uint
   v26[4] = self;
   v14 = v12;
   v27 = v14;
-  v15 = v8;
+  v15 = descriptorCopy;
   v28 = v15;
-  v16 = v9;
+  v16 = labelCopy;
   v29 = v16;
   v30 = &v31;
   [(_PASSqliteDatabase *)db readTransaction:v26];
   v17 = v32[3];
-  v18 = v17 - a5;
-  if (v17 >= a5)
+  v18 = v17 - limit;
+  if (v17 >= limit)
   {
     v19 = self->_db;
     v20[0] = MEMORY[0x277D85DD0];
@@ -1178,7 +1178,7 @@ uint64_t __47__PMLTrainingStore_deleteSessionsWithBundleId___block_invoke_2(uint
     v20[2] = __71__PMLTrainingStore_limitSessionsWithSessionDescriptor_withLabel_limit___block_invoke_206;
     v20[3] = &unk_279ABFF10;
     v21 = v11;
-    v22 = self;
+    selfCopy = self;
     v23 = v15;
     v24 = v16;
     v25 = v18;
@@ -1333,7 +1333,7 @@ uint64_t __51__PMLTrainingStore_limitSessionsByMaxTimesAccessed__block_invoke_3(
   return *MEMORY[0x277D42698];
 }
 
-- (void)limitSessionsByLastUsedTTL:(double)a3
+- (void)limitSessionsByLastUsedTTL:(double)l
 {
   v5 = objc_opt_new();
   [v5 timeIntervalSince1970];
@@ -1345,7 +1345,7 @@ uint64_t __51__PMLTrainingStore_limitSessionsByMaxTimesAccessed__block_invoke_3(
   v9[2] = __47__PMLTrainingStore_limitSessionsByLastUsedTTL___block_invoke;
   v9[3] = &unk_279ABFE48;
   v9[4] = self;
-  *&v9[5] = v7 - a3;
+  *&v9[5] = v7 - l;
   [(_PASSqliteDatabase *)db writeTransaction:v9];
 }
 
@@ -1376,10 +1376,10 @@ uint64_t __47__PMLTrainingStore_limitSessionsByLastUsedTTL___block_invoke_3(uint
   return *MEMORY[0x277D42698];
 }
 
-- (void)limitSessionsForEachLabelWithSessionDescriptor:(id)a3 totalSessionLimit:(unint64_t)a4
+- (void)limitSessionsForEachLabelWithSessionDescriptor:(id)descriptor totalSessionLimit:(unint64_t)limit
 {
   v43 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  descriptorCopy = descriptor;
   v38 = 0;
   v39 = &v38;
   v40 = 0x2020000000;
@@ -1391,11 +1391,11 @@ uint64_t __47__PMLTrainingStore_limitSessionsByLastUsedTTL___block_invoke_3(uint
   v34[3] = &unk_279ABFE00;
   v34[4] = self;
   v35 = @"SELECT count(*) FROM sessions WHERE sessionDescriptorId = (SELECT id FROM sessionsDescriptors WHERE name = :name AND version = :version AND locale = :locale) ";
-  v8 = v6;
+  v8 = descriptorCopy;
   v36 = v8;
   v37 = &v38;
   [(_PASSqliteDatabase *)db readTransaction:v34];
-  if (v39[3] >= a4)
+  if (v39[3] >= limit)
   {
     v28 = 0;
     v29 = &v28;
@@ -1414,10 +1414,10 @@ uint64_t __47__PMLTrainingStore_limitSessionsByLastUsedTTL___block_invoke_3(uint
     v26 = v10;
     v27 = &v28;
     [(_PASSqliteDatabase *)v9 readTransaction:v24];
-    v11 = a4;
+    limitCopy = limit;
     if ([v29[5] count] >= 2)
     {
-      v11 = (a4 / ([v29[5] count] - 1)) >> 1;
+      limitCopy = (limit / ([v29[5] count] - 1)) >> 1;
     }
 
     v22 = 0u;
@@ -1429,7 +1429,7 @@ uint64_t __47__PMLTrainingStore_limitSessionsByLastUsedTTL___block_invoke_3(uint
     if (v13)
     {
       v14 = *v21;
-      v15 = a4 >> 1;
+      v15 = limit >> 1;
       do
       {
         for (i = 0; i != v13; ++i)
@@ -1442,7 +1442,7 @@ uint64_t __47__PMLTrainingStore_limitSessionsByLastUsedTTL___block_invoke_3(uint
           v17 = *(*(&v20 + 1) + 8 * i);
           if ([v17 integerValue])
           {
-            v18 = v11;
+            v18 = limitCopy;
           }
 
           else
@@ -1569,26 +1569,26 @@ uint64_t __85__PMLTrainingStore_limitSessionsForEachLabelWithSessionDescriptor_t
   return *MEMORY[0x277D42698];
 }
 
-- (void)_loadDataForModel:(id)a3 privacyBudgetRefreshPeriod:(double)a4 labelAndStartRows:(id)a5 batchSize:(unint64_t)a6 supportPerLabel:(unint64_t)a7 block:(id)a8
+- (void)_loadDataForModel:(id)model privacyBudgetRefreshPeriod:(double)period labelAndStartRows:(id)rows batchSize:(unint64_t)size supportPerLabel:(unint64_t)label block:(id)block
 {
-  v14 = a3;
-  v15 = a5;
-  v16 = a8;
+  modelCopy = model;
+  rowsCopy = rows;
+  blockCopy = block;
   db = self->_db;
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __115__PMLTrainingStore__loadDataForModel_privacyBudgetRefreshPeriod_labelAndStartRows_batchSize_supportPerLabel_block___block_invoke;
   v21[3] = &unk_279ABFD88;
-  v26 = a4;
-  v22 = v15;
-  v23 = self;
-  v27 = a6;
-  v28 = a7;
-  v24 = v14;
-  v25 = v16;
-  v18 = v16;
-  v19 = v14;
-  v20 = v15;
+  periodCopy = period;
+  v22 = rowsCopy;
+  selfCopy = self;
+  sizeCopy = size;
+  labelCopy = label;
+  v24 = modelCopy;
+  v25 = blockCopy;
+  v18 = blockCopy;
+  v19 = modelCopy;
+  v20 = rowsCopy;
   [(_PASSqliteDatabase *)db writeTransaction:v21];
 }
 
@@ -1703,11 +1703,11 @@ void __115__PMLTrainingStore__loadDataForModel_privacyBudgetRefreshPeriod_labelA
   }
 }
 
-- (void)_loadBatchForModel:(id)a3 privacyBudgetRefreshPeriod:(double)a4 labels:(id)a5 batchSize:(unint64_t)a6 block:(id)a7
+- (void)_loadBatchForModel:(id)model privacyBudgetRefreshPeriod:(double)period labels:(id)labels batchSize:(unint64_t)size block:(id)block
 {
-  v13 = a3;
-  v14 = a5;
-  v25 = a7;
+  modelCopy = model;
+  labelsCopy = labels;
+  blockCopy = block;
   v15 = objc_opt_new();
   [v15 timeIntervalSince1970];
   v17 = v16;
@@ -1735,18 +1735,18 @@ void __115__PMLTrainingStore__loadDataForModel_privacyBudgetRefreshPeriod_labelA
   v36 = &v35;
   v37 = 0x2020000000;
   v38 = 0;
-  if (a6)
+  if (size)
   {
     v20 = 0;
     do
     {
-      v21 = [MEMORY[0x277CBEB68] null];
-      [v18 setObject:v21 atIndexedSubscript:v20];
+      null = [MEMORY[0x277CBEB68] null];
+      [v18 setObject:null atIndexedSubscript:v20];
 
       ++v20;
     }
 
-    while (a6 != v20);
+    while (size != v20);
   }
 
   db = self->_db;
@@ -1754,11 +1754,11 @@ void __115__PMLTrainingStore__loadDataForModel_privacyBudgetRefreshPeriod_labelA
   v29[1] = 3221225472;
   v29[2] = __89__PMLTrainingStore__loadBatchForModel_privacyBudgetRefreshPeriod_labels_batchSize_block___block_invoke;
   v29[3] = &unk_279ABFCE8;
-  v33 = a6;
-  v34 = v17 - a4;
-  v30 = v13;
-  v31 = self;
-  v23 = v14;
+  sizeCopy = size;
+  v34 = v17 - period;
+  v30 = modelCopy;
+  selfCopy = self;
+  v23 = labelsCopy;
   v32 = v23;
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
@@ -1770,7 +1770,7 @@ void __115__PMLTrainingStore__loadDataForModel_privacyBudgetRefreshPeriod_labelA
   v28[7] = v45;
   v28[8] = &v39;
   v28[9] = v19;
-  v28[10] = a6;
+  v28[10] = size;
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __89__PMLTrainingStore__loadBatchForModel_privacyBudgetRefreshPeriod_labels_batchSize_block___block_invoke_164;
@@ -1778,7 +1778,7 @@ void __115__PMLTrainingStore__loadDataForModel_privacyBudgetRefreshPeriod_labelA
   v24 = v30;
   v27 = v24;
   [(_PASSqliteDatabase *)db prepAndRunQuery:@"SELECT sessions.id onPrep:sessions.label onRow:sessions.covariatesLength onError:sessions.covariatesIndices, sessions.covariatesValues, sessionsItemIds.timesAccessed FROM sessions JOIN sessionsItemIds ON sessions.id = sessionsItemIds.sessionId AND sessions.sessionDescriptorId = (SELECT id FROM sessionsDescriptors WHERE name = :name AND version = :version AND locale = :locale) AND sessionsItemIds.lastUsed <= :lastUsedMax AND sessionsItemIds.timesAccessed < :timesUsedMax AND sessions.label IN _pas_nsarray(:labels) ORDER BY RANDOM() limit :limit", v29, v28, v26];
-  v25[2](v25, v36[3], v40[5], v47[5], v52);
+  blockCopy[2](blockCopy, v36[3], v40[5], v47[5], v52);
 
   _Block_object_dispose(&v35, 8);
   _Block_object_dispose(&v39, 8);
@@ -1948,10 +1948,10 @@ uint64_t __89__PMLTrainingStore__loadBatchForModel_privacyBudgetRefreshPeriod_la
   return *MEMORY[0x277D42698];
 }
 
-- (void)_loadDataForModel:(id)a3 positiveRowId:(unint64_t)a4 negativeRowId:(unint64_t)a5 excludeItemIdsUsedWithin:(double)a6 limit:(unint64_t)a7 onlyAppleInternal:(BOOL)a8 positiveLabel:(unint64_t)a9 skew:(double)a10 block:(id)a11
+- (void)_loadDataForModel:(id)model positiveRowId:(unint64_t)id negativeRowId:(unint64_t)rowId excludeItemIdsUsedWithin:(double)within limit:(unint64_t)limit onlyAppleInternal:(BOOL)internal positiveLabel:(unint64_t)label skew:(double)self0 block:(id)self1
 {
-  v18 = a3;
-  v19 = a11;
+  modelCopy = model;
+  blockCopy = block;
   v39[0] = 0;
   v39[1] = v39;
   v39[2] = 0x3032000000;
@@ -1965,24 +1965,24 @@ uint64_t __89__PMLTrainingStore__loadBatchForModel_privacyBudgetRefreshPeriod_la
   v36[0] = 0;
   v36[1] = v36;
   v36[2] = 0x2020000000;
-  *&v36[3] = a10;
+  *&v36[3] = skew;
   db = self->_db;
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __140__PMLTrainingStore__loadDataForModel_positiveRowId_negativeRowId_excludeItemIdsUsedWithin_limit_onlyAppleInternal_positiveLabel_skew_block___block_invoke;
   v24[3] = &unk_279ABFCC0;
-  v30 = a6;
-  v31 = a9;
+  withinCopy = within;
+  labelCopy = label;
   v24[4] = self;
-  v21 = v18;
-  v35 = a8;
-  v33 = a5;
-  v34 = a7;
+  v21 = modelCopy;
+  internalCopy = internal;
+  rowIdCopy = rowId;
+  limitCopy = limit;
   v25 = v21;
   v27 = v36;
   v28 = v39;
-  v32 = a4;
-  v22 = v19;
+  idCopy = id;
+  v22 = blockCopy;
   v26 = v22;
   v29 = v37;
   [(_PASSqliteDatabase *)db writeTransaction:v24];
@@ -2120,12 +2120,12 @@ void __140__PMLTrainingStore__loadDataForModel_positiveRowId_negativeRowId_exclu
   (*(a1[6] + 16))();
 }
 
-- (void)_loadDataFromLabelAndTuples:(id)a3 model:(id)a4 numberOfRows:(unint64_t)a5 numberOfColumns:(unint64_t)a6 lastUsedMax:(double)a7 block:(id)a8
+- (void)_loadDataFromLabelAndTuples:(id)tuples model:(id)model numberOfRows:(unint64_t)rows numberOfColumns:(unint64_t)columns lastUsedMax:(double)max block:(id)block
 {
   v64 = *MEMORY[0x277D85DE8];
-  v27 = a3;
-  v15 = a4;
-  v16 = a8;
+  tuplesCopy = tuples;
+  modelCopy = model;
+  blockCopy = block;
   v62 = 0;
   v56 = 0;
   v57 = &v56;
@@ -2149,18 +2149,18 @@ void __140__PMLTrainingStore__loadDataForModel_positiveRowId_negativeRowId_exclu
   v46 = __Block_byref_object_copy__1041;
   v47 = __Block_byref_object_dispose__1042;
   v48 = objc_opt_new();
-  if (a5)
+  if (rows)
   {
     v17 = 0;
     do
     {
-      v18 = [MEMORY[0x277CBEB68] null];
-      [v57[5] setObject:v18 atIndexedSubscript:v17];
+      null = [MEMORY[0x277CBEB68] null];
+      [v57[5] setObject:null atIndexedSubscript:v17];
 
       ++v17;
     }
 
-    while (a5 != v17);
+    while (rows != v17);
   }
 
   v33[0] = MEMORY[0x277D85DD0];
@@ -2168,17 +2168,17 @@ void __140__PMLTrainingStore__loadDataForModel_positiveRowId_negativeRowId_exclu
   v33[2] = __101__PMLTrainingStore__loadDataFromLabelAndTuples_model_numberOfRows_numberOfColumns_lastUsedMax_block___block_invoke;
   v33[3] = &unk_279ABFC70;
   v33[4] = self;
-  v19 = v15;
-  v39 = a7;
+  v19 = modelCopy;
+  maxCopy = max;
   v34 = v19;
   v35 = &v49;
   v40 = a2;
-  v41 = a6;
+  columnsCopy = columns;
   v36 = &v56;
   v37 = v55;
   v38 = &v43;
-  v42 = a5;
-  [v27 enumerateKeysAndObjectsUsingBlock:v33];
+  rowsCopy = rows;
+  [tuplesCopy enumerateKeysAndObjectsUsingBlock:v33];
   v20 = objc_opt_new();
   v31 = 0u;
   v32 = 0u;
@@ -2212,7 +2212,7 @@ void __140__PMLTrainingStore__loadDataForModel_positiveRowId_negativeRowId_exclu
     while (v22);
   }
 
-  v16[2](v16, a6, v44[5], v20, v50[5], &v62);
+  blockCopy[2](blockCopy, columns, v44[5], v20, v50[5], &v62);
   _Block_object_dispose(&v43, 8);
 
   _Block_object_dispose(&v49, 8);
@@ -2421,12 +2421,12 @@ uint64_t __101__PMLTrainingStore__loadDataFromLabelAndTuples_model_numberOfRows_
   return *MEMORY[0x277D42698];
 }
 
-- (id)sessionDimensionsForModel:(id)a3 startingRowId:(unint64_t)a4 onlyAppleInternal:(BOOL)a5 labelFilter:(id)a6
+- (id)sessionDimensionsForModel:(id)model startingRowId:(unint64_t)id onlyAppleInternal:(BOOL)internal labelFilter:(id)filter
 {
-  v7 = a5;
+  internalCopy = internal;
   v35[2] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a6;
+  modelCopy = model;
+  filterCopy = filter;
   v30 = 0;
   v31 = &v30;
   v32 = 0x2020000000;
@@ -2436,20 +2436,20 @@ uint64_t __101__PMLTrainingStore__loadDataFromLabelAndTuples_model_numberOfRows_
   v28 = 0x2020000000;
   v29 = 0;
   v12 = &stru_28734BC68;
-  if (v7)
+  if (internalCopy)
   {
     v12 = @"AND isAppleInternal = 1 ";
   }
 
   v13 = v12;
-  v14 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"SELECT covariatesLength, COUNT(*) FROM sessions WHERE sessionDescriptorId = (SELECT id FROM sessionsDescriptors WHERE name = :name AND version = :version AND locale = :locale) AND id > :rowId %@ %@ ORDER BY id", v13, v11];
+  filterCopy = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"SELECT covariatesLength, COUNT(*) FROM sessions WHERE sessionDescriptorId = (SELECT id FROM sessionsDescriptors WHERE name = :name AND version = :version AND locale = :locale) AND id > :rowId %@ %@ ORDER BY id", v13, filterCopy];
   db = self->_db;
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __90__PMLTrainingStore_sessionDimensionsForModel_startingRowId_onlyAppleInternal_labelFilter___block_invoke;
   v23[3] = &unk_279ABFBA8;
-  v25 = a4;
-  v16 = v10;
+  idCopy = id;
+  v16 = modelCopy;
   v24 = v16;
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
@@ -2457,7 +2457,7 @@ uint64_t __101__PMLTrainingStore__loadDataFromLabelAndTuples_model_numberOfRows_
   v22[3] = &unk_279ABFBD0;
   v22[4] = &v30;
   v22[5] = &v26;
-  [(_PASSqliteDatabase *)db prepAndRunQuery:v14 onPrep:v23 onRow:v22 onError:0];
+  [(_PASSqliteDatabase *)db prepAndRunQuery:filterCopy onPrep:v23 onRow:v22 onError:0];
   v34[0] = @"numberOfRows";
   v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v27[3]];
   v34[1] = @"numberOfColumns";
@@ -2511,17 +2511,17 @@ uint64_t __90__PMLTrainingStore_sessionDimensionsForModel_startingRowId_onlyAppl
   return *MEMORY[0x277D42690];
 }
 
-- (void)loadSessionsForModel:(id)a3 privacyBudgetRefreshPeriod:(double)a4 labels:(id)a5 batchSize:(unint64_t)a6 block:(id)a7
+- (void)loadSessionsForModel:(id)model privacyBudgetRefreshPeriod:(double)period labels:(id)labels batchSize:(unint64_t)size block:(id)block
 {
-  v12 = a7;
+  blockCopy = block;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __91__PMLTrainingStore_loadSessionsForModel_privacyBudgetRefreshPeriod_labels_batchSize_block___block_invoke;
   v14[3] = &unk_279ABFB58;
   v14[4] = self;
-  v15 = v12;
-  v13 = v12;
-  [(PMLTrainingStore *)self loadDataForModel:a3 privacyBudgetRefreshPeriod:a5 labels:a6 batchSize:v14 block:a4];
+  v15 = blockCopy;
+  v13 = blockCopy;
+  [(PMLTrainingStore *)self loadDataForModel:model privacyBudgetRefreshPeriod:labels labels:size batchSize:v14 block:period];
 }
 
 void __91__PMLTrainingStore_loadSessionsForModel_privacyBudgetRefreshPeriod_labels_batchSize_block___block_invoke(uint64_t a1, uint64_t a2, void *a3, void *a4)
@@ -2534,11 +2534,11 @@ void __91__PMLTrainingStore_loadSessionsForModel_privacyBudgetRefreshPeriod_labe
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)loadDataForModel:(id)a3 privacyBudgetRefreshPeriod:(double)a4 labels:(id)a5 batchSize:(unint64_t)a6 block:(id)a7
+- (void)loadDataForModel:(id)model privacyBudgetRefreshPeriod:(double)period labels:(id)labels batchSize:(unint64_t)size block:(id)block
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a7;
+  modelCopy = model;
+  labelsCopy = labels;
+  blockCopy = block;
   v20 = 0;
   v21 = &v20;
   v22 = 0x2020000000;
@@ -2550,10 +2550,10 @@ void __91__PMLTrainingStore_loadSessionsForModel_privacyBudgetRefreshPeriod_labe
     v17[1] = 3221225472;
     v17[2] = __87__PMLTrainingStore_loadDataForModel_privacyBudgetRefreshPeriod_labels_batchSize_block___block_invoke;
     v17[3] = &unk_279ABFB80;
-    v16 = v14;
+    v16 = blockCopy;
     v18 = v16;
     v19 = &v20;
-    [(PMLTrainingStore *)self _loadBatchForModel:v12 privacyBudgetRefreshPeriod:v13 labels:a6 batchSize:v17 block:a4];
+    [(PMLTrainingStore *)self _loadBatchForModel:modelCopy privacyBudgetRefreshPeriod:labelsCopy labels:size batchSize:v17 block:period];
   }
 
   while ((v21[3] & 1) != 0);
@@ -2622,60 +2622,60 @@ LABEL_12:
   *(*(a1[8] + 8) + 24) = 1;
 }
 
-- (void)storeSession:(id)a3 label:(int64_t)a4 model:(id)a5 bundleId:(id)a6 domainId:(id)a7 itemIds:(id)a8 isAppleInternal:(BOOL)a9
+- (void)storeSession:(id)session label:(int64_t)label model:(id)model bundleId:(id)id domainId:(id)domainId itemIds:(id)ids isAppleInternal:(BOOL)internal
 {
-  v16 = a3;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
+  sessionCopy = session;
+  modelCopy = model;
+  idCopy = id;
+  domainIdCopy = domainId;
+  idsCopy = ids;
   if (![MEMORY[0x277D42590] isDNUEnabled])
   {
     goto LABEL_8;
   }
 
-  if (v16)
+  if (sessionCopy)
   {
-    if (v17)
+    if (modelCopy)
     {
       goto LABEL_4;
     }
 
 LABEL_10:
-    v23 = [MEMORY[0x277CCA890] currentHandler];
-    [v23 handleFailureInMethod:a2 object:self file:@"PMLTrainingStore.m" lineNumber:150 description:{@"Invalid parameter not satisfying: %@", @"sessionDescriptor"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PMLTrainingStore.m" lineNumber:150 description:{@"Invalid parameter not satisfying: %@", @"sessionDescriptor"}];
 
-    if (v18)
+    if (idCopy)
     {
       goto LABEL_5;
     }
 
 LABEL_11:
-    v24 = [MEMORY[0x277CCA890] currentHandler];
-    [v24 handleFailureInMethod:a2 object:self file:@"PMLTrainingStore.m" lineNumber:151 description:{@"Invalid parameter not satisfying: %@", @"bundleId"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PMLTrainingStore.m" lineNumber:151 description:{@"Invalid parameter not satisfying: %@", @"bundleId"}];
 
     goto LABEL_5;
   }
 
-  v22 = [MEMORY[0x277CCA890] currentHandler];
-  [v22 handleFailureInMethod:a2 object:self file:@"PMLTrainingStore.m" lineNumber:149 description:{@"Invalid parameter not satisfying: %@", @"covariates"}];
+  currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"PMLTrainingStore.m" lineNumber:149 description:{@"Invalid parameter not satisfying: %@", @"covariates"}];
 
-  if (!v17)
+  if (!modelCopy)
   {
     goto LABEL_10;
   }
 
 LABEL_4:
-  if (!v18)
+  if (!idCopy)
   {
     goto LABEL_11;
   }
 
 LABEL_5:
-  if (!v20)
+  if (!idsCopy)
   {
-    v25 = [MEMORY[0x277CCA890] currentHandler];
-    [v25 handleFailureInMethod:a2 object:self file:@"PMLTrainingStore.m" lineNumber:152 description:{@"Invalid parameter not satisfying: %@", @"itemIds"}];
+    currentHandler4 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler4 handleFailureInMethod:a2 object:self file:@"PMLTrainingStore.m" lineNumber:152 description:{@"Invalid parameter not satisfying: %@", @"itemIds"}];
   }
 
   db = self->_db;
@@ -2684,13 +2684,13 @@ LABEL_5:
   v26[2] = __87__PMLTrainingStore_storeSession_label_model_bundleId_domainId_itemIds_isAppleInternal___block_invoke;
   v26[3] = &unk_279ABFB08;
   v26[4] = self;
-  v27 = v17;
-  v32 = a4;
-  v28 = v16;
-  v33 = a9;
-  v29 = v19;
-  v30 = v18;
-  v31 = v20;
+  v27 = modelCopy;
+  labelCopy = label;
+  v28 = sessionCopy;
+  internalCopy = internal;
+  v29 = domainIdCopy;
+  v30 = idCopy;
+  v31 = idsCopy;
   [(_PASSqliteDatabase *)db writeTransaction:v26];
 
 LABEL_8:
@@ -2800,17 +2800,17 @@ void __87__PMLTrainingStore_storeSession_label_model_bundleId_domainId_itemIds_i
   v32 = *MEMORY[0x277D85DE8];
 }
 
-- (PMLTrainingStore)initWithPath:(id)a3 allowSkipSchema:(BOOL)a4
+- (PMLTrainingStore)initWithPath:(id)path allowSkipSchema:(BOOL)schema
 {
-  v7 = a3;
+  pathCopy = path;
   v11.receiver = self;
   v11.super_class = PMLTrainingStore;
   v8 = [(PMLTrainingStore *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_dbPath, a3);
-    v9->_allowSkipSchema = a4;
+    objc_storeStrong(&v8->_dbPath, path);
+    v9->_allowSkipSchema = schema;
     v9->_maxTimesAccessed = 1;
     [(PMLTrainingStore *)v9 _registerUnlockHandler];
     [(PMLTrainingStore *)v9 _openDbIfUnlocked];
@@ -2821,55 +2821,55 @@ void __87__PMLTrainingStore_storeSession_label_model_bundleId_domainId_itemIds_i
 
 + (id)inMemoryStoreForTesting
 {
-  v2 = [a1 alloc];
+  v2 = [self alloc];
   v3 = [MEMORY[0x277D42630] randomlyNamedInMemoryPathWithBaseName:@"training_sessions"];
   v4 = [v2 initWithPath:v3];
 
   return v4;
 }
 
-+ (void)setLastUsedTimestampLimit:(double)a3
++ (void)setLastUsedTimestampLimit:(double)limit
 {
-  v6 = [MEMORY[0x277CCAC38] processInfo];
-  v8 = [v6 processName];
+  processInfo = [MEMORY[0x277CCAC38] processInfo];
+  processName = [processInfo processName];
 
-  if (([v8 isEqualToString:@"python"] & 1) == 0)
+  if (([processName isEqualToString:@"python"] & 1) == 0)
   {
-    v7 = [MEMORY[0x277CCA890] currentHandler];
-    [v7 handleFailureInMethod:a2 object:a1 file:@"PMLTrainingStore.m" lineNumber:1401 description:{@"Process name %@ is not python", v8}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PMLTrainingStore.m" lineNumber:1401 description:{@"Process name %@ is not python", processName}];
   }
 
-  kLastUsedTimestampLimit = *&a3;
+  kLastUsedTimestampLimit = *&limit;
 }
 
-+ (id)getSchema:(unint64_t *)a3
++ (id)getSchema:(unint64_t *)schema
 {
   v5 = [MEMORY[0x277D42630] randomlyNamedInMemoryPathWithBaseName:@"training_db_schema"];
-  v6 = [[a1 alloc] initWithPath:v5 allowSkipSchema:0];
-  v7 = [v6 getSchema:a3];
+  v6 = [[self alloc] initWithPath:v5 allowSkipSchema:0];
+  v7 = [v6 getSchema:schema];
 
   return v7;
 }
 
-+ (BOOL)_runQueries:(id)a3 andUpdateVersionTo:(unsigned int)a4 inTransactionOnDb:(id)a5 forStore:(id)a6
++ (BOOL)_runQueries:(id)queries andUpdateVersionTo:(unsigned int)to inTransactionOnDb:(id)db forStore:(id)store
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
+  queriesCopy = queries;
+  dbCopy = db;
+  storeCopy = store;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __78__PMLTrainingStore__runQueries_andUpdateVersionTo_inTransactionOnDb_forStore___block_invoke;
   v16[3] = &unk_279AC0048;
-  v17 = v9;
-  v18 = v11;
-  v19 = v10;
-  v20 = a4;
-  v12 = v10;
-  v13 = v11;
-  v14 = v9;
-  LOBYTE(v9) = [v12 frailWriteTransaction:v16];
+  v17 = queriesCopy;
+  v18 = storeCopy;
+  v19 = dbCopy;
+  toCopy = to;
+  v12 = dbCopy;
+  v13 = storeCopy;
+  v14 = queriesCopy;
+  LOBYTE(queriesCopy) = [v12 frailWriteTransaction:v16];
 
-  return v9;
+  return queriesCopy;
 }
 
 uint64_t __78__PMLTrainingStore__runQueries_andUpdateVersionTo_inTransactionOnDb_forStore___block_invoke(uint64_t a1)
@@ -2980,22 +2980,22 @@ uint64_t __78__PMLTrainingStore__runQueries_andUpdateVersionTo_inTransactionOnDb
   return *MEMORY[0x277D42698];
 }
 
-+ (int64_t)migrate:(id)a3 to:(id)a4 forStore:(id)a5
++ (int64_t)migrate:(id)migrate to:(id)to forStore:(id)store
 {
   v24 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v8 migrations];
-  v11 = [v8 maxVersion];
-  v12 = [v7 userVersion];
-  if (v11 == v12)
+  migrateCopy = migrate;
+  toCopy = to;
+  storeCopy = store;
+  migrations = [toCopy migrations];
+  maxVersion = [toCopy maxVersion];
+  userVersion = [migrateCopy userVersion];
+  if (maxVersion == userVersion)
   {
     goto LABEL_2;
   }
 
-  v14 = v12;
-  if (v11 < v12)
+  v14 = userVersion;
+  if (maxVersion < userVersion)
   {
     v15 = PML_LogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -3011,16 +3011,16 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  v16 = v11 - v12;
-  if (v11 > v12)
+  v16 = maxVersion - userVersion;
+  if (maxVersion > userVersion)
   {
-    v17 = v12 + 1;
+    v17 = userVersion + 1;
     while (1)
     {
       v18 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v17];
-      v15 = [v10 objectForKeyedSubscript:v18];
+      v15 = [migrations objectForKeyedSubscript:v18];
 
-      if (![PMLTrainingStore _runQueries:v15 andUpdateVersionTo:v17 inTransactionOnDb:v7 forStore:v9])
+      if (![PMLTrainingStore _runQueries:v15 andUpdateVersionTo:v17 inTransactionOnDb:migrateCopy forStore:storeCopy])
       {
         break;
       }
@@ -3051,22 +3051,22 @@ LABEL_16:
   return v13;
 }
 
-+ (int64_t)_migrate:(id)a3 forStore:(id)a4
++ (int64_t)_migrate:(id)_migrate forStore:(id)store
 {
-  v5 = a3;
-  v6 = a4;
-  if (v6[32] != 1 || [v5 userVersion])
+  _migrateCopy = _migrate;
+  storeCopy = store;
+  if (storeCopy[32] != 1 || [_migrateCopy userVersion])
   {
 LABEL_8:
     v10 = objc_opt_new();
-    v8 = [PMLTrainingStore migrate:v5 to:v10 forStore:v6];
+    v8 = [PMLTrainingStore migrate:_migrateCopy to:v10 forStore:storeCopy];
 
     goto LABEL_9;
   }
 
   v13 = 0;
   v7 = [PMLTrainingDatabaseMigrations skipFromZeroSchema:&v13];
-  if (![PMLTrainingStore _runQueries:v7 andUpdateVersionTo:v13 inTransactionOnDb:v5 forStore:v6])
+  if (![PMLTrainingStore _runQueries:v7 andUpdateVersionTo:v13 inTransactionOnDb:_migrateCopy forStore:storeCopy])
   {
     v9 = PML_LogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -3084,30 +3084,30 @@ LABEL_9:
   return v8;
 }
 
-+ (id)_sessionDataToBatchWithNumberOfColumns:(unint64_t)a3 rowsData:(id)a4 labelsData:(id)a5
++ (id)_sessionDataToBatchWithNumberOfColumns:(unint64_t)columns rowsData:(id)data labelsData:(id)labelsData
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 count];
-  v12 = [v10 length] >> 2;
+  dataCopy = data;
+  labelsDataCopy = labelsData;
+  v11 = [dataCopy count];
+  v12 = [labelsDataCopy length] >> 2;
   if (v12 != v11)
   {
-    v29 = [MEMORY[0x277CCA890] currentHandler];
-    [v29 handleFailureInMethod:a2 object:a1 file:@"PMLTrainingStore.m" lineNumber:108 description:{@"Number of labels %lu does not match number of rows specified %lu", v12, v11}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PMLTrainingStore.m" lineNumber:108 description:{@"Number of labels %lu does not match number of rows specified %lu", v12, v11}];
   }
 
-  v13 = [PMLSparseMatrix sparseMatrixWithNumberOfRows:v11 numberOfColumns:a3];
+  v13 = [PMLSparseMatrix sparseMatrixWithNumberOfRows:v11 numberOfColumns:columns];
   if (v11)
   {
     for (i = 0; i != v11; ++i)
     {
-      v15 = [v9 objectAtIndexedSubscript:i];
-      v16 = [v15 first];
+      v15 = [dataCopy objectAtIndexedSubscript:i];
+      first = [v15 first];
 
-      v17 = [v9 objectAtIndexedSubscript:i];
-      v18 = [v17 second];
+      v17 = [dataCopy objectAtIndexedSubscript:i];
+      second = [v17 second];
 
-      v19 = [v16 length];
+      v19 = [first length];
       if (v19 >= 4)
       {
         v20 = 0;
@@ -3116,11 +3116,11 @@ LABEL_9:
         do
         {
           LODWORD(j) = 0;
-          [v16 getBytes:&j range:{v20, 4}];
+          [first getBytes:&j range:{v20, 4}];
           val = 0.0;
-          [v18 getBytes:&val range:{v20, 4}];
-          v23 = [v13 matrix];
-          sparse_insert_entry_float(v23, val, i, j);
+          [second getBytes:&val range:{v20, 4}];
+          matrix = [v13 matrix];
+          sparse_insert_entry_float(matrix, val, i, j);
           if ((v21 & 0x1FFF) == 0)
           {
             sparse_commit([v13 matrix]);
@@ -3137,7 +3137,7 @@ LABEL_9:
 
   sparse_commit([v13 matrix]);
   v24 = [PMLTrainingStoredSessionBatch alloc];
-  v25 = [(PMLDenseVector *)[PMLMutableDenseVector alloc] initWithData:v10];
+  v25 = [(PMLDenseVector *)[PMLMutableDenseVector alloc] initWithData:labelsDataCopy];
   v26 = [PMLModelRegressor modelRegressorFromFloats:v25];
   v27 = [(PMLTrainingStoredSessionBatch *)v24 initWithCovariates:v13 outcomes:v26];
 

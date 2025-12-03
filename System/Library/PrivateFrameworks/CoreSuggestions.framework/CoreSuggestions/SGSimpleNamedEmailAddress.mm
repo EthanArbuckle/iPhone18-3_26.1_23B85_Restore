@@ -1,18 +1,18 @@
 @interface SGSimpleNamedEmailAddress
-+ (id)emailToNameDictionaryWithNamedEmailAddresses:(id)a3;
-+ (id)namedEmailAddressWithCSPerson:(id)a3;
-+ (id)namedEmailAddressWithFieldValue:(id)a3;
-+ (id)namedEmailAddressesWithEmailToNameDictionary:(id)a3;
-+ (id)namedEmailAddressesWithFieldValues:(id)a3;
-+ (id)serializeAll:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToNamedEmailAddress:(id)a3;
-- (SGSimpleNamedEmailAddress)initWithCoder:(id)a3;
-- (SGSimpleNamedEmailAddress)initWithName:(id)a3 emailAddress:(id)a4;
-- (SGSimpleNamedEmailAddress)initWithNamedHandle:(id)a3;
++ (id)emailToNameDictionaryWithNamedEmailAddresses:(id)addresses;
++ (id)namedEmailAddressWithCSPerson:(id)person;
++ (id)namedEmailAddressWithFieldValue:(id)value;
++ (id)namedEmailAddressesWithEmailToNameDictionary:(id)dictionary;
++ (id)namedEmailAddressesWithFieldValues:(id)values;
++ (id)serializeAll:(id)all;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToNamedEmailAddress:(id)address;
+- (SGSimpleNamedEmailAddress)initWithCoder:(id)coder;
+- (SGSimpleNamedEmailAddress)initWithName:(id)name emailAddress:(id)address;
+- (SGSimpleNamedEmailAddress)initWithNamedHandle:(id)handle;
 - (id)asCSPerson;
 - (id)serialized;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SGSimpleNamedEmailAddress
@@ -31,12 +31,12 @@
   return v6;
 }
 
-- (BOOL)isEqualToNamedEmailAddress:(id)a3
+- (BOOL)isEqualToNamedEmailAddress:(id)address
 {
-  v4 = a3;
+  addressCopy = address;
   v5 = self->_name;
   v6 = v5;
-  if (v5 == v4[2])
+  if (v5 == addressCopy[2])
   {
   }
 
@@ -53,7 +53,7 @@
 
   v9 = self->_emailAddress;
   v10 = v9;
-  if (v9 == v4[1])
+  if (v9 == addressCopy[1])
   {
     v8 = 1;
   }
@@ -67,18 +67,18 @@ LABEL_9:
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(SGSimpleNamedEmailAddress *)self isEqualToNamedEmailAddress:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(SGSimpleNamedEmailAddress *)self isEqualToNamedEmailAddress:v5];
   }
 
   return v6;
@@ -99,29 +99,29 @@ LABEL_9:
   return v2;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   name = self->_name;
-  v5 = a3;
-  [v5 encodeObject:name forKey:@"name"];
-  [v5 encodeObject:self->_emailAddress forKey:@"emailAddress"];
+  coderCopy = coder;
+  [coderCopy encodeObject:name forKey:@"name"];
+  [coderCopy encodeObject:self->_emailAddress forKey:@"emailAddress"];
 }
 
-- (SGSimpleNamedEmailAddress)initWithCoder:(id)a3
+- (SGSimpleNamedEmailAddress)initWithCoder:(id)coder
 {
-  v5 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = SGSimpleNamedEmailAddress;
   v6 = [(SGSimpleNamedEmailAddress *)&v15 init];
   if (v6)
   {
     v7 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{objc_opt_class(), 0}];
-    v8 = [v5 decodeObjectOfClasses:v7 forKey:@"name"];
+    v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"name"];
     name = v6->_name;
     v6->_name = v8;
 
     v10 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{objc_opt_class(), 0}];
-    v11 = [v5 decodeObjectOfClasses:v10 forKey:@"emailAddress"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"emailAddress"];
 
     if (v11)
     {
@@ -140,43 +140,43 @@ LABEL_9:
   return v6;
 }
 
-- (SGSimpleNamedEmailAddress)initWithNamedHandle:(id)a3
+- (SGSimpleNamedEmailAddress)initWithNamedHandle:(id)handle
 {
-  v4 = a3;
-  v5 = [v4 name];
-  v6 = [v4 handle];
+  handleCopy = handle;
+  name = [handleCopy name];
+  handle = [handleCopy handle];
 
-  v7 = [(SGSimpleNamedEmailAddress *)self initWithName:v5 emailAddress:v6];
+  v7 = [(SGSimpleNamedEmailAddress *)self initWithName:name emailAddress:handle];
   return v7;
 }
 
-- (SGSimpleNamedEmailAddress)initWithName:(id)a3 emailAddress:(id)a4
+- (SGSimpleNamedEmailAddress)initWithName:(id)name emailAddress:(id)address
 {
-  v7 = a3;
-  v8 = a4;
+  nameCopy = name;
+  addressCopy = address;
   v12.receiver = self;
   v12.super_class = SGSimpleNamedEmailAddress;
   v9 = [(SGSimpleNamedEmailAddress *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_name, a3);
-    objc_storeStrong(&v10->_emailAddress, a4);
+    objc_storeStrong(&v9->_name, name);
+    objc_storeStrong(&v10->_emailAddress, address);
   }
 
   return v10;
 }
 
-+ (id)serializeAll:(id)a3
++ (id)serializeAll:(id)all
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v3, "count")}];
+  allCopy = all;
+  v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(allCopy, "count")}];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = v3;
+  v5 = allCopy;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -191,8 +191,8 @@ LABEL_9:
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v13 + 1) + 8 * i) serialized];
-        [v4 addObject:v10];
+        serialized = [*(*(&v13 + 1) + 8 * i) serialized];
+        [v4 addObject:serialized];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -206,16 +206,16 @@ LABEL_9:
   return v4;
 }
 
-+ (id)emailToNameDictionaryWithNamedEmailAddresses:(id)a3
++ (id)emailToNameDictionaryWithNamedEmailAddresses:(id)addresses
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v3, "count")}];
+  addressesCopy = addresses;
+  v4 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(addressesCopy, "count")}];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v5 = v3;
+  v5 = addressesCopy;
   v6 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v6)
   {
@@ -231,15 +231,15 @@ LABEL_9:
         }
 
         v10 = *(*(&v18 + 1) + 8 * i);
-        v11 = [v10 emailAddress];
+        emailAddress = [v10 emailAddress];
 
-        if (v11)
+        if (emailAddress)
         {
-          v12 = [v10 name];
-          v13 = v12;
-          if (v12)
+          name = [v10 name];
+          v13 = name;
+          if (name)
           {
-            v14 = v12;
+            v14 = name;
           }
 
           else
@@ -247,8 +247,8 @@ LABEL_9:
             v14 = &stru_1F385B250;
           }
 
-          v15 = [v10 emailAddress];
-          [v4 setObject:v14 forKeyedSubscript:v15];
+          emailAddress2 = [v10 emailAddress];
+          [v4 setObject:v14 forKeyedSubscript:emailAddress2];
         }
       }
 
@@ -263,20 +263,20 @@ LABEL_9:
   return v4;
 }
 
-+ (id)namedEmailAddressesWithEmailToNameDictionary:(id)a3
++ (id)namedEmailAddressesWithEmailToNameDictionary:(id)dictionary
 {
-  if (a3)
+  if (dictionary)
   {
     v3 = MEMORY[0x1E695DF70];
-    v4 = a3;
-    v5 = [[v3 alloc] initWithCapacity:{objc_msgSend(v4, "count")}];
+    dictionaryCopy = dictionary;
+    v5 = [[v3 alloc] initWithCapacity:{objc_msgSend(dictionaryCopy, "count")}];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __74__SGSimpleNamedEmailAddress_namedEmailAddressesWithEmailToNameDictionary___block_invoke;
     v8[3] = &unk_1E7EFC4E8;
     v6 = v5;
     v9 = v6;
-    [v4 enumerateKeysAndObjectsUsingBlock:v8];
+    [dictionaryCopy enumerateKeysAndObjectsUsingBlock:v8];
   }
 
   else
@@ -297,16 +297,16 @@ void __74__SGSimpleNamedEmailAddress_namedEmailAddressesWithEmailToNameDictionar
   [v4 addObject:v7];
 }
 
-+ (id)namedEmailAddressesWithFieldValues:(id)a3
++ (id)namedEmailAddressesWithFieldValues:(id)values
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v3, "count")}];
+  valuesCopy = values;
+  v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(valuesCopy, "count")}];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = v3;
+  v5 = valuesCopy;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -339,26 +339,26 @@ void __74__SGSimpleNamedEmailAddress_namedEmailAddressesWithEmailToNameDictionar
   return v4;
 }
 
-+ (id)namedEmailAddressWithCSPerson:(id)a3
++ (id)namedEmailAddressWithCSPerson:(id)person
 {
-  v4 = a3;
-  v5 = [v4 handleIdentifier];
-  if (![v5 isEqual:@"emailAddresses"])
+  personCopy = person;
+  handleIdentifier = [personCopy handleIdentifier];
+  if (![handleIdentifier isEqual:@"emailAddresses"])
   {
     v11 = 0;
     goto LABEL_5;
   }
 
-  v6 = [v4 handles];
-  v7 = [v6 count];
+  handles = [personCopy handles];
+  v7 = [handles count];
 
   if (v7)
   {
-    v8 = [a1 alloc];
-    v5 = [v4 displayName];
-    v9 = [v4 handles];
-    v10 = [v9 firstObject];
-    v11 = [v8 initWithName:v5 emailAddress:v10];
+    v8 = [self alloc];
+    handleIdentifier = [personCopy displayName];
+    handles2 = [personCopy handles];
+    firstObject = [handles2 firstObject];
+    v11 = [v8 initWithName:handleIdentifier emailAddress:firstObject];
 
 LABEL_5:
     goto LABEL_6;
@@ -370,13 +370,13 @@ LABEL_6:
   return v11;
 }
 
-+ (id)namedEmailAddressWithFieldValue:(id)a3
++ (id)namedEmailAddressWithFieldValue:(id)value
 {
-  v3 = a3;
-  CStringPtr = CFStringGetCStringPtr(v3, 0x600u);
+  valueCopy = value;
+  CStringPtr = CFStringGetCStringPtr(valueCopy, 0x600u);
   if (!CStringPtr)
   {
-    CStringPtr = [(__CFString *)v3 UTF8String];
+    CStringPtr = [(__CFString *)valueCopy UTF8String];
   }
 
   v9 = 0;
@@ -385,7 +385,7 @@ LABEL_6:
   v12 = __Block_byref_object_copy__3103;
   v13 = __Block_byref_object_dispose__3104;
   v14 = 0;
-  if (v3)
+  if (valueCopy)
   {
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;

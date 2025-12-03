@@ -1,20 +1,20 @@
 @interface CMMotionManager
 + ($27EAB7405FCF4138B96BF1D57C6DB1C9)gyroCalibrationDatabaseGetBiasFit;
-+ ($27EAB7405FCF4138B96BF1D57C6DB1C9)gyroCalibrationDatabaseGetBiasFitAndEstimate:(SEL)a3 atTemperature:(id *)a4;
-+ (BOOL)northAlignedReferenceFrame:(unint64_t)a3;
++ ($27EAB7405FCF4138B96BF1D57C6DB1C9)gyroCalibrationDatabaseGetBiasFitAndEstimate:(SEL)estimate atTemperature:(id *)temperature;
++ (BOOL)northAlignedReferenceFrame:(unint64_t)frame;
 + (BOOL)supportsGyroMiniCalibration;
 + (CMAttitudeReferenceFrame)availableAttitudeReferenceFrames;
 + (unint64_t)availableAttitudeReferenceFramesNoSim;
-+ (void)dumpDb:(int64_t)a3 toURL:(id)a4 onCompletion:(id)a5;
++ (void)dumpDb:(int64_t)db toURL:(id)l onCompletion:(id)completion;
 + (void)initialize;
-+ (void)setVirtualAlmondDevice:(id)a3;
++ (void)setVirtualAlmondDevice:(id)device;
 - (BOOL)isAccelerometerAvailable;
 - (BOOL)isAmbientPressureAvailable;
 - (BOOL)isMagnetometerAvailable;
 - (BOOL)isSidebandSensorFusionAvailable;
-- (BOOL)readRawAmbientPressureSamplesFromDB:(id)a3 toQueue:(id)a4 where:(id)a5 withHandler:(id)a6;
-- (BOOL)sendDeviceMotionHostGravityToKeyboard:(id *)a3;
-- (BOOL)setMotionThreadPriority:(int)a3;
+- (BOOL)readRawAmbientPressureSamplesFromDB:(id)b toQueue:(id)queue where:(id)where withHandler:(id)handler;
+- (BOOL)sendDeviceMotionHostGravityToKeyboard:(id *)keyboard;
+- (BOOL)setMotionThreadPriority:(int)priority;
 - (BOOL)shouldResetStartingReference;
 - (CMAccelerometerData)accelerometerData;
 - (CMAmbientPressureData)ambientPressureData;
@@ -23,88 +23,88 @@
 - (CMGyroData)gyroData;
 - (CMMagnetometerData)magnetometerData;
 - (CMMotionManager)init;
-- (id)computeNonlinearPRTTFromDB:(id)a3 where:(id)a4;
+- (id)computeNonlinearPRTTFromDB:(id)b where:(id)where;
 - (id)deviceMotionNoSim;
 - (id)initPrivate;
 - (id)initUsing6AxisSensorFusion;
 - (id)initUsingGyroOnlySensorFusion;
-- (id)predictedDeviceMotionAtTimestamp:(double)a3 error:(id *)a4;
+- (id)predictedDeviceMotionAtTimestamp:(double)timestamp error:(id *)error;
 - (int)gyttNumTemperatures;
-- (void)_startDeviceMotionErrorUpdatesToQueue:(id)a3 withHandler:(id)a4;
+- (void)_startDeviceMotionErrorUpdatesToQueue:(id)queue withHandler:(id)handler;
 - (void)_stopDeviceMotionErrorUpdates;
-- (void)applyInitialReference:(Sample *)a3;
-- (void)applyNorthReference:(Sample *)a3;
+- (void)applyInitialReference:(Sample *)reference;
+- (void)applyNorthReference:(Sample *)reference;
 - (void)connect;
 - (void)dealloc;
 - (void)deallocPrivate;
-- (void)didBecomeActive:(id)a3;
-- (void)didBecomeActivePrivate:(id)a3;
+- (void)didBecomeActive:(id)active;
+- (void)didBecomeActivePrivate:(id)private;
 - (void)dismissDeviceMovementDisplay;
-- (void)onAccelerometer:(const Sample *)a3;
-- (void)onAmbientPressure:(const Sample *)a3;
-- (void)onCompensatedAmbientPressure:(const Sample *)a3;
-- (void)onDeviceMotion:(const Sample *)a3;
-- (void)onDeviceMotionForKeyboardMotion:(const Sample *)a3;
-- (void)onFactoryGyro:(const Sample *)a3;
-- (void)onFactoryGyroTemperature:(const Temperature *)a3;
-- (void)onGyro:(const Sample *)a3;
-- (void)onMagnetometer:(const Sample *)a3;
+- (void)onAccelerometer:(const Sample *)accelerometer;
+- (void)onAmbientPressure:(const Sample *)pressure;
+- (void)onCompensatedAmbientPressure:(const Sample *)pressure;
+- (void)onDeviceMotion:(const Sample *)motion;
+- (void)onDeviceMotionForKeyboardMotion:(const Sample *)motion;
+- (void)onFactoryGyro:(const Sample *)gyro;
+- (void)onFactoryGyroTemperature:(const Temperature *)temperature;
+- (void)onGyro:(const Sample *)gyro;
+- (void)onMagnetometer:(const Sample *)magnetometer;
 - (void)rebuildGytt;
-- (void)setAccelerometerDataCallback:(void *)a3 info:(void *)a4 interval:(double)a5;
+- (void)setAccelerometerDataCallback:(void *)callback info:(void *)info interval:(double)interval;
 - (void)setAccelerometerUpdateInterval:(NSTimeInterval)accelerometerUpdateInterval;
-- (void)setAccelerometerUpdateIntervalPrivate:(double)a3;
-- (void)setAmbientPressureUpdateInterval:(double)a3;
-- (void)setAmbientPressureUpdateIntervalPrivate:(double)a3;
-- (void)setCompensatedAmbientPressureUpdateInterval:(double)a3;
-- (void)setCompensatedAmbientPressureUpdateIntervalPrivate:(double)a3;
-- (void)setDeviceMotionCallback:(void *)a3 info:(void *)a4 interval:(double)a5 fsync:(BOOL)a6;
+- (void)setAccelerometerUpdateIntervalPrivate:(double)private;
+- (void)setAmbientPressureUpdateInterval:(double)interval;
+- (void)setAmbientPressureUpdateIntervalPrivate:(double)private;
+- (void)setCompensatedAmbientPressureUpdateInterval:(double)interval;
+- (void)setCompensatedAmbientPressureUpdateIntervalPrivate:(double)private;
+- (void)setDeviceMotionCallback:(void *)callback info:(void *)info interval:(double)interval fsync:(BOOL)fsync;
 - (void)setDeviceMotionUpdateInterval:(NSTimeInterval)deviceMotionUpdateInterval;
-- (void)setDeviceMotionUpdateIntervalNoSim:(double)a3;
-- (void)setDeviceMotionUpdateIntervalPrivate:(double)a3;
-- (void)setDisplayGravityHandler:(id)a3 interval:(double)a4;
-- (void)setGyroDataCallback:(void *)a3 info:(void *)a4 interval:(double)a5;
+- (void)setDeviceMotionUpdateIntervalNoSim:(double)sim;
+- (void)setDeviceMotionUpdateIntervalPrivate:(double)private;
+- (void)setDisplayGravityHandler:(id)handler interval:(double)interval;
+- (void)setGyroDataCallback:(void *)callback info:(void *)info interval:(double)interval;
 - (void)setGyroUpdateInterval:(NSTimeInterval)gyroUpdateInterval;
-- (void)setGyroUpdateIntervalPrivate:(double)a3;
-- (void)setMagnetometerDataCallback:(void *)a3 info:(void *)a4 interval:(double)a5;
+- (void)setGyroUpdateIntervalPrivate:(double)private;
+- (void)setMagnetometerDataCallback:(void *)callback info:(void *)info interval:(double)interval;
 - (void)setMagnetometerUpdateInterval:(NSTimeInterval)magnetometerUpdateInterval;
-- (void)setMagnetometerUpdateIntervalPrivate:(double)a3;
-- (void)setNotificationCallback:(void *)a3 info:(void *)a4;
-- (void)setPowerConservationMode:(int)a3;
-- (void)setShouldResetStartingReference:(BOOL)a3;
+- (void)setMagnetometerUpdateIntervalPrivate:(double)private;
+- (void)setNotificationCallback:(void *)callback info:(void *)info;
+- (void)setPowerConservationMode:(int)mode;
+- (void)setShouldResetStartingReference:(BOOL)reference;
 - (void)setShowsDeviceMovementDisplay:(BOOL)showsDeviceMovementDisplay;
-- (void)setSidebandTimeSyncHandler:(id)a3;
+- (void)setSidebandTimeSyncHandler:(id)handler;
 - (void)showDeviceMovementDisplay;
 - (void)startAccelerometerUpdates;
-- (void)startAccelerometerUpdatesPrivateToQueue:(id)a3 withHandler:(id)a4;
+- (void)startAccelerometerUpdatesPrivateToQueue:(id)queue withHandler:(id)handler;
 - (void)startAccelerometerUpdatesToQueue:(NSOperationQueue *)queue withHandler:(CMAccelerometerHandler)handler;
 - (void)startAmbientPressureUpdates;
-- (void)startAmbientPressureUpdatesPrivateToQueue:(id)a3 withHandler:(id)a4;
-- (void)startAmbientPressureUpdatesToQueue:(id)a3 withHandler:(id)a4;
+- (void)startAmbientPressureUpdatesPrivateToQueue:(id)queue withHandler:(id)handler;
+- (void)startAmbientPressureUpdatesToQueue:(id)queue withHandler:(id)handler;
 - (void)startCompensatedAmbientPressureUpdates;
-- (void)startCompensatedAmbientPressureUpdatesPrivateToQueue:(id)a3 withHandler:(id)a4;
-- (void)startCompensatedAmbientPressureUpdatesToQueue:(id)a3 withHandler:(id)a4;
-- (void)startDeviceMotionLiteFusedUpdatesForDeviceID:(id)a3 toQueue:(id)a4 withHandler:(id)a5;
-- (void)startDeviceMotionLiteUpdatesForDeviceID:(id)a3 usingConfiguration:(id)a4 toQueue:(id)a5 withFusedHandler:(id)a6;
+- (void)startCompensatedAmbientPressureUpdatesPrivateToQueue:(id)queue withHandler:(id)handler;
+- (void)startCompensatedAmbientPressureUpdatesToQueue:(id)queue withHandler:(id)handler;
+- (void)startDeviceMotionLiteFusedUpdatesForDeviceID:(id)d toQueue:(id)queue withHandler:(id)handler;
+- (void)startDeviceMotionLiteUpdatesForDeviceID:(id)d usingConfiguration:(id)configuration toQueue:(id)queue withFusedHandler:(id)handler;
 - (void)startDeviceMotionUpdates;
-- (void)startDeviceMotionUpdatesForKeyboardMotionPrivateToQueue:(id)a3 withGravityDeltaThreshold:(double)a4 notificationFrequency:(double)a5 andHandler:(id)a6;
-- (void)startDeviceMotionUpdatesForKeyboardMotionToQueue:(id)a3 withGravityDeltaThreshold:(double)a4 sendFrequency:(double)a5 andHandler:(id)a6;
+- (void)startDeviceMotionUpdatesForKeyboardMotionPrivateToQueue:(id)queue withGravityDeltaThreshold:(double)threshold notificationFrequency:(double)frequency andHandler:(id)handler;
+- (void)startDeviceMotionUpdatesForKeyboardMotionToQueue:(id)queue withGravityDeltaThreshold:(double)threshold sendFrequency:(double)frequency andHandler:(id)handler;
 - (void)startDeviceMotionUpdatesNoSim;
-- (void)startDeviceMotionUpdatesNoSimToQueue:(id)a3 withHandler:(id)a4;
-- (void)startDeviceMotionUpdatesNoSimUsingReferenceFrame:(unint64_t)a3;
-- (void)startDeviceMotionUpdatesNoSimUsingReferenceFrame:(unint64_t)a3 toQueue:(id)a4 withHandler:(id)a5;
-- (void)startDeviceMotionUpdatesPrivateUsingReferenceFrame:(unint64_t)a3 toQueue:(id)a4 withHandler:(id)a5;
+- (void)startDeviceMotionUpdatesNoSimToQueue:(id)queue withHandler:(id)handler;
+- (void)startDeviceMotionUpdatesNoSimUsingReferenceFrame:(unint64_t)frame;
+- (void)startDeviceMotionUpdatesNoSimUsingReferenceFrame:(unint64_t)frame toQueue:(id)queue withHandler:(id)handler;
+- (void)startDeviceMotionUpdatesPrivateUsingReferenceFrame:(unint64_t)frame toQueue:(id)queue withHandler:(id)handler;
 - (void)startDeviceMotionUpdatesToQueue:(NSOperationQueue *)queue withHandler:(CMDeviceMotionHandler)handler;
 - (void)startDeviceMotionUpdatesUsingReferenceFrame:(CMAttitudeReferenceFrame)referenceFrame;
 - (void)startDeviceMotionUpdatesUsingReferenceFrame:(CMAttitudeReferenceFrame)referenceFrame toQueue:(NSOperationQueue *)queue withHandler:(CMDeviceMotionHandler)handler;
-- (void)startFactoryGyroUpdatesPrivateToQueue:(id)a3 atUpdateInterval:(double)a4 withHandler:(id)a5 residualHandler:(id)a6;
-- (void)startFactoryGyroUpdatesToQueue:(id)a3 atUpdateInterval:(double)a4 withHandler:(id)a5;
-- (void)startFactoryGyroUpdatesToQueue:(id)a3 atUpdateInterval:(double)a4 withHandler:(id)a5 residualHandler:(id)a6;
-- (void)startFactoryGyroUpdatesToQueue:(id)a3 withHandler:(id)a4;
+- (void)startFactoryGyroUpdatesPrivateToQueue:(id)queue atUpdateInterval:(double)interval withHandler:(id)handler residualHandler:(id)residualHandler;
+- (void)startFactoryGyroUpdatesToQueue:(id)queue atUpdateInterval:(double)interval withHandler:(id)handler;
+- (void)startFactoryGyroUpdatesToQueue:(id)queue atUpdateInterval:(double)interval withHandler:(id)handler residualHandler:(id)residualHandler;
+- (void)startFactoryGyroUpdatesToQueue:(id)queue withHandler:(id)handler;
 - (void)startGyroUpdates;
-- (void)startGyroUpdatesPrivateToQueue:(id)a3 withHandler:(id)a4;
+- (void)startGyroUpdatesPrivateToQueue:(id)queue withHandler:(id)handler;
 - (void)startGyroUpdatesToQueue:(NSOperationQueue *)queue withHandler:(CMGyroHandler)handler;
 - (void)startMagnetometerUpdates;
-- (void)startMagnetometerUpdatesPrivateToQueue:(id)a3 withHandler:(id)a4;
+- (void)startMagnetometerUpdatesPrivateToQueue:(id)queue withHandler:(id)handler;
 - (void)startMagnetometerUpdatesToQueue:(NSOperationQueue *)queue withHandler:(CMMagnetometerHandler)handler;
 - (void)stopAccelerometerUpdates;
 - (void)stopAccelerometerUpdatesPrivate;
@@ -112,7 +112,7 @@
 - (void)stopAmbientPressureUpdatesPrivate;
 - (void)stopCompensatedAmbientPressureUpdates;
 - (void)stopCompensatedAmbientPressureUpdatesPrivate;
-- (void)stopDeviceMotionLiteUpdatesForDeviceID:(id)a3;
+- (void)stopDeviceMotionLiteUpdatesForDeviceID:(id)d;
 - (void)stopDeviceMotionUpdates;
 - (void)stopDeviceMotionUpdatesForKeyboardMotion;
 - (void)stopDeviceMotionUpdatesForKeyboardMotionPrivate;
@@ -125,8 +125,8 @@
 - (void)stopMagnetometerUpdates;
 - (void)stopMagnetometerUpdatesPrivate;
 - (void)updateDeviceMotionMode;
-- (void)willResignActive:(id)a3;
-- (void)willResignActivePrivate:(id)a3;
+- (void)willResignActive:(id)active;
+- (void)willResignActivePrivate:(id)private;
 @end
 
 @implementation CMMotionManager
@@ -187,12 +187,12 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v5 = objc_msgSend_currentThread(MEMORY[0x1E696AF00], v3, v4);
     if (objc_msgSend_isMainThread(v5, v6, v7) && (objc_msgSend_isMultiThreaded(MEMORY[0x1E696AF00], v8, v9) & 1) == 0)
     {
-      objc_msgSend_detachNewThreadSelector_toTarget_withObject_(MEMORY[0x1E696AF00], v10, sel_dummySelector_, a1, 0);
+      objc_msgSend_detachNewThreadSelector_toTarget_withObject_(MEMORY[0x1E696AF00], v10, sel_dummySelector_, self, 0);
     }
 
     if (!qword_1ED71C900)
@@ -476,13 +476,13 @@
   internal[314] = 0;
 }
 
-+ (void)setVirtualAlmondDevice:(id)a3
++ (void)setVirtualAlmondDevice:(id)device
 {
   if (sub_19B5F8F74())
   {
-    v4 = a3;
+    deviceCopy = device;
 
-    qword_1EAFE38C8 = v4;
+    qword_1EAFE38C8 = deviceCopy;
   }
 }
 
@@ -601,15 +601,15 @@
   sub_19B420C9C(v3, v4);
 }
 
-- (void)setAccelerometerUpdateIntervalPrivate:(double)a3
+- (void)setAccelerometerUpdateIntervalPrivate:(double)private
 {
   internal = self->_internal;
-  if (a3 < 0.01)
+  if (private < 0.01)
   {
-    a3 = 0.01;
+    private = 0.01;
   }
 
-  *(internal + 3) = a3;
+  *(internal + 3) = private;
   if (*(internal + 2))
   {
     v4 = sub_19B4249E4();
@@ -619,23 +619,23 @@
   }
 }
 
-- (void)startAccelerometerUpdatesPrivateToQueue:(id)a3 withHandler:(id)a4
+- (void)startAccelerometerUpdatesPrivateToQueue:(id)queue withHandler:(id)handler
 {
   internal = self->_internal;
-  if (objc_msgSend_isAccelerometerAvailable(self, a2, a3) && internal[3] > 0.0)
+  if (objc_msgSend_isAccelerometerAvailable(self, a2, queue) && internal[3] > 0.0)
   {
     v7 = *(internal + 5);
-    if (v7 != a3)
+    if (v7 != queue)
     {
 
-      *(internal + 5) = a3;
+      *(internal + 5) = queue;
     }
 
     v8 = *(internal + 4);
-    if (v8 != a4)
+    if (v8 != handler)
     {
 
-      *(internal + 4) = objc_msgSend_copy(a4, v9, v10);
+      *(internal + 4) = objc_msgSend_copy(handler, v9, v10);
     }
 
     if (!*(internal + 2))
@@ -699,7 +699,7 @@
   return v2;
 }
 
-- (void)setAmbientPressureUpdateInterval:(double)a3
+- (void)setAmbientPressureUpdateInterval:(double)interval
 {
   v5 = sub_19B420D84();
   v6[0] = MEMORY[0x1E69E9820];
@@ -707,7 +707,7 @@
   v6[2] = sub_19B62B580;
   v6[3] = &unk_1E7533490;
   v6[4] = self;
-  *&v6[5] = a3;
+  *&v6[5] = interval;
   sub_19B420C9C(v5, v6);
 }
 
@@ -722,7 +722,7 @@
   sub_19B421668(v3, v4);
 }
 
-- (void)startAmbientPressureUpdatesToQueue:(id)a3 withHandler:(id)a4
+- (void)startAmbientPressureUpdatesToQueue:(id)queue withHandler:(id)handler
 {
   v7 = sub_19B420D84();
   v8[0] = MEMORY[0x1E69E9820];
@@ -730,8 +730,8 @@
   v8[2] = sub_19B62B6CC;
   v8[3] = &unk_1E7532C08;
   v8[4] = self;
-  v8[5] = a3;
-  v8[6] = a4;
+  v8[5] = queue;
+  v8[6] = handler;
   sub_19B421668(v7, v8);
 }
 
@@ -767,10 +767,10 @@
   return v11;
 }
 
-- (BOOL)readRawAmbientPressureSamplesFromDB:(id)a3 toQueue:(id)a4 where:(id)a5 withHandler:(id)a6
+- (BOOL)readRawAmbientPressureSamplesFromDB:(id)b toQueue:(id)queue where:(id)where withHandler:(id)handler
 {
   v35 = *MEMORY[0x1E69E9840];
-  v10 = objc_msgSend_UTF8String(a3, a2, a3);
+  v10 = objc_msgSend_UTF8String(b, a2, b);
   sub_19B428B50(__p, v10);
   v33 = 0uLL;
   v34 = 0;
@@ -793,7 +793,7 @@
     if (os_log_type_enabled(qword_1EAFE2860, OS_LOG_TYPE_FAULT))
     {
       *__p = 138412290;
-      *&__p[4] = a3;
+      *&__p[4] = b;
       _os_log_impl(&dword_19B41C000, v16, OS_LOG_TYPE_FAULT, "%@ is invalid", __p, 0xCu);
     }
 
@@ -807,7 +807,7 @@
       }
 
       LODWORD(v33) = 138412290;
-      *(&v33 + 4) = a3;
+      *(&v33 + 4) = b;
       v18 = _os_log_send_and_compose_impl();
       sub_19B6BB7CC("Generic", 1, 0, 0, "[CMMotionManager readRawAmbientPressureSamplesFromDB:toQueue:where:withHandler:]", "CoreLocation: %s\n", v18);
       if (v18 != __p)
@@ -819,14 +819,14 @@
     goto LABEL_21;
   }
 
-  v13 = objc_msgSend_UTF8String(a5, v11, v12);
+  v13 = objc_msgSend_UTF8String(where, v11, v12);
   sub_19B428B50(__p, v13);
   v27[0] = MEMORY[0x1E69E9820];
   v27[1] = 3221225472;
   v27[2] = sub_19B62BB88;
   v27[3] = &unk_1E7533758;
-  v27[4] = a4;
-  v27[5] = a6;
+  v27[4] = queue;
+  v27[5] = handler;
   v14 = sub_19B6697FC(v30, __p, v27);
   v15 = v14;
   if (v32 < 0)
@@ -852,8 +852,8 @@ LABEL_21:
   v26[2] = sub_19B62BC40;
   v26[3] = &unk_1E7532B90;
   v26[4] = v21;
-  v26[5] = a6;
-  objc_msgSend_addOperationWithBlock_(a4, v22, v26);
+  v26[5] = handler;
+  objc_msgSend_addOperationWithBlock_(queue, v22, v26);
 
   v23 = 1;
 LABEL_22:
@@ -862,12 +862,12 @@ LABEL_22:
   return v23;
 }
 
-- (id)computeNonlinearPRTTFromDB:(id)a3 where:(id)a4
+- (id)computeNonlinearPRTTFromDB:(id)b where:(id)where
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = objc_msgSend_UTF8String(a3, a2, a3);
+  v6 = objc_msgSend_UTF8String(b, a2, b);
   sub_19B428B50(buf, v6);
-  v9 = objc_msgSend_UTF8String(a4, v7, v8);
+  v9 = objc_msgSend_UTF8String(where, v7, v8);
   sub_19B428B50(v22, v9);
   v11 = sub_19B669D40(buf, v22, v17);
   if (v25 < 0)
@@ -900,9 +900,9 @@ LABEL_5:
   if (os_log_type_enabled(qword_1EAFE2860, OS_LOG_TYPE_FAULT))
   {
     *buf = 138412546;
-    *&buf[4] = a3;
+    *&buf[4] = b;
     v19 = 2112;
-    v20 = a4;
+    whereCopy = where;
     _os_log_impl(&dword_19B41C000, v13, OS_LOG_TYPE_FAULT, "Failed to calculate PRTT for %@ WHERE %@", buf, 0x16u);
   }
 
@@ -916,9 +916,9 @@ LABEL_5:
     }
 
     *v22 = 138412546;
-    *&v22[4] = a3;
+    *&v22[4] = b;
     v23 = 2112;
-    v24 = a4;
+    whereCopy2 = where;
     v15 = _os_log_send_and_compose_impl();
     sub_19B6BB7CC("Generic", 1, 0, 0, "[CMMotionManager computeNonlinearPRTTFromDB:where:]", "CoreLocation: %s\n", v15);
     if (v15 != buf)
@@ -933,7 +933,7 @@ LABEL_19:
   return result;
 }
 
-- (void)setCompensatedAmbientPressureUpdateInterval:(double)a3
+- (void)setCompensatedAmbientPressureUpdateInterval:(double)interval
 {
   v5 = sub_19B420D84();
   v6[0] = MEMORY[0x1E69E9820];
@@ -941,7 +941,7 @@ LABEL_19:
   v6[2] = sub_19B62BF88;
   v6[3] = &unk_1E7533490;
   v6[4] = self;
-  *&v6[5] = a3;
+  *&v6[5] = interval;
   sub_19B420C9C(v5, v6);
 }
 
@@ -956,7 +956,7 @@ LABEL_19:
   sub_19B421668(v3, v4);
 }
 
-- (void)startCompensatedAmbientPressureUpdatesToQueue:(id)a3 withHandler:(id)a4
+- (void)startCompensatedAmbientPressureUpdatesToQueue:(id)queue withHandler:(id)handler
 {
   v7 = sub_19B420D84();
   v8[0] = MEMORY[0x1E69E9820];
@@ -964,8 +964,8 @@ LABEL_19:
   v8[2] = sub_19B62C0D4;
   v8[3] = &unk_1E7532C08;
   v8[4] = self;
-  v8[5] = a3;
-  v8[6] = a4;
+  v8[5] = queue;
+  v8[6] = handler;
   sub_19B421668(v7, v8);
 }
 
@@ -1001,15 +1001,15 @@ LABEL_19:
   return v11;
 }
 
-- (void)setAmbientPressureUpdateIntervalPrivate:(double)a3
+- (void)setAmbientPressureUpdateIntervalPrivate:(double)private
 {
   internal = self->_internal;
-  if (a3 < 0.01)
+  if (private < 0.01)
   {
-    a3 = 0.01;
+    private = 0.01;
   }
 
-  *(internal + 11) = a3;
+  *(internal + 11) = private;
   if (*(internal + 10))
   {
     v4 = sub_19B61C754();
@@ -1019,23 +1019,23 @@ LABEL_19:
   }
 }
 
-- (void)startAmbientPressureUpdatesPrivateToQueue:(id)a3 withHandler:(id)a4
+- (void)startAmbientPressureUpdatesPrivateToQueue:(id)queue withHandler:(id)handler
 {
   internal = self->_internal;
-  if (objc_msgSend_isAmbientPressureAvailable(self, a2, a3) && internal[11] > 0.0)
+  if (objc_msgSend_isAmbientPressureAvailable(self, a2, queue) && internal[11] > 0.0)
   {
     v7 = *(internal + 13);
-    if (v7 != a3)
+    if (v7 != queue)
     {
 
-      *(internal + 13) = a3;
+      *(internal + 13) = queue;
     }
 
     v8 = *(internal + 12);
-    if (v8 != a4)
+    if (v8 != handler)
     {
 
-      *(internal + 12) = objc_msgSend_copy(a4, v9, v10);
+      *(internal + 12) = objc_msgSend_copy(handler, v9, v10);
     }
 
     if (!*(internal + 10))
@@ -1079,15 +1079,15 @@ LABEL_19:
   }
 }
 
-- (void)setCompensatedAmbientPressureUpdateIntervalPrivate:(double)a3
+- (void)setCompensatedAmbientPressureUpdateIntervalPrivate:(double)private
 {
   internal = self->_internal;
-  if (a3 < 0.01)
+  if (private < 0.01)
   {
-    a3 = 0.01;
+    private = 0.01;
   }
 
-  *(internal + 18) = a3;
+  *(internal + 18) = private;
   if (*(internal + 17))
   {
     v4 = sub_19B61C754();
@@ -1097,23 +1097,23 @@ LABEL_19:
   }
 }
 
-- (void)startCompensatedAmbientPressureUpdatesPrivateToQueue:(id)a3 withHandler:(id)a4
+- (void)startCompensatedAmbientPressureUpdatesPrivateToQueue:(id)queue withHandler:(id)handler
 {
   internal = self->_internal;
-  if (objc_msgSend_isAmbientPressureAvailable(self, a2, a3) && internal[18] > 0.0)
+  if (objc_msgSend_isAmbientPressureAvailable(self, a2, queue) && internal[18] > 0.0)
   {
     v7 = *(internal + 20);
-    if (v7 != a3)
+    if (v7 != queue)
     {
 
-      *(internal + 20) = a3;
+      *(internal + 20) = queue;
     }
 
     v8 = *(internal + 19);
-    if (v8 != a4)
+    if (v8 != handler)
     {
 
-      *(internal + 19) = objc_msgSend_copy(a4, v9, v10);
+      *(internal + 19) = objc_msgSend_copy(handler, v9, v10);
     }
 
     if (!*(internal + 17))
@@ -1227,15 +1227,15 @@ LABEL_19:
   sub_19B420C9C(v3, v4);
 }
 
-- (void)setGyroUpdateIntervalPrivate:(double)a3
+- (void)setGyroUpdateIntervalPrivate:(double)private
 {
   internal = self->_internal;
-  if (a3 < 0.01)
+  if (private < 0.01)
   {
-    a3 = 0.01;
+    private = 0.01;
   }
 
-  *(internal + 25) = a3;
+  *(internal + 25) = private;
   if (*(internal + 24))
   {
     v4 = sub_19B42AD98();
@@ -1245,23 +1245,23 @@ LABEL_19:
   }
 }
 
-- (void)startGyroUpdatesPrivateToQueue:(id)a3 withHandler:(id)a4
+- (void)startGyroUpdatesPrivateToQueue:(id)queue withHandler:(id)handler
 {
   internal = self->_internal;
   if ((sub_19B4215D8() & 1) == 0 && (sub_19B421620() & 0x200000) == 0 && internal[25] > 0.0)
   {
     v7 = *(internal + 27);
-    if (v7 != a3)
+    if (v7 != queue)
     {
 
-      *(internal + 27) = a3;
+      *(internal + 27) = queue;
     }
 
     v8 = *(internal + 26);
-    if (v8 != a4)
+    if (v8 != handler)
     {
 
-      *(internal + 26) = objc_msgSend_copy(a4, v9, v10);
+      *(internal + 26) = objc_msgSend_copy(handler, v9, v10);
     }
 
     if (!*(internal + 24))
@@ -1389,7 +1389,7 @@ LABEL_19:
   return 15;
 }
 
-- (void)setDeviceMotionUpdateIntervalNoSim:(double)a3
+- (void)setDeviceMotionUpdateIntervalNoSim:(double)sim
 {
   v5 = sub_19B420D84();
   v6[0] = MEMORY[0x1E69E9820];
@@ -1397,7 +1397,7 @@ LABEL_19:
   v6[2] = sub_19B62D084;
   v6[3] = &unk_1E7533490;
   v6[4] = self;
-  *&v6[5] = a3;
+  *&v6[5] = sim;
   sub_19B420C9C(v5, v6);
 }
 
@@ -1575,7 +1575,7 @@ LABEL_39:
   sub_19B421668(v3, v4);
 }
 
-- (void)startDeviceMotionUpdatesNoSimToQueue:(id)a3 withHandler:(id)a4
+- (void)startDeviceMotionUpdatesNoSimToQueue:(id)queue withHandler:(id)handler
 {
   v7 = sub_19B420D84();
   v8[0] = MEMORY[0x1E69E9820];
@@ -1583,12 +1583,12 @@ LABEL_39:
   v8[2] = sub_19B62D7CC;
   v8[3] = &unk_1E7532C08;
   v8[4] = self;
-  v8[5] = a3;
-  v8[6] = a4;
+  v8[5] = queue;
+  v8[6] = handler;
   sub_19B421668(v7, v8);
 }
 
-- (void)startDeviceMotionUpdatesNoSimUsingReferenceFrame:(unint64_t)a3
+- (void)startDeviceMotionUpdatesNoSimUsingReferenceFrame:(unint64_t)frame
 {
   v5 = sub_19B420D84();
   v6[0] = MEMORY[0x1E69E9820];
@@ -1596,11 +1596,11 @@ LABEL_39:
   v6[2] = sub_19B62D894;
   v6[3] = &unk_1E7533490;
   v6[4] = self;
-  v6[5] = a3;
+  v6[5] = frame;
   sub_19B421668(v5, v6);
 }
 
-- (void)startDeviceMotionUpdatesNoSimUsingReferenceFrame:(unint64_t)a3 toQueue:(id)a4 withHandler:(id)a5
+- (void)startDeviceMotionUpdatesNoSimUsingReferenceFrame:(unint64_t)frame toQueue:(id)queue withHandler:(id)handler
 {
   v9 = sub_19B420D84();
   v10[0] = MEMORY[0x1E69E9820];
@@ -1608,9 +1608,9 @@ LABEL_39:
   v10[2] = sub_19B62D93C;
   v10[3] = &unk_1E7533780;
   v10[4] = self;
-  v10[5] = a4;
-  v10[6] = a5;
-  v10[7] = a3;
+  v10[5] = queue;
+  v10[6] = handler;
+  v10[7] = frame;
   sub_19B421668(v9, v10);
 }
 
@@ -1625,15 +1625,15 @@ LABEL_39:
   sub_19B420C9C(v3, v4);
 }
 
-- (void)setDeviceMotionUpdateIntervalPrivate:(double)a3
+- (void)setDeviceMotionUpdateIntervalPrivate:(double)private
 {
   internal = self->_internal;
-  if (a3 < 0.01)
+  if (private < 0.01)
   {
-    a3 = 0.01;
+    private = 0.01;
   }
 
-  *(internal + 33) = a3;
+  *(internal + 33) = private;
   if (*(internal + 32))
   {
     v4 = sub_19B424AE0();
@@ -1644,17 +1644,17 @@ LABEL_39:
   }
 }
 
-- (void)startDeviceMotionUpdatesPrivateUsingReferenceFrame:(unint64_t)a3 toQueue:(id)a4 withHandler:(id)a5
+- (void)startDeviceMotionUpdatesPrivateUsingReferenceFrame:(unint64_t)frame toQueue:(id)queue withHandler:(id)handler
 {
   internal = self->_internal;
   if (internal[538] == 1)
   {
-    if (!objc_msgSend_isDeviceMotionAvailableNoSim(self, a2, a3) || *(internal + 33) <= 0.0 || (objc_msgSend_availableAttitudeReferenceFramesNoSim(CMMotionManager, v10, v11) & a3) == 0)
+    if (!objc_msgSend_isDeviceMotionAvailableNoSim(self, a2, frame) || *(internal + 33) <= 0.0 || (objc_msgSend_availableAttitudeReferenceFramesNoSim(CMMotionManager, v10, v11) & frame) == 0)
     {
       return;
     }
 
-    if (objc_msgSend_isDeviceMotionActiveNoSim(self, v12, v13) && *(internal + 38) != a3)
+    if (objc_msgSend_isDeviceMotionActiveNoSim(self, v12, v13) && *(internal + 38) != frame)
     {
       objc_msgSend_stopDeviceMotionUpdatesNoSim(self, v14, v15);
     }
@@ -1662,18 +1662,18 @@ LABEL_39:
 
   else
   {
-    if (!objc_msgSend_isDeviceMotionAvailable(self, a2, a3) || *(internal + 33) <= 0.0 || (objc_msgSend_availableAttitudeReferenceFrames(CMMotionManager, v16, v17) & a3) == 0)
+    if (!objc_msgSend_isDeviceMotionAvailable(self, a2, frame) || *(internal + 33) <= 0.0 || (objc_msgSend_availableAttitudeReferenceFrames(CMMotionManager, v16, v17) & frame) == 0)
     {
       return;
     }
 
-    if (objc_msgSend_isDeviceMotionActive(self, v18, v19) && *(internal + 38) != a3)
+    if (objc_msgSend_isDeviceMotionActive(self, v18, v19) && *(internal + 38) != frame)
     {
       objc_msgSend_stopDeviceMotionUpdates(self, v20, v21);
     }
   }
 
-  *(internal + 38) = a3;
+  *(internal + 38) = frame;
   internal[360] = 0;
   v22 = mach_absolute_time();
   *(internal + 40) = sub_19B41E070(v22);
@@ -1691,17 +1691,17 @@ LABEL_39:
   }
 
   v25 = *(internal + 35);
-  if (v25 != a4)
+  if (v25 != queue)
   {
 
-    *(internal + 35) = a4;
+    *(internal + 35) = queue;
   }
 
   v26 = *(internal + 34);
-  if (v26 != a5)
+  if (v26 != handler)
   {
 
-    *(internal + 34) = objc_msgSend_copy(a5, v27, v28);
+    *(internal + 34) = objc_msgSend_copy(handler, v27, v28);
   }
 
   if (!*(internal + 32))
@@ -1775,19 +1775,19 @@ LABEL_36:
   }
 }
 
-+ (void)dumpDb:(int64_t)a3 toURL:(id)a4 onCompletion:(id)a5
++ (void)dumpDb:(int64_t)db toURL:(id)l onCompletion:(id)completion
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  if (!objc_msgSend_fileHandleForWritingToURL_(CMMotionUtils, a2, a4))
+  if (!objc_msgSend_fileHandleForWritingToURL_(CMMotionUtils, a2, l))
   {
     v12 = @"CMReturnCode";
     v13[0] = MEMORY[0x1E695E110];
     v8 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x1E695DF20], v7, v13, &v12, 1);
-    (*(a5 + 2))(a5, v8);
+    (*(completion + 2))(completion, v8);
   }
 
   v10 = @"CMDatabaseType";
-  v11 = objc_msgSend_numberWithInteger_(MEMORY[0x1E696AD98], v7, a3);
+  v11 = objc_msgSend_numberWithInteger_(MEMORY[0x1E696AD98], v7, db);
   objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x1E695DF20], v9, &v11, &v10, 1);
   sub_19B5E2E24();
 }
@@ -1907,15 +1907,15 @@ LABEL_36:
   sub_19B420C9C(v3, v4);
 }
 
-- (void)setMagnetometerUpdateIntervalPrivate:(double)a3
+- (void)setMagnetometerUpdateIntervalPrivate:(double)private
 {
   internal = self->_internal;
-  if (a3 < 0.01)
+  if (private < 0.01)
   {
-    a3 = 0.01;
+    private = 0.01;
   }
 
-  *(internal + 47) = a3;
+  *(internal + 47) = private;
   if (*(internal + 46))
   {
     v4 = sub_19B673618();
@@ -1925,23 +1925,23 @@ LABEL_36:
   }
 }
 
-- (void)startMagnetometerUpdatesPrivateToQueue:(id)a3 withHandler:(id)a4
+- (void)startMagnetometerUpdatesPrivateToQueue:(id)queue withHandler:(id)handler
 {
   internal = self->_internal;
   if ((sub_19B4215D8() & 1) == 0 && (sub_19B423E34() & 1) != 0 && internal[47] > 0.0)
   {
     v7 = *(internal + 49);
-    if (v7 != a3)
+    if (v7 != queue)
     {
 
-      *(internal + 49) = a3;
+      *(internal + 49) = queue;
     }
 
     v8 = *(internal + 48);
-    if (v8 != a4)
+    if (v8 != handler)
     {
 
-      *(internal + 48) = objc_msgSend_copy(a4, v9, v10);
+      *(internal + 48) = objc_msgSend_copy(handler, v9, v10);
     }
 
     if (!*(internal + 46))
@@ -2062,9 +2062,9 @@ LABEL_36:
   return result;
 }
 
-- (void)setAccelerometerDataCallback:(void *)a3 info:(void *)a4 interval:(double)a5
+- (void)setAccelerometerDataCallback:(void *)callback info:(void *)info interval:(double)interval
 {
-  v20 = a5;
+  intervalCopy = interval;
   Current = CFRunLoopGetCurrent();
   sub_19B420D84();
   if (Current == *qword_1ED71C908)
@@ -2072,10 +2072,10 @@ LABEL_36:
     if (objc_msgSend_isAccelerometerAvailable(self, v10, v11))
     {
       internal = self->_internal;
-      internal[56] = a3;
-      internal[57] = a4;
+      internal[56] = callback;
+      internal[57] = info;
       v14 = internal[55];
-      if (a5 <= 0.0)
+      if (interval <= 0.0)
       {
         if (v14)
         {
@@ -2099,7 +2099,7 @@ LABEL_36:
         }
 
         v15 = sub_19B4249E4();
-        sub_19B44E2F8(v15, 0, internal[55], &v20);
+        sub_19B44E2F8(v15, 0, internal[55], &intervalCopy);
       }
     }
   }
@@ -2107,16 +2107,16 @@ LABEL_36:
   else
   {
     v12 = sub_19B420D84();
-    if (a5 <= 0.0)
+    if (interval <= 0.0)
     {
       v19[0] = MEMORY[0x1E69E9820];
       v19[1] = 3221225472;
       v19[2] = sub_19B62ECF8;
       v19[3] = &unk_1E75337F8;
       v19[4] = self;
-      v19[5] = a3;
-      v19[6] = a4;
-      *&v19[7] = a5;
+      v19[5] = callback;
+      v19[6] = info;
+      *&v19[7] = interval;
       sub_19B420C9C(v12, v19);
     }
 
@@ -2127,17 +2127,17 @@ LABEL_36:
       v18[2] = sub_19B62ED0C;
       v18[3] = &unk_1E75337F8;
       v18[4] = self;
-      v18[5] = a3;
-      v18[6] = a4;
-      *&v18[7] = a5;
+      v18[5] = callback;
+      v18[6] = info;
+      *&v18[7] = interval;
       sub_19B421668(v12, v18);
     }
   }
 }
 
-- (void)setGyroDataCallback:(void *)a3 info:(void *)a4 interval:(double)a5
+- (void)setGyroDataCallback:(void *)callback info:(void *)info interval:(double)interval
 {
-  v18 = a5;
+  intervalCopy = interval;
   Current = CFRunLoopGetCurrent();
   sub_19B420D84();
   if (Current == *qword_1ED71C908)
@@ -2145,10 +2145,10 @@ LABEL_36:
     if ((sub_19B4215D8() & 1) == 0 && (sub_19B421620() & 0x200000) == 0)
     {
       internal = self->_internal;
-      internal[59] = a3;
-      internal[60] = a4;
+      internal[59] = callback;
+      internal[60] = info;
       v12 = internal[58];
-      if (a5 <= 0.0)
+      if (interval <= 0.0)
       {
         if (v12)
         {
@@ -2172,7 +2172,7 @@ LABEL_36:
         }
 
         v13 = sub_19B42AD98();
-        sub_19B44E2F8(v13, 0, internal[58], &v18);
+        sub_19B44E2F8(v13, 0, internal[58], &intervalCopy);
       }
     }
   }
@@ -2180,16 +2180,16 @@ LABEL_36:
   else
   {
     v10 = sub_19B420D84();
-    if (a5 <= 0.0)
+    if (interval <= 0.0)
     {
       v17[0] = MEMORY[0x1E69E9820];
       v17[1] = 3221225472;
       v17[2] = sub_19B62EF90;
       v17[3] = &unk_1E75337F8;
       v17[4] = self;
-      v17[5] = a3;
-      v17[6] = a4;
-      *&v17[7] = a5;
+      v17[5] = callback;
+      v17[6] = info;
+      *&v17[7] = interval;
       sub_19B420C9C(v10, v17);
     }
 
@@ -2200,17 +2200,17 @@ LABEL_36:
       v16[2] = sub_19B62EFA4;
       v16[3] = &unk_1E75337F8;
       v16[4] = self;
-      v16[5] = a3;
-      v16[6] = a4;
-      *&v16[7] = a5;
+      v16[5] = callback;
+      v16[6] = info;
+      *&v16[7] = interval;
       sub_19B421668(v10, v16);
     }
   }
 }
 
-- (void)setMagnetometerDataCallback:(void *)a3 info:(void *)a4 interval:(double)a5
+- (void)setMagnetometerDataCallback:(void *)callback info:(void *)info interval:(double)interval
 {
-  v18 = a5;
+  intervalCopy = interval;
   Current = CFRunLoopGetCurrent();
   sub_19B420D84();
   if (Current == *qword_1ED71C908)
@@ -2218,10 +2218,10 @@ LABEL_36:
     if (sub_19B4215D8() & 1) == 0 && (sub_19B423E34())
     {
       internal = self->_internal;
-      internal[62] = a3;
-      internal[63] = a4;
+      internal[62] = callback;
+      internal[63] = info;
       v12 = internal[61];
-      if (a5 <= 0.0)
+      if (interval <= 0.0)
       {
         if (v12)
         {
@@ -2245,7 +2245,7 @@ LABEL_36:
         }
 
         v13 = sub_19B673618();
-        sub_19B44E2F8(v13, 0, internal[61], &v18);
+        sub_19B44E2F8(v13, 0, internal[61], &intervalCopy);
       }
     }
   }
@@ -2253,16 +2253,16 @@ LABEL_36:
   else
   {
     v10 = sub_19B420D84();
-    if (a5 <= 0.0)
+    if (interval <= 0.0)
     {
       v17[0] = MEMORY[0x1E69E9820];
       v17[1] = 3221225472;
       v17[2] = sub_19B62F228;
       v17[3] = &unk_1E75337F8;
       v17[4] = self;
-      v17[5] = a3;
-      v17[6] = a4;
-      *&v17[7] = a5;
+      v17[5] = callback;
+      v17[6] = info;
+      *&v17[7] = interval;
       sub_19B420C9C(v10, v17);
     }
 
@@ -2273,17 +2273,17 @@ LABEL_36:
       v16[2] = sub_19B62F23C;
       v16[3] = &unk_1E75337F8;
       v16[4] = self;
-      v16[5] = a3;
-      v16[6] = a4;
-      *&v16[7] = a5;
+      v16[5] = callback;
+      v16[6] = info;
+      *&v16[7] = interval;
       sub_19B421668(v10, v16);
     }
   }
 }
 
-- (void)setDeviceMotionCallback:(void *)a3 info:(void *)a4 interval:(double)a5 fsync:(BOOL)a6
+- (void)setDeviceMotionCallback:(void *)callback info:(void *)info interval:(double)interval fsync:(BOOL)fsync
 {
-  v6 = a6;
+  fsyncCopy = fsync;
   v56 = *MEMORY[0x1E69E9840];
   Current = CFRunLoopGetCurrent();
   sub_19B420D84();
@@ -2302,13 +2302,13 @@ LABEL_36:
       *buf = 136447234;
       v47 = v15;
       v48 = 2050;
-      v49 = a3;
+      callbackCopy = callback;
       v50 = 2050;
-      v51 = a4;
+      infoCopy = info;
       v52 = 2050;
-      v53 = a5;
+      intervalCopy = interval;
       v54 = 1026;
-      v55 = v6;
+      v55 = fsyncCopy;
       _os_log_impl(&dword_19B41C000, v14, OS_LOG_TYPE_INFO, "%{public}s calling setDeviceMotionCallback:%{public}p info:%{public}p interval:%{public}f fsync:%{public}d", buf, 0x30u);
     }
 
@@ -2326,13 +2326,13 @@ LABEL_36:
       v36 = 136447234;
       v37 = v17;
       v38 = 2050;
-      v39 = a3;
+      callbackCopy2 = callback;
       v40 = 2050;
-      v41 = a4;
+      infoCopy2 = info;
       v42 = 2050;
-      v43 = a5;
+      intervalCopy2 = interval;
       v44 = 1026;
-      v45 = v6;
+      v45 = fsyncCopy;
       v18 = _os_log_send_and_compose_impl();
       sub_19B6BB7CC("Generic", 1, 0, 2, "[CMMotionManager setDeviceMotionCallback:info:interval:fsync:]", "CoreLocation: %s\n", v18);
       if (v18 != buf)
@@ -2342,17 +2342,17 @@ LABEL_36:
     }
 
     v19 = sub_19B420D84();
-    if (a5 <= 0.0)
+    if (interval <= 0.0)
     {
       v34[0] = MEMORY[0x1E69E9820];
       v34[1] = 3221225472;
       v34[2] = sub_19B62F730;
       v34[3] = &unk_1E7533820;
       v34[4] = self;
-      v34[5] = a3;
-      v34[6] = a4;
-      *&v34[7] = a5;
-      v35 = v6;
+      v34[5] = callback;
+      v34[6] = info;
+      *&v34[7] = interval;
+      v35 = fsyncCopy;
       sub_19B420C9C(v19, v34);
     }
 
@@ -2363,10 +2363,10 @@ LABEL_36:
       v32[2] = sub_19B62F748;
       v32[3] = &unk_1E7533820;
       v32[4] = self;
-      v32[5] = a3;
-      v32[6] = a4;
-      *&v32[7] = a5;
-      v33 = v6;
+      v32[5] = callback;
+      v32[6] = info;
+      *&v32[7] = interval;
+      v33 = fsyncCopy;
       sub_19B421668(v19, v32);
     }
 
@@ -2381,10 +2381,10 @@ LABEL_21:
   }
 
   internal = self->_internal;
-  internal[65] = a3;
-  internal[66] = a4;
+  internal[65] = callback;
+  internal[66] = info;
   v23 = internal[64];
-  if (a5 <= 0.0)
+  if (interval <= 0.0)
   {
     if (v23)
     {
@@ -2411,19 +2411,19 @@ LABEL_21:
     }
 
     v24 = sub_19B424AE0();
-    sub_19B44DE40(v24, internal[64], a5);
+    sub_19B44DE40(v24, internal[64], interval);
   }
 
   v30 = sub_19B42AD98();
   v31 = *MEMORY[0x1E69E9840];
 
-  sub_19B42A614(v30, v6);
+  sub_19B42A614(v30, fsyncCopy);
 }
 
-- (void)setDisplayGravityHandler:(id)a3 interval:(double)a4
+- (void)setDisplayGravityHandler:(id)handler interval:(double)interval
 {
   v30 = *MEMORY[0x1E69E9840];
-  if (objc_msgSend_isDisplayGravityAvailable(self, a2, a3))
+  if (objc_msgSend_isDisplayGravityAvailable(self, a2, handler))
   {
     if (qword_1ED71C800 != -1)
     {
@@ -2438,9 +2438,9 @@ LABEL_21:
       *buf = 136446722;
       *v27 = v8;
       *&v27[8] = 2050;
-      *&v27[10] = a3;
+      *&v27[10] = handler;
       v28 = 2050;
-      v29 = a4;
+      intervalCopy = interval;
       _os_log_impl(&dword_19B41C000, v7, OS_LOG_TYPE_INFO, "%{public}s calling _setDisplayGravityHandler:%{public}p interval:%{public}f", buf, 0x20u);
     }
 
@@ -2458,9 +2458,9 @@ LABEL_21:
       *location = 136446722;
       *&location[4] = v10;
       v22 = 2050;
-      v23 = a3;
+      handlerCopy = handler;
       v24 = 2050;
-      v25 = a4;
+      intervalCopy2 = interval;
       v11 = _os_log_send_and_compose_impl();
       sub_19B6BB7CC("Generic", 1, 0, 2, "[CMMotionManager setDisplayGravityHandler:interval:]", "CoreLocation: %s\n", v11);
       if (v11 != buf)
@@ -2470,9 +2470,9 @@ LABEL_21:
     }
 
     objc_initWeak(location, self);
-    if (a3 && a4 > 0.0)
+    if (handler && interval > 0.0)
     {
-      objc_msgSend_setFDisplayGravityHandler_(self->_internal, v12, a3);
+      objc_msgSend_setFDisplayGravityHandler_(self->_internal, v12, handler);
       v13 = sub_19B420D84();
       v17[0] = MEMORY[0x1E69E9820];
       v17[1] = 3321888768;
@@ -2480,7 +2480,7 @@ LABEL_21:
       v17[3] = &unk_1F0E3A728;
       objc_copyWeak(buf, location);
       v14 = v18;
-      *&v27[4] = a4;
+      *&v27[4] = interval;
       objc_copyWeak(v18, buf);
       v18[1] = *&v27[4];
       sub_19B421668(v13, v17);
@@ -2518,13 +2518,13 @@ LABEL_21:
   }
 }
 
-- (void)setSidebandTimeSyncHandler:(id)a3
+- (void)setSidebandTimeSyncHandler:(id)handler
 {
   v51 = *MEMORY[0x1E69E9840];
-  if (objc_msgSend_isSidebandSensorFusionAvailable(self, a2, a3))
+  if (objc_msgSend_isSidebandSensorFusionAvailable(self, a2, handler))
   {
     internal = self->_internal;
-    if (a3)
+    if (handler)
     {
       v41 = 0;
       v42[0] = &v41;
@@ -2692,7 +2692,7 @@ LABEL_21:
       }
 
 LABEL_46:
-      (*(a3 + 2))(a3, *(*v12 + 24), *(*v13 + 24));
+      (*(handler + 2))(handler, *(*v12 + 24), *(*v13 + 24));
       dispatch_release(object);
       _Block_release(v8);
       _Block_object_dispose(&v34, 8);
@@ -2709,7 +2709,7 @@ LABEL_46:
       v32[2] = sub_19B631F2C;
       v32[3] = &unk_1E7532B68;
       v32[4] = internal;
-      v32[5] = a3;
+      v32[5] = handler;
       sub_19B420C9C(v29, v32);
     }
   }
@@ -2736,7 +2736,7 @@ LABEL_46:
   return self;
 }
 
-- (void)setShouldResetStartingReference:(BOOL)a3
+- (void)setShouldResetStartingReference:(BOOL)reference
 {
   v9 = 0;
   v10 = &v9;
@@ -2749,7 +2749,7 @@ LABEL_46:
   v7[3] = &unk_1E7533910;
   v7[4] = self;
   v7[5] = &v9;
-  v8 = a3;
+  referenceCopy = reference;
   sub_19B420C9C(v5, v7);
   if (*(v10 + 24) == 1)
   {
@@ -2759,7 +2759,7 @@ LABEL_46:
   _Block_object_dispose(&v9, 8);
 }
 
-- (void)setPowerConservationMode:(int)a3
+- (void)setPowerConservationMode:(int)mode
 {
   internal = self->_internal;
   v6 = sub_19B420D84();
@@ -2769,19 +2769,19 @@ LABEL_46:
   v7[3] = &unk_1E7533938;
   v7[4] = self;
   v7[5] = internal;
-  v8 = a3;
+  modeCopy = mode;
   sub_19B421668(v6, v7);
 }
 
-- (void)setNotificationCallback:(void *)a3 info:(void *)a4
+- (void)setNotificationCallback:(void *)callback info:(void *)info
 {
-  if ((a3 != 0) != (a4 != 0))
+  if ((callback != 0) != (info != 0))
   {
-    v14 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a2, a3);
+    v14 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a2, callback);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v14, v15, a2, self, @"CMMotionManager.mm", 2887, @"[CMMotionManager setNotificationCallback:info:] won't take these parameters.");
   }
 
-  if (objc_msgSend_isDeviceMotionAvailable(self, a2, a3))
+  if (objc_msgSend_isDeviceMotionAvailable(self, a2, callback))
   {
     Current = CFRunLoopGetCurrent();
     sub_19B420D84();
@@ -2789,7 +2789,7 @@ LABEL_46:
     {
       internal = self->_internal;
       v10 = internal[74];
-      if (v10 != a3 || internal[75] != a4)
+      if (v10 != callback || internal[75] != info)
       {
         if (v10 || internal[75])
         {
@@ -2804,9 +2804,9 @@ LABEL_46:
           internal[76] = 0;
         }
 
-        internal[74] = a3;
-        internal[75] = a4;
-        if (a3)
+        internal[74] = callback;
+        internal[75] = info;
+        if (callback)
         {
           operator new();
         }
@@ -2816,15 +2816,15 @@ LABEL_46:
     else
     {
       v8 = sub_19B420D84();
-      if (a3)
+      if (callback)
       {
         v17[0] = MEMORY[0x1E69E9820];
         v17[1] = 3221225472;
         v17[2] = sub_19B6326DC;
         v17[3] = &unk_1E7533448;
         v17[4] = self;
-        v17[5] = a3;
-        v17[6] = a4;
+        v17[5] = callback;
+        v17[6] = info;
         sub_19B421668(v8, v17);
       }
 
@@ -2841,23 +2841,23 @@ LABEL_46:
   }
 }
 
-- (BOOL)setMotionThreadPriority:(int)a3
+- (BOOL)setMotionThreadPriority:(int)priority
 {
   v4 = sub_19B420D84();
 
-  return sub_19B6780E0(v4, a3);
+  return sub_19B6780E0(v4, priority);
 }
 
-- (void)_startDeviceMotionErrorUpdatesToQueue:(id)a3 withHandler:(id)a4
+- (void)_startDeviceMotionErrorUpdatesToQueue:(id)queue withHandler:(id)handler
 {
   v8 = sub_19B420D84();
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = sub_19B6327C8;
   v9[3] = &unk_1E7533780;
-  v9[4] = a3;
+  v9[4] = queue;
   v9[5] = self;
-  v9[6] = a4;
+  v9[6] = handler;
   v9[7] = a2;
   sub_19B420C9C(v8, v9);
 }
@@ -2873,11 +2873,11 @@ LABEL_46:
   sub_19B420C9C(v3, v4);
 }
 
-- (id)predictedDeviceMotionAtTimestamp:(double)a3 error:(id *)a4
+- (id)predictedDeviceMotionAtTimestamp:(double)timestamp error:(id *)error
 {
-  v4 = a4;
+  errorCopy = error;
   v79 = *MEMORY[0x1E69E9840];
-  if ((objc_msgSend_isPredictedDeviceMotionAvailable(self, a2, a4) & 1) == 0)
+  if ((objc_msgSend_isPredictedDeviceMotionAvailable(self, a2, error) & 1) == 0)
   {
     if (qword_1ED71C800 != -1)
     {
@@ -2922,7 +2922,7 @@ LABEL_46:
       }
     }
 
-    v4 = off_1ED71C808;
+    errorCopy = off_1ED71C808;
     if (os_log_type_enabled(off_1ED71C808, OS_LOG_TYPE_INFO))
     {
       *buf = 68289539;
@@ -2933,7 +2933,7 @@ LABEL_46:
       *&buf[20] = "assert";
       *&buf[28] = 2081;
       *&buf[30] = "[self isPredictedDeviceMotionAvailable]";
-      _os_log_impl(&dword_19B41C000, v4, OS_LOG_TYPE_INFO, "{msg%{public}.0s:Predicted device motion is not available! Check [CMMotionManager isPredictedDeviceMotionAvailable] before making this call, event:%{public, location:escape_only}s, condition:%{private, location:escape_only}s}", buf, 0x26u);
+      _os_log_impl(&dword_19B41C000, errorCopy, OS_LOG_TYPE_INFO, "{msg%{public}.0s:Predicted device motion is not available! Check [CMMotionManager isPredictedDeviceMotionAvailable] before making this call, event:%{public, location:escape_only}s, condition:%{private, location:escape_only}s}", buf, 0x26u);
     }
 
     abort_report_np();
@@ -2943,7 +2943,7 @@ LABEL_46:
   internal = self->_internal;
   if (!*(internal + 74))
   {
-    v4->isa = objc_msgSend_CMErrorWithCode_(CMErrorUtils, v7, 109);
+    errorCopy->isa = objc_msgSend_CMErrorWithCode_(CMErrorUtils, v7, 109);
     p_vtable = CMDeviceOrientationManager.vtable;
     if (qword_1ED71C800 == -1)
     {
@@ -2951,7 +2951,7 @@ LABEL_45:
       v39 = off_1ED71C808;
       if (os_log_type_enabled(off_1ED71C808, OS_LOG_TYPE_DEBUG))
       {
-        v40.isa = v4->isa;
+        v40.isa = errorCopy->isa;
         v41 = *(internal + 74);
         *buf = 138412546;
         *&buf[4] = v40;
@@ -2972,7 +2972,7 @@ LABEL_45:
         dispatch_once(&qword_1ED71C800, &unk_1F0E3A778);
       }
 
-      v43.isa = v4->isa;
+      v43.isa = errorCopy->isa;
       v44 = *(internal + 74);
       *v64 = 138412546;
       *&v64[4] = v43;
@@ -2990,12 +2990,12 @@ LABEL_80:
   v55 = 100;
   v54 = 0xBFF0000000000000;
   v9 = sub_19B424AE0();
-  *v10.i64 = a3;
+  *v10.i64 = timestamp;
   sub_19B7201A0(v9, *(internal + 74), v64, &v55, &v54, v10);
   objc_msgSend_applyNorthReference_(self, v11, v64);
   if (*(internal + 38) == 8 && *(sub_19B424AE0() + 96) < 0.0)
   {
-    v4->isa = objc_msgSend_CMErrorWithCode_(CMErrorUtils, v12, 102);
+    errorCopy->isa = objc_msgSend_CMErrorWithCode_(CMErrorUtils, v12, 102);
     if (qword_1ED71C800 != -1)
     {
       dispatch_once(&qword_1ED71C800, &unk_1F0E3A778);
@@ -3004,7 +3004,7 @@ LABEL_80:
     v13 = off_1ED71C808;
     if (os_log_type_enabled(off_1ED71C808, OS_LOG_TYPE_DEBUG))
     {
-      v14.isa = v4->isa;
+      v14.isa = errorCopy->isa;
       *buf = 138412290;
       *&buf[4] = v14;
       _os_log_impl(&dword_19B41C000, v13, OS_LOG_TYPE_DEBUG, "Predicted CMDeviceMotion: %@", buf, 0xCu);
@@ -3022,7 +3022,7 @@ LABEL_80:
       dispatch_once(&qword_1ED71C800, &unk_1F0E3A778);
     }
 
-    v16.isa = v4->isa;
+    v16.isa = errorCopy->isa;
     v56 = 138412290;
     isa = v16.isa;
 LABEL_65:
@@ -3040,7 +3040,7 @@ LABEL_67:
 
   if ((objc_msgSend_deviceMotionInitialized_(CMMotionManager, v12, v64) & 1) == 0)
   {
-    v4->isa = objc_msgSend_CMErrorWithCode_(CMErrorUtils, v17, 109);
+    errorCopy->isa = objc_msgSend_CMErrorWithCode_(CMErrorUtils, v17, 109);
     if (qword_1ED71C800 != -1)
     {
       dispatch_once(&qword_1ED71C800, &unk_1F0E3A778);
@@ -3049,13 +3049,13 @@ LABEL_67:
     v45 = off_1ED71C808;
     if (os_log_type_enabled(off_1ED71C808, OS_LOG_TYPE_DEBUG))
     {
-      v46.isa = v4->isa;
+      v46.isa = errorCopy->isa;
       *buf = 138413058;
       *&buf[4] = v46;
       *&buf[12] = 2048;
       *&buf[14] = v54;
       *&buf[22] = 2048;
-      *&buf[24] = a3;
+      *&buf[24] = timestamp;
       *&buf[32] = 1024;
       *&buf[34] = v74;
       _os_log_impl(&dword_19B41C000, v45, OS_LOG_TYPE_DEBUG, "Predicted CMDeviceMotion: %@,lastSampleTimestamp,%f,timestamp,%f,status,%#02x", buf, 0x26u);
@@ -3073,13 +3073,13 @@ LABEL_67:
       dispatch_once(&qword_1ED71C800, &unk_1F0E3A778);
     }
 
-    v48.isa = v4->isa;
+    v48.isa = errorCopy->isa;
     v56 = 138413058;
     isa = v48.isa;
     v58 = 2048;
     v59 = v54;
     v60 = 2048;
-    v61 = a3;
+    timestampCopy = timestamp;
     v62 = 1024;
     v63 = v74;
     goto LABEL_65;
@@ -3087,7 +3087,7 @@ LABEL_67:
 
   if (objc_msgSend_northAlignedReferenceFrame_(CMMotionManager, v17, *(internal + 38)) && DWORD1(v68) != -1 && SDWORD1(v68) <= 0)
   {
-    v4->isa = objc_msgSend_CMErrorWithCode_(CMErrorUtils, v18, 101);
+    errorCopy->isa = objc_msgSend_CMErrorWithCode_(CMErrorUtils, v18, 101);
     if (qword_1ED71C800 != -1)
     {
       dispatch_once(&qword_1ED71C800, &unk_1F0E3A778);
@@ -3096,7 +3096,7 @@ LABEL_67:
     v19 = off_1ED71C808;
     if (os_log_type_enabled(off_1ED71C808, OS_LOG_TYPE_DEBUG))
     {
-      v20.isa = v4->isa;
+      v20.isa = errorCopy->isa;
       *buf = 138412546;
       *&buf[4] = v20;
       *&buf[12] = 2048;
@@ -3113,7 +3113,7 @@ LABEL_67:
         dispatch_once(&qword_1ED71C800, &unk_1F0E3A778);
       }
 
-      v22.isa = v4->isa;
+      v22.isa = errorCopy->isa;
       v56 = 138412546;
       isa = v22.isa;
       v58 = 2048;
@@ -3174,7 +3174,7 @@ LABEL_67:
     v58 = 2048;
     v59 = v34;
     v60 = 2048;
-    v61 = v36;
+    timestampCopy = v36;
     v37 = _os_log_send_and_compose_impl();
     sub_19B6BB7CC("Generic", 1, 0, 2, "[CMMotionManager predictedDeviceMotionAtTimestamp:error:]", "CoreLocation: %s\n", v37);
     if (v37 != buf)
@@ -3188,30 +3188,30 @@ LABEL_68:
   return v28;
 }
 
-- (void)onAccelerometer:(const Sample *)a3
+- (void)onAccelerometer:(const Sample *)accelerometer
 {
   v33 = *MEMORY[0x1E69E9840];
   internal = self->_internal;
   os_unfair_lock_lock(internal + 2);
-  v5 = *&a3->timestamp;
-  *(internal + 9) = *&a3->acceleration.z;
+  v5 = *&accelerometer->timestamp;
+  *(internal + 9) = *&accelerometer->acceleration.z;
   *(internal + 56) = v5;
   os_unfair_lock_unlock(internal + 2);
   if (*(internal + 5))
   {
     if (*(internal + 4))
     {
-      if (a3->timestamp > 0.0)
+      if (accelerometer->timestamp > 0.0)
       {
         v6 = *(internal + 6);
-        if (v6 <= 0.0 || a3->timestamp - v6 - *(internal + 3) >= *(internal + 3) * -0.1)
+        if (v6 <= 0.0 || accelerometer->timestamp - v6 - *(internal + 3) >= *(internal + 3) * -0.1)
         {
           v7 = objc_autoreleasePoolPush();
           v8 = [CMAccelerometerData alloc];
-          *&v9 = a3->acceleration.x;
-          *&v10 = a3->acceleration.y;
-          *&v11 = a3->acceleration.z;
-          v14 = objc_msgSend_initWithAcceleration_andTimestamp_(v8, v12, v13, v9, v10, v11, a3->timestamp);
+          *&v9 = accelerometer->acceleration.x;
+          *&v10 = accelerometer->acceleration.y;
+          *&v11 = accelerometer->acceleration.z;
+          v14 = objc_msgSend_initWithAcceleration_andTimestamp_(v8, v12, v13, v9, v10, v11, accelerometer->timestamp);
           v15 = *(internal + 4);
           if (qword_1ED71C800 != -1)
           {
@@ -3261,7 +3261,7 @@ LABEL_68:
           objc_msgSend_addOperationWithBlock_(v22, v19, v24);
 
           objc_autoreleasePoolPop(v7);
-          *(internal + 6) = *&a3->timestamp;
+          *(internal + 6) = *&accelerometer->timestamp;
         }
       }
     }
@@ -3270,30 +3270,30 @@ LABEL_68:
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (void)onGyro:(const Sample *)a3
+- (void)onGyro:(const Sample *)gyro
 {
   v33 = *MEMORY[0x1E69E9840];
   internal = self->_internal;
   os_unfair_lock_lock(internal + 2);
-  v5 = *&a3->timestamp;
-  *(internal + 31) = *&a3->acceleration.z;
+  v5 = *&gyro->timestamp;
+  *(internal + 31) = *&gyro->acceleration.z;
   *(internal + 232) = v5;
   os_unfair_lock_unlock(internal + 2);
   if (*(internal + 27))
   {
     if (*(internal + 26))
     {
-      if (a3->timestamp > 0.0)
+      if (gyro->timestamp > 0.0)
       {
         v6 = *(internal + 28);
-        if (v6 <= 0.0 || a3->timestamp - v6 - *(internal + 25) >= *(internal + 25) * -0.1)
+        if (v6 <= 0.0 || gyro->timestamp - v6 - *(internal + 25) >= *(internal + 25) * -0.1)
         {
           v7 = objc_autoreleasePoolPush();
           v8 = [CMGyroData alloc];
-          *&v9 = a3->acceleration.x;
-          *&v10 = a3->acceleration.y;
-          *&v11 = a3->acceleration.z;
-          v14 = objc_msgSend_initWithRotationRate_andTimestamp_(v8, v12, v13, v9, v10, v11, a3->timestamp);
+          *&v9 = gyro->acceleration.x;
+          *&v10 = gyro->acceleration.y;
+          *&v11 = gyro->acceleration.z;
+          v14 = objc_msgSend_initWithRotationRate_andTimestamp_(v8, v12, v13, v9, v10, v11, gyro->timestamp);
           v15 = *(internal + 26);
           if (qword_1ED71C800 != -1)
           {
@@ -3343,7 +3343,7 @@ LABEL_68:
           objc_msgSend_addOperationWithBlock_(v22, v19, v24);
 
           objc_autoreleasePoolPop(v7);
-          *(internal + 28) = *&a3->timestamp;
+          *(internal + 28) = *&gyro->timestamp;
         }
       }
     }
@@ -3352,7 +3352,7 @@ LABEL_68:
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (void)onFactoryGyro:(const Sample *)a3
+- (void)onFactoryGyro:(const Sample *)gyro
 {
   v97[1] = *MEMORY[0x1E69E9840];
   internal = self->_internal;
@@ -3366,13 +3366,13 @@ LABEL_68:
     goto LABEL_81;
   }
 
-  if (a3->timestamp <= 0.0)
+  if (gyro->timestamp <= 0.0)
   {
     goto LABEL_81;
   }
 
   v5 = *(internal + 88);
-  if (v5 > 0.0 && a3->timestamp - v5 - *(internal + 83) < *(internal + 83) * -0.1)
+  if (v5 > 0.0 && gyro->timestamp - v5 - *(internal + 83) < *(internal + 83) * -0.1)
   {
     goto LABEL_81;
   }
@@ -3477,9 +3477,9 @@ LABEL_68:
     goto LABEL_38;
   }
 
-  x = a3->acceleration.x;
-  y = a3->acceleration.y;
-  z = a3->acceleration.z;
+  x = gyro->acceleration.x;
+  y = gyro->acceleration.y;
+  z = gyro->acceleration.z;
   if ((sub_19B421620() & 0x40000) != 0)
   {
     sub_19B71B784((internal + 717), *(internal + 178));
@@ -3596,7 +3596,7 @@ LABEL_67:
     *&v56 = v40;
     *&v57 = v41;
     *&v58 = v42;
-    v30 = objc_msgSend_initWithRotationRate_andTimestamp_(v55, v59, v60, v56, v57, v58, a3->timestamp);
+    v30 = objc_msgSend_initWithRotationRate_andTimestamp_(v55, v59, v60, v56, v57, v58, gyro->timestamp);
     goto LABEL_68;
   }
 
@@ -3604,10 +3604,10 @@ LABEL_38:
   v30 = 0;
 LABEL_68:
   v61 = [CMGyroData alloc];
-  *&v62 = a3->acceleration.x;
-  *&v63 = a3->acceleration.y;
-  *&v64 = a3->acceleration.z;
-  v67 = objc_msgSend_initWithRotationRate_andTimestamp_(v61, v65, v66, v62, v63, v64, a3->timestamp);
+  *&v62 = gyro->acceleration.x;
+  *&v63 = gyro->acceleration.y;
+  *&v64 = gyro->acceleration.z;
+  v67 = objc_msgSend_initWithRotationRate_andTimestamp_(v61, v65, v66, v62, v63, v64, gyro->timestamp);
   if (qword_1ED71C810 != -1)
   {
     dispatch_once(&qword_1ED71C810, &unk_1F0E3A898);
@@ -3666,17 +3666,17 @@ LABEL_68:
   objc_msgSend_addOperationWithBlock_(v77, v72, v81);
 
   objc_autoreleasePoolPop(context);
-  *(internal + 28) = *&a3->timestamp;
+  *(internal + 28) = *&gyro->timestamp;
 LABEL_81:
   v78 = *MEMORY[0x1E69E9840];
 }
 
-- (void)onFactoryGyroTemperature:(const Temperature *)a3
+- (void)onFactoryGyroTemperature:(const Temperature *)temperature
 {
   v21 = *MEMORY[0x1E69E9840];
   internal = self->_internal;
   os_unfair_lock_lock(internal + 2);
-  internal[178]._os_unfair_lock_opaque = LODWORD(a3->var1);
+  internal[178]._os_unfair_lock_opaque = LODWORD(temperature->var1);
   os_unfair_lock_unlock(internal + 2);
   if (qword_1ED71C810 != -1)
   {
@@ -3686,8 +3686,8 @@ LABEL_81:
   v5 = qword_1ED71C818;
   if (os_log_type_enabled(qword_1ED71C818, OS_LOG_TYPE_DEBUG))
   {
-    var1 = a3->var1;
-    var0 = a3->var0;
+    var1 = temperature->var1;
+    var0 = temperature->var0;
     v8 = mach_absolute_time();
     *buf = 134218496;
     v16 = var1;
@@ -3707,8 +3707,8 @@ LABEL_81:
       dispatch_once(&qword_1ED71C810, &unk_1F0E3A898);
     }
 
-    v10 = a3->var1;
-    v11 = a3->var0;
+    v10 = temperature->var1;
+    v11 = temperature->var0;
     v12 = mach_absolute_time();
     sub_19B41E070(v12);
     v13 = _os_log_send_and_compose_impl();
@@ -3722,30 +3722,30 @@ LABEL_81:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)onMagnetometer:(const Sample *)a3
+- (void)onMagnetometer:(const Sample *)magnetometer
 {
   v33 = *MEMORY[0x1E69E9840];
   internal = self->_internal;
   os_unfair_lock_lock(internal + 2);
-  v5 = *&a3->timestamp;
-  *(internal + 53) = *&a3->acceleration.z;
+  v5 = *&magnetometer->timestamp;
+  *(internal + 53) = *&magnetometer->acceleration.z;
   *(internal + 408) = v5;
   os_unfair_lock_unlock(internal + 2);
   if (*(internal + 49))
   {
     if (*(internal + 48))
     {
-      if (a3->timestamp > 0.0)
+      if (magnetometer->timestamp > 0.0)
       {
         v6 = *(internal + 50);
-        if (v6 <= 0.0 || a3->timestamp - v6 - *(internal + 47) >= *(internal + 47) * -0.1)
+        if (v6 <= 0.0 || magnetometer->timestamp - v6 - *(internal + 47) >= *(internal + 47) * -0.1)
         {
           v7 = objc_autoreleasePoolPush();
           v8 = [CMMagnetometerData alloc];
-          *&v9 = a3->acceleration.x;
-          *&v10 = a3->acceleration.y;
-          *&v11 = a3->acceleration.z;
-          v14 = objc_msgSend_initWithMagneticField_andTimestamp_(v8, v12, v13, v9, v10, v11, a3->timestamp);
+          *&v9 = magnetometer->acceleration.x;
+          *&v10 = magnetometer->acceleration.y;
+          *&v11 = magnetometer->acceleration.z;
+          v14 = objc_msgSend_initWithMagneticField_andTimestamp_(v8, v12, v13, v9, v10, v11, magnetometer->timestamp);
           v15 = *(internal + 48);
           if (qword_1ED71C800 != -1)
           {
@@ -3795,7 +3795,7 @@ LABEL_81:
           objc_msgSend_addOperationWithBlock_(v22, v19, v24);
 
           objc_autoreleasePoolPop(v7);
-          *(internal + 50) = *&a3->timestamp;
+          *(internal + 50) = *&magnetometer->timestamp;
         }
       }
     }
@@ -3804,12 +3804,12 @@ LABEL_81:
   v23 = *MEMORY[0x1E69E9840];
 }
 
-+ (BOOL)northAlignedReferenceFrame:(unint64_t)a3
++ (BOOL)northAlignedReferenceFrame:(unint64_t)frame
 {
   LOBYTE(v3) = 1;
-  if (a3 != 8 && a3 != 4)
+  if (frame != 8 && frame != 4)
   {
-    if (a3 == 2)
+    if (frame == 2)
     {
       return (sub_19B421620() >> 4) & 1;
     }
@@ -3823,71 +3823,71 @@ LABEL_81:
   return v3;
 }
 
-- (void)applyNorthReference:(Sample *)a3
+- (void)applyNorthReference:(Sample *)reference
 {
   internal = self->_internal;
   if (*(internal + 38) == 8 && *(sub_19B424AE0() + 96) < 0.0)
   {
-    if ((*(internal + 316) & 1) == 0 && a3->timestamp - internal[40] > 1.0)
+    if ((*(internal + 316) & 1) == 0 && reference->timestamp - internal[40] > 1.0)
     {
       *(internal + 316) = objc_msgSend_sendDeviceMotionError_(self, v6, 102);
     }
 
-    a3->timestamp = -1.0;
+    reference->timestamp = -1.0;
   }
 
   if ((*(internal + 38) - 1) > 1)
   {
-    if (a3[3].acceleration.y < 0.0)
+    if (reference[3].acceleration.y < 0.0)
     {
-      a3[3].acceleration.y = 0.0;
-      *&a3[4].timestamp = xmmword_19B7B9BB0;
+      reference[3].acceleration.y = 0.0;
+      *&reference[4].timestamp = xmmword_19B7B9BB0;
     }
   }
 
   else
   {
-    a3[3].acceleration.y = -1.0;
-    LODWORD(a3[4].timestamp) = -1082130432;
+    reference[3].acceleration.y = -1.0;
+    LODWORD(reference[4].timestamp) = -1082130432;
   }
 }
 
-- (void)applyInitialReference:(Sample *)a3
+- (void)applyInitialReference:(Sample *)reference
 {
   internal = self->_internal;
-  if ((*&internal[19].f64[0] - 1) <= 1 && LOBYTE(internal[36].f64[1]) == 1 && objc_msgSend_deviceMotionInitialized_(CMMotionManager, a2, a3))
+  if ((*&internal[19].f64[0] - 1) <= 1 && LOBYTE(internal[36].f64[1]) == 1 && objc_msgSend_deviceMotionInitialized_(CMMotionManager, a2, reference))
   {
     if ((LOBYTE(internal[22].f64[1]) & 1) == 0)
     {
-      sub_19B43F0AC(v6, &a3->acceleration.x);
+      sub_19B43F0AC(v6, &reference->acceleration.x);
       internal[21] = vnegq_f64(*&v6[8]);
       internal[22].f64[0] = -*&v6[24];
       internal[20].f64[1] = *v6;
       LOBYTE(internal[22].f64[1]) = 1;
     }
 
-    sub_19B43F1C8(v6, &a3->acceleration.x, &internal[20].f64[1]);
+    sub_19B43F1C8(v6, &reference->acceleration.x, &internal[20].f64[1]);
     v5 = *&v6[16];
-    *&a3->acceleration.x = *v6;
-    *&a3[1].timestamp = v5;
+    *&reference->acceleration.x = *v6;
+    *&reference[1].timestamp = v5;
   }
 }
 
-- (void)onDeviceMotion:(const Sample *)a3
+- (void)onDeviceMotion:(const Sample *)motion
 {
   v44 = *MEMORY[0x1E69E9840];
   internal = self->_internal;
-  v6 = *&a3[3].acceleration.x;
-  *&v32[64] = *&a3[2].acceleration.z;
+  v6 = *&motion[3].acceleration.x;
+  *&v32[64] = *&motion[2].acceleration.z;
   *&v32[80] = v6;
-  v7 = *&a3[4].acceleration.z;
-  v33 = *&a3[4].timestamp;
+  v7 = *&motion[4].acceleration.z;
+  v33 = *&motion[4].timestamp;
   v34 = v7;
-  v8 = *&a3->acceleration.z;
-  *v32 = *&a3->timestamp;
+  v8 = *&motion->acceleration.z;
+  *v32 = *&motion->timestamp;
   *&v32[16] = v8;
-  v9 = *&a3[2].timestamp;
-  *&v32[32] = *&a3[1].acceleration.x;
+  v9 = *&motion[2].timestamp;
+  *&v32[32] = *&motion[1].acceleration.x;
   *&v32[48] = v9;
   if (objc_msgSend_northAlignedReferenceFrame_(CMMotionManager, a2, *(internal + 38)))
   {
@@ -3985,7 +3985,7 @@ LABEL_81:
           objc_msgSend_addOperationWithBlock_(v29, v25, v31);
 
           objc_autoreleasePoolPop(v14);
-          *(internal + 36) = *&a3->timestamp;
+          *(internal + 36) = *&motion->timestamp;
         }
       }
     }
@@ -3994,27 +3994,27 @@ LABEL_81:
   v30 = *MEMORY[0x1E69E9840];
 }
 
-- (void)onAmbientPressure:(const Sample *)a3
+- (void)onAmbientPressure:(const Sample *)pressure
 {
   v31 = *MEMORY[0x1E69E9840];
   internal = self->_internal;
   os_unfair_lock_lock(internal + 2);
-  *(internal + 120) = *&a3->timestamp;
+  *(internal + 120) = *&pressure->timestamp;
   os_unfair_lock_unlock(internal + 2);
   if (*(internal + 13))
   {
     if (*(internal + 12))
     {
-      if (a3->timestamp > 0.0)
+      if (pressure->timestamp > 0.0)
       {
         v5 = *(internal + 14);
-        if (v5 <= 0.0 || a3->timestamp - v5 - *(internal + 11) >= *(internal + 11) * -0.1)
+        if (v5 <= 0.0 || pressure->timestamp - v5 - *(internal + 11) >= *(internal + 11) * -0.1)
         {
           v6 = objc_autoreleasePoolPush();
           v7 = [CMAmbientPressureData alloc];
-          *&v8 = a3->acceleration.x;
-          *&v9 = a3->acceleration.y;
-          v12 = objc_msgSend_initWithPressure_andTimestamp_(v7, v10, v11, v8, v9, a3->timestamp);
+          *&v8 = pressure->acceleration.x;
+          *&v9 = pressure->acceleration.y;
+          v12 = objc_msgSend_initWithPressure_andTimestamp_(v7, v10, v11, v8, v9, pressure->timestamp);
           v13 = *(internal + 12);
           if (qword_1ED71C800 != -1)
           {
@@ -4064,7 +4064,7 @@ LABEL_81:
           objc_msgSend_addOperationWithBlock_(v20, v17, v22);
 
           objc_autoreleasePoolPop(v6);
-          *(internal + 14) = *&a3->timestamp;
+          *(internal + 14) = *&pressure->timestamp;
         }
       }
     }
@@ -4073,27 +4073,27 @@ LABEL_81:
   v21 = *MEMORY[0x1E69E9840];
 }
 
-- (void)onCompensatedAmbientPressure:(const Sample *)a3
+- (void)onCompensatedAmbientPressure:(const Sample *)pressure
 {
   v31 = *MEMORY[0x1E69E9840];
   internal = self->_internal;
   os_unfair_lock_lock(internal + 2);
-  *(internal + 11) = *&a3->timestamp;
+  *(internal + 11) = *&pressure->timestamp;
   os_unfair_lock_unlock(internal + 2);
   if (*(internal + 20))
   {
     if (*(internal + 19))
     {
-      if (a3->timestamp > 0.0)
+      if (pressure->timestamp > 0.0)
       {
         v5 = *(internal + 21);
-        if (v5 <= 0.0 || a3->timestamp - v5 - *(internal + 18) >= *(internal + 18) * -0.1)
+        if (v5 <= 0.0 || pressure->timestamp - v5 - *(internal + 18) >= *(internal + 18) * -0.1)
         {
           v6 = objc_autoreleasePoolPush();
           v7 = [CMAmbientPressureData alloc];
-          *&v8 = a3->acceleration.x;
-          *&v9 = a3->acceleration.y;
-          v12 = objc_msgSend_initWithPressure_andTimestamp_(v7, v10, v11, v8, v9, a3->timestamp);
+          *&v8 = pressure->acceleration.x;
+          *&v9 = pressure->acceleration.y;
+          v12 = objc_msgSend_initWithPressure_andTimestamp_(v7, v10, v11, v8, v9, pressure->timestamp);
           v13 = *(internal + 19);
           if (qword_1ED71C800 != -1)
           {
@@ -4143,7 +4143,7 @@ LABEL_81:
           objc_msgSend_addOperationWithBlock_(v20, v17, v22);
 
           objc_autoreleasePoolPop(v6);
-          *(internal + 21) = *&a3->timestamp;
+          *(internal + 21) = *&pressure->timestamp;
         }
       }
     }
@@ -4152,7 +4152,7 @@ LABEL_81:
   v21 = *MEMORY[0x1E69E9840];
 }
 
-- (void)willResignActive:(id)a3
+- (void)willResignActive:(id)active
 {
   v5 = sub_19B420D84();
   v6[0] = MEMORY[0x1E69E9820];
@@ -4160,11 +4160,11 @@ LABEL_81:
   v6[2] = sub_19B635A3C;
   v6[3] = &unk_1E7532A00;
   v6[4] = self;
-  v6[5] = a3;
+  v6[5] = active;
   sub_19B421668(v5, v6);
 }
 
-- (void)didBecomeActive:(id)a3
+- (void)didBecomeActive:(id)active
 {
   v5 = sub_19B420D84();
   v6[0] = MEMORY[0x1E69E9820];
@@ -4172,11 +4172,11 @@ LABEL_81:
   v6[2] = sub_19B635AC8;
   v6[3] = &unk_1E7532A00;
   v6[4] = self;
-  v6[5] = a3;
+  v6[5] = active;
   sub_19B421668(v5, v6);
 }
 
-- (void)willResignActivePrivate:(id)a3
+- (void)willResignActivePrivate:(id)private
 {
   internal = self->_internal;
   v4 = sub_19B424AE0();
@@ -4196,7 +4196,7 @@ LABEL_81:
   *(internal + 632) = 0;
 }
 
-- (void)didBecomeActivePrivate:(id)a3
+- (void)didBecomeActivePrivate:(id)private
 {
   internal = self->_internal;
   v5 = sub_19B424AE0();
@@ -4250,7 +4250,7 @@ LABEL_81:
   return result;
 }
 
-+ ($27EAB7405FCF4138B96BF1D57C6DB1C9)gyroCalibrationDatabaseGetBiasFitAndEstimate:(SEL)a3 atTemperature:(id *)a4
++ ($27EAB7405FCF4138B96BF1D57C6DB1C9)gyroCalibrationDatabaseGetBiasFitAndEstimate:(SEL)estimate atTemperature:(id *)temperature
 {
   *&retstr->var5.var1.var1[255] = 0u;
   *&retstr->var5.var1.var1[271] = 0u;
@@ -4272,37 +4272,37 @@ LABEL_81:
   *&retstr->var5.var1.var1[15] = 0u;
   *&retstr->var0 = 0u;
   *&retstr->var2 = 0u;
-  result = objc_msgSend_gyroCalibrationDatabaseGetBiasFit(CMMotionManager, a3, a4);
-  if (a4)
+  result = objc_msgSend_gyroCalibrationDatabaseGetBiasFit(CMMotionManager, estimate, temperature);
+  if (temperature)
   {
     if (retstr->var0 == 2)
     {
       memcpy(__dst, &retstr->var5.var0.var0.var0 + 1, sizeof(__dst));
       result = sub_19B71B784(__dst, a5);
       v10.i32[1] = v9;
-      *&a4->var0 = vcvtq_f64_f32(vmul_f32(v10, vdup_n_s32(0x42652EE1u)));
+      *&temperature->var0 = vcvtq_f64_f32(vmul_f32(v10, vdup_n_s32(0x42652EE1u)));
       v8 = v11 * 57.296;
       goto LABEL_6;
     }
 
     if (retstr->var0 == 1)
     {
-      *&a4->var0 = vcvtq_f64_f32(vmla_n_f32(*&retstr->var5.var1.var1[11], *&retstr->var5.var0.var0.var0, a5));
+      *&temperature->var0 = vcvtq_f64_f32(vmla_n_f32(*&retstr->var5.var1.var1[11], *&retstr->var5.var0.var0.var0, a5));
       v8 = retstr->var5.var0.var1.var2 + (retstr->var5.var0.var0.var2 * a5);
 LABEL_6:
-      a4->var2 = v8;
+      temperature->var2 = v8;
       return result;
     }
 
-    a4->var0 = 0.0;
-    a4->var1 = 0.0;
-    a4->var2 = 0.0;
+    temperature->var0 = 0.0;
+    temperature->var1 = 0.0;
+    temperature->var2 = 0.0;
   }
 
   return result;
 }
 
-- (void)startDeviceMotionLiteUpdatesForDeviceID:(id)a3 usingConfiguration:(id)a4 toQueue:(id)a5 withFusedHandler:(id)a6
+- (void)startDeviceMotionLiteUpdatesForDeviceID:(id)d usingConfiguration:(id)configuration toQueue:(id)queue withFusedHandler:(id)handler
 {
   v17 = *MEMORY[0x1E69E9840];
   if (qword_1ED71C800 != -1)
@@ -4368,7 +4368,7 @@ LABEL_11:
   }
 }
 
-- (void)startDeviceMotionLiteFusedUpdatesForDeviceID:(id)a3 toQueue:(id)a4 withHandler:(id)a5
+- (void)startDeviceMotionLiteFusedUpdatesForDeviceID:(id)d toQueue:(id)queue withHandler:(id)handler
 {
   v12 = *MEMORY[0x1E69E9840];
   if (qword_1ED71C800 != -1)
@@ -4380,7 +4380,7 @@ LABEL_11:
   if (os_log_type_enabled(off_1ED71C808, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v11 = a3;
+    dCopy = d;
     _os_log_impl(&dword_19B41C000, v6, OS_LOG_TYPE_DEFAULT, "Motion manager asked to start device motion lite updates for device id %@", buf, 0xCu);
   }
 
@@ -4404,7 +4404,7 @@ LABEL_11:
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)stopDeviceMotionLiteUpdatesForDeviceID:(id)a3
+- (void)stopDeviceMotionLiteUpdatesForDeviceID:(id)d
 {
   v10 = *MEMORY[0x1E69E9840];
   if (qword_1ED71C800 != -1)
@@ -4416,7 +4416,7 @@ LABEL_11:
   if (os_log_type_enabled(off_1ED71C808, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v9 = a3;
+    dCopy = d;
     _os_log_impl(&dword_19B41C000, v4, OS_LOG_TYPE_DEFAULT, "Motion manager asked to stop device motion lite updates for device id %@", buf, 0xCu);
   }
 
@@ -4440,7 +4440,7 @@ LABEL_11:
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)startFactoryGyroUpdatesToQueue:(id)a3 withHandler:(id)a4
+- (void)startFactoryGyroUpdatesToQueue:(id)queue withHandler:(id)handler
 {
   v7 = sub_19B420D84();
   v8[0] = MEMORY[0x1E69E9820];
@@ -4448,12 +4448,12 @@ LABEL_11:
   v8[2] = sub_19B6367A8;
   v8[3] = &unk_1E7532C08;
   v8[4] = self;
-  v8[5] = a3;
-  v8[6] = a4;
+  v8[5] = queue;
+  v8[6] = handler;
   sub_19B421668(v7, v8);
 }
 
-- (void)startFactoryGyroUpdatesToQueue:(id)a3 atUpdateInterval:(double)a4 withHandler:(id)a5
+- (void)startFactoryGyroUpdatesToQueue:(id)queue atUpdateInterval:(double)interval withHandler:(id)handler
 {
   v9 = sub_19B420D84();
   v10[0] = MEMORY[0x1E69E9820];
@@ -4461,13 +4461,13 @@ LABEL_11:
   v10[2] = sub_19B636864;
   v10[3] = &unk_1E7533780;
   v10[4] = self;
-  v10[5] = a3;
-  *&v10[7] = a4;
-  v10[6] = a5;
+  v10[5] = queue;
+  *&v10[7] = interval;
+  v10[6] = handler;
   sub_19B421668(v9, v10);
 }
 
-- (void)startFactoryGyroUpdatesToQueue:(id)a3 atUpdateInterval:(double)a4 withHandler:(id)a5 residualHandler:(id)a6
+- (void)startFactoryGyroUpdatesToQueue:(id)queue atUpdateInterval:(double)interval withHandler:(id)handler residualHandler:(id)residualHandler
 {
   v11 = sub_19B420D84();
   v12[0] = MEMORY[0x1E69E9820];
@@ -4475,10 +4475,10 @@ LABEL_11:
   v12[2] = sub_19B636920;
   v12[3] = &unk_1E7533988;
   v12[4] = self;
-  v12[5] = a3;
-  *&v12[8] = a4;
-  v12[6] = a5;
-  v12[7] = a6;
+  v12[5] = queue;
+  *&v12[8] = interval;
+  v12[6] = handler;
+  v12[7] = residualHandler;
   sub_19B421668(v11, v12);
 }
 
@@ -4493,7 +4493,7 @@ LABEL_11:
   sub_19B420C9C(v3, v4);
 }
 
-- (void)startDeviceMotionUpdatesForKeyboardMotionToQueue:(id)a3 withGravityDeltaThreshold:(double)a4 sendFrequency:(double)a5 andHandler:(id)a6
+- (void)startDeviceMotionUpdatesForKeyboardMotionToQueue:(id)queue withGravityDeltaThreshold:(double)threshold sendFrequency:(double)frequency andHandler:(id)handler
 {
   v11 = sub_19B420D84();
   v12[0] = MEMORY[0x1E69E9820];
@@ -4501,10 +4501,10 @@ LABEL_11:
   v12[2] = sub_19B636A5C;
   v12[3] = &unk_1E75339B0;
   v12[4] = self;
-  v12[5] = a3;
-  *&v12[7] = a4;
-  *&v12[8] = a5;
-  v12[6] = a6;
+  v12[5] = queue;
+  *&v12[7] = threshold;
+  *&v12[8] = frequency;
+  v12[6] = handler;
   sub_19B421668(v11, v12);
 }
 
@@ -4519,7 +4519,7 @@ LABEL_11:
   sub_19B421668(v3, v4);
 }
 
-- (void)startFactoryGyroUpdatesPrivateToQueue:(id)a3 atUpdateInterval:(double)a4 withHandler:(id)a5 residualHandler:(id)a6
+- (void)startFactoryGyroUpdatesPrivateToQueue:(id)queue atUpdateInterval:(double)interval withHandler:(id)handler residualHandler:(id)residualHandler
 {
   v82 = *MEMORY[0x1E69E9840];
   internal = self->_internal;
@@ -4532,7 +4532,7 @@ LABEL_11:
   if (os_log_type_enabled(qword_1ED71C818, OS_LOG_TYPE_DEFAULT))
   {
     buf = 134349056;
-    buf_4 = a4;
+    buf_4 = interval;
     _os_log_impl(&dword_19B41C000, v10, OS_LOG_TYPE_DEFAULT, "Starting factory gyro updates at rate: %{public}f", &buf, 0xCu);
   }
 
@@ -4546,7 +4546,7 @@ LABEL_11:
     }
 
     v66 = 134349056;
-    v67 = a4;
+    intervalCopy2 = interval;
     v12 = _os_log_send_and_compose_impl();
     sub_19B6BB7CC("Generic", 1, 0, 2, "[CMMotionManager startFactoryGyroUpdatesPrivateToQueue:atUpdateInterval:withHandler:residualHandler:]", "CoreLocation: %s\n", v12);
     if (v12 != &buf)
@@ -4555,7 +4555,7 @@ LABEL_11:
     }
   }
 
-  if (a4 <= 0.0)
+  if (interval <= 0.0)
   {
     if (qword_1ED71C810 != -1)
     {
@@ -4566,7 +4566,7 @@ LABEL_11:
     if (os_log_type_enabled(qword_1ED71C818, OS_LOG_TYPE_ERROR))
     {
       buf = 134349056;
-      buf_4 = a4;
+      buf_4 = interval;
       _os_log_impl(&dword_19B41C000, v23, OS_LOG_TYPE_ERROR, "Invalid update interval: %{public}f", &buf, 0xCu);
     }
 
@@ -4580,7 +4580,7 @@ LABEL_11:
       }
 
       v66 = 134349056;
-      v67 = a4;
+      intervalCopy2 = interval;
       v25 = _os_log_send_and_compose_impl();
       sub_19B6BB7CC("Generic", 1, 0, 0, "[CMMotionManager startFactoryGyroUpdatesPrivateToQueue:atUpdateInterval:withHandler:residualHandler:]", "CoreLocation: %s\n", v25);
       if (v25 != &buf)
@@ -4592,19 +4592,19 @@ LABEL_11:
 
   else
   {
-    internal[83] = a4;
+    internal[83] = interval;
     v13 = *(internal + 87);
-    if (v13 != a3)
+    if (v13 != queue)
     {
 
-      *(internal + 87) = a3;
+      *(internal + 87) = queue;
     }
 
     v14 = *(internal + 86);
-    if (v14 != a5)
+    if (v14 != handler)
     {
 
-      *(internal + 86) = objc_msgSend_copy(a5, v15, v16);
+      *(internal + 86) = objc_msgSend_copy(handler, v15, v16);
     }
 
     v59 = 0;
@@ -4661,7 +4661,7 @@ LABEL_11:
             }
 
             v66 = 134218752;
-            v67 = v30;
+            intervalCopy2 = v30;
             v68 = 2048;
             v69 = v29;
             v70 = 2048;
@@ -4767,7 +4767,7 @@ LABEL_11:
         }
 
         v66 = 138543362;
-        v67 = v43;
+        intervalCopy2 = v43;
         v51 = _os_log_send_and_compose_impl();
         sub_19B6BB7CC("Generic", 1, 0, 0, "[CMMotionManager startFactoryGyroUpdatesPrivateToQueue:atUpdateInterval:withHandler:residualHandler:]", "CoreLocation: %s\n", v51);
         if (v51 != &buf)
@@ -4823,7 +4823,7 @@ LABEL_11:
         }
 
         v66 = 138412290;
-        v67 = v58;
+        intervalCopy2 = v58;
         v20 = _os_log_send_and_compose_impl();
         sub_19B6BB7CC("Generic", 1, 0, 0, "[CMMotionManager startFactoryGyroUpdatesPrivateToQueue:atUpdateInterval:withHandler:residualHandler:]", "CoreLocation: %s\n", v20);
         if (v20 != &buf)
@@ -4958,7 +4958,7 @@ LABEL_11:
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)startDeviceMotionUpdatesForKeyboardMotionPrivateToQueue:(id)a3 withGravityDeltaThreshold:(double)a4 notificationFrequency:(double)a5 andHandler:(id)a6
+- (void)startDeviceMotionUpdatesForKeyboardMotionPrivateToQueue:(id)queue withGravityDeltaThreshold:(double)threshold notificationFrequency:(double)frequency andHandler:(id)handler
 {
   v28 = *MEMORY[0x1E69E9840];
   internal = self->_internal;
@@ -4995,17 +4995,17 @@ LABEL_11:
   if (sub_19B4426E4())
   {
     v14 = *(internal + 129);
-    if (v14 != a3)
+    if (v14 != queue)
     {
 
-      *(internal + 129) = a3;
+      *(internal + 129) = queue;
     }
 
     v15 = *(internal + 128);
-    if (v15 != a6)
+    if (v15 != handler)
     {
 
-      *(internal + 128) = a6;
+      *(internal + 128) = handler;
     }
 
     sub_19B4315C8(buf, @"com.apple.CoreMotion", 1);
@@ -5016,22 +5016,22 @@ LABEL_11:
     v18 = sub_19B43D4DC(buf, @"KeyboardMotionGravitySendFrequency", v26);
     if (v16)
     {
-      v19 = v17;
+      thresholdCopy = v17;
     }
 
     else
     {
-      v19 = a4;
+      thresholdCopy = threshold;
     }
 
-    v20 = *v26;
+    frequencyCopy = *v26;
     if (!v18)
     {
-      v20 = a5;
+      frequencyCopy = frequency;
     }
 
-    v21 = v19;
-    v22 = v20;
+    v21 = thresholdCopy;
+    v22 = frequencyCopy;
     internal[267] = v21;
     internal[268] = v22;
     if (!*(internal + 130))
@@ -5132,14 +5132,14 @@ LABEL_11:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)sendDeviceMotionHostGravityToKeyboard:(id *)a3
+- (BOOL)sendDeviceMotionHostGravityToKeyboard:(id *)keyboard
 {
   v4 = *(sub_19B677074() + 48);
   if (v4)
   {
-    var2 = a3->var2;
+    var2 = keyboard->var2;
     v8 = 114;
-    v9 = *a3->var0;
+    v9 = *keyboard->var0;
     v10 = var2;
     LOBYTE(v4) = objc_msgSend_setReport_payload_length_(v4, v5, 114, &v8, 6);
   }
@@ -5147,15 +5147,15 @@ LABEL_11:
   return v4;
 }
 
-- (void)onDeviceMotionForKeyboardMotion:(const Sample *)a3
+- (void)onDeviceMotionForKeyboardMotion:(const Sample *)motion
 {
   internal = self->_internal;
-  v5 = sub_19B420740(&a3->acceleration.x);
+  v5 = sub_19B420740(&motion->acceleration.x);
   v7 = v6;
   v9 = v8;
   v10 = sub_19B639268(v5, v6, v8, *(internal + 264), *(internal + 265), *(internal + 266));
   v11 = *(internal + 267);
-  timestamp = a3->timestamp;
+  timestamp = motion->timestamp;
   v13 = *(internal + 131);
   if (v13 < 0.0 || ((v11 * 0.017453) > 0.0 ? (v14 = *&v10 <= (v11 * 0.017453)) : (v14 = 1), !v14 || timestamp - v13 > (1.0 / *(internal + 268))))
   {

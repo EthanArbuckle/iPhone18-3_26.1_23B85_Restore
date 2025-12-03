@@ -1,24 +1,24 @@
 @interface _SBFContinuityUnlockAuthenticationStatusProvider
 - (BOOL)isAuthenticated;
 - (BOOL)isAuthenticatedCached;
-- (_SBFContinuityUnlockAuthenticationStatusProvider)initWithMobileKeyBag:(id)a3 underlyingProvider:(id)a4;
+- (_SBFContinuityUnlockAuthenticationStatusProvider)initWithMobileKeyBag:(id)bag underlyingProvider:(id)provider;
 - (uint64_t)_isContinuityUnlocked;
 @end
 
 @implementation _SBFContinuityUnlockAuthenticationStatusProvider
 
-- (_SBFContinuityUnlockAuthenticationStatusProvider)initWithMobileKeyBag:(id)a3 underlyingProvider:(id)a4
+- (_SBFContinuityUnlockAuthenticationStatusProvider)initWithMobileKeyBag:(id)bag underlyingProvider:(id)provider
 {
-  v7 = a3;
-  v8 = a4;
+  bagCopy = bag;
+  providerCopy = provider;
   v12.receiver = self;
   v12.super_class = _SBFContinuityUnlockAuthenticationStatusProvider;
   v9 = [(_SBFContinuityUnlockAuthenticationStatusProvider *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_keybag, a3);
-    objc_storeStrong(&v10->_underlyingProvider, a4);
+    objc_storeStrong(&v9->_keybag, bag);
+    objc_storeStrong(&v10->_underlyingProvider, provider);
   }
 
   return v10;

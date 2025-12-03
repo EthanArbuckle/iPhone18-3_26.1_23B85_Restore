@@ -1,10 +1,10 @@
 @interface SGTypeDescription
-+ (id)typeDescriptionRepresenting:(unint64_t)a3 error:(id *)a4;
++ (id)typeDescriptionRepresenting:(unint64_t)representing error:(id *)error;
 - (NSArray)properties;
 - (NSString)description;
 - (SGTypeDescription)init;
 - (unsigned)offset;
-- (void)setOffset:(unsigned int)a3;
+- (void)setOffset:(unsigned int)offset;
 @end
 
 @implementation SGTypeDescription
@@ -26,16 +26,16 @@
   return *(self + v3);
 }
 
-- (void)setOffset:(unsigned int)a3
+- (void)setOffset:(unsigned int)offset
 {
   v5 = OBJC_IVAR___SGTypeDescription_offset;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = offset;
 }
 
-+ (id)typeDescriptionRepresenting:(unint64_t)a3 error:(id *)a4
++ (id)typeDescriptionRepresenting:(unint64_t)representing error:(id *)error
 {
-  v4 = specialized static SGTypeDescription.create(_:)(a3);
+  v4 = specialized static SGTypeDescription.create(_:)(representing);
 
   return v4;
 }

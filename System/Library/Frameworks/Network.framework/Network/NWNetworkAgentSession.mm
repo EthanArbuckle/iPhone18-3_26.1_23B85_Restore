@@ -1,15 +1,15 @@
 @interface NWNetworkAgentSession
 - (BOOL)setupReadSource;
 - (NWNetworkAgentSession)init;
-- (NWNetworkAgentSession)initWithFileDescriptor:(int)a3;
-- (NWNetworkAgentSession)initWithFileDescriptor:(int)a3 queue:(id)a4;
-- (NWNetworkAgentSession)initWithQueue:(id)a3;
-- (id)registrationForAgentUUID:(id)a3;
+- (NWNetworkAgentSession)initWithFileDescriptor:(int)descriptor;
+- (NWNetworkAgentSession)initWithFileDescriptor:(int)descriptor queue:(id)queue;
+- (NWNetworkAgentSession)initWithQueue:(id)queue;
+- (id)registrationForAgentUUID:(id)d;
 - (int)dupSessionFileDescriptor;
-- (void)addRegistration:(id)a3;
+- (void)addRegistration:(id)registration;
 - (void)dealloc;
 - (void)readMessageFromFD;
-- (void)removeRegistration:(id)a3;
+- (void)removeRegistration:(id)registration;
 - (void)unregisterAll;
 @end
 
@@ -18,12 +18,12 @@
 - (void)dealloc
 {
   [(NWNetworkAgentSession *)self unregisterAll];
-  v3 = [(NWNetworkAgentSession *)self readSource];
+  readSource = [(NWNetworkAgentSession *)self readSource];
 
-  if (v3)
+  if (readSource)
   {
-    v4 = [(NWNetworkAgentSession *)self readSource];
-    dispatch_source_cancel(v4);
+    readSource2 = [(NWNetworkAgentSession *)self readSource];
+    dispatch_source_cancel(readSource2);
 
     [(NWNetworkAgentSession *)self setReadSource:0];
   }
@@ -45,8 +45,8 @@
   v12 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v3 = [(NWNetworkAgentSession *)self registrations];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  registrations = [(NWNetworkAgentSession *)self registrations];
+  v4 = [registrations countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -58,21 +58,21 @@
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(registrations);
         }
 
         [*(*(&v9 + 1) + 8 * v7++) unregisterNetworkAgentInternal];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [registrations countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
   }
 
-  v8 = [(NWNetworkAgentSession *)self registrations];
-  [v8 removeAllObjects];
+  registrations2 = [(NWNetworkAgentSession *)self registrations];
+  [registrations2 removeAllObjects];
 }
 
 - (int)dupSessionFileDescriptor
@@ -82,21 +82,21 @@
     return -1;
   }
 
-  v3 = [(NWNetworkAgentSession *)self sessionFD];
+  sessionFD = [(NWNetworkAgentSession *)self sessionFD];
 
-  return dup(v3);
+  return dup(sessionFD);
 }
 
-- (id)registrationForAgentUUID:(id)a3
+- (id)registrationForAgentUUID:(id)d
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dCopy = d;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(NWNetworkAgentSession *)self registrations];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  registrations = [(NWNetworkAgentSession *)self registrations];
+  v6 = [registrations countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = *v15;
@@ -106,13 +106,13 @@
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(registrations);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 networkAgent];
-        v11 = [v10 agentUUID];
-        v12 = [v11 isEqual:v4];
+        networkAgent = [v9 networkAgent];
+        agentUUID = [networkAgent agentUUID];
+        v12 = [agentUUID isEqual:dCopy];
 
         if (v12)
         {
@@ -121,7 +121,7 @@
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [registrations countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v6)
       {
         continue;
@@ -136,18 +136,18 @@ LABEL_11:
   return v6;
 }
 
-- (void)removeRegistration:(id)a3
+- (void)removeRegistration:(id)registration
 {
-  v4 = a3;
-  v5 = [(NWNetworkAgentSession *)self registrations];
-  [v5 removeObject:v4];
+  registrationCopy = registration;
+  registrations = [(NWNetworkAgentSession *)self registrations];
+  [registrations removeObject:registrationCopy];
 }
 
-- (void)addRegistration:(id)a3
+- (void)addRegistration:(id)registration
 {
-  v4 = a3;
-  v5 = [(NWNetworkAgentSession *)self registrations];
-  [v5 addObject:v4];
+  registrationCopy = registration;
+  registrations = [(NWNetworkAgentSession *)self registrations];
+  [registrations addObject:registrationCopy];
 }
 
 - (NWNetworkAgentSession)init
@@ -159,27 +159,27 @@ LABEL_11:
   return v5;
 }
 
-- (NWNetworkAgentSession)initWithQueue:(id)a3
+- (NWNetworkAgentSession)initWithQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v5 = nw_network_agent_open_control_socket();
   if ((v5 & 0x80000000) != 0)
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
   else
   {
-    self = [(NWNetworkAgentSession *)self initWithFileDescriptor:v5 queue:v4];
-    v6 = self;
+    self = [(NWNetworkAgentSession *)self initWithFileDescriptor:v5 queue:queueCopy];
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (NWNetworkAgentSession)initWithFileDescriptor:(int)a3
+- (NWNetworkAgentSession)initWithFileDescriptor:(int)descriptor
 {
-  v3 = *&a3;
+  v3 = *&descriptor;
   v5 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
   v6 = dispatch_queue_create("NWNetworkAgentSession queue", v5);
   v7 = [(NWNetworkAgentSession *)self initWithFileDescriptor:v3 queue:v6];
@@ -187,11 +187,11 @@ LABEL_11:
   return v7;
 }
 
-- (NWNetworkAgentSession)initWithFileDescriptor:(int)a3 queue:(id)a4
+- (NWNetworkAgentSession)initWithFileDescriptor:(int)descriptor queue:(id)queue
 {
   v34 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  if (!v7)
+  queueCopy = queue;
+  if (!queueCopy)
   {
     v12 = __nwlog_obj();
     *buf = 136446210;
@@ -364,8 +364,8 @@ LABEL_36:
   }
 
   self = v8;
-  v8->_sessionFD = a3;
-  objc_storeStrong(&v8->_queue, a4);
+  v8->_sessionFD = descriptor;
+  objc_storeStrong(&v8->_queue, queue);
   v9 = objc_alloc_init(MEMORY[0x1E695DF70]);
   registrations = self->_registrations;
   self->_registrations = v9;
@@ -373,26 +373,26 @@ LABEL_36:
   if (![(NWNetworkAgentSession *)self setupReadSource])
   {
 LABEL_40:
-    v11 = 0;
+    selfCopy = 0;
     goto LABEL_41;
   }
 
   self = self;
-  v11 = self;
+  selfCopy = self;
 LABEL_41:
 
-  return v11;
+  return selfCopy;
 }
 
 - (BOOL)setupReadSource
 {
   v36 = *MEMORY[0x1E69E9840];
-  v3 = [(NWNetworkAgentSession *)self sessionFD];
-  if ((v3 & 0x80000000) == 0)
+  sessionFD = [(NWNetworkAgentSession *)self sessionFD];
+  if ((sessionFD & 0x80000000) == 0)
   {
-    v4 = v3;
-    v5 = [(NWNetworkAgentSession *)self queue];
-    v6 = dispatch_source_create(MEMORY[0x1E69E96F8], v4, 0, v5);
+    v4 = sessionFD;
+    queue = [(NWNetworkAgentSession *)self queue];
+    v6 = dispatch_source_create(MEMORY[0x1E69E96F8], v4, 0, queue);
 
     v7 = v6 != 0;
     if (v6)
@@ -635,8 +635,8 @@ void __40__NWNetworkAgentSession_setupReadSource__block_invoke_2(uint64_t a1)
       v20 = 0u;
       v17 = 0u;
       v18 = 0u;
-      v6 = [(NWNetworkAgentSession *)self registrations];
-      v7 = [v6 countByEnumeratingWithState:&v17 objects:v26 count:16];
+      registrations = [(NWNetworkAgentSession *)self registrations];
+      v7 = [registrations countByEnumeratingWithState:&v17 objects:v26 count:16];
       if (v7)
       {
         v8 = v7;
@@ -647,12 +647,12 @@ void __40__NWNetworkAgentSession_setupReadSource__block_invoke_2(uint64_t a1)
           {
             if (*v18 != v9)
             {
-              objc_enumerationMutation(v6);
+              objc_enumerationMutation(registrations);
             }
 
             v11 = *(*(&v17 + 1) + 8 * i);
-            v12 = [v11 registeredUUID];
-            v13 = [v5 isEqual:v12];
+            registeredUUID = [v11 registeredUUID];
+            v13 = [v5 isEqual:registeredUUID];
 
             if (v13)
             {
@@ -661,7 +661,7 @@ void __40__NWNetworkAgentSession_setupReadSource__block_invoke_2(uint64_t a1)
             }
           }
 
-          v8 = [v6 countByEnumeratingWithState:&v17 objects:v26 count:16];
+          v8 = [registrations countByEnumeratingWithState:&v17 objects:v26 count:16];
           if (v8)
           {
             continue;
@@ -673,8 +673,8 @@ void __40__NWNetworkAgentSession_setupReadSource__block_invoke_2(uint64_t a1)
 
       pthread_once(&nwlog_legacy_init(void)::init_once, nwlog_legacy_init_once);
       networkd_settings_init();
-      v6 = gLogObj;
-      if (!os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+      registrations = gLogObj;
+      if (!os_log_type_enabled(registrations, OS_LOG_TYPE_ERROR))
       {
         goto LABEL_21;
       }
@@ -684,7 +684,7 @@ void __40__NWNetworkAgentSession_setupReadSource__block_invoke_2(uint64_t a1)
       v24 = 2112;
       v25 = v5;
       v14 = "%{public}s Failed to find registration for agent UUID %@";
-      v15 = v6;
+      v15 = registrations;
       v16 = 22;
     }
 
@@ -692,8 +692,8 @@ void __40__NWNetworkAgentSession_setupReadSource__block_invoke_2(uint64_t a1)
     {
       pthread_once(&nwlog_legacy_init(void)::init_once, nwlog_legacy_init_once);
       networkd_settings_init();
-      v6 = gLogObj;
-      if (!os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+      registrations = gLogObj;
+      if (!os_log_type_enabled(registrations, OS_LOG_TYPE_ERROR))
       {
 LABEL_21:
 
@@ -706,7 +706,7 @@ LABEL_22:
       *buf = 136446210;
       v23 = "[NWNetworkAgentSession readMessageFromFD]";
       v14 = "%{public}s Failed to parse agent UUID from message";
-      v15 = v6;
+      v15 = registrations;
       v16 = 12;
     }
 

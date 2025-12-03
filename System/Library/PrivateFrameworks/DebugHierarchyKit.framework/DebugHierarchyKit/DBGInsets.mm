@@ -1,8 +1,8 @@
 @interface DBGInsets
-+ (id)valueWithEncodedValue:(id)a3 format:(id)a4 error:(id *)a5;
-+ (id)withEdgeInsets:(DBGEdgeInsets)a3;
++ (id)valueWithEncodedValue:(id)value format:(id)format error:(id *)error;
++ (id)withEdgeInsets:(DBGEdgeInsets)insets;
 - (DBGEdgeInsets)edgeInsets;
-- (DBGInsets)initWithEdgeInsets:(DBGEdgeInsets)a3;
+- (DBGInsets)initWithEdgeInsets:(DBGEdgeInsets)insets;
 - (NSString)debugDescription;
 - (NSString)description;
 - (id)JSONCompatibleRepresentation;
@@ -11,19 +11,19 @@
 
 @implementation DBGInsets
 
-+ (id)withEdgeInsets:(DBGEdgeInsets)a3
++ (id)withEdgeInsets:(DBGEdgeInsets)insets
 {
-  v3 = [[a1 alloc] initWithEdgeInsets:{a3.top, a3.leading, a3.bottom, a3.trailing}];
+  v3 = [[self alloc] initWithEdgeInsets:{insets.top, insets.leading, insets.bottom, insets.trailing}];
 
   return v3;
 }
 
-- (DBGInsets)initWithEdgeInsets:(DBGEdgeInsets)a3
+- (DBGInsets)initWithEdgeInsets:(DBGEdgeInsets)insets
 {
-  trailing = a3.trailing;
-  bottom = a3.bottom;
-  leading = a3.leading;
-  top = a3.top;
+  trailing = insets.trailing;
+  bottom = insets.bottom;
+  leading = insets.leading;
+  top = insets.top;
   v8.receiver = self;
   v8.super_class = DBGInsets;
   result = [(DBGInsets *)&v8 init];
@@ -59,8 +59,8 @@
 
 - (NSString)description
 {
-  v2 = [(DBGInsets *)self objectValue];
-  v3 = [v2 description];
+  objectValue = [(DBGInsets *)self objectValue];
+  v3 = [objectValue description];
 
   return v3;
 }
@@ -89,7 +89,7 @@
   return result;
 }
 
-+ (id)valueWithEncodedValue:(id)a3 format:(id)a4 error:(id *)a5
++ (id)valueWithEncodedValue:(id)value format:(id)format error:(id *)error
 {
   v7 = DBGDecodeValueFromJSONCompatibleValue();
   v8 = 0;
@@ -97,10 +97,10 @@
   if (v8)
   {
     v10 = 0.0;
-    if (a5)
+    if (error)
     {
       v11 = v8;
-      *a5 = v9;
+      *error = v9;
     }
 
     v12 = 0.0;
@@ -124,7 +124,7 @@
     v10 = v22;
   }
 
-  v23 = [a1 withEdgeInsets:{v14, v13, v12, v10}];
+  v23 = [self withEdgeInsets:{v14, v13, v12, v10}];
 
   return v23;
 }

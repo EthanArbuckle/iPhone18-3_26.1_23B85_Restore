@@ -1,37 +1,37 @@
 @interface VUIMetricsPageEventData
-+ (id)createWithMetricsData:(id)a3 pageContext:(id)a4;
-+ (id)createWithPageId:(id)a3 andPageType:(id)a4 andEventData:(id)a5;
++ (id)createWithMetricsData:(id)data pageContext:(id)context;
++ (id)createWithPageId:(id)id andPageType:(id)type andEventData:(id)data;
 - (id)generateMetricsDataDictionary;
 @end
 
 @implementation VUIMetricsPageEventData
 
-+ (id)createWithPageId:(id)a3 andPageType:(id)a4 andEventData:(id)a5
++ (id)createWithPageId:(id)id andPageType:(id)type andEventData:(id)data
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = objc_alloc_init(a1);
-  [v11 setPageId:v10];
+  dataCopy = data;
+  typeCopy = type;
+  idCopy = id;
+  v11 = objc_alloc_init(self);
+  [v11 setPageId:idCopy];
 
-  [v11 setPageType:v9];
+  [v11 setPageType:typeCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v11 setEventData:v8];
+    [v11 setEventData:dataCopy];
   }
 
   return v11;
 }
 
-+ (id)createWithMetricsData:(id)a3 pageContext:(id)a4
++ (id)createWithMetricsData:(id)data pageContext:(id)context
 {
   v14[3] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 objectForKeyedSubscript:@"pageId"];
-  v9 = [v7 objectForKeyedSubscript:@"pageType"];
-  v10 = [v7 mutableCopy];
+  contextCopy = context;
+  dataCopy = data;
+  v8 = [dataCopy objectForKeyedSubscript:@"pageId"];
+  v9 = [dataCopy objectForKeyedSubscript:@"pageType"];
+  v10 = [dataCopy mutableCopy];
 
   v14[0] = @"pageId";
   v14[1] = @"pageType";
@@ -39,12 +39,12 @@
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:3];
   [v10 removeObjectsForKeys:v11];
 
-  if (v6)
+  if (contextCopy)
   {
-    [v10 setObject:v6 forKey:@"pageContext"];
+    [v10 setObject:contextCopy forKey:@"pageContext"];
   }
 
-  v12 = [a1 createWithPageId:v8 andPageType:v9 andEventData:v10];
+  v12 = [self createWithPageId:v8 andPageType:v9 andEventData:v10];
 
   return v12;
 }

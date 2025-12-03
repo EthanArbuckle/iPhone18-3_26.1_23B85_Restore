@@ -1,29 +1,29 @@
 @interface SBHLibraryViewController
-+ (id)_updateCategoryMap:(id)a3 withCategoryDataFrom:(id)a4;
-- (BOOL)_canPerformDropForAnyItemInSession:(id)a3;
-- (BOOL)_canPerformDropForDraggedIcon:(id)a3;
-- (BOOL)_hiddenCategoriesDidChangeFromCurrentCategoryMap:(id)a3 toUpdatedCategoryMap:(id)a4;
++ (id)_updateCategoryMap:(id)map withCategoryDataFrom:(id)from;
+- (BOOL)_canPerformDropForAnyItemInSession:(id)session;
+- (BOOL)_canPerformDropForDraggedIcon:(id)icon;
+- (BOOL)_hiddenCategoriesDidChangeFromCurrentCategoryMap:(id)map toUpdatedCategoryMap:(id)categoryMap;
 - (BOOL)_shouldUseReduceTransparencyBackgroundView;
-- (BOOL)folderController:(id)a3 iconListView:(id)a4 canHandleIconDropSession:(id)a5;
-- (BOOL)iconShouldAllowCloseBoxTap:(id)a3;
-- (BOOL)iconShouldAllowTap:(id)a3;
-- (BOOL)iconView:(id)a3 editingModeGestureRecognizerDidFire:(id)a4;
-- (BOOL)iconViewCanBecomeFocused:(id)a3;
-- (BOOL)iconViewDisplaysAccessories:(id)a3;
-- (BOOL)iconViewDisplaysCloseBox:(id)a3;
-- (BOOL)isDisplayingIcon:(id)a3;
-- (BOOL)isDisplayingIcon:(id)a3 inLocation:(id)a4 options:(unint64_t)a5;
-- (BOOL)isDisplayingIcon:(id)a3 inLocations:(id)a4;
-- (BOOL)isDisplayingIcon:(id)a3 options:(unint64_t)a4;
-- (BOOL)isDisplayingIconView:(id)a3;
-- (BOOL)isDisplayingIconView:(id)a3 inLocation:(id)a4;
-- (BOOL)isDisplayingIconView:(id)a3 options:(unint64_t)a4;
-- (BOOL)isIconViewRecycled:(id)a3;
+- (BOOL)folderController:(id)controller iconListView:(id)view canHandleIconDropSession:(id)session;
+- (BOOL)iconShouldAllowCloseBoxTap:(id)tap;
+- (BOOL)iconShouldAllowTap:(id)tap;
+- (BOOL)iconView:(id)view editingModeGestureRecognizerDidFire:(id)fire;
+- (BOOL)iconViewCanBecomeFocused:(id)focused;
+- (BOOL)iconViewDisplaysAccessories:(id)accessories;
+- (BOOL)iconViewDisplaysCloseBox:(id)box;
+- (BOOL)isDisplayingIcon:(id)icon;
+- (BOOL)isDisplayingIcon:(id)icon inLocation:(id)location options:(unint64_t)options;
+- (BOOL)isDisplayingIcon:(id)icon inLocations:(id)locations;
+- (BOOL)isDisplayingIcon:(id)icon options:(unint64_t)options;
+- (BOOL)isDisplayingIconView:(id)view;
+- (BOOL)isDisplayingIconView:(id)view inLocation:(id)location;
+- (BOOL)isDisplayingIconView:(id)view options:(unint64_t)options;
+- (BOOL)isIconViewRecycled:(id)recycled;
 - (BOOL)isPresentingFolder;
-- (BOOL)isPresentingIconLocation:(id)a3;
+- (BOOL)isPresentingIconLocation:(id)location;
 - (BOOL)isPresentingSearch;
-- (BOOL)presentPodWithCategory:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (BOOL)presentPodWithCategoryIdentifier:(id)a3 animated:(BOOL)a4 completion:(id)a5;
+- (BOOL)presentPodWithCategory:(id)category animated:(BOOL)animated completion:(id)completion;
+- (BOOL)presentPodWithCategoryIdentifier:(id)identifier animated:(BOOL)animated completion:(id)completion;
 - (NSArray)podTopLevelDisplayedIcons;
 - (NSSet)presentedIconLocations;
 - (SBFolderIconImageCache)folderIconImageCache;
@@ -31,7 +31,7 @@
 - (SBHIconBadgeBehaviorProviding)badgeBehaviorProvider;
 - (SBHLegibilitySettings)effectiveLegibilitySettings;
 - (SBHLibraryIconPrecachingInfo)iconPrecachingInfo;
-- (SBHLibraryViewController)initWithCategoryMapProvider:(id)a3;
+- (SBHLibraryViewController)initWithCategoryMapProvider:(id)provider;
 - (SBHLibraryViewControllerDelegate)behaviorDelegate;
 - (SBHLibraryViewControllerPresenter)presenter;
 - (SBHomeScreenIconTransitionAnimatorDelegate)homeScreenIconTransitionAnimatorDelegate;
@@ -40,136 +40,136 @@
 - (SBRootFolder)categoriesRootFolder;
 - (UIView)externalBackgroundView;
 - (id)_additionalItemsIcons;
-- (id)_additionalItemsIndicatorIconViewForFolderController:(id)a3;
-- (id)_createIconViewControllerForCategoryIdentifier:(id)a3;
-- (id)_customImageViewControllerForCategoryPodIconView:(id)a3 usingInternalCache:(BOOL)a4;
-- (id)_destinationFolderIconViewForDragItem:(id)a3 folderRelativeIconIndexPath:(id *)a4;
-- (id)_draggedItemIdentifiersInSession:(id)a3;
-- (id)_hiddenCategoryIdentifierForCategoryMap:(id)a3;
-- (id)_iconIdentifierForDragItem:(id)a3;
-- (id)_iconLocationForCategoryIdentifier:(id)a3;
-- (id)_iconViewControllerForCategoryIdentifier:(id)a3;
-- (id)_wrappedCompletionBlockForNestedTransitionWithCompletion:(id)a3;
+- (id)_additionalItemsIndicatorIconViewForFolderController:(id)controller;
+- (id)_createIconViewControllerForCategoryIdentifier:(id)identifier;
+- (id)_customImageViewControllerForCategoryPodIconView:(id)view usingInternalCache:(BOOL)cache;
+- (id)_destinationFolderIconViewForDragItem:(id)item folderRelativeIconIndexPath:(id *)path;
+- (id)_draggedItemIdentifiersInSession:(id)session;
+- (id)_hiddenCategoryIdentifierForCategoryMap:(id)map;
+- (id)_iconIdentifierForDragItem:(id)item;
+- (id)_iconLocationForCategoryIdentifier:(id)identifier;
+- (id)_iconViewControllerForCategoryIdentifier:(id)identifier;
+- (id)_wrappedCompletionBlockForNestedTransitionWithCompletion:(id)completion;
 - (id)contentScrollView;
-- (id)contextMenuDelegateForIconView:(id)a3;
-- (id)dequeueReusableIconViewOfClass:(Class)a3;
-- (id)draggingDelegateForIconView:(id)a3;
+- (id)contextMenuDelegateForIconView:(id)view;
+- (id)dequeueReusableIconViewOfClass:(Class)class;
+- (id)draggingDelegateForIconView:(id)view;
 - (id)effectiveIconImageAppearance;
-- (id)firstIconViewForIcon:(id)a3;
-- (id)firstIconViewForIcon:(id)a3 excludingLocations:(id)a4;
-- (id)firstIconViewForIcon:(id)a3 inLocations:(id)a4;
-- (id)firstIconViewForIcon:(id)a3 options:(unint64_t)a4;
-- (id)firstNonSuggestionsOrRecentsIconViewForIcon:(id)a3;
-- (id)folderController:(id)a3 iconListView:(id)a4 iconDropSessionDidUpdate:(id)a5;
-- (id)folderController:(id)a3 iconListView:(id)a4 previewForDroppingIconDragItem:(id)a5 proposedPreview:(id)a6;
-- (id)iconView:(id)a3 labelContentWithParameters:(id)a4;
-- (id)iconView:(id)a3 labelImageWithParameters:(id)a4;
-- (id)iconViewForIcon:(id)a3 location:(id)a4 options:(unint64_t)a5;
+- (id)firstIconViewForIcon:(id)icon;
+- (id)firstIconViewForIcon:(id)icon excludingLocations:(id)locations;
+- (id)firstIconViewForIcon:(id)icon inLocations:(id)locations;
+- (id)firstIconViewForIcon:(id)icon options:(unint64_t)options;
+- (id)firstNonSuggestionsOrRecentsIconViewForIcon:(id)icon;
+- (id)folderController:(id)controller iconListView:(id)view iconDropSessionDidUpdate:(id)update;
+- (id)folderController:(id)controller iconListView:(id)view previewForDroppingIconDragItem:(id)item proposedPreview:(id)preview;
+- (id)iconView:(id)view labelContentWithParameters:(id)parameters;
+- (id)iconView:(id)view labelImageWithParameters:(id)parameters;
+- (id)iconViewForIcon:(id)icon location:(id)location options:(unint64_t)options;
 - (id)keyCommands;
-- (id)nestingViewController:(id)a3 animationControllerForOperation:(int64_t)a4 onViewController:(id)a5 animated:(BOOL)a6;
-- (int64_t)closeBoxTypeForIconView:(id)a3;
+- (id)nestingViewController:(id)controller animationControllerForOperation:(int64_t)operation onViewController:(id)viewController animated:(BOOL)animated;
+- (int64_t)closeBoxTypeForIconView:(id)view;
 - (void)_addBarSwipeView;
 - (void)_dismissDisplayedContextMenu;
-- (void)_dismissExpandedPods:(BOOL)a3 completion:(id)a4;
-- (void)_dismissHiddenExpandedPodAnimated:(BOOL)a3 completion:(id)a4;
-- (void)_dismissLibraryViewControllerForReason:(id)a3 sessionIdentifier:(id)a4;
-- (void)_dismissSearchIfNotInUseForReason:(id)a3 sessionIdentifier:(id)a4;
-- (void)_enqueueTransitionName:(id)a3 withHandler:(id)a4;
-- (void)_enumerateAllViewControllersUsingBlock:(id)a3;
-- (void)_enumerateObservers:(id)a3;
-- (void)_expandPodAtIndex:(unint64_t)a3 animated:(BOOL)a4 completion:(id)a5;
+- (void)_dismissExpandedPods:(BOOL)pods completion:(id)completion;
+- (void)_dismissHiddenExpandedPodAnimated:(BOOL)animated completion:(id)completion;
+- (void)_dismissLibraryViewControllerForReason:(id)reason sessionIdentifier:(id)identifier;
+- (void)_dismissSearchIfNotInUseForReason:(id)reason sessionIdentifier:(id)identifier;
+- (void)_enqueueTransitionName:(id)name withHandler:(id)handler;
+- (void)_enumerateAllViewControllersUsingBlock:(id)block;
+- (void)_enumerateObservers:(id)observers;
+- (void)_expandPodAtIndex:(unint64_t)index animated:(BOOL)animated completion:(id)completion;
 - (void)_flushPendingLibraryCategoryMapUpdateIfNeeded;
-- (void)_installCategoryMap:(id)a3;
+- (void)_installCategoryMap:(id)map;
 - (void)_invalidateLibraryViewControllerDismissalTimer;
 - (void)_notifyObserversDataSourceDidChange;
 - (void)_notifyObserversDidDismiss;
-- (void)_notifyObserversDidDismissFolderController:(id)a3;
-- (void)_notifyObserversDidDismissSearchController:(id)a3;
+- (void)_notifyObserversDidDismissFolderController:(id)controller;
+- (void)_notifyObserversDidDismissSearchController:(id)controller;
 - (void)_notifyObserversDidPresent;
-- (void)_notifyObserversDidPresentSearchController:(id)a3;
-- (void)_notifyObserversOfAcceptedDrop:(id)a3;
-- (void)_notifyObserversOfAppLaunchOfIcon:(id)a3 fromLocation:(id)a4;
+- (void)_notifyObserversDidPresentSearchController:(id)controller;
+- (void)_notifyObserversOfAcceptedDrop:(id)drop;
+- (void)_notifyObserversOfAppLaunchOfIcon:(id)icon fromLocation:(id)location;
 - (void)_notifyObserversWillDismiss;
-- (void)_notifyObserversWillDismissFolderController:(id)a3;
-- (void)_notifyObserversWillDismissSearchController:(id)a3;
+- (void)_notifyObserversWillDismissFolderController:(id)controller;
+- (void)_notifyObserversWillDismissSearchController:(id)controller;
 - (void)_notifyObserversWillPresent;
-- (void)_notifyObserversWillPresentFolderController:(id)a3;
-- (void)_notifyObserversWillPresentSearchController:(id)a3;
+- (void)_notifyObserversWillPresentFolderController:(id)controller;
+- (void)_notifyObserversWillPresentSearchController:(id)controller;
 - (void)_popExpandedPod;
-- (void)_precacheIconViewControllersForCategories:(id)a3;
-- (void)_scrollIconViewToVisible:(id)a3 animated:(BOOL)a4;
-- (void)_setupIconTableViewController:(BOOL)a3;
+- (void)_precacheIconViewControllersForCategories:(id)categories;
+- (void)_scrollIconViewToVisible:(id)visible animated:(BOOL)animated;
+- (void)_setupIconTableViewController:(BOOL)controller;
 - (void)_setupReducedTransparencyBackgroundViewIfNeeded;
-- (void)_startAppLaunchResetTimer:(id)a3;
-- (void)_startLibraryViewControllerDismissalTimer:(id)a3;
+- (void)_startAppLaunchResetTimer:(id)timer;
+- (void)_startLibraryViewControllerDismissalTimer:(id)timer;
 - (void)_teardownReducedTransparencyBackgroundView;
-- (void)_updateDragPreviewIconViewsForDropSession:(id)a3 inIconListView:(id)a4;
-- (void)_updateEditingStateAnimated:(BOOL)a3;
-- (void)_updateLibraryCategoryMap:(id)a3;
+- (void)_updateDragPreviewIconViewsForDropSession:(id)session inIconListView:(id)view;
+- (void)_updateEditingStateAnimated:(BOOL)animated;
+- (void)_updateLibraryCategoryMap:(id)map;
 - (void)_updateReduceTransparency;
 - (void)_updateSearchControllerLegibility;
 - (void)_updateViewControllerLegibility;
-- (void)addObserver:(id)a3;
-- (void)configureIconView:(id)a3 forIcon:(id)a4;
+- (void)addObserver:(id)observer;
+- (void)configureIconView:(id)view forIcon:(id)icon;
 - (void)dealloc;
-- (void)didDismissSearchController:(id)a3;
-- (void)didPresentSearchController:(id)a3;
-- (void)enumerateDisplayedIconViewsForIcon:(id)a3 usingBlock:(id)a4;
-- (void)enumerateDisplayedIconViewsUsingBlock:(id)a3;
-- (void)enumerateIconViewQueryableChildrenWithOptions:(unint64_t)a3 usingBlock:(id)a4;
-- (void)enumeratePodIconListViewsUsingBlock:(id)a3;
-- (void)enumerateViewControllersUsingBlock:(id)a3;
-- (void)folderController:(id)a3 iconListView:(id)a4 iconDragItem:(id)a5 willAnimateDropWithAnimator:(id)a6;
-- (void)folderController:(id)a3 iconListView:(id)a4 performIconDrop:(id)a5;
-- (void)folderControllerWillBeginScrolling:(id)a3;
-- (void)forcedSearchTextFieldNoneditable:(BOOL)a3;
-- (void)iconCloseBoxTapped:(id)a3;
-- (void)iconModelDidLayout:(id)a3;
-- (void)iconTapped:(id)a3 modifierFlags:(int64_t)a4;
-- (void)iconViewWasDiscarded:(id)a3;
-- (void)iconViewWasRecycled:(id)a3;
+- (void)didDismissSearchController:(id)controller;
+- (void)didPresentSearchController:(id)controller;
+- (void)enumerateDisplayedIconViewsForIcon:(id)icon usingBlock:(id)block;
+- (void)enumerateDisplayedIconViewsUsingBlock:(id)block;
+- (void)enumerateIconViewQueryableChildrenWithOptions:(unint64_t)options usingBlock:(id)block;
+- (void)enumeratePodIconListViewsUsingBlock:(id)block;
+- (void)enumerateViewControllersUsingBlock:(id)block;
+- (void)folderController:(id)controller iconListView:(id)view iconDragItem:(id)item willAnimateDropWithAnimator:(id)animator;
+- (void)folderController:(id)controller iconListView:(id)view performIconDrop:(id)drop;
+- (void)folderControllerWillBeginScrolling:(id)scrolling;
+- (void)forcedSearchTextFieldNoneditable:(BOOL)noneditable;
+- (void)iconCloseBoxTapped:(id)tapped;
+- (void)iconModelDidLayout:(id)layout;
+- (void)iconTapped:(id)tapped modifierFlags:(int64_t)flags;
+- (void)iconViewWasDiscarded:(id)discarded;
+- (void)iconViewWasRecycled:(id)recycled;
 - (void)invalidateSearchControllerAppLaunchResetTimer;
-- (void)layoutIconListsWithAnimationType:(int64_t)a3 forceRelayout:(BOOL)a4;
-- (void)libraryPodFolderController:(id)a3 willLayoutDisplayedCategories:(unint64_t)a4;
-- (void)libraryPodFolderControllerRequestsDismissal:(id)a3;
-- (void)libraryTableViewControllerDidAppear:(id)a3;
-- (void)libraryTableViewControllerDidLaunchIcon:(id)a3;
+- (void)layoutIconListsWithAnimationType:(int64_t)type forceRelayout:(BOOL)relayout;
+- (void)libraryPodFolderController:(id)controller willLayoutDisplayedCategories:(unint64_t)categories;
+- (void)libraryPodFolderControllerRequestsDismissal:(id)dismissal;
+- (void)libraryTableViewControllerDidAppear:(id)appear;
+- (void)libraryTableViewControllerDidLaunchIcon:(id)icon;
 - (void)loadView;
-- (void)nestingViewController:(id)a3 willPerformOperation:(int64_t)a4 onViewController:(id)a5 withTransitionCoordinator:(id)a6;
-- (void)overlayController:(id)a3 didChangePresentationProgress:(double)a4 newPresentationProgress:(double)a5 fromLeading:(BOOL)a6;
-- (void)overlayController:(id)a3 visibilityDidChange:(BOOL)a4;
-- (void)overlayControllerDidBeginChangingPresentationProgress:(id)a3;
-- (void)popNestedViewControllerAnimated:(BOOL)a3 withCompletion:(id)a4;
+- (void)nestingViewController:(id)controller willPerformOperation:(int64_t)operation onViewController:(id)viewController withTransitionCoordinator:(id)coordinator;
+- (void)overlayController:(id)controller didChangePresentationProgress:(double)progress newPresentationProgress:(double)presentationProgress fromLeading:(BOOL)leading;
+- (void)overlayController:(id)controller visibilityDidChange:(BOOL)change;
+- (void)overlayControllerDidBeginChangingPresentationProgress:(id)progress;
+- (void)popNestedViewControllerAnimated:(BOOL)animated withCompletion:(id)completion;
 - (void)popPresentationState;
-- (void)pushNestedViewController:(id)a3 animated:(BOOL)a4 withCompletion:(id)a5;
-- (void)recycleIconView:(id)a3;
-- (void)setAllowsBadging:(BOOL)a3;
-- (void)setBadgeBehaviorProvider:(id)a3;
-- (void)setBarSwipeViewController:(id)a3;
-- (void)setBehaviorDelegate:(id)a3;
-- (void)setContentVisibility:(unint64_t)a3;
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4;
-- (void)setExternalBackgroundView:(id)a3;
-- (void)setIconImageCache:(id)a3;
-- (void)setIconModel:(id)a3;
-- (void)setIconViewProvider:(id)a3;
-- (void)setLegibilitySettings:(id)a3;
-- (void)setListLayoutProvider:(id)a3;
-- (void)setOverrideLegibilitySettings:(id)a3;
-- (void)setShouldPrewarmContent:(BOOL)a3;
-- (void)setSuppressesEditingStateForListViews:(BOOL)a3;
+- (void)pushNestedViewController:(id)controller animated:(BOOL)animated withCompletion:(id)completion;
+- (void)recycleIconView:(id)view;
+- (void)setAllowsBadging:(BOOL)badging;
+- (void)setBadgeBehaviorProvider:(id)provider;
+- (void)setBarSwipeViewController:(id)controller;
+- (void)setBehaviorDelegate:(id)delegate;
+- (void)setContentVisibility:(unint64_t)visibility;
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
+- (void)setExternalBackgroundView:(id)view;
+- (void)setIconImageCache:(id)cache;
+- (void)setIconModel:(id)model;
+- (void)setIconViewProvider:(id)provider;
+- (void)setLegibilitySettings:(id)settings;
+- (void)setListLayoutProvider:(id)provider;
+- (void)setOverrideLegibilitySettings:(id)settings;
+- (void)setShouldPrewarmContent:(BOOL)content;
+- (void)setSuppressesEditingStateForListViews:(BOOL)views;
 - (void)updateIconVisibility;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
-- (void)willDismissSearchController:(id)a3;
-- (void)willPresentSearchController:(id)a3;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
+- (void)willDismissSearchController:(id)controller;
+- (void)willPresentSearchController:(id)controller;
 @end
 
 @implementation SBHLibraryViewController
@@ -183,25 +183,25 @@
 
 - (BOOL)isPresentingSearch
 {
-  v3 = [(SBHLibrarySearchController *)self->_containerViewController isActive];
-  if (v3)
+  isActive = [(SBHLibrarySearchController *)self->_containerViewController isActive];
+  if (isActive)
   {
-    LOBYTE(v3) = self->_iconTableViewController != 0;
+    LOBYTE(isActive) = self->_iconTableViewController != 0;
   }
 
-  return v3;
+  return isActive;
 }
 
-- (SBHLibraryViewController)initWithCategoryMapProvider:(id)a3
+- (SBHLibraryViewController)initWithCategoryMapProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v14.receiver = self;
   v14.super_class = SBHLibraryViewController;
   v6 = [(SBNestingViewController *)&v14 initWithNibName:0 bundle:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_categoryMapProvider, a3);
+    objc_storeStrong(&v6->_categoryMapProvider, provider);
     v7->_contentVisibility = 0;
     objc_storeStrong(&v7->_iconLocation, @"SBIconLocationAppLibrary");
     if (MGGetBoolAnswer())
@@ -231,19 +231,19 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:@"SBIconModelDidLayoutIconStateNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:@"SBIconModelDidLayoutIconStateNotification" object:0];
 
   v4.receiver = self;
   v4.super_class = SBHLibraryViewController;
   [(SBHLibraryViewController *)&v4 dealloc];
 }
 
-- (void)iconModelDidLayout:(id)a3
+- (void)iconModelDidLayout:(id)layout
 {
-  v4 = [a3 object];
-  v5 = [(SBHLibraryViewController *)self iconModel];
-  v6 = [v4 isEqual:v5];
+  object = [layout object];
+  iconModel = [(SBHLibraryViewController *)self iconModel];
+  v6 = [object isEqual:iconModel];
 
   if (v6)
   {
@@ -251,7 +251,7 @@
     v7[1] = 3221225472;
     v7[2] = __47__SBHLibraryViewController_iconModelDidLayout___block_invoke;
     v7[3] = &unk_1E808E7D8;
-    v8 = v4;
+    v8 = object;
     [(SBHLibraryViewController *)self _enumerateAllViewControllersUsingBlock:v7];
     [(SBHLibraryViewController *)self _setupIconTableViewController:[(SBHLibraryViewController *)self isViewLoaded]];
   }
@@ -272,8 +272,8 @@ void __47__SBHLibraryViewController_iconModelDidLayout___block_invoke(uint64_t a
   v13.receiver = self;
   v13.super_class = SBHLibraryViewController;
   [(SBHLibraryViewController *)&v13 loadView];
-  v3 = [(SBHLibraryViewController *)self view];
-  [v3 frame];
+  view = [(SBHLibraryViewController *)self view];
+  [view frame];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -292,17 +292,17 @@ void __47__SBHLibraryViewController_iconModelDidLayout___block_invoke(uint64_t a
   v5.receiver = self;
   v5.super_class = SBHLibraryViewController;
   [(SBHLibraryViewController *)&v5 viewDidLoad];
-  v3 = [(SBHLibraryViewController *)self view];
-  [v3 _setIgnoreBackdropViewsWhenHiding:1];
-  v4 = [MEMORY[0x1E69DC888] labelColor];
-  [v3 setTintColor:v4];
+  view = [(SBHLibraryViewController *)self view];
+  [view _setIgnoreBackdropViewsWhenHiding:1];
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  [view setTintColor:labelColor];
 
   [(SBHLibraryViewController *)self _addBarSwipeView];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v8.receiver = self;
   v8.super_class = SBHLibraryViewController;
   [(SBNestingViewController *)&v8 viewWillAppear:?];
@@ -312,11 +312,11 @@ void __47__SBHLibraryViewController_iconModelDidLayout___block_invoke(uint64_t a
     [(SBHLibraryViewController *)self _enqueueAppLibraryUpdate];
   }
 
-  [(SBHLibrarySearchController *)self->_containerViewController resetSearchController:v3 clearSearchResults:1 resetSearchBarTransformAndAlpha:[(SBHLibraryViewController *)self _shouldResetSearchBarTransformAndAlpha]];
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v5 addObserver:self selector:sel__updateReduceTransparency name:*MEMORY[0x1E69DD920] object:0];
+  [(SBHLibrarySearchController *)self->_containerViewController resetSearchController:appearCopy clearSearchResults:1 resetSearchBarTransformAndAlpha:[(SBHLibraryViewController *)self _shouldResetSearchBarTransformAndAlpha]];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__updateReduceTransparency name:*MEMORY[0x1E69DD920] object:0];
 
-  [(SBHLibrarySearchController *)self->_containerViewController beginAppearanceTransition:1 animated:v3];
+  [(SBHLibrarySearchController *)self->_containerViewController beginAppearanceTransition:1 animated:appearCopy];
   v6 = SBLogTelemetrySignposts();
   if (os_signpost_enabled(v6))
   {
@@ -327,11 +327,11 @@ void __47__SBHLibraryViewController_iconModelDidLayout___block_invoke(uint64_t a
   [(SBHLibraryViewController *)self _notifyObserversWillPresent];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = SBHLibraryViewController;
-  [(SBNestingViewController *)&v6 viewDidAppear:a3];
+  [(SBNestingViewController *)&v6 viewDidAppear:appear];
   [(SBHLibrarySearchController *)self->_containerViewController endAppearanceTransition];
   v4 = SBLogTelemetrySignposts();
   if (os_signpost_enabled(v4))
@@ -343,13 +343,13 @@ void __47__SBHLibraryViewController_iconModelDidLayout___block_invoke(uint64_t a
   [(SBHLibraryViewController *)self _notifyObserversDidPresent];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v7.receiver = self;
   v7.super_class = SBHLibraryViewController;
   [(SBNestingViewController *)&v7 viewWillDisappear:?];
-  [(SBHLibrarySearchController *)self->_containerViewController beginAppearanceTransition:0 animated:v3];
+  [(SBHLibrarySearchController *)self->_containerViewController beginAppearanceTransition:0 animated:disappearCopy];
   v5 = SBLogTelemetrySignposts();
   if (os_signpost_enabled(v5))
   {
@@ -363,9 +363,9 @@ void __47__SBHLibraryViewController_iconModelDidLayout___block_invoke(uint64_t a
 
 - (void)_dismissDisplayedContextMenu
 {
-  v3 = [(SBNestingViewController *)self deepestNestedDescendantViewController];
+  deepestNestedDescendantViewController = [(SBNestingViewController *)self deepestNestedDescendantViewController];
   v4 = objc_opt_class();
-  v5 = v3;
+  v5 = deepestNestedDescendantViewController;
   if (v4)
   {
     if (objc_opt_isKindOfClass())
@@ -407,9 +407,9 @@ void __56__SBHLibraryViewController__dismissDisplayedContextMenu__block_invoke(u
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v9.receiver = self;
   v9.super_class = SBHLibraryViewController;
   [(SBNestingViewController *)&v9 viewDidDisappear:?];
@@ -421,25 +421,25 @@ void __56__SBHLibraryViewController__dismissDisplayedContextMenu__block_invoke(u
     _os_signpost_emit_with_name_impl(&dword_1BEB18000, v5, OS_SIGNPOST_INTERVAL_END, 0xEEEEB0B5B2B2EEEELL, "SBH_HOME_LIBRARY_DISMISS", " enableTelemetry=YES  isAnimation=YES ", v8, 2u);
   }
 
-  [(SBHLibrarySearchController *)self->_containerViewController resetSearchController:v3 clearSearchResults:1 resetSearchBarTransformAndAlpha:[(SBHLibraryViewController *)self _shouldResetSearchBarTransformAndAlpha]];
-  [(SBHLibraryViewController *)self _dismissHiddenExpandedPodAnimated:v3 completion:0];
+  [(SBHLibrarySearchController *)self->_containerViewController resetSearchController:disappearCopy clearSearchResults:1 resetSearchBarTransformAndAlpha:[(SBHLibraryViewController *)self _shouldResetSearchBarTransformAndAlpha]];
+  [(SBHLibraryViewController *)self _dismissHiddenExpandedPodAnimated:disappearCopy completion:0];
   [(SBHLibraryViewController *)self _flushPendingLibraryCategoryMapUpdateIfNeeded];
   v6 = [(SBHLibraryCategoryMapProvider *)self->_categoryMapProvider requestLibraryCategoryMapRefreshWithOptions:2 reason:@"SBHLibraryViewController reload proactive categories after disappear request"];
   [(SBHLibraryViewController *)self _notifyObserversDidDismiss];
   [(SBHLibraryViewController *)self _invalidateLibraryViewControllerDismissalTimer];
-  v7 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v7 removeObserver:self name:*MEMORY[0x1E69DD920] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69DD920] object:0];
 
   [(SBHLibraryViewController *)self _teardownReducedTransparencyBackgroundView];
 }
 
 - (void)viewWillLayoutSubviews
 {
-  v3 = [(UIViewController *)self->_barSwipeViewController viewIfLoaded];
-  if (v3)
+  viewIfLoaded = [(UIViewController *)self->_barSwipeViewController viewIfLoaded];
+  if (viewIfLoaded)
   {
-    v4 = [(SBHLibraryViewController *)self view];
-    [v4 bringSubviewToFront:v3];
+    view = [(SBHLibraryViewController *)self view];
+    [view bringSubviewToFront:viewIfLoaded];
   }
 
   v5.receiver = self;
@@ -455,81 +455,81 @@ void __56__SBHLibraryViewController__dismissDisplayedContextMenu__block_invoke(u
   reducedTransparencyBackgroundView = self->_reducedTransparencyBackgroundView;
   if (reducedTransparencyBackgroundView)
   {
-    v4 = [(SBFolderControllerBackgroundView *)self->_reducedTransparencyBackgroundView superview];
-    [v4 bounds];
+    superview = [(SBFolderControllerBackgroundView *)self->_reducedTransparencyBackgroundView superview];
+    [superview bounds];
     [(SBFolderControllerBackgroundView *)reducedTransparencyBackgroundView setFrame:?];
 
-    v5 = [(SBHLibraryViewController *)self view];
-    [v5 sendSubviewToBack:self->_reducedTransparencyBackgroundView];
+    view = [(SBHLibraryViewController *)self view];
+    [view sendSubviewToBack:self->_reducedTransparencyBackgroundView];
   }
 }
 
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear
 {
-  v4 = a4;
-  v6 = a3;
+  disappearCopy = disappear;
+  windowCopy = window;
   v10.receiver = self;
   v10.super_class = SBHLibraryViewController;
-  [(SBHLibraryViewController *)&v10 viewDidMoveToWindow:v6 shouldAppearOrDisappear:v4];
-  v7 = [(SBHLibraryViewController *)self externalBackgroundView];
-  v8 = v7;
-  if (v7)
+  [(SBHLibraryViewController *)&v10 viewDidMoveToWindow:windowCopy shouldAppearOrDisappear:disappearCopy];
+  externalBackgroundView = [(SBHLibraryViewController *)self externalBackgroundView];
+  v8 = externalBackgroundView;
+  if (externalBackgroundView)
   {
-    if (v6)
+    if (windowCopy)
     {
-      v9 = [MEMORY[0x1E69D3FA0] matchMoveAnimationForPinningToView:v6];
-      [v8 addAnimation:v9 forKey:@"SBHLibraryExternalBackgroundMatchMoveKey"];
+      layer = [MEMORY[0x1E69D3FA0] matchMoveAnimationForPinningToView:windowCopy];
+      [v8 addAnimation:layer forKey:@"SBHLibraryExternalBackgroundMatchMoveKey"];
     }
 
     else
     {
-      v9 = [v7 layer];
-      [v9 removeAnimationForKey:@"SBHLibraryExternalBackgroundMatchMoveKey"];
+      layer = [externalBackgroundView layer];
+      [layer removeAnimationForKey:@"SBHLibraryExternalBackgroundMatchMoveKey"];
     }
   }
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v16.receiver = self;
   v16.super_class = SBHLibraryViewController;
-  v7 = a4;
-  [(SBHLibraryViewController *)&v16 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
-  v8 = [(SBHLibraryViewController *)self externalBackgroundView];
-  v9 = [v8 layer];
+  coordinatorCopy = coordinator;
+  [(SBHLibraryViewController *)&v16 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
+  externalBackgroundView = [(SBHLibraryViewController *)self externalBackgroundView];
+  layer = [externalBackgroundView layer];
 
-  v10 = [v9 animationForKey:@"SBHLibraryExternalBackgroundMatchMoveKey"];
-  [v9 removeAnimationForKey:@"SBHLibraryExternalBackgroundMatchMoveKey"];
+  v10 = [layer animationForKey:@"SBHLibraryExternalBackgroundMatchMoveKey"];
+  [layer removeAnimationForKey:@"SBHLibraryExternalBackgroundMatchMoveKey"];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __79__SBHLibraryViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke;
   v13[3] = &unk_1E808E800;
-  v14 = v9;
+  v14 = layer;
   v15 = v10;
   v11 = v10;
-  v12 = v9;
-  [v7 animateAlongsideTransition:0 completion:v13];
+  v12 = layer;
+  [coordinatorCopy animateAlongsideTransition:0 completion:v13];
 }
 
 - (id)contentScrollView
 {
-  v3 = [(SBNestingViewController *)self deepestNestedDescendantViewController];
-  v4 = [v3 contentScrollView];
+  deepestNestedDescendantViewController = [(SBNestingViewController *)self deepestNestedDescendantViewController];
+  contentScrollView = [deepestNestedDescendantViewController contentScrollView];
 
-  if (v4)
+  if (contentScrollView)
   {
-    v5 = [(SBNestingViewController *)self deepestNestedDescendantViewController];
-    v6 = [v5 contentScrollView];
+    deepestNestedDescendantViewController2 = [(SBNestingViewController *)self deepestNestedDescendantViewController];
+    contentScrollView2 = [deepestNestedDescendantViewController2 contentScrollView];
   }
 
   else
   {
-    v6 = [(SBHLibrarySearchController *)self->_containerViewController contentScrollView];
+    contentScrollView2 = [(SBHLibrarySearchController *)self->_containerViewController contentScrollView];
   }
 
-  return v6;
+  return contentScrollView2;
 }
 
 - (id)keyCommands
@@ -537,12 +537,12 @@ void __56__SBHLibraryViewController__dismissDisplayedContextMenu__block_invoke(u
   v8[1] = *MEMORY[0x1E69E9840];
   v7.receiver = self;
   v7.super_class = SBHLibraryViewController;
-  v2 = [(SBHLibraryViewController *)&v7 keyCommands];
+  keyCommands = [(SBHLibraryViewController *)&v7 keyCommands];
   v3 = [MEMORY[0x1E69DCBA0] keyCommandWithInput:*MEMORY[0x1E69DDEA0] modifierFlags:0 action:sel__popExpandedPod];
   v4 = v3;
-  if (v2)
+  if (keyCommands)
   {
-    v5 = [v2 arrayByAddingObject:v3];
+    v5 = [keyCommands arrayByAddingObject:v3];
   }
 
   else
@@ -554,95 +554,95 @@ void __56__SBHLibraryViewController__dismissDisplayedContextMenu__block_invoke(u
   return v5;
 }
 
-- (void)setBehaviorDelegate:(id)a3
+- (void)setBehaviorDelegate:(id)delegate
 {
-  objc_storeWeak(&self->_behaviorDelegate, a3);
+  objc_storeWeak(&self->_behaviorDelegate, delegate);
   shouldUseReduceTransparencyBackgroundView = self->_shouldUseReduceTransparencyBackgroundView;
   self->_shouldUseReduceTransparencyBackgroundView = 0;
 }
 
-- (void)_dismissExpandedPods:(BOOL)a3 completion:(id)a4
+- (void)_dismissExpandedPods:(BOOL)pods completion:(id)completion
 {
-  v4 = a3;
-  v7 = a4;
-  v6 = [(SBNestingViewController *)self deepestNestedDescendantViewController];
+  podsCopy = pods;
+  completionCopy = completion;
+  deepestNestedDescendantViewController = [(SBNestingViewController *)self deepestNestedDescendantViewController];
 
-  if (v6)
+  if (deepestNestedDescendantViewController)
   {
-    [(SBHLibraryViewController *)self popNestedViewControllerAnimated:v4 withCompletion:v7];
+    [(SBHLibraryViewController *)self popNestedViewControllerAnimated:podsCopy withCompletion:completionCopy];
   }
 
-  else if (v7)
+  else if (completionCopy)
   {
-    v7[2](v7, 0);
+    completionCopy[2](completionCopy, 0);
   }
 }
 
-- (void)_expandPodAtIndex:(unint64_t)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)_expandPodAtIndex:(unint64_t)index animated:(BOOL)animated completion:(id)completion
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = [(SBHLibraryCategoryMap *)self->_libraryCategoryMap categoryIdentifiers];
-  v10 = [(SBNestingViewController *)self deepestNestedDescendantViewController];
-  if (v10 || [(SBHLibraryViewController *)self isPresentingSearch])
+  animatedCopy = animated;
+  completionCopy = completion;
+  categoryIdentifiers = [(SBHLibraryCategoryMap *)self->_libraryCategoryMap categoryIdentifiers];
+  deepestNestedDescendantViewController = [(SBNestingViewController *)self deepestNestedDescendantViewController];
+  if (deepestNestedDescendantViewController || [(SBHLibraryViewController *)self isPresentingSearch])
   {
 
     goto LABEL_4;
   }
 
-  if (![v9 count])
+  if (![categoryIdentifiers count])
   {
 LABEL_4:
-    if (v8)
+    if (completionCopy)
     {
-      v8[2](v8, 0);
+      completionCopy[2](completionCopy, 0);
     }
 
     goto LABEL_6;
   }
 
-  v11 = [(SBFolderController *)self->_podFolderViewController folder];
-  v12 = [v11 icons];
-  v13 = [v12 objectAtIndex:a3];
+  folder = [(SBFolderController *)self->_podFolderViewController folder];
+  icons = [folder icons];
+  v13 = [icons objectAtIndex:index];
 
-  v14 = [v13 category];
-  if (v8)
+  category = [v13 category];
+  if (completionCopy)
   {
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __66__SBHLibraryViewController__expandPodAtIndex_animated_completion___block_invoke;
     v15[3] = &unk_1E808E828;
-    v16 = v8;
-    [(SBHLibraryViewController *)self presentPodWithCategory:v14 animated:v5 completion:v15];
+    v16 = completionCopy;
+    [(SBHLibraryViewController *)self presentPodWithCategory:category animated:animatedCopy completion:v15];
   }
 
   else
   {
-    [(SBHLibraryViewController *)self presentPodWithCategory:v14 animated:v5 completion:0];
+    [(SBHLibraryViewController *)self presentPodWithCategory:category animated:animatedCopy completion:0];
   }
 
 LABEL_6:
 }
 
-- (void)setLegibilitySettings:(id)a3
+- (void)setLegibilitySettings:(id)settings
 {
-  v5 = a3;
-  if (([v5 isEqual:self->_legibilitySettings] & 1) == 0)
+  settingsCopy = settings;
+  if (([settingsCopy isEqual:self->_legibilitySettings] & 1) == 0)
   {
-    objc_storeStrong(&self->_legibilitySettings, a3);
+    objc_storeStrong(&self->_legibilitySettings, settings);
     [(SBHLibraryViewController *)self _updateViewControllerLegibility];
     [(SBHLibraryViewController *)self _updateSearchControllerLegibility];
   }
 }
 
-- (void)setIconModel:(id)a3
+- (void)setIconModel:(id)model
 {
-  v5 = a3;
-  if (([v5 isEqual:self->_iconModel] & 1) == 0)
+  modelCopy = model;
+  if (([modelCopy isEqual:self->_iconModel] & 1) == 0)
   {
-    v6 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v6 removeObserver:self name:@"SBIconModelDidLayoutIconStateNotification" object:self->_iconModel];
-    objc_storeStrong(&self->_iconModel, a3);
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter removeObserver:self name:@"SBIconModelDidLayoutIconStateNotification" object:self->_iconModel];
+    objc_storeStrong(&self->_iconModel, model);
     categoriesFolder = self->_categoriesFolder;
     if (categoriesFolder)
     {
@@ -658,7 +658,7 @@ LABEL_6:
     v9[4] = self;
     [(SBHLibraryViewController *)self _enumerateAllViewControllersUsingBlock:v9];
     [(SBHLibraryViewController *)self _setupIconTableViewController:[(SBHLibraryViewController *)self isViewLoaded]];
-    [v6 addObserver:self selector:sel_iconModelDidLayout_ name:@"SBIconModelDidLayoutIconStateNotification" object:self->_iconModel];
+    [defaultCenter addObserver:self selector:sel_iconModelDidLayout_ name:@"SBIconModelDidLayoutIconStateNotification" object:self->_iconModel];
   }
 }
 
@@ -670,9 +670,9 @@ void __41__SBHLibraryViewController_setIconModel___block_invoke(uint64_t a1, voi
   [v3 setRootFolder:v4];
 }
 
-- (void)setIconViewProvider:(id)a3
+- (void)setIconViewProvider:(id)provider
 {
-  obj = a3;
+  obj = provider;
   WeakRetained = objc_loadWeakRetained(&self->_iconViewProvider);
 
   v5 = obj;
@@ -684,12 +684,12 @@ void __41__SBHLibraryViewController_setIconModel___block_invoke(uint64_t a1, voi
   }
 }
 
-- (void)setIconImageCache:(id)a3
+- (void)setIconImageCache:(id)cache
 {
-  v5 = a3;
-  if (([(SBHIconImageCache *)self->_iconImageCache isEqual:v5]& 1) == 0)
+  cacheCopy = cache;
+  if (([(SBHIconImageCache *)self->_iconImageCache isEqual:cacheCopy]& 1) == 0)
   {
-    objc_storeStrong(&self->_iconImageCache, a3);
+    objc_storeStrong(&self->_iconImageCache, cache);
     folderIconImageCache = self->_folderIconImageCache;
     self->_folderIconImageCache = 0;
 
@@ -697,24 +697,24 @@ void __41__SBHLibraryViewController_setIconModel___block_invoke(uint64_t a1, voi
     v7[1] = 3221225472;
     v7[2] = __46__SBHLibraryViewController_setIconImageCache___block_invoke;
     v7[3] = &unk_1E808E7D8;
-    v8 = v5;
+    v8 = cacheCopy;
     [(SBHLibraryViewController *)self _enumerateAllViewControllersUsingBlock:v7];
     [(SBHLibraryViewController *)self _setupIconTableViewController:[(SBHLibraryViewController *)self isViewLoaded]];
   }
 }
 
-- (void)setListLayoutProvider:(id)a3
+- (void)setListLayoutProvider:(id)provider
 {
-  v5 = a3;
-  if (self->_listLayoutProvider != v5)
+  providerCopy = provider;
+  if (self->_listLayoutProvider != providerCopy)
   {
-    objc_storeStrong(&self->_listLayoutProvider, a3);
-    [(SBHLibrarySearchController *)self->_containerViewController setListLayoutProvider:v5];
+    objc_storeStrong(&self->_listLayoutProvider, provider);
+    [(SBHLibrarySearchController *)self->_containerViewController setListLayoutProvider:providerCopy];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __50__SBHLibraryViewController_setListLayoutProvider___block_invoke;
     v6[3] = &unk_1E808E7D8;
-    v7 = v5;
+    v7 = providerCopy;
     [(SBHLibraryViewController *)self _enumerateAllViewControllersUsingBlock:v6];
     [(SBHLibraryViewController *)self _setupIconTableViewController:[(SBHLibraryViewController *)self isViewLoaded]];
   }
@@ -724,18 +724,18 @@ void __41__SBHLibraryViewController_setIconModel___block_invoke(uint64_t a1, voi
 {
   if (!self->_folderIconImageCache)
   {
-    v3 = [(SBHLibraryViewController *)self iconImageCache];
+    iconImageCache = [(SBHLibraryViewController *)self iconImageCache];
 
-    if (v3)
+    if (iconImageCache)
     {
-      v4 = [(SBHLibraryViewController *)self listLayoutProvider];
-      v5 = [v4 layoutForIconLocation:@"SBIconLocationAppLibraryCategoryPodAdditionalItems"];
+      listLayoutProvider = [(SBHLibraryViewController *)self listLayoutProvider];
+      v5 = [listLayoutProvider layoutForIconLocation:@"SBIconLocationAppLibraryCategoryPodAdditionalItems"];
 
       if (v5)
       {
         v6 = [SBFolderIconImageCache alloc];
-        v7 = [(SBHLibraryViewController *)self iconImageCache];
-        v8 = [(SBFolderIconImageCache *)v6 initWithListLayout:v5 iconImageCache:v7];
+        iconImageCache2 = [(SBHLibraryViewController *)self iconImageCache];
+        v8 = [(SBFolderIconImageCache *)v6 initWithListLayout:v5 iconImageCache:iconImageCache2];
         folderIconImageCache = self->_folderIconImageCache;
         self->_folderIconImageCache = v8;
       }
@@ -764,8 +764,8 @@ void __41__SBHLibraryViewController_setIconModel___block_invoke(uint64_t a1, voi
 
   else
   {
-    v3 = [(SBHLibraryViewController *)self behaviorDelegate];
-    [v3 libraryViewControllerRequestsDismissal:self];
+    behaviorDelegate = [(SBHLibraryViewController *)self behaviorDelegate];
+    [behaviorDelegate libraryViewControllerRequestsDismissal:self];
   }
 }
 
@@ -779,9 +779,9 @@ void __48__SBHLibraryViewController_popPresentationState__block_invoke(uint64_t 
   }
 }
 
-- (void)layoutIconListsWithAnimationType:(int64_t)a3 forceRelayout:(BOOL)a4
+- (void)layoutIconListsWithAnimationType:(int64_t)type forceRelayout:(BOOL)relayout
 {
-  v4 = a4;
+  relayoutCopy = relayout;
   v18 = *MEMORY[0x1E69E9840];
   [SBFolderController layoutIconListsWithAnimationType:"layoutIconListsWithAnimationType:forceRelayout:" forceRelayout:?];
   v15 = 0u;
@@ -805,7 +805,7 @@ void __48__SBHLibraryViewController_popPresentationState__block_invoke(uint64_t 
 
         objc_opt_class();
         v12 = SBFSafeCast();
-        [v12 layoutIconListsWithAnimationType:a3 forceRelayout:v4];
+        [v12 layoutIconListsWithAnimationType:type forceRelayout:relayoutCopy];
 
         ++v11;
       }
@@ -818,25 +818,25 @@ void __48__SBHLibraryViewController_popPresentationState__block_invoke(uint64_t 
   }
 }
 
-- (void)setBarSwipeViewController:(id)a3
+- (void)setBarSwipeViewController:(id)controller
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_barSwipeViewController != v5)
+  controllerCopy = controller;
+  v6 = controllerCopy;
+  if (self->_barSwipeViewController != controllerCopy)
   {
-    v7 = v5;
+    v7 = controllerCopy;
     [(SBHLibraryViewController *)self bs_removeChildViewController:?];
-    objc_storeStrong(&self->_barSwipeViewController, a3);
-    v5 = [(SBHLibraryViewController *)self isViewLoaded];
+    objc_storeStrong(&self->_barSwipeViewController, controller);
+    controllerCopy = [(SBHLibraryViewController *)self isViewLoaded];
     v6 = v7;
-    if (v5)
+    if (controllerCopy)
     {
-      v5 = [(SBHLibraryViewController *)self _addBarSwipeView];
+      controllerCopy = [(SBHLibraryViewController *)self _addBarSwipeView];
       v6 = v7;
     }
   }
 
-  MEMORY[0x1EEE66BB8](v5, v6);
+  MEMORY[0x1EEE66BB8](controllerCopy, v6);
 }
 
 - (void)_addBarSwipeView
@@ -846,49 +846,49 @@ void __48__SBHLibraryViewController_popPresentationState__block_invoke(uint64_t 
   {
     v4 = barSwipeViewController;
     [(SBHLibraryViewController *)self bs_addChildViewController:v4];
-    v6 = [(UIViewController *)v4 view];
+    view = [(UIViewController *)v4 view];
 
-    v5 = [(SBHLibraryViewController *)self view];
-    [v5 bounds];
-    [v6 setFrame:?];
+    view2 = [(SBHLibraryViewController *)self view];
+    [view2 bounds];
+    [view setFrame:?];
 
-    [v6 setAutoresizingMask:18];
+    [view setAutoresizingMask:18];
   }
 }
 
-- (void)setExternalBackgroundView:(id)a3
+- (void)setExternalBackgroundView:(id)view
 {
-  obj = a3;
+  obj = view;
   WeakRetained = objc_loadWeakRetained(&self->_externalBackgroundView);
   if (WeakRetained != obj)
   {
-    v5 = [WeakRetained layer];
-    [v5 removeAnimationForKey:@"SBHLibraryExternalBackgroundMatchMoveKey"];
+    layer = [WeakRetained layer];
+    [layer removeAnimationForKey:@"SBHLibraryExternalBackgroundMatchMoveKey"];
 
     objc_storeWeak(&self->_externalBackgroundView, obj);
-    v6 = [(SBHLibraryViewController *)self viewIfLoaded];
-    v7 = [v6 window];
+    viewIfLoaded = [(SBHLibraryViewController *)self viewIfLoaded];
+    window = [viewIfLoaded window];
 
-    if (v7)
+    if (window)
     {
-      v8 = [MEMORY[0x1E69D3FA0] matchMoveAnimationForPinningToView:v7];
+      v8 = [MEMORY[0x1E69D3FA0] matchMoveAnimationForPinningToView:window];
       [obj addAnimation:v8 forKey:@"SBHLibraryExternalBackgroundMatchMoveKey"];
     }
   }
 }
 
-- (void)setAllowsBadging:(BOOL)a3
+- (void)setAllowsBadging:(BOOL)badging
 {
-  if (self->_allowsBadging != a3)
+  if (self->_allowsBadging != badging)
   {
-    self->_allowsBadging = a3;
+    self->_allowsBadging = badging;
     [(SBHLibraryCategoriesRootFolder *)self->_categoriesFolder setSupportsBadging:?];
   }
 }
 
-- (void)setBadgeBehaviorProvider:(id)a3
+- (void)setBadgeBehaviorProvider:(id)provider
 {
-  obj = a3;
+  obj = provider;
   WeakRetained = objc_loadWeakRetained(&self->_badgeBehaviorProvider);
 
   if (WeakRetained != obj)
@@ -898,27 +898,27 @@ void __48__SBHLibraryViewController_popPresentationState__block_invoke(uint64_t 
   }
 }
 
-- (BOOL)presentPodWithCategory:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (BOOL)presentPodWithCategory:(id)category animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  v10 = v9;
-  if (v8)
+  animatedCopy = animated;
+  categoryCopy = category;
+  completionCopy = completion;
+  v10 = completionCopy;
+  if (categoryCopy)
   {
-    v11 = [v8 additionalItemsIndicatorIcon];
-    v12 = [v8 categoryIdentifier];
-    v13 = [(SBHLibraryViewController *)self _iconLocationForCategoryIdentifier:v12];
+    additionalItemsIndicatorIcon = [categoryCopy additionalItemsIndicatorIcon];
+    categoryIdentifier = [categoryCopy categoryIdentifier];
+    v13 = [(SBHLibraryViewController *)self _iconLocationForCategoryIdentifier:categoryIdentifier];
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __71__SBHLibraryViewController_presentPodWithCategory_animated_completion___block_invoke;
     aBlock[3] = &unk_1E808E850;
     aBlock[4] = self;
-    v14 = v11;
+    v14 = additionalItemsIndicatorIcon;
     v33 = v14;
     v15 = v13;
     v34 = v15;
-    v36 = v6;
+    v36 = animatedCopy;
     v16 = v10;
     v35 = v16;
     v17 = _Block_copy(aBlock);
@@ -931,10 +931,10 @@ LABEL_20:
     }
 
     v28 = v14;
-    v18 = [(SBNestingViewController *)self deepestNestedDescendantViewController];
+    deepestNestedDescendantViewController = [(SBNestingViewController *)self deepestNestedDescendantViewController];
     v19 = objc_opt_class();
-    v20 = v18;
-    v29 = v12;
+    v20 = deepestNestedDescendantViewController;
+    v29 = categoryIdentifier;
     if (v19)
     {
       if (objc_opt_isKindOfClass())
@@ -955,20 +955,20 @@ LABEL_20:
 
     v23 = v21;
 
-    v24 = [v23 folder];
+    folder = [v23 folder];
 
-    if ([v24 isLibraryCategoryFolder])
+    if ([folder isLibraryCategoryFolder])
     {
-      v25 = [v24 libraryCategoryIdentifier];
+      libraryCategoryIdentifier = [folder libraryCategoryIdentifier];
     }
 
     else
     {
-      v25 = 0;
+      libraryCategoryIdentifier = 0;
     }
 
-    v12 = v29;
-    if ([v25 isEqual:v29])
+    categoryIdentifier = v29;
+    if ([libraryCategoryIdentifier isEqual:v29])
     {
       if (!v16)
       {
@@ -989,14 +989,14 @@ LABEL_19:
       v30[2] = __71__SBHLibraryViewController_presentPodWithCategory_animated_completion___block_invoke_3;
       v30[3] = &unk_1E808A0B8;
       v31 = v17;
-      [(SBHLibraryViewController *)self popNestedViewControllerAnimated:v6 withCompletion:v30];
+      [(SBHLibraryViewController *)self popNestedViewControllerAnimated:animatedCopy withCompletion:v30];
       v26 = v31;
     }
 
     goto LABEL_19;
   }
 
-  if (v9)
+  if (completionCopy)
   {
     v22 = [MEMORY[0x1E696ABC0] errorWithDomain:@"SBHLibraryPresentationErrorDomain" code:4 userInfo:MEMORY[0x1E695E0F8]];
     (v10)[2](v10, v22);
@@ -1004,7 +1004,7 @@ LABEL_19:
 
 LABEL_21:
 
-  return v8 != 0;
+  return categoryCopy != 0;
 }
 
 void __71__SBHLibraryViewController_presentPodWithCategory_animated_completion___block_invoke(uint64_t a1)
@@ -1042,24 +1042,24 @@ void __71__SBHLibraryViewController_presentPodWithCategory_animated_completion__
   }
 }
 
-- (BOOL)presentPodWithCategoryIdentifier:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (BOOL)presentPodWithCategoryIdentifier:(id)identifier animated:(BOOL)animated completion:(id)completion
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = [a3 integerValue];
-  v10 = [(SBFolderController *)self->_podFolderViewController folder];
-  v11 = [v10 icons];
+  animatedCopy = animated;
+  completionCopy = completion;
+  integerValue = [identifier integerValue];
+  folder = [(SBFolderController *)self->_podFolderViewController folder];
+  icons = [folder icons];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __81__SBHLibraryViewController_presentPodWithCategoryIdentifier_animated_completion___block_invoke;
   v15[3] = &__block_descriptor_40_e16_B16__0__SBIcon_8l;
-  v15[4] = v9;
-  v12 = [v11 bs_firstObjectPassingTest:v15];
+  v15[4] = integerValue;
+  v12 = [icons bs_firstObjectPassingTest:v15];
 
-  v13 = [v12 category];
-  LOBYTE(v5) = [(SBHLibraryViewController *)self presentPodWithCategory:v13 animated:v5 completion:v8];
+  category = [v12 category];
+  LOBYTE(animatedCopy) = [(SBHLibraryViewController *)self presentPodWithCategory:category animated:animatedCopy completion:completionCopy];
 
-  return v5;
+  return animatedCopy;
 }
 
 BOOL __81__SBHLibraryViewController_presentPodWithCategoryIdentifier_animated_completion___block_invoke(uint64_t a1, void *a2)
@@ -1083,35 +1083,35 @@ BOOL __81__SBHLibraryViewController_presentPodWithCategoryIdentifier_animated_co
   return v8;
 }
 
-- (void)forcedSearchTextFieldNoneditable:(BOOL)a3
+- (void)forcedSearchTextFieldNoneditable:(BOOL)noneditable
 {
-  v3 = a3;
-  v4 = [(SBHLibraryViewController *)self containerViewController];
-  [v4 setForcedSearchTextFieldNoneditable:!v3];
+  noneditableCopy = noneditable;
+  containerViewController = [(SBHLibraryViewController *)self containerViewController];
+  [containerViewController setForcedSearchTextFieldNoneditable:!noneditableCopy];
 }
 
 - (id)effectiveIconImageAppearance
 {
-  v2 = [(SBHLibraryViewController *)self traitCollection];
-  v3 = [MEMORY[0x1E69DD1B8] sbh_iconImageAppearanceFromTraitCollection:v2];
+  traitCollection = [(SBHLibraryViewController *)self traitCollection];
+  v3 = [MEMORY[0x1E69DD1B8] sbh_iconImageAppearanceFromTraitCollection:traitCollection];
 
   return v3;
 }
 
 - (SBRootFolder)categoriesRootFolder
 {
-  v2 = [(SBHLibraryPodFolderController *)self->_podFolderViewController dataSource];
-  v3 = [v2 categoriesFolder];
+  dataSource = [(SBHLibraryPodFolderController *)self->_podFolderViewController dataSource];
+  categoriesFolder = [dataSource categoriesFolder];
 
-  return v3;
+  return categoriesFolder;
 }
 
-- (void)setOverrideLegibilitySettings:(id)a3
+- (void)setOverrideLegibilitySettings:(id)settings
 {
-  v5 = a3;
-  if (([v5 isEqual:self->_overrideLegibilitySettings] & 1) == 0)
+  settingsCopy = settings;
+  if (([settingsCopy isEqual:self->_overrideLegibilitySettings] & 1) == 0)
   {
-    objc_storeStrong(&self->_overrideLegibilitySettings, a3);
+    objc_storeStrong(&self->_overrideLegibilitySettings, settings);
     [(SBHLibraryViewController *)self _updateViewControllerLegibility];
     [(SBHLibraryViewController *)self _updateSearchControllerLegibility];
   }
@@ -1130,10 +1130,10 @@ BOOL __81__SBHLibraryViewController_presentPodWithCategoryIdentifier_animated_co
     v3 = self->_legibilitySettings;
     if (!v3)
     {
-      v5 = [(SBHLibraryViewController *)self traitCollection];
-      v6 = [v5 userInterfaceStyle];
+      traitCollection = [(SBHLibraryViewController *)self traitCollection];
+      userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-      if (v6 == 2)
+      if (userInterfaceStyle == 2)
       {
         v7 = 1;
       }
@@ -1152,8 +1152,8 @@ BOOL __81__SBHLibraryViewController_presentPodWithCategoryIdentifier_animated_co
 
 - (NSArray)podTopLevelDisplayedIcons
 {
-  v2 = [(SBHLibraryViewController *)self categoriesRootFolder];
-  v3 = [v2 firstList];
+  categoriesRootFolder = [(SBHLibraryViewController *)self categoriesRootFolder];
+  firstList = [categoriesRootFolder firstList];
   v4 = objc_alloc_init(MEMORY[0x1E695DFA0]);
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
@@ -1161,10 +1161,10 @@ BOOL __81__SBHLibraryViewController_presentPodWithCategoryIdentifier_animated_co
   v8[3] = &unk_1E808A678;
   v9 = v4;
   v5 = v4;
-  [v3 enumerateIconsUsingBlock:v8];
-  v6 = [v5 array];
+  [firstList enumerateIconsUsingBlock:v8];
+  array = [v5 array];
 
-  return v6;
+  return array;
 }
 
 uint64_t __53__SBHLibraryViewController_podTopLevelDisplayedIcons__block_invoke(uint64_t a1, void *a2)
@@ -1202,8 +1202,8 @@ uint64_t __53__SBHLibraryViewController_podTopLevelDisplayedIcons__block_invoke(
 - (SBHLibraryIconPrecachingInfo)iconPrecachingInfo
 {
   v3 = objc_alloc_init(SBHLibraryIconPrecachingInfo);
-  v4 = [(SBHLibraryViewController *)self categoriesRootFolder];
-  v5 = [v4 firstList];
+  categoriesRootFolder = [(SBHLibraryViewController *)self categoriesRootFolder];
+  firstList = [categoriesRootFolder firstList];
   v6 = objc_alloc_init(MEMORY[0x1E695DFA0]);
   v7 = objc_alloc_init(MEMORY[0x1E695DFA0]);
   v16 = MEMORY[0x1E69E9820];
@@ -1214,16 +1214,16 @@ uint64_t __53__SBHLibraryViewController_podTopLevelDisplayedIcons__block_invoke(
   v21 = v7;
   v8 = v7;
   v9 = v6;
-  [v5 enumerateIconsUsingBlock:&v16];
-  v10 = [v9 array];
-  [(SBHLibraryIconPrecachingInfo *)v3 setTopLevelIcons:v10];
+  [firstList enumerateIconsUsingBlock:&v16];
+  array = [v9 array];
+  [(SBHLibraryIconPrecachingInfo *)v3 setTopLevelIcons:array];
 
-  v11 = [v8 array];
-  [(SBHLibraryIconPrecachingInfo *)v3 setAdditionalIcons:v11];
+  array2 = [v8 array];
+  [(SBHLibraryIconPrecachingInfo *)v3 setAdditionalIcons:array2];
 
-  v12 = [(SBHLibraryViewController *)self listLayoutProvider];
-  v13 = [v12 layoutForIconLocation:@"SBIconLocationAppLibraryCategoryPod"];
-  v14 = [v12 layoutForIconLocation:@"SBIconLocationAppLibraryCategoryPodAdditionalItems"];
+  listLayoutProvider = [(SBHLibraryViewController *)self listLayoutProvider];
+  v13 = [listLayoutProvider layoutForIconLocation:@"SBIconLocationAppLibraryCategoryPod"];
+  v14 = [listLayoutProvider layoutForIconLocation:@"SBIconLocationAppLibraryCategoryPodAdditionalItems"];
   [v13 iconImageInfo];
   [(SBHLibraryIconPrecachingInfo *)v3 setTopLevelImageInfo:?];
   [(SBHLibraryIconPrecachingInfo *)v3 setAdditionalImageInfo:SBHIconListLayoutFolderIconGridCellIconImageInfo(v14)];
@@ -1263,11 +1263,11 @@ uint64_t __46__SBHLibraryViewController_iconPrecachingInfo__block_invoke(uint64_
   return MEMORY[0x1EEE66BB8](v3, v4);
 }
 
-- (BOOL)isPresentingIconLocation:(id)a3
+- (BOOL)isPresentingIconLocation:(id)location
 {
-  v4 = a3;
-  v5 = [(SBHLibraryViewController *)self presentedIconLocations];
-  v6 = [v5 containsObject:v4];
+  locationCopy = location;
+  presentedIconLocations = [(SBHLibraryViewController *)self presentedIconLocations];
+  v6 = [presentedIconLocations containsObject:locationCopy];
 
   return v6;
 }
@@ -1293,13 +1293,13 @@ void __50__SBHLibraryViewController_presentedIconLocations__block_invoke(uint64_
   [v2 unionSet:v3];
 }
 
-- (id)iconViewForIcon:(id)a3 location:(id)a4 options:(unint64_t)a5
+- (id)iconViewForIcon:(id)icon location:(id)location options:(unint64_t)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
+  iconCopy = icon;
+  locationCopy = location;
+  v10 = locationCopy;
   v11 = 0;
-  if (v8 && v9)
+  if (iconCopy && locationCopy)
   {
     v17 = 0;
     v18 = &v17;
@@ -1311,10 +1311,10 @@ void __50__SBHLibraryViewController_presentedIconLocations__block_invoke(uint64_
     v13[1] = 3221225472;
     v13[2] = __61__SBHLibraryViewController_iconViewForIcon_location_options___block_invoke;
     v13[3] = &unk_1E808E8C0;
-    v14 = v8;
+    v14 = iconCopy;
     v15 = v10;
     v16 = &v17;
-    [(SBHLibraryViewController *)self enumerateIconViewQueryableChildrenWithOptions:a5 usingBlock:v13];
+    [(SBHLibraryViewController *)self enumerateIconViewQueryableChildrenWithOptions:options usingBlock:v13];
     v11 = v18[5];
 
     _Block_object_dispose(&v17, 8);
@@ -1338,13 +1338,13 @@ uint64_t __61__SBHLibraryViewController_iconViewForIcon_location_options___block
   return MEMORY[0x1EEE66BB8](v6, v8);
 }
 
-- (id)firstIconViewForIcon:(id)a3 inLocations:(id)a4
+- (id)firstIconViewForIcon:(id)icon inLocations:(id)locations
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  iconCopy = icon;
+  locationsCopy = locations;
+  v8 = locationsCopy;
   v9 = 0;
-  if (v6 && v7)
+  if (iconCopy && locationsCopy)
   {
     v15 = 0;
     v16 = &v15;
@@ -1356,7 +1356,7 @@ uint64_t __61__SBHLibraryViewController_iconViewForIcon_location_options___block
     v11[1] = 3221225472;
     v11[2] = __61__SBHLibraryViewController_firstIconViewForIcon_inLocations___block_invoke;
     v11[3] = &unk_1E808E8C0;
-    v12 = v6;
+    v12 = iconCopy;
     v13 = v8;
     v14 = &v15;
     [(SBHLibraryViewController *)self enumerateIconViewQueryableChildrenUsingBlock:v11];
@@ -1383,11 +1383,11 @@ uint64_t __61__SBHLibraryViewController_firstIconViewForIcon_inLocations___block
   return MEMORY[0x1EEE66BB8](v6, v8);
 }
 
-- (id)firstIconViewForIcon:(id)a3
+- (id)firstIconViewForIcon:(id)icon
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  iconCopy = icon;
+  v5 = iconCopy;
+  if (iconCopy)
   {
     v11 = 0;
     v12 = &v11;
@@ -1399,7 +1399,7 @@ uint64_t __61__SBHLibraryViewController_firstIconViewForIcon_inLocations___block
     v8[1] = 3221225472;
     v8[2] = __49__SBHLibraryViewController_firstIconViewForIcon___block_invoke;
     v8[3] = &unk_1E808E8E8;
-    v9 = v4;
+    v9 = iconCopy;
     v10 = &v11;
     [(SBHLibraryViewController *)self enumerateIconViewQueryableChildrenUsingBlock:v8];
     v6 = v12[5];
@@ -1430,11 +1430,11 @@ uint64_t __49__SBHLibraryViewController_firstIconViewForIcon___block_invoke(uint
   return MEMORY[0x1EEE66BB8](v6, v8);
 }
 
-- (id)firstNonSuggestionsOrRecentsIconViewForIcon:(id)a3
+- (id)firstNonSuggestionsOrRecentsIconViewForIcon:(id)icon
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  iconCopy = icon;
+  v5 = iconCopy;
+  if (iconCopy)
   {
     v11 = 0;
     v12 = &v11;
@@ -1447,7 +1447,7 @@ uint64_t __49__SBHLibraryViewController_firstIconViewForIcon___block_invoke(uint
     v8[2] = __72__SBHLibraryViewController_firstNonSuggestionsOrRecentsIconViewForIcon___block_invoke;
     v8[3] = &unk_1E808E8C0;
     v8[4] = self;
-    v9 = v4;
+    v9 = iconCopy;
     v10 = &v11;
     [(SBHLibraryViewController *)self enumerateIconViewQueryableChildrenUsingBlock:v8];
     v6 = v12[5];
@@ -1493,13 +1493,13 @@ LABEL_4:
   *(v10 + 40) = v9;
 }
 
-- (BOOL)isDisplayingIcon:(id)a3 inLocation:(id)a4 options:(unint64_t)a5
+- (BOOL)isDisplayingIcon:(id)icon inLocation:(id)location options:(unint64_t)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
+  iconCopy = icon;
+  locationCopy = location;
+  v10 = locationCopy;
   v11 = 0;
-  if (v8 && v9)
+  if (iconCopy && locationCopy)
   {
     v17 = 0;
     v18 = &v17;
@@ -1509,10 +1509,10 @@ LABEL_4:
     v13[1] = 3221225472;
     v13[2] = __64__SBHLibraryViewController_isDisplayingIcon_inLocation_options___block_invoke;
     v13[3] = &unk_1E808E8C0;
-    v14 = v8;
+    v14 = iconCopy;
     v15 = v10;
     v16 = &v17;
-    [(SBHLibraryViewController *)self enumerateIconViewQueryableChildrenWithOptions:a5 usingBlock:v13];
+    [(SBHLibraryViewController *)self enumerateIconViewQueryableChildrenWithOptions:options usingBlock:v13];
     v11 = *(v18 + 24);
 
     _Block_object_dispose(&v17, 8);
@@ -1533,13 +1533,13 @@ uint64_t __64__SBHLibraryViewController_isDisplayingIcon_inLocation_options___bl
   return result;
 }
 
-- (BOOL)isDisplayingIcon:(id)a3 inLocations:(id)a4
+- (BOOL)isDisplayingIcon:(id)icon inLocations:(id)locations
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  iconCopy = icon;
+  locationsCopy = locations;
+  v8 = locationsCopy;
   v9 = 0;
-  if (v6 && v7)
+  if (iconCopy && locationsCopy)
   {
     v15 = 0;
     v16 = &v15;
@@ -1549,7 +1549,7 @@ uint64_t __64__SBHLibraryViewController_isDisplayingIcon_inLocation_options___bl
     v11[1] = 3221225472;
     v11[2] = __57__SBHLibraryViewController_isDisplayingIcon_inLocations___block_invoke;
     v11[3] = &unk_1E808E8C0;
-    v12 = v6;
+    v12 = iconCopy;
     v13 = v8;
     v14 = &v15;
     [(SBHLibraryViewController *)self enumerateIconViewQueryableChildrenUsingBlock:v11];
@@ -1573,11 +1573,11 @@ uint64_t __57__SBHLibraryViewController_isDisplayingIcon_inLocations___block_inv
   return result;
 }
 
-- (BOOL)isDisplayingIcon:(id)a3
+- (BOOL)isDisplayingIcon:(id)icon
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  iconCopy = icon;
+  v5 = iconCopy;
+  if (iconCopy)
   {
     v11 = 0;
     v12 = &v11;
@@ -1587,7 +1587,7 @@ uint64_t __57__SBHLibraryViewController_isDisplayingIcon_inLocations___block_inv
     v8[1] = 3221225472;
     v8[2] = __45__SBHLibraryViewController_isDisplayingIcon___block_invoke;
     v8[3] = &unk_1E808E8E8;
-    v9 = v4;
+    v9 = iconCopy;
     v10 = &v11;
     [(SBHLibraryViewController *)self enumerateIconViewQueryableChildrenUsingBlock:v8];
     v6 = *(v12 + 24);
@@ -1615,11 +1615,11 @@ uint64_t __45__SBHLibraryViewController_isDisplayingIcon___block_invoke(uint64_t
   return result;
 }
 
-- (BOOL)isDisplayingIconView:(id)a3
+- (BOOL)isDisplayingIconView:(id)view
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  viewCopy = view;
+  v5 = viewCopy;
+  if (viewCopy)
   {
     v11 = 0;
     v12 = &v11;
@@ -1629,7 +1629,7 @@ uint64_t __45__SBHLibraryViewController_isDisplayingIcon___block_invoke(uint64_t
     v8[1] = 3221225472;
     v8[2] = __49__SBHLibraryViewController_isDisplayingIconView___block_invoke;
     v8[3] = &unk_1E808E8E8;
-    v9 = v4;
+    v9 = viewCopy;
     v10 = &v11;
     [(SBHLibraryViewController *)self enumerateIconViewQueryableChildrenUsingBlock:v8];
     v6 = *(v12 + 24);
@@ -1657,13 +1657,13 @@ uint64_t __49__SBHLibraryViewController_isDisplayingIconView___block_invoke(uint
   return result;
 }
 
-- (BOOL)isDisplayingIconView:(id)a3 inLocation:(id)a4
+- (BOOL)isDisplayingIconView:(id)view inLocation:(id)location
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  viewCopy = view;
+  locationCopy = location;
+  v8 = locationCopy;
   v9 = 0;
-  if (v6 && v7)
+  if (viewCopy && locationCopy)
   {
     v15 = 0;
     v16 = &v15;
@@ -1673,7 +1673,7 @@ uint64_t __49__SBHLibraryViewController_isDisplayingIconView___block_invoke(uint
     v11[1] = 3221225472;
     v11[2] = __60__SBHLibraryViewController_isDisplayingIconView_inLocation___block_invoke;
     v11[3] = &unk_1E808E8C0;
-    v12 = v6;
+    v12 = viewCopy;
     v13 = v8;
     v14 = &v15;
     [(SBHLibraryViewController *)self enumerateIconViewQueryableChildrenUsingBlock:v11];
@@ -1697,44 +1697,44 @@ uint64_t __60__SBHLibraryViewController_isDisplayingIconView_inLocation___block_
   return result;
 }
 
-- (void)enumerateDisplayedIconViewsForIcon:(id)a3 usingBlock:(id)a4
+- (void)enumerateDisplayedIconViewsForIcon:(id)icon usingBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6 && v7)
+  iconCopy = icon;
+  blockCopy = block;
+  v8 = blockCopy;
+  if (iconCopy && blockCopy)
   {
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __74__SBHLibraryViewController_enumerateDisplayedIconViewsForIcon_usingBlock___block_invoke;
     v9[3] = &unk_1E808E910;
-    v10 = v6;
+    v10 = iconCopy;
     v11 = v8;
     [(SBHLibraryViewController *)self enumerateIconViewQueryableChildrenUsingBlock:v9];
   }
 }
 
-- (void)enumerateDisplayedIconViewsUsingBlock:(id)a3
+- (void)enumerateDisplayedIconViewsUsingBlock:(id)block
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  blockCopy = block;
+  v5 = blockCopy;
+  if (blockCopy)
   {
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __66__SBHLibraryViewController_enumerateDisplayedIconViewsUsingBlock___block_invoke;
     v6[3] = &unk_1E808D610;
-    v7 = v4;
+    v7 = blockCopy;
     [(SBHLibraryViewController *)self enumerateIconViewQueryableChildrenUsingBlock:v6];
   }
 }
 
-- (id)firstIconViewForIcon:(id)a3 excludingLocations:(id)a4
+- (id)firstIconViewForIcon:(id)icon excludingLocations:(id)locations
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6 && [v7 count])
+  iconCopy = icon;
+  locationsCopy = locations;
+  v8 = locationsCopy;
+  if (iconCopy && [locationsCopy count])
   {
     v15 = 0;
     v16 = &v15;
@@ -1746,7 +1746,7 @@ uint64_t __60__SBHLibraryViewController_isDisplayingIconView_inLocation___block_
     v11[1] = 3221225472;
     v11[2] = __68__SBHLibraryViewController_firstIconViewForIcon_excludingLocations___block_invoke;
     v11[3] = &unk_1E808E8C0;
-    v12 = v6;
+    v12 = iconCopy;
     v13 = v8;
     v14 = &v15;
     [(SBHLibraryViewController *)self enumerateIconViewQueryableChildrenWithOptions:1 usingBlock:v11];
@@ -1778,9 +1778,9 @@ uint64_t __68__SBHLibraryViewController_firstIconViewForIcon_excludingLocations_
   return MEMORY[0x1EEE66BB8](v6, v7);
 }
 
-- (id)firstIconViewForIcon:(id)a3 options:(unint64_t)a4
+- (id)firstIconViewForIcon:(id)icon options:(unint64_t)options
 {
-  v7 = a3;
+  iconCopy = icon;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -1792,7 +1792,7 @@ uint64_t __68__SBHLibraryViewController_firstIconViewForIcon_excludingLocations_
   v14[2] = __57__SBHLibraryViewController_firstIconViewForIcon_options___block_invoke;
   v14[3] = &unk_1E808E938;
   v16 = &v17;
-  v15 = v7;
+  v15 = iconCopy;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __57__SBHLibraryViewController_firstIconViewForIcon_options___block_invoke_2;
@@ -1800,7 +1800,7 @@ uint64_t __68__SBHLibraryViewController_firstIconViewForIcon_excludingLocations_
   v13 = &v17;
   v8 = v15;
   v12 = v8;
-  SBIconViewQueryingHandleMethodRecursion(self, a4, a2, v14, v11);
+  SBIconViewQueryingHandleMethodRecursion(self, options, a2, v14, v11);
   v9 = v18[5];
 
   _Block_object_dispose(&v17, 8);
@@ -1828,9 +1828,9 @@ BOOL __57__SBHLibraryViewController_firstIconViewForIcon_options___block_invoke_
   return *(*(*(a1 + 40) + 8) + 40) != 0;
 }
 
-- (BOOL)isDisplayingIcon:(id)a3 options:(unint64_t)a4
+- (BOOL)isDisplayingIcon:(id)icon options:(unint64_t)options
 {
-  v7 = a3;
+  iconCopy = icon;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
@@ -1840,7 +1840,7 @@ BOOL __57__SBHLibraryViewController_firstIconViewForIcon_options___block_invoke_
   v13[2] = __53__SBHLibraryViewController_isDisplayingIcon_options___block_invoke;
   v13[3] = &unk_1E808E938;
   v15 = &v16;
-  v14 = v7;
+  v14 = iconCopy;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __53__SBHLibraryViewController_isDisplayingIcon_options___block_invoke_2;
@@ -1848,16 +1848,16 @@ BOOL __57__SBHLibraryViewController_firstIconViewForIcon_options___block_invoke_
   v12 = &v16;
   v8 = v14;
   v11 = v8;
-  SBIconViewQueryingHandleMethodRecursion(self, a4, a2, v13, v10);
-  LOBYTE(a4) = *(v17 + 24);
+  SBIconViewQueryingHandleMethodRecursion(self, options, a2, v13, v10);
+  LOBYTE(options) = *(v17 + 24);
 
   _Block_object_dispose(&v16, 8);
-  return a4;
+  return options;
 }
 
-- (BOOL)isDisplayingIconView:(id)a3 options:(unint64_t)a4
+- (BOOL)isDisplayingIconView:(id)view options:(unint64_t)options
 {
-  v7 = a3;
+  viewCopy = view;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
@@ -1867,7 +1867,7 @@ BOOL __57__SBHLibraryViewController_firstIconViewForIcon_options___block_invoke_
   v13[2] = __57__SBHLibraryViewController_isDisplayingIconView_options___block_invoke;
   v13[3] = &unk_1E808E938;
   v15 = &v16;
-  v14 = v7;
+  v14 = viewCopy;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __57__SBHLibraryViewController_isDisplayingIconView_options___block_invoke_2;
@@ -1875,86 +1875,86 @@ BOOL __57__SBHLibraryViewController_firstIconViewForIcon_options___block_invoke_
   v12 = &v16;
   v8 = v14;
   v11 = v8;
-  SBIconViewQueryingHandleMethodRecursion(self, a4, a2, v13, v10);
-  LOBYTE(a4) = *(v17 + 24);
+  SBIconViewQueryingHandleMethodRecursion(self, options, a2, v13, v10);
+  LOBYTE(options) = *(v17 + 24);
 
   _Block_object_dispose(&v16, 8);
-  return a4;
+  return options;
 }
 
-- (id)dequeueReusableIconViewOfClass:(Class)a3
+- (id)dequeueReusableIconViewOfClass:(Class)class
 {
   WeakRetained = objc_loadWeakRetained(&self->_iconViewProvider);
-  v5 = [WeakRetained dequeueReusableIconViewOfClass:a3];
+  v5 = [WeakRetained dequeueReusableIconViewOfClass:class];
 
   return v5;
 }
 
-- (void)recycleIconView:(id)a3
+- (void)recycleIconView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   WeakRetained = objc_loadWeakRetained(&self->_iconViewProvider);
-  [WeakRetained recycleIconView:v4];
+  [WeakRetained recycleIconView:viewCopy];
 }
 
-- (BOOL)isIconViewRecycled:(id)a3
+- (BOOL)isIconViewRecycled:(id)recycled
 {
-  v4 = a3;
+  recycledCopy = recycled;
   WeakRetained = objc_loadWeakRetained(&self->_iconViewProvider);
-  v6 = [WeakRetained isIconViewRecycled:v4];
+  v6 = [WeakRetained isIconViewRecycled:recycledCopy];
 
   return v6;
 }
 
-- (void)configureIconView:(id)a3 forIcon:(id)a4
+- (void)configureIconView:(id)view forIcon:(id)icon
 {
-  v7 = a3;
-  v6 = a4;
-  [v7 setDelegate:self];
-  [v7 setPrefersFlatImageLayers:{-[SBHLibraryViewController prefersFlatImageLayers](self, "prefersFlatImageLayers")}];
-  if (([v6 isCategoryIcon] & 1) == 0 && (objc_msgSend(v6, "isFolderIcon") & 1) == 0 && (objc_msgSend(v6, "isAdditionalItemsIndicatorIcon") & 1) == 0)
+  viewCopy = view;
+  iconCopy = icon;
+  [viewCopy setDelegate:self];
+  [viewCopy setPrefersFlatImageLayers:{-[SBHLibraryViewController prefersFlatImageLayers](self, "prefersFlatImageLayers")}];
+  if (([iconCopy isCategoryIcon] & 1) == 0 && (objc_msgSend(iconCopy, "isFolderIcon") & 1) == 0 && (objc_msgSend(iconCopy, "isAdditionalItemsIndicatorIcon") & 1) == 0)
   {
-    [v7 setIconContentScalingEnabled:1];
+    [viewCopy setIconContentScalingEnabled:1];
   }
 }
 
-- (void)libraryPodFolderController:(id)a3 willLayoutDisplayedCategories:(unint64_t)a4
+- (void)libraryPodFolderController:(id)controller willLayoutDisplayedCategories:(unint64_t)categories
 {
-  v6 = [MEMORY[0x1E69DC938] currentDevice];
-  v7 = [v6 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v7 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
-    v8 = [(SBFolder *)self->_categoriesFolder listGridSize];
+    listGridSize = [(SBFolder *)self->_categoriesFolder listGridSize];
     v9 = self->_containerViewController;
     v11 = v9;
-    if (a4 <= 2 * v8)
+    if (categories <= 2 * listGridSize)
     {
       v10 = 2;
     }
 
     else
     {
-      v10 = v8 + 2 * v8 < a4;
+      v10 = listGridSize + 2 * listGridSize < categories;
     }
 
     [(SBHLibrarySearchController *)v9 setSearchBarAppearance:v10];
   }
 }
 
-- (void)libraryPodFolderControllerRequestsDismissal:(id)a3
+- (void)libraryPodFolderControllerRequestsDismissal:(id)dismissal
 {
-  v7 = a3;
-  if (self->_podFolderViewController == v7)
+  dismissalCopy = dismissal;
+  if (self->_podFolderViewController == dismissalCopy)
   {
-    v6 = [(SBHLibraryViewController *)self behaviorDelegate];
-    [v6 libraryViewControllerRequestsDismissal:self];
+    behaviorDelegate = [(SBHLibraryViewController *)self behaviorDelegate];
+    [behaviorDelegate libraryViewControllerRequestsDismissal:self];
   }
 
   else
   {
-    v4 = [(SBNestingViewController *)self nestedViewControllers];
-    v5 = [v4 containsObject:v7];
+    nestedViewControllers = [(SBNestingViewController *)self nestedViewControllers];
+    v5 = [nestedViewControllers containsObject:dismissalCopy];
 
     if (v5)
     {
@@ -1964,19 +1964,19 @@ BOOL __57__SBHLibraryViewController_firstIconViewForIcon_options___block_invoke_
   }
 }
 
-- (void)pushNestedViewController:(id)a3 animated:(BOOL)a4 withCompletion:(id)a5
+- (void)pushNestedViewController:(id)controller animated:(BOOL)animated withCompletion:(id)completion
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  v10 = [(SBHLibraryViewController *)self traitCollection];
-  v11 = [v10 preferredContentSizeCategory];
-  v12 = [v11 isEqualToString:*MEMORY[0x1E69DDC20]];
+  animatedCopy = animated;
+  controllerCopy = controller;
+  completionCopy = completion;
+  traitCollection = [(SBHLibraryViewController *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  v12 = [preferredContentSizeCategory isEqualToString:*MEMORY[0x1E69DDC20]];
 
   if (v12)
   {
-    v13 = [v8 traitOverrides];
-    [v13 setPreferredContentSizeCategory:*MEMORY[0x1E69DDC28]];
+    traitOverrides = [controllerCopy traitOverrides];
+    [traitOverrides setPreferredContentSizeCategory:*MEMORY[0x1E69DDC28]];
   }
 
   currentTransitionAnimator = self->_currentTransitionAnimator;
@@ -1985,7 +1985,7 @@ BOOL __57__SBHLibraryViewController_firstIconViewForIcon_options___block_invoke_
     if ([(SBHomeScreenIconTransitionAnimator *)currentTransitionAnimator currentOperation]== 1)
     {
       objc_opt_class();
-      v15 = [(SBHomeScreenIconTransitionAnimator *)self->_currentTransitionAnimator childViewController];
+      childViewController = [(SBHomeScreenIconTransitionAnimator *)self->_currentTransitionAnimator childViewController];
       v16 = SBFSafeCast();
 
       objc_opt_class();
@@ -2010,20 +2010,20 @@ BOOL __57__SBHLibraryViewController_firstIconViewForIcon_options___block_invoke_
           v30[2] = __77__SBHLibraryViewController_pushNestedViewController_animated_withCompletion___block_invoke;
           v30[3] = &unk_1E8088F18;
           v30[4] = self;
-          v31 = v8;
+          v31 = controllerCopy;
           [(SBHLibraryViewController *)self _enqueueTransitionName:@"Request to open a folder while another folder is still closing" withHandler:v30];
         }
 
         [(SBHomeScreenIconTransitionAnimator *)self->_currentTransitionAnimator completeImmediately];
-        if (v9)
+        if (completionCopy)
         {
-          v9[2](v9, 0);
+          completionCopy[2](completionCopy, 0);
         }
       }
 
       else
       {
-        if (v9)
+        if (completionCopy)
         {
           currentExpandCompletions = self->_currentExpandCompletions;
           if (!currentExpandCompletions)
@@ -2035,7 +2035,7 @@ BOOL __57__SBHLibraryViewController_firstIconViewForIcon_options___block_invoke_
             currentExpandCompletions = self->_currentExpandCompletions;
           }
 
-          v26 = [v9 copy];
+          v26 = [completionCopy copy];
           v27 = _Block_copy(v26);
           [(NSMutableArray *)currentExpandCompletions addObject:v27];
         }
@@ -2049,18 +2049,18 @@ BOOL __57__SBHLibraryViewController_firstIconViewForIcon_options___block_invoke_
       }
     }
 
-    else if (v9)
+    else if (completionCopy)
     {
-      v9[2](v9, 0);
+      completionCopy[2](completionCopy, 0);
     }
   }
 
   else
   {
-    v28 = [(SBHLibraryViewController *)self _wrappedCompletionBlockForNestedTransitionWithCompletion:v9];
+    v28 = [(SBHLibraryViewController *)self _wrappedCompletionBlockForNestedTransitionWithCompletion:completionCopy];
     v29.receiver = self;
     v29.super_class = SBHLibraryViewController;
-    [(SBNestingViewController *)&v29 pushNestedViewController:v8 animated:v6 withCompletion:v28];
+    [(SBNestingViewController *)&v29 pushNestedViewController:controllerCopy animated:animatedCopy withCompletion:v28];
   }
 }
 
@@ -2075,24 +2075,24 @@ void *__77__SBHLibraryViewController_pushNestedViewController_animated_withCompl
   return result;
 }
 
-- (void)popNestedViewControllerAnimated:(BOOL)a3 withCompletion:(id)a4
+- (void)popNestedViewControllerAnimated:(BOOL)animated withCompletion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
+  animatedCopy = animated;
+  completionCopy = completion;
   currentTransitionAnimator = self->_currentTransitionAnimator;
   if (currentTransitionAnimator)
   {
     if ([(SBHomeScreenIconTransitionAnimator *)currentTransitionAnimator currentOperation])
     {
-      if (v6)
+      if (completionCopy)
       {
-        v6[2](v6, 0);
+        completionCopy[2](completionCopy, 0);
       }
     }
 
     else
     {
-      if (v6)
+      if (completionCopy)
       {
         currentCollapseCompletions = self->_currentCollapseCompletions;
         if (!currentCollapseCompletions)
@@ -2104,13 +2104,13 @@ void *__77__SBHLibraryViewController_pushNestedViewController_animated_withCompl
           currentCollapseCompletions = self->_currentCollapseCompletions;
         }
 
-        v12 = [v6 copy];
+        v12 = [completionCopy copy];
         v13 = _Block_copy(v12);
         [(NSMutableArray *)currentCollapseCompletions addObject:v13];
       }
 
       objc_opt_class();
-      v14 = [(SBHomeScreenIconTransitionAnimator *)self->_currentTransitionAnimator childViewController];
+      childViewController = [(SBHomeScreenIconTransitionAnimator *)self->_currentTransitionAnimator childViewController];
       v15 = SBFSafeCast();
 
       [(SBHLibraryViewController *)self _notifyObserversWillDismissFolderController:v15];
@@ -2120,20 +2120,20 @@ void *__77__SBHLibraryViewController_pushNestedViewController_animated_withCompl
 
   else
   {
-    v8 = [(SBHLibraryViewController *)self _wrappedCompletionBlockForNestedTransitionWithCompletion:v6];
+    v8 = [(SBHLibraryViewController *)self _wrappedCompletionBlockForNestedTransitionWithCompletion:completionCopy];
     v16.receiver = self;
     v16.super_class = SBHLibraryViewController;
-    [(SBNestingViewController *)&v16 popNestedViewControllerAnimated:v4 withCompletion:v8];
+    [(SBNestingViewController *)&v16 popNestedViewControllerAnimated:animatedCopy withCompletion:v8];
   }
 }
 
-- (id)nestingViewController:(id)a3 animationControllerForOperation:(int64_t)a4 onViewController:(id)a5 animated:(BOOL)a6
+- (id)nestingViewController:(id)controller animationControllerForOperation:(int64_t)operation onViewController:(id)viewController animated:(BOOL)animated
 {
-  v6 = a6;
-  v10 = a5;
+  animatedCopy = animated;
+  viewControllerCopy = viewController;
   v35.receiver = self;
   v35.super_class = SBHLibraryViewController;
-  v11 = [(SBNestingViewController *)&v35 nestingViewController:a3 animationControllerForOperation:a4 onViewController:v10 animated:v6];
+  v11 = [(SBNestingViewController *)&v35 nestingViewController:controller animationControllerForOperation:operation onViewController:viewControllerCopy animated:animatedCopy];
   if (v11)
   {
     goto LABEL_20;
@@ -2147,16 +2147,16 @@ void *__77__SBHLibraryViewController_pushNestedViewController_animated_withCompl
   }
 
   v34 = self->_podFolderViewController;
-  v12 = v10;
-  v33 = [v12 folderDelegate];
-  v13 = [v12 folder];
-  v14 = [v13 icon];
+  v12 = viewControllerCopy;
+  folderDelegate = [v12 folderDelegate];
+  folder = [v12 folder];
+  icon = [folder icon];
 
-  v15 = [(SBHLibrarySearchController *)self->_containerViewController searchBar];
-  if (v14 && ([v14 folder], v16 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v16, "icons"), v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v17, "count"), v17, v16, v18))
+  searchBar = [(SBHLibrarySearchController *)self->_containerViewController searchBar];
+  if (icon && ([icon folder], v16 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v16, "icons"), v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v17, "count"), v17, v16, v18))
   {
     v19 = 0;
-    if (!v6)
+    if (!animatedCopy)
     {
 LABEL_6:
       v20 = SBHLibraryPodImmediateAnimator;
@@ -2169,11 +2169,11 @@ LABEL_6:
     v21 = SBLogLibrary();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
-      [(SBHLibraryViewController *)v14 nestingViewController:v21 animationControllerForOperation:v22 onViewController:v23 animated:v24, v25, v26, v27];
+      [(SBHLibraryViewController *)icon nestingViewController:v21 animationControllerForOperation:v22 onViewController:v23 animated:v24, v25, v26, v27];
     }
 
     v19 = 1;
-    if (!v6)
+    if (!animatedCopy)
     {
       goto LABEL_6;
     }
@@ -2181,33 +2181,33 @@ LABEL_6:
 
   if ((v19 | UIAccessibilityIsReduceMotionEnabled()) != 1)
   {
-    v28 = [[SBHLibraryPodIconZoomAnimator alloc] initWithAnimationContainer:v34 innerFolderController:v12 folderIcon:v14 searchBar:v15 libraryViewController:self];
+    v28 = [[SBHLibraryPodIconZoomAnimator alloc] initWithAnimationContainer:v34 innerFolderController:v12 folderIcon:icon searchBar:searchBar libraryViewController:self];
     goto LABEL_15;
   }
 
   v20 = SBHLibraryPodFadeAnimator;
 LABEL_13:
-  v28 = [[v20 alloc] initWithAnimationContainer:v34 innerFolderController:v12 searchBar:v15];
+  v28 = [[v20 alloc] initWithAnimationContainer:v34 innerFolderController:v12 searchBar:searchBar];
 LABEL_15:
   v29 = v28;
   if (v28)
   {
-    v11 = [[SBHomeScreenIconTransitionAnimator alloc] initWithIconAnimator:v28 childViewController:v12 operation:a4 != 1];
+    v11 = [[SBHomeScreenIconTransitionAnimator alloc] initWithIconAnimator:v28 childViewController:v12 operation:operation != 1];
     [(SBHomeScreenIconTransitionAnimator *)v11 setInitialDelay:0.0];
-    v30 = [(SBHLibraryViewController *)self homeScreenIconTransitionAnimatorDelegate];
-    [(SBHomeScreenIconTransitionAnimator *)v11 setDelegate:v30];
+    homeScreenIconTransitionAnimatorDelegate = [(SBHLibraryViewController *)self homeScreenIconTransitionAnimatorDelegate];
+    [(SBHomeScreenIconTransitionAnimator *)v11 setDelegate:homeScreenIconTransitionAnimatorDelegate];
 
-    v31 = v33;
+    v31 = folderDelegate;
     if (objc_opt_respondsToSelector())
     {
-      [v33 folderController:self willUseIconTransitionAnimator:v11 forOperation:a4 onViewController:v12 animated:v6];
+      [folderDelegate folderController:self willUseIconTransitionAnimator:v11 forOperation:operation onViewController:v12 animated:animatedCopy];
     }
   }
 
   else
   {
     v11 = 0;
-    v31 = v33;
+    v31 = folderDelegate;
   }
 
 LABEL_20:
@@ -2215,17 +2215,17 @@ LABEL_20:
   return v11;
 }
 
-- (void)nestingViewController:(id)a3 willPerformOperation:(int64_t)a4 onViewController:(id)a5 withTransitionCoordinator:(id)a6
+- (void)nestingViewController:(id)controller willPerformOperation:(int64_t)operation onViewController:(id)viewController withTransitionCoordinator:(id)coordinator
 {
-  v10 = a5;
-  v11 = a6;
+  viewControllerCopy = viewController;
+  coordinatorCopy = coordinator;
   v24.receiver = self;
   v24.super_class = SBHLibraryViewController;
-  v12 = a3;
-  [(SBNestingViewController *)&v24 nestingViewController:v12 willPerformOperation:a4 onViewController:v10 withTransitionCoordinator:v11];
+  controllerCopy = controller;
+  [(SBNestingViewController *)&v24 nestingViewController:controllerCopy willPerformOperation:operation onViewController:viewControllerCopy withTransitionCoordinator:coordinatorCopy];
   [(SBHLibraryViewController *)self _setupReducedTransparencyBackgroundViewIfNeeded];
 
-  if (v12 == self)
+  if (controllerCopy == self)
   {
     v13 = [(BSEventQueue *)self->_transitionEventQueue acquireLockForReason:@"performingTransitionOperation"];
     v22[0] = MEMORY[0x1E69E9820];
@@ -2235,17 +2235,17 @@ LABEL_20:
     v22[4] = self;
     v23 = v13;
     v14 = v13;
-    [v11 animateAlongsideTransition:0 completion:v22];
+    [coordinatorCopy animateAlongsideTransition:0 completion:v22];
   }
 
-  if ((a4 - 1) <= 1)
+  if ((operation - 1) <= 1)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v15 = v10;
+      v15 = viewControllerCopy;
       [v15 setEditing:-[SBHLibraryViewController isEditing](self animated:{"isEditing"), 1}];
-      if (a4 == 1)
+      if (operation == 1)
       {
         [(SBHLibraryViewController *)self _notifyObserversWillPresentFolderController:v15];
         if ([(SBHLibraryViewController *)self isPresentingSearch])
@@ -2264,16 +2264,16 @@ LABEL_20:
       v19[2] = __114__SBHLibraryViewController_nestingViewController_willPerformOperation_onViewController_withTransitionCoordinator___block_invoke_3;
       v19[3] = &unk_1E808E9B0;
       v19[4] = self;
-      v21 = a4;
+      operationCopy = operation;
       v20 = v15;
       v16[0] = MEMORY[0x1E69E9820];
       v16[1] = 3221225472;
       v16[2] = __114__SBHLibraryViewController_nestingViewController_willPerformOperation_onViewController_withTransitionCoordinator___block_invoke_4;
       v16[3] = &unk_1E808E9B0;
       v17 = v20;
-      v18 = a4;
+      operationCopy2 = operation;
       v16[4] = self;
-      [v11 animateAlongsideTransition:v19 completion:v16];
+      [coordinatorCopy animateAlongsideTransition:v19 completion:v16];
     }
   }
 }
@@ -2384,94 +2384,94 @@ void __114__SBHLibraryViewController_nestingViewController_willPerformOperation_
 LABEL_6:
 }
 
-- (id)iconView:(id)a3 labelImageWithParameters:(id)a4
+- (id)iconView:(id)view labelImageWithParameters:(id)parameters
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SBHLibraryViewController *)self iconViewDelegate];
-  v9 = [v8 iconView:v7 labelImageWithParameters:v6];
+  parametersCopy = parameters;
+  viewCopy = view;
+  iconViewDelegate = [(SBHLibraryViewController *)self iconViewDelegate];
+  v9 = [iconViewDelegate iconView:viewCopy labelImageWithParameters:parametersCopy];
 
   return v9;
 }
 
-- (id)iconView:(id)a3 labelContentWithParameters:(id)a4
+- (id)iconView:(id)view labelContentWithParameters:(id)parameters
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SBHLibraryViewController *)self iconViewDelegate];
-  v9 = [v8 iconView:v7 labelContentWithParameters:v6];
+  parametersCopy = parameters;
+  viewCopy = view;
+  iconViewDelegate = [(SBHLibraryViewController *)self iconViewDelegate];
+  v9 = [iconViewDelegate iconView:viewCopy labelContentWithParameters:parametersCopy];
 
   return v9;
 }
 
-- (BOOL)iconShouldAllowTap:(id)a3
+- (BOOL)iconShouldAllowTap:(id)tap
 {
-  v3 = a3;
-  v4 = [v3 isEditing];
-  v5 = [v3 icon];
+  tapCopy = tap;
+  isEditing = [tapCopy isEditing];
+  icon = [tapCopy icon];
 
-  if (v4)
+  if (isEditing)
   {
-    LOBYTE(v6) = [v5 isAdditionalItemsIndicatorIcon];
+    LOBYTE(v6) = [icon isAdditionalItemsIndicatorIcon];
   }
 
   else
   {
-    v6 = [v5 isCategoryIcon] ^ 1;
+    v6 = [icon isCategoryIcon] ^ 1;
   }
 
   return v6;
 }
 
-- (void)iconTapped:(id)a3 modifierFlags:(int64_t)a4
+- (void)iconTapped:(id)tapped modifierFlags:(int64_t)flags
 {
-  v9 = a3;
-  v6 = [(SBHLibraryViewController *)self iconViewDelegate];
+  tappedCopy = tapped;
+  iconViewDelegate = [(SBHLibraryViewController *)self iconViewDelegate];
   if (objc_opt_respondsToSelector())
   {
-    [v6 iconTapped:v9 modifierFlags:a4];
+    [iconViewDelegate iconTapped:tappedCopy modifierFlags:flags];
   }
 
   else if (objc_opt_respondsToSelector())
   {
-    [v6 iconTapped:v9];
+    [iconViewDelegate iconTapped:tappedCopy];
   }
 
-  [v9 setHighlighted:0];
-  v7 = [v9 icon];
-  v8 = [v9 location];
-  [(SBHLibraryViewController *)self _notifyObserversOfAppLaunchOfIcon:v7 fromLocation:v8];
+  [tappedCopy setHighlighted:0];
+  icon = [tappedCopy icon];
+  location = [tappedCopy location];
+  [(SBHLibraryViewController *)self _notifyObserversOfAppLaunchOfIcon:icon fromLocation:location];
 }
 
-- (id)_customImageViewControllerForCategoryPodIconView:(id)a3 usingInternalCache:(BOOL)a4
+- (id)_customImageViewControllerForCategoryPodIconView:(id)view usingInternalCache:(BOOL)cache
 {
-  v4 = a4;
-  v6 = [a3 icon];
-  if ([v6 isCategoryIcon])
+  cacheCopy = cache;
+  icon = [view icon];
+  if ([icon isCategoryIcon])
   {
-    v7 = [v6 category];
-    v8 = [v7 categoryIdentifier];
-    if (v4)
+    category = [icon category];
+    categoryIdentifier = [category categoryIdentifier];
+    if (cacheCopy)
     {
-      [(SBHLibraryViewController *)self _iconViewControllerForCategoryIdentifier:v8];
+      [(SBHLibraryViewController *)self _iconViewControllerForCategoryIdentifier:categoryIdentifier];
     }
 
     else
     {
-      [(SBHLibraryViewController *)self _createIconViewControllerForCategoryIdentifier:v8];
+      [(SBHLibraryViewController *)self _createIconViewControllerForCategoryIdentifier:categoryIdentifier];
     }
     v9 = ;
-    v10 = [(SBHLibraryViewController *)self _iconLocationForCategoryIdentifier:v8];
-    [v9 updateCategory:v7 location:v10];
-    v11 = [v9 iconListView];
+    v10 = [(SBHLibraryViewController *)self _iconLocationForCategoryIdentifier:categoryIdentifier];
+    [v9 updateCategory:category location:v10];
+    iconListView = [v9 iconListView];
     if ([(SBHLibraryViewController *)self shouldHideIcons])
     {
-      [v11 hideAllIcons];
+      [iconListView hideAllIcons];
     }
 
     else
     {
-      [v11 showAllIcons];
+      [iconListView showAllIcons];
     }
   }
 
@@ -2483,52 +2483,52 @@ LABEL_6:
   return v9;
 }
 
-- (id)_iconViewControllerForCategoryIdentifier:(id)a3
+- (id)_iconViewControllerForCategoryIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   iconViewControllerForCategoryIdentifier = self->_iconViewControllerForCategoryIdentifier;
   if (!iconViewControllerForCategoryIdentifier)
   {
-    v6 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
     v7 = self->_iconViewControllerForCategoryIdentifier;
-    self->_iconViewControllerForCategoryIdentifier = v6;
+    self->_iconViewControllerForCategoryIdentifier = strongToStrongObjectsMapTable;
 
     iconViewControllerForCategoryIdentifier = self->_iconViewControllerForCategoryIdentifier;
   }
 
-  v8 = [(NSMapTable *)iconViewControllerForCategoryIdentifier objectForKey:v4];
+  v8 = [(NSMapTable *)iconViewControllerForCategoryIdentifier objectForKey:identifierCopy];
   if (!v8)
   {
-    v8 = [(SBHLibraryViewController *)self _createIconViewControllerForCategoryIdentifier:v4];
-    [(NSMapTable *)self->_iconViewControllerForCategoryIdentifier setObject:v8 forKey:v4];
+    v8 = [(SBHLibraryViewController *)self _createIconViewControllerForCategoryIdentifier:identifierCopy];
+    [(NSMapTable *)self->_iconViewControllerForCategoryIdentifier setObject:v8 forKey:identifierCopy];
   }
 
   return v8;
 }
 
-- (id)_createIconViewControllerForCategoryIdentifier:(id)a3
+- (id)_createIconViewControllerForCategoryIdentifier:(id)identifier
 {
-  v4 = [(SBHLibraryViewController *)self listLayoutProvider];
-  v5 = [(SBHLibraryViewController *)self iconImageCache];
-  v6 = [(SBHLibraryViewController *)self folderIconImageCache];
+  listLayoutProvider = [(SBHLibraryViewController *)self listLayoutProvider];
+  iconImageCache = [(SBHLibraryViewController *)self iconImageCache];
+  folderIconImageCache = [(SBHLibraryViewController *)self folderIconImageCache];
   v7 = objc_alloc_init(SBHLibraryCategoryIconViewController);
   [(SBHLibraryCategoryIconViewController *)v7 setIconViewProvider:self];
-  [(SBHLibraryCategoryIconViewController *)v7 setListLayoutProvider:v4];
-  [(SBHLibraryCategoryIconViewController *)v7 setIconImageCache:v5];
-  [(SBHLibraryCategoryIconViewController *)v7 setFolderIconImageCache:v6];
+  [(SBHLibraryCategoryIconViewController *)v7 setListLayoutProvider:listLayoutProvider];
+  [(SBHLibraryCategoryIconViewController *)v7 setIconImageCache:iconImageCache];
+  [(SBHLibraryCategoryIconViewController *)v7 setFolderIconImageCache:folderIconImageCache];
 
   return v7;
 }
 
-- (void)_precacheIconViewControllersForCategories:(id)a3
+- (void)_precacheIconViewControllersForCategories:(id)categories
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  categoriesCopy = categories;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v23 objects:v28 count:16];
+  v5 = [categoriesCopy countByEnumeratingWithState:&v23 objects:v28 count:16];
   if (v5)
   {
     v6 = v5;
@@ -2540,25 +2540,25 @@ LABEL_6:
       {
         if (*v24 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(categoriesCopy);
         }
 
         v9 = [(SBHLibraryViewController *)self _iconViewControllerForCategoryIdentifier:*(*(&v23 + 1) + 8 * v8++)];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v23 objects:v28 count:16];
+      v6 = [categoriesCopy countByEnumeratingWithState:&v23 objects:v28 count:16];
     }
 
     while (v6);
   }
 
   v10 = MEMORY[0x1E695DFA8];
-  v11 = [(NSMapTable *)self->_iconViewControllerForCategoryIdentifier keyEnumerator];
-  v12 = [v11 allObjects];
-  v13 = [v10 setWithArray:v12];
+  keyEnumerator = [(NSMapTable *)self->_iconViewControllerForCategoryIdentifier keyEnumerator];
+  allObjects = [keyEnumerator allObjects];
+  v13 = [v10 setWithArray:allObjects];
 
-  [v13 minusSet:v4];
+  [v13 minusSet:categoriesCopy];
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
@@ -2590,18 +2590,18 @@ LABEL_6:
   }
 }
 
-- (id)_iconLocationForCategoryIdentifier:(id)a3
+- (id)_iconLocationForCategoryIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = @"SBIconLocationAppLibraryCategoryPod";
-  if ([v3 predictionCategoryID] == 3)
+  if ([identifierCopy predictionCategoryID] == 3)
   {
     v5 = SBIconLocationAppLibraryCategoryPodSuggestions;
   }
 
   else
   {
-    if ([v3 predictionCategoryID] != 4)
+    if ([identifierCopy predictionCategoryID] != 4)
     {
       goto LABEL_6;
     }
@@ -2617,110 +2617,110 @@ LABEL_6:
   return v4;
 }
 
-- (void)iconViewWasRecycled:(id)a3
+- (void)iconViewWasRecycled:(id)recycled
 {
-  v4 = a3;
-  v5 = [(SBHLibraryViewController *)self iconViewDelegate];
-  [v5 iconViewWasRecycled:v4];
+  recycledCopy = recycled;
+  iconViewDelegate = [(SBHLibraryViewController *)self iconViewDelegate];
+  [iconViewDelegate iconViewWasRecycled:recycledCopy];
 }
 
-- (void)iconViewWasDiscarded:(id)a3
+- (void)iconViewWasDiscarded:(id)discarded
 {
-  v4 = a3;
-  v5 = [(SBHLibraryViewController *)self iconViewDelegate];
-  [v5 iconViewWasDiscarded:v4];
+  discardedCopy = discarded;
+  iconViewDelegate = [(SBHLibraryViewController *)self iconViewDelegate];
+  [iconViewDelegate iconViewWasDiscarded:discardedCopy];
 }
 
-- (id)draggingDelegateForIconView:(id)a3
+- (id)draggingDelegateForIconView:(id)view
 {
-  v4 = a3;
-  v5 = [v4 icon];
-  if (([v5 isCategoryIcon] & 1) != 0 || (objc_msgSend(v5, "isFolderIcon") & 1) != 0 || objc_msgSend(v5, "isAdditionalItemsIndicatorIcon"))
+  viewCopy = view;
+  icon = [viewCopy icon];
+  if (([icon isCategoryIcon] & 1) != 0 || (objc_msgSend(icon, "isFolderIcon") & 1) != 0 || objc_msgSend(icon, "isAdditionalItemsIndicatorIcon"))
   {
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = [(SBHLibraryViewController *)self iconViewDelegate];
-    v6 = v8;
+    iconViewDelegate = [(SBHLibraryViewController *)self iconViewDelegate];
+    selfCopy = iconViewDelegate;
     if (objc_opt_respondsToSelector())
     {
-      v6 = [(SBHLibraryViewController *)v8 draggingDelegateForIconView:v4];
+      selfCopy = [(SBHLibraryViewController *)iconViewDelegate draggingDelegateForIconView:viewCopy];
     }
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (id)contextMenuDelegateForIconView:(id)a3
+- (id)contextMenuDelegateForIconView:(id)view
 {
-  v4 = a3;
-  v5 = [v4 icon];
-  if ([v5 isCategoryIcon])
+  viewCopy = view;
+  icon = [viewCopy icon];
+  if ([icon isCategoryIcon])
   {
   }
 
   else
   {
-    v6 = [v4 icon];
-    v7 = [v6 isFolderIcon];
+    icon2 = [viewCopy icon];
+    isFolderIcon = [icon2 isFolderIcon];
 
-    if (!v7)
+    if (!isFolderIcon)
     {
-      v9 = [(SBHLibraryViewController *)self iconViewDelegate];
+      iconViewDelegate = [(SBHLibraryViewController *)self iconViewDelegate];
       if (objc_opt_respondsToSelector())
       {
-        v10 = [v9 contextMenuDelegateForIconView:v4];
+        v10 = [iconViewDelegate contextMenuDelegateForIconView:viewCopy];
       }
 
       else
       {
-        v10 = v9;
+        v10 = iconViewDelegate;
       }
 
-      v8 = v10;
+      selfCopy = v10;
 
       goto LABEL_9;
     }
   }
 
-  v8 = self;
+  selfCopy = self;
 LABEL_9:
 
-  return v8;
+  return selfCopy;
 }
 
-- (BOOL)iconShouldAllowCloseBoxTap:(id)a3
+- (BOOL)iconShouldAllowCloseBoxTap:(id)tap
 {
-  v4 = a3;
-  v5 = [(SBHLibraryViewController *)self iconViewDelegate];
-  v6 = [v5 iconShouldAllowCloseBoxTap:v4];
+  tapCopy = tap;
+  iconViewDelegate = [(SBHLibraryViewController *)self iconViewDelegate];
+  v6 = [iconViewDelegate iconShouldAllowCloseBoxTap:tapCopy];
 
   return v6;
 }
 
-- (void)iconCloseBoxTapped:(id)a3
+- (void)iconCloseBoxTapped:(id)tapped
 {
-  v4 = a3;
-  v5 = [(SBHLibraryViewController *)self iconViewDelegate];
-  [v5 iconCloseBoxTapped:v4];
+  tappedCopy = tapped;
+  iconViewDelegate = [(SBHLibraryViewController *)self iconViewDelegate];
+  [iconViewDelegate iconCloseBoxTapped:tappedCopy];
 }
 
-- (BOOL)iconViewDisplaysCloseBox:(id)a3
+- (BOOL)iconViewDisplaysCloseBox:(id)box
 {
-  v4 = a3;
-  v5 = [(SBHLibraryViewController *)self iconViewDelegate];
-  v6 = [v5 iconViewDisplaysCloseBox:v4];
+  boxCopy = box;
+  iconViewDelegate = [(SBHLibraryViewController *)self iconViewDelegate];
+  v6 = [iconViewDelegate iconViewDisplaysCloseBox:boxCopy];
 
   return v6;
 }
 
-- (BOOL)iconViewDisplaysAccessories:(id)a3
+- (BOOL)iconViewDisplaysAccessories:(id)accessories
 {
-  v4 = a3;
-  v5 = [v4 icon];
-  if ([v5 isAdditionalItemsIndicatorIcon] && !UIAccessibilityIsReduceMotionEnabled())
+  accessoriesCopy = accessories;
+  icon = [accessoriesCopy icon];
+  if ([icon isAdditionalItemsIndicatorIcon] && !UIAccessibilityIsReduceMotionEnabled())
   {
     if ([(NSMapTable *)self->_presentedFolderControllers count])
     {
@@ -2736,19 +2736,19 @@ LABEL_9:
       }
     }
 
-    v6 = [v4 icon];
-    v10 = [v6 category];
-    v11 = [v10 categoryIdentifier];
+    icon2 = [accessoriesCopy icon];
+    category = [icon2 category];
+    categoryIdentifier = [category categoryIdentifier];
 
-    v12 = [(NSMapTable *)self->_presentedFolderControllers keyEnumerator];
-    v13 = [v12 allObjects];
+    keyEnumerator = [(NSMapTable *)self->_presentedFolderControllers keyEnumerator];
+    allObjects = [keyEnumerator allObjects];
     v27[0] = MEMORY[0x1E69E9820];
     v27[1] = 3221225472;
     v27[2] = __56__SBHLibraryViewController_iconViewDisplaysAccessories___block_invoke;
     v27[3] = &unk_1E808E9D8;
-    v14 = v11;
+    v14 = categoryIdentifier;
     v28 = v14;
-    v15 = [v13 bs_filter:v27];
+    v15 = [allObjects bs_filter:v27];
     v16 = [v15 count];
 
     if (v16)
@@ -2758,15 +2758,15 @@ LABEL_9:
       goto LABEL_5;
     }
 
-    v17 = [(NSMapTable *)self->_dismissingFolderControllers keyEnumerator];
-    v18 = [v17 allObjects];
+    keyEnumerator2 = [(NSMapTable *)self->_dismissingFolderControllers keyEnumerator];
+    allObjects2 = [keyEnumerator2 allObjects];
     v22 = MEMORY[0x1E69E9820];
     v23 = 3221225472;
     v24 = __56__SBHLibraryViewController_iconViewDisplaysAccessories___block_invoke_2;
     v25 = &unk_1E808E9D8;
     v26 = v14;
     v19 = v14;
-    v20 = [v18 bs_filter:&v22];
+    v20 = [allObjects2 bs_filter:&v22];
     v21 = [v20 count];
 
     if (v21)
@@ -2781,8 +2781,8 @@ LABEL_9:
   }
 
 LABEL_4:
-  v6 = [(SBHLibraryViewController *)self iconViewDelegate];
-  v7 = [v6 iconViewDisplaysAccessories:v4];
+  icon2 = [(SBHLibraryViewController *)self iconViewDelegate];
+  v7 = [icon2 iconViewDisplaysAccessories:accessoriesCopy];
 LABEL_5:
 
 LABEL_6:
@@ -2817,23 +2817,23 @@ uint64_t __56__SBHLibraryViewController_iconViewDisplaysAccessories___block_invo
   return v7;
 }
 
-- (BOOL)iconViewCanBecomeFocused:(id)a3
+- (BOOL)iconViewCanBecomeFocused:(id)focused
 {
-  v4 = a3;
-  v5 = [v4 icon];
-  v6 = [v5 isCategoryIcon];
+  focusedCopy = focused;
+  icon = [focusedCopy icon];
+  isCategoryIcon = [icon isCategoryIcon];
 
-  if (v6)
+  if (isCategoryIcon)
   {
     v7 = 0;
   }
 
   else
   {
-    v8 = [(SBHLibraryViewController *)self iconViewDelegate];
+    iconViewDelegate = [(SBHLibraryViewController *)self iconViewDelegate];
     if (objc_opt_respondsToSelector())
     {
-      v7 = [v8 iconViewCanBecomeFocused:v4];
+      v7 = [iconViewDelegate iconViewCanBecomeFocused:focusedCopy];
     }
 
     else
@@ -2845,16 +2845,16 @@ uint64_t __56__SBHLibraryViewController_iconViewDisplaysAccessories___block_invo
   return v7;
 }
 
-- (id)_additionalItemsIndicatorIconViewForFolderController:(id)a3
+- (id)_additionalItemsIndicatorIconViewForFolderController:(id)controller
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  controllerCopy = controller;
   objc_opt_class();
-  v5 = [v4 folder];
+  folder = [controllerCopy folder];
   v14 = SBFSafeCast();
 
-  v6 = [v14 libraryCategoryIdentifier];
-  if (v6)
+  libraryCategoryIdentifier = [v14 libraryCategoryIdentifier];
+  if (libraryCategoryIdentifier)
   {
     v22 = 0;
     v23 = &v22;
@@ -2866,8 +2866,8 @@ uint64_t __56__SBHLibraryViewController_iconViewDisplaysAccessories___block_invo
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v7 = [(SBFolderController *)self->_podFolderViewController iconListViews];
-    v8 = [v7 countByEnumeratingWithState:&v18 objects:v28 count:16];
+    iconListViews = [(SBFolderController *)self->_podFolderViewController iconListViews];
+    v8 = [iconListViews countByEnumeratingWithState:&v18 objects:v28 count:16];
     if (v8)
     {
       v9 = *v19;
@@ -2877,7 +2877,7 @@ uint64_t __56__SBHLibraryViewController_iconViewDisplaysAccessories___block_invo
         {
           if (*v19 != v9)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(iconListViews);
           }
 
           v11 = *(*(&v18 + 1) + 8 * i);
@@ -2885,12 +2885,12 @@ uint64_t __56__SBHLibraryViewController_iconViewDisplaysAccessories___block_invo
           v15[1] = 3221225472;
           v15[2] = __81__SBHLibraryViewController__additionalItemsIndicatorIconViewForFolderController___block_invoke;
           v15[3] = &unk_1E808AE98;
-          v16 = v6;
+          v16 = libraryCategoryIdentifier;
           v17 = &v22;
           [v11 enumerateIconViewsUsingBlock:v15];
         }
 
-        v8 = [v7 countByEnumeratingWithState:&v18 objects:v28 count:16];
+        v8 = [iconListViews countByEnumeratingWithState:&v18 objects:v28 count:16];
       }
 
       while (v8);
@@ -2938,8 +2938,8 @@ void __81__SBHLibraryViewController__additionalItemsIndicatorIconViewForFolderCo
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(SBFolderController *)self->_podFolderViewController iconListViews];
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  iconListViews = [(SBFolderController *)self->_podFolderViewController iconListViews];
+  v5 = [iconListViews countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -2950,7 +2950,7 @@ void __81__SBHLibraryViewController__additionalItemsIndicatorIconViewForFolderCo
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(iconListViews);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
@@ -2962,7 +2962,7 @@ void __81__SBHLibraryViewController__additionalItemsIndicatorIconViewForFolderCo
         [v9 enumerateIconViewsUsingBlock:v11];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [iconListViews countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
@@ -2987,38 +2987,38 @@ void __49__SBHLibraryViewController__additionalItemsIcons__block_invoke(uint64_t
   }
 }
 
-- (int64_t)closeBoxTypeForIconView:(id)a3
+- (int64_t)closeBoxTypeForIconView:(id)view
 {
-  v4 = a3;
-  v5 = [(SBHLibraryViewController *)self iconViewDelegate];
-  v6 = [v5 closeBoxTypeForIconView:v4];
+  viewCopy = view;
+  iconViewDelegate = [(SBHLibraryViewController *)self iconViewDelegate];
+  v6 = [iconViewDelegate closeBoxTypeForIconView:viewCopy];
 
   return v6;
 }
 
-- (BOOL)iconView:(id)a3 editingModeGestureRecognizerDidFire:(id)a4
+- (BOOL)iconView:(id)view editingModeGestureRecognizerDidFire:(id)fire
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SBHLibraryViewController *)self iconViewDelegate];
-  v9 = [v8 iconView:v7 editingModeGestureRecognizerDidFire:v6];
+  fireCopy = fire;
+  viewCopy = view;
+  iconViewDelegate = [(SBHLibraryViewController *)self iconViewDelegate];
+  v9 = [iconViewDelegate iconView:viewCopy editingModeGestureRecognizerDidFire:fireCopy];
 
   return v9;
 }
 
-- (void)setContentVisibility:(unint64_t)a3
+- (void)setContentVisibility:(unint64_t)visibility
 {
-  if (self->_contentVisibility != a3)
+  if (self->_contentVisibility != visibility)
   {
-    self->_contentVisibility = a3;
-    v5 = [(SBHLibraryViewController *)self folderController];
-    [v5 setContentVisibility:a3];
+    self->_contentVisibility = visibility;
+    folderController = [(SBHLibraryViewController *)self folderController];
+    [folderController setContentVisibility:visibility];
 
-    v6 = [(SBHLibraryViewController *)self containerViewController];
-    [v6 setContentVisibility:a3];
+    containerViewController = [(SBHLibraryViewController *)self containerViewController];
+    [containerViewController setContentVisibility:visibility];
 
     [(SBHLibraryViewController *)self updateIconVisibility];
-    if (a3 == 2 && [(SBHLibraryViewController *)self bs_isAppearingOrAppeared])
+    if (visibility == 2 && [(SBHLibraryViewController *)self bs_isAppearingOrAppeared])
     {
       [(SBHLibraryViewController *)self _startLibraryViewControllerDismissalTimer:@"App Library is hidden!"];
 
@@ -3035,12 +3035,12 @@ void __49__SBHLibraryViewController__additionalItemsIcons__block_invoke(uint64_t
 
 - (void)updateIconVisibility
 {
-  v3 = [(SBHLibraryViewController *)self shouldHideIcons];
+  shouldHideIcons = [(SBHLibraryViewController *)self shouldHideIcons];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __48__SBHLibraryViewController_updateIconVisibility__block_invoke;
   v4[3] = &__block_descriptor_33_e28_v24__0__SBIconListView_8_B16l;
-  v5 = v3;
+  v5 = shouldHideIcons;
   [(SBHLibraryViewController *)self enumeratePodIconListViewsUsingBlock:v4];
 }
 
@@ -3057,7 +3057,7 @@ uint64_t __48__SBHLibraryViewController_updateIconVisibility__block_invoke(uint6
   }
 }
 
-- (void)overlayControllerDidBeginChangingPresentationProgress:(id)a3
+- (void)overlayControllerDidBeginChangingPresentationProgress:(id)progress
 {
   if ([(SBHLibraryViewController *)self isPresentingSearch])
   {
@@ -3066,9 +3066,9 @@ uint64_t __48__SBHLibraryViewController_updateIconVisibility__block_invoke(uint6
   }
 }
 
-- (void)overlayController:(id)a3 visibilityDidChange:(BOOL)a4
+- (void)overlayController:(id)controller visibilityDidChange:(BOOL)change
 {
-  if (!a4)
+  if (!change)
   {
     [(BSInvalidatable *)self->_libraryPrewarmAssertion invalidate];
     libraryPrewarmAssertion = self->_libraryPrewarmAssertion;
@@ -3076,38 +3076,38 @@ uint64_t __48__SBHLibraryViewController_updateIconVisibility__block_invoke(uint6
   }
 }
 
-- (void)overlayController:(id)a3 didChangePresentationProgress:(double)a4 newPresentationProgress:(double)a5 fromLeading:(BOOL)a6
+- (void)overlayController:(id)controller didChangePresentationProgress:(double)progress newPresentationProgress:(double)presentationProgress fromLeading:(BOOL)leading
 {
-  v9 = a3;
-  if (a5 >= 1.0 && !a6 && !self->_libraryPrewarmAssertion)
+  controllerCopy = controller;
+  if (presentationProgress >= 1.0 && !leading && !self->_libraryPrewarmAssertion)
   {
-    v12 = v9;
+    v12 = controllerCopy;
     v10 = [(SBHLibraryViewController *)self acquireLibrarySearchPrewarmAssertionForReason:@"Library View Controller is presented"];
     libraryPrewarmAssertion = self->_libraryPrewarmAssertion;
     self->_libraryPrewarmAssertion = v10;
 
-    v9 = v12;
+    controllerCopy = v12;
   }
 }
 
-- (void)_enqueueTransitionName:(id)a3 withHandler:(id)a4
+- (void)_enqueueTransitionName:(id)name withHandler:(id)handler
 {
-  v6 = [MEMORY[0x1E698E6B0] eventWithName:a3 handler:a4];
-  v5 = [(SBHLibraryViewController *)self transitionEventQueue];
-  [v5 executeOrInsertEvent:v6 atPosition:1];
+  v6 = [MEMORY[0x1E698E6B0] eventWithName:name handler:handler];
+  transitionEventQueue = [(SBHLibraryViewController *)self transitionEventQueue];
+  [transitionEventQueue executeOrInsertEvent:v6 atPosition:1];
 }
 
-- (id)_wrappedCompletionBlockForNestedTransitionWithCompletion:(id)a3
+- (id)_wrappedCompletionBlockForNestedTransitionWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __85__SBHLibraryViewController__wrappedCompletionBlockForNestedTransitionWithCompletion___block_invoke;
   aBlock[3] = &unk_1E808EA20;
   objc_copyWeak(&v11, &location);
-  v10 = v4;
-  v5 = v4;
+  v10 = completionCopy;
+  v5 = completionCopy;
   v6 = _Block_copy(aBlock);
   v7 = _Block_copy(v6);
 
@@ -3270,30 +3270,30 @@ void __85__SBHLibraryViewController__wrappedCompletionBlockForNestedTransitionWi
   }
 }
 
-- (void)enumerateViewControllersUsingBlock:(id)a3
+- (void)enumerateViewControllersUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v7 = 0;
-  if (![(SBHLibrarySearchController *)self->_containerViewController isActive]|| (iconTableViewController = self->_iconTableViewController) == 0 || (v4[2](v4, iconTableViewController, &v7), (v7 & 1) == 0))
+  if (![(SBHLibrarySearchController *)self->_containerViewController isActive]|| (iconTableViewController = self->_iconTableViewController) == 0 || (blockCopy[2](blockCopy, iconTableViewController, &v7), (v7 & 1) == 0))
   {
     if (![(SBHLibrarySearchController *)self->_containerViewController isActive])
     {
       podFolderViewController = self->_podFolderViewController;
       if (podFolderViewController)
       {
-        v4[2](v4, podFolderViewController, &v7);
+        blockCopy[2](blockCopy, podFolderViewController, &v7);
       }
     }
   }
 }
 
-- (void)_enumerateAllViewControllersUsingBlock:(id)a3
+- (void)_enumerateAllViewControllersUsingBlock:(id)block
 {
-  v4 = a3;
-  v5 = v4;
+  blockCopy = block;
+  v5 = blockCopy;
   v8 = 0;
   podFolderViewController = self->_podFolderViewController;
-  if (!podFolderViewController || ((*(v4 + 2))(v4, podFolderViewController, &v8), (v8 & 1) == 0))
+  if (!podFolderViewController || ((*(blockCopy + 2))(blockCopy, podFolderViewController, &v8), (v8 & 1) == 0))
   {
     iconTableViewController = self->_iconTableViewController;
     if (iconTableViewController)
@@ -3303,31 +3303,31 @@ void __85__SBHLibraryViewController__wrappedCompletionBlockForNestedTransitionWi
   }
 }
 
-- (void)enumerateIconViewQueryableChildrenWithOptions:(unint64_t)a3 usingBlock:(id)a4
+- (void)enumerateIconViewQueryableChildrenWithOptions:(unint64_t)options usingBlock:(id)block
 {
-  v6 = a4;
-  if ((a3 & 0x40) == 0)
+  blockCopy = block;
+  if ((options & 0x40) == 0)
   {
-    if ((v11 = 0, !self->_iconTableViewController) || (v7 = [(SBHLibrarySearchController *)self->_containerViewController isActive], (a3 & 3) != 0) && !v7 || (v6[2](v6, self->_iconTableViewController, a3, &v11), (a3 & 3) == 0) && (v11 & 1) == 0)
+    if ((v11 = 0, !self->_iconTableViewController) || (v7 = [(SBHLibrarySearchController *)self->_containerViewController isActive], (options & 3) != 0) && !v7 || (blockCopy[2](blockCopy, self->_iconTableViewController, options, &v11), (options & 3) == 0) && (v11 & 1) == 0)
     {
-      v8 = [(SBNestingViewController *)self nestedViewController];
-      v9 = v8;
-      if (!v8 || ([(SBHLibraryPodFolderController *)v8 bs_isDisappearingOrDisappeared]& 1) != 0 || (v6[2](v6, v9, a3, &v11), (a3 & 3) == 0) && (v11 & 1) == 0)
+      nestedViewController = [(SBNestingViewController *)self nestedViewController];
+      v9 = nestedViewController;
+      if (!nestedViewController || ([(SBHLibraryPodFolderController *)nestedViewController bs_isDisappearingOrDisappeared]& 1) != 0 || (blockCopy[2](blockCopy, v9, options, &v11), (options & 3) == 0) && (v11 & 1) == 0)
       {
         podFolderViewController = self->_podFolderViewController;
         if (podFolderViewController)
         {
-          v6[2](v6, podFolderViewController, a3, &v11);
+          blockCopy[2](blockCopy, podFolderViewController, options, &v11);
         }
       }
     }
   }
 }
 
-- (void)enumeratePodIconListViewsUsingBlock:(id)a3
+- (void)enumeratePodIconListViewsUsingBlock:(id)block
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
@@ -3336,8 +3336,8 @@ void __85__SBHLibraryViewController__wrappedCompletionBlockForNestedTransitionWi
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(SBFolderController *)self->_podFolderViewController iconListViews];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v21 count:16];
+  iconListViews = [(SBFolderController *)self->_podFolderViewController iconListViews];
+  v6 = [iconListViews countByEnumeratingWithState:&v13 objects:v21 count:16];
   if (v6)
   {
     v7 = *v14;
@@ -3347,7 +3347,7 @@ LABEL_3:
     {
       if (*v14 != v7)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(iconListViews);
       }
 
       v9 = *(*(&v13 + 1) + 8 * v8);
@@ -3355,7 +3355,7 @@ LABEL_3:
       v10[1] = 3221225472;
       v10[2] = __64__SBHLibraryViewController_enumeratePodIconListViewsUsingBlock___block_invoke;
       v10[3] = &unk_1E808A808;
-      v11 = v4;
+      v11 = blockCopy;
       v12 = &v17;
       [v9 enumerateIconViewsUsingBlock:v10];
       LOBYTE(v9) = *(v18 + 24);
@@ -3367,7 +3367,7 @@ LABEL_3:
 
       if (v6 == ++v8)
       {
-        v6 = [v5 countByEnumeratingWithState:&v13 objects:v21 count:16];
+        v6 = [iconListViews countByEnumeratingWithState:&v13 objects:v21 count:16];
         if (v6)
         {
           goto LABEL_3;
@@ -3390,33 +3390,33 @@ void __64__SBHLibraryViewController_enumeratePodIconListViewsUsingBlock___block_
 
 - (void)_updateViewControllerLegibility
 {
-  v3 = [(SBHLibraryViewController *)self effectiveLegibilitySettings];
-  [(SBFolderController *)self->_podFolderViewController setLegibilitySettings:v3];
+  effectiveLegibilitySettings = [(SBHLibraryViewController *)self effectiveLegibilitySettings];
+  [(SBFolderController *)self->_podFolderViewController setLegibilitySettings:effectiveLegibilitySettings];
 }
 
 - (void)_updateSearchControllerLegibility
 {
-  v3 = [(SBHLibraryViewController *)self effectiveLegibilitySettings];
-  [(SBHLibrarySearchController *)self->_containerViewController setLegibilitySettings:v3];
+  effectiveLegibilitySettings = [(SBHLibraryViewController *)self effectiveLegibilitySettings];
+  [(SBHLibrarySearchController *)self->_containerViewController setLegibilitySettings:effectiveLegibilitySettings];
 }
 
-- (void)_setupIconTableViewController:(BOOL)a3
+- (void)_setupIconTableViewController:(BOOL)controller
 {
-  v92 = a3;
+  controllerCopy = controller;
   v100[4] = *MEMORY[0x1E69E9840];
-  v4 = [(SBHLibraryViewController *)self iconViewProvider];
-  v5 = [(SBHLibraryViewController *)self iconModel];
-  v6 = [v5 rootFolder];
+  iconViewProvider = [(SBHLibraryViewController *)self iconViewProvider];
+  iconModel = [(SBHLibraryViewController *)self iconModel];
+  rootFolder = [iconModel rootFolder];
 
   v7 = self->_listLayoutProvider;
   v8 = self->_iconImageCache;
-  v9 = [(SBHLibraryViewController *)self effectiveLegibilitySettings];
-  v10 = [(SBHLibraryViewController *)self iconModel];
-  v11 = [(SBHLibraryViewController *)self folderIconImageCache];
+  effectiveLegibilitySettings = [(SBHLibraryViewController *)self effectiveLegibilitySettings];
+  iconModel2 = [(SBHLibraryViewController *)self iconModel];
+  folderIconImageCache = [(SBHLibraryViewController *)self folderIconImageCache];
   v12 = self->_categoryMapProvider;
   if (v8)
   {
-    v13 = v11 == 0;
+    v13 = folderIconImageCache == 0;
   }
 
   else
@@ -3426,8 +3426,8 @@ void __64__SBHLibraryViewController_enumeratePodIconListViewsUsingBlock___block_
 
   if (!v13)
   {
-    v93 = v11;
-    v14 = [[_SBHLibraryCollectionOfModelThings alloc] initWithIconViewProvider:v4 iconModel:v10 rootFolder:v6 listLayoutProvider:v7 iconImageCache:v8 folderIconImageCache:v11 categoryMapProvider:v12];
+    v93 = folderIconImageCache;
+    v14 = [[_SBHLibraryCollectionOfModelThings alloc] initWithIconViewProvider:iconViewProvider iconModel:iconModel2 rootFolder:rootFolder listLayoutProvider:v7 iconImageCache:v8 folderIconImageCache:folderIconImageCache categoryMapProvider:v12];
     v99 = 0;
     v15 = [(_SBHLibraryCollectionOfModelThings *)v14 examineModelValidityWithError:&v99];
     v91 = v99;
@@ -3437,11 +3437,11 @@ void __64__SBHLibraryViewController_enumeratePodIconListViewsUsingBlock___block_
       {
 LABEL_31:
 
-        v11 = v93;
+        folderIconImageCache = v93;
         goto LABEL_32;
       }
 
-      v85 = v6;
+      v85 = rootFolder;
       objc_storeStrong(&self->_model, v14);
       iconViewControllerForCategoryIdentifier = self->_iconViewControllerForCategoryIdentifier;
       self->_iconViewControllerForCategoryIdentifier = 0;
@@ -3465,16 +3465,16 @@ LABEL_31:
         self->_iconTableViewController = 0;
       }
 
-      v82 = v10;
+      v82 = iconModel2;
       v21 = objc_alloc_init(SBHIconLibraryTableViewController);
       v22 = self->_iconTableViewController;
       self->_iconTableViewController = v21;
 
       [(SBHIconLibraryTableViewController *)self->_iconTableViewController setObserver:self];
       [(SBHIconLibraryTableViewController *)self->_iconTableViewController setListLayoutProvider:v7];
-      v86 = v4;
-      [(SBHIconLibraryTableViewController *)self->_iconTableViewController setIconViewProvider:v4];
-      v81 = [(SBHLibraryViewController *)self iconLocation];
+      v86 = iconViewProvider;
+      [(SBHIconLibraryTableViewController *)self->_iconTableViewController setIconViewProvider:iconViewProvider];
+      iconLocation = [(SBHLibraryViewController *)self iconLocation];
       v88 = [(SBIconListLayoutProvider *)v7 layoutForIconLocation:?];
       v80 = SBHIconListLayoutIconGridSizeClassSizes(v88, 1);
       v23 = [(SBFolder *)[SBHLibraryCategoriesRootFolder alloc] initWithDisplayName:@"Categories Folder" maxListCount:1 listGridSize:4294901764 iconGridSizeClassSizes:v80];
@@ -3482,30 +3482,30 @@ LABEL_31:
       self->_categoriesFolder = v23;
 
       [(SBRootFolder *)self->_categoriesFolder setModel:self->_iconModel];
-      v25 = [(SBFolder *)self->_categoriesFolder addEmptyList];
+      addEmptyList = [(SBFolder *)self->_categoriesFolder addEmptyList];
       v26 = self->_categoriesFolder;
-      v27 = [(SBHIconModel *)self->_iconModel rootFolder];
-      v28 = [v27 delegate];
-      [(SBRootFolder *)v26 setDelegate:v28];
+      rootFolder2 = [(SBHIconModel *)self->_iconModel rootFolder];
+      delegate = [rootFolder2 delegate];
+      [(SBRootFolder *)v26 setDelegate:delegate];
 
       [(SBHLibraryCategoriesRootFolder *)self->_categoriesFolder setSupportsBadging:[(SBHLibraryViewController *)self allowsBadging]];
       v29 = self->_categoriesFolder;
-      v30 = [(SBHLibraryViewController *)self badgeBehaviorProvider];
-      [(SBFolder *)v29 setBadgeBehaviorProvider:v30];
+      badgeBehaviorProvider = [(SBHLibraryViewController *)self badgeBehaviorProvider];
+      [(SBFolder *)v29 setBadgeBehaviorProvider:badgeBehaviorProvider];
 
       v31 = objc_alloc_init(SBHLibraryPodFolderControllerConfiguration);
       [(SBFolderControllerConfiguration *)v31 setIconViewProvider:self];
       [(SBFolderControllerConfiguration *)v31 setListLayoutProvider:v7];
       [(SBFolderControllerConfiguration *)v31 setIconImageCache:v8];
       [(SBFolderControllerConfiguration *)v31 setFolderIconImageCache:v93];
-      [(SBFolderControllerConfiguration *)v31 setLegibilitySettings:v9];
+      [(SBFolderControllerConfiguration *)v31 setLegibilitySettings:effectiveLegibilitySettings];
       [(SBHLibraryPodFolderControllerConfiguration *)v31 setCategoryMapProvider:v89];
       [(SBHLibraryPodFolderControllerConfiguration *)v31 setCategoriesFolder:self->_categoriesFolder];
       [(SBFolderControllerConfiguration *)v31 setFolder:self->_categoriesFolder];
-      v32 = [MEMORY[0x1E69DC938] currentDevice];
-      v33 = [v32 userInterfaceIdiom];
+      currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+      userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-      if ((v33 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+      if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
       {
         v34 = 30;
       }
@@ -3526,15 +3526,15 @@ LABEL_31:
         self->_podFolderViewController = 0;
       }
 
-      v83 = v9;
+      v83 = effectiveLegibilitySettings;
       v84 = v7;
       v79 = v31;
       v37 = [[SBHLibraryPodFolderController alloc] initWithConfiguration:v31];
       v38 = self->_podFolderViewController;
       self->_podFolderViewController = v37;
 
-      v39 = [(SBHLibraryPodFolderController *)self->_podFolderViewController contentScrollView];
-      [v39 setShowsVerticalScrollIndicator:0];
+      contentScrollView = [(SBHLibraryPodFolderController *)self->_podFolderViewController contentScrollView];
+      [contentScrollView setShowsVerticalScrollIndicator:0];
 
       [(SBHLibraryPodFolderController *)self->_podFolderViewController setPodFolderControllerDelegate:self];
       [(SBFolderController *)self->_podFolderViewController setFolderDelegate:self];
@@ -3546,50 +3546,50 @@ LABEL_31:
         [(SBHLibrarySearchController *)containerViewController setDelegate:self];
         [(SBHLibrarySearchController *)self->_containerViewController setSearchResultsUpdater:0];
         [MEMORY[0x1E696ACD8] deactivateConstraints:self->_containerViewControllerConstraints];
-        v41 = [(SBHLibrarySearchController *)self->_containerViewController view];
-        [v41 removeFromSuperview];
+        view = [(SBHLibrarySearchController *)self->_containerViewController view];
+        [view removeFromSuperview];
 
         [(SBHLibraryViewController *)self bs_removeChildViewController:self->_containerViewController];
         v42 = self->_containerViewController;
         self->_containerViewController = 0;
       }
 
-      v77 = [(SBHLibraryViewController *)self bs_isAppearingOrAppeared];
-      v43 = [v88 appLibraryVisualConfiguration];
-      v44 = [v43 usesInsetPlatterSearchAppearance];
+      bs_isAppearingOrAppeared = [(SBHLibraryViewController *)self bs_isAppearingOrAppeared];
+      appLibraryVisualConfiguration = [v88 appLibraryVisualConfiguration];
+      usesInsetPlatterSearchAppearance = [appLibraryVisualConfiguration usesInsetPlatterSearchAppearance];
 
-      v45 = [[SBHLibrarySearchController alloc] initWithSearchResultsController:self->_iconTableViewController contentViewController:self->_podFolderViewController usingPlatterAppearance:v44];
+      v45 = [[SBHLibrarySearchController alloc] initWithSearchResultsController:self->_iconTableViewController contentViewController:self->_podFolderViewController usingPlatterAppearance:usesInsetPlatterSearchAppearance];
       v46 = self->_containerViewController;
       self->_containerViewController = v45;
 
       [(SBHLibrarySearchController *)self->_containerViewController setDelegate:self];
       v47 = self->_containerViewController;
-      v48 = [(SBHLibraryViewController *)self iconLocation];
-      [(SBHLibrarySearchController *)v47 setContainingIconLocation:v48];
+      iconLocation2 = [(SBHLibraryViewController *)self iconLocation];
+      [(SBHLibrarySearchController *)v47 setContainingIconLocation:iconLocation2];
 
       [(SBHLibrarySearchController *)self->_containerViewController setSearchResultsUpdater:self->_iconTableViewController];
       [(SBHLibraryViewController *)self addChildViewController:self->_containerViewController];
-      v49 = [(SBHLibraryViewController *)self view];
-      v50 = [(SBHLibrarySearchController *)self->_containerViewController view];
-      [v50 setTranslatesAutoresizingMaskIntoConstraints:0];
-      [v49 addSubview:v50];
-      v76 = [v50 leadingAnchor];
-      v75 = [v49 leadingAnchor];
-      v74 = [v76 constraintEqualToAnchor:v75];
+      view2 = [(SBHLibraryViewController *)self view];
+      view3 = [(SBHLibrarySearchController *)self->_containerViewController view];
+      [view3 setTranslatesAutoresizingMaskIntoConstraints:0];
+      [view2 addSubview:view3];
+      leadingAnchor = [view3 leadingAnchor];
+      leadingAnchor2 = [view2 leadingAnchor];
+      v74 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
       v100[0] = v74;
-      v73 = [v50 trailingAnchor];
-      v72 = [v49 trailingAnchor];
-      v51 = [v73 constraintEqualToAnchor:v72];
+      trailingAnchor = [view3 trailingAnchor];
+      trailingAnchor2 = [view2 trailingAnchor];
+      v51 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
       v100[1] = v51;
-      v52 = [v50 topAnchor];
-      v53 = [v49 topAnchor];
-      v54 = [v52 constraintEqualToAnchor:v53];
+      topAnchor = [view3 topAnchor];
+      topAnchor2 = [view2 topAnchor];
+      v54 = [topAnchor constraintEqualToAnchor:topAnchor2];
       v100[2] = v54;
-      v87 = v50;
-      v55 = [v50 bottomAnchor];
-      v78 = v49;
-      v56 = [v49 bottomAnchor];
-      v57 = [v55 constraintEqualToAnchor:v56];
+      v87 = view3;
+      bottomAnchor = [view3 bottomAnchor];
+      v78 = view2;
+      bottomAnchor2 = [view2 bottomAnchor];
+      v57 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
       v100[3] = v57;
       v58 = [MEMORY[0x1E695DEC8] arrayWithObjects:v100 count:4];
       containerViewControllerConstraints = self->_containerViewControllerConstraints;
@@ -3597,9 +3597,9 @@ LABEL_31:
 
       [MEMORY[0x1E696ACD8] activateConstraints:self->_containerViewControllerConstraints];
       [(SBHLibrarySearchController *)self->_containerViewController didMoveToParentViewController:self];
-      if (v77)
+      if (bs_isAppearingOrAppeared)
       {
-        [(SBHLibrarySearchController *)self->_containerViewController beginAppearanceTransition:1 animated:v92];
+        [(SBHLibrarySearchController *)self->_containerViewController beginAppearanceTransition:1 animated:controllerCopy];
       }
 
       v7 = v84;
@@ -3611,10 +3611,10 @@ LABEL_31:
       v95 = v84;
       v96 = v8;
       v97 = v93;
-      v6 = v85;
+      rootFolder = v85;
       v98 = v85;
       [(SBHLibraryViewController *)self _enumerateAllViewControllersUsingBlock:v94];
-      v9 = v83;
+      effectiveLegibilitySettings = v83;
       if (v83)
       {
         [(SBHLibraryViewController *)self _updateViewControllerLegibility];
@@ -3623,25 +3623,25 @@ LABEL_31:
 
       v60 = [SBHLegibilitySettings sharedInstanceForStyle:1];
       [(SBHIconLibraryTableViewController *)self->_iconTableViewController setLegibilitySettings:v60];
-      v61 = [v60 primaryColor];
-      [v87 setTintColor:v61];
+      primaryColor = [v60 primaryColor];
+      [v87 setTintColor:primaryColor];
 
-      v62 = [(SBHIconLibraryTableViewController *)self->_iconTableViewController tableView];
-      [v62 setAccessibilityIdentifier:@"dewey-search-result-table-view"];
+      tableView = [(SBHIconLibraryTableViewController *)self->_iconTableViewController tableView];
+      [tableView setAccessibilityIdentifier:@"dewey-search-result-table-view"];
 
-      v63 = [(SBHLibraryPodFolderController *)self->_podFolderViewController view];
-      [v63 setAccessibilityIdentifier:@"dewey-pod-view"];
+      view4 = [(SBHLibraryPodFolderController *)self->_podFolderViewController view];
+      [view4 setAccessibilityIdentifier:@"dewey-pod-view"];
 
       v12 = v89;
-      if (v77)
+      if (bs_isAppearingOrAppeared)
       {
         [(SBHLibrarySearchController *)self->_containerViewController endAppearanceTransition];
       }
 
-      v64 = [(SBHLibraryCategoryMapProvider *)self->_categoryMapProvider libraryCategoryMap];
-      if (v64)
+      libraryCategoryMap = [(SBHLibraryCategoryMapProvider *)self->_categoryMapProvider libraryCategoryMap];
+      if (libraryCategoryMap)
       {
-        [(SBHLibraryViewController *)self _installCategoryMap:v64];
+        [(SBHLibraryViewController *)self _installCategoryMap:libraryCategoryMap];
       }
 
       else
@@ -3649,12 +3649,12 @@ LABEL_31:
         [(SBHLibraryViewController *)self _updateLibraryCategoryMap:0];
       }
 
-      v10 = v82;
+      iconModel2 = v82;
       [(SBHLibraryCategoryMapProvider *)self->_categoryMapProvider addObserver:self];
       [(SBHLibraryViewController *)self _notifyObserversDataSourceDidChange];
 
-      v4 = v86;
-      v65 = v81;
+      iconViewProvider = v86;
+      v65 = iconLocation;
     }
 
     else
@@ -3690,27 +3690,27 @@ void __58__SBHLibraryViewController__setupIconTableViewController___block_invoke
   }
 }
 
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v6.receiver = self;
   v6.super_class = SBHLibraryViewController;
-  [(SBHLibraryViewController *)&v6 setEditing:a3 animated:?];
-  [(SBHLibraryViewController *)self _updateEditingStateAnimated:v4];
+  [(SBHLibraryViewController *)&v6 setEditing:editing animated:?];
+  [(SBHLibraryViewController *)self _updateEditingStateAnimated:animatedCopy];
 }
 
-- (void)setSuppressesEditingStateForListViews:(BOOL)a3
+- (void)setSuppressesEditingStateForListViews:(BOOL)views
 {
-  if (self->_suppressesEditingStateForListViews != a3)
+  if (self->_suppressesEditingStateForListViews != views)
   {
-    self->_suppressesEditingStateForListViews = a3;
+    self->_suppressesEditingStateForListViews = views;
     [(SBHLibraryViewController *)self _updateEditingStateAnimated:1];
   }
 }
 
-- (void)_updateEditingStateAnimated:(BOOL)a3
+- (void)_updateEditingStateAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   if ([(SBHLibraryViewController *)self isEditing])
   {
     v5 = [(SBHLibraryViewController *)self suppressesEditingStateForListViews]^ 1;
@@ -3721,20 +3721,20 @@ void __58__SBHLibraryViewController__setupIconTableViewController___block_invoke
     v5 = 0;
   }
 
-  [(SBFolderController *)self->_podFolderViewController setEditing:v5 animated:v3];
-  v6 = [(SBNestingViewController *)self nestedViewController];
-  [v6 setEditing:v5 animated:v3];
+  [(SBFolderController *)self->_podFolderViewController setEditing:v5 animated:animatedCopy];
+  nestedViewController = [(SBNestingViewController *)self nestedViewController];
+  [nestedViewController setEditing:v5 animated:animatedCopy];
 }
 
-- (void)_scrollIconViewToVisible:(id)a3 animated:(BOOL)a4
+- (void)_scrollIconViewToVisible:(id)visible animated:(BOOL)animated
 {
-  v21 = a3;
-  v5 = [(SBHLibraryViewController *)self bs_isAppearingOrAppeared];
-  v6 = v21;
-  if (v5)
+  visibleCopy = visible;
+  bs_isAppearingOrAppeared = [(SBHLibraryViewController *)self bs_isAppearingOrAppeared];
+  v6 = visibleCopy;
+  if (bs_isAppearingOrAppeared)
   {
-    v7 = v21;
-    if (!v21)
+    v7 = visibleCopy;
+    if (!visibleCopy)
     {
       v8 = objc_opt_class();
       v9 = NSStringFromClass(v8);
@@ -3743,31 +3743,31 @@ void __58__SBHLibraryViewController__setupIconTableViewController___block_invoke
       v7 = 0;
     }
 
-    v10 = [v7 icon];
-    if (v10)
+    icon = [v7 icon];
+    if (icon)
     {
-      v11 = [v21 location];
-      v12 = [(SBHLibraryViewController *)self iconViewForIcon:v10 location:v11];
+      location = [visibleCopy location];
+      v12 = [(SBHLibraryViewController *)self iconViewForIcon:icon location:location];
 
       if (v12)
       {
         if ([(SBHLibraryViewController *)self isPresentingSearch])
         {
-          v13 = [(SBHLibrarySearchController *)self->_containerViewController contentScrollView];
-          v14 = [(SBHIconLibraryTableViewController *)self->_iconTableViewController headerBlurView];
-          [(SBHLibraryPodFolderController *)v14 frame];
+          contentScrollView = [(SBHLibrarySearchController *)self->_containerViewController contentScrollView];
+          headerBlurView = [(SBHIconLibraryTableViewController *)self->_iconTableViewController headerBlurView];
+          [(SBHLibraryPodFolderController *)headerBlurView frame];
           v16 = v15;
-          [v13 adjustedContentInset];
+          [contentScrollView adjustedContentInset];
           v18 = v16 - v17;
         }
 
         else
         {
-          v19 = [(SBNestingViewController *)self deepestNestedDescendantViewController];
-          v14 = v19;
-          if (v19 && ([(SBHLibraryPodFolderController *)v19 bs_isDisappearingOrDisappeared]& 1) == 0)
+          deepestNestedDescendantViewController = [(SBNestingViewController *)self deepestNestedDescendantViewController];
+          headerBlurView = deepestNestedDescendantViewController;
+          if (deepestNestedDescendantViewController && ([(SBHLibraryPodFolderController *)deepestNestedDescendantViewController bs_isDisappearingOrDisappeared]& 1) == 0)
           {
-            podFolderViewController = v14;
+            podFolderViewController = headerBlurView;
           }
 
           else
@@ -3775,39 +3775,39 @@ void __58__SBHLibraryViewController__setupIconTableViewController___block_invoke
             podFolderViewController = self->_podFolderViewController;
           }
 
-          v13 = [(SBHLibraryPodFolderController *)podFolderViewController contentScrollView];
+          contentScrollView = [(SBHLibraryPodFolderController *)podFolderViewController contentScrollView];
           v18 = 16.0;
         }
 
         [v12 bounds];
-        [v12 convertRect:v13 toView:?];
+        [v12 convertRect:contentScrollView toView:?];
         CGRectInset(v23, 0.0, -v18);
-        [v13 contentSize];
+        [contentScrollView contentSize];
         BSRectWithSize();
         UIRectContainInRect();
-        [v13 scrollRectToVisible:1 animated:?];
+        [contentScrollView scrollRectToVisible:1 animated:?];
       }
     }
 
-    v6 = v21;
+    v6 = visibleCopy;
   }
 
-  MEMORY[0x1EEE66BB8](v5, v6);
+  MEMORY[0x1EEE66BB8](bs_isAppearingOrAppeared, v6);
 }
 
 - (BOOL)isPresentingFolder
 {
   if (self->_currentTransitionAnimator)
   {
-    v2 = [(NSMapTable *)self->_presentedFolderControllers keyEnumerator];
-    v3 = [v2 allObjects];
-    v4 = [v3 count] != 0;
+    keyEnumerator = [(NSMapTable *)self->_presentedFolderControllers keyEnumerator];
+    allObjects = [keyEnumerator allObjects];
+    v4 = [allObjects count] != 0;
   }
 
   else
   {
-    v2 = [(SBNestingViewController *)self deepestNestedDescendantViewController];
-    v4 = v2 != 0;
+    keyEnumerator = [(SBNestingViewController *)self deepestNestedDescendantViewController];
+    v4 = keyEnumerator != 0;
   }
 
   return v4;
@@ -3824,10 +3824,10 @@ void __58__SBHLibraryViewController__setupIconTableViewController___block_invoke
 
 - (BOOL)_shouldUseReduceTransparencyBackgroundView
 {
-  v2 = [(SBHLibraryViewController *)self presenter];
-  v3 = [v2 hasBackgroundBlur];
+  presenter = [(SBHLibraryViewController *)self presenter];
+  hasBackgroundBlur = [presenter hasBackgroundBlur];
 
-  return v3 ^ 1;
+  return hasBackgroundBlur ^ 1;
 }
 
 - (void)_setupReducedTransparencyBackgroundViewIfNeeded
@@ -3837,8 +3837,8 @@ void __58__SBHLibraryViewController__setupIconTableViewController___block_invoke
     if (UIAccessibilityIsReduceTransparencyEnabled() && !self->_reducedTransparencyBackgroundView)
     {
       v3 = [SBFolderControllerBackgroundView alloc];
-      v4 = [(SBHLibraryViewController *)self view];
-      [v4 bounds];
+      view = [(SBHLibraryViewController *)self view];
+      [view bounds];
       v5 = [(SBFolderControllerBackgroundView *)v3 initWithFrame:?];
       reducedTransparencyBackgroundView = self->_reducedTransparencyBackgroundView;
       self->_reducedTransparencyBackgroundView = v5;
@@ -3847,11 +3847,11 @@ void __58__SBHLibraryViewController__setupIconTableViewController___block_invoke
       [(SBFolderControllerBackgroundView *)self->_reducedTransparencyBackgroundView setEffect:4];
       [(SBFolderControllerBackgroundView *)self->_reducedTransparencyBackgroundView setEffectActive:1];
       [(SBFolderControllerBackgroundView *)self->_reducedTransparencyBackgroundView setAlpha:0.0];
-      v7 = [(SBHLibraryViewController *)self view];
-      [v7 addSubview:self->_reducedTransparencyBackgroundView];
+      view2 = [(SBHLibraryViewController *)self view];
+      [view2 addSubview:self->_reducedTransparencyBackgroundView];
 
-      v8 = [(SBHLibraryViewController *)self view];
-      [v8 sendSubviewToBack:self->_reducedTransparencyBackgroundView];
+      view3 = [(SBHLibraryViewController *)self view];
+      [view3 sendSubviewToBack:self->_reducedTransparencyBackgroundView];
     }
 
     [(SBHLibraryViewController *)self _updateReduceTransparency];
@@ -3870,18 +3870,18 @@ void __58__SBHLibraryViewController__setupIconTableViewController___block_invoke
   if ([(SBHLibraryViewController *)self isViewLoaded]&& [(SBHLibraryViewController *)self _shouldUseReduceTransparencyBackgroundView]&& ![(NSMutableArray *)self->_currentCollapseCompletions count]&& ![(NSMutableArray *)self->_currentExpandCompletions count])
   {
     IsReduceTransparencyEnabled = UIAccessibilityIsReduceTransparencyEnabled();
-    v4 = [(SBHLibraryViewController *)self isPresentingFolder];
+    isPresentingFolder = [(SBHLibraryViewController *)self isPresentingFolder];
     if (IsReduceTransparencyEnabled && !self->_reducedTransparencyBackgroundView)
     {
       [(SBHLibraryViewController *)self _setupReducedTransparencyBackgroundViewIfNeeded];
     }
 
-    if (v4)
+    if (isPresentingFolder)
     {
-      v5 = [(SBHLibraryViewController *)self podFolderViewController];
-      v6 = [v5 contentView];
+      podFolderViewController = [(SBHLibraryViewController *)self podFolderViewController];
+      contentView = [podFolderViewController contentView];
       v7 = objc_opt_class();
-      v8 = __BSSafeCast(v6, v7);
+      v8 = __BSSafeCast(contentView, v7);
 
       [v8 setHidesFeatherBlur:IsReduceTransparencyEnabled];
       [(SBFolderControllerBackgroundView *)self->_reducedTransparencyBackgroundView setAlpha:IsReduceTransparencyEnabled];
@@ -3895,9 +3895,9 @@ void __58__SBHLibraryViewController__setupIconTableViewController___block_invoke
   }
 }
 
-- (void)willPresentSearchController:(id)a3
+- (void)willPresentSearchController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v5 = SBLogTelemetrySignposts();
   if (os_signpost_enabled(v5))
   {
@@ -3905,10 +3905,10 @@ void __58__SBHLibraryViewController__setupIconTableViewController___block_invoke
     _os_signpost_emit_with_name_impl(&dword_1BEB18000, v5, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "SBH_HOME_LIBRARY_SEARCH_PRESENT", " enableTelemetry=YES  isAnimation=YES ", v8, 2u);
   }
 
-  [(SBHLibraryViewController *)self _notifyObserversWillPresentSearchController:v4];
-  v6 = [(SBHLibraryViewController *)self podFolderViewController];
-  v7 = [v6 contentScrollView];
-  [v7 _scrollToTopIfPossible:1];
+  [(SBHLibraryViewController *)self _notifyObserversWillPresentSearchController:controllerCopy];
+  podFolderViewController = [(SBHLibraryViewController *)self podFolderViewController];
+  contentScrollView = [podFolderViewController contentScrollView];
+  [contentScrollView _scrollToTopIfPossible:1];
 
   if ([(SBHLibraryViewController *)self isPresentingFolder])
   {
@@ -3916,9 +3916,9 @@ void __58__SBHLibraryViewController__setupIconTableViewController___block_invoke
   }
 }
 
-- (void)didPresentSearchController:(id)a3
+- (void)didPresentSearchController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v5 = SBLogTelemetrySignposts();
   if (os_signpost_enabled(v5))
   {
@@ -3926,13 +3926,13 @@ void __58__SBHLibraryViewController__setupIconTableViewController___block_invoke
     _os_signpost_emit_with_name_impl(&dword_1BEB18000, v5, OS_SIGNPOST_INTERVAL_END, 0xEEEEB0B5B2B2EEEELL, "SBH_HOME_LIBRARY_SEARCH_PRESENT", " enableTelemetry=YES  isAnimation=YES ", v6, 2u);
   }
 
-  [(SBHLibraryViewController *)self _notifyObserversDidPresentSearchController:v4];
+  [(SBHLibraryViewController *)self _notifyObserversDidPresentSearchController:controllerCopy];
   [(SBHLibraryViewController *)self _flushPendingLibraryCategoryMapUpdateIfNeeded];
 }
 
-- (void)willDismissSearchController:(id)a3
+- (void)willDismissSearchController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v5 = SBLogTelemetrySignposts();
   if (os_signpost_enabled(v5))
   {
@@ -3940,12 +3940,12 @@ void __58__SBHLibraryViewController__setupIconTableViewController___block_invoke
     _os_signpost_emit_with_name_impl(&dword_1BEB18000, v5, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "SBH_HOME_LIBRARY_SEARCH_DISMISS", " enableTelemetry=YES  isAnimation=YES ", v6, 2u);
   }
 
-  [(SBHLibraryViewController *)self _notifyObserversWillDismissSearchController:v4];
+  [(SBHLibraryViewController *)self _notifyObserversWillDismissSearchController:controllerCopy];
 }
 
-- (void)didDismissSearchController:(id)a3
+- (void)didDismissSearchController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v5 = SBLogTelemetrySignposts();
   if (os_signpost_enabled(v5))
   {
@@ -3953,46 +3953,46 @@ void __58__SBHLibraryViewController__setupIconTableViewController___block_invoke
     _os_signpost_emit_with_name_impl(&dword_1BEB18000, v5, OS_SIGNPOST_INTERVAL_END, 0xEEEEB0B5B2B2EEEELL, "SBH_HOME_LIBRARY_SEARCH_DISMISS", " enableTelemetry=YES  isAnimation=YES ", v6, 2u);
   }
 
-  [(SBHLibraryViewController *)self _notifyObserversDidDismissSearchController:v4];
+  [(SBHLibraryViewController *)self _notifyObserversDidDismissSearchController:controllerCopy];
 }
 
-- (void)setShouldPrewarmContent:(BOOL)a3
+- (void)setShouldPrewarmContent:(BOOL)content
 {
-  if (self->_shouldPrewarmContent != a3)
+  if (self->_shouldPrewarmContent != content)
   {
-    self->_shouldPrewarmContent = a3;
+    self->_shouldPrewarmContent = content;
     [(SBHLibraryViewController *)self updateIconVisibility];
   }
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   observers = self->_observers;
-  v8 = v4;
+  v8 = observerCopy;
   if (!observers)
   {
-    v6 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     v7 = self->_observers;
-    self->_observers = v6;
+    self->_observers = weakObjectsHashTable;
 
-    v4 = v8;
+    observerCopy = v8;
     observers = self->_observers;
   }
 
-  [(NSHashTable *)observers addObject:v4];
+  [(NSHashTable *)observers addObject:observerCopy];
 }
 
-- (void)_notifyObserversWillDismissSearchController:(id)a3
+- (void)_notifyObserversWillDismissSearchController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __72__SBHLibraryViewController__notifyObserversWillDismissSearchController___block_invoke;
   v6[3] = &unk_1E808EA70;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = controllerCopy;
+  v5 = controllerCopy;
   [(SBHLibraryViewController *)self _enumerateObservers:v6];
 }
 
@@ -4005,16 +4005,16 @@ void __72__SBHLibraryViewController__notifyObserversWillDismissSearchController_
   }
 }
 
-- (void)_notifyObserversDidDismissSearchController:(id)a3
+- (void)_notifyObserversDidDismissSearchController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __71__SBHLibraryViewController__notifyObserversDidDismissSearchController___block_invoke;
   v6[3] = &unk_1E808EA70;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = controllerCopy;
+  v5 = controllerCopy;
   [(SBHLibraryViewController *)self _enumerateObservers:v6];
 }
 
@@ -4027,16 +4027,16 @@ void __71__SBHLibraryViewController__notifyObserversDidDismissSearchController__
   }
 }
 
-- (void)_notifyObserversDidPresentSearchController:(id)a3
+- (void)_notifyObserversDidPresentSearchController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __71__SBHLibraryViewController__notifyObserversDidPresentSearchController___block_invoke;
   v6[3] = &unk_1E808EA70;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = controllerCopy;
+  v5 = controllerCopy;
   [(SBHLibraryViewController *)self _enumerateObservers:v6];
 }
 
@@ -4049,16 +4049,16 @@ void __71__SBHLibraryViewController__notifyObserversDidPresentSearchController__
   }
 }
 
-- (void)_notifyObserversWillPresentSearchController:(id)a3
+- (void)_notifyObserversWillPresentSearchController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __72__SBHLibraryViewController__notifyObserversWillPresentSearchController___block_invoke;
   v6[3] = &unk_1E808EA70;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = controllerCopy;
+  v5 = controllerCopy;
   [(SBHLibraryViewController *)self _enumerateObservers:v6];
 }
 
@@ -4071,27 +4071,27 @@ void __72__SBHLibraryViewController__notifyObserversWillPresentSearchController_
   }
 }
 
-- (void)_notifyObserversWillPresentFolderController:(id)a3
+- (void)_notifyObserversWillPresentFolderController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   if (!self->_presentedFolderControllers)
   {
-    v5 = [MEMORY[0x1E696AD18] weakToWeakObjectsMapTable];
+    weakToWeakObjectsMapTable = [MEMORY[0x1E696AD18] weakToWeakObjectsMapTable];
     presentedFolderControllers = self->_presentedFolderControllers;
-    self->_presentedFolderControllers = v5;
+    self->_presentedFolderControllers = weakToWeakObjectsMapTable;
   }
 
-  v7 = [(SBHLibraryViewController *)self _additionalItemsIndicatorIconViewForFolderController:v4];
-  [(NSMapTable *)self->_presentedFolderControllers bs_setSafeObject:v7 forKey:v4];
-  [(NSMapTable *)self->_dismissingFolderControllers removeObjectForKey:v4];
+  v7 = [(SBHLibraryViewController *)self _additionalItemsIndicatorIconViewForFolderController:controllerCopy];
+  [(NSMapTable *)self->_presentedFolderControllers bs_setSafeObject:v7 forKey:controllerCopy];
+  [(NSMapTable *)self->_dismissingFolderControllers removeObjectForKey:controllerCopy];
   [v7 _updateAccessoryViewAnimated:1];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __72__SBHLibraryViewController__notifyObserversWillPresentFolderController___block_invoke;
   v9[3] = &unk_1E808EA70;
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
+  v10 = controllerCopy;
+  v8 = controllerCopy;
   [(SBHLibraryViewController *)self _enumerateObservers:v9];
 }
 
@@ -4104,30 +4104,30 @@ void __72__SBHLibraryViewController__notifyObserversWillPresentFolderController_
   }
 }
 
-- (void)_notifyObserversWillDismissFolderController:(id)a3
+- (void)_notifyObserversWillDismissFolderController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   dismissingFolderControllers = self->_dismissingFolderControllers;
   if (!dismissingFolderControllers)
   {
-    v6 = [MEMORY[0x1E696AD18] weakToWeakObjectsMapTable];
+    weakToWeakObjectsMapTable = [MEMORY[0x1E696AD18] weakToWeakObjectsMapTable];
     v7 = self->_dismissingFolderControllers;
-    self->_dismissingFolderControllers = v6;
+    self->_dismissingFolderControllers = weakToWeakObjectsMapTable;
 
     dismissingFolderControllers = self->_dismissingFolderControllers;
   }
 
-  v8 = [(SBHLibraryViewController *)self _additionalItemsIndicatorIconViewForFolderController:v4];
-  [(NSMapTable *)dismissingFolderControllers bs_setSafeObject:v8 forKey:v4];
+  v8 = [(SBHLibraryViewController *)self _additionalItemsIndicatorIconViewForFolderController:controllerCopy];
+  [(NSMapTable *)dismissingFolderControllers bs_setSafeObject:v8 forKey:controllerCopy];
 
-  [(NSMapTable *)self->_presentedFolderControllers removeObjectForKey:v4];
+  [(NSMapTable *)self->_presentedFolderControllers removeObjectForKey:controllerCopy];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __72__SBHLibraryViewController__notifyObserversWillDismissFolderController___block_invoke;
   v10[3] = &unk_1E808EA70;
   v10[4] = self;
-  v11 = v4;
-  v9 = v4;
+  v11 = controllerCopy;
+  v9 = controllerCopy;
   [(SBHLibraryViewController *)self _enumerateObservers:v10];
 }
 
@@ -4140,12 +4140,12 @@ void __72__SBHLibraryViewController__notifyObserversWillDismissFolderController_
   }
 }
 
-- (void)_notifyObserversDidDismissFolderController:(id)a3
+- (void)_notifyObserversDidDismissFolderController:(id)controller
 {
   dismissingFolderControllers = self->_dismissingFolderControllers;
-  v5 = a3;
-  [(NSMapTable *)dismissingFolderControllers removeObjectForKey:v5];
-  v6 = [(SBHLibraryViewController *)self _additionalItemsIndicatorIconViewForFolderController:v5];
+  controllerCopy = controller;
+  [(NSMapTable *)dismissingFolderControllers removeObjectForKey:controllerCopy];
+  v6 = [(SBHLibraryViewController *)self _additionalItemsIndicatorIconViewForFolderController:controllerCopy];
 
   [v6 _updateAccessoryViewAnimated:1];
 }
@@ -4226,19 +4226,19 @@ void __54__SBHLibraryViewController__notifyObserversDidPresent__block_invoke(uin
   }
 }
 
-- (void)_notifyObserversOfAppLaunchOfIcon:(id)a3 fromLocation:(id)a4
+- (void)_notifyObserversOfAppLaunchOfIcon:(id)icon fromLocation:(id)location
 {
-  v6 = a3;
-  v7 = a4;
+  iconCopy = icon;
+  locationCopy = location;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __75__SBHLibraryViewController__notifyObserversOfAppLaunchOfIcon_fromLocation___block_invoke;
   v10[3] = &unk_1E808EAC0;
   v10[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = iconCopy;
+  v12 = locationCopy;
+  v8 = locationCopy;
+  v9 = iconCopy;
   [(SBHLibraryViewController *)self _enumerateObservers:v10];
 }
 
@@ -4272,16 +4272,16 @@ void __63__SBHLibraryViewController__notifyObserversDataSourceDidChange__block_i
   }
 }
 
-- (void)_notifyObserversOfAcceptedDrop:(id)a3
+- (void)_notifyObserversOfAcceptedDrop:(id)drop
 {
-  v4 = a3;
+  dropCopy = drop;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __59__SBHLibraryViewController__notifyObserversOfAcceptedDrop___block_invoke;
   v6[3] = &unk_1E808EA70;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = dropCopy;
+  v5 = dropCopy;
   [(SBHLibraryViewController *)self _enumerateObservers:v6];
 }
 
@@ -4294,16 +4294,16 @@ void __59__SBHLibraryViewController__notifyObserversOfAcceptedDrop___block_invok
   }
 }
 
-- (void)_enumerateObservers:(id)a3
+- (void)_enumerateObservers:(id)observers
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  observersCopy = observers;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(NSHashTable *)self->_observers allObjects];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  allObjects = [(NSHashTable *)self->_observers allObjects];
+  v6 = [allObjects countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -4315,28 +4315,28 @@ void __59__SBHLibraryViewController__notifyObserversOfAcceptedDrop___block_invok
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allObjects);
         }
 
-        v4[2](v4, *(*(&v10 + 1) + 8 * v9++));
+        observersCopy[2](observersCopy, *(*(&v10 + 1) + 8 * v9++));
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [allObjects countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)_updateLibraryCategoryMap:(id)a3
+- (void)_updateLibraryCategoryMap:(id)map
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  mapCopy = map;
   if ([(SBHLibrarySearchController *)self->_containerViewController bs_isAppearingOrAppeared])
   {
-    v6 = [(SBNestingViewController *)self nestedViewController];
-    v7 = v6 || [(SBHLibraryViewController *)self isPresentingSearch]|| [(SBHLibraryViewController *)self contentVisibility]== 2;
+    nestedViewController = [(SBNestingViewController *)self nestedViewController];
+    v7 = nestedViewController || [(SBHLibraryViewController *)self isPresentingSearch]|| [(SBHLibraryViewController *)self contentVisibility]== 2;
   }
 
   else
@@ -4344,7 +4344,7 @@ void __59__SBHLibraryViewController__notifyObserversOfAcceptedDrop___block_invok
     v7 = 1;
   }
 
-  v8 = [(SBHLibraryViewController *)self _hiddenCategoriesDidChangeFromCurrentCategoryMap:self->_libraryCategoryMap toUpdatedCategoryMap:v5];
+  v8 = [(SBHLibraryViewController *)self _hiddenCategoriesDidChangeFromCurrentCategoryMap:self->_libraryCategoryMap toUpdatedCategoryMap:mapCopy];
   libraryCategoryMap = self->_libraryCategoryMap;
   v10 = SBLogLibrary();
   v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
@@ -4353,15 +4353,15 @@ void __59__SBHLibraryViewController__notifyObserversOfAcceptedDrop___block_invok
     if (v11)
     {
       v18 = 138412290;
-      v19 = v5;
+      v19 = mapCopy;
       _os_log_impl(&dword_1BEB18000, v10, OS_LOG_TYPE_DEFAULT, "library category map update received: %@", &v18, 0xCu);
     }
 
     pendingLibraryCategoryMap = self->_pendingLibraryCategoryMap;
     self->_pendingLibraryCategoryMap = 0;
 
-    [(SBHLibraryViewController *)self _installCategoryMap:v5];
-    if (!v5)
+    [(SBHLibraryViewController *)self _installCategoryMap:mapCopy];
+    if (!mapCopy)
     {
       v17 = SBLogLibrary();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -4378,11 +4378,11 @@ void __59__SBHLibraryViewController__notifyObserversOfAcceptedDrop___block_invok
     if (v11)
     {
       v18 = 138412290;
-      v19 = v5;
+      v19 = mapCopy;
       _os_log_impl(&dword_1BEB18000, v10, OS_LOG_TYPE_DEFAULT, "Queuing up pending library category map: %@", &v18, 0xCu);
     }
 
-    objc_storeStrong(&self->_pendingLibraryCategoryMap, a3);
+    objc_storeStrong(&self->_pendingLibraryCategoryMap, map);
     v12 = SBLogLibrary();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
@@ -4390,7 +4390,7 @@ void __59__SBHLibraryViewController__notifyObserversOfAcceptedDrop___block_invok
       _os_log_impl(&dword_1BEB18000, v12, OS_LOG_TYPE_DEFAULT, "Setting up partial library category map update...", &v18, 2u);
     }
 
-    v13 = [objc_opt_class() _updateCategoryMap:self->_libraryCategoryMap withCategoryDataFrom:v5];
+    v13 = [objc_opt_class() _updateCategoryMap:self->_libraryCategoryMap withCategoryDataFrom:mapCopy];
     v14 = SBLogLibrary();
     v15 = os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT);
     if (v13)
@@ -4416,15 +4416,15 @@ void __59__SBHLibraryViewController__notifyObserversOfAcceptedDrop___block_invok
   }
 }
 
-- (BOOL)_hiddenCategoriesDidChangeFromCurrentCategoryMap:(id)a3 toUpdatedCategoryMap:(id)a4
+- (BOOL)_hiddenCategoriesDidChangeFromCurrentCategoryMap:(id)map toUpdatedCategoryMap:(id)categoryMap
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SBHLibraryViewController *)self _hiddenCategoryIdentifierForCategoryMap:v7];
-  v9 = [v7 sortedApplicationIdentifiersForCategoryIdentifier:v8];
+  categoryMapCopy = categoryMap;
+  mapCopy = map;
+  v8 = [(SBHLibraryViewController *)self _hiddenCategoryIdentifierForCategoryMap:mapCopy];
+  v9 = [mapCopy sortedApplicationIdentifiersForCategoryIdentifier:v8];
 
-  v10 = [(SBHLibraryViewController *)self _hiddenCategoryIdentifierForCategoryMap:v6];
-  v11 = [v6 sortedApplicationIdentifiersForCategoryIdentifier:v10];
+  v10 = [(SBHLibraryViewController *)self _hiddenCategoryIdentifierForCategoryMap:categoryMapCopy];
+  v11 = [categoryMapCopy sortedApplicationIdentifiersForCategoryIdentifier:v10];
 
   v12 = [v9 count];
   if (v12 == [v11 count])
@@ -4442,21 +4442,21 @@ void __59__SBHLibraryViewController__notifyObserversOfAcceptedDrop___block_invok
   return v15;
 }
 
-- (id)_hiddenCategoryIdentifierForCategoryMap:(id)a3
+- (id)_hiddenCategoryIdentifierForCategoryMap:(id)map
 {
-  v3 = [a3 categoryIdentifiers];
-  v4 = [v3 bs_firstObjectPassingTest:&__block_literal_global_205];
+  categoryIdentifiers = [map categoryIdentifiers];
+  v4 = [categoryIdentifiers bs_firstObjectPassingTest:&__block_literal_global_205];
 
   return v4;
 }
 
-- (void)_dismissHiddenExpandedPodAnimated:(BOOL)a3 completion:(id)a4
+- (void)_dismissHiddenExpandedPodAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
-  v17 = a4;
-  v6 = [(SBNestingViewController *)self deepestNestedDescendantViewController];
+  animatedCopy = animated;
+  completionCopy = completion;
+  deepestNestedDescendantViewController = [(SBNestingViewController *)self deepestNestedDescendantViewController];
   v7 = objc_opt_class();
-  v8 = v6;
+  v8 = deepestNestedDescendantViewController;
   if (v7)
   {
     if (objc_opt_isKindOfClass())
@@ -4477,10 +4477,10 @@ void __59__SBHLibraryViewController__notifyObserversOfAcceptedDrop___block_invok
 
   v10 = v9;
 
-  v11 = [v10 folder];
+  folder = [v10 folder];
 
   v12 = objc_opt_class();
-  v13 = v11;
+  v13 = folder;
   if (v12)
   {
     if (objc_opt_isKindOfClass())
@@ -4501,28 +4501,28 @@ void __59__SBHLibraryViewController__notifyObserversOfAcceptedDrop___block_invok
 
   v15 = v14;
 
-  v16 = [v15 libraryCategoryIdentifier];
+  libraryCategoryIdentifier = [v15 libraryCategoryIdentifier];
 
-  if ([v16 predictionCategoryID] == 7)
+  if ([libraryCategoryIdentifier predictionCategoryID] == 7)
   {
-    [(SBHLibraryViewController *)self _dismissExpandedPods:v4 completion:v17];
+    [(SBHLibraryViewController *)self _dismissExpandedPods:animatedCopy completion:completionCopy];
   }
 
-  else if (v17)
+  else if (completionCopy)
   {
-    v17[2](v17, 0);
+    completionCopy[2](completionCopy, 0);
   }
 }
 
-+ (id)_updateCategoryMap:(id)a3 withCategoryDataFrom:(id)a4
++ (id)_updateCategoryMap:(id)map withCategoryDataFrom:(id)from
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 mutableCopy];
-  [v7 updateRecentlyAddedCategoryFromMap:v5];
+  fromCopy = from;
+  mapCopy = map;
+  v7 = [mapCopy mutableCopy];
+  [v7 updateRecentlyAddedCategoryFromMap:fromCopy];
 
-  LOBYTE(v5) = BSEqualObjects();
-  if (v5)
+  LOBYTE(fromCopy) = BSEqualObjects();
+  if (fromCopy)
   {
     v8 = 0;
   }
@@ -4559,34 +4559,34 @@ void __59__SBHLibraryViewController__notifyObserversOfAcceptedDrop___block_invok
   }
 }
 
-- (void)_installCategoryMap:(id)a3
+- (void)_installCategoryMap:(id)map
 {
   v29 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  mapCopy = map;
   if ([(SBHLibraryViewController *)self isViewLoaded])
   {
-    v6 = [(SBHLibraryViewController *)self bs_isAppearingOrAppeared];
+    bs_isAppearingOrAppeared = [(SBHLibraryViewController *)self bs_isAppearingOrAppeared];
   }
 
   else
   {
-    v6 = 0;
+    bs_isAppearingOrAppeared = 0;
   }
 
   v7 = SBLogLibrary();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v26 = v5;
+    v26 = mapCopy;
     v27 = 1024;
-    v28 = v6;
+    v28 = bs_isAppearingOrAppeared;
     _os_log_impl(&dword_1BEB18000, v7, OS_LOG_TYPE_DEFAULT, "Installing category map %@ - animated %{BOOL}u", buf, 0x12u);
   }
 
-  objc_storeStrong(&self->_libraryCategoryMap, a3);
+  objc_storeStrong(&self->_libraryCategoryMap, map);
   v8 = [MEMORY[0x1E695DF70] arrayWithObject:self->_podFolderViewController];
   objc_opt_class();
-  v9 = [(SBNestingViewController *)self nestedViewController];
+  nestedViewController = [(SBNestingViewController *)self nestedViewController];
   v10 = SBFSafeCast();
   [v8 bs_safeAddObject:v10];
 
@@ -4611,9 +4611,9 @@ void __59__SBHLibraryViewController__notifyObserversOfAcceptedDrop___block_invok
 
         v16 = *(*(&v20 + 1) + 8 * i);
         [v16 setLibraryCategoryMap:{self->_libraryCategoryMap, v20}];
-        if (v6)
+        if (bs_isAppearingOrAppeared)
         {
-          [v16 layoutIconListsWithAnimationType:v6 - 1 forceRelayout:1];
+          [v16 layoutIconListsWithAnimationType:bs_isAppearingOrAppeared - 1 forceRelayout:1];
         }
       }
 
@@ -4625,26 +4625,26 @@ void __59__SBHLibraryViewController__notifyObserversOfAcceptedDrop___block_invok
 
   [(SBHIconLibraryTableViewController *)self->_iconTableViewController setLibraryCategoryMap:self->_libraryCategoryMap];
   v17 = MEMORY[0x1E695DFD8];
-  v18 = [(SBHLibraryCategoryMap *)self->_libraryCategoryMap categoryIdentifiers];
-  v19 = [v17 setWithArray:v18];
+  categoryIdentifiers = [(SBHLibraryCategoryMap *)self->_libraryCategoryMap categoryIdentifiers];
+  v19 = [v17 setWithArray:categoryIdentifiers];
   [(SBHLibraryViewController *)self _precacheIconViewControllersForCategories:v19];
 }
 
-- (void)libraryTableViewControllerDidAppear:(id)a3
+- (void)libraryTableViewControllerDidAppear:(id)appear
 {
   [(SBFolderController *)self->_podFolderViewController setContentVisibility:1];
 
   [(SBHLibraryViewController *)self invalidateSearchControllerAppLaunchResetTimer];
 }
 
-- (void)libraryTableViewControllerDidLaunchIcon:(id)a3
+- (void)libraryTableViewControllerDidLaunchIcon:(id)icon
 {
-  v5 = a3;
+  iconCopy = icon;
   [(SBHLibraryViewController *)self invalidateSearchControllerAppLaunchResetTimer];
-  v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"App Library Search launch of app '%@'", v5];
-  [(SBHLibraryViewController *)self _startAppLaunchResetTimer:v4];
+  iconCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"App Library Search launch of app '%@'", iconCopy];
+  [(SBHLibraryViewController *)self _startAppLaunchResetTimer:iconCopy];
 
-  [(SBHLibraryViewController *)self _notifyObserversOfAppLaunchOfIcon:v5 fromLocation:@"SBIconLocationAppLibrarySearch"];
+  [(SBHLibraryViewController *)self _notifyObserversOfAppLaunchOfIcon:iconCopy fromLocation:@"SBIconLocationAppLibrarySearch"];
 }
 
 - (void)_invalidateLibraryViewControllerDismissalTimer
@@ -4654,23 +4654,23 @@ void __59__SBHLibraryViewController__notifyObserversOfAcceptedDrop___block_invok
   self->_libraryViewControllerDismissalTimer = 0;
 }
 
-- (void)_startLibraryViewControllerDismissalTimer:(id)a3
+- (void)_startLibraryViewControllerDismissalTimer:(id)timer
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  timerCopy = timer;
   if (self->_libraryViewControllerDismissalTimer)
   {
     [(SBHLibraryViewController *)self _invalidateLibraryViewControllerDismissalTimer];
   }
 
-  v5 = [MEMORY[0x1E696AFB0] UUID];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
   v6 = SBLogLibrary();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v17 = v4;
+    v17 = timerCopy;
     v18 = 2114;
-    v19 = v5;
+    v19 = uUID;
     _os_log_impl(&dword_1BEB18000, v6, OS_LOG_TYPE_DEFAULT, "Starting App Library view controller dismissal timer for reason: %{public}@, session identifier %{public}@", buf, 0x16u);
   }
 
@@ -4680,9 +4680,9 @@ void __59__SBHLibraryViewController__notifyObserversOfAcceptedDrop___block_invok
   v12[1] = 3221225472;
   v12[2] = __70__SBHLibraryViewController__startLibraryViewControllerDismissalTimer___block_invoke;
   v12[3] = &unk_1E808EB08;
-  v8 = v4;
+  v8 = timerCopy;
   v13 = v8;
-  v9 = v5;
+  v9 = uUID;
   v14 = v9;
   objc_copyWeak(&v15, buf);
   v10 = [v7 scheduledTimerWithTimeInterval:0 repeats:v12 block:480.0];
@@ -4718,11 +4718,11 @@ void __70__SBHLibraryViewController__startLibraryViewControllerDismissalTimer___
   }
 }
 
-- (void)_dismissLibraryViewControllerForReason:(id)a3 sessionIdentifier:(id)a4
+- (void)_dismissLibraryViewControllerForReason:(id)reason sessionIdentifier:(id)identifier
 {
   v14 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  reasonCopy = reason;
+  identifierCopy = identifier;
   [(SBHLibraryViewController *)self invalidateSearchControllerAppLaunchResetTimer];
   if ([(SBHLibraryViewController *)self bs_isAppearingOrAppeared]&& [(SBHLibraryViewController *)self contentVisibility]!= 2)
   {
@@ -4730,17 +4730,17 @@ void __70__SBHLibraryViewController__startLibraryViewControllerDismissalTimer___
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 138543618;
-      v11 = v6;
+      v11 = reasonCopy;
       v12 = 2114;
-      v13 = v7;
+      v13 = identifierCopy;
       _os_log_impl(&dword_1BEB18000, v9, OS_LOG_TYPE_DEFAULT, "App Library view controller dismissal timer won't dismiss for reason %{public}@, session identifier %{public}@ -- container view controller is visible and it'd be really bad if we just changed the way the UI looked while they're using it", &v10, 0x16u);
     }
   }
 
   else
   {
-    v8 = [(SBHLibraryViewController *)self behaviorDelegate];
-    [v8 libraryViewControllerRequestsDismissal:self];
+    behaviorDelegate = [(SBHLibraryViewController *)self behaviorDelegate];
+    [behaviorDelegate libraryViewControllerRequestsDismissal:self];
   }
 }
 
@@ -4751,18 +4751,18 @@ void __70__SBHLibraryViewController__startLibraryViewControllerDismissalTimer___
   self->_searchControllerAppLaunchResetTimer = 0;
 }
 
-- (void)_startAppLaunchResetTimer:(id)a3
+- (void)_startAppLaunchResetTimer:(id)timer
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E696AFB0] UUID];
+  timerCopy = timer;
+  uUID = [MEMORY[0x1E696AFB0] UUID];
   v6 = SBLogLibrary();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v17 = v4;
+    v17 = timerCopy;
     v18 = 2114;
-    v19 = v5;
+    v19 = uUID;
     _os_log_impl(&dword_1BEB18000, v6, OS_LOG_TYPE_DEFAULT, "Starting app launch reset timer for reason: %{public}@, session identifier %{public}@", buf, 0x16u);
   }
 
@@ -4772,9 +4772,9 @@ void __70__SBHLibraryViewController__startLibraryViewControllerDismissalTimer___
   v12[1] = 3221225472;
   v12[2] = __54__SBHLibraryViewController__startAppLaunchResetTimer___block_invoke;
   v12[3] = &unk_1E808EB08;
-  v8 = v4;
+  v8 = timerCopy;
   v13 = v8;
-  v9 = v5;
+  v9 = uUID;
   v14 = v9;
   objc_copyWeak(&v15, buf);
   v10 = [v7 scheduledTimerWithTimeInterval:0 repeats:v12 block:8.0];
@@ -4810,11 +4810,11 @@ void __54__SBHLibraryViewController__startAppLaunchResetTimer___block_invoke(uin
   }
 }
 
-- (void)_dismissSearchIfNotInUseForReason:(id)a3 sessionIdentifier:(id)a4
+- (void)_dismissSearchIfNotInUseForReason:(id)reason sessionIdentifier:(id)identifier
 {
   v14 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  reasonCopy = reason;
+  identifierCopy = identifier;
   [(SBHLibraryViewController *)self invalidateSearchControllerAppLaunchResetTimer];
   if ([(SBHLibrarySearchController *)self->_containerViewController bs_isAppearingOrAppeared]&& [(SBHLibraryViewController *)self contentVisibility]!= 2)
   {
@@ -4822,9 +4822,9 @@ void __54__SBHLibraryViewController__startAppLaunchResetTimer___block_invoke(uin
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 138543618;
-      v11 = v6;
+      v11 = reasonCopy;
       v12 = 2114;
-      v13 = v7;
+      v13 = identifierCopy;
       v9 = "App launch reset timer for reason %{public}@, session identifier %{public}@ -- container view controller is visible and it'd be really bad if we just changed the way the UI looked while they're using it";
       goto LABEL_9;
     }
@@ -4840,9 +4840,9 @@ LABEL_10:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 138543618;
-      v11 = v6;
+      v11 = reasonCopy;
       v12 = 2114;
-      v13 = v7;
+      v13 = identifierCopy;
       v9 = "App launch won't dismiss search for reason %{public}@, session identifier %{public}@ -- search isn't active, so we can't dismiss something that isn't dismissable";
 LABEL_9:
       _os_log_impl(&dword_1BEB18000, v8, OS_LOG_TYPE_DEFAULT, v9, &v10, 0x16u);
@@ -4856,7 +4856,7 @@ LABEL_9:
 LABEL_11:
 }
 
-- (void)folderControllerWillBeginScrolling:(id)a3
+- (void)folderControllerWillBeginScrolling:(id)scrolling
 {
   if ([(SBHLibraryViewController *)self isPresentingSearch])
   {
@@ -4865,14 +4865,14 @@ LABEL_11:
   }
 }
 
-- (BOOL)folderController:(id)a3 iconListView:(id)a4 canHandleIconDropSession:(id)a5
+- (BOOL)folderController:(id)controller iconListView:(id)view canHandleIconDropSession:(id)session
 {
   v12 = *MEMORY[0x1E69E9840];
   v11 = *MEMORY[0x1E69D4390];
   v6 = MEMORY[0x1E695DEC8];
-  v7 = a5;
+  sessionCopy = session;
   v8 = [v6 arrayWithObjects:&v11 count:1];
-  v9 = [v7 hasItemsConformingToTypeIdentifiers:{v8, v11, v12}];
+  v9 = [sessionCopy hasItemsConformingToTypeIdentifiers:{v8, v11, v12}];
 
   if (v9)
   {
@@ -4885,13 +4885,13 @@ LABEL_11:
   }
 }
 
-- (id)folderController:(id)a3 iconListView:(id)a4 iconDropSessionDidUpdate:(id)a5
+- (id)folderController:(id)controller iconListView:(id)view iconDropSessionDidUpdate:(id)update
 {
-  v7 = a5;
-  [(SBHLibraryViewController *)self _updateDragPreviewIconViewsForDropSession:v7 inIconListView:a4];
-  LODWORD(a4) = [(SBHLibraryViewController *)self _canPerformDropForAnyItemInSession:v7];
+  updateCopy = update;
+  [(SBHLibraryViewController *)self _updateDragPreviewIconViewsForDropSession:updateCopy inIconListView:view];
+  LODWORD(view) = [(SBHLibraryViewController *)self _canPerformDropForAnyItemInSession:updateCopy];
 
-  if (a4)
+  if (view)
   {
     v8 = 3;
   }
@@ -4906,25 +4906,25 @@ LABEL_11:
   return v9;
 }
 
-- (void)folderController:(id)a3 iconListView:(id)a4 performIconDrop:(id)a5
+- (void)folderController:(id)controller iconListView:(id)view performIconDrop:(id)drop
 {
   v44 = *MEMORY[0x1E69E9840];
-  v6 = a5;
-  v33 = self;
-  v7 = [(SBHLibraryViewController *)self iconModel];
-  v31 = [v7 rootFolder];
-  v32 = [MEMORY[0x1E695DF70] array];
+  dropCopy = drop;
+  selfCopy = self;
+  iconModel = [(SBHLibraryViewController *)self iconModel];
+  rootFolder = [iconModel rootFolder];
+  array = [MEMORY[0x1E695DF70] array];
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v8 = [v6 items];
-  v9 = [v8 countByEnumeratingWithState:&v38 objects:v43 count:16];
+  items = [dropCopy items];
+  v9 = [items countByEnumeratingWithState:&v38 objects:v43 count:16];
   if (v9)
   {
     v10 = v9;
-    v29 = v7;
-    v30 = v6;
+    v29 = iconModel;
+    v30 = dropCopy;
     v11 = 0;
     v12 = *v39;
     do
@@ -4933,43 +4933,43 @@ LABEL_11:
       {
         if (*v39 != v12)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(items);
         }
 
         v14 = *(*(&v38 + 1) + 8 * i);
-        v15 = [v14 sbh_appDragLocalContext];
-        v16 = [v15 startLocation] != 4;
-        v17 = [(SBHLibraryViewController *)v33 _iconIdentifierForDragItem:v14];
+        sbh_appDragLocalContext = [v14 sbh_appDragLocalContext];
+        v16 = [sbh_appDragLocalContext startLocation] != 4;
+        v17 = [(SBHLibraryViewController *)selfCopy _iconIdentifierForDragItem:v14];
         if (v17)
         {
-          [v32 addObject:v17];
+          [array addObject:v17];
         }
 
-        v18 = [v15 containedIconIdentifiers];
-        v19 = v18;
-        if (v18)
+        containedIconIdentifiers = [sbh_appDragLocalContext containedIconIdentifiers];
+        v19 = containedIconIdentifiers;
+        if (containedIconIdentifiers)
         {
-          v20 = [v18 allObjects];
-          [v32 addObjectsFromArray:v20];
+          allObjects = [containedIconIdentifiers allObjects];
+          [array addObjectsFromArray:allObjects];
         }
 
         v11 |= v16;
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v38 objects:v43 count:16];
+      v10 = [items countByEnumeratingWithState:&v38 objects:v43 count:16];
     }
 
     while (v10);
 
-    v7 = v29;
-    v6 = v30;
+    iconModel = v29;
+    dropCopy = v30;
     if (v11)
     {
       v36 = 0u;
       v37 = 0u;
       v34 = 0u;
       v35 = 0u;
-      v21 = v32;
+      v21 = array;
       v22 = [v21 countByEnumeratingWithState:&v34 objects:v42 count:16];
       if (v22)
       {
@@ -4985,10 +4985,10 @@ LABEL_11:
             }
 
             v26 = [v29 leafIconForIdentifier:*(*(&v34 + 1) + 8 * j)];
-            if ([(SBHLibraryViewController *)v33 _canPerformDropForDraggedIcon:v26])
+            if ([(SBHLibraryViewController *)selfCopy _canPerformDropForDraggedIcon:v26])
             {
-              v27 = [v31 ignoredList];
-              v28 = [v27 addIcon:v26];
+              ignoredList = [rootFolder ignoredList];
+              v28 = [ignoredList addIcon:v26];
             }
           }
 
@@ -4998,7 +4998,7 @@ LABEL_11:
         while (v23);
       }
 
-      [(SBHLibraryViewController *)v33 _notifyObserversOfAcceptedDrop:v30];
+      [(SBHLibraryViewController *)selfCopy _notifyObserversOfAcceptedDrop:v30];
     }
   }
 
@@ -5007,14 +5007,14 @@ LABEL_11:
   }
 }
 
-- (id)folderController:(id)a3 iconListView:(id)a4 previewForDroppingIconDragItem:(id)a5 proposedPreview:(id)a6
+- (id)folderController:(id)controller iconListView:(id)view previewForDroppingIconDragItem:(id)item proposedPreview:(id)preview
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  v12 = [(SBHLibraryViewController *)self _iconIdentifierForDragItem:v10];
-  v13 = [(SBHLibraryViewController *)self iconModel];
-  v14 = [v13 leafIconForIdentifier:v12];
+  viewCopy = view;
+  itemCopy = item;
+  previewCopy = preview;
+  v12 = [(SBHLibraryViewController *)self _iconIdentifierForDragItem:itemCopy];
+  iconModel = [(SBHLibraryViewController *)self iconModel];
+  v14 = [iconModel leafIconForIdentifier:v12];
 
   v15 = [(SBHLibraryViewController *)self firstNonSuggestionsOrRecentsIconViewForIcon:v14];
   if (!v15)
@@ -5026,26 +5026,26 @@ LABEL_11:
   *&v60.a = *MEMORY[0x1E695EFD0];
   *&v60.c = v54;
   *&v60.tx = *(MEMORY[0x1E695EFD0] + 32);
-  [v9 iconContentScale];
+  [viewCopy iconContentScale];
   *&v59.a = v56;
   *&v59.c = v55;
   *&v59.tx = v53;
   CGAffineTransformScale(&v60, &v59, v16, v16);
   if (v15)
   {
-    v17 = [v15 superview];
+    superview = [v15 superview];
     [v15 center];
-    [v17 convertPoint:v9 toView:?];
+    [superview convertPoint:viewCopy toView:?];
     v19 = v18;
     v21 = v20;
 
     v22 = objc_alloc(MEMORY[0x1E69DC9A8]);
     v59 = v60;
-    v23 = [v22 initWithContainer:v9 center:&v59 transform:{v19, v21}];
+    v23 = [v22 initWithContainer:viewCopy center:&v59 transform:{v19, v21}];
     if (v23)
     {
 LABEL_5:
-      v24 = [v11 retargetedPreviewWithTarget:v23];
+      v24 = [previewCopy retargetedPreviewWithTarget:v23];
       [v24 set_springboardPlatterStyle:1];
       goto LABEL_15;
     }
@@ -5054,7 +5054,7 @@ LABEL_5:
   else
   {
     v58 = 0;
-    v25 = [(SBHLibraryViewController *)self _destinationFolderIconViewForDragItem:v10 folderRelativeIconIndexPath:&v58];
+    v25 = [(SBHLibraryViewController *)self _destinationFolderIconViewForDragItem:itemCopy folderRelativeIconIndexPath:&v58];
     v26 = v58;
     v27 = v26;
     if (v25)
@@ -5062,7 +5062,7 @@ LABEL_5:
       if (v26 && ![v26 sbListIndex])
       {
         [v25 frameForMiniIconAtIndex:{objc_msgSend(v27, "sbIconIndex")}];
-        [v9 convertRect:v25 fromView:?];
+        [viewCopy convertRect:v25 fromView:?];
         v38 = v37;
         v40 = v39;
         v42 = v41;
@@ -5070,7 +5070,7 @@ LABEL_5:
         UIRectGetCenter();
         v46 = v45;
         v48 = v47;
-        [v9 alignmentIconSize];
+        [viewCopy alignmentIconSize];
         v50 = v49;
         v62.origin.x = v38;
         v62.origin.y = v40;
@@ -5082,16 +5082,16 @@ LABEL_5:
         v60 = v59;
         v33 = objc_alloc(MEMORY[0x1E69DC9A8]);
         v59 = v60;
-        v34 = v9;
+        v34 = viewCopy;
         v35 = v46;
         v36 = v48;
       }
 
       else
       {
-        v28 = [v25 superview];
+        superview2 = [v25 superview];
         [v25 center];
-        [v28 convertPoint:v9 toView:?];
+        [superview2 convertPoint:viewCopy toView:?];
         v30 = v29;
         v32 = v31;
 
@@ -5100,7 +5100,7 @@ LABEL_5:
         v60 = v59;
         v33 = objc_alloc(MEMORY[0x1E69DC9A8]);
         v59 = v60;
-        v34 = v9;
+        v34 = viewCopy;
         v35 = v30;
         v36 = v32;
       }
@@ -5125,13 +5125,13 @@ LABEL_15:
   return v24;
 }
 
-- (void)folderController:(id)a3 iconListView:(id)a4 iconDragItem:(id)a5 willAnimateDropWithAnimator:(id)a6
+- (void)folderController:(id)controller iconListView:(id)view iconDragItem:(id)item willAnimateDropWithAnimator:(id)animator
 {
-  v8 = a5;
-  v9 = a6;
-  v10 = [(SBHLibraryViewController *)self _iconIdentifierForDragItem:v8];
-  v11 = [(SBHLibraryViewController *)self iconModel];
-  v12 = [v11 leafIconForIdentifier:v10];
+  itemCopy = item;
+  animatorCopy = animator;
+  v10 = [(SBHLibraryViewController *)self _iconIdentifierForDragItem:itemCopy];
+  iconModel = [(SBHLibraryViewController *)self iconModel];
+  v12 = [iconModel leafIconForIdentifier:v10];
 
   v13 = [(SBHLibraryViewController *)self firstIconViewForIcon:v12];
   v14 = v13;
@@ -5143,20 +5143,20 @@ LABEL_15:
     v28[3] = &unk_1E8088C90;
     v15 = v13;
     v29 = v15;
-    [v9 addAnimations:v28];
+    [animatorCopy addAnimations:v28];
     v26[0] = MEMORY[0x1E69E9820];
     v26[1] = 3221225472;
     v26[2] = __99__SBHLibraryViewController_folderController_iconListView_iconDragItem_willAnimateDropWithAnimator___block_invoke_2;
     v26[3] = &unk_1E8089000;
     v27 = v15;
-    [v9 addCompletion:v26];
+    [animatorCopy addCompletion:v26];
   }
 
-  v16 = [v8 sbh_appDragLocalContext];
-  v17 = [v16 portaledPreview];
+  sbh_appDragLocalContext = [itemCopy sbh_appDragLocalContext];
+  portaledPreview = [sbh_appDragLocalContext portaledPreview];
   if (objc_opt_respondsToSelector())
   {
-    v18 = v17;
+    v18 = portaledPreview;
   }
 
   else
@@ -5175,13 +5175,13 @@ LABEL_15:
     v20 = v19;
     v24 = v20;
     v25 = v14;
-    [v9 addAnimations:v23];
+    [animatorCopy addAnimations:v23];
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v21[2] = __99__SBHLibraryViewController_folderController_iconListView_iconDragItem_willAnimateDropWithAnimator___block_invoke_4;
     v21[3] = &unk_1E8089000;
     v22 = v20;
-    [v9 addCompletion:v21];
+    [animatorCopy addCompletion:v21];
   }
 }
 
@@ -5206,26 +5206,26 @@ uint64_t __99__SBHLibraryViewController_folderController_iconListView_iconDragIt
   return [v2 setDragState:3];
 }
 
-- (id)_iconIdentifierForDragItem:(id)a3
+- (id)_iconIdentifierForDragItem:(id)item
 {
-  v3 = [a3 sbh_appDragLocalContext];
-  v4 = [v3 uniqueIdentifier];
+  sbh_appDragLocalContext = [item sbh_appDragLocalContext];
+  uniqueIdentifier = [sbh_appDragLocalContext uniqueIdentifier];
 
-  return v4;
+  return uniqueIdentifier;
 }
 
-- (id)_draggedItemIdentifiersInSession:(id)a3
+- (id)_draggedItemIdentifiersInSession:(id)session
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
+  sessionCopy = session;
+  array = [MEMORY[0x1E695DF70] array];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v18 = v4;
-  v6 = [v4 items];
-  v7 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  v18 = sessionCopy;
+  items = [sessionCopy items];
+  v7 = [items countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v7)
   {
     v8 = v7;
@@ -5236,41 +5236,41 @@ uint64_t __99__SBHLibraryViewController_folderController_iconListView_iconDragIt
       {
         if (*v20 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(items);
         }
 
         v11 = *(*(&v19 + 1) + 8 * i);
-        v12 = [v11 sbh_appDragLocalContext];
+        sbh_appDragLocalContext = [v11 sbh_appDragLocalContext];
         v13 = [(SBHLibraryViewController *)self _iconIdentifierForDragItem:v11];
         if (v13)
         {
-          [v5 addObject:v13];
+          [array addObject:v13];
         }
 
-        v14 = [v12 containedIconIdentifiers];
-        v15 = v14;
-        if (v14)
+        containedIconIdentifiers = [sbh_appDragLocalContext containedIconIdentifiers];
+        v15 = containedIconIdentifiers;
+        if (containedIconIdentifiers)
         {
-          v16 = [v14 allObjects];
-          [v5 addObjectsFromArray:v16];
+          allObjects = [containedIconIdentifiers allObjects];
+          [array addObjectsFromArray:allObjects];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v8 = [items countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v8);
   }
 
-  return v5;
+  return array;
 }
 
-- (id)_destinationFolderIconViewForDragItem:(id)a3 folderRelativeIconIndexPath:(id *)a4
+- (id)_destinationFolderIconViewForDragItem:(id)item folderRelativeIconIndexPath:(id *)path
 {
-  v6 = a3;
-  v7 = [(SBHLibraryViewController *)self _iconIdentifierForDragItem:v6];
-  v8 = [(SBHLibraryViewController *)self iconModel];
-  v9 = [v8 leafIconForIdentifier:v7];
+  itemCopy = item;
+  v7 = [(SBHLibraryViewController *)self _iconIdentifierForDragItem:itemCopy];
+  iconModel = [(SBHLibraryViewController *)self iconModel];
+  v9 = [iconModel leafIconForIdentifier:v7];
 
   if (v9)
   {
@@ -5294,9 +5294,9 @@ uint64_t __99__SBHLibraryViewController_folderController_iconListView_iconDragIt
     v13 = v9;
     v15 = &v22;
     [(SBHLibraryViewController *)self enumerateViewControllersUsingBlock:v12];
-    if (a4)
+    if (path)
     {
-      *a4 = v23[5];
+      *path = v23[5];
     }
 
     v10 = v17[5];
@@ -5334,12 +5334,12 @@ void __94__SBHLibraryViewController__destinationFolderIconViewForDragItem_folder
   }
 }
 
-- (BOOL)_canPerformDropForAnyItemInSession:(id)a3
+- (BOOL)_canPerformDropForAnyItemInSession:(id)session
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(SBHLibraryViewController *)self iconModel];
-  [(SBHLibraryViewController *)self _draggedItemIdentifiersInSession:v4];
+  sessionCopy = session;
+  iconModel = [(SBHLibraryViewController *)self iconModel];
+  [(SBHLibraryViewController *)self _draggedItemIdentifiersInSession:sessionCopy];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -5358,7 +5358,7 @@ void __94__SBHLibraryViewController__destinationFolderIconViewForDragItem_folder
           objc_enumerationMutation(v6);
         }
 
-        v11 = [v5 leafIconForIdentifier:{*(*(&v15 + 1) + 8 * i), v15}];
+        v11 = [iconModel leafIconForIdentifier:{*(*(&v15 + 1) + 8 * i), v15}];
         v12 = [(SBHLibraryViewController *)self _canPerformDropForDraggedIcon:v11];
 
         if (v12)
@@ -5384,34 +5384,34 @@ LABEL_11:
   return v13;
 }
 
-- (BOOL)_canPerformDropForDraggedIcon:(id)a3
+- (BOOL)_canPerformDropForDraggedIcon:(id)icon
 {
-  if (!a3)
+  if (!icon)
   {
     return 0;
   }
 
-  v4 = a3;
-  v5 = [(SBHLibraryViewController *)self iconModel];
-  v6 = [v5 rootFolder];
-  v7 = [v6 ignoredList];
+  iconCopy = icon;
+  iconModel = [(SBHLibraryViewController *)self iconModel];
+  rootFolder = [iconModel rootFolder];
+  ignoredList = [rootFolder ignoredList];
 
-  LOBYTE(v6) = [v7 isAllowedToContainIcon:v4];
-  return v6;
+  LOBYTE(rootFolder) = [ignoredList isAllowedToContainIcon:iconCopy];
+  return rootFolder;
 }
 
-- (void)_updateDragPreviewIconViewsForDropSession:(id)a3 inIconListView:(id)a4
+- (void)_updateDragPreviewIconViewsForDropSession:(id)session inIconListView:(id)view
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [a4 iconViewConfigurationOptions];
+  sessionCopy = session;
+  iconViewConfigurationOptions = [view iconViewConfigurationOptions];
   [MEMORY[0x1E6979518] begin];
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v15 = v5;
-  obj = [v5 items];
+  v15 = sessionCopy;
+  obj = [sessionCopy items];
   v7 = [obj countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
@@ -5427,11 +5427,11 @@ LABEL_11:
           objc_enumerationMutation(obj);
         }
 
-        v11 = [*(*(&v17 + 1) + 8 * v10) sbh_appDragLocalContext];
-        v12 = [v11 portaledPreview];
+        sbh_appDragLocalContext = [*(*(&v17 + 1) + 8 * v10) sbh_appDragLocalContext];
+        portaledPreview = [sbh_appDragLocalContext portaledPreview];
         if (objc_opt_respondsToSelector())
         {
-          v13 = v12;
+          v13 = portaledPreview;
         }
 
         else
@@ -5441,7 +5441,7 @@ LABEL_11:
 
         v14 = v13;
 
-        [v14 updateDestinationIconLocation:@"SBIconLocationAppLibraryCategoryPod" allowsLabelArea:(v6 & 2) == 0 animated:1];
+        [v14 updateDestinationIconLocation:@"SBIconLocationAppLibraryCategoryPod" allowsLabelArea:(iconViewConfigurationOptions & 2) == 0 animated:1];
         ++v10;
       }
 

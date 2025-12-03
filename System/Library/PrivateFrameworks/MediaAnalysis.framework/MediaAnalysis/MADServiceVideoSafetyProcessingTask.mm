@@ -1,31 +1,31 @@
 @interface MADServiceVideoSafetyProcessingTask
-- (BOOL)configureVideoProcessorWithError:(id *)a3;
+- (BOOL)configureVideoProcessorWithError:(id *)error;
 - (BOOL)fetchCachedAnalysisResults;
-- (BOOL)performQRCodeDetectionsForVideoURL:(id)a3;
-- (BOOL)run:(id *)a3;
-- (BOOL)validateProcessingSettingsWithError:(id *)a3;
-- (MADServiceVideoSafetyProcessingTask)initWithRequest:(id)a3 forAsset:(id)a4 cancelBlock:(id)a5 progressHandler:(id)a6 andCompletionHandler:(id)a7;
+- (BOOL)performQRCodeDetectionsForVideoURL:(id)l;
+- (BOOL)run:(id *)run;
+- (BOOL)validateProcessingSettingsWithError:(id *)error;
+- (MADServiceVideoSafetyProcessingTask)initWithRequest:(id)request forAsset:(id)asset cancelBlock:(id)block progressHandler:(id)handler andCompletionHandler:(id)completionHandler;
 - (id)classificationResults;
-- (id)finalizeSafetyResultsWithError:(id *)a3;
+- (id)finalizeSafetyResultsWithError:(id *)error;
 - (id)storeSafetyClassificationResultsForSharedAsset;
-- (void)_addToDetecionResultsWithSensitivityKey:(id)a3 sensitivity:(id)a4 sensitivityScoreKey:(id)a5 sensitivityScore:(id)a6;
-- (void)_processFrameBuffer:(opaqueCMSampleBuffer *)a3 stop:(BOOL *)a4;
+- (void)_addToDetecionResultsWithSensitivityKey:(id)key sensitivity:(id)sensitivity sensitivityScoreKey:(id)scoreKey sensitivityScore:(id)score;
+- (void)_processFrameBuffer:(opaqueCMSampleBuffer *)buffer stop:(BOOL *)stop;
 @end
 
 @implementation MADServiceVideoSafetyProcessingTask
 
-- (MADServiceVideoSafetyProcessingTask)initWithRequest:(id)a3 forAsset:(id)a4 cancelBlock:(id)a5 progressHandler:(id)a6 andCompletionHandler:(id)a7
+- (MADServiceVideoSafetyProcessingTask)initWithRequest:(id)request forAsset:(id)asset cancelBlock:(id)block progressHandler:(id)handler andCompletionHandler:(id)completionHandler
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  requestCopy = request;
+  assetCopy = asset;
+  blockCopy = block;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
   v31[0] = MEMORY[0x1E69E9820];
   v31[1] = 3221225472;
   v31[2] = __113__MADServiceVideoSafetyProcessingTask_initWithRequest_forAsset_cancelBlock_progressHandler_andCompletionHandler___block_invoke;
   v31[3] = &unk_1E834CF90;
-  v18 = v17;
+  v18 = completionHandlerCopy;
   v32 = v18;
   v30.receiver = self;
   v30.super_class = MADServiceVideoSafetyProcessingTask;
@@ -33,12 +33,12 @@
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_request, a3);
-    objc_storeStrong(&v20->_asset, a4);
+    objc_storeStrong(&v19->_request, request);
+    objc_storeStrong(&v20->_asset, asset);
     v20->_remainingDetections = [(MADVideoSafetyClassificationRequest *)v20->_request enableNudityDetection];
-    v21 = [(MADVideoSafetyClassificationRequest *)v20->_request enableGoreViolenceDetection];
+    enableGoreViolenceDetection = [(MADVideoSafetyClassificationRequest *)v20->_request enableGoreViolenceDetection];
     v22 = 2;
-    if (!v21)
+    if (!enableGoreViolenceDetection)
     {
       v22 = 0;
     }
@@ -48,7 +48,7 @@
     scoresForLabels = v20->_scoresForLabels;
     v20->_scoresForLabels = v23;
 
-    v25 = _Block_copy(v16);
+    v25 = _Block_copy(handlerCopy);
     progressHandler = v20->_progressHandler;
     v20->_progressHandler = v25;
 
@@ -56,7 +56,7 @@
     completionHandler = v20->_completionHandler;
     v20->_completionHandler = v27;
 
-    [(VCPMABaseTask *)v20 setCancelBlock:v15];
+    [(VCPMABaseTask *)v20 setCancelBlock:blockCopy];
     v20->_enablePowerLog = 1;
   }
 
@@ -73,37 +73,37 @@ void __113__MADServiceVideoSafetyProcessingTask_initWithRequest_forAsset_cancelB
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)_addToDetecionResultsWithSensitivityKey:(id)a3 sensitivity:(id)a4 sensitivityScoreKey:(id)a5 sensitivityScore:(id)a6
+- (void)_addToDetecionResultsWithSensitivityKey:(id)key sensitivity:(id)sensitivity sensitivityScoreKey:(id)scoreKey sensitivityScore:(id)score
 {
   v22[4] = *MEMORY[0x1E69E9840];
   v10 = MEMORY[0x1E69CA718];
   detectionResults = self->_detectionResults;
-  v21[0] = a3;
-  v21[1] = a5;
-  v22[0] = a4;
-  v22[1] = a6;
+  v21[0] = key;
+  v21[1] = scoreKey;
+  v22[0] = sensitivity;
+  v22[1] = score;
   v12 = *MEMORY[0x1E69CA800];
   v21[2] = *MEMORY[0x1E69CA7F8];
   v21[3] = v12;
-  v22[2] = a4;
-  v22[3] = a6;
+  v22[2] = sensitivity;
+  v22[3] = score;
   v13 = MEMORY[0x1E695DF20];
-  v14 = a6;
-  v15 = a5;
-  v16 = a4;
-  v17 = a3;
+  scoreCopy = score;
+  scoreKeyCopy = scoreKey;
+  sensitivityCopy = sensitivity;
+  keyCopy = key;
   v18 = [v13 dictionaryWithObjects:v22 forKeys:v21 count:4];
   v19 = [v10 mad_mergeSensitiveAnalysisResults:detectionResults withSensitiveAnalysisResults:v18];
   v20 = self->_detectionResults;
   self->_detectionResults = v19;
 }
 
-- (void)_processFrameBuffer:(opaqueCMSampleBuffer *)a3 stop:(BOOL *)a4
+- (void)_processFrameBuffer:(opaqueCMSampleBuffer *)buffer stop:(BOOL *)stop
 {
   v58 = *MEMORY[0x1E69E9840];
   videoAnalyzer = self->_videoAnalyzer;
   v51 = 0;
-  v7 = [(SCMLVideoAnalyzer *)videoAnalyzer addFrameBuffer:a3 error:&v51];
+  v7 = [(SCMLVideoAnalyzer *)videoAnalyzer addFrameBuffer:buffer error:&v51];
   v8 = v51;
   if (v7)
   {
@@ -163,26 +163,26 @@ LABEL_27:
           v35 = *MEMORY[0x1E69CA7E8];
           v36 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v10, "sensitiveGore")}];
           v37 = *MEMORY[0x1E69CA7F0];
-          v38 = [v10 sensitivityScoreGore];
-          [(MADServiceVideoSafetyProcessingTask *)self _addToDetecionResultsWithSensitivityKey:v35 sensitivity:v36 sensitivityScoreKey:v37 sensitivityScore:v38];
+          sensitivityScoreGore = [v10 sensitivityScoreGore];
+          [(MADServiceVideoSafetyProcessingTask *)self _addToDetecionResultsWithSensitivityKey:v35 sensitivity:v36 sensitivityScoreKey:v37 sensitivityScore:sensitivityScoreGore];
 
           v39 = *MEMORY[0x1E69CA808];
           v40 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v10, "sensitiveViolence")}];
           v41 = *MEMORY[0x1E69CA818];
-          v42 = [v10 sensitivityScoreViolence];
-          [(MADServiceVideoSafetyProcessingTask *)self _addToDetecionResultsWithSensitivityKey:v39 sensitivity:v40 sensitivityScoreKey:v41 sensitivityScore:v42];
+          sensitivityScoreViolence = [v10 sensitivityScoreViolence];
+          [(MADServiceVideoSafetyProcessingTask *)self _addToDetecionResultsWithSensitivityKey:v39 sensitivity:v40 sensitivityScoreKey:v41 sensitivityScore:sensitivityScoreViolence];
         }
 
         if ([(MADVideoSafetyClassificationRequest *)self->_request requiresScoresAndLabels])
         {
-          v43 = [v10 scoresForLabels];
+          scoresForLabels = [v10 scoresForLabels];
           v44 = *MEMORY[0x1E69CA7A0];
-          v45 = [v43 objectForKeyedSubscript:*MEMORY[0x1E69CA7A0]];
+          v45 = [scoresForLabels objectForKeyedSubscript:*MEMORY[0x1E69CA7A0]];
           [(NSMutableDictionary *)self->_scoresForLabels setObject:v45 forKeyedSubscript:v44];
 
-          v46 = [v10 scoresForLabels];
+          scoresForLabels2 = [v10 scoresForLabels];
           v47 = *MEMORY[0x1E69CA7C0];
-          v48 = [v46 objectForKeyedSubscript:*MEMORY[0x1E69CA7C0]];
+          v48 = [scoresForLabels2 objectForKeyedSubscript:*MEMORY[0x1E69CA7C0]];
           [(NSMutableDictionary *)self->_scoresForLabels setObject:v48 forKeyedSubscript:v47];
         }
 
@@ -210,20 +210,20 @@ LABEL_27:
         v25 = *MEMORY[0x1E69CA7D0];
         v26 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v10, "sensitiveExplicit")}];
         v27 = *MEMORY[0x1E69CA7D8];
-        v28 = [v10 sensitivityScoreExplicit];
-        [(MADServiceVideoSafetyProcessingTask *)self _addToDetecionResultsWithSensitivityKey:v25 sensitivity:v26 sensitivityScoreKey:v27 sensitivityScore:v28];
+        sensitivityScoreExplicit = [v10 sensitivityScoreExplicit];
+        [(MADServiceVideoSafetyProcessingTask *)self _addToDetecionResultsWithSensitivityKey:v25 sensitivity:v26 sensitivityScoreKey:v27 sensitivityScore:sensitivityScoreExplicit];
       }
 
       if ([(MADVideoSafetyClassificationRequest *)self->_request requiresScoresAndLabels])
       {
-        v29 = [v10 scoresForLabels];
+        scoresForLabels3 = [v10 scoresForLabels];
         v30 = *MEMORY[0x1E69CA7B8];
-        v31 = [v29 objectForKeyedSubscript:*MEMORY[0x1E69CA7B8]];
+        v31 = [scoresForLabels3 objectForKeyedSubscript:*MEMORY[0x1E69CA7B8]];
         [(NSMutableDictionary *)self->_scoresForLabels setObject:v31 forKeyedSubscript:v30];
 
-        v32 = [v10 scoresForLabels];
+        scoresForLabels4 = [v10 scoresForLabels];
         v33 = *MEMORY[0x1E69CA7A8];
-        v34 = [v32 objectForKeyedSubscript:*MEMORY[0x1E69CA7A8]];
+        v34 = [scoresForLabels4 objectForKeyedSubscript:*MEMORY[0x1E69CA7A8]];
         [(NSMutableDictionary *)self->_scoresForLabels setObject:v34 forKeyedSubscript:v33];
       }
 
@@ -254,7 +254,7 @@ LABEL_17:
     }
 
 LABEL_34:
-    *a4 = 1;
+    *stop = 1;
     goto LABEL_17;
   }
 
@@ -276,7 +276,7 @@ LABEL_34:
 LABEL_18:
 }
 
-- (BOOL)configureVideoProcessorWithError:(id *)a3
+- (BOOL)configureVideoProcessorWithError:(id *)error
 {
   v52 = *MEMORY[0x1E69E9840];
   if (MediaAnalysisLogLevel() >= 5 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
@@ -287,22 +287,22 @@ LABEL_18:
     _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "[%@] Configuring video processor", &buf, 0xCu);
   }
 
-  v5 = [MEMORY[0x1E695DF90] dictionary];
-  v6 = [MEMORY[0x1E695DF90] dictionary];
-  [v5 setObject:&unk_1F49BBA28 forKeyedSubscript:*MEMORY[0x1E6966130]];
-  [v5 setObject:&unk_1F49BBA40 forKeyedSubscript:*MEMORY[0x1E6966208]];
-  [v5 setObject:&unk_1F49BBA40 forKeyedSubscript:*MEMORY[0x1E69660B8]];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setObject:&unk_1F49BBA28 forKeyedSubscript:*MEMORY[0x1E6966130]];
+  [dictionary setObject:&unk_1F49BBA40 forKeyedSubscript:*MEMORY[0x1E6966208]];
+  [dictionary setObject:&unk_1F49BBA40 forKeyedSubscript:*MEMORY[0x1E69660B8]];
   v7 = [MEMORY[0x1E696AD98] numberWithBool:{-[MADVideoSafetyClassificationRequest appliesPreferredTrackTransform](self->_request, "appliesPreferredTrackTransform")}];
-  [v5 setObject:v7 forKeyedSubscript:@"AppliesPreferredTrackTransform"];
+  [dictionary setObject:v7 forKeyedSubscript:@"AppliesPreferredTrackTransform"];
 
-  v8 = [(MADVideoSafetyClassificationRequest *)self->_request sampling];
-  if (v8)
+  sampling = [(MADVideoSafetyClassificationRequest *)self->_request sampling];
+  if (sampling)
   {
     if (MediaAnalysisLogLevel() >= 5 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
     {
       v9 = objc_opt_class();
       v10 = v9;
-      v11 = [v8 description];
+      v11 = [sampling description];
       LODWORD(buf.value) = 138412546;
       *(&buf.value + 4) = v9;
       LOWORD(buf.flags) = 2112;
@@ -313,26 +313,26 @@ LABEL_18:
 
   else
   {
-    v8 = [objc_alloc(MEMORY[0x1E69AE500]) initWithFramesPerSync:1 frameLimit:30 uniformSampling:1];
+    sampling = [objc_alloc(MEMORY[0x1E69AE500]) initWithFramesPerSync:1 frameLimit:30 uniformSampling:1];
   }
 
   if ([(MADVideoSafetyClassificationRequest *)self->_request requiresBlastdoor])
   {
-    v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v8, "framesPerSync")}];
-    [v5 setObject:v12 forKeyedSubscript:*MEMORY[0x1E6987D38]];
+    v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(sampling, "framesPerSync")}];
+    [dictionary setObject:v12 forKeyedSubscript:*MEMORY[0x1E6987D38]];
 
-    v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v8, "frameLimit")}];
-    [v5 setObject:v13 forKeyedSubscript:@"FrameLimit"];
+    v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(sampling, "frameLimit")}];
+    [dictionary setObject:v13 forKeyedSubscript:@"FrameLimit"];
 
-    v14 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v8, "uniformSampling")}];
-    [v5 setObject:v14 forKeyedSubscript:@"UniformSampling"];
+    v14 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(sampling, "uniformSampling")}];
+    [dictionary setObject:v14 forKeyedSubscript:@"UniformSampling"];
   }
 
   else
   {
     [(VCPBlockBasedVideoProcessorProtocol *)self->_videoProcessor videoDuration];
     v30 = v29;
-    if (![v8 frameLimit] && objc_msgSend(v8, "uniformSampling") && MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
+    if (![sampling frameLimit] && objc_msgSend(sampling, "uniformSampling") && MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
     {
       v31 = objc_opt_class();
       LODWORD(buf.value) = 138412290;
@@ -341,19 +341,19 @@ LABEL_18:
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "[%@] Unexpected uniformSampling specified when frameLimit is 0, ignoring uniformSampling", &buf, 0xCu);
     }
 
-    if ([v8 framesPerSync])
+    if ([sampling framesPerSync])
     {
-      v33 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v8, "framesPerSync")}];
-      [v5 setObject:v33 forKeyedSubscript:*MEMORY[0x1E6987D38]];
+      v33 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(sampling, "framesPerSync")}];
+      [dictionary setObject:v33 forKeyedSubscript:*MEMORY[0x1E6987D38]];
 
-      if ([v8 frameLimit])
+      if ([sampling frameLimit])
       {
-        v34 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v8, "frameLimit")}];
-        [v6 setObject:v34 forKeyedSubscript:@"FrameLimit"];
+        v34 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(sampling, "frameLimit")}];
+        [dictionary2 setObject:v34 forKeyedSubscript:@"FrameLimit"];
 
-        if ([v8 uniformSampling])
+        if ([sampling uniformSampling])
         {
-          v35 = v30 / (([v8 frameLimit] - 1) + 0.1);
+          v35 = v30 / (([sampling frameLimit] - 1) + 0.1);
           if (v35 <= 0.0)
           {
             if (MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
@@ -378,21 +378,21 @@ LABEL_18:
             v36 = *MEMORY[0x1E695E480];
             location = buf;
             v37 = CMTimeCopyAsDictionary(&location, v36);
-            [v5 setObject:v37 forKeyedSubscript:*MEMORY[0x1E6987C68]];
+            [dictionary setObject:v37 forKeyedSubscript:*MEMORY[0x1E6987C68]];
           }
         }
       }
     }
 
-    else if ([v8 frameLimit])
+    else if ([sampling frameLimit])
     {
-      v38 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v8, "frameLimit")}];
-      [v6 setObject:v38 forKeyedSubscript:@"FrameLimit"];
+      v38 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(sampling, "frameLimit")}];
+      [dictionary2 setObject:v38 forKeyedSubscript:@"FrameLimit"];
 
-      if ([v8 uniformSampling])
+      if ([sampling uniformSampling])
       {
-        v39 = [MEMORY[0x1E696AD98] numberWithDouble:{objc_msgSend(v8, "frameLimit") / v30}];
-        [v6 setObject:v39 forKeyedSubscript:@"FramesPerSecond"];
+        v39 = [MEMORY[0x1E696AD98] numberWithDouble:{objc_msgSend(sampling, "frameLimit") / v30}];
+        [dictionary2 setObject:v39 forKeyedSubscript:@"FramesPerSecond"];
       }
     }
   }
@@ -402,25 +402,25 @@ LABEL_18:
     v15 = objc_opt_class();
     request = self->_request;
     v17 = v15;
-    v18 = [(MADVideoSafetyClassificationRequest *)request requiresBlastdoor];
+    requiresBlastdoor = [(MADVideoSafetyClassificationRequest *)request requiresBlastdoor];
     v19 = @"NO";
     LODWORD(buf.value) = 138413058;
     *(&buf.value + 4) = v15;
     LOWORD(buf.flags) = 2112;
-    if (v18)
+    if (requiresBlastdoor)
     {
       v19 = @"YES";
     }
 
     *(&buf.flags + 2) = v19;
     HIWORD(buf.epoch) = 2112;
-    v49 = *&v5;
+    v49 = *&dictionary;
     v50 = 2112;
-    v51 = v6;
+    v51 = dictionary2;
     _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "[%@] requiresBlastdoor: %@, decoder configuration: %@, request configuration: %@", &buf, 0x2Au);
   }
 
-  [(VCPBlockBasedVideoProcessorProtocol *)self->_videoProcessor setDecoderSettings:v5];
+  [(VCPBlockBasedVideoProcessorProtocol *)self->_videoProcessor setDecoderSettings:dictionary];
   objc_initWeak(&location, self);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -430,7 +430,7 @@ LABEL_18:
   v20 = _Block_copy(aBlock);
   videoProcessor = self->_videoProcessor;
   v44 = 0;
-  v22 = [(VCPBlockBasedVideoProcessorProtocol *)videoProcessor addFrameProcessingRequest:v20 withConfiguration:v6 error:&v44];
+  v22 = [(VCPBlockBasedVideoProcessorProtocol *)videoProcessor addFrameProcessingRequest:v20 withConfiguration:dictionary2 error:&v44];
   v23 = v44;
   if ((v22 & 1) == 0)
   {
@@ -450,9 +450,9 @@ LABEL_18:
       }
     }
 
-    if (a3)
+    if (error)
     {
-      *a3 = [v23 copy];
+      *error = [v23 copy];
     }
   }
 
@@ -538,10 +538,10 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  v9 = [v7 compactAnalysis];
-  if (v9)
+  compactAnalysis = [v7 compactAnalysis];
+  if (compactAnalysis)
   {
-    [(MADServiceVideoAsset *)self->_asset persistToPhotosWithCompactSCSensitivityAnalysis:v9 screenTimeDeviceImageSensitivity:SLOWORD(self->_detectedharms)];
+    [(MADServiceVideoAsset *)self->_asset persistToPhotosWithCompactSCSensitivityAnalysis:compactAnalysis screenTimeDeviceImageSensitivity:SLOWORD(self->_detectedharms)];
     v10 = 0;
   }
 
@@ -569,7 +569,7 @@ LABEL_16:
   return v10;
 }
 
-- (id)finalizeSafetyResultsWithError:(id *)a3
+- (id)finalizeSafetyResultsWithError:(id *)error
 {
   v63 = *MEMORY[0x1E69E9840];
   if (MediaAnalysisLogLevel() >= 5 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
@@ -585,9 +585,9 @@ LABEL_16:
   {
     videoAnalyzer = self->_videoAnalyzer;
     v55 = 0;
-    v8 = [(SCMLVideoAnalyzer *)videoAnalyzer finalizeAnalysis:&v55];
+    classificationResults = [(SCMLVideoAnalyzer *)videoAnalyzer finalizeAnalysis:&v55];
     v9 = v55;
-    if (v8)
+    if (classificationResults)
     {
       v10 = v9 == 0;
     }
@@ -616,7 +616,7 @@ LABEL_16:
         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[%@] Failed to run %@::finalizeAnalysis: %@", buf, 0x20u);
       }
 
-      if (!a3)
+      if (!error)
       {
         v18 = 0;
         goto LABEL_42;
@@ -633,29 +633,29 @@ LABEL_16:
       if ([(MADServiceVideoAsset *)self->_asset isSharedPhotosAsset])
       {
         v20 = *MEMORY[0x1E69CA7D0];
-        v21 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v8, "sensitiveExplicit")}];
+        v21 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(classificationResults, "sensitiveExplicit")}];
         v22 = *MEMORY[0x1E69CA7D8];
-        v23 = [v8 sensitivityScoreExplicit];
+        sensitivityScoreExplicit = [classificationResults sensitivityScoreExplicit];
         v6 = 0x1EC42C000;
-        [(MADServiceVideoSafetyProcessingTask *)self _addToDetecionResultsWithSensitivityKey:v20 sensitivity:v21 sensitivityScoreKey:v22 sensitivityScore:v23];
+        [(MADServiceVideoSafetyProcessingTask *)self _addToDetecionResultsWithSensitivityKey:v20 sensitivity:v21 sensitivityScoreKey:v22 sensitivityScore:sensitivityScoreExplicit];
       }
 
       if ([(MADVideoSafetyClassificationRequest *)self->_request requiresScoresAndLabels])
       {
-        v24 = [v8 scoresForLabels];
+        scoresForLabels = [classificationResults scoresForLabels];
         v25 = *MEMORY[0x1E69CA7B8];
-        v26 = [v24 objectForKeyedSubscript:*MEMORY[0x1E69CA7B8]];
+        v26 = [scoresForLabels objectForKeyedSubscript:*MEMORY[0x1E69CA7B8]];
         [(NSMutableDictionary *)self->_scoresForLabels setObject:v26 forKeyedSubscript:v25];
 
-        v27 = [v8 scoresForLabels];
+        scoresForLabels2 = [classificationResults scoresForLabels];
         v28 = *MEMORY[0x1E69CA7A8];
-        v29 = [v27 objectForKeyedSubscript:*MEMORY[0x1E69CA7A8]];
+        v29 = [scoresForLabels2 objectForKeyedSubscript:*MEMORY[0x1E69CA7A8]];
         [(NSMutableDictionary *)self->_scoresForLabels setObject:v29 forKeyedSubscript:v28];
 
         v6 = 0x1EC42C000uLL;
       }
 
-      self->_detectedharms |= [v8 sensitiveExplicit];
+      self->_detectedharms |= [classificationResults sensitiveExplicit];
       remainingDetections = self->_remainingDetections ^ 1;
       self->_remainingDetections = remainingDetections;
     }
@@ -665,41 +665,41 @@ LABEL_16:
       if ([*(&self->super.super.super.isa + *(v6 + 2912)) isSharedPhotosAsset])
       {
         v30 = *MEMORY[0x1E69CA7E8];
-        v31 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v8, "sensitiveGore")}];
+        v31 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(classificationResults, "sensitiveGore")}];
         v32 = *MEMORY[0x1E69CA7F0];
-        v33 = [v8 sensitivityScoreGore];
-        [(MADServiceVideoSafetyProcessingTask *)self _addToDetecionResultsWithSensitivityKey:v30 sensitivity:v31 sensitivityScoreKey:v32 sensitivityScore:v33];
+        sensitivityScoreGore = [classificationResults sensitivityScoreGore];
+        [(MADServiceVideoSafetyProcessingTask *)self _addToDetecionResultsWithSensitivityKey:v30 sensitivity:v31 sensitivityScoreKey:v32 sensitivityScore:sensitivityScoreGore];
 
         v34 = *MEMORY[0x1E69CA808];
-        v35 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v8, "sensitiveViolence")}];
+        v35 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(classificationResults, "sensitiveViolence")}];
         v36 = *MEMORY[0x1E69CA818];
-        v37 = [v8 sensitivityScoreViolence];
-        [(MADServiceVideoSafetyProcessingTask *)self _addToDetecionResultsWithSensitivityKey:v34 sensitivity:v35 sensitivityScoreKey:v36 sensitivityScore:v37];
+        sensitivityScoreViolence = [classificationResults sensitivityScoreViolence];
+        [(MADServiceVideoSafetyProcessingTask *)self _addToDetecionResultsWithSensitivityKey:v34 sensitivity:v35 sensitivityScoreKey:v36 sensitivityScore:sensitivityScoreViolence];
       }
 
       if ([(MADVideoSafetyClassificationRequest *)self->_request requiresScoresAndLabels])
       {
-        v38 = [v8 scoresForLabels];
+        scoresForLabels3 = [classificationResults scoresForLabels];
         v39 = *MEMORY[0x1E69CA7A0];
-        v40 = [v38 objectForKeyedSubscript:*MEMORY[0x1E69CA7A0]];
+        v40 = [scoresForLabels3 objectForKeyedSubscript:*MEMORY[0x1E69CA7A0]];
         [(NSMutableDictionary *)self->_scoresForLabels setObject:v40 forKeyedSubscript:v39];
 
-        v41 = [v8 scoresForLabels];
+        scoresForLabels4 = [classificationResults scoresForLabels];
         v42 = *MEMORY[0x1E69CA7C0];
-        v43 = [v41 objectForKeyedSubscript:*MEMORY[0x1E69CA7C0]];
+        v43 = [scoresForLabels4 objectForKeyedSubscript:*MEMORY[0x1E69CA7C0]];
         [(NSMutableDictionary *)self->_scoresForLabels setObject:v43 forKeyedSubscript:v42];
       }
 
-      if ([v8 sensitiveGore])
+      if ([classificationResults sensitiveGore])
       {
         v44 = 2;
       }
 
       else
       {
-        v45 = [v8 sensitiveViolence];
+        sensitiveViolence = [classificationResults sensitiveViolence];
         v44 = 2;
-        if (!v45)
+        if (!sensitiveViolence)
         {
           v44 = 0;
         }
@@ -711,10 +711,10 @@ LABEL_16:
   }
 
   v18 = objc_alloc_init(MEMORY[0x1E69AE4E8]);
-  v8 = [(MADServiceVideoSafetyProcessingTask *)self classificationResults];
+  classificationResults = [(MADServiceVideoSafetyProcessingTask *)self classificationResults];
   v46 = objc_alloc(MEMORY[0x1E69AE4F8]);
-  v47 = [v8 objectForKeyedSubscript:*MEMORY[0x1E69AE2E0]];
-  v48 = [v8 objectForKeyedSubscript:*MEMORY[0x1E69AE2D8]];
+  v47 = [classificationResults objectForKeyedSubscript:*MEMORY[0x1E69AE2E0]];
+  v48 = [classificationResults objectForKeyedSubscript:*MEMORY[0x1E69AE2D8]];
   if ([(NSMutableDictionary *)self->_scoresForLabels count])
   {
     scoresForLabels = self->_scoresForLabels;
@@ -737,13 +737,13 @@ LABEL_16:
     goto LABEL_42;
   }
 
-  v53 = [(MADServiceVideoSafetyProcessingTask *)self storeSafetyClassificationResultsForSharedAsset];
-  v11 = v53;
-  if (a3 && v53)
+  storeSafetyClassificationResultsForSharedAsset = [(MADServiceVideoSafetyProcessingTask *)self storeSafetyClassificationResultsForSharedAsset];
+  v11 = storeSafetyClassificationResultsForSharedAsset;
+  if (error && storeSafetyClassificationResultsForSharedAsset)
   {
-    v17 = [v53 copy];
+    v17 = [storeSafetyClassificationResultsForSharedAsset copy];
 LABEL_41:
-    *a3 = v17;
+    *error = v17;
   }
 
 LABEL_42:
@@ -751,7 +751,7 @@ LABEL_42:
   return v18;
 }
 
-- (BOOL)validateProcessingSettingsWithError:(id *)a3
+- (BOOL)validateProcessingSettingsWithError:(id *)error
 {
   v32[1] = *MEMORY[0x1E69E9840];
   if (![(MADServiceVideoAsset *)self->_asset userSafetyEligible])
@@ -762,7 +762,7 @@ LABEL_42:
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "User Safety either not entitled for client or not enabled", buf, 2u);
     }
 
-    if (!a3)
+    if (!error)
     {
       return 0;
     }
@@ -781,7 +781,7 @@ LABEL_23:
     v18 = v6;
     v19 = -18;
 LABEL_24:
-    *a3 = [v17 errorWithDomain:v18 code:v19 userInfo:v16];
+    *error = [v17 errorWithDomain:v18 code:v19 userInfo:v16];
 
     return 0;
   }
@@ -794,7 +794,7 @@ LABEL_24:
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Invalid request: qrCodeDetectorEnabled=YES and requiresScoresAndLabels=YES", buf, 2u);
     }
 
-    if (!a3)
+    if (!error)
     {
       return 0;
     }
@@ -818,7 +818,7 @@ LABEL_24:
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Invalid request: detections=0", buf, 2u);
     }
 
-    if (!a3)
+    if (!error)
     {
       return 0;
     }
@@ -834,17 +834,17 @@ LABEL_24:
     goto LABEL_23;
   }
 
-  v11 = [(MADVideoSafetyClassificationRequest *)self->_request sensitiveFrameCountThreshold];
-  if (!v11)
+  sensitiveFrameCountThreshold = [(MADVideoSafetyClassificationRequest *)self->_request sensitiveFrameCountThreshold];
+  if (!sensitiveFrameCountThreshold)
   {
     return 1;
   }
 
-  v12 = v11;
-  v13 = [(MADVideoSafetyClassificationRequest *)self->_request sensitiveFrameCountThreshold];
-  v14 = [v13 unsignedIntegerValue];
+  v12 = sensitiveFrameCountThreshold;
+  sensitiveFrameCountThreshold2 = [(MADVideoSafetyClassificationRequest *)self->_request sensitiveFrameCountThreshold];
+  unsignedIntegerValue = [sensitiveFrameCountThreshold2 unsignedIntegerValue];
 
-  if (v14)
+  if (unsignedIntegerValue)
   {
     return 1;
   }
@@ -857,7 +857,7 @@ LABEL_24:
     _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[%@] Invalid configuration, sensitiveFrameCountThreshold must be > 0", buf, 0xCu);
   }
 
-  if (a3)
+  if (error)
   {
     v21 = MEMORY[0x1E696ABC0];
     v22 = *MEMORY[0x1E696A768];
@@ -874,16 +874,16 @@ LABEL_24:
   return 0;
 }
 
-- (BOOL)performQRCodeDetectionsForVideoURL:(id)a3
+- (BOOL)performQRCodeDetectionsForVideoURL:(id)l
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  lCopy = l;
   if (+[MADUserSafetyQRCodeDetector enabled])
   {
     v5 = objc_autoreleasePoolPush();
     v6 = objc_alloc_init(MADUserSafetyVideoQRCodeDetector);
     request = self->_request;
-    v8 = [(MADServiceVideoProcessingSubtask *)self signpostPayload];
+    signpostPayload = [(MADServiceVideoProcessingSubtask *)self signpostPayload];
     if ([(MADServiceVideoAsset *)self->_asset isSharedPhotosAsset])
     {
       progressHandler = 0;
@@ -894,13 +894,13 @@ LABEL_24:
       progressHandler = self->_progressHandler;
     }
 
-    v10 = [(MADUserSafetyVideoQRCodeDetector *)v6 sensitivityFromQRCodeForVideoURL:v4 request:request signpostPayload:v8 progressHandler:progressHandler];
+    v10 = [(MADUserSafetyVideoQRCodeDetector *)v6 sensitivityFromQRCodeForVideoURL:lCopy request:request signpostPayload:signpostPayload progressHandler:progressHandler];
 
     if (v10)
     {
-      v11 = [v10 unsignedIntegerValue];
+      unsignedIntegerValue = [v10 unsignedIntegerValue];
       remainingDetections = self->_remainingDetections;
-      if (v11 & remainingDetections)
+      if (unsignedIntegerValue & remainingDetections)
       {
         if ([(MADServiceVideoAsset *)self->_asset isSharedPhotosAsset])
         {
@@ -912,7 +912,7 @@ LABEL_24:
         self->_remainingDetections = remainingDetections;
       }
 
-      if ((v11 & remainingDetections & 2) != 0)
+      if ((unsignedIntegerValue & remainingDetections & 2) != 0)
       {
         if ([(MADServiceVideoAsset *)self->_asset isSharedPhotosAsset])
         {
@@ -966,11 +966,11 @@ LABEL_24:
   v3 = 0x1EC42C000uLL;
   if (![(MADServiceVideoAsset *)self->_asset isSharedPhotosAsset]|| [(MADServiceVideoAsset *)self->_asset videoSensitivityAnalysisVersion]== 1)
   {
-    v4 = [(MADServiceVideoAsset *)self->_asset cachedSensitivity];
+    cachedSensitivity = [(MADServiceVideoAsset *)self->_asset cachedSensitivity];
     if ([(MADVideoSafetyClassificationRequest *)self->_request requiresScoresAndLabels])
     {
-      v5 = [(MADServiceVideoAsset *)self->_asset safetyScoresForLabels];
-      if (!v4)
+      safetyScoresForLabels = [(MADServiceVideoAsset *)self->_asset safetyScoresForLabels];
+      if (!cachedSensitivity)
       {
         goto LABEL_34;
       }
@@ -978,8 +978,8 @@ LABEL_24:
 
     else
     {
-      v5 = 0;
-      if (!v4)
+      safetyScoresForLabels = 0;
+      if (!cachedSensitivity)
       {
 LABEL_34:
 
@@ -1002,17 +1002,17 @@ LABEL_34:
       if ([(MADServiceVideoAsset *)self->_asset isSharedPhotosAsset])
       {
         v9 = *MEMORY[0x1E69CA7D0];
-        v10 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v4, "unsignedIntegerValue") & 1}];
+        v10 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(cachedSensitivity, "unsignedIntegerValue") & 1}];
         [(MADServiceVideoSafetyProcessingTask *)self _addToDetecionResultsWithSensitivityKey:v9 sensitivity:v10 sensitivityScoreKey:*MEMORY[0x1E69CA7D8] sensitivityScore:&unk_1F49BB568];
       }
 
       if ([(MADVideoSafetyClassificationRequest *)self->_request requiresScoresAndLabels])
       {
         v11 = *MEMORY[0x1E69CA7B8];
-        v12 = [v5 objectForKeyedSubscript:*MEMORY[0x1E69CA7B8]];
+        v12 = [safetyScoresForLabels objectForKeyedSubscript:*MEMORY[0x1E69CA7B8]];
         if (v12)
         {
-          v13 = [v5 objectForKeyedSubscript:v11];
+          v13 = [safetyScoresForLabels objectForKeyedSubscript:v11];
         }
 
         else
@@ -1023,10 +1023,10 @@ LABEL_34:
         v29 = v13;
         [(NSMutableDictionary *)self->_scoresForLabels setObject:v13 forKeyedSubscript:v11];
         v14 = *MEMORY[0x1E69CA7A8];
-        v15 = [v5 objectForKeyedSubscript:*MEMORY[0x1E69CA7A8]];
+        v15 = [safetyScoresForLabels objectForKeyedSubscript:*MEMORY[0x1E69CA7A8]];
         if (v15)
         {
-          v16 = [v5 objectForKeyedSubscript:v14];
+          v16 = [safetyScoresForLabels objectForKeyedSubscript:v14];
         }
 
         else
@@ -1039,7 +1039,7 @@ LABEL_34:
         v8 = 0x1EC42C000uLL;
       }
 
-      *(&self->super.super.super.isa + *(v8 + 2948)) = (*(&self->super.super.super.isa + *(v8 + 2948)) | [v4 unsignedIntegerValue] & 1);
+      *(&self->super.super.super.isa + *(v8 + 2948)) = (*(&self->super.super.super.isa + *(v8 + 2948)) | [cachedSensitivity unsignedIntegerValue] & 1);
       remainingDetections = self->_remainingDetections ^ 1;
       self->_remainingDetections = remainingDetections;
     }
@@ -1049,22 +1049,22 @@ LABEL_34:
       if ([(MADServiceVideoAsset *)self->_asset isSharedPhotosAsset])
       {
         v17 = *MEMORY[0x1E69CA7E8];
-        v18 = [MEMORY[0x1E696AD98] numberWithInt:{(objc_msgSend(v4, "unsignedIntegerValue") >> 1) & 1}];
+        v18 = [MEMORY[0x1E696AD98] numberWithInt:{(objc_msgSend(cachedSensitivity, "unsignedIntegerValue") >> 1) & 1}];
         [(MADServiceVideoSafetyProcessingTask *)self _addToDetecionResultsWithSensitivityKey:v17 sensitivity:v18 sensitivityScoreKey:*MEMORY[0x1E69CA7F0] sensitivityScore:&unk_1F49BB568];
 
         v19 = *MEMORY[0x1E69CA808];
-        v20 = [MEMORY[0x1E696AD98] numberWithInt:{(objc_msgSend(v4, "unsignedIntegerValue") >> 1) & 1}];
+        v20 = [MEMORY[0x1E696AD98] numberWithInt:{(objc_msgSend(cachedSensitivity, "unsignedIntegerValue") >> 1) & 1}];
         [(MADServiceVideoSafetyProcessingTask *)self _addToDetecionResultsWithSensitivityKey:v19 sensitivity:v20 sensitivityScoreKey:*MEMORY[0x1E69CA818] sensitivityScore:&unk_1F49BB568];
       }
 
       if ([(MADVideoSafetyClassificationRequest *)self->_request requiresScoresAndLabels])
       {
         v21 = *MEMORY[0x1E69CA7A0];
-        v22 = [v5 objectForKeyedSubscript:*MEMORY[0x1E69CA7A0]];
+        v22 = [safetyScoresForLabels objectForKeyedSubscript:*MEMORY[0x1E69CA7A0]];
         v23 = v8;
         if (v22)
         {
-          v24 = [v5 objectForKeyedSubscript:v21];
+          v24 = [safetyScoresForLabels objectForKeyedSubscript:v21];
         }
 
         else
@@ -1074,10 +1074,10 @@ LABEL_34:
 
         [(NSMutableDictionary *)self->_scoresForLabels setObject:v24 forKeyedSubscript:v21];
         v25 = *MEMORY[0x1E69CA7C0];
-        v26 = [v5 objectForKeyedSubscript:*MEMORY[0x1E69CA7C0]];
+        v26 = [safetyScoresForLabels objectForKeyedSubscript:*MEMORY[0x1E69CA7C0]];
         if (v26)
         {
-          v27 = [v5 objectForKeyedSubscript:v25];
+          v27 = [safetyScoresForLabels objectForKeyedSubscript:v25];
         }
 
         else
@@ -1090,7 +1090,7 @@ LABEL_34:
         v8 = v23;
       }
 
-      *(&self->super.super.super.isa + *(v8 + 2948)) = (*(&self->super.super.super.isa + *(v8 + 2948)) | [v4 unsignedIntegerValue] & 2);
+      *(&self->super.super.super.isa + *(v8 + 2948)) = (*(&self->super.super.super.isa + *(v8 + 2948)) | [cachedSensitivity unsignedIntegerValue] & 2);
       self->_remainingDetections ^= 2uLL;
     }
 
@@ -1100,7 +1100,7 @@ LABEL_34:
   return *(&self->super.super.super.isa + *(v3 + 2916)) == 0;
 }
 
-- (BOOL)run:(id *)a3
+- (BOOL)run:(id *)run
 {
   v187[1] = *MEMORY[0x1E69E9840];
   if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
@@ -1121,13 +1121,13 @@ LABEL_34:
     [v9 timeIntervalSince1970];
     v11 = v10;
 
-    v12 = [(MADServiceVideoAsset *)self->_asset isSharedPhotosAsset];
+    isSharedPhotosAsset = [(MADServiceVideoAsset *)self->_asset isSharedPhotosAsset];
     asset = self->_asset;
-    if (v12)
+    if (isSharedPhotosAsset)
     {
       progressHandler = self->_progressHandler;
-      v15 = [(VCPMABaseTask *)self cancelBlock];
-      v16 = [(MADServiceVideoAsset *)asset videoURLWithAllowDownload:1 progressHandler:progressHandler cancelBlock:v15];
+      cancelBlock = [(VCPMABaseTask *)self cancelBlock];
+      v16 = [(MADServiceVideoAsset *)asset videoURLWithAllowDownload:1 progressHandler:progressHandler cancelBlock:cancelBlock];
 
       if (v16)
       {
@@ -1138,10 +1138,10 @@ LABEL_7:
           {
             v40 = v8;
             v41 = objc_alloc_init(MEMORY[0x1E69AE4E8]);
-            v42 = [(MADServiceVideoSafetyProcessingTask *)self classificationResults];
+            classificationResults = [(MADServiceVideoSafetyProcessingTask *)self classificationResults];
             v43 = objc_alloc(MEMORY[0x1E69AE4F8]);
-            v44 = [v42 objectForKeyedSubscript:*MEMORY[0x1E69AE2E0]];
-            v45 = [v42 objectForKeyedSubscript:*MEMORY[0x1E69AE2D8]];
+            v44 = [classificationResults objectForKeyedSubscript:*MEMORY[0x1E69AE2E0]];
+            v45 = [classificationResults objectForKeyedSubscript:*MEMORY[0x1E69AE2D8]];
             v46 = [v43 initWithIsSensitiveNudity:v44 isSensitiveGoreViolence:v45 scoresForLabels:0];
             v185 = v46;
             v47 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v185 count:1];
@@ -1163,11 +1163,11 @@ LABEL_7:
           }
 
           v18 = v17;
-          if (a3)
+          if (run)
           {
             v19 = [v17 copy];
-            v20 = *a3;
-            *a3 = v19;
+            v20 = *run;
+            *run = v19;
           }
 
           goto LABEL_23;
@@ -1177,10 +1177,10 @@ LABEL_7:
         if ([(MADServiceVideoSafetyProcessingTask *)self fetchCachedAnalysisResults])
         {
           v34 = objc_alloc_init(MEMORY[0x1E69AE4E8]);
-          v35 = [(MADServiceVideoSafetyProcessingTask *)self classificationResults];
+          classificationResults2 = [(MADServiceVideoSafetyProcessingTask *)self classificationResults];
           v36 = objc_alloc(MEMORY[0x1E69AE4F8]);
-          v37 = [v35 objectForKeyedSubscript:*MEMORY[0x1E69AE2E0]];
-          v38 = [v35 objectForKeyedSubscript:*MEMORY[0x1E69AE2D8]];
+          v37 = [classificationResults2 objectForKeyedSubscript:*MEMORY[0x1E69AE2E0]];
+          v38 = [classificationResults2 objectForKeyedSubscript:*MEMORY[0x1E69AE2D8]];
           if ([(NSMutableDictionary *)self->_scoresForLabels count])
           {
             scoresForLabels = self->_scoresForLabels;
@@ -1199,8 +1199,8 @@ LABEL_7:
           (*(self->_completionHandler + 2))();
           if (self->_enablePowerLog)
           {
-            v75 = [(MADServiceVideoAsset *)self->_asset clientBundleID];
-            MADPLLogIVSProcessing(v75, 1, [(MADServiceVideoAsset *)self->_asset assetType], v11);
+            clientBundleID = [(MADServiceVideoAsset *)self->_asset clientBundleID];
+            MADPLLogIVSProcessing(clientBundleID, 1, [(MADServiceVideoAsset *)self->_asset assetType], v11);
           }
 
           v8 = v168;
@@ -1217,9 +1217,9 @@ LABEL_7:
           goto LABEL_143;
         }
 
-        v50 = [(MADVideoSafetyClassificationRequest *)self->_request requiresBlastdoor];
+        requiresBlastdoor = [(MADVideoSafetyClassificationRequest *)self->_request requiresBlastdoor];
         v51 = off_1E834A120;
-        if (!v50)
+        if (!requiresBlastdoor)
         {
           v51 = &off_1E834A210;
         }
@@ -1296,12 +1296,12 @@ LABEL_7:
               _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[%@] Failed to create %@ (%@)", buf, 0x20u);
             }
 
-            if (a3)
+            if (run)
             {
               v94 = [v167 copy];
               v22 = 0;
-              v70 = *a3;
-              *a3 = v94;
+              v70 = *run;
+              *run = v94;
 LABEL_74:
               v8 = v168;
 LABEL_141:
@@ -1326,16 +1326,16 @@ LABEL_141:
               v70 = v171;
               if (v69)
               {
-                v71 = [(MADVideoSafetyClassificationRequest *)self->_request sensitiveFrameCountThreshold];
-                if (v71)
+                sensitiveFrameCountThreshold = [(MADVideoSafetyClassificationRequest *)self->_request sensitiveFrameCountThreshold];
+                if (sensitiveFrameCountThreshold)
                 {
-                  v72 = [(MADVideoSafetyClassificationRequest *)self->_request sensitiveFrameCountThreshold];
-                  v163 = [v72 unsignedIntegerValue];
+                  sensitiveFrameCountThreshold2 = [(MADVideoSafetyClassificationRequest *)self->_request sensitiveFrameCountThreshold];
+                  unsignedIntegerValue = [sensitiveFrameCountThreshold2 unsignedIntegerValue];
                 }
 
                 else
                 {
-                  v163 = 2;
+                  unsignedIntegerValue = 2;
                 }
 
                 if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
@@ -1344,22 +1344,22 @@ LABEL_141:
                   *buf = 138412546;
                   v177 = v114;
                   v178 = 1024;
-                  LODWORD(v179) = v163;
+                  LODWORD(v179) = unsignedIntegerValue;
                   v115 = v114;
                   _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "[%@] Configuring sensitiveFrameCountThreshold: %u", buf, 0x12u);
                 }
 
                 v159 = objc_alloc(MEMORY[0x1E69CA788]);
-                v161 = [(MADVideoSafetyClassificationRequest *)self->_request sampling];
-                v158 = [v161 framesPerSync];
-                v160 = [(MADVideoSafetyClassificationRequest *)self->_request sampling];
-                v116 = [v160 frameLimit];
+                sampling = [(MADVideoSafetyClassificationRequest *)self->_request sampling];
+                framesPerSync = [sampling framesPerSync];
+                sampling2 = [(MADVideoSafetyClassificationRequest *)self->_request sampling];
+                frameLimit = [sampling2 frameLimit];
                 v162 = v70;
-                if (v116)
+                if (frameLimit)
                 {
                   v117 = MEMORY[0x1E696AD98];
-                  v157 = [(MADVideoSafetyClassificationRequest *)self->_request sampling];
-                  v118 = [v117 numberWithUnsignedInteger:{objc_msgSend(v157, "frameLimit")}];
+                  sampling3 = [(MADVideoSafetyClassificationRequest *)self->_request sampling];
+                  v118 = [v117 numberWithUnsignedInteger:{objc_msgSend(sampling3, "frameLimit")}];
                 }
 
                 else
@@ -1367,10 +1367,10 @@ LABEL_141:
                   v118 = 0;
                 }
 
-                v119 = [(MADVideoSafetyClassificationRequest *)self->_request sampling];
-                v165 = [v159 initWithOptions:0 framesPerSync:v158 frameLimit:v118 sensitiveFrameCountThreshold:v163 useUniformSampling:{objc_msgSend(v119, "uniformSampling")}];
+                sampling4 = [(MADVideoSafetyClassificationRequest *)self->_request sampling];
+                v165 = [v159 initWithOptions:0 framesPerSync:framesPerSync frameLimit:v118 sensitiveFrameCountThreshold:unsignedIntegerValue useUniformSampling:{objc_msgSend(sampling4, "uniformSampling")}];
 
-                if (v116)
+                if (frameLimit)
                 {
                 }
 
@@ -1382,9 +1382,9 @@ LABEL_141:
                 v123 = v122;
                 if (v121 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v122))
                 {
-                  v124 = [(MADServiceVideoProcessingSubtask *)self signpostPayload];
+                  signpostPayload = [(MADServiceVideoProcessingSubtask *)self signpostPayload];
                   *buf = 138412290;
-                  v177 = v124;
+                  v177 = signpostPayload;
                   _os_signpost_emit_with_name_impl(&dword_1C9B70000, v123, OS_SIGNPOST_INTERVAL_BEGIN, v121, "VCPVideoProcessor_Analyze", "%@", buf, 0xCu);
                 }
 
@@ -1400,9 +1400,9 @@ LABEL_141:
                   v130 = v129;
                   if (v121 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v129))
                   {
-                    v131 = [(MADServiceVideoProcessingSubtask *)self signpostPayload];
+                    signpostPayload2 = [(MADServiceVideoProcessingSubtask *)self signpostPayload];
                     *buf = 138412290;
-                    v177 = v131;
+                    v177 = signpostPayload2;
                     _os_signpost_emit_with_name_impl(&dword_1C9B70000, v130, OS_SIGNPOST_INTERVAL_END, v121, "VCPVideoProcessor_Analyze", "%@", buf, 0xCu);
                   }
 
@@ -1430,8 +1430,8 @@ LABEL_141:
                       (*(self->_completionHandler + 2))();
                       if (self->_enablePowerLog)
                       {
-                        v146 = [(MADServiceVideoAsset *)self->_asset clientBundleID];
-                        MADPLLogIVSProcessing(v146, 0, [(MADServiceVideoAsset *)self->_asset assetType], v11);
+                        clientBundleID2 = [(MADServiceVideoAsset *)self->_asset clientBundleID];
+                        MADPLLogIVSProcessing(clientBundleID2, 0, [(MADServiceVideoAsset *)self->_asset assetType], v11);
                       }
 
                       if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
@@ -1463,11 +1463,11 @@ LABEL_141:
                         v128 = v164;
                       }
 
-                      if (a3)
+                      if (run)
                       {
                         v154 = [v142 copy];
-                        v155 = *a3;
-                        *a3 = v154;
+                        v155 = *run;
+                        *run = v154;
                       }
                     }
 
@@ -1491,7 +1491,7 @@ LABEL_141:
                     v70 = v162;
                   }
 
-                  if (!a3)
+                  if (!run)
                   {
                     v22 = 0;
 LABEL_138:
@@ -1520,7 +1520,7 @@ LABEL_138:
                   }
 
                   v70 = v162;
-                  if (!a3)
+                  if (!run)
                   {
                     v22 = 0;
 LABEL_139:
@@ -1534,8 +1534,8 @@ LABEL_139:
 
                 v141 = [(NSError *)v136 copy];
                 v22 = 0;
-                v142 = *a3;
-                *a3 = v141;
+                v142 = *run;
+                *run = v141;
 LABEL_137:
 
                 goto LABEL_138;
@@ -1560,12 +1560,12 @@ LABEL_137:
                 v70 = v109;
               }
 
-              if (a3)
+              if (run)
               {
                 v112 = [v70 copy];
                 v22 = 0;
-                v113 = *a3;
-                *a3 = v112;
+                v113 = *run;
+                *run = v112;
                 v8 = v168;
 LABEL_140:
 
@@ -1589,7 +1589,7 @@ LABEL_140:
               _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[%@] Failed to create %@", buf, 0x16u);
             }
 
-            if (a3)
+            if (run)
             {
               v99 = MEMORY[0x1E696ABC0];
               v100 = *MEMORY[0x1E696A768];
@@ -1600,8 +1600,8 @@ LABEL_140:
               v175 = v70;
               v103 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v175 forKeys:&v174 count:1];
               v104 = [v99 errorWithDomain:v100 code:-50 userInfo:v103];
-              v105 = *a3;
-              *a3 = v104;
+              v105 = *run;
+              *run = v104;
 
               v22 = 0;
               goto LABEL_141;
@@ -1620,9 +1620,9 @@ LABEL_142:
           v78 = objc_opt_class();
           request = self->_request;
           v80 = v78;
-          v81 = [(MADVideoSafetyClassificationRequest *)request requiresBlastdoor];
+          requiresBlastdoor2 = [(MADVideoSafetyClassificationRequest *)request requiresBlastdoor];
           v82 = @"NO";
-          if (v81)
+          if (requiresBlastdoor2)
           {
             v82 = @"YES";
           }
@@ -1634,7 +1634,7 @@ LABEL_142:
           _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[%@] Failed to create video processor (requiresBlastdoor: %@)", buf, 0x16u);
         }
 
-        if (!a3)
+        if (!run)
         {
 LABEL_23:
           v22 = 0;
@@ -1646,9 +1646,9 @@ LABEL_23:
         v182 = *MEMORY[0x1E696A578];
         v85 = MEMORY[0x1E696AEC0];
         v86 = objc_opt_class();
-        v87 = [(MADVideoSafetyClassificationRequest *)self->_request requiresBlastdoor];
+        requiresBlastdoor3 = [(MADVideoSafetyClassificationRequest *)self->_request requiresBlastdoor];
         v88 = @"NO";
-        if (v87)
+        if (requiresBlastdoor3)
         {
           v88 = @"YES";
         }
@@ -1661,8 +1661,8 @@ LABEL_23:
         v31 = -50;
 LABEL_22:
         v32 = [v29 errorWithDomain:v30 code:v31 userInfo:v28];
-        v33 = *a3;
-        *a3 = v32;
+        v33 = *run;
+        *run = v32;
 
         goto LABEL_23;
       }
@@ -1686,7 +1686,7 @@ LABEL_22:
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[%@] Failed to obtain video resource", buf, 0xCu);
     }
 
-    if (!a3)
+    if (!run)
     {
       goto LABEL_23;
     }
@@ -1703,12 +1703,12 @@ LABEL_22:
     goto LABEL_22;
   }
 
-  if (a3)
+  if (run)
   {
     v21 = [v7 copy];
     v22 = 0;
-    v16 = *a3;
-    *a3 = v21;
+    v16 = *run;
+    *run = v21;
 LABEL_143:
 
     goto LABEL_144;

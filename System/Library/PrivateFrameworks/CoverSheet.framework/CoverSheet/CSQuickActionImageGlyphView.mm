@@ -1,22 +1,22 @@
 @interface CSQuickActionImageGlyphView
-- (CSQuickActionImageGlyphView)initWithSystemImageName:(id)a3 selectedSystemImageName:(id)a4 symbolScaleValue:(double)a5 buttonDiameter:(double)a6 symbolOnColor:(id)a7;
-- (id)_systemImageWithName:(id)a3;
-- (id)_systemImageWithName:(id)a3 configuration:(id)a4;
+- (CSQuickActionImageGlyphView)initWithSystemImageName:(id)name selectedSystemImageName:(id)imageName symbolScaleValue:(double)value buttonDiameter:(double)diameter symbolOnColor:(id)color;
+- (id)_systemImageWithName:(id)name;
+- (id)_systemImageWithName:(id)name configuration:(id)configuration;
 - (void)_updateImageAppearance;
 - (void)_updateTint;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setAppearance:(int64_t)a3;
-- (void)setSelected:(BOOL)a3;
+- (void)setAppearance:(int64_t)appearance;
+- (void)setSelected:(BOOL)selected;
 @end
 
 @implementation CSQuickActionImageGlyphView
 
-- (CSQuickActionImageGlyphView)initWithSystemImageName:(id)a3 selectedSystemImageName:(id)a4 symbolScaleValue:(double)a5 buttonDiameter:(double)a6 symbolOnColor:(id)a7
+- (CSQuickActionImageGlyphView)initWithSystemImageName:(id)name selectedSystemImageName:(id)imageName symbolScaleValue:(double)value buttonDiameter:(double)diameter symbolOnColor:(id)color
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a7;
+  nameCopy = name;
+  imageNameCopy = imageName;
+  colorCopy = color;
   v28.receiver = self;
   v28.super_class = CSQuickActionImageGlyphView;
   v16 = [(CSQuickActionImageGlyphView *)&v28 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
@@ -25,21 +25,21 @@
   {
     [(CSQuickActionImageGlyphView *)v16 setOpaque:0];
     [(CSQuickActionImageGlyphView *)v17 setContentMode:1];
-    objc_storeStrong(&v17->_imageName, a3);
-    objc_storeStrong(&v17->_selectedImageName, a4);
-    v18 = [(CSQuickActionImageGlyphView *)v17 _systemImageWithName:v13];
+    objc_storeStrong(&v17->_imageName, name);
+    objc_storeStrong(&v17->_selectedImageName, imageName);
+    v18 = [(CSQuickActionImageGlyphView *)v17 _systemImageWithName:nameCopy];
     image = v17->_image;
     v17->_image = v18;
 
-    v20 = [(CSQuickActionImageGlyphView *)v17 _systemImageWithName:v14];
+    v20 = [(CSQuickActionImageGlyphView *)v17 _systemImageWithName:imageNameCopy];
     selectedImage = v17->_selectedImage;
     v17->_selectedImage = v20;
 
     [(CSQuickActionImageGlyphView *)v17 _updateImageAppearance];
-    v17->_symbolScaleValue = a5;
-    v17->_buttonDiameter = a6;
+    v17->_symbolScaleValue = value;
+    v17->_buttonDiameter = diameter;
     v22 = [MEMORY[0x277D75C80] traitCollectionWithUserInterfaceStyle:1];
-    v23 = [v15 resolvedColorWithTraitCollection:v22];
+    v23 = [colorCopy resolvedColorWithTraitCollection:v22];
     onColor = v17->_onColor;
     v17->_onColor = v23;
 
@@ -73,15 +73,15 @@
   onColor = self->_onColor;
   if (onColor)
   {
-    v4 = onColor;
+    darkTextColor = onColor;
   }
 
   else
   {
-    v4 = [MEMORY[0x277D75348] darkTextColor];
+    darkTextColor = [MEMORY[0x277D75348] darkTextColor];
   }
 
-  v12 = v4;
+  v12 = darkTextColor;
   if (_UISolariumEnabled())
   {
     [MEMORY[0x277D75348] labelColor];
@@ -131,21 +131,21 @@ LABEL_16:
   [(CSQuickActionImageGlyphView *)self setTintColor:v8];
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  if (self->_selected != a3 || ([(CSQuickActionImageGlyphView *)self image], v5 = objc_claimAutoreleasedReturnValue(), v5, !v5))
+  if (self->_selected != selected || ([(CSQuickActionImageGlyphView *)self image], v5 = objc_claimAutoreleasedReturnValue(), v5, !v5))
   {
-    self->_selected = a3;
+    self->_selected = selected;
 
     [(CSQuickActionImageGlyphView *)self _updateImageAppearance];
   }
 }
 
-- (void)setAppearance:(int64_t)a3
+- (void)setAppearance:(int64_t)appearance
 {
-  if (self->_appearance != a3)
+  if (self->_appearance != appearance)
   {
-    self->_appearance = a3;
+    self->_appearance = appearance;
     [(CSQuickActionImageGlyphView *)self _updateImageAppearance];
   }
 }
@@ -162,21 +162,21 @@ LABEL_16:
   [(CSQuickActionImageGlyphView *)self _updateTint];
 }
 
-- (id)_systemImageWithName:(id)a3
+- (id)_systemImageWithName:(id)name
 {
-  v4 = a3;
-  v5 = [(CSQuickActionImageGlyphView *)self preferredSymbolConfiguration];
-  v6 = [(CSQuickActionImageGlyphView *)self _systemImageWithName:v4 configuration:v5];
+  nameCopy = name;
+  preferredSymbolConfiguration = [(CSQuickActionImageGlyphView *)self preferredSymbolConfiguration];
+  v6 = [(CSQuickActionImageGlyphView *)self _systemImageWithName:nameCopy configuration:preferredSymbolConfiguration];
 
   return v6;
 }
 
-- (id)_systemImageWithName:(id)a3 configuration:(id)a4
+- (id)_systemImageWithName:(id)name configuration:(id)configuration
 {
-  v4 = [MEMORY[0x277D755B8] systemImageNamed:a3 withConfiguration:a4];
-  v5 = [v4 _imageThatSuppressesAccessibilityHairlineThickening];
+  v4 = [MEMORY[0x277D755B8] systemImageNamed:name withConfiguration:configuration];
+  _imageThatSuppressesAccessibilityHairlineThickening = [v4 _imageThatSuppressesAccessibilityHairlineThickening];
 
-  return v5;
+  return _imageThatSuppressesAccessibilityHairlineThickening;
 }
 
 @end

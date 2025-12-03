@@ -1,6 +1,6 @@
 @interface ATXFaceSuggestionConfiguredWatchFaceSignal
 - (ATXFaceSuggestionConfiguredWatchFaceSignal)init;
-- (double)valueForDescriptor:(id)a3;
+- (double)valueForDescriptor:(id)descriptor;
 @end
 
 @implementation ATXFaceSuggestionConfiguredWatchFaceSignal
@@ -13,10 +13,10 @@
   v2 = [(ATXFaceSuggestionConfiguredWatchFaceSignal *)&v9 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CEB988] sharedInstance];
-    v4 = [v3 watchFaces];
+    mEMORY[0x277CEB988] = [MEMORY[0x277CEB988] sharedInstance];
+    watchFaces = [mEMORY[0x277CEB988] watchFaces];
     watchFaces = v2->_watchFaces;
-    v2->_watchFaces = v4;
+    v2->_watchFaces = watchFaces;
 
     if (![(NSArray *)v2->_watchFaces count])
     {
@@ -34,10 +34,10 @@
   return v2;
 }
 
-- (double)valueForDescriptor:(id)a3
+- (double)valueForDescriptor:(id)descriptor
 {
   v43 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  descriptorCopy = descriptor;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
@@ -66,24 +66,24 @@
       }
 
       v12 = *(*(&v32 + 1) + 8 * v11);
-      v13 = v4;
-      v14 = [v13 extensionBundleIdentifier];
-      v15 = [v13 identifier];
+      v13 = descriptorCopy;
+      extensionBundleIdentifier = [v13 extensionBundleIdentifier];
+      identifier = [v13 identifier];
 
-      v16 = [v12 style];
-      if (v16 > 8)
+      style = [v12 style];
+      if (style > 8)
       {
-        if (v16 > 10)
+        if (style > 10)
         {
-          if ((v16 - 11) < 6)
+          if ((style - 11) < 6)
           {
 LABEL_9:
-            v17 = v14;
+            v17 = extensionBundleIdentifier;
             v18 = @"com.apple.PridePoster.PridePosterExtension";
             goto LABEL_26;
           }
 
-          if (v16 != 17)
+          if (style != 17)
           {
 LABEL_46:
 
@@ -93,13 +93,13 @@ LABEL_46:
           goto LABEL_25;
         }
 
-        if (v16 != 9)
+        if (style != 9)
         {
           goto LABEL_20;
         }
 
-        v19 = [v14 isEqualToString:@"com.apple.NanoUniverse.AegirProxyApp.AegirPoster"];
-        v20 = v15;
+        v19 = [extensionBundleIdentifier isEqualToString:@"com.apple.NanoUniverse.AegirProxyApp.AegirPoster"];
+        v20 = identifier;
         v21 = @"Orrery";
 LABEL_32:
         v22 = [v20 containsString:{v21, v31, v32}];
@@ -112,33 +112,33 @@ LABEL_32:
         goto LABEL_33;
       }
 
-      if (v16 > 4)
+      if (style > 4)
       {
-        if ((v16 - 5) >= 2)
+        if ((style - 5) >= 2)
         {
-          if (v16 == 7)
+          if (style == 7)
           {
-            v19 = [v14 isEqualToString:@"com.apple.NanoUniverse.AegirProxyApp.AegirPoster"];
-            v20 = v15;
+            v19 = [extensionBundleIdentifier isEqualToString:@"com.apple.NanoUniverse.AegirProxyApp.AegirPoster"];
+            v20 = identifier;
             v21 = @"Earth";
           }
 
           else
           {
-            if (v16 != 8)
+            if (style != 8)
             {
               goto LABEL_46;
             }
 
-            v19 = [v14 isEqualToString:@"com.apple.NanoUniverse.AegirProxyApp.AegirPoster"];
-            v20 = v15;
+            v19 = [extensionBundleIdentifier isEqualToString:@"com.apple.NanoUniverse.AegirProxyApp.AegirPoster"];
+            v20 = identifier;
             v21 = @"Moon";
           }
 
           goto LABEL_32;
         }
 
-        v22 = [v14 isEqualToString:@"com.apple.UnityPoster.UnityPosterExtension"];
+        v22 = [extensionBundleIdentifier isEqualToString:@"com.apple.UnityPoster.UnityPosterExtension"];
 
 LABEL_33:
         if ((v22 & 1) == 0)
@@ -149,17 +149,17 @@ LABEL_33:
         goto LABEL_34;
       }
 
-      if (v16 <= 2)
+      if (style <= 2)
       {
-        if (v16 != 1)
+        if (style != 1)
         {
-          if (v16 != 2)
+          if (style != 2)
           {
             goto LABEL_46;
           }
 
 LABEL_20:
-          v17 = v14;
+          v17 = extensionBundleIdentifier;
           v18 = @"com.apple.GradientPoster.GradientPosterExtension";
 LABEL_26:
           v23 = [v17 isEqualToString:{v18, v31}];
@@ -173,23 +173,23 @@ LABEL_26:
         }
 
 LABEL_25:
-        v17 = v14;
+        v17 = extensionBundleIdentifier;
         v18 = @"com.apple.NanoUniverse.AegirProxyApp.AegirPoster";
         goto LABEL_26;
       }
 
-      if (v16 != 3)
+      if (style != 3)
       {
         goto LABEL_9;
       }
 
-      if ([v14 isEqualToString:@"com.apple.mobileslideshow.PhotosPosterProvider"])
+      if ([extensionBundleIdentifier isEqualToString:@"com.apple.mobileslideshow.PhotosPosterProvider"])
       {
       }
 
       else
       {
-        v27 = [v14 isEqualToString:@"com.apple.PhotosUIPrivate.PhotosPosterProvider"];
+        v27 = [extensionBundleIdentifier isEqualToString:@"com.apple.PhotosUIPrivate.PhotosPosterProvider"];
 
         if (!v27)
         {
@@ -204,7 +204,7 @@ LABEL_34:
         *buf = v31;
         v37 = "[ATXFaceSuggestionConfiguredWatchFaceSignal valueForDescriptor:]";
         v38 = 2112;
-        v39 = v4;
+        v39 = descriptorCopy;
         v40 = 2112;
         v41 = v12;
         _os_log_impl(&dword_2263AA000, v24, OS_LOG_TYPE_DEFAULT, "%s: descriptor (%@) has matching watch face: %@", buf, 0x20u);

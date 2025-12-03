@@ -1,12 +1,12 @@
 @interface ReporterFilter
-+ (id)filterForName:(id)a3 id:(id)a4;
-+ (void)enumerateReporterFiltersUsingBlock:(id)a3;
++ (id)filterForName:(id)name id:(id)id;
++ (void)enumerateReporterFiltersUsingBlock:(id)block;
 + (void)initialize;
 - (ReporterFilter)init;
-- (int)configureSymptomFilter:(id)a3;
+- (int)configureSymptomFilter:(id)filter;
 - (void)pushFinalFilters;
 - (void)pushTransportFilters;
-- (void)setFinalTimer:(int64_t)a3;
+- (void)setFinalTimer:(int64_t)timer;
 - (void)updateTransportFilters;
 @end
 
@@ -36,20 +36,20 @@
   return v2;
 }
 
-+ (id)filterForName:(id)a3 id:(id)a4
++ (id)filterForName:(id)name id:(id)id
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [reporterFilters objectForKey:v7];
+  nameCopy = name;
+  idCopy = id;
+  v8 = [reporterFilters objectForKey:idCopy];
   if (!v8)
   {
     v9 = objc_alloc_init(ReporterFilter);
     v8 = v9;
     if (v9)
     {
-      objc_storeStrong(&v9->_reporterName, a3);
-      v8[9] = [v7 unsignedIntValue];
-      [reporterFilters setObject:v8 forKey:v7];
+      objc_storeStrong(&v9->_reporterName, name);
+      v8[9] = [idCopy unsignedIntValue];
+      [reporterFilters setObject:v8 forKey:idCopy];
     }
   }
 
@@ -58,10 +58,10 @@
   return v10;
 }
 
-+ (void)enumerateReporterFiltersUsingBlock:(id)a3
++ (void)enumerateReporterFiltersUsingBlock:(id)block
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  blockCopy = block;
   v4 = filterLogHandle;
   if (os_log_type_enabled(filterLogHandle, OS_LOG_TYPE_DEBUG))
   {
@@ -69,7 +69,7 @@
     v6 = v4;
     v7 = [v5 description];
     *buf = 136315138;
-    v14 = [v7 UTF8String];
+    uTF8String = [v7 UTF8String];
     _os_log_impl(&dword_23255B000, v6, OS_LOG_TYPE_DEBUG, "enumerateReporterFiltersUsingBlock, look at reporterFilters %s", buf, 0xCu);
   }
 
@@ -78,8 +78,8 @@
   v11[1] = 3221225472;
   v11[2] = __53__ReporterFilter_enumerateReporterFiltersUsingBlock___block_invoke;
   v11[3] = &unk_27898E628;
-  v12 = v3;
-  v9 = v3;
+  v12 = blockCopy;
+  v9 = blockCopy;
   [v8 enumerateKeysAndObjectsUsingBlock:v11];
 
   v10 = *MEMORY[0x277D85DE8];
@@ -89,7 +89,7 @@
 {
   v23 = *MEMORY[0x277D85DE8];
   v3 = [MEMORY[0x277CBEB28] dataWithLength:{16 * -[NSMutableArray count](self->_symptomFilters, "count")}];
-  v4 = [v3 mutableBytes];
+  mutableBytes = [v3 mutableBytes];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -110,16 +110,16 @@
           objc_enumerationMutation(v5);
         }
 
-        v11 = [*(*(&v16 + 1) + 8 * i) currentFilter];
-        v12 = v11;
-        if (v11)
+        currentFilter = [*(*(&v16 + 1) + 8 * i) currentFilter];
+        v12 = currentFilter;
+        if (currentFilter)
         {
-          *v4 = 1;
-          *(v4 + 4) = [v11 symptomId] | (self->_reporterId << 20);
-          *(v4 + 8) = [v12 queueLenAlert];
-          *(v4 + 10) = [v12 queueLenDrop];
-          *(v4 + 12) = [v12 queueTimeLimit];
-          v4 += 16;
+          *mutableBytes = 1;
+          *(mutableBytes + 4) = [currentFilter symptomId] | (self->_reporterId << 20);
+          *(mutableBytes + 8) = [v12 queueLenAlert];
+          *(mutableBytes + 10) = [v12 queueLenDrop];
+          *(mutableBytes + 12) = [v12 queueTimeLimit];
+          mutableBytes += 16;
           ++v8;
         }
       }
@@ -177,7 +177,7 @@ LABEL_14:
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v15 = self;
+  selfCopy = self;
   v4 = self->_symptomFilters;
   v5 = [(NSMutableArray *)v4 countByEnumeratingWithState:&v16 objects:v22 count:16];
   if (v5)
@@ -202,9 +202,9 @@ LABEL_14:
           _os_log_impl(&dword_23255B000, v10, OS_LOG_TYPE_DEBUG, "pushFinalFilters check SymptomFilter %@", buf, 0xCu);
         }
 
-        v11 = [v9 finalFilter];
+        finalFilter = [v9 finalFilter];
 
-        if (v11)
+        if (finalFilter)
         {
           v12 = evaluationLogHandle;
           if (os_log_type_enabled(evaluationLogHandle, OS_LOG_TYPE_DEBUG))
@@ -214,8 +214,8 @@ LABEL_14:
             _os_log_impl(&dword_23255B000, v12, OS_LOG_TYPE_DEBUG, "pushFinalFilters update SymptomFilter %@", buf, 0xCu);
           }
 
-          v13 = [v9 finalFilter];
-          [v9 setCurrentFilter:v13];
+          finalFilter2 = [v9 finalFilter];
+          [v9 setCurrentFilter:finalFilter2];
 
           [v9 setFinalFilter:0];
         }
@@ -227,15 +227,15 @@ LABEL_14:
     while (v6);
   }
 
-  [(ReporterFilter *)v15 updateTransportFilters];
-  [(ReporterFilter *)v15 pushTransportFilters];
+  [(ReporterFilter *)selfCopy updateTransportFilters];
+  [(ReporterFilter *)selfCopy pushTransportFilters];
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setFinalTimer:(int64_t)a3
+- (void)setFinalTimer:(int64_t)timer
 {
   v17 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (timer)
   {
     finalTimer = self->_finalTimer;
     if (finalTimer)
@@ -259,7 +259,7 @@ LABEL_14:
     }
 
     v11 = self->_finalTimer;
-    v12 = dispatch_time(0, 1000000000 * a3);
+    v12 = dispatch_time(0, 1000000000 * timer);
     dispatch_source_set_timer(v11, v12, 0xFFFFFFFFFFFFFFFFLL, 0x3B9ACA00uLL);
     self->_timingInProgress = 1;
     dispatch_resume(self->_finalTimer);
@@ -304,15 +304,15 @@ void __32__ReporterFilter_setFinalTimer___block_invoke(uint64_t a1)
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (int)configureSymptomFilter:(id)a3
+- (int)configureSymptomFilter:(id)filter
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 objectForKey:@"SYMPTOM_FOR_FILTERING"];
+  filterCopy = filter;
+  v5 = [filterCopy objectForKey:@"SYMPTOM_FOR_FILTERING"];
   if (v5)
   {
     v6 = [SymptomStore idFromSymptomName:v5];
-    v7 = [v6 unsignedIntValue];
+    unsignedIntValue = [v6 unsignedIntValue];
     if (![(NSMutableArray *)self->_symptomFilters count])
     {
       goto LABEL_9;
@@ -322,7 +322,7 @@ void __32__ReporterFilter_setFinalTimer___block_invoke(uint64_t a1)
     while (1)
     {
       v9 = [(NSMutableArray *)self->_symptomFilters objectAtIndex:v8];
-      if ([(SymptomFilter *)v9 targetSymptomId]== v7)
+      if ([(SymptomFilter *)v9 targetSymptomId]== unsignedIntValue)
       {
         break;
       }
@@ -337,7 +337,7 @@ void __32__ReporterFilter_setFinalTimer___block_invoke(uint64_t a1)
     {
 LABEL_9:
       v9 = objc_alloc_init(SymptomFilter);
-      [(SymptomFilter *)v9 setTargetSymptomId:v7];
+      [(SymptomFilter *)v9 setTargetSymptomId:unsignedIntValue];
       [(NSMutableArray *)self->_symptomFilters addObject:v9];
       if (!v9)
       {
@@ -348,7 +348,7 @@ LABEL_19:
       }
     }
 
-    v11 = [v4 objectForKey:@"POSSIBLE_FILTERS"];
+    v11 = [filterCopy objectForKey:@"POSSIBLE_FILTERS"];
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;

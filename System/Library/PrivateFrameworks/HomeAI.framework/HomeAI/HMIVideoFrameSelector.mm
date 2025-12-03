@@ -1,18 +1,18 @@
 @interface HMIVideoFrameSelector
-- (HMIVideoFrameSelector)initWithConfiguration:(id)a3 workQueue:(id)a4;
+- (HMIVideoFrameSelector)initWithConfiguration:(id)configuration workQueue:(id)queue;
 - (HMIVideoFrameSelectorDelegate)delegate;
 - (void)dealloc;
-- (void)handleSampleBuffer:(opaqueCMSampleBuffer *)a3;
-- (void)setSampleRate:(double)a3;
+- (void)handleSampleBuffer:(opaqueCMSampleBuffer *)buffer;
+- (void)setSampleRate:(double)rate;
 @end
 
 @implementation HMIVideoFrameSelector
 
-- (HMIVideoFrameSelector)initWithConfiguration:(id)a3 workQueue:(id)a4
+- (HMIVideoFrameSelector)initWithConfiguration:(id)configuration workQueue:(id)queue
 {
   v9.receiver = self;
   v9.super_class = HMIVideoFrameSelector;
-  v4 = [(HMIVideoAnalyzerProcessingNode *)&v9 initWithConfiguration:a3 workQueue:a4];
+  v4 = [(HMIVideoAnalyzerProcessingNode *)&v9 initWithConfiguration:configuration workQueue:queue];
   v5 = v4;
   if (v4)
   {
@@ -30,7 +30,7 @@
   return v5;
 }
 
-- (void)handleSampleBuffer:(opaqueCMSampleBuffer *)a3
+- (void)handleSampleBuffer:(opaqueCMSampleBuffer *)buffer
 {
   os_unfair_lock_lock_with_options();
   if (self->_enabled)
@@ -45,8 +45,8 @@
     maxReferences = self->_maxReferences;
     os_unfair_lock_unlock(&self->_lock);
     memset(&v15, 0, sizeof(v15));
-    CMSampleBufferGetPresentationTimeStamp(&v15, a3);
-    v6 = [(HMIVideoFrameSelector *)self delegate];
+    CMSampleBufferGetPresentationTimeStamp(&v15, buffer);
+    delegate = [(HMIVideoFrameSelector *)self delegate];
     if (CFArrayGetCount(self->_references) < 1 || (ValueAtIndex = CFArrayGetValueAtIndex(self->_references, 0), memset(&v20, 0, 24), CMSampleBufferGetPresentationTimeStamp(&v20.start, ValueAtIndex), lhs = v20.start, rhs = self->_targetInterval, CMTimeAdd(&time2.start, &lhs, &rhs), lhs = v15, CMTimeCompare(&lhs, &time2.start) < 0))
     {
       v8 = 0;
@@ -59,7 +59,7 @@
     }
 
     memset(&v20, 0, sizeof(v20));
-    HMICMSampleBufferGetPresentationTimeRange(a3, &v20);
+    HMICMSampleBufferGetPresentationTimeRange(buffer, &v20);
     memset(&lhs, 0, sizeof(lhs));
     time2 = v20;
     CMTimeRangeGetEnd(&rhs, &time2);
@@ -76,7 +76,7 @@
     rhs = referenceInterval;
     if (CMTimeDivide() < v11 || (time2.start = lhs, *&rhs.value = v14, rhs.epoch = v10, !CMTimeCompare(&time2.start, &rhs)))
     {
-      v12 = [v6 frameSelector:self prepareFrame:{a3, v14}];
+      v12 = [delegate frameSelector:self prepareFrame:{buffer, v14}];
       if (v12)
       {
         v13 = v12;
@@ -92,13 +92,13 @@
 
     if (v8)
     {
-      [v6 frameSelector:self didSelectFrame:a3 reference:v8];
+      [delegate frameSelector:self didSelectFrame:buffer reference:v8];
       CFRelease(v8);
     }
 
     else
     {
-      [v6 frameSelector:self didSkipFrame:a3];
+      [delegate frameSelector:self didSkipFrame:buffer];
     }
   }
 
@@ -117,10 +117,10 @@
   [(HMIVideoFrameSelector *)&v3 dealloc];
 }
 
-- (void)setSampleRate:(double)a3
+- (void)setSampleRate:(double)rate
 {
   memset(&v10, 0, sizeof(v10));
-  CMTimeMakeWithSeconds(&time1, 1.0 / a3, 1000000);
+  CMTimeMakeWithSeconds(&time1, 1.0 / rate, 1000000);
   CMTimeMake(&time2, 86400, 1);
   CMTimeMinimum(&v10, &time1, &time2);
   os_unfair_lock_lock_with_options();
@@ -129,7 +129,7 @@
   time2 = self->_referenceInterval;
   self->_resetReferences = CMTimeCompare(&time1, &time2) > 0;
   self->_referenceInterval = v10;
-  self->_enabled = a3 > 0.0;
+  self->_enabled = rate > 0.0;
   time2 = self->_targetInterval;
   referenceInterval = self->_referenceInterval;
   CMTimeAdd(&time1, &time2, &referenceInterval);

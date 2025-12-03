@@ -1,7 +1,7 @@
 @interface PETEventStringValuedProperty
-- (BOOL)isValidValue:(id)a3;
-- (PETEventStringValuedProperty)initWithName:(id)a3 possibleValues:(id)a4 autoSanitizeValues:(BOOL)a5;
-- (id)_loggingKeyStringRepresentationForValue:(id)a3;
+- (BOOL)isValidValue:(id)value;
+- (PETEventStringValuedProperty)initWithName:(id)name possibleValues:(id)values autoSanitizeValues:(BOOL)sanitizeValues;
+- (id)_loggingKeyStringRepresentationForValue:(id)value;
 - (id)description;
 - (id)longestValueString;
 @end
@@ -57,19 +57,19 @@
   return v6;
 }
 
-- (id)_loggingKeyStringRepresentationForValue:(id)a3
+- (id)_loggingKeyStringRepresentationForValue:(id)value
 {
-  v4 = a3;
-  if ([(PETEventStringValuedProperty *)self isValidValue:v4])
+  valueCopy = value;
+  if ([(PETEventStringValuedProperty *)self isValidValue:valueCopy])
   {
     if (self->_autoSanitizeValues)
     {
-      v5 = [PETEventStringValidator sanitizedString:v4];
+      v5 = [PETEventStringValidator sanitizedString:valueCopy];
     }
 
     else
     {
-      v5 = v4;
+      v5 = valueCopy;
     }
 
     v6 = v5;
@@ -83,9 +83,9 @@
   return v6;
 }
 
-- (BOOL)isValidValue:(id)a3
+- (BOOL)isValidValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -93,13 +93,13 @@
     possibleValues = self->_possibleValues;
     if (autoSanitizeValues)
     {
-      v7 = [PETEventStringValidator sanitizedString:v4];
+      v7 = [PETEventStringValidator sanitizedString:valueCopy];
       v8 = [(NSSet *)possibleValues containsObject:v7];
     }
 
     else
     {
-      v8 = [(NSSet *)possibleValues containsObject:v4];
+      v8 = [(NSSet *)possibleValues containsObject:valueCopy];
     }
   }
 
@@ -114,43 +114,43 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(PETEventProperty *)self name];
-  v5 = [v3 stringWithFormat:@"StringValued: Name=%@ Values=%@", v4, self->_possibleValues];
+  name = [(PETEventProperty *)self name];
+  v5 = [v3 stringWithFormat:@"StringValued: Name=%@ Values=%@", name, self->_possibleValues];
 
   return v5;
 }
 
-- (PETEventStringValuedProperty)initWithName:(id)a3 possibleValues:(id)a4 autoSanitizeValues:(BOOL)a5
+- (PETEventStringValuedProperty)initWithName:(id)name possibleValues:(id)values autoSanitizeValues:(BOOL)sanitizeValues
 {
-  v8 = a4;
+  valuesCopy = values;
   v16.receiver = self;
   v16.super_class = PETEventStringValuedProperty;
-  v9 = [(PETEventProperty *)&v16 initWithName:a3];
+  v9 = [(PETEventProperty *)&v16 initWithName:name];
   if (v9)
   {
-    if (a5)
+    if (sanitizeValues)
     {
-      v10 = [PETEventStringValidator sanitizedSet:v8];
+      v10 = [PETEventStringValidator sanitizedSet:valuesCopy];
     }
 
     else
     {
-      if (![PETEventStringValidator setContainsValidStrings:v8])
+      if (![PETEventStringValidator setContainsValidStrings:valuesCopy])
       {
         v11 = MEMORY[0x1E695DF30];
-        v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"possibleValues may only contain [a-zA-Z0-9_] and may not be prefixed with _ -- possibleValues was: %@", v8];
-        v13 = [v11 exceptionWithName:@"PETEventTrackingException" reason:v12 userInfo:0];
+        valuesCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"possibleValues may only contain [a-zA-Z0-9_] and may not be prefixed with _ -- possibleValues was: %@", valuesCopy];
+        v13 = [v11 exceptionWithName:@"PETEventTrackingException" reason:valuesCopy userInfo:0];
 
         [v13 raise];
       }
 
-      v10 = [v8 copy];
+      v10 = [valuesCopy copy];
     }
 
     possibleValues = v9->_possibleValues;
     v9->_possibleValues = v10;
 
-    v9->_autoSanitizeValues = a5;
+    v9->_autoSanitizeValues = sanitizeValues;
   }
 
   return v9;

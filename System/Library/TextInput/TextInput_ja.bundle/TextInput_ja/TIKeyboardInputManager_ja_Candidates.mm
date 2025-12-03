@@ -1,33 +1,33 @@
 @interface TIKeyboardInputManager_ja_Candidates
-+ (id)sortTitleFromSort:(unint64_t)a3;
-+ (unint64_t)sortFromSortTitle:(id)a3;
-- (BOOL)_adjustPhraseBoundaryInForwardDirection:(BOOL)a3 granularity:(int)a4;
-- (TIKeyboardInputManager_ja_Candidates)initWithConfig:(id)a3 keyboardState:(id)a4 wordSearch:(id)a5;
-- (id)candidateResultSetFromCandidates:(id)a3 proactiveTriggers:(id)a4;
-- (id)groupedCandidatesFromCandidates:(id)a3 usingSortingMethod:(id)a4;
-- (id)handleAcceptedCandidate:(id)a3 keyboardState:(id)a4;
-- (id)handleKeyboardInput:(id)a3;
-- (id)indexTitlesForGroupTitles:(id)a3 sortingMethod:(id)a4;
++ (id)sortTitleFromSort:(unint64_t)sort;
++ (unint64_t)sortFromSortTitle:(id)title;
+- (BOOL)_adjustPhraseBoundaryInForwardDirection:(BOOL)direction granularity:(int)granularity;
+- (TIKeyboardInputManager_ja_Candidates)initWithConfig:(id)config keyboardState:(id)state wordSearch:(id)search;
+- (id)candidateResultSetFromCandidates:(id)candidates proactiveTriggers:(id)triggers;
+- (id)groupedCandidatesFromCandidates:(id)candidates usingSortingMethod:(id)method;
+- (id)handleAcceptedCandidate:(id)candidate keyboardState:(id)state;
+- (id)handleKeyboardInput:(id)input;
+- (id)indexTitlesForGroupTitles:(id)titles sortingMethod:(id)method;
 - (id)sortingMethods;
 - (id)transliterationCandidates;
-- (int64_t)indexFromTransliterationType:(int64_t)a3;
+- (int64_t)indexFromTransliterationType:(int64_t)type;
 - (int64_t)transliterationCandidatesCount;
-- (void)_notifyUpdateCandidates:(id)a3 forOperation:(id)a4;
+- (void)_notifyUpdateCandidates:(id)candidates forOperation:(id)operation;
 - (void)sortingMethods;
 @end
 
 @implementation TIKeyboardInputManager_ja_Candidates
 
-- (TIKeyboardInputManager_ja_Candidates)initWithConfig:(id)a3 keyboardState:(id)a4 wordSearch:(id)a5
+- (TIKeyboardInputManager_ja_Candidates)initWithConfig:(id)config keyboardState:(id)state wordSearch:(id)search
 {
-  v9 = a5;
+  searchCopy = search;
   v15.receiver = self;
   v15.super_class = TIKeyboardInputManager_ja_Candidates;
-  v10 = [(TIKeyboardInputManagerMecabra *)&v15 initWithConfig:a3 keyboardState:a4];
+  v10 = [(TIKeyboardInputManagerMecabra *)&v15 initWithConfig:config keyboardState:state];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_wordSearch, a5);
+    objc_storeStrong(&v10->_wordSearch, search);
     v12 = objc_alloc_init(TICandidateSorter);
     candidateSorter = v11->_candidateSorter;
     v11->_candidateSorter = v12;
@@ -39,17 +39,17 @@
   return v11;
 }
 
-- (id)handleKeyboardInput:(id)a3
+- (id)handleKeyboardInput:(id)input
 {
-  v4 = a3;
-  if (![v4 transliterationType])
+  inputCopy = input;
+  if (![inputCopy transliterationType])
   {
-    v5 = [v4 string];
-    v6 = [v5 _isSpace];
+    string = [inputCopy string];
+    _isSpace = [string _isSpace];
 
-    if ((v6 & 1) == 0)
+    if ((_isSpace & 1) == 0)
     {
-      if ([v4 isBackspace])
+      if ([inputCopy isBackspace])
       {
         [(TIKeyboardInputManagerMecabra *)self cancelComposition];
       }
@@ -64,17 +64,17 @@
   return 0;
 }
 
-- (void)_notifyUpdateCandidates:(id)a3 forOperation:(id)a4
+- (void)_notifyUpdateCandidates:(id)candidates forOperation:(id)operation
 {
-  [(TIKeyboardInputManagerMecabra *)self setWordSearchCandidateResultSet:a3, a4];
+  [(TIKeyboardInputManagerMecabra *)self setWordSearchCandidateResultSet:candidates, operation];
   v7[0] = MEMORY[0x29EDCA5F8];
   v7[1] = 3221225472;
   v7[2] = __77__TIKeyboardInputManager_ja_Candidates__notifyUpdateCandidates_forOperation___block_invoke;
   v7[3] = &unk_29F379238;
   v7[4] = self;
   v5 = MEMORY[0x29EDA3C60](v7);
-  v6 = [(TIKeyboardInputManagerMecabra *)self wordSearchCandidateResultSet];
-  [(TIKeyboardInputManagerMecabra *)self addProactiveTriggers:v6 withCompletionHandler:v5];
+  wordSearchCandidateResultSet = [(TIKeyboardInputManagerMecabra *)self wordSearchCandidateResultSet];
+  [(TIKeyboardInputManagerMecabra *)self addProactiveTriggers:wordSearchCandidateResultSet withCompletionHandler:v5];
 }
 
 - (id)transliterationCandidates
@@ -85,15 +85,15 @@
     for (i = 0; i != 5; ++i)
     {
       v5 = kTransliterationCandidatesTypes[i];
-      v6 = [(TIKeyboardInputManager_ja_Candidates *)self inputString];
-      v7 = TIJapaneseTransliterate(v6, v5);
+      inputString = [(TIKeyboardInputManager_ja_Candidates *)self inputString];
+      v7 = TIJapaneseTransliterate(inputString, v5);
 
-      v8 = [(TIKeyboardInputManager_ja_Candidates *)self autoCommitString];
-      v9 = [v8 stringByAppendingString:v7];
+      autoCommitString = [(TIKeyboardInputManager_ja_Candidates *)self autoCommitString];
+      v9 = [autoCommitString stringByAppendingString:v7];
 
       v10 = objc_alloc(MEMORY[0x29EDC70C0]);
-      v11 = [(TIKeyboardInputManager_ja_Candidates *)self inputString];
-      v12 = [v10 initWithCandidate:v9 forInput:v11 label:v7 transliterationType:v5];
+      inputString2 = [(TIKeyboardInputManager_ja_Candidates *)self inputString];
+      v12 = [v10 initWithCandidate:v9 forInput:inputString2 label:v7 transliterationType:v5];
       [v3 addObject:v12];
     }
   }
@@ -106,10 +106,10 @@
   return v3;
 }
 
-- (int64_t)indexFromTransliterationType:(int64_t)a3
+- (int64_t)indexFromTransliterationType:(int64_t)type
 {
   result = 0;
-  while (kTransliterationCandidatesTypes[result] != a3)
+  while (kTransliterationCandidatesTypes[result] != type)
   {
     if (++result == 5)
     {
@@ -120,20 +120,20 @@
   return result;
 }
 
-- (id)candidateResultSetFromCandidates:(id)a3 proactiveTriggers:(id)a4
+- (id)candidateResultSetFromCandidates:(id)candidates proactiveTriggers:(id)triggers
 {
   v34 = *MEMORY[0x29EDCA608];
-  v6 = a3;
-  v25 = a4;
+  candidatesCopy = candidates;
+  triggersCopy = triggers;
   v7 = MEMORY[0x29EDB8DE8];
-  v8 = [(TIKeyboardInputManager_ja_Candidates *)self transliterationCandidates];
-  v9 = [v7 arrayWithArray:v8];
+  transliterationCandidates = [(TIKeyboardInputManager_ja_Candidates *)self transliterationCandidates];
+  v9 = [v7 arrayWithArray:transliterationCandidates];
 
   v31 = 0u;
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  obj = v6;
+  obj = candidatesCopy;
   v10 = [obj countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (v10)
   {
@@ -154,14 +154,14 @@
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v15 = [v14 mecabraCandidatePointerValue];
-          v16 = [v15 unsignedLongLongValue];
+          mecabraCandidatePointerValue = [v14 mecabraCandidatePointerValue];
+          unsignedLongLongValue = [mecabraCandidatePointerValue unsignedLongLongValue];
 
           v17 = objc_alloc(MEMORY[0x29EDC70C8]);
           autoCommitString = self->_autoCommitString;
-          v19 = [v14 candidate];
-          v20 = [(NSString *)autoCommitString stringByAppendingString:v19];
-          v21 = [v17 initWithMecabraCandidate:v16 candidate:v20];
+          candidate = [v14 candidate];
+          v20 = [(NSString *)autoCommitString stringByAppendingString:candidate];
+          v21 = [v17 initWithMecabraCandidate:unsignedLongLongValue candidate:v20];
 
           if ([(TIKeyboardInputManager_ja_Candidates *)self showsPartialCandidate])
           {
@@ -190,7 +190,7 @@
 
   v28.receiver = self;
   v28.super_class = TIKeyboardInputManager_ja_Candidates;
-  v22 = [(TIKeyboardInputManager_ja_Candidates *)&v28 candidateResultSetFromCandidates:v9 proactiveTriggers:v25];
+  v22 = [(TIKeyboardInputManager_ja_Candidates *)&v28 candidateResultSetFromCandidates:v9 proactiveTriggers:triggersCopy];
   [TIKeyboardInputManager_ja addFullwidthAnnotationToResultSet:v22];
 
   v23 = *MEMORY[0x29EDCA608];
@@ -211,43 +211,43 @@
   }
 }
 
-+ (id)sortTitleFromSort:(unint64_t)a3
++ (id)sortTitleFromSort:(unint64_t)sort
 {
-  if (a3 > 4)
+  if (sort > 4)
   {
     return 0;
   }
 
   else
   {
-    return off_29F379258[a3];
+    return off_29F379258[sort];
   }
 }
 
-+ (unint64_t)sortFromSortTitle:(id)a3
++ (unint64_t)sortFromSortTitle:(id)title
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UI-Sort-Common"])
+  titleCopy = title;
+  if ([titleCopy isEqualToString:@"UI-Sort-Common"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"UI-Sort-Yomi"])
+  else if ([titleCopy isEqualToString:@"UI-Sort-Yomi"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"UI-Sort-Radical"])
+  else if ([titleCopy isEqualToString:@"UI-Sort-Radical"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"UI-Sort-Facemark"])
+  else if ([titleCopy isEqualToString:@"UI-Sort-Facemark"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"UI-Sort-Emoji"])
+  else if ([titleCopy isEqualToString:@"UI-Sort-Emoji"])
   {
     v4 = 4;
   }
@@ -262,10 +262,10 @@
 
 - (id)sortingMethods
 {
-  v4 = [(TIKeyboardInputManagerMecabra *)self wordSearchCandidateResultSet];
-  v5 = [v4 candidates];
+  wordSearchCandidateResultSet = [(TIKeyboardInputManagerMecabra *)self wordSearchCandidateResultSet];
+  candidates = [wordSearchCandidateResultSet candidates];
 
-  if ([v5 count])
+  if ([candidates count])
   {
     v6 = [MEMORY[0x29EDB8DE8] arrayWithCapacity:5];
     for (i = 0; i != 5; ++i)
@@ -275,9 +275,9 @@
       v10 = [v8 sortTitleFromSort:v9];
       if (v10)
       {
-        v11 = [(TIKeyboardInputManager_ja_Candidates *)self candidateSorter];
-        v12 = [(TIKeyboardInputManager_ja_Candidates *)self inputString];
-        v13 = [v11 hasCandidatesFromCandidates:v5 inputString:v12 sortedBy:v9 omittingEmoji:0];
+        candidateSorter = [(TIKeyboardInputManager_ja_Candidates *)self candidateSorter];
+        inputString = [(TIKeyboardInputManager_ja_Candidates *)self inputString];
+        v13 = [candidateSorter hasCandidatesFromCandidates:candidates inputString:inputString sortedBy:v9 omittingEmoji:0];
 
         if (v13)
         {
@@ -302,56 +302,56 @@
   return v6;
 }
 
-- (id)groupedCandidatesFromCandidates:(id)a3 usingSortingMethod:(id)a4
+- (id)groupedCandidatesFromCandidates:(id)candidates usingSortingMethod:(id)method
 {
-  v7 = a3;
-  v8 = a4;
-  if (v8)
+  candidatesCopy = candidates;
+  methodCopy = method;
+  if (methodCopy)
   {
-    v9 = [objc_opt_class() sortFromSortTitle:v8];
-    v10 = [(TIKeyboardInputManager_ja_Candidates *)self candidateSorter];
-    v11 = [(TIKeyboardInputManager_ja_Candidates *)self inputString];
-    v12 = [v10 candidatesFromCandidates:v7 inputString:v11 sortedBy:v9 omittingEmoji:0];
+    v9 = [objc_opt_class() sortFromSortTitle:methodCopy];
+    candidateSorter = [(TIKeyboardInputManager_ja_Candidates *)self candidateSorter];
+    inputString = [(TIKeyboardInputManager_ja_Candidates *)self inputString];
+    v12 = [candidateSorter candidatesFromCandidates:candidatesCopy inputString:inputString sortedBy:v9 omittingEmoji:0];
   }
 
   else
   {
     [(TIKeyboardInputManager_ja_Candidates *)a2 groupedCandidatesFromCandidates:&v14 usingSortingMethod:?];
     v12 = 0;
-    v10 = v14;
+    candidateSorter = v14;
   }
 
   return v12;
 }
 
-- (id)indexTitlesForGroupTitles:(id)a3 sortingMethod:(id)a4
+- (id)indexTitlesForGroupTitles:(id)titles sortingMethod:(id)method
 {
-  v5 = a3;
-  if ([a4 isEqualToString:@"UI-Sort-Yomi"])
+  titlesCopy = titles;
+  if ([method isEqualToString:@"UI-Sort-Yomi"])
   {
     v6 = &unk_2A25295E8;
   }
 
   else
   {
-    v6 = v5;
+    v6 = titlesCopy;
   }
 
   return v6;
 }
 
-- (BOOL)_adjustPhraseBoundaryInForwardDirection:(BOOL)a3 granularity:(int)a4
+- (BOOL)_adjustPhraseBoundaryInForwardDirection:(BOOL)direction granularity:(int)granularity
 {
-  v5 = a3;
+  directionCopy = direction;
   v15 = *MEMORY[0x29EDCA608];
   if (os_log_type_enabled(MEMORY[0x29EDCA988], OS_LOG_TYPE_DEFAULT))
   {
     v9 = 136315650;
     v10 = "[TIKeyboardInputManager_ja_Candidates _adjustPhraseBoundaryInForwardDirection:granularity:]";
     v11 = 1024;
-    v12 = v5;
+    v12 = directionCopy;
     v13 = 1024;
-    v14 = a4;
+    granularityCopy = granularity;
     _os_log_impl(&dword_29EA26000, MEMORY[0x29EDCA988], OS_LOG_TYPE_DEFAULT, "%s  adjust phrase: %d %d", &v9, 0x18u);
   }
 
@@ -360,13 +360,13 @@
   return 0;
 }
 
-- (id)handleAcceptedCandidate:(id)a3 keyboardState:(id)a4
+- (id)handleAcceptedCandidate:(id)candidate keyboardState:(id)state
 {
-  v5 = a3;
-  v6 = [(TIKeyboardInputManager_ja_Candidates *)self inputString];
-  v7 = [v6 length];
-  v8 = [v5 input];
-  if (v7 <= [v8 length])
+  candidateCopy = candidate;
+  inputString = [(TIKeyboardInputManager_ja_Candidates *)self inputString];
+  v7 = [inputString length];
+  input = [candidateCopy input];
+  if (v7 <= [input length])
   {
     v9 = 0;
   }
@@ -377,9 +377,9 @@
     v9 = objc_opt_isKindOfClass() ^ 1;
   }
 
-  v10 = [(TIKeyboardInputManagerMecabra *)self mecabraCandidateRefFromCandidate:v5];
-  v11 = [(TIKeyboardInputManager_ja_Candidates *)self wordSearch];
-  [v11 performAccept:v10 isPartial:v9 & 1];
+  v10 = [(TIKeyboardInputManagerMecabra *)self mecabraCandidateRefFromCandidate:candidateCopy];
+  wordSearch = [(TIKeyboardInputManager_ja_Candidates *)self wordSearch];
+  [wordSearch performAccept:v10 isPartial:v9 & 1];
 
   [(TIKeyboardInputManagerMecabra *)self completeComposition];
   return 0;
@@ -387,8 +387,8 @@
 
 - (void)sortingMethods
 {
-  v4 = [MEMORY[0x29EDB9F28] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"TIKeyboardInputManager_ja_Candidates.m" lineNumber:312 description:{@"Invalid parameter not satisfying: %@", @"sortTitle != nil"}];
+  currentHandler = [MEMORY[0x29EDB9F28] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"TIKeyboardInputManager_ja_Candidates.m" lineNumber:312 description:{@"Invalid parameter not satisfying: %@", @"sortTitle != nil"}];
 }
 
 - (uint64_t)groupedCandidatesFromCandidates:(void *)a3 usingSortingMethod:.cold.1(uint64_t a1, uint64_t a2, void *a3)

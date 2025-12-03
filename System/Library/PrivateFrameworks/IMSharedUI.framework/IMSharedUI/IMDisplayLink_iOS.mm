@@ -1,16 +1,16 @@
 @interface IMDisplayLink_iOS
-- (IMDisplayLink_iOS)initWithTarget:(id)a3 selector:(SEL)a4;
+- (IMDisplayLink_iOS)initWithTarget:(id)target selector:(SEL)selector;
 - (void)invalidate;
 - (void)schedule;
 @end
 
 @implementation IMDisplayLink_iOS
 
-- (IMDisplayLink_iOS)initWithTarget:(id)a3 selector:(SEL)a4
+- (IMDisplayLink_iOS)initWithTarget:(id)target selector:(SEL)selector
 {
   v17.receiver = self;
   v17.super_class = IMDisplayLink_iOS;
-  v4 = [(IMDisplayLink *)&v17 initWithTarget:a3 selector:a4];
+  v4 = [(IMDisplayLink *)&v17 initWithTarget:target selector:selector];
   v6 = v4;
   if (v4)
   {

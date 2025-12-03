@@ -1,20 +1,20 @@
 @interface DTAssetRequest
-+ (id)requestWithIdentifier:(id)a3 path:(id)a4;
-- (DTAssetRequest)initWithCoder:(id)a3;
-- (DTAssetRequest)initWithIdentifier:(id)a3 path:(id)a4;
-- (void)encodeWithCoder:(id)a3;
++ (id)requestWithIdentifier:(id)identifier path:(id)path;
+- (DTAssetRequest)initWithCoder:(id)coder;
+- (DTAssetRequest)initWithIdentifier:(id)identifier path:(id)path;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DTAssetRequest
 
-- (DTAssetRequest)initWithIdentifier:(id)a3 path:(id)a4
+- (DTAssetRequest)initWithIdentifier:(id)identifier path:(id)path
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  identifierCopy = identifier;
+  pathCopy = path;
+  v9 = pathCopy;
+  if (identifierCopy)
   {
-    if (v8)
+    if (pathCopy)
     {
       goto LABEL_3;
     }
@@ -36,7 +36,7 @@ LABEL_3:
   v10 = [(DTAssetRequest *)&v16 init];
   if (v10)
   {
-    v11 = [v7 copy];
+    v11 = [identifierCopy copy];
     identifier = v10->_identifier;
     v10->_identifier = v11;
 
@@ -48,33 +48,33 @@ LABEL_3:
   return v10;
 }
 
-+ (id)requestWithIdentifier:(id)a3 path:(id)a4
++ (id)requestWithIdentifier:(id)identifier path:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithIdentifier:v7 path:v6];
+  pathCopy = path;
+  identifierCopy = identifier;
+  v8 = [[self alloc] initWithIdentifier:identifierCopy path:pathCopy];
 
   return v8;
 }
 
-- (DTAssetRequest)initWithCoder:(id)a3
+- (DTAssetRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"assetPath"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"assetPath"];
 
   v7 = [(DTAssetRequest *)self initWithIdentifier:v5 path:v6];
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(DTAssetRequest *)self identifier];
-  [v4 encodeObject:v5 forKey:@"identifier"];
+  coderCopy = coder;
+  identifier = [(DTAssetRequest *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 
-  v6 = [(DTAssetRequest *)self assetPath];
-  [v4 encodeObject:v6 forKey:@"assetPath"];
+  assetPath = [(DTAssetRequest *)self assetPath];
+  [coderCopy encodeObject:assetPath forKey:@"assetPath"];
 }
 
 @end

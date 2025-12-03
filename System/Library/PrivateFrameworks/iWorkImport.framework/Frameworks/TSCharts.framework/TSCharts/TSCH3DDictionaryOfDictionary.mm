@@ -1,10 +1,10 @@
 @interface TSCH3DDictionaryOfDictionary
 - (TSCH3DDictionaryOfDictionary)init;
 - (id)description;
-- (id)objectForFirstLevelKey:(id)a3 secondLevelKey:(id)a4;
-- (void)addEntriesFromDictionaryOfDictionary:(id)a3;
-- (void)removeObjectForFirstLevelKey:(id)a3 secondLevelKey:(id)a4;
-- (void)setObject:(id)a3 forFirstLevelKey:(id)a4 secondLevelKey:(id)a5;
+- (id)objectForFirstLevelKey:(id)key secondLevelKey:(id)levelKey;
+- (void)addEntriesFromDictionaryOfDictionary:(id)dictionary;
+- (void)removeObjectForFirstLevelKey:(id)key secondLevelKey:(id)levelKey;
+- (void)setObject:(id)object forFirstLevelKey:(id)key secondLevelKey:(id)levelKey;
 @end
 
 @implementation TSCH3DDictionaryOfDictionary
@@ -35,45 +35,45 @@
   return v9;
 }
 
-- (void)setObject:(id)a3 forFirstLevelKey:(id)a4 secondLevelKey:(id)a5
+- (void)setObject:(id)object forFirstLevelKey:(id)key secondLevelKey:(id)levelKey
 {
-  v23 = a3;
-  v8 = a4;
-  v9 = a5;
-  v15 = objc_msgSend_objectForKey_(self->_dictionary, v10, v11, v12, v13, v8);
+  objectCopy = object;
+  keyCopy = key;
+  levelKeyCopy = levelKey;
+  v15 = objc_msgSend_objectForKey_(self->_dictionary, v10, v11, v12, v13, keyCopy);
   if (!v15)
   {
     v15 = objc_msgSend_dictionary(MEMORY[0x277CBEB38], v14, v16, v17, v18);
     objc_msgSend_setObject_forKey_(self->_dictionary, v19, v20, v21, v22);
   }
 
-  objc_msgSend_setObject_forKey_(v15, v14, v16, v17, v18, v23, v9);
+  objc_msgSend_setObject_forKey_(v15, v14, v16, v17, v18, objectCopy, levelKeyCopy);
 }
 
-- (id)objectForFirstLevelKey:(id)a3 secondLevelKey:(id)a4
+- (id)objectForFirstLevelKey:(id)key secondLevelKey:(id)levelKey
 {
-  v6 = a4;
-  v11 = objc_msgSend_objectForKey_(self->_dictionary, v7, v8, v9, v10, a3);
-  v16 = objc_msgSend_objectForKey_(v11, v12, v13, v14, v15, v6);
+  levelKeyCopy = levelKey;
+  v11 = objc_msgSend_objectForKey_(self->_dictionary, v7, v8, v9, v10, key);
+  v16 = objc_msgSend_objectForKey_(v11, v12, v13, v14, v15, levelKeyCopy);
 
   return v16;
 }
 
-- (void)removeObjectForFirstLevelKey:(id)a3 secondLevelKey:(id)a4
+- (void)removeObjectForFirstLevelKey:(id)key secondLevelKey:(id)levelKey
 {
-  v15 = a4;
-  v10 = objc_msgSend_objectForKey_(self->_dictionary, v6, v7, v8, v9, a3);
-  objc_msgSend_removeObjectForKey_(v10, v11, v12, v13, v14, v15);
+  levelKeyCopy = levelKey;
+  v10 = objc_msgSend_objectForKey_(self->_dictionary, v6, v7, v8, v9, key);
+  objc_msgSend_removeObjectForKey_(v10, v11, v12, v13, v14, levelKeyCopy);
 }
 
-- (void)addEntriesFromDictionaryOfDictionary:(id)a3
+- (void)addEntriesFromDictionaryOfDictionary:(id)dictionary
 {
   v83 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v72 = v4;
-  if (v4)
+  dictionaryCopy = dictionary;
+  v72 = dictionaryCopy;
+  if (dictionaryCopy)
   {
-    v9 = v4[1];
+    v9 = dictionaryCopy[1];
     if (!v9)
     {
       v10 = MEMORY[0x277D81150];

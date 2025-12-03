@@ -1,5 +1,5 @@
 @interface _ADRapportLinkConfigurationMutation
-- (_ADRapportLinkConfigurationMutation)initWithBase:(id)a3;
+- (_ADRapportLinkConfigurationMutation)initWithBase:(id)base;
 - (id)getConnectionOptions;
 - (id)getDiscoveryOptions;
 - (id)getTransportOptions;
@@ -25,57 +25,57 @@
 {
   if ((*&self->_mutationFlags & 8) != 0)
   {
-    v2 = self->_connectionOptions;
+    connectionOptions = self->_connectionOptions;
   }
 
   else
   {
-    v2 = [(ADRapportLinkConfiguration *)self->_base connectionOptions];
+    connectionOptions = [(ADRapportLinkConfiguration *)self->_base connectionOptions];
   }
 
-  return v2;
+  return connectionOptions;
 }
 
 - (id)getTransportOptions
 {
   if ((*&self->_mutationFlags & 4) != 0)
   {
-    v2 = self->_transportOptions;
+    transportOptions = self->_transportOptions;
   }
 
   else
   {
-    v2 = [(ADRapportLinkConfiguration *)self->_base transportOptions];
+    transportOptions = [(ADRapportLinkConfiguration *)self->_base transportOptions];
   }
 
-  return v2;
+  return transportOptions;
 }
 
 - (id)getDiscoveryOptions
 {
   if ((*&self->_mutationFlags & 2) != 0)
   {
-    v2 = self->_discoveryOptions;
+    discoveryOptions = self->_discoveryOptions;
   }
 
   else
   {
-    v2 = [(ADRapportLinkConfiguration *)self->_base discoveryOptions];
+    discoveryOptions = [(ADRapportLinkConfiguration *)self->_base discoveryOptions];
   }
 
-  return v2;
+  return discoveryOptions;
 }
 
-- (_ADRapportLinkConfigurationMutation)initWithBase:(id)a3
+- (_ADRapportLinkConfigurationMutation)initWithBase:(id)base
 {
-  v5 = a3;
+  baseCopy = base;
   v9.receiver = self;
   v9.super_class = _ADRapportLinkConfigurationMutation;
   v6 = [(_ADRapportLinkConfigurationMutation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_base, a3);
+    objc_storeStrong(&v6->_base, base);
   }
 
   return v7;

@@ -1,15 +1,15 @@
 @interface DeveloperLinkViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (unint64_t)accessibilityTraits;
 @end
 
 @implementation DeveloperLinkViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"ProductPageExtension.DeveloperLinkView" hasInstanceMethod:@"accessibilitySubtitleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ProductPageExtension.DeveloperLinkView" hasInstanceMethod:@"accessibilityTitleLabel" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"ProductPageExtension.DeveloperLinkView" hasInstanceMethod:@"accessibilitySubtitleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ProductPageExtension.DeveloperLinkView" hasInstanceMethod:@"accessibilityTitleLabel" withFullSignature:{"@", 0}];
 }
 
 - (unint64_t)accessibilityTraits

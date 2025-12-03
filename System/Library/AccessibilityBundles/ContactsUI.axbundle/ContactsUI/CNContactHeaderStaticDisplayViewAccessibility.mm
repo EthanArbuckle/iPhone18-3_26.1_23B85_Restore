@@ -1,16 +1,16 @@
 @interface CNContactHeaderStaticDisplayViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation CNContactHeaderStaticDisplayViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CNContactHeaderStaticDisplayView" isKindOfClass:@"CNContactHeaderView"];
-  [v3 validateClass:@"CNContactHeaderView" hasInstanceMethod:@"nameLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CNContactHeaderStaticDisplayView" hasInstanceMethod:@"copy:" withFullSignature:{"v", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CNContactHeaderStaticDisplayView" isKindOfClass:@"CNContactHeaderView"];
+  [validationsCopy validateClass:@"CNContactHeaderView" hasInstanceMethod:@"nameLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CNContactHeaderStaticDisplayView" hasInstanceMethod:@"copy:" withFullSignature:{"v", "@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

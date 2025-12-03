@@ -1,6 +1,6 @@
 @interface MRScreenMirroringUIControllingObserver
 - (MRScreenMirroringUIControllingObserver)init;
-- (void)_mirrorStateChanged:(BOOL)a3 screenType:(unsigned int)a4;
+- (void)_mirrorStateChanged:(BOOL)changed screenType:(unsigned int)type;
 - (void)dealloc;
 @end
 
@@ -65,7 +65,7 @@ void __46__MRScreenMirroringUIControllingObserver_init__block_invoke(uint64_t a1
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1A2860000, v3, OS_LOG_TYPE_DEFAULT, "[MRScreenMirroringUIControllingObserver] <%p> Deallocating.", buf, 0xCu);
   }
 
@@ -75,38 +75,38 @@ void __46__MRScreenMirroringUIControllingObserver_init__block_invoke(uint64_t a1
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_mirrorStateChanged:(BOOL)a3 screenType:(unsigned int)a4
+- (void)_mirrorStateChanged:(BOOL)changed screenType:(unsigned int)type
 {
-  v5 = a3;
+  changedCopy = changed;
   v16 = *MEMORY[0x1E69E9840];
   v7 = _MRLogForCategory(0xBuLL);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v13[0] = 67109376;
-    v13[1] = v5;
+    v13[1] = changedCopy;
     v14 = 1024;
-    v15 = a4;
+    typeCopy = type;
     _os_log_impl(&dword_1A2860000, v7, OS_LOG_TYPE_DEFAULT, "[MRScreenMirroringUIControllingObserver] Mirroring enabled: %{BOOL}u for screen type: %u", v13, 0xEu);
   }
 
-  v8 = [(MRScreenMirroringUIControllingObserver *)self uiController];
+  uiController = [(MRScreenMirroringUIControllingObserver *)self uiController];
 
-  if (a4 == 1 && v5)
+  if (type == 1 && changedCopy)
   {
-    if (!v8)
+    if (!uiController)
     {
       v9 = [MRUIControllerProvider screenMirroringControllerWithDelegate:0];
       [(MRScreenMirroringUIControllingObserver *)self setUiController:v9];
 
-      v10 = [(MRScreenMirroringUIControllingObserver *)self uiController];
-      [v10 acquireScreenMirroringQuickControlsAssertion];
+      uiController2 = [(MRScreenMirroringUIControllingObserver *)self uiController];
+      [uiController2 acquireScreenMirroringQuickControlsAssertion];
     }
   }
 
-  else if (v8)
+  else if (uiController)
   {
-    v11 = [(MRScreenMirroringUIControllingObserver *)self uiController];
-    [v11 releaseScreenMirroringQuickControlsAssertion];
+    uiController3 = [(MRScreenMirroringUIControllingObserver *)self uiController];
+    [uiController3 releaseScreenMirroringQuickControlsAssertion];
 
     [(MRScreenMirroringUIControllingObserver *)self setUiController:0];
   }

@@ -1,7 +1,7 @@
 @interface CAMBurstThumbnailCluster
 - (CAMBurstThumbnailCluster)init;
-- (CAMBurstThumbnailCluster)initWithImageData:(id)a3 dict:(id)a4 identifier:(id)a5 imageProps:(id)a6 completionBlock:(id)a7;
-- (float)computeMergeCost:(id)a3 :(int *)a4 :(int)a5;
+- (CAMBurstThumbnailCluster)initWithImageData:(id)data dict:(id)dict identifier:(id)identifier imageProps:(id)props completionBlock:(id)block;
+- (float)computeMergeCost:(id)cost :(int *)a4 :(int)a5;
 - (void)dealloc;
 - (void)releaseImage;
 @end
@@ -17,30 +17,30 @@
   return [(CAMBurstThumbnailCluster *)&v4 init];
 }
 
-- (CAMBurstThumbnailCluster)initWithImageData:(id)a3 dict:(id)a4 identifier:(id)a5 imageProps:(id)a6 completionBlock:(id)a7
+- (CAMBurstThumbnailCluster)initWithImageData:(id)data dict:(id)dict identifier:(id)identifier imageProps:(id)props completionBlock:(id)block
 {
   v33.receiver = self;
   v33.super_class = CAMBurstThumbnailCluster;
   v12 = [(CAMBurstThumbnailCluster *)&v33 init];
   v12->burstImages = [MEMORY[0x1E695DF70] arrayWithCapacity:0];
-  [(CAMBurstThumbnailCluster *)v12 setImageProps:a6];
-  [(CAMBurstThumbnailCluster *)v12 setImage:a3];
-  [(CAMBurstThumbnailCluster *)v12 setCompletionBlock:a7];
-  v13 = [[CAMBurstImageStat alloc] initWithIdentifier:a5];
-  BurstLoggingMessage("ThumbnailCluster - adding %s\n", [a5 UTF8String]);
-  if (!a4)
+  [(CAMBurstThumbnailCluster *)v12 setImageProps:props];
+  [(CAMBurstThumbnailCluster *)v12 setImage:data];
+  [(CAMBurstThumbnailCluster *)v12 setCompletionBlock:block];
+  v13 = [[CAMBurstImageStat alloc] initWithIdentifier:identifier];
+  BurstLoggingMessage("ThumbnailCluster - adding %s\n", [identifier UTF8String]);
+  if (!dict)
   {
     goto LABEL_28;
   }
 
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  v15 = [a4 objectForKey:@"JpegData"];
+  v15 = [dict objectForKey:@"JpegData"];
   if (v15)
   {
     [(CAMBurstThumbnailCluster *)v12 setFullsizeJpegData:v15];
     [(CAMBurstImageStat *)v13 setFullsizeJpegData:[(CAMBurstThumbnailCluster *)v12 fullsizeJpegData]];
-    -[CAMBurstImageStat setFullsizeJpegSize:](v13, "setFullsizeJpegSize:", [objc_msgSend(a4 objectForKey:{@"JpegDataSize", "intValue"}]);
+    -[CAMBurstImageStat setFullsizeJpegSize:](v13, "setFullsizeJpegSize:", [objc_msgSend(dict objectForKey:{@"JpegDataSize", "intValue"}]);
   }
 
   if ((isKindOfClass & 1) == 0)
@@ -48,7 +48,7 @@
     goto LABEL_12;
   }
 
-  v16 = [a4 objectForKey:*MEMORY[0x1E696DE78]];
+  v16 = [dict objectForKey:*MEMORY[0x1E696DE78]];
   if (v16)
   {
     v17 = v16;
@@ -61,7 +61,7 @@
     -[CAMBurstImageStat setOrientation:](v13, "setOrientation:", [v17 intValue]);
   }
 
-  v18 = [a4 objectForKey:*MEMORY[0x1E696DE30]];
+  v18 = [dict objectForKey:*MEMORY[0x1E696DE30]];
   if (!v18)
   {
 LABEL_28:
@@ -76,27 +76,27 @@ LABEL_28:
     v20 = [v19 objectForKey:@"6"];
     if (v20)
     {
-      v21 = [v20 intValue];
+      intValue = [v20 intValue];
     }
 
     else
     {
-      v21 = 0;
+      intValue = 0;
     }
 
-    [(CAMBurstImageStat *)v13 setAEAverage:v21];
+    [(CAMBurstImageStat *)v13 setAEAverage:intValue];
     v22 = [v19 objectForKey:@"5"];
     if (v22)
     {
-      v23 = [v22 intValue];
+      intValue2 = [v22 intValue];
     }
 
     else
     {
-      v23 = 0;
+      intValue2 = 0;
     }
 
-    [(CAMBurstImageStat *)v13 setAETarget:v23];
+    [(CAMBurstImageStat *)v13 setAETarget:intValue2];
     v24 = [v19 objectForKey:@"4"];
     if (v24)
     {
@@ -124,7 +124,7 @@ LABEL_28:
     v28 = [v19 objectForKey:@"2"];
     if (!v28 || [(CAMBurstImageStat *)v13 setAEMatrix:v28])
     {
-      [(CAMBurstImageStat *)v13 computeAEMatrix:a3];
+      [(CAMBurstImageStat *)v13 computeAEMatrix:data];
     }
 
     v29 = [v19 objectForKey:@"3"];
@@ -186,13 +186,13 @@ LABEL_29:
   }
 }
 
-- (float)computeMergeCost:(id)a3 :(int *)a4 :(int)a5
+- (float)computeMergeCost:(id)cost :(int *)a4 :(int)a5
 {
   v36 = *MEMORY[0x1E69E9840];
   v9 = [(NSMutableArray *)self->burstImages count];
-  v24 = a3;
+  costCopy = cost;
   v10 = -1.0;
-  if ((a5 / 1.5) >= ([*(a3 + 1) count] + v9))
+  if ((a5 / 1.5) >= ([*(cost + 1) count] + v9))
   {
     v32 = 0u;
     v33 = 0u;
@@ -218,7 +218,7 @@ LABEL_29:
           v27 = 0u;
           v28 = 0u;
           v29 = 0u;
-          v13 = v24[1];
+          v13 = costCopy[1];
           v14 = [v13 countByEnumeratingWithState:&v26 objects:v34 count:16];
           if (v14)
           {
@@ -234,8 +234,8 @@ LABEL_29:
                 }
 
                 v18 = *(*(&v26 + 1) + 8 * j);
-                v19 = [v12 temporalOrder];
-                v20 = [v18 temporalOrder] + v19 * a5;
+                temporalOrder = [v12 temporalOrder];
+                v20 = [v18 temporalOrder] + temporalOrder * a5;
                 if (v10 < a4[v20])
                 {
                   v10 = a4[v20];

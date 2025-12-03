@@ -1,34 +1,34 @@
 @interface ASCAgentProxy
-- (ASCAgentProxy)initWithFailureHandler:(id)a3;
-- (BOOL)isDeviceConfiguredForPasskeysWithTestOptions:(id)a3;
+- (ASCAgentProxy)initWithFailureHandler:(id)handler;
+- (BOOL)isDeviceConfiguredForPasskeysWithTestOptions:(id)options;
 - (id)_reconnectIfNecessary;
-- (id)_remoteObjectProxyWithErrorHandler:(id)a3;
-- (void)_getSavedAccountContextFromSafariApplicationWithRequestContext:(id)a3 completionHandler:(id)a4;
-- (void)_setUpConnection:(id)a3;
-- (void)browserPasskeysForRelyingParty:(id)a3 testOptions:(id)a4 completionHandler:(id)a5;
+- (id)_remoteObjectProxyWithErrorHandler:(id)handler;
+- (void)_getSavedAccountContextFromSafariApplicationWithRequestContext:(id)context completionHandler:(id)handler;
+- (void)_setUpConnection:(id)connection;
+- (void)browserPasskeysForRelyingParty:(id)party testOptions:(id)options completionHandler:(id)handler;
 - (void)cancelCurrentRequest;
-- (void)clearAllPlatformPublicKeyCredentialsWithCompletionHandler:(id)a3;
+- (void)clearAllPlatformPublicKeyCredentialsWithCompletionHandler:(id)handler;
 - (void)dealloc;
-- (void)deleteAllPasskeysForRelyingParty:(id)a3 completionHandler:(id)a4;
-- (void)deletePasskeyForRelyingParty:(id)a3 withCredentialID:(id)a4 completionHandler:(id)a5;
-- (void)getArePasskeysDisallowedForRelyingParty:(id)a3 withCompletionHandler:(id)a4;
-- (void)getCanCurrentProcessAccessPasskeysForRelyingParty:(id)a3 withCompletionHandler:(id)a4;
-- (void)getPasskeysDataForRelyingParty:(id)a3 withCompletionHandler:(id)a4;
-- (void)getShouldUseAlternateCredentialStoreWithCompletionHandler:(id)a3;
-- (void)openCABLEURL:(id)a3 fromSourceApplication:(id)a4 withCompletionHandler:(id)a5;
-- (void)openCredentialProviderAppSettingsWithCompletionHandler:(id)a3;
-- (void)openVerificationCodeAppSettingsWithCompletionHandler:(id)a3;
-- (void)performAuthorizationRequestsForContext:(id)a3 withCompletionHandler:(id)a4;
-- (void)performSilentAuthorizationRequestsForContext:(id)a3 withCompletionHandler:(id)a4;
-- (void)preflightCanCreateICloudKeychainPasskeyWithCompletionHandler:(id)a3;
-- (void)requestToTurnOnCredentialProviderExtensionWithCompletionHandler:(id)a3;
+- (void)deleteAllPasskeysForRelyingParty:(id)party completionHandler:(id)handler;
+- (void)deletePasskeyForRelyingParty:(id)party withCredentialID:(id)d completionHandler:(id)handler;
+- (void)getArePasskeysDisallowedForRelyingParty:(id)party withCompletionHandler:(id)handler;
+- (void)getCanCurrentProcessAccessPasskeysForRelyingParty:(id)party withCompletionHandler:(id)handler;
+- (void)getPasskeysDataForRelyingParty:(id)party withCompletionHandler:(id)handler;
+- (void)getShouldUseAlternateCredentialStoreWithCompletionHandler:(id)handler;
+- (void)openCABLEURL:(id)l fromSourceApplication:(id)application withCompletionHandler:(id)handler;
+- (void)openCredentialProviderAppSettingsWithCompletionHandler:(id)handler;
+- (void)openVerificationCodeAppSettingsWithCompletionHandler:(id)handler;
+- (void)performAuthorizationRequestsForContext:(id)context withCompletionHandler:(id)handler;
+- (void)performSilentAuthorizationRequestsForContext:(id)context withCompletionHandler:(id)handler;
+- (void)preflightCanCreateICloudKeychainPasskeyWithCompletionHandler:(id)handler;
+- (void)requestToTurnOnCredentialProviderExtensionWithCompletionHandler:(id)handler;
 @end
 
 @implementation ASCAgentProxy
 
-- (ASCAgentProxy)initWithFailureHandler:(id)a3
+- (ASCAgentProxy)initWithFailureHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v14.receiver = self;
   v14.super_class = ASCAgentProxy;
   v5 = [(ASCAgentProxy *)&v14 init];
@@ -41,7 +41,7 @@
     v5->_connection = v8;
 
     v5->_connectionLock._os_unfair_lock_opaque = 0;
-    v10 = _Block_copy(v4);
+    v10 = _Block_copy(handlerCopy);
     failureHandler = v5->_failureHandler;
     v5->_failureHandler = v10;
 
@@ -52,18 +52,18 @@
   return v5;
 }
 
-- (void)_setUpConnection:(id)a3
+- (void)_setUpConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v5 = +[ASCAgentInterface xpcInterface];
-  [v4 setRemoteObjectInterface:v5];
+  [connectionCopy setRemoteObjectInterface:v5];
   objc_initWeak(&location, self);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __34__ASCAgentProxy__setUpConnection___block_invoke;
   aBlock[3] = &unk_1E815FFD0;
   objc_copyWeak(&v10, &location);
-  v6 = v4;
+  v6 = connectionCopy;
   v9 = v6;
   v7 = _Block_copy(aBlock);
   [v6 setInvalidationHandler:v7];
@@ -113,17 +113,17 @@ void __34__ASCAgentProxy__setUpConnection___block_invoke(uint64_t a1)
   [(ASCAgentProxy *)&v4 dealloc];
 }
 
-- (id)_remoteObjectProxyWithErrorHandler:(id)a3
+- (id)_remoteObjectProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(ASCAgentProxy *)self _reconnectIfNecessary];
+  handlerCopy = handler;
+  _reconnectIfNecessary = [(ASCAgentProxy *)self _reconnectIfNecessary];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __52__ASCAgentProxy__remoteObjectProxyWithErrorHandler___block_invoke;
   v13[3] = &unk_1E815FFF8;
-  v6 = v4;
+  v6 = handlerCopy;
   v14 = v6;
-  v7 = [v5 remoteObjectProxyWithErrorHandler:v13];
+  v7 = [_reconnectIfNecessary remoteObjectProxyWithErrorHandler:v13];
   v8 = v7;
   if (v7)
   {
@@ -157,19 +157,19 @@ void __52__ASCAgentProxy__remoteObjectProxyWithErrorHandler___block_invoke(uint6
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)performAuthorizationRequestsForContext:(id)a3 withCompletionHandler:(id)a4
+- (void)performAuthorizationRequestsForContext:(id)context withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  handlerCopy = handler;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __78__ASCAgentProxy_performAuthorizationRequestsForContext_withCompletionHandler___block_invoke;
   v10[3] = &unk_1E8160048;
-  v11 = v6;
-  v12 = self;
-  v13 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = contextCopy;
+  selfCopy = self;
+  v13 = handlerCopy;
+  v8 = handlerCopy;
+  v9 = contextCopy;
   [(ASCAgentProxy *)self _getSavedAccountContextFromSafariApplicationWithRequestContext:v9 completionHandler:v10];
 }
 
@@ -216,16 +216,16 @@ void __78__ASCAgentProxy_performAuthorizationRequestsForContext_withCompletionHa
   }
 }
 
-- (void)clearAllPlatformPublicKeyCredentialsWithCompletionHandler:(id)a3
+- (void)clearAllPlatformPublicKeyCredentialsWithCompletionHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __75__ASCAgentProxy_clearAllPlatformPublicKeyCredentialsWithCompletionHandler___block_invoke;
   v10[3] = &unk_1E8160098;
   v10[4] = self;
   v12 = a2;
-  v6 = v5;
+  v6 = handlerCopy;
   v11 = v6;
   v7 = [(ASCAgentProxy *)self _remoteObjectProxyWithErrorHandler:v10];
   v8 = v7;
@@ -266,18 +266,18 @@ void __75__ASCAgentProxy_clearAllPlatformPublicKeyCredentialsWithCompletionHandl
   }
 }
 
-- (void)getShouldUseAlternateCredentialStoreWithCompletionHandler:(id)a3
+- (void)getShouldUseAlternateCredentialStoreWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v7 = MEMORY[0x1E69E9820];
   v8 = 3221225472;
   v9 = __75__ASCAgentProxy_getShouldUseAlternateCredentialStoreWithCompletionHandler___block_invoke;
   v10 = &unk_1E8160020;
-  v11 = self;
-  v12 = v4;
-  v5 = v4;
+  selfCopy = self;
+  v12 = handlerCopy;
+  v5 = handlerCopy;
   v6 = [(ASCAgentProxy *)self _remoteObjectProxyWithErrorHandler:&v7];
-  [v6 getShouldUseAlternateCredentialStoreWithCompletionHandler:{v5, v7, v8, v9, v10, v11}];
+  [v6 getShouldUseAlternateCredentialStoreWithCompletionHandler:{v5, v7, v8, v9, v10, selfCopy}];
 }
 
 void __75__ASCAgentProxy_getShouldUseAlternateCredentialStoreWithCompletionHandler___block_invoke(uint64_t a1, void *a2)
@@ -303,19 +303,19 @@ void __75__ASCAgentProxy_getShouldUseAlternateCredentialStoreWithCompletionHandl
   }
 }
 
-- (void)getArePasskeysDisallowedForRelyingParty:(id)a3 withCompletionHandler:(id)a4
+- (void)getArePasskeysDisallowedForRelyingParty:(id)party withCompletionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v10 = MEMORY[0x1E69E9820];
   v11 = 3221225472;
   v12 = __79__ASCAgentProxy_getArePasskeysDisallowedForRelyingParty_withCompletionHandler___block_invoke;
   v13 = &unk_1E8160020;
-  v14 = self;
-  v15 = v6;
-  v7 = v6;
-  v8 = a3;
+  selfCopy = self;
+  v15 = handlerCopy;
+  v7 = handlerCopy;
+  partyCopy = party;
   v9 = [(ASCAgentProxy *)self _remoteObjectProxyWithErrorHandler:&v10];
-  [v9 getArePasskeysDisallowedForRelyingParty:v8 withCompletionHandler:{v7, v10, v11, v12, v13, v14}];
+  [v9 getArePasskeysDisallowedForRelyingParty:partyCopy withCompletionHandler:{v7, v10, v11, v12, v13, selfCopy}];
 }
 
 void __79__ASCAgentProxy_getArePasskeysDisallowedForRelyingParty_withCompletionHandler___block_invoke(uint64_t a1, void *a2)
@@ -341,19 +341,19 @@ void __79__ASCAgentProxy_getArePasskeysDisallowedForRelyingParty_withCompletionH
   }
 }
 
-- (void)openCABLEURL:(id)a3 fromSourceApplication:(id)a4 withCompletionHandler:(id)a5
+- (void)openCABLEURL:(id)l fromSourceApplication:(id)application withCompletionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  lCopy = l;
+  applicationCopy = application;
+  handlerCopy = handler;
   activity = self->_activity;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __74__ASCAgentProxy_openCABLEURL_fromSourceApplication_withCompletionHandler___block_invoke;
   block[3] = &unk_1E815FD28;
-  v13 = v9;
+  v13 = lCopy;
   v23 = v13;
-  v14 = v10;
+  v14 = applicationCopy;
   v24 = v14;
   os_activity_apply(activity, block);
   v19[0] = MEMORY[0x1E69E9820];
@@ -362,7 +362,7 @@ void __79__ASCAgentProxy_getArePasskeysDisallowedForRelyingParty_withCompletionH
   v19[3] = &unk_1E8160098;
   v19[4] = self;
   v21 = a2;
-  v15 = v11;
+  v15 = handlerCopy;
   v20 = v15;
   v16 = [(ASCAgentProxy *)self _remoteObjectProxyWithErrorHandler:v19];
   v17 = v16;
@@ -421,37 +421,37 @@ void __74__ASCAgentProxy_openCABLEURL_fromSourceApplication_withCompletionHandle
   }
 }
 
-- (void)browserPasskeysForRelyingParty:(id)a3 testOptions:(id)a4 completionHandler:(id)a5
+- (void)browserPasskeysForRelyingParty:(id)party testOptions:(id)options completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  partyCopy = party;
+  optionsCopy = options;
+  handlerCopy = handler;
   activity = self->_activity;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __78__ASCAgentProxy_browserPasskeysForRelyingParty_testOptions_completionHandler___block_invoke;
   block[3] = &unk_1E815F9D0;
-  v13 = v9;
+  v13 = partyCopy;
   v26 = v13;
   os_activity_apply(activity, block);
   v18 = MEMORY[0x1E69E9820];
   v19 = 3221225472;
   v20 = __78__ASCAgentProxy_browserPasskeysForRelyingParty_testOptions_completionHandler___block_invoke_11;
   v21 = &unk_1E8160098;
-  v22 = self;
+  selfCopy = self;
   v24 = a2;
-  v14 = v11;
+  v14 = handlerCopy;
   v23 = v14;
   v15 = [(ASCAgentProxy *)self _remoteObjectProxyWithErrorHandler:&v18];
   v16 = v15;
   if (v15)
   {
-    [v15 browserPasskeysForRelyingParty:v13 testOptions:v10 completionHandler:{v14, v18, v19, v20, v21, v22}];
+    [v15 browserPasskeysForRelyingParty:v13 testOptions:optionsCopy completionHandler:{v14, v18, v19, v20, v21, selfCopy}];
   }
 
   else
   {
-    v17 = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.AuthenticationServicesCore.AuthorizationError" code:1 userInfo:{0, v18, v19, v20, v21, v22}];
+    v17 = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.AuthenticationServicesCore.AuthorizationError" code:1 userInfo:{0, v18, v19, v20, v21, selfCopy}];
     (*(v14 + 2))(v14, MEMORY[0x1E695E0F0]);
   }
 }
@@ -496,9 +496,9 @@ void __78__ASCAgentProxy_browserPasskeysForRelyingParty_testOptions_completionHa
   }
 }
 
-- (BOOL)isDeviceConfiguredForPasskeysWithTestOptions:(id)a3
+- (BOOL)isDeviceConfiguredForPasskeysWithTestOptions:(id)options
 {
-  v5 = a3;
+  optionsCopy = options;
   os_activity_apply(self->_activity, &__block_literal_global_2);
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
@@ -510,7 +510,7 @@ void __78__ASCAgentProxy_browserPasskeysForRelyingParty_testOptions_completionHa
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 isDeviceConfiguredForPasskeysWithTestOptions:v5];
+    v8 = [v6 isDeviceConfiguredForPasskeysWithTestOptions:optionsCopy];
   }
 
   else
@@ -561,23 +561,23 @@ void __62__ASCAgentProxy_isDeviceConfiguredForPasskeysWithTestOptions___block_in
   }
 }
 
-- (void)getCanCurrentProcessAccessPasskeysForRelyingParty:(id)a3 withCompletionHandler:(id)a4
+- (void)getCanCurrentProcessAccessPasskeysForRelyingParty:(id)party withCompletionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  partyCopy = party;
+  handlerCopy = handler;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __89__ASCAgentProxy_getCanCurrentProcessAccessPasskeysForRelyingParty_withCompletionHandler___block_invoke;
   v13[3] = &unk_1E8160098;
   v13[4] = self;
   v15 = a2;
-  v9 = v8;
+  v9 = handlerCopy;
   v14 = v9;
   v10 = [(ASCAgentProxy *)self _remoteObjectProxyWithErrorHandler:v13];
   v11 = v10;
   if (v10)
   {
-    [v10 getCanCurrentProcessAccessPasskeysForRelyingParty:v7 withCompletionHandler:v9];
+    [v10 getCanCurrentProcessAccessPasskeysForRelyingParty:partyCopy withCompletionHandler:v9];
   }
 
   else
@@ -612,10 +612,10 @@ void __89__ASCAgentProxy_getCanCurrentProcessAccessPasskeysForRelyingParty_withC
   }
 }
 
-- (void)performSilentAuthorizationRequestsForContext:(id)a3 withCompletionHandler:(id)a4
+- (void)performSilentAuthorizationRequestsForContext:(id)context withCompletionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  contextCopy = context;
   v8 = WBS_LOG_CHANNEL_PREFIXAuthorization();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -627,7 +627,7 @@ void __89__ASCAgentProxy_getCanCurrentProcessAccessPasskeysForRelyingParty_withC
   aBlock[1] = 3221225472;
   aBlock[2] = __84__ASCAgentProxy_performSilentAuthorizationRequestsForContext_withCompletionHandler___block_invoke;
   aBlock[3] = &unk_1E815FA38;
-  v9 = v6;
+  v9 = handlerCopy;
   v19 = v9;
   v10 = _Block_copy(aBlock);
   v13 = MEMORY[0x1E69E9820];
@@ -637,7 +637,7 @@ void __89__ASCAgentProxy_getCanCurrentProcessAccessPasskeysForRelyingParty_withC
   v17 = v9;
   v11 = v9;
   v12 = [(ASCAgentProxy *)self _remoteObjectProxyWithErrorHandler:&v13];
-  [v12 performSilentAuthorizationRequestsForContext:v7 withCompletionHandler:{v10, v13, v14, v15, v16}];
+  [v12 performSilentAuthorizationRequestsForContext:contextCopy withCompletionHandler:{v10, v13, v14, v15, v16}];
 }
 
 void __84__ASCAgentProxy_performSilentAuthorizationRequestsForContext_withCompletionHandler___block_invoke_2(uint64_t a1, void *a2)
@@ -652,16 +652,16 @@ void __84__ASCAgentProxy_performSilentAuthorizationRequestsForContext_withComple
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)getPasskeysDataForRelyingParty:(id)a3 withCompletionHandler:(id)a4
+- (void)getPasskeysDataForRelyingParty:(id)party withCompletionHandler:(id)handler
 {
   v16 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  partyCopy = party;
+  handlerCopy = handler;
   v8 = WBS_LOG_CHANNEL_PREFIXAuthorization();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     *buf = 138543362;
-    v15 = v6;
+    v15 = partyCopy;
     _os_log_impl(&dword_1C20AD000, v8, OS_LOG_TYPE_INFO, "Asked to look up passkey data for %{public}@.", buf, 0xCu);
   }
 
@@ -669,10 +669,10 @@ void __84__ASCAgentProxy_performSilentAuthorizationRequestsForContext_withComple
   v12[1] = 3221225472;
   v12[2] = __70__ASCAgentProxy_getPasskeysDataForRelyingParty_withCompletionHandler___block_invoke;
   v12[3] = &unk_1E815FFF8;
-  v13 = v7;
-  v9 = v7;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
   v10 = [(ASCAgentProxy *)self _remoteObjectProxyWithErrorHandler:v12];
-  [v10 getPasskeysDataForRelyingParty:v6 withCompletionHandler:v9];
+  [v10 getPasskeysDataForRelyingParty:partyCopy withCompletionHandler:v9];
 
   v11 = *MEMORY[0x1E69E9840];
 }
@@ -689,19 +689,19 @@ void __70__ASCAgentProxy_getPasskeysDataForRelyingParty_withCompletionHandler___
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)deletePasskeyForRelyingParty:(id)a3 withCredentialID:(id)a4 completionHandler:(id)a5
+- (void)deletePasskeyForRelyingParty:(id)party withCredentialID:(id)d completionHandler:(id)handler
 {
   v25 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  partyCopy = party;
+  dCopy = d;
+  handlerCopy = handler;
   v12 = WBS_LOG_CHANNEL_PREFIXAuthorization();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
     *buf = 138543618;
-    v22 = v10;
+    v22 = dCopy;
     v23 = 2114;
-    v24 = v9;
+    v24 = partyCopy;
     _os_log_impl(&dword_1C20AD000, v12, OS_LOG_TYPE_INFO, "Asked to delete passkey %{public}@ for %{public}@.", buf, 0x16u);
   }
 
@@ -711,13 +711,13 @@ void __70__ASCAgentProxy_getPasskeysDataForRelyingParty_withCompletionHandler___
   v18[3] = &unk_1E8160098;
   v18[4] = self;
   v20 = a2;
-  v13 = v11;
+  v13 = handlerCopy;
   v19 = v13;
   v14 = [(ASCAgentProxy *)self _remoteObjectProxyWithErrorHandler:v18];
   v15 = v14;
   if (v14)
   {
-    [v14 deletePasskeyForRelyingParty:v9 withCredentialID:v10 completionHandler:v13];
+    [v14 deletePasskeyForRelyingParty:partyCopy withCredentialID:dCopy completionHandler:v13];
   }
 
   else
@@ -754,16 +754,16 @@ void __81__ASCAgentProxy_deletePasskeyForRelyingParty_withCredentialID_completio
   }
 }
 
-- (void)deleteAllPasskeysForRelyingParty:(id)a3 completionHandler:(id)a4
+- (void)deleteAllPasskeysForRelyingParty:(id)party completionHandler:(id)handler
 {
   v20 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  partyCopy = party;
+  handlerCopy = handler;
   v9 = WBS_LOG_CHANNEL_PREFIXAuthorization();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     *buf = 138543362;
-    v19 = v7;
+    v19 = partyCopy;
     _os_log_impl(&dword_1C20AD000, v9, OS_LOG_TYPE_INFO, "Asked to delete all passkeys for %{public}@.", buf, 0xCu);
   }
 
@@ -773,13 +773,13 @@ void __81__ASCAgentProxy_deletePasskeyForRelyingParty_withCredentialID_completio
   v15[3] = &unk_1E8160098;
   v15[4] = self;
   v17 = a2;
-  v10 = v8;
+  v10 = handlerCopy;
   v16 = v10;
   v11 = [(ASCAgentProxy *)self _remoteObjectProxyWithErrorHandler:v15];
   v12 = v11;
   if (v11)
   {
-    [v11 deleteAllPasskeysForRelyingParty:v7 completionHandler:v10];
+    [v11 deleteAllPasskeysForRelyingParty:partyCopy completionHandler:v10];
   }
 
   else
@@ -816,9 +816,9 @@ void __68__ASCAgentProxy_deleteAllPasskeysForRelyingParty_completionHandler___bl
   }
 }
 
-- (void)preflightCanCreateICloudKeychainPasskeyWithCompletionHandler:(id)a3
+- (void)preflightCanCreateICloudKeychainPasskeyWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = WBS_LOG_CHANNEL_PREFIXAuthorization();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -830,8 +830,8 @@ void __68__ASCAgentProxy_deleteAllPasskeysForRelyingParty_completionHandler___bl
   v8[1] = 3221225472;
   v8[2] = __78__ASCAgentProxy_preflightCanCreateICloudKeychainPasskeyWithCompletionHandler___block_invoke;
   v8[3] = &unk_1E815FFF8;
-  v9 = v4;
-  v6 = v4;
+  v9 = handlerCopy;
+  v6 = handlerCopy;
   v7 = [(ASCAgentProxy *)self _remoteObjectProxyWithErrorHandler:v8];
   [v7 preflightCanCreateICloudKeychainPasskeyWithCompletionHandler:v6];
 }
@@ -848,16 +848,16 @@ void __78__ASCAgentProxy_preflightCanCreateICloudKeychainPasskeyWithCompletionHa
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)openCredentialProviderAppSettingsWithCompletionHandler:(id)a3
+- (void)openCredentialProviderAppSettingsWithCompletionHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __72__ASCAgentProxy_openCredentialProviderAppSettingsWithCompletionHandler___block_invoke;
   v10[3] = &unk_1E8160098;
   v10[4] = self;
   v12 = a2;
-  v6 = v5;
+  v6 = handlerCopy;
   v11 = v6;
   v7 = [(ASCAgentProxy *)self _remoteObjectProxyWithErrorHandler:v10];
   v8 = v7;
@@ -898,16 +898,16 @@ void __72__ASCAgentProxy_openCredentialProviderAppSettingsWithCompletionHandler_
   }
 }
 
-- (void)openVerificationCodeAppSettingsWithCompletionHandler:(id)a3
+- (void)openVerificationCodeAppSettingsWithCompletionHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __70__ASCAgentProxy_openVerificationCodeAppSettingsWithCompletionHandler___block_invoke;
   v10[3] = &unk_1E8160098;
   v10[4] = self;
   v12 = a2;
-  v6 = v5;
+  v6 = handlerCopy;
   v11 = v6;
   v7 = [(ASCAgentProxy *)self _remoteObjectProxyWithErrorHandler:v10];
   v8 = v7;
@@ -948,16 +948,16 @@ void __70__ASCAgentProxy_openVerificationCodeAppSettingsWithCompletionHandler___
   }
 }
 
-- (void)requestToTurnOnCredentialProviderExtensionWithCompletionHandler:(id)a3
+- (void)requestToTurnOnCredentialProviderExtensionWithCompletionHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __81__ASCAgentProxy_requestToTurnOnCredentialProviderExtensionWithCompletionHandler___block_invoke;
   v10[3] = &unk_1E8160098;
   v10[4] = self;
   v12 = a2;
-  v6 = v5;
+  v6 = handlerCopy;
   v11 = v6;
   v7 = [(ASCAgentProxy *)self _remoteObjectProxyWithErrorHandler:v10];
   v8 = v7;
@@ -1054,43 +1054,43 @@ void __37__ASCAgentProxy_cancelCurrentRequest__block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)_getSavedAccountContextFromSafariApplicationWithRequestContext:(id)a3 completionHandler:(id)a4
+- (void)_getSavedAccountContextFromSafariApplicationWithRequestContext:(id)context completionHandler:(id)handler
 {
-  v14 = a3;
-  v5 = a4;
-  v6 = [MEMORY[0x1E69C8A20] defaultContext];
-  v7 = [MEMORY[0x1E696AAE8] mainBundle];
-  v8 = [v7 safari_isSafariFamilyApplicationBundle];
+  contextCopy = context;
+  handlerCopy = handler;
+  defaultContext = [MEMORY[0x1E69C8A20] defaultContext];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  safari_isSafariFamilyApplicationBundle = [mainBundle safari_isSafariFamilyApplicationBundle];
 
-  if ((v8 & 1) != 0 && (v9 = NSClassFromString(&cfstr_Uiapplication.isa)) != 0)
+  if ((safari_isSafariFamilyApplicationBundle & 1) != 0 && (v9 = NSClassFromString(&cfstr_Uiapplication.isa)) != 0)
   {
     v10 = v9;
     if (objc_opt_respondsToSelector())
     {
-      v11 = [(objc_class *)v10 sharedApplication];
+      sharedApplication = [(objc_class *)v10 sharedApplication];
     }
 
     else
     {
-      v11 = 0;
+      sharedApplication = 0;
     }
 
-    if ([v11 conformsToProtocol:&unk_1F41BBA48])
+    if ([sharedApplication conformsToProtocol:&unk_1F41BBA48])
     {
-      v12 = [v14 globalFrameID];
-      v13 = [v12 coreFrameIdentifier];
-      [v11 getSavedAccountContextForGlobalFrameIdentifier:v13 completionHandler:v5];
+      globalFrameID = [contextCopy globalFrameID];
+      coreFrameIdentifier = [globalFrameID coreFrameIdentifier];
+      [sharedApplication getSavedAccountContextForGlobalFrameIdentifier:coreFrameIdentifier completionHandler:handlerCopy];
     }
 
     else
     {
-      v5[2](v5, v6);
+      handlerCopy[2](handlerCopy, defaultContext);
     }
   }
 
   else
   {
-    v5[2](v5, v6);
+    handlerCopy[2](handlerCopy, defaultContext);
   }
 }
 

@@ -26,16 +26,16 @@
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  v3 = [(NSMutableArray *)self->_nonSentinelPoints lastObject];
-  v4 = [(_CACGesturePointQueue *)self nonSentinelPoints];
+  lastObject = [(NSMutableArray *)self->_nonSentinelPoints lastObject];
+  nonSentinelPoints = [(_CACGesturePointQueue *)self nonSentinelPoints];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __57___CACGesturePointQueue_effectiveStartIndexBasedOnLength__block_invoke;
   v8[3] = &unk_279CEB668;
-  v5 = v3;
+  v5 = lastObject;
   v9 = v5;
   v10 = &v11;
-  [v4 enumerateObjectsWithOptions:2 usingBlock:v8];
+  [nonSentinelPoints enumerateObjectsWithOptions:2 usingBlock:v8];
 
   v6 = v12[3];
   _Block_object_dispose(&v11, 8);

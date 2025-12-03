@@ -1,5 +1,5 @@
 @interface OrgApacheLuceneStoreInputStreamDataInput
-- (OrgApacheLuceneStoreInputStreamDataInput)initWithJavaIoInputStream:(id)a3;
+- (OrgApacheLuceneStoreInputStreamDataInput)initWithJavaIoInputStream:(id)stream;
 - (char)readByte;
 - (void)close;
 - (void)dealloc;
@@ -7,10 +7,10 @@
 
 @implementation OrgApacheLuceneStoreInputStreamDataInput
 
-- (OrgApacheLuceneStoreInputStreamDataInput)initWithJavaIoInputStream:(id)a3
+- (OrgApacheLuceneStoreInputStreamDataInput)initWithJavaIoInputStream:(id)stream
 {
   OrgApacheLuceneStoreDataInput_init(self, a2);
-  JreStrongAssign(&self->is_, a3);
+  JreStrongAssign(&self->is_, stream);
   return self;
 }
 
@@ -22,14 +22,14 @@
     JreThrowNullPointerException();
   }
 
-  v3 = [(JavaIoInputStream *)is read];
-  if (v3 == -1)
+  read = [(JavaIoInputStream *)is read];
+  if (read == -1)
   {
     v4 = new_JavaIoEOFException_init();
     objc_exception_throw(v4);
   }
 
-  return v3;
+  return read;
 }
 
 - (void)close

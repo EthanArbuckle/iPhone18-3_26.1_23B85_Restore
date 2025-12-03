@@ -1,6 +1,6 @@
 @interface MTRThreadNetworkDirectoryClusterThreadNetworkStruct
 - (MTRThreadNetworkDirectoryClusterThreadNetworkStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -13,9 +13,9 @@
   v2 = [(MTRThreadNetworkDirectoryClusterThreadNetworkStruct *)&v9 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEA90] data];
+    data = [MEMORY[0x277CBEA90] data];
     extendedPanID = v2->_extendedPanID;
-    v2->_extendedPanID = v3;
+    v2->_extendedPanID = data;
 
     networkName = v2->_networkName;
     v2->_networkName = &stru_284BD0DD8;
@@ -30,20 +30,20 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRThreadNetworkDirectoryClusterThreadNetworkStruct);
-  v5 = [(MTRThreadNetworkDirectoryClusterThreadNetworkStruct *)self extendedPanID];
-  [(MTRThreadNetworkDirectoryClusterThreadNetworkStruct *)v4 setExtendedPanID:v5];
+  extendedPanID = [(MTRThreadNetworkDirectoryClusterThreadNetworkStruct *)self extendedPanID];
+  [(MTRThreadNetworkDirectoryClusterThreadNetworkStruct *)v4 setExtendedPanID:extendedPanID];
 
-  v6 = [(MTRThreadNetworkDirectoryClusterThreadNetworkStruct *)self networkName];
-  [(MTRThreadNetworkDirectoryClusterThreadNetworkStruct *)v4 setNetworkName:v6];
+  networkName = [(MTRThreadNetworkDirectoryClusterThreadNetworkStruct *)self networkName];
+  [(MTRThreadNetworkDirectoryClusterThreadNetworkStruct *)v4 setNetworkName:networkName];
 
-  v7 = [(MTRThreadNetworkDirectoryClusterThreadNetworkStruct *)self channel];
-  [(MTRThreadNetworkDirectoryClusterThreadNetworkStruct *)v4 setChannel:v7];
+  channel = [(MTRThreadNetworkDirectoryClusterThreadNetworkStruct *)self channel];
+  [(MTRThreadNetworkDirectoryClusterThreadNetworkStruct *)v4 setChannel:channel];
 
-  v8 = [(MTRThreadNetworkDirectoryClusterThreadNetworkStruct *)self activeTimestamp];
-  [(MTRThreadNetworkDirectoryClusterThreadNetworkStruct *)v4 setActiveTimestamp:v8];
+  activeTimestamp = [(MTRThreadNetworkDirectoryClusterThreadNetworkStruct *)self activeTimestamp];
+  [(MTRThreadNetworkDirectoryClusterThreadNetworkStruct *)v4 setActiveTimestamp:activeTimestamp];
 
   return v4;
 }

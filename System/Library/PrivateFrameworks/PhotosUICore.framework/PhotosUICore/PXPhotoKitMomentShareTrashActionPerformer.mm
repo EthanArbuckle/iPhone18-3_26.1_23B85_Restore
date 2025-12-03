@@ -1,7 +1,7 @@
 @interface PXPhotoKitMomentShareTrashActionPerformer
-+ (BOOL)canPerformOnAssetCollectionReference:(id)a3 withInputs:(id)a4;
-+ (id)createActivityWithTitle:(id)a3 actionType:(id)a4 actionSystemImageName:(id)a5;
-+ (id)localizedTitleForUseCase:(unint64_t)a3 assetCollectionReference:(id)a4 withInputs:(id)a5;
++ (BOOL)canPerformOnAssetCollectionReference:(id)reference withInputs:(id)inputs;
++ (id)createActivityWithTitle:(id)title actionType:(id)type actionSystemImageName:(id)name;
++ (id)localizedTitleForUseCase:(unint64_t)case assetCollectionReference:(id)reference withInputs:(id)inputs;
 - (void)performBackgroundTask;
 - (void)performUserInteractionTask;
 @end
@@ -10,8 +10,8 @@
 
 - (void)performBackgroundTask
 {
-  v4 = [(PXAssetCollectionActionPerformer *)self assetCollection];
-  if (v4)
+  assetCollection = [(PXAssetCollectionActionPerformer *)self assetCollection];
+  if (assetCollection)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -29,14 +29,14 @@ LABEL_3:
         }
       }
 
-      if ([v4 px_isCloudKitSharedAlbum])
+      if ([assetCollection px_isCloudKitSharedAlbum])
       {
         v14[0] = MEMORY[0x1E69E9820];
         v14[1] = 3221225472;
         v14[2] = __66__PXPhotoKitMomentShareTrashActionPerformer_performBackgroundTask__block_invoke;
         v14[3] = &unk_1E774C5C0;
         v14[4] = self;
-        PXExpungeMomentShare(v4, v14);
+        PXExpungeMomentShare(assetCollection, v14);
       }
 
       v13[0] = MEMORY[0x1E69E9820];
@@ -44,22 +44,22 @@ LABEL_3:
       v13[2] = __66__PXPhotoKitMomentShareTrashActionPerformer_performBackgroundTask__block_invoke_2;
       v13[3] = &unk_1E774C5C0;
       v13[4] = self;
-      PXTrashMomentShare(v4, v13);
+      PXTrashMomentShare(assetCollection, v13);
     }
 
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v11 = objc_opt_class();
     v10 = NSStringFromClass(v11);
-    v12 = [v4 px_descriptionForAssertionMessage];
-    [v8 handleFailureInMethod:a2 object:self file:@"PXPhotoKitAssetCollectionActionManager.m" lineNumber:2184 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"self.assetCollection", v10, v12}];
+    px_descriptionForAssertionMessage = [assetCollection px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotoKitAssetCollectionActionManager.m" lineNumber:2184 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"self.assetCollection", v10, px_descriptionForAssertionMessage}];
   }
 
   else
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v9 = objc_opt_class();
     v10 = NSStringFromClass(v9);
-    [v8 handleFailureInMethod:a2 object:self file:@"PXPhotoKitAssetCollectionActionManager.m" lineNumber:2184 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"self.assetCollection", v10}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotoKitAssetCollectionActionManager.m" lineNumber:2184 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"self.assetCollection", v10}];
   }
 
   goto LABEL_3;
@@ -105,8 +105,8 @@ void __66__PXPhotoKitMomentShareTrashActionPerformer_performBackgroundTask__bloc
 
 - (void)performUserInteractionTask
 {
-  v4 = [(PXAssetCollectionActionPerformer *)self assetCollection];
-  if (v4)
+  assetCollection = [(PXAssetCollectionActionPerformer *)self assetCollection];
+  if (assetCollection)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -114,31 +114,31 @@ void __66__PXPhotoKitMomentShareTrashActionPerformer_performBackgroundTask__bloc
       goto LABEL_3;
     }
 
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v22 = objc_opt_class();
     v21 = NSStringFromClass(v22);
-    v23 = [v4 px_descriptionForAssertionMessage];
-    [v19 handleFailureInMethod:a2 object:self file:@"PXPhotoKitAssetCollectionActionManager.m" lineNumber:2133 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"self.assetCollection", v21, v23}];
+    px_descriptionForAssertionMessage = [assetCollection px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotoKitAssetCollectionActionManager.m" lineNumber:2133 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"self.assetCollection", v21, px_descriptionForAssertionMessage}];
   }
 
   else
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v20 = objc_opt_class();
     v21 = NSStringFromClass(v20);
-    [v19 handleFailureInMethod:a2 object:self file:@"PXPhotoKitAssetCollectionActionManager.m" lineNumber:2133 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"self.assetCollection", v21}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotoKitAssetCollectionActionManager.m" lineNumber:2133 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"self.assetCollection", v21}];
   }
 
 LABEL_3:
-  v24 = _TrashMomentShareActionTitle(v4);
-  v5 = [v4 px_momentShareType];
-  if (!v5)
+  v24 = _TrashMomentShareActionTitle(assetCollection);
+  px_momentShareType = [assetCollection px_momentShareType];
+  if (!px_momentShareType)
   {
     v6 = @"PXCMMStopSharingAlertMessage";
     goto LABEL_7;
   }
 
-  if (v5 == 1)
+  if (px_momentShareType == 1)
   {
     v6 = @"PXCMMDeclineSharingAlertMessage";
 LABEL_7:
@@ -212,25 +212,25 @@ void __71__PXPhotoKitMomentShareTrashActionPerformer_performUserInteractionTask_
   [*(a1 + 32) completeUserInteractionTaskWithSuccess:0 error:v4];
 }
 
-+ (id)createActivityWithTitle:(id)a3 actionType:(id)a4 actionSystemImageName:(id)a5
++ (id)createActivityWithTitle:(id)title actionType:(id)type actionSystemImageName:(id)name
 {
-  if (a5)
+  if (name)
   {
-    v5 = a5;
+    nameCopy = name;
   }
 
   else
   {
-    v5 = &stru_1F1741150;
+    nameCopy = &stru_1F1741150;
   }
 
-  return [PXActivity activityWithActionTitle:a3 actionType:a4 activityType:@"PXActivityTypeTrashMomentShare" systemImageName:v5];
+  return [PXActivity activityWithActionTitle:title actionType:type activityType:@"PXActivityTypeTrashMomentShare" systemImageName:nameCopy];
 }
 
-+ (id)localizedTitleForUseCase:(unint64_t)a3 assetCollectionReference:(id)a4 withInputs:(id)a5
++ (id)localizedTitleForUseCase:(unint64_t)case assetCollectionReference:(id)reference withInputs:(id)inputs
 {
-  v7 = [a4 assetCollection];
-  if (v7)
+  assetCollection = [reference assetCollection];
+  if (assetCollection)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -238,36 +238,36 @@ void __71__PXPhotoKitMomentShareTrashActionPerformer_performUserInteractionTask_
       goto LABEL_3;
     }
 
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v13 = objc_opt_class();
     v12 = NSStringFromClass(v13);
-    v14 = [v7 px_descriptionForAssertionMessage];
-    [v10 handleFailureInMethod:a2 object:a1 file:@"PXPhotoKitAssetCollectionActionManager.m" lineNumber:2112 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"assetCollectionReference.assetCollection", v12, v14}];
+    px_descriptionForAssertionMessage = [assetCollection px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotoKitAssetCollectionActionManager.m" lineNumber:2112 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"assetCollectionReference.assetCollection", v12, px_descriptionForAssertionMessage}];
   }
 
   else
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v11 = objc_opt_class();
     v12 = NSStringFromClass(v11);
-    [v10 handleFailureInMethod:a2 object:a1 file:@"PXPhotoKitAssetCollectionActionManager.m" lineNumber:2112 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"assetCollectionReference.assetCollection", v12}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotoKitAssetCollectionActionManager.m" lineNumber:2112 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"assetCollectionReference.assetCollection", v12}];
   }
 
 LABEL_3:
-  v8 = _TrashMomentShareActionTitle(v7);
+  v8 = _TrashMomentShareActionTitle(assetCollection);
 
   return v8;
 }
 
-+ (BOOL)canPerformOnAssetCollectionReference:(id)a3 withInputs:(id)a4
++ (BOOL)canPerformOnAssetCollectionReference:(id)reference withInputs:(id)inputs
 {
-  v6 = [a3 assetCollection];
-  if (!v6)
+  assetCollection = [reference assetCollection];
+  if (!assetCollection)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v10 = objc_opt_class();
     v11 = NSStringFromClass(v10);
-    [v9 handleFailureInMethod:a2 object:a1 file:@"PXPhotoKitAssetCollectionActionManager.m" lineNumber:2106 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"assetCollectionReference.assetCollection", v11}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotoKitAssetCollectionActionManager.m" lineNumber:2106 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"assetCollectionReference.assetCollection", v11}];
 LABEL_6:
 
     goto LABEL_3;
@@ -276,17 +276,17 @@ LABEL_6:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v12 = objc_opt_class();
     v11 = NSStringFromClass(v12);
-    v13 = [v6 px_descriptionForAssertionMessage];
-    [v9 handleFailureInMethod:a2 object:a1 file:@"PXPhotoKitAssetCollectionActionManager.m" lineNumber:2106 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"assetCollectionReference.assetCollection", v11, v13}];
+    px_descriptionForAssertionMessage = [assetCollection px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotoKitAssetCollectionActionManager.m" lineNumber:2106 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"assetCollectionReference.assetCollection", v11, px_descriptionForAssertionMessage}];
 
     goto LABEL_6;
   }
 
 LABEL_3:
-  v7 = [v6 assetCollectionType] == 7;
+  v7 = [assetCollection assetCollectionType] == 7;
 
   return v7;
 }

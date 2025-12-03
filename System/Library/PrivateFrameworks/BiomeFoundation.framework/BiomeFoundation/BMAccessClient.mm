@@ -1,20 +1,20 @@
 @interface BMAccessClient
-- (BMAccessClient)initWithUseCase:(id)a3 sandboxExtensionCache:(id)a4 accessTracker:(id)a5;
+- (BMAccessClient)initWithUseCase:(id)case sandboxExtensionCache:(id)cache accessTracker:(id)tracker;
 - (BOOL)_currentProcessIsSandboxed;
-- (BOOL)removeResource:(id)a3 error:(id *)a4;
-- (id)_newConnectionForDomain:(unint64_t)a3;
-- (id)_synchronousRemoteObjectProxyForDomain:(unint64_t)a3 errorHandler:(id)a4;
-- (id)requestAccessToResource:(id)a3 mode:(unint64_t)a4 error:(id *)a5;
-- (id)requestEndpointForDomain:(unint64_t)a3 error:(id *)a4;
+- (BOOL)removeResource:(id)resource error:(id *)error;
+- (id)_newConnectionForDomain:(unint64_t)domain;
+- (id)_synchronousRemoteObjectProxyForDomain:(unint64_t)domain errorHandler:(id)handler;
+- (id)requestAccessToResource:(id)resource mode:(unint64_t)mode error:(id *)error;
+- (id)requestEndpointForDomain:(unint64_t)domain error:(id *)error;
 @end
 
 @implementation BMAccessClient
 
-- (BMAccessClient)initWithUseCase:(id)a3 sandboxExtensionCache:(id)a4 accessTracker:(id)a5
+- (BMAccessClient)initWithUseCase:(id)case sandboxExtensionCache:(id)cache accessTracker:(id)tracker
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  caseCopy = case;
+  cacheCopy = cache;
+  trackerCopy = tracker;
   v20.receiver = self;
   v20.super_class = BMAccessClient;
   v11 = [(BMAccessClient *)&v20 init];
@@ -23,13 +23,13 @@
     v12 = +[BMProcess current];
     [v12 enforceDatavaultEntitlementRestrictions];
 
-    v13 = [v8 copy];
+    v13 = [caseCopy copy];
     useCase = v11->_useCase;
     v11->_useCase = v13;
 
-    if (v9)
+    if (cacheCopy)
     {
-      v15 = v9;
+      v15 = cacheCopy;
     }
 
     else
@@ -40,9 +40,9 @@
     accessAssertionCache = v11->_accessAssertionCache;
     v11->_accessAssertionCache = v15;
 
-    if (v10)
+    if (trackerCopy)
     {
-      v17 = v10;
+      v17 = trackerCopy;
     }
 
     else
@@ -57,9 +57,9 @@
   return v11;
 }
 
-- (id)_newConnectionForDomain:(unint64_t)a3
+- (id)_newConnectionForDomain:(unint64_t)domain
 {
-  if (a3 == 1)
+  if (domain == 1)
   {
     v5 = 0;
   }
@@ -69,18 +69,18 @@
     v5 = geteuid();
   }
 
-  [BMXPCConnectionFactory connectionToAccessServerInDomain:a3 user:v5 useCase:self->_useCase options:1];
+  [BMXPCConnectionFactory connectionToAccessServerInDomain:domain user:v5 useCase:self->_useCase options:1];
   return objc_claimAutoreleasedReturnValue();
 }
 
-- (id)_synchronousRemoteObjectProxyForDomain:(unint64_t)a3 errorHandler:(id)a4
+- (id)_synchronousRemoteObjectProxyForDomain:(unint64_t)domain errorHandler:(id)handler
 {
   v29[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  handlerCopy = handler;
   v7 = self->_connectionWrapper;
   if (![(BMXPCConnectionWrapper *)v7 isValid])
   {
-    v8 = [(BMAccessClient *)self _newConnectionForDomain:a3];
+    v8 = [(BMAccessClient *)self _newConnectionForDomain:domain];
 
     objc_storeStrong(&self->_connectionWrapper, v8);
     v7 = v8;
@@ -91,23 +91,23 @@
     v16 = MEMORY[0x1E696ABC0];
     v28 = *MEMORY[0x1E696A578];
     v29[0] = @"Failed to get or create BMXPCConnectionWrapper";
-    v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v29 forKeys:&v28 count:1];
-    v15 = [v16 errorWithDomain:@"BMAccessErrorDomain" code:0 userInfo:v9];
-    v6[2](v6, v15);
+    connection = [MEMORY[0x1E695DF20] dictionaryWithObjects:v29 forKeys:&v28 count:1];
+    v15 = [v16 errorWithDomain:@"BMAccessErrorDomain" code:0 userInfo:connection];
+    handlerCopy[2](handlerCopy, v15);
 LABEL_10:
     v11 = 0;
     goto LABEL_11;
   }
 
-  v9 = [(BMXPCConnectionWrapper *)v7 connection];
-  if (!v9)
+  connection = [(BMXPCConnectionWrapper *)v7 connection];
+  if (!connection)
   {
     v17 = MEMORY[0x1E696ABC0];
     v26 = *MEMORY[0x1E696A578];
     v27 = @"Failed to get connection from BMXPCConnectionWrapper";
     v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v27 forKeys:&v26 count:1];
     v18 = [v17 errorWithDomain:@"BMAccessErrorDomain" code:0 userInfo:v15];
-    v6[2](v6, v18);
+    handlerCopy[2](handlerCopy, v18);
 
     goto LABEL_10;
   }
@@ -117,9 +117,9 @@ LABEL_10:
   v21[2] = __70__BMAccessClient__synchronousRemoteObjectProxyForDomain_errorHandler___block_invoke;
   v21[3] = &unk_1E796B0A0;
   v22 = v7;
-  v10 = v6;
+  v10 = handlerCopy;
   v23 = v10;
-  v11 = [v9 synchronousRemoteObjectProxyWithErrorHandler:v21];
+  v11 = [connection synchronousRemoteObjectProxyWithErrorHandler:v21];
   if (!v11)
   {
     v12 = MEMORY[0x1E696ABC0];
@@ -159,20 +159,20 @@ void __70__BMAccessClient__synchronousRemoteObjectProxyForDomain_errorHandler___
   (*(*(a1 + 40) + 16))();
 }
 
-- (id)requestAccessToResource:(id)a3 mode:(unint64_t)a4 error:(id *)a5
+- (id)requestAccessToResource:(id)resource mode:(unint64_t)mode error:(id *)error
 {
   v90[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v46 = v6;
-  if (v6)
+  resourceCopy = resource;
+  v46 = resourceCopy;
+  if (resourceCopy)
   {
-    v7 = v6;
+    v7 = resourceCopy;
     v8 = +[BMPaths isTestPathOverridden];
     v49 = v7;
-    v9 = [v49 type];
-    if (v9 > 2)
+    type = [v49 type];
+    if (type > 2)
     {
-      switch(v9)
+      switch(type)
       {
         case 3:
           v10 = "BMAccessClient.requestAccessToResource: Database";
@@ -181,8 +181,8 @@ void __70__BMAccessClient__synchronousRemoteObjectProxyForDomain_errorHandler___
           v10 = "BMAccessClient.requestAccessToResource: Set";
           break;
         case 5:
-          v13 = [v49 name];
-          v14 = [v13 isEqual:@"BMSyncResource"];
+          name = [v49 name];
+          v14 = [name isEqual:@"BMSyncResource"];
 
           if (v14)
           {
@@ -191,8 +191,8 @@ void __70__BMAccessClient__synchronousRemoteObjectProxyForDomain_errorHandler___
 
           else
           {
-            v33 = [v49 name];
-            v34 = [v33 isEqual:@"BMSharedSyncResource"];
+            name2 = [v49 name];
+            v34 = [name2 isEqual:@"BMSharedSyncResource"];
 
             if (v34)
             {
@@ -201,8 +201,8 @@ void __70__BMAccessClient__synchronousRemoteObjectProxyForDomain_errorHandler___
 
             else
             {
-              v39 = [v49 name];
-              v40 = [v39 isEqual:@"BMSetsMergeableDeltasResource"];
+              name3 = [v49 name];
+              v40 = [name3 isEqual:@"BMSetsMergeableDeltasResource"];
 
               if (v40)
               {
@@ -226,15 +226,15 @@ LABEL_17:
 
     else
     {
-      if (!v9)
+      if (!type)
       {
         v10 = "BMAccessClient.requestAccessToResource: Unknown";
         goto LABEL_20;
       }
 
-      if (v9 != 1)
+      if (type != 1)
       {
-        if (v9 == 2)
+        if (type == 2)
         {
           v10 = "BMAccessClient.requestAccessToResource: View";
           goto LABEL_20;
@@ -262,16 +262,16 @@ LABEL_20:
       v19 = +[BMProcess current];
       v45 = [BMAccessControlPolicy policyForProcess:v19 connectionFlags:0 useCase:self->_useCase];
 
-      if (([(BMAccessDescriptor *)v45 allowsAccessToResource:v49 withMode:a4]& 1) == 0)
+      if (([(BMAccessDescriptor *)v45 allowsAccessToResource:v49 withMode:mode]& 1) == 0)
       {
-        [(BMAccessTracker *)self->_accessTracker logMissingEntitlementsForAccessToResource:v49 domain:v16 withMode:a4 useCase:self->_useCase];
-        if (a5)
+        [(BMAccessTracker *)self->_accessTracker logMissingEntitlementsForAccessToResource:v49 domain:v16 withMode:mode useCase:self->_useCase];
+        if (error)
         {
           v25 = MEMORY[0x1E696ABC0];
           v87 = *MEMORY[0x1E696A578];
           v88 = @"Not entitled";
           v26 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v88 forKeys:&v87 count:1];
-          *a5 = [v25 errorWithDomain:@"BMAccessErrorDomain" code:3 userInfo:v26];
+          *error = [v25 errorWithDomain:@"BMAccessErrorDomain" code:3 userInfo:v26];
         }
 
         v12 = 0;
@@ -279,7 +279,7 @@ LABEL_20:
       }
     }
 
-    v45 = [[BMAccessDescriptor alloc] initWithDomain:v16 accessMode:a4 resource:v49];
+    v45 = [[BMAccessDescriptor alloc] initWithDomain:v16 accessMode:mode resource:v49];
     v12 = [(BMAccessAssertionCache *)self->_accessAssertionCache assertionForAccessDescriptor:?];
     if (v12)
     {
@@ -296,7 +296,7 @@ LABEL_46:
     {
       v22 = +[BMResourceContainerManager sharedInstance];
       v77 = 0;
-      v23 = [v22 openContainerForResource:v49 mode:a4 error:&v77];
+      v23 = [v22 openContainerForResource:v49 mode:mode error:&v77];
       v24 = v77;
 
       if (v23)
@@ -306,13 +306,13 @@ LABEL_46:
 
       else
       {
-        if (a5)
+        if (error)
         {
           v35 = MEMORY[0x1E696ABC0];
           v85 = *MEMORY[0x1E696A578];
           v86 = @"Cannot open container";
           v36 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v86 forKeys:&v85 count:1];
-          *a5 = [v35 errorWithDomain:@"BMAccessErrorDomain" code:13 userInfo:v36];
+          *error = [v35 errorWithDomain:@"BMAccessErrorDomain" code:13 userInfo:v36];
         }
 
         v12 = 0;
@@ -363,7 +363,7 @@ LABEL_46:
       v50[5] = &v58;
       v50[6] = &v64;
       v50[7] = &v52;
-      [v28 requestAccessToResource:v49 withMode:a4 reply:v50];
+      [v28 requestAccessToResource:v49 withMode:mode reply:v50];
     }
 
     while ((BMShouldRetry(v53[5], &v76, 2uLL, 1) & 1) != 0);
@@ -386,7 +386,7 @@ LABEL_45:
       v30 = __biome_log_for_category(6);
       if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
       {
-        v31 = BMAccessModePrintableDescription(a4);
+        v31 = BMAccessModePrintableDescription(mode);
         v32 = v53[5];
         *buf = 138543874;
         v80 = v31;
@@ -403,7 +403,7 @@ LABEL_45:
       v30 = __biome_log_for_category(6);
       if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
       {
-        v41 = BMAccessModePrintableDescription(a4);
+        v41 = BMAccessModePrintableDescription(mode);
         v42 = v53[5];
         *buf = 138543874;
         v80 = v41;
@@ -419,14 +419,14 @@ LABEL_45:
     goto LABEL_45;
   }
 
-  if (a5)
+  if (error)
   {
     v11 = MEMORY[0x1E696ABC0];
     v89 = *MEMORY[0x1E696A578];
     v90[0] = @"nil resource";
     v43 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v90 forKeys:&v89 count:1];
     [v11 errorWithDomain:@"BMAccessErrorDomain" code:12 userInfo:v43];
-    *a5 = v12 = 0;
+    *error = v12 = 0;
   }
 
   else
@@ -484,12 +484,12 @@ void __53__BMAccessClient_requestAccessToResource_mode_error___block_invoke_102(
 - (BOOL)_currentProcessIsSandboxed
 {
   v2 = +[BMProcess current];
-  v3 = [v2 isSandboxed];
+  isSandboxed = [v2 isSandboxed];
 
-  return v3;
+  return isSandboxed;
 }
 
-- (id)requestEndpointForDomain:(unint64_t)a3 error:(id *)a4
+- (id)requestEndpointForDomain:(unint64_t)domain error:(id *)error
 {
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -516,20 +516,20 @@ void __53__BMAccessClient_requestAccessToResource_mode_error___block_invoke_102(
     v13[2] = __69__BMAccessClient_ConnectionProxying__requestEndpointForDomain_error___block_invoke;
     v13[3] = &unk_1E796B0C8;
     v13[4] = &v14;
-    v7 = [(BMAccessClient *)self _synchronousRemoteObjectProxyForDomain:a3 errorHandler:v13];
+    v7 = [(BMAccessClient *)self _synchronousRemoteObjectProxyForDomain:domain errorHandler:v13];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __69__BMAccessClient_ConnectionProxying__requestEndpointForDomain_error___block_invoke_127;
     v12[3] = &unk_1E796B118;
     v12[4] = &v20;
     v12[5] = &v14;
-    [v7 requestBiomeEndpoint:a3 == 1 reply:v12];
+    [v7 requestBiomeEndpoint:domain == 1 reply:v12];
   }
 
   while ((BMShouldRetry(v15[5], &v26, 2uLL, 1) & 1) != 0);
-  if (a4)
+  if (error)
   {
-    *a4 = v15[5];
+    *error = v15[5];
   }
 
   v8 = v21[5];
@@ -569,15 +569,15 @@ void __69__BMAccessClient_ConnectionProxying__requestEndpointForDomain_error___b
   *(v9 + 40) = v6;
 }
 
-- (BOOL)removeResource:(id)a3 error:(id *)a4
+- (BOOL)removeResource:(id)resource error:(id *)error
 {
-  v5 = a3;
+  resourceCopy = resource;
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   v13 = _os_activity_create(&dword_1AC15D000, "BMAccessClient.removeResource:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   os_activity_scope_enter(v13, &state);
-  v6 = v5;
-  v7 = BMServiceDomainForResource(v5);
+  v6 = resourceCopy;
+  v7 = BMServiceDomainForResource(resourceCopy);
   v26 = 0;
   v22 = 0;
   v23 = &v22;
@@ -604,13 +604,13 @@ void __69__BMAccessClient_ConnectionProxying__requestEndpointForDomain_error___b
     v14[3] = &unk_1E796B140;
     v14[4] = &v22;
     v14[5] = &v16;
-    [v9 removeResource:v5 reply:v14];
+    [v9 removeResource:resourceCopy reply:v14];
   }
 
   while ((BMShouldRetry(v17[5], &v26, 2uLL, 1) & 1) != 0);
-  if (a4)
+  if (error)
   {
-    *a4 = v17[5];
+    *error = v17[5];
   }
 
   v10 = *(v23 + 24);

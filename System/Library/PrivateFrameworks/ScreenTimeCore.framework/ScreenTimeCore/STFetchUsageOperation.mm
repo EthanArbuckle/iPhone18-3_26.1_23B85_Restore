@@ -1,59 +1,59 @@
 @interface STFetchUsageOperation
-+ (id)boundaryDateForDuration:(int64_t)a3 referenceDate:(id)a4;
-- (STFetchUsageOperation)initWithGenesisDate:(id)a3 lastStartDate:(id)a4 referenceDate:(id)a5 includeAggregateUsage:(BOOL)a6 includeRemoteUsage:(BOOL)a7 forceRemoteDeviceSync:(BOOL)a8 duration:(int64_t)a9;
++ (id)boundaryDateForDuration:(int64_t)duration referenceDate:(id)date;
+- (STFetchUsageOperation)initWithGenesisDate:(id)date lastStartDate:(id)startDate referenceDate:(id)referenceDate includeAggregateUsage:(BOOL)usage includeRemoteUsage:(BOOL)remoteUsage forceRemoteDeviceSync:(BOOL)sync duration:(int64_t)duration;
 - (id)_computeStartDate;
-- (id)_queryIntervalsStartingAtDate:(id)a3;
+- (id)_queryIntervalsStartingAtDate:(id)date;
 - (void)_fetchNextReportAndEndWhenDone;
-- (void)_recordLocalUsageReports:(id)a3 usageReportsByCoreDuetIdentifier:(id)a4 aggregateUsageReports:(id)a5;
+- (void)_recordLocalUsageReports:(id)reports usageReportsByCoreDuetIdentifier:(id)identifier aggregateUsageReports:(id)usageReports;
 - (void)main;
 @end
 
 @implementation STFetchUsageOperation
 
-- (STFetchUsageOperation)initWithGenesisDate:(id)a3 lastStartDate:(id)a4 referenceDate:(id)a5 includeAggregateUsage:(BOOL)a6 includeRemoteUsage:(BOOL)a7 forceRemoteDeviceSync:(BOOL)a8 duration:(int64_t)a9
+- (STFetchUsageOperation)initWithGenesisDate:(id)date lastStartDate:(id)startDate referenceDate:(id)referenceDate includeAggregateUsage:(BOOL)usage includeRemoteUsage:(BOOL)remoteUsage forceRemoteDeviceSync:(BOOL)sync duration:(int64_t)duration
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
+  dateCopy = date;
+  startDateCopy = startDate;
+  referenceDateCopy = referenceDate;
   v26.receiver = self;
   v26.super_class = STFetchUsageOperation;
   v18 = [(STOperation *)&v26 init];
   if (v18)
   {
-    v19 = [v15 copy];
+    v19 = [dateCopy copy];
     genesisDate = v18->_genesisDate;
     v18->_genesisDate = v19;
 
-    v21 = [v16 copy];
+    v21 = [startDateCopy copy];
     lastStartDate = v18->_lastStartDate;
     v18->_lastStartDate = v21;
 
-    v23 = [v17 copy];
+    v23 = [referenceDateCopy copy];
     referenceDate = v18->_referenceDate;
     v18->_referenceDate = v23;
 
-    v18->_includeAggregateUsage = a6;
-    v18->_includeRemoteUsage = a7;
-    v18->_forceRemoteDeviceSync = a8;
-    v18->_duration = a9;
+    v18->_includeAggregateUsage = usage;
+    v18->_includeRemoteUsage = remoteUsage;
+    v18->_forceRemoteDeviceSync = sync;
+    v18->_duration = duration;
   }
 
   return v18;
 }
 
-+ (id)boundaryDateForDuration:(int64_t)a3 referenceDate:(id)a4
++ (id)boundaryDateForDuration:(int64_t)duration referenceDate:(id)date
 {
-  v5 = a4;
+  dateCopy = date;
   v6 = +[NSCalendar currentCalendar];
-  v7 = [v6 startOfDayForDate:v5];
-  if (a3 == 1440)
+  v7 = [v6 startOfDayForDate:dateCopy];
+  if (duration == 1440)
   {
     v10 = [v6 dateByAddingUnit:16 value:-120 toDate:v7 options:260];
   }
 
-  else if (a3 == 60)
+  else if (duration == 60)
   {
-    v8 = [v6 dateByAddingUnit:0x2000 value:-4 toDate:v5 options:4];
+    v8 = [v6 dateByAddingUnit:0x2000 value:-4 toDate:dateCopy options:4];
     v9 = [v6 startOfDayForDate:v8];
 
     v10 = [v6 nextDateAfterDate:v9 matchingUnit:512 value:objc_msgSend(v6 options:{"minimumRangeOfUnit:", 512), 260}];
@@ -75,30 +75,30 @@
   v4 = [(STOperation *)self activity:0];
   os_activity_scope_enter(v4, &v23);
 
-  v5 = [(STFetchUsageOperation *)self referenceDate];
-  if (!v5)
+  referenceDate = [(STFetchUsageOperation *)self referenceDate];
+  if (!referenceDate)
   {
-    v5 = objc_opt_new();
-    [(STFetchUsageOperation *)self setReferenceDate:v5];
+    referenceDate = objc_opt_new();
+    [(STFetchUsageOperation *)self setReferenceDate:referenceDate];
   }
 
-  v6 = [(STFetchUsageOperation *)self _computeStartDate];
-  v7 = [(STFetchUsageOperation *)self _queryIntervalsStartingAtDate:v6];
+  _computeStartDate = [(STFetchUsageOperation *)self _computeStartDate];
+  v7 = [(STFetchUsageOperation *)self _queryIntervalsStartingAtDate:_computeStartDate];
   v8 = objc_opt_new();
   [(STFetchUsageOperation *)self setUsageReporter:v8];
 
   [(STFetchUsageOperation *)self setQueryIntervals:v7];
   if ([v7 count])
   {
-    v9 = [v7 firstObject];
-    v10 = [v9 dateInterval];
-    v11 = [v10 startDate];
+    firstObject = [v7 firstObject];
+    dateInterval = [firstObject dateInterval];
+    startDate = [dateInterval startDate];
 
-    v12 = [v7 lastObject];
-    v13 = [v12 dateInterval];
-    v14 = [v13 endDate];
+    lastObject = [v7 lastObject];
+    dateInterval2 = [lastObject dateInterval];
+    endDate = [dateInterval2 endDate];
 
-    v15 = [[NSDateInterval alloc] initWithStartDate:v11 endDate:v14];
+    v15 = [[NSDateInterval alloc] initWithStartDate:startDate endDate:endDate];
     [(STFetchUsageOperation *)self setDateInterval:v15];
   }
 
@@ -107,20 +107,20 @@
     v16 = +[STLog persistence];
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
-      v20 = [(STFetchUsageOperation *)self genesisDate];
-      v21 = [(STFetchUsageOperation *)self lastStartDate];
-      v22 = [(STFetchUsageOperation *)self referenceDate];
+      genesisDate = [(STFetchUsageOperation *)self genesisDate];
+      lastStartDate = [(STFetchUsageOperation *)self lastStartDate];
+      referenceDate2 = [(STFetchUsageOperation *)self referenceDate];
       *buf = 138543874;
-      v25 = v20;
+      v25 = genesisDate;
       v26 = 2114;
-      v27 = v21;
+      v27 = lastStartDate;
       v28 = 2114;
-      v29 = v22;
+      v29 = referenceDate2;
       _os_log_error_impl(&_mh_execute_header, v16, OS_LOG_TYPE_ERROR, "Can't figure out query intervals. genesisDate = %{public}@, lastStartDate = %{public}@, referenceDate = %{public}@", buf, 0x20u);
     }
 
-    v11 = [[NSDateInterval alloc] initWithStartDate:v5 duration:0.0];
-    [(STFetchUsageOperation *)self setDateInterval:v11];
+    startDate = [[NSDateInterval alloc] initWithStartDate:referenceDate duration:0.0];
+    [(STFetchUsageOperation *)self setDateInterval:startDate];
   }
 
   v17 = objc_opt_new();
@@ -138,23 +138,23 @@
 
 - (id)_computeStartDate
 {
-  v3 = [(STFetchUsageOperation *)self referenceDate];
-  v4 = [(STFetchUsageOperation *)self genesisDate];
-  if ([v4 compare:v3] != 1)
+  referenceDate = [(STFetchUsageOperation *)self referenceDate];
+  genesisDate = [(STFetchUsageOperation *)self genesisDate];
+  if ([genesisDate compare:referenceDate] != 1)
   {
-    v7 = [(STFetchUsageOperation *)self duration];
-    v8 = [objc_opt_class() boundaryDateForDuration:v7 referenceDate:v3];
+    duration = [(STFetchUsageOperation *)self duration];
+    v8 = [objc_opt_class() boundaryDateForDuration:duration referenceDate:referenceDate];
     v5 = v8;
-    if (v4 && v8)
+    if (genesisDate && v8)
     {
-      v9 = [v4 laterDate:v8];
+      v9 = [genesisDate laterDate:v8];
     }
 
     else
     {
-      if (v4)
+      if (genesisDate)
       {
-        v10 = v4;
+        v10 = genesisDate;
       }
 
       else
@@ -166,8 +166,8 @@
     }
 
     v11 = v9;
-    v12 = [(STFetchUsageOperation *)self lastStartDate];
-    if (!v12)
+    lastStartDate = [(STFetchUsageOperation *)self lastStartDate];
+    if (!lastStartDate)
     {
 LABEL_17:
       v6 = v11;
@@ -176,8 +176,8 @@ LABEL_46:
       goto LABEL_47;
     }
 
-    v13 = v12;
-    if ([v12 compare:v3] == 1)
+    v13 = lastStartDate;
+    if ([lastStartDate compare:referenceDate] == 1)
     {
       v14 = +[STLog usage];
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -188,9 +188,9 @@ LABEL_46:
       goto LABEL_17;
     }
 
-    v15 = [STCoreDuetUsageQuery earliestUsageEventStartDateCreatedSince:v13 whereStartDateIsOnOrAfter:v4 andEndDateOnOrBefore:v3];
+    v15 = [STCoreDuetUsageQuery earliestUsageEventStartDateCreatedSince:v13 whereStartDateIsOnOrAfter:genesisDate andEndDateOnOrBefore:referenceDate];
     v16 = v15;
-    if (v15 && [v15 compare:v3] == 1)
+    if (v15 && [v15 compare:referenceDate] == 1)
     {
       v17 = +[STLog usage];
       if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -201,7 +201,7 @@ LABEL_46:
       v16 = 0;
     }
 
-    if (v7 == 1440)
+    if (duration == 1440)
     {
       v21 = +[NSCalendar currentCalendar];
       v22 = v13;
@@ -223,7 +223,7 @@ LABEL_46:
 
     else
     {
-      if (v7 != 60)
+      if (duration != 60)
       {
         v25 = 0;
         if (!v11)
@@ -306,55 +306,55 @@ LABEL_47:
   return v6;
 }
 
-- (id)_queryIntervalsStartingAtDate:(id)a3
+- (id)_queryIntervalsStartingAtDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v5 = +[NSCalendar currentCalendar];
-  v6 = v4;
-  v7 = [(STFetchUsageOperation *)self referenceDate];
-  v8 = [(STFetchUsageOperation *)self duration];
-  if (v8 == 60)
+  v6 = dateCopy;
+  referenceDate = [(STFetchUsageOperation *)self referenceDate];
+  duration = [(STFetchUsageOperation *)self duration];
+  if (duration == 60)
   {
     v9 = 64;
   }
 
   else
   {
-    v9 = 32 * (v8 == 1440);
+    v9 = 32 * (duration == 1440);
   }
 
   v10 = objc_opt_new();
   v11 = v6;
-  if ([v6 compare:v7] == -1)
+  if ([v6 compare:referenceDate] == -1)
   {
     v12 = v6;
     do
     {
       v11 = [v5 nextDateAfterDate:v12 matchingUnit:v9 value:0 options:1024];
-      if ([v11 compare:v7] == 1)
+      if ([v11 compare:referenceDate] == 1)
       {
-        v13 = v7;
+        v13 = referenceDate;
 
         v11 = v13;
       }
 
-      v14 = [v10 lastObject];
+      lastObject = [v10 lastObject];
       [v11 timeIntervalSinceDate:v12];
       v16 = v15;
-      if (!v14 || ([v14 partitionTimeInterval], v17 != v16))
+      if (!lastObject || ([lastObject partitionTimeInterval], v17 != v16))
       {
         v18 = [[STQueryInterval alloc] initWithStartDate:v12 partitionTimeInterval:v16];
 
         [v10 addObject:v18];
-        v14 = v18;
+        lastObject = v18;
       }
 
-      [v14 setNumberOfPartitions:{objc_msgSend(v14, "numberOfPartitions") + 1}];
+      [lastObject setNumberOfPartitions:{objc_msgSend(lastObject, "numberOfPartitions") + 1}];
 
       v12 = v11;
     }
 
-    while ([v11 compare:v7] == -1);
+    while ([v11 compare:referenceDate] == -1);
   }
 
   return v10;
@@ -370,8 +370,8 @@ LABEL_47:
 
   else
   {
-    v4 = [(STFetchUsageOperation *)self queryIntervals];
-    if ([v4 count])
+    queryIntervals = [(STFetchUsageOperation *)self queryIntervals];
+    if ([queryIntervals count])
     {
       if ([(STFetchUsageOperation *)self forceRemoteDeviceSync]&& ([(STFetchUsageOperation *)self includeAggregateUsage]|| [(STFetchUsageOperation *)self includeRemoteUsage]))
       {
@@ -384,13 +384,13 @@ LABEL_47:
         [USUsageReporter synchronizeUsageWithCompletionHandler:v30];
       }
 
-      v6 = [v4 firstObject];
-      [v4 removeObjectAtIndex:0];
-      [(STFetchedUsageResults *)v6 partitionTimeInterval];
+      firstObject = [queryIntervals firstObject];
+      [queryIntervals removeObjectAtIndex:0];
+      [(STFetchedUsageResults *)firstObject partitionTimeInterval];
       v8 = v7;
-      v9 = [(STFetchedUsageResults *)v6 dateInterval];
-      v10 = [(STFetchUsageOperation *)self usageReporter];
-      if (!v10)
+      dateInterval = [(STFetchedUsageResults *)firstObject dateInterval];
+      usageReporter = [(STFetchUsageOperation *)self usageReporter];
+      if (!usageReporter)
       {
         sub_100116B28(a2, self);
       }
@@ -400,28 +400,28 @@ LABEL_47:
       v29[2] = sub_10003E378;
       v29[3] = &unk_1001A4070;
       v29[4] = self;
-      [v10 fetchReportsDuringInterval:v9 partitionInterval:v29 completionHandler:v8];
+      [usageReporter fetchReportsDuringInterval:dateInterval partitionInterval:v29 completionHandler:v8];
     }
 
     else
     {
       v11 = [STFetchedUsageResults alloc];
-      v12 = [(STFetchUsageOperation *)self dateInterval];
-      v13 = [(STFetchUsageOperation *)self duration];
-      v14 = [(STFetchUsageOperation *)self localUsageReports];
-      v15 = [(STFetchUsageOperation *)self usageReportsByCoreDuetIdentifier];
-      v16 = [(STFetchUsageOperation *)self aggregateUsageReports];
-      v6 = [(STFetchedUsageResults *)v11 initWithDateInterval:v12 partitionDurationInMinutes:v13 localUsageReports:v14 usageReportsByCoreDuetIdentifier:v15 aggregateUsageReports:v16];
+      dateInterval2 = [(STFetchUsageOperation *)self dateInterval];
+      duration = [(STFetchUsageOperation *)self duration];
+      localUsageReports = [(STFetchUsageOperation *)self localUsageReports];
+      usageReportsByCoreDuetIdentifier = [(STFetchUsageOperation *)self usageReportsByCoreDuetIdentifier];
+      aggregateUsageReports = [(STFetchUsageOperation *)self aggregateUsageReports];
+      firstObject = [(STFetchedUsageResults *)v11 initWithDateInterval:dateInterval2 partitionDurationInMinutes:duration localUsageReports:localUsageReports usageReportsByCoreDuetIdentifier:usageReportsByCoreDuetIdentifier aggregateUsageReports:aggregateUsageReports];
 
       v17 = +[STLog usage];
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
-        v28 = [(STFetchUsageOperation *)self localUsageReports];
-        v18 = [v28 count];
-        v26 = [(STFetchUsageOperation *)self aggregateUsageReports];
-        v19 = &v18[[v26 count]];
-        v25 = [(STFetchUsageOperation *)self aggregateUsageReports];
-        if ([v25 count])
+        localUsageReports2 = [(STFetchUsageOperation *)self localUsageReports];
+        v18 = [localUsageReports2 count];
+        aggregateUsageReports2 = [(STFetchUsageOperation *)self aggregateUsageReports];
+        v19 = &v18[[aggregateUsageReports2 count]];
+        aggregateUsageReports3 = [(STFetchUsageOperation *)self aggregateUsageReports];
+        if ([aggregateUsageReports3 count])
         {
           v20 = @"YES";
         }
@@ -431,38 +431,38 @@ LABEL_47:
           v20 = @"NO";
         }
 
-        v21 = [(STFetchUsageOperation *)self dateInterval];
-        v22 = [v21 startDate];
-        v23 = [(STFetchUsageOperation *)self dateInterval];
-        v24 = [v23 endDate];
+        dateInterval3 = [(STFetchUsageOperation *)self dateInterval];
+        startDate = [dateInterval3 startDate];
+        dateInterval4 = [(STFetchUsageOperation *)self dateInterval];
+        endDate = [dateInterval4 endDate];
         *buf = 134218754;
         v33 = v19;
         v34 = 2112;
         v35 = v20;
         v36 = 2112;
-        v37 = v22;
+        v37 = startDate;
         v38 = 2112;
-        v39 = v24;
+        v39 = endDate;
         _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Fetched %lu reports - contains aggregate: %@ - start date: %@ - end date: %@", buf, 0x2Au);
       }
 
-      [(STFetchUsageOperation *)self endOperationWithResultObject:v6];
+      [(STFetchUsageOperation *)self endOperationWithResultObject:firstObject];
     }
   }
 }
 
-- (void)_recordLocalUsageReports:(id)a3 usageReportsByCoreDuetIdentifier:(id)a4 aggregateUsageReports:(id)a5
+- (void)_recordLocalUsageReports:(id)reports usageReportsByCoreDuetIdentifier:(id)identifier aggregateUsageReports:(id)usageReports
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
-  v11 = [(STFetchUsageOperation *)self localUsageReports];
-  [v11 addObjectsFromArray:v10];
+  identifierCopy = identifier;
+  usageReportsCopy = usageReports;
+  reportsCopy = reports;
+  localUsageReports = [(STFetchUsageOperation *)self localUsageReports];
+  [localUsageReports addObjectsFromArray:reportsCopy];
 
   if ([(STFetchUsageOperation *)self includeAggregateUsage])
   {
-    v12 = [(STFetchUsageOperation *)self aggregateUsageReports];
-    [v12 addObjectsFromArray:v9];
+    aggregateUsageReports = [(STFetchUsageOperation *)self aggregateUsageReports];
+    [aggregateUsageReports addObjectsFromArray:usageReportsCopy];
   }
 
   if ([(STFetchUsageOperation *)self includeRemoteUsage])
@@ -473,7 +473,7 @@ LABEL_47:
     v14[2] = sub_10003E510;
     v15 = v14[3] = &unk_1001A4098;
     v13 = v15;
-    [v8 enumerateKeysAndObjectsUsingBlock:v14];
+    [identifierCopy enumerateKeysAndObjectsUsingBlock:v14];
   }
 }
 

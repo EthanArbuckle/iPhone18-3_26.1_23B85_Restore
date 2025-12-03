@@ -1,12 +1,12 @@
 @interface DropletParticipantTrackingView
-- (_TtC9DropletUI30DropletParticipantTrackingView)initWithCoder:(id)a3;
-- (_TtC9DropletUI30DropletParticipantTrackingView)initWithFrame:(CGRect)a3;
+- (_TtC9DropletUI30DropletParticipantTrackingView)initWithCoder:(id)coder;
+- (_TtC9DropletUI30DropletParticipantTrackingView)initWithFrame:(CGRect)frame;
 - (void)didMoveToSuperview;
 @end
 
 @implementation DropletParticipantTrackingView
 
-- (_TtC9DropletUI30DropletParticipantTrackingView)initWithCoder:(id)a3
+- (_TtC9DropletUI30DropletParticipantTrackingView)initWithCoder:(id)coder
 {
   v3 = self + OBJC_IVAR____TtC9DropletUI30DropletParticipantTrackingView_lastParticipantGeometry;
   sub_249EB72C0(v11);
@@ -86,7 +86,7 @@
   }
 }
 
-- (_TtC9DropletUI30DropletParticipantTrackingView)initWithFrame:(CGRect)a3
+- (_TtC9DropletUI30DropletParticipantTrackingView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

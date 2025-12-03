@@ -1,55 +1,55 @@
 @interface WKPDFView
 + (BOOL)web_requiresCustomSnapshotting;
-- (BOOL)_computeFocusedSearchResultIndexWithOptions:(unint64_t)a3 didWrapAround:(BOOL *)a4;
-- (BOOL)actionSheetAssistant:(id)a3 shouldIncludeAppLinkActionsForElement:(id)a4;
-- (BOOL)web_handleKeyEvent:(id)a3;
+- (BOOL)_computeFocusedSearchResultIndexWithOptions:(unint64_t)options didWrapAround:(BOOL *)around;
+- (BOOL)actionSheetAssistant:(id)assistant shouldIncludeAppLinkActionsForElement:(id)element;
+- (BOOL)web_handleKeyEvent:(id)event;
 - (CGPDFDocument)_ensureDocumentForPrinting;
 - (CGPoint)_offsetForPageNumberIndicator;
-- (RetainPtr<NSArray>)actionSheetAssistant:(id)a3 decideActionsForElement:(id)a4 defaultActions:(RetainPtr<NSArray>)a5;
+- (RetainPtr<NSArray>)actionSheetAssistant:(id)assistant decideActionsForElement:(id)element defaultActions:(RetainPtr<NSArray>)actions;
 - (id).cxx_construct;
-- (id)_URLWithPageIndex:(int64_t)a3;
+- (id)_URLWithPageIndex:(int64_t)index;
 - (id)_contentView;
-- (id)dataDetectionContextForActionSheetAssistant:(id)a3 positionInformation:(const void *)a4;
-- (id)web_initWithFrame:(CGRect)a3 webView:(id)a4 mimeType:(id)a5;
-- (int64_t)compareFoundRange:(id)a3 toRange:(id)a4 inDocument:(id)a5;
+- (id)dataDetectionContextForActionSheetAssistant:(id)assistant positionInformation:(const void *)information;
+- (id)web_initWithFrame:(CGRect)frame webView:(id)view mimeType:(id)type;
+- (int64_t)compareFoundRange:(id)range toRange:(id)toRange inDocument:(id)document;
 - (optional<WebKit::InteractionInformationAtPosition>)positionInformationForActionSheetAssistant:(optional<WebKit::InteractionInformationAtPosition> *__return_ptr)retstr;
-- (uint64_t)pdfHostViewControllerExtensionProcessDidCrash:(id *)a1;
-- (uint64_t)pdfHostViewControllerExtensionProcessDidCrash:(uint64_t)a1;
-- (unint64_t)_wk_pageCountForPrintFormatter:(id)a3;
-- (void)_findString:(id)a3 withOptions:(unint64_t)a4 maxCount:(unint64_t)a5 completion:(id)a6;
-- (void)_focusOnSearchResultWithOptions:(unint64_t)a3;
-- (void)_goToURL:(id)a3 atLocation:(CGPoint)a4;
-- (void)_movePageNumberIndicatorToPoint:(CGPoint)a3 animated:(BOOL)a4;
+- (uint64_t)pdfHostViewControllerExtensionProcessDidCrash:(id *)crash;
+- (uint64_t)pdfHostViewControllerExtensionProcessDidCrash:(uint64_t)crash;
+- (unint64_t)_wk_pageCountForPrintFormatter:(id)formatter;
+- (void)_findString:(id)string withOptions:(unint64_t)options maxCount:(unint64_t)count completion:(id)completion;
+- (void)_focusOnSearchResultWithOptions:(unint64_t)options;
+- (void)_goToURL:(id)l atLocation:(CGPoint)location;
+- (void)_movePageNumberIndicatorToPoint:(CGPoint)point animated:(BOOL)animated;
 - (void)_resetFind;
-- (void)_scrollToURLFragment:(id)a3;
-- (void)_showActionSheetForURL:(id)a3 atLocation:(CGPoint)a4 withAnnotationRect:(CGRect)a5;
-- (void)_updateLayoutAnimated:(BOOL)a3;
-- (void)_wk_requestDocumentForPrintFormatter:(id)a3;
-- (void)actionSheetAssistant:(id)a3 openElementAtLocation:(CGPoint)a4;
-- (void)actionSheetAssistant:(id)a3 performAction:(unsigned __int8)a4;
-- (void)actionSheetAssistant:(id)a3 shareElementWithURL:(id)a4 rect:(CGRect)a5;
+- (void)_scrollToURLFragment:(id)fragment;
+- (void)_showActionSheetForURL:(id)l atLocation:(CGPoint)location withAnnotationRect:(CGRect)rect;
+- (void)_updateLayoutAnimated:(BOOL)animated;
+- (void)_wk_requestDocumentForPrintFormatter:(id)formatter;
+- (void)actionSheetAssistant:(id)assistant openElementAtLocation:(CGPoint)location;
+- (void)actionSheetAssistant:(id)assistant performAction:(unsigned __int8)action;
+- (void)actionSheetAssistant:(id)assistant shareElementWithURL:(id)l rect:(CGRect)rect;
 - (void)clearAllDecoratedFoundText;
 - (void)dealloc;
-- (void)decorateFoundTextRange:(id)a3 inDocument:(id)a4 usingStyle:(int64_t)a5;
-- (void)pdfHostViewController:(id)a3 didLongPressPageIndex:(int64_t)a4 atLocation:(CGPoint)a5 withAnnotationRect:(CGRect)a6;
-- (void)pdfHostViewController:(id)a3 documentDidUnlockWithPassword:(id)a4;
-- (void)pdfHostViewController:(id)a3 findStringUpdate:(unint64_t)a4 done:(BOOL)a5;
-- (void)pdfHostViewController:(id)a3 goToPageIndex:(int64_t)a4 withViewFrustum:(CGRect)a5;
-- (void)pdfHostViewController:(id)a3 updatePageCount:(int64_t)a4;
-- (void)pdfHostViewControllerDocumentDidRequestPassword:(id)a3;
-- (void)pdfHostViewControllerExtensionProcessDidCrash:(id)a3;
-- (void)pdfHostViewControllerExtensionProcessDidCrash:(uint64_t)a1;
-- (void)performTextSearchWithQueryString:(id)a3 usingOptions:(id)a4 resultAggregator:(id)a5;
-- (void)shareSheetDidDismiss:(id)a3;
+- (void)decorateFoundTextRange:(id)range inDocument:(id)document usingStyle:(int64_t)style;
+- (void)pdfHostViewController:(id)controller didLongPressPageIndex:(int64_t)index atLocation:(CGPoint)location withAnnotationRect:(CGRect)rect;
+- (void)pdfHostViewController:(id)controller documentDidUnlockWithPassword:(id)password;
+- (void)pdfHostViewController:(id)controller findStringUpdate:(unint64_t)update done:(BOOL)done;
+- (void)pdfHostViewController:(id)controller goToPageIndex:(int64_t)index withViewFrustum:(CGRect)frustum;
+- (void)pdfHostViewController:(id)controller updatePageCount:(int64_t)count;
+- (void)pdfHostViewControllerDocumentDidRequestPassword:(id)password;
+- (void)pdfHostViewControllerExtensionProcessDidCrash:(id)crash;
+- (void)pdfHostViewControllerExtensionProcessDidCrash:(uint64_t)crash;
+- (void)performTextSearchWithQueryString:(id)string usingOptions:(id)options resultAggregator:(id)aggregator;
+- (void)shareSheetDidDismiss:(id)dismiss;
 - (void)updateBackgroundColor;
-- (void)web_beginAnimatedResizeWithUpdates:(id)a3;
-- (void)web_countStringMatches:(id)a3 options:(unint64_t)a4 maxCount:(unint64_t)a5;
-- (void)web_didSameDocumentNavigation:(unsigned int)a3;
-- (void)web_findString:(id)a3 options:(unint64_t)a4 maxCount:(unint64_t)a5;
-- (void)web_setContentProviderData:(id)a3 suggestedFilename:(id)a4 completionHandler:(id)a5;
-- (void)web_setFixedOverlayView:(id)a3;
-- (void)web_setMinimumSize:(CGSize)a3;
-- (void)web_snapshotRectInContentViewCoordinates:(CGRect)a3 snapshotWidth:(double)a4 completionHandler:(id)a5;
+- (void)web_beginAnimatedResizeWithUpdates:(id)updates;
+- (void)web_countStringMatches:(id)matches options:(unint64_t)options maxCount:(unint64_t)count;
+- (void)web_didSameDocumentNavigation:(unsigned int)navigation;
+- (void)web_findString:(id)string options:(unint64_t)options maxCount:(unint64_t)count;
+- (void)web_setContentProviderData:(id)data suggestedFilename:(id)filename completionHandler:(id)handler;
+- (void)web_setFixedOverlayView:(id)view;
+- (void)web_setMinimumSize:(CGSize)size;
+- (void)web_snapshotRectInContentViewCoordinates:(CGRect)coordinates snapshotWidth:(double)width completionHandler:(id)handler;
 @end
 
 @implementation WKPDFView
@@ -90,9 +90,9 @@
   [(WKPDFView *)&v9 dealloc];
 }
 
-- (BOOL)web_handleKeyEvent:(id)a3
+- (BOOL)web_handleKeyEvent:(id)event
 {
-  v4 = [[WKWebEvent alloc] initWithEvent:a3];
+  v4 = [[WKWebEvent alloc] initWithEvent:event];
   v5 = -[WKKeyboardScrollViewAnimator beginWithEvent:scrollView:](self->_keyboardScrollingAnimator.m_ptr, "beginWithEvent:scrollView:", v4, [objc_loadWeak(&self->_webView.m_weakReference) _scrollViewInternal]);
   if (!v5)
   {
@@ -116,11 +116,11 @@
   return self;
 }
 
-- (id)web_initWithFrame:(CGRect)a3 webView:(id)a4 mimeType:(id)a5
+- (id)web_initWithFrame:(CGRect)frame webView:(id)view mimeType:(id)type
 {
   v10.receiver = self;
   v10.super_class = WKPDFView;
-  v6 = [(WKApplicationStateTrackingView *)&v10 initWithFrame:a4 webView:a5, a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v6 = [(WKApplicationStateTrackingView *)&v10 initWithFrame:view webView:type, frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v6)
   {
     v7 = objc_alloc_init(WKKeyboardScrollViewAnimator);
@@ -130,7 +130,7 @@
     {
     }
 
-    objc_storeWeak(&v6->_webView.m_weakReference, a4);
+    objc_storeWeak(&v6->_webView.m_weakReference, view);
     [(WKPDFView *)v6 updateBackgroundColor];
   }
 
@@ -139,23 +139,23 @@
 
 - (void)updateBackgroundColor
 {
-  v3 = [MEMORY[0x1E6978030] backgroundColor];
-  [(WKPDFView *)self setBackgroundColor:v3];
-  v4 = [objc_loadWeak(&self->_webView.m_weakReference) _wkScrollView];
+  backgroundColor = [MEMORY[0x1E6978030] backgroundColor];
+  [(WKPDFView *)self setBackgroundColor:backgroundColor];
+  _wkScrollView = [objc_loadWeak(&self->_webView.m_weakReference) _wkScrollView];
 
-  [v4 _setBackgroundColorInternal:v3];
+  [_wkScrollView _setBackgroundColorInternal:backgroundColor];
 }
 
-- (void)web_setContentProviderData:(id)a3 suggestedFilename:(id)a4 completionHandler:(id)a5
+- (void)web_setContentProviderData:(id)data suggestedFilename:(id)filename completionHandler:(id)handler
 {
-  v8 = [a3 copy];
+  v8 = [data copy];
   m_ptr = self->_data.m_ptr;
   self->_data.m_ptr = v8;
   if (m_ptr)
   {
   }
 
-  v10 = [a4 copy];
+  v10 = [filename copy];
   v11 = self->_suggestedFilename.m_ptr;
   self->_suggestedFilename.m_ptr = v10;
   if (v11)
@@ -175,7 +175,7 @@
   objc_copyWeak(&v15, &v13);
   [v12 createHostView:v14 forExtensionIdentifier:0];
   objc_destroyWeak(&v13);
-  (*(a5 + 2))(a5);
+  (*(handler + 2))(handler);
   objc_destroyWeak(&v15);
 }
 
@@ -264,25 +264,25 @@ id __76__WKPDFView_web_setContentProviderData_suggestedFilename_completionHandle
   return result;
 }
 
-- (void)_movePageNumberIndicatorToPoint:(CGPoint)a3 animated:(BOOL)a4
+- (void)_movePageNumberIndicatorToPoint:(CGPoint)point animated:(BOOL)animated
 {
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __54__WKPDFView__movePageNumberIndicatorToPoint_animated___block_invoke;
   v6[3] = &unk_1E7633918;
-  v8 = a3;
-  v7 = self;
-  if (a4)
+  pointCopy = point;
+  selfCopy = self;
+  if (animated)
   {
     [MEMORY[0x1E69DD250] animateWithDuration:v6 animations:0.3];
   }
 
   else
   {
-    v4 = a3.x + 20.0;
-    v5 = a3.y + 20.0;
+    v4 = point.x + 20.0;
+    v5 = point.y + 20.0;
     [(UIView *)self->_pageNumberIndicator.m_ptr frame];
-    [(UIView *)v7->_pageNumberIndicator.m_ptr setFrame:v4, v5];
+    [(UIView *)selfCopy->_pageNumberIndicator.m_ptr setFrame:v4, v5];
   }
 }
 
@@ -296,16 +296,16 @@ uint64_t __54__WKPDFView__movePageNumberIndicatorToPoint_animated___block_invoke
   return [v4 setFrame:{v2, v3}];
 }
 
-- (void)_updateLayoutAnimated:(BOOL)a3
+- (void)_updateLayoutAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   [(PDFHostViewController *)self->_hostViewController.m_ptr updatePDFViewLayout];
   [(WKPDFView *)self _offsetForPageNumberIndicator];
 
-  [(WKPDFView *)self _movePageNumberIndicatorToPoint:v3 animated:?];
+  [(WKPDFView *)self _movePageNumberIndicatorToPoint:animatedCopy animated:?];
 }
 
-- (void)web_setMinimumSize:(CGSize)a3
+- (void)web_setMinimumSize:(CGSize)size
 {
   [(WKPDFView *)self frame];
   [(WKPDFView *)self setFrame:?];
@@ -313,25 +313,25 @@ uint64_t __54__WKPDFView__movePageNumberIndicatorToPoint_animated___block_invoke
   [(WKPDFView *)self _updateLayoutAnimated:0];
 }
 
-- (void)web_setFixedOverlayView:(id)a3
+- (void)web_setFixedOverlayView:(id)view
 {
-  if (a3)
+  if (view)
   {
-    v5 = a3;
+    viewCopy = view;
   }
 
   m_ptr = self->_fixedOverlayView.m_ptr;
-  self->_fixedOverlayView.m_ptr = a3;
+  self->_fixedOverlayView.m_ptr = view;
   if (m_ptr)
   {
   }
 }
 
-- (void)_scrollToURLFragment:(id)a3
+- (void)_scrollToURLFragment:(id)fragment
 {
-  if ([a3 hasPrefix:@"page"])
+  if ([fragment hasPrefix:@"page"])
   {
-    v5 = [objc_msgSend(a3 substringFromIndex:{4), "integerValue"}];
+    v5 = [objc_msgSend(fragment substringFromIndex:{4), "integerValue"}];
     v6 = v5 - 1;
     if (v5 < 1)
     {
@@ -352,9 +352,9 @@ uint64_t __54__WKPDFView__movePageNumberIndicatorToPoint_animated___block_invoke
   }
 }
 
-- (void)web_didSameDocumentNavigation:(unsigned int)a3
+- (void)web_didSameDocumentNavigation:(unsigned int)navigation
 {
-  if (a3 == 3)
+  if (navigation == 3)
   {
     v5 = [objc_msgSend(objc_loadWeak(&self->_webView.m_weakReference) "URL")];
 
@@ -389,14 +389,14 @@ uint64_t __54__WKPDFView__movePageNumberIndicatorToPoint_animated___block_invoke
   self->_focusedSearchResultPendingOffset = 0;
 }
 
-- (void)_findString:(id)a3 withOptions:(unint64_t)a4 maxCount:(unint64_t)a5 completion:(id)a6
+- (void)_findString:(id)string withOptions:(unint64_t)options maxCount:(unint64_t)count completion:(id)completion
 {
   [(WKPDFView *)self _resetFind];
-  v11 = _Block_copy(a6);
+  v11 = _Block_copy(completion);
   _Block_release(self->_findCompletion.m_block);
   self->_findCompletion.m_block = v11;
   _Block_release(0);
-  v12 = [a3 copy];
+  v12 = [string copy];
   m_ptr = self->_findString.m_ptr;
   self->_findString.m_ptr = v12;
   if (m_ptr)
@@ -405,20 +405,20 @@ uint64_t __54__WKPDFView__movePageNumberIndicatorToPoint_animated___block_invoke
     v12 = self->_findString.m_ptr;
   }
 
-  self->_findStringMaxCount = a5;
+  self->_findStringMaxCount = count;
   v14 = self->_hostViewController.m_ptr;
 
-  [(PDFHostViewController *)v14 findString:v12 withOptions:a4 & 1 | (4 * ((a4 >> 3) & 1))];
+  [(PDFHostViewController *)v14 findString:v12 withOptions:options & 1 | (4 * ((options >> 3) & 1))];
 }
 
-- (void)web_countStringMatches:(id)a3 options:(unint64_t)a4 maxCount:(unint64_t)a5
+- (void)web_countStringMatches:(id)matches options:(unint64_t)options maxCount:(unint64_t)count
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __53__WKPDFView_web_countStringMatches_options_maxCount___block_invoke;
   v5[3] = &unk_1E7631230;
   v5[4] = self;
-  [(WKPDFView *)self _findString:a3 withOptions:a4 maxCount:a5 completion:v5];
+  [(WKPDFView *)self _findString:matches withOptions:options maxCount:count completion:v5];
 }
 
 void *__53__WKPDFView_web_countStringMatches_options_maxCount___block_invoke(uint64_t a1)
@@ -448,9 +448,9 @@ void *__53__WKPDFView_web_countStringMatches_options_maxCount___block_invoke(uin
   return result;
 }
 
-- (BOOL)_computeFocusedSearchResultIndexWithOptions:(unint64_t)a3 didWrapAround:(BOOL *)a4
+- (BOOL)_computeFocusedSearchResultIndexWithOptions:(unint64_t)options didWrapAround:(BOOL *)around
 {
-  if ((a3 & 8) != 0)
+  if ((options & 8) != 0)
   {
     v4 = -1;
   }
@@ -483,7 +483,7 @@ void *__53__WKPDFView_web_countStringMatches_options_maxCount___block_invoke(uin
     {
       focusedSearchResultPendingOffset = self->_focusedSearchResultPendingOffset;
       self->_focusedSearchResultPendingOffset = 0;
-      v9 = focusedSearchResultPendingOffset + ((findStringCount - 1) & ((a3 << 60) >> 63));
+      v9 = focusedSearchResultPendingOffset + ((findStringCount - 1) & ((options << 60) >> 63));
       if (v9 < 0)
       {
         goto LABEL_14;
@@ -501,7 +501,7 @@ void *__53__WKPDFView_web_countStringMatches_options_maxCount___block_invoke(uin
     }
 
 LABEL_14:
-    if ((a3 & 0x10) == 0)
+    if ((options & 0x10) == 0)
     {
       return 0;
     }
@@ -529,7 +529,7 @@ LABEL_14:
       v9 = v14;
     }
 
-    *a4 = 1;
+    *around = 1;
     if (self->_focusedSearchResultIndex.__engaged_)
     {
 LABEL_24:
@@ -547,7 +547,7 @@ LABEL_23:
   return v5;
 }
 
-- (void)_focusOnSearchResultWithOptions:(unint64_t)a3
+- (void)_focusOnSearchResultWithOptions:(unint64_t)options
 {
   Weak = objc_loadWeak(&self->_webView.m_weakReference);
   if (Weak)
@@ -556,7 +556,7 @@ LABEL_23:
     if (v19)
     {
       v18 = 0;
-      if ([(WKPDFView *)self _computeFocusedSearchResultIndexWithOptions:a3 didWrapAround:&v18])
+      if ([(WKPDFView *)self _computeFocusedSearchResultIndexWithOptions:options didWrapAround:&v18])
       {
         if (!self->_focusedSearchResultIndex.__engaged_)
         {
@@ -610,12 +610,12 @@ LABEL_11:
   }
 }
 
-- (void)web_findString:(id)a3 options:(unint64_t)a4 maxCount:(unint64_t)a5
+- (void)web_findString:(id)string options:(unint64_t)options maxCount:(unint64_t)count
 {
   if ([(NSString *)self->_findString.m_ptr isEqualToString:?])
   {
 
-    [(WKPDFView *)self _focusOnSearchResultWithOptions:a4];
+    [(WKPDFView *)self _focusOnSearchResultWithOptions:options];
   }
 
   else
@@ -625,8 +625,8 @@ LABEL_11:
     v9[2] = __45__WKPDFView_web_findString_options_maxCount___block_invoke;
     v9[3] = &unk_1E7633940;
     v9[4] = self;
-    v9[5] = a4;
-    [(WKPDFView *)self _findString:a3 withOptions:a4 maxCount:a5 completion:v9];
+    v9[5] = options;
+    [(WKPDFView *)self _findString:string withOptions:options maxCount:count completion:v9];
   }
 }
 
@@ -647,16 +647,16 @@ LABEL_11:
   return (HasEntitlement & 1) == 0;
 }
 
-- (void)web_beginAnimatedResizeWithUpdates:(id)a3
+- (void)web_beginAnimatedResizeWithUpdates:(id)updates
 {
   [(PDFHostViewController *)self->_hostViewController.m_ptr beginPDFViewRotation];
-  (*(a3 + 2))(a3);
+  (*(updates + 2))(updates);
   m_ptr = self->_hostViewController.m_ptr;
 
   [(PDFHostViewController *)m_ptr endPDFViewRotation];
 }
 
-- (void)web_snapshotRectInContentViewCoordinates:(CGRect)a3 snapshotWidth:(double)a4 completionHandler:(id)a5
+- (void)web_snapshotRectInContentViewCoordinates:(CGRect)coordinates snapshotWidth:(double)width completionHandler:(id)handler
 {
   [-[WKPDFView _contentView](self "_contentView")];
   v9 = v8;
@@ -664,12 +664,12 @@ LABEL_11:
   v13 = v12;
   v15 = v14;
   m_ptr = self->_hostViewController.m_ptr;
-  v17 = [MEMORY[0x1E696AD98] numberWithDouble:a4];
+  v17 = [MEMORY[0x1E696AD98] numberWithDouble:width];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __86__WKPDFView_web_snapshotRectInContentViewCoordinates_snapshotWidth_completionHandler___block_invoke;
   v18[3] = &unk_1E7633968;
-  v18[4] = a5;
+  v18[4] = handler;
   [(PDFHostViewController *)m_ptr snapshotViewRect:v17 snapshotWidth:0 afterScreenUpdates:v18 withResult:v9, v11, v13, v15];
 }
 
@@ -682,14 +682,14 @@ uint64_t __86__WKPDFView_web_snapshotRectInContentViewCoordinates_snapshotWidth_
   return v4(v2, v3);
 }
 
-- (void)pdfHostViewController:(id)a3 updatePageCount:(int64_t)a4
+- (void)pdfHostViewController:(id)controller updatePageCount:(int64_t)count
 {
   v5 = [objc_msgSend(objc_loadWeak(&self->_webView.m_weakReference) "URL")];
 
   [(WKPDFView *)self _scrollToURLFragment:v5];
 }
 
-- (void)pdfHostViewControllerDocumentDidRequestPassword:(id)a3
+- (void)pdfHostViewControllerDocumentDidRequestPassword:(id)password
 {
   [objc_loadWeak(&self->_webView.m_weakReference) _didRequestPasswordForDocument];
   self->_isShowingPasswordView = 1;
@@ -697,9 +697,9 @@ uint64_t __86__WKPDFView_web_snapshotRectInContentViewCoordinates_snapshotWidth_
   [(WKPDFView *)self updateBackgroundColor];
 }
 
-- (void)pdfHostViewController:(id)a3 documentDidUnlockWithPassword:(id)a4
+- (void)pdfHostViewController:(id)controller documentDidUnlockWithPassword:(id)password
 {
-  WTF::CString::CString(&v10, [a4 UTF8String]);
+  WTF::CString::CString(&v10, [password UTF8String]);
   v6 = v10;
   v10 = 0;
   m_ptr = self->_passwordForPrinting.m_buffer.m_ptr;
@@ -734,16 +734,16 @@ LABEL_4:
   [(WKPDFView *)self updateBackgroundColor];
 }
 
-- (void)pdfHostViewController:(id)a3 findStringUpdate:(unint64_t)a4 done:(BOOL)a5
+- (void)pdfHostViewController:(id)controller findStringUpdate:(unint64_t)update done:(BOOL)done
 {
   m_ptr = self->_searchAggregator.m_ptr;
   if (m_ptr)
   {
-    if (a5)
+    if (done)
     {
-      if (a4)
+      if (update)
       {
-        for (i = 0; i != a4; ++i)
+        for (i = 0; i != update; ++i)
         {
           [(UITextSearchAggregator *)self->_searchAggregator.m_ptr foundRange:[WKPDFFoundTextRange foundTextRangeWithIndex:?], self->_searchString.m_ptr, 0];
         }
@@ -768,9 +768,9 @@ LABEL_4:
 
   else
   {
-    if (self->_findStringMaxCount >= a4 || a5)
+    if (self->_findStringMaxCount >= update || done)
     {
-      if (!a5)
+      if (!done)
       {
         return;
       }
@@ -778,7 +778,7 @@ LABEL_4:
 
     else
     {
-      [a3 cancelFindStringWithHighlightsCleared:0];
+      [controller cancelFindStringWithHighlightsCleared:0];
     }
 
     m_block = self->_findCompletion.m_block;
@@ -789,7 +789,7 @@ LABEL_4:
     _Block_release(0);
     if (m_block)
     {
-      self->_findStringCount = a4;
+      self->_findStringCount = update;
       m_block[2](m_block);
     }
 
@@ -797,10 +797,10 @@ LABEL_4:
   }
 }
 
-- (id)_URLWithPageIndex:(int64_t)a3
+- (id)_URLWithPageIndex:(int64_t)index
 {
   v4 = MEMORY[0x1E695DFF8];
-  v5 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"#page%ld", a3 + 1];
+  v5 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"#page%ld", index + 1];
   v6 = [v4 URLWithString:v5 relativeToURL:{objc_msgSend(objc_loadWeak(&self->_webView.m_weakReference), "URL")}];
   if (v5)
   {
@@ -809,26 +809,26 @@ LABEL_4:
   return v6;
 }
 
-- (void)_goToURL:(id)a3 atLocation:(CGPoint)a4
+- (void)_goToURL:(id)l atLocation:(CGPoint)location
 {
-  y = a4.y;
-  x = a4.x;
-  v30 = a4;
+  y = location.y;
+  x = location.x;
+  locationCopy = location;
   Weak = objc_loadWeak(&self->_webView.m_weakReference);
   if (Weak)
   {
     [Weak _page];
     if (v29)
     {
-      v9 = [(PDFHostViewController *)self->_hostViewController.m_ptr view];
-      v10 = [v9 window];
-      [v9 convertPoint:0 toView:{x, y}];
-      [v10 convertPoint:0 toWindow:?];
+      view = [(PDFHostViewController *)self->_hostViewController.m_ptr view];
+      window = [view window];
+      [view convertPoint:0 toView:{x, y}];
+      [window convertPoint:0 toWindow:?];
       v28.x = v11;
       v28.y = v12;
       v13 = v29;
-      MEMORY[0x19EB02040](&v27, [a3 absoluteString]);
-      WebCore::FloatPoint::FloatPoint(v26, &v30);
+      MEMORY[0x19EB02040](&v27, [l absoluteString]);
+      WebCore::FloatPoint::FloatPoint(v26, &locationCopy);
       v14 = roundf(v26[0]);
       v15 = 0x80000000;
       if (v14 > -2147500000.0)
@@ -908,20 +908,20 @@ LABEL_4:
   }
 }
 
-- (void)pdfHostViewController:(id)a3 goToPageIndex:(int64_t)a4 withViewFrustum:(CGRect)a5
+- (void)pdfHostViewController:(id)controller goToPageIndex:(int64_t)index withViewFrustum:(CGRect)frustum
 {
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v8 = [(WKPDFView *)self _URLWithPageIndex:a4, a5.origin.x, a5.origin.y, a5.size.width, a5.size.height];
+  y = frustum.origin.y;
+  x = frustum.origin.x;
+  v8 = [(WKPDFView *)self _URLWithPageIndex:index, frustum.origin.x, frustum.origin.y, frustum.size.width, frustum.size.height];
 
   [(WKPDFView *)self _goToURL:v8 atLocation:x, y];
 }
 
-- (void)_showActionSheetForURL:(id)a3 atLocation:(CGPoint)a4 withAnnotationRect:(CGRect)a5
+- (void)_showActionSheetForURL:(id)l atLocation:(CGPoint)location withAnnotationRect:(CGRect)rect
 {
   v44 = *MEMORY[0x1E69E9840];
-  v21 = a4;
-  v20 = a5;
+  locationCopy = location;
+  rectCopy = rect;
   if (objc_loadWeak(&self->_webView.m_weakReference))
   {
     memset(v22, 0, sizeof(v22));
@@ -952,10 +952,10 @@ LABEL_4:
     v38 = 0;
     v41 = 0u;
     memset(v42, 0, 25);
-    WebCore::FloatRect::FloatRect(v19, &v20);
+    WebCore::FloatRect::FloatRect(v19, &rectCopy);
     *(&v34 + 1) = WebCore::roundedIntRect(v19, v7);
     *&v35 = v8;
-    WebCore::FloatPoint::FloatPoint(v19, &v21);
+    WebCore::FloatPoint::FloatPoint(v19, &locationCopy);
     v9 = roundf(*v19);
     if (v9 >= 2147500000.0)
     {
@@ -989,7 +989,7 @@ LABEL_4:
     }
 
     *v22 = v12 | v10;
-    MEMORY[0x19EB01DE0](v19, a3);
+    MEMORY[0x19EB01DE0](v19, l);
     WTF::URL::operator=(v32, v19);
     v14 = v19[0];
     v19[0] = 0;
@@ -1015,20 +1015,20 @@ LABEL_4:
   }
 }
 
-- (void)pdfHostViewController:(id)a3 didLongPressPageIndex:(int64_t)a4 atLocation:(CGPoint)a5 withAnnotationRect:(CGRect)a6
+- (void)pdfHostViewController:(id)controller didLongPressPageIndex:(int64_t)index atLocation:(CGPoint)location withAnnotationRect:(CGRect)rect
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v10 = a5.y;
-  v11 = a5.x;
-  v13 = [(WKPDFView *)self _URLWithPageIndex:a4];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v10 = location.y;
+  v11 = location.x;
+  v13 = [(WKPDFView *)self _URLWithPageIndex:index];
 
   [(WKPDFView *)self _showActionSheetForURL:v13 atLocation:v11 withAnnotationRect:v10, x, y, width, height];
 }
 
-- (void)pdfHostViewControllerExtensionProcessDidCrash:(id)a3
+- (void)pdfHostViewControllerExtensionProcessDidCrash:(id)crash
 {
   WTF::RunLoop::mainSingleton(self);
   v6 = 0;
@@ -1056,10 +1056,10 @@ LABEL_4:
   return result;
 }
 
-- (void)actionSheetAssistant:(id)a3 performAction:(unsigned __int8)a4
+- (void)actionSheetAssistant:(id)assistant performAction:(unsigned __int8)action
 {
   v18[2] = *MEMORY[0x1E69E9840];
-  if (!a4)
+  if (!action)
   {
     v17[0] = *MEMORY[0x1E69638C8];
     p_url = &self->_positionInformation.url;
@@ -1067,7 +1067,7 @@ LABEL_4:
     if (m_ptr)
     {
       atomic_fetch_add_explicit(m_ptr, 2u, memory_order_relaxed);
-      MEMORY[0x19EB00B70](&v16, m_ptr, a2, a3);
+      MEMORY[0x19EB00B70](&v16, m_ptr, a2, assistant);
       if (atomic_fetch_add_explicit(m_ptr, 0xFFFFFFFE, memory_order_relaxed) == 2)
       {
         WTF::StringImpl::destroy(m_ptr, v7);
@@ -1116,10 +1116,10 @@ uint64_t __48__WKPDFView_actionSheetAssistant_performAction___block_invoke(uint6
   return [objc_msgSend(MEMORY[0x1E69DCD50] "generalPasteboard")];
 }
 
-- (void)actionSheetAssistant:(id)a3 openElementAtLocation:(CGPoint)a4
+- (void)actionSheetAssistant:(id)assistant openElementAtLocation:(CGPoint)location
 {
-  y = a4.y;
-  x = a4.x;
+  y = location.y;
+  x = location.x;
   WTF::URL::createCFURL(&v8, &self->_positionInformation.url);
   [(WKPDFView *)self _goToURL:v8 atLocation:x, y];
   v7 = v8;
@@ -1129,12 +1129,12 @@ uint64_t __48__WKPDFView_actionSheetAssistant_performAction___block_invoke(uint6
   }
 }
 
-- (void)actionSheetAssistant:(id)a3 shareElementWithURL:(id)a4 rect:(CGRect)a5
+- (void)actionSheetAssistant:(id)assistant shareElementWithURL:(id)l rect:(CGRect)rect
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   Weak = objc_loadWeak(&self->_webView.m_weakReference);
   if (Weak)
   {
@@ -1143,7 +1143,7 @@ uint64_t __48__WKPDFView_actionSheetAssistant_performAction___block_invoke(uint6
     v31 = 0;
     v32 = 0;
     memset(v29, 0, 41);
-    MEMORY[0x19EB01DE0](&v27, a4);
+    MEMORY[0x19EB01DE0](&v27, l);
     v28 = 1;
     std::__optional_storage_base<WTF::URL,false>::__assign_from[abi:sn200100]<std::__optional_move_assign_base<WTF::URL,false>>(&v29[2] + 8, &v27);
     if (v28 == 1)
@@ -1191,7 +1191,7 @@ uint64_t __48__WKPDFView_actionSheetAssistant_performAction___block_invoke(uint6
   }
 }
 
-- (void)shareSheetDidDismiss:(id)a3
+- (void)shareSheetDidDismiss:(id)dismiss
 {
   [(WKShareSheet *)self->_shareSheet.m_ptr setDelegate:0];
   m_ptr = self->_shareSheet.m_ptr;
@@ -1201,7 +1201,7 @@ uint64_t __48__WKPDFView_actionSheetAssistant_performAction___block_invoke(uint6
   }
 }
 
-- (BOOL)actionSheetAssistant:(id)a3 shouldIncludeAppLinkActionsForElement:(id)a4
+- (BOOL)actionSheetAssistant:(id)assistant shouldIncludeAppLinkActionsForElement:(id)element
 {
   Weak = objc_loadWeak(&self->_webView.m_weakReference);
   if (Weak)
@@ -1209,7 +1209,7 @@ uint64_t __48__WKPDFView_actionSheetAssistant_performAction___block_invoke(uint6
     [Weak _page];
     if (v7)
     {
-      LOBYTE(Weak) = (*(**(v7 + 120) + 464))(*(v7 + 120), a4);
+      LOBYTE(Weak) = (*(**(v7 + 120) + 464))(*(v7 + 120), element);
     }
 
     else
@@ -1221,17 +1221,17 @@ uint64_t __48__WKPDFView_actionSheetAssistant_performAction___block_invoke(uint6
   return Weak;
 }
 
-- (RetainPtr<NSArray>)actionSheetAssistant:(id)a3 decideActionsForElement:(id)a4 defaultActions:(RetainPtr<NSArray>)a5
+- (RetainPtr<NSArray>)actionSheetAssistant:(id)assistant decideActionsForElement:(id)element defaultActions:(RetainPtr<NSArray>)actions
 {
   v8 = v5;
   Weak = objc_loadWeak(&self->_webView.m_weakReference);
   if (Weak && (Weak = [Weak _page], v14))
   {
     v10 = *(v14 + 120);
-    isa = a5.m_ptr->super.isa;
-    a5.m_ptr->super.isa = 0;
+    isa = actions.m_ptr->super.isa;
+    actions.m_ptr->super.isa = 0;
     v13 = isa;
-    Weak = (*(*v10 + 472))(v10, a4, &v13);
+    Weak = (*(*v10 + 472))(v10, element, &v13);
     v12 = v13;
     v13 = 0;
     if (v12)
@@ -1247,7 +1247,7 @@ uint64_t __48__WKPDFView_actionSheetAssistant_performAction___block_invoke(uint6
   return Weak;
 }
 
-- (id)dataDetectionContextForActionSheetAssistant:(id)a3 positionInformation:(const void *)a4
+- (id)dataDetectionContextForActionSheetAssistant:(id)assistant positionInformation:(const void *)information
 {
   Weak = objc_loadWeak(&self->_webView.m_weakReference);
   if (!Weak)
@@ -1256,30 +1256,30 @@ uint64_t __48__WKPDFView_actionSheetAssistant_performAction___block_invoke(uint6
   }
 
   v5 = Weak;
-  v6 = [Weak UIDelegate];
+  uIDelegate = [Weak UIDelegate];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
     return 0;
   }
 
-  return [v6 _dataDetectionContextForWebView:v5];
+  return [uIDelegate _dataDetectionContextForWebView:v5];
 }
 
-- (int64_t)compareFoundRange:(id)a3 toRange:(id)a4 inDocument:(id)a5
+- (int64_t)compareFoundRange:(id)range toRange:(id)toRange inDocument:(id)document
 {
-  result = WTF::dynamic_objc_cast<WKPDFFoundTextPosition>([a3 start]);
+  result = WTF::dynamic_objc_cast<WKPDFFoundTextPosition>([range start]);
   if (result)
   {
     v7 = result;
-    result = WTF::dynamic_objc_cast<WKPDFFoundTextPosition>([a4 start]);
+    result = WTF::dynamic_objc_cast<WKPDFFoundTextPosition>([toRange start]);
     if (result)
     {
       v8 = result;
-      v9 = [v7 index];
-      if (v9 >= [v8 index])
+      index = [v7 index];
+      if (index >= [v8 index])
       {
-        v10 = [v7 index];
-        return v10 > [v8 index];
+        index2 = [v7 index];
+        return index2 > [v8 index];
       }
 
       else
@@ -1292,50 +1292,50 @@ uint64_t __48__WKPDFView_actionSheetAssistant_performAction___block_invoke(uint6
   return result;
 }
 
-- (void)performTextSearchWithQueryString:(id)a3 usingOptions:(id)a4 resultAggregator:(id)a5
+- (void)performTextSearchWithQueryString:(id)string usingOptions:(id)options resultAggregator:(id)aggregator
 {
   [(PDFHostViewController *)self->_hostViewController.m_ptr cancelFindString];
-  if (a5)
+  if (aggregator)
   {
-    v9 = a5;
+    aggregatorCopy = aggregator;
   }
 
   m_ptr = self->_searchAggregator.m_ptr;
-  self->_searchAggregator.m_ptr = a5;
+  self->_searchAggregator.m_ptr = aggregator;
   if (m_ptr)
   {
   }
 
-  if (a3)
+  if (string)
   {
-    v11 = a3;
+    stringCopy = string;
   }
 
   v12 = self->_searchString.m_ptr;
-  self->_searchString.m_ptr = a3;
+  self->_searchString.m_ptr = string;
   if (v12)
   {
   }
 
   v13 = self->_hostViewController.m_ptr;
-  v14 = [a4 stringCompareOptions];
+  stringCompareOptions = [options stringCompareOptions];
 
-  [(PDFHostViewController *)v13 findString:a3 withOptions:v14];
+  [(PDFHostViewController *)v13 findString:string withOptions:stringCompareOptions];
 }
 
-- (void)decorateFoundTextRange:(id)a3 inDocument:(id)a4 usingStyle:(int64_t)a5
+- (void)decorateFoundTextRange:(id)range inDocument:(id)document usingStyle:(int64_t)style
 {
-  if (a3)
+  if (range)
   {
-    if (a5 == 2)
+    if (style == 2)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
         m_ptr = self->_hostViewController.m_ptr;
-        v8 = [a3 index];
+        index = [range index];
 
-        [(PDFHostViewController *)m_ptr focusOnSearchResultAtIndex:v8];
+        [(PDFHostViewController *)m_ptr focusOnSearchResultAtIndex:index];
       }
     }
   }
@@ -1437,13 +1437,13 @@ uint64_t __48__WKPDFView_actionSheetAssistant_performAction___block_invoke(uint6
   return m_ptr;
 }
 
-- (unint64_t)_wk_pageCountForPrintFormatter:(id)a3
+- (unint64_t)_wk_pageCountForPrintFormatter:(id)formatter
 {
   result = [(WKPDFView *)self _ensureDocumentForPrinting];
   if (result)
   {
     NumberOfPages = CGPDFDocumentGetNumberOfPages(result);
-    if ([a3 snapshotFirstPage])
+    if ([formatter snapshotFirstPage])
     {
       return NumberOfPages != 0;
     }
@@ -1457,31 +1457,31 @@ uint64_t __48__WKPDFView_actionSheetAssistant_performAction___block_invoke(uint6
   return result;
 }
 
-- (void)_wk_requestDocumentForPrintFormatter:(id)a3
+- (void)_wk_requestDocumentForPrintFormatter:(id)formatter
 {
-  v4 = [(WKPDFView *)self _ensureDocumentForPrinting];
+  _ensureDocumentForPrinting = [(WKPDFView *)self _ensureDocumentForPrinting];
 
-  [a3 _setPrintedDocument:v4];
+  [formatter _setPrintedDocument:_ensureDocumentForPrinting];
 }
 
-- (uint64_t)pdfHostViewControllerExtensionProcessDidCrash:(uint64_t)a1
+- (uint64_t)pdfHostViewControllerExtensionProcessDidCrash:(uint64_t)crash
 {
-  *a1 = &unk_1F110D928;
-  objc_destroyWeak((a1 + 8));
-  return a1;
+  *crash = &unk_1F110D928;
+  objc_destroyWeak((crash + 8));
+  return crash;
 }
 
-- (uint64_t)pdfHostViewControllerExtensionProcessDidCrash:(id *)a1
+- (uint64_t)pdfHostViewControllerExtensionProcessDidCrash:(id *)crash
 {
-  *a1 = &unk_1F110D928;
-  objc_destroyWeak(a1 + 1);
+  *crash = &unk_1F110D928;
+  objc_destroyWeak(crash + 1);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(crash, v2);
 }
 
-- (void)pdfHostViewControllerExtensionProcessDidCrash:(uint64_t)a1
+- (void)pdfHostViewControllerExtensionProcessDidCrash:(uint64_t)crash
 {
-  Weak = objc_loadWeak((a1 + 8));
+  Weak = objc_loadWeak((crash + 8));
   if (Weak)
   {
     [Weak _page];

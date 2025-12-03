@@ -1,43 +1,43 @@
 @interface FedStatsHistogramType
-+ (id)createFromDict:(id)a3 possibleError:(id *)a4;
-- (FedStatsHistogramType)initWithFeatureType:(id)a3 metricField:(id)a4 clippingBound:(id)a5 featureFactors:(id)a6 defaultFeatureFactor:(id)a7 featureField:(id)a8 normType:(id)a9 normDediscoTaskConfig:(id)a10;
-- (id)decodeFromHistogramVector:(id)a3 possibleError:(id *)a4;
-- (id)decodeFromIndex:(id)a3 possibleError:(id *)a4;
-- (id)decodeFromOneHotVector:(id)a3 possibleError:(id *)a4;
-- (id)encodeToHistogramVector:(id)a3 possibleError:(id *)a4;
-- (id)encodeToIndex:(id)a3 possibleError:(id *)a4;
-- (id)encodeToOneHotVector:(id)a3 possibleError:(id *)a4;
-- (id)invertScaleAndShift:(id)a3;
-- (id)scaleAndShift:(id)a3;
++ (id)createFromDict:(id)dict possibleError:(id *)error;
+- (FedStatsHistogramType)initWithFeatureType:(id)type metricField:(id)field clippingBound:(id)bound featureFactors:(id)factors defaultFeatureFactor:(id)factor featureField:(id)featureField normType:(id)normType normDediscoTaskConfig:(id)self0;
+- (id)decodeFromHistogramVector:(id)vector possibleError:(id *)error;
+- (id)decodeFromIndex:(id)index possibleError:(id *)error;
+- (id)decodeFromOneHotVector:(id)vector possibleError:(id *)error;
+- (id)encodeToHistogramVector:(id)vector possibleError:(id *)error;
+- (id)encodeToIndex:(id)index possibleError:(id *)error;
+- (id)encodeToOneHotVector:(id)vector possibleError:(id *)error;
+- (id)invertScaleAndShift:(id)shift;
+- (id)scaleAndShift:(id)shift;
 - (unint64_t)classCount;
 @end
 
 @implementation FedStatsHistogramType
 
-- (FedStatsHistogramType)initWithFeatureType:(id)a3 metricField:(id)a4 clippingBound:(id)a5 featureFactors:(id)a6 defaultFeatureFactor:(id)a7 featureField:(id)a8 normType:(id)a9 normDediscoTaskConfig:(id)a10
+- (FedStatsHistogramType)initWithFeatureType:(id)type metricField:(id)field clippingBound:(id)bound featureFactors:(id)factors defaultFeatureFactor:(id)factor featureField:(id)featureField normType:(id)normType normDediscoTaskConfig:(id)self0
 {
-  v27 = a3;
-  v26 = a4;
-  v25 = a5;
-  v24 = a6;
-  v23 = a7;
-  v22 = a8;
-  v17 = a9;
-  v18 = a10;
+  typeCopy = type;
+  fieldCopy = field;
+  boundCopy = bound;
+  factorsCopy = factors;
+  factorCopy = factor;
+  featureFieldCopy = featureField;
+  normTypeCopy = normType;
+  configCopy = config;
   v28.receiver = self;
   v28.super_class = FedStatsHistogramType;
   v19 = [(FedStatsHistogramType *)&v28 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_featureType, a3);
-    objc_storeStrong(&v20->_metricField, a4);
-    objc_storeStrong(&v20->_clippingBound, a5);
-    objc_storeStrong(&v20->_featureFactors, a6);
-    objc_storeStrong(&v20->_defaultFeatureFactor, a7);
-    objc_storeStrong(&v20->_featureField, a8);
-    objc_storeStrong(&v20->_normType, a9);
-    objc_storeStrong(&v20->_normDediscoTypeConfig, a10);
+    objc_storeStrong(&v19->_featureType, type);
+    objc_storeStrong(&v20->_metricField, field);
+    objc_storeStrong(&v20->_clippingBound, bound);
+    objc_storeStrong(&v20->_featureFactors, factors);
+    objc_storeStrong(&v20->_defaultFeatureFactor, factor);
+    objc_storeStrong(&v20->_featureField, featureField);
+    objc_storeStrong(&v20->_normType, normType);
+    objc_storeStrong(&v20->_normDediscoTypeConfig, config);
   }
 
   return v20;
@@ -45,23 +45,23 @@
 
 - (unint64_t)classCount
 {
-  v2 = [(FedStatsHistogramType *)self featureType];
-  v3 = [v2 classCount];
+  featureType = [(FedStatsHistogramType *)self featureType];
+  classCount = [featureType classCount];
 
-  return v3;
+  return classCount;
 }
 
-+ (id)createFromDict:(id)a3 possibleError:(id *)a4
++ (id)createFromDict:(id)dict possibleError:(id *)error
 {
   v75[2] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [v5 objectForKey:kFedStatsHistogramTypeMetricFieldKey];
+  dictCopy = dict;
+  v6 = [dictCopy objectForKey:kFedStatsHistogramTypeMetricFieldKey];
   if (!v6)
   {
-    if (a4)
+    if (error)
     {
       v17 = LABEL_24:;
-      *a4 = [FedStatsError errorWithCode:300 description:v17];
+      *error = [FedStatsError errorWithCode:300 description:v17];
     }
 
 LABEL_25:
@@ -72,7 +72,7 @@ LABEL_25:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    if (a4)
+    if (error)
     {
       goto LABEL_24;
     }
@@ -80,15 +80,15 @@ LABEL_25:
     goto LABEL_25;
   }
 
-  v7 = [v5 objectForKey:kFedStatsHistogramTypeNormTypeKey];
+  v7 = [dictCopy objectForKey:kFedStatsHistogramTypeNormTypeKey];
   if (v7)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (a4)
+      if (error)
         v19 = {;
-        *a4 = [FedStatsError errorWithCode:300 description:v19];
+        *error = [FedStatsError errorWithCode:300 description:v19];
       }
 
       v18 = 0;
@@ -96,13 +96,13 @@ LABEL_25:
     }
   }
 
-  v8 = [v5 objectForKey:kFedStatsHistogramTypeFeatureTypesKey];
+  v8 = [dictCopy objectForKey:kFedStatsHistogramTypeFeatureTypesKey];
   if (v8)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) != 0 && [v8 count])
     {
-      v9 = [v5 objectForKey:kFedStatsHistogramTypeClippingBoundKey];
+      v9 = [dictCopy objectForKey:kFedStatsHistogramTypeClippingBoundKey];
       if (v9)
       {
         objc_opt_class();
@@ -112,12 +112,12 @@ LABEL_25:
           if (v10 > 0.0)
           {
             v68 = v9;
-            v11 = [v5 objectForKey:kFedStatsCombinationTypeAvailableTypes];
+            v11 = [dictCopy objectForKey:kFedStatsCombinationTypeAvailableTypes];
             if (!v11)
             {
-              if (a4)
+              if (error)
                 v25 = {;
-                *a4 = [FedStatsError errorWithCode:300 description:v25];
+                *error = [FedStatsError errorWithCode:300 description:v25];
 
                 v11 = 0;
               }
@@ -148,15 +148,15 @@ LABEL_15:
                 if (!v27)
                 {
                   v9 = v68;
-                  if (a4)
+                  if (error)
                   {
                     v41 = v28;
                     v42 = [FedStatsError errorWithCode:300 underlyingError:v28 description:@"HistogramType cannot create feature type"];
                     v29 = v41;
-                    *a4 = v42;
+                    *error = v42;
                   }
 
-                  v14 = 0;
+                  firstObject = 0;
                   v16 = 0;
                   v18 = 0;
                   goto LABEL_162;
@@ -165,7 +165,7 @@ LABEL_15:
                 v64 = 0;
 LABEL_52:
                 v9 = v68;
-                v30 = [v5 objectForKey:kFedStatsHistogramTypeDefaultFeatureFactorKey];
+                v30 = [dictCopy objectForKey:kFedStatsHistogramTypeDefaultFeatureFactorKey];
                 if (v30)
                 {
                   v31 = v30;
@@ -188,7 +188,7 @@ LABEL_52:
                             objc_opt_class();
                             if (objc_opt_isKindOfClass())
                             {
-                              v60 = [v5 objectForKey:kFedStatsHistogramTypeFeatureFactorsKey];
+                              v60 = [dictCopy objectForKey:kFedStatsHistogramTypeFeatureFactorsKey];
                               if (v60)
                               {
                                 objc_opt_class();
@@ -211,14 +211,14 @@ LABEL_52:
                                       v58 = [v34 objectForKey:kFedStatsHistogramTypeFeatureFactorScaleKey];
                                       if (!v58)
                                       {
-                                        if (!a4)
+                                        if (!error)
                                         {
                                           goto LABEL_151;
                                         }
 
 LABEL_144:
-                                        v49 = [MEMORY[0x277CCACA8] stringWithFormat:v48, kFedStatsHistogramTypeFeatureFactorsKey, v57, kFedStatsHistogramTypeFeatureFactorScaleKey];
-                                        *a4 = [FedStatsError errorWithCode:300 description:v49];
+                                        kFedStatsHistogramTypeFeatureFactorScaleKey = [MEMORY[0x277CCACA8] stringWithFormat:v48, kFedStatsHistogramTypeFeatureFactorsKey, v57, kFedStatsHistogramTypeFeatureFactorScaleKey];
+                                        *error = [FedStatsError errorWithCode:300 description:kFedStatsHistogramTypeFeatureFactorScaleKey];
 
                                         goto LABEL_151;
                                       }
@@ -226,7 +226,7 @@ LABEL_144:
                                       objc_opt_class();
                                       if ((objc_opt_isKindOfClass() & 1) == 0)
                                       {
-                                        if (!a4)
+                                        if (!error)
                                         {
                                           goto LABEL_151;
                                         }
@@ -237,7 +237,7 @@ LABEL_144:
                                       [v58 floatValue];
                                       if (v35 <= 0.0)
                                       {
-                                        if (!a4)
+                                        if (!error)
                                         {
                                           goto LABEL_151;
                                         }
@@ -248,7 +248,7 @@ LABEL_144:
                                       v36 = [v34 objectForKey:kFedStatsHistogramTypeFeatureFactorShiftKey];
                                       if (!v36)
                                       {
-                                        if (a4)
+                                        if (error)
                                         {
                                           goto LABEL_149;
                                         }
@@ -262,11 +262,11 @@ LABEL_151:
                                       objc_opt_class();
                                       if ((objc_opt_isKindOfClass() & 1) == 0)
                                       {
-                                        if (a4)
+                                        if (error)
                                         {
 LABEL_149:
-                                          v51 = [MEMORY[0x277CCACA8] stringWithFormat:v50, kFedStatsHistogramTypeFeatureFactorsKey, v57, kFedStatsHistogramTypeFeatureFactorShiftKey];
-                                          *a4 = [FedStatsError errorWithCode:300 description:v51];
+                                          kFedStatsHistogramTypeFeatureFactorShiftKey = [MEMORY[0x277CCACA8] stringWithFormat:v50, kFedStatsHistogramTypeFeatureFactorsKey, v57, kFedStatsHistogramTypeFeatureFactorShiftKey];
+                                          *error = [FedStatsError errorWithCode:300 description:kFedStatsHistogramTypeFeatureFactorShiftKey];
                                         }
 
                                         goto LABEL_150;
@@ -306,9 +306,9 @@ LABEL_149:
                                         [v55 setObject:v54 forKey:v18];
                                       }
 
-                                      else if (a4)
+                                      else if (error)
                                         v38 = {;
-                                        *a4 = [FedStatsError errorWithCode:300 underlyingError:v53 description:v38];
+                                        *error = [FedStatsError errorWithCode:300 underlyingError:v53 description:v38];
                                       }
 
                                       if (!v18)
@@ -322,9 +322,9 @@ LABEL_149:
                                       }
                                     }
 
-                                    if (a4)
+                                    if (error)
                                       v46 = {;
-                                      *a4 = [FedStatsError errorWithCode:300 description:v46];
+                                      *error = [FedStatsError errorWithCode:300 description:v46];
                                     }
 
                                     goto LABEL_152;
@@ -332,7 +332,7 @@ LABEL_149:
 
 LABEL_81:
                                   v39 = *MEMORY[0x277D05390];
-                                  v59 = [v5 objectForKey:*MEMORY[0x277D05390]];
+                                  v59 = [dictCopy objectForKey:*MEMORY[0x277D05390]];
                                   if (!v7)
                                   {
 LABEL_84:
@@ -348,16 +348,16 @@ LABEL_84:
                                       goto LABEL_84;
                                     }
 
-                                    if (a4)
+                                    if (error)
                                     {
                                       goto LABEL_137;
                                     }
                                   }
 
-                                  else if (a4)
+                                  else if (error)
                                   {
                                     v47 = LABEL_137:;
-                                    *a4 = [FedStatsError errorWithCode:300 description:v47];
+                                    *error = [FedStatsError errorWithCode:300 description:v47];
                                   }
 
 LABEL_152:
@@ -368,17 +368,17 @@ LABEL_154:
                                   goto LABEL_155;
                                 }
 
-                                if (a4)
+                                if (error)
                                 {
                                   goto LABEL_129;
                                 }
                               }
 
-                              else if (a4)
+                              else if (error)
                               {
                                 v56 = LABEL_129:;
                                 [FedStatsError errorWithCode:300 description:?];
-                                *a4 = v18 = 0;
+                                *error = v18 = 0;
 
 LABEL_155:
                                 goto LABEL_156;
@@ -388,17 +388,17 @@ LABEL_155:
                               goto LABEL_155;
                             }
 
-                            if (a4)
+                            if (error)
                             {
                               goto LABEL_123;
                             }
                           }
 
-                          else if (a4)
+                          else if (error)
                           {
                             v61 = LABEL_123:;
                             [FedStatsError errorWithCode:300 description:?];
-                            *a4 = v18 = 0;
+                            *error = v18 = 0;
 
                             goto LABEL_156;
                           }
@@ -407,10 +407,10 @@ LABEL_155:
                           goto LABEL_156;
                         }
 
-                        if (a4)
+                        if (error)
                           v33 = {;
                           [FedStatsError errorWithCode:300 description:v33];
-                          *a4 = v18 = 0;
+                          *error = v18 = 0;
 LABEL_156:
                           v9 = v68;
                           goto LABEL_157;
@@ -419,23 +419,23 @@ LABEL_156:
                         v18 = 0;
                         v9 = v68;
 LABEL_158:
-                        v14 = v64;
+                        firstObject = v64;
                         v16 = v65;
                         v43 = v62;
                         goto LABEL_159;
                       }
 
-                      if (a4)
+                      if (error)
                       {
                         goto LABEL_114;
                       }
                     }
 
-                    else if (a4)
+                    else if (error)
                     {
                       v33 = LABEL_114:;
                       [FedStatsError errorWithCode:300 description:v33];
-                      *a4 = v18 = 0;
+                      *error = v18 = 0;
 LABEL_157:
 
                       goto LABEL_158;
@@ -445,10 +445,10 @@ LABEL_157:
                     goto LABEL_158;
                   }
 
-                  if (!a4)
+                  if (!error)
                   {
                     v18 = 0;
-                    v14 = v64;
+                    firstObject = v64;
                     v16 = v65;
 LABEL_160:
                     v30 = v63;
@@ -458,10 +458,10 @@ LABEL_160:
 
                 else
                 {
-                  if (!a4)
+                  if (!error)
                   {
                     v18 = 0;
-                    v14 = v64;
+                    firstObject = v64;
                     v16 = v65;
 LABEL_161:
 
@@ -472,32 +472,32 @@ LABEL_161:
                 }
                 v43 = ;
                 [FedStatsError errorWithCode:300 description:v43];
-                *a4 = v18 = 0;
-                v14 = v64;
+                *error = v18 = 0;
+                firstObject = v64;
                 v16 = v65;
 LABEL_159:
 
                 goto LABEL_160;
               }
 
-              v14 = [v8 firstObject];
+              firstObject = [v8 firstObject];
               objc_opt_class();
               if (objc_opt_isKindOfClass())
               {
-                v15 = [v67 objectForKey:v14];
+                v15 = [v67 objectForKey:firstObject];
                 if (v15)
                 {
                   v16 = v15;
                   if ([v15 conformsToProtocol:&unk_285E13BF8])
                   {
-                    v64 = v14;
+                    v64 = firstObject;
                     v65 = v16;
                     goto LABEL_52;
                   }
 
-                  if (a4)
+                  if (error)
                     v45 = {;
-                    *a4 = [FedStatsError errorWithCode:300 description:v45];
+                    *error = [FedStatsError errorWithCode:300 description:v45];
                   }
 
 LABEL_105:
@@ -508,16 +508,16 @@ LABEL_162:
                   goto LABEL_163;
                 }
 
-                if (a4)
+                if (error)
                 {
                   goto LABEL_103;
                 }
               }
 
-              else if (a4)
+              else if (error)
               {
                 v44 = LABEL_103:;
-                *a4 = [FedStatsError errorWithCode:300 description:v44];
+                *error = [FedStatsError errorWithCode:300 description:v44];
               }
 
               v16 = 0;
@@ -532,16 +532,16 @@ LABEL_162:
                 goto LABEL_15;
               }
 
-              if (a4)
+              if (error)
               {
                 goto LABEL_89;
               }
             }
 
-            else if (a4)
+            else if (error)
             {
               v40 = LABEL_89:;
-              *a4 = [FedStatsError errorWithCode:300 description:v40];
+              *error = [FedStatsError errorWithCode:300 description:v40];
             }
 
             v18 = 0;
@@ -554,16 +554,16 @@ LABEL_164:
           }
         }
 
-        if (a4)
+        if (error)
         {
           v23 = v9;
           v24 = LABEL_44:;
           v9 = v23;
-          *a4 = [FedStatsError errorWithCode:300 description:v24];
+          *error = [FedStatsError errorWithCode:300 description:v24];
         }
       }
 
-      else if (a4)
+      else if (error)
       {
         v23 = 0;
         goto LABEL_44;
@@ -575,14 +575,14 @@ LABEL_46:
       goto LABEL_35;
     }
 
-    if (a4)
+    if (error)
     {
       v20 = LABEL_33:;
-      *a4 = [FedStatsError errorWithCode:300 description:v20];
+      *error = [FedStatsError errorWithCode:300 description:v20];
     }
   }
 
-  else if (a4)
+  else if (error)
   {
     goto LABEL_33;
   }
@@ -598,35 +598,35 @@ LABEL_37:
   return v18;
 }
 
-- (id)scaleAndShift:(id)a3
+- (id)scaleAndShift:(id)shift
 {
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  shiftCopy = shift;
+  if (shiftCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v4, "count")}];
-    if ([v4 count])
+    v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(shiftCopy, "count")}];
+    if ([shiftCopy count])
     {
       v6 = 0;
       do
       {
-        v7 = [(FedStatsHistogramType *)self featureFactors];
+        featureFactors = [(FedStatsHistogramType *)self featureFactors];
         v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v6];
-        v9 = [v7 objectForKey:v8];
+        defaultFeatureFactor = [featureFactors objectForKey:v8];
 
-        if (!v9)
+        if (!defaultFeatureFactor)
         {
-          v9 = [(FedStatsHistogramType *)self defaultFeatureFactor];
+          defaultFeatureFactor = [(FedStatsHistogramType *)self defaultFeatureFactor];
         }
 
-        v10 = [v9 objectForKey:kFedStatsHistogramTypeFeatureFactorScaleKey];
+        v10 = [defaultFeatureFactor objectForKey:kFedStatsHistogramTypeFeatureFactorScaleKey];
         [v10 floatValue];
         v12 = v11;
 
-        v13 = [v9 objectForKey:kFedStatsHistogramTypeFeatureFactorShiftKey];
+        v13 = [defaultFeatureFactor objectForKey:kFedStatsHistogramTypeFeatureFactorShiftKey];
         [v13 floatValue];
         v15 = v14;
 
-        v16 = [v4 objectAtIndex:v6];
+        v16 = [shiftCopy objectAtIndex:v6];
         [v16 floatValue];
         v18 = -(v15 - (v12 * v17));
 
@@ -637,7 +637,7 @@ LABEL_37:
         ++v6;
       }
 
-      while (v6 < [v4 count]);
+      while (v6 < [shiftCopy count]);
     }
   }
 
@@ -649,35 +649,35 @@ LABEL_37:
   return v5;
 }
 
-- (id)invertScaleAndShift:(id)a3
+- (id)invertScaleAndShift:(id)shift
 {
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  shiftCopy = shift;
+  if (shiftCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v4, "count")}];
-    if ([v4 count])
+    v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(shiftCopy, "count")}];
+    if ([shiftCopy count])
     {
       v6 = 0;
       do
       {
-        v7 = [(FedStatsHistogramType *)self featureFactors];
+        featureFactors = [(FedStatsHistogramType *)self featureFactors];
         v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v6];
-        v9 = [v7 objectForKey:v8];
+        defaultFeatureFactor = [featureFactors objectForKey:v8];
 
-        if (!v9)
+        if (!defaultFeatureFactor)
         {
-          v9 = [(FedStatsHistogramType *)self defaultFeatureFactor];
+          defaultFeatureFactor = [(FedStatsHistogramType *)self defaultFeatureFactor];
         }
 
-        v10 = [v9 objectForKey:kFedStatsHistogramTypeFeatureFactorScaleKey];
+        v10 = [defaultFeatureFactor objectForKey:kFedStatsHistogramTypeFeatureFactorScaleKey];
         [v10 floatValue];
         v12 = v11;
 
-        v13 = [v9 objectForKey:kFedStatsHistogramTypeFeatureFactorShiftKey];
+        v13 = [defaultFeatureFactor objectForKey:kFedStatsHistogramTypeFeatureFactorShiftKey];
         [v13 floatValue];
         v15 = v14;
 
-        v16 = [v4 objectAtIndex:v6];
+        v16 = [shiftCopy objectAtIndex:v6];
         [v16 floatValue];
         v18 = (v15 + v17) / v12;
 
@@ -688,7 +688,7 @@ LABEL_37:
         ++v6;
       }
 
-      while (v6 < [v4 count]);
+      while (v6 < [shiftCopy count]);
     }
   }
 
@@ -700,61 +700,61 @@ LABEL_37:
   return v5;
 }
 
-- (id)encodeToIndex:(id)a3 possibleError:(id *)a4
+- (id)encodeToIndex:(id)index possibleError:(id *)error
 {
-  if (a4)
+  if (error)
   {
-    *a4 = [FedStatsError errorWithCode:900 description:@"encoding to index not implemented for histogram type"];
+    *error = [FedStatsError errorWithCode:900 description:@"encoding to index not implemented for histogram type"];
   }
 
   return 0;
 }
 
-- (id)decodeFromIndex:(id)a3 possibleError:(id *)a4
+- (id)decodeFromIndex:(id)index possibleError:(id *)error
 {
-  if (a4)
+  if (error)
   {
-    *a4 = [FedStatsError errorWithCode:900 description:@"decoding from index not implemented for histogram type"];
+    *error = [FedStatsError errorWithCode:900 description:@"decoding from index not implemented for histogram type"];
   }
 
   return 0;
 }
 
-- (id)encodeToOneHotVector:(id)a3 possibleError:(id *)a4
+- (id)encodeToOneHotVector:(id)vector possibleError:(id *)error
 {
-  if (a4)
+  if (error)
   {
-    *a4 = [FedStatsError errorWithCode:900 description:@"encoding to one-hot vector not implemented for histogram type"];
+    *error = [FedStatsError errorWithCode:900 description:@"encoding to one-hot vector not implemented for histogram type"];
   }
 
   return 0;
 }
 
-- (id)decodeFromOneHotVector:(id)a3 possibleError:(id *)a4
+- (id)decodeFromOneHotVector:(id)vector possibleError:(id *)error
 {
-  if (a4)
+  if (error)
   {
-    *a4 = [FedStatsError errorWithCode:900 description:@"decoding from vector not implemented for histogram type"];
+    *error = [FedStatsError errorWithCode:900 description:@"decoding from vector not implemented for histogram type"];
   }
 
   return 0;
 }
 
-- (id)encodeToHistogramVector:(id)a3 possibleError:(id *)a4
+- (id)encodeToHistogramVector:(id)vector possibleError:(id *)error
 {
-  v6 = a3;
-  v7 = [(FedStatsHistogramType *)self metricField];
-  v8 = [v6 objectForKey:v7];
+  vectorCopy = vector;
+  metricField = [(FedStatsHistogramType *)self metricField];
+  v8 = [vectorCopy objectForKey:metricField];
 
   if (!v8)
   {
-    if (a4)
+    if (error)
     {
       v14 = MEMORY[0x277CCACA8];
-      v15 = [(FedStatsHistogramType *)self metricField];
-      [v14 stringWithFormat:@"Histogram type encoder input is missing the key '%@'", v15];
+      metricField2 = [(FedStatsHistogramType *)self metricField];
+      [v14 stringWithFormat:@"Histogram type encoder input is missing the key '%@'", metricField2];
       v17 = LABEL_9:;
-      *a4 = [FedStatsError errorWithCode:401 description:v17];
+      *error = [FedStatsError errorWithCode:401 description:v17];
     }
 
 LABEL_10:
@@ -765,60 +765,60 @@ LABEL_10:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    if (a4)
+    if (error)
     {
       v16 = MEMORY[0x277CCACA8];
-      v15 = [(FedStatsHistogramType *)self metricField];
-      [v16 stringWithFormat:@"Histogram type encoder input's value for '%@' is not a number", v15];
+      metricField2 = [(FedStatsHistogramType *)self metricField];
+      [v16 stringWithFormat:@"Histogram type encoder input's value for '%@' is not a number", metricField2];
       goto LABEL_9;
     }
 
     goto LABEL_10;
   }
 
-  v9 = [(FedStatsHistogramType *)self featureType];
+  featureType = [(FedStatsHistogramType *)self featureType];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v11 = [(FedStatsHistogramType *)self featureType];
+    featureType2 = [(FedStatsHistogramType *)self featureType];
     v29 = 0;
-    v12 = [v11 encodeToIndex:v6 possibleError:&v29];
+    v12 = [featureType2 encodeToIndex:vectorCopy possibleError:&v29];
     v13 = v29;
   }
 
   else
   {
-    v19 = [(FedStatsHistogramType *)self featureField];
-    v11 = [v6 objectForKey:v19];
+    featureField = [(FedStatsHistogramType *)self featureField];
+    featureType2 = [vectorCopy objectForKey:featureField];
 
-    if (!v11)
+    if (!featureType2)
     {
-      if (a4)
+      if (error)
       {
         v24 = MEMORY[0x277CCACA8];
-        v25 = [(FedStatsHistogramType *)self featureField];
-        v26 = [v24 stringWithFormat:@"Histogram type encoder input data is missing value for the field %@", v25];
-        *a4 = [FedStatsError errorWithCode:401 description:v26];
+        featureField2 = [(FedStatsHistogramType *)self featureField];
+        v26 = [v24 stringWithFormat:@"Histogram type encoder input data is missing value for the field %@", featureField2];
+        *error = [FedStatsError errorWithCode:401 description:v26];
       }
 
       v13 = 0;
       goto LABEL_20;
     }
 
-    v20 = [(FedStatsHistogramType *)self featureType];
+    featureType3 = [(FedStatsHistogramType *)self featureType];
     v28 = 0;
-    v12 = [v20 encodeToIndex:v11 possibleError:&v28];
+    v12 = [featureType3 encodeToIndex:featureType2 possibleError:&v28];
     v13 = v28;
   }
 
   if (!v12)
   {
-    if (a4)
+    if (error)
     {
       [FedStatsError errorWithCode:401 underlyingError:v13 description:@"Histogram type encoder input data cannot be encoded to an index"];
-      *a4 = v18 = 0;
+      *error = v18 = 0;
       goto LABEL_21;
     }
 
@@ -828,8 +828,8 @@ LABEL_20:
   }
 
   v21 = MEMORY[0x277CBEB18];
-  v22 = [(FedStatsHistogramType *)self featureType];
-  v23 = [v21 arrayWithObject:&unk_285E12C50 repeated:{objc_msgSend(v22, "classCount")}];
+  featureType4 = [(FedStatsHistogramType *)self featureType];
+  v23 = [v21 arrayWithObject:&unk_285E12C50 repeated:{objc_msgSend(featureType4, "classCount")}];
 
   [v23 setObject:v8 atIndexedSubscript:{objc_msgSend(v12, "unsignedIntegerValue")}];
   v18 = [MEMORY[0x277CBEA90] dataWithArray:v23];
@@ -840,11 +840,11 @@ LABEL_22:
   return v18;
 }
 
-- (id)decodeFromHistogramVector:(id)a3 possibleError:(id *)a4
+- (id)decodeFromHistogramVector:(id)vector possibleError:(id *)error
 {
   v25[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [MEMORY[0x277CBEA60] arrayWithData:v6];
+  vectorCopy = vector;
+  v7 = [MEMORY[0x277CBEA60] arrayWithData:vectorCopy];
   if ([v7 count])
   {
     v8 = 0;
@@ -857,9 +857,9 @@ LABEL_22:
       {
         if (v10 != -1)
         {
-          if (a4)
+          if (error)
           {
-            *a4 = [FedStatsError errorWithCode:500 description:@"Histogram vector cannot have multiple indices with non-zero value"];
+            *error = [FedStatsError errorWithCode:500 description:@"Histogram vector cannot have multiple indices with non-zero value"];
           }
 
           v19 = 0;
@@ -882,16 +882,16 @@ LABEL_22:
   v10 = -1;
   v9 = &unk_285E12DE8;
 LABEL_9:
-  v13 = [(FedStatsHistogramType *)self featureType];
+  featureType = [(FedStatsHistogramType *)self featureType];
   v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v10];
   v23 = 0;
-  v15 = [v13 decodeFromIndex:v14 possibleError:&v23];
+  v15 = [featureType decodeFromIndex:v14 possibleError:&v23];
   v16 = v23;
 
   if (v15)
   {
-    v17 = [(FedStatsHistogramType *)self metricField];
-    v24 = v17;
+    metricField = [(FedStatsHistogramType *)self metricField];
+    v24 = metricField;
     v25[0] = v9;
     v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v25 forKeys:&v24 count:1];
     v19 = [v18 mutableCopy];
@@ -904,15 +904,15 @@ LABEL_9:
 
     else
     {
-      v20 = [(FedStatsHistogramType *)self featureField];
-      [v19 setObject:v15 forKey:v20];
+      featureField = [(FedStatsHistogramType *)self featureField];
+      [v19 setObject:v15 forKey:featureField];
     }
   }
 
-  else if (a4)
+  else if (error)
   {
     [FedStatsError errorWithCode:500 underlyingError:v16 description:@"Cannot decode feature value for histogram"];
-    *a4 = v19 = 0;
+    *error = v19 = 0;
   }
 
   else

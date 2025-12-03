@@ -1,5 +1,5 @@
 @interface LPCaptionBarStyle
-- (LPCaptionBarStyle)initWithPlatform:(int64_t)a3 sizeClass:(unint64_t)a4 sizeClassParameters:(id)a5 fontScalingFactor:(double)a6;
+- (LPCaptionBarStyle)initWithPlatform:(int64_t)platform sizeClass:(unint64_t)class sizeClassParameters:(id)parameters fontScalingFactor:(double)factor;
 - (id)leftAccessory;
 - (id)leftIcon;
 - (id)rightAccessory;
@@ -8,9 +8,9 @@
 
 @implementation LPCaptionBarStyle
 
-- (LPCaptionBarStyle)initWithPlatform:(int64_t)a3 sizeClass:(unint64_t)a4 sizeClassParameters:(id)a5 fontScalingFactor:(double)a6
+- (LPCaptionBarStyle)initWithPlatform:(int64_t)platform sizeClass:(unint64_t)class sizeClassParameters:(id)parameters fontScalingFactor:(double)factor
 {
-  v10 = a5;
+  parametersCopy = parameters;
   v88.receiver = self;
   v88.super_class = LPCaptionBarStyle;
   v11 = [(LPCaptionBarStyle *)&v88 init];
@@ -19,7 +19,7 @@
     goto LABEL_48;
   }
 
-  if (a3 == 2)
+  if (platform == 2)
   {
     v12 = [LPPointUnit alloc];
     v13 = 100.0;
@@ -28,7 +28,7 @@ LABEL_6:
     goto LABEL_8;
   }
 
-  if ([v10 needsSpaceAffordanceForDeleteButton])
+  if ([parametersCopy needsSpaceAffordanceForDeleteButton])
   {
     v12 = [LPPointUnit alloc];
     v13 = 140.0;
@@ -54,7 +54,7 @@ LABEL_8:
   v20 = [[LPPointUnit alloc] initWithValue:3.0];
   [(LPImageViewStyle *)v11->_leadingIcon setCornerRadius:v20];
 
-  if (a4 == 5)
+  if (class == 5)
   {
     v21 = 14;
   }
@@ -65,49 +65,49 @@ LABEL_8:
   }
 
   [(LPImageViewStyle *)v11->_leadingIcon setFilter:v21];
-  v22 = iconSize(a3);
+  v22 = iconSize(platform);
   [(LPImageViewStyle *)v11->_leadingIcon setFixedSize:v22];
 
-  v23 = outerHorizontalIconMargin(a3);
-  v24 = [(LPImageViewStyle *)v11->_leadingIcon margin];
-  [v24 setLeading:v23];
+  v23 = outerHorizontalIconMargin(platform);
+  margin = [(LPImageViewStyle *)v11->_leadingIcon margin];
+  [margin setLeading:v23];
 
   v25 = initWithPlatform_sizeClass_sizeClassParameters_fontScalingFactor__defaultVerticalMargin;
-  v26 = [(LPImageViewStyle *)v11->_leadingIcon margin];
-  [v26 setTop:v25];
+  margin2 = [(LPImageViewStyle *)v11->_leadingIcon margin];
+  [margin2 setTop:v25];
 
   v27 = initWithPlatform_sizeClass_sizeClassParameters_fontScalingFactor__defaultVerticalMargin;
-  v28 = [(LPImageViewStyle *)v11->_leadingIcon margin];
-  [v28 setBottom:v27];
+  margin3 = [(LPImageViewStyle *)v11->_leadingIcon margin];
+  [margin3 setBottom:v27];
 
-  v29 = fallbackIconSize(a3);
+  v29 = fallbackIconSize(platform);
   [(LPImageViewStyle *)v11->_leadingIcon setFixedFallbackImageSize:v29];
 
   v30 = objc_alloc_init(LPImageViewStyle);
   trailingIcon = v11->_trailingIcon;
   v11->_trailingIcon = v30;
 
-  v32 = [(LPImageViewStyle *)v11->_leadingIcon cornerRadius];
-  [(LPImageViewStyle *)v11->_trailingIcon setCornerRadius:v32];
+  cornerRadius = [(LPImageViewStyle *)v11->_leadingIcon cornerRadius];
+  [(LPImageViewStyle *)v11->_trailingIcon setCornerRadius:cornerRadius];
 
   [(LPImageViewStyle *)v11->_trailingIcon setFilter:v21];
-  v33 = iconSize(a3);
+  v33 = iconSize(platform);
   [(LPImageViewStyle *)v11->_trailingIcon setFixedSize:v33];
 
-  v34 = outerHorizontalIconMargin(a3);
-  v35 = [(LPImageViewStyle *)v11->_trailingIcon margin];
-  [v35 setTrailing:v34];
+  v34 = outerHorizontalIconMargin(platform);
+  margin4 = [(LPImageViewStyle *)v11->_trailingIcon margin];
+  [margin4 setTrailing:v34];
 
   v36 = initWithPlatform_sizeClass_sizeClassParameters_fontScalingFactor__defaultVerticalMargin;
-  v37 = [(LPImageViewStyle *)v11->_trailingIcon margin];
-  [v37 setTop:v36];
+  margin5 = [(LPImageViewStyle *)v11->_trailingIcon margin];
+  [margin5 setTop:v36];
 
   v38 = initWithPlatform_sizeClass_sizeClassParameters_fontScalingFactor__defaultVerticalMargin;
-  v39 = [(LPImageViewStyle *)v11->_trailingIcon margin];
-  [v39 setBottom:v38];
+  margin6 = [(LPImageViewStyle *)v11->_trailingIcon margin];
+  [margin6 setBottom:v38];
 
-  v40 = [(LPImageViewStyle *)v11->_leadingIcon fixedFallbackImageSize];
-  [(LPImageViewStyle *)v11->_trailingIcon setFixedFallbackImageSize:v40];
+  fixedFallbackImageSize = [(LPImageViewStyle *)v11->_leadingIcon fixedFallbackImageSize];
+  [(LPImageViewStyle *)v11->_trailingIcon setFixedFallbackImageSize:fixedFallbackImageSize];
 
   v41 = objc_alloc_init(LPIconBadgeStyle);
   leadingIconBadge = v11->_leadingIconBadge;
@@ -119,7 +119,7 @@ LABEL_8:
   [(LPImageViewStyle *)v11->_leadingIconBadge setFixedSize:v44];
 
   [(LPIconBadgeStyle *)v11->_leadingIconBadge setOffset:3.0];
-  if (a3 == 4 || a3 == 1)
+  if (platform == 4 || platform == 1)
   {
     v46 = 1;
   }
@@ -134,26 +134,26 @@ LABEL_8:
   trailingIconBadge = v11->_trailingIconBadge;
   v11->_trailingIconBadge = v47;
 
-  v49 = [(LPImageViewStyle *)v11->_leadingIconBadge fixedSize];
-  [(LPImageViewStyle *)v11->_trailingIconBadge setFixedSize:v49];
+  fixedSize = [(LPImageViewStyle *)v11->_leadingIconBadge fixedSize];
+  [(LPImageViewStyle *)v11->_trailingIconBadge setFixedSize:fixedSize];
 
   [(LPIconBadgeStyle *)v11->_leadingIconBadge offset];
   [(LPIconBadgeStyle *)v11->_trailingIconBadge setOffset:?];
   [(LPImageViewStyle *)v11->_trailingIconBadge setFilter:[(LPImageViewStyle *)v11->_leadingIconBadge filter]];
-  v50 = [[LPVerticalTextStackViewStyle alloc] initWithPlatform:a3 sizeClass:a4 fontScalingFactor:a6];
+  v50 = [[LPVerticalTextStackViewStyle alloc] initWithPlatform:platform sizeClass:class fontScalingFactor:factor];
   textStack = v11->_textStack;
   v11->_textStack = v50;
 
-  if (a3 <= 2)
+  if (platform <= 2)
   {
-    if (!a3)
+    if (!platform)
     {
       goto LABEL_29;
     }
 
-    if (a3 != 1)
+    if (platform != 1)
     {
-      if (a3 != 2)
+      if (platform != 2)
       {
         goto LABEL_32;
       }
@@ -167,19 +167,19 @@ LABEL_28:
     v52 = [LPPointUnit alloc];
     v54 = 18.0;
 LABEL_31:
-    v49 = [(LPPointUnit *)v52 initWithValue:v54];
+    fixedSize = [(LPPointUnit *)v52 initWithValue:v54];
     goto LABEL_32;
   }
 
-  if ((a3 - 3) < 2)
+  if ((platform - 3) < 2)
   {
     goto LABEL_28;
   }
 
-  if (a3 == 5)
+  if (platform == 5)
   {
     v52 = [LPPointUnit alloc];
-    if (a4 == 5)
+    if (class == 5)
     {
       v53 = 24.0;
     }
@@ -192,27 +192,27 @@ LABEL_31:
     goto LABEL_30;
   }
 
-  if (a3 == 6)
+  if (platform == 6)
   {
 LABEL_29:
     v52 = [LPPointUnit alloc];
     v53 = 23.0;
 LABEL_30:
-    v54 = a6 * v53;
+    v54 = factor * v53;
     goto LABEL_31;
   }
 
 LABEL_32:
-  [(LPVerticalTextStackViewStyle *)v11->_textStack setFirstLineLeading:v49];
+  [(LPVerticalTextStackViewStyle *)v11->_textStack setFirstLineLeading:fixedSize];
 
-  if (a3 > 2)
+  if (platform > 2)
   {
-    if ((a3 - 3) >= 2)
+    if ((platform - 3) >= 2)
     {
-      if (a3 == 5)
+      if (platform == 5)
       {
         v55 = [LPPointUnit alloc];
-        if (a4 == 5)
+        if (class == 5)
         {
           v56 = 13.0;
         }
@@ -225,7 +225,7 @@ LABEL_32:
         goto LABEL_43;
       }
 
-      if (a3 != 6)
+      if (platform != 6)
       {
         goto LABEL_45;
       }
@@ -236,7 +236,7 @@ LABEL_32:
     goto LABEL_41;
   }
 
-  switch(a3)
+  switch(platform)
   {
     case 0:
 LABEL_42:
@@ -248,20 +248,20 @@ LABEL_41:
       v55 = [LPPointUnit alloc];
       v57 = 10.0;
 LABEL_44:
-      v49 = [(LPPointUnit *)v55 initWithValue:v57];
+      fixedSize = [(LPPointUnit *)v55 initWithValue:v57];
       break;
     case 2:
       v55 = [LPPointUnit alloc];
       v56 = 9.0;
 LABEL_43:
-      v57 = a6 * v56;
+      v57 = factor * v56;
       goto LABEL_44;
   }
 
 LABEL_45:
-  [(LPVerticalTextStackViewStyle *)v11->_textStack setLastLineDescent:v49];
+  [(LPVerticalTextStackViewStyle *)v11->_textStack setLastLineDescent:fixedSize];
 
-  v58 = [[LPAudioPlayButtonStyle alloc] initWithPlatform:a3];
+  v58 = [[LPAudioPlayButtonStyle alloc] initWithPlatform:platform];
   playButton = v11->_playButton;
   v11->_playButton = v58;
 
@@ -279,42 +279,42 @@ LABEL_45:
   leadingAccessory = v11->_leadingAccessory;
   v11->_leadingAccessory = v64;
 
-  v66 = outerHorizontalIconMargin(a3);
-  v67 = [(LPCaptionBarAccessoryStyle *)v11->_leadingAccessory margin];
-  [v67 setLeading:v66];
+  v66 = outerHorizontalIconMargin(platform);
+  margin7 = [(LPCaptionBarAccessoryStyle *)v11->_leadingAccessory margin];
+  [margin7 setLeading:v66];
 
   v68 = initWithPlatform_sizeClass_sizeClassParameters_fontScalingFactor__defaultVerticalMargin;
-  v69 = [(LPCaptionBarAccessoryStyle *)v11->_leadingAccessory margin];
-  [v69 setTop:v68];
+  margin8 = [(LPCaptionBarAccessoryStyle *)v11->_leadingAccessory margin];
+  [margin8 setTop:v68];
 
   v70 = initWithPlatform_sizeClass_sizeClassParameters_fontScalingFactor__defaultVerticalMargin;
-  v71 = [(LPCaptionBarAccessoryStyle *)v11->_leadingAccessory margin];
-  [v71 setBottom:v70];
+  margin9 = [(LPCaptionBarAccessoryStyle *)v11->_leadingAccessory margin];
+  [margin9 setBottom:v70];
 
   v72 = objc_alloc_init(LPCaptionBarAccessoryStyle);
   trailingAccessory = v11->_trailingAccessory;
   v11->_trailingAccessory = v72;
 
-  v74 = outerHorizontalIconMargin(a3);
-  v75 = [(LPCaptionBarAccessoryStyle *)v11->_trailingAccessory margin];
-  [v75 setTrailing:v74];
+  v74 = outerHorizontalIconMargin(platform);
+  margin10 = [(LPCaptionBarAccessoryStyle *)v11->_trailingAccessory margin];
+  [margin10 setTrailing:v74];
 
   v76 = initWithPlatform_sizeClass_sizeClassParameters_fontScalingFactor__defaultVerticalMargin;
-  v77 = [(LPCaptionBarAccessoryStyle *)v11->_trailingAccessory margin];
-  [v77 setTop:v76];
+  margin11 = [(LPCaptionBarAccessoryStyle *)v11->_trailingAccessory margin];
+  [margin11 setTop:v76];
 
   v78 = initWithPlatform_sizeClass_sizeClassParameters_fontScalingFactor__defaultVerticalMargin;
-  v79 = [(LPCaptionBarAccessoryStyle *)v11->_trailingAccessory margin];
-  [v79 setBottom:v78];
+  margin12 = [(LPCaptionBarAccessoryStyle *)v11->_trailingAccessory margin];
+  [margin12 setBottom:v78];
 
-  if ([v10 needsSpaceAffordanceForDeleteButton])
+  if ([parametersCopy needsSpaceAffordanceForDeleteButton])
   {
     v80 = [[LPPointUnit alloc] initWithValue:30.0];
     trailingPaddingForPresenceOfLeadingIcon = v11->_trailingPaddingForPresenceOfLeadingIcon;
     v11->_trailingPaddingForPresenceOfLeadingIcon = v80;
   }
 
-  v82 = [LPButtonStyle systemPillButtonStyleForPlatform:a3 sizeClass:a4];
+  v82 = [LPButtonStyle systemPillButtonStyleForPlatform:platform sizeClass:class];
   button = v11->_button;
   v11->_button = v82;
 

@@ -1,41 +1,41 @@
 @interface SecureButtonTag
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_TtC15AppDistribution15SecureButtonTag)init;
-- (_TtC15AppDistribution15SecureButtonTag)initWithCoder:(id)a3;
+- (_TtC15AppDistribution15SecureButtonTag)initWithCoder:(id)coder;
 - (int64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SecureButtonTag
 
-- (_TtC15AppDistribution15SecureButtonTag)initWithCoder:(id)a3
+- (_TtC15AppDistribution15SecureButtonTag)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v4 = sub_23FFD86D0(v3);
+  coderCopy = coder;
+  v4 = sub_23FFD86D0(coderCopy);
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  SecureButtonTag.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  SecureButtonTag.encode(with:)(coderCopy);
 }
 
 - (int64_t)hash
 {
-  v2 = self;
+  selfCopy = self;
   v3 = SecureButtonTag.hash.getter();
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_23FFD95DC();
     swift_unknownObjectRelease();
@@ -44,7 +44,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = SecureButtonTag.isEqual(_:)(v8);

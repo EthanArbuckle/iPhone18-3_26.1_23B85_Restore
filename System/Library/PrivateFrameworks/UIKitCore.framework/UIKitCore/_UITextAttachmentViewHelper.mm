@@ -1,24 +1,24 @@
 @interface _UITextAttachmentViewHelper
-+ (id)helperForAttachment:(id)a3;
++ (id)helperForAttachment:(id)attachment;
 - (void)removeView;
 @end
 
 @implementation _UITextAttachmentViewHelper
 
-+ (id)helperForAttachment:(id)a3
++ (id)helperForAttachment:(id)attachment
 {
-  v4 = a3;
-  v5 = objc_alloc_init(a1);
-  [v5 setAttachment:v4];
+  attachmentCopy = attachment;
+  v5 = objc_alloc_init(self);
+  [v5 setAttachment:attachmentCopy];
 
   return v5;
 }
 
 - (void)removeView
 {
-  v3 = [(_UITextAttachmentViewHelper *)self attachment];
-  v2 = [v3 attachmentCell];
-  [v2 removeFromSuperview];
+  attachment = [(_UITextAttachmentViewHelper *)self attachment];
+  attachmentCell = [attachment attachmentCell];
+  [attachmentCell removeFromSuperview];
 }
 
 @end

@@ -1,6 +1,6 @@
 @interface TSCH3DTexCoordGeneration
 - (TSCH3DTexCoordGeneration)init;
-- (TSCH3DTexCoordGeneration)initWithTransform:(const void *)a3;
+- (TSCH3DTexCoordGeneration)initWithTransform:(const void *)transform;
 - (id).cxx_construct;
 @end
 
@@ -37,27 +37,27 @@
   return v3;
 }
 
-- (TSCH3DTexCoordGeneration)initWithTransform:(const void *)a3
+- (TSCH3DTexCoordGeneration)initWithTransform:(const void *)transform
 {
   result = objc_msgSend_init(self, a2, v3, v4, v5);
   if (result)
   {
-    result->_transform.value[0].var0.var0 = *a3;
-    result->_transform.value[0].var1.var0 = *(a3 + 1);
-    result->_transform.value[0].var2.var0 = *(a3 + 2);
-    result->_transform.value[0].var3.var0 = *(a3 + 3);
-    result->_transform.value[1].var0.var0 = *(a3 + 4);
-    result->_transform.value[1].var1.var0 = *(a3 + 5);
-    result->_transform.value[1].var2.var0 = *(a3 + 6);
-    result->_transform.value[1].var3.var0 = *(a3 + 7);
-    result->_transform.value[2].var0.var0 = *(a3 + 8);
-    result->_transform.value[2].var1.var0 = *(a3 + 9);
-    result->_transform.value[2].var2.var0 = *(a3 + 10);
-    result->_transform.value[2].var3.var0 = *(a3 + 11);
-    result->_transform.value[3].var0.var0 = *(a3 + 12);
-    result->_transform.value[3].var1.var0 = *(a3 + 13);
-    result->_transform.value[3].var2.var0 = *(a3 + 14);
-    result->_transform.value[3].var3.var0 = *(a3 + 15);
+    result->_transform.value[0].var0.var0 = *transform;
+    result->_transform.value[0].var1.var0 = *(transform + 1);
+    result->_transform.value[0].var2.var0 = *(transform + 2);
+    result->_transform.value[0].var3.var0 = *(transform + 3);
+    result->_transform.value[1].var0.var0 = *(transform + 4);
+    result->_transform.value[1].var1.var0 = *(transform + 5);
+    result->_transform.value[1].var2.var0 = *(transform + 6);
+    result->_transform.value[1].var3.var0 = *(transform + 7);
+    result->_transform.value[2].var0.var0 = *(transform + 8);
+    result->_transform.value[2].var1.var0 = *(transform + 9);
+    result->_transform.value[2].var2.var0 = *(transform + 10);
+    result->_transform.value[2].var3.var0 = *(transform + 11);
+    result->_transform.value[3].var0.var0 = *(transform + 12);
+    result->_transform.value[3].var1.var0 = *(transform + 13);
+    result->_transform.value[3].var2.var0 = *(transform + 14);
+    result->_transform.value[3].var3.var0 = *(transform + 15);
   }
 
   return result;

@@ -1,14 +1,14 @@
 @interface SpotlightPseudoHeaderHyperlinkView
-- (double)preferredHeightForWidth:(double)a3;
+- (double)preferredHeightForWidth:(double)width;
 @end
 
 @implementation SpotlightPseudoHeaderHyperlinkView
 
-- (double)preferredHeightForWidth:(double)a3
+- (double)preferredHeightForWidth:(double)width
 {
   v9.receiver = self;
   v9.super_class = SpotlightPseudoHeaderHyperlinkView;
-  [(SpotlightPseudoHeaderHyperlinkView *)&v9 preferredHeightForWidth:a3];
+  [(SpotlightPseudoHeaderHyperlinkView *)&v9 preferredHeightForWidth:width];
   v4 = v3;
   PSTableSectionFooterBottomPad();
   v6 = v5;

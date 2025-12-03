@@ -1,17 +1,17 @@
 @interface _DPMLRuntimeEnhancedBudgetControl
-- (BOOL)checkEnhancedDPParametersWithError:(id *)a3;
-- (BOOL)checkMinimumCohortSizeWithError:(id *)a3;
-- (BOOL)checkPrivacyBudgetLimitsWithError:(id *)a3;
-- (_DPMLRuntimeEnhancedBudgetControl)initWithMetadata:(id)a3 withError:(id *)a4;
-- (id)findTheNearestGreaterNumberInArray:(id)a3 forValue:(id)a4;
-- (id)findTheNearestLowerNumberInArray:(id)a3 forValue:(id)a4;
+- (BOOL)checkEnhancedDPParametersWithError:(id *)error;
+- (BOOL)checkMinimumCohortSizeWithError:(id *)error;
+- (BOOL)checkPrivacyBudgetLimitsWithError:(id *)error;
+- (_DPMLRuntimeEnhancedBudgetControl)initWithMetadata:(id)metadata withError:(id *)error;
+- (id)findTheNearestGreaterNumberInArray:(id)array forValue:(id)value;
+- (id)findTheNearestLowerNumberInArray:(id)array forValue:(id)value;
 @end
 
 @implementation _DPMLRuntimeEnhancedBudgetControl
 
-- (_DPMLRuntimeEnhancedBudgetControl)initWithMetadata:(id)a3 withError:(id *)a4
+- (_DPMLRuntimeEnhancedBudgetControl)initWithMetadata:(id)metadata withError:(id *)error
 {
-  v7 = a3;
+  metadataCopy = metadata;
   v17.receiver = self;
   v17.super_class = _DPMLRuntimeEnhancedBudgetControl;
   v8 = [(_DPMLRuntimeEnhancedBudgetControl *)&v17 init];
@@ -21,14 +21,14 @@
     goto LABEL_5;
   }
 
-  objc_storeStrong(&v8->_metadata, a3);
+  objc_storeStrong(&v8->_metadata, metadata);
   v10 = [NSBundle bundleForClass:objc_opt_class()];
   v11 = [v10 pathForResource:@"dpmlruntime-enhancedbudget-cohortsize" ofType:@"plist"];
   if (!v11)
   {
-    if (a4)
+    if (error)
     {
-      *a4 = [_DPMLRuntimeError errorWithCode:300 description:@"No path found to load the cohort size table"];
+      *error = [_DPMLRuntimeError errorWithCode:300 description:@"No path found to load the cohort size table"];
     }
 
     goto LABEL_11;
@@ -38,9 +38,9 @@
   v13 = [NSDictionary dictionaryWithContentsOfFile:v11];
   if (!v13)
   {
-    if (a4)
+    if (error)
     {
-      *a4 = [_DPMLRuntimeError errorWithCode:300 description:@"Error in loading the cohort size table"];
+      *error = [_DPMLRuntimeError errorWithCode:300 description:@"Error in loading the cohort size table"];
     }
 
 LABEL_11:
@@ -58,7 +58,7 @@ LABEL_12:
   return v15;
 }
 
-- (BOOL)checkEnhancedDPParametersWithError:(id *)a3
+- (BOOL)checkEnhancedDPParametersWithError:(id *)error
 {
   v19[0] = @"localDifferentialPrivacyBudget";
   v19[1] = @"cohortAggregateDifferentialPrivacyBudget";
@@ -88,12 +88,12 @@ LABEL_12:
 
         if (!v11)
         {
-          if (a3)
+          if (error)
           {
             v12 = [NSString stringWithFormat:@"Malformed enhanced differential privacy parameters, %@ key not found", v10];
-            *a3 = [_DPMLRuntimeError errorWithCode:100 description:v12];
+            *error = [_DPMLRuntimeError errorWithCode:100 description:v12];
 
-            LOBYTE(a3) = 0;
+            LOBYTE(error) = 0;
           }
 
           goto LABEL_12;
@@ -110,13 +110,13 @@ LABEL_12:
     }
   }
 
-  LOBYTE(a3) = 1;
+  LOBYTE(error) = 1;
 LABEL_12:
 
-  return a3;
+  return error;
 }
 
-- (BOOL)checkPrivacyBudgetLimitsWithError:(id *)a3
+- (BOOL)checkPrivacyBudgetLimitsWithError:(id *)error
 {
   v5 = [(NSDictionary *)self->_metadata objectForKeyedSubscript:@"cohortAggregateDifferentialPrivacyBudget"];
   [v5 floatValue];
@@ -124,14 +124,14 @@ LABEL_12:
 
   if (v7 <= 0.0 || v7 > 5.0)
   {
-    if (!a3)
+    if (!error)
     {
       return 0;
     }
 
     [NSString stringWithFormat:@"The query cohort aggregate privacy budget (%f) is not between its limits of 0 and %f", v7, 0x4014000000000000];
     v14 = LABEL_16:;
-    *a3 = [_DPMLRuntimeError errorWithCode:100 description:v14];
+    *error = [_DPMLRuntimeError errorWithCode:100 description:v14];
 
     return 0;
   }
@@ -141,7 +141,7 @@ LABEL_12:
   v11 = v10;
 
   v13 = v11 <= 10.0 && v11 > 0.0;
-  if (a3 && !v13)
+  if (error && !v13)
   {
     [NSString stringWithFormat:@"The query local privacy budget (%f) is not between its limits of 0 and %f", v11, 0x4024000000000000];
     goto LABEL_16;
@@ -150,26 +150,26 @@ LABEL_12:
   return v13;
 }
 
-- (BOOL)checkMinimumCohortSizeWithError:(id *)a3
+- (BOOL)checkMinimumCohortSizeWithError:(id *)error
 {
   v5 = [(NSDictionary *)self->_metadata objectForKeyedSubscript:@"minCohortSize"];
-  v6 = [v5 unsignedIntegerValue];
+  unsignedIntegerValue = [v5 unsignedIntegerValue];
 
   v7 = [(NSDictionary *)self->_metadata objectForKeyedSubscript:@"cohortAggregateDifferentialPrivacyBudget"];
   v8 = [(NSDictionary *)self->_metadata objectForKeyedSubscript:@"localDifferentialPrivacyBudget"];
   v9 = [(NSDictionary *)self->_cohortSizeTable objectForKeyedSubscript:v7];
   v10 = [v9 objectForKeyedSubscript:v8];
-  v11 = [v10 unsignedIntegerValue];
+  unsignedIntegerValue2 = [v10 unsignedIntegerValue];
 
-  if (!v11)
+  if (!unsignedIntegerValue2)
   {
-    v13 = [(NSDictionary *)self->_cohortSizeTable allKeys];
-    v14 = [v13 mutableCopy];
+    allKeys = [(NSDictionary *)self->_cohortSizeTable allKeys];
+    v14 = [allKeys mutableCopy];
 
     v15 = [(_DPMLRuntimeEnhancedBudgetControl *)self findTheNearestLowerNumberInArray:v14 forValue:v7];
     if (!v15)
     {
-      if (!a3)
+      if (!error)
       {
         v12 = 0;
         goto LABEL_21;
@@ -178,7 +178,7 @@ LABEL_12:
       [v7 floatValue];
       v16 = [NSString stringWithFormat:@"No local privacy budget key found for the query cohort aggregate privacy budget of %f in the table", v23];
       [_DPMLRuntimeError errorWithCode:100 description:v16];
-      *a3 = v12 = 0;
+      *error = v12 = 0;
 LABEL_20:
 
 LABEL_21:
@@ -186,8 +186,8 @@ LABEL_21:
     }
 
     v16 = [(NSDictionary *)self->_cohortSizeTable objectForKeyedSubscript:v15];
-    v17 = [v16 allKeys];
-    v18 = [v17 mutableCopy];
+    allKeys2 = [v16 allKeys];
+    v18 = [allKeys2 mutableCopy];
 
     v19 = [(_DPMLRuntimeEnhancedBudgetControl *)self findTheNearestGreaterNumberInArray:v18 forValue:v8];
     if (v19)
@@ -196,9 +196,9 @@ LABEL_21:
       v31 = v16;
       v20 = [(NSDictionary *)self->_cohortSizeTable objectForKeyedSubscript:v15];
       v21 = [v20 objectForKeyedSubscript:v19];
-      v22 = [v21 unsignedIntegerValue];
+      unsignedIntegerValue3 = [v21 unsignedIntegerValue];
 
-      if (v6 > v22)
+      if (unsignedIntegerValue > unsignedIntegerValue3)
       {
         v12 = 1;
         v18 = v30;
@@ -209,21 +209,21 @@ LABEL_19:
       }
 
       v18 = v30;
-      if (!a3)
+      if (!error)
       {
         v12 = 0;
         v16 = v31;
         goto LABEL_19;
       }
 
-      v27 = [NSString stringWithFormat:@"Query minimum cohort size of (%lu) is less than that of the approved one (%lu)", v6, v22];
+      v27 = [NSString stringWithFormat:@"Query minimum cohort size of (%lu) is less than that of the approved one (%lu)", unsignedIntegerValue, unsignedIntegerValue3];
       v28 = [_DPMLRuntimeError errorWithCode:100 description:v27];
       v16 = v31;
     }
 
     else
     {
-      if (!a3)
+      if (!error)
       {
 LABEL_18:
         v12 = 0;
@@ -237,22 +237,22 @@ LABEL_18:
       v28 = [_DPMLRuntimeError errorWithCode:100 description:v27];
     }
 
-    *a3 = v28;
+    *error = v28;
 
     goto LABEL_18;
   }
 
-  if (v6 <= v11)
+  if (unsignedIntegerValue <= unsignedIntegerValue2)
   {
-    if (!a3)
+    if (!error)
     {
       v12 = 0;
       goto LABEL_23;
     }
 
-    v14 = [NSString stringWithFormat:@"Query minimum cohort size of (%lu) is less than that of the approved one (%lu)", v6, v11];
+    v14 = [NSString stringWithFormat:@"Query minimum cohort size of (%lu) is less than that of the approved one (%lu)", unsignedIntegerValue, unsignedIntegerValue2];
     [_DPMLRuntimeError errorWithCode:100 description:v14];
-    *a3 = v12 = 0;
+    *error = v12 = 0;
 LABEL_22:
 
     goto LABEL_23;
@@ -264,19 +264,19 @@ LABEL_23:
   return v12;
 }
 
-- (id)findTheNearestGreaterNumberInArray:(id)a3 forValue:(id)a4
+- (id)findTheNearestGreaterNumberInArray:(id)array forValue:(id)value
 {
-  v5 = a3;
-  v6 = a4;
+  arrayCopy = array;
+  valueCopy = value;
   v7 = [NSSortDescriptor sortDescriptorWithKey:@"self" ascending:1];
   v8 = [NSArray arrayWithObject:v7];
-  [v5 sortUsingDescriptors:v8];
+  [arrayCopy sortUsingDescriptors:v8];
 
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v9 = v5;
+  v9 = arrayCopy;
   v10 = [v9 countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v10)
   {
@@ -292,12 +292,12 @@ LABEL_23:
         }
 
         v14 = *(*(&v23 + 1) + 8 * i);
-        [v6 floatValue];
+        [valueCopy floatValue];
         v16 = v15;
         [v14 floatValue];
         if (vabds_f32(v16, v17) >= 0.000011921)
         {
-          [v6 floatValue];
+          [valueCopy floatValue];
           v19 = v18;
           [v14 floatValue];
           if (v19 > v20)
@@ -331,19 +331,19 @@ LABEL_13:
   return v21;
 }
 
-- (id)findTheNearestLowerNumberInArray:(id)a3 forValue:(id)a4
+- (id)findTheNearestLowerNumberInArray:(id)array forValue:(id)value
 {
-  v5 = a3;
-  v6 = a4;
+  arrayCopy = array;
+  valueCopy = value;
   v7 = [NSSortDescriptor sortDescriptorWithKey:@"self" ascending:0];
   v8 = [NSArray arrayWithObject:v7];
-  [v5 sortUsingDescriptors:v8];
+  [arrayCopy sortUsingDescriptors:v8];
 
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v9 = v5;
+  v9 = arrayCopy;
   v10 = [v9 countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v10)
   {
@@ -359,12 +359,12 @@ LABEL_13:
         }
 
         v14 = *(*(&v23 + 1) + 8 * i);
-        [v6 floatValue];
+        [valueCopy floatValue];
         v16 = v15;
         [v14 floatValue];
         if (vabds_f32(v16, v17) >= 0.000011921)
         {
-          [v6 floatValue];
+          [valueCopy floatValue];
           v19 = v18;
           [v14 floatValue];
           if (v19 < v20)

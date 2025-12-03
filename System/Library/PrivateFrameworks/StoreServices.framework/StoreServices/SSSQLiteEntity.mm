@@ -1,22 +1,22 @@
 @interface SSSQLiteEntity
-+ (BOOL)_insertValues:(id)a3 intoTable:(id)a4 withPersistentID:(int64_t)a5 database:(id)a6;
-+ (id)_aggregateValueForProperty:(id)a3 function:(id)a4 predicate:(id)a5 database:(id)a6;
-+ (id)anyInDatabase:(id)a3 predicate:(id)a4;
-+ (id)copyDatabaseDictionaryToSetClientDictionary:(id)a3;
-+ (id)disambiguatedSQLForProperty:(id)a3;
-+ (id)queryWithDatabase:(id)a3 predicate:(id)a4 orderingProperties:(id)a5;
-- (BOOL)_deleteRowFromTable:(id)a3 usingColumn:(id)a4;
++ (BOOL)_insertValues:(id)values intoTable:(id)table withPersistentID:(int64_t)d database:(id)database;
++ (id)_aggregateValueForProperty:(id)property function:(id)function predicate:(id)predicate database:(id)database;
++ (id)anyInDatabase:(id)database predicate:(id)predicate;
++ (id)copyDatabaseDictionaryToSetClientDictionary:(id)dictionary;
++ (id)disambiguatedSQLForProperty:(id)property;
++ (id)queryWithDatabase:(id)database predicate:(id)predicate orderingProperties:(id)properties;
+- (BOOL)_deleteRowFromTable:(id)table usingColumn:(id)column;
 - (BOOL)deleteFromDatabase;
 - (BOOL)existsInDatabase;
-- (BOOL)setValue:(id)a3 forProperty:(id)a4;
-- (BOOL)setValuesWithDictionary:(id)a3;
-- (SSSQLiteEntity)initWithPersistentID:(int64_t)a3 inDatabase:(id)a4;
-- (SSSQLiteEntity)initWithPropertyValues:(id)a3 inDatabase:(id)a4;
-- (id)_copyTableClusteredValuesWithValues:(id)a3;
-- (id)copyValuesForClientProperties:(id)a3;
-- (id)copyXPCEncodedValuesForClientProperties:(id)a3;
-- (id)valueForProperty:(id)a3;
-- (void)getValues:(id *)a3 forProperties:(const void *)a4 count:(unint64_t)a5;
+- (BOOL)setValue:(id)value forProperty:(id)property;
+- (BOOL)setValuesWithDictionary:(id)dictionary;
+- (SSSQLiteEntity)initWithPersistentID:(int64_t)d inDatabase:(id)database;
+- (SSSQLiteEntity)initWithPropertyValues:(id)values inDatabase:(id)database;
+- (id)_copyTableClusteredValuesWithValues:(id)values;
+- (id)copyValuesForClientProperties:(id)properties;
+- (id)copyXPCEncodedValuesForClientProperties:(id)properties;
+- (id)valueForProperty:(id)property;
+- (void)getValues:(id *)values forProperties:(const void *)properties count:(unint64_t)count;
 @end
 
 @implementation SSSQLiteEntity
@@ -101,32 +101,32 @@ LABEL_3:
   return v3;
 }
 
-- (SSSQLiteEntity)initWithPersistentID:(int64_t)a3 inDatabase:(id)a4
+- (SSSQLiteEntity)initWithPersistentID:(int64_t)d inDatabase:(id)database
 {
   v7.receiver = self;
   v7.super_class = SSSQLiteEntity;
   result = [(SSSQLiteEntity *)&v7 init];
   if (result)
   {
-    result->_database = a4;
-    result->_persistentID = a3;
+    result->_database = database;
+    result->_persistentID = d;
   }
 
   return result;
 }
 
-- (SSSQLiteEntity)initWithPropertyValues:(id)a3 inDatabase:(id)a4
+- (SSSQLiteEntity)initWithPropertyValues:(id)values inDatabase:(id)database
 {
-  v7 = [a3 objectForKey:@"ROWID"];
+  v7 = [values objectForKey:@"ROWID"];
   if (v7)
   {
-    v8 = [v7 longLongValue];
+    longLongValue = [v7 longLongValue];
   }
 
   else
   {
     v9 = CFUUIDCreate(0);
-    v8 = *&CFUUIDGetUUIDBytes(v9);
+    longLongValue = *&CFUUIDGetUUIDBytes(v9);
     CFRelease(v9);
   }
 
@@ -134,7 +134,7 @@ LABEL_3:
   v15 = &v14;
   v16 = 0x2020000000;
   v17 = 1;
-  v10 = [(SSSQLiteEntity *)self _copyTableClusteredValuesWithValues:a3];
+  v10 = [(SSSQLiteEntity *)self _copyTableClusteredValuesWithValues:values];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __52__SSSQLiteEntity_initWithPropertyValues_inDatabase___block_invoke;
@@ -142,9 +142,9 @@ LABEL_3:
   v13[4] = self;
   v13[5] = v10;
   v13[7] = &v14;
-  v13[8] = v8;
-  v13[6] = a4;
-  [a4 performTransactionWithBlock:v13];
+  v13[8] = longLongValue;
+  v13[6] = database;
+  [database performTransactionWithBlock:v13];
 
   if ((v15[3] & 1) == 0)
   {
@@ -152,7 +152,7 @@ LABEL_3:
     self = 0;
   }
 
-  v11 = [(SSSQLiteEntity *)self initWithPersistentID:v8 inDatabase:a4];
+  v11 = [(SSSQLiteEntity *)self initWithPersistentID:longLongValue inDatabase:database];
   _Block_object_dispose(&v14, 8);
   return v11;
 }
@@ -184,16 +184,16 @@ uint64_t __52__SSSQLiteEntity_initWithPropertyValues_inDatabase___block_invoke_2
   return result;
 }
 
-+ (id)copyDatabaseDictionaryToSetClientDictionary:(id)a3
++ (id)copyDatabaseDictionaryToSetClientDictionary:(id)dictionary
 {
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __62__SSSQLiteEntity_copyDatabaseDictionaryToSetClientDictionary___block_invoke;
   v7[3] = &unk_1E84B1F10;
-  v7[4] = a1;
+  v7[4] = self;
   v7[5] = v5;
-  [a3 enumerateKeysAndObjectsUsingBlock:v7];
+  [dictionary enumerateKeysAndObjectsUsingBlock:v7];
   return v5;
 }
 
@@ -253,23 +253,23 @@ void __62__SSSQLiteEntity_copyDatabaseDictionaryToSetClientDictionary___block_in
   }
 }
 
-+ (id)disambiguatedSQLForProperty:(id)a3
++ (id)disambiguatedSQLForProperty:(id)property
 {
-  if ([a1 joinClauseForProperty:?])
+  if ([self joinClauseForProperty:?])
   {
-    return a3;
+    return property;
   }
 
   else
   {
-    return [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", objc_msgSend(a1, "databaseTable"), a3];
+    return [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", objc_msgSend(self, "databaseTable"), property];
   }
 }
 
-- (id)copyValuesForClientProperties:(id)a3
+- (id)copyValuesForClientProperties:(id)properties
 {
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v6 = [a3 count];
+  v6 = [properties count];
   v7 = malloc_type_malloc(8 * v6, 0x80040B8603338uLL);
   v8 = malloc_type_malloc(8 * v6, 0x80040B8603338uLL);
   if (v6 < 1)
@@ -286,7 +286,7 @@ LABEL_10:
   {
     for (i = 0; i != v6; ++i)
     {
-      *(v8 + i) = [objc_opt_class() databasePropertyToGetClientProperty:{objc_msgSend(a3, "objectAtIndex:", i)}];
+      *(v8 + i) = [objc_opt_class() databasePropertyToGetClientProperty:{objc_msgSend(properties, "objectAtIndex:", i)}];
     }
 
     [(SSSQLiteEntity *)self getValues:v7 forProperties:v8 count:v6];
@@ -295,7 +295,7 @@ LABEL_10:
       v11 = v7[j];
       if (v11 && *(v8 + j))
       {
-        [v5 setObject:v11 forKey:{objc_msgSend(a3, "objectAtIndex:", j)}];
+        [v5 setObject:v11 forKey:{objc_msgSend(properties, "objectAtIndex:", j)}];
       }
     }
 
@@ -313,10 +313,10 @@ LABEL_10:
   return v5;
 }
 
-- (id)copyXPCEncodedValuesForClientProperties:(id)a3
+- (id)copyXPCEncodedValuesForClientProperties:(id)properties
 {
   v5 = xpc_array_create(0, 0);
-  v6 = [a3 count];
+  v6 = [properties count];
   v7 = malloc_type_malloc(8 * v6, 0x80040B8603338uLL);
   if (v7)
   {
@@ -330,7 +330,7 @@ LABEL_10:
         v11 = 0;
         while (1)
         {
-          v12 = [objc_opt_class() databasePropertyToGetClientProperty:{objc_msgSend(a3, "objectAtIndex:", v11)}];
+          v12 = [objc_opt_class() databasePropertyToGetClientProperty:{objc_msgSend(properties, "objectAtIndex:", v11)}];
           v8[v11] = v12;
           if (!v12)
           {
@@ -343,13 +343,13 @@ LABEL_10:
             v13 = v10;
             do
             {
-              v14 = *v13;
+              null = *v13;
               if (!*v13)
               {
-                v14 = [MEMORY[0x1E695DFB0] null];
+                null = [MEMORY[0x1E695DFB0] null];
               }
 
-              SSXPCArraySetCFObject(v5, 0xFFFFFFFFFFFFFFFFLL, v14);
+              SSXPCArraySetCFObject(v5, 0xFFFFFFFFFFFFFFFFLL, null);
               ++v13;
               --v6;
             }
@@ -403,34 +403,34 @@ uint64_t __34__SSSQLiteEntity_existsInDatabase__block_invoke(uint64_t a1, sqlite
   return result;
 }
 
-- (void)getValues:(id *)a3 forProperties:(const void *)a4 count:(unint64_t)a5
+- (void)getValues:(id *)values forProperties:(const void *)properties count:(unint64_t)count
 {
   v29 = *MEMORY[0x1E69E9840];
-  if (a5 == 1 && [*a4 isEqualToString:@"ROWID"])
+  if (count == 1 && [*properties isEqualToString:@"ROWID"])
   {
-    *a3 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_persistentID];
+    *values = [MEMORY[0x1E696AD98] numberWithLongLong:self->_persistentID];
   }
 
   else
   {
     v9 = objc_opt_class();
-    v21 = [v9 databaseTable];
+    databaseTable = [v9 databaseTable];
     v10 = [objc_alloc(MEMORY[0x1E696AD60]) initWithString:@"SELECT "];
     v11 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-    if (a5)
+    if (count)
     {
       v12 = 0;
       do
       {
-        a3[v12] = 0;
-        v13 = [v9 disambiguatedSQLForProperty:{a4[v12], v21}];
+        values[v12] = 0;
+        v13 = [v9 disambiguatedSQLForProperty:{properties[v12], databaseTable}];
         if (v12)
         {
           [v10 appendString:{@", "}];
         }
 
         [v10 appendString:v13];
-        v14 = [v9 joinClauseForProperty:a4[v12]];
+        v14 = [v9 joinClauseForProperty:properties[v12]];
         if (v14)
         {
           [v11 addObject:v14];
@@ -439,10 +439,10 @@ uint64_t __34__SSSQLiteEntity_existsInDatabase__block_invoke(uint64_t a1, sqlite
         ++v12;
       }
 
-      while (a5 != v12);
+      while (count != v12);
     }
 
-    [v10 appendString:{@" FROM ", v21}];
+    [v10 appendString:{@" FROM ", databaseTable}];
     [v10 appendString:v22];
     v26 = 0u;
     v27 = 0u;
@@ -482,8 +482,8 @@ uint64_t __34__SSSQLiteEntity_existsInDatabase__block_invoke(uint64_t a1, sqlite
     v23[2] = __48__SSSQLiteEntity_getValues_forProperties_count___block_invoke;
     v23[3] = &unk_1E84B1F60;
     v23[4] = self;
-    v23[5] = a5;
-    v23[6] = a3;
+    v23[5] = count;
+    v23[6] = values;
     [(SSSQLiteDatabase *)database prepareStatementForSQL:v10 cache:1 usingBlock:v23];
   }
 }
@@ -507,42 +507,42 @@ id __48__SSSQLiteEntity_getValues_forProperties_count___block_invoke(void *a1, s
   return result;
 }
 
-- (BOOL)setValue:(id)a3 forProperty:(id)a4
+- (BOOL)setValue:(id)value forProperty:(id)property
 {
   v7 = objc_alloc(MEMORY[0x1E695DF20]);
-  if (!a3)
+  if (!value)
   {
-    a3 = [MEMORY[0x1E695DFB0] null];
+    value = [MEMORY[0x1E695DFB0] null];
   }
 
-  v8 = [v7 initWithObjectsAndKeys:{a3, a4, 0}];
+  v8 = [v7 initWithObjectsAndKeys:{value, property, 0}];
   v9 = [(SSSQLiteEntity *)self setValuesWithDictionary:v8];
 
   return v9;
 }
 
-- (BOOL)setValuesWithDictionary:(id)a3
+- (BOOL)setValuesWithDictionary:(id)dictionary
 {
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
   v13 = 1;
   v5 = objc_opt_class();
-  v6 = [v5 databaseTable];
+  databaseTable = [v5 databaseTable];
   database = self->_database;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __42__SSSQLiteEntity_setValuesWithDictionary___block_invoke;
   v9[3] = &unk_1E84B1FD8;
   v9[4] = self;
-  v9[5] = a3;
+  v9[5] = dictionary;
   v9[6] = v5;
-  v9[7] = v6;
+  v9[7] = databaseTable;
   v9[8] = &v10;
   [(SSSQLiteDatabase *)database performTransactionWithBlock:v9];
-  LOBYTE(a3) = *(v11 + 24);
+  LOBYTE(dictionary) = *(v11 + 24);
   _Block_object_dispose(&v10, 8);
-  return a3;
+  return dictionary;
 }
 
 uint64_t __42__SSSQLiteEntity_setValuesWithDictionary___block_invoke(uint64_t a1)
@@ -713,15 +713,15 @@ uint64_t __42__SSSQLiteEntity_setValuesWithDictionary___block_invoke_5(void *a1,
   return result;
 }
 
-- (id)valueForProperty:(id)a3
+- (id)valueForProperty:(id)property
 {
   v4 = 0;
-  v5 = a3;
-  [(SSSQLiteEntity *)self getValues:&v4 forProperties:&v5 count:1];
+  propertyCopy = property;
+  [(SSSQLiteEntity *)self getValues:&v4 forProperties:&propertyCopy count:1];
   return v4;
 }
 
-+ (BOOL)_insertValues:(id)a3 intoTable:(id)a4 withPersistentID:(int64_t)a5 database:(id)a6
++ (BOOL)_insertValues:(id)values intoTable:(id)table withPersistentID:(int64_t)d database:(id)database
 {
   v37 = *MEMORY[0x1E69E9840];
   v31 = 0;
@@ -729,9 +729,9 @@ uint64_t __42__SSSQLiteEntity_setValuesWithDictionary___block_invoke_5(void *a1,
   v33 = 0x2020000000;
   v34 = 1;
   v11 = [objc_alloc(MEMORY[0x1E696AD60]) initWithString:@"INSERT OR REPLACE INTO "];
-  [v11 appendString:a4];
+  [v11 appendString:table];
   objc_msgSend(v11, "appendString:", @" (");
-  v12 = [a1 foreignKeyColumnForTable:a4];
+  v12 = [self foreignKeyColumnForTable:table];
   if (v12)
   {
     v13 = v12;
@@ -747,7 +747,7 @@ uint64_t __42__SSSQLiteEntity_setValuesWithDictionary___block_invoke_5(void *a1,
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v14 = [a3 countByEnumeratingWithState:&v27 objects:v36 count:16];
+  v14 = [values countByEnumeratingWithState:&v27 objects:v36 count:16];
   if (v14)
   {
     v15 = *v28;
@@ -757,7 +757,7 @@ uint64_t __42__SSSQLiteEntity_setValuesWithDictionary___block_invoke_5(void *a1,
       {
         if (*v28 != v15)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(values);
         }
 
         v17 = *(*(&v27 + 1) + 8 * i);
@@ -765,7 +765,7 @@ uint64_t __42__SSSQLiteEntity_setValuesWithDictionary___block_invoke_5(void *a1,
         [v11 appendString:v17];
       }
 
-      v14 = [a3 countByEnumeratingWithState:&v27 objects:v36 count:16];
+      v14 = [values countByEnumeratingWithState:&v27 objects:v36 count:16];
     }
 
     while (v14);
@@ -776,7 +776,7 @@ uint64_t __42__SSSQLiteEntity_setValuesWithDictionary___block_invoke_5(void *a1,
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v18 = [a3 countByEnumeratingWithState:&v23 objects:v35 count:16];
+  v18 = [values countByEnumeratingWithState:&v23 objects:v35 count:16];
   if (v18)
   {
     v19 = *v24;
@@ -784,13 +784,13 @@ uint64_t __42__SSSQLiteEntity_setValuesWithDictionary___block_invoke_5(void *a1,
     {
       if (*v24 != v19)
       {
-        objc_enumerationMutation(a3);
+        objc_enumerationMutation(values);
       }
 
       [v11 appendString:{@", ?"}];
       if (!--v18)
       {
-        v18 = [a3 countByEnumeratingWithState:&v23 objects:v35 count:16];
+        v18 = [values countByEnumeratingWithState:&v23 objects:v35 count:16];
         if (!v18)
         {
           break;
@@ -805,10 +805,10 @@ uint64_t __42__SSSQLiteEntity_setValuesWithDictionary___block_invoke_5(void *a1,
   v22[2] = __68__SSSQLiteEntity__insertValues_intoTable_withPersistentID_database___block_invoke;
   v22[3] = &unk_1E84B2000;
   v22[6] = &v31;
-  v22[7] = a5;
-  v22[4] = a3;
-  v22[5] = a6;
-  [a6 prepareStatementForSQL:v11 cache:0 usingBlock:v22];
+  v22[7] = d;
+  v22[4] = values;
+  v22[5] = database;
+  [database prepareStatementForSQL:v11 cache:0 usingBlock:v22];
 
   v20 = *(v32 + 24);
   _Block_object_dispose(&v31, 8);
@@ -857,19 +857,19 @@ uint64_t __68__SSSQLiteEntity__insertValues_intoTable_withPersistentID_database_
   return result;
 }
 
-- (id)_copyTableClusteredValuesWithValues:(id)a3
+- (id)_copyTableClusteredValuesWithValues:(id)values
 {
   v4 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v5 = objc_opt_class();
-  v6 = [v5 databaseTable];
+  databaseTable = [v5 databaseTable];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __54__SSSQLiteEntity__copyTableClusteredValuesWithValues___block_invoke;
   v8[3] = &unk_1E84B2028;
   v8[4] = v5;
-  v8[5] = v6;
+  v8[5] = databaseTable;
   v8[6] = v4;
-  [a3 enumerateKeysAndObjectsUsingBlock:v8];
+  [values enumerateKeysAndObjectsUsingBlock:v8];
   return v4;
 }
 
@@ -905,13 +905,13 @@ uint64_t __54__SSSQLiteEntity__copyTableClusteredValuesWithValues___block_invoke
   return result;
 }
 
-- (BOOL)_deleteRowFromTable:(id)a3 usingColumn:(id)a4
+- (BOOL)_deleteRowFromTable:(id)table usingColumn:(id)column
 {
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
   v12 = 0;
-  v5 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"DELETE FROM %@ WHERE %@ = ?;", a3, a4];
+  column = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"DELETE FROM %@ WHERE %@ = ?;", table, column];
   database = self->_database;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
@@ -919,7 +919,7 @@ uint64_t __54__SSSQLiteEntity__copyTableClusteredValuesWithValues___block_invoke
   v8[3] = &unk_1E84B1E90;
   v8[4] = self;
   v8[5] = &v9;
-  [(SSSQLiteDatabase *)database prepareStatementForSQL:v5 cache:1 usingBlock:v8];
+  [(SSSQLiteDatabase *)database prepareStatementForSQL:column cache:1 usingBlock:v8];
 
   LOBYTE(self) = *(v10 + 24);
   _Block_object_dispose(&v9, 8);
@@ -934,7 +934,7 @@ uint64_t __50__SSSQLiteEntity__deleteRowFromTable_usingColumn___block_invoke(uin
   return result;
 }
 
-+ (id)anyInDatabase:(id)a3 predicate:(id)a4
++ (id)anyInDatabase:(id)database predicate:(id)predicate
 {
   v10 = 0;
   v11 = &v10;
@@ -942,14 +942,14 @@ uint64_t __50__SSSQLiteEntity__deleteRowFromTable_usingColumn___block_invoke(uin
   v13 = __Block_byref_object_copy__60;
   v14 = __Block_byref_object_dispose__60;
   v15 = 0;
-  v6 = [a1 queryWithDatabase:a3 predicate:a4];
+  v6 = [self queryWithDatabase:database predicate:predicate];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __66__SSSQLiteEntity_SSSQLiteQueryAdditions__anyInDatabase_predicate___block_invoke;
   v9[3] = &unk_1E84B2200;
-  v9[5] = a3;
+  v9[5] = database;
   v9[6] = &v10;
-  v9[4] = a1;
+  v9[4] = self;
   [v6 enumeratePersistentIDsUsingBlock:v9];
   v7 = v11[5];
   _Block_object_dispose(&v10, 8);
@@ -964,7 +964,7 @@ uint64_t __66__SSSQLiteEntity_SSSQLiteQueryAdditions__anyInDatabase_predicate___
   return result;
 }
 
-+ (id)_aggregateValueForProperty:(id)a3 function:(id)a4 predicate:(id)a5 database:(id)a6
++ (id)_aggregateValueForProperty:(id)property function:(id)function predicate:(id)predicate database:(id)database
 {
   v23[1] = *MEMORY[0x1E69E9840];
   v17 = 0;
@@ -974,19 +974,19 @@ uint64_t __66__SSSQLiteEntity_SSSQLiteQueryAdditions__anyInDatabase_predicate___
   v21 = __Block_byref_object_dispose__60;
   v22 = 0;
   v11 = objc_alloc_init(SSSQLiteQueryDescriptor);
-  [(SSSQLiteQueryDescriptor *)v11 setEntityClass:a1];
-  [(SSSQLiteQueryDescriptor *)v11 setPredicate:a5];
-  v12 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@(%@)", a4, objc_msgSend(a1, "disambiguatedSQLForProperty:", a3)];
-  v23[0] = a3;
+  [(SSSQLiteQueryDescriptor *)v11 setEntityClass:self];
+  [(SSSQLiteQueryDescriptor *)v11 setPredicate:predicate];
+  v12 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@(%@)", function, objc_msgSend(self, "disambiguatedSQLForProperty:", property)];
+  v23[0] = property;
   v13 = -[SSSQLiteQueryDescriptor _newSelectSQLWithProperties:count:columns:](v11, "_newSelectSQLWithProperties:count:columns:", v23, 1, [MEMORY[0x1E695DEC8] arrayWithObject:v12]);
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __97__SSSQLiteEntity_SSSQLiteQueryAdditions___aggregateValueForProperty_function_predicate_database___block_invoke;
   v16[3] = &unk_1E84B1E40;
   v16[4] = v11;
-  v16[5] = a6;
+  v16[5] = database;
   v16[6] = &v17;
-  [a6 prepareStatementForSQL:v13 cache:1 usingBlock:v16];
+  [database prepareStatementForSQL:v13 cache:1 usingBlock:v16];
 
   v14 = v18[5];
   _Block_object_dispose(&v17, 8);
@@ -1007,14 +1007,14 @@ uint64_t __97__SSSQLiteEntity_SSSQLiteQueryAdditions___aggregateValueForProperty
   return result;
 }
 
-+ (id)queryWithDatabase:(id)a3 predicate:(id)a4 orderingProperties:(id)a5
++ (id)queryWithDatabase:(id)database predicate:(id)predicate orderingProperties:(id)properties
 {
   v9 = objc_alloc_init(SSSQLiteQueryDescriptor);
-  [(SSSQLiteQueryDescriptor *)v9 setEntityClass:a1];
-  -[SSSQLiteQueryDescriptor setMemoryEntityClass:](v9, "setMemoryEntityClass:", [a1 memoryEntityClass]);
-  [(SSSQLiteQueryDescriptor *)v9 setOrderingProperties:a5];
-  [(SSSQLiteQueryDescriptor *)v9 setPredicate:a4];
-  v10 = [[SSSQLiteQuery alloc] initWithDatabase:a3 descriptor:v9];
+  [(SSSQLiteQueryDescriptor *)v9 setEntityClass:self];
+  -[SSSQLiteQueryDescriptor setMemoryEntityClass:](v9, "setMemoryEntityClass:", [self memoryEntityClass]);
+  [(SSSQLiteQueryDescriptor *)v9 setOrderingProperties:properties];
+  [(SSSQLiteQueryDescriptor *)v9 setPredicate:predicate];
+  v10 = [[SSSQLiteQuery alloc] initWithDatabase:database descriptor:v9];
 
   return v10;
 }

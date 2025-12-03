@@ -25,13 +25,13 @@ uint64_t __56__HUQuickControlIconViewController_controlItemPredicate__block_invo
 - (id)createInteractionCoordinator
 {
   v3 = [HUQuickControlIconView alloc];
-  v4 = [(HUQuickControlSingleControlViewController *)self viewProfile];
-  v5 = [(HUQuickControlIconView *)v3 initWithProfile:v4];
+  viewProfile = [(HUQuickControlSingleControlViewController *)self viewProfile];
+  v5 = [(HUQuickControlIconView *)v3 initWithProfile:viewProfile];
   [(HUQuickControlIconViewController *)self setQuickControlIconView:v5];
 
   v6 = [HUQuickControlSimpleInteractionCoordinator alloc];
-  v7 = [(HUQuickControlIconViewController *)self quickControlIconView];
-  v8 = [(HUQuickControlSimpleInteractionCoordinator *)v6 initWithControlView:v7 delegate:self];
+  quickControlIconView = [(HUQuickControlIconViewController *)self quickControlIconView];
+  v8 = [(HUQuickControlSimpleInteractionCoordinator *)v6 initWithControlView:quickControlIconView delegate:self];
 
   return v8;
 }
@@ -39,24 +39,24 @@ uint64_t __56__HUQuickControlIconViewController_controlItemPredicate__block_invo
 - (id)createViewProfile
 {
   v3 = objc_alloc_init(HUQuickControlIconViewProfile);
-  v4 = [(HUQuickControlSingleControlViewController *)self controlItem];
-  v5 = [v4 latestResults];
-  v6 = [v5 objectForKeyedSubscript:*MEMORY[0x277D13E08]];
+  controlItem = [(HUQuickControlSingleControlViewController *)self controlItem];
+  latestResults = [controlItem latestResults];
+  v6 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13E08]];
   [(HUQuickControlIconViewProfile *)v3 setStatusString:v6];
 
-  v7 = [(HUQuickControlSingleControlViewController *)self controlItem];
-  v8 = [v7 latestResults];
-  v9 = [v8 objectForKeyedSubscript:*MEMORY[0x277D13DF0]];
+  controlItem2 = [(HUQuickControlSingleControlViewController *)self controlItem];
+  latestResults2 = [controlItem2 latestResults];
+  v9 = [latestResults2 objectForKeyedSubscript:*MEMORY[0x277D13DF0]];
   [(HUQuickControlIconViewProfile *)v3 setStatusTextColor:v9];
 
-  v10 = [(HUQuickControlSingleControlViewController *)self controlItem];
-  v11 = [v10 latestResults];
-  v12 = [v11 objectForKeyedSubscript:*MEMORY[0x277D13F28]];
+  controlItem3 = [(HUQuickControlSingleControlViewController *)self controlItem];
+  latestResults3 = [controlItem3 latestResults];
+  v12 = [latestResults3 objectForKeyedSubscript:*MEMORY[0x277D13F28]];
   [(HUQuickControlIconViewProfile *)v3 setSupplementaryString:v12];
 
-  v13 = [(HUQuickControlSingleControlViewController *)self controlItem];
-  v14 = [v13 latestResults];
-  v15 = [v14 objectForKeyedSubscript:*MEMORY[0x277D13E00]];
+  controlItem4 = [(HUQuickControlSingleControlViewController *)self controlItem];
+  latestResults4 = [controlItem4 latestResults];
+  v15 = [latestResults4 objectForKeyedSubscript:*MEMORY[0x277D13E00]];
   [(HUQuickControlIconViewProfile *)v3 setIconDescriptor:v15];
 
   return v3;

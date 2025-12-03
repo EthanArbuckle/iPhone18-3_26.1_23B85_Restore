@@ -1,23 +1,23 @@
 @interface PGGraphConcreteNode
 - (BOOL)hasProperties;
-- (PGGraphConcreteNode)initWithLabel:(id)a3 domain:(unsigned __int16)a4 properties:(id)a5;
-- (id)_stringValueForPropertyWithKey:(id)a3;
+- (PGGraphConcreteNode)initWithLabel:(id)label domain:(unsigned __int16)domain properties:(id)properties;
+- (id)_stringValueForPropertyWithKey:(id)key;
 - (id)propertyDictionary;
-- (id)propertyForKey:(id)a3;
+- (id)propertyForKey:(id)key;
 - (id)propertyKeys;
 - (unint64_t)propertiesCount;
-- (void)enumeratePropertiesUsingBlock:(id)a3;
+- (void)enumeratePropertiesUsingBlock:(id)block;
 @end
 
 @implementation PGGraphConcreteNode
 
-- (void)enumeratePropertiesUsingBlock:(id)a3
+- (void)enumeratePropertiesUsingBlock:(id)block
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  properties = v5->_properties;
+  blockCopy = block;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  properties = selfCopy->_properties;
   if (properties)
   {
     v18 = 0;
@@ -25,8 +25,8 @@
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v7 = [(NSMutableDictionary *)properties keyEnumerator];
-    v8 = [v7 countByEnumeratingWithState:&v14 objects:v19 count:16];
+    keyEnumerator = [(NSMutableDictionary *)properties keyEnumerator];
+    v8 = [keyEnumerator countByEnumeratingWithState:&v14 objects:v19 count:16];
     if (v8)
     {
       v9 = *v15;
@@ -36,12 +36,12 @@ LABEL_4:
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(keyEnumerator);
         }
 
         v11 = *(*(&v14 + 1) + 8 * v10);
-        v12 = [(NSMutableDictionary *)v5->_properties objectForKeyedSubscript:v11];
-        v4[2](v4, v11, v12, &v18);
+        v12 = [(NSMutableDictionary *)selfCopy->_properties objectForKeyedSubscript:v11];
+        blockCopy[2](blockCopy, v11, v12, &v18);
 
         if (v18)
         {
@@ -50,7 +50,7 @@ LABEL_4:
 
         if (v8 == ++v10)
         {
-          v8 = [v7 countByEnumeratingWithState:&v14 objects:v19 count:16];
+          v8 = [keyEnumerator countByEnumeratingWithState:&v14 objects:v19 count:16];
           if (v8)
           {
             goto LABEL_4;
@@ -62,31 +62,31 @@ LABEL_4:
     }
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
 - (id)propertyDictionary
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:v2->_properties];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:selfCopy->_properties];
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (id)propertyKeys
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  properties = v2->_properties;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  properties = selfCopy->_properties;
   if (properties && [(NSMutableDictionary *)properties count])
   {
     v4 = MEMORY[0x277CBEB98];
-    v5 = [(NSMutableDictionary *)v2->_properties allKeys];
-    v6 = [v4 setWithArray:v5];
+    allKeys = [(NSMutableDictionary *)selfCopy->_properties allKeys];
+    v6 = [v4 setWithArray:allKeys];
   }
 
   else
@@ -94,40 +94,40 @@ LABEL_4:
     v6 = [MEMORY[0x277CBEB98] set];
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
 - (unint64_t)propertiesCount
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSMutableDictionary *)v2->_properties count];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [(NSMutableDictionary *)selfCopy->_properties count];
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (BOOL)hasProperties
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSMutableDictionary *)v2->_properties count]!= 0;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [(NSMutableDictionary *)selfCopy->_properties count]!= 0;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (id)propertyForKey:(id)a3
+- (id)propertyForKey:(id)key
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  properties = v5->_properties;
+  keyCopy = key;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  properties = selfCopy->_properties;
   if (properties)
   {
-    v7 = [(NSMutableDictionary *)properties objectForKeyedSubscript:v4];
+    v7 = [(NSMutableDictionary *)properties objectForKeyedSubscript:keyCopy];
   }
 
   else
@@ -135,16 +135,16 @@ LABEL_4:
     v7 = 0;
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v7;
 }
 
-- (id)_stringValueForPropertyWithKey:(id)a3
+- (id)_stringValueForPropertyWithKey:(id)key
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(PGGraphConcreteNode *)self propertyForKey:v4];
+  keyCopy = key;
+  v5 = [(PGGraphConcreteNode *)self propertyForKey:keyCopy];
   if (!v5 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
@@ -160,15 +160,15 @@ LABEL_4:
   }
 
   v10 = +[PGLogging sharedLogging];
-  v11 = [v10 loggingConnection];
+  loggingConnection = [v10 loggingConnection];
 
-  if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
+  if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_INFO))
   {
     v12 = 138412546;
-    v13 = v4;
+    v13 = keyCopy;
     v14 = 2112;
     v15 = v5;
-    _os_log_impl(&dword_22F0FC000, v11, OS_LOG_TYPE_INFO, "Unsupported type for property %@: %@. Returning nil.", &v12, 0x16u);
+    _os_log_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_INFO, "Unsupported type for property %@: %@. Returning nil.", &v12, 0x16u);
   }
 
   v7 = 0;
@@ -179,21 +179,21 @@ LABEL_5:
   return v7;
 }
 
-- (PGGraphConcreteNode)initWithLabel:(id)a3 domain:(unsigned __int16)a4 properties:(id)a5
+- (PGGraphConcreteNode)initWithLabel:(id)label domain:(unsigned __int16)domain properties:(id)properties
 {
-  v8 = a3;
-  v9 = a5;
+  labelCopy = label;
+  propertiesCopy = properties;
   v16.receiver = self;
   v16.super_class = PGGraphConcreteNode;
   v10 = [(PGGraphNode *)&v16 init];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [labelCopy copy];
     label = v10->_label;
     v10->_label = v11;
 
-    v10->_domain = a4;
-    v13 = [v9 mutableCopy];
+    v10->_domain = domain;
+    v13 = [propertiesCopy mutableCopy];
     properties = v10->_properties;
     v10->_properties = v13;
   }

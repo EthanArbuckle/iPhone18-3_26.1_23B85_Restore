@@ -1,13 +1,13 @@
 @interface CKDSystemAvailabilityMonitor
 + (void)initialize;
-- (BOOL)registerWatcher:(id)a3;
+- (BOOL)registerWatcher:(id)watcher;
 - (id)availabilityDescription;
 - (id)initInternal;
 - (unint64_t)currentAvailabilityState;
 - (void)_clearVanishedWatchers;
 - (void)_logAvailabilityDescription;
 - (void)_systemMayNowBeReady;
-- (void)assertAvailability:(unint64_t)a3;
+- (void)assertAvailability:(unint64_t)availability;
 - (void)dealloc;
 - (void)removeNotifications;
 - (void)resetToUnavailableForUnitTests;
@@ -110,12 +110,12 @@ LABEL_6:
   [(CKDSystemAvailabilityMonitor *)&v4 dealloc];
 }
 
-- (void)assertAvailability:(unint64_t)a3
+- (void)assertAvailability:(unint64_t)availability
 {
-  if ((objc_msgSend_availabilityState(self, a2, a3) & a3) == 0)
+  if ((objc_msgSend_availabilityState(self, a2, availability) & availability) == 0)
   {
     v9 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], v6, v7);
-    objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v9, v8, a2, self, @"CKDSystemAvailabilityMonitor.m", 206, @"System does not have availability %lx", a3);
+    objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v9, v8, a2, self, @"CKDSystemAvailabilityMonitor.m", 206, @"System does not have availability %lx", availability);
   }
 }
 
@@ -244,15 +244,15 @@ LABEL_6:
 {
   v35 = *MEMORY[0x277D85DE8];
   v4 = objc_msgSend_currentAvailabilityState(self, a2, v2);
-  v5 = self;
-  objc_sync_enter(v5);
-  v8 = objc_msgSend_availabilityState(v5, v6, v7);
-  v11 = objc_msgSend_availabilityState(v5, v9, v10);
-  objc_msgSend_setAvailabilityState_(v5, v12, v11 | v4);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v8 = objc_msgSend_availabilityState(selfCopy, v6, v7);
+  v11 = objc_msgSend_availabilityState(selfCopy, v9, v10);
+  objc_msgSend_setAvailabilityState_(selfCopy, v12, v11 | v4);
   if (v4 != v8)
   {
-    objc_msgSend__logAvailabilityDescription(v5, v13, v14);
-    v19 = objc_msgSend_count(v5->_watcherWrappersInRegistrationOrder, v15, v16);
+    objc_msgSend__logAvailabilityDescription(selfCopy, v13, v14);
+    v19 = objc_msgSend_count(selfCopy->_watcherWrappersInRegistrationOrder, v15, v16);
     if (v19)
     {
       if (*MEMORY[0x277CBC880] != -1)
@@ -263,7 +263,7 @@ LABEL_6:
       v20 = *MEMORY[0x277CBC830];
       if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_DEBUG))
       {
-        watcherWrappersInRegistrationOrder = v5->_watcherWrappersInRegistrationOrder;
+        watcherWrappersInRegistrationOrder = selfCopy->_watcherWrappersInRegistrationOrder;
         v33 = 138412290;
         v34 = watcherWrappersInRegistrationOrder;
         _os_log_debug_impl(&dword_22506F000, v20, OS_LOG_TYPE_DEBUG, "Notifying watchers of availability change. Watchers are %@", &v33, 0xCu);
@@ -271,51 +271,51 @@ LABEL_6:
 
       for (i = 0; i != v19; ++i)
       {
-        v22 = objc_msgSend_objectAtIndex_(v5->_watcherWrappersInRegistrationOrder, v17, i);
+        v22 = objc_msgSend_objectAtIndex_(selfCopy->_watcherWrappersInRegistrationOrder, v17, i);
         objc_msgSend_postSystemAvailabilityChanged_(v22, v23, v4);
       }
     }
 
     if (v4 == 3)
     {
-      v24 = v5->_watcherWrappersInRegistrationOrder;
-      v5->_watcherWrappersInRegistrationOrder = 0;
+      v24 = selfCopy->_watcherWrappersInRegistrationOrder;
+      selfCopy->_watcherWrappersInRegistrationOrder = 0;
 
-      objc_msgSend_removeNotifications(v5, v25, v26);
+      objc_msgSend_removeNotifications(selfCopy, v25, v26);
     }
 
     else
     {
-      objc_msgSend__clearVanishedWatchers(v5, v17, v18);
+      objc_msgSend__clearVanishedWatchers(selfCopy, v17, v18);
     }
 
     v29 = objc_msgSend_sharedNotifier(CKDAccountNotifier, v27, v28);
     objc_msgSend_postAccountChangedNotificationWithAccountID_changeType_(v29, v30, 0, 0);
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   v31 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)registerWatcher:(id)a3
+- (BOOL)registerWatcher:(id)watcher
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  watcherCopy = watcher;
+  if (watcherCopy)
   {
-    v5 = self;
-    objc_sync_enter(v5);
-    v8 = objc_msgSend_availabilityState(v5, v6, v7);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v8 = objc_msgSend_availabilityState(selfCopy, v6, v7);
     if ((v8 - 1) < 2)
     {
-      v12 = objc_msgSend_availabilityState(v5, v9, v10);
-      if (!objc_msgSend_systemAvailabilityChanged_(v4, v13, v12))
+      v12 = objc_msgSend_availabilityState(selfCopy, v9, v10);
+      if (!objc_msgSend_systemAvailabilityChanged_(watcherCopy, v13, v12))
       {
 LABEL_17:
         v11 = 0;
 LABEL_18:
-        objc_sync_exit(v5);
+        objc_sync_exit(selfCopy);
 
         goto LABEL_19;
       }
@@ -325,7 +325,7 @@ LABEL_18:
     {
       if (v8 == 3)
       {
-        objc_msgSend_systemAvailabilityChanged_(v4, v9, 3);
+        objc_msgSend_systemAvailabilityChanged_(watcherCopy, v9, 3);
       }
 
       goto LABEL_17;
@@ -340,22 +340,22 @@ LABEL_18:
     if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_DEBUG))
     {
       v24 = 138412290;
-      v25 = v4;
+      v25 = watcherCopy;
       _os_log_debug_impl(&dword_22506F000, v14, OS_LOG_TYPE_DEBUG, "Registering watcher %@", &v24, 0xCu);
     }
 
-    if (!v5->_watcherWrappersInRegistrationOrder)
+    if (!selfCopy->_watcherWrappersInRegistrationOrder)
     {
       v15 = objc_alloc_init(MEMORY[0x277CBEB18]);
-      watcherWrappersInRegistrationOrder = v5->_watcherWrappersInRegistrationOrder;
-      v5->_watcherWrappersInRegistrationOrder = v15;
+      watcherWrappersInRegistrationOrder = selfCopy->_watcherWrappersInRegistrationOrder;
+      selfCopy->_watcherWrappersInRegistrationOrder = v15;
     }
 
     v17 = [CKDSystemAvailabilityWatcherWrapper alloc];
-    v19 = objc_msgSend_initWithDelegate_(v17, v18, v4);
-    if ((objc_msgSend_containsObject_(v5->_watcherWrappersInRegistrationOrder, v20, v19) & 1) == 0)
+    v19 = objc_msgSend_initWithDelegate_(v17, v18, watcherCopy);
+    if ((objc_msgSend_containsObject_(selfCopy->_watcherWrappersInRegistrationOrder, v20, v19) & 1) == 0)
     {
-      objc_msgSend_addObject_(v5->_watcherWrappersInRegistrationOrder, v21, v19);
+      objc_msgSend_addObject_(selfCopy->_watcherWrappersInRegistrationOrder, v21, v19);
     }
 
     v11 = 1;

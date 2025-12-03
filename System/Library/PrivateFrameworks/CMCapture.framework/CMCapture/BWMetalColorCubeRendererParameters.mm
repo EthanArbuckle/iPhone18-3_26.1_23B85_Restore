@@ -1,24 +1,24 @@
 @interface BWMetalColorCubeRendererParameters
-- (BWMetalColorCubeRendererParameters)initWithColorFilter:(id)a3 colorLookupCache:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (int)prepareForRenderingWithInputVideoFormat:(id)a3;
+- (BWMetalColorCubeRendererParameters)initWithColorFilter:(id)filter colorLookupCache:(id)cache;
+- (id)copyWithZone:(_NSZone *)zone;
+- (int)prepareForRenderingWithInputVideoFormat:(id)format;
 - (void)dealloc;
-- (void)setColorFilter:(id)a3;
-- (void)updateByInterpolatingFromParameters:(id)a3 toParameters:(id)a4 withFractionComplete:(float)a5;
+- (void)setColorFilter:(id)filter;
+- (void)updateByInterpolatingFromParameters:(id)parameters toParameters:(id)toParameters withFractionComplete:(float)complete;
 @end
 
 @implementation BWMetalColorCubeRendererParameters
 
-- (BWMetalColorCubeRendererParameters)initWithColorFilter:(id)a3 colorLookupCache:(id)a4
+- (BWMetalColorCubeRendererParameters)initWithColorFilter:(id)filter colorLookupCache:(id)cache
 {
   v9.receiver = self;
   v9.super_class = BWMetalColorCubeRendererParameters;
   v6 = [(BWMetalColorCubeRendererParameters *)&v9 init];
   if (v6)
   {
-    v6->_colorFilter = a3;
-    v6->_colorLookupCache = a4;
-    v7 = [a4 colorLookupTablesForFilter:a3];
+    v6->_colorFilter = filter;
+    v6->_colorLookupCache = cache;
+    v7 = [cache colorLookupTablesForFilter:filter];
     v6->_foregroundColorLookupTable = [v7 foregroundColorLookupTable];
     v6->_backgroundColorLookupTable = [v7 backgroundColorLookupTable];
     v6->_interpolationFractionComplete = 1.0;
@@ -34,7 +34,7 @@
   [(BWMetalColorCubeRendererParameters *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [BWMetalColorCubeRendererParameters alloc];
   colorFilter = self->_colorFilter;
@@ -43,7 +43,7 @@
   return [(BWMetalColorCubeRendererParameters *)v4 initWithColorFilter:colorFilter colorLookupCache:colorLookupCache];
 }
 
-- (int)prepareForRenderingWithInputVideoFormat:(id)a3
+- (int)prepareForRenderingWithInputVideoFormat:(id)format
 {
   if (![(BWMetalColorCubeRendererParameters *)self foregroundColorLookupTable]&& ![(BWMetalColorCubeRendererParameters *)self backgroundColorLookupTable])
   {
@@ -59,84 +59,84 @@
   return 0;
 }
 
-- (void)setColorFilter:(id)a3
+- (void)setColorFilter:(id)filter
 {
   colorFilter = self->_colorFilter;
-  if (colorFilter != a3)
+  if (colorFilter != filter)
   {
 
-    self->_colorFilter = a3;
+    self->_colorFilter = filter;
   }
 }
 
-- (void)updateByInterpolatingFromParameters:(id)a3 toParameters:(id)a4 withFractionComplete:(float)a5
+- (void)updateByInterpolatingFromParameters:(id)parameters toParameters:(id)toParameters withFractionComplete:(float)complete
 {
-  if (a3 && [a3 type] != 5)
+  if (parameters && [parameters type] != 5)
   {
     [BWMetalColorCubeRendererParameters updateByInterpolatingFromParameters:toParameters:withFractionComplete:];
   }
 
-  else if (a4 && [a4 type] != 5)
+  else if (toParameters && [toParameters type] != 5)
   {
     [BWMetalColorCubeRendererParameters updateByInterpolatingFromParameters:toParameters:withFractionComplete:];
   }
 
   else
   {
-    if ([a3 colorFilter])
+    if ([parameters colorFilter])
     {
-      v9 = [a3 foregroundColorLookupTable];
+      foregroundColorLookupTable = [parameters foregroundColorLookupTable];
     }
 
     else
     {
-      v9 = [(BWColorLookupCache *)self->_colorLookupCache identityColorLookupTable];
+      foregroundColorLookupTable = [(BWColorLookupCache *)self->_colorLookupCache identityColorLookupTable];
     }
 
-    v10 = v9;
-    if ([a4 colorFilter])
+    v10 = foregroundColorLookupTable;
+    if ([toParameters colorFilter])
     {
-      v11 = [a4 foregroundColorLookupTable];
-    }
-
-    else
-    {
-      v11 = [(BWColorLookupCache *)self->_colorLookupCache identityColorLookupTable];
-    }
-
-    v12 = v11;
-    if ([a3 colorFilter])
-    {
-      v13 = [a3 backgroundColorLookupTable];
+      foregroundColorLookupTable2 = [toParameters foregroundColorLookupTable];
     }
 
     else
     {
-      v13 = [(BWColorLookupCache *)self->_colorLookupCache identityColorLookupTable];
+      foregroundColorLookupTable2 = [(BWColorLookupCache *)self->_colorLookupCache identityColorLookupTable];
     }
 
-    v14 = v13;
-    if ([a4 colorFilter])
+    v12 = foregroundColorLookupTable2;
+    if ([parameters colorFilter])
     {
-      v15 = [a4 backgroundColorLookupTable];
+      backgroundColorLookupTable = [parameters backgroundColorLookupTable];
     }
 
     else
     {
-      v15 = [(BWColorLookupCache *)self->_colorLookupCache identityColorLookupTable];
+      backgroundColorLookupTable = [(BWColorLookupCache *)self->_colorLookupCache identityColorLookupTable];
     }
 
-    v16 = v15;
-    if (([objc_msgSend(a3 "foregroundColorLookupTable")] & 1) == 0)
+    v14 = backgroundColorLookupTable;
+    if ([toParameters colorFilter])
     {
-      *&v17 = a5;
+      backgroundColorLookupTable2 = [toParameters backgroundColorLookupTable];
+    }
+
+    else
+    {
+      backgroundColorLookupTable2 = [(BWColorLookupCache *)self->_colorLookupCache identityColorLookupTable];
+    }
+
+    v16 = backgroundColorLookupTable2;
+    if (([objc_msgSend(parameters "foregroundColorLookupTable")] & 1) == 0)
+    {
+      *&v17 = complete;
       v10 = [(BWColorLookupCache *)self->_colorLookupCache interpolatedColorLookupTableFromTable:v10 toTable:v12 fractionComplete:v17];
     }
 
     [(BWMetalColorCubeRendererParameters *)self setForegroundColorLookupTable:v10];
-    *&v18 = a5;
+    *&v18 = complete;
     [(BWMetalColorCubeRendererParameters *)self setBackgroundColorLookupTable:[(BWColorLookupCache *)self->_colorLookupCache interpolatedColorLookupTableFromTable:v14 toTable:v16 fractionComplete:v18]];
-    self->_interpolationFractionComplete = a5;
+    self->_interpolationFractionComplete = complete;
   }
 }
 

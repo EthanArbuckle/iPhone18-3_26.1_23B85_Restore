@@ -1,7 +1,7 @@
 @interface OADGraphicProperties
 - (BOOL)hasNonEmptyFill;
 - (BOOL)isBehindText;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (OADGraphicProperties)initWithDefaults;
 - (id)effects;
@@ -11,10 +11,10 @@
 - (id)shape3D;
 - (id)stroke;
 - (unint64_t)hash;
-- (void)fixPropertiesForChangingParentPreservingEffectiveValues:(id)a3;
+- (void)fixPropertiesForChangingParentPreservingEffectiveValues:(id)values;
 - (void)removeUnnecessaryOverrides;
-- (void)setIsBehindText:(BOOL)a3;
-- (void)setParent:(id)a3;
+- (void)setIsBehindText:(BOOL)text;
+- (void)setParent:(id)parent;
 @end
 
 @implementation OADGraphicProperties
@@ -23,72 +23,72 @@
 {
   v10.receiver = self;
   v10.super_class = OADGraphicProperties;
-  v2 = [(OADDrawableProperties *)&v10 initWithDefaults];
-  if (v2)
+  initWithDefaults = [(OADDrawableProperties *)&v10 initWithDefaults];
+  if (initWithDefaults)
   {
     v3 = +[OADNullFill nullFill];
-    [(OADGraphicProperties *)v2 setFill:v3];
+    [(OADGraphicProperties *)initWithDefaults setFill:v3];
 
-    v4 = [MEMORY[0x277CBEA60] array];
-    [(OADGraphicProperties *)v2 setEffects:v4];
+    array = [MEMORY[0x277CBEA60] array];
+    [(OADGraphicProperties *)initWithDefaults setEffects:array];
 
-    v5 = [MEMORY[0x277CBEA60] array];
-    [(OADGraphicProperties *)v2 setExts:v5];
+    array2 = [MEMORY[0x277CBEA60] array];
+    [(OADGraphicProperties *)initWithDefaults setExts:array2];
 
     v6 = +[OADStroke nullStroke];
-    [(OADGraphicProperties *)v2 setStroke:v6];
+    [(OADGraphicProperties *)initWithDefaults setStroke:v6];
 
     v7 = +[OADScene3D nullScene3D];
-    [(OADGraphicProperties *)v2 setScene3D:v7];
+    [(OADGraphicProperties *)initWithDefaults setScene3D:v7];
 
     v8 = +[OADShape3D nullShape3D];
-    [(OADGraphicProperties *)v2 setShape3D:v8];
+    [(OADGraphicProperties *)initWithDefaults setShape3D:v8];
 
-    [(OADGraphicProperties *)v2 setIsBehindText:0];
+    [(OADGraphicProperties *)initWithDefaults setIsBehindText:0];
   }
 
-  return v2;
+  return initWithDefaults;
 }
 
 - (void)removeUnnecessaryOverrides
 {
-  v3 = [(OADProperties *)self parent];
+  parent = [(OADProperties *)self parent];
 
-  if (!v3)
+  if (!parent)
   {
     return;
   }
 
-  v4 = [(OADProperties *)self isMerged];
-  v5 = [(OADProperties *)self isMergedWithParent];
+  isMerged = [(OADProperties *)self isMerged];
+  isMergedWithParent = [(OADProperties *)self isMergedWithParent];
   [(OADProperties *)self setMerged:0];
   [(OADProperties *)self setMergedWithParent:0];
   if ([(OADGraphicProperties *)self hasFill])
   {
-    v6 = [(OADProperties *)self parent];
-    v7 = [(OADGraphicProperties *)self fill];
-    v8 = [v6 fill];
+    parent2 = [(OADProperties *)self parent];
+    fill = [(OADGraphicProperties *)self fill];
+    fill2 = [parent2 fill];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(objc_object *)v7 removeUnnecessaryOverrides];
+      [(objc_object *)fill removeUnnecessaryOverrides];
       v9 = objc_opt_class();
       if (v9 != objc_opt_class())
       {
         goto LABEL_9;
       }
 
-      v10 = [(objc_object *)v7 isMergedWithParent];
-      [(objc_object *)v7 setMergedWithParent:0];
-      v11 = [(objc_object *)v7 isAnythingOverridden];
-      [(objc_object *)v7 setMergedWithParent:v10];
-      if (v11)
+      isMergedWithParent2 = [(objc_object *)fill isMergedWithParent];
+      [(objc_object *)fill setMergedWithParent:0];
+      isAnythingOverridden = [(objc_object *)fill isAnythingOverridden];
+      [(objc_object *)fill setMergedWithParent:isMergedWithParent2];
+      if (isAnythingOverridden)
       {
         goto LABEL_9;
       }
     }
 
-    else if (!TCObjectEqual(v7, v8))
+    else if (!TCObjectEqual(fill, fill2))
     {
 LABEL_9:
 
@@ -107,24 +107,24 @@ LABEL_10:
     goto LABEL_18;
   }
 
-  v13 = [(OADProperties *)self parent];
-  v14 = [(OADGraphicProperties *)self effects];
-  v15 = [v13 effects];
+  parent3 = [(OADProperties *)self parent];
+  effects = [(OADGraphicProperties *)self effects];
+  effects2 = [parent3 effects];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(objc_object *)v14 removeUnnecessaryOverrides];
+    [(objc_object *)effects removeUnnecessaryOverrides];
     v16 = objc_opt_class();
     if (v16 != objc_opt_class())
     {
       goto LABEL_17;
     }
 
-    v17 = [(objc_object *)v14 isMergedWithParent];
-    [(objc_object *)v14 setMergedWithParent:0];
-    v18 = [(objc_object *)v14 isAnythingOverridden];
-    [(objc_object *)v14 setMergedWithParent:v17];
-    if (v18)
+    isMergedWithParent3 = [(objc_object *)effects isMergedWithParent];
+    [(objc_object *)effects setMergedWithParent:0];
+    isAnythingOverridden2 = [(objc_object *)effects isAnythingOverridden];
+    [(objc_object *)effects setMergedWithParent:isMergedWithParent3];
+    if (isAnythingOverridden2)
     {
       goto LABEL_17;
     }
@@ -132,7 +132,7 @@ LABEL_10:
     goto LABEL_16;
   }
 
-  if (TCObjectEqual(v14, v15))
+  if (TCObjectEqual(effects, effects2))
   {
 LABEL_16:
     mEffects = self->mEffects;
@@ -147,24 +147,24 @@ LABEL_18:
     goto LABEL_26;
   }
 
-  v20 = [(OADProperties *)self parent];
-  v21 = [(OADGraphicProperties *)self exts];
-  v22 = [v20 exts];
+  parent4 = [(OADProperties *)self parent];
+  exts = [(OADGraphicProperties *)self exts];
+  exts2 = [parent4 exts];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(objc_object *)v21 removeUnnecessaryOverrides];
+    [(objc_object *)exts removeUnnecessaryOverrides];
     v23 = objc_opt_class();
     if (v23 != objc_opt_class())
     {
       goto LABEL_25;
     }
 
-    v24 = [(objc_object *)v21 isMergedWithParent];
-    [(objc_object *)v21 setMergedWithParent:0];
-    v25 = [(objc_object *)v21 isAnythingOverridden];
-    [(objc_object *)v21 setMergedWithParent:v24];
-    if (v25)
+    isMergedWithParent4 = [(objc_object *)exts isMergedWithParent];
+    [(objc_object *)exts setMergedWithParent:0];
+    isAnythingOverridden3 = [(objc_object *)exts isAnythingOverridden];
+    [(objc_object *)exts setMergedWithParent:isMergedWithParent4];
+    if (isAnythingOverridden3)
     {
       goto LABEL_25;
     }
@@ -172,7 +172,7 @@ LABEL_18:
     goto LABEL_24;
   }
 
-  if (TCObjectEqual(v21, v22))
+  if (TCObjectEqual(exts, exts2))
   {
 LABEL_24:
     mExts = self->mExts;
@@ -187,24 +187,24 @@ LABEL_26:
     goto LABEL_34;
   }
 
-  v27 = [(OADProperties *)self parent];
-  v28 = [(OADGraphicProperties *)self scene3D];
-  v29 = [v27 scene3D];
+  parent5 = [(OADProperties *)self parent];
+  scene3D = [(OADGraphicProperties *)self scene3D];
+  scene3D2 = [parent5 scene3D];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(objc_object *)v28 removeUnnecessaryOverrides];
+    [(objc_object *)scene3D removeUnnecessaryOverrides];
     v30 = objc_opt_class();
     if (v30 != objc_opt_class())
     {
       goto LABEL_33;
     }
 
-    v31 = [(objc_object *)v28 isMergedWithParent];
-    [(objc_object *)v28 setMergedWithParent:0];
-    v32 = [(objc_object *)v28 isAnythingOverridden];
-    [(objc_object *)v28 setMergedWithParent:v31];
-    if (v32)
+    isMergedWithParent5 = [(objc_object *)scene3D isMergedWithParent];
+    [(objc_object *)scene3D setMergedWithParent:0];
+    isAnythingOverridden4 = [(objc_object *)scene3D isAnythingOverridden];
+    [(objc_object *)scene3D setMergedWithParent:isMergedWithParent5];
+    if (isAnythingOverridden4)
     {
       goto LABEL_33;
     }
@@ -212,7 +212,7 @@ LABEL_26:
     goto LABEL_32;
   }
 
-  if (TCObjectEqual(v28, v29))
+  if (TCObjectEqual(scene3D, scene3D2))
   {
 LABEL_32:
     mScene3D = self->mScene3D;
@@ -227,24 +227,24 @@ LABEL_34:
     goto LABEL_42;
   }
 
-  v34 = [(OADProperties *)self parent];
-  v35 = [(OADGraphicProperties *)self shape3D];
-  v36 = [v34 shape3D];
+  parent6 = [(OADProperties *)self parent];
+  shape3D = [(OADGraphicProperties *)self shape3D];
+  shape3D2 = [parent6 shape3D];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(objc_object *)v35 removeUnnecessaryOverrides];
+    [(objc_object *)shape3D removeUnnecessaryOverrides];
     v37 = objc_opt_class();
     if (v37 != objc_opt_class())
     {
       goto LABEL_41;
     }
 
-    v38 = [(objc_object *)v35 isMergedWithParent];
-    [(objc_object *)v35 setMergedWithParent:0];
-    v39 = [(objc_object *)v35 isAnythingOverridden];
-    [(objc_object *)v35 setMergedWithParent:v38];
-    if (v39)
+    isMergedWithParent6 = [(objc_object *)shape3D isMergedWithParent];
+    [(objc_object *)shape3D setMergedWithParent:0];
+    isAnythingOverridden5 = [(objc_object *)shape3D isAnythingOverridden];
+    [(objc_object *)shape3D setMergedWithParent:isMergedWithParent6];
+    if (isAnythingOverridden5)
     {
       goto LABEL_41;
     }
@@ -252,7 +252,7 @@ LABEL_34:
     goto LABEL_40;
   }
 
-  if (TCObjectEqual(v35, v36))
+  if (TCObjectEqual(shape3D, shape3D2))
   {
 LABEL_40:
     mShape3D = self->mShape3D;
@@ -264,30 +264,30 @@ LABEL_41:
 LABEL_42:
   if ([(OADGraphicProperties *)self hasStroke])
   {
-    v41 = [(OADProperties *)self parent];
-    v42 = [(OADGraphicProperties *)self stroke];
-    v43 = [v41 stroke];
+    parent7 = [(OADProperties *)self parent];
+    stroke = [(OADGraphicProperties *)self stroke];
+    stroke2 = [parent7 stroke];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(objc_object *)v42 removeUnnecessaryOverrides];
+      [(objc_object *)stroke removeUnnecessaryOverrides];
       v44 = objc_opt_class();
       if (v44 != objc_opt_class())
       {
         goto LABEL_49;
       }
 
-      v45 = [(objc_object *)v42 isMergedWithParent];
-      [(objc_object *)v42 setMergedWithParent:0];
-      v46 = [(objc_object *)v42 isAnythingOverridden];
-      [(objc_object *)v42 setMergedWithParent:v45];
-      if (v46)
+      isMergedWithParent7 = [(objc_object *)stroke isMergedWithParent];
+      [(objc_object *)stroke setMergedWithParent:0];
+      isAnythingOverridden6 = [(objc_object *)stroke isAnythingOverridden];
+      [(objc_object *)stroke setMergedWithParent:isMergedWithParent7];
+      if (isAnythingOverridden6)
       {
         goto LABEL_49;
       }
     }
 
-    else if (!TCObjectEqual(v42, v43))
+    else if (!TCObjectEqual(stroke, stroke2))
     {
 LABEL_49:
 
@@ -303,17 +303,17 @@ LABEL_49:
 LABEL_50:
   if ([(OADGraphicProperties *)self hasIsBehindText])
   {
-    v48 = [(OADProperties *)self parent];
-    v49 = [(OADGraphicProperties *)self isBehindText];
-    if (v49 == [v48 isBehindText])
+    parent8 = [(OADProperties *)self parent];
+    isBehindText = [(OADGraphicProperties *)self isBehindText];
+    if (isBehindText == [parent8 isBehindText])
     {
       [(OADGraphicProperties *)self setIsBehindText:0];
       *(self + 120) &= ~1u;
     }
   }
 
-  [(OADProperties *)self setMerged:v4];
-  [(OADProperties *)self setMergedWithParent:v5];
+  [(OADProperties *)self setMerged:isMerged];
+  [(OADProperties *)self setMergedWithParent:isMergedWithParent];
   v50.receiver = self;
   v50.super_class = OADGraphicProperties;
   [(OADDrawableProperties *)&v50 removeUnnecessaryOverrides];
@@ -354,56 +354,56 @@ LABEL_50:
   return v3;
 }
 
-- (void)setParent:(id)a3
+- (void)setParent:(id)parent
 {
-  v4 = a3;
+  parentCopy = parent;
   v17.receiver = self;
   v17.super_class = OADGraphicProperties;
-  [(OADProperties *)&v17 setParent:v4];
+  [(OADProperties *)&v17 setParent:parentCopy];
   if (self->mFill)
   {
-    v5 = [v4 fill];
+    fill = [parentCopy fill];
     v6 = self->mFill;
-    v7 = [(OADProperties *)self->mFill parent];
+    parent = [(OADProperties *)self->mFill parent];
 
-    if (v7 != v5)
+    if (parent != fill)
     {
-      v8 = [(OADProperties *)self->mFill parent];
-      v9 = [v8 parent];
+      parent2 = [(OADProperties *)self->mFill parent];
+      v8Parent = [parent2 parent];
 
-      if (v9)
+      if (v8Parent)
       {
-        v10 = [(OADProperties *)self->mFill parent];
+        parent3 = [(OADProperties *)self->mFill parent];
 
-        v6 = v10;
+        v6 = parent3;
       }
 
-      if ([v5 isMemberOfClass:objc_opt_class()])
+      if ([fill isMemberOfClass:objc_opt_class()])
       {
-        [(OADProperties *)v6 setParent:v5];
+        [(OADProperties *)v6 setParent:fill];
       }
     }
   }
 
   if (self->mStroke)
   {
-    v11 = [v4 stroke];
+    stroke = [parentCopy stroke];
     v12 = self->mStroke;
-    v13 = [(OADProperties *)self->mStroke parent];
+    parent4 = [(OADProperties *)self->mStroke parent];
 
-    if (v13 != v11)
+    if (parent4 != stroke)
     {
-      v14 = [(OADProperties *)self->mStroke parent];
-      v15 = [v14 parent];
+      parent5 = [(OADProperties *)self->mStroke parent];
+      v14Parent = [parent5 parent];
 
-      if (v15)
+      if (v14Parent)
       {
-        v16 = [(OADProperties *)self->mStroke parent];
+        parent6 = [(OADProperties *)self->mStroke parent];
 
-        v12 = v16;
+        v12 = parent6;
       }
 
-      [(OADStroke *)v12 setParent:v11];
+      [(OADStroke *)v12 setParent:stroke];
     }
   }
 }
@@ -412,7 +412,7 @@ LABEL_50:
 {
   if ([(OADGraphicProperties *)self hasFill])
   {
-    v3 = [(OADGraphicProperties *)self fill];
+    fill = [(OADGraphicProperties *)self fill];
     objc_opt_class();
     v4 = objc_opt_isKindOfClass() ^ 1;
   }
@@ -452,9 +452,9 @@ LABEL_50:
   return v3;
 }
 
-- (void)setIsBehindText:(BOOL)a3
+- (void)setIsBehindText:(BOOL)text
 {
-  if (a3)
+  if (text)
   {
     v3 = 2;
   }
@@ -468,41 +468,41 @@ LABEL_50:
   *(self + 120) |= 1u;
 }
 
-- (void)fixPropertiesForChangingParentPreservingEffectiveValues:(id)a3
+- (void)fixPropertiesForChangingParentPreservingEffectiveValues:(id)values
 {
-  v4 = a3;
+  valuesCopy = values;
   v51.receiver = self;
   v51.super_class = OADGraphicProperties;
-  [(OADDrawableProperties *)&v51 fixPropertiesForChangingParentPreservingEffectiveValues:v4];
-  if (self->mFill || ([(OADProperties *)self parent], v5 = objc_claimAutoreleasedReturnValue(), v5, v5 != v4))
+  [(OADDrawableProperties *)&v51 fixPropertiesForChangingParentPreservingEffectiveValues:valuesCopy];
+  if (self->mFill || ([(OADProperties *)self parent], v5 = objc_claimAutoreleasedReturnValue(), v5, v5 != valuesCopy))
   {
-    v6 = [(OADGraphicProperties *)self fill];
+    fill = [(OADGraphicProperties *)self fill];
     v7 = objc_alloc_init(objc_opt_class());
 
-    v8 = [(OADGraphicProperties *)self fill];
-    [v7 setParent:v8];
+    fill2 = [(OADGraphicProperties *)self fill];
+    [v7 setParent:fill2];
 
     objc_storeStrong(&self->mFill, v7);
-    v9 = [v4 possiblyInexistentOverrideForSelector:sel_hasFill];
+    fill3 = [valuesCopy possiblyInexistentOverrideForSelector:sel_hasFill];
 
-    if (v9)
+    if (fill3)
     {
-      v9 = [v4 fill];
+      fill3 = [valuesCopy fill];
     }
 
     mFill = self->mFill;
-    if (mFill != v9)
+    if (mFill != fill3)
     {
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
       if ((isKindOfClass & 1) == 0)
       {
-        v12 = [objc_opt_class() defaultProperties];
+        defaultProperties = [objc_opt_class() defaultProperties];
 
-        v9 = v12;
+        fill3 = defaultProperties;
       }
 
-      [(OADProperties *)self->mFill changeParentPreservingEffectiveValues:v9];
+      [(OADProperties *)self->mFill changeParentPreservingEffectiveValues:fill3];
       if ((isKindOfClass & 1) == 0 || [(OADProperties *)self->mFill isAnythingOverridden])
       {
         goto LABEL_12;
@@ -516,33 +516,33 @@ LABEL_50:
 LABEL_12:
   }
 
-  if ([(OADGraphicProperties *)self hasEffects]|| ([(OADProperties *)self parent], v13 = objc_claimAutoreleasedReturnValue(), v13, v13 != v4))
+  if ([(OADGraphicProperties *)self hasEffects]|| ([(OADProperties *)self parent], v13 = objc_claimAutoreleasedReturnValue(), v13, v13 != valuesCopy))
   {
     v14 = [(OADProperties *)self possiblyInexistentOverrideForSelector:sel_hasEffects];
 
     if (v14)
     {
-      v15 = [(OADGraphicProperties *)self effects];
+      effects = [(OADGraphicProperties *)self effects];
     }
 
     else
     {
-      v15 = 0;
+      effects = 0;
     }
 
-    v16 = [v4 possiblyInexistentOverrideForSelector:sel_hasEffects];
+    v16 = [valuesCopy possiblyInexistentOverrideForSelector:sel_hasEffects];
 
     if (v16)
     {
-      v17 = [v4 effects];
+      effects2 = [valuesCopy effects];
     }
 
     else
     {
-      v17 = 0;
+      effects2 = 0;
     }
 
-    v18 = TCObjectEqual(v15, v17);
+    v18 = TCObjectEqual(effects, effects2);
     mEffects = self->mEffects;
     if (v18)
     {
@@ -551,37 +551,37 @@ LABEL_12:
 
     else if (!mEffects && v14)
     {
-      [(OADGraphicProperties *)self setEffects:v15];
+      [(OADGraphicProperties *)self setEffects:effects];
     }
   }
 
-  if ([(OADGraphicProperties *)self hasExts]|| ([(OADProperties *)self parent], v20 = objc_claimAutoreleasedReturnValue(), v20, v20 != v4))
+  if ([(OADGraphicProperties *)self hasExts]|| ([(OADProperties *)self parent], v20 = objc_claimAutoreleasedReturnValue(), v20, v20 != valuesCopy))
   {
     v21 = [(OADProperties *)self possiblyInexistentOverrideForSelector:sel_hasExts];
 
     if (v21)
     {
-      v22 = [(OADGraphicProperties *)self exts];
+      exts = [(OADGraphicProperties *)self exts];
     }
 
     else
     {
-      v22 = 0;
+      exts = 0;
     }
 
-    v23 = [v4 possiblyInexistentOverrideForSelector:sel_hasExts];
+    v23 = [valuesCopy possiblyInexistentOverrideForSelector:sel_hasExts];
 
     if (v23)
     {
-      v24 = [v4 exts];
+      exts2 = [valuesCopy exts];
     }
 
     else
     {
-      v24 = 0;
+      exts2 = 0;
     }
 
-    v25 = TCObjectEqual(v22, v24);
+    v25 = TCObjectEqual(exts, exts2);
     mExts = self->mExts;
     if (v25)
     {
@@ -590,37 +590,37 @@ LABEL_12:
 
     else if (!mExts && v21)
     {
-      [(OADGraphicProperties *)self setExts:v22];
+      [(OADGraphicProperties *)self setExts:exts];
     }
   }
 
-  if ([(OADGraphicProperties *)self hasScene3D]|| ([(OADProperties *)self parent], v27 = objc_claimAutoreleasedReturnValue(), v27, v27 != v4))
+  if ([(OADGraphicProperties *)self hasScene3D]|| ([(OADProperties *)self parent], v27 = objc_claimAutoreleasedReturnValue(), v27, v27 != valuesCopy))
   {
     v28 = [(OADProperties *)self possiblyInexistentOverrideForSelector:sel_hasScene3D];
 
     if (v28)
     {
-      v29 = [(OADGraphicProperties *)self scene3D];
+      scene3D = [(OADGraphicProperties *)self scene3D];
     }
 
     else
     {
-      v29 = 0;
+      scene3D = 0;
     }
 
-    v30 = [v4 possiblyInexistentOverrideForSelector:sel_hasScene3D];
+    v30 = [valuesCopy possiblyInexistentOverrideForSelector:sel_hasScene3D];
 
     if (v30)
     {
-      v31 = [v4 scene3D];
+      scene3D2 = [valuesCopy scene3D];
     }
 
     else
     {
-      v31 = 0;
+      scene3D2 = 0;
     }
 
-    v32 = TCObjectEqual(v29, v31);
+    v32 = TCObjectEqual(scene3D, scene3D2);
     mScene3D = self->mScene3D;
     if (v32)
     {
@@ -629,37 +629,37 @@ LABEL_12:
 
     else if (!mScene3D && v28)
     {
-      [(OADGraphicProperties *)self setScene3D:v29];
+      [(OADGraphicProperties *)self setScene3D:scene3D];
     }
   }
 
-  if ([(OADGraphicProperties *)self hasShape3D]|| ([(OADProperties *)self parent], v34 = objc_claimAutoreleasedReturnValue(), v34, v34 != v4))
+  if ([(OADGraphicProperties *)self hasShape3D]|| ([(OADProperties *)self parent], v34 = objc_claimAutoreleasedReturnValue(), v34, v34 != valuesCopy))
   {
     v35 = [(OADProperties *)self possiblyInexistentOverrideForSelector:sel_hasShape3D];
 
     if (v35)
     {
-      v36 = [(OADGraphicProperties *)self shape3D];
+      shape3D = [(OADGraphicProperties *)self shape3D];
     }
 
     else
     {
-      v36 = 0;
+      shape3D = 0;
     }
 
-    v37 = [v4 possiblyInexistentOverrideForSelector:sel_hasShape3D];
+    v37 = [valuesCopy possiblyInexistentOverrideForSelector:sel_hasShape3D];
 
     if (v37)
     {
-      v38 = [v4 shape3D];
+      shape3D2 = [valuesCopy shape3D];
     }
 
     else
     {
-      v38 = 0;
+      shape3D2 = 0;
     }
 
-    v39 = TCObjectEqual(v36, v38);
+    v39 = TCObjectEqual(shape3D, shape3D2);
     mShape3D = self->mShape3D;
     if (v39)
     {
@@ -668,39 +668,39 @@ LABEL_12:
 
     else if (!mShape3D && v35)
     {
-      [(OADGraphicProperties *)self setShape3D:v36];
+      [(OADGraphicProperties *)self setShape3D:shape3D];
     }
   }
 
-  if (self->mStroke || ([(OADProperties *)self parent], v41 = objc_claimAutoreleasedReturnValue(), v41, v41 != v4))
+  if (self->mStroke || ([(OADProperties *)self parent], v41 = objc_claimAutoreleasedReturnValue(), v41, v41 != valuesCopy))
   {
-    v42 = [(OADGraphicProperties *)self stroke];
+    stroke = [(OADGraphicProperties *)self stroke];
     v43 = objc_alloc_init(objc_opt_class());
 
-    v44 = [(OADGraphicProperties *)self stroke];
-    [v43 setParent:v44];
+    stroke2 = [(OADGraphicProperties *)self stroke];
+    [v43 setParent:stroke2];
 
     objc_storeStrong(&self->mStroke, v43);
-    v45 = [v4 possiblyInexistentOverrideForSelector:sel_hasStroke];
+    stroke3 = [valuesCopy possiblyInexistentOverrideForSelector:sel_hasStroke];
 
-    if (v45)
+    if (stroke3)
     {
-      v45 = [v4 stroke];
+      stroke3 = [valuesCopy stroke];
     }
 
     mStroke = self->mStroke;
-    if (mStroke != v45)
+    if (mStroke != stroke3)
     {
       objc_opt_class();
       v47 = objc_opt_isKindOfClass();
       if ((v47 & 1) == 0)
       {
-        v48 = [objc_opt_class() defaultProperties];
+        defaultProperties2 = [objc_opt_class() defaultProperties];
 
-        v45 = v48;
+        stroke3 = defaultProperties2;
       }
 
-      [(OADProperties *)self->mStroke changeParentPreservingEffectiveValues:v45];
+      [(OADProperties *)self->mStroke changeParentPreservingEffectiveValues:stroke3];
       if ((v47 & 1) == 0 || [(OADStroke *)self->mStroke isAnythingOverridden])
       {
         goto LABEL_80;
@@ -714,10 +714,10 @@ LABEL_12:
 LABEL_80:
   }
 
-  if ((*(self + 120) & 1) != 0 || ([(OADProperties *)self parent], v49 = objc_claimAutoreleasedReturnValue(), v49, v49 != v4))
+  if ((*(self + 120) & 1) != 0 || ([(OADProperties *)self parent], v49 = objc_claimAutoreleasedReturnValue(), v49, v49 != valuesCopy))
   {
-    v50 = [(OADGraphicProperties *)self isBehindText];
-    if (v50 == [v4 isBehindText])
+    isBehindText = [(OADGraphicProperties *)self isBehindText];
+    if (isBehindText == [valuesCopy isBehindText])
     {
       *(self + 120) &= ~1u;
     }
@@ -773,13 +773,13 @@ LABEL_80:
   return v6 ^ [(OADDrawableProperties *)&v16 hash]^ v14;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = [(OADGraphicProperties *)self hash];
     if (v6 == [v5 hash] && (v7 = objc_msgSend(v5, "hasFill"), v7 == -[OADGraphicProperties hasFill](self, "hasFill")) && (!objc_msgSend(v5, "hasFill") || (objc_msgSend(v5, "fill"), v8 = objc_claimAutoreleasedReturnValue(), -[OADGraphicProperties fill](self, "fill"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v8, "isEqual:", v9), v9, v8, (v10 & 1) != 0)) && (v11 = objc_msgSend(v5, "hasEffects"), v11 == -[OADGraphicProperties hasEffects](self, "hasEffects")) && (!objc_msgSend(v5, "hasEffects") || (objc_msgSend(v5, "effects"), v12 = objc_claimAutoreleasedReturnValue(), -[OADGraphicProperties effects](self, "effects"), v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v12, "isEqualToArray:", v13), v13, v12, (v14 & 1) != 0)) && (v15 = objc_msgSend(v5, "hasScene3D"), v15 == -[OADGraphicProperties hasScene3D](self, "hasScene3D")) && (!objc_msgSend(v5, "hasScene3D") || (objc_msgSend(v5, "scene3D"), v16 = objc_claimAutoreleasedReturnValue(), -[OADGraphicProperties scene3D](self, "scene3D"), v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v16, "isEqual:", v17), v17, v16, (v18 & 1) != 0)) && (v19 = objc_msgSend(v5, "hasShape3D"), v19 == -[OADGraphicProperties hasShape3D](self, "hasShape3D")) && (!objc_msgSend(v5, "hasShape3D") || (objc_msgSend(v5, "shape3D"), v20 = objc_claimAutoreleasedReturnValue(), -[OADGraphicProperties shape3D](self, "shape3D"), v21 = objc_claimAutoreleasedReturnValue(), v22 = objc_msgSend(v20, "isEqual:", v21), v21, v20, (v22 & 1) != 0)) && (v23 = objc_msgSend(v5, "hasStroke"), v23 == -[OADGraphicProperties hasStroke](self, "hasStroke")) && (!objc_msgSend(v5, "hasStroke") || (objc_msgSend(v5, "stroke"), v24 = objc_claimAutoreleasedReturnValue(), -[OADGraphicProperties stroke](self, "stroke"), v25 = objc_claimAutoreleasedReturnValue(), v26 = objc_msgSend(v24, "isEqual:", v25), v25, v24, (v26 & 1) != 0)) && (v27 = objc_msgSend(v5, "hasIsBehindText"), v27 == -[OADGraphicProperties hasIsBehindText](self, "hasIsBehindText")) && (!objc_msgSend(v5, "hasIsBehindText") || (v30 = objc_msgSend(v5, "isBehindText"), v30 == -[OADGraphicProperties isBehindText](self, "isBehindText"))))
     {

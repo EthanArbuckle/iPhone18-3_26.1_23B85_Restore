@@ -1,28 +1,28 @@
 @interface SCSchemaSCCheckCorrectionResponse
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (SCSchemaSCCheckCorrectionResponse)initWithDictionary:(id)a3;
-- (SCSchemaSCCheckCorrectionResponse)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (SCSchemaSCCheckCorrectionResponse)initWithDictionary:(id)dictionary;
+- (SCSchemaSCCheckCorrectionResponse)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addResults:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addResults:(id)results;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SCSchemaSCCheckCorrectionResponse
 
-- (SCSchemaSCCheckCorrectionResponse)initWithDictionary:(id)a3
+- (SCSchemaSCCheckCorrectionResponse)initWithDictionary:(id)dictionary
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v22.receiver = self;
   v22.super_class = SCSchemaSCCheckCorrectionResponse;
   v5 = [(SCSchemaSCCheckCorrectionResponse *)&v22 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"results"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"results"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -66,7 +66,7 @@
       }
     }
 
-    v15 = [v4 objectForKeyedSubscript:{@"candidateCount", v18}];
+    v15 = [dictionaryCopy objectForKeyedSubscript:{@"candidateCount", v18}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -79,30 +79,30 @@
   return v5;
 }
 
-- (SCSchemaSCCheckCorrectionResponse)initWithJSON:(id)a3
+- (SCSchemaSCCheckCorrectionResponse)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SCSchemaSCCheckCorrectionResponse *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(SCSchemaSCCheckCorrectionResponse *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(SCSchemaSCCheckCorrectionResponse *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -116,16 +116,16 @@
 - (id)dictionaryRepresentation
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[SCSchemaSCCheckCorrectionResponse candidateCount](self, "candidateCount")}];
-    [v3 setObject:v4 forKeyedSubscript:@"candidateCount"];
+    [dictionary setObject:v4 forKeyedSubscript:@"candidateCount"];
   }
 
   if ([(NSArray *)self->_results count])
   {
-    v5 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
@@ -145,16 +145,16 @@
             objc_enumerationMutation(v6);
           }
 
-          v11 = [*(*(&v14 + 1) + 8 * i) dictionaryRepresentation];
-          if (v11)
+          dictionaryRepresentation = [*(*(&v14 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation)
           {
-            [v5 addObject:v11];
+            [array addObject:dictionaryRepresentation];
           }
 
           else
           {
-            v12 = [MEMORY[0x1E695DFB0] null];
-            [v5 addObject:v12];
+            null = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null];
           }
         }
 
@@ -164,12 +164,12 @@
       while (v8);
     }
 
-    [v3 setObject:v5 forKeyedSubscript:@"results"];
+    [dictionary setObject:array forKeyedSubscript:@"results"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3, v14];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary, v14];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -188,18 +188,18 @@
   return v4 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(SCSchemaSCCheckCorrectionResponse *)self results];
-  v6 = [v4 results];
-  v7 = v6;
-  if ((v5 != 0) == (v6 == 0))
+  results = [(SCSchemaSCCheckCorrectionResponse *)self results];
+  results2 = [equalCopy results];
+  v7 = results2;
+  if ((results != 0) == (results2 == 0))
   {
 
 LABEL_12:
@@ -207,13 +207,13 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v8 = [(SCSchemaSCCheckCorrectionResponse *)self results];
-  if (v8)
+  results3 = [(SCSchemaSCCheckCorrectionResponse *)self results];
+  if (results3)
   {
-    v9 = v8;
-    v10 = [(SCSchemaSCCheckCorrectionResponse *)self results];
-    v11 = [v4 results];
-    v12 = [v10 isEqual:v11];
+    v9 = results3;
+    results4 = [(SCSchemaSCCheckCorrectionResponse *)self results];
+    results5 = [equalCopy results];
+    v12 = [results4 isEqual:results5];
 
     if (!v12)
     {
@@ -225,7 +225,7 @@ LABEL_12:
   {
   }
 
-  if ((*&self->_has & 1) != (v4[20] & 1))
+  if ((*&self->_has & 1) != (equalCopy[20] & 1))
   {
     goto LABEL_12;
   }
@@ -233,7 +233,7 @@ LABEL_12:
   if (*&self->_has)
   {
     candidateCount = self->_candidateCount;
-    if (candidateCount != [v4 candidateCount])
+    if (candidateCount != [equalCopy candidateCount])
     {
       goto LABEL_12;
     }
@@ -245,10 +245,10 @@ LABEL_13:
   return v14;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -286,32 +286,32 @@ LABEL_13:
   }
 }
 
-- (void)addResults:(id)a3
+- (void)addResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   results = self->_results;
-  v8 = v4;
+  v8 = resultsCopy;
   if (!results)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_results;
-    self->_results = v6;
+    self->_results = array;
 
-    v4 = v8;
+    resultsCopy = v8;
     results = self->_results;
   }
 
-  [(NSArray *)results addObject:v4];
+  [(NSArray *)results addObject:resultsCopy];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = SCSchemaSCCheckCorrectionResponse;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(SCSchemaSCCheckCorrectionResponse *)self results:v9.receiver];
-  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:v4];
+  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:policyCopy];
 
   [(SCSchemaSCCheckCorrectionResponse *)self setResults:v7];
 

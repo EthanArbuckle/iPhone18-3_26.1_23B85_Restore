@@ -1,6 +1,6 @@
 @interface CTXPCCheckPreFlightEligibilityRequest
 + (id)allowedClassesForArguments;
-- (CTXPCCheckPreFlightEligibilityRequest)initWithIccid:(id)a3 mccs:(id)a4 mncs:(id)a5 gid1s:(id)a6 gid2s:(id)a7 smdpUrl:(id)a8 iccidPrefix:(id)a9;
+- (CTXPCCheckPreFlightEligibilityRequest)initWithIccid:(id)iccid mccs:(id)mccs mncs:(id)mncs gid1s:(id)gid1s gid2s:(id)gid2s smdpUrl:(id)url iccidPrefix:(id)prefix;
 - (id)gid1s;
 - (id)gid2s;
 - (id)iccidPrefix;
@@ -8,28 +8,28 @@
 - (id)mccs;
 - (id)mncs;
 - (id)smdpUrl;
-- (void)performRequestWithHandler:(id)a3 completionHandler:(id)a4;
+- (void)performRequestWithHandler:(id)handler completionHandler:(id)completionHandler;
 @end
 
 @implementation CTXPCCheckPreFlightEligibilityRequest
 
-- (CTXPCCheckPreFlightEligibilityRequest)initWithIccid:(id)a3 mccs:(id)a4 mncs:(id)a5 gid1s:(id)a6 gid2s:(id)a7 smdpUrl:(id)a8 iccidPrefix:(id)a9
+- (CTXPCCheckPreFlightEligibilityRequest)initWithIccid:(id)iccid mccs:(id)mccs mncs:(id)mncs gid1s:(id)gid1s gid2s:(id)gid2s smdpUrl:(id)url iccidPrefix:(id)prefix
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
+  iccidCopy = iccid;
+  mccsCopy = mccs;
+  mncsCopy = mncs;
+  gid1sCopy = gid1s;
+  gid2sCopy = gid2s;
+  urlCopy = url;
+  prefixCopy = prefix;
   v22 = objc_opt_new();
-  [v22 setObject:v15 forKeyedSubscript:@"iccids"];
-  [v22 setObject:v16 forKeyedSubscript:@"mccs"];
-  [v22 setObject:v17 forKeyedSubscript:@"mncs"];
-  [v22 setObject:v18 forKeyedSubscript:@"gid1s"];
-  [v22 setObject:v19 forKeyedSubscript:@"gid2s"];
-  [v22 setObject:v20 forKeyedSubscript:@"urlString"];
-  [v22 setObject:v21 forKeyedSubscript:@"iccidPrefix"];
+  [v22 setObject:iccidCopy forKeyedSubscript:@"iccids"];
+  [v22 setObject:mccsCopy forKeyedSubscript:@"mccs"];
+  [v22 setObject:mncsCopy forKeyedSubscript:@"mncs"];
+  [v22 setObject:gid1sCopy forKeyedSubscript:@"gid1s"];
+  [v22 setObject:gid2sCopy forKeyedSubscript:@"gid2s"];
+  [v22 setObject:urlCopy forKeyedSubscript:@"urlString"];
+  [v22 setObject:prefixCopy forKeyedSubscript:@"iccidPrefix"];
   v25.receiver = self;
   v25.super_class = CTXPCCheckPreFlightEligibilityRequest;
   v23 = [(CTXPCMessage *)&v25 initWithNamedArguments:v22];
@@ -37,24 +37,24 @@
   return v23;
 }
 
-- (void)performRequestWithHandler:(id)a3 completionHandler:(id)a4
+- (void)performRequestWithHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v15 = a3;
-  v6 = a4;
-  v7 = [(CTXPCCheckPreFlightEligibilityRequest *)self iccids];
-  v8 = [(CTXPCCheckPreFlightEligibilityRequest *)self mccs];
-  v9 = [(CTXPCCheckPreFlightEligibilityRequest *)self mncs];
-  v10 = [(CTXPCCheckPreFlightEligibilityRequest *)self gid1s];
-  v11 = [(CTXPCCheckPreFlightEligibilityRequest *)self gid2s];
-  v12 = [(CTXPCCheckPreFlightEligibilityRequest *)self smdpUrl];
-  v13 = [(CTXPCCheckPreFlightEligibilityRequest *)self iccidPrefix];
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  iccids = [(CTXPCCheckPreFlightEligibilityRequest *)self iccids];
+  mccs = [(CTXPCCheckPreFlightEligibilityRequest *)self mccs];
+  mncs = [(CTXPCCheckPreFlightEligibilityRequest *)self mncs];
+  gid1s = [(CTXPCCheckPreFlightEligibilityRequest *)self gid1s];
+  gid2s = [(CTXPCCheckPreFlightEligibilityRequest *)self gid2s];
+  smdpUrl = [(CTXPCCheckPreFlightEligibilityRequest *)self smdpUrl];
+  iccidPrefix = [(CTXPCCheckPreFlightEligibilityRequest *)self iccidPrefix];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __85__CTXPCCheckPreFlightEligibilityRequest_performRequestWithHandler_completionHandler___block_invoke;
   v16[3] = &unk_1E6A460B8;
-  v14 = v6;
+  v14 = completionHandlerCopy;
   v17 = v14;
-  [v15 checkPreFlightEligibility:v7 mccs:v8 mncs:v9 gid1s:v10 gid2s:v11 smdpUrl:v12 iccidPrefix:v13 completion:v16];
+  [handlerCopy checkPreFlightEligibility:iccids mccs:mccs mncs:mncs gid1s:gid1s gid2s:gid2s smdpUrl:smdpUrl iccidPrefix:iccidPrefix completion:v16];
 }
 
 void __85__CTXPCCheckPreFlightEligibilityRequest_performRequestWithHandler_completionHandler___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -68,7 +68,7 @@ void __85__CTXPCCheckPreFlightEligibilityRequest_performRequestWithHandler_compl
 + (id)allowedClassesForArguments
 {
   v8[2] = *MEMORY[0x1E69E9840];
-  v7.receiver = a1;
+  v7.receiver = self;
   v7.super_class = &OBJC_METACLASS___CTXPCCheckPreFlightEligibilityRequest;
   v2 = objc_msgSendSuper2(&v7, sel_allowedClassesForArguments);
   v8[0] = objc_opt_class();
@@ -83,8 +83,8 @@ void __85__CTXPCCheckPreFlightEligibilityRequest_performRequestWithHandler_compl
 
 - (id)iccids
 {
-  v2 = [(CTXPCMessage *)self namedArguments];
-  v3 = [v2 objectForKeyedSubscript:@"iccids"];
+  namedArguments = [(CTXPCMessage *)self namedArguments];
+  v3 = [namedArguments objectForKeyedSubscript:@"iccids"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -101,8 +101,8 @@ void __85__CTXPCCheckPreFlightEligibilityRequest_performRequestWithHandler_compl
 
 - (id)mccs
 {
-  v2 = [(CTXPCMessage *)self namedArguments];
-  v3 = [v2 objectForKeyedSubscript:@"mccs"];
+  namedArguments = [(CTXPCMessage *)self namedArguments];
+  v3 = [namedArguments objectForKeyedSubscript:@"mccs"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -119,8 +119,8 @@ void __85__CTXPCCheckPreFlightEligibilityRequest_performRequestWithHandler_compl
 
 - (id)mncs
 {
-  v2 = [(CTXPCMessage *)self namedArguments];
-  v3 = [v2 objectForKeyedSubscript:@"mncs"];
+  namedArguments = [(CTXPCMessage *)self namedArguments];
+  v3 = [namedArguments objectForKeyedSubscript:@"mncs"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -137,8 +137,8 @@ void __85__CTXPCCheckPreFlightEligibilityRequest_performRequestWithHandler_compl
 
 - (id)gid1s
 {
-  v2 = [(CTXPCMessage *)self namedArguments];
-  v3 = [v2 objectForKeyedSubscript:@"gid1s"];
+  namedArguments = [(CTXPCMessage *)self namedArguments];
+  v3 = [namedArguments objectForKeyedSubscript:@"gid1s"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -155,8 +155,8 @@ void __85__CTXPCCheckPreFlightEligibilityRequest_performRequestWithHandler_compl
 
 - (id)gid2s
 {
-  v2 = [(CTXPCMessage *)self namedArguments];
-  v3 = [v2 objectForKeyedSubscript:@"gid2s"];
+  namedArguments = [(CTXPCMessage *)self namedArguments];
+  v3 = [namedArguments objectForKeyedSubscript:@"gid2s"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -173,8 +173,8 @@ void __85__CTXPCCheckPreFlightEligibilityRequest_performRequestWithHandler_compl
 
 - (id)smdpUrl
 {
-  v2 = [(CTXPCMessage *)self namedArguments];
-  v3 = [v2 objectForKeyedSubscript:@"urlString"];
+  namedArguments = [(CTXPCMessage *)self namedArguments];
+  v3 = [namedArguments objectForKeyedSubscript:@"urlString"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -191,8 +191,8 @@ void __85__CTXPCCheckPreFlightEligibilityRequest_performRequestWithHandler_compl
 
 - (id)iccidPrefix
 {
-  v2 = [(CTXPCMessage *)self namedArguments];
-  v3 = [v2 objectForKeyedSubscript:@"iccidPrefix"];
+  namedArguments = [(CTXPCMessage *)self namedArguments];
+  v3 = [namedArguments objectForKeyedSubscript:@"iccidPrefix"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {

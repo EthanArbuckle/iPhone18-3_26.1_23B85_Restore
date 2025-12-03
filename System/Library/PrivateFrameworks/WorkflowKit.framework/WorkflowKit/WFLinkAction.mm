@@ -1,65 +1,65 @@
 @interface WFLinkAction
-+ (Class)classForLinkActionWithIdentifier:(id)a3 metadata:(id)a4;
-+ (id)inputParameterMetadataWithActionMetadata:(id)a3;
++ (Class)classForLinkActionWithIdentifier:(id)identifier metadata:(id)metadata;
++ (id)inputParameterMetadataWithActionMetadata:(id)metadata;
 + (id)linkActionClassOverrides;
 + (id)linkProtocolClassOverrides;
-+ (id)providedActionWithIdentifier:(id)a3 serializedParameters:(id)a4;
-- (BOOL)canOfferSuggestionsForParameterWithKey:(id)a3;
++ (id)providedActionWithIdentifier:(id)identifier serializedParameters:(id)parameters;
+- (BOOL)canOfferSuggestionsForParameterWithKey:(id)key;
 - (BOOL)openWhenRunParameterIsHidden;
-- (BOOL)setParameterState:(id)a3 forKey:(id)a4;
+- (BOOL)setParameterState:(id)state forKey:(id)key;
 - (BOOL)showWhenRunParameterIsHidden;
 - (BOOL)showsWhenRun;
-- (BOOL)updateParameterSummaryIfNeededWithLinkAction:(id)a3;
+- (BOOL)updateParameterSummaryIfNeededWithLinkAction:(id)action;
 - (NSNumber)showsWhenRunIfApplicable;
 - (NSString)developerSpecifiedTitle;
-- (WFLinkAction)initWithIdentifier:(id)a3 metadata:(id)a4 definition:(id)a5 serializedParameters:(id)a6 appIntentDescriptor:(id)a7 fullyQualifiedActionIdentifier:(id)a8;
+- (WFLinkAction)initWithIdentifier:(id)identifier metadata:(id)metadata definition:(id)definition serializedParameters:(id)parameters appIntentDescriptor:(id)descriptor fullyQualifiedActionIdentifier:(id)actionIdentifier;
 - (WFLinkAction)linkActionWithSerializedParameters;
 - (id)currentParameterStates;
 - (id)generatedResourceNodes;
 - (id)icon;
 - (id)iconName;
 - (id)inputDictionary;
-- (id)localizedCategoryWithContext:(id)a3;
-- (id)localizedDefaultOutputNameWithContext:(id)a3;
-- (id)localizedDescriptionSummaryWithContext:(id)a3;
-- (id)localizedDiscontinuedDescriptionWithContext:(id)a3;
-- (id)localizedKeywordsWithContext:(id)a3;
-- (id)localizedNameWithContext:(id)a3;
+- (id)localizedCategoryWithContext:(id)context;
+- (id)localizedDefaultOutputNameWithContext:(id)context;
+- (id)localizedDescriptionSummaryWithContext:(id)context;
+- (id)localizedDiscontinuedDescriptionWithContext:(id)context;
+- (id)localizedKeywordsWithContext:(id)context;
+- (id)localizedNameWithContext:(id)context;
 - (id)outputMeasurementUnitType;
 - (id)parameterDefinitions;
-- (id)serializedParametersForDonatedIntent:(id)a3 allowDroppingUnconfigurableValues:(BOOL)a4;
-- (id)smartPromptWithContentDescription:(id)a3 contentDestination:(id)a4 workflowName:(id)a5;
+- (id)serializedParametersForDonatedIntent:(id)intent allowDroppingUnconfigurableValues:(BOOL)values;
+- (id)smartPromptWithContentDescription:(id)description contentDestination:(id)destination workflowName:(id)name;
 - (id)supportedAppIdentifiers;
-- (void)action:(id)a3 parameterStateDidChangeForKey:(id)a4;
+- (void)action:(id)action parameterStateDidChangeForKey:(id)key;
 - (void)dealloc;
 - (void)deregisterExecutorProgressListeners;
-- (void)documentsValueFromRepresentation:(id)a3 valueType:(id)a4 completionHandler:(id)a5;
-- (void)executor:(id)a3 didPerformActionWithResult:(id)a4 error:(id)a5;
-- (void)executor:(id)a3 needsChoiceWithRequest:(id)a4;
-- (void)executor:(id)a3 needsConfirmationWithRequest:(id)a4;
-- (void)executor:(id)a3 needsDisambiguationWithRequest:(id)a4;
-- (void)executor:(id)a3 needsValueWithRequest:(id)a4;
-- (void)fetchSuggestedEntitiesForParameterWithKey:(id)a3 completionHandler:(id)a4;
-- (void)finishRunningWithResult:(id)a3 error:(id)a4;
+- (void)documentsValueFromRepresentation:(id)representation valueType:(id)type completionHandler:(id)handler;
+- (void)executor:(id)executor didPerformActionWithResult:(id)result error:(id)error;
+- (void)executor:(id)executor needsChoiceWithRequest:(id)request;
+- (void)executor:(id)executor needsConfirmationWithRequest:(id)request;
+- (void)executor:(id)executor needsDisambiguationWithRequest:(id)request;
+- (void)executor:(id)executor needsValueWithRequest:(id)request;
+- (void)fetchSuggestedEntitiesForParameterWithKey:(id)key completionHandler:(id)handler;
+- (void)finishRunningWithResult:(id)result error:(id)error;
 - (void)forceUpdateParameterVisibility;
-- (void)getAlertForLinkResult:(id)a3 encodedSnippetActionToolInvocation:(id)a4 handler:(id)a5 completionHandler:(id)a6;
-- (void)getContentDestinationWithCompletionHandler:(id)a3;
-- (void)getDocumentsLinkValueFromParameterMetadata:(id)a3 processedParameters:(id)a4 parameterState:(id)a5 valueType:(id)a6 completionHandler:(id)a7;
+- (void)getAlertForLinkResult:(id)result encodedSnippetActionToolInvocation:(id)invocation handler:(id)handler completionHandler:(id)completionHandler;
+- (void)getContentDestinationWithCompletionHandler:(id)handler;
+- (void)getDocumentsLinkValueFromParameterMetadata:(id)metadata processedParameters:(id)parameters parameterState:(id)state valueType:(id)type completionHandler:(id)handler;
 - (void)initializeParameters;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)performPresentationAction:(id)a3;
-- (void)performPresentationActionWithResult:(id)a3;
-- (void)presentAlertForChoiceRequest:(id)a3 dialogString:(id)a4;
-- (void)requestUnlock:(id)a3;
-- (void)runAsynchronouslyWithInput:(id)a3;
-- (void)runAsynchronouslyWithLinkAction:(id)a3;
-- (void)runSnippetActionWithLinkAction:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)performPresentationAction:(id)action;
+- (void)performPresentationActionWithResult:(id)result;
+- (void)presentAlertForChoiceRequest:(id)request dialogString:(id)string;
+- (void)requestUnlock:(id)unlock;
+- (void)runAsynchronouslyWithInput:(id)input;
+- (void)runAsynchronouslyWithLinkAction:(id)action;
+- (void)runSnippetActionWithLinkAction:(id)action;
 - (void)serializeAppIntentDescriptorIfNecessary;
-- (void)setExecutorProgress:(id)a3;
-- (void)showResultIfNeeded:(id)a3 completionHandler:(id)a4;
-- (void)updateParameterSummaryIfNeeded:(id)a3;
+- (void)setExecutorProgress:(id)progress;
+- (void)showResultIfNeeded:(id)needed completionHandler:(id)handler;
+- (void)updateParameterSummaryIfNeeded:(id)needed;
 - (void)updateParameterVisibility;
-- (void)wasAddedToWorkflow:(id)a3;
+- (void)wasAddedToWorkflow:(id)workflow;
 @end
 
 @implementation WFLinkAction
@@ -100,9 +100,9 @@
 {
   v39 = *MEMORY[0x1E69E9840];
   parameterDefinitions = self->_parameterDefinitions;
-  v4 = [MEMORY[0x1E695DFB0] null];
+  null = [MEMORY[0x1E695DFB0] null];
 
-  if (parameterDefinitions == v4)
+  if (parameterDefinitions == null)
   {
     v5 = 0;
   }
@@ -117,11 +117,11 @@
   {
     v33.receiver = self;
     v33.super_class = WFLinkAction;
-    v6 = [(WFAction *)&v33 parameterDefinitions];
-    if ([(NSArray *)v6 count])
+    parameterDefinitions = [(WFAction *)&v33 parameterDefinitions];
+    if ([(NSArray *)parameterDefinitions count])
     {
       parameterDefinitions = 0;
-      v5 = v6;
+      v5 = parameterDefinitions;
     }
 
     else
@@ -131,10 +131,10 @@
       v30 = 0u;
       v31 = 0u;
       v32 = 0u;
-      v8 = [(WFAppIntentExecutionAction *)self metadata];
-      v9 = [v8 wf_parameterDefinitions];
+      metadata = [(WFAppIntentExecutionAction *)self metadata];
+      wf_parameterDefinitions = [metadata wf_parameterDefinitions];
 
-      v10 = [v9 countByEnumeratingWithState:&v29 objects:v38 count:16];
+      v10 = [wf_parameterDefinitions countByEnumeratingWithState:&v29 objects:v38 count:16];
       if (v10)
       {
         v11 = v10;
@@ -145,13 +145,13 @@
           {
             if (*v30 != v12)
             {
-              objc_enumerationMutation(v9);
+              objc_enumerationMutation(wf_parameterDefinitions);
             }
 
             [v7 addObject:*(*(&v29 + 1) + 8 * i)];
           }
 
-          v11 = [v9 countByEnumeratingWithState:&v29 objects:v38 count:16];
+          v11 = [wf_parameterDefinitions countByEnumeratingWithState:&v29 objects:v38 count:16];
         }
 
         while (v11);
@@ -201,16 +201,16 @@
 
       if (v5)
       {
-        v26 = v5;
+        null2 = v5;
       }
 
       else
       {
-        v26 = [MEMORY[0x1E695DFB0] null];
+        null2 = [MEMORY[0x1E695DFB0] null];
       }
 
       parameterDefinitions = self->_parameterDefinitions;
-      self->_parameterDefinitions = v26;
+      self->_parameterDefinitions = null2;
     }
   }
 
@@ -221,48 +221,48 @@
 
 - (BOOL)showWhenRunParameterIsHidden
 {
-  v2 = [(WFAppIntentExecutionAction *)self metadata];
-  v3 = ([v2 outputFlags] & 0x26) == 0;
+  metadata = [(WFAppIntentExecutionAction *)self metadata];
+  v3 = ([metadata outputFlags] & 0x26) == 0;
 
   return v3;
 }
 
 - (BOOL)openWhenRunParameterIsHidden
 {
-  v3 = [(WFAppIntentExecutionAction *)self metadata];
-  v4 = [v3 outputFlags];
+  metadata = [(WFAppIntentExecutionAction *)self metadata];
+  outputFlags = [metadata outputFlags];
 
-  v5 = [(WFAppIntentExecutionAction *)self metadata];
-  v6 = [v5 supportedModes];
+  metadata2 = [(WFAppIntentExecutionAction *)self metadata];
+  supportedModes = [metadata2 supportedModes];
 
-  v7 = [(WFAppIntentExecutionAction *)self metadata];
-  if (([v7 supportedModes] & 8) != 0)
+  metadata3 = [(WFAppIntentExecutionAction *)self metadata];
+  if (([metadata3 supportedModes] & 8) != 0)
   {
     LOBYTE(v10) = 1;
   }
 
   else
   {
-    v8 = [(WFAppIntentExecutionAction *)self metadata];
-    if (([v8 supportedModes] & 4) != 0)
+    metadata4 = [(WFAppIntentExecutionAction *)self metadata];
+    if (([metadata4 supportedModes] & 4) != 0)
     {
       LOBYTE(v10) = 1;
     }
 
     else
     {
-      v9 = [(WFAppIntentExecutionAction *)self metadata];
-      v10 = ([v9 supportedModes] >> 1) & 1;
+      metadata5 = [(WFAppIntentExecutionAction *)self metadata];
+      v10 = ([metadata5 supportedModes] >> 1) & 1;
     }
   }
 
-  return ((v4 & 1) == 0) & (((v6 & 1) == 0) | v10 ^ 1);
+  return ((outputFlags & 1) == 0) & (((supportedModes & 1) == 0) | v10 ^ 1);
 }
 
 - (void)serializeAppIntentDescriptorIfNecessary
 {
-  v3 = [(WFAction *)self serializedParameters];
-  v4 = [v3 objectForKey:@"AppIntentDescriptor"];
+  serializedParameters = [(WFAction *)self serializedParameters];
+  v4 = [serializedParameters objectForKey:@"AppIntentDescriptor"];
 
   if (v4)
   {
@@ -270,9 +270,9 @@
   }
 
   v5 = MEMORY[0x1E6963620];
-  v6 = [(WFAppIntentExecutionAction *)self fullyQualifiedLinkActionIdentifier];
-  v7 = [v6 bundleIdentifier];
-  v8 = [v5 bundleRecordWithBundleIdentifier:v7 allowPlaceholder:0 error:0];
+  fullyQualifiedLinkActionIdentifier = [(WFAppIntentExecutionAction *)self fullyQualifiedLinkActionIdentifier];
+  bundleIdentifier = [fullyQualifiedLinkActionIdentifier bundleIdentifier];
+  v8 = [v5 bundleRecordWithBundleIdentifier:bundleIdentifier allowPlaceholder:0 error:0];
 
   v15 = v8;
   if (v15)
@@ -280,9 +280,9 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = [v15 containingBundleRecord];
+      containingBundleRecord = [v15 containingBundleRecord];
 
-      if (!v9)
+      if (!containingBundleRecord)
       {
         goto LABEL_9;
       }
@@ -292,20 +292,20 @@ LABEL_7:
       if (objc_opt_isKindOfClass())
       {
         v10 = objc_alloc(MEMORY[0x1E696E740]);
-        v11 = [(WFAppIntentExecutionAction *)self metadata];
-        v12 = [v11 identifier];
-        v13 = [v10 initWithIntentIdentifier:v12 applicationRecord:v9];
+        metadata = [(WFAppIntentExecutionAction *)self metadata];
+        identifier = [metadata identifier];
+        v13 = [v10 initWithIntentIdentifier:identifier applicationRecord:containingBundleRecord];
 
-        v14 = [v13 serializedRepresentation];
-        [(WFAction *)self setSupplementalParameterValue:v14 forKey:@"AppIntentDescriptor"];
+        serializedRepresentation = [v13 serializedRepresentation];
+        [(WFAction *)self setSupplementalParameterValue:serializedRepresentation forKey:@"AppIntentDescriptor"];
       }
 
       goto LABEL_9;
     }
   }
 
-  v9 = v15;
-  if (v9)
+  containingBundleRecord = v15;
+  if (containingBundleRecord)
   {
     goto LABEL_7;
   }
@@ -323,49 +323,49 @@ LABEL_9:
 
 - (void)deregisterExecutorProgressListeners
 {
-  v3 = [(WFLinkAction *)self executorProgress];
-  [v3 removeObserver:self forKeyPath:@"localizedDescription" context:WFProgressLocalizedDescriptionContext];
+  executorProgress = [(WFLinkAction *)self executorProgress];
+  [executorProgress removeObserver:self forKeyPath:@"localizedDescription" context:WFProgressLocalizedDescriptionContext];
 
-  v4 = [(WFLinkAction *)self executorProgress];
-  [v4 removeObserver:self forKeyPath:@"localizedAdditionalDescription" context:WFProgressLocalizedAdditionalDescriptionContext];
+  executorProgress2 = [(WFLinkAction *)self executorProgress];
+  [executorProgress2 removeObserver:self forKeyPath:@"localizedAdditionalDescription" context:WFProgressLocalizedAdditionalDescriptionContext];
 }
 
 - (id)inputDictionary
 {
   v28[3] = *MEMORY[0x1E69E9840];
   inputDictionary = self->_inputDictionary;
-  v4 = [MEMORY[0x1E695DFB0] null];
+  null = [MEMORY[0x1E695DFB0] null];
 
-  if (inputDictionary == v4)
+  if (inputDictionary == null)
   {
-    v5 = 0;
+    bundleIdentifier = 0;
   }
 
   else if (inputDictionary)
   {
     inputDictionary = inputDictionary;
-    v5 = inputDictionary;
+    bundleIdentifier = inputDictionary;
   }
 
   else
   {
     v26.receiver = self;
     v26.super_class = WFLinkAction;
-    v6 = [(WFAction *)&v26 inputDictionary];
+    inputDictionary = [(WFAction *)&v26 inputDictionary];
     v7 = objc_opt_class();
-    v8 = [(WFAppIntentExecutionAction *)self metadata];
-    inputDictionary = [v7 inputParameterMetadataWithActionMetadata:v8];
+    metadata = [(WFAppIntentExecutionAction *)self metadata];
+    inputDictionary = [v7 inputParameterMetadataWithActionMetadata:metadata];
 
     if (inputDictionary)
     {
-      v9 = [(NSDictionary *)inputDictionary valueType];
-      v10 = [(WFAppIntentExecutionAction *)self fullyQualifiedLinkActionIdentifier];
-      v5 = [v10 bundleIdentifier];
-      v11 = [v9 wf_contentItemClassesWithAppBundleIdentifier:v5];
+      valueType = [(NSDictionary *)inputDictionary valueType];
+      fullyQualifiedLinkActionIdentifier = [(WFAppIntentExecutionAction *)self fullyQualifiedLinkActionIdentifier];
+      bundleIdentifier = [fullyQualifiedLinkActionIdentifier bundleIdentifier];
+      v11 = [valueType wf_contentItemClassesWithAppBundleIdentifier:bundleIdentifier];
 
       if (v11)
       {
-        v12 = [v6 mutableCopy];
+        v12 = [inputDictionary mutableCopy];
         v13 = v12;
         if (v12)
         {
@@ -386,73 +386,73 @@ LABEL_9:
         v28[0] = v18;
         v27[1] = @"Types";
         [v11 if_map:&__block_literal_global_235];
-        v19 = v25 = v9;
+        v19 = v25 = valueType;
         v28[1] = v19;
         v27[2] = @"ParameterKey";
-        v20 = [(NSDictionary *)inputDictionary name];
-        v28[2] = v20;
+        name = [(NSDictionary *)inputDictionary name];
+        v28[2] = name;
         v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v28 forKeys:v27 count:3];
         [v16 addEntriesFromDictionary:v21];
 
-        v9 = v25;
-        v5 = [v16 copy];
+        valueType = v25;
+        bundleIdentifier = [v16 copy];
       }
 
       else
       {
-        v15 = v6;
+        v15 = inputDictionary;
       }
 
       if (v11)
       {
-        if (v5)
+        if (bundleIdentifier)
         {
-          v22 = v5;
+          null2 = bundleIdentifier;
         }
 
         else
         {
-          v22 = [MEMORY[0x1E695DFB0] null];
+          null2 = [MEMORY[0x1E695DFB0] null];
         }
 
         inputDictionary = self->_inputDictionary;
-        self->_inputDictionary = v22;
+        self->_inputDictionary = null2;
         goto LABEL_19;
       }
 
       inputDictionary = 0;
     }
 
-    v5 = v6;
+    bundleIdentifier = inputDictionary;
   }
 
 LABEL_19:
 
   v23 = *MEMORY[0x1E69E9840];
 
-  return v5;
+  return bundleIdentifier;
 }
 
-- (void)documentsValueFromRepresentation:(id)a3 valueType:(id)a4 completionHandler:(id)a5
+- (void)documentsValueFromRepresentation:(id)representation valueType:(id)type completionHandler:(id)handler
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = v8;
-  if (a3)
+  typeCopy = type;
+  handlerCopy = handler;
+  v9 = handlerCopy;
+  if (representation)
   {
-    v10 = [MEMORY[0x1E6996D58] itemWithFile:a3];
+    v10 = [MEMORY[0x1E6996D58] itemWithFile:representation];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __88__WFLinkAction_Documents__documentsValueFromRepresentation_valueType_completionHandler___block_invoke;
     v11[3] = &unk_1E8375EE8;
     v13 = v9;
-    v12 = v7;
+    v12 = typeCopy;
     [v10 getObjectRepresentation:v11 forClass:objc_opt_class()];
   }
 
   else
   {
-    (*(v8 + 2))(v8, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
   }
 }
 
@@ -466,18 +466,18 @@ void __88__WFLinkAction_Documents__documentsValueFromRepresentation_valueType_co
   (*(v3 + 16))(v3, v6, 0);
 }
 
-- (void)getDocumentsLinkValueFromParameterMetadata:(id)a3 processedParameters:(id)a4 parameterState:(id)a5 valueType:(id)a6 completionHandler:(id)a7
+- (void)getDocumentsLinkValueFromParameterMetadata:(id)metadata processedParameters:(id)parameters parameterState:(id)state valueType:(id)type completionHandler:(id)handler
 {
-  v11 = a6;
-  v12 = a7;
-  v13 = a4;
-  v14 = [a3 name];
-  v15 = [v13 objectForKeyedSubscript:v14];
+  typeCopy = type;
+  handlerCopy = handler;
+  parametersCopy = parameters;
+  name = [metadata name];
+  v15 = [parametersCopy objectForKeyedSubscript:name];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v16 = v11;
+    v16 = typeCopy;
     v17 = v15;
     if (v17)
     {
@@ -512,14 +512,14 @@ void __88__WFLinkAction_Documents__documentsValueFromRepresentation_valueType_co
       v23[1] = 3221225472;
       v23[2] = __133__WFLinkAction_Documents__getDocumentsLinkValueFromParameterMetadata_processedParameters_parameterState_valueType_completionHandler___block_invoke_2;
       v23[3] = &unk_1E837F020;
-      v25 = v12;
+      v25 = handlerCopy;
       v24 = v27;
       [v21 if_mapAsynchronously:v26 completionHandler:v23];
     }
 
     else
     {
-      (*(v12 + 2))(v12, 0, 0);
+      (*(handlerCopy + 2))(handlerCopy, 0, 0);
     }
   }
 
@@ -547,7 +547,7 @@ void __88__WFLinkAction_Documents__documentsValueFromRepresentation_valueType_co
 
     v22 = v20;
 
-    [(WFLinkAction *)self documentsValueFromRepresentation:v22 valueType:v11 completionHandler:v12];
+    [(WFLinkAction *)self documentsValueFromRepresentation:v22 valueType:typeCopy completionHandler:handlerCopy];
   }
 }
 
@@ -593,13 +593,13 @@ void __133__WFLinkAction_Documents__getDocumentsLinkValueFromParameterMetadata_p
   (*(v5 + 16))(v5, v10, v7);
 }
 
-+ (Class)classForLinkActionWithIdentifier:(id)a3 metadata:(id)a4
++ (Class)classForLinkActionWithIdentifier:(id)identifier metadata:(id)metadata
 {
   v27 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = [a1 linkActionClassOverrides];
-  v10 = [v9 objectForKeyedSubscript:v7];
+  identifierCopy = identifier;
+  metadataCopy = metadata;
+  linkActionClassOverrides = [self linkActionClassOverrides];
+  v10 = [linkActionClassOverrides objectForKeyedSubscript:identifierCopy];
 
   if (v10)
   {
@@ -609,8 +609,8 @@ LABEL_14:
       goto LABEL_15;
     }
 
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:a1 file:@"WFLinkActionOverrides.m" lineNumber:2165 description:@"Link override class must be a WFAction"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFLinkActionOverrides.m" lineNumber:2165 description:@"Link override class must be a WFAction"];
   }
 
   else
@@ -619,8 +619,8 @@ LABEL_14:
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v11 = [v8 systemProtocols];
-    v12 = [v11 countByEnumeratingWithState:&v22 objects:v26 count:16];
+    currentHandler = [metadataCopy systemProtocols];
+    v12 = [currentHandler countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v12)
     {
       v13 = v12;
@@ -633,14 +633,14 @@ LABEL_14:
         {
           if (*v23 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(currentHandler);
           }
 
-          v16 = [*(*(&v22 + 1) + 8 * v15) identifier];
-          if (v16)
+          identifier = [*(*(&v22 + 1) + 8 * v15) identifier];
+          if (identifier)
           {
-            v17 = [a1 linkProtocolClassOverrides];
-            v10 = [v17 objectForKeyedSubscript:v16];
+            linkProtocolClassOverrides = [self linkProtocolClassOverrides];
+            v10 = [linkProtocolClassOverrides objectForKeyedSubscript:identifier];
 
             if (v10)
             {
@@ -654,7 +654,7 @@ LABEL_14:
         }
 
         while (v13 != v15);
-        v13 = [v11 countByEnumeratingWithState:&v22 objects:v26 count:16];
+        v13 = [currentHandler countByEnumeratingWithState:&v22 objects:v26 count:16];
         if (v13)
         {
           continue;
@@ -1035,23 +1035,23 @@ void __51__WFLinkAction_Overrides__linkActionClassOverrides__block_invoke()
   v26 = *MEMORY[0x1E69E9840];
 }
 
-- (void)action:(id)a3 parameterStateDidChangeForKey:(id)a4
+- (void)action:(id)action parameterStateDidChangeForKey:(id)key
 {
-  v5 = [(WFLinkAction *)self linkActionWithSerializedParametersUsingConnectionPolicy:0, a4];
+  v5 = [(WFLinkAction *)self linkActionWithSerializedParametersUsingConnectionPolicy:0, key];
   [(WFLinkAction *)self updateParameterSummaryIfNeededWithLinkAction:v5];
 }
 
-- (void)getAlertForLinkResult:(id)a3 encodedSnippetActionToolInvocation:(id)a4 handler:(id)a5 completionHandler:(id)a6
+- (void)getAlertForLinkResult:(id)result encodedSnippetActionToolInvocation:(id)invocation handler:(id)handler completionHandler:(id)completionHandler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  resultCopy = result;
+  invocationCopy = invocation;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __99__WFLinkAction_getAlertForLinkResult_encodedSnippetActionToolInvocation_handler_completionHandler___block_invoke;
   aBlock[3] = &unk_1E8377A00;
-  v13 = v9;
+  v13 = resultCopy;
   v26 = v13;
   v14 = _Block_copy(aBlock);
   v20[0] = MEMORY[0x1E69E9820];
@@ -1059,13 +1059,13 @@ void __51__WFLinkAction_Overrides__linkActionClassOverrides__block_invoke()
   v20[2] = __99__WFLinkAction_getAlertForLinkResult_encodedSnippetActionToolInvocation_handler_completionHandler___block_invoke_3;
   v20[3] = &unk_1E8377A28;
   v21 = v13;
-  v22 = v10;
-  v23 = v11;
-  v24 = v12;
+  v22 = invocationCopy;
+  v23 = handlerCopy;
+  v24 = completionHandlerCopy;
   v15 = v14[2];
-  v16 = v12;
-  v17 = v11;
-  v18 = v10;
+  v16 = completionHandlerCopy;
+  v17 = handlerCopy;
+  v18 = invocationCopy;
   v19 = v13;
   v15(v14, v20);
 }
@@ -1133,74 +1133,74 @@ void __99__WFLinkAction_getAlertForLinkResult_encodedSnippetActionToolInvocation
   (*(*(a1 + 40) + 16))();
 }
 
-- (id)smartPromptWithContentDescription:(id)a3 contentDestination:(id)a4 workflowName:(id)a5
+- (id)smartPromptWithContentDescription:(id)description contentDestination:(id)destination workflowName:(id)name
 {
-  v7 = a3;
+  descriptionCopy = description;
   v8 = MEMORY[0x1E696AEC0];
-  v9 = a5;
-  v10 = a4;
-  if (v7)
+  nameCopy = name;
+  destinationCopy = destination;
+  if (descriptionCopy)
   {
     v11 = WFLocalizedString(@"Allow “%@” to share %@ with “%@”?");
-    [v8 localizedStringWithFormat:v11, v9, v7, v10];
+    [v8 localizedStringWithFormat:v11, nameCopy, descriptionCopy, destinationCopy];
   }
 
   else
   {
     v11 = WFLocalizedString(@"Allow “%@” to run actions from “%@”?");
-    [v8 localizedStringWithFormat:v11, v9, v10, v14];
+    [v8 localizedStringWithFormat:v11, nameCopy, destinationCopy, v14];
   }
   v12 = ;
 
   return v12;
 }
 
-- (void)getContentDestinationWithCompletionHandler:(id)a3
+- (void)getContentDestinationWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(WFAppIntentExecutionAction *)self appDescriptor];
+  handlerCopy = handler;
+  appDescriptor = [(WFAppIntentExecutionAction *)self appDescriptor];
 
-  if (v5 && !self->_isBuiltIn)
+  if (appDescriptor && !self->_isBuiltIn)
   {
-    v6 = [(WFAppIntentExecutionAction *)self metadata];
-    v7 = [v6 systemProtocols];
-    v8 = [MEMORY[0x1E69ACA50] requiresMDMChecksProtocol];
-    v9 = [v7 containsObject:v8];
+    metadata = [(WFAppIntentExecutionAction *)self metadata];
+    systemProtocols = [metadata systemProtocols];
+    requiresMDMChecksProtocol = [MEMORY[0x1E69ACA50] requiresMDMChecksProtocol];
+    v9 = [systemProtocols containsObject:requiresMDMChecksProtocol];
 
     if (v9)
     {
-      v10 = [(WFAction *)self processedParameters];
+      processedParameters = [(WFAction *)self processedParameters];
       v15[0] = MEMORY[0x1E69E9820];
       v15[1] = 3221225472;
       v15[2] = __59__WFLinkAction_getContentDestinationWithCompletionHandler___block_invoke;
       v15[3] = &unk_1E83779D8;
       v15[4] = self;
-      v16 = v4;
-      [(WFAppIntentExecutionAction *)self getLinkActionWithProcessedParameters:v10 completionHandler:v15];
+      v16 = handlerCopy;
+      [(WFAppIntentExecutionAction *)self getLinkActionWithProcessedParameters:processedParameters completionHandler:v15];
     }
 
     else
     {
       v11 = MEMORY[0x1E6996C90];
-      v12 = [(WFAppIntentExecutionAction *)self displayableAppDescriptor];
-      if (v12)
+      displayableAppDescriptor = [(WFAppIntentExecutionAction *)self displayableAppDescriptor];
+      if (displayableAppDescriptor)
       {
-        v13 = [v11 locationWithAppDescriptor:v12];
+        v13 = [v11 locationWithAppDescriptor:displayableAppDescriptor];
       }
 
       else
       {
-        v14 = [(WFAppIntentExecutionAction *)self appDescriptor];
-        v13 = [v11 locationWithAppDescriptor:v14];
+        appDescriptor2 = [(WFAppIntentExecutionAction *)self appDescriptor];
+        v13 = [v11 locationWithAppDescriptor:appDescriptor2];
       }
 
-      (*(v4 + 2))(v4, v13, 0);
+      (*(handlerCopy + 2))(handlerCopy, v13, 0);
     }
   }
 
   else
   {
-    (*(v4 + 2))(v4, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
   }
 }
 
@@ -1284,66 +1284,66 @@ void __59__WFLinkAction_getContentDestinationWithCompletionHandler___block_invok
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)executor:(id)a3 didPerformActionWithResult:(id)a4 error:(id)a5
+- (void)executor:(id)executor didPerformActionWithResult:(id)result error:(id)error
 {
-  v7 = a4;
-  v8 = a5;
-  if (v7)
+  resultCopy = result;
+  errorCopy = error;
+  if (resultCopy)
   {
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __58__WFLinkAction_executor_didPerformActionWithResult_error___block_invoke;
     v9[3] = &unk_1E837C1E8;
     v9[4] = self;
-    v10 = v7;
-    v11 = v8;
+    v10 = resultCopy;
+    v11 = errorCopy;
     [(WFLinkAction *)self showResultIfNeeded:v10 completionHandler:v9];
   }
 
   else
   {
-    [(WFLinkAction *)self finishRunningWithResult:0 error:v8];
+    [(WFLinkAction *)self finishRunningWithResult:0 error:errorCopy];
   }
 }
 
-- (void)executor:(id)a3 needsChoiceWithRequest:(id)a4
+- (void)executor:(id)executor needsChoiceWithRequest:(id)request
 {
-  v5 = a4;
-  v6 = [v5 options];
-  v7 = [v6 count];
+  requestCopy = request;
+  options = [requestCopy options];
+  v7 = [options count];
 
   if (v7 < 9)
   {
-    v11 = [(WFAction *)self userInterface];
-    v12 = [v5 dialog];
+    userInterface = [(WFAction *)self userInterface];
+    dialog = [requestCopy dialog];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __48__WFLinkAction_executor_needsChoiceWithRequest___block_invoke_2;
     v13[3] = &unk_1E83779B0;
-    v14 = v5;
-    [v11 showLinkChoice:v14 dialog:v12 completionHandler:v13];
+    v14 = requestCopy;
+    [userInterface showLinkChoice:v14 dialog:dialog completionHandler:v13];
 
     v10 = v14;
   }
 
   else
   {
-    v8 = [v5 dialog];
+    dialog2 = [requestCopy dialog];
 
-    if (!v8)
+    if (!dialog2)
     {
-      [(WFLinkAction *)self presentAlertForChoiceRequest:v5 dialogString:0];
+      [(WFLinkAction *)self presentAlertForChoiceRequest:requestCopy dialogString:0];
       goto LABEL_6;
     }
 
-    v9 = [v5 dialog];
+    dialog3 = [requestCopy dialog];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __48__WFLinkAction_executor_needsChoiceWithRequest___block_invoke;
     v15[3] = &unk_1E837CA78;
     v15[4] = self;
-    v16 = v5;
-    [v9 getResultWithCompletionHandler:v15];
+    v16 = requestCopy;
+    [dialog3 getResultWithCompletionHandler:v15];
 
     v10 = v16;
   }
@@ -1368,19 +1368,19 @@ void __48__WFLinkAction_executor_needsChoiceWithRequest___block_invoke_2(uint64_
   [v6 respondWithOption:v5];
 }
 
-- (void)presentAlertForChoiceRequest:(id)a3 dialogString:(id)a4
+- (void)presentAlertForChoiceRequest:(id)request dialogString:(id)string
 {
   v30 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  requestCopy = request;
+  stringCopy = string;
   v7 = [MEMORY[0x1E6996C70] alertWithPreferredStyle:0];
-  v20 = v6;
-  [v7 setTitle:v6];
+  v20 = stringCopy;
+  [v7 setTitle:stringCopy];
   v27 = 0u;
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  obj = [v5 options];
+  obj = [requestCopy options];
   v8 = [obj countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v8)
   {
@@ -1397,15 +1397,15 @@ void __48__WFLinkAction_executor_needsChoiceWithRequest___block_invoke_2(uint64_
 
         v12 = *(*(&v25 + 1) + 8 * i);
         v13 = MEMORY[0x1E6996C78];
-        v14 = [v12 title];
-        v15 = [v14 wf_localizedString];
+        title = [v12 title];
+        wf_localizedString = [title wf_localizedString];
         v22[0] = MEMORY[0x1E69E9820];
         v22[1] = 3221225472;
         v22[2] = __58__WFLinkAction_presentAlertForChoiceRequest_dialogString___block_invoke;
         v22[3] = &unk_1E837F870;
-        v23 = v5;
+        v23 = requestCopy;
         v24 = v12;
-        v16 = [v13 buttonWithTitle:v15 style:0 handler:v22];
+        v16 = [v13 buttonWithTitle:wf_localizedString style:0 handler:v22];
         [v7 addButton:v16];
       }
 
@@ -1415,33 +1415,33 @@ void __48__WFLinkAction_executor_needsChoiceWithRequest___block_invoke_2(uint64_
     while (v9);
   }
 
-  v17 = [(WFAction *)self userInterface];
-  [v17 presentAlert:v7];
+  userInterface = [(WFAction *)self userInterface];
+  [userInterface presentAlert:v7];
 
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)executor:(id)a3 needsDisambiguationWithRequest:(id)a4
+- (void)executor:(id)executor needsDisambiguationWithRequest:(id)request
 {
-  v5 = a4;
-  v6 = [v5 dialog];
+  requestCopy = request;
+  dialog = [requestCopy dialog];
 
-  if (v6)
+  if (dialog)
   {
-    v7 = [v5 dialog];
+    dialog2 = [requestCopy dialog];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __56__WFLinkAction_executor_needsDisambiguationWithRequest___block_invoke;
     v9[3] = &unk_1E837CA78;
     v9[4] = self;
-    v10 = v5;
-    [v7 getResultWithCompletionHandler:v9];
+    v10 = requestCopy;
+    [dialog2 getResultWithCompletionHandler:v9];
   }
 
   else
   {
-    v8 = [v5 parameterName];
-    [(WFAppIntentExecutionAction *)self disambiguateParameterForParameterName:v8 request:v5 dialogString:0];
+    parameterName = [requestCopy parameterName];
+    [(WFAppIntentExecutionAction *)self disambiguateParameterForParameterName:parameterName request:requestCopy dialogString:0];
   }
 }
 
@@ -1458,27 +1458,27 @@ void __56__WFLinkAction_executor_needsDisambiguationWithRequest___block_invoke(u
   [v3 disambiguateParameterForParameterName:v9 request:v6 dialogString:v8];
 }
 
-- (void)executor:(id)a3 needsConfirmationWithRequest:(id)a4
+- (void)executor:(id)executor needsConfirmationWithRequest:(id)request
 {
-  v5 = a4;
-  v6 = [v5 dialog];
+  requestCopy = request;
+  dialog = [requestCopy dialog];
 
-  if (v6)
+  if (dialog)
   {
-    v7 = [v5 dialog];
+    dialog2 = [requestCopy dialog];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __54__WFLinkAction_executor_needsConfirmationWithRequest___block_invoke;
     v9[3] = &unk_1E837CA78;
     v9[4] = self;
-    v10 = v5;
-    [v7 getResultWithCompletionHandler:v9];
+    v10 = requestCopy;
+    [dialog2 getResultWithCompletionHandler:v9];
   }
 
   else
   {
-    v8 = [v5 parameterName];
-    [(WFAppIntentExecutionAction *)self confirmParameterValueForParameterName:v8 request:v5 dialogString:0];
+    parameterName = [requestCopy parameterName];
+    [(WFAppIntentExecutionAction *)self confirmParameterValueForParameterName:parameterName request:requestCopy dialogString:0];
   }
 }
 
@@ -1495,27 +1495,27 @@ void __54__WFLinkAction_executor_needsConfirmationWithRequest___block_invoke(uin
   [v3 confirmParameterValueForParameterName:v9 request:v6 dialogString:v8];
 }
 
-- (void)executor:(id)a3 needsValueWithRequest:(id)a4
+- (void)executor:(id)executor needsValueWithRequest:(id)request
 {
-  v5 = a4;
-  v6 = [v5 dialog];
+  requestCopy = request;
+  dialog = [requestCopy dialog];
 
-  if (v6)
+  if (dialog)
   {
-    v7 = [v5 dialog];
+    dialog2 = [requestCopy dialog];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __47__WFLinkAction_executor_needsValueWithRequest___block_invoke;
     v9[3] = &unk_1E837CA78;
     v9[4] = self;
-    v10 = v5;
-    [v7 getResultWithCompletionHandler:v9];
+    v10 = requestCopy;
+    [dialog2 getResultWithCompletionHandler:v9];
   }
 
   else
   {
-    v8 = [v5 parameterName];
-    [(WFAppIntentExecutionAction *)self askForParameterValueForParameterName:v8 request:v5 dialogString:0];
+    parameterName = [requestCopy parameterName];
+    [(WFAppIntentExecutionAction *)self askForParameterValueForParameterName:parameterName request:requestCopy dialogString:0];
   }
 }
 
@@ -1532,16 +1532,16 @@ void __47__WFLinkAction_executor_needsValueWithRequest___block_invoke(uint64_t a
   [v3 askForParameterValueForParameterName:v9 request:v6 dialogString:v8];
 }
 
-- (void)performPresentationAction:(id)a3
+- (void)performPresentationAction:(id)action
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  actionCopy = action;
   [(WFAppIntentExecutionAction *)self setDidRunOpensIntent:1];
-  if ((objc_opt_respondsToSelector() & 1) != 0 && ([v4 valueForKey:@"url"], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
+  if ((objc_opt_respondsToSelector() & 1) != 0 && ([actionCopy valueForKey:@"url"], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
   {
-    v6 = [(WFAppIntentExecutionAction *)self connection];
-    v7 = [(WFAppIntentExecutionAction *)self executorOptions];
-    v8 = [v6 executorForAction:v4 options:v7 delegate:self];
+    connection = [(WFAppIntentExecutionAction *)self connection];
+    executorOptions = [(WFAppIntentExecutionAction *)self executorOptions];
+    v8 = [connection executorForAction:actionCopy options:executorOptions delegate:self];
 
     [v8 perform];
   }
@@ -1549,19 +1549,19 @@ void __47__WFLinkAction_executor_needsValueWithRequest___block_invoke(uint64_t a
   else
   {
     v9 = objc_opt_new();
-    v10 = [(WFAppIntentExecutionAction *)self fullyQualifiedLinkActionIdentifier];
-    v11 = [v10 bundleIdentifier];
-    v12 = [v4 identifier];
+    fullyQualifiedLinkActionIdentifier = [(WFAppIntentExecutionAction *)self fullyQualifiedLinkActionIdentifier];
+    bundleIdentifier = [fullyQualifiedLinkActionIdentifier bundleIdentifier];
+    identifier = [actionCopy identifier];
     v26 = 0;
-    v13 = [v9 actionForBundleIdentifier:v11 andActionIdentifier:v12 error:&v26];
+    v13 = [v9 actionForBundleIdentifier:bundleIdentifier andActionIdentifier:identifier error:&v26];
     v14 = v26;
 
     if (v13)
     {
       os_unfair_lock_lock(&self->_connectionLock);
       v15 = MEMORY[0x1E69ACE60];
-      v16 = [(WFAppIntentExecutionAction *)self connectionPolicySignals];
-      v17 = [v15 policyWithActionMetadata:v13 signals:v16];
+      connectionPolicySignals = [(WFAppIntentExecutionAction *)self connectionPolicySignals];
+      v17 = [v15 policyWithActionMetadata:v13 signals:connectionPolicySignals];
 
       v25 = v14;
       v18 = [v17 connectionWithError:&v25];
@@ -1570,14 +1570,14 @@ void __47__WFLinkAction_executor_needsValueWithRequest___block_invoke(uint64_t a
       os_unfair_lock_unlock(&self->_connectionLock);
       if (v18)
       {
-        v20 = [v4 parameters];
-        v21 = [v17 actionWithParameters:v20];
+        parameters = [actionCopy parameters];
+        v21 = [v17 actionWithParameters:parameters];
 
-        v22 = [(WFAppIntentExecutionAction *)self executorOptions];
-        v23 = [v18 executorForAction:v21 options:v22 delegate:self];
+        executorOptions2 = [(WFAppIntentExecutionAction *)self executorOptions];
+        v23 = [v18 executorForAction:v21 options:executorOptions2 delegate:self];
 
         [v23 perform];
-        v4 = v21;
+        actionCopy = v21;
       }
 
       else
@@ -1604,27 +1604,27 @@ void __47__WFLinkAction_executor_needsValueWithRequest___block_invoke(uint64_t a
   v24 = *MEMORY[0x1E69E9840];
 }
 
-- (void)performPresentationActionWithResult:(id)a3
+- (void)performPresentationActionWithResult:(id)result
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 output];
-  v6 = [v5 showOutputAction];
+  resultCopy = result;
+  output = [resultCopy output];
+  showOutputAction = [output showOutputAction];
 
-  if (v6)
+  if (showOutputAction)
   {
-    v7 = [(WFAction *)self userInterface];
-    v8 = [v7 isRunningWithExternalUI];
+    userInterface = [(WFAction *)self userInterface];
+    isRunningWithExternalUI = [userInterface isRunningWithExternalUI];
 
-    if (v8)
+    if (isRunningWithExternalUI)
     {
       v9 = objc_opt_new();
       v27 = 0u;
       v28 = 0u;
       v29 = 0u;
       v30 = 0u;
-      v10 = [v6 parameters];
-      v11 = [v10 countByEnumeratingWithState:&v27 objects:v31 count:16];
+      parameters = [showOutputAction parameters];
+      v11 = [parameters countByEnumeratingWithState:&v27 objects:v31 count:16];
       if (v11)
       {
         v12 = v11;
@@ -1635,43 +1635,43 @@ void __47__WFLinkAction_executor_needsValueWithRequest___block_invoke(uint64_t a
           {
             if (*v28 != v13)
             {
-              objc_enumerationMutation(v10);
+              objc_enumerationMutation(parameters);
             }
 
             v15 = *(*(&v27 + 1) + 8 * i);
-            v16 = [v15 value];
+            value = [v15 value];
 
-            if (v16)
+            if (value)
             {
-              v17 = [v15 value];
-              v18 = [v15 identifier];
-              [v9 setObject:v17 forKey:v18];
+              value2 = [v15 value];
+              identifier = [v15 identifier];
+              [v9 setObject:value2 forKey:identifier];
             }
           }
 
-          v12 = [v10 countByEnumeratingWithState:&v27 objects:v31 count:16];
+          v12 = [parameters countByEnumeratingWithState:&v27 objects:v31 count:16];
         }
 
         while (v12);
       }
 
-      v19 = [(WFAppIntentExecutionAction *)self fullyQualifiedLinkActionIdentifier];
-      v20 = [v19 bundleIdentifier];
+      fullyQualifiedLinkActionIdentifier = [(WFAppIntentExecutionAction *)self fullyQualifiedLinkActionIdentifier];
+      bundleIdentifier = [fullyQualifiedLinkActionIdentifier bundleIdentifier];
       v23[0] = MEMORY[0x1E69E9820];
       v23[1] = 3221225472;
       v23[2] = __52__WFLinkAction_performPresentationActionWithResult___block_invoke;
       v23[3] = &unk_1E8377988;
       v23[4] = self;
-      v24 = v6;
+      v24 = showOutputAction;
       v25 = v9;
-      v26 = v4;
+      v26 = resultCopy;
       v21 = v9;
-      [WFToolInvocation invocationFrom:v24 bundleIdentifier:v20 deviceIdentifier:0 completionHandler:v23];
+      [WFToolInvocation invocationFrom:v24 bundleIdentifier:bundleIdentifier deviceIdentifier:0 completionHandler:v23];
     }
 
     else
     {
-      [(WFLinkAction *)self performPresentationAction:v6];
+      [(WFLinkAction *)self performPresentationAction:showOutputAction];
     }
   }
 
@@ -1728,13 +1728,13 @@ uint64_t __52__WFLinkAction_performPresentationActionWithResult___block_invoke_2
   }
 }
 
-- (void)showResultIfNeeded:(id)a3 completionHandler:(id)a4
+- (void)showResultIfNeeded:(id)needed completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 output];
-  v9 = [v8 showOutputAction];
-  if (!v9)
+  neededCopy = needed;
+  handlerCopy = handler;
+  output = [neededCopy output];
+  showOutputAction = [output showOutputAction];
+  if (!showOutputAction)
   {
     goto LABEL_5;
   }
@@ -1747,10 +1747,10 @@ uint64_t __52__WFLinkAction_performPresentationActionWithResult___block_invoke_2
 
   if ([(WFAppIntentExecutionAction *)self runKind]!= 1)
   {
-    v10 = [v6 output];
-    v11 = [v10 showOutputActionHint];
+    output2 = [neededCopy output];
+    showOutputActionHint = [output2 showOutputActionHint];
 
-    if (v11 == 1)
+    if (showOutputActionHint == 1)
     {
       goto LABEL_9;
     }
@@ -1764,38 +1764,38 @@ LABEL_5:
   if (![(WFLinkAction *)self showsWhenRun])
   {
 LABEL_9:
-    v7[2](v7);
+    handlerCopy[2](handlerCopy);
     goto LABEL_10;
   }
 
-  v8 = [(WFAction *)self userInterface];
-  if ([v8 isRunningWithSiriUI])
+  output = [(WFAction *)self userInterface];
+  if ([output isRunningWithSiriUI])
   {
 LABEL_8:
 
     goto LABEL_9;
   }
 
-  v12 = [v6 output];
-  v13 = [v12 dialog];
-  if (v13)
+  output3 = [neededCopy output];
+  dialog = [output3 dialog];
+  if (dialog)
   {
     goto LABEL_16;
   }
 
-  v13 = [v6 output];
-  v14 = [v13 viewSnippet];
-  if (v14)
+  dialog = [neededCopy output];
+  viewSnippet = [dialog viewSnippet];
+  if (viewSnippet)
   {
 
 LABEL_16:
     goto LABEL_17;
   }
 
-  v23 = [v6 output];
-  v24 = [v23 snippetAction];
+  output4 = [neededCopy output];
+  snippetAction = [output4 snippetAction];
 
-  if (!v24)
+  if (!snippetAction)
   {
     goto LABEL_9;
   }
@@ -1806,25 +1806,25 @@ LABEL_17:
   aBlock[2] = __53__WFLinkAction_showResultIfNeeded_completionHandler___block_invoke;
   aBlock[3] = &unk_1E8377960;
   aBlock[4] = self;
-  v15 = v6;
+  v15 = neededCopy;
   v28 = v15;
-  v29 = v7;
+  v29 = handlerCopy;
   v16 = _Block_copy(aBlock);
-  v17 = [v15 output];
-  v18 = [v17 snippetAction];
+  output5 = [v15 output];
+  snippetAction2 = [output5 snippetAction];
 
-  if (v18)
+  if (snippetAction2)
   {
-    v19 = [v15 output];
-    v20 = [v19 snippetAction];
-    v21 = [(WFAppIntentExecutionAction *)self fullyQualifiedLinkActionIdentifier];
-    v22 = [v21 bundleIdentifier];
+    output6 = [v15 output];
+    snippetAction3 = [output6 snippetAction];
+    fullyQualifiedLinkActionIdentifier = [(WFAppIntentExecutionAction *)self fullyQualifiedLinkActionIdentifier];
+    bundleIdentifier = [fullyQualifiedLinkActionIdentifier bundleIdentifier];
     v25[0] = MEMORY[0x1E69E9820];
     v25[1] = 3221225472;
     v25[2] = __53__WFLinkAction_showResultIfNeeded_completionHandler___block_invoke_4;
     v25[3] = &unk_1E837CA50;
     v26 = v16;
-    [WFToolInvocation invocationFrom:v20 bundleIdentifier:v22 deviceIdentifier:0 completionHandler:v25];
+    [WFToolInvocation invocationFrom:snippetAction3 bundleIdentifier:bundleIdentifier deviceIdentifier:0 completionHandler:v25];
   }
 
   else
@@ -1897,84 +1897,84 @@ uint64_t __53__WFLinkAction_showResultIfNeeded_completionHandler___block_invoke_
   return v3();
 }
 
-- (void)finishRunningWithResult:(id)a3 error:(id)a4
+- (void)finishRunningWithResult:(id)result error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 output];
-  v9 = [v8 value];
+  resultCopy = result;
+  errorCopy = error;
+  output = [resultCopy output];
+  value = [output value];
 
-  if (v9)
+  if (value)
   {
-    v10 = [v9 valueType];
-    v11 = [(WFAppIntentExecutionAction *)self fullyQualifiedLinkActionIdentifier];
-    v12 = [v11 bundleIdentifier];
-    v13 = [(WFAppIntentExecutionAction *)self outputOriginDisplayableAppBundleIdentifier];
-    v14 = [v10 wf_contentCollectionFromLinkValue:v9 appBundleIdentifier:v12 displayedBundleIdentifier:v13 disclosureLevel:{-[WFAction outputDisclosureLevel](self, "outputDisclosureLevel")}];
+    valueType = [value valueType];
+    fullyQualifiedLinkActionIdentifier = [(WFAppIntentExecutionAction *)self fullyQualifiedLinkActionIdentifier];
+    bundleIdentifier = [fullyQualifiedLinkActionIdentifier bundleIdentifier];
+    outputOriginDisplayableAppBundleIdentifier = [(WFAppIntentExecutionAction *)self outputOriginDisplayableAppBundleIdentifier];
+    v14 = [valueType wf_contentCollectionFromLinkValue:value appBundleIdentifier:bundleIdentifier displayedBundleIdentifier:outputOriginDisplayableAppBundleIdentifier disclosureLevel:{-[WFAction outputDisclosureLevel](self, "outputDisclosureLevel")}];
     [(WFAction *)self setOutput:v14];
   }
 
-  v15 = [v6 output];
-  v16 = [v15 undoContext];
-  [(WFAppIntentExecutionAction *)self setUndoContext:v16];
+  output2 = [resultCopy output];
+  undoContext = [output2 undoContext];
+  [(WFAppIntentExecutionAction *)self setUndoContext:undoContext];
 
-  v17 = [v6 output];
-  v18 = [v17 attribution];
-  [(WFAppIntentExecutionAction *)self setAttribution:v18];
+  output3 = [resultCopy output];
+  attribution = [output3 attribution];
+  [(WFAppIntentExecutionAction *)self setAttribution:attribution];
 
-  v19 = [v6 output];
-  v20 = [v19 showOutputAction];
+  output4 = [resultCopy output];
+  showOutputAction = [output4 showOutputAction];
 
-  if (v20)
+  if (showOutputAction)
   {
-    v21 = [(WFAppIntentExecutionAction *)self opensWhenRun];
+    opensWhenRun = [(WFAppIntentExecutionAction *)self opensWhenRun];
     if ([(WFAppIntentExecutionAction *)self runKind]== 1)
     {
-      if (v21)
+      if (opensWhenRun)
       {
 LABEL_6:
-        [(WFLinkAction *)self performPresentationActionWithResult:v6];
+        [(WFLinkAction *)self performPresentationActionWithResult:resultCopy];
         goto LABEL_12;
       }
     }
 
     else
     {
-      v22 = [v6 output];
-      v23 = [v22 showOutputActionHint];
+      output5 = [resultCopy output];
+      showOutputActionHint = [output5 showOutputActionHint];
 
-      if (v23)
+      if (showOutputActionHint)
       {
-        v24 = [v6 output];
-        v25 = [v24 showOutputActionHint];
+        output6 = [resultCopy output];
+        showOutputActionHint2 = [output6 showOutputActionHint];
 
-        if (v25 == 1)
+        if (showOutputActionHint2 == 1)
         {
           goto LABEL_6;
         }
       }
 
-      else if (v21)
+      else if (opensWhenRun)
       {
         goto LABEL_6;
       }
     }
   }
 
-  if (v7)
+  if (errorCopy)
   {
-    [(WFAppIntentExecutionAction *)self finishRunningWithError:v7];
+    [(WFAppIntentExecutionAction *)self finishRunningWithError:errorCopy];
   }
 
   else
   {
-    v26 = [(WFAppIntentExecutionAction *)self metadata];
+    metadata = [(WFAppIntentExecutionAction *)self metadata];
     v27[0] = MEMORY[0x1E69E9820];
     v27[1] = 3221225472;
     v27[2] = __46__WFLinkAction_finishRunningWithResult_error___block_invoke;
     v27[3] = &unk_1E837E5E0;
     v27[4] = self;
-    [(WFAppIntentExecutionAction *)self showChronoControlIfPossibleForIntent:v26 completionHandler:v27];
+    [(WFAppIntentExecutionAction *)self showChronoControlIfPossibleForIntent:metadata completionHandler:v27];
   }
 
 LABEL_12:
@@ -1982,30 +1982,30 @@ LABEL_12:
 
 - (WFLinkAction)linkActionWithSerializedParameters
 {
-  v3 = [(WFLinkAction *)self currentParameterStates];
-  v4 = [(WFAppIntentExecutionAction *)self linkActionWithParameterStates:v3 usingConnectionPolicy:1];
+  currentParameterStates = [(WFLinkAction *)self currentParameterStates];
+  v4 = [(WFAppIntentExecutionAction *)self linkActionWithParameterStates:currentParameterStates usingConnectionPolicy:1];
 
   return v4;
 }
 
 - (void)updateParameterVisibility
 {
-  v2 = self;
+  selfCopy = self;
   v46 = *MEMORY[0x1E69E9840];
-  v3 = [(WFAppIntentExecutionAction *)self actionSummary];
-  v4 = v3;
-  if (v3)
+  actionSummary = [(WFAppIntentExecutionAction *)self actionSummary];
+  v4 = actionSummary;
+  if (actionSummary)
   {
-    v5 = [v3 summaryString];
-    v6 = [v5 parameterIdentifiers];
-    if ([v6 count])
+    summaryString = [actionSummary summaryString];
+    parameterIdentifiers = [summaryString parameterIdentifiers];
+    if ([parameterIdentifiers count])
     {
     }
 
     else
     {
-      v7 = [v4 otherParameterIdentifiers];
-      v8 = [v7 count];
+      otherParameterIdentifiers = [v4 otherParameterIdentifiers];
+      v8 = [otherParameterIdentifiers count];
 
       if (!v8)
       {
@@ -2013,7 +2013,7 @@ LABEL_12:
         v43 = 0u;
         v40 = 0u;
         v41 = 0u;
-        obj = [(WFAction *)v2 parameters];
+        obj = [(WFAction *)selfCopy parameters];
         v30 = [obj countByEnumeratingWithState:&v40 objects:v45 count:16];
         if (v30)
         {
@@ -2045,16 +2045,16 @@ LABEL_12:
     v39 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v9 = [(WFAppIntentExecutionAction *)v2 metadata];
-    v10 = [v9 parameters];
+    metadata = [(WFAppIntentExecutionAction *)selfCopy metadata];
+    parameters = [metadata parameters];
 
-    obj = v10;
-    v11 = [v10 countByEnumeratingWithState:&v36 objects:v44 count:16];
+    obj = parameters;
+    v11 = [parameters countByEnumeratingWithState:&v36 objects:v44 count:16];
     if (v11)
     {
       v12 = v11;
       v13 = *v37;
-      v34 = v2;
+      v34 = selfCopy;
       do
       {
         for (j = 0; j != v12; ++j)
@@ -2064,13 +2064,13 @@ LABEL_12:
             objc_enumerationMutation(obj);
           }
 
-          v15 = [*(*(&v36 + 1) + 8 * j) name];
-          v16 = [(WFAction *)v2 parameterForKey:v15];
+          name = [*(*(&v36 + 1) + 8 * j) name];
+          v16 = [(WFAction *)selfCopy parameterForKey:name];
 
-          v17 = [v4 summaryString];
-          v18 = [v17 parameterIdentifiers];
+          summaryString2 = [v4 summaryString];
+          parameterIdentifiers2 = [summaryString2 parameterIdentifiers];
           v19 = [v16 key];
-          if ([v18 containsObject:v19])
+          if ([parameterIdentifiers2 containsObject:v19])
           {
             [v16 setHidden:0];
           }
@@ -2087,16 +2087,16 @@ LABEL_12:
             v4 = v22;
             v13 = v21;
             v12 = v20;
-            v2 = v34;
+            selfCopy = v34;
           }
 
-          if ([(WFAction *)v2 shouldInsertExpandingParameterForParameter:v16])
+          if ([(WFAction *)selfCopy shouldInsertExpandingParameterForParameter:v16])
           {
             v25 = MEMORY[0x1E696AEC0];
             v26 = [v16 key];
             v27 = [v25 stringWithFormat:@"Show-%@", v26];
 
-            v28 = [(WFAction *)v2 parameterForKey:v27];
+            v28 = [(WFAction *)selfCopy parameterForKey:v27];
             [v28 setHidden:{objc_msgSend(v16, "isHidden")}];
           }
 
@@ -2130,13 +2130,13 @@ LABEL_17:
 - (id)currentParameterStates
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [(WFAction *)self parameters];
-  v4 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v3, "count")}];
+  parameters = [(WFAction *)self parameters];
+  v4 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(parameters, "count")}];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = v3;
+  v5 = parameters;
   v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
@@ -2174,11 +2174,11 @@ LABEL_17:
   v34 = *MEMORY[0x1E69E9840];
   v27.receiver = self;
   v27.super_class = WFLinkAction;
-  v3 = [(WFAction *)&v27 generatedResourceNodes];
-  v22 = [v3 mutableCopy];
+  generatedResourceNodes = [(WFAction *)&v27 generatedResourceNodes];
+  v22 = [generatedResourceNodes mutableCopy];
 
-  v4 = [(WFLinkAction *)self parameterDefinitions];
-  v5 = [v4 if_compactMap:&__block_literal_global_320];
+  parameterDefinitions = [(WFLinkAction *)self parameterDefinitions];
+  v5 = [parameterDefinitions if_compactMap:&__block_literal_global_320];
 
   v25 = 0u;
   v26 = 0u;
@@ -2295,10 +2295,10 @@ id __38__WFLinkAction_generatedResourceNodes__block_invoke(uint64_t a1, void *a2
 
 - (BOOL)showsWhenRun
 {
-  v2 = [(WFLinkAction *)self showsWhenRunIfApplicable];
-  v3 = [v2 BOOLValue];
+  showsWhenRunIfApplicable = [(WFLinkAction *)self showsWhenRunIfApplicable];
+  bOOLValue = [showsWhenRunIfApplicable BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (NSNumber)showsWhenRunIfApplicable
@@ -2321,9 +2321,9 @@ id __38__WFLinkAction_generatedResourceNodes__block_invoke(uint64_t a1, void *a2
 - (id)outputMeasurementUnitType
 {
   outputMeasurementUnitType = self->_outputMeasurementUnitType;
-  v4 = [MEMORY[0x1E695DFB0] null];
+  null = [MEMORY[0x1E695DFB0] null];
 
-  if (outputMeasurementUnitType != v4)
+  if (outputMeasurementUnitType != null)
   {
     if (outputMeasurementUnitType)
     {
@@ -2332,29 +2332,29 @@ id __38__WFLinkAction_generatedResourceNodes__block_invoke(uint64_t a1, void *a2
       goto LABEL_10;
     }
 
-    v6 = [(WFAppIntentExecutionAction *)self metadata];
-    v7 = [v6 outputType];
-    v8 = [v7 wf_objectValueType];
+    metadata = [(WFAppIntentExecutionAction *)self metadata];
+    outputType = [metadata outputType];
+    wf_objectValueType = [outputType wf_objectValueType];
 
-    if (v8)
+    if (wf_objectValueType)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v5 = [MEMORY[0x1E69E0BE8] unitTypeFromLinkMeasurementUnitType:{objc_msgSend(v8, "unitType")}];
+        v5 = [MEMORY[0x1E69E0BE8] unitTypeFromLinkMeasurementUnitType:{objc_msgSend(wf_objectValueType, "unitType")}];
 
         if (v5)
         {
-          v9 = v5;
+          null2 = v5;
         }
 
         else
         {
-          v9 = [MEMORY[0x1E695DFB0] null];
+          null2 = [MEMORY[0x1E695DFB0] null];
         }
 
         outputMeasurementUnitType = self->_outputMeasurementUnitType;
-        self->_outputMeasurementUnitType = v9;
+        self->_outputMeasurementUnitType = null2;
         goto LABEL_10;
       }
     }
@@ -2368,19 +2368,19 @@ LABEL_10:
   return v5;
 }
 
-- (id)serializedParametersForDonatedIntent:(id)a3 allowDroppingUnconfigurableValues:(BOOL)a4
+- (id)serializedParametersForDonatedIntent:(id)intent allowDroppingUnconfigurableValues:(BOOL)values
 {
-  v6 = a3;
-  v7 = [(WFAppIntentExecutionAction *)self metadata];
-  v8 = [v7 customIntentClassName];
-  v9 = [v6 _className];
-  v10 = [v8 isEqualToString:v9];
+  intentCopy = intent;
+  metadata = [(WFAppIntentExecutionAction *)self metadata];
+  customIntentClassName = [metadata customIntentClassName];
+  _className = [intentCopy _className];
+  v10 = [customIntentClassName isEqualToString:_className];
 
   if (v10)
   {
-    v11 = [(WFAction *)self parametersByKey];
+    parametersByKey = [(WFAction *)self parametersByKey];
     v12 = [MEMORY[0x1E696EA80] localizerForLanguage:0];
-    v13 = WFSerializedParametersForDonatedIntent(v6, 1, a4, v11, v12);
+    v13 = WFSerializedParametersForDonatedIntent(intentCopy, 1, values, parametersByKey, v12);
   }
 
   else
@@ -2391,23 +2391,23 @@ LABEL_10:
   return v13;
 }
 
-- (BOOL)setParameterState:(id)a3 forKey:(id)a4
+- (BOOL)setParameterState:(id)state forKey:(id)key
 {
   v35 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(WFAction *)self parameterStateForKey:v7];
-  v9 = [v8 isEqual:v6];
+  stateCopy = state;
+  keyCopy = key;
+  v8 = [(WFAction *)self parameterStateForKey:keyCopy];
+  v9 = [v8 isEqual:stateCopy];
 
   v33.receiver = self;
   v33.super_class = WFLinkAction;
-  v10 = [(WFAction *)&v33 setParameterState:v6 forKey:v7];
+  v10 = [(WFAction *)&v33 setParameterState:stateCopy forKey:keyCopy];
   v11 = v10;
-  if (!v6 || (v9 & 1) == 0)
+  if (!stateCopy || (v9 & 1) == 0)
   {
     v24 = v10;
-    v12 = [(WFAppIntentExecutionAction *)self dependentParameterIdentifiers];
-    v13 = [v12 objectForKeyedSubscript:v7];
+    dependentParameterIdentifiers = [(WFAppIntentExecutionAction *)self dependentParameterIdentifiers];
+    v13 = [dependentParameterIdentifiers objectForKeyedSubscript:keyCopy];
 
     v31 = 0u;
     v32 = 0u;
@@ -2454,8 +2454,8 @@ LABEL_10:
       while (v16);
     }
 
-    v21 = [(WFAppIntentExecutionAction *)self dependentParameterIdentifiers];
-    [v21 removeAllObjects];
+    dependentParameterIdentifiers2 = [(WFAppIntentExecutionAction *)self dependentParameterIdentifiers];
+    [dependentParameterIdentifiers2 removeAllObjects];
 
     v11 = v24;
   }
@@ -2488,13 +2488,13 @@ uint64_t __41__WFLinkAction_setParameterState_forKey___block_invoke_2(uint64_t a
   return [v2 attributesDidChange];
 }
 
-- (BOOL)updateParameterSummaryIfNeededWithLinkAction:(id)a3
+- (BOOL)updateParameterSummaryIfNeededWithLinkAction:(id)action
 {
-  v4 = a3;
-  v5 = [(WFAppIntentExecutionAction *)self metadata];
-  v6 = [v5 actionConfiguration];
-  v7 = [(WFAppIntentExecutionAction *)self actionConfigurationContext];
-  v8 = [v6 actionConfigurationByEvaluatingAction:v4 context:v7];
+  actionCopy = action;
+  metadata = [(WFAppIntentExecutionAction *)self metadata];
+  actionConfiguration = [metadata actionConfiguration];
+  actionConfigurationContext = [(WFAppIntentExecutionAction *)self actionConfigurationContext];
+  v8 = [actionConfiguration actionConfigurationByEvaluatingAction:actionCopy context:actionConfigurationContext];
 
   v9 = v8;
   if (v9)
@@ -2518,13 +2518,13 @@ uint64_t __41__WFLinkAction_setParameterState_forKey___block_invoke_2(uint64_t a
 
   v11 = v10;
 
-  v12 = [(WFAppIntentExecutionAction *)self actionSummary];
-  if (!v12)
+  actionSummary = [(WFAppIntentExecutionAction *)self actionSummary];
+  if (!actionSummary)
   {
     goto LABEL_10;
   }
 
-  v13 = v12;
+  v13 = actionSummary;
   if (!v11)
   {
     v16 = 0;
@@ -2533,8 +2533,8 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  v14 = [(WFAppIntentExecutionAction *)self actionSummary];
-  v15 = [v14 isEqual:v11];
+  actionSummary2 = [(WFAppIntentExecutionAction *)self actionSummary];
+  v15 = [actionSummary2 isEqual:v11];
 
   if ((v15 & 1) == 0)
   {
@@ -2558,36 +2558,36 @@ LABEL_15:
   return v16;
 }
 
-- (void)updateParameterSummaryIfNeeded:(id)a3
+- (void)updateParameterSummaryIfNeeded:(id)needed
 {
-  v4 = a3;
+  neededCopy = needed;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __47__WFLinkAction_updateParameterSummaryIfNeeded___block_invoke;
   aBlock[3] = &unk_1E83779D8;
   aBlock[4] = self;
-  v5 = v4;
+  v5 = neededCopy;
   v14 = v5;
   v6 = _Block_copy(aBlock);
-  v7 = [(WFAction *)self toolInvocation];
+  toolInvocation = [(WFAction *)self toolInvocation];
 
-  if (v7)
+  if (toolInvocation)
   {
-    v8 = [(WFAction *)self input];
-    v9 = [(WFAppIntentExecutionAction *)self actionArchivingQueue];
+    input = [(WFAction *)self input];
+    actionArchivingQueue = [(WFAppIntentExecutionAction *)self actionArchivingQueue];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __47__WFLinkAction_updateParameterSummaryIfNeeded___block_invoke_2;
     v11[3] = &unk_1E8378300;
     v11[4] = self;
     v12 = v6;
-    [(WFAction *)self processParametersWithoutAskingForValuesWithInput:v8 workQueue:v9 completionHandler:v11];
+    [(WFAction *)self processParametersWithoutAskingForValuesWithInput:input workQueue:actionArchivingQueue completionHandler:v11];
   }
 
   else
   {
-    v10 = [(WFLinkAction *)self linkActionWithSerializedParameters];
-    (*(v6 + 2))(v6, v10, 0);
+    linkActionWithSerializedParameters = [(WFLinkAction *)self linkActionWithSerializedParameters];
+    (*(v6 + 2))(v6, linkActionWithSerializedParameters, 0);
   }
 }
 
@@ -2645,35 +2645,35 @@ void __47__WFLinkAction_updateParameterSummaryIfNeeded___block_invoke_2(uint64_t
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v16 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v10;
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  v12 = objectCopy;
   if (v12)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      if (WFProgressLocalizedDescriptionContext == a6)
+      if (WFProgressLocalizedDescriptionContext == context)
       {
-        v14 = [v12 localizedDescription];
-        v15 = [(WFAction *)self progress];
-        [v15 setLocalizedDescription:v14];
+        localizedDescription = [v12 localizedDescription];
+        progress = [(WFAction *)self progress];
+        [progress setLocalizedDescription:localizedDescription];
       }
 
       else
       {
         v13 = v12;
-        if (WFProgressLocalizedAdditionalDescriptionContext != a6)
+        if (WFProgressLocalizedAdditionalDescriptionContext != context)
         {
           goto LABEL_11;
         }
 
-        v14 = [v12 localizedAdditionalDescription];
-        v15 = [(WFAction *)self progress];
-        [v15 setLocalizedAdditionalDescription:v14];
+        localizedDescription = [v12 localizedAdditionalDescription];
+        progress = [(WFAction *)self progress];
+        [progress setLocalizedAdditionalDescription:localizedDescription];
       }
 
       v13 = v12;
@@ -2682,53 +2682,53 @@ void __47__WFLinkAction_updateParameterSummaryIfNeeded___block_invoke_2(uint64_t
     else
     {
       v13 = 0;
-      v14 = v12;
+      localizedDescription = v12;
     }
   }
 
   else
   {
-    v14 = 0;
+    localizedDescription = 0;
     v13 = 0;
   }
 
 LABEL_11:
 }
 
-- (void)setExecutorProgress:(id)a3
+- (void)setExecutorProgress:(id)progress
 {
-  v4 = a3;
+  progressCopy = progress;
   [(WFLinkAction *)self deregisterExecutorProgressListeners];
   executorProgress = self->_executorProgress;
-  self->_executorProgress = v4;
-  v6 = v4;
+  self->_executorProgress = progressCopy;
+  v6 = progressCopy;
 
-  v7 = [(WFLinkAction *)self executorProgress];
-  [v7 addObserver:self forKeyPath:@"localizedDescription" options:5 context:WFProgressLocalizedDescriptionContext];
+  executorProgress = [(WFLinkAction *)self executorProgress];
+  [executorProgress addObserver:self forKeyPath:@"localizedDescription" options:5 context:WFProgressLocalizedDescriptionContext];
 
-  v8 = [(WFLinkAction *)self executorProgress];
-  [v8 addObserver:self forKeyPath:@"localizedAdditionalDescription" options:5 context:WFProgressLocalizedAdditionalDescriptionContext];
+  executorProgress2 = [(WFLinkAction *)self executorProgress];
+  [executorProgress2 addObserver:self forKeyPath:@"localizedAdditionalDescription" options:5 context:WFProgressLocalizedAdditionalDescriptionContext];
 }
 
-- (void)runSnippetActionWithLinkAction:(id)a3
+- (void)runSnippetActionWithLinkAction:(id)action
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 systemProtocols];
-  v6 = [MEMORY[0x1E69ACA50] snippetProtocol];
-  v7 = [v5 containsObject:v6];
+  actionCopy = action;
+  systemProtocols = [actionCopy systemProtocols];
+  snippetProtocol = [MEMORY[0x1E69ACA50] snippetProtocol];
+  v7 = [systemProtocols containsObject:snippetProtocol];
 
   if (v7)
   {
-    v8 = [(WFAppIntentExecutionAction *)self fullyQualifiedLinkActionIdentifier];
-    v9 = [v8 bundleIdentifier];
+    fullyQualifiedLinkActionIdentifier = [(WFAppIntentExecutionAction *)self fullyQualifiedLinkActionIdentifier];
+    bundleIdentifier = [fullyQualifiedLinkActionIdentifier bundleIdentifier];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __47__WFLinkAction_runSnippetActionWithLinkAction___block_invoke;
     v12[3] = &unk_1E83778A0;
     v12[4] = self;
-    v13 = v4;
-    [WFToolInvocation invocationFrom:v13 bundleIdentifier:v9 deviceIdentifier:0 completionHandler:v12];
+    v13 = actionCopy;
+    [WFToolInvocation invocationFrom:v13 bundleIdentifier:bundleIdentifier deviceIdentifier:0 completionHandler:v12];
   }
 
   else
@@ -2761,103 +2761,103 @@ void __47__WFLinkAction_runSnippetActionWithLinkAction___block_invoke(uint64_t a
   [v5 showSnippetLinkAction:v6 encodedSnippetActionToolInvocation:v7 completionHandler:v8];
 }
 
-- (void)runAsynchronouslyWithLinkAction:(id)a3
+- (void)runAsynchronouslyWithLinkAction:(id)action
 {
   v64[2] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  actionCopy = action;
   if ([(WFAppIntentExecutionAction *)self actionIsExecutedFromAnotherDevice])
   {
     if (-[WFAppIntentExecutionAction opensWhenRun](self, "opensWhenRun") || (-[WFAction disabledOnPlatforms](self, "disabledOnPlatforms"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 containsObject:@"Watch"], v6, v7))
     {
-      v8 = WFLocalizedString(@"Sorry, you can’t do that here. Try it on your iPhone instead.");
+      connection = WFLocalizedString(@"Sorry, you can’t do that here. Try it on your iPhone instead.");
       v9 = MEMORY[0x1E696ABC0];
       v63[0] = *MEMORY[0x1E696A588];
       v10 = MEMORY[0x1E696AEC0];
       v11 = WFLocalizedString(@"Could Not Run “%@”");
-      v12 = [(WFAction *)self localizedName];
-      v13 = [v10 localizedStringWithFormat:v11, v12];
+      localizedName = [(WFAction *)self localizedName];
+      v13 = [v10 localizedStringWithFormat:v11, localizedName];
       v63[1] = *MEMORY[0x1E696A578];
       v64[0] = v13;
-      v64[1] = v8;
+      v64[1] = connection;
       v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v64 forKeys:v63 count:2];
-      v15 = [v9 errorWithDomain:@"WFActionErrorDomain" code:15 userInfo:v14];
+      runningDelegate2 = [v9 errorWithDomain:@"WFActionErrorDomain" code:15 userInfo:v14];
 
-      [(WFAppIntentExecutionAction *)self finishRunningWithError:v15];
+      [(WFAppIntentExecutionAction *)self finishRunningWithError:runningDelegate2];
 LABEL_34:
 
       goto LABEL_37;
     }
   }
 
-  v16 = [(WFAction *)self userInterface];
-  if (![v16 isRunningWithSiriUI])
+  userInterface = [(WFAction *)self userInterface];
+  if (![userInterface isRunningWithSiriUI])
   {
 
     goto LABEL_10;
   }
 
-  v17 = [(WFAppIntentExecutionAction *)self skipExecutingInSiri];
+  skipExecutingInSiri = [(WFAppIntentExecutionAction *)self skipExecutingInSiri];
 
-  if (v17)
+  if (skipExecutingInSiri)
   {
     goto LABEL_10;
   }
 
   v18 = objc_alloc(MEMORY[0x1E69E0CD0]);
-  v19 = [(WFAppIntentExecutionAction *)self appDescriptor];
-  v20 = [v19 bundleIdentifier];
-  v21 = [(WFAction *)self localizedName];
-  v22 = [v18 initWithAction:v5 bundleIdentifier:v20 nameOverride:v21 showWhenRun:{-[WFLinkAction showsWhenRun](self, "showsWhenRun")}];
+  appDescriptor = [(WFAppIntentExecutionAction *)self appDescriptor];
+  bundleIdentifier = [appDescriptor bundleIdentifier];
+  localizedName2 = [(WFAction *)self localizedName];
+  v22 = [v18 initWithAction:actionCopy bundleIdentifier:bundleIdentifier nameOverride:localizedName2 showWhenRun:{-[WFLinkAction showsWhenRun](self, "showsWhenRun")}];
 
-  v23 = [(WFAction *)self userInterface];
+  userInterface2 = [(WFAction *)self userInterface];
   v61[0] = MEMORY[0x1E69E9820];
   v61[1] = 3221225472;
   v61[2] = __48__WFLinkAction_runAsynchronouslyWithLinkAction___block_invoke;
   v61[3] = &unk_1E8377850;
   v61[4] = self;
-  v62 = v5;
-  LOBYTE(v20) = [v23 performSiriRequest:v22 completionHandler:v61];
+  v62 = actionCopy;
+  LOBYTE(bundleIdentifier) = [userInterface2 performSiriRequest:v22 completionHandler:v61];
 
-  if ((v20 & 1) == 0)
+  if ((bundleIdentifier & 1) == 0)
   {
 LABEL_10:
-    v8 = [(WFAppIntentExecutionAction *)self connection];
-    v24 = [MEMORY[0x1E69E0A90] currentDevice];
-    v25 = [v24 hasSystemAperture];
+    connection = [(WFAppIntentExecutionAction *)self connection];
+    currentDevice = [MEMORY[0x1E69E0A90] currentDevice];
+    hasSystemAperture = [currentDevice hasSystemAperture];
 
-    v26 = [(WFLinkAction *)self showsWhenRunIfApplicable];
-    v27 = [v26 BOOLValue];
+    showsWhenRunIfApplicable = [(WFLinkAction *)self showsWhenRunIfApplicable];
+    bOOLValue = [showsWhenRunIfApplicable BOOLValue];
 
-    if (v27 && (v25 & 1) == 0)
+    if (bOOLValue && (hasSystemAperture & 1) == 0)
     {
-      v28 = [(WFAction *)self runningDelegate];
-      [v28 action:self didDecideRunningProgressIsAllowed:0];
+      runningDelegate = [(WFAction *)self runningDelegate];
+      [runningDelegate action:self didDecideRunningProgressIsAllowed:0];
     }
 
-    v29 = [(WFAppIntentExecutionAction *)self sessionKitSessionInvocationType];
+    sessionKitSessionInvocationType = [(WFAppIntentExecutionAction *)self sessionKitSessionInvocationType];
 
-    if (!v29)
+    if (!sessionKitSessionInvocationType)
     {
-      v15 = [(WFAction *)self runningDelegate];
-      [v15 action:self didDecideRunningProgressIsAllowed:1];
+      runningDelegate2 = [(WFAction *)self runningDelegate];
+      [runningDelegate2 action:self didDecideRunningProgressIsAllowed:1];
       goto LABEL_27;
     }
 
-    v30 = [(WFAction *)self sessionKitSessionConfiguration];
+    sessionKitSessionConfiguration = [(WFAction *)self sessionKitSessionConfiguration];
 
-    if (v30)
+    if (sessionKitSessionConfiguration)
     {
-      v31 = [(WFAction *)self sessionKitSessionConfiguration];
-      v15 = [v31 bundleIdentifier];
+      sessionKitSessionConfiguration2 = [(WFAction *)self sessionKitSessionConfiguration];
+      runningDelegate2 = [sessionKitSessionConfiguration2 bundleIdentifier];
 
-      if (!v15)
+      if (!runningDelegate2)
       {
         goto LABEL_39;
       }
 
 LABEL_25:
-      v43 = [(WFAction *)self sessionKitToastDurationsPerRunSourceDefinition];
-      v44 = [[WFActionSessionKitSessionConfiguration alloc] initWithBundleIdentifier:v15 toastDurationPerRunSource:v43];
+      sessionKitToastDurationsPerRunSourceDefinition = [(WFAction *)self sessionKitToastDurationsPerRunSourceDefinition];
+      v44 = [[WFActionSessionKitSessionConfiguration alloc] initWithBundleIdentifier:runningDelegate2 toastDurationPerRunSource:sessionKitToastDurationsPerRunSourceDefinition];
       v60 = 0;
       v45 = [(WFAction *)self allowSessionKitSessionsIfNeededWithConfiguration:v44 error:&v60];
       v46 = v60;
@@ -2870,15 +2870,15 @@ LABEL_25:
       }
 
 LABEL_27:
-      v48 = [v5 systemProtocols];
-      v49 = [MEMORY[0x1E69ACA50] snippetProtocol];
-      if ([v48 containsObject:v49])
+      systemProtocols = [actionCopy systemProtocols];
+      snippetProtocol = [MEMORY[0x1E69ACA50] snippetProtocol];
+      if ([systemProtocols containsObject:snippetProtocol])
       {
-        v50 = [(WFLinkAction *)self showsWhenRun];
+        showsWhenRun = [(WFLinkAction *)self showsWhenRun];
 
-        if (v50)
+        if (showsWhenRun)
         {
-          [(WFLinkAction *)self runSnippetActionWithLinkAction:v5];
+          [(WFLinkAction *)self runSnippetActionWithLinkAction:actionCopy];
 LABEL_37:
 
           goto LABEL_38;
@@ -2889,17 +2889,17 @@ LABEL_37:
       {
       }
 
-      v51 = [(WFAppIntentExecutionAction *)self executorOptions];
-      v52 = [v8 executorForAction:v5 options:v51 delegate:self];
+      executorOptions = [(WFAppIntentExecutionAction *)self executorOptions];
+      v52 = [connection executorForAction:actionCopy options:executorOptions delegate:self];
 
       if (v52)
       {
-        v53 = [v52 progress];
-        [(WFLinkAction *)self setExecutorProgress:v53];
+        progress = [v52 progress];
+        [(WFLinkAction *)self setExecutorProgress:progress];
 
-        v54 = [(WFAction *)self progress];
-        v55 = [(WFLinkAction *)self executorProgress];
-        [v54 addChild:v55 withPendingUnitCount:1];
+        progress2 = [(WFAction *)self progress];
+        executorProgress = [(WFLinkAction *)self executorProgress];
+        [progress2 addChild:executorProgress withPendingUnitCount:1];
 
         [v52 perform];
       }
@@ -2913,31 +2913,31 @@ LABEL_37:
       goto LABEL_37;
     }
 
-    v32 = [(WFAppIntentExecutionAction *)self metadata];
-    v33 = [v32 systemProtocols];
-    v34 = [MEMORY[0x1E69ACA50] sessionStartingProtocol];
-    v35 = [v33 containsObject:v34];
+    metadata = [(WFAppIntentExecutionAction *)self metadata];
+    systemProtocols2 = [metadata systemProtocols];
+    sessionStartingProtocol = [MEMORY[0x1E69ACA50] sessionStartingProtocol];
+    v35 = [systemProtocols2 containsObject:sessionStartingProtocol];
 
     if (v35)
     {
-      v36 = [v8 bundleIdentifier];
+      bundleIdentifier2 = [connection bundleIdentifier];
     }
 
     else
     {
-      v37 = [(WFAppIntentExecutionAction *)self metadata];
-      v38 = [v37 systemProtocols];
-      v39 = [MEMORY[0x1E69ACA50] audioStartingProtocol];
-      if ([v38 containsObject:v39])
+      metadata2 = [(WFAppIntentExecutionAction *)self metadata];
+      systemProtocols3 = [metadata2 systemProtocols];
+      audioStartingProtocol = [MEMORY[0x1E69ACA50] audioStartingProtocol];
+      if ([systemProtocols3 containsObject:audioStartingProtocol])
       {
       }
 
       else
       {
-        v40 = [(WFAppIntentExecutionAction *)self metadata];
-        v41 = [v40 systemProtocols];
-        v42 = [MEMORY[0x1E69ACA50] audioRecordingProtocol];
-        v59 = [v41 containsObject:v42];
+        metadata3 = [(WFAppIntentExecutionAction *)self metadata];
+        systemProtocols4 = [metadata3 systemProtocols];
+        audioRecordingProtocol = [MEMORY[0x1E69ACA50] audioRecordingProtocol];
+        v59 = [systemProtocols4 containsObject:audioRecordingProtocol];
 
         if (!v59)
         {
@@ -2945,20 +2945,20 @@ LABEL_37:
         }
       }
 
-      v36 = *MEMORY[0x1E69E0EB0];
+      bundleIdentifier2 = *MEMORY[0x1E69E0EB0];
     }
 
-    v15 = v36;
-    if (v36)
+    runningDelegate2 = bundleIdentifier2;
+    if (bundleIdentifier2)
     {
       goto LABEL_25;
     }
 
 LABEL_39:
-    v58 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v58 handleFailureInMethod:a2 object:self file:@"WFLinkAction.m" lineNumber:389 description:{@"Intent is expected to start live activity, but we couldn't figure out what process will"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFLinkAction.m" lineNumber:389 description:{@"Intent is expected to start live activity, but we couldn't figure out what process will"}];
 
-    v15 = 0;
+    runningDelegate2 = 0;
     goto LABEL_25;
   }
 
@@ -3053,15 +3053,15 @@ void __48__WFLinkAction_runAsynchronouslyWithLinkAction___block_invoke_270(uint6
   [v1 finishRunningWithResult:v2 error:v3];
 }
 
-- (void)runAsynchronouslyWithInput:(id)a3
+- (void)runAsynchronouslyWithInput:(id)input
 {
-  v4 = [(WFAction *)self processedParameters];
+  processedParameters = [(WFAction *)self processedParameters];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __43__WFLinkAction_runAsynchronouslyWithInput___block_invoke;
   v5[3] = &unk_1E837B428;
   v5[4] = self;
-  [(WFAppIntentExecutionAction *)self getLinkActionWithProcessedParameters:v4 completionHandler:v5];
+  [(WFAppIntentExecutionAction *)self getLinkActionWithProcessedParameters:processedParameters completionHandler:v5];
 }
 
 void __43__WFLinkAction_runAsynchronouslyWithInput___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -3100,31 +3100,31 @@ uint64_t __43__WFLinkAction_runAsynchronouslyWithInput___block_invoke_2(uint64_t
   }
 }
 
-- (id)localizedDiscontinuedDescriptionWithContext:(id)a3
+- (id)localizedDiscontinuedDescriptionWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [(WFAppIntentExecutionAction *)self metadata];
-  v6 = [v5 deprecationMetadata];
+  contextCopy = context;
+  metadata = [(WFAppIntentExecutionAction *)self metadata];
+  deprecationMetadata = [metadata deprecationMetadata];
 
-  if (v6)
+  if (deprecationMetadata)
   {
-    v7 = [v6 messageText];
-    v8 = [v4 locale];
-    v9 = [v8 localeIdentifier];
-    v10 = [v7 localizedStringForLocaleIdentifier:v9];
+    messageText = [deprecationMetadata messageText];
+    locale = [contextCopy locale];
+    localeIdentifier = [locale localeIdentifier];
+    v10 = [messageText localizedStringForLocaleIdentifier:localeIdentifier];
 
-    v11 = [(WFAction *)self definition];
-    v12 = [v11 objectForKey:@"DiscontinuedReplacementTitle"];
+    definition = [(WFAction *)self definition];
+    v12 = [definition objectForKey:@"DiscontinuedReplacementTitle"];
 
     if (v12)
     {
       v13 = MEMORY[0x1E696AEC0];
       v14 = WFLocalizedStringResourceWithKey(@"Please use “%@” instead.", @"Please use “%@” instead.");
-      v15 = [v4 localize:v14];
-      [v4 locale];
+      v15 = [contextCopy localize:v14];
+      [contextCopy locale];
       v17 = v16 = v10;
-      v18 = [v17 localeIdentifier];
-      v19 = [v12 localizedStringForLocaleIdentifier:v18];
+      localeIdentifier2 = [v17 localeIdentifier];
+      v19 = [v12 localizedStringForLocaleIdentifier:localeIdentifier2];
       v20 = [v13 localizedStringWithFormat:v15, v19];
 
       v10 = v16;
@@ -3145,54 +3145,54 @@ uint64_t __43__WFLinkAction_runAsynchronouslyWithInput___block_invoke_2(uint64_t
   return v21;
 }
 
-- (id)localizedCategoryWithContext:(id)a3
+- (id)localizedCategoryWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   if (self->_isBuiltIn)
   {
     v14.receiver = self;
     v14.super_class = WFLinkAction;
-    v5 = [(WFAction *)&v14 localizedCategoryWithContext:v4];
+    v5 = [(WFAction *)&v14 localizedCategoryWithContext:contextCopy];
   }
 
   else
   {
-    v6 = [(WFAppIntentExecutionAction *)self metadata];
-    v7 = [v6 descriptionMetadata];
-    v8 = [v7 categoryName];
-    v9 = [v8 title];
+    metadata = [(WFAppIntentExecutionAction *)self metadata];
+    descriptionMetadata = [metadata descriptionMetadata];
+    categoryName = [descriptionMetadata categoryName];
+    title = [categoryName title];
 
-    if (v9)
+    if (title)
     {
-      v10 = [v4 locale];
-      v11 = [v10 localeIdentifier];
-      v5 = [v9 localizedStringForLocaleIdentifier:v11];
+      locale = [contextCopy locale];
+      localeIdentifier = [locale localeIdentifier];
+      v5 = [title localizedStringForLocaleIdentifier:localeIdentifier];
     }
 
     else
     {
       v13.receiver = self;
       v13.super_class = WFLinkAction;
-      v5 = [(WFAction *)&v13 localizedCategoryWithContext:v4];
+      v5 = [(WFAction *)&v13 localizedCategoryWithContext:contextCopy];
     }
   }
 
   return v5;
 }
 
-- (id)localizedKeywordsWithContext:(id)a3
+- (id)localizedKeywordsWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [(WFAppIntentExecutionAction *)self metadata];
-  v6 = [v5 descriptionMetadata];
-  v7 = [v6 searchKeywords];
+  contextCopy = context;
+  metadata = [(WFAppIntentExecutionAction *)self metadata];
+  descriptionMetadata = [metadata descriptionMetadata];
+  searchKeywords = [descriptionMetadata searchKeywords];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __45__WFLinkAction_localizedKeywordsWithContext___block_invoke;
   v11[3] = &unk_1E837D6B8;
-  v12 = v4;
-  v8 = v4;
-  v9 = [v7 if_map:v11];
+  v12 = contextCopy;
+  v8 = contextCopy;
+  v9 = [searchKeywords if_map:v11];
 
   return v9;
 }
@@ -3208,49 +3208,49 @@ id __45__WFLinkAction_localizedKeywordsWithContext___block_invoke(uint64_t a1, v
   return v6;
 }
 
-- (id)localizedDefaultOutputNameWithContext:(id)a3
+- (id)localizedDefaultOutputNameWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [(WFAppIntentExecutionAction *)self metadata];
-  v6 = [v5 descriptionMetadata];
-  v7 = [v6 resultValueName];
+  contextCopy = context;
+  metadata = [(WFAppIntentExecutionAction *)self metadata];
+  descriptionMetadata = [metadata descriptionMetadata];
+  resultValueName = [descriptionMetadata resultValueName];
 
-  if (v7)
+  if (resultValueName)
   {
-    v8 = [v4 locale];
+    locale = [contextCopy locale];
 
-    v9 = [v8 localeIdentifier];
-    v10 = [v7 localizedStringForLocaleIdentifier:v9];
+    localeIdentifier = [locale localeIdentifier];
+    v10 = [resultValueName localizedStringForLocaleIdentifier:localeIdentifier];
   }
 
   else
   {
     v12.receiver = self;
     v12.super_class = WFLinkAction;
-    v10 = [(WFAppIntentExecutionAction *)&v12 localizedDefaultOutputNameWithContext:v4];
+    v10 = [(WFAppIntentExecutionAction *)&v12 localizedDefaultOutputNameWithContext:contextCopy];
   }
 
   return v10;
 }
 
-- (id)localizedDescriptionSummaryWithContext:(id)a3
+- (id)localizedDescriptionSummaryWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [v4 localizationUsage];
+  contextCopy = context;
+  localizationUsage = [contextCopy localizationUsage];
   v6 = *MEMORY[0x1E69E1070];
 
-  v7 = [(WFAppIntentExecutionAction *)self metadata];
-  v8 = [v7 descriptionMetadata];
-  v9 = [v8 descriptionText];
+  metadata = [(WFAppIntentExecutionAction *)self metadata];
+  descriptionMetadata = [metadata descriptionMetadata];
+  descriptionText = [descriptionMetadata descriptionText];
 
-  if (v5 == v6)
+  if (localizationUsage == v6)
   {
-    if (v9)
+    if (descriptionText)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v11 = v9;
+        v11 = descriptionText;
       }
 
       else
@@ -3266,20 +3266,20 @@ id __45__WFLinkAction_localizedKeywordsWithContext___block_invoke(uint64_t a1, v
 
     v12 = v11;
 
-    v13 = [v4 locale];
+    locale = [contextCopy locale];
 
-    v14 = [v13 localeIdentifier];
-    v15 = [v12 localizedStringForLocaleIdentifier:v14 kind:*MEMORY[0x1E69AC260]];
+    localeIdentifier = [locale localeIdentifier];
+    v15 = [v12 localizedStringForLocaleIdentifier:localeIdentifier kind:*MEMORY[0x1E69AC260]];
   }
 
   else
   {
-    if (v9)
+    if (descriptionText)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v10 = v9;
+        v10 = descriptionText;
       }
 
       else
@@ -3295,10 +3295,10 @@ id __45__WFLinkAction_localizedKeywordsWithContext___block_invoke(uint64_t a1, v
 
     v12 = v10;
 
-    v13 = [v4 locale];
+    locale = [contextCopy locale];
 
-    v14 = [v13 localeIdentifier];
-    v15 = [v12 localizedStringForLocaleIdentifier:v14];
+    localeIdentifier = [locale localeIdentifier];
+    v15 = [v12 localizedStringForLocaleIdentifier:localeIdentifier];
   }
 
   v16 = v15;
@@ -3306,24 +3306,24 @@ id __45__WFLinkAction_localizedKeywordsWithContext___block_invoke(uint64_t a1, v
   return v16;
 }
 
-- (id)localizedNameWithContext:(id)a3
+- (id)localizedNameWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [(WFAppIntentExecutionAction *)self metadata];
-  v6 = [v5 title];
-  v7 = [v4 locale];
+  contextCopy = context;
+  metadata = [(WFAppIntentExecutionAction *)self metadata];
+  title = [metadata title];
+  locale = [contextCopy locale];
 
-  v8 = [v7 localeIdentifier];
-  v9 = [v6 localizedStringForLocaleIdentifier:v8];
+  localeIdentifier = [locale localeIdentifier];
+  v9 = [title localizedStringForLocaleIdentifier:localeIdentifier];
 
   return v9;
 }
 
 - (NSString)developerSpecifiedTitle
 {
-  v2 = [(WFAppIntentExecutionAction *)self metadata];
-  v3 = [v2 title];
-  v4 = [v3 localizedStringForLocaleIdentifier:0];
+  metadata = [(WFAppIntentExecutionAction *)self metadata];
+  title = [metadata title];
+  v4 = [title localizedStringForLocaleIdentifier:0];
 
   return v4;
 }
@@ -3332,9 +3332,9 @@ id __45__WFLinkAction_localizedKeywordsWithContext___block_invoke(uint64_t a1, v
 {
   v7.receiver = self;
   v7.super_class = WFLinkAction;
-  v3 = [(WFAction *)&v7 supportedAppIdentifiers];
-  v4 = v3;
-  if (self->_isBuiltIn || ([v3 containsObject:*MEMORY[0x1E69E0F48]] & 1) != 0)
+  supportedAppIdentifiers = [(WFAction *)&v7 supportedAppIdentifiers];
+  v4 = supportedAppIdentifiers;
+  if (self->_isBuiltIn || ([supportedAppIdentifiers containsObject:*MEMORY[0x1E69E0F48]] & 1) != 0)
   {
     v5 = 0;
   }
@@ -3351,7 +3351,7 @@ id __45__WFLinkAction_localizedKeywordsWithContext___block_invoke(uint64_t a1, v
 {
   if (self->_isBuiltIn)
   {
-    v4 = 0;
+    iconName = 0;
   }
 
   else
@@ -3360,19 +3360,19 @@ id __45__WFLinkAction_localizedKeywordsWithContext___block_invoke(uint64_t a1, v
     v8 = v3;
     v6.receiver = self;
     v6.super_class = WFLinkAction;
-    v4 = [(WFAction *)&v6 iconName];
+    iconName = [(WFAction *)&v6 iconName];
   }
 
-  return v4;
+  return iconName;
 }
 
 - (id)icon
 {
-  v3 = [(WFAppIntentExecutionAction *)self metadata];
-  v4 = [v3 descriptionMetadata];
-  v5 = [v4 icon];
+  metadata = [(WFAppIntentExecutionAction *)self metadata];
+  descriptionMetadata = [metadata descriptionMetadata];
+  icon = [descriptionMetadata icon];
 
-  if (!v5)
+  if (!icon)
   {
     v9 = 0;
 LABEL_8:
@@ -3383,26 +3383,26 @@ LABEL_8:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v9 = v5;
-    v5 = 0;
+    v9 = icon;
+    icon = 0;
     goto LABEL_8;
   }
 
-  v6 = [v5 bundleURL];
+  bundleURL = [icon bundleURL];
 
-  if (v6)
+  if (bundleURL)
   {
     v7 = objc_alloc(MEMORY[0x1E696AAE8]);
-    v8 = [v5 bundleURL];
-    v9 = [v7 _initUniqueWithURL:v8];
+    bundleURL2 = [icon bundleURL];
+    v9 = [v7 _initUniqueWithURL:bundleURL2];
 
     v10 = MEMORY[0x1E69E0B58];
-    v11 = [v5 name];
-    v12 = [v10 imageNamed:v11 inBundle:v9];
+    name = [icon name];
+    v12 = [v10 imageNamed:name inBundle:v9];
 
     if (v12)
     {
-      v13 = [objc_alloc(MEMORY[0x1E69E0B60]) initWithImage:v12];
+      icon2 = [objc_alloc(MEMORY[0x1E69E0B60]) initWithImage:v12];
 
       goto LABEL_10;
     }
@@ -3413,17 +3413,17 @@ LABEL_8:
 LABEL_9:
   v15.receiver = self;
   v15.super_class = WFLinkAction;
-  v13 = [(WFAction *)&v15 icon];
+  icon2 = [(WFAction *)&v15 icon];
 LABEL_10:
 
-  return v13;
+  return icon2;
 }
 
-- (void)wasAddedToWorkflow:(id)a3
+- (void)wasAddedToWorkflow:(id)workflow
 {
   v4.receiver = self;
   v4.super_class = WFLinkAction;
-  [(WFAction *)&v4 wasAddedToWorkflow:a3];
+  [(WFAction *)&v4 wasAddedToWorkflow:workflow];
   [(WFLinkAction *)self forceUpdateParameterVisibility];
   [(WFAction *)self preloadDefaultParameterStatesIfNecessaryWithCompletionHandler:&__block_literal_global_26990];
 }
@@ -3445,16 +3445,16 @@ void __35__WFLinkAction_wasAddedToWorkflow___block_invoke(uint64_t a1, void *a2)
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (WFLinkAction)initWithIdentifier:(id)a3 metadata:(id)a4 definition:(id)a5 serializedParameters:(id)a6 appIntentDescriptor:(id)a7 fullyQualifiedActionIdentifier:(id)a8
+- (WFLinkAction)initWithIdentifier:(id)identifier metadata:(id)metadata definition:(id)definition serializedParameters:(id)parameters appIntentDescriptor:(id)descriptor fullyQualifiedActionIdentifier:(id)actionIdentifier
 {
-  v14 = a4;
+  metadataCopy = metadata;
   v19.receiver = self;
   v19.super_class = WFLinkAction;
-  v15 = [(WFAppIntentExecutionAction *)&v19 initWithIdentifier:a3 metadata:v14 definition:a5 serializedParameters:a6 appIntentDescriptor:a7 fullyQualifiedActionIdentifier:a8];
+  v15 = [(WFAppIntentExecutionAction *)&v19 initWithIdentifier:identifier metadata:metadataCopy definition:definition serializedParameters:parameters appIntentDescriptor:descriptor fullyQualifiedActionIdentifier:actionIdentifier];
   if (v15)
   {
-    v16 = [v14 shortcutsActionMetadata];
-    v15->_isBuiltIn = v16 != 0;
+    shortcutsActionMetadata = [metadataCopy shortcutsActionMetadata];
+    v15->_isBuiltIn = shortcutsActionMetadata != 0;
 
     [(WFAction *)v15 addEventObserver:v15];
     v17 = v15;
@@ -3463,29 +3463,29 @@ void __35__WFLinkAction_wasAddedToWorkflow___block_invoke(uint64_t a1, void *a2)
   return v15;
 }
 
-+ (id)inputParameterMetadataWithActionMetadata:(id)a3
++ (id)inputParameterMetadataWithActionMetadata:(id)metadata
 {
-  v3 = a3;
-  v4 = [v3 parameters];
-  v5 = [v4 if_firstObjectPassingTest:&__block_literal_global_225_27000];
+  metadataCopy = metadata;
+  parameters = [metadataCopy parameters];
+  v5 = [parameters if_firstObjectPassingTest:&__block_literal_global_225_27000];
 
   if (!v5)
   {
-    v6 = [v3 parameters];
-    v7 = [v6 if_objectsPassingTest:&__block_literal_global_227];
+    parameters2 = [metadataCopy parameters];
+    v7 = [parameters2 if_objectsPassingTest:&__block_literal_global_227];
 
     if ([v7 count] == 1)
     {
-      v8 = [v7 firstObject];
+      firstObject = [v7 firstObject];
 
       goto LABEL_6;
     }
   }
 
-  v8 = v5;
+  firstObject = v5;
 LABEL_6:
 
-  return v8;
+  return firstObject;
 }
 
 BOOL __57__WFLinkAction_inputParameterMetadataWithActionMetadata___block_invoke_2(uint64_t a1, void *a2)
@@ -3506,25 +3506,25 @@ BOOL __57__WFLinkAction_inputParameterMetadataWithActionMetadata___block_invoke_
   return v5;
 }
 
-+ (id)providedActionWithIdentifier:(id)a3 serializedParameters:(id)a4
++ (id)providedActionWithIdentifier:(id)identifier serializedParameters:(id)parameters
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = a3;
+  parametersCopy = parameters;
+  identifierCopy = identifier;
   v7 = +[WFLinkActionProvider sharedProvider];
-  v8 = [[WFActionRequest alloc] initWithActionIdentifier:v6 serializedParameters:v5];
+  v8 = [[WFActionRequest alloc] initWithActionIdentifier:identifierCopy serializedParameters:parametersCopy];
 
   v15[0] = v8;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
   [v7 createActionsForRequests:v9];
 
-  v10 = [(WFActionRequest *)v8 result];
-  if (v10)
+  result = [(WFActionRequest *)v8 result];
+  if (result)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v11 = v10;
+      v11 = result;
     }
 
     else
@@ -3544,9 +3544,9 @@ BOOL __57__WFLinkAction_inputParameterMetadataWithActionMetadata___block_invoke_
   return v11;
 }
 
-- (void)requestUnlock:(id)a3
+- (void)requestUnlock:(id)unlock
 {
-  v4 = a3;
+  unlockCopy = unlock;
   if ([(WFLinkAction *)self usesCompactUnlockService])
   {
     v5 = objc_alloc_init(WFCompactUnlockService);
@@ -3555,7 +3555,7 @@ BOOL __57__WFLinkAction_inputParameterMetadataWithActionMetadata___block_invoke_
     v7[2] = __45__WFLinkAction_RequestUnlock__requestUnlock___block_invoke;
     v7[3] = &unk_1E837D770;
     v8 = v5;
-    v9 = v4;
+    v9 = unlockCopy;
     v6 = v5;
     [(WFCompactUnlockService *)v6 requestUnlockIfNeeded:v7];
   }
@@ -3564,7 +3564,7 @@ BOOL __57__WFLinkAction_inputParameterMetadataWithActionMetadata___block_invoke_
   {
     v10.receiver = self;
     v10.super_class = WFLinkAction;
-    [(WFAction *)&v10 requestUnlock:v4];
+    [(WFAction *)&v10 requestUnlock:unlockCopy];
   }
 }
 
@@ -3586,14 +3586,14 @@ void __45__WFLinkAction_RequestUnlock__requestUnlock___block_invoke(uint64_t a1,
   }
 }
 
-- (void)fetchSuggestedEntitiesForParameterWithKey:(id)a3 completionHandler:(id)a4
+- (void)fetchSuggestedEntitiesForParameterWithKey:(id)key completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(WFAction *)self parameterForKey:v6];
+  keyCopy = key;
+  handlerCopy = handler;
+  v8 = [(WFAction *)self parameterForKey:keyCopy];
   if (v8 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v9 = [(WFAction *)self parameterStateForKey:v6];
+    v9 = [(WFAction *)self parameterStateForKey:keyCopy];
     if (v9)
     {
       objc_opt_class();
@@ -3614,14 +3614,14 @@ void __45__WFLinkAction_RequestUnlock__requestUnlock___block_invoke(uint64_t a1,
     }
 
     v11 = v10;
-    v12 = [v11 variable];
+    variable = [v11 variable];
 
-    if (v12)
+    if (variable)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v13 = v12;
+        v13 = variable;
       }
 
       else
@@ -3637,31 +3637,31 @@ void __45__WFLinkAction_RequestUnlock__requestUnlock___block_invoke(uint64_t a1,
 
     v14 = v13;
 
-    v15 = [v14 collectionFilter];
+    collectionFilter = [v14 collectionFilter];
 
-    v16 = [v15 namedQueryReference];
+    namedQueryReference = [collectionFilter namedQueryReference];
 
-    if (v16)
+    if (namedQueryReference)
     {
       v17[0] = MEMORY[0x1E69E9820];
       v17[1] = 3221225472;
       v17[2] = __90__WFLinkAction_NamedQueries__fetchSuggestedEntitiesForParameterWithKey_completionHandler___block_invoke;
       v17[3] = &unk_1E837D448;
-      v19 = v7;
+      v19 = handlerCopy;
       v18 = v8;
-      [(WFAppIntentExecutionAction *)self loadPossibleStatesForEnumeration:v18 searchTerm:0 optionsProviderReference:v16 completionHandler:v17];
+      [(WFAppIntentExecutionAction *)self loadPossibleStatesForEnumeration:v18 searchTerm:0 optionsProviderReference:namedQueryReference completionHandler:v17];
     }
 
     else
     {
-      (*(v7 + 2))(v7, 0, 0);
+      (*(handlerCopy + 2))(handlerCopy, 0, 0);
     }
   }
 
   else
   {
 
-    (*(v7 + 2))(v7, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
   }
 }
 
@@ -3744,9 +3744,9 @@ id __90__WFLinkAction_NamedQueries__fetchSuggestedEntitiesForParameterWithKey_co
   return v8;
 }
 
-- (BOOL)canOfferSuggestionsForParameterWithKey:(id)a3
+- (BOOL)canOfferSuggestionsForParameterWithKey:(id)key
 {
-  v3 = [(WFAction *)self parameterStateForKey:a3];
+  v3 = [(WFAction *)self parameterStateForKey:key];
   if (v3)
   {
     objc_opt_class();
@@ -3767,14 +3767,14 @@ id __90__WFLinkAction_NamedQueries__fetchSuggestedEntitiesForParameterWithKey_co
   }
 
   v5 = v4;
-  v6 = [v5 variable];
+  variable = [v5 variable];
 
-  if (v6)
+  if (variable)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = v6;
+      v7 = variable;
     }
 
     else
@@ -3790,10 +3790,10 @@ id __90__WFLinkAction_NamedQueries__fetchSuggestedEntitiesForParameterWithKey_co
 
   v8 = v7;
 
-  v9 = [v8 collectionFilter];
+  collectionFilter = [v8 collectionFilter];
 
-  v10 = [v9 namedQueryReference];
-  LOBYTE(v8) = v10 != 0;
+  namedQueryReference = [collectionFilter namedQueryReference];
+  LOBYTE(v8) = namedQueryReference != 0;
 
   return v8;
 }

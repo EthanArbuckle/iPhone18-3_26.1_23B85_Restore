@@ -1,30 +1,30 @@
 @interface IMDCKInitialMessageSyncController
-- (BOOL)_deviceConditionsAllowsMessageSyncForActivity:(id)a3 deviceConditionsToCheck:(unint64_t)a4 currentBatchCount:(int64_t)a5 maxBatchCount:(int64_t)a6;
-- (BOOL)_deviceConditionsAllowsMessageSyncForCurrentBatchCount:(int64_t)a3 maxBatchCount:(int64_t)a4;
-- (BOOL)_kickOffWriteIfNeededForSyncType:(int64_t)a3 activity:(id)a4 completion:(id)a5;
-- (void)syncMessagesWithSyncType:(int64_t)a3 deviceConditionsToCheck:(unint64_t)a4 activity:(id)a5 completionBlock:(id)a6;
+- (BOOL)_deviceConditionsAllowsMessageSyncForActivity:(id)activity deviceConditionsToCheck:(unint64_t)check currentBatchCount:(int64_t)count maxBatchCount:(int64_t)batchCount;
+- (BOOL)_deviceConditionsAllowsMessageSyncForCurrentBatchCount:(int64_t)count maxBatchCount:(int64_t)batchCount;
+- (BOOL)_kickOffWriteIfNeededForSyncType:(int64_t)type activity:(id)activity completion:(id)completion;
+- (void)syncMessagesWithSyncType:(int64_t)type deviceConditionsToCheck:(unint64_t)check activity:(id)activity completionBlock:(id)block;
 @end
 
 @implementation IMDCKInitialMessageSyncController
 
-- (void)syncMessagesWithSyncType:(int64_t)a3 deviceConditionsToCheck:(unint64_t)a4 activity:(id)a5 completionBlock:(id)a6
+- (void)syncMessagesWithSyncType:(int64_t)type deviceConditionsToCheck:(unint64_t)check activity:(id)activity completionBlock:(id)block
 {
-  v10 = a6;
-  v11 = a5;
+  blockCopy = block;
+  activityCopy = activity;
   [(IMDCKInitialMessageSyncController *)self setSyncToken:0];
   v12.receiver = self;
   v12.super_class = IMDCKInitialMessageSyncController;
-  [(IMDCKMessageSyncController *)&v12 syncMessagesWithSyncType:a3 deviceConditionsToCheck:a4 activity:v11 completionBlock:v10];
+  [(IMDCKMessageSyncController *)&v12 syncMessagesWithSyncType:type deviceConditionsToCheck:check activity:activityCopy completionBlock:blockCopy];
 }
 
-- (BOOL)_deviceConditionsAllowsMessageSyncForCurrentBatchCount:(int64_t)a3 maxBatchCount:(int64_t)a4
+- (BOOL)_deviceConditionsAllowsMessageSyncForCurrentBatchCount:(int64_t)count maxBatchCount:(int64_t)batchCount
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = [(IMDCKInitialMessageSyncController *)self ckUtilities:a3];
-  v6 = [v5 cloudKitSyncingEnabled];
+  v5 = [(IMDCKInitialMessageSyncController *)self ckUtilities:count];
+  cloudKitSyncingEnabled = [v5 cloudKitSyncingEnabled];
 
-  v7 = [(IMDCKInitialMessageSyncController *)self ckUtilities];
-  v8 = [v7 iCloudAccountMatchesiMessageAccount];
+  ckUtilities = [(IMDCKInitialMessageSyncController *)self ckUtilities];
+  iCloudAccountMatchesiMessageAccount = [ckUtilities iCloudAccountMatchesiMessageAccount];
 
   if (IMOSLoggingEnabled())
   {
@@ -32,7 +32,7 @@
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       v10 = @"NO";
-      if (v6)
+      if (cloudKitSyncingEnabled)
       {
         v11 = @"YES";
       }
@@ -42,7 +42,7 @@
         v11 = @"NO";
       }
 
-      if (v8)
+      if (iCloudAccountMatchesiMessageAccount)
       {
         v10 = @"YES";
       }
@@ -56,18 +56,18 @@
   }
 
   v12 = *MEMORY[0x277D85DE8];
-  return v6 & v8;
+  return cloudKitSyncingEnabled & iCloudAccountMatchesiMessageAccount;
 }
 
-- (BOOL)_deviceConditionsAllowsMessageSyncForActivity:(id)a3 deviceConditionsToCheck:(unint64_t)a4 currentBatchCount:(int64_t)a5 maxBatchCount:(int64_t)a6
+- (BOOL)_deviceConditionsAllowsMessageSyncForActivity:(id)activity deviceConditionsToCheck:(unint64_t)check currentBatchCount:(int64_t)count maxBatchCount:(int64_t)batchCount
 {
   v21 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = [(IMDCKInitialMessageSyncController *)self ckUtilities];
-  v9 = [v8 cloudKitSyncingEnabled];
+  activityCopy = activity;
+  ckUtilities = [(IMDCKInitialMessageSyncController *)self ckUtilities];
+  cloudKitSyncingEnabled = [ckUtilities cloudKitSyncingEnabled];
 
-  v10 = [(IMDCKInitialMessageSyncController *)self ckUtilities];
-  v11 = [v10 iCloudAccountMatchesiMessageAccount];
+  ckUtilities2 = [(IMDCKInitialMessageSyncController *)self ckUtilities];
+  iCloudAccountMatchesiMessageAccount = [ckUtilities2 iCloudAccountMatchesiMessageAccount];
 
   if (IMOSLoggingEnabled())
   {
@@ -75,7 +75,7 @@
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
       v13 = @"NO";
-      if (v9)
+      if (cloudKitSyncingEnabled)
       {
         v14 = @"YES";
       }
@@ -85,7 +85,7 @@
         v14 = @"NO";
       }
 
-      if (v11)
+      if (iCloudAccountMatchesiMessageAccount)
       {
         v13 = @"YES";
       }
@@ -99,19 +99,19 @@
   }
 
   v15 = *MEMORY[0x277D85DE8];
-  return v9 & v11;
+  return cloudKitSyncingEnabled & iCloudAccountMatchesiMessageAccount;
 }
 
-- (BOOL)_kickOffWriteIfNeededForSyncType:(int64_t)a3 activity:(id)a4 completion:(id)a5
+- (BOOL)_kickOffWriteIfNeededForSyncType:(int64_t)type activity:(id)activity completion:(id)completion
 {
-  v6 = a5;
+  completionCopy = completion;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = sub_22B6CC440;
   v9[3] = &unk_2787028B0;
   v9[4] = self;
-  v10 = v6;
-  v7 = v6;
+  v10 = completionCopy;
+  v7 = completionCopy;
   dispatch_async(MEMORY[0x277D85CD0], v9);
 
   return 0;

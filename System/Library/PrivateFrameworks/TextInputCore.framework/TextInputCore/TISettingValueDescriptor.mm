@@ -1,30 +1,30 @@
 @interface TISettingValueDescriptor
-+ (id)settingValueDescriptorWithMetricName:(id)a3 settingName:(id)a4;
-- (TISettingValueDescriptor)initWithMetricName:(id)a3 settingName:(id)a4;
++ (id)settingValueDescriptorWithMetricName:(id)name settingName:(id)settingName;
+- (TISettingValueDescriptor)initWithMetricName:(id)name settingName:(id)settingName;
 @end
 
 @implementation TISettingValueDescriptor
 
-- (TISettingValueDescriptor)initWithMetricName:(id)a3 settingName:(id)a4
+- (TISettingValueDescriptor)initWithMetricName:(id)name settingName:(id)settingName
 {
-  v7 = a4;
+  settingNameCopy = settingName;
   v11.receiver = self;
   v11.super_class = TISettingValueDescriptor;
-  v8 = [(TIMetricDescriptor *)&v11 initWithMetricName:a3];
+  v8 = [(TIMetricDescriptor *)&v11 initWithMetricName:name];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_settingName, a4);
+    objc_storeStrong(&v8->_settingName, settingName);
   }
 
   return v9;
 }
 
-+ (id)settingValueDescriptorWithMetricName:(id)a3 settingName:(id)a4
++ (id)settingValueDescriptorWithMetricName:(id)name settingName:(id)settingName
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[TISettingValueDescriptor alloc] initWithMetricName:v6 settingName:v5];
+  settingNameCopy = settingName;
+  nameCopy = name;
+  v7 = [[TISettingValueDescriptor alloc] initWithMetricName:nameCopy settingName:settingNameCopy];
 
   return v7;
 }

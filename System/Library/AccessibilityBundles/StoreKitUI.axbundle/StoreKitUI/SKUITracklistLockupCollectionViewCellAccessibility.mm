@@ -44,13 +44,13 @@
       NSClassFromString(&cfstr_Skuibarratingv_0.isa);
       if (objc_opt_isKindOfClass())
       {
-        v11 = accessibilitySKUILocalizedString(@"popularity");
-        v31 = [v10 accessibilityValue];
+        accessibilityLabel = accessibilitySKUILocalizedString(@"popularity");
+        accessibilityValue = [v10 accessibilityValue];
         v32 = @"__AXStringForVariablesSentinel";
-        v30 = v11;
+        v30 = accessibilityLabel;
         v12 = __UIAXStringForVariables();
 
-        v8 = v31;
+        v8 = accessibilityValue;
       }
 
       else
@@ -61,20 +61,20 @@
           goto LABEL_28;
         }
 
-        v11 = [v10 accessibilityLabel];
-        if ([v11 rangeOfString:@":"] != 0x7FFFFFFFFFFFFFFFLL && v7 == 5)
+        accessibilityLabel = [v10 accessibilityLabel];
+        if ([accessibilityLabel rangeOfString:@":"] != 0x7FFFFFFFFFFFFFFFLL && v7 == 5)
         {
           v37 = v8;
-          v14 = [v11 componentsSeparatedByString:@":"];
+          v14 = [accessibilityLabel componentsSeparatedByString:@":"];
           v39 = 0u;
           v40 = 0u;
           v41 = 0u;
           v42 = 0u;
           v36 = v14;
-          v15 = [v14 reverseObjectEnumerator];
-          v16 = [v15 allObjects];
+          reverseObjectEnumerator = [v14 reverseObjectEnumerator];
+          allObjects = [reverseObjectEnumerator allObjects];
 
-          v17 = [v16 countByEnumeratingWithState:&v39 objects:v47 count:16];
+          v17 = [allObjects countByEnumeratingWithState:&v39 objects:v47 count:16];
           if (v17)
           {
             v18 = v17;
@@ -89,15 +89,15 @@
               {
                 if (*v40 != v20)
                 {
-                  objc_enumerationMutation(v16);
+                  objc_enumerationMutation(allObjects);
                 }
 
-                v24 = [*(*(&v39 + 1) + 8 * v22) integerValue];
-                v25 = 3600 * v24;
-                v26 = 60 * v24;
+                integerValue = [*(*(&v39 + 1) + 8 * v22) integerValue];
+                v25 = 3600 * integerValue;
+                v26 = 60 * integerValue;
                 if (v23 != 1)
                 {
-                  v26 = v24;
+                  v26 = integerValue;
                 }
 
                 if (v23 != 2)
@@ -112,7 +112,7 @@
 
               while (v18 != v22);
               v19 += v18;
-              v18 = [v16 countByEnumeratingWithState:&v39 objects:v47 count:16];
+              v18 = [allObjects countByEnumeratingWithState:&v39 objects:v47 count:16];
             }
 
             while (v18);
@@ -120,14 +120,14 @@
 
           v27 = AXDurationStringForDuration();
 
-          v11 = v27;
+          accessibilityLabel = v27;
           v4 = v34;
           v6 = v35;
           v8 = v37;
         }
 
-        v30 = v11;
-        v31 = @"__AXStringForVariablesSentinel";
+        v30 = accessibilityLabel;
+        accessibilityValue = @"__AXStringForVariablesSentinel";
         v12 = __UIAXStringForVariables();
       }
 
@@ -156,7 +156,7 @@ LABEL_32:
   v2 = [(SKUITracklistLockupCollectionViewCellAccessibility *)self safeValueForKey:@"contentView"];
   v3 = [v2 safeValueForKey:@"subviews"];
 
-  v4 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -180,7 +180,7 @@ LABEL_32:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) != 0 && [v10 isAccessibilityElement])
         {
-          [v4 addObject:v10];
+          [array addObject:v10];
         }
       }
 
@@ -192,7 +192,7 @@ LABEL_32:
 
   v11 = *MEMORY[0x29EDCA608];
 
-  return v4;
+  return array;
 }
 
 @end

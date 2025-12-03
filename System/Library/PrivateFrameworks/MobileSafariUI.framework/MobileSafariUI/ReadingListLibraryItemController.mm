@@ -1,25 +1,25 @@
 @interface ReadingListLibraryItemController
 - (id)_bookmarksNavigationControllerDelegate;
-- (id)readingListViewControllerCurrentReadingListItem:(id)a3;
+- (id)readingListViewControllerCurrentReadingListItem:(id)item;
 - (id)viewController;
-- (unint64_t)dropOperationForSession:(id)a3;
-- (void)performDropWithProposal:(id)a3 session:(id)a4 inViewController:(id)a5;
-- (void)readingListViewController:(id)a3 setBookmark:(id)a4 asRead:(BOOL)a5;
-- (void)readingListViewController:(id)a3 updateUnreadFilterShowingAllBookmarks:(BOOL)a4;
-- (void)updateListContentConfiguration:(id)a3;
+- (unint64_t)dropOperationForSession:(id)session;
+- (void)performDropWithProposal:(id)proposal session:(id)session inViewController:(id)controller;
+- (void)readingListViewController:(id)controller setBookmark:(id)bookmark asRead:(BOOL)read;
+- (void)readingListViewController:(id)controller updateUnreadFilterShowingAllBookmarks:(BOOL)bookmarks;
+- (void)updateListContentConfiguration:(id)configuration;
 @end
 
 @implementation ReadingListLibraryItemController
 
-- (void)updateListContentConfiguration:(id)a3
+- (void)updateListContentConfiguration:(id)configuration
 {
   v3 = MEMORY[0x277D755B8];
-  v4 = a3;
+  configurationCopy = configuration;
   v5 = [v3 systemImageNamed:@"eyeglasses"];
-  [v4 setImage:v5];
+  [configurationCopy setImage:v5];
 
   v6 = _WBSLocalizedString();
-  [v4 setText:v6];
+  [configurationCopy setText:v6];
 }
 
 - (id)viewController
@@ -32,20 +32,20 @@
     self->_viewController = v4;
 
     [(ReadingListViewController *)self->_viewController setDelegate:self];
-    v6 = [(LibraryItemController *)self configuration];
-    v7 = [v6 linkPreviewProvider];
-    [(ReadingListViewController *)self->_viewController setLinkPreviewProvider:v7];
+    configuration = [(LibraryItemController *)self configuration];
+    linkPreviewProvider = [configuration linkPreviewProvider];
+    [(ReadingListViewController *)self->_viewController setLinkPreviewProvider:linkPreviewProvider];
 
-    v8 = [(LibraryItemController *)self configuration];
-    v9 = [v8 navigationIntentHandler];
-    [(ReadingListViewController *)self->_viewController setNavigationIntentHandler:v9];
+    configuration2 = [(LibraryItemController *)self configuration];
+    navigationIntentHandler = [configuration2 navigationIntentHandler];
+    [(ReadingListViewController *)self->_viewController setNavigationIntentHandler:navigationIntentHandler];
 
-    v10 = [(LibraryItemController *)self configuration];
-    v11 = [v10 tabGroupProvider];
-    [(ReadingListViewController *)self->_viewController setTabGroupProvider:v11];
+    configuration3 = [(LibraryItemController *)self configuration];
+    tabGroupProvider = [configuration3 tabGroupProvider];
+    [(ReadingListViewController *)self->_viewController setTabGroupProvider:tabGroupProvider];
 
-    v12 = [(ReadingListViewController *)self->_viewController navigationItem];
-    [v12 setLargeTitleDisplayMode:2];
+    navigationItem = [(ReadingListViewController *)self->_viewController navigationItem];
+    [navigationItem setLargeTitleDisplayMode:2];
 
     viewController = self->_viewController;
   }
@@ -55,18 +55,18 @@
 
 - (id)_bookmarksNavigationControllerDelegate
 {
-  v2 = [(LibraryItemController *)self configuration];
-  v3 = [v2 bookmarksNavigationControllerDelegate];
+  configuration = [(LibraryItemController *)self configuration];
+  bookmarksNavigationControllerDelegate = [configuration bookmarksNavigationControllerDelegate];
 
-  return v3;
+  return bookmarksNavigationControllerDelegate;
 }
 
-- (id)readingListViewControllerCurrentReadingListItem:(id)a3
+- (id)readingListViewControllerCurrentReadingListItem:(id)item
 {
-  v3 = [(ReadingListLibraryItemController *)self _bookmarksNavigationControllerDelegate];
+  _bookmarksNavigationControllerDelegate = [(ReadingListLibraryItemController *)self _bookmarksNavigationControllerDelegate];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 bookmarksNavigationControllerCurrentContinuousReadingItem:0];
+    v4 = [_bookmarksNavigationControllerDelegate bookmarksNavigationControllerCurrentContinuousReadingItem:0];
   }
 
   else
@@ -77,47 +77,47 @@
   return v4;
 }
 
-- (void)readingListViewController:(id)a3 setBookmark:(id)a4 asRead:(BOOL)a5
+- (void)readingListViewController:(id)controller setBookmark:(id)bookmark asRead:(BOOL)read
 {
-  v5 = a5;
-  v8 = a4;
-  v7 = [(ReadingListLibraryItemController *)self _bookmarksNavigationControllerDelegate];
+  readCopy = read;
+  bookmarkCopy = bookmark;
+  _bookmarksNavigationControllerDelegate = [(ReadingListLibraryItemController *)self _bookmarksNavigationControllerDelegate];
   if (objc_opt_respondsToSelector())
   {
-    [v7 bookmarksNavigationController:0 setBookmark:v8 asRead:v5];
+    [_bookmarksNavigationControllerDelegate bookmarksNavigationController:0 setBookmark:bookmarkCopy asRead:readCopy];
   }
 }
 
-- (void)readingListViewController:(id)a3 updateUnreadFilterShowingAllBookmarks:(BOOL)a4
+- (void)readingListViewController:(id)controller updateUnreadFilterShowingAllBookmarks:(BOOL)bookmarks
 {
-  v4 = a4;
-  v5 = [(ReadingListLibraryItemController *)self _bookmarksNavigationControllerDelegate];
+  bookmarksCopy = bookmarks;
+  _bookmarksNavigationControllerDelegate = [(ReadingListLibraryItemController *)self _bookmarksNavigationControllerDelegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 bookmarksNavigationController:0 updateReadingListUnreadFilterShowingAllBookmarks:v4];
+    [_bookmarksNavigationControllerDelegate bookmarksNavigationController:0 updateReadingListUnreadFilterShowingAllBookmarks:bookmarksCopy];
   }
 }
 
-- (unint64_t)dropOperationForSession:(id)a3
+- (unint64_t)dropOperationForSession:(id)session
 {
   v3 = MEMORY[0x277D7B5A8];
-  v4 = a3;
-  v5 = [v3 mainBookmarkCollection];
-  v6 = [(WebBookmarkCollection *)v5 dropOperationForReadingListDropSession:v4];
+  sessionCopy = session;
+  mainBookmarkCollection = [v3 mainBookmarkCollection];
+  v6 = [(WebBookmarkCollection *)mainBookmarkCollection dropOperationForReadingListDropSession:sessionCopy];
 
   return v6;
 }
 
-- (void)performDropWithProposal:(id)a3 session:(id)a4 inViewController:(id)a5
+- (void)performDropWithProposal:(id)proposal session:(id)session inViewController:(id)controller
 {
   v5 = MEMORY[0x277D7B5A8];
-  v6 = a4;
-  v7 = [v5 mainBookmarkCollection];
-  v8 = [v6 items];
+  sessionCopy = session;
+  mainBookmarkCollection = [v5 mainBookmarkCollection];
+  items = [sessionCopy items];
 
-  [(WebBookmarkCollection *)v7 dropDragItemsInReadingList:v8 updatingController:0];
-  v9 = [MEMORY[0x277D499B8] sharedLogger];
-  [v9 didUseSidebarAction:21];
+  [(WebBookmarkCollection *)mainBookmarkCollection dropDragItemsInReadingList:items updatingController:0];
+  mEMORY[0x277D499B8] = [MEMORY[0x277D499B8] sharedLogger];
+  [mEMORY[0x277D499B8] didUseSidebarAction:21];
 }
 
 @end

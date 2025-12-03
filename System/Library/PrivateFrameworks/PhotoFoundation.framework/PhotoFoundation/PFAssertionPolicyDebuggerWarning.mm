@@ -1,30 +1,30 @@
 @interface PFAssertionPolicyDebuggerWarning
-- (void)notifyAssertion:(id)a3;
+- (void)notifyAssertion:(id)assertion;
 @end
 
 @implementation PFAssertionPolicyDebuggerWarning
 
-- (void)notifyAssertion:(id)a3
+- (void)notifyAssertion:(id)assertion
 {
-  v14 = a3;
-  if (!+[PFAssertionHandler runningUnderDebugger](PFAssertionHandler, "runningUnderDebugger") || ![v14 isWarning])
+  assertionCopy = assertion;
+  if (!+[PFAssertionHandler runningUnderDebugger](PFAssertionHandler, "runningUnderDebugger") || ![assertionCopy isWarning])
   {
     goto LABEL_15;
   }
 
-  v3 = [MEMORY[0x1E695E000] standardUserDefaults];
-  if ([v3 BOOLForKey:@"__skipWarningAssertions"])
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  if ([standardUserDefaults BOOLForKey:@"__skipWarningAssertions"])
   {
     v4 = MEMORY[0x1E696AD98];
     v5 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:86400.0];
     [v5 timeIntervalSinceReferenceDate];
     v6 = [v4 numberWithDouble:?];
 
-    v7 = [v3 objectForKey:@"PFAssertSkipWarningExpirationDate"];
+    v7 = [standardUserDefaults objectForKey:@"PFAssertSkipWarningExpirationDate"];
     if (!v7)
     {
       v7 = v6;
-      [v3 setObject:v7 forKey:@"PFAssertSkipWarningExpirationDate"];
+      [standardUserDefaults setObject:v7 forKey:@"PFAssertSkipWarningExpirationDate"];
     }
 
     v8 = MEMORY[0x1E695DF00];
@@ -40,16 +40,16 @@ LABEL_11:
         goto LABEL_12;
       }
 
-      [v3 removeObjectForKey:@"PFAssertSkipWarningExpirationDate"];
+      [standardUserDefaults removeObjectForKey:@"PFAssertSkipWarningExpirationDate"];
       v13 = MEMORY[0x1E695E110];
       v11 = @"__skipWarningAssertions";
-      v12 = v3;
+      v12 = standardUserDefaults;
     }
 
     else
     {
       v11 = @"PFAssertSkipWarningExpirationDate";
-      v12 = v3;
+      v12 = standardUserDefaults;
       v13 = v6;
     }
 
@@ -58,7 +58,7 @@ LABEL_11:
   }
 
 LABEL_12:
-  if (([v3 BOOLForKey:@"__skipWarningAssertions"] & 1) == 0)
+  if (([standardUserDefaults BOOLForKey:@"__skipWarningAssertions"] & 1) == 0)
   {
     __debugbreak();
   }

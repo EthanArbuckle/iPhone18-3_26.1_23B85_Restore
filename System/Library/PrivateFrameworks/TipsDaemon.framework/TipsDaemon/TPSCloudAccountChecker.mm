@@ -1,6 +1,6 @@
 @interface TPSCloudAccountChecker
 + (BOOL)isiCloudAccountEnabled;
-+ (BOOL)isiCloudDataClassEnabled:(id)a3;
++ (BOOL)isiCloudDataClassEnabled:(id)enabled;
 + (BOOL)isiCloudPlusEnabled;
 + (id)sharedAccountStore;
 @end
@@ -28,29 +28,29 @@ uint64_t __44__TPSCloudAccountChecker_sharedAccountStore__block_invoke()
 
 + (BOOL)isiCloudAccountEnabled
 {
-  v2 = [a1 sharedAccountStore];
-  v3 = [v2 aa_primaryAppleAccount];
+  sharedAccountStore = [self sharedAccountStore];
+  aa_primaryAppleAccount = [sharedAccountStore aa_primaryAppleAccount];
 
-  return v3 != 0;
+  return aa_primaryAppleAccount != 0;
 }
 
 + (BOOL)isiCloudPlusEnabled
 {
-  v2 = [a1 sharedAccountStore];
-  v3 = [v2 aa_primaryAppleAccount];
+  sharedAccountStore = [self sharedAccountStore];
+  aa_primaryAppleAccount = [sharedAccountStore aa_primaryAppleAccount];
 
-  LOBYTE(v2) = [v3 aa_isCloudSubscriber];
-  return v2;
+  LOBYTE(sharedAccountStore) = [aa_primaryAppleAccount aa_isCloudSubscriber];
+  return sharedAccountStore;
 }
 
-+ (BOOL)isiCloudDataClassEnabled:(id)a3
++ (BOOL)isiCloudDataClassEnabled:(id)enabled
 {
-  v4 = a3;
-  v5 = [a1 sharedAccountStore];
-  v6 = [v5 aa_primaryAppleAccount];
+  enabledCopy = enabled;
+  sharedAccountStore = [self sharedAccountStore];
+  aa_primaryAppleAccount = [sharedAccountStore aa_primaryAppleAccount];
 
-  v7 = [v6 enabledDataclasses];
-  v8 = [v7 containsObject:v4];
+  enabledDataclasses = [aa_primaryAppleAccount enabledDataclasses];
+  v8 = [enabledDataclasses containsObject:enabledCopy];
 
   return v8;
 }

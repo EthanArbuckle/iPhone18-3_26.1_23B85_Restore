@@ -1,25 +1,25 @@
 @interface SearchHintCollectionViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (unint64_t)accessibilityTraits;
 @end
 
 @implementation SearchHintCollectionViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"BridgeStoreExtension.SearchHintCollectionViewCell" hasInstanceMethod:@"accessibilityHintView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AppStoreKit.DynamicTypeLabel"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"BridgeStoreExtension.SearchHintCollectionViewCell" hasInstanceMethod:@"accessibilityHintView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AppStoreKit.DynamicTypeLabel"];
 }
 
 - (id)accessibilityLabel
 {
   v2 = [(SearchHintCollectionViewCellAccessibility *)self safeValueForKey:@"accessibilityHintView"];
   v3 = [v2 _accessibilityDescendantOfType:MEMORY[0x29C2CD990](@"AppStoreKit.DynamicTypeLabel")];
-  v4 = [v3 accessibilityLabel];
+  accessibilityLabel = [v3 accessibilityLabel];
 
-  return v4;
+  return accessibilityLabel;
 }
 
 - (unint64_t)accessibilityTraits

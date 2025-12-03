@@ -1,6 +1,6 @@
 @interface WFContextualActionRunnerClient
-- (WFContextualActionRunnerClient)initWithContextualAction:(id)a3 actionContext:(id)a4;
-- (void)handleWorkflowRunResult:(id)a3 completion:(id)a4;
+- (WFContextualActionRunnerClient)initWithContextualAction:(id)action actionContext:(id)context;
+- (void)handleWorkflowRunResult:(id)result completion:(id)completion;
 - (void)start;
 - (void)startFromQueue;
 @end
@@ -9,13 +9,13 @@
 
 - (void)startFromQueue
 {
-  v3 = [(WFWorkflowRunnerClient *)self descriptor];
-  if (v3)
+  descriptor = [(WFWorkflowRunnerClient *)self descriptor];
+  if (descriptor)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = v3;
+      v4 = descriptor;
     }
 
     else
@@ -31,17 +31,17 @@
 
   v5 = v4;
 
-  v6 = [v5 action];
-  v7 = [v5 context];
+  action = [v5 action];
+  context = [v5 context];
 
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __48__WFContextualActionRunnerClient_startFromQueue__block_invoke;
   v9[3] = &unk_1E7AFFA78;
   v9[4] = self;
-  v10 = v7;
-  v8 = v7;
-  [v6 configureIfNeededForContext:v8 completion:v9];
+  v10 = context;
+  v8 = context;
+  [action configureIfNeededForContext:v8 completion:v9];
 }
 
 void __48__WFContextualActionRunnerClient_startFromQueue__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -131,53 +131,53 @@ void __48__WFContextualActionRunnerClient_startFromQueue__block_invoke(uint64_t 
   [v3 enqueueRun:self];
 }
 
-- (void)handleWorkflowRunResult:(id)a3 completion:(id)a4
+- (void)handleWorkflowRunResult:(id)result completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  resultCopy = result;
+  completionCopy = completion;
   v8 = +[WFContextualActionRunQueue sharedQueue];
   [v8 runFinished:self];
 
-  v9 = [(WFWorkflowRunnerClient *)self delegate];
+  delegate = [(WFWorkflowRunnerClient *)self delegate];
   v10 = objc_opt_respondsToSelector();
 
   if (v10)
   {
-    v11 = v6;
+    v11 = resultCopy;
     if (v11 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v12 = [(WFWorkflowRunnerClient *)self delegate];
-      v13 = [v11 files];
-      v14 = [v11 error];
-      [v12 workflowRunnerClient:self didFinishRunningWorkflowWithOutputFiles:v13 error:v14 cancelled:{objc_msgSend(v11, "isCancelled")}];
+      delegate2 = [(WFWorkflowRunnerClient *)self delegate];
+      files = [v11 files];
+      error = [v11 error];
+      [delegate2 workflowRunnerClient:self didFinishRunningWorkflowWithOutputFiles:files error:error cancelled:{objc_msgSend(v11, "isCancelled")}];
     }
 
     else
     {
 
-      v15 = [(WFWorkflowRunnerClient *)self delegate];
-      v12 = [v11 error];
-      [v15 workflowRunnerClient:self didFinishRunningWorkflowWithOutputFiles:0 error:v12 cancelled:{objc_msgSend(v11, "isCancelled")}];
-      v11 = v15;
+      delegate3 = [(WFWorkflowRunnerClient *)self delegate];
+      delegate2 = [v11 error];
+      [delegate3 workflowRunnerClient:self didFinishRunningWorkflowWithOutputFiles:0 error:delegate2 cancelled:{objc_msgSend(v11, "isCancelled")}];
+      v11 = delegate3;
     }
 
-    v7[2](v7);
+    completionCopy[2](completionCopy);
   }
 
   else
   {
     v16.receiver = self;
     v16.super_class = WFContextualActionRunnerClient;
-    [(WFWorkflowRunnerClient *)&v16 handleWorkflowRunResult:v6 completion:v7];
+    [(WFWorkflowRunnerClient *)&v16 handleWorkflowRunResult:resultCopy completion:completionCopy];
   }
 }
 
-- (WFContextualActionRunnerClient)initWithContextualAction:(id)a3 actionContext:(id)a4
+- (WFContextualActionRunnerClient)initWithContextualAction:(id)action actionContext:(id)context
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[WFContextualActionRunDescriptor alloc] initWithAction:v7 context:v6];
-  v9 = [[WFContextualActionRunRequest alloc] initWithAction:v7 actionContext:v6];
+  contextCopy = context;
+  actionCopy = action;
+  v8 = [[WFContextualActionRunDescriptor alloc] initWithAction:actionCopy context:contextCopy];
+  v9 = [[WFContextualActionRunRequest alloc] initWithAction:actionCopy actionContext:contextCopy];
 
   v10 = [(WFWorkflowRunnerClient *)self initWithDescriptor:v8 runRequest:v9];
   return v10;

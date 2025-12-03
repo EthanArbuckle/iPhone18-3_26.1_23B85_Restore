@@ -1,7 +1,7 @@
 @interface IMDGroupPhotoDonationManager
 + (id)sharedInstance;
 - (IMDGroupPhotoDonationManager)init;
-- (void)copyGroupPhotoToExternalPathIfNecessary:(id)a3 chatGUID:(id)a4 attachmentFilepath:(id)a5;
+- (void)copyGroupPhotoToExternalPathIfNecessary:(id)necessary chatGUID:(id)d attachmentFilepath:(id)filepath;
 - (void)dealloc;
 @end
 
@@ -44,16 +44,16 @@
   [(IMDGroupPhotoDonationManager *)&v4 dealloc];
 }
 
-- (void)copyGroupPhotoToExternalPathIfNecessary:(id)a3 chatGUID:(id)a4 attachmentFilepath:(id)a5
+- (void)copyGroupPhotoToExternalPathIfNecessary:(id)necessary chatGUID:(id)d attachmentFilepath:(id)filepath
 {
   v53 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v13 = v10;
-  if (v8 && v9 && v10)
+  necessaryCopy = necessary;
+  dCopy = d;
+  filepathCopy = filepath;
+  v13 = filepathCopy;
+  if (necessaryCopy && dCopy && filepathCopy)
   {
-    v14 = objc_msgSend_im_lastPathComponent(v10, v11, v12);
+    v14 = objc_msgSend_im_lastPathComponent(filepathCopy, v11, v12);
     v15 = IMSharedHelperExternalLocationForFile();
 
     v18 = objc_msgSend_fileManager(self, v16, v17);
@@ -159,9 +159,9 @@
     if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
     {
       *buf = 138412802;
-      v46 = v8;
+      v46 = necessaryCopy;
       v47 = 2112;
-      v48 = v9;
+      v48 = dCopy;
       v49 = 2112;
       v50 = v13;
       _os_log_impl(&dword_1B7AD5000, v22, OS_LOG_TYPE_INFO, "early returning from copyGroupPhotoToExternalPathIfNecessary - nil argument. groupPhotoGUID %@ chatGUID %@ filepath %@", buf, 0x20u);

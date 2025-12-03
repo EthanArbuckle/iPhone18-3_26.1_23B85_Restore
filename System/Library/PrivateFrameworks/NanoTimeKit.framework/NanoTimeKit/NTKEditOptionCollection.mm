@@ -1,10 +1,10 @@
 @interface NTKEditOptionCollection
-+ (NTKEditOptionCollection)editOptionCollectionWithEditMode:(int64_t)a3 localizedName:(id)a4 options:(id)a5 collectionType:(unint64_t)a6;
-- (BOOL)isEqual:(id)a3;
++ (NTKEditOptionCollection)editOptionCollectionWithEditMode:(int64_t)mode localizedName:(id)name options:(id)options collectionType:(unint64_t)type;
+- (BOOL)isEqual:(id)equal;
 - (NSString)optionsDescription;
-- (NTKEditOptionCollection)initWithEditMode:(int64_t)a3 localizedName:(id)a4 options:(id)a5 collectionType:(unint64_t)a6 slot:(id)a7;
-- (id)filteredCollectionForDevice:(id)a3;
-- (id)filteredCollectionWithObjectsPassingTest:(id)a3;
+- (NTKEditOptionCollection)initWithEditMode:(int64_t)mode localizedName:(id)name options:(id)options collectionType:(unint64_t)type slot:(id)slot;
+- (id)filteredCollectionForDevice:(id)device;
+- (id)filteredCollectionWithObjectsPassingTest:(id)test;
 - (int64_t)swatchStyle;
 @end
 
@@ -12,71 +12,71 @@
 
 - (int64_t)swatchStyle
 {
-  v2 = [(NTKEditOptionCollection *)self options];
-  v3 = [v2 firstObject];
-  v4 = [v3 swatchStyle];
+  options = [(NTKEditOptionCollection *)self options];
+  firstObject = [options firstObject];
+  swatchStyle = [firstObject swatchStyle];
 
-  return v4;
+  return swatchStyle;
 }
 
 - (NSString)optionsDescription
 {
-  v2 = [(NTKEditOptionCollection *)self options];
-  v3 = [v2 firstObject];
-  v4 = [objc_opt_class() optionsDescription];
+  options = [(NTKEditOptionCollection *)self options];
+  firstObject = [options firstObject];
+  optionsDescription = [objc_opt_class() optionsDescription];
 
-  return v4;
+  return optionsDescription;
 }
 
-+ (NTKEditOptionCollection)editOptionCollectionWithEditMode:(int64_t)a3 localizedName:(id)a4 options:(id)a5 collectionType:(unint64_t)a6
++ (NTKEditOptionCollection)editOptionCollectionWithEditMode:(int64_t)mode localizedName:(id)name options:(id)options collectionType:(unint64_t)type
 {
-  v10 = a5;
-  v11 = a4;
-  v12 = [[a1 alloc] initWithEditMode:a3 localizedName:v11 options:v10 collectionType:a6];
+  optionsCopy = options;
+  nameCopy = name;
+  v12 = [[self alloc] initWithEditMode:mode localizedName:nameCopy options:optionsCopy collectionType:type];
 
   return v12;
 }
 
-- (NTKEditOptionCollection)initWithEditMode:(int64_t)a3 localizedName:(id)a4 options:(id)a5 collectionType:(unint64_t)a6 slot:(id)a7
+- (NTKEditOptionCollection)initWithEditMode:(int64_t)mode localizedName:(id)name options:(id)options collectionType:(unint64_t)type slot:(id)slot
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a7;
+  nameCopy = name;
+  optionsCopy = options;
+  slotCopy = slot;
   v18.receiver = self;
   v18.super_class = NTKEditOptionCollection;
   v15 = [(NTKEditOptionCollection *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    [(NTKEditOptionCollection *)v15 setMode:a3];
-    [(NTKEditOptionCollection *)v16 setLocalizedName:v12];
-    [(NTKEditOptionCollection *)v16 setOptions:v13];
-    [(NTKEditOptionCollection *)v16 setCollectionType:a6];
-    [(NTKEditOptionCollection *)v16 setSlot:v14];
+    [(NTKEditOptionCollection *)v15 setMode:mode];
+    [(NTKEditOptionCollection *)v16 setLocalizedName:nameCopy];
+    [(NTKEditOptionCollection *)v16 setOptions:optionsCopy];
+    [(NTKEditOptionCollection *)v16 setCollectionType:type];
+    [(NTKEditOptionCollection *)v16 setSlot:slotCopy];
   }
 
   return v16;
 }
 
-- (id)filteredCollectionWithObjectsPassingTest:(id)a3
+- (id)filteredCollectionWithObjectsPassingTest:(id)test
 {
-  v4 = a3;
+  testCopy = test;
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v6 = [(NTKEditOptionCollection *)self options];
+  options = [(NTKEditOptionCollection *)self options];
   v14 = MEMORY[0x277D85DD0];
   v15 = 3221225472;
   v16 = __68__NTKEditOptionCollection_filteredCollectionWithObjectsPassingTest___block_invoke;
   v17 = &unk_278785CA8;
   v18 = v5;
-  v19 = v4;
+  v19 = testCopy;
   v7 = v5;
-  v8 = v4;
-  [v6 enumerateObjectsUsingBlock:&v14];
+  v8 = testCopy;
+  [options enumerateObjectsUsingBlock:&v14];
 
   v9 = [NTKEditOptionCollection alloc];
   v10 = [(NTKEditOptionCollection *)self mode:v14];
-  v11 = [(NTKEditOptionCollection *)self localizedName];
-  v12 = [(NTKEditOptionCollection *)v9 initWithEditMode:v10 localizedName:v11 options:v7 collectionType:[(NTKEditOptionCollection *)self collectionType]];
+  localizedName = [(NTKEditOptionCollection *)self localizedName];
+  v12 = [(NTKEditOptionCollection *)v9 initWithEditMode:v10 localizedName:localizedName options:v7 collectionType:[(NTKEditOptionCollection *)self collectionType]];
 
   return v12;
 }
@@ -90,37 +90,37 @@ void __68__NTKEditOptionCollection_filteredCollectionWithObjectsPassingTest___bl
   }
 }
 
-- (id)filteredCollectionForDevice:(id)a3
+- (id)filteredCollectionForDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __55__NTKEditOptionCollection_filteredCollectionForDevice___block_invoke;
   v8[3] = &unk_278785CD0;
-  v9 = v4;
-  v5 = v4;
+  v9 = deviceCopy;
+  v5 = deviceCopy;
   v6 = [(NTKEditOptionCollection *)self filteredCollectionWithObjectsPassingTest:v8];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 || [v4 mode] != self->_mode)
+  if ((objc_opt_isKindOfClass() & 1) == 0 || [equalCopy mode] != self->_mode)
   {
     goto LABEL_14;
   }
 
-  v5 = [v4 localizedName];
-  v6 = v5;
-  if (v5 && self->_localizedName)
+  localizedName = [equalCopy localizedName];
+  v6 = localizedName;
+  if (localizedName && self->_localizedName)
   {
-    v7 = [v4 localizedName];
+    localizedName2 = [equalCopy localizedName];
     localizedName = self->_localizedName;
 
-    if (v7 != localizedName)
+    if (localizedName2 != localizedName)
     {
 LABEL_14:
       v16 = 0;
@@ -132,8 +132,8 @@ LABEL_14:
   {
   }
 
-  v9 = [v4 options];
-  v10 = [v9 count];
+  options = [equalCopy options];
+  v10 = [options count];
   v11 = [(NSArray *)self->_options count];
 
   if (v10 != v11)
@@ -146,8 +146,8 @@ LABEL_14:
     v12 = 0;
     do
     {
-      v13 = [v4 options];
-      v14 = [v13 objectAtIndexedSubscript:v12];
+      options2 = [equalCopy options];
+      v14 = [options2 objectAtIndexedSubscript:v12];
       v15 = [(NSArray *)self->_options objectAtIndexedSubscript:v12];
       v16 = [v14 isEqual:v15];
 

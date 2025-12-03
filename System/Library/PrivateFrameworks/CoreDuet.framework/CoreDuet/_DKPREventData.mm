@@ -1,6 +1,6 @@
 @interface _DKPREventData
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (uint64_t)event;
@@ -10,8 +10,8 @@
 - (uint64_t)uncompressedLength;
 - (uint64_t)version;
 - (unint64_t)hash;
-- (void)setEvent:(uint64_t)a1;
-- (void)writeTo:(id)a3;
+- (void)setEvent:(uint64_t)event;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _DKPREventData
@@ -22,38 +22,38 @@
   v8.receiver = self;
   v8.super_class = _DKPREventData;
   v4 = [(_DKPREventData *)&v8 description];
-  v5 = [(_DKPREventData *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(_DKPREventData *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_version];
-  [v3 setObject:v4 forKey:@"version"];
+  [dictionary setObject:v4 forKey:@"version"];
 
   event = self->_event;
   if (event)
   {
-    [v3 setObject:event forKey:@"event"];
+    [dictionary setObject:event forKey:@"event"];
   }
 
   if (*&self->_has)
   {
     v6 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_uncompressedLength];
-    [v3 setObject:v6 forKey:@"uncompressedLength"];
+    [dictionary setObject:v6 forKey:@"uncompressedLength"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   version = self->_version;
-  v7 = v4;
+  v7 = toCopy;
   PBDataWriterWriteUint32Field();
   if (!self->_event)
   {
@@ -68,11 +68,11 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(v5 + 24) = self->_version;
-  v6 = [(NSData *)self->_event copyWithZone:a3];
+  v6 = [(NSData *)self->_event copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
@@ -85,21 +85,21 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_9;
   }
 
-  if (self->_version != *(v4 + 6))
+  if (self->_version != *(equalCopy + 6))
   {
     goto LABEL_9;
   }
 
   event = self->_event;
-  if (event | *(v4 + 2))
+  if (event | *(equalCopy + 2))
   {
     if (![(NSData *)event isEqual:?])
     {
@@ -107,10 +107,10 @@
     }
   }
 
-  v6 = (*(v4 + 28) & 1) == 0;
+  v6 = (*(equalCopy + 28) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 28) & 1) != 0 && self->_uncompressedLength == *(v4 + 1))
+    if ((*(equalCopy + 28) & 1) != 0 && self->_uncompressedLength == *(equalCopy + 1))
     {
       v6 = 1;
       goto LABEL_10;
@@ -163,11 +163,11 @@ LABEL_10:
   return result;
 }
 
-- (void)setEvent:(uint64_t)a1
+- (void)setEvent:(uint64_t)event
 {
-  if (a1)
+  if (event)
   {
-    objc_storeStrong((a1 + 16), a2);
+    objc_storeStrong((event + 16), a2);
   }
 }
 

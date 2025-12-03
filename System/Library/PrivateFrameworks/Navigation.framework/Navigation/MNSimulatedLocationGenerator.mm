@@ -1,23 +1,23 @@
 @interface MNSimulatedLocationGenerator
 - ($212C09783140BCCD23384160D545CE0D)_simulationStartRouteCoordinate;
-- (MNSimulatedLocationGenerator)initWithSimulationParameters:(id)a3;
-- (id)nextSimulatedLocationWithElapsedTime:(double)a3;
+- (MNSimulatedLocationGenerator)initWithSimulationParameters:(id)parameters;
+- (id)nextSimulatedLocationWithElapsedTime:(double)time;
 - (void)_updateStartState;
-- (void)changeState:(id)a3;
-- (void)setSpeedOverride:(double)a3;
-- (void)updatePosition:(double)a3;
-- (void)updateWithRouteInfo:(id)a3 rerouteReason:(unint64_t)a4;
+- (void)changeState:(id)state;
+- (void)setSpeedOverride:(double)override;
+- (void)updatePosition:(double)position;
+- (void)updateWithRouteInfo:(id)info rerouteReason:(unint64_t)reason;
 @end
 
 @implementation MNSimulatedLocationGenerator
 
 - ($212C09783140BCCD23384160D545CE0D)_simulationStartRouteCoordinate
 {
-  v2 = [(_MNLocationSimulationData *)self->_data routeToFollow];
+  routeToFollow = [(_MNLocationSimulationData *)self->_data routeToFollow];
   Integer = GEOConfigGetInteger();
   if (Integer < 0 || (v4 = Integer) == 0)
   {
-    LODWORD(v13) = *MEMORY[0x1E69A1918];
+    LODWORD(startRouteCoordinate) = *MEMORY[0x1E69A1918];
     v14 = *(MEMORY[0x1E69A1918] + 4);
   }
 
@@ -25,26 +25,26 @@
   {
     GEOConfigGetDouble();
     v6 = v5;
-    v7 = [v2 legs];
-    v8 = [v7 count];
+    legs = [routeToFollow legs];
+    v8 = [legs count];
     if (v6 <= 0.0)
     {
 
-      v15 = [v2 legs];
-      v16 = v15;
+      legs2 = [routeToFollow legs];
+      v16 = legs2;
       if (v4 >= v8)
       {
-        v17 = [v15 lastObject];
-        v18 = [v17 endPointIndex];
+        lastObject = [legs2 lastObject];
+        endPointIndex = [lastObject endPointIndex];
       }
 
       else
       {
-        v17 = [v15 objectAtIndexedSubscript:v4];
-        v18 = [v17 startPointIndex];
+        lastObject = [legs2 objectAtIndexedSubscript:v4];
+        endPointIndex = [lastObject startPointIndex];
       }
 
-      LODWORD(v13) = v18;
+      LODWORD(startRouteCoordinate) = endPointIndex;
 
       v14 = 0;
     }
@@ -63,28 +63,28 @@
       }
 
       v10 = v9 - 1;
-      v11 = [v2 legs];
-      v12 = [v11 objectAtIndexedSubscript:v10];
+      legs3 = [routeToFollow legs];
+      v12 = [legs3 objectAtIndexedSubscript:v10];
 
-      v13 = [v2 routeCoordinateAtDistance:objc_msgSend(v12 beforeRouteCoordinate:{"endRouteCoordinate"), v6}];
-      if ([v12 startPointIndex] > v13)
+      startRouteCoordinate = [routeToFollow routeCoordinateAtDistance:objc_msgSend(v12 beforeRouteCoordinate:{"endRouteCoordinate"), v6}];
+      if ([v12 startPointIndex] > startRouteCoordinate)
       {
-        v13 = [v12 startRouteCoordinate];
+        startRouteCoordinate = [v12 startRouteCoordinate];
       }
 
-      v14 = HIDWORD(v13);
+      v14 = HIDWORD(startRouteCoordinate);
     }
   }
 
-  return (v13 | (v14 << 32));
+  return (startRouteCoordinate | (v14 << 32));
 }
 
 - (void)_updateStartState
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = [(_MNLocationSimulationData *)self->_data routeToFollow];
+  routeToFollow = [(_MNLocationSimulationData *)self->_data routeToFollow];
 
-  if (!v3)
+  if (!routeToFollow)
   {
     v14 = MNGetMNNavigationSimulationLog();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -98,12 +98,12 @@
     goto LABEL_13;
   }
 
-  v4 = [(MNSimulatedLocationGenerator *)self _simulationStartRouteCoordinate];
+  _simulationStartRouteCoordinate = [(MNSimulatedLocationGenerator *)self _simulationStartRouteCoordinate];
   if ((GEOPolylineCoordinateIsValid() & 1) == 0)
   {
-    v5 = [(_MNLocationSimulationData *)self->_data lastLocation];
+    lastLocation = [(_MNLocationSimulationData *)self->_data lastLocation];
 
-    if (v5)
+    if (lastLocation)
     {
       v6 = MNGetMNNavigationSimulationLog();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -119,8 +119,8 @@ LABEL_13:
     }
   }
 
-  v8 = [(_MNLocationSimulationData *)self->_data routeToFollow];
-  v9 = [v8 legIndexForRouteCoordinate:v4];
+  routeToFollow2 = [(_MNLocationSimulationData *)self->_data routeToFollow];
+  v9 = [routeToFollow2 legIndexForRouteCoordinate:_simulationStartRouteCoordinate];
 
   IsValid = GEOPolylineCoordinateIsValid();
   v11 = MNGetMNNavigationSimulationLog();
@@ -154,7 +154,7 @@ LABEL_13:
     v16 = _MNLocationSimulationState_FollowingRoute;
   }
 
-  v15 = [[v16 alloc] initWithStartRouteCoordinate:v4];
+  v15 = [[v16 alloc] initWithStartRouteCoordinate:_simulationStartRouteCoordinate];
 LABEL_20:
   v17 = v15;
   [(MNSimulatedLocationGenerator *)self changeState:v15];
@@ -162,40 +162,40 @@ LABEL_20:
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)changeState:(id)a3
+- (void)changeState:(id)state
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  stateCopy = state;
   p_currentState = &self->_currentState;
-  v7 = [(_MNLocationSimulationState *)self->_currentState type];
-  if (v7 != [v5 type])
+  type = [(_MNLocationSimulationState *)self->_currentState type];
+  if (type != [stateCopy type])
   {
     [(_MNLocationSimulationState *)self->_currentState setDelegate:0];
-    [v5 setDelegate:self];
-    [v5 setData:self->_data];
+    [stateCopy setDelegate:self];
+    [stateCopy setData:self->_data];
     v8 = MNGetMNNavigationSimulationLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [(_MNLocationSimulationState *)*p_currentState type];
-      if (v9 > 0xA)
+      type2 = [(_MNLocationSimulationState *)*p_currentState type];
+      if (type2 > 0xA)
       {
         v10 = @"Unknown";
       }
 
       else
       {
-        v10 = off_1E842BE18[v9];
+        v10 = off_1E842BE18[type2];
       }
 
-      v11 = [v5 type];
-      if (v11 > 0xA)
+      type3 = [stateCopy type];
+      if (type3 > 0xA)
       {
         v12 = @"Unknown";
       }
 
       else
       {
-        v12 = off_1E842BE18[v11];
+        v12 = off_1E842BE18[type3];
       }
 
       v14 = 138412546;
@@ -205,24 +205,24 @@ LABEL_20:
     }
 
     [(_MNLocationSimulationState *)*p_currentState onLeaveState];
-    objc_storeStrong(p_currentState, a3);
-    [v5 onEnterState];
+    objc_storeStrong(p_currentState, state);
+    [stateCopy onEnterState];
   }
 
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setSpeedOverride:(double)a3
+- (void)setSpeedOverride:(double)override
 {
   v15 = *MEMORY[0x1E69E9840];
-  if (a3 >= 0.0)
+  if (override >= 0.0)
   {
-    [(_MNLocationSimulationData *)self->_data setSpeedOverride:a3];
+    [(_MNLocationSimulationData *)self->_data setSpeedOverride:override];
     v8 = MNGetMNNavigationSimulationLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 134217984;
-      v14 = a3;
+      overrideCopy = override;
       v9 = "Setting speed override to %0.1f m/s.";
       goto LABEL_7;
     }
@@ -234,7 +234,7 @@ LABEL_20:
     data = self->_data;
     if (v5 <= 0.0)
     {
-      [(_MNLocationSimulationData *)data setSpeedOverride:a3];
+      [(_MNLocationSimulationData *)data setSpeedOverride:override];
       v8 = MNGetMNNavigationSimulationLog();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
@@ -254,7 +254,7 @@ LABEL_20:
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
         v13 = 134217984;
-        v14 = v7;
+        overrideCopy = v7;
 LABEL_7:
         v10 = v8;
         v11 = 12;
@@ -267,20 +267,20 @@ LABEL_10:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (id)nextSimulatedLocationWithElapsedTime:(double)a3
+- (id)nextSimulatedLocationWithElapsedTime:(double)time
 {
-  v5 = [(_MNLocationSimulationData *)self->_data routeToFollow];
+  routeToFollow = [(_MNLocationSimulationData *)self->_data routeToFollow];
 
-  if (v5)
+  if (routeToFollow)
   {
-    v6 = [(_MNLocationSimulationData *)self->_data routeToFollow];
-    if ([v6 pointCount])
+    routeToFollow2 = [(_MNLocationSimulationData *)self->_data routeToFollow];
+    if ([routeToFollow2 pointCount])
     {
       data = self->_data;
       [(_MNLocationSimulationData *)data currentTime];
-      [(_MNLocationSimulationData *)data setCurrentTime:v8 + a3];
+      [(_MNLocationSimulationData *)data setCurrentTime:v8 + time];
       v9 = self->_currentState;
-      v10 = [(_MNLocationSimulationState *)v9 nextSimulatedLocationWithElapsedTime:a3];
+      v10 = [(_MNLocationSimulationState *)v9 nextSimulatedLocationWithElapsedTime:time];
       [(_MNLocationSimulationData *)self->_data setLastLocation:v10];
     }
 
@@ -310,17 +310,17 @@ LABEL_10:
   return v10;
 }
 
-- (void)updatePosition:(double)a3
+- (void)updatePosition:(double)position
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = fmin(fmax(a3, 0.0), 1.0);
-  v5 = [(_MNLocationSimulationData *)self->_data routeToFollow];
-  [v5 distance];
+  v4 = fmin(fmax(position, 0.0), 1.0);
+  routeToFollow = [(_MNLocationSimulationData *)self->_data routeToFollow];
+  [routeToFollow distance];
   v7 = v6;
 
   v8 = v7 * v4;
-  v9 = [(_MNLocationSimulationData *)self->_data routeToFollow];
-  v10 = [v9 routeCoordinateForDistanceAfterStart:v8];
+  routeToFollow2 = [(_MNLocationSimulationData *)self->_data routeToFollow];
+  v10 = [routeToFollow2 routeCoordinateForDistanceAfterStart:v8];
 
   v11 = MNGetMNNavigationSimulationLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -347,16 +347,16 @@ LABEL_10:
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updateWithRouteInfo:(id)a3 rerouteReason:(unint64_t)a4
+- (void)updateWithRouteInfo:(id)info rerouteReason:(unint64_t)reason
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  [(_MNLocationSimulationData *)self->_data setRouteInfo:v6];
-  v7 = [v6 route];
-  if ([v7 pointCount])
+  infoCopy = info;
+  [(_MNLocationSimulationData *)self->_data setRouteInfo:infoCopy];
+  route = [infoCopy route];
+  if ([route pointCount])
   {
     v8 = MEMORY[0x1E69A1E80];
-    [v7 pointAt:0];
+    [route pointAt:0];
     v9 = [v8 isLocationShiftRequiredForCoordinate:?];
   }
 
@@ -366,38 +366,38 @@ LABEL_10:
   }
 
   [(_MNLocationSimulationData *)self->_data setIsChinaShifted:v9];
-  v10 = [(_MNLocationSimulationData *)self->_data lastLocation];
+  lastLocation = [(_MNLocationSimulationData *)self->_data lastLocation];
 
-  if (v10)
+  if (lastLocation)
   {
     v11 = MNGetMNNavigationSimulationLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [v6 route];
-      v13 = [v12 name];
-      if (a4 - 1 > 0xF)
+      route2 = [infoCopy route];
+      name = [route2 name];
+      if (reason - 1 > 0xF)
       {
         v14 = @"Unknown";
       }
 
       else
       {
-        v14 = off_1E842BD98[a4 - 1];
+        v14 = off_1E842BD98[reason - 1];
       }
 
-      v16 = [(_MNLocationSimulationState *)self->_currentState type];
-      if (v16 > 0xA)
+      type = [(_MNLocationSimulationState *)self->_currentState type];
+      if (type > 0xA)
       {
         v17 = @"Unknown";
       }
 
       else
       {
-        v17 = off_1E842BE18[v16];
+        v17 = off_1E842BE18[type];
       }
 
       v19 = 138412802;
-      v20 = v13;
+      v20 = name;
       v21 = 2112;
       v22 = v14;
       v23 = 2112;
@@ -405,7 +405,7 @@ LABEL_10:
       _os_log_impl(&dword_1D311E000, v11, OS_LOG_TYPE_DEFAULT, "Route changed to %@. Reason: %@. Current state: %@", &v19, 0x20u);
     }
 
-    [(_MNLocationSimulationState *)self->_currentState updateWithRouteInfo:v6 rerouteReason:a4];
+    [(_MNLocationSimulationState *)self->_currentState updateWithRouteInfo:infoCopy rerouteReason:reason];
   }
 
   else
@@ -422,9 +422,9 @@ LABEL_10:
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (MNSimulatedLocationGenerator)initWithSimulationParameters:(id)a3
+- (MNSimulatedLocationGenerator)initWithSimulationParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   v19.receiver = self;
   v19.super_class = MNSimulatedLocationGenerator;
   v5 = [(MNSimulatedLocationGenerator *)&v19 init];
@@ -434,24 +434,24 @@ LABEL_10:
     data = v5->_data;
     v5->_data = v6;
 
-    -[_MNLocationSimulationData setSimulationType:](v5->_data, "setSimulationType:", [v4 simulationType]);
-    v8 = [v4 initialRoute];
-    [(_MNLocationSimulationData *)v5->_data setRouteInfo:v8];
+    -[_MNLocationSimulationData setSimulationType:](v5->_data, "setSimulationType:", [parametersCopy simulationType]);
+    initialRoute = [parametersCopy initialRoute];
+    [(_MNLocationSimulationData *)v5->_data setRouteInfo:initialRoute];
 
-    v9 = [v4 initialRoute];
-    [(_MNLocationSimulationData *)v5->_data setInitialRouteInfo:v9];
+    initialRoute2 = [parametersCopy initialRoute];
+    [(_MNLocationSimulationData *)v5->_data setInitialRouteInfo:initialRoute2];
 
-    v10 = [v4 startingLocation];
-    [(_MNLocationSimulationData *)v5->_data setLastLocation:v10];
+    startingLocation = [parametersCopy startingLocation];
+    [(_MNLocationSimulationData *)v5->_data setLastLocation:startingLocation];
 
     [(_MNLocationSimulationData *)v5->_data setCurrentTime:0.0];
     [(_MNLocationSimulationData *)v5->_data setCurrentLegIndex:0];
     [(_MNLocationSimulationData *)v5->_data setEndAtFinalDestination:1];
-    v11 = [v4 auditToken];
-    [(_MNLocationSimulationData *)v5->_data setAuditToken:v11];
+    auditToken = [parametersCopy auditToken];
+    [(_MNLocationSimulationData *)v5->_data setAuditToken:auditToken];
 
-    v12 = [v4 requestingAppIdentifier];
-    [(_MNLocationSimulationData *)v5->_data setRequestingAppIdentifier:v12];
+    requestingAppIdentifier = [parametersCopy requestingAppIdentifier];
+    [(_MNLocationSimulationData *)v5->_data setRequestingAppIdentifier:requestingAppIdentifier];
 
     GEOConfigGetDouble();
     [(_MNLocationSimulationData *)v5->_data setSpeedOverride:?];
@@ -466,13 +466,13 @@ LABEL_10:
     GEOConfigGetDouble();
     [(_MNLocationSimulationData *)v5->_data setMinimumSpeed:?];
     [(MNSimulatedLocationGenerator *)v5 _updateStartState];
-    v14 = [(_MNLocationSimulationData *)v5->_data routeInfo];
-    v15 = [v14 route];
+    routeInfo = [(_MNLocationSimulationData *)v5->_data routeInfo];
+    route = [routeInfo route];
 
-    if ([v15 pointCount])
+    if ([route pointCount])
     {
       v16 = MEMORY[0x1E69A1E80];
-      [v15 pointAt:0];
+      [route pointAt:0];
       v17 = [v16 isLocationShiftRequiredForCoordinate:?];
     }
 

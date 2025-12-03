@@ -1,5 +1,5 @@
 @interface MOSuggestionMotionAssetView
-- (_TtC16MomentsUIService27MOSuggestionMotionAssetView)initWithFrame:(CGRect)a3;
+- (_TtC16MomentsUIService27MOSuggestionMotionAssetView)initWithFrame:(CGRect)frame;
 - (void)handleTraitChange;
 - (void)layoutSubviews;
 @end
@@ -8,17 +8,17 @@
 
 - (void)handleTraitChange
 {
-  v2 = self;
+  selfCopy = self;
   MOSuggestionMotionAssetView.handleTraitChange()();
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   MOSuggestionMotionAssetView.layoutSubviews()();
 }
 
-- (_TtC16MomentsUIService27MOSuggestionMotionAssetView)initWithFrame:(CGRect)a3
+- (_TtC16MomentsUIService27MOSuggestionMotionAssetView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

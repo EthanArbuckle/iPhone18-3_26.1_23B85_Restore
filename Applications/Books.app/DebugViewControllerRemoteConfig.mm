@@ -1,12 +1,12 @@
 @interface DebugViewControllerRemoteConfig
 - (BKDebugViewSection)section;
 - (DebugViewControllerRemoteConfig)init;
-- (DebugViewControllerRemoteConfig)initWithOwner:(id)a3;
+- (DebugViewControllerRemoteConfig)initWithOwner:(id)owner;
 @end
 
 @implementation DebugViewControllerRemoteConfig
 
-- (DebugViewControllerRemoteConfig)initWithOwner:(id)a3
+- (DebugViewControllerRemoteConfig)initWithOwner:(id)owner
 {
   ObjectType = swift_getObjectType();
   swift_unknownObjectWeakInit();
@@ -25,7 +25,7 @@
 
 - (BKDebugViewSection)section
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10036545C();
 
   return v3;

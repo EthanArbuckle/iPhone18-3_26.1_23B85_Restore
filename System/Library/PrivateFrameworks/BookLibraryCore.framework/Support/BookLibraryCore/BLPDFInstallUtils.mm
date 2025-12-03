@@ -1,15 +1,15 @@
 @interface BLPDFInstallUtils
-+ (BOOL)decryptFileAtURL:(id)a3 encryptionKey:(id)a4 salt:(id)a5 error:(id *)a6;
++ (BOOL)decryptFileAtURL:(id)l encryptionKey:(id)key salt:(id)salt error:(id *)error;
 @end
 
 @implementation BLPDFInstallUtils
 
-+ (BOOL)decryptFileAtURL:(id)a3 encryptionKey:(id)a4 salt:(id)a5 error:(id *)a6
++ (BOOL)decryptFileAtURL:(id)l encryptionKey:(id)key salt:(id)salt error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v9)
+  lCopy = l;
+  keyCopy = key;
+  saltCopy = salt;
+  if (lCopy)
   {
     v12 = 0;
   }
@@ -19,20 +19,20 @@
     v12 = @"Missing URL. ";
   }
 
-  if (!v10)
+  if (!keyCopy)
   {
     v16 = @"Missing property k. ";
     goto LABEL_10;
   }
 
-  v13 = [NSData bu_dataFromHexString:v10];
+  v13 = [NSData bu_dataFromHexString:keyCopy];
   if (!v13)
   {
     v16 = @"Failed to decode k. ";
 LABEL_10:
     v12 = [(__CFString *)v12 stringByAppendingString:v16];
     v14 = 0;
-    if (!v11)
+    if (!saltCopy)
     {
       goto LABEL_7;
     }
@@ -41,7 +41,7 @@ LABEL_10:
   }
 
   v14 = v13;
-  if (!v11)
+  if (!saltCopy)
   {
 LABEL_7:
     v15 = @"Missing property s. ";
@@ -53,19 +53,19 @@ LABEL_16:
   }
 
 LABEL_11:
-  v17 = [NSData bu_dataFromHexString:v11];
-  v18 = [v17 bytes];
+  v17 = [NSData bu_dataFromHexString:saltCopy];
+  bytes = [v17 bytes];
 
-  if (!v18)
+  if (!bytes)
   {
     v15 = @"Failed to decode s. ";
     goto LABEL_16;
   }
 
-  if (v9 && v14)
+  if (lCopy && v14)
   {
-    v19 = -[BLEncryptedBuffer initWithFileAtURL:pageSize:key:options:]([BLEncryptedBuffer alloc], "initWithFileAtURL:pageSize:key:options:", v9, 1008, [v14 bytes], 0);
-    [(BLEncryptedBuffer *)v19 setIVProc:sub_1000B499C withContext:v18];
+    v19 = -[BLEncryptedBuffer initWithFileAtURL:pageSize:key:options:]([BLEncryptedBuffer alloc], "initWithFileAtURL:pageSize:key:options:", lCopy, 1008, [v14 bytes], 0);
+    [(BLEncryptedBuffer *)v19 setIVProc:sub_1000B499C withContext:bytes];
     [(BLEncryptedBuffer *)v19 decrypt];
 
     v20 = 0;
@@ -90,10 +90,10 @@ LABEL_18:
     raise(11);
   }
 
-  if (a6 && v20)
+  if (error && v20)
   {
     v24 = v20;
-    *a6 = v20;
+    *error = v20;
   }
 
   return v20 == 0;

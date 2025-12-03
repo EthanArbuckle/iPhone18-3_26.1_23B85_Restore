@@ -1,14 +1,14 @@
 @interface CLSLocationMobilityInformant
-- (id)_locationMobilityClueForInvestigation:(id)a3;
-- (id)gatherCluesForInvestigation:(id)a3 progressBlock:(id)a4;
+- (id)_locationMobilityClueForInvestigation:(id)investigation;
+- (id)gatherCluesForInvestigation:(id)investigation progressBlock:(id)block;
 @end
 
 @implementation CLSLocationMobilityInformant
 
-- (id)_locationMobilityClueForInvestigation:(id)a3
+- (id)_locationMobilityClueForInvestigation:(id)investigation
 {
-  v3 = a3;
-  v4 = [v3 clueCollection];
+  investigationCopy = investigation;
+  clueCollection = [investigationCopy clueCollection];
   v5 = [MEMORY[0x277CCA940] set];
   v22[0] = 0;
   v22[1] = v22;
@@ -23,7 +23,7 @@
   v21 = v22;
   v6 = v5;
   v20 = v6;
-  [v4 enumerateLocationClues:&v16];
+  [clueCollection enumerateLocationClues:&v16];
   if (![v6 count])
   {
     v12 = 0;
@@ -44,7 +44,7 @@
     v10 = 0;
   }
 
-  if (v8 > v7 && v8 >= [v4 numberOfDays] + 1)
+  if (v8 > v7 && v8 >= [clueCollection numberOfDays] + 1)
   {
     v13 = @"Car";
 
@@ -109,12 +109,12 @@ void __70__CLSLocationMobilityInformant__locationMobilityClueForInvestigation___
   *(v8 + 40) = v3;
 }
 
-- (id)gatherCluesForInvestigation:(id)a3 progressBlock:(id)a4
+- (id)gatherCluesForInvestigation:(id)investigation progressBlock:(id)block
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = _Block_copy(a4);
-  v8 = [(CLSLocationMobilityInformant *)self _locationMobilityClueForInvestigation:v6];
+  investigationCopy = investigation;
+  v7 = _Block_copy(block);
+  v8 = [(CLSLocationMobilityInformant *)self _locationMobilityClueForInvestigation:investigationCopy];
 
   if (v7 && (v11 = 0, v7[2](v7, &v11, 0.5), v11 == 1))
   {

@@ -1,17 +1,17 @@
 @interface THLabelWithWordHighlights
-- (THLabelWithWordHighlights)initWithFrame:(CGRect)a3;
+- (THLabelWithWordHighlights)initWithFrame:(CGRect)frame;
 - (void)dealloc;
-- (void)drawRect:(CGRect)a3;
-- (void)setText:(id)a3;
+- (void)drawRect:(CGRect)rect;
+- (void)setText:(id)text;
 @end
 
 @implementation THLabelWithWordHighlights
 
-- (THLabelWithWordHighlights)initWithFrame:(CGRect)a3
+- (THLabelWithWordHighlights)initWithFrame:(CGRect)frame
 {
   v5.receiver = self;
   v5.super_class = THLabelWithWordHighlights;
-  v3 = [(THLabelWithWordHighlights *)&v5 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(THLabelWithWordHighlights *)&v5 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v3->mTextColor = +[UIColor blackColor];
@@ -36,9 +36,9 @@
   [(THLabelWithWordHighlights *)&v3 dealloc];
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  if ([(NSString *)self->mText length:a3.origin.x])
+  if ([(NSString *)self->mText length:rect.origin.x])
   {
     v4 = [(NSString *)self->mText componentsSeparatedByCharactersInSet:+[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     v41 = 0u;
@@ -90,23 +90,23 @@
     v47.length = 0;
     CFAttributedStringReplaceString(Mutable, v47, v7);
     v12 = [(NSMutableString *)v7 length];
-    v13 = [(UIFont *)self->mTextFont fontName];
+    fontName = [(UIFont *)self->mTextFont fontName];
     [(UIFont *)self->mTextFont pointSize];
-    v15 = CTFontCreateWithName(v13, v14, 0);
+    v15 = CTFontCreateWithName(fontName, v14, 0);
     v48.location = 0;
     v48.length = v12;
     CFAttributedStringSetAttribute(Mutable, v48, kCTFontAttributeName, v15);
-    v16 = [(UIColor *)self->mTextColor CGColor];
+    cGColor = [(UIColor *)self->mTextColor CGColor];
     aStr = Mutable;
     v49.location = 0;
     v49.length = v12;
-    CFAttributedStringSetAttribute(Mutable, v49, kCTForegroundColorAttributeName, v16);
+    CFAttributedStringSetAttribute(Mutable, v49, kCTForegroundColorAttributeName, cGColor);
     CFRelease(v15);
     if (self->mDelegate)
     {
-      v17 = [(UIFont *)self->mHighlightedTextFont fontName];
+      fontName2 = [(UIFont *)self->mHighlightedTextFont fontName];
       [(UIFont *)self->mHighlightedTextFont pointSize];
-      cf = CTFontCreateWithName(v17, v18, 0);
+      cf = CTFontCreateWithName(fontName2, v18, 0);
       v37 = 0u;
       v38 = 0u;
       v39 = 0u;
@@ -138,10 +138,10 @@
               v50.location = v21;
               v50.length = v25;
               CFAttributedStringSetAttribute(aStr, v50, kCTFontAttributeName, cf);
-              v26 = [(UIColor *)self->mHighlightedTextColor CGColor];
+              cGColor2 = [(UIColor *)self->mHighlightedTextColor CGColor];
               v51.location = v21;
               v51.length = v25;
-              CFAttributedStringSetAttribute(aStr, v51, kCTForegroundColorAttributeName, v26);
+              CFAttributedStringSetAttribute(aStr, v51, kCTForegroundColorAttributeName, cGColor2);
             }
 
             v21 += [v24 length];
@@ -180,16 +180,16 @@
   }
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
   mText = self->mText;
-  if (mText != a3)
+  if (mText != text)
   {
     if (mText)
     {
     }
 
-    self->mText = [a3 copy];
+    self->mText = [text copy];
 
     [(THLabelWithWordHighlights *)self setNeedsDisplay];
   }

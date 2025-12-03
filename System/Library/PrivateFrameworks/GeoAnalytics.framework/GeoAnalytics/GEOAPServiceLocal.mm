@@ -1,27 +1,27 @@
 @interface GEOAPServiceLocal
 - (void)flushEvalData;
-- (void)flushUploadHistoryWithCompletion:(id)a3;
-- (void)reportDailySettings:(id)a3 completion:(id)a4;
-- (void)reportLogMsg:(id)a3 uploadBatchId:(unint64_t)a4 completion:(id)a5;
+- (void)flushUploadHistoryWithCompletion:(id)completion;
+- (void)reportDailySettings:(id)settings completion:(id)completion;
+- (void)reportLogMsg:(id)msg uploadBatchId:(unint64_t)id completion:(id)completion;
 - (void)runAggregationTasks;
-- (void)showEvalDataWithVisitorBlock:(id)a3;
-- (void)showInflightUploadsWithVisitorBlock:(id)a3 completion:(id)a4;
-- (void)showUploadCounts:(id)a3;
-- (void)streamWithLogMsgBlock:(id)a3 dailyUsageBlock:(id)a4 monthlyUsageBlock:(id)a5;
+- (void)showEvalDataWithVisitorBlock:(id)block;
+- (void)showInflightUploadsWithVisitorBlock:(id)block completion:(id)completion;
+- (void)showUploadCounts:(id)counts;
+- (void)streamWithLogMsgBlock:(id)block dailyUsageBlock:(id)usageBlock monthlyUsageBlock:(id)monthlyUsageBlock;
 @end
 
 @implementation GEOAPServiceLocal
 
-- (void)showUploadCounts:(id)a3
+- (void)showUploadCounts:(id)counts
 {
-  v3 = a3;
+  countsCopy = counts;
   v4 = +[GEOAPDebugPersistence sharedInstance];
-  [v4 showUploadCounts:v3];
+  [v4 showUploadCounts:countsCopy];
 }
 
-- (void)flushUploadHistoryWithCompletion:(id)a3
+- (void)flushUploadHistoryWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = +[GEOAPDebugPersistence sharedInstance];
   [v4 deleteAllHistory];
 
@@ -30,17 +30,17 @@
   block[1] = 3221225472;
   block[2] = sub_100005E34;
   block[3] = &unk_10003C988;
-  v8 = v3;
-  v6 = v3;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(v5, block);
 }
 
-- (void)showInflightUploadsWithVisitorBlock:(id)a3 completion:(id)a4
+- (void)showInflightUploadsWithVisitorBlock:(id)block completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  blockCopy = block;
   v7 = +[GEOAPDebugPersistence sharedInstance];
-  [v7 showInflightUploadsWithVisitorBlock:v6 completion:v5];
+  [v7 showInflightUploadsWithVisitorBlock:blockCopy completion:completionCopy];
 }
 
 - (void)runAggregationTasks
@@ -73,7 +73,7 @@
   [v7 runAggregation];
 }
 
-- (void)streamWithLogMsgBlock:(id)a3 dailyUsageBlock:(id)a4 monthlyUsageBlock:(id)a5
+- (void)streamWithLogMsgBlock:(id)block dailyUsageBlock:(id)usageBlock monthlyUsageBlock:(id)monthlyUsageBlock
 {
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_FAULT))
   {
@@ -82,11 +82,11 @@
   }
 }
 
-- (void)showEvalDataWithVisitorBlock:(id)a3
+- (void)showEvalDataWithVisitorBlock:(id)block
 {
-  v3 = a3;
+  blockCopy = block;
   v4 = +[GEOAPDB sharedInstance];
-  [v4 showEvalDataWithVisitorBlock:v3];
+  [v4 showEvalDataWithVisitorBlock:blockCopy];
 }
 
 - (void)flushEvalData
@@ -95,23 +95,23 @@
   [v2 flushEvalData];
 }
 
-- (void)reportDailySettings:(id)a3 completion:(id)a4
+- (void)reportDailySettings:(id)settings completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  settingsCopy = settings;
   v7 = sub_100001018();
   v8 = dispatch_get_global_queue(21, 0);
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_1000063B4;
   v17[3] = &unk_10003C988;
-  v18 = v5;
-  v9 = v5;
+  v18 = completionCopy;
+  v9 = completionCopy;
   if (v7)
   {
     v10 = v17;
     v11 = v8;
-    v12 = v6;
+    v12 = settingsCopy;
     v13 = sub_100001134();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
     {
@@ -120,17 +120,17 @@
     }
 
     v14 = +[GEOReferenceTimeManager sharedManager];
-    v15 = [v14 bestReferenceDate];
+    bestReferenceDate = [v14 bestReferenceDate];
 
-    v16 = [[GEOAPDailySettingsQueueElem alloc] initWithSettings:v12 createTime:v15];
+    v16 = [[GEOAPDailySettingsQueueElem alloc] initWithSettings:v12 createTime:bestReferenceDate];
     [v7 _storeQueueElem:v16 completionQueue:v11 completionBlock:v10];
   }
 }
 
-- (void)reportLogMsg:(id)a3 uploadBatchId:(unint64_t)a4 completion:(id)a5
+- (void)reportLogMsg:(id)msg uploadBatchId:(unint64_t)id completion:(id)completion
 {
-  v7 = a5;
-  v8 = a3;
+  completionCopy = completion;
+  msgCopy = msg;
   v9 = sub_100000FC4();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
@@ -141,7 +141,7 @@
 
   v10 = sub_100001018();
   v11 = dispatch_get_global_queue(21, 0);
-  sub_10001A428(v10, v8, a4, v11, v7);
+  sub_10001A428(v10, msgCopy, id, v11, completionCopy);
 }
 
 @end

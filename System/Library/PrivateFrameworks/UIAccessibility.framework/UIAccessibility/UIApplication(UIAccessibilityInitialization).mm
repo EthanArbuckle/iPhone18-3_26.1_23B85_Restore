@@ -11,7 +11,7 @@
   block[1] = 3221225472;
   block[2] = __79__UIApplication_UIAccessibilityInitialization___accessibilityIsSystemAppServer__block_invoke;
   block[3] = &unk_1E78AB028;
-  block[4] = a1;
+  block[4] = self;
   if (_accessibilityIsSystemAppServer_onceToken != -1)
   {
     dispatch_once(&_accessibilityIsSystemAppServer_onceToken, block);

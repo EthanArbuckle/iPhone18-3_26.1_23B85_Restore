@@ -1,27 +1,27 @@
 @interface CKDUploadMergeableDeltasURLRequest
-- (CKDUploadMergeableDeltasURLRequest)initWithOperation:(id)a3 deltas:(id)a4 replacementRequests:(id)a5;
+- (CKDUploadMergeableDeltasURLRequest)initWithOperation:(id)operation deltas:(id)deltas replacementRequests:(id)requests;
 - (id)anonymousUserIDForHTTPHeader;
 - (id)generateRequestOperations;
-- (id)requestDidParseProtobufObject:(id)a3;
+- (id)requestDidParseProtobufObject:(id)object;
 - (id)requestOperationClasses;
 - (id)zoneIDsToLock;
-- (void)fillOutEquivalencyPropertiesBuilder:(id)a3;
-- (void)fillOutRequestProperties:(id)a3;
-- (void)requestDidParseNodeFailure:(id)a3;
+- (void)fillOutEquivalencyPropertiesBuilder:(id)builder;
+- (void)fillOutRequestProperties:(id)properties;
+- (void)requestDidParseNodeFailure:(id)failure;
 @end
 
 @implementation CKDUploadMergeableDeltasURLRequest
 
-- (CKDUploadMergeableDeltasURLRequest)initWithOperation:(id)a3 deltas:(id)a4 replacementRequests:(id)a5
+- (CKDUploadMergeableDeltasURLRequest)initWithOperation:(id)operation deltas:(id)deltas replacementRequests:(id)requests
 {
-  v8 = a4;
-  v9 = a5;
+  deltasCopy = deltas;
+  requestsCopy = requests;
   v28.receiver = self;
   v28.super_class = CKDUploadMergeableDeltasURLRequest;
-  v12 = [(CKDURLRequest *)&v28 initWithOperation:a3];
+  v12 = [(CKDURLRequest *)&v28 initWithOperation:operation];
   if (v12)
   {
-    v13 = objc_msgSend_copy(v8, v10, v11);
+    v13 = objc_msgSend_copy(deltasCopy, v10, v11);
     deltas = v12->_deltas;
     v12->_deltas = v13;
 
@@ -33,7 +33,7 @@
     replacementRequestsByRequestID = v12->_replacementRequestsByRequestID;
     v12->_replacementRequestsByRequestID = v21;
 
-    v25 = objc_msgSend_copy(v9, v23, v24);
+    v25 = objc_msgSend_copy(requestsCopy, v23, v24);
     replacementRequests = v12->_replacementRequests;
     v12->_replacementRequests = v25;
   }
@@ -41,30 +41,30 @@
   return v12;
 }
 
-- (void)fillOutEquivalencyPropertiesBuilder:(id)a3
+- (void)fillOutEquivalencyPropertiesBuilder:(id)builder
 {
   v15.receiver = self;
   v15.super_class = CKDUploadMergeableDeltasURLRequest;
-  v4 = a3;
-  [(CKDURLRequest *)&v15 fillOutEquivalencyPropertiesBuilder:v4];
+  builderCopy = builder;
+  [(CKDURLRequest *)&v15 fillOutEquivalencyPropertiesBuilder:builderCopy];
   v5 = MEMORY[0x277CBEB98];
   v8 = objc_msgSend_replacementRequests(self, v6, v7, v15.receiver, v15.super_class);
   v11 = objc_msgSend_ckEquivalencyProperties(v8, v9, v10);
   v13 = objc_msgSend_setWithArray_(v5, v12, v11);
 
-  objc_msgSend_setObject_forKeyedSubscript_(v4, v14, v13, @"requests");
+  objc_msgSend_setObject_forKeyedSubscript_(builderCopy, v14, v13, @"requests");
 }
 
-- (void)fillOutRequestProperties:(id)a3
+- (void)fillOutRequestProperties:(id)properties
 {
-  v4 = a3;
+  propertiesCopy = properties;
   v7 = objc_msgSend_replacementRequests(self, v5, v6);
   v9 = objc_msgSend_CKCompactMap_(v7, v8, &unk_28385E4A0);
 
-  objc_msgSend_setModifyMergeableValueIDs_(v4, v10, v9);
+  objc_msgSend_setModifyMergeableValueIDs_(propertiesCopy, v10, v9);
   v11.receiver = self;
   v11.super_class = CKDUploadMergeableDeltasURLRequest;
-  [(CKDURLRequest *)&v11 fillOutRequestProperties:v4];
+  [(CKDURLRequest *)&v11 fillOutRequestProperties:propertiesCopy];
 }
 
 - (id)zoneIDsToLock
@@ -203,20 +203,20 @@
   return v14;
 }
 
-- (id)requestDidParseProtobufObject:(id)a3
+- (id)requestDidParseProtobufObject:(id)object
 {
-  v5 = a3;
-  if (objc_msgSend_hasMergeableDeltaSaveResponse(v5, v6, v7))
+  objectCopy = object;
+  if (objc_msgSend_hasMergeableDeltaSaveResponse(objectCopy, v6, v7))
   {
     v10 = objc_msgSend_deltasByRequestID(self, v8, v9);
-    v13 = objc_msgSend_response(v5, v11, v12);
+    v13 = objc_msgSend_response(objectCopy, v11, v12);
     v16 = objc_msgSend_operationUUID(v13, v14, v15);
     v18 = objc_msgSend_objectForKeyedSubscript_(v10, v17, v16);
 
     if (!v18)
     {
       v45 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], v19, v20);
-      objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v45, v46, a2, self, @"CKDUploadMergeableDeltasURLRequest.m", 164, @"Expected non-nil delta for response %@", v5);
+      objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v45, v46, a2, self, @"CKDUploadMergeableDeltasURLRequest.m", 164, @"Expected non-nil delta for response %@", objectCopy);
     }
 
     v21 = objc_msgSend_perDeltaCompletionBlock(self, v19, v20);
@@ -229,24 +229,24 @@
     v24 = objc_msgSend_perDeltaCompletionBlock(self, v22, v23);
 LABEL_11:
     v42 = v24;
-    v43 = objc_msgSend_result(v5, v25, v26);
+    v43 = objc_msgSend_result(objectCopy, v25, v26);
     (v42)[2](v42, v18, v43);
 
 LABEL_12:
     goto LABEL_13;
   }
 
-  if (objc_msgSend_hasMergeableDeltaReplaceResponse(v5, v8, v9))
+  if (objc_msgSend_hasMergeableDeltaReplaceResponse(objectCopy, v8, v9))
   {
     v29 = objc_msgSend_replacementRequestsByRequestID(self, v27, v28);
-    v32 = objc_msgSend_response(v5, v30, v31);
+    v32 = objc_msgSend_response(objectCopy, v30, v31);
     v35 = objc_msgSend_operationUUID(v32, v33, v34);
     v18 = objc_msgSend_objectForKeyedSubscript_(v29, v36, v35);
 
     if (!v18)
     {
       v47 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], v37, v38);
-      objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v47, v48, a2, self, @"CKDUploadMergeableDeltasURLRequest.m", 170, @"Expected non-nil replacement request for response %@", v5);
+      objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v47, v48, a2, self, @"CKDUploadMergeableDeltasURLRequest.m", 170, @"Expected non-nil replacement request for response %@", objectCopy);
     }
 
     v39 = objc_msgSend_perReplaceDeltasRequestCompletionBlock(self, v37, v38);
@@ -265,10 +265,10 @@ LABEL_13:
   return 0;
 }
 
-- (void)requestDidParseNodeFailure:(id)a3
+- (void)requestDidParseNodeFailure:(id)failure
 {
   v51 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  failureCopy = failure;
   if (*MEMORY[0x277CBC880] != -1)
   {
     dispatch_once(MEMORY[0x277CBC880], *MEMORY[0x277CBC878]);
@@ -282,12 +282,12 @@ LABEL_13:
     v47 = 138412546;
     v48 = v46;
     v49 = 2112;
-    v50 = v4;
+    v50 = failureCopy;
     _os_log_error_impl(&dword_22506F000, v43, OS_LOG_TYPE_ERROR, "Node failure in upload deltas request %@: %@", &v47, 0x16u);
   }
 
   v8 = objc_msgSend_deltasByRequestID(self, v6, v7);
-  v11 = objc_msgSend_response(v4, v9, v10);
+  v11 = objc_msgSend_response(failureCopy, v9, v10);
   v14 = objc_msgSend_operationUUID(v11, v12, v13);
   v16 = objc_msgSend_objectForKeyedSubscript_(v8, v15, v14);
 
@@ -298,13 +298,13 @@ LABEL_13:
     if (v19)
     {
       v20 = objc_msgSend_perDeltaCompletionBlock(self, v17, v18);
-      v23 = objc_msgSend_result(v4, v21, v22);
+      v23 = objc_msgSend_result(failureCopy, v21, v22);
       (v20)[2](v20, v16, v23);
     }
   }
 
   v24 = objc_msgSend_replacementRequestsByRequestID(self, v17, v18);
-  v27 = objc_msgSend_response(v4, v25, v26);
+  v27 = objc_msgSend_response(failureCopy, v25, v26);
   v30 = objc_msgSend_operationUUID(v27, v28, v29);
   v32 = objc_msgSend_objectForKeyedSubscript_(v24, v31, v30);
 
@@ -315,7 +315,7 @@ LABEL_13:
     if (v35)
     {
       v38 = objc_msgSend_perReplaceDeltasRequestCompletionBlock(self, v36, v37);
-      v41 = objc_msgSend_result(v4, v39, v40);
+      v41 = objc_msgSend_result(failureCopy, v39, v40);
       (v38)[2](v38, v32, v41);
     }
   }

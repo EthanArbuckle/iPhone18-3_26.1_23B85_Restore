@@ -3,12 +3,12 @@
 - (BOOL)isDeviceSetupComplete;
 - (BOOL)isSetupAssistantComplete;
 - (id)_init;
-- (void)_runAllPendingBlocksOfType:(int64_t)a3;
+- (void)_runAllPendingBlocksOfType:(int64_t)type;
 - (void)dealloc;
-- (void)nanoPairedDeviceStatusMonitor:(id)a3 didChangeClientSyncState:(unint64_t)a4;
-- (void)performBlockAfterBuddySetup:(id)a3;
-- (void)performBlockAfterDeviceSetup:(id)a3;
-- (void)setSetupAssistantComplete:(BOOL)a3;
+- (void)nanoPairedDeviceStatusMonitor:(id)monitor didChangeClientSyncState:(unint64_t)state;
+- (void)performBlockAfterBuddySetup:(id)setup;
+- (void)performBlockAfterDeviceSetup:(id)setup;
+- (void)setSetupAssistantComplete:(BOOL)complete;
 @end
 
 @implementation ICDeviceSetupStatusMonitor
@@ -29,9 +29,9 @@
 {
   os_unfair_lock_lock(&self->_lock);
   v3 = +[ICDeviceInfo currentDeviceInfo];
-  v4 = [v3 isWatch];
+  isWatch = [v3 isWatch];
   v5 = 40;
-  if (v4)
+  if (isWatch)
   {
     v5 = 41;
   }
@@ -57,13 +57,13 @@
     workQueue = v3->_workQueue;
     v3->_workQueue = v5;
 
-    v7 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     pendingBuddyCompleteBlocks = v3->_pendingBuddyCompleteBlocks;
-    v3->_pendingBuddyCompleteBlocks = v7;
+    v3->_pendingBuddyCompleteBlocks = array;
 
-    v9 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     pendingSetupCompleteBlocks = v3->_pendingSetupCompleteBlocks;
-    v3->_pendingSetupCompleteBlocks = v9;
+    v3->_pendingSetupCompleteBlocks = array2;
 
     v11 = v3->_workQueue;
     block[0] = MEMORY[0x1E69E9820];
@@ -74,9 +74,9 @@
     v24 = v12;
     dispatch_sync(v11, block);
     v13 = +[ICDeviceInfo currentDeviceInfo];
-    v14 = [v13 isWatch];
+    isWatch = [v13 isWatch];
 
-    if (v14)
+    if (isWatch)
     {
       v15 = +[ICNanoPairedDeviceStatusMonitor sharedMonitor];
       [v15 addObserver:v12];
@@ -88,9 +88,9 @@
     {
       v17 = v12[40];
       v18 = +[ICDeviceInfo currentDeviceInfo];
-      v19 = [v18 isWatch];
+      isWatch2 = [v18 isWatch];
       v20 = 40;
-      if (v19)
+      if (isWatch2)
       {
         v20 = 41;
       }
@@ -294,17 +294,17 @@ LABEL_29:
   }
 }
 
-- (void)_runAllPendingBlocksOfType:(int64_t)a3
+- (void)_runAllPendingBlocksOfType:(int64_t)type
 {
-  v3 = a3;
+  typeCopy = type;
   v27 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!type)
   {
     v5 = 24;
     goto LABEL_5;
   }
 
-  if (a3 == 1)
+  if (type == 1)
   {
     v5 = 32;
 LABEL_5:
@@ -319,11 +319,11 @@ LABEL_7:
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543874;
-    v22 = self;
+    selfCopy = self;
     v23 = 1024;
     v24 = [v6 count];
     v25 = 1024;
-    v26 = v3;
+    v26 = typeCopy;
     _os_log_impl(&dword_1B4491000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ Running %d blocks of type %d", buf, 0x18u);
   }
 
@@ -363,11 +363,11 @@ LABEL_7:
   }
 }
 
-- (void)nanoPairedDeviceStatusMonitor:(id)a3 didChangeClientSyncState:(unint64_t)a4
+- (void)nanoPairedDeviceStatusMonitor:(id)monitor didChangeClientSyncState:(unint64_t)state
 {
   v12 = *MEMORY[0x1E69E9840];
   os_unfair_lock_lock(&self->_lock);
-  if (a4 == 3)
+  if (state == 3)
   {
     self->_watchInitialSyncIsComplete = 1;
     v6 = os_log_create("com.apple.amp.iTunesCloud", "Default");
@@ -375,7 +375,7 @@ LABEL_7:
     {
       v7 = +[ICDeviceInfo currentDeviceInfo];
       v8 = 138543618;
-      v9 = self;
+      selfCopy = self;
       v10 = 2114;
       v11 = v7;
       _os_log_impl(&dword_1B4491000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@ Device %{public}@ has completed setup and initial sync", &v8, 0x16u);
@@ -387,17 +387,17 @@ LABEL_7:
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)performBlockAfterDeviceSetup:(id)a3
+- (void)performBlockAfterDeviceSetup:(id)setup
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  setupCopy = setup;
+  if (setupCopy)
   {
     os_unfair_lock_lock(&self->_lock);
     v5 = +[ICDeviceInfo currentDeviceInfo];
-    v6 = [v5 isWatch];
+    isWatch = [v5 isWatch];
     v7 = 40;
-    if (v6)
+    if (isWatch)
     {
       v7 = 41;
     }
@@ -412,7 +412,7 @@ LABEL_7:
       block[2] = __59__ICDeviceSetupStatusMonitor_performBlockAfterDeviceSetup___block_invoke_10;
       block[3] = &unk_1E7BF9D20;
       v10 = &v21;
-      v21 = v4;
+      v21 = setupCopy;
       dispatch_async(workQueue, block);
     }
 
@@ -435,14 +435,14 @@ LABEL_7:
       v22[3] = &unk_1E7BF7260;
       v23[1] = v12;
       v10 = v23;
-      v23[0] = v4;
+      v23[0] = setupCopy;
       v15 = MEMORY[0x1B8C781E0](v22);
       v16 = os_log_create("com.apple.amp.iTunesCloud", "Default");
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
         v17 = +[ICDeviceInfo currentDeviceInfo];
         *buf = 138543618;
-        v25 = self;
+        selfCopy = self;
         v26 = 2114;
         v27 = v17;
         _os_log_impl(&dword_1B4491000, v16, OS_LOG_TYPE_DEFAULT, "%{public}@ Device %{public}@ has not completed setup and initial sync", buf, 0x16u);
@@ -471,10 +471,10 @@ uint64_t __59__ICDeviceSetupStatusMonitor_performBlockAfterDeviceSetup___block_i
   return (*(*(a1 + 32) + 16))();
 }
 
-- (void)performBlockAfterBuddySetup:(id)a3
+- (void)performBlockAfterBuddySetup:(id)setup
 {
-  v4 = a3;
-  if (v4)
+  setupCopy = setup;
+  if (setupCopy)
   {
     os_unfair_lock_lock(&self->_lock);
     if (self->_setupAssistantComplete)
@@ -484,14 +484,14 @@ uint64_t __59__ICDeviceSetupStatusMonitor_performBlockAfterDeviceSetup___block_i
       block[1] = 3221225472;
       block[2] = __58__ICDeviceSetupStatusMonitor_performBlockAfterBuddySetup___block_invoke;
       block[3] = &unk_1E7BF9D20;
-      v9 = v4;
+      v9 = setupCopy;
       dispatch_async(workQueue, block);
     }
 
     else
     {
       pendingBuddyCompleteBlocks = self->_pendingBuddyCompleteBlocks;
-      v7 = MEMORY[0x1B8C781E0](v4);
+      v7 = MEMORY[0x1B8C781E0](setupCopy);
       [(NSMutableArray *)pendingBuddyCompleteBlocks addObject:v7];
     }
 
@@ -499,29 +499,29 @@ uint64_t __59__ICDeviceSetupStatusMonitor_performBlockAfterDeviceSetup___block_i
   }
 }
 
-- (void)setSetupAssistantComplete:(BOOL)a3
+- (void)setSetupAssistantComplete:(BOOL)complete
 {
-  v3 = a3;
+  completeCopy = complete;
   v12 = *MEMORY[0x1E69E9840];
   os_unfair_lock_lock(&self->_lock);
   v5 = os_log_create("com.apple.amp.iTunesCloud", "Default");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138543618;
-    v9 = self;
+    selfCopy = self;
     v10 = 1024;
-    v11 = v3;
+    v11 = completeCopy;
     _os_log_impl(&dword_1B4491000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ Setup assistant has completed:%{BOOL}u", &v8, 0x12u);
   }
 
-  self->_setupAssistantComplete = v3;
-  if (v3)
+  self->_setupAssistantComplete = completeCopy;
+  if (completeCopy)
   {
     [(ICDeviceSetupStatusMonitor *)self _runAllPendingBlocksOfType:0];
     v6 = +[ICDeviceInfo currentDeviceInfo];
-    v7 = [v6 isWatch];
+    isWatch = [v6 isWatch];
 
-    if ((v7 & 1) == 0)
+    if ((isWatch & 1) == 0)
     {
       [(ICDeviceSetupStatusMonitor *)self _runAllPendingBlocksOfType:1];
     }
@@ -541,9 +541,9 @@ uint64_t __59__ICDeviceSetupStatusMonitor_performBlockAfterDeviceSetup___block_i
 - (void)dealloc
 {
   v3 = +[ICDeviceInfo currentDeviceInfo];
-  v4 = [v3 isWatch];
+  isWatch = [v3 isWatch];
 
-  if (v4)
+  if (isWatch)
   {
     v5 = +[ICNanoPairedDeviceStatusMonitor sharedMonitor];
     [v5 removeObserver:self];

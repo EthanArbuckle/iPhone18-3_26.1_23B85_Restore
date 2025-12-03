@@ -1,18 +1,18 @@
 @interface HPSProductUtils
-+ (BOOL)isAppleHeadphone:(id)a3;
-+ (BOOL)isBeatsNonWx:(id)a3;
++ (BOOL)isAppleHeadphone:(id)headphone;
++ (BOOL)isBeatsNonWx:(id)wx;
 + (BOOL)isRealityDevice;
 @end
 
 @implementation HPSProductUtils
 
-+ (BOOL)isAppleHeadphone:(id)a3
++ (BOOL)isAppleHeadphone:(id)headphone
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  headphoneCopy = headphone;
+  v4 = headphoneCopy;
+  if (headphoneCopy)
   {
-    v5 = ([v3 isAppleAudioDevice] & 1) != 0 || objc_msgSend(v4, "productId") == 8209;
+    v5 = ([headphoneCopy isAppleAudioDevice] & 1) != 0 || objc_msgSend(v4, "productId") == 8209;
     if ([v4 productId] == 8214)
     {
       v5 = 1;
@@ -33,16 +33,16 @@
   return v5;
 }
 
-+ (BOOL)isBeatsNonWx:(id)a3
++ (BOOL)isBeatsNonWx:(id)wx
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  wxCopy = wx;
+  v4 = wxCopy;
+  if (wxCopy)
   {
-    v5 = [v3 productId];
-    v6 = [v4 productId];
-    v7 = [v4 productId];
-    v10 = v5 == 8209 || v6 == 8214 || v7 == 8230;
+    productId = [wxCopy productId];
+    productId2 = [v4 productId];
+    productId3 = [v4 productId];
+    v10 = productId == 8209 || productId2 == 8214 || productId3 == 8230;
   }
 
   else

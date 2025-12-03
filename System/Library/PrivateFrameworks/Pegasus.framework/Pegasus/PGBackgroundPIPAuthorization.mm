@@ -1,22 +1,22 @@
 @interface PGBackgroundPIPAuthorization
 - (NSString)description;
-- (PGBackgroundPIPAuthorization)initWithActivitySessionIdentifier:(id)a3 appBundleIdentifier:(id)a4 stateTransitionHandler:(id)a5;
+- (PGBackgroundPIPAuthorization)initWithActivitySessionIdentifier:(id)identifier appBundleIdentifier:(id)bundleIdentifier stateTransitionHandler:(id)handler;
 - (int64_t)state;
-- (void)_transitionToState:(int64_t)a3;
+- (void)_transitionToState:(int64_t)state;
 - (void)dealloc;
 - (void)revoke;
-- (void)transitionToState:(id)a3;
+- (void)transitionToState:(id)state;
 @end
 
 @implementation PGBackgroundPIPAuthorization
 
-- (PGBackgroundPIPAuthorization)initWithActivitySessionIdentifier:(id)a3 appBundleIdentifier:(id)a4 stateTransitionHandler:(id)a5
+- (PGBackgroundPIPAuthorization)initWithActivitySessionIdentifier:(id)identifier appBundleIdentifier:(id)bundleIdentifier stateTransitionHandler:(id)handler
 {
   v44 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v9)
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
+  handlerCopy = handler;
+  if (!identifierCopy)
   {
     [PGBackgroundPIPAuthorization initWithActivitySessionIdentifier:a2 appBundleIdentifier:self stateTransitionHandler:?];
   }
@@ -29,22 +29,22 @@
   {
     v12->_lock._os_unfair_lock_opaque = 0;
     objc_initWeak(&location, v12);
-    v14 = [v9 copy];
+    v14 = [identifierCopy copy];
     activitySessionIdentifier = v13->_activitySessionIdentifier;
     v13->_activitySessionIdentifier = v14;
 
-    v16 = MEMORY[0x1BFB0C680](v11);
+    v16 = MEMORY[0x1BFB0C680](handlerCopy);
     stateTransitionHandler = v13->_stateTransitionHandler;
     v13->_stateTransitionHandler = v16;
 
-    v18 = [v10 copy];
+    v18 = [bundleIdentifierCopy copy];
     appBundleIdentifier = v13->_appBundleIdentifier;
     v13->_appBundleIdentifier = v18;
 
     v20 = MEMORY[0x1E698F498];
-    v21 = [MEMORY[0x1E698F498] defaultShellMachName];
+    defaultShellMachName = [MEMORY[0x1E698F498] defaultShellMachName];
     v22 = +[PGBackgroundPIPServiceSpecification identifier];
-    v23 = [v20 endpointForMachName:v21 service:v22 instance:0];
+    v23 = [v20 endpointForMachName:defaultShellMachName service:v22 instance:0];
 
     v24 = [MEMORY[0x1E698F490] connectionWithEndpoint:v23];
     connection = v13->_connection;
@@ -61,9 +61,9 @@
     v29 = v27;
     v34 = v29;
     objc_copyWeak(&v37, &location);
-    v30 = v9;
+    v30 = identifierCopy;
     v35 = v30;
-    v36 = v10;
+    v36 = bundleIdentifierCopy;
     [(BSServiceConnection *)v28 configureConnection:v33];
     v31 = PGLogCommon();
     if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
@@ -184,15 +184,15 @@ void __109__PGBackgroundPIPAuthorization_initWithActivitySessionIdentifier_appBu
   return lock_state;
 }
 
-- (void)transitionToState:(id)a3
+- (void)transitionToState:(id)state
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  stateCopy = state;
   BSDispatchQueueAssertNotMain();
   v5 = PGLogCommon();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = NSStringFromPGBackgroundPIPAuthorizationState([v4 integerValue]);
+    v6 = NSStringFromPGBackgroundPIPAuthorizationState([stateCopy integerValue]);
     v7 = 136315394;
     v8 = "[PGBackgroundPIPAuthorization transitionToState:]";
     v9 = 2112;
@@ -200,13 +200,13 @@ void __109__PGBackgroundPIPAuthorization_initWithActivitySessionIdentifier_appBu
     _os_log_impl(&dword_1BB282000, v5, OS_LOG_TYPE_DEFAULT, "%s %@", &v7, 0x16u);
   }
 
-  -[PGBackgroundPIPAuthorization _transitionToState:](self, "_transitionToState:", [v4 integerValue]);
+  -[PGBackgroundPIPAuthorization _transitionToState:](self, "_transitionToState:", [stateCopy integerValue]);
 }
 
-- (void)_transitionToState:(int64_t)a3
+- (void)_transitionToState:(int64_t)state
 {
   os_unfair_lock_lock(&self->_lock);
-  if (self->_lock_state >= a3)
+  if (self->_lock_state >= state)
   {
 
     os_unfair_lock_unlock(&self->_lock);
@@ -214,7 +214,7 @@ void __109__PGBackgroundPIPAuthorization_initWithActivitySessionIdentifier_appBu
 
   else
   {
-    self->_lock_state = a3;
+    self->_lock_state = state;
     os_unfair_lock_unlock(&self->_lock);
     BSDispatchMain();
   }
@@ -230,8 +230,8 @@ void __51__PGBackgroundPIPAuthorization__transitionToState___block_invoke(uint64
 {
   if ([(PGBackgroundPIPAuthorization *)self state]!= 5)
   {
-    v3 = [(BSServiceConnection *)self->_connection remoteTarget];
-    [v3 revokeAuthorization];
+    remoteTarget = [(BSServiceConnection *)self->_connection remoteTarget];
+    [remoteTarget revokeAuthorization];
 
     [(BSServiceConnection *)self->_connection invalidate];
 
@@ -255,8 +255,8 @@ void __51__PGBackgroundPIPAuthorization__transitionToState___block_invoke(uint64
 
 - (void)dealloc
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"PGBackgroundPIPAuthorization.m" lineNumber:121 description:{@"Released %@ without revoking it first", a2}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"PGBackgroundPIPAuthorization.m" lineNumber:121 description:{@"Released %@ without revoking it first", a2}];
 }
 
 - (void)initWithActivitySessionIdentifier:(uint64_t)a1 appBundleIdentifier:(uint64_t)a2 stateTransitionHandler:.cold.1(uint64_t a1, uint64_t a2)

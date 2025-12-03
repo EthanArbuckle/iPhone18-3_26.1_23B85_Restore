@@ -1,6 +1,6 @@
 @interface MADVideoSessionRequest
 - (MADVideoSessionRequest)init;
-- (MADVideoSessionRequest)initWithCoder:(id)a3;
+- (MADVideoSessionRequest)initWithCoder:(id)coder;
 - (id)description;
 @end
 
@@ -13,24 +13,24 @@
   v2 = [(MADVideoSessionRequest *)&v7 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AFB0] UUID];
-    v4 = [v3 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
     requestID = v2->_requestID;
-    v2->_requestID = v4;
+    v2->_requestID = uUIDString;
   }
 
   return v2;
 }
 
-- (MADVideoSessionRequest)initWithCoder:(id)a3
+- (MADVideoSessionRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = MADVideoSessionRequest;
   v5 = [(MADVideoSessionRequest *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"RequestID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"RequestID"];
     requestID = v5->_requestID;
     v5->_requestID = v6;
   }
@@ -40,14 +40,14 @@
 
 - (id)description
 {
-  v3 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  [v3 appendFormat:@"<%@ %p, ", v5, self];
+  [string appendFormat:@"<%@ %p, ", v5, self];
 
-  [v3 appendFormat:@"RequestID: %@>", self->_requestID];
+  [string appendFormat:@"RequestID: %@>", self->_requestID];
 
-  return v3;
+  return string;
 }
 
 @end

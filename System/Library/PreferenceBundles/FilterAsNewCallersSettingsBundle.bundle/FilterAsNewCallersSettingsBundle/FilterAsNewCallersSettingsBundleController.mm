@@ -1,27 +1,27 @@
 @interface FilterAsNewCallersSettingsBundleController
-+ (id)localizedStringForKey:(id)a3;
++ (id)localizedStringForKey:(id)key;
 - (BOOL)currentControllerIsFaceTimeSettings;
 - (BOOL)filterNewCallersForFaceTimeIsEnabled;
 - (BOOL)filterNewCallersForPhoneIsEnabled;
-- (FilterAsNewCallersSettingsBundleController)initWithParentListController:(id)a3;
+- (FilterAsNewCallersSettingsBundleController)initWithParentListController:(id)controller;
 - (PSListController)parentListController;
 - (id)createFilterAsNewCallersSpecifier;
 - (id)currentControllerSpecifierIdentifier;
-- (id)getBooleanFromUserDefaults:(id)a3 default:(id)a4;
-- (id)getFilterAsNewCallersEnabled:(id)a3;
-- (id)specifiersWithSpecifier:(id)a3;
+- (id)getBooleanFromUserDefaults:(id)defaults default:(id)default;
+- (id)getFilterAsNewCallersEnabled:(id)enabled;
+- (id)specifiersWithSpecifier:(id)specifier;
 - (void)refreshView;
-- (void)setFilterAsNewCallersEnabled:(id)a3 specifier:(id)a4;
-- (void)setValueInUserDefaults:(id)a3 forKey:(id)a4;
+- (void)setFilterAsNewCallersEnabled:(id)enabled specifier:(id)specifier;
+- (void)setValueInUserDefaults:(id)defaults forKey:(id)key;
 @end
 
 @implementation FilterAsNewCallersSettingsBundleController
 
-- (FilterAsNewCallersSettingsBundleController)initWithParentListController:(id)a3
+- (FilterAsNewCallersSettingsBundleController)initWithParentListController:(id)controller
 {
   v10.receiver = self;
   v10.super_class = FilterAsNewCallersSettingsBundleController;
-  v3 = [(FilterAsNewCallersSettingsBundleController *)&v10 initWithParentListController:a3];
+  v3 = [(FilterAsNewCallersSettingsBundleController *)&v10 initWithParentListController:controller];
   if (v3)
   {
     v4 = +[NSNotificationCenter defaultCenter];
@@ -44,24 +44,24 @@
   return v3;
 }
 
-- (id)specifiersWithSpecifier:(id)a3
+- (id)specifiersWithSpecifier:(id)specifier
 {
   v4 = PHDefaultLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [(FilterAsNewCallersSettingsBundleController *)self currentControllerSpecifierIdentifier];
+    currentControllerSpecifierIdentifier = [(FilterAsNewCallersSettingsBundleController *)self currentControllerSpecifierIdentifier];
     v13 = 138412290;
-    v14 = v5;
+    v14 = currentControllerSpecifierIdentifier;
     _os_log_impl(&dword_0, v4, OS_LOG_TYPE_DEFAULT, "Loading settings page for app %@", &v13, 0xCu);
   }
 
   v6 = +[NSMutableArray array];
-  v7 = [(FilterAsNewCallersSettingsBundleController *)self tuFeatureFlags];
-  if ([v7 junkFilteringEnabled])
+  tuFeatureFlags = [(FilterAsNewCallersSettingsBundleController *)self tuFeatureFlags];
+  if ([tuFeatureFlags junkFilteringEnabled])
   {
-    v8 = [(FilterAsNewCallersSettingsBundleController *)self activeSpecifier];
+    activeSpecifier = [(FilterAsNewCallersSettingsBundleController *)self activeSpecifier];
 
-    if (!v8)
+    if (!activeSpecifier)
     {
       v9 = PHDefaultLog();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -70,10 +70,10 @@
         _os_log_impl(&dword_0, v9, OS_LOG_TYPE_DEFAULT, "User device meets FF criteria, adding Filter as New Callers switch to Settings", &v13, 2u);
       }
 
-      v10 = [(FilterAsNewCallersSettingsBundleController *)self createFilterAsNewCallersSpecifier];
-      if (v10)
+      createFilterAsNewCallersSpecifier = [(FilterAsNewCallersSettingsBundleController *)self createFilterAsNewCallersSpecifier];
+      if (createFilterAsNewCallersSpecifier)
       {
-        [v6 addObject:v10];
+        [v6 addObject:createFilterAsNewCallersSpecifier];
       }
 
       goto LABEL_12;
@@ -84,11 +84,11 @@
   {
   }
 
-  v10 = PHDefaultLog();
-  if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+  createFilterAsNewCallersSpecifier = PHDefaultLog();
+  if (os_log_type_enabled(createFilterAsNewCallersSpecifier, OS_LOG_TYPE_DEFAULT))
   {
     LOWORD(v13) = 0;
-    _os_log_impl(&dword_0, v10, OS_LOG_TYPE_DEFAULT, "User device does not meet FF criteria or switch has already been added, so we are not adding Filter as New Callers switch to Settings", &v13, 2u);
+    _os_log_impl(&dword_0, createFilterAsNewCallersSpecifier, OS_LOG_TYPE_DEFAULT, "User device does not meet FF criteria or switch has already been added, so we are not adding Filter as New Callers switch to Settings", &v13, 2u);
   }
 
 LABEL_12:
@@ -111,12 +111,12 @@ LABEL_12:
   return v5;
 }
 
-+ (id)localizedStringForKey:(id)a3
++ (id)localizedStringForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = [NSBundle bundleForClass:objc_opt_class()];
-  v6 = [a1 localizationTableName];
-  v7 = [v5 localizedStringForKey:v4 value:&stru_42C8 table:v6];
+  localizationTableName = [self localizationTableName];
+  v7 = [v5 localizedStringForKey:keyCopy value:&stru_42C8 table:localizationTableName];
 
   return v7;
 }
@@ -130,48 +130,48 @@ LABEL_12:
 
 - (void)refreshView
 {
-  v4 = [(FilterAsNewCallersSettingsBundleController *)self parentListController];
-  v3 = [(FilterAsNewCallersSettingsBundleController *)self activeSpecifier];
-  [v4 reloadSpecifier:v3 animated:1];
+  parentListController = [(FilterAsNewCallersSettingsBundleController *)self parentListController];
+  activeSpecifier = [(FilterAsNewCallersSettingsBundleController *)self activeSpecifier];
+  [parentListController reloadSpecifier:activeSpecifier animated:1];
 }
 
-- (void)setFilterAsNewCallersEnabled:(id)a3 specifier:(id)a4
+- (void)setFilterAsNewCallersEnabled:(id)enabled specifier:(id)specifier
 {
-  v5 = a3;
+  enabledCopy = enabled;
   v6 = PHDefaultLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(FilterAsNewCallersSettingsBundleController *)self currentControllerSpecifierIdentifier];
+    currentControllerSpecifierIdentifier = [(FilterAsNewCallersSettingsBundleController *)self currentControllerSpecifierIdentifier];
     v14 = 138412546;
-    v15 = v7;
+    v15 = currentControllerSpecifierIdentifier;
     v16 = 2112;
-    v17 = v5;
+    v17 = enabledCopy;
     _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "User has toggled Filter as New Callers %@ switch to %@", &v14, 0x16u);
   }
 
-  v8 = [(FilterAsNewCallersSettingsBundleController *)self tuFeatureFlags];
-  v9 = [v8 deviceExpertMigrationEnabled];
+  tuFeatureFlags = [(FilterAsNewCallersSettingsBundleController *)self tuFeatureFlags];
+  deviceExpertMigrationEnabled = [tuFeatureFlags deviceExpertMigrationEnabled];
 
-  v10 = [(FilterAsNewCallersSettingsBundleController *)self currentControllerIsFaceTimeSettings];
-  if (v9)
+  currentControllerIsFaceTimeSettings = [(FilterAsNewCallersSettingsBundleController *)self currentControllerIsFaceTimeSettings];
+  if (deviceExpertMigrationEnabled)
   {
-    v11 = [(FilterAsNewCallersSettingsBundleController *)self configurationProvider];
-    v12 = [v5 BOOLValue];
-    if (v10)
+    configurationProvider = [(FilterAsNewCallersSettingsBundleController *)self configurationProvider];
+    bOOLValue = [enabledCopy BOOLValue];
+    if (currentControllerIsFaceTimeSettings)
     {
-      [v11 setFilterAsNewCallersEnabledForFaceTime:v12];
+      [configurationProvider setFilterAsNewCallersEnabledForFaceTime:bOOLValue];
     }
 
     else
     {
-      [v11 setFilterAsNewCallersEnabledForPhone:v12];
+      [configurationProvider setFilterAsNewCallersEnabledForPhone:bOOLValue];
     }
   }
 
   else
   {
-    v11 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v5 BOOLValue]);
-    if (v10)
+    configurationProvider = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [enabledCopy BOOLValue]);
+    if (currentControllerIsFaceTimeSettings)
     {
       v13 = &TUCallFilteringUnknownFaceTimeCallersAsNewCallersKey;
     }
@@ -181,34 +181,34 @@ LABEL_12:
       v13 = &TUCallFilteringUnknownCallersAsNewCallersKey;
     }
 
-    [(FilterAsNewCallersSettingsBundleController *)self setValueInUserDefaults:v11 forKey:*v13];
+    [(FilterAsNewCallersSettingsBundleController *)self setValueInUserDefaults:configurationProvider forKey:*v13];
   }
 }
 
-- (id)getFilterAsNewCallersEnabled:(id)a3
+- (id)getFilterAsNewCallersEnabled:(id)enabled
 {
   if ([(FilterAsNewCallersSettingsBundleController *)self currentControllerIsFaceTimeSettings])
   {
-    v4 = [(FilterAsNewCallersSettingsBundleController *)self filterNewCallersForFaceTimeIsEnabled];
+    filterNewCallersForFaceTimeIsEnabled = [(FilterAsNewCallersSettingsBundleController *)self filterNewCallersForFaceTimeIsEnabled];
   }
 
   else
   {
-    v4 = [(FilterAsNewCallersSettingsBundleController *)self filterNewCallersForPhoneIsEnabled];
+    filterNewCallersForFaceTimeIsEnabled = [(FilterAsNewCallersSettingsBundleController *)self filterNewCallersForPhoneIsEnabled];
   }
 
-  v5 = [NSNumber numberWithBool:v4];
+  v5 = [NSNumber numberWithBool:filterNewCallersForFaceTimeIsEnabled];
 
   return v5;
 }
 
-- (id)getBooleanFromUserDefaults:(id)a3 default:(id)a4
+- (id)getBooleanFromUserDefaults:(id)defaults default:(id)default
 {
-  v5 = a4;
-  v6 = a3;
+  defaultCopy = default;
+  defaultsCopy = defaults;
   v7 = [NSUserDefaults alloc];
   v8 = [v7 initWithSuiteName:TUBundleIdentifierTelephonyUtilitiesFramework];
-  v9 = [v8 objectForKey:v6];
+  v9 = [v8 objectForKey:defaultsCopy];
 
   if (v9)
   {
@@ -217,7 +217,7 @@ LABEL_12:
 
   else
   {
-    v10 = v5;
+    v10 = defaultCopy;
   }
 
   v11 = v10;
@@ -225,13 +225,13 @@ LABEL_12:
   return v10;
 }
 
-- (void)setValueInUserDefaults:(id)a3 forKey:(id)a4
+- (void)setValueInUserDefaults:(id)defaults forKey:(id)key
 {
-  v5 = a4;
-  v6 = a3;
+  keyCopy = key;
+  defaultsCopy = defaults;
   v7 = [NSUserDefaults alloc];
   v8 = [v7 initWithSuiteName:TUBundleIdentifierTelephonyUtilitiesFramework];
-  [v8 setValue:v6 forKey:v5];
+  [v8 setValue:defaultsCopy forKey:keyCopy];
 
   v9 = +[NSNotificationCenter defaultCenter];
   [v9 postNotificationName:@"FilterAsNewCallersSettingsChangedNotification" object:0];
@@ -239,21 +239,21 @@ LABEL_12:
 
 - (BOOL)currentControllerIsFaceTimeSettings
 {
-  v2 = [(FilterAsNewCallersSettingsBundleController *)self currentControllerSpecifierIdentifier];
-  v3 = [v2 isEqualToString:@"FaceTime"];
+  currentControllerSpecifierIdentifier = [(FilterAsNewCallersSettingsBundleController *)self currentControllerSpecifierIdentifier];
+  v3 = [currentControllerSpecifierIdentifier isEqualToString:@"FaceTime"];
 
   return v3;
 }
 
 - (id)currentControllerSpecifierIdentifier
 {
-  v2 = [(FilterAsNewCallersSettingsBundleController *)self parentListController];
-  v3 = [v2 specifier];
-  v4 = [v3 identifier];
+  parentListController = [(FilterAsNewCallersSettingsBundleController *)self parentListController];
+  specifier = [parentListController specifier];
+  identifier = [specifier identifier];
 
-  if (v4)
+  if (identifier)
   {
-    v5 = v4;
+    v5 = identifier;
   }
 
   else
@@ -267,17 +267,17 @@ LABEL_12:
 - (BOOL)filterNewCallersForFaceTimeIsEnabled
 {
   v2 = [(FilterAsNewCallersSettingsBundleController *)self getBooleanFromUserDefaults:TUCallFilteringUnknownFaceTimeCallersAsNewCallersKey default:&off_4310];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)filterNewCallersForPhoneIsEnabled
 {
   v2 = [(FilterAsNewCallersSettingsBundleController *)self getBooleanFromUserDefaults:TUCallFilteringUnknownCallersAsNewCallersKey default:&off_4310];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 @end

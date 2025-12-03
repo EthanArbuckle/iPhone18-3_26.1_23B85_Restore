@@ -1,22 +1,22 @@
 @interface PKReprocessMerchantActivity
-- (PKReprocessMerchantActivity)initWithTransaction:(id)a3 paymentPass:(id)a4;
+- (PKReprocessMerchantActivity)initWithTransaction:(id)transaction paymentPass:(id)pass;
 - (void)performActivity;
 @end
 
 @implementation PKReprocessMerchantActivity
 
-- (PKReprocessMerchantActivity)initWithTransaction:(id)a3 paymentPass:(id)a4
+- (PKReprocessMerchantActivity)initWithTransaction:(id)transaction paymentPass:(id)pass
 {
-  v7 = a3;
-  v8 = a4;
+  transactionCopy = transaction;
+  passCopy = pass;
   v12.receiver = self;
   v12.super_class = PKReprocessMerchantActivity;
   v9 = [(UIActivity *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_transaction, a3);
-    objc_storeStrong(&v10->_paymentPass, a4);
+    objc_storeStrong(&v9->_transaction, transaction);
+    objc_storeStrong(&v10->_paymentPass, pass);
   }
 
   return v10;
@@ -24,16 +24,16 @@
 
 - (void)performActivity
 {
-  v3 = [(PKPaymentPass *)self->_paymentPass devicePrimaryPaymentApplication];
-  v4 = [objc_alloc(MEMORY[0x1E69B92D8]) initWithTransaction:self->_transaction paymentApplication:v3];
+  devicePrimaryPaymentApplication = [(PKPaymentPass *)self->_paymentPass devicePrimaryPaymentApplication];
+  v4 = [objc_alloc(MEMORY[0x1E69B92D8]) initWithTransaction:self->_transaction paymentApplication:devicePrimaryPaymentApplication];
   v5 = [objc_alloc(MEMORY[0x1E69B89B0]) initWithSource:v4];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __46__PKReprocessMerchantActivity_performActivity__block_invoke;
   v7[3] = &unk_1E801CFA0;
   v7[4] = self;
-  v8 = v3;
-  v6 = v3;
+  v8 = devicePrimaryPaymentApplication;
+  v6 = devicePrimaryPaymentApplication;
   [v5 startLookupWithCompletion:v7];
 }
 

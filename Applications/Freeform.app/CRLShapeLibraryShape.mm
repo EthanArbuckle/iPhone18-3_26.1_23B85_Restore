@@ -1,11 +1,11 @@
 @interface CRLShapeLibraryShape
-+ (id)baseKeywordsForShapeFromDictionary:(id)a3 keywordDelimiter:(id)a4;
-+ (id)baseNameForShapeFromDictionary:(id)a3;
-+ (id)localizedKeywordsForShapeFromDictionary:(id)a3 keywordDelimiter:(id)a4;
-+ (id)localizedNameForShapeFromDictionary:(id)a3;
-+ (id)p_stringForKey:(id)a3 inBaseStringsTableWithName:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (CRLShapeLibraryShape)initWithDictionary:(id)a3 keywordDelimiter:(id)a4;
++ (id)baseKeywordsForShapeFromDictionary:(id)dictionary keywordDelimiter:(id)delimiter;
++ (id)baseNameForShapeFromDictionary:(id)dictionary;
++ (id)localizedKeywordsForShapeFromDictionary:(id)dictionary keywordDelimiter:(id)delimiter;
++ (id)localizedNameForShapeFromDictionary:(id)dictionary;
++ (id)p_stringForKey:(id)key inBaseStringsTableWithName:(id)name;
+- (BOOL)isEqual:(id)equal;
+- (CRLShapeLibraryShape)initWithDictionary:(id)dictionary keywordDelimiter:(id)delimiter;
 - (NSArray)categoryIDs;
 - (NSArray)keywords;
 - (NSNumber)shapeID;
@@ -13,58 +13,58 @@
 - (NSString)localizationKey;
 - (NSString)name;
 - (id)p_categoryMetadata;
-- (id)pathSourceWithSize:(CGSize)a3;
+- (id)pathSourceWithSize:(CGSize)size;
 - (unint64_t)hash;
-- (unint64_t)positionInCategoryWithID:(id)a3;
+- (unint64_t)positionInCategoryWithID:(id)d;
 @end
 
 @implementation CRLShapeLibraryShape
 
-+ (id)baseKeywordsForShapeFromDictionary:(id)a3 keywordDelimiter:(id)a4
++ (id)baseKeywordsForShapeFromDictionary:(id)dictionary keywordDelimiter:(id)delimiter
 {
-  v6 = a4;
-  v7 = [a1 p_localizationKeyForShapeFromDictionary:a3];
-  v8 = [a1 p_stringForKey:v7 inBaseStringsTableWithName:@"CRLShapeLibrarianKeywords"];
-  v9 = [v8 componentsSeparatedByString:v6];
+  delimiterCopy = delimiter;
+  v7 = [self p_localizationKeyForShapeFromDictionary:dictionary];
+  v8 = [self p_stringForKey:v7 inBaseStringsTableWithName:@"CRLShapeLibrarianKeywords"];
+  v9 = [v8 componentsSeparatedByString:delimiterCopy];
 
   return v9;
 }
 
-+ (id)baseNameForShapeFromDictionary:(id)a3
++ (id)baseNameForShapeFromDictionary:(id)dictionary
 {
-  v4 = [a1 p_localizationKeyForShapeFromDictionary:a3];
-  v5 = [a1 p_stringForKey:v4 inBaseStringsTableWithName:@"CRLShapeLibrarianShapeNames"];
+  v4 = [self p_localizationKeyForShapeFromDictionary:dictionary];
+  v5 = [self p_stringForKey:v4 inBaseStringsTableWithName:@"CRLShapeLibrarianShapeNames"];
 
   return v5;
 }
 
-+ (id)localizedKeywordsForShapeFromDictionary:(id)a3 keywordDelimiter:(id)a4
++ (id)localizedKeywordsForShapeFromDictionary:(id)dictionary keywordDelimiter:(id)delimiter
 {
-  v6 = a4;
-  v7 = [a1 p_localizationKeyForShapeFromDictionary:a3];
+  delimiterCopy = delimiter;
+  v7 = [self p_localizationKeyForShapeFromDictionary:dictionary];
   v8 = +[NSBundle mainBundle];
   v9 = [v8 localizedStringForKey:v7 value:0 table:@"CRLShapeLibrarianKeywords"];
 
-  v10 = [v9 componentsSeparatedByString:v6];
+  v10 = [v9 componentsSeparatedByString:delimiterCopy];
 
   return v10;
 }
 
-+ (id)localizedNameForShapeFromDictionary:(id)a3
++ (id)localizedNameForShapeFromDictionary:(id)dictionary
 {
-  v3 = [a1 p_localizationKeyForShapeFromDictionary:a3];
+  v3 = [self p_localizationKeyForShapeFromDictionary:dictionary];
   v4 = +[NSBundle mainBundle];
   v5 = [v4 localizedStringForKey:v3 value:0 table:@"CRLShapeLibrarianShapeNames"];
 
   return v5;
 }
 
-+ (id)p_stringForKey:(id)a3 inBaseStringsTableWithName:(id)a4
++ (id)p_stringForKey:(id)key inBaseStringsTableWithName:(id)name
 {
-  v5 = a3;
-  v6 = a4;
+  keyCopy = key;
+  nameCopy = name;
   v7 = +[NSBundle mainBundle];
-  v8 = [v7 localizedStringForKey:v5 value:0 table:v6 localization:@"en"];
+  v8 = [v7 localizedStringForKey:keyCopy value:0 table:nameCopy localization:@"en"];
 
   v9 = v8;
   if (!v8)
@@ -95,7 +95,7 @@
     v12 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLCanvas/CRLShapeLibraryShape.m"];
     [CRLAssertionHandler handleFailureInFunction:v11 file:v12 lineNumber:93 isFatal:0 description:"invalid nil value for '%{public}s'", "englishString"];
 
-    v9 = v5;
+    v9 = keyCopy;
   }
 
   v13 = v9;
@@ -103,18 +103,18 @@
   return v9;
 }
 
-- (CRLShapeLibraryShape)initWithDictionary:(id)a3 keywordDelimiter:(id)a4
+- (CRLShapeLibraryShape)initWithDictionary:(id)dictionary keywordDelimiter:(id)delimiter
 {
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  delimiterCopy = delimiter;
   v16.receiver = self;
   v16.super_class = CRLShapeLibraryShape;
-  v8 = [(CRLShapeLibraryObject *)&v16 initWithDictionary:v6];
+  v8 = [(CRLShapeLibraryObject *)&v16 initWithDictionary:dictionaryCopy];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_keywordDelimiter, a4);
-    v10 = [v6 objectForKey:@"shapePath"];
+    objc_storeStrong(&v8->_keywordDelimiter, delimiter);
+    v10 = [dictionaryCopy objectForKey:@"shapePath"];
     v11 = [v10 copy];
     bezierPathString = v9->_bezierPathString;
     v9->_bezierPathString = v11;
@@ -133,15 +133,15 @@
 - (NSArray)categoryIDs
 {
   v3 = objc_alloc_init(NSNumberFormatter);
-  v4 = [(CRLShapeLibraryShape *)self p_categoryMetadata];
-  v5 = [v4 allKeys];
+  p_categoryMetadata = [(CRLShapeLibraryShape *)self p_categoryMetadata];
+  allKeys = [p_categoryMetadata allKeys];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10012FEDC;
   v10[3] = &unk_10183EE28;
   v11 = v3;
   v6 = v3;
-  v7 = [v5 crl_arrayByMappingObjectsUsingBlock:v10];
+  v7 = [allKeys crl_arrayByMappingObjectsUsingBlock:v10];
   v8 = [v7 sortedArrayUsingSelector:"compare:"];
 
   return v8;
@@ -150,8 +150,8 @@
 - (NSString)localizationKey
 {
   v3 = objc_opt_class();
-  v4 = [(CRLShapeLibraryObject *)self i_dictionary];
-  v5 = [v3 p_localizationKeyForShapeFromDictionary:v4];
+  i_dictionary = [(CRLShapeLibraryObject *)self i_dictionary];
+  v5 = [v3 p_localizationKeyForShapeFromDictionary:i_dictionary];
 
   return v5;
 }
@@ -159,8 +159,8 @@
 - (NSString)name
 {
   v3 = objc_opt_class();
-  v4 = [(CRLShapeLibraryObject *)self i_dictionary];
-  v5 = [v3 localizedNameForShapeFromDictionary:v4];
+  i_dictionary = [(CRLShapeLibraryObject *)self i_dictionary];
+  v5 = [v3 localizedNameForShapeFromDictionary:i_dictionary];
 
   return v5;
 }
@@ -169,8 +169,8 @@
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(CRLShapeLibraryShape *)self name];
-  v6 = [NSString stringWithFormat:@"<%@ %p name=%@>", v4, self, v5];
+  name = [(CRLShapeLibraryShape *)self name];
+  v6 = [NSString stringWithFormat:@"<%@ %p name=%@>", v4, self, name];
 
   return v6;
 }
@@ -178,8 +178,8 @@
 - (NSNumber)shapeID
 {
   v3 = objc_opt_class();
-  v4 = [(CRLShapeLibraryObject *)self i_dictionary];
-  v5 = [v3 shapeIDForShapeFromDictionary:v4];
+  i_dictionary = [(CRLShapeLibraryObject *)self i_dictionary];
+  v5 = [v3 shapeIDForShapeFromDictionary:i_dictionary];
 
   return v5;
 }
@@ -187,28 +187,28 @@
 - (NSArray)keywords
 {
   v3 = objc_opt_class();
-  v4 = [(CRLShapeLibraryObject *)self i_dictionary];
-  v5 = [(CRLShapeLibraryShape *)self p_keywordDelimiter];
-  v6 = [v3 localizedKeywordsForShapeFromDictionary:v4 keywordDelimiter:v5];
+  i_dictionary = [(CRLShapeLibraryObject *)self i_dictionary];
+  p_keywordDelimiter = [(CRLShapeLibraryShape *)self p_keywordDelimiter];
+  v6 = [v3 localizedKeywordsForShapeFromDictionary:i_dictionary keywordDelimiter:p_keywordDelimiter];
 
   return v6;
 }
 
-- (id)pathSourceWithSize:(CGSize)a3
+- (id)pathSourceWithSize:(CGSize)size
 {
-  v4 = [(CRLShapeLibraryShape *)self p_bezierPath:a3.width];
+  v4 = [(CRLShapeLibraryShape *)self p_bezierPath:size.width];
   v5 = [CRLBezierPathSource pathSourceWithBezierPath:v4];
 
-  v6 = [(CRLShapeLibraryShape *)self localizationKey];
-  [v5 setLocalizationKey:v6];
+  localizationKey = [(CRLShapeLibraryShape *)self localizationKey];
+  [v5 setLocalizationKey:localizationKey];
 
   return v5;
 }
 
-- (unint64_t)positionInCategoryWithID:(id)a3
+- (unint64_t)positionInCategoryWithID:(id)d
 {
-  v4 = a3;
-  if (!v4)
+  dCopy = d;
+  if (!dCopy)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -237,35 +237,35 @@
     [CRLAssertionHandler handleFailureInFunction:v6 file:v7 lineNumber:150 isFatal:0 description:"Must pass a categoryID when fetching a shape library shape's position."];
   }
 
-  v8 = [(CRLShapeLibraryShape *)self p_categoryMetadata];
-  v9 = [v4 stringValue];
-  v10 = [v8 objectForKeyedSubscript:v9];
+  p_categoryMetadata = [(CRLShapeLibraryShape *)self p_categoryMetadata];
+  stringValue = [dCopy stringValue];
+  v10 = [p_categoryMetadata objectForKeyedSubscript:stringValue];
   v11 = [v10 objectForKeyedSubscript:@"position"];
 
   if (v11)
   {
-    v12 = [v11 unsignedIntegerValue];
+    unsignedIntegerValue = [v11 unsignedIntegerValue];
   }
 
   else
   {
-    v12 = 0x7FFFFFFFFFFFFFFFLL;
+    unsignedIntegerValue = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  return v12;
+  return unsignedIntegerValue;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  v6 = sub_100014370(v5, v4);
+  v6 = sub_100014370(v5, equalCopy);
 
-  v7 = [(CRLShapeLibraryShape *)self shapeID];
-  v8 = [v6 shapeID];
-  if (v7 | v8)
+  shapeID = [(CRLShapeLibraryShape *)self shapeID];
+  shapeID2 = [v6 shapeID];
+  if (shapeID | shapeID2)
   {
-    v9 = [v7 isEqual:v8];
+    v9 = [shapeID isEqual:shapeID2];
   }
 
   else
@@ -278,16 +278,16 @@
 
 - (unint64_t)hash
 {
-  v2 = [(CRLShapeLibraryShape *)self shapeID];
-  v3 = [v2 hash];
+  shapeID = [(CRLShapeLibraryShape *)self shapeID];
+  v3 = [shapeID hash];
 
   return v3;
 }
 
 - (id)p_categoryMetadata
 {
-  v2 = [(CRLShapeLibraryObject *)self i_dictionary];
-  v3 = [v2 objectForKeyedSubscript:@"categories"];
+  i_dictionary = [(CRLShapeLibraryObject *)self i_dictionary];
+  v3 = [i_dictionary objectForKeyedSubscript:@"categories"];
 
   return v3;
 }

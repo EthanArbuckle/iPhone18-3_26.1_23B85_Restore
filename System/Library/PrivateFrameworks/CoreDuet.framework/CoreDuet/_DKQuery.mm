@@ -1,74 +1,74 @@
 @interface _DKQuery
-+ (id)executableQueryForQuery:(id)a3;
-+ (id)predicateForEventsBetweenStartSecondOfDay:(unint64_t)a3 endSecondOfDay:(unint64_t)a4;
-+ (id)predicateForEventsExcludingIntegerValue:(int64_t)a3;
-+ (id)predicateForEventsWithCategoryValue:(id)a3;
-+ (id)predicateForEventsWithDayOfWeek:(unint64_t)a3;
-+ (id)predicateForEventsWithDoubleValue:(double)a3;
-+ (id)predicateForEventsWithDoubleValueBetween:(double)a3 and:(double)a4;
-+ (id)predicateForEventsWithIdentifierValue:(id)a3;
-+ (id)predicateForEventsWithIntegerValue:(int64_t)a3;
-+ (id)predicateForEventsWithMinimumDuration:(double)a3;
-+ (id)predicateForEventsWithQuantityValue:(id)a3;
-+ (id)predicateForEventsWithSourceDeviceIDs:(id)a3;
-+ (id)predicateForEventsWithSourceGroupIDs:(id)a3;
-+ (id)predicateForEventsWithSourceID:(id)a3;
-+ (id)predicateForEventsWithSourceID:(id)a3 bundleID:(id)a4;
-+ (id)predicateForEventsWithSourceID:(id)a3 bundleID:(id)a4 groupIDs:(id)a5;
-+ (id)predicateForEventsWithSourceID:(id)a3 bundleID:(id)a4 itemIDs:(id)a5;
-+ (id)predicateForEventsWithStartAndEndInDateRangeFrom:(id)a3 to:(id)a4;
-+ (id)predicateForEventsWithStartOrEndInDateRangeWithFrom:(id)a3 to:(id)a4;
-+ (id)predicateForEventsWithStringValue:(id)a3;
-+ (id)predicateForEventsWithStringValueInValues:(id)a3;
-+ (id)predicateForObjectWithUUID:(id)a3;
-+ (id)predicateForObjectsWithMetadataKey:(id)a3;
-+ (id)predicateForObjectsWithMetadataKey:(id)a3 andDoubleValue:(double)a4;
-+ (id)predicateForObjectsWithMetadataKey:(id)a3 andDoubleValueBetween:(double)a4 andValue:(double)a5;
-+ (id)predicateForObjectsWithMetadataKey:(id)a3 andIntegerValue:(int64_t)a4;
-+ (id)predicateForObjectsWithMetadataKey:(id)a3 andStringValue:(id)a4;
-+ (id)predicateForObjectsWithMetadataKey:(id)a3 andValue:(id)a4;
-+ (id)predicateForObjectsWithMetadataKey:(id)a3 inValues:(id)a4;
-+ (id)predicateForObjectsWithMetadataKey:(id)a3 likeStringValue:(id)a4;
-+ (id)predicateForObjectsWithStructuredMetadataKey:(void *)a3 andValue:;
-+ (id)predicateForObjectsWithUUIDs:(id)a3;
-+ (id)predicateForSpotlightEventsWithBundleID:(uint64_t)a1;
-+ (id)predicateForSpotlightEventsWithBundleID:(void *)a3 sinceDate:;
-+ (id)predicateForSpotlightEventsWithDomainIdentifiers:(void *)a3 bundleID:;
-+ (id)predicateForSpotlightEventsWithItemIdentifiers:(void *)a3 bundleID:;
++ (id)executableQueryForQuery:(id)query;
++ (id)predicateForEventsBetweenStartSecondOfDay:(unint64_t)day endSecondOfDay:(unint64_t)ofDay;
++ (id)predicateForEventsExcludingIntegerValue:(int64_t)value;
++ (id)predicateForEventsWithCategoryValue:(id)value;
++ (id)predicateForEventsWithDayOfWeek:(unint64_t)week;
++ (id)predicateForEventsWithDoubleValue:(double)value;
++ (id)predicateForEventsWithDoubleValueBetween:(double)between and:(double)and;
++ (id)predicateForEventsWithIdentifierValue:(id)value;
++ (id)predicateForEventsWithIntegerValue:(int64_t)value;
++ (id)predicateForEventsWithMinimumDuration:(double)duration;
++ (id)predicateForEventsWithQuantityValue:(id)value;
++ (id)predicateForEventsWithSourceDeviceIDs:(id)ds;
++ (id)predicateForEventsWithSourceGroupIDs:(id)ds;
++ (id)predicateForEventsWithSourceID:(id)d;
++ (id)predicateForEventsWithSourceID:(id)d bundleID:(id)iD;
++ (id)predicateForEventsWithSourceID:(id)d bundleID:(id)iD groupIDs:(id)ds;
++ (id)predicateForEventsWithSourceID:(id)d bundleID:(id)iD itemIDs:(id)ds;
++ (id)predicateForEventsWithStartAndEndInDateRangeFrom:(id)from to:(id)to;
++ (id)predicateForEventsWithStartOrEndInDateRangeWithFrom:(id)from to:(id)to;
++ (id)predicateForEventsWithStringValue:(id)value;
++ (id)predicateForEventsWithStringValueInValues:(id)values;
++ (id)predicateForObjectWithUUID:(id)d;
++ (id)predicateForObjectsWithMetadataKey:(id)key;
++ (id)predicateForObjectsWithMetadataKey:(id)key andDoubleValue:(double)value;
++ (id)predicateForObjectsWithMetadataKey:(id)key andDoubleValueBetween:(double)between andValue:(double)value;
++ (id)predicateForObjectsWithMetadataKey:(id)key andIntegerValue:(int64_t)value;
++ (id)predicateForObjectsWithMetadataKey:(id)key andStringValue:(id)value;
++ (id)predicateForObjectsWithMetadataKey:(id)key andValue:(id)value;
++ (id)predicateForObjectsWithMetadataKey:(id)key inValues:(id)values;
++ (id)predicateForObjectsWithMetadataKey:(id)key likeStringValue:(id)value;
++ (id)predicateForObjectsWithStructuredMetadataKey:(void *)key andValue:;
++ (id)predicateForObjectsWithUUIDs:(id)ds;
++ (id)predicateForSpotlightEventsWithBundleID:(uint64_t)d;
++ (id)predicateForSpotlightEventsWithBundleID:(void *)d sinceDate:;
++ (id)predicateForSpotlightEventsWithDomainIdentifiers:(void *)identifiers bundleID:;
++ (id)predicateForSpotlightEventsWithItemIdentifiers:(void *)identifiers bundleID:;
 + (id)queryNotExecutableError;
-+ (id)structuredMetadataKeyPathForMetadataKey:(id)a3;
-- (_DKQuery)initWithCoder:(id)a3;
++ (id)structuredMetadataKeyPathForMetadataKey:(id)key;
+- (_DKQuery)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _DKQuery
 
-+ (id)predicateForObjectWithUUID:(id)a3
++ (id)predicateForObjectWithUUID:(id)d
 {
   v3 = MEMORY[0x1E696AE18];
   v4 = MEMORY[0x1E696AD98];
-  v5 = a3;
-  v6 = [v5 UUIDString];
-  v7 = [v4 numberWithUnsignedInteger:{objc_msgSend(v6, "hash")}];
-  v8 = [v5 UUIDString];
+  dCopy = d;
+  uUIDString = [dCopy UUIDString];
+  v7 = [v4 numberWithUnsignedInteger:{objc_msgSend(uUIDString, "hash")}];
+  uUIDString2 = [dCopy UUIDString];
 
-  v9 = [v3 predicateWithFormat:@"(uuidHash == %@ AND uuid == %@)", v7, v8];
+  v9 = [v3 predicateWithFormat:@"(uuidHash == %@ AND uuid == %@)", v7, uUIDString2];
 
   return v9;
 }
 
-+ (id)predicateForObjectsWithUUIDs:(id)a3
++ (id)predicateForObjectsWithUUIDs:(id)ds
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF70] array];
-  v5 = [MEMORY[0x1E695DF70] array];
+  dsCopy = ds;
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v6 = v3;
+  v6 = dsCopy;
   v7 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v7)
   {
@@ -85,12 +85,12 @@
 
         v11 = *(*(&v19 + 1) + 8 * i);
         v12 = MEMORY[0x1E696AD98];
-        v13 = [v11 UUIDString];
-        v14 = [v12 numberWithUnsignedInteger:{objc_msgSend(v13, "hash")}];
-        [v4 addObject:v14];
+        uUIDString = [v11 UUIDString];
+        v14 = [v12 numberWithUnsignedInteger:{objc_msgSend(uUIDString, "hash")}];
+        [array addObject:v14];
 
-        v15 = [v11 UUIDString];
-        [v5 addObject:v15];
+        uUIDString2 = [v11 UUIDString];
+        [array2 addObject:uUIDString2];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
@@ -99,20 +99,20 @@
     while (v8);
   }
 
-  v16 = [MEMORY[0x1E696AE18] predicateWithFormat:@"(uuidHash IN %@ AND uuid IN %@)", v4, v5, v19];
+  v16 = [MEMORY[0x1E696AE18] predicateWithFormat:@"(uuidHash IN %@ AND uuid IN %@)", array, array2, v19];
 
   v17 = *MEMORY[0x1E69E9840];
 
   return v16;
 }
 
-+ (id)predicateForEventsWithStartOrEndInDateRangeWithFrom:(id)a3 to:(id)a4
++ (id)predicateForEventsWithStartOrEndInDateRangeWithFrom:(id)from to:(id)to
 {
   v15[2] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 predicateForEventsWithStartInDateRangeFrom:v7 to:v6];
-  v9 = [a1 predicateForEventsWithEndInDateRangeFrom:v7 to:v6];
+  toCopy = to;
+  fromCopy = from;
+  v8 = [self predicateForEventsWithStartInDateRangeFrom:fromCopy to:toCopy];
+  v9 = [self predicateForEventsWithEndInDateRangeFrom:fromCopy to:toCopy];
 
   v10 = MEMORY[0x1E696AB28];
   v15[0] = v8;
@@ -125,13 +125,13 @@
   return v12;
 }
 
-+ (id)predicateForEventsWithStartAndEndInDateRangeFrom:(id)a3 to:(id)a4
++ (id)predicateForEventsWithStartAndEndInDateRangeFrom:(id)from to:(id)to
 {
   v15[2] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 predicateForEventsWithStartInDateRangeFrom:v7 to:v6];
-  v9 = [a1 predicateForEventsWithEndInDateRangeFrom:v7 to:v6];
+  toCopy = to;
+  fromCopy = from;
+  v8 = [self predicateForEventsWithStartInDateRangeFrom:fromCopy to:toCopy];
+  v9 = [self predicateForEventsWithEndInDateRangeFrom:fromCopy to:toCopy];
 
   v10 = MEMORY[0x1E696AB28];
   v15[0] = v8;
@@ -144,10 +144,10 @@
   return v12;
 }
 
-+ (id)predicateForEventsWithDayOfWeek:(unint64_t)a3
++ (id)predicateForEventsWithDayOfWeek:(unint64_t)week
 {
   v12[3] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v3 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:week];
   v4 = [MEMORY[0x1E696AE18] predicateWithFormat:@"(startDayOfWeek == %@ || endDayOfWeek == %@)", v3, v3];
   v5 = [MEMORY[0x1E696AE18] predicateWithFormat:@"(endDayOfWeek > startDayOfWeek AND  startDayOfWeek < %@ AND  endDayOfWeek > %@)", v3, v3];
   v6 = [MEMORY[0x1E696AE18] predicateWithFormat:@"(endDayOfWeek < startDayOfWeek AND  startDayOfWeek > %@ AND endDayOfWeek < %@)", v3, v3];
@@ -163,115 +163,115 @@
   return v9;
 }
 
-+ (id)predicateForEventsBetweenStartSecondOfDay:(unint64_t)a3 endSecondOfDay:(unint64_t)a4
++ (id)predicateForEventsBetweenStartSecondOfDay:(unint64_t)day endSecondOfDay:(unint64_t)ofDay
 {
-  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
+  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:day];
+  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:ofDay];
   v7 = [MEMORY[0x1E696AE18] predicateWithFormat:@"(startSecondOfDay >= %@ AND startSecondOfDay <= %@) OR  (endSecondOfDay >= %@ AND endSecondOfDay <= %@)", v5, v6, v5, v6];
 
   return v7;
 }
 
-+ (id)predicateForEventsWithMinimumDuration:(double)a3
++ (id)predicateForEventsWithMinimumDuration:(double)duration
 {
   v3 = MEMORY[0x1E696AE18];
-  v4 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithDouble:duration];
   v5 = [v3 predicateWithFormat:@"((endDate.timeIntervalSinceReferenceDate - startDate.timeIntervalSinceReferenceDate) >= %@)", v4];
 
   return v5;
 }
 
-+ (id)predicateForEventsWithCategoryValue:(id)a3
++ (id)predicateForEventsWithCategoryValue:(id)value
 {
-  v4 = [a3 integerValue];
+  integerValue = [value integerValue];
 
-  return [a1 predicateForEventsWithIntegerValue:v4];
+  return [self predicateForEventsWithIntegerValue:integerValue];
 }
 
-+ (id)predicateForEventsWithIdentifierValue:(id)a3
++ (id)predicateForEventsWithIdentifierValue:(id)value
 {
-  v4 = [a3 stringValue];
-  v5 = [a1 predicateForEventsWithStringValue:v4];
+  stringValue = [value stringValue];
+  v5 = [self predicateForEventsWithStringValue:stringValue];
 
   return v5;
 }
 
-+ (id)predicateForEventsWithQuantityValue:(id)a3
++ (id)predicateForEventsWithQuantityValue:(id)value
 {
-  [a3 doubleValue];
+  [value doubleValue];
 
-  return [a1 predicateForEventsWithDoubleValue:?];
+  return [self predicateForEventsWithDoubleValue:?];
 }
 
-+ (id)predicateForEventsWithIntegerValue:(int64_t)a3
++ (id)predicateForEventsWithIntegerValue:(int64_t)value
 {
   v3 = MEMORY[0x1E696AE18];
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:value];
   v5 = [v3 predicateWithFormat:@"valueInteger = %@", v4];
 
   return v5;
 }
 
-+ (id)predicateForEventsExcludingIntegerValue:(int64_t)a3
++ (id)predicateForEventsExcludingIntegerValue:(int64_t)value
 {
   v3 = MEMORY[0x1E696AE18];
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:value];
   v5 = [v3 predicateWithFormat:@"valueInteger != %@", v4];
 
   return v5;
 }
 
-+ (id)predicateForEventsWithDoubleValue:(double)a3
++ (id)predicateForEventsWithDoubleValue:(double)value
 {
   v3 = MEMORY[0x1E696AE18];
-  v4 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithDouble:value];
   v5 = [v3 predicateWithFormat:@"valueDouble = %@", v4];
 
   return v5;
 }
 
-+ (id)predicateForEventsWithDoubleValueBetween:(double)a3 and:(double)a4
++ (id)predicateForEventsWithDoubleValueBetween:(double)between and:(double)and
 {
-  if (a3 >= a4)
+  if (between >= and)
   {
-    v4 = a4;
+    betweenCopy = and;
   }
 
   else
   {
-    v4 = a3;
+    betweenCopy = between;
   }
 
-  if (a3 >= a4)
+  if (between >= and)
   {
-    v5 = a3;
+    andCopy2 = between;
   }
 
   else
   {
-    v5 = a4;
+    andCopy2 = and;
   }
 
-  v6 = [MEMORY[0x1E695DF70] array];
-  if (v4 > 2.22507386e-308)
+  array = [MEMORY[0x1E695DF70] array];
+  if (betweenCopy > 2.22507386e-308)
   {
     v7 = MEMORY[0x1E696AE18];
-    v8 = [MEMORY[0x1E696AD98] numberWithDouble:v4];
+    v8 = [MEMORY[0x1E696AD98] numberWithDouble:betweenCopy];
     v9 = [v7 predicateWithFormat:@"valueDouble >= %@", v8];
-    [v6 addObject:v9];
+    [array addObject:v9];
   }
 
-  if (v5 < 1.79769313e308)
+  if (andCopy2 < 1.79769313e308)
   {
     v10 = MEMORY[0x1E696AE18];
-    v11 = [MEMORY[0x1E696AD98] numberWithDouble:v5];
+    v11 = [MEMORY[0x1E696AD98] numberWithDouble:andCopy2];
     v12 = [v10 predicateWithFormat:@"valueDouble <= %@", v11];
-    [v6 addObject:v12];
+    [array addObject:v12];
   }
 
-  if ([v6 count])
+  if ([array count])
   {
-    [MEMORY[0x1E696AB28] andPredicateWithSubpredicates:v6];
+    [MEMORY[0x1E696AB28] andPredicateWithSubpredicates:array];
   }
 
   else
@@ -283,25 +283,25 @@
   return v13;
 }
 
-+ (id)predicateForEventsWithStringValue:(id)a3
++ (id)predicateForEventsWithStringValue:(id)value
 {
   v3 = MEMORY[0x1E696AE18];
   v4 = MEMORY[0x1E696AD98];
-  v5 = a3;
-  v6 = [v4 numberWithInteger:{objc_msgSend(v5, "hash")}];
-  v7 = [v3 predicateWithFormat:@"(valueInteger = %@ AND valueString = %@)", v6, v5];
+  valueCopy = value;
+  v6 = [v4 numberWithInteger:{objc_msgSend(valueCopy, "hash")}];
+  valueCopy = [v3 predicateWithFormat:@"(valueInteger = %@ AND valueString = %@)", v6, valueCopy];
 
-  return v7;
+  return valueCopy;
 }
 
-+ (id)predicateForEventsWithStringValueInValues:(id)a3
++ (id)predicateForEventsWithStringValueInValues:(id)values
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = v3;
-  if (v3 && [v3 count])
+  valuesCopy = values;
+  v4 = valuesCopy;
+  if (valuesCopy && [valuesCopy count])
   {
-    v5 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
@@ -322,7 +322,7 @@
           }
 
           v11 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(*(*(&v15 + 1) + 8 * i), "hash")}];
-          [v5 addObject:v11];
+          [array addObject:v11];
         }
 
         v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -331,7 +331,7 @@
       while (v8);
     }
 
-    v12 = [MEMORY[0x1E696AE18] predicateWithFormat:@"(valueInteger IN %@ AND valueString IN %@)", v5, v6, v15];
+    v12 = [MEMORY[0x1E696AE18] predicateWithFormat:@"(valueInteger IN %@ AND valueString IN %@)", array, v6, v15];
   }
 
   else
@@ -344,10 +344,10 @@
   return v12;
 }
 
-+ (id)structuredMetadataKeyPathForMetadataKey:(id)a3
++ (id)structuredMetadataKeyPathForMetadataKey:(id)key
 {
-  v3 = a3;
-  if (v3 && (+[_DKMetadataPersistenceLookupTable keyToAttribute](), v4 = objc_claimAutoreleasedReturnValue(), [v4 objectForKeyedSubscript:v3], v5 = objc_claimAutoreleasedReturnValue(), v4, v5))
+  keyCopy = key;
+  if (keyCopy && (+[_DKMetadataPersistenceLookupTable keyToAttribute](), v4 = objc_claimAutoreleasedReturnValue(), [v4 objectForKeyedSubscript:keyCopy], v5 = objc_claimAutoreleasedReturnValue(), v4, v5))
   {
     v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"structuredMetadata.%@", v5];
   }
@@ -360,12 +360,12 @@
   return v6;
 }
 
-+ (id)predicateForObjectsWithMetadataKey:(id)a3
++ (id)predicateForObjectsWithMetadataKey:(id)key
 {
-  v4 = a3;
-  if (v4)
+  keyCopy = key;
+  if (keyCopy)
   {
-    v5 = [a1 structuredMetadataKeyPathForMetadataKey:v4];
+    v5 = [self structuredMetadataKeyPathForMetadataKey:keyCopy];
     if (v5)
     {
       [MEMORY[0x1E696AE18] predicateWithFormat:@"%K != NULL", v5];
@@ -373,7 +373,7 @@
 
     else
     {
-      [MEMORY[0x1E696AE18] predicateWithFormat:@"ANY customMetadata.name = %@", v4];
+      [MEMORY[0x1E696AE18] predicateWithFormat:@"ANY customMetadata.name = %@", keyCopy];
     }
     v6 = ;
   }
@@ -386,17 +386,17 @@
   return v6;
 }
 
-+ (id)predicateForObjectsWithStructuredMetadataKey:(void *)a3 andValue:
++ (id)predicateForObjectsWithStructuredMetadataKey:(void *)key andValue:
 {
   v4 = a2;
-  v5 = a3;
+  keyCopy = key;
   v6 = objc_opt_self();
   if (v4 && ([v6 structuredMetadataKeyPathForMetadataKey:v4], (v7 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v8 = v7;
-    if (v5)
+    if (keyCopy)
     {
-      [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %@", v7, v5];
+      [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %@", v7, keyCopy];
     }
 
     else
@@ -414,30 +414,30 @@
   return v9;
 }
 
-+ (id)predicateForObjectsWithMetadataKey:(id)a3 andValue:(id)a4
++ (id)predicateForObjectsWithMetadataKey:(id)key andValue:(id)value
 {
-  v5 = a3;
-  v6 = [_DKQuery predicateForObjectsWithStructuredMetadataKey:v5 andValue:a4];
+  keyCopy = key;
+  v6 = [_DKQuery predicateForObjectsWithStructuredMetadataKey:keyCopy andValue:value];
   if (!v6)
   {
     v7 = +[_CDLogging knowledgeChannel];
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      [(_DKQuery *)v5 predicateForObjectsWithMetadataKey:v7 andValue:v8, v9, v10, v11, v12, v13];
+      [(_DKQuery *)keyCopy predicateForObjectsWithMetadataKey:v7 andValue:v8, v9, v10, v11, v12, v13];
     }
   }
 
   return v6;
 }
 
-+ (id)predicateForObjectsWithMetadataKey:(id)a3 inValues:(id)a4
++ (id)predicateForObjectsWithMetadataKey:(id)key inValues:(id)values
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6 && [v7 count])
+  keyCopy = key;
+  valuesCopy = values;
+  v8 = valuesCopy;
+  if (keyCopy && [valuesCopy count])
   {
-    v9 = [a1 structuredMetadataKeyPathForMetadataKey:v6];
+    v9 = [self structuredMetadataKeyPathForMetadataKey:keyCopy];
     if (v9)
     {
       v10 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K IN %@", v9, v8];
@@ -448,7 +448,7 @@
       v11 = +[_CDLogging knowledgeChannel];
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
-        [(_DKQuery *)v6 predicateForObjectsWithMetadataKey:v11 andValue:v12, v13, v14, v15, v16, v17];
+        [(_DKQuery *)keyCopy predicateForObjectsWithMetadataKey:v11 andValue:v12, v13, v14, v15, v16, v17];
       }
 
       v10 = 0;
@@ -463,13 +463,13 @@
   return v10;
 }
 
-+ (id)predicateForObjectsWithMetadataKey:(id)a3 andStringValue:(id)a4
++ (id)predicateForObjectsWithMetadataKey:(id)key andStringValue:(id)value
 {
   v19[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(_DKQuery *)a1 predicateForObjectsWithStructuredMetadataKey:v6 andValue:v7];
-  if (v8 || ([a1 predicateForObjectsWithMetadataKey:v6], v8 = objc_claimAutoreleasedReturnValue(), !v7))
+  keyCopy = key;
+  valueCopy = value;
+  v8 = [(_DKQuery *)self predicateForObjectsWithStructuredMetadataKey:keyCopy andValue:valueCopy];
+  if (v8 || ([self predicateForObjectsWithMetadataKey:keyCopy], v8 = objc_claimAutoreleasedReturnValue(), !valueCopy))
   {
     v8 = v8;
     v9 = v8;
@@ -479,7 +479,7 @@
   {
     v10 = MEMORY[0x1E696AE18];
     v11 = MEMORY[0x1E696AEC0];
-    v12 = [_CDHashUtilities md5ForString:v7];
+    v12 = [_CDHashUtilities md5ForString:valueCopy];
     v13 = [v11 stringWithFormat:@"%@S", v12];
     v14 = [v10 predicateWithFormat:@"ANY customMetadata.valueHash == %@", v13];
 
@@ -495,14 +495,14 @@
   return v9;
 }
 
-+ (id)predicateForObjectsWithMetadataKey:(id)a3 likeStringValue:(id)a4
++ (id)predicateForObjectsWithMetadataKey:(id)key likeStringValue:(id)value
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [a1 structuredMetadataKeyPathForMetadataKey:v6];
+  keyCopy = key;
+  valueCopy = value;
+  v8 = [self structuredMetadataKeyPathForMetadataKey:keyCopy];
   if (v8)
   {
-    v9 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K LIKE %@", v8, v7];
+    valueCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K LIKE %@", v8, valueCopy];
   }
 
   else
@@ -510,23 +510,23 @@
     v10 = +[_CDLogging knowledgeChannel];
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      [(_DKQuery *)v6 predicateForObjectsWithMetadataKey:v10 andValue:v11, v12, v13, v14, v15, v16];
+      [(_DKQuery *)keyCopy predicateForObjectsWithMetadataKey:v10 andValue:v11, v12, v13, v14, v15, v16];
     }
 
-    v9 = 0;
+    valueCopy = 0;
   }
 
-  return v9;
+  return valueCopy;
 }
 
-+ (id)predicateForObjectsWithMetadataKey:(id)a3 andIntegerValue:(int64_t)a4
++ (id)predicateForObjectsWithMetadataKey:(id)key andIntegerValue:(int64_t)value
 {
   v19[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
-  v8 = [(_DKQuery *)a1 predicateForObjectsWithStructuredMetadataKey:v6 andValue:v7];
+  keyCopy = key;
+  v7 = [MEMORY[0x1E696AD98] numberWithInteger:value];
+  v8 = [(_DKQuery *)self predicateForObjectsWithStructuredMetadataKey:keyCopy andValue:v7];
 
-  if (v8 || ([a1 predicateForObjectsWithMetadataKey:v6], v8 = objc_claimAutoreleasedReturnValue(), !a4))
+  if (v8 || ([self predicateForObjectsWithMetadataKey:keyCopy], v8 = objc_claimAutoreleasedReturnValue(), !value))
   {
     v8 = v8;
     v9 = v8;
@@ -536,7 +536,7 @@
   {
     v10 = MEMORY[0x1E696AE18];
     v11 = MEMORY[0x1E696AEC0];
-    v12 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+    v12 = [MEMORY[0x1E696AD98] numberWithInteger:value];
     v13 = [v11 stringWithFormat:@"%@I", v12];
     v14 = [v10 predicateWithFormat:@"ANY customMetadata.valueHash == %@", v13];
 
@@ -552,14 +552,14 @@
   return v9;
 }
 
-+ (id)predicateForObjectsWithMetadataKey:(id)a3 andDoubleValue:(double)a4
++ (id)predicateForObjectsWithMetadataKey:(id)key andDoubleValue:(double)value
 {
   v19[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [MEMORY[0x1E696AD98] numberWithDouble:a4];
-  v8 = [(_DKQuery *)a1 predicateForObjectsWithStructuredMetadataKey:v6 andValue:v7];
+  keyCopy = key;
+  v7 = [MEMORY[0x1E696AD98] numberWithDouble:value];
+  v8 = [(_DKQuery *)self predicateForObjectsWithStructuredMetadataKey:keyCopy andValue:v7];
 
-  if (v8 || ([a1 predicateForObjectsWithMetadataKey:v6], v8 = objc_claimAutoreleasedReturnValue(), a4 == 0.0))
+  if (v8 || ([self predicateForObjectsWithMetadataKey:keyCopy], v8 = objc_claimAutoreleasedReturnValue(), value == 0.0))
   {
     v8 = v8;
     v9 = v8;
@@ -569,7 +569,7 @@
   {
     v10 = MEMORY[0x1E696AE18];
     v11 = MEMORY[0x1E696AEC0];
-    v12 = [MEMORY[0x1E696AD98] numberWithDouble:a4];
+    v12 = [MEMORY[0x1E696AD98] numberWithDouble:value];
     v13 = [v11 stringWithFormat:@"%@D", v12];
     v14 = [v10 predicateWithFormat:@"ANY customMetadata.valueHash = %@", v13];
 
@@ -585,29 +585,29 @@
   return v9;
 }
 
-+ (id)predicateForObjectsWithMetadataKey:(id)a3 andDoubleValueBetween:(double)a4 andValue:(double)a5
++ (id)predicateForObjectsWithMetadataKey:(id)key andDoubleValueBetween:(double)between andValue:(double)value
 {
   v33[3] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = [a1 predicateForObjectsWithMetadataKey:v8];
-  if (a4 >= a5)
+  keyCopy = key;
+  v9 = [self predicateForObjectsWithMetadataKey:keyCopy];
+  if (between >= value)
   {
-    v10 = a5;
+    betweenCopy = value;
   }
 
   else
   {
-    v10 = a4;
+    betweenCopy = between;
   }
 
-  if (a4 >= a5)
+  if (between >= value)
   {
-    a5 = a4;
+    value = between;
   }
 
-  v11 = [a1 structuredMetadataKeyPathForMetadataKey:v8];
+  v11 = [self structuredMetadataKeyPathForMetadataKey:keyCopy];
 
-  if (v10 <= 2.22507386e-308)
+  if (betweenCopy <= 2.22507386e-308)
   {
     v15 = 0;
   }
@@ -615,13 +615,13 @@
   else
   {
     v12 = MEMORY[0x1E696AE18];
-    v13 = [MEMORY[0x1E696AD98] numberWithDouble:v10];
+    v13 = [MEMORY[0x1E696AD98] numberWithDouble:betweenCopy];
     v14 = v13;
     if (!v11)
     {
       v15 = [v12 predicateWithFormat:@"ANY customMetadata.doubleValue >= %@", v13];
 
-      if (a5 < 1.79769313e308)
+      if (value < 1.79769313e308)
       {
         goto LABEL_14;
       }
@@ -639,7 +639,7 @@ LABEL_18:
     v15 = [v12 predicateWithFormat:@"%K >= %@", v11, v13];
   }
 
-  if (a5 >= 1.79769313e308)
+  if (value >= 1.79769313e308)
   {
     goto LABEL_18;
   }
@@ -648,13 +648,13 @@ LABEL_18:
   {
 LABEL_14:
     v18 = MEMORY[0x1E696AE18];
-    v17 = [MEMORY[0x1E696AD98] numberWithDouble:a5];
+    v17 = [MEMORY[0x1E696AD98] numberWithDouble:value];
     [v18 predicateWithFormat:@"ANY customMetadata.doubleValue <= %@", v17, v30];
     goto LABEL_15;
   }
 
   v16 = MEMORY[0x1E696AE18];
-  v17 = [MEMORY[0x1E696AD98] numberWithDouble:a5];
+  v17 = [MEMORY[0x1E696AD98] numberWithDouble:value];
   [v16 predicateWithFormat:@"%K <= %@", v11, v17];
   v19 = LABEL_15:;
 
@@ -706,11 +706,11 @@ LABEL_26:
   return v25;
 }
 
-+ (id)predicateForEventsWithSourceID:(id)a3
++ (id)predicateForEventsWithSourceID:(id)d
 {
-  if (a3)
+  if (d)
   {
-    [MEMORY[0x1E696AE18] predicateWithFormat:@"source.sourceID = %@", a3];
+    [MEMORY[0x1E696AE18] predicateWithFormat:@"source.sourceID = %@", d];
   }
 
   else
@@ -722,16 +722,16 @@ LABEL_26:
   return v3;
 }
 
-+ (id)predicateForEventsWithSourceID:(id)a3 bundleID:(id)a4
++ (id)predicateForEventsWithSourceID:(id)d bundleID:(id)iD
 {
   v14[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (a4)
+  dCopy = d;
+  if (iD)
   {
-    v7 = [a1 predicateForEventsWithBundleID:a4];
+    v7 = [self predicateForEventsWithBundleID:iD];
     v8 = MEMORY[0x1E696AB28];
     v14[0] = v7;
-    v9 = [a1 predicateForEventsWithSourceID:v6];
+    v9 = [self predicateForEventsWithSourceID:dCopy];
 
     v14[1] = v9;
     v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:2];
@@ -740,7 +740,7 @@ LABEL_26:
 
   else
   {
-    v11 = [a1 predicateForEventsWithSourceID:v6];
+    v11 = [self predicateForEventsWithSourceID:dCopy];
   }
 
   v12 = *MEMORY[0x1E69E9840];
@@ -748,14 +748,14 @@ LABEL_26:
   return v11;
 }
 
-+ (id)predicateForEventsWithSourceID:(id)a3 bundleID:(id)a4 groupIDs:(id)a5
++ (id)predicateForEventsWithSourceID:(id)d bundleID:(id)iD groupIDs:(id)ds
 {
   v16[2] = *MEMORY[0x1E69E9840];
-  v8 = a5;
-  v9 = [a1 predicateForEventsWithSourceID:a3 bundleID:a4];
-  if ([v8 count])
+  dsCopy = ds;
+  v9 = [self predicateForEventsWithSourceID:d bundleID:iD];
+  if ([dsCopy count])
   {
-    v10 = [_DKQuery predicateForEventsWithSourceGroupIDs:v8];
+    v10 = [_DKQuery predicateForEventsWithSourceGroupIDs:dsCopy];
     v11 = MEMORY[0x1E696AB28];
     v16[0] = v9;
     v16[1] = v10;
@@ -773,20 +773,20 @@ LABEL_26:
   return v13;
 }
 
-+ (id)predicateForEventsWithSourceGroupIDs:(id)a3
++ (id)predicateForEventsWithSourceGroupIDs:(id)ds
 {
   v27 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if ([v3 count])
+  dsCopy = ds;
+  if ([dsCopy count])
   {
-    v4 = [MEMORY[0x1E695DF70] array];
-    v5 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v20 = v3;
-    obj = v3;
+    v20 = dsCopy;
+    obj = dsCopy;
     v6 = [obj countByEnumeratingWithState:&v22 objects:v26 count:16];
     v7 = 0x1E696A000uLL;
     if (v6)
@@ -803,19 +803,19 @@ LABEL_26:
           }
 
           v11 = [MEMORY[0x1E696AE18] predicateWithFormat:@"source.groupID BEGINSWITH %@", *(*(&v22 + 1) + 8 * i)];
-          [v5 addObject:v11];
+          [array2 addObject:v11];
 
-          if ([v5 count] >= 0x385)
+          if ([array2 count] >= 0x385)
           {
-            v12 = [*(v7 + 2856) orPredicateWithSubpredicates:v5];
-            [v4 addObject:v12];
+            v12 = [*(v7 + 2856) orPredicateWithSubpredicates:array2];
+            [array addObject:v12];
             [MEMORY[0x1E695DF70] array];
-            v13 = v4;
+            v13 = array;
             v15 = v14 = v7;
 
-            v5 = v15;
+            array2 = v15;
             v7 = v14;
-            v4 = v13;
+            array = v13;
           }
         }
 
@@ -825,15 +825,15 @@ LABEL_26:
       while (v8);
     }
 
-    if ([v5 count])
+    if ([array2 count])
     {
-      v16 = [*(v7 + 2856) orPredicateWithSubpredicates:v5];
-      [v4 addObject:v16];
+      v16 = [*(v7 + 2856) orPredicateWithSubpredicates:array2];
+      [array addObject:v16];
     }
 
-    v17 = [*(v7 + 2856) orPredicateWithSubpredicates:v4];
+    v17 = [*(v7 + 2856) orPredicateWithSubpredicates:array];
 
-    v3 = v20;
+    dsCopy = v20;
   }
 
   else
@@ -846,18 +846,18 @@ LABEL_26:
   return v17;
 }
 
-+ (id)predicateForEventsWithSourceID:(id)a3 bundleID:(id)a4 itemIDs:(id)a5
++ (id)predicateForEventsWithSourceID:(id)d bundleID:(id)iD itemIDs:(id)ds
 {
   v20[2] = *MEMORY[0x1E69E9840];
-  if (a5)
+  if (ds)
   {
     v8 = MEMORY[0x1E696AE18];
-    v9 = a4;
-    v10 = a3;
-    v11 = [v8 predicateWithFormat:@"source.itemID IN %@", a5];
+    iDCopy = iD;
+    dCopy = d;
+    v11 = [v8 predicateWithFormat:@"source.itemID IN %@", ds];
     v12 = MEMORY[0x1E696AB28];
     v20[0] = v11;
-    v13 = [a1 predicateForEventsWithSourceID:v10 bundleID:v9];
+    v13 = [self predicateForEventsWithSourceID:dCopy bundleID:iDCopy];
 
     v20[1] = v13;
     v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:2];
@@ -866,9 +866,9 @@ LABEL_26:
 
   else
   {
-    v16 = a4;
-    v17 = a3;
-    v15 = [a1 predicateForEventsWithSourceID:v17 bundleID:v16];
+    iDCopy2 = iD;
+    dCopy2 = d;
+    v15 = [self predicateForEventsWithSourceID:dCopy2 bundleID:iDCopy2];
   }
 
   v18 = *MEMORY[0x1E69E9840];
@@ -876,18 +876,18 @@ LABEL_26:
   return v15;
 }
 
-+ (id)predicateForEventsWithSourceDeviceIDs:(id)a3
++ (id)predicateForEventsWithSourceDeviceIDs:(id)ds
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if ([v3 count])
+  dsCopy = ds;
+  if ([dsCopy count])
   {
     v4 = objc_opt_new();
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v5 = v3;
+    v5 = dsCopy;
     v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v6)
     {
@@ -902,8 +902,8 @@ LABEL_26:
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v14 + 1) + 8 * i) UUIDString];
-          [v4 addObject:v10];
+          uUIDString = [*(*(&v14 + 1) + 8 * i) UUIDString];
+          [v4 addObject:uUIDString];
         }
 
         v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -925,9 +925,9 @@ LABEL_26:
   return v11;
 }
 
-- (_DKQuery)initWithCoder:(id)a3
+- (_DKQuery)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = _DKQuery;
   v5 = [(_DKQuery *)&v9 init];
@@ -936,27 +936,27 @@ LABEL_26:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = _CDCurrentOrXPCProcessName();
-      [(_DKQuery *)v5 setClientName:v6];
+      processInfo = _CDCurrentOrXPCProcessName();
+      [(_DKQuery *)v5 setClientName:processInfo];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E696AE30] processInfo];
-      v7 = [v6 processName];
-      [(_DKQuery *)v5 setClientName:v7];
+      processInfo = [MEMORY[0x1E696AE30] processInfo];
+      processName = [processInfo processName];
+      [(_DKQuery *)v5 setClientName:processName];
     }
 
-    -[_DKQuery setExecuteConcurrently:](v5, "setExecuteConcurrently:", [v4 decodeBoolForKey:@"executeConcurrently"]);
+    -[_DKQuery setExecuteConcurrently:](v5, "setExecuteConcurrently:", [coderCopy decodeBoolForKey:@"executeConcurrently"]);
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeBool:-[_DKQuery executeConcurrently](self forKey:{"executeConcurrently"), @"executeConcurrently"}];
+  coderCopy = coder;
+  [coderCopy encodeBool:-[_DKQuery executeConcurrently](self forKey:{"executeConcurrently"), @"executeConcurrently"}];
 }
 
 - (id)description
@@ -969,12 +969,12 @@ LABEL_26:
   return v5;
 }
 
-+ (id)executableQueryForQuery:(id)a3
++ (id)executableQueryForQuery:(id)query
 {
-  v3 = a3;
-  if ([v3 conformsToProtocol:&unk_1F0608888])
+  queryCopy = query;
+  if ([queryCopy conformsToProtocol:&unk_1F0608888])
   {
-    v4 = v3;
+    v4 = queryCopy;
   }
 
   else
@@ -999,29 +999,29 @@ LABEL_26:
   return v4;
 }
 
-+ (id)predicateForSpotlightEventsWithBundleID:(uint64_t)a1
++ (id)predicateForSpotlightEventsWithBundleID:(uint64_t)d
 {
   v29[6] = *MEMORY[0x1E69E9840];
   v26 = a2;
   objc_opt_self();
   v25 = +[_DKSystemEventStreams appActivityStream];
-  v24 = [v25 name];
-  v29[0] = v24;
+  name = [v25 name];
+  v29[0] = name;
   v23 = +[_DKSystemEventStreams appIntentsStream];
-  v2 = [v23 name];
-  v29[1] = v2;
+  name2 = [v23 name];
+  v29[1] = name2;
   v3 = +[_DKSystemEventStreams appLocationActivityStream];
-  v4 = [v3 name];
-  v29[2] = v4;
+  name3 = [v3 name];
+  v29[2] = name3;
   v5 = +[_CDPortraitStreams entityStream];
-  v6 = [v5 name];
-  v29[3] = v6;
+  name4 = [v5 name];
+  v29[3] = name4;
   v7 = +[_CDPortraitStreams topicStream];
-  v8 = [v7 name];
-  v29[4] = v8;
+  name5 = [v7 name];
+  v29[4] = name5;
   v9 = +[_DKSystemEventStreams safariHistoryStream];
-  v10 = [v9 name];
-  v29[5] = v10;
+  name6 = [v9 name];
+  v29[5] = name6;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v29 count:6];
   v22 = [_DKQuery predicateForEventsWithStreamNames:v11];
 
@@ -1044,13 +1044,13 @@ LABEL_26:
   return v19;
 }
 
-+ (id)predicateForSpotlightEventsWithDomainIdentifiers:(void *)a3 bundleID:
++ (id)predicateForSpotlightEventsWithDomainIdentifiers:(void *)identifiers bundleID:
 {
   v13[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifiersCopy = identifiers;
   v5 = a2;
   objc_opt_self();
-  v6 = [_DKQuery predicateForSpotlightEventsWithBundleID:v4];
+  v6 = [_DKQuery predicateForSpotlightEventsWithBundleID:identifiersCopy];
 
   v7 = [_DKQuery predicateForEventsWithSourceGroupIDs:v5];
 
@@ -1065,11 +1065,11 @@ LABEL_26:
   return v10;
 }
 
-+ (id)predicateForSpotlightEventsWithItemIdentifiers:(void *)a3 bundleID:
++ (id)predicateForSpotlightEventsWithItemIdentifiers:(void *)identifiers bundleID:
 {
   v30[2] = *MEMORY[0x1E69E9840];
   v4 = a2;
-  v5 = a3;
+  identifiersCopy = identifiers;
   objc_opt_self();
   v6 = MEMORY[0x1E696AE18];
   v7 = +[_DKSource intentsSourceID];
@@ -1077,22 +1077,22 @@ LABEL_26:
   v8 = +[_DKSource spotlightSourceID];
   v30[1] = v8;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v30 count:2];
-  v10 = [v6 predicateWithFormat:@"source.itemID IN %@ AND source.bundleID == %@ AND source.sourceID IN %@", v4, v5, v9];
+  v10 = [v6 predicateWithFormat:@"source.itemID IN %@ AND source.bundleID == %@ AND source.sourceID IN %@", v4, identifiersCopy, v9];
 
   v11 = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{v10, 0}];
   v12 = 0x1E696A000;
-  if (v4 && v5 && [v4 count])
+  if (v4 && identifiersCopy && [v4 count])
   {
     v13 = +[_DKSystemEventStreams appActivityStream];
-    v14 = [v13 name];
-    v29[0] = v14;
+    name = [v13 name];
+    v29[0] = name;
     v15 = +[_DKSystemEventStreams appLocationActivityStream];
-    v16 = [v15 name];
-    v29[1] = v16;
+    name2 = [v15 name];
+    v29[1] = name2;
     v27 = [MEMORY[0x1E695DEC8] arrayWithObjects:v29 count:2];
 
     v17 = [_DKQuery predicateForEventsWithStreamNames:v27];
-    v18 = [_DKQuery predicateForEventsWithStringValue:v5];
+    v18 = [_DKQuery predicateForEventsWithStringValue:identifiersCopy];
     v19 = +[_DKApplicationActivityMetadataKey itemRelatedUniqueIdentifier];
     v20 = [_DKQuery predicateForObjectsWithMetadataKey:v19 inValues:v4];
     v21 = MEMORY[0x1E696AB28];
@@ -1113,15 +1113,15 @@ LABEL_26:
   return v24;
 }
 
-+ (id)predicateForSpotlightEventsWithBundleID:(void *)a3 sinceDate:
++ (id)predicateForSpotlightEventsWithBundleID:(void *)d sinceDate:
 {
   v13[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dCopy = d;
   v5 = a2;
   objc_opt_self();
   v6 = [_DKQuery predicateForSpotlightEventsWithBundleID:v5];
 
-  v7 = [_DKQuery predicateForEventsWithStartDateAfter:v4];
+  v7 = [_DKQuery predicateForEventsWithStartDateAfter:dCopy];
 
   v8 = MEMORY[0x1E696AB28];
   v13[0] = v7;

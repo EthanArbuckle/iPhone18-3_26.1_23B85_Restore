@@ -1,14 +1,14 @@
 @interface COSTheftAndLossModalBuilderHelper
-+ (id)createTnLDisclaimerViewControllerWithConfirmActionHandler:(id)a3 cancelActionHandler:(id)a4;
++ (id)createTnLDisclaimerViewControllerWithConfirmActionHandler:(id)handler cancelActionHandler:(id)actionHandler;
 - (COSTheftAndLossModalBuilderHelper)init;
 @end
 
 @implementation COSTheftAndLossModalBuilderHelper
 
-+ (id)createTnLDisclaimerViewControllerWithConfirmActionHandler:(id)a3 cancelActionHandler:(id)a4
++ (id)createTnLDisclaimerViewControllerWithConfirmActionHandler:(id)handler cancelActionHandler:(id)actionHandler
 {
-  v5 = _Block_copy(a3);
-  v6 = _Block_copy(a4);
+  v5 = _Block_copy(handler);
+  v6 = _Block_copy(actionHandler);
   v7 = swift_allocObject();
   *(v7 + 16) = v5;
   if (v6)

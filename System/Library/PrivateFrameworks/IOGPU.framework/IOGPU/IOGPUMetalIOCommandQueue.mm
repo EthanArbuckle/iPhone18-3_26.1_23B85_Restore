@@ -1,31 +1,31 @@
 @interface IOGPUMetalIOCommandQueue
-- (IOGPUMetalIOCommandQueue)initWithDevice:(id)a3 descriptor:(id)a4;
+- (IOGPUMetalIOCommandQueue)initWithDevice:(id)device descriptor:(id)descriptor;
 - (id)commandBuffer;
 - (id)commandBufferWithUnretainedReferences;
-- (void)_submitAvailableCommands:(void *)a3;
+- (void)_submitAvailableCommands:(void *)commands;
 - (void)dealloc;
-- (void)didComplete:(id)a3 withStatus:(int64_t)a4;
+- (void)didComplete:(id)complete withStatus:(int64_t)status;
 - (void)enqueueBarrier;
-- (void)enqueueCommandBuffer:(id)a3;
+- (void)enqueueCommandBuffer:(id)buffer;
 - (void)launchIOGPUIOThreads;
-- (void)setLabel:(id)a3;
+- (void)setLabel:(id)label;
 - (void)submitAvailableCommands;
 @end
 
 @implementation IOGPUMetalIOCommandQueue
 
-- (IOGPUMetalIOCommandQueue)initWithDevice:(id)a3 descriptor:(id)a4
+- (IOGPUMetalIOCommandQueue)initWithDevice:(id)device descriptor:(id)descriptor
 {
   v22.receiver = self;
   v22.super_class = IOGPUMetalIOCommandQueue;
   v6 = [_MTLIOCommandQueue initWithDevice:sel_initWithDevice_descriptor_ descriptor:?];
   if (v6)
   {
-    *(v6 + 49) = a3;
-    v7 = [a3 deviceRef];
-    v8 = [a4 maxCommandBufferCount];
+    *(v6 + 49) = device;
+    deviceRef = [device deviceRef];
+    maxCommandBufferCount = [descriptor maxCommandBufferCount];
     v9 = *MEMORY[0x1E6974368];
-    v10 = IOGPUIOCommandQueueCreate(v7, v8, *&v6[*MEMORY[0x1E6974378]], *&v6[v9]);
+    v10 = IOGPUIOCommandQueueCreate(deviceRef, maxCommandBufferCount, *&v6[*MEMORY[0x1E6974378]], *&v6[v9]);
     *(v6 + 50) = v10;
     if (v10 && (v11 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_USER_INTERACTIVE, 0), v12 = dispatch_queue_create("com.Metal.IOSubmissionQueueDispatch", v11), (*(v6 + 70) = v12) != 0) && (v13 = dispatch_queue_create("com.Metal.IOCompletionQueueDispatch", v11), (*(v6 + 71) = v13) != 0))
     {
@@ -147,10 +147,10 @@
   return v4;
 }
 
-- (void)enqueueCommandBuffer:(id)a3
+- (void)enqueueCommandBuffer:(id)buffer
 {
   pthread_mutex_lock(&self->_pendingQueueLock);
-  [(NSMutableArray *)self->_pendingQueue addObject:a3];
+  [(NSMutableArray *)self->_pendingQueue addObject:buffer];
   pthread_mutex_unlock(&self->_pendingQueueLock);
   if (*(&self->super.super.super.isa + *MEMORY[0x1E6974378]) == 1)
   {
@@ -174,19 +174,19 @@
   [(_MTLIOCommandQueue *)self returnActiveScratchBuffersToPool];
 }
 
-- (void)didComplete:(id)a3 withStatus:(int64_t)a4
+- (void)didComplete:(id)complete withStatus:(int64_t)status
 {
-  [a3 didCompleteWithStatus:a4];
+  [complete didCompleteWithStatus:status];
   pthread_mutex_lock(&self->_submittedQueueLock);
-  [(NSMutableArray *)self->_submittedQueue removeObject:a3];
+  [(NSMutableArray *)self->_submittedQueue removeObject:complete];
 
   pthread_mutex_unlock(&self->_submittedQueueLock);
 }
 
-- (void)_submitAvailableCommands:(void *)a3
+- (void)_submitAvailableCommands:(void *)commands
 {
   v25[4] = *MEMORY[0x1E69E9840];
-  v5 = (*(a3 + 1) - *a3) >> 3;
+  v5 = (*(commands + 1) - *commands) >> 3;
   v6 = v5;
   MEMORY[0x1EEE9AC00](self, a2);
   v8 = (v22 - v7);
@@ -202,7 +202,7 @@
     v13 = v10 + 3;
     do
     {
-      v14 = *(*a3 + v11);
+      v14 = *(*commands + v11);
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -287,7 +287,7 @@
     while (v6);
   }
 
-  *(a3 + 1) = *a3;
+  *(commands + 1) = *commands;
   v21 = *MEMORY[0x1E69E9840];
 }
 
@@ -301,7 +301,7 @@ void __53__IOGPUMetalIOCommandQueue__submitAvailableCommands___block_invoke_2(ui
 
 - (void)submitAvailableCommands
 {
-  v11 = self;
+  selfCopy = self;
   __p = 0;
   v14 = 0;
   v15 = 0;
@@ -316,23 +316,23 @@ void __53__IOGPUMetalIOCommandQueue__submitAvailableCommands___block_invoke_2(ui
       v6 = 1;
       do
       {
-        v12 = [(NSMutableArray *)self->_pendingQueue objectAtIndex:v4, v11];
+        selfCopy = [(NSMutableArray *)self->_pendingQueue objectAtIndex:v4, selfCopy];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v7 = v12;
-          std::vector<NSObject *>::push_back[abi:ne200100](&__p, &v12);
+          v7 = selfCopy;
+          std::vector<NSObject *>::push_back[abi:ne200100](&__p, &selfCopy);
         }
 
         else
         {
-          if (![v12 isCommitted])
+          if (![selfCopy isCommitted])
           {
             goto LABEL_14;
           }
 
-          v8 = v12;
-          v9 = atomic_load(v12 + 96);
+          v8 = selfCopy;
+          v9 = atomic_load(selfCopy + 96);
           if ([v8 validateNotificationCount])
           {
             if ((v9 + v5) >> 13)
@@ -340,8 +340,8 @@ void __53__IOGPUMetalIOCommandQueue__submitAvailableCommands___block_invoke_2(ui
               goto LABEL_14;
             }
 
-            v10 = v12;
-            std::vector<NSObject *>::push_back[abi:ne200100](&__p, &v12);
+            v10 = selfCopy;
+            std::vector<NSObject *>::push_back[abi:ne200100](&__p, &selfCopy);
             v5 += v9 + 1;
           }
         }
@@ -360,7 +360,7 @@ void __53__IOGPUMetalIOCommandQueue__submitAvailableCommands___block_invoke_2(ui
     }
 
 LABEL_14:
-    [(NSMutableArray *)self->_pendingQueue removeObjectsInRange:0, v4, v11];
+    [(NSMutableArray *)self->_pendingQueue removeObjectsInRange:0, v4, selfCopy];
     pthread_mutex_unlock(&self->_pendingQueueLock);
     if (__p == v14)
     {
@@ -383,19 +383,19 @@ LABEL_14:
   }
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
   v9.receiver = self;
   v9.super_class = IOGPUMetalIOCommandQueue;
   [(_MTLObjectWithLabel *)&v9 setLabel:?];
   if (*__globalGPUCommPage)
   {
-    v5 = [(MTLDevice *)self->_device deviceRef];
+    deviceRef = [(MTLDevice *)self->_device deviceRef];
     globalTraceObjectID = self->_globalTraceObjectID;
     v7 = *MEMORY[0x1E6974358];
     v8 = *(&self->super.super.super.isa + v7);
-    [a3 cStringUsingEncoding:1];
-    *(&self->super.super.super.isa + v7) = IOGPUDeviceTraceObjectLabel(v5, 8, 0, globalTraceObjectID, v8);
+    [label cStringUsingEncoding:1];
+    *(&self->super.super.super.isa + v7) = IOGPUDeviceTraceObjectLabel(deviceRef, 8, 0, globalTraceObjectID, v8);
   }
 }
 

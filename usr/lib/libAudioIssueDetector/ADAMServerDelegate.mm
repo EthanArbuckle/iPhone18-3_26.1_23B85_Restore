@@ -1,30 +1,30 @@
 @interface ADAMServerDelegate
-- (ADAMServerDelegate)initWithConnection:(id)a3 andErrorCode:(int64_t)a4;
-- (BOOL)isActive:(unsigned int)a3;
-- (BOOL)verifyInvariantsWithReply:(id)a3;
-- (id)DatatypeTo4CC:(unsigned int)a3;
-- (id)describeErrorCode:(int64_t)a3;
-- (id)errorWithCode:(int64_t)a3 andReason:(id)a4;
+- (ADAMServerDelegate)initWithConnection:(id)connection andErrorCode:(int64_t)code;
+- (BOOL)isActive:(unsigned int)active;
+- (BOOL)verifyInvariantsWithReply:(id)reply;
+- (id)DatatypeTo4CC:(unsigned int)c;
+- (id)describeErrorCode:(int64_t)code;
+- (id)errorWithCode:(int64_t)code andReason:(id)reason;
 - (void)deactivateAll;
-- (void)getCurrentConfigurationForAudioSampleType:(unsigned int)a3 withReply:(id)a4;
-- (void)registerDelegate:(unsigned int)a3;
-- (void)sendAudioSample:(id)a3;
-- (void)setupConnection:(id)a3;
+- (void)getCurrentConfigurationForAudioSampleType:(unsigned int)type withReply:(id)reply;
+- (void)registerDelegate:(unsigned int)delegate;
+- (void)sendAudioSample:(id)sample;
+- (void)setupConnection:(id)connection;
 - (void)unregisterDelegate;
 @end
 
 @implementation ADAMServerDelegate
 
-- (id)describeErrorCode:(int64_t)a3
+- (id)describeErrorCode:(int64_t)code
 {
-  if (a3 <= 560295539)
+  if (code <= 560295539)
   {
-    if (!a3)
+    if (!code)
     {
       return @"No Error";
     }
 
-    if (a3 == 560164457)
+    if (code == 560164457)
     {
       return @"Invalid connection";
     }
@@ -32,7 +32,7 @@
 
   else
   {
-    switch(a3)
+    switch(code)
     {
       case 560295540:
         return @"Missing Entitlements";
@@ -46,15 +46,15 @@
   return @"Unknown Error";
 }
 
-- (BOOL)verifyInvariantsWithReply:(id)a3
+- (BOOL)verifyInvariantsWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   error_code = self->_error_code;
   if (error_code)
   {
     v6 = [(ADAMServerDelegate *)self describeErrorCode:self->_error_code];
     v7 = [(ADAMServerDelegate *)self errorWithCode:error_code andReason:v6];
-    v4[2](v4, v7);
+    replyCopy[2](replyCopy, v7);
   }
 
   else
@@ -69,7 +69,7 @@
 
     v6 = [(ADAMServerDelegate *)self describeErrorCode:560164457];
     v7 = [(ADAMServerDelegate *)self errorWithCode:560164457 andReason:v6];
-    v4[2](v4, v7);
+    replyCopy[2](replyCopy, v7);
   }
 
   v8 = 0;
@@ -78,28 +78,28 @@ LABEL_6:
   return v8;
 }
 
-- (id)errorWithCode:(int64_t)a3 andReason:(id)a4
+- (id)errorWithCode:(int64_t)code andReason:(id)reason
 {
   v12[1] = *MEMORY[0x29EDCA608];
-  v5 = a4;
+  reasonCopy = reason;
   v6 = MEMORY[0x29EDB9FA0];
   v11 = *MEMORY[0x29EDB9ED8];
-  v12[0] = v5;
+  v12[0] = reasonCopy;
   v7 = [MEMORY[0x29EDB8DC0] dictionaryWithObjects:v12 forKeys:&v11 count:1];
-  v8 = [v6 errorWithDomain:@"AudioDataAnalysisManager(ADAM)" code:a3 userInfo:v7];
+  v8 = [v6 errorWithDomain:@"AudioDataAnalysisManager(ADAM)" code:code userInfo:v7];
 
   v9 = *MEMORY[0x29EDCA608];
 
   return v8;
 }
 
-- (id)DatatypeTo4CC:(unsigned int)a3
+- (id)DatatypeTo4CC:(unsigned int)c
 {
   v5[4] = 0;
-  v5[2] = BYTE1(a3);
-  v5[3] = a3;
-  v5[1] = BYTE2(a3);
-  v5[0] = HIBYTE(a3);
+  v5[2] = BYTE1(c);
+  v5[3] = c;
+  v5[1] = BYTE2(c);
+  v5[0] = HIBYTE(c);
   v3 = [MEMORY[0x29EDBA0F8] stringWithUTF8String:v5];
 
   return v3;
@@ -126,14 +126,14 @@ LABEL_6:
   v4 = *MEMORY[0x29EDCA608];
 }
 
-- (void)registerDelegate:(unsigned int)a3
+- (void)registerDelegate:(unsigned int)delegate
 {
   inited = objc_initWeak(&v15, self);
   ADAM::AudioDataAnalysisManager::instance(inited);
   v5 = objc_loadWeakRetained(&v15);
   objc_initWeak(&location, v5);
-  v6 = a3;
-  v7 = [MEMORY[0x29EDBA070] numberWithUnsignedInteger:a3];
+  delegateCopy = delegate;
+  v7 = [MEMORY[0x29EDBA070] numberWithUnsignedInteger:delegate];
   v8 = qword_2A18A5240;
   std::mutex::lock((qword_2A18A5240 + 24));
   v9 = [*(qword_2A18A5240 + 16) objectForKey:v7];
@@ -152,7 +152,7 @@ LABEL_6:
     v10 = [v12 arrayWithObject:v13];
 
     v14 = *(qword_2A18A5240 + 16);
-    v11 = [MEMORY[0x29EDBA070] numberWithUnsignedInteger:v6];
+    v11 = [MEMORY[0x29EDBA070] numberWithUnsignedInteger:delegateCopy];
     [v14 setObject:v10 forKey:v11];
   }
 
@@ -203,40 +203,40 @@ LABEL_6:
   v9 = *MEMORY[0x29EDCA608];
 }
 
-- (BOOL)isActive:(unsigned int)a3
+- (BOOL)isActive:(unsigned int)active
 {
   os_unfair_lock_lock(&self->_lock);
   dataTypeStatus = self->_dataTypeStatus;
-  v6 = [MEMORY[0x29EDBA070] numberWithUnsignedInteger:a3];
+  v6 = [MEMORY[0x29EDBA070] numberWithUnsignedInteger:active];
   v7 = [(NSMutableDictionary *)dataTypeStatus objectForKey:v6];
 
   os_unfair_lock_unlock(&self->_lock);
   if (v7)
   {
-    v8 = [v7 BOOLValue];
+    bOOLValue = [v7 BOOLValue];
   }
 
   else
   {
-    v8 = 0;
+    bOOLValue = 0;
   }
 
-  return v8;
+  return bOOLValue;
 }
 
-- (void)getCurrentConfigurationForAudioSampleType:(unsigned int)a3 withReply:(id)a4
+- (void)getCurrentConfigurationForAudioSampleType:(unsigned int)type withReply:(id)reply
 {
-  v4 = a4;
-  ADAM::AudioDataAnalysisManager::instance(v4);
-  (*(v4 + 2))(v4, 0);
+  replyCopy = reply;
+  ADAM::AudioDataAnalysisManager::instance(replyCopy);
+  (*(replyCopy + 2))(replyCopy, 0);
 }
 
-- (void)sendAudioSample:(id)a3
+- (void)sendAudioSample:(id)sample
 {
-  v4 = a3;
-  if (-[ADAMServerDelegate isActive:](self, "isActive:", [v4 type]))
+  sampleCopy = sample;
+  if (-[ADAMServerDelegate isActive:](self, "isActive:", [sampleCopy type]))
   {
-    if ([v4 type] == 1751213428)
+    if ([sampleCopy type] == 1751213428)
     {
       os_unfair_lock_lock(&self->_lock);
       configs = self->_configs;
@@ -249,8 +249,8 @@ LABEL_6:
       os_unfair_lock_unlock(&self->_lock);
       if (v9 && [v9 BOOLValue])
       {
-        v10 = [v4 metadata];
-        v11 = [v10 objectForKey:@"_ADAFMetadataKeyIsLoud"];
+        metadata = [sampleCopy metadata];
+        v11 = [metadata objectForKey:@"_ADAFMetadataKeyIsLoud"];
 
         if (v11 && ([v11 BOOLValue] & 1) == 0)
         {
@@ -267,7 +267,7 @@ LABEL_6:
     v12[3] = &unk_29EE524E8;
     v12[4] = self;
     v9 = [WeakRetained remoteObjectProxyWithErrorHandler:v12];
-    [v9 receiveAudioSample:v4];
+    [v9 receiveAudioSample:sampleCopy];
 LABEL_10:
   }
 }
@@ -356,10 +356,10 @@ LABEL_10:
   v7 = *MEMORY[0x29EDCA608];
 }
 
-- (void)setupConnection:(id)a3
+- (void)setupConnection:(id)connection
 {
-  v4 = a3;
-  objc_storeWeak(&self->_connection, v4);
+  connectionCopy = connection;
+  objc_storeWeak(&self->_connection, connectionCopy);
 
   objc_initWeak(&location, self);
   v9[0] = MEMORY[0x29EDCA5F8];
@@ -475,9 +475,9 @@ LABEL_10:
   v7 = *MEMORY[0x29EDCA608];
 }
 
-- (ADAMServerDelegate)initWithConnection:(id)a3 andErrorCode:(int64_t)a4
+- (ADAMServerDelegate)initWithConnection:(id)connection andErrorCode:(int64_t)code
 {
-  objc_initWeak(&location, a3);
+  objc_initWeak(&location, connection);
   v16.receiver = self;
   v16.super_class = ADAMServerDelegate;
   v6 = [(ADAMServerDelegate *)&v16 init];
@@ -487,7 +487,7 @@ LABEL_10:
     clientName = v6->_clientName;
     v6->_clientName = 0;
 
-    if (a4)
+    if (code)
     {
       objc_storeWeak(&v7->_connection, 0);
       dataTypeStatus = v7->_dataTypeStatus;
@@ -511,7 +511,7 @@ LABEL_10:
     configs = v7->_configs;
     v7->_configs = v10;
 
-    v7->_error_code = a4;
+    v7->_error_code = code;
     v7->_lock._os_unfair_lock_opaque = 0;
   }
 

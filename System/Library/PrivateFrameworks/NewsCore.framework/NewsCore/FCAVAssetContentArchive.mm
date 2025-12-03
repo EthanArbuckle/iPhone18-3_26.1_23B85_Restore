@@ -1,23 +1,23 @@
 @interface FCAVAssetContentArchive
-- (BOOL)isEqual:(id)a3;
-- (FCAVAssetContentArchive)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (FCAVAssetContentArchive)initWithCoder:(id)coder;
 - (id)description;
 - (id)manifest;
-- (id)unarchiveIntoContentContext:(id)a3;
+- (id)unarchiveIntoContentContext:(id)context;
 - (unint64_t)hash;
 @end
 
 @implementation FCAVAssetContentArchive
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if (v4)
+  if (equalCopy)
   {
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -35,9 +35,9 @@
 
   if (v6)
   {
-    v7 = [(NTPBAVAsset *)self->_avAsset identifier];
-    v8 = [v6[1] identifier];
-    v9 = [v7 isEqual:v8];
+    identifier = [(NTPBAVAsset *)self->_avAsset identifier];
+    identifier2 = [v6[1] identifier];
+    v9 = [identifier isEqual:identifier2];
   }
 
   else
@@ -50,8 +50,8 @@
 
 - (unint64_t)hash
 {
-  v2 = [(NTPBAVAsset *)self->_avAsset identifier];
-  v3 = [v2 hash];
+  identifier = [(NTPBAVAsset *)self->_avAsset identifier];
+  v3 = [identifier hash];
 
   return v3;
 }
@@ -60,20 +60,20 @@
 {
   v3 = [[FCDescription alloc] initWithObject:self];
   [(FCDescription *)v3 addField:@"avAsset" object:self->_avAsset];
-  v4 = [(FCDescription *)v3 descriptionString];
+  descriptionString = [(FCDescription *)v3 descriptionString];
 
-  return v4;
+  return descriptionString;
 }
 
-- (FCAVAssetContentArchive)initWithCoder:(id)a3
+- (FCAVAssetContentArchive)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = FCAVAssetContentArchive;
   v5 = [(FCAVAssetContentArchive *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"avAsset"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"avAsset"];
     avAsset = v5->_avAsset;
     v5->_avAsset = v6;
   }
@@ -81,11 +81,11 @@
   return v5;
 }
 
-- (id)unarchiveIntoContentContext:(id)a3
+- (id)unarchiveIntoContentContext:(id)context
 {
-  v4 = [a3 internalContentContext];
-  v5 = [v4 avAssetCache];
-  v6 = [v5 importAVAsset:self->_avAsset];
+  internalContentContext = [context internalContentContext];
+  avAssetCache = [internalContentContext avAssetCache];
+  v6 = [avAssetCache importAVAsset:self->_avAsset];
 
   v7 = [[FCContentUnarchiveResult alloc] initWithInterestToken:v6 storageSize:[(FCAVAssetContentArchive *)self storageSize]];
 
@@ -96,8 +96,8 @@
 {
   v9[1] = *MEMORY[0x1E69E9840];
   v3 = [FCContentManifest alloc];
-  v4 = [(NTPBAVAsset *)self->_avAsset identifier];
-  v9[0] = v4;
+  identifier = [(NTPBAVAsset *)self->_avAsset identifier];
+  v9[0] = identifier;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:1];
   v6 = [(FCContentManifest *)v3 initWithAVAssetIDs:v5];
 

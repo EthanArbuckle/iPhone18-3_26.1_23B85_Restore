@@ -1,5 +1,5 @@
 @interface MADFastPassBackgroundSystemTask
-- (void)executeWithSystemTask:(id)a3 cancelBlock:(id)a4 completionHandler:(id)a5;
+- (void)executeWithSystemTask:(id)task cancelBlock:(id)block completionHandler:(id)handler;
 - (void)registerTask;
 @end
 
@@ -12,12 +12,12 @@
     v3 = VCPLogToOSLogType[5];
     if (os_log_type_enabled(&_os_log_default, v3))
     {
-      v4 = [objc_opt_class() identifier];
-      v5 = [objc_opt_class() processingTaskIdentifiers];
+      identifier = [objc_opt_class() identifier];
+      processingTaskIdentifiers = [objc_opt_class() processingTaskIdentifiers];
       *buf = 138412546;
-      v8 = v4;
+      v8 = identifier;
       v9 = 2112;
-      v10 = v5;
+      v10 = processingTaskIdentifiers;
       _os_log_impl(&_mh_execute_header, &_os_log_default, v3, "%@: Registering fast-pass background processing task for %@", buf, 0x16u);
     }
   }
@@ -27,13 +27,13 @@
   [(MADBackgroundSystemTask *)&v6 registerTask];
 }
 
-- (void)executeWithSystemTask:(id)a3 cancelBlock:(id)a4 completionHandler:(id)a5
+- (void)executeWithSystemTask:(id)task cancelBlock:(id)block completionHandler:(id)handler
 {
-  v23 = a3;
-  v26 = a4;
-  v25 = a5;
-  v22 = [objc_opt_class() identifier];
-  v24 = [NSString stringWithFormat:@"[BGST-FP][%@][ExecuteTask]", v22];
+  taskCopy = task;
+  blockCopy = block;
+  handlerCopy = handler;
+  identifier = [objc_opt_class() identifier];
+  v24 = [NSString stringWithFormat:@"[BGST-FP][%@][ExecuteTask]", identifier];
   v41 = 0;
   v42 = &v41;
   v43 = 0x3032000000;
@@ -46,8 +46,8 @@
   v39[2] = 0x3032000000;
   v39[3] = sub_1000A6C18;
   v39[4] = sub_1000A6C28;
-  v8 = [objc_opt_class() identifier];
-  v40 = VCPTransactionWithName(v8);
+  identifier2 = [objc_opt_class() identifier];
+  v40 = VCPTransactionWithName(identifier2);
 
   v38[0] = 0;
   v38[1] = v38;
@@ -68,12 +68,12 @@
   v32 = &v41;
   v11 = v9;
   v28 = v11;
-  v12 = v23;
+  v12 = taskCopy;
   v29 = v12;
-  v30 = self;
+  selfCopy = self;
   v33 = v38;
   v34 = v39;
-  v13 = v25;
+  v13 = handlerCopy;
   v31 = v13;
   v14 = objc_retainBlock(v27);
   v15 = objc_autoreleasePoolPush();
@@ -88,7 +88,7 @@
     }
   }
 
-  v17 = [(MADFastPassBackgroundSystemTask *)self processingTaskWithCancelBlock:v26 progressHandler:v10 completionHandler:v14];
+  v17 = [(MADFastPassBackgroundSystemTask *)self processingTaskWithCancelBlock:blockCopy progressHandler:v10 completionHandler:v14];
   if (v17)
   {
     v18 = +[VCPMADTaskScheduler sharedInstance];

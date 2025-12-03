@@ -1,34 +1,34 @@
 @interface ActivityTypeIconView
-- (_TtC9SeymourUI20ActivityTypeIconView)initWithCoder:(id)a3;
-- (_TtC9SeymourUI20ActivityTypeIconView)initWithFrame:(CGRect)a3;
-- (_TtC9SeymourUI20ActivityTypeIconView)initWithImage:(id)a3;
-- (_TtC9SeymourUI20ActivityTypeIconView)initWithImage:(id)a3 highlightedImage:(id)a4;
+- (_TtC9SeymourUI20ActivityTypeIconView)initWithCoder:(id)coder;
+- (_TtC9SeymourUI20ActivityTypeIconView)initWithFrame:(CGRect)frame;
+- (_TtC9SeymourUI20ActivityTypeIconView)initWithImage:(id)image;
+- (_TtC9SeymourUI20ActivityTypeIconView)initWithImage:(id)image highlightedImage:(id)highlightedImage;
 - (int64_t)accessibilityActivityType;
 @end
 
 @implementation ActivityTypeIconView
 
-- (_TtC9SeymourUI20ActivityTypeIconView)initWithFrame:(CGRect)a3
+- (_TtC9SeymourUI20ActivityTypeIconView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v7 = self + OBJC_IVAR____TtC9SeymourUI20ActivityTypeIconView_workoutActivityType;
   *v7 = 0;
   v7[8] = 1;
   v13.receiver = self;
   v13.super_class = type metadata accessor for ActivityTypeIconView();
-  v8 = [(ActivityTypeIconView *)&v13 initWithFrame:x, y, width, height];
+  height = [(ActivityTypeIconView *)&v13 initWithFrame:x, y, width, height];
   v9 = objc_opt_self();
-  v10 = v8;
-  v11 = [v9 whiteColor];
-  [(ActivityTypeIconView *)v10 setTintColor:v11];
+  v10 = height;
+  whiteColor = [v9 whiteColor];
+  [(ActivityTypeIconView *)v10 setTintColor:whiteColor];
 
   return v10;
 }
 
-- (_TtC9SeymourUI20ActivityTypeIconView)initWithCoder:(id)a3
+- (_TtC9SeymourUI20ActivityTypeIconView)initWithCoder:(id)coder
 {
   v3 = self + OBJC_IVAR____TtC9SeymourUI20ActivityTypeIconView_workoutActivityType;
   *v3 = 0;
@@ -38,14 +38,14 @@
   return result;
 }
 
-- (_TtC9SeymourUI20ActivityTypeIconView)initWithImage:(id)a3
+- (_TtC9SeymourUI20ActivityTypeIconView)initWithImage:(id)image
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC9SeymourUI20ActivityTypeIconView)initWithImage:(id)a3 highlightedImage:(id)a4
+- (_TtC9SeymourUI20ActivityTypeIconView)initWithImage:(id)image highlightedImage:(id)highlightedImage
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,67 +1,67 @@
 @interface DKInkRendererGL
 - (DKInkRendererDelegate)delegate;
-- (DKInkRendererGL)initWithFrame:(CGRect)a3;
+- (DKInkRendererGL)initWithFrame:(CGRect)frame;
 - (id)snapshotImage;
 - (void)_commonInit;
-- (void)addPoint:(id *)a3;
-- (void)addPointsFromBrushPointQueueWithSegmentLength:(unint64_t)a3;
+- (void)addPoint:(id *)point;
+- (void)addPointsFromBrushPointQueueWithSegmentLength:(unint64_t)length;
 - (void)beginStroke;
 - (void)clear;
 - (void)completeAnimationsImmediately;
 - (void)dealloc;
 - (void)display;
 - (void)displayForcefully;
-- (void)drawRect:(CGRect)a3;
+- (void)drawRect:(CGRect)rect;
 - (void)endStroke;
 - (void)flush;
 - (void)force;
 - (void)layoutSubviews;
 - (void)removeLastStroke;
-- (void)rendererDidFinishAnimatingDrawing:(id)a3;
+- (void)rendererDidFinishAnimatingDrawing:(id)drawing;
 - (void)resetRendererState;
-- (void)setInkColor:(id)a3;
-- (void)setMode:(unint64_t)a3;
+- (void)setInkColor:(id)color;
+- (void)setMode:(unint64_t)mode;
 - (void)teardown;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation DKInkRendererGL
 
-- (DKInkRendererGL)initWithFrame:(CGRect)a3
+- (DKInkRendererGL)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8 = [objc_alloc(MEMORY[0x277CD9388]) initWithAPI:2];
   v13.receiver = self;
   v13.super_class = DKInkRendererGL;
-  v9 = [(GLKView *)&v13 initWithFrame:v8 context:x, y, width, height];
-  if (v9)
+  height = [(GLKView *)&v13 initWithFrame:v8 context:x, y, width, height];
+  if (height)
   {
-    v10 = [MEMORY[0x277D75348] systemBackgroundColor];
-    [(DKInkRendererGL *)v9 setBackgroundColor:v10];
+    systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+    [(DKInkRendererGL *)height setBackgroundColor:systemBackgroundColor];
 
-    [(GLKView *)v9 setDrawableColorFormat:0];
-    [(GLKView *)v9 setDrawableDepthFormat:0];
-    [(GLKView *)v9 setDrawableStencilFormat:0];
-    [(GLKView *)v9 setDrawableMultisample:0];
-    [(GLKView *)v9 setEnableSetNeedsDisplay:0];
-    v11 = [MEMORY[0x277D759A0] mainScreen];
-    [v11 scale];
-    [(GLKView *)v9 setContentScaleFactor:?];
+    [(GLKView *)height setDrawableColorFormat:0];
+    [(GLKView *)height setDrawableDepthFormat:0];
+    [(GLKView *)height setDrawableStencilFormat:0];
+    [(GLKView *)height setDrawableMultisample:0];
+    [(GLKView *)height setEnableSetNeedsDisplay:0];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
+    [(GLKView *)height setContentScaleFactor:?];
 
-    [(DKInkRendererGL *)v9 _commonInit];
+    [(DKInkRendererGL *)height _commonInit];
   }
 
-  return v9;
+  return height;
 }
 
 - (void)_commonInit
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   brushStrokes = self->_brushStrokes;
-  self->_brushStrokes = v3;
+  self->_brushStrokes = array;
 
   v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:1000];
   brushPointQueue = self->_brushPointQueue;
@@ -74,8 +74,8 @@
   v20.super_class = DKInkRendererGL;
   [(GLKView *)&v20 layoutSubviews];
   v3 = MEMORY[0x277CD9388];
-  v4 = [(GLKView *)self context];
-  [v3 setCurrentContext:v4];
+  context = [(GLKView *)self context];
+  [v3 setCurrentContext:context];
 
   if (self->_initialized || ([(DKInkRendererGL *)self window], v5 = objc_claimAutoreleasedReturnValue(), v5, !v5))
   {
@@ -100,8 +100,8 @@
       v10 = v9;
       v12 = v11;
       v14 = v13;
-      v15 = [MEMORY[0x277D759A0] mainScreen];
-      [v15 scale];
+      mainScreen = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen scale];
       v17 = [(DKOpenGLRenderer *)v6 initWithBounds:v8 scale:v10, v12, v14, v16];
       v18 = self->_inkRenderer;
       self->_inkRenderer = v17;
@@ -124,31 +124,31 @@
   {
     v5.receiver = self;
     v5.super_class = DKInkRendererGL;
-    v3 = [(GLKView *)&v5 snapshot];
+    snapshot = [(GLKView *)&v5 snapshot];
   }
 
   else
   {
-    v3 = 0;
+    snapshot = 0;
   }
 
-  return v3;
+  return snapshot;
 }
 
 - (void)dealloc
 {
   v3 = MEMORY[0x277CD9388];
-  v4 = [(GLKView *)self context];
-  [v3 setCurrentContext:v4];
+  context = [(GLKView *)self context];
+  [v3 setCurrentContext:context];
 
   [(DKInkRendererGL *)self setDelegate:0];
   inkRenderer = self->_inkRenderer;
   self->_inkRenderer = 0;
 
-  v6 = [MEMORY[0x277CD9388] currentContext];
-  v7 = [(GLKView *)self context];
+  currentContext = [MEMORY[0x277CD9388] currentContext];
+  context2 = [(GLKView *)self context];
 
-  if (v6 == v7)
+  if (currentContext == context2)
   {
     [MEMORY[0x277CD9388] setCurrentContext:0];
   }
@@ -160,21 +160,21 @@
 
 - (void)beginStroke
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   currentBrushStroke = self->_currentBrushStroke;
-  self->_currentBrushStroke = v3;
+  self->_currentBrushStroke = array;
 
   inkRenderer = self->_inkRenderer;
 
   [(DKOpenGLRenderer *)inkRenderer didBeginNewStroke];
 }
 
-- (void)addPoint:(id *)a3
+- (void)addPoint:(id *)point
 {
-  v4 = *&a3->var1;
-  v6[0] = a3->var0;
+  v4 = *&point->var1;
+  v6[0] = point->var0;
   v6[1] = v4;
-  var3 = a3->var3;
+  var3 = point->var3;
   v5 = [MEMORY[0x277CCAE60] dk_valueWithRenderPoint:v6];
   [(NSMutableArray *)self->_currentBrushStroke addObject:v5];
   [(NSMutableArray *)self->_brushPointQueue addObject:v5];
@@ -203,77 +203,77 @@
 
 - (void)resetRendererState
 {
-  v5 = [MEMORY[0x277CD9388] currentContext];
+  currentContext = [MEMORY[0x277CD9388] currentContext];
   v3 = MEMORY[0x277CD9388];
-  v4 = [(GLKView *)self context];
-  [v3 setCurrentContext:v4];
+  context = [(GLKView *)self context];
+  [v3 setCurrentContext:context];
 
   [(DKOpenGLRenderer *)self->_inkRenderer resetRendererState];
-  [MEMORY[0x277CD9388] setCurrentContext:v5];
+  [MEMORY[0x277CD9388] setCurrentContext:currentContext];
 }
 
 - (void)completeAnimationsImmediately
 {
-  v5 = [MEMORY[0x277CD9388] currentContext];
+  currentContext = [MEMORY[0x277CD9388] currentContext];
   v3 = MEMORY[0x277CD9388];
-  v4 = [(GLKView *)self context];
-  [v3 setCurrentContext:v4];
+  context = [(GLKView *)self context];
+  [v3 setCurrentContext:context];
 
   [(DKOpenGLRenderer *)self->_inkRenderer updateDryForcefully];
-  [MEMORY[0x277CD9388] setCurrentContext:v5];
+  [MEMORY[0x277CD9388] setCurrentContext:currentContext];
 }
 
 - (void)removeLastStroke
 {
-  v5 = [MEMORY[0x277CD9388] currentContext];
+  currentContext = [MEMORY[0x277CD9388] currentContext];
   v3 = MEMORY[0x277CD9388];
-  v4 = [(GLKView *)self context];
-  [v3 setCurrentContext:v4];
+  context = [(GLKView *)self context];
+  [v3 setCurrentContext:context];
 
   [(NSMutableArray *)self->_brushStrokes removeLastObject];
   [(DKOpenGLRenderer *)self->_inkRenderer undo];
-  [MEMORY[0x277CD9388] setCurrentContext:v5];
+  [MEMORY[0x277CD9388] setCurrentContext:currentContext];
 }
 
-- (void)setInkColor:(id)a3
+- (void)setInkColor:(id)color
 {
-  objc_storeStrong(&self->_inkColor, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_inkColor, color);
+  colorCopy = color;
   [(DKOpenGLRenderer *)self->_inkRenderer setInkColor:?];
 }
 
-- (void)setMode:(unint64_t)a3
+- (void)setMode:(unint64_t)mode
 {
-  if (self->_mode != a3)
+  if (self->_mode != mode)
   {
-    self->_mode = a3;
-    [(DKOpenGLRenderer *)self->_inkRenderer setUndoEnabled:a3 != 1];
+    self->_mode = mode;
+    [(DKOpenGLRenderer *)self->_inkRenderer setUndoEnabled:mode != 1];
   }
 }
 
 - (void)force
 {
-  v5 = [MEMORY[0x277CD9388] currentContext];
+  currentContext = [MEMORY[0x277CD9388] currentContext];
   v3 = MEMORY[0x277CD9388];
-  v4 = [(GLKView *)self context];
-  [v3 setCurrentContext:v4];
+  context = [(GLKView *)self context];
+  [v3 setCurrentContext:context];
 
   [(DKOpenGLRenderer *)self->_inkRenderer setIgnoreFirstUndoItem:1];
   [(DKOpenGLRenderer *)self->_inkRenderer didBeginNewStroke];
   [(DKInkRendererGL *)self displayForcefully];
   [(DKOpenGLRenderer *)self->_inkRenderer didCompleteStroke];
-  [MEMORY[0x277CD9388] setCurrentContext:v5];
+  [MEMORY[0x277CD9388] setCurrentContext:currentContext];
 }
 
 - (void)flush
 {
-  v5 = [MEMORY[0x277CD9388] currentContext];
+  currentContext = [MEMORY[0x277CD9388] currentContext];
   v3 = MEMORY[0x277CD9388];
-  v4 = [(GLKView *)self context];
-  [v3 setCurrentContext:v4];
+  context = [(GLKView *)self context];
+  [v3 setCurrentContext:context];
 
   glFlush();
-  [MEMORY[0x277CD9388] setCurrentContext:v5];
+  [MEMORY[0x277CD9388] setCurrentContext:currentContext];
 }
 
 - (void)display
@@ -283,38 +283,38 @@
   [(GLKView *)&v4 display];
   if (self->_needToNotify)
   {
-    v3 = [(DKInkRendererGL *)self delegate];
+    delegate = [(DKInkRendererGL *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v3 performSelector:sel_inkDidRender_ withObject:self afterDelay:0.0];
+      [delegate performSelector:sel_inkDidRender_ withObject:self afterDelay:0.0];
     }
 
     self->_needToNotify = 0;
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v8.receiver = self;
   v8.super_class = DKInkRendererGL;
-  [(DKInkRendererGL *)&v8 traitCollectionDidChange:v4];
-  v5 = [(DKInkRendererGL *)self traitCollection];
-  v6 = [v5 userInterfaceStyle];
-  v7 = [v4 userInterfaceStyle];
+  [(DKInkRendererGL *)&v8 traitCollectionDidChange:changeCopy];
+  traitCollection = [(DKInkRendererGL *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
+  userInterfaceStyle2 = [changeCopy userInterfaceStyle];
 
-  if (v6 != v7)
+  if (userInterfaceStyle != userInterfaceStyle2)
   {
     [(DKInkRendererGL *)self force];
   }
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  v8 = [MEMORY[0x277D75C80] currentTraitCollection];
+  currentTraitCollection = [MEMORY[0x277D75C80] currentTraitCollection];
   v4 = MEMORY[0x277D75C80];
-  v5 = [(DKInkRendererGL *)self traitCollection];
-  v6 = [v4 traitCollectionWithUserInterfaceStyle:{objc_msgSend(v5, "userInterfaceStyle")}];
+  traitCollection = [(DKInkRendererGL *)self traitCollection];
+  v6 = [v4 traitCollectionWithUserInterfaceStyle:{objc_msgSend(traitCollection, "userInterfaceStyle")}];
   [v4 setCurrentTraitCollection:v6];
 
   +[DKGLUtilities setCurrentClearColor];
@@ -324,7 +324,7 @@
   [(DKInkRendererGL *)self addPointsFromBrushPointQueueWithSegmentLength:[(NSMutableArray *)self->_brushPointQueue count]];
   [(DKOpenGLRenderer *)self->_inkRenderer update];
   [(DKOpenGLRenderer *)self->_inkRenderer draw];
-  [MEMORY[0x277D75C80] setCurrentTraitCollection:v8];
+  [MEMORY[0x277D75C80] setCurrentTraitCollection:currentTraitCollection];
   if (v7)
   {
     self->_needToNotify = 1;
@@ -333,16 +333,16 @@
 
 - (void)displayForcefully
 {
-  v9 = [MEMORY[0x277D75C80] currentTraitCollection];
+  currentTraitCollection = [MEMORY[0x277D75C80] currentTraitCollection];
   v3 = MEMORY[0x277D75C80];
-  v4 = [(DKInkRendererGL *)self traitCollection];
-  v5 = [v3 traitCollectionWithUserInterfaceStyle:{objc_msgSend(v4, "userInterfaceStyle")}];
+  traitCollection = [(DKInkRendererGL *)self traitCollection];
+  v5 = [v3 traitCollectionWithUserInterfaceStyle:{objc_msgSend(traitCollection, "userInterfaceStyle")}];
   [v3 setCurrentTraitCollection:v5];
 
-  v6 = [MEMORY[0x277CD9388] currentContext];
+  currentContext = [MEMORY[0x277CD9388] currentContext];
   v7 = MEMORY[0x277CD9388];
-  v8 = [(GLKView *)self context];
-  [v7 setCurrentContext:v8];
+  context = [(GLKView *)self context];
+  [v7 setCurrentContext:context];
 
   [(DKOpenGLRenderer *)self->_inkRenderer setInkColor:self->_inkColor];
   [(DKOpenGLRenderer *)self->_inkRenderer setDrawingEnabled:0];
@@ -350,18 +350,18 @@
   [(DKOpenGLRenderer *)self->_inkRenderer setDrawingEnabled:1];
   [(DKOpenGLRenderer *)self->_inkRenderer redrawEntireDrawingImmediatelyWithLayeredBlending:1];
   self->_needToNotify = 1;
-  [MEMORY[0x277CD9388] setCurrentContext:v6];
-  [MEMORY[0x277D75C80] setCurrentTraitCollection:v9];
+  [MEMORY[0x277CD9388] setCurrentContext:currentContext];
+  [MEMORY[0x277D75C80] setCurrentTraitCollection:currentTraitCollection];
 }
 
-- (void)addPointsFromBrushPointQueueWithSegmentLength:(unint64_t)a3
+- (void)addPointsFromBrushPointQueueWithSegmentLength:(unint64_t)length
 {
   if ([(NSMutableArray *)self->_brushPointQueue count])
   {
     inkRenderer = self->_inkRenderer;
     if (inkRenderer)
     {
-      [(DKOpenGLRenderer *)inkRenderer addPoints:self->_brushPointQueue withSegmentLength:a3];
+      [(DKOpenGLRenderer *)inkRenderer addPoints:self->_brushPointQueue withSegmentLength:length];
       brushPointQueue = self->_brushPointQueue;
 
       [(NSMutableArray *)brushPointQueue removeAllObjects];
@@ -371,22 +371,22 @@
 
 - (void)teardown
 {
-  v5 = [MEMORY[0x277CD9388] currentContext];
+  currentContext = [MEMORY[0x277CD9388] currentContext];
   v3 = MEMORY[0x277CD9388];
-  v4 = [(GLKView *)self context];
-  [v3 setCurrentContext:v4];
+  context = [(GLKView *)self context];
+  [v3 setCurrentContext:context];
 
   [(DKOpenGLRenderer *)self->_inkRenderer teardown];
   [(DKInkRendererGL *)self setDelegate:0];
-  [MEMORY[0x277CD9388] setCurrentContext:v5];
+  [MEMORY[0x277CD9388] setCurrentContext:currentContext];
 }
 
-- (void)rendererDidFinishAnimatingDrawing:(id)a3
+- (void)rendererDidFinishAnimatingDrawing:(id)drawing
 {
-  v4 = [(DKInkRendererGL *)self delegate];
+  delegate = [(DKInkRendererGL *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 inkDidCompleteRender:self];
+    [delegate inkDidCompleteRender:self];
   }
 }
 

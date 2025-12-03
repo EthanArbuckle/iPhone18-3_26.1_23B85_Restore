@@ -5,15 +5,15 @@
 - (BOOL)writeOutOCRInputImages;
 - (BOOL)writeOutScreenCaptures;
 - (id)_init;
-- (void)_queue_removeObserver:(id)a3 forSetting:(id)a4;
-- (void)addObserver:(id)a3 forSeetting:(id)a4 withBlock:(id)a5;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)removeObserver:(id)a3 forSetting:(id)a4;
-- (void)removeObserverForAllSettings:(id)a3;
-- (void)setUseANODModelForAXElementVision:(BOOL)a3;
-- (void)setWriteOutInputImages:(BOOL)a3;
-- (void)setWriteOutOCRInputImages:(BOOL)a3;
-- (void)setWriteOutScreenCaptures:(BOOL)a3;
+- (void)_queue_removeObserver:(id)observer forSetting:(id)setting;
+- (void)addObserver:(id)observer forSeetting:(id)seetting withBlock:(id)block;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)removeObserver:(id)observer forSetting:(id)setting;
+- (void)removeObserverForAllSettings:(id)settings;
+- (void)setUseANODModelForAXElementVision:(BOOL)vision;
+- (void)setWriteOutInputImages:(BOOL)images;
+- (void)setWriteOutOCRInputImages:(BOOL)images;
+- (void)setWriteOutScreenCaptures:(BOOL)captures;
 @end
 
 @implementation AXMSettings
@@ -49,9 +49,9 @@ void __23__AXMSettings_settings__block_invoke()
     queue = v2->_queue;
     v2->_queue = v3;
 
-    v5 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     queue_settingObservers = v2->_queue_settingObservers;
-    v2->_queue_settingObservers = v5;
+    v2->_queue_settingObservers = dictionary;
 
     v7 = objc_alloc(MEMORY[0x1E695E000]);
     v8 = [v7 initWithSuiteName:AXMBundleID];
@@ -79,20 +79,20 @@ void __23__AXMSettings_settings__block_invoke()
   return v2;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   v21 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a5;
-  if (AXMSettingsKVOContext == a6)
+  pathCopy = path;
+  changeCopy = change;
+  if (AXMSettingsKVOContext == context)
   {
     v12 = AXMediaLogSettings();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v18 = v10;
+      v18 = pathCopy;
       v19 = 2112;
-      v20 = v11;
+      v20 = changeCopy;
       _os_log_impl(&dword_1AE37B000, v12, OS_LOG_TYPE_INFO, "Did get KVO update for key: '%@'. change: %@", buf, 0x16u);
     }
 
@@ -102,7 +102,7 @@ void __23__AXMSettings_settings__block_invoke()
     block[2] = __62__AXMSettings_observeValueForKeyPath_ofObject_change_context___block_invoke;
     block[3] = &unk_1E7A1CB30;
     block[4] = self;
-    v16 = v10;
+    v16 = pathCopy;
     dispatch_async(queue, block);
   }
 
@@ -110,7 +110,7 @@ void __23__AXMSettings_settings__block_invoke()
   {
     v14.receiver = self;
     v14.super_class = AXMSettings;
-    [(AXMSettings *)&v14 observeValueForKeyPath:v10 ofObject:a4 change:v11 context:a6];
+    [(AXMSettings *)&v14 observeValueForKeyPath:pathCopy ofObject:object change:changeCopy context:context];
   }
 }
 
@@ -155,23 +155,23 @@ void __62__AXMSettings_observeValueForKeyPath_ofObject_change_context___block_in
   }
 }
 
-- (void)addObserver:(id)a3 forSeetting:(id)a4 withBlock:(id)a5
+- (void)addObserver:(id)observer forSeetting:(id)seetting withBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  observerCopy = observer;
+  seettingCopy = seetting;
+  blockCopy = block;
   queue = self->_queue;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __49__AXMSettings_addObserver_forSeetting_withBlock___block_invoke;
   v15[3] = &unk_1E7A1CF70;
   v15[4] = self;
-  v16 = v9;
-  v17 = v8;
-  v18 = v10;
-  v12 = v10;
-  v13 = v8;
-  v14 = v9;
+  v16 = seettingCopy;
+  v17 = observerCopy;
+  v18 = blockCopy;
+  v12 = blockCopy;
+  v13 = observerCopy;
+  v14 = seettingCopy;
   dispatch_sync(queue, v15);
 }
 
@@ -193,37 +193,37 @@ void __49__AXMSettings_addObserver_forSeetting_withBlock___block_invoke(uint64_t
   [v5 addObject:v2];
 }
 
-- (void)removeObserver:(id)a3 forSetting:(id)a4
+- (void)removeObserver:(id)observer forSetting:(id)setting
 {
-  v6 = a3;
-  v7 = a4;
+  observerCopy = observer;
+  settingCopy = setting;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __41__AXMSettings_removeObserver_forSetting___block_invoke;
   block[3] = &unk_1E7A1D5C8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = observerCopy;
+  v13 = settingCopy;
+  v9 = settingCopy;
+  v10 = observerCopy;
   dispatch_sync(queue, block);
 }
 
-- (void)_queue_removeObserver:(id)a3 forSetting:(id)a4
+- (void)_queue_removeObserver:(id)observer forSetting:(id)setting
 {
-  v6 = a3;
-  v7 = a4;
+  observerCopy = observer;
+  settingCopy = setting;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __48__AXMSettings__queue_removeObserver_forSetting___block_invoke;
   block[3] = &unk_1E7A1D5C8;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = settingCopy;
+  v13 = observerCopy;
+  v9 = observerCopy;
+  v10 = settingCopy;
   dispatch_sync(queue, block);
 }
 
@@ -277,17 +277,17 @@ void __48__AXMSettings__queue_removeObserver_forSetting___block_invoke(void *a1)
   }
 }
 
-- (void)removeObserverForAllSettings:(id)a3
+- (void)removeObserverForAllSettings:(id)settings
 {
-  v4 = a3;
+  settingsCopy = settings;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __44__AXMSettings_removeObserverForAllSettings___block_invoke;
   v7[3] = &unk_1E7A1CB30;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = settingsCopy;
+  v6 = settingsCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -338,14 +338,14 @@ void __44__AXMSettings_removeObserverForAllSettings___block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)setWriteOutInputImages:(BOOL)a3
+- (void)setWriteOutInputImages:(BOOL)images
 {
-  v3 = a3;
+  imagesCopy = images;
   if (AXMHasInternalSecurityPrivilages())
   {
     defaults = self->_defaults;
 
-    [(NSUserDefaults *)defaults setBool:v3 forKey:@"writeOutInputImages"];
+    [(NSUserDefaults *)defaults setBool:imagesCopy forKey:@"writeOutInputImages"];
   }
 }
 
@@ -362,14 +362,14 @@ void __44__AXMSettings_removeObserverForAllSettings___block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)setWriteOutOCRInputImages:(BOOL)a3
+- (void)setWriteOutOCRInputImages:(BOOL)images
 {
-  v3 = a3;
+  imagesCopy = images;
   if (AXMHasInternalSecurityPrivilages())
   {
     defaults = self->_defaults;
 
-    [(NSUserDefaults *)defaults setBool:v3 forKey:@"writeOutOCRInputImages"];
+    [(NSUserDefaults *)defaults setBool:imagesCopy forKey:@"writeOutOCRInputImages"];
   }
 }
 
@@ -386,14 +386,14 @@ void __44__AXMSettings_removeObserverForAllSettings___block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)setWriteOutScreenCaptures:(BOOL)a3
+- (void)setWriteOutScreenCaptures:(BOOL)captures
 {
-  v3 = a3;
+  capturesCopy = captures;
   if (AXMHasInternalSecurityPrivilages())
   {
     defaults = self->_defaults;
 
-    [(NSUserDefaults *)defaults setBool:v3 forKey:@"writeOutScreenCaptures"];
+    [(NSUserDefaults *)defaults setBool:capturesCopy forKey:@"writeOutScreenCaptures"];
   }
 }
 
@@ -409,14 +409,14 @@ void __44__AXMSettings_removeObserverForAllSettings___block_invoke(uint64_t a1)
   return [(NSUserDefaults *)defaults BOOLForKey:@"useANODModelForAXElementVision"];
 }
 
-- (void)setUseANODModelForAXElementVision:(BOOL)a3
+- (void)setUseANODModelForAXElementVision:(BOOL)vision
 {
-  v3 = a3;
+  visionCopy = vision;
   if (AXMHasInternalSecurityPrivilages())
   {
     defaults = self->_defaults;
 
-    [(NSUserDefaults *)defaults setBool:v3 forKey:@"useANODModelForAXElementVision"];
+    [(NSUserDefaults *)defaults setBool:visionCopy forKey:@"useANODModelForAXElementVision"];
   }
 }
 

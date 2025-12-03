@@ -1,33 +1,33 @@
 @interface STShowDraftMessageUsageResult
-- (STShowDraftMessageUsageResult)initWithCoder:(id)a3;
+- (STShowDraftMessageUsageResult)initWithCoder:(id)coder;
 - (id)_resultDescription;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation STShowDraftMessageUsageResult
 
-- (STShowDraftMessageUsageResult)initWithCoder:(id)a3
+- (STShowDraftMessageUsageResult)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = STShowDraftMessageUsageResult;
-  v5 = [(AFSiriTaskUsageResult *)&v7 initWithCoder:v4];
+  v5 = [(AFSiriTaskUsageResult *)&v7 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_resultCode = [v4 decodeIntegerForKey:@"ResultCodeKeyIdentifier"];
+    v5->_resultCode = [coderCopy decodeIntegerForKey:@"ResultCodeKeyIdentifier"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = STShowDraftMessageUsageResult;
-  v4 = a3;
-  [(AFSiriTaskUsageResult *)&v5 encodeWithCoder:v4];
-  [v4 encodeInteger:self->_resultCode forKey:{@"ResultCodeKeyIdentifier", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(AFSiriTaskUsageResult *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:self->_resultCode forKey:{@"ResultCodeKeyIdentifier", v5.receiver, v5.super_class}];
 }
 
 - (id)_resultDescription
@@ -52,8 +52,8 @@
   v4 = [v3 mutableCopy];
 
   [v4 appendString:@" result: "];
-  v5 = [(STShowDraftMessageUsageResult *)self _resultDescription];
-  [v4 appendString:v5];
+  _resultDescription = [(STShowDraftMessageUsageResult *)self _resultDescription];
+  [v4 appendString:_resultDescription];
 
   return v4;
 }

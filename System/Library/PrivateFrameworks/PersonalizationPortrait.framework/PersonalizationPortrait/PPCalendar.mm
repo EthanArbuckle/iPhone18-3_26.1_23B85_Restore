@@ -1,27 +1,27 @@
 @interface PPCalendar
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToCalendar:(id)a3;
-- (PPCalendar)initWithCalendarIdentifier:(id)a3 title:(id)a4 color:(CGColor *)a5;
-- (PPCalendar)initWithCoder:(id)a3;
-- (PPCalendar)initWithEKCalendar:(id)a3 internPool:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToCalendar:(id)calendar;
+- (PPCalendar)initWithCalendarIdentifier:(id)identifier title:(id)title color:(CGColor *)color;
+- (PPCalendar)initWithCoder:(id)coder;
+- (PPCalendar)initWithEKCalendar:(id)calendar internPool:(id)pool;
 - (id)description;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PPCalendar
 
-- (BOOL)isEqualToCalendar:(id)a3
+- (BOOL)isEqualToCalendar:(id)calendar
 {
-  v4 = a3;
-  if (!v4)
+  calendarCopy = calendar;
+  if (!calendarCopy)
   {
     goto LABEL_8;
   }
 
   v5 = self->_calendarIdentifier;
   v6 = v5;
-  if (v5 == v4[1])
+  if (v5 == calendarCopy[1])
   {
   }
 
@@ -37,7 +37,7 @@
 
   v8 = self->_title;
   v9 = v8;
-  if (v8 == v4[2])
+  if (v8 == calendarCopy[2])
   {
   }
 
@@ -54,45 +54,45 @@ LABEL_8:
   }
 
   color = self->_color;
-  v13 = v4[3];
+  v13 = calendarCopy[3];
   v11 = color == v13 || CGColorEqualToColor(color, v13);
 LABEL_13:
 
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PPCalendar *)self isEqualToCalendar:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PPCalendar *)self isEqualToCalendar:v5];
   }
 
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   calendarIdentifier = self->_calendarIdentifier;
-  v5 = a3;
-  [v5 encodeObject:calendarIdentifier forKey:@"cid"];
-  [v5 encodeObject:self->_title forKey:@"ttl"];
-  PPEncodeCalendarColor(v5, self->_color);
+  coderCopy = coder;
+  [coderCopy encodeObject:calendarIdentifier forKey:@"cid"];
+  [coderCopy encodeObject:self->_title forKey:@"ttl"];
+  PPEncodeCalendarColor(coderCopy, self->_color);
 }
 
-- (PPCalendar)initWithCoder:(id)a3
+- (PPCalendar)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
-  v6 = [v4 decodeObjectOfClass:v5 forKey:@"cid"];
-  v7 = [v4 decodeObjectOfClass:v5 forKey:@"ttl"];
+  v6 = [coderCopy decodeObjectOfClass:v5 forKey:@"cid"];
+  v7 = [coderCopy decodeObjectOfClass:v5 forKey:@"ttl"];
   v8 = v7;
   if (v6)
   {
@@ -106,18 +106,18 @@ LABEL_13:
 
   if (v9)
   {
-    v11 = 0;
+    selfCopy = 0;
   }
 
   else
   {
-    v10 = PPCreateCalendarColorWithDecoder(v4);
+    v10 = PPCreateCalendarColorWithDecoder(coderCopy);
     self = [(PPCalendar *)self initWithCalendarIdentifier:v6 title:v8 color:v10];
     CGColorRelease(v10);
-    v11 = self;
+    selfCopy = self;
   }
 
-  return v11;
+  return selfCopy;
 }
 
 - (id)description
@@ -135,33 +135,33 @@ LABEL_13:
   [(PPCalendar *)&v3 dealloc];
 }
 
-- (PPCalendar)initWithCalendarIdentifier:(id)a3 title:(id)a4 color:(CGColor *)a5
+- (PPCalendar)initWithCalendarIdentifier:(id)identifier title:(id)title color:(CGColor *)color
 {
-  v8 = a3;
-  v9 = a4;
+  identifierCopy = identifier;
+  titleCopy = title;
   v16.receiver = self;
   v16.super_class = PPCalendar;
   v10 = [(PPCalendar *)&v16 init];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [identifierCopy copy];
     calendarIdentifier = v10->_calendarIdentifier;
     v10->_calendarIdentifier = v11;
 
-    v13 = [v9 copy];
+    v13 = [titleCopy copy];
     title = v10->_title;
     v10->_title = v13;
 
-    CGColorRetain(a5);
-    v10->_color = a5;
+    CGColorRetain(color);
+    v10->_color = color;
   }
 
   return v10;
 }
 
-- (PPCalendar)initWithEKCalendar:(id)a3 internPool:(id)a4
+- (PPCalendar)initWithEKCalendar:(id)calendar internPool:(id)pool
 {
-  v5 = [a4 internedCalendarWithEKCalendar:a3];
+  v5 = [pool internedCalendarWithEKCalendar:calendar];
 
   return v5;
 }

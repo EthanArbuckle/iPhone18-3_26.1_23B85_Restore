@@ -1,33 +1,33 @@
 @interface SCKZoneJSONStore
-- (SCKZoneJSONStore)initWithZoneName:(id)a3 serverRecords:(id)a4 lastSyncDate:(id)a5 lastDirtyDate:(id)a6 serverChangeToken:(id)a7 pendingCommands:(id)a8;
-- (void)addPendingCommands:(id)a3;
-- (void)applyServerRecordsDiff:(id)a3;
-- (void)clearPendingCommandsUpToCount:(unint64_t)a3;
+- (SCKZoneJSONStore)initWithZoneName:(id)name serverRecords:(id)records lastSyncDate:(id)date lastDirtyDate:(id)dirtyDate serverChangeToken:(id)token pendingCommands:(id)commands;
+- (void)addPendingCommands:(id)commands;
+- (void)applyServerRecordsDiff:(id)diff;
+- (void)clearPendingCommandsUpToCount:(unint64_t)count;
 @end
 
 @implementation SCKZoneJSONStore
 
-- (SCKZoneJSONStore)initWithZoneName:(id)a3 serverRecords:(id)a4 lastSyncDate:(id)a5 lastDirtyDate:(id)a6 serverChangeToken:(id)a7 pendingCommands:(id)a8
+- (SCKZoneJSONStore)initWithZoneName:(id)name serverRecords:(id)records lastSyncDate:(id)date lastDirtyDate:(id)dirtyDate serverChangeToken:(id)token pendingCommands:(id)commands
 {
-  v14 = a3;
-  v15 = a4;
-  v26 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
+  nameCopy = name;
+  recordsCopy = records;
+  dateCopy = date;
+  dirtyDateCopy = dirtyDate;
+  tokenCopy = token;
+  commandsCopy = commands;
   v27.receiver = self;
   v27.super_class = SCKZoneJSONStore;
   v19 = [(SCKZoneJSONStore *)&v27 init];
   if (v19)
   {
-    v20 = [v14 copy];
+    v20 = [nameCopy copy];
     zoneName = v19->_zoneName;
     v19->_zoneName = v20;
 
     v22 = MEMORY[0x277CBEBF8];
-    if (v15)
+    if (recordsCopy)
     {
-      v23 = v15;
+      v23 = recordsCopy;
     }
 
     else
@@ -36,12 +36,12 @@
     }
 
     objc_storeStrong(&v19->_serverRecords, v23);
-    objc_storeStrong(&v19->_lastSyncDate, a5);
-    objc_storeStrong(&v19->_lastDirtyDate, a6);
-    objc_storeStrong(&v19->_serverChangeToken, a7);
-    if (v18)
+    objc_storeStrong(&v19->_lastSyncDate, date);
+    objc_storeStrong(&v19->_lastDirtyDate, dirtyDate);
+    objc_storeStrong(&v19->_serverChangeToken, token);
+    if (commandsCopy)
     {
-      v24 = v18;
+      v24 = commandsCopy;
     }
 
     else
@@ -55,28 +55,28 @@
   return v19;
 }
 
-- (void)applyServerRecordsDiff:(id)a3
+- (void)applyServerRecordsDiff:(id)diff
 {
-  v4 = a3;
-  v7 = [(SCKZoneJSONStore *)self serverRecords];
-  v5 = [v4 applyToRecords:v7];
+  diffCopy = diff;
+  serverRecords = [(SCKZoneJSONStore *)self serverRecords];
+  v5 = [diffCopy applyToRecords:serverRecords];
 
   serverRecords = self->_serverRecords;
   self->_serverRecords = v5;
 }
 
-- (void)addPendingCommands:(id)a3
+- (void)addPendingCommands:(id)commands
 {
-  v4 = [(NSArray *)self->_pendingCommands arrayByAddingObjectsFromArray:a3];
+  v4 = [(NSArray *)self->_pendingCommands arrayByAddingObjectsFromArray:commands];
   pendingCommands = self->_pendingCommands;
   self->_pendingCommands = v4;
 
   MEMORY[0x2821F96F8](v4, pendingCommands);
 }
 
-- (void)clearPendingCommandsUpToCount:(unint64_t)a3
+- (void)clearPendingCommandsUpToCount:(unint64_t)count
 {
-  v4 = [(NSArray *)self->_pendingCommands subarrayWithRange:a3, [(NSArray *)self->_pendingCommands count]- a3];
+  v4 = [(NSArray *)self->_pendingCommands subarrayWithRange:count, [(NSArray *)self->_pendingCommands count]- count];
   pendingCommands = self->_pendingCommands;
   self->_pendingCommands = v4;
 

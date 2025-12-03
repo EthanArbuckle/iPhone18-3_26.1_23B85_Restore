@@ -1,23 +1,23 @@
 @interface VKRouteContext
 - ($F24F406B2B787EFB06265DBA3D28CBD5)puckLocation;
-- (VKRouteContext)initWithAnchorPoint:(id)a3 useType:(unsigned __int8)a4;
-- (VKRouteContext)initWithComposedRoute:(id)a3 useType:(unsigned __int8)a4;
-- (VKRouteContext)initWithRouteInfo:(id)a3 useType:(unsigned __int8)a4;
+- (VKRouteContext)initWithAnchorPoint:(id)point useType:(unsigned __int8)type;
+- (VKRouteContext)initWithComposedRoute:(id)route useType:(unsigned __int8)type;
+- (VKRouteContext)initWithRouteInfo:(id)info useType:(unsigned __int8)type;
 - (id).cxx_construct;
-- (id)_hashTableForObserverType:(unsigned __int8)a3;
+- (id)_hashTableForObserverType:(unsigned __int8)type;
 - (unint64_t)totalRouteCount;
-- (void)_setHasContextChangedForObserverType:(unsigned __int8)a3 withValue:(BOOL)a4;
-- (void)addObserver:(id)a3 withType:(unsigned __int8)a4;
-- (void)forEachRouteInfo:(id)a3;
-- (void)forEachSectionWithShareCount:(unsigned int)a3 dothis:(id)a4;
-- (void)removeObserver:(id)a3 withType:(unsigned __int8)a4;
-- (void)setAlternateRoutes:(id)a3;
-- (void)setCurrentStepIndex:(int64_t)a3;
-- (void)setCurrentWaypoint:(id)a3 withProximity:(unsigned __int8)a4;
-- (void)setInspectedSegmentIndex:(int64_t)a3;
-- (void)setInspectedStepIndex:(int64_t)a3;
-- (void)setPuckRadius:(float)a3;
-- (void)setPuckSnappedStopID:(unint64_t)a3;
+- (void)_setHasContextChangedForObserverType:(unsigned __int8)type withValue:(BOOL)value;
+- (void)addObserver:(id)observer withType:(unsigned __int8)type;
+- (void)forEachRouteInfo:(id)info;
+- (void)forEachSectionWithShareCount:(unsigned int)count dothis:(id)dothis;
+- (void)removeObserver:(id)observer withType:(unsigned __int8)type;
+- (void)setAlternateRoutes:(id)routes;
+- (void)setCurrentStepIndex:(int64_t)index;
+- (void)setCurrentWaypoint:(id)waypoint withProximity:(unsigned __int8)proximity;
+- (void)setInspectedSegmentIndex:(int64_t)index;
+- (void)setInspectedStepIndex:(int64_t)index;
+- (void)setPuckRadius:(float)radius;
+- (void)setPuckSnappedStopID:(unint64_t)d;
 @end
 
 @implementation VKRouteContext
@@ -40,19 +40,19 @@
   return result;
 }
 
-- (void)forEachRouteInfo:(id)a3
+- (void)forEachRouteInfo:(id)info
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(VKRouteContext *)self routeInfo];
-  v4[2](v4, v5, 0);
+  infoCopy = info;
+  routeInfo = [(VKRouteContext *)self routeInfo];
+  infoCopy[2](infoCopy, routeInfo, 0);
 
   v12 = 0u;
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v6 = [(VKRouteContext *)self alternateRoutes];
-  v7 = [v6 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  alternateRoutes = [(VKRouteContext *)self alternateRoutes];
+  v7 = [alternateRoutes countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v7)
   {
     v8 = *v11;
@@ -63,23 +63,23 @@
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(alternateRoutes);
         }
 
-        v4[2](v4, *(*(&v10 + 1) + 8 * v9++), 1);
+        infoCopy[2](infoCopy, *(*(&v10 + 1) + 8 * v9++), 1);
       }
 
       while (v7 != v9);
-      v7 = [v6 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [alternateRoutes countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)forEachSectionWithShareCount:(unsigned int)a3 dothis:(id)a4
+- (void)forEachSectionWithShareCount:(unsigned int)count dothis:(id)dothis
 {
-  v22 = a4;
+  dothisCopy = dothis;
   left = self->_shareSections.__tree_.__end_node_.__left_;
   p_end_node = &self->_shareSections.__tree_.__end_node_;
   v6 = left;
@@ -91,7 +91,7 @@
   while (1)
   {
     v9 = v6[4].__left_;
-    if (v9 <= a3)
+    if (v9 <= count)
     {
       break;
     }
@@ -105,7 +105,7 @@ LABEL_6:
     }
   }
 
-  if (v9 < a3)
+  if (v9 < count)
   {
     ++v6;
     goto LABEL_6;
@@ -119,8 +119,8 @@ LABEL_6:
     do
     {
       v12 = *(v10.__left_ + 8);
-      v13 = v12 >= a3;
-      v14 = v12 < a3;
+      v13 = v12 >= count;
+      v14 = v12 < count;
       if (v13)
       {
         v11 = v10.__left_;
@@ -135,8 +135,8 @@ LABEL_6:
   for (i = v6[1].__left_; i; i = *(i + v18))
   {
     v16 = *(i + 8);
-    v17 = v16 > a3;
-    v18 = v16 <= a3;
+    v17 = v16 > count;
+    v18 = v16 <= count;
     if (v17)
     {
       p_end_node = i;
@@ -147,7 +147,7 @@ LABEL_6:
   {
     do
     {
-      (v22)[2](v22, v11[5].__left_);
+      (dothisCopy)[2](dothisCopy, v11[5].__left_);
       v19 = v11[1].__left_;
       if (v19)
       {
@@ -181,42 +181,42 @@ LABEL_6:
 LABEL_25:
 }
 
-- (void)setAlternateRoutes:(id)a3
+- (void)setAlternateRoutes:(id)routes
 {
-  v5 = a3;
-  if (self->_alternateRoutes != v5)
+  routesCopy = routes;
+  if (self->_alternateRoutes != routesCopy)
   {
-    v8 = v5;
+    v8 = routesCopy;
     v6 = [MEMORY[0x1E695DFD8] setWithArray:?];
     v7 = [MEMORY[0x1E695DFD8] setWithArray:v8];
     if (([v6 isEqualToSet:v7] & 1) == 0)
     {
-      objc_storeStrong(&self->_alternateRoutes, a3);
+      objc_storeStrong(&self->_alternateRoutes, routes);
       if (!self->_hasContextChangedForAlternateRouteLines)
       {
         [(VKRouteContext *)self _setHasContextChangedForObserverType:2 withValue:1];
       }
     }
 
-    v5 = v8;
+    routesCopy = v8;
   }
 }
 
-- (void)setCurrentWaypoint:(id)a3 withProximity:(unsigned __int8)a4
+- (void)setCurrentWaypoint:(id)waypoint withProximity:(unsigned __int8)proximity
 {
-  v8 = a3;
+  waypointCopy = waypoint;
   v6 = [(VKRouteInfo *)self->_routeInfo waypointForWaypoint:?];
   currentWaypoint = self->_currentWaypoint;
   self->_currentWaypoint = v6;
 
-  self->_currentWaypointProximity = a4;
+  self->_currentWaypointProximity = proximity;
 }
 
-- (void)setPuckSnappedStopID:(unint64_t)a3
+- (void)setPuckSnappedStopID:(unint64_t)d
 {
-  if (self->_puckSnappedStopID != a3)
+  if (self->_puckSnappedStopID != d)
   {
-    self->_puckSnappedStopID = a3;
+    self->_puckSnappedStopID = d;
     if (!self->_hasContextChangedForLabels)
     {
       [(VKRouteContext *)self _setHasContextChangedForObserverType:0 withValue:1];
@@ -224,11 +224,11 @@ LABEL_25:
   }
 }
 
-- (void)setPuckRadius:(float)a3
+- (void)setPuckRadius:(float)radius
 {
-  if (vabds_f32(self->_puckRadius, a3) >= 0.000001)
+  if (vabds_f32(self->_puckRadius, radius) >= 0.000001)
   {
-    self->_puckRadius = a3;
+    self->_puckRadius = radius;
     if (!self->_hasContextChangedForLabels)
     {
       [(VKRouteContext *)self _setHasContextChangedForObserverType:0 withValue:1];
@@ -236,11 +236,11 @@ LABEL_25:
   }
 }
 
-- (void)setCurrentStepIndex:(int64_t)a3
+- (void)setCurrentStepIndex:(int64_t)index
 {
-  if (self->_currentStepIndex != a3)
+  if (self->_currentStepIndex != index)
   {
-    self->_currentStepIndex = a3;
+    self->_currentStepIndex = index;
     if (!self->_hasContextChangedForRouteLine)
     {
       [(VKRouteContext *)self _setHasContextChangedForObserverType:1 withValue:1];
@@ -248,11 +248,11 @@ LABEL_25:
   }
 }
 
-- (void)setInspectedStepIndex:(int64_t)a3
+- (void)setInspectedStepIndex:(int64_t)index
 {
-  if (self->_inspectedStepIndex != a3)
+  if (self->_inspectedStepIndex != index)
   {
-    self->_inspectedStepIndex = a3;
+    self->_inspectedStepIndex = index;
     if (!self->_hasContextChangedForLabels)
     {
       [(VKRouteContext *)self _setHasContextChangedForObserverType:0 withValue:1];
@@ -260,11 +260,11 @@ LABEL_25:
   }
 }
 
-- (void)setInspectedSegmentIndex:(int64_t)a3
+- (void)setInspectedSegmentIndex:(int64_t)index
 {
-  if (self->_inspectedSegmentIndex != a3)
+  if (self->_inspectedSegmentIndex != index)
   {
-    self->_inspectedSegmentIndex = a3;
+    self->_inspectedSegmentIndex = index;
     if (!self->_hasContextChangedForLabels)
     {
       [(VKRouteContext *)self _setHasContextChangedForObserverType:0 withValue:1];
@@ -272,31 +272,31 @@ LABEL_25:
   }
 }
 
-- (void)removeObserver:(id)a3 withType:(unsigned __int8)a4
+- (void)removeObserver:(id)observer withType:(unsigned __int8)type
 {
-  v4 = a4;
-  v7 = a3;
-  v6 = [(VKRouteContext *)self _hashTableForObserverType:v4];
-  [v6 removeObject:v7];
+  typeCopy = type;
+  observerCopy = observer;
+  v6 = [(VKRouteContext *)self _hashTableForObserverType:typeCopy];
+  [v6 removeObject:observerCopy];
 }
 
-- (void)addObserver:(id)a3 withType:(unsigned __int8)a4
+- (void)addObserver:(id)observer withType:(unsigned __int8)type
 {
-  v4 = a4;
-  v7 = a3;
-  v6 = [(VKRouteContext *)self _hashTableForObserverType:v4];
-  [v6 addObject:v7];
+  typeCopy = type;
+  observerCopy = observer;
+  v6 = [(VKRouteContext *)self _hashTableForObserverType:typeCopy];
+  [v6 addObject:observerCopy];
 }
 
-- (void)_setHasContextChangedForObserverType:(unsigned __int8)a3 withValue:(BOOL)a4
+- (void)_setHasContextChangedForObserverType:(unsigned __int8)type withValue:(BOOL)value
 {
   v14 = *MEMORY[0x1E69E9840];
-  if (a3 <= 2u)
+  if (type <= 2u)
   {
-    *(&self->_hasContextChangedForLabels + 16 * (a3 & 0xF)) = a4;
+    *(&self->_hasContextChangedForLabels + 16 * (type & 0xF)) = value;
   }
 
-  if (a4)
+  if (value)
   {
     v11 = 0u;
     v12 = 0u;
@@ -329,42 +329,42 @@ LABEL_25:
   }
 }
 
-- (id)_hashTableForObserverType:(unsigned __int8)a3
+- (id)_hashTableForObserverType:(unsigned __int8)type
 {
-  if (a3 > 2u)
+  if (type > 2u)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = (&self->_labelObservers)[2 * (a3 & 0xF)];
+    v4 = (&self->_labelObservers)[2 * (type & 0xF)];
   }
 
   return v4;
 }
 
-- (VKRouteContext)initWithAnchorPoint:(id)a3 useType:(unsigned __int8)a4
+- (VKRouteContext)initWithAnchorPoint:(id)point useType:(unsigned __int8)type
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [[VKRouteInfo alloc] initWithAnchorPoint:v6];
-  v8 = [(VKRouteContext *)self initWithRouteInfo:v7 useType:v4];
+  typeCopy = type;
+  pointCopy = point;
+  v7 = [[VKRouteInfo alloc] initWithAnchorPoint:pointCopy];
+  v8 = [(VKRouteContext *)self initWithRouteInfo:v7 useType:typeCopy];
 
   return v8;
 }
 
-- (VKRouteContext)initWithRouteInfo:(id)a3 useType:(unsigned __int8)a4
+- (VKRouteContext)initWithRouteInfo:(id)info useType:(unsigned __int8)type
 {
-  v7 = a3;
+  infoCopy = info;
   v18.receiver = self;
   v18.super_class = VKRouteContext;
   v8 = [(VKRouteContext *)&v18 init];
   v9 = v8;
   if (v8)
   {
-    v8->_useType = a4;
-    objc_storeStrong(&v8->_routeInfo, a3);
+    v8->_useType = type;
+    objc_storeStrong(&v8->_routeInfo, info);
     v9->_currentSegmentIndex = -1;
     v9->_currentStepIndex = -1;
     v9->_snappingToTransitLines = 0;
@@ -391,12 +391,12 @@ LABEL_25:
   return v9;
 }
 
-- (VKRouteContext)initWithComposedRoute:(id)a3 useType:(unsigned __int8)a4
+- (VKRouteContext)initWithComposedRoute:(id)route useType:(unsigned __int8)type
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [[VKRouteInfo alloc] initWithComposedRoute:v6 etaDescription:0];
-  v8 = [(VKRouteContext *)self initWithRouteInfo:v7 useType:v4];
+  typeCopy = type;
+  routeCopy = route;
+  v7 = [[VKRouteInfo alloc] initWithComposedRoute:routeCopy etaDescription:0];
+  v8 = [(VKRouteContext *)self initWithRouteInfo:v7 useType:typeCopy];
 
   return v8;
 }

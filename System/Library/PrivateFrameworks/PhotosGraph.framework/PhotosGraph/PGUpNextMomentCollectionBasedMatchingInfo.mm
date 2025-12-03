@@ -1,14 +1,14 @@
 @interface PGUpNextMomentCollectionBasedMatchingInfo
-+ (id)representativeDateForMomentNodes:(id)a3;
-+ (id)representativeDateForMomentNodesUniversalDateInterval:(id)a3;
-+ (id)representativeLocationForLocations:(id)a3;
-+ (id)representativeLocationForMomentNodes:(id)a3;
-+ (id)representativeMeaningNodesForEligibleMeaningNodesByMomentNode:(id)a3;
-+ (id)representativeMeaningNodesForMomentNodes:(id)a3;
-+ (id)representativePersonNodesForMomentNodes:(id)a3;
-+ (id)representativePersonNodesForPersonNodesByMomentNode:(id)a3;
-+ (id)representativeSceneNodesForMomentNodes:(id)a3;
-+ (id)representativeSceneNodesForSceneNodesByMomentNode:(id)a3;
++ (id)representativeDateForMomentNodes:(id)nodes;
++ (id)representativeDateForMomentNodesUniversalDateInterval:(id)interval;
++ (id)representativeLocationForLocations:(id)locations;
++ (id)representativeLocationForMomentNodes:(id)nodes;
++ (id)representativeMeaningNodesForEligibleMeaningNodesByMomentNode:(id)node;
++ (id)representativeMeaningNodesForMomentNodes:(id)nodes;
++ (id)representativePersonNodesForMomentNodes:(id)nodes;
++ (id)representativePersonNodesForPersonNodesByMomentNode:(id)node;
++ (id)representativeSceneNodesForMomentNodes:(id)nodes;
++ (id)representativeSceneNodesForSceneNodesByMomentNode:(id)node;
 - (BOOL)isTripMemory;
 - (CLLocation)representativeLocation;
 - (NSDate)representativeDate;
@@ -16,8 +16,8 @@
 - (PGGraphMeaningNodeCollection)meaningNodes;
 - (PGGraphPersonNodeCollection)personNodes;
 - (PGGraphSceneNodeCollection)sceneNodes;
-- (PGUpNextMomentCollectionBasedMatchingInfo)initWithMomentNodes:(id)a3;
-- (PGUpNextMomentCollectionBasedMatchingInfo)initWithMomentNodes:(id)a3 personNodes:(id)a4 sceneNodes:(id)a5 meaningNodes:(id)a6 isTripMemory:(BOOL)a7 representativeLocation:(id)a8 representativeDate:(id)a9;
+- (PGUpNextMomentCollectionBasedMatchingInfo)initWithMomentNodes:(id)nodes;
+- (PGUpNextMomentCollectionBasedMatchingInfo)initWithMomentNodes:(id)nodes personNodes:(id)personNodes sceneNodes:(id)sceneNodes meaningNodes:(id)meaningNodes isTripMemory:(BOOL)memory representativeLocation:(id)location representativeDate:(id)date;
 @end
 
 @implementation PGUpNextMomentCollectionBasedMatchingInfo
@@ -25,8 +25,8 @@
 - (NSString)debugInfo
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(PGGraphMomentNodeCollection *)self->_momentNodes uuids];
-  v4 = [v2 stringWithFormat:@"Moment uuids %@", v3];
+  uuids = [(PGGraphMomentNodeCollection *)self->_momentNodes uuids];
+  v4 = [v2 stringWithFormat:@"Moment uuids %@", uuids];
 
   return v4;
 }
@@ -72,12 +72,12 @@
 
   else
   {
-    v3 = [(PGUpNextMomentCollectionBasedMatchingInfo *)self _implIsTripMemory];
-    self->_isTripMemory = v3;
+    _implIsTripMemory = [(PGUpNextMomentCollectionBasedMatchingInfo *)self _implIsTripMemory];
+    self->_isTripMemory = _implIsTripMemory;
     self->_isTripMemoryIsResolved = 1;
   }
 
-  return v3;
+  return _implIsTripMemory;
 }
 
 - (PGGraphMeaningNodeCollection)meaningNodes
@@ -125,27 +125,27 @@
   return personNodes;
 }
 
-- (PGUpNextMomentCollectionBasedMatchingInfo)initWithMomentNodes:(id)a3 personNodes:(id)a4 sceneNodes:(id)a5 meaningNodes:(id)a6 isTripMemory:(BOOL)a7 representativeLocation:(id)a8 representativeDate:(id)a9
+- (PGUpNextMomentCollectionBasedMatchingInfo)initWithMomentNodes:(id)nodes personNodes:(id)personNodes sceneNodes:(id)sceneNodes meaningNodes:(id)meaningNodes isTripMemory:(BOOL)memory representativeLocation:(id)location representativeDate:(id)date
 {
-  v24 = a3;
-  v23 = a4;
-  v22 = a5;
-  v15 = a6;
-  v16 = a8;
-  v17 = a9;
+  nodesCopy = nodes;
+  personNodesCopy = personNodes;
+  sceneNodesCopy = sceneNodes;
+  meaningNodesCopy = meaningNodes;
+  locationCopy = location;
+  dateCopy = date;
   v25.receiver = self;
   v25.super_class = PGUpNextMomentCollectionBasedMatchingInfo;
   v18 = [(PGUpNextMomentCollectionBasedMatchingInfo *)&v25 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_momentNodes, a3);
-    objc_storeStrong(&v19->_personNodes, a4);
-    objc_storeStrong(&v19->_sceneNodes, a5);
-    objc_storeStrong(&v19->_meaningNodes, a6);
-    v19->_isTripMemory = a7;
-    objc_storeStrong(&v19->_representativeLocation, a8);
-    objc_storeStrong(&v19->_representativeDate, a9);
+    objc_storeStrong(&v18->_momentNodes, nodes);
+    objc_storeStrong(&v19->_personNodes, personNodes);
+    objc_storeStrong(&v19->_sceneNodes, sceneNodes);
+    objc_storeStrong(&v19->_meaningNodes, meaningNodes);
+    v19->_isTripMemory = memory;
+    objc_storeStrong(&v19->_representativeLocation, location);
+    objc_storeStrong(&v19->_representativeDate, date);
     *&v19->_isTripMemoryIsResolved = 257;
     v19->_representativeDateIsResolved = 1;
   }
@@ -153,30 +153,30 @@
   return v19;
 }
 
-- (PGUpNextMomentCollectionBasedMatchingInfo)initWithMomentNodes:(id)a3
+- (PGUpNextMomentCollectionBasedMatchingInfo)initWithMomentNodes:(id)nodes
 {
-  v5 = a3;
+  nodesCopy = nodes;
   v9.receiver = self;
   v9.super_class = PGUpNextMomentCollectionBasedMatchingInfo;
   v6 = [(PGUpNextMomentCollectionBasedMatchingInfo *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_momentNodes, a3);
+    objc_storeStrong(&v6->_momentNodes, nodes);
   }
 
   return v7;
 }
 
-+ (id)representativeDateForMomentNodesUniversalDateInterval:(id)a3
++ (id)representativeDateForMomentNodesUniversalDateInterval:(id)interval
 {
-  v3 = a3;
-  [v3 duration];
+  intervalCopy = interval;
+  [intervalCopy duration];
   if (v4 <= 2592000.0)
   {
-    v6 = [v3 startDate];
-    [v3 duration];
-    v5 = [v6 dateByAddingTimeInterval:v7 * 0.5];
+    startDate = [intervalCopy startDate];
+    [intervalCopy duration];
+    v5 = [startDate dateByAddingTimeInterval:v7 * 0.5];
   }
 
   else
@@ -187,19 +187,19 @@
   return v5;
 }
 
-+ (id)representativeDateForMomentNodes:(id)a3
++ (id)representativeDateForMomentNodes:(id)nodes
 {
-  v4 = [a3 universalDateInterval];
-  v5 = [a1 representativeDateForMomentNodesUniversalDateInterval:v4];
+  universalDateInterval = [nodes universalDateInterval];
+  v5 = [self representativeDateForMomentNodesUniversalDateInterval:universalDateInterval];
 
   return v5;
 }
 
-+ (id)representativeLocationForLocations:(id)a3
++ (id)representativeLocationForLocations:(id)locations
 {
   v36 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 count];
+  locationsCopy = locations;
+  v4 = [locationsCopy count];
   if (v4 > 1)
   {
     v6 = v4;
@@ -207,7 +207,7 @@
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v7 = v3;
+    v7 = locationsCopy;
     v8 = [v7 countByEnumeratingWithState:&v30 objects:v35 count:16];
     if (v8)
     {
@@ -267,7 +267,7 @@
           if (v23 > 50000.0)
           {
 
-            v5 = 0;
+            firstObject = 0;
             goto LABEL_22;
           }
         }
@@ -282,94 +282,94 @@
       }
     }
 
-    v5 = v17;
+    firstObject = v17;
 LABEL_22:
   }
 
   else
   {
-    v5 = [v3 firstObject];
+    firstObject = [locationsCopy firstObject];
   }
 
   v24 = *MEMORY[0x277D85DE8];
 
-  return v5;
+  return firstObject;
 }
 
-+ (id)representativeLocationForMomentNodes:(id)a3
++ (id)representativeLocationForMomentNodes:(id)nodes
 {
-  v4 = [a3 addressNodes];
-  v5 = [v4 locations];
-  v6 = [a1 representativeLocationForLocations:v5];
+  addressNodes = [nodes addressNodes];
+  locations = [addressNodes locations];
+  v6 = [self representativeLocationForLocations:locations];
 
   return v6;
 }
 
-+ (id)representativeMeaningNodesForEligibleMeaningNodesByMomentNode:(id)a3
++ (id)representativeMeaningNodesForEligibleMeaningNodesByMomentNode:(id)node
 {
-  v3 = a3;
-  v4 = [v3 targetsWithMinimumCount:{vcvtps_u32_f32(vcvts_n_f32_u64(objc_msgSend(v3, "sourcesCount"), 2uLL))}];
+  nodeCopy = node;
+  v4 = [nodeCopy targetsWithMinimumCount:{vcvtps_u32_f32(vcvts_n_f32_u64(objc_msgSend(nodeCopy, "sourcesCount"), 2uLL))}];
 
   return v4;
 }
 
-+ (id)representativeMeaningNodesForMomentNodes:(id)a3
++ (id)representativeMeaningNodesForMomentNodes:(id)nodes
 {
   v4 = MEMORY[0x277D22BF8];
-  v5 = a3;
+  nodesCopy = nodes;
   v6 = +[PGGraphMomentNode meaningOfMoment];
   v7 = objc_opt_self();
-  v8 = [v4 adjacencyWithSources:v5 relation:v6 targetsClass:v7];
+  v8 = [v4 adjacencyWithSources:nodesCopy relation:v6 targetsClass:v7];
 
-  v9 = [v5 graph];
+  graph = [nodesCopy graph];
 
-  v10 = [PGGraphMeaningNodeCollection meaningNodesWithMeaning:16 inGraph:v9];
+  v10 = [PGGraphMeaningNodeCollection meaningNodesWithMeaning:16 inGraph:graph];
 
   v11 = [v8 subtractingTargetsWith:v10];
 
-  v12 = [a1 representativeMeaningNodesForEligibleMeaningNodesByMomentNode:v11];
+  v12 = [self representativeMeaningNodesForEligibleMeaningNodesByMomentNode:v11];
 
   return v12;
 }
 
-+ (id)representativeSceneNodesForSceneNodesByMomentNode:(id)a3
++ (id)representativeSceneNodesForSceneNodesByMomentNode:(id)node
 {
-  v3 = a3;
-  v4 = [v3 targetsWithMinimumCount:{vcvtps_u32_f32(vcvts_n_f32_u64(objc_msgSend(v3, "sourcesCount"), 2uLL))}];
+  nodeCopy = node;
+  v4 = [nodeCopy targetsWithMinimumCount:{vcvtps_u32_f32(vcvts_n_f32_u64(objc_msgSend(nodeCopy, "sourcesCount"), 2uLL))}];
 
   return v4;
 }
 
-+ (id)representativeSceneNodesForMomentNodes:(id)a3
++ (id)representativeSceneNodesForMomentNodes:(id)nodes
 {
   v4 = MEMORY[0x277D22BF8];
-  v5 = a3;
+  nodesCopy = nodes;
   v6 = +[PGGraphMomentNode sceneOfMoment];
   v7 = objc_opt_self();
-  v8 = [v4 adjacencyWithSources:v5 relation:v6 targetsClass:v7];
+  v8 = [v4 adjacencyWithSources:nodesCopy relation:v6 targetsClass:v7];
 
-  v9 = [a1 representativeSceneNodesForSceneNodesByMomentNode:v8];
+  v9 = [self representativeSceneNodesForSceneNodesByMomentNode:v8];
 
   return v9;
 }
 
-+ (id)representativePersonNodesForPersonNodesByMomentNode:(id)a3
++ (id)representativePersonNodesForPersonNodesByMomentNode:(id)node
 {
-  v3 = a3;
-  v4 = [v3 targetsWithMinimumCount:{vcvtps_u32_f32(vcvts_n_f32_u64(objc_msgSend(v3, "sourcesCount"), 2uLL))}];
+  nodeCopy = node;
+  v4 = [nodeCopy targetsWithMinimumCount:{vcvtps_u32_f32(vcvts_n_f32_u64(objc_msgSend(nodeCopy, "sourcesCount"), 2uLL))}];
 
   return v4;
 }
 
-+ (id)representativePersonNodesForMomentNodes:(id)a3
++ (id)representativePersonNodesForMomentNodes:(id)nodes
 {
   v4 = MEMORY[0x277D22BF8];
-  v5 = a3;
+  nodesCopy = nodes;
   v6 = +[PGGraphMomentNode personExcludingMeInMoment];
   v7 = objc_opt_self();
-  v8 = [v4 adjacencyWithSources:v5 relation:v6 targetsClass:v7];
+  v8 = [v4 adjacencyWithSources:nodesCopy relation:v6 targetsClass:v7];
 
-  v9 = [a1 representativePersonNodesForPersonNodesByMomentNode:v8];
+  v9 = [self representativePersonNodesForPersonNodesByMomentNode:v8];
 
   return v9;
 }

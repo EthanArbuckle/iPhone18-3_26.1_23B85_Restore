@@ -1,31 +1,31 @@
 @interface HKSimpleDataEntryMultipleChoiceItem
-- (HKSimpleDataEntryMultipleChoiceItem)initWithTitle:(id)a3 registrantModelKey:(id)a4 choices:(id)a5 choiceDisplayNames:(id)a6 defaultChoice:(id)a7;
+- (HKSimpleDataEntryMultipleChoiceItem)initWithTitle:(id)title registrantModelKey:(id)key choices:(id)choices choiceDisplayNames:(id)names defaultChoice:(id)choice;
 - (id)cell;
 - (id)formattedKeyAndValue;
-- (void)_setTextForInputTextField:(id)a3;
+- (void)_setTextForInputTextField:(id)field;
 - (void)_setupPlaceholder;
-- (void)pickerView:(id)a3 didSelectRow:(int64_t)a4 inComponent:(int64_t)a5;
+- (void)pickerView:(id)view didSelectRow:(int64_t)row inComponent:(int64_t)component;
 - (void)updateCellDisplay;
 @end
 
 @implementation HKSimpleDataEntryMultipleChoiceItem
 
-- (HKSimpleDataEntryMultipleChoiceItem)initWithTitle:(id)a3 registrantModelKey:(id)a4 choices:(id)a5 choiceDisplayNames:(id)a6 defaultChoice:(id)a7
+- (HKSimpleDataEntryMultipleChoiceItem)initWithTitle:(id)title registrantModelKey:(id)key choices:(id)choices choiceDisplayNames:(id)names defaultChoice:(id)choice
 {
-  v23 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  titleCopy = title;
+  keyCopy = key;
+  choicesCopy = choices;
+  namesCopy = names;
+  choiceCopy = choice;
   v24.receiver = self;
   v24.super_class = HKSimpleDataEntryMultipleChoiceItem;
   v17 = [(HKSimpleDataEntryMultipleChoiceItem *)&v24 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_title, a3);
-    objc_storeStrong(&v18->_registrantModelKey, a4);
-    v19 = [v14 indexOfObject:v16];
+    objc_storeStrong(&v17->_title, title);
+    objc_storeStrong(&v18->_registrantModelKey, key);
+    v19 = [choicesCopy indexOfObject:choiceCopy];
     if (v19 != 0x7FFFFFFFFFFFFFFFLL)
     {
       v20 = [MEMORY[0x1E696AD98] numberWithInteger:v19];
@@ -33,8 +33,8 @@
       v18->_chosenIndex = v20;
     }
 
-    objc_storeStrong(&v18->_choices, a5);
-    objc_storeStrong(&v18->_choiceDisplayValues, a6);
+    objc_storeStrong(&v18->_choices, choices);
+    objc_storeStrong(&v18->_choiceDisplayValues, names);
   }
 
   return v18;
@@ -60,8 +60,8 @@
     v5 = self->_cell;
     self->_cell = v4;
 
-    v6 = [(HKSimpleDataEntryPlainTextCell *)self->_cell titleLabel];
-    [v6 setText:self->_title];
+    titleLabel = [(HKSimpleDataEntryPlainTextCell *)self->_cell titleLabel];
+    [titleLabel setText:self->_title];
 
     v7 = objc_alloc_init(MEMORY[0x1E69DCD78]);
     picker = self->_picker;
@@ -71,12 +71,12 @@
     [(UIPickerView *)self->_picker setDataSource:self];
     [(UIPickerView *)self->_picker selectRow:[(NSNumber *)self->_chosenIndex integerValue] inComponent:0 animated:0];
     v9 = [HKHostingAreaLayoutView viewHostingView:self->_picker];
-    v10 = [(HKSimpleDataEntryPlainTextCell *)self->_cell inputTextField];
-    [v10 setInputView:v9];
+    inputTextField = [(HKSimpleDataEntryPlainTextCell *)self->_cell inputTextField];
+    [inputTextField setInputView:v9];
 
-    v11 = [(HKSimpleDataEntryPlainTextCell *)self->_cell inputTextField];
-    v12 = [(HKSimpleDataEntryItem *)self accessoryToolbar];
-    [v11 setInputAccessoryView:v12];
+    inputTextField2 = [(HKSimpleDataEntryPlainTextCell *)self->_cell inputTextField];
+    accessoryToolbar = [(HKSimpleDataEntryItem *)self accessoryToolbar];
+    [inputTextField2 setInputAccessoryView:accessoryToolbar];
 
     [(HKSimpleDataEntryMultipleChoiceItem *)self _setupPlaceholder];
     [(HKSimpleDataEntryMultipleChoiceItem *)self updateCellDisplay];
@@ -91,8 +91,8 @@
   chosenIndex = self->_chosenIndex;
   if (chosenIndex)
   {
-    v4 = [(NSNumber *)chosenIndex integerValue];
-    if (v4 < [(NSArray *)self->_choiceDisplayValues count])
+    integerValue = [(NSNumber *)chosenIndex integerValue];
+    if (integerValue < [(NSArray *)self->_choiceDisplayValues count])
     {
       v5 = [(NSArray *)self->_choiceDisplayValues objectAtIndexedSubscript:[(NSNumber *)self->_chosenIndex integerValue]];
       [(HKSimpleDataEntryMultipleChoiceItem *)self _setTextForInputTextField:v5];
@@ -104,51 +104,51 @@
 {
   if (![(HKSimpleDataEntryItem *)self placeholderType])
   {
-    v3 = [(HKSimpleDataEntryPlainTextCell *)self->_cell inputTextField];
+    inputTextField = [(HKSimpleDataEntryPlainTextCell *)self->_cell inputTextField];
     v4 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
     v5 = [v4 localizedStringForKey:@"OD_PLACEHOLDER_OPTIONAL" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
-    [v3 setPlaceholder:v5];
+    [inputTextField setPlaceholder:v5];
   }
 
   [(HKSimpleDataEntryMultipleChoiceItem *)self _setTextForInputTextField:0];
 }
 
-- (void)_setTextForInputTextField:(id)a3
+- (void)_setTextForInputTextField:(id)field
 {
-  v11 = a3;
-  if (-[HKSimpleDataEntryItem placeholderType](self, "placeholderType") == 1 && ![v11 length])
+  fieldCopy = field;
+  if (-[HKSimpleDataEntryItem placeholderType](self, "placeholderType") == 1 && ![fieldCopy length])
   {
-    v8 = [(HKSimpleDataEntryPlainTextCell *)self->_cell inputTextField];
+    inputTextField = [(HKSimpleDataEntryPlainTextCell *)self->_cell inputTextField];
     v9 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
     v10 = [v9 localizedStringForKey:@"OD_PICKER_CHOOSE" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
-    [v8 setText:v10];
+    [inputTextField setText:v10];
 
-    v5 = [(HKSimpleDataEntryPlainTextCell *)self->_cell inputTextField];
-    v6 = HKHealthKeyColor();
+    inputTextField2 = [(HKSimpleDataEntryPlainTextCell *)self->_cell inputTextField];
+    labelColor = HKHealthKeyColor();
   }
 
   else
   {
-    v4 = [(HKSimpleDataEntryPlainTextCell *)self->_cell inputTextField];
-    [v4 setText:v11];
+    inputTextField3 = [(HKSimpleDataEntryPlainTextCell *)self->_cell inputTextField];
+    [inputTextField3 setText:fieldCopy];
 
-    v5 = [(HKSimpleDataEntryPlainTextCell *)self->_cell inputTextField];
-    v6 = [MEMORY[0x1E69DC888] labelColor];
+    inputTextField2 = [(HKSimpleDataEntryPlainTextCell *)self->_cell inputTextField];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
   }
 
-  v7 = v6;
-  [v5 setTextColor:v6];
+  v7 = labelColor;
+  [inputTextField2 setTextColor:labelColor];
 }
 
-- (void)pickerView:(id)a3 didSelectRow:(int64_t)a4 inComponent:(int64_t)a5
+- (void)pickerView:(id)view didSelectRow:(int64_t)row inComponent:(int64_t)component
 {
-  v6 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+  v6 = [MEMORY[0x1E696AD98] numberWithInteger:row];
   chosenIndex = self->_chosenIndex;
   self->_chosenIndex = v6;
 
   [(HKSimpleDataEntryMultipleChoiceItem *)self updateCellDisplay];
-  v8 = [(HKSimpleDataEntryItem *)self delegate];
-  [v8 dataEntryItemDidUpdateValue:self];
+  delegate = [(HKSimpleDataEntryItem *)self delegate];
+  [delegate dataEntryItemDidUpdateValue:self];
 }
 
 @end

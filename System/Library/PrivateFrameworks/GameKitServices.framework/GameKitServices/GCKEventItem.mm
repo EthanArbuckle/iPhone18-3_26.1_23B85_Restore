@@ -1,6 +1,6 @@
 @interface GCKEventItem
 - (GCKEventItem)init;
-- (GCKEventItem)initWithEvent:(id *)a3 remotePeer:(unsigned int)a4;
+- (GCKEventItem)initWithEvent:(id *)event remotePeer:(unsigned int)peer;
 - (void)dealloc;
 @end
 
@@ -13,15 +13,15 @@
   return [(GCKEventItem *)&v3 init];
 }
 
-- (GCKEventItem)initWithEvent:(id *)a3 remotePeer:(unsigned int)a4
+- (GCKEventItem)initWithEvent:(id *)event remotePeer:(unsigned int)peer
 {
   v7.receiver = self;
   v7.super_class = GCKEventItem;
   result = [(GCKEventItem *)&v7 init];
   if (result)
   {
-    result->_event = a3;
-    result->_pid = a4;
+    result->_event = event;
+    result->_pid = peer;
   }
 
   return result;

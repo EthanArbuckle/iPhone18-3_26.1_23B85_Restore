@@ -11,16 +11,16 @@
 - (BOOL)_hasEmptyEdits;
 - (BOOL)_hasMultipleDistinctFormatDescriptions;
 - (BOOL)_hasScaledEdits;
-- (BOOL)_subtitleFormatDescriptionMatchesTextDisplayFlags:(unsigned int)a3 flagsMask:(unsigned int)a4;
+- (BOOL)_subtitleFormatDescriptionMatchesTextDisplayFlags:(unsigned int)flags flagsMask:(unsigned int)mask;
 - (BOOL)hasMediaCharacteristic:(AVMediaCharacteristic)mediaCharacteristic;
-- (BOOL)hasMediaCharacteristics:(id)a3;
+- (BOOL)hasMediaCharacteristics:(id)characteristics;
 - (BOOL)isDefunct;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGAffineTransform)preferredTransform;
 - (CGSize)dimensions;
 - (CGSize)naturalSize;
 - (CMTime)minFrameDuration;
-- (CMTime)samplePresentationTimeForTrackTime:(SEL)a3;
+- (CMTime)samplePresentationTimeForTrackTime:(SEL)time;
 - (CMTimeRange)timeRange;
 - (NSArray)associatedTracksOfType:(AVTrackAssociationType)trackAssociationType;
 - (NSArray)availableMetadataFormats;
@@ -28,8 +28,8 @@
 - (NSArray)metadata;
 - (NSArray)metadataForFormat:(AVMetadataFormat)format;
 - (NSString)description;
-- (id)_firstAssociatedTrackWithAssociationType:(id)a3;
-- (id)_initWithAsset:(id)a3 trackID:(int)a4 trackIndex:(int64_t)a5;
+- (id)_firstAssociatedTrackWithAssociationType:(id)type;
+- (id)_initWithAsset:(id)asset trackID:(int)d trackIndex:(int64_t)index;
 - (void)_startListeningToFigAssetTrackNotifications;
 - (void)_stopListeningToFigAssetTrackNotifications;
 - (void)dealloc;
@@ -43,14 +43,14 @@
 
 - (void)_startListeningToFigAssetTrackNotifications
 {
-  v3 = [(AVAssetTrack *)self _figAssetTrack];
-  v4 = [(AVAssetTrack *)self _weakReference];
-  if (v3)
+  _figAssetTrack = [(AVAssetTrack *)self _figAssetTrack];
+  _weakReference = [(AVAssetTrack *)self _weakReference];
+  if (_figAssetTrack)
   {
-    v5 = v4;
-    if (v4)
+    v5 = _weakReference;
+    if (_weakReference)
     {
-      self->_track->figAssetTrackNotificationSource = CFRetain(v3);
+      self->_track->figAssetTrackNotificationSource = CFRetain(_figAssetTrack);
       self->_track->figAssetTrackNotificationListenerWeakReference = CFRetain(v5);
       [AVCMNotificationDispatcher notificationDispatcherForCMNotificationCenter:CMNotificationCenterGetDefaultLocalCenter()];
       OUTLINED_FUNCTION_0_2();
@@ -85,20 +85,20 @@ void __49__AVAssetTrack_mediaCharacteristicsForMediaTypes__block_invoke()
   }
 }
 
-- (id)_initWithAsset:(id)a3 trackID:(int)a4 trackIndex:(int64_t)a5
+- (id)_initWithAsset:(id)asset trackID:(int)d trackIndex:(int64_t)index
 {
-  v6 = *&a4;
+  v6 = *&d;
   v13.receiver = self;
   v13.super_class = AVAssetTrack;
   v8 = [(AVAssetTrack *)&v13 init];
   if (v8)
   {
-    v9 = [AVAssetTrackInspector assetTrackInspectorWithAsset:a3 trackID:v6 trackIndex:a5];
+    v9 = [AVAssetTrackInspector assetTrackInspectorWithAsset:asset trackID:v6 trackIndex:index];
     if (v9 && (v10 = v9, v11 = objc_alloc_init(AVAssetTrackInternal), (v8->_track = v11) != 0))
     {
       CFRetain(v11);
       v8->_track->trackInspector = v10;
-      v8->_track->assetWeakReference = [a3 _weakReference];
+      v8->_track->assetWeakReference = [asset _weakReference];
       v8->_track->weakReferenceToSelf = [[AVWeakReference alloc] initWithReferencedObject:v8];
       [(AVAssetTrack *)v8 _startListeningToFigAssetTrackNotifications];
     }
@@ -134,16 +134,16 @@ void __49__AVAssetTrack_mediaCharacteristicsForMediaTypes__block_invoke()
   return [v3 stringWithFormat:@"<%@: %p, trackID = %d, mediaType = %@>", NSStringFromClass(v4), self, -[AVAssetTrack trackID](self, "trackID"), -[AVAssetTrack mediaType](self, "mediaType")];
 }
 
-- (BOOL)_subtitleFormatDescriptionMatchesTextDisplayFlags:(unsigned int)a3 flagsMask:(unsigned int)a4
+- (BOOL)_subtitleFormatDescriptionMatchesTextDisplayFlags:(unsigned int)flags flagsMask:(unsigned int)mask
 {
   v7 = [(NSString *)[(AVAssetTrack *)self mediaType] isEqualToString:@"sbtl"];
   if (v7)
   {
-    v8 = [(AVAssetTrack *)self formatDescriptions];
-    if ([(NSArray *)v8 count]== 1)
+    formatDescriptions = [(AVAssetTrack *)self formatDescriptions];
+    if ([(NSArray *)formatDescriptions count]== 1)
     {
       displayFlagsOut = 0;
-      v9 = [(NSArray *)v8 objectAtIndex:0];
+      v9 = [(NSArray *)formatDescriptions objectAtIndex:0];
       MediaType = CMFormatDescriptionGetMediaType(v9);
       LOBYTE(v7) = 0;
       if (MediaType == 1935832172)
@@ -155,7 +155,7 @@ void __49__AVAssetTrack_mediaCharacteristicsForMediaTypes__block_invoke()
 
         else
         {
-          v11 = (displayFlagsOut & a4) == a3;
+          v11 = (displayFlagsOut & mask) == flags;
         }
 
         LOBYTE(v7) = v11;
@@ -173,19 +173,19 @@ void __49__AVAssetTrack_mediaCharacteristicsForMediaTypes__block_invoke()
 
 - (BOOL)hasMediaCharacteristic:(AVMediaCharacteristic)mediaCharacteristic
 {
-  v4 = [(AVAssetTrackInspector *)self->_track->trackInspector mediaCharacteristics];
+  mediaCharacteristics = [(AVAssetTrackInspector *)self->_track->trackInspector mediaCharacteristics];
 
-  return [(NSArray *)v4 containsObject:mediaCharacteristic];
+  return [(NSArray *)mediaCharacteristics containsObject:mediaCharacteristic];
 }
 
-- (BOOL)hasMediaCharacteristics:(id)a3
+- (BOOL)hasMediaCharacteristics:(id)characteristics
 {
   v16 = *MEMORY[0x1E69E9840];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [a3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v5 = [characteristics countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -196,7 +196,7 @@ LABEL_3:
     {
       if (*v12 != v7)
       {
-        objc_enumerationMutation(a3);
+        objc_enumerationMutation(characteristics);
       }
 
       v9 = [(AVAssetTrack *)self hasMediaCharacteristic:*(*(&v11 + 1) + 8 * v8)];
@@ -207,7 +207,7 @@ LABEL_3:
 
       if (v6 == ++v8)
       {
-        v6 = [a3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v6 = [characteristics countByEnumeratingWithState:&v11 objects:v15 count:16];
         if (v6)
         {
           goto LABEL_3;
@@ -405,7 +405,7 @@ uint64_t __58__AVAssetTrack_loadSegmentForTrackTime_completionHandler___block_in
   return result;
 }
 
-- (CMTime)samplePresentationTimeForTrackTime:(SEL)a3
+- (CMTime)samplePresentationTimeForTrackTime:(SEL)time
 {
   result = self->_track->trackInspector;
   if (result)
@@ -469,13 +469,13 @@ uint64_t __73__AVAssetTrack_loadSamplePresentationTimeForTrackTime_completionHan
 
 - (NSArray)availableMetadataFormats
 {
-  v2 = [(AVAssetTrackInspector *)self->_track->trackInspector availableMetadataFormats];
-  if (!+[AVMetadataItem _clientExpectsISOUserDataKeysInQuickTimeUserDataKeySpace]|| ![(NSArray *)v2 containsObject:@"org.mp4ra"])
+  availableMetadataFormats = [(AVAssetTrackInspector *)self->_track->trackInspector availableMetadataFormats];
+  if (!+[AVMetadataItem _clientExpectsISOUserDataKeysInQuickTimeUserDataKeySpace]|| ![(NSArray *)availableMetadataFormats containsObject:@"org.mp4ra"])
   {
-    return v2;
+    return availableMetadataFormats;
   }
 
-  return [(NSArray *)v2 arrayByAddingObject:@"com.apple.quicktime.udta"];
+  return [(NSArray *)availableMetadataFormats arrayByAddingObject:@"com.apple.quicktime.udta"];
 }
 
 - (NSArray)metadataForFormat:(AVMetadataFormat)format
@@ -518,13 +518,13 @@ uint64_t __56__AVAssetTrack_loadMetadataForFormat_completionHandler___block_invo
 - (NSArray)metadata
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = [(AVAssetTrack *)self availableMetadataFormats];
-  v4 = [MEMORY[0x1E695DF70] array];
+  availableMetadataFormats = [(AVAssetTrack *)self availableMetadataFormats];
+  array = [MEMORY[0x1E695DF70] array];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(NSArray *)v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v5 = [(NSArray *)availableMetadataFormats countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -536,25 +536,25 @@ uint64_t __56__AVAssetTrack_loadMetadataForFormat_completionHandler___block_invo
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(availableMetadataFormats);
         }
 
-        [(NSArray *)v4 addObjectsFromArray:[(AVAssetTrack *)self metadataForFormat:*(*(&v10 + 1) + 8 * v8++)]];
+        [(NSArray *)array addObjectsFromArray:[(AVAssetTrack *)self metadataForFormat:*(*(&v10 + 1) + 8 * v8++)]];
       }
 
       while (v6 != v8);
-      v6 = [(NSArray *)v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [(NSArray *)availableMetadataFormats countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
   }
 
-  return v4;
+  return array;
 }
 
-- (id)_firstAssociatedTrackWithAssociationType:(id)a3
+- (id)_firstAssociatedTrackWithAssociationType:(id)type
 {
-  v3 = [(AVAssetTrack *)self associatedTracksOfType:a3];
+  v3 = [(AVAssetTrack *)self associatedTracksOfType:type];
   result = [(NSArray *)v3 count];
   if (result)
   {
@@ -567,9 +567,9 @@ uint64_t __56__AVAssetTrack_loadMetadataForFormat_completionHandler___block_invo
 
 - (NSArray)availableTrackAssociationTypes
 {
-  v2 = [(AVAssetTrack *)self _trackReferences];
+  _trackReferences = [(AVAssetTrack *)self _trackReferences];
 
-  return [v2 allKeys];
+  return [_trackReferences allKeys];
 }
 
 - (NSArray)associatedTracksOfType:(AVTrackAssociationType)trackAssociationType
@@ -657,7 +657,7 @@ uint64_t __61__AVAssetTrack_loadAssociatedTracksOfType_completionHandler___block
   return [(AVAssetTrackInspector *)trackInspector makeSampleCursorWithPresentationTimeStamp:&v5];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -665,10 +665,10 @@ uint64_t __61__AVAssetTrack_loadAssociatedTracksOfType_completionHandler___block
     return 0;
   }
 
-  v5 = [(AVAssetTrack *)self _assetTrackInspector];
-  v6 = [a3 _assetTrackInspector];
+  _assetTrackInspector = [(AVAssetTrack *)self _assetTrackInspector];
+  _assetTrackInspector2 = [equal _assetTrackInspector];
 
-  return [v5 isEqual:v6];
+  return [_assetTrackInspector isEqual:_assetTrackInspector2];
 }
 
 - (BOOL)_hasScaledEdits
@@ -678,8 +678,8 @@ uint64_t __61__AVAssetTrack_loadAssociatedTracksOfType_completionHandler___block
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v2 = [(AVAssetTrack *)self segments];
-  v3 = [(NSArray *)v2 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  segments = [(AVAssetTrack *)self segments];
+  v3 = [(NSArray *)segments countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v3)
   {
     v4 = v3;
@@ -691,7 +691,7 @@ uint64_t __61__AVAssetTrack_loadAssociatedTracksOfType_completionHandler___block
       {
         if (*v15 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(segments);
         }
 
         v7 = *(*(&v14 + 1) + 8 * v6);
@@ -722,7 +722,7 @@ uint64_t __61__AVAssetTrack_loadAssociatedTracksOfType_completionHandler___block
       }
 
       while (v4 != v6);
-      v3 = [(NSArray *)v2 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v3 = [(NSArray *)segments countByEnumeratingWithState:&v14 objects:v18 count:16];
       v4 = v3;
       if (v3)
       {
@@ -743,8 +743,8 @@ uint64_t __61__AVAssetTrack_loadAssociatedTracksOfType_completionHandler___block
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [(AVAssetTrack *)self segments];
-  v3 = [(NSArray *)v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  segments = [(AVAssetTrack *)self segments];
+  v3 = [(NSArray *)segments countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v3)
   {
     v4 = v3;
@@ -755,7 +755,7 @@ uint64_t __61__AVAssetTrack_loadAssociatedTracksOfType_completionHandler___block
       {
         if (*v11 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(segments);
         }
 
         v7 = *(*(&v10 + 1) + 8 * i);
@@ -772,7 +772,7 @@ uint64_t __61__AVAssetTrack_loadAssociatedTracksOfType_completionHandler___block
         return v3;
       }
 
-      v4 = [(NSArray *)v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v4 = [(NSArray *)segments countByEnumeratingWithState:&v10 objects:v14 count:16];
       LOBYTE(v3) = 0;
       if (v4)
       {
@@ -788,17 +788,17 @@ uint64_t __61__AVAssetTrack_loadAssociatedTracksOfType_completionHandler___block
 
 - (BOOL)_hasMultipleDistinctFormatDescriptions
 {
-  v2 = [(AVAssetTrack *)self formatDescriptions];
-  v3 = [(NSArray *)v2 count];
-  v4 = [(NSArray *)v2 firstObject];
+  formatDescriptions = [(AVAssetTrack *)self formatDescriptions];
+  v3 = [(NSArray *)formatDescriptions count];
+  firstObject = [(NSArray *)formatDescriptions firstObject];
   if (v3 < 2)
   {
     return 0;
   }
 
-  v5 = v4;
+  v5 = firstObject;
   v6 = 1;
-  if (CMFormatDescriptionEqual([(NSArray *)v2 objectAtIndex:1], v4))
+  if (CMFormatDescriptionEqual([(NSArray *)formatDescriptions objectAtIndex:1], firstObject))
   {
     v7 = 2;
     do
@@ -809,7 +809,7 @@ uint64_t __61__AVAssetTrack_loadAssociatedTracksOfType_completionHandler___block
         break;
       }
 
-      v9 = CMFormatDescriptionEqual([(NSArray *)v2 objectAtIndex:v7], v5);
+      v9 = CMFormatDescriptionEqual([(NSArray *)formatDescriptions objectAtIndex:v7], v5);
       v7 = v8 + 1;
     }
 
@@ -822,11 +822,11 @@ uint64_t __61__AVAssetTrack_loadAssociatedTracksOfType_completionHandler___block
 
 - (BOOL)_firstFormatDescriptionIsLPCM
 {
-  v2 = [(AVAssetTrack *)self formatDescriptions];
-  v3 = [(NSArray *)v2 count];
+  formatDescriptions = [(AVAssetTrack *)self formatDescriptions];
+  v3 = [(NSArray *)formatDescriptions count];
   if (v3)
   {
-    LOBYTE(v3) = CMFormatDescriptionGetMediaSubType([(NSArray *)v2 firstObject]) == 1819304813;
+    LOBYTE(v3) = CMFormatDescriptionGetMediaSubType([(NSArray *)formatDescriptions firstObject]) == 1819304813;
   }
 
   return v3;
@@ -834,9 +834,9 @@ uint64_t __61__AVAssetTrack_loadAssociatedTracksOfType_completionHandler___block
 
 - (BOOL)isDefunct
 {
-  v2 = [(AVAssetTrack *)self _assetTrackInspector];
+  _assetTrackInspector = [(AVAssetTrack *)self _assetTrackInspector];
 
-  return [v2 _isDefunct];
+  return [_assetTrackInspector _isDefunct];
 }
 
 - (void)_stopListeningToFigAssetTrackNotifications

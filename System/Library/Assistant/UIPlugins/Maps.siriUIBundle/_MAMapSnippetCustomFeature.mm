@@ -1,22 +1,22 @@
 @interface _MAMapSnippetCustomFeature
 - ($F24F406B2B787EFB06265DBA3D28CBD5)coordinate;
-- (_MAMapSnippetCustomFeature)initWithCustomFeature:(id)a3 coordinate:(id)a4;
+- (_MAMapSnippetCustomFeature)initWithCustomFeature:(id)feature coordinate:(id)coordinate;
 @end
 
 @implementation _MAMapSnippetCustomFeature
 
-- (_MAMapSnippetCustomFeature)initWithCustomFeature:(id)a3 coordinate:(id)a4
+- (_MAMapSnippetCustomFeature)initWithCustomFeature:(id)feature coordinate:(id)coordinate
 {
-  var1 = a4.var1;
-  var0 = a4.var0;
-  v8 = a3;
+  var1 = coordinate.var1;
+  var0 = coordinate.var0;
+  featureCopy = feature;
   v13.receiver = self;
   v13.super_class = _MAMapSnippetCustomFeature;
   v9 = [(_MAMapSnippetCustomFeature *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_feature, a3);
+    objc_storeStrong(&v9->_feature, feature);
     v10->_coordinate.latitude = var0;
     v10->_coordinate.longitude = var1;
     v10->_showsBalloonCallout = 1;

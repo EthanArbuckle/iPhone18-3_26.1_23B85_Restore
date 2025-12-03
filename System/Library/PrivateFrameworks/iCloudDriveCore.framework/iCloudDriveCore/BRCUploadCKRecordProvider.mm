@@ -1,57 +1,57 @@
 @interface BRCUploadCKRecordProvider
-- (BRCUploadCKRecordProvider)initWithStageRegistry:(id)a3 deviceID:(id)a4;
-- (id)_createFileRecordForURL:(id)a3 item:(id)a4 fileSize:(int64_t *)a5 boundaryKey:(id *)a6 error:(id *)a7;
-- (id)_createPackageRecordForURL:(id)a3 item:(id)a4 stageID:(id)a5 fileSize:(int64_t *)a6 boundaryKey:(id *)a7 error:(id *)a8;
-- (id)createCKRecordFor:(id)a3 document:(id)a4 stageID:(id)a5 mtime:(unint64_t)a6 etag:(id)a7 xattrSignature:(id)a8 transferSize:(int64_t *)a9 boundaryKey:(id *)a10 error:(id *)a11;
+- (BRCUploadCKRecordProvider)initWithStageRegistry:(id)registry deviceID:(id)d;
+- (id)_createFileRecordForURL:(id)l item:(id)item fileSize:(int64_t *)size boundaryKey:(id *)key error:(id *)error;
+- (id)_createPackageRecordForURL:(id)l item:(id)item stageID:(id)d fileSize:(int64_t *)size boundaryKey:(id *)key error:(id *)error;
+- (id)createCKRecordFor:(id)for document:(id)document stageID:(id)d mtime:(unint64_t)mtime etag:(id)etag xattrSignature:(id)signature transferSize:(int64_t *)size boundaryKey:(id *)self0 error:(id *)self1;
 @end
 
 @implementation BRCUploadCKRecordProvider
 
-- (BRCUploadCKRecordProvider)initWithStageRegistry:(id)a3 deviceID:(id)a4
+- (BRCUploadCKRecordProvider)initWithStageRegistry:(id)registry deviceID:(id)d
 {
-  v7 = a3;
-  v8 = a4;
+  registryCopy = registry;
+  dCopy = d;
   v12.receiver = self;
   v12.super_class = BRCUploadCKRecordProvider;
   v9 = [(BRCUploadCKRecordProvider *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_stageRegistry, a3);
-    objc_storeStrong(&v10->_deviceID, a4);
+    objc_storeStrong(&v9->_stageRegistry, registry);
+    objc_storeStrong(&v10->_deviceID, d);
   }
 
   return v10;
 }
 
-- (id)createCKRecordFor:(id)a3 document:(id)a4 stageID:(id)a5 mtime:(unint64_t)a6 etag:(id)a7 xattrSignature:(id)a8 transferSize:(int64_t *)a9 boundaryKey:(id *)a10 error:(id *)a11
+- (id)createCKRecordFor:(id)for document:(id)document stageID:(id)d mtime:(unint64_t)mtime etag:(id)etag xattrSignature:(id)signature transferSize:(int64_t *)size boundaryKey:(id *)self0 error:(id *)self1
 {
   v69 = *MEMORY[0x277D85DE8];
-  v16 = a3;
-  v17 = a4;
-  v58 = a5;
-  v18 = a7;
-  v19 = a8;
+  forCopy = for;
+  documentCopy = document;
+  dCopy = d;
+  etagCopy = etag;
+  signatureCopy = signature;
   v61 = 0;
-  v20 = [MEMORY[0x277CCAA00] defaultManager];
-  v21 = [v16 path];
-  LODWORD(a5) = [v20 fileExistsAtPath:v21 isDirectory:&v61];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  path = [forCopy path];
+  LODWORD(d) = [defaultManager fileExistsAtPath:path isDirectory:&v61];
 
-  if (a5)
+  if (d)
   {
     *buf = 0;
     if (v61 == 1)
     {
       v60 = 0;
       v22 = &v60;
-      v23 = [(BRCUploadCKRecordProvider *)self _createPackageRecordForURL:v16 item:v17 stageID:v58 fileSize:buf boundaryKey:&v60 error:a11];
+      v23 = [(BRCUploadCKRecordProvider *)self _createPackageRecordForURL:forCopy item:documentCopy stageID:dCopy fileSize:buf boundaryKey:&v60 error:error];
     }
 
     else
     {
       v59 = 0;
       v22 = &v59;
-      v23 = [(BRCUploadCKRecordProvider *)self _createFileRecordForURL:v16 item:v17 fileSize:buf boundaryKey:&v59 error:a11];
+      v23 = [(BRCUploadCKRecordProvider *)self _createFileRecordForURL:forCopy item:documentCopy fileSize:buf boundaryKey:&v59 error:error];
     }
 
     v28 = v23;
@@ -59,14 +59,14 @@
     v24 = v29;
     if (v28)
     {
-      if (a10)
+      if (key)
       {
         v30 = v29;
-        *a10 = v24;
+        *key = v24;
       }
 
-      v31 = [v17 shouldUseEnhancedDrivePrivacyWhenNeedsPreserving:v24 != 0];
-      if (![v28 serializeForContentUpload:v17 size:*buf mtime:a6 etag:v18 shouldUseEnhancedDrivePrivacy:v31 error:a11])
+      v31 = [documentCopy shouldUseEnhancedDrivePrivacyWhenNeedsPreserving:v24 != 0];
+      if (![v28 serializeForContentUpload:documentCopy size:*buf mtime:mtime etag:etagCopy shouldUseEnhancedDrivePrivacy:v31 error:error])
       {
 
         v42 = 0;
@@ -74,63 +74,63 @@
       }
 
       v32 = [BRCUserDefaults defaultsForMangledID:0];
-      v33 = [v32 supportsEnhancedDrivePrivacy];
+      supportsEnhancedDrivePrivacy = [v32 supportsEnhancedDrivePrivacy];
 
-      v56 = v18;
-      if (v33)
+      v56 = etagCopy;
+      if (supportsEnhancedDrivePrivacy)
       {
-        v34 = [v17 clientZone];
-        v35 = [v34 asPrivateClientZone];
-        v36 = [v17 itemID];
-        v37 = [v35 childBaseSaltForItemID:v36];
+        clientZone = [documentCopy clientZone];
+        asPrivateClientZone = [clientZone asPrivateClientZone];
+        itemID = [documentCopy itemID];
+        v37 = [asPrivateClientZone childBaseSaltForItemID:itemID];
 
-        v38 = [v17 appLibrary];
-        if ([v38 isCloudDocsAppLibrary])
+        appLibrary = [documentCopy appLibrary];
+        if ([appLibrary isCloudDocsAppLibrary])
         {
-          v39 = [v17 clientZone];
-          if ([v39 isCloudDocsZone])
+          clientZone2 = [documentCopy clientZone];
+          if ([clientZone2 isCloudDocsZone])
           {
-            v40 = [v17 parentItemIDInZone];
-            v41 = [v40 isNonDesktopRoot];
+            parentItemIDInZone = [documentCopy parentItemIDInZone];
+            isNonDesktopRoot = [parentItemIDInZone isNonDesktopRoot];
           }
 
           else
           {
-            v41 = 0;
+            isNonDesktopRoot = 0;
           }
         }
 
         else
         {
-          v41 = 0;
+          isNonDesktopRoot = 0;
         }
 
-        v43 = [v17 parentItemIDInZone];
-        v33 = [v43 isDocumentsFolder];
+        parentItemIDInZone2 = [documentCopy parentItemIDInZone];
+        supportsEnhancedDrivePrivacy = [parentItemIDInZone2 isDocumentsFolder];
       }
 
       else
       {
-        v41 = 0;
+        isNonDesktopRoot = 0;
         v37 = 0;
       }
 
-      v44 = [v17 st];
-      v45 = [v44 logicalName];
-      [v28 serializeFilename:v45 forCreation:0 basehashSalt:v37 parentIDIsCloudDocsRoot:v41 parentIDIsDocumentsFolder:v33];
+      v44 = [documentCopy st];
+      logicalName = [v44 logicalName];
+      [v28 serializeFilename:logicalName forCreation:0 basehashSalt:v37 parentIDIsCloudDocsRoot:isNonDesktopRoot parentIDIsDocumentsFolder:supportsEnhancedDrivePrivacy];
 
-      if (v19)
+      if (signatureCopy)
       {
         v55 = v37;
-        v46 = [(BRCStageRegistry *)self->_stageRegistry urlForXattrSignature:v19];
-        v18 = v56;
+        v46 = [(BRCStageRegistry *)self->_stageRegistry urlForXattrSignature:signatureCopy];
+        etagCopy = v56;
         if (v46)
         {
           v47 = [MEMORY[0x277CBC190] br_assetWithFileURL:v46 boundaryKey:v24];
           [v28 setObject:v47 forKeyedSubscript:@"xattr"];
           if (v24)
           {
-            v48 = v19;
+            v48 = signatureCopy;
           }
 
           else
@@ -138,8 +138,8 @@
             v48 = 0;
           }
 
-          v49 = [v28 encryptedValues];
-          [v49 setObject:v48 forKeyedSubscript:@"xattrSignature"];
+          encryptedValues = [v28 encryptedValues];
+          [encryptedValues setObject:v48 forKeyedSubscript:@"xattrSignature"];
 
           v50 = [v47 size];
         }
@@ -162,12 +162,12 @@
       else
       {
         v50 = 0;
-        v18 = v56;
+        etagCopy = v56;
       }
 
-      if (a9)
+      if (size)
       {
-        *a9 = *buf + v50;
+        *size = *buf + v50;
       }
     }
   }
@@ -185,7 +185,7 @@
         *buf = 136315906;
         *&buf[4] = "[BRCUploadCKRecordProvider createCKRecordFor:document:stageID:mtime:etag:xattrSignature:transferSize:boundaryKey:error:]";
         v63 = 2080;
-        if (!a11)
+        if (!error)
         {
           v54 = "(ignored by caller)";
         }
@@ -199,11 +199,11 @@
       }
     }
 
-    if (a11)
+    if (error)
     {
       v27 = v24;
       v28 = 0;
-      *a11 = v24;
+      *error = v24;
     }
 
     else
@@ -221,53 +221,53 @@ LABEL_40:
   return v42;
 }
 
-- (id)_createFileRecordForURL:(id)a3 item:(id)a4 fileSize:(int64_t *)a5 boundaryKey:(id *)a6 error:(id *)a7
+- (id)_createFileRecordForURL:(id)l item:(id)item fileSize:(int64_t *)size boundaryKey:(id *)key error:(id *)error
 {
   v50 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
+  lCopy = l;
+  itemCopy = item;
   v13 = brc_bread_crumbs();
   v14 = brc_default_log();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
-    [BRCUploadCKRecordProvider _createFileRecordForURL:v11 item:? fileSize:? boundaryKey:? error:?];
+    [BRCUploadCKRecordProvider _createFileRecordForURL:lCopy item:? fileSize:? boundaryKey:? error:?];
   }
 
-  v15 = [v12 baseRecordClearAllFields:1];
+  v15 = [itemCopy baseRecordClearAllFields:1];
   v41 = 0;
   v16 = *MEMORY[0x277CBE838];
   v40 = 0;
-  v17 = [v11 getResourceValue:&v41 forKey:v16 error:&v40];
+  v17 = [lCopy getResourceValue:&v41 forKey:v16 error:&v40];
   v18 = v41;
   v19 = v40;
   v20 = v19;
   if (v17)
   {
-    v21 = [v15 getAndUpdateBoundaryKeyForItem:v12];
-    v22 = [v12 shouldUseEnhancedDrivePrivacyWhenNeedsPreserving:v21 != 0];
-    if (a6)
+    v21 = [v15 getAndUpdateBoundaryKeyForItem:itemCopy];
+    v22 = [itemCopy shouldUseEnhancedDrivePrivacyWhenNeedsPreserving:v21 != 0];
+    if (key)
     {
       v23 = v21;
-      *a6 = v21;
+      *key = v21;
     }
 
     v39 = v20;
     v24 = v18;
-    v25 = a5;
-    if ([v12 isFinderBookmark])
+    sizeCopy = size;
+    if ([itemCopy isFinderBookmark])
     {
       if (v22)
       {
-        v26 = [MEMORY[0x277CBEA90] brc_generateSaltingKey];
+        brc_generateSaltingKey = [MEMORY[0x277CBEA90] brc_generateSaltingKey];
       }
 
       else
       {
-        v26 = 0;
+        brc_generateSaltingKey = 0;
       }
 
       v31 = kBRRecordKeyFinderBookmarkContent;
-      v21 = v26;
+      v21 = brc_generateSaltingKey;
     }
 
     else
@@ -275,16 +275,16 @@ LABEL_40:
       v31 = kBRRecordKeyFileContent;
     }
 
-    v32 = [MEMORY[0x277CBC190] br_assetWithFileURL:v11 boundaryKey:v21];
+    v32 = [MEMORY[0x277CBC190] br_assetWithFileURL:lCopy boundaryKey:v21];
     [v15 setObject:v32 forKeyedSubscript:*v31];
-    v33 = [v12 st];
-    v34 = [v33 logicalName];
-    v35 = [v34 br_pathExtension];
-    [v32 setItemTypeHint:v35];
+    v33 = [itemCopy st];
+    logicalName = [v33 logicalName];
+    br_pathExtension = [logicalName br_pathExtension];
+    [v32 setItemTypeHint:br_pathExtension];
 
-    if (v25)
+    if (sizeCopy)
     {
-      *v25 = [v24 longLongValue];
+      *sizeCopy = [v24 longLongValue];
     }
 
     v30 = v15;
@@ -306,7 +306,7 @@ LABEL_40:
         *buf = 136315906;
         v43 = "[BRCUploadCKRecordProvider _createFileRecordForURL:item:fileSize:boundaryKey:error:]";
         v44 = 2080;
-        if (!a7)
+        if (!error)
         {
           v38 = "(ignored by caller)";
         }
@@ -320,11 +320,11 @@ LABEL_40:
       }
     }
 
-    if (a7)
+    if (error)
     {
       v29 = v21;
       v30 = 0;
-      *a7 = v21;
+      *error = v21;
     }
 
     else
@@ -338,43 +338,43 @@ LABEL_40:
   return v30;
 }
 
-- (id)_createPackageRecordForURL:(id)a3 item:(id)a4 stageID:(id)a5 fileSize:(int64_t *)a6 boundaryKey:(id *)a7 error:(id *)a8
+- (id)_createPackageRecordForURL:(id)l item:(id)item stageID:(id)d fileSize:(int64_t *)size boundaryKey:(id *)key error:(id *)error
 {
   v94[2] = *MEMORY[0x277D85DE8];
-  v65 = a3;
-  v12 = a4;
-  v13 = a5;
+  lCopy = l;
+  itemCopy = item;
+  dCopy = d;
   v14 = brc_bread_crumbs();
   v15 = brc_default_log();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
   {
-    [BRCUploadCKRecordProvider _createPackageRecordForURL:v65 item:? stageID:? fileSize:? boundaryKey:? error:?];
+    [BRCUploadCKRecordProvider _createPackageRecordForURL:lCopy item:? stageID:? fileSize:? boundaryKey:? error:?];
   }
 
-  v16 = [v12 baseRecordClearAllFields:1];
-  v17 = [(BRCStageRegistry *)self->_stageRegistry createURLForUploadWithStageID:v13 name:@"brpackage"];
-  v63 = [(BRCStageRegistry *)self->_stageRegistry createURLForUploadWithStageID:v13 name:@"ckpackage"];
-  if ([v12 isFinderBookmark])
+  v16 = [itemCopy baseRecordClearAllFields:1];
+  v17 = [(BRCStageRegistry *)self->_stageRegistry createURLForUploadWithStageID:dCopy name:@"brpackage"];
+  v63 = [(BRCStageRegistry *)self->_stageRegistry createURLForUploadWithStageID:dCopy name:@"ckpackage"];
+  if ([itemCopy isFinderBookmark])
   {
     [BRCUploadCKRecordProvider _createPackageRecordForURL:item:stageID:fileSize:boundaryKey:error:];
   }
 
-  v18 = [v16 getAndUpdateBoundaryKeyForItem:v12];
+  v18 = [v16 getAndUpdateBoundaryKeyForItem:itemCopy];
   v19 = v18;
-  if (a7)
+  if (key)
   {
     v20 = v18;
-    *a7 = v19;
+    *key = v19;
   }
 
-  [v12 shouldUseEnhancedDrivePrivacyWhenNeedsPreserving:v19 != 0];
+  [itemCopy shouldUseEnhancedDrivePrivacyWhenNeedsPreserving:v19 != 0];
   v21 = [BRCPackageManifestWriter alloc];
-  v22 = [v12 clientZone];
-  v23 = [(BRCPackageManifestWriter *)v21 initWithZone:v22 stageID:v13 url:v17];
+  clientZone = [itemCopy clientZone];
+  v23 = [(BRCPackageManifestWriter *)v21 initWithZone:clientZone stageID:dCopy url:v17];
 
-  v24 = [(BRCPackageManifestWriter *)v23 error];
+  error = [(BRCPackageManifestWriter *)v23 error];
 
-  if (!v24)
+  if (!error)
   {
     *v91 = 0;
     *&v91[8] = v91;
@@ -393,7 +393,7 @@ LABEL_40:
       objc_storeStrong((v28 + 40), v79);
       if (v29)
       {
-        v59 = [[BRCLazyPackage alloc] initWithRegistry:self->_stageRegistry stageID:v13 name:@"ckpackage-xattrs" boundaryKey:v19];
+        v59 = [[BRCLazyPackage alloc] initWithRegistry:self->_stageRegistry stageID:dCopy name:@"ckpackage-xattrs" boundaryKey:v19];
         *buf = 0;
         *&buf[8] = buf;
         *&buf[16] = 0x2020000000;
@@ -406,7 +406,7 @@ LABEL_40:
         v30 = [BRCFSPackageEnumerator alloc];
         v31 = *&v91[8];
         v77 = *(*&v91[8] + 40);
-        v60 = [(BRCFSPackageEnumerator *)v30 initForURL:v65 boundaryKey:v19 error:&v77];
+        v60 = [(BRCFSPackageEnumerator *)v30 initForURL:lCopy boundaryKey:v19 error:&v77];
         objc_storeStrong((v31 + 40), v77);
         if (v60)
         {
@@ -450,12 +450,12 @@ LABEL_40:
             _os_log_error_impl(&dword_223E7A000, v37, 0x90u, "[ERROR] Fail to performTransactionBlock for package [%@] with error [%@]%@", v81, 0x20u);
           }
 
-          if (a8)
+          if (error)
           {
-            v38 = *(*&v91[8] + 40);
+            error3 = *(*&v91[8] + 40);
 LABEL_42:
             v27 = 0;
-            *a8 = v38;
+            *error = error3;
 LABEL_44:
 
             _Block_object_dispose(v78, 8);
@@ -469,21 +469,21 @@ LABEL_44:
         {
           if ([(BRCPackageManifestWriter *)v23 done])
           {
-            v46 = [(BRCLazyPackage *)v59 package];
-            if (v46)
+            package = [(BRCLazyPackage *)v59 package];
+            if (package)
             {
-              [v16 setObject:v46 forKeyedSubscript:@"pkgXattrs"];
+              [v16 setObject:package forKeyedSubscript:@"pkgXattrs"];
             }
 
             v47 = [MEMORY[0x277CBC190] br_assetWithFileURL:v17 boundaryKey:{v19, v58}];
             [v16 setObject:v62 forKeyedSubscript:@"pkgContent"];
             [v16 setObject:v47 forKeyedSubscript:@"pkgManifest"];
-            v48 = [v58 signature];
-            [v16 setObject:v48 forKeyedSubscript:@"pkgSignature"];
+            signature = [v58 signature];
+            [v16 setObject:signature forKeyedSubscript:@"pkgSignature"];
 
-            if (a6)
+            if (size)
             {
-              *a6 = *(*&buf[8] + 24);
+              *size = *(*&buf[8] + 24);
             }
 
             v27 = v16;
@@ -495,20 +495,20 @@ LABEL_44:
           v52 = brc_default_log();
           if (os_log_type_enabled(v52, 0x90u))
           {
-            v56 = [v17 path];
-            v57 = [(BRCPackageManifestWriter *)v23 error];
+            path = [v17 path];
+            error2 = [(BRCPackageManifestWriter *)v23 error];
             *v81 = 138412802;
-            v82 = v56;
+            v82 = path;
             v83 = 2112;
-            v84 = v57;
+            v84 = error2;
             v85 = 2112;
             v86 = v51;
             _os_log_error_impl(&dword_223E7A000, v52, 0x90u, "[ERROR] failed to create manifest at %@: %@%@", v81, 0x20u);
           }
 
-          if (a8)
+          if (error)
           {
-            v38 = [(BRCPackageManifestWriter *)v23 error];
+            error3 = [(BRCPackageManifestWriter *)v23 error];
             goto LABEL_42;
           }
         }
@@ -521,12 +521,12 @@ LABEL_44:
       v43 = brc_default_log();
       if (os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT))
       {
-        v44 = [v63 path];
+        path2 = [v63 path];
         v45 = *(*&v91[8] + 40);
         *buf = 138413058;
         *&buf[4] = v62;
         *&buf[12] = 2112;
-        *&buf[14] = v44;
+        *&buf[14] = path2;
         *&buf[22] = 2112;
         v88 = v45;
         v89 = 2112;
@@ -534,7 +534,7 @@ LABEL_44:
         _os_log_impl(&dword_223E7A000, v43, OS_LOG_TYPE_DEFAULT, "[WARNING] Failed to anchor package %@ at %@: %@%@", buf, 0x2Au);
       }
 
-      if (a8)
+      if (error)
       {
         v41 = *(*&v91[8] + 40);
         goto LABEL_30;
@@ -550,12 +550,12 @@ LABEL_44:
         [BRCUploadCKRecordProvider _createPackageRecordForURL:v39 item:v40 stageID:? fileSize:? boundaryKey:? error:?];
       }
 
-      if (a8)
+      if (error)
       {
         v41 = *(*&v91[8] + 40);
 LABEL_30:
         v27 = 0;
-        *a8 = v41;
+        *error = v41;
 LABEL_45:
 
         _Block_object_dispose(v91, 8);
@@ -571,21 +571,21 @@ LABEL_45:
   v26 = brc_default_log();
   if (os_log_type_enabled(v26, 0x90u))
   {
-    v49 = [v17 path];
-    v50 = [(BRCPackageManifestWriter *)v23 error];
+    path3 = [v17 path];
+    error4 = [(BRCPackageManifestWriter *)v23 error];
     *v91 = 138412802;
-    *&v91[4] = v49;
+    *&v91[4] = path3;
     *&v91[12] = 2112;
-    *&v91[14] = v50;
+    *&v91[14] = error4;
     *&v91[22] = 2112;
     v92 = v25;
     _os_log_error_impl(&dword_223E7A000, v26, 0x90u, "[ERROR] failed to create manifest at %@: %@%@", v91, 0x20u);
   }
 
-  if (a8)
+  if (error)
   {
     [(BRCPackageManifestWriter *)v23 error];
-    *a8 = v27 = 0;
+    *error = v27 = 0;
   }
 
   else

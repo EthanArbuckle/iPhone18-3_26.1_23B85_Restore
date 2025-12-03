@@ -1,5 +1,5 @@
 @interface TSCHChartFeatureLine
-- (Class)valueAxisClassForID:(id)a3 scale:(int64_t)a4;
+- (Class)valueAxisClassForID:(id)d scale:(int64_t)scale;
 - (id)categoryLabelPositioner;
 - (id)defaultDataFileName;
 - (id)genericToSpecificPropertyMap;
@@ -8,14 +8,14 @@
 
 @implementation TSCHChartFeatureLine
 
-- (Class)valueAxisClassForID:(id)a3 scale:(int64_t)a4
+- (Class)valueAxisClassForID:(id)d scale:(int64_t)scale
 {
-  v9 = objc_msgSend_type(a3, a2, v4, v5, v6);
+  v9 = objc_msgSend_type(d, a2, v4, v5, v6);
   if (v9 == 2)
   {
     v11 = objc_opt_class();
     v12 = objc_opt_class();
-    v10 = objc_msgSend_p_selectAxisClassForScale_linearClass_logClass_percentClass_(self, v13, v14, v15, v16, a4, v11, v12, 0);
+    v10 = objc_msgSend_p_selectAxisClassForScale_linearClass_logClass_percentClass_(self, v13, v14, v15, v16, scale, v11, v12, 0);
   }
 
   else if (v9 == 1)

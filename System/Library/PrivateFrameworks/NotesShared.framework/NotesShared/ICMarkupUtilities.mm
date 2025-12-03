@@ -1,34 +1,34 @@
 @interface ICMarkupUtilities
-+ (BOOL)hasPrivateImageMetadata:(id)a3;
-+ (id)cleanImageMetadataFromData:(id)a3;
++ (BOOL)hasPrivateImageMetadata:(id)metadata;
++ (id)cleanImageMetadataFromData:(id)data;
 + (id)createMarkupViewController;
-+ (id)createProcessingMarkupViewControllerOutWindow:(id *)a3;
-+ (id)imageDataWithMarkupModelData:(id)a3 sourceImageData:(id)a4 embedData:(BOOL)a5;
-+ (id)imageDataWithMarkupModelData:(id)a3 sourceImageURL:(id)a4;
-+ (id)markupModelDataFromData:(id)a3;
-+ (id)markupModelDataFromDataAtURL:(id)a3;
-+ (void)applyMarkupModelData:(id)a3 attachment:(id)a4 completionBlock:(id)a5;
-+ (void)applyReturnedMarkupURL:(id)a3 attachment:(id)a4 completionBlock:(id)a5;
-+ (void)embedReturnedMarkupURL:(id)a3 attachment:(id)a4 completionBlock:(id)a5;
-+ (void)extractReturnedMarkupURL:(id)a3 attachment:(id)a4 completionBlock:(id)a5;
++ (id)createProcessingMarkupViewControllerOutWindow:(id *)window;
++ (id)imageDataWithMarkupModelData:(id)data sourceImageData:(id)imageData embedData:(BOOL)embedData;
++ (id)imageDataWithMarkupModelData:(id)data sourceImageURL:(id)l;
++ (id)markupModelDataFromData:(id)data;
++ (id)markupModelDataFromDataAtURL:(id)l;
++ (void)applyMarkupModelData:(id)data attachment:(id)attachment completionBlock:(id)block;
++ (void)applyReturnedMarkupURL:(id)l attachment:(id)attachment completionBlock:(id)block;
++ (void)embedReturnedMarkupURL:(id)l attachment:(id)attachment completionBlock:(id)block;
++ (void)extractReturnedMarkupURL:(id)l attachment:(id)attachment completionBlock:(id)block;
 @end
 
 @implementation ICMarkupUtilities
 
-+ (BOOL)hasPrivateImageMetadata:(id)a3
++ (BOOL)hasPrivateImageMetadata:(id)metadata
 {
-  v8 = a3;
+  metadataCopy = metadata;
   Helper_x8__OBJC_CLASS___MarkupViewController = gotLoadHelper_x8__OBJC_CLASS___MarkupViewController(v3);
-  v6 = [*(v5 + 1776) hasPrivateImageMetadata:{v8, Helper_x8__OBJC_CLASS___MarkupViewController}];
+  v6 = [*(v5 + 1776) hasPrivateImageMetadata:{metadataCopy, Helper_x8__OBJC_CLASS___MarkupViewController}];
 
   return v6 & 1;
 }
 
-+ (id)cleanImageMetadataFromData:(id)a3
++ (id)cleanImageMetadataFromData:(id)data
 {
-  v8 = a3;
+  dataCopy = data;
   Helper_x8__OBJC_CLASS___MarkupViewController = gotLoadHelper_x8__OBJC_CLASS___MarkupViewController(v3);
-  v6 = [*(v5 + 1776) cleanImageMetadataFromData:{v8, Helper_x8__OBJC_CLASS___MarkupViewController}];
+  v6 = [*(v5 + 1776) cleanImageMetadataFromData:{dataCopy, Helper_x8__OBJC_CLASS___MarkupViewController}];
 
   return v6;
 }
@@ -41,7 +41,7 @@
   return v4;
 }
 
-+ (id)createProcessingMarkupViewControllerOutWindow:(id *)a3
++ (id)createProcessingMarkupViewControllerOutWindow:(id *)window
 {
   v7 = 0;
   v8 = &v7;
@@ -51,7 +51,7 @@
   v12 = 0;
   v5 = MEMORY[0x277D85DD0];
   performBlockOnMainThreadAndWait();
-  [v8[5] setEncryptPrivateMetadata:{0, v5, 3221225472, __67__ICMarkupUtilities_createProcessingMarkupViewControllerOutWindow___block_invoke, &unk_278194D98, &v7, a1}];
+  [v8[5] setEncryptPrivateMetadata:{0, v5, 3221225472, __67__ICMarkupUtilities_createProcessingMarkupViewControllerOutWindow___block_invoke, &unk_278194D98, &v7, self}];
   v3 = v8[5];
   _Block_object_dispose(&v7, 8);
 
@@ -66,14 +66,14 @@ void __67__ICMarkupUtilities_createProcessingMarkupViewControllerOutWindow___blo
   *(v3 + 40) = v2;
 }
 
-+ (id)imageDataWithMarkupModelData:(id)a3 sourceImageData:(id)a4 embedData:(BOOL)a5
++ (id)imageDataWithMarkupModelData:(id)data sourceImageData:(id)imageData embedData:(BOOL)embedData
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  embedDataCopy = embedData;
+  dataCopy = data;
+  imageDataCopy = imageData;
   v10 = objc_autoreleasePoolPush();
   v24 = 0;
-  v11 = [a1 createProcessingMarkupViewControllerOutWindow:&v24];
+  v11 = [self createProcessingMarkupViewControllerOutWindow:&v24];
   v12 = v24;
   v20[1] = MEMORY[0x277D85DD0];
   v20[2] = 3221225472;
@@ -81,13 +81,13 @@ void __67__ICMarkupUtilities_createProcessingMarkupViewControllerOutWindow___blo
   v20[4] = &unk_278194DC0;
   v13 = v11;
   v21 = v13;
-  v14 = v9;
+  v14 = imageDataCopy;
   v22 = v14;
-  v15 = v8;
+  v15 = dataCopy;
   v23 = v15;
   performBlockOnMainThreadAndWait();
   v20[0] = 0;
-  v16 = [v13 dataRepresentationEmbeddingSourceImageAndEditModel:v5 error:v20];
+  v16 = [v13 dataRepresentationEmbeddingSourceImageAndEditModel:embedDataCopy error:v20];
   v17 = v20[0];
   if (v17)
   {
@@ -103,13 +103,13 @@ void __67__ICMarkupUtilities_createProcessingMarkupViewControllerOutWindow___blo
   return v16;
 }
 
-+ (id)imageDataWithMarkupModelData:(id)a3 sourceImageURL:(id)a4
++ (id)imageDataWithMarkupModelData:(id)data sourceImageURL:(id)l
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  lCopy = l;
   v8 = objc_autoreleasePoolPush();
   v22 = 0;
-  v9 = [a1 createProcessingMarkupViewControllerOutWindow:&v22];
+  v9 = [self createProcessingMarkupViewControllerOutWindow:&v22];
   v10 = v22;
   v18[1] = MEMORY[0x277D85DD0];
   v18[2] = 3221225472;
@@ -117,9 +117,9 @@ void __67__ICMarkupUtilities_createProcessingMarkupViewControllerOutWindow___blo
   v18[4] = &unk_278194DC0;
   v11 = v9;
   v19 = v11;
-  v12 = v7;
+  v12 = lCopy;
   v20 = v12;
-  v13 = v6;
+  v13 = dataCopy;
   v21 = v13;
   performBlockOnMainThreadAndWait();
   v18[0] = 0;
@@ -139,33 +139,33 @@ void __67__ICMarkupUtilities_createProcessingMarkupViewControllerOutWindow___blo
   return v14;
 }
 
-+ (void)applyReturnedMarkupURL:(id)a3 attachment:(id)a4 completionBlock:(id)a5
++ (void)applyReturnedMarkupURL:(id)l attachment:(id)attachment completionBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  lCopy = l;
+  attachmentCopy = attachment;
+  blockCopy = block;
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;
   v22 = 0;
-  v11 = [v9 managedObjectContext];
+  managedObjectContext = [attachmentCopy managedObjectContext];
   v13 = MEMORY[0x277D85DD0];
   v14 = 3221225472;
   v15 = __71__ICMarkupUtilities_applyReturnedMarkupURL_attachment_completionBlock___block_invoke;
   v16 = &unk_278194DE8;
   v18 = &v19;
-  v12 = v9;
+  v12 = attachmentCopy;
   v17 = v12;
-  [v11 performBlockAndWait:&v13];
+  [managedObjectContext performBlockAndWait:&v13];
 
   if (*(v20 + 24) == 1)
   {
-    [a1 embedReturnedMarkupURL:v8 attachment:v12 completionBlock:{v10, v13, v14, v15, v16}];
+    [self embedReturnedMarkupURL:lCopy attachment:v12 completionBlock:{blockCopy, v13, v14, v15, v16}];
   }
 
   else
   {
-    [a1 extractReturnedMarkupURL:v8 attachment:v12 completionBlock:{v10, v13, v14, v15, v16}];
+    [self extractReturnedMarkupURL:lCopy attachment:v12 completionBlock:{blockCopy, v13, v14, v15, v16}];
   }
 
   _Block_object_dispose(&v19, 8);
@@ -178,26 +178,26 @@ uint64_t __71__ICMarkupUtilities_applyReturnedMarkupURL_attachment_completionBlo
   return result;
 }
 
-+ (void)embedReturnedMarkupURL:(id)a3 attachment:(id)a4 completionBlock:(id)a5
++ (void)embedReturnedMarkupURL:(id)l attachment:(id)attachment completionBlock:(id)block
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  [v9 startAccessingSecurityScopedResource];
-  v12 = [v10 managedObjectContext];
+  lCopy = l;
+  attachmentCopy = attachment;
+  blockCopy = block;
+  [lCopy startAccessingSecurityScopedResource];
+  managedObjectContext = [attachmentCopy managedObjectContext];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __71__ICMarkupUtilities_embedReturnedMarkupURL_attachment_completionBlock___block_invoke;
   v16[3] = &unk_278194E10;
-  v17 = v10;
-  v18 = v9;
-  v20 = a1;
+  v17 = attachmentCopy;
+  v18 = lCopy;
+  selfCopy = self;
   v21 = a2;
-  v19 = v11;
-  v13 = v11;
-  v14 = v9;
-  v15 = v10;
-  [v12 performBlockAndWait:v16];
+  v19 = blockCopy;
+  v13 = blockCopy;
+  v14 = lCopy;
+  v15 = attachmentCopy;
+  [managedObjectContext performBlockAndWait:v16];
 }
 
 void __71__ICMarkupUtilities_embedReturnedMarkupURL_attachment_completionBlock___block_invoke(uint64_t a1)
@@ -268,35 +268,35 @@ void __71__ICMarkupUtilities_embedReturnedMarkupURL_attachment_completionBlock__
   }
 }
 
-+ (void)extractReturnedMarkupURL:(id)a3 attachment:(id)a4 completionBlock:(id)a5
++ (void)extractReturnedMarkupURL:(id)l attachment:(id)attachment completionBlock:(id)block
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  [v10 startAccessingSecurityScopedResource];
-  v11 = [a1 markupModelDataFromDataAtURL:v10];
-  [v10 stopAccessingSecurityScopedResource];
+  blockCopy = block;
+  attachmentCopy = attachment;
+  lCopy = l;
+  [lCopy startAccessingSecurityScopedResource];
+  v11 = [self markupModelDataFromDataAtURL:lCopy];
+  [lCopy stopAccessingSecurityScopedResource];
 
-  [a1 applyMarkupModelData:v11 attachment:v9 completionBlock:v8];
+  [self applyMarkupModelData:v11 attachment:attachmentCopy completionBlock:blockCopy];
 }
 
-+ (void)applyMarkupModelData:(id)a3 attachment:(id)a4 completionBlock:(id)a5
++ (void)applyMarkupModelData:(id)data attachment:(id)attachment completionBlock:(id)block
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v8 managedObjectContext];
+  dataCopy = data;
+  attachmentCopy = attachment;
+  blockCopy = block;
+  managedObjectContext = [attachmentCopy managedObjectContext];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __69__ICMarkupUtilities_applyMarkupModelData_attachment_completionBlock___block_invoke;
   v14[3] = &unk_278194E38;
-  v15 = v7;
-  v16 = v8;
-  v17 = v9;
-  v11 = v9;
-  v12 = v8;
-  v13 = v7;
-  [v10 performBlockAndWait:v14];
+  v15 = dataCopy;
+  v16 = attachmentCopy;
+  v17 = blockCopy;
+  v11 = blockCopy;
+  v12 = attachmentCopy;
+  v13 = dataCopy;
+  [managedObjectContext performBlockAndWait:v14];
 }
 
 uint64_t __69__ICMarkupUtilities_applyMarkupModelData_attachment_completionBlock___block_invoke(uint64_t a1)
@@ -343,40 +343,40 @@ uint64_t __69__ICMarkupUtilities_applyMarkupModelData_attachment_completionBlock
   return result;
 }
 
-+ (id)markupModelDataFromDataAtURL:(id)a3
++ (id)markupModelDataFromDataAtURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v5 = objc_autoreleasePoolPush();
   v13 = 0;
-  v6 = [a1 createProcessingMarkupViewControllerOutWindow:&v13];
+  v6 = [self createProcessingMarkupViewControllerOutWindow:&v13];
   v7 = v13;
   v11 = v6;
-  v12 = v4;
+  v12 = lCopy;
   v8 = v6;
   performBlockOnMainThreadAndWait();
-  v9 = [v8 createArchivedModelData];
+  createArchivedModelData = [v8 createArchivedModelData];
 
   objc_autoreleasePoolPop(v5);
 
-  return v9;
+  return createArchivedModelData;
 }
 
-+ (id)markupModelDataFromData:(id)a3
++ (id)markupModelDataFromData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v5 = objc_autoreleasePoolPush();
   v13 = 0;
-  v6 = [a1 createProcessingMarkupViewControllerOutWindow:&v13];
+  v6 = [self createProcessingMarkupViewControllerOutWindow:&v13];
   v7 = v13;
   v11 = v6;
-  v12 = v4;
+  v12 = dataCopy;
   v8 = v6;
   performBlockOnMainThreadAndWait();
-  v9 = [v8 createArchivedModelData];
+  createArchivedModelData = [v8 createArchivedModelData];
 
   objc_autoreleasePoolPop(v5);
 
-  return v9;
+  return createArchivedModelData;
 }
 
 @end

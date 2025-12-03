@@ -1,27 +1,27 @@
 @interface MapsSuggestionsPredictor
-- (void)storeSignalPackData:(id)a3 forEntryData:(id)a4;
-- (void)storeSignalPackData:(id)a3 forMapItemData:(id)a4;
+- (void)storeSignalPackData:(id)data forEntryData:(id)entryData;
+- (void)storeSignalPackData:(id)data forMapItemData:(id)itemData;
 @end
 
 @implementation MapsSuggestionsPredictor
 
-- (void)storeSignalPackData:(id)a3 forMapItemData:(id)a4
+- (void)storeSignalPackData:(id)data forMapItemData:(id)itemData
 {
-  v6 = a4;
-  v8 = [MapsSuggestionsSignalPack signalPackFromData:a3];
-  v7 = [[GEOMapItemStorage alloc] initWithData:v6];
+  itemDataCopy = itemData;
+  v8 = [MapsSuggestionsSignalPack signalPackFromData:data];
+  v7 = [[GEOMapItemStorage alloc] initWithData:itemDataCopy];
 
   [(MapsSuggestionsPredictor *)self storeSignalPack:v8 forMapItem:v7 andEntry:0];
 }
 
-- (void)storeSignalPackData:(id)a3 forEntryData:(id)a4
+- (void)storeSignalPackData:(id)data forEntryData:(id)entryData
 {
-  v6 = a4;
-  v9 = [MapsSuggestionsSignalPack signalPackFromData:a3];
-  v7 = [MapsSuggestionsEntry entryWithData:v6];
+  entryDataCopy = entryData;
+  v9 = [MapsSuggestionsSignalPack signalPackFromData:data];
+  v7 = [MapsSuggestionsEntry entryWithData:entryDataCopy];
 
-  v8 = [v7 geoMapItem];
-  [(MapsSuggestionsPredictor *)self storeSignalPack:v9 forMapItem:v8 andEntry:v7];
+  geoMapItem = [v7 geoMapItem];
+  [(MapsSuggestionsPredictor *)self storeSignalPack:v9 forMapItem:geoMapItem andEntry:v7];
 }
 
 @end

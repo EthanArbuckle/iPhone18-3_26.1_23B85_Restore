@@ -1,7 +1,7 @@
 @interface REDataSourceLoaderConfiguration
 + (id)sharedInstance;
-- (BOOL)shouldLoadBundleClass:(Class)a3 forKey:(id)a4;
-- (Class)desiredClassFromBundle:(id)a3 forKey:(id)a4;
+- (BOOL)shouldLoadBundleClass:(Class)class forKey:(id)key;
+- (Class)desiredClassFromBundle:(id)bundle forKey:(id)key;
 @end
 
 @implementation REDataSourceLoaderConfiguration
@@ -25,35 +25,35 @@ uint64_t __49__REDataSourceLoaderConfiguration_sharedInstance__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (Class)desiredClassFromBundle:(id)a3 forKey:(id)a4
+- (Class)desiredClassFromBundle:(id)bundle forKey:(id)key
 {
-  v5 = a4;
-  if (!v5)
+  keyCopy = key;
+  if (!keyCopy)
   {
-    v5 = @"REPrimaryDataSourceKey";
+    keyCopy = @"REPrimaryDataSourceKey";
   }
 
-  v6 = [a3 dataSourceClassForKey:v5];
+  v6 = [bundle dataSourceClassForKey:keyCopy];
 
   return v6;
 }
 
-- (BOOL)shouldLoadBundleClass:(Class)a3 forKey:(id)a4
+- (BOOL)shouldLoadBundleClass:(Class)class forKey:(id)key
 {
-  v4 = a4;
-  if (!v4)
+  keyCopy = key;
+  if (!keyCopy)
   {
-    v4 = @"REPrimaryDataSourceKey";
+    keyCopy = @"REPrimaryDataSourceKey";
   }
 
-  if (([(__CFString *)v4 isEqualToString:@"REPrimaryDataSourceKey"]& 1) != 0)
+  if (([(__CFString *)keyCopy isEqualToString:@"REPrimaryDataSourceKey"]& 1) != 0)
   {
     v5 = 1;
   }
 
   else
   {
-    v5 = [(__CFString *)v4 isEqualToString:@"REDemoDataSourceKey"];
+    v5 = [(__CFString *)keyCopy isEqualToString:@"REDemoDataSourceKey"];
   }
 
   return v5;

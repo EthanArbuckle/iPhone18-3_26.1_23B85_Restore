@@ -1,27 +1,27 @@
 @interface CUIKUserActivityRemindersListDate
-- (CUIKUserActivityRemindersListDate)initWithDate:(id)a3;
-- (CUIKUserActivityRemindersListDate)initWithDate:(id)a3 calendar:(id)a4;
-- (CUIKUserActivityRemindersListDate)initWithDictionary:(id)a3;
+- (CUIKUserActivityRemindersListDate)initWithDate:(id)date;
+- (CUIKUserActivityRemindersListDate)initWithDate:(id)date calendar:(id)calendar;
+- (CUIKUserActivityRemindersListDate)initWithDictionary:(id)dictionary;
 - (id)dictionary;
 @end
 
 @implementation CUIKUserActivityRemindersListDate
 
-- (CUIKUserActivityRemindersListDate)initWithDate:(id)a3 calendar:(id)a4
+- (CUIKUserActivityRemindersListDate)initWithDate:(id)date calendar:(id)calendar
 {
-  v7 = a3;
-  v8 = a4;
+  dateCopy = date;
+  calendarCopy = calendar;
   v17.receiver = self;
   v17.super_class = CUIKUserActivityRemindersListDate;
   v9 = [(CUIKUserActivity *)&v17 initWithType:3];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_date, a3);
-    v11 = [CUIKDateStrings mediumStringForDate:v7 inCalendar:v8];
+    objc_storeStrong(&v9->_date, date);
+    v11 = [CUIKDateStrings mediumStringForDate:dateCopy inCalendar:calendarCopy];
     v12 = MEMORY[0x1E696AEC0];
-    v13 = [MEMORY[0x1E696AAE8] mainBundle];
-    v14 = [v13 localizedStringForKey:@"Reminders on date" value:@"Reminders on %@" table:0];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    v14 = [mainBundle localizedStringForKey:@"Reminders on date" value:@"Reminders on %@" table:0];
     v15 = [v12 localizedStringWithFormat:v14, v11];
     [(CUIKUserActivity *)v10 setActivityTitle:v15];
 
@@ -31,29 +31,29 @@
   return v10;
 }
 
-- (CUIKUserActivityRemindersListDate)initWithDate:(id)a3
+- (CUIKUserActivityRemindersListDate)initWithDate:(id)date
 {
   v4 = MEMORY[0x1E695DEE8];
-  v5 = a3;
-  v6 = [v4 currentCalendar];
-  v7 = [(CUIKUserActivityRemindersListDate *)self initWithDate:v5 calendar:v6];
+  dateCopy = date;
+  currentCalendar = [v4 currentCalendar];
+  v7 = [(CUIKUserActivityRemindersListDate *)self initWithDate:dateCopy calendar:currentCalendar];
 
   return v7;
 }
 
-- (CUIKUserActivityRemindersListDate)initWithDictionary:(id)a3
+- (CUIKUserActivityRemindersListDate)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = CUIKUserActivityRemindersListDate;
-  v5 = [(CUIKUserActivity *)&v12 initWithDictionary:v4];
+  v5 = [(CUIKUserActivity *)&v12 initWithDictionary:dictionaryCopy];
   if (!v5)
   {
     goto LABEL_5;
   }
 
   v11 = 0;
-  [objc_opt_class() _doubleFromDictionary:v4 key:@"com.apple.calendarUIKit.userActivity.date" error:&v11];
+  [objc_opt_class() _doubleFromDictionary:dictionaryCopy key:@"com.apple.calendarUIKit.userActivity.date" error:&v11];
   if ((v11 & 1) == 0)
   {
     v8 = [objc_alloc(MEMORY[0x1E695DF00]) initWithTimeIntervalSinceReferenceDate:v6];
@@ -77,8 +77,8 @@ LABEL_6:
   v3 = objc_alloc(MEMORY[0x1E695DF90]);
   v10.receiver = self;
   v10.super_class = CUIKUserActivityRemindersListDate;
-  v4 = [(CUIKUserActivity *)&v10 dictionary];
-  v5 = [v3 initWithDictionary:v4];
+  dictionary = [(CUIKUserActivity *)&v10 dictionary];
+  v5 = [v3 initWithDictionary:dictionary];
 
   v11 = @"com.apple.calendarUIKit.userActivity.date";
   v6 = MEMORY[0x1E696AD98];

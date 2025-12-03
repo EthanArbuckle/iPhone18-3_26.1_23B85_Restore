@@ -1,22 +1,22 @@
 @interface FeatureStatusPlatformFeedItemView
-- (void)didSelectCell:(id)a3 in:(id)a4;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)didSelectCell:(id)cell in:(id)in;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation FeatureStatusPlatformFeedItemView
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_1BA0BFD14(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_1BA0BFD14(change);
 }
 
-- (void)didSelectCell:(id)a3 in:(id)a4
+- (void)didSelectCell:(id)cell in:(id)in
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  cellCopy = cell;
+  inCopy = in;
+  selfCopy = self;
   sub_1BA0C1E78();
 }
 

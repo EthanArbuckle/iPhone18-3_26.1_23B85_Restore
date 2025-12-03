@@ -1,16 +1,16 @@
 @interface SiriStateObserver
-- (void)notifyObserver:(id)a3 didChangeStateFrom:(unint64_t)a4 to:(unint64_t)a5;
+- (void)notifyObserver:(id)observer didChangeStateFrom:(unint64_t)from to:(unint64_t)to;
 @end
 
 @implementation SiriStateObserver
 
-- (void)notifyObserver:(id)a3 didChangeStateFrom:(unint64_t)a4 to:(unint64_t)a5
+- (void)notifyObserver:(id)observer didChangeStateFrom:(unint64_t)from to:(unint64_t)to
 {
-  v5 = a5;
-  v6 = a4;
-  v8 = a3;
-  v9 = self;
-  SiriStateObserver.notifyObserver(_:didChangeStateFrom:to:)(v9, v6, v5);
+  toCopy = to;
+  fromCopy = from;
+  observerCopy = observer;
+  selfCopy = self;
+  SiriStateObserver.notifyObserver(_:didChangeStateFrom:to:)(selfCopy, fromCopy, toCopy);
 }
 
 @end

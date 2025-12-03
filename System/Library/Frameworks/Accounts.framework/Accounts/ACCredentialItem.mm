@@ -1,69 +1,69 @@
 @interface ACCredentialItem
 - (ACAccountStore)accountStore;
-- (ACCredentialItem)initWithAccountIdentifier:(id)a3 serviceName:(id)a4;
-- (ACCredentialItem)initWithCoder:(id)a3;
-- (ACCredentialItem)initWithManagedCredentialItem:(id)a3;
-- (ACCredentialItem)initWithManagedCredentialItem:(id)a3 accountStore:(id)a4;
+- (ACCredentialItem)initWithAccountIdentifier:(id)identifier serviceName:(id)name;
+- (ACCredentialItem)initWithCoder:(id)coder;
+- (ACCredentialItem)initWithManagedCredentialItem:(id)item;
+- (ACCredentialItem)initWithManagedCredentialItem:(id)item accountStore:(id)store;
 - (BOOL)isExpired;
 - (NSString)description;
 - (id)_encodeProtobuf;
 - (id)_encodeProtobufData;
-- (id)_initWithProtobuf:(id)a3;
-- (id)_initWithProtobufData:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_initWithProtobuf:(id)protobuf;
+- (id)_initWithProtobufData:(id)data;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)fullDescription;
-- (void)_markPropertyDirty:(id)a3;
+- (void)_markPropertyDirty:(id)dirty;
 - (void)clearDirtyProperties;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)markAllPropertiesDirty;
-- (void)setAccountIdentifier:(id)a3;
-- (void)setExpirationDate:(id)a3;
-- (void)setObjectID:(id)a3;
-- (void)setServiceName:(id)a3;
+- (void)setAccountIdentifier:(id)identifier;
+- (void)setExpirationDate:(id)date;
+- (void)setObjectID:(id)d;
+- (void)setServiceName:(id)name;
 @end
 
 @implementation ACCredentialItem
 
-- (ACCredentialItem)initWithManagedCredentialItem:(id)a3 accountStore:(id)a4
+- (ACCredentialItem)initWithManagedCredentialItem:(id)item accountStore:(id)store
 {
-  v6 = a4;
-  v7 = [(ACCredentialItem *)self initWithManagedCredentialItem:a3];
+  storeCopy = store;
+  v7 = [(ACCredentialItem *)self initWithManagedCredentialItem:item];
   v8 = v7;
   if (v7)
   {
-    objc_storeWeak(&v7->_accountStore, v6);
+    objc_storeWeak(&v7->_accountStore, storeCopy);
   }
 
   return v8;
 }
 
-- (ACCredentialItem)initWithManagedCredentialItem:(id)a3
+- (ACCredentialItem)initWithManagedCredentialItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v18.receiver = self;
   v18.super_class = ACCredentialItem;
   v5 = [(ACCredentialItem *)&v18 init];
   if (v5)
   {
-    v6 = [v4 accountIdentifier];
+    accountIdentifier = [itemCopy accountIdentifier];
     accountIdentifier = v5->_accountIdentifier;
-    v5->_accountIdentifier = v6;
+    v5->_accountIdentifier = accountIdentifier;
 
-    v8 = [v4 expirationDate];
+    expirationDate = [itemCopy expirationDate];
     expirationDate = v5->_expirationDate;
-    v5->_expirationDate = v8;
+    v5->_expirationDate = expirationDate;
 
-    v10 = [v4 serviceName];
+    serviceName = [itemCopy serviceName];
     serviceName = v5->_serviceName;
-    v5->_serviceName = v10;
+    v5->_serviceName = serviceName;
 
-    v12 = [v4 persistent];
-    v5->_persistent = [v12 BOOLValue];
+    persistent = [itemCopy persistent];
+    v5->_persistent = [persistent BOOLValue];
 
-    v13 = [v4 objectID];
-    v14 = [v13 URIRepresentation];
+    objectID = [itemCopy objectID];
+    uRIRepresentation = [objectID URIRepresentation];
     objectID = v5->_objectID;
-    v5->_objectID = v14;
+    v5->_objectID = uRIRepresentation;
 
     v16 = v5;
   }
@@ -71,20 +71,20 @@
   return v5;
 }
 
-- (ACCredentialItem)initWithAccountIdentifier:(id)a3 serviceName:(id)a4
+- (ACCredentialItem)initWithAccountIdentifier:(id)identifier serviceName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  nameCopy = name;
   v14.receiver = self;
   v14.super_class = ACCredentialItem;
   v8 = [(ACCredentialItem *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [identifierCopy copy];
     accountIdentifier = v8->_accountIdentifier;
     v8->_accountIdentifier = v9;
 
-    v11 = [v7 copy];
+    v11 = [nameCopy copy];
     serviceName = v8->_serviceName;
     v8->_serviceName = v11;
 
@@ -96,32 +96,32 @@
   return v8;
 }
 
-- (ACCredentialItem)initWithCoder:(id)a3
+- (ACCredentialItem)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v24.receiver = self;
   v24.super_class = ACCredentialItem;
   v5 = [(ACCredentialItem *)&v24 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"accountIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"accountIdentifier"];
     v7 = [v6 copy];
     accountIdentifier = v5->_accountIdentifier;
     v5->_accountIdentifier = v7;
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"expirationDate"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"expirationDate"];
     expirationDate = v5->_expirationDate;
     v5->_expirationDate = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"serviceName"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"serviceName"];
     v12 = [v11 copy];
     serviceName = v5->_serviceName;
     v5->_serviceName = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"persistent"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"persistent"];
     v5->_persistent = [v14 BOOLValue];
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"objectID"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"objectID"];
     v16 = [v15 copy];
     objectID = v5->_objectID;
     v5->_objectID = v16;
@@ -129,7 +129,7 @@
     v18 = MEMORY[0x1E695DFD8];
     v19 = objc_opt_class();
     v20 = [v18 setWithObjects:{v19, objc_opt_class(), 0}];
-    v21 = [v4 decodeObjectOfClasses:v20 forKey:@"dirtyProperties"];
+    v21 = [coderCopy decodeObjectOfClasses:v20 forKey:@"dirtyProperties"];
     dirtyProperties = v5->_dirtyProperties;
     v5->_dirtyProperties = v21;
   }
@@ -137,69 +137,69 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(ACCredentialItem *)self accountIdentifier];
-  [v4 encodeObject:v5 forKey:@"accountIdentifier"];
+  coderCopy = coder;
+  accountIdentifier = [(ACCredentialItem *)self accountIdentifier];
+  [coderCopy encodeObject:accountIdentifier forKey:@"accountIdentifier"];
 
-  v6 = [(ACCredentialItem *)self expirationDate];
-  [v4 encodeObject:v6 forKey:@"expirationDate"];
+  expirationDate = [(ACCredentialItem *)self expirationDate];
+  [coderCopy encodeObject:expirationDate forKey:@"expirationDate"];
 
-  v7 = [(ACCredentialItem *)self serviceName];
-  [v4 encodeObject:v7 forKey:@"serviceName"];
+  serviceName = [(ACCredentialItem *)self serviceName];
+  [coderCopy encodeObject:serviceName forKey:@"serviceName"];
 
   v8 = [MEMORY[0x1E696AD98] numberWithBool:{-[ACCredentialItem isPersistent](self, "isPersistent")}];
-  [v4 encodeObject:v8 forKey:@"persistent"];
+  [coderCopy encodeObject:v8 forKey:@"persistent"];
 
-  v9 = [(ACCredentialItem *)self objectID];
-  [v4 encodeObject:v9 forKey:@"objectID"];
+  objectID = [(ACCredentialItem *)self objectID];
+  [coderCopy encodeObject:objectID forKey:@"objectID"];
 
-  v10 = [(ACCredentialItem *)self dirtyProperties];
-  [v4 encodeObject:v10 forKey:@"dirtyProperties"];
+  dirtyProperties = [(ACCredentialItem *)self dirtyProperties];
+  [coderCopy encodeObject:dirtyProperties forKey:@"dirtyProperties"];
 }
 
-- (id)_initWithProtobuf:(id)a3
+- (id)_initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v5 = [(ACCredentialItem *)self init];
   if (v5)
   {
-    v6 = v4;
-    v7 = [v6 accountIdentifier];
-    v8 = [v7 copy];
+    v6 = protobufCopy;
+    accountIdentifier = [v6 accountIdentifier];
+    v8 = [accountIdentifier copy];
     accountIdentifier = v5->_accountIdentifier;
     v5->_accountIdentifier = v8;
 
     if ([v6 hasExpirationDate])
     {
-      v10 = [v6 expirationDate];
-      v11 = [v10 date];
+      expirationDate = [v6 expirationDate];
+      date = [expirationDate date];
       expirationDate = v5->_expirationDate;
-      v5->_expirationDate = v11;
+      v5->_expirationDate = date;
     }
 
-    v13 = [v6 serviceName];
-    v14 = [v13 copy];
+    serviceName = [v6 serviceName];
+    v14 = [serviceName copy];
     serviceName = v5->_serviceName;
     v5->_serviceName = v14;
 
     v5->_persistent = [v6 isPersistent];
     if ([v6 hasObjectID])
     {
-      v16 = [v6 objectID];
-      v17 = [v16 url];
+      objectID = [v6 objectID];
+      v17 = [objectID url];
       objectID = v5->_objectID;
       v5->_objectID = v17;
     }
 
-    v19 = [v6 dirtyProperties];
+    dirtyProperties = [v6 dirtyProperties];
 
-    if (v19)
+    if (dirtyProperties)
     {
       v20 = objc_alloc(MEMORY[0x1E695DFA8]);
-      v21 = [v6 dirtyProperties];
-      v22 = [v20 initWithArray:v21];
+      dirtyProperties2 = [v6 dirtyProperties];
+      v22 = [v20 initWithArray:dirtyProperties2];
       dirtyProperties = v5->_dirtyProperties;
       v5->_dirtyProperties = v22;
     }
@@ -210,35 +210,35 @@
   return v5;
 }
 
-- (id)_initWithProtobufData:(id)a3
+- (id)_initWithProtobufData:(id)data
 {
-  v5 = a3;
-  if (![v5 length])
+  dataCopy = data;
+  if (![dataCopy length])
   {
     [(ACCredentialItem *)a2 _initWithProtobufData:?];
   }
 
-  if ([v5 length])
+  if ([dataCopy length])
   {
-    v6 = [[ACProtobufCredentialItem alloc] initWithData:v5];
+    v6 = [[ACProtobufCredentialItem alloc] initWithData:dataCopy];
     if (v6)
     {
       self = [(ACCredentialItem *)self _initWithProtobuf:v6];
-      v7 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v7 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
 - (id)_encodeProtobuf
@@ -253,9 +253,9 @@
   v5 = [[ACProtobufURL alloc] initWithURL:self->_objectID];
   [v3 setObjectID:v5];
 
-  v6 = [(ACCredentialItem *)self dirtyProperties];
-  v7 = [v6 allObjects];
-  v8 = [v7 mutableCopy];
+  dirtyProperties = [(ACCredentialItem *)self dirtyProperties];
+  allObjects = [dirtyProperties allObjects];
+  v8 = [allObjects mutableCopy];
   [v3 setDirtyProperties:v8];
 
   return v3;
@@ -263,18 +263,18 @@
 
 - (id)_encodeProtobufData
 {
-  v2 = [(ACCredentialItem *)self _encodeProtobuf];
-  v3 = [v2 data];
+  _encodeProtobuf = [(ACCredentialItem *)self _encodeProtobuf];
+  data = [_encodeProtobuf data];
 
-  return v3;
+  return data;
 }
 
 - (NSString)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(ACCredentialItem *)self accountIdentifier];
-  v5 = [(ACCredentialItem *)self serviceName];
-  v6 = [v3 stringWithFormat:@"%@ (%@)", v4, v5];
+  accountIdentifier = [(ACCredentialItem *)self accountIdentifier];
+  serviceName = [(ACCredentialItem *)self serviceName];
+  v6 = [v3 stringWithFormat:@"%@ (%@)", accountIdentifier, serviceName];
 
   return v6;
 }
@@ -282,9 +282,9 @@
 - (id)fullDescription
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(ACCredentialItem *)self accountIdentifier];
-  v5 = [(ACCredentialItem *)self expirationDate];
-  v6 = [(ACCredentialItem *)self serviceName];
+  accountIdentifier = [(ACCredentialItem *)self accountIdentifier];
+  expirationDate = [(ACCredentialItem *)self expirationDate];
+  serviceName = [(ACCredentialItem *)self serviceName];
   if ([(ACCredentialItem *)self isPersistent])
   {
     v7 = @"YES";
@@ -295,45 +295,45 @@
     v7 = @"NO";
   }
 
-  v8 = [(ACCredentialItem *)self objectID];
-  v9 = [v3 stringWithFormat:@"accountIdentifier: %@\nexpirationDate: %@\nserviceName: %@\npersistent: %@\nobjectID: %@", v4, v5, v6, v7, v8];
+  objectID = [(ACCredentialItem *)self objectID];
+  v9 = [v3 stringWithFormat:@"accountIdentifier: %@\nexpirationDate: %@\nserviceName: %@\npersistent: %@\nobjectID: %@", accountIdentifier, expirationDate, serviceName, v7, objectID];
 
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_accountIdentifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_accountIdentifier copyWithZone:zone];
   v7 = *(v5 + 8);
   *(v5 + 8) = v6;
 
-  v8 = [(NSDate *)self->_expirationDate copyWithZone:a3];
+  v8 = [(NSDate *)self->_expirationDate copyWithZone:zone];
   v9 = *(v5 + 16);
   *(v5 + 16) = v8;
 
-  v10 = [(NSString *)self->_serviceName copyWithZone:a3];
+  v10 = [(NSString *)self->_serviceName copyWithZone:zone];
   v11 = *(v5 + 24);
   *(v5 + 24) = v10;
 
   *(v5 + 32) = self->_persistent;
-  v12 = [(NSURL *)self->_objectID copyWithZone:a3];
+  v12 = [(NSURL *)self->_objectID copyWithZone:zone];
   v13 = *(v5 + 40);
   *(v5 + 40) = v12;
 
   WeakRetained = objc_loadWeakRetained(&self->_accountStore);
   objc_storeWeak((v5 + 48), WeakRetained);
 
-  v15 = [(NSMutableSet *)self->_dirtyProperties mutableCopyWithZone:a3];
+  v15 = [(NSMutableSet *)self->_dirtyProperties mutableCopyWithZone:zone];
   v16 = *(v5 + 56);
   *(v5 + 56) = v15;
 
   return v5;
 }
 
-- (void)setAccountIdentifier:(id)a3
+- (void)setAccountIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   accountIdentifier = self->_accountIdentifier;
   self->_accountIdentifier = v4;
 
@@ -343,31 +343,31 @@
 - (BOOL)isExpired
 {
   expirationDate = self->_expirationDate;
-  v3 = [MEMORY[0x1E695DF00] date];
-  LOBYTE(expirationDate) = [(NSDate *)expirationDate compare:v3]!= NSOrderedDescending;
+  date = [MEMORY[0x1E695DF00] date];
+  LOBYTE(expirationDate) = [(NSDate *)expirationDate compare:date]!= NSOrderedDescending;
 
   return expirationDate;
 }
 
-- (void)setExpirationDate:(id)a3
+- (void)setExpirationDate:(id)date
 {
-  objc_storeStrong(&self->_expirationDate, a3);
+  objc_storeStrong(&self->_expirationDate, date);
 
   [(ACCredentialItem *)self _markPropertyDirty:@"expirationDate"];
 }
 
-- (void)setServiceName:(id)a3
+- (void)setServiceName:(id)name
 {
-  v4 = [a3 copy];
+  v4 = [name copy];
   serviceName = self->_serviceName;
   self->_serviceName = v4;
 
   [(ACCredentialItem *)self _markPropertyDirty:@"serviceName"];
 }
 
-- (void)setObjectID:(id)a3
+- (void)setObjectID:(id)d
 {
-  objc_storeStrong(&self->_objectID, a3);
+  objc_storeStrong(&self->_objectID, d);
 
   [(ACCredentialItem *)self _markPropertyDirty:@"objectID"];
 }
@@ -382,22 +382,22 @@
   [(ACCredentialItem *)self _markPropertyDirty:@"objectID"];
 }
 
-- (void)_markPropertyDirty:(id)a3
+- (void)_markPropertyDirty:(id)dirty
 {
-  v4 = a3;
+  dirtyCopy = dirty;
   dirtyProperties = self->_dirtyProperties;
-  v8 = v4;
+  v8 = dirtyCopy;
   if (!dirtyProperties)
   {
     v6 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:1];
     v7 = self->_dirtyProperties;
     self->_dirtyProperties = v6;
 
-    v4 = v8;
+    dirtyCopy = v8;
     dirtyProperties = self->_dirtyProperties;
   }
 
-  [(NSMutableSet *)dirtyProperties addObject:v4];
+  [(NSMutableSet *)dirtyProperties addObject:dirtyCopy];
 }
 
 - (void)clearDirtyProperties

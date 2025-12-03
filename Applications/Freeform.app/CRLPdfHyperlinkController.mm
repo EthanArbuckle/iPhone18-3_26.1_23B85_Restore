@@ -1,23 +1,23 @@
 @interface CRLPdfHyperlinkController
-- (BOOL)ignoreUrl:(id)a3;
+- (BOOL)ignoreUrl:(id)url;
 - (CGRect)taggingRect;
-- (CRLPdfHyperlinkController)initWithTaggingRect:(CGRect)a3;
-- (id)p_chopBezierIntoRects:(id)a3;
-- (id)p_hyperlinkRegionsForRep:(id)a3;
+- (CRLPdfHyperlinkController)initWithTaggingRect:(CGRect)rect;
+- (id)p_chopBezierIntoRects:(id)rects;
+- (id)p_hyperlinkRegionsForRep:(id)rep;
 - (id)p_taggingRectPath;
-- (void)addHyperlinksForRep:(id)a3;
-- (void)crl_commitHyperlinksToPDF:(CGContext *)a3 targetRect:(CGRect)a4;
-- (void)p_combineSimilarElements:(id)a3;
+- (void)addHyperlinksForRep:(id)rep;
+- (void)crl_commitHyperlinksToPDF:(CGContext *)f targetRect:(CGRect)rect;
+- (void)p_combineSimilarElements:(id)elements;
 @end
 
 @implementation CRLPdfHyperlinkController
 
-- (CRLPdfHyperlinkController)initWithTaggingRect:(CGRect)a3
+- (CRLPdfHyperlinkController)initWithTaggingRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v11.receiver = self;
   v11.super_class = CRLPdfHyperlinkController;
   v7 = [(CRLPdfHyperlinkController *)&v11 init];
@@ -36,10 +36,10 @@
   return v7;
 }
 
-- (BOOL)ignoreUrl:(id)a3
+- (BOOL)ignoreUrl:(id)url
 {
-  v3 = [a3 absoluteString];
-  v4 = v3 == 0;
+  absoluteString = [url absoluteString];
+  v4 = absoluteString == 0;
 
   return v4;
 }
@@ -72,21 +72,21 @@
   return v3;
 }
 
-- (void)addHyperlinksForRep:(id)a3
+- (void)addHyperlinksForRep:(id)rep
 {
-  v4 = [(CRLPdfHyperlinkController *)self p_hyperlinkRegionsForRep:a3];
+  v4 = [(CRLPdfHyperlinkController *)self p_hyperlinkRegionsForRep:rep];
   if ([v4 count])
   {
     [(NSMutableArray *)self->mHyperlinkRegions addObjectsFromArray:v4];
   }
 }
 
-- (void)crl_commitHyperlinksToPDF:(CGContext *)a3 targetRect:(CGRect)a4
+- (void)crl_commitHyperlinksToPDF:(CGContext *)f targetRect:(CGRect)rect
 {
-  height = a4.size.height;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v32 = [(CRLPdfHyperlinkController *)self p_taggingRectPath:a4.origin.x];
+  height = rect.size.height;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v32 = [(CRLPdfHyperlinkController *)self p_taggingRectPath:rect.origin.x];
   v9 = [(NSMutableArray *)self->mHyperlinkRegions count];
   if (v9)
   {
@@ -100,12 +100,12 @@
       v14 = [v13 URL];
       if (v14 && ![(CRLPdfHyperlinkController *)self ignoreUrl:v14])
       {
-        v15 = [v13 bezierPath];
-        v16 = v15;
+        bezierPath = [v13 bezierPath];
+        v16 = bezierPath;
         v33 = v12;
         if (v32)
         {
-          v17 = [v15 intersectBezierPath:?];
+          v17 = [bezierPath intersectBezierPath:?];
 
           v16 = v17;
         }
@@ -129,7 +129,7 @@
             v35.origin.y = height - (v26 - y) - v30;
             v35.size.width = v28;
             v35.size.height = v30;
-            CGPDFContextSetURLForRect(a3, v14, v35);
+            CGPDFContextSetURLForRect(f, v14, v35);
           }
         }
 
@@ -147,15 +147,15 @@
   [(NSMutableArray *)self->mHyperlinkRegions removeAllObjects];
 }
 
-- (id)p_hyperlinkRegionsForRep:(id)a3
+- (id)p_hyperlinkRegionsForRep:(id)rep
 {
-  v3 = a3;
-  v4 = [v3 hyperlinkRegions];
+  repCopy = rep;
+  hyperlinkRegions = [repCopy hyperlinkRegions];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v5 = [hyperlinkRegions countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v5)
   {
     v6 = v5;
@@ -166,15 +166,15 @@
       {
         if (*v17 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(hyperlinkRegions);
         }
 
-        v9 = [*(*(&v16 + 1) + 8 * i) bezierPath];
-        v10 = [v3 layout];
-        v11 = v10;
-        if (v10)
+        bezierPath = [*(*(&v16 + 1) + 8 * i) bezierPath];
+        layout = [repCopy layout];
+        v11 = layout;
+        if (layout)
         {
-          [v10 transformInRoot];
+          [layout transformInRoot];
         }
 
         else
@@ -184,24 +184,24 @@
           v13 = 0u;
         }
 
-        [v9 transformUsingAffineTransform:&v13];
+        [bezierPath transformUsingAffineTransform:&v13];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v6 = [hyperlinkRegions countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v6);
   }
 
-  return v4;
+  return hyperlinkRegions;
 }
 
-- (id)p_chopBezierIntoRects:(id)a3
+- (id)p_chopBezierIntoRects:(id)rects
 {
-  v3 = a3;
-  if ([v3 elementCount])
+  rectsCopy = rects;
+  if ([rectsCopy elementCount])
   {
-    [v3 bounds];
+    [rectsCopy bounds];
     v5 = v4;
     v7 = v6;
     v9 = v8;
@@ -211,7 +211,7 @@
     do
     {
       v14 = [CRLBezierPath bezierPathWithRect:v5, v7 + v13, v9, 5.0];
-      v15 = [v3 intersectBezierPath:v14];
+      v15 = [rectsCopy intersectBezierPath:v14];
       if (([v15 isEmpty] & 1) == 0)
       {
         v16 = [v15 arrayOfSubpathsWithEffectivelyEmptySubpathsRemoved:1];
@@ -250,28 +250,28 @@
   return v12;
 }
 
-- (void)p_combineSimilarElements:(id)a3
+- (void)p_combineSimilarElements:(id)elements
 {
-  v26 = a3;
-  if (v26)
+  elementsCopy = elements;
+  if (elementsCopy)
   {
-    if ([v26 count])
+    if ([elementsCopy count])
     {
-      v3 = [v26 count];
+      v3 = [elementsCopy count];
       v4 = v3 - 1;
       if (v3 != 1)
       {
         v25 = 0.000000999999997;
         do
         {
-          v5 = [v26 objectAtIndex:{v4 - 1, *&v25}];
+          v5 = [elementsCopy objectAtIndex:{v4 - 1, *&v25}];
           [v5 CGRectValue];
           v7 = v6;
           v9 = v8;
           v11 = v10;
           v13 = v12;
 
-          v14 = [v26 objectAtIndex:v4];
+          v14 = [elementsCopy objectAtIndex:v4];
           [v14 CGRectValue];
           v16 = v15;
           v18 = v17;
@@ -283,9 +283,9 @@
             v23 = v9 + v13;
             if (v9 + v13 == v18 || (v23 = vabdd_f64(v23, v18), v23 < fabs(v18 * v25)))
             {
-              [v26 removeObjectAtIndex:{v4, v23}];
+              [elementsCopy removeObjectAtIndex:{v4, v23}];
               v24 = [NSValue valueWithCGRect:v7, v9, v11, v13 + v22];
-              [v26 replaceObjectAtIndex:v4 - 1 withObject:v24];
+              [elementsCopy replaceObjectAtIndex:v4 - 1 withObject:v24];
             }
           }
 

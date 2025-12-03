@@ -1,102 +1,102 @@
 @interface VCSessionErrorUtils
-+ (id)VCSessionCaptionsErrorEvent:(unsigned int)a3 errorPath:(id)a4 returnCode:(int64_t)a5;
-+ (id)VCSessionErrorEvent:(unsigned int)a3 errorPath:(id)a4 returnCode:(int64_t)a5;
-+ (id)VCSessionParticipantErrorEvent:(unsigned int)a3 errorPath:(id)a4;
++ (id)VCSessionCaptionsErrorEvent:(unsigned int)event errorPath:(id)path returnCode:(int64_t)code;
++ (id)VCSessionErrorEvent:(unsigned int)event errorPath:(id)path returnCode:(int64_t)code;
++ (id)VCSessionParticipantErrorEvent:(unsigned int)event errorPath:(id)path;
 @end
 
 @implementation VCSessionErrorUtils
 
-+ (id)VCSessionErrorEvent:(unsigned int)a3 errorPath:(id)a4 returnCode:(int64_t)a5
++ (id)VCSessionErrorEvent:(unsigned int)event errorPath:(id)path returnCode:(int64_t)code
 {
-  switch(a3)
+  switch(event)
   {
     case 1u:
       v11 = MEMORY[0x1E696ABC0];
-      v9 = @"Add participant failed";
+      code = @"Add participant failed";
       v10 = @"Remote participant already exist in session";
       v12 = 32016;
       v13 = 1;
       goto LABEL_22;
     case 2u:
       v11 = MEMORY[0x1E696ABC0];
-      v9 = @"Add participant failed";
+      code = @"Add participant failed";
       v10 = @"Remote participant data is nil";
       v12 = 32016;
       v13 = 2;
       goto LABEL_22;
     case 3u:
       v11 = MEMORY[0x1E696ABC0];
-      v9 = @"Trying to remove an unknown participant";
+      code = @"Trying to remove an unknown participant";
       v10 = @"Invalid participant";
       v12 = 32016;
       v13 = 3;
       goto LABEL_22;
     case 4u:
       v11 = MEMORY[0x1E696ABC0];
-      v9 = @"Bad API usage";
+      code = @"Bad API usage";
       v10 = @"Start called on a stopping session";
       v12 = 32028;
       v13 = 4;
       goto LABEL_22;
     case 5u:
       v11 = MEMORY[0x1E696ABC0];
-      v9 = @"Bad API usage";
+      code = @"Bad API usage";
       v10 = @"Stop called on a starting session";
       v12 = 32028;
       v13 = 5;
       goto LABEL_22;
     case 6u:
       v11 = MEMORY[0x1E696ABC0];
-      v9 = @"Bad API usage";
+      code = @"Bad API usage";
       v10 = @"Start called while session is already in progress";
       v12 = 32028;
       v13 = 6;
       goto LABEL_22;
     case 7u:
       v11 = MEMORY[0x1E696ABC0];
-      v9 = @"Bad API usage";
+      code = @"Bad API usage";
       v10 = @"Stop called on an already stopped session";
       v12 = 32028;
       v13 = 7;
       goto LABEL_22;
     case 8u:
       v11 = MEMORY[0x1E696ABC0];
-      v9 = @"Session start failed";
+      code = @"Session start failed";
       v10 = @"One or more participants failed to start";
       v12 = 32000;
       v13 = 8;
       goto LABEL_22;
     case 9u:
       v11 = MEMORY[0x1E696ABC0];
-      v9 = @"Add participant failed";
+      code = @"Add participant failed";
       v10 = @"Remote source collision detected";
       v12 = 32024;
       v13 = 9;
       goto LABEL_22;
     case 0xAu:
       v11 = MEMORY[0x1E696ABC0];
-      v9 = @"Add participant failed";
+      code = @"Add participant failed";
       v10 = @"Local source collision detected";
       v12 = 32024;
       v13 = 10;
       goto LABEL_22;
     case 0xBu:
       v11 = MEMORY[0x1E696ABC0];
-      v9 = @"Update configuration failed";
+      code = @"Update configuration failed";
       v10 = @"Failed to update session configuration";
       v12 = 32016;
       v13 = 11;
       goto LABEL_22;
     case 0xCu:
       v11 = MEMORY[0x1E696ABC0];
-      v9 = @"Media decryption failed";
+      code = @"Media decryption failed";
       v10 = @"Remote media decryption failed";
       v12 = 32018;
       v13 = 12;
       goto LABEL_22;
     case 0xDu:
       v11 = MEMORY[0x1E696ABC0];
-      v9 = @"Fractured media detected";
+      code = @"Fractured media detected";
       v10 = @"Remote participant subscribed to unknown stream ID";
       v12 = 32027;
       v13 = 13;
@@ -105,12 +105,12 @@
     case 0x18u:
     case 0x19u:
       v7 = MEMORY[0x1E696ABC0];
-      v8 = a3;
-      v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"No remote packets for %ld seconds", a5];
+      eventCopy = event;
+      code = [MEMORY[0x1E696AEC0] stringWithFormat:@"No remote packets for %ld seconds", code];
       v10 = @"Remote network outage?";
       v11 = v7;
       v12 = 32001;
-      v13 = v8;
+      v13 = eventCopy;
       goto LABEL_22;
     case 0xFu:
       v14 = MEMORY[0x1E696ABC0];
@@ -169,23 +169,23 @@
       v18 = 22;
 LABEL_29:
 
-      return [v14 AVConferenceServiceError:v17 detailedCode:v18 filePath:a4 description:v15 reason:v16];
+      return [v14 AVConferenceServiceError:v17 detailedCode:v18 filePath:path description:v15 reason:v16];
     case 0x17u:
       v11 = MEMORY[0x1E696ABC0];
-      v9 = @"Call failed";
+      code = @"Call failed";
       v10 = @"Media server terminated";
       v12 = 32000;
       v13 = 23;
       goto LABEL_22;
     case 0x1Au:
       v11 = MEMORY[0x1E696ABC0];
-      v9 = @"Short MKI detected when 'shortMKI' feature disabled";
+      code = @"Short MKI detected when 'shortMKI' feature disabled";
       v10 = @"MKI collision detected";
       v12 = 32041;
       v13 = 26;
 LABEL_22:
 
-      result = [v11 AVConferenceServiceError:v12 detailedCode:v13 returnCode:a5 filePath:a4 description:v9 reason:v10];
+      result = [v11 AVConferenceServiceError:v12 detailedCode:v13 returnCode:code filePath:path description:code reason:v10];
       break;
     default:
       result = 0;
@@ -195,9 +195,9 @@ LABEL_22:
   return result;
 }
 
-+ (id)VCSessionParticipantErrorEvent:(unsigned int)a3 errorPath:(id)a4
++ (id)VCSessionParticipantErrorEvent:(unsigned int)event errorPath:(id)path
 {
-  switch(a3)
+  switch(event)
   {
     case 1u:
       v5 = MEMORY[0x1E696ABC0];
@@ -311,7 +311,7 @@ LABEL_22:
       v8 = 16;
       v9 = 16;
 LABEL_3:
-      result = [v5 AVConferenceServiceError:v8 detailedCode:v9 filePath:a4 description:v6 reason:v7];
+      result = [v5 AVConferenceServiceError:v8 detailedCode:v9 filePath:path description:v6 reason:v7];
       break;
     default:
       result = 0;
@@ -321,95 +321,95 @@ LABEL_3:
   return result;
 }
 
-+ (id)VCSessionCaptionsErrorEvent:(unsigned int)a3 errorPath:(id)a4 returnCode:(int64_t)a5
++ (id)VCSessionCaptionsErrorEvent:(unsigned int)event errorPath:(id)path returnCode:(int64_t)code
 {
-  if (a3 > 5)
+  if (event > 5)
   {
-    if (a3 <= 7)
+    if (event <= 7)
     {
       v6 = MEMORY[0x1E696ABC0];
-      if (a3 == 6)
+      if (event == 6)
       {
         v7 = @"Speech Analyzer Error";
         v8 = @"Analyzer is unavailable";
-        v9 = 6;
+        eventCopy = 6;
       }
 
       else
       {
         v7 = @"Captions Initalization Error";
         v8 = @"Recognizer Request/Task or Converter Failed";
-        v9 = 7;
+        eventCopy = 7;
       }
 
-      return [v6 AVConferenceServiceError:32016 detailedCode:v9 returnCode:a5 filePath:a4 description:v7 reason:v8];
+      return [v6 AVConferenceServiceError:32016 detailedCode:eventCopy returnCode:code filePath:path description:v7 reason:v8];
     }
 
-    switch(a3)
+    switch(event)
     {
       case 8u:
         v6 = MEMORY[0x1E696ABC0];
         v7 = @"Speech Translator Client Error";
         v8 = @"Speech Translation Client Initialization Failed.";
-        v9 = 8;
-        return [v6 AVConferenceServiceError:32016 detailedCode:v9 returnCode:a5 filePath:a4 description:v7 reason:v8];
+        eventCopy = 8;
+        return [v6 AVConferenceServiceError:32016 detailedCode:eventCopy returnCode:code filePath:path description:v7 reason:v8];
       case 9u:
         v6 = MEMORY[0x1E696ABC0];
         v7 = @"Speech Translator Client Error";
         v8 = @"Speech Translation Client Start Failed.";
-        v9 = 9;
-        return [v6 AVConferenceServiceError:32016 detailedCode:v9 returnCode:a5 filePath:a4 description:v7 reason:v8];
+        eventCopy = 9;
+        return [v6 AVConferenceServiceError:32016 detailedCode:eventCopy returnCode:code filePath:path description:v7 reason:v8];
       case 0xAu:
         v6 = MEMORY[0x1E696ABC0];
         v7 = @"Captions Initialization Error";
         v8 = @"Configuration Failed";
-        v9 = 10;
-        return [v6 AVConferenceServiceError:32016 detailedCode:v9 returnCode:a5 filePath:a4 description:v7 reason:v8];
+        eventCopy = 10;
+        return [v6 AVConferenceServiceError:32016 detailedCode:eventCopy returnCode:code filePath:path description:v7 reason:v8];
     }
   }
 
   else
   {
-    if (a3 > 2)
+    if (event > 2)
     {
-      if (a3 == 3)
+      if (event == 3)
       {
         v6 = MEMORY[0x1E696ABC0];
         v7 = @"Invalid captions state transition";
         v8 = @"Unsupported transition";
-        v9 = 3;
-        return [v6 AVConferenceServiceError:32016 detailedCode:v9 returnCode:a5 filePath:a4 description:v7 reason:v8];
+        eventCopy = 3;
+        return [v6 AVConferenceServiceError:32016 detailedCode:eventCopy returnCode:code filePath:path description:v7 reason:v8];
       }
 
-      if (a3 != 4)
+      if (event != 4)
       {
         v6 = MEMORY[0x1E696ABC0];
         v7 = @"Speech Recognizer Error";
         v8 = @"Recognizer is unavailable";
-        v9 = 5;
-        return [v6 AVConferenceServiceError:32016 detailedCode:v9 returnCode:a5 filePath:a4 description:v7 reason:v8];
+        eventCopy = 5;
+        return [v6 AVConferenceServiceError:32016 detailedCode:eventCopy returnCode:code filePath:path description:v7 reason:v8];
       }
 
 LABEL_17:
       v6 = MEMORY[0x1E696ABC0];
-      v9 = a3;
+      eventCopy = event;
       v7 = @"Speech Recognizer Error";
       v8 = @"The Speech Framework is unavailable";
-      return [v6 AVConferenceServiceError:32016 detailedCode:v9 returnCode:a5 filePath:a4 description:v7 reason:v8];
+      return [v6 AVConferenceServiceError:32016 detailedCode:eventCopy returnCode:code filePath:path description:v7 reason:v8];
     }
 
-    if (a3 == 1)
+    if (event == 1)
     {
       goto LABEL_17;
     }
 
-    if (a3 == 2)
+    if (event == 2)
     {
       v6 = MEMORY[0x1E696ABC0];
       v7 = @"Captions State Transition Failed";
       v8 = @"Captions not supported";
-      v9 = 2;
-      return [v6 AVConferenceServiceError:32016 detailedCode:v9 returnCode:a5 filePath:a4 description:v7 reason:v8];
+      eventCopy = 2;
+      return [v6 AVConferenceServiceError:32016 detailedCode:eventCopy returnCode:code filePath:path description:v7 reason:v8];
     }
   }
 

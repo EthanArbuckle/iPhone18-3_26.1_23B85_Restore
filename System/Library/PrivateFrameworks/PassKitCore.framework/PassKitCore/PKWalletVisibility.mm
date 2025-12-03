@@ -119,11 +119,11 @@ void __44__PKWalletVisibility_updateWalletVisibility__block_invoke_2(uint64_t a1
 
 + (BOOL)isWalletRestricted
 {
-  v2 = [MEMORY[0x1E69ADFC8] sharedManager];
-  v3 = [v2 unionValuesForFeature:*MEMORY[0x1E69ADDE8]];
+  mEMORY[0x1E69ADFC8] = [MEMORY[0x1E69ADFC8] sharedManager];
+  v3 = [mEMORY[0x1E69ADFC8] unionValuesForFeature:*MEMORY[0x1E69ADDE8]];
 
-  LOBYTE(v2) = [v3 containsObject:@"com.apple.Passbook"];
-  return v2;
+  LOBYTE(mEMORY[0x1E69ADFC8]) = [v3 containsObject:@"com.apple.Passbook"];
+  return mEMORY[0x1E69ADFC8];
 }
 
 + (id)setOfActiveRestrictionUUIDs

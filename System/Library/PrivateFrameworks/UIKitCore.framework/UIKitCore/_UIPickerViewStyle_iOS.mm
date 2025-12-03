@@ -1,49 +1,49 @@
 @interface _UIPickerViewStyle_iOS
-- (BOOL)sizeIsValid:(CGSize)a3;
+- (BOOL)sizeIsValid:(CGSize)valid;
 - (CATransform3D)perspectiveTransform;
-- (CATransform3D)transformForCellAtY:(SEL)a3 inBounds:(double)a4 rowHeight:(CGRect)a5 selectionBarRect:(double)a6;
-- (CGSize)defaultSizeForTraitCollection:(id)a3;
-- (CGSize)sizeThatFits:(CGSize)a3 forTraitCollection:(id)a4;
-- (double)_yForY:(double)a3 inBounds:(CGRect)a4 rowHeight:(double)a5;
-- (double)_zForUnitY:(double)a3 inBounds:(CGRect)a4 rowHeight:(double)a5;
-- (double)defaultRowHeightForSize:(CGSize)a3;
-- (double)horizontalBiasForEndTablesWithColumnFrame:(CGRect)a3 tableFrame:(CGRect)a4;
+- (CATransform3D)transformForCellAtY:(SEL)y inBounds:(double)bounds rowHeight:(CGRect)height selectionBarRect:(double)rect;
+- (CGSize)defaultSizeForTraitCollection:(id)collection;
+- (CGSize)sizeThatFits:(CGSize)fits forTraitCollection:(id)collection;
+- (double)_yForY:(double)y inBounds:(CGRect)bounds rowHeight:(double)height;
+- (double)_zForUnitY:(double)y inBounds:(CGRect)bounds rowHeight:(double)height;
+- (double)defaultRowHeightForSize:(CGSize)size;
+- (double)horizontalBiasForEndTablesWithColumnFrame:(CGRect)frame tableFrame:(CGRect)tableFrame;
 - (double)horizontalPaddingForCenterHighlightView;
 - (double)horizontalPaddingForContents;
 - (id)createCenterHighlightView;
-- (void)configureMaskGradientLayer:(id)a3;
+- (void)configureMaskGradientLayer:(id)layer;
 @end
 
 @implementation _UIPickerViewStyle_iOS
 
-- (CGSize)defaultSizeForTraitCollection:(id)a3
+- (CGSize)defaultSizeForTraitCollection:(id)collection
 {
-  v3 = a3;
+  collectionCopy = collection;
   if (!dyld_program_sdk_at_least())
   {
     v6 = +[UIDevice currentDevice];
-    v7 = [v6 userInterfaceIdiom];
+    userInterfaceIdiom = [v6 userInterfaceIdiom];
 
-    if ((v7 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+    if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
     {
       v5 = 0x4074000000000000;
     }
 
     else
     {
-      v8 = [v3 verticalSizeClass];
-      v9 = [objc_opt_self() mainScreen];
-      v10 = v9;
-      if (v8 == 1)
+      verticalSizeClass = [collectionCopy verticalSizeClass];
+      mainScreen = [objc_opt_self() mainScreen];
+      v10 = mainScreen;
+      if (verticalSizeClass == 1)
       {
-        [v9 _boundsForInterfaceOrientation:4];
+        [mainScreen _boundsForInterfaceOrientation:4];
         v5 = v11;
 
         v4 = 162.0;
         goto LABEL_12;
       }
 
-      [v9 _boundsForInterfaceOrientation:1];
+      [mainScreen _boundsForInterfaceOrientation:1];
       v5 = v12;
     }
 
@@ -51,7 +51,7 @@
     goto LABEL_12;
   }
 
-  if ([v3 verticalSizeClass] == 1)
+  if ([collectionCopy verticalSizeClass] == 1)
   {
     v4 = 162.0;
   }
@@ -71,11 +71,11 @@ LABEL_12:
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3 forTraitCollection:(id)a4
+- (CGSize)sizeThatFits:(CGSize)fits forTraitCollection:(id)collection
 {
-  height = a3.height;
-  width = a3.width;
-  [(_UIPickerViewStyle_iOS *)self defaultSizeForTraitCollection:a4];
+  height = fits.height;
+  width = fits.width;
+  [(_UIPickerViewStyle_iOS *)self defaultSizeForTraitCollection:collection];
   if (height != 0.0)
   {
     v7 = 216.0;
@@ -95,9 +95,9 @@ LABEL_12:
   return result;
 }
 
-- (BOOL)sizeIsValid:(CGSize)a3
+- (BOOL)sizeIsValid:(CGSize)valid
 {
-  height = a3.height;
+  height = valid.height;
   if (dyld_program_sdk_at_least())
   {
     return 1;
@@ -112,10 +112,10 @@ LABEL_12:
   return height == 162.0 || v5;
 }
 
-- (double)defaultRowHeightForSize:(CGSize)a3
+- (double)defaultRowHeightForSize:(CGSize)size
 {
   result = 32.0;
-  if (a3.height < 216.0)
+  if (size.height < 216.0)
   {
     return 24.0;
   }
@@ -142,29 +142,29 @@ LABEL_12:
   return self;
 }
 
-- (void)configureMaskGradientLayer:(id)a3
+- (void)configureMaskGradientLayer:(id)layer
 {
   v11[6] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  layerCopy = layer;
   v4 = [UIColor colorWithWhite:0.0 alpha:0.0];
-  v5 = [v4 CGColor];
+  cGColor = [v4 CGColor];
 
   v6 = [UIColor colorWithWhite:0.0 alpha:0.71];
-  v7 = [v6 CGColor];
+  cGColor2 = [v6 CGColor];
 
   v8 = [UIColor colorWithWhite:0.0 alpha:0.8];
-  v9 = [v8 CGColor];
+  cGColor3 = [v8 CGColor];
 
-  v11[0] = v5;
-  v11[1] = v7;
-  v11[2] = v9;
-  v11[3] = v9;
-  v11[4] = v7;
-  v11[5] = v5;
+  v11[0] = cGColor;
+  v11[1] = cGColor2;
+  v11[2] = cGColor3;
+  v11[3] = cGColor3;
+  v11[4] = cGColor2;
+  v11[5] = cGColor;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:6];
-  [v3 setColors:v10];
+  [layerCopy setColors:v10];
 
-  [v3 setLocations:&unk_1EFE2C178];
+  [layerCopy setLocations:&unk_1EFE2C178];
 }
 
 - (id)createCenterHighlightView
@@ -209,29 +209,29 @@ LABEL_12:
   return result;
 }
 
-- (double)_zForUnitY:(double)a3 inBounds:(CGRect)a4 rowHeight:(double)a5
+- (double)_zForUnitY:(double)y inBounds:(CGRect)bounds rowHeight:(double)height
 {
-  height = a4.size.height;
-  [(_UIPickerViewStyle_iOS *)self _viewYForUnitY:a3 inBounds:?];
+  height = bounds.size.height;
+  [(_UIPickerViewStyle_iOS *)self _viewYForUnitY:y inBounds:?];
   [_UIPickerViewStyle_iOS _rotationForCellCenterY:"_rotationForCellCenterY:inBounds:rowHeight:" inBounds:? rowHeight:?];
   *&v7 = v7;
   return height / 3.14159265 * 1.05 * cosf(*&v7) - height / 3.14159265 * 1.05;
 }
 
-- (double)_yForY:(double)a3 inBounds:(CGRect)a4 rowHeight:(double)a5
+- (double)_yForY:(double)y inBounds:(CGRect)bounds rowHeight:(double)height
 {
-  height = a4.size.height;
-  [(_UIPickerViewStyle_iOS *)self _rotationForCellCenterY:a3 inBounds:a4.origin.x rowHeight:a4.origin.y, a4.size.width, a4.size.height, a5];
+  height = bounds.size.height;
+  [(_UIPickerViewStyle_iOS *)self _rotationForCellCenterY:y inBounds:bounds.origin.x rowHeight:bounds.origin.y, bounds.size.width, bounds.size.height, height];
   *&v6 = v6;
   return height / -3.14159265 * 1.05 * sinf(*&v6);
 }
 
-- (CATransform3D)transformForCellAtY:(SEL)a3 inBounds:(double)a4 rowHeight:(CGRect)a5 selectionBarRect:(double)a6
+- (CATransform3D)transformForCellAtY:(SEL)y inBounds:(double)bounds rowHeight:(CGRect)height selectionBarRect:(double)rect
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
+  height = height.size.height;
+  width = height.size.width;
+  y = height.origin.y;
+  x = height.origin.x;
   v15 = MEMORY[0x1E69792E8];
   v45 = *(MEMORY[0x1E69792E8] + 80);
   v46 = *(MEMORY[0x1E69792E8] + 64);
@@ -250,18 +250,18 @@ LABEL_12:
   *&retstr->m21 = v40;
   *&retstr->m23 = v39;
   memset(&v52, 0, sizeof(v52));
-  [(_UIPickerViewStyle_iOS *)self _rotationForCellCenterY:a4 inBounds:a5.origin.x rowHeight:?];
+  [(_UIPickerViewStyle_iOS *)self _rotationForCellCenterY:bounds inBounds:height.origin.x rowHeight:?];
   CATransform3DMakeRotation(&v52, v16, 1.0, 0.0, 0.0);
   memset(&v51, 0, sizeof(v51));
-  [(_UIPickerViewStyle_iOS *)self _distanceToCenterForY:a4 inBounds:x, y, width, height];
+  [(_UIPickerViewStyle_iOS *)self _distanceToCenterForY:bounds inBounds:x, y, width, height];
   CATransform3DMakeTranslation(&v51, 0.0, v17, 0.0);
   memset(&v50, 0, sizeof(v50));
-  [(_UIPickerViewStyle_iOS *)self _yForY:a4 inBounds:x rowHeight:y, width, height, a6];
+  [(_UIPickerViewStyle_iOS *)self _yForY:bounds inBounds:x rowHeight:y, width, height, rect];
   v19 = v18;
-  [(_UIPickerViewStyle_iOS *)self _unitYForViewY:a4 inBounds:x, y, width, height];
+  [(_UIPickerViewStyle_iOS *)self _unitYForViewY:bounds inBounds:x, y, width, height];
   [_UIPickerViewStyle_iOS _zForUnitY:"_zForUnitY:inBounds:rowHeight:" inBounds:? rowHeight:?];
   CATransform3DMakeTranslation(&v50, 0.0, v19, v20);
-  result = [(_UIPickerViewStyle_iOS *)self _distanceToCenterForY:a4 inBounds:x, y, width, height];
+  result = [(_UIPickerViewStyle_iOS *)self _distanceToCenterForY:bounds inBounds:x, y, width, height];
   if (fabs(v22) > a7.size.height * 0.5)
   {
     *&a.m31 = v46;
@@ -331,12 +331,12 @@ LABEL_12:
   return result;
 }
 
-- (double)horizontalBiasForEndTablesWithColumnFrame:(CGRect)a3 tableFrame:(CGRect)a4
+- (double)horizontalBiasForEndTablesWithColumnFrame:(CGRect)frame tableFrame:(CGRect)tableFrame
 {
-  width = a4.size.width;
-  x = a4.origin.x;
-  v6 = a3.size.width;
-  MidX = CGRectGetMidX(a3);
+  width = tableFrame.size.width;
+  x = tableFrame.origin.x;
+  v6 = frame.size.width;
+  MidX = CGRectGetMidX(frame);
   v8 = 0.0;
   if (floor(width) > ceil(v6 / 3.0))
   {

@@ -1,47 +1,47 @@
 @interface EKCalendarShareeOrOwner
-+ (id)ownerForEKCalendar:(id)a3;
-+ (id)shareeWithEKSharee:(id)a3 forCalendar:(id)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)ownerForEKCalendar:(id)calendar;
++ (id)shareeWithEKSharee:(id)sharee forCalendar:(id)calendar;
+- (BOOL)isEqual:(id)equal;
 - (unint64_t)hash;
 @end
 
 @implementation EKCalendarShareeOrOwner
 
-+ (id)shareeWithEKSharee:(id)a3 forCalendar:(id)a4
++ (id)shareeWithEKSharee:(id)sharee forCalendar:(id)calendar
 {
-  v6 = a3;
-  v7 = a4;
-  v21.receiver = a1;
+  shareeCopy = sharee;
+  calendarCopy = calendar;
+  v21.receiver = self;
   v21.super_class = &OBJC_METACLASS___EKCalendarShareeOrOwner;
   v8 = [objc_msgSendSuper2(&v21 alloc)];
-  v9 = [v6 name];
-  [v8 setName:v9];
+  name = [shareeCopy name];
+  [v8 setName:name];
 
-  v10 = [v6 emailAddress];
-  [v8 setEmailAddress:v10];
+  emailAddress = [shareeCopy emailAddress];
+  [v8 setEmailAddress:emailAddress];
 
-  v11 = [v6 phoneNumber];
-  [v8 setPhoneNumber:v11];
+  phoneNumber = [shareeCopy phoneNumber];
+  [v8 setPhoneNumber:phoneNumber];
 
-  v12 = [v6 firstName];
-  [v8 setFirstName:v12];
+  firstName = [shareeCopy firstName];
+  [v8 setFirstName:firstName];
 
-  v13 = [v6 lastName];
-  [v8 setLastName:v13];
+  lastName = [shareeCopy lastName];
+  [v8 setLastName:lastName];
 
-  v14 = [v6 URL];
+  v14 = [shareeCopy URL];
   [v8 setURL:v14];
 
-  v15 = [v6 UUID];
+  uUID = [shareeCopy UUID];
   v16 = *(v8 + 16);
-  *(v8 + 16) = v15;
+  *(v8 + 16) = uUID;
 
-  if ([v7 sharingStatus])
+  if ([calendarCopy sharingStatus])
   {
-    v17 = [v7 source];
-    v18 = [v17 ownerAddresses];
-    v19 = [v6 address];
-    *(v8 + 8) = [v18 containsObject:v19];
+    source = [calendarCopy source];
+    ownerAddresses = [source ownerAddresses];
+    address = [shareeCopy address];
+    *(v8 + 8) = [ownerAddresses containsObject:address];
   }
 
   else
@@ -52,37 +52,37 @@
   return v8;
 }
 
-+ (id)ownerForEKCalendar:(id)a3
++ (id)ownerForEKCalendar:(id)calendar
 {
-  v4 = a3;
-  if ([v4 sharingStatus])
+  calendarCopy = calendar;
+  if ([calendarCopy sharingStatus])
   {
-    v15.receiver = a1;
+    v15.receiver = self;
     v15.super_class = &OBJC_METACLASS___EKCalendarShareeOrOwner;
     v5 = [objc_msgSendSuper2(&v15 alloc)];
-    v6 = [v4 ownerIdentityDisplayName];
-    [v5 setName:v6];
+    ownerIdentityDisplayName = [calendarCopy ownerIdentityDisplayName];
+    [v5 setName:ownerIdentityDisplayName];
 
-    v7 = [v4 ownerIdentityEmail];
-    [v5 setEmailAddress:v7];
+    ownerIdentityEmail = [calendarCopy ownerIdentityEmail];
+    [v5 setEmailAddress:ownerIdentityEmail];
 
-    v8 = [v4 ownerIdentityPhoneNumber];
-    [v5 setPhoneNumber:v8];
+    ownerIdentityPhoneNumber = [calendarCopy ownerIdentityPhoneNumber];
+    [v5 setPhoneNumber:ownerIdentityPhoneNumber];
 
-    v9 = [v4 ownerIdentityFirstName];
-    [v5 setFirstName:v9];
+    ownerIdentityFirstName = [calendarCopy ownerIdentityFirstName];
+    [v5 setFirstName:ownerIdentityFirstName];
 
-    v10 = [v4 ownerIdentityLastName];
-    [v5 setLastName:v10];
+    ownerIdentityLastName = [calendarCopy ownerIdentityLastName];
+    [v5 setLastName:ownerIdentityLastName];
 
-    v11 = [v4 ownerIdentityAddress];
-    [v5 setURL:v11];
+    ownerIdentityAddress = [calendarCopy ownerIdentityAddress];
+    [v5 setURL:ownerIdentityAddress];
 
-    v12 = [v4 uniqueIdentifier];
+    uniqueIdentifier = [calendarCopy uniqueIdentifier];
     v13 = *(v5 + 16);
-    *(v5 + 16) = v12;
+    *(v5 + 16) = uniqueIdentifier;
 
-    *(v5 + 8) = [v4 sharingStatus] == 1;
+    *(v5 + 8) = [calendarCopy sharingStatus] == 1;
   }
 
   else
@@ -93,26 +93,26 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (!equalCopy)
   {
     goto LABEL_5;
   }
 
-  if (v4 == self)
+  if (equalCopy == self)
   {
     v8 = 1;
     goto LABEL_7;
   }
 
-  if ([(EKCalendarShareeOrOwner *)v4 conformsToProtocol:&unk_1F1B8DAB0])
+  if ([(EKCalendarShareeOrOwner *)equalCopy conformsToProtocol:&unk_1F1B8DAB0])
   {
-    v6 = [(EKCalendarShareeOrOwner *)v5 UUID];
-    v7 = [(EKCalendarShareeOrOwner *)self UUID];
-    v8 = [v6 isEqualToString:v7];
+    uUID = [(EKCalendarShareeOrOwner *)v5 UUID];
+    uUID2 = [(EKCalendarShareeOrOwner *)self UUID];
+    v8 = [uUID isEqualToString:uUID2];
   }
 
   else
@@ -128,8 +128,8 @@ LABEL_7:
 
 - (unint64_t)hash
 {
-  v2 = [(EKCalendarShareeOrOwner *)self UUID];
-  v3 = [v2 hash];
+  uUID = [(EKCalendarShareeOrOwner *)self UUID];
+  v3 = [uUID hash];
 
   return v3;
 }

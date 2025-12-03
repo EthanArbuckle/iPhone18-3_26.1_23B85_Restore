@@ -1,5 +1,5 @@
 @interface _NSFileAccessAsynchronousProcessAssertion
-- (_NSFileAccessAsynchronousProcessAssertion)initWithPID:(int)a3 name:(id)a4;
+- (_NSFileAccessAsynchronousProcessAssertion)initWithPID:(int)d name:(id)name;
 - (void)beginAssertion;
 - (void)dealloc;
 - (void)invalidate;
@@ -45,7 +45,7 @@
   [(_NSFileAccessAsynchronousProcessAssertion *)&v3 dealloc];
 }
 
-- (_NSFileAccessAsynchronousProcessAssertion)initWithPID:(int)a3 name:(id)a4
+- (_NSFileAccessAsynchronousProcessAssertion)initWithPID:(int)d name:(id)name
 {
   v10 = *MEMORY[0x1E69E9840];
   v9.receiver = self;
@@ -54,8 +54,8 @@
   v7 = v6;
   if (v6)
   {
-    v6->_pid = a3;
-    v6->_name = [a4 copy];
+    v6->_pid = d;
+    v6->_name = [name copy];
   }
 
   return v7;

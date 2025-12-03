@@ -1,16 +1,16 @@
 @interface _PKPeerPaymentFraudUIFactory
-+ (id)fraudUIViewControllerFor:(id)a3 continuationHandler:(id)a4;
++ (id)fraudUIViewControllerFor:(id)for continuationHandler:(id)handler;
 - (_PKPeerPaymentFraudUIFactory)init;
 @end
 
 @implementation _PKPeerPaymentFraudUIFactory
 
-+ (id)fraudUIViewControllerFor:(id)a3 continuationHandler:(id)a4
++ (id)fraudUIViewControllerFor:(id)for continuationHandler:(id)handler
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(handler);
   _Block_copy(v5);
-  v6 = a3;
-  sub_1BD4207CC(v6, v5);
+  forCopy = for;
+  sub_1BD4207CC(forCopy, v5);
   v8 = v7;
   _Block_release(v5);
   _Block_release(v5);

@@ -1,24 +1,24 @@
 @interface _CNUIUserActionCurator
 - (CNContactStore)contactStore;
 - (CNLSApplicationWorkspace)applicationWorkspace;
-- (_CNUIUserActionCurator)initWithContactStore:(id)a3 applicationWorkspace:(id)a4;
-- (id)curateUserAction:(id)a3 withKeysToFetch:(id)a4;
+- (_CNUIUserActionCurator)initWithContactStore:(id)store applicationWorkspace:(id)workspace;
+- (id)curateUserAction:(id)action withKeysToFetch:(id)fetch;
 @end
 
 @implementation _CNUIUserActionCurator
 
-- (_CNUIUserActionCurator)initWithContactStore:(id)a3 applicationWorkspace:(id)a4
+- (_CNUIUserActionCurator)initWithContactStore:(id)store applicationWorkspace:(id)workspace
 {
-  v7 = a3;
-  v8 = a4;
+  storeCopy = store;
+  workspaceCopy = workspace;
   v13.receiver = self;
   v13.super_class = _CNUIUserActionCurator;
   v9 = [(_CNUIUserActionCurator *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_contactStore, a3);
-    objc_storeStrong(&v10->_applicationWorkspace, a4);
+    objc_storeStrong(&v9->_contactStore, store);
+    objc_storeStrong(&v10->_applicationWorkspace, workspace);
     v11 = v10;
   }
 
@@ -58,36 +58,36 @@
   return applicationWorkspace;
 }
 
-- (id)curateUserAction:(id)a3 withKeysToFetch:(id)a4
+- (id)curateUserAction:(id)action withKeysToFetch:(id)fetch
 {
   v103[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 contactProperty];
-  v8 = [v7 contact];
-  v9 = [v8 hasBeenPersisted];
+  actionCopy = action;
+  fetchCopy = fetch;
+  contactProperty = [actionCopy contactProperty];
+  contact = [contactProperty contact];
+  hasBeenPersisted = [contact hasBeenPersisted];
 
-  if ((v9 & 1) == 0)
+  if ((hasBeenPersisted & 1) == 0)
   {
     v22 = +[CNUICoreLogProvider actions_os_log];
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
     {
-      [_CNUIUserActionCurator curateUserAction:v5 withKeysToFetch:?];
+      [_CNUIUserActionCurator curateUserAction:actionCopy withKeysToFetch:?];
     }
 
     goto LABEL_23;
   }
 
-  if ([v5 isSuggested])
+  if ([actionCopy isSuggested])
   {
     v10 = objc_alloc_init(MEMORY[0x1E695CFA8]);
-    v11 = [v5 contactProperty];
-    v12 = [v11 labeledValue];
-    [v10 confirmSuggestion:v12];
+    contactProperty2 = [actionCopy contactProperty];
+    labeledValue = [contactProperty2 labeledValue];
+    [v10 confirmSuggestion:labeledValue];
 
-    v13 = [(_CNUIUserActionCurator *)self contactStore];
+    contactStore = [(_CNUIUserActionCurator *)self contactStore];
     v93 = 0;
-    v14 = [v13 executeSaveRequest:v10 error:&v93];
+    v14 = [contactStore executeSaveRequest:v10 error:&v93];
     v15 = v93;
 
     if ((v14 & 1) == 0)
@@ -95,46 +95,46 @@
       v16 = +[CNUICoreLogProvider actions_os_log];
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
       {
-        [(_CNUIUserActionCurator *)v15 curateUserAction:v5 withKeysToFetch:v16];
+        [(_CNUIUserActionCurator *)v15 curateUserAction:actionCopy withKeysToFetch:v16];
       }
     }
   }
 
-  v17 = [v7 contact];
+  contact2 = [contactProperty contact];
   v18 = *MEMORY[0x1E695C3D0];
-  v19 = [v17 isKeyAvailable:*MEMORY[0x1E695C3D0]];
+  v19 = [contact2 isKeyAvailable:*MEMORY[0x1E695C3D0]];
 
-  v20 = [v7 contact];
-  v21 = v20;
+  contact3 = [contactProperty contact];
+  contactStore2 = contact3;
   if (v19)
   {
-    v22 = [v20 mutableCopy];
+    v22 = [contact3 mutableCopy];
   }
 
   else
   {
-    v23 = [v20 identifier];
+    identifier = [contact3 identifier];
 
-    if (!v23)
+    if (!identifier)
     {
       goto LABEL_21;
     }
 
-    v21 = [(_CNUIUserActionCurator *)self contactStore];
-    v24 = [v7 contact];
-    [v24 identifier];
-    v25 = v86 = v6;
+    contactStore2 = [(_CNUIUserActionCurator *)self contactStore];
+    contact4 = [contactProperty contact];
+    [contact4 identifier];
+    v25 = v86 = fetchCopy;
     v103[0] = v18;
     v26 = [MEMORY[0x1E695DEC8] arrayWithObjects:v103 count:1];
-    [v21 unifiedContactWithIdentifier:v25 keysToFetch:v26 error:0];
+    [contactStore2 unifiedContactWithIdentifier:v25 keysToFetch:v26 error:0];
     v27 = v18;
-    v29 = v28 = v7;
+    v29 = v28 = contactProperty;
     v22 = [v29 mutableCopy];
 
-    v7 = v28;
+    contactProperty = v28;
     v18 = v27;
 
-    v6 = v86;
+    fetchCopy = v86;
   }
 
   if (!v22)
@@ -143,7 +143,7 @@ LABEL_21:
     v22 = +[CNUICoreLogProvider actions_os_log];
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
     {
-      [_CNUIUserActionCurator curateUserAction:v5 withKeysToFetch:?];
+      [_CNUIUserActionCurator curateUserAction:actionCopy withKeysToFetch:?];
     }
 
 LABEL_23:
@@ -151,16 +151,16 @@ LABEL_23:
     goto LABEL_44;
   }
 
-  v87 = v6;
-  if ([v5 isSuggested])
+  v87 = fetchCopy;
+  if ([actionCopy isSuggested])
   {
     objc_opt_class();
-    v30 = [v5 contactProperty];
-    v31 = [v30 labeledValue];
-    v32 = [v31 value];
+    contactProperty3 = [actionCopy contactProperty];
+    labeledValue2 = [contactProperty3 labeledValue];
+    value = [labeledValue2 value];
     if (objc_opt_isKindOfClass())
     {
-      v33 = v32;
+      v33 = value;
     }
 
     else
@@ -172,50 +172,50 @@ LABEL_23:
 
     if (v34)
     {
-      v35 = [v34 userIdentifier];
-      v36 = [v34 service];
-      v85 = [v34 displayname];
+      userIdentifier = [v34 userIdentifier];
+      service = [v34 service];
+      displayname = [v34 displayname];
     }
 
     else
     {
-      v85 = 0;
-      v36 = 0;
-      v35 = 0;
+      displayname = 0;
+      service = 0;
+      userIdentifier = 0;
     }
   }
 
   else
   {
-    v85 = 0;
-    v36 = 0;
-    v35 = 0;
+    displayname = 0;
+    service = 0;
+    userIdentifier = 0;
   }
 
   if ((*(*MEMORY[0x1E6996568] + 16))())
   {
     v38 = *MEMORY[0x1E6996570];
-    v39 = [v5 bundleIdentifier];
-    LODWORD(v38) = (*(v38 + 16))(v38, v39);
+    bundleIdentifier = [actionCopy bundleIdentifier];
+    LODWORD(v38) = (*(v38 + 16))(v38, bundleIdentifier);
 
     if (v38)
     {
-      v40 = [(_CNUIUserActionCurator *)self applicationWorkspace];
-      v41 = [v5 bundleIdentifier];
-      v42 = [v40 applicationForBundleIdentifier:v41];
-      v43 = [v42 localizedName];
-      v44 = v36;
-      v36 = v43;
+      applicationWorkspace = [(_CNUIUserActionCurator *)self applicationWorkspace];
+      bundleIdentifier2 = [actionCopy bundleIdentifier];
+      v42 = [applicationWorkspace applicationForBundleIdentifier:bundleIdentifier2];
+      localizedName = [v42 localizedName];
+      v44 = service;
+      service = localizedName;
     }
   }
 
-  v45 = [v5 bundleIdentifier];
+  bundleIdentifier3 = [actionCopy bundleIdentifier];
   v83 = v18;
-  v84 = v7;
-  if (v45)
+  v84 = contactProperty;
+  if (bundleIdentifier3)
   {
-    v46 = [v5 bundleIdentifier];
-    v102 = v46;
+    bundleIdentifier4 = [actionCopy bundleIdentifier];
+    v102 = bundleIdentifier4;
     v47 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v102 count:1];
   }
 
@@ -225,29 +225,29 @@ LABEL_23:
   }
 
   v48 = objc_alloc(MEMORY[0x1E695CF38]);
-  v49 = [v5 targetHandle];
+  targetHandle = [actionCopy targetHandle];
   v50 = MEMORY[0x1E6996580];
-  v82 = v35;
+  v82 = userIdentifier;
   v51 = (*(*MEMORY[0x1E6996580] + 16))();
   (*(*v50 + 16))();
-  v53 = v52 = v36;
+  v53 = v52 = service;
   v54 = (*(*v50 + 16))();
-  v55 = [v5 teamIdentifier];
-  v56 = [v48 initWithUrlString:0 username:v49 userIdentifier:v51 service:v53 displayname:v54 teamIdentifier:v55 bundleIdentifiers:v47];
+  teamIdentifier = [actionCopy teamIdentifier];
+  v56 = [v48 initWithUrlString:0 username:targetHandle userIdentifier:v51 service:v53 displayname:v54 teamIdentifier:teamIdentifier bundleIdentifiers:v47];
 
   v81 = v52;
   v57 = v52;
   v58 = v56;
   v59 = [MEMORY[0x1E695CEE0] labeledValueWithLabel:v57 value:v56];
-  v60 = [v22 socialProfiles];
-  v61 = [v60 arrayByAddingObject:v59];
+  socialProfiles = [v22 socialProfiles];
+  v61 = [socialProfiles arrayByAddingObject:v59];
   [v22 setSocialProfiles:v61];
 
   v62 = objc_alloc_init(MEMORY[0x1E695CF88]);
   [v62 updateContact:v22];
-  v63 = [(_CNUIUserActionCurator *)self contactStore];
+  contactStore3 = [(_CNUIUserActionCurator *)self contactStore];
   v92 = 0;
-  LOBYTE(v61) = [v63 executeSaveRequest:v62 error:&v92];
+  LOBYTE(v61) = [contactStore3 executeSaveRequest:v62 error:&v92];
   v64 = v92;
 
   if ((v61 & 1) == 0)
@@ -255,15 +255,15 @@ LABEL_23:
     v65 = +[CNUICoreLogProvider actions_os_log];
     if (os_log_type_enabled(v65, OS_LOG_TYPE_DEBUG))
     {
-      v78 = [v5 type];
+      type = [actionCopy type];
       *buf = 138544130;
       v95 = v64;
       v96 = 2112;
       v97 = v22;
       v98 = 2114;
-      v99 = v78;
+      v99 = type;
       v100 = 2112;
-      v101 = v5;
+      v101 = actionCopy;
       _os_log_debug_impl(&dword_1A31E6000, v65, OS_LOG_TYPE_DEBUG, "[User Action Curator] cannot save mutable contact with curated action, error = %{public}@\n mutable contact = %@\n user action = %{public}@: %@", buf, 0x2Au);
     }
   }
@@ -272,11 +272,11 @@ LABEL_23:
   v80 = v47;
   v66 = [MEMORY[0x1E695DF70] arrayWithObjects:{v83, 0}];
   [v66 addObjectsFromArray:v87];
-  v67 = [(_CNUIUserActionCurator *)self contactStore];
-  v68 = [v22 identifier];
-  v69 = [v67 unifiedContactWithIdentifier:v68 keysToFetch:v66 error:0];
+  contactStore4 = [(_CNUIUserActionCurator *)self contactStore];
+  identifier2 = [v22 identifier];
+  v69 = [contactStore4 unifiedContactWithIdentifier:identifier2 keysToFetch:v66 error:0];
 
-  v70 = [v69 socialProfiles];
+  socialProfiles2 = [v69 socialProfiles];
   v89[0] = MEMORY[0x1E69E9820];
   v89[1] = 3221225472;
   v89[2] = __59___CNUIUserActionCurator_curateUserAction_withKeysToFetch___block_invoke;
@@ -284,15 +284,15 @@ LABEL_23:
   v90 = v59;
   v71 = v58;
   v91 = v71;
-  v72 = [v70 _cn_firstObjectPassingTest:v89];
+  v72 = [socialProfiles2 _cn_firstObjectPassingTest:v89];
 
   if (v72)
   {
     v73 = MEMORY[0x1E695CE08];
-    v74 = [v72 identifier];
-    v75 = [v73 contactPropertyWithContactNoCopy:v69 propertyKey:v83 identifier:v74];
+    identifier3 = [v72 identifier];
+    v75 = [v73 contactPropertyWithContactNoCopy:v69 propertyKey:v83 identifier:identifier3];
 
-    v37 = [[CNUIUserActionItem alloc] initWithItem:v5 contactProperty:v75];
+    v37 = [[CNUIUserActionItem alloc] initWithItem:actionCopy contactProperty:v75];
     v76 = +[CNUICoreLogProvider actions_os_log];
     if (os_log_type_enabled(v76, OS_LOG_TYPE_DEBUG))
     {
@@ -312,8 +312,8 @@ LABEL_23:
     v37 = 0;
   }
 
-  v6 = v87;
-  v7 = v75;
+  fetchCopy = v87;
+  contactProperty = v75;
 LABEL_44:
 
   return v37;

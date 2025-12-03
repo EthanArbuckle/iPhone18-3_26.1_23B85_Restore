@@ -1,10 +1,10 @@
 @interface CNAuditTokenUtilities
-+ (id)_bundleIdentifierFromInfoPlistForAuditToken:(id *)a3;
-+ (id)_bundleIdentifierFromSecTaskForAuditToken:(id *)a3;
-+ (id)bundleIdentifierForAuditToken:(id)a3;
++ (id)_bundleIdentifierFromInfoPlistForAuditToken:(id *)token;
++ (id)_bundleIdentifierFromSecTaskForAuditToken:(id *)token;
++ (id)bundleIdentifierForAuditToken:(id)token;
 + (id)os_log;
-+ (id)processNameForAuditToken:(id)a3;
-+ (int)processIdentifierForAuditToken:(id)a3;
++ (id)processNameForAuditToken:(id)token;
++ (int)processIdentifierForAuditToken:(id)token;
 @end
 
 @implementation CNAuditTokenUtilities
@@ -30,24 +30,24 @@ uint64_t __31__CNAuditTokenUtilities_os_log__block_invoke()
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-+ (id)bundleIdentifierForAuditToken:(id)a3
++ (id)bundleIdentifierForAuditToken:(id)token
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  tokenCopy = token;
+  v5 = tokenCopy;
+  if (!tokenCopy)
   {
     v9 = 0;
     goto LABEL_16;
   }
 
-  [v4 audit_token];
-  v6 = [a1 _bundleIdentifierFromSecTaskForAuditToken:v15];
+  [tokenCopy audit_token];
+  v6 = [self _bundleIdentifierFromSecTaskForAuditToken:v15];
   if (off_1EF440728(&__block_literal_global_122, v6))
   {
-    v7 = [a1 os_log];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
+    os_log = [self os_log];
+    if (os_log_type_enabled(os_log, OS_LOG_TYPE_DEBUG))
     {
-      [(CNAuditTokenUtilities *)v6 bundleIdentifierForAuditToken:v7];
+      [(CNAuditTokenUtilities *)v6 bundleIdentifierForAuditToken:os_log];
     }
 
     v8 = v6;
@@ -56,14 +56,14 @@ uint64_t __31__CNAuditTokenUtilities_os_log__block_invoke()
   else
   {
     [v5 audit_token];
-    v10 = [a1 _bundleIdentifierFromInfoPlistForAuditToken:v15];
+    v10 = [self _bundleIdentifierFromInfoPlistForAuditToken:v15];
 
     v11 = off_1EF440728(&__block_literal_global_122, v10);
-    v12 = [a1 os_log];
-    v13 = v12;
+    os_log2 = [self os_log];
+    v13 = os_log2;
     if (!v11)
     {
-      if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+      if (os_log_type_enabled(os_log2, OS_LOG_TYPE_ERROR))
       {
         +[CNAuditTokenUtilities bundleIdentifierForAuditToken:];
       }
@@ -72,7 +72,7 @@ uint64_t __31__CNAuditTokenUtilities_os_log__block_invoke()
       goto LABEL_15;
     }
 
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
+    if (os_log_type_enabled(os_log2, OS_LOG_TYPE_DEBUG))
     {
       [(CNAuditTokenUtilities *)v10 bundleIdentifierForAuditToken:v13];
     }
@@ -89,12 +89,12 @@ LABEL_16:
   return v9;
 }
 
-+ (id)processNameForAuditToken:(id)a3
++ (id)processNameForAuditToken:(id)token
 {
   v12 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (token)
   {
-    [a3 audit_token];
+    [token audit_token];
     v4 = audit_token_to_pid(&atoken);
     LOBYTE(atoken.val[0]) = 0;
     if (proc_pidpath(v4, &atoken, 0x800u) > 0)
@@ -114,8 +114,8 @@ LABEL_16:
       goto LABEL_11;
     }
 
-    v8 = [a1 os_log];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    os_log = [self os_log];
+    if (os_log_type_enabled(os_log, OS_LOG_TYPE_ERROR))
     {
       +[CNAuditTokenUtilities processNameForAuditToken:];
     }
@@ -128,27 +128,27 @@ LABEL_11:
   return v7;
 }
 
-+ (int)processIdentifierForAuditToken:(id)a3
++ (int)processIdentifierForAuditToken:(id)token
 {
-  if (!a3)
+  if (!token)
   {
     return 0;
   }
 
-  [a3 audit_token];
+  [token audit_token];
   return audit_token_to_pid(&v4);
 }
 
-+ (id)_bundleIdentifierFromSecTaskForAuditToken:(id *)a3
++ (id)_bundleIdentifierFromSecTaskForAuditToken:(id *)token
 {
-  v4 = *&a3->var0[4];
-  *v21.val = *a3->var0;
+  v4 = *&token->var0[4];
+  *v21.val = *token->var0;
   *&v21.val[4] = v4;
   v5 = SecTaskCreateWithAuditToken(0, &v21);
   if (!v5)
   {
-    v9 = [a1 os_log];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    os_log = [self os_log];
+    if (os_log_type_enabled(os_log, OS_LOG_TYPE_ERROR))
     {
       +[CNAuditTokenUtilities _bundleIdentifierFromSecTaskForAuditToken:];
     }
@@ -167,8 +167,8 @@ LABEL_11:
     goto LABEL_29;
   }
 
-  v10 = [a1 os_log];
-  if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+  os_log2 = [self os_log];
+  if (os_log_type_enabled(os_log2, OS_LOG_TYPE_ERROR))
   {
     [CNAuditTokenUtilities _bundleIdentifierFromSecTaskForAuditToken:?];
   }
@@ -176,8 +176,8 @@ LABEL_11:
   v11 = SecTaskCopyValueForEntitlement(v6, @"application-identifier", &v21);
   if (!v11)
   {
-    v20 = [a1 os_log];
-    if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
+    os_log3 = [self os_log];
+    if (os_log_type_enabled(os_log3, OS_LOG_TYPE_ERROR))
     {
       +[CNAuditTokenUtilities _bundleIdentifierFromSecTaskForAuditToken:];
     }
@@ -216,17 +216,17 @@ LABEL_29:
   return v8;
 }
 
-+ (id)_bundleIdentifierFromInfoPlistForAuditToken:(id *)a3
++ (id)_bundleIdentifierFromInfoPlistForAuditToken:(id *)token
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = *a3->var0;
-  v5 = *&a3->var0[4];
+  v4 = *token->var0;
+  v5 = *&token->var0[4];
   v6 = audit_token_to_pid(v19);
   v7 = proc_pidpath(v6, v19, 0x1000u);
   if (v7 <= 0)
   {
-    v8 = [a1 os_log];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    os_log = [self os_log];
+    if (os_log_type_enabled(os_log, OS_LOG_TYPE_ERROR))
     {
       +[CNAuditTokenUtilities _bundleIdentifierFromInfoPlistForAuditToken:];
     }
@@ -234,11 +234,11 @@ LABEL_29:
     goto LABEL_8;
   }
 
-  v8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithBytes:v19 length:v7 encoding:4];
-  if (access([v8 UTF8String], 4))
+  os_log = [objc_alloc(MEMORY[0x1E696AEC0]) initWithBytes:v19 length:v7 encoding:4];
+  if (access([os_log UTF8String], 4))
   {
-    v9 = [a1 os_log];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    os_log2 = [self os_log];
+    if (os_log_type_enabled(os_log2, OS_LOG_TYPE_ERROR))
     {
       +[CNAuditTokenUtilities _bundleIdentifierFromInfoPlistForAuditToken:];
     }
@@ -246,7 +246,7 @@ LABEL_29:
     goto LABEL_8;
   }
 
-  v13 = CFURLCreateWithFileSystemPath(0, v8, kCFURLPOSIXPathStyle, 0);
+  v13 = CFURLCreateWithFileSystemPath(0, os_log, kCFURLPOSIXPathStyle, 0);
   if (!v13)
   {
 LABEL_8:

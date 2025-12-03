@@ -1,59 +1,59 @@
 @interface RTPredictedContextSequence
-- (BOOL)isEqual:(id)a3;
-- (RTPredictedContextSequence)initWithCoder:(id)a3;
-- (RTPredictedContextSequence)initWithProbability:(double)a3 dateInterval:(id)a4 predictedContexts:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (RTPredictedContextSequence)initWithCoder:(id)coder;
+- (RTPredictedContextSequence)initWithProbability:(double)probability dateInterval:(id)interval predictedContexts:(id)contexts;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RTPredictedContextSequence
 
-- (RTPredictedContextSequence)initWithProbability:(double)a3 dateInterval:(id)a4 predictedContexts:(id)a5
+- (RTPredictedContextSequence)initWithProbability:(double)probability dateInterval:(id)interval predictedContexts:(id)contexts
 {
-  v9 = a4;
-  v10 = a5;
+  intervalCopy = interval;
+  contextsCopy = contexts;
   v14.receiver = self;
   v14.super_class = RTPredictedContextSequence;
   v11 = [(RTPredictedContextSequence *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    v11->_probability = a3;
-    objc_storeStrong(&v11->_dateInterval, a4);
-    objc_storeStrong(&v12->_predictedContexts, a5);
+    v11->_probability = probability;
+    objc_storeStrong(&v11->_dateInterval, interval);
+    objc_storeStrong(&v12->_predictedContexts, contexts);
   }
 
   return v12;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   probability = self->_probability;
-  v5 = a3;
-  [v5 encodeDouble:@"probability" forKey:probability];
-  [v5 encodeObject:self->_dateInterval forKey:@"dateInterval"];
-  [v5 encodeObject:self->_predictedContexts forKey:@"contexts"];
+  coderCopy = coder;
+  [coderCopy encodeDouble:@"probability" forKey:probability];
+  [coderCopy encodeObject:self->_dateInterval forKey:@"dateInterval"];
+  [coderCopy encodeObject:self->_predictedContexts forKey:@"contexts"];
 }
 
-- (RTPredictedContextSequence)initWithCoder:(id)a3
+- (RTPredictedContextSequence)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = RTPredictedContextSequence;
   v5 = [(RTPredictedContextSequence *)&v15 init];
   if (v5)
   {
-    [v4 decodeDoubleForKey:@"probability"];
+    [coderCopy decodeDoubleForKey:@"probability"];
     v5->_probability = v6;
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dateInterval"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dateInterval"];
     dateInterval = v5->_dateInterval;
     v5->_dateInterval = v7;
 
     v9 = MEMORY[0x1E695DFD8];
     v10 = objc_opt_class();
     v11 = [v9 setWithObjects:{v10, objc_opt_class(), 0}];
-    v12 = [v4 decodeObjectOfClasses:v11 forKey:@"contexts"];
+    v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"contexts"];
     predictedContexts = v5->_predictedContexts;
     v5->_predictedContexts = v12;
   }
@@ -61,7 +61,7 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [RTPredictedContextSequence alloc];
   probability = self->_probability;
@@ -71,22 +71,22 @@
   return [(RTPredictedContextSequence *)v4 initWithProbability:dateInterval dateInterval:predictedContexts predictedContexts:probability];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
-    v7 = [(RTPredictedContextSequence *)self predictedContexts];
-    v8 = [(RTPredictedContextSequence *)v6 predictedContexts];
+    predictedContexts = [(RTPredictedContextSequence *)self predictedContexts];
+    predictedContexts2 = [(RTPredictedContextSequence *)v6 predictedContexts];
 
-    v9 = [v7 isEqual:v8];
+    v9 = [predictedContexts isEqual:predictedContexts2];
   }
 
   else
@@ -102,9 +102,9 @@
   v3 = MEMORY[0x1E696AEC0];
   [(RTPredictedContextSequence *)self probability];
   v5 = v4;
-  v6 = [(RTPredictedContextSequence *)self dateInterval];
-  v7 = [(RTPredictedContextSequence *)self predictedContexts];
-  v8 = [v3 stringWithFormat:@"probability, %f, dateInterval, %@, predictedContexts, %@", v5, v6, v7];
+  dateInterval = [(RTPredictedContextSequence *)self dateInterval];
+  predictedContexts = [(RTPredictedContextSequence *)self predictedContexts];
+  v8 = [v3 stringWithFormat:@"probability, %f, dateInterval, %@, predictedContexts, %@", v5, dateInterval, predictedContexts];
 
   return v8;
 }

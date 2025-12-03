@@ -1,8 +1,8 @@
 @interface FCAccessChecker
-- (BOOL)canSynchronouslyCheckAccessToItem:(id)a3;
-- (BOOL)hasAccessToItem:(id)a3 blockedReason:(unint64_t *)a4 error:(id *)a5;
+- (BOOL)canSynchronouslyCheckAccessToItem:(id)item;
+- (BOOL)hasAccessToItem:(id)item blockedReason:(unint64_t *)reason error:(id *)error;
 - (FCAccessChecker)init;
-- (void)checkAccessToItem:(id)a3 withQualityOfService:(int64_t)a4 completion:(id)a5;
+- (void)checkAccessToItem:(id)item withQualityOfService:(int64_t)service completion:(id)completion;
 @end
 
 @implementation FCAccessChecker
@@ -14,10 +14,10 @@
   return [(FCAccessChecker *)&v3 init];
 }
 
-- (BOOL)canSynchronouslyCheckAccessToItem:(id)a3
+- (BOOL)canSynchronouslyCheckAccessToItem:(id)item
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  itemCopy = item;
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v4 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Abstract method"];
@@ -41,10 +41,10 @@
   objc_exception_throw(v8);
 }
 
-- (BOOL)hasAccessToItem:(id)a3 blockedReason:(unint64_t *)a4 error:(id *)a5
+- (BOOL)hasAccessToItem:(id)item blockedReason:(unint64_t *)reason error:(id *)error
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  itemCopy = item;
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v6 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Abstract method"];
@@ -68,12 +68,12 @@
   objc_exception_throw(v10);
 }
 
-- (void)checkAccessToItem:(id)a3 withQualityOfService:(int64_t)a4 completion:(id)a5
+- (void)checkAccessToItem:(id)item withQualityOfService:(int64_t)service completion:(id)completion
 {
   v21 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a5;
-  if (!v7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  itemCopy = item;
+  completionCopy = completion;
+  if (!itemCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v11 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "item != nil"];
     *buf = 136315906;
@@ -86,13 +86,13 @@
     v20 = v11;
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
 
-    if (v8)
+    if (completionCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v8)
+  else if (completionCopy)
   {
     goto LABEL_6;
   }
@@ -114,8 +114,8 @@
 LABEL_6:
   v13 = 0;
   *buf = 0;
-  v9 = [(FCAccessChecker *)self hasAccessToItem:v7 blockedReason:&v13 error:buf];
-  v8[2](v8, v9, v13, *buf);
+  v9 = [(FCAccessChecker *)self hasAccessToItem:itemCopy blockedReason:&v13 error:buf];
+  completionCopy[2](completionCopy, v9, v13, *buf);
 
   v10 = *MEMORY[0x1E69E9840];
 }

@@ -8,9 +8,9 @@
 {
   v4.receiver = self;
   v4.super_class = DMFDevicePropertiesResultObject;
-  v2 = [(DMFFetchDevicePropertiesResultObject *)&v4 classForCoder];
+  classForCoder = [(DMFFetchDevicePropertiesResultObject *)&v4 classForCoder];
 
-  return v2;
+  return classForCoder;
 }
 
 @end

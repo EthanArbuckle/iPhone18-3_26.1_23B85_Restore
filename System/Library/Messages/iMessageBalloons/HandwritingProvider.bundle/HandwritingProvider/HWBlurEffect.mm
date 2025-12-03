@@ -7,9 +7,9 @@
 
 - (id)effectSettings
 {
-  v2 = [objc_opt_class() _backdropStyleForCurrentDevice];
+  _backdropStyleForCurrentDevice = [objc_opt_class() _backdropStyleForCurrentDevice];
 
-  return [_UIBackdropViewSettings settingsForPrivateStyle:v2];
+  return [_UIBackdropViewSettings settingsForPrivateStyle:_backdropStyleForCurrentDevice];
 }
 
 + (int64_t)_backdropStyleForCurrentDevice

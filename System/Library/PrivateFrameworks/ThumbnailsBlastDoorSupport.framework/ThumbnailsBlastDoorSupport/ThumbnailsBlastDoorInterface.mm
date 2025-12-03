@@ -1,7 +1,7 @@
 @interface ThumbnailsBlastDoorInterface
 - (ThumbnailsBlastDoorInterface)init;
-- (id)generateImageThumbnailForFileURL:(id)a3 maxPixelDimension:(float)a4 scale:(float)a5 error:(id *)a6;
-- (void)generateMovieThumbnailForAttachmentWithFileURL:(id)a3 maxPixelDimension:(float)a4 minThumbnailPxSize:(CGSize)a5 scale:(float)a6 resultHandler:(id)a7;
+- (id)generateImageThumbnailForFileURL:(id)l maxPixelDimension:(float)dimension scale:(float)scale error:(id *)error;
+- (void)generateMovieThumbnailForAttachmentWithFileURL:(id)l maxPixelDimension:(float)dimension minThumbnailPxSize:(CGSize)size scale:(float)scale resultHandler:(id)handler;
 @end
 
 @implementation ThumbnailsBlastDoorInterface
@@ -23,27 +23,27 @@
   return v2;
 }
 
-- (id)generateImageThumbnailForFileURL:(id)a3 maxPixelDimension:(float)a4 scale:(float)a5 error:(id *)a6
+- (id)generateImageThumbnailForFileURL:(id)l maxPixelDimension:(float)dimension scale:(float)scale error:(id *)error
 {
-  v10 = a3;
-  v11 = [(ThumbnailsBlastDoorInterface *)self interface];
-  *&v12 = a4;
-  *&v13 = a5;
-  v14 = [v11 generateImageThumbnailForFileURL:v10 maxPixelDimension:a6 scale:v12 error:v13];
+  lCopy = l;
+  interface = [(ThumbnailsBlastDoorInterface *)self interface];
+  *&v12 = dimension;
+  *&v13 = scale;
+  v14 = [interface generateImageThumbnailForFileURL:lCopy maxPixelDimension:error scale:v12 error:v13];
 
   return v14;
 }
 
-- (void)generateMovieThumbnailForAttachmentWithFileURL:(id)a3 maxPixelDimension:(float)a4 minThumbnailPxSize:(CGSize)a5 scale:(float)a6 resultHandler:(id)a7
+- (void)generateMovieThumbnailForAttachmentWithFileURL:(id)l maxPixelDimension:(float)dimension minThumbnailPxSize:(CGSize)size scale:(float)scale resultHandler:(id)handler
 {
-  height = a5.height;
-  width = a5.width;
-  v13 = a7;
-  v14 = a3;
-  v17 = [(ThumbnailsBlastDoorInterface *)self interface];
-  *&v15 = a4;
-  *&v16 = a6;
-  [v17 generateMovieThumbnailForAttachmentWithFileURL:v14 maxPixelDimension:v13 minThumbnailPxSize:v15 scale:width resultHandler:{height, v16}];
+  height = size.height;
+  width = size.width;
+  handlerCopy = handler;
+  lCopy = l;
+  interface = [(ThumbnailsBlastDoorInterface *)self interface];
+  *&v15 = dimension;
+  *&v16 = scale;
+  [interface generateMovieThumbnailForAttachmentWithFileURL:lCopy maxPixelDimension:handlerCopy minThumbnailPxSize:v15 scale:width resultHandler:{height, v16}];
 }
 
 @end

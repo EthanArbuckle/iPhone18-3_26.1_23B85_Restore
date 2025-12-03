@@ -1,18 +1,18 @@
 @interface _DKIdentifier
-+ (id)_identifierFromManagedObject:(id)a3 readMetadata:(BOOL)a4 cache:(id)a5;
-+ (id)fromPBCodable:(id)a3;
-+ (id)identifierWithString:(id)a3 type:(id)a4;
-- (BOOL)copyToManagedObject:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)_identifierFromManagedObject:(id)object readMetadata:(BOOL)metadata cache:(id)cache;
++ (id)fromPBCodable:(id)codable;
++ (id)identifierWithString:(id)string type:(id)type;
+- (BOOL)copyToManagedObject:(id)object;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (_DKIdentifier)initWithCoder:(id)a3;
-- (_DKIdentifier)initWithString:(id)a3 type:(id)a4;
+- (_DKIdentifier)initWithCoder:(id)coder;
+- (_DKIdentifier)initWithString:(id)string type:(id)type;
 - (double)doubleValue;
 - (id)toPBCodable;
-- (int64_t)compareValue:(id)a3;
+- (int64_t)compareValue:(id)value;
 - (int64_t)integerValue;
 - (int64_t)typeCode;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _DKIdentifier
@@ -22,83 +22,83 @@
   v3 = objc_alloc_init(_DKPRValue);
   v4 = objc_alloc_init(_DKPRValueType);
   [(_DKPRValue *)v3 setType:v4];
-  v5 = [(_DKPRValue *)v3 type];
-  [(_DKPRValueType *)v5 setType:?];
+  type = [(_DKPRValue *)v3 type];
+  [(_DKPRValueType *)type setType:?];
 
-  v6 = [(_DKIdentifier *)self identifierType];
-  v7 = [v6 typeCode];
-  v8 = [(_DKPRValue *)v3 type];
-  [(_DKPRValueType *)v8 setTypeCode:v7];
+  identifierType = [(_DKIdentifier *)self identifierType];
+  typeCode = [identifierType typeCode];
+  type2 = [(_DKPRValue *)v3 type];
+  [(_DKPRValueType *)type2 setTypeCode:typeCode];
 
-  v9 = [(_DKIdentifier *)self stringValue];
-  [(_DKPRValue *)v3 setStringValue:v9];
+  stringValue = [(_DKIdentifier *)self stringValue];
+  [(_DKPRValue *)v3 setStringValue:stringValue];
 
   return v3;
 }
 
 - (int64_t)integerValue
 {
-  v2 = [(_DKIdentifier *)self stringValue];
-  v3 = [v2 hash];
+  stringValue = [(_DKIdentifier *)self stringValue];
+  v3 = [stringValue hash];
 
   return v3;
 }
 
 - (double)doubleValue
 {
-  v2 = [(_DKIdentifier *)self stringValue];
-  v3 = [v2 hash];
+  stringValue = [(_DKIdentifier *)self stringValue];
+  v3 = [stringValue hash];
 
   return v3;
 }
 
 - (int64_t)typeCode
 {
-  v2 = [(_DKIdentifier *)self identifierType];
-  v3 = [v2 typeCode];
+  identifierType = [(_DKIdentifier *)self identifierType];
+  typeCode = [identifierType typeCode];
 
-  return v3;
+  return typeCode;
 }
 
-+ (id)identifierWithString:(id)a3 type:(id)a4
++ (id)identifierWithString:(id)string type:(id)type
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[_DKIdentifier alloc] initWithString:v6 type:v5];
+  typeCopy = type;
+  stringCopy = string;
+  v7 = [[_DKIdentifier alloc] initWithString:stringCopy type:typeCopy];
 
   return v7;
 }
 
-- (_DKIdentifier)initWithString:(id)a3 type:(id)a4
+- (_DKIdentifier)initWithString:(id)string type:(id)type
 {
-  v7 = a3;
-  v8 = a4;
+  stringCopy = string;
+  typeCopy = type;
   v12.receiver = self;
   v12.super_class = _DKIdentifier;
   v9 = [(_DKObject *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_stringValue, a3);
-    objc_storeStrong(&v10->_identifierType, a4);
+    objc_storeStrong(&v9->_stringValue, string);
+    objc_storeStrong(&v10->_identifierType, type);
   }
 
   return v10;
 }
 
-- (_DKIdentifier)initWithCoder:(id)a3
+- (_DKIdentifier)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = _DKIdentifier;
-  v5 = [(_DKObject *)&v12 initWithCoder:v4];
+  v5 = [(_DKObject *)&v12 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"stringValue"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"stringValue"];
     stringValue = v5->_stringValue;
     v5->_stringValue = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifierType"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifierType"];
     identifierType = v5->_identifierType;
     v5->_identifierType = v8;
 
@@ -108,14 +108,14 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = _DKIdentifier;
-  v4 = a3;
-  [(_DKObject *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_stringValue forKey:{@"stringValue", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_identifierType forKey:@"identifierType"];
+  coderCopy = coder;
+  [(_DKObject *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_stringValue forKey:{@"stringValue", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_identifierType forKey:@"identifierType"];
 }
 
 - (NSString)description
@@ -133,22 +133,22 @@
   return v9;
 }
 
-- (int64_t)compareValue:(id)a3
+- (int64_t)compareValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [v5 identifierType];
-    v7 = [(_DKIdentifier *)self identifierType];
-    v8 = [v6 isEqual:v7];
+    v5 = valueCopy;
+    identifierType = [v5 identifierType];
+    identifierType2 = [(_DKIdentifier *)self identifierType];
+    v8 = [identifierType isEqual:identifierType2];
 
     if (v8)
     {
-      v9 = [v5 stringValue];
-      v10 = [(_DKIdentifier *)self stringValue];
-      v11 = [v9 isEqualToString:v10];
+      stringValue = [v5 stringValue];
+      stringValue2 = [(_DKIdentifier *)self stringValue];
+      v11 = [stringValue isEqualToString:stringValue2];
 
       v12 = v11 - 1;
     }
@@ -167,18 +167,18 @@
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  v6 = v5;
-  if (self == v5)
+  equalCopy = equal;
+  v6 = equalCopy;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
 
   else
   {
-    if (v5)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -188,13 +188,13 @@
         if ([(_DKObject *)&v18 isEqual:v6])
         {
           v7 = v6;
-          v8 = [(_DKIdentifier *)self stringValue];
-          v9 = [(_DKIdentifier *)v7 stringValue];
-          if (v8 != v9)
+          stringValue = [(_DKIdentifier *)self stringValue];
+          stringValue2 = [(_DKIdentifier *)v7 stringValue];
+          if (stringValue != stringValue2)
           {
-            v10 = [(_DKIdentifier *)self stringValue];
-            v3 = [(_DKIdentifier *)v7 stringValue];
-            if (![v10 isEqualToString:v3])
+            stringValue3 = [(_DKIdentifier *)self stringValue];
+            stringValue4 = [(_DKIdentifier *)v7 stringValue];
+            if (![stringValue3 isEqualToString:stringValue4])
             {
               v11 = 0;
 LABEL_15:
@@ -203,25 +203,25 @@ LABEL_16:
               goto LABEL_17;
             }
 
-            v17 = v10;
+            v17 = stringValue3;
           }
 
-          v12 = [(_DKIdentifier *)self identifierType];
-          v13 = [(_DKIdentifier *)v7 identifierType];
-          if (v12 == v13)
+          identifierType = [(_DKIdentifier *)self identifierType];
+          identifierType2 = [(_DKIdentifier *)v7 identifierType];
+          if (identifierType == identifierType2)
           {
             v11 = 1;
           }
 
           else
           {
-            v14 = [(_DKIdentifier *)self identifierType];
-            v15 = [(_DKIdentifier *)v7 identifierType];
-            v11 = [v14 isEqual:v15];
+            identifierType3 = [(_DKIdentifier *)self identifierType];
+            identifierType4 = [(_DKIdentifier *)v7 identifierType];
+            v11 = [identifierType3 isEqual:identifierType4];
           }
 
-          v10 = v17;
-          if (v8 == v9)
+          stringValue3 = v17;
+          if (stringValue == stringValue2)
           {
             goto LABEL_16;
           }
@@ -239,18 +239,18 @@ LABEL_17:
   return v11;
 }
 
-+ (id)fromPBCodable:(id)a3
++ (id)fromPBCodable:(id)codable
 {
-  v3 = a3;
+  codableCopy = codable;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
-    v5 = [(_DKPRValue *)v4 stringValue];
-    v6 = [(_DKPRValue *)v4 type];
+    v4 = codableCopy;
+    stringValue = [(_DKPRValue *)v4 stringValue];
+    type = [(_DKPRValue *)v4 type];
 
-    v7 = [(_DKObjectType *)_DKIdentifierType objectTypeWithTypeCode:[(_DKPRValueType *)v6 typeCode]];
-    v8 = [_DKIdentifier identifierWithString:v5 type:v7];
+    v7 = [(_DKObjectType *)_DKIdentifierType objectTypeWithTypeCode:[(_DKPRValueType *)type typeCode]];
+    v8 = [_DKIdentifier identifierWithString:stringValue type:v7];
   }
 
   else
@@ -261,33 +261,33 @@ LABEL_17:
   return v8;
 }
 
-+ (id)_identifierFromManagedObject:(id)a3 readMetadata:(BOOL)a4 cache:(id)a5
++ (id)_identifierFromManagedObject:(id)object readMetadata:(BOOL)metadata cache:(id)cache
 {
-  v6 = a3;
-  v7 = a5;
-  v8 = [v6 string];
-  if (v7)
+  objectCopy = object;
+  cacheCopy = cache;
+  string = [objectCopy string];
+  if (cacheCopy)
   {
-    v13 = [(_DKObjectFromMOCache *)v7 deduplicateString:v8];
+    v13 = [(_DKObjectFromMOCache *)cacheCopy deduplicateString:string];
 
-    v14 = [MEMORY[0x1E696AD98] numberWithLongLong:{objc_msgSend(v6, "identifierType")}];
+    v14 = [MEMORY[0x1E696AD98] numberWithLongLong:{objc_msgSend(objectCopy, "identifierType")}];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __79___DKIdentifier_MOConversion___identifierFromManagedObject_readMetadata_cache___block_invoke;
     v15[3] = &unk_1E736A328;
-    v16 = v6;
-    v9 = [(_DKObjectFromMOCache *)v7 objectForKey:v14 type:@"_DKid" setIfMissingWithBlock:v15];
+    v16 = objectCopy;
+    v9 = [(_DKObjectFromMOCache *)cacheCopy objectForKey:v14 type:@"_DKid" setIfMissingWithBlock:v15];
 
-    v8 = v13;
+    string = v13;
   }
 
   else
   {
-    v9 = +[_DKObjectType objectTypeWithTypeCode:](_DKIdentifierType, "objectTypeWithTypeCode:", [v6 identifierType]);
+    v9 = +[_DKObjectType objectTypeWithTypeCode:](_DKIdentifierType, "objectTypeWithTypeCode:", [objectCopy identifierType]);
   }
 
-  v10 = [_DKIdentifier identifierWithString:v8 type:v9];
-  if ([v10 copyBaseObjectInfoFromManagedObject:v6 cache:v7])
+  v10 = [_DKIdentifier identifierWithString:string type:v9];
+  if ([v10 copyBaseObjectInfoFromManagedObject:objectCopy cache:cacheCopy])
   {
     v11 = v10;
   }
@@ -300,18 +300,18 @@ LABEL_17:
   return v11;
 }
 
-- (BOOL)copyToManagedObject:(id)a3
+- (BOOL)copyToManagedObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && (v10.receiver = self, v10.super_class = _DKIdentifier, [(_DKObject *)&v10 copyToManagedObject:v4]))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && (v10.receiver = self, v10.super_class = _DKIdentifier, [(_DKObject *)&v10 copyToManagedObject:objectCopy]))
   {
-    v5 = v4;
-    v6 = [(_DKIdentifier *)self stringValue];
-    [v5 setString:v6];
+    v5 = objectCopy;
+    stringValue = [(_DKIdentifier *)self stringValue];
+    [v5 setString:stringValue];
 
-    v7 = [(_DKIdentifier *)self identifierType];
-    [v5 setIdentifierType:{objc_msgSend(v7, "typeCode")}];
+    identifierType = [(_DKIdentifier *)self identifierType];
+    [v5 setIdentifierType:{objc_msgSend(identifierType, "typeCode")}];
 
     v8 = 1;
   }

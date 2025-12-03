@@ -1,11 +1,11 @@
 @interface CHFriendListTableViewCell
-+ (double)measuredHeightWithDisplayMode:(int64_t)a3 formattingManager:(id)a4;
-- (CHFriendListTableViewCell)initWithFrame:(CGRect)a3;
-- (CHFriendListTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
++ (double)measuredHeightWithDisplayMode:(int64_t)mode formattingManager:(id)manager;
+- (CHFriendListTableViewCell)initWithFrame:(CGRect)frame;
+- (CHFriendListTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (double)_lastBaseline;
 - (void)_setupCell;
 - (void)layoutSubviews;
-- (void)setFriend:(id)a3 snapshot:(id)a4 formattingManager:(id)a5 animated:(BOOL)a6;
+- (void)setFriend:(id)friend snapshot:(id)snapshot formattingManager:(id)manager animated:(BOOL)animated;
 @end
 
 @implementation CHFriendListTableViewCell
@@ -16,20 +16,20 @@
   [(CHFriendListTableViewCell *)self setBackgroundColor:v3];
 
   v4 = sub_100046170();
-  v5 = [(CHFriendListTableViewCell *)self contentView];
-  [v5 setBackgroundColor:v4];
+  contentView = [(CHFriendListTableViewCell *)self contentView];
+  [contentView setBackgroundColor:v4];
 
   v6 = sub_10013A904();
-  v7 = [(CHFriendListTableViewCell *)self contentView];
-  v8 = [v7 layer];
-  [v8 setCornerRadius:v6];
+  contentView2 = [(CHFriendListTableViewCell *)self contentView];
+  layer = [contentView2 layer];
+  [layer setCornerRadius:v6];
 
   v9 = +[UIColor labelColor];
-  v10 = [(CHFriendListTableViewCell *)self textLabel];
-  [v10 setTextColor:v9];
+  textLabel = [(CHFriendListTableViewCell *)self textLabel];
+  [textLabel setTextColor:v9];
 
-  v11 = [(CHFriendListTableViewCell *)self textLabel];
-  [v11 setLineBreakMode:4];
+  textLabel2 = [(CHFriendListTableViewCell *)self textLabel];
+  [textLabel2 setLineBreakMode:4];
 
   v12 = [UILabel alloc];
   y = CGRectZero.origin.y;
@@ -39,53 +39,53 @@
   detailLineOneLabel = self->_detailLineOneLabel;
   self->_detailLineOneLabel = v16;
 
-  v18 = [(CHFriendListTableViewCell *)self contentView];
-  v19 = [(CHFriendListTableViewCell *)self detailLineOneLabel];
-  [v18 addSubview:v19];
+  contentView3 = [(CHFriendListTableViewCell *)self contentView];
+  detailLineOneLabel = [(CHFriendListTableViewCell *)self detailLineOneLabel];
+  [contentView3 addSubview:detailLineOneLabel];
 
   v20 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
   detailLineTwoLabel = self->_detailLineTwoLabel;
   self->_detailLineTwoLabel = v20;
 
-  v22 = [(CHFriendListTableViewCell *)self contentView];
-  [v22 addSubview:self->_detailLineTwoLabel];
+  contentView4 = [(CHFriendListTableViewCell *)self contentView];
+  [contentView4 addSubview:self->_detailLineTwoLabel];
 
   v23 = [ARUIRingsView alloc];
   v24 = [ARUIRingGroup activityRingGroupForRingType:3];
-  v25 = [v24 forCompanion];
-  v26 = [v23 initWithRingGroup:v25];
+  forCompanion = [v24 forCompanion];
+  v26 = [v23 initWithRingGroup:forCompanion];
   ringsView = self->_ringsView;
   self->_ringsView = v26;
 
   [(CHFriendListTableViewCell *)self valueForSmallWidth:0.788 mediumWidth:0.923 largeWidth:1.0];
   v29 = v28;
   *&y = v28 * 52.0;
-  v30 = [(ARUIRingsView *)self->_ringsView ringGroup];
+  ringGroup = [(ARUIRingsView *)self->_ringsView ringGroup];
   LODWORD(v31) = LODWORD(y);
-  [v30 setGroupDiameter:v31];
+  [ringGroup setGroupDiameter:v31];
 
-  v32 = [(ARUIRingsView *)self->_ringsView ringGroup];
+  ringGroup2 = [(ARUIRingsView *)self->_ringsView ringGroup];
   *&y = v29 * 6.0;
   LODWORD(v33) = LODWORD(y);
-  [v32 setThickness:v33];
+  [ringGroup2 setThickness:v33];
 
-  v34 = [(ARUIRingsView *)self->_ringsView ringGroup];
+  ringGroup3 = [(ARUIRingsView *)self->_ringsView ringGroup];
   *&v29 = v29 * 1.0;
   LODWORD(v35) = LODWORD(v29);
-  [v34 setInterspacing:v35];
+  [ringGroup3 setInterspacing:v35];
 
   v36 = +[UIColor clearColor];
   [(ARUIRingsView *)self->_ringsView setBackgroundColor:v36];
 
-  v37 = [(CHFriendListTableViewCell *)self contentView];
-  [v37 addSubview:self->_ringsView];
+  contentView5 = [(CHFriendListTableViewCell *)self contentView];
+  [contentView5 addSubview:self->_ringsView];
 }
 
-- (CHFriendListTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (CHFriendListTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v7.receiver = self;
   v7.super_class = CHFriendListTableViewCell;
-  v4 = [(CHFriendListTableViewCell *)&v7 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(CHFriendListTableViewCell *)&v7 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
@@ -95,11 +95,11 @@
   return v5;
 }
 
-- (CHFriendListTableViewCell)initWithFrame:(CGRect)a3
+- (CHFriendListTableViewCell)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = CHFriendListTableViewCell;
-  v3 = [(CHFriendListTableViewCell *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CHFriendListTableViewCell *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -118,17 +118,17 @@
   v5 = v4;
   v7 = v6;
   v9 = v8;
-  v10 = [(CHFriendListTableViewCell *)self contentView];
-  [v10 frame];
+  contentView = [(CHFriendListTableViewCell *)self contentView];
+  [contentView frame];
   v12 = v5 + v11;
   v14 = v3 + v13;
   v16 = v15 - (v5 + v9);
   v18 = v17 - (v3 + v7);
-  v19 = [(CHFriendListTableViewCell *)self contentView];
-  [v19 setFrame:{v12, v14, v16, v18}];
+  contentView2 = [(CHFriendListTableViewCell *)self contentView];
+  [contentView2 setFrame:{v12, v14, v16, v18}];
 
-  v20 = [(CHFriendListTableViewCell *)self contentView];
-  [v20 bounds];
+  contentView3 = [(CHFriendListTableViewCell *)self contentView];
+  [contentView3 bounds];
   v22 = v21;
   v24 = v23;
   v26 = v25;
@@ -145,16 +145,16 @@
   [(ARUIRingsView *)self->_ringsView setFrame:v32, CGRectGetMidY(v66) + v30 * -0.5, v30, v30];
   [(ARUIRingsView *)self->_ringsView frame];
   v33 = v32 + CGRectGetMaxX(v67);
-  v34 = [(CHFriendListTableViewCell *)self textLabel];
-  v35 = [v34 font];
-  [v35 _scaledValueForValue:28.0];
+  textLabel = [(CHFriendListTableViewCell *)self textLabel];
+  font = [textLabel font];
+  [font _scaledValueForValue:28.0];
   v37 = v36;
 
-  v38 = [(CHFriendListTableViewCell *)self textLabel];
-  [v38 sizeToFit];
+  textLabel2 = [(CHFriendListTableViewCell *)self textLabel];
+  [textLabel2 sizeToFit];
 
-  v39 = [(CHFriendListTableViewCell *)self textLabel];
-  [v39 frame];
+  textLabel3 = [(CHFriendListTableViewCell *)self textLabel];
+  [textLabel3 frame];
   v41 = v40;
   v43 = v42;
 
@@ -164,11 +164,11 @@
   v68.size.width = v26;
   v68.size.height = v28;
   v44 = CGRectGetMaxX(v68) - v33 + -4.0;
-  v45 = [(CHFriendListTableViewCell *)self textLabel];
-  [v45 setFrame:{v33, v41, v44, v43}];
+  textLabel4 = [(CHFriendListTableViewCell *)self textLabel];
+  [textLabel4 setFrame:{v33, v41, v44, v43}];
 
-  v46 = [(CHFriendListTableViewCell *)self textLabel];
-  [v46 _setFirstLineBaselineFrameOriginY:v37];
+  textLabel5 = [(CHFriendListTableViewCell *)self textLabel];
+  [textLabel5 _setFirstLineBaselineFrameOriginY:v37];
 
   p_detailLineOneLabel = &self->_detailLineOneLabel;
   [(UILabel *)self->_detailLineOneLabel sizeToFit];
@@ -191,8 +191,8 @@ LABEL_4:
 
   if (displayMode == 4)
   {
-    v58 = [(UILabel *)*p_detailLineOneLabel font];
-    [v58 _scaledValueForValue:20.0];
+    font2 = [(UILabel *)*p_detailLineOneLabel font];
+    [font2 _scaledValueForValue:20.0];
     v60 = v59;
 
     v61 = v37 + v60;
@@ -224,14 +224,14 @@ LABEL_5:
 
   if ([UIView userInterfaceLayoutDirectionForSemanticContentAttribute:0, *&recta.origin.x]== 1)
   {
-    v52 = [(CHFriendListTableViewCell *)self textLabel];
-    *&recta.size.height = v52;
-    v53 = [(CHFriendListTableViewCell *)self detailLineOneLabel];
-    v63 = v53;
-    v54 = [(CHFriendListTableViewCell *)self detailLineTwoLabel];
-    v64 = v54;
-    v55 = [(CHFriendListTableViewCell *)self ringsView];
-    v65 = v55;
+    textLabel6 = [(CHFriendListTableViewCell *)self textLabel];
+    *&recta.size.height = textLabel6;
+    detailLineOneLabel = [(CHFriendListTableViewCell *)self detailLineOneLabel];
+    v63 = detailLineOneLabel;
+    detailLineTwoLabel = [(CHFriendListTableViewCell *)self detailLineTwoLabel];
+    v64 = detailLineTwoLabel;
+    ringsView = [(CHFriendListTableViewCell *)self ringsView];
+    v65 = ringsView;
     v56 = [NSArray arrayWithObjects:&recta.size.height count:4];
 
     if (self->_competitionBadgeView)
@@ -245,17 +245,17 @@ LABEL_5:
   }
 }
 
-+ (double)measuredHeightWithDisplayMode:(int64_t)a3 formattingManager:(id)a4
++ (double)measuredHeightWithDisplayMode:(int64_t)mode formattingManager:(id)manager
 {
   v5 = qword_1008F9958;
-  v6 = a4;
+  managerCopy = manager;
   if (v5 != -1)
   {
     sub_10069B5D8();
   }
 
-  [qword_1008F9950 setDisplayMode:a3];
-  [qword_1008F9950 setFriend:0 snapshot:0 formattingManager:v6 animated:0];
+  [qword_1008F9950 setDisplayMode:mode];
+  [qword_1008F9950 setFriend:0 snapshot:0 formattingManager:managerCopy animated:0];
 
   [qword_1008F9950 layoutIfNeeded];
   v7 = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
@@ -267,42 +267,42 @@ LABEL_5:
   return v11;
 }
 
-- (void)setFriend:(id)a3 snapshot:(id)a4 formattingManager:(id)a5 animated:(BOOL)a6
+- (void)setFriend:(id)friend snapshot:(id)snapshot formattingManager:(id)manager animated:(BOOL)animated
 {
-  v6 = a6;
-  v59 = a3;
-  v10 = a4;
-  v11 = a5;
+  animatedCopy = animated;
+  friendCopy = friend;
+  snapshotCopy = snapshot;
+  managerCopy = manager;
   v12 = [ASDisplayContext displayContextWithName:kASDisplayContextCompanion];
-  v13 = [v12 nameFont];
-  v14 = [(CHFriendListTableViewCell *)self textLabel];
-  [v14 setFont:v13];
+  nameFont = [v12 nameFont];
+  textLabel = [(CHFriendListTableViewCell *)self textLabel];
+  [textLabel setFont:nameFont];
 
-  v15 = [(CHFriendListTableViewCell *)self textLabel];
-  v16 = [v15 font];
+  textLabel2 = [(CHFriendListTableViewCell *)self textLabel];
+  font = [textLabel2 font];
   v17 = [v12 keyColorForDisplayMode:{-[CHFriendListTableViewCell displayMode](self, "displayMode")}];
-  v18 = [v59 as_friendListNameStringWithDotPrefix:v16 keyColor:v17];
-  v19 = [(CHFriendListTableViewCell *)self textLabel];
-  [v19 setAttributedText:v18];
+  v18 = [friendCopy as_friendListNameStringWithDotPrefix:font keyColor:v17];
+  textLabel3 = [(CHFriendListTableViewCell *)self textLabel];
+  [textLabel3 setAttributedText:v18];
 
-  if ([v10 hasCarriedForwardGoals])
+  if ([snapshotCopy hasCarriedForwardGoals])
   {
-    v20 = 0;
+    activitySummary = 0;
   }
 
   else
   {
-    v20 = [v10 activitySummary];
+    activitySummary = [snapshotCopy activitySummary];
   }
 
-  [(ARUIRingsView *)self->_ringsView hk_configureWithActivitySummary:v20 animated:v6];
-  if ([v10 hasCarriedForwardGoals])
+  [(ARUIRingsView *)self->_ringsView hk_configureWithActivitySummary:activitySummary animated:animatedCopy];
+  if ([snapshotCopy hasCarriedForwardGoals])
   {
-    v21 = [v10 activitySummary];
-    v22 = [v21 _isStandalonePhoneSummary];
+    activitySummary2 = [snapshotCopy activitySummary];
+    _isStandalonePhoneSummary = [activitySummary2 _isStandalonePhoneSummary];
 
-    v23 = [(ARUIRingsView *)self->_ringsView ringGroup];
-    [v23 setIsStandalonePhoneFitnessMode:v22 animated:v6];
+    ringGroup = [(ARUIRingsView *)self->_ringsView ringGroup];
+    [ringGroup setIsStandalonePhoneFitnessMode:_isStandalonePhoneSummary animated:animatedCopy];
   }
 
   competitionBadgeView = self->_competitionBadgeView;
@@ -313,7 +313,7 @@ LABEL_5:
     self->_competitionBadgeView = 0;
   }
 
-  if ([v59 isAwaitingCompetitionResponseFromMe])
+  if ([friendCopy isAwaitingCompetitionResponseFromMe])
   {
     v26 = [UIImageView alloc];
     v27 = ActivitySharingBundle();
@@ -325,75 +325,75 @@ LABEL_5:
     [(CHFriendListTableViewCell *)self addSubview:self->_competitionBadgeView];
   }
 
-  if (!v20)
+  if (!activitySummary)
   {
-    v20 = objc_opt_new();
+    activitySummary = objc_opt_new();
   }
 
-  v31 = [(CHFriendListTableViewCell *)self displayMode];
-  if (v31 <= 2)
+  displayMode = [(CHFriendListTableViewCell *)self displayMode];
+  if (displayMode <= 2)
   {
-    if (v31 >= 2)
+    if (displayMode >= 2)
     {
-      if (v31 != 2)
+      if (displayMode != 2)
       {
         goto LABEL_24;
       }
 
-      v35 = [v20 as_exerciseProgressStringWithContext:v12];
+      v35 = [activitySummary as_exerciseProgressStringWithContext:v12];
       [(UILabel *)self->_detailLineOneLabel setAttributedText:v35];
 
-      v33 = [v20 as_exerciseDurationStringWithContext:v12];
+      v33 = [activitySummary as_exerciseDurationStringWithContext:v12];
     }
 
     else
     {
-      v32 = [v20 as_movePercentStringWithContext:v12 snapshot:v10];
+      v32 = [activitySummary as_movePercentStringWithContext:v12 snapshot:snapshotCopy];
       [(UILabel *)self->_detailLineOneLabel setAttributedText:v32];
 
-      v33 = [v20 as_moveProgressStringWithContext:v12 formattingManager:v11 snapshot:v10];
+      v33 = [activitySummary as_moveProgressStringWithContext:v12 formattingManager:managerCopy snapshot:snapshotCopy];
     }
 
     goto LABEL_22;
   }
 
-  switch(v31)
+  switch(displayMode)
   {
     case 3:
-      v36 = [v20 as_stepsStringWithContext:v12];
+      v36 = [activitySummary as_stepsStringWithContext:v12];
       [(UILabel *)self->_detailLineOneLabel setAttributedText:v36];
 
-      v33 = [v20 as_distanceStringWithContext:v12 formattingManager:v11];
+      v33 = [activitySummary as_distanceStringWithContext:v12 formattingManager:managerCopy];
 LABEL_22:
       v37 = v33;
       [(UILabel *)self->_detailLineTwoLabel setAttributedText:v33];
 
-      v38 = [(CHFriendListTableViewCell *)self contentView];
-      v39 = v38;
+      contentView = [(CHFriendListTableViewCell *)self contentView];
+      v39 = contentView;
       detailLineTwoLabel = self->_detailLineTwoLabel;
 LABEL_23:
-      [v38 addSubview:detailLineTwoLabel];
+      [contentView addSubview:detailLineTwoLabel];
 
       break;
     case 4:
-      v51 = [v59 friendWorkouts];
-      v52 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [v10 snapshotIndex]);
-      v53 = [v51 objectForKeyedSubscript:v52];
+      friendWorkouts = [friendCopy friendWorkouts];
+      v52 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [snapshotCopy snapshotIndex]);
+      v53 = [friendWorkouts objectForKeyedSubscript:v52];
       v54 = ASWorkoutNameString();
       [(UILabel *)self->_detailLineOneLabel setAttributedText:v54];
 
-      v55 = [v59 friendWorkouts];
-      v56 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [v10 snapshotIndex]);
-      v57 = [v55 objectForKeyedSubscript:v56];
+      friendWorkouts2 = [friendCopy friendWorkouts];
+      v56 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [snapshotCopy snapshotIndex]);
+      v57 = [friendWorkouts2 objectForKeyedSubscript:v56];
       v58 = ASWorkoutCaloriesString();
       [(UILabel *)self->_detailLineTwoLabel setAttributedText:v58];
 
-      v38 = [(CHFriendListTableViewCell *)self contentView];
-      v39 = v38;
+      contentView = [(CHFriendListTableViewCell *)self contentView];
+      v39 = contentView;
       detailLineTwoLabel = self->_detailLineTwoLabel;
       goto LABEL_23;
     case 5:
-      v34 = [v20 as_pushesStringWithContext:v12];
+      v34 = [activitySummary as_pushesStringWithContext:v12];
       [(UILabel *)self->_detailLineOneLabel setAttributedText:v34];
 
       [(UILabel *)self->_detailLineTwoLabel removeFromSuperview];
@@ -401,24 +401,24 @@ LABEL_23:
   }
 
 LABEL_24:
-  if (v59)
+  if (friendCopy)
   {
-    if ([v59 isMe])
+    if ([friendCopy isMe])
     {
-      v41 = @"me";
+      uUIDString = @"me";
     }
 
     else
     {
-      v42 = [v59 UUID];
-      v41 = [v42 UUIDString];
+      uUID = [friendCopy UUID];
+      uUIDString = [uUID UUIDString];
     }
 
-    v43 = [v10 startDate];
-    v44 = v43;
-    if (v43)
+    startDate = [snapshotCopy startDate];
+    v44 = startDate;
+    if (startDate)
     {
-      v45 = v43;
+      v45 = startDate;
     }
 
     else
@@ -432,7 +432,7 @@ LABEL_24:
     v48 = +[NSDate date];
     v49 = [v47 components:16 fromDate:v46 toDate:v48 options:0];
 
-    v50 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"friend_row_%ld_%@", [v49 day], v41);
+    v50 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"friend_row_%ld_%@", [v49 day], uUIDString);
     [(CHFriendListTableViewCell *)self setAccessibilityIdentifier:v50];
   }
 
@@ -442,9 +442,9 @@ LABEL_24:
 - (double)_lastBaseline
 {
   p_detailLineTwoLabel = &self->_detailLineTwoLabel;
-  v4 = [(UILabel *)self->_detailLineTwoLabel superview];
+  superview = [(UILabel *)self->_detailLineTwoLabel superview];
 
-  if (!v4)
+  if (!superview)
   {
     p_detailLineTwoLabel = &self->_detailLineOneLabel;
   }

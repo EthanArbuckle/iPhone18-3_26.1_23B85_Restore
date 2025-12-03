@@ -1,34 +1,34 @@
 @interface PTDisparityFilterPassThrough
-- (PTDisparityFilterPassThrough)initWithMetalContext:(id)a3;
-- (int)temporalDisparityFilter:(id)a3 inDisplacement:(id)a4 inStatePrev:(id)a5 inDisparity:(id)a6 outDisparity:(id)a7 outState:(id)a8;
+- (PTDisparityFilterPassThrough)initWithMetalContext:(id)context;
+- (int)temporalDisparityFilter:(id)filter inDisplacement:(id)displacement inStatePrev:(id)prev inDisparity:(id)disparity outDisparity:(id)outDisparity outState:(id)state;
 @end
 
 @implementation PTDisparityFilterPassThrough
 
-- (PTDisparityFilterPassThrough)initWithMetalContext:(id)a3
+- (PTDisparityFilterPassThrough)initWithMetalContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v10.receiver = self;
   v10.super_class = PTDisparityFilterPassThrough;
   v6 = [(PTDisparityFilterPassThrough *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_metalContext, a3);
+    objc_storeStrong(&v6->_metalContext, context);
     v8 = v7;
   }
 
   return v7;
 }
 
-- (int)temporalDisparityFilter:(id)a3 inDisplacement:(id)a4 inStatePrev:(id)a5 inDisparity:(id)a6 outDisparity:(id)a7 outState:(id)a8
+- (int)temporalDisparityFilter:(id)filter inDisplacement:(id)displacement inStatePrev:(id)prev inDisparity:(id)disparity outDisparity:(id)outDisparity outState:(id)state
 {
   metalContext = self->_metalContext;
-  v11 = a7;
-  v12 = a6;
-  v13 = a3;
-  v14 = [(PTMetalContext *)metalContext textureUtil];
-  v15 = [v14 copy:v13 inTex:v12 outTex:v11];
+  outDisparityCopy = outDisparity;
+  disparityCopy = disparity;
+  filterCopy = filter;
+  textureUtil = [(PTMetalContext *)metalContext textureUtil];
+  v15 = [textureUtil copy:filterCopy inTex:disparityCopy outTex:outDisparityCopy];
 
   return v15;
 }

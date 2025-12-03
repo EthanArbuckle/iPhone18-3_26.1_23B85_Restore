@@ -1,12 +1,12 @@
 @interface CARBluetoothSyncContactsPrompt
-- (void)presentSyncContactsAlertFromViewController:(id)a3;
+- (void)presentSyncContactsAlertFromViewController:(id)controller;
 @end
 
 @implementation CARBluetoothSyncContactsPrompt
 
-- (void)presentSyncContactsAlertFromViewController:(id)a3
+- (void)presentSyncContactsAlertFromViewController:(id)controller
 {
-  v15 = a3;
+  controllerCopy = controller;
   v4 = [NSBundle bundleForClass:objc_opt_class()];
   v5 = [v4 localizedStringForKey:@"SYNC_CONTACTS_TITLE" value:&stru_6FD90 table:@"Alerts"];
   v6 = [NSBundle bundleForClass:objc_opt_class()];
@@ -33,7 +33,7 @@
   v14 = [UIAlertAction actionWithTitle:v13 style:0 handler:v16];
   [v8 addAction:v14];
 
-  [v15 presentViewController:v8 animated:1 completion:0];
+  [controllerCopy presentViewController:v8 animated:1 completion:0];
 }
 
 @end

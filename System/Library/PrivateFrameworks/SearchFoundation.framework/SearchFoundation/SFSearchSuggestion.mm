@@ -1,65 +1,65 @@
 @interface SFSearchSuggestion
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (SFSearchSuggestion)initWithCoder:(id)a3;
-- (SFSearchSuggestion)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SFSearchSuggestion)initWithCoder:(id)coder;
+- (SFSearchSuggestion)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFSearchSuggestion
 
-- (SFSearchSuggestion)initWithProtobuf:(id)a3
+- (SFSearchSuggestion)initWithProtobuf:(id)protobuf
 {
   v47 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  protobufCopy = protobuf;
   v45.receiver = self;
   v45.super_class = SFSearchSuggestion;
   v5 = [(SFSearchSuggestion *)&v45 init];
   if (v5)
   {
-    v6 = [v4 identifier];
+    identifier = [protobufCopy identifier];
 
-    if (v6)
+    if (identifier)
     {
-      v7 = [v4 identifier];
-      [(SFSearchSuggestion *)v5 setIdentifier:v7];
+      identifier2 = [protobufCopy identifier];
+      [(SFSearchSuggestion *)v5 setIdentifier:identifier2];
     }
 
-    v8 = [v4 suggestion];
+    suggestion = [protobufCopy suggestion];
 
-    if (v8)
+    if (suggestion)
     {
-      v9 = [v4 suggestion];
-      [(SFSearchSuggestion *)v5 setSuggestion:v9];
+      suggestion2 = [protobufCopy suggestion];
+      [(SFSearchSuggestion *)v5 setSuggestion:suggestion2];
     }
 
-    v10 = [v4 query];
+    query = [protobufCopy query];
 
-    if (v10)
+    if (query)
     {
-      v11 = [v4 query];
-      [(SFSearchSuggestion *)v5 setQuery:v11];
+      query2 = [protobufCopy query];
+      [(SFSearchSuggestion *)v5 setQuery:query2];
     }
 
-    v12 = [v4 score];
+    score = [protobufCopy score];
 
-    if (v12)
+    if (score)
     {
-      v13 = [v4 score];
-      [v13 doubleValue];
+      score2 = [protobufCopy score];
+      [score2 doubleValue];
       [(SFSearchSuggestion *)v5 setScore:?];
     }
 
-    if ([v4 type])
+    if ([protobufCopy type])
     {
-      -[SFSearchSuggestion setType:](v5, "setType:", [v4 type]);
+      -[SFSearchSuggestion setType:](v5, "setType:", [protobufCopy type]);
     }
 
-    v14 = [v4 duplicateSuggestions];
-    if (v14)
+    duplicateSuggestions = [protobufCopy duplicateSuggestions];
+    if (duplicateSuggestions)
     {
       v15 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -73,8 +73,8 @@
     v44 = 0u;
     v41 = 0u;
     v42 = 0u;
-    v16 = [v4 duplicateSuggestions];
-    v17 = [v16 countByEnumeratingWithState:&v41 objects:v46 count:16];
+    duplicateSuggestions2 = [protobufCopy duplicateSuggestions];
+    v17 = [duplicateSuggestions2 countByEnumeratingWithState:&v41 objects:v46 count:16];
     if (v17)
     {
       v18 = v17;
@@ -85,7 +85,7 @@
         {
           if (*v42 != v19)
           {
-            objc_enumerationMutation(v16);
+            objc_enumerationMutation(duplicateSuggestions2);
           }
 
           v21 = [[SFSearchSuggestion alloc] initWithProtobuf:*(*(&v41 + 1) + 8 * i)];
@@ -95,74 +95,74 @@
           }
         }
 
-        v18 = [v16 countByEnumeratingWithState:&v41 objects:v46 count:16];
+        v18 = [duplicateSuggestions2 countByEnumeratingWithState:&v41 objects:v46 count:16];
       }
 
       while (v18);
     }
 
     [(SFSearchSuggestion *)v5 setDuplicateSuggestions:v15];
-    v22 = [v4 topicIdentifier];
+    topicIdentifier = [protobufCopy topicIdentifier];
 
-    if (v22)
+    if (topicIdentifier)
     {
-      v23 = [v4 topicIdentifier];
-      [(SFSearchSuggestion *)v5 setTopicIdentifier:v23];
+      topicIdentifier2 = [protobufCopy topicIdentifier];
+      [(SFSearchSuggestion *)v5 setTopicIdentifier:topicIdentifier2];
     }
 
-    v24 = [v4 bundleIdentifier];
+    bundleIdentifier = [protobufCopy bundleIdentifier];
 
-    if (v24)
+    if (bundleIdentifier)
     {
-      v25 = [v4 bundleIdentifier];
-      [(SFSearchSuggestion *)v5 setBundleIdentifier:v25];
+      bundleIdentifier2 = [protobufCopy bundleIdentifier];
+      [(SFSearchSuggestion *)v5 setBundleIdentifier:bundleIdentifier2];
     }
 
-    if ([v4 previouslyEngaged])
+    if ([protobufCopy previouslyEngaged])
     {
-      -[SFSearchSuggestion setPreviouslyEngaged:](v5, "setPreviouslyEngaged:", [v4 previouslyEngaged]);
+      -[SFSearchSuggestion setPreviouslyEngaged:](v5, "setPreviouslyEngaged:", [protobufCopy previouslyEngaged]);
     }
 
-    v26 = [v4 fbr];
+    v26 = [protobufCopy fbr];
 
     if (v26)
     {
-      v27 = [v4 fbr];
+      v27 = [protobufCopy fbr];
       [(SFSearchSuggestion *)v5 setFbr:v27];
     }
 
-    v28 = [v4 scopedSearchApplicationBundleIdentifier];
+    scopedSearchApplicationBundleIdentifier = [protobufCopy scopedSearchApplicationBundleIdentifier];
 
-    if (v28)
+    if (scopedSearchApplicationBundleIdentifier)
     {
-      v29 = [v4 scopedSearchApplicationBundleIdentifier];
-      [(SFSearchSuggestion *)v5 setScopedSearchApplicationBundleIdentifier:v29];
+      scopedSearchApplicationBundleIdentifier2 = [protobufCopy scopedSearchApplicationBundleIdentifier];
+      [(SFSearchSuggestion *)v5 setScopedSearchApplicationBundleIdentifier:scopedSearchApplicationBundleIdentifier2];
     }
 
-    v30 = [v4 utteranceText];
+    utteranceText = [protobufCopy utteranceText];
 
-    if (v30)
+    if (utteranceText)
     {
-      v31 = [v4 utteranceText];
-      [(SFSearchSuggestion *)v5 setUtteranceText:v31];
+      utteranceText2 = [protobufCopy utteranceText];
+      [(SFSearchSuggestion *)v5 setUtteranceText:utteranceText2];
     }
 
-    v32 = [v4 detailText];
+    detailText = [protobufCopy detailText];
 
-    if (v32)
+    if (detailText)
     {
-      v33 = [v4 detailText];
-      [(SFSearchSuggestion *)v5 setDetailText:v33];
+      detailText2 = [protobufCopy detailText];
+      [(SFSearchSuggestion *)v5 setDetailText:detailText2];
     }
 
-    v34 = [v4 serverFeatures];
+    serverFeatures = [protobufCopy serverFeatures];
     v39[0] = MEMORY[0x1E69E9820];
     v39[1] = 3221225472;
     v39[2] = __60__SFSearchSuggestion_ProtobufInitializer__initWithProtobuf___block_invoke;
     v39[3] = &unk_1E7ACDB40;
     v35 = v5;
     v40 = v35;
-    [v34 enumerateKeysAndObjectsUsingBlock:v39];
+    [serverFeatures enumerateKeysAndObjectsUsingBlock:v39];
 
     v36 = v35;
   }
@@ -182,12 +182,12 @@ void __60__SFSearchSuggestion_ProtobufInitializer__initWithProtobuf___block_invo
 
 - (unint64_t)hash
 {
-  v32 = [(SFSearchSuggestion *)self identifier];
-  v3 = [v32 hash];
-  v31 = [(SFSearchSuggestion *)self suggestion];
-  v28 = [v31 hash] ^ v3;
-  v30 = [(SFSearchSuggestion *)self query];
-  v27 = [v30 hash];
+  identifier = [(SFSearchSuggestion *)self identifier];
+  v3 = [identifier hash];
+  suggestion = [(SFSearchSuggestion *)self suggestion];
+  v28 = [suggestion hash] ^ v3;
+  query = [(SFSearchSuggestion *)self query];
+  v27 = [query hash];
   [(SFSearchSuggestion *)self score];
   if (v4 < 0.0)
   {
@@ -199,48 +199,48 @@ void __60__SFSearchSuggestion_ProtobufInitializer__initWithProtobuf___block_invo
   v7.f64[0] = NAN;
   v7.f64[1] = NAN;
   v29 = (*vbslq_s8(vnegq_f64(v7), v6, v5).i64 * 2654435760.0) + vcvtd_n_u64_f64(v4 - *v5.i64, 0x40uLL);
-  v24 = [(SFSearchSuggestion *)self type];
-  v26 = [(SFSearchSuggestion *)self duplicateSuggestions];
-  v23 = [v26 hash];
-  v25 = [(SFSearchSuggestion *)self topicIdentifier];
-  v22 = [v25 hash];
-  v8 = [(SFSearchSuggestion *)self bundleIdentifier];
-  v21 = [v8 hash];
-  v20 = [(SFSearchSuggestion *)self previouslyEngaged];
+  type = [(SFSearchSuggestion *)self type];
+  duplicateSuggestions = [(SFSearchSuggestion *)self duplicateSuggestions];
+  v23 = [duplicateSuggestions hash];
+  topicIdentifier = [(SFSearchSuggestion *)self topicIdentifier];
+  v22 = [topicIdentifier hash];
+  bundleIdentifier = [(SFSearchSuggestion *)self bundleIdentifier];
+  v21 = [bundleIdentifier hash];
+  previouslyEngaged = [(SFSearchSuggestion *)self previouslyEngaged];
   v9 = [(SFSearchSuggestion *)self fbr];
   v10 = [v9 hash];
-  v11 = [(SFSearchSuggestion *)self scopedSearchApplicationBundleIdentifier];
-  v12 = [v11 hash];
-  v13 = [(SFSearchSuggestion *)self utteranceText];
-  v14 = [v13 hash];
-  v15 = [(SFSearchSuggestion *)self detailText];
-  v16 = [v15 hash];
-  v17 = [(SFSearchSuggestion *)self serverFeatures];
-  v18 = v28 ^ v27 ^ v24 ^ v23 ^ v22 ^ v21 ^ v20 ^ v10 ^ v12 ^ v14 ^ v16 ^ [v17 hash];
+  scopedSearchApplicationBundleIdentifier = [(SFSearchSuggestion *)self scopedSearchApplicationBundleIdentifier];
+  v12 = [scopedSearchApplicationBundleIdentifier hash];
+  utteranceText = [(SFSearchSuggestion *)self utteranceText];
+  v14 = [utteranceText hash];
+  detailText = [(SFSearchSuggestion *)self detailText];
+  v16 = [detailText hash];
+  serverFeatures = [(SFSearchSuggestion *)self serverFeatures];
+  v18 = v28 ^ v27 ^ type ^ v23 ^ v22 ^ v21 ^ previouslyEngaged ^ v10 ^ v12 ^ v14 ^ v16 ^ [serverFeatures hash];
 
   return v18 ^ v29;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v19 = 1;
     goto LABEL_76;
   }
 
-  if (![(SFSearchSuggestion *)v4 isMemberOfClass:objc_opt_class()])
+  if (![(SFSearchSuggestion *)equalCopy isMemberOfClass:objc_opt_class()])
   {
     v19 = 0;
     goto LABEL_76;
   }
 
-  v5 = v4;
-  v122 = [(SFSearchSuggestion *)self identifier];
-  v121 = [(SFSearchSuggestion *)v5 identifier];
-  v119 = v121 == 0;
-  v120 = v122 != 0;
+  v5 = equalCopy;
+  identifier = [(SFSearchSuggestion *)self identifier];
+  identifier2 = [(SFSearchSuggestion *)v5 identifier];
+  v119 = identifier2 == 0;
+  v120 = identifier != 0;
   if (v120 == v119)
   {
     v117 = 0uLL;
@@ -261,15 +261,15 @@ void __60__SFSearchSuggestion_ProtobufInitializer__initWithProtobuf___block_invo
     goto LABEL_15;
   }
 
-  v7 = [(SFSearchSuggestion *)self identifier];
-  v8 = v7 != 0;
-  v114 = v7;
-  if (v7)
+  identifier3 = [(SFSearchSuggestion *)self identifier];
+  v8 = identifier3 != 0;
+  v114 = identifier3;
+  if (identifier3)
   {
-    v9 = [(SFSearchSuggestion *)self identifier];
-    v108 = [(SFSearchSuggestion *)v5 identifier];
-    v109 = v9;
-    if (![v9 isEqual:?])
+    identifier4 = [(SFSearchSuggestion *)self identifier];
+    identifier5 = [(SFSearchSuggestion *)v5 identifier];
+    v109 = identifier4;
+    if (![identifier4 isEqual:?])
     {
       v117 = 0uLL;
       memset(v118, 0, 28);
@@ -291,10 +291,10 @@ void __60__SFSearchSuggestion_ProtobufInitializer__initWithProtobuf___block_invo
     }
   }
 
-  v111 = [(SFSearchSuggestion *)self suggestion];
-  v110 = [(SFSearchSuggestion *)v5 suggestion];
+  suggestion = [(SFSearchSuggestion *)self suggestion];
+  suggestion2 = [(SFSearchSuggestion *)v5 suggestion];
   HIDWORD(v118[3]) = v8;
-  if ((v111 != 0) == (v110 == 0))
+  if ((suggestion != 0) == (suggestion2 == 0))
   {
     v118[0] = 0;
     *(&v118[2] + 4) = 0;
@@ -317,15 +317,15 @@ void __60__SFSearchSuggestion_ProtobufInitializer__initWithProtobuf___block_invo
     goto LABEL_15;
   }
 
-  v20 = [(SFSearchSuggestion *)self suggestion];
-  v21 = v20 != 0;
-  v107 = v20;
-  if (v20)
+  suggestion3 = [(SFSearchSuggestion *)self suggestion];
+  v21 = suggestion3 != 0;
+  v107 = suggestion3;
+  if (suggestion3)
   {
-    v22 = [(SFSearchSuggestion *)self suggestion];
-    v103 = [(SFSearchSuggestion *)v5 suggestion];
-    v104 = v22;
-    if (![v22 isEqual:?])
+    suggestion4 = [(SFSearchSuggestion *)self suggestion];
+    suggestion5 = [(SFSearchSuggestion *)v5 suggestion];
+    v104 = suggestion4;
+    if (![suggestion4 isEqual:?])
     {
       v117 = 0uLL;
       v10 = 0;
@@ -355,9 +355,9 @@ void __60__SFSearchSuggestion_ProtobufInitializer__initWithProtobuf___block_invo
     LODWORD(v118[3]) = 0;
   }
 
-  v106 = [(SFSearchSuggestion *)self query];
-  v105 = [(SFSearchSuggestion *)v5 query];
-  if ((v106 != 0) == (v105 == 0))
+  query = [(SFSearchSuggestion *)self query];
+  query2 = [(SFSearchSuggestion *)v5 query];
+  if ((query != 0) == (query2 == 0))
   {
     v116 = 0;
     *&v117 = 0;
@@ -379,15 +379,15 @@ void __60__SFSearchSuggestion_ProtobufInitializer__initWithProtobuf___block_invo
     goto LABEL_15;
   }
 
-  v35 = [(SFSearchSuggestion *)self query];
-  v36 = v35 != 0;
-  v102 = v35;
-  if (v35)
+  query3 = [(SFSearchSuggestion *)self query];
+  v36 = query3 != 0;
+  v102 = query3;
+  if (query3)
   {
-    v37 = [(SFSearchSuggestion *)self query];
-    v100 = [(SFSearchSuggestion *)v5 query];
-    v101 = v37;
-    if (![v37 isEqual:?])
+    query4 = [(SFSearchSuggestion *)self query];
+    query5 = [(SFSearchSuggestion *)v5 query];
+    v101 = query4;
+    if (![query4 isEqual:?])
     {
       *(&v117 + 4) = 0;
       *(&v118[1] + 4) = 0;
@@ -441,9 +441,9 @@ void __60__SFSearchSuggestion_ProtobufInitializer__initWithProtobuf___block_invo
     goto LABEL_15;
   }
 
-  v99 = [(SFSearchSuggestion *)self duplicateSuggestions];
-  v98 = [(SFSearchSuggestion *)v5 duplicateSuggestions];
-  if ((v99 != 0) == (v98 == 0))
+  duplicateSuggestions = [(SFSearchSuggestion *)self duplicateSuggestions];
+  duplicateSuggestions2 = [(SFSearchSuggestion *)v5 duplicateSuggestions];
+  if ((duplicateSuggestions != 0) == (duplicateSuggestions2 == 0))
   {
     v118[0] = 0x100000000;
     *(&v118[1] + 4) = 0;
@@ -467,15 +467,15 @@ void __60__SFSearchSuggestion_ProtobufInitializer__initWithProtobuf___block_invo
     goto LABEL_15;
   }
 
-  v42 = [(SFSearchSuggestion *)self duplicateSuggestions];
-  v43 = v42 != 0;
-  v97 = v42;
-  if (v42)
+  duplicateSuggestions3 = [(SFSearchSuggestion *)self duplicateSuggestions];
+  v43 = duplicateSuggestions3 != 0;
+  v97 = duplicateSuggestions3;
+  if (duplicateSuggestions3)
   {
-    v44 = [(SFSearchSuggestion *)self duplicateSuggestions];
-    v93 = [(SFSearchSuggestion *)v5 duplicateSuggestions];
-    v94 = v44;
-    if (![v44 isEqual:?])
+    duplicateSuggestions4 = [(SFSearchSuggestion *)self duplicateSuggestions];
+    duplicateSuggestions5 = [(SFSearchSuggestion *)v5 duplicateSuggestions];
+    v94 = duplicateSuggestions4;
+    if (![duplicateSuggestions4 isEqual:?])
     {
       v10 = 0;
       memset(v115, 0, sizeof(v115));
@@ -506,9 +506,9 @@ void __60__SFSearchSuggestion_ProtobufInitializer__initWithProtobuf___block_invo
     LODWORD(v118[2]) = 0;
   }
 
-  v96 = [(SFSearchSuggestion *)self topicIdentifier];
-  v95 = [(SFSearchSuggestion *)v5 topicIdentifier];
-  if ((v96 != 0) == (v95 == 0))
+  topicIdentifier = [(SFSearchSuggestion *)self topicIdentifier];
+  topicIdentifier2 = [(SFSearchSuggestion *)v5 topicIdentifier];
+  if ((topicIdentifier != 0) == (topicIdentifier2 == 0))
   {
     memset(v115, 0, sizeof(v115));
     v116 = 0;
@@ -530,15 +530,15 @@ void __60__SFSearchSuggestion_ProtobufInitializer__initWithProtobuf___block_invo
     goto LABEL_15;
   }
 
-  v45 = [(SFSearchSuggestion *)self topicIdentifier];
-  v46 = v45 != 0;
-  v92 = v45;
-  if (v45)
+  topicIdentifier3 = [(SFSearchSuggestion *)self topicIdentifier];
+  v46 = topicIdentifier3 != 0;
+  v92 = topicIdentifier3;
+  if (topicIdentifier3)
   {
-    v47 = [(SFSearchSuggestion *)self topicIdentifier];
-    v88 = [(SFSearchSuggestion *)v5 topicIdentifier];
-    v89 = v47;
-    if (![v47 isEqual:?])
+    topicIdentifier4 = [(SFSearchSuggestion *)self topicIdentifier];
+    topicIdentifier5 = [(SFSearchSuggestion *)v5 topicIdentifier];
+    v89 = topicIdentifier4;
+    if (![topicIdentifier4 isEqual:?])
     {
       memset(v115, 0, sizeof(v115));
       v116 = 0;
@@ -568,9 +568,9 @@ void __60__SFSearchSuggestion_ProtobufInitializer__initWithProtobuf___block_invo
     HIDWORD(v118[1]) = 0;
   }
 
-  v91 = [(SFSearchSuggestion *)self bundleIdentifier];
-  v90 = [(SFSearchSuggestion *)v5 bundleIdentifier];
-  if ((v91 != 0) == (v90 == 0))
+  bundleIdentifier = [(SFSearchSuggestion *)self bundleIdentifier];
+  bundleIdentifier2 = [(SFSearchSuggestion *)v5 bundleIdentifier];
+  if ((bundleIdentifier != 0) == (bundleIdentifier2 == 0))
   {
     *&v115[4] = 0;
     v116 = 0;
@@ -593,15 +593,15 @@ void __60__SFSearchSuggestion_ProtobufInitializer__initWithProtobuf___block_invo
     goto LABEL_15;
   }
 
-  v48 = [(SFSearchSuggestion *)self bundleIdentifier];
-  LODWORD(v123[2]) = v48 != 0;
-  v87 = v48;
-  if (v48)
+  bundleIdentifier3 = [(SFSearchSuggestion *)self bundleIdentifier];
+  LODWORD(v123[2]) = bundleIdentifier3 != 0;
+  v87 = bundleIdentifier3;
+  if (bundleIdentifier3)
   {
-    v49 = [(SFSearchSuggestion *)self bundleIdentifier];
-    v85 = [(SFSearchSuggestion *)v5 bundleIdentifier];
-    v86 = v49;
-    if (![v49 isEqual:?])
+    bundleIdentifier4 = [(SFSearchSuggestion *)self bundleIdentifier];
+    bundleIdentifier5 = [(SFSearchSuggestion *)v5 bundleIdentifier];
+    v86 = bundleIdentifier4;
+    if (![bundleIdentifier4 isEqual:?])
     {
       v11 = 0;
       v123[1] = 0;
@@ -627,8 +627,8 @@ void __60__SFSearchSuggestion_ProtobufInitializer__initWithProtobuf___block_invo
     }
   }
 
-  v50 = [(SFSearchSuggestion *)self previouslyEngaged];
-  if (v50 != [(SFSearchSuggestion *)v5 previouslyEngaged])
+  previouslyEngaged = [(SFSearchSuggestion *)self previouslyEngaged];
+  if (previouslyEngaged != [(SFSearchSuggestion *)v5 previouslyEngaged])
   {
     v11 = 0;
     v123[1] = 0;
@@ -685,9 +685,9 @@ void __60__SFSearchSuggestion_ProtobufInitializer__initWithProtobuf___block_invo
     v82 = v51;
     if (!v51 || (-[SFSearchSuggestion fbr](self, "fbr"), v52 = objc_claimAutoreleasedReturnValue(), -[SFSearchSuggestion fbr](v113, "fbr"), v78 = objc_claimAutoreleasedReturnValue(), v79 = v52, [v52 isEqual:?]))
     {
-      v81 = [(SFSearchSuggestion *)self scopedSearchApplicationBundleIdentifier];
-      v80 = [(SFSearchSuggestion *)v113 scopedSearchApplicationBundleIdentifier];
-      if ((v81 != 0) == (v80 == 0))
+      scopedSearchApplicationBundleIdentifier = [(SFSearchSuggestion *)self scopedSearchApplicationBundleIdentifier];
+      scopedSearchApplicationBundleIdentifier2 = [(SFSearchSuggestion *)v113 scopedSearchApplicationBundleIdentifier];
+      if ((scopedSearchApplicationBundleIdentifier != 0) == (scopedSearchApplicationBundleIdentifier2 == 0))
       {
         v12 = 0;
         *(v123 + 4) = 0;
@@ -712,14 +712,14 @@ void __60__SFSearchSuggestion_ProtobufInitializer__initWithProtobuf___block_invo
 
       else
       {
-        v53 = [(SFSearchSuggestion *)self scopedSearchApplicationBundleIdentifier];
-        LODWORD(v123[1]) = v53 != 0;
-        v77 = v53;
-        if (!v53 || (-[SFSearchSuggestion scopedSearchApplicationBundleIdentifier](self, "scopedSearchApplicationBundleIdentifier"), v54 = objc_claimAutoreleasedReturnValue(), -[SFSearchSuggestion scopedSearchApplicationBundleIdentifier](v113, "scopedSearchApplicationBundleIdentifier"), v73 = objc_claimAutoreleasedReturnValue(), v74 = v54, [v54 isEqual:?]))
+        scopedSearchApplicationBundleIdentifier3 = [(SFSearchSuggestion *)self scopedSearchApplicationBundleIdentifier];
+        LODWORD(v123[1]) = scopedSearchApplicationBundleIdentifier3 != 0;
+        v77 = scopedSearchApplicationBundleIdentifier3;
+        if (!scopedSearchApplicationBundleIdentifier3 || (-[SFSearchSuggestion scopedSearchApplicationBundleIdentifier](self, "scopedSearchApplicationBundleIdentifier"), v54 = objc_claimAutoreleasedReturnValue(), -[SFSearchSuggestion scopedSearchApplicationBundleIdentifier](v113, "scopedSearchApplicationBundleIdentifier"), v73 = objc_claimAutoreleasedReturnValue(), v74 = v54, [v54 isEqual:?]))
         {
-          v76 = [(SFSearchSuggestion *)self utteranceText];
-          v75 = [(SFSearchSuggestion *)v113 utteranceText];
-          if ((v76 != 0) == (v75 == 0))
+          utteranceText = [(SFSearchSuggestion *)self utteranceText];
+          utteranceText2 = [(SFSearchSuggestion *)v113 utteranceText];
+          if ((utteranceText != 0) == (utteranceText2 == 0))
           {
             v13 = 0;
             v123[0] = 0;
@@ -743,14 +743,14 @@ void __60__SFSearchSuggestion_ProtobufInitializer__initWithProtobuf___block_invo
 
           else
           {
-            v55 = [(SFSearchSuggestion *)self utteranceText];
-            HIDWORD(v123[0]) = v55 != 0;
-            v72 = v55;
-            if (!v55 || (-[SFSearchSuggestion utteranceText](self, "utteranceText"), v56 = objc_claimAutoreleasedReturnValue(), -[SFSearchSuggestion utteranceText](v113, "utteranceText"), v68 = objc_claimAutoreleasedReturnValue(), v69 = v56, [v56 isEqual:?]))
+            utteranceText3 = [(SFSearchSuggestion *)self utteranceText];
+            HIDWORD(v123[0]) = utteranceText3 != 0;
+            v72 = utteranceText3;
+            if (!utteranceText3 || (-[SFSearchSuggestion utteranceText](self, "utteranceText"), v56 = objc_claimAutoreleasedReturnValue(), -[SFSearchSuggestion utteranceText](v113, "utteranceText"), v68 = objc_claimAutoreleasedReturnValue(), v69 = v56, [v56 isEqual:?]))
             {
-              v71 = [(SFSearchSuggestion *)self detailText];
-              v70 = [(SFSearchSuggestion *)v113 detailText];
-              if ((v71 != 0) == (v70 == 0))
+              detailText = [(SFSearchSuggestion *)self detailText];
+              detailText2 = [(SFSearchSuggestion *)v113 detailText];
+              if ((detailText != 0) == (detailText2 == 0))
               {
                 v15 = 0;
                 LODWORD(v123[0]) = 0;
@@ -774,14 +774,14 @@ void __60__SFSearchSuggestion_ProtobufInitializer__initWithProtobuf___block_invo
 
               else
               {
-                v57 = [(SFSearchSuggestion *)self detailText];
-                LODWORD(v123[0]) = v57 != 0;
-                v67 = v57;
-                if (!v57 || (-[SFSearchSuggestion detailText](self, "detailText"), v58 = objc_claimAutoreleasedReturnValue(), -[SFSearchSuggestion detailText](v113, "detailText"), v63 = objc_claimAutoreleasedReturnValue(), v64 = v58, [v58 isEqual:?]))
+                detailText3 = [(SFSearchSuggestion *)self detailText];
+                LODWORD(v123[0]) = detailText3 != 0;
+                v67 = detailText3;
+                if (!detailText3 || (-[SFSearchSuggestion detailText](self, "detailText"), v58 = objc_claimAutoreleasedReturnValue(), -[SFSearchSuggestion detailText](v113, "detailText"), v63 = objc_claimAutoreleasedReturnValue(), v64 = v58, [v58 isEqual:?]))
                 {
-                  v66 = [(SFSearchSuggestion *)self serverFeatures];
-                  v65 = [(SFSearchSuggestion *)v113 serverFeatures];
-                  if ((v66 != 0) == (v65 == 0))
+                  serverFeatures = [(SFSearchSuggestion *)self serverFeatures];
+                  serverFeatures2 = [(SFSearchSuggestion *)v113 serverFeatures];
+                  if ((serverFeatures != 0) == (serverFeatures2 == 0))
                   {
                     v17 = 0;
                     v18 = 0;
@@ -804,15 +804,15 @@ void __60__SFSearchSuggestion_ProtobufInitializer__initWithProtobuf___block_invo
 
                   else
                   {
-                    v62 = [(SFSearchSuggestion *)self serverFeatures];
-                    if (v62)
+                    serverFeatures3 = [(SFSearchSuggestion *)self serverFeatures];
+                    if (serverFeatures3)
                     {
-                      v59 = [(SFSearchSuggestion *)self serverFeatures];
+                      serverFeatures4 = [(SFSearchSuggestion *)self serverFeatures];
                       v5 = v113;
-                      v60 = [(SFSearchSuggestion *)v113 serverFeatures];
-                      v61 = v59;
-                      v19 = [v59 isEqual:v60];
-                      v6 = v60;
+                      serverFeatures5 = [(SFSearchSuggestion *)v113 serverFeatures];
+                      v61 = serverFeatures4;
+                      v19 = [serverFeatures4 isEqual:serverFeatures5];
+                      v6 = serverFeatures5;
                       v18 = 1;
                       LODWORD(v118[1]) = 1;
                       *(&v117 + 1) = 0x100000001;
@@ -832,7 +832,7 @@ void __60__SFSearchSuggestion_ProtobufInitializer__initWithProtobuf___block_invo
                       goto LABEL_15;
                     }
 
-                    v62 = 0;
+                    serverFeatures3 = 0;
                     v18 = 0;
                     LODWORD(v118[1]) = 1;
                     *(&v117 + 1) = 0x100000001;
@@ -955,7 +955,7 @@ void __60__SFSearchSuggestion_ProtobufInitializer__initWithProtobuf___block_invo
 LABEL_15:
   if (v18)
   {
-    v112 = v4;
+    v112 = equalCopy;
     v23 = v19;
     v24 = v14;
     v25 = v10;
@@ -977,7 +977,7 @@ LABEL_15:
     v10 = v25;
     v14 = v24;
     v19 = v23;
-    v4 = v112;
+    equalCopy = v112;
     if (!v33)
     {
       goto LABEL_17;
@@ -1139,34 +1139,34 @@ LABEL_76:
   return v19;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(SFSearchSuggestion *)self identifier];
-  v6 = [v5 copy];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  identifier = [(SFSearchSuggestion *)self identifier];
+  v6 = [identifier copy];
   [v4 setIdentifier:v6];
 
-  v7 = [(SFSearchSuggestion *)self suggestion];
-  v8 = [v7 copy];
+  suggestion = [(SFSearchSuggestion *)self suggestion];
+  v8 = [suggestion copy];
   [v4 setSuggestion:v8];
 
-  v9 = [(SFSearchSuggestion *)self query];
-  v10 = [v9 copy];
+  query = [(SFSearchSuggestion *)self query];
+  v10 = [query copy];
   [v4 setQuery:v10];
 
   [(SFSearchSuggestion *)self score];
   [v4 setScore:?];
   [v4 setType:{-[SFSearchSuggestion type](self, "type")}];
-  v11 = [(SFSearchSuggestion *)self duplicateSuggestions];
-  v12 = [v11 copy];
+  duplicateSuggestions = [(SFSearchSuggestion *)self duplicateSuggestions];
+  v12 = [duplicateSuggestions copy];
   [v4 setDuplicateSuggestions:v12];
 
-  v13 = [(SFSearchSuggestion *)self topicIdentifier];
-  v14 = [v13 copy];
+  topicIdentifier = [(SFSearchSuggestion *)self topicIdentifier];
+  v14 = [topicIdentifier copy];
   [v4 setTopicIdentifier:v14];
 
-  v15 = [(SFSearchSuggestion *)self bundleIdentifier];
-  v16 = [v15 copy];
+  bundleIdentifier = [(SFSearchSuggestion *)self bundleIdentifier];
+  v16 = [bundleIdentifier copy];
   [v4 setBundleIdentifier:v16];
 
   [v4 setPreviouslyEngaged:{-[SFSearchSuggestion previouslyEngaged](self, "previouslyEngaged")}];
@@ -1174,20 +1174,20 @@ LABEL_76:
   v18 = [v17 copy];
   [v4 setFbr:v18];
 
-  v19 = [(SFSearchSuggestion *)self scopedSearchApplicationBundleIdentifier];
-  v20 = [v19 copy];
+  scopedSearchApplicationBundleIdentifier = [(SFSearchSuggestion *)self scopedSearchApplicationBundleIdentifier];
+  v20 = [scopedSearchApplicationBundleIdentifier copy];
   [v4 setScopedSearchApplicationBundleIdentifier:v20];
 
-  v21 = [(SFSearchSuggestion *)self utteranceText];
-  v22 = [v21 copy];
+  utteranceText = [(SFSearchSuggestion *)self utteranceText];
+  v22 = [utteranceText copy];
   [v4 setUtteranceText:v22];
 
-  v23 = [(SFSearchSuggestion *)self detailText];
-  v24 = [v23 copy];
+  detailText = [(SFSearchSuggestion *)self detailText];
+  v24 = [detailText copy];
   [v4 setDetailText:v24];
 
-  v25 = [(SFSearchSuggestion *)self serverFeatures];
-  v26 = [v25 copy];
+  serverFeatures = [(SFSearchSuggestion *)self serverFeatures];
+  v26 = [serverFeatures copy];
   [v4 setServerFeatures:v26];
 
   return v4;
@@ -1196,31 +1196,31 @@ LABEL_76:
 - (NSData)jsonData
 {
   v2 = [[_SFPBSearchSuggestion alloc] initWithFacade:self];
-  v3 = [(_SFPBSearchSuggestion *)v2 jsonData];
+  jsonData = [(_SFPBSearchSuggestion *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBSearchSuggestion alloc] initWithFacade:self];
-  v3 = [(_SFPBSearchSuggestion *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBSearchSuggestion *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6 = [[_SFPBSearchSuggestion alloc] initWithFacade:self];
-  v5 = [(_SFPBSearchSuggestion *)v6 data];
-  [v4 encodeObject:v5 forKey:@"_backingStore"];
+  data = [(_SFPBSearchSuggestion *)v6 data];
+  [coderCopy encodeObject:data forKey:@"_backingStore"];
 }
 
-- (SFSearchSuggestion)initWithCoder:(id)a3
+- (SFSearchSuggestion)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v6 = [[_SFPBSearchSuggestion alloc] initWithData:v5];
   v7 = [(SFSearchSuggestion *)self initWithProtobuf:v6];

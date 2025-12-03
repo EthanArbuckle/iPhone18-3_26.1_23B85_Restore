@@ -1,72 +1,72 @@
 @interface STStorageAppHeaderCell
-+ (id)specifierForAppBundleURL:(id)a3;
-+ (id)specifierForAppIdentifier:(id)a3;
-+ (id)specifierForAppProxy:(id)a3;
-+ (id)specifierForStorageApp:(id)a3;
++ (id)specifierForAppBundleURL:(id)l;
++ (id)specifierForAppIdentifier:(id)identifier;
++ (id)specifierForAppProxy:(id)proxy;
++ (id)specifierForStorageApp:(id)app;
 - (NSString)info;
 - (NSString)title;
 - (NSString)vendor;
-- (STStorageAppHeaderCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
-- (void)setTitle:(id)a3;
+- (STStorageAppHeaderCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
+- (void)setTitle:(id)title;
 - (void)updateConstraints;
 @end
 
 @implementation STStorageAppHeaderCell
 
-+ (id)specifierForStorageApp:(id)a3
++ (id)specifierForStorageApp:(id)app
 {
   v3 = MEMORY[0x277D3FAD8];
-  v4 = a3;
+  appCopy = app;
   v5 = [v3 preferenceSpecifierNamed:&stru_282D51E38 target:0 set:0 get:0 detail:0 cell:-1 edit:0];
   [v5 setProperty:objc_opt_class() forKey:*MEMORY[0x277D3FE58]];
-  [v5 setProperty:v4 forKey:@"stStorageApp"];
+  [v5 setProperty:appCopy forKey:@"stStorageApp"];
 
   return v5;
 }
 
-+ (id)specifierForAppIdentifier:(id)a3
++ (id)specifierForAppIdentifier:(id)identifier
 {
   v3 = MEMORY[0x277D69950];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithBundleIdentifier:v4];
+  identifierCopy = identifier;
+  v5 = [[v3 alloc] initWithBundleIdentifier:identifierCopy];
 
   v6 = [STStorageAppHeaderCell specifierForStorageApp:v5];
 
   return v6;
 }
 
-+ (id)specifierForAppProxy:(id)a3
++ (id)specifierForAppProxy:(id)proxy
 {
-  v3 = [a3 bundleIdentifier];
-  v4 = [STStorageAppHeaderCell specifierForAppIdentifier:v3];
+  bundleIdentifier = [proxy bundleIdentifier];
+  v4 = [STStorageAppHeaderCell specifierForAppIdentifier:bundleIdentifier];
 
   return v4;
 }
 
-+ (id)specifierForAppBundleURL:(id)a3
++ (id)specifierForAppBundleURL:(id)l
 {
-  v3 = [MEMORY[0x277CCA8D8] bundleWithURL:a3];
-  v4 = [v3 bundleIdentifier];
-  v5 = [STStorageAppHeaderCell specifierForAppIdentifier:v4];
+  v3 = [MEMORY[0x277CCA8D8] bundleWithURL:l];
+  bundleIdentifier = [v3 bundleIdentifier];
+  v5 = [STStorageAppHeaderCell specifierForAppIdentifier:bundleIdentifier];
 
   return v5;
 }
 
-- (STStorageAppHeaderCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (STStorageAppHeaderCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
   v43[5] = *MEMORY[0x277D85DE8];
-  v8 = a5;
+  specifierCopy = specifier;
   v41.receiver = self;
   v41.super_class = STStorageAppHeaderCell;
-  v9 = [(PSTableCell *)&v41 initWithStyle:a3 reuseIdentifier:a4 specifier:v8];
+  v9 = [(PSTableCell *)&v41 initWithStyle:style reuseIdentifier:identifier specifier:specifierCopy];
   v10 = v9;
   if (v9)
   {
-    v11 = [(STStorageAppHeaderCell *)v9 contentView];
+    contentView = [(STStorageAppHeaderCell *)v9 contentView];
     v12 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76918]];
     v13 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76968]];
-    v10->_infoHidden = [v8 versionLabelEnabled] ^ 1;
+    v10->_infoHidden = [specifierCopy versionLabelEnabled] ^ 1;
     v14 = objc_alloc(MEMORY[0x277D756B8]);
     v15 = *MEMORY[0x277CBF3A0];
     v16 = *(MEMORY[0x277CBF3A0] + 8);
@@ -83,35 +83,35 @@
     [(UILabel *)v10->_titleLabel setNumberOfLines:1];
     [(UILabel *)v10->_titleLabel setLineBreakMode:4];
     [(UILabel *)v10->_titleLabel setAllowsDefaultTighteningForTruncation:1];
-    [v11 addSubview:v10->_titleLabel];
+    [contentView addSubview:v10->_titleLabel];
     v21 = [objc_alloc(MEMORY[0x277D756B8]) initWithFrame:{v15, v16, v17, v18}];
     infoLabel = v10->_infoLabel;
     v10->_infoLabel = v21;
 
     [(UILabel *)v10->_infoLabel setFont:v13];
-    v23 = [MEMORY[0x277D75348] secondaryLabelColor];
-    [(UILabel *)v10->_infoLabel setTextColor:v23];
+    secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+    [(UILabel *)v10->_infoLabel setTextColor:secondaryLabelColor];
 
     [(UILabel *)v10->_infoLabel setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UILabel *)v10->_infoLabel setAccessibilityIdentifier:@"Info"];
     [(UILabel *)v10->_infoLabel setNumberOfLines:1];
     [(UILabel *)v10->_infoLabel setLineBreakMode:4];
     [(UILabel *)v10->_infoLabel setAllowsDefaultTighteningForTruncation:1];
-    [v11 addSubview:v10->_infoLabel];
+    [contentView addSubview:v10->_infoLabel];
     v24 = [objc_alloc(MEMORY[0x277D756B8]) initWithFrame:{v15, v16, v17, v18}];
     vendorLabel = v10->_vendorLabel;
     v10->_vendorLabel = v24;
 
     [(UILabel *)v10->_vendorLabel setFont:v13];
-    v26 = [MEMORY[0x277D75348] secondaryLabelColor];
-    [(UILabel *)v10->_vendorLabel setTextColor:v26];
+    secondaryLabelColor2 = [MEMORY[0x277D75348] secondaryLabelColor];
+    [(UILabel *)v10->_vendorLabel setTextColor:secondaryLabelColor2];
 
     [(UILabel *)v10->_vendorLabel setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UILabel *)v10->_vendorLabel setAccessibilityIdentifier:@"Creator"];
     [(UILabel *)v10->_vendorLabel setNumberOfLines:1];
     [(UILabel *)v10->_vendorLabel setLineBreakMode:4];
     [(UILabel *)v10->_vendorLabel setAllowsDefaultTighteningForTruncation:1];
-    [v11 addSubview:v10->_vendorLabel];
+    [contentView addSubview:v10->_vendorLabel];
     v27 = [objc_alloc(MEMORY[0x277D755E8]) initWithFrame:{v15, v16, v17, v18}];
     appIconView = v10->_appIconView;
     v10->_appIconView = v27;
@@ -119,7 +119,7 @@
     [(UIImageView *)v10->_appIconView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIImageView *)v10->_appIconView setAccessibilityIdentifier:@"Icon"];
     [(UIImageView *)v10->_appIconView setContentMode:1];
-    [v11 addSubview:v10->_appIconView];
+    [contentView addSubview:v10->_appIconView];
     v29 = [objc_alloc(MEMORY[0x277D755E8]) initWithFrame:{v15, v16, v17, v18}];
     cloudIconView = v10->_cloudIconView;
     v10->_cloudIconView = v29;
@@ -131,10 +131,10 @@
     v31 = [MEMORY[0x277D755B8] systemImageNamed:@"icloud.and.arrow.down"];
     [(UIImageView *)v10->_cloudIconView setImage:v31];
 
-    v32 = [MEMORY[0x277D75348] systemGray2Color];
-    [(UIImageView *)v10->_cloudIconView setTintColor:v32];
+    systemGray2Color = [MEMORY[0x277D75348] systemGray2Color];
+    [(UIImageView *)v10->_cloudIconView setTintColor:systemGray2Color];
 
-    [v11 addSubview:v10->_cloudIconView];
+    [contentView addSubview:v10->_cloudIconView];
     v33 = v10->_titleLabel;
     if (v10->_infoHidden)
     {
@@ -160,10 +160,10 @@
     }
 
     v37 = [v34 arrayWithObjects:v35 count:{v36, 1257}];
-    [v11 setAccessibilityElements:v37];
+    [contentView setAccessibilityElements:v37];
 
     [(STStorageAppHeaderCell *)v10 setNeedsUpdateConstraints];
-    [(STStorageAppHeaderCell *)v10 refreshCellContentsWithSpecifier:v8];
+    [(STStorageAppHeaderCell *)v10 refreshCellContentsWithSpecifier:specifierCopy];
   }
 
   v38 = *MEMORY[0x277D85DE8];
@@ -189,9 +189,9 @@
     [MEMORY[0x277CCAAD0] deactivateConstraints:self->_constraints];
   }
 
-  v6 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   constraints = self->_constraints;
-  self->_constraints = v6;
+  self->_constraints = array;
 
   v8 = self->_constraints;
   v9 = [MEMORY[0x277CCAAD0] constraintsWithVisualFormat:@"H:|-15-[_appIconView(==58)]" options:0 metrics:0 views:v5];
@@ -254,32 +254,32 @@
   [(STStorageAppHeaderCell *)&v26 updateConstraints];
 }
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   v20.receiver = self;
   v20.super_class = STStorageAppHeaderCell;
-  [(PSTableCell *)&v20 refreshCellContentsWithSpecifier:v4];
-  v5 = [v4 propertyForKey:@"stStorageApp"];
+  [(PSTableCell *)&v20 refreshCellContentsWithSpecifier:specifierCopy];
+  v5 = [specifierCopy propertyForKey:@"stStorageApp"];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 isDemoted];
-    v8 = [v6 bundleIdentifier];
-    v9 = [v8 isEqualToString:@"com.apple.Health"];
+    isDemoted = [v5 isDemoted];
+    bundleIdentifier = [v6 bundleIdentifier];
+    v9 = [bundleIdentifier isEqualToString:@"com.apple.Health"];
 
     if (v9 && [v6 isDemoted])
     {
-      v10 = [MEMORY[0x277D3F930] settingsIconCache];
-      v11 = [v10 imageForKey:*MEMORY[0x277D3FD28]];
+      settingsIconCache = [MEMORY[0x277D3F930] settingsIconCache];
+      v11 = [settingsIconCache imageForKey:*MEMORY[0x277D3FD28]];
 
       [(STStorageAppHeaderCell *)self setIcon:v11];
-      v7 = 0;
+      isDemoted = 0;
     }
 
-    v12 = [(STStorageAppHeaderCell *)self icon];
+    icon = [(STStorageAppHeaderCell *)self icon];
 
-    if (!v12)
+    if (!icon)
     {
       v19[0] = MEMORY[0x277D85DD0];
       v19[1] = 3221225472;
@@ -289,13 +289,13 @@
       STLoadHeaderIconForApp(v6, v19);
     }
 
-    v13 = [v6 name];
-    [(STStorageAppHeaderCell *)self setTitle:v13];
+    name = [v6 name];
+    [(STStorageAppHeaderCell *)self setTitle:name];
 
-    if ([v4 versionLabelEnabled])
+    if ([specifierCopy versionLabelEnabled])
     {
-      v14 = [v6 versionString];
-      [(STStorageAppHeaderCell *)self setInfo:v14];
+      versionString = [v6 versionString];
+      [(STStorageAppHeaderCell *)self setInfo:versionString];
     }
 
     else
@@ -303,39 +303,39 @@
       [(STStorageAppHeaderCell *)self setInfo:0];
     }
 
-    v15 = [v6 vendorName];
-    if (v15)
+    vendorName = [v6 vendorName];
+    if (vendorName)
     {
-      v16 = [v6 appIdentifier];
-      v17 = [v16 hasPrefix:@"com.apple."];
+      appIdentifier = [v6 appIdentifier];
+      v17 = [appIdentifier hasPrefix:@"com.apple."];
 
       if (v17)
       {
         v18 = *MEMORY[0x277D699D8];
 
-        v15 = v18;
+        vendorName = v18;
       }
     }
 
-    [(STStorageAppHeaderCell *)self setVendor:v15];
-    if (self->_isDemoted != v7)
+    [(STStorageAppHeaderCell *)self setVendor:vendorName];
+    if (self->_isDemoted != isDemoted)
     {
-      self->_isDemoted = v7;
+      self->_isDemoted = isDemoted;
       [(STStorageAppHeaderCell *)self setNeedsUpdateConstraints];
     }
 
-    [(UIImageView *)self->_cloudIconView setHidden:v7 ^ 1u];
+    [(UIImageView *)self->_cloudIconView setHidden:isDemoted ^ 1u];
   }
 
   [(STStorageAppHeaderCell *)self setNeedsDisplay];
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v5 = a3;
-  if ([v5 length])
+  titleCopy = title;
+  if ([titleCopy length])
   {
-    v4 = v5;
+    v4 = titleCopy;
   }
 
   else
@@ -348,11 +348,11 @@
 
 - (NSString)title
 {
-  v2 = [(UILabel *)self->_titleLabel text];
-  v3 = v2;
-  if (v2)
+  text = [(UILabel *)self->_titleLabel text];
+  v3 = text;
+  if (text)
   {
-    v4 = v2;
+    v4 = text;
   }
 
   else
@@ -367,11 +367,11 @@
 
 - (NSString)vendor
 {
-  v2 = [(UILabel *)self->_vendorLabel text];
-  v3 = v2;
-  if (v2)
+  text = [(UILabel *)self->_vendorLabel text];
+  v3 = text;
+  if (text)
   {
-    v4 = v2;
+    v4 = text;
   }
 
   else
@@ -386,11 +386,11 @@
 
 - (NSString)info
 {
-  v2 = [(UILabel *)self->_infoLabel text];
-  v3 = v2;
-  if (v2)
+  text = [(UILabel *)self->_infoLabel text];
+  v3 = text;
+  if (text)
   {
-    v4 = v2;
+    v4 = text;
   }
 
   else

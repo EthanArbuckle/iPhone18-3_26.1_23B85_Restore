@@ -1,13 +1,13 @@
 @interface RMRelativeMotionManager
-- (RMRelativeMotionManager)initWithQueue:(id)a3;
-- (id)getCurrentAudioListenerPoseWithError:(int64_t *)a3;
+- (RMRelativeMotionManager)initWithQueue:(id)queue;
+- (id)getCurrentAudioListenerPoseWithError:(int64_t *)error;
 - (id)getCurrentDummyData;
-- (int64_t)getCurrentAudioListenerPose:(id *)a3 timestamp:(double *)a4;
+- (int64_t)getCurrentAudioListenerPose:(id *)pose timestamp:(double *)timestamp;
 - (uint64_t)audioListenerPoseManager;
 - (uint64_t)currentAudioListenerPoseBufferIndex;
 - (uint64_t)defaults;
 - (uint64_t)dummyDataManager;
-- (uint64_t)getCurrentAudioListenerPoseInternal:(os_unfair_lock_s *)a1;
+- (uint64_t)getCurrentAudioListenerPoseInternal:(os_unfair_lock_s *)internal;
 - (uint64_t)queue;
 - (uint64_t)setCurrentAudioListenerPoseBufferIndex:(uint64_t)result;
 - (uint64_t)setShouldReceiveAudioListenerPose:(uint64_t)result;
@@ -19,10 +19,10 @@
 - (uint64_t)verboseLatencyAnalysisLogging;
 - (void)dealloc;
 - (void)resetAudioListenerPoseTrackingForAllClients;
-- (void)setAudioListenerPoseManager:(uint64_t)a1;
-- (void)setDefaults:(uint64_t)a1;
-- (void)setDummyDataManager:(uint64_t)a1;
-- (void)setQueue:(uint64_t)a1;
+- (void)setAudioListenerPoseManager:(uint64_t)manager;
+- (void)setDefaults:(uint64_t)defaults;
+- (void)setDummyDataManager:(uint64_t)manager;
+- (void)setQueue:(uint64_t)queue;
 - (void)startReceivingAudioListenerPoseWithForceSessionRestart:(_BYTE *)val;
 - (void)startReceivingDummyData;
 - (void)stopReceivingAudioListenerPose;
@@ -31,18 +31,18 @@
 
 @implementation RMRelativeMotionManager
 
-- (RMRelativeMotionManager)initWithQueue:(id)a3
+- (RMRelativeMotionManager)initWithQueue:(id)queue
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  queueCopy = queue;
   v19.receiver = self;
   v19.super_class = RMRelativeMotionManager;
   v6 = [(RMRelativeMotionManager *)&v19 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_queue, a3);
-    v8 = [[RMDummyDataManager alloc] initWithQueue:v5];
+    objc_storeStrong(&v6->_queue, queue);
+    v8 = [[RMDummyDataManager alloc] initWithQueue:queueCopy];
     dummyDataManager = v7->_dummyDataManager;
     v7->_dummyDataManager = v8;
 
@@ -52,7 +52,7 @@
     defaults = v7->_defaults;
     v7->_defaults = v10;
 
-    v12 = [[RMAudioListenerPoseManager alloc] initWithQueue:v5];
+    v12 = [[RMAudioListenerPoseManager alloc] initWithQueue:queueCopy];
     audioListenerPoseManager = v7->_audioListenerPoseManager;
     v7->_audioListenerPoseManager = v12;
 
@@ -340,19 +340,19 @@ void __82__RMRelativeMotionManager_startReceivingAudioListenerPoseWithForceSessi
 
   else
   {
-    v6 = [RMRelativeMotionManager stopReceivingAudioListenerPose];
-    __57__RMRelativeMotionManager_stopReceivingAudioListenerPose__block_invoke(v6);
+    stopReceivingAudioListenerPose = [RMRelativeMotionManager stopReceivingAudioListenerPose];
+    __57__RMRelativeMotionManager_stopReceivingAudioListenerPose__block_invoke(stopReceivingAudioListenerPose);
   }
 }
 
 - (void)dealloc
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     v3 = self->_dummyDataManager;
-    self = v2->_audioListenerPoseManager;
-    queue = v2->_queue;
+    self = selfCopy->_audioListenerPoseManager;
+    queue = selfCopy->_queue;
   }
 
   else
@@ -366,12 +366,12 @@ void __82__RMRelativeMotionManager_startReceivingAudioListenerPoseWithForceSessi
   block[2] = __34__RMRelativeMotionManager_dealloc__block_invoke;
   block[3] = &unk_279AF52D0;
   v9 = v3;
-  v10 = self;
-  v5 = self;
+  selfCopy2 = self;
+  selfCopy3 = self;
   v6 = v3;
   dispatch_async(queue, block);
 
-  v7.receiver = v2;
+  v7.receiver = selfCopy;
   v7.super_class = RMRelativeMotionManager;
   [(RMRelativeMotionManager *)&v7 dealloc];
 }
@@ -384,19 +384,19 @@ uint64_t __34__RMRelativeMotionManager_dealloc__block_invoke(uint64_t a1)
   return [v2 invalidate];
 }
 
-- (void)setQueue:(uint64_t)a1
+- (void)setQueue:(uint64_t)queue
 {
-  if (a1)
+  if (queue)
   {
-    objc_storeStrong((a1 + 240), a2);
+    objc_storeStrong((queue + 240), a2);
   }
 }
 
-- (void)setDummyDataManager:(uint64_t)a1
+- (void)setDummyDataManager:(uint64_t)manager
 {
-  if (a1)
+  if (manager)
   {
-    objc_storeStrong((a1 + 248), a2);
+    objc_storeStrong((manager + 248), a2);
   }
 }
 
@@ -410,19 +410,19 @@ uint64_t __34__RMRelativeMotionManager_dealloc__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setDefaults:(uint64_t)a1
+- (void)setDefaults:(uint64_t)defaults
 {
-  if (a1)
+  if (defaults)
   {
-    objc_storeStrong((a1 + 256), a2);
+    objc_storeStrong((defaults + 256), a2);
   }
 }
 
-- (void)setAudioListenerPoseManager:(uint64_t)a1
+- (void)setAudioListenerPoseManager:(uint64_t)manager
 {
-  if (a1)
+  if (manager)
   {
-    objc_storeStrong((a1 + 264), a2);
+    objc_storeStrong((manager + 264), a2);
   }
 }
 
@@ -458,9 +458,9 @@ uint64_t __34__RMRelativeMotionManager_dealloc__block_invoke(uint64_t a1)
 
 - (uint64_t)verboseLatencyAnalysisLogging
 {
-  if (a1)
+  if (self)
   {
-    return OUTLINED_FUNCTION_4(*(a1 + 226));
+    return OUTLINED_FUNCTION_4(*(self + 226));
   }
 
   else
@@ -471,9 +471,9 @@ uint64_t __34__RMRelativeMotionManager_dealloc__block_invoke(uint64_t a1)
 
 - (uint64_t)shouldReceiveDummyData
 {
-  if (a1)
+  if (self)
   {
-    return OUTLINED_FUNCTION_4(*(a1 + 224));
+    return OUTLINED_FUNCTION_4(*(self + 224));
   }
 
   else
@@ -504,9 +504,9 @@ uint64_t __34__RMRelativeMotionManager_dealloc__block_invoke(uint64_t a1)
 
 - (uint64_t)shouldReceiveAudioListenerPose
 {
-  if (a1)
+  if (self)
   {
-    return OUTLINED_FUNCTION_4(*(a1 + 225));
+    return OUTLINED_FUNCTION_4(*(self + 225));
   }
 
   else
@@ -572,39 +572,39 @@ void __82__RMRelativeMotionManager_startReceivingAudioListenerPoseWithForceSessi
   }
 }
 
-- (uint64_t)getCurrentAudioListenerPoseInternal:(os_unfair_lock_s *)a1
+- (uint64_t)getCurrentAudioListenerPoseInternal:(os_unfair_lock_s *)internal
 {
-  if (!a1)
+  if (!internal)
   {
     return 0;
   }
 
-  os_unfair_lock_lock(a1 + 55);
+  os_unfair_lock_lock(internal + 55);
   if (a2)
   {
     OUTLINED_FUNCTION_6();
-    memcpy(a2, &a1[20 * v4 + 10], 0x50uLL);
+    memcpy(a2, &internal[20 * v4 + 10], 0x50uLL);
   }
 
   OUTLINED_FUNCTION_6();
-  v6 = *&a1[2 * v5 + 50]._os_unfair_lock_opaque;
-  os_unfair_lock_unlock(a1 + 55);
+  v6 = *&internal[2 * v5 + 50]._os_unfair_lock_opaque;
+  os_unfair_lock_unlock(internal + 55);
   return v6;
 }
 
-- (int64_t)getCurrentAudioListenerPose:(id *)a3 timestamp:(double *)a4
+- (int64_t)getCurrentAudioListenerPose:(id *)pose timestamp:(double *)timestamp
 {
   v45 = *MEMORY[0x277D85DE8];
-  v11 = OUTLINED_FUNCTION_5(self, a2, a3, a4, v4, v5, v6, v7, v15, v17, v19, v21, v24);
-  if (a3)
+  v11 = OUTLINED_FUNCTION_5(self, a2, pose, timestamp, v4, v5, v6, v7, v15, v17, v19, v21, v24);
+  if (pose)
   {
-    *&a3->var0 = v16;
-    *&a3->var2 = v18;
+    *&pose->var0 = v16;
+    *&pose->var2 = v18;
   }
 
-  if (a4)
+  if (timestamp)
   {
-    *a4 = v20;
+    *timestamp = v20;
   }
 
   if (self && self->_verboseLatencyAnalysisLogging)
@@ -643,12 +643,12 @@ void __82__RMRelativeMotionManager_startReceivingAudioListenerPoseWithForceSessi
   return v11;
 }
 
-- (id)getCurrentAudioListenerPoseWithError:(int64_t *)a3
+- (id)getCurrentAudioListenerPoseWithError:(int64_t *)error
 {
-  v9 = OUTLINED_FUNCTION_5(self, a2, a3, v3, v4, v5, v6, v7, v13, v16, v19, v21, v24);
-  if (a3)
+  v9 = OUTLINED_FUNCTION_5(self, a2, error, v3, v4, v5, v6, v7, v13, v16, v19, v21, v24);
+  if (error)
   {
-    *a3 = v9;
+    *error = v9;
   }
 
   v10 = [[RMAttitude alloc] _initWithQuaternion:v14 timestamp:v15, v17, v18, v20];

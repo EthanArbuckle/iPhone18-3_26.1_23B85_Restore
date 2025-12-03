@@ -1,7 +1,7 @@
 @interface DMDInviteUserToVPPOperation
-+ (BOOL)validateRequest:(id)a3 error:(id *)a4;
++ (BOOL)validateRequest:(id)request error:(id *)error;
 + (id)whitelistedClassesForRequest;
-- (void)runWithRequest:(id)a3;
+- (void)runWithRequest:(id)request;
 - (void)waitUntilFinished;
 @end
 
@@ -21,21 +21,21 @@
   return [NSSet setWithObject:v2];
 }
 
-+ (BOOL)validateRequest:(id)a3 error:(id *)a4
++ (BOOL)validateRequest:(id)request error:(id *)error
 {
-  v6 = a3;
-  v13.receiver = a1;
+  requestCopy = request;
+  v13.receiver = self;
   v13.super_class = &OBJC_METACLASS___DMDInviteUserToVPPOperation;
-  if (!objc_msgSendSuper2(&v13, "validateRequest:error:", v6, a4))
+  if (!objc_msgSendSuper2(&v13, "validateRequest:error:", requestCopy, error))
   {
     goto LABEL_10;
   }
 
-  v7 = [v6 URL];
+  v7 = [requestCopy URL];
 
   if (!v7)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_11;
     }
@@ -47,11 +47,11 @@
     goto LABEL_9;
   }
 
-  v8 = [v6 originator];
+  originator = [requestCopy originator];
 
-  if (!v8)
+  if (!originator)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_11;
     }
@@ -62,23 +62,23 @@
     v10 = &v14;
 LABEL_9:
     v11 = [NSDictionary dictionaryWithObjects:v9 forKeys:v10 count:1];
-    *a4 = DMFErrorWithCodeAndUserInfo();
+    *error = DMFErrorWithCodeAndUserInfo();
 
 LABEL_10:
-    LOBYTE(a4) = 0;
+    LOBYTE(error) = 0;
     goto LABEL_11;
   }
 
-  LOBYTE(a4) = 1;
+  LOBYTE(error) = 1;
 LABEL_11:
 
-  return a4;
+  return error;
 }
 
-- (void)runWithRequest:(id)a3
+- (void)runWithRequest:(id)request
 {
-  v4 = a3;
-  v5 = [v4 URL];
+  requestCopy = request;
+  v5 = [requestCopy URL];
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138477827;
@@ -89,17 +89,17 @@ LABEL_11:
   if ([v5 conformsToOverridePatternWithKey:@"vpp-licensing-invitation-url-pattern"])
   {
     v6 = +[MCProfileConnection sharedConnection];
-    v7 = [v6 restrictedAppBundleIDs];
-    v8 = [v6 effectiveWhitelistedAppBundleIDs];
+    restrictedAppBundleIDs = [v6 restrictedAppBundleIDs];
+    effectiveWhitelistedAppBundleIDs = [v6 effectiveWhitelistedAppBundleIDs];
     v9 = MCAppStoreBundleIdentifier;
-    if (([v7 containsObject:MCAppStoreBundleIdentifier] & 1) != 0 || v8 && (objc_msgSend(v8, "containsObject:", v9) & 1) == 0)
+    if (([restrictedAppBundleIDs containsObject:MCAppStoreBundleIdentifier] & 1) != 0 || effectiveWhitelistedAppBundleIDs && (objc_msgSend(effectiveWhitelistedAppBundleIDs, "containsObject:", v9) & 1) == 0)
     {
       if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
       {
         sub_1000848F8();
       }
 
-      v10 = self;
+      selfCopy3 = self;
       v11 = 1400;
     }
 
@@ -117,8 +117,8 @@ LABEL_11:
         v14 = [v13 localizedStringForKey:@"Allow App and Book Assignment?" value:&stru_1000D0428 table:@"DMFNotifications"];
         [v23 setHeader:v14];
 
-        v15 = [v4 originator];
-        v16 = [NSString stringWithFormat:v24, v15];
+        originator = [requestCopy originator];
+        v16 = [NSString stringWithFormat:v24, originator];
         [v23 setMessage:v16];
 
         v17 = [NSBundle bundleForClass:objc_opt_class()];
@@ -135,7 +135,7 @@ LABEL_11:
         v26[2] = sub_10004D56C;
         v26[3] = &unk_1000CF368;
         v27 = v5;
-        v28 = self;
+        selfCopy2 = self;
         v29 = v25;
         v22 = v25;
         [v21 showNotification:v23 completion:v26];
@@ -143,11 +143,11 @@ LABEL_11:
         goto LABEL_16;
       }
 
-      v10 = self;
+      selfCopy3 = self;
       v11 = 1407;
     }
 
-    [(DMDTaskOperation *)v10 endOperationWithDMFErrorCode:v11];
+    [(DMDTaskOperation *)selfCopy3 endOperationWithDMFErrorCode:v11];
 LABEL_16:
 
     goto LABEL_17;

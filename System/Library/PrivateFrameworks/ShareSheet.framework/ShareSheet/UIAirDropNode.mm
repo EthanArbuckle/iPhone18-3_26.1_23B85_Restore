@@ -1,52 +1,52 @@
 @interface UIAirDropNode
-+ (UIAirDropNode)nodeWithIdentifier:(id)a3 displayName:(id)a4 subtitle:(id)a5 avatarImageSlotID:(unsigned int)a6 transportImageSlotID:(unsigned int)a7;
-+ (UIAirDropNode)nodeWithIdentifier:(id)a3 peopleSuggestion:(id)a4;
-+ (UIAirDropNode)nodeWithIdentifier:(id)a3 suggestionNode:(id)a4;
++ (UIAirDropNode)nodeWithIdentifier:(id)identifier displayName:(id)name subtitle:(id)subtitle avatarImageSlotID:(unsigned int)d transportImageSlotID:(unsigned int)iD;
++ (UIAirDropNode)nodeWithIdentifier:(id)identifier peopleSuggestion:(id)suggestion;
++ (UIAirDropNode)nodeWithIdentifier:(id)identifier suggestionNode:(id)node;
 + (id)TTRAirDropNode;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isTapToRadar;
 - (BOOL)load;
 - (NSString)description;
-- (UIAirDropNode)initWithCoder:(id)a3;
+- (UIAirDropNode)initWithCoder:(id)coder;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)load;
 @end
 
 @implementation UIAirDropNode
 
-+ (UIAirDropNode)nodeWithIdentifier:(id)a3 suggestionNode:(id)a4
++ (UIAirDropNode)nodeWithIdentifier:(id)identifier suggestionNode:(id)node
 {
-  v5 = a4;
-  v6 = a3;
+  nodeCopy = node;
+  identifierCopy = identifier;
   v7 = objc_alloc_init(UIAirDropNode);
-  [(UIAirDropNode *)v7 setIdentifier:v6];
+  [(UIAirDropNode *)v7 setIdentifier:identifierCopy];
 
-  [(UIAirDropNode *)v7 setSuggestionNode:v5];
-  v8 = [v5 suggestion];
+  [(UIAirDropNode *)v7 setSuggestionNode:nodeCopy];
+  suggestion = [nodeCopy suggestion];
 
-  -[UIAirDropNode setIsPlaceholder:](v7, "setIsPlaceholder:", [v8 isPlaceholder]);
+  -[UIAirDropNode setIsPlaceholder:](v7, "setIsPlaceholder:", [suggestion isPlaceholder]);
 
   return v7;
 }
 
-+ (UIAirDropNode)nodeWithIdentifier:(id)a3 displayName:(id)a4 subtitle:(id)a5 avatarImageSlotID:(unsigned int)a6 transportImageSlotID:(unsigned int)a7
++ (UIAirDropNode)nodeWithIdentifier:(id)identifier displayName:(id)name subtitle:(id)subtitle avatarImageSlotID:(unsigned int)d transportImageSlotID:(unsigned int)iD
 {
-  v7 = *&a7;
-  v8 = *&a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  v7 = *&iD;
+  v8 = *&d;
+  subtitleCopy = subtitle;
+  nameCopy = name;
+  identifierCopy = identifier;
   v14 = objc_alloc_init(UIAirDropNode);
-  [(UIAirDropNode *)v14 setIdentifier:v13];
+  [(UIAirDropNode *)v14 setIdentifier:identifierCopy];
 
-  [(UIAirDropNode *)v14 setDisplayName:v12];
-  [(UIAirDropNode *)v14 setSubtitle:v11];
+  [(UIAirDropNode *)v14 setDisplayName:nameCopy];
+  [(UIAirDropNode *)v14 setSubtitle:subtitleCopy];
 
   [(UIAirDropNode *)v14 setAvatarImageSlotID:v8];
   [(UIAirDropNode *)v14 setTransportImageSlotID:v7];
-  -[UIAirDropNode setMainLabelSlotID:](v14, "setMainLabelSlotID:", [v12 slotIdentifier]);
-  [v12 slotTextHeight];
+  -[UIAirDropNode setMainLabelSlotID:](v14, "setMainLabelSlotID:", [nameCopy slotIdentifier]);
+  [nameCopy slotTextHeight];
   v16 = v15;
 
   [(UIAirDropNode *)v14 setMainLabelSlotHeight:v16];
@@ -54,14 +54,14 @@
   return v14;
 }
 
-+ (UIAirDropNode)nodeWithIdentifier:(id)a3 peopleSuggestion:(id)a4
++ (UIAirDropNode)nodeWithIdentifier:(id)identifier peopleSuggestion:(id)suggestion
 {
-  v5 = a4;
-  v6 = a3;
+  suggestionCopy = suggestion;
+  identifierCopy = identifier;
   v7 = objc_alloc_init(UIAirDropNode);
-  [(UIAirDropNode *)v7 setIdentifier:v6];
+  [(UIAirDropNode *)v7 setIdentifier:identifierCopy];
 
-  [(UIAirDropNode *)v7 setPeopleSuggestion:v5];
+  [(UIAirDropNode *)v7 setPeopleSuggestion:suggestionCopy];
 
   return v7;
 }
@@ -69,88 +69,88 @@
 + (id)TTRAirDropNode
 {
   v2 = objc_alloc_init(UIAirDropNode);
-  v3 = [MEMORY[0x1E69CDEA8] TTRPeopleSuggestion];
+  tTRPeopleSuggestion = [MEMORY[0x1E69CDEA8] TTRPeopleSuggestion];
   v4 = objc_alloc(MEMORY[0x1E696AFB0]);
-  v5 = [v3 identifier];
-  v6 = [v4 initWithUUIDString:v5];
+  identifier = [tTRPeopleSuggestion identifier];
+  v6 = [v4 initWithUUIDString:identifier];
   [(UIAirDropNode *)v2 setIdentifier:v6];
 
   v7 = objc_alloc(MEMORY[0x1E69CDEB0]);
-  v8 = [v3 displayName];
-  v9 = [v7 initWithText:v8];
+  displayName = [tTRPeopleSuggestion displayName];
+  v9 = [v7 initWithText:displayName];
   [(UIAirDropNode *)v2 setDisplayName:v9];
 
-  [(UIAirDropNode *)v2 setPeopleSuggestion:v3];
+  [(UIAirDropNode *)v2 setPeopleSuggestion:tTRPeopleSuggestion];
 
   return v2;
 }
 
 - (BOOL)isTapToRadar
 {
-  v2 = [(UIAirDropNode *)self peopleSuggestion];
-  v3 = [v2 isTapToRadar];
+  peopleSuggestion = [(UIAirDropNode *)self peopleSuggestion];
+  isTapToRadar = [peopleSuggestion isTapToRadar];
 
-  return v3;
+  return isTapToRadar;
 }
 
-- (UIAirDropNode)initWithCoder:(id)a3
+- (UIAirDropNode)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(UIAirDropNode *)self init];
   if (v5)
   {
-    -[UIAirDropNode setAvatarImageSlotID:](v5, "setAvatarImageSlotID:", [v4 decodeInt32ForKey:@"avatarImageSlotID"]);
-    -[UIAirDropNode setTransportImageSlotID:](v5, "setTransportImageSlotID:", [v4 decodeInt32ForKey:@"transportImageSlotID"]);
-    -[UIAirDropNode setMainLabelSlotID:](v5, "setMainLabelSlotID:", [v4 decodeInt32ForKey:@"mainLabelSlotID"]);
-    [v4 decodeDoubleForKey:@"mainLabelSlotHeight"];
+    -[UIAirDropNode setAvatarImageSlotID:](v5, "setAvatarImageSlotID:", [coderCopy decodeInt32ForKey:@"avatarImageSlotID"]);
+    -[UIAirDropNode setTransportImageSlotID:](v5, "setTransportImageSlotID:", [coderCopy decodeInt32ForKey:@"transportImageSlotID"]);
+    -[UIAirDropNode setMainLabelSlotID:](v5, "setMainLabelSlotID:", [coderCopy decodeInt32ForKey:@"mainLabelSlotID"]);
+    [coderCopy decodeDoubleForKey:@"mainLabelSlotHeight"];
     [(UIAirDropNode *)v5 setMainLabelSlotHeight:?];
-    -[UIAirDropNode setBottomLabelSlotID:](v5, "setBottomLabelSlotID:", [v4 decodeInt32ForKey:@"bottomLabelSlotID"]);
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"suggestionNodeReason"];
+    -[UIAirDropNode setBottomLabelSlotID:](v5, "setBottomLabelSlotID:", [coderCopy decodeInt32ForKey:@"bottomLabelSlotID"]);
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"suggestionNodeReason"];
     [(UIAirDropNode *)v5 setSuggestionReason:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"displayName"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"displayName"];
     displayName = v5->_displayName;
     v5->_displayName = v7;
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"subtitle"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"subtitle"];
     subtitle = v5->_subtitle;
     v5->_subtitle = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v11;
 
-    v5->_isMagicHead = [v4 decodeBoolForKey:@"isMagicHead"];
-    v5->_selectionReason = [v4 decodeInt64ForKey:@"selectionReason"];
-    v5->_hasSquareImage = [v4 decodeBoolForKey:@"hasSquareImage"];
-    v5->_isDisabled = [v4 decodeBoolForKey:@"isDisabled"];
-    v5->_isRestricted = [v4 decodeBoolForKey:@"isRestricted"];
-    v5->_isPlaceholder = [v4 decodeBoolForKey:@"isPlaceholder"];
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"peopleSuggestion"];
+    v5->_isMagicHead = [coderCopy decodeBoolForKey:@"isMagicHead"];
+    v5->_selectionReason = [coderCopy decodeInt64ForKey:@"selectionReason"];
+    v5->_hasSquareImage = [coderCopy decodeBoolForKey:@"hasSquareImage"];
+    v5->_isDisabled = [coderCopy decodeBoolForKey:@"isDisabled"];
+    v5->_isRestricted = [coderCopy decodeBoolForKey:@"isRestricted"];
+    v5->_isPlaceholder = [coderCopy decodeBoolForKey:@"isPlaceholder"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"peopleSuggestion"];
     peopleSuggestion = v5->_peopleSuggestion;
     v5->_peopleSuggestion = v13;
 
     if ([(UIAirDropNode *)v5 mainLabelSlotID])
     {
-      v15 = [(UIAirDropNode *)v5 displayName];
-      v16 = [v15 slotIdentifier];
+      displayName = [(UIAirDropNode *)v5 displayName];
+      slotIdentifier = [displayName slotIdentifier];
 
-      if (!v16)
+      if (!slotIdentifier)
       {
         v17 = objc_alloc(MEMORY[0x1E69CDEB0]);
-        v18 = [(UIAirDropNode *)v5 mainLabelSlotID];
+        mainLabelSlotID = [(UIAirDropNode *)v5 mainLabelSlotID];
         [(UIAirDropNode *)v5 mainLabelSlotHeight];
-        v19 = [v17 initWithSlotIdentifier:v18 slotTextHeight:?];
+        v19 = [v17 initWithSlotIdentifier:mainLabelSlotID slotTextHeight:?];
         [(UIAirDropNode *)v5 setDisplayName:v19];
       }
     }
 
     if ([(UIAirDropNode *)v5 bottomLabelSlotID])
     {
-      v20 = [(UIAirDropNode *)v5 subtitle];
-      v21 = [v20 slotIdentifier];
+      subtitle = [(UIAirDropNode *)v5 subtitle];
+      slotIdentifier2 = [subtitle slotIdentifier];
 
-      if (!v21)
+      if (!slotIdentifier2)
       {
         v22 = [objc_alloc(MEMORY[0x1E69CDEB0]) initWithSlotIdentifier:{-[UIAirDropNode bottomLabelSlotID](v5, "bottomLabelSlotID")}];
         [(UIAirDropNode *)v5 setSubtitle:v22];
@@ -172,29 +172,29 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  [v6 encodeInt32:-[UIAirDropNode avatarImageSlotID](self forKey:{"avatarImageSlotID"), @"avatarImageSlotID"}];
-  [v6 encodeInt32:-[UIAirDropNode transportImageSlotID](self forKey:{"transportImageSlotID"), @"transportImageSlotID"}];
-  [v6 encodeInt32:-[UIAirDropNode mainLabelSlotID](self forKey:{"mainLabelSlotID"), @"mainLabelSlotID"}];
+  coderCopy = coder;
+  [coderCopy encodeInt32:-[UIAirDropNode avatarImageSlotID](self forKey:{"avatarImageSlotID"), @"avatarImageSlotID"}];
+  [coderCopy encodeInt32:-[UIAirDropNode transportImageSlotID](self forKey:{"transportImageSlotID"), @"transportImageSlotID"}];
+  [coderCopy encodeInt32:-[UIAirDropNode mainLabelSlotID](self forKey:{"mainLabelSlotID"), @"mainLabelSlotID"}];
   [(UIAirDropNode *)self mainLabelSlotHeight];
-  [v6 encodeDouble:@"mainLabelSlotHeight" forKey:?];
-  [v6 encodeInt32:-[UIAirDropNode bottomLabelSlotID](self forKey:{"bottomLabelSlotID"), @"bottomLabelSlotID"}];
-  v4 = [(UIAirDropNode *)self suggestionNode];
-  v5 = [v4 suggestionReason];
-  [v6 encodeObject:v5 forKey:@"suggestionNodeReason"];
+  [coderCopy encodeDouble:@"mainLabelSlotHeight" forKey:?];
+  [coderCopy encodeInt32:-[UIAirDropNode bottomLabelSlotID](self forKey:{"bottomLabelSlotID"), @"bottomLabelSlotID"}];
+  suggestionNode = [(UIAirDropNode *)self suggestionNode];
+  suggestionReason = [suggestionNode suggestionReason];
+  [coderCopy encodeObject:suggestionReason forKey:@"suggestionNodeReason"];
 
-  [v6 encodeObject:self->_displayName forKey:@"displayName"];
-  [v6 encodeObject:self->_subtitle forKey:@"subtitle"];
-  [v6 encodeObject:self->_identifier forKey:@"identifier"];
-  [v6 encodeBool:self->_isMagicHead forKey:@"isMagicHead"];
-  [v6 encodeInt64:self->_selectionReason forKey:@"selectionReason"];
-  [v6 encodeBool:self->_hasSquareImage forKey:@"hasSquareImage"];
-  [v6 encodeBool:self->_isDisabled forKey:@"isDisabled"];
-  [v6 encodeBool:self->_isRestricted forKey:@"isRestricted"];
-  [v6 encodeBool:self->_isPlaceholder forKey:@"isPlaceholder"];
-  [v6 encodeObject:self->_peopleSuggestion forKey:@"peopleSuggestion"];
+  [coderCopy encodeObject:self->_displayName forKey:@"displayName"];
+  [coderCopy encodeObject:self->_subtitle forKey:@"subtitle"];
+  [coderCopy encodeObject:self->_identifier forKey:@"identifier"];
+  [coderCopy encodeBool:self->_isMagicHead forKey:@"isMagicHead"];
+  [coderCopy encodeInt64:self->_selectionReason forKey:@"selectionReason"];
+  [coderCopy encodeBool:self->_hasSquareImage forKey:@"hasSquareImage"];
+  [coderCopy encodeBool:self->_isDisabled forKey:@"isDisabled"];
+  [coderCopy encodeBool:self->_isRestricted forKey:@"isRestricted"];
+  [coderCopy encodeBool:self->_isPlaceholder forKey:@"isPlaceholder"];
+  [coderCopy encodeObject:self->_peopleSuggestion forKey:@"peopleSuggestion"];
 }
 
 - (NSString)description
@@ -203,10 +203,10 @@
   v18.receiver = self;
   v18.super_class = UIAirDropNode;
   v4 = [(UIAirDropNode *)&v18 description];
-  v5 = [(UIAirDropNode *)self identifier];
-  v6 = [(UIAirDropNode *)self avatarImageSlotID];
-  v7 = [(UIAirDropNode *)self transportImageSlotID];
-  v8 = [(UIAirDropNode *)self mainLabelSlotID];
+  identifier = [(UIAirDropNode *)self identifier];
+  avatarImageSlotID = [(UIAirDropNode *)self avatarImageSlotID];
+  transportImageSlotID = [(UIAirDropNode *)self transportImageSlotID];
+  mainLabelSlotID = [(UIAirDropNode *)self mainLabelSlotID];
   [(UIAirDropNode *)self mainLabelSlotHeight];
   if (self->_isDisabled)
   {
@@ -238,7 +238,7 @@
     v12 = @"NO";
   }
 
-  v13 = [v3 stringWithFormat:@"<%@: identifier:%@ avatarImageSlotID:%u, transportImageSlotID:%u, textSlotID:%u, textSlotHeight:%f, peopleSuggestion:%@, isDisabled:%@, isRestricted:%@ displayName:%@ subtitle:%@ isPlaceholder:%@", v4, v5, v6, v7, v8, v9, self->_peopleSuggestion, v10, v11, self->_displayName, self->_subtitle, v12];
+  v13 = [v3 stringWithFormat:@"<%@: identifier:%@ avatarImageSlotID:%u, transportImageSlotID:%u, textSlotID:%u, textSlotHeight:%f, peopleSuggestion:%@, isDisabled:%@, isRestricted:%@ displayName:%@ subtitle:%@ isPlaceholder:%@", v4, identifier, avatarImageSlotID, transportImageSlotID, mainLabelSlotID, v9, self->_peopleSuggestion, v10, v11, self->_displayName, self->_subtitle, v12];
 
   if (self->_isMagicHead)
   {
@@ -263,16 +263,16 @@
   v4 = NSStringFromClass(v3);
   v5 = [v4 hash];
 
-  v6 = [(UIAirDropNode *)self identifier];
-  v7 = [v6 hash];
+  identifier = [(UIAirDropNode *)self identifier];
+  v7 = [identifier hash];
 
   return v7 ^ v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v19 = 1;
   }
@@ -282,9 +282,9 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(UIAirDropNode *)v5 avatarImageSlotID];
-      if (v6 != [(UIAirDropNode *)self avatarImageSlotID]|| (v7 = [(UIAirDropNode *)v5 mainLabelSlotID], v7 != [(UIAirDropNode *)self mainLabelSlotID]) || ([(UIAirDropNode *)v5 mainLabelSlotHeight], v9 = v8, [(UIAirDropNode *)self mainLabelSlotHeight], v9 != v10) || (v11 = [(UIAirDropNode *)v5 bottomLabelSlotID], v11 != [(UIAirDropNode *)self bottomLabelSlotID]) || (v12 = [(UIAirDropNode *)v5 transportImageSlotID], v12 != [(UIAirDropNode *)self transportImageSlotID]))
+      v5 = equalCopy;
+      avatarImageSlotID = [(UIAirDropNode *)v5 avatarImageSlotID];
+      if (avatarImageSlotID != [(UIAirDropNode *)self avatarImageSlotID]|| (v7 = [(UIAirDropNode *)v5 mainLabelSlotID], v7 != [(UIAirDropNode *)self mainLabelSlotID]) || ([(UIAirDropNode *)v5 mainLabelSlotHeight], v9 = v8, [(UIAirDropNode *)self mainLabelSlotHeight], v9 != v10) || (v11 = [(UIAirDropNode *)v5 bottomLabelSlotID], v11 != [(UIAirDropNode *)self bottomLabelSlotID]) || (v12 = [(UIAirDropNode *)v5 transportImageSlotID], v12 != [(UIAirDropNode *)self transportImageSlotID]))
       {
         v19 = 0;
 LABEL_15:
@@ -292,10 +292,10 @@ LABEL_15:
         goto LABEL_16;
       }
 
-      v13 = [(UIAirDropNode *)v5 identifier];
-      v14 = [(UIAirDropNode *)self identifier];
-      v15 = v13;
-      v16 = v14;
+      identifier = [(UIAirDropNode *)v5 identifier];
+      identifier2 = [(UIAirDropNode *)self identifier];
+      v15 = identifier;
+      v16 = identifier2;
       v17 = v16;
       if (v15 == v16)
       {
@@ -325,46 +325,46 @@ LABEL_27:
         }
       }
 
-      v21 = [(UIAirDropNode *)v5 isMagicHead];
-      if (v21 != [(UIAirDropNode *)self isMagicHead])
+      isMagicHead = [(UIAirDropNode *)v5 isMagicHead];
+      if (isMagicHead != [(UIAirDropNode *)self isMagicHead])
       {
         goto LABEL_24;
       }
 
-      v22 = [(UIAirDropNode *)v5 selectionReason];
-      if (v22 != [(UIAirDropNode *)self selectionReason])
+      selectionReason = [(UIAirDropNode *)v5 selectionReason];
+      if (selectionReason != [(UIAirDropNode *)self selectionReason])
       {
         goto LABEL_24;
       }
 
-      v23 = [(UIAirDropNode *)v5 hasSquareImage];
-      if (v23 != [(UIAirDropNode *)self hasSquareImage])
+      hasSquareImage = [(UIAirDropNode *)v5 hasSquareImage];
+      if (hasSquareImage != [(UIAirDropNode *)self hasSquareImage])
       {
         goto LABEL_24;
       }
 
-      v24 = [(UIAirDropNode *)v5 isDisabled];
-      if (v24 != [(UIAirDropNode *)self isDisabled])
+      isDisabled = [(UIAirDropNode *)v5 isDisabled];
+      if (isDisabled != [(UIAirDropNode *)self isDisabled])
       {
         goto LABEL_24;
       }
 
-      v25 = [(UIAirDropNode *)v5 isRestricted];
-      if (v25 != [(UIAirDropNode *)self isRestricted])
+      isRestricted = [(UIAirDropNode *)v5 isRestricted];
+      if (isRestricted != [(UIAirDropNode *)self isRestricted])
       {
         goto LABEL_24;
       }
 
-      v26 = [(UIAirDropNode *)v5 isPlaceholder];
-      if (v26 != [(UIAirDropNode *)self isPlaceholder])
+      isPlaceholder = [(UIAirDropNode *)v5 isPlaceholder];
+      if (isPlaceholder != [(UIAirDropNode *)self isPlaceholder])
       {
         goto LABEL_24;
       }
 
-      v29 = [(UIAirDropNode *)v5 peopleSuggestion];
-      v30 = [(UIAirDropNode *)self peopleSuggestion];
-      v28 = v29;
-      v31 = v30;
+      peopleSuggestion = [(UIAirDropNode *)v5 peopleSuggestion];
+      peopleSuggestion2 = [(UIAirDropNode *)self peopleSuggestion];
+      v28 = peopleSuggestion;
+      v31 = peopleSuggestion2;
       v32 = v31;
       v44 = v31;
       if (v28 == v31)
@@ -391,10 +391,10 @@ LABEL_48:
         }
       }
 
-      v34 = [(UIAirDropNode *)v5 displayName];
-      v35 = [(UIAirDropNode *)self displayName];
-      v36 = v34;
-      v37 = v35;
+      displayName = [(UIAirDropNode *)v5 displayName];
+      displayName2 = [(UIAirDropNode *)self displayName];
+      v36 = displayName;
+      v37 = displayName2;
       v32 = v37;
       if (v36 == v37)
       {
@@ -423,10 +423,10 @@ LABEL_47:
         }
       }
 
-      v39 = [(UIAirDropNode *)v5 subtitle];
-      v40 = [(UIAirDropNode *)self subtitle];
-      v41 = v39;
-      v42 = v40;
+      subtitle = [(UIAirDropNode *)v5 subtitle];
+      subtitle2 = [(UIAirDropNode *)self subtitle];
+      v41 = subtitle;
+      v42 = subtitle2;
       v43 = v42;
       if (v41 == v42)
       {
@@ -456,15 +456,15 @@ LABEL_16:
 
 - (BOOL)load
 {
-  v3 = [(UIAirDropNode *)self loadHandler];
-  if (v3)
+  loadHandler = [(UIAirDropNode *)self loadHandler];
+  if (loadHandler)
   {
     [(UIAirDropNode *)self setLoadHandler:0];
-    v4 = [(UIAirDropNode *)self peopleSuggestion];
+    peopleSuggestion = [(UIAirDropNode *)self peopleSuggestion];
 
-    if (v4 || (-[UIAirDropNode suggestionNode](self, "suggestionNode"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 loadIcon], v5, v6))
+    if (peopleSuggestion || (-[UIAirDropNode suggestionNode](self, "suggestionNode"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 loadIcon], v5, v6))
     {
-      v7 = (v3)[2](v3, self);
+      v7 = (loadHandler)[2](loadHandler, self);
     }
 
     else
@@ -498,9 +498,9 @@ LABEL_16:
 - (void)load
 {
   v6 = *MEMORY[0x1E69E9840];
-  v3 = [a1 suggestionNode];
+  suggestionNode = [self suggestionNode];
   v4 = 138412290;
-  v5 = v3;
+  v5 = suggestionNode;
   _os_log_error_impl(&dword_18B359000, a2, OS_LOG_TYPE_ERROR, "Failed to load icon for suggestionNode:%@", &v4, 0xCu);
 }
 

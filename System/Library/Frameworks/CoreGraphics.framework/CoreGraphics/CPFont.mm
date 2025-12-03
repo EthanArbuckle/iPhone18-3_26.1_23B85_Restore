@@ -1,33 +1,33 @@
 @interface CPFont
-- (BOOL)getGlyphs:(unsigned __int16 *)a3 forCodes:(const unsigned __int16 *)a4 count:(unsigned int)a5;
+- (BOOL)getGlyphs:(unsigned __int16 *)glyphs forCodes:(const unsigned __int16 *)codes count:(unsigned int)count;
 - (CGFont)cgFont;
 - (CGRect)fontBBox;
-- (CPFont)initWith:(CGPDFDictionary *)a3;
+- (CPFont)initWith:(CGPDFDictionary *)with;
 - (double)ascent;
 - (double)descent;
-- (double)kernBetweenUnicode:(unsigned __int16)a3 andUnicode:(unsigned __int16)a4;
+- (double)kernBetweenUnicode:(unsigned __int16)unicode andUnicode:(unsigned __int16)andUnicode;
 - (id)matchingFontName;
 - (void)dealloc;
 - (void)dispose;
 - (void)finalize;
 - (void)getFontName;
 - (void)loadEmbeddedFontInfo;
-- (void)loadExternalFontInfoFor:(id)a3;
-- (void)uniCharsFor:(unint64_t)a3 count:(unint64_t *)a4 toArray:(unsigned __int16 *)a5 maxChars:(unsigned int)a6;
+- (void)loadExternalFontInfoFor:(id)for;
+- (void)uniCharsFor:(unint64_t)for count:(unint64_t *)count toArray:(unsigned __int16 *)array maxChars:(unsigned int)chars;
 @end
 
 @implementation CPFont
 
-- (void)uniCharsFor:(unint64_t)a3 count:(unint64_t *)a4 toArray:(unsigned __int16 *)a5 maxChars:(unsigned int)a6
+- (void)uniCharsFor:(unint64_t)for count:(unint64_t *)count toArray:(unsigned __int16 *)array maxChars:(unsigned int)chars
 {
-  *a4 = 0;
+  *count = 0;
   cgPDFFont = self->cgPDFFont;
   if (!cgPDFFont)
   {
     return;
   }
 
-  LODWORD(v8) = a6;
+  LODWORD(v8) = chars;
   Encoding = CGPDFFontGetEncoding(cgPDFFont);
   if (!Encoding)
   {
@@ -37,14 +37,14 @@
       return;
     }
 
-    if (a3 < 0x10000)
+    if (for < 0x10000)
     {
       v22 = v16;
       v23 = *(*(v16 + 16) + 48);
       if (v23)
       {
-        unichars = cmap_bf_set_get_unichars(*(v23 + 16), a3, 0, v17, v18, v19, v20, v21);
-        *a4 = unichars;
+        unichars = cmap_bf_set_get_unichars(*(v23 + 16), for, 0, v17, v18, v19, v20, v21);
+        *count = unichars;
         if (unichars > v8)
         {
           goto LABEL_17;
@@ -54,49 +54,49 @@
         v30 = *(*(v22 + 16) + 48);
         if (v30)
         {
-          v31 = cmap_bf_set_get_unichars(*(v30 + 16), a3, a5, v25, v26, v27, v28, v29);
-          *a4 = v31;
+          v31 = cmap_bf_set_get_unichars(*(v30 + 16), for, array, v25, v26, v27, v28, v29);
+          *count = v31;
           if (v31)
           {
             return;
           }
 
 LABEL_16:
-          v32 = CGPDFGetUnicharGuessForCID(a3, 0);
-          *a4 = v32;
+          v32 = CGPDFGetUnicharGuessForCID(for, 0);
+          *count = v32;
           if (v32 <= v8)
           {
-            v33 = CGPDFGetUnicharGuessForCID(a3, a5);
+            v33 = CGPDFGetUnicharGuessForCID(for, array);
             goto LABEL_19;
           }
 
 LABEL_17:
           v33 = 0;
 LABEL_19:
-          *a4 = v33;
+          *count = v33;
           return;
         }
 
 LABEL_15:
-        *a4 = 0;
+        *count = 0;
         goto LABEL_16;
       }
 
-      *a4 = 0;
+      *count = 0;
     }
 
     v8 = v8;
     goto LABEL_15;
   }
 
-  UnicodesForIndex = CGPDFEncodingGetUnicodesForIndex(Encoding, a3, a4);
-  v14 = *a4;
-  if (*a4 - 1 < v8)
+  UnicodesForIndex = CGPDFEncodingGetUnicodesForIndex(Encoding, for, count);
+  v14 = *count;
+  if (*count - 1 < v8)
   {
     do
     {
       v15 = *UnicodesForIndex++;
-      *a5++ = v15;
+      *array++ = v15;
       --v14;
     }
 
@@ -104,7 +104,7 @@ LABEL_15:
   }
 }
 
-- (BOOL)getGlyphs:(unsigned __int16 *)a3 forCodes:(const unsigned __int16 *)a4 count:(unsigned int)a5
+- (BOOL)getGlyphs:(unsigned __int16 *)glyphs forCodes:(const unsigned __int16 *)codes count:(unsigned int)count
 {
   cgPDFFont = self->cgPDFFont;
   if (cgPDFFont)
@@ -113,17 +113,17 @@ LABEL_15:
     if (Encoding)
     {
       GlyphVector = CGPDFEncodingGetGlyphVector(Encoding);
-      if (a5)
+      if (count)
       {
-        v12 = a5;
+        countCopy = count;
         do
         {
-          v13 = *a4++;
-          *a3++ = *(GlyphVector + v13);
-          --v12;
+          v13 = *codes++;
+          *glyphs++ = *(GlyphVector + v13);
+          --countCopy;
         }
 
-        while (v12);
+        while (countCopy);
       }
     }
 
@@ -132,14 +132,14 @@ LABEL_15:
       CIDToGlyphMap = CGPDFFontGetCIDToGlyphMap(self->cgPDFFont);
       if (CIDToGlyphMap)
       {
-        CGFontIndexMapGetValues(CIDToGlyphMap, a4, a5, a3);
+        CGFontIndexMapGetValues(CIDToGlyphMap, codes, count, glyphs);
       }
 
       else
       {
         [(CPFont *)self cgFont];
         cgFont = self->cgFont;
-        if (cgFont && (v16 = a5, CGFontGetGlyphsForCIDs(cgFont, a4, a5, a3)))
+        if (cgFont && (v16 = count, CGFontGetGlyphsForCIDs(cgFont, codes, count, glyphs)))
         {
           if (!CGPDFFontIsEmbedded(self->cgPDFFont))
           {
@@ -150,17 +150,17 @@ LABEL_15:
               v22 = 0;
             }
 
-            if (a5)
+            if (count)
             {
               v17 = v22;
               do
               {
-                if (!*a4++)
+                if (!*codes++)
                 {
-                  *a3 = v17;
+                  *glyphs = v17;
                 }
 
-                ++a3;
+                ++glyphs;
                 --v16;
               }
 
@@ -169,17 +169,17 @@ LABEL_15:
           }
         }
 
-        else if (a5)
+        else if (count)
         {
-          v19 = a5;
+          countCopy2 = count;
           do
           {
-            v20 = *a4++;
-            *a3++ = v20;
-            --v19;
+            v20 = *codes++;
+            *glyphs++ = v20;
+            --countCopy2;
           }
 
-          while (v19);
+          while (countCopy2);
         }
       }
     }
@@ -188,19 +188,19 @@ LABEL_15:
   return cgPDFFont != 0;
 }
 
-- (double)kernBetweenUnicode:(unsigned __int16)a3 andUnicode:(unsigned __int16)a4
+- (double)kernBetweenUnicode:(unsigned __int16)unicode andUnicode:(unsigned __int16)andUnicode
 {
   kernDictionary = self->kernDictionary;
   v6 = 0.0;
   if (kernDictionary)
   {
-    v7 = a4;
-    v8 = a3;
+    andUnicodeCopy = andUnicode;
+    unicodeCopy = unicode;
     if (CFDictionaryGetCount(kernDictionary))
     {
       if (self->kernUnitsPerEm != 0.0)
       {
-        return CFDictionaryGetValue(self->kernDictionary, (v7 | (v8 << 16))) / self->kernUnitsPerEm;
+        return CFDictionaryGetValue(self->kernDictionary, (andUnicodeCopy | (unicodeCopy << 16))) / self->kernUnitsPerEm;
       }
     }
   }
@@ -300,14 +300,14 @@ LABEL_15:
   }
 }
 
-- (CPFont)initWith:(CGPDFDictionary *)a3
+- (CPFont)initWith:(CGPDFDictionary *)with
 {
   v6.receiver = self;
   v6.super_class = CPFont;
   v4 = [(CPFont *)&v6 init];
   if (v4)
   {
-    v4->cgPDFFont = CGPDFFontCreate(a3);
+    v4->cgPDFFont = CGPDFFontCreate(with);
     [(CPFont *)v4 getFontName];
     [(CPFont *)v4 loadExternalFontInfoFor:v4->fontName];
     [(CPFont *)v4 loadEmbeddedFontInfo];
@@ -511,7 +511,7 @@ LABEL_56:
   }
 }
 
-- (void)loadExternalFontInfoFor:(id)a3
+- (void)loadExternalFontInfoFor:(id)for
 {
   fontName = self->fontName;
   v56 = 0;
@@ -984,17 +984,17 @@ LABEL_12:
   fontName = self->fontName;
   if (fontName && [(NSString *)fontName length])
   {
-    v10 = self->fontName;
+    matchingFontName = self->fontName;
   }
 
   else
   {
-    v10 = [(CPFont *)self matchingFontName];
-    self->fontName = v10;
+    matchingFontName = [(CPFont *)self matchingFontName];
+    self->fontName = matchingFontName;
     self->exactMatch = 0;
   }
 
-  v11 = v10;
+  v11 = matchingFontName;
 }
 
 - (id)matchingFontName

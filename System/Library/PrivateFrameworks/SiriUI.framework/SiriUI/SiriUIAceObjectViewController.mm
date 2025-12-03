@@ -1,16 +1,16 @@
 @interface SiriUIAceObjectViewController
-- (SiriUIAceObjectViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (SiriUIAceObjectViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (SiriUIAceObjectViewControllerDelegate)delegate;
 - (id)_privateDelegate;
 @end
 
 @implementation SiriUIAceObjectViewController
 
-- (SiriUIAceObjectViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (SiriUIAceObjectViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v5.receiver = self;
   v5.super_class = SiriUIAceObjectViewController;
-  return [(SiriUIAceObjectViewController *)&v5 initWithNibName:a3 bundle:a4];
+  return [(SiriUIAceObjectViewController *)&v5 initWithNibName:name bundle:bundle];
 }
 
 - (SiriUIAceObjectViewControllerDelegate)delegate
@@ -22,20 +22,20 @@
 
 - (id)_privateDelegate
 {
-  v3 = [(SiriUIAceObjectViewController *)self delegate];
+  delegate = [(SiriUIAceObjectViewController *)self delegate];
   v4 = [objc_opt_class() conformsToProtocol:&unk_287A67FC0];
 
   if (v4)
   {
-    v5 = [(SiriUIAceObjectViewController *)self delegate];
+    delegate2 = [(SiriUIAceObjectViewController *)self delegate];
   }
 
   else
   {
-    v5 = 0;
+    delegate2 = 0;
   }
 
-  return v5;
+  return delegate2;
 }
 
 @end

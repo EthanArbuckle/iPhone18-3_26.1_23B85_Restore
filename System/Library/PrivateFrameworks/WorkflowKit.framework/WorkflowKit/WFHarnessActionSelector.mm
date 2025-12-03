@@ -1,36 +1,36 @@
 @interface WFHarnessActionSelector
 + (WFHarnessActionSelector)matchAll;
-- (BOOL)matchesContext:(id)a3;
-- (WFHarnessActionSelector)initWithPredicate:(id)a3;
+- (BOOL)matchesContext:(id)context;
+- (WFHarnessActionSelector)initWithPredicate:(id)predicate;
 @end
 
 @implementation WFHarnessActionSelector
 
-- (BOOL)matchesContext:(id)a3
+- (BOOL)matchesContext:(id)context
 {
-  v5 = a3;
-  if (!v5)
+  contextCopy = context;
+  if (!contextCopy)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"WFHarnessActionSelector.m" lineNumber:49 description:{@"Invalid parameter not satisfying: %@", @"context"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFHarnessActionSelector.m" lineNumber:49 description:{@"Invalid parameter not satisfying: %@", @"context"}];
   }
 
-  v6 = [(WFHarnessActionSelector *)self predicate];
-  [v6 allowEvaluation];
+  predicate = [(WFHarnessActionSelector *)self predicate];
+  [predicate allowEvaluation];
 
-  v7 = [(WFHarnessActionSelector *)self predicate];
-  LOBYTE(v6) = [v7 evaluateWithObject:v5];
+  predicate2 = [(WFHarnessActionSelector *)self predicate];
+  LOBYTE(predicate) = [predicate2 evaluateWithObject:contextCopy];
 
-  return v6;
+  return predicate;
 }
 
-- (WFHarnessActionSelector)initWithPredicate:(id)a3
+- (WFHarnessActionSelector)initWithPredicate:(id)predicate
 {
-  v6 = a3;
-  if (!v6)
+  predicateCopy = predicate;
+  if (!predicateCopy)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"WFHarnessActionSelector.m" lineNumber:32 description:{@"Invalid parameter not satisfying: %@", @"predicate"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFHarnessActionSelector.m" lineNumber:32 description:{@"Invalid parameter not satisfying: %@", @"predicate"}];
   }
 
   v12.receiver = self;
@@ -39,7 +39,7 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_predicate, a3);
+    objc_storeStrong(&v7->_predicate, predicate);
     v9 = v8;
   }
 

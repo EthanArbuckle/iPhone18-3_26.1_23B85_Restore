@@ -1,12 +1,12 @@
 @interface MIOImageSize
-- (BOOL)isEqual:(id)a3;
-- (MIOImageSize)initWithSpecification:(const void *)a3;
-- (int64_t)compare:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (MIOImageSize)initWithSpecification:(const void *)specification;
+- (int64_t)compare:(id)compare;
 @end
 
 @implementation MIOImageSize
 
-- (MIOImageSize)initWithSpecification:(const void *)a3
+- (MIOImageSize)initWithSpecification:(const void *)specification
 {
   v7.receiver = self;
   v7.super_class = MIOImageSize;
@@ -14,16 +14,16 @@
   v5 = v4;
   if (v4)
   {
-    CoreML::Specification::ImageFeatureType_ImageSize::CopyFrom((v4 + 8), a3);
+    CoreML::Specification::ImageFeatureType_ImageSize::CopyFrom((v4 + 8), specification);
   }
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -33,12 +33,12 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(MIOImageSize *)self pixelsWide];
-      if (v6 == [(MIOImageSize *)v5 pixelsWide])
+      v5 = equalCopy;
+      pixelsWide = [(MIOImageSize *)self pixelsWide];
+      if (pixelsWide == [(MIOImageSize *)v5 pixelsWide])
       {
-        v7 = [(MIOImageSize *)self pixelsHigh];
-        v8 = v7 == [(MIOImageSize *)v5 pixelsHigh];
+        pixelsHigh = [(MIOImageSize *)self pixelsHigh];
+        v8 = pixelsHigh == [(MIOImageSize *)v5 pixelsHigh];
       }
 
       else
@@ -56,17 +56,17 @@
   return v8;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
+  compareCopy = compare;
   v5 = [MEMORY[0x1E696AD98] numberWithInteger:{-[MIOImageSize pixelsWide](self, "pixelsWide")}];
-  v6 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v4, "pixelsWide")}];
+  v6 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(compareCopy, "pixelsWide")}];
   v7 = [v5 compare:v6];
 
   if (!v7)
   {
     v8 = [MEMORY[0x1E696AD98] numberWithInteger:{-[MIOImageSize pixelsHigh](self, "pixelsHigh")}];
-    v9 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v4, "pixelsHigh")}];
+    v9 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(compareCopy, "pixelsHigh")}];
     v7 = [v8 compare:v9];
   }
 

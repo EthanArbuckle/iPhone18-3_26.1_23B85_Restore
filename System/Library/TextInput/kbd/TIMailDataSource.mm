@@ -1,13 +1,13 @@
 @interface TIMailDataSource
-+ (id)searchCriterionForSenderAddresses:(id)a3;
-- (BOOL)search:(id)a3 didFindResults:(id)a4;
++ (id)searchCriterionForSenderAddresses:(id)addresses;
+- (BOOL)search:(id)search didFindResults:(id)results;
 - (TIMailDataSource)init;
 - (id)nextOutgoingMessageBatch;
 - (void)dealloc;
 - (void)initializeSearchIfNecessary;
-- (void)search:(id)a3 didFinishWithError:(id)a4;
-- (void)searchAccounts:(id)a3;
-- (void)searchMailWithSenderAddresses:(id)a3;
+- (void)search:(id)search didFinishWithError:(id)error;
+- (void)searchAccounts:(id)accounts;
+- (void)searchMailWithSenderAddresses:(id)addresses;
 @end
 
 @implementation TIMailDataSource
@@ -40,17 +40,17 @@
 
 - (void)initializeSearchIfNecessary
 {
-  v3 = [(TIMailDataSource *)self cond];
-  [v3 lock];
+  cond = [(TIMailDataSource *)self cond];
+  [cond lock];
 
   if ([(TIMailDataSource *)self isValid])
   {
-    v4 = [(TIMailDataSource *)self search];
+    search = [(TIMailDataSource *)self search];
 
-    v5 = [(TIMailDataSource *)self cond];
-    [v5 unlock];
+    cond2 = [(TIMailDataSource *)self cond];
+    [cond2 unlock];
 
-    if (!v4)
+    if (!search)
     {
       v9 = MSAccountResultsKeyFromEmailAddresses;
       v6 = [NSArray arrayWithObjects:&v9 count:1];
@@ -65,20 +65,20 @@
 
   else
   {
-    v7 = [(TIMailDataSource *)self cond];
-    [v7 unlock];
+    cond3 = [(TIMailDataSource *)self cond];
+    [cond3 unlock];
   }
 }
 
-- (void)searchAccounts:(id)a3
+- (void)searchAccounts:(id)accounts
 {
-  v4 = a3;
+  accountsCopy = accounts;
   v5 = objc_alloc_init(NSMutableArray);
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = v4;
+  v6 = accountsCopy;
   v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
@@ -114,15 +114,15 @@
   [(TIMailDataSource *)self searchMailWithSenderAddresses:v5];
 }
 
-+ (id)searchCriterionForSenderAddresses:(id)a3
++ (id)searchCriterionForSenderAddresses:(id)addresses
 {
-  v3 = a3;
-  v4 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v3, "count")}];
+  addressesCopy = addresses;
+  v4 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(addressesCopy, "count")}];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v5 = v3;
+  v5 = addressesCopy;
   v6 = [v5 countByEnumeratingWithState:&v25 objects:v30 count:16];
   if (v6)
   {
@@ -167,37 +167,37 @@
   return v23;
 }
 
-- (void)searchMailWithSenderAddresses:(id)a3
+- (void)searchMailWithSenderAddresses:(id)addresses
 {
   v10 = MSResultsKeyOutgoing;
   v11 = MSResultsKeyDateSent;
   v12 = MSResultsKeyRecipientTo;
   v13 = MSResultsKeyRecipientCc;
   v14 = _MSResultsKeyPredictiveModelSummary;
-  v4 = a3;
+  addressesCopy = addresses;
   v5 = [NSArray arrayWithObjects:&v10 count:5];
-  v6 = [TIMailDataSource searchCriterionForSenderAddresses:v4, v10, v11, v12, v13, v14];
+  v6 = [TIMailDataSource searchCriterionForSenderAddresses:addressesCopy, v10, v11, v12, v13, v14];
 
   v7 = [MSSearch findMessageData:v5 matchingCriterion:v6 options:0 delegate:self];
   [(TIMailDataSource *)self setStrongSelf:self];
-  v8 = [(TIMailDataSource *)self cond];
-  [v8 lock];
+  cond = [(TIMailDataSource *)self cond];
+  [cond lock];
 
   [(TIMailDataSource *)self setSearch:v7];
-  v9 = [(TIMailDataSource *)self cond];
-  [v9 unlock];
+  cond2 = [(TIMailDataSource *)self cond];
+  [cond2 unlock];
 }
 
 - (id)nextOutgoingMessageBatch
 {
   [(TIMailDataSource *)self initializeSearchIfNecessary];
-  v3 = [(TIMailDataSource *)self cond];
-  [v3 lock];
+  cond = [(TIMailDataSource *)self cond];
+  [cond lock];
   while (1)
   {
 
-    v4 = [(TIMailDataSource *)self outgoingMessages];
-    if (v4)
+    outgoingMessages = [(TIMailDataSource *)self outgoingMessages];
+    if (outgoingMessages)
     {
       break;
     }
@@ -207,30 +207,30 @@
       goto LABEL_6;
     }
 
-    v3 = [(TIMailDataSource *)self cond];
-    [v3 wait];
+    cond = [(TIMailDataSource *)self cond];
+    [cond wait];
   }
 
 LABEL_6:
-  v5 = [(TIMailDataSource *)self outgoingMessages];
-  v6 = [v5 copy];
+  outgoingMessages2 = [(TIMailDataSource *)self outgoingMessages];
+  v6 = [outgoingMessages2 copy];
 
   [(TIMailDataSource *)self setOutgoingMessages:0];
-  v7 = [(TIMailDataSource *)self cond];
-  [v7 unlock];
+  cond2 = [(TIMailDataSource *)self cond];
+  [cond2 unlock];
 
   return v6;
 }
 
-- (BOOL)search:(id)a3 didFindResults:(id)a4
+- (BOOL)search:(id)search didFindResults:(id)results
 {
-  v4 = a4;
-  v5 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v4, "count")}];
+  resultsCopy = results;
+  v5 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(resultsCopy, "count")}];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v6 = v4;
+  v6 = resultsCopy;
   v7 = [v6 countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v7)
   {
@@ -248,9 +248,9 @@ LABEL_6:
 
         v12 = *(*(&v25 + 1) + 8 * i);
         v13 = [v12 objectForKey:v10];
-        v14 = [v13 BOOLValue];
+        bOOLValue = [v13 BOOLValue];
 
-        if (v14)
+        if (bOOLValue)
         {
           v15 = objc_alloc_init(TIMailOutgoingMessage);
           [(TIMailOutgoingMessage *)v15 setSearchResult:v12];
@@ -264,11 +264,11 @@ LABEL_6:
     while (v8);
   }
 
-  v16 = [(TIMailDataSource *)self cond];
-  [v16 lock];
+  cond = [(TIMailDataSource *)self cond];
+  [cond lock];
 
-  v17 = [(TIMailDataSource *)self outgoingMessages];
-  v18 = [v17 arrayByAddingObjectsFromArray:v5];
+  outgoingMessages = [(TIMailDataSource *)self outgoingMessages];
+  v18 = [outgoingMessages arrayByAddingObjectsFromArray:v5];
   v19 = v18;
   if (v18)
   {
@@ -282,38 +282,38 @@ LABEL_6:
 
   [(TIMailDataSource *)self setOutgoingMessages:v20];
 
-  v21 = [(TIMailDataSource *)self cond];
-  [v21 broadcast];
+  cond2 = [(TIMailDataSource *)self cond];
+  [cond2 broadcast];
 
-  v22 = [(TIMailDataSource *)self cond];
-  [v22 unlock];
+  cond3 = [(TIMailDataSource *)self cond];
+  [cond3 unlock];
 
   return 1;
 }
 
-- (void)search:(id)a3 didFinishWithError:(id)a4
+- (void)search:(id)search didFinishWithError:(id)error
 {
-  v12 = a3;
-  if (a4)
+  searchCopy = search;
+  if (error)
   {
-    v6 = a4;
+    errorCopy = error;
     v7 = objc_opt_class();
     v8 = NSStringFromClass(v7);
-    NSLog(@"%@: Mail search failed with error: %@", v8, v6);
+    NSLog(@"%@: Mail search failed with error: %@", v8, errorCopy);
   }
 
-  v9 = [(TIMailDataSource *)self cond];
-  [v9 lock];
+  cond = [(TIMailDataSource *)self cond];
+  [cond lock];
 
   [(TIMailDataSource *)self setValid:0];
-  [v12 cancel];
-  [v12 setDelegate:0];
+  [searchCopy cancel];
+  [searchCopy setDelegate:0];
   [(TIMailDataSource *)self setStrongSelf:0];
-  v10 = [(TIMailDataSource *)self cond];
-  [v10 broadcast];
+  cond2 = [(TIMailDataSource *)self cond];
+  [cond2 broadcast];
 
-  v11 = [(TIMailDataSource *)self cond];
-  [v11 unlock];
+  cond3 = [(TIMailDataSource *)self cond];
+  [cond3 unlock];
 }
 
 @end

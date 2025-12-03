@@ -1,65 +1,65 @@
 @interface HFCharacteristicValueManager
 + (NAIdentity)na_identity;
-- (BOOL)hasCachedReadErrorForAccessory:(id)a3 passingTest:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isNaturalLightingEnabledForProfile:(id)a3;
-- (BOOL)isNaturalLightingSupportedForProfile:(id)a3;
-- (BOOL)staticHomeDataModelHasInProgressWriteForCharacteristic:(id)a3;
+- (BOOL)hasCachedReadErrorForAccessory:(id)accessory passingTest:(id)test;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isNaturalLightingEnabledForProfile:(id)profile;
+- (BOOL)isNaturalLightingSupportedForProfile:(id)profile;
+- (BOOL)staticHomeDataModelHasInProgressWriteForCharacteristic:(id)characteristic;
 - (HFCharacteristicOperationContextProviding)contextProvider;
-- (HFCharacteristicValueManager)initWithValueReader:(id)a3 valueWriter:(id)a4;
+- (HFCharacteristicValueManager)initWithValueReader:(id)reader valueWriter:(id)writer;
 - (NSSet)allReadCharacteristics;
 - (NSSet)characteristicsWithPendingReads;
 - (NSSet)characteristicsWithPendingWrites;
 - (id)_openTransactionCompletionFuture;
-- (id)_overrideCachedValueForCharacteristic:(id)a3 value:(id)a4;
-- (id)_transactionLock_characteristicsWithPendingWritesInTransacton:(id)a3 includeDirectWrites:(BOOL)a4 includeActionSets:(BOOL)a5 includeActions:(BOOL)a6;
-- (id)cachedErrorForExecutionOfActionSet:(id)a3;
-- (id)cachedErrorForWriteToCharacteristic:(id)a3;
-- (id)cachedReadErrorForCharacteristic:(id)a3;
-- (id)cachedValueForCharacteristic:(id)a3;
+- (id)_overrideCachedValueForCharacteristic:(id)characteristic value:(id)value;
+- (id)_transactionLock_characteristicsWithPendingWritesInTransacton:(id)transacton includeDirectWrites:(BOOL)writes includeActionSets:(BOOL)sets includeActions:(BOOL)actions;
+- (id)cachedErrorForExecutionOfActionSet:(id)set;
+- (id)cachedErrorForWriteToCharacteristic:(id)characteristic;
+- (id)cachedReadErrorForCharacteristic:(id)characteristic;
+- (id)cachedValueForCharacteristic:(id)characteristic;
 - (id)createHomeStateStreamObserver;
-- (id)executeActionSet:(id)a3;
-- (id)executeActions:(id)a3;
-- (id)readValueForCharacteristic:(id)a3;
-- (id)readValuesForCharacteristicTypes:(id)a3 inServices:(id)a4;
-- (id)readValuesForCharacteristics:(id)a3;
-- (id)readValuesForCharacteristicsPassingTest:(id)a3 inServices:(id)a4;
-- (id)staticHomeDataModelCachedValueForCharacteristic:(id)a3;
-- (id)writeValue:(id)a3 forCharacteristic:(id)a4;
-- (id)writeValuesForCharacteristics:(id)a3;
-- (unint64_t)cachedLoadingStateForCharacteristics:(id)a3 actionSets:(id)a4;
+- (id)executeActionSet:(id)set;
+- (id)executeActions:(id)actions;
+- (id)readValueForCharacteristic:(id)characteristic;
+- (id)readValuesForCharacteristicTypes:(id)types inServices:(id)services;
+- (id)readValuesForCharacteristics:(id)characteristics;
+- (id)readValuesForCharacteristicsPassingTest:(id)test inServices:(id)services;
+- (id)staticHomeDataModelCachedValueForCharacteristic:(id)characteristic;
+- (id)writeValue:(id)value forCharacteristic:(id)characteristic;
+- (id)writeValuesForCharacteristics:(id)characteristics;
+- (unint64_t)cachedLoadingStateForCharacteristics:(id)characteristics actionSets:(id)sets;
 - (unint64_t)hash;
-- (unint64_t)loadingStateForCharacteristics:(id)a3 actionSets:(id)a4;
-- (void)_beginReadsCompleteTrackingForCharacteristics:(id)a3 withLogger:(id)a4;
-- (void)_endReadsCompleteTrackingForCharacteristic:(id)a3 withLogger:(id)a4 didRead:(BOOL)a5;
-- (void)_transactionLock_executeActionSetTransaction:(id)a3 completionHandler:(id)a4;
-- (void)_transactionLock_executeActionsTransaction:(id)a3 completionHandler:(id)a4;
-- (void)_transactionLock_executeReadTransaction:(id)a3 completionHandler:(id)a4;
-- (void)_transactionLock_executeWriteTransaction:(id)a3 completionHandler:(id)a4;
-- (void)beginTransactionWithReason:(id)a3;
-- (void)beginTransactionWithReason:(id)a3 readPolicy:(id)a4 logger:(id)a5;
+- (unint64_t)loadingStateForCharacteristics:(id)characteristics actionSets:(id)sets;
+- (void)_beginReadsCompleteTrackingForCharacteristics:(id)characteristics withLogger:(id)logger;
+- (void)_endReadsCompleteTrackingForCharacteristic:(id)characteristic withLogger:(id)logger didRead:(BOOL)read;
+- (void)_transactionLock_executeActionSetTransaction:(id)transaction completionHandler:(id)handler;
+- (void)_transactionLock_executeActionsTransaction:(id)transaction completionHandler:(id)handler;
+- (void)_transactionLock_executeReadTransaction:(id)transaction completionHandler:(id)handler;
+- (void)_transactionLock_executeWriteTransaction:(id)transaction completionHandler:(id)handler;
+- (void)beginTransactionWithReason:(id)reason;
+- (void)beginTransactionWithReason:(id)reason readPolicy:(id)policy logger:(id)logger;
 - (void)cancelInFlightReadRequests;
 - (void)clearOverrideLoadingStates;
-- (void)commitTransactionWithReason:(id)a3;
+- (void)commitTransactionWithReason:(id)reason;
 - (void)dealloc;
-- (void)executeActionSet:(id)a3 completionHandler:(id)a4;
+- (void)executeActionSet:(id)set completionHandler:(id)handler;
 - (void)invalidateAllCachedErrors;
-- (void)invalidateCachedErrorForCharacteristic:(id)a3;
-- (void)invalidateCachedErrorForExecutionOfActionSet:(id)a3;
-- (void)invalidateCachedValueForCharacteristic:(id)a3;
-- (void)invalidateCachedValuesForAccessory:(id)a3;
-- (void)setCachedReadError:(id)a3 forCharacteristic:(id)a4;
-- (void)setCachedWriteError:(id)a3 forCharacteristic:(id)a4;
-- (void)setOverrideLoadingState:(unint64_t)a3 forCharacteristic:(id)a4;
+- (void)invalidateCachedErrorForCharacteristic:(id)characteristic;
+- (void)invalidateCachedErrorForExecutionOfActionSet:(id)set;
+- (void)invalidateCachedValueForCharacteristic:(id)characteristic;
+- (void)invalidateCachedValuesForAccessory:(id)accessory;
+- (void)setCachedReadError:(id)error forCharacteristic:(id)characteristic;
+- (void)setCachedWriteError:(id)error forCharacteristic:(id)characteristic;
+- (void)setOverrideLoadingState:(unint64_t)state forCharacteristic:(id)characteristic;
 @end
 
 @implementation HFCharacteristicValueManager
 
-- (id)staticHomeDataModelCachedValueForCharacteristic:(id)a3
+- (id)staticHomeDataModelCachedValueForCharacteristic:(id)characteristic
 {
-  v4 = a3;
-  v5 = self;
-  HFCharacteristicValueManager.staticHomeDataModelCachedValue(for:)(v4, v14);
+  characteristicCopy = characteristic;
+  selfCopy = self;
+  HFCharacteristicValueManager.staticHomeDataModelCachedValue(for:)(characteristicCopy, v14);
 
   v6 = v15;
   if (v15)
@@ -83,12 +83,12 @@
   return v12;
 }
 
-- (BOOL)staticHomeDataModelHasInProgressWriteForCharacteristic:(id)a3
+- (BOOL)staticHomeDataModelHasInProgressWriteForCharacteristic:(id)characteristic
 {
   sub_20D9C7830();
   sub_20DA5A66C(&unk_280E020F0, sub_20D9C7830);
   v4 = sub_20DD651E4();
-  v5 = self;
+  selfCopy = self;
   v6 = _sSo28HFCharacteristicValueManagerC4HomeE06staticD27DataModelHasInProgressWrite3forSbShySo16HMCharacteristicCG_tF_0(v4);
 
   return v6 & 1;
@@ -97,7 +97,7 @@
 - (id)createHomeStateStreamObserver
 {
   sub_20DD63B44();
-  v3 = self;
+  selfCopy = self;
   v4 = MEMORY[0x20F324A10]();
   if (v4)
   {
@@ -115,39 +115,39 @@
   return v4;
 }
 
-- (BOOL)isNaturalLightingSupportedForProfile:(id)a3
+- (BOOL)isNaturalLightingSupportedForProfile:(id)profile
 {
-  v3 = a3;
+  profileCopy = profile;
   if (+[HFUtilities isRunningInStoreDemoMode](HFUtilities, "isRunningInStoreDemoMode") || +[HFUtilities isPressDemoModeEnabled])
   {
-    v4 = 1;
+    supportedFeatures = 1;
   }
 
   else
   {
-    v5 = [v3 settings];
-    v4 = [v5 supportedFeatures];
+    settings = [profileCopy settings];
+    supportedFeatures = [settings supportedFeatures];
   }
 
-  return v4 & 1;
+  return supportedFeatures & 1;
 }
 
-- (BOOL)isNaturalLightingEnabledForProfile:(id)a3
+- (BOOL)isNaturalLightingEnabledForProfile:(id)profile
 {
-  v3 = a3;
+  profileCopy = profile;
   if (+[HFUtilities isRunningInStoreDemoMode](HFUtilities, "isRunningInStoreDemoMode") || +[HFUtilities isPressDemoModeEnabled])
   {
-    v4 = objc_getAssociatedObject(v3, "HF_NaturalLightDemoMode");
-    v5 = [v4 BOOLValue];
+    settings = objc_getAssociatedObject(profileCopy, "HF_NaturalLightDemoMode");
+    bOOLValue = [settings BOOLValue];
   }
 
   else
   {
-    v4 = [v3 settings];
-    v5 = [v4 isNaturalLightingEnabled];
+    settings = [profileCopy settings];
+    bOOLValue = [settings isNaturalLightingEnabled];
   }
 
-  v6 = v5;
+  v6 = bOOLValue;
 
   return v6;
 }
@@ -231,32 +231,32 @@ void __100__HFCharacteristicValueManager_HFLightProfileValueSource__writeNatural
   [v3 lightProfile:WeakRetained didUpdateSettings:v4];
 }
 
-- (HFCharacteristicValueManager)initWithValueReader:(id)a3 valueWriter:(id)a4
+- (HFCharacteristicValueManager)initWithValueReader:(id)reader valueWriter:(id)writer
 {
-  v6 = a3;
-  v7 = a4;
+  readerCopy = reader;
+  writerCopy = writer;
   v28.receiver = self;
   v28.super_class = HFCharacteristicValueManager;
   v8 = [(HFCharacteristicValueManager *)&v28 init];
   v9 = v8;
   if (v8)
   {
-    [(HFCharacteristicValueManager *)v8 setValueReader:v6];
-    [(HFCharacteristicValueManager *)v9 setValueWriter:v7];
-    v10 = [MEMORY[0x277CBEB18] array];
-    [(HFCharacteristicValueManager *)v9 setRunningTransactions:v10];
+    [(HFCharacteristicValueManager *)v8 setValueReader:readerCopy];
+    [(HFCharacteristicValueManager *)v9 setValueWriter:writerCopy];
+    array = [MEMORY[0x277CBEB18] array];
+    [(HFCharacteristicValueManager *)v9 setRunningTransactions:array];
 
-    v11 = [MEMORY[0x277CBEB18] array];
-    [(HFCharacteristicValueManager *)v9 setReadTransactionsToExecuteOnNextRunLoop:v11];
+    array2 = [MEMORY[0x277CBEB18] array];
+    [(HFCharacteristicValueManager *)v9 setReadTransactionsToExecuteOnNextRunLoop:array2];
 
-    v12 = [MEMORY[0x277CBEB18] array];
-    [(HFCharacteristicValueManager *)v9 setCompletionHandlersForReadTransactionsToExecuteOnNextRunLoop:v12];
+    array3 = [MEMORY[0x277CBEB18] array];
+    [(HFCharacteristicValueManager *)v9 setCompletionHandlersForReadTransactionsToExecuteOnNextRunLoop:array3];
 
     v13 = objc_alloc_init(MEMORY[0x277CCAC60]);
     [(HFCharacteristicValueManager *)v9 setTransactionLock:v13];
 
-    v14 = [(HFCharacteristicValueManager *)v9 transactionLock];
-    [v14 setName:@"com.apple.Home.valueManager.transactionLock"];
+    transactionLock = [(HFCharacteristicValueManager *)v9 transactionLock];
+    [transactionLock setName:@"com.apple.Home.valueManager.transactionLock"];
 
     v15 = objc_alloc_init(HFCharacteristicValueCacheManager);
     [(HFCharacteristicValueManager *)v9 setCacheManager:v15];
@@ -267,14 +267,14 @@ void __100__HFCharacteristicValueManager_HFLightProfileValueSource__writeNatural
     v17 = [MEMORY[0x277CBEB58] set];
     [(HFCharacteristicValueManager *)v9 setCharacteristicsWithCachedValues:v17];
 
-    v18 = [MEMORY[0x277CBEB38] dictionary];
-    [(HFCharacteristicValueManager *)v9 setCachedReadErrorsKeyedByCharacteristicIdentifier:v18];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    [(HFCharacteristicValueManager *)v9 setCachedReadErrorsKeyedByCharacteristicIdentifier:dictionary];
 
-    v19 = [MEMORY[0x277CBEB38] dictionary];
-    [(HFCharacteristicValueManager *)v9 setCachedWriteErrorsKeyedByCharacteristicIdentifier:v19];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
+    [(HFCharacteristicValueManager *)v9 setCachedWriteErrorsKeyedByCharacteristicIdentifier:dictionary2];
 
-    v20 = [MEMORY[0x277CBEB38] dictionary];
-    [(HFCharacteristicValueManager *)v9 setCachedExecutionErrorsKeyedByActionSetIdentifier:v20];
+    dictionary3 = [MEMORY[0x277CBEB38] dictionary];
+    [(HFCharacteristicValueManager *)v9 setCachedExecutionErrorsKeyedByActionSetIdentifier:dictionary3];
 
     v21 = objc_alloc_init(MEMORY[0x277D2C8C8]);
     [(HFCharacteristicValueManager *)v9 setInFlightReadCancelationToken:v21];
@@ -283,12 +283,12 @@ void __100__HFCharacteristicValueManager_HFLightProfileValueSource__writeNatural
     firstReadCompleteFuture = v9->_firstReadCompleteFuture;
     v9->_firstReadCompleteFuture = v22;
 
-    v24 = [(HFCharacteristicValueManager *)v9 createHomeStateStreamObserver];
+    createHomeStateStreamObserver = [(HFCharacteristicValueManager *)v9 createHomeStateStreamObserver];
     homeStateStreamObserver = v9->_homeStateStreamObserver;
-    v9->_homeStateStreamObserver = v24;
+    v9->_homeStateStreamObserver = createHomeStateStreamObserver;
 
-    v26 = [(HFCharacteristicValueManager *)v9 homeStateStreamObserver];
-    [v26 startObserving];
+    homeStateStreamObserver = [(HFCharacteristicValueManager *)v9 homeStateStreamObserver];
+    [homeStateStreamObserver startObserving];
   }
 
   return v9;
@@ -296,8 +296,8 @@ void __100__HFCharacteristicValueManager_HFLightProfileValueSource__writeNatural
 
 - (void)dealloc
 {
-  v3 = [(HFCharacteristicValueManager *)self homeStateStreamObserver];
-  [v3 cancelObservation];
+  homeStateStreamObserver = [(HFCharacteristicValueManager *)self homeStateStreamObserver];
+  [homeStateStreamObserver cancelObservation];
 
   v4.receiver = self;
   v4.super_class = HFCharacteristicValueManager;
@@ -306,14 +306,14 @@ void __100__HFCharacteristicValueManager_HFLightProfileValueSource__writeNatural
 
 - (NSSet)allReadCharacteristics
 {
-  v3 = [(HFCharacteristicValueManager *)self transactionLock];
-  [v3 lock];
+  transactionLock = [(HFCharacteristicValueManager *)self transactionLock];
+  [transactionLock lock];
 
-  v4 = [(HFCharacteristicValueManager *)self mutableAllReadCharacteristics];
-  v5 = [v4 copy];
+  mutableAllReadCharacteristics = [(HFCharacteristicValueManager *)self mutableAllReadCharacteristics];
+  v5 = [mutableAllReadCharacteristics copy];
 
-  v6 = [(HFCharacteristicValueManager *)self transactionLock];
-  [v6 unlock];
+  transactionLock2 = [(HFCharacteristicValueManager *)self transactionLock];
+  [transactionLock2 unlock];
 
   return v5;
 }
@@ -321,16 +321,16 @@ void __100__HFCharacteristicValueManager_HFLightProfileValueSource__writeNatural
 - (NSSet)characteristicsWithPendingReads
 {
   v27 = *MEMORY[0x277D85DE8];
-  v3 = [(HFCharacteristicValueManager *)self transactionLock];
-  [v3 lock];
+  transactionLock = [(HFCharacteristicValueManager *)self transactionLock];
+  [transactionLock lock];
 
   v4 = [MEMORY[0x277CBEB58] set];
-  v5 = [(HFCharacteristicValueManager *)self runningTransactions];
-  v6 = [v5 mutableCopy];
+  runningTransactions = [(HFCharacteristicValueManager *)self runningTransactions];
+  v6 = [runningTransactions mutableCopy];
 
-  v20 = self;
-  v7 = [(HFCharacteristicValueManager *)self openTransaction];
-  [v6 na_safeAddObject:v7];
+  selfCopy = self;
+  openTransaction = [(HFCharacteristicValueManager *)self openTransaction];
+  [v6 na_safeAddObject:openTransaction];
 
   v24 = 0u;
   v25 = 0u;
@@ -352,17 +352,17 @@ void __100__HFCharacteristicValueManager_HFLightProfileValueSource__writeNatural
         }
 
         v13 = *(*(&v22 + 1) + 8 * i);
-        v14 = [v13 characteristicsToRead];
+        characteristicsToRead = [v13 characteristicsToRead];
 
-        if (v14)
+        if (characteristicsToRead)
         {
-          v15 = [v13 characteristicsToRead];
+          characteristicsToRead2 = [v13 characteristicsToRead];
           v21[0] = MEMORY[0x277D85DD0];
           v21[1] = 3221225472;
           v21[2] = __63__HFCharacteristicValueManager_characteristicsWithPendingReads__block_invoke;
           v21[3] = &unk_277DF6218;
           v21[4] = v13;
-          v16 = [v15 na_filter:v21];
+          v16 = [characteristicsToRead2 na_filter:v21];
           [v4 unionSet:v16];
         }
       }
@@ -373,8 +373,8 @@ void __100__HFCharacteristicValueManager_HFLightProfileValueSource__writeNatural
     while (v10);
   }
 
-  v17 = [(HFCharacteristicValueManager *)v20 transactionLock];
-  [v17 unlock];
+  transactionLock2 = [(HFCharacteristicValueManager *)selfCopy transactionLock];
+  [transactionLock2 unlock];
 
   v18 = *MEMORY[0x277D85DE8];
 
@@ -397,15 +397,15 @@ uint64_t __63__HFCharacteristicValueManager_characteristicsWithPendingReads__blo
 - (NSSet)characteristicsWithPendingWrites
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = [(HFCharacteristicValueManager *)self transactionLock];
-  [v3 lock];
+  transactionLock = [(HFCharacteristicValueManager *)self transactionLock];
+  [transactionLock lock];
 
   v4 = [MEMORY[0x277CBEB58] set];
-  v5 = [(HFCharacteristicValueManager *)self runningTransactions];
-  v6 = [v5 mutableCopy];
+  runningTransactions = [(HFCharacteristicValueManager *)self runningTransactions];
+  v6 = [runningTransactions mutableCopy];
 
-  v7 = [(HFCharacteristicValueManager *)self openTransaction];
-  [v6 na_safeAddObject:v7];
+  openTransaction = [(HFCharacteristicValueManager *)self openTransaction];
+  [v6 na_safeAddObject:openTransaction];
 
   v19 = 0u;
   v20 = 0u;
@@ -436,24 +436,24 @@ uint64_t __63__HFCharacteristicValueManager_characteristicsWithPendingReads__blo
     while (v10);
   }
 
-  v14 = [(HFCharacteristicValueManager *)self transactionLock];
-  [v14 unlock];
+  transactionLock2 = [(HFCharacteristicValueManager *)self transactionLock];
+  [transactionLock2 unlock];
 
   v15 = *MEMORY[0x277D85DE8];
 
   return v4;
 }
 
-- (unint64_t)cachedLoadingStateForCharacteristics:(id)a3 actionSets:(id)a4
+- (unint64_t)cachedLoadingStateForCharacteristics:(id)characteristics actionSets:(id)sets
 {
-  v6 = a3;
-  v7 = a4;
+  characteristicsCopy = characteristics;
+  setsCopy = sets;
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
   v20 = 0;
-  v8 = [(HFCharacteristicValueManager *)self testingOverrideLoadingStates];
-  v9 = [v8 count];
+  testingOverrideLoadingStates = [(HFCharacteristicValueManager *)self testingOverrideLoadingStates];
+  v9 = [testingOverrideLoadingStates count];
 
   if (v9)
   {
@@ -463,11 +463,11 @@ uint64_t __63__HFCharacteristicValueManager_characteristicsWithPendingReads__blo
     v16[3] = &unk_277DF6240;
     v16[4] = self;
     v16[5] = &v17;
-    [v6 na_each:v16];
+    [characteristicsCopy na_each:v16];
   }
 
-  v10 = [(HFCharacteristicValueManager *)self transactionLock];
-  [v10 lock];
+  transactionLock = [(HFCharacteristicValueManager *)self transactionLock];
+  [transactionLock lock];
 
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
@@ -475,7 +475,7 @@ uint64_t __63__HFCharacteristicValueManager_characteristicsWithPendingReads__blo
   v15[3] = &unk_277DF6290;
   v15[4] = self;
   v15[5] = &v17;
-  [v6 enumerateObjectsUsingBlock:v15];
+  [characteristicsCopy enumerateObjectsUsingBlock:v15];
   if ((v18[3] & 2) == 0)
   {
     v14[0] = MEMORY[0x277D85DD0];
@@ -484,11 +484,11 @@ uint64_t __63__HFCharacteristicValueManager_characteristicsWithPendingReads__blo
     v14[3] = &unk_277DF62B8;
     v14[4] = self;
     v14[5] = &v17;
-    [v7 enumerateObjectsUsingBlock:v14];
+    [setsCopy enumerateObjectsUsingBlock:v14];
   }
 
-  v11 = [(HFCharacteristicValueManager *)self transactionLock];
-  [v11 unlock];
+  transactionLock2 = [(HFCharacteristicValueManager *)self transactionLock];
+  [transactionLock2 unlock];
 
   v12 = v18[3];
   _Block_object_dispose(&v17, 8);
@@ -582,16 +582,16 @@ void __80__HFCharacteristicValueManager_cachedLoadingStateForCharacteristics_act
   }
 }
 
-- (unint64_t)loadingStateForCharacteristics:(id)a3 actionSets:(id)a4
+- (unint64_t)loadingStateForCharacteristics:(id)characteristics actionSets:(id)sets
 {
-  v6 = a3;
-  v7 = a4;
+  characteristicsCopy = characteristics;
+  setsCopy = sets;
   v40 = 0;
   v41 = &v40;
   v42 = 0x2020000000;
   v43 = 0;
-  v8 = [(HFCharacteristicValueManager *)self testingOverrideLoadingStates];
-  v9 = [v8 count];
+  testingOverrideLoadingStates = [(HFCharacteristicValueManager *)self testingOverrideLoadingStates];
+  v9 = [testingOverrideLoadingStates count];
 
   if (v9)
   {
@@ -601,20 +601,20 @@ void __80__HFCharacteristicValueManager_cachedLoadingStateForCharacteristics_act
     v39[3] = &unk_277DF6240;
     v39[4] = self;
     v39[5] = &v40;
-    [v6 na_each:v39];
+    [characteristicsCopy na_each:v39];
   }
 
-  v10 = [(HFCharacteristicValueManager *)self cachedLoadingStateForCharacteristics:v6 actionSets:v7];
+  v10 = [(HFCharacteristicValueManager *)self cachedLoadingStateForCharacteristics:characteristicsCopy actionSets:setsCopy];
   v41[3] |= v10;
-  v11 = [(HFCharacteristicValueManager *)self transactionLock];
-  [v11 lock];
+  transactionLock = [(HFCharacteristicValueManager *)self transactionLock];
+  [transactionLock lock];
 
   v12 = v41[3];
   if ((v12 & 1) == 0)
   {
-    v13 = [(HFCharacteristicValueManager *)self openTransaction];
-    v14 = [v13 characteristicsToRead];
-    v15 = [v14 intersectsSet:v6];
+    openTransaction = [(HFCharacteristicValueManager *)self openTransaction];
+    characteristicsToRead = [openTransaction characteristicsToRead];
+    v15 = [characteristicsToRead intersectsSet:characteristicsCopy];
 
     v12 = v41[3];
     if (v15)
@@ -626,9 +626,9 @@ void __80__HFCharacteristicValueManager_cachedLoadingStateForCharacteristics_act
 
   if ((v12 & 2) == 0)
   {
-    v16 = [(HFCharacteristicValueManager *)self openTransaction];
-    v17 = [v16 actionSetsToExecute];
-    v18 = [v17 intersectsSet:v7];
+    openTransaction2 = [(HFCharacteristicValueManager *)self openTransaction];
+    actionSetsToExecute = [openTransaction2 actionSetsToExecute];
+    v18 = [actionSetsToExecute intersectsSet:setsCopy];
 
     v12 = v41[3];
     if (v18)
@@ -644,11 +644,11 @@ void __80__HFCharacteristicValueManager_cachedLoadingStateForCharacteristics_act
     aBlock[1] = 3221225472;
     aBlock[2] = __74__HFCharacteristicValueManager_loadingStateForCharacteristics_actionSets___block_invoke_2;
     aBlock[3] = &unk_277DF62E0;
-    v38 = v6;
+    v38 = characteristicsCopy;
     v19 = _Block_copy(aBlock);
-    v20 = [(HFCharacteristicValueManager *)self openTransaction];
-    v21 = [v20 writeCharacteristicRequests];
-    v22 = [v21 na_any:v19];
+    openTransaction3 = [(HFCharacteristicValueManager *)self openTransaction];
+    writeCharacteristicRequests = [openTransaction3 writeCharacteristicRequests];
+    v22 = [writeCharacteristicRequests na_any:v19];
 
     if (v22)
     {
@@ -664,11 +664,11 @@ void __80__HFCharacteristicValueManager_cachedLoadingStateForCharacteristics_act
     v33 = 3221225472;
     v34 = __74__HFCharacteristicValueManager_loadingStateForCharacteristics_actionSets___block_invoke_3;
     v35 = &unk_277DF6308;
-    v36 = v6;
+    v36 = characteristicsCopy;
     v23 = _Block_copy(&v32);
     v24 = [(HFCharacteristicValueManager *)self openTransaction:v32];
-    v25 = [v24 actionsToExecute];
-    v26 = [v25 na_any:v23];
+    actionsToExecute = [v24 actionsToExecute];
+    v26 = [actionsToExecute na_any:v23];
 
     if (v26)
     {
@@ -678,13 +678,13 @@ void __80__HFCharacteristicValueManager_cachedLoadingStateForCharacteristics_act
 
   if (+[HFHomeKitDispatcher synchronizesHomeDataModel])
   {
-    if ([(HFCharacteristicValueManager *)self staticHomeDataModelHasInProgressWriteForCharacteristic:v6])
+    if ([(HFCharacteristicValueManager *)self staticHomeDataModelHasInProgressWriteForCharacteristic:characteristicsCopy])
     {
       v41[3] |= 2uLL;
     }
 
-    v27 = [(HFCharacteristicValueManager *)self homeStateStreamObserver];
-    v28 = [v27 homeStateStreamHasInProgressWriteFor:v6];
+    homeStateStreamObserver = [(HFCharacteristicValueManager *)self homeStateStreamObserver];
+    v28 = [homeStateStreamObserver homeStateStreamHasInProgressWriteFor:characteristicsCopy];
 
     if (v28)
     {
@@ -692,8 +692,8 @@ void __80__HFCharacteristicValueManager_cachedLoadingStateForCharacteristics_act
     }
   }
 
-  v29 = [(HFCharacteristicValueManager *)self transactionLock];
-  [v29 unlock];
+  transactionLock2 = [(HFCharacteristicValueManager *)self transactionLock];
+  [transactionLock2 unlock];
 
   v30 = v41[3];
   _Block_object_dispose(&v40, 8);
@@ -761,26 +761,26 @@ uint64_t __74__HFCharacteristicValueManager_loadingStateForCharacteristics_actio
   return v9;
 }
 
-- (id)_transactionLock_characteristicsWithPendingWritesInTransacton:(id)a3 includeDirectWrites:(BOOL)a4 includeActionSets:(BOOL)a5 includeActions:(BOOL)a6
+- (id)_transactionLock_characteristicsWithPendingWritesInTransacton:(id)transacton includeDirectWrites:(BOOL)writes includeActionSets:(BOOL)sets includeActions:(BOOL)actions
 {
-  v6 = a6;
-  v7 = a5;
-  v8 = a4;
+  actionsCopy = actions;
+  setsCopy = sets;
+  writesCopy = writes;
   v53 = *MEMORY[0x277D85DE8];
-  v9 = a3;
+  transactonCopy = transacton;
   v10 = [MEMORY[0x277CBEB58] set];
-  if (v8)
+  if (writesCopy)
   {
-    v11 = [v9 writeCharacteristicRequests];
+    writeCharacteristicRequests = [transactonCopy writeCharacteristicRequests];
 
-    if (v11)
+    if (writeCharacteristicRequests)
     {
       v48 = 0u;
       v49 = 0u;
       v46 = 0u;
       v47 = 0u;
-      v12 = [v9 writeCharacteristicRequests];
-      v13 = [v12 countByEnumeratingWithState:&v46 objects:v52 count:16];
+      writeCharacteristicRequests2 = [transactonCopy writeCharacteristicRequests];
+      v13 = [writeCharacteristicRequests2 countByEnumeratingWithState:&v46 objects:v52 count:16];
       if (v13)
       {
         v14 = v13;
@@ -791,14 +791,14 @@ uint64_t __74__HFCharacteristicValueManager_loadingStateForCharacteristics_actio
           {
             if (*v47 != v15)
             {
-              objc_enumerationMutation(v12);
+              objc_enumerationMutation(writeCharacteristicRequests2);
             }
 
-            v17 = [*(*(&v46 + 1) + 8 * i) characteristic];
-            [v10 na_safeAddObject:v17];
+            characteristic = [*(*(&v46 + 1) + 8 * i) characteristic];
+            [v10 na_safeAddObject:characteristic];
           }
 
-          v14 = [v12 countByEnumeratingWithState:&v46 objects:v52 count:16];
+          v14 = [writeCharacteristicRequests2 countByEnumeratingWithState:&v46 objects:v52 count:16];
         }
 
         while (v14);
@@ -806,18 +806,18 @@ uint64_t __74__HFCharacteristicValueManager_loadingStateForCharacteristics_actio
     }
   }
 
-  if (v7)
+  if (setsCopy)
   {
-    v18 = [v9 actionSetsToExecute];
+    actionSetsToExecute = [transactonCopy actionSetsToExecute];
 
-    if (v18)
+    if (actionSetsToExecute)
     {
       v44 = 0u;
       v45 = 0u;
       v42 = 0u;
       v43 = 0u;
-      v19 = [v9 actionSetsToExecute];
-      v20 = [v19 countByEnumeratingWithState:&v42 objects:v51 count:16];
+      actionSetsToExecute2 = [transactonCopy actionSetsToExecute];
+      v20 = [actionSetsToExecute2 countByEnumeratingWithState:&v42 objects:v51 count:16];
       if (v20)
       {
         v21 = v20;
@@ -828,17 +828,17 @@ uint64_t __74__HFCharacteristicValueManager_loadingStateForCharacteristics_actio
           {
             if (*v43 != v22)
             {
-              objc_enumerationMutation(v19);
+              objc_enumerationMutation(actionSetsToExecute2);
             }
 
-            v24 = [*(*(&v42 + 1) + 8 * j) hf_affectedCharacteristics];
-            if (v24)
+            hf_affectedCharacteristics = [*(*(&v42 + 1) + 8 * j) hf_affectedCharacteristics];
+            if (hf_affectedCharacteristics)
             {
-              [v10 unionSet:v24];
+              [v10 unionSet:hf_affectedCharacteristics];
             }
           }
 
-          v21 = [v19 countByEnumeratingWithState:&v42 objects:v51 count:16];
+          v21 = [actionSetsToExecute2 countByEnumeratingWithState:&v42 objects:v51 count:16];
         }
 
         while (v21);
@@ -846,18 +846,18 @@ uint64_t __74__HFCharacteristicValueManager_loadingStateForCharacteristics_actio
     }
   }
 
-  if (v6)
+  if (actionsCopy)
   {
-    v25 = [v9 actionsToExecute];
+    actionsToExecute = [transactonCopy actionsToExecute];
 
-    if (v25)
+    if (actionsToExecute)
     {
       v40 = 0u;
       v41 = 0u;
       v38 = 0u;
       v39 = 0u;
-      v26 = [v9 actionsToExecute];
-      v27 = [v26 countByEnumeratingWithState:&v38 objects:v50 count:16];
+      actionsToExecute2 = [transactonCopy actionsToExecute];
+      v27 = [actionsToExecute2 countByEnumeratingWithState:&v38 objects:v50 count:16];
       if (v27)
       {
         v28 = v27;
@@ -868,7 +868,7 @@ uint64_t __74__HFCharacteristicValueManager_loadingStateForCharacteristics_actio
           {
             if (*v39 != v29)
             {
-              objc_enumerationMutation(v26);
+              objc_enumerationMutation(actionsToExecute2);
             }
 
             v31 = *(*(&v38 + 1) + 8 * k);
@@ -886,11 +886,11 @@ uint64_t __74__HFCharacteristicValueManager_loadingStateForCharacteristics_actio
 
             v34 = v33;
 
-            v35 = [v34 characteristic];
-            [v10 na_safeAddObject:v35];
+            characteristic2 = [v34 characteristic];
+            [v10 na_safeAddObject:characteristic2];
           }
 
-          v28 = [v26 countByEnumeratingWithState:&v38 objects:v50 count:16];
+          v28 = [actionsToExecute2 countByEnumeratingWithState:&v38 objects:v50 count:16];
         }
 
         while (v28);
@@ -903,64 +903,64 @@ uint64_t __74__HFCharacteristicValueManager_loadingStateForCharacteristics_actio
   return v10;
 }
 
-- (void)beginTransactionWithReason:(id)a3
+- (void)beginTransactionWithReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   v5 = objc_opt_new();
-  [(HFCharacteristicValueManager *)self beginTransactionWithReason:v4 readPolicy:v5 logger:0];
+  [(HFCharacteristicValueManager *)self beginTransactionWithReason:reasonCopy readPolicy:v5 logger:0];
 }
 
-- (void)beginTransactionWithReason:(id)a3 readPolicy:(id)a4 logger:(id)a5
+- (void)beginTransactionWithReason:(id)reason readPolicy:(id)policy logger:(id)logger
 {
   v47 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v9)
+  reasonCopy = reason;
+  policyCopy = policy;
+  loggerCopy = logger;
+  if (!reasonCopy)
   {
-    v41 = [MEMORY[0x277CCA890] currentHandler];
-    [v41 handleFailureInMethod:a2 object:self file:@"HFCharacteristicValueManager.m" lineNumber:368 description:{@"Invalid parameter not satisfying: %@", @"reason"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HFCharacteristicValueManager.m" lineNumber:368 description:{@"Invalid parameter not satisfying: %@", @"reason"}];
   }
 
-  v12 = [(HFCharacteristicValueManager *)self transactionLock];
-  [v12 lock];
+  transactionLock = [(HFCharacteristicValueManager *)self transactionLock];
+  [transactionLock lock];
 
-  v13 = [(HFCharacteristicValueManager *)self openTransaction];
+  openTransaction = [(HFCharacteristicValueManager *)self openTransaction];
 
-  if (!v13)
+  if (!openTransaction)
   {
     v24 = objc_alloc_init(HFCharacteristicValueTransaction);
     [(HFCharacteristicValueManager *)self setOpenTransaction:v24];
 
-    v25 = v11;
-    if (!v11)
+    v25 = loggerCopy;
+    if (!loggerCopy)
     {
-      v25 = [[HFUpdateLogger alloc] initWithTimeout:v9 description:15.0];
+      v25 = [[HFUpdateLogger alloc] initWithTimeout:reasonCopy description:15.0];
     }
 
-    v26 = [(HFCharacteristicValueManager *)self openTransaction];
-    [v26 setLoggerIsExternal:v11 != 0];
+    openTransaction2 = [(HFCharacteristicValueManager *)self openTransaction];
+    [openTransaction2 setLoggerIsExternal:loggerCopy != 0];
 
-    v27 = [(HFCharacteristicValueManager *)self openTransaction];
-    [v27 setLogger:v25];
+    openTransaction3 = [(HFCharacteristicValueManager *)self openTransaction];
+    [openTransaction3 setLogger:v25];
 
-    v28 = [(HFCharacteristicValueManager *)self openTransaction];
-    v29 = [v28 logger];
+    openTransaction4 = [(HFCharacteristicValueManager *)self openTransaction];
+    logger = [openTransaction4 logger];
 
-    if (v29)
+    if (logger)
     {
       state.opaque[0] = 0;
       state.opaque[1] = 0;
-      v30 = [(HFCharacteristicValueManager *)self openTransaction];
-      v31 = [v30 logger];
-      v32 = [v31 loggerActivity];
-      os_activity_scope_enter(v32, &state);
+      openTransaction5 = [(HFCharacteristicValueManager *)self openTransaction];
+      logger2 = [openTransaction5 logger];
+      loggerActivity = [logger2 loggerActivity];
+      os_activity_scope_enter(loggerActivity, &state);
 
       v33 = HFLogForCategory(0x3DuLL);
       if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v45 = v9;
+        v45 = reasonCopy;
         _os_log_impl(&dword_20D9BF000, v33, OS_LOG_TYPE_DEFAULT, "----- OPEN TRANSACTION (%@) -----", buf, 0xCu);
       }
 
@@ -973,36 +973,36 @@ uint64_t __74__HFCharacteristicValueManager_loadingStateForCharacteristics_actio
       if (os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT))
       {
         LODWORD(state.opaque[0]) = 138412290;
-        *(state.opaque + 4) = v9;
+        *(state.opaque + 4) = reasonCopy;
         _os_log_impl(&dword_20D9BF000, v43, OS_LOG_TYPE_DEFAULT, "----- OPEN TRANSACTION (%@) -----", &state, 0xCu);
       }
     }
 
-    v23 = [(HFCharacteristicValueManager *)self openTransaction];
-    v34 = [v23 onFinishGroup];
-    dispatch_group_enter(v34);
+    openTransaction6 = [(HFCharacteristicValueManager *)self openTransaction];
+    onFinishGroup = [openTransaction6 onFinishGroup];
+    dispatch_group_enter(onFinishGroup);
 
-    v11 = v25;
+    loggerCopy = v25;
     goto LABEL_17;
   }
 
-  v14 = [(HFCharacteristicValueManager *)self openTransaction];
-  v15 = [v14 logger];
+  openTransaction7 = [(HFCharacteristicValueManager *)self openTransaction];
+  logger3 = [openTransaction7 logger];
 
-  if (v15)
+  if (logger3)
   {
     state.opaque[0] = 0;
     state.opaque[1] = 0;
-    v16 = [(HFCharacteristicValueManager *)self openTransaction];
-    v17 = [v16 logger];
-    v18 = [v17 loggerActivity];
-    os_activity_scope_enter(v18, &state);
+    openTransaction8 = [(HFCharacteristicValueManager *)self openTransaction];
+    logger4 = [openTransaction8 logger];
+    loggerActivity2 = [logger4 loggerActivity];
+    os_activity_scope_enter(loggerActivity2, &state);
 
     v19 = HFLogForCategory(0x3DuLL);
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v45 = v9;
+      v45 = reasonCopy;
       _os_log_impl(&dword_20D9BF000, v19, OS_LOG_TYPE_DEFAULT, "Nest transaction (%@)", buf, 0xCu);
     }
 
@@ -1015,61 +1015,61 @@ uint64_t __74__HFCharacteristicValueManager_loadingStateForCharacteristics_actio
     if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
     {
       LODWORD(state.opaque[0]) = 138412290;
-      *(state.opaque + 4) = v9;
+      *(state.opaque + 4) = reasonCopy;
       _os_log_impl(&dword_20D9BF000, v42, OS_LOG_TYPE_DEFAULT, "Nest transaction (%@)", &state, 0xCu);
     }
   }
 
-  v20 = [(HFCharacteristicValueManager *)self openTransaction];
-  v21 = [v20 clientReasonsStack];
-  v22 = [v21 containsObject:v9];
+  openTransaction9 = [(HFCharacteristicValueManager *)self openTransaction];
+  clientReasonsStack = [openTransaction9 clientReasonsStack];
+  v22 = [clientReasonsStack containsObject:reasonCopy];
 
   if (v22)
   {
-    v23 = [(HFCharacteristicValueManager *)self openTransaction];
-    NSLog(&cfstr_TheOpenTransac.isa, v23, v9);
+    openTransaction6 = [(HFCharacteristicValueManager *)self openTransaction];
+    NSLog(&cfstr_TheOpenTransac.isa, openTransaction6, reasonCopy);
 LABEL_17:
   }
 
-  v35 = [(HFCharacteristicValueManager *)self openTransaction];
-  v36 = [v35 readPolicy];
-  [v36 pushPolicy:v10];
+  openTransaction10 = [(HFCharacteristicValueManager *)self openTransaction];
+  readPolicy = [openTransaction10 readPolicy];
+  [readPolicy pushPolicy:policyCopy];
 
-  v37 = [(HFCharacteristicValueManager *)self openTransaction];
-  v38 = [v37 clientReasonsStack];
-  [v38 addObject:v9];
+  openTransaction11 = [(HFCharacteristicValueManager *)self openTransaction];
+  clientReasonsStack2 = [openTransaction11 clientReasonsStack];
+  [clientReasonsStack2 addObject:reasonCopy];
 
-  v39 = [(HFCharacteristicValueManager *)self transactionLock];
-  [v39 unlock];
+  transactionLock2 = [(HFCharacteristicValueManager *)self transactionLock];
+  [transactionLock2 unlock];
 
   v40 = *MEMORY[0x277D85DE8];
 }
 
-- (id)readValueForCharacteristic:(id)a3
+- (id)readValueForCharacteristic:(id)characteristic
 {
   v112 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  characteristicCopy = characteristic;
+  if (!characteristicCopy)
   {
-    v73 = [MEMORY[0x277CCA890] currentHandler];
-    [v73 handleFailureInMethod:a2 object:self file:@"HFCharacteristicValueManager.m" lineNumber:394 description:{@"Invalid parameter not satisfying: %@", @"characteristic != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HFCharacteristicValueManager.m" lineNumber:394 description:{@"Invalid parameter not satisfying: %@", @"characteristic != nil"}];
   }
 
-  v5 = [(HFCharacteristicValueManager *)self transactionLock];
-  [v5 lock];
+  transactionLock = [(HFCharacteristicValueManager *)self transactionLock];
+  [transactionLock lock];
 
-  v6 = [v4 uniqueIdentifier];
-  v7 = [(HFCharacteristicValueManager *)self openTransaction];
-  v8 = [v7 readPolicy];
+  uniqueIdentifier = [characteristicCopy uniqueIdentifier];
+  openTransaction = [(HFCharacteristicValueManager *)self openTransaction];
+  readPolicy = [openTransaction readPolicy];
   v108 = 0;
-  v9 = [v8 evaluateWithCharacteristic:v4 traits:&v108];
+  v9 = [readPolicy evaluateWithCharacteristic:characteristicCopy traits:&v108];
   v10 = v108;
 
-  v11 = [v10 allObjects];
-  v84 = [v11 componentsJoinedByString:{@", "}];
+  allObjects = [v10 allObjects];
+  v84 = [allObjects componentsJoinedByString:{@", "}];
 
-  v12 = [(HFCharacteristicValueManager *)self openTransaction];
-  if (v12)
+  openTransaction2 = [(HFCharacteristicValueManager *)self openTransaction];
+  if (openTransaction2)
   {
     v13 = v9 == 0;
   }
@@ -1086,20 +1086,20 @@ LABEL_17:
     goto LABEL_15;
   }
 
-  v15 = [(HFCharacteristicValueManager *)self openTransaction];
-  v16 = [v15 logger];
-  v17 = v16 == 0;
+  openTransaction3 = [(HFCharacteristicValueManager *)self openTransaction];
+  logger = [openTransaction3 logger];
+  v17 = logger == 0;
 
   if (v17)
   {
     v75 = HFLogForCategory(0x3DuLL);
     if (os_log_type_enabled(v75, OS_LOG_TYPE_DEBUG))
     {
-      v76 = [v4 hf_prettyDescription];
+      hf_prettyDescription = [characteristicCopy hf_prettyDescription];
       *buf = 138412546;
       *&buf[4] = v84;
       *&buf[12] = 2112;
-      *&buf[14] = v76;
+      *&buf[14] = hf_prettyDescription;
       _os_log_impl(&dword_20D9BF000, v75, OS_LOG_TYPE_DEBUG, "Skip read (%@): %@", buf, 0x16u);
     }
   }
@@ -1108,19 +1108,19 @@ LABEL_17:
   {
     state.opaque[0] = 0;
     state.opaque[1] = 0;
-    v18 = [(HFCharacteristicValueManager *)self openTransaction];
-    v19 = [v18 logger];
-    v20 = [v19 loggerActivity];
-    os_activity_scope_enter(v20, &state);
+    openTransaction4 = [(HFCharacteristicValueManager *)self openTransaction];
+    logger2 = [openTransaction4 logger];
+    loggerActivity = [logger2 loggerActivity];
+    os_activity_scope_enter(loggerActivity, &state);
 
     v21 = HFLogForCategory(0x3DuLL);
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
     {
-      v22 = [v4 hf_prettyDescription];
+      hf_prettyDescription2 = [characteristicCopy hf_prettyDescription];
       *buf = 138412546;
       *&buf[4] = v84;
       *&buf[12] = 2112;
-      *&buf[14] = v22;
+      *&buf[14] = hf_prettyDescription2;
       _os_log_impl(&dword_20D9BF000, v21, OS_LOG_TYPE_DEBUG, "Skip read (%@): %@", buf, 0x16u);
     }
 
@@ -1128,16 +1128,16 @@ LABEL_17:
   }
 
   objc_initWeak(buf, self);
-  v23 = [(HFCharacteristicValueManager *)self openTransaction];
-  v24 = [v23 commitFuture];
+  openTransaction5 = [(HFCharacteristicValueManager *)self openTransaction];
+  commitFuture = [openTransaction5 commitFuture];
   v104[0] = MEMORY[0x277D85DD0];
   v104[1] = 3221225472;
   v104[2] = __59__HFCharacteristicValueManager_readValueForCharacteristic___block_invoke;
   v104[3] = &unk_277DF6330;
   objc_copyWeak(&v107, buf);
-  v105 = v4;
+  v105 = characteristicCopy;
   v106 = v10;
-  v25 = [v24 flatMap:v104];
+  v25 = [commitFuture flatMap:v104];
 
   objc_destroyWeak(&v107);
   objc_destroyWeak(buf);
@@ -1148,8 +1148,8 @@ LABEL_15:
     v103 = 0u;
     v100 = 0u;
     v101 = 0u;
-    v26 = [(HFCharacteristicValueManager *)self runningTransactions];
-    v27 = [v26 countByEnumeratingWithState:&v100 objects:v109 count:16];
+    runningTransactions = [(HFCharacteristicValueManager *)self runningTransactions];
+    v27 = [runningTransactions countByEnumeratingWithState:&v100 objects:v109 count:16];
     if (v27)
     {
       v28 = *v101;
@@ -1159,11 +1159,11 @@ LABEL_17:
       {
         if (*v101 != v28)
         {
-          objc_enumerationMutation(v26);
+          objc_enumerationMutation(runningTransactions);
         }
 
-        v30 = [*(*(&v100 + 1) + 8 * v29) readFuturesKeyedByCharacteristicIdentifier];
-        v31 = [v30 objectForKeyedSubscript:v6];
+        readFuturesKeyedByCharacteristicIdentifier = [*(*(&v100 + 1) + 8 * v29) readFuturesKeyedByCharacteristicIdentifier];
+        v31 = [readFuturesKeyedByCharacteristicIdentifier objectForKeyedSubscript:uniqueIdentifier];
 
         if (v31)
         {
@@ -1175,7 +1175,7 @@ LABEL_17:
 
         if (v27 == ++v29)
         {
-          v27 = [v26 countByEnumeratingWithState:&v100 objects:v109 count:16];
+          v27 = [runningTransactions countByEnumeratingWithState:&v100 objects:v109 count:16];
           if (v27)
           {
             goto LABEL_17;
@@ -1185,18 +1185,18 @@ LABEL_17:
         }
       }
 
-      v32 = [(HFCharacteristicValueManager *)self openTransaction];
-      v33 = [v32 logger];
-      v34 = v33 == 0;
+      openTransaction6 = [(HFCharacteristicValueManager *)self openTransaction];
+      logger3 = [openTransaction6 logger];
+      v34 = logger3 == 0;
 
       if (v34)
       {
         v77 = HFLogForCategory(0x3DuLL);
         if (os_log_type_enabled(v77, OS_LOG_TYPE_DEBUG))
         {
-          v78 = [v4 hf_prettyDescription];
+          hf_prettyDescription3 = [characteristicCopy hf_prettyDescription];
           *buf = 138412290;
-          *&buf[4] = v78;
+          *&buf[4] = hf_prettyDescription3;
           _os_log_impl(&dword_20D9BF000, v77, OS_LOG_TYPE_DEBUG, "Duplicate read in other running transaction: %@", buf, 0xCu);
         }
       }
@@ -1205,17 +1205,17 @@ LABEL_17:
       {
         *buf = 0;
         *&buf[8] = 0;
-        v35 = [(HFCharacteristicValueManager *)self openTransaction];
-        v36 = [v35 logger];
-        v37 = [v36 loggerActivity];
-        os_activity_scope_enter(v37, buf);
+        openTransaction7 = [(HFCharacteristicValueManager *)self openTransaction];
+        logger4 = [openTransaction7 logger];
+        loggerActivity2 = [logger4 loggerActivity];
+        os_activity_scope_enter(loggerActivity2, buf);
 
         v38 = HFLogForCategory(0x3DuLL);
         if (os_log_type_enabled(v38, OS_LOG_TYPE_DEBUG))
         {
-          v39 = [v4 hf_prettyDescription];
+          hf_prettyDescription4 = [characteristicCopy hf_prettyDescription];
           LODWORD(state.opaque[0]) = 138412290;
-          *(state.opaque + 4) = v39;
+          *(state.opaque + 4) = hf_prettyDescription4;
           _os_log_impl(&dword_20D9BF000, v38, OS_LOG_TYPE_DEBUG, "Duplicate read in other running transaction: %@", &state, 0xCu);
         }
 
@@ -1228,7 +1228,7 @@ LABEL_17:
       v96[2] = __59__HFCharacteristicValueManager_readValueForCharacteristic___block_invoke_106;
       v96[3] = &unk_277DF6358;
       objc_copyWeak(&v99, buf);
-      v97 = v4;
+      v97 = characteristicCopy;
       v98 = v10;
       v25 = [v31 flatMap:v96];
 
@@ -1246,22 +1246,22 @@ LABEL_17:
 LABEL_24:
     }
 
-    v40 = [(HFCharacteristicValueManager *)self openTransaction];
-    v41 = v40 == 0;
+    openTransaction8 = [(HFCharacteristicValueManager *)self openTransaction];
+    v41 = openTransaction8 == 0;
 
     if (v41)
     {
       goto LABEL_40;
     }
 
-    v42 = [(HFCharacteristicValueManager *)self openTransaction];
-    v43 = [v42 readFuturesKeyedByCharacteristicIdentifier];
-    v44 = [v43 objectForKeyedSubscript:v6];
+    openTransaction9 = [(HFCharacteristicValueManager *)self openTransaction];
+    readFuturesKeyedByCharacteristicIdentifier2 = [openTransaction9 readFuturesKeyedByCharacteristicIdentifier];
+    v44 = [readFuturesKeyedByCharacteristicIdentifier2 objectForKeyedSubscript:uniqueIdentifier];
 
     if (v44)
     {
-      v45 = [v42 characteristicsToRead];
-      v46 = [v45 containsObject:v4];
+      characteristicsToRead = [openTransaction9 characteristicsToRead];
+      v46 = [characteristicsToRead containsObject:characteristicCopy];
 
       if ((v46 & 1) == 0)
       {
@@ -1271,20 +1271,20 @@ LABEL_24:
 
     else
     {
-      v47 = [(HFCharacteristicValueManager *)self openTransaction];
-      v48 = [v47 logger];
-      v49 = v48 == 0;
+      openTransaction10 = [(HFCharacteristicValueManager *)self openTransaction];
+      logger5 = [openTransaction10 logger];
+      v49 = logger5 == 0;
 
       if (v49)
       {
         v81 = HFLogForCategory(0x3DuLL);
         if (os_log_type_enabled(v81, OS_LOG_TYPE_DEBUG))
         {
-          v82 = [v4 hf_prettyDescription];
+          hf_prettyDescription5 = [characteristicCopy hf_prettyDescription];
           *buf = 138412546;
           *&buf[4] = v84;
           *&buf[12] = 2112;
-          *&buf[14] = v82;
+          *&buf[14] = hf_prettyDescription5;
           _os_log_impl(&dword_20D9BF000, v81, OS_LOG_TYPE_DEBUG, "New read request (%@): %@", buf, 0x16u);
         }
       }
@@ -1293,19 +1293,19 @@ LABEL_24:
       {
         state.opaque[0] = 0;
         state.opaque[1] = 0;
-        v50 = [(HFCharacteristicValueManager *)self openTransaction];
-        v51 = [v50 logger];
-        v52 = [v51 loggerActivity];
-        os_activity_scope_enter(v52, &state);
+        openTransaction11 = [(HFCharacteristicValueManager *)self openTransaction];
+        logger6 = [openTransaction11 logger];
+        loggerActivity3 = [logger6 loggerActivity];
+        os_activity_scope_enter(loggerActivity3, &state);
 
         v53 = HFLogForCategory(0x3DuLL);
         if (os_log_type_enabled(v53, OS_LOG_TYPE_DEBUG))
         {
-          v54 = [v4 hf_prettyDescription];
+          hf_prettyDescription6 = [characteristicCopy hf_prettyDescription];
           *buf = 138412546;
           *&buf[4] = v84;
           *&buf[12] = 2112;
-          *&buf[14] = v54;
+          *&buf[14] = hf_prettyDescription6;
           _os_log_impl(&dword_20D9BF000, v53, OS_LOG_TYPE_DEBUG, "New read request (%@): %@", buf, 0x16u);
         }
 
@@ -1313,12 +1313,12 @@ LABEL_24:
       }
 
       v44 = objc_alloc_init(MEMORY[0x277D2C900]);
-      v55 = [v42 readFuturesKeyedByCharacteristicIdentifier];
-      [v55 setObject:v44 forKeyedSubscript:v6];
+      readFuturesKeyedByCharacteristicIdentifier3 = [openTransaction9 readFuturesKeyedByCharacteristicIdentifier];
+      [readFuturesKeyedByCharacteristicIdentifier3 setObject:v44 forKeyedSubscript:uniqueIdentifier];
     }
 
-    v56 = [v42 characteristicsToRead];
-    [v56 addObject:v4];
+    characteristicsToRead2 = [openTransaction9 characteristicsToRead];
+    [characteristicsToRead2 addObject:characteristicCopy];
 
     objc_initWeak(buf, self);
     v92[0] = MEMORY[0x277D85DD0];
@@ -1326,7 +1326,7 @@ LABEL_24:
     v92[2] = __59__HFCharacteristicValueManager_readValueForCharacteristic___block_invoke_111;
     v92[3] = &unk_277DF6358;
     objc_copyWeak(&v95, buf);
-    v93 = v4;
+    v93 = characteristicCopy;
     v94 = v10;
     v25 = [v44 flatMap:v92];
 
@@ -1337,20 +1337,20 @@ LABEL_24:
     {
 LABEL_40:
       [(HFCharacteristicValueManager *)self beginTransactionWithReason:@"characteristicValueManagerImplicitTransaction"];
-      v57 = [(HFCharacteristicValueManager *)self openTransaction];
-      v58 = [v57 logger];
-      v59 = v58 == 0;
+      openTransaction12 = [(HFCharacteristicValueManager *)self openTransaction];
+      logger7 = [openTransaction12 logger];
+      v59 = logger7 == 0;
 
       if (v59)
       {
         v79 = HFLogForCategory(0x3DuLL);
         if (os_log_type_enabled(v79, OS_LOG_TYPE_DEBUG))
         {
-          v80 = [v4 hf_prettyDescription];
+          hf_prettyDescription7 = [characteristicCopy hf_prettyDescription];
           *buf = 138412546;
           *&buf[4] = v84;
           *&buf[12] = 2112;
-          *&buf[14] = v80;
+          *&buf[14] = hf_prettyDescription7;
           _os_log_impl(&dword_20D9BF000, v79, OS_LOG_TYPE_DEBUG, "Read request for implicit transaction (%@): %@", buf, 0x16u);
         }
       }
@@ -1359,18 +1359,18 @@ LABEL_40:
       {
         state.opaque[0] = 0;
         state.opaque[1] = 0;
-        v60 = [v57 logger];
-        v61 = [v60 loggerActivity];
-        os_activity_scope_enter(v61, &state);
+        logger8 = [openTransaction12 logger];
+        loggerActivity4 = [logger8 loggerActivity];
+        os_activity_scope_enter(loggerActivity4, &state);
 
         v62 = HFLogForCategory(0x3DuLL);
         if (os_log_type_enabled(v62, OS_LOG_TYPE_DEBUG))
         {
-          v63 = [v4 hf_prettyDescription];
+          hf_prettyDescription8 = [characteristicCopy hf_prettyDescription];
           *buf = 138412546;
           *&buf[4] = v84;
           *&buf[12] = 2112;
-          *&buf[14] = v63;
+          *&buf[14] = hf_prettyDescription8;
           _os_log_impl(&dword_20D9BF000, v62, OS_LOG_TYPE_DEBUG, "Read request for implicit transaction (%@): %@", buf, 0x16u);
         }
 
@@ -1378,11 +1378,11 @@ LABEL_40:
       }
 
       v64 = objc_alloc_init(MEMORY[0x277D2C900]);
-      v65 = [v57 readFuturesKeyedByCharacteristicIdentifier];
-      [v65 setObject:v64 forKeyedSubscript:v6];
+      readFuturesKeyedByCharacteristicIdentifier4 = [openTransaction12 readFuturesKeyedByCharacteristicIdentifier];
+      [readFuturesKeyedByCharacteristicIdentifier4 setObject:v64 forKeyedSubscript:uniqueIdentifier];
 
-      v66 = [v57 characteristicsToRead];
-      [v66 addObject:v4];
+      characteristicsToRead3 = [openTransaction12 characteristicsToRead];
+      [characteristicsToRead3 addObject:characteristicCopy];
 
       objc_initWeak(buf, self);
       v88[0] = MEMORY[0x277D85DD0];
@@ -1390,7 +1390,7 @@ LABEL_40:
       v88[2] = __59__HFCharacteristicValueManager_readValueForCharacteristic___block_invoke_112;
       v88[3] = &unk_277DF6358;
       objc_copyWeak(&v91, buf);
-      v89 = v4;
+      v89 = characteristicCopy;
       v90 = v10;
       v25 = [v64 flatMap:v88];
       [(HFCharacteristicValueManager *)self commitTransactionWithReason:@"characteristicValueManagerImplicitTransaction"];
@@ -1401,13 +1401,13 @@ LABEL_40:
   }
 
 LABEL_45:
-  v67 = [(HFCharacteristicValueManager *)self transactionLock];
-  [v67 unlock];
+  transactionLock2 = [(HFCharacteristicValueManager *)self transactionLock];
+  [transactionLock2 unlock];
 
   if (!v25)
   {
-    v74 = [MEMORY[0x277CCA890] currentHandler];
-    [v74 handleFailureInMethod:a2 object:self file:@"HFCharacteristicValueManager.m" lineNumber:500 description:@"None of our cases were able to create a future for this request"];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"HFCharacteristicValueManager.m" lineNumber:500 description:@"None of our cases were able to create a future for this request"];
   }
 
   v85[0] = MEMORY[0x277D85DD0];
@@ -1415,10 +1415,10 @@ LABEL_45:
   v85[2] = __59__HFCharacteristicValueManager_readValueForCharacteristic___block_invoke_2;
   v85[3] = &unk_277DF6380;
   v85[4] = self;
-  v86 = v4;
+  v86 = characteristicCopy;
   v87 = v10;
   v68 = v10;
-  v69 = v4;
+  v69 = characteristicCopy;
   v70 = [v25 recover:v85];
 
   v71 = *MEMORY[0x277D85DE8];
@@ -1500,33 +1500,33 @@ id __59__HFCharacteristicValueManager_readValueForCharacteristic___block_invoke_
   return v9;
 }
 
-- (id)writeValue:(id)a3 forCharacteristic:(id)a4
+- (id)writeValue:(id)value forCharacteristic:(id)characteristic
 {
   v106 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  valueCopy = value;
+  characteristicCopy = characteristic;
+  if (!characteristicCopy)
   {
-    v73 = [MEMORY[0x277CCA890] currentHandler];
-    [v73 handleFailureInMethod:a2 object:self file:@"HFCharacteristicValueManager.m" lineNumber:516 description:{@"Invalid parameter not satisfying: %@", @"characteristic != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HFCharacteristicValueManager.m" lineNumber:516 description:{@"Invalid parameter not satisfying: %@", @"characteristic != nil"}];
   }
 
   v81 = a2;
-  v9 = [v8 uniqueIdentifier];
-  v10 = [(HFCharacteristicValueManager *)self transactionLock];
-  [v10 lock];
+  uniqueIdentifier = [characteristicCopy uniqueIdentifier];
+  transactionLock = [(HFCharacteristicValueManager *)self transactionLock];
+  [transactionLock lock];
 
   v98 = 0u;
   v99 = 0u;
   v96 = 0u;
   v97 = 0u;
-  v11 = [(HFCharacteristicValueManager *)self runningTransactions];
-  v12 = [v11 reverseObjectEnumerator];
+  runningTransactions = [(HFCharacteristicValueManager *)self runningTransactions];
+  reverseObjectEnumerator = [runningTransactions reverseObjectEnumerator];
 
-  v84 = v7;
-  v85 = self;
-  v86 = v9;
-  v87 = [v12 countByEnumeratingWithState:&v96 objects:v105 count:16];
+  v84 = valueCopy;
+  selfCopy = self;
+  v86 = uniqueIdentifier;
+  v87 = [reverseObjectEnumerator countByEnumeratingWithState:&v96 objects:v105 count:16];
   if (!v87)
   {
 LABEL_30:
@@ -1536,19 +1536,19 @@ LABEL_30:
 
   v13 = *v97;
   v82 = *v97;
-  v83 = v12;
+  v83 = reverseObjectEnumerator;
 LABEL_5:
   v14 = 0;
   while (1)
   {
     if (*v97 != v13)
     {
-      objc_enumerationMutation(v12);
+      objc_enumerationMutation(reverseObjectEnumerator);
     }
 
     v15 = *(*(&v96 + 1) + 8 * v14);
-    v16 = [v15 writeFuturesKeyedByCharacteristicIdentifier];
-    v17 = [v16 objectForKeyedSubscript:v9];
+    writeFuturesKeyedByCharacteristicIdentifier = [v15 writeFuturesKeyedByCharacteristicIdentifier];
+    v17 = [writeFuturesKeyedByCharacteristicIdentifier objectForKeyedSubscript:uniqueIdentifier];
 
     if (!v17 || ([v17 isFinished] & 1) != 0)
     {
@@ -1559,8 +1559,8 @@ LABEL_5:
     v95 = 0u;
     v92 = 0u;
     v93 = 0u;
-    v18 = [v15 writeCharacteristicRequests];
-    v19 = [v18 countByEnumeratingWithState:&v92 objects:v104 count:16];
+    writeCharacteristicRequests = [v15 writeCharacteristicRequests];
+    v19 = [writeCharacteristicRequests countByEnumeratingWithState:&v92 objects:v104 count:16];
     if (v19)
     {
       break;
@@ -1568,16 +1568,16 @@ LABEL_5:
 
 LABEL_18:
 
-    v7 = v84;
-    self = v85;
-    v9 = v86;
+    valueCopy = v84;
+    self = selfCopy;
+    uniqueIdentifier = v86;
     v13 = v82;
-    v12 = v83;
+    reverseObjectEnumerator = v83;
 LABEL_19:
 
     if (++v14 == v87)
     {
-      v87 = [v12 countByEnumeratingWithState:&v96 objects:v105 count:16];
+      v87 = [reverseObjectEnumerator countByEnumeratingWithState:&v96 objects:v105 count:16];
       if (v87)
       {
         goto LABEL_5;
@@ -1595,12 +1595,12 @@ LABEL_12:
   {
     if (*v93 != v21)
     {
-      objc_enumerationMutation(v18);
+      objc_enumerationMutation(writeCharacteristicRequests);
     }
 
     v23 = *(*(&v92 + 1) + 8 * v22);
-    v24 = [v23 characteristic];
-    v25 = [v24 isEqual:v8];
+    characteristic = [v23 characteristic];
+    v25 = [characteristic isEqual:characteristicCopy];
 
     if (v25)
     {
@@ -1609,7 +1609,7 @@ LABEL_12:
 
     if (v20 == ++v22)
     {
-      v20 = [v18 countByEnumeratingWithState:&v92 objects:v104 count:16];
+      v20 = [writeCharacteristicRequests countByEnumeratingWithState:&v92 objects:v104 count:16];
       if (v20)
       {
         goto LABEL_12;
@@ -1619,38 +1619,38 @@ LABEL_12:
     }
   }
 
-  v26 = [v23 value];
-  v7 = v84;
-  v27 = [v26 isEqual:v84];
+  value = [v23 value];
+  valueCopy = v84;
+  v27 = [value isEqual:v84];
 
   if ((v27 & 1) == 0)
   {
 
-    self = v85;
-    v9 = v86;
-    v12 = v83;
+    self = selfCopy;
+    uniqueIdentifier = v86;
+    reverseObjectEnumerator = v83;
     goto LABEL_30;
   }
 
-  self = v85;
-  v28 = [(HFCharacteristicValueManager *)v85 openTransaction];
-  v29 = [v28 logger];
+  self = selfCopy;
+  openTransaction = [(HFCharacteristicValueManager *)selfCopy openTransaction];
+  logger = [openTransaction logger];
 
-  if (v29)
+  if (logger)
   {
     state.opaque[0] = 0;
     state.opaque[1] = 0;
-    v30 = [(HFCharacteristicValueManager *)v85 openTransaction];
-    v31 = [v30 logger];
-    v32 = [v31 loggerActivity];
-    os_activity_scope_enter(v32, &state);
+    openTransaction2 = [(HFCharacteristicValueManager *)selfCopy openTransaction];
+    logger2 = [openTransaction2 logger];
+    loggerActivity = [logger2 loggerActivity];
+    os_activity_scope_enter(loggerActivity, &state);
 
     v33 = HFLogForCategory(0x3DuLL);
     if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
     {
-      v34 = [v8 hf_prettyDescription];
+      hf_prettyDescription = [characteristicCopy hf_prettyDescription];
       *buf = 138412290;
-      v102 = v34;
+      v102 = hf_prettyDescription;
       _os_log_impl(&dword_20D9BF000, v33, OS_LOG_TYPE_DEFAULT, "Duplicate write: %@", buf, 0xCu);
     }
 
@@ -1662,14 +1662,14 @@ LABEL_12:
     v77 = HFLogForCategory(0x3DuLL);
     if (os_log_type_enabled(v77, OS_LOG_TYPE_DEFAULT))
     {
-      v78 = [v8 hf_prettyDescription];
+      hf_prettyDescription2 = [characteristicCopy hf_prettyDescription];
       LODWORD(state.opaque[0]) = 138412290;
-      *(state.opaque + 4) = v78;
+      *(state.opaque + 4) = hf_prettyDescription2;
       _os_log_impl(&dword_20D9BF000, v77, OS_LOG_TYPE_DEFAULT, "Duplicate write: %@", &state, 0xCu);
     }
   }
 
-  v9 = v86;
+  uniqueIdentifier = v86;
   v35 = [v17 flatMap:&__block_literal_global_49];
 
   if (v35)
@@ -1678,23 +1678,23 @@ LABEL_12:
   }
 
 LABEL_31:
-  v36 = [(HFCharacteristicValueManager *)self openTransaction];
+  openTransaction3 = [(HFCharacteristicValueManager *)self openTransaction];
 
-  if (!v36)
+  if (!openTransaction3)
   {
     goto LABEL_55;
   }
 
-  v37 = [(HFCharacteristicValueManager *)self openTransaction];
-  v38 = [v37 writeFuturesKeyedByCharacteristicIdentifier];
-  v39 = [v38 objectForKeyedSubscript:v9];
+  openTransaction4 = [(HFCharacteristicValueManager *)self openTransaction];
+  writeFuturesKeyedByCharacteristicIdentifier2 = [openTransaction4 writeFuturesKeyedByCharacteristicIdentifier];
+  v39 = [writeFuturesKeyedByCharacteristicIdentifier2 objectForKeyedSubscript:uniqueIdentifier];
 
   v90 = 0u;
   v91 = 0u;
   v88 = 0u;
   v89 = 0u;
-  v40 = [v37 writeCharacteristicRequests];
-  v41 = [v40 countByEnumeratingWithState:&v88 objects:v100 count:16];
+  writeCharacteristicRequests2 = [openTransaction4 writeCharacteristicRequests];
+  v41 = [writeCharacteristicRequests2 countByEnumeratingWithState:&v88 objects:v100 count:16];
   if (v41)
   {
     v42 = *v89;
@@ -1704,12 +1704,12 @@ LABEL_31:
       {
         if (*v89 != v42)
         {
-          objc_enumerationMutation(v40);
+          objc_enumerationMutation(writeCharacteristicRequests2);
         }
 
         v44 = *(*(&v88 + 1) + 8 * i);
-        v45 = [v44 characteristic];
-        v46 = [v45 isEqual:v8];
+        characteristic2 = [v44 characteristic];
+        v46 = [characteristic2 isEqual:characteristicCopy];
 
         if (v46)
         {
@@ -1718,7 +1718,7 @@ LABEL_31:
         }
       }
 
-      v41 = [v40 countByEnumeratingWithState:&v88 objects:v100 count:16];
+      v41 = [writeCharacteristicRequests2 countByEnumeratingWithState:&v88 objects:v100 count:16];
       if (v41)
       {
         continue;
@@ -1728,9 +1728,9 @@ LABEL_31:
     }
 
 LABEL_42:
-    v7 = v84;
-    self = v85;
-    v9 = v86;
+    valueCopy = v84;
+    self = selfCopy;
+    uniqueIdentifier = v86;
   }
 
   if (v39)
@@ -1750,8 +1750,8 @@ LABEL_42:
 
   if (v41)
   {
-    v49 = [v37 writeCharacteristicRequests];
-    [v49 removeObject:v41];
+    writeCharacteristicRequests3 = [openTransaction4 writeCharacteristicRequests];
+    [writeCharacteristicRequests3 removeObject:v41];
 
     if (!v39)
     {
@@ -1761,24 +1761,24 @@ LABEL_42:
 
   else
   {
-    v66 = [(HFCharacteristicValueManager *)self openTransaction];
-    v67 = [v66 logger];
+    openTransaction5 = [(HFCharacteristicValueManager *)self openTransaction];
+    logger3 = [openTransaction5 logger];
 
-    if (v67)
+    if (logger3)
     {
       state.opaque[0] = 0;
       state.opaque[1] = 0;
-      v68 = [(HFCharacteristicValueManager *)self openTransaction];
-      v69 = [v68 logger];
-      v70 = [v69 loggerActivity];
-      os_activity_scope_enter(v70, &state);
+      openTransaction6 = [(HFCharacteristicValueManager *)self openTransaction];
+      logger4 = [openTransaction6 logger];
+      loggerActivity2 = [logger4 loggerActivity];
+      os_activity_scope_enter(loggerActivity2, &state);
 
       v71 = HFLogForCategory(0x3DuLL);
       if (os_log_type_enabled(v71, OS_LOG_TYPE_DEFAULT))
       {
-        v72 = [v8 hf_prettyDescription];
+        hf_prettyDescription3 = [characteristicCopy hf_prettyDescription];
         *buf = 138412290;
-        v102 = v72;
+        v102 = hf_prettyDescription3;
         _os_log_impl(&dword_20D9BF000, v71, OS_LOG_TYPE_DEFAULT, "New write request: %@", buf, 0xCu);
       }
 
@@ -1790,26 +1790,26 @@ LABEL_42:
       v79 = HFLogForCategory(0x3DuLL);
       if (os_log_type_enabled(v79, OS_LOG_TYPE_DEFAULT))
       {
-        v80 = [v8 hf_prettyDescription];
+        hf_prettyDescription4 = [characteristicCopy hf_prettyDescription];
         LODWORD(state.opaque[0]) = 138412290;
-        *(state.opaque + 4) = v80;
+        *(state.opaque + 4) = hf_prettyDescription4;
         _os_log_impl(&dword_20D9BF000, v79, OS_LOG_TYPE_DEFAULT, "New write request: %@", &state, 0xCu);
       }
     }
 
-    v9 = v86;
+    uniqueIdentifier = v86;
     if (!v39)
     {
 LABEL_53:
       v39 = objc_alloc_init(MEMORY[0x277D2C900]);
-      v50 = [v37 writeFuturesKeyedByCharacteristicIdentifier];
-      [v50 setObject:v39 forKeyedSubscript:v9];
+      writeFuturesKeyedByCharacteristicIdentifier3 = [openTransaction4 writeFuturesKeyedByCharacteristicIdentifier];
+      [writeFuturesKeyedByCharacteristicIdentifier3 setObject:v39 forKeyedSubscript:uniqueIdentifier];
     }
   }
 
-  v51 = [v37 writeCharacteristicRequests];
-  v52 = [MEMORY[0x277CD19B0] writeRequestWithCharacteristic:v8 value:v7];
-  [v51 addObject:v52];
+  writeCharacteristicRequests4 = [openTransaction4 writeCharacteristicRequests];
+  v52 = [MEMORY[0x277CD19B0] writeRequestWithCharacteristic:characteristicCopy value:valueCopy];
+  [writeCharacteristicRequests4 addObject:v52];
 
   v35 = [v39 flatMap:&__block_literal_global_123_0];
 
@@ -1817,23 +1817,23 @@ LABEL_53:
   {
 LABEL_55:
     [(HFCharacteristicValueManager *)self beginTransactionWithReason:@"characteristicValueManagerImplicitTransaction"];
-    v53 = [(HFCharacteristicValueManager *)self openTransaction];
-    v54 = [v53 logger];
+    openTransaction7 = [(HFCharacteristicValueManager *)self openTransaction];
+    logger5 = [openTransaction7 logger];
 
-    if (v54)
+    if (logger5)
     {
       state.opaque[0] = 0;
       state.opaque[1] = 0;
-      v55 = [v53 logger];
-      v56 = [v55 loggerActivity];
-      os_activity_scope_enter(v56, &state);
+      logger6 = [openTransaction7 logger];
+      loggerActivity3 = [logger6 loggerActivity];
+      os_activity_scope_enter(loggerActivity3, &state);
 
       v57 = HFLogForCategory(0x3DuLL);
       if (os_log_type_enabled(v57, OS_LOG_TYPE_DEFAULT))
       {
-        v58 = [v8 hf_prettyDescription];
+        hf_prettyDescription5 = [characteristicCopy hf_prettyDescription];
         *buf = 138412290;
-        v102 = v58;
+        v102 = hf_prettyDescription5;
         _os_log_impl(&dword_20D9BF000, v57, OS_LOG_TYPE_DEFAULT, "Write request for implicit transaction: %@", buf, 0xCu);
       }
 
@@ -1845,33 +1845,33 @@ LABEL_55:
       v75 = HFLogForCategory(0x3DuLL);
       if (os_log_type_enabled(v75, OS_LOG_TYPE_DEFAULT))
       {
-        v76 = [v8 hf_prettyDescription];
+        hf_prettyDescription6 = [characteristicCopy hf_prettyDescription];
         LODWORD(state.opaque[0]) = 138412290;
-        *(state.opaque + 4) = v76;
+        *(state.opaque + 4) = hf_prettyDescription6;
         _os_log_impl(&dword_20D9BF000, v75, OS_LOG_TYPE_DEFAULT, "Write request for implicit transaction: %@", &state, 0xCu);
       }
     }
 
-    v59 = [v53 writeCharacteristicRequests];
-    v60 = [MEMORY[0x277CD19B0] writeRequestWithCharacteristic:v8 value:v7];
-    [v59 addObject:v60];
+    writeCharacteristicRequests5 = [openTransaction7 writeCharacteristicRequests];
+    v60 = [MEMORY[0x277CD19B0] writeRequestWithCharacteristic:characteristicCopy value:valueCopy];
+    [writeCharacteristicRequests5 addObject:v60];
 
     v61 = objc_alloc_init(MEMORY[0x277D2C900]);
-    v62 = [v53 writeFuturesKeyedByCharacteristicIdentifier];
-    [v62 setObject:v61 forKeyedSubscript:v9];
+    writeFuturesKeyedByCharacteristicIdentifier4 = [openTransaction7 writeFuturesKeyedByCharacteristicIdentifier];
+    [writeFuturesKeyedByCharacteristicIdentifier4 setObject:v61 forKeyedSubscript:uniqueIdentifier];
 
     v35 = [v61 flatMap:&__block_literal_global_126];
     [(HFCharacteristicValueManager *)self commitTransactionWithReason:@"characteristicValueManagerImplicitTransaction"];
   }
 
 LABEL_60:
-  v63 = [(HFCharacteristicValueManager *)self transactionLock];
-  [v63 unlock];
+  transactionLock2 = [(HFCharacteristicValueManager *)self transactionLock];
+  [transactionLock2 unlock];
 
   if (!v35)
   {
-    v74 = [MEMORY[0x277CCA890] currentHandler];
-    [v74 handleFailureInMethod:v81 object:self file:@"HFCharacteristicValueManager.m" lineNumber:631 description:@"None of our cases were able to create a future for this request"];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:v81 object:self file:@"HFCharacteristicValueManager.m" lineNumber:631 description:@"None of our cases were able to create a future for this request"];
   }
 
   v64 = *MEMORY[0x277D85DE8];
@@ -1939,16 +1939,16 @@ id __61__HFCharacteristicValueManager_writeValue_forCharacteristic___block_invok
   return v6;
 }
 
-- (void)executeActionSet:(id)a3 completionHandler:(id)a4
+- (void)executeActionSet:(id)set completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [(HFCharacteristicValueManager *)self executeActionSet:a3];
+  handlerCopy = handler;
+  v7 = [(HFCharacteristicValueManager *)self executeActionSet:set];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __67__HFCharacteristicValueManager_executeActionSet_completionHandler___block_invoke;
   v10[3] = &unk_277DF63C8;
-  v11 = v6;
-  v8 = v6;
+  v11 = handlerCopy;
+  v8 = handlerCopy;
   v9 = [v7 addCompletionBlock:v10];
 }
 
@@ -1963,26 +1963,26 @@ uint64_t __67__HFCharacteristicValueManager_executeActionSet_completionHandler__
   return result;
 }
 
-- (id)executeActionSet:(id)a3
+- (id)executeActionSet:(id)set
 {
   v81 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  setCopy = set;
+  if (!setCopy)
   {
-    v53 = [MEMORY[0x277CCA890] currentHandler];
-    [v53 handleFailureInMethod:a2 object:self file:@"HFCharacteristicValueManager.m" lineNumber:647 description:{@"Invalid parameter not satisfying: %@", @"actionSet != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HFCharacteristicValueManager.m" lineNumber:647 description:{@"Invalid parameter not satisfying: %@", @"actionSet != nil"}];
   }
 
   v61 = a2;
-  v6 = [(HFCharacteristicValueManager *)self transactionLock];
-  [v6 lock];
+  transactionLock = [(HFCharacteristicValueManager *)self transactionLock];
+  [transactionLock lock];
 
   v75 = 0u;
   v76 = 0u;
   v73 = 0u;
   v74 = 0u;
-  v7 = [(HFCharacteristicValueManager *)self runningTransactions];
-  v8 = [v7 countByEnumeratingWithState:&v73 objects:v80 count:16];
+  runningTransactions = [(HFCharacteristicValueManager *)self runningTransactions];
+  v8 = [runningTransactions countByEnumeratingWithState:&v73 objects:v80 count:16];
   if (v8)
   {
     v9 = v8;
@@ -1993,12 +1993,12 @@ LABEL_5:
     {
       if (*v74 != v10)
       {
-        objc_enumerationMutation(v7);
+        objc_enumerationMutation(runningTransactions);
       }
 
       v12 = *(*(&v73 + 1) + 8 * v11);
-      v13 = [v12 actionSetsToExecute];
-      v14 = [v13 containsObject:v5];
+      actionSetsToExecute = [v12 actionSetsToExecute];
+      v14 = [actionSetsToExecute containsObject:setCopy];
 
       if (v14)
       {
@@ -2007,7 +2007,7 @@ LABEL_5:
 
       if (v9 == ++v11)
       {
-        v9 = [v7 countByEnumeratingWithState:&v73 objects:v80 count:16];
+        v9 = [runningTransactions countByEnumeratingWithState:&v73 objects:v80 count:16];
         if (v9)
         {
           goto LABEL_5;
@@ -2017,24 +2017,24 @@ LABEL_5:
       }
     }
 
-    v15 = [(HFCharacteristicValueManager *)self openTransaction];
-    v16 = [v15 logger];
+    openTransaction = [(HFCharacteristicValueManager *)self openTransaction];
+    logger = [openTransaction logger];
 
-    if (v16)
+    if (logger)
     {
       state.opaque[0] = 0;
       state.opaque[1] = 0;
-      v17 = [(HFCharacteristicValueManager *)self openTransaction];
-      v18 = [v17 logger];
-      v19 = [v18 loggerActivity];
-      os_activity_scope_enter(v19, &state);
+      openTransaction2 = [(HFCharacteristicValueManager *)self openTransaction];
+      logger2 = [openTransaction2 logger];
+      loggerActivity = [logger2 loggerActivity];
+      os_activity_scope_enter(loggerActivity, &state);
 
       v20 = HFLogForCategory(0x3DuLL);
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
       {
-        v21 = [v5 hf_prettyDescription];
+        hf_prettyDescription = [setCopy hf_prettyDescription];
         *buf = 138412290;
-        v78 = v21;
+        v78 = hf_prettyDescription;
         _os_log_impl(&dword_20D9BF000, v20, OS_LOG_TYPE_DEFAULT, "Duplicate action set execution request: %@", buf, 0xCu);
       }
 
@@ -2046,24 +2046,24 @@ LABEL_5:
       v55 = HFLogForCategory(0x3DuLL);
       if (os_log_type_enabled(v55, OS_LOG_TYPE_DEFAULT))
       {
-        v56 = [v5 hf_prettyDescription];
+        hf_prettyDescription2 = [setCopy hf_prettyDescription];
         LODWORD(state.opaque[0]) = 138412290;
-        *(state.opaque + 4) = v56;
+        *(state.opaque + 4) = hf_prettyDescription2;
         _os_log_impl(&dword_20D9BF000, v55, OS_LOG_TYPE_DEFAULT, "Duplicate action set execution request: %@", &state, 0xCu);
       }
     }
 
     v22 = objc_alloc_init(MEMORY[0x277D2C900]);
-    v23 = [v12 onFinishGroup];
+    onFinishGroup = [v12 onFinishGroup];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __49__HFCharacteristicValueManager_executeActionSet___block_invoke;
     block[3] = &unk_277DF32A8;
     block[4] = v12;
-    v71 = v5;
+    v71 = setCopy;
     v24 = v22;
     v72 = v24;
-    dispatch_group_notify(v23, MEMORY[0x277D85CD0], block);
+    dispatch_group_notify(onFinishGroup, MEMORY[0x277D85CD0], block);
 
     if (v24)
     {
@@ -2076,38 +2076,38 @@ LABEL_5:
 LABEL_11:
   }
 
-  v25 = [(HFCharacteristicValueManager *)self openTransaction];
+  openTransaction3 = [(HFCharacteristicValueManager *)self openTransaction];
 
-  if (!v25)
+  if (!openTransaction3)
   {
     goto LABEL_24;
   }
 
   v26 = objc_alloc_init(MEMORY[0x277D2C900]);
-  v27 = [(HFCharacteristicValueManager *)self openTransaction];
-  v28 = [v27 actionSetsToExecute];
-  v29 = [v28 containsObject:v5];
+  openTransaction4 = [(HFCharacteristicValueManager *)self openTransaction];
+  actionSetsToExecute2 = [openTransaction4 actionSetsToExecute];
+  v29 = [actionSetsToExecute2 containsObject:setCopy];
 
   if ((v29 & 1) == 0)
   {
-    v30 = [(HFCharacteristicValueManager *)self openTransaction];
-    v31 = [v30 logger];
+    openTransaction5 = [(HFCharacteristicValueManager *)self openTransaction];
+    logger3 = [openTransaction5 logger];
 
-    if (v31)
+    if (logger3)
     {
       state.opaque[0] = 0;
       state.opaque[1] = 0;
-      v32 = [(HFCharacteristicValueManager *)self openTransaction];
-      v33 = [v32 logger];
-      v34 = [v33 loggerActivity];
-      os_activity_scope_enter(v34, &state);
+      openTransaction6 = [(HFCharacteristicValueManager *)self openTransaction];
+      logger4 = [openTransaction6 logger];
+      loggerActivity2 = [logger4 loggerActivity];
+      os_activity_scope_enter(loggerActivity2, &state);
 
       v35 = HFLogForCategory(0x3DuLL);
       if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
       {
-        v36 = [v5 hf_prettyDescription];
+        hf_prettyDescription3 = [setCopy hf_prettyDescription];
         *buf = 138412290;
-        v78 = v36;
+        v78 = hf_prettyDescription3;
         _os_log_impl(&dword_20D9BF000, v35, OS_LOG_TYPE_DEFAULT, "Execute action set request: %@", buf, 0xCu);
       }
 
@@ -2119,51 +2119,51 @@ LABEL_11:
       v59 = HFLogForCategory(0x3DuLL);
       if (os_log_type_enabled(v59, OS_LOG_TYPE_DEFAULT))
       {
-        v60 = [v5 hf_prettyDescription];
+        hf_prettyDescription4 = [setCopy hf_prettyDescription];
         LODWORD(state.opaque[0]) = 138412290;
-        *(state.opaque + 4) = v60;
+        *(state.opaque + 4) = hf_prettyDescription4;
         _os_log_impl(&dword_20D9BF000, v59, OS_LOG_TYPE_DEFAULT, "Execute action set request: %@", &state, 0xCu);
       }
     }
   }
 
-  v37 = [v27 actionSetsToExecute];
-  [v37 addObject:v5];
+  actionSetsToExecute3 = [openTransaction4 actionSetsToExecute];
+  [actionSetsToExecute3 addObject:setCopy];
 
-  v38 = [v27 onFinishGroup];
+  onFinishGroup2 = [openTransaction4 onFinishGroup];
   v66[0] = MEMORY[0x277D85DD0];
   v66[1] = 3221225472;
   v66[2] = __49__HFCharacteristicValueManager_executeActionSet___block_invoke_132;
   v66[3] = &unk_277DF32A8;
-  v67 = v27;
-  v68 = v5;
+  v67 = openTransaction4;
+  v68 = setCopy;
   v24 = v26;
   v69 = v24;
-  v39 = v27;
-  dispatch_group_notify(v38, MEMORY[0x277D85CD0], v66);
+  v39 = openTransaction4;
+  dispatch_group_notify(onFinishGroup2, MEMORY[0x277D85CD0], v66);
 
   if (!v24)
   {
 LABEL_24:
     v40 = objc_alloc_init(MEMORY[0x277D2C900]);
     [(HFCharacteristicValueManager *)self beginTransactionWithReason:@"characteristicValueManagerImplicitTransaction"];
-    v41 = [(HFCharacteristicValueManager *)self openTransaction];
-    v42 = [v41 logger];
+    openTransaction7 = [(HFCharacteristicValueManager *)self openTransaction];
+    logger5 = [openTransaction7 logger];
 
-    if (v42)
+    if (logger5)
     {
       state.opaque[0] = 0;
       state.opaque[1] = 0;
-      v43 = [v41 logger];
-      v44 = [v43 loggerActivity];
-      os_activity_scope_enter(v44, &state);
+      logger6 = [openTransaction7 logger];
+      loggerActivity3 = [logger6 loggerActivity];
+      os_activity_scope_enter(loggerActivity3, &state);
 
       v45 = HFLogForCategory(0x3DuLL);
       if (os_log_type_enabled(v45, OS_LOG_TYPE_DEFAULT))
       {
-        v46 = [v5 hf_prettyDescription];
+        hf_prettyDescription5 = [setCopy hf_prettyDescription];
         *buf = 138412290;
-        v78 = v46;
+        v78 = hf_prettyDescription5;
         _os_log_impl(&dword_20D9BF000, v45, OS_LOG_TYPE_DEFAULT, "Execute action set request in implicit transaction: %@", buf, 0xCu);
       }
 
@@ -2175,39 +2175,39 @@ LABEL_24:
       v57 = HFLogForCategory(0x3DuLL);
       if (os_log_type_enabled(v57, OS_LOG_TYPE_DEFAULT))
       {
-        v58 = [v5 hf_prettyDescription];
+        hf_prettyDescription6 = [setCopy hf_prettyDescription];
         LODWORD(state.opaque[0]) = 138412290;
-        *(state.opaque + 4) = v58;
+        *(state.opaque + 4) = hf_prettyDescription6;
         _os_log_impl(&dword_20D9BF000, v57, OS_LOG_TYPE_DEFAULT, "Execute action set request in implicit transaction: %@", &state, 0xCu);
       }
     }
 
-    v47 = [v41 actionSetsToExecute];
-    [v47 addObject:v5];
+    actionSetsToExecute4 = [openTransaction7 actionSetsToExecute];
+    [actionSetsToExecute4 addObject:setCopy];
 
-    v48 = [v41 onFinishGroup];
+    onFinishGroup3 = [openTransaction7 onFinishGroup];
     v62[0] = MEMORY[0x277D85DD0];
     v62[1] = 3221225472;
     v62[2] = __49__HFCharacteristicValueManager_executeActionSet___block_invoke_133;
     v62[3] = &unk_277DF32A8;
-    v63 = v41;
-    v64 = v5;
+    v63 = openTransaction7;
+    v64 = setCopy;
     v24 = v40;
     v65 = v24;
-    v49 = v41;
-    dispatch_group_notify(v48, MEMORY[0x277D85CD0], v62);
+    v49 = openTransaction7;
+    dispatch_group_notify(onFinishGroup3, MEMORY[0x277D85CD0], v62);
 
     [(HFCharacteristicValueManager *)self commitTransactionWithReason:@"characteristicValueManagerImplicitTransaction"];
   }
 
 LABEL_29:
-  v50 = [(HFCharacteristicValueManager *)self transactionLock];
-  [v50 unlock];
+  transactionLock2 = [(HFCharacteristicValueManager *)self transactionLock];
+  [transactionLock2 unlock];
 
   if (!v24)
   {
-    v54 = [MEMORY[0x277CCA890] currentHandler];
-    [v54 handleFailureInMethod:v61 object:self file:@"HFCharacteristicValueManager.m" lineNumber:714 description:@"None of our cases were able to create a future for this request"];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:v61 object:self file:@"HFCharacteristicValueManager.m" lineNumber:714 description:@"None of our cases were able to create a future for this request"];
   }
 
   v51 = *MEMORY[0x277D85DE8];
@@ -2263,25 +2263,25 @@ void __49__HFCharacteristicValueManager_executeActionSet___block_invoke_133(uint
   }
 }
 
-- (id)executeActions:(id)a3
+- (id)executeActions:(id)actions
 {
   v89 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  actionsCopy = actions;
+  if (!actionsCopy)
   {
-    v60 = [MEMORY[0x277CCA890] currentHandler];
-    [v60 handleFailureInMethod:a2 object:self file:@"HFCharacteristicValueManager.m" lineNumber:721 description:{@"Invalid parameter not satisfying: %@", @"actions != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HFCharacteristicValueManager.m" lineNumber:721 description:{@"Invalid parameter not satisfying: %@", @"actions != nil"}];
   }
 
-  v5 = [(HFCharacteristicValueManager *)self transactionLock];
-  [v5 lock];
+  transactionLock = [(HFCharacteristicValueManager *)self transactionLock];
+  [transactionLock lock];
 
-  v6 = [MEMORY[0x277CBEB18] array];
-  v7 = [v4 mutableCopy];
+  array = [MEMORY[0x277CBEB18] array];
+  v7 = [actionsCopy mutableCopy];
   v8 = &qword_20DD97000;
   if ([v7 count])
   {
-    v66 = v4;
+    v66 = actionsCopy;
     v83 = 0u;
     v84 = 0u;
     v81 = 0u;
@@ -2303,15 +2303,15 @@ void __49__HFCharacteristicValueManager_executeActionSet___block_invoke_133(uint
           }
 
           v10 = *(*(&v81 + 1) + 8 * v9);
-          v11 = [v10 actionsToExecute];
-          v12 = [v11 mutableCopy];
+          actionsToExecute = [v10 actionsToExecute];
+          v12 = [actionsToExecute mutableCopy];
 
-          v13 = [v10 actionSetsToExecute];
-          v14 = [v13 na_flatMap:&__block_literal_global_139_1];
+          actionSetsToExecute = [v10 actionSetsToExecute];
+          v14 = [actionSetsToExecute na_flatMap:&__block_literal_global_139_1];
           [v12 unionSet:v14];
 
-          v15 = [v10 writeCharacteristicRequests];
-          v16 = [v15 na_map:&__block_literal_global_142];
+          writeCharacteristicRequests = [v10 writeCharacteristicRequests];
+          v16 = [writeCharacteristicRequests na_map:&__block_literal_global_142];
           [v12 unionSet:v16];
 
           v79[0] = MEMORY[0x277D85DD0];
@@ -2323,26 +2323,26 @@ void __49__HFCharacteristicValueManager_executeActionSet___block_invoke_133(uint
           v18 = [v12 na_map:v79];
           if ([v18 count])
           {
-            v19 = v6;
-            v20 = [(HFCharacteristicValueManager *)self openTransaction];
-            v21 = [v20 logger];
+            v19 = array;
+            openTransaction = [(HFCharacteristicValueManager *)self openTransaction];
+            logger = [openTransaction logger];
 
-            if (v21)
+            if (logger)
             {
               state.opaque[0] = 0;
               state.opaque[1] = 0;
-              v22 = self;
-              v23 = [(HFCharacteristicValueManager *)self openTransaction];
-              v24 = [v23 logger];
-              v25 = [v24 loggerActivity];
-              os_activity_scope_enter(v25, &state);
+              selfCopy2 = self;
+              openTransaction2 = [(HFCharacteristicValueManager *)self openTransaction];
+              logger2 = [openTransaction2 logger];
+              loggerActivity = [logger2 loggerActivity];
+              os_activity_scope_enter(loggerActivity, &state);
 
               v26 = HFLogForCategory(0x3DuLL);
               if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
               {
-                v27 = [v66 hf_prettyDescription];
+                hf_prettyDescription = [v66 hf_prettyDescription];
                 *buf = 138412290;
-                v86 = v27;
+                v86 = hf_prettyDescription;
                 _os_log_impl(&dword_20D9BF000, v26, OS_LOG_TYPE_DEFAULT, "Overlapping actions execution request: %@", buf, 0xCu);
               }
 
@@ -2351,22 +2351,22 @@ void __49__HFCharacteristicValueManager_executeActionSet___block_invoke_133(uint
 
             else
             {
-              v22 = self;
+              selfCopy2 = self;
               v32 = HFLogForCategory(0x3DuLL);
               if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
               {
-                v33 = [v66 hf_prettyDescription];
+                hf_prettyDescription2 = [v66 hf_prettyDescription];
                 LODWORD(state.opaque[0]) = 138412290;
-                *(state.opaque + 4) = v33;
+                *(state.opaque + 4) = hf_prettyDescription2;
                 _os_log_impl(&dword_20D9BF000, v32, OS_LOG_TYPE_DEFAULT, "Overlapping actions execution request: %@", &state, 0xCu);
               }
             }
 
-            v6 = v19;
+            array = v19;
             v28 = objc_alloc_init(MEMORY[0x277D2C900]);
             [v19 addObject:v28];
             [v17 minusSet:v18];
-            v29 = [v10 onFinishGroup];
+            onFinishGroup = [v10 onFinishGroup];
             block[0] = MEMORY[0x277D85DD0];
             block[1] = 3221225472;
             block[2] = __47__HFCharacteristicValueManager_executeActions___block_invoke_144;
@@ -2374,10 +2374,10 @@ void __49__HFCharacteristicValueManager_executeActionSet___block_invoke_133(uint
             block[4] = v10;
             v78 = v28;
             v30 = v28;
-            dispatch_group_notify(v29, MEMORY[0x277D85CD0], block);
+            dispatch_group_notify(onFinishGroup, MEMORY[0x277D85CD0], block);
 
             v31 = [v17 count];
-            self = v22;
+            self = selfCopy2;
             v7 = v68;
             if (!v31)
             {
@@ -2401,66 +2401,66 @@ void __49__HFCharacteristicValueManager_executeActionSet___block_invoke_133(uint
 
 LABEL_23:
 
-    v4 = v66;
+    actionsCopy = v66;
   }
 
   if ([v7 count])
   {
-    v35 = [(HFCharacteristicValueManager *)self openTransaction];
+    openTransaction3 = [(HFCharacteristicValueManager *)self openTransaction];
 
-    if (v35)
+    if (openTransaction3)
     {
       v36 = objc_alloc_init(MEMORY[0x277D2C900]);
-      [v6 addObject:v36];
-      v37 = [(HFCharacteristicValueManager *)self openTransaction];
-      v38 = [v37 actionsToExecute];
-      [v38 minusSet:v7];
+      [array addObject:v36];
+      openTransaction4 = [(HFCharacteristicValueManager *)self openTransaction];
+      actionsToExecute2 = [openTransaction4 actionsToExecute];
+      [actionsToExecute2 minusSet:v7];
 
-      v39 = [v37 actionsToExecute];
-      [v39 unionSet:v7];
+      actionsToExecute3 = [openTransaction4 actionsToExecute];
+      [actionsToExecute3 unionSet:v7];
 
       [v7 removeAllObjects];
-      v40 = [v37 onFinishGroup];
+      onFinishGroup2 = [openTransaction4 onFinishGroup];
       v74[0] = MEMORY[0x277D85DD0];
       v74[1] = v8[51];
       v74[2] = __47__HFCharacteristicValueManager_executeActions___block_invoke_2_145;
       v74[3] = &unk_277DF3370;
-      v75 = v37;
+      v75 = openTransaction4;
       v76 = v36;
       v41 = v36;
-      v42 = v37;
-      dispatch_group_notify(v40, MEMORY[0x277D85CD0], v74);
+      v42 = openTransaction4;
+      dispatch_group_notify(onFinishGroup2, MEMORY[0x277D85CD0], v74);
     }
   }
 
   if ([v7 count])
   {
     v43 = objc_alloc_init(MEMORY[0x277D2C900]);
-    [v6 addObject:v43];
+    [array addObject:v43];
     [(HFCharacteristicValueManager *)self beginTransactionWithReason:@"characteristicValueManagerImplicitTransaction"];
-    v44 = [(HFCharacteristicValueManager *)self openTransaction];
-    v45 = [v44 logger];
+    openTransaction5 = [(HFCharacteristicValueManager *)self openTransaction];
+    logger3 = [openTransaction5 logger];
 
-    if (v45)
+    if (logger3)
     {
-      v46 = self;
+      selfCopy3 = self;
       state.opaque[0] = 0;
       state.opaque[1] = 0;
-      v47 = [v44 logger];
-      v48 = [v47 loggerActivity];
-      os_activity_scope_enter(v48, &state);
+      logger4 = [openTransaction5 logger];
+      loggerActivity2 = [logger4 loggerActivity];
+      os_activity_scope_enter(loggerActivity2, &state);
 
       v49 = HFLogForCategory(0x3DuLL);
       if (os_log_type_enabled(v49, OS_LOG_TYPE_DEFAULT))
       {
-        v50 = [v7 hf_prettyDescription];
+        hf_prettyDescription3 = [v7 hf_prettyDescription];
         *buf = 138412290;
-        v86 = v50;
+        v86 = hf_prettyDescription3;
         _os_log_impl(&dword_20D9BF000, v49, OS_LOG_TYPE_DEFAULT, "Execute actions request in implicit transaction: %@", buf, 0xCu);
       }
 
       os_activity_scope_leave(&state);
-      self = v46;
+      self = selfCopy3;
     }
 
     else
@@ -2478,34 +2478,34 @@ LABEL_23:
       }
     }
 
-    v51 = [v44 actionsToExecute];
-    [v51 unionSet:v7];
+    actionsToExecute4 = [openTransaction5 actionsToExecute];
+    [actionsToExecute4 unionSet:v7];
 
     [v7 removeAllObjects];
-    v52 = [v44 onFinishGroup];
+    onFinishGroup3 = [openTransaction5 onFinishGroup];
     v71[0] = MEMORY[0x277D85DD0];
     v71[1] = v8[51];
     v71[2] = __47__HFCharacteristicValueManager_executeActions___block_invoke_146;
     v71[3] = &unk_277DF3370;
-    v72 = v44;
+    v72 = openTransaction5;
     v73 = v43;
     v53 = v43;
-    v54 = v44;
-    dispatch_group_notify(v52, MEMORY[0x277D85CD0], v71);
+    v54 = openTransaction5;
+    dispatch_group_notify(onFinishGroup3, MEMORY[0x277D85CD0], v71);
 
     [(HFCharacteristicValueManager *)self commitTransactionWithReason:@"characteristicValueManagerImplicitTransaction"];
   }
 
-  v55 = [(HFCharacteristicValueManager *)self transactionLock];
-  [v55 unlock];
+  transactionLock2 = [(HFCharacteristicValueManager *)self transactionLock];
+  [transactionLock2 unlock];
 
-  if (![v6 count])
+  if (![array count])
   {
-    v61 = [MEMORY[0x277CCA890] currentHandler];
-    [v61 handleFailureInMethod:a2 object:self file:@"HFCharacteristicValueManager.m" lineNumber:838 description:@"None of our cases were able to create a future for this request"];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"HFCharacteristicValueManager.m" lineNumber:838 description:@"None of our cases were able to create a future for this request"];
   }
 
-  v56 = [MEMORY[0x277D2C900] combineAllFutures:v6];
+  v56 = [MEMORY[0x277D2C900] combineAllFutures:array];
   v57 = [v56 flatMap:&__block_literal_global_150_1];
 
   v58 = *MEMORY[0x277D85DE8];
@@ -2632,73 +2632,73 @@ void __47__HFCharacteristicValueManager_executeActions___block_invoke_146(uint64
   }
 }
 
-- (void)commitTransactionWithReason:(id)a3
+- (void)commitTransactionWithReason:(id)reason
 {
   v71 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  reasonCopy = reason;
+  if (!reasonCopy)
   {
-    v41 = [MEMORY[0x277CCA890] currentHandler];
-    [v41 handleFailureInMethod:a2 object:self file:@"HFCharacteristicValueManager.m" lineNumber:847 description:{@"Invalid parameter not satisfying: %@", @"reason"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HFCharacteristicValueManager.m" lineNumber:847 description:{@"Invalid parameter not satisfying: %@", @"reason"}];
   }
 
-  v6 = [(HFCharacteristicValueManager *)self transactionLock];
-  [v6 lock];
+  transactionLock = [(HFCharacteristicValueManager *)self transactionLock];
+  [transactionLock lock];
 
-  v7 = [(HFCharacteristicValueManager *)self openTransaction];
-  if (!v7)
+  openTransaction = [(HFCharacteristicValueManager *)self openTransaction];
+  if (!openTransaction)
   {
-    v42 = [MEMORY[0x277CCA890] currentHandler];
-    [v42 handleFailureInMethod:a2 object:self file:@"HFCharacteristicValueManager.m" lineNumber:852 description:{@"Invalid parameter not satisfying: %@", @"transaction"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"HFCharacteristicValueManager.m" lineNumber:852 description:{@"Invalid parameter not satisfying: %@", @"transaction"}];
   }
 
-  v8 = [v7 clientReasonsStack];
-  v9 = [v8 containsObject:v5];
+  clientReasonsStack = [openTransaction clientReasonsStack];
+  v9 = [clientReasonsStack containsObject:reasonCopy];
 
   if ((v9 & 1) == 0)
   {
-    v43 = [MEMORY[0x277CCA890] currentHandler];
-    [v43 handleFailureInMethod:a2 object:self file:@"HFCharacteristicValueManager.m" lineNumber:853 description:{@"Attempt to commit transaction with unknown reason (not used in a call to -beginTransaction...): %@", v5}];
+    currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"HFCharacteristicValueManager.m" lineNumber:853 description:{@"Attempt to commit transaction with unknown reason (not used in a call to -beginTransaction...): %@", reasonCopy}];
   }
 
-  v10 = [v7 clientReasonsStack];
-  v11 = [v10 lastObject];
-  v12 = [v11 isEqual:v5];
+  clientReasonsStack2 = [openTransaction clientReasonsStack];
+  lastObject = [clientReasonsStack2 lastObject];
+  v12 = [lastObject isEqual:reasonCopy];
 
   if ((v12 & 1) == 0)
   {
-    v44 = [MEMORY[0x277CCA890] currentHandler];
-    v45 = [v7 clientReasonsStack];
-    v46 = [v45 lastObject];
-    [v44 handleFailureInMethod:a2 object:self file:@"HFCharacteristicValueManager.m" lineNumber:854 description:{@"Attempt to commit transactions with out-of-order reasons. The last call to -beginTransaction had a reason of %@, but the client attempted to commit the transaction with a reason (%@) that is further down the stack (i.e., begin(A) -> begin(B) -> commit(A).)", v46, v5}];
+    currentHandler4 = [MEMORY[0x277CCA890] currentHandler];
+    clientReasonsStack3 = [openTransaction clientReasonsStack];
+    lastObject2 = [clientReasonsStack3 lastObject];
+    [currentHandler4 handleFailureInMethod:a2 object:self file:@"HFCharacteristicValueManager.m" lineNumber:854 description:{@"Attempt to commit transactions with out-of-order reasons. The last call to -beginTransaction had a reason of %@, but the client attempted to commit the transaction with a reason (%@) that is further down the stack (i.e., begin(A) -> begin(B) -> commit(A).)", lastObject2, reasonCopy}];
   }
 
-  v13 = [v7 clientReasonsStack];
-  [v13 removeLastObject];
+  clientReasonsStack4 = [openTransaction clientReasonsStack];
+  [clientReasonsStack4 removeLastObject];
 
-  v14 = [v7 readPolicy];
-  v15 = [v14 popPolicy];
+  readPolicy = [openTransaction readPolicy];
+  popPolicy = [readPolicy popPolicy];
 
-  v16 = [v7 clientReasonsStack];
-  v17 = [v16 count] == 0;
+  clientReasonsStack5 = [openTransaction clientReasonsStack];
+  v17 = [clientReasonsStack5 count] == 0;
 
-  v18 = [v7 logger];
+  logger = [openTransaction logger];
 
   if (v17)
   {
-    if (v18)
+    if (logger)
     {
       *buf = 0;
       *&buf[8] = 0;
-      v24 = [v7 logger];
-      v25 = [v24 loggerActivity];
-      os_activity_scope_enter(v25, buf);
+      logger2 = [openTransaction logger];
+      loggerActivity = [logger2 loggerActivity];
+      os_activity_scope_enter(loggerActivity, buf);
 
       v26 = HFLogForCategory(0x3DuLL);
       if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
       {
         LODWORD(state.opaque[0]) = 138412290;
-        *(state.opaque + 4) = v5;
+        *(state.opaque + 4) = reasonCopy;
         _os_log_impl(&dword_20D9BF000, v26, OS_LOG_TYPE_DEFAULT, "----- COMMIT TRANSACTION (%@) -----", &state, 0xCu);
       }
 
@@ -2711,19 +2711,19 @@ void __47__HFCharacteristicValueManager_executeActions___block_invoke_146(uint64
       if (os_log_type_enabled(v49, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        *&buf[4] = v5;
+        *&buf[4] = reasonCopy;
         _os_log_impl(&dword_20D9BF000, v49, OS_LOG_TYPE_DEFAULT, "----- COMMIT TRANSACTION (%@) -----", buf, 0xCu);
       }
     }
 
-    v27 = [(HFCharacteristicValueManager *)self runningTransactions];
-    [v27 addObject:v7];
+    runningTransactions = [(HFCharacteristicValueManager *)self runningTransactions];
+    [runningTransactions addObject:openTransaction];
 
-    v28 = [(HFCharacteristicValueManager *)self cacheManager];
-    [v28 transactionAdded:v7];
+    cacheManager = [(HFCharacteristicValueManager *)self cacheManager];
+    [cacheManager transactionAdded:openTransaction];
 
     [(HFCharacteristicValueManager *)self setOpenTransaction:0];
-    v23 = [v7 commitFuture];
+    commitFuture = [openTransaction commitFuture];
     v29 = dispatch_group_create();
     objc_initWeak(buf, self);
     dispatch_group_enter(v29);
@@ -2732,7 +2732,7 @@ void __47__HFCharacteristicValueManager_executeActions___block_invoke_146(uint64
     v65[2] = __60__HFCharacteristicValueManager_commitTransactionWithReason___block_invoke;
     v65[3] = &unk_277DF6458;
     objc_copyWeak(&v68, buf);
-    v30 = v7;
+    v30 = openTransaction;
     v66 = v30;
     v31 = v29;
     v67 = v31;
@@ -2790,22 +2790,22 @@ void __47__HFCharacteristicValueManager_executeActions___block_invoke_146(uint64
 
   else
   {
-    if (v18)
+    if (logger)
     {
       state.opaque[0] = 0;
       state.opaque[1] = 0;
-      v19 = [v7 logger];
-      v20 = [v19 loggerActivity];
-      os_activity_scope_enter(v20, &state);
+      logger3 = [openTransaction logger];
+      loggerActivity2 = [logger3 loggerActivity];
+      os_activity_scope_enter(loggerActivity2, &state);
 
       v21 = HFLogForCategory(0x3DuLL);
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
       {
-        v22 = [v7 clientReasonsStack];
+        clientReasonsStack6 = [openTransaction clientReasonsStack];
         *buf = 138412546;
-        *&buf[4] = v5;
+        *&buf[4] = reasonCopy;
         *&buf[12] = 2112;
-        *&buf[14] = v22;
+        *&buf[14] = clientReasonsStack6;
         _os_log_impl(&dword_20D9BF000, v21, OS_LOG_TYPE_DEFAULT, "Commit nested transaction (%@). Remaining: %@", buf, 0x16u);
       }
 
@@ -2817,23 +2817,23 @@ void __47__HFCharacteristicValueManager_executeActions___block_invoke_146(uint64
       v47 = HFLogForCategory(0x3DuLL);
       if (os_log_type_enabled(v47, OS_LOG_TYPE_DEFAULT))
       {
-        v48 = [v7 clientReasonsStack];
+        clientReasonsStack7 = [openTransaction clientReasonsStack];
         *buf = 138412546;
-        *&buf[4] = v5;
+        *&buf[4] = reasonCopy;
         *&buf[12] = 2112;
-        *&buf[14] = v48;
+        *&buf[14] = clientReasonsStack7;
         _os_log_impl(&dword_20D9BF000, v47, OS_LOG_TYPE_DEFAULT, "Commit nested transaction (%@). Remaining: %@", buf, 0x16u);
       }
     }
 
-    v23 = 0;
+    commitFuture = 0;
   }
 
-  v38 = [(HFCharacteristicValueManager *)self transactionLock];
-  [v38 unlock];
+  transactionLock2 = [(HFCharacteristicValueManager *)self transactionLock];
+  [transactionLock2 unlock];
 
   v39 = NAEmptyResult();
-  [v23 finishWithResult:v39];
+  [commitFuture finishWithResult:v39];
 
   v40 = *MEMORY[0x277D85DE8];
 }
@@ -3102,23 +3102,23 @@ void __60__HFCharacteristicValueManager_commitTransactionWithReason___block_invo
 
 - (id)_openTransactionCompletionFuture
 {
-  v2 = [(HFCharacteristicValueManager *)self openTransaction];
-  if (!v2)
+  openTransaction = [(HFCharacteristicValueManager *)self openTransaction];
+  if (!openTransaction)
   {
     NSLog(&cfstr_NoOpenTransact.isa);
   }
 
   v3 = objc_alloc_init(MEMORY[0x277D2C900]);
-  v4 = [v2 onFinishGroup];
+  onFinishGroup = [openTransaction onFinishGroup];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __64__HFCharacteristicValueManager__openTransactionCompletionFuture__block_invoke;
   v10[3] = &unk_277DF3370;
   v5 = v3;
   v11 = v5;
-  v12 = v2;
-  v6 = v2;
-  dispatch_group_notify(v4, MEMORY[0x277D85CD0], v10);
+  v12 = openTransaction;
+  v6 = openTransaction;
+  dispatch_group_notify(onFinishGroup, MEMORY[0x277D85CD0], v10);
 
   v7 = v12;
   v8 = v5;
@@ -3126,37 +3126,37 @@ void __60__HFCharacteristicValueManager_commitTransactionWithReason___block_invo
   return v5;
 }
 
-- (void)_transactionLock_executeWriteTransaction:(id)a3 completionHandler:(id)a4
+- (void)_transactionLock_executeWriteTransaction:(id)transaction completionHandler:(id)handler
 {
   v60 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  transactionCopy = transaction;
+  handlerCopy = handler;
+  if (!transactionCopy)
   {
     NSLog(&cfstr_NilTransaction.isa);
   }
 
-  v8 = [v6 writeCharacteristicRequests];
-  v9 = [v8 count];
+  writeCharacteristicRequests = [transactionCopy writeCharacteristicRequests];
+  v9 = [writeCharacteristicRequests count];
 
   if (v9)
   {
     objc_initWeak(&location, self);
-    v10 = [v6 logger];
-    v11 = v10 == 0;
+    logger = [transactionCopy logger];
+    v11 = logger == 0;
 
     if (v11)
     {
       v37 = HFLogForCategory(0x3DuLL);
       if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
       {
-        v38 = [(HFCharacteristicValueManager *)self valueWriter];
-        v39 = [v6 writeCharacteristicRequests];
-        v40 = [v39 hf_prettyDescription];
+        valueWriter = [(HFCharacteristicValueManager *)self valueWriter];
+        writeCharacteristicRequests2 = [transactionCopy writeCharacteristicRequests];
+        hf_prettyDescription = [writeCharacteristicRequests2 hf_prettyDescription];
         *buf = 138412546;
-        v57 = v38;
+        v57 = valueWriter;
         v58 = 2112;
-        v59 = v40;
+        v59 = hf_prettyDescription;
         _os_log_impl(&dword_20D9BF000, v37, OS_LOG_TYPE_DEFAULT, "Start executing write with writer:%@. Characteristic requests:%@", buf, 0x16u);
       }
     }
@@ -3165,63 +3165,63 @@ void __60__HFCharacteristicValueManager_commitTransactionWithReason___block_invo
     {
       state.opaque[0] = 0;
       state.opaque[1] = 0;
-      v12 = [v6 logger];
-      v13 = [v12 loggerActivity];
-      os_activity_scope_enter(v13, &state);
+      logger2 = [transactionCopy logger];
+      loggerActivity = [logger2 loggerActivity];
+      os_activity_scope_enter(loggerActivity, &state);
 
       v14 = HFLogForCategory(0x3DuLL);
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
-        v15 = [(HFCharacteristicValueManager *)self valueWriter];
-        v16 = [v6 writeCharacteristicRequests];
-        v17 = [v16 hf_prettyDescription];
+        valueWriter2 = [(HFCharacteristicValueManager *)self valueWriter];
+        writeCharacteristicRequests3 = [transactionCopy writeCharacteristicRequests];
+        hf_prettyDescription2 = [writeCharacteristicRequests3 hf_prettyDescription];
         *buf = 138412546;
-        v57 = v15;
+        v57 = valueWriter2;
         v58 = 2112;
-        v59 = v17;
+        v59 = hf_prettyDescription2;
         _os_log_impl(&dword_20D9BF000, v14, OS_LOG_TYPE_DEFAULT, "Start executing write with writer:%@. Characteristic requests:%@", buf, 0x16u);
       }
 
       os_activity_scope_leave(&state);
     }
 
-    v18 = [(HFCharacteristicValueManager *)self transactionLock];
-    [v18 lock];
+    transactionLock = [(HFCharacteristicValueManager *)self transactionLock];
+    [transactionLock lock];
 
-    v19 = [v6 writeCharacteristicRequests];
-    v20 = [v19 copy];
+    writeCharacteristicRequests4 = [transactionCopy writeCharacteristicRequests];
+    v20 = [writeCharacteristicRequests4 copy];
 
     v21 = [v20 na_map:&__block_literal_global_172_0];
-    v22 = [(HFCharacteristicValueManager *)self transactionLock];
-    [v22 unlock];
+    transactionLock2 = [(HFCharacteristicValueManager *)self transactionLock];
+    [transactionLock2 unlock];
 
-    v23 = [(HFCharacteristicValueManager *)self valueWriter];
-    v24 = [v23 hf_home];
+    valueWriter3 = [(HFCharacteristicValueManager *)self valueWriter];
+    hf_home = [valueWriter3 hf_home];
 
-    if (v24)
+    if (hf_home)
     {
       v25 = +[HFHomeKitDispatcher sharedDispatcher];
       v51[0] = MEMORY[0x277D85DD0];
       v51[1] = 3221225472;
       v51[2] = __91__HFCharacteristicValueManager__transactionLock_executeWriteTransaction_completionHandler___block_invoke_2;
       v51[3] = &unk_277DF3810;
-      v52 = v24;
+      v52 = hf_home;
       v53 = v21;
       [v25 dispatchHomeObserverMessage:v51 sender:0];
     }
 
     v26 = MEMORY[0x277CD1978];
-    v27 = [v20 allObjects];
-    v28 = [v26 characteristicBatchRequestWithWriteRequests:v27];
+    allObjects = [v20 allObjects];
+    v28 = [v26 characteristicBatchRequestWithWriteRequests:allObjects];
 
-    v29 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v48[0] = MEMORY[0x277D85DD0];
     v48[1] = 3221225472;
     v48[2] = __91__HFCharacteristicValueManager__transactionLock_executeWriteTransaction_completionHandler___block_invoke_3;
     v48[3] = &unk_277DF64A0;
-    v30 = v6;
+    v30 = transactionCopy;
     v49 = v30;
-    v31 = v29;
+    v31 = array;
     v50 = v31;
     [v28 setProgressHandler:v48];
     v41[0] = MEMORY[0x277D85DD0];
@@ -3234,20 +3234,20 @@ void __60__HFCharacteristicValueManager_commitTransactionWithReason___block_invo
     v43 = v32;
     v33 = v20;
     v44 = v33;
-    v34 = v24;
+    v34 = hf_home;
     v45 = v34;
-    v46 = v7;
+    v46 = handlerCopy;
     [v28 setCompletionHandler:v41];
-    v35 = [(HFCharacteristicValueManager *)self valueWriter];
-    [v35 performBatchCharacteristicRequest:v28];
+    valueWriter4 = [(HFCharacteristicValueManager *)self valueWriter];
+    [valueWriter4 performBatchCharacteristicRequest:v28];
 
     objc_destroyWeak(&v47);
     objc_destroyWeak(&location);
   }
 
-  else if (v7)
+  else if (handlerCopy)
   {
-    v7[2](v7);
+    handlerCopy[2](handlerCopy);
   }
 
   v36 = *MEMORY[0x277D85DE8];
@@ -3654,35 +3654,35 @@ void __91__HFCharacteristicValueManager__transactionLock_executeWriteTransaction
   }
 }
 
-- (void)_transactionLock_executeReadTransaction:(id)a3 completionHandler:(id)a4
+- (void)_transactionLock_executeReadTransaction:(id)transaction completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  transactionCopy = transaction;
+  handlerCopy = handler;
+  if (!transactionCopy)
   {
     NSLog(&cfstr_NilTransaction_0.isa);
   }
 
-  v9 = [v7 characteristicsToRead];
-  v10 = [v9 count];
+  characteristicsToRead = [transactionCopy characteristicsToRead];
+  v10 = [characteristicsToRead count];
 
   if (v10)
   {
-    v11 = [(HFCharacteristicValueManager *)self transactionLock];
-    [v11 lock];
+    transactionLock = [(HFCharacteristicValueManager *)self transactionLock];
+    [transactionLock lock];
 
-    v12 = [(HFCharacteristicValueManager *)self readTransactionsToExecuteOnNextRunLoop];
-    [v12 addObject:v7];
+    readTransactionsToExecuteOnNextRunLoop = [(HFCharacteristicValueManager *)self readTransactionsToExecuteOnNextRunLoop];
+    [readTransactionsToExecuteOnNextRunLoop addObject:transactionCopy];
 
-    v13 = [(HFCharacteristicValueManager *)self completionHandlersForReadTransactionsToExecuteOnNextRunLoop];
-    v14 = [v8 copy];
-    [v13 addObject:v14];
+    completionHandlersForReadTransactionsToExecuteOnNextRunLoop = [(HFCharacteristicValueManager *)self completionHandlersForReadTransactionsToExecuteOnNextRunLoop];
+    v14 = [handlerCopy copy];
+    [completionHandlersForReadTransactionsToExecuteOnNextRunLoop addObject:v14];
 
-    v15 = [(HFCharacteristicValueManager *)self readTransactionsToExecuteOnNextRunLoop];
-    v16 = [v15 count];
+    readTransactionsToExecuteOnNextRunLoop2 = [(HFCharacteristicValueManager *)self readTransactionsToExecuteOnNextRunLoop];
+    v16 = [readTransactionsToExecuteOnNextRunLoop2 count];
 
-    v17 = [(HFCharacteristicValueManager *)self transactionLock];
-    [v17 unlock];
+    transactionLock2 = [(HFCharacteristicValueManager *)self transactionLock];
+    [transactionLock2 unlock];
 
     if (v16 <= 1)
     {
@@ -3692,14 +3692,14 @@ void __91__HFCharacteristicValueManager__transactionLock_executeWriteTransaction
       block[3] = &unk_277DF37C0;
       block[4] = self;
       v20 = a2;
-      v19 = v7;
+      v19 = transactionCopy;
       dispatch_async(MEMORY[0x277D85CD0], block);
     }
   }
 
-  else if (v8)
+  else if (handlerCopy)
   {
-    v8[2](v8);
+    handlerCopy[2](handlerCopy);
   }
 }
 
@@ -4644,38 +4644,38 @@ void __90__HFCharacteristicValueManager__transactionLock_executeReadTransaction_
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_transactionLock_executeActionSetTransaction:(id)a3 completionHandler:(id)a4
+- (void)_transactionLock_executeActionSetTransaction:(id)transaction completionHandler:(id)handler
 {
   v91 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v46 = a4;
-  if (!v5)
+  transactionCopy = transaction;
+  handlerCopy = handler;
+  if (!transactionCopy)
   {
     NSLog(&cfstr_NilTransaction_0.isa);
   }
 
-  v52 = v5;
-  v6 = [v5 actionSetsToExecute];
-  v7 = [v6 count];
+  v52 = transactionCopy;
+  actionSetsToExecute = [transactionCopy actionSetsToExecute];
+  v7 = [actionSetsToExecute count];
 
   if (v7)
   {
     objc_initWeak(&location, self);
-    v8 = [v52 logger];
-    v9 = v8 == 0;
+    logger = [v52 logger];
+    v9 = logger == 0;
 
     if (v9)
     {
       v40 = HFLogForCategory(0x3DuLL);
       if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
       {
-        v41 = [(HFCharacteristicValueManager *)self valueWriter];
-        v42 = [v52 actionSetsToExecute];
-        v43 = [v42 hf_prettyDescription];
+        valueWriter = [(HFCharacteristicValueManager *)self valueWriter];
+        actionSetsToExecute2 = [v52 actionSetsToExecute];
+        hf_prettyDescription = [actionSetsToExecute2 hf_prettyDescription];
         *buf = 138412546;
-        v88 = v41;
+        v88 = valueWriter;
         v89 = 2112;
-        v90 = v43;
+        v90 = hf_prettyDescription;
         _os_log_impl(&dword_20D9BF000, v40, OS_LOG_TYPE_DEFAULT, "Start executing action sets with writer:%@. Action sets:%@", buf, 0x16u);
       }
     }
@@ -4684,44 +4684,44 @@ void __90__HFCharacteristicValueManager__transactionLock_executeReadTransaction_
     {
       state.opaque[0] = 0;
       state.opaque[1] = 0;
-      v10 = [v52 logger];
-      v11 = [v10 loggerActivity];
-      os_activity_scope_enter(v11, &state);
+      logger2 = [v52 logger];
+      loggerActivity = [logger2 loggerActivity];
+      os_activity_scope_enter(loggerActivity, &state);
 
       v12 = HFLogForCategory(0x3DuLL);
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
-        v13 = [(HFCharacteristicValueManager *)self valueWriter];
-        v14 = [v52 actionSetsToExecute];
-        v15 = [v14 hf_prettyDescription];
+        valueWriter2 = [(HFCharacteristicValueManager *)self valueWriter];
+        actionSetsToExecute3 = [v52 actionSetsToExecute];
+        hf_prettyDescription2 = [actionSetsToExecute3 hf_prettyDescription];
         *buf = 138412546;
-        v88 = v13;
+        v88 = valueWriter2;
         v89 = 2112;
-        v90 = v15;
+        v90 = hf_prettyDescription2;
         _os_log_impl(&dword_20D9BF000, v12, OS_LOG_TYPE_DEFAULT, "Start executing action sets with writer:%@. Action sets:%@", buf, 0x16u);
       }
 
       os_activity_scope_leave(&state);
     }
 
-    v16 = [(HFCharacteristicValueManager *)self transactionLock];
-    [v16 lock];
+    transactionLock = [(HFCharacteristicValueManager *)self transactionLock];
+    [transactionLock lock];
 
     v44 = [(HFCharacteristicValueManager *)self _transactionLock_characteristicsWithPendingWritesInTransacton:v52 includeDirectWrites:0 includeActionSets:1 includeActions:0];
-    v17 = [(HFCharacteristicValueManager *)self transactionLock];
-    [v17 unlock];
+    transactionLock2 = [(HFCharacteristicValueManager *)self transactionLock];
+    [transactionLock2 unlock];
 
-    v18 = [(HFCharacteristicValueManager *)self valueWriter];
-    v45 = [v18 hf_home];
+    valueWriter3 = [(HFCharacteristicValueManager *)self valueWriter];
+    hf_home = [valueWriter3 hf_home];
 
-    if (v45)
+    if (hf_home)
     {
       v19 = +[HFHomeKitDispatcher sharedDispatcher];
       v81[0] = MEMORY[0x277D85DD0];
       v81[1] = 3221225472;
       v81[2] = __95__HFCharacteristicValueManager__transactionLock_executeActionSetTransaction_completionHandler___block_invoke;
       v81[3] = &unk_277DF3810;
-      v20 = v45;
+      v20 = hf_home;
       v82 = v20;
       v83 = v52;
       [v19 dispatchHomeObserverMessage:v81 sender:0];
@@ -4737,7 +4737,7 @@ void __90__HFCharacteristicValueManager__transactionLock_executeReadTransaction_
     }
 
     v22 = dispatch_group_create();
-    v50 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v49 = [MEMORY[0x277CBEB58] set];
     v48 = [MEMORY[0x277CBEB58] set];
     v23 = [MEMORY[0x277CBEB58] set];
@@ -4746,8 +4746,8 @@ void __90__HFCharacteristicValueManager__transactionLock_executeReadTransaction_
     v77 = 0u;
     v74 = 0u;
     v75 = 0u;
-    v25 = [v52 actionSetsToExecute];
-    obj = [v25 copy];
+    actionSetsToExecute4 = [v52 actionSetsToExecute];
+    obj = [actionSetsToExecute4 copy];
 
     v26 = [obj countByEnumeratingWithState:&v74 objects:v86 count:16];
     if (v26)
@@ -4765,7 +4765,7 @@ void __90__HFCharacteristicValueManager__transactionLock_executeReadTransaction_
 
           v29 = *(*(&v74 + 1) + 8 * v28);
           dispatch_group_enter(v22);
-          v30 = [(HFCharacteristicValueManager *)self valueWriter];
+          valueWriter4 = [(HFCharacteristicValueManager *)self valueWriter];
           v64[0] = MEMORY[0x277D85DD0];
           v64[1] = 3221225472;
           v64[2] = __95__HFCharacteristicValueManager__transactionLock_executeActionSetTransaction_completionHandler___block_invoke_3;
@@ -4773,13 +4773,13 @@ void __90__HFCharacteristicValueManager__transactionLock_executeReadTransaction_
           objc_copyWeak(&v73, &location);
           v65 = v52;
           v66 = v29;
-          v67 = v50;
+          v67 = dictionary;
           v68 = v48;
           v69 = v24;
           v70 = v49;
           v71 = v23;
           v72 = v22;
-          [v30 executeActionSet:v29 completionHandler:v64];
+          [valueWriter4 executeActionSet:v29 completionHandler:v64];
 
           objc_destroyWeak(&v73);
           ++v28;
@@ -4798,34 +4798,34 @@ void __90__HFCharacteristicValueManager__transactionLock_executeReadTransaction_
     block[3] = &unk_277DF6678;
     objc_copyWeak(&v63, &location);
     v54 = v52;
-    v55 = v50;
-    v56 = self;
+    v55 = dictionary;
+    selfCopy = self;
     v57 = v23;
     v31 = v23;
-    v58 = v45;
+    v58 = hf_home;
     v59 = v24;
     v60 = v49;
     v61 = v48;
-    v62 = v46;
+    v62 = handlerCopy;
     v32 = v48;
     v33 = v49;
     v34 = v24;
-    v35 = v45;
+    v35 = hf_home;
     v36 = v31;
-    v37 = v50;
+    v37 = dictionary;
     dispatch_group_notify(v22, MEMORY[0x277D85CD0], block);
 
     objc_destroyWeak(&v63);
     objc_destroyWeak(&location);
-    v38 = v46;
+    v38 = handlerCopy;
   }
 
   else
   {
-    v38 = v46;
-    if (v46)
+    v38 = handlerCopy;
+    if (handlerCopy)
     {
-      v46[2](v46);
+      handlerCopy[2](handlerCopy);
     }
   }
 
@@ -5045,37 +5045,37 @@ void __95__HFCharacteristicValueManager__transactionLock_executeActionSetTransac
   }
 }
 
-- (void)_transactionLock_executeActionsTransaction:(id)a3 completionHandler:(id)a4
+- (void)_transactionLock_executeActionsTransaction:(id)transaction completionHandler:(id)handler
 {
   v54 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  transactionCopy = transaction;
+  handlerCopy = handler;
+  if (!transactionCopy)
   {
     NSLog(&cfstr_NilTransaction_0.isa);
   }
 
-  v8 = [v6 actionsToExecute];
-  v9 = [v8 count];
+  actionsToExecute = [transactionCopy actionsToExecute];
+  v9 = [actionsToExecute count];
 
   if (v9)
   {
     objc_initWeak(&location, self);
-    v10 = [v6 logger];
-    v11 = v10 == 0;
+    logger = [transactionCopy logger];
+    v11 = logger == 0;
 
     if (v11)
     {
       v34 = HFLogForCategory(0x3DuLL);
       if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
       {
-        v35 = [(HFCharacteristicValueManager *)self valueWriter];
-        v36 = [v6 actionsToExecute];
-        v37 = [v36 hf_prettyDescription];
+        valueWriter = [(HFCharacteristicValueManager *)self valueWriter];
+        actionsToExecute2 = [transactionCopy actionsToExecute];
+        hf_prettyDescription = [actionsToExecute2 hf_prettyDescription];
         *buf = 138412546;
-        v51 = v35;
+        v51 = valueWriter;
         v52 = 2112;
-        v53 = v37;
+        v53 = hf_prettyDescription;
         _os_log_impl(&dword_20D9BF000, v34, OS_LOG_TYPE_DEFAULT, "Start executing actions with writer:%@. Action sets:%@", buf, 0x16u);
       }
     }
@@ -5084,92 +5084,92 @@ void __95__HFCharacteristicValueManager__transactionLock_executeActionSetTransac
     {
       state.opaque[0] = 0;
       state.opaque[1] = 0;
-      v12 = [v6 logger];
-      v13 = [v12 loggerActivity];
-      os_activity_scope_enter(v13, &state);
+      logger2 = [transactionCopy logger];
+      loggerActivity = [logger2 loggerActivity];
+      os_activity_scope_enter(loggerActivity, &state);
 
       v14 = HFLogForCategory(0x3DuLL);
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
-        v15 = [(HFCharacteristicValueManager *)self valueWriter];
-        v16 = [v6 actionsToExecute];
-        v17 = [v16 hf_prettyDescription];
+        valueWriter2 = [(HFCharacteristicValueManager *)self valueWriter];
+        actionsToExecute3 = [transactionCopy actionsToExecute];
+        hf_prettyDescription2 = [actionsToExecute3 hf_prettyDescription];
         *buf = 138412546;
-        v51 = v15;
+        v51 = valueWriter2;
         v52 = 2112;
-        v53 = v17;
+        v53 = hf_prettyDescription2;
         _os_log_impl(&dword_20D9BF000, v14, OS_LOG_TYPE_DEFAULT, "Start executing actions with writer:%@. Action sets:%@", buf, 0x16u);
       }
 
       os_activity_scope_leave(&state);
     }
 
-    v18 = [(HFCharacteristicValueManager *)self transactionLock];
-    [v18 lock];
+    transactionLock = [(HFCharacteristicValueManager *)self transactionLock];
+    [transactionLock lock];
 
-    v19 = [(HFCharacteristicValueManager *)self _transactionLock_characteristicsWithPendingWritesInTransacton:v6 includeDirectWrites:0 includeActionSets:0 includeActions:1];
-    v20 = [(HFCharacteristicValueManager *)self transactionLock];
-    [v20 unlock];
+    v19 = [(HFCharacteristicValueManager *)self _transactionLock_characteristicsWithPendingWritesInTransacton:transactionCopy includeDirectWrites:0 includeActionSets:0 includeActions:1];
+    transactionLock2 = [(HFCharacteristicValueManager *)self transactionLock];
+    [transactionLock2 unlock];
 
-    v21 = [(HFCharacteristicValueManager *)self valueWriter];
-    v22 = [v21 hf_home];
+    valueWriter3 = [(HFCharacteristicValueManager *)self valueWriter];
+    hf_home = [valueWriter3 hf_home];
 
-    if (v22)
+    if (hf_home)
     {
       v23 = +[HFHomeKitDispatcher sharedDispatcher];
       v45[0] = MEMORY[0x277D85DD0];
       v45[1] = 3221225472;
       v45[2] = __93__HFCharacteristicValueManager__transactionLock_executeActionsTransaction_completionHandler___block_invoke;
       v45[3] = &unk_277DF3810;
-      v24 = v22;
+      v24 = hf_home;
       v46 = v24;
       v25 = v19;
       v47 = v25;
       [v23 dispatchHomeObserverMessage:v45 sender:0];
 
-      v26 = [v6 actionsToExecute];
-      v27 = [v26 copy];
+      actionsToExecute4 = [transactionCopy actionsToExecute];
+      v27 = [actionsToExecute4 copy];
 
-      v28 = [(HFCharacteristicValueManager *)self valueWriter];
+      valueWriter4 = [(HFCharacteristicValueManager *)self valueWriter];
       v38[0] = MEMORY[0x277D85DD0];
       v38[1] = 3221225472;
       v38[2] = __93__HFCharacteristicValueManager__transactionLock_executeActionsTransaction_completionHandler___block_invoke_2;
       v38[3] = &unk_277DF6518;
       objc_copyWeak(&v44, &location);
-      v39 = v6;
+      v39 = transactionCopy;
       v29 = v27;
       v40 = v29;
       v41 = v24;
       v42 = v25;
-      v43 = v7;
-      [v28 executeActions:v29 completionHandler:v38];
+      v43 = handlerCopy;
+      [valueWriter4 executeActions:v29 completionHandler:v38];
 
       objc_destroyWeak(&v44);
     }
 
     else
     {
-      v30 = [(HFCharacteristicValueManager *)self transactionLock];
-      [v30 lock];
+      transactionLock3 = [(HFCharacteristicValueManager *)self transactionLock];
+      [transactionLock3 lock];
 
       v31 = [MEMORY[0x277CCA9B8] hf_errorWithCode:30];
-      [v6 setActionsError:v31];
+      [transactionCopy setActionsError:v31];
 
-      v32 = [(HFCharacteristicValueManager *)self transactionLock];
-      [v32 unlock];
+      transactionLock4 = [(HFCharacteristicValueManager *)self transactionLock];
+      [transactionLock4 unlock];
 
-      if (v7)
+      if (handlerCopy)
       {
-        v7[2](v7);
+        handlerCopy[2](handlerCopy);
       }
     }
 
     objc_destroyWeak(&location);
   }
 
-  else if (v7)
+  else if (handlerCopy)
   {
-    v7[2](v7);
+    handlerCopy[2](handlerCopy);
   }
 
   v33 = *MEMORY[0x277D85DE8];
@@ -5288,32 +5288,32 @@ void __93__HFCharacteristicValueManager__transactionLock_executeActionsTransacti
   }
 }
 
-- (id)cachedValueForCharacteristic:(id)a3
+- (id)cachedValueForCharacteristic:(id)characteristic
 {
-  v4 = a3;
-  v5 = [(HFCharacteristicValueManager *)self transactionLock];
-  [v5 lock];
+  characteristicCopy = characteristic;
+  transactionLock = [(HFCharacteristicValueManager *)self transactionLock];
+  [transactionLock lock];
 
-  v6 = [(HFCharacteristicValueManager *)self cacheManager];
-  v7 = [v6 cachedValueForCharacteristic:v4];
+  cacheManager = [(HFCharacteristicValueManager *)self cacheManager];
+  value = [cacheManager cachedValueForCharacteristic:characteristicCopy];
 
-  if (!v7)
+  if (!value)
   {
-    v8 = [(HFCharacteristicValueManager *)self characteristicsWithCachedValues];
-    v9 = [v8 containsObject:v4];
+    characteristicsWithCachedValues = [(HFCharacteristicValueManager *)self characteristicsWithCachedValues];
+    v9 = [characteristicsWithCachedValues containsObject:characteristicCopy];
 
     if (v9)
     {
-      v7 = [v4 value];
+      value = [characteristicCopy value];
     }
 
     else
     {
-      v7 = 0;
+      value = 0;
     }
   }
 
-  v10 = [(HFCharacteristicValueManager *)self _overrideCachedValueForCharacteristic:v4 value:v7];
+  v10 = [(HFCharacteristicValueManager *)self _overrideCachedValueForCharacteristic:characteristicCopy value:value];
   v11 = v10;
   if (v10)
   {
@@ -5322,14 +5322,14 @@ void __93__HFCharacteristicValueManager__transactionLock_executeActionsTransacti
 
   else
   {
-    v12 = v7;
+    v12 = value;
   }
 
   v13 = v12;
 
   if (+[HFHomeKitDispatcher synchronizesHomeDataModel])
   {
-    v14 = [(HFCharacteristicValueManager *)self staticHomeDataModelCachedValueForCharacteristic:v4];
+    v14 = [(HFCharacteristicValueManager *)self staticHomeDataModelCachedValueForCharacteristic:characteristicCopy];
     v15 = v14;
     if (v14)
     {
@@ -5338,8 +5338,8 @@ void __93__HFCharacteristicValueManager__transactionLock_executeActionsTransacti
       v13 = v16;
     }
 
-    v17 = [(HFCharacteristicValueManager *)self homeStateStreamObserver];
-    v18 = [v17 homeStateStreamCachedValueFor:v4];
+    homeStateStreamObserver = [(HFCharacteristicValueManager *)self homeStateStreamObserver];
+    v18 = [homeStateStreamObserver homeStateStreamCachedValueFor:characteristicCopy];
 
     if (v18)
     {
@@ -5349,51 +5349,51 @@ void __93__HFCharacteristicValueManager__transactionLock_executeActionsTransacti
     }
   }
 
-  v20 = [(HFCharacteristicValueManager *)self transactionLock];
-  [v20 unlock];
+  transactionLock2 = [(HFCharacteristicValueManager *)self transactionLock];
+  [transactionLock2 unlock];
 
   return v13;
 }
 
-- (id)cachedReadErrorForCharacteristic:(id)a3
+- (id)cachedReadErrorForCharacteristic:(id)characteristic
 {
-  v4 = a3;
-  v5 = [(HFCharacteristicValueManager *)self transactionLock];
-  [v5 lock];
+  characteristicCopy = characteristic;
+  transactionLock = [(HFCharacteristicValueManager *)self transactionLock];
+  [transactionLock lock];
 
-  v6 = [(HFCharacteristicValueManager *)self cachedReadErrorsKeyedByCharacteristicIdentifier];
-  v7 = [v4 uniqueIdentifier];
+  cachedReadErrorsKeyedByCharacteristicIdentifier = [(HFCharacteristicValueManager *)self cachedReadErrorsKeyedByCharacteristicIdentifier];
+  uniqueIdentifier = [characteristicCopy uniqueIdentifier];
 
-  v8 = [v6 objectForKeyedSubscript:v7];
+  v8 = [cachedReadErrorsKeyedByCharacteristicIdentifier objectForKeyedSubscript:uniqueIdentifier];
 
-  v9 = [(HFCharacteristicValueManager *)self transactionLock];
-  [v9 unlock];
+  transactionLock2 = [(HFCharacteristicValueManager *)self transactionLock];
+  [transactionLock2 unlock];
 
   return v8;
 }
 
-- (BOOL)hasCachedReadErrorForAccessory:(id)a3 passingTest:(id)a4
+- (BOOL)hasCachedReadErrorForAccessory:(id)accessory passingTest:(id)test
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HFCharacteristicValueManager *)self transactionLock];
-  [v8 lock];
+  testCopy = test;
+  accessoryCopy = accessory;
+  transactionLock = [(HFCharacteristicValueManager *)self transactionLock];
+  [transactionLock lock];
 
-  v9 = [v7 services];
+  services = [accessoryCopy services];
 
   v13 = MEMORY[0x277D85DD0];
   v14 = 3221225472;
   v15 = __75__HFCharacteristicValueManager_hasCachedReadErrorForAccessory_passingTest___block_invoke;
   v16 = &unk_277DF66C8;
-  v17 = self;
-  v18 = v6;
-  v10 = v6;
-  LOBYTE(v6) = [v9 na_any:&v13];
+  selfCopy = self;
+  v18 = testCopy;
+  v10 = testCopy;
+  LOBYTE(testCopy) = [services na_any:&v13];
 
   v11 = [(HFCharacteristicValueManager *)self transactionLock:v13];
   [v11 unlock];
 
-  return v6;
+  return testCopy;
 }
 
 uint64_t __75__HFCharacteristicValueManager_hasCachedReadErrorForAccessory_passingTest___block_invoke(uint64_t a1, void *a2)
@@ -5444,50 +5444,50 @@ uint64_t __75__HFCharacteristicValueManager_hasCachedReadErrorForAccessory_passi
   return v8;
 }
 
-- (void)invalidateCachedValueForCharacteristic:(id)a3
+- (void)invalidateCachedValueForCharacteristic:(id)characteristic
 {
-  v4 = a3;
-  v5 = [(HFCharacteristicValueManager *)self transactionLock];
-  [v5 lock];
+  characteristicCopy = characteristic;
+  transactionLock = [(HFCharacteristicValueManager *)self transactionLock];
+  [transactionLock lock];
 
-  v6 = [(HFCharacteristicValueManager *)self characteristicsWithCachedValues];
-  [v6 removeObject:v4];
+  characteristicsWithCachedValues = [(HFCharacteristicValueManager *)self characteristicsWithCachedValues];
+  [characteristicsWithCachedValues removeObject:characteristicCopy];
 
-  v7 = [(HFCharacteristicValueManager *)self transactionLock];
-  [v7 unlock];
+  transactionLock2 = [(HFCharacteristicValueManager *)self transactionLock];
+  [transactionLock2 unlock];
 }
 
-- (void)invalidateCachedErrorForCharacteristic:(id)a3
+- (void)invalidateCachedErrorForCharacteristic:(id)characteristic
 {
-  v4 = a3;
-  v5 = [(HFCharacteristicValueManager *)self transactionLock];
-  [v5 lock];
+  characteristicCopy = characteristic;
+  transactionLock = [(HFCharacteristicValueManager *)self transactionLock];
+  [transactionLock lock];
 
-  v6 = [(HFCharacteristicValueManager *)self cachedReadErrorsKeyedByCharacteristicIdentifier];
-  v7 = [v4 uniqueIdentifier];
-  [v6 removeObjectForKey:v7];
+  cachedReadErrorsKeyedByCharacteristicIdentifier = [(HFCharacteristicValueManager *)self cachedReadErrorsKeyedByCharacteristicIdentifier];
+  uniqueIdentifier = [characteristicCopy uniqueIdentifier];
+  [cachedReadErrorsKeyedByCharacteristicIdentifier removeObjectForKey:uniqueIdentifier];
 
-  v8 = [(HFCharacteristicValueManager *)self cachedWriteErrorsKeyedByCharacteristicIdentifier];
-  v9 = [v4 uniqueIdentifier];
+  cachedWriteErrorsKeyedByCharacteristicIdentifier = [(HFCharacteristicValueManager *)self cachedWriteErrorsKeyedByCharacteristicIdentifier];
+  uniqueIdentifier2 = [characteristicCopy uniqueIdentifier];
 
-  [v8 removeObjectForKey:v9];
-  v10 = [(HFCharacteristicValueManager *)self transactionLock];
-  [v10 unlock];
+  [cachedWriteErrorsKeyedByCharacteristicIdentifier removeObjectForKey:uniqueIdentifier2];
+  transactionLock2 = [(HFCharacteristicValueManager *)self transactionLock];
+  [transactionLock2 unlock];
 }
 
-- (void)invalidateCachedValuesForAccessory:(id)a3
+- (void)invalidateCachedValuesForAccessory:(id)accessory
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HFCharacteristicValueManager *)self transactionLock];
-  [v5 lock];
+  accessoryCopy = accessory;
+  transactionLock = [(HFCharacteristicValueManager *)self transactionLock];
+  [transactionLock lock];
 
   v28 = 0u;
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v20 = v4;
-  obj = [v4 services];
+  v20 = accessoryCopy;
+  obj = [accessoryCopy services];
   v6 = [obj countByEnumeratingWithState:&v26 objects:v31 count:16];
   if (v6)
   {
@@ -5508,8 +5508,8 @@ uint64_t __75__HFCharacteristicValueManager_hasCachedReadErrorForAccessory_passi
         v23 = 0u;
         v24 = 0u;
         v25 = 0u;
-        v11 = [v10 characteristics];
-        v12 = [v11 countByEnumeratingWithState:&v22 objects:v30 count:16];
+        characteristics = [v10 characteristics];
+        v12 = [characteristics countByEnumeratingWithState:&v22 objects:v30 count:16];
         if (v12)
         {
           v13 = v12;
@@ -5521,18 +5521,18 @@ uint64_t __75__HFCharacteristicValueManager_hasCachedReadErrorForAccessory_passi
             {
               if (*v23 != v14)
               {
-                objc_enumerationMutation(v11);
+                objc_enumerationMutation(characteristics);
               }
 
               v16 = *(*(&v22 + 1) + 8 * v15);
-              v17 = [(HFCharacteristicValueManager *)self characteristicsWithCachedValues];
-              [v17 removeObject:v16];
+              characteristicsWithCachedValues = [(HFCharacteristicValueManager *)self characteristicsWithCachedValues];
+              [characteristicsWithCachedValues removeObject:v16];
 
               ++v15;
             }
 
             while (v13 != v15);
-            v13 = [v11 countByEnumeratingWithState:&v22 objects:v30 count:16];
+            v13 = [characteristics countByEnumeratingWithState:&v22 objects:v30 count:16];
           }
 
           while (v13);
@@ -5548,25 +5548,25 @@ uint64_t __75__HFCharacteristicValueManager_hasCachedReadErrorForAccessory_passi
     while (v7);
   }
 
-  v18 = [(HFCharacteristicValueManager *)self transactionLock];
-  [v18 unlock];
+  transactionLock2 = [(HFCharacteristicValueManager *)self transactionLock];
+  [transactionLock2 unlock];
 
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (id)cachedErrorForWriteToCharacteristic:(id)a3
+- (id)cachedErrorForWriteToCharacteristic:(id)characteristic
 {
-  v4 = [a3 uniqueIdentifier];
-  if (v4)
+  uniqueIdentifier = [characteristic uniqueIdentifier];
+  if (uniqueIdentifier)
   {
-    v5 = [(HFCharacteristicValueManager *)self transactionLock];
-    [v5 lock];
+    transactionLock = [(HFCharacteristicValueManager *)self transactionLock];
+    [transactionLock lock];
 
-    v6 = [(HFCharacteristicValueManager *)self cachedWriteErrorsKeyedByCharacteristicIdentifier];
-    v7 = [v6 objectForKeyedSubscript:v4];
+    cachedWriteErrorsKeyedByCharacteristicIdentifier = [(HFCharacteristicValueManager *)self cachedWriteErrorsKeyedByCharacteristicIdentifier];
+    v7 = [cachedWriteErrorsKeyedByCharacteristicIdentifier objectForKeyedSubscript:uniqueIdentifier];
 
-    v8 = [(HFCharacteristicValueManager *)self transactionLock];
-    [v8 unlock];
+    transactionLock2 = [(HFCharacteristicValueManager *)self transactionLock];
+    [transactionLock2 unlock];
   }
 
   else
@@ -5577,19 +5577,19 @@ uint64_t __75__HFCharacteristicValueManager_hasCachedReadErrorForAccessory_passi
   return v7;
 }
 
-- (id)cachedErrorForExecutionOfActionSet:(id)a3
+- (id)cachedErrorForExecutionOfActionSet:(id)set
 {
-  v4 = [a3 uniqueIdentifier];
-  if (v4)
+  uniqueIdentifier = [set uniqueIdentifier];
+  if (uniqueIdentifier)
   {
-    v5 = [(HFCharacteristicValueManager *)self transactionLock];
-    [v5 lock];
+    transactionLock = [(HFCharacteristicValueManager *)self transactionLock];
+    [transactionLock lock];
 
-    v6 = [(HFCharacteristicValueManager *)self cachedExecutionErrorsKeyedByActionSetIdentifier];
-    v7 = [v6 objectForKeyedSubscript:v4];
+    cachedExecutionErrorsKeyedByActionSetIdentifier = [(HFCharacteristicValueManager *)self cachedExecutionErrorsKeyedByActionSetIdentifier];
+    v7 = [cachedExecutionErrorsKeyedByActionSetIdentifier objectForKeyedSubscript:uniqueIdentifier];
 
-    v8 = [(HFCharacteristicValueManager *)self transactionLock];
-    [v8 unlock];
+    transactionLock2 = [(HFCharacteristicValueManager *)self transactionLock];
+    [transactionLock2 unlock];
   }
 
   else
@@ -5600,61 +5600,61 @@ uint64_t __75__HFCharacteristicValueManager_hasCachedReadErrorForAccessory_passi
   return v7;
 }
 
-- (void)invalidateCachedErrorForExecutionOfActionSet:(id)a3
+- (void)invalidateCachedErrorForExecutionOfActionSet:(id)set
 {
-  v4 = a3;
-  v5 = [(HFCharacteristicValueManager *)self transactionLock];
-  [v5 lock];
+  setCopy = set;
+  transactionLock = [(HFCharacteristicValueManager *)self transactionLock];
+  [transactionLock lock];
 
-  v6 = [(HFCharacteristicValueManager *)self cachedExecutionErrorsKeyedByActionSetIdentifier];
-  v7 = [v4 uniqueIdentifier];
+  cachedExecutionErrorsKeyedByActionSetIdentifier = [(HFCharacteristicValueManager *)self cachedExecutionErrorsKeyedByActionSetIdentifier];
+  uniqueIdentifier = [setCopy uniqueIdentifier];
 
-  [v6 setObject:0 forKeyedSubscript:v7];
-  v8 = [(HFCharacteristicValueManager *)self transactionLock];
-  [v8 unlock];
+  [cachedExecutionErrorsKeyedByActionSetIdentifier setObject:0 forKeyedSubscript:uniqueIdentifier];
+  transactionLock2 = [(HFCharacteristicValueManager *)self transactionLock];
+  [transactionLock2 unlock];
 }
 
 - (void)invalidateAllCachedErrors
 {
-  v3 = [(HFCharacteristicValueManager *)self transactionLock];
-  [v3 lock];
+  transactionLock = [(HFCharacteristicValueManager *)self transactionLock];
+  [transactionLock lock];
 
-  v4 = [(HFCharacteristicValueManager *)self cachedReadErrorsKeyedByCharacteristicIdentifier];
-  [v4 removeAllObjects];
+  cachedReadErrorsKeyedByCharacteristicIdentifier = [(HFCharacteristicValueManager *)self cachedReadErrorsKeyedByCharacteristicIdentifier];
+  [cachedReadErrorsKeyedByCharacteristicIdentifier removeAllObjects];
 
-  v5 = [(HFCharacteristicValueManager *)self cachedWriteErrorsKeyedByCharacteristicIdentifier];
-  [v5 removeAllObjects];
+  cachedWriteErrorsKeyedByCharacteristicIdentifier = [(HFCharacteristicValueManager *)self cachedWriteErrorsKeyedByCharacteristicIdentifier];
+  [cachedWriteErrorsKeyedByCharacteristicIdentifier removeAllObjects];
 
-  v6 = [(HFCharacteristicValueManager *)self cachedExecutionErrorsKeyedByActionSetIdentifier];
-  [v6 removeAllObjects];
+  cachedExecutionErrorsKeyedByActionSetIdentifier = [(HFCharacteristicValueManager *)self cachedExecutionErrorsKeyedByActionSetIdentifier];
+  [cachedExecutionErrorsKeyedByActionSetIdentifier removeAllObjects];
 
-  v7 = [(HFCharacteristicValueManager *)self transactionLock];
-  [v7 unlock];
+  transactionLock2 = [(HFCharacteristicValueManager *)self transactionLock];
+  [transactionLock2 unlock];
 }
 
 - (void)cancelInFlightReadRequests
 {
-  v3 = [(HFCharacteristicValueManager *)self transactionLock];
-  [v3 lock];
+  transactionLock = [(HFCharacteristicValueManager *)self transactionLock];
+  [transactionLock lock];
 
-  v6 = [(HFCharacteristicValueManager *)self inFlightReadCancelationToken];
+  inFlightReadCancelationToken = [(HFCharacteristicValueManager *)self inFlightReadCancelationToken];
   v4 = objc_alloc_init(MEMORY[0x277D2C8C8]);
   [(HFCharacteristicValueManager *)self setInFlightReadCancelationToken:v4];
 
-  v5 = [(HFCharacteristicValueManager *)self transactionLock];
-  [v5 unlock];
+  transactionLock2 = [(HFCharacteristicValueManager *)self transactionLock];
+  [transactionLock2 unlock];
 
-  [v6 cancel];
+  [inFlightReadCancelationToken cancel];
 }
 
-- (void)_beginReadsCompleteTrackingForCharacteristics:(id)a3 withLogger:(id)a4
+- (void)_beginReadsCompleteTrackingForCharacteristics:(id)characteristics withLogger:(id)logger
 {
   v40 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HFCharacteristicValueManager *)self readsCompleteLogger];
+  characteristicsCopy = characteristics;
+  loggerCopy = logger;
+  readsCompleteLogger = [(HFCharacteristicValueManager *)self readsCompleteLogger];
 
-  if (!v8)
+  if (!readsCompleteLogger)
   {
     v9 = objc_alloc_init(HFCharacteristicReadLogger);
     [(HFCharacteristicValueManager *)self setReadsCompleteLogger:v9];
@@ -5664,24 +5664,24 @@ uint64_t __75__HFCharacteristicValueManager_hasCachedReadErrorForAccessory_passi
   v29 = 3221225472;
   v30 = __89__HFCharacteristicValueManager__beginReadsCompleteTrackingForCharacteristics_withLogger___block_invoke;
   v31 = &unk_277DF66F0;
-  v32 = self;
-  v10 = v7;
+  selfCopy = self;
+  v10 = loggerCopy;
   v33 = v10;
-  [v6 na_each:&v28];
+  [characteristicsCopy na_each:&v28];
   if (v10)
   {
-    v11 = [v10 loggerActivity];
-    os_activity_scope_enter(v11, &v27);
+    loggerActivity = [v10 loggerActivity];
+    os_activity_scope_enter(loggerActivity, &v27);
 
     v12 = HFLogForCategory(0x3DuLL);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [(HFCharacteristicValueManager *)self readsCompleteLogger];
-      v14 = [v13 numberOfAccessoriesForTransportType:0];
-      v15 = [(HFCharacteristicValueManager *)self readsCompleteLogger];
-      v16 = [v15 numberOfAccessoriesForTransportType:1];
-      v17 = [(HFCharacteristicValueManager *)self readsCompleteLogger];
-      v18 = [v17 numberOfAccessoriesForTransportType:2];
+      readsCompleteLogger2 = [(HFCharacteristicValueManager *)self readsCompleteLogger];
+      v14 = [readsCompleteLogger2 numberOfAccessoriesForTransportType:0];
+      readsCompleteLogger3 = [(HFCharacteristicValueManager *)self readsCompleteLogger];
+      v16 = [readsCompleteLogger3 numberOfAccessoriesForTransportType:1];
+      readsCompleteLogger4 = [(HFCharacteristicValueManager *)self readsCompleteLogger];
+      v18 = [readsCompleteLogger4 numberOfAccessoriesForTransportType:2];
       *buf = 134218496;
       v35 = v14;
       v36 = 2048;
@@ -5699,12 +5699,12 @@ uint64_t __75__HFCharacteristicValueManager_hasCachedReadErrorForAccessory_passi
     v20 = HFLogForCategory(0x3DuLL);
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
-      v21 = [(HFCharacteristicValueManager *)self readsCompleteLogger];
-      v22 = [v21 numberOfAccessoriesForTransportType:0];
-      v23 = [(HFCharacteristicValueManager *)self readsCompleteLogger];
-      v24 = [v23 numberOfAccessoriesForTransportType:1];
-      v25 = [(HFCharacteristicValueManager *)self readsCompleteLogger];
-      v26 = [v25 numberOfAccessoriesForTransportType:2];
+      readsCompleteLogger5 = [(HFCharacteristicValueManager *)self readsCompleteLogger];
+      v22 = [readsCompleteLogger5 numberOfAccessoriesForTransportType:0];
+      readsCompleteLogger6 = [(HFCharacteristicValueManager *)self readsCompleteLogger];
+      v24 = [readsCompleteLogger6 numberOfAccessoriesForTransportType:1];
+      readsCompleteLogger7 = [(HFCharacteristicValueManager *)self readsCompleteLogger];
+      v26 = [readsCompleteLogger7 numberOfAccessoriesForTransportType:2];
       *buf = 134218496;
       v35 = v22;
       v36 = 2048;
@@ -5726,30 +5726,30 @@ void __89__HFCharacteristicValueManager__beginReadsCompleteTrackingForCharacteri
   [v5 addCharacteristic:v4 withUpdateLogger:*(a1 + 40)];
 }
 
-- (void)_endReadsCompleteTrackingForCharacteristic:(id)a3 withLogger:(id)a4 didRead:(BOOL)a5
+- (void)_endReadsCompleteTrackingForCharacteristic:(id)characteristic withLogger:(id)logger didRead:(BOOL)read
 {
-  v5 = a5;
+  readCopy = read;
   v30 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (v5)
+  characteristicCopy = characteristic;
+  loggerCopy = logger;
+  v10 = loggerCopy;
+  if (readCopy)
   {
-    if (v9)
+    if (loggerCopy)
     {
-      v11 = [v9 loggerActivity];
-      os_activity_scope_enter(v11, &v25);
+      loggerActivity = [loggerCopy loggerActivity];
+      os_activity_scope_enter(loggerActivity, &v25);
 
       v12 = HFLogForCategory(0x3DuLL);
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
-        v13 = [v8 service];
-        v14 = [v13 accessory];
-        v15 = [v14 name];
+        service = [characteristicCopy service];
+        accessory = [service accessory];
+        name = [accessory name];
         *buf = 138412546;
-        v27 = v8;
+        v27 = characteristicCopy;
         v28 = 2112;
-        v29 = v15;
+        v29 = name;
         v16 = "Reads Complete Tracking: Read characteristic %@ from %@";
 LABEL_8:
         _os_log_impl(&dword_20D9BF000, v12, OS_LOG_TYPE_DEFAULT, v16, buf, 0x16u);
@@ -5763,13 +5763,13 @@ LABEL_8:
     v20 = HFLogForCategory(0x3DuLL);
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
-      v21 = [v8 service];
-      v22 = [v21 accessory];
-      v23 = [v22 name];
+      service2 = [characteristicCopy service];
+      accessory2 = [service2 accessory];
+      name2 = [accessory2 name];
       *buf = 138412546;
-      v27 = v8;
+      v27 = characteristicCopy;
       v28 = 2112;
-      v29 = v23;
+      v29 = name2;
       v24 = "Reads Complete Tracking: Read characteristic %@ from %@";
 LABEL_15:
       _os_log_impl(&dword_20D9BF000, v20, OS_LOG_TYPE_DEFAULT, v24, buf, 0x16u);
@@ -5780,18 +5780,18 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  if (!v9)
+  if (!loggerCopy)
   {
     v20 = HFLogForCategory(0x3DuLL);
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
-      v21 = [v8 service];
-      v22 = [v21 accessory];
-      v23 = [v22 name];
+      service2 = [characteristicCopy service];
+      accessory2 = [service2 accessory];
+      name2 = [accessory2 name];
       *buf = 138412546;
-      v27 = v8;
+      v27 = characteristicCopy;
       v28 = 2112;
-      v29 = v23;
+      v29 = name2;
       v24 = "Reads Complete Tracking: No read response for characteristic %@ from %@ (ignoring)";
       goto LABEL_15;
     }
@@ -5801,19 +5801,19 @@ LABEL_16:
     goto LABEL_10;
   }
 
-  v17 = [v9 loggerActivity];
-  os_activity_scope_enter(v17, &v25);
+  loggerActivity2 = [loggerCopy loggerActivity];
+  os_activity_scope_enter(loggerActivity2, &v25);
 
   v12 = HFLogForCategory(0x3DuLL);
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = [v8 service];
-    v14 = [v13 accessory];
-    v15 = [v14 name];
+    service = [characteristicCopy service];
+    accessory = [service accessory];
+    name = [accessory name];
     *buf = 138412546;
-    v27 = v8;
+    v27 = characteristicCopy;
     v28 = 2112;
-    v29 = v15;
+    v29 = name;
     v16 = "Reads Complete Tracking: No read response for characteristic %@ from %@ (ignoring)";
     goto LABEL_8;
   }
@@ -5822,19 +5822,19 @@ LABEL_9:
 
   os_activity_scope_leave(&v25);
 LABEL_10:
-  v18 = [(HFCharacteristicValueManager *)self readsCompleteLogger];
-  [v18 markCharacteristicAsRead:v8 withLogger:v10];
+  readsCompleteLogger = [(HFCharacteristicValueManager *)self readsCompleteLogger];
+  [readsCompleteLogger markCharacteristicAsRead:characteristicCopy withLogger:v10];
 
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (id)readValuesForCharacteristics:(id)a3
+- (id)readValuesForCharacteristics:(id)characteristics
 {
   v30 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v18 = [(HFCharacteristicValueManager *)self openTransaction];
+  characteristicsCopy = characteristics;
+  openTransaction = [(HFCharacteristicValueManager *)self openTransaction];
 
-  if (!v18)
+  if (!openTransaction)
   {
     [(HFCharacteristicValueManager *)self beginTransactionWithReason:@"characteristicValueManagerBatchReadTransaction"];
   }
@@ -5844,7 +5844,7 @@ LABEL_10:
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  obj = v5;
+  obj = characteristicsCopy;
   v6 = [obj countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v6)
   {
@@ -5878,8 +5878,8 @@ LABEL_10:
 
   objc_initWeak(&location, self);
   v12 = MEMORY[0x277D2C900];
-  v13 = [v20 allObjects];
-  v14 = [v12 combineAllFutures:v13];
+  allObjects = [v20 allObjects];
+  v14 = [v12 combineAllFutures:allObjects];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __61__HFCharacteristicValueManager_readValuesForCharacteristics___block_invoke_2;
@@ -5887,7 +5887,7 @@ LABEL_10:
   objc_copyWeak(&v22, &location);
   v15 = [v14 flatMap:v21];
 
-  if (!v18)
+  if (!openTransaction)
   {
     [(HFCharacteristicValueManager *)self commitTransactionWithReason:@"characteristicValueManagerBatchReadTransaction"];
   }
@@ -5921,16 +5921,16 @@ id __61__HFCharacteristicValueManager_readValuesForCharacteristics___block_invok
   return v9;
 }
 
-- (id)readValuesForCharacteristicTypes:(id)a3 inServices:(id)a4
+- (id)readValuesForCharacteristicTypes:(id)types inServices:(id)services
 {
-  v6 = a3;
+  typesCopy = types;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __76__HFCharacteristicValueManager_readValuesForCharacteristicTypes_inServices___block_invoke;
   v10[3] = &unk_277DF6218;
-  v11 = v6;
-  v7 = v6;
-  v8 = [(HFCharacteristicValueManager *)self readValuesForCharacteristicsPassingTest:v10 inServices:a4];
+  v11 = typesCopy;
+  v7 = typesCopy;
+  v8 = [(HFCharacteristicValueManager *)self readValuesForCharacteristicsPassingTest:v10 inServices:services];
 
   return v8;
 }
@@ -5944,18 +5944,18 @@ uint64_t __76__HFCharacteristicValueManager_readValuesForCharacteristicTypes_inS
   return v4;
 }
 
-- (id)readValuesForCharacteristicsPassingTest:(id)a3 inServices:(id)a4
+- (id)readValuesForCharacteristicsPassingTest:(id)test inServices:(id)services
 {
   v36 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  testCopy = test;
+  servicesCopy = services;
   v7 = [MEMORY[0x277CBEB58] set];
-  v8 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  obj = v6;
+  obj = servicesCopy;
   v24 = [obj countByEnumeratingWithState:&v30 objects:v35 count:16];
   if (v24)
   {
@@ -5976,8 +5976,8 @@ uint64_t __76__HFCharacteristicValueManager_readValuesForCharacteristicTypes_inS
         v27 = 0u;
         v28 = 0u;
         v29 = 0u;
-        v11 = [v10 characteristics];
-        v12 = [v11 countByEnumeratingWithState:&v26 objects:v34 count:16];
+        characteristics = [v10 characteristics];
+        v12 = [characteristics countByEnumeratingWithState:&v26 objects:v34 count:16];
         if (v12)
         {
           v13 = v12;
@@ -5988,19 +5988,19 @@ uint64_t __76__HFCharacteristicValueManager_readValuesForCharacteristicTypes_inS
             {
               if (*v27 != v14)
               {
-                objc_enumerationMutation(v11);
+                objc_enumerationMutation(characteristics);
               }
 
               v16 = *(*(&v26 + 1) + 8 * i);
-              if (!v5 || v5[2](v5, *(*(&v26 + 1) + 8 * i)))
+              if (!testCopy || testCopy[2](testCopy, *(*(&v26 + 1) + 8 * i)))
               {
                 [v7 addObject:v16];
-                v17 = [v16 uniqueIdentifier];
-                [v8 setObject:v10 forKeyedSubscript:v17];
+                uniqueIdentifier = [v16 uniqueIdentifier];
+                [dictionary setObject:v10 forKeyedSubscript:uniqueIdentifier];
               }
             }
 
-            v13 = [v11 countByEnumeratingWithState:&v26 objects:v34 count:16];
+            v13 = [characteristics countByEnumeratingWithState:&v26 objects:v34 count:16];
           }
 
           while (v13);
@@ -6023,38 +6023,38 @@ uint64_t __76__HFCharacteristicValueManager_readValuesForCharacteristicTypes_inS
   return v18;
 }
 
-- (id)writeValuesForCharacteristics:(id)a3
+- (id)writeValuesForCharacteristics:(id)characteristics
 {
-  v4 = a3;
-  v5 = [v4 allCharacteristics];
-  v6 = [v5 count];
+  characteristicsCopy = characteristics;
+  allCharacteristics = [characteristicsCopy allCharacteristics];
+  v6 = [allCharacteristics count];
 
   if (v6)
   {
     [(HFCharacteristicValueManager *)self beginTransactionWithReason:@"characteristicValueManagerBatchWriteTransaction"];
-    v7 = [v4 allCharacteristics];
-    v8 = [v7 allObjects];
+    allCharacteristics2 = [characteristicsCopy allCharacteristics];
+    allObjects = [allCharacteristics2 allObjects];
 
     v14 = MEMORY[0x277D85DD0];
     v15 = 3221225472;
     v16 = __62__HFCharacteristicValueManager_writeValuesForCharacteristics___block_invoke;
     v17 = &unk_277DF6740;
-    v18 = v4;
-    v19 = self;
-    v9 = [v8 na_map:&v14];
+    v18 = characteristicsCopy;
+    selfCopy = self;
+    v9 = [allObjects na_map:&v14];
     v10 = MEMORY[0x277D2C900];
-    v11 = [MEMORY[0x277D2C938] mainThreadScheduler];
-    v12 = [v10 combineAllFutures:v9 ignoringErrors:0 scheduler:v11];
+    mainThreadScheduler = [MEMORY[0x277D2C938] mainThreadScheduler];
+    futureWithNoResult = [v10 combineAllFutures:v9 ignoringErrors:0 scheduler:mainThreadScheduler];
 
     [(HFCharacteristicValueManager *)self commitTransactionWithReason:@"characteristicValueManagerBatchWriteTransaction"];
   }
 
   else
   {
-    v12 = [MEMORY[0x277D2C900] futureWithNoResult];
+    futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
   }
 
-  return v12;
+  return futureWithNoResult;
 }
 
 id __62__HFCharacteristicValueManager_writeValuesForCharacteristics___block_invoke(uint64_t a1, void *a2)
@@ -6069,10 +6069,10 @@ id __62__HFCharacteristicValueManager_writeValuesForCharacteristics___block_invo
 
 - (HFCharacteristicOperationContextProviding)contextProvider
 {
-  v2 = [(HFCharacteristicValueManager *)self valueReader];
-  v3 = [v2 hf_home];
+  valueReader = [(HFCharacteristicValueManager *)self valueReader];
+  hf_home = [valueReader hf_home];
 
-  return v3;
+  return hf_home;
 }
 
 + (NAIdentity)na_identity
@@ -6094,44 +6094,44 @@ void __43__HFCharacteristicValueManager_na_identity__block_invoke_2()
   qword_280E02D88 = v0;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [objc_opt_class() na_identity];
-  LOBYTE(self) = [v5 isObject:self equalToObject:v4];
+  equalCopy = equal;
+  na_identity = [objc_opt_class() na_identity];
+  LOBYTE(self) = [na_identity isObject:self equalToObject:equalCopy];
 
   return self;
 }
 
 - (unint64_t)hash
 {
-  v3 = [objc_opt_class() na_identity];
-  v4 = [v3 hashOfObject:self];
+  na_identity = [objc_opt_class() na_identity];
+  v4 = [na_identity hashOfObject:self];
 
   return v4;
 }
 
-- (id)_overrideCachedValueForCharacteristic:(id)a3 value:(id)a4
+- (id)_overrideCachedValueForCharacteristic:(id)characteristic value:(id)value
 {
   v49 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 characteristicType];
-  v10 = [v9 isEqualToString:*MEMORY[0x277CCF788]];
+  characteristicCopy = characteristic;
+  valueCopy = value;
+  characteristicType = [characteristicCopy characteristicType];
+  v10 = [characteristicType isEqualToString:*MEMORY[0x277CCF788]];
 
   v11 = 0;
-  if (v8 && v10)
+  if (valueCopy && v10)
   {
-    if ([v8 intValue])
+    if ([valueCopy intValue])
     {
       v11 = 0;
     }
 
     else
     {
-      v12 = [v7 service];
-      v13 = [v12 characteristics];
-      v14 = [v13 na_firstObjectPassingTest:&__block_literal_global_248];
+      service = [characteristicCopy service];
+      characteristics = [service characteristics];
+      v14 = [characteristics na_firstObjectPassingTest:&__block_literal_global_248];
 
       if (v14)
       {
@@ -6144,22 +6144,22 @@ void __43__HFCharacteristicValueManager_na_identity__block_invoke_2()
             v17 = objc_opt_class();
             v18 = NSStringFromClass(v17);
             v19 = NSStringFromSelector(a2);
-            v20 = [v7 uniqueIdentifier];
-            v21 = [v15 BOOLValue];
+            uniqueIdentifier = [characteristicCopy uniqueIdentifier];
+            bOOLValue = [v15 BOOLValue];
             *buf = 138413314;
             v22 = @"Off";
             v36 = v18;
             v37 = 2112;
-            if (v21)
+            if (bOOLValue)
             {
               v22 = @"On";
             }
 
             v38 = v19;
             v39 = 2112;
-            v40 = v8;
+            v40 = valueCopy;
             v41 = 2112;
-            v42 = v20;
+            v42 = uniqueIdentifier;
             v43 = 2112;
             v44 = v22;
             _os_log_impl(&dword_20D9BF000, v16, OS_LOG_TYPE_DEFAULT, "%@:%@ brightness %@ (%@) associatedPowerCharacteristic powered on: %@", buf, 0x34u);
@@ -6174,24 +6174,24 @@ void __43__HFCharacteristicValueManager_na_identity__block_invoke_2()
             v24 = objc_opt_class();
             v32 = NSStringFromClass(v24);
             v31 = NSStringFromSelector(a2);
-            v25 = [v7 uniqueIdentifier];
-            v34 = [v7 service];
-            v33 = [v34 hf_serviceNameComponents];
-            v26 = [v33 composedString];
-            v27 = [v7 service];
-            v28 = [v27 uniqueIdentifier];
+            uniqueIdentifier2 = [characteristicCopy uniqueIdentifier];
+            service2 = [characteristicCopy service];
+            hf_serviceNameComponents = [service2 hf_serviceNameComponents];
+            composedString = [hf_serviceNameComponents composedString];
+            service3 = [characteristicCopy service];
+            uniqueIdentifier3 = [service3 uniqueIdentifier];
             *buf = 138413826;
             v36 = v32;
             v37 = 2112;
             v38 = v31;
             v39 = 2112;
-            v40 = v25;
+            v40 = uniqueIdentifier2;
             v41 = 2112;
-            v42 = v26;
+            v42 = composedString;
             v43 = 2112;
-            v44 = v28;
+            v44 = uniqueIdentifier3;
             v45 = 2112;
-            v46 = v8;
+            v46 = valueCopy;
             v47 = 2112;
             v48 = &unk_2825237A8;
             _os_log_impl(&dword_20D9BF000, v23, OS_LOG_TYPE_DEFAULT, "%@:%@ Overriding cached value for characteristic (%@) in service '%@' (%@) from %@ to %@", buf, 0x48u);
@@ -6225,58 +6225,58 @@ uint64_t __76__HFCharacteristicValueManager__overrideCachedValueForCharacteristi
   return v3;
 }
 
-- (void)setCachedReadError:(id)a3 forCharacteristic:(id)a4
+- (void)setCachedReadError:(id)error forCharacteristic:(id)characteristic
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HFCharacteristicValueManager *)self transactionLock];
-  [v8 lock];
+  characteristicCopy = characteristic;
+  errorCopy = error;
+  transactionLock = [(HFCharacteristicValueManager *)self transactionLock];
+  [transactionLock lock];
 
-  v9 = [(HFCharacteristicValueManager *)self cachedReadErrorsKeyedByCharacteristicIdentifier];
-  v10 = [v6 uniqueIdentifier];
+  cachedReadErrorsKeyedByCharacteristicIdentifier = [(HFCharacteristicValueManager *)self cachedReadErrorsKeyedByCharacteristicIdentifier];
+  uniqueIdentifier = [characteristicCopy uniqueIdentifier];
 
-  [v9 setObject:v7 forKey:v10];
-  v11 = [(HFCharacteristicValueManager *)self transactionLock];
-  [v11 unlock];
+  [cachedReadErrorsKeyedByCharacteristicIdentifier setObject:errorCopy forKey:uniqueIdentifier];
+  transactionLock2 = [(HFCharacteristicValueManager *)self transactionLock];
+  [transactionLock2 unlock];
 }
 
-- (void)setCachedWriteError:(id)a3 forCharacteristic:(id)a4
+- (void)setCachedWriteError:(id)error forCharacteristic:(id)characteristic
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HFCharacteristicValueManager *)self transactionLock];
-  [v8 lock];
+  characteristicCopy = characteristic;
+  errorCopy = error;
+  transactionLock = [(HFCharacteristicValueManager *)self transactionLock];
+  [transactionLock lock];
 
-  v9 = [(HFCharacteristicValueManager *)self cachedWriteErrorsKeyedByCharacteristicIdentifier];
-  v10 = [v6 uniqueIdentifier];
+  cachedWriteErrorsKeyedByCharacteristicIdentifier = [(HFCharacteristicValueManager *)self cachedWriteErrorsKeyedByCharacteristicIdentifier];
+  uniqueIdentifier = [characteristicCopy uniqueIdentifier];
 
-  [v9 setObject:v7 forKey:v10];
-  v11 = [(HFCharacteristicValueManager *)self transactionLock];
-  [v11 unlock];
+  [cachedWriteErrorsKeyedByCharacteristicIdentifier setObject:errorCopy forKey:uniqueIdentifier];
+  transactionLock2 = [(HFCharacteristicValueManager *)self transactionLock];
+  [transactionLock2 unlock];
 }
 
-- (void)setOverrideLoadingState:(unint64_t)a3 forCharacteristic:(id)a4
+- (void)setOverrideLoadingState:(unint64_t)state forCharacteristic:(id)characteristic
 {
-  v6 = a4;
-  v7 = [(HFCharacteristicValueManager *)self testingOverrideLoadingStates];
+  characteristicCopy = characteristic;
+  testingOverrideLoadingStates = [(HFCharacteristicValueManager *)self testingOverrideLoadingStates];
 
-  if (!v7)
+  if (!testingOverrideLoadingStates)
   {
-    v8 = [MEMORY[0x277CBEB38] dictionary];
-    [(HFCharacteristicValueManager *)self setTestingOverrideLoadingStates:v8];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    [(HFCharacteristicValueManager *)self setTestingOverrideLoadingStates:dictionary];
   }
 
-  v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-  v9 = [(HFCharacteristicValueManager *)self testingOverrideLoadingStates];
-  v10 = [v6 uniqueIdentifier];
+  v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:state];
+  testingOverrideLoadingStates2 = [(HFCharacteristicValueManager *)self testingOverrideLoadingStates];
+  uniqueIdentifier = [characteristicCopy uniqueIdentifier];
 
-  [v9 setObject:v11 forKeyedSubscript:v10];
+  [testingOverrideLoadingStates2 setObject:v11 forKeyedSubscript:uniqueIdentifier];
 }
 
 - (void)clearOverrideLoadingStates
 {
-  v2 = [(HFCharacteristicValueManager *)self testingOverrideLoadingStates];
-  [v2 removeAllObjects];
+  testingOverrideLoadingStates = [(HFCharacteristicValueManager *)self testingOverrideLoadingStates];
+  [testingOverrideLoadingStates removeAllObjects];
 }
 
 @end

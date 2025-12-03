@@ -1,13 +1,13 @@
 @interface MKMessage
-- (MKMessage)initWithData:(id)a3;
+- (MKMessage)initWithData:(id)data;
 @end
 
 @implementation MKMessage
 
-- (MKMessage)initWithData:(id)a3
+- (MKMessage)initWithData:(id)data
 {
   v93 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dataCopy = data;
   v89.receiver = self;
   v89.super_class = MKMessage;
   v5 = [(MKMessage *)&v89 init];
@@ -17,7 +17,7 @@
   }
 
   v88 = 0;
-  v6 = [MEMORY[0x277CCAAA0] JSONObjectWithData:v4 options:0 error:&v88];
+  v6 = [MEMORY[0x277CCAAA0] JSONObjectWithData:dataCopy options:0 error:&v88];
   v7 = v88;
   if (!v7)
   {
@@ -54,9 +54,9 @@
     [(NSDate *)v5->_date timeIntervalSinceReferenceDate];
     [(MKMessage *)v5 setTimestampInNanoseconds:(v17 * *"")];
     v18 = 0x277CCA000uLL;
-    v19 = [MEMORY[0x277CCAD78] UUID];
-    v20 = [v19 UUIDString];
-    [(MKMessage *)v5 setID:v20];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    [(MKMessage *)v5 setID:uUIDString];
 
     v21 = [v9 mk_stringForKey:@"thread_id"];
     [(MKMessage *)v5 setThreadID:v21];
@@ -94,7 +94,7 @@
       if (objc_opt_isKindOfClass())
       {
         v73 = v9;
-        v75 = v4;
+        v75 = dataCopy;
         v28 = v5;
         v29 = v27;
         v30 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -154,7 +154,7 @@
         [(MKMessage *)v28 setRecipients:v30];
 
         v9 = v73;
-        v4 = v75;
+        dataCopy = v75;
         v18 = 0x277CCA000;
       }
     }
@@ -220,10 +220,10 @@ LABEL_44:
                   if ([v53 isEqualToString:@"text/plain"])
                   {
                     v55 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBase64EncodedString:v54 options:0];
-                    v56 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v55 encoding:4];
-                    if (([v56 hasPrefix:@"proto:"] & 1) == 0)
+                    uUID2 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v55 encoding:4];
+                    if (([uUID2 hasPrefix:@"proto:"] & 1) == 0)
                     {
-                      v57 = [p_isa[9] stringByAppendingString:v56];
+                      v57 = [p_isa[9] stringByAppendingString:uUID2];
                       [p_isa setBody:v57];
 
                       v46 = v76;
@@ -238,8 +238,8 @@ LABEL_60:
                     if (v55)
                     {
                       [v79 addObject:v55];
-                      v56 = [(MKMessageAttachment *)v55 UUID];
-                      [v78 addObject:v56];
+                      uUID2 = [(MKMessageAttachment *)v55 UUID];
+                      [v78 addObject:uUID2];
                       goto LABEL_60;
                     }
                   }
@@ -270,8 +270,8 @@ LABEL_64:
         }
 
         v61 = objc_alloc_init(MEMORY[0x277CBEB18]);
-        v62 = [(MKMessage *)v5 recipients];
-        v63 = [v62 count];
+        recipients = [(MKMessage *)v5 recipients];
+        v63 = [recipients count];
 
         if (v63 >= 2)
         {
@@ -300,9 +300,9 @@ LABEL_76:
               [(MKMessage *)v5 setAccount:v66];
 
 LABEL_84:
-              v67 = [*(v18 + 3448) UUID];
-              v68 = [v67 UUIDString];
-              [(MKMessage *)v5 setUUID:v68];
+              uUID3 = [*(v18 + 3448) UUID];
+              uUIDString2 = [uUID3 UUIDString];
+              [(MKMessage *)v5 setUUID:uUIDString2];
 
 LABEL_85:
               v40 = v5;

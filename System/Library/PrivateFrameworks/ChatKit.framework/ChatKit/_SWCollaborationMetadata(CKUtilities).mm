@@ -61,7 +61,7 @@
     v6 = 0;
   }
 
-  if ([a1 _contentTypeIsNotFileType:v6])
+  if ([self _contentTypeIsNotFileType:v6])
   {
     v8 = IMLogHandleForCategory();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
@@ -84,7 +84,7 @@ LABEL_14:
   if (v4)
   {
     v5 = [objc_opt_class() contentTypeFromCKShare:v4];
-    v6 = [a1 updatedCollaborationMetadataWithSharingURL:0 ckShare:v4 localIdentifier:0 collaborationIdentifier:0 title:0 defaultShareOptions:0 creationDate:0 contentType:v5 ckAppBundleIDs:0 initiatorHandle:0 initiatorNameComponents:0 containerSetupInfo:0 sourceProcessData:0];
+    v6 = [self updatedCollaborationMetadataWithSharingURL:0 ckShare:v4 localIdentifier:0 collaborationIdentifier:0 title:0 defaultShareOptions:0 creationDate:0 contentType:v5 ckAppBundleIDs:0 initiatorHandle:0 initiatorNameComponents:0 containerSetupInfo:0 sourceProcessData:0];
   }
 
   else
@@ -137,21 +137,21 @@ LABEL_14:
   v50 = a3;
   v51 = a4;
   v21 = a5;
-  v22 = a6;
+  collaborationIdentifier = a6;
   v23 = a7;
-  v53 = a8;
-  v24 = a1;
-  v52 = a9;
+  defaultShareOptions = a8;
+  selfCopy = self;
+  creationDate = a9;
   v25 = a10;
   v26 = a11;
   v27 = a12;
   v28 = a13;
   v29 = a14;
-  v30 = a15;
-  v48 = v21;
+  sourceProcessData = a15;
+  localIdentifier = v21;
   if (v21)
   {
-    if (v22)
+    if (collaborationIdentifier)
     {
       goto LABEL_3;
     }
@@ -159,18 +159,18 @@ LABEL_14:
 
   else
   {
-    v48 = [v24 localIdentifier];
-    if (v22)
+    localIdentifier = [selfCopy localIdentifier];
+    if (collaborationIdentifier)
     {
       goto LABEL_3;
     }
   }
 
-  v22 = [v24 collaborationIdentifier];
+  collaborationIdentifier = [selfCopy collaborationIdentifier];
 LABEL_3:
   v47 = v28;
-  v49 = v22;
-  if (v23 && [v23 length] || (objc_msgSend(v24, "title"), v31 = objc_claimAutoreleasedReturnValue(), v23, (v23 = v31) != 0))
+  v49 = collaborationIdentifier;
+  if (v23 && [v23 length] || (objc_msgSend(selfCopy, "title"), v31 = objc_claimAutoreleasedReturnValue(), v23, (v23 = v31) != 0))
   {
     v32 = [v23 length];
     if (v51 && !v32)
@@ -187,14 +187,14 @@ LABEL_8:
     v23 = v33;
   }
 
-  if (!v53)
+  if (!defaultShareOptions)
   {
-    v53 = [v24 defaultShareOptions];
+    defaultShareOptions = [selfCopy defaultShareOptions];
   }
 
-  if (!v52)
+  if (!creationDate)
   {
-    v52 = [v24 creationDate];
+    creationDate = [selfCopy creationDate];
   }
 
   v34 = v29;
@@ -205,10 +205,10 @@ LABEL_8:
 
   else
   {
-    v36 = [v24 contentType];
-    v25 = v36;
+    contentType = [selfCopy contentType];
+    v25 = contentType;
     v35 = v50 != 0;
-    if (v50 && !v36)
+    if (v50 && !contentType)
     {
       v25 = [objc_opt_class() contentTypeFromCKShare:v51];
       v35 = 1;
@@ -217,21 +217,21 @@ LABEL_8:
 
   if (v26 && [v26 count])
   {
-    v37 = v34;
+    containerSetupInfo = v34;
   }
 
   else
   {
-    v38 = [v24 ckAppBundleIDs];
+    ckAppBundleIDs = [selfCopy ckAppBundleIDs];
 
     v39 = !v35;
-    if (v38)
+    if (ckAppBundleIDs)
     {
       v39 = 1;
     }
 
-    v26 = v38;
-    v37 = v34;
+    v26 = ckAppBundleIDs;
+    containerSetupInfo = v34;
     if ((v39 & 1) == 0)
     {
       v26 = [objc_opt_class() appBundleIDsFromSharingURL:v50];
@@ -240,22 +240,22 @@ LABEL_8:
 
   if (!v27 || ![v27 length])
   {
-    v40 = [v24 initiatorHandle];
+    initiatorHandle = [selfCopy initiatorHandle];
 
-    v27 = v40;
+    v27 = initiatorHandle;
   }
 
-  v41 = v47;
+  initiatorNameComponents = v47;
   if (v47)
   {
-    if (v37)
+    if (containerSetupInfo)
     {
       goto LABEL_32;
     }
 
 LABEL_39:
-    v37 = [v24 containerSetupInfo];
-    if (v30)
+    containerSetupInfo = [selfCopy containerSetupInfo];
+    if (sourceProcessData)
     {
       goto LABEL_33;
     }
@@ -263,24 +263,24 @@ LABEL_39:
     goto LABEL_40;
   }
 
-  v41 = [v24 initiatorNameComponents];
-  if (!v37)
+  initiatorNameComponents = [selfCopy initiatorNameComponents];
+  if (!containerSetupInfo)
   {
     goto LABEL_39;
   }
 
 LABEL_32:
-  if (v30)
+  if (sourceProcessData)
   {
     goto LABEL_33;
   }
 
 LABEL_40:
-  v30 = [v24 sourceProcessData];
+  sourceProcessData = [selfCopy sourceProcessData];
 LABEL_33:
-  v42 = v30;
-  v43 = v41;
-  v44 = [objc_alloc(MEMORY[0x1E697B700]) initWithLocalIdentifier:v26 collaborationIdentifier:v27 title:v41 defaultShareOptions:v37 creationDate:v30 contentType:? ckAppBundleIDs:? initiatorHandle:? initiatorNameComponents:? containerSetupInfo:? sourceProcessData:?];
+  v42 = sourceProcessData;
+  v43 = initiatorNameComponents;
+  v44 = [objc_alloc(MEMORY[0x1E697B700]) initWithLocalIdentifier:v26 collaborationIdentifier:v27 title:initiatorNameComponents defaultShareOptions:containerSetupInfo creationDate:sourceProcessData contentType:? ckAppBundleIDs:? initiatorHandle:? initiatorNameComponents:? containerSetupInfo:? sourceProcessData:?];
   v45 = IMLogHandleForCategory();
   if (os_log_type_enabled(v45, OS_LOG_TYPE_INFO))
   {
@@ -300,62 +300,62 @@ LABEL_33:
   v2 = IMLogHandleForCategory();
   if (os_log_type_enabled(v2, OS_LOG_TYPE_INFO))
   {
-    v3 = [a1 localIdentifier];
+    localIdentifier = [self localIdentifier];
     v31 = 138412290;
-    v32 = v3;
+    v32 = localIdentifier;
     _os_log_impl(&dword_19020E000, v2, OS_LOG_TYPE_INFO, "    localIdentifier: %@", &v31, 0xCu);
   }
 
   v4 = IMLogHandleForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
-    v5 = [a1 collaborationIdentifier];
+    collaborationIdentifier = [self collaborationIdentifier];
     v31 = 138412290;
-    v32 = v5;
+    v32 = collaborationIdentifier;
     _os_log_impl(&dword_19020E000, v4, OS_LOG_TYPE_INFO, "    collaborationIdentifier: %@", &v31, 0xCu);
   }
 
   v6 = IMLogHandleForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
-    v7 = [a1 title];
+    title = [self title];
     v31 = 138412290;
-    v32 = v7;
+    v32 = title;
     _os_log_impl(&dword_19020E000, v6, OS_LOG_TYPE_INFO, "    title: %@", &v31, 0xCu);
   }
 
   v8 = IMLogHandleForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
-    v9 = [a1 defaultShareOptions];
+    defaultShareOptions = [self defaultShareOptions];
     v31 = 138412290;
-    v32 = v9;
+    v32 = defaultShareOptions;
     _os_log_impl(&dword_19020E000, v8, OS_LOG_TYPE_INFO, "    defaultShareOptions: %@", &v31, 0xCu);
   }
 
   v10 = IMLogHandleForCategory();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
-    v11 = [a1 creationDate];
+    creationDate = [self creationDate];
     v31 = 138412290;
-    v32 = v11;
+    v32 = creationDate;
     _os_log_impl(&dword_19020E000, v10, OS_LOG_TYPE_INFO, "    creationDate: %@", &v31, 0xCu);
   }
 
   v12 = IMLogHandleForCategory();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
-    v13 = [a1 contentType];
+    contentType = [self contentType];
     v31 = 138412290;
-    v32 = v13;
+    v32 = contentType;
     _os_log_impl(&dword_19020E000, v12, OS_LOG_TYPE_INFO, "    contentType: %@", &v31, 0xCu);
   }
 
   v14 = IMLogHandleForCategory();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
   {
-    v15 = [a1 ckAppBundleIDs];
-    v16 = [v15 componentsJoinedByString:{@", "}];
+    ckAppBundleIDs = [self ckAppBundleIDs];
+    v16 = [ckAppBundleIDs componentsJoinedByString:{@", "}];
     v31 = 138412290;
     v32 = v16;
     _os_log_impl(&dword_19020E000, v14, OS_LOG_TYPE_INFO, "    ckAppBundleIDs: %@", &v31, 0xCu);
@@ -364,63 +364,63 @@ LABEL_33:
   v17 = IMLogHandleForCategory();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
   {
-    v18 = [a1 initiatorHandle];
+    initiatorHandle = [self initiatorHandle];
     v31 = 138412290;
-    v32 = v18;
+    v32 = initiatorHandle;
     _os_log_impl(&dword_19020E000, v17, OS_LOG_TYPE_INFO, "    initiatorHandle: %@", &v31, 0xCu);
   }
 
   v19 = IMLogHandleForCategory();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
   {
-    v20 = [a1 initiatorHandle];
+    initiatorHandle2 = [self initiatorHandle];
     v31 = 138412290;
-    v32 = v20;
+    v32 = initiatorHandle2;
     _os_log_impl(&dword_19020E000, v19, OS_LOG_TYPE_INFO, "    initiatorNameComponents: %@", &v31, 0xCu);
   }
 
   v21 = IMLogHandleForCategory();
   if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
   {
-    v22 = [a1 containerSetupInfo];
+    containerSetupInfo = [self containerSetupInfo];
     v31 = 138412290;
-    v32 = v22;
+    v32 = containerSetupInfo;
     _os_log_impl(&dword_19020E000, v21, OS_LOG_TYPE_INFO, "    containerSetupInfo: %@", &v31, 0xCu);
   }
 
   v23 = IMLogHandleForCategory();
   if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
   {
-    v24 = [a1 sourceProcessData];
+    sourceProcessData = [self sourceProcessData];
     v31 = 138412290;
-    v32 = v24;
+    v32 = sourceProcessData;
     _os_log_impl(&dword_19020E000, v23, OS_LOG_TYPE_INFO, "    sourceProcessData: %@", &v31, 0xCu);
   }
 
   v25 = IMLogHandleForCategory();
   if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
   {
-    v26 = [a1 userSelectedShareOptions];
+    userSelectedShareOptions = [self userSelectedShareOptions];
     v31 = 138412290;
-    v32 = v26;
+    v32 = userSelectedShareOptions;
     _os_log_impl(&dword_19020E000, v25, OS_LOG_TYPE_INFO, "    userSelectedShareOptions: %@", &v31, 0xCu);
   }
 
   v27 = IMLogHandleForCategory();
   if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
   {
-    v28 = [a1 defaultOptions];
+    defaultOptions = [self defaultOptions];
     v31 = 138412290;
-    v32 = v28;
+    v32 = defaultOptions;
     _os_log_impl(&dword_19020E000, v27, OS_LOG_TYPE_INFO, "    defaultOptions: %@", &v31, 0xCu);
   }
 
   v29 = IMLogHandleForCategory();
   if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
   {
-    v30 = [a1 defaultShareOptions];
+    defaultShareOptions2 = [self defaultShareOptions];
     v31 = 138412290;
-    v32 = v30;
+    v32 = defaultShareOptions2;
     _os_log_impl(&dword_19020E000, v29, OS_LOG_TYPE_INFO, "    defaultShareOptions: %@", &v31, 0xCu);
   }
 }
@@ -432,20 +432,20 @@ LABEL_33:
   v10 = a5;
   if (v8)
   {
-    v25 = [v8 localIdentifier];
-    v23 = [v8 collaborationIdentifier];
-    v22 = [v8 title];
-    v21 = [v8 defaultShareOptions];
-    v20 = [v8 creationDate];
-    v19 = [v8 contentType];
-    v18 = [v8 ckAppBundleIDs];
-    v11 = [v8 initiatorHandle];
-    v12 = [v8 initiatorNameComponents];
-    v13 = [v8 containerSetupInfo];
-    v14 = [v8 sourceProcessData];
-    v24 = [a1 updatedCollaborationMetadataWithSharingURL:v10 ckShare:v9 localIdentifier:v25 collaborationIdentifier:v23 title:v22 defaultShareOptions:v21 creationDate:v20 contentType:v19 ckAppBundleIDs:v18 initiatorHandle:v11 initiatorNameComponents:v12 containerSetupInfo:v13 sourceProcessData:v14];
+    localIdentifier = [v8 localIdentifier];
+    collaborationIdentifier = [v8 collaborationIdentifier];
+    title = [v8 title];
+    defaultShareOptions = [v8 defaultShareOptions];
+    creationDate = [v8 creationDate];
+    contentType = [v8 contentType];
+    ckAppBundleIDs = [v8 ckAppBundleIDs];
+    initiatorHandle = [v8 initiatorHandle];
+    initiatorNameComponents = [v8 initiatorNameComponents];
+    containerSetupInfo = [v8 containerSetupInfo];
+    sourceProcessData = [v8 sourceProcessData];
+    v24 = [self updatedCollaborationMetadataWithSharingURL:v10 ckShare:v9 localIdentifier:localIdentifier collaborationIdentifier:collaborationIdentifier title:title defaultShareOptions:defaultShareOptions creationDate:creationDate contentType:contentType ckAppBundleIDs:ckAppBundleIDs initiatorHandle:initiatorHandle initiatorNameComponents:initiatorNameComponents containerSetupInfo:containerSetupInfo sourceProcessData:sourceProcessData];
 
-    v15 = v24;
+    selfCopy = v24;
   }
 
   else
@@ -456,10 +456,10 @@ LABEL_33:
       [_SWCollaborationMetadata(CKUtilities) updatedCollaborationMetadataWithUpdatedMetadata:ckShare:sharingURL:];
     }
 
-    v15 = a1;
+    selfCopy = self;
   }
 
-  return v15;
+  return selfCopy;
 }
 
 - (id)updatedCollaborationMetadataAppBundleIDsWithSharingURL:()CKUtilities
@@ -469,7 +469,7 @@ LABEL_33:
   v6 = v5;
   if (v5 && [v5 count])
   {
-    v7 = [a1 updatedCollaborationMetadataWithAppBundleIDs:v6];
+    v7 = [self updatedCollaborationMetadataWithAppBundleIDs:v6];
   }
 
   else
@@ -494,35 +494,35 @@ LABEL_33:
   v8 = v7;
   if (v7 && [v7 length])
   {
-    [a1 setInitiatorHandle:v8];
+    [self setInitiatorHandle:v8];
   }
 
   if (v6 && [v6 length])
   {
     v9 = objc_alloc_init(MEMORY[0x1E696ADF8]);
     v10 = [v9 personNameComponentsFromString:v6];
-    [a1 setInitiatorNameComponents:v10];
+    [self setInitiatorNameComponents:v10];
   }
 
   v11 = IMLogHandleForCategory();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
-    v12 = [a1 initiatorHandle];
-    v13 = [a1 initiatorNameComponents];
+    initiatorHandle = [self initiatorHandle];
+    initiatorNameComponents = [self initiatorNameComponents];
     v14 = 138412546;
-    v15 = v12;
+    v15 = initiatorHandle;
     v16 = 2112;
-    v17 = v13;
+    v17 = initiatorNameComponents;
     _os_log_impl(&dword_19020E000, v11, OS_LOG_TYPE_INFO, "Updated initiator name: %@, components: %@", &v14, 0x16u);
   }
 }
 
 - (uint64_t)checkSendReadiness
 {
-  v2 = [a1 collaborationIdentifier];
-  v3 = v2 != 0;
+  collaborationIdentifier = [self collaborationIdentifier];
+  v3 = collaborationIdentifier != 0;
 
-  if (!v2)
+  if (!collaborationIdentifier)
   {
     v4 = IMLogHandleForCategory();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -531,9 +531,9 @@ LABEL_33:
     }
   }
 
-  v5 = [a1 localIdentifier];
+  localIdentifier = [self localIdentifier];
 
-  if (!v5)
+  if (!localIdentifier)
   {
     v6 = IMLogHandleForCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -544,8 +544,8 @@ LABEL_33:
     v3 = 0;
   }
 
-  v7 = [a1 title];
-  if (!v7 || (v8 = v7, [a1 title], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "length"), v9, v8, !v10))
+  title = [self title];
+  if (!title || (v8 = title, [self title], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "length"), v9, v8, !v10))
   {
     v11 = IMLogHandleForCategory();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -556,9 +556,9 @@ LABEL_33:
     v3 = 0;
   }
 
-  v12 = [a1 defaultShareOptions];
+  defaultShareOptions = [self defaultShareOptions];
 
-  if (!v12)
+  if (!defaultShareOptions)
   {
     v13 = IMLogHandleForCategory();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -569,8 +569,8 @@ LABEL_33:
     v3 = 0;
   }
 
-  v14 = [a1 ckAppBundleIDs];
-  if (!v14 || (v15 = v14, [a1 ckAppBundleIDs], v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "count"), v16, v15, !v17))
+  ckAppBundleIDs = [self ckAppBundleIDs];
+  if (!ckAppBundleIDs || (v15 = ckAppBundleIDs, [self ckAppBundleIDs], v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "count"), v16, v15, !v17))
   {
     v18 = IMLogHandleForCategory();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -581,8 +581,8 @@ LABEL_33:
     v3 = 0;
   }
 
-  v19 = [a1 initiatorHandle];
-  if (!v19 || (v20 = v19, [a1 initiatorHandle], v21 = objc_claimAutoreleasedReturnValue(), v22 = objc_msgSend(v21, "length"), v21, v20, !v22))
+  initiatorHandle = [self initiatorHandle];
+  if (!initiatorHandle || (v20 = initiatorHandle, [self initiatorHandle], v21 = objc_claimAutoreleasedReturnValue(), v22 = objc_msgSend(v21, "length"), v21, v20, !v22))
   {
     v23 = IMLogHandleForCategory();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -593,9 +593,9 @@ LABEL_33:
     v3 = 0;
   }
 
-  v24 = [a1 initiatorNameComponents];
+  initiatorNameComponents = [self initiatorNameComponents];
 
-  if (v24)
+  if (initiatorNameComponents)
   {
     if (v3)
     {
@@ -627,7 +627,7 @@ LABEL_33:
 
 LABEL_37:
 
-  return [a1 _logSelf];
+  return [self _logSelf];
 }
 
 - (void)updatedCollaborationMetadataAppBundleIDsWithSharingURL:()CKUtilities .cold.1(uint64_t a1, NSObject *a2)

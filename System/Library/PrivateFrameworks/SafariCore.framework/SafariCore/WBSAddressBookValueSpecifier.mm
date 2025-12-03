@@ -1,52 +1,52 @@
 @interface WBSAddressBookValueSpecifier
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSDictionary)dictionaryRepresentation;
-- (WBSAddressBookValueSpecifier)initWithProperty:(id)a3 component:(id)a4 label:(id)a5 category:(id)a6 parentProperty:(id)a7 classification:(id)a8 classificationHint:(id)a9;
+- (WBSAddressBookValueSpecifier)initWithProperty:(id)property component:(id)component label:(id)label category:(id)category parentProperty:(id)parentProperty classification:(id)classification classificationHint:(id)hint;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation WBSAddressBookValueSpecifier
 
-- (WBSAddressBookValueSpecifier)initWithProperty:(id)a3 component:(id)a4 label:(id)a5 category:(id)a6 parentProperty:(id)a7 classification:(id)a8 classificationHint:(id)a9
+- (WBSAddressBookValueSpecifier)initWithProperty:(id)property component:(id)component label:(id)label category:(id)category parentProperty:(id)parentProperty classification:(id)classification classificationHint:(id)hint
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
+  propertyCopy = property;
+  componentCopy = component;
+  labelCopy = label;
+  categoryCopy = category;
+  parentPropertyCopy = parentProperty;
+  classificationCopy = classification;
+  hintCopy = hint;
   v39.receiver = self;
   v39.super_class = WBSAddressBookValueSpecifier;
   v22 = [(WBSAddressBookValueSpecifier *)&v39 init];
   if (v22)
   {
-    v23 = [v15 copy];
+    v23 = [propertyCopy copy];
     property = v22->_property;
     v22->_property = v23;
 
-    v25 = [v16 copy];
+    v25 = [componentCopy copy];
     component = v22->_component;
     v22->_component = v25;
 
-    v27 = [v17 copy];
+    v27 = [labelCopy copy];
     label = v22->_label;
     v22->_label = v27;
 
-    v29 = [v18 copy];
+    v29 = [categoryCopy copy];
     category = v22->_category;
     v22->_category = v29;
 
-    v31 = [v19 copy];
+    v31 = [parentPropertyCopy copy];
     parentProperty = v22->_parentProperty;
     v22->_parentProperty = v31;
 
-    v33 = [v20 copy];
+    v33 = [classificationCopy copy];
     classification = v22->_classification;
     v22->_classification = v33;
 
-    v35 = [v21 copy];
+    v35 = [hintCopy copy];
     classificationHint = v22->_classificationHint;
     v22->_classificationHint = v35;
 
@@ -63,10 +63,10 @@
   return v4 ^ [(NSString *)self->_label hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -76,7 +76,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       property = self->_property;
       v9 = 0;
       if (property == v5->_property || [(NSString *)property isEqualToString:?])
@@ -114,12 +114,12 @@
 
 - (NSDictionary)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   property = self->_property;
   if (property)
   {
-    [v3 setObject:property forKeyedSubscript:@"property"];
+    [dictionary setObject:property forKeyedSubscript:@"property"];
   }
 
   component = self->_component;

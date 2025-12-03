@@ -1,13 +1,13 @@
 @interface SPTextualReportParser
-+ (BOOL)isSpindumpFile:(const char *)a3;
-- (BOOL)parseSpindumpFile:(const char *)a3 andReportToStream:(__sFILE *)a4;
++ (BOOL)isSpindumpFile:(const char *)file;
+- (BOOL)parseSpindumpFile:(const char *)file andReportToStream:(__sFILE *)stream;
 @end
 
 @implementation SPTextualReportParser
 
-+ (BOOL)isSpindumpFile:(const char *)a3
++ (BOOL)isSpindumpFile:(const char *)file
 {
-  v4 = fopen(a3, "r");
+  v4 = fopen(file, "r");
   if (v4)
   {
     v5 = v4;
@@ -47,7 +47,7 @@ LABEL_16:
       v12 = *__error();
       v13 = __error();
       v14 = strerror(*v13);
-      v15 = CFStringCreateWithFormat(kCFAllocatorDefault, 0, @"Unable to open %s: %d (%s)", a3, v12, v14);
+      v15 = CFStringCreateWithFormat(kCFAllocatorDefault, 0, @"Unable to open %s: %d (%s)", file, v12, v14);
       if (v15)
       {
         v16 = v15;
@@ -118,7 +118,7 @@ LABEL_16:
   return v7;
 }
 
-- (BOOL)parseSpindumpFile:(const char *)a3 andReportToStream:(__sFILE *)a4
+- (BOOL)parseSpindumpFile:(const char *)file andReportToStream:(__sFILE *)stream
 {
   context = objc_autoreleasePoolPush();
   v975 = 0;
@@ -136,7 +136,7 @@ LABEL_16:
   v970[4] = &v971;
   v970[5] = &v975;
   v949 = objc_retainBlock(v970);
-  v5 = fopen(a3, "r");
+  v5 = fopen(file, "r");
   if (!v5)
   {
     if (byte_100127EC8 == 1)
@@ -149,7 +149,7 @@ LABEL_16:
         v86 = __error();
         v87 = strerror(*v86);
         *buf = 136315650;
-        *&buf[4] = a3;
+        *&buf[4] = file;
         *&buf[12] = 1024;
         *&buf[14] = v85;
         *&buf[18] = 2080;
@@ -181,7 +181,7 @@ LABEL_16:
       v28 = *__error();
       v29 = __error();
       v30 = strerror(*v29);
-      v31 = CFStringCreateWithFormat(kCFAllocatorDefault, 0, @"Parsing spindump text: Unable to open %s: %d (%s)", a3, v28, v30);
+      v31 = CFStringCreateWithFormat(kCFAllocatorDefault, 0, @"Parsing spindump text: Unable to open %s: %d (%s)", file, v28, v30);
       v20 = v31;
       if (v31)
       {
@@ -224,7 +224,7 @@ LABEL_16:
         v94 = __error();
         v95 = strerror(*v94);
         *buf = 136315650;
-        *&buf[4] = a3;
+        *&buf[4] = file;
         *&buf[12] = 1024;
         *&buf[14] = v93;
         *&buf[18] = 2080;
@@ -691,16 +691,16 @@ LABEL_69:
       v629 = sub_10003E080();
       if (os_log_type_enabled(v629, OS_LOG_TYPE_ERROR))
       {
-        v630 = [(__CFString *)v58 UTF8String];
+        uTF8String = [(__CFString *)v58 UTF8String];
         v631 = [v61 debugDescription];
         v632 = v631;
-        v633 = [v631 UTF8String];
+        uTF8String2 = [v631 UTF8String];
         *buf = 136315650;
         *&buf[4] = "regex";
         *&buf[12] = 2080;
-        *&buf[14] = v630;
+        *&buf[14] = uTF8String;
         *&buf[22] = 2080;
-        *&buf[24] = v633;
+        *&buf[24] = uTF8String2;
         _os_log_error_impl(&_mh_execute_header, v629, OS_LOG_TYPE_ERROR, "%s: Unable to compile regex %s: %s", buf, 0x20u);
       }
 
@@ -710,10 +710,10 @@ LABEL_69:
     if (byte_100127EC9 == 1 && dword_100127558 <= 3)
     {
       v634 = *__error();
-      v635 = [(__CFString *)v58 UTF8String];
+      uTF8String3 = [(__CFString *)v58 UTF8String];
       v636 = [v61 debugDescription];
       v637 = v636;
-      v638 = CFStringCreateWithFormat(kCFAllocatorDefault, 0, @"%s: Unable to compile regex %s: %s", "regex", v635, [v636 UTF8String]);
+      v638 = CFStringCreateWithFormat(kCFAllocatorDefault, 0, @"%s: Unable to compile regex %s: %s", "regex", uTF8String3, [v636 UTF8String]);
 
       if (v638)
       {
@@ -754,16 +754,16 @@ LABEL_69:
         v639 = sub_10003E080();
         if (os_log_type_enabled(v639, OS_LOG_TYPE_FAULT))
         {
-          v640 = [(__CFString *)v58 UTF8String];
+          uTF8String4 = [(__CFString *)v58 UTF8String];
           v641 = [v61 debugDescription];
           v642 = v641;
-          v643 = [v641 UTF8String];
+          uTF8String5 = [v641 UTF8String];
           *buf = 136315650;
           *&buf[4] = "regex";
           *&buf[12] = 2080;
-          *&buf[14] = v640;
+          *&buf[14] = uTF8String4;
           *&buf[22] = 2080;
-          *&buf[24] = v643;
+          *&buf[24] = uTF8String5;
           _os_log_fault_impl(&_mh_execute_header, v639, OS_LOG_TYPE_FAULT, "Unable to format: %s: Unable to compile regex %s: %s", buf, 0x20u);
         }
 
@@ -1601,7 +1601,7 @@ LABEL_248:
   }
 
   v947 = sub_1000A0E84(v5, 0, v944, v935);
-  v143 = a4;
+  streamCopy6 = stream;
   if (!v947)
   {
     if (byte_100127EC8 == 1)
@@ -1711,14 +1711,14 @@ LABEL_932:
       if (v145[v146 - 1] != 10)
       {
         (v949[2])();
-        v143 = a4;
+        streamCopy6 = stream;
         v154 = 5;
         goto LABEL_786;
       }
 
       v145[v146 - 1] = 0;
       [NSString stringWithUTF8String:v976[3]];
-      v147 = a4;
+      streamCopy5 = stream;
       v149 = v144;
       v150 = v148 = v14;
       v151 = [v946 firstMatchInString:v150 options:0 range:{0, objc_msgSend(v150, "length")}];
@@ -2076,19 +2076,19 @@ LABEL_324:
             v213 = [v199 rangeWithName:@"binaryUuid"];
             if (v213 == 0x7FFFFFFFFFFFFFFFLL)
             {
-              v214 = 0;
+              v225 = 0;
             }
 
             else
             {
               v225 = [v906 substringWithRange:{v213, v212}];
-              v214 = [NSString stringWithFormat:@"<%@>", v225];
+              v225 = [NSString stringWithFormat:@"<%@>", v225];
             }
           }
 
           else
           {
-            v214 = [v906 substringWithRange:{v211, v210}];
+            v225 = [v906 substringWithRange:{v211, v210}];
           }
 
           *buf = _NSConcreteStackBlock;
@@ -2101,7 +2101,7 @@ LABEL_324:
           *&buf[48] = v208;
           v877 = v207;
           v985 = v877;
-          v883 = v214;
+          v883 = v225;
           v986 = v883;
           v227 = objc_retainBlock(buf);
           if ((v182 & 1) != 0 || v885 == 0x7FFFFFFFFFFFFFFFLL)
@@ -2147,18 +2147,18 @@ LABEL_567:
 
               if ([v246 numSymbols] > 1 || !v877 && ((v423 = objc_msgSend(v246, "hasSourceInfo"), !v208) ? (v424 = 1) : (v424 = v423), (v424 & 1) != 0))
               {
-                v371 = [v229 name];
+                name = [v229 name];
 
-                if (v371)
+                if (name)
                 {
-                  v372 = [v229 name];
+                  name2 = [v229 name];
                 }
 
                 else
                 {
-                  v413 = [v229 uuid];
-                  v414 = [v413 UUIDString];
-                  v372 = [NSString stringWithFormat:@"<%@>", v414];
+                  uuid = [v229 uuid];
+                  uUIDString = [uuid UUIDString];
+                  name2 = [NSString stringWithFormat:@"<%@>", uUIDString];
                 }
 
                 v415 = objc_alloc_init(NSMutableArray);
@@ -2168,11 +2168,11 @@ LABEL_567:
                 v996[3] = &unk_100116018;
                 v1001 = v183;
                 v997 = v246;
-                v998 = v372;
+                v998 = name2;
                 v1000 = v885;
                 v416 = v415;
                 v999 = v416;
-                v417 = v372;
+                v417 = name2;
                 [v246 enumerateSymbols:v996];
                 v418 = [v416 count];
                 v419 = v999;
@@ -2280,8 +2280,8 @@ LABEL_358:
         v250 = v209;
         v916 = v233;
         v924 = v250;
-        v251 = [v250 firstObject];
-        LODWORD(v250) = [v251 length] == 0;
+        firstObject = [v250 firstObject];
+        LODWORD(v250) = [firstObject length] == 0;
 
         if (v250)
         {
@@ -2293,17 +2293,17 @@ LABEL_358:
             {
               v575 = [v924 debugDescription];
               v576 = v575;
-              v577 = [v575 UTF8String];
+              uTF8String6 = [v575 UTF8String];
               v578 = v906;
-              v579 = [v906 UTF8String];
+              uTF8String7 = [v906 UTF8String];
               *buf = 136315906;
               *&buf[4] = "frameBodies.firstObject.length > 0";
               *&buf[12] = 2080;
-              *&buf[14] = v577;
+              *&buf[14] = uTF8String6;
               *&buf[22] = 1024;
               *&buf[24] = v905;
               *&buf[28] = 2080;
-              *&buf[30] = v579;
+              *&buf[30] = uTF8String7;
               _os_log_error_impl(&_mh_execute_header, v574, OS_LOG_TYPE_ERROR, "%s: No frame bodies in %s (%d: %s)", buf, 0x26u);
             }
 
@@ -2315,9 +2315,9 @@ LABEL_358:
             v580 = *__error();
             v581 = [v924 debugDescription];
             v582 = v581;
-            v583 = [v581 UTF8String];
+            uTF8String8 = [v581 UTF8String];
             v584 = v906;
-            v585 = CFStringCreateWithFormat(kCFAllocatorDefault, 0, @"%s: No frame bodies in %s (%d: %s)", "frameBodies.firstObject.length > 0", v583, v905, [v906 UTF8String]);
+            v585 = CFStringCreateWithFormat(kCFAllocatorDefault, 0, @"%s: No frame bodies in %s (%d: %s)", "frameBodies.firstObject.length > 0", uTF8String8, v905, [v906 UTF8String]);
 
             if (v585)
             {
@@ -2360,17 +2360,17 @@ LABEL_358:
               {
                 v587 = [v924 debugDescription];
                 v588 = v587;
-                v589 = [v587 UTF8String];
+                uTF8String9 = [v587 UTF8String];
                 v590 = v906;
-                v591 = [v906 UTF8String];
+                uTF8String10 = [v906 UTF8String];
                 *buf = 136315906;
                 *&buf[4] = "frameBodies.firstObject.length > 0";
                 *&buf[12] = 2080;
-                *&buf[14] = v589;
+                *&buf[14] = uTF8String9;
                 *&buf[22] = 1024;
                 *&buf[24] = v905;
                 *&buf[28] = 2080;
-                *&buf[30] = v591;
+                *&buf[30] = uTF8String10;
                 _os_log_fault_impl(&_mh_execute_header, v586, OS_LOG_TYPE_FAULT, "Unable to format: %s: No frame bodies in %s (%d: %s)", buf, 0x26u);
               }
 
@@ -2675,9 +2675,9 @@ LABEL_538:
                 v355 = v968;
                 v356 = v967;
                 v357 = v354;
-                v358 = [v354 UTF8String];
+                uTF8String11 = [v354 UTF8String];
                 v359 = v916;
-                sub_1000A2E60(a4, v356 + v355 * (v353 + v352), v900 != 0x7FFFFFFFFFFFFFFFLL, v910, v895, v358, v892, [v916 UTF8String], v886, v275);
+                sub_1000A2E60(stream, v356 + v355 * (v353 + v352), v900 != 0x7FFFFFFFFFFFFFFFLL, v910, v895, uTF8String11, v892, [v916 UTF8String], v886, v275);
 
                 ++v352;
                 v253 = v931;
@@ -2729,7 +2729,7 @@ LABEL_538:
                   if (os_log_type_enabled(v718, OS_LOG_TYPE_ERROR))
                   {
                     v719 = v906;
-                    v720 = [v906 UTF8String];
+                    uTF8String12 = [v906 UTF8String];
                     *buf = 136315906;
                     *&buf[4] = "previousNode";
                     *&buf[12] = 1024;
@@ -2737,7 +2737,7 @@ LABEL_538:
                     *&buf[18] = 1024;
                     *&buf[20] = v905;
                     *&buf[24] = 2080;
-                    *&buf[26] = v720;
+                    *&buf[26] = uTF8String12;
                     _os_log_error_impl(&_mh_execute_header, v718, OS_LOG_TYPE_ERROR, "%s: no previousNode for indent of %d (%d: %s)", buf, 0x22u);
                   }
 
@@ -2790,7 +2790,7 @@ LABEL_538:
                     if (os_log_type_enabled(v725, OS_LOG_TYPE_FAULT))
                     {
                       v726 = v906;
-                      v727 = [v906 UTF8String];
+                      uTF8String13 = [v906 UTF8String];
                       *buf = 136315906;
                       *&buf[4] = "previousNode";
                       *&buf[12] = 1024;
@@ -2798,7 +2798,7 @@ LABEL_538:
                       *&buf[18] = 1024;
                       *&buf[20] = v905;
                       *&buf[24] = 2080;
-                      *&buf[26] = v727;
+                      *&buf[26] = uTF8String13;
                       _os_log_fault_impl(&_mh_execute_header, v725, OS_LOG_TYPE_FAULT, "Unable to format: %s: no previousNode for indent of %d (%d: %s)", buf, 0x22u);
                     }
 
@@ -2852,7 +2852,7 @@ LABEL_538:
                   if (os_log_type_enabled(v601, OS_LOG_TYPE_ERROR))
                   {
                     v602 = v906;
-                    v603 = [v906 UTF8String];
+                    uTF8String14 = [v906 UTF8String];
                     *buf = 136316162;
                     *&buf[4] = "previousNode";
                     *&buf[12] = 1024;
@@ -2862,7 +2862,7 @@ LABEL_538:
                     *&buf[24] = 1024;
                     *&buf[26] = v905;
                     *&buf[30] = 2080;
-                    *&buf[32] = v603;
+                    *&buf[32] = uTF8String14;
                     _os_log_error_impl(&_mh_execute_header, v601, OS_LOG_TYPE_ERROR, "%s: no previousNode for indent %d, previousIndentLevel %d (%d: %s)", buf, 0x28u);
                   }
 
@@ -2915,7 +2915,7 @@ LABEL_538:
                     if (os_log_type_enabled(v609, OS_LOG_TYPE_FAULT))
                     {
                       v610 = v906;
-                      v611 = [v906 UTF8String];
+                      uTF8String15 = [v906 UTF8String];
                       *buf = 136316162;
                       *&buf[4] = "previousNode";
                       *&buf[12] = 1024;
@@ -2925,7 +2925,7 @@ LABEL_538:
                       *&buf[24] = 1024;
                       *&buf[26] = v905;
                       *&buf[30] = 2080;
-                      *&buf[32] = v611;
+                      *&buf[32] = uTF8String15;
                       _os_log_fault_impl(&_mh_execute_header, v609, OS_LOG_TYPE_FAULT, "Unable to format: %s: no previousNode for indent %d, previousIndentLevel %d (%d: %s)", buf, 0x28u);
                     }
 
@@ -3173,7 +3173,7 @@ LABEL_743:
               }
             }
 
-            fprintf(a4, "%s\n", v976[3]);
+            fprintf(stream, "%s\n", v976[3]);
             if ([v899 containsString:@"Binary Images:"])
             {
               v956 = 0u;
@@ -3301,13 +3301,13 @@ LABEL_743:
                   v889 = v533;
                   v943 = sub_1000C5624(v532);
                   v534 = v943;
-                  v904 = [v943 UTF8String];
+                  uTF8String16 = [v943 UTF8String];
                   v934 = sub_1000C5684(v532);
                   v535 = v934;
-                  v897 = [v934 UTF8String];
+                  uTF8String17 = [v934 UTF8String];
                   v928 = sub_1000C56E4(v532);
                   v536 = v928;
-                  v894 = [v928 UTF8String];
+                  uTF8String18 = [v928 UTF8String];
                   if (v532)
                   {
                     v538 = objc_getProperty(v532, v537, 40, 1);
@@ -3319,10 +3319,10 @@ LABEL_743:
                   }
 
                   v539 = v538;
-                  v540 = [v539 uuid];
-                  v926 = [v540 UUIDString];
-                  v541 = v926;
-                  v887 = [v926 UTF8String];
+                  uuid2 = [v539 uuid];
+                  uUIDString2 = [uuid2 UUIDString];
+                  v541 = uUIDString2;
+                  uTF8String19 = [uUIDString2 UTF8String];
                   if (v532)
                   {
                     v543 = objc_getProperty(v532, v542, 48, 1);
@@ -3335,7 +3335,7 @@ LABEL_743:
 
                   v913 = v543;
                   v544 = v913;
-                  v546 = [v913 UTF8String];
+                  uTF8String20 = [v913 UTF8String];
                   if (v532)
                   {
                     v547 = objc_getProperty(v532, v545, 40, 1);
@@ -3347,46 +3347,46 @@ LABEL_743:
                   }
 
                   v548 = v547;
-                  v549 = [v548 path];
-                  v550 = v549;
-                  v551 = [v549 UTF8String];
-                  v880 = v540;
+                  path = [v548 path];
+                  v550 = path;
+                  uTF8String21 = [path UTF8String];
+                  v880 = uuid2;
                   if (selfb)
                   {
                     snprintf(buf, 0x20uLL, "%s0x%llx", v889, selfb);
-                    fprintf(a4, "%22s - ", buf);
+                    fprintf(stream, "%22s - ", buf);
                     if (v878)
                     {
-                      fprintf(a4, "%#18llx  ");
+                      fprintf(stream, "%#18llx  ");
                     }
 
                     else
                     {
-                      fwrite("               ???  ", 0x14uLL, 1uLL, a4);
+                      fwrite("               ???  ", 0x14uLL, 1uLL, stream);
                     }
                   }
 
                   else
                   {
-                    fprintf(a4, "%2s");
+                    fprintf(stream, "%2s");
                   }
 
                   v552 = v539;
                   v553 = "???";
-                  if (v897)
+                  if (uTF8String17)
                   {
-                    v553 = v897;
+                    v553 = uTF8String17;
                   }
 
-                  if (v904)
+                  if (uTF8String16)
                   {
-                    v553 = v904;
+                    v553 = uTF8String16;
                   }
 
-                  v558 = fprintf(a4, "%s", v553);
-                  if (v894)
+                  v558 = fprintf(stream, "%s", v553);
+                  if (uTF8String18)
                   {
-                    v558 = (fprintf(a4, " %s", v894) + v558);
+                    v558 = (fprintf(stream, " %s", uTF8String18) + v558);
                   }
 
                   if (v558 > v514)
@@ -3394,11 +3394,11 @@ LABEL_743:
                     break;
                   }
 
-                  fprintf(a4, "%*s", v514 + 1 - v558, "");
-                  fprintf(a4, "<%s>", v887);
-                  if (v546)
+                  fprintf(stream, "%*s", v514 + 1 - v558, "");
+                  fprintf(stream, "<%s>", uTF8String19);
+                  if (uTF8String20)
                   {
-                    v559 = fprintf(a4, "%s", v546);
+                    v559 = fprintf(stream, "%s", uTF8String20);
                   }
 
                   else
@@ -3408,15 +3408,15 @@ LABEL_743:
 
                   if (v515 > v559)
                   {
-                    fprintf(a4, "%*s", v515 - v559, "");
+                    fprintf(stream, "%*s", v515 - v559, "");
                   }
 
-                  if (v551)
+                  if (uTF8String21)
                   {
-                    fprintf(a4, "  %s", v551);
+                    fprintf(stream, "  %s", uTF8String21);
                   }
 
-                  fputc(10, a4);
+                  fputc(10, stream);
 
                   v919 = v919 + 1;
                   if (v919 >= v909)
@@ -3446,11 +3446,11 @@ LABEL_743:
                     *&buf[18] = 1024;
                     *&buf[20] = v514;
                     *&buf[24] = 2080;
-                    *&buf[26] = v904;
+                    *&buf[26] = uTF8String16;
                     *&buf[34] = 2080;
-                    *&buf[36] = v897;
+                    *&buf[36] = uTF8String17;
                     *&buf[44] = 2080;
-                    *&buf[46] = v894;
+                    *&buf[46] = uTF8String18;
                     _os_log_error_impl(&_mh_execute_header, v701, OS_LOG_TYPE_ERROR, "%s: Printed %d characters when max is %d: %s, %s, %s", buf, 0x36u);
                   }
 
@@ -3460,7 +3460,7 @@ LABEL_743:
                 if (byte_100127EC9 == 1 && dword_100127558 <= 3)
                 {
                   v702 = *__error();
-                  v703 = CFStringCreateWithFormat(kCFAllocatorDefault, 0, @"%s: Printed %d characters when max is %d: %s, %s, %s", "numChars < nameAndVersionWidth + 1", v558, v514, v904, v897, v894);
+                  v703 = CFStringCreateWithFormat(kCFAllocatorDefault, 0, @"%s: Printed %d characters when max is %d: %s, %s, %s", "numChars < nameAndVersionWidth + 1", v558, v514, uTF8String16, uTF8String17, uTF8String18);
                   v704 = v703;
                   if (v703)
                   {
@@ -3508,11 +3508,11 @@ LABEL_743:
                       *&buf[18] = 1024;
                       *&buf[20] = v514;
                       *&buf[24] = 2080;
-                      *&buf[26] = v904;
+                      *&buf[26] = uTF8String16;
                       *&buf[34] = 2080;
-                      *&buf[36] = v897;
+                      *&buf[36] = uTF8String17;
                       *&buf[44] = 2080;
-                      *&buf[46] = v894;
+                      *&buf[46] = uTF8String18;
                       _os_log_fault_impl(&_mh_execute_header, v705, OS_LOG_TYPE_FAULT, "Unable to format: %s: Printed %d characters when max is %d: %s, %s, %s", buf, 0x36u);
                     }
 
@@ -3566,7 +3566,7 @@ LABEL_876:
             [obj sortUsingComparator:&stru_100115F08];
             [v428 addObject:obj];
             v429 = [obj objectAtIndex:0];
-            v430 = v429;
+            lastObject = v429;
             if (v429)
             {
               v431 = *(v429 + 12);
@@ -3594,8 +3594,8 @@ LABEL_876:
                   goto LABEL_743;
                 }
 
-                v430 = [v925 lastObject];
-                if ([v430 count])
+                lastObject = [v925 lastObject];
+                if ([lastObject count])
                 {
                   break;
                 }
@@ -3603,12 +3603,12 @@ LABEL_876:
                 [v925 removeLastObject];
               }
 
-              v933 = [v430 objectAtIndex:0];
-              [v430 removeObjectAtIndex:0];
+              v933 = [lastObject objectAtIndex:0];
+              [lastObject removeObjectAtIndex:0];
               v433 = [v925 count];
               v435 = v433;
               omitFramesBelowSampleCount = self->_omitFramesBelowSampleCount;
-              v908 = v430;
+              v908 = lastObject;
               if (omitFramesBelowSampleCount >= 1)
               {
                 v437 = v933;
@@ -3705,7 +3705,7 @@ LABEL_724:
 
                   v475 = v487;
                   v488 = v475;
-                  v490 = [v475 UTF8String];
+                  uTF8String22 = [v475 UTF8String];
                   if (v933)
                   {
                     v491 = objc_getProperty(v933, v489, 40, 1);
@@ -3718,7 +3718,7 @@ LABEL_724:
 
                   v492 = v491;
                   v493 = v492;
-                  sub_1000A2F80(a4, v481, v485 & 1, v486, v918 + 2, v490, [v492 UTF8String], 0, 0);
+                  sub_1000A2F80(stream, v481, v485 & 1, v486, v918 + 2, uTF8String22, [v492 UTF8String], 0, 0);
 
                   v881 = v903;
 LABEL_730:
@@ -3862,7 +3862,7 @@ LABEL_1248:
                 v459 = v968;
                 v460 = v967;
                 v461 = v456;
-                v463 = [v456 UTF8String];
+                uTF8String23 = [v456 UTF8String];
                 v464 = v933;
                 if (v933)
                 {
@@ -3877,7 +3877,7 @@ LABEL_1248:
 
                 v466 = v464;
                 v467 = v466;
-                sub_1000A2E60(a4, v460 + v459 * (v912 + v449), v457 & 1, v458, v918 + 2, v463, v465, [v466 UTF8String], 0, 0);
+                sub_1000A2E60(stream, v460 + v459 * (v912 + v449), v457 & 1, v458, v918 + 2, uTF8String23, v465, [v466 UTF8String], 0, 0);
 
                 ++v449;
               }
@@ -3943,7 +3943,7 @@ LABEL_731:
 
 LABEL_736:
               v432 = v881;
-              v430 = v908;
+              lastObject = v908;
             }
           }
 
@@ -4044,7 +4044,7 @@ LABEL_736:
         if (v336 == 0x7FFFFFFFFFFFFFFFLL)
         {
 LABEL_503:
-          fprintf(v147, "%s\n", v976[3]);
+          fprintf(streamCopy5, "%s\n", v976[3]);
         }
 
         else
@@ -4077,7 +4077,7 @@ LABEL_503:
               *__error() = v404;
             }
 
-            v147 = a4;
+            streamCopy5 = stream;
             if (byte_100127EC9 == 1 && dword_100127558 <= 3)
             {
               v406 = *__error();
@@ -4148,7 +4148,7 @@ LABEL_503:
               }
 
               *__error() = v406;
-              v147 = a4;
+              streamCopy5 = stream;
             }
 
             goto LABEL_503;
@@ -4176,10 +4176,10 @@ LABEL_503:
           }
 
           v381 = v380;
-          v382 = [v381 uuid];
-          v383 = [v382 UUIDString];
-          v384 = v383;
-          fprintf(a4, "UUID:%*s%s\n", v379, "", [v383 UTF8String]);
+          uuid3 = [v381 uuid];
+          uUIDString3 = [uuid3 UUIDString];
+          v384 = uUIDString3;
+          fprintf(stream, "UUID:%*s%s\n", v379, "", [uUIDString3 UTF8String]);
         }
 
         v921 = 0;
@@ -4943,9 +4943,9 @@ LABEL_527:
         v344 = v968;
         v345 = v967;
         v346 = v917;
-        v347 = [v917 UTF8String];
+        uTF8String24 = [v917 UTF8String];
         v348 = v911;
-        sub_1000A2F80(a4, v345 + (v328 + v289) * v344, v907 != 0x7FFFFFFFFFFFFFFFLL, v902, v329, v347, [v911 UTF8String], v301, v302);
+        sub_1000A2F80(stream, v345 + (v328 + v289) * v344, v907 != 0x7FFFFFFFFFFFFFFFLL, v902, v329, uTF8String24, [v911 UTF8String], v301, v302);
         goto LABEL_672;
       }
 
@@ -5014,7 +5014,7 @@ LABEL_610:
           if (os_log_type_enabled(v755, OS_LOG_TYPE_ERROR))
           {
             v756 = v932;
-            v757 = [v932 UTF8String];
+            uTF8String25 = [v932 UTF8String];
             *buf = 136315906;
             *&buf[4] = "previousNode";
             *&buf[12] = 1024;
@@ -5022,7 +5022,7 @@ LABEL_610:
             *&buf[18] = 1024;
             *&buf[20] = v905;
             *&buf[24] = 2080;
-            *&buf[26] = v757;
+            *&buf[26] = uTF8String25;
             _os_log_error_impl(&_mh_execute_header, v755, OS_LOG_TYPE_ERROR, "%s: no previousNode for indent of %d (%d: %s)", buf, 0x22u);
           }
 
@@ -5075,7 +5075,7 @@ LABEL_610:
             if (os_log_type_enabled(v763, OS_LOG_TYPE_FAULT))
             {
               v764 = v932;
-              v765 = [v932 UTF8String];
+              uTF8String26 = [v932 UTF8String];
               *buf = 136315906;
               *&buf[4] = "previousNode";
               *&buf[12] = 1024;
@@ -5083,7 +5083,7 @@ LABEL_610:
               *&buf[18] = 1024;
               *&buf[20] = v905;
               *&buf[24] = 2080;
-              *&buf[26] = v765;
+              *&buf[26] = uTF8String26;
               _os_log_fault_impl(&_mh_execute_header, v763, OS_LOG_TYPE_FAULT, "Unable to format: %s: no previousNode for indent of %d (%d: %s)", buf, 0x22u);
             }
 
@@ -5130,7 +5130,7 @@ LABEL_610:
             if (os_log_type_enabled(v683, OS_LOG_TYPE_ERROR))
             {
               v684 = v932;
-              v685 = [v932 UTF8String];
+              uTF8String27 = [v932 UTF8String];
               *buf = 136316162;
               *&buf[4] = "previousNode";
               *&buf[12] = 1024;
@@ -5140,7 +5140,7 @@ LABEL_610:
               *&buf[24] = 1024;
               *&buf[26] = v905;
               *&buf[30] = 2080;
-              *&buf[32] = v685;
+              *&buf[32] = uTF8String27;
               _os_log_error_impl(&_mh_execute_header, v683, OS_LOG_TYPE_ERROR, "%s: no previousNode for indent %d, previousIndentLevel %d (%d: %s)", buf, 0x28u);
             }
 
@@ -5193,7 +5193,7 @@ LABEL_610:
               if (os_log_type_enabled(v691, OS_LOG_TYPE_FAULT))
               {
                 v692 = v932;
-                v693 = [v932 UTF8String];
+                uTF8String28 = [v932 UTF8String];
                 *buf = 136316162;
                 *&buf[4] = "previousNode";
                 *&buf[12] = 1024;
@@ -5203,7 +5203,7 @@ LABEL_610:
                 *&buf[24] = 1024;
                 *&buf[26] = v905;
                 *&buf[30] = 2080;
-                *&buf[32] = v693;
+                *&buf[32] = uTF8String28;
                 _os_log_fault_impl(&_mh_execute_header, v691, OS_LOG_TYPE_FAULT, "Unable to format: %s: no previousNode for indent %d, previousIndentLevel %d (%d: %s)", buf, 0x28u);
               }
 
@@ -5272,7 +5272,7 @@ LABEL_785:
       v146 = 0;
       v14 = v930;
       v927 = v931;
-      v143 = a4;
+      streamCopy6 = stream;
       v144 = v929;
 LABEL_786:
       objc_autoreleasePoolPop(v914);
@@ -5302,7 +5302,7 @@ LABEL_900:
   {
     do
     {
-      fputs(v976[3], v143);
+      fputs(v976[3], streamCopy6);
       v13 = 1;
     }
 

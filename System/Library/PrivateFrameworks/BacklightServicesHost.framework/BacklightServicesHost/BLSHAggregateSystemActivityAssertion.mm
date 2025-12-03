@@ -1,22 +1,22 @@
 @interface BLSHAggregateSystemActivityAssertion
-- (BLSHAggregateSystemActivityAssertion)initWithConfigurator:(id)a3;
+- (BLSHAggregateSystemActivityAssertion)initWithConfigurator:(id)configurator;
 - (BOOL)isActive;
 - (NSString)description;
-- (void)_lock_addSystemActivityAcquisitionHandler:(id)a3;
-- (void)acquireIndividualAssertion:(id)a3 handler:(id)a4;
+- (void)_lock_addSystemActivityAcquisitionHandler:(id)handler;
+- (void)acquireIndividualAssertion:(id)assertion handler:(id)handler;
 - (void)dealloc;
-- (void)invalidateIndividualAssertion:(id)a3;
-- (void)performConfigurator:(id)a3;
-- (void)setAcquireWaitsToAbortSleepImminent:(BOOL)a3;
-- (void)setAcquireWaitsToAbortSleepRequested:(BOOL)a3;
-- (void)setOSInterfaceProvider:(id)a3;
+- (void)invalidateIndividualAssertion:(id)assertion;
+- (void)performConfigurator:(id)configurator;
+- (void)setAcquireWaitsToAbortSleepImminent:(BOOL)imminent;
+- (void)setAcquireWaitsToAbortSleepRequested:(BOOL)requested;
+- (void)setOSInterfaceProvider:(id)provider;
 @end
 
 @implementation BLSHAggregateSystemActivityAssertion
 
-- (BLSHAggregateSystemActivityAssertion)initWithConfigurator:(id)a3
+- (BLSHAggregateSystemActivityAssertion)initWithConfigurator:(id)configurator
 {
-  v5 = a3;
+  configuratorCopy = configurator;
   v13.receiver = self;
   v13.super_class = BLSHAggregateSystemActivityAssertion;
   v6 = [(BLSHAggregateSystemActivityAssertion *)&v13 init];
@@ -28,7 +28,7 @@
     lock_individualAssertions = v7->_lock_individualAssertions;
     v7->_lock_individualAssertions = v8;
 
-    [(BLSHAggregateSystemActivityAssertion *)v7 performConfigurator:v5];
+    [(BLSHAggregateSystemActivityAssertion *)v7 performConfigurator:configuratorCopy];
     if (!v7->_osInterfaceProvider)
     {
       [BLSHAggregateSystemActivityAssertion initWithConfigurator:a2];
@@ -64,7 +64,7 @@ uint64_t __61__BLSHAggregateSystemActivityAssertion_initWithConfigurator___block
   v11[3] = &unk_27841E538;
   v4 = v3;
   v12 = v4;
-  v13 = self;
+  selfCopy = self;
   [v4 appendProem:self block:v11];
   lock_individualAssertions = self->_lock_individualAssertions;
   v9[0] = MEMORY[0x277D85DD0];
@@ -87,50 +87,50 @@ void __51__BLSHAggregateSystemActivityAssertion_description__block_invoke_2(uint
   v3 = [v2 appendObject:v4 withName:0];
 }
 
-- (void)performConfigurator:(id)a3
+- (void)performConfigurator:(id)configurator
 {
   self->_initializing = 1;
-  (*(a3 + 2))(a3, self);
+  (*(configurator + 2))(configurator, self);
   self->_initializing = 0;
 }
 
-- (void)setAcquireWaitsToAbortSleepRequested:(BOOL)a3
+- (void)setAcquireWaitsToAbortSleepRequested:(BOOL)requested
 {
   if (!self->_initializing)
   {
     [BLSHAggregateSystemActivityAssertion setAcquireWaitsToAbortSleepRequested:a2];
   }
 
-  self->_acquireWaitsToAbortSleepRequested = a3;
+  self->_acquireWaitsToAbortSleepRequested = requested;
 }
 
-- (void)setAcquireWaitsToAbortSleepImminent:(BOOL)a3
+- (void)setAcquireWaitsToAbortSleepImminent:(BOOL)imminent
 {
   if (!self->_initializing)
   {
     [BLSHAggregateSystemActivityAssertion setAcquireWaitsToAbortSleepImminent:a2];
   }
 
-  self->_acquireWaitsToAbortSleepImminent = a3;
+  self->_acquireWaitsToAbortSleepImminent = imminent;
 }
 
-- (void)setOSInterfaceProvider:(id)a3
+- (void)setOSInterfaceProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   if (!self->_initializing)
   {
     [BLSHAggregateSystemActivityAssertion setOSInterfaceProvider:a2];
   }
 
   osInterfaceProvider = self->_osInterfaceProvider;
-  self->_osInterfaceProvider = v5;
+  self->_osInterfaceProvider = providerCopy;
 
-  MEMORY[0x2821F96F8](v5, osInterfaceProvider);
+  MEMORY[0x2821F96F8](providerCopy, osInterfaceProvider);
 }
 
 - (void)dealloc
 {
-  v11 = *a1;
+  v11 = *self;
   v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"dealloced while assertion was active:%@"];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
@@ -150,14 +150,14 @@ void __51__BLSHAggregateSystemActivityAssertion_description__block_invoke_2(uint
 - (BOOL)isActive
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(BLSHSystemActivityAsserting *)self->_lock_systemActivityAssertion isActive];
+  isActive = [(BLSHSystemActivityAsserting *)self->_lock_systemActivityAssertion isActive];
   os_unfair_lock_unlock(&self->_lock);
-  return v3;
+  return isActive;
 }
 
-- (void)_lock_addSystemActivityAcquisitionHandler:(id)a3
+- (void)_lock_addSystemActivityAcquisitionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = MEMORY[0x223D70730](self->_lock_acquisitionHandler);
   v6 = v5;
   if (v5)
@@ -167,7 +167,7 @@ void __51__BLSHAggregateSystemActivityAssertion_description__block_invoke_2(uint
     v11[2] = __82__BLSHAggregateSystemActivityAssertion__lock_addSystemActivityAcquisitionHandler___block_invoke;
     v11[3] = &unk_2784202F0;
     v12 = v5;
-    v13 = v4;
+    v13 = handlerCopy;
     v7 = MEMORY[0x223D70730](v11);
     lock_acquisitionHandler = self->_lock_acquisitionHandler;
     self->_lock_acquisitionHandler = v7;
@@ -177,7 +177,7 @@ void __51__BLSHAggregateSystemActivityAssertion_description__block_invoke_2(uint
 
   else
   {
-    v10 = MEMORY[0x223D70730](v4);
+    v10 = MEMORY[0x223D70730](handlerCopy);
     v9 = self->_lock_acquisitionHandler;
     self->_lock_acquisitionHandler = v10;
   }
@@ -193,12 +193,12 @@ void __82__BLSHAggregateSystemActivityAssertion__lock_addSystemActivityAcquisiti
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)acquireIndividualAssertion:(id)a3 handler:(id)a4
+- (void)acquireIndividualAssertion:(id)assertion handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  assertionCopy = assertion;
+  handlerCopy = handler;
   os_unfair_lock_lock(&self->_lock);
-  [(NSHashTable *)self->_lock_individualAssertions addObject:v6];
+  [(NSHashTable *)self->_lock_individualAssertions addObject:assertionCopy];
   if ([(BLSHSystemActivityAsserting *)self->_lock_systemActivityAssertion isActive])
   {
     v8 = self->_lock_systemActivityAcquisitionDetails;
@@ -207,7 +207,7 @@ void __82__BLSHAggregateSystemActivityAssertion__lock_addSystemActivityAcquisiti
     block[2] = __75__BLSHAggregateSystemActivityAssertion_acquireIndividualAssertion_handler___block_invoke;
     block[3] = &unk_278420318;
     v21 = v8;
-    v22 = v7;
+    v22 = handlerCopy;
     v9 = v8;
     dispatch_async(MEMORY[0x277D85CD0], block);
   }
@@ -215,17 +215,17 @@ void __82__BLSHAggregateSystemActivityAssertion__lock_addSystemActivityAcquisiti
   else
   {
     lock_systemActivityAssertion = self->_lock_systemActivityAssertion;
-    [(BLSHAggregateSystemActivityAssertion *)self _lock_addSystemActivityAcquisitionHandler:v7];
+    [(BLSHAggregateSystemActivityAssertion *)self _lock_addSystemActivityAcquisitionHandler:handlerCopy];
     if (!lock_systemActivityAssertion)
     {
       osInterfaceProvider = self->_osInterfaceProvider;
-      v12 = [v6 identifier];
+      identifier = [assertionCopy identifier];
       v19[0] = MEMORY[0x277D85DD0];
       v19[1] = 3221225472;
       v19[2] = __75__BLSHAggregateSystemActivityAssertion_acquireIndividualAssertion_handler___block_invoke_2;
       v19[3] = &unk_278420340;
       v19[4] = self;
-      v13 = [(BLSHOSInterfaceProviding *)osInterfaceProvider createSystemActivityAssertionWithIdentifier:v12 configurator:v19];
+      v13 = [(BLSHOSInterfaceProviding *)osInterfaceProvider createSystemActivityAssertionWithIdentifier:identifier configurator:v19];
       v14 = self->_lock_systemActivityAssertion;
       self->_lock_systemActivityAssertion = v13;
 
@@ -278,11 +278,11 @@ void __75__BLSHAggregateSystemActivityAssertion_acquireIndividualAssertion_handl
   [WeakRetained didAcquireSystemActivityIsActive:*(a1 + 56) error:*(a1 + 32) details:*(a1 + 40)];
 }
 
-- (void)invalidateIndividualAssertion:(id)a3
+- (void)invalidateIndividualAssertion:(id)assertion
 {
-  v4 = a3;
+  assertionCopy = assertion;
   os_unfair_lock_lock(&self->_lock);
-  [(NSHashTable *)self->_lock_individualAssertions removeObject:v4];
+  [(NSHashTable *)self->_lock_individualAssertions removeObject:assertionCopy];
 
   if (![(NSHashTable *)self->_lock_individualAssertions count])
   {

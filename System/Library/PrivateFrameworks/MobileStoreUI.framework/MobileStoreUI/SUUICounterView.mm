@@ -1,10 +1,10 @@
 @interface SUUICounterView
-+ (BOOL)prefetchResourcesForViewElement:(id)a3 reason:(int64_t)a4 context:(id)a5;
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4;
-- (BOOL)setImage:(id)a3 forArtworkRequest:(id)a4 context:(id)a5;
-- (unint64_t)_visibleTimeFieldsForDateFormat:(int64_t)a3;
-- (void)_addNumberViewWithViewElement:(id)a3 context:(id)a4;
-- (void)_addTimeViewWithViewElement:(id)a3 context:(id)a4;
++ (BOOL)prefetchResourcesForViewElement:(id)element reason:(int64_t)reason context:(id)context;
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context;
+- (BOOL)setImage:(id)image forArtworkRequest:(id)request context:(id)context;
+- (unint64_t)_visibleTimeFieldsForDateFormat:(int64_t)format;
+- (void)_addNumberViewWithViewElement:(id)element context:(id)context;
+- (void)_addTimeViewWithViewElement:(id)element context:(id)context;
 - (void)_reloadNumberValue;
 - (void)_reloadUpdateTimer;
 - (void)_startUpdateTimer;
@@ -14,10 +14,10 @@
 - (void)didMoveToSuperview;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
-- (void)reloadWithViewElement:(id)a3 width:(double)a4 context:(id)a5;
-- (void)setAlpha:(double)a3;
-- (void)setContentInset:(UIEdgeInsets)a3;
-- (void)setHidden:(BOOL)a3;
+- (void)reloadWithViewElement:(id)element width:(double)width context:(id)context;
+- (void)setAlpha:(double)alpha;
+- (void)setContentInset:(UIEdgeInsets)inset;
+- (void)setHidden:(BOOL)hidden;
 @end
 
 @implementation SUUICounterView
@@ -35,13 +35,13 @@
   [(SUUIViewReuseView *)&v4 dealloc];
 }
 
-+ (BOOL)prefetchResourcesForViewElement:(id)a3 reason:(int64_t)a4 context:(id)a5
++ (BOOL)prefetchResourcesForViewElement:(id)element reason:(int64_t)reason context:(id)context
 {
-  v7 = a5;
-  v8 = [a3 backgroundImageElement];
-  if (v8)
+  contextCopy = context;
+  backgroundImageElement = [element backgroundImageElement];
+  if (backgroundImageElement)
   {
-    v9 = [v7 prefetchResourcesForViewElement:v8 reason:a4];
+    v9 = [contextCopy prefetchResourcesForViewElement:backgroundImageElement reason:reason];
   }
 
   else
@@ -52,13 +52,13 @@
   return v9;
 }
 
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context
 {
-  v5 = a4;
-  v6 = [a3 backgroundImageElement];
-  if (v6)
+  contextCopy = context;
+  backgroundImageElement = [element backgroundImageElement];
+  if (backgroundImageElement)
   {
-    [v5 sizeForImageElement:v6];
+    [contextCopy sizeForImageElement:backgroundImageElement];
     v8 = v7;
     v10 = v9;
   }
@@ -76,14 +76,14 @@
   return result;
 }
 
-- (void)reloadWithViewElement:(id)a3 width:(double)a4 context:(id)a5
+- (void)reloadWithViewElement:(id)element width:(double)width context:(id)context
 {
-  v8 = a3;
-  v9 = a5;
-  if (self->_counterElement != v8)
+  elementCopy = element;
+  contextCopy = context;
+  if (self->_counterElement != elementCopy)
   {
     [(SUUICounterView *)self _stopUpdateTimer];
-    objc_storeStrong(&self->_counterElement, a3);
+    objc_storeStrong(&self->_counterElement, element);
     numberFormatter = self->_numberFormatter;
     self->_numberFormatter = 0;
   }
@@ -92,21 +92,21 @@
   v15[1] = 3221225472;
   v15[2] = __55__SUUICounterView_reloadWithViewElement_width_context___block_invoke;
   v15[3] = &unk_2798F7950;
-  v11 = v8;
+  v11 = elementCopy;
   v16 = v11;
-  v17 = self;
-  v12 = v9;
+  selfCopy = self;
+  v12 = contextCopy;
   v18 = v12;
   [(SUUIViewReuseView *)self modifyUsingBlock:v15];
-  v13 = [(SUUICounterViewElement *)v11 counterType];
-  if (!v13)
+  counterType = [(SUUICounterViewElement *)v11 counterType];
+  if (!counterType)
   {
     [(SUUICounterView *)self _addTimeViewWithViewElement:v11 context:v12];
     v14 = &OBJC_IVAR___SUUICounterView__numberView;
     goto LABEL_7;
   }
 
-  if (v13 == 1)
+  if (counterType == 1)
   {
     [(SUUICounterView *)self _addNumberViewWithViewElement:v11 context:v12];
     v14 = &OBJC_IVAR___SUUICounterView__timeView;
@@ -137,28 +137,28 @@ void __55__SUUICounterView_reloadWithViewElement_width_context___block_invoke(ui
   }
 }
 
-- (void)setContentInset:(UIEdgeInsets)a3
+- (void)setContentInset:(UIEdgeInsets)inset
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = inset.top;
+  v3.f64[1] = inset.left;
+  v4.f64[0] = inset.bottom;
+  v4.f64[1] = inset.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_contentInset.top, v3), vceqq_f64(*&self->_contentInset.bottom, v4)))) & 1) == 0)
   {
-    self->_contentInset = a3;
+    self->_contentInset = inset;
     [(SUUICounterView *)self setNeedsLayout];
   }
 }
 
-- (BOOL)setImage:(id)a3 forArtworkRequest:(id)a4 context:(id)a5
+- (BOOL)setImage:(id)image forArtworkRequest:(id)request context:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(SUUICounterViewElement *)self->_counterElement backgroundImageElement];
-  if (v11 && (v12 = [v9 requestIdentifier], objc_msgSend(v10, "requestIdentifierForViewElement:", v11), v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "unsignedIntegerValue"), v13, v12 == v14))
+  imageCopy = image;
+  requestCopy = request;
+  contextCopy = context;
+  backgroundImageElement = [(SUUICounterViewElement *)self->_counterElement backgroundImageElement];
+  if (backgroundImageElement && (v12 = [requestCopy requestIdentifier], objc_msgSend(contextCopy, "requestIdentifierForViewElement:", backgroundImageElement), v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "unsignedIntegerValue"), v13, v12 == v14))
   {
-    [(SUUIImageView *)self->_imageView setImage:v8];
+    [(SUUIImageView *)self->_imageView setImage:imageCopy];
     v15 = 1;
   }
 
@@ -216,9 +216,9 @@ void __55__SUUICounterView_reloadWithViewElement_width_context___block_invoke(ui
   {
     if (([v21 isHidden] & 1) == 0)
     {
-      v23 = [(SUUICounterViewElement *)self->_counterElement style];
+      style = [(SUUICounterViewElement *)self->_counterElement style];
       v42 = 0;
-      v24 = SUUIViewElementPaddingForStyle(v23, &v42);
+      v24 = SUUIViewElementPaddingForStyle(style, &v42);
       v40 = v25;
       v41 = v24;
       v26 = v42;
@@ -229,10 +229,10 @@ void __55__SUUICounterView_reloadWithViewElement_width_context___block_invoke(ui
       v32 = v31;
       *&v29 = v6 + (v9 - v29) * 0.5;
       v33 = floorf(*&v29);
-      v34 = [v23 elementPosition];
-      if (v34 <= 9)
+      elementPosition = [style elementPosition];
+      if (elementPosition <= 9)
       {
-        if (((1 << v34) & 0x309) != 0)
+        if (((1 << elementPosition) & 0x309) != 0)
         {
           if (v26)
           {
@@ -262,7 +262,7 @@ void __55__SUUICounterView_reloadWithViewElement_width_context___block_invoke(ui
           }
 
           v38 = v8 + v37;
-          if (((1 << v34) & 0x32) != 0)
+          if (((1 << elementPosition) & 0x32) != 0)
           {
             v28 = v36;
           }
@@ -281,26 +281,26 @@ void __55__SUUICounterView_reloadWithViewElement_width_context___block_invoke(ui
   [(SUUICounterView *)self _reloadUpdateTimer];
 }
 
-- (void)setAlpha:(double)a3
+- (void)setAlpha:(double)alpha
 {
   v4.receiver = self;
   v4.super_class = SUUICounterView;
-  [(SUUICounterView *)&v4 setAlpha:a3];
+  [(SUUICounterView *)&v4 setAlpha:alpha];
   [(SUUICounterView *)self _reloadUpdateTimer];
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
   v4.receiver = self;
   v4.super_class = SUUICounterView;
-  [(SUUICounterView *)&v4 setHidden:a3];
+  [(SUUICounterView *)&v4 setHidden:hidden];
   [(SUUICounterView *)self _reloadUpdateTimer];
 }
 
-- (void)_addNumberViewWithViewElement:(id)a3 context:(id)a4
+- (void)_addNumberViewWithViewElement:(id)element context:(id)context
 {
-  v16 = a3;
-  v6 = a4;
+  elementCopy = element;
+  contextCopy = context;
   if (!self->_numberView)
   {
     v7 = objc_alloc_init(MEMORY[0x277D756B8]);
@@ -308,19 +308,19 @@ void __55__SUUICounterView_reloadWithViewElement_width_context___block_invoke(ui
     self->_numberView = v7;
 
     v9 = self->_numberView;
-    v10 = [MEMORY[0x277D75348] clearColor];
-    [(UILabel *)v9 setBackgroundColor:v10];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(UILabel *)v9 setBackgroundColor:clearColor];
 
     [(UILabel *)self->_numberView setTextAlignment:1];
   }
 
-  v11 = [v16 style];
+  style = [elementCopy style];
   v12 = self->_numberView;
-  v13 = SUUIViewElementFontWithStyle(v11);
+  v13 = SUUIViewElementFontWithStyle(style);
   [(UILabel *)v12 setFont:v13];
 
-  v14 = [v6 tintColor];
-  v15 = SUUIViewElementPlainColorWithStyle(v11, v14);
+  tintColor = [contextCopy tintColor];
+  v15 = SUUIViewElementPlainColorWithStyle(style, tintColor);
 
   [(UILabel *)self->_numberView setTextColor:v15];
   [(UILabel *)self->_numberView setHidden:0];
@@ -328,37 +328,37 @@ void __55__SUUICounterView_reloadWithViewElement_width_context___block_invoke(ui
   [(SUUICounterView *)self _reloadNumberValue];
 }
 
-- (void)_addTimeViewWithViewElement:(id)a3 context:(id)a4
+- (void)_addTimeViewWithViewElement:(id)element context:(id)context
 {
-  v20 = a3;
-  v6 = a4;
+  elementCopy = element;
+  contextCopy = context;
   if (!self->_timeView)
   {
     v7 = [SUUICounterTimeView alloc];
-    v8 = [v6 clientContext];
-    v9 = [(SUUICounterTimeView *)v7 initWithClientContext:v8];
+    clientContext = [contextCopy clientContext];
+    v9 = [(SUUICounterTimeView *)v7 initWithClientContext:clientContext];
     timeView = self->_timeView;
     self->_timeView = v9;
 
     v11 = self->_timeView;
-    v12 = [MEMORY[0x277D75348] clearColor];
-    [(SUUICounterTimeView *)v11 setBackgroundColor:v12];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(SUUICounterTimeView *)v11 setBackgroundColor:clearColor];
   }
 
-  v13 = [v20 style];
+  style = [elementCopy style];
   v14 = self->_timeView;
-  v15 = [v20 endDate];
-  [(SUUICounterTimeView *)v14 setEndDate:v15];
+  endDate = [elementCopy endDate];
+  [(SUUICounterTimeView *)v14 setEndDate:endDate];
 
-  v16 = [v6 tintColor];
-  v17 = SUUIViewElementPlainColorWithStyle(v13, v16);
+  tintColor = [contextCopy tintColor];
+  v17 = SUUIViewElementPlainColorWithStyle(style, tintColor);
 
   [(SUUICounterTimeView *)self->_timeView setTextColor:v17];
   v18 = self->_timeView;
-  v19 = SUUIViewElementFontWithStyle(v13);
+  v19 = SUUIViewElementFontWithStyle(style);
   [(SUUICounterTimeView *)v18 setValueFont:v19];
 
-  -[SUUICounterTimeView setVisibleFields:](self->_timeView, "setVisibleFields:", -[SUUICounterView _visibleTimeFieldsForDateFormat:](self, "_visibleTimeFieldsForDateFormat:", [v20 dateFormatType]));
+  -[SUUICounterTimeView setVisibleFields:](self->_timeView, "setVisibleFields:", -[SUUICounterView _visibleTimeFieldsForDateFormat:](self, "_visibleTimeFieldsForDateFormat:", [elementCopy dateFormatType]));
   [(SUUICounterTimeView *)self->_timeView setHidden:0];
   [(SUUICounterView *)self addSubview:self->_timeView];
 }
@@ -374,8 +374,8 @@ void __55__SUUICounterView_reloadWithViewElement_width_context___block_invoke(ui
 
     [(NSNumberFormatter *)self->_numberFormatter setNumberStyle:1];
     v6 = self->_numberFormatter;
-    v7 = [(SUUICounterViewElement *)self->_counterElement numberFormat];
-    [(NSNumberFormatter *)v6 setPositiveFormat:v7];
+    numberFormat = [(SUUICounterViewElement *)self->_counterElement numberFormat];
+    [(NSNumberFormatter *)v6 setPositiveFormat:numberFormat];
 
     numberFormatter = self->_numberFormatter;
   }
@@ -470,16 +470,16 @@ void __36__SUUICounterView__startUpdateTimer__block_invoke(uint64_t a1)
   }
 }
 
-- (unint64_t)_visibleTimeFieldsForDateFormat:(int64_t)a3
+- (unint64_t)_visibleTimeFieldsForDateFormat:(int64_t)format
 {
-  if (a3 > 3)
+  if (format > 3)
   {
     return 7;
   }
 
   else
   {
-    return qword_259FCB180[a3];
+    return qword_259FCB180[format];
   }
 }
 

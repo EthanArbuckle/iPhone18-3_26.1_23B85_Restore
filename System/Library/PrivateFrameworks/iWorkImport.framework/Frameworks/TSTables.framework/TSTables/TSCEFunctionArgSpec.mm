@@ -1,56 +1,56 @@
 @interface TSCEFunctionArgSpec
-+ (TSCEFunctionArgSpec)argSpecWithType:(char)a3;
-+ (TSCEFunctionArgSpec)argSpecWithType:(char)a3 accessorMode:(int)a4;
-+ (TSCEFunctionArgSpec)argSpecWithType:(char)a3 accessorMode:(int)a4 argumentContext:(int)a5;
-+ (TSCEFunctionArgSpec)argSpecWithType:(char)a3 accessorMode:(int)a4 argumentContext:(int)a5 typeOptions:(unsigned int)a6;
-+ (TSCEFunctionArgSpec)argSpecWithType:(char)a3 accessorMode:(int)a4 rangeContext:(unsigned __int8)a5;
-+ (TSCEFunctionArgSpec)argSpecWithType:(char)a3 accessorMode:(int)a4 rangeContext:(unsigned __int8)a5 argumentContext:(int)a6;
-+ (TSCEFunctionArgSpec)argSpecWithType:(char)a3 accessorMode:(int)a4 rangeContext:(unsigned __int8)a5 argumentContext:(int)a6 minValue:(double)a7 minInclusive:(BOOL)a8 maxValue:(double)a9 maxInclusive:(BOOL)a10 typeOptions:(unsigned int)a11;
-+ (TSCEFunctionArgSpec)argSpecWithType:(char)a3 accessorMode:(int)a4 rangeContext:(unsigned __int8)a5 argumentContext:(int)a6 minValue:(double)a7 minInclusive:(BOOL)a8 maxValue:(double)a9 maxInclusive:(BOOL)a10 typeOptions:(unsigned int)a11 modeValues:(const void *)a12 defaultModeIndex:(unsigned __int16)a13;
-+ (TSCEFunctionArgSpec)argSpecWithType:(char)a3 accessorMode:(int)a4 rangeContext:(unsigned __int8)a5 argumentContext:(int)a6 minValue:(double)a7 minInclusive:(BOOL)a8 typeOptions:(unsigned int)a9;
-+ (TSCEFunctionArgSpec)argSpecWithType:(char)a3 accessorMode:(int)a4 rangeContext:(unsigned __int8)a5 argumentContext:(int)a6 modeValues:(const void *)a7 defaultModeIndex:(unsigned __int16)a8;
-+ (TSCEFunctionArgSpec)argSpecWithType:(char)a3 accessorMode:(int)a4 rangeContext:(unsigned __int8)a5 argumentContext:(int)a6 typeOptions:(unsigned int)a7;
-+ (TSCEFunctionArgSpec)argSpecWithType:(char)a3 accessorMode:(int)a4 rangeContext:(unsigned __int8)a5 argumentContext:(int)a6 typeOptions:(unsigned int)a7 modeValues:(const void *)a8 defaultModeIndex:(unsigned __int16)a9;
-+ (TSCEFunctionArgSpec)argSpecWithType:(char)a3 accessorMode:(int)a4 rangeContext:(unsigned __int8)a5 argumentContext:(int)a6 unwrapThunk:(BOOL)a7;
-+ (TSCEFunctionArgSpec)argSpecWithType:(char)a3 accessorMode:(int)a4 rangeContext:(unsigned __int8)a5 minValue:(double)a6 minInclusive:(BOOL)a7 maxValue:(double)a8 maxInclusive:(BOOL)a9 typeOptions:(unsigned int)a10;
-+ (TSCEFunctionArgSpec)argSpecWithType:(char)a3 accessorMode:(int)a4 rangeContext:(unsigned __int8)a5 minValue:(double)a6 minInclusive:(BOOL)a7 typeOptions:(unsigned int)a8;
-+ (TSCEFunctionArgSpec)argSpecWithType:(char)a3 accessorMode:(int)a4 rangeContext:(unsigned __int8)a5 modeValues:(const void *)a6 defaultModeIndex:(unsigned __int16)a7;
-+ (TSCEFunctionArgSpec)argSpecWithType:(char)a3 accessorMode:(int)a4 rangeContext:(unsigned __int8)a5 typeOptions:(unsigned int)a6;
-+ (TSCEFunctionArgSpec)argSpecWithType:(char)a3 accessorMode:(int)a4 rangeContext:(unsigned __int8)a5 unwrapThunk:(BOOL)a6;
-+ (TSCEFunctionArgSpec)argSpecWithType:(char)a3 accessorMode:(int)a4 typeOptions:(unsigned int)a5;
-+ (TSCEFunctionArgSpec)argSpecWithType:(char)a3 minValue:(double)a4 minInclusive:(BOOL)a5;
-+ (TSCEFunctionArgSpec)argSpecWithType:(char)a3 minValue:(double)a4 minInclusive:(BOOL)a5 maxValue:(double)a6 maxInclusive:(BOOL)a7;
-+ (TSCEFunctionArgSpec)argSpecWithType:(char)a3 typeOptions:(unsigned int)a4;
-+ (id)argSpecForFunctorWithNumLambdaIdentifiers:(unsigned __int16)a3;
-+ (id)coerceValueToNumberOrDate:(id)a3 valueDeepType:(char)a4 context:(id)a5 functionSpec:(id)a6 argIndex:(unint64_t)a7 outError:(id *)a8;
-- (BOOL)isModeEnabled:(unsigned __int16)a3;
++ (TSCEFunctionArgSpec)argSpecWithType:(char)type;
++ (TSCEFunctionArgSpec)argSpecWithType:(char)type accessorMode:(int)mode;
++ (TSCEFunctionArgSpec)argSpecWithType:(char)type accessorMode:(int)mode argumentContext:(int)context;
++ (TSCEFunctionArgSpec)argSpecWithType:(char)type accessorMode:(int)mode argumentContext:(int)context typeOptions:(unsigned int)options;
++ (TSCEFunctionArgSpec)argSpecWithType:(char)type accessorMode:(int)mode rangeContext:(unsigned __int8)context;
++ (TSCEFunctionArgSpec)argSpecWithType:(char)type accessorMode:(int)mode rangeContext:(unsigned __int8)context argumentContext:(int)argumentContext;
++ (TSCEFunctionArgSpec)argSpecWithType:(char)type accessorMode:(int)mode rangeContext:(unsigned __int8)context argumentContext:(int)argumentContext minValue:(double)value minInclusive:(BOOL)inclusive maxValue:(double)maxValue maxInclusive:(BOOL)self0 typeOptions:(unsigned int)self1;
++ (TSCEFunctionArgSpec)argSpecWithType:(char)type accessorMode:(int)mode rangeContext:(unsigned __int8)context argumentContext:(int)argumentContext minValue:(double)value minInclusive:(BOOL)inclusive maxValue:(double)maxValue maxInclusive:(BOOL)self0 typeOptions:(unsigned int)self1 modeValues:(const void *)self2 defaultModeIndex:(unsigned __int16)self3;
++ (TSCEFunctionArgSpec)argSpecWithType:(char)type accessorMode:(int)mode rangeContext:(unsigned __int8)context argumentContext:(int)argumentContext minValue:(double)value minInclusive:(BOOL)inclusive typeOptions:(unsigned int)options;
++ (TSCEFunctionArgSpec)argSpecWithType:(char)type accessorMode:(int)mode rangeContext:(unsigned __int8)context argumentContext:(int)argumentContext modeValues:(const void *)values defaultModeIndex:(unsigned __int16)index;
++ (TSCEFunctionArgSpec)argSpecWithType:(char)type accessorMode:(int)mode rangeContext:(unsigned __int8)context argumentContext:(int)argumentContext typeOptions:(unsigned int)options;
++ (TSCEFunctionArgSpec)argSpecWithType:(char)type accessorMode:(int)mode rangeContext:(unsigned __int8)context argumentContext:(int)argumentContext typeOptions:(unsigned int)options modeValues:(const void *)values defaultModeIndex:(unsigned __int16)index;
++ (TSCEFunctionArgSpec)argSpecWithType:(char)type accessorMode:(int)mode rangeContext:(unsigned __int8)context argumentContext:(int)argumentContext unwrapThunk:(BOOL)thunk;
++ (TSCEFunctionArgSpec)argSpecWithType:(char)type accessorMode:(int)mode rangeContext:(unsigned __int8)context minValue:(double)value minInclusive:(BOOL)inclusive maxValue:(double)maxValue maxInclusive:(BOOL)maxInclusive typeOptions:(unsigned int)self0;
++ (TSCEFunctionArgSpec)argSpecWithType:(char)type accessorMode:(int)mode rangeContext:(unsigned __int8)context minValue:(double)value minInclusive:(BOOL)inclusive typeOptions:(unsigned int)options;
++ (TSCEFunctionArgSpec)argSpecWithType:(char)type accessorMode:(int)mode rangeContext:(unsigned __int8)context modeValues:(const void *)values defaultModeIndex:(unsigned __int16)index;
++ (TSCEFunctionArgSpec)argSpecWithType:(char)type accessorMode:(int)mode rangeContext:(unsigned __int8)context typeOptions:(unsigned int)options;
++ (TSCEFunctionArgSpec)argSpecWithType:(char)type accessorMode:(int)mode rangeContext:(unsigned __int8)context unwrapThunk:(BOOL)thunk;
++ (TSCEFunctionArgSpec)argSpecWithType:(char)type accessorMode:(int)mode typeOptions:(unsigned int)options;
++ (TSCEFunctionArgSpec)argSpecWithType:(char)type minValue:(double)value minInclusive:(BOOL)inclusive;
++ (TSCEFunctionArgSpec)argSpecWithType:(char)type minValue:(double)value minInclusive:(BOOL)inclusive maxValue:(double)maxValue maxInclusive:(BOOL)maxInclusive;
++ (TSCEFunctionArgSpec)argSpecWithType:(char)type typeOptions:(unsigned int)options;
++ (id)argSpecForFunctorWithNumLambdaIdentifiers:(unsigned __int16)identifiers;
++ (id)coerceValueToNumberOrDate:(id)date valueDeepType:(char)type context:(id)context functionSpec:(id)spec argIndex:(unint64_t)index outError:(id *)error;
+- (BOOL)isModeEnabled:(unsigned __int16)enabled;
 - (BOOL)isOptional;
-- (BOOL)typeIsDisallowed:(char)a3 value:(id)a4;
+- (BOOL)typeIsDisallowed:(char)disallowed value:(id)value;
 - (TSCEFunctionArgSpec)init;
-- (TSCEFunctionArgSpec)initWithArgumentType:(char)a3 accessorMode:(int)a4;
-- (TSCEFunctionArgSpec)initWithArgumentType:(char)a3 accessorMode:(int)a4 argumentContext:(int)a5;
+- (TSCEFunctionArgSpec)initWithArgumentType:(char)type accessorMode:(int)mode;
+- (TSCEFunctionArgSpec)initWithArgumentType:(char)type accessorMode:(int)mode argumentContext:(int)context;
 - (id).cxx_construct;
-- (id)boundsCheckAndCoerce:(id)a3 valueDeepType:(char)a4 context:(id)a5 functionSpec:(id)a6 argIndex:(unint64_t)a7 outError:(id *)a8;
-- (id)checkBoundsAndUnits:(id)a3 valueDeepType:(char)a4 context:(id)a5 functionSpec:(id)a6 argIndex:(unint64_t)a7;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)localizedArgumentNameForLocale:(id)a3;
-- (id)localizedLambdaIdentifierForLambdaIndex:(unsigned __int16)a3 locale:(id)a4;
-- (id)localizedModeMenuItemStringForModeIndex:(unsigned __int16)a3 locale:(id)a4;
-- (id)localizedModeNameForModeIndex:(unsigned __int16)a3 locale:(id)a4;
-- (id)localizedModeToolTipStringForModeIndex:(unsigned __int16)a3 locale:(id)a4;
-- (id)localizedToolTipStringForLocale:(id)a3;
+- (id)boundsCheckAndCoerce:(id)coerce valueDeepType:(char)type context:(id)context functionSpec:(id)spec argIndex:(unint64_t)index outError:(id *)error;
+- (id)checkBoundsAndUnits:(id)units valueDeepType:(char)type context:(id)context functionSpec:(id)spec argIndex:(unint64_t)index;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)localizedArgumentNameForLocale:(id)locale;
+- (id)localizedLambdaIdentifierForLambdaIndex:(unsigned __int16)index locale:(id)locale;
+- (id)localizedModeMenuItemStringForModeIndex:(unsigned __int16)index locale:(id)locale;
+- (id)localizedModeNameForModeIndex:(unsigned __int16)index locale:(id)locale;
+- (id)localizedModeToolTipStringForModeIndex:(unsigned __int16)index locale:(id)locale;
+- (id)localizedToolTipStringForLocale:(id)locale;
 - (id)nativeSyntaxString;
-- (id)typeCheckAndCoerce:(id)a3 context:(id)a4 functionSpec:(id)a5 argIndex:(unint64_t)a6 fromInsideArray:(BOOL)a7 outError:(id *)a8;
-- (id)typeCheckAndCoerce:(id)a3 context:(id)a4 functionSpec:(id)a5 argIndex:(unint64_t)a6 fromInsideArray:(BOOL)a7 outError:(id *)a8 fullRangeBeingAccessed:(const TSCERangeRef *)a9;
-- (id)valueForModeIndex:(unsigned __int16)a3;
-- (int64_t)indexForModeBool:(BOOL)a3 locale:(id)a4;
-- (int64_t)indexForModeNumber:(double)a3 locale:(id)a4;
-- (int64_t)indexForModeString:(id)a3 locale:(id)a4;
-- (int64_t)indexForModeValue:(id)a3 locale:(id)a4;
-- (void)setArgumentContext:(int)a3;
-- (void)setDisallowArrayModeFanout:(BOOL)a3;
-- (void)setModeValues:(const void *)a3;
-- (void)setModeValues:(const void *)a3 defaultModeIndex:(unsigned __int16)a4;
+- (id)typeCheckAndCoerce:(id)coerce context:(id)context functionSpec:(id)spec argIndex:(unint64_t)index fromInsideArray:(BOOL)array outError:(id *)error;
+- (id)typeCheckAndCoerce:(id)coerce context:(id)context functionSpec:(id)spec argIndex:(unint64_t)index fromInsideArray:(BOOL)array outError:(id *)error fullRangeBeingAccessed:(const TSCERangeRef *)accessed;
+- (id)valueForModeIndex:(unsigned __int16)index;
+- (int64_t)indexForModeBool:(BOOL)bool locale:(id)locale;
+- (int64_t)indexForModeNumber:(double)number locale:(id)locale;
+- (int64_t)indexForModeString:(id)string locale:(id)locale;
+- (int64_t)indexForModeValue:(id)value locale:(id)locale;
+- (void)setArgumentContext:(int)context;
+- (void)setDisallowArrayModeFanout:(BOOL)fanout;
+- (void)setModeValues:(const void *)values;
+- (void)setModeValues:(const void *)values defaultModeIndex:(unsigned __int16)index;
 - (void)setupArgAccessor;
 @end
 
@@ -84,7 +84,7 @@
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [TSCEFunctionArgSpec alloc];
   v6 = objc_msgSend_initWithArgumentType_accessorMode_argumentContext_(v4, v5, self->_argumentType, self->_accessorMode, self->_argumentContext);
@@ -102,40 +102,40 @@
   return v6;
 }
 
-- (TSCEFunctionArgSpec)initWithArgumentType:(char)a3 accessorMode:(int)a4
+- (TSCEFunctionArgSpec)initWithArgumentType:(char)type accessorMode:(int)mode
 {
-  v7 = objc_msgSend_init(self, a2, a3, *&a4, v4);
+  v7 = objc_msgSend_init(self, a2, type, *&mode, v4);
   v11 = v7;
   if (v7)
   {
-    *(v7 + 32) = a3;
-    *(v7 + 36) = a4;
-    objc_msgSend_setDisallowArrayModeFanout_(v7, v8, a4 == 4, v9, v10);
+    *(v7 + 32) = type;
+    *(v7 + 36) = mode;
+    objc_msgSend_setDisallowArrayModeFanout_(v7, v8, mode == 4, v9, v10);
     objc_msgSend_markAsPermanent(v11, v12, v13, v14, v15);
   }
 
   return v11;
 }
 
-- (TSCEFunctionArgSpec)initWithArgumentType:(char)a3 accessorMode:(int)a4 argumentContext:(int)a5
+- (TSCEFunctionArgSpec)initWithArgumentType:(char)type accessorMode:(int)mode argumentContext:(int)context
 {
-  v8 = objc_msgSend_init(self, a2, a3, *&a4, *&a5);
+  v8 = objc_msgSend_init(self, a2, type, *&mode, *&context);
   v12 = v8;
   if (v8)
   {
-    *(v8 + 32) = a3;
-    *(v8 + 36) = a4;
-    *(v8 + 44) = a5;
-    objc_msgSend_setDisallowArrayModeFanout_(v8, v9, a4 == 4, v10, v11);
+    *(v8 + 32) = type;
+    *(v8 + 36) = mode;
+    *(v8 + 44) = context;
+    objc_msgSend_setDisallowArrayModeFanout_(v8, v9, mode == 4, v10, v11);
     objc_msgSend_markAsPermanent(v12, v13, v14, v15, v16);
   }
 
   return v12;
 }
 
-- (void)setDisallowArrayModeFanout:(BOOL)a3
+- (void)setDisallowArrayModeFanout:(BOOL)fanout
 {
-  if (a3)
+  if (fanout)
   {
     v3 = 2048;
   }
@@ -148,20 +148,20 @@
   self->_typeOptions = self->_typeOptions & 0xFFFFF7FF | v3;
 }
 
-- (BOOL)typeIsDisallowed:(char)a3 value:(id)a4
+- (BOOL)typeIsDisallowed:(char)disallowed value:(id)value
 {
   typeOptions = self->_typeOptions;
   if (typeOptions)
   {
     LOBYTE(v5) = 0;
-    if (a3 <= 3)
+    if (disallowed <= 3)
     {
-      if (a3 == 2)
+      if (disallowed == 2)
       {
         v5 = (typeOptions >> 1) & 1;
       }
 
-      else if (a3 == 3)
+      else if (disallowed == 3)
       {
         v5 = (typeOptions >> 5) & 1;
       }
@@ -169,7 +169,7 @@
 
     else
     {
-      switch(a3)
+      switch(disallowed)
       {
         case 4:
           v5 = (typeOptions >> 3) & 1;
@@ -192,12 +192,12 @@
   return v5 & 1;
 }
 
-- (void)setArgumentContext:(int)a3
+- (void)setArgumentContext:(int)context
 {
-  self->_argumentContext = a3;
+  self->_argumentContext = context;
   if (self->_argumentAccessor)
   {
-    objc_msgSend_setupArgAccessor(self, a2, *&a3, v3, v4);
+    objc_msgSend_setupArgAccessor(self, a2, *&context, v3, v4);
   }
 }
 
@@ -227,15 +227,15 @@
   }
 }
 
-- (void)setModeValues:(const void *)a3 defaultModeIndex:(unsigned __int16)a4
+- (void)setModeValues:(const void *)values defaultModeIndex:(unsigned __int16)index
 {
   p_modeValues = &self->_modeValues;
-  if (p_modeValues != a3)
+  if (p_modeValues != values)
   {
-    sub_22116CF34(p_modeValues, *a3, *(a3 + 1), (*(a3 + 1) - *a3) >> 3);
+    sub_22116CF34(p_modeValues, *values, *(values + 1), (*(values + 1) - *values) >> 3);
   }
 
-  self->_defaultModeIndex = a4;
+  self->_defaultModeIndex = index;
 }
 
 - (BOOL)isOptional
@@ -247,10 +247,10 @@
   return (objc_msgSend_minArguments(self->_functionSpec, v18, v19, v20, v21) - v7) <= index && v12 - v7 + v17 > index;
 }
 
-- (id)valueForModeIndex:(unsigned __int16)a3
+- (id)valueForModeIndex:(unsigned __int16)index
 {
-  v5 = a3;
-  if ((objc_msgSend_isMode(self, a2, a3, v3, v4) & 1) == 0)
+  indexCopy = index;
+  if ((objc_msgSend_isMode(self, a2, index, v3, v4) & 1) == 0)
   {
     v11 = MEMORY[0x277D81150];
     v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, "[TSCEFunctionArgSpec valueForModeIndex:]", v9, v10);
@@ -260,7 +260,7 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v18, v19, v20, v21);
   }
 
-  if (objc_msgSend_numModes(self, v7, v8, v9, v10) <= v5)
+  if (objc_msgSend_numModes(self, v7, v8, v9, v10) <= indexCopy)
   {
     v25 = MEMORY[0x277D81150];
     v26 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v22, "[TSCEFunctionArgSpec valueForModeIndex:]", v23, v24);
@@ -271,20 +271,20 @@
   }
 
   begin = self->_modeValues.__begin_;
-  if (v5 >= (self->_modeValues.var0 - begin))
+  if (indexCopy >= (self->_modeValues.var0 - begin))
   {
     sub_2211E631C();
   }
 
-  v37 = begin[v5];
+  v37 = begin[indexCopy];
 
   return v37;
 }
 
-- (int64_t)indexForModeValue:(id)a3 locale:(id)a4
+- (int64_t)indexForModeValue:(id)value locale:(id)locale
 {
-  v6 = a3;
-  v11 = objc_msgSend_nativeType(v6, v7, v8, v9, v10);
+  valueCopy = value;
+  v11 = objc_msgSend_nativeType(valueCopy, v7, v8, v9, v10);
   v16 = v11;
   v17 = 0x7FFFFFFFFFFFFFFFLL;
   if (v11 <= 7 && ((1 << v11) & 0xA4) != 0)
@@ -306,8 +306,8 @@
         v25 = v21;
         if (v16 == 7)
         {
-          v26 = objc_msgSend_asStringWithLocale_(v21, v22, a4, v23, v24);
-          v30 = objc_msgSend_asStringWithLocale_(v6, v27, a4, v28, v29);
+          v26 = objc_msgSend_asStringWithLocale_(v21, v22, locale, v23, v24);
+          v30 = objc_msgSend_asStringWithLocale_(valueCopy, v27, locale, v28, v29);
           v34 = objc_msgSend_caseInsensitiveCompare_(v30, v31, v26, v32, v33);
 
           if (!v34)
@@ -316,7 +316,7 @@
           }
         }
 
-        isNativelyEqual = objc_msgSend_isNativelyEqual_(v6, v22, v25, v23, v24);
+        isNativelyEqual = objc_msgSend_isNativelyEqual_(valueCopy, v22, v25, v23, v24);
 
         if (isNativelyEqual)
         {
@@ -337,53 +337,53 @@ LABEL_12:
   return v17;
 }
 
-- (int64_t)indexForModeString:(id)a3 locale:(id)a4
+- (int64_t)indexForModeString:(id)string locale:(id)locale
 {
-  v7 = objc_msgSend_stringValue_(TSCEStringValue, a2, a3, a4, v4);
-  v10 = objc_msgSend_indexForModeValue_locale_(self, v8, v7, a4, v9);
+  v7 = objc_msgSend_stringValue_(TSCEStringValue, a2, string, locale, v4);
+  v10 = objc_msgSend_indexForModeValue_locale_(self, v8, v7, locale, v9);
 
   return v10;
 }
 
-- (int64_t)indexForModeNumber:(double)a3 locale:(id)a4
+- (int64_t)indexForModeNumber:(double)number locale:(id)locale
 {
   TSUDecimal::operator=();
   v9 = objc_msgSend_numberWithDecimal_(TSCENumberValue, v6, &v14, v7, v8);
-  v12 = objc_msgSend_indexForModeValue_locale_(self, v10, v9, a4, v11);
+  v12 = objc_msgSend_indexForModeValue_locale_(self, v10, v9, locale, v11);
 
   return v12;
 }
 
-- (int64_t)indexForModeBool:(BOOL)a3 locale:(id)a4
+- (int64_t)indexForModeBool:(BOOL)bool locale:(id)locale
 {
-  v7 = objc_msgSend_BOOLValue_(TSCEBooleanValue, a2, a3, a4, v4);
-  v10 = objc_msgSend_indexForModeValue_locale_(self, v8, v7, a4, v9);
+  v7 = objc_msgSend_BOOLValue_(TSCEBooleanValue, a2, bool, locale, v4);
+  v10 = objc_msgSend_indexForModeValue_locale_(self, v8, v7, locale, v9);
 
   return v10;
 }
 
-- (BOOL)isModeEnabled:(unsigned __int16)a3
+- (BOOL)isModeEnabled:(unsigned __int16)enabled
 {
-  v5 = a3;
-  v6 = objc_msgSend_functionIndex(self->_functionSpec, a2, a3, v3, v4);
+  enabledCopy = enabled;
+  v6 = objc_msgSend_functionIndex(self->_functionSpec, a2, enabled, v3, v4);
 
-  return MEMORY[0x2821F9670](TSCEFunctionSpec, sel_isModeEnabled_functionIndex_, v5, v6, v7);
+  return MEMORY[0x2821F9670](TSCEFunctionSpec, sel_isModeEnabled_functionIndex_, enabledCopy, v6, v7);
 }
 
-- (id)localizedArgumentNameForLocale:(id)a3
+- (id)localizedArgumentNameForLocale:(id)locale
 {
   index = self->_index;
-  v7 = objc_msgSend_functionName(self->_functionSpec, a2, a3, v3, v4);
-  v10 = objc_msgSend_localizedNameForArgument_ofFunction_(a3, v8, index, v7, v9);
+  v7 = objc_msgSend_functionName(self->_functionSpec, a2, locale, v3, v4);
+  v10 = objc_msgSend_localizedNameForArgument_ofFunction_(locale, v8, index, v7, v9);
 
   return v10;
 }
 
-- (id)localizedToolTipStringForLocale:(id)a3
+- (id)localizedToolTipStringForLocale:(id)locale
 {
   index = self->_index;
-  v7 = objc_msgSend_functionName(self->_functionSpec, a2, a3, v3, v4);
-  v10 = objc_msgSend_localizedToolTipForArgument_ofFunction_(a3, v8, index, v7, v9);
+  v7 = objc_msgSend_functionName(self->_functionSpec, a2, locale, v3, v4);
+  v10 = objc_msgSend_localizedToolTipForArgument_ofFunction_(locale, v8, index, v7, v9);
 
   return v10;
 }
@@ -397,33 +397,33 @@ LABEL_12:
   return v11;
 }
 
-- (id)localizedModeNameForModeIndex:(unsigned __int16)a3 locale:(id)a4
+- (id)localizedModeNameForModeIndex:(unsigned __int16)index locale:(id)locale
 {
   index = self->_index;
-  v8 = objc_msgSend_functionName(self->_functionSpec, a2, a3, a4, v4);
-  v10 = objc_msgSend_localizedModeNameForArgument_modeIndex_ofFunction_(a4, v9, index, a3, v8);
+  v8 = objc_msgSend_functionName(self->_functionSpec, a2, index, locale, v4);
+  v10 = objc_msgSend_localizedModeNameForArgument_modeIndex_ofFunction_(locale, v9, index, index, v8);
 
   return v10;
 }
 
-- (id)localizedModeToolTipStringForModeIndex:(unsigned __int16)a3 locale:(id)a4
+- (id)localizedModeToolTipStringForModeIndex:(unsigned __int16)index locale:(id)locale
 {
   index = self->_index;
-  v8 = objc_msgSend_functionName(self->_functionSpec, a2, a3, a4, v4);
-  v10 = objc_msgSend_localizedModeToolTipForArgument_modeIndex_ofFunction_(a4, v9, index, a3, v8);
+  v8 = objc_msgSend_functionName(self->_functionSpec, a2, index, locale, v4);
+  v10 = objc_msgSend_localizedModeToolTipForArgument_modeIndex_ofFunction_(locale, v9, index, index, v8);
 
   return v10;
 }
 
-- (id)localizedModeMenuItemStringForModeIndex:(unsigned __int16)a3 locale:(id)a4
+- (id)localizedModeMenuItemStringForModeIndex:(unsigned __int16)index locale:(id)locale
 {
-  v6 = a3;
+  indexCopy = index;
   index = self->_index;
-  v9 = objc_msgSend_functionName(self->_functionSpec, a2, a3, a4, v4);
-  v11 = objc_msgSend_localizedModeNameForArgument_modeIndex_ofFunction_(a4, v10, index, v6, v9);
+  v9 = objc_msgSend_functionName(self->_functionSpec, a2, index, locale, v4);
+  v11 = objc_msgSend_localizedModeNameForArgument_modeIndex_ofFunction_(locale, v10, index, indexCopy, v9);
 
-  v15 = objc_msgSend_valueForModeIndex_(self, v12, v6, v13, v14);
-  v19 = objc_msgSend_asStringWithLocale_(v15, v16, a4, v17, v18);
+  v15 = objc_msgSend_valueForModeIndex_(self, v12, indexCopy, v13, v14);
+  v19 = objc_msgSend_asStringWithLocale_(v15, v16, locale, v17, v18);
   if (objc_msgSend_nativeType(v15, v20, v21, v22, v23) == 7)
   {
     v27 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v24, @"%@", v25, v26, v19);
@@ -431,7 +431,7 @@ LABEL_12:
     v19 = v27;
   }
 
-  if (self->_defaultModeIndex == v6)
+  if (self->_defaultModeIndex == indexCopy)
   {
     v28 = qword_27CFB53C0;
     if (!qword_27CFB53C0)
@@ -456,19 +456,19 @@ LABEL_12:
   return v39;
 }
 
-- (id)localizedLambdaIdentifierForLambdaIndex:(unsigned __int16)a3 locale:(id)a4
+- (id)localizedLambdaIdentifierForLambdaIndex:(unsigned __int16)index locale:(id)locale
 {
   index = self->_index;
-  v8 = objc_msgSend_functionName(self->_functionSpec, a2, a3, a4, v4);
-  v10 = objc_msgSend_localizedLambdaIdentifierForArgument_identifierIndex_ofFunction_(a4, v9, index, a3, v8);
+  v8 = objc_msgSend_functionName(self->_functionSpec, a2, index, locale, v4);
+  v10 = objc_msgSend_localizedLambdaIdentifierForArgument_identifierIndex_ofFunction_(locale, v9, index, index, v8);
 
   return v10;
 }
 
-- (id)checkBoundsAndUnits:(id)a3 valueDeepType:(char)a4 context:(id)a5 functionSpec:(id)a6 argIndex:(unint64_t)a7
+- (id)checkBoundsAndUnits:(id)units valueDeepType:(char)type context:(id)context functionSpec:(id)spec argIndex:(unint64_t)index
 {
-  v10 = a4;
-  v12 = a3;
+  typeCopy = type;
+  unitsCopy = units;
   objc_msgSend_minValue(self, v13, v14, v15, v16);
   v18 = v17;
   objc_msgSend_maxValue(self, v19, v20, v21, v22);
@@ -486,10 +486,10 @@ LABEL_12:
   {
     v49 = objc_msgSend_argumentType(self, v35, v36, v37, v38);
     v50 = 0;
-    if (v10 != 5 && v49 != 15)
+    if (typeCopy != 5 && v49 != 15)
     {
       v105 = 0;
-      v51 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v12, v48, a5, a6, a7, &v105);
+      v51 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(unitsCopy, v48, context, spec, index, &v105);
       v50 = v105;
     }
 
@@ -498,7 +498,7 @@ LABEL_12:
   }
 
   v107 = 0;
-  v41 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v12, v35, a5, a6, a7, &v107);
+  v41 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(unitsCopy, v35, context, spec, index, &v107);
   v42 = v107;
   if (v42)
   {
@@ -548,8 +548,8 @@ LABEL_64:
 
             if (v96 == 1)
             {
-              v97 = objc_msgSend_functionName(a6, v66, v67, v68, v69);
-              v100 = objc_msgSend_currencyNotAllowedErrorForFunctionName_argumentNumber_(TSCEError, v98, v97, (a7 + 1), v99);
+              v97 = objc_msgSend_functionName(spec, v66, v67, v68, v69);
+              v100 = objc_msgSend_currencyNotAllowedErrorForFunctionName_argumentNumber_(TSCEError, v98, v97, (index + 1), v99);
 LABEL_75:
               v95 = v100;
 
@@ -568,8 +568,8 @@ LABEL_75:
 
             if (v101 == 1)
             {
-              v97 = objc_msgSend_functionName(a6, v66, v67, v68, v69);
-              v100 = objc_msgSend_durationNotAllowedError_argumentNumber_(TSCEError, v102, v97, (a7 + 1), v103);
+              v97 = objc_msgSend_functionName(spec, v66, v67, v68, v69);
+              v100 = objc_msgSend_durationNotAllowedError_argumentNumber_(TSCEError, v102, v97, (index + 1), v103);
               goto LABEL_75;
             }
           }
@@ -585,8 +585,8 @@ LABEL_75:
             goto LABEL_64;
           }
 
-          v85 = objc_msgSend_functionName(a6, v66, v67, v68, v69);
-          v87 = objc_msgSend_outOfBoundsArgumentErrorForArgument_functionName_upperBound_upperBoundInclusive_(TSCEError, v90, (a7 + 1), v85, 1, v24);
+          v85 = objc_msgSend_functionName(spec, v66, v67, v68, v69);
+          v87 = objc_msgSend_outOfBoundsArgumentErrorForArgument_functionName_upperBound_upperBoundInclusive_(TSCEError, v90, (index + 1), v85, 1, v24);
         }
 
         else
@@ -596,8 +596,8 @@ LABEL_75:
             goto LABEL_64;
           }
 
-          v85 = objc_msgSend_functionName(a6, v66, v67, v68, v69);
-          v87 = objc_msgSend_outOfBoundsArgumentErrorForArgument_functionName_upperBound_upperBoundInclusive_(TSCEError, v94, (a7 + 1), v85, 0, v24);
+          v85 = objc_msgSend_functionName(spec, v66, v67, v68, v69);
+          v87 = objc_msgSend_outOfBoundsArgumentErrorForArgument_functionName_upperBound_upperBoundInclusive_(TSCEError, v94, (index + 1), v85, 0, v24);
         }
 
         goto LABEL_62;
@@ -610,8 +610,8 @@ LABEL_75:
           goto LABEL_63;
         }
 
-        v85 = objc_msgSend_functionName(a6, v66, v67, v68, v69);
-        v87 = objc_msgSend_outOfBoundsArgumentErrorForArgument_functionName_lowerBound_lowerBoundInclusive_(TSCEError, v88, (a7 + 1), v85, 1, v18);
+        v85 = objc_msgSend_functionName(spec, v66, v67, v68, v69);
+        v87 = objc_msgSend_outOfBoundsArgumentErrorForArgument_functionName_lowerBound_lowerBoundInclusive_(TSCEError, v88, (index + 1), v85, 1, v18);
       }
 
       else
@@ -621,8 +621,8 @@ LABEL_75:
           goto LABEL_63;
         }
 
-        v85 = objc_msgSend_functionName(a6, v66, v67, v68, v69);
-        v87 = objc_msgSend_outOfBoundsArgumentErrorForArgument_functionName_lowerBound_lowerBoundInclusive_(TSCEError, v92, (a7 + 1), v85, 0, v18);
+        v85 = objc_msgSend_functionName(spec, v66, v67, v68, v69);
+        v87 = objc_msgSend_outOfBoundsArgumentErrorForArgument_functionName_lowerBound_lowerBoundInclusive_(TSCEError, v92, (index + 1), v85, 0, v18);
       }
     }
 
@@ -632,8 +632,8 @@ LABEL_75:
       {
         if (v61 < v18 || v61 > v24)
         {
-          v85 = objc_msgSend_functionName(a6, v66, v67, v68, v69);
-          v87 = objc_msgSend_outOfBoundsArgumentErrorForArgument_functionName_lowerBound_lowerBoundInclusive_upperBound_upperBoundInclusive_(TSCEError, v86, (a7 + 1), v85, 1, 1, v18, v24);
+          v85 = objc_msgSend_functionName(spec, v66, v67, v68, v69);
+          v87 = objc_msgSend_outOfBoundsArgumentErrorForArgument_functionName_lowerBound_lowerBoundInclusive_upperBound_upperBoundInclusive_(TSCEError, v86, (index + 1), v85, 1, 1, v18, v24);
           goto LABEL_62;
         }
 
@@ -649,8 +649,8 @@ LABEL_63:
           goto LABEL_63;
         }
 
-        v85 = objc_msgSend_functionName(a6, v66, v67, v68, v69);
-        v87 = objc_msgSend_outOfBoundsArgumentErrorForArgument_functionName_lowerBound_lowerBoundInclusive_upperBound_upperBoundInclusive_(TSCEError, v93, (a7 + 1), v85, 1, 0, v18, v24);
+        v85 = objc_msgSend_functionName(spec, v66, v67, v68, v69);
+        v87 = objc_msgSend_outOfBoundsArgumentErrorForArgument_functionName_lowerBound_lowerBoundInclusive_upperBound_upperBoundInclusive_(TSCEError, v93, (index + 1), v85, 1, 0, v18, v24);
       }
 
       else if ((objc_msgSend_minInclusive(self, v66, v67, v68, v69) & 1) != 0 || !objc_msgSend_maxInclusive(self, v66, v67, v68, v69))
@@ -660,8 +660,8 @@ LABEL_63:
           goto LABEL_63;
         }
 
-        v85 = objc_msgSend_functionName(a6, v66, v67, v68, v69);
-        v87 = objc_msgSend_outOfBoundsArgumentErrorForArgument_functionName_lowerBound_lowerBoundInclusive_upperBound_upperBoundInclusive_(TSCEError, v91, (a7 + 1), v85, 0, 0, v18, v24);
+        v85 = objc_msgSend_functionName(spec, v66, v67, v68, v69);
+        v87 = objc_msgSend_outOfBoundsArgumentErrorForArgument_functionName_lowerBound_lowerBoundInclusive_upperBound_upperBoundInclusive_(TSCEError, v91, (index + 1), v85, 0, 0, v18, v24);
       }
 
       else
@@ -671,8 +671,8 @@ LABEL_63:
           goto LABEL_63;
         }
 
-        v85 = objc_msgSend_functionName(a6, v66, v67, v68, v69);
-        v87 = objc_msgSend_outOfBoundsArgumentErrorForArgument_functionName_lowerBound_lowerBoundInclusive_upperBound_upperBoundInclusive_(TSCEError, v89, (a7 + 1), v85, 0, 1, v18, v24);
+        v85 = objc_msgSend_functionName(spec, v66, v67, v68, v69);
+        v87 = objc_msgSend_outOfBoundsArgumentErrorForArgument_functionName_lowerBound_lowerBoundInclusive_upperBound_upperBoundInclusive_(TSCEError, v89, (index + 1), v85, 0, 1, v18, v24);
       }
     }
 
@@ -698,16 +698,16 @@ LABEL_77:
   {
     if (v61 < v18)
     {
-      v74 = objc_msgSend_functionName(a6, v66, v67, v68, v69);
+      v74 = objc_msgSend_functionName(spec, v66, v67, v68, v69);
       if (v24 == INFINITY)
       {
-        objc_msgSend_outOfBoundsArgumentErrorForArgument_functionName_lowerBound_lowerBoundInclusive_(TSCEError, v70, (a7 + 1), v74, 1, v18);
+        objc_msgSend_outOfBoundsArgumentErrorForArgument_functionName_lowerBound_lowerBoundInclusive_(TSCEError, v70, (index + 1), v74, 1, v18);
       }
 
       else
       {
         v75 = objc_msgSend_maxInclusive(self, v70, v71, v72, v73);
-        objc_msgSend_outOfBoundsArgumentErrorForArgument_functionName_lowerBound_lowerBoundInclusive_upperBound_upperBoundInclusive_(TSCEError, v76, (a7 + 1), v74, 1, v75, v18, v24);
+        objc_msgSend_outOfBoundsArgumentErrorForArgument_functionName_lowerBound_lowerBoundInclusive_upperBound_upperBoundInclusive_(TSCEError, v76, (index + 1), v74, 1, v75, v18, v24);
       }
 
       goto LABEL_18;
@@ -723,16 +723,16 @@ LABEL_27:
     goto LABEL_27;
   }
 
-  v74 = objc_msgSend_functionName(a6, v66, v67, v68, v69);
+  v74 = objc_msgSend_functionName(spec, v66, v67, v68, v69);
   if (v24 == INFINITY)
   {
-    objc_msgSend_outOfBoundsArgumentErrorForArgument_functionName_lowerBound_lowerBoundInclusive_(TSCEError, v78, (a7 + 1), v74, 0, v18);
+    objc_msgSend_outOfBoundsArgumentErrorForArgument_functionName_lowerBound_lowerBoundInclusive_(TSCEError, v78, (index + 1), v74, 0, v18);
   }
 
   else
   {
     v82 = objc_msgSend_maxInclusive(self, v78, v79, v80, v81);
-    objc_msgSend_outOfBoundsArgumentErrorForArgument_functionName_lowerBound_lowerBoundInclusive_upperBound_upperBoundInclusive_(TSCEError, v83, (a7 + 1), v74, 0, v82, v18, v24);
+    objc_msgSend_outOfBoundsArgumentErrorForArgument_functionName_lowerBound_lowerBoundInclusive_upperBound_upperBoundInclusive_(TSCEError, v83, (index + 1), v74, 0, v82, v18, v24);
   }
 
   v77 = LABEL_18:;
@@ -751,22 +751,22 @@ LABEL_79:
   return v47;
 }
 
-+ (id)coerceValueToNumberOrDate:(id)a3 valueDeepType:(char)a4 context:(id)a5 functionSpec:(id)a6 argIndex:(unint64_t)a7 outError:(id *)a8
++ (id)coerceValueToNumberOrDate:(id)date valueDeepType:(char)type context:(id)context functionSpec:(id)spec argIndex:(unint64_t)index outError:(id *)error
 {
-  v12 = a4;
-  v13 = a3;
-  v17 = v13;
-  if (v12 > 0x10 || (v18 = v13, ((1 << v12) & 0x1002B) == 0))
+  typeCopy = type;
+  dateCopy = date;
+  v17 = dateCopy;
+  if (typeCopy > 0x10 || (v18 = dateCopy, ((1 << typeCopy) & 0x1002B) == 0))
   {
-    v21 = objc_msgSend_argumentSpecForIndex_(a6, v14, a7, v15, v16);
+    v21 = objc_msgSend_argumentSpecForIndex_(spec, v14, index, v15, v16);
     if (!objc_msgSend_isOptional(v21, v22, v23, v24, v25) || (v18 = v17, (objc_msgSend_isTokenOrEmptyArg(v17, v26, v27, v28, v29) & 1) == 0))
     {
       v39 = 0;
-      v30 = objc_msgSend_asString_functionSpec_argumentIndex_outError_(v17, v26, a5, a6, a7, &v39);
-      v32 = TSCEArgumentAccessor::TSUFormattedDateValueFromDateString(v30, a5, v31);
+      v30 = objc_msgSend_asString_functionSpec_argumentIndex_outError_(v17, v26, context, spec, index, &v39);
+      v32 = TSCEArgumentAccessor::TSUFormattedDateValueFromDateString(v30, context, v31);
       if (objc_msgSend_isNil(v32, v33, v34, v35, v36))
       {
-        v38 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v17, v37, a5, a6, a7, a8);
+        v38 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v17, v37, context, spec, index, error);
       }
 
       else
@@ -783,50 +783,50 @@ LABEL_79:
   return v18;
 }
 
-- (id)boundsCheckAndCoerce:(id)a3 valueDeepType:(char)a4 context:(id)a5 functionSpec:(id)a6 argIndex:(unint64_t)a7 outError:(id *)a8
+- (id)boundsCheckAndCoerce:(id)coerce valueDeepType:(char)type context:(id)context functionSpec:(id)spec argIndex:(unint64_t)index outError:(id *)error
 {
-  v12 = a4;
-  v14 = a3;
-  v19 = v14;
-  if (v14 && (objc_msgSend_isNil(v14, v15, v16, v17, v18) & 1) == 0)
+  typeCopy = type;
+  coerceCopy = coerce;
+  v19 = coerceCopy;
+  if (coerceCopy && (objc_msgSend_isNil(coerceCopy, v15, v16, v17, v18) & 1) == 0)
   {
     v24 = objc_msgSend_argumentType(self, v20, v21, v22, v23);
     if (v24 == 8)
     {
-      v26 = objc_msgSend_coerceValueToNumberOrDate_valueDeepType_context_functionSpec_argIndex_outError_(TSCEFunctionArgSpec, v25, v19, v12, a5, a6, a7, a8);
+      v26 = objc_msgSend_coerceValueToNumberOrDate_valueDeepType_context_functionSpec_argIndex_outError_(TSCEFunctionArgSpec, v25, v19, typeCopy, context, spec, index, error);
 
       v19 = v26;
     }
 
     else if (v24 == 5)
     {
-      *a8 = objc_msgSend_checkBoundsAndUnits_valueDeepType_context_functionSpec_argIndex_(self, v25, v19, v12, a5, a6, a7);
+      *error = objc_msgSend_checkBoundsAndUnits_valueDeepType_context_functionSpec_argIndex_(self, v25, v19, typeCopy, context, spec, index);
     }
   }
 
   return v19;
 }
 
-- (id)typeCheckAndCoerce:(id)a3 context:(id)a4 functionSpec:(id)a5 argIndex:(unint64_t)a6 fromInsideArray:(BOOL)a7 outError:(id *)a8
+- (id)typeCheckAndCoerce:(id)coerce context:(id)context functionSpec:(id)spec argIndex:(unint64_t)index fromInsideArray:(BOOL)array outError:(id *)error
 {
   v10 = vdupq_n_s64(0x7FFF7FFFFFFFuLL);
   v11 = 0;
   v12 = 0;
-  v8 = objc_msgSend_typeCheckAndCoerce_context_functionSpec_argIndex_fromInsideArray_outError_fullRangeBeingAccessed_(self, a2, a3, a4, a5, a6, a7, a8, &v10);
+  v8 = objc_msgSend_typeCheckAndCoerce_context_functionSpec_argIndex_fromInsideArray_outError_fullRangeBeingAccessed_(self, a2, coerce, context, spec, index, array, error, &v10);
 
   return v8;
 }
 
-- (id)typeCheckAndCoerce:(id)a3 context:(id)a4 functionSpec:(id)a5 argIndex:(unint64_t)a6 fromInsideArray:(BOOL)a7 outError:(id *)a8 fullRangeBeingAccessed:(const TSCERangeRef *)a9
+- (id)typeCheckAndCoerce:(id)coerce context:(id)context functionSpec:(id)spec argIndex:(unint64_t)index fromInsideArray:(BOOL)array outError:(id *)error fullRangeBeingAccessed:(const TSCERangeRef *)accessed
 {
-  v10 = a7;
+  arrayCopy = array;
   argumentContext = self->_argumentContext;
   if ((argumentContext & 0xFFFFFFFE) != 4)
   {
-    if (sub_2216F754C(self, a3, a4, a4, a5))
+    if (sub_2216F754C(self, coerce, context, context, spec))
     {
 LABEL_8:
-      v17 = objc_msgSend_nilValue(TSCENilValue, a2, a3, a4, a5);
+      v17 = objc_msgSend_nilValue(TSCENilValue, a2, coerce, context, spec);
       goto LABEL_17;
     }
 
@@ -838,43 +838,43 @@ LABEL_8:
     case 0:
     case 14:
     case 15:
-      v17 = sub_22125B3AC(self, a3, a4, a5, a6, 0, a8);
+      v17 = sub_22125B3AC(self, coerce, context, spec, index, 0, error);
       break;
     case 1:
-      v17 = sub_22125B498(self, a3, a4, a5, a6, v10, a8);
+      v17 = sub_22125B498(self, coerce, context, spec, index, arrayCopy, error);
       break;
     case 2:
-      v17 = sub_22125B6D4(self, a3, a4, a5, a6, v10, a8);
+      v17 = sub_22125B6D4(self, coerce, context, spec, index, arrayCopy, error);
       break;
     case 3:
-      v17 = sub_22125BA08(self, a3, a4, a5, a6, v10, a8);
+      v17 = sub_22125BA08(self, coerce, context, spec, index, arrayCopy, error);
       break;
     case 4:
-      v17 = sub_22125C0A8(self, a3, a4, a5, a6, v10, a8, a9);
+      v17 = sub_22125C0A8(self, coerce, context, spec, index, arrayCopy, error, accessed);
       break;
     case 5:
-      v17 = sub_22125BCF8(self, a3, a4, a5, a6, v10, a8, a9);
+      v17 = sub_22125BCF8(self, coerce, context, spec, index, arrayCopy, error, accessed);
       break;
     case 6:
     case 7:
-      v17 = sub_22125C434(self, a3, a4, a5, a6, v10, a8);
+      v17 = sub_22125C434(self, coerce, context, spec, index, arrayCopy, error);
       break;
     case 8:
     case 9:
-      v17 = sub_22125C95C(self, a3, a4, a5, a6, v10, a8);
+      v17 = sub_22125C95C(self, coerce, context, spec, index, arrayCopy, error);
       break;
     case 10:
     case 11:
-      v17 = sub_22125CCD0(self, a3, a4, a5, a6, v10, a8);
+      v17 = sub_22125CCD0(self, coerce, context, spec, index, arrayCopy, error);
       break;
     case 12:
-      v17 = sub_22125D204(self, a3, a4, a5, a6, v10, a8);
+      v17 = sub_22125D204(self, coerce, context, spec, index, arrayCopy, error);
       break;
     case 13:
-      v17 = sub_22125D324(self, a3, a4, a5, a6, v10, a8);
+      v17 = sub_22125D324(self, coerce, context, spec, index, arrayCopy, error);
       break;
     case 16:
-      v17 = sub_22125D468(self, a3, a4, a5, a6, 0, a8);
+      v17 = sub_22125D468(self, coerce, context, spec, index, 0, error);
       break;
     default:
       goto LABEL_8;
@@ -885,98 +885,98 @@ LABEL_17:
   return v17;
 }
 
-+ (TSCEFunctionArgSpec)argSpecWithType:(char)a3
++ (TSCEFunctionArgSpec)argSpecWithType:(char)type
 {
-  v3 = a3;
+  typeCopy = type;
   v4 = [TSCEFunctionArgSpec alloc];
-  v7 = objc_msgSend_initWithArgumentType_accessorMode_(v4, v5, v3, 1, v6);
+  v7 = objc_msgSend_initWithArgumentType_accessorMode_(v4, v5, typeCopy, 1, v6);
 
   return v7;
 }
 
-+ (id)argSpecForFunctorWithNumLambdaIdentifiers:(unsigned __int16)a3
++ (id)argSpecForFunctorWithNumLambdaIdentifiers:(unsigned __int16)identifiers
 {
   result = objc_msgSend_argSpecWithType_(TSCEFunctionArgSpec, a2, 19, v3, v4);
-  *(result + 41) = a3;
+  *(result + 41) = identifiers;
   return result;
 }
 
-+ (TSCEFunctionArgSpec)argSpecWithType:(char)a3 accessorMode:(int)a4
++ (TSCEFunctionArgSpec)argSpecWithType:(char)type accessorMode:(int)mode
 {
-  v4 = *&a4;
-  v5 = a3;
+  v4 = *&mode;
+  typeCopy = type;
   v6 = [TSCEFunctionArgSpec alloc];
-  v9 = objc_msgSend_initWithArgumentType_accessorMode_(v6, v7, v5, v4, v8);
+  v9 = objc_msgSend_initWithArgumentType_accessorMode_(v6, v7, typeCopy, v4, v8);
 
   return v9;
 }
 
-+ (TSCEFunctionArgSpec)argSpecWithType:(char)a3 typeOptions:(unsigned int)a4
++ (TSCEFunctionArgSpec)argSpecWithType:(char)type typeOptions:(unsigned int)options
 {
-  v4 = *&a4;
-  v5 = a3;
+  v4 = *&options;
+  typeCopy = type;
   v6 = [TSCEFunctionArgSpec alloc];
-  v9 = objc_msgSend_initWithArgumentType_accessorMode_(v6, v7, v5, 1, v8);
+  v9 = objc_msgSend_initWithArgumentType_accessorMode_(v6, v7, typeCopy, 1, v8);
   objc_msgSend_setTypeOptions_(v9, v10, v4, v11, v12);
 
   return v9;
 }
 
-+ (TSCEFunctionArgSpec)argSpecWithType:(char)a3 accessorMode:(int)a4 argumentContext:(int)a5
++ (TSCEFunctionArgSpec)argSpecWithType:(char)type accessorMode:(int)mode argumentContext:(int)context
 {
-  v5 = *&a5;
-  v6 = *&a4;
-  v7 = a3;
+  v5 = *&context;
+  v6 = *&mode;
+  typeCopy = type;
   v8 = [TSCEFunctionArgSpec alloc];
-  v11 = objc_msgSend_initWithArgumentType_accessorMode_(v8, v9, v7, v6, v10);
+  v11 = objc_msgSend_initWithArgumentType_accessorMode_(v8, v9, typeCopy, v6, v10);
   objc_msgSend_setArgumentContext_(v11, v12, v5, v13, v14);
 
   return v11;
 }
 
-+ (TSCEFunctionArgSpec)argSpecWithType:(char)a3 minValue:(double)a4 minInclusive:(BOOL)a5
++ (TSCEFunctionArgSpec)argSpecWithType:(char)type minValue:(double)value minInclusive:(BOOL)inclusive
 {
-  v6 = a5;
-  v8 = objc_msgSend_argSpecWithType_(a1, a2, a3, a5, v5);
-  objc_msgSend_setMinValue_minInclusive_(v8, v9, v6, v10, v11, a4);
+  inclusiveCopy = inclusive;
+  v8 = objc_msgSend_argSpecWithType_(self, a2, type, inclusive, v5);
+  objc_msgSend_setMinValue_minInclusive_(v8, v9, inclusiveCopy, v10, v11, value);
 
   return v8;
 }
 
-+ (TSCEFunctionArgSpec)argSpecWithType:(char)a3 minValue:(double)a4 minInclusive:(BOOL)a5 maxValue:(double)a6 maxInclusive:(BOOL)a7
++ (TSCEFunctionArgSpec)argSpecWithType:(char)type minValue:(double)value minInclusive:(BOOL)inclusive maxValue:(double)maxValue maxInclusive:(BOOL)maxInclusive
 {
-  v7 = a7;
-  v9 = a5;
-  v11 = objc_msgSend_argSpecWithType_(a1, a2, a3, a5, a7);
-  objc_msgSend_setMinValue_minInclusive_(v11, v12, v9, v13, v14, a4);
-  objc_msgSend_setMaxValue_maxInclusive_(v11, v15, v7, v16, v17, a6);
+  maxInclusiveCopy = maxInclusive;
+  inclusiveCopy = inclusive;
+  v11 = objc_msgSend_argSpecWithType_(self, a2, type, inclusive, maxInclusive);
+  objc_msgSend_setMinValue_minInclusive_(v11, v12, inclusiveCopy, v13, v14, value);
+  objc_msgSend_setMaxValue_maxInclusive_(v11, v15, maxInclusiveCopy, v16, v17, maxValue);
 
   return v11;
 }
 
-+ (TSCEFunctionArgSpec)argSpecWithType:(char)a3 accessorMode:(int)a4 rangeContext:(unsigned __int8)a5
++ (TSCEFunctionArgSpec)argSpecWithType:(char)type accessorMode:(int)mode rangeContext:(unsigned __int8)context
 {
-  v5 = a5;
-  v6 = *&a4;
-  v7 = a3;
+  contextCopy = context;
+  v6 = *&mode;
+  typeCopy = type;
   v8 = [TSCEFunctionArgSpec alloc];
-  v11 = objc_msgSend_initWithArgumentType_accessorMode_(v8, v9, v7, v6, v10);
-  objc_msgSend_setRangeContext_(v11, v12, v5, v13, v14);
+  v11 = objc_msgSend_initWithArgumentType_accessorMode_(v8, v9, typeCopy, v6, v10);
+  objc_msgSend_setRangeContext_(v11, v12, contextCopy, v13, v14);
 
   return v11;
 }
 
-+ (TSCEFunctionArgSpec)argSpecWithType:(char)a3 accessorMode:(int)a4 rangeContext:(unsigned __int8)a5 unwrapThunk:(BOOL)a6
++ (TSCEFunctionArgSpec)argSpecWithType:(char)type accessorMode:(int)mode rangeContext:(unsigned __int8)context unwrapThunk:(BOOL)thunk
 {
-  v6 = a6;
-  v7 = a5;
-  v8 = *&a4;
-  v9 = a3;
+  thunkCopy = thunk;
+  contextCopy = context;
+  v8 = *&mode;
+  typeCopy = type;
   v10 = [TSCEFunctionArgSpec alloc];
-  v13 = objc_msgSend_initWithArgumentType_accessorMode_(v10, v11, v9, v8, v12);
-  objc_msgSend_setRangeContext_(v13, v14, v7, v15, v16);
-  objc_msgSend_setUnwrapThunk_(v13, v17, v6, v18, v19);
-  if (!v6)
+  v13 = objc_msgSend_initWithArgumentType_accessorMode_(v10, v11, typeCopy, v8, v12);
+  objc_msgSend_setRangeContext_(v13, v14, contextCopy, v15, v16);
+  objc_msgSend_setUnwrapThunk_(v13, v17, thunkCopy, v18, v19);
+  if (!thunkCopy)
   {
     v24 = objc_msgSend_typeOptions(v13, v20, v21, v22, v23);
     objc_msgSend_setTypeOptions_(v13, v25, v24 | 0x40u, v26, v27);
@@ -985,31 +985,31 @@ LABEL_17:
   return v13;
 }
 
-+ (TSCEFunctionArgSpec)argSpecWithType:(char)a3 accessorMode:(int)a4 rangeContext:(unsigned __int8)a5 argumentContext:(int)a6
++ (TSCEFunctionArgSpec)argSpecWithType:(char)type accessorMode:(int)mode rangeContext:(unsigned __int8)context argumentContext:(int)argumentContext
 {
-  v6 = *&a6;
-  v7 = a5;
-  v8 = *&a4;
-  v9 = a3;
+  v6 = *&argumentContext;
+  contextCopy = context;
+  v8 = *&mode;
+  typeCopy = type;
   v10 = [TSCEFunctionArgSpec alloc];
-  v12 = objc_msgSend_initWithArgumentType_accessorMode_argumentContext_(v10, v11, v9, v8, v6);
-  objc_msgSend_setRangeContext_(v12, v13, v7, v14, v15);
+  v12 = objc_msgSend_initWithArgumentType_accessorMode_argumentContext_(v10, v11, typeCopy, v8, v6);
+  objc_msgSend_setRangeContext_(v12, v13, contextCopy, v14, v15);
 
   return v12;
 }
 
-+ (TSCEFunctionArgSpec)argSpecWithType:(char)a3 accessorMode:(int)a4 rangeContext:(unsigned __int8)a5 argumentContext:(int)a6 unwrapThunk:(BOOL)a7
++ (TSCEFunctionArgSpec)argSpecWithType:(char)type accessorMode:(int)mode rangeContext:(unsigned __int8)context argumentContext:(int)argumentContext unwrapThunk:(BOOL)thunk
 {
-  v7 = a7;
-  v8 = *&a6;
-  v9 = a5;
-  v10 = *&a4;
-  v11 = a3;
+  thunkCopy = thunk;
+  v8 = *&argumentContext;
+  contextCopy = context;
+  v10 = *&mode;
+  typeCopy = type;
   v12 = [TSCEFunctionArgSpec alloc];
-  v14 = objc_msgSend_initWithArgumentType_accessorMode_argumentContext_(v12, v13, v11, v10, v8);
-  objc_msgSend_setRangeContext_(v14, v15, v9, v16, v17);
-  objc_msgSend_setUnwrapThunk_(v14, v18, v7, v19, v20);
-  if (!v7)
+  v14 = objc_msgSend_initWithArgumentType_accessorMode_argumentContext_(v12, v13, typeCopy, v10, v8);
+  objc_msgSend_setRangeContext_(v14, v15, contextCopy, v16, v17);
+  objc_msgSend_setUnwrapThunk_(v14, v18, thunkCopy, v19, v20);
+  if (!thunkCopy)
   {
     v25 = objc_msgSend_typeOptions(v14, v21, v22, v23, v24);
     objc_msgSend_setTypeOptions_(v14, v26, v25 | 0x40u, v27, v28);
@@ -1018,162 +1018,162 @@ LABEL_17:
   return v14;
 }
 
-+ (TSCEFunctionArgSpec)argSpecWithType:(char)a3 accessorMode:(int)a4 typeOptions:(unsigned int)a5
++ (TSCEFunctionArgSpec)argSpecWithType:(char)type accessorMode:(int)mode typeOptions:(unsigned int)options
 {
-  v5 = *&a5;
-  v6 = *&a4;
-  v7 = a3;
+  v5 = *&options;
+  v6 = *&mode;
+  typeCopy = type;
   v8 = [TSCEFunctionArgSpec alloc];
-  v11 = objc_msgSend_initWithArgumentType_accessorMode_(v8, v9, v7, v6, v10);
+  v11 = objc_msgSend_initWithArgumentType_accessorMode_(v8, v9, typeCopy, v6, v10);
   objc_msgSend_setTypeOptions_(v11, v12, v5, v13, v14);
 
   return v11;
 }
 
-+ (TSCEFunctionArgSpec)argSpecWithType:(char)a3 accessorMode:(int)a4 argumentContext:(int)a5 typeOptions:(unsigned int)a6
++ (TSCEFunctionArgSpec)argSpecWithType:(char)type accessorMode:(int)mode argumentContext:(int)context typeOptions:(unsigned int)options
 {
-  v6 = *&a5;
-  v7 = objc_msgSend_argSpecWithType_accessorMode_typeOptions_(TSCEFunctionArgSpec, a2, a3, *&a4, *&a6);
+  v6 = *&context;
+  v7 = objc_msgSend_argSpecWithType_accessorMode_typeOptions_(TSCEFunctionArgSpec, a2, type, *&mode, *&options);
   objc_msgSend_setArgumentContext_(v7, v8, v6, v9, v10);
 
   return v7;
 }
 
-+ (TSCEFunctionArgSpec)argSpecWithType:(char)a3 accessorMode:(int)a4 rangeContext:(unsigned __int8)a5 typeOptions:(unsigned int)a6
++ (TSCEFunctionArgSpec)argSpecWithType:(char)type accessorMode:(int)mode rangeContext:(unsigned __int8)context typeOptions:(unsigned int)options
 {
-  v6 = a5;
-  v7 = objc_msgSend_argSpecWithType_accessorMode_typeOptions_(TSCEFunctionArgSpec, a2, a3, *&a4, *&a6);
-  objc_msgSend_setRangeContext_(v7, v8, v6, v9, v10);
+  contextCopy = context;
+  v7 = objc_msgSend_argSpecWithType_accessorMode_typeOptions_(TSCEFunctionArgSpec, a2, type, *&mode, *&options);
+  objc_msgSend_setRangeContext_(v7, v8, contextCopy, v9, v10);
 
   return v7;
 }
 
-+ (TSCEFunctionArgSpec)argSpecWithType:(char)a3 accessorMode:(int)a4 rangeContext:(unsigned __int8)a5 modeValues:(const void *)a6 defaultModeIndex:(unsigned __int16)a7
++ (TSCEFunctionArgSpec)argSpecWithType:(char)type accessorMode:(int)mode rangeContext:(unsigned __int8)context modeValues:(const void *)values defaultModeIndex:(unsigned __int16)index
 {
-  v7 = a7;
-  v9 = a5;
-  v10 = *&a4;
-  v11 = a3;
+  indexCopy = index;
+  contextCopy = context;
+  v10 = *&mode;
+  typeCopy = type;
   v12 = [TSCEFunctionArgSpec alloc];
-  v15 = objc_msgSend_initWithArgumentType_accessorMode_(v12, v13, v11, v10, v14);
-  objc_msgSend_setRangeContext_(v15, v16, v9, v17, v18);
-  objc_msgSend_setModeValues_defaultModeIndex_(v15, v19, a6, v7, v20);
+  v15 = objc_msgSend_initWithArgumentType_accessorMode_(v12, v13, typeCopy, v10, v14);
+  objc_msgSend_setRangeContext_(v15, v16, contextCopy, v17, v18);
+  objc_msgSend_setModeValues_defaultModeIndex_(v15, v19, values, indexCopy, v20);
 
   return v15;
 }
 
-+ (TSCEFunctionArgSpec)argSpecWithType:(char)a3 accessorMode:(int)a4 rangeContext:(unsigned __int8)a5 argumentContext:(int)a6 modeValues:(const void *)a7 defaultModeIndex:(unsigned __int16)a8
++ (TSCEFunctionArgSpec)argSpecWithType:(char)type accessorMode:(int)mode rangeContext:(unsigned __int8)context argumentContext:(int)argumentContext modeValues:(const void *)values defaultModeIndex:(unsigned __int16)index
 {
-  v8 = a8;
-  v10 = *&a6;
-  v11 = a5;
-  v12 = *&a4;
-  v13 = a3;
+  indexCopy = index;
+  v10 = *&argumentContext;
+  contextCopy = context;
+  v12 = *&mode;
+  typeCopy = type;
   v14 = [TSCEFunctionArgSpec alloc];
-  v16 = objc_msgSend_initWithArgumentType_accessorMode_argumentContext_(v14, v15, v13, v12, v10);
-  objc_msgSend_setRangeContext_(v16, v17, v11, v18, v19);
-  objc_msgSend_setModeValues_defaultModeIndex_(v16, v20, a7, v8, v21);
+  v16 = objc_msgSend_initWithArgumentType_accessorMode_argumentContext_(v14, v15, typeCopy, v12, v10);
+  objc_msgSend_setRangeContext_(v16, v17, contextCopy, v18, v19);
+  objc_msgSend_setModeValues_defaultModeIndex_(v16, v20, values, indexCopy, v21);
 
   return v16;
 }
 
-+ (TSCEFunctionArgSpec)argSpecWithType:(char)a3 accessorMode:(int)a4 rangeContext:(unsigned __int8)a5 argumentContext:(int)a6 typeOptions:(unsigned int)a7
++ (TSCEFunctionArgSpec)argSpecWithType:(char)type accessorMode:(int)mode rangeContext:(unsigned __int8)context argumentContext:(int)argumentContext typeOptions:(unsigned int)options
 {
-  v7 = *&a6;
-  v8 = a5;
-  v9 = objc_msgSend_argSpecWithType_accessorMode_typeOptions_(TSCEFunctionArgSpec, a2, a3, *&a4, *&a7);
+  v7 = *&argumentContext;
+  contextCopy = context;
+  v9 = objc_msgSend_argSpecWithType_accessorMode_typeOptions_(TSCEFunctionArgSpec, a2, type, *&mode, *&options);
   objc_msgSend_setArgumentContext_(v9, v10, v7, v11, v12);
-  objc_msgSend_setRangeContext_(v9, v13, v8, v14, v15);
+  objc_msgSend_setRangeContext_(v9, v13, contextCopy, v14, v15);
 
   return v9;
 }
 
-+ (TSCEFunctionArgSpec)argSpecWithType:(char)a3 accessorMode:(int)a4 rangeContext:(unsigned __int8)a5 minValue:(double)a6 minInclusive:(BOOL)a7 maxValue:(double)a8 maxInclusive:(BOOL)a9 typeOptions:(unsigned int)a10
++ (TSCEFunctionArgSpec)argSpecWithType:(char)type accessorMode:(int)mode rangeContext:(unsigned __int8)context minValue:(double)value minInclusive:(BOOL)inclusive maxValue:(double)maxValue maxInclusive:(BOOL)maxInclusive typeOptions:(unsigned int)self0
 {
-  v10 = a9;
-  v12 = a7;
-  v14 = a5;
-  v15 = objc_msgSend_argSpecWithType_accessorMode_typeOptions_(TSCEFunctionArgSpec, a2, a3, *&a4, *&a10);
-  objc_msgSend_setRangeContext_(v15, v16, v14, v17, v18);
-  objc_msgSend_setMinValue_minInclusive_(v15, v19, v12, v20, v21, a6);
-  objc_msgSend_setMaxValue_maxInclusive_(v15, v22, v10, v23, v24, a8);
+  maxInclusiveCopy = maxInclusive;
+  inclusiveCopy = inclusive;
+  contextCopy = context;
+  v15 = objc_msgSend_argSpecWithType_accessorMode_typeOptions_(TSCEFunctionArgSpec, a2, type, *&mode, *&options);
+  objc_msgSend_setRangeContext_(v15, v16, contextCopy, v17, v18);
+  objc_msgSend_setMinValue_minInclusive_(v15, v19, inclusiveCopy, v20, v21, value);
+  objc_msgSend_setMaxValue_maxInclusive_(v15, v22, maxInclusiveCopy, v23, v24, maxValue);
 
   return v15;
 }
 
-+ (TSCEFunctionArgSpec)argSpecWithType:(char)a3 accessorMode:(int)a4 rangeContext:(unsigned __int8)a5 minValue:(double)a6 minInclusive:(BOOL)a7 typeOptions:(unsigned int)a8
++ (TSCEFunctionArgSpec)argSpecWithType:(char)type accessorMode:(int)mode rangeContext:(unsigned __int8)context minValue:(double)value minInclusive:(BOOL)inclusive typeOptions:(unsigned int)options
 {
-  v8 = a7;
-  v10 = a5;
-  v11 = objc_msgSend_argSpecWithType_accessorMode_typeOptions_(TSCEFunctionArgSpec, a2, a3, *&a4, *&a8);
-  objc_msgSend_setRangeContext_(v11, v12, v10, v13, v14);
-  objc_msgSend_setMinValue_minInclusive_(v11, v15, v8, v16, v17, a6);
+  inclusiveCopy = inclusive;
+  contextCopy = context;
+  v11 = objc_msgSend_argSpecWithType_accessorMode_typeOptions_(TSCEFunctionArgSpec, a2, type, *&mode, *&options);
+  objc_msgSend_setRangeContext_(v11, v12, contextCopy, v13, v14);
+  objc_msgSend_setMinValue_minInclusive_(v11, v15, inclusiveCopy, v16, v17, value);
 
   return v11;
 }
 
-+ (TSCEFunctionArgSpec)argSpecWithType:(char)a3 accessorMode:(int)a4 rangeContext:(unsigned __int8)a5 argumentContext:(int)a6 minValue:(double)a7 minInclusive:(BOOL)a8 maxValue:(double)a9 maxInclusive:(BOOL)a10 typeOptions:(unsigned int)a11
++ (TSCEFunctionArgSpec)argSpecWithType:(char)type accessorMode:(int)mode rangeContext:(unsigned __int8)context argumentContext:(int)argumentContext minValue:(double)value minInclusive:(BOOL)inclusive maxValue:(double)maxValue maxInclusive:(BOOL)self0 typeOptions:(unsigned int)self1
 {
-  v11 = a10;
-  v13 = a8;
-  v15 = *&a6;
-  v16 = a5;
-  v17 = objc_msgSend_argSpecWithType_accessorMode_typeOptions_(TSCEFunctionArgSpec, a2, a3, *&a4, a11);
+  maxInclusiveCopy = maxInclusive;
+  inclusiveCopy = inclusive;
+  v15 = *&argumentContext;
+  contextCopy = context;
+  v17 = objc_msgSend_argSpecWithType_accessorMode_typeOptions_(TSCEFunctionArgSpec, a2, type, *&mode, options);
   objc_msgSend_setArgumentContext_(v17, v18, v15, v19, v20);
-  objc_msgSend_setRangeContext_(v17, v21, v16, v22, v23);
-  objc_msgSend_setMinValue_minInclusive_(v17, v24, v13, v25, v26, a7);
-  objc_msgSend_setMaxValue_maxInclusive_(v17, v27, v11, v28, v29, a9);
+  objc_msgSend_setRangeContext_(v17, v21, contextCopy, v22, v23);
+  objc_msgSend_setMinValue_minInclusive_(v17, v24, inclusiveCopy, v25, v26, value);
+  objc_msgSend_setMaxValue_maxInclusive_(v17, v27, maxInclusiveCopy, v28, v29, maxValue);
 
   return v17;
 }
 
-+ (TSCEFunctionArgSpec)argSpecWithType:(char)a3 accessorMode:(int)a4 rangeContext:(unsigned __int8)a5 argumentContext:(int)a6 minValue:(double)a7 minInclusive:(BOOL)a8 typeOptions:(unsigned int)a9
++ (TSCEFunctionArgSpec)argSpecWithType:(char)type accessorMode:(int)mode rangeContext:(unsigned __int8)context argumentContext:(int)argumentContext minValue:(double)value minInclusive:(BOOL)inclusive typeOptions:(unsigned int)options
 {
-  v9 = a8;
-  v11 = *&a6;
-  v12 = a5;
-  v13 = objc_msgSend_argSpecWithType_accessorMode_typeOptions_(TSCEFunctionArgSpec, a2, a3, *&a4, *&a9);
+  inclusiveCopy = inclusive;
+  v11 = *&argumentContext;
+  contextCopy = context;
+  v13 = objc_msgSend_argSpecWithType_accessorMode_typeOptions_(TSCEFunctionArgSpec, a2, type, *&mode, *&options);
   objc_msgSend_setArgumentContext_(v13, v14, v11, v15, v16);
-  objc_msgSend_setRangeContext_(v13, v17, v12, v18, v19);
-  objc_msgSend_setMinValue_minInclusive_(v13, v20, v9, v21, v22, a7);
+  objc_msgSend_setRangeContext_(v13, v17, contextCopy, v18, v19);
+  objc_msgSend_setMinValue_minInclusive_(v13, v20, inclusiveCopy, v21, v22, value);
 
   return v13;
 }
 
-+ (TSCEFunctionArgSpec)argSpecWithType:(char)a3 accessorMode:(int)a4 rangeContext:(unsigned __int8)a5 argumentContext:(int)a6 typeOptions:(unsigned int)a7 modeValues:(const void *)a8 defaultModeIndex:(unsigned __int16)a9
++ (TSCEFunctionArgSpec)argSpecWithType:(char)type accessorMode:(int)mode rangeContext:(unsigned __int8)context argumentContext:(int)argumentContext typeOptions:(unsigned int)options modeValues:(const void *)values defaultModeIndex:(unsigned __int16)index
 {
-  v10 = *&a6;
-  v11 = a5;
-  v12 = objc_msgSend_argSpecWithType_accessorMode_typeOptions_(TSCEFunctionArgSpec, a2, a3, *&a4, *&a7);
+  v10 = *&argumentContext;
+  contextCopy = context;
+  v12 = objc_msgSend_argSpecWithType_accessorMode_typeOptions_(TSCEFunctionArgSpec, a2, type, *&mode, *&options);
   objc_msgSend_setArgumentContext_(v12, v13, v10, v14, v15);
-  objc_msgSend_setRangeContext_(v12, v16, v11, v17, v18);
-  objc_msgSend_setModeValues_defaultModeIndex_(v12, v19, a8, a9, v20);
+  objc_msgSend_setRangeContext_(v12, v16, contextCopy, v17, v18);
+  objc_msgSend_setModeValues_defaultModeIndex_(v12, v19, values, index, v20);
 
   return v12;
 }
 
-+ (TSCEFunctionArgSpec)argSpecWithType:(char)a3 accessorMode:(int)a4 rangeContext:(unsigned __int8)a5 argumentContext:(int)a6 minValue:(double)a7 minInclusive:(BOOL)a8 maxValue:(double)a9 maxInclusive:(BOOL)a10 typeOptions:(unsigned int)a11 modeValues:(const void *)a12 defaultModeIndex:(unsigned __int16)a13
++ (TSCEFunctionArgSpec)argSpecWithType:(char)type accessorMode:(int)mode rangeContext:(unsigned __int8)context argumentContext:(int)argumentContext minValue:(double)value minInclusive:(BOOL)inclusive maxValue:(double)maxValue maxInclusive:(BOOL)self0 typeOptions:(unsigned int)self1 modeValues:(const void *)self2 defaultModeIndex:(unsigned __int16)self3
 {
-  v13 = a10;
-  v15 = a8;
-  v17 = *&a6;
-  v18 = a5;
-  v19 = objc_msgSend_argSpecWithType_accessorMode_typeOptions_(TSCEFunctionArgSpec, a2, a3, *&a4, a11);
+  maxInclusiveCopy = maxInclusive;
+  inclusiveCopy = inclusive;
+  v17 = *&argumentContext;
+  contextCopy = context;
+  v19 = objc_msgSend_argSpecWithType_accessorMode_typeOptions_(TSCEFunctionArgSpec, a2, type, *&mode, options);
   objc_msgSend_setArgumentContext_(v19, v20, v17, v21, v22);
-  objc_msgSend_setRangeContext_(v19, v23, v18, v24, v25);
-  objc_msgSend_setMinValue_minInclusive_(v19, v26, v15, v27, v28, a7);
-  objc_msgSend_setMaxValue_maxInclusive_(v19, v29, v13, v30, v31, a9);
-  objc_msgSend_setModeValues_defaultModeIndex_(v19, v32, a12, a13, v33);
+  objc_msgSend_setRangeContext_(v19, v23, contextCopy, v24, v25);
+  objc_msgSend_setMinValue_minInclusive_(v19, v26, inclusiveCopy, v27, v28, value);
+  objc_msgSend_setMaxValue_maxInclusive_(v19, v29, maxInclusiveCopy, v30, v31, maxValue);
+  objc_msgSend_setModeValues_defaultModeIndex_(v19, v32, values, index, v33);
 
   return v19;
 }
 
-- (void)setModeValues:(const void *)a3
+- (void)setModeValues:(const void *)values
 {
   p_modeValues = &self->_modeValues;
-  if (p_modeValues != a3)
+  if (p_modeValues != values)
   {
-    sub_22116CF34(p_modeValues, *a3, *(a3 + 1), (*(a3 + 1) - *a3) >> 3);
+    sub_22116CF34(p_modeValues, *values, *(values + 1), (*(values + 1) - *values) >> 3);
   }
 }
 

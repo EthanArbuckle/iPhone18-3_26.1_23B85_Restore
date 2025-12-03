@@ -1,17 +1,17 @@
 @interface SBTraitsSingleSceneWindow
-- (SBTraitsSingleSceneWindow)initWithWindowScene:(id)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (SBTraitsSingleSceneWindow)initWithWindowScene:(id)scene;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (id)rootViewController;
-- (void)setRootViewController:(id)a3;
+- (void)setRootViewController:(id)controller;
 @end
 
 @implementation SBTraitsSingleSceneWindow
 
-- (SBTraitsSingleSceneWindow)initWithWindowScene:(id)a3
+- (SBTraitsSingleSceneWindow)initWithWindowScene:(id)scene
 {
   v6.receiver = self;
   v6.super_class = SBTraitsSingleSceneWindow;
-  v3 = [(SBTraitsSingleSceneWindow *)&v6 initWithWindowScene:a3];
+  v3 = [(SBTraitsSingleSceneWindow *)&v6 initWithWindowScene:scene];
   v4 = v3;
   if (v3)
   {
@@ -23,10 +23,10 @@
   return v4;
 }
 
-- (void)setRootViewController:(id)a3
+- (void)setRootViewController:(id)controller
 {
-  v5 = a3;
-  if (v5)
+  controllerCopy = controller;
+  if (controllerCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -37,23 +37,23 @@
 
   v6.receiver = self;
   v6.super_class = SBTraitsSingleSceneWindow;
-  [(SBTraitsSingleSceneWindow *)&v6 setRootViewController:v5];
+  [(SBTraitsSingleSceneWindow *)&v6 setRootViewController:controllerCopy];
 }
 
 - (id)rootViewController
 {
   v4.receiver = self;
   v4.super_class = SBTraitsSingleSceneWindow;
-  v2 = [(SBTraitsSingleSceneWindow *)&v4 rootViewController];
+  rootViewController = [(SBTraitsSingleSceneWindow *)&v4 rootViewController];
 
-  return v2;
+  return rootViewController;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
   v9.receiver = self;
   v9.super_class = SBTraitsSingleSceneWindow;
-  v5 = [(SBTraitsSingleSceneWindow *)&v9 hitTest:a4 withEvent:a3.x, a3.y];
+  v5 = [(SBTraitsSingleSceneWindow *)&v9 hitTest:event withEvent:test.x, test.y];
   v6 = v5;
   if (v5 == self)
   {

@@ -1,9 +1,9 @@
 @interface FeedbackViewModelHelper
 - (NSArray)selectedMailboxes;
-- (_TtC6MailUI23FeedbackViewModelHelper)initWithSelectedBucket:(int64_t)a3 selectedMailboxes:(id)a4;
+- (_TtC6MailUI23FeedbackViewModelHelper)initWithSelectedBucket:(int64_t)bucket selectedMailboxes:(id)mailboxes;
 - (int64_t)selectedBucket;
-- (void)setSelectedBucket:(int64_t)a3;
-- (void)setSelectedMailboxes:(id)a3;
+- (void)setSelectedBucket:(int64_t)bucket;
+- (void)setSelectedMailboxes:(id)mailboxes;
 @end
 
 @implementation FeedbackViewModelHelper
@@ -16,10 +16,10 @@
   return v4;
 }
 
-- (void)setSelectedBucket:(int64_t)a3
+- (void)setSelectedBucket:(int64_t)bucket
 {
   MEMORY[0x277D82BE0](self);
-  sub_214B89CDC(a3);
+  sub_214B89CDC(bucket);
   MEMORY[0x277D82BD8](self);
 }
 
@@ -44,15 +44,15 @@
   return v4;
 }
 
-- (void)setSelectedMailboxes:(id)a3
+- (void)setSelectedMailboxes:(id)mailboxes
 {
-  MEMORY[0x277D82BE0](a3);
+  MEMORY[0x277D82BE0](mailboxes);
   MEMORY[0x277D82BE0](self);
-  if (a3)
+  if (mailboxes)
   {
     sub_214A63684();
     v3 = sub_214CCF7E4();
-    MEMORY[0x277D82BD8](a3);
+    MEMORY[0x277D82BD8](mailboxes);
     v4 = v3;
   }
 
@@ -65,14 +65,14 @@
   MEMORY[0x277D82BD8](self);
 }
 
-- (_TtC6MailUI23FeedbackViewModelHelper)initWithSelectedBucket:(int64_t)a3 selectedMailboxes:(id)a4
+- (_TtC6MailUI23FeedbackViewModelHelper)initWithSelectedBucket:(int64_t)bucket selectedMailboxes:(id)mailboxes
 {
-  MEMORY[0x277D82BE0](a4);
-  if (a4)
+  MEMORY[0x277D82BE0](mailboxes);
+  if (mailboxes)
   {
     sub_214A63684();
     v5 = sub_214CCF7E4();
-    MEMORY[0x277D82BD8](a4);
+    MEMORY[0x277D82BD8](mailboxes);
     v6 = v5;
   }
 
@@ -81,7 +81,7 @@
     v6 = 0;
   }
 
-  return FeedbackViewModelHelper.init(selectedBucket:selectedMailboxes:)(a3, v6);
+  return FeedbackViewModelHelper.init(selectedBucket:selectedMailboxes:)(bucket, v6);
 }
 
 @end

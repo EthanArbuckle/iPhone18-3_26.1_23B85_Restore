@@ -1,48 +1,48 @@
 @interface TSTranslationClock
-- (TSTranslationClock)initWithTranslationClock:(id)a3;
-- (void)setPropertyUpdateQueue:(id)a3;
+- (TSTranslationClock)initWithTranslationClock:(id)clock;
+- (void)setPropertyUpdateQueue:(id)queue;
 @end
 
 @implementation TSTranslationClock
 
-- (TSTranslationClock)initWithTranslationClock:(id)a3
+- (TSTranslationClock)initWithTranslationClock:(id)clock
 {
-  v5 = a3;
-  v6 = v5;
-  if (!v5)
+  clockCopy = clock;
+  v6 = clockCopy;
+  if (!clockCopy)
   {
     [(TSTranslationClock *)self initWithTranslationClock:&v14];
-    v9 = v13;
+    propertyUpdateQueue = v13;
     v8 = v14;
     goto LABEL_4;
   }
 
   v12.receiver = self;
   v12.super_class = TSTranslationClock;
-  v7 = -[TSClock initWithClockIdentifier:](&v12, sel_initWithClockIdentifier_, [v5 clockIdentifier]);
+  v7 = -[TSClock initWithClockIdentifier:](&v12, sel_initWithClockIdentifier_, [clockCopy clockIdentifier]);
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_impl, a3);
+    objc_storeStrong(&v7->_impl, clock);
     v11.receiver = v8;
     v11.super_class = TSTranslationClock;
-    v9 = [(TSClock *)&v11 propertyUpdateQueue];
-    [(TSXTranslationClock *)v8->_impl setPropertyUpdateQueue:v9];
+    propertyUpdateQueue = [(TSClock *)&v11 propertyUpdateQueue];
+    [(TSXTranslationClock *)v8->_impl setPropertyUpdateQueue:propertyUpdateQueue];
 LABEL_4:
   }
 
   return v8;
 }
 
-- (void)setPropertyUpdateQueue:(id)a3
+- (void)setPropertyUpdateQueue:(id)queue
 {
   v6.receiver = self;
   v6.super_class = TSTranslationClock;
-  [(TSClock *)&v6 setPropertyUpdateQueue:a3];
+  [(TSClock *)&v6 setPropertyUpdateQueue:queue];
   v5.receiver = self;
   v5.super_class = TSTranslationClock;
-  v4 = [(TSClock *)&v5 propertyUpdateQueue];
-  [(TSXTranslationClock *)self->_impl setPropertyUpdateQueue:v4];
+  propertyUpdateQueue = [(TSClock *)&v5 propertyUpdateQueue];
+  [(TSXTranslationClock *)self->_impl setPropertyUpdateQueue:propertyUpdateQueue];
 }
 
 - (void)initWithTranslationClock:(void *)a3 .cold.1(uint64_t a1, void *a2, void *a3)

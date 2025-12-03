@@ -1,19 +1,19 @@
 @interface CPLOutput
-- (id)openOutputToPagerWithInterruptionHandler:(id)a3;
+- (id)openOutputToPagerWithInterruptionHandler:(id)handler;
 - (int)remainingSpace;
-- (unint64_t)_startInCString:(char)a3[256] fgColor:(int)a4 bgColor:(int)a5 attr:(int)a6 force:(BOOL)a7;
-- (void)_putsAndCrop:(const char *)a3 len:(unint64_t)a4;
+- (unint64_t)_startInCString:(char)string[256] fgColor:(int)color bgColor:(int)bgColor attr:(int)attr force:(BOOL)force;
+- (void)_putsAndCrop:(const char *)crop len:(unint64_t)len;
 - (void)clearScreen;
 - (void)closeOutput;
-- (void)cursorDown:(unsigned int)a3;
+- (void)cursorDown:(unsigned int)down;
 - (void)cursorGotoLineStart;
-- (void)cursorLeft:(unsigned int)a3;
+- (void)cursorLeft:(unsigned int)left;
 - (void)cursorRestore;
-- (void)cursorRight:(unsigned int)a3;
+- (void)cursorRight:(unsigned int)right;
 - (void)cursorSave;
 - (void)cursorToStartOfLine;
 - (void)cursorToTopLeft;
-- (void)cursorUp:(unsigned int)a3;
+- (void)cursorUp:(unsigned int)up;
 - (void)endLine;
 - (void)endLineIfNecessary;
 - (void)eraseEndOfLine;
@@ -22,39 +22,39 @@
 - (void)eraseScreenUp;
 - (void)eraseStartOfLine;
 - (void)flush;
-- (void)printError:(id)a3 arguments:(char *)a4;
-- (void)printFormat:(id)a3 arguments:(char *)a4;
-- (void)printHeaderIfNecessary:(char)a3;
-- (void)printJSONData:(id)a3;
-- (void)printJSONObject:(id)a3;
-- (void)put:(id)a3;
-- (void)putBright:(id)a3;
-- (void)putBrightF:(id)a3;
-- (void)putF:(id)a3 arguments:(char *)a4;
-- (void)putHighlight:(id)a3;
-- (void)putUnderline:(id)a3;
-- (void)puts:(const char *)a3;
-- (void)puts:(const char *)a3 len:(unint64_t)a4;
-- (void)setPrintHeader:(char)a3;
+- (void)printError:(id)error arguments:(char *)arguments;
+- (void)printFormat:(id)format arguments:(char *)arguments;
+- (void)printHeaderIfNecessary:(char)necessary;
+- (void)printJSONData:(id)data;
+- (void)printJSONObject:(id)object;
+- (void)put:(id)put;
+- (void)putBright:(id)bright;
+- (void)putBrightF:(id)f;
+- (void)putF:(id)f arguments:(char *)arguments;
+- (void)putHighlight:(id)highlight;
+- (void)putUnderline:(id)underline;
+- (void)puts:(const char *)puts;
+- (void)puts:(const char *)puts len:(unint64_t)len;
+- (void)setPrintHeader:(char)header;
 - (void)startNewLine;
 @end
 
 @implementation CPLOutput
 
-- (id)openOutputToPagerWithInterruptionHandler:(id)a3
+- (id)openOutputToPagerWithInterruptionHandler:(id)handler
 {
-  v4 = a3;
-  if (self->_fd != 1 || ![(CPLOutput *)self isATTY]|| (v5 = [[CPLPagerOutput alloc] initWithInputFromOutput:self interruptionHandler:v4]) == 0)
+  handlerCopy = handler;
+  if (self->_fd != 1 || ![(CPLOutput *)self isATTY]|| (selfCopy = [[CPLPagerOutput alloc] initWithInputFromOutput:self interruptionHandler:handlerCopy]) == 0)
   {
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
-- (void)setPrintHeader:(char)a3
+- (void)setPrintHeader:(char)header
 {
-  if (!a3)
+  if (!header)
   {
     v3 = 0;
     goto LABEL_5;
@@ -67,64 +67,64 @@ LABEL_5:
     self->_needsHeader = v3;
   }
 
-  self->_printHeader = a3;
+  self->_printHeader = header;
 }
 
-- (void)printFormat:(id)a3 arguments:(char *)a4
+- (void)printFormat:(id)format arguments:(char *)arguments
 {
-  v6 = a3;
-  v7 = [[NSString alloc] initWithFormat:v6 arguments:a4];
+  formatCopy = format;
+  v7 = [[NSString alloc] initWithFormat:formatCopy arguments:arguments];
 
   [(CPLOutput *)self put:v7];
   [(CPLOutput *)self endLine];
 }
 
-- (void)printError:(id)a3 arguments:(char *)a4
+- (void)printError:(id)error arguments:(char *)arguments
 {
   v5 = __stderrp;
-  v6 = a3;
-  v8 = [[NSString alloc] initWithFormat:v6 arguments:a4];
+  errorCopy = error;
+  v8 = [[NSString alloc] initWithFormat:errorCopy arguments:arguments];
 
   v7 = v8;
   fprintf(v5, "%s\n", [v8 UTF8String]);
 }
 
-- (unint64_t)_startInCString:(char)a3[256] fgColor:(int)a4 bgColor:(int)a5 attr:(int)a6 force:(BOOL)a7
+- (unint64_t)_startInCString:(char)string[256] fgColor:(int)color bgColor:(int)bgColor attr:(int)attr force:(BOOL)force
 {
-  curAttrs = a6;
-  curBg = a5;
-  curFg = a4;
-  if (a5 == -1)
+  curAttrs = attr;
+  curBg = bgColor;
+  curFg = color;
+  if (bgColor == -1)
   {
     curBg = self->_curBg;
   }
 
-  if (a4 == -1)
+  if (color == -1)
   {
     curFg = self->_curFg;
   }
 
-  if (a6 == -1)
+  if (attr == -1)
   {
     curAttrs = self->_curAttrs;
   }
 
-  strcpy(a3, "\x1B[");
-  if (a7 || curAttrs != self->_curAttrs)
+  strcpy(string, "\x1B[");
+  if (force || curAttrs != self->_curAttrs)
   {
-    strcpy(a3 + 2, "0;");
+    strcpy(string + 2, "0;");
     v14 = 4;
     for (i = 1; i != 32; ++i)
     {
       if ((curAttrs >> i))
       {
-        v14 += snprintf(&a3[v14], 256 - v14, "%zd;", i);
+        v14 += snprintf(&string[v14], 256 - v14, "%zd;", i);
       }
     }
 
     self->_curAttrs = curAttrs;
     *&self->_curFg = 0x900000009;
-    if (a7)
+    if (force)
     {
       goto LABEL_17;
     }
@@ -144,9 +144,9 @@ LABEL_5:
   }
 
 LABEL_17:
-  v14 += snprintf(&a3[v14], 256 - v14, "%d;", curFg + 30);
+  v14 += snprintf(&string[v14], 256 - v14, "%d;", curFg + 30);
   self->_curFg = curFg;
-  if (!a7)
+  if (!force)
   {
 LABEL_18:
     if (curBg == self->_curBg)
@@ -155,7 +155,7 @@ LABEL_18:
     }
   }
 
-  v14 += snprintf(&a3[v14], 256 - v14, "%d;", curBg + 40);
+  v14 += snprintf(&string[v14], 256 - v14, "%d;", curBg + 40);
   self->_curBg = curBg;
 LABEL_20:
   if (v14 < 3)
@@ -163,42 +163,42 @@ LABEL_20:
     return 0;
   }
 
-  a3[v14 - 1] = 109;
+  string[v14 - 1] = 109;
   return v14;
 }
 
-- (void)putBright:(id)a3
+- (void)putBright:(id)bright
 {
-  v4 = a3;
+  brightCopy = bright;
   [(CPLOutput *)self startFgColor:0xFFFFFFFFLL bgColor:0xFFFFFFFFLL attr:2];
-  [(CPLOutput *)self put:v4];
+  [(CPLOutput *)self put:brightCopy];
 
   [(CPLOutput *)self resetColorsAndAttributes];
 }
 
-- (void)putHighlight:(id)a3
+- (void)putHighlight:(id)highlight
 {
-  v4 = a3;
+  highlightCopy = highlight;
   [(CPLOutput *)self startFgColor:4 bgColor:0xFFFFFFFFLL attr:128];
-  [(CPLOutput *)self put:v4];
+  [(CPLOutput *)self put:highlightCopy];
 
   [(CPLOutput *)self resetColorsAndAttributes];
 }
 
-- (void)putUnderline:(id)a3
+- (void)putUnderline:(id)underline
 {
-  v4 = a3;
+  underlineCopy = underline;
   [(CPLOutput *)self startFgColor:0xFFFFFFFFLL bgColor:0xFFFFFFFFLL attr:16];
-  [(CPLOutput *)self put:v4];
+  [(CPLOutput *)self put:underlineCopy];
 
   [(CPLOutput *)self resetColorsAndAttributes];
 }
 
 - (void)clearScreen
 {
-  v2 = self;
-  v3 = v2;
-  if ((v2->_fd & 0x80000000) == 0 && [(CPLOutput *)v2 supportsEscapeSequences])
+  selfCopy = self;
+  v3 = selfCopy;
+  if ((selfCopy->_fd & 0x80000000) == 0 && [(CPLOutput *)selfCopy supportsEscapeSequences])
   {
     fd = v3->_fd;
     if (fd != -1)
@@ -311,9 +311,9 @@ LABEL_20:
 
 - (void)eraseStartOfLine
 {
-  v2 = self;
-  v3 = v2;
-  if ((v2->_fd & 0x80000000) == 0 && [(CPLOutput *)v2 supportsEscapeSequences])
+  selfCopy = self;
+  v3 = selfCopy;
+  if ((selfCopy->_fd & 0x80000000) == 0 && [(CPLOutput *)selfCopy supportsEscapeSequences])
   {
     fd = v3->_fd;
     if (fd != -1)
@@ -370,9 +370,9 @@ LABEL_20:
 
 - (void)eraseLine
 {
-  v2 = self;
-  v3 = v2;
-  if ((v2->_fd & 0x80000000) == 0 && [(CPLOutput *)v2 supportsEscapeSequences])
+  selfCopy = self;
+  v3 = selfCopy;
+  if ((selfCopy->_fd & 0x80000000) == 0 && [(CPLOutput *)selfCopy supportsEscapeSequences])
   {
     fd = v3->_fd;
     if (fd != -1)
@@ -715,60 +715,60 @@ LABEL_20:
   }
 }
 
-- (void)cursorUp:(unsigned int)a3
+- (void)cursorUp:(unsigned int)up
 {
-  v4 = self;
-  if ((v4->_fd & 0x80000000) == 0)
+  selfCopy = self;
+  if ((selfCopy->_fd & 0x80000000) == 0)
   {
-    v5 = v4;
-    if ([(CPLOutput *)v4 supportsEscapeSequences])
+    v5 = selfCopy;
+    if ([(CPLOutput *)selfCopy supportsEscapeSequences])
     {
-      dprintf(v5->_fd, "\x1B[%d%c", a3, 65);
+      dprintf(v5->_fd, "\x1B[%d%c", up, 65);
     }
   }
 
   _objc_release_x1();
 }
 
-- (void)cursorDown:(unsigned int)a3
+- (void)cursorDown:(unsigned int)down
 {
-  v4 = self;
-  if ((v4->_fd & 0x80000000) == 0)
+  selfCopy = self;
+  if ((selfCopy->_fd & 0x80000000) == 0)
   {
-    v5 = v4;
-    if ([(CPLOutput *)v4 supportsEscapeSequences])
+    v5 = selfCopy;
+    if ([(CPLOutput *)selfCopy supportsEscapeSequences])
     {
-      dprintf(v5->_fd, "\x1B[%d%c", a3, 66);
+      dprintf(v5->_fd, "\x1B[%d%c", down, 66);
     }
   }
 
   _objc_release_x1();
 }
 
-- (void)cursorRight:(unsigned int)a3
+- (void)cursorRight:(unsigned int)right
 {
-  v4 = self;
-  if ((v4->_fd & 0x80000000) == 0)
+  selfCopy = self;
+  if ((selfCopy->_fd & 0x80000000) == 0)
   {
-    v5 = v4;
-    if ([(CPLOutput *)v4 supportsEscapeSequences])
+    v5 = selfCopy;
+    if ([(CPLOutput *)selfCopy supportsEscapeSequences])
     {
-      dprintf(v5->_fd, "\x1B[%d%c", a3, 67);
+      dprintf(v5->_fd, "\x1B[%d%c", right, 67);
     }
   }
 
   _objc_release_x1();
 }
 
-- (void)cursorLeft:(unsigned int)a3
+- (void)cursorLeft:(unsigned int)left
 {
-  v4 = self;
-  if ((v4->_fd & 0x80000000) == 0)
+  selfCopy = self;
+  if ((selfCopy->_fd & 0x80000000) == 0)
   {
-    v5 = v4;
-    if ([(CPLOutput *)v4 supportsEscapeSequences])
+    v5 = selfCopy;
+    if ([(CPLOutput *)selfCopy supportsEscapeSequences])
     {
-      dprintf(v5->_fd, "\x1B[%d%c", a3, 68);
+      dprintf(v5->_fd, "\x1B[%d%c", left, 68);
     }
   }
 
@@ -883,7 +883,7 @@ LABEL_20:
   return v3 - LODWORD(self->_usedTermWidth);
 }
 
-- (void)_putsAndCrop:(const char *)a3 len:(unint64_t)a4
+- (void)_putsAndCrop:(const char *)crop len:(unint64_t)len
 {
   fd = self->_fd;
   if ((fd & 0x80000000) == 0)
@@ -891,17 +891,17 @@ LABEL_20:
     p_printHeader = &self->_printHeader;
     printHeader = self->_printHeader;
     usedTermWidth = self->_usedTermWidth;
-    if (self->_termWidth - usedTermWidth >= a4)
+    if (self->_termWidth - usedTermWidth >= len)
     {
-      v10 = a4;
+      lenCopy = len;
     }
 
     else
     {
-      v10 = self->_termWidth - usedTermWidth;
+      lenCopy = self->_termWidth - usedTermWidth;
     }
 
-    self->_usedTermWidth = v10 + usedTermWidth;
+    self->_usedTermWidth = lenCopy + usedTermWidth;
     if (printHeader && self->_needsHeader)
     {
       v11 = 1;
@@ -928,11 +928,11 @@ LABEL_12:
       fd = self->_fd;
     }
 
-    while (v10)
+    while (lenCopy)
     {
-      v13 = write(fd, a3, v10);
-      a3 += v13;
-      v10 -= v13;
+      v13 = write(fd, crop, lenCopy);
+      crop += v13;
+      lenCopy -= v13;
       if (v13 <= 0)
       {
         if (v13 < 0)
@@ -947,15 +947,15 @@ LABEL_12:
   }
 }
 
-- (void)puts:(const char *)a3 len:(unint64_t)a4
+- (void)puts:(const char *)puts len:(unint64_t)len
 {
-  if (a4)
+  if (len)
   {
     fd = self->_fd;
     if ((fd & 0x80000000) == 0)
     {
-      v6 = a4;
-      v7 = a3;
+      lenCopy = len;
+      putsCopy = puts;
       if (self->_termWidth)
       {
 
@@ -967,7 +967,7 @@ LABEL_12:
         p_printHeader = &self->_printHeader;
         if (self->_printHeader)
         {
-          if (a4 == 1 && *a3 == 10)
+          if (len == 1 && *puts == 10)
           {
             if (self->_needsHeader)
             {
@@ -992,13 +992,13 @@ LABEL_12:
               fd = self->_fd;
             }
 
-            write(fd, v7, 1uLL);
+            write(fd, putsCopy, 1uLL);
             self->_needsHeader = 1;
           }
 
           else
           {
-            v12 = strchr(a3, 10);
+            v12 = strchr(puts, 10);
             if (v12)
             {
               v13 = v12;
@@ -1029,11 +1029,11 @@ LABEL_12:
                   v14 = self->_fd;
                 }
 
-                v18 = v13 - v7 + 1;
+                v18 = v13 - putsCopy + 1;
                 while (v18)
                 {
-                  v19 = write(v14, v7, v18);
-                  v7 += v19;
+                  v19 = write(v14, putsCopy, v18);
+                  putsCopy += v19;
                   v18 -= v19;
                   if (v19 <= 0)
                   {
@@ -1047,14 +1047,14 @@ LABEL_12:
                 }
 
                 self->_needsHeader = 1;
-                v7 = v13 + 1;
+                putsCopy = v13 + 1;
                 v13 = strchr(v13 + 1, 10);
               }
 
               while (v13);
             }
 
-            if (*v7)
+            if (*putsCopy)
             {
               v20 = self->_fd;
               if (v20 != -1 && *p_printHeader && self->_needsHeader)
@@ -1080,11 +1080,11 @@ LABEL_12:
                 v20 = self->_fd;
               }
 
-              v23 = strlen(v7);
+              v23 = strlen(putsCopy);
               while (v23)
               {
-                v11 = write(v20, v7, v23);
-                v7 += v11;
+                v11 = write(v20, putsCopy, v23);
+                putsCopy += v11;
                 v23 -= v11;
                 if (v11 <= 0)
                 {
@@ -1097,11 +1097,11 @@ LABEL_12:
 
         else
         {
-          while (v6)
+          while (lenCopy)
           {
-            v11 = write(fd, v7, v6);
-            v7 += v11;
-            v6 -= v11;
+            v11 = write(fd, putsCopy, lenCopy);
+            putsCopy += v11;
+            lenCopy -= v11;
             if (v11 <= 0)
             {
 LABEL_51:
@@ -1120,22 +1120,22 @@ LABEL_51:
   }
 }
 
-- (void)puts:(const char *)a3
+- (void)puts:(const char *)puts
 {
-  v5 = strlen(a3);
+  v5 = strlen(puts);
 
-  [(CPLOutput *)self puts:a3 len:v5];
+  [(CPLOutput *)self puts:puts len:v5];
 }
 
-- (void)put:(id)a3
+- (void)put:(id)put
 {
-  v8 = a3;
-  if ([v8 length])
+  putCopy = put;
+  if ([putCopy length])
   {
     if (self->_termWidth)
     {
       v4 = objc_autoreleasePoolPush();
-      v5 = [v8 stringByReplacingOccurrencesOfString:@"\t" withString:@"    "];
+      v5 = [putCopy stringByReplacingOccurrencesOfString:@"\t" withString:@"    "];
 
       -[CPLOutput puts:](self, "puts:", [v5 UTF8String]);
       objc_autoreleasePoolPop(v4);
@@ -1143,34 +1143,34 @@ LABEL_51:
       goto LABEL_6;
     }
 
-    v7 = v8;
-    -[CPLOutput puts:](self, "puts:", [v8 UTF8String]);
+    v7 = putCopy;
+    -[CPLOutput puts:](self, "puts:", [putCopy UTF8String]);
   }
 
-  v6 = v8;
+  v6 = putCopy;
 LABEL_6:
 }
 
-- (void)putBrightF:(id)a3
+- (void)putBrightF:(id)f
 {
-  v4 = a3;
+  fCopy = f;
   [(CPLOutput *)self startFgColor:0xFFFFFFFFLL bgColor:0xFFFFFFFFLL attr:2];
-  [(CPLOutput *)self putF:v4 arguments:&v5];
+  [(CPLOutput *)self putF:fCopy arguments:&v5];
 
   [(CPLOutput *)self resetColorsAndAttributes];
 }
 
-- (void)putF:(id)a3 arguments:(char *)a4
+- (void)putF:(id)f arguments:(char *)arguments
 {
-  v6 = a3;
-  v7 = [[NSString alloc] initWithFormat:v6 arguments:a4];
+  fCopy = f;
+  v7 = [[NSString alloc] initWithFormat:fCopy arguments:arguments];
 
   [(CPLOutput *)self put:v7];
 }
 
-- (void)printHeaderIfNecessary:(char)a3
+- (void)printHeaderIfNecessary:(char)necessary
 {
-  __buf = a3;
+  __buf = necessary;
   if (self->_needsHeader)
   {
     fd = self->_fd;
@@ -1182,12 +1182,12 @@ LABEL_6:
   }
 }
 
-- (void)printJSONObject:(id)a3
+- (void)printJSONObject:(id)object
 {
-  v4 = a3;
-  if (v4)
+  objectCopy = object;
+  if (objectCopy)
   {
-    v5 = v4;
+    v5 = objectCopy;
     v6 = objc_autoreleasePoolPush();
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -1213,12 +1213,12 @@ LABEL_6:
   }
 }
 
-- (void)printJSONData:(id)a3
+- (void)printJSONData:(id)data
 {
-  v19 = a3;
-  v4 = v19;
-  v5 = [v19 bytes];
-  v6 = [v19 length];
+  dataCopy = data;
+  v4 = dataCopy;
+  bytes = [dataCopy bytes];
+  v6 = [dataCopy length];
   fd = self->_fd;
   if (self->_printHeader)
   {
@@ -1227,20 +1227,20 @@ LABEL_6:
     {
       while (1)
       {
-        v8 = memchr(v5, 10, v6);
+        v8 = memchr(bytes, 10, v6);
         write(self->_fd, ".", 1uLL);
         if (!v8)
         {
           break;
         }
 
-        v9 = v8 - v5 + 1;
+        v9 = v8 - bytes + 1;
         v10 = self->_fd;
         v11 = v9;
         while (v11)
         {
-          v12 = write(v10, v5, v11);
-          v5 += v12;
+          v12 = write(v10, bytes, v11);
+          bytes += v12;
           v11 -= v12;
           if (v12 <= 0)
           {
@@ -1253,7 +1253,7 @@ LABEL_6:
           }
         }
 
-        v5 = v8 + 1;
+        bytes = v8 + 1;
         v6 -= v9;
         if (!v6)
         {
@@ -1264,8 +1264,8 @@ LABEL_6:
       v17 = self->_fd;
       while (v6)
       {
-        v18 = write(v17, v5, v6);
-        v5 += v18;
+        v18 = write(v17, bytes, v6);
+        bytes += v18;
         v6 -= v18;
         if (v18 <= 0)
         {
@@ -1299,8 +1299,8 @@ LABEL_10:
   {
     while (v6)
     {
-      v16 = write(fd, v5, v6);
-      v5 += v16;
+      v16 = write(fd, bytes, v6);
+      bytes += v16;
       v6 -= v16;
       if (v16 <= 0)
       {

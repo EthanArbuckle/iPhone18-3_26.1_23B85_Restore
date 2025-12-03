@@ -1,32 +1,32 @@
 @interface _MusicDownloadProgressRingView
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3;
-- (_MusicDownloadProgressRingView)initWithFrame:(CGRect)a3;
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key;
+- (_MusicDownloadProgressRingView)initWithFrame:(CGRect)frame;
 - (void)_updateShapePath;
 - (void)layoutSubviews;
-- (void)setProgress:(double)a3;
+- (void)setProgress:(double)progress;
 - (void)tintColorDidChange;
 @end
 
 @implementation _MusicDownloadProgressRingView
 
-- (_MusicDownloadProgressRingView)initWithFrame:(CGRect)a3
+- (_MusicDownloadProgressRingView)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = _MusicDownloadProgressRingView;
-  v3 = [(_MusicDownloadProgressRingView *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(_MusicDownloadProgressRingView *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     [(_MusicDownloadProgressRingView *)v3 setClipsToBounds:1];
-    v5 = [(_MusicDownloadProgressRingView *)v4 layer];
+    layer = [(_MusicDownloadProgressRingView *)v4 layer];
     v6 = +[UIColor clearColor];
-    [v5 setFillColor:{objc_msgSend(v6, "CGColor")}];
+    [layer setFillColor:{objc_msgSend(v6, "CGColor")}];
 
-    [v5 setStrokeStart:0.0];
-    v7 = [(_MusicDownloadProgressRingView *)v4 tintColor];
-    [v5 setStrokeColor:{objc_msgSend(v7, "CGColor")}];
+    [layer setStrokeStart:0.0];
+    tintColor = [(_MusicDownloadProgressRingView *)v4 tintColor];
+    [layer setStrokeColor:{objc_msgSend(tintColor, "CGColor")}];
 
-    [v5 setLineCap:@"round"];
+    [layer setLineCap:@"round"];
     [(_MusicDownloadProgressRingView *)v4 _updateShapePath];
   }
 
@@ -46,34 +46,34 @@
   v5.receiver = self;
   v5.super_class = _MusicDownloadProgressRingView;
   [(_MusicDownloadProgressRingView *)&v5 tintColorDidChange];
-  v3 = [(_MusicDownloadProgressRingView *)self tintColor];
-  v4 = [(_MusicDownloadProgressRingView *)self layer];
-  [v4 setStrokeColor:{objc_msgSend(v3, "CGColor")}];
+  tintColor = [(_MusicDownloadProgressRingView *)self tintColor];
+  layer = [(_MusicDownloadProgressRingView *)self layer];
+  [layer setStrokeColor:{objc_msgSend(tintColor, "CGColor")}];
 }
 
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v7.receiver = self;
   v7.super_class = _MusicDownloadProgressRingView;
-  if ([(_MusicDownloadProgressRingView *)&v7 _shouldAnimatePropertyWithKey:v4])
+  if ([(_MusicDownloadProgressRingView *)&v7 _shouldAnimatePropertyWithKey:keyCopy])
   {
     v5 = 1;
   }
 
   else
   {
-    v5 = [v4 isEqualToString:@"strokeEnd"];
+    v5 = [keyCopy isEqualToString:@"strokeEnd"];
   }
 
   return v5;
 }
 
-- (void)setProgress:(double)a3
+- (void)setProgress:(double)progress
 {
-  self->_progress = a3;
-  v4 = [(_MusicDownloadProgressRingView *)self layer];
-  [v4 setStrokeEnd:self->_progress];
+  self->_progress = progress;
+  layer = [(_MusicDownloadProgressRingView *)self layer];
+  [layer setStrokeEnd:self->_progress];
 }
 
 - (void)_updateShapePath
@@ -83,13 +83,13 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(_MusicDownloadProgressRingView *)self traitCollection];
-  [v11 displayScale];
+  traitCollection = [(_MusicDownloadProgressRingView *)self traitCollection];
+  [traitCollection displayScale];
   MTMPUFloatGetSafeScaleForValue();
   v13 = v12;
 
-  v26 = [(_MusicDownloadProgressRingView *)self layer];
-  [v26 lineWidth];
+  layer = [(_MusicDownloadProgressRingView *)self layer];
+  [layer lineWidth];
   v15 = v14 * 0.5;
   v28.origin.x = v4;
   v28.origin.y = v6;
@@ -137,8 +137,8 @@
   v35.size.width = width;
   v35.size.height = height;
   [v20 addArcWithCenter:1 radius:v25 startAngle:CGRectGetMidY(v35) endAngle:v24 clockwise:{-1.57079633, 4.71238898}];
-  [v26 setPath:{objc_msgSend(v20, "CGPath")}];
-  [v26 setLineWidth:1.0 / v13 + 2.0];
+  [layer setPath:{objc_msgSend(v20, "CGPath")}];
+  [layer setLineWidth:1.0 / v13 + 2.0];
 }
 
 @end

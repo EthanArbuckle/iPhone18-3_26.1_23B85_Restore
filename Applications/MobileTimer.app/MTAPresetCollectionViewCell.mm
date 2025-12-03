@@ -1,18 +1,18 @@
 @interface MTAPresetCollectionViewCell
-- (MTAPresetCollectionViewCell)initWithFrame:(CGRect)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setPresetItem:(id)a3;
+- (MTAPresetCollectionViewCell)initWithFrame:(CGRect)frame;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setPresetItem:(id)item;
 - (void)setupLayoutConstraints;
 - (void)setupPresetView;
 @end
 
 @implementation MTAPresetCollectionViewCell
 
-- (MTAPresetCollectionViewCell)initWithFrame:(CGRect)a3
+- (MTAPresetCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = MTAPresetCollectionViewCell;
-  v3 = [(MTAPresetCollectionViewCell *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MTAPresetCollectionViewCell *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -23,11 +23,11 @@
   return v4;
 }
 
-- (void)setPresetItem:(id)a3
+- (void)setPresetItem:(id)item
 {
-  v4 = a3;
-  v5 = [(MTAPresetCollectionViewCell *)self presetView];
-  [v5 setPresetItem:v4];
+  itemCopy = item;
+  presetView = [(MTAPresetCollectionViewCell *)self presetView];
+  [presetView setPresetItem:itemCopy];
 }
 
 - (void)setupPresetView
@@ -37,59 +37,59 @@
   v4 = [(MTATimerPresetView *)v3 initWithFrame:?];
   [(MTAPresetCollectionViewCell *)self setPresetView:v4];
 
-  v5 = [(MTAPresetCollectionViewCell *)self presetView];
-  [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
+  presetView = [(MTAPresetCollectionViewCell *)self presetView];
+  [presetView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v6 = [(MTAPresetCollectionViewCell *)self presetView];
-  [v6 setUserInteractionEnabled:0];
+  presetView2 = [(MTAPresetCollectionViewCell *)self presetView];
+  [presetView2 setUserInteractionEnabled:0];
 
-  v8 = [(MTAPresetCollectionViewCell *)self contentView];
-  v7 = [(MTAPresetCollectionViewCell *)self presetView];
-  [v8 addSubview:v7];
+  contentView = [(MTAPresetCollectionViewCell *)self contentView];
+  presetView3 = [(MTAPresetCollectionViewCell *)self presetView];
+  [contentView addSubview:presetView3];
 }
 
 - (void)setupLayoutConstraints
 {
   v23 = objc_opt_new();
-  v3 = [(MTAPresetCollectionViewCell *)self presetView];
-  v4 = [v3 leadingAnchor];
-  v5 = [(MTAPresetCollectionViewCell *)self contentView];
-  v6 = [v5 leadingAnchor];
-  v7 = [v4 constraintEqualToAnchor:v6];
+  presetView = [(MTAPresetCollectionViewCell *)self presetView];
+  leadingAnchor = [presetView leadingAnchor];
+  contentView = [(MTAPresetCollectionViewCell *)self contentView];
+  leadingAnchor2 = [contentView leadingAnchor];
+  v7 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [v23 addObject:v7];
 
-  v8 = [(MTAPresetCollectionViewCell *)self presetView];
-  v9 = [v8 trailingAnchor];
-  v10 = [(MTAPresetCollectionViewCell *)self contentView];
-  v11 = [v10 trailingAnchor];
-  v12 = [v9 constraintEqualToAnchor:v11];
+  presetView2 = [(MTAPresetCollectionViewCell *)self presetView];
+  trailingAnchor = [presetView2 trailingAnchor];
+  contentView2 = [(MTAPresetCollectionViewCell *)self contentView];
+  trailingAnchor2 = [contentView2 trailingAnchor];
+  v12 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   [v23 addObject:v12];
 
-  v13 = [(MTAPresetCollectionViewCell *)self presetView];
-  v14 = [v13 topAnchor];
-  v15 = [(MTAPresetCollectionViewCell *)self contentView];
-  v16 = [v15 topAnchor];
-  v17 = [v14 constraintEqualToAnchor:v16];
+  presetView3 = [(MTAPresetCollectionViewCell *)self presetView];
+  topAnchor = [presetView3 topAnchor];
+  contentView3 = [(MTAPresetCollectionViewCell *)self contentView];
+  topAnchor2 = [contentView3 topAnchor];
+  v17 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v23 addObject:v17];
 
-  v18 = [(MTAPresetCollectionViewCell *)self presetView];
-  v19 = [v18 bottomAnchor];
-  v20 = [(MTAPresetCollectionViewCell *)self contentView];
-  v21 = [v20 bottomAnchor];
-  v22 = [v19 constraintEqualToAnchor:v21];
+  presetView4 = [(MTAPresetCollectionViewCell *)self presetView];
+  bottomAnchor = [presetView4 bottomAnchor];
+  contentView4 = [(MTAPresetCollectionViewCell *)self contentView];
+  bottomAnchor2 = [contentView4 bottomAnchor];
+  v22 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   [v23 addObject:v22];
 
   [NSLayoutConstraint activateConstraints:v23];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v6.receiver = self;
   v6.super_class = MTAPresetCollectionViewCell;
   [(MTAPresetCollectionViewCell *)&v6 setHighlighted:?];
-  v5 = [(MTAPresetCollectionViewCell *)self presetView];
-  [v5 setHighlighted:v3];
+  presetView = [(MTAPresetCollectionViewCell *)self presetView];
+  [presetView setHighlighted:highlightedCopy];
 }
 
 @end

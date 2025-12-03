@@ -2,40 +2,40 @@
 + (id)serviceInterface;
 - (BOOL)_isClientEntitled;
 - (id)_createNavigationItem;
-- (void)_setAskToBuy:(BOOL)a3;
-- (void)_setCancelButtonTitle:(id)a3;
-- (void)_setPromptString:(id)a3;
-- (void)_setRightBarButtonTitle:(id)a3;
-- (void)_setShowsRightBarButton:(BOOL)a3;
-- (void)_setShowsStoreButton:(BOOL)a3;
-- (void)_setUsageContext:(id)a3;
-- (void)_setupWithClientBundleID:(id)a3 bagType:(int64_t)a4;
-- (void)clientLookupItemDidLoad:(id)a3 parameters:(id)a4;
-- (void)finishWithResult:(unint64_t)a3 completion:(id)a4;
+- (void)_setAskToBuy:(BOOL)buy;
+- (void)_setCancelButtonTitle:(id)title;
+- (void)_setPromptString:(id)string;
+- (void)_setRightBarButtonTitle:(id)title;
+- (void)_setShowsRightBarButton:(BOOL)button;
+- (void)_setShowsStoreButton:(BOOL)button;
+- (void)_setUsageContext:(id)context;
+- (void)_setupWithClientBundleID:(id)d bagType:(int64_t)type;
+- (void)clientLookupItemDidLoad:(id)load parameters:(id)parameters;
+- (void)finishWithResult:(unint64_t)result completion:(id)completion;
 - (void)loadDidFinish;
-- (void)setupWithCancelButtonTitle:(id)a3 rightBarButtonTitle:(id)a4 showsStoreButton:(BOOL)a5 promptString:(id)a6 askToBuy:(BOOL)a7;
-- (void)userDidInteractWithProduct:(unint64_t)a3;
+- (void)setupWithCancelButtonTitle:(id)title rightBarButtonTitle:(id)buttonTitle showsStoreButton:(BOOL)button promptString:(id)string askToBuy:(BOOL)buy;
+- (void)userDidInteractWithProduct:(unint64_t)product;
 @end
 
 @implementation SKProductPageExtension
 
-- (void)finishWithResult:(unint64_t)a3 completion:(id)a4
+- (void)finishWithResult:(unint64_t)result completion:(id)completion
 {
-  v6 = a4;
-  v7 = [(SKProductPageExtension *)self _remoteViewControllerProxy];
-  if (v7)
+  completionCopy = completion;
+  _remoteViewControllerProxy = [(SKProductPageExtension *)self _remoteViewControllerProxy];
+  if (_remoteViewControllerProxy)
   {
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __54__SKProductPageExtension_finishWithResult_completion___block_invoke;
     v8[3] = &unk_1E7B27900;
-    v9 = v6;
-    [v7 finishWithResult:a3 completion:v8];
+    v9 = completionCopy;
+    [_remoteViewControllerProxy finishWithResult:result completion:v8];
   }
 
   else
   {
-    [(SKProductPageExtension *)self dismissViewControllerAnimated:1 completion:v6];
+    [(SKProductPageExtension *)self dismissViewControllerAnimated:1 completion:completionCopy];
   }
 }
 
@@ -53,35 +53,35 @@ uint64_t __54__SKProductPageExtension_finishWithResult_completion___block_invoke
 - (void)loadDidFinish
 {
   v3 = *MEMORY[0x1E69DD930];
-  v4 = [(SKProductPageExtension *)self view];
-  UIAccessibilityPostNotification(v3, v4);
+  view = [(SKProductPageExtension *)self view];
+  UIAccessibilityPostNotification(v3, view);
 
-  v5 = [(SKProductPageExtension *)self _remoteViewControllerProxy];
-  if (v5)
+  _remoteViewControllerProxy = [(SKProductPageExtension *)self _remoteViewControllerProxy];
+  if (_remoteViewControllerProxy)
   {
-    v6 = v5;
-    [v5 loadDidFinish];
-    v5 = v6;
+    v6 = _remoteViewControllerProxy;
+    [_remoteViewControllerProxy loadDidFinish];
+    _remoteViewControllerProxy = v6;
   }
 }
 
-- (void)userDidInteractWithProduct:(unint64_t)a3
+- (void)userDidInteractWithProduct:(unint64_t)product
 {
-  v4 = [(SKProductPageExtension *)self _remoteViewControllerProxy];
-  if (v4)
+  _remoteViewControllerProxy = [(SKProductPageExtension *)self _remoteViewControllerProxy];
+  if (_remoteViewControllerProxy)
   {
-    v5 = v4;
-    [v4 userDidInteractWithProduct:a3];
-    v4 = v5;
+    v5 = _remoteViewControllerProxy;
+    [_remoteViewControllerProxy userDidInteractWithProduct:product];
+    _remoteViewControllerProxy = v5;
   }
 }
 
-- (void)setupWithCancelButtonTitle:(id)a3 rightBarButtonTitle:(id)a4 showsStoreButton:(BOOL)a5 promptString:(id)a6 askToBuy:(BOOL)a7
+- (void)setupWithCancelButtonTitle:(id)title rightBarButtonTitle:(id)buttonTitle showsStoreButton:(BOOL)button promptString:(id)string askToBuy:(BOOL)buy
 {
   v18 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  titleCopy = title;
+  buttonTitleCopy = buttonTitle;
+  stringCopy = string;
   if (SKLogHandleForCategory_onceToken != -1)
   {
     [SKProductPageExtension setupWithCancelButtonTitle:rightBarButtonTitle:showsStoreButton:promptString:askToBuy:];
@@ -91,20 +91,20 @@ uint64_t __54__SKProductPageExtension_finishWithResult_completion___block_invoke
   if (os_log_type_enabled(SKLogHandleForCategory_logHandles_9, OS_LOG_TYPE_INFO))
   {
     v16 = 138543362;
-    v17 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B23EF000, v13, OS_LOG_TYPE_INFO, "[%{public}@]: Subclass hasn't implemented setupWithCancelButtonTitle:rightBarButtonTitle:showsStoreButton:promptString:askToBuy:. Falling back to setupWithCustomNavigationItem:promptString:askToBuy:", &v16, 0xCu);
   }
 
-  v14 = [(SKProductPageExtension *)self _createNavigationItem];
-  v15 = [(SKProductPageExtension *)self promptString];
-  [(SKProductPageExtension *)self setupWithCustomNavigationItem:v14 promptString:v15 askToBuy:[(SKProductPageExtension *)self askToBuy]];
+  _createNavigationItem = [(SKProductPageExtension *)self _createNavigationItem];
+  promptString = [(SKProductPageExtension *)self promptString];
+  [(SKProductPageExtension *)self setupWithCustomNavigationItem:_createNavigationItem promptString:promptString askToBuy:[(SKProductPageExtension *)self askToBuy]];
 }
 
-- (void)clientLookupItemDidLoad:(id)a3 parameters:(id)a4
+- (void)clientLookupItemDidLoad:(id)load parameters:(id)parameters
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v6 objectForKey:@"isViewOnly"];
+  parametersCopy = parameters;
+  loadCopy = load;
+  v8 = [parametersCopy objectForKey:@"isViewOnly"];
 
   if (v8)
   {
@@ -113,21 +113,21 @@ uint64_t __54__SKProductPageExtension_finishWithResult_completion___block_invoke
 
   if ([(SKProductPageExtension *)self showsRightBarButton])
   {
-    v12 = [(SKProductPageExtension *)self rightBarButtonTitle];
+    rightBarButtonTitle = [(SKProductPageExtension *)self rightBarButtonTitle];
   }
 
   else
   {
-    v12 = 0;
+    rightBarButtonTitle = 0;
   }
 
-  v9 = [(SKProductPageExtension *)self cancelButtonTitle];
-  v10 = [(SKProductPageExtension *)self showsStoreButton];
-  v11 = [(SKProductPageExtension *)self promptString];
-  [(SKProductPageExtension *)self setupWithCancelButtonTitle:v9 rightBarButtonTitle:v12 showsStoreButton:v10 promptString:v11 askToBuy:[(SKProductPageExtension *)self askToBuy]];
+  cancelButtonTitle = [(SKProductPageExtension *)self cancelButtonTitle];
+  showsStoreButton = [(SKProductPageExtension *)self showsStoreButton];
+  promptString = [(SKProductPageExtension *)self promptString];
+  [(SKProductPageExtension *)self setupWithCancelButtonTitle:cancelButtonTitle rightBarButtonTitle:rightBarButtonTitle showsStoreButton:showsStoreButton promptString:promptString askToBuy:[(SKProductPageExtension *)self askToBuy]];
 
-  LODWORD(v9) = [(SKProductPageExtension *)self lookupItemDidLoad:v7 parameters:v6];
-  if (v9)
+  LODWORD(cancelButtonTitle) = [(SKProductPageExtension *)self lookupItemDidLoad:loadCopy parameters:parametersCopy];
+  if (cancelButtonTitle)
   {
     [(SKProductPageExtension *)self loadDidFinish];
   }
@@ -151,28 +151,28 @@ uint64_t __54__SKProductPageExtension_finishWithResult_completion___block_invoke
 - (id)_createNavigationItem
 {
   v3 = objc_alloc_init(MEMORY[0x1E69DCCE0]);
-  v4 = [(SKProductPageExtension *)self cancelButtonTitle];
+  cancelButtonTitle = [(SKProductPageExtension *)self cancelButtonTitle];
 
   v5 = objc_alloc(MEMORY[0x1E69DC708]);
   v6 = v5;
-  if (v4)
+  if (cancelButtonTitle)
   {
-    v7 = [(SKProductPageExtension *)self cancelButtonTitle];
-    v8 = [v6 initWithTitle:v7 style:0 target:self action:sel_cancelButtonPressed_];
+    cancelButtonTitle2 = [(SKProductPageExtension *)self cancelButtonTitle];
+    v8 = [v6 initWithTitle:cancelButtonTitle2 style:0 target:self action:sel_cancelButtonPressed_];
     [v3 setLeftBarButtonItem:v8];
   }
 
   else
   {
-    v7 = [v5 initWithBarButtonSystemItem:0 target:self action:sel_cancelButtonPressed_];
-    [v3 setLeftBarButtonItem:v7];
+    cancelButtonTitle2 = [v5 initWithBarButtonSystemItem:0 target:self action:sel_cancelButtonPressed_];
+    [v3 setLeftBarButtonItem:cancelButtonTitle2];
   }
 
   if ([(SKProductPageExtension *)self showsRightBarButton]&& ([(SKProductPageExtension *)self rightBarButtonTitle], v9 = objc_claimAutoreleasedReturnValue(), v9, v9))
   {
     v10 = objc_alloc(MEMORY[0x1E69DC708]);
-    v11 = [(SKProductPageExtension *)self rightBarButtonTitle];
-    v12 = [v10 initWithTitle:v11 style:0 target:self action:sel_rightBarButtonPressed_];
+    rightBarButtonTitle = [(SKProductPageExtension *)self rightBarButtonTitle];
+    v12 = [v10 initWithTitle:rightBarButtonTitle style:0 target:self action:sel_rightBarButtonPressed_];
     [v3 setRightBarButtonItem:v12];
   }
 
@@ -184,8 +184,8 @@ uint64_t __54__SKProductPageExtension_finishWithResult_completion___block_invoke
     }
 
     v13 = objc_alloc(MEMORY[0x1E69DC708]);
-    v11 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-    v12 = [v11 localizedStringForKey:@"VIEW_IN_STORE" value:&stru_1F29BCE20 table:0];
+    rightBarButtonTitle = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
+    v12 = [rightBarButtonTitle localizedStringForKey:@"VIEW_IN_STORE" value:&stru_1F29BCE20 table:0];
     v14 = [v13 initWithTitle:v12 style:0 target:self action:sel_storeButtonPressed_];
     [v3 setRightBarButtonItem:v14];
   }
@@ -195,13 +195,13 @@ LABEL_10:
   return v3;
 }
 
-- (void)_setShowsStoreButton:(BOOL)a3
+- (void)_setShowsStoreButton:(BOOL)button
 {
-  v3 = a3;
+  buttonCopy = button;
   if ([(SKProductPageExtension *)self _isClientEntitled])
   {
 
-    [(SKProductPageExtension *)self setShowsStoreButton:v3];
+    [(SKProductPageExtension *)self setShowsStoreButton:buttonCopy];
   }
 
   else
@@ -218,12 +218,12 @@ LABEL_10:
   }
 }
 
-- (void)_setCancelButtonTitle:(id)a3
+- (void)_setCancelButtonTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   if ([(SKProductPageExtension *)self _isClientEntitled])
   {
-    [(SKProductPageExtension *)self setCancelButtonTitle:v4];
+    [(SKProductPageExtension *)self setCancelButtonTitle:titleCopy];
   }
 
   else
@@ -240,12 +240,12 @@ LABEL_10:
   }
 }
 
-- (void)_setRightBarButtonTitle:(id)a3
+- (void)_setRightBarButtonTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   if ([(SKProductPageExtension *)self _isClientEntitled])
   {
-    [(SKProductPageExtension *)self setRightBarButtonTitle:v4];
+    [(SKProductPageExtension *)self setRightBarButtonTitle:titleCopy];
   }
 
   else
@@ -262,13 +262,13 @@ LABEL_10:
   }
 }
 
-- (void)_setShowsRightBarButton:(BOOL)a3
+- (void)_setShowsRightBarButton:(BOOL)button
 {
-  v3 = a3;
+  buttonCopy = button;
   if ([(SKProductPageExtension *)self _isClientEntitled])
   {
 
-    [(SKProductPageExtension *)self setShowsRightBarButton:v3];
+    [(SKProductPageExtension *)self setShowsRightBarButton:buttonCopy];
   }
 
   else
@@ -285,12 +285,12 @@ LABEL_10:
   }
 }
 
-- (void)_setPromptString:(id)a3
+- (void)_setPromptString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   if ([(SKProductPageExtension *)self _isClientEntitled])
   {
-    [(SKProductPageExtension *)self setPromptString:v4];
+    [(SKProductPageExtension *)self setPromptString:stringCopy];
   }
 
   else
@@ -307,13 +307,13 @@ LABEL_10:
   }
 }
 
-- (void)_setAskToBuy:(BOOL)a3
+- (void)_setAskToBuy:(BOOL)buy
 {
-  v3 = a3;
+  buyCopy = buy;
   if ([(SKProductPageExtension *)self _isClientEntitled])
   {
 
-    [(SKProductPageExtension *)self setAskToBuy:v3];
+    [(SKProductPageExtension *)self setAskToBuy:buyCopy];
   }
 
   else
@@ -330,12 +330,12 @@ LABEL_10:
   }
 }
 
-- (void)_setUsageContext:(id)a3
+- (void)_setUsageContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   if ([(SKProductPageExtension *)self _isClientEntitled])
   {
-    [(SKProductPageExtension *)self setUsageContext:v4];
+    [(SKProductPageExtension *)self setUsageContext:contextCopy];
   }
 
   else
@@ -352,18 +352,18 @@ LABEL_10:
   }
 }
 
-- (void)_setupWithClientBundleID:(id)a3 bagType:(int64_t)a4
+- (void)_setupWithClientBundleID:(id)d bagType:(int64_t)type
 {
-  v7 = a3;
+  dCopy = d;
   if ([(SKProductPageExtension *)self _isClientEntitled])
   {
-    [(SKProductPageExtension *)self setupWithClientBundleID:v7 bagType:a4];
+    [(SKProductPageExtension *)self setupWithClientBundleID:dCopy bagType:type];
   }
 
   else
   {
-    v6 = [(SKProductPageExtension *)self _hostApplicationBundleIdentifier];
-    [(SKProductPageExtension *)self setupWithClientBundleID:v6 bagType:a4];
+    _hostApplicationBundleIdentifier = [(SKProductPageExtension *)self _hostApplicationBundleIdentifier];
+    [(SKProductPageExtension *)self setupWithClientBundleID:_hostApplicationBundleIdentifier bagType:type];
   }
 }
 

@@ -1,17 +1,17 @@
 @interface HKConceptStore
 + (id)serverInterface;
 - (HKConceptStore)init;
-- (HKConceptStore)initWithHealthStore:(id)a3;
-- (id)countOfConceptsAssociatedToUserRecordsWithError:(id *)a3;
+- (HKConceptStore)initWithHealthStore:(id)store;
+- (id)countOfConceptsAssociatedToUserRecordsWithError:(id *)error;
 - (id)exportedInterface;
 - (id)remoteInterface;
 - (unint64_t)currentConceptIndexerState;
 - (void)_startObservingConceptIndexManager;
-- (void)clientRemote_conceptIndexManagerDidChangeState:(unint64_t)a3;
+- (void)clientRemote_conceptIndexManagerDidChangeState:(unint64_t)state;
 - (void)connectionInvalidated;
-- (void)fetchConceptForIdentifier:(id)a3 loadRelationships:(BOOL)a4 completionHandler:(id)a5;
-- (void)registerAsConceptObserver:(id)a3 onQueue:(id)a4;
-- (void)startObservingConceptIndexManagerWithCompletion:(id)a3;
+- (void)fetchConceptForIdentifier:(id)identifier loadRelationships:(BOOL)relationships completionHandler:(id)handler;
+- (void)registerAsConceptObserver:(id)observer onQueue:(id)queue;
+- (void)startObservingConceptIndexManagerWithCompletion:(id)completion;
 @end
 
 @implementation HKConceptStore
@@ -26,9 +26,9 @@
   return 0;
 }
 
-- (HKConceptStore)initWithHealthStore:(id)a3
+- (HKConceptStore)initWithHealthStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v17.receiver = self;
   v17.super_class = HKConceptStore;
   v6 = [(HKConceptStore *)&v17 init];
@@ -37,10 +37,10 @@
   {
     v6->_conceptIndexManagerStateLock._os_unfair_lock_opaque = 0;
     v6->_lastKnownConceptIndexManagerState = 0;
-    objc_storeStrong(&v6->_healthStore, a3);
-    v8 = [MEMORY[0x1E696AFB0] UUID];
+    objc_storeStrong(&v6->_healthStore, store);
+    uUID = [MEMORY[0x1E696AFB0] UUID];
     identifier = v7->_identifier;
-    v7->_identifier = v8;
+    v7->_identifier = uUID;
 
     v10 = [[HKTaskServerProxyProvider alloc] initWithHealthStore:v7->_healthStore taskIdentifier:@"HDOntologyTaskServerIdentifier" exportedObject:v7 taskUUID:v7->_identifier];
     proxyProvider = v7->_proxyProvider;
@@ -84,9 +84,9 @@ void __52__HKConceptStore__startObservingConceptIndexManager__block_invoke(uint6
   }
 }
 
-- (void)startObservingConceptIndexManagerWithCompletion:(id)a3
+- (void)startObservingConceptIndexManagerWithCompletion:(id)completion
 {
-  v4 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:a3];
+  v4 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completion];
   proxyProvider = self->_proxyProvider;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
@@ -102,17 +102,17 @@ void __52__HKConceptStore__startObservingConceptIndexManager__block_invoke(uint6
   [(HKProxyProvider *)proxyProvider fetchProxyWithHandler:v9 errorHandler:v7];
 }
 
-- (void)fetchConceptForIdentifier:(id)a3 loadRelationships:(BOOL)a4 completionHandler:(id)a5
+- (void)fetchConceptForIdentifier:(id)identifier loadRelationships:(BOOL)relationships completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:a5];
+  identifierCopy = identifier;
+  v9 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:handler];
   proxyProvider = self->_proxyProvider;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __80__HKConceptStore_fetchConceptForIdentifier_loadRelationships_completionHandler___block_invoke;
   v15[3] = &unk_1E7383780;
-  v16 = v8;
-  v18 = a4;
+  v16 = identifierCopy;
+  relationshipsCopy = relationships;
   v17 = v9;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
@@ -120,7 +120,7 @@ void __52__HKConceptStore__startObservingConceptIndexManager__block_invoke(uint6
   v13[3] = &unk_1E7376960;
   v14 = v17;
   v11 = v17;
-  v12 = v8;
+  v12 = identifierCopy;
   [(HKProxyProvider *)proxyProvider fetchProxyWithHandler:v15 errorHandler:v13];
 }
 
@@ -136,7 +136,7 @@ void __80__HKConceptStore_fetchConceptForIdentifier_loadRelationships_completion
   [a2 remote_queryConceptByIdentifier:v4 loadRelationships:v3 completion:v5];
 }
 
-- (id)countOfConceptsAssociatedToUserRecordsWithError:(id *)a3
+- (id)countOfConceptsAssociatedToUserRecordsWithError:(id *)error
 {
   v17 = 0;
   v18 = &v17;
@@ -170,10 +170,10 @@ void __80__HKConceptStore_fetchConceptForIdentifier_loadRelationships_completion
     v7 = v6;
     if (v6)
     {
-      if (a3)
+      if (error)
       {
         v8 = v6;
-        *a3 = v7;
+        *error = v7;
       }
 
       else
@@ -280,19 +280,19 @@ void __44__HKConceptStore_currentConceptIndexerState__block_invoke_3(uint64_t a1
   }
 }
 
-- (void)registerAsConceptObserver:(id)a3 onQueue:(id)a4
+- (void)registerAsConceptObserver:(id)observer onQueue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  observerCopy = observer;
+  queueCopy = queue;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __52__HKConceptStore_registerAsConceptObserver_onQueue___block_invoke;
   v10[3] = &unk_1E7376640;
   v10[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = observerCopy;
+  v12 = queueCopy;
+  v8 = queueCopy;
+  v9 = observerCopy;
   HKWithUnfairLock(&self->_conceptIndexManagerStateLock, v10);
 }
 
@@ -321,14 +321,14 @@ uint64_t __52__HKConceptStore_registerAsConceptObserver_onQueue___block_invoke(v
   return [v9 notifyObserver:v7 handler:v11];
 }
 
-- (void)clientRemote_conceptIndexManagerDidChangeState:(unint64_t)a3
+- (void)clientRemote_conceptIndexManagerDidChangeState:(unint64_t)state
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __65__HKConceptStore_clientRemote_conceptIndexManagerDidChangeState___block_invoke;
   v3[3] = &unk_1E7378630;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = state;
   HKWithUnfairLock(&self->_conceptIndexManagerStateLock, v3);
 }
 

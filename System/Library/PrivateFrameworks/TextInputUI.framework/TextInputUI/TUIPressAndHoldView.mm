@@ -1,16 +1,16 @@
 @interface TUIPressAndHoldView
-+ (CGSize)requiredPopoverSizeForKeyString:(id)a3;
-+ (id)accentedCharactersForKeyString:(id)a3;
-- (BOOL)handleNumberKey:(unint64_t)a3;
++ (CGSize)requiredPopoverSizeForKeyString:(id)string;
++ (id)accentedCharactersForKeyString:(id)string;
+- (BOOL)handleNumberKey:(unint64_t)key;
 - (BOOL)handleSelection;
-- (BOOL)hasAccentVariantInForwardDirection:(BOOL)a3;
+- (BOOL)hasAccentVariantInForwardDirection:(BOOL)direction;
 - (BOOL)pressAndHoldGridHasSelectedIndexPath;
 - (NSString)selectedAccentVariant;
-- (TUIPressAndHoldView)initWithFrame:(CGRect)a3 keyString:(id)a4;
+- (TUIPressAndHoldView)initWithFrame:(CGRect)frame keyString:(id)string;
 - (TUIPressAndHoldViewDelegate)delegate;
-- (void)pressAndHoldGridDidAcceptAccentVariant:(id)a3 atIndexPath:(id)a4;
-- (void)setSelectedIndexPath:(id)a3;
-- (void)showAccentVariantInForwardDirection:(BOOL)a3;
+- (void)pressAndHoldGridDidAcceptAccentVariant:(id)variant atIndexPath:(id)path;
+- (void)setSelectedIndexPath:(id)path;
+- (void)showAccentVariantInForwardDirection:(BOOL)direction;
 @end
 
 @implementation TUIPressAndHoldView
@@ -22,91 +22,91 @@
   return WeakRetained;
 }
 
-- (void)pressAndHoldGridDidAcceptAccentVariant:(id)a3 atIndexPath:(id)a4
+- (void)pressAndHoldGridDidAcceptAccentVariant:(id)variant atIndexPath:(id)path
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [(TUIPressAndHoldView *)self delegate];
+  variantCopy = variant;
+  pathCopy = path;
+  delegate = [(TUIPressAndHoldView *)self delegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(TUIPressAndHoldView *)self delegate];
-    [v9 pressAndHoldViewDidAcceptAccentVariant:v10 atIndexPath:v6];
+    delegate2 = [(TUIPressAndHoldView *)self delegate];
+    [delegate2 pressAndHoldViewDidAcceptAccentVariant:variantCopy atIndexPath:pathCopy];
   }
 }
 
 - (NSString)selectedAccentVariant
 {
-  v2 = [(TUIPressAndHoldView *)self pressAndHoldGrid];
-  v3 = [v2 selectedAccentVariant];
+  pressAndHoldGrid = [(TUIPressAndHoldView *)self pressAndHoldGrid];
+  selectedAccentVariant = [pressAndHoldGrid selectedAccentVariant];
 
-  return v3;
+  return selectedAccentVariant;
 }
 
 - (BOOL)handleSelection
 {
-  v2 = [(TUIPressAndHoldView *)self pressAndHoldGrid];
-  v3 = [v2 handleSelection];
+  pressAndHoldGrid = [(TUIPressAndHoldView *)self pressAndHoldGrid];
+  handleSelection = [pressAndHoldGrid handleSelection];
 
-  return v3;
+  return handleSelection;
 }
 
 - (BOOL)pressAndHoldGridHasSelectedIndexPath
 {
-  v2 = [(TUIPressAndHoldView *)self pressAndHoldGrid];
-  v3 = [v2 selectedIndexPath];
-  v4 = v3 != 0;
+  pressAndHoldGrid = [(TUIPressAndHoldView *)self pressAndHoldGrid];
+  selectedIndexPath = [pressAndHoldGrid selectedIndexPath];
+  v4 = selectedIndexPath != 0;
 
   return v4;
 }
 
-- (void)setSelectedIndexPath:(id)a3
+- (void)setSelectedIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(TUIPressAndHoldView *)self pressAndHoldGrid];
-  [v5 setSelectedIndexPath:v4];
+  pathCopy = path;
+  pressAndHoldGrid = [(TUIPressAndHoldView *)self pressAndHoldGrid];
+  [pressAndHoldGrid setSelectedIndexPath:pathCopy];
 }
 
-- (BOOL)handleNumberKey:(unint64_t)a3
+- (BOOL)handleNumberKey:(unint64_t)key
 {
-  v4 = [(TUIPressAndHoldView *)self pressAndHoldGrid];
-  LOBYTE(a3) = [v4 handleNumberKey:a3];
+  pressAndHoldGrid = [(TUIPressAndHoldView *)self pressAndHoldGrid];
+  LOBYTE(key) = [pressAndHoldGrid handleNumberKey:key];
 
-  return a3;
+  return key;
 }
 
-- (void)showAccentVariantInForwardDirection:(BOOL)a3
+- (void)showAccentVariantInForwardDirection:(BOOL)direction
 {
-  v3 = a3;
-  v5 = [(TUIPressAndHoldView *)self pressAndHoldGrid];
-  v4 = [v5 showAccentVariantInForwardDirection:v3];
+  directionCopy = direction;
+  pressAndHoldGrid = [(TUIPressAndHoldView *)self pressAndHoldGrid];
+  v4 = [pressAndHoldGrid showAccentVariantInForwardDirection:directionCopy];
 }
 
-- (BOOL)hasAccentVariantInForwardDirection:(BOOL)a3
+- (BOOL)hasAccentVariantInForwardDirection:(BOOL)direction
 {
-  v3 = a3;
-  v4 = [(TUIPressAndHoldView *)self pressAndHoldGrid];
-  LOBYTE(v3) = [v4 hasAccentVariantInForwardDirection:v3];
+  directionCopy = direction;
+  pressAndHoldGrid = [(TUIPressAndHoldView *)self pressAndHoldGrid];
+  LOBYTE(directionCopy) = [pressAndHoldGrid hasAccentVariantInForwardDirection:directionCopy];
 
-  return v3;
+  return directionCopy;
 }
 
-- (TUIPressAndHoldView)initWithFrame:(CGRect)a3 keyString:(id)a4
+- (TUIPressAndHoldView)initWithFrame:(CGRect)frame keyString:(id)string
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  stringCopy = string;
   v20.receiver = self;
   v20.super_class = TUIPressAndHoldView;
-  v11 = [(TUIPressAndHoldView *)&v20 initWithFrame:x, y, width, height];
-  v12 = v11;
-  if (v11)
+  height = [(TUIPressAndHoldView *)&v20 initWithFrame:x, y, width, height];
+  v12 = height;
+  if (height)
   {
-    objc_storeStrong(&v11->_currentKeyString, a4);
-    v13 = [TUIPressAndHoldView accentedCharactersForKeyString:v10];
+    objc_storeStrong(&height->_currentKeyString, string);
+    v13 = [TUIPressAndHoldView accentedCharactersForKeyString:stringCopy];
     accentVariants = v12->_accentVariants;
     v12->_accentVariants = v13;
     v15 = v13;
@@ -124,9 +124,9 @@
   return v12;
 }
 
-+ (CGSize)requiredPopoverSizeForKeyString:(id)a3
++ (CGSize)requiredPopoverSizeForKeyString:(id)string
 {
-  v3 = [a1 accentedCharactersForKeyString:a3];
+  v3 = [self accentedCharactersForKeyString:string];
   [v3 count];
   v4 = [v3 count];
   v5 = ([v3 count] + 1) * 5.0 + v4 * 30.0 + 0.0;
@@ -138,13 +138,13 @@
   return result;
 }
 
-+ (id)accentedCharactersForKeyString:(id)a3
++ (id)accentedCharactersForKeyString:(id)string
 {
-  v3 = a3;
-  if (v3)
+  stringCopy = string;
+  if (stringCopy)
   {
     v4 = UIKeyboardGetCurrentInputMode();
-    v5 = [@"Roman-Accent-" stringByAppendingString:v3];
+    v5 = [@"Roman-Accent-" stringByAppendingString:stringCopy];
     v6 = UIKeyboardLocalizedObject();
 
     objc_opt_class();
@@ -154,11 +154,11 @@
       v8 = [v6 objectForKey:*MEMORY[0x1E69DE050]];
       if (v8)
       {
-        v9 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-        v10 = [v8 componentsSeparatedByCharactersInSet:v9];
+        whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+        v10 = [v8 componentsSeparatedByCharactersInSet:whitespaceCharacterSet];
 
         v7 = [v10 mutableCopy];
-        [v7 removeObject:v3];
+        [v7 removeObject:stringCopy];
       }
 
       else

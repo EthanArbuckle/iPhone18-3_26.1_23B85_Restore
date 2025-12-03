@@ -1,7 +1,7 @@
 @interface WLKSubscriptionDataRequestOperation
-+ (id)_requestURL:(id *)a3;
++ (id)_requestURL:(id *)l;
 - (WLKSubscriptionDataRequestOperation)init;
-- (void)prepareURLRequest:(id)a3;
+- (void)prepareURLRequest:(id)request;
 - (void)processResponse;
 @end
 
@@ -14,9 +14,9 @@
   return [(WLKNetworkRequestOperation *)&v3 initWithURLRequest:0 options:0];
 }
 
-- (void)prepareURLRequest:(id)a3
+- (void)prepareURLRequest:(id)request
 {
-  v3 = a3;
+  requestCopy = request;
   v7 = 0;
   v4 = [objc_opt_class() _requestURL:&v7];
   v5 = v7;
@@ -24,12 +24,12 @@
   {
     v6 = [MEMORY[0x277CBAB50] requestWithURL:v4];
     [v6 setTimeoutInterval:15.0];
-    v3[2](v3, v6, 0);
+    requestCopy[2](requestCopy, v6, 0);
   }
 
   else
   {
-    (v3)[2](v3, 0, v5);
+    (requestCopy)[2](requestCopy, 0, v5);
   }
 }
 
@@ -37,8 +37,8 @@
 {
   v11 = *MEMORY[0x277D85DE8];
   v3 = objc_alloc_init(WLKDictionaryResponseProcessor);
-  v4 = [(WLKNetworkRequestOperation *)self data];
-  v5 = [(WLKDictionaryResponseProcessor *)v3 processResponseData:v4 error:0];
+  data = [(WLKNetworkRequestOperation *)self data];
+  v5 = [(WLKDictionaryResponseProcessor *)v3 processResponseData:data error:0];
 
   objc_storeStrong(&self->_response, v5);
   v6 = WLKNetworkingLogObject();
@@ -53,7 +53,7 @@
   v8 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)_requestURL:(id *)a3
++ (id)_requestURL:(id *)l
 {
   v3 = [objc_alloc(MEMORY[0x277CBEBD0]) initWithSuiteName:@"com.apple.WatchListKit"];
   v4 = [v3 stringForKey:@"SubscriptionSyncTestEndpointURL"];

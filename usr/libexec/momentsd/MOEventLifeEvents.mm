@@ -1,40 +1,40 @@
 @interface MOEventLifeEvents
-+ (id)descriptionOfLifeEventCategory:(unint64_t)a3;
-- (MOEventLifeEvents)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)descriptionOfLifeEventCategory:(unint64_t)category;
+- (MOEventLifeEvents)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MOEventLifeEvents
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   lifeEventCategory = self->_lifeEventCategory;
-  v6 = a3;
-  [v6 encodeInteger:lifeEventCategory forKey:@"lifeEventCategory"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:lifeEventCategory forKey:@"lifeEventCategory"];
   confidenceScore = self->_confidenceScore;
   *&confidenceScore = confidenceScore;
-  [v6 encodeFloat:@"confidenceScore" forKey:confidenceScore];
+  [coderCopy encodeFloat:@"confidenceScore" forKey:confidenceScore];
 }
 
-- (MOEventLifeEvents)initWithCoder:(id)a3
+- (MOEventLifeEvents)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = MOEventLifeEvents;
   v5 = [(MOEventLifeEvents *)&v8 init];
   if (v5)
   {
-    v5->_lifeEventCategory = [v4 decodeIntegerForKey:@"lifeEventCategory"];
-    [v4 decodeFloatForKey:@"confidenceScore"];
+    v5->_lifeEventCategory = [coderCopy decodeIntegerForKey:@"lifeEventCategory"];
+    [coderCopy decodeFloatForKey:@"confidenceScore"];
     v5->_confidenceScore = v6;
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   result = objc_alloc_init(MOEventLifeEvents);
   *(result + 1) = self->_lifeEventCategory;
@@ -42,16 +42,16 @@
   return result;
 }
 
-+ (id)descriptionOfLifeEventCategory:(unint64_t)a3
++ (id)descriptionOfLifeEventCategory:(unint64_t)category
 {
-  if (a3 > 4)
+  if (category > 4)
   {
     return @"Invalid";
   }
 
   else
   {
-    return *(&off_10033D4B8 + a3);
+    return *(&off_10033D4B8 + category);
   }
 }
 

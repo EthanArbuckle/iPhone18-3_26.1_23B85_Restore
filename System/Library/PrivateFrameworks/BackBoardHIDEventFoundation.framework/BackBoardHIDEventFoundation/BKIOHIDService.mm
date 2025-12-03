@@ -1,31 +1,31 @@
 @interface BKIOHIDService
-- (BKIOHIDService)initWithHIDServiceRef:(__IOHIDService *)a3;
-- (BOOL)claimsToConformToUsagePage:(unsigned __int16)a3 usage:(unsigned __int16)a4;
+- (BKIOHIDService)initWithHIDServiceRef:(__IOHIDService *)ref;
+- (BOOL)claimsToConformToUsagePage:(unsigned __int16)page usage:(unsigned __int16)usage;
 - (BOOL)isVirtualService;
-- (BOOL)setProperties:(id)a3;
-- (BOOL)setProperty:(id)a3 forKey:(id)a4;
+- (BOOL)setProperties:(id)properties;
+- (BOOL)setProperty:(id)property forKey:(id)key;
 - (NSString)uniqueProductIdentifier;
 - (id)_disappearanceObservers;
-- (id)_initForTestingWithSenderID:(unint64_t)a3 setUpInitialProperties:(BOOL)a4;
+- (id)_initForTestingWithSenderID:(unint64_t)d setUpInitialProperties:(BOOL)properties;
 - (id)_workQueue;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)initForSimulatorWithDisplayUUID:(id)a3;
-- (id)propertyForKey:(id)a3;
-- (id)propertyOfClass:(Class)a3 forKey:(id)a4;
-- (id)senderDescriptorForEventType:(unsigned int)a3;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)initForSimulatorWithDisplayUUID:(id)d;
+- (id)propertyForKey:(id)key;
+- (id)propertyOfClass:(Class)class forKey:(id)key;
+- (id)senderDescriptorForEventType:(unsigned int)type;
 - (id)succinctDescription;
 - (uint64_t)_isProbablyHeadset;
 - (void)_serviceWasRemoved;
 - (void)_setUpInitialProperties;
 - (void)_workQueue_startIOServiceRemovalNotifications;
 - (void)_workQueue_stopIOServiceRemovalNotifications;
-- (void)addDisappearanceObserver:(id)a3 queue:(id)a4;
-- (void)asyncSetProperties:(id)a3;
-- (void)asyncSetProperty:(id)a3 forKey:(id)a4 andDelayForSeconds:(double)a5;
+- (void)addDisappearanceObserver:(id)observer queue:(id)queue;
+- (void)asyncSetProperties:(id)properties;
+- (void)asyncSetProperty:(id)property forKey:(id)key andDelayForSeconds:(double)seconds;
 - (void)dealloc;
-- (void)removeDisappearanceObserver:(id)a3;
-- (void)setElementValue:(unsigned int)a3 forUsagePage:(unsigned int)a4 usage:(unsigned int)a5;
+- (void)removeDisappearanceObserver:(id)observer;
+- (void)setElementValue:(unsigned int)value forUsagePage:(unsigned int)page usage:(unsigned int)usage;
 @end
 
 @implementation BKIOHIDService
@@ -33,30 +33,30 @@
 - (void)_serviceWasRemoved
 {
   [(BKIOHIDService *)self setServiceStatus:2];
-  v3 = [(BKIOHIDService *)self _workQueue];
+  _workQueue = [(BKIOHIDService *)self _workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __36__BKIOHIDService__serviceWasRemoved__block_invoke;
   block[3] = &unk_2784F6B98;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(_workQueue, block);
 }
 
 - (id)_workQueue
 {
-  if (a1)
+  if (self)
   {
-    os_unfair_lock_lock((a1 + 16));
-    Serial = *(a1 + 24);
+    os_unfair_lock_lock((self + 16));
+    Serial = *(self + 24);
     if (!Serial)
     {
-      v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%p.workQueue", objc_opt_class(), a1];
+      v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%p.workQueue", objc_opt_class(), self];
       Serial = BSDispatchQueueCreateSerial();
 
-      objc_storeStrong((a1 + 24), Serial);
+      objc_storeStrong((self + 24), Serial);
     }
 
-    os_unfair_lock_unlock((a1 + 16));
+    os_unfair_lock_unlock((self + 16));
   }
 
   else
@@ -147,8 +147,8 @@ uint64_t __36__BKIOHIDService__serviceWasRemoved__block_invoke(uint64_t result)
 
 - (void)_workQueue_stopIOServiceRemovalNotifications
 {
-  v3 = [(BKIOHIDService *)self _workQueue];
-  dispatch_assert_queue_V2(v3);
+  _workQueue = [(BKIOHIDService *)self _workQueue];
+  dispatch_assert_queue_V2(_workQueue);
 
   workQueue_removalNotification = self->_workQueue_removalNotification;
   if (workQueue_removalNotification)
@@ -257,15 +257,15 @@ LABEL_6:
       if (![v11 isEqualToString:@"Trackpad"])
       {
 
-        v17 = [v10 intValue];
-        if (v17 > 6)
+        intValue = [v10 intValue];
+        if (intValue > 6)
         {
           v18 = 5;
         }
 
         else
         {
-          v18 = dword_223CED968[v17];
+          v18 = dword_223CED968[intValue];
         }
 
         self->_eventSource = v18;
@@ -291,29 +291,29 @@ LABEL_28:
     goto LABEL_29;
   }
 
-  v14 = self;
-  if (![(BKIOHIDService *)v14 claimsToConformToUsagePage:1 usage:2])
+  selfCopy = self;
+  if (![(BKIOHIDService *)selfCopy claimsToConformToUsagePage:1 usage:2])
   {
 
-    if (v14->_authenticated)
+    if (selfCopy->_authenticated)
     {
-      if ([(BKIOHIDService *)v14 claimsToConformToUsagePage:1 usage:5])
+      if ([(BKIOHIDService *)selfCopy claimsToConformToUsagePage:1 usage:5])
       {
         v19 = 4;
 LABEL_84:
-        v14->_eventSource = v19;
+        selfCopy->_eventSource = v19;
         goto LABEL_29;
       }
 
-      if (v14->_authenticated)
+      if (selfCopy->_authenticated)
       {
-        if ([(BKIOHIDService *)v14 claimsToConformToUsagePage:1 usage:6])
+        if ([(BKIOHIDService *)selfCopy claimsToConformToUsagePage:1 usage:6])
         {
           v19 = 3;
           goto LABEL_84;
         }
 
-        if (v14->_authenticated)
+        if (selfCopy->_authenticated)
         {
           v19 = 5;
           goto LABEL_84;
@@ -321,12 +321,12 @@ LABEL_84:
       }
     }
 
-    v34 = [(BKIOHIDService *)v14 propertyForKey:@"AppleBluetoothRemote"];
+    v34 = [(BKIOHIDService *)selfCopy propertyForKey:@"AppleBluetoothRemote"];
     if (v34 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v35 = [v34 BOOLValue];
+      bOOLValue = [v34 BOOLValue];
 
-      if (v35)
+      if (bOOLValue)
       {
         v19 = 8;
         goto LABEL_84;
@@ -337,31 +337,31 @@ LABEL_84:
     {
     }
 
-    if ([(BKIOHIDService *)v14 claimsToConformToUsagePage:1 usage:5])
+    if ([(BKIOHIDService *)selfCopy claimsToConformToUsagePage:1 usage:5])
     {
       v19 = 9;
     }
 
-    else if ([(BKIOHIDService *)v14 claimsToConformToUsagePage:1 usage:15])
+    else if ([(BKIOHIDService *)selfCopy claimsToConformToUsagePage:1 usage:15])
     {
       v19 = 10;
     }
 
-    else if ([(BKIOHIDService *)v14 claimsToConformToUsagePage:11 usage:5])
+    else if ([(BKIOHIDService *)selfCopy claimsToConformToUsagePage:11 usage:5])
     {
       v19 = 7;
     }
 
-    else if ([(BKIOHIDService *)v14 _isProbablyHeadset])
+    else if ([(BKIOHIDService *)selfCopy _isProbablyHeadset])
     {
       v19 = 6;
     }
 
     else
     {
-      if ([(BKIOHIDService *)v14 claimsToConformToUsagePage:1 usage:6])
+      if ([(BKIOHIDService *)selfCopy claimsToConformToUsagePage:1 usage:6])
       {
-        v14->_eventSource = 1;
+        selfCopy->_eventSource = 1;
         goto LABEL_29;
       }
 
@@ -371,7 +371,7 @@ LABEL_84:
     goto LABEL_84;
   }
 
-  v15 = [(BKIOHIDService *)v14 propertyForKey:@"DeviceTypeHint"];
+  v15 = [(BKIOHIDService *)selfCopy propertyForKey:@"DeviceTypeHint"];
   if ([v15 isEqualToString:@"Mouse"])
   {
     v16 = 11;
@@ -399,7 +399,7 @@ LABEL_84:
     }
   }
 
-  v14->_eventSource = v16;
+  selfCopy->_eventSource = v16;
 
 LABEL_29:
   v20 = objc_alloc_init(MEMORY[0x277CF0760]);
@@ -458,24 +458,24 @@ LABEL_29:
 
   if (self->_displayUUID)
   {
-    v23 = [MEMORY[0x277CF0698] displayWithHardwareIdentifier:?];
+    builtinDisplay = [MEMORY[0x277CF0698] displayWithHardwareIdentifier:?];
   }
 
   else
   {
     v24 = [(BKIOHIDService *)self propertyOfClass:objc_opt_class() forKey:@"DisplayIntegrated"];
-    v25 = [v24 BOOLValue];
+    bOOLValue2 = [v24 BOOLValue];
 
-    if (!v25)
+    if (!bOOLValue2)
     {
       goto LABEL_46;
     }
 
-    v23 = [MEMORY[0x277CF0698] builtinDisplay];
+    builtinDisplay = [MEMORY[0x277CF0698] builtinDisplay];
   }
 
-  v26 = v23;
-  [v20 setAssociatedDisplay:v23];
+  v26 = builtinDisplay;
+  [v20 setAssociatedDisplay:builtinDisplay];
 
 LABEL_46:
   [v20 setSenderID:self->_senderID];
@@ -496,7 +496,7 @@ LABEL_46:
       v36[0] = 67109378;
       v36[1] = primaryUsage;
       v37 = 2114;
-      v38 = self;
+      selfCopy2 = self;
       _os_log_error_impl(&dword_223CBE000, v28, OS_LOG_TYPE_ERROR, "strangeness: primary page is zero; primary usage is:%X %{public}@", v36, 0x12u);
     }
   }
@@ -522,8 +522,8 @@ LABEL_46:
 
 - (void)_workQueue_startIOServiceRemovalNotifications
 {
-  v3 = [(BKIOHIDService *)self _workQueue];
-  dispatch_assert_queue_V2(v3);
+  _workQueue = [(BKIOHIDService *)self _workQueue];
+  dispatch_assert_queue_V2(_workQueue);
 
   if (!self->_workQueue_removalNotification)
   {
@@ -543,14 +543,14 @@ LABEL_46:
   v10 = __Block_byref_object_copy_;
   v11 = __Block_byref_object_dispose_;
   v12 = 0;
-  v3 = [(BKIOHIDService *)self _workQueue];
+  _workQueue = [(BKIOHIDService *)self _workQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __41__BKIOHIDService__disappearanceObservers__block_invoke;
   v6[3] = &unk_2784F6B58;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(_workQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -653,18 +653,18 @@ uint64_t __41__BKIOHIDService__disappearanceObservers__block_invoke(uint64_t a1)
   return v18;
 }
 
-- (void)removeDisappearanceObserver:(id)a3
+- (void)removeDisappearanceObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(BKIOHIDService *)self _workQueue];
+  observerCopy = observer;
+  _workQueue = [(BKIOHIDService *)self _workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __46__BKIOHIDService_removeDisappearanceObserver___block_invoke;
   v7[3] = &unk_2784F7270;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = observerCopy;
+  v6 = observerCopy;
+  dispatch_sync(_workQueue, v7);
 }
 
 void __46__BKIOHIDService_removeDisappearanceObserver___block_invoke(uint64_t a1)
@@ -748,21 +748,21 @@ LABEL_18:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addDisappearanceObserver:(id)a3 queue:(id)a4
+- (void)addDisappearanceObserver:(id)observer queue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BKIOHIDService *)self _workQueue];
+  observerCopy = observer;
+  queueCopy = queue;
+  _workQueue = [(BKIOHIDService *)self _workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __49__BKIOHIDService_addDisappearanceObserver_queue___block_invoke;
   block[3] = &unk_2784F6B30;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_sync(v8, block);
+  v12 = observerCopy;
+  v13 = queueCopy;
+  v9 = queueCopy;
+  v10 = observerCopy;
+  dispatch_sync(_workQueue, block);
 }
 
 void __49__BKIOHIDService_addDisappearanceObserver_queue___block_invoke(uint64_t a1)
@@ -810,18 +810,18 @@ void __49__BKIOHIDService_addDisappearanceObserver_queue___block_invoke(uint64_t
   }
 }
 
-- (void)setElementValue:(unsigned int)a3 forUsagePage:(unsigned int)a4 usage:(unsigned int)a5
+- (void)setElementValue:(unsigned int)value forUsagePage:(unsigned int)page usage:(unsigned int)usage
 {
-  v9 = [(BKIOHIDService *)self _workQueue];
+  _workQueue = [(BKIOHIDService *)self _workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __53__BKIOHIDService_setElementValue_forUsagePage_usage___block_invoke;
   block[3] = &unk_2784F6B08;
   block[4] = self;
-  v11 = a4;
-  v12 = a5;
-  v13 = a3;
-  dispatch_async(v9, block);
+  pageCopy = page;
+  usageCopy = usage;
+  valueCopy = value;
+  dispatch_async(_workQueue, block);
 }
 
 void __53__BKIOHIDService_setElementValue_forUsagePage_usage___block_invoke(uint64_t a1)
@@ -856,19 +856,19 @@ void __53__BKIOHIDService_setElementValue_forUsagePage_usage___block_invoke(uint
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)asyncSetProperties:(id)a3
+- (void)asyncSetProperties:(id)properties
 {
-  v4 = a3;
+  propertiesCopy = properties;
   objc_initWeak(&location, self);
-  v5 = [(BKIOHIDService *)self _workQueue];
+  _workQueue = [(BKIOHIDService *)self _workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __37__BKIOHIDService_asyncSetProperties___block_invoke;
   block[3] = &unk_2784F6AE0;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, block);
+  v8 = propertiesCopy;
+  v6 = propertiesCopy;
+  dispatch_async(_workQueue, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -891,23 +891,23 @@ void __37__BKIOHIDService_asyncSetProperties___block_invoke(uint64_t a1)
   }
 }
 
-- (void)asyncSetProperty:(id)a3 forKey:(id)a4 andDelayForSeconds:(double)a5
+- (void)asyncSetProperty:(id)property forKey:(id)key andDelayForSeconds:(double)seconds
 {
-  v8 = a3;
-  v9 = a4;
+  propertyCopy = property;
+  keyCopy = key;
   objc_initWeak(&location, self);
-  v10 = [(BKIOHIDService *)self _workQueue];
+  _workQueue = [(BKIOHIDService *)self _workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __61__BKIOHIDService_asyncSetProperty_forKey_andDelayForSeconds___block_invoke;
   block[3] = &unk_2784F6AB8;
   objc_copyWeak(v16, &location);
-  v14 = v9;
-  v15 = v8;
-  v16[1] = *&a5;
-  v11 = v8;
-  v12 = v9;
-  dispatch_async(v10, block);
+  v14 = keyCopy;
+  v15 = propertyCopy;
+  v16[1] = *&seconds;
+  v11 = propertyCopy;
+  v12 = keyCopy;
+  dispatch_async(_workQueue, block);
 
   objc_destroyWeak(v16);
   objc_destroyWeak(&location);
@@ -933,18 +933,18 @@ void __61__BKIOHIDService_asyncSetProperty_forKey_andDelayForSeconds___block_inv
   }
 }
 
-- (BOOL)setProperties:(id)a3
+- (BOOL)setProperties:(id)properties
 {
-  v4 = a3;
-  v5 = [(BKIOHIDService *)self _workQueue];
+  propertiesCopy = properties;
+  _workQueue = [(BKIOHIDService *)self _workQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __32__BKIOHIDService_setProperties___block_invoke;
   v8[3] = &unk_2784F7270;
   v8[4] = self;
-  v9 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v8);
+  v9 = propertiesCopy;
+  v6 = propertiesCopy;
+  dispatch_sync(_workQueue, v8);
 
   return 0;
 }
@@ -962,26 +962,26 @@ uint64_t __32__BKIOHIDService_setProperties___block_invoke(uint64_t a1)
   return [v1 enumerateKeysAndObjectsUsingBlock:v5];
 }
 
-- (BOOL)setProperty:(id)a3 forKey:(id)a4
+- (BOOL)setProperty:(id)property forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  propertyCopy = property;
+  keyCopy = key;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
   v19 = 0;
-  v8 = [(BKIOHIDService *)self _workQueue];
+  _workQueue = [(BKIOHIDService *)self _workQueue];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __37__BKIOHIDService_setProperty_forKey___block_invoke;
   v12[3] = &unk_2784F6A70;
   v12[4] = self;
-  v13 = v7;
-  v14 = v6;
+  v13 = keyCopy;
+  v14 = propertyCopy;
   v15 = &v16;
-  v9 = v6;
-  v10 = v7;
-  dispatch_sync(v8, v12);
+  v9 = propertyCopy;
+  v10 = keyCopy;
+  dispatch_sync(_workQueue, v12);
 
   LOBYTE(self) = *(v17 + 24);
   _Block_object_dispose(&v16, 8);
@@ -998,20 +998,20 @@ uint64_t __37__BKIOHIDService_setProperty_forKey___block_invoke(void *a1)
   return result;
 }
 
-- (id)propertyOfClass:(Class)a3 forKey:(id)a4
+- (id)propertyOfClass:(Class)class forKey:(id)key
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [(BKIOHIDService *)self propertyForKey:v6];
+  keyCopy = key;
+  v7 = [(BKIOHIDService *)self propertyForKey:keyCopy];
   if (v7 && (objc_opt_isKindOfClass() & 1) == 0)
   {
     v8 = BKLogHID();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
       v12 = 138543874;
-      v13 = v6;
+      v13 = keyCopy;
       v14 = 2114;
-      v15 = a3;
+      classCopy = class;
       v16 = 2114;
       v17 = objc_opt_class();
       v11 = v17;
@@ -1026,25 +1026,25 @@ uint64_t __37__BKIOHIDService_setProperty_forKey___block_invoke(void *a1)
   return v7;
 }
 
-- (id)propertyForKey:(id)a3
+- (id)propertyForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy_;
   v16 = __Block_byref_object_dispose_;
   v17 = 0;
-  v5 = [(BKIOHIDService *)self _workQueue];
+  _workQueue = [(BKIOHIDService *)self _workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __33__BKIOHIDService_propertyForKey___block_invoke;
   block[3] = &unk_2784F6A48;
-  v10 = v4;
+  v10 = keyCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = keyCopy;
+  dispatch_sync(_workQueue, block);
 
   v7 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -1067,17 +1067,17 @@ uint64_t __33__BKIOHIDService_propertyForKey___block_invoke(void *a1)
 - (BOOL)isVirtualService
 {
   v2 = [(BKIOHIDService *)self propertyOfClass:objc_opt_class() forKey:@"HIDVirtualDevice"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-- (BOOL)claimsToConformToUsagePage:(unsigned __int16)a3 usage:(unsigned __int16)a4
+- (BOOL)claimsToConformToUsagePage:(unsigned __int16)page usage:(unsigned __int16)usage
 {
-  v4 = a4;
-  v5 = a3;
+  usageCopy = usage;
+  pageCopy = page;
   v37 = *MEMORY[0x277D85DE8];
-  if (self->_primaryUsagePage == a3 && self->_primaryUsage == a4)
+  if (self->_primaryUsagePage == page && self->_primaryUsage == usage)
   {
     v6 = 1;
   }
@@ -1093,7 +1093,7 @@ uint64_t __33__BKIOHIDService_propertyForKey___block_invoke(void *a1)
     if (v7)
     {
       v8 = v7;
-      v30 = v4;
+      v30 = usageCopy;
       v9 = *v33;
       while (2)
       {
@@ -1159,10 +1159,10 @@ uint64_t __33__BKIOHIDService_propertyForKey___block_invoke(void *a1)
 
             v25 = v24;
 
-            v26 = [v20 intValue];
-            v27 = [v25 intValue];
+            intValue = [v20 intValue];
+            intValue2 = [v25 intValue];
 
-            if (v5 == v26 && v27 == v30)
+            if (pageCopy == intValue && intValue2 == v30)
             {
 
               v6 = 1;
@@ -1189,10 +1189,10 @@ LABEL_31:
   return v6;
 }
 
-- (id)senderDescriptorForEventType:(unsigned int)a3
+- (id)senderDescriptorForEventType:(unsigned int)type
 {
   v3 = 80;
-  if (a3 == 3)
+  if (type == 3)
   {
     v3 = 56;
   }
@@ -1200,9 +1200,9 @@ LABEL_31:
   return *(&self->super.isa + v3);
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(BKIOHIDService *)self succinctDescriptionBuilder];
+  succinctDescriptionBuilder = [(BKIOHIDService *)self succinctDescriptionBuilder];
   serviceStatus = self->_serviceStatus;
   if (serviceStatus >= 3)
   {
@@ -1214,49 +1214,49 @@ LABEL_31:
     v6 = off_2784F6B78[serviceStatus];
   }
 
-  v7 = [v4 appendObject:v6 withName:@"serviceStatus"];
+  v7 = [succinctDescriptionBuilder appendObject:v6 withName:@"serviceStatus"];
 
-  v8 = [v4 appendObject:self->_IOHIDService withName:@"IOHIDService"];
+  v8 = [succinctDescriptionBuilder appendObject:self->_IOHIDService withName:@"IOHIDService"];
   v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"0x%llX", self->_senderID];
-  v10 = [v4 appendObject:v9 withName:@"senderID"];
+  v10 = [succinctDescriptionBuilder appendObject:v9 withName:@"senderID"];
 
-  v11 = [v4 appendObject:self->_displayUUID withName:@"displayUUID"];
+  v11 = [succinctDescriptionBuilder appendObject:self->_displayUUID withName:@"displayUUID"];
   eventSource = self->_eventSource;
   v13 = NSStringFromBKSHIDEventSource();
-  v14 = [v4 appendObject:v13 withName:@"eventSource"];
+  v14 = [succinctDescriptionBuilder appendObject:v13 withName:@"eventSource"];
 
   v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"0x%X", self->_primaryUsagePage];
-  v16 = [v4 appendObject:v15 withName:@"primaryUsagePage"];
+  v16 = [succinctDescriptionBuilder appendObject:v15 withName:@"primaryUsagePage"];
 
   v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"0x%X", self->_primaryUsage];
-  v18 = [v4 appendObject:v17 withName:@"primaryUsage"];
+  v18 = [succinctDescriptionBuilder appendObject:v17 withName:@"primaryUsage"];
 
-  v19 = [v4 appendBool:self->_authenticated withName:@"authenticated"];
-  v20 = [v4 appendBool:self->_builtIn withName:@"builtIn"];
+  v19 = [succinctDescriptionBuilder appendBool:self->_authenticated withName:@"authenticated"];
+  v20 = [succinctDescriptionBuilder appendBool:self->_builtIn withName:@"builtIn"];
 
-  return v4;
+  return succinctDescriptionBuilder;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(BKIOHIDService *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(BKIOHIDService *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 - (id)succinctDescription
 {
-  v2 = [(BKIOHIDService *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(BKIOHIDService *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (BKIOHIDService)initWithHIDServiceRef:(__IOHIDService *)a3
+- (BKIOHIDService)initWithHIDServiceRef:(__IOHIDService *)ref
 {
   v27 = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!ref)
   {
     v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"Invalid condition not satisfying: %@", @"hidService"];
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
@@ -1269,7 +1269,7 @@ LABEL_31:
       v17 = 2114;
       v18 = v13;
       v19 = 2048;
-      v20 = self;
+      selfCopy = self;
       v21 = 2114;
       v22 = @"BKIOHIDService.m";
       v23 = 1024;
@@ -1290,8 +1290,8 @@ LABEL_31:
   v5 = [(BKIOHIDService *)&v14 init];
   if (v5)
   {
-    CFRetain(a3);
-    v5->_IOHIDService = a3;
+    CFRetain(ref);
+    v5->_IOHIDService = ref;
     v6 = IOHIDServiceGetRegistryID();
     v5->_senderID = [v6 unsignedLongLongValue];
     [(BKIOHIDService *)v5 _setUpInitialProperties];
@@ -1301,9 +1301,9 @@ LABEL_31:
   return v5;
 }
 
-- (id)initForSimulatorWithDisplayUUID:(id)a3
+- (id)initForSimulatorWithDisplayUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v11.receiver = self;
   v11.super_class = BKIOHIDService;
   v5 = [(BKIOHIDService *)&v11 init];
@@ -1316,7 +1316,7 @@ LABEL_31:
       v6->_senderID = [v7 unsignedLongLongValue];
     }
 
-    v8 = [v4 copy];
+    v8 = [dCopy copy];
     displayUUID = v6->_displayUUID;
     v6->_displayUUID = v8;
   }
@@ -1324,17 +1324,17 @@ LABEL_31:
   return v6;
 }
 
-- (id)_initForTestingWithSenderID:(unint64_t)a3 setUpInitialProperties:(BOOL)a4
+- (id)_initForTestingWithSenderID:(unint64_t)d setUpInitialProperties:(BOOL)properties
 {
-  v4 = a4;
+  propertiesCopy = properties;
   v9.receiver = self;
   v9.super_class = BKIOHIDService;
   v6 = [(BKIOHIDService *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    v6->_senderID = a3;
-    if (v4)
+    v6->_senderID = d;
+    if (propertiesCopy)
     {
       [(BKIOHIDService *)v6 _setUpInitialProperties];
     }
@@ -1345,12 +1345,12 @@ LABEL_31:
 
 - (uint64_t)_isProbablyHeadset
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v1 = [a1 propertyForKey:@"DeviceTypeHint"];
+  v1 = [self propertyForKey:@"DeviceTypeHint"];
   if (v1 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v2 = [v1 isEqual:@"Headset"];

@@ -1,36 +1,36 @@
 @interface NemethView.Coordinator
 - (_TtCV28AccessibilitySharedUISupport10NemethView11Coordinator)init;
-- (void)webView:(id)a3 didFailNavigation:(id)a4 withError:(id)a5;
-- (void)webView:(id)a3 didFailProvisionalNavigation:(id)a4 withError:(id)a5;
-- (void)webView:(id)a3 didFinishNavigation:(id)a4;
+- (void)webView:(id)view didFailNavigation:(id)navigation withError:(id)error;
+- (void)webView:(id)view didFailProvisionalNavigation:(id)navigation withError:(id)error;
+- (void)webView:(id)view didFinishNavigation:(id)navigation;
 @end
 
 @implementation NemethView.Coordinator
 
-- (void)webView:(id)a3 didFailProvisionalNavigation:(id)a4 withError:(id)a5
+- (void)webView:(id)view didFailProvisionalNavigation:(id)navigation withError:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v11 = a5;
-  v10 = self;
-  sub_23DA16568(v11, "Error during provisional navigation... %s");
+  viewCopy = view;
+  navigationCopy = navigation;
+  errorCopy = error;
+  selfCopy = self;
+  sub_23DA16568(errorCopy, "Error during provisional navigation... %s");
 }
 
-- (void)webView:(id)a3 didFinishNavigation:(id)a4
+- (void)webView:(id)view didFinishNavigation:(id)navigation
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_23DA16340(v6);
+  viewCopy = view;
+  navigationCopy = navigation;
+  selfCopy = self;
+  sub_23DA16340(viewCopy);
 }
 
-- (void)webView:(id)a3 didFailNavigation:(id)a4 withError:(id)a5
+- (void)webView:(id)view didFailNavigation:(id)navigation withError:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v11 = a5;
-  v10 = self;
-  sub_23DA16568(v11, "Error navigating to URL... %s");
+  viewCopy = view;
+  navigationCopy = navigation;
+  errorCopy = error;
+  selfCopy = self;
+  sub_23DA16568(errorCopy, "Error navigating to URL... %s");
 }
 
 - (_TtCV28AccessibilitySharedUISupport10NemethView11Coordinator)init

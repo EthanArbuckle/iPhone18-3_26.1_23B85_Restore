@@ -1,8 +1,8 @@
 @interface IntentRouter
 - (IntentRouter)init;
-- (id)handlerForIntent:(id)a3;
-- (void)pk_didFinishInteractionForIntent:(id)a3;
-- (void)transactionDidCompleteForIntentIdentifier:(id)a3;
+- (id)handlerForIntent:(id)intent;
+- (void)pk_didFinishInteractionForIntent:(id)intent;
+- (void)transactionDidCompleteForIntentIdentifier:(id)identifier;
 @end
 
 @implementation IntentRouter
@@ -30,12 +30,12 @@
   return v3;
 }
 
-- (id)handlerForIntent:(id)a3
+- (id)handlerForIntent:(id)intent
 {
-  v4 = a3;
+  intentCopy = intent;
   kdebug_trace();
-  v5 = [v4 identifier];
-  v6 = [(NSMutableDictionary *)self->_intentHandlerCache objectForKey:v5];
+  identifier = [intentCopy identifier];
+  v6 = [(NSMutableDictionary *)self->_intentHandlerCache objectForKey:identifier];
   if (!v6)
   {
     objc_opt_class();
@@ -67,7 +67,7 @@
 
     if (v6)
     {
-      [(NSMutableDictionary *)self->_intentHandlerCache setObject:v6 forKey:v5];
+      [(NSMutableDictionary *)self->_intentHandlerCache setObject:v6 forKey:identifier];
     }
 
     else
@@ -75,7 +75,7 @@
       v9 = PKLogFacilityTypeGetObject();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
-        sub_10000C0A0(v4, v9);
+        sub_10000C0A0(intentCopy, v9);
       }
 
       v6 = 0;
@@ -85,20 +85,20 @@
   return v6;
 }
 
-- (void)transactionDidCompleteForIntentIdentifier:(id)a3
+- (void)transactionDidCompleteForIntentIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     [(NSMutableDictionary *)self->_intentHandlerCache removeObjectForKey:?];
   }
 }
 
-- (void)pk_didFinishInteractionForIntent:(id)a3
+- (void)pk_didFinishInteractionForIntent:(id)intent
 {
-  v4 = [a3 identifier];
-  if (v4)
+  identifier = [intent identifier];
+  if (identifier)
   {
-    [(NSMutableDictionary *)self->_intentHandlerCache removeObjectForKey:v4];
+    [(NSMutableDictionary *)self->_intentHandlerCache removeObjectForKey:identifier];
   }
 
   _objc_release_x1();

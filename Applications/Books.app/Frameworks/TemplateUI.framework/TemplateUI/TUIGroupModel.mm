@@ -1,12 +1,12 @@
 @interface TUIGroupModel
 - (TUIGroupModel)init;
 - (TUIModelContaining)parentModel;
-- (void)appendLayoutChildrenToArray:(id)a3;
-- (void)appendLayoutModelsToArray:(id)a3;
-- (void)appendObjectsWithProtocol:(id)a3 toArray:(id)a4;
+- (void)appendLayoutChildrenToArray:(id)array;
+- (void)appendLayoutModelsToArray:(id)array;
+- (void)appendObjectsWithProtocol:(id)protocol toArray:(id)array;
 - (void)onContainedModelsChanged;
-- (void)setSpan:(unint64_t)a3;
-- (void)updateModelChildren:(id)a3;
+- (void)setSpan:(unint64_t)span;
+- (void)updateModelChildren:(id)children;
 @end
 
 @implementation TUIGroupModel
@@ -24,27 +24,27 @@
   return result;
 }
 
-- (void)setSpan:(unint64_t)a3
+- (void)setSpan:(unint64_t)span
 {
-  if (a3 <= 1)
+  if (span <= 1)
   {
-    v3 = 1;
+    spanCopy = 1;
   }
 
   else
   {
-    v3 = a3;
+    spanCopy = span;
   }
 
-  *&self->_flags = *&self->_flags & 0xFC1F | (32 * (v3 & 0x1F));
+  *&self->_flags = *&self->_flags & 0xFC1F | (32 * (spanCopy & 0x1F));
 }
 
-- (void)updateModelChildren:(id)a3
+- (void)updateModelChildren:(id)children
 {
   children = self->_children;
-  v5 = a3;
+  childrenCopy = children;
   [(NSArray *)children enumerateObjectsUsingBlock:&stru_25DF58];
-  v6 = [v5 copy];
+  v6 = [childrenCopy copy];
 
   v7 = self->_children;
   self->_children = v6;
@@ -59,52 +59,52 @@
   [(TUIGroupModel *)self onContainedModelsChanged];
 }
 
-- (void)appendLayoutModelsToArray:(id)a3
+- (void)appendLayoutModelsToArray:(id)array
 {
-  v4 = a3;
+  arrayCopy = array;
   children = self->_children;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_181DC;
   v7[3] = &unk_25DF80;
-  v8 = v4;
-  v6 = v4;
+  v8 = arrayCopy;
+  v6 = arrayCopy;
   [(NSArray *)children enumerateObjectsUsingBlock:v7];
 }
 
-- (void)appendLayoutChildrenToArray:(id)a3
+- (void)appendLayoutChildrenToArray:(id)array
 {
-  v4 = a3;
+  arrayCopy = array;
   children = self->_children;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_18280;
   v7[3] = &unk_25DF80;
-  v8 = v4;
-  v6 = v4;
+  v8 = arrayCopy;
+  v6 = arrayCopy;
   [(NSArray *)children enumerateObjectsUsingBlock:v7];
 }
 
-- (void)appendObjectsWithProtocol:(id)a3 toArray:(id)a4
+- (void)appendObjectsWithProtocol:(id)protocol toArray:(id)array
 {
-  v6 = a3;
-  v7 = a4;
+  protocolCopy = protocol;
+  arrayCopy = array;
   children = self->_children;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1834C;
   v11[3] = &unk_25DFA8;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = protocolCopy;
+  v13 = arrayCopy;
+  v9 = arrayCopy;
+  v10 = protocolCopy;
   [(NSArray *)children enumerateObjectsUsingBlock:v11];
 }
 
 - (void)onContainedModelsChanged
 {
-  v2 = [(TUIGroupModel *)self parentModel];
-  [v2 onContainedModelsChanged];
+  parentModel = [(TUIGroupModel *)self parentModel];
+  [parentModel onContainedModelsChanged];
 }
 
 - (TUIModelContaining)parentModel

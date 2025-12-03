@@ -1,39 +1,39 @@
 @interface VideosExtrasCarouselCollectionViewFlowLayout
 - (unint64_t)indexOfVisibleItem;
-- (void)setIndexOfVisibleItem:(unint64_t)a3 animated:(BOOL)a4;
+- (void)setIndexOfVisibleItem:(unint64_t)item animated:(BOOL)animated;
 @end
 
 @implementation VideosExtrasCarouselCollectionViewFlowLayout
 
-- (void)setIndexOfVisibleItem:(unint64_t)a3 animated:(BOOL)a4
+- (void)setIndexOfVisibleItem:(unint64_t)item animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = [MEMORY[0x1E696AC88] indexPathForItem:a3 inSection:0];
+  animatedCopy = animated;
+  v6 = [MEMORY[0x1E696AC88] indexPathForItem:item inSection:0];
   v16 = [(UICollectionViewFlowLayout *)self layoutAttributesForItemAtIndexPath:v6];
 
   [v16 frame];
   v8 = v7;
-  v9 = [(VideosExtrasCarouselCollectionViewFlowLayout *)self collectionView];
-  [v9 contentOffset];
+  collectionView = [(VideosExtrasCarouselCollectionViewFlowLayout *)self collectionView];
+  [collectionView contentOffset];
   v11 = v10;
 
-  v12 = [(VideosExtrasCarouselCollectionViewFlowLayout *)self collectionView];
-  [v12 _effectiveContentInset];
+  collectionView2 = [(VideosExtrasCarouselCollectionViewFlowLayout *)self collectionView];
+  [collectionView2 _effectiveContentInset];
   v14 = v13;
 
-  v15 = [(VideosExtrasCarouselCollectionViewFlowLayout *)self collectionView];
-  [v15 setContentOffset:v4 animated:{v8 - v14, v11}];
+  collectionView3 = [(VideosExtrasCarouselCollectionViewFlowLayout *)self collectionView];
+  [collectionView3 setContentOffset:animatedCopy animated:{v8 - v14, v11}];
 }
 
 - (unint64_t)indexOfVisibleItem
 {
   v27 = *MEMORY[0x1E69E9840];
-  v3 = [(VideosExtrasCarouselCollectionViewFlowLayout *)self collectionView];
-  [v3 contentOffset];
+  collectionView = [(VideosExtrasCarouselCollectionViewFlowLayout *)self collectionView];
+  [collectionView contentOffset];
   v5 = v4;
 
-  v6 = [(VideosExtrasCarouselCollectionViewFlowLayout *)self collectionView];
-  [v6 bounds];
+  collectionView2 = [(VideosExtrasCarouselCollectionViewFlowLayout *)self collectionView];
+  [collectionView2 bounds];
   v8 = v7;
   v10 = v9;
 
@@ -62,8 +62,8 @@
         [v18 frame];
         if (v19 <= v14)
         {
-          v20 = [v18 indexPath];
-          v16 = [v20 row];
+          indexPath = [v18 indexPath];
+          v16 = [indexPath row];
         }
       }
 

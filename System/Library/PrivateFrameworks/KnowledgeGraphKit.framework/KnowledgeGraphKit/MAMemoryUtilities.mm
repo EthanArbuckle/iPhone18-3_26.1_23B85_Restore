@@ -1,6 +1,6 @@
 @interface MAMemoryUtilities
 + (id)humanReadableMemoryFootprint;
-+ (id)humanReadableMemorySizeWithSize:(unint64_t)a3;
++ (id)humanReadableMemorySizeWithSize:(unint64_t)size;
 + (id)humanReadablePeakMemoryFootprint;
 + (id)humanReadableResidentMemory;
 + (unint64_t)footprintBytes;
@@ -19,12 +19,12 @@
   }
 
   v3 = +[MALogging sharedLogging];
-  v4 = [v3 loggingConnection];
+  loggingConnection = [v3 loggingConnection];
 
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
+  if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
   {
     *v5 = 0;
-    _os_log_error_impl(&dword_255870000, v4, OS_LOG_TYPE_ERROR, "failed to calculate resident memory", v5, 2u);
+    _os_log_error_impl(&dword_255870000, loggingConnection, OS_LOG_TYPE_ERROR, "failed to calculate resident memory", v5, 2u);
   }
 
   return 0;
@@ -39,12 +39,12 @@
   }
 
   v3 = +[MALogging sharedLogging];
-  v4 = [v3 loggingConnection];
+  loggingConnection = [v3 loggingConnection];
 
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
+  if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
   {
     *v5 = 0;
-    _os_log_error_impl(&dword_255870000, v4, OS_LOG_TYPE_ERROR, "failed to calculate peak memory footprint", v5, 2u);
+    _os_log_error_impl(&dword_255870000, loggingConnection, OS_LOG_TYPE_ERROR, "failed to calculate peak memory footprint", v5, 2u);
   }
 
   return 0;
@@ -59,12 +59,12 @@
   }
 
   v3 = +[MALogging sharedLogging];
-  v4 = [v3 loggingConnection];
+  loggingConnection = [v3 loggingConnection];
 
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
+  if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
   {
     *v5 = 0;
-    _os_log_error_impl(&dword_255870000, v4, OS_LOG_TYPE_ERROR, "failed to calculate memory footprint", v5, 2u);
+    _os_log_error_impl(&dword_255870000, loggingConnection, OS_LOG_TYPE_ERROR, "failed to calculate memory footprint", v5, 2u);
   }
 
   return 0;
@@ -75,18 +75,18 @@
   v8 = 0;
   if (report_memory(0, 0, &v8))
   {
-    v3 = [a1 humanReadableMemorySizeWithSize:v8];
+    v3 = [self humanReadableMemorySizeWithSize:v8];
   }
 
   else
   {
     v4 = +[MALogging sharedLogging];
-    v5 = [v4 loggingConnection];
+    loggingConnection = [v4 loggingConnection];
 
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
     {
       *v7 = 0;
-      _os_log_error_impl(&dword_255870000, v5, OS_LOG_TYPE_ERROR, "failed to calculate peak memory footprint", v7, 2u);
+      _os_log_error_impl(&dword_255870000, loggingConnection, OS_LOG_TYPE_ERROR, "failed to calculate peak memory footprint", v7, 2u);
     }
 
     v3 = @"0";
@@ -100,18 +100,18 @@
   v8 = 0;
   if (report_memory(0, &v8, 0))
   {
-    v3 = [a1 humanReadableMemorySizeWithSize:v8];
+    v3 = [self humanReadableMemorySizeWithSize:v8];
   }
 
   else
   {
     v4 = +[MALogging sharedLogging];
-    v5 = [v4 loggingConnection];
+    loggingConnection = [v4 loggingConnection];
 
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
     {
       *v7 = 0;
-      _os_log_error_impl(&dword_255870000, v5, OS_LOG_TYPE_ERROR, "failed to calculate memory footprint", v7, 2u);
+      _os_log_error_impl(&dword_255870000, loggingConnection, OS_LOG_TYPE_ERROR, "failed to calculate memory footprint", v7, 2u);
     }
 
     v3 = @"0";
@@ -125,18 +125,18 @@
   v8 = 0;
   if (report_memory(&v8, 0, 0))
   {
-    v3 = [a1 humanReadableMemorySizeWithSize:v8];
+    v3 = [self humanReadableMemorySizeWithSize:v8];
   }
 
   else
   {
     v4 = +[MALogging sharedLogging];
-    v5 = [v4 loggingConnection];
+    loggingConnection = [v4 loggingConnection];
 
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
     {
       *v7 = 0;
-      _os_log_error_impl(&dword_255870000, v5, OS_LOG_TYPE_ERROR, "failed to calculate resident memory", v7, 2u);
+      _os_log_error_impl(&dword_255870000, loggingConnection, OS_LOG_TYPE_ERROR, "failed to calculate resident memory", v7, 2u);
     }
 
     v3 = @"0";
@@ -145,23 +145,23 @@
   return v3;
 }
 
-+ (id)humanReadableMemorySizeWithSize:(unint64_t)a3
++ (id)humanReadableMemorySizeWithSize:(unint64_t)size
 {
-  if (a3 >= 0x100000)
+  if (size >= 0x100000)
   {
     v6 = 0;
-    v7 = a3;
+    sizeCopy = size;
     do
     {
-      a3 = v7 >> 10;
+      size = sizeCopy >> 10;
       v5 = v6 + 1;
       if (v6 > 4)
       {
         break;
       }
 
-      v8 = v7 >> 30;
-      v7 >>= 10;
+      v8 = sizeCopy >> 30;
+      sizeCopy >>= 10;
       ++v6;
     }
 
@@ -173,7 +173,7 @@
     v5 = 0;
   }
 
-  return [MEMORY[0x277CCACA8] stringWithFormat:@"%lld %s", a3, off_2797FEAF0[v5], v3, v4];
+  return [MEMORY[0x277CCACA8] stringWithFormat:@"%lld %s", size, off_2797FEAF0[v5], v3, v4];
 }
 
 @end

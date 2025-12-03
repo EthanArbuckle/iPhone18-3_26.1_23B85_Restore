@@ -1,14 +1,14 @@
 @interface SiriTTSServiceSession
-- (SiriTTSServiceSession)initWithAccessoryId:(id)a3;
-- (void)cancelWithRequest:(id)a3;
-- (void)didGenerateWordTimingsWithRequestId:(unint64_t)a3 wordTimingInfo:(id)a4;
-- (void)didStartSpeakingWithRequestId:(unint64_t)a3;
-- (void)getAudioPower:(id)a3;
+- (SiriTTSServiceSession)initWithAccessoryId:(id)id;
+- (void)cancelWithRequest:(id)request;
+- (void)didGenerateWordTimingsWithRequestId:(unint64_t)id wordTimingInfo:(id)info;
+- (void)didStartSpeakingWithRequestId:(unint64_t)id;
+- (void)getAudioPower:(id)power;
 @end
 
 @implementation SiriTTSServiceSession
 
-- (SiriTTSServiceSession)initWithAccessoryId:(id)a3
+- (SiriTTSServiceSession)initWithAccessoryId:(id)id
 {
   v3 = sub_1B1C2C478();
   v4 = *(*(v3 - 8) + 64);
@@ -18,29 +18,29 @@
   return ServiceSession.init(accessoryId:)(v6);
 }
 
-- (void)cancelWithRequest:(id)a3
+- (void)cancelWithRequest:(id)request
 {
-  v4 = a3;
-  v5 = self;
-  sub_1B1BCE560(v4);
+  requestCopy = request;
+  selfCopy = self;
+  sub_1B1BCE560(requestCopy);
 }
 
-- (void)getAudioPower:(id)a3
+- (void)getAudioPower:(id)power
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(power);
   _Block_copy(v4);
-  v5 = self;
-  sub_1B1BCE728(v5, v4);
+  selfCopy = self;
+  sub_1B1BCE728(selfCopy, v4);
   _Block_release(v4);
 }
 
-- (void)didStartSpeakingWithRequestId:(unint64_t)a3
+- (void)didStartSpeakingWithRequestId:(unint64_t)id
 {
-  v4 = self;
-  ServiceSession.didStartSpeaking(requestId:)(a3);
+  selfCopy = self;
+  ServiceSession.didStartSpeaking(requestId:)(id);
 }
 
-- (void)didGenerateWordTimingsWithRequestId:(unint64_t)a3 wordTimingInfo:(id)a4
+- (void)didGenerateWordTimingsWithRequestId:(unint64_t)id wordTimingInfo:(id)info
 {
   type metadata accessor for WordTimingInfo();
   sub_1B1C2CE78();

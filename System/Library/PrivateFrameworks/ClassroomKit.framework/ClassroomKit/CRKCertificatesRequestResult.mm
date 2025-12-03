@@ -1,28 +1,28 @@
 @interface CRKCertificatesRequestResult
 + (id)invalidResult;
-+ (id)resultWithCertificateDataCollection:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToResult:(id)a3;
-- (CRKCertificatesRequestResult)initWithCoder:(id)a3;
-- (CRKCertificatesRequestResult)initWithIsValidRequest:(BOOL)a3 certificateDataCollection:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)resultWithCertificateDataCollection:(id)collection;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToResult:(id)result;
+- (CRKCertificatesRequestResult)initWithCoder:(id)coder;
+- (CRKCertificatesRequestResult)initWithIsValidRequest:(BOOL)request certificateDataCollection:(id)collection;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CRKCertificatesRequestResult
 
-- (CRKCertificatesRequestResult)initWithIsValidRequest:(BOOL)a3 certificateDataCollection:(id)a4
+- (CRKCertificatesRequestResult)initWithIsValidRequest:(BOOL)request certificateDataCollection:(id)collection
 {
-  v6 = a4;
+  collectionCopy = collection;
   v12.receiver = self;
   v12.super_class = CRKCertificatesRequestResult;
   v7 = [(CRKCertificatesRequestResult *)&v12 init];
   v8 = v7;
   if (v7)
   {
-    v7->_validRequest = a3;
-    v9 = [v6 copy];
+    v7->_validRequest = request;
+    v9 = [collectionCopy copy];
     certificateDataCollection = v8->_certificateDataCollection;
     v8->_certificateDataCollection = v9;
   }
@@ -32,34 +32,34 @@
 
 + (id)invalidResult
 {
-  v2 = [[a1 alloc] initWithIsValidRequest:0 certificateDataCollection:0];
+  v2 = [[self alloc] initWithIsValidRequest:0 certificateDataCollection:0];
 
   return v2;
 }
 
-+ (id)resultWithCertificateDataCollection:(id)a3
++ (id)resultWithCertificateDataCollection:(id)collection
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithIsValidRequest:1 certificateDataCollection:v4];
+  collectionCopy = collection;
+  v5 = [[self alloc] initWithIsValidRequest:1 certificateDataCollection:collectionCopy];
 
   return v5;
 }
 
-- (CRKCertificatesRequestResult)initWithCoder:(id)a3
+- (CRKCertificatesRequestResult)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = CRKCertificatesRequestResult;
   v5 = [(CRKCertificatesRequestResult *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"validRequest"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"validRequest"];
     v5->_validRequest = [v6 BOOLValue];
 
     v7 = MEMORY[0x277CBEB98];
     v8 = objc_opt_class();
     v9 = [v7 setWithObjects:{v8, objc_opt_class(), 0}];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"certificateDataCollection"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"certificateDataCollection"];
     certificateDataCollection = v5->_certificateDataCollection;
     v5->_certificateDataCollection = v10;
   }
@@ -67,37 +67,37 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x277CCABB0];
-  v5 = a3;
+  coderCopy = coder;
   v6 = [v4 numberWithBool:{-[CRKCertificatesRequestResult isValidRequest](self, "isValidRequest")}];
-  [v5 encodeObject:v6 forKey:@"validRequest"];
+  [coderCopy encodeObject:v6 forKey:@"validRequest"];
 
-  v7 = [(CRKCertificatesRequestResult *)self certificateDataCollection];
-  [v5 encodeObject:v7 forKey:@"certificateDataCollection"];
+  certificateDataCollection = [(CRKCertificatesRequestResult *)self certificateDataCollection];
+  [coderCopy encodeObject:certificateDataCollection forKey:@"certificateDataCollection"];
 }
 
 - (unint64_t)hash
 {
   v3 = [MEMORY[0x277CCABB0] numberWithBool:{-[CRKCertificatesRequestResult isValidRequest](self, "isValidRequest")}];
   v4 = [v3 hash];
-  v5 = [(CRKCertificatesRequestResult *)self certificateDataCollection];
-  v6 = [v5 hash];
+  certificateDataCollection = [(CRKCertificatesRequestResult *)self certificateDataCollection];
+  v6 = [certificateDataCollection hash];
 
   return v6 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v7 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
     objc_opt_class();
@@ -117,15 +117,15 @@
   return v7;
 }
 
-- (BOOL)isEqualToResult:(id)a3
+- (BOOL)isEqualToResult:(id)result
 {
-  v4 = a3;
-  v5 = [v4 isValidRequest];
-  if (v5 == [(CRKCertificatesRequestResult *)self isValidRequest])
+  resultCopy = result;
+  isValidRequest = [resultCopy isValidRequest];
+  if (isValidRequest == [(CRKCertificatesRequestResult *)self isValidRequest])
   {
-    v7 = [v4 certificateDataCollection];
-    v8 = [(CRKCertificatesRequestResult *)self certificateDataCollection];
-    v6 = [v7 isEqualToArray:v8];
+    certificateDataCollection = [resultCopy certificateDataCollection];
+    certificateDataCollection2 = [(CRKCertificatesRequestResult *)self certificateDataCollection];
+    v6 = [certificateDataCollection isEqualToArray:certificateDataCollection2];
   }
 
   else
@@ -136,12 +136,12 @@
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(CRKCertificatesRequestResult *)self isValidRequest];
-  v6 = [(CRKCertificatesRequestResult *)self certificateDataCollection];
-  v7 = [v4 initWithIsValidRequest:v5 certificateDataCollection:v6];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  isValidRequest = [(CRKCertificatesRequestResult *)self isValidRequest];
+  certificateDataCollection = [(CRKCertificatesRequestResult *)self certificateDataCollection];
+  v7 = [v4 initWithIsValidRequest:isValidRequest certificateDataCollection:certificateDataCollection];
 
   return v7;
 }

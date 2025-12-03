@@ -1,20 +1,20 @@
 @interface LXLexiconChecker
-- (BOOL)checkValidityOfString:(id)a3 locales:(id)a4 allowlist:(id)a5 error:(id *)a6;
+- (BOOL)checkValidityOfString:(id)string locales:(id)locales allowlist:(id)allowlist error:(id *)error;
 - (LXLexiconChecker)init;
-- (id)_checkValidityOfString:(id)a3 locales:(id)a4 allowlist:(id)a5 error:(id *)a6;
+- (id)_checkValidityOfString:(id)string locales:(id)locales allowlist:(id)allowlist error:(id *)error;
 @end
 
 @implementation LXLexiconChecker
 
-- (BOOL)checkValidityOfString:(id)a3 locales:(id)a4 allowlist:(id)a5 error:(id *)a6
+- (BOOL)checkValidityOfString:(id)string locales:(id)locales allowlist:(id)allowlist error:(id *)error
 {
-  v10 = a3;
-  v11 = a5;
+  stringCopy = string;
+  allowlistCopy = allowlist;
   v18 = 0;
-  v12 = sub_1B5D22A0C(a4);
+  v12 = sub_1B5D22A0C(locales);
   ptr = self->_impl.__ptr_;
-  v14 = [v10 precomposedStringWithCanonicalMapping];
-  sub_1B5D7E034(&v19, ptr, v14, v12, v11, &v18);
+  precomposedStringWithCanonicalMapping = [stringCopy precomposedStringWithCanonicalMapping];
+  sub_1B5D7E034(&v19, ptr, precomposedStringWithCanonicalMapping, v12, allowlistCopy, &v18);
   v15 = v19;
   if (v20 != v19)
   {
@@ -36,9 +36,9 @@ LABEL_3:
 
 LABEL_4:
 
-  if (a6)
+  if (error)
   {
-    *a6 = v18;
+    *error = v18;
   }
 
   return v16;
@@ -58,21 +58,21 @@ LABEL_4:
   return v2;
 }
 
-- (id)_checkValidityOfString:(id)a3 locales:(id)a4 allowlist:(id)a5 error:(id *)a6
+- (id)_checkValidityOfString:(id)string locales:(id)locales allowlist:(id)allowlist error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
+  stringCopy = string;
+  localesCopy = locales;
   v29 = 0;
-  v28 = a5;
-  v12 = sub_1B5D22A0C(v11);
+  allowlistCopy = allowlist;
+  v12 = sub_1B5D22A0C(localesCopy);
   ptr = self->_impl.__ptr_;
-  v14 = [v10 precomposedStringWithCanonicalMapping];
-  sub_1B5D7E034(&v30, ptr, v14, v12, v28, &v29);
+  precomposedStringWithCanonicalMapping = [stringCopy precomposedStringWithCanonicalMapping];
+  sub_1B5D7E034(&v30, ptr, precomposedStringWithCanonicalMapping, v12, allowlistCopy, &v29);
   v16 = v30;
   v15 = v31;
   v17 = v31 - v30;
   v18 = sub_1B5D33FFC(v30, v31, 0, v17);
-  v27 = a6;
+  errorCopy = error;
   if (v15 == v16)
   {
     v19 = 1;
@@ -138,9 +138,9 @@ LABEL_16:
     operator delete(v16);
   }
 
-  if (v27)
+  if (errorCopy)
   {
-    *v27 = v29;
+    *errorCopy = v29;
   }
 
   v25 = objc_alloc_init(MEMORY[0x1E695DF70]);

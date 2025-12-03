@@ -1,14 +1,14 @@
 @interface LKError
-+ (id)errorWithCode:(unint64_t)a3 userInfo:(id)a4;
++ (id)errorWithCode:(unint64_t)code userInfo:(id)info;
 @end
 
 @implementation LKError
 
-+ (id)errorWithCode:(unint64_t)a3 userInfo:(id)a4
++ (id)errorWithCode:(unint64_t)code userInfo:(id)info
 {
-  v5 = a4;
-  v6 = v5;
-  switch(a3)
+  infoCopy = info;
+  v6 = infoCopy;
+  switch(code)
   {
     case 1uLL:
       v7 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -185,7 +185,7 @@ LABEL_36:
       goto LABEL_18;
     default:
       v10 = @"An error occurred";
-      if (v5)
+      if (infoCopy)
       {
 LABEL_37:
         v11 = [v6 mutableCopy];
@@ -199,7 +199,7 @@ LABEL_18:
 
       v13 = v11;
       [v11 setObject:v10 forKeyedSubscript:*MEMORY[0x277CCA450]];
-      v14 = [MEMORY[0x277CCA9B8] errorWithDomain:@"LKLoginDomainErrorDomain" code:a3 userInfo:v13];
+      v14 = [MEMORY[0x277CCA9B8] errorWithDomain:@"LKLoginDomainErrorDomain" code:code userInfo:v13];
 
       return v14;
   }

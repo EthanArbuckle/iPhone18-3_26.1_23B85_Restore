@@ -1,10 +1,10 @@
 @interface WLAccessibilityMigrator
 - (WLFeaturePayload)featurePayload;
-- (void)addWorkingTime:(unint64_t)a3;
+- (void)addWorkingTime:(unint64_t)time;
 - (void)enable;
-- (void)estimateItemSizeForSummary:(id)a3 account:(id)a4;
-- (void)importRecordData:(id)a3 summary:(id)a4 account:(id)a5 completion:(id)a6;
-- (void)setState:(id)a3;
+- (void)estimateItemSizeForSummary:(id)summary account:(id)account;
+- (void)importRecordData:(id)data summary:(id)summary account:(id)account completion:(id)completion;
+- (void)setState:(id)state;
 @end
 
 @implementation WLAccessibilityMigrator
@@ -18,38 +18,38 @@
   [v4 setState:@"enabled"];
 }
 
-- (void)setState:(id)a3
+- (void)setState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   WeakRetained = objc_loadWeakRetained(&self->_featurePayload);
-  [WeakRetained setState:v4];
+  [WeakRetained setState:stateCopy];
 }
 
-- (void)addWorkingTime:(unint64_t)a3
+- (void)addWorkingTime:(unint64_t)time
 {
   WeakRetained = objc_loadWeakRetained(&self->_featurePayload);
-  [WeakRetained setElapsedTime:{objc_msgSend(WeakRetained, "elapsedTime") + a3}];
+  [WeakRetained setElapsedTime:{objc_msgSend(WeakRetained, "elapsedTime") + time}];
 }
 
-- (void)estimateItemSizeForSummary:(id)a3 account:(id)a4
+- (void)estimateItemSizeForSummary:(id)summary account:(id)account
 {
-  v4 = a3;
-  if (![v4 itemSize])
+  summaryCopy = summary;
+  if (![summaryCopy itemSize])
   {
-    [v4 setItemSize:5242880];
+    [summaryCopy setItemSize:5242880];
   }
 }
 
-- (void)importRecordData:(id)a3 summary:(id)a4 account:(id)a5 completion:(id)a6
+- (void)importRecordData:(id)data summary:(id)summary account:(id)account completion:(id)completion
 {
   v33[1] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if (v9 && [v9 length])
+  dataCopy = data;
+  summaryCopy = summary;
+  accountCopy = account;
+  completionCopy = completion;
+  if (dataCopy && [dataCopy length])
   {
-    v13 = [MEMORY[0x277D7B898] settingsWithData:v9];
+    v13 = [MEMORY[0x277D7B898] settingsWithData:dataCopy];
     v14 = v13;
     if (v13)
     {
@@ -94,16 +94,16 @@
         }
       }
 
-      if (v12)
+      if (completionCopy)
       {
-        v12[2](v12, 1, 0);
+        completionCopy[2](completionCopy, 1, 0);
       }
     }
 
     else
     {
       _WLLog();
-      if (v12)
+      if (completionCopy)
       {
         v24 = MEMORY[0x277CCA9B8];
         v25 = *MEMORY[0x277D7B8F8];
@@ -112,7 +112,7 @@
         v26 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v31 forKeys:&v30 count:1];
         v27 = [v24 errorWithDomain:v25 code:1 userInfo:v26];
 
-        (v12)[2](v12, 0, v27);
+        (completionCopy)[2](completionCopy, 0, v27);
       }
     }
 
@@ -120,7 +120,7 @@
   }
 
   _WLLog();
-  if (v12)
+  if (completionCopy)
   {
     v21 = MEMORY[0x277CCA9B8];
     v22 = *MEMORY[0x277D7B8F8];
@@ -129,7 +129,7 @@
     v23 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v33 forKeys:&v32 count:1];
     v14 = [v21 errorWithDomain:v22 code:1 userInfo:v23];
 
-    (v12)[2](v12, 0, v14);
+    (completionCopy)[2](completionCopy, 0, v14);
 LABEL_22:
   }
 

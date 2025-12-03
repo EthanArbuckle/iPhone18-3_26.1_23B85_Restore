@@ -1,20 +1,20 @@
 @interface SearchUIAppClipValidationCache
-- (void)computeObjectsForKeys:(id)a3 completionHandler:(id)a4;
+- (void)computeObjectsForKeys:(id)keys completionHandler:(id)handler;
 @end
 
 @implementation SearchUIAppClipValidationCache
 
-- (void)computeObjectsForKeys:(id)a3 completionHandler:(id)a4
+- (void)computeObjectsForKeys:(id)keys completionHandler:(id)handler
 {
   v30 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  keysCopy = keys;
+  handlerCopy = handler;
   v7 = objc_opt_new();
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v8 = v5;
+  v8 = keysCopy;
   v9 = [v8 countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v9)
   {
@@ -34,13 +34,13 @@
         if (v14)
         {
           v15 = v14;
-          v16 = [v13 applicationBundleIdentifier];
+          applicationBundleIdentifier = [v13 applicationBundleIdentifier];
 
-          if (v16)
+          if (applicationBundleIdentifier)
           {
-            v17 = [v13 applicationBundleIdentifier];
+            applicationBundleIdentifier2 = [v13 applicationBundleIdentifier];
             v18 = [v13 url];
-            [v7 setObject:v17 forKey:v18];
+            [v7 setObject:applicationBundleIdentifier2 forKey:v18];
           }
         }
       }
@@ -57,8 +57,8 @@
   v22[2] = __74__SearchUIAppClipValidationCache_computeObjectsForKeys_completionHandler___block_invoke;
   v22[3] = &unk_1E85B2E98;
   v23 = v8;
-  v24 = v6;
-  v20 = v6;
+  v24 = handlerCopy;
+  v20 = handlerCopy;
   v21 = v8;
   [v19 validateWithCompletion:v22];
 }

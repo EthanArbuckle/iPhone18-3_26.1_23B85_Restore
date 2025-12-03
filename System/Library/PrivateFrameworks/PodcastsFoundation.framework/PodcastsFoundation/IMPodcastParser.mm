@@ -1,21 +1,21 @@
 @interface IMPodcastParser
-+ (BOOL)isITunesNamespace:(id)a3;
++ (BOOL)isITunesNamespace:(id)namespace;
 - (IMPodcastParser)init;
-- (id)dateFromAtomDateString:(id)a3;
-- (id)dateFromRSSDateString:(id)a3;
+- (id)dateFromAtomDateString:(id)string;
+- (id)dateFromRSSDateString:(id)string;
 - (id)elementCharBufferTrimmed;
-- (id)parseWithData:(id)a3;
-- (id)removeLastColonOfString:(id)a3;
-- (void)_parseEnclosureElement:(id)a3 forFeedItem:(id)a4;
-- (void)atomParser:(id)a3 didEndElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6;
-- (void)atomParser:(id)a3 didStartElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6 attributes:(id)a7;
-- (void)parseStreamFromURL:(id)a3 withCompletionBlock:(id)a4;
-- (void)parser:(id)a3 didEndElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6;
-- (void)parser:(id)a3 didStartElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6 attributes:(id)a7;
-- (void)parser:(id)a3 foundCharacters:(id)a4;
-- (void)postProcessItemElement:(id)a3;
-- (void)rssParser:(id)a3 didEndElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6;
-- (void)rssParser:(id)a3 didStartElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6 attributes:(id)a7;
+- (id)parseWithData:(id)data;
+- (id)removeLastColonOfString:(id)string;
+- (void)_parseEnclosureElement:(id)element forFeedItem:(id)item;
+- (void)atomParser:(id)parser didEndElement:(id)element namespaceURI:(id)i qualifiedName:(id)name;
+- (void)atomParser:(id)parser didStartElement:(id)element namespaceURI:(id)i qualifiedName:(id)name attributes:(id)attributes;
+- (void)parseStreamFromURL:(id)l withCompletionBlock:(id)block;
+- (void)parser:(id)parser didEndElement:(id)element namespaceURI:(id)i qualifiedName:(id)name;
+- (void)parser:(id)parser didStartElement:(id)element namespaceURI:(id)i qualifiedName:(id)name attributes:(id)attributes;
+- (void)parser:(id)parser foundCharacters:(id)characters;
+- (void)postProcessItemElement:(id)element;
+- (void)rssParser:(id)parser didEndElement:(id)element namespaceURI:(id)i qualifiedName:(id)name;
+- (void)rssParser:(id)parser didStartElement:(id)element namespaceURI:(id)i qualifiedName:(id)name attributes:(id)attributes;
 - (void)startBufferingElementChars;
 @end
 
@@ -40,16 +40,16 @@
   return v2;
 }
 
-- (id)parseWithData:(id)a3
+- (id)parseWithData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
+    dataCopy = data;
     [(IMPodcastParser *)self setFeedType:-1];
     v5 = objc_alloc_init(IMPodcastFeed);
     [(IMPodcastParser *)self setParsedFeed:v5];
 
-    v6 = [objc_alloc(MEMORY[0x1E696B0A8]) initWithData:v4];
+    v6 = [objc_alloc(MEMORY[0x1E696B0A8]) initWithData:dataCopy];
     [v6 setShouldResolveExternalEntities:0];
     [v6 setDelegate:self];
     [v6 setShouldProcessNamespaces:1];
@@ -57,32 +57,32 @@
   }
 
   v7 = NSPersistentStringForMTDisplayType(0);
-  v8 = [(IMPodcastParser *)self parsedFeed];
-  [v8 setDisplayType:v7];
+  parsedFeed = [(IMPodcastParser *)self parsedFeed];
+  [parsedFeed setDisplayType:v7];
 
   return [(IMPodcastParser *)self parsedFeed];
 }
 
-- (void)parseStreamFromURL:(id)a3 withCompletionBlock:(id)a4
+- (void)parseStreamFromURL:(id)l withCompletionBlock:(id)block
 {
-  v6 = a4;
-  v7 = a3;
+  blockCopy = block;
+  lCopy = l;
   [(IMPodcastParser *)self setFeedType:-1];
   v8 = objc_alloc_init(IMPodcastFeed);
   [(IMPodcastParser *)self setParsedFeed:v8];
 
-  v9 = [IMXMLStreamOperation operationWithURL:v7 parseDelegate:self];
+  v9 = [IMXMLStreamOperation operationWithURL:lCopy parseDelegate:self];
 
   v12 = MEMORY[0x1E69E9820];
   v13 = 3221225472;
   v14 = __58__IMPodcastParser_parseStreamFromURL_withCompletionBlock___block_invoke;
   v15 = &unk_1E8569228;
-  v16 = self;
-  v17 = v6;
-  v10 = v6;
+  selfCopy = self;
+  v17 = blockCopy;
+  v10 = blockCopy;
   [v9 setCompletionBlock:&v12];
-  v11 = [MEMORY[0x1E696ADC8] mainQueue];
-  [v11 addOperation:v9];
+  mainQueue = [MEMORY[0x1E696ADC8] mainQueue];
+  [mainQueue addOperation:v9];
 }
 
 void __58__IMPodcastParser_parseStreamFromURL_withCompletionBlock___block_invoke(uint64_t a1)
@@ -92,15 +92,15 @@ void __58__IMPodcastParser_parseStreamFromURL_withCompletionBlock___block_invoke
   (*(v1 + 16))(v1, v2);
 }
 
-- (id)dateFromRSSDateString:(id)a3
+- (id)dateFromRSSDateString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v11[0] = 0;
-  v11[1] = [v4 length];
-  v5 = [(IMPodcastParser *)self rssDateFormatter];
+  v11[1] = [stringCopy length];
+  rssDateFormatter = [(IMPodcastParser *)self rssDateFormatter];
   v9 = 0;
   v10 = 0;
-  [v5 getObjectValue:&v10 forString:v4 range:v11 error:&v9];
+  [rssDateFormatter getObjectValue:&v10 forString:stringCopy range:v11 error:&v9];
 
   v6 = v10;
   v7 = v9;
@@ -108,30 +108,30 @@ void __58__IMPodcastParser_parseStreamFromURL_withCompletionBlock___block_invoke
   return v6;
 }
 
-- (id)removeLastColonOfString:(id)a3
+- (id)removeLastColonOfString:(id)string
 {
-  v3 = a3;
-  v4 = [v3 rangeOfString:@":" options:4];
+  stringCopy = string;
+  v4 = [stringCopy rangeOfString:@":" options:4];
   if (v4 != 0x7FFFFFFFFFFFFFFFLL && v5 == 1)
   {
     v8 = v4;
     v9 = MEMORY[0x1E696AEC0];
-    v10 = [v3 substringToIndex:v4];
-    v11 = [v3 substringFromIndex:v8 + 1];
+    v10 = [stringCopy substringToIndex:v4];
+    v11 = [stringCopy substringFromIndex:v8 + 1];
     v7 = [v9 stringWithFormat:@"%@%@", v10, v11];
   }
 
   else
   {
-    v7 = v3;
+    v7 = stringCopy;
   }
 
   return v7;
 }
 
-- (id)dateFromAtomDateString:(id)a3
+- (id)dateFromAtomDateString:(id)string
 {
-  v3 = [(IMPodcastParser *)self removeLastColonOfString:a3];
+  v3 = [(IMPodcastParser *)self removeLastColonOfString:string];
   v4 = [v3 cStringUsingEncoding:4];
 
   if (v4)
@@ -152,68 +152,68 @@ void __58__IMPodcastParser_parseStreamFromURL_withCompletionBlock___block_invoke
   return v5;
 }
 
-- (void)parser:(id)a3 didStartElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6 attributes:(id)a7
+- (void)parser:(id)parser didStartElement:(id)element namespaceURI:(id)i qualifiedName:(id)name attributes:(id)attributes
 {
-  v18 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  parserCopy = parser;
+  elementCopy = element;
+  iCopy = i;
+  nameCopy = name;
+  attributesCopy = attributes;
   if (![(IMPodcastParser *)self feedType])
   {
-    [(IMPodcastParser *)self rssParser:v18 didStartElement:v12 namespaceURI:v13 qualifiedName:v14 attributes:v15];
+    [(IMPodcastParser *)self rssParser:parserCopy didStartElement:elementCopy namespaceURI:iCopy qualifiedName:nameCopy attributes:attributesCopy];
     goto LABEL_11;
   }
 
   if ([(IMPodcastParser *)self feedType]== 1)
   {
-    [(IMPodcastParser *)self atomParser:v18 didStartElement:v12 namespaceURI:v13 qualifiedName:v14 attributes:v15];
+    [(IMPodcastParser *)self atomParser:parserCopy didStartElement:elementCopy namespaceURI:iCopy qualifiedName:nameCopy attributes:attributesCopy];
     goto LABEL_11;
   }
 
   if ([(IMPodcastParser *)self feedType]== -1)
   {
-    if ([v12 isEqualToString:@"rss"])
+    if ([elementCopy isEqualToString:@"rss"])
     {
-      v16 = self;
+      selfCopy2 = self;
       v17 = 0;
     }
 
     else
     {
-      if (![v12 isEqualToString:@"feed"])
+      if (![elementCopy isEqualToString:@"feed"])
       {
         goto LABEL_11;
       }
 
-      v16 = self;
+      selfCopy2 = self;
       v17 = 1;
     }
 
-    [(IMPodcastParser *)v16 setFeedType:v17];
+    [(IMPodcastParser *)selfCopy2 setFeedType:v17];
   }
 
 LABEL_11:
 }
 
-- (void)rssParser:(id)a3 didStartElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6 attributes:(id)a7
+- (void)rssParser:(id)parser didStartElement:(id)element namespaceURI:(id)i qualifiedName:(id)name attributes:(id)attributes
 {
-  v32 = a4;
-  v10 = a5;
-  v11 = a7;
-  v12 = [IMPodcastParser isITunesNamespace:v10];
-  v13 = [IMPodcastParser isContentNamespace:v10];
-  if (v10)
+  elementCopy = element;
+  iCopy = i;
+  attributesCopy = attributes;
+  v12 = [IMPodcastParser isITunesNamespace:iCopy];
+  v13 = [IMPodcastParser isContentNamespace:iCopy];
+  if (iCopy)
   {
-    v14 = [v10 isWhitespace];
+    isWhitespace = [iCopy isWhitespace];
   }
 
   else
   {
-    v14 = 1;
+    isWhitespace = 1;
   }
 
-  if (self->_inGlobalImageElement && [v32 isEqualToString:@"url"])
+  if (self->_inGlobalImageElement && [elementCopy isEqualToString:@"url"])
   {
     [(IMPodcastParser *)self startBufferingElementChars];
   }
@@ -227,25 +227,25 @@ LABEL_34:
       goto LABEL_51;
     }
 
-    v15 = [(IMPodcastParser *)self parsedFeed];
-    v16 = [v15 items];
-    v17 = [v16 lastObject];
+    parsedFeed = [(IMPodcastParser *)self parsedFeed];
+    items = [parsedFeed items];
+    lastObject = [items lastObject];
 
     if (rssParser_didStartElement_namespaceURI_qualifiedName_attributes__onceToken_globalElementsToCapture != -1)
     {
       [IMPodcastParser rssParser:didStartElement:namespaceURI:qualifiedName:attributes:];
     }
 
-    v18 = v32;
+    v18 = elementCopy;
     if (rssParser_didStartElement_namespaceURI_qualifiedName_attributes__onceToken_itunesElementsToCapture != -1)
     {
       [IMPodcastParser rssParser:didStartElement:namespaceURI:qualifiedName:attributes:];
-      v18 = v32;
+      v18 = elementCopy;
     }
 
     if (rssParser_didStartElement_namespaceURI_qualifiedName_attributes__onceToken_contentElementsToCapture == -1)
     {
-      if (v14)
+      if (isWhitespace)
       {
         goto LABEL_15;
       }
@@ -254,12 +254,12 @@ LABEL_34:
     else
     {
       [IMPodcastParser rssParser:didStartElement:namespaceURI:qualifiedName:attributes:];
-      v18 = v32;
-      if (v14)
+      v18 = elementCopy;
+      if (isWhitespace)
       {
 LABEL_15:
         v19 = [rssParser_didStartElement_namespaceURI_qualifiedName_attributes__globalElementsToCapture containsObject:v18];
-        v18 = v32;
+        v18 = elementCopy;
         if (v19)
         {
           goto LABEL_20;
@@ -267,24 +267,24 @@ LABEL_15:
       }
     }
 
-    if (!v12 || (v20 = [rssParser_didStartElement_namespaceURI_qualifiedName_attributes__itunesElementsToCapture containsObject:v18], v18 = v32, (v20 & 1) == 0))
+    if (!v12 || (v20 = [rssParser_didStartElement_namespaceURI_qualifiedName_attributes__itunesElementsToCapture containsObject:v18], v18 = elementCopy, (v20 & 1) == 0))
     {
-      if (!v13 || (v21 = [rssParser_didStartElement_namespaceURI_qualifiedName_attributes__contentElementsToCapture containsObject:v18], v18 = v32, !v21))
+      if (!v13 || (v21 = [rssParser_didStartElement_namespaceURI_qualifiedName_attributes__contentElementsToCapture containsObject:v18], v18 = elementCopy, !v21))
       {
-        if (v12 && (v25 = [v18 isEqualToString:@"category"], v18 = v32, v25))
+        if (v12 && (v25 = [v18 isEqualToString:@"category"], v18 = elementCopy, v25))
         {
           if (![(IMPodcastParser *)self preferredItemCategoryFound])
           {
-            v26 = [v11 valueForKey:@"text"];
-            v27 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-            v28 = [v26 stringByTrimmingCharactersInSet:v27];
-            [v17 setCategory:v28];
+            v26 = [attributesCopy valueForKey:@"text"];
+            whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+            v28 = [v26 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
+            [lastObject setCategory:v28];
           }
         }
 
         else if ([v18 isEqualToString:@"enclosure"])
         {
-          [(IMPodcastParser *)self _parseEnclosureElement:v11 forFeedItem:v17];
+          [(IMPodcastParser *)self _parseEnclosureElement:attributesCopy forFeedItem:lastObject];
         }
 
         goto LABEL_33;
@@ -305,7 +305,7 @@ LABEL_33:
 
   if (rssParser_didStartElement_namespaceURI_qualifiedName_attributes__onceToken_subelement_itunesElementsToCapture == -1)
   {
-    if (!v14)
+    if (!isWhitespace)
     {
       goto LABEL_36;
     }
@@ -314,20 +314,20 @@ LABEL_33:
   else
   {
     [IMPodcastParser rssParser:didStartElement:namespaceURI:qualifiedName:attributes:];
-    if (!v14)
+    if (!isWhitespace)
     {
       goto LABEL_36;
     }
   }
 
-  if ([v32 isEqualToString:@"item"])
+  if ([elementCopy isEqualToString:@"item"])
   {
     [(IMPodcastParser *)self setItemElementNestCount:1];
     [(IMPodcastParser *)self setPreferredItemCategoryFound:0];
     v22 = objc_alloc_init(IMPodcastFeedItem);
-    v23 = [(IMPodcastParser *)self parsedFeed];
-    v24 = [v23 items];
-    [v24 addObject:v22];
+    parsedFeed2 = [(IMPodcastParser *)self parsedFeed];
+    items2 = [parsedFeed2 items];
+    [items2 addObject:v22];
 
 LABEL_43:
     goto LABEL_51;
@@ -336,49 +336,49 @@ LABEL_43:
 LABEL_36:
   if (v12)
   {
-    if ([v32 isEqualToString:@"category"])
+    if ([elementCopy isEqualToString:@"category"])
     {
       if ([(IMPodcastParser *)self preferredFeedCategoryFound])
       {
         goto LABEL_51;
       }
 
-      v22 = [v11 valueForKey:@"text"];
-      v29 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-      v30 = [(IMPodcastFeedItem *)v22 stringByTrimmingCharactersInSet:v29];
-      v31 = [(IMPodcastParser *)self parsedFeed];
-      [v31 setCategory:v30];
+      v22 = [attributesCopy valueForKey:@"text"];
+      whitespaceAndNewlineCharacterSet2 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+      v30 = [(IMPodcastFeedItem *)v22 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet2];
+      parsedFeed3 = [(IMPodcastParser *)self parsedFeed];
+      [parsedFeed3 setCategory:v30];
       goto LABEL_42;
     }
 
-    if ([v32 isEqualToString:@"image"])
+    if ([elementCopy isEqualToString:@"image"])
     {
-      v22 = [v11 valueForKey:@"href"];
-      v29 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-      v30 = [(IMPodcastFeedItem *)v22 stringByTrimmingCharactersInSet:v29];
-      v31 = [(IMPodcastParser *)self parsedFeed];
-      [v31 setImageURL:v30];
+      v22 = [attributesCopy valueForKey:@"href"];
+      whitespaceAndNewlineCharacterSet2 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+      v30 = [(IMPodcastFeedItem *)v22 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet2];
+      parsedFeed3 = [(IMPodcastParser *)self parsedFeed];
+      [parsedFeed3 setImageURL:v30];
 LABEL_42:
 
       goto LABEL_43;
     }
   }
 
-  if (v14)
+  if (isWhitespace)
   {
-    if ([v32 isEqualToString:@"image"])
+    if ([elementCopy isEqualToString:@"image"])
     {
       self->_inGlobalImageElement = 1;
       goto LABEL_51;
     }
 
-    if ([rssParser_didStartElement_namespaceURI_qualifiedName_attributes__subelement_globalElementsToCapture containsObject:v32])
+    if ([rssParser_didStartElement_namespaceURI_qualifiedName_attributes__subelement_globalElementsToCapture containsObject:elementCopy])
     {
       goto LABEL_50;
     }
   }
 
-  if (v12 && [rssParser_didStartElement_namespaceURI_qualifiedName_attributes__subelement_itunesElementsToCapture containsObject:v32])
+  if (v12 && [rssParser_didStartElement_namespaceURI_qualifiedName_attributes__subelement_itunesElementsToCapture containsObject:elementCopy])
   {
 LABEL_50:
     [(IMPodcastParser *)self startBufferingElementChars];
@@ -462,17 +462,17 @@ void __83__IMPodcastParser_rssParser_didStartElement_namespaceURI_qualifiedName_
   v2 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_parseEnclosureElement:(id)a3 forFeedItem:(id)a4
+- (void)_parseEnclosureElement:(id)element forFeedItem:(id)item
 {
-  v35 = a3;
-  v5 = a4;
-  v6 = [v35 valueForKey:@"type"];
-  v7 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-  v8 = [v6 stringByTrimmingCharactersInSet:v7];
+  elementCopy = element;
+  itemCopy = item;
+  v6 = [elementCopy valueForKey:@"type"];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+  v8 = [v6 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
-  v9 = [v35 valueForKey:@"url"];
-  v10 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-  v11 = [v9 stringByTrimmingCharactersInSet:v10];
+  v9 = [elementCopy valueForKey:@"url"];
+  whitespaceAndNewlineCharacterSet2 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+  v11 = [v9 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet2];
 
   if (v11)
   {
@@ -493,8 +493,8 @@ void __83__IMPodcastParser_rssParser_didStartElement_namespaceURI_qualifiedName_
       v16 = v18;
     }
 
-    v19 = [MEMORY[0x1E696AD48] URLAllowedCharacterSet];
-    v20 = [v19 mutableCopy];
+    uRLAllowedCharacterSet = [MEMORY[0x1E696AD48] URLAllowedCharacterSet];
+    v20 = [uRLAllowedCharacterSet mutableCopy];
 
     [v20 addCharactersInString:@"%"];
     v21 = [v16 stringByAddingPercentEncodingWithAllowedCharacters:v20];
@@ -510,106 +510,106 @@ void __83__IMPodcastParser_rssParser_didStartElement_namespaceURI_qualifiedName_
     v25 = v24;
     if (v24)
     {
-      v26 = [v24 scheme];
-      if (v26)
+      scheme = [v24 scheme];
+      if (scheme)
       {
-        v27 = v26;
-        v28 = [v25 host];
+        v27 = scheme;
+        host = [v25 host];
 
-        if (v28)
+        if (host)
         {
-          v34 = [v35 valueForKey:@"length"];
-          v29 = [v34 longLongValue];
-          v33 = v29 & ~(v29 >> 63);
-          v30 = [v16 pathExtension];
-          v31 = [IMUTITypes UTIByExtension:v30];
+          v34 = [elementCopy valueForKey:@"length"];
+          longLongValue = [v34 longLongValue];
+          v33 = longLongValue & ~(longLongValue >> 63);
+          pathExtension = [v16 pathExtension];
+          v31 = [IMUTITypes UTIByExtension:pathExtension];
           if (v31)
           {
-            [v5 setUti:v31];
+            [itemCopy setUti:v31];
           }
 
           else
           {
             v32 = [IMUTITypes UTIFromMIMEType:v8];
-            [v5 setUti:v32];
+            [itemCopy setUti:v32];
           }
 
-          [v5 setEnclosureURL:v16];
-          [v5 setEnclosureParameterString:v17];
-          [v5 setByteSize:v33];
+          [itemCopy setEnclosureURL:v16];
+          [itemCopy setEnclosureParameterString:v17];
+          [itemCopy setByteSize:v33];
         }
       }
     }
   }
 }
 
-- (void)atomParser:(id)a3 didStartElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6 attributes:(id)a7
+- (void)atomParser:(id)parser didStartElement:(id)element namespaceURI:(id)i qualifiedName:(id)name attributes:(id)attributes
 {
-  v37 = a4;
-  v10 = a5;
-  v11 = a7;
-  v12 = [IMPodcastParser isITunesNamespace:v10];
-  if (!v10)
+  elementCopy = element;
+  iCopy = i;
+  attributesCopy = attributes;
+  v12 = [IMPodcastParser isITunesNamespace:iCopy];
+  if (!iCopy)
   {
     if (![(IMPodcastParser *)self itemElementNestCount])
     {
       goto LABEL_18;
     }
 
-    v13 = 1;
+    isWhitespace = 1;
 LABEL_8:
     if ([(IMPodcastParser *)self itemElementNestCount]== 1)
     {
       v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:{@"title", @"published", @"id", @"summary", 0}];
       v16 = v15;
-      if (v13 && ([v15 containsObject:v37] & 1) != 0 || v12 && objc_msgSend(v37, "isEqualToString:", @"author"))
+      if (isWhitespace && ([v15 containsObject:elementCopy] & 1) != 0 || v12 && objc_msgSend(elementCopy, "isEqualToString:", @"author"))
       {
         [(IMPodcastParser *)self startBufferingElementChars];
       }
 
-      else if (v13)
+      else if (isWhitespace)
       {
-        if ([v37 isEqualToString:@"author"])
+        if ([elementCopy isEqualToString:@"author"])
         {
           [(IMPodcastParser *)self setInAuthorElement:1];
         }
 
-        else if ([v37 isEqualToString:@"link"])
+        else if ([elementCopy isEqualToString:@"link"])
         {
-          v20 = [v11 valueForKey:@"href"];
-          v21 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-          v22 = [v20 stringByTrimmingCharactersInSet:v21];
+          v20 = [attributesCopy valueForKey:@"href"];
+          whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+          v22 = [v20 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
-          v23 = [v11 valueForKey:@"rel"];
-          v24 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-          v25 = [v23 stringByTrimmingCharactersInSet:v24];
+          v23 = [attributesCopy valueForKey:@"rel"];
+          whitespaceAndNewlineCharacterSet2 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+          v25 = [v23 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet2];
 
-          v26 = [v11 valueForKey:@"length"];
-          v27 = [v26 longLongValue];
+          v26 = [attributesCopy valueForKey:@"length"];
+          longLongValue = [v26 longLongValue];
           if ([v25 isEqualToString:@"enclosure"] && v22 && (objc_msgSend(v22, "isWhitespace") & 1) == 0)
           {
-            v36 = v27;
-            v28 = [(IMPodcastParser *)self parsedFeed];
-            v29 = [v28 items];
-            v30 = [v29 lastObject];
+            v36 = longLongValue;
+            parsedFeed = [(IMPodcastParser *)self parsedFeed];
+            items = [parsedFeed items];
+            lastObject = [items lastObject];
 
-            v31 = v30;
-            v32 = [v30 enclosureURL];
+            v31 = lastObject;
+            enclosureURL = [lastObject enclosureURL];
 
-            if (!v32)
+            if (!enclosureURL)
             {
-              v33 = [v30 enclosureURL];
+              enclosureURL2 = [lastObject enclosureURL];
 
-              if (v33)
+              if (enclosureURL2)
               {
-                [v30 setByteSize:0];
-                [v30 setUti:0];
+                [lastObject setByteSize:0];
+                [lastObject setUti:0];
               }
 
-              [v30 setEnclosureURL:v22];
-              [v30 setByteSize:v36 & ~(v36 >> 63)];
-              v34 = [v22 pathExtension];
-              v35 = [IMUTITypes UTIByExtension:v34];
+              [lastObject setEnclosureURL:v22];
+              [lastObject setByteSize:v36 & ~(v36 >> 63)];
+              pathExtension = [v22 pathExtension];
+              v35 = [IMUTITypes UTIByExtension:pathExtension];
               [v31 setUti:v35];
             }
           }
@@ -617,7 +617,7 @@ LABEL_8:
       }
     }
 
-    else if (-[IMPodcastParser itemElementNestCount](self, "itemElementNestCount") == 2 && (-[IMPodcastParser inAuthorElement](self, "inAuthorElement") & v13) == 1 && [v37 isEqualToString:@"name"])
+    else if (-[IMPodcastParser itemElementNestCount](self, "itemElementNestCount") == 2 && (-[IMPodcastParser inAuthorElement](self, "inAuthorElement") & isWhitespace) == 1 && [elementCopy isEqualToString:@"name"])
     {
       [(IMPodcastParser *)self startBufferingElementChars];
     }
@@ -626,13 +626,13 @@ LABEL_8:
     goto LABEL_41;
   }
 
-  v13 = [v10 isWhitespace];
+  isWhitespace = [iCopy isWhitespace];
   if ([(IMPodcastParser *)self itemElementNestCount])
   {
     goto LABEL_8;
   }
 
-  if (!v13)
+  if (!isWhitespace)
   {
     v14 = 0;
     if (!v12)
@@ -641,7 +641,7 @@ LABEL_8:
     }
 
 LABEL_25:
-    if ([v37 isEqualToString:@"summary"])
+    if ([elementCopy isEqualToString:@"summary"])
     {
 LABEL_28:
       [(IMPodcastParser *)self startBufferingElementChars];
@@ -652,19 +652,19 @@ LABEL_28:
   }
 
 LABEL_18:
-  if ([v37 isEqualToString:@"entry"])
+  if ([elementCopy isEqualToString:@"entry"])
   {
     [(IMPodcastParser *)self setItemElementNestCount:1];
     [(IMPodcastParser *)self setPreferredItemCategoryFound:0];
     v17 = objc_alloc_init(IMPodcastFeedItem);
-    v18 = [(IMPodcastParser *)self parsedFeed];
-    v19 = [v18 items];
-    [v19 addObject:v17];
+    parsedFeed2 = [(IMPodcastParser *)self parsedFeed];
+    items2 = [parsedFeed2 items];
+    [items2 addObject:v17];
 
     goto LABEL_41;
   }
 
-  if ([v37 isEqualToString:@"title"])
+  if ([elementCopy isEqualToString:@"title"])
   {
     goto LABEL_28;
   }
@@ -676,7 +676,7 @@ LABEL_18:
   }
 
 LABEL_26:
-  if (v14 && [v37 isEqualToString:@"logo"])
+  if (v14 && [elementCopy isEqualToString:@"logo"])
   {
     goto LABEL_28;
   }
@@ -684,88 +684,88 @@ LABEL_26:
 LABEL_41:
 }
 
-- (void)parser:(id)a3 didEndElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6
+- (void)parser:(id)parser didEndElement:(id)element namespaceURI:(id)i qualifiedName:(id)name
 {
-  v13 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  parserCopy = parser;
+  elementCopy = element;
+  iCopy = i;
+  nameCopy = name;
   if ([(IMPodcastParser *)self feedType])
   {
     if ([(IMPodcastParser *)self feedType]== 1)
     {
-      [(IMPodcastParser *)self atomParser:v13 didEndElement:v10 namespaceURI:v11 qualifiedName:v12];
+      [(IMPodcastParser *)self atomParser:parserCopy didEndElement:elementCopy namespaceURI:iCopy qualifiedName:nameCopy];
     }
   }
 
   else
   {
-    [(IMPodcastParser *)self rssParser:v13 didEndElement:v10 namespaceURI:v11 qualifiedName:v12];
+    [(IMPodcastParser *)self rssParser:parserCopy didEndElement:elementCopy namespaceURI:iCopy qualifiedName:nameCopy];
   }
 }
 
-- (void)rssParser:(id)a3 didEndElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6
+- (void)rssParser:(id)parser didEndElement:(id)element namespaceURI:(id)i qualifiedName:(id)name
 {
-  v65 = a4;
-  v8 = a5;
-  v9 = [IMPodcastParser isITunesNamespace:v8];
-  v10 = [IMPodcastParser isContentNamespace:v8];
-  if (v8)
+  elementCopy = element;
+  iCopy = i;
+  v9 = [IMPodcastParser isITunesNamespace:iCopy];
+  v10 = [IMPodcastParser isContentNamespace:iCopy];
+  if (iCopy)
   {
-    v11 = [v8 isWhitespace];
+    isWhitespace = [iCopy isWhitespace];
   }
 
   else
   {
-    v11 = 1;
+    isWhitespace = 1;
   }
 
-  if (self->_inGlobalImageElement && [v65 isEqualToString:@"url"])
+  if (self->_inGlobalImageElement && [elementCopy isEqualToString:@"url"])
   {
-    v12 = [(IMPodcastParser *)self elementCharBufferTrimmed];
-    v13 = [(IMPodcastParser *)self parsedFeed];
-    [v13 setGlobalImageURL:v12];
+    elementCharBufferTrimmed = [(IMPodcastParser *)self elementCharBufferTrimmed];
+    parsedFeed = [(IMPodcastParser *)self parsedFeed];
+    [parsedFeed setGlobalImageURL:elementCharBufferTrimmed];
 
     [(IMPodcastParser *)self endBufferingElementChars];
   }
 
   if ([(IMPodcastParser *)self itemElementNestCount])
   {
-    v14 = [(IMPodcastParser *)self parsedFeed];
-    v15 = [v14 items];
-    v16 = [v15 lastObject];
+    parsedFeed2 = [(IMPodcastParser *)self parsedFeed];
+    items = [parsedFeed2 items];
+    lastObject = [items lastObject];
 
     if ([(IMPodcastParser *)self itemElementNestCount]!= 2)
     {
-      if (v11)
+      if (isWhitespace)
       {
-        v20 = [v65 isEqualToString:@"item"];
+        v20 = [elementCopy isEqualToString:@"item"];
         if ([(IMPodcastParser *)self itemElementNestCount]== v20)
         {
           [(IMPodcastParser *)self setItemElementNestCount:0];
-          [(IMPodcastParser *)self postProcessItemElement:v16];
+          [(IMPodcastParser *)self postProcessItemElement:lastObject];
         }
       }
 
       goto LABEL_75;
     }
 
-    v17 = v65;
-    if (v11)
+    v17 = elementCopy;
+    if (isWhitespace)
     {
-      if ([v65 isEqualToString:@"title"])
+      if ([elementCopy isEqualToString:@"title"])
       {
-        v18 = [(IMPodcastParser *)self elementCharBufferTrimmed];
-        [v16 setTitle:v18];
+        elementCharBufferTrimmed2 = [(IMPodcastParser *)self elementCharBufferTrimmed];
+        [lastObject setTitle:elementCharBufferTrimmed2];
         goto LABEL_74;
       }
 
-      v26 = [v65 isEqualToString:@"guid"];
-      v17 = v65;
+      v26 = [elementCopy isEqualToString:@"guid"];
+      v17 = elementCopy;
       if (v26)
       {
-        v18 = [(IMPodcastParser *)self elementCharBufferTrimmed];
-        [v16 setGuid:v18];
+        elementCharBufferTrimmed2 = [(IMPodcastParser *)self elementCharBufferTrimmed];
+        [lastObject setGuid:elementCharBufferTrimmed2];
         goto LABEL_74;
       }
     }
@@ -774,47 +774,47 @@ LABEL_41:
     {
       if ([v17 isEqualToString:@"duration"])
       {
-        v27 = [(IMPodcastParser *)self elementCharBuffer];
-        v18 = [v27 componentsSeparatedByString:@":"];
+        elementCharBuffer = [(IMPodcastParser *)self elementCharBuffer];
+        elementCharBufferTrimmed2 = [elementCharBuffer componentsSeparatedByString:@":"];
 
-        if ([v18 count] && objc_msgSend(v18, "count") <= 3)
+        if ([elementCharBufferTrimmed2 count] && objc_msgSend(elementCharBufferTrimmed2, "count") <= 3)
         {
           v28 = MEMORY[0x1E696AEC0];
-          v29 = [(IMPodcastParser *)self elementCharBuffer];
-          [v28 durationWithHMSString:v29];
-          [v16 setDuration:?];
+          elementCharBuffer2 = [(IMPodcastParser *)self elementCharBuffer];
+          [v28 durationWithHMSString:elementCharBuffer2];
+          [lastObject setDuration:?];
         }
 
         goto LABEL_74;
       }
 
-      v30 = [v65 isEqualToString:@"author"];
-      v17 = v65;
+      v30 = [elementCopy isEqualToString:@"author"];
+      v17 = elementCopy;
       if (v30)
       {
-        v18 = [(IMPodcastParser *)self elementCharBufferTrimmed];
-        [v16 setAuthor:v18];
+        elementCharBufferTrimmed2 = [(IMPodcastParser *)self elementCharBufferTrimmed];
+        [lastObject setAuthor:elementCharBufferTrimmed2];
         goto LABEL_74;
       }
     }
 
-    if (v11)
+    if (isWhitespace)
     {
       if ([v17 isEqualToString:@"pubDate"])
       {
-        v18 = [(IMPodcastParser *)self elementCharBuffer];
-        v31 = [(IMPodcastParser *)self dateFromRSSDateString:v18];
-        [v16 setPubDate:v31];
+        elementCharBufferTrimmed2 = [(IMPodcastParser *)self elementCharBuffer];
+        v31 = [(IMPodcastParser *)self dateFromRSSDateString:elementCharBufferTrimmed2];
+        [lastObject setPubDate:v31];
 
         goto LABEL_74;
       }
 
-      v41 = [v65 isEqualToString:@"link"];
-      v17 = v65;
+      v41 = [elementCopy isEqualToString:@"link"];
+      v17 = elementCopy;
       if (v41)
       {
-        v18 = [(IMPodcastParser *)self elementCharBufferTrimmed];
-        [v16 setWebpageURL:v18];
+        elementCharBufferTrimmed2 = [(IMPodcastParser *)self elementCharBufferTrimmed];
+        [lastObject setWebpageURL:elementCharBufferTrimmed2];
         goto LABEL_74;
       }
     }
@@ -823,9 +823,9 @@ LABEL_41:
     {
       if ([v17 isEqualToString:@"category"])
       {
-        v42 = [v16 category];
+        category = [lastObject category];
 
-        if (v42)
+        if (category)
         {
           [(IMPodcastParser *)self setPreferredItemCategoryFound:1];
         }
@@ -833,35 +833,35 @@ LABEL_41:
         goto LABEL_75;
       }
 
-      if ([v65 isEqualToString:@"summary"])
+      if ([elementCopy isEqualToString:@"summary"])
       {
-        v18 = [(IMPodcastParser *)self elementCharBufferTrimmed];
-        if (![v18 length])
+        elementCharBufferTrimmed2 = [(IMPodcastParser *)self elementCharBufferTrimmed];
+        if (![elementCharBufferTrimmed2 length])
         {
           goto LABEL_74;
         }
 
-        [v16 setItemSummary:v18];
+        [lastObject setItemSummary:elementCharBufferTrimmed2];
         v45 = @"summary";
 LABEL_69:
-        [v16 setItemSummarySourceElement:v45];
+        [lastObject setItemSummarySourceElement:v45];
         goto LABEL_74;
       }
 
-      v46 = [v65 isEqualToString:@"subtitle"];
-      v17 = v65;
+      v46 = [elementCopy isEqualToString:@"subtitle"];
+      v17 = elementCopy;
       if (v46)
       {
-        v47 = [v16 itemSummary];
-        if (!v47 || (v48 = v47, [v16 itemSummarySourceElement], v49 = objc_claimAutoreleasedReturnValue(), v50 = objc_msgSend(v49, "isEqualToString:", @"description"), v49, v48, v17 = v65, v50))
+        itemSummary = [lastObject itemSummary];
+        if (!itemSummary || (v48 = itemSummary, [lastObject itemSummarySourceElement], v49 = objc_claimAutoreleasedReturnValue(), v50 = objc_msgSend(v49, "isEqualToString:", @"description"), v49, v48, v17 = elementCopy, v50))
         {
-          v18 = [(IMPodcastParser *)self elementCharBufferTrimmed];
-          if (![v18 length])
+          elementCharBufferTrimmed2 = [(IMPodcastParser *)self elementCharBufferTrimmed];
+          if (![elementCharBufferTrimmed2 length])
           {
             goto LABEL_74;
           }
 
-          [v16 setItemSummary:v18];
+          [lastObject setItemSummary:elementCharBufferTrimmed2];
           v45 = @"subtitle";
           goto LABEL_69;
         }
@@ -870,36 +870,36 @@ LABEL_69:
 
     if (v10 && [v17 isEqualToString:@"encoded"])
     {
-      v18 = [(IMPodcastParser *)self elementCharBufferTrimmed];
-      if ([v18 length])
+      elementCharBufferTrimmed2 = [(IMPodcastParser *)self elementCharBufferTrimmed];
+      if ([elementCharBufferTrimmed2 length])
       {
-        [v16 setItemDescription:v18];
-        [v16 setItemDescriptionSourceElement:@"encoded"];
+        [lastObject setItemDescription:elementCharBufferTrimmed2];
+        [lastObject setItemDescriptionSourceElement:@"encoded"];
       }
     }
 
     else
     {
-      if (v11 && [v65 isEqualToString:@"description"])
+      if (isWhitespace && [elementCopy isEqualToString:@"description"])
       {
-        v51 = [v16 itemDescription];
+        itemDescription = [lastObject itemDescription];
 
-        if (!v51)
+        if (!itemDescription)
         {
-          v52 = [(IMPodcastParser *)self elementCharBufferTrimmed];
-          [v16 setItemDescription:v52];
+          elementCharBufferTrimmed3 = [(IMPodcastParser *)self elementCharBufferTrimmed];
+          [lastObject setItemDescription:elementCharBufferTrimmed3];
 
-          [v16 setItemDescriptionSourceElement:@"description"];
+          [lastObject setItemDescriptionSourceElement:@"description"];
         }
 
-        v53 = [v16 itemSummary];
+        itemSummary2 = [lastObject itemSummary];
 
-        if (!v53)
+        if (!itemSummary2)
         {
-          v54 = [(IMPodcastParser *)self elementCharBufferTrimmed];
-          [v16 setItemSummary:v54];
+          elementCharBufferTrimmed4 = [(IMPodcastParser *)self elementCharBufferTrimmed];
+          [lastObject setItemSummary:elementCharBufferTrimmed4];
 
-          [v16 setItemSummarySourceElement:@"description"];
+          [lastObject setItemSummarySourceElement:@"description"];
         }
 
         goto LABEL_75;
@@ -916,67 +916,67 @@ LABEL_75:
         goto LABEL_97;
       }
 
-      if ([v65 isEqualToString:@"order"])
+      if ([elementCopy isEqualToString:@"order"])
       {
-        v55 = [(IMPodcastParser *)self elementCharBuffer];
-        v56 = [v55 intValue];
+        elementCharBuffer3 = [(IMPodcastParser *)self elementCharBuffer];
+        intValue = [elementCharBuffer3 intValue];
 
-        if ((v56 - 1) <= 0x7FFE)
+        if ((intValue - 1) <= 0x7FFE)
         {
-          [v16 setTrackNum:v56];
+          [lastObject setTrackNum:intValue];
         }
 
         goto LABEL_75;
       }
 
-      if ([v65 isEqualToString:@"explicit"])
+      if ([elementCopy isEqualToString:@"explicit"])
       {
-        v57 = [(IMPodcastParser *)self elementCharBufferTrimmed];
-        v18 = [v57 lowercaseString];
+        elementCharBufferTrimmed5 = [(IMPodcastParser *)self elementCharBufferTrimmed];
+        elementCharBufferTrimmed2 = [elementCharBufferTrimmed5 lowercaseString];
 
-        if ([v18 isEqualToString:@"yes"])
+        if ([elementCharBufferTrimmed2 isEqualToString:@"yes"])
         {
-          [v16 setIsExplicit:1];
+          [lastObject setIsExplicit:1];
         }
       }
 
-      else if ([v65 isEqualToString:@"title"])
+      else if ([elementCopy isEqualToString:@"title"])
       {
-        v18 = [(IMPodcastParser *)self elementCharBufferTrimmed];
-        [v16 setItunesTitle:v18];
+        elementCharBufferTrimmed2 = [(IMPodcastParser *)self elementCharBufferTrimmed];
+        [lastObject setItunesTitle:elementCharBufferTrimmed2];
       }
 
       else
       {
-        if (![v65 isEqualToString:@"episodeType"])
+        if (![elementCopy isEqualToString:@"episodeType"])
         {
-          if ([v65 isEqualToString:@"season"])
+          if ([elementCopy isEqualToString:@"season"])
           {
-            v61 = [(IMPodcastParser *)self elementCharBuffer];
-            v62 = [v61 longLongValue];
+            elementCharBuffer4 = [(IMPodcastParser *)self elementCharBuffer];
+            longLongValue = [elementCharBuffer4 longLongValue];
 
-            if ((v62 - 1) <= 0x7FFFFFFFFFFFFFFDLL)
+            if ((longLongValue - 1) <= 0x7FFFFFFFFFFFFFFDLL)
             {
-              [v16 setSeasonNumber:v62];
+              [lastObject setSeasonNumber:longLongValue];
             }
           }
 
-          else if ([v65 isEqualToString:@"episode"])
+          else if ([elementCopy isEqualToString:@"episode"])
           {
-            v63 = [(IMPodcastParser *)self elementCharBuffer];
-            v64 = [v63 longLongValue];
+            elementCharBuffer5 = [(IMPodcastParser *)self elementCharBuffer];
+            longLongValue2 = [elementCharBuffer5 longLongValue];
 
-            if ((v64 - 1) <= 0x7FFFFFFFFFFFFFFDLL)
+            if ((longLongValue2 - 1) <= 0x7FFFFFFFFFFFFFFDLL)
             {
-              [v16 setEpisodeNumber:v64];
+              [lastObject setEpisodeNumber:longLongValue2];
             }
           }
 
           goto LABEL_75;
         }
 
-        v18 = [(IMPodcastParser *)self elementCharBufferTrimmed];
-        [v16 setEpisodeType:v18];
+        elementCharBufferTrimmed2 = [(IMPodcastParser *)self elementCharBufferTrimmed];
+        [lastObject setEpisodeType:elementCharBufferTrimmed2];
       }
     }
 
@@ -987,39 +987,39 @@ LABEL_74:
 
   if (v9)
   {
-    if ([v65 isEqualToString:@"author"])
+    if ([elementCopy isEqualToString:@"author"])
     {
-      v16 = [(IMPodcastParser *)self elementCharBufferTrimmed];
-      v19 = [(IMPodcastParser *)self parsedFeed];
-      [v19 setAuthor:v16];
+      lastObject = [(IMPodcastParser *)self elementCharBufferTrimmed];
+      parsedFeed3 = [(IMPodcastParser *)self parsedFeed];
+      [parsedFeed3 setAuthor:lastObject];
       goto LABEL_96;
     }
 
-    if ([v65 isEqualToString:@"provider"])
+    if ([elementCopy isEqualToString:@"provider"])
     {
-      v16 = [(IMPodcastParser *)self elementCharBufferTrimmed];
-      v19 = [(IMPodcastParser *)self parsedFeed];
-      [v19 setProvider:v16];
+      lastObject = [(IMPodcastParser *)self elementCharBufferTrimmed];
+      parsedFeed3 = [(IMPodcastParser *)self parsedFeed];
+      [parsedFeed3 setProvider:lastObject];
       goto LABEL_96;
     }
 
-    if ([v65 isEqualToString:@"summary"])
+    if ([elementCopy isEqualToString:@"summary"])
     {
-      v34 = [(IMPodcastParser *)self elementCharBuffer];
-      v35 = [v34 isWhitespace];
+      elementCharBuffer6 = [(IMPodcastParser *)self elementCharBuffer];
+      isWhitespace2 = [elementCharBuffer6 isWhitespace];
 
-      if (v35)
+      if (isWhitespace2)
       {
         goto LABEL_98;
       }
 
-      v36 = [(IMPodcastParser *)self parsedFeed];
-      v37 = [v36 feedDescription];
-      if (v37)
+      parsedFeed4 = [(IMPodcastParser *)self parsedFeed];
+      feedDescription = [parsedFeed4 feedDescription];
+      if (feedDescription)
       {
-        v38 = v37;
-        v39 = [(IMPodcastParser *)self feedDescriptionSourceElement];
-        v40 = [v39 isEqualToString:@"description"];
+        v38 = feedDescription;
+        feedDescriptionSourceElement = [(IMPodcastParser *)self feedDescriptionSourceElement];
+        v40 = [feedDescriptionSourceElement isEqualToString:@"description"];
 
         if (!v40)
         {
@@ -1034,18 +1034,18 @@ LABEL_74:
       v25 = @"summary";
 LABEL_95:
       [(IMPodcastParser *)self setFeedDescriptionSourceElement:v25];
-      v16 = [(IMPodcastParser *)self elementCharBufferTrimmed];
-      v19 = [(IMPodcastParser *)self parsedFeed];
-      [v19 setFeedDescription:v16];
+      lastObject = [(IMPodcastParser *)self elementCharBufferTrimmed];
+      parsedFeed3 = [(IMPodcastParser *)self parsedFeed];
+      [parsedFeed3 setFeedDescription:lastObject];
       goto LABEL_96;
     }
 
-    if ([v65 isEqualToString:@"category"])
+    if ([elementCopy isEqualToString:@"category"])
     {
-      v43 = [(IMPodcastParser *)self parsedFeed];
-      v44 = [v43 category];
+      parsedFeed5 = [(IMPodcastParser *)self parsedFeed];
+      category2 = [parsedFeed5 category];
 
-      if (v44)
+      if (category2)
       {
         [(IMPodcastParser *)self setPreferredFeedCategoryFound:1];
       }
@@ -1053,76 +1053,76 @@ LABEL_95:
       goto LABEL_98;
     }
 
-    if ([v65 isEqualToString:@"new-feed-url"])
+    if ([elementCopy isEqualToString:@"new-feed-url"])
     {
-      v16 = [(IMPodcastParser *)self elementCharBufferTrimmed];
-      v19 = [(IMPodcastParser *)self parsedFeed];
-      [v19 setUpdatedFeedURL:v16];
+      lastObject = [(IMPodcastParser *)self elementCharBufferTrimmed];
+      parsedFeed3 = [(IMPodcastParser *)self parsedFeed];
+      [parsedFeed3 setUpdatedFeedURL:lastObject];
       goto LABEL_96;
     }
 
-    if ([v65 isEqualToString:@"title"])
+    if ([elementCopy isEqualToString:@"title"])
     {
-      v58 = [(IMPodcastParser *)self parsedFeed];
-      v59 = [v58 title];
+      parsedFeed6 = [(IMPodcastParser *)self parsedFeed];
+      title = [parsedFeed6 title];
 
-      if (v59)
+      if (title)
       {
         goto LABEL_98;
       }
 
-      v16 = [(IMPodcastParser *)self elementCharBufferTrimmed];
+      lastObject = [(IMPodcastParser *)self elementCharBufferTrimmed];
 LABEL_40:
-      v19 = [(IMPodcastParser *)self parsedFeed];
-      [v19 setTitle:v16];
+      parsedFeed3 = [(IMPodcastParser *)self parsedFeed];
+      [parsedFeed3 setTitle:lastObject];
       goto LABEL_96;
     }
 
-    if ([v65 isEqualToString:@"explicit"])
+    if ([elementCopy isEqualToString:@"explicit"])
     {
-      v60 = [(IMPodcastParser *)self elementCharBufferTrimmed];
-      v16 = [v60 lowercaseString];
+      elementCharBufferTrimmed6 = [(IMPodcastParser *)self elementCharBufferTrimmed];
+      lastObject = [elementCharBufferTrimmed6 lowercaseString];
 
-      if (![v16 isEqualToString:@"yes"])
+      if (![lastObject isEqualToString:@"yes"])
       {
         goto LABEL_97;
       }
 
-      v19 = [(IMPodcastParser *)self parsedFeed];
-      [v19 setIsExplicit:1];
+      parsedFeed3 = [(IMPodcastParser *)self parsedFeed];
+      [parsedFeed3 setIsExplicit:1];
 LABEL_96:
 
 LABEL_97:
       goto LABEL_98;
     }
 
-    if ([v65 isEqualToString:@"type"])
+    if ([elementCopy isEqualToString:@"type"])
     {
-      v16 = [(IMPodcastParser *)self elementCharBufferTrimmed];
-      v19 = [(IMPodcastParser *)self parsedFeed];
-      [v19 setShowType:v16];
+      lastObject = [(IMPodcastParser *)self elementCharBufferTrimmed];
+      parsedFeed3 = [(IMPodcastParser *)self parsedFeed];
+      [parsedFeed3 setShowType:lastObject];
       goto LABEL_96;
     }
   }
 
   else
   {
-    if (!v11)
+    if (!isWhitespace)
     {
       goto LABEL_98;
     }
 
-    if ([v65 isEqualToString:@"description"])
+    if ([elementCopy isEqualToString:@"description"])
     {
-      v21 = [(IMPodcastParser *)self elementCharBuffer];
-      v22 = [v21 isWhitespace];
+      elementCharBuffer7 = [(IMPodcastParser *)self elementCharBuffer];
+      isWhitespace3 = [elementCharBuffer7 isWhitespace];
 
-      if ((v22 & 1) == 0)
+      if ((isWhitespace3 & 1) == 0)
       {
-        v23 = [(IMPodcastParser *)self parsedFeed];
-        v24 = [v23 feedDescription];
+        parsedFeed7 = [(IMPodcastParser *)self parsedFeed];
+        feedDescription2 = [parsedFeed7 feedDescription];
 
-        if (!v24)
+        if (!feedDescription2)
         {
           v25 = @"description";
           goto LABEL_95;
@@ -1132,18 +1132,18 @@ LABEL_97:
 
     else
     {
-      if ([v65 isEqualToString:@"title"])
+      if ([elementCopy isEqualToString:@"title"])
       {
-        v16 = [(IMPodcastParser *)self elementCharBufferTrimmed];
-        if (![v16 length])
+        lastObject = [(IMPodcastParser *)self elementCharBufferTrimmed];
+        if (![lastObject length])
         {
           goto LABEL_97;
         }
 
-        v32 = [(IMPodcastParser *)self parsedFeed];
-        v33 = [v32 title];
+        parsedFeed8 = [(IMPodcastParser *)self parsedFeed];
+        title2 = [parsedFeed8 title];
 
-        if (v33)
+        if (title2)
         {
           goto LABEL_97;
         }
@@ -1151,15 +1151,15 @@ LABEL_97:
         goto LABEL_40;
       }
 
-      if ([v65 isEqualToString:@"link"])
+      if ([elementCopy isEqualToString:@"link"])
       {
-        v16 = [(IMPodcastParser *)self elementCharBufferTrimmed];
-        v19 = [(IMPodcastParser *)self parsedFeed];
-        [v19 setWebpageURL:v16];
+        lastObject = [(IMPodcastParser *)self elementCharBufferTrimmed];
+        parsedFeed3 = [(IMPodcastParser *)self parsedFeed];
+        [parsedFeed3 setWebpageURL:lastObject];
         goto LABEL_96;
       }
 
-      if ([v65 isEqualToString:@"image"])
+      if ([elementCopy isEqualToString:@"image"])
       {
         self->_inGlobalImageElement = 0;
       }
@@ -1170,17 +1170,17 @@ LABEL_98:
   [(IMPodcastParser *)self endBufferingElementChars];
 }
 
-- (void)atomParser:(id)a3 didEndElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6
+- (void)atomParser:(id)parser didEndElement:(id)element namespaceURI:(id)i qualifiedName:(id)name
 {
-  v33 = a4;
-  v8 = a5;
-  v9 = [IMPodcastParser isITunesNamespace:v8];
-  if (v8)
+  elementCopy = element;
+  iCopy = i;
+  v9 = [IMPodcastParser isITunesNamespace:iCopy];
+  if (iCopy)
   {
-    v10 = [v8 isWhitespace];
+    isWhitespace = [iCopy isWhitespace];
     if (![(IMPodcastParser *)self itemElementNestCount])
     {
-      if (!v10)
+      if (!isWhitespace)
       {
         goto LABEL_22;
       }
@@ -1189,37 +1189,37 @@ LABEL_98:
     }
 
 LABEL_7:
-    v11 = [(IMPodcastParser *)self parsedFeed];
-    v12 = [v11 items];
-    v13 = [v12 lastObject];
+    parsedFeed = [(IMPodcastParser *)self parsedFeed];
+    items = [parsedFeed items];
+    lastObject = [items lastObject];
 
     if ([(IMPodcastParser *)self itemElementNestCount]== 2)
     {
-      if (v10)
+      if (isWhitespace)
       {
-        if ([v33 isEqualToString:@"title"])
+        if ([elementCopy isEqualToString:@"title"])
         {
-          v14 = [(IMPodcastParser *)self elementCharBufferTrimmed];
-          [v13 setTitle:v14];
+          elementCharBufferTrimmed = [(IMPodcastParser *)self elementCharBufferTrimmed];
+          [lastObject setTitle:elementCharBufferTrimmed];
 LABEL_37:
 
           goto LABEL_38;
         }
 
-        if ([v33 isEqualToString:@"id"])
+        if ([elementCopy isEqualToString:@"id"])
         {
-          v14 = [(IMPodcastParser *)self elementCharBufferTrimmed];
-          [v13 setGuid:v14];
+          elementCharBufferTrimmed = [(IMPodcastParser *)self elementCharBufferTrimmed];
+          [lastObject setGuid:elementCharBufferTrimmed];
           goto LABEL_37;
         }
       }
 
-      if (v9 && [v33 isEqualToString:@"author"])
+      if (v9 && [elementCopy isEqualToString:@"author"])
       {
-        v28 = [v13 author];
-        v29 = [v28 isNotWhitespace];
+        author = [lastObject author];
+        isNotWhitespace = [author isNotWhitespace];
 
-        if (v29)
+        if (isNotWhitespace)
         {
           goto LABEL_38;
         }
@@ -1227,47 +1227,47 @@ LABEL_37:
         goto LABEL_33;
       }
 
-      if (!v10)
+      if (!isWhitespace)
       {
         goto LABEL_38;
       }
 
-      if ([v33 isEqualToString:@"published"])
+      if ([elementCopy isEqualToString:@"published"])
       {
-        v14 = [(IMPodcastParser *)self elementCharBuffer];
-        v30 = [(IMPodcastParser *)self dateFromAtomDateString:v14];
-        [v13 setPubDate:v30];
+        elementCharBufferTrimmed = [(IMPodcastParser *)self elementCharBuffer];
+        v30 = [(IMPodcastParser *)self dateFromAtomDateString:elementCharBufferTrimmed];
+        [lastObject setPubDate:v30];
 
         goto LABEL_37;
       }
 
-      if (![v33 isEqualToString:@"summary"])
+      if (![elementCopy isEqualToString:@"summary"])
       {
-        if ([v33 isEqualToString:@"entry"])
+        if ([elementCopy isEqualToString:@"entry"])
         {
           [(IMPodcastParser *)self setItemElementNestCount:0];
-          [(IMPodcastParser *)self postProcessItemElement:v13];
+          [(IMPodcastParser *)self postProcessItemElement:lastObject];
         }
 
         goto LABEL_38;
       }
 
-      v31 = [v13 itemDescription];
-      v32 = [v31 isNotWhitespace];
+      itemDescription = [lastObject itemDescription];
+      isNotWhitespace2 = [itemDescription isNotWhitespace];
 
-      if ((v32 & 1) == 0)
+      if ((isNotWhitespace2 & 1) == 0)
       {
-        v14 = [(IMPodcastParser *)self elementCharBufferTrimmed];
-        [v13 setItemDescription:v14];
+        elementCharBufferTrimmed = [(IMPodcastParser *)self elementCharBufferTrimmed];
+        [lastObject setItemDescription:elementCharBufferTrimmed];
         goto LABEL_37;
       }
     }
 
-    else if ([(IMPodcastParser *)self itemElementNestCount]== 3 && ([(IMPodcastParser *)self inAuthorElement]& v10) == 1)
+    else if ([(IMPodcastParser *)self itemElementNestCount]== 3 && ([(IMPodcastParser *)self inAuthorElement]& isWhitespace) == 1)
     {
-      if (![v33 isEqualToString:@"name"])
+      if (![elementCopy isEqualToString:@"name"])
       {
-        if ([v33 isEqualToString:@"author"])
+        if ([elementCopy isEqualToString:@"author"])
         {
           [(IMPodcastParser *)self setInAuthorElement:0];
         }
@@ -1276,8 +1276,8 @@ LABEL_37:
       }
 
 LABEL_33:
-      v14 = [(IMPodcastParser *)self elementCharBufferTrimmed];
-      [v13 setAuthor:v14];
+      elementCharBufferTrimmed = [(IMPodcastParser *)self elementCharBufferTrimmed];
+      [lastObject setAuthor:elementCharBufferTrimmed];
       goto LABEL_37;
     }
 
@@ -1292,29 +1292,29 @@ LABEL_38:
 
   if ([(IMPodcastParser *)self itemElementNestCount])
   {
-    v10 = 1;
+    isWhitespace = 1;
     goto LABEL_7;
   }
 
 LABEL_16:
-  if ([v33 isEqualToString:@"title"])
+  if ([elementCopy isEqualToString:@"title"])
   {
-    v15 = [(IMPodcastParser *)self elementCharBuffer];
-    v16 = [v15 isWhitespace];
+    elementCharBuffer = [(IMPodcastParser *)self elementCharBuffer];
+    isWhitespace2 = [elementCharBuffer isWhitespace];
 
-    if ((v16 & 1) == 0)
+    if ((isWhitespace2 & 1) == 0)
     {
-      v17 = [(IMPodcastParser *)self parsedFeed];
-      v18 = [v17 feedDescription];
+      parsedFeed2 = [(IMPodcastParser *)self parsedFeed];
+      feedDescription = [parsedFeed2 feedDescription];
 
-      if (!v18)
+      if (!feedDescription)
       {
         v19 = @"title";
 LABEL_47:
         [(IMPodcastParser *)self setFeedDescriptionSourceElement:v19];
-        v13 = [(IMPodcastParser *)self elementCharBufferTrimmed];
-        v20 = [(IMPodcastParser *)self parsedFeed];
-        [v20 setFeedDescription:v13];
+        lastObject = [(IMPodcastParser *)self elementCharBufferTrimmed];
+        parsedFeed3 = [(IMPodcastParser *)self parsedFeed];
+        [parsedFeed3 setFeedDescription:lastObject];
         goto LABEL_48;
       }
     }
@@ -1322,11 +1322,11 @@ LABEL_47:
     goto LABEL_50;
   }
 
-  if ([v33 isEqualToString:@"logo"])
+  if ([elementCopy isEqualToString:@"logo"])
   {
-    v13 = [(IMPodcastParser *)self elementCharBufferTrimmed];
-    v20 = [(IMPodcastParser *)self parsedFeed];
-    [v20 setImageURL:v13];
+    lastObject = [(IMPodcastParser *)self elementCharBufferTrimmed];
+    parsedFeed3 = [(IMPodcastParser *)self parsedFeed];
+    [parsedFeed3 setImageURL:lastObject];
 LABEL_48:
 
 LABEL_49:
@@ -1336,20 +1336,20 @@ LABEL_49:
 LABEL_22:
   if (v9)
   {
-    if ([v33 isEqualToString:@"summary"])
+    if ([elementCopy isEqualToString:@"summary"])
     {
-      v21 = [(IMPodcastParser *)self elementCharBuffer];
-      v22 = [v21 isWhitespace];
+      elementCharBuffer2 = [(IMPodcastParser *)self elementCharBuffer];
+      isWhitespace3 = [elementCharBuffer2 isWhitespace];
 
-      if ((v22 & 1) == 0)
+      if ((isWhitespace3 & 1) == 0)
       {
-        v23 = [(IMPodcastParser *)self parsedFeed];
-        v24 = [v23 feedDescription];
-        if (v24)
+        parsedFeed4 = [(IMPodcastParser *)self parsedFeed];
+        feedDescription2 = [parsedFeed4 feedDescription];
+        if (feedDescription2)
         {
-          v25 = v24;
-          v26 = [(IMPodcastParser *)self feedDescriptionSourceElement];
-          v27 = [v26 isEqualToString:@"title"];
+          v25 = feedDescription2;
+          feedDescriptionSourceElement = [(IMPodcastParser *)self feedDescriptionSourceElement];
+          v27 = [feedDescriptionSourceElement isEqualToString:@"title"];
 
           if (!v27)
           {
@@ -1371,68 +1371,68 @@ LABEL_50:
   [(IMPodcastParser *)self endBufferingElementChars];
 }
 
-- (void)postProcessItemElement:(id)a3
+- (void)postProcessItemElement:(id)element
 {
-  v16 = a3;
-  v4 = [v16 guid];
-  if (![v4 length])
+  elementCopy = element;
+  guid = [elementCopy guid];
+  if (![guid length])
   {
-    v11 = [v16 enclosureURL];
+    enclosureURL = [elementCopy enclosureURL];
 
-    if (!v11)
+    if (!enclosureURL)
     {
       goto LABEL_3;
     }
 
-    v12 = [v16 enclosureParameterString];
+    enclosureParameterString = [elementCopy enclosureParameterString];
 
-    if (v12)
+    if (enclosureParameterString)
     {
       v13 = MEMORY[0x1E696AEC0];
-      v4 = [v16 enclosureURL];
-      v14 = [v16 enclosureParameterString];
-      v15 = [v13 stringWithFormat:@"%@?%@", v4, v14];
-      [v16 setGuid:v15];
+      guid = [elementCopy enclosureURL];
+      enclosureParameterString2 = [elementCopy enclosureParameterString];
+      v15 = [v13 stringWithFormat:@"%@?%@", guid, enclosureParameterString2];
+      [elementCopy setGuid:v15];
     }
 
     else
     {
-      v4 = [v16 enclosureURL];
-      [v16 setGuid:v4];
+      guid = [elementCopy enclosureURL];
+      [elementCopy setGuid:guid];
     }
   }
 
 LABEL_3:
-  v5 = [v16 title];
-  if (!v5 || (v6 = v5, [v16 title], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "isWhitespace"), v7, v6, v8))
+  title = [elementCopy title];
+  if (!title || (v6 = title, [elementCopy title], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "isWhitespace"), v7, v6, v8))
   {
-    v9 = [(IMPodcastParser *)self parsedFeed];
-    v10 = [v9 items];
-    [v10 removeObject:v16];
+    parsedFeed = [(IMPodcastParser *)self parsedFeed];
+    items = [parsedFeed items];
+    [items removeObject:elementCopy];
   }
 }
 
-- (void)parser:(id)a3 foundCharacters:(id)a4
+- (void)parser:(id)parser foundCharacters:(id)characters
 {
-  v6 = a4;
+  charactersCopy = characters;
   if ([(IMPodcastParser *)self shouldBufferElementChars])
   {
-    v5 = [(IMPodcastParser *)self elementCharBuffer];
-    [v5 appendString:v6];
+    elementCharBuffer = [(IMPodcastParser *)self elementCharBuffer];
+    [elementCharBuffer appendString:charactersCopy];
   }
 }
 
-+ (BOOL)isITunesNamespace:(id)a3
++ (BOOL)isITunesNamespace:(id)namespace
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"http://www.itunes.com/dtds/podcast-1.0.dtd"] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"http://www.itunes.com/DTDs/Podcast-1.0.dtd"))
+  namespaceCopy = namespace;
+  if ([namespaceCopy isEqualToString:@"http://www.itunes.com/dtds/podcast-1.0.dtd"] & 1) != 0 || (objc_msgSend(namespaceCopy, "isEqualToString:", @"http://www.itunes.com/DTDs/Podcast-1.0.dtd"))
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"http://www.itunes.com/DTDs/PodCast-1.0.dtd"];
+    v4 = [namespaceCopy isEqualToString:@"http://www.itunes.com/DTDs/PodCast-1.0.dtd"];
   }
 
   return v4;
@@ -1446,15 +1446,15 @@ LABEL_3:
   }
 
   [(IMPodcastParser *)self setShouldBufferElementChars:1];
-  v3 = [MEMORY[0x1E696AD60] string];
-  [(IMPodcastParser *)self setElementCharBuffer:v3];
+  string = [MEMORY[0x1E696AD60] string];
+  [(IMPodcastParser *)self setElementCharBuffer:string];
 }
 
 - (id)elementCharBufferTrimmed
 {
-  v2 = [(IMPodcastParser *)self elementCharBuffer];
-  v3 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-  v4 = [v2 im_stringByMemoryEfficientTrimmingCharactersInSet:v3];
+  elementCharBuffer = [(IMPodcastParser *)self elementCharBuffer];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+  v4 = [elementCharBuffer im_stringByMemoryEfficientTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
   return v4;
 }

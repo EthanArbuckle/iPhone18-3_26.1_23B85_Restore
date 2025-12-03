@@ -1,34 +1,34 @@
 @interface WLKChannel
-+ (id)channelsWithDictionaries:(id)a3 context:(id)a4;
-+ (id)channelsWithDictionaries:(id)a3 context:(id)a4 seasons:(id)a5;
++ (id)channelsWithDictionaries:(id)dictionaries context:(id)context;
++ (id)channelsWithDictionaries:(id)dictionaries context:(id)context seasons:(id)seasons;
 - (WLKChannel)init;
-- (WLKChannel)initWithDictionary:(id)a3 context:(id)a4;
+- (WLKChannel)initWithDictionary:(id)dictionary context:(id)context;
 @end
 
 @implementation WLKChannel
 
-- (WLKChannel)initWithDictionary:(id)a3 context:(id)a4
+- (WLKChannel)initWithDictionary:(id)dictionary context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  contextCopy = context;
   v26.receiver = self;
   v26.super_class = WLKChannel;
   v8 = [(WLKChannel *)&v26 init];
   if (v8)
   {
-    v9 = [v6 wlk_stringForKey:@"channelId"];
+    v9 = [dictionaryCopy wlk_stringForKey:@"channelId"];
     ID = v8->_ID;
     v8->_ID = v9;
 
-    v11 = [v6 wlk_dictionaryForKey:@"punchoutUrls"];
+    v11 = [dictionaryCopy wlk_dictionaryForKey:@"punchoutUrls"];
     punchoutUrls = v8->_punchoutUrls;
     v8->_punchoutUrls = v11;
 
-    v13 = [v6 wlk_arrayForKey:@"seasonNumbers"];
+    v13 = [dictionaryCopy wlk_arrayForKey:@"seasonNumbers"];
     seasonNumbers = v8->_seasonNumbers;
     v8->_seasonNumbers = v13;
 
-    v15 = [v6 wlk_arrayForKey:@"subscriptionOffers"];
+    v15 = [dictionaryCopy wlk_arrayForKey:@"subscriptionOffers"];
     if (v15)
     {
       v16 = [WLKStoreOffer offersWithSubscriptionDictionaries:v15];
@@ -36,7 +36,7 @@
       v8->_subscriptionOffers = v16;
     }
 
-    v18 = v7;
+    v18 = contextCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -81,17 +81,17 @@ void __41__WLKChannel_initWithDictionary_context___block_invoke(uint64_t a1, voi
   return 0;
 }
 
-+ (id)channelsWithDictionaries:(id)a3 context:(id)a4
++ (id)channelsWithDictionaries:(id)dictionaries context:(id)context
 {
   v24 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  dictionariesCopy = dictionaries;
+  contextCopy = context;
   v7 = [MEMORY[0x277CBEB18] arrayWithCapacity:1];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v8 = v5;
+  v8 = dictionariesCopy;
   v9 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v9)
   {
@@ -108,7 +108,7 @@ void __41__WLKChannel_initWithDictionary_context___block_invoke(uint64_t a1, voi
 
         v13 = *(*(&v19 + 1) + 8 * i);
         v14 = [WLKChannel alloc];
-        v15 = [(WLKChannel *)v14 initWithDictionary:v13 context:v6, v19];
+        v15 = [(WLKChannel *)v14 initWithDictionary:v13 context:contextCopy, v19];
         if (v15)
         {
           [v7 addObject:v15];
@@ -127,19 +127,19 @@ void __41__WLKChannel_initWithDictionary_context___block_invoke(uint64_t a1, voi
   return v16;
 }
 
-+ (id)channelsWithDictionaries:(id)a3 context:(id)a4 seasons:(id)a5
++ (id)channelsWithDictionaries:(id)dictionaries context:(id)context seasons:(id)seasons
 {
   v42 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v28 = a4;
-  v8 = a5;
+  dictionariesCopy = dictionaries;
+  contextCopy = context;
+  seasonsCopy = seasons;
   v26 = [MEMORY[0x277CBEB18] arrayWithCapacity:1];
   v9 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  obj = v7;
+  obj = dictionariesCopy;
   v29 = [obj countByEnumeratingWithState:&v36 objects:v41 count:16];
   if (v29)
   {
@@ -179,7 +179,7 @@ void __41__WLKChannel_initWithDictionary_context___block_invoke(uint64_t a1, voi
               }
 
               v17 = [*(*(&v32 + 1) + 8 * i) wlk_stringForKey:@"id"];
-              v18 = [v8 wlk_dictionaryForKey:v17];
+              v18 = [seasonsCopy wlk_dictionaryForKey:v17];
               v19 = [v18 wlk_numberForKey:@"seasonNumber"];
 
               [v9 addObject:v19];
@@ -193,7 +193,7 @@ void __41__WLKChannel_initWithDictionary_context___block_invoke(uint64_t a1, voi
 
         v20 = [v30 mutableCopy];
         [v20 setObject:v9 forKey:@"seasonNumbers"];
-        v21 = [[WLKChannel alloc] initWithDictionary:v20 context:v28];
+        v21 = [[WLKChannel alloc] initWithDictionary:v20 context:contextCopy];
         if (v21)
         {
           [v26 addObject:v21];

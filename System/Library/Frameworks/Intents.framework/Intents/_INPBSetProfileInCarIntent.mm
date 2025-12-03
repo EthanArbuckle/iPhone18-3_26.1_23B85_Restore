@@ -1,41 +1,41 @@
 @interface _INPBSetProfileInCarIntent
-- (BOOL)isEqual:(id)a3;
-- (_INPBSetProfileInCarIntent)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBSetProfileInCarIntent)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBSetProfileInCarIntent
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(_INPBSetProfileInCarIntent *)self carName];
-  v5 = [v4 dictionaryRepresentation];
-  [v3 setObject:v5 forKeyedSubscript:@"carName"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  carName = [(_INPBSetProfileInCarIntent *)self carName];
+  dictionaryRepresentation = [carName dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"carName"];
 
   if ([(_INPBSetProfileInCarIntent *)self hasDefaultProfile])
   {
     v6 = [MEMORY[0x1E696AD98] numberWithBool:{-[_INPBSetProfileInCarIntent defaultProfile](self, "defaultProfile")}];
-    [v3 setObject:v6 forKeyedSubscript:@"defaultProfile"];
+    [dictionary setObject:v6 forKeyedSubscript:@"defaultProfile"];
   }
 
-  v7 = [(_INPBSetProfileInCarIntent *)self intentMetadata];
-  v8 = [v7 dictionaryRepresentation];
-  [v3 setObject:v8 forKeyedSubscript:@"intentMetadata"];
+  intentMetadata = [(_INPBSetProfileInCarIntent *)self intentMetadata];
+  dictionaryRepresentation2 = [intentMetadata dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"intentMetadata"];
 
-  v9 = [(_INPBSetProfileInCarIntent *)self profileName];
-  v10 = [v9 dictionaryRepresentation];
-  [v3 setObject:v10 forKeyedSubscript:@"profileName"];
+  profileName = [(_INPBSetProfileInCarIntent *)self profileName];
+  dictionaryRepresentation3 = [profileName dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"profileName"];
 
-  v11 = [(_INPBSetProfileInCarIntent *)self profileNumber];
-  v12 = [v11 dictionaryRepresentation];
-  [v3 setObject:v12 forKeyedSubscript:@"profileNumber"];
+  profileNumber = [(_INPBSetProfileInCarIntent *)self profileNumber];
+  dictionaryRepresentation4 = [profileNumber dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"profileNumber"];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -57,28 +57,28 @@
   return v7 ^ [(_INPBInteger *)self->_profileNumber hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_26;
   }
 
-  v5 = [(_INPBSetProfileInCarIntent *)self carName];
-  v6 = [v4 carName];
-  if ((v5 != 0) == (v6 == 0))
+  carName = [(_INPBSetProfileInCarIntent *)self carName];
+  carName2 = [equalCopy carName];
+  if ((carName != 0) == (carName2 == 0))
   {
     goto LABEL_25;
   }
 
-  v7 = [(_INPBSetProfileInCarIntent *)self carName];
-  if (v7)
+  carName3 = [(_INPBSetProfileInCarIntent *)self carName];
+  if (carName3)
   {
-    v8 = v7;
-    v9 = [(_INPBSetProfileInCarIntent *)self carName];
-    v10 = [v4 carName];
-    v11 = [v9 isEqual:v10];
+    v8 = carName3;
+    carName4 = [(_INPBSetProfileInCarIntent *)self carName];
+    carName5 = [equalCopy carName];
+    v11 = [carName4 isEqual:carName5];
 
     if (!v11)
     {
@@ -90,38 +90,38 @@
   {
   }
 
-  v12 = [(_INPBSetProfileInCarIntent *)self hasDefaultProfile];
-  if (v12 != [v4 hasDefaultProfile])
+  hasDefaultProfile = [(_INPBSetProfileInCarIntent *)self hasDefaultProfile];
+  if (hasDefaultProfile != [equalCopy hasDefaultProfile])
   {
     goto LABEL_26;
   }
 
   if ([(_INPBSetProfileInCarIntent *)self hasDefaultProfile])
   {
-    if ([v4 hasDefaultProfile])
+    if ([equalCopy hasDefaultProfile])
     {
       defaultProfile = self->_defaultProfile;
-      if (defaultProfile != [v4 defaultProfile])
+      if (defaultProfile != [equalCopy defaultProfile])
       {
         goto LABEL_26;
       }
     }
   }
 
-  v5 = [(_INPBSetProfileInCarIntent *)self intentMetadata];
-  v6 = [v4 intentMetadata];
-  if ((v5 != 0) == (v6 == 0))
+  carName = [(_INPBSetProfileInCarIntent *)self intentMetadata];
+  carName2 = [equalCopy intentMetadata];
+  if ((carName != 0) == (carName2 == 0))
   {
     goto LABEL_25;
   }
 
-  v14 = [(_INPBSetProfileInCarIntent *)self intentMetadata];
-  if (v14)
+  intentMetadata = [(_INPBSetProfileInCarIntent *)self intentMetadata];
+  if (intentMetadata)
   {
-    v15 = v14;
-    v16 = [(_INPBSetProfileInCarIntent *)self intentMetadata];
-    v17 = [v4 intentMetadata];
-    v18 = [v16 isEqual:v17];
+    v15 = intentMetadata;
+    intentMetadata2 = [(_INPBSetProfileInCarIntent *)self intentMetadata];
+    intentMetadata3 = [equalCopy intentMetadata];
+    v18 = [intentMetadata2 isEqual:intentMetadata3];
 
     if (!v18)
     {
@@ -133,20 +133,20 @@
   {
   }
 
-  v5 = [(_INPBSetProfileInCarIntent *)self profileName];
-  v6 = [v4 profileName];
-  if ((v5 != 0) == (v6 == 0))
+  carName = [(_INPBSetProfileInCarIntent *)self profileName];
+  carName2 = [equalCopy profileName];
+  if ((carName != 0) == (carName2 == 0))
   {
     goto LABEL_25;
   }
 
-  v19 = [(_INPBSetProfileInCarIntent *)self profileName];
-  if (v19)
+  profileName = [(_INPBSetProfileInCarIntent *)self profileName];
+  if (profileName)
   {
-    v20 = v19;
-    v21 = [(_INPBSetProfileInCarIntent *)self profileName];
-    v22 = [v4 profileName];
-    v23 = [v21 isEqual:v22];
+    v20 = profileName;
+    profileName2 = [(_INPBSetProfileInCarIntent *)self profileName];
+    profileName3 = [equalCopy profileName];
+    v23 = [profileName2 isEqual:profileName3];
 
     if (!v23)
     {
@@ -158,12 +158,12 @@
   {
   }
 
-  v5 = [(_INPBSetProfileInCarIntent *)self profileNumber];
-  v6 = [v4 profileNumber];
-  if ((v5 != 0) != (v6 == 0))
+  carName = [(_INPBSetProfileInCarIntent *)self profileNumber];
+  carName2 = [equalCopy profileNumber];
+  if ((carName != 0) != (carName2 == 0))
   {
-    v24 = [(_INPBSetProfileInCarIntent *)self profileNumber];
-    if (!v24)
+    profileNumber = [(_INPBSetProfileInCarIntent *)self profileNumber];
+    if (!profileNumber)
     {
 
 LABEL_29:
@@ -171,10 +171,10 @@ LABEL_29:
       goto LABEL_27;
     }
 
-    v25 = v24;
-    v26 = [(_INPBSetProfileInCarIntent *)self profileNumber];
-    v27 = [v4 profileNumber];
-    v28 = [v26 isEqual:v27];
+    v25 = profileNumber;
+    profileNumber2 = [(_INPBSetProfileInCarIntent *)self profileNumber];
+    profileNumber3 = [equalCopy profileNumber];
+    v28 = [profileNumber2 isEqual:profileNumber3];
 
     if (v28)
     {
@@ -194,10 +194,10 @@ LABEL_27:
   return v29;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBSetProfileInCarIntent allocWithZone:](_INPBSetProfileInCarIntent init];
-  v6 = [(_INPBDataString *)self->_carName copyWithZone:a3];
+  v6 = [(_INPBDataString *)self->_carName copyWithZone:zone];
   [(_INPBSetProfileInCarIntent *)v5 setCarName:v6];
 
   if ([(_INPBSetProfileInCarIntent *)self hasDefaultProfile])
@@ -205,50 +205,50 @@ LABEL_27:
     [(_INPBSetProfileInCarIntent *)v5 setDefaultProfile:[(_INPBSetProfileInCarIntent *)self defaultProfile]];
   }
 
-  v7 = [(_INPBIntentMetadata *)self->_intentMetadata copyWithZone:a3];
+  v7 = [(_INPBIntentMetadata *)self->_intentMetadata copyWithZone:zone];
   [(_INPBSetProfileInCarIntent *)v5 setIntentMetadata:v7];
 
-  v8 = [(_INPBString *)self->_profileName copyWithZone:a3];
+  v8 = [(_INPBString *)self->_profileName copyWithZone:zone];
   [(_INPBSetProfileInCarIntent *)v5 setProfileName:v8];
 
-  v9 = [(_INPBInteger *)self->_profileNumber copyWithZone:a3];
+  v9 = [(_INPBInteger *)self->_profileNumber copyWithZone:zone];
   [(_INPBSetProfileInCarIntent *)v5 setProfileNumber:v9];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBSetProfileInCarIntent *)self data];
+  coderCopy = coder;
+  data = [(_INPBSetProfileInCarIntent *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBSetProfileInCarIntent)initWithCoder:(id)a3
+- (_INPBSetProfileInCarIntent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBSetProfileInCarIntent *)self initWithData:v6];
+    self = [(_INPBSetProfileInCarIntent *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v14 = a3;
-  v4 = [(_INPBSetProfileInCarIntent *)self carName];
+  toCopy = to;
+  carName = [(_INPBSetProfileInCarIntent *)self carName];
 
-  if (v4)
+  if (carName)
   {
-    v5 = [(_INPBSetProfileInCarIntent *)self carName];
+    carName2 = [(_INPBSetProfileInCarIntent *)self carName];
     PBDataWriterWriteSubmessage();
   }
 
@@ -258,31 +258,31 @@ LABEL_27:
     PBDataWriterWriteBOOLField();
   }
 
-  v7 = [(_INPBSetProfileInCarIntent *)self intentMetadata];
+  intentMetadata = [(_INPBSetProfileInCarIntent *)self intentMetadata];
 
-  if (v7)
+  if (intentMetadata)
   {
-    v8 = [(_INPBSetProfileInCarIntent *)self intentMetadata];
+    intentMetadata2 = [(_INPBSetProfileInCarIntent *)self intentMetadata];
     PBDataWriterWriteSubmessage();
   }
 
-  v9 = [(_INPBSetProfileInCarIntent *)self profileName];
+  profileName = [(_INPBSetProfileInCarIntent *)self profileName];
 
-  if (v9)
+  if (profileName)
   {
-    v10 = [(_INPBSetProfileInCarIntent *)self profileName];
+    profileName2 = [(_INPBSetProfileInCarIntent *)self profileName];
     PBDataWriterWriteSubmessage();
   }
 
-  v11 = [(_INPBSetProfileInCarIntent *)self profileNumber];
+  profileNumber = [(_INPBSetProfileInCarIntent *)self profileNumber];
 
-  v12 = v14;
-  if (v11)
+  v12 = toCopy;
+  if (profileNumber)
   {
-    v13 = [(_INPBSetProfileInCarIntent *)self profileNumber];
+    profileNumber2 = [(_INPBSetProfileInCarIntent *)self profileNumber];
     PBDataWriterWriteSubmessage();
 
-    v12 = v14;
+    v12 = toCopy;
   }
 }
 

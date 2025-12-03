@@ -1,187 +1,187 @@
 @interface ASTIconPickerTableViewController
 - (AssistiveTouchCustomizeController)iconPickerDelegate;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)_resetSearch;
-- (void)_updateSearch:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
-- (void)updateSearchResultsForSearchController:(id)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)_updateSearch:(id)search;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
+- (void)updateSearchResultsForSearchController:(id)controller;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation ASTIconPickerTableViewController
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v16.receiver = self;
   v16.super_class = ASTIconPickerTableViewController;
-  [(ASTIconPickerTableViewController *)&v16 viewWillAppear:a3];
-  v4 = [(ASTIconPickerTableViewController *)self tableView];
-  [v4 setRowHeight:UITableViewAutomaticDimension];
+  [(ASTIconPickerTableViewController *)&v16 viewWillAppear:appear];
+  tableView = [(ASTIconPickerTableViewController *)self tableView];
+  [tableView setRowHeight:UITableViewAutomaticDimension];
 
   v5 = UITableDefaultRowHeight;
-  v6 = [(ASTIconPickerTableViewController *)self tableView];
-  [v6 setEstimatedRowHeight:v5];
+  tableView2 = [(ASTIconPickerTableViewController *)self tableView];
+  [tableView2 setEstimatedRowHeight:v5];
 
   v7 = objc_alloc_init(UISearchController);
   [(ASTIconPickerTableViewController *)self setSearchController:v7];
 
-  v8 = [(ASTIconPickerTableViewController *)self searchController];
-  [v8 setSearchResultsUpdater:self];
+  searchController = [(ASTIconPickerTableViewController *)self searchController];
+  [searchController setSearchResultsUpdater:self];
 
-  v9 = [(ASTIconPickerTableViewController *)self searchController];
-  [v9 setHidesNavigationBarDuringPresentation:0];
+  searchController2 = [(ASTIconPickerTableViewController *)self searchController];
+  [searchController2 setHidesNavigationBarDuringPresentation:0];
 
-  v10 = [(ASTIconPickerTableViewController *)self searchController];
-  [v10 setObscuresBackgroundDuringPresentation:0];
+  searchController3 = [(ASTIconPickerTableViewController *)self searchController];
+  [searchController3 setObscuresBackgroundDuringPresentation:0];
 
-  v11 = [(ASTIconPickerTableViewController *)self searchController];
-  [v11 setAutomaticallyShowsCancelButton:1];
+  searchController4 = [(ASTIconPickerTableViewController *)self searchController];
+  [searchController4 setAutomaticallyShowsCancelButton:1];
 
-  v12 = [(ASTIconPickerTableViewController *)self navigationItem];
-  [v12 setHidesSearchBarWhenScrolling:0];
+  navigationItem = [(ASTIconPickerTableViewController *)self navigationItem];
+  [navigationItem setHidesSearchBarWhenScrolling:0];
 
   if (AXDeviceIsPad())
   {
-    v13 = [(ASTIconPickerTableViewController *)self navigationItem];
-    v14 = [(ASTIconPickerTableViewController *)self searchController];
-    v15 = [v14 searchBar];
-    [v13 setTitleView:v15];
+    navigationItem2 = [(ASTIconPickerTableViewController *)self navigationItem];
+    searchController5 = [(ASTIconPickerTableViewController *)self searchController];
+    searchBar = [searchController5 searchBar];
+    [navigationItem2 setTitleView:searchBar];
   }
 
   else
   {
-    v13 = [(ASTIconPickerTableViewController *)self searchController];
-    v14 = [(ASTIconPickerTableViewController *)self navigationItem];
-    [v14 setSearchController:v13];
+    navigationItem2 = [(ASTIconPickerTableViewController *)self searchController];
+    searchController5 = [(ASTIconPickerTableViewController *)self navigationItem];
+    [searchController5 setSearchController:navigationItem2];
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = ASTIconPickerTableViewController;
-  [(ASTIconPickerTableViewController *)&v4 viewWillDisappear:a3];
+  [(ASTIconPickerTableViewController *)&v4 viewWillDisappear:disappear];
   [(ASTIconPickerTableViewController *)self _resetSearch];
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v5 = [(ASTIconPickerTableViewController *)self iconPickerDelegate];
-  v6 = [v5 astNumberOfRowsInSection:a4];
+  iconPickerDelegate = [(ASTIconPickerTableViewController *)self iconPickerDelegate];
+  v6 = [iconPickerDelegate astNumberOfRowsInSection:section];
 
   return v6;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"row"];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"row"];
   if (!v7)
   {
     v7 = [[UITableViewCell alloc] initWithStyle:0 reuseIdentifier:@"row"];
-    v8 = [v7 textLabel];
-    [v8 setNumberOfLines:0];
+    textLabel = [v7 textLabel];
+    [textLabel setNumberOfLines:0];
   }
 
-  v9 = [(ASTIconPickerTableViewController *)self iconPickerDelegate];
-  v10 = [v9 formattedTextForIconAtIndexPath:v6];
+  iconPickerDelegate = [(ASTIconPickerTableViewController *)self iconPickerDelegate];
+  v10 = [iconPickerDelegate formattedTextForIconAtIndexPath:pathCopy];
 
-  v11 = [v7 textLabel];
-  [v11 setText:v10];
+  textLabel2 = [v7 textLabel];
+  [textLabel2 setText:v10];
 
   return v7;
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(ASTIconPickerTableViewController *)self iconPickerDelegate];
-  [v11 astTableView:v10 willDisplayCell:v9 forRowAtIndexPath:v8];
+  pathCopy = path;
+  cellCopy = cell;
+  viewCopy = view;
+  iconPickerDelegate = [(ASTIconPickerTableViewController *)self iconPickerDelegate];
+  [iconPickerDelegate astTableView:viewCopy willDisplayCell:cellCopy forRowAtIndexPath:pathCopy];
 
-  v12 = [(ASTIconPickerTableViewController *)self iconPickerDelegate];
-  v17 = [v12 iconForIndexPath:v8];
+  iconPickerDelegate2 = [(ASTIconPickerTableViewController *)self iconPickerDelegate];
+  v17 = [iconPickerDelegate2 iconForIndexPath:pathCopy];
 
   v13 = +[AXSettings sharedInstance];
-  v14 = [v13 assistiveTouchMainScreenCustomization];
+  assistiveTouchMainScreenCustomization = [v13 assistiveTouchMainScreenCustomization];
 
-  v15 = [v14 allValues];
-  LODWORD(v8) = [v15 containsObject:v17];
+  allValues = [assistiveTouchMainScreenCustomization allValues];
+  LODWORD(pathCopy) = [allValues containsObject:v17];
 
-  v16 = [v9 textLabel];
+  textLabel = [cellCopy textLabel];
 
-  [v16 setEnabled:v8 ^ 1];
+  [textLabel setEnabled:pathCopy ^ 1];
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
-  v3 = [(ASTIconPickerTableViewController *)self iconPickerDelegate];
-  v4 = [v3 astNumberOfSections];
+  iconPickerDelegate = [(ASTIconPickerTableViewController *)self iconPickerDelegate];
+  astNumberOfSections = [iconPickerDelegate astNumberOfSections];
 
-  return v4;
+  return astNumberOfSections;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(ASTIconPickerTableViewController *)self iconPickerDelegate];
-  [v8 astTableView:v7 didSelectRowAtIndexPath:v6];
+  pathCopy = path;
+  viewCopy = view;
+  iconPickerDelegate = [(ASTIconPickerTableViewController *)self iconPickerDelegate];
+  [iconPickerDelegate astTableView:viewCopy didSelectRowAtIndexPath:pathCopy];
 
   v9 = +[AXSettings sharedInstance];
-  v10 = [v9 assistiveTouchMainScreenCustomization];
-  v25 = [v10 mutableCopy];
+  assistiveTouchMainScreenCustomization = [v9 assistiveTouchMainScreenCustomization];
+  v25 = [assistiveTouchMainScreenCustomization mutableCopy];
 
-  v11 = [(ASTIconPickerTableViewController *)self iconPickerDelegate];
-  v12 = [v11 selectedPopoverIcon];
-  v13 = [(ASTIconPickerTableViewController *)self iconPickerDelegate];
-  v14 = [v13 selectedPopoverLocation];
-  [v25 setObject:v12 forKeyedSubscript:v14];
+  iconPickerDelegate2 = [(ASTIconPickerTableViewController *)self iconPickerDelegate];
+  selectedPopoverIcon = [iconPickerDelegate2 selectedPopoverIcon];
+  iconPickerDelegate3 = [(ASTIconPickerTableViewController *)self iconPickerDelegate];
+  selectedPopoverLocation = [iconPickerDelegate3 selectedPopoverLocation];
+  [v25 setObject:selectedPopoverIcon forKeyedSubscript:selectedPopoverLocation];
 
   v15 = +[AXSettings sharedInstance];
   [v15 setAssistiveTouchMainScreenCustomization:v25];
 
-  v16 = [(ASTIconPickerTableViewController *)self iconPickerDelegate];
-  v17 = [v16 customizeCell];
-  v18 = [(ASTIconPickerTableViewController *)self iconPickerDelegate];
-  v19 = [v18 selectedPopoverLocation];
-  v20 = [(ASTIconPickerTableViewController *)self iconPickerDelegate];
-  v21 = [v20 selectedPopoverIcon];
+  iconPickerDelegate4 = [(ASTIconPickerTableViewController *)self iconPickerDelegate];
+  customizeCell = [iconPickerDelegate4 customizeCell];
+  iconPickerDelegate5 = [(ASTIconPickerTableViewController *)self iconPickerDelegate];
+  selectedPopoverLocation2 = [iconPickerDelegate5 selectedPopoverLocation];
+  iconPickerDelegate6 = [(ASTIconPickerTableViewController *)self iconPickerDelegate];
+  selectedPopoverIcon2 = [iconPickerDelegate6 selectedPopoverIcon];
   v22 = +[AXSettings sharedInstance];
-  v23 = [v22 assistiveTouchMainScreenCustomization];
-  [v23 count];
-  [v17 updateButton:v19 withIcon:v21 layout:AXAssistiveTouchNamedLayout()];
+  assistiveTouchMainScreenCustomization2 = [v22 assistiveTouchMainScreenCustomization];
+  [assistiveTouchMainScreenCustomization2 count];
+  [customizeCell updateButton:selectedPopoverLocation2 withIcon:selectedPopoverIcon2 layout:AXAssistiveTouchNamedLayout()];
 
-  v24 = [(ASTIconPickerTableViewController *)self iconPickerDelegate];
-  [v24 didUpdateCustomizeCellHeight];
+  iconPickerDelegate7 = [(ASTIconPickerTableViewController *)self iconPickerDelegate];
+  [iconPickerDelegate7 didUpdateCustomizeCellHeight];
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v5 = [(ASTIconPickerTableViewController *)self iconPickerDelegate];
-  v6 = [v5 astTitleForSection:a4];
+  iconPickerDelegate = [(ASTIconPickerTableViewController *)self iconPickerDelegate];
+  v6 = [iconPickerDelegate astTitleForSection:section];
 
   return v6;
 }
 
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(ASTIconPickerTableViewController *)self iconPickerDelegate];
-  v7 = [v6 iconForIndexPath:v5];
+  pathCopy = path;
+  iconPickerDelegate = [(ASTIconPickerTableViewController *)self iconPickerDelegate];
+  v7 = [iconPickerDelegate iconForIndexPath:pathCopy];
 
   v8 = +[AXSettings sharedInstance];
-  v9 = [v8 assistiveTouchMainScreenCustomization];
+  assistiveTouchMainScreenCustomization = [v8 assistiveTouchMainScreenCustomization];
 
-  v10 = [v9 allValues];
-  v11 = [v10 containsObject:v7];
+  allValues = [assistiveTouchMainScreenCustomization allValues];
+  v11 = [allValues containsObject:v7];
 
   if (v11)
   {
@@ -190,17 +190,17 @@
 
   else
   {
-    v12 = v5;
+    v12 = pathCopy;
   }
 
   return v12;
 }
 
-- (void)updateSearchResultsForSearchController:(id)a3
+- (void)updateSearchResultsForSearchController:(id)controller
 {
-  v4 = a3;
-  v5 = [(ASTIconPickerTableViewController *)self searchTimer];
-  [v5 invalidate];
+  controllerCopy = controller;
+  searchTimer = [(ASTIconPickerTableViewController *)self searchTimer];
+  [searchTimer invalidate];
 
   [(ASTIconPickerTableViewController *)self setSearchTimer:0];
   objc_initWeak(&location, self);
@@ -209,7 +209,7 @@
   v8[2] = __75__ASTIconPickerTableViewController_updateSearchResultsForSearchController___block_invoke;
   v8[3] = &unk_258848;
   objc_copyWeak(&v10, &location);
-  v6 = v4;
+  v6 = controllerCopy;
   v9 = v6;
   v7 = [NSTimer scheduledTimerWithTimeInterval:0 repeats:v8 block:0.5];
   [(ASTIconPickerTableViewController *)self setSearchTimer:v7];
@@ -226,37 +226,37 @@ void __75__ASTIconPickerTableViewController_updateSearchResultsForSearchControll
   [WeakRetained _updateSearch:v3];
 }
 
-- (void)_updateSearch:(id)a3
+- (void)_updateSearch:(id)search
 {
-  v4 = a3;
-  v5 = [(ASTIconPickerTableViewController *)self iconPickerDelegate];
-  [v5 setSearchText:v4];
+  searchCopy = search;
+  iconPickerDelegate = [(ASTIconPickerTableViewController *)self iconPickerDelegate];
+  [iconPickerDelegate setSearchText:searchCopy];
 
-  v6 = [(ASTIconPickerTableViewController *)self iconPickerDelegate];
-  [v6 reloadASTDataSource];
+  iconPickerDelegate2 = [(ASTIconPickerTableViewController *)self iconPickerDelegate];
+  [iconPickerDelegate2 reloadASTDataSource];
 
-  v7 = [(ASTIconPickerTableViewController *)self tableView];
-  [v7 reloadData];
+  tableView = [(ASTIconPickerTableViewController *)self tableView];
+  [tableView reloadData];
 }
 
 - (void)_resetSearch
 {
-  v9 = [(ASTIconPickerTableViewController *)self searchController];
-  if ([v9 isActive])
+  searchController = [(ASTIconPickerTableViewController *)self searchController];
+  if ([searchController isActive])
   {
-    v3 = [(ASTIconPickerTableViewController *)self searchController];
-    v4 = [v3 searchBar];
-    v5 = [v4 text];
-    v6 = [v5 length];
+    searchController2 = [(ASTIconPickerTableViewController *)self searchController];
+    searchBar = [searchController2 searchBar];
+    text = [searchBar text];
+    v6 = [text length];
 
     if (v6)
     {
       [(ASTIconPickerTableViewController *)self _updateSearch:0];
-      v7 = [(ASTIconPickerTableViewController *)self searchController];
-      [v7 setActive:0];
+      searchController3 = [(ASTIconPickerTableViewController *)self searchController];
+      [searchController3 setActive:0];
 
-      v8 = [(ASTIconPickerTableViewController *)self searchTimer];
-      [v8 invalidate];
+      searchTimer = [(ASTIconPickerTableViewController *)self searchTimer];
+      [searchTimer invalidate];
 
       [(ASTIconPickerTableViewController *)self setSearchTimer:0];
     }

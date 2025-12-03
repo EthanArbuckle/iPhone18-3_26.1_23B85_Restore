@@ -1,14 +1,14 @@
 @interface AWDMPTCPSubflowSwitchingReport
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasSwitchCount:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasSwitchCount:(BOOL)count;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDMPTCPSubflowSwitchingReport
@@ -22,9 +22,9 @@
   [(AWDMPTCPSubflowSwitchingReport *)&v3 dealloc];
 }
 
-- (void)setHasSwitchCount:(BOOL)a3
+- (void)setHasSwitchCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 2;
   }
@@ -46,33 +46,33 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   if (*&self->_has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
   }
 
   switchFromInterfaceName = self->_switchFromInterfaceName;
   if (switchFromInterfaceName)
   {
-    [v3 setObject:switchFromInterfaceName forKey:@"switch_from_interface_name"];
+    [dictionary setObject:switchFromInterfaceName forKey:@"switch_from_interface_name"];
   }
 
   switchToInterfaceName = self->_switchToInterfaceName;
   if (switchToInterfaceName)
   {
-    [v3 setObject:switchToInterfaceName forKey:@"switch_to_interface_name"];
+    [dictionary setObject:switchToInterfaceName forKey:@"switch_to_interface_name"];
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_switchCount), @"switch_count"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_switchCount), @"switch_count"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (*&self->_has)
   {
@@ -98,34 +98,34 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if (*&self->_has)
   {
-    *(a3 + 1) = self->_timestamp;
-    *(a3 + 40) |= 1u;
+    *(to + 1) = self->_timestamp;
+    *(to + 40) |= 1u;
   }
 
   if (self->_switchFromInterfaceName)
   {
-    [a3 setSwitchFromInterfaceName:?];
+    [to setSwitchFromInterfaceName:?];
   }
 
   if (self->_switchToInterfaceName)
   {
-    [a3 setSwitchToInterfaceName:?];
+    [to setSwitchToInterfaceName:?];
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    *(a3 + 4) = self->_switchCount;
-    *(a3 + 40) |= 2u;
+    *(to + 4) = self->_switchCount;
+    *(to + 40) |= 2u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -133,8 +133,8 @@
     *(v5 + 40) |= 1u;
   }
 
-  *(v6 + 24) = [(NSString *)self->_switchFromInterfaceName copyWithZone:a3];
-  *(v6 + 32) = [(NSString *)self->_switchToInterfaceName copyWithZone:a3];
+  *(v6 + 24) = [(NSString *)self->_switchFromInterfaceName copyWithZone:zone];
+  *(v6 + 32) = [(NSString *)self->_switchToInterfaceName copyWithZone:zone];
   if ((*&self->_has & 2) != 0)
   {
     *(v6 + 16) = self->_switchCount;
@@ -144,21 +144,21 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
-    v6 = *(a3 + 40);
+    v6 = *(equal + 40);
     if (*&self->_has)
     {
-      if ((*(a3 + 40) & 1) == 0 || self->_timestamp != *(a3 + 1))
+      if ((*(equal + 40) & 1) == 0 || self->_timestamp != *(equal + 1))
       {
         goto LABEL_15;
       }
     }
 
-    else if (*(a3 + 40))
+    else if (*(equal + 40))
     {
 LABEL_15:
       LOBYTE(v5) = 0;
@@ -166,15 +166,15 @@ LABEL_15:
     }
 
     switchFromInterfaceName = self->_switchFromInterfaceName;
-    if (!(switchFromInterfaceName | *(a3 + 3)) || (v5 = [(NSString *)switchFromInterfaceName isEqual:?]) != 0)
+    if (!(switchFromInterfaceName | *(equal + 3)) || (v5 = [(NSString *)switchFromInterfaceName isEqual:?]) != 0)
     {
       switchToInterfaceName = self->_switchToInterfaceName;
-      if (!(switchToInterfaceName | *(a3 + 4)) || (v5 = [(NSString *)switchToInterfaceName isEqual:?]) != 0)
+      if (!(switchToInterfaceName | *(equal + 4)) || (v5 = [(NSString *)switchToInterfaceName isEqual:?]) != 0)
       {
-        LOBYTE(v5) = (*(a3 + 40) & 2) == 0;
+        LOBYTE(v5) = (*(equal + 40) & 2) == 0;
         if ((*&self->_has & 2) != 0)
         {
-          if ((*(a3 + 40) & 2) == 0 || self->_switchCount != *(a3 + 4))
+          if ((*(equal + 40) & 2) == 0 || self->_switchCount != *(equal + 4))
           {
             goto LABEL_15;
           }
@@ -215,27 +215,27 @@ LABEL_15:
   return v4 ^ v3 ^ v5 ^ v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  if (*(a3 + 40))
+  if (*(from + 40))
   {
-    self->_timestamp = *(a3 + 1);
+    self->_timestamp = *(from + 1);
     *&self->_has |= 1u;
   }
 
-  if (*(a3 + 3))
+  if (*(from + 3))
   {
     [(AWDMPTCPSubflowSwitchingReport *)self setSwitchFromInterfaceName:?];
   }
 
-  if (*(a3 + 4))
+  if (*(from + 4))
   {
     [(AWDMPTCPSubflowSwitchingReport *)self setSwitchToInterfaceName:?];
   }
 
-  if ((*(a3 + 40) & 2) != 0)
+  if ((*(from + 40) & 2) != 0)
   {
-    self->_switchCount = *(a3 + 4);
+    self->_switchCount = *(from + 4);
     *&self->_has |= 2u;
   }
 }

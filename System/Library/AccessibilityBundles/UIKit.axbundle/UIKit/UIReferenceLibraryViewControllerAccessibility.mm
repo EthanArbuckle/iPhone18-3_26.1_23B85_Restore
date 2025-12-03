@@ -1,19 +1,19 @@
 @interface UIReferenceLibraryViewControllerAccessibility
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation UIReferenceLibraryViewControllerAccessibility
 
 - (void)viewDidLoad
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   v3.receiver = self;
   v3.super_class = UIReferenceLibraryViewControllerAccessibility;
   [(UIReferenceLibraryViewControllerAccessibility *)&v3 viewDidLoad];
-  location = [(UIReferenceLibraryViewControllerAccessibility *)v5 safeValueForKey:@"view"];
+  location = [(UIReferenceLibraryViewControllerAccessibility *)selfCopy safeValueForKey:@"view"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -23,45 +23,45 @@
   objc_storeStrong(&location, 0);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v9 = self;
+  selfCopy = self;
   v8 = a2;
-  v7 = a3;
+  disappearCopy = disappear;
   v6.receiver = self;
   v6.super_class = UIReferenceLibraryViewControllerAccessibility;
-  [(UIReferenceLibraryViewControllerAccessibility *)&v6 viewWillDisappear:a3];
-  location = [(UIReferenceLibraryViewControllerAccessibility *)v9 safeValueForKey:@"view"];
+  [(UIReferenceLibraryViewControllerAccessibility *)&v6 viewWillDisappear:disappear];
+  location = [(UIReferenceLibraryViewControllerAccessibility *)selfCopy safeValueForKey:@"view"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [location window];
-    [v3 _setAccessibilityIsMainWindow:0];
-    v4 = [location superview];
-    [v4 setAccessibilityViewIsModal:0];
-    MEMORY[0x29EDC9740](v4);
+    window = [location window];
+    [window _setAccessibilityIsMainWindow:0];
+    superview = [location superview];
+    [superview setAccessibilityViewIsModal:0];
+    MEMORY[0x29EDC9740](superview);
   }
 
   objc_storeStrong(&location, 0);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v9 = self;
+  selfCopy = self;
   v8 = a2;
-  v7 = a3;
+  appearCopy = appear;
   v6.receiver = self;
   v6.super_class = UIReferenceLibraryViewControllerAccessibility;
-  [(UIReferenceLibraryViewControllerAccessibility *)&v6 viewDidAppear:a3];
-  location = [(UIReferenceLibraryViewControllerAccessibility *)v9 safeValueForKey:@"view"];
+  [(UIReferenceLibraryViewControllerAccessibility *)&v6 viewDidAppear:appear];
+  location = [(UIReferenceLibraryViewControllerAccessibility *)selfCopy safeValueForKey:@"view"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [location window];
-    [v3 _setAccessibilityIsMainWindow:1];
-    v4 = [location superview];
-    [v4 setAccessibilityViewIsModal:1];
-    MEMORY[0x29EDC9740](v4);
+    window = [location window];
+    [window _setAccessibilityIsMainWindow:1];
+    superview = [location superview];
+    [superview setAccessibilityViewIsModal:1];
+    MEMORY[0x29EDC9740](superview);
   }
 
   UIAccessibilityPostNotification(*MEMORY[0x29EDC7F10], 0);

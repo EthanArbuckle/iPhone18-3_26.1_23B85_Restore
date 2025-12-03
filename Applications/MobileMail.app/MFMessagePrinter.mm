@@ -1,16 +1,16 @@
 @interface MFMessagePrinter
-- (CGRect)_printingRectForImageableRect:(CGRect)a3;
-- (MFMessagePrinter)initWithContentRequest:(id)a3;
+- (CGRect)_printingRectForImageableRect:(CGRect)rect;
+- (MFMessagePrinter)initWithContentRequest:(id)request;
 - (MFMessagePrinterDelegate)delegate;
-- (id)printInteractionControllerParentViewController:(id)a3;
+- (id)printInteractionControllerParentViewController:(id)controller;
 - (int64_t)numberOfPages;
 - (void)_setupPrintableContent;
 - (void)dealloc;
-- (void)drawContentForPageAtIndex:(int64_t)a3 inRect:(CGRect)a4;
-- (void)drawPageAtIndex:(int64_t)a3 inRect:(CGRect)a4;
-- (void)loadWithCompletion:(id)a3;
-- (void)messageViewController:(id)a3 didFinishRenderingWithHeight:(double)a4;
-- (void)presentPrintPopoverFromBarButtonItem:(id)a3;
+- (void)drawContentForPageAtIndex:(int64_t)index inRect:(CGRect)rect;
+- (void)drawPageAtIndex:(int64_t)index inRect:(CGRect)rect;
+- (void)loadWithCompletion:(id)completion;
+- (void)messageViewController:(id)controller didFinishRenderingWithHeight:(double)height;
+- (void)presentPrintPopoverFromBarButtonItem:(id)item;
 - (void)presentPrintSheet;
 @end
 
@@ -19,9 +19,9 @@
 - (void)dealloc
 {
   v3 = +[UIPrintInteractionController sharedPrintController];
-  v4 = [v3 printPageRenderer];
+  printPageRenderer = [v3 printPageRenderer];
 
-  if (v4 == self)
+  if (printPageRenderer == self)
   {
     [v3 setPrintPageRenderer:0];
   }
@@ -31,17 +31,17 @@
   [(MFMessagePrinter *)&v5 dealloc];
 }
 
-- (MFMessagePrinter)initWithContentRequest:(id)a3
+- (MFMessagePrinter)initWithContentRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v28.receiver = self;
   v28.super_class = MFMessagePrinter;
   v5 = [(MFMessagePrinter *)&v28 init];
   if (v5)
   {
-    v6 = [v4 message];
+    message = [requestCopy message];
     message = v5->_message;
-    v5->_message = v6;
+    v5->_message = message;
 
     v8 = objc_alloc_init(EFPromise);
     webLoadPromise = v5->_webLoadPromise;
@@ -49,29 +49,29 @@
 
     v10 = [MFMessageViewController alloc];
     v11 = +[UIApplication sharedApplication];
-    v12 = [v11 accountsController];
-    v13 = [(MFMessageViewController *)v10 initWithScene:0 accountsController:v12];
+    accountsController = [v11 accountsController];
+    v13 = [(MFMessageViewController *)v10 initWithScene:0 accountsController:accountsController];
     messageViewController = v5->_messageViewController;
     v5->_messageViewController = v13;
 
     [(MFMessageViewController *)v5->_messageViewController setDelegate:v5];
-    [(MFMessageViewController *)v5->_messageViewController setContentRequest:v4];
+    [(MFMessageViewController *)v5->_messageViewController setContentRequest:requestCopy];
     v15 = +[UIPrintInfo printInfo];
-    v16 = [(EMMessage *)v5->_message subject];
-    v17 = [v16 length];
+    subject = [(EMMessage *)v5->_message subject];
+    v17 = [subject length];
     if (v17)
     {
-      v18 = [v16 subjectString];
-      v19 = v18;
+      subjectString = [subject subjectString];
+      v19 = subjectString;
     }
 
     else
     {
       v19 = +[NSBundle mainBundle];
-      v18 = [v19 localizedStringForKey:@"NO_SUBJECT" value:&stru_100662A88 table:@"Main"];
+      subjectString = [v19 localizedStringForKey:@"NO_SUBJECT" value:&stru_100662A88 table:@"Main"];
     }
 
-    [v15 setJobName:v18];
+    [v15 setJobName:subjectString];
     if (!v17)
     {
     }
@@ -90,58 +90,58 @@
     [(UIWindow *)v5->_window setAlpha:0.01];
     [(UIWindow *)v5->_window setHidden:0];
     v25 = v5->_window;
-    v26 = [(MFMessageViewController *)v5->_messageViewController view];
-    [(UIWindow *)v25 addSubview:v26];
+    view = [(MFMessageViewController *)v5->_messageViewController view];
+    [(UIWindow *)v25 addSubview:view];
   }
 
   return v5;
 }
 
-- (void)presentPrintPopoverFromBarButtonItem:(id)a3
+- (void)presentPrintPopoverFromBarButtonItem:(id)item
 {
-  v4 = a3;
-  v5 = [(EFPromise *)self->_webLoadPromise future];
+  itemCopy = item;
+  future = [(EFPromise *)self->_webLoadPromise future];
   v6 = +[EFScheduler mainThreadScheduler];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1001F1A88;
   v8[3] = &unk_10064EFC0;
   v8[4] = self;
-  v7 = v4;
+  v7 = itemCopy;
   v9 = v7;
-  [v5 onScheduler:v6 addSuccessBlock:v8];
+  [future onScheduler:v6 addSuccessBlock:v8];
 }
 
 - (void)presentPrintSheet
 {
-  v3 = [(EFPromise *)self->_webLoadPromise future];
+  future = [(EFPromise *)self->_webLoadPromise future];
   v4 = +[EFScheduler mainThreadScheduler];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_1001F1B6C;
   v5[3] = &unk_100654EB8;
   v5[4] = self;
-  [v3 onScheduler:v4 addSuccessBlock:v5];
+  [future onScheduler:v4 addSuccessBlock:v5];
 }
 
-- (void)loadWithCompletion:(id)a3
+- (void)loadWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(EFPromise *)self->_webLoadPromise future];
+  completionCopy = completion;
+  future = [(EFPromise *)self->_webLoadPromise future];
   v6 = +[EFScheduler mainThreadScheduler];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1001F1C80;
   v8[3] = &unk_100654EE0;
-  v7 = v4;
+  v7 = completionCopy;
   v9 = v7;
-  [v5 onScheduler:v6 addSuccessBlock:v8];
+  [future onScheduler:v6 addSuccessBlock:v8];
 }
 
-- (id)printInteractionControllerParentViewController:(id)a3
+- (id)printInteractionControllerParentViewController:(id)controller
 {
-  v4 = [(MFMessagePrinter *)self delegate];
-  v5 = [v4 parentViewControllerForMessagePrinter:self];
+  delegate = [(MFMessagePrinter *)self delegate];
+  v5 = [delegate parentViewControllerForMessagePrinter:self];
 
   return v5;
 }
@@ -161,13 +161,13 @@
   return [(MFMessagePrinter *)&v5 numberOfPages];
 }
 
-- (CGRect)_printingRectForImageableRect:(CGRect)a3
+- (CGRect)_printingRectForImageableRect:(CGRect)rect
 {
-  rect_24 = a3.origin.y;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  rect_24 = rect.origin.y;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   UIEdgeInsetsMakeWithEdges();
   v8 = v7;
   v10 = v9;
@@ -262,13 +262,13 @@
     v6 = v5;
     v8 = v7;
     v10 = v9;
-    v38 = [(MFMessageViewController *)self->_messageViewController messageContentView];
-    [v38 setFrame:{0.0, 0.0, v8, v10}];
+    messageContentView = [(MFMessageViewController *)self->_messageViewController messageContentView];
+    [messageContentView setFrame:{0.0, 0.0, v8, v10}];
     v11 = +[UIApplication sharedApplication];
-    v12 = [v11 mailboxProvider];
-    [v38 setMailboxProvider:v12];
+    mailboxProvider = [v11 mailboxProvider];
+    [messageContentView setMailboxProvider:mailboxProvider];
 
-    [v38 layoutSubviews];
+    [messageContentView layoutSubviews];
     [(MFMessagePrinter *)self printableRect];
     [(MFMessagePrinter *)self setHeaderHeight:v6 - v13];
     [(MFMessagePrinter *)self printableRect];
@@ -281,17 +281,17 @@
     headerFormatter = self->_headerFormatter;
     if (!headerFormatter)
     {
-      v23 = [v38 headerView];
-      [v23 removeAllHeaderBlocksAnimated:0];
+      headerView = [messageContentView headerView];
+      [headerView removeAllHeaderBlocksAnimated:0];
 
       v24 = [[MFPrintMessageHeaderViewBlock alloc] initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
-      v25 = [v38 headerView];
-      [v25 addHeaderBlock:v24 animated:1];
+      headerView2 = [messageContentView headerView];
+      [headerView2 addHeaderBlock:v24 animated:1];
 
-      v26 = [v38 headerView];
-      v27 = [v26 viewPrintFormatter];
+      headerView3 = [messageContentView headerView];
+      viewPrintFormatter = [headerView3 viewPrintFormatter];
       v28 = self->_headerFormatter;
-      self->_headerFormatter = v27;
+      self->_headerFormatter = viewPrintFormatter;
 
       [(MFMessagePrinter *)self addPrintFormatter:self->_headerFormatter startingAtPageAtIndex:0];
       headerFormatter = self->_headerFormatter;
@@ -300,15 +300,15 @@
     v29 = v4 - v17;
     v30 = v19 + v21 - (v4 + v8);
     [(UIViewPrintFormatter *)headerFormatter setPerPageContentInsets:0.0, v29, 0.0, v30];
-    v31 = [(UIViewPrintFormatter *)self->_headerFormatter pageCount];
-    if (v31 <= 1)
+    pageCount = [(UIViewPrintFormatter *)self->_headerFormatter pageCount];
+    if (pageCount <= 1)
     {
       v32 = 1;
     }
 
     else
     {
-      v32 = v31;
+      v32 = pageCount;
     }
 
     v33 = v32 - 1;
@@ -317,9 +317,9 @@
     bodyFormatter = self->_bodyFormatter;
     if (!bodyFormatter)
     {
-      v36 = [v38 viewPrintFormatter];
+      viewPrintFormatter2 = [messageContentView viewPrintFormatter];
       v37 = self->_bodyFormatter;
-      self->_bodyFormatter = v36;
+      self->_bodyFormatter = viewPrintFormatter2;
 
       [(MFMessagePrinter *)self addPrintFormatter:self->_bodyFormatter startingAtPageAtIndex:v33];
       headerLastPageHeight = self->_headerLastPageHeight;
@@ -330,23 +330,23 @@
   }
 }
 
-- (void)messageViewController:(id)a3 didFinishRenderingWithHeight:(double)a4
+- (void)messageViewController:(id)controller didFinishRenderingWithHeight:(double)height
 {
   webLoadPromise = self->_webLoadPromise;
-  v5 = [NSNull null:a3];
+  v5 = [NSNull null:controller];
   [(EFPromise *)webLoadPromise finishWithResult:?];
 }
 
-- (void)drawContentForPageAtIndex:(int64_t)a3 inRect:(CGRect)a4
+- (void)drawContentForPageAtIndex:(int64_t)index inRect:(CGRect)rect
 {
-  [(MFMessagePrinter *)self _printingRectForImageableRect:a4.origin.x, a4.origin.y, a4.size.width, a4.size.height];
+  [(MFMessagePrinter *)self _printingRectForImageableRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   CurrentContext = UIGraphicsGetCurrentContext();
   CGContextSaveGState(CurrentContext);
   CGContextTranslateCTM(CurrentContext, v7, v9);
-  if (!a3 && self->_contactPhoto)
+  if (!index && self->_contactPhoto)
   {
     v13 = UIGraphicsGetCurrentContext();
     CGContextSaveGState(v13);
@@ -381,12 +381,12 @@
   CGContextRestoreGState(CurrentContext);
 }
 
-- (void)drawPageAtIndex:(int64_t)a3 inRect:(CGRect)a4
+- (void)drawPageAtIndex:(int64_t)index inRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v10.width = NAN;
   v10.height = NAN;
   slice.origin = v10;
@@ -406,15 +406,15 @@
   CGRectDivide(remainder, &v24, &remainder, v13, CGRectMaxYEdge);
   if (!CGRectIsEmpty(slice))
   {
-    [(MFMessagePrinter *)self drawHeaderForPageAtIndex:a3 inRect:slice.origin.x, slice.origin.y, slice.size.width, slice.size.height];
+    [(MFMessagePrinter *)self drawHeaderForPageAtIndex:index inRect:slice.origin.x, slice.origin.y, slice.size.width, slice.size.height];
   }
 
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v14 = [(MFMessagePrinter *)self printFormatters];
-  v15 = [v14 countByEnumeratingWithState:&v20 objects:v27 count:16];
+  printFormatters = [(MFMessagePrinter *)self printFormatters];
+  v15 = [printFormatters countByEnumeratingWithState:&v20 objects:v27 count:16];
   if (v15)
   {
     v16 = *v21;
@@ -424,21 +424,21 @@
       {
         if (*v21 != v16)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(printFormatters);
         }
 
         v18 = *(*(&v20 + 1) + 8 * i);
-        if ([v18 startPage] <= a3)
+        if ([v18 startPage] <= index)
         {
-          v19 = [v18 startPage];
-          if (v19 + [v18 pageCount] > a3)
+          startPage = [v18 startPage];
+          if (startPage + [v18 pageCount] > index)
           {
-            [(MFMessagePrinter *)self drawPrintFormatter:v18 forPageAtIndex:a3];
+            [(MFMessagePrinter *)self drawPrintFormatter:v18 forPageAtIndex:index];
           }
         }
       }
 
-      v15 = [v14 countByEnumeratingWithState:&v20 objects:v27 count:16];
+      v15 = [printFormatters countByEnumeratingWithState:&v20 objects:v27 count:16];
     }
 
     while (v15);
@@ -446,12 +446,12 @@
 
   if (!CGRectIsEmpty(remainder))
   {
-    [(MFMessagePrinter *)self drawContentForPageAtIndex:a3 inRect:remainder.origin.x, remainder.origin.y, remainder.size.width, remainder.size.height];
+    [(MFMessagePrinter *)self drawContentForPageAtIndex:index inRect:remainder.origin.x, remainder.origin.y, remainder.size.width, remainder.size.height];
   }
 
   if (!CGRectIsEmpty(v24))
   {
-    [(MFMessagePrinter *)self drawFooterForPageAtIndex:a3 inRect:v24.origin.x, v24.origin.y, v24.size.width, v24.size.height];
+    [(MFMessagePrinter *)self drawFooterForPageAtIndex:index inRect:v24.origin.x, v24.origin.y, v24.size.width, v24.size.height];
   }
 }
 

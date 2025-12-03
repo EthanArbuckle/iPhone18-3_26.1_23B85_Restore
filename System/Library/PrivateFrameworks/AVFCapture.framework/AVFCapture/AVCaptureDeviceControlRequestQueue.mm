@@ -3,7 +3,7 @@
 - (id)dequeue;
 - (id)head;
 - (void)dealloc;
-- (void)enqueueRequest:(id)a3;
+- (void)enqueueRequest:(id)request;
 @end
 
 @implementation AVCaptureDeviceControlRequestQueue
@@ -58,7 +58,7 @@ id __42__AVCaptureDeviceControlRequestQueue_head__block_invoke(uint64_t a1)
   [(AVCaptureDeviceControlRequestQueue *)&v3 dealloc];
 }
 
-- (void)enqueueRequest:(id)a3
+- (void)enqueueRequest:(id)request
 {
   serialQueue = self->_serialQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -66,7 +66,7 @@ id __42__AVCaptureDeviceControlRequestQueue_head__block_invoke(uint64_t a1)
   v4[2] = __53__AVCaptureDeviceControlRequestQueue_enqueueRequest___block_invoke;
   v4[3] = &unk_1E786EAA8;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = request;
   dispatch_sync(serialQueue, v4);
 }
 

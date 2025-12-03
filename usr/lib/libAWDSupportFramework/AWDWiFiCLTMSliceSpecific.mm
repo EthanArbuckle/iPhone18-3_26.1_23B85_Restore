@@ -1,28 +1,28 @@
 @interface AWDWiFiCLTMSliceSpecific
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)temperatureBucketedAtIndex:(unint64_t)a3;
-- (int)txPowerBackoffBucketedAtIndex:(unint64_t)a3;
+- (int)temperatureBucketedAtIndex:(unint64_t)index;
+- (int)txPowerBackoffBucketedAtIndex:(unint64_t)index;
 - (unint64_t)hash;
-- (unsigned)batteryVoltageBucketedAtIndex:(unint64_t)a3;
-- (unsigned)cltmIndexBucketedAtIndex:(unint64_t)a3;
-- (unsigned)numActiveChainsBucketedAtIndex:(unint64_t)a3;
-- (unsigned)ppmBucketedAtIndex:(unint64_t)a3;
-- (unsigned)txDutyCycleBucketedAtIndex:(unint64_t)a3;
-- (void)copyTo:(id)a3;
+- (unsigned)batteryVoltageBucketedAtIndex:(unint64_t)index;
+- (unsigned)cltmIndexBucketedAtIndex:(unint64_t)index;
+- (unsigned)numActiveChainsBucketedAtIndex:(unint64_t)index;
+- (unsigned)ppmBucketedAtIndex:(unint64_t)index;
+- (unsigned)txDutyCycleBucketedAtIndex:(unint64_t)index;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasBatteryVoltage:(BOOL)a3;
-- (void)setHasCltmIndex:(BOOL)a3;
-- (void)setHasNumActiveChains:(BOOL)a3;
-- (void)setHasPpm:(BOOL)a3;
-- (void)setHasTemperature:(BOOL)a3;
-- (void)setHasTxDutyCycle:(BOOL)a3;
-- (void)setHasTxPowerBackoff:(BOOL)a3;
-- (void)setHasUpdateCount:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasBatteryVoltage:(BOOL)voltage;
+- (void)setHasCltmIndex:(BOOL)index;
+- (void)setHasNumActiveChains:(BOOL)chains;
+- (void)setHasPpm:(BOOL)ppm;
+- (void)setHasTemperature:(BOOL)temperature;
+- (void)setHasTxDutyCycle:(BOOL)cycle;
+- (void)setHasTxPowerBackoff:(BOOL)backoff;
+- (void)setHasUpdateCount:(BOOL)count;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDWiFiCLTMSliceSpecific
@@ -41,9 +41,9 @@
   [(AWDWiFiCLTMSliceSpecific *)&v3 dealloc];
 }
 
-- (void)setHasTxDutyCycle:(BOOL)a3
+- (void)setHasTxDutyCycle:(BOOL)cycle
 {
-  if (a3)
+  if (cycle)
   {
     v3 = 128;
   }
@@ -56,9 +56,9 @@
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasTxPowerBackoff:(BOOL)a3
+- (void)setHasTxPowerBackoff:(BOOL)backoff
 {
-  if (a3)
+  if (backoff)
   {
     v3 = 256;
   }
@@ -71,9 +71,9 @@
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasNumActiveChains:(BOOL)a3
+- (void)setHasNumActiveChains:(BOOL)chains
 {
-  if (a3)
+  if (chains)
   {
     v3 = 16;
   }
@@ -86,9 +86,9 @@
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasTemperature:(BOOL)a3
+- (void)setHasTemperature:(BOOL)temperature
 {
-  if (a3)
+  if (temperature)
   {
     v3 = 64;
   }
@@ -101,9 +101,9 @@
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasBatteryVoltage:(BOOL)a3
+- (void)setHasBatteryVoltage:(BOOL)voltage
 {
-  if (a3)
+  if (voltage)
   {
     v3 = 4;
   }
@@ -116,69 +116,69 @@
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (unsigned)txDutyCycleBucketedAtIndex:(unint64_t)a3
+- (unsigned)txDutyCycleBucketedAtIndex:(unint64_t)index
 {
   p_txDutyCycleBucketeds = &self->_txDutyCycleBucketeds;
   count = self->_txDutyCycleBucketeds.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", a3, count), 0), "raise"}];
+    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", index, count), 0), "raise"}];
   }
 
-  return p_txDutyCycleBucketeds->list[a3];
+  return p_txDutyCycleBucketeds->list[index];
 }
 
-- (int)txPowerBackoffBucketedAtIndex:(unint64_t)a3
+- (int)txPowerBackoffBucketedAtIndex:(unint64_t)index
 {
   p_txPowerBackoffBucketeds = &self->_txPowerBackoffBucketeds;
   count = self->_txPowerBackoffBucketeds.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", a3, count), 0), "raise"}];
+    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", index, count), 0), "raise"}];
   }
 
-  return p_txPowerBackoffBucketeds->list[a3];
+  return p_txPowerBackoffBucketeds->list[index];
 }
 
-- (unsigned)numActiveChainsBucketedAtIndex:(unint64_t)a3
+- (unsigned)numActiveChainsBucketedAtIndex:(unint64_t)index
 {
   p_numActiveChainsBucketeds = &self->_numActiveChainsBucketeds;
   count = self->_numActiveChainsBucketeds.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", a3, count), 0), "raise"}];
+    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", index, count), 0), "raise"}];
   }
 
-  return p_numActiveChainsBucketeds->list[a3];
+  return p_numActiveChainsBucketeds->list[index];
 }
 
-- (int)temperatureBucketedAtIndex:(unint64_t)a3
+- (int)temperatureBucketedAtIndex:(unint64_t)index
 {
   p_temperatureBucketeds = &self->_temperatureBucketeds;
   count = self->_temperatureBucketeds.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", a3, count), 0), "raise"}];
+    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", index, count), 0), "raise"}];
   }
 
-  return p_temperatureBucketeds->list[a3];
+  return p_temperatureBucketeds->list[index];
 }
 
-- (unsigned)batteryVoltageBucketedAtIndex:(unint64_t)a3
+- (unsigned)batteryVoltageBucketedAtIndex:(unint64_t)index
 {
   p_batteryVoltageBucketeds = &self->_batteryVoltageBucketeds;
   count = self->_batteryVoltageBucketeds.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", a3, count), 0), "raise"}];
+    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", index, count), 0), "raise"}];
   }
 
-  return p_batteryVoltageBucketeds->list[a3];
+  return p_batteryVoltageBucketeds->list[index];
 }
 
-- (void)setHasCltmIndex:(BOOL)a3
+- (void)setHasCltmIndex:(BOOL)index
 {
-  if (a3)
+  if (index)
   {
     v3 = 8;
   }
@@ -191,9 +191,9 @@
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasPpm:(BOOL)a3
+- (void)setHasPpm:(BOOL)ppm
 {
-  if (a3)
+  if (ppm)
   {
     v3 = 32;
   }
@@ -206,9 +206,9 @@
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasUpdateCount:(BOOL)a3
+- (void)setHasUpdateCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 2;
   }
@@ -221,28 +221,28 @@
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (unsigned)cltmIndexBucketedAtIndex:(unint64_t)a3
+- (unsigned)cltmIndexBucketedAtIndex:(unint64_t)index
 {
   p_cltmIndexBucketeds = &self->_cltmIndexBucketeds;
   count = self->_cltmIndexBucketeds.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", a3, count), 0), "raise"}];
+    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", index, count), 0), "raise"}];
   }
 
-  return p_cltmIndexBucketeds->list[a3];
+  return p_cltmIndexBucketeds->list[index];
 }
 
-- (unsigned)ppmBucketedAtIndex:(unint64_t)a3
+- (unsigned)ppmBucketedAtIndex:(unint64_t)index
 {
   p_ppmBucketeds = &self->_ppmBucketeds;
   count = self->_ppmBucketeds.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", a3, count), 0), "raise"}];
+    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", index, count), 0), "raise"}];
   }
 
-  return p_ppmBucketeds->list[a3];
+  return p_ppmBucketeds->list[index];
 }
 
 - (id)description
@@ -254,11 +254,11 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if (has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
     has = self->_has;
     if ((has & 0x80) == 0)
     {
@@ -277,7 +277,7 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_txDutyCycle), @"txDutyCycle"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_txDutyCycle), @"txDutyCycle"}];
   has = self->_has;
   if ((has & 0x100) == 0)
   {
@@ -291,7 +291,7 @@ LABEL_4:
   }
 
 LABEL_15:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_txPowerBackoff), @"txPowerBackoff"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_txPowerBackoff), @"txPowerBackoff"}];
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -305,7 +305,7 @@ LABEL_5:
   }
 
 LABEL_16:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_numActiveChains), @"numActiveChains"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_numActiveChains), @"numActiveChains"}];
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -319,19 +319,19 @@ LABEL_6:
   }
 
 LABEL_17:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_temperature), @"temperature"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_temperature), @"temperature"}];
   if ((*&self->_has & 4) != 0)
   {
 LABEL_7:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_batteryVoltage), @"batteryVoltage"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_batteryVoltage), @"batteryVoltage"}];
   }
 
 LABEL_8:
-  [v3 setObject:PBRepeatedUInt32NSArray() forKey:@"txDutyCycleBucketed"];
-  [v3 setObject:PBRepeatedInt32NSArray() forKey:@"txPowerBackoffBucketed"];
-  [v3 setObject:PBRepeatedUInt32NSArray() forKey:@"numActiveChainsBucketed"];
-  [v3 setObject:PBRepeatedInt32NSArray() forKey:@"temperatureBucketed"];
-  [v3 setObject:PBRepeatedUInt32NSArray() forKey:@"batteryVoltageBucketed"];
+  [dictionary setObject:PBRepeatedUInt32NSArray() forKey:@"txDutyCycleBucketed"];
+  [dictionary setObject:PBRepeatedInt32NSArray() forKey:@"txPowerBackoffBucketed"];
+  [dictionary setObject:PBRepeatedUInt32NSArray() forKey:@"numActiveChainsBucketed"];
+  [dictionary setObject:PBRepeatedInt32NSArray() forKey:@"temperatureBucketed"];
+  [dictionary setObject:PBRepeatedUInt32NSArray() forKey:@"batteryVoltageBucketed"];
   v5 = self->_has;
   if ((v5 & 8) == 0)
   {
@@ -341,7 +341,7 @@ LABEL_8:
     }
 
 LABEL_20:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_ppm), @"ppm"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_ppm), @"ppm"}];
     if ((*&self->_has & 2) == 0)
     {
       goto LABEL_12;
@@ -350,7 +350,7 @@ LABEL_20:
     goto LABEL_11;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_cltmIndex), @"cltmIndex"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_cltmIndex), @"cltmIndex"}];
   v5 = self->_has;
   if ((v5 & 0x20) != 0)
   {
@@ -361,16 +361,16 @@ LABEL_10:
   if ((v5 & 2) != 0)
   {
 LABEL_11:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_updateCount), @"updateCount"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_updateCount), @"updateCount"}];
   }
 
 LABEL_12:
-  [v3 setObject:PBRepeatedUInt32NSArray() forKey:@"cltmIndexBucketed"];
-  [v3 setObject:PBRepeatedUInt32NSArray() forKey:@"ppmBucketed"];
-  return v3;
+  [dictionary setObject:PBRepeatedUInt32NSArray() forKey:@"cltmIndexBucketed"];
+  [dictionary setObject:PBRepeatedUInt32NSArray() forKey:@"ppmBucketed"];
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   has = self->_has;
   if (has)
@@ -576,13 +576,13 @@ LABEL_27:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if (has)
   {
-    *(a3 + 22) = self->_timestamp;
-    *(a3 + 110) |= 1u;
+    *(to + 22) = self->_timestamp;
+    *(to + 110) |= 1u;
     has = self->_has;
     if ((has & 0x80) == 0)
     {
@@ -601,8 +601,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(a3 + 53) = self->_txDutyCycle;
-  *(a3 + 110) |= 0x80u;
+  *(to + 53) = self->_txDutyCycle;
+  *(to + 110) |= 0x80u;
   has = self->_has;
   if ((has & 0x100) == 0)
   {
@@ -616,8 +616,8 @@ LABEL_4:
   }
 
 LABEL_43:
-  *(a3 + 54) = self->_txPowerBackoff;
-  *(a3 + 110) |= 0x100u;
+  *(to + 54) = self->_txPowerBackoff;
+  *(to + 110) |= 0x100u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -628,8 +628,8 @@ LABEL_5:
     }
 
 LABEL_45:
-    *(a3 + 52) = self->_temperature;
-    *(a3 + 110) |= 0x40u;
+    *(to + 52) = self->_temperature;
+    *(to + 110) |= 0x40u;
     if ((*&self->_has & 4) == 0)
     {
       goto LABEL_8;
@@ -639,8 +639,8 @@ LABEL_45:
   }
 
 LABEL_44:
-  *(a3 + 50) = self->_numActiveChains;
-  *(a3 + 110) |= 0x10u;
+  *(to + 50) = self->_numActiveChains;
+  *(to + 110) |= 0x10u;
   has = self->_has;
   if ((has & 0x40) != 0)
   {
@@ -651,77 +651,77 @@ LABEL_6:
   if ((has & 4) != 0)
   {
 LABEL_7:
-    *(a3 + 48) = self->_batteryVoltage;
-    *(a3 + 110) |= 4u;
+    *(to + 48) = self->_batteryVoltage;
+    *(to + 110) |= 4u;
   }
 
 LABEL_8:
   if ([(AWDWiFiCLTMSliceSpecific *)self txDutyCycleBucketedsCount])
   {
-    [a3 clearTxDutyCycleBucketeds];
-    v6 = [(AWDWiFiCLTMSliceSpecific *)self txDutyCycleBucketedsCount];
-    if (v6)
+    [to clearTxDutyCycleBucketeds];
+    txDutyCycleBucketedsCount = [(AWDWiFiCLTMSliceSpecific *)self txDutyCycleBucketedsCount];
+    if (txDutyCycleBucketedsCount)
     {
-      v7 = v6;
+      v7 = txDutyCycleBucketedsCount;
       for (i = 0; i != v7; ++i)
       {
-        [a3 addTxDutyCycleBucketed:{-[AWDWiFiCLTMSliceSpecific txDutyCycleBucketedAtIndex:](self, "txDutyCycleBucketedAtIndex:", i)}];
+        [to addTxDutyCycleBucketed:{-[AWDWiFiCLTMSliceSpecific txDutyCycleBucketedAtIndex:](self, "txDutyCycleBucketedAtIndex:", i)}];
       }
     }
   }
 
   if ([(AWDWiFiCLTMSliceSpecific *)self txPowerBackoffBucketedsCount])
   {
-    [a3 clearTxPowerBackoffBucketeds];
-    v9 = [(AWDWiFiCLTMSliceSpecific *)self txPowerBackoffBucketedsCount];
-    if (v9)
+    [to clearTxPowerBackoffBucketeds];
+    txPowerBackoffBucketedsCount = [(AWDWiFiCLTMSliceSpecific *)self txPowerBackoffBucketedsCount];
+    if (txPowerBackoffBucketedsCount)
     {
-      v10 = v9;
+      v10 = txPowerBackoffBucketedsCount;
       for (j = 0; j != v10; ++j)
       {
-        [a3 addTxPowerBackoffBucketed:{-[AWDWiFiCLTMSliceSpecific txPowerBackoffBucketedAtIndex:](self, "txPowerBackoffBucketedAtIndex:", j)}];
+        [to addTxPowerBackoffBucketed:{-[AWDWiFiCLTMSliceSpecific txPowerBackoffBucketedAtIndex:](self, "txPowerBackoffBucketedAtIndex:", j)}];
       }
     }
   }
 
   if ([(AWDWiFiCLTMSliceSpecific *)self numActiveChainsBucketedsCount])
   {
-    [a3 clearNumActiveChainsBucketeds];
-    v12 = [(AWDWiFiCLTMSliceSpecific *)self numActiveChainsBucketedsCount];
-    if (v12)
+    [to clearNumActiveChainsBucketeds];
+    numActiveChainsBucketedsCount = [(AWDWiFiCLTMSliceSpecific *)self numActiveChainsBucketedsCount];
+    if (numActiveChainsBucketedsCount)
     {
-      v13 = v12;
+      v13 = numActiveChainsBucketedsCount;
       for (k = 0; k != v13; ++k)
       {
-        [a3 addNumActiveChainsBucketed:{-[AWDWiFiCLTMSliceSpecific numActiveChainsBucketedAtIndex:](self, "numActiveChainsBucketedAtIndex:", k)}];
+        [to addNumActiveChainsBucketed:{-[AWDWiFiCLTMSliceSpecific numActiveChainsBucketedAtIndex:](self, "numActiveChainsBucketedAtIndex:", k)}];
       }
     }
   }
 
   if ([(AWDWiFiCLTMSliceSpecific *)self temperatureBucketedsCount])
   {
-    [a3 clearTemperatureBucketeds];
-    v15 = [(AWDWiFiCLTMSliceSpecific *)self temperatureBucketedsCount];
-    if (v15)
+    [to clearTemperatureBucketeds];
+    temperatureBucketedsCount = [(AWDWiFiCLTMSliceSpecific *)self temperatureBucketedsCount];
+    if (temperatureBucketedsCount)
     {
-      v16 = v15;
+      v16 = temperatureBucketedsCount;
       for (m = 0; m != v16; ++m)
       {
-        [a3 addTemperatureBucketed:{-[AWDWiFiCLTMSliceSpecific temperatureBucketedAtIndex:](self, "temperatureBucketedAtIndex:", m)}];
+        [to addTemperatureBucketed:{-[AWDWiFiCLTMSliceSpecific temperatureBucketedAtIndex:](self, "temperatureBucketedAtIndex:", m)}];
       }
     }
   }
 
   if ([(AWDWiFiCLTMSliceSpecific *)self batteryVoltageBucketedsCount])
   {
-    [a3 clearBatteryVoltageBucketeds];
-    v18 = [(AWDWiFiCLTMSliceSpecific *)self batteryVoltageBucketedsCount];
-    if (v18)
+    [to clearBatteryVoltageBucketeds];
+    batteryVoltageBucketedsCount = [(AWDWiFiCLTMSliceSpecific *)self batteryVoltageBucketedsCount];
+    if (batteryVoltageBucketedsCount)
     {
-      v19 = v18;
+      v19 = batteryVoltageBucketedsCount;
       for (n = 0; n != v19; ++n)
       {
-        [a3 addBatteryVoltageBucketed:{-[AWDWiFiCLTMSliceSpecific batteryVoltageBucketedAtIndex:](self, "batteryVoltageBucketedAtIndex:", n)}];
+        [to addBatteryVoltageBucketed:{-[AWDWiFiCLTMSliceSpecific batteryVoltageBucketedAtIndex:](self, "batteryVoltageBucketedAtIndex:", n)}];
       }
     }
   }
@@ -735,8 +735,8 @@ LABEL_8:
     }
 
 LABEL_48:
-    *(a3 + 51) = self->_ppm;
-    *(a3 + 110) |= 0x20u;
+    *(to + 51) = self->_ppm;
+    *(to + 110) |= 0x20u;
     if ((*&self->_has & 2) == 0)
     {
       goto LABEL_32;
@@ -745,8 +745,8 @@ LABEL_48:
     goto LABEL_31;
   }
 
-  *(a3 + 49) = self->_cltmIndex;
-  *(a3 + 110) |= 8u;
+  *(to + 49) = self->_cltmIndex;
+  *(to + 110) |= 8u;
   v21 = self->_has;
   if ((v21 & 0x20) != 0)
   {
@@ -757,43 +757,43 @@ LABEL_30:
   if ((v21 & 2) != 0)
   {
 LABEL_31:
-    *(a3 + 23) = self->_updateCount;
-    *(a3 + 110) |= 2u;
+    *(to + 23) = self->_updateCount;
+    *(to + 110) |= 2u;
   }
 
 LABEL_32:
   if ([(AWDWiFiCLTMSliceSpecific *)self cltmIndexBucketedsCount])
   {
-    [a3 clearCltmIndexBucketeds];
-    v22 = [(AWDWiFiCLTMSliceSpecific *)self cltmIndexBucketedsCount];
-    if (v22)
+    [to clearCltmIndexBucketeds];
+    cltmIndexBucketedsCount = [(AWDWiFiCLTMSliceSpecific *)self cltmIndexBucketedsCount];
+    if (cltmIndexBucketedsCount)
     {
-      v23 = v22;
+      v23 = cltmIndexBucketedsCount;
       for (ii = 0; ii != v23; ++ii)
       {
-        [a3 addCltmIndexBucketed:{-[AWDWiFiCLTMSliceSpecific cltmIndexBucketedAtIndex:](self, "cltmIndexBucketedAtIndex:", ii)}];
+        [to addCltmIndexBucketed:{-[AWDWiFiCLTMSliceSpecific cltmIndexBucketedAtIndex:](self, "cltmIndexBucketedAtIndex:", ii)}];
       }
     }
   }
 
   if ([(AWDWiFiCLTMSliceSpecific *)self ppmBucketedsCount])
   {
-    [a3 clearPpmBucketeds];
-    v25 = [(AWDWiFiCLTMSliceSpecific *)self ppmBucketedsCount];
-    if (v25)
+    [to clearPpmBucketeds];
+    ppmBucketedsCount = [(AWDWiFiCLTMSliceSpecific *)self ppmBucketedsCount];
+    if (ppmBucketedsCount)
     {
-      v26 = v25;
+      v26 = ppmBucketedsCount;
       for (jj = 0; jj != v26; ++jj)
       {
-        [a3 addPpmBucketed:{-[AWDWiFiCLTMSliceSpecific ppmBucketedAtIndex:](self, "ppmBucketedAtIndex:", jj)}];
+        [to addPpmBucketed:{-[AWDWiFiCLTMSliceSpecific ppmBucketedAtIndex:](self, "ppmBucketedAtIndex:", jj)}];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = v4;
   has = self->_has;
   if (has)
@@ -919,18 +919,18 @@ LABEL_12:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (![a3 isMemberOfClass:objc_opt_class()])
+  if (![equal isMemberOfClass:objc_opt_class()])
   {
     return 0;
   }
 
   has = self->_has;
-  v6 = *(a3 + 110);
+  v6 = *(equal + 110);
   if (has)
   {
-    if ((v6 & 1) == 0 || self->_timestamp != *(a3 + 22))
+    if ((v6 & 1) == 0 || self->_timestamp != *(equal + 22))
     {
       return 0;
     }
@@ -943,7 +943,7 @@ LABEL_12:
 
   if ((has & 0x80) != 0)
   {
-    if ((v6 & 0x80) == 0 || self->_txDutyCycle != *(a3 + 53))
+    if ((v6 & 0x80) == 0 || self->_txDutyCycle != *(equal + 53))
     {
       return 0;
     }
@@ -956,20 +956,20 @@ LABEL_12:
 
   if ((*&self->_has & 0x100) != 0)
   {
-    if ((*(a3 + 110) & 0x100) == 0 || self->_txPowerBackoff != *(a3 + 54))
+    if ((*(equal + 110) & 0x100) == 0 || self->_txPowerBackoff != *(equal + 54))
     {
       return 0;
     }
   }
 
-  else if ((*(a3 + 110) & 0x100) != 0)
+  else if ((*(equal + 110) & 0x100) != 0)
   {
     return 0;
   }
 
   if ((has & 0x10) != 0)
   {
-    if ((v6 & 0x10) == 0 || self->_numActiveChains != *(a3 + 50))
+    if ((v6 & 0x10) == 0 || self->_numActiveChains != *(equal + 50))
     {
       return 0;
     }
@@ -982,7 +982,7 @@ LABEL_12:
 
   if ((has & 0x40) != 0)
   {
-    if ((v6 & 0x40) == 0 || self->_temperature != *(a3 + 52))
+    if ((v6 & 0x40) == 0 || self->_temperature != *(equal + 52))
     {
       return 0;
     }
@@ -995,7 +995,7 @@ LABEL_12:
 
   if ((has & 4) != 0)
   {
-    if ((v6 & 4) == 0 || self->_batteryVoltage != *(a3 + 48))
+    if ((v6 & 4) == 0 || self->_batteryVoltage != *(equal + 48))
     {
       return 0;
     }
@@ -1012,10 +1012,10 @@ LABEL_12:
   }
 
   v7 = self->_has;
-  v8 = *(a3 + 110);
+  v8 = *(equal + 110);
   if ((v7 & 8) != 0)
   {
-    if ((v8 & 8) == 0 || self->_cltmIndex != *(a3 + 49))
+    if ((v8 & 8) == 0 || self->_cltmIndex != *(equal + 49))
     {
       return 0;
     }
@@ -1028,7 +1028,7 @@ LABEL_12:
 
   if ((v7 & 0x20) != 0)
   {
-    if ((v8 & 0x20) == 0 || self->_ppm != *(a3 + 51))
+    if ((v8 & 0x20) == 0 || self->_ppm != *(equal + 51))
     {
       return 0;
     }
@@ -1041,7 +1041,7 @@ LABEL_12:
 
   if ((v7 & 2) != 0)
   {
-    if ((v8 & 2) == 0 || self->_updateCount != *(a3 + 23))
+    if ((v8 & 2) == 0 || self->_updateCount != *(equal + 23))
     {
       return 0;
     }
@@ -1188,14 +1188,14 @@ LABEL_21:
   return v16 ^ v17 ^ PBRepeatedUInt32Hash();
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v5 = *(a3 + 110);
+  v5 = *(from + 110);
   if (v5)
   {
-    self->_timestamp = *(a3 + 22);
+    self->_timestamp = *(from + 22);
     *&self->_has |= 1u;
-    v5 = *(a3 + 110);
+    v5 = *(from + 110);
     if ((v5 & 0x80) == 0)
     {
 LABEL_3:
@@ -1213,9 +1213,9 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  self->_txDutyCycle = *(a3 + 53);
+  self->_txDutyCycle = *(from + 53);
   *&self->_has |= 0x80u;
-  v5 = *(a3 + 110);
+  v5 = *(from + 110);
   if ((v5 & 0x100) == 0)
   {
 LABEL_4:
@@ -1228,9 +1228,9 @@ LABEL_4:
   }
 
 LABEL_36:
-  self->_txPowerBackoff = *(a3 + 54);
+  self->_txPowerBackoff = *(from + 54);
   *&self->_has |= 0x100u;
-  v5 = *(a3 + 110);
+  v5 = *(from + 110);
   if ((v5 & 0x10) == 0)
   {
 LABEL_5:
@@ -1243,9 +1243,9 @@ LABEL_5:
   }
 
 LABEL_37:
-  self->_numActiveChains = *(a3 + 50);
+  self->_numActiveChains = *(from + 50);
   *&self->_has |= 0x10u;
-  v5 = *(a3 + 110);
+  v5 = *(from + 110);
   if ((v5 & 0x40) == 0)
   {
 LABEL_6:
@@ -1258,72 +1258,72 @@ LABEL_6:
   }
 
 LABEL_38:
-  self->_temperature = *(a3 + 52);
+  self->_temperature = *(from + 52);
   *&self->_has |= 0x40u;
-  if ((*(a3 + 110) & 4) != 0)
+  if ((*(from + 110) & 4) != 0)
   {
 LABEL_7:
-    self->_batteryVoltage = *(a3 + 48);
+    self->_batteryVoltage = *(from + 48);
     *&self->_has |= 4u;
   }
 
 LABEL_8:
-  v6 = [a3 txDutyCycleBucketedsCount];
-  if (v6)
+  txDutyCycleBucketedsCount = [from txDutyCycleBucketedsCount];
+  if (txDutyCycleBucketedsCount)
   {
-    v7 = v6;
+    v7 = txDutyCycleBucketedsCount;
     for (i = 0; i != v7; ++i)
     {
-      -[AWDWiFiCLTMSliceSpecific addTxDutyCycleBucketed:](self, "addTxDutyCycleBucketed:", [a3 txDutyCycleBucketedAtIndex:i]);
+      -[AWDWiFiCLTMSliceSpecific addTxDutyCycleBucketed:](self, "addTxDutyCycleBucketed:", [from txDutyCycleBucketedAtIndex:i]);
     }
   }
 
-  v9 = [a3 txPowerBackoffBucketedsCount];
-  if (v9)
+  txPowerBackoffBucketedsCount = [from txPowerBackoffBucketedsCount];
+  if (txPowerBackoffBucketedsCount)
   {
-    v10 = v9;
+    v10 = txPowerBackoffBucketedsCount;
     for (j = 0; j != v10; ++j)
     {
-      -[AWDWiFiCLTMSliceSpecific addTxPowerBackoffBucketed:](self, "addTxPowerBackoffBucketed:", [a3 txPowerBackoffBucketedAtIndex:j]);
+      -[AWDWiFiCLTMSliceSpecific addTxPowerBackoffBucketed:](self, "addTxPowerBackoffBucketed:", [from txPowerBackoffBucketedAtIndex:j]);
     }
   }
 
-  v12 = [a3 numActiveChainsBucketedsCount];
-  if (v12)
+  numActiveChainsBucketedsCount = [from numActiveChainsBucketedsCount];
+  if (numActiveChainsBucketedsCount)
   {
-    v13 = v12;
+    v13 = numActiveChainsBucketedsCount;
     for (k = 0; k != v13; ++k)
     {
-      -[AWDWiFiCLTMSliceSpecific addNumActiveChainsBucketed:](self, "addNumActiveChainsBucketed:", [a3 numActiveChainsBucketedAtIndex:k]);
+      -[AWDWiFiCLTMSliceSpecific addNumActiveChainsBucketed:](self, "addNumActiveChainsBucketed:", [from numActiveChainsBucketedAtIndex:k]);
     }
   }
 
-  v15 = [a3 temperatureBucketedsCount];
-  if (v15)
+  temperatureBucketedsCount = [from temperatureBucketedsCount];
+  if (temperatureBucketedsCount)
   {
-    v16 = v15;
+    v16 = temperatureBucketedsCount;
     for (m = 0; m != v16; ++m)
     {
-      -[AWDWiFiCLTMSliceSpecific addTemperatureBucketed:](self, "addTemperatureBucketed:", [a3 temperatureBucketedAtIndex:m]);
+      -[AWDWiFiCLTMSliceSpecific addTemperatureBucketed:](self, "addTemperatureBucketed:", [from temperatureBucketedAtIndex:m]);
     }
   }
 
-  v18 = [a3 batteryVoltageBucketedsCount];
-  if (v18)
+  batteryVoltageBucketedsCount = [from batteryVoltageBucketedsCount];
+  if (batteryVoltageBucketedsCount)
   {
-    v19 = v18;
+    v19 = batteryVoltageBucketedsCount;
     for (n = 0; n != v19; ++n)
     {
-      -[AWDWiFiCLTMSliceSpecific addBatteryVoltageBucketed:](self, "addBatteryVoltageBucketed:", [a3 batteryVoltageBucketedAtIndex:n]);
+      -[AWDWiFiCLTMSliceSpecific addBatteryVoltageBucketed:](self, "addBatteryVoltageBucketed:", [from batteryVoltageBucketedAtIndex:n]);
     }
   }
 
-  v21 = *(a3 + 110);
+  v21 = *(from + 110);
   if ((v21 & 8) != 0)
   {
-    self->_cltmIndex = *(a3 + 49);
+    self->_cltmIndex = *(from + 49);
     *&self->_has |= 8u;
-    v21 = *(a3 + 110);
+    v21 = *(from + 110);
     if ((v21 & 0x20) == 0)
     {
 LABEL_25:
@@ -1341,33 +1341,33 @@ LABEL_25:
     goto LABEL_25;
   }
 
-  self->_ppm = *(a3 + 51);
+  self->_ppm = *(from + 51);
   *&self->_has |= 0x20u;
-  if ((*(a3 + 110) & 2) != 0)
+  if ((*(from + 110) & 2) != 0)
   {
 LABEL_26:
-    self->_updateCount = *(a3 + 23);
+    self->_updateCount = *(from + 23);
     *&self->_has |= 2u;
   }
 
 LABEL_27:
-  v22 = [a3 cltmIndexBucketedsCount];
-  if (v22)
+  cltmIndexBucketedsCount = [from cltmIndexBucketedsCount];
+  if (cltmIndexBucketedsCount)
   {
-    v23 = v22;
+    v23 = cltmIndexBucketedsCount;
     for (ii = 0; ii != v23; ++ii)
     {
-      -[AWDWiFiCLTMSliceSpecific addCltmIndexBucketed:](self, "addCltmIndexBucketed:", [a3 cltmIndexBucketedAtIndex:ii]);
+      -[AWDWiFiCLTMSliceSpecific addCltmIndexBucketed:](self, "addCltmIndexBucketed:", [from cltmIndexBucketedAtIndex:ii]);
     }
   }
 
-  v25 = [a3 ppmBucketedsCount];
-  if (v25)
+  ppmBucketedsCount = [from ppmBucketedsCount];
+  if (ppmBucketedsCount)
   {
-    v26 = v25;
+    v26 = ppmBucketedsCount;
     for (jj = 0; jj != v26; ++jj)
     {
-      -[AWDWiFiCLTMSliceSpecific addPpmBucketed:](self, "addPpmBucketed:", [a3 ppmBucketedAtIndex:jj]);
+      -[AWDWiFiCLTMSliceSpecific addPpmBucketed:](self, "addPpmBucketed:", [from ppmBucketedAtIndex:jj]);
     }
   }
 }

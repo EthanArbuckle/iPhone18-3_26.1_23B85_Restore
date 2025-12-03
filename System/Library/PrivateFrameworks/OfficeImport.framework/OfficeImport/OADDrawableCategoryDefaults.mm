@@ -36,17 +36,17 @@
   v2 = [(OADDrawableCategoryDefaults *)&v10 init];
   if (v2)
   {
-    v3 = [(OADGraphicProperties *)[OADShapeProperties alloc] initWithDefaults];
+    initWithDefaults = [(OADGraphicProperties *)[OADShapeProperties alloc] initWithDefaults];
     mShapeProperties = v2->mShapeProperties;
-    v2->mShapeProperties = v3;
+    v2->mShapeProperties = initWithDefaults;
 
-    v5 = [[OADTextBodyProperties alloc] initWithDefaults];
+    initWithDefaults2 = [[OADTextBodyProperties alloc] initWithDefaults];
     mTextBodyProperties = v2->mTextBodyProperties;
-    v2->mTextBodyProperties = v5;
+    v2->mTextBodyProperties = initWithDefaults2;
 
-    v7 = [[OADTextListStyle alloc] initWithDefaults];
+    initWithDefaults3 = [[OADTextListStyle alloc] initWithDefaults];
     mTextListStyle = v2->mTextListStyle;
-    v2->mTextListStyle = v7;
+    v2->mTextListStyle = initWithDefaults3;
   }
 
   return v2;

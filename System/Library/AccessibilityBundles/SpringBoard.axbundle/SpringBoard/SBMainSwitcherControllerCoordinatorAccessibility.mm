@@ -1,5 +1,5 @@
 @interface SBMainSwitcherControllerCoordinatorAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_axIsAppSwitcherPeeking;
 - (BOOL)_axIsAppSwitcherPeekingSlideOver;
 - (BOOL)_axIsAppSwitcherPeekingSplitView;
@@ -12,29 +12,29 @@
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_axSetUpSwitcherViewControllers;
 - (void)_axSetUpWrapperViews;
-- (void)keyboardFocusController:(id)a3 externalSceneDidAcquireFocus:(id)a4;
+- (void)keyboardFocusController:(id)controller externalSceneDidAcquireFocus:(id)focus;
 @end
 
 @implementation SBMainSwitcherControllerCoordinatorAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBMainSwitcherControllerCoordinator" isKindOfClass:@"NSObject"];
-  [v3 validateClass:@"SBSwitcherViewController" hasInstanceVariable:@"_contentWrapperView" withType:"BSUIOrientationTransformWrapperView"];
-  [v3 validateClass:@"SBSwitcherController" hasProperty:@"contentViewController" withType:"@"];
-  [v3 validateClass:@"SBSwitcherController" hasInstanceMethod:@"isMainSwitcherVisible" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"SBFluidSwitcherViewController" hasInstanceMethod:@"visibleShelves" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBSwitcherController" hasInstanceMethod:@"switcherViewController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBSwitcherController" hasInstanceMethod:@"_currentLayoutState" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBSwitcherController" hasInstanceMethod:@"isChamoisWindowingUIEnabled" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"SBMainDisplayLayoutState" hasInstanceMethod:@"isFloatingSwitcherVisible" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"UIFocusSystem" hasInstanceMethod:@"_isEnabled" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"SBSwitcherController" hasInstanceMethod:@"_currentMainAppLayout" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBSwitcherController" hasInstanceMethod:@"_currentFloatingAppLayout" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBMainDisplayLayoutState" hasInstanceMethod:@"peekConfiguration" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"SBMainDisplayLayoutState" hasInstanceMethod:@"unlockedEnvironmentMode" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"SBMainSwitcherControllerCoordinator" hasInstanceMethod:@"keyboardFocusController:externalSceneDidAcquireFocus:" withFullSignature:{"v", "@", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBMainSwitcherControllerCoordinator" isKindOfClass:@"NSObject"];
+  [validationsCopy validateClass:@"SBSwitcherViewController" hasInstanceVariable:@"_contentWrapperView" withType:"BSUIOrientationTransformWrapperView"];
+  [validationsCopy validateClass:@"SBSwitcherController" hasProperty:@"contentViewController" withType:"@"];
+  [validationsCopy validateClass:@"SBSwitcherController" hasInstanceMethod:@"isMainSwitcherVisible" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"SBFluidSwitcherViewController" hasInstanceMethod:@"visibleShelves" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBSwitcherController" hasInstanceMethod:@"switcherViewController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBSwitcherController" hasInstanceMethod:@"_currentLayoutState" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBSwitcherController" hasInstanceMethod:@"isChamoisWindowingUIEnabled" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"SBMainDisplayLayoutState" hasInstanceMethod:@"isFloatingSwitcherVisible" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"UIFocusSystem" hasInstanceMethod:@"_isEnabled" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"SBSwitcherController" hasInstanceMethod:@"_currentMainAppLayout" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBSwitcherController" hasInstanceMethod:@"_currentFloatingAppLayout" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBMainDisplayLayoutState" hasInstanceMethod:@"peekConfiguration" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"SBMainDisplayLayoutState" hasInstanceMethod:@"unlockedEnvironmentMode" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"SBMainSwitcherControllerCoordinator" hasInstanceMethod:@"keyboardFocusController:externalSceneDidAcquireFocus:" withFullSignature:{"v", "@", "@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -46,13 +46,13 @@
   [(SBMainSwitcherControllerCoordinatorAccessibility *)self _axSetUpSwitcherViewControllers];
 }
 
-- (void)keyboardFocusController:(id)a3 externalSceneDidAcquireFocus:(id)a4
+- (void)keyboardFocusController:(id)controller externalSceneDidAcquireFocus:(id)focus
 {
   v7.receiver = self;
   v7.super_class = SBMainSwitcherControllerCoordinatorAccessibility;
-  v5 = a4;
-  [(SBMainSwitcherControllerCoordinatorAccessibility *)&v7 keyboardFocusController:a3 externalSceneDidAcquireFocus:v5];
-  v6 = [v5 safeStringForKey:{@"identifier", v7.receiver, v7.super_class}];
+  focusCopy = focus;
+  [(SBMainSwitcherControllerCoordinatorAccessibility *)&v7 keyboardFocusController:controller externalSceneDidAcquireFocus:focusCopy];
+  v6 = [focusCopy safeStringForKey:{@"identifier", v7.receiver, v7.super_class}];
 
   UIAccessibilityPostNotification(*MEMORY[0x29EDC7470], v6);
 }
@@ -60,8 +60,8 @@
 - (void)_axSetUpWrapperViews
 {
   objc_initWeak(&location, self);
-  v3 = [(SBMainSwitcherControllerCoordinatorAccessibility *)self _activeDisplaySwitcherController];
-  v4 = [v3 safeValueForKey:@"switcherViewController"];
+  _activeDisplaySwitcherController = [(SBMainSwitcherControllerCoordinatorAccessibility *)self _activeDisplaySwitcherController];
+  v4 = [_activeDisplaySwitcherController safeValueForKey:@"switcherViewController"];
   v5 = [v4 safeUIViewForKey:@"_contentWrapperView"];
 
   v6[0] = MEMORY[0x29EDCA5F8];
@@ -132,8 +132,8 @@ uint64_t __83__SBMainSwitcherControllerCoordinatorAccessibility__axSetUpSwitcher
 - (id)_axFluidSwitcherViewController
 {
   objc_opt_class();
-  v3 = [(SBMainSwitcherControllerCoordinatorAccessibility *)self _activeDisplaySwitcherController];
-  v4 = [v3 safeValueForKey:@"contentViewController"];
+  _activeDisplaySwitcherController = [(SBMainSwitcherControllerCoordinatorAccessibility *)self _activeDisplaySwitcherController];
+  v4 = [_activeDisplaySwitcherController safeValueForKey:@"contentViewController"];
   v5 = __UIAccessibilityCastAsSafeCategory();
 
   return v5;
@@ -156,8 +156,8 @@ uint64_t __83__SBMainSwitcherControllerCoordinatorAccessibility__axSetUpSwitcher
     return 1;
   }
 
-  v4 = [(SBMainSwitcherControllerCoordinatorAccessibility *)self _activeDisplaySwitcherController];
-  v5 = [v4 safeBoolForKey:@"isMainSwitcherVisible"];
+  _activeDisplaySwitcherController = [(SBMainSwitcherControllerCoordinatorAccessibility *)self _activeDisplaySwitcherController];
+  v5 = [_activeDisplaySwitcherController safeBoolForKey:@"isMainSwitcherVisible"];
 
   return v5;
 }
@@ -174,8 +174,8 @@ uint64_t __83__SBMainSwitcherControllerCoordinatorAccessibility__axSetUpSwitcher
 
 - (BOOL)_axIsAppSwitcherPeekingSlideOver
 {
-  v3 = [(SBMainSwitcherControllerCoordinatorAccessibility *)self _activeDisplaySwitcherController];
-  v4 = [v3 safeValueForKey:@"_currentMainAppLayout"];
+  _activeDisplaySwitcherController = [(SBMainSwitcherControllerCoordinatorAccessibility *)self _activeDisplaySwitcherController];
+  v4 = [_activeDisplaySwitcherController safeValueForKey:@"_currentMainAppLayout"];
   if (v4)
   {
     v5 = 0;
@@ -183,8 +183,8 @@ uint64_t __83__SBMainSwitcherControllerCoordinatorAccessibility__axSetUpSwitcher
 
   else
   {
-    v6 = [(SBMainSwitcherControllerCoordinatorAccessibility *)self _activeDisplaySwitcherController];
-    v7 = [v6 safeValueForKey:@"_currentFloatingAppLayout"];
+    _activeDisplaySwitcherController2 = [(SBMainSwitcherControllerCoordinatorAccessibility *)self _activeDisplaySwitcherController];
+    v7 = [_activeDisplaySwitcherController2 safeValueForKey:@"_currentFloatingAppLayout"];
     v5 = v7 != 0;
   }
 
@@ -193,8 +193,8 @@ uint64_t __83__SBMainSwitcherControllerCoordinatorAccessibility__axSetUpSwitcher
 
 - (BOOL)_axIsAppSwitcherPeekingSplitView
 {
-  v2 = [(SBMainSwitcherControllerCoordinatorAccessibility *)self _activeDisplaySwitcherController];
-  v3 = [v2 safeValueForKey:@"_currentLayoutState"];
+  _activeDisplaySwitcherController = [(SBMainSwitcherControllerCoordinatorAccessibility *)self _activeDisplaySwitcherController];
+  v3 = [_activeDisplaySwitcherController safeValueForKey:@"_currentLayoutState"];
   v4 = [v3 safeIntegerForKey:@"peekConfiguration"];
 
   return v4 > 1;
@@ -202,8 +202,8 @@ uint64_t __83__SBMainSwitcherControllerCoordinatorAccessibility__axSetUpSwitcher
 
 - (BOOL)_axIsFloatingSwitcherVisible
 {
-  v3 = [(SBMainSwitcherControllerCoordinatorAccessibility *)self _activeDisplaySwitcherController];
-  v4 = [v3 safeValueForKey:@"_currentLayoutState"];
+  _activeDisplaySwitcherController = [(SBMainSwitcherControllerCoordinatorAccessibility *)self _activeDisplaySwitcherController];
+  v4 = [_activeDisplaySwitcherController safeValueForKey:@"_currentLayoutState"];
   v5 = ([v4 safeBoolForKey:@"isFloatingSwitcherVisible"] & 1) != 0 || -[SBMainSwitcherControllerCoordinatorAccessibility _axIsAppSwitcherPeekingSlideOver](self, "_axIsAppSwitcherPeekingSlideOver");
 
   return v5;
@@ -211,8 +211,8 @@ uint64_t __83__SBMainSwitcherControllerCoordinatorAccessibility__axSetUpSwitcher
 
 - (BOOL)_axIsShelfSwitcherVisible
 {
-  v2 = [(SBMainSwitcherControllerCoordinatorAccessibility *)self _axFluidSwitcherViewController];
-  v3 = [v2 safeDictionaryForKey:@"visibleShelves"];
+  _axFluidSwitcherViewController = [(SBMainSwitcherControllerCoordinatorAccessibility *)self _axFluidSwitcherViewController];
+  v3 = [_axFluidSwitcherViewController safeDictionaryForKey:@"visibleShelves"];
   v4 = [v3 count] != 0;
 
   return v4;
@@ -220,11 +220,11 @@ uint64_t __83__SBMainSwitcherControllerCoordinatorAccessibility__axSetUpSwitcher
 
 - (BOOL)_axIsChamoisSwitcherVisible
 {
-  v2 = [(SBMainSwitcherControllerCoordinatorAccessibility *)self _activeDisplaySwitcherController];
-  v3 = [v2 safeValueForKey:@"_currentLayoutState"];
+  _activeDisplaySwitcherController = [(SBMainSwitcherControllerCoordinatorAccessibility *)self _activeDisplaySwitcherController];
+  v3 = [_activeDisplaySwitcherController safeValueForKey:@"_currentLayoutState"];
   v4 = [v3 safeIntegerForKey:@"unlockedEnvironmentMode"];
 
-  v5 = [v2 safeBoolForKey:@"isChamoisWindowingUIEnabled"];
+  v5 = [_activeDisplaySwitcherController safeBoolForKey:@"isChamoisWindowingUIEnabled"];
   if (v4 == 3)
   {
     v6 = v5;

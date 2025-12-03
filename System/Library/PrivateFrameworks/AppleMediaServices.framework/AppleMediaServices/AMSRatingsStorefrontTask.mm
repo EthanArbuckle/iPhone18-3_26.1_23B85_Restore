@@ -1,28 +1,28 @@
 @interface AMSRatingsStorefrontTask
 + (AMSBagKeySet)bagKeySet;
 + (id)createBagForSubProfile;
-- (AMSRatingsStorefrontTask)initWithMediaType:(unint64_t)a3 clientIdentifier:(id)a4 bag:(id)a5;
+- (AMSRatingsStorefrontTask)initWithMediaType:(unint64_t)type clientIdentifier:(id)identifier bag:(id)bag;
 - (id)_queryItems;
-- (id)_urlBagKeyForMediaType:(unint64_t)a3;
-- (id)_urlForMediaType:(unint64_t)a3;
+- (id)_urlBagKeyForMediaType:(unint64_t)type;
+- (id)_urlForMediaType:(unint64_t)type;
 - (id)performTask;
 @end
 
 @implementation AMSRatingsStorefrontTask
 
-- (AMSRatingsStorefrontTask)initWithMediaType:(unint64_t)a3 clientIdentifier:(id)a4 bag:(id)a5
+- (AMSRatingsStorefrontTask)initWithMediaType:(unint64_t)type clientIdentifier:(id)identifier bag:(id)bag
 {
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  bagCopy = bag;
   v14.receiver = self;
   v14.super_class = AMSRatingsStorefrontTask;
   v11 = [(AMSTask *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    v11->_mediaType = a3;
-    objc_storeStrong(&v11->_clientIdentifier, a4);
-    objc_storeStrong(&v12->_bag, a5);
+    v11->_mediaType = type;
+    objc_storeStrong(&v11->_clientIdentifier, identifier);
+    objc_storeStrong(&v12->_bag, bag);
   }
 
   return v12;
@@ -242,23 +242,23 @@ LABEL_35:
   return v7;
 }
 
-- (id)_urlBagKeyForMediaType:(unint64_t)a3
+- (id)_urlBagKeyForMediaType:(unint64_t)type
 {
-  if (a3 > 4)
+  if (type > 4)
   {
     return @"AMSRatingsStorefrontMediaURL";
   }
 
   else
   {
-    return off_1E73BBB68[a3];
+    return off_1E73BBB68[type];
   }
 }
 
-- (id)_urlForMediaType:(unint64_t)a3
+- (id)_urlForMediaType:(unint64_t)type
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = [(AMSRatingsStorefrontTask *)self _urlBagKeyForMediaType:a3];
+  v4 = [(AMSRatingsStorefrontTask *)self _urlBagKeyForMediaType:type];
   v5 = [(AMSRatingsStorefrontTask *)self bag];
   v6 = [v5 stringForKey:v4];
   v28 = 0;
@@ -273,8 +273,8 @@ LABEL_35:
       v10 = +[AMSLogConfig sharedConfig];
     }
 
-    v11 = [v10 OSLogObject];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v10 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v19 = objc_opt_class();
       v20 = AMSLogKey();
@@ -285,7 +285,7 @@ LABEL_35:
       v32 = v20;
       v33 = 2112;
       v34 = v21;
-      _os_log_impl(&dword_192869000, v11, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Error getting URL from the bag for the key: %@.", buf, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Error getting URL from the bag for the key: %@.", buf, 0x20u);
     }
 
     goto LABEL_16;
@@ -300,8 +300,8 @@ LABEL_35:
       v22 = +[AMSLogConfig sharedConfig];
     }
 
-    v23 = [v22 OSLogObject];
-    if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
+    oSLogObject2 = [v22 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
     {
       v24 = objc_opt_class();
       v25 = AMSLogKey();
@@ -312,10 +312,10 @@ LABEL_35:
       v32 = v25;
       v33 = 2112;
       v34 = v26;
-      _os_log_impl(&dword_192869000, v23, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Error creating URL from string: %@.", buf, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Error creating URL from string: %@.", buf, 0x20u);
     }
 
-    v11 = AMSError(200, @"Storefronts URL string malformed", @"Failed to create URL from bag-provided URL string", 0);
+    oSLogObject = AMSError(200, @"Storefronts URL string malformed", @"Failed to create URL from bag-provided URL string", 0);
     v10 = 0;
 LABEL_16:
     v18 = 0;
@@ -323,19 +323,19 @@ LABEL_16:
   }
 
   v10 = v9;
-  v11 = [(AMSRatingsStorefrontTask *)self _queryItems];
+  oSLogObject = [(AMSRatingsStorefrontTask *)self _queryItems];
   v12 = [objc_alloc(MEMORY[0x1E696AF20]) initWithURL:v10 resolvingAgainstBaseURL:0];
-  v13 = [v12 queryItems];
-  v14 = v13;
+  queryItems = [v12 queryItems];
+  v14 = queryItems;
   v15 = MEMORY[0x1E695E0F0];
-  if (v13)
+  if (queryItems)
   {
-    v15 = v13;
+    v15 = queryItems;
   }
 
   v16 = v15;
 
-  v17 = [v16 arrayByAddingObjectsFromArray:v11];
+  v17 = [v16 arrayByAddingObjectsFromArray:oSLogObject];
 
   [v12 setQueryItems:v17];
   v18 = [v12 URL];
@@ -388,9 +388,9 @@ LABEL_17:
 
 + (id)createBagForSubProfile
 {
-  v2 = [objc_opt_class() bagSubProfile];
-  v3 = [objc_opt_class() bagSubProfileVersion];
-  v4 = [AMSBag bagForProfile:v2 profileVersion:v3];
+  bagSubProfile = [objc_opt_class() bagSubProfile];
+  bagSubProfileVersion = [objc_opt_class() bagSubProfileVersion];
+  v4 = [AMSBag bagForProfile:bagSubProfile profileVersion:bagSubProfileVersion];
 
   return v4;
 }

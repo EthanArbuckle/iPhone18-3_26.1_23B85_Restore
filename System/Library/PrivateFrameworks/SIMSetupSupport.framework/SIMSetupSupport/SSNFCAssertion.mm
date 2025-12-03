@@ -33,7 +33,7 @@
 {
   v7 = *MEMORY[0x277D85DE8];
   v3 = 138543618;
-  v4 = a1;
+  selfCopy = self;
   v5 = 2080;
   v6 = "[SSNFCAssertion _assert]";
   _os_log_error_impl(&dword_262AA8000, a2, OS_LOG_TYPE_ERROR, "[E]assertion fail with error: %{public}@ @%s", &v3, 0x16u);
@@ -45,8 +45,8 @@
   v10 = *MEMORY[0x277D85DE8];
   if (self->_preventConnectionHandoverAssertion)
   {
-    v3 = [getNFHardwareManagerClass() sharedHardwareManagerWithNoUI];
-    v4 = [v3 releaseAssertion:self->_preventConnectionHandoverAssertion];
+    sharedHardwareManagerWithNoUI = [getNFHardwareManagerClass() sharedHardwareManagerWithNoUI];
+    v4 = [sharedHardwareManagerWithNoUI releaseAssertion:self->_preventConnectionHandoverAssertion];
 
     preventConnectionHandoverAssertion = self->_preventConnectionHandoverAssertion;
     self->_preventConnectionHandoverAssertion = 0;

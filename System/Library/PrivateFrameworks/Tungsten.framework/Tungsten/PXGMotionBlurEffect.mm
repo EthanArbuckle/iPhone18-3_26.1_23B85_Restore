@@ -1,14 +1,14 @@
 @interface PXGMotionBlurEffect
-- (PXGMotionBlurEffect)initWithEntityManager:(id)a3;
+- (PXGMotionBlurEffect)initWithEntityManager:(id)manager;
 @end
 
 @implementation PXGMotionBlurEffect
 
-- (PXGMotionBlurEffect)initWithEntityManager:(id)a3
+- (PXGMotionBlurEffect)initWithEntityManager:(id)manager
 {
   v4.receiver = self;
   v4.super_class = PXGMotionBlurEffect;
-  result = [(PXGEffect *)&v4 initWithEntityManager:a3];
+  result = [(PXGEffect *)&v4 initWithEntityManager:manager];
   if (result)
   {
     result->_intensity = 0.1;

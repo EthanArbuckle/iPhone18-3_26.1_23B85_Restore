@@ -1,27 +1,27 @@
 @interface CAMControlStatusIndicator
 + (NSNumberFormatter)decimalFormatter;
 + (NSNumberFormatter)integerFormatter;
-+ (id)_createStretchableCircleImageFilled:(BOOL)a3 scale:(double)a4;
-+ (id)stretchableCircleImageFilled:(BOOL)a3 scale:(double)a4;
-- (CAMControlStatusIndicator)initWithFrame:(CGRect)a3;
++ (id)_createStretchableCircleImageFilled:(BOOL)filled scale:(double)scale;
++ (id)stretchableCircleImageFilled:(BOOL)filled scale:(double)scale;
+- (CAMControlStatusIndicator)initWithFrame:(CGRect)frame;
 - (CAMControlStatusIndicatorDelegate)delegate;
 - (CGSize)_valueLabelSize;
 - (CGSize)intrinsicContentSize;
 - (CGVector)imageOffset;
-- (id)hudItemForAccessibilityHUDManager:(id)a3;
+- (id)hudItemForAccessibilityHUDManager:(id)manager;
 - (id)imageForAXHUD;
 - (id)imageForCurrentState;
 - (id)imageNameForCurrentState;
 - (id)valueText;
-- (void)_updateImageOrientationAnimated:(BOOL)a3;
-- (void)_updateSlashAnimated:(BOOL)a3;
-- (void)_updateValueLabelVisibilityAnimated:(BOOL)a3;
+- (void)_updateImageOrientationAnimated:(BOOL)animated;
+- (void)_updateSlashAnimated:(BOOL)animated;
+- (void)_updateValueLabelVisibilityAnimated:(BOOL)animated;
 - (void)_updateValueText;
 - (void)layoutSubviews;
 - (void)setNeedsUpdateValueText;
-- (void)setOrientation:(int64_t)a3 animated:(BOOL)a4;
-- (void)setShowingValue:(BOOL)a3 animated:(BOOL)a4;
-- (void)updateImageAnimated:(BOOL)a3;
+- (void)setOrientation:(int64_t)orientation animated:(BOOL)animated;
+- (void)setShowingValue:(BOOL)value animated:(BOOL)animated;
+- (void)updateImageAnimated:(BOOL)animated;
 @end
 
 @implementation CAMControlStatusIndicator
@@ -79,17 +79,17 @@ uint64_t __45__CAMControlStatusIndicator_integerFormatter__block_invoke()
   return [v2 setPositiveFormat:@"0"];
 }
 
-+ (id)stretchableCircleImageFilled:(BOOL)a3 scale:(double)a4
++ (id)stretchableCircleImageFilled:(BOOL)filled scale:(double)scale
 {
-  v5 = a3;
+  filledCopy = filled;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
   v7 = @"NO";
-  if (v5)
+  if (filledCopy)
   {
     v7 = @"YES";
   }
 
-  v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"filled=%@ scale=%f", v7, *&a4];
+  v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"filled=%@ scale=%f", v7, *&scale];
   if (stretchableCircleImageFilled_scale__onceToken != -1)
   {
     +[CAMControlStatusIndicator stretchableCircleImageFilled:scale:];
@@ -104,7 +104,7 @@ uint64_t __45__CAMControlStatusIndicator_integerFormatter__block_invoke()
 
   else
   {
-    v10 = [a1 _createStretchableCircleImageFilled:v5 scale:a4];
+    v10 = [self _createStretchableCircleImageFilled:filledCopy scale:scale];
     [stretchableCircleImageFilled_scale__cachedCircleImages setObject:v10 forKeyedSubscript:v8];
   }
 
@@ -120,10 +120,10 @@ uint64_t __64__CAMControlStatusIndicator_stretchableCircleImageFilled_scale___bl
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-+ (id)_createStretchableCircleImageFilled:(BOOL)a3 scale:(double)a4
++ (id)_createStretchableCircleImageFilled:(BOOL)filled scale:(double)scale
 {
-  v5 = a3;
-  v6 = 3.0 / a4 * 0.5;
+  filledCopy = filled;
+  v6 = 3.0 / scale * 0.5;
   v7 = v6 * 2.0 + 24.0;
   v24.origin.x = 0.0;
   v24.origin.y = 0.0;
@@ -136,19 +136,19 @@ uint64_t __64__CAMControlStatusIndicator_stretchableCircleImageFilled_scale___bl
   height = v25.size.height;
   v25.origin.x = v7;
   v25.origin.y = v7;
-  UIGraphicsBeginImageContextWithOptions(v25.origin, 0, a4);
+  UIGraphicsBeginImageContextWithOptions(v25.origin, 0, scale);
   CurrentContext = UIGraphicsGetCurrentContext();
-  v13 = [MEMORY[0x1E69DC888] whiteColor];
-  [v13 setFill];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  [whiteColor setFill];
 
-  v14 = [MEMORY[0x1E69DC888] whiteColor];
-  [v14 setStroke];
+  whiteColor2 = [MEMORY[0x1E69DC888] whiteColor];
+  [whiteColor2 setStroke];
 
   v15 = x;
   v16 = y;
   v17 = width;
   v18 = height;
-  if (v5)
+  if (filledCopy)
   {
     CGContextFillEllipseInRect(CurrentContext, *&v15);
   }
@@ -167,11 +167,11 @@ uint64_t __64__CAMControlStatusIndicator_stretchableCircleImageFilled_scale___bl
   return v21;
 }
 
-- (CAMControlStatusIndicator)initWithFrame:(CGRect)a3
+- (CAMControlStatusIndicator)initWithFrame:(CGRect)frame
 {
   v27.receiver = self;
   v27.super_class = CAMControlStatusIndicator;
-  v3 = [(CAMControlStatusIndicator *)&v27 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CAMControlStatusIndicator *)&v27 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -183,8 +183,8 @@ uint64_t __64__CAMControlStatusIndicator_stretchableCircleImageFilled_scale___bl
       slashView = v5->__slashView;
       v5->__slashView = v7;
 
-      v9 = [MEMORY[0x1E69DC888] whiteColor];
-      [(CAMSlashView *)v5->__slashView setTintColor:v9];
+      whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+      [(CAMSlashView *)v5->__slashView setTintColor:whiteColor];
 
       [(CAMControlStatusIndicator *)v5 addSubview:v5->__slashView];
       v10 = objc_alloc_init(CAMSlashMaskView);
@@ -204,8 +204,8 @@ uint64_t __64__CAMControlStatusIndicator_stretchableCircleImageFilled_scale___bl
     {
       v14 = objc_alloc(MEMORY[0x1E69DCAE0]);
       v15 = objc_opt_class();
-      v16 = [(CAMControlStatusIndicator *)v5 traitCollection];
-      [v16 displayScale];
+      traitCollection = [(CAMControlStatusIndicator *)v5 traitCollection];
+      [traitCollection displayScale];
       v17 = [v15 stretchableCircleImageFilled:0 scale:?];
       v18 = [v14 initWithImage:v17];
       outlineView = v5->__outlineView;
@@ -220,8 +220,8 @@ uint64_t __64__CAMControlStatusIndicator_stretchableCircleImageFilled_scale___bl
       valueLabel = v5->__valueLabel;
       v5->__valueLabel = v20;
 
-      v22 = [MEMORY[0x1E69DC888] whiteColor];
-      [(UILabel *)v5->__valueLabel setTextColor:v22];
+      whiteColor2 = [MEMORY[0x1E69DC888] whiteColor];
+      [(UILabel *)v5->__valueLabel setTextColor:whiteColor2];
 
       v23 = +[CAMCaptureCapabilities capabilities];
       [v23 sfCameraFontSupported];
@@ -260,11 +260,11 @@ uint64_t __64__CAMControlStatusIndicator_stretchableCircleImageFilled_scale___bl
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(CAMControlStatusIndicator *)self _imageView];
-  v12 = [(CAMControlStatusIndicator *)self _outlineView];
-  v13 = [(CAMControlStatusIndicator *)self _valueLabel];
-  v14 = [(CAMControlStatusIndicator *)self _slashMaskContainer];
-  [v14 setFrame:{v4, v6, v8, v10}];
+  _imageView = [(CAMControlStatusIndicator *)self _imageView];
+  _outlineView = [(CAMControlStatusIndicator *)self _outlineView];
+  _valueLabel = [(CAMControlStatusIndicator *)self _valueLabel];
+  _slashMaskContainer = [(CAMControlStatusIndicator *)self _slashMaskContainer];
+  [_slashMaskContainer setFrame:{v4, v6, v8, v10}];
 
   v51 = v6;
   v52 = v4;
@@ -273,7 +273,7 @@ uint64_t __64__CAMControlStatusIndicator_stretchableCircleImageFilled_scale___bl
   [(CAMControlStatusIndicator *)self alignmentRectForFrame:v4, v6, v8, v10];
   UIRectGetCenter();
   v15 = MEMORY[0x1E695EFF8];
-  if (v11)
+  if (_imageView)
   {
     [(CAMControlStatusIndicator *)self imageOffset];
     if (v17 == 0.0 && v16 == 0.0 && [(CAMControlStatusIndicator *)self isShowingValue])
@@ -283,17 +283,17 @@ uint64_t __64__CAMControlStatusIndicator_stretchableCircleImageFilled_scale___bl
 
     v18 = *v15;
     v19 = v15[1];
-    [v11 intrinsicContentSize];
-    [v11 frameForAlignmentRect:{v18, v19, v20, v21}];
+    [_imageView intrinsicContentSize];
+    [_imageView frameForAlignmentRect:{v18, v19, v20, v21}];
     v23 = v22;
     v25 = v24;
     UIRectCenteredAboutPointScale();
     UIRectGetCenter();
-    [v11 setCenter:?];
-    [v11 setBounds:{v18, v19, v23, v25}];
+    [_imageView setCenter:?];
+    [_imageView setBounds:{v18, v19, v23, v25}];
   }
 
-  if (v12)
+  if (_outlineView)
   {
     v26 = *v15;
     v27 = v15[1];
@@ -302,11 +302,11 @@ uint64_t __64__CAMControlStatusIndicator_stretchableCircleImageFilled_scale___bl
     v31 = v30;
     UIRectCenteredAboutPointScale();
     UIRectGetCenter();
-    [v12 setCenter:?];
-    [v12 setBounds:{v26, v27, v29, v31}];
+    [_outlineView setCenter:?];
+    [_outlineView setBounds:{v26, v27, v29, v31}];
   }
 
-  if (v13)
+  if (_valueLabel)
   {
     v32 = *MEMORY[0x1E695F058];
     v33 = *(MEMORY[0x1E695F058] + 8);
@@ -316,7 +316,7 @@ uint64_t __64__CAMControlStatusIndicator_stretchableCircleImageFilled_scale___bl
     UIRectCenteredYInRectScale();
     if ([(CAMControlStatusIndicator *)self isShowingValue])
     {
-      [v12 frame];
+      [_outlineView frame];
       CGRectGetMaxX(v54);
       [(CAMControlStatusIndicator *)self _additionalWidthForValue];
     }
@@ -328,15 +328,15 @@ uint64_t __64__CAMControlStatusIndicator_stretchableCircleImageFilled_scale___bl
     }
 
     UIRectGetCenter();
-    [v13 setCenter:?];
-    [v13 setBounds:{v32, v33, v48, v47}];
+    [_valueLabel setCenter:?];
+    [_valueLabel setBounds:{v32, v33, v48, v47}];
   }
 
   if ([(CAMControlStatusIndicator *)self shouldUseSlash])
   {
-    if (v11)
+    if (_imageView)
     {
-      [v11 frame];
+      [_imageView frame];
     }
 
     else
@@ -349,11 +349,11 @@ uint64_t __64__CAMControlStatusIndicator_stretchableCircleImageFilled_scale___bl
     v39 = v38;
     v41 = v40;
     v43 = v42;
-    v44 = [(CAMControlStatusIndicator *)self _slashView];
-    [v44 setFrame:{v37, v39, v41, v43}];
+    _slashView = [(CAMControlStatusIndicator *)self _slashView];
+    [_slashView setFrame:{v37, v39, v41, v43}];
 
-    v45 = [(CAMControlStatusIndicator *)self _slashMaskView];
-    [v45 setFrame:{v52, v51, v50, v49}];
+    _slashMaskView = [(CAMControlStatusIndicator *)self _slashMaskView];
+    [_slashMaskView setFrame:{v52, v51, v50, v49}];
 
     [(CAMControlStatusIndicator *)self _updateSlashAnimated:0];
   }
@@ -361,17 +361,17 @@ uint64_t __64__CAMControlStatusIndicator_stretchableCircleImageFilled_scale___bl
 
 - (CGSize)intrinsicContentSize
 {
-  v3 = [(CAMControlStatusIndicator *)self _outlineView];
-  [v3 intrinsicContentSize];
+  _outlineView = [(CAMControlStatusIndicator *)self _outlineView];
+  [_outlineView intrinsicContentSize];
   v5 = v4;
   v7 = v6;
-  v8 = [(CAMControlStatusIndicator *)self _imageView];
-  v9 = [v8 image];
-  [v9 size];
+  _imageView = [(CAMControlStatusIndicator *)self _imageView];
+  image = [_imageView image];
+  [image size];
   v11 = v10;
   v13 = v12;
 
-  if (!v3)
+  if (!_outlineView)
   {
     v7 = v13;
     v5 = v11;
@@ -390,65 +390,65 @@ uint64_t __64__CAMControlStatusIndicator_stretchableCircleImageFilled_scale___bl
   return result;
 }
 
-- (void)updateImageAnimated:(BOOL)a3
+- (void)updateImageAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v27 = [(CAMControlStatusIndicator *)self imageForCurrentState];
-  if (v27)
+  animatedCopy = animated;
+  imageForCurrentState = [(CAMControlStatusIndicator *)self imageForCurrentState];
+  if (imageForCurrentState)
   {
-    v5 = [(CAMControlStatusIndicator *)self _imageView];
-    v6 = [(CAMControlStatusIndicator *)self _outlineView];
-    if (!v5)
+    _imageView = [(CAMControlStatusIndicator *)self _imageView];
+    _outlineView = [(CAMControlStatusIndicator *)self _outlineView];
+    if (!_imageView)
     {
-      v5 = objc_alloc_init(MEMORY[0x1E69DCAE0]);
-      v7 = [(CAMControlStatusIndicator *)self _slashMaskContainer];
-      v8 = v7;
-      if (v7)
+      _imageView = objc_alloc_init(MEMORY[0x1E69DCAE0]);
+      _slashMaskContainer = [(CAMControlStatusIndicator *)self _slashMaskContainer];
+      v8 = _slashMaskContainer;
+      if (_slashMaskContainer)
       {
-        v9 = v7;
+        selfCopy = _slashMaskContainer;
       }
 
       else
       {
-        v9 = self;
+        selfCopy = self;
       }
 
-      v10 = v9;
+      v10 = selfCopy;
 
-      [(CAMControlStatusIndicator *)v10 addSubview:v5];
-      [(CAMControlStatusIndicator *)self set_imageView:v5];
+      [(CAMControlStatusIndicator *)v10 addSubview:_imageView];
+      [(CAMControlStatusIndicator *)self set_imageView:_imageView];
     }
 
-    [v5 setImage:v27];
+    [_imageView setImage:imageForCurrentState];
     [(CAMControlStatusIndicator *)self setNeedsLayout];
-    v11 = [(CAMControlStatusIndicator *)self shouldUseActiveTintForCurrentState];
-    v12 = [MEMORY[0x1E69DC888] systemYellowColor];
-    v13 = v12;
-    if (v11)
+    shouldUseActiveTintForCurrentState = [(CAMControlStatusIndicator *)self shouldUseActiveTintForCurrentState];
+    systemYellowColor = [MEMORY[0x1E69DC888] systemYellowColor];
+    v13 = systemYellowColor;
+    if (shouldUseActiveTintForCurrentState)
     {
-      v14 = v12;
+      whiteColor = systemYellowColor;
     }
 
     else
     {
-      v14 = [MEMORY[0x1E69DC888] whiteColor];
+      whiteColor = [MEMORY[0x1E69DC888] whiteColor];
     }
 
-    v15 = v14;
-    if (v6)
+    v15 = whiteColor;
+    if (_outlineView)
     {
-      v26 = v3;
-      v16 = [(CAMControlStatusIndicator *)self shouldFillOutlineForCurrentState];
-      v17 = [(CAMControlStatusIndicator *)self shouldShowOutlineForCurrentState];
+      v26 = animatedCopy;
+      shouldFillOutlineForCurrentState = [(CAMControlStatusIndicator *)self shouldFillOutlineForCurrentState];
+      shouldShowOutlineForCurrentState = [(CAMControlStatusIndicator *)self shouldShowOutlineForCurrentState];
       v18 = objc_opt_class();
-      v19 = [(CAMControlStatusIndicator *)self traitCollection];
-      [v19 displayScale];
-      v20 = [v18 stretchableCircleImageFilled:v16 scale:?];
-      [v6 setImage:v20];
+      traitCollection = [(CAMControlStatusIndicator *)self traitCollection];
+      [traitCollection displayScale];
+      v20 = [v18 stretchableCircleImageFilled:shouldFillOutlineForCurrentState scale:?];
+      [_outlineView setImage:v20];
 
-      if (v11)
+      if (shouldUseActiveTintForCurrentState)
       {
-        [v6 setTintColor:v13];
+        [_outlineView setTintColor:v13];
         v21 = 0x1E69DC000;
       }
 
@@ -456,46 +456,46 @@ uint64_t __64__CAMControlStatusIndicator_stretchableCircleImageFilled_scale___bl
       {
         v21 = 0x1E69DC000uLL;
         v22 = [MEMORY[0x1E69DC888] colorWithWhite:1.0 alpha:0.6];
-        [v6 setTintColor:v22];
+        [_outlineView setTintColor:v22];
       }
 
       v23 = 0.0;
-      if (v17)
+      if (shouldShowOutlineForCurrentState)
       {
         v23 = 1.0;
       }
 
-      [v6 setAlpha:v23];
-      if (v16 && v17)
+      [_outlineView setAlpha:v23];
+      if (shouldFillOutlineForCurrentState && shouldShowOutlineForCurrentState)
       {
-        v24 = [*(v21 + 2184) blackColor];
+        blackColor = [*(v21 + 2184) blackColor];
 
-        v15 = v24;
+        v15 = blackColor;
       }
 
-      v3 = v26;
+      animatedCopy = v26;
     }
 
-    [v5 setTintColor:v15];
-    v25 = [(CAMControlStatusIndicator *)self _valueLabel];
-    [v25 setTextColor:v15];
+    [_imageView setTintColor:v15];
+    _valueLabel = [(CAMControlStatusIndicator *)self _valueLabel];
+    [_valueLabel setTextColor:v15];
   }
 
   if ([(CAMControlStatusIndicator *)self shouldUseSlash])
   {
-    [(CAMControlStatusIndicator *)self _updateSlashAnimated:v3];
+    [(CAMControlStatusIndicator *)self _updateSlashAnimated:animatedCopy];
   }
 }
 
 - (id)imageForCurrentState
 {
-  v3 = [(CAMControlStatusIndicator *)self imageNameForCurrentState];
-  if (v3)
+  imageNameForCurrentState = [(CAMControlStatusIndicator *)self imageNameForCurrentState];
+  if (imageNameForCurrentState)
   {
-    v4 = [(CAMControlStatusIndicator *)self customPointSizeForImageSymbol];
-    if (v4)
+    customPointSizeForImageSymbol = [(CAMControlStatusIndicator *)self customPointSizeForImageSymbol];
+    if (customPointSizeForImageSymbol)
     {
-      v5 = [MEMORY[0x1E69DCAD8] configurationWithPointSize:v4];
+      v5 = [MEMORY[0x1E69DCAD8] configurationWithPointSize:customPointSizeForImageSymbol];
     }
 
     else
@@ -514,15 +514,15 @@ uint64_t __64__CAMControlStatusIndicator_stretchableCircleImageFilled_scale___bl
     }
 
     v8 = v5;
-    v9 = [(CAMControlStatusIndicator *)self imageSymbolColorConfiguration];
-    if (v9)
+    imageSymbolColorConfiguration = [(CAMControlStatusIndicator *)self imageSymbolColorConfiguration];
+    if (imageSymbolColorConfiguration)
     {
-      v10 = [v8 configurationByApplyingConfiguration:v9];
+      v10 = [v8 configurationByApplyingConfiguration:imageSymbolColorConfiguration];
 
       v8 = v10;
     }
 
-    v11 = [MEMORY[0x1E69DCAB8] _systemImageNamed:v3 withConfiguration:v8];
+    v11 = [MEMORY[0x1E69DCAB8] _systemImageNamed:imageNameForCurrentState withConfiguration:v8];
     v12 = v11;
     if (v11)
     {
@@ -533,7 +533,7 @@ uint64_t __64__CAMControlStatusIndicator_stretchableCircleImageFilled_scale___bl
     {
       v13 = MEMORY[0x1E69DCAB8];
       v14 = CAMCameraUIFrameworkBundle();
-      v15 = [v13 imageNamed:v3 inBundle:v14];
+      v15 = [v13 imageNamed:imageNameForCurrentState inBundle:v14];
       v6 = [v15 imageWithRenderingMode:2];
     }
   }
@@ -558,12 +558,12 @@ uint64_t __64__CAMControlStatusIndicator_stretchableCircleImageFilled_scale___bl
 
 - (id)imageForAXHUD
 {
-  v3 = [(CAMControlStatusIndicator *)self imageNameForAXHUD];
+  imageNameForAXHUD = [(CAMControlStatusIndicator *)self imageNameForAXHUD];
   v4 = [MEMORY[0x1E69DCAD8] configurationWithScale:3];
-  v5 = [(CAMControlStatusIndicator *)self traitCollection];
-  v6 = [v4 configurationWithTraitCollection:v5];
+  traitCollection = [(CAMControlStatusIndicator *)self traitCollection];
+  v6 = [v4 configurationWithTraitCollection:traitCollection];
 
-  v7 = [MEMORY[0x1E69DCAB8] _systemImageNamed:v3 withConfiguration:v6];
+  v7 = [MEMORY[0x1E69DCAB8] _systemImageNamed:imageNameForAXHUD withConfiguration:v6];
   v8 = v7;
   if (v7)
   {
@@ -574,7 +574,7 @@ uint64_t __64__CAMControlStatusIndicator_stretchableCircleImageFilled_scale___bl
   {
     v10 = MEMORY[0x1E69DCAB8];
     v11 = CAMCameraUIFrameworkBundle();
-    v9 = [v10 imageNamed:v3 inBundle:v11];
+    v9 = [v10 imageNamed:imageNameForAXHUD inBundle:v11];
   }
 
   return v9;
@@ -617,10 +617,10 @@ uint64_t __64__CAMControlStatusIndicator_stretchableCircleImageFilled_scale___bl
 - (void)_updateValueText
 {
   [(CAMControlStatusIndicator *)self _setNeedsUpdateValueText:0];
-  v13 = [(CAMControlStatusIndicator *)self valueText];
-  v3 = [(CAMControlStatusIndicator *)self _valueLabel];
-  [v3 setText:v13];
-  [v3 intrinsicContentSize];
+  valueText = [(CAMControlStatusIndicator *)self valueText];
+  _valueLabel = [(CAMControlStatusIndicator *)self _valueLabel];
+  [_valueLabel setText:valueText];
+  [_valueLabel intrinsicContentSize];
   UICeilToViewScale();
   v5 = v4;
   UICeilToViewScale();
@@ -631,19 +631,19 @@ uint64_t __64__CAMControlStatusIndicator_stretchableCircleImageFilled_scale___bl
     [(CAMControlStatusIndicator *)self _setValueLabelSize:v5, v7];
     if ([(CAMControlStatusIndicator *)self isShowingValue])
     {
-      v11 = [(CAMControlStatusIndicator *)self delegate];
-      [v11 controlStatusIndicatorDidChangeIntrinsicContentSize:self animated:1];
+      delegate = [(CAMControlStatusIndicator *)self delegate];
+      [delegate controlStatusIndicatorDidChangeIntrinsicContentSize:self animated:1];
 
-      v12 = [(CAMControlStatusIndicator *)self _slashMaskView];
-      [v12 updateMaskAnimated];
+      _slashMaskView = [(CAMControlStatusIndicator *)self _slashMaskView];
+      [_slashMaskView updateMaskAnimated];
     }
   }
 }
 
-- (void)_updateValueLabelVisibilityAnimated:(BOOL)a3
+- (void)_updateValueLabelVisibilityAnimated:(BOOL)animated
 {
   v3 = 0.0;
-  if (a3)
+  if (animated)
   {
     v3 = 0.25;
   }
@@ -672,109 +672,109 @@ void __65__CAMControlStatusIndicator__updateValueLabelVisibilityAnimated___block
   [v3 setAlpha:v2];
 }
 
-- (void)setOrientation:(int64_t)a3 animated:(BOOL)a4
+- (void)setOrientation:(int64_t)orientation animated:(BOOL)animated
 {
-  if (self->_orientation != a3)
+  if (self->_orientation != orientation)
   {
-    self->_orientation = a3;
-    [(CAMControlStatusIndicator *)self _updateImageOrientationAnimated:a4];
+    self->_orientation = orientation;
+    [(CAMControlStatusIndicator *)self _updateImageOrientationAnimated:animated];
   }
 }
 
-- (void)_updateImageOrientationAnimated:(BOOL)a3
+- (void)_updateImageOrientationAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   if (([(CAMControlStatusIndicator *)self orientation]- 1) > 1)
   {
-    v5 = 1;
+    orientation = 1;
   }
 
   else
   {
-    v5 = [(CAMControlStatusIndicator *)self orientation];
+    orientation = [(CAMControlStatusIndicator *)self orientation];
   }
 
-  v6 = [(CAMControlStatusIndicator *)self _valueLabel];
-  [CAMView rotateView:v6 toInterfaceOrientation:v5 animated:0];
+  _valueLabel = [(CAMControlStatusIndicator *)self _valueLabel];
+  [CAMView rotateView:_valueLabel toInterfaceOrientation:orientation animated:0];
 
   if (![(CAMControlStatusIndicator *)self isShowingValue])
   {
-    v5 = [(CAMControlStatusIndicator *)self orientation];
+    orientation = [(CAMControlStatusIndicator *)self orientation];
   }
 
-  v7 = [(CAMControlStatusIndicator *)self _imageView];
-  [CAMView rotateView:v7 toInterfaceOrientation:v5 animated:v3];
+  _imageView = [(CAMControlStatusIndicator *)self _imageView];
+  [CAMView rotateView:_imageView toInterfaceOrientation:orientation animated:animatedCopy];
 
-  v8 = [(CAMControlStatusIndicator *)self _slashView];
-  [CAMView rotateView:v8 toInterfaceOrientation:v5 animated:v3];
+  _slashView = [(CAMControlStatusIndicator *)self _slashView];
+  [CAMView rotateView:_slashView toInterfaceOrientation:orientation animated:animatedCopy];
 
-  v9 = [(CAMControlStatusIndicator *)self _slashMaskView];
-  [CAMView rotateView:v9 toInterfaceOrientation:v5 animated:v3];
+  _slashMaskView = [(CAMControlStatusIndicator *)self _slashMaskView];
+  [CAMView rotateView:_slashMaskView toInterfaceOrientation:orientation animated:animatedCopy];
 }
 
-- (void)setShowingValue:(BOOL)a3 animated:(BOOL)a4
+- (void)setShowingValue:(BOOL)value animated:(BOOL)animated
 {
-  if (self->_showingValue != a3)
+  if (self->_showingValue != value)
   {
-    v4 = a4;
-    v5 = a3;
-    v7 = [(CAMControlStatusIndicator *)self _valueLabel];
+    animatedCopy = animated;
+    valueCopy = value;
+    _valueLabel = [(CAMControlStatusIndicator *)self _valueLabel];
 
-    if (v7)
+    if (_valueLabel)
     {
-      if (v4)
+      if (animatedCopy)
       {
         [(CAMControlStatusIndicator *)self layoutIfNeeded];
       }
 
-      if (v5 && [(CAMControlStatusIndicator *)self _needsUpdateValueText])
+      if (valueCopy && [(CAMControlStatusIndicator *)self _needsUpdateValueText])
       {
         [(CAMControlStatusIndicator *)self _updateValueText];
       }
 
-      self->_showingValue = v5;
+      self->_showingValue = valueCopy;
       [(CAMControlStatusIndicator *)self setNeedsLayout];
-      [(CAMControlStatusIndicator *)self _updateImageOrientationAnimated:v4];
-      [(CAMControlStatusIndicator *)self _updateValueLabelVisibilityAnimated:v4];
-      v8 = [(CAMControlStatusIndicator *)self delegate];
-      [v8 controlStatusIndicatorDidChangeIntrinsicContentSize:self animated:v4];
+      [(CAMControlStatusIndicator *)self _updateImageOrientationAnimated:animatedCopy];
+      [(CAMControlStatusIndicator *)self _updateValueLabelVisibilityAnimated:animatedCopy];
+      delegate = [(CAMControlStatusIndicator *)self delegate];
+      [delegate controlStatusIndicatorDidChangeIntrinsicContentSize:self animated:animatedCopy];
 
-      if (v4)
+      if (animatedCopy)
       {
-        v9 = [(CAMControlStatusIndicator *)self _slashMaskView];
-        [v9 updateMaskAnimated];
+        _slashMaskView = [(CAMControlStatusIndicator *)self _slashMaskView];
+        [_slashMaskView updateMaskAnimated];
       }
     }
   }
 }
 
-- (void)_updateSlashAnimated:(BOOL)a3
+- (void)_updateSlashAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v7 = [(CAMControlStatusIndicator *)self _slashView];
-  v5 = [(CAMControlStatusIndicator *)self _slashMaskView];
-  v6 = [(CAMControlStatusIndicator *)self shouldShowSlashForCurrentState];
-  [v7 bounds];
-  [v5 convertRect:v7 fromView:?];
-  [v5 setSlashBounds:v3 animated:?];
-  [v7 setVisible:v6 animated:v3];
+  animatedCopy = animated;
+  _slashView = [(CAMControlStatusIndicator *)self _slashView];
+  _slashMaskView = [(CAMControlStatusIndicator *)self _slashMaskView];
+  shouldShowSlashForCurrentState = [(CAMControlStatusIndicator *)self shouldShowSlashForCurrentState];
+  [_slashView bounds];
+  [_slashMaskView convertRect:_slashView fromView:?];
+  [_slashMaskView setSlashBounds:animatedCopy animated:?];
+  [_slashView setVisible:shouldShowSlashForCurrentState animated:animatedCopy];
 }
 
-- (id)hudItemForAccessibilityHUDManager:(id)a3
+- (id)hudItemForAccessibilityHUDManager:(id)manager
 {
-  v4 = [(CAMControlStatusIndicator *)self imageForAXHUD];
+  imageForAXHUD = [(CAMControlStatusIndicator *)self imageForAXHUD];
   if ([(CAMControlStatusIndicator *)self canShowValue]&& [(CAMControlStatusIndicator *)self isShowingValue])
   {
-    v5 = [(CAMControlStatusIndicator *)self valueText];
+    valueText = [(CAMControlStatusIndicator *)self valueText];
   }
 
   else
   {
-    v5 = 0;
+    valueText = 0;
   }
 
   v6 = objc_alloc(MEMORY[0x1E69DC618]);
-  v7 = [v6 initWithTitle:v5 image:v4 imageInsets:1 scaleImage:{*MEMORY[0x1E69DDCE0], *(MEMORY[0x1E69DDCE0] + 8), *(MEMORY[0x1E69DDCE0] + 16), *(MEMORY[0x1E69DDCE0] + 24)}];
+  v7 = [v6 initWithTitle:valueText image:imageForAXHUD imageInsets:1 scaleImage:{*MEMORY[0x1E69DDCE0], *(MEMORY[0x1E69DDCE0] + 8), *(MEMORY[0x1E69DDCE0] + 16), *(MEMORY[0x1E69DDCE0] + 24)}];
 
   return v7;
 }

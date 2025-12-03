@@ -1,11 +1,11 @@
 @interface INHelperServiceAccessSpecifier
 + (id)accessSpecifierAppropriateForCurrentProcess;
-+ (id)accessSpecifierAppropriateForXPCConnection:(id)a3;
-+ (id)accessSpecifierFilteredForAssociatedAppBundleIdentifier:(id)a3;
++ (id)accessSpecifierAppropriateForXPCConnection:(id)connection;
++ (id)accessSpecifierFilteredForAssociatedAppBundleIdentifier:(id)identifier;
 + (id)accessSpecifierUnrestricted;
 + (id)accessSpecifierWithNoAccess;
 + (void)initialize;
-- (INHelperServiceAccessSpecifier)initWithAccessLevel:(unint64_t)a3 associatedAppBundleIdentifier:(id)a4;
+- (INHelperServiceAccessSpecifier)initWithAccessLevel:(unint64_t)level associatedAppBundleIdentifier:(id)identifier;
 - (id)debugDescription;
 @end
 
@@ -13,20 +13,20 @@
 
 - (id)debugDescription
 {
-  v3 = [(INHelperServiceAccessSpecifier *)self accessLevel];
-  if (v3 == 2)
+  accessLevel = [(INHelperServiceAccessSpecifier *)self accessLevel];
+  if (accessLevel == 2)
   {
     v4 = @"Unrestricted";
   }
 
-  else if (v3 == 1)
+  else if (accessLevel == 1)
   {
     v5 = MEMORY[0x1E696AEC0];
-    v6 = [(INHelperServiceAccessSpecifier *)self associatedAppBundleIdentifier];
-    v4 = [v5 stringWithFormat:@"FilteredByBundleID=%@", v6];
+    associatedAppBundleIdentifier = [(INHelperServiceAccessSpecifier *)self associatedAppBundleIdentifier];
+    v4 = [v5 stringWithFormat:@"FilteredByBundleID=%@", associatedAppBundleIdentifier];
   }
 
-  else if (v3)
+  else if (accessLevel)
   {
     v4 = 0;
   }
@@ -44,17 +44,17 @@
   return v10;
 }
 
-- (INHelperServiceAccessSpecifier)initWithAccessLevel:(unint64_t)a3 associatedAppBundleIdentifier:(id)a4
+- (INHelperServiceAccessSpecifier)initWithAccessLevel:(unint64_t)level associatedAppBundleIdentifier:(id)identifier
 {
-  v6 = a4;
+  identifierCopy = identifier;
   v12.receiver = self;
   v12.super_class = INHelperServiceAccessSpecifier;
   v7 = [(INHelperServiceAccessSpecifier *)&v12 init];
   v8 = v7;
   if (v7)
   {
-    v7->_accessLevel = a3;
-    v9 = [v6 copy];
+    v7->_accessLevel = level;
+    v9 = [identifierCopy copy];
     associatedAppBundleIdentifier = v8->_associatedAppBundleIdentifier;
     v8->_associatedAppBundleIdentifier = v9;
   }
@@ -62,14 +62,14 @@
   return v8;
 }
 
-+ (id)accessSpecifierAppropriateForXPCConnection:(id)a3
++ (id)accessSpecifierAppropriateForXPCConnection:(id)connection
 {
-  MEMORY[0x1EEE9AC00](a1, a2);
+  MEMORY[0x1EEE9AC00](self, a2);
   v29 = *MEMORY[0x1E69E9840];
   v4 = v3;
-  v5 = [v4 processIdentifier];
+  processIdentifier = [v4 processIdentifier];
   bzero(buffer, 0x1000uLL);
-  v6 = proc_pidpath(v5, buffer, 0x1000u);
+  v6 = proc_pidpath(processIdentifier, buffer, 0x1000u);
   if (v6 >= 1 && (v7 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithBytes:buffer length:v6 encoding:4], v8 = objc_msgSend(objc_alloc(MEMORY[0x1E695DFF8]), "initFileURLWithPath:isDirectory:", v7, 1), v9 = _CFBundleCopyBundleURLForExecutableURL(), v8, v7, v9))
   {
     v10 = [MEMORY[0x1E6963618] bundleProxyForURL:v9];
@@ -95,7 +95,7 @@
       v24 = 136315394;
       v25 = "bundleProxyForPID";
       v26 = 1024;
-      LODWORD(v27) = v5;
+      LODWORD(v27) = processIdentifier;
       _os_log_impl(&dword_18E991000, v12, OS_LOG_TYPE_INFO, "%s No bundleURL for pid=%{publid}d", &v24, 0x12u);
     }
 
@@ -140,10 +140,10 @@
 
       else
       {
-        v21 = [v10 bundleIdentifier];
-        if (v21)
+        bundleIdentifier = [v10 bundleIdentifier];
+        if (bundleIdentifier)
         {
-          [INHelperServiceAccessSpecifier accessSpecifierFilteredForAssociatedAppBundleIdentifier:v21];
+          [INHelperServiceAccessSpecifier accessSpecifierFilteredForAssociatedAppBundleIdentifier:bundleIdentifier];
         }
 
         else
@@ -190,42 +190,42 @@
   if (INThisProcessIsCarousel_isCarousel == 1)
   {
 LABEL_10:
-    v3 = [a1 accessSpecifierUnrestricted];
+    accessSpecifierUnrestricted = [self accessSpecifierUnrestricted];
   }
 
   else
   {
-    v3 = [a1 accessSpecifierWithNoAccess];
+    accessSpecifierUnrestricted = [self accessSpecifierWithNoAccess];
   }
 
-  return v3;
+  return accessSpecifierUnrestricted;
 }
 
 + (id)accessSpecifierWithNoAccess
 {
-  v2 = [[a1 alloc] initWithAccessLevel:0 associatedAppBundleIdentifier:0];
+  v2 = [[self alloc] initWithAccessLevel:0 associatedAppBundleIdentifier:0];
 
   return v2;
 }
 
-+ (id)accessSpecifierFilteredForAssociatedAppBundleIdentifier:(id)a3
++ (id)accessSpecifierFilteredForAssociatedAppBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithAccessLevel:1 associatedAppBundleIdentifier:v4];
+  identifierCopy = identifier;
+  v5 = [[self alloc] initWithAccessLevel:1 associatedAppBundleIdentifier:identifierCopy];
 
   return v5;
 }
 
 + (id)accessSpecifierUnrestricted
 {
-  v2 = [[a1 alloc] initWithAccessLevel:2 associatedAppBundleIdentifier:0];
+  v2 = [[self alloc] initWithAccessLevel:2 associatedAppBundleIdentifier:0];
 
   return v2;
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1 && INLogInitIfNeeded_once != -1)
+  if (objc_opt_class() == self && INLogInitIfNeeded_once != -1)
   {
 
     dispatch_once(&INLogInitIfNeeded_once, &__block_literal_global_72043);

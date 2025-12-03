@@ -1,7 +1,7 @@
 @interface ImageDataConfiguration
 - (NSArray)itemProvidersForActivityItemsConfiguration;
 - (_TtC6Tamale22ImageDataConfiguration)init;
-- (void)setItemProvidersForActivityItemsConfiguration:(id)a3;
+- (void)setItemProvidersForActivityItemsConfiguration:(id)configuration;
 @end
 
 @implementation ImageDataConfiguration
@@ -15,7 +15,7 @@
   return v2.super.isa;
 }
 
-- (void)setItemProvidersForActivityItemsConfiguration:(id)a3
+- (void)setItemProvidersForActivityItemsConfiguration:(id)configuration
 {
   sub_1000E94BC();
   *(self + OBJC_IVAR____TtC6Tamale22ImageDataConfiguration_itemProvidersForActivityItemsConfiguration) = static Array._unconditionallyBridgeFromObjectiveC(_:)();

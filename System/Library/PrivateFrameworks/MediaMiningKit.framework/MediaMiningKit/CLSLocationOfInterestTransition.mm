@@ -1,15 +1,15 @@
 @interface CLSLocationOfInterestTransition
-- (BOOL)isEqual:(id)a3;
-- (CLSLocationOfInterestTransition)initWithIdentifier:(id)a3 transitionInterval:(id)a4 transportationMode:(int64_t)a5;
+- (BOOL)isEqual:(id)equal;
+- (CLSLocationOfInterestTransition)initWithIdentifier:(id)identifier transitionInterval:(id)interval transportationMode:(int64_t)mode;
 - (id)description;
 @end
 
 @implementation CLSLocationOfInterestTransition
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -20,8 +20,8 @@
     if (objc_opt_isKindOfClass())
     {
       identifier = self->_identifier;
-      v6 = [(CLSLocationOfInterestTransition *)v4 identifier];
-      v7 = [(NSUUID *)identifier isEqual:v6];
+      identifier = [(CLSLocationOfInterestTransition *)equalCopy identifier];
+      v7 = [(NSUUID *)identifier isEqual:identifier];
     }
 
     else
@@ -56,19 +56,19 @@
   return v8;
 }
 
-- (CLSLocationOfInterestTransition)initWithIdentifier:(id)a3 transitionInterval:(id)a4 transportationMode:(int64_t)a5
+- (CLSLocationOfInterestTransition)initWithIdentifier:(id)identifier transitionInterval:(id)interval transportationMode:(int64_t)mode
 {
-  v9 = a3;
-  v10 = a4;
+  identifierCopy = identifier;
+  intervalCopy = interval;
   v14.receiver = self;
   v14.super_class = CLSLocationOfInterestTransition;
   v11 = [(CLSLocationOfInterestTransition *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_identifier, a3);
-    objc_storeStrong(&v12->_transitionInterval, a4);
-    v12->_transportationMode = a5;
+    objc_storeStrong(&v11->_identifier, identifier);
+    objc_storeStrong(&v12->_transitionInterval, interval);
+    v12->_transportationMode = mode;
   }
 
   return v12;

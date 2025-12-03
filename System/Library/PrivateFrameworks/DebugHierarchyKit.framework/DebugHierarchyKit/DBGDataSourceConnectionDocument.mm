@@ -1,50 +1,50 @@
 @interface DBGDataSourceConnectionDocument
-+ (id)connectionForDocumentDirectoryAtURL:(id)a3;
++ (id)connectionForDocumentDirectoryAtURL:(id)l;
 - (DBGDataSourceConnectionDelegate)delegate;
-- (DBGDataSourceConnectionDocument)initWithDirectoryURL:(id)a3;
-- (id)dataForFetchAtIndex:(int64_t)a3;
-- (id)dateOrdererdContentsOfDirectory:(id)a3;
+- (DBGDataSourceConnectionDocument)initWithDirectoryURL:(id)l;
+- (id)dataForFetchAtIndex:(int64_t)index;
+- (id)dateOrdererdContentsOfDirectory:(id)directory;
 - (void)simulateInitialDataFetch;
 - (void)simulateSecondaryDataFetch;
 - (void)simulateTertiaryDataFetch;
-- (void)simulateTotalDataFetchForRequest:(id)a3;
+- (void)simulateTotalDataFetchForRequest:(id)request;
 @end
 
 @implementation DBGDataSourceConnectionDocument
 
-+ (id)connectionForDocumentDirectoryAtURL:(id)a3
++ (id)connectionForDocumentDirectoryAtURL:(id)l
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithDirectoryURL:v4];
+  lCopy = l;
+  v5 = [[self alloc] initWithDirectoryURL:lCopy];
 
   return v5;
 }
 
-- (DBGDataSourceConnectionDocument)initWithDirectoryURL:(id)a3
+- (DBGDataSourceConnectionDocument)initWithDirectoryURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v10.receiver = self;
   v10.super_class = DBGDataSourceConnectionDocument;
   v5 = [(DBGDataSourceConnectionDocument *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    [(DBGDataSourceConnectionDocument *)v5 setDirectoryURL:v4];
-    v7 = [(DBGDataSourceConnectionDocument *)v6 directoryURL];
-    v8 = [(DBGDataSourceConnectionDocument *)v6 dateOrdererdContentsOfDirectory:v7];
+    [(DBGDataSourceConnectionDocument *)v5 setDirectoryURL:lCopy];
+    directoryURL = [(DBGDataSourceConnectionDocument *)v6 directoryURL];
+    v8 = [(DBGDataSourceConnectionDocument *)v6 dateOrdererdContentsOfDirectory:directoryURL];
     [(DBGDataSourceConnectionDocument *)v6 setDateOrderedDirectoryContents:v8];
   }
 
   return v6;
 }
 
-- (id)dateOrdererdContentsOfDirectory:(id)a3
+- (id)dateOrdererdContentsOfDirectory:(id)directory
 {
-  v3 = a3;
+  directoryCopy = directory;
   v4 = +[NSFileManager defaultManager];
-  v5 = [v3 path];
+  path = [directoryCopy path];
 
-  v6 = [v4 contentsOfDirectoryAtPath:v5 error:0];
+  v6 = [v4 contentsOfDirectoryAtPath:path error:0];
 
   v7 = [v6 sortedArrayUsingComparator:&__block_literal_global];
 
@@ -92,26 +92,26 @@ void __67__DBGDataSourceConnectionDocument_dateOrdererdContentsOfDirectory___blo
   }
 }
 
-- (id)dataForFetchAtIndex:(int64_t)a3
+- (id)dataForFetchAtIndex:(int64_t)index
 {
-  v5 = [(DBGDataSourceConnectionDocument *)self dateOrderedDirectoryContents];
-  v6 = [v5 count];
+  dateOrderedDirectoryContents = [(DBGDataSourceConnectionDocument *)self dateOrderedDirectoryContents];
+  v6 = [dateOrderedDirectoryContents count];
 
-  if (v6 <= a3)
+  if (v6 <= index)
   {
     v12 = 0;
   }
 
   else
   {
-    v7 = [(DBGDataSourceConnectionDocument *)self dateOrderedDirectoryContents];
-    v8 = [v7 objectAtIndexedSubscript:a3];
+    dateOrderedDirectoryContents2 = [(DBGDataSourceConnectionDocument *)self dateOrderedDirectoryContents];
+    v8 = [dateOrderedDirectoryContents2 objectAtIndexedSubscript:index];
 
-    v9 = [(DBGDataSourceConnectionDocument *)self directoryURL];
-    v10 = [v9 URLByAppendingPathComponent:v8];
-    v11 = [v10 path];
+    directoryURL = [(DBGDataSourceConnectionDocument *)self directoryURL];
+    v10 = [directoryURL URLByAppendingPathComponent:v8];
+    path = [v10 path];
 
-    v12 = [NSData dataWithContentsOfFile:v11];
+    v12 = [NSData dataWithContentsOfFile:path];
   }
 
   return v12;
@@ -120,29 +120,29 @@ void __67__DBGDataSourceConnectionDocument_dateOrdererdContentsOfDirectory___blo
 - (void)simulateInitialDataFetch
 {
   v4 = [(DBGDataSourceConnectionDocument *)self dataForFetchAtIndex:0];
-  v3 = [(DBGDataSourceConnectionDocument *)self delegate];
-  [v3 didReceiveData:v4 forRequest:0];
+  delegate = [(DBGDataSourceConnectionDocument *)self delegate];
+  [delegate didReceiveData:v4 forRequest:0];
 }
 
 - (void)simulateSecondaryDataFetch
 {
   v4 = [(DBGDataSourceConnectionDocument *)self dataForFetchAtIndex:1];
-  v3 = [(DBGDataSourceConnectionDocument *)self delegate];
-  [v3 didReceiveData:v4 forRequest:0];
+  delegate = [(DBGDataSourceConnectionDocument *)self delegate];
+  [delegate didReceiveData:v4 forRequest:0];
 }
 
 - (void)simulateTertiaryDataFetch
 {
   v4 = [(DBGDataSourceConnectionDocument *)self dataForFetchAtIndex:2];
-  v3 = [(DBGDataSourceConnectionDocument *)self delegate];
-  [v3 didReceiveData:v4 forRequest:0];
+  delegate = [(DBGDataSourceConnectionDocument *)self delegate];
+  [delegate didReceiveData:v4 forRequest:0];
 }
 
-- (void)simulateTotalDataFetchForRequest:(id)a3
+- (void)simulateTotalDataFetchForRequest:(id)request
 {
-  v11 = a3;
-  v4 = [(DBGDataSourceConnectionDocument *)self dateOrderedDirectoryContents];
-  v5 = [v4 count];
+  requestCopy = request;
+  dateOrderedDirectoryContents = [(DBGDataSourceConnectionDocument *)self dateOrderedDirectoryContents];
+  v5 = [dateOrderedDirectoryContents count];
 
   if (v5)
   {
@@ -150,12 +150,12 @@ void __67__DBGDataSourceConnectionDocument_dateOrdererdContentsOfDirectory___blo
     do
     {
       v7 = [(DBGDataSourceConnectionDocument *)self dataForFetchAtIndex:v6];
-      v8 = [(DBGDataSourceConnectionDocument *)self delegate];
-      [v8 didReceiveData:v7 forRequest:v11];
+      delegate = [(DBGDataSourceConnectionDocument *)self delegate];
+      [delegate didReceiveData:v7 forRequest:requestCopy];
 
       ++v6;
-      v9 = [(DBGDataSourceConnectionDocument *)self dateOrderedDirectoryContents];
-      v10 = [v9 count];
+      dateOrderedDirectoryContents2 = [(DBGDataSourceConnectionDocument *)self dateOrderedDirectoryContents];
+      v10 = [dateOrderedDirectoryContents2 count];
     }
 
     while (v6 < v10);

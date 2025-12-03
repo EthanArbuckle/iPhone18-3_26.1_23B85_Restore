@@ -1,11 +1,11 @@
 @interface WebAuthenticationPresentationContextProvider
 - (_TtC12FinanceKitUI44WebAuthenticationPresentationContextProvider)init;
-- (id)presentationAnchorForWebAuthenticationSession:(id)a3;
+- (id)presentationAnchorForWebAuthenticationSession:(id)session;
 @end
 
 @implementation WebAuthenticationPresentationContextProvider
 
-- (id)presentationAnchorForWebAuthenticationSession:(id)a3
+- (id)presentationAnchorForWebAuthenticationSession:(id)session
 {
   sub_23875ED50();
   sub_23875ED40();

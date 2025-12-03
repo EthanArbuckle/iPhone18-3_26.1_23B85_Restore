@@ -1,6 +1,6 @@
 @interface ENRegionServerAgencyExposureNotificationConfiguration
-- (ENRegionServerAgencyExposureNotificationConfiguration)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (ENRegionServerAgencyExposureNotificationConfiguration)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ENRegionServerAgencyExposureNotificationConfiguration
@@ -18,34 +18,34 @@ id __114__ENRegionServerAgencyExposureNotificationConfiguration_getNotificationC
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   classificationName = self->_classificationName;
-  v5 = a3;
-  [v5 encodeObject:classificationName forKey:@"name"];
-  [v5 encodeObject:self->_classificationURL forKey:@"URL"];
-  [v5 encodeObject:self->_localizedExposureDetailBody forKey:@"expB"];
-  [v5 encodeObject:self->_localizedNotificationBody forKey:@"noteB"];
-  [v5 encodeObject:self->_localizedNotificationSubject forKey:@"noteT"];
+  coderCopy = coder;
+  [coderCopy encodeObject:classificationName forKey:@"name"];
+  [coderCopy encodeObject:self->_classificationURL forKey:@"URL"];
+  [coderCopy encodeObject:self->_localizedExposureDetailBody forKey:@"expB"];
+  [coderCopy encodeObject:self->_localizedNotificationBody forKey:@"noteB"];
+  [coderCopy encodeObject:self->_localizedNotificationSubject forKey:@"noteT"];
 }
 
-- (ENRegionServerAgencyExposureNotificationConfiguration)initWithCoder:(id)a3
+- (ENRegionServerAgencyExposureNotificationConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"expB"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"expB"];
     if (v6)
     {
-      v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"noteB"];
+      v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"noteB"];
       if (v7)
       {
-        v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"noteT"];
+        v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"noteT"];
         if (v8 && (v14.receiver = self, v14.super_class = ENRegionServerAgencyExposureNotificationConfiguration, v9 = [(ENRegionServerAgencyExposureNotificationConfiguration *)&v14 init], (self = v9) != 0))
         {
           objc_storeStrong(&v9->_classificationName, v5);
-          v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"URL"];
+          v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"URL"];
           classificationURL = self->_classificationURL;
           self->_classificationURL = v10;
 
@@ -53,33 +53,33 @@ id __114__ENRegionServerAgencyExposureNotificationConfiguration_getNotificationC
           objc_storeStrong(&self->_localizedNotificationBody, v7);
           objc_storeStrong(&self->_localizedNotificationSubject, v8);
           self = self;
-          v12 = self;
+          selfCopy = self;
         }
 
         else
         {
-          v12 = 0;
+          selfCopy = 0;
         }
       }
 
       else
       {
-        v12 = 0;
+        selfCopy = 0;
       }
     }
 
     else
     {
-      v12 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v12 = 0;
+    selfCopy = 0;
   }
 
-  return v12;
+  return selfCopy;
 }
 
 @end

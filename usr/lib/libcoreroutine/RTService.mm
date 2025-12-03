@@ -1,16 +1,16 @@
 @interface RTService
 - (id)name;
-- (void)checkInWithHandler:(id)a3;
+- (void)checkInWithHandler:(id)handler;
 - (void)setup;
-- (void)shutdownWithHandler:(id)a3;
+- (void)shutdownWithHandler:(id)handler;
 @end
 
 @implementation RTService
 
-- (void)shutdownWithHandler:(id)a3
+- (void)shutdownWithHandler:(id)handler
 {
   v27 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  handlerCopy = handler;
   v21[0] = 0;
   v21[1] = v21;
   v21[2] = 0x3032000000;
@@ -41,16 +41,16 @@
     }
   }
 
-  v13 = [(RTNotifier *)self queue];
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __33__RTService_shutdownWithHandler___block_invoke;
   block[3] = &unk_2788C5380;
-  v19 = v5;
+  v19 = handlerCopy;
   v20 = v21;
   block[4] = self;
-  v14 = v5;
-  dispatch_async(v13, block);
+  v14 = handlerCopy;
+  dispatch_async(queue, block);
 
   _Block_object_dispose(v21, 8);
 }
@@ -85,26 +85,26 @@ void __33__RTService_shutdownWithHandler___block_invoke_2(uint64_t a1, void *a2)
 
 - (void)setup
 {
-  v3 = [(RTNotifier *)self queue];
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __18__RTService_setup__block_invoke;
   block[3] = &unk_2788C4EA0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
-- (void)checkInWithHandler:(id)a3
+- (void)checkInWithHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __32__RTService_checkInWithHandler___block_invoke;
   block[3] = &unk_2788C4758;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, block);
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  dispatch_async(queue, block);
 }
 
 - (id)name

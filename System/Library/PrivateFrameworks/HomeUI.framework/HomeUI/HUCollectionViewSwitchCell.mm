@@ -1,13 +1,13 @@
 @interface HUCollectionViewSwitchCell
 - (HFItem)item;
-- (_TtC6HomeUI26HUCollectionViewSwitchCell)initWithCoder:(id)a3;
+- (_TtC6HomeUI26HUCollectionViewSwitchCell)initWithCoder:(id)coder;
 - (_TtP6HomeUI34HUCollectionViewSwitchCellDelegate_)delegate;
 - (void)_toggleOn;
 - (void)prepareForReuse;
-- (void)setDelegate:(id)a3;
-- (void)setDisabled:(BOOL)a3;
-- (void)setItem:(id)a3;
-- (void)updateUIWithAnimation:(BOOL)a3;
+- (void)setDelegate:(id)delegate;
+- (void)setDisabled:(BOOL)disabled;
+- (void)setItem:(id)item;
+- (void)updateUIWithAnimation:(BOOL)animation;
 @end
 
 @implementation HUCollectionViewSwitchCell
@@ -19,21 +19,21 @@
   return *(&self->super.super.super.super.super.super.isa + v3);
 }
 
-- (void)setItem:(id)a3
+- (void)setItem:(id)item
 {
   v5 = OBJC_IVAR____TtC6HomeUI26HUCollectionViewSwitchCell_item;
   swift_beginAccess();
   v6 = *(&self->super.super.super.super.super.super.isa + v5);
-  *(&self->super.super.super.super.super.super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.super.super.super.super.super.isa + v5) = item;
+  itemCopy = item;
 }
 
-- (void)setDisabled:(BOOL)a3
+- (void)setDisabled:(BOOL)disabled
 {
-  if (*(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC6HomeUI26HUCollectionViewSwitchCell__disabled) != a3)
+  if (*(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC6HomeUI26HUCollectionViewSwitchCell__disabled) != disabled)
   {
-    *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC6HomeUI26HUCollectionViewSwitchCell__disabled) = a3;
-    v4 = self;
+    *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC6HomeUI26HUCollectionViewSwitchCell__disabled) = disabled;
+    selfCopy = self;
     sub_20D096A38(0);
   }
 }
@@ -46,16 +46,16 @@
   return v2;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   v5 = OBJC_IVAR____TtC6HomeUI26HUCollectionViewSwitchCell_delegate;
   swift_beginAccess();
-  *(&self->super.super.super.super.super.super.isa + v5) = a3;
+  *(&self->super.super.super.super.super.super.isa + v5) = delegate;
   swift_unknownObjectRetain();
   swift_unknownObjectRelease();
 }
 
-- (_TtC6HomeUI26HUCollectionViewSwitchCell)initWithCoder:(id)a3
+- (_TtC6HomeUI26HUCollectionViewSwitchCell)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC6HomeUI26HUCollectionViewSwitchCell_item) = 0;
   *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC6HomeUI26HUCollectionViewSwitchCell__disabled) = 0;
@@ -80,16 +80,16 @@
   }
 }
 
-- (void)updateUIWithAnimation:(BOOL)a3
+- (void)updateUIWithAnimation:(BOOL)animation
 {
-  v3 = a3;
-  v4 = self;
-  sub_20D096A38(v3);
+  animationCopy = animation;
+  selfCopy = self;
+  sub_20D096A38(animationCopy);
 }
 
 - (void)_toggleOn
 {
-  v2 = self;
+  selfCopy = self;
   sub_20D096F28();
 }
 

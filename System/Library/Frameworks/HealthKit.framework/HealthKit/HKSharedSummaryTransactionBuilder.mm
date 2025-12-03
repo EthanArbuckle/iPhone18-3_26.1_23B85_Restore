@@ -1,38 +1,38 @@
 @interface HKSharedSummaryTransactionBuilder
 + (id)serverInterface;
 - (HKHealthStore)healthStore;
-- (HKSharedSummaryTransactionBuilder)initWithHealthStore:(id)a3 transactionUUID:(id)a4;
+- (HKSharedSummaryTransactionBuilder)initWithHealthStore:(id)store transactionUUID:(id)d;
 - (id)exportedInterface;
-- (id)isCommittedWithError:(id *)a3;
+- (id)isCommittedWithError:(id *)error;
 - (id)remoteInterface;
-- (void)addMetadata:(id)a3 completion:(id)a4;
-- (void)addSummaries:(id)a3 completion:(id)a4;
-- (void)addedSummariesWithPackage:(id)a3 names:(id)a4 resultsHandler:(id)a5;
-- (void)commitAsUrgent:(BOOL)a3 completion:(id)a4;
-- (void)discardWithCompletion:(id)a3;
-- (void)removeAllSummariesWithPackage:(id)a3 completion:(id)a4;
-- (void)removeSummariesWithPackage:(id)a3 names:(id)a4 completion:(id)a5;
-- (void)removeSummariesWithUUIDs:(id)a3 completion:(id)a4;
-- (void)reuseAllSummariesWithPackage:(id)a3 completion:(id)a4;
-- (void)reuseSummaries:(id)a3 completion:(id)a4;
-- (void)reuseSummariesWithPackage:(id)a3 names:(id)a4 completion:(id)a5;
-- (void)reuseSummariesWithUUIDs:(id)a3 completion:(id)a4;
+- (void)addMetadata:(id)metadata completion:(id)completion;
+- (void)addSummaries:(id)summaries completion:(id)completion;
+- (void)addedSummariesWithPackage:(id)package names:(id)names resultsHandler:(id)handler;
+- (void)commitAsUrgent:(BOOL)urgent completion:(id)completion;
+- (void)discardWithCompletion:(id)completion;
+- (void)removeAllSummariesWithPackage:(id)package completion:(id)completion;
+- (void)removeSummariesWithPackage:(id)package names:(id)names completion:(id)completion;
+- (void)removeSummariesWithUUIDs:(id)ds completion:(id)completion;
+- (void)reuseAllSummariesWithPackage:(id)package completion:(id)completion;
+- (void)reuseSummaries:(id)summaries completion:(id)completion;
+- (void)reuseSummariesWithPackage:(id)package names:(id)names completion:(id)completion;
+- (void)reuseSummariesWithUUIDs:(id)ds completion:(id)completion;
 @end
 
 @implementation HKSharedSummaryTransactionBuilder
 
-- (HKSharedSummaryTransactionBuilder)initWithHealthStore:(id)a3 transactionUUID:(id)a4
+- (HKSharedSummaryTransactionBuilder)initWithHealthStore:(id)store transactionUUID:(id)d
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 profileIdentifier];
-  v9 = [v8 type] == 2;
+  dCopy = d;
+  storeCopy = store;
+  profileIdentifier = [storeCopy profileIdentifier];
+  v9 = [profileIdentifier type] == 2;
 
-  v10 = [(HKSharedSummaryTransactionBuilder *)self initWithHealthStore:v7 transactionUUID:v6 allowCommitted:v9];
+  v10 = [(HKSharedSummaryTransactionBuilder *)self initWithHealthStore:storeCopy transactionUUID:dCopy allowCommitted:v9];
   return v10;
 }
 
-- (id)isCommittedWithError:(id *)a3
+- (id)isCommittedWithError:(id *)error
 {
   v19 = 0;
   v20 = &v19;
@@ -62,10 +62,10 @@
   {
     v6 = v5;
     v7 = v6;
-    if (a3)
+    if (error)
     {
       v8 = v6;
-      *a3 = v7;
+      *error = v7;
     }
 
     else
@@ -112,16 +112,16 @@ void __58__HKSharedSummaryTransactionBuilder_isCommittedWithError___block_invoke
   }
 }
 
-- (void)addSummaries:(id)a3 completion:(id)a4
+- (void)addSummaries:(id)summaries completion:(id)completion
 {
-  v6 = a3;
-  v7 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:a4];
+  summariesCopy = summaries;
+  v7 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completion];
   proxyProvider = self->_proxyProvider;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __61__HKSharedSummaryTransactionBuilder_addSummaries_completion___block_invoke;
   v13[3] = &unk_1E7380A18;
-  v14 = v6;
+  v14 = summariesCopy;
   v15 = v7;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -130,7 +130,7 @@ void __58__HKSharedSummaryTransactionBuilder_isCommittedWithError___block_invoke
   v11[4] = self;
   v12 = v15;
   v9 = v15;
-  v10 = v6;
+  v10 = summariesCopy;
   [(HKProxyProvider *)proxyProvider fetchProxyWithHandler:v13 errorHandler:v11];
 }
 
@@ -158,12 +158,12 @@ void __61__HKSharedSummaryTransactionBuilder_addSummaries_completion___block_inv
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)reuseSummaries:(id)a3 completion:(id)a4
+- (void)reuseSummaries:(id)summaries completion:(id)completion
 {
   proxyProvider = self->_proxyProvider;
-  v7 = a3;
-  v8 = [(HKProxyProvider *)proxyProvider clientQueueActionHandlerWithCompletion:a4];
-  v9 = [v7 hk_map:&__block_literal_global_85];
+  summariesCopy = summaries;
+  v8 = [(HKProxyProvider *)proxyProvider clientQueueActionHandlerWithCompletion:completion];
+  v9 = [summariesCopy hk_map:&__block_literal_global_85];
 
   v10 = self->_proxyProvider;
   v15[0] = MEMORY[0x1E69E9820];
@@ -207,16 +207,16 @@ void __63__HKSharedSummaryTransactionBuilder_reuseSummaries_completion___block_i
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)reuseSummariesWithUUIDs:(id)a3 completion:(id)a4
+- (void)reuseSummariesWithUUIDs:(id)ds completion:(id)completion
 {
-  v6 = a3;
-  v7 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:a4];
+  dsCopy = ds;
+  v7 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completion];
   proxyProvider = self->_proxyProvider;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __72__HKSharedSummaryTransactionBuilder_reuseSummariesWithUUIDs_completion___block_invoke;
   v13[3] = &unk_1E7380A18;
-  v14 = v6;
+  v14 = dsCopy;
   v15 = v7;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -225,7 +225,7 @@ void __63__HKSharedSummaryTransactionBuilder_reuseSummaries_completion___block_i
   v11[4] = self;
   v12 = v15;
   v9 = v15;
-  v10 = v6;
+  v10 = dsCopy;
   [(HKProxyProvider *)proxyProvider fetchProxyWithHandler:v13 errorHandler:v11];
 }
 
@@ -242,18 +242,18 @@ void __72__HKSharedSummaryTransactionBuilder_reuseSummariesWithUUIDs_completion_
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)reuseSummariesWithPackage:(id)a3 names:(id)a4 completion:(id)a5
+- (void)reuseSummariesWithPackage:(id)package names:(id)names completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:a5];
+  packageCopy = package;
+  namesCopy = names;
+  v10 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completion];
   proxyProvider = self->_proxyProvider;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __80__HKSharedSummaryTransactionBuilder_reuseSummariesWithPackage_names_completion___block_invoke;
   v17[3] = &unk_1E7380A60;
-  v18 = v8;
-  v19 = v9;
+  v18 = packageCopy;
+  v19 = namesCopy;
   v20 = v10;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
@@ -262,8 +262,8 @@ void __72__HKSharedSummaryTransactionBuilder_reuseSummariesWithUUIDs_completion_
   v15[4] = self;
   v16 = v20;
   v12 = v20;
-  v13 = v9;
-  v14 = v8;
+  v13 = namesCopy;
+  v14 = packageCopy;
   [(HKProxyProvider *)proxyProvider fetchProxyWithHandler:v17 errorHandler:v15];
 }
 
@@ -280,16 +280,16 @@ void __80__HKSharedSummaryTransactionBuilder_reuseSummariesWithPackage_names_com
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)reuseAllSummariesWithPackage:(id)a3 completion:(id)a4
+- (void)reuseAllSummariesWithPackage:(id)package completion:(id)completion
 {
-  v6 = a3;
-  v7 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:a4];
+  packageCopy = package;
+  v7 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completion];
   proxyProvider = self->_proxyProvider;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __77__HKSharedSummaryTransactionBuilder_reuseAllSummariesWithPackage_completion___block_invoke;
   v13[3] = &unk_1E7380A18;
-  v14 = v6;
+  v14 = packageCopy;
   v15 = v7;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -298,7 +298,7 @@ void __80__HKSharedSummaryTransactionBuilder_reuseSummariesWithPackage_names_com
   v11[4] = self;
   v12 = v15;
   v9 = v15;
-  v10 = v6;
+  v10 = packageCopy;
   [(HKProxyProvider *)proxyProvider fetchProxyWithHandler:v13 errorHandler:v11];
 }
 
@@ -315,16 +315,16 @@ void __77__HKSharedSummaryTransactionBuilder_reuseAllSummariesWithPackage_comple
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)addMetadata:(id)a3 completion:(id)a4
+- (void)addMetadata:(id)metadata completion:(id)completion
 {
-  v6 = a3;
-  v7 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:a4];
+  metadataCopy = metadata;
+  v7 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completion];
   proxyProvider = self->_proxyProvider;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __60__HKSharedSummaryTransactionBuilder_addMetadata_completion___block_invoke;
   v13[3] = &unk_1E7380A18;
-  v14 = v6;
+  v14 = metadataCopy;
   v15 = v7;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -333,7 +333,7 @@ void __77__HKSharedSummaryTransactionBuilder_reuseAllSummariesWithPackage_comple
   v11[4] = self;
   v12 = v15;
   v9 = v15;
-  v10 = v6;
+  v10 = metadataCopy;
   [(HKProxyProvider *)proxyProvider fetchProxyWithHandler:v13 errorHandler:v11];
 }
 
@@ -350,16 +350,16 @@ void __60__HKSharedSummaryTransactionBuilder_addMetadata_completion___block_invo
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)removeSummariesWithUUIDs:(id)a3 completion:(id)a4
+- (void)removeSummariesWithUUIDs:(id)ds completion:(id)completion
 {
-  v6 = a3;
-  v7 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:a4];
+  dsCopy = ds;
+  v7 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completion];
   proxyProvider = self->_proxyProvider;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __73__HKSharedSummaryTransactionBuilder_removeSummariesWithUUIDs_completion___block_invoke;
   v13[3] = &unk_1E7380A18;
-  v14 = v6;
+  v14 = dsCopy;
   v15 = v7;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -368,7 +368,7 @@ void __60__HKSharedSummaryTransactionBuilder_addMetadata_completion___block_invo
   v11[4] = self;
   v12 = v15;
   v9 = v15;
-  v10 = v6;
+  v10 = dsCopy;
   [(HKProxyProvider *)proxyProvider fetchProxyWithHandler:v13 errorHandler:v11];
 }
 
@@ -396,18 +396,18 @@ void __73__HKSharedSummaryTransactionBuilder_removeSummariesWithUUIDs_completion
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)removeSummariesWithPackage:(id)a3 names:(id)a4 completion:(id)a5
+- (void)removeSummariesWithPackage:(id)package names:(id)names completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:a5];
+  packageCopy = package;
+  namesCopy = names;
+  v10 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completion];
   proxyProvider = self->_proxyProvider;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __81__HKSharedSummaryTransactionBuilder_removeSummariesWithPackage_names_completion___block_invoke;
   v17[3] = &unk_1E7380A60;
-  v18 = v8;
-  v19 = v9;
+  v18 = packageCopy;
+  v19 = namesCopy;
   v20 = v10;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
@@ -416,8 +416,8 @@ void __73__HKSharedSummaryTransactionBuilder_removeSummariesWithUUIDs_completion
   v15[4] = self;
   v16 = v20;
   v12 = v20;
-  v13 = v9;
-  v14 = v8;
+  v13 = namesCopy;
+  v14 = packageCopy;
   [(HKProxyProvider *)proxyProvider fetchProxyWithHandler:v17 errorHandler:v15];
 }
 
@@ -446,16 +446,16 @@ void __81__HKSharedSummaryTransactionBuilder_removeSummariesWithPackage_names_co
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)removeAllSummariesWithPackage:(id)a3 completion:(id)a4
+- (void)removeAllSummariesWithPackage:(id)package completion:(id)completion
 {
-  v6 = a3;
-  v7 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:a4];
+  packageCopy = package;
+  v7 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completion];
   proxyProvider = self->_proxyProvider;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __78__HKSharedSummaryTransactionBuilder_removeAllSummariesWithPackage_completion___block_invoke;
   v13[3] = &unk_1E7380A18;
-  v14 = v6;
+  v14 = packageCopy;
   v15 = v7;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -464,7 +464,7 @@ void __81__HKSharedSummaryTransactionBuilder_removeSummariesWithPackage_names_co
   v11[4] = self;
   v12 = v15;
   v9 = v15;
-  v10 = v6;
+  v10 = packageCopy;
   [(HKProxyProvider *)proxyProvider fetchProxyWithHandler:v13 errorHandler:v11];
 }
 
@@ -492,27 +492,27 @@ void __78__HKSharedSummaryTransactionBuilder_removeAllSummariesWithPackage_compl
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)commitAsUrgent:(BOOL)a3 completion:(id)a4
+- (void)commitAsUrgent:(BOOL)urgent completion:(id)completion
 {
-  v4 = a3;
+  urgentCopy = urgent;
   v25 = *MEMORY[0x1E69E9840];
-  v6 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:a4];
+  v6 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:completion];
   _HKInitializeLogging();
   v7 = HKLogSharing();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [(NSUUID *)self->_transactionUUID UUIDString];
-    v9 = v8;
+    uUIDString = [(NSUUID *)self->_transactionUUID UUIDString];
+    v9 = uUIDString;
     v10 = @"NO";
     *buf = 138543874;
-    v20 = self;
+    selfCopy = self;
     v21 = 2114;
-    if (v4)
+    if (urgentCopy)
     {
       v10 = @"YES";
     }
 
-    v22 = v8;
+    v22 = uUIDString;
     v23 = 2114;
     v24 = v10;
     _os_log_impl(&dword_19197B000, v7, OS_LOG_TYPE_DEFAULT, "[summary-sharing] %{public}@: Commiting transaction %{public}@ urgent: %{public}@", buf, 0x20u);
@@ -523,7 +523,7 @@ void __78__HKSharedSummaryTransactionBuilder_removeAllSummariesWithPackage_compl
   v16[1] = 3221225472;
   v16[2] = __63__HKSharedSummaryTransactionBuilder_commitAsUrgent_completion___block_invoke;
   v16[3] = &unk_1E7380A88;
-  v18 = v4;
+  v18 = urgentCopy;
   v17 = v6;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
@@ -550,19 +550,19 @@ void __63__HKSharedSummaryTransactionBuilder_commitAsUrgent_completion___block_i
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)discardWithCompletion:(id)a3
+- (void)discardWithCompletion:(id)completion
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:a3];
+  v4 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completion];
   _HKInitializeLogging();
   v5 = HKLogSharing();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(NSUUID *)self->_transactionUUID UUIDString];
+    uUIDString = [(NSUUID *)self->_transactionUUID UUIDString];
     *buf = 138543618;
-    v15 = self;
+    selfCopy = self;
     v16 = 2114;
-    v17 = v6;
+    v17 = uUIDString;
     _os_log_impl(&dword_19197B000, v5, OS_LOG_TYPE_DEFAULT, "[summary-sharing] %{public}@: Discarding transaction %{public}@", buf, 0x16u);
   }
 
@@ -607,25 +607,25 @@ void __59__HKSharedSummaryTransactionBuilder_discardWithCompletion___block_invok
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)addedSummariesWithPackage:(id)a3 names:(id)a4 resultsHandler:(id)a5
+- (void)addedSummariesWithPackage:(id)package names:(id)names resultsHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  packageCopy = package;
+  namesCopy = names;
+  handlerCopy = handler;
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __84__HKSharedSummaryTransactionBuilder_addedSummariesWithPackage_names_resultsHandler___block_invoke;
   v22[3] = &unk_1E7380B00;
   v22[4] = self;
-  v23 = v10;
+  v23 = handlerCopy;
   v11 = [v22 copy];
   proxyProvider = self->_proxyProvider;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __84__HKSharedSummaryTransactionBuilder_addedSummariesWithPackage_names_resultsHandler___block_invoke_3;
   v18[3] = &unk_1E7380A60;
-  v19 = v8;
-  v20 = v9;
+  v19 = packageCopy;
+  v20 = namesCopy;
   v21 = v11;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
@@ -634,8 +634,8 @@ void __59__HKSharedSummaryTransactionBuilder_discardWithCompletion___block_invok
   v16[4] = self;
   v17 = v21;
   v13 = v21;
-  v14 = v9;
-  v15 = v8;
+  v14 = namesCopy;
+  v15 = packageCopy;
   [(HKProxyProvider *)proxyProvider fetchProxyWithHandler:v18 errorHandler:v16];
 }
 

@@ -1,7 +1,7 @@
 @interface IMCloudKitEventNotificationRuntimeTestSuite
 + (void)runTestsIfNeeded;
 - (IMCloudKitEventNotificationRuntimeTestSuite)init;
-- (void)cloudKitEventNotificationManager:(id)a3 syncProgressDidUpdate:(id)a4;
+- (void)cloudKitEventNotificationManager:(id)manager syncProgressDidUpdate:(id)update;
 - (void)setUp;
 - (void)tearDown;
 @end
@@ -71,9 +71,9 @@
   objc_msgSend_setTestState_(v25, v27, v26);
 }
 
-- (void)cloudKitEventNotificationManager:(id)a3 syncProgressDidUpdate:(id)a4
+- (void)cloudKitEventNotificationManager:(id)manager syncProgressDidUpdate:(id)update
 {
-  if (objc_msgSend_shouldTearDown(self, a2, a3, a4))
+  if (objc_msgSend_shouldTearDown(self, a2, manager, update))
   {
     objc_msgSend_setShouldTearDown_(self, v5, 0);
     objc_msgSend_testLog_(self, v6, @"Actually Tearing down cloudkit hooks");
@@ -103,9 +103,9 @@
 
   if (v6 >= 1)
   {
-    objc_msgSend_testLog_(a1, v7, @"user default cloudkit-sync-ui-tests == %ld, starting runtime tests", v6);
+    objc_msgSend_testLog_(self, v7, @"user default cloudkit-sync-ui-tests == %ld, starting runtime tests", v6);
 
-    MEMORY[0x1EEE66B58](a1, sel_runTestsIfNeededWithRepeatCount_, v6);
+    MEMORY[0x1EEE66B58](self, sel_runTestsIfNeededWithRepeatCount_, v6);
   }
 }
 

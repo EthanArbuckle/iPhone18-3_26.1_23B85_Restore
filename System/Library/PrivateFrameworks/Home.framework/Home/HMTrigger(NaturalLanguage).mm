@@ -7,7 +7,7 @@
 
 - (id)hf_naturalLangugeDetailsWithOptions:()NaturalLanguage
 {
-  v1 = [a1 _hf_naturalLanguageDetailsSentenceElementsWithOptions:?];
+  v1 = [self _hf_naturalLanguageDetailsSentenceElementsWithOptions:?];
   v2 = [v1 mutableCopy];
 
   if ([v2 count])
@@ -19,8 +19,8 @@
 
     v3 = qword_280E02DD8;
     [v3 setListStyle:2];
-    v4 = [v2 array];
-    v5 = [v3 stringForObjectValue:v4];
+    array = [v2 array];
+    v5 = [v3 stringForObjectValue:array];
   }
 
   else

@@ -1,21 +1,21 @@
 @interface UIDebuggingInformationHierarchyDataContainer
-- (UIDebuggingInformationHierarchyDataContainer)initWithView:(id)a3 atLevel:(int64_t)a4;
+- (UIDebuggingInformationHierarchyDataContainer)initWithView:(id)view atLevel:(int64_t)level;
 - (UIView)view;
 @end
 
 @implementation UIDebuggingInformationHierarchyDataContainer
 
-- (UIDebuggingInformationHierarchyDataContainer)initWithView:(id)a3 atLevel:(int64_t)a4
+- (UIDebuggingInformationHierarchyDataContainer)initWithView:(id)view atLevel:(int64_t)level
 {
-  v6 = a3;
+  viewCopy = view;
   v10.receiver = self;
   v10.super_class = UIDebuggingInformationHierarchyDataContainer;
   v7 = [(UIDebuggingInformationHierarchyDataContainer *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    [(UIDebuggingInformationHierarchyDataContainer *)v7 setView:v6];
-    [(UIDebuggingInformationHierarchyDataContainer *)v8 setLevel:a4];
+    [(UIDebuggingInformationHierarchyDataContainer *)v7 setView:viewCopy];
+    [(UIDebuggingInformationHierarchyDataContainer *)v8 setLevel:level];
   }
 
   return v8;

@@ -1,37 +1,37 @@
 @interface HMICleanupImpureHomePersonsOperation
 + (id)shortDescription;
-- (BOOL)isAffectedDate:(id)a3;
-- (BOOL)isIdentityPureWithFaceprints:(id)a3 person:(id)a4;
-- (HMICleanupImpureHomePersonsOperation)initWithHomeUUID:(id)a3 dataSource:(id)a4;
+- (BOOL)isAffectedDate:(id)date;
+- (BOOL)isIdentityPureWithFaceprints:(id)faceprints person:(id)person;
+- (HMICleanupImpureHomePersonsOperation)initWithHomeUUID:(id)d dataSource:(id)source;
 - (NSString)shortDescription;
-- (id)fetchFaceCropsForPerson:(id)a3;
-- (id)fetchOrCreateFaceprintsForCrops:(id)a3 person:(id)a4;
+- (id)fetchFaceCropsForPerson:(id)person;
+- (id)fetchOrCreateFaceprintsForCrops:(id)crops person:(id)person;
 - (id)fetchPersons;
-- (id)ffArchiveRootURLWithError:(id *)a3;
-- (void)dumpFFDataToCacheForPerson:(id)a3 personFaceCrops:(id)a4;
-- (void)handleCleanupForPerson:(id)a3;
+- (id)ffArchiveRootURLWithError:(id *)error;
+- (void)dumpFFDataToCacheForPerson:(id)person personFaceCrops:(id)crops;
+- (void)handleCleanupForPerson:(id)person;
 - (void)main;
 - (void)mainInsideAutoreleasePool;
-- (void)purgeURLIfNeeded:(id)a3;
-- (void)reassociateFaceCropsWithUnknownSource:(id)a3 toPersonUUID:(id)a4;
-- (void)removeFaceCropsWithUUIDs:(id)a3;
-- (void)removePerson:(id)a3;
+- (void)purgeURLIfNeeded:(id)needed;
+- (void)reassociateFaceCropsWithUnknownSource:(id)source toPersonUUID:(id)d;
+- (void)removeFaceCropsWithUUIDs:(id)ds;
+- (void)removePerson:(id)person;
 @end
 
 @implementation HMICleanupImpureHomePersonsOperation
 
-- (HMICleanupImpureHomePersonsOperation)initWithHomeUUID:(id)a3 dataSource:(id)a4
+- (HMICleanupImpureHomePersonsOperation)initWithHomeUUID:(id)d dataSource:(id)source
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  sourceCopy = source;
   v19.receiver = self;
   v19.super_class = HMICleanupImpureHomePersonsOperation;
   v9 = [(HMFOperation *)&v19 initWithTimeout:500.0];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_homeUUID, a3);
-    objc_storeStrong(&v10->_dataSource, a4);
+    objc_storeStrong(&v9->_homeUUID, d);
+    objc_storeStrong(&v10->_dataSource, source);
     v11 = [[HMIGreedyClustering alloc] initWithError:0];
     clusterer = v10->_clusterer;
     v10->_clusterer = v11;
@@ -55,7 +55,7 @@
 {
   v28 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -67,51 +67,51 @@
 
   objc_autoreleasePoolPop(v3);
   v7 = [HMIFetchPersonsOperation alloc];
-  v8 = [(HMICleanupImpureHomePersonsOperation *)v4 dataSource];
-  v9 = [(HMIFetchPersonsOperation *)v7 initWithDataSource:v8];
+  dataSource = [(HMICleanupImpureHomePersonsOperation *)selfCopy dataSource];
+  v9 = [(HMIFetchPersonsOperation *)v7 initWithDataSource:dataSource];
 
   [(HMFOperation *)v9 start];
   [(HMIFetchPersonsOperation *)v9 waitUntilFinished];
-  v10 = [(HMFOperation *)v9 error];
-  if (v10)
+  error = [(HMFOperation *)v9 error];
+  if (error)
   {
 
 LABEL_5:
     v11 = objc_autoreleasePoolPush();
-    v12 = v4;
+    v12 = selfCopy;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
       v14 = HMFGetLogIdentifier();
-      v15 = [(HMFOperation *)v9 error];
+      error2 = [(HMFOperation *)v9 error];
       v24 = 138543618;
       v25 = v14;
       v26 = 2112;
-      v27 = v15;
+      v27 = error2;
       _os_log_impl(&dword_22D12F000, v13, OS_LOG_TYPE_ERROR, "%{public}@Error fetching persons, error:%@", &v24, 0x16u);
     }
 
     objc_autoreleasePoolPop(v11);
     [(HMICleanupImpureHomePersonsOperation *)v12 setNumFailures:[(HMICleanupImpureHomePersonsOperation *)v12 numFailures]+ 1];
-    v16 = 0;
+    persons2 = 0;
     goto LABEL_12;
   }
 
-  v17 = [(HMIFetchPersonsOperation *)v9 persons];
+  persons = [(HMIFetchPersonsOperation *)v9 persons];
 
-  if (!v17)
+  if (!persons)
   {
     goto LABEL_5;
   }
 
-  v16 = [(HMIFetchPersonsOperation *)v9 persons];
+  persons2 = [(HMIFetchPersonsOperation *)v9 persons];
   v18 = objc_autoreleasePoolPush();
-  v19 = v4;
+  v19 = selfCopy;
   v20 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
   {
     v21 = HMFGetLogIdentifier();
-    v22 = [v16 count];
+    v22 = [persons2 count];
     v24 = 138543618;
     v25 = v21;
     v26 = 2048;
@@ -122,15 +122,15 @@ LABEL_5:
   objc_autoreleasePoolPop(v18);
 LABEL_12:
 
-  return v16;
+  return persons2;
 }
 
-- (id)fetchFaceCropsForPerson:(id)a3
+- (id)fetchFaceCropsForPerson:(id)person
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  personCopy = person;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -138,126 +138,126 @@ LABEL_12:
     v26 = 138543618;
     v27 = v8;
     v28 = 2112;
-    v29 = v4;
+    v29 = personCopy;
     _os_log_impl(&dword_22D12F000, v7, OS_LOG_TYPE_INFO, "%{public}@Fetching face crops for person: %@", &v26, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
   v9 = [HMIFetchPersonFaceCropsOperation alloc];
-  v10 = [(HMICleanupImpureHomePersonsOperation *)v6 dataSource];
-  v11 = [(HMIFetchPersonFaceCropsOperation *)v9 initWithDataSource:v10 person:v4];
+  dataSource = [(HMICleanupImpureHomePersonsOperation *)selfCopy dataSource];
+  v11 = [(HMIFetchPersonFaceCropsOperation *)v9 initWithDataSource:dataSource person:personCopy];
 
   [(HMFOperation *)v11 start];
   [(HMIFetchPersonFaceCropsOperation *)v11 waitUntilFinished];
-  v12 = [(HMFOperation *)v11 error];
-  if (v12)
+  error = [(HMFOperation *)v11 error];
+  if (error)
   {
 
 LABEL_5:
     v13 = objc_autoreleasePoolPush();
-    v14 = v6;
+    v14 = selfCopy;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
       v16 = HMFGetLogIdentifier();
-      v17 = [(HMFOperation *)v11 error];
+      error2 = [(HMFOperation *)v11 error];
       v26 = 138543874;
       v27 = v16;
       v28 = 2112;
-      v29 = v4;
+      v29 = personCopy;
       v30 = 2112;
-      v31 = v17;
+      v31 = error2;
       _os_log_impl(&dword_22D12F000, v15, OS_LOG_TYPE_ERROR, "%{public}@Error fetching facecrops for person:%@, error:%@", &v26, 0x20u);
     }
 
     objc_autoreleasePoolPop(v13);
     [(HMICleanupImpureHomePersonsOperation *)v14 setNumFailures:[(HMICleanupImpureHomePersonsOperation *)v14 numFailures]+ 1];
-    v18 = 0;
+    personFaceCrops2 = 0;
     goto LABEL_12;
   }
 
-  v19 = [(HMIFetchPersonFaceCropsOperation *)v11 personFaceCrops];
+  personFaceCrops = [(HMIFetchPersonFaceCropsOperation *)v11 personFaceCrops];
 
-  if (!v19)
+  if (!personFaceCrops)
   {
     goto LABEL_5;
   }
 
-  v18 = [(HMIFetchPersonFaceCropsOperation *)v11 personFaceCrops];
+  personFaceCrops2 = [(HMIFetchPersonFaceCropsOperation *)v11 personFaceCrops];
   v20 = objc_autoreleasePoolPush();
-  v21 = v6;
+  v21 = selfCopy;
   v22 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
   {
     v23 = HMFGetLogIdentifier();
-    v24 = [v18 count];
+    v24 = [personFaceCrops2 count];
     v26 = 138543874;
     v27 = v23;
     v28 = 2048;
     v29 = v24;
     v30 = 2112;
-    v31 = v4;
+    v31 = personCopy;
     _os_log_impl(&dword_22D12F000, v22, OS_LOG_TYPE_INFO, "%{public}@Fetched %lu face crops for person: %@", &v26, 0x20u);
   }
 
   objc_autoreleasePoolPop(v20);
 LABEL_12:
 
-  return v18;
+  return personFaceCrops2;
 }
 
-- (id)fetchOrCreateFaceprintsForCrops:(id)a3 person:(id)a4
+- (id)fetchOrCreateFaceprintsForCrops:(id)crops person:(id)person
 {
   v36 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 na_map:&__block_literal_global_33];
+  cropsCopy = crops;
+  personCopy = person;
+  v8 = [cropsCopy na_map:&__block_literal_global_33];
   v9 = [HMIFetchFaceprintsForFaceCropsOperation alloc];
-  v10 = [(HMICleanupImpureHomePersonsOperation *)self dataSource];
-  v11 = [(HMIFetchFaceprintsForFaceCropsOperation *)v9 initWithDataSource:v10 faceCropUUIDs:v8];
+  dataSource = [(HMICleanupImpureHomePersonsOperation *)self dataSource];
+  v11 = [(HMIFetchFaceprintsForFaceCropsOperation *)v9 initWithDataSource:dataSource faceCropUUIDs:v8];
 
   [(HMFOperation *)v11 start];
   [(HMIFetchFaceprintsForFaceCropsOperation *)v11 waitUntilFinished];
-  v12 = [(HMFOperation *)v11 error];
+  error = [(HMFOperation *)v11 error];
 
-  if (v12)
+  if (error)
   {
     [(HMICleanupImpureHomePersonsOperation *)self setNumFailures:[(HMICleanupImpureHomePersonsOperation *)self numFailures]+ 1];
     v13 = objc_autoreleasePoolPush();
-    v14 = self;
+    selfCopy = self;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
       v16 = HMFGetLogIdentifier();
-      v17 = [(HMFOperation *)v11 error];
+      error2 = [(HMFOperation *)v11 error];
       *buf = 138543874;
       v31 = v16;
       v32 = 2112;
-      v33 = v7;
+      v33 = personCopy;
       v34 = 2112;
-      v35 = v17;
+      v35 = error2;
       _os_log_impl(&dword_22D12F000, v15, OS_LOG_TYPE_ERROR, "%{public}@Ignoring error fetching faceprints for person:%@, error:%@", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(v13);
   }
 
-  v18 = [(HMICleanupImpureHomePersonsOperation *)self faceprinter];
-  v19 = [(HMIFetchFaceprintsForFaceCropsOperation *)v11 faceprints];
+  faceprinter = [(HMICleanupImpureHomePersonsOperation *)self faceprinter];
+  faceprints = [(HMIFetchFaceprintsForFaceCropsOperation *)v11 faceprints];
   v29 = 0;
-  v20 = [v18 updatedFaceprintsForFaceCrops:v6 withExistingFaceprints:v19 error:&v29];
+  v20 = [faceprinter updatedFaceprintsForFaceCrops:cropsCopy withExistingFaceprints:faceprints error:&v29];
   v21 = v29;
 
   if (v20)
   {
-    v22 = [v20 allAtCurrentVersion];
-    v23 = [v22 allObjects];
+    allAtCurrentVersion = [v20 allAtCurrentVersion];
+    allObjects = [allAtCurrentVersion allObjects];
   }
 
   else
   {
     v24 = objc_autoreleasePoolPush();
-    v25 = self;
+    selfCopy2 = self;
     v26 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
     {
@@ -265,28 +265,28 @@ LABEL_12:
       *buf = 138543874;
       v31 = v27;
       v32 = 2112;
-      v33 = v7;
+      v33 = personCopy;
       v34 = 2112;
       v35 = v21;
       _os_log_impl(&dword_22D12F000, v26, OS_LOG_TYPE_ERROR, "%{public}@Error faceprinting face crops for person:%@, error:%@", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(v24);
-    [(HMICleanupImpureHomePersonsOperation *)v25 setNumFailures:[(HMICleanupImpureHomePersonsOperation *)v25 numFailures]+ 1];
-    v23 = 0;
+    [(HMICleanupImpureHomePersonsOperation *)selfCopy2 setNumFailures:[(HMICleanupImpureHomePersonsOperation *)selfCopy2 numFailures]+ 1];
+    allObjects = 0;
   }
 
-  return v23;
+  return allObjects;
 }
 
-- (BOOL)isIdentityPureWithFaceprints:(id)a3 person:(id)a4
+- (BOOL)isIdentityPureWithFaceprints:(id)faceprints person:(id)person
 {
   v80 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [HMIFaceUtilities faceObservationsFromFaceprintsForClustering:v6];
+  faceprintsCopy = faceprints;
+  personCopy = person;
+  v8 = [HMIFaceUtilities faceObservationsFromFaceprintsForClustering:faceprintsCopy];
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy = self;
   v11 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
@@ -299,24 +299,24 @@ LABEL_12:
   }
 
   objc_autoreleasePoolPop(v9);
-  clusterer = v10->_clusterer;
+  clusterer = selfCopy->_clusterer;
   v71 = 0;
   v14 = [(HMIGreedyClustering *)clusterer getClustersWithFaces:v8 error:&v71];
   v15 = v71;
   if (!v14)
   {
-    [(HMICleanupImpureHomePersonsOperation *)v10 setNumFailures:[(HMICleanupImpureHomePersonsOperation *)v10 numFailures]+ 1];
+    [(HMICleanupImpureHomePersonsOperation *)selfCopy setNumFailures:[(HMICleanupImpureHomePersonsOperation *)selfCopy numFailures]+ 1];
     v22 = objc_autoreleasePoolPush();
-    v23 = v10;
+    v23 = selfCopy;
     v24 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
     {
       v25 = HMFGetLogIdentifier();
-      v26 = [v7 UUID];
+      uUID = [personCopy UUID];
       *buf = 138543874;
       v75 = v25;
       v76 = 2112;
-      v77 = v26;
+      v77 = uUID;
       v78 = 2112;
       v79 = v15;
       _os_log_impl(&dword_22D12F000, v24, OS_LOG_TYPE_ERROR, "%{public}@Clustering error:%@ treating identity: %@ as impure", buf, 0x20u);
@@ -329,16 +329,16 @@ LABEL_12:
   if ([v14 count] <= 1)
   {
     v16 = objc_autoreleasePoolPush();
-    v17 = v10;
+    v17 = selfCopy;
     v18 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
     {
       v19 = HMFGetLogIdentifier();
-      v20 = [v7 UUID];
+      uUID2 = [personCopy UUID];
       *buf = 138543618;
       v75 = v19;
       v76 = 2112;
-      v77 = v20;
+      v77 = uUID2;
       _os_log_impl(&dword_22D12F000, v18, OS_LOG_TYPE_INFO, "%{public}@0 or 1 cluster exists, treating identity: %@ as pure", buf, 0x16u);
     }
 
@@ -347,12 +347,12 @@ LABEL_12:
     goto LABEL_25;
   }
 
-  v27 = [v7 name];
+  name = [personCopy name];
 
-  if (!v27)
+  if (!name)
   {
     v32 = objc_autoreleasePoolPush();
-    v33 = v10;
+    v33 = selfCopy;
     v34 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v34, OS_LOG_TYPE_INFO))
     {
@@ -361,7 +361,7 @@ LABEL_12:
       *buf = 138543874;
       v75 = v35;
       v76 = 2112;
-      v77 = v7;
+      v77 = personCopy;
       v78 = 2048;
       v79 = v53;
       v37 = "%{public}@Unnamed person %@ has %lu clusters, treating as impure";
@@ -376,17 +376,17 @@ LABEL_24:
     goto LABEL_25;
   }
 
-  v28 = [v7 name];
-  if (v28)
+  name2 = [personCopy name];
+  if (name2)
   {
-    v29 = v28;
-    v30 = [v7 personLinks];
-    v31 = [v30 count];
+    v29 = name2;
+    personLinks = [personCopy personLinks];
+    v31 = [personLinks count];
 
     if (v31)
     {
       v32 = objc_autoreleasePoolPush();
-      v33 = v10;
+      v33 = selfCopy;
       v34 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v34, OS_LOG_TYPE_INFO))
       {
@@ -395,7 +395,7 @@ LABEL_24:
         *buf = 138543874;
         v75 = v35;
         v76 = 2112;
-        v77 = v7;
+        v77 = personCopy;
         v78 = 2048;
         v79 = v36;
         v37 = "%{public}@Named person %@ with atleast 1 personLink has %lu clusters, treating as impure";
@@ -410,13 +410,13 @@ LABEL_22:
   }
 
   v38 = objc_autoreleasePoolPush();
-  v39 = v10;
+  v39 = selfCopy;
   v40 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v40, OS_LOG_TYPE_INFO))
   {
     v41 = HMFGetLogIdentifier();
     v42 = [v14 count];
-    [v7 UUID];
+    [personCopy UUID];
     v43 = v61 = v38;
     *buf = 138543874;
     v75 = v41;
@@ -439,17 +439,17 @@ LABEL_22:
   v70[4] = v39;
   [v44 na_each:v70];
   v45 = [v44 objectAtIndexedSubscript:0];
-  v46 = [v45 objects];
+  objects = [v45 objects];
   v68[0] = MEMORY[0x277D85DD0];
   v68[1] = 3221225472;
   v68[2] = __76__HMICleanupImpureHomePersonsOperation_isIdentityPureWithFaceprints_person___block_invoke_168;
   v68[3] = &unk_278755610;
   v47 = v8;
   v69 = v47;
-  v48 = [v46 na_map:v68];
+  v48 = [objects na_map:v68];
 
-  v49 = [MEMORY[0x277CCAD78] UUID];
-  v72 = v49;
+  uUID3 = [MEMORY[0x277CCAD78] UUID];
+  v72 = uUID3;
   v60 = v48;
   v73 = v48;
   v50 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v73 forKeys:&v72 count:1];
@@ -588,32 +588,32 @@ BOOL __76__HMICleanupImpureHomePersonsOperation_isIdentityPureWithFaceprints_per
   return v10;
 }
 
-- (void)removeFaceCropsWithUUIDs:(id)a3
+- (void)removeFaceCropsWithUUIDs:(id)ds
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dsCopy = ds;
   v5 = [HMIRemoveFaceCropsOperation alloc];
-  v6 = [(HMICleanupImpureHomePersonsOperation *)self dataSource];
-  v7 = [(HMIRemoveFaceCropsOperation *)v5 initWithDataSource:v6 faceCropUUIDs:v4];
+  dataSource = [(HMICleanupImpureHomePersonsOperation *)self dataSource];
+  v7 = [(HMIRemoveFaceCropsOperation *)v5 initWithDataSource:dataSource faceCropUUIDs:dsCopy];
 
   [(HMFOperation *)v7 start];
   [(HMIRemoveFaceCropsOperation *)v7 waitUntilFinished];
-  v8 = [(HMFOperation *)v7 error];
+  error = [(HMFOperation *)v7 error];
 
-  if (v8)
+  if (error)
   {
     [(HMICleanupImpureHomePersonsOperation *)self setNumFailures:[(HMICleanupImpureHomePersonsOperation *)self numFailures]+ 1];
     v9 = objc_autoreleasePoolPush();
-    v10 = self;
+    selfCopy = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       v12 = HMFGetLogIdentifier();
-      v13 = [(HMFOperation *)v7 error];
+      error2 = [(HMFOperation *)v7 error];
       v14 = 138543618;
       v15 = v12;
       v16 = 2112;
-      v17 = v13;
+      v17 = error2;
       _os_log_impl(&dword_22D12F000, v11, OS_LOG_TYPE_ERROR, "%{public}@Error while removing facecrops %@", &v14, 0x16u);
     }
 
@@ -621,16 +621,16 @@ BOOL __76__HMICleanupImpureHomePersonsOperation_isIdentityPureWithFaceprints_per
   }
 }
 
-- (void)reassociateFaceCropsWithUnknownSource:(id)a3 toPersonUUID:(id)a4
+- (void)reassociateFaceCropsWithUnknownSource:(id)source toPersonUUID:(id)d
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 na_map:&__block_literal_global_178_0];
+  sourceCopy = source;
+  dCopy = d;
+  v8 = [sourceCopy na_map:&__block_literal_global_178_0];
   if ([v8 count])
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = self;
+    selfCopy = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
@@ -640,33 +640,33 @@ BOOL __76__HMICleanupImpureHomePersonsOperation_isIdentityPureWithFaceprints_per
       v24 = 2048;
       v25 = [v8 count];
       v26 = 2112;
-      v27 = v7;
+      v27 = dCopy;
       _os_log_impl(&dword_22D12F000, v11, OS_LOG_TYPE_INFO, "%{public}@Reassociating %lu face crops to person UUID: %@", &v22, 0x20u);
     }
 
     objc_autoreleasePoolPop(v9);
     v13 = [HMIAssociateFaceCropsOperation alloc];
-    v14 = [(HMICleanupImpureHomePersonsOperation *)v10 dataSource];
-    v15 = [(HMIAssociateFaceCropsOperation *)v13 initWithDataSource:v14 faceCropUUIDs:v8 personUUID:v7 source:4];
+    dataSource = [(HMICleanupImpureHomePersonsOperation *)selfCopy dataSource];
+    v15 = [(HMIAssociateFaceCropsOperation *)v13 initWithDataSource:dataSource faceCropUUIDs:v8 personUUID:dCopy source:4];
 
     [(HMFOperation *)v15 start];
     [(HMIAssociateFaceCropsOperation *)v15 waitUntilFinished];
-    v16 = [(HMFOperation *)v15 error];
+    error = [(HMFOperation *)v15 error];
 
-    if (v16)
+    if (error)
     {
-      [(HMICleanupImpureHomePersonsOperation *)v10 setNumFailures:[(HMICleanupImpureHomePersonsOperation *)v10 numFailures]+ 1];
+      [(HMICleanupImpureHomePersonsOperation *)selfCopy setNumFailures:[(HMICleanupImpureHomePersonsOperation *)selfCopy numFailures]+ 1];
       v17 = objc_autoreleasePoolPush();
-      v18 = v10;
+      v18 = selfCopy;
       v19 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
       {
         v20 = HMFGetLogIdentifier();
-        v21 = [(HMFOperation *)v15 error];
+        error2 = [(HMFOperation *)v15 error];
         v22 = 138543618;
         v23 = v20;
         v24 = 2112;
-        v25 = v21;
+        v25 = error2;
         _os_log_impl(&dword_22D12F000, v19, OS_LOG_TYPE_ERROR, "%{public}@Error while reassociating facecrops %@", &v22, 0x16u);
       }
 
@@ -691,21 +691,21 @@ id __91__HMICleanupImpureHomePersonsOperation_reassociateFaceCropsWithUnknownSou
   return v3;
 }
 
-- (id)ffArchiveRootURLWithError:(id *)a3
+- (id)ffArchiveRootURLWithError:(id *)error
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = HMIURLForCacheDirectory(a3);
+  v5 = HMIURLForCacheDirectory(error);
   v6 = v5;
   if (v5)
   {
     v7 = [v5 URLByAppendingPathComponent:@"FFArchive" isDirectory:1];
-    v8 = [(HMICleanupImpureHomePersonsOperation *)self homeUUID];
-    v9 = [v8 UUIDString];
-    v10 = [v7 URLByAppendingPathComponent:v9 isDirectory:1];
+    homeUUID = [(HMICleanupImpureHomePersonsOperation *)self homeUUID];
+    uUIDString = [homeUUID UUIDString];
+    v10 = [v7 URLByAppendingPathComponent:uUIDString isDirectory:1];
 
-    v11 = [MEMORY[0x277CCAA00] defaultManager];
-    v12 = [v10 path];
-    v13 = [v11 createDirectoryAtPath:v12 withIntermediateDirectories:1 attributes:0 error:a3];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    path = [v10 path];
+    v13 = [defaultManager createDirectoryAtPath:path withIntermediateDirectories:1 attributes:0 error:error];
 
     if (v13)
     {
@@ -715,16 +715,16 @@ id __91__HMICleanupImpureHomePersonsOperation_reassociateFaceCropsWithUnknownSou
     else
     {
       v15 = objc_autoreleasePoolPush();
-      v16 = self;
+      selfCopy = self;
       v17 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
       {
         v18 = HMFGetLogIdentifier();
-        v19 = [v10 path];
+        path2 = [v10 path];
         v21 = 138543618;
         v22 = v18;
         v23 = 2112;
-        v24 = v19;
+        v24 = path2;
         _os_log_impl(&dword_22D12F000, v17, OS_LOG_TYPE_ERROR, "%{public}@Error creating directory %@", &v21, 0x16u);
       }
 
@@ -741,122 +741,122 @@ id __91__HMICleanupImpureHomePersonsOperation_reassociateFaceCropsWithUnknownSou
   return v14;
 }
 
-- (void)purgeURLIfNeeded:(id)a3
+- (void)purgeURLIfNeeded:(id)needed
 {
   v59 = *MEMORY[0x277D85DE8];
-  v39 = a3;
+  neededCopy = needed;
   v49 = 0;
   v50 = &v49;
   v51 = 0x2020000000;
   v52 = 0;
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
-  v5 = [v39 path];
-  v38 = [v4 enumeratorAtPath:v5];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  path = [neededCopy path];
+  v38 = [defaultManager enumeratorAtPath:path];
 
-  v37 = [MEMORY[0x277CBEB18] array];
-  v36 = [MEMORY[0x277CBEB38] dictionary];
-  v35 = [MEMORY[0x277CBEB38] dictionary];
+  array = [MEMORY[0x277CBEB18] array];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  dictionary2 = [MEMORY[0x277CBEB38] dictionary];
   v6 = 0;
   v34 = *MEMORY[0x277CCA150];
   *&v7 = 138543874;
   v33 = v7;
   while (1)
   {
-    v8 = [v38 nextObject];
+    nextObject = [v38 nextObject];
 
-    if (!v8)
+    if (!nextObject)
     {
       break;
     }
 
-    v9 = [v39 path];
-    v10 = [v9 stringByAppendingPathComponent:v8];
+    path2 = [neededCopy path];
+    v10 = [path2 stringByAppendingPathComponent:nextObject];
 
-    v11 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
     v48 = 0;
-    v12 = [v11 attributesOfItemAtPath:v10 error:&v48];
+    v12 = [defaultManager2 attributesOfItemAtPath:v10 error:&v48];
     v13 = v48;
 
     if (v12)
     {
-      [v37 addObject:v8];
-      v14 = [v12 fileSize];
-      v50[3] += v14;
+      [array addObject:nextObject];
+      fileSize = [v12 fileSize];
+      v50[3] += fileSize;
       v15 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v12, "fileSize")}];
-      [v36 setObject:v15 forKeyedSubscript:v8];
+      [dictionary setObject:v15 forKeyedSubscript:nextObject];
 
-      v16 = [v12 objectForKey:v34];
-      if (!v16)
+      defaultManager3 = [v12 objectForKey:v34];
+      if (!defaultManager3)
       {
-        v16 = [MEMORY[0x277CBEAA8] now];
+        defaultManager3 = [MEMORY[0x277CBEAA8] now];
       }
 
-      [v35 setObject:v16 forKeyedSubscript:v8];
+      [dictionary2 setObject:defaultManager3 forKeyedSubscript:nextObject];
     }
 
     else
     {
       v17 = objc_autoreleasePoolPush();
-      v18 = self;
+      selfCopy = self;
       v19 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
       {
-        v20 = self;
+        selfCopy2 = self;
         v21 = HMFGetLogIdentifier();
-        v22 = [v39 path];
+        path3 = [neededCopy path];
         *buf = v33;
         v54 = v21;
         v55 = 2112;
-        v56 = v8;
+        v56 = nextObject;
         v57 = 2112;
-        v58 = v22;
+        v58 = path3;
         _os_log_impl(&dword_22D12F000, v19, OS_LOG_TYPE_ERROR, "%{public}@Error fetching attributes of the file: %@ at: %@. Attempting to delete it", buf, 0x20u);
 
-        self = v20;
+        self = selfCopy2;
       }
 
       objc_autoreleasePoolPop(v17);
-      v16 = [MEMORY[0x277CCAA00] defaultManager];
+      defaultManager3 = [MEMORY[0x277CCAA00] defaultManager];
       v47 = v13;
-      [v16 removeItemAtPath:v10 error:&v47];
+      [defaultManager3 removeItemAtPath:v10 error:&v47];
       v23 = v47;
 
       v13 = v23;
     }
 
-    v6 = v8;
+    v6 = nextObject;
   }
 
   v45[0] = MEMORY[0x277D85DD0];
   v45[1] = 3221225472;
   v45[2] = __57__HMICleanupImpureHomePersonsOperation_purgeURLIfNeeded___block_invoke;
   v45[3] = &unk_278755660;
-  v24 = v35;
+  v24 = dictionary2;
   v46 = v24;
-  [v37 sortUsingComparator:v45];
+  [array sortUsingComparator:v45];
   v40[0] = MEMORY[0x277D85DD0];
   v40[1] = 3221225472;
   v40[2] = __57__HMICleanupImpureHomePersonsOperation_purgeURLIfNeeded___block_invoke_2;
   v40[3] = &unk_278755688;
   v44 = &v49;
-  v25 = v39;
+  v25 = neededCopy;
   v41 = v25;
-  v42 = self;
-  v26 = v36;
+  selfCopy3 = self;
+  v26 = dictionary;
   v43 = v26;
-  [v37 enumerateObjectsUsingBlock:v40];
+  [array enumerateObjectsUsingBlock:v40];
   v27 = objc_autoreleasePoolPush();
-  v28 = self;
+  selfCopy4 = self;
   v29 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
   {
     v30 = HMFGetLogIdentifier();
-    v31 = [v25 path];
+    path4 = [v25 path];
     v32 = (v50[3] >> 10);
     *buf = v33;
     v54 = v30;
     v55 = 2112;
-    v56 = v31;
+    v56 = path4;
     v57 = 2048;
     v58 = v32;
     _os_log_impl(&dword_22D12F000, v29, OS_LOG_TYPE_INFO, "%{public}@Disk buffer size of %@: %ld KB", buf, 0x20u);
@@ -938,39 +938,39 @@ void __57__HMICleanupImpureHomePersonsOperation_purgeURLIfNeeded___block_invoke_
   }
 }
 
-- (void)dumpFFDataToCacheForPerson:(id)a3 personFaceCrops:(id)a4
+- (void)dumpFFDataToCacheForPerson:(id)person personFaceCrops:(id)crops
 {
   v77[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  personCopy = person;
+  cropsCopy = crops;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     v11 = HMFGetLogIdentifier();
-    v12 = [(HMICleanupImpureHomePersonsOperation *)v9 homeUUID];
+    homeUUID = [(HMICleanupImpureHomePersonsOperation *)selfCopy homeUUID];
     *buf = 138543874;
     v66 = v11;
     v67 = 2112;
-    v68 = v12;
+    v68 = homeUUID;
     v69 = 2112;
-    v70 = v6;
+    v70 = personCopy;
     _os_log_impl(&dword_22D12F000, v10, OS_LOG_TYPE_INFO, "%{public}@Archive familiar face data for home: %@ person: %@", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v8);
-  v13 = [v7 allObjects];
-  v14 = [v13 sortedArrayUsingComparator:&__block_literal_global_189];
+  allObjects = [cropsCopy allObjects];
+  v14 = [allObjects sortedArrayUsingComparator:&__block_literal_global_189];
 
   v76[0] = @"home";
-  v15 = [(HMICleanupImpureHomePersonsOperation *)v9 homeUUID];
-  v16 = [v15 UUIDString];
+  homeUUID2 = [(HMICleanupImpureHomePersonsOperation *)selfCopy homeUUID];
+  uUIDString = [homeUUID2 UUIDString];
   v76[1] = @"homePersonsAndFaceCrops";
-  v77[0] = v16;
+  v77[0] = uUIDString;
   v73[0] = @"person";
   v73[1] = @"faceCrops";
-  v74[0] = v6;
+  v74[0] = personCopy;
   v74[1] = v14;
   v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v74 forKeys:v73 count:2];
   v75 = v17;
@@ -985,14 +985,14 @@ void __57__HMICleanupImpureHomePersonsOperation_purgeURLIfNeeded___block_invoke_
   if (v20)
   {
     v63 = v21;
-    v23 = [(HMICleanupImpureHomePersonsOperation *)v9 ffArchiveRootURLWithError:&v63];
+    v23 = [(HMICleanupImpureHomePersonsOperation *)selfCopy ffArchiveRootURLWithError:&v63];
     v62 = v63;
 
     if (v23)
     {
-      v60 = v7;
+      v60 = cropsCopy;
       v61 = v14;
-      [(HMICleanupImpureHomePersonsOperation *)v9 purgeURLIfNeeded:v23];
+      [(HMICleanupImpureHomePersonsOperation *)selfCopy purgeURLIfNeeded:v23];
       v24 = objc_alloc_init(MEMORY[0x277CCA968]);
       [v24 setDateFormat:@"yyyy-MM-dd'T'HH-mm-ss"];
       v25 = [MEMORY[0x277CBEAA8] now];
@@ -1000,34 +1000,34 @@ void __57__HMICleanupImpureHomePersonsOperation_purgeURLIfNeeded___block_invoke_
       v26 = [v24 stringFromDate:v25];
 
       v27 = MEMORY[0x277CCACA8];
-      v28 = [v6 UUID];
-      v29 = [v28 UUIDString];
+      uUID = [personCopy UUID];
+      uUIDString2 = [uUID UUIDString];
       v58 = v26;
-      v30 = [v27 stringWithFormat:@"%@_%@.plist", v29, v26];
+      v30 = [v27 stringWithFormat:@"%@_%@.plist", uUIDString2, v26];
       v31 = [v23 URLByAppendingPathComponent:v30];
-      v32 = [v31 path];
+      path = [v31 path];
 
       v33 = objc_autoreleasePoolPush();
-      v34 = v9;
+      v34 = selfCopy;
       v35 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v35, OS_LOG_TYPE_INFO))
       {
         v36 = HMFGetLogIdentifier();
-        v37 = [(HMICleanupImpureHomePersonsOperation *)v34 homeUUID];
+        homeUUID3 = [(HMICleanupImpureHomePersonsOperation *)v34 homeUUID];
         *buf = 138544130;
         v66 = v36;
         v67 = 2112;
-        v68 = v37;
+        v68 = homeUUID3;
         v69 = 2112;
-        v70 = v6;
+        v70 = personCopy;
         v71 = 2112;
-        v72 = v32;
+        v72 = path;
         _os_log_impl(&dword_22D12F000, v35, OS_LOG_TYPE_INFO, "%{public}@Saving archived familiar face data for home: %@ person: %@ to: %@", buf, 0x2Au);
       }
 
       objc_autoreleasePoolPop(v33);
       v14 = v61;
-      if (([v20 writeToFile:v32 atomically:1] & 1) == 0)
+      if (([v20 writeToFile:path atomically:1] & 1) == 0)
       {
         v38 = objc_autoreleasePoolPush();
         v39 = v34;
@@ -1057,13 +1057,13 @@ void __57__HMICleanupImpureHomePersonsOperation_purgeURLIfNeeded___block_invoke_
       }
 
       objc_autoreleasePoolPop(v42);
-      v7 = v60;
+      cropsCopy = v60;
     }
 
     else
     {
       v54 = objc_autoreleasePoolPush();
-      v55 = v9;
+      v55 = selfCopy;
       v56 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v56, OS_LOG_TYPE_ERROR))
       {
@@ -1084,13 +1084,13 @@ void __57__HMICleanupImpureHomePersonsOperation_purgeURLIfNeeded___block_invoke_
   else
   {
     v46 = objc_autoreleasePoolPush();
-    v47 = v9;
+    v47 = selfCopy;
     v48 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v48, OS_LOG_TYPE_ERROR))
     {
       v49 = HMFGetLogIdentifier();
-      [v6 UUID];
-      v50 = v6;
+      [personCopy UUID];
+      v50 = personCopy;
       v51 = v19;
       v53 = v52 = v14;
       *buf = 138543874;
@@ -1103,7 +1103,7 @@ void __57__HMICleanupImpureHomePersonsOperation_purgeURLIfNeeded___block_invoke_
 
       v14 = v52;
       v19 = v51;
-      v6 = v50;
+      personCopy = v50;
       v20 = 0;
     }
 
@@ -1129,16 +1129,16 @@ uint64_t __83__HMICleanupImpureHomePersonsOperation_dumpFFDataToCacheForPerson_p
   objc_autoreleasePoolPop(v3);
 }
 
-- (void)handleCleanupForPerson:(id)a3
+- (void)handleCleanupForPerson:(id)person
 {
   v64 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMICleanupImpureHomePersonsOperation *)self fetchFaceCropsForPerson:v4];
+  personCopy = person;
+  v5 = [(HMICleanupImpureHomePersonsOperation *)self fetchFaceCropsForPerson:personCopy];
   v6 = v5;
   if (!v5 || ![v5 count])
   {
     v30 = objc_autoreleasePoolPush();
-    v31 = self;
+    selfCopy3 = self;
     v32 = HMFGetOSLogHandle();
     if (!os_log_type_enabled(v32, OS_LOG_TYPE_INFO))
     {
@@ -1149,11 +1149,11 @@ LABEL_27:
     }
 
     v33 = HMFGetLogIdentifier();
-    v34 = [v4 UUID];
+    uUID = [personCopy UUID];
     *buf = 138543618;
     v59 = v33;
     v60 = 2112;
-    v61 = v34;
+    v61 = uUID;
     v35 = "%{public}@Skipping person %@ due to nil or 0 face crops";
 LABEL_26:
     _os_log_impl(&dword_22D12F000, v32, OS_LOG_TYPE_INFO, v35, buf, 0x16u);
@@ -1171,31 +1171,31 @@ LABEL_26:
     if ([v6 na_any:&__block_literal_global_213])
     {
       v36 = objc_autoreleasePoolPush();
-      v37 = self;
+      selfCopy2 = self;
       v38 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v38, OS_LOG_TYPE_INFO))
       {
         v39 = HMFGetLogIdentifier();
-        v40 = [v4 UUID];
+        uUID2 = [personCopy UUID];
         *buf = 138543618;
         v59 = v39;
         v60 = 2112;
-        v61 = v40;
+        v61 = uUID2;
         _os_log_impl(&dword_22D12F000, v38, OS_LOG_TYPE_INFO, "%{public}@Person %@ has crops with unknown source, reassociating them", buf, 0x16u);
       }
 
       objc_autoreleasePoolPop(v36);
       if (+[HMIPreference isInternalInstall])
       {
-        [(HMICleanupImpureHomePersonsOperation *)v37 dumpFFDataToCacheForPerson:v4 personFaceCrops:v6];
+        [(HMICleanupImpureHomePersonsOperation *)selfCopy2 dumpFFDataToCacheForPerson:personCopy personFaceCrops:v6];
       }
 
-      v41 = [v4 UUID];
-      [(HMICleanupImpureHomePersonsOperation *)v37 reassociateFaceCropsWithUnknownSource:v6 toPersonUUID:v41];
+      uUID3 = [personCopy UUID];
+      [(HMICleanupImpureHomePersonsOperation *)selfCopy2 reassociateFaceCropsWithUnknownSource:v6 toPersonUUID:uUID3];
     }
 
     v30 = objc_autoreleasePoolPush();
-    v31 = self;
+    selfCopy3 = self;
     v32 = HMFGetOSLogHandle();
     if (!os_log_type_enabled(v32, OS_LOG_TYPE_INFO))
     {
@@ -1203,21 +1203,21 @@ LABEL_26:
     }
 
     v33 = HMFGetLogIdentifier();
-    v34 = [v4 UUID];
+    uUID = [personCopy UUID];
     *buf = 138543618;
     v59 = v33;
     v60 = 2112;
-    v61 = v34;
+    v61 = uUID;
     v35 = "%{public}@Skipping person %@ as all crops are either old or have a non-unknown source";
     goto LABEL_26;
   }
 
   if (+[HMIPreference isInternalInstall])
   {
-    [(HMICleanupImpureHomePersonsOperation *)self dumpFFDataToCacheForPerson:v4 personFaceCrops:v6];
+    [(HMICleanupImpureHomePersonsOperation *)self dumpFFDataToCacheForPerson:personCopy personFaceCrops:v6];
   }
 
-  v7 = [(HMICleanupImpureHomePersonsOperation *)self fetchOrCreateFaceprintsForCrops:v6 person:v4];
+  v7 = [(HMICleanupImpureHomePersonsOperation *)self fetchOrCreateFaceprintsForCrops:v6 person:personCopy];
   if (v7)
   {
     v8 = [v6 na_map:&__block_literal_global_217];
@@ -1231,7 +1231,7 @@ LABEL_26:
     {
       v51 = v8;
       v14 = objc_autoreleasePoolPush();
-      v15 = self;
+      selfCopy4 = self;
       v16 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
       {
@@ -1239,7 +1239,7 @@ LABEL_26:
         v17 = v49 = v14;
         v18 = v13;
         v19 = [v13 count];
-        [v4 UUID];
+        [personCopy UUID];
         v20 = v50 = v12;
         *buf = 138543874;
         v59 = v17;
@@ -1255,15 +1255,15 @@ LABEL_26:
       }
 
       objc_autoreleasePoolPop(v14);
-      [(HMICleanupImpureHomePersonsOperation *)v15 removeFaceCropsWithUUIDs:v13];
+      [(HMICleanupImpureHomePersonsOperation *)selfCopy4 removeFaceCropsWithUUIDs:v13];
       v8 = v51;
     }
 
     if ([v7 count])
     {
-      v21 = [(HMICleanupImpureHomePersonsOperation *)self isIdentityPureWithFaceprints:v7 person:v4];
+      v21 = [(HMICleanupImpureHomePersonsOperation *)self isIdentityPureWithFaceprints:v7 person:personCopy];
       v22 = objc_autoreleasePoolPush();
-      v23 = self;
+      selfCopy5 = self;
       v24 = HMFGetOSLogHandle();
       v25 = os_log_type_enabled(v24, OS_LOG_TYPE_INFO);
       if (v21)
@@ -1272,11 +1272,11 @@ LABEL_26:
         if (v25)
         {
           v26 = HMFGetLogIdentifier();
-          v27 = [v4 UUID];
+          uUID4 = [personCopy UUID];
           *buf = 138543618;
           v59 = v26;
           v60 = 2112;
-          v61 = v27;
+          v61 = uUID4;
           _os_log_impl(&dword_22D12F000, v24, OS_LOG_TYPE_INFO, "%{public}@Found pure identity, skipping person %@", buf, 0x16u);
         }
 
@@ -1287,8 +1287,8 @@ LABEL_26:
         v55[3] = &unk_278754108;
         v56 = v12;
         v28 = [v6 na_filter:v55];
-        v29 = [v4 UUID];
-        [(HMICleanupImpureHomePersonsOperation *)v23 reassociateFaceCropsWithUnknownSource:v28 toPersonUUID:v29];
+        uUID5 = [personCopy UUID];
+        [(HMICleanupImpureHomePersonsOperation *)selfCopy5 reassociateFaceCropsWithUnknownSource:v28 toPersonUUID:uUID5];
 
         v13 = v52;
       }
@@ -1298,7 +1298,7 @@ LABEL_26:
         if (v25)
         {
           v47 = HMFGetLogIdentifier();
-          [v4 UUID];
+          [personCopy UUID];
           v48 = v54 = v13;
           *buf = 138543618;
           v59 = v47;
@@ -1310,20 +1310,20 @@ LABEL_26:
         }
 
         objc_autoreleasePoolPop(v22);
-        [(HMICleanupImpureHomePersonsOperation *)v23 removeFaceCropsWithUUIDs:v12];
-        [(HMICleanupImpureHomePersonsOperation *)v23 removePerson:v4];
+        [(HMICleanupImpureHomePersonsOperation *)selfCopy5 removeFaceCropsWithUUIDs:v12];
+        [(HMICleanupImpureHomePersonsOperation *)selfCopy5 removePerson:personCopy];
       }
     }
 
     else
     {
       v42 = objc_autoreleasePoolPush();
-      v43 = self;
+      selfCopy6 = self;
       v44 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v44, OS_LOG_TYPE_INFO))
       {
         v45 = HMFGetLogIdentifier();
-        [v4 UUID];
+        [personCopy UUID];
         v46 = v53 = v13;
         *buf = 138543618;
         v59 = v45;
@@ -1371,15 +1371,15 @@ uint64_t __63__HMICleanupImpureHomePersonsOperation_handleCleanupForPerson___blo
 - (void)mainInsideAutoreleasePool
 {
   v35 = *MEMORY[0x277D85DE8];
-  v3 = [(HMICleanupImpureHomePersonsOperation *)self fetchPersons];
-  v4 = v3;
-  if (v3)
+  fetchPersons = [(HMICleanupImpureHomePersonsOperation *)self fetchPersons];
+  v4 = fetchPersons;
+  if (fetchPersons)
   {
     v28 = 0u;
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v5 = v3;
+    v5 = fetchPersons;
     v6 = [v5 countByEnumeratingWithState:&v26 objects:v34 count:16];
     if (v6)
     {
@@ -1395,11 +1395,11 @@ uint64_t __63__HMICleanupImpureHomePersonsOperation_handleCleanupForPerson___blo
           }
 
           v10 = *(*(&v26 + 1) + 8 * i);
-          v11 = [(HMICleanupImpureHomePersonsOperation *)self isCancelled];
+          isCancelled = [(HMICleanupImpureHomePersonsOperation *)self isCancelled];
           v12 = objc_autoreleasePoolPush();
-          if (v11)
+          if (isCancelled)
           {
-            v21 = self;
+            selfCopy = self;
             v22 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
             {
@@ -1427,27 +1427,27 @@ uint64_t __63__HMICleanupImpureHomePersonsOperation_handleCleanupForPerson___blo
       }
     }
 
-    v13 = [(HMICleanupImpureHomePersonsOperation *)self numFailures];
+    numFailures = [(HMICleanupImpureHomePersonsOperation *)self numFailures];
     v14 = objc_autoreleasePoolPush();
-    v15 = self;
+    selfCopy2 = self;
     v16 = HMFGetOSLogHandle();
     v17 = os_log_type_enabled(v16, OS_LOG_TYPE_INFO);
-    if (v13)
+    if (numFailures)
     {
       if (v17)
       {
         v18 = HMFGetLogIdentifier();
-        v19 = [(HMICleanupImpureHomePersonsOperation *)v15 numFailures];
+        numFailures2 = [(HMICleanupImpureHomePersonsOperation *)selfCopy2 numFailures];
         *buf = 138543618;
         v31 = v18;
         v32 = 1024;
-        v33 = v19;
+        v33 = numFailures2;
         _os_log_impl(&dword_22D12F000, v16, OS_LOG_TYPE_INFO, "%{public}@CleanImpureHomePersonsOperation encountered %d failures", buf, 0x12u);
       }
 
       objc_autoreleasePoolPop(v14);
       v20 = [MEMORY[0x277CCA9B8] hmiPrivateErrorWithCode:1040 description:@"CleanImpureHomePersonsOperation encountered failures"];
-      [(HMFOperation *)v15 cancelWithError:v20];
+      [(HMFOperation *)selfCopy2 cancelWithError:v20];
     }
 
     else
@@ -1461,7 +1461,7 @@ uint64_t __63__HMICleanupImpureHomePersonsOperation_handleCleanupForPerson___blo
       }
 
       objc_autoreleasePoolPop(v14);
-      v25.receiver = v15;
+      v25.receiver = selfCopy2;
       v25.super_class = HMICleanupImpureHomePersonsOperation;
       [(HMFOperation *)&v25 finish];
     }
@@ -1475,44 +1475,44 @@ LABEL_18:
   }
 }
 
-- (BOOL)isAffectedDate:(id)a3
+- (BOOL)isAffectedDate:(id)date
 {
-  v4 = a3;
-  v5 = [(HMICleanupImpureHomePersonsOperation *)self targetDate];
-  v6 = [v4 compare:v5];
+  dateCopy = date;
+  targetDate = [(HMICleanupImpureHomePersonsOperation *)self targetDate];
+  v6 = [dateCopy compare:targetDate];
 
   return v6 == 1;
 }
 
-- (void)removePerson:(id)a3
+- (void)removePerson:(id)person
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  personCopy = person;
   v5 = [HMIRemovePersonsOperation alloc];
-  v6 = [(HMICleanupImpureHomePersonsOperation *)self dataSource];
+  dataSource = [(HMICleanupImpureHomePersonsOperation *)self dataSource];
   v7 = MEMORY[0x277CBEB98];
-  v8 = [v4 UUID];
-  v9 = [v7 setWithObject:v8];
-  v10 = [(HMIRemovePersonsOperation *)v5 initWithDataSource:v6 personUUIDs:v9];
+  uUID = [personCopy UUID];
+  v9 = [v7 setWithObject:uUID];
+  v10 = [(HMIRemovePersonsOperation *)v5 initWithDataSource:dataSource personUUIDs:v9];
 
   [(HMFOperation *)v10 start];
   [(HMIRemovePersonsOperation *)v10 waitUntilFinished];
-  v11 = [(HMFOperation *)v10 error];
+  error = [(HMFOperation *)v10 error];
 
-  if (v11)
+  if (error)
   {
     [(HMICleanupImpureHomePersonsOperation *)self setNumFailures:[(HMICleanupImpureHomePersonsOperation *)self numFailures]+ 1];
     v12 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
       v15 = HMFGetLogIdentifier();
-      v16 = [(HMFOperation *)v10 error];
+      error2 = [(HMFOperation *)v10 error];
       v17 = 138543618;
       v18 = v15;
       v19 = 2112;
-      v20 = v16;
+      v20 = error2;
       _os_log_impl(&dword_22D12F000, v14, OS_LOG_TYPE_ERROR, "%{public}@Error while removing persons %@", &v17, 0x16u);
     }
 

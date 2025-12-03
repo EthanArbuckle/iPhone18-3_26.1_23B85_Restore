@@ -1,49 +1,49 @@
 @interface PKPeerPaymentNumberPadActionButton
-+ (CGSize)referenceSizeForSizeCategory:(unint64_t)a3;
-+ (double)adjustSize:(double)a3 forSizeCategory:(unint64_t)a4;
-- (PKPeerPaymentNumberPadActionButton)initWithSizeCategory:(unint64_t)a3;
-- (id)_axIDForAction:(unint64_t)a3;
-- (id)_titleForAction:(unint64_t)a3;
++ (CGSize)referenceSizeForSizeCategory:(unint64_t)category;
++ (double)adjustSize:(double)size forSizeCategory:(unint64_t)category;
+- (PKPeerPaymentNumberPadActionButton)initWithSizeCategory:(unint64_t)category;
+- (id)_axIDForAction:(unint64_t)action;
+- (id)_titleForAction:(unint64_t)action;
 - (void)_updateForFontSize;
 - (void)layoutSubviews;
-- (void)setAction:(unint64_t)a3;
-- (void)setSizeCategory:(unint64_t)a3;
+- (void)setAction:(unint64_t)action;
+- (void)setSizeCategory:(unint64_t)category;
 @end
 
 @implementation PKPeerPaymentNumberPadActionButton
 
-+ (CGSize)referenceSizeForSizeCategory:(unint64_t)a3
++ (CGSize)referenceSizeForSizeCategory:(unint64_t)category
 {
-  [a1 adjustSize:a3 forSizeCategory:70.0];
+  [self adjustSize:category forSizeCategory:70.0];
   v4 = v3;
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-+ (double)adjustSize:(double)a3 forSizeCategory:(unint64_t)a4
++ (double)adjustSize:(double)size forSizeCategory:(unint64_t)category
 {
   if ((PKIsPad() & 1) != 0 || PKIsPhone())
   {
-    if (a4 == 1)
+    if (category == 1)
     {
       v6 = 0.8;
-      return a3 * v6;
+      return size * v6;
     }
 
-    if (!a4)
+    if (!category)
     {
       v6 = 0.7;
-      return a3 * v6;
+      return size * v6;
     }
   }
 
-  return a3;
+  return size;
 }
 
-- (PKPeerPaymentNumberPadActionButton)initWithSizeCategory:(unint64_t)a3
+- (PKPeerPaymentNumberPadActionButton)initWithSizeCategory:(unint64_t)category
 {
-  [objc_opt_class() referenceSizeForSizeCategory:a3];
+  [objc_opt_class() referenceSizeForSizeCategory:category];
   v6 = v5;
   v8 = v7;
   v9 = *MEMORY[0x1E695EFF8];
@@ -55,7 +55,7 @@
   v13 = v12;
   if (v12)
   {
-    v12->_sizeCategory = a3;
+    v12->_sizeCategory = category;
     [(PKPeerPaymentNumberPadActionButton *)v12 _updateForFontSize];
     [(PKPeerPaymentMessagesButton *)v13 setHighlighted:0];
   }
@@ -74,19 +74,19 @@
   [(PKPeerPaymentNumberPadActionButton *)self _setContinuousCornerRadius:?];
 }
 
-- (void)setSizeCategory:(unint64_t)a3
+- (void)setSizeCategory:(unint64_t)category
 {
-  if (self->_sizeCategory != a3)
+  if (self->_sizeCategory != category)
   {
-    self->_sizeCategory = a3;
+    self->_sizeCategory = category;
     [(PKPeerPaymentNumberPadActionButton *)self _updateForFontSize];
   }
 }
 
-- (void)setAction:(unint64_t)a3
+- (void)setAction:(unint64_t)action
 {
-  self->_action = a3;
-  if (a3 == 12)
+  self->_action = action;
+  if (action == 12)
   {
     if (_UISolariumFeatureFlagEnabled())
     {
@@ -103,12 +103,12 @@
     v7 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"delete.backward" withConfiguration:v6];
     if (_UISolariumFeatureFlagEnabled())
     {
-      v8 = [MEMORY[0x1E69DC740] _clearGlassButtonConfiguration];
-      [v8 setImage:v7];
+      _clearGlassButtonConfiguration = [MEMORY[0x1E69DC740] _clearGlassButtonConfiguration];
+      [_clearGlassButtonConfiguration setImage:v7];
       v9 = +[PKPeerPaymentTheme primaryTextColor];
-      [v8 setBaseForegroundColor:v9];
+      [_clearGlassButtonConfiguration setBaseForegroundColor:v9];
 
-      [(PKPeerPaymentNumberPadActionButton *)self setConfiguration:v8];
+      [(PKPeerPaymentNumberPadActionButton *)self setConfiguration:_clearGlassButtonConfiguration];
       v12[0] = MEMORY[0x1E69E9820];
       v12[1] = 3221225472;
       v12[2] = __48__PKPeerPaymentNumberPadActionButton_setAction___block_invoke;
@@ -120,8 +120,8 @@
     else
     {
       [(PKPeerPaymentNumberPadActionButton *)self setImage:v7 forState:0];
-      v8 = +[PKPeerPaymentTheme primaryTextColor];
-      [(PKPeerPaymentNumberPadActionButton *)self setTintColor:v8];
+      _clearGlassButtonConfiguration = +[PKPeerPaymentTheme primaryTextColor];
+      [(PKPeerPaymentNumberPadActionButton *)self setTintColor:_clearGlassButtonConfiguration];
     }
 
     [(PKPeerPaymentNumberPadActionButton *)self setNeedsLayout];
@@ -139,7 +139,7 @@
       [MEMORY[0x1E69DC740] _clearGlassButtonConfiguration];
     }
     v6 = ;
-    v10 = [(PKPeerPaymentNumberPadActionButton *)self _titleForAction:a3];
+    v10 = [(PKPeerPaymentNumberPadActionButton *)self _titleForAction:action];
     [v6 setTitle:v10];
 
     [(PKPeerPaymentNumberPadActionButton *)self setConfiguration:v6];
@@ -147,11 +147,11 @@
 
   else
   {
-    v6 = [(PKPeerPaymentNumberPadActionButton *)self _titleForAction:a3];
+    v6 = [(PKPeerPaymentNumberPadActionButton *)self _titleForAction:action];
     [(PKPeerPaymentNumberPadActionButton *)self setTitle:v6 forState:0];
   }
 
-  v11 = [(PKPeerPaymentNumberPadActionButton *)self _axIDForAction:a3];
+  v11 = [(PKPeerPaymentNumberPadActionButton *)self _axIDForAction:action];
   [(PKPeerPaymentNumberPadActionButton *)self setAccessibilityIdentifier:v11];
 }
 
@@ -170,19 +170,19 @@ void __48__PKPeerPaymentNumberPadActionButton_setAction___block_invoke(uint64_t 
   [v6 setConfiguration:v3];
 }
 
-- (id)_titleForAction:(unint64_t)a3
+- (id)_titleForAction:(unint64_t)action
 {
   if (qword_1EBDAA8A8 != -1)
   {
     dispatch_once(&qword_1EBDAA8A8, &__block_literal_global_377);
   }
 
-  v4 = 0;
-  if (a3 <= 5)
+  decimalSeparator = 0;
+  if (action <= 5)
   {
-    if (a3 <= 2)
+    if (action <= 2)
     {
-      if (a3 == 1)
+      if (action == 1)
       {
         v5 = qword_1EBDAA8A0;
         v6 = &unk_1F3CC7370;
@@ -190,7 +190,7 @@ void __48__PKPeerPaymentNumberPadActionButton_setAction___block_invoke(uint64_t 
 
       else
       {
-        if (a3 != 2)
+        if (action != 2)
         {
           goto LABEL_27;
         }
@@ -200,7 +200,7 @@ void __48__PKPeerPaymentNumberPadActionButton_setAction___block_invoke(uint64_t 
       }
     }
 
-    else if (a3 == 3)
+    else if (action == 3)
     {
       v5 = qword_1EBDAA8A0;
       v6 = &unk_1F3CC73A0;
@@ -209,7 +209,7 @@ void __48__PKPeerPaymentNumberPadActionButton_setAction___block_invoke(uint64_t 
     else
     {
       v5 = qword_1EBDAA8A0;
-      if (a3 == 4)
+      if (action == 4)
       {
         v6 = &unk_1F3CC73B8;
       }
@@ -221,17 +221,17 @@ void __48__PKPeerPaymentNumberPadActionButton_setAction___block_invoke(uint64_t 
     }
   }
 
-  else if (a3 > 8)
+  else if (action > 8)
   {
-    switch(a3)
+    switch(action)
     {
       case 9uLL:
         v5 = qword_1EBDAA8A0;
         v6 = &unk_1F3CC7430;
         break;
       case 0xAuLL:
-        v7 = [MEMORY[0x1E695DF58] currentLocale];
-        v4 = [v7 decimalSeparator];
+        currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+        decimalSeparator = [currentLocale decimalSeparator];
 
         goto LABEL_27;
       case 0xBuLL:
@@ -243,7 +243,7 @@ void __48__PKPeerPaymentNumberPadActionButton_setAction___block_invoke(uint64_t 
     }
   }
 
-  else if (a3 == 6)
+  else if (action == 6)
   {
     v5 = qword_1EBDAA8A0;
     v6 = &unk_1F3CC73E8;
@@ -252,7 +252,7 @@ void __48__PKPeerPaymentNumberPadActionButton_setAction___block_invoke(uint64_t 
   else
   {
     v5 = qword_1EBDAA8A0;
-    if (a3 == 7)
+    if (action == 7)
     {
       v6 = &unk_1F3CC7400;
     }
@@ -263,10 +263,10 @@ void __48__PKPeerPaymentNumberPadActionButton_setAction___block_invoke(uint64_t 
     }
   }
 
-  v4 = [v5 stringFromNumber:v6];
+  decimalSeparator = [v5 stringFromNumber:v6];
 LABEL_27:
 
-  return v4;
+  return decimalSeparator;
 }
 
 uint64_t __54__PKPeerPaymentNumberPadActionButton__titleForAction___block_invoke()
@@ -284,15 +284,15 @@ uint64_t __54__PKPeerPaymentNumberPadActionButton__titleForAction___block_invoke
   return [v4 setFormattingContext:2];
 }
 
-- (id)_axIDForAction:(unint64_t)a3
+- (id)_axIDForAction:(unint64_t)action
 {
-  if (a3 == 12)
+  if (action == 12)
   {
     v3 = MEMORY[0x1E69B96C0];
     goto LABEL_5;
   }
 
-  if (a3 == 10)
+  if (action == 10)
   {
     v3 = MEMORY[0x1E69B96B0];
 LABEL_5:
@@ -324,8 +324,8 @@ LABEL_7:
   v6 = v5;
   if ((PKIsVision() & 1) != 0 || _UISolariumFeatureFlagEnabled())
   {
-    v7 = [(PKPeerPaymentNumberPadActionButton *)self configuration];
-    if (!v7)
+    configuration = [(PKPeerPaymentNumberPadActionButton *)self configuration];
+    if (!configuration)
     {
       if (PKIsVision())
       {
@@ -336,27 +336,27 @@ LABEL_7:
       {
         [MEMORY[0x1E69DC740] _clearGlassButtonConfiguration];
       }
-      v7 = ;
+      configuration = ;
     }
 
     v10 = +[PKPeerPaymentTheme primaryTextColor];
-    [v7 setBaseForegroundColor:v10];
+    [configuration setBaseForegroundColor:v10];
 
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __56__PKPeerPaymentNumberPadActionButton__updateForFontSize__block_invoke;
     v12[3] = &__block_descriptor_40_e36___NSDictionary_16__0__NSDictionary_8l;
     *&v12[4] = v6;
-    [v7 setTitleTextAttributesTransformer:v12];
-    [(PKPeerPaymentNumberPadActionButton *)self setConfiguration:v7];
+    [configuration setTitleTextAttributesTransformer:v12];
+    [(PKPeerPaymentNumberPadActionButton *)self setConfiguration:configuration];
   }
 
   else
   {
-    v11 = [(PKPeerPaymentNumberPadActionButton *)self titleLabel];
+    titleLabel = [(PKPeerPaymentNumberPadActionButton *)self titleLabel];
     v8 = [MEMORY[0x1E69DB878] pk_textCondensedSemiboldCashFontOfSize:v6];
-    v9 = [v8 pk_fixedWidthFont];
-    [v11 setFont:v9];
+    pk_fixedWidthFont = [v8 pk_fixedWidthFont];
+    [titleLabel setFont:pk_fixedWidthFont];
   }
 }
 

@@ -1,31 +1,31 @@
 @interface ASRSchemaASRPackageGenerated
-- (ASRSchemaASRPackageGenerated)initWithDictionary:(id)a3;
-- (ASRSchemaASRPackageGenerated)initWithJSON:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (ASRSchemaASRPackageGenerated)initWithDictionary:(id)dictionary;
+- (ASRSchemaASRPackageGenerated)initWithJSON:(id)n;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasHasNoVoiceCommandAfterRespeakCheck:(BOOL)a3;
-- (void)setHasHasVoiceCommandAfterReranking:(BOOL)a3;
-- (void)setHasHasVoiceCommandEditIntent:(BOOL)a3;
-- (void)setHasHasVoiceCommandInExhaustiveParses:(BOOL)a3;
-- (void)setHasHasVoiceCommandParses:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasHasNoVoiceCommandAfterRespeakCheck:(BOOL)check;
+- (void)setHasHasVoiceCommandAfterReranking:(BOOL)reranking;
+- (void)setHasHasVoiceCommandEditIntent:(BOOL)intent;
+- (void)setHasHasVoiceCommandInExhaustiveParses:(BOOL)parses;
+- (void)setHasHasVoiceCommandParses:(BOOL)parses;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ASRSchemaASRPackageGenerated
 
-- (ASRSchemaASRPackageGenerated)initWithDictionary:(id)a3
+- (ASRSchemaASRPackageGenerated)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v31.receiver = self;
   v31.super_class = ASRSchemaASRPackageGenerated;
   v5 = [(ASRSchemaASRPackageGenerated *)&v31 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"package"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"package"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -33,14 +33,14 @@
       [(ASRSchemaASRPackageGenerated *)v5 setPackage:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"isFinal"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"isFinal"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ASRSchemaASRPackageGenerated setIsFinal:](v5, "setIsFinal:", [v8 BOOLValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"resultCandidateId"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"resultCandidateId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -48,7 +48,7 @@
       [(ASRSchemaASRPackageGenerated *)v5 setResultCandidateId:v10];
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"loggableSharedUserId"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"loggableSharedUserId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -57,7 +57,7 @@
     }
 
     v28 = v9;
-    v13 = [v4 objectForKeyedSubscript:@"modelVersion"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"modelVersion"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -67,7 +67,7 @@
 
     v26 = v13;
     v27 = v11;
-    v15 = [v4 objectForKeyedSubscript:@"acousticModelVersion"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"acousticModelVersion"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -75,14 +75,14 @@
       [(ASRSchemaASRPackageGenerated *)v5 setAcousticModelVersion:v16];
     }
 
-    v17 = [v4 objectForKeyedSubscript:@"hasVoiceCommandInExhaustiveParses"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"hasVoiceCommandInExhaustiveParses"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ASRSchemaASRPackageGenerated setHasVoiceCommandInExhaustiveParses:](v5, "setHasVoiceCommandInExhaustiveParses:", [v17 BOOLValue]);
     }
 
-    v18 = [v4 objectForKeyedSubscript:@"hasVoiceCommandParses"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"hasVoiceCommandParses"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -90,7 +90,7 @@
     }
 
     v30 = v6;
-    v19 = [v4 objectForKeyedSubscript:@"hasVoiceCommandEditIntent"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"hasVoiceCommandEditIntent"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -98,21 +98,21 @@
     }
 
     v29 = v8;
-    v20 = [v4 objectForKeyedSubscript:@"hasVoiceCommandAfterReranking"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"hasVoiceCommandAfterReranking"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ASRSchemaASRPackageGenerated setHasVoiceCommandAfterReranking:](v5, "setHasVoiceCommandAfterReranking:", [v20 BOOLValue]);
     }
 
-    v21 = [v4 objectForKeyedSubscript:@"hasNoVoiceCommandAfterRespeakCheck"];
+    v21 = [dictionaryCopy objectForKeyedSubscript:@"hasNoVoiceCommandAfterRespeakCheck"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ASRSchemaASRPackageGenerated setHasNoVoiceCommandAfterRespeakCheck:](v5, "setHasNoVoiceCommandAfterRespeakCheck:", [v21 BOOLValue]);
     }
 
-    v22 = [v4 objectForKeyedSubscript:@"loggableUserIdHash"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"loggableUserIdHash"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -126,30 +126,30 @@
   return v5;
 }
 
-- (ASRSchemaASRPackageGenerated)initWithJSON:(id)a3
+- (ASRSchemaASRPackageGenerated)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(ASRSchemaASRPackageGenerated *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(ASRSchemaASRPackageGenerated *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(ASRSchemaASRPackageGenerated *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -162,19 +162,19 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_acousticModelVersion)
   {
-    v4 = [(ASRSchemaASRPackageGenerated *)self acousticModelVersion];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"acousticModelVersion"];
+    acousticModelVersion = [(ASRSchemaASRPackageGenerated *)self acousticModelVersion];
+    v5 = [acousticModelVersion copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"acousticModelVersion"];
   }
 
   has = self->_has;
   if ((has & 0x20) != 0)
   {
     v16 = [MEMORY[0x1E696AD98] numberWithBool:{-[ASRSchemaASRPackageGenerated hasNoVoiceCommandAfterRespeakCheck](self, "hasNoVoiceCommandAfterRespeakCheck")}];
-    [v3 setObject:v16 forKeyedSubscript:@"hasNoVoiceCommandAfterRespeakCheck"];
+    [dictionary setObject:v16 forKeyedSubscript:@"hasNoVoiceCommandAfterRespeakCheck"];
 
     has = self->_has;
     if ((has & 0x10) == 0)
@@ -195,7 +195,7 @@ LABEL_5:
   }
 
   v17 = [MEMORY[0x1E696AD98] numberWithBool:{-[ASRSchemaASRPackageGenerated hasVoiceCommandAfterReranking](self, "hasVoiceCommandAfterReranking")}];
-  [v3 setObject:v17 forKeyedSubscript:@"hasVoiceCommandAfterReranking"];
+  [dictionary setObject:v17 forKeyedSubscript:@"hasVoiceCommandAfterReranking"];
 
   has = self->_has;
   if ((has & 8) == 0)
@@ -211,7 +211,7 @@ LABEL_6:
 
 LABEL_21:
   v18 = [MEMORY[0x1E696AD98] numberWithBool:{-[ASRSchemaASRPackageGenerated hasVoiceCommandEditIntent](self, "hasVoiceCommandEditIntent")}];
-  [v3 setObject:v18 forKeyedSubscript:@"hasVoiceCommandEditIntent"];
+  [dictionary setObject:v18 forKeyedSubscript:@"hasVoiceCommandEditIntent"];
 
   has = self->_has;
   if ((has & 2) == 0)
@@ -227,7 +227,7 @@ LABEL_7:
 
 LABEL_22:
   v19 = [MEMORY[0x1E696AD98] numberWithBool:{-[ASRSchemaASRPackageGenerated hasVoiceCommandInExhaustiveParses](self, "hasVoiceCommandInExhaustiveParses")}];
-  [v3 setObject:v19 forKeyedSubscript:@"hasVoiceCommandInExhaustiveParses"];
+  [dictionary setObject:v19 forKeyedSubscript:@"hasVoiceCommandInExhaustiveParses"];
 
   has = self->_has;
   if ((has & 4) == 0)
@@ -243,63 +243,63 @@ LABEL_8:
 
 LABEL_23:
   v20 = [MEMORY[0x1E696AD98] numberWithBool:{-[ASRSchemaASRPackageGenerated hasVoiceCommandParses](self, "hasVoiceCommandParses")}];
-  [v3 setObject:v20 forKeyedSubscript:@"hasVoiceCommandParses"];
+  [dictionary setObject:v20 forKeyedSubscript:@"hasVoiceCommandParses"];
 
   if (*&self->_has)
   {
 LABEL_9:
     v7 = [MEMORY[0x1E696AD98] numberWithBool:{-[ASRSchemaASRPackageGenerated isFinal](self, "isFinal")}];
-    [v3 setObject:v7 forKeyedSubscript:@"isFinal"];
+    [dictionary setObject:v7 forKeyedSubscript:@"isFinal"];
   }
 
 LABEL_10:
   if (self->_loggableSharedUserId)
   {
-    v8 = [(ASRSchemaASRPackageGenerated *)self loggableSharedUserId];
-    v9 = [v8 copy];
-    [v3 setObject:v9 forKeyedSubscript:@"loggableSharedUserId"];
+    loggableSharedUserId = [(ASRSchemaASRPackageGenerated *)self loggableSharedUserId];
+    v9 = [loggableSharedUserId copy];
+    [dictionary setObject:v9 forKeyedSubscript:@"loggableSharedUserId"];
   }
 
   if (self->_loggableUserIdHash)
   {
-    v10 = [(ASRSchemaASRPackageGenerated *)self loggableUserIdHash];
-    v11 = [v10 copy];
-    [v3 setObject:v11 forKeyedSubscript:@"loggableUserIdHash"];
+    loggableUserIdHash = [(ASRSchemaASRPackageGenerated *)self loggableUserIdHash];
+    v11 = [loggableUserIdHash copy];
+    [dictionary setObject:v11 forKeyedSubscript:@"loggableUserIdHash"];
   }
 
   if (self->_modelVersion)
   {
-    v12 = [(ASRSchemaASRPackageGenerated *)self modelVersion];
-    v13 = [v12 copy];
-    [v3 setObject:v13 forKeyedSubscript:@"modelVersion"];
+    modelVersion = [(ASRSchemaASRPackageGenerated *)self modelVersion];
+    v13 = [modelVersion copy];
+    [dictionary setObject:v13 forKeyedSubscript:@"modelVersion"];
   }
 
   if (self->_package)
   {
-    v14 = [(ASRSchemaASRPackageGenerated *)self package];
-    v15 = [v14 dictionaryRepresentation];
-    if (v15)
+    package = [(ASRSchemaASRPackageGenerated *)self package];
+    dictionaryRepresentation = [package dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v15 forKeyedSubscript:@"package"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"package"];
     }
 
     else
     {
-      v21 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v21 forKeyedSubscript:@"package"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"package"];
     }
   }
 
   if (self->_resultCandidateId)
   {
-    v22 = [(ASRSchemaASRPackageGenerated *)self resultCandidateId];
-    v23 = [v22 copy];
-    [v3 setObject:v23 forKeyedSubscript:@"resultCandidateId"];
+    resultCandidateId = [(ASRSchemaASRPackageGenerated *)self resultCandidateId];
+    v23 = [resultCandidateId copy];
+    [dictionary setObject:v23 forKeyedSubscript:@"resultCandidateId"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -385,28 +385,28 @@ LABEL_9:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13 ^ [(NSString *)self->_loggableUserIdHash hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_54;
   }
 
-  v5 = [(ASRSchemaASRPackageGenerated *)self package];
-  v6 = [v4 package];
-  if ((v5 != 0) == (v6 == 0))
+  package = [(ASRSchemaASRPackageGenerated *)self package];
+  package2 = [equalCopy package];
+  if ((package != 0) == (package2 == 0))
   {
     goto LABEL_53;
   }
 
-  v7 = [(ASRSchemaASRPackageGenerated *)self package];
-  if (v7)
+  package3 = [(ASRSchemaASRPackageGenerated *)self package];
+  if (package3)
   {
-    v8 = v7;
-    v9 = [(ASRSchemaASRPackageGenerated *)self package];
-    v10 = [v4 package];
-    v11 = [v9 isEqual:v10];
+    v8 = package3;
+    package4 = [(ASRSchemaASRPackageGenerated *)self package];
+    package5 = [equalCopy package];
+    v11 = [package4 isEqual:package5];
 
     if (!v11)
     {
@@ -418,7 +418,7 @@ LABEL_9:
   {
   }
 
-  if ((*&self->_has & 1) != (v4[72] & 1))
+  if ((*&self->_has & 1) != (equalCopy[72] & 1))
   {
     goto LABEL_54;
   }
@@ -426,26 +426,26 @@ LABEL_9:
   if (*&self->_has)
   {
     isFinal = self->_isFinal;
-    if (isFinal != [v4 isFinal])
+    if (isFinal != [equalCopy isFinal])
     {
       goto LABEL_54;
     }
   }
 
-  v5 = [(ASRSchemaASRPackageGenerated *)self resultCandidateId];
-  v6 = [v4 resultCandidateId];
-  if ((v5 != 0) == (v6 == 0))
+  package = [(ASRSchemaASRPackageGenerated *)self resultCandidateId];
+  package2 = [equalCopy resultCandidateId];
+  if ((package != 0) == (package2 == 0))
   {
     goto LABEL_53;
   }
 
-  v13 = [(ASRSchemaASRPackageGenerated *)self resultCandidateId];
-  if (v13)
+  resultCandidateId = [(ASRSchemaASRPackageGenerated *)self resultCandidateId];
+  if (resultCandidateId)
   {
-    v14 = v13;
-    v15 = [(ASRSchemaASRPackageGenerated *)self resultCandidateId];
-    v16 = [v4 resultCandidateId];
-    v17 = [v15 isEqual:v16];
+    v14 = resultCandidateId;
+    resultCandidateId2 = [(ASRSchemaASRPackageGenerated *)self resultCandidateId];
+    resultCandidateId3 = [equalCopy resultCandidateId];
+    v17 = [resultCandidateId2 isEqual:resultCandidateId3];
 
     if (!v17)
     {
@@ -457,20 +457,20 @@ LABEL_9:
   {
   }
 
-  v5 = [(ASRSchemaASRPackageGenerated *)self loggableSharedUserId];
-  v6 = [v4 loggableSharedUserId];
-  if ((v5 != 0) == (v6 == 0))
+  package = [(ASRSchemaASRPackageGenerated *)self loggableSharedUserId];
+  package2 = [equalCopy loggableSharedUserId];
+  if ((package != 0) == (package2 == 0))
   {
     goto LABEL_53;
   }
 
-  v18 = [(ASRSchemaASRPackageGenerated *)self loggableSharedUserId];
-  if (v18)
+  loggableSharedUserId = [(ASRSchemaASRPackageGenerated *)self loggableSharedUserId];
+  if (loggableSharedUserId)
   {
-    v19 = v18;
-    v20 = [(ASRSchemaASRPackageGenerated *)self loggableSharedUserId];
-    v21 = [v4 loggableSharedUserId];
-    v22 = [v20 isEqual:v21];
+    v19 = loggableSharedUserId;
+    loggableSharedUserId2 = [(ASRSchemaASRPackageGenerated *)self loggableSharedUserId];
+    loggableSharedUserId3 = [equalCopy loggableSharedUserId];
+    v22 = [loggableSharedUserId2 isEqual:loggableSharedUserId3];
 
     if (!v22)
     {
@@ -482,20 +482,20 @@ LABEL_9:
   {
   }
 
-  v5 = [(ASRSchemaASRPackageGenerated *)self modelVersion];
-  v6 = [v4 modelVersion];
-  if ((v5 != 0) == (v6 == 0))
+  package = [(ASRSchemaASRPackageGenerated *)self modelVersion];
+  package2 = [equalCopy modelVersion];
+  if ((package != 0) == (package2 == 0))
   {
     goto LABEL_53;
   }
 
-  v23 = [(ASRSchemaASRPackageGenerated *)self modelVersion];
-  if (v23)
+  modelVersion = [(ASRSchemaASRPackageGenerated *)self modelVersion];
+  if (modelVersion)
   {
-    v24 = v23;
-    v25 = [(ASRSchemaASRPackageGenerated *)self modelVersion];
-    v26 = [v4 modelVersion];
-    v27 = [v25 isEqual:v26];
+    v24 = modelVersion;
+    modelVersion2 = [(ASRSchemaASRPackageGenerated *)self modelVersion];
+    modelVersion3 = [equalCopy modelVersion];
+    v27 = [modelVersion2 isEqual:modelVersion3];
 
     if (!v27)
     {
@@ -507,20 +507,20 @@ LABEL_9:
   {
   }
 
-  v5 = [(ASRSchemaASRPackageGenerated *)self acousticModelVersion];
-  v6 = [v4 acousticModelVersion];
-  if ((v5 != 0) == (v6 == 0))
+  package = [(ASRSchemaASRPackageGenerated *)self acousticModelVersion];
+  package2 = [equalCopy acousticModelVersion];
+  if ((package != 0) == (package2 == 0))
   {
     goto LABEL_53;
   }
 
-  v28 = [(ASRSchemaASRPackageGenerated *)self acousticModelVersion];
-  if (v28)
+  acousticModelVersion = [(ASRSchemaASRPackageGenerated *)self acousticModelVersion];
+  if (acousticModelVersion)
   {
-    v29 = v28;
-    v30 = [(ASRSchemaASRPackageGenerated *)self acousticModelVersion];
-    v31 = [v4 acousticModelVersion];
-    v32 = [v30 isEqual:v31];
+    v29 = acousticModelVersion;
+    acousticModelVersion2 = [(ASRSchemaASRPackageGenerated *)self acousticModelVersion];
+    acousticModelVersion3 = [equalCopy acousticModelVersion];
+    v32 = [acousticModelVersion2 isEqual:acousticModelVersion3];
 
     if (!v32)
     {
@@ -534,7 +534,7 @@ LABEL_9:
 
   has = self->_has;
   v34 = (*&has >> 1) & 1;
-  v35 = v4[72];
+  v35 = equalCopy[72];
   if (v34 != ((v35 >> 1) & 1))
   {
     goto LABEL_54;
@@ -543,13 +543,13 @@ LABEL_9:
   if (v34)
   {
     hasVoiceCommandInExhaustiveParses = self->_hasVoiceCommandInExhaustiveParses;
-    if (hasVoiceCommandInExhaustiveParses != [v4 hasVoiceCommandInExhaustiveParses])
+    if (hasVoiceCommandInExhaustiveParses != [equalCopy hasVoiceCommandInExhaustiveParses])
     {
       goto LABEL_54;
     }
 
     has = self->_has;
-    v35 = v4[72];
+    v35 = equalCopy[72];
   }
 
   v37 = (*&has >> 2) & 1;
@@ -561,13 +561,13 @@ LABEL_9:
   if (v37)
   {
     hasVoiceCommandParses = self->_hasVoiceCommandParses;
-    if (hasVoiceCommandParses != [v4 hasVoiceCommandParses])
+    if (hasVoiceCommandParses != [equalCopy hasVoiceCommandParses])
     {
       goto LABEL_54;
     }
 
     has = self->_has;
-    v35 = v4[72];
+    v35 = equalCopy[72];
   }
 
   v39 = (*&has >> 3) & 1;
@@ -579,13 +579,13 @@ LABEL_9:
   if (v39)
   {
     hasVoiceCommandEditIntent = self->_hasVoiceCommandEditIntent;
-    if (hasVoiceCommandEditIntent != [v4 hasVoiceCommandEditIntent])
+    if (hasVoiceCommandEditIntent != [equalCopy hasVoiceCommandEditIntent])
     {
       goto LABEL_54;
     }
 
     has = self->_has;
-    v35 = v4[72];
+    v35 = equalCopy[72];
   }
 
   v41 = (*&has >> 4) & 1;
@@ -597,13 +597,13 @@ LABEL_9:
   if (v41)
   {
     hasVoiceCommandAfterReranking = self->_hasVoiceCommandAfterReranking;
-    if (hasVoiceCommandAfterReranking != [v4 hasVoiceCommandAfterReranking])
+    if (hasVoiceCommandAfterReranking != [equalCopy hasVoiceCommandAfterReranking])
     {
       goto LABEL_54;
     }
 
     has = self->_has;
-    v35 = v4[72];
+    v35 = equalCopy[72];
   }
 
   v43 = (*&has >> 5) & 1;
@@ -615,23 +615,23 @@ LABEL_9:
   if (v43)
   {
     hasNoVoiceCommandAfterRespeakCheck = self->_hasNoVoiceCommandAfterRespeakCheck;
-    if (hasNoVoiceCommandAfterRespeakCheck != [v4 hasNoVoiceCommandAfterRespeakCheck])
+    if (hasNoVoiceCommandAfterRespeakCheck != [equalCopy hasNoVoiceCommandAfterRespeakCheck])
     {
       goto LABEL_54;
     }
   }
 
-  v5 = [(ASRSchemaASRPackageGenerated *)self loggableUserIdHash];
-  v6 = [v4 loggableUserIdHash];
-  if ((v5 != 0) == (v6 == 0))
+  package = [(ASRSchemaASRPackageGenerated *)self loggableUserIdHash];
+  package2 = [equalCopy loggableUserIdHash];
+  if ((package != 0) == (package2 == 0))
   {
 LABEL_53:
 
     goto LABEL_54;
   }
 
-  v45 = [(ASRSchemaASRPackageGenerated *)self loggableUserIdHash];
-  if (!v45)
+  loggableUserIdHash = [(ASRSchemaASRPackageGenerated *)self loggableUserIdHash];
+  if (!loggableUserIdHash)
   {
 
 LABEL_57:
@@ -639,10 +639,10 @@ LABEL_57:
     goto LABEL_55;
   }
 
-  v46 = v45;
-  v47 = [(ASRSchemaASRPackageGenerated *)self loggableUserIdHash];
-  v48 = [v4 loggableUserIdHash];
-  v49 = [v47 isEqual:v48];
+  v46 = loggableUserIdHash;
+  loggableUserIdHash2 = [(ASRSchemaASRPackageGenerated *)self loggableUserIdHash];
+  loggableUserIdHash3 = [equalCopy loggableUserIdHash];
+  v49 = [loggableUserIdHash2 isEqual:loggableUserIdHash3];
 
   if (v49)
   {
@@ -656,14 +656,14 @@ LABEL_55:
   return v50;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v13 = a3;
-  v4 = [(ASRSchemaASRPackageGenerated *)self package];
+  toCopy = to;
+  package = [(ASRSchemaASRPackageGenerated *)self package];
 
-  if (v4)
+  if (package)
   {
-    v5 = [(ASRSchemaASRPackageGenerated *)self package];
+    package2 = [(ASRSchemaASRPackageGenerated *)self package];
     PBDataWriterWriteSubmessage();
   }
 
@@ -672,30 +672,30 @@ LABEL_55:
     PBDataWriterWriteBOOLField();
   }
 
-  v6 = [(ASRSchemaASRPackageGenerated *)self resultCandidateId];
+  resultCandidateId = [(ASRSchemaASRPackageGenerated *)self resultCandidateId];
 
-  if (v6)
+  if (resultCandidateId)
   {
     PBDataWriterWriteStringField();
   }
 
-  v7 = [(ASRSchemaASRPackageGenerated *)self loggableSharedUserId];
+  loggableSharedUserId = [(ASRSchemaASRPackageGenerated *)self loggableSharedUserId];
 
-  if (v7)
+  if (loggableSharedUserId)
   {
     PBDataWriterWriteStringField();
   }
 
-  v8 = [(ASRSchemaASRPackageGenerated *)self modelVersion];
+  modelVersion = [(ASRSchemaASRPackageGenerated *)self modelVersion];
 
-  if (v8)
+  if (modelVersion)
   {
     PBDataWriterWriteStringField();
   }
 
-  v9 = [(ASRSchemaASRPackageGenerated *)self acousticModelVersion];
+  acousticModelVersion = [(ASRSchemaASRPackageGenerated *)self acousticModelVersion];
 
-  if (v9)
+  if (acousticModelVersion)
   {
     PBDataWriterWriteStringField();
   }
@@ -758,19 +758,19 @@ LABEL_18:
   }
 
 LABEL_19:
-  v11 = [(ASRSchemaASRPackageGenerated *)self loggableUserIdHash];
+  loggableUserIdHash = [(ASRSchemaASRPackageGenerated *)self loggableUserIdHash];
 
-  v12 = v13;
-  if (v11)
+  v12 = toCopy;
+  if (loggableUserIdHash)
   {
     PBDataWriterWriteStringField();
-    v12 = v13;
+    v12 = toCopy;
   }
 }
 
-- (void)setHasHasNoVoiceCommandAfterRespeakCheck:(BOOL)a3
+- (void)setHasHasNoVoiceCommandAfterRespeakCheck:(BOOL)check
 {
-  if (a3)
+  if (check)
   {
     v3 = 32;
   }
@@ -783,9 +783,9 @@ LABEL_19:
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasHasVoiceCommandAfterReranking:(BOOL)a3
+- (void)setHasHasVoiceCommandAfterReranking:(BOOL)reranking
 {
-  if (a3)
+  if (reranking)
   {
     v3 = 16;
   }
@@ -798,9 +798,9 @@ LABEL_19:
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasHasVoiceCommandEditIntent:(BOOL)a3
+- (void)setHasHasVoiceCommandEditIntent:(BOOL)intent
 {
-  if (a3)
+  if (intent)
   {
     v3 = 8;
   }
@@ -813,9 +813,9 @@ LABEL_19:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasHasVoiceCommandParses:(BOOL)a3
+- (void)setHasHasVoiceCommandParses:(BOOL)parses
 {
-  if (a3)
+  if (parses)
   {
     v3 = 4;
   }
@@ -828,9 +828,9 @@ LABEL_19:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasHasVoiceCommandInExhaustiveParses:(BOOL)a3
+- (void)setHasHasVoiceCommandInExhaustiveParses:(BOOL)parses
 {
-  if (a3)
+  if (parses)
   {
     v3 = 2;
   }
@@ -843,22 +843,22 @@ LABEL_19:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v10.receiver = self;
   v10.super_class = ASRSchemaASRPackageGenerated;
-  v5 = [(SISchemaInstrumentationMessage *)&v10 applySensitiveConditionsPolicy:v4];
-  if ([v4 isConditionSet:8])
+  v5 = [(SISchemaInstrumentationMessage *)&v10 applySensitiveConditionsPolicy:policyCopy];
+  if ([policyCopy isConditionSet:8])
   {
     [(ASRSchemaASRPackageGenerated *)self deleteLoggableSharedUserId];
   }
 
-  v6 = [(ASRSchemaASRPackageGenerated *)self package];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  package = [(ASRSchemaASRPackageGenerated *)self package];
+  v7 = [package applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(ASRSchemaASRPackageGenerated *)self deletePackage];
   }

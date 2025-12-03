@@ -8,35 +8,35 @@
 
 - (id)hdmc_categoryIdentifier
 {
-  v2 = [a1 eventIdentifier];
+  eventIdentifier = [self eventIdentifier];
   v3 = *MEMORY[0x277D118F8];
-  v4 = [v2 containsString:*MEMORY[0x277D118F8]];
+  v4 = [eventIdentifier containsString:*MEMORY[0x277D118F8]];
 
   if (v4)
   {
-    v5 = v3;
+    eventIdentifier2 = v3;
   }
 
   else
   {
-    v5 = [a1 eventIdentifier];
+    eventIdentifier2 = [self eventIdentifier];
   }
 
-  return v5;
+  return eventIdentifier2;
 }
 
 - (uint64_t)hdmc_fertileWindowEndDayIndex
 {
-  v2 = [a1 hdmc_categoryIdentifier];
+  hdmc_categoryIdentifier = [self hdmc_categoryIdentifier];
   v3 = *MEMORY[0x277D118F8];
 
-  if (v2 != v3)
+  if (hdmc_categoryIdentifier != v3)
   {
     return 0;
   }
 
-  v5 = [a1 eventIdentifier];
-  v6 = [v5 componentsSeparatedByString:@"_"];
+  eventIdentifier = [self eventIdentifier];
+  v6 = [eventIdentifier componentsSeparatedByString:@"_"];
 
   v7 = [v6 objectAtIndexedSubscript:0];
   v8 = HKMCNotificationDateComponentScalarFromCategory();
@@ -46,29 +46,29 @@
 
 - (uint64_t)hdmc_fertileWindowDayShift
 {
-  v2 = [a1 hdmc_categoryIdentifier];
+  hdmc_categoryIdentifier = [self hdmc_categoryIdentifier];
   v3 = *MEMORY[0x277D118F8];
 
-  if (v2 != v3)
+  if (hdmc_categoryIdentifier != v3)
   {
     return 0;
   }
 
-  v5 = [a1 eventIdentifier];
-  v6 = [v5 componentsSeparatedByString:@"_"];
+  eventIdentifier = [self eventIdentifier];
+  v6 = [eventIdentifier componentsSeparatedByString:@"_"];
 
   if ([v6 count] < 2)
   {
-    v4 = 0;
+    integerValue = 0;
   }
 
   else
   {
     v7 = [v6 objectAtIndexedSubscript:1];
-    v4 = [v7 integerValue];
+    integerValue = [v7 integerValue];
   }
 
-  return v4;
+  return integerValue;
 }
 
 @end

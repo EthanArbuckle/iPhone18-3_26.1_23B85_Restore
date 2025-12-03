@@ -1,35 +1,35 @@
 @interface LiveCaptionsNubbitOpacitySliderCell
 - (double)initialValue;
-- (void)_updateRightLabelWithValue:(double)a3;
-- (void)handleSliderBeingDragged:(id)a3;
-- (void)handleSliderDidFinishDrag:(id)a3;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (void)_updateRightLabelWithValue:(double)value;
+- (void)handleSliderBeingDragged:(id)dragged;
+- (void)handleSliderDidFinishDrag:(id)drag;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 @end
 
 @implementation LiveCaptionsNubbitOpacitySliderCell
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
   v4.receiver = self;
   v4.super_class = LiveCaptionsNubbitOpacitySliderCell;
-  [(LiveCaptionsNubbitOpacitySliderCell *)&v4 refreshCellContentsWithSpecifier:a3];
+  [(LiveCaptionsNubbitOpacitySliderCell *)&v4 refreshCellContentsWithSpecifier:specifier];
   [(LiveCaptionsNubbitOpacitySliderCell *)self initialValue];
   [(LiveCaptionsNubbitOpacitySliderCell *)self _updateRightLabelWithValue:?];
 }
 
-- (void)_updateRightLabelWithValue:(double)a3
+- (void)_updateRightLabelWithValue:(double)value
 {
   v4 = AXFormatFloatWithPercentage();
   [(LiveCaptionsNubbitOpacitySliderCell *)self setLabelText:v4];
 
   v5 = objc_initWeak(&location, self);
-  v6 = [(LiveCaptionsNubbitOpacitySliderCell *)self slider];
+  slider = [(LiveCaptionsNubbitOpacitySliderCell *)self slider];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = __66__LiveCaptionsNubbitOpacitySliderCell__updateRightLabelWithValue___block_invoke;
   v7[3] = &unk_255F00;
   objc_copyWeak(&v8, &location);
-  [v6 _setAccessibilityValueBlock:v7];
+  [slider _setAccessibilityValueBlock:v7];
 
   objc_destroyWeak(&v8);
   objc_destroyWeak(&location);
@@ -44,23 +44,23 @@ id __66__LiveCaptionsNubbitOpacitySliderCell__updateRightLabelWithValue___block_
   return v2;
 }
 
-- (void)handleSliderBeingDragged:(id)a3
+- (void)handleSliderBeingDragged:(id)dragged
 {
-  v4 = a3;
-  [v4 value];
-  [v4 setValue:0 animated:?];
-  [v4 value];
+  draggedCopy = dragged;
+  [draggedCopy value];
+  [draggedCopy setValue:0 animated:?];
+  [draggedCopy value];
   [NSNumber numberWithFloat:?];
   _AXSLiveCaptionsSetNubbitIdleOpacity();
-  [v4 value];
+  [draggedCopy value];
   v6 = v5;
 
   [(LiveCaptionsNubbitOpacitySliderCell *)self _updateRightLabelWithValue:v6];
 }
 
-- (void)handleSliderDidFinishDrag:(id)a3
+- (void)handleSliderDidFinishDrag:(id)drag
 {
-  [a3 value];
+  [drag value];
   [NSNumber numberWithFloat:?];
 
   _AXSLiveCaptionsSetNubbitIdleOpacity();

@@ -1,18 +1,18 @@
 @interface WBSCyclerItemLeafRepresentation
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation WBSCyclerItemLeafRepresentation
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [WBSCyclerItemLeafRepresentation alloc];
-  v5 = [(WBSCyclerItemRepresentation *)self title];
-  v6 = [(WBSCyclerItemRepresentation *)self uniqueIdentifier];
-  v7 = [(WBSCyclerItemRepresentation *)v4 initWithTitle:v5 uniqueIdentifier:v6];
+  title = [(WBSCyclerItemRepresentation *)self title];
+  uniqueIdentifier = [(WBSCyclerItemRepresentation *)self uniqueIdentifier];
+  v7 = [(WBSCyclerItemRepresentation *)v4 initWithTitle:title uniqueIdentifier:uniqueIdentifier];
 
-  v8 = [(WBSCyclerItemRepresentation *)self extraAttributes];
-  [(WBSCyclerItemRepresentation *)v7 setExtraAttributes:v8];
+  extraAttributes = [(WBSCyclerItemRepresentation *)self extraAttributes];
+  [(WBSCyclerItemRepresentation *)v7 setExtraAttributes:extraAttributes];
 
   return v7;
 }

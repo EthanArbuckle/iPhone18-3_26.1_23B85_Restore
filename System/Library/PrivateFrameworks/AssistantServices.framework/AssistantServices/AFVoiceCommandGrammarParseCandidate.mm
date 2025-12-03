@@ -1,41 +1,41 @@
 @interface AFVoiceCommandGrammarParseCandidate
-- (AFVoiceCommandGrammarParseCandidate)initWithCoder:(id)a3;
-- (AFVoiceCommandGrammarParseCandidate)initWithVoiceCommandUUID:(id)a3 commandId:(id)a4 isComplete:(BOOL)a5 paramMatches:(id)a6;
-- (BOOL)isEqual:(id)a3;
+- (AFVoiceCommandGrammarParseCandidate)initWithCoder:(id)coder;
+- (AFVoiceCommandGrammarParseCandidate)initWithVoiceCommandUUID:(id)d commandId:(id)id isComplete:(BOOL)complete paramMatches:(id)matches;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AFVoiceCommandGrammarParseCandidate
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   voiceCommandUUID = self->_voiceCommandUUID;
-  v6 = a3;
-  [v6 encodeObject:voiceCommandUUID forKey:@"AFVoiceCommandGrammarParseCandidate::voiceCommandUUID"];
-  [v6 encodeObject:self->_commandId forKey:@"AFVoiceCommandGrammarParseCandidate::commandId"];
+  coderCopy = coder;
+  [coderCopy encodeObject:voiceCommandUUID forKey:@"AFVoiceCommandGrammarParseCandidate::voiceCommandUUID"];
+  [coderCopy encodeObject:self->_commandId forKey:@"AFVoiceCommandGrammarParseCandidate::commandId"];
   v5 = [MEMORY[0x1E696AD98] numberWithBool:self->_isComplete];
-  [v6 encodeObject:v5 forKey:@"AFVoiceCommandGrammarParseCandidate::isComplete"];
+  [coderCopy encodeObject:v5 forKey:@"AFVoiceCommandGrammarParseCandidate::isComplete"];
 
-  [v6 encodeObject:self->_paramMatches forKey:@"AFVoiceCommandGrammarParseCandidate::paramMatches"];
+  [coderCopy encodeObject:self->_paramMatches forKey:@"AFVoiceCommandGrammarParseCandidate::paramMatches"];
 }
 
-- (AFVoiceCommandGrammarParseCandidate)initWithCoder:(id)a3
+- (AFVoiceCommandGrammarParseCandidate)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AFVoiceCommandGrammarParseCandidate::voiceCommandUUID"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AFVoiceCommandGrammarParseCandidate::commandId"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AFVoiceCommandGrammarParseCandidate::isComplete"];
-  v8 = [v7 BOOLValue];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFVoiceCommandGrammarParseCandidate::voiceCommandUUID"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFVoiceCommandGrammarParseCandidate::commandId"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFVoiceCommandGrammarParseCandidate::isComplete"];
+  bOOLValue = [v7 BOOLValue];
 
   v9 = MEMORY[0x1E695DFD8];
   v10 = objc_opt_class();
   v11 = objc_opt_class();
   v12 = [v9 setWithObjects:{v10, v11, objc_opt_class(), 0}];
-  v13 = [v4 decodeObjectOfClasses:v12 forKey:@"AFVoiceCommandGrammarParseCandidate::paramMatches"];
+  v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"AFVoiceCommandGrammarParseCandidate::paramMatches"];
 
-  v14 = [(AFVoiceCommandGrammarParseCandidate *)self initWithVoiceCommandUUID:v5 commandId:v6 isComplete:v8 paramMatches:v13];
+  v14 = [(AFVoiceCommandGrammarParseCandidate *)self initWithVoiceCommandUUID:v5 commandId:v6 isComplete:bOOLValue paramMatches:v13];
   return v14;
 }
 
@@ -86,10 +86,10 @@ void __63__AFVoiceCommandGrammarParseCandidate_dictionaryRepresentation__block_i
 
 - (id)description
 {
-  v3 = [MEMORY[0x1E696AD60] string];
-  [v3 appendFormat:@"["];
-  [v3 appendFormat:@"voiceCommandUUID = %@", self->_voiceCommandUUID];
-  [v3 appendFormat:@"commandId = %@", self->_commandId];
+  string = [MEMORY[0x1E696AD60] string];
+  [string appendFormat:@"["];
+  [string appendFormat:@"voiceCommandUUID = %@", self->_voiceCommandUUID];
+  [string appendFormat:@"commandId = %@", self->_commandId];
   if (self->_isComplete)
   {
     v4 = @"YES";
@@ -100,13 +100,13 @@ void __63__AFVoiceCommandGrammarParseCandidate_dictionaryRepresentation__block_i
     v4 = @"NO";
   }
 
-  [v3 appendFormat:@", isComplete = %@", v4];
+  [string appendFormat:@", isComplete = %@", v4];
   paramMatches = self->_paramMatches;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __50__AFVoiceCommandGrammarParseCandidate_description__block_invoke;
   v8[3] = &unk_1E73452D0;
-  v6 = v3;
+  v6 = string;
   v9 = v6;
   [(NSDictionary *)paramMatches enumerateKeysAndObjectsUsingBlock:v8];
   [v6 appendFormat:@"]"];
@@ -122,10 +122,10 @@ void __50__AFVoiceCommandGrammarParseCandidate_description__block_invoke(uint64_
   [v4 appendFormat:@", %@ : %@", v5, v6];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v13 = 1;
   }
@@ -135,21 +135,21 @@ void __50__AFVoiceCommandGrammarParseCandidate_description__block_invoke(uint64_
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       isComplete = self->_isComplete;
       if (isComplete == [(AFVoiceCommandGrammarParseCandidate *)v5 isComplete])
       {
-        v7 = [(AFVoiceCommandGrammarParseCandidate *)v5 voiceCommandUUID];
+        voiceCommandUUID = [(AFVoiceCommandGrammarParseCandidate *)v5 voiceCommandUUID];
         voiceCommandUUID = self->_voiceCommandUUID;
-        if (voiceCommandUUID == v7 || [(NSUUID *)voiceCommandUUID isEqual:v7])
+        if (voiceCommandUUID == voiceCommandUUID || [(NSUUID *)voiceCommandUUID isEqual:voiceCommandUUID])
         {
-          v9 = [(AFVoiceCommandGrammarParseCandidate *)v5 commandId];
+          commandId = [(AFVoiceCommandGrammarParseCandidate *)v5 commandId];
           commandId = self->_commandId;
-          if (commandId == v9 || [(NSString *)commandId isEqual:v9])
+          if (commandId == commandId || [(NSString *)commandId isEqual:commandId])
           {
-            v11 = [(AFVoiceCommandGrammarParseCandidate *)v5 paramMatches];
+            paramMatches = [(AFVoiceCommandGrammarParseCandidate *)v5 paramMatches];
             paramMatches = self->_paramMatches;
-            v13 = paramMatches == v11 || [(NSDictionary *)paramMatches isEqual:v11];
+            v13 = paramMatches == paramMatches || [(NSDictionary *)paramMatches isEqual:paramMatches];
           }
 
           else
@@ -179,26 +179,26 @@ void __50__AFVoiceCommandGrammarParseCandidate_description__block_invoke(uint64_
   return v13;
 }
 
-- (AFVoiceCommandGrammarParseCandidate)initWithVoiceCommandUUID:(id)a3 commandId:(id)a4 isComplete:(BOOL)a5 paramMatches:(id)a6
+- (AFVoiceCommandGrammarParseCandidate)initWithVoiceCommandUUID:(id)d commandId:(id)id isComplete:(BOOL)complete paramMatches:(id)matches
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  dCopy = d;
+  idCopy = id;
+  matchesCopy = matches;
   v21.receiver = self;
   v21.super_class = AFVoiceCommandGrammarParseCandidate;
   v13 = [(AFVoiceCommandGrammarParseCandidate *)&v21 init];
   if (v13)
   {
-    v14 = [v10 copy];
+    v14 = [dCopy copy];
     voiceCommandUUID = v13->_voiceCommandUUID;
     v13->_voiceCommandUUID = v14;
 
-    v16 = [v11 copy];
+    v16 = [idCopy copy];
     commandId = v13->_commandId;
     v13->_commandId = v16;
 
-    v13->_isComplete = a5;
-    v18 = [v12 copy];
+    v13->_isComplete = complete;
+    v18 = [matchesCopy copy];
     paramMatches = v13->_paramMatches;
     v13->_paramMatches = v18;
   }

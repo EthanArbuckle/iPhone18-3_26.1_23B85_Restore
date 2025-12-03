@@ -1,17 +1,17 @@
 @interface SKUISizeValue
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGSize)size;
-- (SKUISizeValue)initWithSize:(CGSize)a3;
+- (SKUISizeValue)initWithSize:(CGSize)size;
 - (id)description;
-- (void)unionWithSize:(CGSize)a3;
+- (void)unionWithSize:(CGSize)size;
 @end
 
 @implementation SKUISizeValue
 
-- (SKUISizeValue)initWithSize:(CGSize)a3
+- (SKUISizeValue)initWithSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     [SKUISizeValue initWithSize:];
@@ -38,11 +38,11 @@
   return result;
 }
 
-- (void)unionWithSize:(CGSize)a3
+- (void)unionWithSize:(CGSize)size
 {
   v3 = vcvtq_f64_s64(*&self->_height);
-  width = a3.width;
-  *&self->_height = vcvtq_s64_f64(vbslq_s8(vcgtq_f64(*&a3.height, v3), *&a3.height, v3));
+  width = size.width;
+  *&self->_height = vcvtq_s64_f64(vbslq_s8(vcgtq_f64(*&size.height, v3), *&size.height, v3));
 }
 
 - (id)description
@@ -58,11 +58,11 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  v6 = v5 == objc_opt_class() && self->_width == v4[2] && self->_height == v4[1];
+  v6 = v5 == objc_opt_class() && self->_width == equalCopy[2] && self->_height == equalCopy[1];
 
   return v6;
 }

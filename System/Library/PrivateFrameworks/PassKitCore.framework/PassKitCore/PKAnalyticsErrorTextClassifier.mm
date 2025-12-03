@@ -1,31 +1,31 @@
 @interface PKAnalyticsErrorTextClassifier
-+ (BOOL)containsAnyTerm:(id)a3 inText:(id)a4;
-+ (id)analyticsValueForResult:(int64_t)a3;
-+ (int64_t)classifyErrorText:(id)a3;
++ (BOOL)containsAnyTerm:(id)term inText:(id)text;
++ (id)analyticsValueForResult:(int64_t)result;
++ (int64_t)classifyErrorText:(id)text;
 @end
 
 @implementation PKAnalyticsErrorTextClassifier
 
-+ (int64_t)classifyErrorText:(id)a3
++ (int64_t)classifyErrorText:(id)text
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 length])
+  textCopy = text;
+  v5 = textCopy;
+  if (textCopy && [textCopy length])
   {
-    v6 = [v5 lowercaseString];
-    if (![a1 containsAnyTerm:&unk_1F23B3FC8 inText:v6] || objc_msgSend(v6, "containsString:", @"name") && ((objc_msgSend(v6, "containsString:", @"street") & 1) != 0 || (objc_msgSend(v6, "containsString:", @"country") & 1) != 0 || (objc_msgSend(v6, "containsString:", @"county") & 1) != 0 || objc_msgSend(v6, "containsString:", @"city")))
+    lowercaseString = [v5 lowercaseString];
+    if (![self containsAnyTerm:&unk_1F23B3FC8 inText:lowercaseString] || objc_msgSend(lowercaseString, "containsString:", @"name") && ((objc_msgSend(lowercaseString, "containsString:", @"street") & 1) != 0 || (objc_msgSend(lowercaseString, "containsString:", @"country") & 1) != 0 || (objc_msgSend(lowercaseString, "containsString:", @"county") & 1) != 0 || objc_msgSend(lowercaseString, "containsString:", @"city")))
     {
-      if ([a1 containsAnyTerm:&unk_1F23B3FE0 inText:v6] && (objc_msgSend(a1, "containsAnyTerm:inText:", &unk_1F23B4010, v6) & 1) != 0)
+      if ([self containsAnyTerm:&unk_1F23B3FE0 inText:lowercaseString] && (objc_msgSend(self, "containsAnyTerm:inText:", &unk_1F23B4010, lowercaseString) & 1) != 0)
       {
         v7 = 1;
       }
 
-      else if ([a1 containsAnyTerm:&unk_1F23B3FF8 inText:v6] && (objc_msgSend(a1, "containsAnyTerm:inText:", &unk_1F23B4010, v6) & 1) != 0)
+      else if ([self containsAnyTerm:&unk_1F23B3FF8 inText:lowercaseString] && (objc_msgSend(self, "containsAnyTerm:inText:", &unk_1F23B4010, lowercaseString) & 1) != 0)
       {
         v7 = 2;
       }
 
-      else if ([a1 containsAnyTerm:&unk_1F23B4010 inText:v6])
+      else if ([self containsAnyTerm:&unk_1F23B4010 inText:lowercaseString])
       {
         v7 = 3;
       }
@@ -50,29 +50,29 @@
   return v7;
 }
 
-+ (id)analyticsValueForResult:(int64_t)a3
++ (id)analyticsValueForResult:(int64_t)result
 {
-  if (a3 > 3)
+  if (result > 3)
   {
     return @"Others";
   }
 
   else
   {
-    return off_1E79D64C0[a3];
+    return off_1E79D64C0[result];
   }
 }
 
-+ (BOOL)containsAnyTerm:(id)a3 inText:(id)a4
++ (BOOL)containsAnyTerm:(id)term inText:(id)text
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  termCopy = term;
+  textCopy = text;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v7 = v5;
+  v7 = termCopy;
   v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v8)
   {
@@ -86,8 +86,8 @@
           objc_enumerationMutation(v7);
         }
 
-        v11 = [*(*(&v14 + 1) + 8 * i) lowercaseString];
-        v12 = [v6 containsString:v11];
+        lowercaseString = [*(*(&v14 + 1) + 8 * i) lowercaseString];
+        v12 = [textCopy containsString:lowercaseString];
 
         if (v12)
         {

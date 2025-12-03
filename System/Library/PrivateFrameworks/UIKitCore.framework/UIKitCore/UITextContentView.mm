@@ -3,123 +3,123 @@
 - (BOOL)_restoreFirstResponder;
 - (BOOL)becomeFirstResponder;
 - (BOOL)canBecomeFirstResponder;
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
 - (BOOL)canResignFirstResponder;
 - (BOOL)dragInteractionEnabled;
 - (BOOL)hasMarkedText;
 - (BOOL)isFirstResponder;
-- (BOOL)keyboardInput:(id)a3 shouldInsertText:(id)a4 isMarkedText:(BOOL)a5;
-- (BOOL)keyboardInput:(id)a3 shouldReplaceTextInRange:(_NSRange)a4 replacementText:(id)a5;
-- (BOOL)keyboardInput:(id)a3 shouldReplaceTextInRanges:(id)a4 replacementText:(id)a5;
-- (BOOL)keyboardInputChanged:(id)a3;
+- (BOOL)keyboardInput:(id)input shouldInsertText:(id)text isMarkedText:(BOOL)markedText;
+- (BOOL)keyboardInput:(id)input shouldReplaceTextInRange:(_NSRange)range replacementText:(id)text;
+- (BOOL)keyboardInput:(id)input shouldReplaceTextInRanges:(id)ranges replacementText:(id)text;
+- (BOOL)keyboardInputChanged:(id)changed;
 - (BOOL)resignFirstResponder;
 - (BOOL)shouldStartDataDetectors;
-- (CGPoint)constrainedPoint:(CGPoint)a3;
+- (CGPoint)constrainedPoint:(CGPoint)point;
 - (CGPoint)offset;
 - (CGRect)_selectionClipRect;
-- (CGRect)caretRectForPosition:(id)a3;
-- (CGRect)caretRectForVisiblePosition:(id)a3;
-- (CGRect)closestCaretRectInMarkedTextRangeForPoint:(CGPoint)a3;
-- (CGRect)firstRectForRange:(id)a3;
-- (CGRect)frameForDictationResultPlaceholder:(id)a3;
+- (CGRect)caretRectForPosition:(id)position;
+- (CGRect)caretRectForVisiblePosition:(id)position;
+- (CGRect)closestCaretRectInMarkedTextRangeForPoint:(CGPoint)point;
+- (CGRect)firstRectForRange:(id)range;
+- (CGRect)frameForDictationResultPlaceholder:(id)placeholder;
 - (CGRect)rectForScrollToVisible;
-- (CGRect)rectForSelection:(_NSRange)a3;
+- (CGRect)rectForSelection:(_NSRange)selection;
 - (CGRect)visibleRect;
 - (CGRect)visibleTextRect;
 - (NSAttributedString)attributedText;
 - (NSString)text;
 - (UIEdgeInsets)selectionInset;
-- (UITextContentView)initWithCoder:(id)a3;
-- (UITextContentView)initWithFrame:(CGRect)a3;
-- (UITextContentView)initWithFrame:(CGRect)a3 webView:(id)a4;
+- (UITextContentView)initWithCoder:(id)coder;
+- (UITextContentView)initWithFrame:(CGRect)frame;
+- (UITextContentView)initWithFrame:(CGRect)frame webView:(id)view;
 - (UITextContentViewDelegate)delegate;
 - (_NSRange)selectedRange;
 - (_NSRange)selectionRange;
 - (id)_proxyTextInput;
 - (id)automaticallySelectedOverlay;
-- (id)characterRangeAtPoint:(CGPoint)a3;
-- (id)closestPositionToPoint:(CGPoint)a3;
-- (id)closestPositionToPoint:(CGPoint)a3 withinRange:(id)a4;
+- (id)characterRangeAtPoint:(CGPoint)point;
+- (id)closestPositionToPoint:(CGPoint)point;
+- (id)closestPositionToPoint:(CGPoint)point withinRange:(id)range;
 - (id)contentAsAttributedString;
 - (id)contentAsHTMLString;
-- (id)documentFragmentForPasteboardItemAtIndex:(int64_t)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (id)insertTextPlaceholderWithSize:(CGSize)a3;
-- (id)methodSignatureForSelector:(SEL)a3;
+- (id)documentFragmentForPasteboardItemAtIndex:(int64_t)index;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (id)insertTextPlaceholderWithSize:(CGSize)size;
+- (id)methodSignatureForSelector:(SEL)selector;
 - (id)selectedText;
-- (id)selectionRectsForRange:(id)a3;
+- (id)selectionRectsForRange:(id)range;
 - (id)styleString;
 - (id)supportedPasteboardTypesForCurrentSelection;
 - (id)undoManager;
 - (unint64_t)_allowedLinkTypes;
 - (void)_hideSelectionCommands;
-- (void)_populateArchivedSubviews:(id)a3;
-- (void)_promptForReplace:(id)a3;
-- (void)_removeAttribute:(id)a3 fromString:(id)a4 andSetPropertyWith:(id)a5 usingValueClass:(Class)a6;
-- (void)_removeTextViewPropertiesFromText:(id)a3;
+- (void)_populateArchivedSubviews:(id)subviews;
+- (void)_promptForReplace:(id)replace;
+- (void)_removeAttribute:(id)attribute fromString:(id)string andSetPropertyWith:(id)with usingValueClass:(Class)class;
+- (void)_removeTextViewPropertiesFromText:(id)text;
 - (void)_sizeChanged;
-- (void)_transliterateChinese:(id)a3;
+- (void)_transliterateChinese:(id)chinese;
 - (void)cancelDataDetectorsWithWebLock;
-- (void)commonInitWithWebDocumentView:(id)a3 isDecoding:(BOOL)a4;
-- (void)copy:(id)a3;
-- (void)cut:(id)a3;
+- (void)commonInitWithWebDocumentView:(id)view isDecoding:(BOOL)decoding;
+- (void)copy:(id)copy;
+- (void)cut:(id)cut;
 - (void)dealloc;
 - (void)didMoveToSuperview;
-- (void)dropInteraction:(id)a3 concludeDrop:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (void)dropInteraction:(id)interaction concludeDrop:(id)drop;
+- (void)encodeWithCoder:(id)coder;
 - (void)ensureSelection;
-- (void)forwardInvocation:(id)a3;
-- (void)insertDictationResult:(id)a3 withCorrectionIdentifier:(id)a4;
-- (void)keyboardDidShow:(id)a3;
-- (void)keyboardInputChangedSelection:(id)a3;
-- (void)paste:(id)a3;
-- (void)pasteAndMatchStyle:(id)a3;
+- (void)forwardInvocation:(id)invocation;
+- (void)insertDictationResult:(id)result withCorrectionIdentifier:(id)identifier;
+- (void)keyboardDidShow:(id)show;
+- (void)keyboardInputChangedSelection:(id)selection;
+- (void)paste:(id)paste;
+- (void)pasteAndMatchStyle:(id)style;
 - (void)performBecomeEditableTasks;
-- (void)performScrollSelectionToVisible:(BOOL)a3;
+- (void)performScrollSelectionToVisible:(BOOL)visible;
 - (void)recalculateStyle;
 - (void)removeFromSuperview;
-- (void)removeTextPlaceholder:(id)a3;
+- (void)removeTextPlaceholder:(id)placeholder;
 - (void)resetDataDetectorsResultsWithWebLock;
-- (void)scrollRangeToVisible:(_NSRange)a3;
-- (void)scrollRectToVisible:(CGRect)a3 animated:(BOOL)a4;
-- (void)select:(id)a3;
-- (void)selectAll:(id)a3;
-- (void)setAllowsEditingTextAttributes:(BOOL)a3;
-- (void)setAttributedText:(id)a3;
-- (void)setBounds:(CGRect)a3;
-- (void)setContentToAttributedString:(id)a3;
-- (void)setContentToHTMLString:(id)a3;
-- (void)setDataDetectorTypes:(unint64_t)a3;
-- (void)setDragInteractionEnabled:(BOOL)a3;
-- (void)setEditable:(BOOL)a3;
-- (void)setEditing:(BOOL)a3;
-- (void)setFont:(id)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setMarginTop:(int)a3;
-- (void)setSelectedRange:(_NSRange)a3;
-- (void)setSelectedTextRange:(id)a3;
-- (void)setSelectionChangeCallbacksDisabled:(BOOL)a3;
+- (void)scrollRangeToVisible:(_NSRange)visible;
+- (void)scrollRectToVisible:(CGRect)visible animated:(BOOL)animated;
+- (void)select:(id)select;
+- (void)selectAll:(id)all;
+- (void)setAllowsEditingTextAttributes:(BOOL)attributes;
+- (void)setAttributedText:(id)text;
+- (void)setBounds:(CGRect)bounds;
+- (void)setContentToAttributedString:(id)string;
+- (void)setContentToHTMLString:(id)string;
+- (void)setDataDetectorTypes:(unint64_t)types;
+- (void)setDragInteractionEnabled:(BOOL)enabled;
+- (void)setEditable:(BOOL)editable;
+- (void)setEditing:(BOOL)editing;
+- (void)setFont:(id)font;
+- (void)setFrame:(CGRect)frame;
+- (void)setMarginTop:(int)top;
+- (void)setSelectedRange:(_NSRange)range;
+- (void)setSelectedTextRange:(id)range;
+- (void)setSelectionChangeCallbacksDisabled:(BOOL)disabled;
 - (void)setSelectionToEnd;
 - (void)setSelectionToStart;
-- (void)setSelectionWithPoint:(CGPoint)a3;
-- (void)setText:(id)a3;
-- (void)setTextAlignment:(int64_t)a3;
-- (void)setTextColor:(id)a3;
+- (void)setSelectionWithPoint:(CGPoint)point;
+- (void)setText:(id)text;
+- (void)setTextAlignment:(int64_t)alignment;
+- (void)setTextColor:(id)color;
 - (void)startDataDetectorsWithWebLock;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)updateContentEditableAttribute:(BOOL)a3;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)updateContentEditableAttribute:(BOOL)attribute;
 - (void)updateSelection;
-- (void)webView:(id)a3 decidePolicyForNavigationAction:(id)a4 request:(id)a5 frame:(id)a6 decisionListener:(id)a7;
-- (void)webViewDidChange:(id)a3;
+- (void)webView:(id)view decidePolicyForNavigationAction:(id)action request:(id)request frame:(id)frame decisionListener:(id)listener;
+- (void)webViewDidChange:(id)change;
 @end
 
 @implementation UITextContentView
 
-- (UITextContentView)initWithFrame:(CGRect)a3
+- (UITextContentView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = UITextContentView;
-  v3 = [(UIView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -129,31 +129,31 @@
   return v4;
 }
 
-- (UITextContentView)initWithFrame:(CGRect)a3 webView:(id)a4
+- (UITextContentView)initWithFrame:(CGRect)frame webView:(id)view
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  viewCopy = view;
   v13.receiver = self;
   v13.super_class = UITextContentView;
-  v10 = [(UIView *)&v13 initWithFrame:x, y, width, height];
-  v11 = v10;
-  if (v10)
+  height = [(UIView *)&v13 initWithFrame:x, y, width, height];
+  v11 = height;
+  if (height)
   {
-    [(UITextContentView *)v10 commonInitWithWebDocumentView:v9 isDecoding:0];
+    [(UITextContentView *)height commonInitWithWebDocumentView:viewCopy isDecoding:0];
   }
 
   return v11;
 }
 
-- (UITextContentView)initWithCoder:(id)a3
+- (UITextContentView)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = UITextContentView;
-  v5 = [(UIView *)&v11 initWithCoder:v4];
+  v5 = [(UIView *)&v11 initWithCoder:coderCopy];
   v6 = v5;
   if (!v5)
   {
@@ -161,114 +161,114 @@
   }
 
   [(UITextContentView *)v5 commonInitWithWebDocumentView:0 isDecoding:1];
-  if ([v4 containsValueForKey:@"UIAttributedText"])
+  if ([coderCopy containsValueForKey:@"UIAttributedText"])
   {
-    v7 = [v4 decodeObjectForKey:@"UIAttributedText"];
+    v7 = [coderCopy decodeObjectForKey:@"UIAttributedText"];
     [(UITextContentView *)v6 setAttributedText:v7];
 LABEL_6:
 
     goto LABEL_7;
   }
 
-  if ([v4 containsValueForKey:@"UIText"])
+  if ([coderCopy containsValueForKey:@"UIText"])
   {
-    v7 = [v4 decodeObjectForKey:@"UIText"];
+    v7 = [coderCopy decodeObjectForKey:@"UIText"];
     [(UITextContentView *)v6 setText:v7];
     goto LABEL_6;
   }
 
 LABEL_7:
-  if ([v4 containsValueForKey:@"UIFont"])
+  if ([coderCopy containsValueForKey:@"UIFont"])
   {
-    v8 = [v4 decodeObjectForKey:@"UIFont"];
+    v8 = [coderCopy decodeObjectForKey:@"UIFont"];
     [(UITextContentView *)v6 setFont:v8];
   }
 
-  if ([v4 containsValueForKey:@"UITextColor"])
+  if ([coderCopy containsValueForKey:@"UITextColor"])
   {
-    v9 = [v4 decodeObjectForKey:@"UITextColor"];
+    v9 = [coderCopy decodeObjectForKey:@"UITextColor"];
     [(UITextContentView *)v6 setTextColor:v9];
   }
 
-  if ([v4 containsValueForKey:@"UITextAlignment"])
+  if ([coderCopy containsValueForKey:@"UITextAlignment"])
   {
-    -[UITextContentView setTextAlignment:](v6, "setTextAlignment:", [v4 decodeIntegerForKey:@"UITextAlignment"]);
+    -[UITextContentView setTextAlignment:](v6, "setTextAlignment:", [coderCopy decodeIntegerForKey:@"UITextAlignment"]);
   }
 
-  if ([v4 containsValueForKey:@"UIEditable"])
+  if ([coderCopy containsValueForKey:@"UIEditable"])
   {
-    -[UITextContentView setEditable:](v6, "setEditable:", [v4 decodeBoolForKey:@"UIEditable"]);
+    -[UITextContentView setEditable:](v6, "setEditable:", [coderCopy decodeBoolForKey:@"UIEditable"]);
   }
 
-  -[UITextContentView setDataDetectorTypes:](v6, "setDataDetectorTypes:", [v4 decodeIntegerForKey:@"UIDataDetectorTypes"]);
+  -[UITextContentView setDataDetectorTypes:](v6, "setDataDetectorTypes:", [coderCopy decodeIntegerForKey:@"UIDataDetectorTypes"]);
 LABEL_16:
 
   return v6;
 }
 
-- (void)_populateArchivedSubviews:(id)a3
+- (void)_populateArchivedSubviews:(id)subviews
 {
-  v4 = a3;
+  subviewsCopy = subviews;
   v5.receiver = self;
   v5.super_class = UITextContentView;
-  [(UIView *)&v5 _populateArchivedSubviews:v4];
+  [(UIView *)&v5 _populateArchivedSubviews:subviewsCopy];
   if (self->m_webView)
   {
-    [v4 removeObject:?];
+    [subviewsCopy removeObject:?];
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = UITextContentView;
-  [(UIView *)&v10 encodeWithCoder:v4];
-  v5 = [(UITextContentView *)self text];
-  v6 = v5;
-  if (v5 && [v5 length])
+  [(UIView *)&v10 encodeWithCoder:coderCopy];
+  text = [(UITextContentView *)self text];
+  v6 = text;
+  if (text && [text length])
   {
     if (self->m_usesAttributedText)
     {
-      v7 = [(UITextContentView *)self attributedText];
-      [v4 encodeObject:v7 forKey:@"UIAttributedText"];
+      attributedText = [(UITextContentView *)self attributedText];
+      [coderCopy encodeObject:attributedText forKey:@"UIAttributedText"];
     }
 
-    [v4 encodeObject:v6 forKey:@"UIText"];
+    [coderCopy encodeObject:v6 forKey:@"UIText"];
   }
 
   m_font = self->m_font;
   if (m_font)
   {
-    [v4 encodeObject:m_font forKey:@"UIFont"];
+    [coderCopy encodeObject:m_font forKey:@"UIFont"];
   }
 
   m_textColor = self->m_textColor;
   if (m_textColor)
   {
-    [v4 encodeObject:m_textColor forKey:@"UITextColor"];
+    [coderCopy encodeObject:m_textColor forKey:@"UITextColor"];
   }
 
   if (self->m_hasExplicitTextAlignment)
   {
-    [v4 encodeInteger:self->m_textAlignment forKey:@"UITextAlignment"];
+    [coderCopy encodeInteger:self->m_textAlignment forKey:@"UITextAlignment"];
   }
 
   if (![(UITextContentView *)self isEditable])
   {
-    [v4 encodeBool:0 forKey:@"UIEditable"];
+    [coderCopy encodeBool:0 forKey:@"UIEditable"];
   }
 
   if ([(UITextContentView *)self dataDetectorTypes])
   {
-    [v4 encodeInteger:-[UITextContentView dataDetectorTypes](self forKey:{"dataDetectorTypes"), @"UIDataDetectorTypes"}];
+    [coderCopy encodeInteger:-[UITextContentView dataDetectorTypes](self forKey:{"dataDetectorTypes"), @"UIDataDetectorTypes"}];
   }
 }
 
-- (void)updateContentEditableAttribute:(BOOL)a3
+- (void)updateContentEditableAttribute:(BOOL)attribute
 {
-  v3 = a3;
-  if (a3)
+  attributeCopy = attribute;
+  if (attribute)
   {
     v5 = @"true";
   }
@@ -279,11 +279,11 @@ LABEL_16:
   }
 
   [(DOMHTMLElement *)self->m_body setContentEditable:v5];
-  if (v3)
+  if (attributeCopy)
   {
-    v6 = [(WebFrame *)self->m_frame selectedDOMRange];
+    selectedDOMRange = [(WebFrame *)self->m_frame selectedDOMRange];
 
-    if (!v6)
+    if (!selectedDOMRange)
     {
       m_frame = self->m_frame;
 
@@ -292,9 +292,9 @@ LABEL_16:
   }
 }
 
-- (void)commonInitWithWebDocumentView:(id)a3 isDecoding:(BOOL)a4
+- (void)commonInitWithWebDocumentView:(id)view isDecoding:(BOOL)decoding
 {
-  v41 = a3;
+  viewCopy = view;
   WebThreadLock();
   v7 = [off_1E70ECC18 systemFontOfSize:12.0];
   m_font = self->m_font;
@@ -310,9 +310,9 @@ LABEL_16:
   m_interactionAssistant = self->m_interactionAssistant;
   self->m_interactionAssistant = v11;
 
-  if (v41)
+  if (viewCopy)
   {
-    objc_storeStrong(&self->m_webView, a3);
+    objc_storeStrong(&self->m_webView, view);
     [(UIWebDocumentView *)self->m_webView setWebDraggingDelegate:self];
   }
 
@@ -322,9 +322,9 @@ LABEL_16:
     v14 = v13;
     v16 = v15;
     v17 = [UIWebDocumentView alloc];
-    v18 = [(UITextContentView *)self styleString];
+    styleString = [(UITextContentView *)self styleString];
     v19 = +[UIWebDocumentView standardTextViewPreferences];
-    v20 = [(UIWebDocumentView *)v17 initSimpleHTMLDocumentWithStyle:v18 frame:v19 preferences:0 groupName:0.0, 0.0, v14, v16];
+    v20 = [(UIWebDocumentView *)v17 initSimpleHTMLDocumentWithStyle:styleString frame:v19 preferences:0 groupName:0.0, 0.0, v14, v16];
     m_webView = self->m_webView;
     self->m_webView = v20;
 
@@ -332,40 +332,40 @@ LABEL_16:
     [(UIView *)self->m_webView setEnabled:0];
     [(UIWebDocumentView *)self->m_webView setIgnoresFocusingMouse:1];
     [(UIWebDocumentView *)self->m_webView setLoadsSynchronously:1];
-    v22 = [(UIWebDocumentView *)self->m_webView webView];
-    [v22 _setFixedLayoutSize:{v14, 1.0}];
-    [v22 setPolicyDelegate:self];
-    [v22 setEditingDelegate:self];
+    webView = [(UIWebDocumentView *)self->m_webView webView];
+    [webView _setFixedLayoutSize:{v14, 1.0}];
+    [webView setPolicyDelegate:self];
+    [webView setEditingDelegate:self];
     v23 = [objc_opt_class() description];
-    [v22 setCustomUserAgent:v23];
+    [webView setCustomUserAgent:v23];
   }
 
-  v24 = [(UIWebDocumentView *)self->m_webView webView];
-  v25 = [v24 mainFrame];
+  webView2 = [(UIWebDocumentView *)self->m_webView webView];
+  mainFrame = [webView2 mainFrame];
   m_frame = self->m_frame;
-  self->m_frame = v25;
+  self->m_frame = mainFrame;
 
-  v27 = [(WebFrame *)self->m_frame DOMDocument];
+  dOMDocument = [(WebFrame *)self->m_frame DOMDocument];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v28 = [v27 body];
+    body = [dOMDocument body];
     m_body = self->m_body;
-    self->m_body = v28;
+    self->m_body = body;
   }
 
-  v30 = [(WebFrame *)self->m_frame frameView];
-  v31 = [MEMORY[0x1E696AD88] defaultCenter];
+  frameView = [(WebFrame *)self->m_frame frameView];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v32 = *MEMORY[0x1E69E2FC0];
-  v33 = [v30 documentView];
-  [v31 addObserver:self selector:sel_webViewDidChange_ name:v32 object:v33];
+  documentView = [frameView documentView];
+  [defaultCenter addObserver:self selector:sel_webViewDidChange_ name:v32 object:documentView];
 
   v34 = *MEMORY[0x1E69E3030];
-  v35 = [(UIWebDocumentView *)self->m_webView webView];
-  [v31 addObserver:self selector:sel_webViewDidChange_ name:v34 object:v35];
+  webView3 = [(UIWebDocumentView *)self->m_webView webView];
+  [defaultCenter addObserver:self selector:sel_webViewDidChange_ name:v34 object:webView3];
 
-  [v31 addObserver:self selector:sel_keyboardDidShow_ name:@"UIKeyboardDidShowNotification" object:0];
-  [v30 setAllowsScrolling:0];
+  [defaultCenter addObserver:self selector:sel_keyboardDidShow_ name:@"UIKeyboardDidShowNotification" object:0];
+  [frameView setAllowsScrolling:0];
   [(DOMHTMLElement *)self->m_body setAttribute:@"dir" value:@"auto"];
   [(UITextContentView *)self setSelectionChangeCallbacksDisabled:1];
   [(UITextContentView *)self setScrollsSelectionOnWebDocumentChanges:1];
@@ -373,7 +373,7 @@ LABEL_16:
   [(UIWebDocumentView *)self->m_webView setOpaque:0];
   [(UIWebDocumentView *)self->m_webView setDrawsBackground:0];
   [(UIView *)self addSubview:self->m_webView];
-  if (!a4)
+  if (!decoding)
   {
     v36 = +[UIColor whiteColor];
     [(UIView *)self setBackgroundColor:v36];
@@ -397,23 +397,23 @@ LABEL_16:
 {
   v12[3] = *MEMORY[0x1E69E9840];
   WebThreadLock();
-  v3 = [(UIWebDocumentView *)self->m_webView webView];
-  [v3 setPolicyDelegate:0];
-  [v3 setEditingDelegate:0];
+  webView = [(UIWebDocumentView *)self->m_webView webView];
+  [webView setPolicyDelegate:0];
+  [webView setEditingDelegate:0];
   if (sDataDetectorsUIFrameworkLoaded == 1 && [(UITextContentView *)self dataDetectorTypes])
   {
-    v4 = [DataDetectorsUIGetClass(@"DDDetectionController") sharedController];
-    [v4 frameWillBeRemoved:self->m_frame];
+    dataDetectorsUIGetClass(@"DDDetectionController") = [DataDetectorsUIGetClass(@"DDDetectionController") sharedController];
+    [dataDetectorsUIGetClass(@"DDDetectionController") frameWillBeRemoved:self->m_frame];
   }
 
   [(UITextContentView *)self cancelDataDetectorsWithWebLock];
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v6 = *MEMORY[0x1E69E3030];
   v12[0] = *MEMORY[0x1E69E2FC0];
   v12[1] = v6;
   v12[2] = @"UIKeyboardDidShowNotification";
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:3];
-  [(NSNotificationCenter *)v5 _uiRemoveObserver:v7 names:?];
+  [(NSNotificationCenter *)defaultCenter _uiRemoveObserver:v7 names:?];
 
   m_interactionAssistant = self->m_interactionAssistant;
   self->m_interactionAssistant = 0;
@@ -435,20 +435,20 @@ LABEL_16:
 - (void)removeFromSuperview
 {
   [MEMORY[0x1E69E58C0] cancelPreviousPerformRequestsWithTarget:self];
-  v3 = [(UITextContentView *)self interactionAssistant];
-  [v3 detach];
+  interactionAssistant = [(UITextContentView *)self interactionAssistant];
+  [interactionAssistant detach];
 
   v4.receiver = self;
   v4.super_class = UITextContentView;
   [(UIView *)&v4 removeFromSuperview];
 }
 
-- (void)keyboardDidShow:(id)a3
+- (void)keyboardDidShow:(id)show
 {
   if ([(UITextContentView *)self isFirstResponder])
   {
-    v4 = [(UITextContentView *)self interactionAssistant];
-    [v4 setNeedsSelectionDisplayUpdate];
+    interactionAssistant = [(UITextContentView *)self interactionAssistant];
+    [interactionAssistant setNeedsSelectionDisplayUpdate];
 
     [(UITextContentView *)self scrollSelectionToVisible:1];
   }
@@ -467,8 +467,8 @@ LABEL_16:
 
   v4 = MEMORY[0x1E696AD60];
   m_marginTop = self->m_marginTop;
-  v6 = [(UIFont *)self->m_font markupDescription];
-  v7 = [v4 stringWithFormat:@"margin-top: %dpx %@; color: rgba(%d, %d, %d, %f); word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space;", m_marginTop, v6, (*&v13 * 255.0), (*(&v13 + 1) * 255.0), (v14[0] * 255.0), *&v14[1]];;
+  markupDescription = [(UIFont *)self->m_font markupDescription];
+  v7 = [v4 stringWithFormat:@"margin-top: %dpx %@; color: rgba(%d, %d, %d, %f); word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space;", m_marginTop, markupDescription, (*&v13 * 255.0), (*(&v13 + 1) * 255.0), (v14[0] * 255.0), *&v14[1]];;
 
   if (self->m_hasExplicitTextAlignment)
   {
@@ -489,8 +489,8 @@ LABEL_16:
 {
   WebThreadLock();
   m_body = self->m_body;
-  v4 = [(UITextContentView *)self styleString];
-  [(DOMHTMLElement *)m_body setAttribute:@"style" value:v4];
+  styleString = [(UITextContentView *)self styleString];
+  [(DOMHTMLElement *)m_body setAttribute:@"style" value:styleString];
 
   m_frame = self->m_frame;
 
@@ -502,21 +502,21 @@ LABEL_16:
   v4.receiver = self;
   v4.super_class = UITextContentView;
   [(UIView *)&v4 didMoveToSuperview];
-  v3 = [(UIView *)self superview];
+  superview = [(UIView *)self superview];
 
-  if (v3)
+  if (superview)
   {
     [(WebFrame *)self->m_frame updateLayout];
     [(UITextContentView *)self webViewDidChange:0];
   }
 }
 
-- (void)setSelectionChangeCallbacksDisabled:(BOOL)a3
+- (void)setSelectionChangeCallbacksDisabled:(BOOL)disabled
 {
-  LODWORD(v3) = a3;
-  v5 = [(UIWebDocumentView *)self->m_webView webView];
-  v6 = [v5 editingDelegate];
-  if (v6 == self)
+  LODWORD(v3) = disabled;
+  webView = [(UIWebDocumentView *)self->m_webView webView];
+  editingDelegate = [webView editingDelegate];
+  if (editingDelegate == self)
   {
     v3 = v3;
   }
@@ -551,8 +551,8 @@ LABEL_16:
           [WeakRetained textViewDidBeginEditing:self];
         }
 
-        v5 = [MEMORY[0x1E696AD88] defaultCenter];
-        [v5 postNotificationName:@"UITextViewTextDidBeginEditingNotification" object:self];
+        defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+        [defaultCenter postNotificationName:@"UITextViewTextDidBeginEditingNotification" object:self];
 
         v2 = 1;
       }
@@ -574,25 +574,25 @@ LABEL_16:
             [WeakRetained textViewDidBeginEditing:self];
           }
 
-          v6 = [MEMORY[0x1E696AD88] defaultCenter];
-          [v6 postNotificationName:@"UITextViewTextDidBeginEditingNotification" object:self];
+          defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+          [defaultCenter2 postNotificationName:@"UITextViewTextDidBeginEditingNotification" object:self];
 
-          v7 = [(UITextContentView *)self interactionAssistant];
-          [v7 setCursorBlinkAnimationEnabled:1];
+          interactionAssistant = [(UITextContentView *)self interactionAssistant];
+          [interactionAssistant setCursorBlinkAnimationEnabled:1];
         }
 
         else
         {
-          v7 = [(UITextContentView *)self interactionAssistant];
-          [v7 setGestureRecognizers];
+          interactionAssistant = [(UITextContentView *)self interactionAssistant];
+          [interactionAssistant setGestureRecognizers];
         }
 
-        v8 = [(UITextContentView *)self interactionAssistant];
+        interactionAssistant2 = [(UITextContentView *)self interactionAssistant];
         v2 = 1;
-        [v8 setSelectionDisplayVisible:1];
+        [interactionAssistant2 setSelectionDisplayVisible:1];
 
-        v9 = [(UITextContentView *)self interactionAssistant];
-        [v9 activateSelection];
+        interactionAssistant3 = [(UITextContentView *)self interactionAssistant];
+        [interactionAssistant3 activateSelection];
 
         [(UITextContentView *)self webViewDidChange:0];
       }
@@ -629,11 +629,11 @@ LABEL_16:
         [WeakRetained textContentViewDidEndEditing:self];
       }
 
-      v6 = [(UITextContentView *)self interactionAssistant];
-      [v6 resignedFirstResponder];
+      interactionAssistant = [(UITextContentView *)self interactionAssistant];
+      [interactionAssistant resignedFirstResponder];
 
-      v7 = [(UITextContentView *)self interactionAssistant];
-      [v7 setGestureRecognizers];
+      interactionAssistant2 = [(UITextContentView *)self interactionAssistant];
+      [interactionAssistant2 setGestureRecognizers];
 
       self->m_reentrancyGuard = 0;
       return 1;
@@ -705,19 +705,19 @@ LABEL_16:
     [(UITextContentView *)self becomeFirstResponder];
   }
 
-  v3 = [(UIWebDocumentView *)self->m_webView selectedTextRange];
+  selectedTextRange = [(UIWebDocumentView *)self->m_webView selectedTextRange];
 
-  if (!v3)
+  if (!selectedTextRange)
   {
 
     [(UITextContentView *)self setSelectionToEnd];
   }
 }
 
-- (CGPoint)constrainedPoint:(CGPoint)a3
+- (CGPoint)constrainedPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   [(UIView *)self frame];
   v7 = v6 * 0.5;
   [(UITextContentView *)self visibleTextRect];
@@ -745,52 +745,52 @@ LABEL_16:
 
 - (id)automaticallySelectedOverlay
 {
-  v2 = self;
-  v3 = [(UIView *)self _scroller];
-  v4 = v3;
-  if (v3)
+  selfCopy = self;
+  _scroller = [(UIView *)self _scroller];
+  v4 = _scroller;
+  if (_scroller)
   {
-    v2 = v3;
+    selfCopy = _scroller;
   }
 
-  v5 = v2;
+  v5 = selfCopy;
 
-  return v2;
+  return selfCopy;
 }
 
-- (void)setDragInteractionEnabled:(BOOL)a3
+- (void)setDragInteractionEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   [(UIDragInteraction *)self->m_dragInteraction setEnabled:?];
   m_webView = self->m_webView;
 
-  [(UIWebDocumentView *)m_webView setDragInteractionEnabled:v3];
+  [(UIWebDocumentView *)m_webView setDragInteractionEnabled:enabledCopy];
 }
 
 - (BOOL)dragInteractionEnabled
 {
-  v3 = [(UIDragInteraction *)self->m_dragInteraction isEnabled];
-  if (v3)
+  isEnabled = [(UIDragInteraction *)self->m_dragInteraction isEnabled];
+  if (isEnabled)
   {
     m_webView = self->m_webView;
 
-    LOBYTE(v3) = [(UIWebDocumentView *)m_webView isDragInteractionEnabled];
+    LOBYTE(isEnabled) = [(UIWebDocumentView *)m_webView isDragInteractionEnabled];
   }
 
-  return v3;
+  return isEnabled;
 }
 
-- (void)dropInteraction:(id)a3 concludeDrop:(id)a4
+- (void)dropInteraction:(id)interaction concludeDrop:(id)drop
 {
-  v9 = a4;
-  [(UIWebDocumentView *)self->m_webView dropInteraction:a3 concludeDrop:?];
+  dropCopy = drop;
+  [(UIWebDocumentView *)self->m_webView dropInteraction:interaction concludeDrop:?];
   if (![(UITextContentView *)self isFirstResponder])
   {
-    v6 = [(UIWebDocumentView *)self->m_webView webDraggingDelegate];
+    webDraggingDelegate = [(UIWebDocumentView *)self->m_webView webDraggingDelegate];
     if (objc_opt_respondsToSelector())
     {
-      v7 = [(UIWebDocumentView *)self->m_webView webDraggingDelegate];
-      v8 = [v7 _webView:self->m_webView allowsSelectingContentAfterDropForSession:v9];
+      webDraggingDelegate2 = [(UIWebDocumentView *)self->m_webView webDraggingDelegate];
+      v8 = [webDraggingDelegate2 _webView:self->m_webView allowsSelectingContentAfterDropForSession:dropCopy];
 
       if (!v8)
       {
@@ -808,52 +808,52 @@ LABEL_16:
 LABEL_7:
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
   v8.receiver = self;
   v8.super_class = UITextContentView;
-  v5 = [(UIView *)&v8 hitTest:a4 withEvent:a3.x, a3.y];
+  v5 = [(UIView *)&v8 hitTest:event withEvent:test.x, test.y];
   if (v5 == self->m_webView)
   {
-    v6 = self;
+    selfCopy = self;
 
-    v5 = v6;
+    v5 = selfCopy;
   }
 
   return v5;
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
   v4.receiver = self;
   v4.super_class = UITextContentView;
-  [(UIResponder *)&v4 touchesEnded:a3 withEvent:a4];
+  [(UIResponder *)&v4 touchesEnded:ended withEvent:event];
 }
 
 - (void)updateSelection
 {
-  v2 = [(UITextContentView *)self interactionAssistant];
-  [v2 setNeedsSelectionDisplayUpdate];
+  interactionAssistant = [(UITextContentView *)self interactionAssistant];
+  [interactionAssistant setNeedsSelectionDisplayUpdate];
 }
 
 - (BOOL)_restoreFirstResponder
 {
-  v3 = [(UITextContentView *)self interactionAssistant];
-  v4 = v3;
-  if (v3)
+  interactionAssistant = [(UITextContentView *)self interactionAssistant];
+  v4 = interactionAssistant;
+  if (interactionAssistant)
   {
-    [v3 checkEditabilityAndSetFirstResponderIfNecessary];
-    v5 = [(UITextContentView *)self isFirstResponder];
+    [interactionAssistant checkEditabilityAndSetFirstResponderIfNecessary];
+    isFirstResponder = [(UITextContentView *)self isFirstResponder];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = UITextContentView;
-    v5 = [(UIResponder *)&v8 _restoreFirstResponder];
+    isFirstResponder = [(UIResponder *)&v8 _restoreFirstResponder];
   }
 
-  v6 = v5;
+  v6 = isFirstResponder;
 
   return v6;
 }
@@ -871,10 +871,10 @@ LABEL_7:
   return result;
 }
 
-- (CGRect)caretRectForVisiblePosition:(id)a3
+- (CGRect)caretRectForVisiblePosition:(id)position
 {
   m_webView = self->m_webView;
-  [(UIWebDocumentView *)m_webView caretRectForVisiblePosition:a3];
+  [(UIWebDocumentView *)m_webView caretRectForVisiblePosition:position];
 
   [(UIView *)m_webView convertRect:self toView:?];
   result.size.height = v8;
@@ -884,13 +884,13 @@ LABEL_7:
   return result;
 }
 
-- (id)selectionRectsForRange:(id)a3
+- (id)selectionRectsForRange:(id)range
 {
   v23 = *MEMORY[0x1E69E9840];
   m_webView = self->m_webView;
-  v5 = [a3 _isImpl];
-  v6 = [v5 domRange];
-  v7 = [(UIWebDocumentView *)m_webView selectionRectsForDOMRange:v6];
+  _isImpl = [range _isImpl];
+  domRange = [_isImpl domRange];
+  v7 = [(UIWebDocumentView *)m_webView selectionRectsForDOMRange:domRange];
 
   if ([v7 count])
   {
@@ -943,15 +943,15 @@ LABEL_7:
 - (id)selectedText
 {
   m_webView = self->m_webView;
-  v3 = [(UIWebDocumentView *)m_webView selectedTextRange];
-  v4 = [(UIWebDocumentView *)m_webView textInRange:v3];
+  selectedTextRange = [(UIWebDocumentView *)m_webView selectedTextRange];
+  v4 = [(UIWebDocumentView *)m_webView textInRange:selectedTextRange];
 
   return v4;
 }
 
-- (CGRect)closestCaretRectInMarkedTextRangeForPoint:(CGPoint)a3
+- (CGRect)closestCaretRectInMarkedTextRangeForPoint:(CGPoint)point
 {
-  [(UIView *)self convertPoint:self->m_webView toView:a3.x, a3.y];
+  [(UIView *)self convertPoint:self->m_webView toView:point.x, point.y];
   m_webView = self->m_webView;
 
   [(UIWebDocumentView *)m_webView closestCaretRectInMarkedTextRangeForPoint:?];
@@ -964,119 +964,119 @@ LABEL_7:
 
 - (BOOL)hasMarkedText
 {
-  v2 = [(UIWebDocumentView *)self->m_webView markedTextRange];
-  v3 = v2 != 0;
+  markedTextRange = [(UIWebDocumentView *)self->m_webView markedTextRange];
+  v3 = markedTextRange != 0;
 
   return v3;
 }
 
 - (_NSRange)selectionRange
 {
-  v2 = [(UIWebDocumentView *)self->m_webView selectionRange];
+  selectionRange = [(UIWebDocumentView *)self->m_webView selectionRange];
   result.length = v3;
-  result.location = v2;
+  result.location = selectionRange;
   return result;
 }
 
 - (void)_hideSelectionCommands
 {
-  v2 = [(UITextContentView *)self interactionAssistant];
-  [v2 hideSelectionCommands];
+  interactionAssistant = [(UITextContentView *)self interactionAssistant];
+  [interactionAssistant hideSelectionCommands];
 }
 
 - (id)undoManager
 {
   m_webView = self->m_webView;
-  v3 = [(UIWebDocumentView *)m_webView webView];
-  v4 = [(UIWebDocumentView *)m_webView undoManagerForWebView:v3];
+  webView = [(UIWebDocumentView *)m_webView webView];
+  v4 = [(UIWebDocumentView *)m_webView undoManagerForWebView:webView];
 
   return v4;
 }
 
-- (void)cut:(id)a3
+- (void)cut:(id)cut
 {
-  v4 = a3;
-  v5 = [(UIResponder *)self _dataOwnerForCopy];
+  cutCopy = cut;
+  _dataOwnerForCopy = [(UIResponder *)self _dataOwnerForCopy];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __25__UITextContentView_cut___block_invoke;
   v7[3] = &unk_1E70F35B8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [UIPasteboard _performAsDataOwner:v5 block:v7];
+  v8 = cutCopy;
+  v6 = cutCopy;
+  [UIPasteboard _performAsDataOwner:_dataOwnerForCopy block:v7];
 }
 
-- (void)copy:(id)a3
+- (void)copy:(id)copy
 {
-  v4 = a3;
-  v5 = [(UIResponder *)self _dataOwnerForCopy];
+  copyCopy = copy;
+  _dataOwnerForCopy = [(UIResponder *)self _dataOwnerForCopy];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __26__UITextContentView_copy___block_invoke;
   v7[3] = &unk_1E70F35B8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [UIPasteboard _performAsDataOwner:v5 block:v7];
+  v8 = copyCopy;
+  v6 = copyCopy;
+  [UIPasteboard _performAsDataOwner:_dataOwnerForCopy block:v7];
 }
 
-- (void)paste:(id)a3
+- (void)paste:(id)paste
 {
-  v4 = a3;
-  v5 = [(UIResponder *)self _dataOwnerForPaste];
+  pasteCopy = paste;
+  _dataOwnerForPaste = [(UIResponder *)self _dataOwnerForPaste];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __27__UITextContentView_paste___block_invoke;
   v7[3] = &unk_1E70F35B8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [UIPasteboard _performAsDataOwner:v5 block:v7];
+  v8 = pasteCopy;
+  v6 = pasteCopy;
+  [UIPasteboard _performAsDataOwner:_dataOwnerForPaste block:v7];
 }
 
-- (void)pasteAndMatchStyle:(id)a3
+- (void)pasteAndMatchStyle:(id)style
 {
-  v4 = a3;
-  v5 = [(UIResponder *)self _dataOwnerForPaste];
+  styleCopy = style;
+  _dataOwnerForPaste = [(UIResponder *)self _dataOwnerForPaste];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __40__UITextContentView_pasteAndMatchStyle___block_invoke;
   v7[3] = &unk_1E70F35B8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [UIPasteboard _performAsDataOwner:v5 block:v7];
+  v8 = styleCopy;
+  v6 = styleCopy;
+  [UIPasteboard _performAsDataOwner:_dataOwnerForPaste block:v7];
 }
 
-- (void)select:(id)a3
+- (void)select:(id)select
 {
-  v3 = [(UITextContentView *)self interactionAssistant];
-  [v3 selectWord];
+  interactionAssistant = [(UITextContentView *)self interactionAssistant];
+  [interactionAssistant selectWord];
 }
 
-- (void)selectAll:(id)a3
+- (void)selectAll:(id)all
 {
-  v4 = a3;
-  v5 = [(UITextContentView *)self interactionAssistant];
-  [v5 selectAll:v4];
+  allCopy = all;
+  interactionAssistant = [(UITextContentView *)self interactionAssistant];
+  [interactionAssistant selectAll:allCopy];
 }
 
-- (void)_promptForReplace:(id)a3
+- (void)_promptForReplace:(id)replace
 {
-  v3 = [(UITextContentView *)self interactionAssistant];
-  [v3 scheduleReplacements];
+  interactionAssistant = [(UITextContentView *)self interactionAssistant];
+  [interactionAssistant scheduleReplacements];
 }
 
-- (void)_transliterateChinese:(id)a3
+- (void)_transliterateChinese:(id)chinese
 {
-  v3 = [(UITextContentView *)self interactionAssistant];
-  [v3 scheduleChineseTransliteration];
+  interactionAssistant = [(UITextContentView *)self interactionAssistant];
+  [interactionAssistant scheduleChineseTransliteration];
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  if (sel_replace_ == a3)
+  if (sel_replace_ == action)
   {
     if ([(UITextContentView *)self isEditing]&& ([(UITextContentView *)self isSecureTextEntry]& 1) == 0)
     {
@@ -1107,8 +1107,8 @@ LABEL_7:
     _MergedGlobals_9_11 = v3;
 
     v5 = _MergedGlobals_9_11;
-    v6 = [*MEMORY[0x1E6983030] identifier];
-    [v5 addObject:v6];
+    identifier = [*MEMORY[0x1E6983030] identifier];
+    [v5 addObject:identifier];
 
     [_MergedGlobals_9_11 addObjectsFromArray:UIPasteboardTypeListString];
     v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -1117,20 +1117,20 @@ LABEL_7:
 
     [qword_1ED499D50 addObject:*MEMORY[0x1E69E2FD8]];
     v9 = qword_1ED499D50;
-    v10 = [*MEMORY[0x1E6982F90] identifier];
-    [v9 addObject:v10];
+    identifier2 = [*MEMORY[0x1E6982F90] identifier];
+    [v9 addObject:identifier2];
 
     v11 = qword_1ED499D50;
-    v12 = [*MEMORY[0x1E6982DC0] identifier];
-    [v11 addObject:v12];
+    identifier3 = [*MEMORY[0x1E6982DC0] identifier];
+    [v11 addObject:identifier3];
 
     [qword_1ED499D50 addObjectsFromArray:UIPasteboardTypeListImage];
     [qword_1ED499D50 addObjectsFromArray:_MergedGlobals_9_11];
   }
 
-  v13 = [(UITextContentView *)self allowsEditingTextAttributes];
+  allowsEditingTextAttributes = [(UITextContentView *)self allowsEditingTextAttributes];
   v14 = &qword_1ED499D50;
-  if (!v13)
+  if (!allowsEditingTextAttributes)
   {
     v14 = &_MergedGlobals_9_11;
   }
@@ -1140,12 +1140,12 @@ LABEL_7:
   return v15;
 }
 
-- (id)documentFragmentForPasteboardItemAtIndex:(int64_t)a3
+- (id)documentFragmentForPasteboardItemAtIndex:(int64_t)index
 {
   WeakRetained = objc_loadWeakRetained(&self->m_delegate);
   if (objc_opt_respondsToSelector())
   {
-    v6 = [WeakRetained documentFragmentForPasteboardItemAtIndex:a3 inTextContentView:self];
+    v6 = [WeakRetained documentFragmentForPasteboardItemAtIndex:index inTextContentView:self];
   }
 
   else
@@ -1156,17 +1156,17 @@ LABEL_7:
   return v6;
 }
 
-- (void)scrollRectToVisible:(CGRect)a3 animated:(BOOL)a4
+- (void)scrollRectToVisible:(CGRect)visible animated:(BOOL)animated
 {
-  v4 = a4;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = [(UIView *)self _scroller];
-  if (v10)
+  animatedCopy = animated;
+  height = visible.size.height;
+  width = visible.size.width;
+  y = visible.origin.y;
+  x = visible.origin.x;
+  _scroller = [(UIView *)self _scroller];
+  if (_scroller)
   {
-    v16 = v10;
+    v16 = _scroller;
     [(UITextContentView *)self selectionInset];
     if (self->m_bottomBufferHeight >= v13)
     {
@@ -1179,18 +1179,18 @@ LABEL_7:
     }
 
     [(UIView *)self convertRect:v16 toView:x + v12, y + v11, width - (v12 + v14), height - (v11 + m_bottomBufferHeight)];
-    [v16 scrollRectToVisible:v4 animated:?];
-    v10 = v16;
+    [v16 scrollRectToVisible:animatedCopy animated:?];
+    _scroller = v16;
   }
 }
 
-- (void)webViewDidChange:(id)a3
+- (void)webViewDidChange:(id)change
 {
   WebThreadLock();
-  v4 = [(WebFrame *)self->m_frame frameView];
-  v18 = [v4 documentView];
+  frameView = [(WebFrame *)self->m_frame frameView];
+  documentView = [frameView documentView];
 
-  [v18 frame];
+  [documentView frame];
   v6 = v5;
   v8 = v7;
   [(UIView *)self frame];
@@ -1237,29 +1237,29 @@ LABEL_7:
     [(UIView *)self->m_webView setSize:v6, v8];
   }
 
-  v15 = [(UIView *)self _scroller];
-  if (!((v15 == 0) | v13 & 1) && [(UITextContentView *)self scrollsSelectionOnWebDocumentChanges])
+  _scroller = [(UIView *)self _scroller];
+  if (!((_scroller == 0) | v13 & 1) && [(UITextContentView *)self scrollsSelectionOnWebDocumentChanges])
   {
-    [v15 _contentOffsetAnimationDuration];
+    [_scroller _contentOffsetAnimationDuration];
     v17 = v16;
-    [v15 _setContentOffsetAnimationDuration:0.1];
+    [_scroller _setContentOffsetAnimationDuration:0.1];
     [(UITextContentView *)self scrollSelectionToVisible:1];
-    [v15 _setContentOffsetAnimationDuration:v17];
+    [_scroller _setContentOffsetAnimationDuration:v17];
   }
 }
 
 - (void)performBecomeEditableTasks
 {
-  v3 = [(UIView *)self superview];
+  superview = [(UIView *)self superview];
 
-  if (v3)
+  if (superview)
   {
     [(UITextContentView *)self ensureSelection];
     v4 = +[UIKeyboardImpl activeInstance];
     [v4 setInitialDirection];
 
-    v5 = [(UITextContentView *)self interactionAssistant];
-    [v5 setGestureRecognizers];
+    interactionAssistant = [(UITextContentView *)self interactionAssistant];
+    [interactionAssistant setGestureRecognizers];
   }
 }
 
@@ -1272,22 +1272,22 @@ LABEL_7:
   [(UIView *)self bounds];
   v6 = v5;
   [(UIWebDocumentView *)self->m_webView setFrame:v3, v4];
-  v7 = [(UIWebDocumentView *)self->m_webView webView];
-  [v7 _setFixedLayoutSize:{v6, 1.0}];
+  webView = [(UIWebDocumentView *)self->m_webView webView];
+  [webView _setFixedLayoutSize:{v6, 1.0}];
 
-  v8 = [(UITextContentView *)self interactionAssistant];
-  [v8 setNeedsSelectionDisplayUpdate];
+  interactionAssistant = [(UITextContentView *)self interactionAssistant];
+  [interactionAssistant setNeedsSelectionDisplayUpdate];
 
   v9 = +[UIKeyboardImpl activeInstance];
   [v9 textFrameChanged:self];
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(UIView *)self frame];
   v9 = v8;
   v11 = v10;
@@ -1300,12 +1300,12 @@ LABEL_7:
   }
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(UIView *)self bounds];
   v9 = v8;
   v11 = v10;
@@ -1318,10 +1318,10 @@ LABEL_7:
   }
 }
 
-- (void)setSelectionWithPoint:(CGPoint)a3
+- (void)setSelectionWithPoint:(CGPoint)point
 {
   m_webView = self->m_webView;
-  [(UITextContentView *)self constrainedPoint:a3.x, a3.y];
+  [(UITextContentView *)self constrainedPoint:point.x, point.y];
 
   [(UIWebDocumentView *)m_webView setSelectionWithPoint:?];
 }
@@ -1331,9 +1331,9 @@ LABEL_7:
   [(UITextContentView *)self beginSelectionChange];
   WebThreadLock();
   m_webView = self->m_webView;
-  v4 = [(UIWebDocumentView *)m_webView beginningOfDocument];
-  v5 = [(UIWebDocumentView *)self->m_webView beginningOfDocument];
-  v6 = [(UIWebDocumentView *)m_webView textRangeFromPosition:v4 toPosition:v5];
+  beginningOfDocument = [(UIWebDocumentView *)m_webView beginningOfDocument];
+  beginningOfDocument2 = [(UIWebDocumentView *)self->m_webView beginningOfDocument];
+  v6 = [(UIWebDocumentView *)m_webView textRangeFromPosition:beginningOfDocument toPosition:beginningOfDocument2];
   [(UIWebDocumentView *)self->m_webView setSelectedTextRange:v6];
 
   [(UITextContentView *)self scrollSelectionToVisible:1];
@@ -1345,9 +1345,9 @@ LABEL_7:
 {
   [(UITextContentView *)self beginSelectionChange];
   m_webView = self->m_webView;
-  v4 = [(UIWebDocumentView *)m_webView endOfDocument];
-  v5 = [(UIWebDocumentView *)self->m_webView endOfDocument];
-  v6 = [(UIWebDocumentView *)m_webView textRangeFromPosition:v4 toPosition:v5];
+  endOfDocument = [(UIWebDocumentView *)m_webView endOfDocument];
+  endOfDocument2 = [(UIWebDocumentView *)self->m_webView endOfDocument];
+  v6 = [(UIWebDocumentView *)m_webView textRangeFromPosition:endOfDocument toPosition:endOfDocument2];
   [(UIWebDocumentView *)self->m_webView setSelectedTextRange:v6];
 
   [(UITextContentView *)self scrollSelectionToVisible:1];
@@ -1355,15 +1355,15 @@ LABEL_7:
   [(UITextContentView *)self endSelectionChange];
 }
 
-- (CGRect)rectForSelection:(_NSRange)a3
+- (CGRect)rectForSelection:(_NSRange)selection
 {
-  length = a3.length;
-  location = a3.location;
+  length = selection.length;
+  location = selection.location;
   WebThreadLock();
   v6 = [(WebFrame *)self->m_frame convertNSRangeToDOMRange:location, length];
   m_frame = self->m_frame;
-  v8 = [v6 startContainer];
-  -[WebFrame caretRectAtNode:offset:affinity:](m_frame, "caretRectAtNode:offset:affinity:", v8, [v6 startOffset], 1);
+  startContainer = [v6 startContainer];
+  -[WebFrame caretRectAtNode:offset:affinity:](m_frame, "caretRectAtNode:offset:affinity:", startContainer, [v6 startOffset], 1);
   v10 = v9;
   v12 = v11;
   v14 = v13;
@@ -1380,16 +1380,16 @@ LABEL_7:
   return result;
 }
 
-- (void)performScrollSelectionToVisible:(BOOL)a3
+- (void)performScrollSelectionToVisible:(BOOL)visible
 {
-  v3 = a3;
+  visibleCopy = visible;
   if ([(UIWebDocumentView *)self->m_webView hasSelection]&& [(UITextContentView *)self isFirstResponder])
   {
     [(WebFrame *)self->m_frame rectForScrollToVisible];
     v7 = CGRectInset(v6, -5.0, -5.0);
     [(UIView *)self convertRect:self->m_webView fromView:v7.origin.x, v7.origin.y, v7.size.width, v7.size.height];
 
-    [(UITextContentView *)self scrollRectToVisible:v3 animated:?];
+    [(UITextContentView *)self scrollRectToVisible:visibleCopy animated:?];
   }
 }
 
@@ -1416,19 +1416,19 @@ LABEL_7:
   return result;
 }
 
-- (void)setContentToHTMLString:(id)a3
+- (void)setContentToHTMLString:(id)string
 {
-  v10 = a3;
+  stringCopy = string;
   WebThreadLock();
-  v4 = [(UIWebDocumentView *)self->m_webView inputDelegate];
+  inputDelegate = [(UIWebDocumentView *)self->m_webView inputDelegate];
   if ([(UITextContentView *)self isEditing])
   {
-    [v4 textWillChange:self->m_webView];
+    [inputDelegate textWillChange:self->m_webView];
   }
 
-  if (v10)
+  if (stringCopy)
   {
-    v5 = v10;
+    v5 = stringCopy;
   }
 
   else
@@ -1439,7 +1439,7 @@ LABEL_7:
   [(DOMHTMLElement *)self->m_body setInnerHTML:v5];
   if ([(UITextContentView *)self isEditing])
   {
-    [v4 textDidChange:self->m_webView];
+    [inputDelegate textDidChange:self->m_webView];
   }
 
   [(WebFrame *)self->m_frame updateLayout];
@@ -1449,16 +1449,16 @@ LABEL_7:
     [(UITextContentView *)self startDataDetectorsWithWebLock];
   }
 
-  v6 = [(UIWebDocumentView *)self->m_webView undoManager];
-  v7 = [v6 isUndoRegistrationEnabled];
+  undoManager = [(UIWebDocumentView *)self->m_webView undoManager];
+  isUndoRegistrationEnabled = [undoManager isUndoRegistrationEnabled];
 
-  v8 = [(UIWebDocumentView *)self->m_webView undoManager];
-  [v8 removeAllActions];
+  undoManager2 = [(UIWebDocumentView *)self->m_webView undoManager];
+  [undoManager2 removeAllActions];
 
-  if ((v7 & 1) == 0)
+  if ((isUndoRegistrationEnabled & 1) == 0)
   {
-    v9 = [(UIWebDocumentView *)self->m_webView undoManager];
-    [v9 disableUndoRegistration];
+    undoManager3 = [(UIWebDocumentView *)self->m_webView undoManager];
+    [undoManager3 disableUndoRegistration];
   }
 }
 
@@ -1470,14 +1470,14 @@ LABEL_7:
   return [(DOMHTMLElement *)m_body innerHTML];
 }
 
-- (void)setContentToAttributedString:(id)a3
+- (void)setContentToAttributedString:(id)string
 {
-  v4 = a3;
-  v8 = [[off_1E70ECB70 alloc] initWithAttributedString:v4];
+  stringCopy = string;
+  v8 = [[off_1E70ECB70 alloc] initWithAttributedString:stringCopy];
 
   v5 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v6 = [v8 HTMLData];
-  v7 = [v5 initWithData:v6 encoding:4];
+  hTMLData = [v8 HTMLData];
+  v7 = [v5 initWithData:hTMLData encoding:4];
 
   [(UITextContentView *)self setContentToHTMLString:v7];
 }
@@ -1485,50 +1485,50 @@ LABEL_7:
 - (id)contentAsAttributedString
 {
   WebThreadLock();
-  v3 = [(UIWebDocumentView *)self->m_webView _focusedOrMainFrame];
-  v4 = [v3 DOMDocument];
-  v5 = [v4 createRange];
+  _focusedOrMainFrame = [(UIWebDocumentView *)self->m_webView _focusedOrMainFrame];
+  dOMDocument = [_focusedOrMainFrame DOMDocument];
+  createRange = [dOMDocument createRange];
 
-  [v5 selectNodeContents:self->m_body];
-  v6 = [[off_1E70ECB68 alloc] initWithDOMRange:v5];
-  v7 = [v6 attributedString];
+  [createRange selectNodeContents:self->m_body];
+  v6 = [[off_1E70ECB68 alloc] initWithDOMRange:createRange];
+  attributedString = [v6 attributedString];
 
-  return v7;
+  return attributedString;
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
-  v4 = a3;
-  v5 = [(UITextContentView *)self textInputTraits];
-  [v4 selector];
+  invocationCopy = invocation;
+  textInputTraits = [(UITextContentView *)self textInputTraits];
+  [invocationCopy selector];
   if (objc_opt_respondsToSelector())
   {
-    [v4 invokeWithTarget:v5];
+    [invocationCopy invokeWithTarget:textInputTraits];
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = UITextContentView;
-    [(UITextContentView *)&v6 forwardInvocation:v4];
+    [(UITextContentView *)&v6 forwardInvocation:invocationCopy];
   }
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
-  v4 = [objc_opt_class() instanceMethodSignatureForSelector:a3];
+  v4 = [objc_opt_class() instanceMethodSignatureForSelector:selector];
   if (!v4)
   {
-    v4 = [objc_opt_class() instanceMethodSignatureForSelector:a3];
+    v4 = [objc_opt_class() instanceMethodSignatureForSelector:selector];
   }
 
   return v4;
 }
 
-- (void)setAllowsEditingTextAttributes:(BOOL)a3
+- (void)setAllowsEditingTextAttributes:(BOOL)attributes
 {
-  self->m_allowsEditingTextAttributes = a3;
-  if (a3)
+  self->m_allowsEditingTextAttributes = attributes;
+  if (attributes)
   {
     self->m_usesAttributedText = 1;
   }
@@ -1539,68 +1539,68 @@ LABEL_7:
   if (self->m_usesAttributedText)
   {
     WebThreadLock();
-    v3 = [(UIWebDocumentView *)self->m_webView _focusedOrMainFrame];
-    v4 = [v3 DOMDocument];
-    v5 = [v4 createRange];
+    _focusedOrMainFrame = [(UIWebDocumentView *)self->m_webView _focusedOrMainFrame];
+    dOMDocument = [_focusedOrMainFrame DOMDocument];
+    createRange = [dOMDocument createRange];
 
-    [v5 selectNodeContents:self->m_body];
-    v6 = [[off_1E70ECB68 alloc] initWithDOMRange:v5];
-    v7 = [v6 attributedString];
-    v8 = [v7 mutableCopy];
+    [createRange selectNodeContents:self->m_body];
+    v6 = [[off_1E70ECB68 alloc] initWithDOMRange:createRange];
+    attributedString = [v6 attributedString];
+    v8 = [attributedString mutableCopy];
   }
 
   else
   {
     v9 = objc_alloc(MEMORY[0x1E696AD40]);
-    v5 = [(UITextContentView *)self text];
-    v8 = [v9 initWithString:v5];
+    createRange = [(UITextContentView *)self text];
+    v8 = [v9 initWithString:createRange];
   }
 
-  v10 = [v8 mutableString];
-  v11 = [(UITextContentView *)self textInputTraits];
-  [v10 _removeCharactersFromSet:{objc_msgSend(v11, "textTrimmingSet")}];
+  mutableString = [v8 mutableString];
+  textInputTraits = [(UITextContentView *)self textInputTraits];
+  [mutableString _removeCharactersFromSet:{objc_msgSend(textInputTraits, "textTrimmingSet")}];
 
-  [v10 _replaceOccurrencesOfCharacter:160 withCharacter:32];
+  [mutableString _replaceOccurrencesOfCharacter:160 withCharacter:32];
   v12 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithAttributedString:v8];
 
   return v12;
 }
 
-- (void)_removeAttribute:(id)a3 fromString:(id)a4 andSetPropertyWith:(id)a5 usingValueClass:(Class)a6
+- (void)_removeAttribute:(id)attribute fromString:(id)string andSetPropertyWith:(id)with usingValueClass:(Class)class
 {
-  v11 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v8 _UIKBStringWideAttributeValueForKey:v11];
+  attributeCopy = attribute;
+  stringCopy = string;
+  withCopy = with;
+  v10 = [stringCopy _UIKBStringWideAttributeValueForKey:attributeCopy];
   if (v10)
   {
     if (objc_opt_isKindOfClass())
     {
-      v9[2](v9, v10);
+      withCopy[2](withCopy, v10);
     }
 
-    [v8 removeAttribute:v11 range:{0, objc_msgSend(v8, "length")}];
+    [stringCopy removeAttribute:attributeCopy range:{0, objc_msgSend(stringCopy, "length")}];
   }
 }
 
-- (void)_removeTextViewPropertiesFromText:(id)a3
+- (void)_removeTextViewPropertiesFromText:(id)text
 {
   v4 = *off_1E70EC918;
   v13 = MEMORY[0x1E69E9820];
   v14 = 3221225472;
   v15 = __55__UITextContentView__removeTextViewPropertiesFromText___block_invoke;
   v16 = &unk_1E7118240;
-  v17 = self;
-  v5 = a3;
-  [(UITextContentView *)self _removeAttribute:v4 fromString:v5 andSetPropertyWith:&v13 usingValueClass:objc_opt_class()];
+  selfCopy = self;
+  textCopy = text;
+  [(UITextContentView *)self _removeAttribute:v4 fromString:textCopy andSetPropertyWith:&v13 usingValueClass:objc_opt_class()];
   v6 = *off_1E70EC920;
   v8 = MEMORY[0x1E69E9820];
   v9 = 3221225472;
   v10 = __55__UITextContentView__removeTextViewPropertiesFromText___block_invoke_2;
   v11 = &unk_1E7118240;
-  v12 = self;
-  [(UITextContentView *)self _removeAttribute:v6 fromString:v5 andSetPropertyWith:&v8 usingValueClass:objc_opt_class()];
-  v7 = [v5 _UIKBStringWideAttributeValueForKey:{*off_1E70EC988, v8, v9, v10, v11, v12, v13, v14, v15, v16, v17}];
+  selfCopy2 = self;
+  [(UITextContentView *)self _removeAttribute:v6 fromString:textCopy andSetPropertyWith:&v8 usingValueClass:objc_opt_class()];
+  v7 = [textCopy _UIKBStringWideAttributeValueForKey:{*off_1E70EC988, v8, v9, v10, v11, selfCopy2, v13, v14, v15, v16, selfCopy}];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -1624,24 +1624,24 @@ LABEL_7:
   return v2;
 }
 
-- (void)setAttributedText:(id)a3
+- (void)setAttributedText:(id)text
 {
   self->m_usesAttributedText = 1;
-  v16 = [a3 mutableCopy];
-  v4 = [v16 mutableString];
+  v16 = [text mutableCopy];
+  mutableString = [v16 mutableString];
   [(UITextContentView *)self _removeTextViewPropertiesFromText:v16];
-  v5 = [(UITextContentView *)self textInputTraits];
-  [v4 _removeCharactersFromSet:{objc_msgSend(v5, "textTrimmingSet")}];
+  textInputTraits = [(UITextContentView *)self textInputTraits];
+  [mutableString _removeCharactersFromSet:{objc_msgSend(textInputTraits, "textTrimmingSet")}];
 
-  [v4 _removeOccurrencesOfCharacter:65532];
+  [mutableString _removeOccurrencesOfCharacter:65532];
   v6 = [[off_1E70ECB70 alloc] initWithAttributedString:v16];
-  v7 = [objc_opt_class() excludedElementsForHTML];
-  v8 = [MEMORY[0x1E695DF20] dictionaryWithObject:v7 forKey:*off_1E70EC908];
+  excludedElementsForHTML = [objc_opt_class() excludedElementsForHTML];
+  v8 = [MEMORY[0x1E695DF20] dictionaryWithObject:excludedElementsForHTML forKey:*off_1E70EC908];
   [v6 setDocumentAttributes:v8];
 
   v9 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v10 = [v6 HTMLData];
-  v11 = [v9 initWithData:v10 encoding:4];
+  hTMLData = [v6 HTMLData];
+  v11 = [v9 initWithData:hTMLData encoding:4];
 
   if ([v11 length])
   {
@@ -1660,60 +1660,60 @@ LABEL_7:
   [(UITextContentView *)self setContentToHTMLString:v15];
 }
 
-- (void)setFont:(id)a3
+- (void)setFont:(id)font
 {
-  v5 = a3;
-  if (self->m_font != v5)
+  fontCopy = font;
+  if (self->m_font != fontCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->m_font, a3);
+    v6 = fontCopy;
+    objc_storeStrong(&self->m_font, font);
     [(UITextContentView *)self recalculateStyle];
     [(UITextContentView *)self webViewDidChange:0];
-    v5 = v6;
+    fontCopy = v6;
   }
 }
 
-- (void)setTextColor:(id)a3
+- (void)setTextColor:(id)color
 {
-  v4 = a3;
-  if (self->m_textColor != v4)
+  colorCopy = color;
+  if (self->m_textColor != colorCopy)
   {
-    if (!v4)
+    if (!colorCopy)
     {
-      v4 = +[UIColor blackColor];
+      colorCopy = +[UIColor blackColor];
     }
 
-    obj = v4;
-    objc_storeStrong(&self->m_textColor, v4);
+    obj = colorCopy;
+    objc_storeStrong(&self->m_textColor, colorCopy);
     [(UITextContentView *)self recalculateStyle];
-    v4 = obj;
+    colorCopy = obj;
   }
 }
 
 - (NSString)text
 {
   WebThreadLock();
-  v3 = [(WebFrame *)self->m_frame DOMDocument];
+  dOMDocument = [(WebFrame *)self->m_frame DOMDocument];
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && ([v3 body], v4 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "innerText"), v5 = objc_claimAutoreleasedReturnValue(), v4, v5))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && ([dOMDocument body], v4 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "innerText"), v5 = objc_claimAutoreleasedReturnValue(), v4, v5))
   {
     if ([v5 hasSuffix:@"\n"])
     {
-      v6 = [(DOMHTMLElement *)self->m_body lastChild];
-      v7 = [v6 tagName];
-      if (![v7 caseInsensitiveCompare:@"div"])
+      lastChild = [(DOMHTMLElement *)self->m_body lastChild];
+      tagName = [lastChild tagName];
+      if (![tagName caseInsensitiveCompare:@"div"])
       {
-        v8 = [v6 firstChild];
-        v9 = [v8 tagName];
+        firstChild = [lastChild firstChild];
+        tagName2 = [firstChild tagName];
 
-        v7 = v9;
+        tagName = tagName2;
       }
 
-      if (![v7 caseInsensitiveCompare:@"br"])
+      if (![tagName caseInsensitiveCompare:@"br"])
       {
-        v10 = [v5 _stringByTrimmingLastCharacter];
+        _stringByTrimmingLastCharacter = [v5 _stringByTrimmingLastCharacter];
 
-        v5 = v10;
+        v5 = _stringByTrimmingLastCharacter;
       }
     }
 
@@ -1726,12 +1726,12 @@ LABEL_7:
 
     v13 = [objc_alloc(MEMORY[0x1E696AD60]) initWithString:v5];
     [v13 replaceOccurrencesOfString:text_nbspString withString:@" " options:2 range:{0, objc_msgSend(v13, "length")}];
-    v14 = [(UITextContentView *)self textInputTraits];
-    v15 = [v14 textTrimmingSet];
+    textInputTraits = [(UITextContentView *)self textInputTraits];
+    textTrimmingSet = [textInputTraits textTrimmingSet];
 
-    if (v15)
+    if (textTrimmingSet)
     {
-      v16 = [v13 _stringByTrimmingCharactersInCFCharacterSet:v15];
+      v16 = [v13 _stringByTrimmingCharactersInCFCharacterSet:textTrimmingSet];
     }
 
     else
@@ -1750,45 +1750,45 @@ LABEL_7:
   return v17;
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  v13 = a3;
+  textCopy = text;
   WebThreadLock();
   if ([(UITextContentView *)self dataDetectorTypes])
   {
     [(UITextContentView *)self cancelDataDetectorsWithWebLock];
   }
 
-  v4 = [(UIWebDocumentView *)self->m_webView inputDelegate];
+  inputDelegate = [(UIWebDocumentView *)self->m_webView inputDelegate];
   if ([(UITextContentView *)self isEditing])
   {
-    [v4 textWillChange:self->m_webView];
+    [inputDelegate textWillChange:self->m_webView];
   }
 
-  v5 = [v13 length];
+  v5 = [textCopy length];
   v6 = 0;
-  if (v13 && v5)
+  if (textCopy && v5)
   {
-    v7 = [(UITextContentView *)self textInputTraits];
-    v8 = [v7 textTrimmingSet];
+    textInputTraits = [(UITextContentView *)self textInputTraits];
+    textTrimmingSet = [textInputTraits textTrimmingSet];
 
-    if (v8)
+    if (textTrimmingSet)
     {
-      v6 = [v13 _stringByTrimmingCharactersInCFCharacterSet:v8];
+      v6 = [textCopy _stringByTrimmingCharactersInCFCharacterSet:textTrimmingSet];
 
-      v13 = v6;
+      textCopy = v6;
     }
 
     else
     {
-      v6 = v13;
+      v6 = textCopy;
     }
   }
 
   [(WebFrame *)self->m_frame setText:v6 asChildOfElement:self->m_body];
   if ([(UITextContentView *)self isEditable])
   {
-    [v4 textDidChange:self->m_webView];
+    [inputDelegate textDidChange:self->m_webView];
   }
 
   [(WebFrame *)self->m_frame updateLayout];
@@ -1798,23 +1798,23 @@ LABEL_7:
     [(UITextContentView *)self startDataDetectorsWithWebLock];
   }
 
-  v9 = [(UIWebDocumentView *)self->m_webView undoManager];
-  v10 = [v9 isUndoRegistrationEnabled];
+  undoManager = [(UIWebDocumentView *)self->m_webView undoManager];
+  isUndoRegistrationEnabled = [undoManager isUndoRegistrationEnabled];
 
-  v11 = [(UIWebDocumentView *)self->m_webView undoManager];
-  [v11 removeAllActions];
+  undoManager2 = [(UIWebDocumentView *)self->m_webView undoManager];
+  [undoManager2 removeAllActions];
 
-  if ((v10 & 1) == 0)
+  if ((isUndoRegistrationEnabled & 1) == 0)
   {
-    v12 = [(UIWebDocumentView *)self->m_webView undoManager];
-    [v12 disableUndoRegistration];
+    undoManager3 = [(UIWebDocumentView *)self->m_webView undoManager];
+    [undoManager3 disableUndoRegistration];
   }
 }
 
-- (void)setTextAlignment:(int64_t)a3
+- (void)setTextAlignment:(int64_t)alignment
 {
   self->m_hasExplicitTextAlignment = 1;
-  self->m_textAlignment = a3;
+  self->m_textAlignment = alignment;
   [(UITextContentView *)self recalculateStyle];
 }
 
@@ -1823,16 +1823,16 @@ LABEL_7:
   WebThreadLock();
   m_frame = self->m_frame;
 
-  v4 = [(WebFrame *)m_frame _selectedNSRange];
+  _selectedNSRange = [(WebFrame *)m_frame _selectedNSRange];
   result.length = v5;
-  result.location = v4;
+  result.location = _selectedNSRange;
   return result;
 }
 
-- (void)setSelectedRange:(_NSRange)a3
+- (void)setSelectedRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   [(UITextContentView *)self beginSelectionChange];
   WebThreadLock();
   v6 = [(WebFrame *)self->m_frame convertNSRangeToDOMRange:location, length];
@@ -1851,14 +1851,14 @@ LABEL_7:
   [(UITextContentView *)self endSelectionChange];
 }
 
-- (void)setEditable:(BOOL)a3
+- (void)setEditable:(BOOL)editable
 {
-  if (self->m_editable != a3)
+  if (self->m_editable != editable)
   {
-    v3 = a3;
+    editableCopy = editable;
     WebThreadLock();
-    [(UITextContentView *)self updateContentEditableAttribute:v3];
-    if (v3)
+    [(UITextContentView *)self updateContentEditableAttribute:editableCopy];
+    if (editableCopy)
     {
       [(UIWebDocumentView *)self->m_webView makeWKFirstResponder];
       [(UITextContentView *)self performSelector:sel_performBecomeEditableTasks withObject:0 afterDelay:0.0];
@@ -1871,11 +1871,11 @@ LABEL_7:
       [(UITextContentView *)self resignFirstResponder];
     }
 
-    [(WebFrame *)self->m_frame setIsActive:v3];
-    [(UITextContentView *)self setSelectionChangeCallbacksDisabled:v3];
-    self->m_editable = v3;
-    v6 = [(UITextContentView *)self interactionAssistant];
-    [v6 setGestureRecognizers];
+    [(WebFrame *)self->m_frame setIsActive:editableCopy];
+    [(UITextContentView *)self setSelectionChangeCallbacksDisabled:editableCopy];
+    self->m_editable = editableCopy;
+    interactionAssistant = [(UITextContentView *)self interactionAssistant];
+    [interactionAssistant setGestureRecognizers];
 
     if ([(UITextContentView *)self isEditable]&& [(UITextContentView *)self dataDetectorTypes])
     {
@@ -1893,20 +1893,20 @@ LABEL_7:
   }
 }
 
-- (void)setEditing:(BOOL)a3
+- (void)setEditing:(BOOL)editing
 {
-  if (self->m_editing != a3)
+  if (self->m_editing != editing)
   {
-    self->m_editing = a3;
+    self->m_editing = editing;
     [(UIWebTiledView *)self->m_webView setEditingTilingModeEnabled:?];
   }
 }
 
-- (void)setMarginTop:(int)a3
+- (void)setMarginTop:(int)top
 {
-  if (self->m_marginTop != a3)
+  if (self->m_marginTop != top)
   {
-    self->m_marginTop = a3;
+    self->m_marginTop = top;
     [(UITextContentView *)self recalculateStyle];
   }
 }
@@ -1918,11 +1918,11 @@ LABEL_7:
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(UIView *)self _scroller];
-  v12 = v11;
-  if (v11)
+  _scroller = [(UIView *)self _scroller];
+  v12 = _scroller;
+  if (_scroller)
   {
-    [v11 contentOffset];
+    [_scroller contentOffset];
     v14 = v13;
     v16 = v15;
     [v12 frame];
@@ -1999,10 +1999,10 @@ LABEL_7:
   return result;
 }
 
-- (void)scrollRangeToVisible:(_NSRange)a3
+- (void)scrollRangeToVisible:(_NSRange)visible
 {
-  length = a3.length;
-  location = a3.location;
+  length = visible.length;
+  location = visible.location;
   WebThreadLock();
   v6 = [(WebFrame *)self->m_frame convertNSRangeToDOMRange:location, length];
   [(WebFrame *)self->m_frame firstRectForDOMRange:v6];
@@ -2012,45 +2012,45 @@ LABEL_7:
 
 - (BOOL)shouldStartDataDetectors
 {
-  v3 = [(UITextContentView *)self dataDetectorTypes];
-  if (v3)
+  dataDetectorTypes = [(UITextContentView *)self dataDetectorTypes];
+  if (dataDetectorTypes)
   {
-    LOBYTE(v3) = ![(UITextContentView *)self isEditable];
+    LOBYTE(dataDetectorTypes) = ![(UITextContentView *)self isEditable];
   }
 
-  return v3;
+  return dataDetectorTypes;
 }
 
 - (void)cancelDataDetectorsWithWebLock
 {
-  v3 = [DataDetectorsUIGetClass(@"DDDetectionController") sharedController];
-  [v3 cancelURLificationForFrame:self->m_frame];
+  dataDetectorsUIGetClass(@"DDDetectionController") = [DataDetectorsUIGetClass(@"DDDetectionController") sharedController];
+  [dataDetectorsUIGetClass(@"DDDetectionController") cancelURLificationForFrame:self->m_frame];
 }
 
 - (void)startDataDetectorsWithWebLock
 {
-  v3 = [DataDetectorsUIGetClass(@"DDDetectionController") sharedController];
-  [v3 startURLificationForFrame:self->m_frame detectedTypes:{-[UIWebDocumentView effectiveDataDetectorTypes](self->m_webView, "effectiveDataDetectorTypes")}];
+  dataDetectorsUIGetClass(@"DDDetectionController") = [DataDetectorsUIGetClass(@"DDDetectionController") sharedController];
+  [dataDetectorsUIGetClass(@"DDDetectionController") startURLificationForFrame:self->m_frame detectedTypes:{-[UIWebDocumentView effectiveDataDetectorTypes](self->m_webView, "effectiveDataDetectorTypes")}];
 }
 
 - (void)resetDataDetectorsResultsWithWebLock
 {
   if (sDataDetectorsUIFrameworkLoaded == 1)
   {
-    v4 = [DataDetectorsUIGetClass(@"DDDetectionController") sharedController];
-    [v4 resetResultsForFrame:self->m_frame];
+    dataDetectorsUIGetClass(@"DDDetectionController") = [DataDetectorsUIGetClass(@"DDDetectionController") sharedController];
+    [dataDetectorsUIGetClass(@"DDDetectionController") resetResultsForFrame:self->m_frame];
   }
 }
 
-- (void)setDataDetectorTypes:(unint64_t)a3
+- (void)setDataDetectorTypes:(unint64_t)types
 {
-  if ([(UIWebDocumentView *)self->m_webView dataDetectorTypes]!= a3)
+  if ([(UIWebDocumentView *)self->m_webView dataDetectorTypes]!= types)
   {
     WebThreadLock();
-    [(UIWebDocumentView *)self->m_webView setDataDetectorTypes:a3];
-    v5 = [(UITextContentView *)self shouldStartDataDetectors];
+    [(UIWebDocumentView *)self->m_webView setDataDetectorTypes:types];
+    shouldStartDataDetectors = [(UITextContentView *)self shouldStartDataDetectors];
     m_webView = self->m_webView;
-    if (v5)
+    if (shouldStartDataDetectors)
     {
       [(UIWebDocumentView *)m_webView setAllowsDataDetectorsSheet:1];
       [(UITextContentView *)self startDataDetectorsWithWebLock];
@@ -2062,8 +2062,8 @@ LABEL_7:
       [(UITextContentView *)self resetDataDetectorsResultsWithWebLock];
     }
 
-    v7 = [(UITextContentView *)self interactionAssistant];
-    [v7 setGestureRecognizers];
+    interactionAssistant = [(UITextContentView *)self interactionAssistant];
+    [interactionAssistant setGestureRecognizers];
   }
 }
 
@@ -2080,30 +2080,30 @@ LABEL_7:
   }
 }
 
-- (BOOL)keyboardInput:(id)a3 shouldReplaceTextInRange:(_NSRange)a4 replacementText:(id)a5
+- (BOOL)keyboardInput:(id)input shouldReplaceTextInRange:(_NSRange)range replacementText:(id)text
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v15[1] = *MEMORY[0x1E69E9840];
   v9 = MEMORY[0x1E696B098];
-  v10 = a5;
-  v11 = a3;
+  textCopy = text;
+  inputCopy = input;
   v12 = [v9 valueWithRange:{location, length}];
   v15[0] = v12;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
-  LOBYTE(length) = [(UITextContentView *)self keyboardInput:v11 shouldReplaceTextInRanges:v13 replacementText:v10];
+  LOBYTE(length) = [(UITextContentView *)self keyboardInput:inputCopy shouldReplaceTextInRanges:v13 replacementText:textCopy];
 
   return length;
 }
 
-- (BOOL)keyboardInput:(id)a3 shouldReplaceTextInRanges:(id)a4 replacementText:(id)a5
+- (BOOL)keyboardInput:(id)input shouldReplaceTextInRanges:(id)ranges replacementText:(id)text
 {
-  v7 = a4;
-  v8 = a5;
+  rangesCopy = ranges;
+  textCopy = text;
   WeakRetained = objc_loadWeakRetained(&self->m_delegate);
   if (objc_opt_respondsToSelector())
   {
-    v10 = [WeakRetained textContentView:self shouldChangeTextInRanges:v7 replacementText:v8];
+    v10 = [WeakRetained textContentView:self shouldChangeTextInRanges:rangesCopy replacementText:textCopy];
   }
 
   else
@@ -2114,8 +2114,8 @@ LABEL_7:
       goto LABEL_7;
     }
 
-    v11 = [v7 unionRange];
-    v10 = [WeakRetained textContentView:self shouldChangeTextInRange:v11 replacementText:{v12, v8}];
+    unionRange = [rangesCopy unionRange];
+    v10 = [WeakRetained textContentView:self shouldChangeTextInRange:unionRange replacementText:{v12, textCopy}];
   }
 
   v13 = v10;
@@ -2124,25 +2124,25 @@ LABEL_7:
   return v13;
 }
 
-- (BOOL)keyboardInput:(id)a3 shouldInsertText:(id)a4 isMarkedText:(BOOL)a5
+- (BOOL)keyboardInput:(id)input shouldInsertText:(id)text isMarkedText:(BOOL)markedText
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  textCopy = text;
   WeakRetained = objc_loadWeakRetained(&self->m_delegate);
   if (objc_opt_respondsToSelector())
   {
     v8 = MEMORY[0x1E696B098];
-    v9 = [(UITextContentView *)self selectedRange];
-    v11 = [v8 valueWithRange:{v9, v10}];
+    selectedRange = [(UITextContentView *)self selectedRange];
+    v11 = [v8 valueWithRange:{selectedRange, v10}];
     v17[0] = v11;
     v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:1];
-    v13 = [WeakRetained textContentView:self shouldChangeTextInRanges:v12 replacementText:v6];
+    v13 = [WeakRetained textContentView:self shouldChangeTextInRanges:v12 replacementText:textCopy];
   }
 
   else if (objc_opt_respondsToSelector())
   {
-    v14 = [(UITextContentView *)self selectedRange];
-    v13 = [WeakRetained textContentView:self shouldChangeTextInRange:v14 replacementText:{v15, v6}];
+    selectedRange2 = [(UITextContentView *)self selectedRange];
+    v13 = [WeakRetained textContentView:self shouldChangeTextInRange:selectedRange2 replacementText:{v15, textCopy}];
   }
 
   else
@@ -2153,7 +2153,7 @@ LABEL_7:
   return v13;
 }
 
-- (BOOL)keyboardInputChanged:(id)a3
+- (BOOL)keyboardInputChanged:(id)changed
 {
   WeakRetained = objc_loadWeakRetained(&self->m_delegate);
   if (objc_opt_respondsToSelector())
@@ -2161,13 +2161,13 @@ LABEL_7:
     [WeakRetained textContentViewDidChange:self];
   }
 
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v5 postNotificationName:@"UITextViewTextDidChangeNotification" object:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"UITextViewTextDidChangeNotification" object:self];
 
   return 1;
 }
 
-- (void)keyboardInputChangedSelection:(id)a3
+- (void)keyboardInputChangedSelection:(id)selection
 {
   if (!self->m_becomingFirstResponder)
   {
@@ -2179,29 +2179,29 @@ LABEL_7:
   }
 }
 
-- (void)webView:(id)a3 decidePolicyForNavigationAction:(id)a4 request:(id)a5 frame:(id)a6 decisionListener:(id)a7
+- (void)webView:(id)view decidePolicyForNavigationAction:(id)action request:(id)request frame:(id)frame decisionListener:(id)listener
 {
-  v19 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = a7;
-  v14 = [v19 objectForKeyedSubscript:*MEMORY[0x1E69E2FD0]];
-  v15 = [v14 intValue];
+  actionCopy = action;
+  requestCopy = request;
+  frameCopy = frame;
+  listenerCopy = listener;
+  v14 = [actionCopy objectForKeyedSubscript:*MEMORY[0x1E69E2FD0]];
+  intValue = [v14 intValue];
 
-  if (v15)
+  if (intValue)
   {
-    [v13 use];
+    [listenerCopy use];
   }
 
   else
   {
-    v16 = [v19 objectForKeyedSubscript:*MEMORY[0x1E69E2FC8]];
+    v16 = [actionCopy objectForKeyedSubscript:*MEMORY[0x1E69E2FC8]];
     v17 = [v16 objectForKeyedSubscript:*MEMORY[0x1E69E2FE8]];
 
-    v18 = [v11 URL];
-    [UIWebURLAction performDefaultActionForURL:v18 andDOMNode:v17 withAllowedTypes:[(UITextContentView *)self _allowedLinkTypes] forFrame:v12 inView:self];
+    v18 = [requestCopy URL];
+    [UIWebURLAction performDefaultActionForURL:v18 andDOMNode:v17 withAllowedTypes:[(UITextContentView *)self _allowedLinkTypes] forFrame:frameCopy inView:self];
 
-    [v13 ignore];
+    [listenerCopy ignore];
   }
 }
 
@@ -2216,43 +2216,43 @@ LABEL_7:
 
 - (id)_proxyTextInput
 {
-  v2 = self;
-  v3 = [(UITextContentView *)self tokenizer];
-  v4 = [(UIWebDocumentView *)v2->m_webView tokenizer];
+  selfCopy = self;
+  tokenizer = [(UITextContentView *)self tokenizer];
+  tokenizer2 = [(UIWebDocumentView *)selfCopy->m_webView tokenizer];
 
-  if (v3 == v4)
+  if (tokenizer == tokenizer2)
   {
-    v2 = v2->m_webView;
+    selfCopy = selfCopy->m_webView;
   }
 
-  v5 = v2;
+  v5 = selfCopy;
 
   return v5;
 }
 
-- (void)insertDictationResult:(id)a3 withCorrectionIdentifier:(id)a4
+- (void)insertDictationResult:(id)result withCorrectionIdentifier:(id)identifier
 {
-  v9 = a4;
-  v6 = a3;
-  v7 = [(UITextContentView *)self _proxyTextInput];
+  identifierCopy = identifier;
+  resultCopy = result;
+  _proxyTextInput = [(UITextContentView *)self _proxyTextInput];
 
-  if (v7 == self)
+  if (_proxyTextInput == self)
   {
-    v8 = [v6 dictationPhraseArray];
+    dictationPhraseArray = [resultCopy dictationPhraseArray];
 
-    [(UITextContentView *)self insertDictationResult:v8];
-    v6 = v8;
+    [(UITextContentView *)self insertDictationResult:dictationPhraseArray];
+    resultCopy = dictationPhraseArray;
   }
 
   else
   {
-    [(UIWebDocumentView *)self->m_webView insertDictationResult:v6 withCorrectionIdentifier:v9];
+    [(UIWebDocumentView *)self->m_webView insertDictationResult:resultCopy withCorrectionIdentifier:identifierCopy];
   }
 }
 
-- (CGRect)frameForDictationResultPlaceholder:(id)a3
+- (CGRect)frameForDictationResultPlaceholder:(id)placeholder
 {
-  [(UIWebDocumentView *)self->m_webView frameForDictationResultPlaceholder:a3];
+  [(UIWebDocumentView *)self->m_webView frameForDictationResultPlaceholder:placeholder];
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -2260,52 +2260,52 @@ LABEL_7:
   return result;
 }
 
-- (id)insertTextPlaceholderWithSize:(CGSize)a3
+- (id)insertTextPlaceholderWithSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   if (objc_opt_respondsToSelector())
   {
-    v6 = [(UIWebDocumentView *)self->m_webView insertTextPlaceholderWithSize:width, height];
+    height = [(UIWebDocumentView *)self->m_webView insertTextPlaceholderWithSize:width, height];
   }
 
   else
   {
-    v6 = 0;
+    height = 0;
   }
 
-  return v6;
+  return height;
 }
 
-- (void)removeTextPlaceholder:(id)a3
+- (void)removeTextPlaceholder:(id)placeholder
 {
-  v4 = a3;
+  placeholderCopy = placeholder;
   if (objc_opt_respondsToSelector())
   {
-    [(UIWebDocumentView *)self->m_webView removeTextPlaceholder:v4];
+    [(UIWebDocumentView *)self->m_webView removeTextPlaceholder:placeholderCopy];
   }
 }
 
-- (void)setSelectedTextRange:(id)a3
+- (void)setSelectedTextRange:(id)range
 {
-  v6 = a3;
-  v4 = [(UITextContentView *)self _proxyTextInput];
+  rangeCopy = range;
+  _proxyTextInput = [(UITextContentView *)self _proxyTextInput];
 
-  if (v4 == self)
+  if (_proxyTextInput == self)
   {
-    v5 = [(UITextContentView *)self interactionAssistant];
-    [v5 selectionChanged];
+    interactionAssistant = [(UITextContentView *)self interactionAssistant];
+    [interactionAssistant selectionChanged];
   }
 
   else
   {
-    [(UIWebDocumentView *)self->m_webView setSelectedTextRange:v6];
+    [(UIWebDocumentView *)self->m_webView setSelectedTextRange:rangeCopy];
   }
 }
 
-- (CGRect)firstRectForRange:(id)a3
+- (CGRect)firstRectForRange:(id)range
 {
-  [(UIWebDocumentView *)self->m_webView firstRectForRange:a3];
+  [(UIWebDocumentView *)self->m_webView firstRectForRange:range];
   m_webView = self->m_webView;
 
   [(UIView *)m_webView convertRect:self toView:?];
@@ -2316,9 +2316,9 @@ LABEL_7:
   return result;
 }
 
-- (CGRect)caretRectForPosition:(id)a3
+- (CGRect)caretRectForPosition:(id)position
 {
-  [(UIWebDocumentView *)self->m_webView caretRectForPosition:a3];
+  [(UIWebDocumentView *)self->m_webView caretRectForPosition:position];
   m_webView = self->m_webView;
 
   [(UIView *)m_webView convertRect:self toView:?];
@@ -2329,29 +2329,29 @@ LABEL_7:
   return result;
 }
 
-- (id)closestPositionToPoint:(CGPoint)a3
+- (id)closestPositionToPoint:(CGPoint)point
 {
-  [(UIView *)self->m_webView convertPoint:self fromView:a3.x, a3.y];
+  [(UIView *)self->m_webView convertPoint:self fromView:point.x, point.y];
   m_webView = self->m_webView;
 
   return [(UIWebDocumentView *)m_webView closestPositionToPoint:?];
 }
 
-- (id)closestPositionToPoint:(CGPoint)a3 withinRange:(id)a4
+- (id)closestPositionToPoint:(CGPoint)point withinRange:(id)range
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   m_webView = self->m_webView;
-  v8 = a4;
+  rangeCopy = range;
   [(UIView *)m_webView convertPoint:self fromView:x, y];
-  v9 = [(UIWebDocumentView *)self->m_webView closestPositionToPoint:v8 withinRange:?];
+  v9 = [(UIWebDocumentView *)self->m_webView closestPositionToPoint:rangeCopy withinRange:?];
 
   return v9;
 }
 
-- (id)characterRangeAtPoint:(CGPoint)a3
+- (id)characterRangeAtPoint:(CGPoint)point
 {
-  [(UIView *)self->m_webView convertPoint:self fromView:a3.x, a3.y];
+  [(UIView *)self->m_webView convertPoint:self fromView:point.x, point.y];
   m_webView = self->m_webView;
 
   return [(UIWebDocumentView *)m_webView characterRangeAtPoint:?];

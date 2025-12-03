@@ -1,13 +1,13 @@
 @interface MCChaperonePayload
-- (id)handlerWithProfileHandler:(id)a3;
+- (id)handlerWithProfileHandler:(id)handler;
 @end
 
 @implementation MCChaperonePayload
 
-- (id)handlerWithProfileHandler:(id)a3
+- (id)handlerWithProfileHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(MCNewPayloadHandler *)[MCNewChaperonePayloadHandler alloc] initWithPayload:self profileHandler:v4];
+  handlerCopy = handler;
+  v5 = [(MCNewPayloadHandler *)[MCNewChaperonePayloadHandler alloc] initWithPayload:self profileHandler:handlerCopy];
 
   return v5;
 }

@@ -1,19 +1,19 @@
 @interface MobileTimerAssistantAlarmSnippetCell
-- (MobileTimerAssistantAlarmSnippetCell)initWithFrame:(CGRect)a3;
+- (MobileTimerAssistantAlarmSnippetCell)initWithFrame:(CGRect)frame;
 - (MobileTimerAssistantAlarmSnippetCellDelegate)delegate;
-- (void)alarmActiveChanged:(id)a3;
-- (void)refreshWithSleepMetadata:(id)a3;
-- (void)setAlarm:(id)a3;
+- (void)alarmActiveChanged:(id)changed;
+- (void)refreshWithSleepMetadata:(id)metadata;
+- (void)setAlarm:(id)alarm;
 - (void)setupConstraints;
 @end
 
 @implementation MobileTimerAssistantAlarmSnippetCell
 
-- (MobileTimerAssistantAlarmSnippetCell)initWithFrame:(CGRect)a3
+- (MobileTimerAssistantAlarmSnippetCell)initWithFrame:(CGRect)frame
 {
   v13.receiver = self;
   v13.super_class = MobileTimerAssistantAlarmSnippetCell;
-  v3 = [(MobileTimerAssistantAlarmSnippetCell *)&v13 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MobileTimerAssistantAlarmSnippetCell *)&v13 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [MTUIAlarmView alloc];
@@ -24,17 +24,17 @@
 
     [(MTUIAlarmView *)v3->_alarmView setShouldAddLayoutConstraints:1];
     v7 = +[UIColor siriui_textColor];
-    v8 = [(MTUIAlarmView *)v3->_alarmView timeLabel];
-    [v8 setTextColor:v7];
+    timeLabel = [(MTUIAlarmView *)v3->_alarmView timeLabel];
+    [timeLabel setTextColor:v7];
 
     v9 = +[UIColor siriui_keylineColor];
-    v10 = [(MTUIAlarmView *)v3->_alarmView enabledSwitch];
-    [v10 setTintColor:v9];
+    enabledSwitch = [(MTUIAlarmView *)v3->_alarmView enabledSwitch];
+    [enabledSwitch setTintColor:v9];
 
     [(MobileTimerAssistantAlarmSnippetCell *)v3 textAndAccessoryInsets];
     [(MTUIAlarmView *)v3->_alarmView setLayoutMargins:?];
-    v11 = [(MTUIAlarmView *)v3->_alarmView enabledSwitch];
-    [v11 addTarget:v3 action:"alarmActiveChanged:" forControlEvents:4096];
+    enabledSwitch2 = [(MTUIAlarmView *)v3->_alarmView enabledSwitch];
+    [enabledSwitch2 addTarget:v3 action:"alarmActiveChanged:" forControlEvents:4096];
 
     [(MobileTimerAssistantAlarmSnippetCell *)v3 addSubview:v3->_alarmView];
     [(MobileTimerAssistantAlarmSnippetCell *)v3 setupConstraints];
@@ -46,122 +46,122 @@
 - (void)setupConstraints
 {
   v23 = objc_opt_new();
-  v3 = [(MobileTimerAssistantAlarmSnippetCell *)self contentView];
-  v4 = [v3 leadingAnchor];
-  v5 = [(MobileTimerAssistantAlarmSnippetCell *)self alarmView];
-  v6 = [v5 leadingAnchor];
-  v7 = [v4 constraintEqualToAnchor:v6];
+  contentView = [(MobileTimerAssistantAlarmSnippetCell *)self contentView];
+  leadingAnchor = [contentView leadingAnchor];
+  alarmView = [(MobileTimerAssistantAlarmSnippetCell *)self alarmView];
+  leadingAnchor2 = [alarmView leadingAnchor];
+  v7 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [v23 addObject:v7];
 
-  v8 = [(MobileTimerAssistantAlarmSnippetCell *)self contentView];
-  v9 = [v8 trailingAnchor];
-  v10 = [(MobileTimerAssistantAlarmSnippetCell *)self alarmView];
-  v11 = [v10 trailingAnchor];
-  v12 = [v9 constraintEqualToAnchor:v11];
+  contentView2 = [(MobileTimerAssistantAlarmSnippetCell *)self contentView];
+  trailingAnchor = [contentView2 trailingAnchor];
+  alarmView2 = [(MobileTimerAssistantAlarmSnippetCell *)self alarmView];
+  trailingAnchor2 = [alarmView2 trailingAnchor];
+  v12 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   [v23 addObject:v12];
 
-  v13 = [(MobileTimerAssistantAlarmSnippetCell *)self contentView];
-  v14 = [v13 topAnchor];
-  v15 = [(MobileTimerAssistantAlarmSnippetCell *)self alarmView];
-  v16 = [v15 topAnchor];
-  v17 = [v14 constraintEqualToAnchor:v16];
+  contentView3 = [(MobileTimerAssistantAlarmSnippetCell *)self contentView];
+  topAnchor = [contentView3 topAnchor];
+  alarmView3 = [(MobileTimerAssistantAlarmSnippetCell *)self alarmView];
+  topAnchor2 = [alarmView3 topAnchor];
+  v17 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v23 addObject:v17];
 
-  v18 = [(MobileTimerAssistantAlarmSnippetCell *)self contentView];
-  v19 = [v18 bottomAnchor];
-  v20 = [(MobileTimerAssistantAlarmSnippetCell *)self alarmView];
-  v21 = [v20 bottomAnchor];
-  v22 = [v19 constraintEqualToAnchor:v21];
+  contentView4 = [(MobileTimerAssistantAlarmSnippetCell *)self contentView];
+  bottomAnchor = [contentView4 bottomAnchor];
+  alarmView4 = [(MobileTimerAssistantAlarmSnippetCell *)self alarmView];
+  bottomAnchor2 = [alarmView4 bottomAnchor];
+  v22 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   [v23 addObject:v22];
 
   [NSLayoutConstraint activateConstraints:v23];
 }
 
-- (void)alarmActiveChanged:(id)a3
+- (void)alarmActiveChanged:(id)changed
 {
-  v4 = a3;
-  v6 = [(MobileTimerAssistantAlarmSnippetCell *)self delegate];
-  v5 = [v4 isOn];
+  changedCopy = changed;
+  delegate = [(MobileTimerAssistantAlarmSnippetCell *)self delegate];
+  isOn = [changedCopy isOn];
 
-  [v6 setAlarmActive:v5 forCell:self];
+  [delegate setAlarmActive:isOn forCell:self];
 }
 
-- (void)setAlarm:(id)a3
+- (void)setAlarm:(id)alarm
 {
-  v5 = a3;
+  alarmCopy = alarm;
   alarm = self->_alarm;
-  if (alarm != v5)
+  if (alarm != alarmCopy)
   {
-    v18 = v5;
-    v7 = alarm;
-    objc_storeStrong(&self->_alarm, a3);
+    v18 = alarmCopy;
+    alarmCopy2 = alarm;
+    objc_storeStrong(&self->_alarm, alarm);
     if ([(MTAlarm *)self->_alarm isSleepAlarm]&& MTShouldHandleForEucalyptus())
     {
-      v8 = [(MobileTimerAssistantAlarmSnippetCell *)self alarmView];
-      v9 = [v8 enabledSwitch];
-      [v9 setHidden:1];
+      alarmView = [(MobileTimerAssistantAlarmSnippetCell *)self alarmView];
+      enabledSwitch = [alarmView enabledSwitch];
+      [enabledSwitch setHidden:1];
 
-      v10 = [(MobileTimerAssistantAlarmSnippetCell *)self sleepMetaData];
-      [(MobileTimerAssistantAlarmSnippetCell *)self refreshWithSleepMetadata:v10];
+      sleepMetaData = [(MobileTimerAssistantAlarmSnippetCell *)self sleepMetaData];
+      [(MobileTimerAssistantAlarmSnippetCell *)self refreshWithSleepMetadata:sleepMetaData];
     }
 
     else
     {
-      v11 = [(MobileTimerAssistantAlarmSnippetCell *)self alarmView];
-      v12 = [v11 enabledSwitch];
-      [v12 setOn:-[MTAlarm isEnabled](self->_alarm animated:{"isEnabled"), v7 != 0}];
+      alarmView2 = [(MobileTimerAssistantAlarmSnippetCell *)self alarmView];
+      enabledSwitch2 = [alarmView2 enabledSwitch];
+      [enabledSwitch2 setOn:-[MTAlarm isEnabled](self->_alarm animated:{"isEnabled"), alarmCopy2 != 0}];
 
       if ([(MTAlarm *)self->_alarm repeatSchedule])
       {
-        v10 = DateMaskToString();
+        sleepMetaData = DateMaskToString();
       }
 
       else
       {
-        v10 = 0;
+        sleepMetaData = 0;
       }
 
-      v13 = [(MobileTimerAssistantAlarmSnippetCell *)self alarmView];
-      v14 = [(MTAlarm *)self->_alarm displayTitle];
+      alarmView3 = [(MobileTimerAssistantAlarmSnippetCell *)self alarmView];
+      displayTitle = [(MTAlarm *)self->_alarm displayTitle];
       v15 = +[UIColor siriui_textColor];
-      [v13 setName:v14 andRepeatText:v10 textColor:v15];
+      [alarmView3 setName:displayTitle andRepeatText:sleepMetaData textColor:v15];
 
-      v16 = [(MobileTimerAssistantAlarmSnippetCell *)self alarmView];
-      v17 = [v16 timeLabel];
-      [v17 setHour:-[MTAlarm hour](self->_alarm minute:{"hour"), -[MTAlarm minute](self->_alarm, "minute")}];
+      alarmView4 = [(MobileTimerAssistantAlarmSnippetCell *)self alarmView];
+      timeLabel = [alarmView4 timeLabel];
+      [timeLabel setHour:-[MTAlarm hour](self->_alarm minute:{"hour"), -[MTAlarm minute](self->_alarm, "minute")}];
     }
 
-    v5 = v18;
+    alarmCopy = v18;
   }
 }
 
-- (void)refreshWithSleepMetadata:(id)a3
+- (void)refreshWithSleepMetadata:(id)metadata
 {
-  v14 = a3;
-  v4 = [v14 displaysTime];
-  v5 = [(MTUIAlarmView *)self->_alarmView timeLabel];
-  if (v4)
+  metadataCopy = metadata;
+  displaysTime = [metadataCopy displaysTime];
+  timeLabel = [(MTUIAlarmView *)self->_alarmView timeLabel];
+  if (displaysTime)
   {
-    v6 = [v14 alarmComponents];
-    v7 = [v6 hour];
-    v8 = [v14 alarmComponents];
-    [v5 setHour:v7 minute:{objc_msgSend(v8, "minute")}];
+    alarmComponents = [metadataCopy alarmComponents];
+    hour = [alarmComponents hour];
+    alarmComponents2 = [metadataCopy alarmComponents];
+    [timeLabel setHour:hour minute:{objc_msgSend(alarmComponents2, "minute")}];
   }
 
   else
   {
-    v6 = [v14 mainDescription];
-    [v5 setTimeLabelText:v6];
+    alarmComponents = [metadataCopy mainDescription];
+    [timeLabel setTimeLabelText:alarmComponents];
   }
 
   v9 = +[UIColor siriui_textColor];
-  v10 = [(MTUIAlarmView *)self->_alarmView timeLabel];
-  [v10 setTextColor:v9];
+  timeLabel2 = [(MTUIAlarmView *)self->_alarmView timeLabel];
+  [timeLabel2 setTextColor:v9];
 
   alarmView = self->_alarmView;
-  v12 = [v14 detailedDescription];
+  detailedDescription = [metadataCopy detailedDescription];
   v13 = +[UIColor siriui_textColor];
-  [(MTUIAlarmView *)alarmView setName:0 andRepeatText:v12 textColor:v13];
+  [(MTUIAlarmView *)alarmView setName:0 andRepeatText:detailedDescription textColor:v13];
 
   [(MTUIAlarmView *)self->_alarmView setNeedsLayout];
 }

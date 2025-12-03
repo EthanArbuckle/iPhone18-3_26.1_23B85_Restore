@@ -1,22 +1,22 @@
 @interface AMDAppStoreEvent
-+ (id)deleteAllEvents:(id *)a3;
-+ (id)deleteEventsForPredicate:(id)a3 error:(id *)a4;
-+ (id)deleteEventsForUser:(id)a3 error:(id *)a4;
-+ (id)deleteEventsOlderThan:(unint64_t)a3 error:(id *)a4;
-+ (id)fetchEvents:(id *)a3;
-+ (id)retrieveEventsOfType:(id)a3 inPeriod:(id)a4 forUser:(id)a5 error:(id *)a6;
-+ (signed)getEventType:(id)a3;
-+ (unsigned)saveEvent:(id)a3 forUser:(id)a4 error:(id *)a5;
++ (id)deleteAllEvents:(id *)events;
++ (id)deleteEventsForPredicate:(id)predicate error:(id *)error;
++ (id)deleteEventsForUser:(id)user error:(id *)error;
++ (id)deleteEventsOlderThan:(unint64_t)than error:(id *)error;
++ (id)fetchEvents:(id *)events;
++ (id)retrieveEventsOfType:(id)type inPeriod:(id)period forUser:(id)user error:(id *)error;
++ (signed)getEventType:(id)type;
++ (unsigned)saveEvent:(id)event forUser:(id)user error:(id *)error;
 @end
 
 @implementation AMDAppStoreEvent
 
-+ (signed)getEventType:(id)a3
++ (signed)getEventType:(id)type
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, type);
   if (!getEventType__eventTypeMap_0)
   {
     objc_storeStrong(&getEventType__eventTypeMap_0, &unk_2852BB6A0);
@@ -25,29 +25,29 @@
   v5 = [getEventType__eventTypeMap_0 objectForKey:location[0]];
   if (v5)
   {
-    v4 = [v5 unsignedIntValue];
+    unsignedIntValue = [v5 unsignedIntValue];
   }
 
   else
   {
-    v4 = 2;
+    unsignedIntValue = 2;
   }
 
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
-  return v4;
+  return unsignedIntValue;
 }
 
-+ (unsigned)saveEvent:(id)a3 forUser:(id)a4 error:(id *)a5
++ (unsigned)saveEvent:(id)event forUser:(id)user error:(id *)error
 {
   v63 = *MEMORY[0x277D85DE8];
-  v58 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, event);
   v56 = 0;
-  objc_storeStrong(&v56, a4);
-  v55 = a5;
+  objc_storeStrong(&v56, user);
+  errorCopy = error;
   v54 = [location[0] objectForKey:@"adamId"];
   v53 = [location[0] objectForKey:@"time"];
   v52 = [location[0] objectForKey:@"type"];
@@ -55,7 +55,7 @@
   v50 = [location[0] objectForKey:@"usecase"];
   if (v54 && v53 && v52 && v51 && v50 && v56)
   {
-    v45 = [v58 getEventType:v52];
+    v45 = [selfCopy getEventType:v52];
     if (v45 == 2)
     {
       v44 = [MEMORY[0x277CCACA8] stringWithFormat:@"Invalid appstore event type."];
@@ -70,7 +70,7 @@
       objc_storeStrong(&v43, 0);
       v12 = [AMDError allocError:15 withMessage:v44];
       v6 = v12;
-      *v55 = v12;
+      *errorCopy = v12;
       v59 = 0;
       v46 = 1;
       objc_storeStrong(&v44, 0);
@@ -86,14 +86,14 @@
       v40 = __Block_byref_object_dispose__7;
       v41 = 0;
       v34 = +[AMDCoreDataPersistentContainer sharedContainer];
-      v33 = [v34 getManagedObjectContext];
-      v11 = v33;
+      getManagedObjectContext = [v34 getManagedObjectContext];
+      v11 = getManagedObjectContext;
       v19 = MEMORY[0x277D85DD0];
       v20 = -1073741824;
       v21 = 0;
       v22 = __44__AMDAppStoreEvent_saveEvent_forUser_error___block_invoke;
       v23 = &unk_278CB60C8;
-      v24 = MEMORY[0x277D82BE0](v33);
+      v24 = MEMORY[0x277D82BE0](getManagedObjectContext);
       v25 = MEMORY[0x277D82BE0](v53);
       v26 = MEMORY[0x277D82BE0](v54);
       v32 = v45;
@@ -108,16 +108,16 @@
       {
         v10 = v36[5];
         v7 = v10;
-        *v55 = v10;
+        *errorCopy = v10;
         oslog = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
         v17 = OS_LOG_TYPE_ERROR;
         if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
         {
-          v9 = [*v55 localizedDescription];
-          v16 = MEMORY[0x277D82BE0](v9);
+          localizedDescription = [*errorCopy localizedDescription];
+          v16 = MEMORY[0x277D82BE0](localizedDescription);
           __os_log_helper_16_2_1_8_64(v60, v16);
           _os_log_error_impl(&dword_240CB9000, oslog, v17, "Error saving appstore event: %@", v60, 0xCu);
-          MEMORY[0x277D82BD8](v9);
+          MEMORY[0x277D82BD8](localizedDescription);
           objc_storeStrong(&v16, 0);
         }
 
@@ -140,7 +140,7 @@
       objc_storeStrong(&v26, 0);
       objc_storeStrong(&v25, 0);
       objc_storeStrong(&v24, 0);
-      objc_storeStrong(&v33, 0);
+      objc_storeStrong(&getManagedObjectContext, 0);
       objc_storeStrong(&v34, 0);
       _Block_object_dispose(&v35, 8);
       objc_storeStrong(&v41, 0);
@@ -161,7 +161,7 @@
     objc_storeStrong(&v48, 0);
     v13 = [AMDError allocError:15 withMessage:v49];
     v5 = v13;
-    *v55 = v13;
+    *errorCopy = v13;
     v59 = 0;
     v46 = 1;
     objc_storeStrong(&v49, 0);
@@ -223,17 +223,17 @@ void __44__AMDAppStoreEvent_saveEvent_forUser_error___block_invoke(uint64_t a1)
   *MEMORY[0x277D85DE8];
 }
 
-+ (id)retrieveEventsOfType:(id)a3 inPeriod:(id)a4 forUser:(id)a5 error:(id *)a6
++ (id)retrieveEventsOfType:(id)type inPeriod:(id)period forUser:(id)user error:(id *)error
 {
-  v43 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, type);
   v41 = 0;
-  objc_storeStrong(&v41, a4);
+  objc_storeStrong(&v41, period);
   v40 = 0;
-  objc_storeStrong(&v40, a5);
-  v39 = a6;
+  objc_storeStrong(&v40, user);
+  errorCopy = error;
   [AMDPerf startMonitoringEvent:@"ImpressionEventsRetrieval"];
   v32 = 0;
   v33 = &v32;
@@ -250,9 +250,9 @@ void __44__AMDAppStoreEvent_saveEvent_forUser_error___block_invoke(uint64_t a1)
   v30 = __Block_byref_object_dispose__7;
   v31 = 0;
   v11 = +[AMDCoreDataPersistentContainer sharedContainer];
-  v24 = [v11 getManagedObjectContext];
+  getManagedObjectContext = [v11 getManagedObjectContext];
   MEMORY[0x277D82BD8](v11);
-  v10 = v24;
+  v10 = getManagedObjectContext;
   v15 = MEMORY[0x277D85DD0];
   v16 = -1073741824;
   v17 = 0;
@@ -260,17 +260,17 @@ void __44__AMDAppStoreEvent_saveEvent_forUser_error___block_invoke(uint64_t a1)
   v19 = &unk_278CB60F0;
   v20 = MEMORY[0x277D82BE0](v41);
   v21 = MEMORY[0x277D82BE0](location[0]);
-  v23[3] = v43;
+  v23[3] = selfCopy;
   v23[1] = &v32;
   v22 = MEMORY[0x277D82BE0](v40);
   v23[2] = &v25;
-  v23[0] = MEMORY[0x277D82BE0](v24);
+  v23[0] = MEMORY[0x277D82BE0](getManagedObjectContext);
   [v10 performBlockAndWait:&v15];
   if (v33[5])
   {
     v9 = v33[5];
     v6 = v9;
-    *v39 = v9;
+    *errorCopy = v9;
     v44 = 0;
   }
 
@@ -284,7 +284,7 @@ void __44__AMDAppStoreEvent_saveEvent_forUser_error___block_invoke(uint64_t a1)
   objc_storeStrong(&v22, 0);
   objc_storeStrong(&v21, 0);
   objc_storeStrong(&v20, 0);
-  objc_storeStrong(&v24, 0);
+  objc_storeStrong(&getManagedObjectContext, 0);
   _Block_object_dispose(&v25, 8);
   objc_storeStrong(&v31, 0);
   _Block_object_dispose(&v32, 8);
@@ -381,21 +381,21 @@ LABEL_11:
   *MEMORY[0x277D85DE8];
 }
 
-+ (id)deleteEventsOlderThan:(unint64_t)a3 error:(id *)a4
++ (id)deleteEventsOlderThan:(unint64_t)than error:(id *)error
 {
-  v14 = a1;
+  selfCopy = self;
   v13 = a2;
-  v12 = a3;
-  v11 = a4;
+  thanCopy = than;
+  errorCopy = error;
   [AMDPerf startMonitoringEvent:@"ImpressionEventsScrub"];
-  v7 = [MEMORY[0x277CBEAA8] date];
-  [v7 timeIntervalSince1970];
-  v8 = ((v4 - (86400 * v12)) * 1000.0);
-  MEMORY[0x277D82BD8](v7);
+  date = [MEMORY[0x277CBEAA8] date];
+  [date timeIntervalSince1970];
+  v8 = ((v4 - (86400 * thanCopy)) * 1000.0);
+  MEMORY[0x277D82BD8](date);
   v10[1] = v8;
   v10[0] = [MEMORY[0x277CCAC30] predicateWithFormat:@"eventTimeMillis < %llu", v8];
-  location = [v14 deleteEventsForPredicate:v10[0] error:v11];
-  if (*v11)
+  location = [selfCopy deleteEventsForPredicate:v10[0] error:errorCopy];
+  if (*errorCopy)
   {
     v15 = 0;
   }
@@ -413,13 +413,13 @@ LABEL_11:
   return v5;
 }
 
-+ (id)deleteEventsForPredicate:(id)a3 error:(id *)a4
++ (id)deleteEventsForPredicate:(id)predicate error:(id *)error
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v34 = a4;
+  objc_storeStrong(location, predicate);
+  errorCopy = error;
   v27 = 0;
   v28 = &v27;
   v29 = 838860800;
@@ -435,15 +435,15 @@ LABEL_11:
   v25 = __Block_byref_object_dispose__7;
   v26 = 0;
   v19 = +[AMDCoreDataPersistentContainer sharedContainer];
-  v18 = [v19 getManagedObjectContext];
-  v8 = v18;
+  getManagedObjectContext = [v19 getManagedObjectContext];
+  v8 = getManagedObjectContext;
   v10 = MEMORY[0x277D85DD0];
   v11 = -1073741824;
   v12 = 0;
   v13 = __51__AMDAppStoreEvent_deleteEventsForPredicate_error___block_invoke;
   v14 = &unk_278CB5A58;
   v15 = MEMORY[0x277D82BE0](location[0]);
-  v16 = MEMORY[0x277D82BE0](v18);
+  v16 = MEMORY[0x277D82BE0](getManagedObjectContext);
   v17[1] = &v27;
   v17[0] = MEMORY[0x277D82BE0](v19);
   v17[2] = &v20;
@@ -452,7 +452,7 @@ LABEL_11:
   {
     v7 = v28[5];
     v4 = v7;
-    *v34 = v7;
+    *errorCopy = v7;
     v36 = 0;
   }
 
@@ -464,7 +464,7 @@ LABEL_11:
   objc_storeStrong(v17, 0);
   objc_storeStrong(&v16, 0);
   objc_storeStrong(&v15, 0);
-  objc_storeStrong(&v18, 0);
+  objc_storeStrong(&getManagedObjectContext, 0);
   objc_storeStrong(&v19, 0);
   _Block_object_dispose(&v20, 8);
   objc_storeStrong(&v26, 0);
@@ -532,16 +532,16 @@ void __51__AMDAppStoreEvent_deleteEventsForPredicate_error___block_invoke(void *
   objc_storeStrong(v18, 0);
 }
 
-+ (id)deleteEventsForUser:(id)a3 error:(id *)a4
++ (id)deleteEventsForUser:(id)user error:(id *)error
 {
-  v10 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v8[1] = a4;
+  objc_storeStrong(location, user);
+  v8[1] = error;
   v8[0] = [MEMORY[0x277CCAC30] predicateWithFormat:@"userId == %@", location[0]];
-  v7 = [v10 deleteEventsForPredicate:v8[0] error:a4];
-  if (*a4)
+  v7 = [selfCopy deleteEventsForPredicate:v8[0] error:error];
+  if (*error)
   {
     v11 = 0;
   }
@@ -559,11 +559,11 @@ void __51__AMDAppStoreEvent_deleteEventsForPredicate_error___block_invoke(void *
   return v4;
 }
 
-+ (id)fetchEvents:(id *)a3
++ (id)fetchEvents:(id *)events
 {
-  v32 = a1;
+  selfCopy = self;
   v31 = a2;
-  v30 = a3;
+  eventsCopy = events;
   v23 = 0;
   v24 = &v23;
   v25 = 838860800;
@@ -579,23 +579,23 @@ void __51__AMDAppStoreEvent_deleteEventsForPredicate_error___block_invoke(void *
   v21 = __Block_byref_object_dispose__7;
   v22 = 0;
   v8 = +[AMDCoreDataPersistentContainer sharedContainer];
-  v15 = [v8 getManagedObjectContext];
+  getManagedObjectContext = [v8 getManagedObjectContext];
   MEMORY[0x277D82BD8](v8);
-  v7 = v15;
+  v7 = getManagedObjectContext;
   v9 = MEMORY[0x277D85DD0];
   v10 = -1073741824;
   v11 = 0;
   v12 = __32__AMDAppStoreEvent_fetchEvents___block_invoke;
   v13 = &unk_278CB5AD0;
   v14[1] = &v16;
-  v14[0] = MEMORY[0x277D82BE0](v15);
+  v14[0] = MEMORY[0x277D82BE0](getManagedObjectContext);
   v14[2] = &v23;
   [v7 performBlockAndWait:&v9];
   if (v24[5])
   {
     v6 = v24[5];
     v3 = v6;
-    *v30 = v6;
+    *eventsCopy = v6;
     v33 = 0;
   }
 
@@ -605,7 +605,7 @@ void __51__AMDAppStoreEvent_deleteEventsForPredicate_error___block_invoke(void *
   }
 
   objc_storeStrong(v14, 0);
-  objc_storeStrong(&v15, 0);
+  objc_storeStrong(&getManagedObjectContext, 0);
   _Block_object_dispose(&v16, 8);
   objc_storeStrong(&v22, 0);
   _Block_object_dispose(&v23, 8);
@@ -638,13 +638,13 @@ void __32__AMDAppStoreEvent_fetchEvents___block_invoke(void *a1)
   objc_storeStrong(v11, 0);
 }
 
-+ (id)deleteAllEvents:(id *)a3
++ (id)deleteAllEvents:(id *)events
 {
-  v8 = a1;
+  selfCopy = self;
   v7 = a2;
-  v6 = a3;
-  location = [a1 deleteEventsForPredicate:0 error:a3];
-  if (*v6)
+  eventsCopy = events;
+  location = [self deleteEventsForPredicate:0 error:events];
+  if (*eventsCopy)
   {
     v9 = 0;
   }

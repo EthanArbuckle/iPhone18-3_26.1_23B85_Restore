@@ -1,10 +1,10 @@
 @interface SBSingleSceneController
 - (BOOL)_isClientProcessRunning;
 - (SBScenePresenting)presenter;
-- (SBSingleSceneController)initWithSceneWorkspaceController:(id)a3 sceneRequestOptions:(id)a4 clientIdentity:(id)a5 traitsRole:(id)a6 level:(double)a7;
+- (SBSingleSceneController)initWithSceneWorkspaceController:(id)controller sceneRequestOptions:(id)options clientIdentity:(id)identity traitsRole:(id)role level:(double)level;
 - (id)_newActivationContext;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 - (id)traitsOrientedResizableViewController;
@@ -14,21 +14,21 @@
 - (void)_evaluateSceneForegroundState;
 - (void)_evaluateVisibility;
 - (void)_presentScene;
-- (void)_setVisible:(BOOL)a3;
+- (void)_setVisible:(BOOL)visible;
 - (void)dealloc;
-- (void)didUpdateSceneTraitsDelegate:(id)a3;
+- (void)didUpdateSceneTraitsDelegate:(id)delegate;
 - (void)invalidate;
-- (void)scene:(id)a3 didCompleteUpdateWithContext:(id)a4 error:(id)a5;
-- (void)sceneContentStateDidChange:(id)a3;
-- (void)sceneDidInvalidate:(id)a3 withContext:(id)a4;
-- (void)setCornerRadiusConfiguration:(id)a3;
-- (void)setHidden:(BOOL)a3;
-- (void)setPresenter:(id)a3;
-- (void)setSceneActive:(BOOL)a3;
-- (void)setSceneContentVisible:(BOOL)a3;
-- (void)setShouldActivateUponClientConnection:(BOOL)a3;
-- (void)setShouldBeKeptActiveWhileForeground:(BOOL)a3;
-- (void)setTargetDisplayConfiguration:(id)a3;
+- (void)scene:(id)scene didCompleteUpdateWithContext:(id)context error:(id)error;
+- (void)sceneContentStateDidChange:(id)change;
+- (void)sceneDidInvalidate:(id)invalidate withContext:(id)context;
+- (void)setCornerRadiusConfiguration:(id)configuration;
+- (void)setHidden:(BOOL)hidden;
+- (void)setPresenter:(id)presenter;
+- (void)setSceneActive:(BOOL)active;
+- (void)setSceneContentVisible:(BOOL)visible;
+- (void)setShouldActivateUponClientConnection:(BOOL)connection;
+- (void)setShouldBeKeptActiveWhileForeground:(BOOL)foreground;
+- (void)setTargetDisplayConfiguration:(id)configuration;
 @end
 
 @implementation SBSingleSceneController
@@ -38,23 +38,23 @@
   v24 = *MEMORY[0x277D85DE8];
   WeakRetained = objc_loadWeakRetained(&self->_presenter);
 
-  v4 = [(FBScene *)self->_scene isValid];
-  v5 = [(FBScene *)self->_scene contentState];
-  v6 = v5;
+  isValid = [(FBScene *)self->_scene isValid];
+  contentState = [(FBScene *)self->_scene contentState];
+  v6 = contentState;
   v7 = 0;
-  if (!self->_hidden && WeakRetained && v4)
+  if (!self->_hidden && WeakRetained && isValid)
   {
-    v7 = self->_shouldPresentAnyContentState && self->_targetDisplayConfiguration || v5 == 2;
+    v7 = self->_shouldPresentAnyContentState && self->_targetDisplayConfiguration || contentState == 2;
   }
 
   v8 = SBLogSystemUIScene();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = WeakRetained != 0;
-    v10 = [(FBScene *)self->_scene identifier];
+    identifier = [(FBScene *)self->_scene identifier];
     hidden = self->_hidden;
     v12 = 138544642;
-    v13 = v10;
+    v13 = identifier;
     v14 = 1024;
     v15 = hidden;
     v16 = 1024;
@@ -62,7 +62,7 @@
     v18 = 1024;
     v19 = v9;
     v20 = 1024;
-    v21 = v4;
+    v21 = isValid;
     v22 = 1024;
     v23 = v6 == 2;
     _os_log_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_DEFAULT, "[%{public}@] hidden[%{BOOL}u] shouldBeVisible[%{BOOL}u] hasPresenter[%{BOOL}u] sceneIsValid[%{BOOL}u] contentIsReady[%{BOOL}u]", &v12, 0x2Au);
@@ -71,16 +71,16 @@
   [(SBSingleSceneController *)self _setVisible:v7];
 }
 
-- (SBSingleSceneController)initWithSceneWorkspaceController:(id)a3 sceneRequestOptions:(id)a4 clientIdentity:(id)a5 traitsRole:(id)a6 level:(double)a7
+- (SBSingleSceneController)initWithSceneWorkspaceController:(id)controller sceneRequestOptions:(id)options clientIdentity:(id)identity traitsRole:(id)role level:(double)level
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
+  controllerCopy = controller;
+  optionsCopy = options;
+  identityCopy = identity;
+  roleCopy = role;
   BSDispatchQueueAssertMain();
-  if (v14)
+  if (controllerCopy)
   {
-    if (v16)
+    if (identityCopy)
     {
       goto LABEL_3;
     }
@@ -89,17 +89,17 @@
   else
   {
     [SBSingleSceneController initWithSceneWorkspaceController:sceneRequestOptions:clientIdentity:traitsRole:level:];
-    if (v16)
+    if (identityCopy)
     {
 LABEL_3:
-      if (v15)
+      if (optionsCopy)
       {
         goto LABEL_4;
       }
 
 LABEL_10:
       [SBSingleSceneController initWithSceneWorkspaceController:sceneRequestOptions:clientIdentity:traitsRole:level:];
-      if (v17)
+      if (roleCopy)
       {
         goto LABEL_5;
       }
@@ -109,13 +109,13 @@ LABEL_10:
   }
 
   [SBSingleSceneController initWithSceneWorkspaceController:sceneRequestOptions:clientIdentity:traitsRole:level:];
-  if (!v15)
+  if (!optionsCopy)
   {
     goto LABEL_10;
   }
 
 LABEL_4:
-  if (v17)
+  if (roleCopy)
   {
     goto LABEL_5;
   }
@@ -129,11 +129,11 @@ LABEL_5:
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_traitsRole, a6);
+    objc_storeStrong(&v18->_traitsRole, role);
     v19->_sceneContentVisible = 1;
-    objc_storeStrong(&v19->_clientIdentity, a5);
-    objc_storeStrong(&v19->_sceneOptions, a4);
-    objc_storeStrong(&v19->_sceneWorkspaceController, a3);
+    objc_storeStrong(&v19->_clientIdentity, identity);
+    objc_storeStrong(&v19->_sceneOptions, options);
+    objc_storeStrong(&v19->_sceneWorkspaceController, controller);
     sceneWorkspaceController = v19->_sceneWorkspaceController;
     v29[0] = MEMORY[0x277D85DD0];
     v29[1] = 3221225472;
@@ -142,14 +142,14 @@ LABEL_5:
     v32 = a2;
     v21 = v19;
     v30 = v21;
-    v31 = v15;
-    [(SBFSceneWorkspaceController *)sceneWorkspaceController createSceneForProcessIdentity:v16 withOptions:v31 completion:v29];
+    v31 = optionsCopy;
+    [(SBFSceneWorkspaceController *)sceneWorkspaceController createSceneForProcessIdentity:identityCopy withOptions:v31 completion:v29];
     [v21[13] addObserver:v21];
     v22 = [SBSceneSettingsUpdater alloc];
     v23 = v21[13];
-    v24 = [MEMORY[0x277CCAD78] UUID];
-    v25 = [v24 UUIDString];
-    v26 = [(SBSceneSettingsUpdater *)v22 initWithScene:v23 persistentIdentifier:v25 level:1 updatesGeometry:a7];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    v26 = [(SBSceneSettingsUpdater *)v22 initWithScene:v23 persistentIdentifier:uUIDString level:1 updatesGeometry:level];
     v27 = v21[3];
     v21[3] = v26;
 
@@ -186,11 +186,11 @@ void __112__SBSingleSceneController_initWithSceneWorkspaceController_sceneReques
   v3 = SBLogSystemUIScene();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(FBScene *)self->_scene identifier];
+    identifier = [(FBScene *)self->_scene identifier];
     v7 = 138543618;
-    v8 = v4;
+    v8 = identifier;
     v9 = 2048;
-    v10 = self;
+    selfCopy = self;
     _os_log_impl(&dword_21ED4E000, v3, OS_LOG_TYPE_DEFAULT, "[%{public}@] Invalidating SBSingleSceneController[%p]", &v7, 0x16u);
   }
 
@@ -207,9 +207,9 @@ void __112__SBSingleSceneController_initWithSceneWorkspaceController_sceneReques
   [(SBSingleSceneController *)self _evaluateVisibility];
 }
 
-- (void)setSceneContentVisible:(BOOL)a3
+- (void)setSceneContentVisible:(BOOL)visible
 {
-  self->_sceneContentVisible = a3;
+  self->_sceneContentVisible = visible;
   WeakRetained = objc_loadWeakRetained(&self->_presenter);
   if (objc_opt_respondsToSelector())
   {
@@ -217,18 +217,18 @@ void __112__SBSingleSceneController_initWithSceneWorkspaceController_sceneReques
   }
 }
 
-- (void)setTargetDisplayConfiguration:(id)a3
+- (void)setTargetDisplayConfiguration:(id)configuration
 {
-  v8 = a3;
+  configurationCopy = configuration;
   if (([(FBSDisplayConfiguration *)self->_targetDisplayConfiguration isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_targetDisplayConfiguration, a3);
-    [(SBSceneSettingsUpdater *)self->_sceneSettingsUpdater setDisplayConfiguration:v8];
-    if (v8)
+    objc_storeStrong(&self->_targetDisplayConfiguration, configuration);
+    [(SBSceneSettingsUpdater *)self->_sceneSettingsUpdater setDisplayConfiguration:configurationCopy];
+    if (configurationCopy)
     {
-      v5 = [(FBScene *)self->_scene systemShellHostingEnvironment];
+      systemShellHostingEnvironment = [(FBScene *)self->_scene systemShellHostingEnvironment];
       v6 = SBUISystemShellHostingSpaceIdentifierForDisplayConfiguration();
-      [v5 setSystemShellHostingSpaceIdentifier:v6];
+      [systemShellHostingEnvironment setSystemShellHostingSpaceIdentifier:v6];
     }
 
     WeakRetained = objc_loadWeakRetained(&self->_presenter);
@@ -243,27 +243,27 @@ void __112__SBSingleSceneController_initWithSceneWorkspaceController_sceneReques
   }
 }
 
-- (void)setCornerRadiusConfiguration:(id)a3
+- (void)setCornerRadiusConfiguration:(id)configuration
 {
-  objc_storeStrong(&self->_cornerRadiusConfiguration, a3);
-  v5 = a3;
-  [(SBSceneSettingsUpdater *)self->_sceneSettingsUpdater setCornerRadiusConfiguration:v5];
+  objc_storeStrong(&self->_cornerRadiusConfiguration, configuration);
+  configurationCopy = configuration;
+  [(SBSceneSettingsUpdater *)self->_sceneSettingsUpdater setCornerRadiusConfiguration:configurationCopy];
 }
 
-- (void)setShouldActivateUponClientConnection:(BOOL)a3
+- (void)setShouldActivateUponClientConnection:(BOOL)connection
 {
-  v3 = a3;
+  connectionCopy = connection;
   objc_initWeak(&location, self);
-  v5 = [(SBFSceneWorkspaceController *)self->_sceneWorkspaceController delegate];
+  delegate = [(SBFSceneWorkspaceController *)self->_sceneWorkspaceController delegate];
   scene = self->_scene;
   v7 = MEMORY[0x277D85DD0];
   v8 = 3221225472;
   v9 = __65__SBSingleSceneController_setShouldActivateUponClientConnection___block_invoke;
   v10 = &unk_2783C2788;
   objc_copyWeak(&v11, &location);
-  [v5 setScene:scene shouldActivateUponClientConnection:v3 withContextGenerator:&v7];
+  [delegate setScene:scene shouldActivateUponClientConnection:connectionCopy withContextGenerator:&v7];
 
-  if (v3 && ([(FBScene *)self->_scene isActive:v7]& 1) == 0 && [(SBSingleSceneController *)self _isClientProcessRunning])
+  if (connectionCopy && ([(FBScene *)self->_scene isActive:v7]& 1) == 0 && [(SBSingleSceneController *)self _isClientProcessRunning])
   {
     [(SBSingleSceneController *)self setSceneActive:1];
   }
@@ -280,27 +280,27 @@ id __65__SBSingleSceneController_setShouldActivateUponClientConnection___block_i
   return v2;
 }
 
-- (void)setShouldBeKeptActiveWhileForeground:(BOOL)a3
+- (void)setShouldBeKeptActiveWhileForeground:(BOOL)foreground
 {
-  v3 = a3;
+  foregroundCopy = foreground;
   objc_initWeak(&location, self);
-  v5 = [(SBFSceneWorkspaceController *)self->_sceneWorkspaceController delegate];
+  delegate = [(SBFSceneWorkspaceController *)self->_sceneWorkspaceController delegate];
   scene = self->_scene;
   v9 = MEMORY[0x277D85DD0];
   v10 = 3221225472;
   v11 = __64__SBSingleSceneController_setShouldBeKeptActiveWhileForeground___block_invoke;
   v12 = &unk_2783C2788;
   objc_copyWeak(&v13, &location);
-  [v5 setScene:scene shouldBeKeptActiveWhileForeground:v3 withContextGenerator:&v9];
+  [delegate setScene:scene shouldBeKeptActiveWhileForeground:foregroundCopy withContextGenerator:&v9];
 
-  if (v3 && ([(FBScene *)self->_scene isActive:v9]& 1) == 0)
+  if (foregroundCopy && ([(FBScene *)self->_scene isActive:v9]& 1) == 0)
   {
-    v7 = [(FBScene *)self->_scene settings];
-    if ([v7 isForeground])
+    settings = [(FBScene *)self->_scene settings];
+    if ([settings isForeground])
     {
-      v8 = [(SBSingleSceneController *)self _isClientProcessRunning];
+      _isClientProcessRunning = [(SBSingleSceneController *)self _isClientProcessRunning];
 
-      if (v8)
+      if (_isClientProcessRunning)
       {
         [(SBSingleSceneController *)self setSceneActive:1];
       }
@@ -323,45 +323,45 @@ id __64__SBSingleSceneController_setShouldBeKeptActiveWhileForeground___block_in
   return v2;
 }
 
-- (void)setSceneActive:(BOOL)a3
+- (void)setSceneActive:(BOOL)active
 {
-  v3 = a3;
-  if (a3)
+  activeCopy = active;
+  if (active)
   {
-    v5 = [(SBSingleSceneController *)self _newActivationContext];
+    _newActivationContext = [(SBSingleSceneController *)self _newActivationContext];
   }
 
   else
   {
-    v5 = 0;
+    _newActivationContext = 0;
   }
 
-  v6 = v5;
-  [(SBSceneSettingsUpdater *)self->_sceneSettingsUpdater setActive:v3 withTransitionContext:v5];
+  v6 = _newActivationContext;
+  [(SBSceneSettingsUpdater *)self->_sceneSettingsUpdater setActive:activeCopy withTransitionContext:_newActivationContext];
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
-  if (self->_hidden != a3)
+  if (self->_hidden != hidden)
   {
-    self->_hidden = a3;
+    self->_hidden = hidden;
     [(SBSingleSceneController *)self _evaluateVisibility];
   }
 }
 
-- (void)setPresenter:(id)a3
+- (void)setPresenter:(id)presenter
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  presenterCopy = presenter;
   WeakRetained = objc_loadWeakRetained(&self->_presenter);
-  if (!v4)
+  if (!presenterCopy)
   {
     v9 = SBLogSystemUIScene();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [(FBScene *)self->_scene identifier];
+      identifier = [(FBScene *)self->_scene identifier];
       v11 = 138543362;
-      v12 = v10;
+      v12 = identifier;
       _os_log_impl(&dword_21ED4E000, v9, OS_LOG_TYPE_DEFAULT, "[%{public}@] setPresenter[nil]", &v11, 0xCu);
     }
 
@@ -369,23 +369,23 @@ id __64__SBSingleSceneController_setShouldBeKeptActiveWhileForeground___block_in
     goto LABEL_9;
   }
 
-  if (([v4 isEqual:WeakRetained] & 1) == 0)
+  if (([presenterCopy isEqual:WeakRetained] & 1) == 0)
   {
     v6 = SBLogSystemUIScene();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [(FBScene *)self->_scene identifier];
+      identifier2 = [(FBScene *)self->_scene identifier];
       v11 = 138543874;
-      v12 = v7;
+      v12 = identifier2;
       v13 = 2114;
-      v14 = v4;
+      v14 = presenterCopy;
       v15 = 2114;
       v16 = WeakRetained;
       _os_log_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_DEFAULT, "[%{public}@] setPresenter[%{public}@] oldPresenter[%{public}@]", &v11, 0x20u);
     }
 
     [(SBSingleSceneController *)self _setVisible:0];
-    v8 = v4;
+    v8 = presenterCopy;
 LABEL_9:
     objc_storeWeak(&self->_presenter, v8);
   }
@@ -393,26 +393,26 @@ LABEL_9:
   [(SBSingleSceneController *)self _evaluateVisibility];
 }
 
-- (void)sceneContentStateDidChange:(id)a3
+- (void)sceneContentStateDidChange:(id)change
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (self->_scene != v4)
+  changeCopy = change;
+  if (self->_scene != changeCopy)
   {
     [SBSingleSceneController sceneContentStateDidChange:];
   }
 
-  v5 = [(FBScene *)v4 contentState];
-  if ((v5 - 1) >= 2)
+  contentState = [(FBScene *)changeCopy contentState];
+  if ((contentState - 1) >= 2)
   {
-    if (!v5)
+    if (!contentState)
     {
       v8 = SBLogSystemUIScene();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
-        v9 = [(FBScene *)self->_scene identifier];
+        identifier = [(FBScene *)self->_scene identifier];
         *buf = 138543362;
-        v16 = v9;
+        v16 = identifier;
         _os_log_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_DEFAULT, "[%{public}@] sceneContentStateDidChange: not ready", buf, 0xCu);
       }
 
@@ -434,9 +434,9 @@ LABEL_9:
     v6 = SBLogSystemUIScene();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [(FBScene *)self->_scene identifier];
+      identifier2 = [(FBScene *)self->_scene identifier];
       *buf = 138543362;
-      v16 = v7;
+      v16 = identifier2;
       _os_log_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_DEFAULT, "[%{public}@] sceneContentStateDidChange: preparing or ready", buf, 0xCu);
     }
 
@@ -463,12 +463,12 @@ void __54__SBSingleSceneController_sceneContentStateDidChange___block_invoke_33(
   [WeakRetained _evaluateVisibility];
 }
 
-- (void)sceneDidInvalidate:(id)a3 withContext:(id)a4
+- (void)sceneDidInvalidate:(id)invalidate withContext:(id)context
 {
   v13 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (self->_scene != v6)
+  invalidateCopy = invalidate;
+  contextCopy = context;
+  if (self->_scene != invalidateCopy)
   {
     [SBSingleSceneController sceneDidInvalidate:withContext:];
   }
@@ -476,9 +476,9 @@ void __54__SBSingleSceneController_sceneContentStateDidChange___block_invoke_33(
   v8 = SBLogSystemUIScene();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(FBScene *)self->_scene identifier];
+    identifier = [(FBScene *)self->_scene identifier];
     v11 = 138543362;
-    v12 = v9;
+    v12 = identifier;
     _os_log_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_DEFAULT, "[%{public}@] sceneDidInvalidate", &v11, 0xCu);
   }
 
@@ -489,10 +489,10 @@ void __54__SBSingleSceneController_sceneContentStateDidChange___block_invoke_33(
   [(SBSingleSceneController *)self _evaluateVisibility];
 }
 
-- (void)scene:(id)a3 didCompleteUpdateWithContext:(id)a4 error:(id)a5
+- (void)scene:(id)scene didCompleteUpdateWithContext:(id)context error:(id)error
 {
-  v6 = [a3 settings];
-  [v6 frame];
+  settings = [scene settings];
+  [settings frame];
   v8 = v7;
   v10 = v9;
   v12 = v11;
@@ -511,23 +511,23 @@ void __54__SBSingleSceneController_sceneContentStateDidChange___block_invoke_33(
     if (!CGRectIsEmpty(v18))
     {
       [(SBSingleSceneController *)self _evaluateVisibility];
-      v15 = [(SBTraitsOrientedContentViewController *)self->_orientedSceneViewController view];
-      [v15 setContentViewBoundsInReferenceSpace:{v8, v10, v12, v14}];
+      view = [(SBTraitsOrientedContentViewController *)self->_orientedSceneViewController view];
+      [view setContentViewBoundsInReferenceSpace:{v8, v10, v12, v14}];
     }
   }
 }
 
-- (void)_setVisible:(BOOL)a3
+- (void)_setVisible:(BOOL)visible
 {
-  if (self->_visible != a3)
+  if (self->_visible != visible)
   {
-    self->_visible = a3;
-    if (a3)
+    self->_visible = visible;
+    if (visible)
     {
       scene = self->_scene;
       v5 = SBApp;
-      v6 = [(FBSDisplayConfiguration *)self->_targetDisplayConfiguration identity];
-      v7 = [v5 userInterfaceStyleProviderForDisplay:v6];
+      identity = [(FBSDisplayConfiguration *)self->_targetDisplayConfiguration identity];
+      v7 = [v5 userInterfaceStyleProviderForDisplay:identity];
       +[SBSceneSettingsUpdater safeUpdateScene:withUserInterfaceStyle:](SBSceneSettingsUpdater, "safeUpdateScene:withUserInterfaceStyle:", scene, [v7 currentStyle]);
 
       [(SBSingleSceneController *)self _presentScene];
@@ -599,9 +599,9 @@ void __40__SBSingleSceneController__presentScene__block_invoke(uint64_t a1)
   v4 = SBLogSystemUIScene();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [(FBScene *)self->_scene identifier];
+    identifier = [(FBScene *)self->_scene identifier];
     v7 = 138543618;
-    v8 = v5;
+    v8 = identifier;
     v9 = 2114;
     v10 = WeakRetained;
     _os_log_impl(&dword_21ED4E000, v4, OS_LOG_TYPE_DEFAULT, "[%{public}@] Presenter[%{public}@] will dismiss scene", &v7, 0x16u);
@@ -613,20 +613,20 @@ void __40__SBSingleSceneController__presentScene__block_invoke(uint64_t a1)
 - (id)_newActivationContext
 {
   v13[3] = *MEMORY[0x277D85DE8];
-  v2 = [(UISceneRequestOptions *)self->_sceneOptions actions];
-  v3 = [v2 bs_firstObjectPassingTest:&__block_literal_global_409];
+  actions = [(UISceneRequestOptions *)self->_sceneOptions actions];
+  v3 = [actions bs_firstObjectPassingTest:&__block_literal_global_409];
 
   if (v3)
   {
     v12[0] = &unk_2833722A8;
-    v4 = [v3 userActivityData];
-    v13[0] = v4;
+    userActivityData = [v3 userActivityData];
+    v13[0] = userActivityData;
     v12[1] = &unk_2833722C0;
-    v5 = [v3 activityType];
-    v13[1] = v5;
+    activityType = [v3 activityType];
+    v13[1] = activityType;
     v12[2] = &unk_2833722D8;
-    v6 = [v3 lastUpdateTime];
-    v13[2] = v6;
+    lastUpdateTime = [v3 lastUpdateTime];
+    v13[2] = lastUpdateTime;
     v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:v12 count:3];
 
     v8 = [objc_alloc(MEMORY[0x277D750D8]) initWithSettings:v7];
@@ -654,41 +654,41 @@ uint64_t __48__SBSingleSceneController__newActivationContext__block_invoke(uint6
 
 - (BOOL)_isClientProcessRunning
 {
-  v3 = [MEMORY[0x277D0AAC0] sharedInstance];
-  v4 = [v3 processForIdentity:self->_clientIdentity];
-  v5 = [v4 isRunning];
+  mEMORY[0x277D0AAC0] = [MEMORY[0x277D0AAC0] sharedInstance];
+  v4 = [mEMORY[0x277D0AAC0] processForIdentity:self->_clientIdentity];
+  isRunning = [v4 isRunning];
 
-  return v5;
+  return isRunning;
 }
 
-- (void)didUpdateSceneTraitsDelegate:(id)a3
+- (void)didUpdateSceneTraitsDelegate:(id)delegate
 {
-  v5 = a3;
-  v6 = [(SBTraitsSceneParticipantDelegate *)v5 participant];
+  delegateCopy = delegate;
+  participant = [(SBTraitsSceneParticipantDelegate *)delegateCopy participant];
   v7 = self->_lastSceneTraitsParticipantDelegate;
   v8 = v7;
-  if (v7 != v5)
+  if (v7 != delegateCopy)
   {
     [(SBTraitsSceneParticipantDelegate *)v7 setActuateOrientationAlongsideBlock:0];
-    objc_storeStrong(&self->_lastSceneTraitsParticipantDelegate, a3);
+    objc_storeStrong(&self->_lastSceneTraitsParticipantDelegate, delegate);
     objc_initWeak(&location, self);
     v10 = MEMORY[0x277D85DD0];
     v11 = 3221225472;
     v12 = __56__SBSingleSceneController_didUpdateSceneTraitsDelegate___block_invoke;
     v13 = &unk_2783AD848;
     objc_copyWeak(&v14, &location);
-    [(SBTraitsSceneParticipantDelegate *)v5 setActuateOrientationAlongsideBlock:&v10];
+    [(SBTraitsSceneParticipantDelegate *)delegateCopy setActuateOrientationAlongsideBlock:&v10];
     objc_destroyWeak(&v14);
     objc_destroyWeak(&location);
   }
 
-  [(SBTraitsOrientedContentViewController *)self->_orientedSceneViewController setContentParticipant:v6, v10, v11, v12, v13];
-  [(SBTraitsOrientedContentViewController *)self->_orientedSceneViewController setContainerParticipant:v6];
+  [(SBTraitsOrientedContentViewController *)self->_orientedSceneViewController setContentParticipant:participant, v10, v11, v12, v13];
+  [(SBTraitsOrientedContentViewController *)self->_orientedSceneViewController setContainerParticipant:participant];
   [(SBTraitsOrientedContentViewController *)self->_orientedSceneViewController updateOrientationIfNeeded];
   WeakRetained = objc_loadWeakRetained(&self->_presenter);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained scene:self->_scene didChangeTraitsParticipantDelegate:v5];
+    [WeakRetained scene:self->_scene didChangeTraitsParticipantDelegate:delegateCopy];
   }
 }
 
@@ -717,8 +717,8 @@ void __56__SBSingleSceneController_didUpdateSceneTraitsDelegate___block_invoke(u
   if (self->_shouldActivateForDisplayConfiguration && self->_targetDisplayConfiguration)
   {
     sceneSettingsUpdater = self->_sceneSettingsUpdater;
-    v4 = [(SBSingleSceneController *)self _newActivationContext];
-    [(SBSceneSettingsUpdater *)sceneSettingsUpdater setActive:1 withTransitionContext:v4];
+    _newActivationContext = [(SBSingleSceneController *)self _newActivationContext];
+    [(SBSceneSettingsUpdater *)sceneSettingsUpdater setActive:1 withTransitionContext:_newActivationContext];
   }
 }
 
@@ -731,39 +731,39 @@ void __56__SBSingleSceneController_didUpdateSceneTraitsDelegate___block_invoke(u
     v5 = self->_orientedSceneViewController;
     self->_orientedSceneViewController = v4;
 
-    v6 = [(SBTraitsOrientedContentViewController *)self->_orientedSceneViewController view];
-    [v6 setContentOrientation:1];
-    [v6 setContainerOrientation:1];
-    v7 = [(FBScene *)self->_scene settings];
-    [v7 frame];
-    [v6 setContentViewBoundsInReferenceSpace:?];
+    view = [(SBTraitsOrientedContentViewController *)self->_orientedSceneViewController view];
+    [view setContentOrientation:1];
+    [view setContainerOrientation:1];
+    settings = [(FBScene *)self->_scene settings];
+    [settings frame];
+    [view setContentViewBoundsInReferenceSpace:?];
 
-    [v6 setAutoresizingMask:18];
+    [view setAutoresizingMask:18];
     if (self->_scene && !self->_uiScenePresenter)
     {
       [0 deactivate];
       [(UIScenePresenter *)self->_uiScenePresenter invalidate];
-      v8 = [(FBScene *)self->_scene uiPresentationManager];
+      uiPresentationManager = [(FBScene *)self->_scene uiPresentationManager];
       v9 = MEMORY[0x277CCACA8];
       v10 = objc_opt_class();
       v11 = NSStringFromClass(v10);
-      v12 = [(FBScene *)self->_scene identifier];
-      v13 = v12;
+      identifier = [(FBScene *)self->_scene identifier];
+      v13 = identifier;
       v14 = &stru_283094718;
-      if (v12)
+      if (identifier)
       {
-        v14 = v12;
+        v14 = identifier;
       }
 
       v15 = [v9 stringWithFormat:@"%@-%@", v11, v14];
 
-      v16 = [v8 createPresenterWithIdentifier:v15 priority:0];
+      v16 = [uiPresentationManager createPresenterWithIdentifier:v15 priority:0];
       uiScenePresenter = self->_uiScenePresenter;
       self->_uiScenePresenter = v16;
 
       [(UIScenePresenter *)self->_uiScenePresenter modifyPresentationContext:&__block_literal_global_61_6];
-      v18 = [(UIScenePresenter *)self->_uiScenePresenter presentationView];
-      [v6 setContentView:v18];
+      presentationView = [(UIScenePresenter *)self->_uiScenePresenter presentationView];
+      [view setContentView:presentationView];
     }
 
     [(BSInvalidatable *)self->_settingsUpdaterObserverInvalidatable invalidate];
@@ -771,8 +771,8 @@ void __56__SBSingleSceneController_didUpdateSceneTraitsDelegate___block_invoke(u
     settingsUpdaterObserverInvalidatable = self->_settingsUpdaterObserverInvalidatable;
     self->_settingsUpdaterObserverInvalidatable = v19;
 
-    v21 = [(SBSceneSettingsUpdater *)self->_sceneSettingsUpdater sceneTraitsDelegate];
-    [(SBSingleSceneController *)self didUpdateSceneTraitsDelegate:v21];
+    sceneTraitsDelegate = [(SBSceneSettingsUpdater *)self->_sceneSettingsUpdater sceneTraitsDelegate];
+    [(SBSingleSceneController *)self didUpdateSceneTraitsDelegate:sceneTraitsDelegate];
 
     orientedSceneViewController = self->_orientedSceneViewController;
   }
@@ -806,8 +806,8 @@ void __55__SBSingleSceneController_traitsOrientedViewController__block_invoke(ui
     self->_hostComponent = v6;
 
     v8 = [SBTraitsOrientedResizableContentViewController alloc];
-    v9 = [(SBSingleSceneController *)self traitsOrientedViewController];
-    v10 = [(SBTraitsOrientedResizableContentViewController *)v8 initWithContentViewController:v9 delegate:self->_hostComponent];
+    traitsOrientedViewController = [(SBSingleSceneController *)self traitsOrientedViewController];
+    v10 = [(SBTraitsOrientedResizableContentViewController *)v8 initWithContentViewController:traitsOrientedViewController delegate:self->_hostComponent];
     v11 = self->_resizableOrientedSceneViewController;
     self->_resizableOrientedSceneViewController = v10;
 
@@ -819,41 +819,41 @@ void __55__SBSingleSceneController_traitsOrientedViewController__block_invoke(ui
 
 - (id)succinctDescription
 {
-  v2 = [(SBSingleSceneController *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBSingleSceneController *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
 {
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
-  v4 = [(SBSingleSceneController *)self scenePersistentIdentifier];
-  [v3 appendString:v4 withName:@"scenePersistentIdentifier"];
+  scenePersistentIdentifier = [(SBSingleSceneController *)self scenePersistentIdentifier];
+  [v3 appendString:scenePersistentIdentifier withName:@"scenePersistentIdentifier"];
 
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBSingleSceneController *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBSingleSceneController *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(SBSingleSceneController *)self succinctDescriptionBuilder];
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(SBSingleSceneController *)self succinctDescriptionBuilder];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __65__SBSingleSceneController_descriptionBuilderWithMultilinePrefix___block_invoke;
   v9[3] = &unk_2783A92D8;
-  v6 = v5;
+  v6 = succinctDescriptionBuilder;
   v10 = v6;
-  v11 = self;
-  [v6 appendBodySectionWithName:0 multilinePrefix:v4 block:v9];
+  selfCopy = self;
+  [v6 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v9];
 
   v7 = v6;
   return v6;

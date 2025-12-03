@@ -1,5 +1,5 @@
 @interface HFItemResultComponent
-+ (id)combinedResultsForComponents:(id)a3;
++ (id)combinedResultsForComponents:(id)components;
 - (NSDictionary)results;
 @end
 
@@ -7,19 +7,19 @@
 
 - (NSDictionary)results
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"HFItemResultComponent.m" lineNumber:15 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HFItemResultComponent results]", objc_opt_class()}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFItemResultComponent.m" lineNumber:15 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HFItemResultComponent results]", objc_opt_class()}];
 
   return MEMORY[0x277CBEC10];
 }
 
-+ (id)combinedResultsForComponents:(id)a3
++ (id)combinedResultsForComponents:(id)components
 {
-  v3 = [a3 sortedArrayUsingComparator:&__block_literal_global_91];
-  v4 = [v3 firstObject];
-  v5 = [v4 results];
+  v3 = [components sortedArrayUsingComparator:&__block_literal_global_91];
+  firstObject = [v3 firstObject];
+  results = [firstObject results];
 
-  return v5;
+  return results;
 }
 
 uint64_t __54__HFItemResultComponent_combinedResultsForComponents___block_invoke(uint64_t a1, void *a2, void *a3)

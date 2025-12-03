@@ -1,21 +1,21 @@
 @interface HMDSharedUserPrivateSettingsManager
 + (id)logCategory;
-- (HMDSharedUserPrivateSettingsManager)initWithCoreData:(id)a3 cloudTransform:(id)a4 homeManager:(id)a5;
-- (id)authorizationDataForCharacteristicWithInstanceID:(id)a3 accessoryUUID:(id)a4 homeModelID:(id)a5;
-- (id)settingsForHome:(id)a3 ofType:(int64_t)a4;
-- (id)updateAuthorizationDataForCharacteristicWithInstanceID:(id)a3 accessoryUUID:(id)a4 homeModelID:(id)a5 authorizationData:(id)a6 context:(id)a7;
-- (id)updateSettingsForHome:(id)a3 ofType:(int64_t)a4 withValues:(id)a5 context:(id)a6;
-- (void)_populateSettings:(void *)a3 fromEntity:(void *)a4 context:;
-- (void)didInsertOrUpdateModel:(id)a3 changedProperties:(id)a4;
-- (void)willStartListeningWithContext:(id)a3;
+- (HMDSharedUserPrivateSettingsManager)initWithCoreData:(id)data cloudTransform:(id)transform homeManager:(id)manager;
+- (id)authorizationDataForCharacteristicWithInstanceID:(id)d accessoryUUID:(id)iD homeModelID:(id)modelID;
+- (id)settingsForHome:(id)home ofType:(int64_t)type;
+- (id)updateAuthorizationDataForCharacteristicWithInstanceID:(id)d accessoryUUID:(id)iD homeModelID:(id)modelID authorizationData:(id)data context:(id)context;
+- (id)updateSettingsForHome:(id)home ofType:(int64_t)type withValues:(id)values context:(id)context;
+- (void)_populateSettings:(void *)settings fromEntity:(void *)entity context:;
+- (void)didInsertOrUpdateModel:(id)model changedProperties:(id)properties;
+- (void)willStartListeningWithContext:(id)context;
 @end
 
 @implementation HMDSharedUserPrivateSettingsManager
 
-- (void)didInsertOrUpdateModel:(id)a3 changedProperties:(id)a4
+- (void)didInsertOrUpdateModel:(id)model changedProperties:(id)properties
 {
-  v6 = a3;
-  v7 = a4;
+  modelCopy = model;
+  propertiesCopy = properties;
   v44 = 0;
   v45 = &v44;
   v46 = 0x2020000000;
@@ -25,9 +25,9 @@
   v42 = 0x2020000000;
   v43 = 0;
   os_unfair_lock_lock_with_options();
-  v8 = [v6 entity];
+  entity = [modelCopy entity];
   v9 = +[MKFCKSharedUserPrivateRoot entity];
-  v10 = [v8 isKindOfEntity:v9];
+  v10 = [entity isKindOfEntity:v9];
 
   if (v10)
   {
@@ -36,10 +36,10 @@
 
   else
   {
-    v12 = [v6 entity];
+    entity2 = [modelCopy entity];
     v13 = +[MKFCKSharedUserDataRoot entity];
 
-    v14 = [v12 isKindOfEntity:v13];
+    v14 = [entity2 isKindOfEntity:v13];
     if (!v14)
     {
 
@@ -51,8 +51,8 @@
   }
 
   v15 = *(&self->super.isa + v11);
-  v16 = [v6 homeModelID];
-  if (!v16)
+  homeModelID = [modelCopy homeModelID];
+  if (!homeModelID)
   {
 
 LABEL_10:
@@ -60,7 +60,7 @@ LABEL_10:
     goto LABEL_24;
   }
 
-  v17 = [v15 objectForKeyedSubscript:v16];
+  v17 = [v15 objectForKeyedSubscript:homeModelID];
   v18 = v17;
   if (v17)
   {
@@ -74,23 +74,23 @@ LABEL_10:
 
   v20 = v19;
 
-  v21 = [v9 hmd_attributesBySettingsPath];
+  hmd_attributesBySettingsPath = [v9 hmd_attributesBySettingsPath];
   v35[0] = MEMORY[0x277D85DD0];
   v35[1] = 3221225472;
   v35[2] = __80__HMDSharedUserPrivateSettingsManager_didInsertOrUpdateModel_changedProperties___block_invoke;
   v35[3] = &unk_27867E2C8;
-  v22 = v7;
+  v22 = propertiesCopy;
   v36 = v22;
   v23 = v20;
   v37 = v23;
-  v24 = v6;
+  v24 = modelCopy;
   v38 = v24;
   v39 = &v44;
-  [v21 enumerateKeysAndObjectsUsingBlock:v35];
+  [hmd_attributesBySettingsPath enumerateKeysAndObjectsUsingBlock:v35];
 
   if (*(v45 + 24) == 1)
   {
-    [v15 setObject:v23 forKeyedSubscript:v16];
+    [v15 setObject:v23 forKeyedSubscript:homeModelID];
   }
 
   v25 = v24;
@@ -114,7 +114,7 @@ LABEL_10:
     v31[2] = __80__HMDSharedUserPrivateSettingsManager_didInsertOrUpdateModel_changedProperties___block_invoke_2;
     v31[3] = &unk_27867E2F0;
     v31[4] = self;
-    v32 = v16;
+    v32 = homeModelID;
     v33 = v27;
     v34 = &v40;
     [v22 hmf_enumerateWithAutoreleasePoolUsingBlock:v31];
@@ -124,14 +124,14 @@ LABEL_10:
   WeakRetained = objc_loadWeakRetained(&self->_homeManager);
   if (v45[3])
   {
-    v29 = [v25 modelID];
-    [WeakRetained notifyClientsOfUserSettingsChangeWithReason:@"User Settings updated (Cloud)" sourceUUID:v29];
+    modelID = [v25 modelID];
+    [WeakRetained notifyClientsOfUserSettingsChangeWithReason:@"User Settings updated (Cloud)" sourceUUID:modelID];
   }
 
   if (*(v41 + 24) == 1)
   {
-    v30 = [v25 modelID];
-    [WeakRetained updateGenerationCounterWithReason:@"Authorization Data Changed" sourceUUID:v30 shouldNotifyClients:1];
+    modelID2 = [v25 modelID];
+    [WeakRetained updateGenerationCounterWithReason:@"Authorization Data Changed" sourceUUID:modelID2 shouldNotifyClients:1];
   }
 
 LABEL_24:
@@ -195,10 +195,10 @@ void __80__HMDSharedUserPrivateSettingsManager_didInsertOrUpdateModel_changedPro
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)willStartListeningWithContext:(id)a3
+- (void)willStartListeningWithContext:(id)context
 {
   v34[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  contextCopy = context;
   os_unfair_lock_lock_with_options();
   v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
   privateSettingsByHome = self->_privateSettingsByHome;
@@ -206,7 +206,7 @@ void __80__HMDSharedUserPrivateSettingsManager_didInsertOrUpdateModel_changedPro
 
   v7 = self->_privateSettingsByHome;
   v8 = +[MKFCKSharedUserPrivateRoot entity];
-  [(HMDSharedUserPrivateSettingsManager *)self _populateSettings:v7 fromEntity:v8 context:v4];
+  [(HMDSharedUserPrivateSettingsManager *)self _populateSettings:v7 fromEntity:v8 context:contextCopy];
 
   v9 = objc_alloc_init(MEMORY[0x277CBEB38]);
   sharedSettingsByHome = self->_sharedSettingsByHome;
@@ -214,21 +214,21 @@ void __80__HMDSharedUserPrivateSettingsManager_didInsertOrUpdateModel_changedPro
 
   v11 = self->_sharedSettingsByHome;
   v12 = +[MKFCKSharedUserDataRoot entity];
-  [(HMDSharedUserPrivateSettingsManager *)self _populateSettings:v11 fromEntity:v12 context:v4];
+  [(HMDSharedUserPrivateSettingsManager *)self _populateSettings:v11 fromEntity:v12 context:contextCopy];
 
   v13 = objc_alloc_init(MEMORY[0x277CBEB38]);
   characteristicAuthorizationDataByHomeModelID = self->_characteristicAuthorizationDataByHomeModelID;
   self->_characteristicAuthorizationDataByHomeModelID = v13;
 
   v15 = self->_characteristicAuthorizationDataByHomeModelID;
-  v29 = v4;
+  v29 = contextCopy;
   v16 = +[MKFCKSharedUserPrivateRoot entity];
-  v17 = [v16 name];
+  name = [v16 name];
 
-  v18 = [objc_alloc(MEMORY[0x277CBE428]) initWithEntityName:v17];
-  v19 = [v29 hmd_coreData];
-  v20 = [v19 cloudPrivateStore];
-  v34[0] = v20;
+  v18 = [objc_alloc(MEMORY[0x277CBE428]) initWithEntityName:name];
+  hmd_coreData = [v29 hmd_coreData];
+  cloudPrivateStore = [hmd_coreData cloudPrivateStore];
+  v34[0] = cloudPrivateStore;
   v21 = [MEMORY[0x277CBEA60] arrayWithObjects:v34 count:1];
   [v18 setAffectedStores:v21];
 
@@ -248,7 +248,7 @@ void __80__HMDSharedUserPrivateSettingsManager_didInsertOrUpdateModel_changedPro
   else
   {
     v24 = objc_autoreleasePoolPush();
-    v25 = self;
+    selfCopy = self;
     v26 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
     {
@@ -256,7 +256,7 @@ void __80__HMDSharedUserPrivateSettingsManager_didInsertOrUpdateModel_changedPro
       *buf = 138543874;
       *&buf[4] = v27;
       *&buf[12] = 2112;
-      *&buf[14] = v17;
+      *&buf[14] = name;
       *&buf[22] = 2112;
       v32 = v23;
       _os_log_impl(&dword_229538000, v26, OS_LOG_TYPE_ERROR, "%{public}@Failed to fetch private %@: %@", buf, 0x20u);
@@ -269,49 +269,49 @@ void __80__HMDSharedUserPrivateSettingsManager_didInsertOrUpdateModel_changedPro
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_populateSettings:(void *)a3 fromEntity:(void *)a4 context:
+- (void)_populateSettings:(void *)settings fromEntity:(void *)entity context:
 {
   v37[1] = *MEMORY[0x277D85DE8];
   v7 = a2;
-  v8 = a3;
-  v9 = a4;
-  if (a1)
+  settingsCopy = settings;
+  entityCopy = entity;
+  if (self)
   {
     v10 = objc_alloc(MEMORY[0x277CBE428]);
-    v11 = [v8 name];
-    v12 = [v10 initWithEntityName:v11];
+    name = [settingsCopy name];
+    v12 = [v10 initWithEntityName:name];
 
-    v13 = [v9 hmd_coreData];
-    v14 = [v13 cloudPrivateStore];
-    v37[0] = v14;
+    hmd_coreData = [entityCopy hmd_coreData];
+    cloudPrivateStore = [hmd_coreData cloudPrivateStore];
+    v37[0] = cloudPrivateStore;
     v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v37 count:1];
     [v12 setAffectedStores:v15];
 
     v30 = 0;
-    v16 = [v9 executeFetchRequest:v12 error:&v30];
+    v16 = [entityCopy executeFetchRequest:v12 error:&v30];
     v17 = v30;
     if (v16)
     {
-      v18 = [v8 hmd_attributesBySettingsPath];
+      hmd_attributesBySettingsPath = [settingsCopy hmd_attributesBySettingsPath];
       v27[0] = MEMORY[0x277D85DD0];
       v27[1] = 3221225472;
       v27[2] = __76__HMDSharedUserPrivateSettingsManager__populateSettings_fromEntity_context___block_invoke;
       v27[3] = &unk_27867E2A0;
       v28 = v7;
-      v29 = v18;
-      v19 = v18;
+      v29 = hmd_attributesBySettingsPath;
+      v19 = hmd_attributesBySettingsPath;
       [v16 hmf_enumerateWithAutoreleasePoolUsingBlock:v27];
     }
 
     else
     {
       v20 = objc_autoreleasePoolPush();
-      v21 = a1;
+      selfCopy = self;
       v22 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
       {
         v23 = HMFGetLogIdentifier();
-        [v8 name];
+        [settingsCopy name];
         v24 = v26 = v20;
         *buf = 138543874;
         v32 = v23;
@@ -371,29 +371,29 @@ void __76__HMDSharedUserPrivateSettingsManager__populateSettings_fromEntity_cont
   [*(a1 + 32) setObject:v7 forKeyedSubscript:v6];
 }
 
-- (id)updateAuthorizationDataForCharacteristicWithInstanceID:(id)a3 accessoryUUID:(id)a4 homeModelID:(id)a5 authorizationData:(id)a6 context:(id)a7
+- (id)updateAuthorizationDataForCharacteristicWithInstanceID:(id)d accessoryUUID:(id)iD homeModelID:(id)modelID authorizationData:(id)data context:(id)context
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  dCopy = d;
+  iDCopy = iD;
+  modelIDCopy = modelID;
+  dataCopy = data;
+  contextCopy = context;
   v17 = MEMORY[0x277D0F7C0];
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
   v25[2] = __146__HMDSharedUserPrivateSettingsManager_updateAuthorizationDataForCharacteristicWithInstanceID_accessoryUUID_homeModelID_authorizationData_context___block_invoke;
   v25[3] = &unk_27867E228;
   v25[4] = self;
-  v26 = v14;
-  v27 = v16;
-  v28 = v13;
-  v29 = v15;
-  v30 = v12;
-  v18 = v12;
-  v19 = v15;
-  v20 = v13;
-  v21 = v16;
-  v22 = v14;
+  v26 = modelIDCopy;
+  v27 = contextCopy;
+  v28 = iDCopy;
+  v29 = dataCopy;
+  v30 = dCopy;
+  v18 = dCopy;
+  v19 = dataCopy;
+  v20 = iDCopy;
+  v21 = contextCopy;
+  v22 = modelIDCopy;
   v23 = [v17 inContext:v21 perform:v25];
 
   return v23;
@@ -644,27 +644,27 @@ uint64_t __146__HMDSharedUserPrivateSettingsManager_updateAuthorizationDataForCh
   return v33;
 }
 
-- (id)authorizationDataForCharacteristicWithInstanceID:(id)a3 accessoryUUID:(id)a4 homeModelID:(id)a5
+- (id)authorizationDataForCharacteristicWithInstanceID:(id)d accessoryUUID:(id)iD homeModelID:(id)modelID
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  iDCopy = iD;
+  modelIDCopy = modelID;
   os_unfair_lock_lock_with_options();
-  v11 = [(NSMutableDictionary *)self->_characteristicAuthorizationDataByHomeModelID objectForKeyedSubscript:v10];
-  v12 = [v11 objectForKeyedSubscript:v9];
-  v13 = [v12 objectForKeyedSubscript:v8];
+  v11 = [(NSMutableDictionary *)self->_characteristicAuthorizationDataByHomeModelID objectForKeyedSubscript:modelIDCopy];
+  v12 = [v11 objectForKeyedSubscript:iDCopy];
+  v13 = [v12 objectForKeyedSubscript:dCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 
   return v13;
 }
 
-- (id)updateSettingsForHome:(id)a3 ofType:(int64_t)a4 withValues:(id)a5 context:(id)a6
+- (id)updateSettingsForHome:(id)home ofType:(int64_t)type withValues:(id)values context:(id)context
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = [v11 count];
+  homeCopy = home;
+  valuesCopy = values;
+  contextCopy = context;
+  v13 = [valuesCopy count];
   v14 = MEMORY[0x277D0F7C0];
   if (v13)
   {
@@ -673,19 +673,19 @@ uint64_t __146__HMDSharedUserPrivateSettingsManager_updateAuthorizationDataForCh
     v17[2] = __87__HMDSharedUserPrivateSettingsManager_updateSettingsForHome_ofType_withValues_context___block_invoke;
     v17[3] = &unk_278685130;
     v17[4] = self;
-    v21 = a4;
-    v18 = v10;
-    v19 = v12;
-    v20 = v11;
-    v15 = [v14 inContext:v19 perform:v17];
+    typeCopy = type;
+    v18 = homeCopy;
+    v19 = contextCopy;
+    v20 = valuesCopy;
+    futureWithNoValue = [v14 inContext:v19 perform:v17];
   }
 
   else
   {
-    v15 = [MEMORY[0x277D0F7C0] futureWithNoValue];
+    futureWithNoValue = [MEMORY[0x277D0F7C0] futureWithNoValue];
   }
 
-  return v15;
+  return futureWithNoValue;
 }
 
 uint64_t __87__HMDSharedUserPrivateSettingsManager_updateSettingsForHome_ofType_withValues_context___block_invoke(uint64_t a1)
@@ -955,22 +955,22 @@ void __87__HMDSharedUserPrivateSettingsManager_updateSettingsForHome_ofType_with
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (id)settingsForHome:(id)a3 ofType:(int64_t)a4
+- (id)settingsForHome:(id)home ofType:(int64_t)type
 {
-  v6 = a3;
+  homeCopy = home;
   os_unfair_lock_lock_with_options();
-  if (a4 == 1)
+  if (type == 1)
   {
     v7 = 40;
     goto LABEL_5;
   }
 
-  if (a4 == 2)
+  if (type == 2)
   {
     v7 = 48;
 LABEL_5:
     v8 = *(&self->super.isa + v7);
-    v9 = [v8 objectForKeyedSubscript:v6];
+    v9 = [v8 objectForKeyedSubscript:homeCopy];
 
     goto LABEL_7;
   }
@@ -982,27 +982,27 @@ LABEL_7:
   return v9;
 }
 
-- (HMDSharedUserPrivateSettingsManager)initWithCoreData:(id)a3 cloudTransform:(id)a4 homeManager:(id)a5
+- (HMDSharedUserPrivateSettingsManager)initWithCoreData:(id)data cloudTransform:(id)transform homeManager:(id)manager
 {
   v20[2] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  dataCopy = data;
+  transformCopy = transform;
+  managerCopy = manager;
   v19.receiver = self;
   v19.super_class = HMDSharedUserPrivateSettingsManager;
   v12 = [(HMDSharedUserPrivateSettingsManager *)&v19 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_coreData, a3);
-    objc_storeStrong(&v13->_cloudTransform, a4);
-    objc_storeWeak(&v13->_homeManager, v11);
+    objc_storeStrong(&v12->_coreData, data);
+    objc_storeStrong(&v13->_cloudTransform, transform);
+    objc_storeWeak(&v13->_homeManager, managerCopy);
     v14 = +[MKFCKSharedUserDataRoot entity];
     v20[0] = v14;
     v15 = +[MKFCKSharedUserPrivateRoot entity];
     v20[1] = v15;
     v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v20 count:2];
-    [v10 registerCloudChangeListener:v13 forEntities:v16];
+    [transformCopy registerCloudChangeListener:v13 forEntities:v16];
   }
 
   v17 = *MEMORY[0x277D85DE8];

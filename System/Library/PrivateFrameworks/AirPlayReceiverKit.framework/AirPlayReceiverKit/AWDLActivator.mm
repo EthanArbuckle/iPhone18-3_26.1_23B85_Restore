@@ -1,7 +1,7 @@
 @interface AWDLActivator
 - (AWDLActivator)init;
 - (void)_stopInternal;
-- (void)startWithMaxDuration:(int64_t)a3;
+- (void)startWithMaxDuration:(int64_t)duration;
 - (void)stop;
 @end
 
@@ -79,7 +79,7 @@ void __21__AWDLActivator_init__block_invoke(uint64_t a1)
   dispatch_sync(queue, block);
 }
 
-- (void)startWithMaxDuration:(int64_t)a3
+- (void)startWithMaxDuration:(int64_t)duration
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -87,7 +87,7 @@ void __21__AWDLActivator_init__block_invoke(uint64_t a1)
   v4[2] = __38__AWDLActivator_startWithMaxDuration___block_invoke;
   v4[3] = &unk_278C62A70;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = duration;
   dispatch_sync(queue, v4);
 }
 

@@ -1,40 +1,40 @@
 @interface HUQuickControlGridLayoutManager
 - (HUQuickControlGridLayoutManager)init;
-- (HUQuickControlGridLayoutManager)initWithCollectionView:(id)a3 itemManager:(id)a4 layoutOptions:(id)a5;
+- (HUQuickControlGridLayoutManager)initWithCollectionView:(id)view itemManager:(id)manager layoutOptions:(id)options;
 - (NSArray)collectionSectionSettings;
 - (UICollectionView)collectionView;
-- (double)interItemSpacingForItemSize:(unint64_t)a3 layoutOptions:(id)a4;
-- (double)sectionTopPaddingInSection:(unint64_t)a3 withLayoutOptions:(id)a4;
-- (id)_settingsForSectionNumber:(unint64_t)a3 sectionIdentifier:(id)a4 layoutOptions:(id)a5;
-- (id)_viewProfileClassesForSection:(unint64_t)a3;
+- (double)interItemSpacingForItemSize:(unint64_t)size layoutOptions:(id)options;
+- (double)sectionTopPaddingInSection:(unint64_t)section withLayoutOptions:(id)options;
+- (id)_settingsForSectionNumber:(unint64_t)number sectionIdentifier:(id)identifier layoutOptions:(id)options;
+- (id)_viewProfileClassesForSection:(unint64_t)section;
 - (int64_t)viewSizeSubclass;
-- (unint64_t)_mostImportantItemTypeForSection:(unint64_t)a3;
-- (unint64_t)itemSizeForSection:(unint64_t)a3;
-- (unint64_t)numberOfColumnsInSection:(unint64_t)a3;
-- (unint64_t)titlePositionForSection:(unint64_t)a3;
+- (unint64_t)_mostImportantItemTypeForSection:(unint64_t)section;
+- (unint64_t)itemSizeForSection:(unint64_t)section;
+- (unint64_t)numberOfColumnsInSection:(unint64_t)section;
+- (unint64_t)titlePositionForSection:(unint64_t)section;
 - (void)generateSectionSettings;
-- (void)setLayoutOptions:(id)a3;
+- (void)setLayoutOptions:(id)options;
 @end
 
 @implementation HUQuickControlGridLayoutManager
 
-- (HUQuickControlGridLayoutManager)initWithCollectionView:(id)a3 itemManager:(id)a4 layoutOptions:(id)a5
+- (HUQuickControlGridLayoutManager)initWithCollectionView:(id)view itemManager:(id)manager layoutOptions:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  viewCopy = view;
+  managerCopy = manager;
+  optionsCopy = options;
   v16.receiver = self;
   v16.super_class = HUQuickControlGridLayoutManager;
   v11 = [(HUQuickControlGridLayoutManager *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_collectionView, v8);
-    objc_storeStrong(&v12->_itemManager, a4);
-    objc_storeStrong(&v12->_layoutOptions, a5);
-    v13 = [MEMORY[0x277CBEB18] array];
+    objc_storeWeak(&v11->_collectionView, viewCopy);
+    objc_storeStrong(&v12->_itemManager, manager);
+    objc_storeStrong(&v12->_layoutOptions, options);
+    array = [MEMORY[0x277CBEB18] array];
     sectionSettingsArray = v12->_sectionSettingsArray;
-    v12->_sectionSettingsArray = v13;
+    v12->_sectionSettingsArray = array;
 
     [(HUQuickControlGridLayoutManager *)v12 generateSectionSettings];
   }
@@ -44,51 +44,51 @@
 
 - (HUQuickControlGridLayoutManager)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithCollectionView_itemManager_layoutOptions_);
-  [v4 handleFailureInMethod:a2 object:self file:@"HUQuickControlGridLayoutManager.m" lineNumber:57 description:{@"%s is unavailable; use %@ instead", "-[HUQuickControlGridLayoutManager init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUQuickControlGridLayoutManager.m" lineNumber:57 description:{@"%s is unavailable; use %@ instead", "-[HUQuickControlGridLayoutManager init]", v5}];
 
   return 0;
 }
 
-- (void)setLayoutOptions:(id)a3
+- (void)setLayoutOptions:(id)options
 {
-  v5 = a3;
-  if (self->_layoutOptions != v5)
+  optionsCopy = options;
+  if (self->_layoutOptions != optionsCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_layoutOptions, a3);
+    v6 = optionsCopy;
+    objc_storeStrong(&self->_layoutOptions, options);
     [(HUQuickControlGridLayoutManager *)self generateSectionSettings];
-    v5 = v6;
+    optionsCopy = v6;
   }
 }
 
 - (NSArray)collectionSectionSettings
 {
-  v2 = [(HUQuickControlGridLayoutManager *)self sectionSettingsArray];
-  v3 = [v2 copy];
+  sectionSettingsArray = [(HUQuickControlGridLayoutManager *)self sectionSettingsArray];
+  v3 = [sectionSettingsArray copy];
 
   return v3;
 }
 
-- (unint64_t)itemSizeForSection:(unint64_t)a3
+- (unint64_t)itemSizeForSection:(unint64_t)section
 {
   v34[2] = *MEMORY[0x277D85DE8];
-  v5 = [(HUQuickControlGridLayoutManager *)self itemManager];
-  v6 = [v5 displayedItemsInSection:a3];
+  itemManager = [(HUQuickControlGridLayoutManager *)self itemManager];
+  v6 = [itemManager displayedItemsInSection:section];
   v7 = [v6 count];
 
-  v8 = [(HUQuickControlGridLayoutManager *)self itemManager];
+  itemManager2 = [(HUQuickControlGridLayoutManager *)self itemManager];
   objc_opt_class();
   LOBYTE(v6) = objc_opt_isKindOfClass();
 
   if ((v6 & 1) == 0)
   {
-    v10 = [(HUQuickControlGridLayoutManager *)self viewSizeSubclass];
-    v11 = [(HUQuickControlGridLayoutManager *)self itemManager];
-    v12 = [v11 displayedSectionIdentifierForSectionIndex:a3];
+    viewSizeSubclass = [(HUQuickControlGridLayoutManager *)self viewSizeSubclass];
+    itemManager3 = [(HUQuickControlGridLayoutManager *)self itemManager];
+    v12 = [itemManager3 displayedSectionIdentifierForSectionIndex:section];
 
-    v13 = [(HUQuickControlGridLayoutManager *)self _mostImportantItemTypeForSection:a3];
+    v13 = [(HUQuickControlGridLayoutManager *)self _mostImportantItemTypeForSection:section];
     if ([v12 hasSuffix:@"supplementary"])
     {
       if (v13 == 4)
@@ -104,7 +104,7 @@ LABEL_8:
         v17 = 2;
 LABEL_23:
         v21 = [v14 dictionaryWithObjects:v15 forKeys:v16 count:v17];
-        v9 = HUConstantIntegerForViewSizeSubclass(v10, v21);
+        v9 = HUConstantIntegerForViewSizeSubclass(viewSizeSubclass, v21);
 
         goto LABEL_24;
       }
@@ -117,8 +117,8 @@ LABEL_23:
     {
       if (!v13)
       {
-        v18 = [(HUQuickControlGridLayoutManager *)self itemManager];
-        v19 = [v18 displayedItemsInSectionWithIdentifier:@"supplementary"];
+        itemManager4 = [(HUQuickControlGridLayoutManager *)self itemManager];
+        v19 = [itemManager4 displayedItemsInSectionWithIdentifier:@"supplementary"];
         v20 = [v19 na_any:&__block_literal_global_26];
 
         if (v20)
@@ -242,49 +242,49 @@ uint64_t __54__HUQuickControlGridLayoutManager_itemSizeForSection___block_invoke
 
 - (void)generateSectionSettings
 {
-  v3 = [(HUQuickControlGridLayoutManager *)self itemManager];
-  v4 = [v3 numberOfSections];
+  itemManager = [(HUQuickControlGridLayoutManager *)self itemManager];
+  numberOfSections = [itemManager numberOfSections];
 
-  v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:v4];
+  v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:numberOfSections];
   [(HUQuickControlGridLayoutManager *)self setSectionSettingsArray:v5];
 
-  v6 = [(HUQuickControlGridLayoutManager *)self itemManager];
-  if ([v6 sectionIndexForDisplayedSectionIdentifier:@"sensors"])
+  itemManager2 = [(HUQuickControlGridLayoutManager *)self itemManager];
+  if ([itemManager2 sectionIndexForDisplayedSectionIdentifier:@"sensors"])
   {
     v7 = 0;
   }
 
   else
   {
-    v8 = [(HUQuickControlGridLayoutManager *)self itemManager];
-    v9 = [v8 displayedSectionIdentifierForSectionIndex:1];
+    itemManager3 = [(HUQuickControlGridLayoutManager *)self itemManager];
+    v9 = [itemManager3 displayedSectionIdentifierForSectionIndex:1];
     v7 = [v9 hasSuffix:@"grid"];
   }
 
-  if (v4)
+  if (numberOfSections)
   {
-    for (i = 0; i != v4; ++i)
+    for (i = 0; i != numberOfSections; ++i)
     {
-      v11 = [(HUQuickControlGridLayoutManager *)self itemManager];
-      v12 = [v11 displayedSectionIdentifierForSectionIndex:i];
+      itemManager4 = [(HUQuickControlGridLayoutManager *)self itemManager];
+      v12 = [itemManager4 displayedSectionIdentifierForSectionIndex:i];
 
-      v13 = [(HUQuickControlGridLayoutManager *)self layoutOptions];
+      layoutOptions = [(HUQuickControlGridLayoutManager *)self layoutOptions];
       v14 = [v12 isEqualToString:@"sensors"];
       v15 = off_277DB10D8;
       if ((v14 & 1) != 0 || (v16 = [(HUQuickControlGridLayoutManager *)self _mostImportantItemTypeForSection:i], v15 = off_277DB0FC8, v16 == 6))
       {
         v17 = *v15;
-        v18 = [(HUQuickControlGridLayoutManager *)self layoutOptions];
-        [v18 viewSize];
+        layoutOptions2 = [(HUQuickControlGridLayoutManager *)self layoutOptions];
+        [layoutOptions2 viewSize];
         v19 = [(__objc2_class *)v17 defaultOptionsForViewSize:?];
 
-        v13 = v19;
+        layoutOptions = v19;
       }
 
-      v20 = [(HUQuickControlGridLayoutManager *)self _settingsForSectionNumber:i sectionIdentifier:v12 layoutOptions:v13];
+      v20 = [(HUQuickControlGridLayoutManager *)self _settingsForSectionNumber:i sectionIdentifier:v12 layoutOptions:layoutOptions];
       if (v7 && [v12 isEqualToString:@"grid"])
       {
-        [v13 minimumSectionToSensorSectionSpacing];
+        [layoutOptions minimumSectionToSensorSectionSpacing];
         [v20 setSectionTopPadding:?];
       }
 
@@ -293,46 +293,46 @@ uint64_t __54__HUQuickControlGridLayoutManager_itemSizeForSection___block_invoke
         [v20 setHorizontalAlignment:3];
       }
 
-      v21 = [(HUQuickControlGridLayoutManager *)self sectionSettingsArray];
-      [v21 addObject:v20];
+      sectionSettingsArray = [(HUQuickControlGridLayoutManager *)self sectionSettingsArray];
+      [sectionSettingsArray addObject:v20];
     }
   }
 }
 
-- (id)_settingsForSectionNumber:(unint64_t)a3 sectionIdentifier:(id)a4 layoutOptions:(id)a5
+- (id)_settingsForSectionNumber:(unint64_t)number sectionIdentifier:(id)identifier layoutOptions:(id)options
 {
-  v8 = a5;
-  v9 = a4;
+  optionsCopy = options;
+  identifierCopy = identifier;
   v10 = objc_alloc_init(HUQuickControlCollectionGridLayoutSettings);
-  [(HUQuickControlCollectionGridLayoutSettings *)v10 setSectionNumber:a3];
-  [(HUQuickControlCollectionGridLayoutSettings *)v10 setSectionIdentifier:v9];
+  [(HUQuickControlCollectionGridLayoutSettings *)v10 setSectionNumber:number];
+  [(HUQuickControlCollectionGridLayoutSettings *)v10 setSectionIdentifier:identifierCopy];
 
-  v11 = [(HUQuickControlGridLayoutManager *)self itemManager];
-  v12 = [v11 titleForSection:a3];
+  itemManager = [(HUQuickControlGridLayoutManager *)self itemManager];
+  v12 = [itemManager titleForSection:number];
   [(HUQuickControlCollectionGridLayoutSettings *)v10 setSectionHeader:v12];
 
-  v13 = [(HUQuickControlGridLayoutManager *)self itemManager];
-  v14 = [v13 attributedTitleForSection:a3];
+  itemManager2 = [(HUQuickControlGridLayoutManager *)self itemManager];
+  v14 = [itemManager2 attributedTitleForSection:number];
   [(HUQuickControlCollectionGridLayoutSettings *)v10 setSectionAttributedHeader:v14];
 
-  [(HUQuickControlCollectionGridLayoutSettings *)v10 setTitlePosition:[(HUQuickControlGridLayoutManager *)self titlePositionForSection:a3]];
-  [(HUQuickControlGridLayoutManager *)self sectionTopPaddingInSection:a3 withLayoutOptions:v8];
+  [(HUQuickControlCollectionGridLayoutSettings *)v10 setTitlePosition:[(HUQuickControlGridLayoutManager *)self titlePositionForSection:number]];
+  [(HUQuickControlGridLayoutManager *)self sectionTopPaddingInSection:number withLayoutOptions:optionsCopy];
   [(HUQuickControlCollectionGridLayoutSettings *)v10 setSectionTopPadding:?];
-  [v8 rowSpacing];
+  [optionsCopy rowSpacing];
   [(HUQuickControlCollectionGridLayoutSettings *)v10 setRowSpacing:?];
-  -[HUQuickControlCollectionGridLayoutSettings setPreferredLayoutStyle:](v10, "setPreferredLayoutStyle:", [v8 preferredLayoutStyle]);
+  -[HUQuickControlCollectionGridLayoutSettings setPreferredLayoutStyle:](v10, "setPreferredLayoutStyle:", [optionsCopy preferredLayoutStyle]);
   [(HUQuickControlCollectionGridLayoutSettings *)v10 setHorizontalAlignment:3];
-  v15 = [(HUQuickControlGridLayoutManager *)self itemSizeForSection:a3];
+  v15 = [(HUQuickControlGridLayoutManager *)self itemSizeForSection:number];
   [(HUQuickControlCollectionGridLayoutSettings *)v10 setItemSize:v15];
-  [(HUQuickControlGridLayoutManager *)self interItemSpacingForItemSize:v15 layoutOptions:v8];
+  [(HUQuickControlGridLayoutManager *)self interItemSpacingForItemSize:v15 layoutOptions:optionsCopy];
   v17 = v16;
 
   [(HUQuickControlCollectionGridLayoutSettings *)v10 setInteritemSpacing:v17];
-  v18 = [(HUQuickControlGridLayoutManager *)self itemManager];
-  v19 = [v18 displayedItemsInSection:a3];
+  itemManager3 = [(HUQuickControlGridLayoutManager *)self itemManager];
+  v19 = [itemManager3 displayedItemsInSection:number];
   v20 = [v19 count];
 
-  v21 = [(HUQuickControlGridLayoutManager *)self numberOfColumnsInSection:a3];
+  v21 = [(HUQuickControlGridLayoutManager *)self numberOfColumnsInSection:number];
   [(HUQuickControlCollectionGridLayoutSettings *)v10 setNumberOfItems:v20];
   [(HUQuickControlCollectionGridLayoutSettings *)v10 setNumberOfColumns:v21];
   if (v20 <= v21)
@@ -350,36 +350,36 @@ uint64_t __54__HUQuickControlGridLayoutManager_itemSizeForSection___block_invoke
   return v10;
 }
 
-- (double)interItemSpacingForItemSize:(unint64_t)a3 layoutOptions:(id)a4
+- (double)interItemSpacingForItemSize:(unint64_t)size layoutOptions:(id)options
 {
-  v6 = a4;
-  v7 = v6;
-  if (a3 > 1)
+  optionsCopy = options;
+  v7 = optionsCopy;
+  if (size > 1)
   {
-    if (a3 == 2)
+    if (size == 2)
     {
-      [v6 interitemSpacingForRegularControlSize];
+      [optionsCopy interitemSpacingForRegularControlSize];
       goto LABEL_10;
     }
 
-    if (a3 == 3)
+    if (size == 3)
     {
-      [v6 interitemSpacingForLargeControlSize];
+      [optionsCopy interitemSpacingForLargeControlSize];
       goto LABEL_10;
     }
   }
 
   else
   {
-    if (!a3)
+    if (!size)
     {
-      [v6 interitemSpacingForExtraSmallControlSize];
+      [optionsCopy interitemSpacingForExtraSmallControlSize];
       goto LABEL_10;
     }
 
-    if (a3 == 1)
+    if (size == 1)
     {
-      [v6 interitemSpacingForSmallControlSize];
+      [optionsCopy interitemSpacingForSmallControlSize];
 LABEL_10:
       v4 = v8;
     }
@@ -388,21 +388,21 @@ LABEL_10:
   return v4;
 }
 
-- (double)sectionTopPaddingInSection:(unint64_t)a3 withLayoutOptions:(id)a4
+- (double)sectionTopPaddingInSection:(unint64_t)section withLayoutOptions:(id)options
 {
-  v6 = a4;
-  v7 = v6;
-  if (a3)
+  optionsCopy = options;
+  v7 = optionsCopy;
+  if (section)
   {
-    [v6 minimumSectionSpacing];
+    [optionsCopy minimumSectionSpacing];
     v9 = v8;
-    v10 = [(HUQuickControlGridLayoutManager *)self itemManager];
-    v11 = [v10 displayedSectionIdentifierForSectionIndex:a3];
+    itemManager = [(HUQuickControlGridLayoutManager *)self itemManager];
+    v11 = [itemManager displayedSectionIdentifierForSectionIndex:section];
 
     if ([v11 hasSuffix:@"supplementary"])
     {
-      v12 = [(HUQuickControlGridLayoutManager *)self _mostImportantItemTypeForSection:a3];
-      v13 = [(HUQuickControlGridLayoutManager *)self _mostImportantItemTypeForSection:a3 - 1];
+      v12 = [(HUQuickControlGridLayoutManager *)self _mostImportantItemTypeForSection:section];
+      v13 = [(HUQuickControlGridLayoutManager *)self _mostImportantItemTypeForSection:section - 1];
       if (v12 == 3 && v13 == 2)
       {
         [v7 thermostatSectionSpacingOverride];
@@ -413,15 +413,15 @@ LABEL_10:
     else
     {
       v16 = [v11 isEqualToString:@"sensors"];
-      v17 = a3 - 1;
-      if (a3 != 1 && v16)
+      v17 = section - 1;
+      if (section != 1 && v16)
       {
-        v18 = [(HUQuickControlGridLayoutManager *)self itemManager];
-        v19 = [v18 displayedSectionIdentifierForSectionIndex:a3 - 1];
+        itemManager2 = [(HUQuickControlGridLayoutManager *)self itemManager];
+        v19 = [itemManager2 displayedSectionIdentifierForSectionIndex:section - 1];
 
-        v20 = [(HUQuickControlGridLayoutManager *)self itemManager];
-        v21 = a3 - 2;
-        v22 = [v20 displayedSectionIdentifierForSectionIndex:a3 - 2];
+        itemManager3 = [(HUQuickControlGridLayoutManager *)self itemManager];
+        v21 = section - 2;
+        v22 = [itemManager3 displayedSectionIdentifierForSectionIndex:section - 2];
 
         v23 = [(HUQuickControlGridLayoutManager *)self _mostImportantItemTypeForSection:v17];
         v24 = [(HUQuickControlGridLayoutManager *)self _mostImportantItemTypeForSection:v21];
@@ -436,25 +436,25 @@ LABEL_10:
 
   else
   {
-    [v6 minimumNavBarToControlsSpacing];
+    [optionsCopy minimumNavBarToControlsSpacing];
     v9 = v15;
   }
 
   return v9;
 }
 
-- (unint64_t)numberOfColumnsInSection:(unint64_t)a3
+- (unint64_t)numberOfColumnsInSection:(unint64_t)section
 {
-  v5 = [(HUQuickControlGridLayoutManager *)self itemManager];
-  v6 = [v5 displayedItemsInSection:a3];
+  itemManager = [(HUQuickControlGridLayoutManager *)self itemManager];
+  v6 = [itemManager displayedItemsInSection:section];
   v7 = [v6 count];
 
-  v8 = [(HUQuickControlGridLayoutManager *)self itemManager];
-  v9 = [v8 displayedSectionIdentifierForSectionIndex:a3];
+  itemManager2 = [(HUQuickControlGridLayoutManager *)self itemManager];
+  v9 = [itemManager2 displayedSectionIdentifierForSectionIndex:section];
 
   if ([v9 hasSuffix:@"grid"])
   {
-    v10 = [(HUQuickControlGridLayoutManager *)self _mostImportantItemTypeForSection:a3];
+    v10 = [(HUQuickControlGridLayoutManager *)self _mostImportantItemTypeForSection:section];
     v11 = 2;
     if (v7 < 2)
     {
@@ -493,7 +493,7 @@ LABEL_10:
 
   else
   {
-    v13 = [(HUQuickControlGridLayoutManager *)self _mostImportantItemTypeForSection:a3]- 3;
+    v13 = [(HUQuickControlGridLayoutManager *)self _mostImportantItemTypeForSection:section]- 3;
     v14 = 3;
     if (v7 < 3)
     {
@@ -514,9 +514,9 @@ LABEL_10:
   return v7;
 }
 
-- (unint64_t)titlePositionForSection:(unint64_t)a3
+- (unint64_t)titlePositionForSection:(unint64_t)section
 {
-  v5 = [(HUQuickControlGridLayoutManager *)self itemManager];
+  itemManager = [(HUQuickControlGridLayoutManager *)self itemManager];
   v6 = objc_opt_respondsToSelector();
 
   if ((v6 & 1) == 0)
@@ -525,7 +525,7 @@ LABEL_10:
   }
 
   v7 = MEMORY[0x277CCA940];
-  v8 = [(HUQuickControlGridLayoutManager *)self _viewProfileClassesForSection:a3];
+  v8 = [(HUQuickControlGridLayoutManager *)self _viewProfileClassesForSection:section];
   v9 = [v7 setWithArray:v8];
 
   v21[0] = MEMORY[0x277D85DD0];
@@ -535,8 +535,8 @@ LABEL_10:
   v22 = v9;
   v10 = v9;
   LOBYTE(v8) = [v10 na_any:v21];
-  v11 = [(HUQuickControlGridLayoutManager *)self itemManager];
-  v12 = [v11 displayedItemsInSection:a3];
+  itemManager2 = [(HUQuickControlGridLayoutManager *)self itemManager];
+  v12 = [itemManager2 displayedItemsInSection:section];
 
   v13 = MEMORY[0x277CCA940];
   v14 = [v12 na_map:&__block_literal_global_35_2];
@@ -602,24 +602,24 @@ id __59__HUQuickControlGridLayoutManager_titlePositionForSection___block_invoke_
 
 - (int64_t)viewSizeSubclass
 {
-  v2 = [(HUQuickControlGridLayoutManager *)self layoutOptions];
-  v3 = [v2 viewSizeSubclass];
+  layoutOptions = [(HUQuickControlGridLayoutManager *)self layoutOptions];
+  viewSizeSubclass = [layoutOptions viewSizeSubclass];
 
-  return v3;
+  return viewSizeSubclass;
 }
 
-- (unint64_t)_mostImportantItemTypeForSection:(unint64_t)a3
+- (unint64_t)_mostImportantItemTypeForSection:(unint64_t)section
 {
-  v5 = [(HUQuickControlGridLayoutManager *)self itemManager];
-  v6 = [v5 displayedSectionIdentifierForSectionIndex:a3];
+  itemManager = [(HUQuickControlGridLayoutManager *)self itemManager];
+  v6 = [itemManager displayedSectionIdentifierForSectionIndex:section];
 
   v7 = [v6 hasSuffix:@"supplementary"];
-  v8 = [(HUQuickControlGridLayoutManager *)self itemManager];
+  itemManager2 = [(HUQuickControlGridLayoutManager *)self itemManager];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v10 = [(HUQuickControlGridLayoutManager *)self _viewProfileClassesForSection:a3];
+    v10 = [(HUQuickControlGridLayoutManager *)self _viewProfileClassesForSection:section];
     v11 = v10;
     if (!v7)
     {
@@ -744,10 +744,10 @@ uint64_t __68__HUQuickControlGridLayoutManager__mostImportantItemTypeForSection_
   return [a2 isEqual:v3];
 }
 
-- (id)_viewProfileClassesForSection:(unint64_t)a3
+- (id)_viewProfileClassesForSection:(unint64_t)section
 {
-  v5 = [(HUQuickControlGridLayoutManager *)self itemManager];
-  v6 = [v5 displayedItemsInSection:a3];
+  itemManager = [(HUQuickControlGridLayoutManager *)self itemManager];
+  v6 = [itemManager displayedItemsInSection:section];
 
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;

@@ -1,6 +1,6 @@
 @interface RDClientInterestCache
 + (void)initialize;
-- (void)cache:(id)a3 willEvictObject:(id)a4;
+- (void)cache:(id)cache willEvictObject:(id)object;
 - (void)dealloc;
 @end
 
@@ -8,7 +8,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     qword_100071980 = os_log_create("com.apple.SensorKit", "ClientInterestCache");
   }
@@ -28,15 +28,15 @@
   [(RDClientInterestCache *)&v5 dealloc];
 }
 
-- (void)cache:(id)a3 willEvictObject:(id)a4
+- (void)cache:(id)cache willEvictObject:(id)object
 {
   v6 = qword_100071980;
   if (os_log_type_enabled(qword_100071980, OS_LOG_TYPE_DEBUG))
   {
     v7 = 138543618;
-    v8 = a4;
+    objectCopy = object;
     v9 = 2050;
-    v10 = a3;
+    cacheCopy = cache;
     _os_log_debug_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEBUG, "Evicting %{public}@ from cache: %{public}p", &v7, 0x16u);
   }
 }

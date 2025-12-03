@@ -1,15 +1,15 @@
 @interface CDPAccountRepresentation
-+ (id)representationForAccount:(id)a3;
-+ (id)representationForAltDSID:(id)a3;
++ (id)representationForAccount:(id)account;
++ (id)representationForAltDSID:(id)d;
 + (id)representationForPrimaryAccount;
 - (BOOL)isBeneficiary;
 - (BOOL)isSilentBurnCDPRepairEnabled;
 - (BOOL)isSilentEscrowRecordRepairEnabled;
 - (BOOL)isSilentEscrowRecordRepairEnabledV2;
 - (BOOL)shouldPerformSilentEscrowRecordRepair;
-- (CDPAccountRepresentation)initWithAccount:(id)a3;
-- (CDPAccountRepresentation)initWithAltDSID:(id)a3;
-- (CDPAccountRepresentation)initWithAltDSID:(id)a3 accountStore:(id)a4 accountManager:(id)a5;
+- (CDPAccountRepresentation)initWithAccount:(id)account;
+- (CDPAccountRepresentation)initWithAltDSID:(id)d;
+- (CDPAccountRepresentation)initWithAltDSID:(id)d accountStore:(id)store accountManager:(id)manager;
 - (CDPContext)generatedContext;
 - (NSString)DSID;
 - (NSString)authenticationToken;
@@ -19,30 +19,30 @@
 - (NSString)iCloudEnvironment;
 - (NSString)stashedPRK;
 - (NSString)username;
-- (id)_cachedPropertyValueOfClass:(Class)a3 forKey:(id)a4 staleModifiedDate:(id)a5 account:(id)a6 isStale:(BOOL *)a7;
-- (id)_cachedPropertyValueOfClass:(Class)a3 forKey:(id)a4 valueProducer:(id)a5;
-- (id)_cachedPropertyValueOfClass:(Class)a3 forKey:(id)a4 valueProducer:(id)a5 checkForStale:(BOOL)a6 account:(id)a7 saveHandler:(id)a8;
-- (id)_cachedPropertyValueOfClass:(Class)a3 forKey:(id)a4 valueProducer:(id)a5 saveHandler:(id)a6;
-- (id)_cachedPropertyValueOfClass:(Class)a3 forKey:(id)a4 valueProducer:(id)a5 staleModifiedDate:(id)a6 account:(id)a7 saveHandler:(id)a8;
-- (id)_deserializedPropertyDictionaryForData:(id)a3 withPropertyValueOfClass:(Class)a4 error:(id *)a5;
-- (id)_serializedPropertyDictionaryWithValue:(id)a3 lastModifiedDate:(id)a4 error:(id *)a5;
+- (id)_cachedPropertyValueOfClass:(Class)class forKey:(id)key staleModifiedDate:(id)date account:(id)account isStale:(BOOL *)stale;
+- (id)_cachedPropertyValueOfClass:(Class)class forKey:(id)key valueProducer:(id)producer;
+- (id)_cachedPropertyValueOfClass:(Class)class forKey:(id)key valueProducer:(id)producer checkForStale:(BOOL)stale account:(id)account saveHandler:(id)handler;
+- (id)_cachedPropertyValueOfClass:(Class)class forKey:(id)key valueProducer:(id)producer saveHandler:(id)handler;
+- (id)_cachedPropertyValueOfClass:(Class)class forKey:(id)key valueProducer:(id)producer staleModifiedDate:(id)date account:(id)account saveHandler:(id)handler;
+- (id)_deserializedPropertyDictionaryForData:(id)data withPropertyValueOfClass:(Class)class error:(id *)error;
+- (id)_serializedPropertyDictionaryWithValue:(id)value lastModifiedDate:(id)date error:(id *)error;
 - (unint64_t)securityLevel;
-- (void)_cachePropertyValue:(id)a3 forKey:(id)a4 lastModifiedDate:(id)a5 account:(id)a6 saveHandler:(id)a7;
+- (void)_cachePropertyValue:(id)value forKey:(id)key lastModifiedDate:(id)date account:(id)account saveHandler:(id)handler;
 - (void)generatedContext;
 - (void)isSilentBurnCDPRepairEnabled;
 - (void)shouldPerformSilentEscrowRecordRepair;
-- (void)silentEscrowRecordRepairEnabledWithCompletion:(id)a3;
+- (void)silentEscrowRecordRepairEnabledWithCompletion:(id)completion;
 @end
 
 @implementation CDPAccountRepresentation
 
-- (CDPAccountRepresentation)initWithAltDSID:(id)a3 accountStore:(id)a4 accountManager:(id)a5
+- (CDPAccountRepresentation)initWithAltDSID:(id)d accountStore:(id)store accountManager:(id)manager
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [v10 aa_appleAccountWithAltDSID:v9];
-  v13 = [v11 authKitAccountWithAltDSID:v9];
+  dCopy = d;
+  storeCopy = store;
+  managerCopy = manager;
+  v12 = [storeCopy aa_appleAccountWithAltDSID:dCopy];
+  v13 = [managerCopy authKitAccountWithAltDSID:dCopy];
   v14 = v13;
   if (v12 && v13)
   {
@@ -52,15 +52,15 @@
     p_isa = &v15->super.isa;
     if (v15)
     {
-      objc_storeStrong(&v15->_altDSID, a3);
+      objc_storeStrong(&v15->_altDSID, d);
       objc_storeStrong(p_isa + 1, v12);
       objc_storeStrong(p_isa + 2, v14);
-      objc_storeStrong(p_isa + 4, a4);
-      objc_storeStrong(p_isa + 5, a5);
+      objc_storeStrong(p_isa + 4, store);
+      objc_storeStrong(p_isa + 5, manager);
     }
 
     self = p_isa;
-    v17 = self;
+    selfCopy = self;
   }
 
   else
@@ -71,70 +71,70 @@
       [CDPAccountRepresentation initWithAltDSID:accountStore:accountManager:];
     }
 
-    v17 = 0;
+    selfCopy = 0;
   }
 
-  return v17;
+  return selfCopy;
 }
 
-- (CDPAccountRepresentation)initWithAltDSID:(id)a3
+- (CDPAccountRepresentation)initWithAltDSID:(id)d
 {
   v4 = MEMORY[0x1E6959A48];
-  v5 = a3;
-  v6 = [v4 defaultStore];
-  v7 = [MEMORY[0x1E698DC80] sharedInstance];
-  v8 = [(CDPAccountRepresentation *)self initWithAltDSID:v5 accountStore:v6 accountManager:v7];
+  dCopy = d;
+  defaultStore = [v4 defaultStore];
+  mEMORY[0x1E698DC80] = [MEMORY[0x1E698DC80] sharedInstance];
+  v8 = [(CDPAccountRepresentation *)self initWithAltDSID:dCopy accountStore:defaultStore accountManager:mEMORY[0x1E698DC80]];
 
   return v8;
 }
 
-- (CDPAccountRepresentation)initWithAccount:(id)a3
+- (CDPAccountRepresentation)initWithAccount:(id)account
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E698DC80] sharedInstance];
-  v6 = [v5 altDSIDForAccount:v4];
+  accountCopy = account;
+  mEMORY[0x1E698DC80] = [MEMORY[0x1E698DC80] sharedInstance];
+  v6 = [mEMORY[0x1E698DC80] altDSIDForAccount:accountCopy];
 
   if (v6)
   {
-    v7 = [v4 accountStore];
-    v8 = [MEMORY[0x1E698DC80] sharedInstance];
-    self = [(CDPAccountRepresentation *)self initWithAltDSID:v6 accountStore:v7 accountManager:v8];
+    accountStore = [accountCopy accountStore];
+    mEMORY[0x1E698DC80]2 = [MEMORY[0x1E698DC80] sharedInstance];
+    self = [(CDPAccountRepresentation *)self initWithAltDSID:v6 accountStore:accountStore accountManager:mEMORY[0x1E698DC80]2];
 
-    v9 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
-+ (id)representationForAltDSID:(id)a3
++ (id)representationForAltDSID:(id)d
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithAltDSID:v4];
+  dCopy = d;
+  v5 = [[self alloc] initWithAltDSID:dCopy];
 
   return v5;
 }
 
-+ (id)representationForAccount:(id)a3
++ (id)representationForAccount:(id)account
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithAccount:v4];
+  accountCopy = account;
+  v5 = [[self alloc] initWithAccount:accountCopy];
 
   return v5;
 }
 
 + (id)representationForPrimaryAccount
 {
-  v3 = [MEMORY[0x1E6959A48] defaultStore];
-  v4 = [v3 aa_primaryAppleAccount];
+  defaultStore = [MEMORY[0x1E6959A48] defaultStore];
+  aa_primaryAppleAccount = [defaultStore aa_primaryAppleAccount];
 
-  if (v4)
+  if (aa_primaryAppleAccount)
   {
-    v5 = [a1 representationForAccount:v4];
+    v5 = [self representationForAccount:aa_primaryAppleAccount];
   }
 
   else
@@ -147,32 +147,32 @@
 
 - (NSString)username
 {
-  v2 = [(CDPAccountRepresentation *)self appleAccount];
-  v3 = [v2 username];
+  appleAccount = [(CDPAccountRepresentation *)self appleAccount];
+  username = [appleAccount username];
 
-  return v3;
+  return username;
 }
 
 - (NSString)DSID
 {
-  v2 = [(CDPAccountRepresentation *)self appleAccount];
-  v3 = [v2 aa_personID];
+  appleAccount = [(CDPAccountRepresentation *)self appleAccount];
+  aa_personID = [appleAccount aa_personID];
 
-  return v3;
+  return aa_personID;
 }
 
 - (NSString)authenticationToken
 {
-  v2 = [(CDPAccountRepresentation *)self appleAccount];
-  v3 = [v2 aa_authToken];
+  appleAccount = [(CDPAccountRepresentation *)self appleAccount];
+  aa_authToken = [appleAccount aa_authToken];
 
-  return v3;
+  return aa_authToken;
 }
 
 - (NSString)escrowURLString
 {
-  v2 = [(CDPAccountRepresentation *)self appleAccount];
-  v3 = [v2 propertiesForDataclass:*MEMORY[0x1E6959B20]];
+  appleAccount = [(CDPAccountRepresentation *)self appleAccount];
+  v3 = [appleAccount propertiesForDataclass:*MEMORY[0x1E6959B20]];
 
   v4 = [v3 objectForKeyedSubscript:@"escrowProxyUrl"];
 
@@ -181,9 +181,9 @@
 
 - (NSString)iCloudEnvironment
 {
-  v2 = [(CDPAccountRepresentation *)self appleAccount];
-  v3 = [v2 dataclassProperties];
-  v4 = [v3 objectForKeyedSubscript:@"com.apple.Dataclass.Account"];
+  appleAccount = [(CDPAccountRepresentation *)self appleAccount];
+  dataclassProperties = [appleAccount dataclassProperties];
+  v4 = [dataclassProperties objectForKeyedSubscript:@"com.apple.Dataclass.Account"];
 
   v5 = [v4 objectForKeyedSubscript:@"iCloudEnv"];
 
@@ -192,43 +192,43 @@
 
 - (NSString)firstName
 {
-  v2 = [(CDPAccountRepresentation *)self appleAccount];
-  v3 = [v2 aa_firstName];
+  appleAccount = [(CDPAccountRepresentation *)self appleAccount];
+  aa_firstName = [appleAccount aa_firstName];
 
-  return v3;
+  return aa_firstName;
 }
 
 - (NSString)fullName
 {
-  v2 = [(CDPAccountRepresentation *)self appleAccount];
-  v3 = [v2 aa_fullName];
+  appleAccount = [(CDPAccountRepresentation *)self appleAccount];
+  aa_fullName = [appleAccount aa_fullName];
 
-  return v3;
+  return aa_fullName;
 }
 
 - (NSString)stashedPRK
 {
-  v3 = [(CDPAccountRepresentation *)self accountManager];
-  v4 = [(CDPAccountRepresentation *)self authKitAccount];
-  v5 = [v3 passwordResetTokenBackupForAccount:v4];
+  accountManager = [(CDPAccountRepresentation *)self accountManager];
+  authKitAccount = [(CDPAccountRepresentation *)self authKitAccount];
+  v5 = [accountManager passwordResetTokenBackupForAccount:authKitAccount];
 
   return v5;
 }
 
 - (unint64_t)securityLevel
 {
-  v3 = [(CDPAccountRepresentation *)self accountManager];
-  v4 = [(CDPAccountRepresentation *)self authKitAccount];
-  v5 = [v3 securityLevelForAccount:v4];
+  accountManager = [(CDPAccountRepresentation *)self accountManager];
+  authKitAccount = [(CDPAccountRepresentation *)self authKitAccount];
+  v5 = [accountManager securityLevelForAccount:authKitAccount];
 
   return v5;
 }
 
 - (BOOL)isBeneficiary
 {
-  v3 = [(CDPAccountRepresentation *)self accountManager];
-  v4 = [(CDPAccountRepresentation *)self authKitAccount];
-  v5 = [v3 isBeneficiaryForAccount:v4];
+  accountManager = [(CDPAccountRepresentation *)self accountManager];
+  authKitAccount = [(CDPAccountRepresentation *)self authKitAccount];
+  v5 = [accountManager isBeneficiaryForAccount:authKitAccount];
 
   return v5;
 }
@@ -236,9 +236,9 @@
 - (BOOL)isSilentEscrowRecordRepairEnabled
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = [(CDPAccountRepresentation *)self accountManager];
-  v4 = [(CDPAccountRepresentation *)self authKitAccount];
-  v5 = [v3 isSilentEscrowRecordRepairEnabledForAccount:v4];
+  accountManager = [(CDPAccountRepresentation *)self accountManager];
+  authKitAccount = [(CDPAccountRepresentation *)self authKitAccount];
+  v5 = [accountManager isSilentEscrowRecordRepairEnabledForAccount:authKitAccount];
 
   v6 = _CDPLogSystem();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
@@ -247,13 +247,13 @@
     if (v7)
     {
       v11 = 138412546;
-      v12 = self;
+      selfCopy2 = self;
       v13 = 2112;
       v14 = v5;
       _os_log_impl(&dword_1DED99000, v6, OS_LOG_TYPE_DEFAULT, "%@: Returning %@ for 'isSilentEscrowRecordRepairEnabled'", &v11, 0x16u);
     }
 
-    v8 = [v5 BOOLValue];
+    bOOLValue = [v5 BOOLValue];
   }
 
   else
@@ -261,23 +261,23 @@
     if (v7)
     {
       v11 = 138412290;
-      v12 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1DED99000, v6, OS_LOG_TYPE_DEFAULT, "%@: Assuming silent escrow record repair is disabled", &v11, 0xCu);
     }
 
-    v8 = 0;
+    bOOLValue = 0;
   }
 
   v9 = *MEMORY[0x1E69E9840];
-  return v8;
+  return bOOLValue;
 }
 
 - (BOOL)isSilentEscrowRecordRepairEnabledV2
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = [(CDPAccountRepresentation *)self accountManager];
-  v4 = [(CDPAccountRepresentation *)self authKitAccount];
-  v5 = [v3 isSilentEscrowRecordRepairEnabledForAccountV2:v4];
+  accountManager = [(CDPAccountRepresentation *)self accountManager];
+  authKitAccount = [(CDPAccountRepresentation *)self authKitAccount];
+  v5 = [accountManager isSilentEscrowRecordRepairEnabledForAccountV2:authKitAccount];
 
   v6 = _CDPLogSystem();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
@@ -286,13 +286,13 @@
     if (v7)
     {
       v11 = 138412546;
-      v12 = self;
+      selfCopy2 = self;
       v13 = 2112;
       v14 = v5;
       _os_log_impl(&dword_1DED99000, v6, OS_LOG_TYPE_DEFAULT, "%@: Returning %@ for 'isSilentEscrowRecordRepairEnabledV2'", &v11, 0x16u);
     }
 
-    v8 = [v5 BOOLValue];
+    bOOLValue = [v5 BOOLValue];
   }
 
   else
@@ -300,21 +300,21 @@
     if (v7)
     {
       v11 = 138412290;
-      v12 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1DED99000, v6, OS_LOG_TYPE_DEFAULT, "%@: Assuming silent escrow record repair V2 is disabled", &v11, 0xCu);
     }
 
-    v8 = 0;
+    bOOLValue = 0;
   }
 
   v9 = *MEMORY[0x1E69E9840];
-  return v8;
+  return bOOLValue;
 }
 
 - (BOOL)isSilentBurnCDPRepairEnabled
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [(CDPAccountRepresentation *)self accountManager];
+  accountManager = [(CDPAccountRepresentation *)self accountManager];
   v4 = objc_opt_respondsToSelector();
 
   if ((v4 & 1) == 0)
@@ -328,9 +328,9 @@
     goto LABEL_11;
   }
 
-  v5 = [(CDPAccountRepresentation *)self accountManager];
-  v6 = [(CDPAccountRepresentation *)self authKitAccount];
-  v7 = [v5 isSilentBurnCDPRepairEnabledForAccount:v6];
+  accountManager2 = [(CDPAccountRepresentation *)self accountManager];
+  authKitAccount = [(CDPAccountRepresentation *)self authKitAccount];
+  v7 = [accountManager2 isSilentBurnCDPRepairEnabledForAccount:authKitAccount];
 
   v8 = _CDPLogSystem();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
@@ -339,29 +339,29 @@
     if (v9)
     {
       v13 = 138412290;
-      v14 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1DED99000, v8, OS_LOG_TYPE_DEFAULT, "%@: Assuming silent burn in mini-buddy is disabled", &v13, 0xCu);
     }
 
 LABEL_11:
-    v10 = 0;
+    bOOLValue = 0;
     goto LABEL_12;
   }
 
   if (v9)
   {
     v13 = 138412546;
-    v14 = self;
+    selfCopy2 = self;
     v15 = 2112;
     v16 = v7;
     _os_log_impl(&dword_1DED99000, v8, OS_LOG_TYPE_DEFAULT, "%@: Returning %@ for 'isSilentBurnCDPRepairEnabled'", &v13, 0x16u);
   }
 
-  v10 = [v7 BOOLValue];
+  bOOLValue = [v7 BOOLValue];
 LABEL_12:
 
   v11 = *MEMORY[0x1E69E9840];
-  return v10;
+  return bOOLValue;
 }
 
 - (BOOL)shouldPerformSilentEscrowRecordRepair
@@ -369,10 +369,10 @@ LABEL_12:
   v16 = *MEMORY[0x1E69E9840];
   if ([(CDPAccountRepresentation *)self isSilentEscrowRecordRepairEnabledV2])
   {
-    v3 = [(CDPAccountRepresentation *)self generatedContext];
-    if (v3)
+    generatedContext = [(CDPAccountRepresentation *)self generatedContext];
+    if (generatedContext)
     {
-      v4 = [(CDPController *)[CDPStateController alloc] initWithContext:v3];
+      v4 = [(CDPController *)[CDPStateController alloc] initWithContext:generatedContext];
       v11 = 0;
       v5 = [(CDPStateController *)v4 shouldPerformSilentEscrowRecordRepairUsingCache:1 error:&v11];
       v6 = v11;
@@ -391,7 +391,7 @@ LABEL_12:
       else if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        v13 = self;
+        selfCopy2 = self;
         v14 = 1024;
         v15 = v5;
         _os_log_impl(&dword_1DED99000, v8, OS_LOG_TYPE_DEFAULT, "%@: Checked if escrow record repair is needed (%{BOOL}d)", buf, 0x12u);
@@ -412,12 +412,12 @@ LABEL_12:
 
   else
   {
-    v3 = _CDPLogSystem();
-    if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+    generatedContext = _CDPLogSystem();
+    if (os_log_type_enabled(generatedContext, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v13 = self;
-      _os_log_impl(&dword_1DED99000, v3, OS_LOG_TYPE_DEFAULT, "%@: Silent escrow record repair is disabled by server, returning NO", buf, 0xCu);
+      selfCopy2 = self;
+      _os_log_impl(&dword_1DED99000, generatedContext, OS_LOG_TYPE_DEFAULT, "%@: Silent escrow record repair is disabled by server, returning NO", buf, 0xCu);
     }
 
     LOBYTE(v5) = 0;
@@ -430,31 +430,31 @@ LABEL_12:
 - (CDPContext)generatedContext
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [(CDPAccountRepresentation *)self DSID];
-  if (v3)
+  dSID = [(CDPAccountRepresentation *)self DSID];
+  if (dSID)
   {
     v4 = objc_alloc_init(CDPContext);
-    v5 = [MEMORY[0x1E696AD98] numberWithLongLong:{objc_msgSend(v3, "longLongValue")}];
+    v5 = [MEMORY[0x1E696AD98] numberWithLongLong:{objc_msgSend(dSID, "longLongValue")}];
     [(CDPContext *)v4 setDsid:v5];
 
-    v6 = [(CDPAccountRepresentation *)self altDSID];
-    [(CDPContext *)v4 setAltDSID:v6];
+    altDSID = [(CDPAccountRepresentation *)self altDSID];
+    [(CDPContext *)v4 setAltDSID:altDSID];
 
-    v7 = [(CDPAccountRepresentation *)self username];
-    [(CDPContext *)v4 setAppleID:v7];
+    username = [(CDPAccountRepresentation *)self username];
+    [(CDPContext *)v4 setAppleID:username];
 
     [(CDPContext *)v4 setIsBeneficiaryAccount:[(CDPAccountRepresentation *)self isBeneficiary]];
     v8 = _CDPLogSystem();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v11 = 138413058;
-      v12 = self;
+      selfCopy = self;
       v13 = 2112;
       v14 = v4;
       v15 = 2160;
       v16 = 1752392040;
       v17 = 2112;
-      v18 = v3;
+      v18 = dSID;
       _os_log_impl(&dword_1DED99000, v8, OS_LOG_TYPE_DEFAULT, "%@: Generated context (%@) for account with DSID (%{mask.hash}@)", &v11, 0x2Au);
     }
   }
@@ -514,18 +514,18 @@ void __62__CDPAccountRepresentation_isICDPEnabledByCheckingWithServer___block_in
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)silentEscrowRecordRepairEnabledWithCompletion:(id)a3
+- (void)silentEscrowRecordRepairEnabledWithCompletion:(id)completion
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CDPAccountRepresentation *)self accountManager];
+  completionCopy = completion;
+  accountManager = [(CDPAccountRepresentation *)self accountManager];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(CDPAccountRepresentation *)self accountManager];
-    v8 = [(CDPAccountRepresentation *)self authKitAccount];
-    v9 = [v7 isSilentEscrowRecordRepairEnabledForAccount:v8];
+    accountManager2 = [(CDPAccountRepresentation *)self accountManager];
+    authKitAccount = [(CDPAccountRepresentation *)self authKitAccount];
+    v9 = [accountManager2 isSilentEscrowRecordRepairEnabledForAccount:authKitAccount];
 
     v10 = _CDPLogSystem();
     v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
@@ -533,19 +533,19 @@ void __62__CDPAccountRepresentation_isICDPEnabledByCheckingWithServer___block_in
     {
       if (v11)
       {
-        v12 = [(CDPAccountRepresentation *)self authKitAccount];
+        authKitAccount2 = [(CDPAccountRepresentation *)self authKitAccount];
         *buf = 138412803;
-        v26 = self;
+        selfCopy2 = self;
         v27 = 2112;
         v28 = v9;
         v29 = 2117;
-        v30 = v12;
+        v30 = authKitAccount2;
         _os_log_impl(&dword_1DED99000, v10, OS_LOG_TYPE_DEFAULT, "%@: Returning cached 'silentEscrowRecordRepairEnabled' value (%@) from account (%{sensitive}@)", buf, 0x20u);
       }
 
-      if (v4)
+      if (completionCopy)
       {
-        v4[2](v4, [v9 BOOLValue], 0);
+        completionCopy[2](completionCopy, [v9 BOOLValue], 0);
       }
 
       goto LABEL_21;
@@ -553,19 +553,19 @@ void __62__CDPAccountRepresentation_isICDPEnabledByCheckingWithServer___block_in
 
     if (v11)
     {
-      v14 = [(CDPAccountRepresentation *)self altDSID];
+      altDSID = [(CDPAccountRepresentation *)self altDSID];
       *buf = 138412802;
-      v26 = self;
+      selfCopy2 = self;
       v27 = 2160;
       v28 = 1752392040;
       v29 = 2112;
-      v30 = v14;
+      v30 = altDSID;
       _os_log_impl(&dword_1DED99000, v10, OS_LOG_TYPE_DEFAULT, "%@: Calling to fetch user info for altDSID (%{mask.hash}@) for 'silentEscrowRecordRepairEnabled' value", buf, 0x20u);
     }
 
     v15 = objc_alloc_init(MEMORY[0x1E698DCB8]);
-    v16 = [(CDPAccountRepresentation *)self altDSID];
-    [v15 setAltDSID:v16];
+    altDSID2 = [(CDPAccountRepresentation *)self altDSID];
+    [v15 setAltDSID:altDSID2];
 
     [v15 setAppProvidedContext:@"silentEscrowRecordRepair"];
     v17 = objc_alloc_init(MEMORY[0x1E698DCC0]);
@@ -576,8 +576,8 @@ void __62__CDPAccountRepresentation_isICDPEnabledByCheckingWithServer___block_in
       v21[2] = __74__CDPAccountRepresentation_silentEscrowRecordRepairEnabledWithCompletion___block_invoke;
       v21[3] = &unk_1E869D280;
       v22 = v15;
-      v23 = self;
-      v24 = v4;
+      selfCopy3 = self;
+      v24 = completionCopy;
       [v17 getUserInformationWithContext:v22 completion:v21];
 
       v18 = v22;
@@ -591,13 +591,13 @@ void __62__CDPAccountRepresentation_isICDPEnabledByCheckingWithServer___block_in
         [CDPAccountRepresentation silentEscrowRecordRepairEnabledWithCompletion:];
       }
 
-      if (!v4)
+      if (!completionCopy)
       {
         goto LABEL_20;
       }
 
       v18 = [MEMORY[0x1E696ABC0] cdp_errorWithCode:0];
-      (v4)[2](v4, 0, v18);
+      (completionCopy)[2](completionCopy, 0, v18);
     }
 
 LABEL_20:
@@ -610,10 +610,10 @@ LABEL_20:
     [CDPAccountRepresentation silentEscrowRecordRepairEnabledWithCompletion:?];
   }
 
-  if (v4)
+  if (completionCopy)
   {
     v9 = [MEMORY[0x1E696ABC0] cdp_errorWithCode:0];
-    (v4)[2](v4, 0, v9);
+    (completionCopy)[2](completionCopy, 0, v9);
 LABEL_21:
   }
 
@@ -686,35 +686,35 @@ LABEL_16:
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_cachedPropertyValueOfClass:(Class)a3 forKey:(id)a4 valueProducer:(id)a5
+- (id)_cachedPropertyValueOfClass:(Class)class forKey:(id)key valueProducer:(id)producer
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [(CDPAccountRepresentation *)self appleAccount];
-  v11 = [(CDPAccountRepresentation *)self _cachedPropertyValueOfClass:a3 forKey:v9 valueProducer:v8 checkForStale:1 account:v10 saveHandler:0];
+  producerCopy = producer;
+  keyCopy = key;
+  appleAccount = [(CDPAccountRepresentation *)self appleAccount];
+  v11 = [(CDPAccountRepresentation *)self _cachedPropertyValueOfClass:class forKey:keyCopy valueProducer:producerCopy checkForStale:1 account:appleAccount saveHandler:0];
 
   return v11;
 }
 
-- (id)_cachedPropertyValueOfClass:(Class)a3 forKey:(id)a4 valueProducer:(id)a5 saveHandler:(id)a6
+- (id)_cachedPropertyValueOfClass:(Class)class forKey:(id)key valueProducer:(id)producer saveHandler:(id)handler
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = [(CDPAccountRepresentation *)self appleAccount];
-  v14 = [(CDPAccountRepresentation *)self _cachedPropertyValueOfClass:a3 forKey:v12 valueProducer:v11 checkForStale:1 account:v13 saveHandler:v10];
+  handlerCopy = handler;
+  producerCopy = producer;
+  keyCopy = key;
+  appleAccount = [(CDPAccountRepresentation *)self appleAccount];
+  v14 = [(CDPAccountRepresentation *)self _cachedPropertyValueOfClass:class forKey:keyCopy valueProducer:producerCopy checkForStale:1 account:appleAccount saveHandler:handlerCopy];
 
   return v14;
 }
 
-- (id)_cachedPropertyValueOfClass:(Class)a3 forKey:(id)a4 valueProducer:(id)a5 checkForStale:(BOOL)a6 account:(id)a7 saveHandler:(id)a8
+- (id)_cachedPropertyValueOfClass:(Class)class forKey:(id)key valueProducer:(id)producer checkForStale:(BOOL)stale account:(id)account saveHandler:(id)handler
 {
-  v10 = a6;
-  v14 = a4;
-  v15 = a5;
-  v16 = a7;
-  v17 = a8;
-  if (v10)
+  staleCopy = stale;
+  keyCopy = key;
+  producerCopy = producer;
+  accountCopy = account;
+  handlerCopy = handler;
+  if (staleCopy)
   {
     v18 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:-86400.0];
   }
@@ -724,20 +724,20 @@ LABEL_16:
     v18 = 0;
   }
 
-  v19 = [(CDPAccountRepresentation *)self _cachedPropertyValueOfClass:a3 forKey:v14 valueProducer:v15 staleModifiedDate:v18 account:v16 saveHandler:v17];
+  v19 = [(CDPAccountRepresentation *)self _cachedPropertyValueOfClass:class forKey:keyCopy valueProducer:producerCopy staleModifiedDate:v18 account:accountCopy saveHandler:handlerCopy];
 
   return v19;
 }
 
-- (id)_cachedPropertyValueOfClass:(Class)a3 forKey:(id)a4 valueProducer:(id)a5 staleModifiedDate:(id)a6 account:(id)a7 saveHandler:(id)a8
+- (id)_cachedPropertyValueOfClass:(Class)class forKey:(id)key valueProducer:(id)producer staleModifiedDate:(id)date account:(id)account saveHandler:(id)handler
 {
   v33 = *MEMORY[0x1E69E9840];
-  v14 = a4;
-  v15 = a5;
-  v16 = a7;
-  v17 = a8;
+  keyCopy = key;
+  producerCopy = producer;
+  accountCopy = account;
+  handlerCopy = handler;
   v26 = 0;
-  v18 = [(CDPAccountRepresentation *)self _cachedPropertyValueOfClass:a3 forKey:v14 staleModifiedDate:a6 account:v16 isStale:&v26];
+  v18 = [(CDPAccountRepresentation *)self _cachedPropertyValueOfClass:class forKey:keyCopy staleModifiedDate:date account:accountCopy isStale:&v26];
   if (!v18 || v26 == 1)
   {
     v19 = _CDPLogSystem();
@@ -746,14 +746,14 @@ LABEL_16:
       [CDPAccountRepresentation _cachedPropertyValueOfClass:forKey:valueProducer:staleModifiedDate:account:saveHandler:];
     }
 
-    v20 = v15[2](v15);
+    v20 = producerCopy[2](producerCopy);
     v21 = _CDPLogSystem();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412802;
-      v28 = self;
+      selfCopy = self;
       v29 = 2112;
-      v30 = v14;
+      v30 = keyCopy;
       v31 = 2112;
       v32 = v20;
       _os_log_debug_impl(&dword_1DED99000, v21, OS_LOG_TYPE_DEBUG, "%@: Called value producer for key (%@) and received value (%@)", buf, 0x20u);
@@ -761,8 +761,8 @@ LABEL_16:
 
     if (v20)
     {
-      v22 = [MEMORY[0x1E695DF00] date];
-      [(CDPAccountRepresentation *)self _cachePropertyValue:v20 forKey:v14 lastModifiedDate:v22 account:v16 saveHandler:v17];
+      date = [MEMORY[0x1E695DF00] date];
+      [(CDPAccountRepresentation *)self _cachePropertyValue:v20 forKey:keyCopy lastModifiedDate:date account:accountCopy saveHandler:handlerCopy];
 
       v23 = v20;
       v18 = v23;
@@ -774,15 +774,15 @@ LABEL_16:
   return v18;
 }
 
-- (id)_cachedPropertyValueOfClass:(Class)a3 forKey:(id)a4 staleModifiedDate:(id)a5 account:(id)a6 isStale:(BOOL *)a7
+- (id)_cachedPropertyValueOfClass:(Class)class forKey:(id)key staleModifiedDate:(id)date account:(id)account isStale:(BOOL *)stale
 {
   v41 = *MEMORY[0x1E69E9840];
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  [(__CFString *)v14 refresh];
+  keyCopy = key;
+  dateCopy = date;
+  accountCopy = account;
+  [(__CFString *)accountCopy refresh];
   objc_opt_class();
-  v15 = [(__CFString *)v14 accountPropertyForKey:v12];
+  v15 = [(__CFString *)accountCopy accountPropertyForKey:keyCopy];
   if (objc_opt_isKindOfClass())
   {
     v16 = v15;
@@ -796,11 +796,11 @@ LABEL_16:
   if (v16)
   {
     v30 = 0;
-    v17 = [(CDPAccountRepresentation *)self _deserializedPropertyDictionaryForData:v16 withPropertyValueOfClass:a3 error:&v30];
+    v17 = [(CDPAccountRepresentation *)self _deserializedPropertyDictionaryForData:v16 withPropertyValueOfClass:class error:&v30];
     v18 = v30;
     if (v17)
     {
-      v29 = a7;
+      staleCopy = stale;
       objc_opt_class();
       v19 = [(__CFString *)v17 objectForKeyedSubscript:@"com.apple.cdp.appleaccount.property.last-modified-date"];
       if (objc_opt_isKindOfClass())
@@ -828,27 +828,27 @@ LABEL_16:
 
         if (v23)
         {
-          if (v13 && [v20 compare:v13]== -1)
+          if (dateCopy && [v20 compare:dateCopy]== -1)
           {
             v26 = _CDPLogSystem();
             if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
             {
               *buf = 138413314;
-              v32 = self;
+              selfCopy5 = self;
               v33 = 2112;
               v34 = @"com.apple.cdp.appleaccount.property";
               v35 = 2112;
-              v36 = v12;
+              v36 = keyCopy;
               v37 = 2112;
               v38 = v20;
               v39 = 2112;
-              v40 = v13;
+              v40 = dateCopy;
               _os_log_debug_impl(&dword_1DED99000, v26, OS_LOG_TYPE_DEBUG, "%@: Cached property value (%@) for key (%@) is stale (lastModifiedDate [%@] < staleModifiedDate [%@])", buf, 0x34u);
             }
 
-            if (v29)
+            if (staleCopy)
             {
-              *v29 = 1;
+              *staleCopy = 1;
             }
           }
 
@@ -860,9 +860,9 @@ LABEL_16:
               [CDPAccountRepresentation _cachedPropertyValueOfClass:forKey:staleModifiedDate:account:isStale:];
             }
 
-            if (v29)
+            if (staleCopy)
             {
-              *v29 = 0;
+              *staleCopy = 0;
             }
           }
 
@@ -876,11 +876,11 @@ LABEL_16:
           if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
           {
             *buf = 138412802;
-            v32 = self;
+            selfCopy5 = self;
             v33 = 2112;
             v34 = v17;
             v35 = 2112;
-            v36 = v12;
+            v36 = keyCopy;
             _os_log_debug_impl(&dword_1DED99000, v25, OS_LOG_TYPE_DEBUG, "%@: Found nil property value in cached property dictionary (%@) for key (%@)", buf, 0x20u);
           }
 
@@ -894,11 +894,11 @@ LABEL_16:
         if (os_log_type_enabled(v23, OS_LOG_TYPE_FAULT))
         {
           *buf = 138412802;
-          v32 = self;
+          selfCopy5 = self;
           v33 = 2112;
           v34 = v17;
           v35 = 2112;
-          v36 = v12;
+          v36 = keyCopy;
           _os_log_fault_impl(&dword_1DED99000, v23, OS_LOG_TYPE_FAULT, "%@: Expected lastModifiedDate value in cached property dictionary (%@) for key (%@)", buf, 0x20u);
         }
 
@@ -912,9 +912,9 @@ LABEL_16:
       if (os_log_type_enabled(v20, OS_LOG_TYPE_FAULT))
       {
         *buf = 138413058;
-        v32 = self;
+        selfCopy5 = self;
         v33 = 2112;
-        v34 = v12;
+        v34 = keyCopy;
         v35 = 2112;
         v36 = v16;
         v37 = 2112;
@@ -932,11 +932,11 @@ LABEL_16:
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412802;
-      v32 = self;
+      selfCopy5 = self;
       v33 = 2112;
-      v34 = v12;
+      v34 = keyCopy;
       v35 = 2112;
-      v36 = v14;
+      v36 = accountCopy;
       _os_log_debug_impl(&dword_1DED99000, v18, OS_LOG_TYPE_DEBUG, "%@: No cached property for key (%@) was found on account (%@)", buf, 0x20u);
     }
 
@@ -948,29 +948,29 @@ LABEL_16:
   return v21;
 }
 
-- (void)_cachePropertyValue:(id)a3 forKey:(id)a4 lastModifiedDate:(id)a5 account:(id)a6 saveHandler:(id)a7
+- (void)_cachePropertyValue:(id)value forKey:(id)key lastModifiedDate:(id)date account:(id)account saveHandler:(id)handler
 {
   v33 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
+  valueCopy = value;
+  keyCopy = key;
+  accountCopy = account;
+  handlerCopy = handler;
   v26 = 0;
-  v16 = [(CDPAccountRepresentation *)self _serializedPropertyDictionaryWithValue:v12 lastModifiedDate:a5 error:&v26];
+  v16 = [(CDPAccountRepresentation *)self _serializedPropertyDictionaryWithValue:valueCopy lastModifiedDate:date error:&v26];
   v17 = v26;
-  if (!v12 || v16)
+  if (!valueCopy || v16)
   {
-    [v14 setAccountProperty:v16 forKey:v13];
-    v19 = [v14 accountStore];
+    [accountCopy setAccountProperty:v16 forKey:keyCopy];
+    accountStore = [accountCopy accountStore];
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v21[2] = __92__CDPAccountRepresentation__cachePropertyValue_forKey_lastModifiedDate_account_saveHandler___block_invoke;
     v21[3] = &unk_1E869D2A8;
-    v22 = v12;
-    v23 = v13;
-    v24 = v14;
-    v25 = v15;
-    [v19 saveAccount:v24 withCompletionHandler:v21];
+    v22 = valueCopy;
+    v23 = keyCopy;
+    v24 = accountCopy;
+    v25 = handlerCopy;
+    [accountStore saveAccount:v24 withCompletionHandler:v21];
   }
 
   else
@@ -979,17 +979,17 @@ LABEL_16:
     if (os_log_type_enabled(v18, OS_LOG_TYPE_FAULT))
     {
       *buf = 138412802;
-      v28 = self;
+      selfCopy = self;
       v29 = 2112;
-      v30 = v13;
+      v30 = keyCopy;
       v31 = 2112;
       v32 = v17;
       _os_log_fault_impl(&dword_1DED99000, v18, OS_LOG_TYPE_FAULT, "%@: Failed to serialize property dictionary for key (%@) with error (%@)", buf, 0x20u);
     }
 
-    if (v15)
+    if (handlerCopy)
     {
-      (*(v15 + 2))(v15, 0, v17);
+      (*(handlerCopy + 2))(handlerCopy, 0, v17);
     }
   }
 
@@ -1021,18 +1021,18 @@ void __92__CDPAccountRepresentation__cachePropertyValue_forKey_lastModifiedDate_
   }
 }
 
-- (id)_serializedPropertyDictionaryWithValue:(id)a3 lastModifiedDate:(id)a4 error:(id *)a5
+- (id)_serializedPropertyDictionaryWithValue:(id)value lastModifiedDate:(id)date error:(id *)error
 {
   v25 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (value)
   {
     v8 = MEMORY[0x1E695DF90];
-    v9 = a4;
-    v10 = a3;
+    dateCopy = date;
+    valueCopy = value;
     v11 = [v8 dictionaryWithCapacity:2];
-    [v11 setObject:v10 forKeyedSubscript:@"com.apple.cdp.appleaccount.property"];
+    [v11 setObject:valueCopy forKeyedSubscript:@"com.apple.cdp.appleaccount.property"];
 
-    [v11 setObject:v9 forKeyedSubscript:@"com.apple.cdp.appleaccount.property.last-modified-date"];
+    [v11 setObject:dateCopy forKeyedSubscript:@"com.apple.cdp.appleaccount.property.last-modified-date"];
     v18 = 0;
     v12 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v11 requiringSecureCoding:1 error:&v18];
     v13 = v18;
@@ -1042,7 +1042,7 @@ void __92__CDPAccountRepresentation__cachePropertyValue_forKey_lastModifiedDate_
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412802;
-        v20 = self;
+        selfCopy = self;
         v21 = 2112;
         v22 = v11;
         v23 = 2112;
@@ -1050,10 +1050,10 @@ void __92__CDPAccountRepresentation__cachePropertyValue_forKey_lastModifiedDate_
         _os_log_error_impl(&dword_1DED99000, v14, OS_LOG_TYPE_ERROR, "%@: Failed to archive property dictionary (%@) with error (%@)", buf, 0x20u);
       }
 
-      if (a5)
+      if (error)
       {
         v15 = v13;
-        *a5 = v13;
+        *error = v13;
       }
     }
   }
@@ -1068,16 +1068,16 @@ void __92__CDPAccountRepresentation__cachePropertyValue_forKey_lastModifiedDate_
   return v12;
 }
 
-- (id)_deserializedPropertyDictionaryForData:(id)a3 withPropertyValueOfClass:(Class)a4 error:(id *)a5
+- (id)_deserializedPropertyDictionaryForData:(id)data withPropertyValueOfClass:(Class)class error:(id *)error
 {
   v24 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  if (v8)
+  dataCopy = data;
+  if (dataCopy)
   {
     v9 = [MEMORY[0x1E695DFD8] setWithObject:objc_opt_class()];
-    v10 = [MEMORY[0x1E695DFD8] setWithObjects:{a4, objc_opt_class(), 0}];
+    v10 = [MEMORY[0x1E695DFD8] setWithObjects:{class, objc_opt_class(), 0}];
     v17 = 0;
-    v11 = [MEMORY[0x1E696ACD0] unarchivedDictionaryWithKeysOfClasses:v9 objectsOfClasses:v10 fromData:v8 error:&v17];
+    v11 = [MEMORY[0x1E696ACD0] unarchivedDictionaryWithKeysOfClasses:v9 objectsOfClasses:v10 fromData:dataCopy error:&v17];
     v12 = v17;
     if (v12)
     {
@@ -1085,18 +1085,18 @@ void __92__CDPAccountRepresentation__cachePropertyValue_forKey_lastModifiedDate_
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412802;
-        v19 = self;
+        selfCopy = self;
         v20 = 2112;
-        v21 = v8;
+        v21 = dataCopy;
         v22 = 2112;
         v23 = v12;
         _os_log_error_impl(&dword_1DED99000, v13, OS_LOG_TYPE_ERROR, "%@: Failed to unarchive data (%@) with error (%@)", buf, 0x20u);
       }
 
-      if (a5)
+      if (error)
       {
         v14 = v12;
-        *a5 = v12;
+        *error = v12;
       }
     }
   }
@@ -1123,7 +1123,7 @@ void __92__CDPAccountRepresentation__cachePropertyValue_forKey_lastModifiedDate_
 - (void)isSilentBurnCDPRepairEnabled
 {
   v8 = *MEMORY[0x1E69E9840];
-  v1 = [a1 accountManager];
+  accountManager = [self accountManager];
   OUTLINED_FUNCTION_1_1();
   OUTLINED_FUNCTION_4();
   OUTLINED_FUNCTION_6(v2, v3, v4, v5, v6);
@@ -1135,7 +1135,7 @@ void __92__CDPAccountRepresentation__cachePropertyValue_forKey_lastModifiedDate_
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_1DED99000, a2, OS_LOG_TYPE_ERROR, "%@: Could not determine if device needs escrow repair with invalid context", &v3, 0xCu);
   v2 = *MEMORY[0x1E69E9840];
 }
@@ -1143,7 +1143,7 @@ void __92__CDPAccountRepresentation__cachePropertyValue_forKey_lastModifiedDate_
 - (void)generatedContext
 {
   v7 = *MEMORY[0x1E69E9840];
-  v6 = [a1 appleAccount];
+  appleAccount = [self appleAccount];
   OUTLINED_FUNCTION_4();
   _os_log_error_impl(v1, v2, OS_LOG_TYPE_ERROR, v3, v4, 0x16u);
 

@@ -1,19 +1,19 @@
 @interface CUPairingIdentity
-- (BOOL)signDataPtr:(const void *)a3 dataLen:(unint64_t)a4 signatureBytes:(unsigned __int8)a5[64] error:(id *)a6;
-- (BOOL)verifySignature:(id)a3 data:(id)a4 error:(id *)a5;
-- (BOOL)verifySignaturePtr:(const void *)a3 signatureLen:(unint64_t)a4 dataPtr:(const void *)a5 dataLen:(unint64_t)a6 error:(id *)a7;
-- (CUPairingIdentity)initWithCoder:(id)a3;
+- (BOOL)signDataPtr:(const void *)ptr dataLen:(unint64_t)len signatureBytes:(unsigned __int8)bytes[64] error:(id *)error;
+- (BOOL)verifySignature:(id)signature data:(id)data error:(id *)error;
+- (BOOL)verifySignaturePtr:(const void *)ptr signatureLen:(unint64_t)len dataPtr:(const void *)dataPtr dataLen:(unint64_t)dataLen error:(id *)error;
+- (CUPairingIdentity)initWithCoder:(id)coder;
 - (id)description;
-- (id)signData:(id)a3 error:(id *)a4;
-- (void)encodeWithCoder:(id)a3;
+- (id)signData:(id)data error:(id *)error;
+- (void)encodeWithCoder:(id)coder;
 - (void)setRandomKeyPair;
 @end
 
 @implementation CUPairingIdentity
 
-- (BOOL)verifySignaturePtr:(const void *)a3 signatureLen:(unint64_t)a4 dataPtr:(const void *)a5 dataLen:(unint64_t)a6 error:(id *)a7
+- (BOOL)verifySignaturePtr:(const void *)ptr signatureLen:(unint64_t)len dataPtr:(const void *)dataPtr dataLen:(unint64_t)dataLen error:(id *)error
 {
-  if (a4 == 64)
+  if (len == 64)
   {
     v9 = self->_publicKey;
     if ([(NSData *)v9 length]== 32)
@@ -22,7 +22,7 @@
       ccsha512_di();
       v15 = cced25519_verify();
       v16 = v15 == 0;
-      if (!a7 || !v15)
+      if (!error || !v15)
       {
         goto LABEL_13;
       }
@@ -34,7 +34,7 @@
 
     else
     {
-      if (!a7)
+      if (!error)
       {
         v16 = 0;
         goto LABEL_13;
@@ -46,37 +46,37 @@
     }
 
     NSErrorF_safe(v17, v19, v18, v10, v11, v12, v13, v14, v21);
-    *a7 = v16 = 0;
+    *error = v16 = 0;
 LABEL_13:
 
     return v16;
   }
 
-  if (!a7)
+  if (!error)
   {
     return 0;
   }
 
-  NSErrorF_safe(*MEMORY[0x1E696A768], 4294960580, "Bad signature size (%zu)", a4, a5, a6, a7, v7, a4);
-  *a7 = v16 = 0;
+  NSErrorF_safe(*MEMORY[0x1E696A768], 4294960580, "Bad signature size (%zu)", len, dataPtr, dataLen, error, v7, len);
+  *error = v16 = 0;
   return v16;
 }
 
-- (BOOL)verifySignature:(id)a3 data:(id)a4 error:(id *)a5
+- (BOOL)verifySignature:(id)signature data:(id)data error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a3;
-  v12 = [v11 bytes];
-  v13 = [v11 length];
+  signatureCopy = signature;
+  dataCopy = data;
+  signatureCopy2 = signature;
+  bytes = [signatureCopy2 bytes];
+  v13 = [signatureCopy2 length];
 
-  v14 = [v10 bytes];
-  v15 = [v10 length];
+  bytes2 = [dataCopy bytes];
+  v15 = [dataCopy length];
 
-  return [(CUPairingIdentity *)self verifySignaturePtr:v12 signatureLen:v13 dataPtr:v14 dataLen:v15 error:a5];
+  return [(CUPairingIdentity *)self verifySignaturePtr:bytes signatureLen:v13 dataPtr:bytes2 dataLen:v15 error:error];
 }
 
-- (BOOL)signDataPtr:(const void *)a3 dataLen:(unint64_t)a4 signatureBytes:(unsigned __int8)a5[64] error:(id *)a6
+- (BOOL)signDataPtr:(const void *)ptr dataLen:(unint64_t)len signatureBytes:(unsigned __int8)bytes[64] error:(id *)error
 {
   v8 = self->_publicKey;
   if ([(NSData *)v8 length]== 32)
@@ -92,16 +92,16 @@ LABEL_13:
       cced25519_sign();
     }
 
-    else if (a6)
+    else if (error)
     {
-      *a6 = NSErrorF_safe(*MEMORY[0x1E696A768], 4294896142, "No EdSK", v16, v17, v18, v19, v20, v23);
+      *error = NSErrorF_safe(*MEMORY[0x1E696A768], 4294896142, "No EdSK", v16, v17, v18, v19, v20, v23);
     }
   }
 
-  else if (a6)
+  else if (error)
   {
     NSErrorF_safe(*MEMORY[0x1E696A768], 4294896141, "No EdPK", v9, v10, v11, v12, v13, v23);
-    *a6 = v21 = 0;
+    *error = v21 = 0;
   }
 
   else
@@ -112,15 +112,15 @@ LABEL_13:
   return v21;
 }
 
-- (id)signData:(id)a3 error:(id *)a4
+- (id)signData:(id)data error:(id *)error
 {
   v14 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a3;
-  v9 = [v8 bytes];
-  v10 = [v8 length];
+  dataCopy = data;
+  dataCopy2 = data;
+  bytes = [dataCopy2 bytes];
+  v10 = [dataCopy2 length];
 
-  if ([(CUPairingIdentity *)self signDataPtr:v9 dataLen:v10 signatureBytes:v13 error:a4])
+  if ([(CUPairingIdentity *)self signDataPtr:bytes dataLen:v10 signatureBytes:v13 error:error])
   {
     v11 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytes:v13 length:64];
   }
@@ -183,36 +183,36 @@ LABEL_13:
   return v16;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   altIRK = self->_altIRK;
-  v9 = v4;
+  v9 = coderCopy;
   if (altIRK)
   {
-    [v4 encodeObject:altIRK forKey:@"altIRK"];
-    v4 = v9;
+    [coderCopy encodeObject:altIRK forKey:@"altIRK"];
+    coderCopy = v9;
   }
 
   identifier = self->_identifier;
   if (identifier)
   {
     [v9 encodeObject:identifier forKey:@"ident"];
-    v4 = v9;
+    coderCopy = v9;
   }
 
   publicKey = self->_publicKey;
   if (publicKey)
   {
     [v9 encodeObject:publicKey forKey:@"pk"];
-    v4 = v9;
+    coderCopy = v9;
   }
 
   secretKey = self->_secretKey;
   if (secretKey)
   {
     [v9 encodeObject:secretKey forKey:@"sk"];
-    v4 = v9;
+    coderCopy = v9;
   }
 }
 
@@ -229,15 +229,15 @@ LABEL_13:
   self->_secretKey = v5;
 }
 
-- (CUPairingIdentity)initWithCoder:(id)a3
+- (CUPairingIdentity)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = CUPairingIdentity;
   v5 = [(CUPairingIdentity *)&v16 init];
   if (v5)
   {
-    v6 = v4;
+    v6 = coderCopy;
     v7 = objc_opt_class();
     NSDecodeObjectIfPresent(v6, @"altIRK", v7, &v5->_altIRK);
 

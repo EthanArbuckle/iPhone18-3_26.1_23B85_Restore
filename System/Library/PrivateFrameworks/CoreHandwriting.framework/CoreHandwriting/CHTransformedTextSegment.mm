@@ -4,60 +4,60 @@
 - (CGAffineTransform)transform;
 - (CGPoint)anchorPoint;
 - (CGPoint)insertionPoint;
-- (CHTransformedTextSegment)initWithStrokes:(id)a3 tokens:(id)a4 locale:(id)a5 strokeClassification:(int64_t)a6 principalLines:(id *)a7 principalPoints:(id)a8 transform:(CGAffineTransform *)a9;
-- (CHTransformedTextSegment)initWithStrokes:(id)a3 tokens:(id)a4 points:(const void *)a5 strokePoints:(const void *)a6 locale:(id)a7 strokeClassification:(int64_t)a8 principalLines:(id *)a9 principalPoints:(id)a10 transform:(CGAffineTransform *)a11;
+- (CHTransformedTextSegment)initWithStrokes:(id)strokes tokens:(id)tokens locale:(id)locale strokeClassification:(int64_t)classification principalLines:(id *)lines principalPoints:(id)points transform:(CGAffineTransform *)transform;
+- (CHTransformedTextSegment)initWithStrokes:(id)strokes tokens:(id)tokens points:(const void *)points strokePoints:(const void *)strokePoints locale:(id)locale strokeClassification:(int64_t)classification principalLines:(id *)lines principalPoints:(id)self0 transform:(CGAffineTransform *)self1;
 - (double)lineHeight;
 - (double)orientation;
 - (id).cxx_construct;
 - (id)splitIntoTokens;
 - (id)string;
 - (id)textSize;
-- (id)tokenDistanceSizes:(BOOL)a3;
-- (id)tokenSupportRangeForTokenIndex:(int64_t)a3 supportStrokes:(id *)a4;
-- (vector<CGPoint,)clippedPoints:(CHTransformedTextSegment *)self min:(SEL)a3 max:(CGSize)a4;
+- (id)tokenDistanceSizes:(BOOL)sizes;
+- (id)tokenSupportRangeForTokenIndex:(int64_t)index supportStrokes:(id *)strokes;
+- (vector<CGPoint,)clippedPoints:(CHTransformedTextSegment *)self min:(SEL)min max:(CGSize)max;
 - (vector<CGPoint,)filteredPoints:(CHTransformedTextSegment *)self;
 - (vector<CGPoint,)points;
 - (vector<std::vector<CGPoint>,)strokePoints;
-- (void)addSupportStroke:(id)a3;
-- (void)addSupportStroke:(id)a3 tokenRange:(_NSRange)a4;
-- (void)addTransform:(CGAffineTransform *)a3;
-- (void)mergeTransformedText:(id)a3;
+- (void)addSupportStroke:(id)stroke;
+- (void)addSupportStroke:(id)stroke tokenRange:(_NSRange)range;
+- (void)addTransform:(CGAffineTransform *)transform;
+- (void)mergeTransformedText:(id)text;
 @end
 
 @implementation CHTransformedTextSegment
 
-- (CHTransformedTextSegment)initWithStrokes:(id)a3 tokens:(id)a4 locale:(id)a5 strokeClassification:(int64_t)a6 principalLines:(id *)a7 principalPoints:(id)a8 transform:(CGAffineTransform *)a9
+- (CHTransformedTextSegment)initWithStrokes:(id)strokes tokens:(id)tokens locale:(id)locale strokeClassification:(int64_t)classification principalLines:(id *)lines principalPoints:(id)points transform:(CGAffineTransform *)transform
 {
-  v16 = a3;
-  v52 = a4;
-  v17 = a5;
-  v18 = a8;
+  strokesCopy = strokes;
+  tokensCopy = tokens;
+  localeCopy = locale;
+  pointsCopy = points;
   v24 = objc_msgSend_init(self, v19, v20, v21, v22, v23);
   v25 = v24;
   if (v24)
   {
-    objc_storeStrong((v24 + 224), a3);
-    objc_storeStrong((v25 + 232), a4);
-    objc_storeStrong((v25 + 256), a5);
-    *(v25 + 264) = a6;
-    var0 = a7->var0.var0;
-    var1 = a7->var0.var1;
-    v28 = a7->var1.var0;
-    *(v25 + 56) = a7->var1.var1;
+    objc_storeStrong((v24 + 224), strokes);
+    objc_storeStrong((v25 + 232), tokens);
+    objc_storeStrong((v25 + 256), locale);
+    *(v25 + 264) = classification;
+    var0 = lines->var0.var0;
+    var1 = lines->var0.var1;
+    v28 = lines->var1.var0;
+    *(v25 + 56) = lines->var1.var1;
     *(v25 + 40) = v28;
     *(v25 + 24) = var1;
     *(v25 + 8) = var0;
-    v29 = a7->var2.var0;
-    v30 = a7->var2.var1;
-    v31 = a7->var3.var0;
-    *(v25 + 120) = a7->var3.var1;
+    v29 = lines->var2.var0;
+    v30 = lines->var2.var1;
+    v31 = lines->var3.var0;
+    *(v25 + 120) = lines->var3.var1;
     *(v25 + 104) = v31;
     *(v25 + 88) = v30;
     *(v25 + 72) = v29;
-    objc_storeStrong((v25 + 136), a8);
-    v32 = *&a9->a;
-    v33 = *&a9->tx;
-    *(v25 + 288) = *&a9->c;
+    objc_storeStrong((v25 + 136), points);
+    v32 = *&transform->a;
+    v33 = *&transform->tx;
+    *(v25 + 288) = *&transform->c;
     *(v25 + 304) = v33;
     *(v25 + 272) = v32;
     v34 = *(v25 + 240);
@@ -132,41 +132,41 @@
   return v25;
 }
 
-- (CHTransformedTextSegment)initWithStrokes:(id)a3 tokens:(id)a4 points:(const void *)a5 strokePoints:(const void *)a6 locale:(id)a7 strokeClassification:(int64_t)a8 principalLines:(id *)a9 principalPoints:(id)a10 transform:(CGAffineTransform *)a11
+- (CHTransformedTextSegment)initWithStrokes:(id)strokes tokens:(id)tokens points:(const void *)points strokePoints:(const void *)strokePoints locale:(id)locale strokeClassification:(int64_t)classification principalLines:(id *)lines principalPoints:(id)self0 transform:(CGAffineTransform *)self1
 {
-  v17 = a3;
-  v18 = a4;
-  v19 = a7;
-  v20 = a10;
-  var1 = a9->var2.var1;
-  v46[4] = a9->var2.var0;
+  strokesCopy = strokes;
+  tokensCopy = tokens;
+  localeCopy = locale;
+  principalPointsCopy = principalPoints;
+  var1 = lines->var2.var1;
+  v46[4] = lines->var2.var0;
   v46[5] = var1;
-  v22 = a9->var3.var1;
-  v46[6] = a9->var3.var0;
+  v22 = lines->var3.var1;
+  v46[6] = lines->var3.var0;
   v46[7] = v22;
-  v23 = a9->var0.var1;
-  v46[0] = a9->var0.var0;
+  v23 = lines->var0.var1;
+  v46[0] = lines->var0.var0;
   v46[1] = v23;
-  v24 = a9->var1.var1;
-  v46[2] = a9->var1.var0;
+  v24 = lines->var1.var1;
+  v46[2] = lines->var1.var0;
   v46[3] = v24;
-  v25 = *&a11->c;
-  v45[0] = *&a11->a;
+  v25 = *&transform->c;
+  v45[0] = *&transform->a;
   v45[1] = v25;
-  v45[2] = *&a11->tx;
-  v27 = objc_msgSend_initWithStrokes_tokens_locale_strokeClassification_principalLines_principalPoints_transform_(self, v26, v17, v18, v19, a8, v46, v20, v45);
+  v45[2] = *&transform->tx;
+  v27 = objc_msgSend_initWithStrokes_tokens_locale_strokeClassification_principalLines_principalPoints_transform_(self, v26, strokesCopy, tokensCopy, localeCopy, classification, v46, principalPointsCopy, v45);
   v28 = v27;
   if (v27)
   {
     v29 = (v27 + 176);
-    if ((v28 + 176) != a5)
+    if ((v28 + 176) != points)
     {
-      sub_18374AA38(v29, *a5, *(a5 + 1), (*(a5 + 1) - *a5) >> 4);
+      sub_18374AA38(v29, *points, *(points + 1), (*(points + 1) - *points) >> 4);
     }
 
-    if ((v28 + 200) != a6)
+    if ((v28 + 200) != strokePoints)
     {
-      sub_183821D0C((v28 + 200), *a6, *(a6 + 1), 0xAAAAAAAAAAAAAAABLL * ((*(a6 + 1) - *a6) >> 3));
+      sub_183821D0C((v28 + 200), *strokePoints, *(strokePoints + 1), 0xAAAAAAAAAAAAAAABLL * ((*(strokePoints + 1) - *strokePoints) >> 3));
     }
 
     v30 = *(v28 + 176);
@@ -212,7 +212,7 @@
   return v28;
 }
 
-- (void)addTransform:(CGAffineTransform *)a3
+- (void)addTransform:(CGAffineTransform *)transform
 {
   v75 = 0;
   v76 = 0;
@@ -222,7 +222,7 @@
   v72 = 0;
   v69 = 0;
   v70 = 0;
-  sub_1838CA7E4(&self->_principalLines.descender.start.x, &a3->a, &v69.x);
+  sub_1838CA7E4(&self->_principalLines.descender.start.x, &transform->a, &v69.x);
   v5 = v74;
   self->_principalLines.median.start = v73;
   self->_principalLines.median.end = v5;
@@ -236,7 +236,7 @@
   self->_principalLines.base.start = v71;
   self->_principalLines.base.end = v8;
   objc_msgSend_points(self, v9, v10, v11, v12, v13);
-  sub_1838CA648(&__p, a3, &v63);
+  sub_1838CA648(&__p, transform, &v63);
   begin = self->_points.__begin_;
   if (begin)
   {
@@ -267,7 +267,7 @@
     v22 = 0;
     do
     {
-      sub_1838CA648(&v20[v21], a3, &v63);
+      sub_1838CA648(&v20[v21], transform, &v63);
       v24 = v65;
       if (v65 < v66)
       {
@@ -396,10 +396,10 @@ LABEL_9:
   *&__p.a = *&self->_transform.a;
   *&__p.c = v46;
   *&__p.tx = *&self->_transform.tx;
-  v47 = *&a3->c;
-  *&v61.a = *&a3->a;
+  v47 = *&transform->c;
+  *&v61.a = *&transform->a;
   *&v61.c = v47;
-  *&v61.tx = *&a3->tx;
+  *&v61.tx = *&transform->tx;
   CGAffineTransformConcat(&v63, &__p, &v61);
   v48 = *&v63.c;
   *&self->_transform.a = *&v63.a;
@@ -466,17 +466,17 @@ LABEL_9:
   }
 }
 
-- (void)addSupportStroke:(id)a3
+- (void)addSupportStroke:(id)stroke
 {
-  v87 = a3;
+  strokeCopy = stroke;
   if (objc_msgSend_count(self->_tokens, v4, v5, v6, v7, v8) == 1)
   {
-    objc_msgSend_addSupportStroke_tokenRange_(self, v9, v87, 0, 1, v13);
+    objc_msgSend_addSupportStroke_tokenRange_(self, v9, strokeCopy, 0, 1, v13);
   }
 
   else
   {
-    objc_msgSend_bounds(v87, v9, v10, v11, v12, v13);
+    objc_msgSend_bounds(strokeCopy, v9, v10, v11, v12, v13);
     v89 = v14;
     v90 = v15;
     rect = v16;
@@ -515,18 +515,18 @@ LABEL_9:
       Index = objc_msgSend_firstIndex(v29, v67, v68, v69, v70, v71);
       v78 = objc_msgSend_lastIndex(v29, v73, v74, v75, v76, v77);
       v84 = objc_msgSend_firstIndex(v29, v79, v80, v81, v82, v83);
-      objc_msgSend_addSupportStroke_tokenRange_(self, v85, v87, Index, v78 - v84 + 1, v86);
+      objc_msgSend_addSupportStroke_tokenRange_(self, v85, strokeCopy, Index, v78 - v84 + 1, v86);
     }
   }
 }
 
-- (void)addSupportStroke:(id)a3 tokenRange:(_NSRange)a4
+- (void)addSupportStroke:(id)stroke tokenRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v35[2] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v12 = objc_msgSend_arrayByAddingObject_(self->_supportStrokes, v8, v7, v9, v10, v11);
+  strokeCopy = stroke;
+  v12 = objc_msgSend_arrayByAddingObject_(self->_supportStrokes, v8, strokeCopy, v9, v10, v11);
   supportStrokes = self->_supportStrokes;
   self->_supportStrokes = v12;
 
@@ -541,9 +541,9 @@ LABEL_9:
   self->_supportStrokeTokenRanges = v33;
 }
 
-- (id)tokenSupportRangeForTokenIndex:(int64_t)a3 supportStrokes:(id *)a4
+- (id)tokenSupportRangeForTokenIndex:(int64_t)index supportStrokes:(id *)strokes
 {
-  v8 = objc_msgSend_indexSetWithIndex_(MEMORY[0x1E696AD50], a2, a3, a4, v4, v5);
+  v8 = objc_msgSend_indexSetWithIndex_(MEMORY[0x1E696AD50], a2, index, strokes, v4, v5);
   v19 = objc_msgSend_indexSet(MEMORY[0x1E696AD50], v9, v10, v11, v12, v13);
   v20 = 0;
   while (v20 != objc_msgSend_count(v8, v14, v15, v16, v17, v18))
@@ -573,10 +573,10 @@ LABEL_9:
     }
   }
 
-  if (a4)
+  if (strokes)
   {
     v92 = v19;
-    *a4 = v19;
+    *strokes = v19;
   }
 
   return v8;
@@ -750,13 +750,13 @@ LABEL_9:
   return v126;
 }
 
-- (void)mergeTransformedText:(id)a3
+- (void)mergeTransformedText:(id)text
 {
   v236 = *MEMORY[0x1E69E9840];
-  v210 = a3;
+  textCopy = text;
   v9 = objc_msgSend_count(self->_textStrokes, v4, v5, v6, v7, v8);
   textStrokes = self->_textStrokes;
-  v16 = objc_msgSend_textStrokes(v210, v11, v12, v13, v14, v15);
+  v16 = objc_msgSend_textStrokes(textCopy, v11, v12, v13, v14, v15);
   v21 = objc_msgSend_arrayByAddingObjectsFromArray_(textStrokes, v17, v16, v18, v19, v20);
   v22 = self->_textStrokes;
   self->_textStrokes = v21;
@@ -766,7 +766,7 @@ LABEL_9:
   v231 = 0u;
   v228 = 0u;
   v229 = 0u;
-  v34 = objc_msgSend_tokens(v210, v29, v30, v31, v32, v33);
+  v34 = objc_msgSend_tokens(textCopy, v29, v30, v31, v32, v33);
   v42 = objc_msgSend_countByEnumeratingWithState_objects_count_(v34, v35, &v228, v235, 16, v36);
   if (v42)
   {
@@ -799,12 +799,12 @@ LABEL_9:
   }
 
   supportStrokes = self->_supportStrokes;
-  v78 = objc_msgSend_supportStrokes(v210, v73, v74, v75, v76, v77);
+  v78 = objc_msgSend_supportStrokes(textCopy, v73, v74, v75, v76, v77);
   v83 = objc_msgSend_arrayByAddingObjectsFromArray_(supportStrokes, v79, v78, v80, v81, v82);
   v84 = self->_supportStrokes;
   self->_supportStrokes = v83;
 
-  v90 = objc_msgSend_supportStrokeTokenRanges(v210, v85, v86, v87, v88, v89);
+  v90 = objc_msgSend_supportStrokeTokenRanges(textCopy, v85, v86, v87, v88, v89);
   v96 = objc_msgSend_mutableCopy(v90, v91, v92, v93, v94, v95);
 
   for (j = 0; j < objc_msgSend_count(v96, v97, v98, v99, v100, v101); ++j)
@@ -826,9 +826,9 @@ LABEL_9:
   self->_supportStrokeTokenRanges = v137;
 
   objc_msgSend_points(self, v139, v140, v141, v142, v143);
-  if (v210)
+  if (textCopy)
   {
-    objc_msgSend_points(v210, v144, v145, v146, v147, v148);
+    objc_msgSend_points(textCopy, v144, v145, v146, v147, v148);
     v149 = v223;
     v150 = v224;
   }
@@ -849,9 +849,9 @@ LABEL_9:
   }
 
   objc_msgSend_strokePoints(self, v151, v152, v153, v154, v155);
-  if (v210)
+  if (textCopy)
   {
-    objc_msgSend_strokePoints(v210, v156, v157, v158, v159, v160);
+    objc_msgSend_strokePoints(textCopy, v156, v157, v158, v159, v160);
     v161 = __p;
     v162 = v220;
   }
@@ -880,9 +880,9 @@ LABEL_9:
   self->_boundingBox.y_min = MinY;
   self->_boundingBox.y_max = MaxY;
   x = self->_principalLines.base.start.x;
-  if (v210)
+  if (textCopy)
   {
-    objc_msgSend_principalLines(v210, v167, v168, v169, v170, v171);
+    objc_msgSend_principalLines(textCopy, v167, v168, v169, v170, v171);
     if (x < v213.x)
     {
       goto LABEL_23;
@@ -894,7 +894,7 @@ LABEL_9:
 LABEL_23:
     v174 = objc_opt_class();
     v233[0] = self;
-    v233[1] = v210;
+    v233[1] = textCopy;
     v182 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v175, v233, 2, v176, v177);
     if (v174)
     {
@@ -905,7 +905,7 @@ LABEL_23:
   }
 
   v174 = objc_opt_class();
-  v232[0] = v210;
+  v232[0] = textCopy;
   v232[1] = self;
   v182 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v183, v232, 2, v184, v185);
   if (v174)
@@ -935,7 +935,7 @@ LABEL_29:
   self->_principalLines.base.end = v214;
 
   principalPoints = self->_principalPoints;
-  v192 = objc_msgSend_principalPoints(v210, v187, v188, v189, v190, v191);
+  v192 = objc_msgSend_principalPoints(textCopy, v187, v188, v189, v190, v191);
   v197 = objc_msgSend_arrayByAddingObjectsFromArray_(principalPoints, v193, v192, v194, v195, v196);
   v198 = self->_principalPoints;
   self->_principalPoints = v197;
@@ -1011,11 +1011,11 @@ LABEL_29:
   }
 }
 
-- (id)tokenDistanceSizes:(BOOL)a3
+- (id)tokenDistanceSizes:(BOOL)sizes
 {
-  v6 = a3;
+  sizesCopy = sizes;
   v95 = *MEMORY[0x1E69E9840];
-  v73 = objc_msgSend_array(MEMORY[0x1E695DF70], a2, a3, v3, v4, v5);
+  v73 = objc_msgSend_array(MEMORY[0x1E695DF70], a2, sizes, v3, v4, v5);
   if (objc_msgSend_count(self->_tokens, v8, v9, v10, v11, v12) >= 2)
   {
     objc_msgSend_splitIntoTokens(self, v13, v14, v15, v16, v17);
@@ -1070,7 +1070,7 @@ LABEL_29:
           v57 = objc_msgSend_firstObject(v51, v52, v53, v54, v55, v56);
           v63 = objc_msgSend_properties(v57, v58, v59, v60, v61, v62);
 
-          if (!v6 || (v63 & 0x20) != 0)
+          if (!sizesCopy || (v63 & 0x20) != 0)
           {
             if (v50)
             {
@@ -1273,15 +1273,15 @@ LABEL_10:
 
 - (vector<CGPoint,)points
 {
-  v4 = self;
-  objc_sync_enter(v4);
-  if (v4->_points.__end_ == v4->_points.__begin_)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_points.__end_ == selfCopy->_points.__begin_)
   {
-    sub_1838C3014(v4->_textStrokes, v10);
-    sub_1838CA648(v10, &v4->_transform, &__p);
-    if (&v4->_points != &__p)
+    sub_1838C3014(selfCopy->_textStrokes, v10);
+    sub_1838CA648(v10, &selfCopy->_transform, &__p);
+    if (&selfCopy->_points != &__p)
     {
-      sub_18374AA38(&v4->_points, __p, v9, (v9 - __p) >> 4);
+      sub_18374AA38(&selfCopy->_points, __p, v9, (v9 - __p) >> 4);
     }
 
     if (__p)
@@ -1297,13 +1297,13 @@ LABEL_10:
     }
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 
   retstr->__begin_ = 0;
   retstr->__end_ = 0;
   retstr->__cap_ = 0;
-  begin = v4->_points.__begin_;
-  end = v4->_points.__end_;
+  begin = selfCopy->_points.__begin_;
+  end = selfCopy->_points.__end_;
   if (end != begin)
   {
     if (((end - begin) & 0x8000000000000000) == 0)
@@ -1320,17 +1320,17 @@ LABEL_10:
 - (vector<std::vector<CGPoint>,)strokePoints
 {
   v46 = *MEMORY[0x1E69E9840];
-  v4 = self;
-  objc_sync_enter(v4);
-  p_strokePoints = &v4->_strokePoints;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  p_strokePoints = &selfCopy->_strokePoints;
   v31 = retstr;
-  if (v4->_strokePoints.__end_ == v4->_strokePoints.__begin_)
+  if (selfCopy->_strokePoints.__end_ == selfCopy->_strokePoints.__begin_)
   {
     v37 = 0u;
     v38 = 0u;
     v35 = 0u;
     v36 = 0u;
-    obj = v4->_textStrokes;
+    obj = selfCopy->_textStrokes;
     v11 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v6, &v35, v45, 16, v7);
     if (!v11)
     {
@@ -1351,9 +1351,9 @@ LABEL_10:
         v14 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v8, &v44, 1, v9, v10);
         sub_1838C3014(v14, v34);
 
-        sub_1838CA648(v34, &v4->_transform, &__p);
-        end = v4->_strokePoints.__end_;
-        cap = v4->_strokePoints.__cap_;
+        sub_1838CA648(v34, &selfCopy->_transform, &__p);
+        end = selfCopy->_strokePoints.__end_;
+        cap = selfCopy->_strokePoints.__cap_;
         if (end >= cap)
         {
           v18 = 0xAAAAAAAAAAAAAAABLL * ((end - p_strokePoints->__begin_) >> 3);
@@ -1379,7 +1379,7 @@ LABEL_10:
             v21 = v19;
           }
 
-          v43 = &v4->_strokePoints;
+          v43 = &selfCopy->_strokePoints;
           if (v21)
           {
             if (v21 <= 0xAAAAAAAAAAAAAAALL)
@@ -1408,13 +1408,13 @@ LABEL_10:
             sub_18369761C();
           }
 
-          begin = v4->_strokePoints.__begin_;
-          v24 = v4->_strokePoints.__end_ - begin;
+          begin = selfCopy->_strokePoints.__begin_;
+          v24 = selfCopy->_strokePoints.__end_ - begin;
           v25 = (v22 - v24);
           memcpy((v22 - v24), begin, v24);
-          v4->_strokePoints.__begin_ = v25;
-          v4->_strokePoints.__end_ = (v22 + 24);
-          v4->_strokePoints.__cap_ = 0;
+          selfCopy->_strokePoints.__begin_ = v25;
+          selfCopy->_strokePoints.__end_ = (v22 + 24);
+          selfCopy->_strokePoints.__cap_ = 0;
           if (begin)
           {
             operator delete(begin);
@@ -1422,7 +1422,7 @@ LABEL_10:
 
           retstr = v31;
           v17 = __p;
-          v4->_strokePoints.__end_ = (v22 + 24);
+          selfCopy->_strokePoints.__end_ = (v22 + 24);
           if (v17)
           {
 LABEL_13:
@@ -1446,8 +1446,8 @@ LABEL_13:
             sub_18369761C();
           }
 
-          v4->_strokePoints.__end_ = end + 24;
-          v4->_strokePoints.__end_ = end + 24;
+          selfCopy->_strokePoints.__end_ = end + 24;
+          selfCopy->_strokePoints.__end_ = end + 24;
           v17 = __p;
           if (__p)
           {
@@ -1472,14 +1472,14 @@ LABEL_33:
     }
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 
   retstr->__begin_ = 0;
   retstr->__end_ = 0;
   retstr->__cap_ = 0;
   v27 = retstr;
-  v29 = v4->_strokePoints.__begin_;
-  v28 = v4->_strokePoints.__end_;
+  v29 = selfCopy->_strokePoints.__begin_;
+  v28 = selfCopy->_strokePoints.__end_;
   v39 = v27;
   LOBYTE(v40) = 0;
   if (v28 != v29)
@@ -1556,14 +1556,14 @@ LABEL_33:
   return result;
 }
 
-- (vector<CGPoint,)clippedPoints:(CHTransformedTextSegment *)self min:(SEL)a3 max:(CGSize)a4
+- (vector<CGPoint,)clippedPoints:(CHTransformedTextSegment *)self min:(SEL)min max:(CGSize)max
 {
   y = a6.y;
   x = a6.x;
   v12 = a5.y;
   v13 = a5.x;
-  height = a4.height;
-  width = a4.width;
+  height = max.height;
+  width = max.width;
   v17 = 0;
   retstr->__begin_ = 0;
   retstr->__end_ = 0;
@@ -1571,7 +1571,7 @@ LABEL_33:
   v90 = sqrt((a5.y - a6.y) * (a5.y - a6.y) + (a5.x - a6.x) * (a5.x - a6.x));
   while (1)
   {
-    result = objc_msgSend_count(self->_textStrokes, a3, v6, v7, v8, v9);
+    result = objc_msgSend_count(self->_textStrokes, min, v6, v7, v8, v9);
     if (v17 >= result)
     {
       return result;
@@ -1807,11 +1807,11 @@ LABEL_54:
 
 - (BoundingBox)boundingBox
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (v2->_boundingBox.x_max - v2->_boundingBox.x_min == 0.0)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_boundingBox.x_max - selfCopy->_boundingBox.x_min == 0.0)
   {
-    objc_msgSend_points(v2, v3, v4, v5, v6, v7);
+    objc_msgSend_points(selfCopy, v3, v4, v5, v6, v7);
     if (v27 == v28)
     {
       v11 = xmmword_1839CE920;
@@ -1861,16 +1861,16 @@ LABEL_54:
     v12 = v25;
     v11 = v26;
 LABEL_7:
-    *&v2->_boundingBox.x_min = v11;
-    *&v2->_boundingBox.y_min = v12;
+    *&selfCopy->_boundingBox.x_min = v11;
+    *&selfCopy->_boundingBox.y_min = v12;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  x_min = v2->_boundingBox.x_min;
-  x_max = v2->_boundingBox.x_max;
-  y_min = v2->_boundingBox.y_min;
-  y_max = v2->_boundingBox.y_max;
+  x_min = selfCopy->_boundingBox.x_min;
+  x_max = selfCopy->_boundingBox.x_max;
+  y_min = selfCopy->_boundingBox.y_min;
+  y_max = selfCopy->_boundingBox.y_max;
   result.y_max = y_max;
   result.y_min = y_min;
   result.x_max = x_max;

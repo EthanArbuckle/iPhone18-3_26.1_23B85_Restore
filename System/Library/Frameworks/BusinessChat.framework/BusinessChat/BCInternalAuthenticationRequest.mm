@@ -1,16 +1,16 @@
 @interface BCInternalAuthenticationRequest
-- (BCInternalAuthenticationRequest)initWithCoder:(id)a3;
-- (BCInternalAuthenticationRequest)initWithDictionary:(id)a3;
+- (BCInternalAuthenticationRequest)initWithCoder:(id)coder;
+- (BCInternalAuthenticationRequest)initWithDictionary:(id)dictionary;
 - (NSDictionary)dictionaryValue;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BCInternalAuthenticationRequest
 
-- (BCInternalAuthenticationRequest)initWithDictionary:(id)a3
+- (BCInternalAuthenticationRequest)initWithDictionary:(id)dictionary
 {
   v59 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v55.receiver = self;
   v55.super_class = BCInternalAuthenticationRequest;
   v5 = [(BCInternalAuthenticationRequest *)&v55 init];
@@ -19,70 +19,70 @@
     v6 = LogCategory_Daemon();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [v4 description];
+      v7 = [dictionaryCopy description];
       *buf = 138412290;
       v58 = v7;
       _os_log_impl(&dword_236EA0000, v6, OS_LOG_TYPE_DEFAULT, "BCInternalAuthenticationRequest: initWithDictionary %@", buf, 0xCu);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"businessIdentifier"];
-    v9 = [MEMORY[0x277CBEB68] null];
-    if (v8 == v9)
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"businessIdentifier"];
+    null = [MEMORY[0x277CBEB68] null];
+    if (v8 == null)
     {
       v10 = 0;
     }
 
     else
     {
-      v10 = [v4 objectForKeyedSubscript:@"businessIdentifier"];
+      v10 = [dictionaryCopy objectForKeyedSubscript:@"businessIdentifier"];
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"groupIdentifier"];
-    v12 = [MEMORY[0x277CBEB68] null];
-    if (v11 == v12)
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"groupIdentifier"];
+    null2 = [MEMORY[0x277CBEB68] null];
+    if (v11 == null2)
     {
       v13 = 0;
     }
 
     else
     {
-      v13 = [v4 objectForKeyedSubscript:@"groupIdentifier"];
+      v13 = [dictionaryCopy objectForKeyedSubscript:@"groupIdentifier"];
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"responseEncryptionKey"];
-    v15 = [MEMORY[0x277CBEB68] null];
-    if (v14 == v15)
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"responseEncryptionKey"];
+    null3 = [MEMORY[0x277CBEB68] null];
+    if (v14 == null3)
     {
       v16 = 0;
     }
 
     else
     {
-      v16 = [v4 objectForKeyedSubscript:@"responseEncryptionKey"];
+      v16 = [dictionaryCopy objectForKeyedSubscript:@"responseEncryptionKey"];
     }
 
-    v17 = [v4 objectForKeyedSubscript:@"retrieve"];
-    v18 = [MEMORY[0x277CBEB68] null];
-    if (v17 == v18)
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"retrieve"];
+    null4 = [MEMORY[0x277CBEB68] null];
+    if (v17 == null4)
     {
       v19 = 0;
     }
 
     else
     {
-      v19 = [v4 objectForKeyedSubscript:@"retrieve"];
+      v19 = [dictionaryCopy objectForKeyedSubscript:@"retrieve"];
     }
 
-    v20 = [v4 objectForKeyedSubscript:@"labels"];
-    v21 = [MEMORY[0x277CBEB68] null];
-    if (v20 == v21)
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"labels"];
+    null5 = [MEMORY[0x277CBEB68] null];
+    if (v20 == null5)
     {
       v22 = 0;
     }
 
     else
     {
-      v22 = [v4 objectForKeyedSubscript:@"labels"];
+      v22 = [dictionaryCopy objectForKeyedSubscript:@"labels"];
     }
 
     v23 = objc_opt_new();
@@ -218,21 +218,21 @@ LABEL_44:
   return v41;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   businessIdentifier = self->_businessIdentifier;
-  v5 = a3;
-  [v5 encodeObject:businessIdentifier forKey:@"businessIdentifier"];
-  [v5 encodeObject:self->_groupIdentifier forKey:@"groupIdentifier"];
-  [v5 encodeObject:self->_responseEncryptionKey forKey:@"responseEncryptionKey"];
-  [v5 encodeObject:self->_retrieve forKey:@"retrieve"];
-  [v5 encodeObject:self->_labels forKey:@"labels"];
+  coderCopy = coder;
+  [coderCopy encodeObject:businessIdentifier forKey:@"businessIdentifier"];
+  [coderCopy encodeObject:self->_groupIdentifier forKey:@"groupIdentifier"];
+  [coderCopy encodeObject:self->_responseEncryptionKey forKey:@"responseEncryptionKey"];
+  [coderCopy encodeObject:self->_retrieve forKey:@"retrieve"];
+  [coderCopy encodeObject:self->_labels forKey:@"labels"];
 }
 
-- (BCInternalAuthenticationRequest)initWithCoder:(id)a3
+- (BCInternalAuthenticationRequest)initWithCoder:(id)coder
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v19.receiver = self;
   v19.super_class = BCInternalAuthenticationRequest;
   v5 = [(BCInternalAuthenticationRequest *)&v19 init];
@@ -242,27 +242,27 @@ LABEL_44:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v21 = v4;
+      v21 = coderCopy;
       _os_log_impl(&dword_236EA0000, v6, OS_LOG_TYPE_DEFAULT, "BCInternalAuthenticationRequest: initWithCoder %@", buf, 0xCu);
     }
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"businessIdentifier"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"businessIdentifier"];
     businessIdentifier = v5->_businessIdentifier;
     v5->_businessIdentifier = v7;
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"groupIdentifier"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"groupIdentifier"];
     groupIdentifier = v5->_groupIdentifier;
     v5->_groupIdentifier = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"responseEncryptionKey"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"responseEncryptionKey"];
     responseEncryptionKey = v5->_responseEncryptionKey;
     v5->_responseEncryptionKey = v11;
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"retrieve"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"retrieve"];
     retrieve = v5->_retrieve;
     v5->_retrieve = v13;
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"labels"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"labels"];
     labels = v5->_labels;
     v5->_labels = v15;
   }
@@ -297,8 +297,8 @@ LABEL_44:
 
         v10 = *(*(&v16 + 1) + 8 * i);
         v11 = [(NSDictionary *)self->_labels objectForKeyedSubscript:v10, v16];
-        v12 = [v11 dictionaryValue];
-        [v4 setObject:v12 forKeyedSubscript:v10];
+        dictionaryValue = [v11 dictionaryValue];
+        [v4 setObject:dictionaryValue forKeyedSubscript:v10];
       }
 
       v7 = [(NSDictionary *)v5 countByEnumeratingWithState:&v16 objects:v20 count:16];

@@ -1,5 +1,5 @@
 @interface UARPStandaloneCommandManagerReply
-- (UARPStandaloneCommandManagerReply)initWithRemoteServiceEndpoint:(id)a3;
+- (UARPStandaloneCommandManagerReply)initWithRemoteServiceEndpoint:(id)endpoint;
 - (id)remoteObject;
 - (id)xpcConnectionToRequestor;
 - (void)dealloc;
@@ -7,14 +7,14 @@
 
 @implementation UARPStandaloneCommandManagerReply
 
-- (UARPStandaloneCommandManagerReply)initWithRemoteServiceEndpoint:(id)a3
+- (UARPStandaloneCommandManagerReply)initWithRemoteServiceEndpoint:(id)endpoint
 {
-  v5 = a3;
+  endpointCopy = endpoint;
   v12.receiver = self;
   v12.super_class = UARPStandaloneCommandManagerReply;
   v6 = [(UARPStandaloneCommandManagerReply *)&v12 init];
   v7 = v6;
-  if (v6 && (objc_storeStrong(&v6->_remoteEndpoint, a3), [(UARPStandaloneCommandManagerReply *)v7 xpcConnectionToRequestor], v8 = objc_claimAutoreleasedReturnValue(), xpcConnection = v7->_xpcConnection, v7->_xpcConnection = v8, xpcConnection, !v7->_xpcConnection))
+  if (v6 && (objc_storeStrong(&v6->_remoteEndpoint, endpoint), [(UARPStandaloneCommandManagerReply *)v7 xpcConnectionToRequestor], v8 = objc_claimAutoreleasedReturnValue(), xpcConnection = v7->_xpcConnection, v7->_xpcConnection = v8, xpcConnection, !v7->_xpcConnection))
   {
     v10 = 0;
   }
@@ -75,11 +75,11 @@
     v5 = objc_opt_class();
     v6 = objc_opt_class();
     v7 = [NSSet setWithObjects:v4, v5, v6, objc_opt_class(), 0];
-    v8 = [v2 remoteObjectInterface];
-    [v8 setClasses:v7 forSelector:"dynamicAssetSolicitationComplete:modelNumber:" argumentIndex:0 ofReply:0];
+    remoteObjectInterface = [v2 remoteObjectInterface];
+    [remoteObjectInterface setClasses:v7 forSelector:"dynamicAssetSolicitationComplete:modelNumber:" argumentIndex:0 ofReply:0];
 
-    v9 = [v2 remoteObjectInterface];
-    [v9 setClasses:v7 forSelector:"dynamicAssetSolicitationComplete:" argumentIndex:0 ofReply:0];
+    remoteObjectInterface2 = [v2 remoteObjectInterface];
+    [remoteObjectInterface2 setClasses:v7 forSelector:"dynamicAssetSolicitationComplete:" argumentIndex:0 ofReply:0];
 
     [v2 resume];
     v10 = v2;

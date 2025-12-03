@@ -1,5 +1,5 @@
 @interface MUIExternalSummarizationOnboardingViewController
-- (_TtC6MailUI48MUIExternalSummarizationOnboardingViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC6MailUI48MUIExternalSummarizationOnboardingViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLoad;
 @end
 
@@ -12,15 +12,15 @@
   MEMORY[0x277D82BD8](self);
 }
 
-- (_TtC6MailUI48MUIExternalSummarizationOnboardingViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC6MailUI48MUIExternalSummarizationOnboardingViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  MEMORY[0x277D82BE0](a3);
-  MEMORY[0x277D82BE0](a4);
-  if (a3)
+  MEMORY[0x277D82BE0](name);
+  MEMORY[0x277D82BE0](bundle);
+  if (name)
   {
     sub_214CCF564();
     v6 = v4;
-    MEMORY[0x277D82BD8](a3);
+    MEMORY[0x277D82BD8](name);
     v5 = v6;
   }
 

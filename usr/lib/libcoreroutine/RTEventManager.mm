@@ -1,27 +1,27 @@
 @interface RTEventManager
 - (RTEventManager)init;
-- (RTEventManager)initWithEventStore:(id)a3;
+- (RTEventManager)initWithEventStore:(id)store;
 - (id)calendars;
 - (id)calendarsExcludingSuggested;
-- (id)eventsBetweenStartDate:(id)a3 andEndDate:(id)a4 calendars:(id)a5;
-- (id)eventsSortedByEndDateBetweenStartDate:(id)a3 andEndDate:(id)a4;
-- (id)eventsSortedByStartDateBetweenStartDate:(id)a3 andEndDate:(id)a4;
-- (id)eventsSortedByStartDateBetweenStartDate:(id)a3 andEndDate:(id)a4 calendars:(id)a5;
-- (void)_fetchCurrentlyInEventWithHandler:(id)a3;
-- (void)_fetchEventsBetweenStartDate:(id)a3 andEndDate:(id)a4 includeSuggestions:(BOOL)a5 withHandler:(id)a6;
-- (void)_fetchEventsBetweenStartDate:(id)a3 endDate:(id)a4 handler:(id)a5;
-- (void)_fetchFreeDateIntervalsBetweenStartDate:(id)a3 endDate:(id)a4 filterAllDayEvents:(BOOL)a5 filterFreeTimeEvents:(BOOL)a6 handler:(id)a7;
-- (void)_fetchLastEventEndDateWithHandler:(id)a3;
-- (void)_fetchNextFreeStartDateWithHandler:(id)a3;
-- (void)_shutdownWithHandler:(id)a3;
-- (void)fetchCurrentlyInEventWithHandler:(id)a3;
-- (void)fetchEventsBetweenStartDate:(id)a3 andEndDate:(id)a4 includeSuggestions:(BOOL)a5 withHandler:(id)a6;
-- (void)fetchEventsBetweenStartDate:(id)a3 endDate:(id)a4 handler:(id)a5;
-- (void)fetchFreeDateIntervalsBetweenStartDate:(id)a3 endDate:(id)a4 filterAllDayEvents:(BOOL)a5 filterFreeTimeEvents:(BOOL)a6 handler:(id)a7;
-- (void)fetchLastEventEndDateWithHandler:(id)a3;
-- (void)fetchNextFreeStartDateWithHandler:(id)a3;
-- (void)transientObjectDidCreateBackingObject:(id)a3;
-- (void)transientObjectDidReleaseBackingObject:(id)a3;
+- (id)eventsBetweenStartDate:(id)date andEndDate:(id)endDate calendars:(id)calendars;
+- (id)eventsSortedByEndDateBetweenStartDate:(id)date andEndDate:(id)endDate;
+- (id)eventsSortedByStartDateBetweenStartDate:(id)date andEndDate:(id)endDate;
+- (id)eventsSortedByStartDateBetweenStartDate:(id)date andEndDate:(id)endDate calendars:(id)calendars;
+- (void)_fetchCurrentlyInEventWithHandler:(id)handler;
+- (void)_fetchEventsBetweenStartDate:(id)date andEndDate:(id)endDate includeSuggestions:(BOOL)suggestions withHandler:(id)handler;
+- (void)_fetchEventsBetweenStartDate:(id)date endDate:(id)endDate handler:(id)handler;
+- (void)_fetchFreeDateIntervalsBetweenStartDate:(id)date endDate:(id)endDate filterAllDayEvents:(BOOL)events filterFreeTimeEvents:(BOOL)timeEvents handler:(id)handler;
+- (void)_fetchLastEventEndDateWithHandler:(id)handler;
+- (void)_fetchNextFreeStartDateWithHandler:(id)handler;
+- (void)_shutdownWithHandler:(id)handler;
+- (void)fetchCurrentlyInEventWithHandler:(id)handler;
+- (void)fetchEventsBetweenStartDate:(id)date andEndDate:(id)endDate includeSuggestions:(BOOL)suggestions withHandler:(id)handler;
+- (void)fetchEventsBetweenStartDate:(id)date endDate:(id)endDate handler:(id)handler;
+- (void)fetchFreeDateIntervalsBetweenStartDate:(id)date endDate:(id)endDate filterAllDayEvents:(BOOL)events filterFreeTimeEvents:(BOOL)timeEvents handler:(id)handler;
+- (void)fetchLastEventEndDateWithHandler:(id)handler;
+- (void)fetchNextFreeStartDateWithHandler:(id)handler;
+- (void)transientObjectDidCreateBackingObject:(id)object;
+- (void)transientObjectDidReleaseBackingObject:(id)object;
 @end
 
 @implementation RTEventManager
@@ -41,11 +41,11 @@ id __22__RTEventManager_init__block_invoke()
   return v4;
 }
 
-- (RTEventManager)initWithEventStore:(id)a3
+- (RTEventManager)initWithEventStore:(id)store
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (v5)
+  storeCopy = store;
+  if (storeCopy)
   {
     v16.receiver = self;
     v16.super_class = RTEventManager;
@@ -53,22 +53,22 @@ id __22__RTEventManager_init__block_invoke()
     v7 = v6;
     if (v6)
     {
-      objc_storeStrong(&v6->_eventStore, a3);
+      objc_storeStrong(&v6->_eventStore, store);
       v8 = objc_opt_class();
       if (v8 == objc_opt_class())
       {
-        [v5 setTransientObjectDelegate:v7];
+        [storeCopy setTransientObjectDelegate:v7];
       }
 
       v9 = [RTInvocationDispatcher alloc];
-      v10 = [(RTNotifier *)v7 queue];
-      v11 = [(RTInvocationDispatcher *)v9 initWithQueue:v10];
+      queue = [(RTNotifier *)v7 queue];
+      v11 = [(RTInvocationDispatcher *)v9 initWithQueue:queue];
       invocationDispatcher = v7->_invocationDispatcher;
       v7->_invocationDispatcher = v11;
     }
 
     self = v7;
-    v13 = self;
+    selfCopy = self;
   }
 
   else
@@ -83,25 +83,25 @@ id __22__RTEventManager_init__block_invoke()
       _os_log_error_impl(&dword_2304B3000, v14, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: eventStore (in %s:%d)", buf, 0x12u);
     }
 
-    v13 = 0;
+    selfCopy = 0;
   }
 
-  return v13;
+  return selfCopy;
 }
 
-- (void)_shutdownWithHandler:(id)a3
+- (void)_shutdownWithHandler:(id)handler
 {
-  if (a3)
+  if (handler)
   {
-    (*(a3 + 2))(a3, 0);
+    (*(handler + 2))(handler, 0);
   }
 }
 
-- (void)transientObjectDidCreateBackingObject:(id)a3
+- (void)transientObjectDidCreateBackingObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   objc_initWeak(&location, self);
-  if ([v4 isEqual:self->_eventStore])
+  if ([objectCopy isEqual:self->_eventStore])
   {
     eventStore = self->_eventStore;
     v6[0] = MEMORY[0x277D85DD0];
@@ -173,18 +173,18 @@ void __56__RTEventManager_transientObjectDidCreateBackingObject___block_invoke_2
   }
 }
 
-- (void)transientObjectDidReleaseBackingObject:(id)a3
+- (void)transientObjectDidReleaseBackingObject:(id)object
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  objectCopy = object;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __57__RTEventManager_transientObjectDidReleaseBackingObject___block_invoke;
   v7[3] = &unk_2788C4A70;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = objectCopy;
+  selfCopy = self;
+  v6 = objectCopy;
+  dispatch_async(queue, v7);
 }
 
 uint64_t __57__RTEventManager_transientObjectDidReleaseBackingObject___block_invoke(uint64_t a1)
@@ -198,12 +198,12 @@ uint64_t __57__RTEventManager_transientObjectDidReleaseBackingObject___block_inv
   return result;
 }
 
-- (id)eventsBetweenStartDate:(id)a3 andEndDate:(id)a4 calendars:(id)a5
+- (id)eventsBetweenStartDate:(id)date andEndDate:(id)endDate calendars:(id)calendars
 {
   v27 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dateCopy = date;
+  endDateCopy = endDate;
+  calendarsCopy = calendars;
   if (![(RTEventManager *)self accessToEventsGranted])
   {
     v11 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
@@ -218,13 +218,13 @@ uint64_t __57__RTEventManager_transientObjectDidReleaseBackingObject___block_inv
   }
 
   v12 = 0;
-  if (v8 && v9)
+  if (dateCopy && endDateCopy)
   {
-    v13 = [(RTEventManager *)self eventStore];
-    v14 = [v13 predicateForEventsWithStartDate:v8 endDate:v9 calendars:v10];
+    eventStore = [(RTEventManager *)self eventStore];
+    v14 = [eventStore predicateForEventsWithStartDate:dateCopy endDate:endDateCopy calendars:calendarsCopy];
 
-    v15 = [(RTEventManager *)self eventStore];
-    v12 = [v15 eventsMatchingPredicate:v14];
+    eventStore2 = [(RTEventManager *)self eventStore];
+    v12 = [eventStore2 eventsMatchingPredicate:v14];
 
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
     {
@@ -232,14 +232,14 @@ uint64_t __57__RTEventManager_transientObjectDidReleaseBackingObject___block_inv
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
       {
         v18 = [v12 count];
-        v19 = [v8 stringFromDate];
-        v20 = [v9 stringFromDate];
+        stringFromDate = [dateCopy stringFromDate];
+        stringFromDate2 = [endDateCopy stringFromDate];
         v21 = 134218498;
         v22 = v18;
         v23 = 2112;
-        v24 = v19;
+        v24 = stringFromDate;
         v25 = 2112;
-        v26 = v20;
+        v26 = stringFromDate2;
         _os_log_debug_impl(&dword_2304B3000, v16, OS_LOG_TYPE_DEBUG, "%lu events between start date, %@, and end date, %@", &v21, 0x20u);
       }
     }
@@ -248,9 +248,9 @@ uint64_t __57__RTEventManager_transientObjectDidReleaseBackingObject___block_inv
   return v12;
 }
 
-- (id)eventsSortedByEndDateBetweenStartDate:(id)a3 andEndDate:(id)a4
+- (id)eventsSortedByEndDateBetweenStartDate:(id)date andEndDate:(id)endDate
 {
-  v4 = [(RTEventManager *)self eventsBetweenStartDate:a3 andEndDate:a4];
+  v4 = [(RTEventManager *)self eventsBetweenStartDate:date andEndDate:endDate];
   v5 = [v4 sortedArrayUsingComparator:&__block_literal_global_68_1];
 
   return v5;
@@ -266,17 +266,17 @@ uint64_t __67__RTEventManager_eventsSortedByEndDateBetweenStartDate_andEndDate__
   return v7;
 }
 
-- (id)eventsSortedByStartDateBetweenStartDate:(id)a3 andEndDate:(id)a4
+- (id)eventsSortedByStartDateBetweenStartDate:(id)date andEndDate:(id)endDate
 {
-  v4 = [(RTEventManager *)self eventsBetweenStartDate:a3 andEndDate:a4];
+  v4 = [(RTEventManager *)self eventsBetweenStartDate:date andEndDate:endDate];
   v5 = [v4 sortedArrayUsingComparator:&__block_literal_global_70];
 
   return v5;
 }
 
-- (id)eventsSortedByStartDateBetweenStartDate:(id)a3 andEndDate:(id)a4 calendars:(id)a5
+- (id)eventsSortedByStartDateBetweenStartDate:(id)date andEndDate:(id)endDate calendars:(id)calendars
 {
-  v5 = [(RTEventManager *)self eventsBetweenStartDate:a3 andEndDate:a4 calendars:a5];
+  v5 = [(RTEventManager *)self eventsBetweenStartDate:date andEndDate:endDate calendars:calendars];
   v6 = [v5 sortedArrayUsingComparator:&__block_literal_global_72_0];
 
   return v6;
@@ -298,26 +298,26 @@ uint64_t __67__RTEventManager_eventsSortedByEndDateBetweenStartDate_andEndDate__
     }
   }
 
-  v4 = [(RTEventManager *)self eventStore];
-  v5 = [v4 calendarsForEntityType:0];
+  eventStore = [(RTEventManager *)self eventStore];
+  v5 = [eventStore calendarsForEntityType:0];
 
   return v5;
 }
 
 - (id)calendarsExcludingSuggested
 {
-  v2 = [(RTEventManager *)self calendars];
+  calendars = [(RTEventManager *)self calendars];
   v3 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_76_0];
-  v4 = [v2 filteredArrayUsingPredicate:v3];
+  v4 = [calendars filteredArrayUsingPredicate:v3];
 
   return v4;
 }
 
-- (void)_fetchCurrentlyInEventWithHandler:(id)a3
+- (void)_fetchCurrentlyInEventWithHandler:(id)handler
 {
   v27 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (v5)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     if ([(RTEventManager *)self accessToEventsGranted])
     {
@@ -325,9 +325,9 @@ uint64_t __67__RTEventManager_eventsSortedByEndDateBetweenStartDate_andEndDate__
       *&v25[8] = v25;
       *&v25[16] = 0x2020000000;
       v26 = 0;
-      v6 = [MEMORY[0x277CBEAA8] startOfDay];
-      v7 = [MEMORY[0x277CBEAA8] endOfDay];
-      v8 = [(RTEventManager *)self eventsSortedByStartDateBetweenStartDate:v6 andEndDate:v7];
+      startOfDay = [MEMORY[0x277CBEAA8] startOfDay];
+      endOfDay = [MEMORY[0x277CBEAA8] endOfDay];
+      v8 = [(RTEventManager *)self eventsSortedByStartDateBetweenStartDate:startOfDay andEndDate:endOfDay];
       v17[0] = MEMORY[0x277D85DD0];
       v17[1] = 3221225472;
       v17[2] = __52__RTEventManager__fetchCurrentlyInEventWithHandler___block_invoke_86;
@@ -356,19 +356,19 @@ uint64_t __67__RTEventManager_eventsSortedByEndDateBetweenStartDate_andEndDate__
         }
       }
 
-      (*(v5 + 2))(v5, *(*&v25[8] + 24), 0);
+      (*(handlerCopy + 2))(handlerCopy, *(*&v25[8] + 24), 0);
       _Block_object_dispose(v25, 8);
     }
 
     else
     {
-      v12 = [(RTEventManager *)self invocationDispatcher];
+      invocationDispatcher = [(RTEventManager *)self invocationDispatcher];
       v21[0] = MEMORY[0x277D85DD0];
       v21[1] = 3221225472;
       v21[2] = __52__RTEventManager__fetchCurrentlyInEventWithHandler___block_invoke;
       v21[3] = &unk_2788C4938;
       v21[4] = self;
-      v22 = v5;
+      v22 = handlerCopy;
       v18[0] = MEMORY[0x277D85DD0];
       v18[1] = 3221225472;
       v18[2] = __52__RTEventManager__fetchCurrentlyInEventWithHandler___block_invoke_2;
@@ -379,10 +379,10 @@ uint64_t __67__RTEventManager_eventsSortedByEndDateBetweenStartDate_andEndDate__
       v13 = objc_opt_class();
       v14 = NSStringFromClass(v13);
       v15 = NSStringFromSelector(a2);
-      [v12 enqueueBlock:v21 failureBlock:v18 description:{@"%@-%@", v14, v15}];
+      [invocationDispatcher enqueueBlock:v21 failureBlock:v18 description:{@"%@-%@", v14, v15}];
 
-      v16 = [(RTEventManager *)self eventStore];
-      [v16 touch];
+      eventStore = [(RTEventManager *)self eventStore];
+      [eventStore touch];
     }
   }
 
@@ -452,25 +452,25 @@ void __52__RTEventManager__fetchCurrentlyInEventWithHandler___block_invoke_86(ui
   }
 }
 
-- (void)fetchCurrentlyInEventWithHandler:(id)a3
+- (void)fetchCurrentlyInEventWithHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __51__RTEventManager_fetchCurrentlyInEventWithHandler___block_invoke;
   v7[3] = &unk_2788C4938;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)_fetchNextFreeStartDateWithHandler:(id)a3
+- (void)_fetchNextFreeStartDateWithHandler:(id)handler
 {
   v31 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (v5)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     if ([(RTEventManager *)self accessToEventsGranted])
     {
@@ -480,13 +480,13 @@ void __52__RTEventManager__fetchCurrentlyInEventWithHandler___block_invoke_86(ui
       v28 = __Block_byref_object_copy__184;
       v29 = __Block_byref_object_dispose__184;
       v30 = 0;
-      v6 = [MEMORY[0x277CBEAA8] date];
+      date = [MEMORY[0x277CBEAA8] date];
       v7 = *(*&v27[8] + 40);
-      *(*&v27[8] + 40) = v6;
+      *(*&v27[8] + 40) = date;
 
-      v8 = [MEMORY[0x277CBEAA8] date];
-      v9 = [MEMORY[0x277CBEAA8] endOfDay];
-      v10 = [(RTEventManager *)self eventsSortedByStartDateBetweenStartDate:v8 andEndDate:v9];
+      date2 = [MEMORY[0x277CBEAA8] date];
+      endOfDay = [MEMORY[0x277CBEAA8] endOfDay];
+      v10 = [(RTEventManager *)self eventsSortedByStartDateBetweenStartDate:date2 andEndDate:endOfDay];
       v19[0] = MEMORY[0x277D85DD0];
       v19[1] = 3221225472;
       v19[2] = __53__RTEventManager__fetchNextFreeStartDateWithHandler___block_invoke_88;
@@ -499,26 +499,26 @@ void __52__RTEventManager__fetchCurrentlyInEventWithHandler___block_invoke_86(ui
         v11 = _rt_log_facility_get_os_log(RTLogFacilityEvent);
         if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
         {
-          v12 = [*(*&v27[8] + 40) stringFromDate];
+          stringFromDate = [*(*&v27[8] + 40) stringFromDate];
           *buf = 138412290;
-          v26 = v12;
+          v26 = stringFromDate;
           _os_log_impl(&dword_2304B3000, v11, OS_LOG_TYPE_INFO, "next free start date, %@", buf, 0xCu);
         }
       }
 
-      (*(v5 + 2))(v5, *(*&v27[8] + 40), 0);
+      (*(handlerCopy + 2))(handlerCopy, *(*&v27[8] + 40), 0);
       _Block_object_dispose(v27, 8);
     }
 
     else
     {
-      v14 = [(RTEventManager *)self invocationDispatcher];
+      invocationDispatcher = [(RTEventManager *)self invocationDispatcher];
       v23[0] = MEMORY[0x277D85DD0];
       v23[1] = 3221225472;
       v23[2] = __53__RTEventManager__fetchNextFreeStartDateWithHandler___block_invoke;
       v23[3] = &unk_2788C4938;
       v23[4] = self;
-      v24 = v5;
+      v24 = handlerCopy;
       v20[0] = MEMORY[0x277D85DD0];
       v20[1] = 3221225472;
       v20[2] = __53__RTEventManager__fetchNextFreeStartDateWithHandler___block_invoke_2;
@@ -529,10 +529,10 @@ void __52__RTEventManager__fetchCurrentlyInEventWithHandler___block_invoke_86(ui
       v15 = objc_opt_class();
       v16 = NSStringFromClass(v15);
       v17 = NSStringFromSelector(a2);
-      [v14 enqueueBlock:v23 failureBlock:v20 description:{@"%@-%@", v16, v17}];
+      [invocationDispatcher enqueueBlock:v23 failureBlock:v20 description:{@"%@-%@", v16, v17}];
 
-      v18 = [(RTEventManager *)self eventStore];
-      [v18 touch];
+      eventStore = [(RTEventManager *)self eventStore];
+      [eventStore touch];
     }
   }
 
@@ -633,58 +633,58 @@ LABEL_8:
 LABEL_10:
 }
 
-- (void)fetchNextFreeStartDateWithHandler:(id)a3
+- (void)fetchNextFreeStartDateWithHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __52__RTEventManager_fetchNextFreeStartDateWithHandler___block_invoke;
   v7[3] = &unk_2788C4938;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)_fetchLastEventEndDateWithHandler:(id)a3
+- (void)_fetchLastEventEndDateWithHandler:(id)handler
 {
   v28 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (v5)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     if ([(RTEventManager *)self accessToEventsGranted])
     {
-      v6 = [MEMORY[0x277CBEAA8] date];
-      v7 = [MEMORY[0x277CBEAA8] endOfDay];
-      v8 = [(RTEventManager *)self eventsSortedByEndDateBetweenStartDate:v6 andEndDate:v7];
-      v9 = [v8 lastObject];
+      date = [MEMORY[0x277CBEAA8] date];
+      endOfDay = [MEMORY[0x277CBEAA8] endOfDay];
+      v8 = [(RTEventManager *)self eventsSortedByEndDateBetweenStartDate:date andEndDate:endOfDay];
+      lastObject = [v8 lastObject];
 
-      v10 = [v9 endDate];
+      endDate = [lastObject endDate];
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
         v11 = _rt_log_facility_get_os_log(RTLogFacilityEvent);
         if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
         {
-          v12 = [v10 stringFromDate];
+          stringFromDate = [endDate stringFromDate];
           *buf = 138412290;
-          v25 = v12;
+          v25 = stringFromDate;
           _os_log_impl(&dword_2304B3000, v11, OS_LOG_TYPE_INFO, "last event end date, %@", buf, 0xCu);
         }
       }
 
-      v5[2](v5, v10, 0);
+      handlerCopy[2](handlerCopy, endDate, 0);
     }
 
     else
     {
-      v14 = [(RTEventManager *)self invocationDispatcher];
+      invocationDispatcher = [(RTEventManager *)self invocationDispatcher];
       v22[0] = MEMORY[0x277D85DD0];
       v22[1] = 3221225472;
       v22[2] = __52__RTEventManager__fetchLastEventEndDateWithHandler___block_invoke;
       v22[3] = &unk_2788C4938;
       v22[4] = self;
-      v23 = v5;
+      v23 = handlerCopy;
       v19[0] = MEMORY[0x277D85DD0];
       v19[1] = 3221225472;
       v19[2] = __52__RTEventManager__fetchLastEventEndDateWithHandler___block_invoke_2;
@@ -695,10 +695,10 @@ LABEL_10:
       v15 = objc_opt_class();
       v16 = NSStringFromClass(v15);
       v17 = NSStringFromSelector(a2);
-      [v14 enqueueBlock:v22 failureBlock:v19 description:{@"%@-%@", v16, v17}];
+      [invocationDispatcher enqueueBlock:v22 failureBlock:v19 description:{@"%@-%@", v16, v17}];
 
-      v18 = [(RTEventManager *)self eventStore];
-      [v18 touch];
+      eventStore = [(RTEventManager *)self eventStore];
+      [eventStore touch];
     }
   }
 
@@ -743,31 +743,31 @@ void __52__RTEventManager__fetchLastEventEndDateWithHandler___block_invoke_2(uin
   (*(v8 + 16))(v8, 0, v12);
 }
 
-- (void)fetchLastEventEndDateWithHandler:(id)a3
+- (void)fetchLastEventEndDateWithHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __51__RTEventManager_fetchLastEventEndDateWithHandler___block_invoke;
   v7[3] = &unk_2788C4938;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)_fetchFreeDateIntervalsBetweenStartDate:(id)a3 endDate:(id)a4 filterAllDayEvents:(BOOL)a5 filterFreeTimeEvents:(BOOL)a6 handler:(id)a7
+- (void)_fetchFreeDateIntervalsBetweenStartDate:(id)date endDate:(id)endDate filterAllDayEvents:(BOOL)events filterFreeTimeEvents:(BOOL)timeEvents handler:(id)handler
 {
   v54 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = a4;
-  v15 = a7;
-  if (v15)
+  dateCopy = date;
+  endDateCopy = endDate;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v16 = [v13 laterDate:v14];
+    v16 = [dateCopy laterDate:endDateCopy];
 
-    if (v16 == v13)
+    if (v16 == dateCopy)
     {
       v19 = MEMORY[0x277CCA9B8];
       v20 = *MEMORY[0x277D01448];
@@ -775,7 +775,7 @@ void __52__RTEventManager__fetchLastEventEndDateWithHandler___block_invoke_2(uin
       v49 = @"Requires start date to be before end date.";
       v21 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v49 forKeys:&v48 count:1];
       v22 = [v19 errorWithDomain:v20 code:7 userInfo:v21];
-      v15[2](v15, 0, v22);
+      handlerCopy[2](handlerCopy, 0, v22);
 
 LABEL_16:
       goto LABEL_17;
@@ -783,37 +783,37 @@ LABEL_16:
 
     if ([(RTEventManager *)self accessToEventsGranted])
     {
-      if (v13)
+      if (dateCopy)
       {
-        v17 = v13;
+        distantPast = dateCopy;
       }
 
       else
       {
-        v17 = [MEMORY[0x277CBEAA8] distantPast];
+        distantPast = [MEMORY[0x277CBEAA8] distantPast];
       }
 
-      v28 = v17;
-      if (v14)
+      v28 = distantPast;
+      if (endDateCopy)
       {
-        v29 = v14;
+        distantFuture = endDateCopy;
       }
 
       else
       {
-        v29 = [MEMORY[0x277CBEAA8] distantFuture];
+        distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
       }
 
-      v30 = v29;
+      v30 = distantFuture;
       aBlock[0] = MEMORY[0x277D85DD0];
       aBlock[1] = 3221225472;
       aBlock[2] = __114__RTEventManager__fetchFreeDateIntervalsBetweenStartDate_endDate_filterAllDayEvents_filterFreeTimeEvents_handler___block_invoke_93;
       aBlock[3] = &unk_2788D23E8;
-      v37 = a5;
-      v38 = a6;
+      eventsCopy = events;
+      timeEventsCopy = timeEvents;
       v34 = v28;
-      v35 = v29;
-      v36 = v15;
+      v35 = distantFuture;
+      v36 = handlerCopy;
       v31 = v30;
       v21 = v28;
       v32 = _Block_copy(aBlock);
@@ -822,17 +822,17 @@ LABEL_16:
       goto LABEL_16;
     }
 
-    v23 = [(RTEventManager *)self invocationDispatcher];
+    invocationDispatcher = [(RTEventManager *)self invocationDispatcher];
     v42[0] = MEMORY[0x277D85DD0];
     v42[1] = 3221225472;
     v42[2] = __114__RTEventManager__fetchFreeDateIntervalsBetweenStartDate_endDate_filterAllDayEvents_filterFreeTimeEvents_handler___block_invoke;
     v42[3] = &unk_2788D23A0;
     v42[4] = self;
-    v43 = v13;
-    v44 = v14;
-    v46 = a5;
-    v47 = a6;
-    v45 = v15;
+    v43 = dateCopy;
+    v44 = endDateCopy;
+    eventsCopy2 = events;
+    timeEventsCopy2 = timeEvents;
+    v45 = handlerCopy;
     v39[0] = MEMORY[0x277D85DD0];
     v39[1] = 3221225472;
     v39[2] = __114__RTEventManager__fetchFreeDateIntervalsBetweenStartDate_endDate_filterAllDayEvents_filterFreeTimeEvents_handler___block_invoke_2;
@@ -843,10 +843,10 @@ LABEL_16:
     v24 = objc_opt_class();
     v25 = NSStringFromClass(v24);
     v26 = NSStringFromSelector(a2);
-    [v23 enqueueBlock:v42 failureBlock:v39 description:{@"%@-%@", v25, v26}];
+    [invocationDispatcher enqueueBlock:v42 failureBlock:v39 description:{@"%@-%@", v25, v26}];
 
-    v27 = [(RTEventManager *)self eventStore];
-    [v27 touch];
+    eventStore = [(RTEventManager *)self eventStore];
+    [eventStore touch];
   }
 
   else
@@ -939,59 +939,59 @@ BOOL __114__RTEventManager__fetchFreeDateIntervalsBetweenStartDate_endDate_filte
   return v3;
 }
 
-- (void)fetchFreeDateIntervalsBetweenStartDate:(id)a3 endDate:(id)a4 filterAllDayEvents:(BOOL)a5 filterFreeTimeEvents:(BOOL)a6 handler:(id)a7
+- (void)fetchFreeDateIntervalsBetweenStartDate:(id)date endDate:(id)endDate filterAllDayEvents:(BOOL)events filterFreeTimeEvents:(BOOL)timeEvents handler:(id)handler
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
-  v15 = [(RTNotifier *)self queue];
+  dateCopy = date;
+  endDateCopy = endDate;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __113__RTEventManager_fetchFreeDateIntervalsBetweenStartDate_endDate_filterAllDayEvents_filterFreeTimeEvents_handler___block_invoke;
   block[3] = &unk_2788D23A0;
   block[4] = self;
-  v20 = v12;
-  v23 = a5;
-  v24 = a6;
-  v21 = v13;
-  v22 = v14;
-  v16 = v14;
-  v17 = v13;
-  v18 = v12;
-  dispatch_async(v15, block);
+  v20 = dateCopy;
+  eventsCopy = events;
+  timeEventsCopy = timeEvents;
+  v21 = endDateCopy;
+  v22 = handlerCopy;
+  v16 = handlerCopy;
+  v17 = endDateCopy;
+  v18 = dateCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)fetchEventsBetweenStartDate:(id)a3 andEndDate:(id)a4 includeSuggestions:(BOOL)a5 withHandler:(id)a6
+- (void)fetchEventsBetweenStartDate:(id)date andEndDate:(id)endDate includeSuggestions:(BOOL)suggestions withHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
-  v12 = [(RTNotifier *)self queue];
+  dateCopy = date;
+  endDateCopy = endDate;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __88__RTEventManager_fetchEventsBetweenStartDate_andEndDate_includeSuggestions_withHandler___block_invoke;
   v16[3] = &unk_2788C5530;
   v16[4] = self;
-  v17 = v9;
-  v18 = v10;
-  v19 = v11;
-  v13 = v11;
-  v14 = v10;
-  v15 = v9;
-  dispatch_async(v12, v16);
+  v17 = dateCopy;
+  v18 = endDateCopy;
+  v19 = handlerCopy;
+  v13 = handlerCopy;
+  v14 = endDateCopy;
+  v15 = dateCopy;
+  dispatch_async(queue, v16);
 }
 
-- (void)_fetchEventsBetweenStartDate:(id)a3 andEndDate:(id)a4 includeSuggestions:(BOOL)a5 withHandler:(id)a6
+- (void)_fetchEventsBetweenStartDate:(id)date andEndDate:(id)endDate includeSuggestions:(BOOL)suggestions withHandler:(id)handler
 {
   v41 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  if (v13)
+  dateCopy = date;
+  endDateCopy = endDate;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v14 = [v11 laterDate:v12];
+    v14 = [dateCopy laterDate:endDateCopy];
 
-    if (v14 == v11)
+    if (v14 == dateCopy)
     {
       v17 = MEMORY[0x277CCA9B8];
       v18 = *MEMORY[0x277D01448];
@@ -999,37 +999,37 @@ BOOL __114__RTEventManager__fetchFreeDateIntervalsBetweenStartDate_endDate_filte
       v36 = @"Requires start date to be before end date.";
       v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v36 forKeys:&v35 count:1];
       v20 = [v17 errorWithDomain:v18 code:7 userInfo:v19];
-      v13[2](v13, 0, v20);
+      handlerCopy[2](handlerCopy, 0, v20);
     }
 
     else if ([(RTEventManager *)self accessToEventsGranted])
     {
-      if (a5)
+      if (suggestions)
       {
-        v15 = 0;
+        calendarsExcludingSuggested = 0;
       }
 
       else
       {
-        v15 = [(RTEventManager *)self calendarsExcludingSuggested];
+        calendarsExcludingSuggested = [(RTEventManager *)self calendarsExcludingSuggested];
       }
 
-      v26 = [(RTEventManager *)self eventsBetweenStartDate:v11 andEndDate:v12 calendars:v15];
-      (v13)[2](v13, v26, 0);
+      v26 = [(RTEventManager *)self eventsBetweenStartDate:dateCopy andEndDate:endDateCopy calendars:calendarsExcludingSuggested];
+      (handlerCopy)[2](handlerCopy, v26, 0);
     }
 
     else
     {
-      v21 = [(RTEventManager *)self invocationDispatcher];
+      invocationDispatcher = [(RTEventManager *)self invocationDispatcher];
       v30[0] = MEMORY[0x277D85DD0];
       v30[1] = 3221225472;
       v30[2] = __89__RTEventManager__fetchEventsBetweenStartDate_andEndDate_includeSuggestions_withHandler___block_invoke;
       v30[3] = &unk_2788C6440;
       v30[4] = self;
-      v31 = v11;
-      v32 = v12;
-      v34 = a5;
-      v33 = v13;
+      v31 = dateCopy;
+      v32 = endDateCopy;
+      suggestionsCopy = suggestions;
+      v33 = handlerCopy;
       v27[0] = MEMORY[0x277D85DD0];
       v27[1] = 3221225472;
       v27[2] = __89__RTEventManager__fetchEventsBetweenStartDate_andEndDate_includeSuggestions_withHandler___block_invoke_2;
@@ -1040,10 +1040,10 @@ BOOL __114__RTEventManager__fetchFreeDateIntervalsBetweenStartDate_endDate_filte
       v22 = objc_opt_class();
       v23 = NSStringFromClass(v22);
       v24 = NSStringFromSelector(a2);
-      [v21 enqueueBlock:v30 failureBlock:v27 description:{@"%@-%@", v23, v24}];
+      [invocationDispatcher enqueueBlock:v30 failureBlock:v27 description:{@"%@-%@", v23, v24}];
 
-      v25 = [(RTEventManager *)self eventStore];
-      [v25 touch];
+      eventStore = [(RTEventManager *)self eventStore];
+      [eventStore touch];
     }
   }
 
@@ -1088,18 +1088,18 @@ void __89__RTEventManager__fetchEventsBetweenStartDate_andEndDate_includeSuggest
   (*(v8 + 16))(v8, 0, v12);
 }
 
-- (void)_fetchEventsBetweenStartDate:(id)a3 endDate:(id)a4 handler:(id)a5
+- (void)_fetchEventsBetweenStartDate:(id)date endDate:(id)endDate handler:(id)handler
 {
   v65[1] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v11)
+  dateCopy = date;
+  endDateCopy = endDate;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     goto LABEL_19;
   }
 
-  if (!v9)
+  if (!dateCopy)
   {
     v27 = MEMORY[0x277CCA9B8];
     v28 = *MEMORY[0x277D01448];
@@ -1111,12 +1111,12 @@ void __89__RTEventManager__fetchEventsBetweenStartDate_andEndDate_includeSuggest
 LABEL_17:
     v32 = [v29 dictionaryWithObjects:v30 forKeys:v31 count:1];
     v33 = [v27 errorWithDomain:v28 code:0 userInfo:v32];
-    v11[2](v11, 0, v33);
+    handlerCopy[2](handlerCopy, 0, v33);
 
     goto LABEL_19;
   }
 
-  if (!v10)
+  if (!endDateCopy)
   {
     v27 = MEMORY[0x277CCA9B8];
     v28 = *MEMORY[0x277D01448];
@@ -1130,10 +1130,10 @@ LABEL_17:
 
   if ([(RTEventManager *)self accessToEventsGranted])
   {
-    v39 = v11;
-    v40 = v10;
-    v41 = v9;
-    v12 = [(RTEventManager *)self eventsBetweenStartDate:v9 andEndDate:v10];
+    v39 = handlerCopy;
+    v40 = endDateCopy;
+    v41 = dateCopy;
+    v12 = [(RTEventManager *)self eventsBetweenStartDate:dateCopy andEndDate:endDateCopy];
     v43 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v12, "count")}];
     v50 = 0u;
     v51 = 0u;
@@ -1156,22 +1156,22 @@ LABEL_17:
 
           v14 = *(*(&v50 + 1) + 8 * v13);
           v15 = objc_alloc(MEMORY[0x277D01160]);
-          v16 = [v14 structuredLocation];
-          v17 = [v16 geoLocation];
-          v49 = [v15 initWithCLLocation:v17];
+          structuredLocation = [v14 structuredLocation];
+          geoLocation = [structuredLocation geoLocation];
+          v49 = [v15 initWithCLLocation:geoLocation];
 
           v48 = [RTCalendarEvent alloc];
-          v18 = [v14 eventIdentifier];
-          v47 = [v14 isAllDay];
-          v19 = [v14 startDate];
-          v20 = [v14 endDate];
-          v46 = [v14 participantStatus];
-          v21 = [v14 availability];
-          v22 = [v14 structuredLocation];
-          v23 = [v22 title];
-          v24 = [v14 structuredLocation];
-          v25 = [v24 mapKitHandle];
-          v26 = [(RTCalendarEvent *)v48 initWithEventIdentifier:v18 allDay:v47 startDate:v19 endDate:v20 participantStatus:v46 availability:v21 location:v49 locationTitle:v23 locationMapItemHandle:v25];
+          eventIdentifier = [v14 eventIdentifier];
+          isAllDay = [v14 isAllDay];
+          startDate = [v14 startDate];
+          endDate = [v14 endDate];
+          participantStatus = [v14 participantStatus];
+          availability = [v14 availability];
+          structuredLocation2 = [v14 structuredLocation];
+          title = [structuredLocation2 title];
+          structuredLocation3 = [v14 structuredLocation];
+          mapKitHandle = [structuredLocation3 mapKitHandle];
+          v26 = [(RTCalendarEvent *)v48 initWithEventIdentifier:eventIdentifier allDay:isAllDay startDate:startDate endDate:endDate participantStatus:participantStatus availability:availability location:v49 locationTitle:title locationMapItemHandle:mapKitHandle];
 
           if (v26)
           {
@@ -1188,24 +1188,24 @@ LABEL_17:
       while (v45);
     }
 
-    v11 = v39;
+    handlerCopy = v39;
     (v39)[2](v39, v43, 0);
 
-    v10 = v40;
-    v9 = v41;
+    endDateCopy = v40;
+    dateCopy = v41;
   }
 
   else
   {
-    v34 = [(RTEventManager *)self invocationDispatcher];
+    invocationDispatcher = [(RTEventManager *)self invocationDispatcher];
     v57[0] = MEMORY[0x277D85DD0];
     v57[1] = 3221225472;
     v57[2] = __63__RTEventManager__fetchEventsBetweenStartDate_endDate_handler___block_invoke;
     v57[3] = &unk_2788C5530;
     v57[4] = self;
-    v58 = v9;
-    v59 = v10;
-    v60 = v11;
+    v58 = dateCopy;
+    v59 = endDateCopy;
+    v60 = handlerCopy;
     v54[0] = MEMORY[0x277D85DD0];
     v54[1] = 3221225472;
     v54[2] = __63__RTEventManager__fetchEventsBetweenStartDate_endDate_handler___block_invoke_2;
@@ -1216,10 +1216,10 @@ LABEL_17:
     v35 = objc_opt_class();
     v36 = NSStringFromClass(v35);
     v37 = NSStringFromSelector(a2);
-    [v34 enqueueBlock:v57 failureBlock:v54 description:{@"%@-%@", v36, v37}];
+    [invocationDispatcher enqueueBlock:v57 failureBlock:v54 description:{@"%@-%@", v36, v37}];
 
-    v38 = [(RTEventManager *)self eventStore];
-    [v38 touch];
+    eventStore = [(RTEventManager *)self eventStore];
+    [eventStore touch];
   }
 
 LABEL_19:
@@ -1252,24 +1252,24 @@ void __63__RTEventManager__fetchEventsBetweenStartDate_endDate_handler___block_i
   (*(v8 + 16))(v8, 0, v12);
 }
 
-- (void)fetchEventsBetweenStartDate:(id)a3 endDate:(id)a4 handler:(id)a5
+- (void)fetchEventsBetweenStartDate:(id)date endDate:(id)endDate handler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(RTNotifier *)self queue];
+  dateCopy = date;
+  endDateCopy = endDate;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __62__RTEventManager_fetchEventsBetweenStartDate_endDate_handler___block_invoke;
   v15[3] = &unk_2788C5530;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  dispatch_async(v11, v15);
+  v16 = dateCopy;
+  v17 = endDateCopy;
+  v18 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = endDateCopy;
+  v14 = dateCopy;
+  dispatch_async(queue, v15);
 }
 
 @end

@@ -6,10 +6,10 @@
 
 - (BOOL)wf_isRequiresShortcutsJrError
 {
-  v2 = [a1 domain];
-  if ([v2 isEqualToString:@"WFSiriExecutionErrorDomain"])
+  domain = [self domain];
+  if ([domain isEqualToString:@"WFSiriExecutionErrorDomain"])
   {
-    v3 = [a1 code] == 0;
+    v3 = [self code] == 0;
   }
 
   else

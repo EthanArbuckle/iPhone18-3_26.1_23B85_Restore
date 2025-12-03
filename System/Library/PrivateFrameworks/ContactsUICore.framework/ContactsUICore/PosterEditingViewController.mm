@@ -1,14 +1,14 @@
 @interface PosterEditingViewController
-- (_TtC14ContactsUICore27PosterEditingViewController)initWithCoder:(id)a3;
-- (_TtC14ContactsUICore27PosterEditingViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)editingViewController:(id)a3 didFinishWithConfiguration:(id)a4;
-- (void)editingViewControllerDidFinishShowingContent:(id)a3;
+- (_TtC14ContactsUICore27PosterEditingViewController)initWithCoder:(id)coder;
+- (_TtC14ContactsUICore27PosterEditingViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)editingViewController:(id)controller didFinishWithConfiguration:(id)configuration;
+- (void)editingViewControllerDidFinishShowingContent:(id)content;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation PosterEditingViewController
 
-- (_TtC14ContactsUICore27PosterEditingViewController)initWithCoder:(id)a3
+- (_TtC14ContactsUICore27PosterEditingViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC14ContactsUICore27PosterEditingViewController_viewController) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC14ContactsUICore27PosterEditingViewController_contact) = 0;
@@ -23,29 +23,29 @@
 
 - (void)viewWillLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1A33F22F0();
 }
 
-- (_TtC14ContactsUICore27PosterEditingViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC14ContactsUICore27PosterEditingViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)editingViewController:(id)a3 didFinishWithConfiguration:(id)a4
+- (void)editingViewController:(id)controller didFinishWithConfiguration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1A33F4B08(a4);
+  controllerCopy = controller;
+  configurationCopy = configuration;
+  selfCopy = self;
+  sub_1A33F4B08(configuration);
 }
 
-- (void)editingViewControllerDidFinishShowingContent:(id)a3
+- (void)editingViewControllerDidFinishShowingContent:(id)content
 {
-  v4 = a3;
-  v5 = self;
+  contentCopy = content;
+  selfCopy = self;
   sub_1A33F4E3C();
 }
 

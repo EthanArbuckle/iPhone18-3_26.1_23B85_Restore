@@ -1,34 +1,34 @@
 @interface TUIHostedAnchorLayout
-- (BOOL)collectHostingPropertiesWithCollector:(id)a3;
-- (id)newRenderModelCompatibleWithKind:(unint64_t)a3 context:(id)a4;
+- (BOOL)collectHostingPropertiesWithCollector:(id)collector;
+- (id)newRenderModelCompatibleWithKind:(unint64_t)kind context:(id)context;
 @end
 
 @implementation TUIHostedAnchorLayout
 
-- (BOOL)collectHostingPropertiesWithCollector:(id)a3
+- (BOOL)collectHostingPropertiesWithCollector:(id)collector
 {
-  v4 = a3;
+  collectorCopy = collector;
   v5 = [(TUILayout *)self box];
-  v6 = [v5 hostingProperties];
-  v7 = [v5 hostingIdentifier];
-  [v4 hostingCollectorAddProperties:v6 forIdentifier:v7];
+  hostingProperties = [v5 hostingProperties];
+  hostingIdentifier = [v5 hostingIdentifier];
+  [collectorCopy hostingCollectorAddProperties:hostingProperties forIdentifier:hostingIdentifier];
 
   return 0;
 }
 
-- (id)newRenderModelCompatibleWithKind:(unint64_t)a3 context:(id)a4
+- (id)newRenderModelCompatibleWithKind:(unint64_t)kind context:(id)context
 {
-  if (a3 < 4)
+  if (kind < 4)
   {
     return 0;
   }
 
-  v5 = [a4 renderModelForContainerLayout:self kind:6];
+  v5 = [context renderModelForContainerLayout:self kind:6];
   v6 = [(TUILayout *)self box];
-  v7 = [v6 identifier];
-  v8 = [v6 hostingIdentifier];
-  v9 = [v6 hostingProperties];
-  v10 = [TUIHostingAnchorView renderModelIdentifier:v7 submodel:v5 hostingIdentifier:v8 hostingProperties:v9];
+  identifier = [v6 identifier];
+  hostingIdentifier = [v6 hostingIdentifier];
+  hostingProperties = [v6 hostingProperties];
+  v10 = [TUIHostingAnchorView renderModelIdentifier:identifier submodel:v5 hostingIdentifier:hostingIdentifier hostingProperties:hostingProperties];
 
   return v10;
 }

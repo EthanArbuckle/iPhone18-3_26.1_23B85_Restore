@@ -1,13 +1,13 @@
 @interface SGPostalAddressComponents
-+ (id)components:(id)a3 city:(id)a4 state:(id)a5 postalCode:(id)a6 country:(id)a7;
-+ (id)components:(id)a3 subLocality:(id)a4 city:(id)a5 subAdministrativeArea:(id)a6 state:(id)a7 postalCode:(id)a8 country:(id)a9 isoCountryCode:(id)a10;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToPostalAddressComponents:(id)a3;
-- (SGPostalAddressComponents)initWithCoder:(id)a3;
-- (SGPostalAddressComponents)initWithStreet:(id)a3 subLocality:(id)a4 city:(id)a5 subAdministrativeArea:(id)a6 state:(id)a7 postalCode:(id)a8 country:(id)a9 isoCountryCode:(id)a10;
++ (id)components:(id)components city:(id)city state:(id)state postalCode:(id)code country:(id)country;
++ (id)components:(id)components subLocality:(id)locality city:(id)city subAdministrativeArea:(id)area state:(id)state postalCode:(id)code country:(id)country isoCountryCode:(id)self0;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToPostalAddressComponents:(id)components;
+- (SGPostalAddressComponents)initWithCoder:(id)coder;
+- (SGPostalAddressComponents)initWithStreet:(id)street subLocality:(id)locality city:(id)city subAdministrativeArea:(id)area state:(id)state postalCode:(id)code country:(id)country isoCountryCode:(id)self0;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SGPostalAddressComponents
@@ -29,12 +29,12 @@
   return [(NSString *)self->_country hash]- v5 + 32 * v5;
 }
 
-- (BOOL)isEqualToPostalAddressComponents:(id)a3
+- (BOOL)isEqualToPostalAddressComponents:(id)components
 {
-  v4 = a3;
+  componentsCopy = components;
   v5 = self->_street;
   v6 = v5;
-  if (v5 == v4[1])
+  if (v5 == componentsCopy[1])
   {
   }
 
@@ -50,7 +50,7 @@
 
   v8 = self->_subLocality;
   v9 = v8;
-  if (v8 == v4[2])
+  if (v8 == componentsCopy[2])
   {
   }
 
@@ -66,7 +66,7 @@
 
   v11 = self->_city;
   v12 = v11;
-  if (v11 == v4[3])
+  if (v11 == componentsCopy[3])
   {
   }
 
@@ -82,7 +82,7 @@
 
   v14 = self->_subAdministrativeArea;
   v15 = v14;
-  if (v14 == v4[4])
+  if (v14 == componentsCopy[4])
   {
   }
 
@@ -98,7 +98,7 @@
 
   v17 = self->_state;
   v18 = v17;
-  if (v17 == v4[5])
+  if (v17 == componentsCopy[5])
   {
   }
 
@@ -114,7 +114,7 @@
 
   v20 = self->_postalCode;
   v21 = v20;
-  if (v20 == v4[6])
+  if (v20 == componentsCopy[6])
   {
   }
 
@@ -130,7 +130,7 @@
 
   v23 = self->_country;
   v24 = v23;
-  if (v23 == v4[7])
+  if (v23 == componentsCopy[7])
   {
   }
 
@@ -148,7 +148,7 @@ LABEL_27:
 
   v28 = self->_isoCountryCode;
   v29 = v28;
-  if (v28 == v4[8])
+  if (v28 == componentsCopy[8])
   {
     v26 = 1;
   }
@@ -162,82 +162,82 @@ LABEL_28:
   return v26;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(SGPostalAddressComponents *)self isEqualToPostalAddressComponents:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(SGPostalAddressComponents *)self isEqualToPostalAddressComponents:v5];
   }
 
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   street = self->_street;
-  v5 = a3;
-  [v5 encodeObject:street forKey:@"street"];
-  [v5 encodeObject:self->_subLocality forKey:@"subLocality"];
-  [v5 encodeObject:self->_city forKey:@"city"];
-  [v5 encodeObject:self->_subAdministrativeArea forKey:@"subAdministrativeArea"];
-  [v5 encodeObject:self->_state forKey:@"state"];
-  [v5 encodeObject:self->_postalCode forKey:@"postalCode"];
-  [v5 encodeObject:self->_country forKey:@"country"];
-  [v5 encodeObject:self->_isoCountryCode forKey:@"isoCountryCode"];
+  coderCopy = coder;
+  [coderCopy encodeObject:street forKey:@"street"];
+  [coderCopy encodeObject:self->_subLocality forKey:@"subLocality"];
+  [coderCopy encodeObject:self->_city forKey:@"city"];
+  [coderCopy encodeObject:self->_subAdministrativeArea forKey:@"subAdministrativeArea"];
+  [coderCopy encodeObject:self->_state forKey:@"state"];
+  [coderCopy encodeObject:self->_postalCode forKey:@"postalCode"];
+  [coderCopy encodeObject:self->_country forKey:@"country"];
+  [coderCopy encodeObject:self->_isoCountryCode forKey:@"isoCountryCode"];
 }
 
-- (SGPostalAddressComponents)initWithCoder:(id)a3
+- (SGPostalAddressComponents)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v31.receiver = self;
   v31.super_class = SGPostalAddressComponents;
   v5 = [(SGPostalAddressComponents *)&v31 init];
   if (v5)
   {
     v6 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{objc_opt_class(), 0}];
-    v7 = [v4 decodeObjectOfClasses:v6 forKey:@"street"];
+    v7 = [coderCopy decodeObjectOfClasses:v6 forKey:@"street"];
     street = v5->_street;
     v5->_street = v7;
 
     v9 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{objc_opt_class(), 0}];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"subLocality"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"subLocality"];
     subLocality = v5->_subLocality;
     v5->_subLocality = v10;
 
     v12 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{objc_opt_class(), 0}];
-    v13 = [v4 decodeObjectOfClasses:v12 forKey:@"city"];
+    v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"city"];
     city = v5->_city;
     v5->_city = v13;
 
     v15 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{objc_opt_class(), 0}];
-    v16 = [v4 decodeObjectOfClasses:v15 forKey:@"subAdministrativeArea"];
+    v16 = [coderCopy decodeObjectOfClasses:v15 forKey:@"subAdministrativeArea"];
     subAdministrativeArea = v5->_subAdministrativeArea;
     v5->_subAdministrativeArea = v16;
 
     v18 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{objc_opt_class(), 0}];
-    v19 = [v4 decodeObjectOfClasses:v18 forKey:@"state"];
+    v19 = [coderCopy decodeObjectOfClasses:v18 forKey:@"state"];
     state = v5->_state;
     v5->_state = v19;
 
     v21 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{objc_opt_class(), 0}];
-    v22 = [v4 decodeObjectOfClasses:v21 forKey:@"postalCode"];
+    v22 = [coderCopy decodeObjectOfClasses:v21 forKey:@"postalCode"];
     postalCode = v5->_postalCode;
     v5->_postalCode = v22;
 
     v24 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{objc_opt_class(), 0}];
-    v25 = [v4 decodeObjectOfClasses:v24 forKey:@"country"];
+    v25 = [coderCopy decodeObjectOfClasses:v24 forKey:@"country"];
     country = v5->_country;
     v5->_country = v25;
 
     v27 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{objc_opt_class(), 0}];
-    v28 = [v4 decodeObjectOfClasses:v27 forKey:@"isoCountryCode"];
+    v28 = [coderCopy decodeObjectOfClasses:v27 forKey:@"isoCountryCode"];
     isoCountryCode = v5->_isoCountryCode;
     v5->_isoCountryCode = v28;
   }
@@ -245,58 +245,58 @@ LABEL_28:
   return v5;
 }
 
-- (SGPostalAddressComponents)initWithStreet:(id)a3 subLocality:(id)a4 city:(id)a5 subAdministrativeArea:(id)a6 state:(id)a7 postalCode:(id)a8 country:(id)a9 isoCountryCode:(id)a10
+- (SGPostalAddressComponents)initWithStreet:(id)street subLocality:(id)locality city:(id)city subAdministrativeArea:(id)area state:(id)state postalCode:(id)code country:(id)country isoCountryCode:(id)self0
 {
-  v27 = a3;
-  v26 = a4;
-  v25 = a5;
-  v24 = a6;
-  v23 = a7;
-  v22 = a8;
-  v17 = a9;
-  v18 = a10;
+  streetCopy = street;
+  localityCopy = locality;
+  cityCopy = city;
+  areaCopy = area;
+  stateCopy = state;
+  codeCopy = code;
+  countryCopy = country;
+  countryCodeCopy = countryCode;
   v28.receiver = self;
   v28.super_class = SGPostalAddressComponents;
   v19 = [(SGPostalAddressComponents *)&v28 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_street, a3);
-    objc_storeStrong(&v20->_subLocality, a4);
-    objc_storeStrong(&v20->_city, a5);
-    objc_storeStrong(&v20->_subAdministrativeArea, a6);
-    objc_storeStrong(&v20->_state, a7);
-    objc_storeStrong(&v20->_postalCode, a8);
-    objc_storeStrong(&v20->_country, a9);
-    objc_storeStrong(&v20->_isoCountryCode, a10);
+    objc_storeStrong(&v19->_street, street);
+    objc_storeStrong(&v20->_subLocality, locality);
+    objc_storeStrong(&v20->_city, city);
+    objc_storeStrong(&v20->_subAdministrativeArea, area);
+    objc_storeStrong(&v20->_state, state);
+    objc_storeStrong(&v20->_postalCode, code);
+    objc_storeStrong(&v20->_country, country);
+    objc_storeStrong(&v20->_isoCountryCode, countryCode);
   }
 
   return v20;
 }
 
-+ (id)components:(id)a3 subLocality:(id)a4 city:(id)a5 subAdministrativeArea:(id)a6 state:(id)a7 postalCode:(id)a8 country:(id)a9 isoCountryCode:(id)a10
++ (id)components:(id)components subLocality:(id)locality city:(id)city subAdministrativeArea:(id)area state:(id)state postalCode:(id)code country:(id)country isoCountryCode:(id)self0
 {
-  v16 = a10;
-  v17 = a9;
-  v18 = a8;
-  v19 = a7;
-  v20 = a6;
-  v21 = a5;
-  v22 = a4;
-  v23 = a3;
-  v24 = [[SGPostalAddressComponents alloc] initWithStreet:v23 subLocality:v22 city:v21 subAdministrativeArea:v20 state:v19 postalCode:v18 country:v17 isoCountryCode:v16];
+  countryCodeCopy = countryCode;
+  countryCopy = country;
+  codeCopy = code;
+  stateCopy = state;
+  areaCopy = area;
+  cityCopy = city;
+  localityCopy = locality;
+  componentsCopy = components;
+  v24 = [[SGPostalAddressComponents alloc] initWithStreet:componentsCopy subLocality:localityCopy city:cityCopy subAdministrativeArea:areaCopy state:stateCopy postalCode:codeCopy country:countryCopy isoCountryCode:countryCodeCopy];
 
   return v24;
 }
 
-+ (id)components:(id)a3 city:(id)a4 state:(id)a5 postalCode:(id)a6 country:(id)a7
++ (id)components:(id)components city:(id)city state:(id)state postalCode:(id)code country:(id)country
 {
-  v11 = a7;
-  v12 = a6;
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
-  v16 = [[SGPostalAddressComponents alloc] initWithStreet:v15 subLocality:0 city:v14 subAdministrativeArea:0 state:v13 postalCode:v12 country:v11 isoCountryCode:0];
+  countryCopy = country;
+  codeCopy = code;
+  stateCopy = state;
+  cityCopy = city;
+  componentsCopy = components;
+  v16 = [[SGPostalAddressComponents alloc] initWithStreet:componentsCopy subLocality:0 city:cityCopy subAdministrativeArea:0 state:stateCopy postalCode:codeCopy country:countryCopy isoCountryCode:0];
 
   return v16;
 }

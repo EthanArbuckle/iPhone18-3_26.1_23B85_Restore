@@ -1,11 +1,11 @@
 @interface FCHeldPBCodableFetchedValueDescriptor
-- (BOOL)isValue:(id)a3 equalToValue:(id)a4;
+- (BOOL)isValue:(id)value equalToValue:(id)toValue;
 - (FCHeldPBCodableFetchedValueDescriptor)init;
-- (FCHeldPBCodableFetchedValueDescriptor)initWithCodableClass:(Class)a3 contentContext:(id)a4 resourceConfigurationManager:(id)a5;
+- (FCHeldPBCodableFetchedValueDescriptor)initWithCodableClass:(Class)class contentContext:(id)context resourceConfigurationManager:(id)manager;
 - (id)fastCachedValue;
 - (id)inputManagers;
-- (void)_processFetchOperationResult:(id)a3 withBlock:(id)a4;
-- (void)fetchValueWithCachePolicy:(unint64_t)a3 qualityOfService:(int64_t)a4 completion:(id)a5;
+- (void)_processFetchOperationResult:(id)result withBlock:(id)block;
+- (void)fetchValueWithCachePolicy:(unint64_t)policy qualityOfService:(int64_t)service completion:(id)completion;
 @end
 
 @implementation FCHeldPBCodableFetchedValueDescriptor
@@ -19,17 +19,17 @@
   v17 = __Block_byref_object_copy__63;
   v18 = __Block_byref_object_dispose__63;
   v19 = 0;
-  v3 = [(FCHeldPBCodableFetchedValueDescriptor *)self resourceConfigurationManager];
-  v4 = [v3 value];
+  resourceConfigurationManager = [(FCHeldPBCodableFetchedValueDescriptor *)self resourceConfigurationManager];
+  value = [resourceConfigurationManager value];
 
-  if (v4)
+  if (value)
   {
     v5 = [FCResourcesFetchOperation alloc];
-    v6 = [(FCHeldPBCodableFetchedValueDescriptor *)self contentContext];
-    v7 = [v4 resourceID];
-    v20[0] = v7;
+    contentContext = [(FCHeldPBCodableFetchedValueDescriptor *)self contentContext];
+    resourceID = [value resourceID];
+    v20[0] = resourceID;
     v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:1];
-    v9 = [(FCResourcesFetchOperation *)v5 initWithContext:v6 resourceIDs:v8 downloadAssets:0];
+    v9 = [(FCResourcesFetchOperation *)v5 initWithContext:contentContext resourceIDs:v8 downloadAssets:0];
 
     [(FCFetchOperation *)v9 setCachePolicy:3];
     [(FCFetchOperation *)v9 setCanSendFetchCompletionSynchronously:1];
@@ -76,8 +76,8 @@ uint64_t __56__FCHeldPBCodableFetchedValueDescriptor_fastCachedValue__block_invo
 - (id)inputManagers
 {
   v6[1] = *MEMORY[0x1E69E9840];
-  v2 = [(FCHeldPBCodableFetchedValueDescriptor *)self resourceConfigurationManager];
-  v6[0] = v2;
+  resourceConfigurationManager = [(FCHeldPBCodableFetchedValueDescriptor *)self resourceConfigurationManager];
+  v6[0] = resourceConfigurationManager;
   v3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:1];
 
   v4 = *MEMORY[0x1E69E9840];
@@ -111,12 +111,12 @@ uint64_t __56__FCHeldPBCodableFetchedValueDescriptor_fastCachedValue__block_invo
   objc_exception_throw(v6);
 }
 
-- (FCHeldPBCodableFetchedValueDescriptor)initWithCodableClass:(Class)a3 contentContext:(id)a4 resourceConfigurationManager:(id)a5
+- (FCHeldPBCodableFetchedValueDescriptor)initWithCodableClass:(Class)class contentContext:(id)context resourceConfigurationManager:(id)manager
 {
   v27 = *MEMORY[0x1E69E9840];
-  v9 = a4;
-  v10 = a5;
-  if (!a3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  contextCopy = context;
+  managerCopy = manager;
+  if (!class && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v15 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "codableClass"];
     *buf = 136315906;
@@ -129,13 +129,13 @@ uint64_t __56__FCHeldPBCodableFetchedValueDescriptor_fastCachedValue__block_invo
     v26 = v15;
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
 
-    if (v9)
+    if (contextCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v9)
+  else if (contextCopy)
   {
     goto LABEL_6;
   }
@@ -155,7 +155,7 @@ uint64_t __56__FCHeldPBCodableFetchedValueDescriptor_fastCachedValue__block_invo
   }
 
 LABEL_6:
-  if (!v10 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if (!managerCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v17 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "resourceConfigurationManager"];
     *buf = 136315906;
@@ -175,22 +175,22 @@ LABEL_6:
   v12 = v11;
   if (v11)
   {
-    v11->_codableClass = a3;
-    objc_storeStrong(&v11->_contentContext, a4);
-    objc_storeStrong(&v12->_resourceConfigurationManager, a5);
+    v11->_codableClass = class;
+    objc_storeStrong(&v11->_contentContext, context);
+    objc_storeStrong(&v12->_resourceConfigurationManager, manager);
   }
 
   v13 = *MEMORY[0x1E69E9840];
   return v12;
 }
 
-- (void)fetchValueWithCachePolicy:(unint64_t)a3 qualityOfService:(int64_t)a4 completion:(id)a5
+- (void)fetchValueWithCachePolicy:(unint64_t)policy qualityOfService:(int64_t)service completion:(id)completion
 {
   v25[1] = *MEMORY[0x1E69E9840];
-  v8 = a5;
-  if (a3)
+  completionCopy = completion;
+  if (policy)
   {
-    v9 = a3 == 1;
+    v9 = policy == 1;
   }
 
   else
@@ -198,38 +198,38 @@ LABEL_6:
     v9 = 5;
   }
 
-  v10 = [(FCHeldPBCodableFetchedValueDescriptor *)self resourceConfigurationManager];
-  v11 = [v10 value];
+  resourceConfigurationManager = [(FCHeldPBCodableFetchedValueDescriptor *)self resourceConfigurationManager];
+  value = [resourceConfigurationManager value];
 
   v12 = [FCResourcesFetchOperation alloc];
-  v13 = [(FCHeldPBCodableFetchedValueDescriptor *)self contentContext];
-  v14 = [v11 resourceID];
-  v25[0] = v14;
+  contentContext = [(FCHeldPBCodableFetchedValueDescriptor *)self contentContext];
+  resourceID = [value resourceID];
+  v25[0] = resourceID;
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v25 count:1];
-  v16 = [(FCResourcesFetchOperation *)v12 initWithContext:v13 resourceIDs:v15 downloadAssets:1];
+  v16 = [(FCResourcesFetchOperation *)v12 initWithContext:contentContext resourceIDs:v15 downloadAssets:1];
 
-  [(FCOperation *)v16 setQualityOfService:a4];
+  [(FCOperation *)v16 setQualityOfService:service];
   [(FCFetchOperation *)v16 setCachePolicy:v9];
-  -[FCFetchOperation setMaximumCachedAge:](v16, "setMaximumCachedAge:", [v11 refreshRate]);
+  -[FCFetchOperation setMaximumCachedAge:](v16, "setMaximumCachedAge:", [value refreshRate]);
   v19 = MEMORY[0x1E69E9820];
   v20 = 3221225472;
   v21 = __95__FCHeldPBCodableFetchedValueDescriptor_fetchValueWithCachePolicy_qualityOfService_completion___block_invoke;
   v22 = &unk_1E7C37B98;
-  v23 = self;
-  v24 = v8;
-  v17 = v8;
+  selfCopy = self;
+  v24 = completionCopy;
+  v17 = completionCopy;
   [(FCFetchOperation *)v16 setFetchCompletionBlock:&v19];
   [(FCOperation *)v16 start:v19];
 
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)isValue:(id)a3 equalToValue:(id)a4
+- (BOOL)isValue:(id)value equalToValue:(id)toValue
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if (!v5 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  valueCopy = value;
+  toValueCopy = toValue;
+  if (!valueCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v12 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "left"];
     *buf = 136315906;
@@ -242,13 +242,13 @@ LABEL_6:
     v21 = v12;
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
 
-    if (v6)
+    if (toValueCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v6)
+  else if (toValueCopy)
   {
     goto LABEL_6;
   }
@@ -268,20 +268,20 @@ LABEL_6:
   }
 
 LABEL_6:
-  v7 = [v5 first];
-  v8 = [v6 first];
-  v9 = [v7 isEqual:v8];
+  first = [valueCopy first];
+  first2 = [toValueCopy first];
+  v9 = [first isEqual:first2];
 
   v10 = *MEMORY[0x1E69E9840];
   return v9;
 }
 
-- (void)_processFetchOperationResult:(id)a3 withBlock:(id)a4
+- (void)_processFetchOperationResult:(id)result withBlock:(id)block
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  resultCopy = result;
+  blockCopy = block;
+  if (!resultCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v19 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "result"];
     *buf = 136315906;
@@ -294,13 +294,13 @@ LABEL_6:
     v28 = v19;
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
 
-    if (v7)
+    if (blockCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v7)
+  else if (blockCopy)
   {
     goto LABEL_6;
   }
@@ -320,26 +320,26 @@ LABEL_6:
   }
 
 LABEL_6:
-  v8 = [v6 error];
-  if (v8)
+  error = [resultCopy error];
+  if (error)
   {
-    v7[2](v7, 0, v8);
+    blockCopy[2](blockCopy, 0, error);
   }
 
   else
   {
-    v9 = [v6 fetchedObject];
-    v10 = [v9 fc_onlyObject];
+    fetchedObject = [resultCopy fetchedObject];
+    fc_onlyObject = [fetchedObject fc_onlyObject];
     v11 = objc_alloc(MEMORY[0x1E695DEF0]);
-    v12 = [v10 fileURL];
-    v13 = [v11 initWithContentsOfURL:v12];
+    fileURL = [fc_onlyObject fileURL];
+    v13 = [v11 initWithContentsOfURL:fileURL];
 
     v14 = [objc_alloc(-[FCHeldPBCodableFetchedValueDescriptor codableClass](self "codableClass"))];
     v15 = [FCShallowCopyPair alloc];
-    v16 = [v10 assetHandle];
-    v17 = [(FCPair *)v15 initWithFirst:v14 second:v16];
+    assetHandle = [fc_onlyObject assetHandle];
+    v17 = [(FCPair *)v15 initWithFirst:v14 second:assetHandle];
 
-    (v7)[2](v7, v17, 0);
+    (blockCopy)[2](blockCopy, v17, 0);
   }
 
   v18 = *MEMORY[0x1E69E9840];

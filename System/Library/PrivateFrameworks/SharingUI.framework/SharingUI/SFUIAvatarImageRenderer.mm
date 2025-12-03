@@ -2,8 +2,8 @@
 + (id)avatarImageRender;
 - (CNKeyDescriptor)descriptorForRequiredKeys;
 - (SFUIAvatarImageRenderer)init;
-- (id)avatarImageForContacts:(id)a3 scope:(id)a4;
-- (id)placeholderImageForSize:(CGSize)a3 scale:(double)a4;
+- (id)avatarImageForContacts:(id)contacts scope:(id)scope;
+- (id)placeholderImageForSize:(CGSize)size scale:(double)scale;
 @end
 
 @implementation SFUIAvatarImageRenderer
@@ -16,8 +16,8 @@
   if (v2)
   {
     v3 = objc_alloc(getCNAvatarImageRendererClass());
-    v4 = [getCNAvatarImageRendererSettingsClass() defaultSettings];
-    v5 = [v3 initWithSettings:v4];
+    defaultSettings = [getCNAvatarImageRendererSettingsClass() defaultSettings];
+    v5 = [v3 initWithSettings:defaultSettings];
     imageRenderer = v2->_imageRenderer;
     v2->_imageRenderer = v5;
   }
@@ -32,26 +32,26 @@
   return v2;
 }
 
-- (id)avatarImageForContacts:(id)a3 scope:(id)a4
+- (id)avatarImageForContacts:(id)contacts scope:(id)scope
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SFUIAvatarImageRenderer *)self imageRenderer];
-  v9 = [v6 scope];
+  scopeCopy = scope;
+  contactsCopy = contacts;
+  imageRenderer = [(SFUIAvatarImageRenderer *)self imageRenderer];
+  scope = [scopeCopy scope];
 
-  v10 = [v8 avatarImageForContacts:v7 scope:v9];
+  v10 = [imageRenderer avatarImageForContacts:contactsCopy scope:scope];
 
   return v10;
 }
 
-- (id)placeholderImageForSize:(CGSize)a3 scale:(double)a4
+- (id)placeholderImageForSize:(CGSize)size scale:(double)scale
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = [(SFUIAvatarImageRenderer *)self imageRenderer];
-  v8 = [v7 placeholderImageProvider];
+  height = size.height;
+  width = size.width;
+  imageRenderer = [(SFUIAvatarImageRenderer *)self imageRenderer];
+  placeholderImageProvider = [imageRenderer placeholderImageProvider];
 
-  v9 = [v8 imageForSize:width scale:{height, a4}];
+  v9 = [placeholderImageProvider imageForSize:width scale:{height, scale}];
 
   return v9;
 }

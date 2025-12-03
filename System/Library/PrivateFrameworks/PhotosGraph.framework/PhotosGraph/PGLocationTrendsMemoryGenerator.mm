@@ -1,16 +1,16 @@
 @interface PGLocationTrendsMemoryGenerator
-- (PGLocationTrendsMemoryGenerator)initWithMemoryGenerationContext:(id)a3 configurations:(id)a4;
-- (unint64_t)memoryCategorySubcategoryForOverTimeType:(unint64_t)a3;
-- (void)enumerateMomentNodesAndFeatureNodesInGraph:(id)a3 usingBlock:(id)a4;
+- (PGLocationTrendsMemoryGenerator)initWithMemoryGenerationContext:(id)context configurations:(id)configurations;
+- (unint64_t)memoryCategorySubcategoryForOverTimeType:(unint64_t)type;
+- (void)enumerateMomentNodesAndFeatureNodesInGraph:(id)graph usingBlock:(id)block;
 @end
 
 @implementation PGLocationTrendsMemoryGenerator
 
-- (void)enumerateMomentNodesAndFeatureNodesInGraph:(id)a3 usingBlock:(id)a4
+- (void)enumerateMomentNodesAndFeatureNodesInGraph:(id)graph usingBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PGTrendsMemoryGenerator *)self validSceneFeatureNodesInGraph:v6];
+  graphCopy = graph;
+  blockCopy = block;
+  v8 = [(PGTrendsMemoryGenerator *)self validSceneFeatureNodesInGraph:graphCopy];
   if ([v8 count])
   {
     v9 = MEMORY[0x277D22BF8];
@@ -22,8 +22,8 @@
     v12[2] = __89__PGLocationTrendsMemoryGenerator_enumerateMomentNodesAndFeatureNodesInGraph_usingBlock___block_invoke;
     v12[3] = &unk_278889518;
     v12[4] = self;
-    v13 = v6;
-    v14 = v7;
+    v13 = graphCopy;
+    v14 = blockCopy;
     [v11 enumerateTargetsBySourceWithBlock:v12];
   }
 }
@@ -71,34 +71,34 @@ void __89__PGLocationTrendsMemoryGenerator_enumerateMomentNodesAndFeatureNodesIn
   **(a1 + 64) = *a4;
 }
 
-- (unint64_t)memoryCategorySubcategoryForOverTimeType:(unint64_t)a3
+- (unint64_t)memoryCategorySubcategoryForOverTimeType:(unint64_t)type
 {
   v13 = *MEMORY[0x277D85DE8];
-  if (a3 == 1)
+  if (type == 1)
   {
     result = 16005;
   }
 
   else
   {
-    v3 = a3;
-    if (a3 == 3)
+    typeCopy = type;
+    if (type == 3)
     {
       result = 16006;
     }
 
     else
     {
-      v5 = [(PGMemoryGenerator *)self loggingConnection];
-      if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+      loggingConnection = [(PGMemoryGenerator *)self loggingConnection];
+      if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
       {
         v7 = objc_opt_class();
         v8 = NSStringFromClass(v7);
         v9 = 138412546;
         v10 = v8;
         v11 = 1024;
-        v12 = v3;
-        _os_log_error_impl(&dword_22F0FC000, v5, OS_LOG_TYPE_ERROR, "[%@] Returning PHMemoryCategorySubcategoryNone for PGOverTimeMemoryType %d, this should never happen", &v9, 0x12u);
+        v12 = typeCopy;
+        _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "[%@] Returning PHMemoryCategorySubcategoryNone for PGOverTimeMemoryType %d, this should never happen", &v9, 0x12u);
       }
 
       result = 0;
@@ -109,11 +109,11 @@ void __89__PGLocationTrendsMemoryGenerator_enumerateMomentNodesAndFeatureNodesIn
   return result;
 }
 
-- (PGLocationTrendsMemoryGenerator)initWithMemoryGenerationContext:(id)a3 configurations:(id)a4
+- (PGLocationTrendsMemoryGenerator)initWithMemoryGenerationContext:(id)context configurations:(id)configurations
 {
   v8.receiver = self;
   v8.super_class = PGLocationTrendsMemoryGenerator;
-  v4 = [(PGTrendsMemoryGenerator *)&v8 initWithMemoryGenerationContext:a3 configurations:a4];
+  v4 = [(PGTrendsMemoryGenerator *)&v8 initWithMemoryGenerationContext:context configurations:configurations];
   if (v4)
   {
     v5 = objc_alloc_init(PGMemoryMomentRequirements);

@@ -1,13 +1,13 @@
 @interface CNCoreRecentsMapper
 + (id)log;
-- (BOOL)executeSaveRequest:(id)a3 response:(id *)a4 authorizationContext:(id)a5 error:(id *)a6;
-- (CNCoreRecentsMapper)initWithDomains:(id)a3 configuration:(id)a4;
-- (CNCoreRecentsMapper)initWithDomains:(id)a3 environment:(id)a4 recentsLibrary:(id)a5;
-- (id)contactCountForFetchRequest:(id)a3 error:(id *)a4;
-- (id)contactObservableForFetchRequest:(id)a3;
-- (id)contactPairs:(id)a3 sortedWithOrder:(int64_t)a4;
-- (id)containersMatchingPredicate:(id)a3 error:(id *)a4;
-- (id)policyForContainerWithIdentifier:(id)a3 error:(id *)a4;
+- (BOOL)executeSaveRequest:(id)request response:(id *)response authorizationContext:(id)context error:(id *)error;
+- (CNCoreRecentsMapper)initWithDomains:(id)domains configuration:(id)configuration;
+- (CNCoreRecentsMapper)initWithDomains:(id)domains environment:(id)environment recentsLibrary:(id)library;
+- (id)contactCountForFetchRequest:(id)request error:(id *)error;
+- (id)contactObservableForFetchRequest:(id)request;
+- (id)contactPairs:(id)pairs sortedWithOrder:(int64_t)order;
+- (id)containersMatchingPredicate:(id)predicate error:(id *)error;
+- (id)policyForContainerWithIdentifier:(id)identifier error:(id *)error;
 @end
 
 @implementation CNCoreRecentsMapper
@@ -33,46 +33,46 @@ uint64_t __26__CNCoreRecentsMapper_log__block_invoke()
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-- (CNCoreRecentsMapper)initWithDomains:(id)a3 configuration:(id)a4
+- (CNCoreRecentsMapper)initWithDomains:(id)domains configuration:(id)configuration
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[CNCoreRecentsLibraryFacade alloc] initWithDomains:v7];
-  v9 = [v6 environment];
+  configurationCopy = configuration;
+  domainsCopy = domains;
+  v8 = [[CNCoreRecentsLibraryFacade alloc] initWithDomains:domainsCopy];
+  environment = [configurationCopy environment];
 
-  v10 = [(CNCoreRecentsMapper *)self initWithDomains:v7 environment:v9 recentsLibrary:v8];
+  v10 = [(CNCoreRecentsMapper *)self initWithDomains:domainsCopy environment:environment recentsLibrary:v8];
   return v10;
 }
 
-- (CNCoreRecentsMapper)initWithDomains:(id)a3 environment:(id)a4 recentsLibrary:(id)a5
+- (CNCoreRecentsMapper)initWithDomains:(id)domains environment:(id)environment recentsLibrary:(id)library
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  domainsCopy = domains;
+  environmentCopy = environment;
+  libraryCopy = library;
   v16.receiver = self;
   v16.super_class = CNCoreRecentsMapper;
   v11 = [(CNCoreRecentsMapper *)&v16 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [domainsCopy copy];
     domains = v11->_domains;
     v11->_domains = v12;
 
-    objc_storeStrong(&v11->_environment, a4);
-    objc_storeStrong(&v11->_recentsLibrary, a5);
+    objc_storeStrong(&v11->_environment, environment);
+    objc_storeStrong(&v11->_recentsLibrary, library);
     v14 = v11;
   }
 
   return v11;
 }
 
-- (id)contactObservableForFetchRequest:(id)a3
+- (id)contactObservableForFetchRequest:(id)request
 {
-  v4 = a3;
-  v5 = [v4 predicate];
-  if ([v5 conformsToProtocol:&unk_1F098FF70])
+  requestCopy = request;
+  predicate = [requestCopy predicate];
+  if ([predicate conformsToProtocol:&unk_1F098FF70])
   {
-    v6 = v5;
+    v6 = predicate;
   }
 
   else
@@ -84,19 +84,19 @@ uint64_t __26__CNCoreRecentsMapper_log__block_invoke()
 
   if (v7 && (-[CNCoreRecentsMapper recentsLibrary](self, "recentsLibrary"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v7 canSearchCoreRecentsLibrary:v8], v8, (v9 & 1) != 0))
   {
-    v10 = [(CNCoreRecentsMapper *)self recentsLibrary];
-    v11 = [v7 contactsFromRecentsLibrary:v10];
+    recentsLibrary = [(CNCoreRecentsMapper *)self recentsLibrary];
+    v11 = [v7 contactsFromRecentsLibrary:recentsLibrary];
 
-    v12 = [v11 value];
+    value = [v11 value];
 
-    if (v12)
+    if (value)
     {
-      v13 = [v11 value];
-      v14 = -[CNCoreRecentsMapper contactPairs:sortedWithOrder:](self, "contactPairs:sortedWithOrder:", v13, [v4 sortOrder]);
+      value2 = [v11 value];
+      v14 = -[CNCoreRecentsMapper contactPairs:sortedWithOrder:](self, "contactPairs:sortedWithOrder:", value2, [requestCopy sortOrder]);
 
       v15 = [v14 _cn_filter:&__block_literal_global_57_0];
 
-      v16 = [MEMORY[0x1E6996798] observableWithResult:v15];
+      emptyObservable = [MEMORY[0x1E6996798] observableWithResult:v15];
     }
 
     else
@@ -107,36 +107,36 @@ uint64_t __26__CNCoreRecentsMapper_log__block_invoke()
         [(CNCoreRecentsMapper *)v11 contactObservableForFetchRequest:v17];
       }
 
-      v16 = [MEMORY[0x1E6996798] emptyObservable];
+      emptyObservable = [MEMORY[0x1E6996798] emptyObservable];
     }
   }
 
   else
   {
-    v16 = [MEMORY[0x1E6996798] emptyObservable];
+    emptyObservable = [MEMORY[0x1E6996798] emptyObservable];
   }
 
-  return v16;
+  return emptyObservable;
 }
 
-- (id)contactPairs:(id)a3 sortedWithOrder:(int64_t)a4
+- (id)contactPairs:(id)pairs sortedWithOrder:(int64_t)order
 {
-  v5 = a3;
-  if (a4 && ((*(*MEMORY[0x1E6996538] + 16))() & 1) != 0)
+  pairsCopy = pairs;
+  if (order && ((*(*MEMORY[0x1E6996538] + 16))() & 1) != 0)
   {
-    v6 = [CNContact comparatorForNameSortOrder:a4];
+    v6 = [CNContact comparatorForNameSortOrder:order];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __52__CNCoreRecentsMapper_contactPairs_sortedWithOrder___block_invoke;
     v10[3] = &unk_1E7417230;
     v11 = v6;
     v7 = v6;
-    v8 = [v5 sortedArrayUsingComparator:v10];
+    v8 = [pairsCopy sortedArrayUsingComparator:v10];
   }
 
   else
   {
-    v8 = v5;
+    v8 = pairsCopy;
   }
 
   return v8;
@@ -173,11 +173,11 @@ uint64_t __52__CNCoreRecentsMapper_contactPairs_sortedWithOrder___block_invoke(u
   return v10;
 }
 
-- (BOOL)executeSaveRequest:(id)a3 response:(id *)a4 authorizationContext:(id)a5 error:(id *)a6
+- (BOOL)executeSaveRequest:(id)request response:(id *)response authorizationContext:(id)context error:(id *)error
 {
-  v8 = a3;
+  requestCopy = request;
   objc_opt_class();
-  v9 = v8;
+  v9 = requestCopy;
   if (objc_opt_isKindOfClass())
   {
     v10 = v9;
@@ -192,17 +192,17 @@ uint64_t __52__CNCoreRecentsMapper_contactPairs_sortedWithOrder___block_invoke(u
 
   if (v11 && ([v11 deletedRecentContacts], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "count"), v12, v13))
   {
-    v14 = [(CNCoreRecentsMapper *)self recentsLibrary];
-    v15 = [v11 deletedRecentContacts];
-    v16 = [v15 allObjects];
+    recentsLibrary = [(CNCoreRecentsMapper *)self recentsLibrary];
+    deletedRecentContacts = [v11 deletedRecentContacts];
+    allObjects = [deletedRecentContacts allObjects];
     v21 = 0;
-    v17 = [v14 deleteContacts:v16 error:&v21];
+    v17 = [recentsLibrary deleteContacts:allObjects error:&v21];
     v18 = v21;
 
-    if (a6 && (v17 & 1) == 0)
+    if (error && (v17 & 1) == 0)
     {
       v19 = v18;
-      *a6 = v18;
+      *error = v18;
     }
   }
 
@@ -214,12 +214,12 @@ uint64_t __52__CNCoreRecentsMapper_contactPairs_sortedWithOrder___block_invoke(u
   return v17;
 }
 
-- (id)containersMatchingPredicate:(id)a3 error:(id *)a4
+- (id)containersMatchingPredicate:(id)predicate error:(id *)error
 {
-  v5 = a3;
-  if ([v5 conformsToProtocol:&unk_1F09991D0])
+  predicateCopy = predicate;
+  if ([predicateCopy conformsToProtocol:&unk_1F09991D0])
   {
-    v6 = v5;
+    v6 = predicateCopy;
   }
 
   else
@@ -230,8 +230,8 @@ uint64_t __52__CNCoreRecentsMapper_contactPairs_sortedWithOrder___block_invoke(u
   v7 = v6;
   if (v7)
   {
-    v8 = [(CNCoreRecentsMapper *)self recentsLibrary];
-    v9 = [v7 containersFromRecentsLibrary:v8];
+    recentsLibrary = [(CNCoreRecentsMapper *)self recentsLibrary];
+    v9 = [v7 containersFromRecentsLibrary:recentsLibrary];
   }
 
   else
@@ -242,23 +242,23 @@ uint64_t __52__CNCoreRecentsMapper_contactPairs_sortedWithOrder___block_invoke(u
   return v9;
 }
 
-- (id)policyForContainerWithIdentifier:(id)a3 error:(id *)a4
+- (id)policyForContainerWithIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v7 = objc_alloc_init(CNPolicyDescription);
-  [(CNPolicyDescription *)v7 setContainerIdentifier:v6];
+  [(CNPolicyDescription *)v7 setContainerIdentifier:identifierCopy];
 
-  v8 = [(CNCoreRecentsMapper *)self policyWithDescription:v7 error:a4];
+  v8 = [(CNCoreRecentsMapper *)self policyWithDescription:v7 error:error];
 
   return v8;
 }
 
-- (id)contactCountForFetchRequest:(id)a3 error:(id *)a4
+- (id)contactCountForFetchRequest:(id)request error:(id *)error
 {
-  v5 = [a3 predicate];
-  if ([v5 conformsToProtocol:&unk_1F098FF70])
+  predicate = [request predicate];
+  if ([predicate conformsToProtocol:&unk_1F098FF70])
   {
-    v6 = v5;
+    v6 = predicate;
   }
 
   else
@@ -270,8 +270,8 @@ uint64_t __52__CNCoreRecentsMapper_contactPairs_sortedWithOrder___block_invoke(u
 
   if (v7 && (-[CNCoreRecentsMapper recentsLibrary](self, "recentsLibrary"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v7 canSearchCoreRecentsLibrary:v8], v8, v9))
   {
-    v10 = [(CNCoreRecentsMapper *)self recentsLibrary];
-    v11 = [v7 countOfContactsFromRecentsLibrary:v10];
+    recentsLibrary = [(CNCoreRecentsMapper *)self recentsLibrary];
+    v11 = [v7 countOfContactsFromRecentsLibrary:recentsLibrary];
 
     v12 = [MEMORY[0x1E696AD98] numberWithInteger:v11];
   }

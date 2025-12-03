@@ -1,17 +1,17 @@
 @interface NSKeyedArchiver
-+ (id)_nsurlsessionproxy_secureArchivedDataWithRootObject:(id)a3;
++ (id)_nsurlsessionproxy_secureArchivedDataWithRootObject:(id)object;
 @end
 
 @implementation NSKeyedArchiver
 
-+ (id)_nsurlsessionproxy_secureArchivedDataWithRootObject:(id)a3
++ (id)_nsurlsessionproxy_secureArchivedDataWithRootObject:(id)object
 {
-  v3 = a3;
+  objectCopy = object;
   v4 = [[NSKeyedArchiver alloc] initRequiringSecureCoding:1];
-  [v4 encodeObject:v3 forKey:NSKeyedArchiveRootObjectKey];
-  v5 = [v4 encodedData];
+  [v4 encodeObject:objectCopy forKey:NSKeyedArchiveRootObjectKey];
+  encodedData = [v4 encodedData];
 
-  return v5;
+  return encodedData;
 }
 
 @end

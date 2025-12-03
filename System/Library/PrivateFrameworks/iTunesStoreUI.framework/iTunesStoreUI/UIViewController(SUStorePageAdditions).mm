@@ -9,30 +9,30 @@
 
 - (uint64_t)handleStoreFailureWithError:()SUStorePageAdditions
 {
-  v4 = [a1 parentViewController];
+  parentViewController = [self parentViewController];
 
-  return [v4 handleStoreFailureWithError:a3];
+  return [parentViewController handleStoreFailureWithError:a3];
 }
 
 - (uint64_t)loadMoreWithURL:()SUStorePageAdditions
 {
-  v4 = [a1 parentViewController];
+  parentViewController = [self parentViewController];
 
-  return [v4 loadMoreWithURL:a3];
+  return [parentViewController loadMoreWithURL:a3];
 }
 
 - (uint64_t)pushStorePage:()SUStorePageAdditions withTarget:animated:
 {
-  v8 = [a1 parentViewController];
+  parentViewController = [self parentViewController];
 
-  return [v8 pushStorePage:a3 withTarget:a4 animated:a5];
+  return [parentViewController pushStorePage:a3 withTarget:a4 animated:a5];
 }
 
 - (uint64_t)reloadWithURLRequestProperties:()SUStorePageAdditions
 {
-  v4 = [a1 parentViewController];
+  parentViewController = [self parentViewController];
 
-  return [v4 reloadWithURLRequestProperties:a3];
+  return [parentViewController reloadWithURLRequestProperties:a3];
 }
 
 @end

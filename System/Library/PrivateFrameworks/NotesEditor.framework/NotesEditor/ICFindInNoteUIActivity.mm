@@ -1,5 +1,5 @@
 @interface ICFindInNoteUIActivity
-- (ICFindInNoteUIActivity)initWithDelegate:(id)a3;
+- (ICFindInNoteUIActivity)initWithDelegate:(id)delegate;
 - (ICFindInNoteUIActivityDelegate)delegate;
 - (id)activityTitle;
 - (void)performActivity;
@@ -7,16 +7,16 @@
 
 @implementation ICFindInNoteUIActivity
 
-- (ICFindInNoteUIActivity)initWithDelegate:(id)a3
+- (ICFindInNoteUIActivity)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v9.receiver = self;
   v9.super_class = ICFindInNoteUIActivity;
   v5 = [(UIActivity *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     v7 = v6;
   }
 
@@ -25,25 +25,25 @@
 
 - (id)activityTitle
 {
-  v2 = [MEMORY[0x277CCA8D8] mainBundle];
-  v3 = [v2 localizedStringForKey:@"Find in Note" value:&stru_282757698 table:0];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v3 = [mainBundle localizedStringForKey:@"Find in Note" value:&stru_282757698 table:0];
 
   return v3;
 }
 
 - (void)performActivity
 {
-  v3 = [(ICFindInNoteUIActivity *)self delegate];
-  if (v3)
+  delegate = [(ICFindInNoteUIActivity *)self delegate];
+  if (delegate)
   {
-    v4 = v3;
-    v5 = [(ICFindInNoteUIActivity *)self delegate];
+    v4 = delegate;
+    delegate2 = [(ICFindInNoteUIActivity *)self delegate];
     v6 = objc_opt_respondsToSelector();
 
     if (v6)
     {
-      v7 = [(ICFindInNoteUIActivity *)self delegate];
-      [v7 performFindInNoteUIActivity:self];
+      delegate3 = [(ICFindInNoteUIActivity *)self delegate];
+      [delegate3 performFindInNoteUIActivity:self];
     }
   }
 }

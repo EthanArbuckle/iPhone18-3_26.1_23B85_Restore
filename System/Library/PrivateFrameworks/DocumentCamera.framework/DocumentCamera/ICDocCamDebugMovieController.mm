@@ -2,42 +2,42 @@
 - (AVCaptureConnection)videoConnection;
 - (BOOL)inputsReadyToRecord;
 - (BOOL)setupAssetWriterMetadataInputAndMetadataAdaptor;
-- (BOOL)setupAssetWriterVideoInput:(opaqueCMFormatDescription *)a3;
-- (CGAffineTransform)transformFromCurrentVideoOrientationToOrientation:(SEL)a3;
-- (ICDocCamDebugMovieController)initWithDelegate:(id)a3 videoConnection:(id)a4 referenceOrientation:(int64_t)a5;
+- (BOOL)setupAssetWriterVideoInput:(opaqueCMFormatDescription *)input;
+- (CGAffineTransform)transformFromCurrentVideoOrientationToOrientation:(SEL)orientation;
+- (ICDocCamDebugMovieController)initWithDelegate:(id)delegate videoConnection:(id)connection referenceOrientation:(int64_t)orientation;
 - (ICDocCamDebugMovieControllerDelegate)delegate;
-- (double)angleOffsetFromPortraitOrientationToOrientation:(int64_t)a3;
-- (uint64_t)writeMetaDataAtFrame:(double)a3 intrinsicMatrix:(float32x2_t)a4;
+- (double)angleOffsetFromPortraitOrientationToOrientation:(int64_t)orientation;
+- (uint64_t)writeMetaDataAtFrame:(double)frame intrinsicMatrix:(float32x2_t)matrix;
 - (void)pauseCaptureSessionForMovieRecording;
-- (void)recordFrame:(opaqueCMSampleBuffer *)a3 fromConnection:(id)a4;
+- (void)recordFrame:(opaqueCMSampleBuffer *)frame fromConnection:(id)connection;
 - (void)recordingDidStart;
 - (void)recordingDidStop;
 - (void)recordingWillStart;
 - (void)recordingWillStop;
-- (void)removeFile:(id)a3;
+- (void)removeFile:(id)file;
 - (void)resumeCaptureSessionForMovieRecording;
 - (void)saveMovieToCameraRoll;
 - (void)startRecording;
 - (void)stopRecording;
-- (void)video:(id)a3 didFinishSavingWithError:(id)a4 contextInfo:(void *)a5;
-- (void)writeSampleBuffer:(opaqueCMSampleBuffer *)a3 ofType:(id)a4 atFrame:(int64_t)a5;
+- (void)video:(id)video didFinishSavingWithError:(id)error contextInfo:(void *)info;
+- (void)writeSampleBuffer:(opaqueCMSampleBuffer *)buffer ofType:(id)type atFrame:(int64_t)frame;
 @end
 
 @implementation ICDocCamDebugMovieController
 
-- (ICDocCamDebugMovieController)initWithDelegate:(id)a3 videoConnection:(id)a4 referenceOrientation:(int64_t)a5
+- (ICDocCamDebugMovieController)initWithDelegate:(id)delegate videoConnection:(id)connection referenceOrientation:(int64_t)orientation
 {
-  v8 = a3;
-  v9 = a4;
+  delegateCopy = delegate;
+  connectionCopy = connection;
   v22.receiver = self;
   v22.super_class = ICDocCamDebugMovieController;
   v10 = [(ICDocCamDebugMovieController *)&v22 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeWeak(&v10->_delegate, v8);
-    objc_storeWeak(&v11->_videoConnection, v9);
-    v11->_referenceOrientation = a5;
+    objc_storeWeak(&v10->_delegate, delegateCopy);
+    objc_storeWeak(&v11->_videoConnection, connectionCopy);
+    v11->_referenceOrientation = orientation;
     v12 = MEMORY[0x277CBEBC0];
     v13 = MEMORY[0x277CCACA8];
     v14 = NSTemporaryDirectory();
@@ -57,20 +57,20 @@
   return v11;
 }
 
-- (void)recordFrame:(opaqueCMSampleBuffer *)a3 fromConnection:(id)a4
+- (void)recordFrame:(opaqueCMSampleBuffer *)frame fromConnection:(id)connection
 {
-  v6 = a4;
-  CFRetain(a3);
-  v7 = [(ICDocCamDebugMovieController *)self movieWritingQueue];
+  connectionCopy = connection;
+  CFRetain(frame);
+  movieWritingQueue = [(ICDocCamDebugMovieController *)self movieWritingQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __59__ICDocCamDebugMovieController_recordFrame_fromConnection___block_invoke;
   block[3] = &unk_278F93340;
   block[4] = self;
-  v10 = v6;
-  v11 = a3;
-  v8 = v6;
-  dispatch_async(v7, block);
+  v10 = connectionCopy;
+  frameCopy = frame;
+  v8 = connectionCopy;
+  dispatch_async(movieWritingQueue, block);
 }
 
 void __59__ICDocCamDebugMovieController_recordFrame_fromConnection___block_invoke(uint64_t a1)
@@ -237,123 +237,123 @@ void __48__ICDocCamDebugMovieController_recordingDidStop__block_invoke(uint64_t 
   [v7 enableUIElementsForMovieRecording:1];
 }
 
-- (void)writeSampleBuffer:(opaqueCMSampleBuffer *)a3 ofType:(id)a4 atFrame:(int64_t)a5
+- (void)writeSampleBuffer:(opaqueCMSampleBuffer *)buffer ofType:(id)type atFrame:(int64_t)frame
 {
-  v8 = a4;
-  v9 = [(ICDocCamDebugMovieController *)self assetWriter];
-  v10 = [v9 status];
+  typeCopy = type;
+  assetWriter = [(ICDocCamDebugMovieController *)self assetWriter];
+  status = [assetWriter status];
 
-  if (!v10)
+  if (!status)
   {
-    v11 = [(ICDocCamDebugMovieController *)self assetWriter];
-    v12 = [v11 startWriting];
+    assetWriter2 = [(ICDocCamDebugMovieController *)self assetWriter];
+    startWriting = [assetWriter2 startWriting];
 
-    if (v12)
+    if (startWriting)
     {
-      v13 = [(ICDocCamDebugMovieController *)self assetWriter];
+      assetWriter3 = [(ICDocCamDebugMovieController *)self assetWriter];
       v26 = **&MEMORY[0x277CC08F0];
-      [v13 startSessionAtSourceTime:&v26];
+      [assetWriter3 startSessionAtSourceTime:&v26];
     }
 
     else
     {
-      v13 = [(ICDocCamDebugMovieController *)self delegate];
-      v14 = [(ICDocCamDebugMovieController *)self assetWriter];
-      v15 = [v14 error];
-      [v13 showErrorForMovieRecording:v15];
+      assetWriter3 = [(ICDocCamDebugMovieController *)self delegate];
+      assetWriter4 = [(ICDocCamDebugMovieController *)self assetWriter];
+      error = [assetWriter4 error];
+      [assetWriter3 showErrorForMovieRecording:error];
     }
   }
 
-  v16 = [(ICDocCamDebugMovieController *)self assetWriter];
-  v17 = [v16 status];
+  assetWriter5 = [(ICDocCamDebugMovieController *)self assetWriter];
+  status2 = [assetWriter5 status];
 
-  if (v17 == 1 && *MEMORY[0x277CE5EA8] == v8)
+  if (status2 == 1 && *MEMORY[0x277CE5EA8] == typeCopy)
   {
-    v18 = [(ICDocCamDebugMovieController *)self assetWriterVideoIn];
-    v19 = [v18 isReadyForMoreMediaData];
+    assetWriterVideoIn = [(ICDocCamDebugMovieController *)self assetWriterVideoIn];
+    isReadyForMoreMediaData = [assetWriterVideoIn isReadyForMoreMediaData];
 
-    if (v19)
+    if (isReadyForMoreMediaData)
     {
-      ImageBuffer = CMSampleBufferGetImageBuffer(a3);
-      v21 = [(ICDocCamDebugMovieController *)self pixelBufferAdaptor];
-      CMTimeMake(&v26, a5, 30);
-      v22 = [v21 appendPixelBuffer:ImageBuffer withPresentationTime:&v26];
+      ImageBuffer = CMSampleBufferGetImageBuffer(buffer);
+      pixelBufferAdaptor = [(ICDocCamDebugMovieController *)self pixelBufferAdaptor];
+      CMTimeMake(&v26, frame, 30);
+      v22 = [pixelBufferAdaptor appendPixelBuffer:ImageBuffer withPresentationTime:&v26];
 
       if ((v22 & 1) == 0)
       {
-        v23 = [(ICDocCamDebugMovieController *)self delegate];
-        v24 = [(ICDocCamDebugMovieController *)self assetWriter];
-        v25 = [v24 error];
-        [v23 showErrorForMovieRecording:v25];
+        delegate = [(ICDocCamDebugMovieController *)self delegate];
+        assetWriter6 = [(ICDocCamDebugMovieController *)self assetWriter];
+        error2 = [assetWriter6 error];
+        [delegate showErrorForMovieRecording:error2];
       }
     }
   }
 }
 
-- (uint64_t)writeMetaDataAtFrame:(double)a3 intrinsicMatrix:(float32x2_t)a4
+- (uint64_t)writeMetaDataAtFrame:(double)frame intrinsicMatrix:(float32x2_t)matrix
 {
-  v28 = *(&a3 + 1);
+  v28 = *(&frame + 1);
   v34[4] = *MEMORY[0x277D85DE8];
-  v8 = [MEMORY[0x277CE6558] metadataItem];
-  [v8 setIdentifier:@"mdta/com.docCamMovie.version.field"];
-  [v8 setDataType:*MEMORY[0x277CC05C0]];
-  [v8 setValue:&unk_285C6D540];
-  v9 = [MEMORY[0x277CE6558] metadataItem];
-  [v9 setIdentifier:@"mdta/com.docCamMovie.comment.field"];
-  [v9 setDataType:*MEMORY[0x277CC05F8]];
+  metadataItem = [MEMORY[0x277CE6558] metadataItem];
+  [metadataItem setIdentifier:@"mdta/com.docCamMovie.version.field"];
+  [metadataItem setDataType:*MEMORY[0x277CC05C0]];
+  [metadataItem setValue:&unk_285C6D540];
+  metadataItem2 = [MEMORY[0x277CE6558] metadataItem];
+  [metadataItem2 setIdentifier:@"mdta/com.docCamMovie.comment.field"];
+  [metadataItem2 setDataType:*MEMORY[0x277CC05F8]];
   v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"%.2f", a6];
-  [v9 setValue:v10];
+  [metadataItem2 setValue:v10];
 
-  v11 = [MEMORY[0x277CE6558] metadataItem];
-  [v11 setIdentifier:@"mdta/com.docCamMovie.pixelFocalLength.field"];
+  metadataItem3 = [MEMORY[0x277CE6558] metadataItem];
+  [metadataItem3 setIdentifier:@"mdta/com.docCamMovie.pixelFocalLength.field"];
   v12 = *MEMORY[0x277CC05A8];
-  [v11 setDataType:*MEMORY[0x277CC05A8]];
+  [metadataItem3 setDataType:*MEMORY[0x277CC05A8]];
   v13 = [MEMORY[0x277CCAE60] valueWithCGPoint:{a2, v28}];
-  [v11 setValue:v13];
+  [metadataItem3 setValue:v13];
 
-  v14 = [MEMORY[0x277CE6558] metadataItem];
-  [v14 setIdentifier:@"mdta/com.docCamMovie.principalPoint.field"];
-  [v14 setDataType:v12];
-  v15 = [MEMORY[0x277CCAE60] valueWithCGPoint:vcvtq_f64_f32(a4)];
-  [v14 setValue:v15];
+  metadataItem4 = [MEMORY[0x277CE6558] metadataItem];
+  [metadataItem4 setIdentifier:@"mdta/com.docCamMovie.principalPoint.field"];
+  [metadataItem4 setDataType:v12];
+  v15 = [MEMORY[0x277CCAE60] valueWithCGPoint:vcvtq_f64_f32(matrix)];
+  [metadataItem4 setValue:v15];
 
   memset(&v33, 0, sizeof(v33));
   CMTimeMake(&v33, a6, 30);
   v16 = objc_alloc(MEMORY[0x277CE6648]);
-  v34[0] = v8;
-  v34[1] = v9;
-  v34[2] = v11;
-  v34[3] = v14;
+  v34[0] = metadataItem;
+  v34[1] = metadataItem2;
+  v34[2] = metadataItem3;
+  v34[3] = metadataItem4;
   v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v34 count:4];
   start = v33;
   duration = **&MEMORY[0x277CC0898];
   CMTimeRangeMake(&v32, &start, &duration);
   v18 = [v16 initWithItems:v17 timeRange:&v32];
 
-  v19 = [a1 assetWriterMetadataIn];
-  v20 = [v19 isReadyForMoreMediaData];
+  assetWriterMetadataIn = [self assetWriterMetadataIn];
+  isReadyForMoreMediaData = [assetWriterMetadataIn isReadyForMoreMediaData];
 
-  if (v20)
+  if (isReadyForMoreMediaData)
   {
-    v21 = [a1 assetWriterMetadataAdaptor];
-    v22 = [v21 appendTimedMetadataGroup:v18];
+    assetWriterMetadataAdaptor = [self assetWriterMetadataAdaptor];
+    v22 = [assetWriterMetadataAdaptor appendTimedMetadataGroup:v18];
 
     if ((v22 & 1) == 0)
     {
-      v23 = [a1 delegate];
-      v24 = [a1 assetWriter];
-      v25 = [v24 error];
-      [v23 showErrorForMovieRecording:v25];
+      delegate = [self delegate];
+      assetWriter = [self assetWriter];
+      error = [assetWriter error];
+      [delegate showErrorForMovieRecording:error];
     }
   }
 
   return 1;
 }
 
-- (BOOL)setupAssetWriterVideoInput:(opaqueCMFormatDescription *)a3
+- (BOOL)setupAssetWriterVideoInput:(opaqueCMFormatDescription *)input
 {
   v34[4] = *MEMORY[0x277D85DE8];
-  Dimensions = CMVideoFormatDescriptionGetDimensions(a3);
+  Dimensions = CMVideoFormatDescriptionGetDimensions(input);
   v5 = MEMORY[0x277CBEAC0];
   v6 = [MEMORY[0x277CCABB0] numberWithInt:96000000];
   v7 = *MEMORY[0x277CE62B0];
@@ -374,9 +374,9 @@ void __48__ICDocCamDebugMovieController_recordingDidStop__block_invoke(uint64_t 
   v34[3] = v9;
   v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v34 forKeys:v33 count:4];
 
-  v15 = [(ICDocCamDebugMovieController *)self assetWriter];
+  assetWriter = [(ICDocCamDebugMovieController *)self assetWriter];
   v16 = *MEMORY[0x277CE5EA8];
-  LODWORD(v7) = [v15 canApplyOutputSettings:v14 forMediaType:*MEMORY[0x277CE5EA8]];
+  LODWORD(v7) = [assetWriter canApplyOutputSettings:v14 forMediaType:*MEMORY[0x277CE5EA8]];
 
   if (!v7)
   {
@@ -389,27 +389,27 @@ LABEL_6:
   v17 = [MEMORY[0x277CE6468] assetWriterInputWithMediaType:v16 outputSettings:0];
   [(ICDocCamDebugMovieController *)self setAssetWriterVideoIn:v17];
 
-  v18 = [(ICDocCamDebugMovieController *)self assetWriterVideoIn];
-  [v18 setExpectsMediaDataInRealTime:1];
+  assetWriterVideoIn = [(ICDocCamDebugMovieController *)self assetWriterVideoIn];
+  [assetWriterVideoIn setExpectsMediaDataInRealTime:1];
 
   [(ICDocCamDebugMovieController *)self transformFromCurrentVideoOrientationToOrientation:[(ICDocCamDebugMovieController *)self referenceOrientation]];
-  v19 = [(ICDocCamDebugMovieController *)self assetWriterVideoIn];
+  assetWriterVideoIn2 = [(ICDocCamDebugMovieController *)self assetWriterVideoIn];
   *v32 = *&v32[7];
   *&v32[2] = *&v32[9];
   *&v32[4] = *&v32[11];
-  [v19 setTransform:v32];
+  [assetWriterVideoIn2 setTransform:v32];
 
   v20 = objc_alloc(MEMORY[0x277CE6478]);
-  v21 = [(ICDocCamDebugMovieController *)self assetWriterVideoIn];
+  assetWriterVideoIn3 = [(ICDocCamDebugMovieController *)self assetWriterVideoIn];
   v22 = MEMORY[0x277CBEAC0];
   v23 = [MEMORY[0x277CCABB0] numberWithInt:875704422];
   v24 = [v22 dictionaryWithObjectsAndKeys:{v23, *MEMORY[0x277CC4E30], 0}];
-  v25 = [v20 initWithAssetWriterInput:v21 sourcePixelBufferAttributes:v24];
+  v25 = [v20 initWithAssetWriterInput:assetWriterVideoIn3 sourcePixelBufferAttributes:v24];
   [(ICDocCamDebugMovieController *)self setPixelBufferAdaptor:v25];
 
-  v26 = [(ICDocCamDebugMovieController *)self assetWriter];
-  v27 = [(ICDocCamDebugMovieController *)self assetWriterVideoIn];
-  LODWORD(v24) = [v26 canAddInput:v27];
+  assetWriter2 = [(ICDocCamDebugMovieController *)self assetWriter];
+  assetWriterVideoIn4 = [(ICDocCamDebugMovieController *)self assetWriterVideoIn];
+  LODWORD(v24) = [assetWriter2 canAddInput:assetWriterVideoIn4];
 
   if (!v24)
   {
@@ -417,9 +417,9 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  v28 = [(ICDocCamDebugMovieController *)self assetWriter];
-  v29 = [(ICDocCamDebugMovieController *)self assetWriterVideoIn];
-  [v28 addInput:v29];
+  assetWriter3 = [(ICDocCamDebugMovieController *)self assetWriter];
+  assetWriterVideoIn5 = [(ICDocCamDebugMovieController *)self assetWriterVideoIn];
+  [assetWriter3 addInput:assetWriterVideoIn5];
 
   v30 = 1;
 LABEL_7:
@@ -474,16 +474,16 @@ LABEL_6:
   [(ICDocCamDebugMovieController *)self setAssetWriterMetadataIn:v13];
 
   v14 = MEMORY[0x277CE6470];
-  v15 = [(ICDocCamDebugMovieController *)self assetWriterMetadataIn];
-  v16 = [v14 assetWriterInputMetadataAdaptorWithAssetWriterInput:v15];
+  assetWriterMetadataIn = [(ICDocCamDebugMovieController *)self assetWriterMetadataIn];
+  v16 = [v14 assetWriterInputMetadataAdaptorWithAssetWriterInput:assetWriterMetadataIn];
   [(ICDocCamDebugMovieController *)self setAssetWriterMetadataAdaptor:v16];
 
-  v17 = [(ICDocCamDebugMovieController *)self assetWriterMetadataIn];
-  [v17 setExpectsMediaDataInRealTime:1];
+  assetWriterMetadataIn2 = [(ICDocCamDebugMovieController *)self assetWriterMetadataIn];
+  [assetWriterMetadataIn2 setExpectsMediaDataInRealTime:1];
 
-  v18 = [(ICDocCamDebugMovieController *)self assetWriter];
-  v19 = [(ICDocCamDebugMovieController *)self assetWriterMetadataIn];
-  v20 = [v18 canAddInput:v19];
+  assetWriter = [(ICDocCamDebugMovieController *)self assetWriter];
+  assetWriterMetadataIn3 = [(ICDocCamDebugMovieController *)self assetWriterMetadataIn];
+  v20 = [assetWriter canAddInput:assetWriterMetadataIn3];
 
   if (!v20)
   {
@@ -491,9 +491,9 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  v21 = [(ICDocCamDebugMovieController *)self assetWriter];
-  v22 = [(ICDocCamDebugMovieController *)self assetWriterMetadataIn];
-  [v21 addInput:v22];
+  assetWriter2 = [(ICDocCamDebugMovieController *)self assetWriter];
+  assetWriterMetadataIn4 = [(ICDocCamDebugMovieController *)self assetWriterMetadataIn];
+  [assetWriter2 addInput:assetWriterMetadataIn4];
 
   v23 = 1;
 LABEL_7:
@@ -504,13 +504,13 @@ LABEL_7:
 - (void)startRecording
 {
   [(ICDocCamDebugMovieController *)self resumeCaptureSessionForMovieRecording];
-  v3 = [(ICDocCamDebugMovieController *)self movieWritingQueue];
+  movieWritingQueue = [(ICDocCamDebugMovieController *)self movieWritingQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __46__ICDocCamDebugMovieController_startRecording__block_invoke;
   block[3] = &unk_278F92C70;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(movieWritingQueue, block);
 }
 
 void __46__ICDocCamDebugMovieController_startRecording__block_invoke(uint64_t a1)
@@ -543,13 +543,13 @@ void __46__ICDocCamDebugMovieController_startRecording__block_invoke(uint64_t a1
 
 - (void)stopRecording
 {
-  v3 = [(ICDocCamDebugMovieController *)self movieWritingQueue];
+  movieWritingQueue = [(ICDocCamDebugMovieController *)self movieWritingQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __45__ICDocCamDebugMovieController_stopRecording__block_invoke;
   block[3] = &unk_278F92C70;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(movieWritingQueue, block);
 }
 
 void __45__ICDocCamDebugMovieController_stopRecording__block_invoke(uint64_t a1)
@@ -598,69 +598,69 @@ void __45__ICDocCamDebugMovieController_stopRecording__block_invoke_2(uint64_t a
 
 - (BOOL)inputsReadyToRecord
 {
-  v3 = [(ICDocCamDebugMovieController *)self readyToRecordVideo];
-  if (v3)
+  readyToRecordVideo = [(ICDocCamDebugMovieController *)self readyToRecordVideo];
+  if (readyToRecordVideo)
   {
 
-    LOBYTE(v3) = [(ICDocCamDebugMovieController *)self readyToRecordMetadata];
+    LOBYTE(readyToRecordVideo) = [(ICDocCamDebugMovieController *)self readyToRecordMetadata];
   }
 
-  return v3;
+  return readyToRecordVideo;
 }
 
 - (void)pauseCaptureSessionForMovieRecording
 {
-  v2 = [(ICDocCamDebugMovieController *)self delegate];
-  [v2 pauseCaptureSessionForMovieRecording];
+  delegate = [(ICDocCamDebugMovieController *)self delegate];
+  [delegate pauseCaptureSessionForMovieRecording];
 }
 
 - (void)resumeCaptureSessionForMovieRecording
 {
-  v2 = [(ICDocCamDebugMovieController *)self delegate];
-  [v2 resumeCaptureSessionForMovieRecording];
+  delegate = [(ICDocCamDebugMovieController *)self delegate];
+  [delegate resumeCaptureSessionForMovieRecording];
 }
 
 - (void)saveMovieToCameraRoll
 {
-  v3 = [(ICDocCamDebugMovieController *)self movieURL];
-  if (v3)
+  movieURL = [(ICDocCamDebugMovieController *)self movieURL];
+  if (movieURL)
   {
-    v4 = v3;
-    v5 = [(ICDocCamDebugMovieController *)self movieURL];
-    v6 = [v5 path];
-    IsCompatibleWithSavedPhotosAlbum = UIVideoAtPathIsCompatibleWithSavedPhotosAlbum(v6);
+    v4 = movieURL;
+    movieURL2 = [(ICDocCamDebugMovieController *)self movieURL];
+    path = [movieURL2 path];
+    IsCompatibleWithSavedPhotosAlbum = UIVideoAtPathIsCompatibleWithSavedPhotosAlbum(path);
 
     if (IsCompatibleWithSavedPhotosAlbum)
     {
-      v9 = [(ICDocCamDebugMovieController *)self movieURL];
-      v8 = [v9 path];
-      UISaveVideoAtPathToSavedPhotosAlbum(v8, self, sel_video_didFinishSavingWithError_contextInfo_, 0);
+      movieURL3 = [(ICDocCamDebugMovieController *)self movieURL];
+      path2 = [movieURL3 path];
+      UISaveVideoAtPathToSavedPhotosAlbum(path2, self, sel_video_didFinishSavingWithError_contextInfo_, 0);
     }
   }
 }
 
-- (void)video:(id)a3 didFinishSavingWithError:(id)a4 contextInfo:(void *)a5
+- (void)video:(id)video didFinishSavingWithError:(id)error contextInfo:(void *)info
 {
-  v6 = a4;
-  if (v6)
+  errorCopy = error;
+  if (errorCopy)
   {
-    v7 = [(ICDocCamDebugMovieController *)self delegate];
-    [v7 showErrorForMovieRecording:v6];
+    delegate = [(ICDocCamDebugMovieController *)self delegate];
+    [delegate showErrorForMovieRecording:errorCopy];
   }
 
   else
   {
-    v7 = [(ICDocCamDebugMovieController *)self movieURL];
-    [(ICDocCamDebugMovieController *)self removeFile:v7];
+    delegate = [(ICDocCamDebugMovieController *)self movieURL];
+    [(ICDocCamDebugMovieController *)self removeFile:delegate];
   }
 
-  v8 = [(ICDocCamDebugMovieController *)self movieWritingQueue];
+  movieWritingQueue = [(ICDocCamDebugMovieController *)self movieWritingQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __75__ICDocCamDebugMovieController_video_didFinishSavingWithError_contextInfo___block_invoke;
   block[3] = &unk_278F92C70;
   block[4] = self;
-  dispatch_async(v8, block);
+  dispatch_async(movieWritingQueue, block);
 }
 
 uint64_t __75__ICDocCamDebugMovieController_video_didFinishSavingWithError_contextInfo___block_invoke(uint64_t a1)
@@ -672,66 +672,66 @@ uint64_t __75__ICDocCamDebugMovieController_video_didFinishSavingWithError_conte
   return [v2 recordingDidStop];
 }
 
-- (void)removeFile:(id)a3
+- (void)removeFile:(id)file
 {
   v4 = MEMORY[0x277CCAA00];
-  v5 = a3;
-  v6 = [v4 defaultManager];
-  v7 = [v5 path];
+  fileCopy = file;
+  defaultManager = [v4 defaultManager];
+  path = [fileCopy path];
 
-  if ([v6 fileExistsAtPath:v7])
+  if ([defaultManager fileExistsAtPath:path])
   {
     v11 = 0;
-    v8 = [v6 removeItemAtPath:v7 error:&v11];
+    v8 = [defaultManager removeItemAtPath:path error:&v11];
     v9 = v11;
     if ((v8 & 1) == 0)
     {
-      v10 = [(ICDocCamDebugMovieController *)self delegate];
-      [v10 showErrorForMovieRecording:v9];
+      delegate = [(ICDocCamDebugMovieController *)self delegate];
+      [delegate showErrorForMovieRecording:v9];
     }
   }
 }
 
-- (double)angleOffsetFromPortraitOrientationToOrientation:(int64_t)a3
+- (double)angleOffsetFromPortraitOrientationToOrientation:(int64_t)orientation
 {
   result = 0.0;
-  if ((a3 - 2) <= 2)
+  if ((orientation - 2) <= 2)
   {
-    return dbl_2492F7B20[a3 - 2];
+    return dbl_2492F7B20[orientation - 2];
   }
 
   return result;
 }
 
-- (CGAffineTransform)transformFromCurrentVideoOrientationToOrientation:(SEL)a3
+- (CGAffineTransform)transformFromCurrentVideoOrientationToOrientation:(SEL)orientation
 {
   v7 = MEMORY[0x277CBF2C0];
   v8 = *(MEMORY[0x277CBF2C0] + 16);
   *&retstr->a = *MEMORY[0x277CBF2C0];
   *&retstr->c = v8;
   *&retstr->tx = *(v7 + 32);
-  v9 = [(ICDocCamDebugMovieController *)self delegate];
-  v10 = [v9 videoPreviewLayer];
-  v11 = [v10 connection];
-  v12 = [v11 videoOrientation];
+  delegate = [(ICDocCamDebugMovieController *)self delegate];
+  videoPreviewLayer = [delegate videoPreviewLayer];
+  connection = [videoPreviewLayer connection];
+  videoOrientation = [connection videoOrientation];
 
   [(ICDocCamDebugMovieController *)self angleOffsetFromPortraitOrientationToOrientation:a4];
   v14 = v13;
-  [(ICDocCamDebugMovieController *)self angleOffsetFromPortraitOrientationToOrientation:v12];
+  [(ICDocCamDebugMovieController *)self angleOffsetFromPortraitOrientationToOrientation:videoOrientation];
   CGAffineTransformMakeRotation(retstr, v14 - v15);
-  v16 = [(ICDocCamDebugMovieController *)self delegate];
-  v17 = [v16 statusBarOrientation];
+  delegate2 = [(ICDocCamDebugMovieController *)self delegate];
+  statusBarOrientation = [delegate2 statusBarOrientation];
 
-  if (v17 > 2)
+  if (statusBarOrientation > 2)
   {
-    if (v17 == 3)
+    if (statusBarOrientation == 3)
     {
       v19 = 0.0;
     }
 
     else
     {
-      if (v17 != 4)
+      if (statusBarOrientation != 4)
       {
         return result;
       }
@@ -740,14 +740,14 @@ uint64_t __75__ICDocCamDebugMovieController_video_didFinishSavingWithError_conte
     }
   }
 
-  else if (v17 == 1)
+  else if (statusBarOrientation == 1)
   {
     v19 = 1.57079633;
   }
 
   else
   {
-    if (v17 != 2)
+    if (statusBarOrientation != 2)
     {
       return result;
     }

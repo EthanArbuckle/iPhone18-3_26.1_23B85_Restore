@@ -1,119 +1,119 @@
 @interface _PASKVOHandler
 - (_PASKVOHandler)init;
-- (void)_watchKeyPath:(id)a3 ofObject:(id)a4 options:(unint64_t)a5 usingTask:(id)a6;
+- (void)_watchKeyPath:(id)path ofObject:(id)object options:(unint64_t)options usingTask:(id)task;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)reactAfterChangesToKeyPath:(id)a3 ofObject:(id)a4 usingBlock:(id)a5;
-- (void)reactAsynchronouslyAfterChangesToKeyPath:(id)a3 ofObject:(id)a4 usingBlock:(id)a5 onQueue:(id)a6;
-- (void)reactBeforeAndAfterChangesToKeyPath:(id)a3 ofObject:(id)a4 usingBlock:(id)a5;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)reactAfterChangesToKeyPath:(id)path ofObject:(id)object usingBlock:(id)block;
+- (void)reactAsynchronouslyAfterChangesToKeyPath:(id)path ofObject:(id)object usingBlock:(id)block onQueue:(id)queue;
+- (void)reactBeforeAndAfterChangesToKeyPath:(id)path ofObject:(id)object usingBlock:(id)block;
 @end
 
 @implementation _PASKVOHandler
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v24 = a3;
-  v11 = a4;
-  v12 = a5;
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
   if (pthread_mutex_lock(&self->_lock) != 22)
   {
-    v13 = a6;
+    contextCopy = context;
     pthread_mutex_unlock(&self->_lock);
-    v14 = [v12 objectForKeyedSubscript:*MEMORY[0x1E696A500]];
-    v15 = [MEMORY[0x1E695DFB0] null];
+    v14 = [changeCopy objectForKeyedSubscript:*MEMORY[0x1E696A500]];
+    null = [MEMORY[0x1E695DFB0] null];
 
-    if (v14 == v15)
+    if (v14 == null)
     {
 
       v14 = 0;
     }
 
-    v16 = [v12 objectForKeyedSubscript:*MEMORY[0x1E696A4F0]];
-    v17 = [MEMORY[0x1E695DFB0] null];
+    v16 = [changeCopy objectForKeyedSubscript:*MEMORY[0x1E696A4F0]];
+    null2 = [MEMORY[0x1E695DFB0] null];
 
-    if (v16 == v17)
+    if (v16 == null2)
     {
 
       v16 = 0;
     }
 
-    v18 = [v12 objectForKeyedSubscript:*MEMORY[0x1E696A4F8]];
-    v19 = [v18 BOOLValue];
+    v18 = [changeCopy objectForKeyedSubscript:*MEMORY[0x1E696A4F8]];
+    bOOLValue = [v18 BOOLValue];
 
-    v20 = [v13 beforeAndAfterBlock];
+    beforeAndAfterBlock = [contextCopy beforeAndAfterBlock];
 
-    if (v20)
+    if (beforeAndAfterBlock)
     {
-      v21 = [v13 beforeAndAfterBlock];
-      (v21)[2](v21, v24, v11, v14, v16, v19);
+      beforeAndAfterBlock2 = [contextCopy beforeAndAfterBlock];
+      (beforeAndAfterBlock2)[2](beforeAndAfterBlock2, pathCopy, objectCopy, v14, v16, bOOLValue);
     }
 
     else
     {
-      v22 = [v13 afterBlock];
+      afterBlock = [contextCopy afterBlock];
 
-      if (!v22)
+      if (!afterBlock)
       {
-        v23 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v23 handleFailureInMethod:a2 object:self file:@"_PASKVOHandler.m" lineNumber:120 description:{@"Invalid parameter not satisfying: %@", @"task.afterBlock"}];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"_PASKVOHandler.m" lineNumber:120 description:{@"Invalid parameter not satisfying: %@", @"task.afterBlock"}];
       }
 
-      v21 = [v13 afterBlock];
-      (v21[2])(v21, v24, v11, v14, v16);
+      beforeAndAfterBlock2 = [contextCopy afterBlock];
+      (beforeAndAfterBlock2[2])(beforeAndAfterBlock2, pathCopy, objectCopy, v14, v16);
     }
   }
 }
 
-- (void)_watchKeyPath:(id)a3 ofObject:(id)a4 options:(unint64_t)a5 usingTask:(id)a6
+- (void)_watchKeyPath:(id)path ofObject:(id)object options:(unint64_t)options usingTask:(id)task
 {
-  v12 = a3;
-  v10 = a4;
-  v11 = a6;
+  pathCopy = path;
+  objectCopy = object;
+  taskCopy = task;
   pthread_mutex_lock(&self->_lock);
-  [(NSMutableArray *)self->_tasks addObject:v11];
-  [v10 addObserver:self forKeyPath:v12 options:a5 context:v11];
+  [(NSMutableArray *)self->_tasks addObject:taskCopy];
+  [objectCopy addObserver:self forKeyPath:pathCopy options:options context:taskCopy];
   pthread_mutex_unlock(&self->_lock);
 }
 
-- (void)reactBeforeAndAfterChangesToKeyPath:(id)a3 ofObject:(id)a4 usingBlock:(id)a5
+- (void)reactBeforeAndAfterChangesToKeyPath:(id)path ofObject:(id)object usingBlock:(id)block
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  blockCopy = block;
+  objectCopy = object;
+  pathCopy = path;
   v11 = objc_opt_new();
-  [v11 setKeyPath:v10];
-  [v11 setObject:v9];
-  [v11 setBeforeAndAfterBlock:v8];
+  [v11 setKeyPath:pathCopy];
+  [v11 setObject:objectCopy];
+  [v11 setBeforeAndAfterBlock:blockCopy];
 
-  [(_PASKVOHandler *)self _watchKeyPath:v10 ofObject:v9 options:11 usingTask:v11];
+  [(_PASKVOHandler *)self _watchKeyPath:pathCopy ofObject:objectCopy options:11 usingTask:v11];
 }
 
-- (void)reactAsynchronouslyAfterChangesToKeyPath:(id)a3 ofObject:(id)a4 usingBlock:(id)a5 onQueue:(id)a6
+- (void)reactAsynchronouslyAfterChangesToKeyPath:(id)path ofObject:(id)object usingBlock:(id)block onQueue:(id)queue
 {
-  v10 = a5;
-  v11 = a6;
+  blockCopy = block;
+  queueCopy = queue;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __87___PASKVOHandler_reactAsynchronouslyAfterChangesToKeyPath_ofObject_usingBlock_onQueue___block_invoke;
   v14[3] = &unk_1E77F1EC8;
-  v15 = v11;
-  v16 = v10;
-  v12 = v10;
-  v13 = v11;
-  [(_PASKVOHandler *)self reactAfterChangesToKeyPath:a3 ofObject:a4 usingBlock:v14];
+  v15 = queueCopy;
+  v16 = blockCopy;
+  v12 = blockCopy;
+  v13 = queueCopy;
+  [(_PASKVOHandler *)self reactAfterChangesToKeyPath:path ofObject:object usingBlock:v14];
 }
 
-- (void)reactAfterChangesToKeyPath:(id)a3 ofObject:(id)a4 usingBlock:(id)a5
+- (void)reactAfterChangesToKeyPath:(id)path ofObject:(id)object usingBlock:(id)block
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  blockCopy = block;
+  objectCopy = object;
+  pathCopy = path;
   v11 = objc_opt_new();
-  [v11 setKeyPath:v10];
-  [v11 setObject:v9];
-  [v11 setAfterBlock:v8];
+  [v11 setKeyPath:pathCopy];
+  [v11 setObject:objectCopy];
+  [v11 setAfterBlock:blockCopy];
 
-  [(_PASKVOHandler *)self _watchKeyPath:v10 ofObject:v9 options:3 usingTask:v11];
+  [(_PASKVOHandler *)self _watchKeyPath:pathCopy ofObject:objectCopy options:3 usingTask:v11];
 }
 
 - (void)dealloc
@@ -139,11 +139,11 @@
         }
 
         v7 = *(*(&v12 + 1) + 8 * i);
-        v8 = [v7 object];
-        if (v8)
+        object = [v7 object];
+        if (object)
         {
-          v9 = [v7 keyPath];
-          [v8 removeObserver:self forKeyPath:v9 context:v7];
+          keyPath = [v7 keyPath];
+          [object removeObserver:self forKeyPath:keyPath context:v7];
         }
       }
 

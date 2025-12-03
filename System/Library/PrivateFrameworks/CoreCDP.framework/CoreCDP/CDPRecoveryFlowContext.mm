@@ -1,43 +1,43 @@
 @interface CDPRecoveryFlowContext
-- (CDPRecoveryFlowContext)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (CDPRecoveryFlowContext)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CDPRecoveryFlowContext
 
-- (CDPRecoveryFlowContext)initWithCoder:(id)a3
+- (CDPRecoveryFlowContext)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(CDPRecoveryFlowContext *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_context"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_context"];
     context = v5->_context;
     v5->_context = v6;
 
-    v5->_hasPeersForRemoteApproval = [v4 decodeBoolForKey:@"_hasPeersForRemoteApproval"];
-    v5->_isWalrusEnabled = [v4 decodeBoolForKey:@"_isWalrusEnabled"];
-    [v4 decodeDoubleForKey:@"_rpdProbationDuration"];
+    v5->_hasPeersForRemoteApproval = [coderCopy decodeBoolForKey:@"_hasPeersForRemoteApproval"];
+    v5->_isWalrusEnabled = [coderCopy decodeBoolForKey:@"_isWalrusEnabled"];
+    [coderCopy decodeDoubleForKey:@"_rpdProbationDuration"];
     v5->_rpdProbationDuration = v8;
-    v5->_hasViableICSC = [v4 decodeBoolForKey:@"_hasViableICSC"];
+    v5->_hasViableICSC = [coderCopy decodeBoolForKey:@"_hasViableICSC"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   context = self->_context;
-  v5 = a3;
-  [v5 encodeObject:context forKey:@"_context"];
-  [v5 encodeBool:self->_hasPeersForRemoteApproval forKey:@"_hasPeersForRemoteApproval"];
-  [v5 encodeBool:self->_isWalrusEnabled forKey:@"_isWalrusEnabled"];
-  [v5 encodeDouble:@"_rpdProbationDuration" forKey:self->_rpdProbationDuration];
-  [v5 encodeBool:self->_hasViableICSC forKey:@"_hasViableICSC"];
+  coderCopy = coder;
+  [coderCopy encodeObject:context forKey:@"_context"];
+  [coderCopy encodeBool:self->_hasPeersForRemoteApproval forKey:@"_hasPeersForRemoteApproval"];
+  [coderCopy encodeBool:self->_isWalrusEnabled forKey:@"_isWalrusEnabled"];
+  [coderCopy encodeDouble:@"_rpdProbationDuration" forKey:self->_rpdProbationDuration];
+  [coderCopy encodeBool:self->_hasViableICSC forKey:@"_hasViableICSC"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(CDPRecoveryFlowContext);
   v5 = [(CDPContext *)self->_context copy];

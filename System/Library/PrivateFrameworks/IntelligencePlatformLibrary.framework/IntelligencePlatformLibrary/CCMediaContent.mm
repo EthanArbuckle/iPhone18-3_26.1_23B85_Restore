@@ -1,12 +1,12 @@
 @interface CCMediaContent
-+ (id)descriptionForTypeIdentifier:(unsigned __int16)a3;
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4;
++ (id)descriptionForTypeIdentifier:(unsigned __int16)identifier;
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error;
 - (CCMediaAlbum)album;
 - (CCMediaAlbumArtist)albumArtist;
 - (CCMediaAudiobook)audiobook;
 - (CCMediaAudiobookArtist)audiobookArtist;
-- (CCMediaContent)initWithEntity:(id)a3 entityType:(unsigned int)a4 error:(id *)a5;
-- (CCMediaContent)initWithJSONDictionary:(id)a3 error:(id *)a4;
+- (CCMediaContent)initWithEntity:(id)entity entityType:(unsigned int)type error:(id *)error;
+- (CCMediaContent)initWithJSONDictionary:(id)dictionary error:(id *)error;
 - (CCMediaGenre)genre;
 - (CCMediaMovie)movie;
 - (CCMediaMusicVideo)musicVideo;
@@ -16,21 +16,21 @@
 - (CCMediaTVEpisode)TVEpisode;
 - (CCMediaTVShow)TVShow;
 - (id)jsonDictionary;
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4;
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type;
 @end
 
 @implementation CCMediaContent
 
-- (CCMediaContent)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (CCMediaContent)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   v109[1] = 0;
   IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
   v8 = 0;
   if (IsInstanceOfExpectedClass)
   {
-    v9 = [v6 objectForKeyedSubscript:@"albumArtist"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"albumArtist"];
     if (v9)
     {
       v109[0] = 0;
@@ -49,7 +49,7 @@ LABEL_106:
       v9 = v10;
     }
 
-    v12 = [v6 objectForKeyedSubscript:@"songArtist"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"songArtist"];
     if (v12)
     {
       v13 = [CCMediaSongArtist alloc];
@@ -69,7 +69,7 @@ LABEL_105:
       v12 = v14;
     }
 
-    v10 = [v6 objectForKeyedSubscript:@"album"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"album"];
     if (v10)
     {
       v16 = [CCMediaAlbum alloc];
@@ -89,7 +89,7 @@ LABEL_104:
       v10 = v17;
     }
 
-    v14 = [v6 objectForKeyedSubscript:@"genre"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"genre"];
     if (v14)
     {
       v19 = [CCMediaGenre alloc];
@@ -109,11 +109,11 @@ LABEL_103:
       v14 = v20;
     }
 
-    v17 = [v6 objectForKeyedSubscript:@"song"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"song"];
     if (v17)
     {
       v95 = v14;
-      v22 = self;
+      selfCopy = self;
       v23 = [CCMediaSong alloc];
       v105 = 0;
       v24 = v17;
@@ -127,19 +127,19 @@ LABEL_103:
         v38 = 0;
         v20 = v27;
         v17 = v24;
-        self = v22;
+        self = selfCopy;
         v14 = v95;
 LABEL_102:
 
         goto LABEL_103;
       }
 
-      self = v22;
+      self = selfCopy;
       v14 = v95;
       v17 = v25;
     }
 
-    v28 = [v6 objectForKeyedSubscript:@"playlist"];
+    v28 = [dictionaryCopy objectForKeyedSubscript:@"playlist"];
     v94 = v17;
     if (v28)
     {
@@ -162,12 +162,12 @@ LABEL_102:
       v17 = v94;
     }
 
-    v32 = [v6 objectForKeyedSubscript:@"musicVideo"];
+    v32 = [dictionaryCopy objectForKeyedSubscript:@"musicVideo"];
     if (!v32)
     {
       v97 = 0;
 LABEL_38:
-      v39 = [v6 objectForKeyedSubscript:@"TVShow"];
+      v39 = [dictionaryCopy objectForKeyedSubscript:@"TVShow"];
       v82 = v28;
       if (v39)
       {
@@ -197,7 +197,7 @@ LABEL_100:
         v96 = 0;
       }
 
-      v44 = [v6 objectForKeyedSubscript:@"TVEpisode"];
+      v44 = [dictionaryCopy objectForKeyedSubscript:@"TVEpisode"];
       if (v44)
       {
         v45 = v44;
@@ -226,7 +226,7 @@ LABEL_99:
         v93 = 0;
       }
 
-      v49 = [v6 objectForKeyedSubscript:@"movie"];
+      v49 = [dictionaryCopy objectForKeyedSubscript:@"movie"];
       if (v49)
       {
         v50 = v49;
@@ -254,7 +254,7 @@ LABEL_99:
       }
 
       v20 = v82;
-      v54 = [v6 objectForKeyedSubscript:@"audiobookArtist"];
+      v54 = [dictionaryCopy objectForKeyedSubscript:@"audiobookArtist"];
       if (v54)
       {
         v81 = v54;
@@ -279,7 +279,7 @@ LABEL_99:
         v81 = 0;
       }
 
-      v57 = [v6 objectForKeyedSubscript:@"audiobook"];
+      v57 = [dictionaryCopy objectForKeyedSubscript:@"audiobook"];
       if (!v57)
       {
         v60 = 0;
@@ -406,7 +406,7 @@ LABEL_68:
           v78 = v63;
         }
 
-        v66 = [[CCMediaContent alloc] initWithEntity:v91 entityType:v78 error:a4];
+        v66 = [[CCMediaContent alloc] initWithEntity:v91 entityType:v78 error:error];
         v61 = v91;
         v38 = v66;
         goto LABEL_96;
@@ -468,9 +468,9 @@ LABEL_107:
       goto LABEL_37;
     }
 
-    v5 = [(CCMediaContent *)self albumArtist];
-    v6 = [v5 jsonDictionary];
-    [v3 setObject:v6 forKeyedSubscript:@"albumArtist"];
+    albumArtist = [(CCMediaContent *)self albumArtist];
+    jsonDictionary = [albumArtist jsonDictionary];
+    [v3 setObject:jsonDictionary forKeyedSubscript:@"albumArtist"];
 
     entityType = self->_entityType;
   }
@@ -482,9 +482,9 @@ LABEL_107:
       goto LABEL_37;
     }
 
-    v7 = [(CCMediaContent *)self songArtist];
-    v8 = [v7 jsonDictionary];
-    [v3 setObject:v8 forKeyedSubscript:@"songArtist"];
+    songArtist = [(CCMediaContent *)self songArtist];
+    jsonDictionary2 = [songArtist jsonDictionary];
+    [v3 setObject:jsonDictionary2 forKeyedSubscript:@"songArtist"];
 
     entityType = self->_entityType;
   }
@@ -496,9 +496,9 @@ LABEL_107:
       goto LABEL_37;
     }
 
-    v9 = [(CCMediaContent *)self album];
-    v10 = [v9 jsonDictionary];
-    [v3 setObject:v10 forKeyedSubscript:@"album"];
+    album = [(CCMediaContent *)self album];
+    jsonDictionary3 = [album jsonDictionary];
+    [v3 setObject:jsonDictionary3 forKeyedSubscript:@"album"];
 
     entityType = self->_entityType;
   }
@@ -510,9 +510,9 @@ LABEL_107:
       goto LABEL_37;
     }
 
-    v11 = [(CCMediaContent *)self genre];
-    v12 = [v11 jsonDictionary];
-    [v3 setObject:v12 forKeyedSubscript:@"genre"];
+    genre = [(CCMediaContent *)self genre];
+    jsonDictionary4 = [genre jsonDictionary];
+    [v3 setObject:jsonDictionary4 forKeyedSubscript:@"genre"];
 
     entityType = self->_entityType;
   }
@@ -524,9 +524,9 @@ LABEL_107:
       goto LABEL_37;
     }
 
-    v13 = [(CCMediaContent *)self song];
-    v14 = [v13 jsonDictionary];
-    [v3 setObject:v14 forKeyedSubscript:@"song"];
+    song = [(CCMediaContent *)self song];
+    jsonDictionary5 = [song jsonDictionary];
+    [v3 setObject:jsonDictionary5 forKeyedSubscript:@"song"];
 
     entityType = self->_entityType;
   }
@@ -538,9 +538,9 @@ LABEL_107:
       goto LABEL_37;
     }
 
-    v15 = [(CCMediaContent *)self playlist];
-    v16 = [v15 jsonDictionary];
-    [v3 setObject:v16 forKeyedSubscript:@"playlist"];
+    playlist = [(CCMediaContent *)self playlist];
+    jsonDictionary6 = [playlist jsonDictionary];
+    [v3 setObject:jsonDictionary6 forKeyedSubscript:@"playlist"];
 
     entityType = self->_entityType;
   }
@@ -552,9 +552,9 @@ LABEL_107:
       goto LABEL_37;
     }
 
-    v17 = [(CCMediaContent *)self musicVideo];
-    v18 = [v17 jsonDictionary];
-    [v3 setObject:v18 forKeyedSubscript:@"musicVideo"];
+    musicVideo = [(CCMediaContent *)self musicVideo];
+    jsonDictionary7 = [musicVideo jsonDictionary];
+    [v3 setObject:jsonDictionary7 forKeyedSubscript:@"musicVideo"];
 
     entityType = self->_entityType;
   }
@@ -566,9 +566,9 @@ LABEL_107:
       goto LABEL_37;
     }
 
-    v19 = [(CCMediaContent *)self TVShow];
-    v20 = [v19 jsonDictionary];
-    [v3 setObject:v20 forKeyedSubscript:@"TVShow"];
+    tVShow = [(CCMediaContent *)self TVShow];
+    jsonDictionary8 = [tVShow jsonDictionary];
+    [v3 setObject:jsonDictionary8 forKeyedSubscript:@"TVShow"];
 
     entityType = self->_entityType;
   }
@@ -580,9 +580,9 @@ LABEL_107:
       goto LABEL_37;
     }
 
-    v21 = [(CCMediaContent *)self TVEpisode];
-    v22 = [v21 jsonDictionary];
-    [v3 setObject:v22 forKeyedSubscript:@"TVEpisode"];
+    tVEpisode = [(CCMediaContent *)self TVEpisode];
+    jsonDictionary9 = [tVEpisode jsonDictionary];
+    [v3 setObject:jsonDictionary9 forKeyedSubscript:@"TVEpisode"];
 
     entityType = self->_entityType;
   }
@@ -594,9 +594,9 @@ LABEL_107:
       goto LABEL_37;
     }
 
-    v23 = [(CCMediaContent *)self movie];
-    v24 = [v23 jsonDictionary];
-    [v3 setObject:v24 forKeyedSubscript:@"movie"];
+    movie = [(CCMediaContent *)self movie];
+    jsonDictionary10 = [movie jsonDictionary];
+    [v3 setObject:jsonDictionary10 forKeyedSubscript:@"movie"];
 
     entityType = self->_entityType;
   }
@@ -608,18 +608,18 @@ LABEL_107:
       goto LABEL_37;
     }
 
-    v25 = [(CCMediaContent *)self audiobookArtist];
-    v26 = [v25 jsonDictionary];
-    [v3 setObject:v26 forKeyedSubscript:@"audiobookArtist"];
+    audiobookArtist = [(CCMediaContent *)self audiobookArtist];
+    jsonDictionary11 = [audiobookArtist jsonDictionary];
+    [v3 setObject:jsonDictionary11 forKeyedSubscript:@"audiobookArtist"];
 
     entityType = self->_entityType;
   }
 
   if (entityType == 12 && self->_audiobook)
   {
-    v27 = [(CCMediaContent *)self audiobook];
-    v28 = [v27 jsonDictionary];
-    [v3 setObject:v28 forKeyedSubscript:@"audiobook"];
+    audiobook = [(CCMediaContent *)self audiobook];
+    jsonDictionary12 = [audiobook jsonDictionary];
+    [v3 setObject:jsonDictionary12 forKeyedSubscript:@"audiobook"];
   }
 
 LABEL_37:
@@ -628,82 +628,82 @@ LABEL_37:
   return v29;
 }
 
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type
 {
-  v18 = a3;
+  blockCopy = block;
   if (self->_albumArtist)
   {
     v5 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:18541 subMessageValue:self->_albumArtist];
-    v18[2](v18, v5);
+    blockCopy[2](blockCopy, v5);
   }
 
   if (self->_songArtist)
   {
     v6 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:18542 subMessageValue:self->_songArtist];
-    v18[2](v18, v6);
+    blockCopy[2](blockCopy, v6);
   }
 
   if (self->_album)
   {
     v7 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:18543 subMessageValue:self->_album];
-    v18[2](v18, v7);
+    blockCopy[2](blockCopy, v7);
   }
 
   if (self->_genre)
   {
     v8 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:18544 subMessageValue:self->_genre];
-    v18[2](v18, v8);
+    blockCopy[2](blockCopy, v8);
   }
 
   if (self->_song)
   {
     v9 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:18545 subMessageValue:self->_song];
-    v18[2](v18, v9);
+    blockCopy[2](blockCopy, v9);
   }
 
   if (self->_playlist)
   {
     v10 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:18546 subMessageValue:self->_playlist];
-    v18[2](v18, v10);
+    blockCopy[2](blockCopy, v10);
   }
 
   if (self->_musicVideo)
   {
     v11 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:18547 subMessageValue:self->_musicVideo];
-    v18[2](v18, v11);
+    blockCopy[2](blockCopy, v11);
   }
 
   if (self->_TVShow)
   {
     v12 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:18548 subMessageValue:self->_TVShow];
-    v18[2](v18, v12);
+    blockCopy[2](blockCopy, v12);
   }
 
   if (self->_TVEpisode)
   {
     v13 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:18549 subMessageValue:self->_TVEpisode];
-    v18[2](v18, v13);
+    blockCopy[2](blockCopy, v13);
   }
 
   if (self->_movie)
   {
     v14 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:18550 subMessageValue:self->_movie];
-    v18[2](v18, v14);
+    blockCopy[2](blockCopy, v14);
   }
 
   if (self->_audiobookArtist)
   {
     v15 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:18551 subMessageValue:self->_audiobookArtist];
-    v18[2](v18, v15);
+    blockCopy[2](blockCopy, v15);
   }
 
-  v16 = v18;
+  v16 = blockCopy;
   if (self->_audiobook)
   {
     v17 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:18552 subMessageValue:self->_audiobook];
-    v18[2](v18, v17);
+    blockCopy[2](blockCopy, v17);
 
-    v16 = v18;
+    v16 = blockCopy;
   }
 }
 
@@ -791,10 +791,10 @@ LABEL_37:
   return v2;
 }
 
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error
 {
-  v5 = a3;
-  v6 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:v5];
+  dataCopy = data;
+  v6 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:dataCopy];
   v7 = MEMORY[0x1E6993AB8];
   v8 = MEMORY[0x1E6993AB0];
   v9 = MEMORY[0x1E6993AA8];
@@ -1397,11 +1397,11 @@ LABEL_81:
   return v155;
 }
 
-- (CCMediaContent)initWithEntity:(id)a3 entityType:(unsigned int)a4 error:(id *)a5
+- (CCMediaContent)initWithEntity:(id)entity entityType:(unsigned int)type error:(id *)error
 {
-  v8 = a3;
+  entityCopy = entity;
   v9 = objc_opt_new();
-  if (v8 && a4 == 1)
+  if (entityCopy && type == 1)
   {
     objc_opt_class();
     IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
@@ -1413,11 +1413,11 @@ LABEL_81:
 
 LABEL_50:
     CCSetError();
-    v25 = 0;
+    selfCopy = 0;
     goto LABEL_51;
   }
 
-  if (v8 && a4 == 2)
+  if (entityCopy && type == 2)
   {
     objc_opt_class();
     v12 = CCValidateIsInstanceOfExpectedClass();
@@ -1430,7 +1430,7 @@ LABEL_50:
     goto LABEL_50;
   }
 
-  if (v8 && a4 == 3)
+  if (entityCopy && type == 3)
   {
     objc_opt_class();
     v13 = CCValidateIsInstanceOfExpectedClass();
@@ -1443,7 +1443,7 @@ LABEL_50:
     goto LABEL_50;
   }
 
-  if (v8 && a4 == 4)
+  if (entityCopy && type == 4)
   {
     objc_opt_class();
     v14 = CCValidateIsInstanceOfExpectedClass();
@@ -1456,7 +1456,7 @@ LABEL_50:
     goto LABEL_50;
   }
 
-  if (v8 && a4 == 5)
+  if (entityCopy && type == 5)
   {
     objc_opt_class();
     v15 = CCValidateIsInstanceOfExpectedClass();
@@ -1469,7 +1469,7 @@ LABEL_50:
     goto LABEL_50;
   }
 
-  if (v8 && a4 == 6)
+  if (entityCopy && type == 6)
   {
     objc_opt_class();
     v16 = CCValidateIsInstanceOfExpectedClass();
@@ -1482,7 +1482,7 @@ LABEL_50:
     goto LABEL_50;
   }
 
-  if (v8 && a4 == 7)
+  if (entityCopy && type == 7)
   {
     objc_opt_class();
     v17 = CCValidateIsInstanceOfExpectedClass();
@@ -1495,7 +1495,7 @@ LABEL_50:
     goto LABEL_50;
   }
 
-  if (v8 && a4 == 8)
+  if (entityCopy && type == 8)
   {
     objc_opt_class();
     v18 = CCValidateIsInstanceOfExpectedClass();
@@ -1508,7 +1508,7 @@ LABEL_50:
     goto LABEL_50;
   }
 
-  if (v8 && a4 == 9)
+  if (entityCopy && type == 9)
   {
     objc_opt_class();
     v19 = CCValidateIsInstanceOfExpectedClass();
@@ -1521,7 +1521,7 @@ LABEL_50:
     goto LABEL_50;
   }
 
-  if (v8 && a4 == 10)
+  if (entityCopy && type == 10)
   {
     objc_opt_class();
     v20 = CCValidateIsInstanceOfExpectedClass();
@@ -1534,7 +1534,7 @@ LABEL_50:
     goto LABEL_50;
   }
 
-  if (v8 && a4 == 11)
+  if (entityCopy && type == 11)
   {
     objc_opt_class();
     v21 = CCValidateIsInstanceOfExpectedClass();
@@ -1548,7 +1548,7 @@ LABEL_50:
   }
 
   v11 = 0;
-  if (!v8 || a4 != 12)
+  if (!entityCopy || type != 12)
   {
     goto LABEL_49;
   }
@@ -1563,29 +1563,29 @@ LABEL_50:
   }
 
 LABEL_48:
-  v23 = [v8 data];
+  data = [entityCopy data];
   CCPBDataWriterWriteDataField();
 
 LABEL_49:
-  v24 = [v9 immutableData];
-  self = [(CCItemMessage *)self initWithData:v24 error:a5];
+  immutableData = [v9 immutableData];
+  self = [(CCItemMessage *)self initWithData:immutableData error:error];
 
-  v25 = self;
+  selfCopy = self;
 LABEL_51:
 
-  return v25;
+  return selfCopy;
 }
 
-+ (id)descriptionForTypeIdentifier:(unsigned __int16)a3
++ (id)descriptionForTypeIdentifier:(unsigned __int16)identifier
 {
-  if ((a3 - 18540) > 0x1A)
+  if ((identifier - 18540) > 0x1A)
   {
     return 0;
   }
 
   else
   {
-    return off_1E73E77B0[(a3 - 18540)];
+    return off_1E73E77B0[(identifier - 18540)];
   }
 }
 

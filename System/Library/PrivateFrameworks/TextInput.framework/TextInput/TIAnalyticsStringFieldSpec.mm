@@ -1,46 +1,46 @@
 @interface TIAnalyticsStringFieldSpec
-- (BOOL)validate:(id)a3 error:(id *)a4;
-- (TIAnalyticsStringFieldSpec)initWithName:(id)a3 allowedValues:(id)a4;
+- (BOOL)validate:(id)validate error:(id *)error;
+- (TIAnalyticsStringFieldSpec)initWithName:(id)name allowedValues:(id)values;
 @end
 
 @implementation TIAnalyticsStringFieldSpec
 
-- (BOOL)validate:(id)a3 error:(id *)a4
+- (BOOL)validate:(id)validate error:(id *)error
 {
-  v6 = a3;
-  if (v6)
+  validateCopy = validate;
+  if (validateCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      if ([v6 length])
+      if ([validateCopy length])
       {
-        v7 = [(TIAnalyticsStringFieldSpec *)self allowedValues];
-        if (!v7 || (v8 = v7, -[TIAnalyticsStringFieldSpec allowedValues](self, "allowedValues"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 containsObject:v6], v9, v8, (v10 & 1) != 0))
+        allowedValues = [(TIAnalyticsStringFieldSpec *)self allowedValues];
+        if (!allowedValues || (v8 = allowedValues, -[TIAnalyticsStringFieldSpec allowedValues](self, "allowedValues"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 containsObject:validateCopy], v9, v8, (v10 & 1) != 0))
         {
-          v11 = 0;
+          errorFromNil = 0;
           goto LABEL_15;
         }
 
-        v12 = [(TIAnalyticsFieldSpec *)self name];
-        [(TIAnalyticsFieldSpec *)self errorFromValue:v6 code:13 message:@"Field '%@' must be one of the allowed values.", v12];
+        name = [(TIAnalyticsFieldSpec *)self name];
+        [(TIAnalyticsFieldSpec *)self errorFromValue:validateCopy code:13 message:@"Field '%@' must be one of the allowed values.", name];
       }
 
       else
       {
-        v12 = [(TIAnalyticsFieldSpec *)self name];
-        [(TIAnalyticsFieldSpec *)self errorFromValue:v6 code:12 message:@"Field '%@' cannot be an empty string.", v12];
+        name = [(TIAnalyticsFieldSpec *)self name];
+        [(TIAnalyticsFieldSpec *)self errorFromValue:validateCopy code:12 message:@"Field '%@' cannot be an empty string.", name];
       }
     }
 
     else
     {
-      v12 = [(TIAnalyticsFieldSpec *)self name];
-      [(TIAnalyticsFieldSpec *)self errorFromValue:v6 code:10 message:@"Field '%@' must be a string.", v12];
+      name = [(TIAnalyticsFieldSpec *)self name];
+      [(TIAnalyticsFieldSpec *)self errorFromValue:validateCopy code:10 message:@"Field '%@' must be a string.", name];
     }
-    v11 = ;
+    errorFromNil = ;
 
-    if (!a4)
+    if (!error)
     {
       goto LABEL_15;
     }
@@ -48,35 +48,35 @@
 
   else
   {
-    v11 = [(TIAnalyticsFieldSpec *)self errorFromNil];
-    if (!a4)
+    errorFromNil = [(TIAnalyticsFieldSpec *)self errorFromNil];
+    if (!error)
     {
       goto LABEL_15;
     }
   }
 
-  if (v11)
+  if (errorFromNil)
   {
-    v13 = v11;
-    *a4 = v11;
+    v13 = errorFromNil;
+    *error = errorFromNil;
   }
 
 LABEL_15:
 
-  return v11 == 0;
+  return errorFromNil == 0;
 }
 
-- (TIAnalyticsStringFieldSpec)initWithName:(id)a3 allowedValues:(id)a4
+- (TIAnalyticsStringFieldSpec)initWithName:(id)name allowedValues:(id)values
 {
-  v6 = a4;
+  valuesCopy = values;
   v10.receiver = self;
   v10.super_class = TIAnalyticsStringFieldSpec;
-  v7 = [(TIAnalyticsFieldSpec *)&v10 initWithName:a3];
+  v7 = [(TIAnalyticsFieldSpec *)&v10 initWithName:name];
   if (v7)
   {
-    if (v6)
+    if (valuesCopy)
     {
-      v8 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithArray:v6 copyItems:1];
+      v8 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithArray:valuesCopy copyItems:1];
     }
 
     else
@@ -85,7 +85,7 @@ LABEL_15:
     }
 
     objc_storeStrong(&v7->_allowedValues, v8);
-    if (v6)
+    if (valuesCopy)
     {
     }
   }

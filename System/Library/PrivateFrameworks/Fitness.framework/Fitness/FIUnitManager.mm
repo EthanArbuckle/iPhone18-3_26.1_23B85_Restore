@@ -1,12 +1,12 @@
 @interface FIUnitManager
-+ (id)quantityTypeForDistanceType:(unint64_t)a3;
-- (FIUnitManager)initWithHealthStore:(id)a3;
-- (double)distanceInDistanceUnit:(unint64_t)a3 forDistanceInMeters:(double)a4;
-- (double)distanceInMetersForDistanceInUserUnit:(double)a3 distanceType:(unint64_t)a4;
-- (double)distanceInUserDistanceUnitForDistanceInMeters:(double)a3 distanceType:(unint64_t)a4;
-- (double)paceWithDistance:(id)a3 overDuration:(double)a4 paceFormat:(int64_t)a5 distanceType:(unint64_t)a6;
++ (id)quantityTypeForDistanceType:(unint64_t)type;
+- (FIUnitManager)initWithHealthStore:(id)store;
+- (double)distanceInDistanceUnit:(unint64_t)unit forDistanceInMeters:(double)meters;
+- (double)distanceInMetersForDistanceInUserUnit:(double)unit distanceType:(unint64_t)type;
+- (double)distanceInUserDistanceUnitForDistanceInMeters:(double)meters distanceType:(unint64_t)type;
+- (double)paceWithDistance:(id)distance overDuration:(double)duration paceFormat:(int64_t)format distanceType:(unint64_t)type;
 - (id)_loadPreferredUnitsFromDefaults;
-- (id)_preferredHKUnitForQuantityType:(id)a3;
+- (id)_preferredHKUnitForQuantityType:(id)type;
 - (id)userActiveEnergyBurnedUnit;
 - (id)userBasalEnergyBurnedUnit;
 - (id)userDepthHKUnit;
@@ -14,38 +14,38 @@
 - (id)userDistanceCyclingHKUnit;
 - (id)userDistanceDownhillSnowSportsHKUnit;
 - (id)userDistanceElevationHKUnit;
-- (id)userDistanceHKUnitForActivityType:(id)a3;
-- (id)userDistanceHKUnitForDistanceType:(unint64_t)a3;
+- (id)userDistanceHKUnitForActivityType:(id)type;
+- (id)userDistanceHKUnitForDistanceType:(unint64_t)type;
 - (id)userDistancePaddleSportsHKUnit;
 - (id)userDistanceRowingHKUnit;
 - (id)userDistanceSkatingSportsHKUnit;
 - (id)userDistanceWalkingRunningHKUnit;
 - (id)userLapLengthHKUnit;
 - (id)userWaterTemperatureHKUnit;
-- (unint64_t)paceDistanceUnitForDistanceType:(unint64_t)a3;
+- (unint64_t)paceDistanceUnitForDistanceType:(unint64_t)type;
 - (unint64_t)userDistanceCyclingUnit;
 - (unint64_t)userDistanceElevationUnit;
-- (unint64_t)userDistanceUnitForDistanceType:(unint64_t)a3;
+- (unint64_t)userDistanceUnitForDistanceType:(unint64_t)type;
 - (unint64_t)userDistanceWalkingRunningUnit;
-- (void)_setPreferredHKUnit:(id)a3 forQuantityType:(id)a4;
-- (void)_storePreferredUnitsInDefaults:(id)a3;
+- (void)_setPreferredHKUnit:(id)unit forQuantityType:(id)type;
+- (void)_storePreferredUnitsInDefaults:(id)defaults;
 - (void)_updatePreferredUnits;
-- (void)setPreferredUnitsForTesting:(id)a3;
-- (void)setUserActiveEnergyBurnedUnit:(id)a3;
-- (void)setUserBasalEnergyBurnedUnit:(id)a3;
-- (void)setUserDepthHKUnit:(id)a3;
-- (void)setUserDistanceCyclingUnit:(unint64_t)a3;
-- (void)setUserDistanceUnit:(unint64_t)a3 forDistanceType:(unint64_t)a4;
-- (void)setUserDistanceWalkingRunningUnit:(unint64_t)a3;
-- (void)setUserWaterTemperatureHKUnit:(id)a3;
+- (void)setPreferredUnitsForTesting:(id)testing;
+- (void)setUserActiveEnergyBurnedUnit:(id)unit;
+- (void)setUserBasalEnergyBurnedUnit:(id)unit;
+- (void)setUserDepthHKUnit:(id)unit;
+- (void)setUserDistanceCyclingUnit:(unint64_t)unit;
+- (void)setUserDistanceUnit:(unint64_t)unit forDistanceType:(unint64_t)type;
+- (void)setUserDistanceWalkingRunningUnit:(unint64_t)unit;
+- (void)setUserWaterTemperatureHKUnit:(id)unit;
 @end
 
 @implementation FIUnitManager
 
 - (id)_loadPreferredUnitsFromDefaults
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 objectForKey:@"FICachedPreferredUnitsKey"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults objectForKey:@"FICachedPreferredUnitsKey"];
 
   v4 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v3, "count")}];
   v7[0] = MEMORY[0x277D85DD0];
@@ -151,25 +151,25 @@ void __46__FIUnitManager__notifyUnitPreferencesChanged__block_invoke()
 
 - (unint64_t)userDistanceWalkingRunningUnit
 {
-  v2 = [(FIUnitManager *)self userDistanceWalkingRunningHKUnit];
-  v3 = FIDistanceUnitForHKUnit(v2);
+  userDistanceWalkingRunningHKUnit = [(FIUnitManager *)self userDistanceWalkingRunningHKUnit];
+  v3 = FIDistanceUnitForHKUnit(userDistanceWalkingRunningHKUnit);
 
   return v3;
 }
 
-- (FIUnitManager)initWithHealthStore:(id)a3
+- (FIUnitManager)initWithHealthStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v19.receiver = self;
   v19.super_class = FIUnitManager;
   v6 = [(FIUnitManager *)&v19 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_healthStore, a3);
+    objc_storeStrong(&v6->_healthStore, store);
     v8 = MEMORY[0x277CBEB38];
-    v9 = [(FIUnitManager *)v7 _loadPreferredUnitsFromDefaults];
-    v10 = [v8 dictionaryWithDictionary:v9];
+    _loadPreferredUnitsFromDefaults = [(FIUnitManager *)v7 _loadPreferredUnitsFromDefaults];
+    v10 = [v8 dictionaryWithDictionary:_loadPreferredUnitsFromDefaults];
     preferredUnits = v7->_preferredUnits;
     v7->_preferredUnits = v10;
 
@@ -182,31 +182,31 @@ void __46__FIUnitManager__notifyUnitPreferencesChanged__block_invoke()
     v18 = v13;
     dispatch_async(v12, block);
 
-    v14 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v14 addObserver:v13 selector:sel__userPreferencesDidChange_ name:*MEMORY[0x277CCCE80] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v13 selector:sel__userPreferencesDidChange_ name:*MEMORY[0x277CCCE80] object:0];
 
-    v15 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v15 addObserver:v13 selector:sel__localeDidChange_ name:*MEMORY[0x277CBE620] object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v13 selector:sel__localeDidChange_ name:*MEMORY[0x277CBE620] object:0];
   }
 
   return v7;
 }
 
-- (void)_storePreferredUnitsInDefaults:(id)a3
+- (void)_storePreferredUnitsInDefaults:(id)defaults
 {
   v3 = MEMORY[0x277CBEB38];
-  v4 = a3;
-  v5 = [v3 dictionaryWithCapacity:{objc_msgSend(v4, "count")}];
+  defaultsCopy = defaults;
+  v5 = [v3 dictionaryWithCapacity:{objc_msgSend(defaultsCopy, "count")}];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __48__FIUnitManager__storePreferredUnitsInDefaults___block_invoke;
   v8[3] = &unk_279004F30;
   v9 = v5;
   v6 = v5;
-  [v4 enumerateKeysAndObjectsUsingBlock:v8];
+  [defaultsCopy enumerateKeysAndObjectsUsingBlock:v8];
 
-  v7 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v7 setObject:v6 forKey:@"FICachedPreferredUnitsKey"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults setObject:v6 forKey:@"FICachedPreferredUnitsKey"];
 }
 
 void __48__FIUnitManager__storePreferredUnitsInDefaults___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -231,12 +231,12 @@ uint64_t __38__FIUnitManager__updatePreferredUnits__block_invoke_351(uint64_t a1
   return [v5 _notifyUnitPreferencesChanged];
 }
 
-- (id)_preferredHKUnitForQuantityType:(id)a3
+- (id)_preferredHKUnitForQuantityType:(id)type
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_preferredUnits objectForKeyedSubscript:v4];
+  typeCopy = type;
+  v5 = [(NSMutableDictionary *)self->_preferredUnits objectForKeyedSubscript:typeCopy];
   v6 = v5;
-  if (!v5 || (_IsValidUserUnitForQuantityType(v5, v4) & 1) == 0)
+  if (!v5 || (_IsValidUserUnitForQuantityType(v5, typeCopy) & 1) == 0)
   {
     v7 = _HKGenerateDefaultUnitForQuantityType();
 
@@ -246,27 +246,27 @@ uint64_t __38__FIUnitManager__updatePreferredUnits__block_invoke_351(uint64_t a1
   return v6;
 }
 
-- (void)_setPreferredHKUnit:(id)a3 forQuantityType:(id)a4
+- (void)_setPreferredHKUnit:(id)unit forQuantityType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  unitCopy = unit;
+  typeCopy = type;
+  if (typeCopy)
   {
-    v8 = [(FIUnitManager *)self _preferredHKUnitForQuantityType:v7];
-    v9 = [v8 isEqual:v6];
+    v8 = [(FIUnitManager *)self _preferredHKUnitForQuantityType:typeCopy];
+    v9 = [v8 isEqual:unitCopy];
 
     if ((v9 & 1) == 0)
     {
       preferredUnits = self->_preferredUnits;
       if (preferredUnits)
       {
-        [(NSMutableDictionary *)preferredUnits setObject:v6 forKeyedSubscript:v7];
+        [(NSMutableDictionary *)preferredUnits setObject:unitCopy forKeyedSubscript:typeCopy];
         [(FIUnitManager *)self _storePreferredUnitsInDefaults:self->_preferredUnits];
       }
 
-      if (_IsValidUserUnitForQuantityType(v6, v7))
+      if (_IsValidUserUnitForQuantityType(unitCopy, typeCopy))
       {
-        [(HKHealthStore *)self->_healthStore _setPreferredUnit:v6 forType:v7 completion:&__block_literal_global_357];
+        [(HKHealthStore *)self->_healthStore _setPreferredUnit:unitCopy forType:typeCopy completion:&__block_literal_global_357];
       }
 
       else
@@ -294,17 +294,17 @@ void __53__FIUnitManager__setPreferredHKUnit_forQuantityType___block_invoke(uint
   }
 }
 
-- (unint64_t)paceDistanceUnitForDistanceType:(unint64_t)a3
+- (unint64_t)paceDistanceUnitForDistanceType:(unint64_t)type
 {
-  if (a3 == 9)
+  if (type == 9)
   {
     return 1;
   }
 
-  if (a3 == 4)
+  if (type == 4)
   {
-    v4 = [(FIUnitManager *)self userLapLengthHKUnit];
-    v5 = FIDistanceUnitForHKUnit(v4);
+    userLapLengthHKUnit = [(FIUnitManager *)self userLapLengthHKUnit];
+    v5 = FIDistanceUnitForHKUnit(userLapLengthHKUnit);
 
     return v5;
   }
@@ -316,21 +316,21 @@ void __53__FIUnitManager__setPreferredHKUnit_forQuantityType___block_invoke(uint
   }
 }
 
-- (unint64_t)userDistanceUnitForDistanceType:(unint64_t)a3
+- (unint64_t)userDistanceUnitForDistanceType:(unint64_t)type
 {
-  v3 = [(FIUnitManager *)self userDistanceHKUnitForDistanceType:a3];
+  v3 = [(FIUnitManager *)self userDistanceHKUnitForDistanceType:type];
   v4 = FIDistanceUnitForHKUnit(v3);
 
   return v4;
 }
 
-- (id)userDistanceHKUnitForDistanceType:(unint64_t)a3
+- (id)userDistanceHKUnitForDistanceType:(unint64_t)type
 {
-  if (a3 > 5)
+  if (type > 5)
   {
-    if (a3 <= 7)
+    if (type <= 7)
     {
-      if (a3 == 6)
+      if (type == 6)
       {
         [(FIUnitManager *)self userDistanceCrossCountrySkiingHKUnit];
       }
@@ -339,21 +339,21 @@ void __53__FIUnitManager__setPreferredHKUnit_forQuantityType___block_invoke(uint
       {
         [(FIUnitManager *)self userDistanceDownhillSnowSportsHKUnit];
       }
-      v4 = ;
+      userDistancePaddleSportsHKUnit = ;
     }
 
     else
     {
-      switch(a3)
+      switch(type)
       {
         case 8uLL:
-          v4 = [(FIUnitManager *)self userDistancePaddleSportsHKUnit];
+          userDistancePaddleSportsHKUnit = [(FIUnitManager *)self userDistancePaddleSportsHKUnit];
           break;
         case 9uLL:
-          v4 = [(FIUnitManager *)self userDistanceRowingHKUnit];
+          userDistancePaddleSportsHKUnit = [(FIUnitManager *)self userDistanceRowingHKUnit];
           break;
         case 0xAuLL:
-          v4 = [(FIUnitManager *)self userDistanceSkatingSportsHKUnit];
+          userDistancePaddleSportsHKUnit = [(FIUnitManager *)self userDistanceSkatingSportsHKUnit];
           break;
         default:
           goto LABEL_25;
@@ -361,83 +361,83 @@ void __53__FIUnitManager__setPreferredHKUnit_forQuantityType___block_invoke(uint
     }
   }
 
-  else if (a3 > 2)
+  else if (type > 2)
   {
-    if (a3 == 3)
+    if (type == 3)
     {
-      v4 = [(FIUnitManager *)self userLapLengthHKUnit];
+      userDistancePaddleSportsHKUnit = [(FIUnitManager *)self userLapLengthHKUnit];
     }
 
     else
     {
-      if (a3 == 4)
+      if (type == 4)
       {
-        v5 = [(FIUnitManager *)self userLapLengthHKUnit];
-        v6 = [MEMORY[0x277CCDAB0] yardUnit];
-        v7 = [v5 isEqual:v6];
+        userLapLengthHKUnit = [(FIUnitManager *)self userLapLengthHKUnit];
+        yardUnit = [MEMORY[0x277CCDAB0] yardUnit];
+        v7 = [userLapLengthHKUnit isEqual:yardUnit];
 
         if (v7)
         {
-          v8 = [MEMORY[0x277CCDAB0] mileUnit];
+          mileUnit = [MEMORY[0x277CCDAB0] mileUnit];
         }
 
         else
         {
-          v10 = [MEMORY[0x277CCDAB0] meterUnit];
-          v11 = [v5 isEqual:v10];
+          meterUnit = [MEMORY[0x277CCDAB0] meterUnit];
+          v11 = [userLapLengthHKUnit isEqual:meterUnit];
 
           if (v11)
           {
-            v8 = [MEMORY[0x277CCDAB0] meterUnitWithMetricPrefix:9];
+            mileUnit = [MEMORY[0x277CCDAB0] meterUnitWithMetricPrefix:9];
           }
 
           else
           {
-            v8 = v5;
+            mileUnit = userLapLengthHKUnit;
           }
         }
 
-        v3 = v8;
+        v3 = mileUnit;
 
         goto LABEL_25;
       }
 
-      v4 = [(FIUnitManager *)self userDistanceElevationHKUnit];
+      userDistancePaddleSportsHKUnit = [(FIUnitManager *)self userDistanceElevationHKUnit];
     }
   }
 
-  else if (a3 >= 2)
+  else if (type >= 2)
   {
-    if (a3 != 2)
+    if (type != 2)
     {
       goto LABEL_25;
     }
 
-    v4 = [(FIUnitManager *)self userDistanceCyclingHKUnit];
+    userDistancePaddleSportsHKUnit = [(FIUnitManager *)self userDistanceCyclingHKUnit];
   }
 
   else
   {
-    v4 = [(FIUnitManager *)self userDistanceWalkingRunningHKUnit];
+    userDistancePaddleSportsHKUnit = [(FIUnitManager *)self userDistanceWalkingRunningHKUnit];
   }
 
-  v3 = v4;
+  v3 = userDistancePaddleSportsHKUnit;
 LABEL_25:
 
   return v3;
 }
 
-- (id)userDistanceHKUnitForActivityType:(id)a3
+- (id)userDistanceHKUnitForActivityType:(id)type
 {
-  v4 = FIDistanceTypeForActivityType(a3);
+  v4 = FIDistanceTypeForActivityType(type);
 
   return [(FIUnitManager *)self userDistanceHKUnitForDistanceType:v4];
 }
 
-+ (id)quantityTypeForDistanceType:(unint64_t)a3
++ (id)quantityTypeForDistanceType:(unint64_t)type
 {
-  v5 = a3 - 1;
-  if (a3 - 1 <= 9 && ((0x3EFu >> v5) & 1) != 0)
+  v5 = type - 1;
+  if (type - 1 <= 9 && ((0x3EFu >> v5) & 1) != 0)
   {
     v6 = [MEMORY[0x277CCD830] quantityTypeForIdentifier:{**(&unk_279004FE8 + v5), v3}];
   }
@@ -450,36 +450,36 @@ LABEL_25:
   return v6;
 }
 
-- (void)setUserDistanceUnit:(unint64_t)a3 forDistanceType:(unint64_t)a4
+- (void)setUserDistanceUnit:(unint64_t)unit forDistanceType:(unint64_t)type
 {
-  v11 = [FIUnitManager quantityTypeForDistanceType:a4];
+  v11 = [FIUnitManager quantityTypeForDistanceType:type];
   v7 = 4;
-  if (a3 == 2)
+  if (unit == 2)
   {
-    v8 = 1;
+    unitCopy = 1;
   }
 
   else
   {
-    v8 = a3;
+    unitCopy = unit;
   }
 
-  if (a3 != 3)
+  if (unit != 3)
   {
-    v7 = v8;
+    v7 = unitCopy;
   }
 
-  if (a4 == 4)
+  if (type == 4)
   {
-    v9 = v7;
+    unitCopy2 = v7;
   }
 
   else
   {
-    v9 = a3;
+    unitCopy2 = unit;
   }
 
-  v10 = FIHKUnitForDistanceUnit(v9);
+  v10 = FIHKUnitForDistanceUnit(unitCopy2);
   [(FIUnitManager *)self _setPreferredHKUnit:v10 forQuantityType:v11];
 }
 
@@ -560,35 +560,35 @@ LABEL_25:
   return v4;
 }
 
-- (void)setUserDepthHKUnit:(id)a3
+- (void)setUserDepthHKUnit:(id)unit
 {
   v4 = MEMORY[0x277CCD830];
   v5 = *MEMORY[0x277CCCC90];
-  v6 = a3;
+  unitCopy = unit;
   v7 = [v4 quantityTypeForIdentifier:v5];
-  [(FIUnitManager *)self _setPreferredHKUnit:v6 forQuantityType:v7];
+  [(FIUnitManager *)self _setPreferredHKUnit:unitCopy forQuantityType:v7];
 }
 
-- (void)setUserWaterTemperatureHKUnit:(id)a3
+- (void)setUserWaterTemperatureHKUnit:(id)unit
 {
   v4 = MEMORY[0x277CCD830];
   v5 = *MEMORY[0x277CCCCD0];
-  v6 = a3;
+  unitCopy = unit;
   v7 = [v4 quantityTypeForIdentifier:v5];
-  [(FIUnitManager *)self _setPreferredHKUnit:v6 forQuantityType:v7];
+  [(FIUnitManager *)self _setPreferredHKUnit:unitCopy forQuantityType:v7];
 }
 
-- (void)setUserDistanceWalkingRunningUnit:(unint64_t)a3
+- (void)setUserDistanceWalkingRunningUnit:(unint64_t)unit
 {
-  v5 = FIHKUnitForDistanceUnit(a3);
+  v5 = FIHKUnitForDistanceUnit(unit);
   v4 = [MEMORY[0x277CCD830] quantityTypeForIdentifier:*MEMORY[0x277CCCB40]];
   [(FIUnitManager *)self _setPreferredHKUnit:v5 forQuantityType:v4];
 }
 
 - (unint64_t)userDistanceCyclingUnit
 {
-  v2 = [(FIUnitManager *)self userDistanceCyclingHKUnit];
-  v3 = FIDistanceUnitForHKUnit(v2);
+  userDistanceCyclingHKUnit = [(FIUnitManager *)self userDistanceCyclingHKUnit];
+  v3 = FIDistanceUnitForHKUnit(userDistanceCyclingHKUnit);
 
   return v3;
 }
@@ -601,61 +601,61 @@ LABEL_25:
   return v4;
 }
 
-- (void)setUserDistanceCyclingUnit:(unint64_t)a3
+- (void)setUserDistanceCyclingUnit:(unint64_t)unit
 {
-  v5 = FIHKUnitForDistanceUnit(a3);
+  v5 = FIHKUnitForDistanceUnit(unit);
   v4 = [MEMORY[0x277CCD830] quantityTypeForIdentifier:*MEMORY[0x277CCCB10]];
   [(FIUnitManager *)self _setPreferredHKUnit:v5 forQuantityType:v4];
 }
 
-- (double)paceWithDistance:(id)a3 overDuration:(double)a4 paceFormat:(int64_t)a5 distanceType:(unint64_t)a6
+- (double)paceWithDistance:(id)distance overDuration:(double)duration paceFormat:(int64_t)format distanceType:(unint64_t)type
 {
-  v10 = a3;
-  v11 = FIHKUnitForDistanceUnit([(FIUnitManager *)self paceDistanceUnitForDistanceType:a6]);
-  v12 = FIPace(v10, v11, a5, a4);
+  distanceCopy = distance;
+  v11 = FIHKUnitForDistanceUnit([(FIUnitManager *)self paceDistanceUnitForDistanceType:type]);
+  v12 = FIPace(distanceCopy, v11, format, duration);
 
   return v12;
 }
 
-- (double)distanceInMetersForDistanceInUserUnit:(double)a3 distanceType:(unint64_t)a4
+- (double)distanceInMetersForDistanceInUserUnit:(double)unit distanceType:(unint64_t)type
 {
-  v5 = [(FIUnitManager *)self userDistanceHKUnitForDistanceType:a4];
-  v6 = [MEMORY[0x277CCD7E8] quantityWithUnit:v5 doubleValue:a3];
-  v7 = [MEMORY[0x277CCDAB0] meterUnit];
-  [v6 doubleValueForUnit:v7];
+  v5 = [(FIUnitManager *)self userDistanceHKUnitForDistanceType:type];
+  v6 = [MEMORY[0x277CCD7E8] quantityWithUnit:v5 doubleValue:unit];
+  meterUnit = [MEMORY[0x277CCDAB0] meterUnit];
+  [v6 doubleValueForUnit:meterUnit];
   v9 = v8;
 
   return v9;
 }
 
-- (double)distanceInUserDistanceUnitForDistanceInMeters:(double)a3 distanceType:(unint64_t)a4
+- (double)distanceInUserDistanceUnitForDistanceInMeters:(double)meters distanceType:(unint64_t)type
 {
-  v6 = [(FIUnitManager *)self userDistanceUnitForDistanceType:a4];
+  v6 = [(FIUnitManager *)self userDistanceUnitForDistanceType:type];
 
-  [(FIUnitManager *)self distanceInDistanceUnit:v6 forDistanceInMeters:a3];
+  [(FIUnitManager *)self distanceInDistanceUnit:v6 forDistanceInMeters:meters];
   return result;
 }
 
-- (double)distanceInDistanceUnit:(unint64_t)a3 forDistanceInMeters:(double)a4
+- (double)distanceInDistanceUnit:(unint64_t)unit forDistanceInMeters:(double)meters
 {
   v6 = MEMORY[0x277CCD7E8];
-  v7 = [MEMORY[0x277CCDAB0] meterUnit];
-  v8 = [v6 quantityWithUnit:v7 doubleValue:a4];
+  meterUnit = [MEMORY[0x277CCDAB0] meterUnit];
+  v8 = [v6 quantityWithUnit:meterUnit doubleValue:meters];
 
-  v9 = FIHKUnitForDistanceUnit(a3);
+  v9 = FIHKUnitForDistanceUnit(unit);
   [v8 doubleValueForUnit:v9];
   v11 = v10;
 
   return v11;
 }
 
-- (void)setUserActiveEnergyBurnedUnit:(id)a3
+- (void)setUserActiveEnergyBurnedUnit:(id)unit
 {
   v4 = MEMORY[0x277CCD830];
   v5 = *MEMORY[0x277CCC918];
-  v6 = a3;
+  unitCopy = unit;
   v7 = [v4 quantityTypeForIdentifier:v5];
-  [(FIUnitManager *)self _setPreferredHKUnit:v6 forQuantityType:v7];
+  [(FIUnitManager *)self _setPreferredHKUnit:unitCopy forQuantityType:v7];
 }
 
 - (id)userBasalEnergyBurnedUnit
@@ -666,18 +666,18 @@ LABEL_25:
   return v4;
 }
 
-- (void)setUserBasalEnergyBurnedUnit:(id)a3
+- (void)setUserBasalEnergyBurnedUnit:(id)unit
 {
   v4 = MEMORY[0x277CCD830];
   v5 = *MEMORY[0x277CCC960];
-  v6 = a3;
+  unitCopy = unit;
   v7 = [v4 quantityTypeForIdentifier:v5];
-  [(FIUnitManager *)self _setPreferredHKUnit:v6 forQuantityType:v7];
+  [(FIUnitManager *)self _setPreferredHKUnit:unitCopy forQuantityType:v7];
 }
 
-- (void)setPreferredUnitsForTesting:(id)a3
+- (void)setPreferredUnitsForTesting:(id)testing
 {
-  v4 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:a3];
+  v4 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:testing];
   preferredUnits = self->_preferredUnits;
   self->_preferredUnits = v4;
 

@@ -1,6 +1,6 @@
 @interface NTKCFaceDetailMonogramComplicationCell
 + (id)reuseIdentifier;
-- (NTKCFaceDetailMonogramComplicationCell)initWithSlot:(id)a3 inFace:(id)a4;
+- (NTKCFaceDetailMonogramComplicationCell)initWithSlot:(id)slot inFace:(id)face;
 @end
 
 @implementation NTKCFaceDetailMonogramComplicationCell
@@ -12,22 +12,22 @@
   return NSStringFromClass(v2);
 }
 
-- (NTKCFaceDetailMonogramComplicationCell)initWithSlot:(id)a3 inFace:(id)a4
+- (NTKCFaceDetailMonogramComplicationCell)initWithSlot:(id)slot inFace:(id)face
 {
-  v6 = a3;
-  v7 = a4;
+  slotCopy = slot;
+  faceCopy = face;
   v14.receiver = self;
   v14.super_class = NTKCFaceDetailMonogramComplicationCell;
   v8 = [(NTKCFaceDetailToggleCell *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [slotCopy copy];
     slot = v8->_slot;
     v8->_slot = v9;
 
-    v11 = [v7 displayNameForComplicationSlot:v8->_slot];
-    v12 = [(NTKCFaceDetailMonogramComplicationCell *)v8 textLabel];
-    [v12 setText:v11];
+    v11 = [faceCopy displayNameForComplicationSlot:v8->_slot];
+    textLabel = [(NTKCFaceDetailMonogramComplicationCell *)v8 textLabel];
+    [textLabel setText:v11];
   }
 
   return v8;

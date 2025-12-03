@@ -1,14 +1,14 @@
 @interface PXGDisplayAssetBlurAdjustment
-- (BOOL)isEqualToDisplayAssetAdjustment:(id)a3;
-- (CGSize)requestSizeForProposedTargetSize:(CGSize)a3;
-- (PXGDisplayAssetBlurAdjustment)initWithBlurRadius:(double)a3 darkeningOverlayOpacity:(double)a4;
-- (id)applyToImage:(id)a3 targetSize:(CGSize)a4;
+- (BOOL)isEqualToDisplayAssetAdjustment:(id)adjustment;
+- (CGSize)requestSizeForProposedTargetSize:(CGSize)size;
+- (PXGDisplayAssetBlurAdjustment)initWithBlurRadius:(double)radius darkeningOverlayOpacity:(double)opacity;
+- (id)applyToImage:(id)image targetSize:(CGSize)size;
 - (unint64_t)hash;
 @end
 
 @implementation PXGDisplayAssetBlurAdjustment
 
-- (CGSize)requestSizeForProposedTargetSize:(CGSize)a3
+- (CGSize)requestSizeForProposedTargetSize:(CGSize)size
 {
   PXSizeMin();
   result.height = v4;
@@ -16,13 +16,13 @@
   return result;
 }
 
-- (BOOL)isEqualToDisplayAssetAdjustment:(id)a3
+- (BOOL)isEqualToDisplayAssetAdjustment:(id)adjustment
 {
-  v4 = a3;
+  adjustmentCopy = adjustment;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v4 blurRadius];
+    [adjustmentCopy blurRadius];
     v6 = v5;
     [(PXGDisplayAssetBlurAdjustment *)self blurRadius];
     v8 = v6 == v7;
@@ -43,22 +43,22 @@
   return [v2 hash];
 }
 
-- (id)applyToImage:(id)a3 targetSize:(CGSize)a4
+- (id)applyToImage:(id)image targetSize:(CGSize)size
 {
   v30[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [v5 imageByClampingToExtent];
+  imageCopy = image;
+  imageByClampingToExtent = [imageCopy imageByClampingToExtent];
   v7 = [MEMORY[0x277CBF750] filterWithName:@"CIGaussianBlur"];
   v8 = *MEMORY[0x277CBFAF0];
-  [v7 setValue:v6 forKey:*MEMORY[0x277CBFAF0]];
+  [v7 setValue:imageByClampingToExtent forKey:*MEMORY[0x277CBFAF0]];
   v9 = MEMORY[0x277CCABB0];
   [(PXGDisplayAssetBlurAdjustment *)self blurRadius];
   v10 = [v9 numberWithDouble:?];
   [v7 setValue:v10 forKey:*MEMORY[0x277CBFB08]];
 
-  v11 = [v7 outputImage];
+  outputImage = [v7 outputImage];
   [(PXGDisplayAssetBlurAdjustment *)self darkeningOverlayOpacity];
-  v12 = v11;
+  outputImage3 = outputImage;
   if (v13 > 0.0)
   {
     v14 = MEMORY[0x277D75348];
@@ -71,33 +71,33 @@
     v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v30 forKeys:&v29 count:1];
     v19 = [v17 filterWithName:@"CIConstantColorGenerator" withInputParameters:v18];
 
-    v20 = [v19 outputImage];
+    outputImage2 = [v19 outputImage];
     v21 = MEMORY[0x277CBF750];
     v27[0] = *MEMORY[0x277CBFAB8];
     v27[1] = v8;
-    v28[0] = v11;
-    v28[1] = v20;
+    v28[0] = outputImage;
+    v28[1] = outputImage2;
     v22 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v28 forKeys:v27 count:2];
     v23 = [v21 filterWithName:@"CISourceOverCompositing" withInputParameters:v22];
 
-    v12 = [v23 outputImage];
+    outputImage3 = [v23 outputImage];
   }
 
-  [v5 extent];
-  v24 = [v12 imageByCroppingToRect:?];
+  [imageCopy extent];
+  v24 = [outputImage3 imageByCroppingToRect:?];
 
   return v24;
 }
 
-- (PXGDisplayAssetBlurAdjustment)initWithBlurRadius:(double)a3 darkeningOverlayOpacity:(double)a4
+- (PXGDisplayAssetBlurAdjustment)initWithBlurRadius:(double)radius darkeningOverlayOpacity:(double)opacity
 {
   v7.receiver = self;
   v7.super_class = PXGDisplayAssetBlurAdjustment;
   result = [(PXGDisplayAssetBlurAdjustment *)&v7 init];
   if (result)
   {
-    result->_blurRadius = a3;
-    result->_darkeningOverlayOpacity = a4;
+    result->_blurRadius = radius;
+    result->_darkeningOverlayOpacity = opacity;
   }
 
   return result;

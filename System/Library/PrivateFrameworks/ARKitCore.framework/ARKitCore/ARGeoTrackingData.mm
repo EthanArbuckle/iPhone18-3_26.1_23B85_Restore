@@ -1,16 +1,16 @@
 @interface ARGeoTrackingData
-- (ARGeoTrackingData)initWithCoder:(id)a3;
-- (__n128)initWithENUOrigin:(__n128)a3 vioFromENU:(__n128)a4;
-- (id)anchorsForCameraWithTransform:(double)a3 referenceOriginTransform:(double)a4 existingAnchors:(double)a5 anchorsToRemove:(float32x4_t)a6;
-- (void)encodeWithCoder:(id)a3;
+- (ARGeoTrackingData)initWithCoder:(id)coder;
+- (__n128)initWithENUOrigin:(__n128)origin vioFromENU:(__n128)u;
+- (id)anchorsForCameraWithTransform:(double)transform referenceOriginTransform:(double)originTransform existingAnchors:(double)anchors anchorsToRemove:(float32x4_t)remove;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ARGeoTrackingData
 
-- (__n128)initWithENUOrigin:(__n128)a3 vioFromENU:(__n128)a4
+- (__n128)initWithENUOrigin:(__n128)origin vioFromENU:(__n128)u
 {
   v9 = a7;
-  v17.receiver = a1;
+  v17.receiver = self;
   v17.super_class = ARGeoTrackingData;
   v10 = [(ARGeoTrackingData *)&v17 init];
   v11 = v10;
@@ -18,15 +18,15 @@
   {
     objc_storeStrong(&v10->_enuOrigin, a7);
     v11[1] = a2;
-    v11[2] = a3;
-    v11[3] = a4;
+    v11[2] = origin;
+    v11[3] = u;
     v11[4] = a5;
   }
 
   return v11;
 }
 
-- (id)anchorsForCameraWithTransform:(double)a3 referenceOriginTransform:(double)a4 existingAnchors:(double)a5 anchorsToRemove:(float32x4_t)a6
+- (id)anchorsForCameraWithTransform:(double)transform referenceOriginTransform:(double)originTransform existingAnchors:(double)anchors anchorsToRemove:(float32x4_t)remove
 {
   v179 = *MEMORY[0x1E69E9840];
   v12 = a11;
@@ -42,7 +42,7 @@
     LODWORD(buf[0].f64[0]) = 138543874;
     *(buf[0].f64 + 4) = v17;
     WORD2(buf[0].f64[1]) = 2048;
-    *(&buf[0].f64[1] + 6) = a1;
+    *(&buf[0].f64[1] + 6) = self;
     HIWORD(buf[1].f64[0]) = 2048;
     *&buf[1].f64[1] = [v14 count];
     _os_log_impl(&dword_1C241C000, v15, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: VL geo anchors updated: %lu", buf, 0x20u);
@@ -53,12 +53,12 @@
   {
     v19 = objc_opt_class();
     v20 = NSStringFromClass(v19);
-    v181 = __invert_f4(*(a1 + 16));
+    v181 = __invert_f4(*(self + 16));
     v21 = ARMatrix4x4Description(1, v181.columns[0], v181.columns[1], v181.columns[2], v181.columns[3]);
     LODWORD(buf[0].f64[0]) = 138543875;
     *(buf[0].f64 + 4) = v20;
     WORD2(buf[0].f64[1]) = 2048;
-    *(&buf[0].f64[1] + 6) = a1;
+    *(&buf[0].f64[1] + 6) = self;
     HIWORD(buf[1].f64[0]) = 2113;
     *&buf[1].f64[1] = v21;
     _os_log_impl(&dword_1C241C000, v18, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: enuFromVIO: %{private}@", buf, 0x20u);
@@ -114,7 +114,7 @@
           v145 = 0u;
           v142 = 0u;
           v143 = 0u;
-          v31 = *(a1 + 8);
+          v31 = *(self + 8);
           if (v31)
           {
             [v31 ecefFromlocation];
@@ -148,7 +148,7 @@
           v173 = 0u;
           v174 = 0u;
           memset(buf, 0, sizeof(buf));
-          ARMatrix4x4FloatToDouble(buf, *(a1 + 16), *(a1 + 32), *(a1 + 48), *(a1 + 64));
+          ARMatrix4x4FloatToDouble(buf, *(self + 16), *(self + 32), *(self + 48), *(self + 64));
           v32 = 0uLL;
           v140 = 0u;
           v141 = 0u;
@@ -340,7 +340,7 @@
           v97 = 0u;
           do
           {
-            *(&v94 + v82 * 16) = vmlaq_laneq_f32(vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(a6, COERCE_FLOAT(v170[v82])), a7, *&v170[v82], 1), a8, v170[v82], 2), a9, v170[v82], 3);
+            *(&v94 + v82 * 16) = vmlaq_laneq_f32(vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(remove, COERCE_FLOAT(v170[v82])), a7, *&v170[v82], 1), a8, v170[v82], 2), a9, v170[v82], 3);
             ++v82;
           }
 
@@ -369,19 +369,19 @@ uint64_t __108__ARGeoTrackingData_anchorsForCameraWithTransform_referenceOriginT
   return isKindOfClass & 1;
 }
 
-- (ARGeoTrackingData)initWithCoder:(id)a3
+- (ARGeoTrackingData)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = ARGeoTrackingData;
   v5 = [(ARGeoTrackingData *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectForKey:@"enuOrigin"];
+    v6 = [coderCopy decodeObjectForKey:@"enuOrigin"];
     enuOrigin = v5->_enuOrigin;
     v5->_enuOrigin = v6;
 
-    [v4 ar_decodeMatrix4x4ForKey:@"vioFromENU"];
+    [coderCopy ar_decodeMatrix4x4ForKey:@"vioFromENU"];
     v5[1] = v8;
     v5[2] = v9;
     v5[3] = v10;
@@ -391,12 +391,12 @@ uint64_t __108__ARGeoTrackingData_anchorsForCameraWithTransform_referenceOriginT
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   enuOrigin = self->_enuOrigin;
-  v5 = a3;
-  [v5 encodeObject:enuOrigin forKey:@"enuOrigin"];
-  [v5 ar_encodeMatrix4x4:@"vioFromENU" forKey:{*&self[1].super.isa, *&self[2].super.isa, *&self[3].super.isa, *&self[4].super.isa}];
+  coderCopy = coder;
+  [coderCopy encodeObject:enuOrigin forKey:@"enuOrigin"];
+  [coderCopy ar_encodeMatrix4x4:@"vioFromENU" forKey:{*&self[1].super.isa, *&self[2].super.isa, *&self[3].super.isa, *&self[4].super.isa}];
 }
 
 @end

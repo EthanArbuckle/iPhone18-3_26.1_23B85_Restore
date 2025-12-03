@@ -1,12 +1,12 @@
 @interface SFBookmarksCollectionViewController.ContentUnavailableCell
-- (_TtCC12MobileSafari35SFBookmarksCollectionViewController22ContentUnavailableCell)initWithCoder:(id)a3;
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3;
+- (_TtCC12MobileSafari35SFBookmarksCollectionViewController22ContentUnavailableCell)initWithCoder:(id)coder;
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes;
 - (void)layoutSubviews;
 @end
 
 @implementation SFBookmarksCollectionViewController.ContentUnavailableCell
 
-- (_TtCC12MobileSafari35SFBookmarksCollectionViewController22ContentUnavailableCell)initWithCoder:(id)a3
+- (_TtCC12MobileSafari35SFBookmarksCollectionViewController22ContentUnavailableCell)initWithCoder:(id)coder
 {
   v4 = sub_18BC1FCD8();
   MEMORY[0x1EEE9AC00](v4 - 8);
@@ -30,17 +30,17 @@
   [v3 setFrame_];
 }
 
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes
 {
   v19.receiver = self;
   v19.super_class = _s22ContentUnavailableCellCMa();
-  v4 = a3;
+  attributesCopy = attributes;
   v5 = v19.receiver;
-  v6 = [(SFBookmarksCollectionViewController.ContentUnavailableCell *)&v19 preferredLayoutAttributesFittingAttributes:v4];
+  v6 = [(SFBookmarksCollectionViewController.ContentUnavailableCell *)&v19 preferredLayoutAttributesFittingAttributes:attributesCopy];
   [v6 size];
   v8 = v7;
-  v9 = [objc_opt_self() mainScreen];
-  [v9 bounds];
+  mainScreen = [objc_opt_self() mainScreen];
+  [mainScreen bounds];
   v11 = v10;
   v13 = v12;
   v15 = v14;

@@ -9,8 +9,8 @@
 - (id)description
 {
   v15 = MEMORY[0x277CCACA8];
-  v16 = [a1 title];
-  if (v16)
+  title = [self title];
+  if (title)
   {
     v2 = @"YES";
   }
@@ -21,8 +21,8 @@
   }
 
   v14 = v2;
-  v3 = [a1 location];
-  if (v3)
+  location = [self location];
+  if (location)
   {
     v4 = @"YES";
   }
@@ -32,8 +32,8 @@
     v4 = @"NO";
   }
 
-  v5 = [a1 structuredLocation];
-  if (v5)
+  structuredLocation = [self structuredLocation];
+  if (structuredLocation)
   {
     v6 = @"YES";
   }
@@ -43,12 +43,12 @@
     v6 = @"NO";
   }
 
-  v7 = [a1 startDate];
-  v8 = [v7 stringFromDate];
-  v9 = [a1 endDate];
-  v10 = [v9 stringFromDate];
-  v11 = [objc_opt_class() participationStatusToString:{objc_msgSend(a1, "participationStatus")}];
-  v12 = [v15 stringWithFormat:@"title, %@, location, %@, structuredLocation, %@, startDate, %@, endDate, %@, participationStatus, %@", v14, v4, v6, v8, v10, v11];
+  startDate = [self startDate];
+  stringFromDate = [startDate stringFromDate];
+  endDate = [self endDate];
+  stringFromDate2 = [endDate stringFromDate];
+  v11 = [objc_opt_class() participationStatusToString:{objc_msgSend(self, "participationStatus")}];
+  v12 = [v15 stringWithFormat:@"title, %@, location, %@, structuredLocation, %@, startDate, %@, endDate, %@, participationStatus, %@", v14, v4, v6, stringFromDate, stringFromDate2, v11];
 
   return v12;
 }
@@ -68,7 +68,7 @@
 
 - (uint64_t)participantStatus
 {
-  result = [a1 participationStatus];
+  result = [self participationStatus];
   if ((result - 1) >= 7)
   {
     return 0;

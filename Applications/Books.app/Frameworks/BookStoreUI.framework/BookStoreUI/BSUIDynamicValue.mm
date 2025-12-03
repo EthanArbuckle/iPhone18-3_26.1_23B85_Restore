@@ -1,21 +1,21 @@
 @interface BSUIDynamicValue
-- (BSUIDynamicValue)initWithValue:(id)a3 options:(id)a4;
+- (BSUIDynamicValue)initWithValue:(id)value options:(id)options;
 - (id)getValue;
-- (void)addObserver:(id)a3;
-- (void)addWeakObserver:(id)a3;
-- (void)removeObserver:(id)a3;
-- (void)removeWeakObserver:(id)a3;
-- (void)updateValue:(id)a3;
+- (void)addObserver:(id)observer;
+- (void)addWeakObserver:(id)observer;
+- (void)removeObserver:(id)observer;
+- (void)removeWeakObserver:(id)observer;
+- (void)updateValue:(id)value;
 @end
 
 @implementation BSUIDynamicValue
 
-- (BSUIDynamicValue)initWithValue:(id)a3 options:(id)a4
+- (BSUIDynamicValue)initWithValue:(id)value options:(id)options
 {
-  v6 = a4;
+  optionsCopy = options;
   v19.receiver = self;
   v19.super_class = BSUIDynamicValue;
-  v7 = [(BSUIDynamicValue *)&v19 initWithValue:a3];
+  v7 = [(BSUIDynamicValue *)&v19 initWithValue:value];
   if (v7)
   {
     v8 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
@@ -32,7 +32,7 @@
     weakObservers = v7->_weakObservers;
     v7->_weakObservers = v13;
 
-    v15 = [v6 objectForKeyedSubscript:@"loadsContent"];
+    v15 = [optionsCopy objectForKeyedSubscript:@"loadsContent"];
 
     if (v15)
     {
@@ -40,7 +40,7 @@
     }
 
     objc_opt_class();
-    v16 = [v6 objectForKeyedSubscript:@"debugName"];
+    v16 = [optionsCopy objectForKeyedSubscript:@"debugName"];
     v17 = BUDynamicCast();
     [(BSUIDynamicValue *)v7 setDebugName:v17];
   }
@@ -48,17 +48,17 @@
   return v7;
 }
 
-- (void)updateValue:(id)a3
+- (void)updateValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_77A4;
   v7[3] = &unk_386D98;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = valueCopy;
+  v6 = valueCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -83,44 +83,44 @@
   return v3;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_observerAccessLock);
-  v5 = [(BSUIDynamicValue *)self strongObservers];
-  [v5 addObject:v4];
+  strongObservers = [(BSUIDynamicValue *)self strongObservers];
+  [strongObservers addObject:observerCopy];
 
   os_unfair_lock_unlock(&self->_observerAccessLock);
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_observerAccessLock);
-  v5 = [(BSUIDynamicValue *)self strongObservers];
-  [v5 removeObject:v4];
+  strongObservers = [(BSUIDynamicValue *)self strongObservers];
+  [strongObservers removeObject:observerCopy];
 
   os_unfair_lock_unlock(&self->_observerAccessLock);
 }
 
-- (void)addWeakObserver:(id)a3
+- (void)addWeakObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_observerAccessLock);
-  v5 = [(BSUIDynamicValue *)self weakObservers];
-  v6 = [JSManagedValue managedValueWithValue:v4];
+  weakObservers = [(BSUIDynamicValue *)self weakObservers];
+  v6 = [JSManagedValue managedValueWithValue:observerCopy];
 
-  [v5 addObject:v6];
+  [weakObservers addObject:v6];
 
   os_unfair_lock_unlock(&self->_observerAccessLock);
 }
 
-- (void)removeWeakObserver:(id)a3
+- (void)removeWeakObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_observerAccessLock);
-  v5 = [(BSUIDynamicValue *)self weakObservers];
-  v6 = [v5 copy];
+  weakObservers = [(BSUIDynamicValue *)self weakObservers];
+  v6 = [weakObservers copy];
 
   v18 = 0u;
   v19 = 0u;
@@ -142,12 +142,12 @@
         }
 
         v12 = *(*(&v16 + 1) + 8 * i);
-        v13 = [v12 value];
-        v14 = v13;
-        if (!v13 || [v13 isEqual:v4])
+        value = [v12 value];
+        v14 = value;
+        if (!value || [value isEqual:observerCopy])
         {
-          v15 = [(BSUIDynamicValue *)self weakObservers];
-          [v15 removeObject:v12];
+          weakObservers2 = [(BSUIDynamicValue *)self weakObservers];
+          [weakObservers2 removeObject:v12];
         }
       }
 

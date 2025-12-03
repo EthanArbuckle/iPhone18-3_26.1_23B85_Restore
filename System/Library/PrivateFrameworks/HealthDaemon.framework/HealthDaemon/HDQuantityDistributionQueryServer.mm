@@ -1,30 +1,30 @@
 @interface HDQuantityDistributionQueryServer
-- (BOOL)_walkSampleValuesWithPredicate:(uint64_t)a3 errorOut:(void *)a4 handler:;
-- (HDQuantityDistributionQueryServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6;
-- (id)_categoryPredicateWithTypeCode:(void *)a3 matchingValue:(uint64_t)a4 errorOut:;
-- (id)_sqlitePredicateForObjectType:(uint64_t)a3 errorOut:;
-- (id)_walkSampleDatesWithPredicate:(uint64_t)a3 entityClass:(char)a4 includeUUID:(uint64_t)a5 errorOut:;
-- (id)_walkSampleDatesWithPredicate:(uint64_t)a3 entityClass:(uint64_t)a4 errorOut:;
-- (void)_addAttenuatedSamplesUsingAttenuateSamples:(uint64_t)a3 sampleCount:(void *)a4 distributionCalculator:(int)a5 computeAverageAndDuration:(void *)a6 calculatorForAverageAndDuration:(void *)a7 attenuationEngine:;
-- (void)_addSampleIntoDistributionCalculatorAndAverageAndDurationCalculator:(void *)a3 distributionCalculator:(int)a4 computeAverageAndDuration:(void *)a5 calculatorForAverageAndDuration:(double)a6 dataFactor:;
+- (BOOL)_walkSampleValuesWithPredicate:(uint64_t)predicate errorOut:(void *)out handler:;
+- (HDQuantityDistributionQueryServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate;
+- (id)_categoryPredicateWithTypeCode:(void *)code matchingValue:(uint64_t)value errorOut:;
+- (id)_sqlitePredicateForObjectType:(uint64_t)type errorOut:;
+- (id)_walkSampleDatesWithPredicate:(uint64_t)predicate entityClass:(char)class includeUUID:(uint64_t)d errorOut:;
+- (id)_walkSampleDatesWithPredicate:(uint64_t)predicate entityClass:(uint64_t)class errorOut:;
+- (void)_addAttenuatedSamplesUsingAttenuateSamples:(uint64_t)samples sampleCount:(void *)count distributionCalculator:(int)calculator computeAverageAndDuration:(void *)duration calculatorForAverageAndDuration:(void *)andDuration attenuationEngine:;
+- (void)_addSampleIntoDistributionCalculatorAndAverageAndDurationCalculator:(void *)calculator distributionCalculator:(int)distributionCalculator computeAverageAndDuration:(void *)duration calculatorForAverageAndDuration:(double)andDuration dataFactor:;
 - (void)_queue_start;
 @end
 
 @implementation HDQuantityDistributionQueryServer
 
-- (HDQuantityDistributionQueryServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6
+- (HDQuantityDistributionQueryServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate
 {
-  v10 = a4;
+  configurationCopy = configuration;
   v17.receiver = self;
   v17.super_class = HDQuantityDistributionQueryServer;
-  v11 = [(HDQueryServer *)&v17 initWithUUID:a3 configuration:v10 client:a5 delegate:a6];
+  v11 = [(HDQueryServer *)&v17 initWithUUID:d configuration:configurationCopy client:client delegate:delegate];
   if (v11)
   {
     v12 = [[HDQuantitySampleOverlapProcessor alloc] initWithOverlapFunction:1];
     overlapProcessor = v11->_overlapProcessor;
     v11->_overlapProcessor = v12;
 
-    v14 = [v10 copy];
+    v14 = [configurationCopy copy];
     quantityDistributionQueryServerConfiguration = v11->_quantityDistributionQueryServerConfiguration;
     v11->_quantityDistributionQueryServerConfiguration = v14;
   }
@@ -39,15 +39,15 @@
   v231.receiver = self;
   v231.super_class = HDQuantityDistributionQueryServer;
   [(HDQueryServer *)&v231 _queue_start];
-  v3 = [p_isa clientProxy];
-  v4 = [p_isa sampleType];
+  clientProxy = [p_isa clientProxy];
+  sampleType = [p_isa sampleType];
   v230 = 0;
-  v5 = [p_isa authorizationStatusRecordForType:v4 error:&v230];
+  v5 = [p_isa authorizationStatusRecordForType:sampleType error:&v230];
   v205 = v230;
   if (!v5)
   {
-    v6 = [p_isa queryUUID];
-    [v3 client_deliverError:v205 forQuery:v6];
+    queryUUID = [p_isa queryUUID];
+    [clientProxy client_deliverError:v205 forQuery:queryUUID];
   }
 
   v206 = p_isa;
@@ -59,22 +59,22 @@
     goto LABEL_126;
   }
 
-  v201 = v4;
+  v201 = sampleType;
   if (p_isa)
   {
-    v7 = [p_isa[26] histogramBucketSize];
-    v8 = [v7 _unit];
+    histogramBucketSize = [p_isa[26] histogramBucketSize];
+    _unit = [histogramBucketSize _unit];
 
-    v199 = [p_isa quantityType];
-    v198 = [v199 canonicalUnit];
-    [v198 _valueByConvertingValue:v8 toUnit:1.0];
+    quantityType = [p_isa quantityType];
+    canonicalUnit = [quantityType canonicalUnit];
+    [canonicalUnit _valueByConvertingValue:_unit toUnit:1.0];
     v10 = v9;
-    v11 = [p_isa[26] histogramAnchor];
+    histogramAnchor = [p_isa[26] histogramAnchor];
 
-    if (v11)
+    if (histogramAnchor)
     {
-      v12 = [p_isa[26] histogramAnchor];
-      [v12 doubleValueForUnit:v8];
+      histogramAnchor2 = [p_isa[26] histogramAnchor];
+      [histogramAnchor2 doubleValueForUnit:_unit];
       v14 = v13;
     }
 
@@ -83,43 +83,43 @@
       v14 = 0.0;
     }
 
-    v16 = [p_isa[26] histogramBucketSize];
-    [v16 doubleValueForUnit:v8];
+    histogramBucketSize2 = [p_isa[26] histogramBucketSize];
+    [histogramBucketSize2 doubleValueForUnit:_unit];
     v18 = v17;
 
     v19 = [HDQuantityDistributionCalculator alloc];
-    v20 = [p_isa[26] startDate];
-    v21 = [p_isa[26] endDate];
-    v22 = [p_isa[26] anchorDate];
-    v23 = [p_isa[26] intervalComponents];
-    v203 = [(HDQuantityDistributionCalculator *)v19 initWithStartDate:v20 endDate:v21 anchorDate:v22 intervalComponents:v23 histogramBucketAnchor:v14 histogramBucketSize:v18];
+    startDate = [p_isa[26] startDate];
+    endDate = [p_isa[26] endDate];
+    anchorDate = [p_isa[26] anchorDate];
+    intervalComponents = [p_isa[26] intervalComponents];
+    v203 = [(HDQuantityDistributionCalculator *)v19 initWithStartDate:startDate endDate:endDate anchorDate:anchorDate intervalComponents:intervalComponents histogramBucketAnchor:v14 histogramBucketSize:v18];
 
     v24 = v206;
-    v25 = [v206[26] options];
-    if (v25)
+    options = [v206[26] options];
+    if (options)
     {
-      v26 = [v206[26] intervalComponents];
-      v27 = [v26 copy];
+      intervalComponents2 = [v206[26] intervalComponents];
+      v27 = [intervalComponents2 copy];
 
-      v28 = [v27 calendar];
+      calendar = [v27 calendar];
 
-      if (!v28)
+      if (!calendar)
       {
-        v29 = [MEMORY[0x277CBEA80] currentCalendar];
-        [v27 setCalendar:v29];
+        currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+        [v27 setCalendar:currentCalendar];
       }
 
       v30 = objc_alloc(MEMORY[0x277CCDD78]);
-      v31 = [v206[26] anchorDate];
-      v32 = [v30 initWithAnchorDate:v31 intervalComponents:v27];
+      anchorDate2 = [v206[26] anchorDate];
+      v32 = [v30 initWithAnchorDate:anchorDate2 intervalComponents:v27];
 
       v33 = [HDStatisticsCollectionCalculatorDefaultSourceOrderProvider alloc];
-      v34 = [v206 profile];
-      v35 = [v206 quantityType];
-      v36 = [(HDStatisticsCollectionCalculatorDefaultSourceOrderProvider *)v33 initWithProfile:v34 quantityType:v35];
+      profile = [v206 profile];
+      quantityType2 = [v206 quantityType];
+      v36 = [(HDStatisticsCollectionCalculatorDefaultSourceOrderProvider *)v33 initWithProfile:profile quantityType:quantityType2];
 
-      v37 = [v206 quantityType];
-      v38 = [HDStatisticsCollectionCalculator calculatorForQuantityType:v37 intervalCollection:v32 options:66 mergeStrategy:0];
+      quantityType3 = [v206 quantityType];
+      v38 = [HDStatisticsCollectionCalculator calculatorForQuantityType:quantityType3 intervalCollection:v32 options:66 mergeStrategy:0];
 
       v24 = v206;
       [v38 setSourceOrderProvider:v36];
@@ -142,18 +142,18 @@
       v202 = 0;
     }
 
-    v40 = [v24[26] options];
-    v41 = [v24[26] contextStyle];
+    options2 = [v24[26] options];
+    contextStyle = [v24[26] contextStyle];
     v42 = 0;
     v234 = 0;
-    v208 = v8;
-    v227 = v25;
-    if (v41 > 3)
+    v208 = _unit;
+    v227 = options;
+    if (contextStyle > 3)
     {
-      if (v41 <= 5)
+      if (contextStyle <= 5)
       {
-        v43 = (v40 >> 1) & 1;
-        if (v41 == 4)
+        v43 = (options2 >> 1) & 1;
+        if (contextStyle == 4)
         {
           v44 = v24;
           v45 = 147;
@@ -168,7 +168,7 @@
         goto LABEL_27;
       }
 
-      if (v41 == 6)
+      if (contextStyle == 6)
       {
         v64 = _HKCategoryValueSleepAnalysisAsleepValues();
         v67 = [MEMORY[0x277CCD0C0] dataTypeWithCode:63];
@@ -189,9 +189,9 @@
       }
 
       v46 = 0;
-      if (v41 == 7)
+      if (contextStyle == 7)
       {
-        v43 = (v40 >> 1) & 1;
+        v43 = (options2 >> 1) & 1;
         v47 = &unk_283CB3EE8;
         v44 = v24;
         v45 = 199;
@@ -210,53 +210,53 @@ LABEL_35:
       goto LABEL_36;
     }
 
-    if (v41 == 1)
+    if (contextStyle == 1)
     {
       v48 = [MEMORY[0x277CCD720] categoryTypeForIdentifier:*MEMORY[0x277CCBA30]];
       v223 = [(HDQuantityDistributionQueryServer *)v24 _sqlitePredicateForObjectType:v48 errorOut:&v234];
 
       v221 = HDDataEntityPredicateForObjectsFromAppleWatchSources(1);
-      v49 = [v24 profile];
-      v50 = [v49 metadataManager];
+      profile2 = [v24 profile];
+      metadataManager = [profile2 metadataManager];
       v51 = *MEMORY[0x277CCE060];
-      v52 = [v50 predicateWithMetadataKey:*MEMORY[0x277CCE060] exists:0];
+      v52 = [metadataManager predicateWithMetadataKey:*MEMORY[0x277CCE060] exists:0];
 
       v53 = MEMORY[0x277D10B20];
       aBlock = v221;
       v238 = v52;
       [MEMORY[0x277CBEA60] arrayWithObjects:&aBlock count:2];
-      v55 = v54 = v40;
+      v55 = v54 = options2;
       v56 = [v53 predicateMatchingAllPredicates:v55];
 
-      v57 = [v206 profile];
-      v58 = [v57 metadataManager];
+      profile3 = [v206 profile];
+      metadataManager2 = [profile3 metadataManager];
       [MEMORY[0x277CBEB98] setWithObject:&unk_283CB3F00];
-      v60 = v59 = v3;
-      v61 = [v58 predicateWithMetadataKey:v51 allowedValues:v60];
+      v60 = v59 = clientProxy;
+      v61 = [metadataManager2 predicateWithMetadataKey:v51 allowedValues:v60];
 
-      v3 = v59;
+      clientProxy = v59;
       v62 = MEMORY[0x277D10B20];
       *&v249 = v56;
       *(&v249 + 1) = v61;
       v63 = [MEMORY[0x277CBEA60] arrayWithObjects:&v249 count:2];
-      v40 = [v62 predicateMatchingAnyPredicates:v63];
+      options2 = [v62 predicateMatchingAnyPredicates:v63];
 
-      v64 = [MEMORY[0x277D10B20] compoundPredicateWithPredicate:v223 otherPredicate:v40];
+      v64 = [MEMORY[0x277D10B20] compoundPredicateWithPredicate:v223 otherPredicate:options2];
 
-      LOBYTE(v40) = v54;
-      v8 = v208;
+      LOBYTE(options2) = v54;
+      _unit = v208;
 
       v24 = v206;
     }
 
     else
     {
-      if (v41 != 2)
+      if (contextStyle != 2)
       {
         v46 = 0;
-        if (v41 == 3)
+        if (contextStyle == 3)
         {
-          v43 = (v40 >> 1) & 1;
+          v43 = (options2 >> 1) & 1;
           v44 = v24;
           v45 = 140;
 LABEL_27:
@@ -276,11 +276,11 @@ LABEL_124:
           goto LABEL_125;
         }
 
-        v224 = v40;
+        v224 = options2;
         v196 = v74;
-        v77 = [v24[26] objectType];
+        objectType = [v24[26] objectType];
         v233 = 0;
-        v78 = [(HDQuantityDistributionQueryServer *)v24 _sqlitePredicateForObjectType:v77 errorOut:&v233];
+        v78 = [(HDQuantityDistributionQueryServer *)v24 _sqlitePredicateForObjectType:objectType errorOut:&v233];
         v79 = v233;
         v197 = v78;
         v195 = v79;
@@ -308,20 +308,20 @@ LABEL_124:
         v219 = v227 & 1;
         v80 = *MEMORY[0x277CCCB58];
         v81 = [MEMORY[0x277CCD720] quantityTypeForIdentifier:*MEMORY[0x277CCCB58]];
-        v82 = [v77 isEqual:v81];
+        v82 = [objectType isEqual:v81];
 
-        v83 = [v24[26] options];
+        options3 = [v24[26] options];
         v84 = [MEMORY[0x277CCD830] _quantityTypeWithCode:272];
         v85 = [HDQuantitySampleAttenuationProvider alloc];
-        v86 = [v24 profile];
+        profile4 = [v24 profile];
         v193 = v84;
-        v87 = [(HDQuantitySampleAttenuationProvider *)v85 initWithQuantityType:v84 profile:v86];
+        v87 = [(HDQuantitySampleAttenuationProvider *)v85 initWithQuantityType:v84 profile:profile4];
 
         v192 = v87;
         v88 = [[HDQuantitySampleAttenuationEngine alloc] initWithAttenuationEngineDelegate:v87];
-        v222 = v77;
+        v222 = objectType;
         v191 = v88;
-        if (v82 && (v83 & 4) != 0)
+        if (v82 && (options3 & 4) != 0)
         {
           v89 = v88;
           v90 = v46;
@@ -349,7 +349,7 @@ LABEL_124:
           v246 = v100;
           v194 = _Block_copy(&aBlock);
 
-          v4 = v201;
+          sampleType = v201;
           if (v227)
           {
 LABEL_43:
@@ -361,11 +361,11 @@ LABEL_43:
 
         else
         {
-          v104 = [v206 quantityType];
+          quantityType4 = [v206 quantityType];
           v105 = [MEMORY[0x277CCD720] quantityTypeForIdentifier:v80];
-          v106 = [v104 isEqual:v105];
+          v106 = [quantityType4 isEqual:v105];
 
-          v4 = v201;
+          sampleType = v201;
           if (v106)
           {
             v107 = 1;
@@ -373,9 +373,9 @@ LABEL_43:
 
           else
           {
-            v108 = [v206 quantityType];
+            quantityType5 = [v206 quantityType];
             v109 = [MEMORY[0x277CCD720] quantityTypeForIdentifier:*MEMORY[0x277CCCB88]];
-            v107 = [v108 isEqual:v109];
+            v107 = [quantityType5 isEqual:v109];
           }
 
           v110 = v46;
@@ -401,7 +401,7 @@ LABEL_43:
           v245 = v117;
           v194 = _Block_copy(&aBlock);
 
-          v77 = v222;
+          objectType = v222;
           if (v227)
           {
             goto LABEL_43;
@@ -416,8 +416,8 @@ LABEL_51:
         if (v118)
         {
           v186 = v119;
-          v217 = [(HDQuantityDistributionCalculator *)v203 quantityDistributionsWithUnit:v8];
-          v187 = v3;
+          v217 = [(HDQuantityDistributionCalculator *)v203 quantityDistributionsWithUnit:_unit];
+          v187 = clientProxy;
           if ((v224 & 2) != 0 && v46)
           {
             v120 = v217;
@@ -467,11 +467,11 @@ LABEL_51:
                   }
 
                   v128 = *(*(&v249 + 1) + 8 * v127);
-                  v129 = [v128 startDate];
-                  [v129 timeIntervalSinceReferenceDate];
+                  startDate2 = [v128 startDate];
+                  [startDate2 timeIntervalSinceReferenceDate];
                   v131 = v130;
-                  v132 = [v128 endDate];
-                  [v132 timeIntervalSinceReferenceDate];
+                  endDate2 = [v128 endDate];
+                  [endDate2 timeIntervalSinceReferenceDate];
                   v134 = *(v121 + 5);
                   if (!v134)
                   {
@@ -600,19 +600,19 @@ LABEL_95:
                   if (v142 && [v142 count])
                   {
                     v213 = objc_alloc(MEMORY[0x277CCDE20]);
-                    v211 = [v128 startDate];
-                    v152 = [v128 endDate];
-                    v153 = [v128 minimumBucketValue];
+                    startDate3 = [v128 startDate];
+                    endDate3 = [v128 endDate];
+                    minimumBucketValue = [v128 minimumBucketValue];
                     [v128 minimumValue];
                     v154 = v228 = v142;
-                    v155 = [v128 maximumValue];
-                    v156 = [v128 averageValue];
-                    v157 = [v128 duration];
-                    v158 = [v128 histogramCounts];
-                    v159 = [v213 initWithStartDate:v211 endDate:v152 minimumBucketValue:v153 minimumValue:v154 maximumValue:v155 averageValue:v156 duration:v157 histogramCounts:v158 contextIdentifiers:v228];
+                    maximumValue = [v128 maximumValue];
+                    averageValue = [v128 averageValue];
+                    duration = [v128 duration];
+                    histogramCounts = [v128 histogramCounts];
+                    v159 = [v213 initWithStartDate:startDate3 endDate:endDate3 minimumBucketValue:minimumBucketValue minimumValue:v154 maximumValue:maximumValue averageValue:averageValue duration:duration histogramCounts:histogramCounts contextIdentifiers:v228];
 
                     v46 = v207;
-                    v8 = v208;
+                    _unit = v208;
 
                     v142 = v228;
                     [v217 addObject:v159];
@@ -624,7 +624,7 @@ LABEL_95:
                   }
 
                   ++v127;
-                  v77 = v222;
+                  objectType = v222;
                   v98 = v219;
                 }
 
@@ -636,15 +636,15 @@ LABEL_95:
               while (v160);
             }
 
-            v3 = v187;
-            v4 = v201;
+            clientProxy = v187;
+            sampleType = v201;
           }
 
           v229 = v217;
           if (v98)
           {
             v163 = v200;
-            v190 = v8;
+            v190 = _unit;
             p_isa = objc_alloc_init(MEMORY[0x277CBEB18]);
             if ([v229 count])
             {
@@ -661,48 +661,48 @@ LABEL_95:
 
                 v166 = [v229 objectAtIndexedSubscript:v164];
                 v167 = [v163 objectAtIndexedSubscript:v165];
-                v168 = [v166 startDate];
-                v169 = [v167 startDate];
-                v226 = v169;
-                if ([v168 isEqual:v169])
+                startDate4 = [v166 startDate];
+                startDate5 = [v167 startDate];
+                v226 = startDate5;
+                if ([startDate4 isEqual:startDate5])
                 {
-                  v170 = [v167 averageQuantity];
+                  averageQuantity = [v167 averageQuantity];
                   v216 = v164;
-                  [v170 doubleValueForUnit:v190];
+                  [averageQuantity doubleValueForUnit:v190];
                   v172 = v171;
 
                   v220 = [MEMORY[0x277CCD7E8] quantityWithUnit:v190 doubleValue:v172];
                   v214 = objc_alloc(MEMORY[0x277CCDE20]);
-                  v218 = [v166 startDate];
+                  startDate6 = [v166 startDate];
                   obja = [v166 endDate];
-                  v173 = [v166 minimumBucketValue];
-                  v174 = [v166 minimumValue];
-                  v175 = [v166 maximumValue];
-                  v176 = [v167 duration];
-                  v177 = [v166 histogramCounts];
+                  minimumBucketValue2 = [v166 minimumBucketValue];
+                  minimumValue = [v166 minimumValue];
+                  maximumValue2 = [v166 maximumValue];
+                  duration2 = [v167 duration];
+                  histogramCounts2 = [v166 histogramCounts];
                   [v166 contextIdentifiers];
                   v212 = v167;
-                  v178 = v168;
+                  v178 = startDate4;
                   v180 = v179 = v165;
-                  v181 = v174;
-                  v182 = [v214 initWithStartDate:v218 endDate:obja minimumBucketValue:v173 minimumValue:v174 maximumValue:v175 averageValue:v220 duration:v176 histogramCounts:v177 contextIdentifiers:v180];
+                  v181 = minimumValue;
+                  v182 = [v214 initWithStartDate:startDate6 endDate:obja minimumBucketValue:minimumBucketValue2 minimumValue:minimumValue maximumValue:maximumValue2 averageValue:v220 duration:duration2 histogramCounts:histogramCounts2 contextIdentifiers:v180];
 
                   v183 = v179;
-                  v168 = v178;
+                  startDate4 = v178;
                   v167 = v212;
 
                   v163 = v189;
-                  v4 = v201;
+                  sampleType = v201;
 
                   p_isa = v188;
                   [v188 addObject:v182];
                   v164 = v216 + 1;
                   v165 = v183 + 1;
 
-                  v77 = v222;
+                  objectType = v222;
                 }
 
-                else if ([v168 hk_isBeforeDate:v169])
+                else if ([startDate4 hk_isBeforeDate:startDate5])
                 {
                   [p_isa addObject:v166];
                   ++v164;
@@ -718,9 +718,9 @@ LABEL_95:
             }
 
             v76 = v205;
-            v3 = v187;
+            clientProxy = v187;
             v46 = v207;
-            v8 = v208;
+            _unit = v208;
           }
 
           else
@@ -758,8 +758,8 @@ LABEL_123:
         goto LABEL_122;
       }
 
-      v72 = [MEMORY[0x277CCD720] workoutType];
-      v64 = [(HDQuantityDistributionQueryServer *)v24 _sqlitePredicateForObjectType:v72 errorOut:&v234];
+      workoutType = [MEMORY[0x277CCD720] workoutType];
+      v64 = [(HDQuantityDistributionQueryServer *)v24 _sqlitePredicateForObjectType:workoutType errorOut:&v234];
     }
 
     v73 = objc_opt_class();
@@ -774,44 +774,44 @@ LABEL_125:
   if (!p_isa)
   {
     p_isa = [v206 queryUUID];
-    [v3 client_deliverError:v15 forQuery:p_isa];
+    [clientProxy client_deliverError:v15 forQuery:p_isa];
     goto LABEL_127;
   }
 
 LABEL_126:
-  v184 = [v206 queryUUID];
-  [v3 client_deliverDistributionCollection:p_isa forQuery:v184];
+  queryUUID2 = [v206 queryUUID];
+  [clientProxy client_deliverDistributionCollection:p_isa forQuery:queryUUID2];
 
 LABEL_127:
   v185 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_sqlitePredicateForObjectType:(uint64_t)a3 errorOut:
+- (id)_sqlitePredicateForObjectType:(uint64_t)type errorOut:
 {
   v5 = a2;
   v6 = HDSampleEntityPredicateForDataType(v5);
-  v7 = [a1 filter];
+  filter = [self filter];
 
-  if (!v7)
+  if (!filter)
   {
     v15 = v6;
     goto LABEL_7;
   }
 
-  v8 = [a1 filter];
+  filter2 = [self filter];
   v9 = objc_opt_respondsToSelector();
 
-  v10 = [a1 filter];
+  filter3 = [self filter];
   if (v9)
   {
     v11 = [MEMORY[0x277CBEB98] setWithObject:v5];
-    v12 = [v10 builder_filterWithDataTypes:v11];
+    v12 = [filter3 builder_filterWithDataTypes:v11];
 
-    v10 = v12;
+    filter3 = v12;
   }
 
-  v13 = [a1 profile];
-  v14 = [v10 predicateWithProfile:v13];
+  profile = [self profile];
+  v14 = [filter3 predicateWithProfile:profile];
 
   if (v14)
   {
@@ -822,7 +822,7 @@ LABEL_7:
     goto LABEL_9;
   }
 
-  [MEMORY[0x277CCA9B8] hk_assignError:a3 code:100 format:@"Error building predicate for query"];
+  [MEMORY[0x277CCA9B8] hk_assignError:type code:100 format:@"Error building predicate for query"];
   v16 = 0;
 LABEL_9:
 
@@ -1006,33 +1006,33 @@ uint64_t __214__HDQuantityDistributionQueryServer__standardSampleWalkBlockUsingD
   return 1;
 }
 
-- (void)_addSampleIntoDistributionCalculatorAndAverageAndDurationCalculator:(void *)a3 distributionCalculator:(int)a4 computeAverageAndDuration:(void *)a5 calculatorForAverageAndDuration:(double)a6 dataFactor:
+- (void)_addSampleIntoDistributionCalculatorAndAverageAndDurationCalculator:(void *)calculator distributionCalculator:(int)distributionCalculator computeAverageAndDuration:(void *)duration calculatorForAverageAndDuration:(double)andDuration dataFactor:
 {
-  v12 = a3;
-  v11 = a5;
-  if (a1)
+  calculatorCopy = calculator;
+  durationCopy = duration;
+  if (self)
   {
-    [v12 addDataPoint:a2[2] startTime:*a2 endTime:a2[1]];
-    if (a4)
+    [calculatorCopy addDataPoint:a2[2] startTime:*a2 endTime:a2[1]];
+    if (distributionCalculator)
     {
-      [v11 addSampleValue:*(a2 + 4) startTime:0 endTime:a2[2] / a6 sourceID:*a2 error:a2[1]];
+      [durationCopy addSampleValue:*(a2 + 4) startTime:0 endTime:a2[2] / andDuration sourceID:*a2 error:a2[1]];
     }
   }
 }
 
-- (BOOL)_walkSampleValuesWithPredicate:(uint64_t)a3 errorOut:(void *)a4 handler:
+- (BOOL)_walkSampleValuesWithPredicate:(uint64_t)predicate errorOut:(void *)out handler:
 {
-  v7 = a4;
-  if (a1)
+  outCopy = out;
+  if (self)
   {
     v8 = a2;
-    v9 = [a1 profile];
+    profile = [self profile];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __85__HDQuantityDistributionQueryServer__walkSampleValuesWithPredicate_errorOut_handler___block_invoke;
     v12[3] = &unk_27862B250;
-    v13 = v7;
-    v10 = [HDQuantitySampleValueEnumerator orderedQuantityValuesForPredicate:v8 profile:v9 options:4 error:a3 handler:v12];
+    v13 = outCopy;
+    v10 = [HDQuantitySampleValueEnumerator orderedQuantityValuesForPredicate:v8 profile:profile options:4 error:predicate handler:v12];
   }
 
   else
@@ -1235,12 +1235,12 @@ uint64_t __208__HDQuantityDistributionQueryServer__attenuatedSampleWalkBlockUsin
   return v20;
 }
 
-- (void)_addAttenuatedSamplesUsingAttenuateSamples:(uint64_t)a3 sampleCount:(void *)a4 distributionCalculator:(int)a5 computeAverageAndDuration:(void *)a6 calculatorForAverageAndDuration:(void *)a7 attenuationEngine:
+- (void)_addAttenuatedSamplesUsingAttenuateSamples:(uint64_t)samples sampleCount:(void *)count distributionCalculator:(int)calculator computeAverageAndDuration:(void *)duration calculatorForAverageAndDuration:(void *)andDuration attenuationEngine:
 {
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
-  if (a1 && a3 >= 1)
+  countCopy = count;
+  durationCopy = duration;
+  andDurationCopy = andDuration;
+  if (self && samples >= 1)
   {
     v16 = 0;
     do
@@ -1248,20 +1248,20 @@ uint64_t __208__HDQuantityDistributionQueryServer__attenuatedSampleWalkBlockUsin
       v30 = 0;
       v28 = 0u;
       v29 = 0u;
-      if (v15)
+      if (andDurationCopy)
       {
         v17 = (a2 + 40 * v16);
         v18 = v17[1];
         v25 = *v17;
         v26 = v18;
         v27 = *(v17 + 4);
-        [v15 attenuateSample:&v25];
+        [andDurationCopy attenuateSample:&v25];
         while (*(&v28 + 1) - *&v28 > 0.000001)
         {
           v25 = v28;
           v26 = v29;
           v27 = v30;
-          [(HDQuantityDistributionQueryServer *)a1 _addSampleIntoDistributionCalculatorAndAverageAndDurationCalculator:v13 distributionCalculator:a5 computeAverageAndDuration:v14 calculatorForAverageAndDuration:1.0 dataFactor:?];
+          [(HDQuantityDistributionQueryServer *)self _addSampleIntoDistributionCalculatorAndAverageAndDurationCalculator:countCopy distributionCalculator:calculator computeAverageAndDuration:durationCopy calculatorForAverageAndDuration:1.0 dataFactor:?];
           v19 = *(v17 + 8);
           if (*&v19 - *(&v28 + 1) <= 0.000001)
           {
@@ -1273,7 +1273,7 @@ uint64_t __208__HDQuantityDistributionQueryServer__attenuatedSampleWalkBlockUsin
           v22 = v19;
           v23 = v20;
           v24 = 0;
-          [v15 attenuateSample:&v21];
+          [andDurationCopy attenuateSample:&v21];
           v28 = v25;
           v29 = v26;
           v30 = v27;
@@ -1283,24 +1283,24 @@ uint64_t __208__HDQuantityDistributionQueryServer__attenuatedSampleWalkBlockUsin
       ++v16;
     }
 
-    while (v16 != a3);
+    while (v16 != samples);
   }
 }
 
-- (id)_walkSampleDatesWithPredicate:(uint64_t)a3 entityClass:(uint64_t)a4 errorOut:
+- (id)_walkSampleDatesWithPredicate:(uint64_t)predicate entityClass:(uint64_t)class errorOut:
 {
-  v4 = [(HDQuantityDistributionQueryServer *)a1 _walkSampleDatesWithPredicate:a2 entityClass:a3 includeUUID:0 errorOut:a4];
+  v4 = [(HDQuantityDistributionQueryServer *)self _walkSampleDatesWithPredicate:a2 entityClass:predicate includeUUID:0 errorOut:class];
 
   return v4;
 }
 
-- (id)_categoryPredicateWithTypeCode:(void *)a3 matchingValue:(uint64_t)a4 errorOut:
+- (id)_categoryPredicateWithTypeCode:(void *)code matchingValue:(uint64_t)value errorOut:
 {
-  v7 = a3;
+  codeCopy = code;
   v8 = [MEMORY[0x277CCD0C0] dataTypeWithCode:a2];
-  v9 = [(HDQuantityDistributionQueryServer *)a1 _sqlitePredicateForObjectType:v8 errorOut:a4];
+  v9 = [(HDQuantityDistributionQueryServer *)self _sqlitePredicateForObjectType:v8 errorOut:value];
 
-  if (v7)
+  if (codeCopy)
   {
     v10 = HDCategorySampleEntityPredicateForValue(1);
     v11 = [MEMORY[0x277D10B20] compoundPredicateWithPredicate:v9 otherPredicate:v10];
@@ -1311,7 +1311,7 @@ uint64_t __208__HDQuantityDistributionQueryServer__attenuatedSampleWalkBlockUsin
   return v9;
 }
 
-- (id)_walkSampleDatesWithPredicate:(uint64_t)a3 entityClass:(char)a4 includeUUID:(uint64_t)a5 errorOut:
+- (id)_walkSampleDatesWithPredicate:(uint64_t)predicate entityClass:(char)class includeUUID:(uint64_t)d errorOut:
 {
   v9 = a2;
   v20 = 0;
@@ -1320,20 +1320,20 @@ uint64_t __208__HDQuantityDistributionQueryServer__attenuatedSampleWalkBlockUsin
   v23 = __Block_byref_object_copy__173;
   v24 = __Block_byref_object_dispose__173;
   v25 = objc_alloc_init(_HDQuantityDateIntervals);
-  v10 = [a1 profile];
-  v11 = [v10 database];
+  profile = [self profile];
+  database = [profile database];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __100__HDQuantityDistributionQueryServer__walkSampleDatesWithPredicate_entityClass_includeUUID_errorOut___block_invoke;
   v15[3] = &unk_27862B2A0;
-  v18 = a3;
+  predicateCopy = predicate;
   v12 = v9;
-  v19 = a4;
+  classCopy = class;
   v16 = v12;
   v17 = &v20;
-  LODWORD(a5) = [(HDHealthEntity *)HDSampleEntity performReadTransactionWithHealthDatabase:v11 error:a5 block:v15];
+  LODWORD(d) = [(HDHealthEntity *)HDSampleEntity performReadTransactionWithHealthDatabase:database error:d block:v15];
 
-  if (a5)
+  if (d)
   {
     v13 = v21[5];
   }

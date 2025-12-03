@@ -1,22 +1,22 @@
 @interface FCCGoalProgressConfigurationProtobuf
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasMinimumNumberOfActiveDays:(BOOL)a3;
-- (void)setHasUserEndOfDayDate:(BOOL)a3;
-- (void)setHasUserStartOfDayDate:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasMinimumNumberOfActiveDays:(BOOL)days;
+- (void)setHasUserEndOfDayDate:(BOOL)date;
+- (void)setHasUserStartOfDayDate:(BOOL)date;
+- (void)writeTo:(id)to;
 @end
 
 @implementation FCCGoalProgressConfigurationProtobuf
 
-- (void)setHasMinimumNumberOfActiveDays:(BOOL)a3
+- (void)setHasMinimumNumberOfActiveDays:(BOOL)days
 {
-  if (a3)
+  if (days)
   {
     v3 = 8;
   }
@@ -29,9 +29,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasUserStartOfDayDate:(BOOL)a3
+- (void)setHasUserStartOfDayDate:(BOOL)date
 {
-  if (a3)
+  if (date)
   {
     v3 = 4;
   }
@@ -44,9 +44,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasUserEndOfDayDate:(BOOL)a3
+- (void)setHasUserEndOfDayDate:(BOOL)date
 {
-  if (a3)
+  if (date)
   {
     v3 = 2;
   }
@@ -65,20 +65,20 @@
   v8.receiver = self;
   v8.super_class = FCCGoalProgressConfigurationProtobuf;
   v4 = [(FCCGoalProgressConfigurationProtobuf *)&v8 description];
-  v5 = [(FCCGoalProgressConfigurationProtobuf *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(FCCGoalProgressConfigurationProtobuf *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if ((has & 8) != 0)
   {
     v13 = [MEMORY[0x277CCABB0] numberWithInt:self->_minimumNumberOfActiveDays];
-    [v3 setObject:v13 forKey:@"minimumNumberOfActiveDays"];
+    [dictionary setObject:v13 forKey:@"minimumNumberOfActiveDays"];
 
     has = self->_has;
     if ((has & 4) == 0)
@@ -99,7 +99,7 @@ LABEL_3:
   }
 
   v14 = [MEMORY[0x277CCABB0] numberWithDouble:self->_userStartOfDayDate];
-  [v3 setObject:v14 forKey:@"userStartOfDayDate"];
+  [dictionary setObject:v14 forKey:@"userStartOfDayDate"];
 
   has = self->_has;
   if ((has & 2) == 0)
@@ -115,50 +115,50 @@ LABEL_4:
 
 LABEL_17:
   v15 = [MEMORY[0x277CCABB0] numberWithDouble:self->_userEndOfDayDate];
-  [v3 setObject:v15 forKey:@"userEndOfDayDate"];
+  [dictionary setObject:v15 forKey:@"userEndOfDayDate"];
 
   if (*&self->_has)
   {
 LABEL_5:
     v5 = [MEMORY[0x277CCABB0] numberWithDouble:self->_expirationDate];
-    [v3 setObject:v5 forKey:@"expirationDate"];
+    [dictionary setObject:v5 forKey:@"expirationDate"];
   }
 
 LABEL_6:
   almostThereConfiguration = self->_almostThereConfiguration;
   if (almostThereConfiguration)
   {
-    v7 = [(FCCAlmostThereConfigurationProtobuf *)almostThereConfiguration dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"almostThereConfiguration"];
+    dictionaryRepresentation = [(FCCAlmostThereConfigurationProtobuf *)almostThereConfiguration dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"almostThereConfiguration"];
   }
 
   atypicalDayConfiguration = self->_atypicalDayConfiguration;
   if (atypicalDayConfiguration)
   {
-    v9 = [(FCCAtypicalDayConfigurationProtobuf *)atypicalDayConfiguration dictionaryRepresentation];
-    [v3 setObject:v9 forKey:@"atypicalDayConfiguration"];
+    dictionaryRepresentation2 = [(FCCAtypicalDayConfigurationProtobuf *)atypicalDayConfiguration dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"atypicalDayConfiguration"];
   }
 
   completionOffTrackConfiguration = self->_completionOffTrackConfiguration;
   if (completionOffTrackConfiguration)
   {
-    v11 = [(FCCCompletionOffTrackConfigurationProtobuf *)completionOffTrackConfiguration dictionaryRepresentation];
-    [v3 setObject:v11 forKey:@"completionOffTrackConfiguration"];
+    dictionaryRepresentation3 = [(FCCCompletionOffTrackConfigurationProtobuf *)completionOffTrackConfiguration dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation3 forKey:@"completionOffTrackConfiguration"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v10 = v4;
+  v10 = toCopy;
   if ((has & 8) != 0)
   {
     minimumNumberOfActiveDays = self->_minimumNumberOfActiveDays;
     PBDataWriterWriteInt32Field();
-    v4 = v10;
+    toCopy = v10;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -179,7 +179,7 @@ LABEL_3:
 
   userStartOfDayDate = self->_userStartOfDayDate;
   PBDataWriterWriteDoubleField();
-  v4 = v10;
+  toCopy = v10;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -195,43 +195,43 @@ LABEL_4:
 LABEL_17:
   userEndOfDayDate = self->_userEndOfDayDate;
   PBDataWriterWriteDoubleField();
-  v4 = v10;
+  toCopy = v10;
   if (*&self->_has)
   {
 LABEL_5:
     expirationDate = self->_expirationDate;
     PBDataWriterWriteDoubleField();
-    v4 = v10;
+    toCopy = v10;
   }
 
 LABEL_6:
   if (self->_almostThereConfiguration)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_atypicalDayConfiguration)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_completionOffTrackConfiguration)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v10;
+    toCopy = v10;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 8) != 0)
   {
-    v4[14] = self->_minimumNumberOfActiveDays;
-    *(v4 + 60) |= 8u;
+    toCopy[14] = self->_minimumNumberOfActiveDays;
+    *(toCopy + 60) |= 8u;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -250,8 +250,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(v4 + 3) = *&self->_userStartOfDayDate;
-  *(v4 + 60) |= 4u;
+  *(toCopy + 3) = *&self->_userStartOfDayDate;
+  *(toCopy + 60) |= 4u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -265,39 +265,39 @@ LABEL_4:
   }
 
 LABEL_17:
-  *(v4 + 2) = *&self->_userEndOfDayDate;
-  *(v4 + 60) |= 2u;
+  *(toCopy + 2) = *&self->_userEndOfDayDate;
+  *(toCopy + 60) |= 2u;
   if (*&self->_has)
   {
 LABEL_5:
-    *(v4 + 1) = *&self->_expirationDate;
-    *(v4 + 60) |= 1u;
+    *(toCopy + 1) = *&self->_expirationDate;
+    *(toCopy + 60) |= 1u;
   }
 
 LABEL_6:
-  v6 = v4;
+  v6 = toCopy;
   if (self->_almostThereConfiguration)
   {
-    [v4 setAlmostThereConfiguration:?];
-    v4 = v6;
+    [toCopy setAlmostThereConfiguration:?];
+    toCopy = v6;
   }
 
   if (self->_atypicalDayConfiguration)
   {
     [v6 setAtypicalDayConfiguration:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_completionOffTrackConfiguration)
   {
     [v6 setCompletionOffTrackConfiguration:?];
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 8) != 0)
@@ -347,39 +347,39 @@ LABEL_5:
   }
 
 LABEL_6:
-  v8 = [(FCCAlmostThereConfigurationProtobuf *)self->_almostThereConfiguration copyWithZone:a3];
+  v8 = [(FCCAlmostThereConfigurationProtobuf *)self->_almostThereConfiguration copyWithZone:zone];
   v9 = v6[4];
   v6[4] = v8;
 
-  v10 = [(FCCAtypicalDayConfigurationProtobuf *)self->_atypicalDayConfiguration copyWithZone:a3];
+  v10 = [(FCCAtypicalDayConfigurationProtobuf *)self->_atypicalDayConfiguration copyWithZone:zone];
   v11 = v6[5];
   v6[5] = v10;
 
-  v12 = [(FCCCompletionOffTrackConfigurationProtobuf *)self->_completionOffTrackConfiguration copyWithZone:a3];
+  v12 = [(FCCCompletionOffTrackConfigurationProtobuf *)self->_completionOffTrackConfiguration copyWithZone:zone];
   v13 = v6[6];
   v6[6] = v12;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_28;
   }
 
-  v5 = *(v4 + 60);
+  v5 = *(equalCopy + 60);
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 60) & 8) == 0 || self->_minimumNumberOfActiveDays != *(v4 + 14))
+    if ((*(equalCopy + 60) & 8) == 0 || self->_minimumNumberOfActiveDays != *(equalCopy + 14))
     {
       goto LABEL_28;
     }
   }
 
-  else if ((*(v4 + 60) & 8) != 0)
+  else if ((*(equalCopy + 60) & 8) != 0)
   {
 LABEL_28:
     v9 = 0;
@@ -388,51 +388,51 @@ LABEL_28:
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 60) & 4) == 0 || self->_userStartOfDayDate != *(v4 + 3))
+    if ((*(equalCopy + 60) & 4) == 0 || self->_userStartOfDayDate != *(equalCopy + 3))
     {
       goto LABEL_28;
     }
   }
 
-  else if ((*(v4 + 60) & 4) != 0)
+  else if ((*(equalCopy + 60) & 4) != 0)
   {
     goto LABEL_28;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 60) & 2) == 0 || self->_userEndOfDayDate != *(v4 + 2))
+    if ((*(equalCopy + 60) & 2) == 0 || self->_userEndOfDayDate != *(equalCopy + 2))
     {
       goto LABEL_28;
     }
   }
 
-  else if ((*(v4 + 60) & 2) != 0)
+  else if ((*(equalCopy + 60) & 2) != 0)
   {
     goto LABEL_28;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 60) & 1) == 0 || self->_expirationDate != *(v4 + 1))
+    if ((*(equalCopy + 60) & 1) == 0 || self->_expirationDate != *(equalCopy + 1))
     {
       goto LABEL_28;
     }
   }
 
-  else if (*(v4 + 60))
+  else if (*(equalCopy + 60))
   {
     goto LABEL_28;
   }
 
   almostThereConfiguration = self->_almostThereConfiguration;
-  if (almostThereConfiguration | *(v4 + 4) && ![(FCCAlmostThereConfigurationProtobuf *)almostThereConfiguration isEqual:?])
+  if (almostThereConfiguration | *(equalCopy + 4) && ![(FCCAlmostThereConfigurationProtobuf *)almostThereConfiguration isEqual:?])
   {
     goto LABEL_28;
   }
 
   atypicalDayConfiguration = self->_atypicalDayConfiguration;
-  if (atypicalDayConfiguration | *(v4 + 5))
+  if (atypicalDayConfiguration | *(equalCopy + 5))
   {
     if (![(FCCAtypicalDayConfigurationProtobuf *)atypicalDayConfiguration isEqual:?])
     {
@@ -441,7 +441,7 @@ LABEL_28:
   }
 
   completionOffTrackConfiguration = self->_completionOffTrackConfiguration;
-  if (completionOffTrackConfiguration | *(v4 + 6))
+  if (completionOffTrackConfiguration | *(equalCopy + 6))
   {
     v9 = [(FCCCompletionOffTrackConfigurationProtobuf *)completionOffTrackConfiguration isEqual:?];
   }
@@ -577,16 +577,16 @@ LABEL_9:
   return v18 ^ v19 ^ [(FCCCompletionOffTrackConfigurationProtobuf *)self->_completionOffTrackConfiguration hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  v6 = *(v4 + 60);
+  fromCopy = from;
+  v5 = fromCopy;
+  v6 = *(fromCopy + 60);
   if ((v6 & 8) != 0)
   {
-    self->_minimumNumberOfActiveDays = *(v4 + 14);
+    self->_minimumNumberOfActiveDays = *(fromCopy + 14);
     *&self->_has |= 8u;
-    v6 = *(v4 + 60);
+    v6 = *(fromCopy + 60);
     if ((v6 & 4) == 0)
     {
 LABEL_3:
@@ -599,14 +599,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 60) & 4) == 0)
+  else if ((*(fromCopy + 60) & 4) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_userStartOfDayDate = *(v4 + 3);
+  self->_userStartOfDayDate = *(fromCopy + 3);
   *&self->_has |= 4u;
-  v6 = *(v4 + 60);
+  v6 = *(fromCopy + 60);
   if ((v6 & 2) == 0)
   {
 LABEL_4:
@@ -619,12 +619,12 @@ LABEL_4:
   }
 
 LABEL_11:
-  self->_userEndOfDayDate = *(v4 + 2);
+  self->_userEndOfDayDate = *(fromCopy + 2);
   *&self->_has |= 2u;
-  if (*(v4 + 60))
+  if (*(fromCopy + 60))
   {
 LABEL_5:
-    self->_expirationDate = *(v4 + 1);
+    self->_expirationDate = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 

@@ -1,13 +1,13 @@
 @interface BuddyMigrationPreparationController
-- (BOOL)_ableToMigrateWithPreflightInformation:(id)a3;
+- (BOOL)_ableToMigrateWithPreflightInformation:(id)information;
 - (BuddyMigrationPreparationController)init;
 - (void)_controllerDone;
-- (void)_showError:(id)a3;
-- (void)_showErrorController:(id)a3;
+- (void)_showError:(id)error;
+- (void)_showErrorController:(id)controller;
 - (void)_showOutOfSpaceError;
 - (void)_waitForKeychainAndPreflight;
 - (void)_waitForPreflight;
-- (void)performExtendedInitializationWithCompletion:(id)a3;
+- (void)performExtendedInitializationWithCompletion:(id)completion;
 @end
 
 @implementation BuddyMigrationPreparationController
@@ -25,11 +25,11 @@
 
   if (location)
   {
-    v5 = [location navigationItem];
-    [v5 setTitle:&stru_10032F900];
+    navigationItem = [location navigationItem];
+    [navigationItem setTitle:&stru_10032F900];
 
-    v6 = [location navigationItem];
-    [v6 setHidesBackButton:1 animated:0];
+    navigationItem2 = [location navigationItem];
+    [navigationItem2 setHidesBackButton:1 animated:0];
   }
 
   v7 = location;
@@ -37,17 +37,17 @@
   return v7;
 }
 
-- (void)performExtendedInitializationWithCompletion:(id)a3
+- (void)performExtendedInitializationWithCompletion:(id)completion
 {
-  v24 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(BuddyMigrationPreparationController *)v24 miscState];
-  v4 = [(BuddyMiscState *)v3 migrationManager];
-  v5 = [(BuddyTargetDeviceMigrationManager *)v4 requiresUpdateToMigrate];
+  objc_storeStrong(location, completion);
+  miscState = [(BuddyMigrationPreparationController *)selfCopy miscState];
+  migrationManager = [(BuddyMiscState *)miscState migrationManager];
+  requiresUpdateToMigrate = [(BuddyTargetDeviceMigrationManager *)migrationManager requiresUpdateToMigrate];
 
-  if (v5)
+  if (requiresUpdateToMigrate)
   {
     (*(location[0] + 2))(location[0], 0);
     v22 = 1;
@@ -55,7 +55,7 @@
 
   else
   {
-    [(BuddyMigrationPreparationController *)v24 setWaiting:1];
+    [(BuddyMigrationPreparationController *)selfCopy setWaiting:1];
     v6 = dispatch_time(0, 2000000000);
     v7 = &_dispatch_main_q;
     block = _NSConcreteStackBlock;
@@ -63,18 +63,18 @@
     v17 = 0;
     v18 = sub_1000BD2BC;
     v19 = &unk_10032AFD0;
-    v20 = v24;
+    v20 = selfCopy;
     v21 = location[0];
     dispatch_after(v6, v7, &block);
 
-    [(BuddyMigrationPreparationController *)v24 setExtendedInitializationCompletion:location[0]];
+    [(BuddyMigrationPreparationController *)selfCopy setExtendedInitializationCompletion:location[0]];
     v8 = dispatch_get_global_queue(0, 0);
     v9 = _NSConcreteStackBlock;
     v10 = -1073741824;
     v11 = 0;
     v12 = sub_1000BD334;
     v13 = &unk_10032B0D0;
-    v14 = v24;
+    v14 = selfCopy;
     dispatch_async(v8, &v9);
 
     objc_storeStrong(&v14, 0);
@@ -88,17 +88,17 @@
 
 - (void)_waitForKeychainAndPreflight
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
-  v2 = [(BuddyMigrationPreparationController *)self miscState];
-  location[0] = [(BuddyMiscState *)v2 migrationManager];
+  miscState = [(BuddyMigrationPreparationController *)self miscState];
+  location[0] = [(BuddyMiscState *)miscState migrationManager];
 
   v3 = _NSConcreteStackBlock;
   v4 = -1073741824;
   v5 = 0;
   v6 = sub_1000BD44C;
   v7 = &unk_10032B6F0;
-  v8 = v10;
+  v8 = selfCopy;
   [location[0] waitForKeychain:&v3];
   objc_storeStrong(&v8, 0);
   objc_storeStrong(location, 0);
@@ -106,17 +106,17 @@
 
 - (void)_waitForPreflight
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
-  v2 = [(BuddyMigrationPreparationController *)self miscState];
-  location[0] = [(BuddyMiscState *)v2 migrationManager];
+  miscState = [(BuddyMigrationPreparationController *)self miscState];
+  location[0] = [(BuddyMiscState *)miscState migrationManager];
 
   v3 = _NSConcreteStackBlock;
   v4 = -1073741824;
   v5 = 0;
   v6 = sub_1000BD708;
   v7 = &unk_10032C358;
-  v8 = v10;
+  v8 = selfCopy;
   [location[0] waitForPreflight:&v3];
   objc_storeStrong(&v8, 0);
   objc_storeStrong(location, 0);
@@ -127,18 +127,18 @@
   [(BuddyMigrationPreparationController *)self setWaiting:0, a2];
   if ([(BuddyMigrationPreparationController *)self isPaneVisible])
   {
-    v2 = [(BuddyMigrationPreparationController *)self delegate];
-    [v2 flowItemDone:self];
+    delegate = [(BuddyMigrationPreparationController *)self delegate];
+    [delegate flowItemDone:self];
   }
 
   else
   {
-    v3 = [(BuddyMigrationPreparationController *)self extendedInitializationCompletion];
+    extendedInitializationCompletion = [(BuddyMigrationPreparationController *)self extendedInitializationCompletion];
 
-    if (v3)
+    if (extendedInitializationCompletion)
     {
-      v4 = [(BuddyMigrationPreparationController *)self extendedInitializationCompletion];
-      v4[2](v4, 0);
+      extendedInitializationCompletion2 = [(BuddyMigrationPreparationController *)self extendedInitializationCompletion];
+      extendedInitializationCompletion2[2](extendedInitializationCompletion2, 0);
 
       [(BuddyMigrationPreparationController *)self setExtendedInitializationCompletion:0];
     }
@@ -147,57 +147,57 @@
 
 - (void)_showOutOfSpaceError
 {
-  v3 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = [[BuddyMigrationTargetErrorController alloc] initForInsufficientSpace];
-  [(BuddyMigrationPreparationController *)v3 _showErrorController:location[0]];
+  [(BuddyMigrationPreparationController *)selfCopy _showErrorController:location[0]];
   objc_storeStrong(location, 0);
 }
 
-- (void)_showError:(id)a3
+- (void)_showError:(id)error
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, error);
   v3 = [BuddyMigrationTargetErrorController alloc];
   v4 = [(BuddyMigrationTargetErrorController *)v3 initWithError:location[0]];
-  [(BuddyMigrationPreparationController *)v7 _showErrorController:v4, v4];
+  [(BuddyMigrationPreparationController *)selfCopy _showErrorController:v4, v4];
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)_showErrorController:(id)a3
+- (void)_showErrorController:(id)controller
 {
-  v20 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(BuddyMigrationPreparationController *)v20 miscState];
-  v4 = [(BuddyMiscState *)v3 migrationManager];
-  v5 = [(BuddyTargetDeviceMigrationManager *)v4 hasTransferredData];
-  [location[0] setForceErase:v5 & 1];
+  objc_storeStrong(location, controller);
+  miscState = [(BuddyMigrationPreparationController *)selfCopy miscState];
+  migrationManager = [(BuddyMiscState *)miscState migrationManager];
+  hasTransferredData = [(BuddyTargetDeviceMigrationManager *)migrationManager hasTransferredData];
+  [location[0] setForceErase:hasTransferredData & 1];
 
-  v6 = [(BuddyMigrationPreparationController *)v20 delegate];
-  [location[0] setDelegate:v6];
+  delegate = [(BuddyMigrationPreparationController *)selfCopy delegate];
+  [location[0] setDelegate:delegate];
 
-  [(BuddyMigrationPreparationController *)v20 setWaiting:0];
-  if ([(BuddyMigrationPreparationController *)v20 isPaneVisible])
+  [(BuddyMigrationPreparationController *)selfCopy setWaiting:0];
+  if ([(BuddyMigrationPreparationController *)selfCopy isPaneVisible])
   {
-    v7 = [(BuddyMigrationPreparationController *)v20 delegate];
-    [v7 flowItemDone:v20 nextItem:location[0]];
+    delegate2 = [(BuddyMigrationPreparationController *)selfCopy delegate];
+    [delegate2 flowItemDone:selfCopy nextItem:location[0]];
   }
 
   else
   {
-    v8 = [(BuddyMigrationPreparationController *)v20 extendedInitializationCompletion];
+    extendedInitializationCompletion = [(BuddyMigrationPreparationController *)selfCopy extendedInitializationCompletion];
 
-    if (v8)
+    if (extendedInitializationCompletion)
     {
-      v9 = [(BuddyMigrationPreparationController *)v20 extendedInitializationCompletion];
-      v9[2](v9, 1);
+      extendedInitializationCompletion2 = [(BuddyMigrationPreparationController *)selfCopy extendedInitializationCompletion];
+      extendedInitializationCompletion2[2](extendedInitializationCompletion2, 1);
 
-      [(BuddyMigrationPreparationController *)v20 setExtendedInitializationCompletion:0];
+      [(BuddyMigrationPreparationController *)selfCopy setExtendedInitializationCompletion:0];
       v10 = dispatch_time(0, 1000000000);
       v11 = &_dispatch_main_q;
       block = _NSConcreteStackBlock;
@@ -205,7 +205,7 @@
       v14 = 0;
       v15 = sub_1000BDCA8;
       v16 = &unk_10032B838;
-      v17 = v20;
+      v17 = selfCopy;
       v18 = location[0];
       dispatch_after(v10, v11, &block);
 
@@ -217,17 +217,17 @@
   objc_storeStrong(location, 0);
 }
 
-- (BOOL)_ableToMigrateWithPreflightInformation:(id)a3
+- (BOOL)_ableToMigrateWithPreflightInformation:(id)information
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, information);
   v3 = 0;
   if (location[0])
   {
-    v4 = [location[0] sourceDeviceDataSize];
-    v3 = v4 < [location[0] targetDeviceFreeSpaceSize];
+    sourceDeviceDataSize = [location[0] sourceDeviceDataSize];
+    v3 = sourceDeviceDataSize < [location[0] targetDeviceFreeSpaceSize];
   }
 
   objc_storeStrong(location, 0);

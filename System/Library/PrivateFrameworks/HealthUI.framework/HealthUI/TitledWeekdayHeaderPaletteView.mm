@@ -1,11 +1,11 @@
 @interface TitledWeekdayHeaderPaletteView
-- (_TtC8HealthUI30TitledWeekdayHeaderPaletteView)initWithCoder:(id)a3;
-- (_TtC8HealthUI30TitledWeekdayHeaderPaletteView)initWithFrame:(CGRect)a3;
+- (_TtC8HealthUI30TitledWeekdayHeaderPaletteView)initWithCoder:(id)coder;
+- (_TtC8HealthUI30TitledWeekdayHeaderPaletteView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation TitledWeekdayHeaderPaletteView
 
-- (_TtC8HealthUI30TitledWeekdayHeaderPaletteView)initWithCoder:(id)a3
+- (_TtC8HealthUI30TitledWeekdayHeaderPaletteView)initWithCoder:(id)coder
 {
   sub_1C3D20374();
   sub_1C3D20364();
@@ -22,7 +22,7 @@
   return result;
 }
 
-- (_TtC8HealthUI30TitledWeekdayHeaderPaletteView)initWithFrame:(CGRect)a3
+- (_TtC8HealthUI30TitledWeekdayHeaderPaletteView)initWithFrame:(CGRect)frame
 {
   sub_1C3D20374();
   sub_1C3D20364();

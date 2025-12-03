@@ -1,5 +1,5 @@
 @interface WFWidgetConfigurationServiceContainerViewController
-- (WFWidgetConfigurationServiceContainerViewController)initWithRequest:(id)a3 contentViewController:(id)a4;
+- (WFWidgetConfigurationServiceContainerViewController)initWithRequest:(id)request contentViewController:(id)controller;
 - (void)viewDidLoad;
 @end
 
@@ -10,12 +10,12 @@
   v11.receiver = self;
   v11.super_class = WFWidgetConfigurationServiceContainerViewController;
   [(WFWidgetConfigurationServiceContainerViewController *)&v11 viewDidLoad];
-  v3 = [(WFWidgetConfigurationServiceContainerViewController *)self request];
-  v4 = [v3 widgetPrimaryColor];
-  v5 = v4;
-  if (v4)
+  request = [(WFWidgetConfigurationServiceContainerViewController *)self request];
+  widgetPrimaryColor = [request widgetPrimaryColor];
+  v5 = widgetPrimaryColor;
+  if (widgetPrimaryColor)
   {
-    v6 = v4;
+    v6 = widgetPrimaryColor;
   }
 
   else
@@ -25,21 +25,21 @@
 
   v7 = v6;
 
-  v8 = [(WFWidgetConfigurationServiceContainerViewController *)self parametersConfigurationViewController];
-  v9 = [(WFWidgetConfigurationServiceContainerViewController *)self strokeProvider];
-  v10 = [(WFWidgetConfigurationServiceContainerViewController *)self fillProvider];
-  [v8 applyStylingWithStrokeProvider:v9 fillProvider:v10 cardBackgroundColor:v7];
+  parametersConfigurationViewController = [(WFWidgetConfigurationServiceContainerViewController *)self parametersConfigurationViewController];
+  strokeProvider = [(WFWidgetConfigurationServiceContainerViewController *)self strokeProvider];
+  fillProvider = [(WFWidgetConfigurationServiceContainerViewController *)self fillProvider];
+  [parametersConfigurationViewController applyStylingWithStrokeProvider:strokeProvider fillProvider:fillProvider cardBackgroundColor:v7];
 }
 
-- (WFWidgetConfigurationServiceContainerViewController)initWithRequest:(id)a3 contentViewController:(id)a4
+- (WFWidgetConfigurationServiceContainerViewController)initWithRequest:(id)request contentViewController:(id)controller
 {
-  v6 = a4;
+  controllerCopy = controller;
   v22.receiver = self;
   v22.super_class = WFWidgetConfigurationServiceContainerViewController;
-  v7 = [(WFWidgetConfigurationServiceContainerViewController *)&v22 initWithRequest:a3 contentViewController:v6];
+  v7 = [(WFWidgetConfigurationServiceContainerViewController *)&v22 initWithRequest:request contentViewController:controllerCopy];
   if (v7)
   {
-    v8 = v6;
+    v8 = controllerCopy;
     if (v8)
     {
       objc_opt_class();
@@ -64,12 +64,12 @@
     parametersConfigurationViewController = v7->_parametersConfigurationViewController;
     v7->_parametersConfigurationViewController = v10;
 
-    v12 = [(WFWidgetConfigurationServiceContainerViewController *)v7 request];
-    v13 = [v12 widgetPrimaryColor];
-    v14 = v13;
-    if (v13)
+    request = [(WFWidgetConfigurationServiceContainerViewController *)v7 request];
+    widgetPrimaryColor = [request widgetPrimaryColor];
+    v14 = widgetPrimaryColor;
+    if (widgetPrimaryColor)
     {
-      v15 = v13;
+      v15 = widgetPrimaryColor;
     }
 
     else
@@ -79,10 +79,10 @@
 
     v16 = v15;
 
-    v17 = [(WFWidgetConfigurationServiceContainerViewController *)v7 parametersConfigurationViewController];
-    v18 = [(WFWidgetConfigurationServiceContainerViewController *)v7 strokeProvider];
-    v19 = [(WFWidgetConfigurationServiceContainerViewController *)v7 fillProvider];
-    [v17 applyStylingWithStrokeProvider:v18 fillProvider:v19 cardBackgroundColor:v16];
+    parametersConfigurationViewController = [(WFWidgetConfigurationServiceContainerViewController *)v7 parametersConfigurationViewController];
+    strokeProvider = [(WFWidgetConfigurationServiceContainerViewController *)v7 strokeProvider];
+    fillProvider = [(WFWidgetConfigurationServiceContainerViewController *)v7 fillProvider];
+    [parametersConfigurationViewController applyStylingWithStrokeProvider:strokeProvider fillProvider:fillProvider cardBackgroundColor:v16];
 
     v20 = v7;
   }

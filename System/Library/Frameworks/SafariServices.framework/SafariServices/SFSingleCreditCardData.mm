@@ -1,52 +1,52 @@
 @interface SFSingleCreditCardData
-- (SFSingleCreditCardData)initWithCoder:(id)a3;
-- (SFSingleCreditCardData)initWithHeaderText:(id)a3 displayText:(id)a4 type:(int64_t)a5 value:(id)a6;
-- (void)encodeWithCoder:(id)a3;
+- (SFSingleCreditCardData)initWithCoder:(id)coder;
+- (SFSingleCreditCardData)initWithHeaderText:(id)text displayText:(id)displayText type:(int64_t)type value:(id)value;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFSingleCreditCardData
 
-- (SFSingleCreditCardData)initWithHeaderText:(id)a3 displayText:(id)a4 type:(int64_t)a5 value:(id)a6
+- (SFSingleCreditCardData)initWithHeaderText:(id)text displayText:(id)displayText type:(int64_t)type value:(id)value
 {
-  v11 = a3;
-  v12 = a4;
+  textCopy = text;
+  displayTextCopy = displayText;
   v17.receiver = self;
   v17.super_class = SFSingleCreditCardData;
-  v13 = [(WBSSingleCreditCardData *)&v17 initWithValue:a6 type:a5];
+  v13 = [(WBSSingleCreditCardData *)&v17 initWithValue:value type:type];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_headerText, a3);
-    objc_storeStrong(&v14->_displayText, a4);
+    objc_storeStrong(&v13->_headerText, text);
+    objc_storeStrong(&v14->_displayText, displayText);
     v15 = v14;
   }
 
   return v14;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = SFSingleCreditCardData;
-  v4 = a3;
-  [(WBSSingleCreditCardData *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_headerText forKey:{@"headerText", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_displayText forKey:@"displayText"];
+  coderCopy = coder;
+  [(WBSSingleCreditCardData *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_headerText forKey:{@"headerText", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_displayText forKey:@"displayText"];
 }
 
-- (SFSingleCreditCardData)initWithCoder:(id)a3
+- (SFSingleCreditCardData)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = SFSingleCreditCardData;
-  v5 = [(WBSSingleCreditCardData *)&v12 initWithCoder:v4];
+  v5 = [(WBSSingleCreditCardData *)&v12 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"headerText"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"headerText"];
     headerText = v5->_headerText;
     v5->_headerText = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"displayText"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"displayText"];
     displayText = v5->_displayText;
     v5->_displayText = v8;
 

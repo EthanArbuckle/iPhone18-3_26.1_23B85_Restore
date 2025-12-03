@@ -1,21 +1,21 @@
 @interface TSCHMultiDataScatterSeriesRenderingElementShapeLayer
 - (id)currentValueLayer;
-- (void)p_addAnimationsForUpdatingImage:(CGImage *)a3 frame:(CGRect)a4 toAnimationInfo:(id)a5;
-- (void)updateElementFrame:(CGRect)a3 forSeries:(id)a4 addingAnimationsToAnimationInfo:(id)a5;
-- (void)updateElementFrameToNullForSeries:(id)a3 addingAnimationsToAnimationInfo:(id)a4;
+- (void)p_addAnimationsForUpdatingImage:(CGImage *)image frame:(CGRect)frame toAnimationInfo:(id)info;
+- (void)updateElementFrame:(CGRect)frame forSeries:(id)series addingAnimationsToAnimationInfo:(id)info;
+- (void)updateElementFrameToNullForSeries:(id)series addingAnimationsToAnimationInfo:(id)info;
 @end
 
 @implementation TSCHMultiDataScatterSeriesRenderingElementShapeLayer
 
-- (void)p_addAnimationsForUpdatingImage:(CGImage *)a3 frame:(CGRect)a4 toAnimationInfo:(id)a5
+- (void)p_addAnimationsForUpdatingImage:(CGImage *)image frame:(CGRect)frame toAnimationInfo:(id)info
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v119[2] = *MEMORY[0x277D85DE8];
-  v12 = a5;
-  if (!v12)
+  infoCopy = info;
+  if (!infoCopy)
   {
     v16 = MEMORY[0x277D81150];
     v17 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v11, v13, v14, v15, "[TSCHMultiDataScatterSeriesRenderingElementShapeLayer p_addAnimationsForUpdatingImage:frame:toAnimationInfo:]");
@@ -26,7 +26,7 @@
   }
 
   v31 = objc_msgSend_chartRep(self, v11, v13, v14, v15);
-  v36 = objc_msgSend_needsAnimationForAnimationInfo_(v31, v32, v33, v34, v35, v12);
+  v36 = objc_msgSend_needsAnimationForAnimationInfo_(v31, v32, v33, v34, v35, infoCopy);
 
   if (v36)
   {
@@ -37,8 +37,8 @@
     TSUCenterOfRect();
     v38 = v37;
     v40 = v39;
-    v41 = a3;
-    if (objc_msgSend_shouldAnimate(v12, v42, v43, v44, v45))
+    imageCopy = image;
+    if (objc_msgSend_shouldAnimate(infoCopy, v42, v43, v44, v45))
     {
       v51 = objc_msgSend_currentValueLayer(self, v46, v47, v48, v49);
       if (!v51)
@@ -64,7 +64,7 @@
 
     else
     {
-      v83 = v41;
+      v83 = imageCopy;
       v77 = v116;
       v79 = v114;
       v71 = v38;
@@ -83,34 +83,34 @@
     v118[1] = v96;
     v101 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v97, v98, v99, v100, v118, 2);
 
-    objc_msgSend_addAnimationForLayer_key_values_keyTimes_(v12, v102, v103, v104, v105, self, @"position", v92, 0);
-    objc_msgSend_addAnimationForLayer_key_values_keyTimes_(v12, v106, v107, v108, v109, self, @"bounds", v101, 0);
-    objc_msgSend_addImageContentsAnimationForLayer_fromImage_toImage_keyTimes_(v12, v110, v111, v112, v113, self, v83, v41, 0);
+    objc_msgSend_addAnimationForLayer_key_values_keyTimes_(infoCopy, v102, v103, v104, v105, self, @"position", v92, 0);
+    objc_msgSend_addAnimationForLayer_key_values_keyTimes_(infoCopy, v106, v107, v108, v109, self, @"bounds", v101, 0);
+    objc_msgSend_addImageContentsAnimationForLayer_fromImage_toImage_keyTimes_(infoCopy, v110, v111, v112, v113, self, v83, imageCopy, 0);
   }
 }
 
-- (void)updateElementFrameToNullForSeries:(id)a3 addingAnimationsToAnimationInfo:(id)a4
+- (void)updateElementFrameToNullForSeries:(id)series addingAnimationsToAnimationInfo:(id)info
 {
-  v23 = a4;
+  infoCopy = info;
   v9 = objc_msgSend_contents(self, v5, v6, v7, v8);
 
   if (v9)
   {
     v14 = objc_msgSend_contents(self, v10, v11, v12, v13);
     objc_msgSend_frame(self, v15, v16, v17, v18);
-    objc_msgSend_p_addAnimationsForUpdatingImage_frame_toAnimationInfo_(self, v19, v20, v21, v22, v14, v23);
+    objc_msgSend_p_addAnimationsForUpdatingImage_frame_toAnimationInfo_(self, v19, v20, v21, v22, v14, infoCopy);
   }
 }
 
-- (void)updateElementFrame:(CGRect)a3 forSeries:(id)a4 addingAnimationsToAnimationInfo:(id)a5
+- (void)updateElementFrame:(CGRect)frame forSeries:(id)series addingAnimationsToAnimationInfo:(id)info
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v11 = a4;
-  v13 = a5;
-  if (!v13)
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  seriesCopy = series;
+  infoCopy = info;
+  if (!infoCopy)
   {
     v17 = MEMORY[0x277D81150];
     v18 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v12, v14, v15, v16, "[TSCHMultiDataScatterSeriesRenderingElementShapeLayer updateElementFrame:forSeries:addingAnimationsToAnimationInfo:]");
@@ -171,7 +171,7 @@
   v146 = *MEMORY[0x277CBF398];
   v147 = v106;
   v107 = objc_msgSend_newChartImageForFrame_originOffset_returningAdjustedFrame_(v57, v87, x, y, width, &v146, height, v82 - x, v84 - y);
-  objc_msgSend_p_addAnimationsForUpdatingImage_frame_toAnimationInfo_(self, v108, *&v146, *(&v146 + 1), *&v147, v107, v13, *(&v147 + 1));
+  objc_msgSend_p_addAnimationsForUpdatingImage_frame_toAnimationInfo_(self, v108, *&v146, *(&v146 + 1), *&v147, v107, infoCopy, *(&v147 + 1));
   objc_msgSend_setBounds_(self, v109, *&v146, *(&v146 + 1), *&v147, *(&v147 + 1));
   TSUCenterOfRect();
   objc_msgSend_setPosition_(self, v110, v111, v112, v113);
@@ -195,17 +195,17 @@
 
 - (id)currentValueLayer
 {
-  v5 = self;
+  selfCopy = self;
   v6 = objc_msgSend_presentationLayer(self, a2, v2, v3, v4);
   v7 = v6;
   if (v6)
   {
-    v5 = v6;
+    selfCopy = v6;
   }
 
-  v8 = v5;
+  v8 = selfCopy;
 
-  return v5;
+  return selfCopy;
 }
 
 @end

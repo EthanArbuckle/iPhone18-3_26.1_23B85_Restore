@@ -1,45 +1,45 @@
 @interface CKConversationListScrollingController
-- (CKConversationListScrollingController)initWithConversationList:(id)a3 chatRegistry:(id)a4;
-- (id)_convertFilterActionDictionaryToConversationListFilterModeDictionary:(id)a3;
-- (id)_filterModeNumForFilterModes:(id)a3;
-- (void)_handleRegistryDidLoadNotification:(id)a3;
-- (void)_loadOlderConversationsWithFilterModes:(id)a3;
-- (void)_loadOlderConversationsWithFilterModes:(id)a3 limit:(unint64_t)a4 iteration:(unint64_t)a5;
-- (void)_resetDateTrackingWithChatRegistry:(id)a3;
-- (void)beginLoadingConversationsForFilterModesChanged:(id)a3;
-- (void)reachedConversationWithLastMessageDate:(id)a3 filterModes:(id)a4 remainingRows:(int64_t)a5;
+- (CKConversationListScrollingController)initWithConversationList:(id)list chatRegistry:(id)registry;
+- (id)_convertFilterActionDictionaryToConversationListFilterModeDictionary:(id)dictionary;
+- (id)_filterModeNumForFilterModes:(id)modes;
+- (void)_handleRegistryDidLoadNotification:(id)notification;
+- (void)_loadOlderConversationsWithFilterModes:(id)modes;
+- (void)_loadOlderConversationsWithFilterModes:(id)modes limit:(unint64_t)limit iteration:(unint64_t)iteration;
+- (void)_resetDateTrackingWithChatRegistry:(id)registry;
+- (void)beginLoadingConversationsForFilterModesChanged:(id)changed;
+- (void)reachedConversationWithLastMessageDate:(id)date filterModes:(id)modes remainingRows:(int64_t)rows;
 @end
 
 @implementation CKConversationListScrollingController
 
-- (CKConversationListScrollingController)initWithConversationList:(id)a3 chatRegistry:(id)a4
+- (CKConversationListScrollingController)initWithConversationList:(id)list chatRegistry:(id)registry
 {
-  v7 = a3;
-  v8 = a4;
+  listCopy = list;
+  registryCopy = registry;
   v14.receiver = self;
   v14.super_class = CKConversationListScrollingController;
   v9 = [(CKConversationListScrollingController *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_conversationList, a3);
-    objc_storeStrong(&v10->_chatRegistry, a4);
-    v11 = [(CKConversationListScrollingController *)v10 chatRegistry];
-    [(CKConversationListScrollingController *)v10 _resetDateTrackingWithChatRegistry:v11];
+    objc_storeStrong(&v9->_conversationList, list);
+    objc_storeStrong(&v10->_chatRegistry, registry);
+    chatRegistry = [(CKConversationListScrollingController *)v10 chatRegistry];
+    [(CKConversationListScrollingController *)v10 _resetDateTrackingWithChatRegistry:chatRegistry];
 
-    v12 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v12 addObserver:v10 selector:sel__handleRegistryDidLoadNotification_ name:*MEMORY[0x1E69A58A0] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v10 selector:sel__handleRegistryDidLoadNotification_ name:*MEMORY[0x1E69A58A0] object:0];
   }
 
   return v10;
 }
 
-- (void)_resetDateTrackingWithChatRegistry:(id)a3
+- (void)_resetDateTrackingWithChatRegistry:(id)registry
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 filterCategoryToEarliestInitiallyFetchedLastMessageDate];
-  v6 = [(CKConversationListScrollingController *)self _convertFilterActionDictionaryToConversationListFilterModeDictionary:v5];
+  registryCopy = registry;
+  filterCategoryToEarliestInitiallyFetchedLastMessageDate = [registryCopy filterCategoryToEarliestInitiallyFetchedLastMessageDate];
+  v6 = [(CKConversationListScrollingController *)self _convertFilterActionDictionaryToConversationListFilterModeDictionary:filterCategoryToEarliestInitiallyFetchedLastMessageDate];
   filterModeToEarliestFetchedDate = self->_filterModeToEarliestFetchedDate;
   self->_filterModeToEarliestFetchedDate = v6;
 
@@ -60,33 +60,33 @@
   }
 }
 
-- (void)_handleRegistryDidLoadNotification:(id)a3
+- (void)_handleRegistryDidLoadNotification:(id)notification
 {
-  v4 = [(CKConversationListScrollingController *)self chatRegistry];
-  [(CKConversationListScrollingController *)self _resetDateTrackingWithChatRegistry:v4];
+  chatRegistry = [(CKConversationListScrollingController *)self chatRegistry];
+  [(CKConversationListScrollingController *)self _resetDateTrackingWithChatRegistry:chatRegistry];
 }
 
-- (void)beginLoadingConversationsForFilterModesChanged:(id)a3
+- (void)beginLoadingConversationsForFilterModesChanged:(id)changed
 {
   v4 = MEMORY[0x1E695DF00];
-  v5 = a3;
+  changedCopy = changed;
   v6 = [v4 now];
-  [(CKConversationListScrollingController *)self reachedConversationWithLastMessageDate:v6 filterModes:v5 remainingRows:0];
+  [(CKConversationListScrollingController *)self reachedConversationWithLastMessageDate:v6 filterModes:changedCopy remainingRows:0];
 }
 
-- (void)reachedConversationWithLastMessageDate:(id)a3 filterModes:(id)a4 remainingRows:(int64_t)a5
+- (void)reachedConversationWithLastMessageDate:(id)date filterModes:(id)modes remainingRows:(int64_t)rows
 {
   v38 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  if (!v8)
+  dateCopy = date;
+  modesCopy = modes;
+  if (!dateCopy)
   {
-    v8 = [MEMORY[0x1E695DF00] now];
+    dateCopy = [MEMORY[0x1E695DF00] now];
   }
 
-  v10 = [(CKConversationListScrollingController *)self _filterModeNumForFilterModes:v9];
-  v11 = [(CKConversationListScrollingController *)self filterModeToEarliestFetchedDate];
-  v12 = [v11 objectForKeyedSubscript:v10];
+  v10 = [(CKConversationListScrollingController *)self _filterModeNumForFilterModes:modesCopy];
+  filterModeToEarliestFetchedDate = [(CKConversationListScrollingController *)self filterModeToEarliestFetchedDate];
+  v12 = [filterModeToEarliestFetchedDate objectForKeyedSubscript:v10];
   v13 = v12;
   if (v12)
   {
@@ -100,8 +100,8 @@
 
   v15 = v14;
 
-  v16 = [(CKConversationListScrollingController *)self filterModeToEarliestReachedDate];
-  v17 = [v16 objectForKeyedSubscript:v10];
+  filterModeToEarliestReachedDate = [(CKConversationListScrollingController *)self filterModeToEarliestReachedDate];
+  v17 = [filterModeToEarliestReachedDate objectForKeyedSubscript:v10];
   v18 = v17;
   if (v17)
   {
@@ -115,19 +115,19 @@
 
   v20 = v19;
 
-  v21 = [v20 earlierDate:v8];
-  v22 = [(CKConversationListScrollingController *)self filterModeToEarliestReachedDate];
-  [v22 setObject:v21 forKeyedSubscript:v10];
+  v21 = [v20 earlierDate:dateCopy];
+  filterModeToEarliestReachedDate2 = [(CKConversationListScrollingController *)self filterModeToEarliestReachedDate];
+  [filterModeToEarliestReachedDate2 setObject:v21 forKeyedSubscript:v10];
 
   if (![(CKConversationListScrollingController *)self isFetchingOlderConversations])
   {
-    v23 = [v8 earlierDate:v15];
-    v24 = [v23 isEqualToDate:v8];
+    v23 = [dateCopy earlierDate:v15];
+    v24 = [v23 isEqualToDate:dateCopy];
 
     v25 = +[CKUIBehavior sharedBehaviors];
-    v26 = [v25 conversationListScrollingPaddingRowCount];
+    conversationListScrollingPaddingRowCount = [v25 conversationListScrollingPaddingRowCount];
 
-    v27 = v26 > a5 ? 1 : v24;
+    v27 = conversationListScrollingPaddingRowCount > rows ? 1 : v24;
     if (v27 == 1)
     {
       if (IMOSLoggingEnabled())
@@ -135,9 +135,9 @@
         v28 = OSLogHandleForIMFoundationCategory();
         if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
         {
-          v29 = [MEMORY[0x1E696AD98] numberWithInteger:a5];
+          v29 = [MEMORY[0x1E696AD98] numberWithInteger:rows];
           v30 = @"NO";
-          if (v26 <= a5)
+          if (conversationListScrollingPaddingRowCount <= rows)
           {
             v31 = @"NO";
           }
@@ -163,28 +163,28 @@
         }
       }
 
-      [(CKConversationListScrollingController *)self _loadOlderConversationsWithFilterModes:v9, *v33];
+      [(CKConversationListScrollingController *)self _loadOlderConversationsWithFilterModes:modesCopy, *v33];
     }
   }
 }
 
-- (void)_loadOlderConversationsWithFilterModes:(id)a3
+- (void)_loadOlderConversationsWithFilterModes:(id)modes
 {
-  v4 = a3;
+  modesCopy = modes;
   v5 = +[CKUIBehavior sharedBehaviors];
-  -[CKConversationListScrollingController _loadOlderConversationsWithFilterModes:limit:iteration:](self, "_loadOlderConversationsWithFilterModes:limit:iteration:", v4, [v5 conversationListScrollingBatchSize], 0);
+  -[CKConversationListScrollingController _loadOlderConversationsWithFilterModes:limit:iteration:](self, "_loadOlderConversationsWithFilterModes:limit:iteration:", modesCopy, [v5 conversationListScrollingBatchSize], 0);
 }
 
-- (id)_filterModeNumForFilterModes:(id)a3
+- (id)_filterModeNumForFilterModes:(id)modes
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  modesCopy = modes;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [v3 __im_primaryFilterModes];
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  __im_primaryFilterModes = [modesCopy __im_primaryFilterModes];
+  v5 = [__im_primaryFilterModes countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -196,13 +196,13 @@
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(__im_primaryFilterModes);
         }
 
         v7 += 1 << [*(*(&v13 + 1) + 8 * i) integerValue];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [__im_primaryFilterModes countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
@@ -213,7 +213,7 @@
     v7 = 0;
   }
 
-  if ([v3 containsObject:&unk_1F04E7740])
+  if ([modesCopy containsObject:&unk_1F04E7740])
   {
     v10 = v7 + 256;
   }
@@ -228,31 +228,31 @@
   return v11;
 }
 
-- (void)_loadOlderConversationsWithFilterModes:(id)a3 limit:(unint64_t)a4 iteration:(unint64_t)a5
+- (void)_loadOlderConversationsWithFilterModes:(id)modes limit:(unint64_t)limit iteration:(unint64_t)iteration
 {
   v56 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = [(CKConversationListScrollingController *)self isFetchingOlderConversations];
-  if (a5 > 0xC || v9)
+  modesCopy = modes;
+  isFetchingOlderConversations = [(CKConversationListScrollingController *)self isFetchingOlderConversations];
+  if (iteration > 0xC || isFetchingOlderConversations)
   {
     if (IMOSLoggingEnabled())
     {
       v17 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
       {
-        v18 = [(CKConversationListScrollingController *)self isFetchingOlderConversations];
-        v19 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a5];
+        isFetchingOlderConversations2 = [(CKConversationListScrollingController *)self isFetchingOlderConversations];
+        v19 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:iteration];
         v20 = v19;
         v21 = @"NO";
-        if (v18)
+        if (isFetchingOlderConversations2)
         {
           v21 = @"YES";
         }
 
         *buf = 138412546;
-        v47 = v21;
+        iterationCopy = v21;
         v48 = 2112;
-        v49 = v19;
+        limitCopy = v19;
         _os_log_impl(&dword_19020E000, v17, OS_LOG_TYPE_INFO, "Ignoring load older conversations request, is fetching is %@ and iteration is %@", buf, 0x16u);
       }
     }
@@ -260,14 +260,14 @@
 
   else
   {
-    v10 = [v8 __im_primaryFilterModes];
-    v11 = [v10 anyObject];
-    v38 = [v11 integerValue];
+    __im_primaryFilterModes = [modesCopy __im_primaryFilterModes];
+    anyObject = [__im_primaryFilterModes anyObject];
+    integerValue = [anyObject integerValue];
 
-    v37 = [v8 containsObject:&unk_1F04E7740];
-    v12 = [(CKConversationListScrollingController *)self _filterModeNumForFilterModes:v8];
-    v13 = [(CKConversationListScrollingController *)self filterModeToEarliestFetchedDate];
-    v14 = [v13 objectForKeyedSubscript:v12];
+    v37 = [modesCopy containsObject:&unk_1F04E7740];
+    v12 = [(CKConversationListScrollingController *)self _filterModeNumForFilterModes:modesCopy];
+    filterModeToEarliestFetchedDate = [(CKConversationListScrollingController *)self filterModeToEarliestFetchedDate];
+    v14 = [filterModeToEarliestFetchedDate objectForKeyedSubscript:v12];
     v15 = v14;
     if (v14)
     {
@@ -281,13 +281,13 @@
 
     v22 = v16;
 
-    v23 = [(CKConversationListScrollingController *)self conversationList];
-    v24 = [v23 conversations];
-    v25 = [v24 lastObject];
-    v26 = [v25 chat];
-    v39 = [v26 lastFinishedMessageDate];
+    conversationList = [(CKConversationListScrollingController *)self conversationList];
+    conversations = [conversationList conversations];
+    lastObject = [conversations lastObject];
+    chat = [lastObject chat];
+    lastFinishedMessageDate = [chat lastFinishedMessageDate];
 
-    v27 = [v22 laterDate:v39];
+    v27 = [v22 laterDate:lastFinishedMessageDate];
 
     if (IMOSLoggingEnabled())
     {
@@ -295,15 +295,15 @@
       if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
       {
         *buf = 134219010;
-        v47 = a5;
+        iterationCopy = iteration;
         v48 = 2048;
-        v49 = a4;
+        limitCopy = limit;
         v50 = 1024;
-        v51 = v38;
+        v51 = integerValue;
         v52 = 2112;
         v53 = v27;
         v54 = 2112;
-        v55 = v39;
+        v55 = lastFinishedMessageDate;
         _os_log_impl(&dword_19020E000, v28, OS_LOG_TYPE_INFO, "Kicking off request (%llu) for %llu older conversations with filter mode %d older than date %@ (oldest conversation date: %@)", buf, 0x30u);
       }
     }
@@ -316,26 +316,26 @@
     aBlock[4] = self;
     v29 = v12;
     v41 = v29;
-    v44 = a4;
+    limitCopy2 = limit;
     v30 = v27;
     v42 = v30;
-    v45 = a5;
-    v43 = v8;
+    iterationCopy2 = iteration;
+    v43 = modesCopy;
     v31 = _Block_copy(aBlock);
-    v32 = [CKConversationListFilterModeUtilities filterModeChatPredicate:v38];
-    v33 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-    v34 = [v33 isUnreadCountRefactorEnabled];
+    v32 = [CKConversationListFilterModeUtilities filterModeChatPredicate:integerValue];
+    mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+    isUnreadCountRefactorEnabled = [mEMORY[0x1E69A8070] isUnreadCountRefactorEnabled];
 
-    v35 = [(CKConversationListScrollingController *)self chatRegistry];
-    v36 = v35;
-    if ((v34 & v37) != 0)
+    chatRegistry = [(CKConversationListScrollingController *)self chatRegistry];
+    v36 = chatRegistry;
+    if ((isUnreadCountRefactorEnabled & v37) != 0)
     {
-      [v35 _loadUnreadChatsWithLastMessageOlderThan:v30 waitForReply:0 predicate:v32 limit:a4 completionHandler:v31];
+      [chatRegistry _loadUnreadChatsWithLastMessageOlderThan:v30 waitForReply:0 predicate:v32 limit:limit completionHandler:v31];
     }
 
     else
     {
-      [v35 _loadChatsFilteredUsingPredicate:v32 lastMessageOlderThan:v30 limit:a4 waitForReply:0 completionHandler:v31];
+      [chatRegistry _loadChatsFilteredUsingPredicate:v32 lastMessageOlderThan:v30 limit:limit waitForReply:0 completionHandler:v31];
     }
   }
 }
@@ -437,10 +437,10 @@ LABEL_18:
 LABEL_21:
 }
 
-- (id)_convertFilterActionDictionaryToConversationListFilterModeDictionary:(id)a3
+- (id)_convertFilterActionDictionaryToConversationListFilterModeDictionary:(id)dictionary
 {
   v3 = MEMORY[0x1E695DF90];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = objc_alloc_init(v3);
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
@@ -448,7 +448,7 @@ LABEL_21:
   v8[3] = &unk_1E72ECD20;
   v6 = v5;
   v9 = v6;
-  [v4 enumerateKeysAndObjectsUsingBlock:v8];
+  [dictionaryCopy enumerateKeysAndObjectsUsingBlock:v8];
 
   return v6;
 }

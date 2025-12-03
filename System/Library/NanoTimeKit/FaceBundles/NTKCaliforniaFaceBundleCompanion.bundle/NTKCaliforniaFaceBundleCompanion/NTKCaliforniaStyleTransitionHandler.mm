@@ -1,54 +1,54 @@
 @interface NTKCaliforniaStyleTransitionHandler
-- (CGAffineTransform)transformForMarkerAtIndex:(SEL)a3 markerType:(unint64_t)a4;
+- (CGAffineTransform)transformForMarkerAtIndex:(SEL)index markerType:(unint64_t)type;
 - (CGPoint)centerPoint;
-- (CGPoint)positionForMarkerAtIndex:(unint64_t)a3 markerType:(unint64_t)a4;
-- (NTKCaliforniaStyleTransitionHandler)initWithDevice:(id)a3;
-- (double)animationDurationForHourMarkerAtIndex:(unint64_t)a3 markerType:(unint64_t)a4;
-- (double)animationProgressForHourMarkerAtIndex:(unint64_t)a3 markerType:(unint64_t)a4;
-- (double)animationStartTimeForMarkerAtIndex:(unint64_t)a3 markerType:(unint64_t)a4;
-- (double)opacityForMarkerAtIndex:(unint64_t)a3 markerType:(unint64_t)a4;
+- (CGPoint)positionForMarkerAtIndex:(unint64_t)index markerType:(unint64_t)type;
+- (NTKCaliforniaStyleTransitionHandler)initWithDevice:(id)device;
+- (double)animationDurationForHourMarkerAtIndex:(unint64_t)index markerType:(unint64_t)type;
+- (double)animationProgressForHourMarkerAtIndex:(unint64_t)index markerType:(unint64_t)type;
+- (double)animationStartTimeForMarkerAtIndex:(unint64_t)index markerType:(unint64_t)type;
+- (double)opacityForMarkerAtIndex:(unint64_t)index markerType:(unint64_t)type;
 @end
 
 @implementation NTKCaliforniaStyleTransitionHandler
 
-- (NTKCaliforniaStyleTransitionHandler)initWithDevice:(id)a3
+- (NTKCaliforniaStyleTransitionHandler)initWithDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v9.receiver = self;
   v9.super_class = NTKCaliforniaStyleTransitionHandler;
   v6 = [(NTKCaliforniaStyleTransitionHandler *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_device, a3);
+    objc_storeStrong(&v6->_device, device);
   }
 
   return v7;
 }
 
-- (double)opacityForMarkerAtIndex:(unint64_t)a3 markerType:(unint64_t)a4
+- (double)opacityForMarkerAtIndex:(unint64_t)index markerType:(unint64_t)type
 {
-  [(NTKCaliforniaStyleTransitionHandler *)self animationProgressForHourMarkerAtIndex:a3 markerType:a4];
+  [(NTKCaliforniaStyleTransitionHandler *)self animationProgressForHourMarkerAtIndex:index markerType:type];
   CLKCompressFraction();
 
   CLKInterpolateBetweenFloatsClipped();
   return result;
 }
 
-- (CGPoint)positionForMarkerAtIndex:(unint64_t)a3 markerType:(unint64_t)a4
+- (CGPoint)positionForMarkerAtIndex:(unint64_t)index markerType:(unint64_t)type
 {
   [NTKCaliforniaStyleTransitionHandler animationProgressForHourMarkerAtIndex:"animationProgressForHourMarkerAtIndex:markerType:" markerType:?];
-  if (a4)
+  if (type)
   {
-    v7 = [(NTKCaliforniaStyleTransitionHandler *)self fadeInHourMarkersCenterPoints];
+    fadeInHourMarkersCenterPoints = [(NTKCaliforniaStyleTransitionHandler *)self fadeInHourMarkersCenterPoints];
   }
 
   else
   {
-    v7 = [(NTKCaliforniaStyleTransitionHandler *)self fadeOutHourMarkersCenterPoints];
+    fadeInHourMarkersCenterPoints = [(NTKCaliforniaStyleTransitionHandler *)self fadeOutHourMarkersCenterPoints];
   }
 
-  v8 = &v7[a3];
+  v8 = &fadeInHourMarkersCenterPoints[index];
   v9 = *v8;
   v10 = v8[1];
   [(NTKCaliforniaStyleTransitionHandler *)self centerPoint];
@@ -63,19 +63,19 @@
   return result;
 }
 
-- (CGAffineTransform)transformForMarkerAtIndex:(SEL)a3 markerType:(unint64_t)a4
+- (CGAffineTransform)transformForMarkerAtIndex:(SEL)index markerType:(unint64_t)type
 {
-  [(NTKCaliforniaStyleTransitionHandler *)self animationProgressForHourMarkerAtIndex:a4 markerType:a5];
+  [(NTKCaliforniaStyleTransitionHandler *)self animationProgressForHourMarkerAtIndex:type markerType:a5];
   CLKInterpolateBetweenFloatsClipped();
 
   return CGAffineTransformMakeScale(retstr, v6, v6);
 }
 
-- (double)animationProgressForHourMarkerAtIndex:(unint64_t)a3 markerType:(unint64_t)a4
+- (double)animationProgressForHourMarkerAtIndex:(unint64_t)index markerType:(unint64_t)type
 {
   [NTKCaliforniaStyleTransitionHandler animationStartTimeForMarkerAtIndex:"animationStartTimeForMarkerAtIndex:markerType:" markerType:?];
   v8 = v7;
-  [(NTKCaliforniaStyleTransitionHandler *)self animationDurationForHourMarkerAtIndex:a3 markerType:a4];
+  [(NTKCaliforniaStyleTransitionHandler *)self animationDurationForHourMarkerAtIndex:index markerType:type];
   v10 = v8 + v9;
   if (v10 <= 1.0)
   {
@@ -100,7 +100,7 @@
   }
 
   result = 1.0 - v13;
-  if (a4)
+  if (type)
   {
     return v13;
   }
@@ -108,37 +108,37 @@
   return result;
 }
 
-- (double)animationStartTimeForMarkerAtIndex:(unint64_t)a3 markerType:(unint64_t)a4
+- (double)animationStartTimeForMarkerAtIndex:(unint64_t)index markerType:(unint64_t)type
 {
-  if (a4)
+  if (type)
   {
-    v4 = a3 - 2;
-    if (a3 <= 0xB)
+    indexCopy = index - 2;
+    if (index <= 0xB)
     {
-      v4 = a3;
+      indexCopy = index;
     }
 
-    v5 = (v4 + 79);
-    if (a3 <= 2)
+    v5 = (indexCopy + 79);
+    if (index <= 2)
     {
-      v5 = (a3 + 50);
+      v5 = (index + 50);
     }
   }
 
   else
   {
-    v5 = 100.0 / (4 * [(NTKCaliforniaStyleTransitionHandler *)self hourMarkersCount]) * a3;
+    v5 = 100.0 / (4 * [(NTKCaliforniaStyleTransitionHandler *)self hourMarkersCount]) * index;
   }
 
   return v5 / 100.0;
 }
 
-- (double)animationDurationForHourMarkerAtIndex:(unint64_t)a3 markerType:(unint64_t)a4
+- (double)animationDurationForHourMarkerAtIndex:(unint64_t)index markerType:(unint64_t)type
 {
-  v4 = (&unk_17560 + 8 * (a3 < 3));
-  if (!a4)
+  v4 = (&unk_17560 + 8 * (index < 3));
+  if (!type)
   {
-    v4 = (&unk_17550 + 8 * (a3 > 8));
+    v4 = (&unk_17550 + 8 * (index > 8));
   }
 
   return *v4 / 100.0;

@@ -1,76 +1,76 @@
 @interface PlaceCardLinkedPlacesItemSource
 - (id)allItems;
-- (void)updateForPlaceCardItem:(id)a3;
+- (void)updateForPlaceCardItem:(id)item;
 @end
 
 @implementation PlaceCardLinkedPlacesItemSource
 
 - (id)allItems
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSArray *)v2->_linkedPlaces copy];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [(NSArray *)selfCopy->_linkedPlaces copy];
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)updateForPlaceCardItem:(id)a3
+- (void)updateForPlaceCardItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v49 = self->_geoMapItem;
-  v50 = v4;
-  if ([v4 isCurrentLocation])
+  v50 = itemCopy;
+  if ([itemCopy isCurrentLocation])
   {
     v5 = 0;
-    v6 = 0;
+    _geoMapItem = 0;
     goto LABEL_7;
   }
 
-  v7 = [v4 personalizedItem];
+  personalizedItem = [itemCopy personalizedItem];
 
-  if (v7)
+  if (personalizedItem)
   {
-    v8 = [v50 personalizedItem];
-    v5 = v8;
+    personalizedItem2 = [v50 personalizedItem];
+    v5 = personalizedItem2;
   }
 
   else
   {
-    v9 = [v50 mapItem];
+    mapItem = [v50 mapItem];
 
     v5 = 0;
-    v6 = 0;
-    v8 = v50;
-    if (!v9)
+    _geoMapItem = 0;
+    personalizedItem2 = v50;
+    if (!mapItem)
     {
       goto LABEL_7;
     }
   }
 
-  v10 = [v8 mapItem];
-  v6 = [v10 _geoMapItem];
+  mapItem2 = [personalizedItem2 mapItem];
+  _geoMapItem = [mapItem2 _geoMapItem];
 
 LABEL_7:
-  if ([(GEOMapItem *)v6 _isTransitDisplayFeature])
+  if ([(GEOMapItem *)_geoMapItem _isTransitDisplayFeature])
   {
 
-    v6 = 0;
+    _geoMapItem = 0;
   }
 
-  v51 = v6;
-  if (v6 != self->_geoMapItem)
+  v51 = _geoMapItem;
+  if (_geoMapItem != self->_geoMapItem)
   {
     v46 = v5;
-    v52 = self;
-    objc_storeStrong(&self->_geoMapItem, v6);
+    selfCopy = self;
+    objc_storeStrong(&self->_geoMapItem, _geoMapItem);
     v11 = +[NSMutableArray array];
     v54 = +[NSMutableSet set];
     if (v51)
     {
       featureID = self->_featureID;
-      v12 = [(GEOMapItem *)v51 _identifier];
-      v44 = v12 == 0;
+      _identifier = [(GEOMapItem *)v51 _identifier];
+      v44 = _identifier == 0;
       v13 = [PlaceCardLinkedPlacesItem alloc];
       if (v46)
       {
@@ -83,29 +83,29 @@ LABEL_7:
       }
 
       v47 = v14;
-      v48 = [(GEOMapItem *)self->_geoMapItem _containedPlace];
-      if (v48)
+      _containedPlace = [(GEOMapItem *)self->_geoMapItem _containedPlace];
+      if (_containedPlace)
       {
         [v11 addObject:v47];
-        if (v12)
+        if (_identifier)
         {
-          [v54 addObject:v12];
+          [v54 addObject:_identifier];
         }
 
-        v17 = [v48 children];
-        v18 = [v17 count];
+        children = [_containedPlace children];
+        v18 = [children count];
 
         if (v18)
         {
           [(PlaceCardLinkedPlacesItem *)v47 setParent:1];
           [(PlaceCardLinkedPlacesItem *)v47 setSortOrder:1];
-          featureID = [v48 featureId];
+          featureID = [_containedPlace featureId];
           v59 = 0u;
           v60 = 0u;
           v61 = 0u;
           v62 = 0u;
-          v19 = [v48 children];
-          v20 = [v19 countByEnumeratingWithState:&v59 objects:v64 count:16];
+          children2 = [_containedPlace children];
+          v20 = [children2 countByEnumeratingWithState:&v59 objects:v64 count:16];
           if (v20)
           {
             v21 = *v60;
@@ -113,12 +113,12 @@ LABEL_7:
             do
             {
               v23 = 0;
-              v24 = v12;
+              v24 = _identifier;
               do
               {
                 if (*v60 != v21)
                 {
-                  objc_enumerationMutation(v19);
+                  objc_enumerationMutation(children2);
                 }
 
                 v25 = *(*(&v59 + 1) + 8 * v23);
@@ -126,20 +126,20 @@ LABEL_7:
                 [(PlaceCardLinkedPlacesItem *)v26 setSortOrder:v22];
                 [(PlaceCardLinkedPlacesItem *)v26 setChild:1];
                 [v11 addObject:v26];
-                v12 = [v25 _identifier];
+                _identifier = [v25 _identifier];
 
-                if (v12)
+                if (_identifier)
                 {
-                  [v54 addObject:v12];
+                  [v54 addObject:_identifier];
                 }
 
                 v23 = v23 + 1;
                 ++v22;
-                v24 = v12;
+                v24 = _identifier;
               }
 
               while (v20 != v23);
-              v20 = [v19 countByEnumeratingWithState:&v59 objects:v64 count:16];
+              v20 = [children2 countByEnumeratingWithState:&v59 objects:v64 count:16];
             }
 
             while (v20);
@@ -148,13 +148,13 @@ LABEL_7:
 
         else
         {
-          v27 = [v48 parent];
+          parent = [_containedPlace parent];
 
-          if (v27)
+          if (parent)
           {
-            v28 = [v48 parent];
-            featureID = [v48 parentFeatureId];
-            v29 = [[PlaceCardLinkedPlacesItem alloc] initWithGEOMapItem:v28];
+            parent2 = [_containedPlace parent];
+            featureID = [_containedPlace parentFeatureId];
+            v29 = [[PlaceCardLinkedPlacesItem alloc] initWithGEOMapItem:parent2];
             [(PlaceCardLinkedPlacesItem *)v29 setParent:1];
             [(PlaceCardLinkedPlacesItem *)v29 setSortOrder:1];
             [v11 addObject:v29];
@@ -164,7 +164,7 @@ LABEL_7:
             v58 = 0u;
             v55 = 0u;
             v56 = 0u;
-            obj = [v48 siblings];
+            obj = [_containedPlace siblings];
             v30 = [obj countByEnumeratingWithState:&v55 objects:v63 count:16];
             if (v30)
             {
@@ -186,12 +186,12 @@ LABEL_7:
                   [(PlaceCardLinkedPlacesItem *)v35 setSortOrder:v32];
                   [(PlaceCardLinkedPlacesItem *)v35 setChild:1];
                   [v11 addObject:v35];
-                  v36 = [v34 _identifier];
+                  _identifier2 = [v34 _identifier];
 
-                  v12 = v36;
-                  if (v36)
+                  _identifier = _identifier2;
+                  if (_identifier2)
                   {
-                    [v54 addObject:v36];
+                    [v54 addObject:_identifier2];
                   }
 
                   ++v32;
@@ -206,14 +206,14 @@ LABEL_7:
 
           else
           {
-            featureID = [v48 featureId];
+            featureID = [_containedPlace featureId];
           }
         }
 
         v15 = 1;
       }
 
-      else if (v12 && [(NSSet *)self->_linkedPlaceIdentifiers containsObject:v12])
+      else if (_identifier && [(NSSet *)self->_linkedPlaceIdentifiers containsObject:_identifier])
       {
         v15 = 0;
       }
@@ -230,8 +230,8 @@ LABEL_7:
 LABEL_50:
         if (v49)
         {
-          v37 = [(GEOMapItem *)v49 _identifier];
-          v38 = v37 == 0;
+          _identifier3 = [(GEOMapItem *)v49 _identifier];
+          v38 = _identifier3 == 0;
 
           if (((v38 | v15) & 1) == 0)
           {
@@ -247,15 +247,15 @@ LABEL_55:
           goto LABEL_56;
         }
 
-        v39 = v52;
+        v39 = selfCopy;
         objc_sync_enter(v39);
         v40 = [v11 copy];
         linkedPlaces = v39->_linkedPlaces;
         v39->_linkedPlaces = v40;
 
         objc_sync_exit(v39);
-        objc_storeStrong(&v39->_containedPlace, v48);
-        v52->_featureID = v16;
+        objc_storeStrong(&v39->_containedPlace, _containedPlace);
+        selfCopy->_featureID = v16;
         v42 = [v54 copy];
         linkedPlaceIdentifiers = v39->_linkedPlaceIdentifiers;
         v39->_linkedPlaceIdentifiers = v42;
@@ -268,14 +268,14 @@ LABEL_55:
     else
     {
       v47 = 0;
-      v48 = 0;
+      _containedPlace = 0;
       v15 = self->_featureID != 0;
       v16 = 0;
     }
 
-    if (v15 && [(NSSet *)v52->_linkedPlaceIdentifiers isEqualToSet:v54])
+    if (v15 && [(NSSet *)selfCopy->_linkedPlaceIdentifiers isEqualToSet:v54])
     {
-      v15 = (v16 != v52->_featureID) & v15;
+      v15 = (v16 != selfCopy->_featureID) & v15;
     }
 
     goto LABEL_50;

@@ -1,20 +1,20 @@
 @interface NSFileHandle
-+ (id)uarpCreateFileHandleForWritingToURL:(id)a3 error:(id *)a4;
++ (id)uarpCreateFileHandleForWritingToURL:(id)l error:(id *)error;
 @end
 
 @implementation NSFileHandle
 
-+ (id)uarpCreateFileHandleForWritingToURL:(id)a3 error:(id *)a4
++ (id)uarpCreateFileHandleForWritingToURL:(id)l error:(id *)error
 {
-  v5 = a3;
+  lCopy = l;
   v6 = +[NSFileManager defaultManager];
-  v7 = [v5 path];
-  v8 = [v6 fileExistsAtPath:v7];
+  path = [lCopy path];
+  v8 = [v6 fileExistsAtPath:path];
 
   if (v8)
   {
-    v9 = [v5 path];
-    v10 = [v6 removeItemAtPath:v9 error:a4];
+    path2 = [lCopy path];
+    v10 = [v6 removeItemAtPath:path2 error:error];
 
     if (!v10)
     {
@@ -22,12 +22,12 @@
     }
   }
 
-  v11 = [v5 path];
-  v12 = [v6 createFileAtPath:v11 contents:0 attributes:0];
+  path3 = [lCopy path];
+  v12 = [v6 createFileAtPath:path3 contents:0 attributes:0];
 
   if (v12)
   {
-    v13 = [NSFileHandle fileHandleForWritingToURL:v5 error:a4];
+    v13 = [NSFileHandle fileHandleForWritingToURL:lCopy error:error];
   }
 
   else

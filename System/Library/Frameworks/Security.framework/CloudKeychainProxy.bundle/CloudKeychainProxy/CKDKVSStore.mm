@@ -1,22 +1,22 @@
 @interface CKDKVSStore
 + (id)kvsInterface;
-- (BOOL)pullUpdates:(id *)a3;
+- (BOOL)pullUpdates:(id *)updates;
 - (CKDKVSStore)init;
 - (UbiqitousKVSProxy)proxy;
 - (id)copyAsDictionary;
-- (id)objectForKey:(id)a3;
-- (void)addEntriesFromDictionary:(id)a3;
+- (id)objectForKey:(id)key;
+- (void)addEntriesFromDictionary:(id)dictionary;
 - (void)addOneToOutGoing;
-- (void)connectToProxy:(id)a3;
+- (void)connectToProxy:(id)proxy;
 - (void)dealloc;
 - (void)forceSynchronizeWithKVS;
-- (void)kvsStoreChanged:(id)a3;
-- (void)kvsStoreChangedAsync:(id)a3;
-- (void)perfCounters:(id)a3;
-- (void)pushWrites:(id)a3 requiresForceSync:(BOOL)a4;
+- (void)kvsStoreChanged:(id)changed;
+- (void)kvsStoreChangedAsync:(id)async;
+- (void)perfCounters:(id)counters;
+- (void)pushWrites:(id)writes requiresForceSync:(BOOL)sync;
 - (void)removeAllObjects;
-- (void)removeObjectForKey:(id)a3;
-- (void)setObject:(id)a3 forKey:(id)a4;
+- (void)removeObjectForKey:(id)key;
+- (void)setObject:(id)object forKey:(id)key;
 - (void)setupSamplers;
 @end
 
@@ -31,13 +31,13 @@
 
 - (void)addOneToOutGoing
 {
-  v3 = [(CKDKVSStore *)self perfQueue];
+  perfQueue = [(CKDKVSStore *)self perfQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000092B0;
   block[3] = &unk_100018D18;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(perfQueue, block);
 }
 
 - (void)setupSamplers
@@ -51,21 +51,21 @@
   v4 = [v3 AddMultiSamplerForName:CKDKVSPerformanceCountersSampler withTimeInterval:v5 block:SFAnalyticsSamplerIntervalOncePerReport];
 }
 
-- (void)perfCounters:(id)a3
+- (void)perfCounters:(id)counters
 {
-  v4 = a3;
-  v5 = [(CKDKVSStore *)self perfQueue];
+  countersCopy = counters;
+  perfQueue = [(CKDKVSStore *)self perfQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100009600;
   v7[3] = &unk_100018DB8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = countersCopy;
+  v6 = countersCopy;
+  dispatch_async(perfQueue, v7);
 }
 
-- (BOOL)pullUpdates:(id *)a3
+- (BOOL)pullUpdates:(id *)updates
 {
   v16 = 0;
   v17 = &v16;
@@ -80,19 +80,19 @@
     *buf = 136315394;
     v23 = "EFRESH";
     v24 = 2112;
-    v25 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%s CALLING OUT TO syncdefaultsd SWCH: %@", buf, 0x16u);
   }
 
-  v7 = [(CKDKVSStore *)self perfQueue];
+  perfQueue = [(CKDKVSStore *)self perfQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100009AAC;
   block[3] = &unk_100018D18;
   block[4] = self;
-  dispatch_async(v7, block);
+  dispatch_async(perfQueue, block);
 
-  v8 = [(CKDKVSStore *)self cloudStore];
+  cloudStore = [(CKDKVSStore *)self cloudStore];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_100009AD4;
@@ -101,12 +101,12 @@
   v14 = &v16;
   v9 = v5;
   v13 = v9;
-  [v8 synchronizeWithCompletionHandler:v12];
+  [cloudStore synchronizeWithCompletionHandler:v12];
 
   dispatch_semaphore_wait(v9, 0xFFFFFFFFFFFFFFFFLL);
-  if (a3 && !*a3)
+  if (updates && !*updates)
   {
-    *a3 = v17[5];
+    *updates = v17[5];
   }
 
   v10 = v17[5] == 0;
@@ -115,38 +115,38 @@
   return v10;
 }
 
-- (void)kvsStoreChanged:(id)a3
+- (void)kvsStoreChanged:(id)changed
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100009E00;
   v4[3] = &unk_100018D68;
   v4[4] = self;
-  v5 = a3;
-  v3 = v5;
+  changedCopy = changed;
+  v3 = changedCopy;
   _os_activity_initiate(&_mh_execute_header, "cloudChanged", OS_ACTIVITY_FLAG_DEFAULT, v4);
 }
 
-- (void)kvsStoreChangedAsync:(id)a3
+- (void)kvsStoreChangedAsync:(id)async
 {
-  v4 = a3;
+  asyncCopy = async;
   v5 = sub_10000AE54("CloudKeychainProxy");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v13 = self;
+    selfCopy = self;
     v14 = 2112;
-    v15 = v4;
+    v15 = asyncCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@ KVS Remote changed notification: %@", buf, 0x16u);
   }
 
-  v6 = [(CKDKVSStore *)self perfQueue];
+  perfQueue = [(CKDKVSStore *)self perfQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10000A1A8;
   block[3] = &unk_100018D18;
   block[4] = self;
-  dispatch_async(v6, block);
+  dispatch_async(perfQueue, block);
 
   v7 = dispatch_get_global_queue(0, 0);
   v9[0] = _NSConcreteStackBlock;
@@ -154,15 +154,15 @@
   v9[2] = sub_10000A1D0;
   v9[3] = &unk_100018D68;
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
+  v10 = asyncCopy;
+  v8 = asyncCopy;
   dispatch_async(v7, v9);
 }
 
-- (void)pushWrites:(id)a3 requiresForceSync:(BOOL)a4
+- (void)pushWrites:(id)writes requiresForceSync:(BOOL)sync
 {
-  v4 = a4;
-  v6 = a3;
+  syncCopy = sync;
+  writesCopy = writes;
   v7 = sub_10000AE54("pushWrites");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -172,7 +172,7 @@
 
   v8 = sub_10000AE54("pushWrites");
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
-  if (v4)
+  if (syncCopy)
   {
     if (v9)
     {
@@ -191,7 +191,7 @@
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "KVS on CloudKit enabled. Evaluating changed keys", buf, 2u);
     }
 
-    if (v6 && [v6 count])
+    if (writesCopy && [writesCopy count])
     {
       *buf = 0;
       v15 = buf;
@@ -202,7 +202,7 @@
       v13[2] = sub_10000A448;
       v13[3] = &unk_100018D40;
       v13[4] = buf;
-      [v6 enumerateObjectsUsingBlock:v13];
+      [writesCopy enumerateObjectsUsingBlock:v13];
       if (v15[24])
       {
         [(CKDKVSStore *)self forceSynchronizeWithKVS];
@@ -250,21 +250,21 @@
   block[4] = self;
   dispatch_async(v4, block);
 
-  v5 = [(CKDKVSStore *)self perfQueue];
+  perfQueue = [(CKDKVSStore *)self perfQueue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10000A778;
   v6[3] = &unk_100018D18;
   v6[4] = self;
-  dispatch_async(v5, v6);
+  dispatch_async(perfQueue, v6);
 }
 
 - (void)removeAllObjects
 {
-  v3 = [(CKDKVSStore *)self cloudStore];
-  v4 = [v3 dictionaryRepresentation];
-  v5 = [v4 allKeys];
-  v6 = [v5 copy];
+  cloudStore = [(CKDKVSStore *)self cloudStore];
+  dictionaryRepresentation = [cloudStore dictionaryRepresentation];
+  allKeys = [dictionaryRepresentation allKeys];
+  v6 = [allKeys copy];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10000A864;
@@ -273,51 +273,51 @@
   [v6 enumerateObjectsUsingBlock:v7];
 }
 
-- (void)removeObjectForKey:(id)a3
+- (void)removeObjectForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(CKDKVSStore *)self cloudStore];
-  [v5 removeObjectForKey:v4];
+  keyCopy = key;
+  cloudStore = [(CKDKVSStore *)self cloudStore];
+  [cloudStore removeObjectForKey:keyCopy];
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(CKDKVSStore *)self cloudStore];
-  v6 = [v5 objectForKey:v4];
+  keyCopy = key;
+  cloudStore = [(CKDKVSStore *)self cloudStore];
+  v6 = [cloudStore objectForKey:keyCopy];
 
   return v6;
 }
 
-- (void)addEntriesFromDictionary:(id)a3
+- (void)addEntriesFromDictionary:(id)dictionary
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_10000AA04;
   v3[3] = &unk_100018CC8;
   v3[4] = self;
-  [a3 enumerateKeysAndObjectsUsingBlock:v3];
+  [dictionary enumerateKeysAndObjectsUsingBlock:v3];
 }
 
 - (id)copyAsDictionary
 {
-  v2 = [(CKDKVSStore *)self cloudStore];
-  v3 = [v2 dictionaryRepresentation];
+  cloudStore = [(CKDKVSStore *)self cloudStore];
+  dictionaryRepresentation = [cloudStore dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CKDKVSStore *)self cloudStore];
-  [v8 setObject:v7 forKey:v6];
+  keyCopy = key;
+  objectCopy = object;
+  cloudStore = [(CKDKVSStore *)self cloudStore];
+  [cloudStore setObject:objectCopy forKey:keyCopy];
 }
 
-- (void)connectToProxy:(id)a3
+- (void)connectToProxy:(id)proxy
 {
-  objc_storeWeak(&self->_proxy, a3);
+  objc_storeWeak(&self->_proxy, proxy);
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 addObserver:self selector:"kvsStoreChangedAsync:" name:NSUbiquitousKeyValueStoreDidChangeExternallyNotification object:0];
 }
@@ -350,9 +350,9 @@
   v2->_cloudStore = v3;
 
   objc_storeWeak(&v2->_proxy, 0);
-  v5 = [(CKDKVSStore *)v2 cloudStore];
+  cloudStore = [(CKDKVSStore *)v2 cloudStore];
 
-  if (v5)
+  if (cloudStore)
   {
     v6 = dispatch_queue_create("CKDKVSStorePerfQueue", 0);
     [(CKDKVSStore *)v2 setPerfQueue:v6];

@@ -1,18 +1,18 @@
 @interface CSHealthWrapMessageConfiguration
-- (CSHealthWrapMessageConfiguration)initWithCertificate:(__SecCertificate *)a3 messageUUID:(id)a4 subjectUUID:(id)a5 studyUUID:(id)a6 channel:(id)a7 payloadType:(id)a8;
+- (CSHealthWrapMessageConfiguration)initWithCertificate:(__SecCertificate *)certificate messageUUID:(id)d subjectUUID:(id)iD studyUUID:(id)uID channel:(id)channel payloadType:(id)type;
 - (void)dealloc;
 @end
 
 @implementation CSHealthWrapMessageConfiguration
 
-- (CSHealthWrapMessageConfiguration)initWithCertificate:(__SecCertificate *)a3 messageUUID:(id)a4 subjectUUID:(id)a5 studyUUID:(id)a6 channel:(id)a7 payloadType:(id)a8
+- (CSHealthWrapMessageConfiguration)initWithCertificate:(__SecCertificate *)certificate messageUUID:(id)d subjectUUID:(id)iD studyUUID:(id)uID channel:(id)channel payloadType:(id)type
 {
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  if (!a3)
+  dCopy = d;
+  iDCopy = iD;
+  uIDCopy = uID;
+  channelCopy = channel;
+  typeCopy = type;
+  if (!certificate)
   {
     sub_100357F98();
   }
@@ -22,9 +22,9 @@
   v19 = [(CSHealthWrapMessageConfiguration *)&v31 init];
   if (v19)
   {
-    if (v14)
+    if (dCopy)
     {
-      v20 = [v14 copy];
+      v20 = [dCopy copy];
     }
 
     else
@@ -35,24 +35,24 @@
     messageUUID = v19->_messageUUID;
     v19->_messageUUID = v20;
 
-    v22 = [v15 copy];
+    v22 = [iDCopy copy];
     subjectUUID = v19->_subjectUUID;
     v19->_subjectUUID = v22;
 
-    v24 = [v16 copy];
+    v24 = [uIDCopy copy];
     studyUUID = v19->_studyUUID;
     v19->_studyUUID = v24;
 
-    v26 = [v17 copy];
+    v26 = [channelCopy copy];
     channel = v19->_channel;
     v19->_channel = v26;
 
-    v28 = [v18 copy];
+    v28 = [typeCopy copy];
     payloadType = v19->_payloadType;
     v19->_payloadType = v28;
 
-    CFRetain(a3);
-    v19->_certificate = a3;
+    CFRetain(certificate);
+    v19->_certificate = certificate;
   }
 
   return v19;

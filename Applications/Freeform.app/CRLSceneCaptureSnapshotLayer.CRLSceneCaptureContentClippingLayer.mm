@@ -1,6 +1,6 @@
 @interface CRLSceneCaptureSnapshotLayer.CRLSceneCaptureContentClippingLayer
 - (_TtCC8Freeform28CRLSceneCaptureSnapshotLayer35CRLSceneCaptureContentClippingLayer)init;
-- (_TtCC8Freeform28CRLSceneCaptureSnapshotLayer35CRLSceneCaptureContentClippingLayer)initWithLayer:(id)a3;
+- (_TtCC8Freeform28CRLSceneCaptureSnapshotLayer35CRLSceneCaptureContentClippingLayer)initWithLayer:(id)layer;
 @end
 
 @implementation CRLSceneCaptureSnapshotLayer.CRLSceneCaptureContentClippingLayer
@@ -21,7 +21,7 @@
   return [(CRLSceneCaptureSnapshotLayer.CRLSceneCaptureContentClippingLayer *)&v7 init];
 }
 
-- (_TtCC8Freeform28CRLSceneCaptureSnapshotLayer35CRLSceneCaptureContentClippingLayer)initWithLayer:(id)a3
+- (_TtCC8Freeform28CRLSceneCaptureSnapshotLayer35CRLSceneCaptureContentClippingLayer)initWithLayer:(id)layer
 {
   swift_unknownObjectRetain();
   _bridgeAnyObjectToAny(_:)();

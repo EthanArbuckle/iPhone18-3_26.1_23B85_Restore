@@ -1,8 +1,8 @@
 @interface ICSelectionStateModel
-+ (id)dataRepresentationForSelectionStateModels:(id)a3;
-+ (id)modelWithData:(id)a3;
-+ (id)modelsWithData:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)dataRepresentationForSelectionStateModels:(id)models;
++ (id)modelWithData:(id)data;
++ (id)modelsWithData:(id)data;
+- (BOOL)isEqual:(id)equal;
 - (ICItemIdentifier)selectedNoteBrowseContainerItemID;
 - (ICTagSelection)tagSelection;
 - (NSDictionary)currentFirstVisibleObjectIDForContainerObjectID;
@@ -11,19 +11,19 @@
 - (NSManagedObjectID)selectedObjectID;
 - (NSString)description;
 - (id)dataRepresentation;
-- (void)setCurrentFirstVisibleObjectIDForContainerObjectID:(id)a3;
-- (void)setCurrentSelectedSearchResult:(id)a3;
-- (void)setFocusedNoteObjectID:(id)a3;
-- (void)setSelectedNoteObjectID:(id)a3;
+- (void)setCurrentFirstVisibleObjectIDForContainerObjectID:(id)d;
+- (void)setCurrentSelectedSearchResult:(id)result;
+- (void)setFocusedNoteObjectID:(id)d;
+- (void)setSelectedNoteObjectID:(id)d;
 @end
 
 @implementation ICSelectionStateModel
 
-- (void)setCurrentSelectedSearchResult:(id)a3
+- (void)setCurrentSelectedSearchResult:(id)result
 {
   v4 = *(self + OBJC_IVAR____TtC11MobileNotes21ICSelectionStateModel_currentSelectedSearchResult);
-  *(self + OBJC_IVAR____TtC11MobileNotes21ICSelectionStateModel_currentSelectedSearchResult) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC11MobileNotes21ICSelectionStateModel_currentSelectedSearchResult) = result;
+  resultCopy = result;
 }
 
 - (NSDictionary)currentFirstVisibleObjectIDForContainerObjectID
@@ -46,31 +46,31 @@
   return v4.super.isa;
 }
 
-- (void)setCurrentFirstVisibleObjectIDForContainerObjectID:(id)a3
+- (void)setCurrentFirstVisibleObjectIDForContainerObjectID:(id)d
 {
-  v3 = a3;
-  if (a3)
+  dCopy = d;
+  if (d)
   {
     sub_1000054A4(0, &qword_1006BFEC0);
     sub_1001C607C();
-    v3 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
+    dCopy = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
   v5 = OBJC_IVAR____TtC11MobileNotes21ICSelectionStateModel_currentFirstVisibleObjectIDForContainerObjectID;
   swift_beginAccess();
-  *(self + v5) = v3;
+  *(self + v5) = dCopy;
 }
 
-- (void)setFocusedNoteObjectID:(id)a3
+- (void)setFocusedNoteObjectID:(id)d
 {
   v4 = *(self + OBJC_IVAR____TtC11MobileNotes21ICSelectionStateModel_focusedNoteObjectID);
-  *(self + OBJC_IVAR____TtC11MobileNotes21ICSelectionStateModel_focusedNoteObjectID) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC11MobileNotes21ICSelectionStateModel_focusedNoteObjectID) = d;
+  dCopy = d;
 }
 
 - (ICTagSelection)tagSelection
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100016590();
 
   return v3;
@@ -78,7 +78,7 @@
 
 - (ICItemIdentifier)selectedNoteBrowseContainerItemID
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1000167F8();
 
   return v3;
@@ -86,7 +86,7 @@
 
 - (NSManagedObjectID)selectedNoteObjectID
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100013FA4();
 
   return v3;
@@ -94,7 +94,7 @@
 
 - (NSManagedObjectID)selectedInvitationObjectID
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1001B9EA4();
 
   return v3;
@@ -102,7 +102,7 @@
 
 - (NSManagedObjectID)selectedObjectID
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100013FA4();
   if (!v3)
   {
@@ -112,31 +112,31 @@
   return v3;
 }
 
-- (void)setSelectedNoteObjectID:(id)a3
+- (void)setSelectedNoteObjectID:(id)d
 {
   v5 = sub_10015DA04(&unk_1006BFEA0);
   __chkstk_darwin(v5 - 8);
-  v7 = (&v13 - v6);
-  v8 = a3;
-  v13 = self;
-  if ([v8 ic_isNoteType])
+  v7 = (&selfCopy - v6);
+  dCopy = d;
+  selfCopy = self;
+  if ([dCopy ic_isNoteType])
   {
-    *v7 = v8;
+    *v7 = dCopy;
     v7[1] = 0;
     v9 = type metadata accessor for ICSelectionStateModel.ObjectSelection(0);
     swift_storeEnumTagMultiPayload();
     (*(*(v9 - 8) + 56))(v7, 0, 1, v9);
     v10 = OBJC_IVAR____TtC11MobileNotes21ICSelectionStateModel_objectSelection;
     swift_beginAccess();
-    v11 = v8;
-    sub_10000A49C(v7, v13 + v10, &unk_1006BFEA0);
+    v11 = dCopy;
+    sub_10000A49C(v7, selfCopy + v10, &unk_1006BFEA0);
     swift_endAccess();
   }
 
   else
   {
 
-    v12 = v13;
+    v12 = selfCopy;
   }
 }
 
@@ -145,7 +145,7 @@
   swift_getObjectType();
   type metadata accessor for JSONEncoder();
   swift_allocObject();
-  v3 = self;
+  selfCopy = self;
   JSONEncoder.init()();
   sub_1001C275C(&qword_1006BF0E8, type metadata accessor for ICSelectionStateModel);
   v4 = dispatch thunk of JSONEncoder.encode<A>(_:)();
@@ -157,9 +157,9 @@
   return v7.super.isa;
 }
 
-+ (id)modelWithData:(id)a3
++ (id)modelWithData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v4 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v6 = v5;
 
@@ -170,7 +170,7 @@
   return v7;
 }
 
-+ (id)dataRepresentationForSelectionStateModels:(id)a3
++ (id)dataRepresentationForSelectionStateModels:(id)models
 {
   swift_getObjCClassMetadata();
   static Array._unconditionallyBridgeFromObjectiveC(_:)();
@@ -188,13 +188,13 @@
   return v6.super.isa;
 }
 
-+ (id)modelsWithData:(id)a3
++ (id)modelsWithData:(id)data
 {
   swift_getObjCClassMetadata();
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    a3 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
+    dataCopy = data;
+    data = static Data._unconditionallyBridgeFromObjectiveC(_:)();
     v6 = v5;
   }
 
@@ -203,8 +203,8 @@
     v6 = 0xF000000000000000;
   }
 
-  v7 = sub_1001C546C(a3, v6);
-  sub_1001C60E4(a3, v6);
+  v7 = sub_1001C546C(data, v6);
+  sub_1001C60E4(data, v6);
   if (v7)
   {
     v8.super.isa = Array._bridgeToObjectiveC()().super.isa;
@@ -220,7 +220,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001BD4E4();
 
   v3 = String._bridgeToObjectiveC()();
@@ -228,12 +228,12 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   swift_getObjectType();
-  if (a3)
+  if (equal)
   {
-    v5 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -242,7 +242,7 @@
   else
   {
     memset(v12, 0, sizeof(v12));
-    v6 = self;
+    selfCopy2 = self;
   }
 
   sub_100006038(v12, v10, &qword_1006BE7A0);

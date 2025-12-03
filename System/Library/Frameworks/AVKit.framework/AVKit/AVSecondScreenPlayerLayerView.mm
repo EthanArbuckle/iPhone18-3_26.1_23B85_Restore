@@ -1,7 +1,7 @@
 @interface AVSecondScreenPlayerLayerView
 - (AVPlayerLayer)activeSourcePlayerLayer;
 - (void)dealloc;
-- (void)startShowingContentFromSourcePlayerLayer:(id)a3;
+- (void)startShowingContentFromSourcePlayerLayer:(id)layer;
 - (void)stopShowingContentFromActiveSourcePlayerLayer;
 @end
 
@@ -16,41 +16,41 @@
 
 - (void)stopShowingContentFromActiveSourcePlayerLayer
 {
-  v3 = [(AVSecondScreenPlayerLayerView *)self observationController];
-  [v3 stopAllObservation];
+  observationController = [(AVSecondScreenPlayerLayerView *)self observationController];
+  [observationController stopAllObservation];
 
   [(AVSecondScreenPlayerLayerView *)self setObservationController:0];
-  v4 = [(AVSecondScreenPlayerLayerView *)self activeSourcePlayerLayer];
-  v5 = [(AVSecondScreenPlayerLayerView *)self layer];
-  [v4 stopRedirectingVideoToLayer:v5];
+  activeSourcePlayerLayer = [(AVSecondScreenPlayerLayerView *)self activeSourcePlayerLayer];
+  layer = [(AVSecondScreenPlayerLayerView *)self layer];
+  [activeSourcePlayerLayer stopRedirectingVideoToLayer:layer];
 
   [(AVSecondScreenPlayerLayerView *)self setActiveSourcePlayerLayer:0];
-  v6 = [(AVSecondScreenPlayerLayerView *)self layer];
-  [v6 setPlayer:0];
+  layer2 = [(AVSecondScreenPlayerLayerView *)self layer];
+  [layer2 setPlayer:0];
 }
 
-- (void)startShowingContentFromSourcePlayerLayer:(id)a3
+- (void)startShowingContentFromSourcePlayerLayer:(id)layer
 {
-  v11 = a3;
-  v4 = [(AVSecondScreenPlayerLayerView *)self activeSourcePlayerLayer];
-  v5 = [v4 isEqual:v11];
+  layerCopy = layer;
+  activeSourcePlayerLayer = [(AVSecondScreenPlayerLayerView *)self activeSourcePlayerLayer];
+  v5 = [activeSourcePlayerLayer isEqual:layerCopy];
 
   if ((v5 & 1) == 0)
   {
     [(AVSecondScreenPlayerLayerView *)self stopShowingContentFromActiveSourcePlayerLayer];
-    [(AVSecondScreenPlayerLayerView *)self setActiveSourcePlayerLayer:v11];
-    v6 = [(AVSecondScreenPlayerLayerView *)self layer];
-    [v11 startRedirectingVideoToLayer:v6 forMode:1];
+    [(AVSecondScreenPlayerLayerView *)self setActiveSourcePlayerLayer:layerCopy];
+    layer = [(AVSecondScreenPlayerLayerView *)self layer];
+    [layerCopy startRedirectingVideoToLayer:layer forMode:1];
 
-    v7 = [(AVSecondScreenPlayerLayerView *)self observationController];
+    observationController = [(AVSecondScreenPlayerLayerView *)self observationController];
 
-    if (!v7)
+    if (!observationController)
     {
       v8 = [[AVObservationController alloc] initWithOwner:self];
       [(AVSecondScreenPlayerLayerView *)self setObservationController:v8];
 
-      v9 = [(AVSecondScreenPlayerLayerView *)self observationController];
-      v10 = [v9 startObserving:self keyPath:@"layer.videoRect" includeInitialValue:1 observationHandler:&__block_literal_global_29695];
+      observationController2 = [(AVSecondScreenPlayerLayerView *)self observationController];
+      v10 = [observationController2 startObserving:self keyPath:@"layer.videoRect" includeInitialValue:1 observationHandler:&__block_literal_global_29695];
     }
   }
 }

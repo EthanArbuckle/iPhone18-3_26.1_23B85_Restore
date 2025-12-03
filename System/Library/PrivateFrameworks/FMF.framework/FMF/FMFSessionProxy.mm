@@ -1,41 +1,41 @@
 @interface FMFSessionProxy
 - (FMFSession)session;
-- (FMFSessionProxy)initWithFMFSession:(id)a3;
+- (FMFSessionProxy)initWithFMFSession:(id)session;
 - (void)abDidChange;
 - (void)abPreferencesDidChange;
-- (void)didAddFollowerHandle:(id)a3;
-- (void)didChangeActiveLocationSharingDevice:(id)a3;
-- (void)didReceiveFriendshipRequest:(id)a3;
-- (void)didReceiveServerError:(id)a3;
-- (void)didRemoveFollowerHandle:(id)a3;
-- (void)didStartFollowingHandle:(id)a3;
-- (void)didStopFollowingHandle:(id)a3;
-- (void)didUpdateActiveDeviceList:(id)a3;
-- (void)didUpdateFavorites:(id)a3;
-- (void)didUpdateFences:(id)a3;
-- (void)didUpdateFollowers:(id)a3;
-- (void)didUpdateFollowing:(id)a3;
-- (void)didUpdateLocations:(id)a3;
-- (void)didUpdatePendingOffersForHandles:(id)a3;
-- (void)didUpdatePreferences:(id)a3;
-- (void)failedToGetLocationForHandle:(id)a3 error:(id)a4;
+- (void)didAddFollowerHandle:(id)handle;
+- (void)didChangeActiveLocationSharingDevice:(id)device;
+- (void)didReceiveFriendshipRequest:(id)request;
+- (void)didReceiveServerError:(id)error;
+- (void)didRemoveFollowerHandle:(id)handle;
+- (void)didStartFollowingHandle:(id)handle;
+- (void)didStopFollowingHandle:(id)handle;
+- (void)didUpdateActiveDeviceList:(id)list;
+- (void)didUpdateFavorites:(id)favorites;
+- (void)didUpdateFences:(id)fences;
+- (void)didUpdateFollowers:(id)followers;
+- (void)didUpdateFollowing:(id)following;
+- (void)didUpdateLocations:(id)locations;
+- (void)didUpdatePendingOffersForHandles:(id)handles;
+- (void)didUpdatePreferences:(id)preferences;
+- (void)failedToGetLocationForHandle:(id)handle error:(id)error;
 - (void)modelDidLoad;
-- (void)sendMappingPacket:(id)a3 toHandle:(id)a4;
-- (void)setLocations:(id)a3;
+- (void)sendMappingPacket:(id)packet toHandle:(id)handle;
+- (void)setLocations:(id)locations;
 @end
 
 @implementation FMFSessionProxy
 
-- (FMFSessionProxy)initWithFMFSession:(id)a3
+- (FMFSessionProxy)initWithFMFSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   v8.receiver = self;
   v8.super_class = FMFSessionProxy;
   v5 = [(FMFSessionProxy *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(FMFSessionProxy *)v5 setSession:v4];
+    [(FMFSessionProxy *)v5 setSession:sessionCopy];
   }
 
   return v6;
@@ -43,148 +43,148 @@
 
 - (void)modelDidLoad
 {
-  v2 = [(FMFSessionProxy *)self session];
-  [v2 modelDidLoad];
+  session = [(FMFSessionProxy *)self session];
+  [session modelDidLoad];
 }
 
-- (void)setLocations:(id)a3
+- (void)setLocations:(id)locations
 {
-  v4 = a3;
-  v5 = [(FMFSessionProxy *)self session];
-  [v5 setLocations:v4];
+  locationsCopy = locations;
+  session = [(FMFSessionProxy *)self session];
+  [session setLocations:locationsCopy];
 }
 
-- (void)failedToGetLocationForHandle:(id)a3 error:(id)a4
+- (void)failedToGetLocationForHandle:(id)handle error:(id)error
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(FMFSessionProxy *)self session];
-  [v8 failedToGetLocationForHandle:v7 error:v6];
+  errorCopy = error;
+  handleCopy = handle;
+  session = [(FMFSessionProxy *)self session];
+  [session failedToGetLocationForHandle:handleCopy error:errorCopy];
 }
 
-- (void)didAddFollowerHandle:(id)a3
+- (void)didAddFollowerHandle:(id)handle
 {
-  v4 = a3;
-  v5 = [(FMFSessionProxy *)self session];
-  [v5 didAddFollowerHandle:v4];
+  handleCopy = handle;
+  session = [(FMFSessionProxy *)self session];
+  [session didAddFollowerHandle:handleCopy];
 }
 
-- (void)didRemoveFollowerHandle:(id)a3
+- (void)didRemoveFollowerHandle:(id)handle
 {
-  v4 = a3;
-  v5 = [(FMFSessionProxy *)self session];
-  [v5 didRemoveFollowerHandle:v4];
+  handleCopy = handle;
+  session = [(FMFSessionProxy *)self session];
+  [session didRemoveFollowerHandle:handleCopy];
 }
 
-- (void)didStartFollowingHandle:(id)a3
+- (void)didStartFollowingHandle:(id)handle
 {
-  v4 = a3;
-  v5 = [(FMFSessionProxy *)self session];
-  [v5 didStartFollowingHandle:v4];
+  handleCopy = handle;
+  session = [(FMFSessionProxy *)self session];
+  [session didStartFollowingHandle:handleCopy];
 }
 
-- (void)didStopFollowingHandle:(id)a3
+- (void)didStopFollowingHandle:(id)handle
 {
-  v4 = a3;
-  v5 = [(FMFSessionProxy *)self session];
-  [v5 didStopFollowingHandle:v4];
+  handleCopy = handle;
+  session = [(FMFSessionProxy *)self session];
+  [session didStopFollowingHandle:handleCopy];
 }
 
-- (void)didReceiveFriendshipRequest:(id)a3
+- (void)didReceiveFriendshipRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(FMFSessionProxy *)self session];
-  [v5 didReceiveFriendshipRequest:v4];
+  requestCopy = request;
+  session = [(FMFSessionProxy *)self session];
+  [session didReceiveFriendshipRequest:requestCopy];
 }
 
-- (void)didUpdatePendingOffersForHandles:(id)a3
+- (void)didUpdatePendingOffersForHandles:(id)handles
 {
-  v4 = a3;
-  v5 = [(FMFSessionProxy *)self session];
-  [v5 didUpdatePendingOffersForHandles:v4];
+  handlesCopy = handles;
+  session = [(FMFSessionProxy *)self session];
+  [session didUpdatePendingOffersForHandles:handlesCopy];
 }
 
-- (void)didChangeActiveLocationSharingDevice:(id)a3
+- (void)didChangeActiveLocationSharingDevice:(id)device
 {
-  v4 = a3;
-  v5 = [(FMFSessionProxy *)self session];
-  [v5 didChangeActiveLocationSharingDevice:v4];
+  deviceCopy = device;
+  session = [(FMFSessionProxy *)self session];
+  [session didChangeActiveLocationSharingDevice:deviceCopy];
 }
 
-- (void)didUpdateActiveDeviceList:(id)a3
+- (void)didUpdateActiveDeviceList:(id)list
 {
-  v4 = a3;
-  v5 = [(FMFSessionProxy *)self session];
-  [v5 didUpdateActiveDeviceList:v4];
+  listCopy = list;
+  session = [(FMFSessionProxy *)self session];
+  [session didUpdateActiveDeviceList:listCopy];
 }
 
-- (void)sendMappingPacket:(id)a3 toHandle:(id)a4
+- (void)sendMappingPacket:(id)packet toHandle:(id)handle
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(FMFSessionProxy *)self session];
-  [v8 sendMappingPacket:v7 toHandle:v6];
+  handleCopy = handle;
+  packetCopy = packet;
+  session = [(FMFSessionProxy *)self session];
+  [session sendMappingPacket:packetCopy toHandle:handleCopy];
 }
 
-- (void)didUpdateFavorites:(id)a3
+- (void)didUpdateFavorites:(id)favorites
 {
-  v4 = a3;
-  v5 = [(FMFSessionProxy *)self session];
-  [v5 didUpdateFavorites:v4];
+  favoritesCopy = favorites;
+  session = [(FMFSessionProxy *)self session];
+  [session didUpdateFavorites:favoritesCopy];
 }
 
-- (void)didUpdateFences:(id)a3
+- (void)didUpdateFences:(id)fences
 {
-  v4 = a3;
-  v5 = [(FMFSessionProxy *)self session];
-  [v5 didUpdateFences:v4];
+  fencesCopy = fences;
+  session = [(FMFSessionProxy *)self session];
+  [session didUpdateFences:fencesCopy];
 }
 
-- (void)didUpdatePreferences:(id)a3
+- (void)didUpdatePreferences:(id)preferences
 {
-  v4 = a3;
-  v5 = [(FMFSessionProxy *)self session];
-  [v5 didUpdatePreferences:v4];
+  preferencesCopy = preferences;
+  session = [(FMFSessionProxy *)self session];
+  [session didUpdatePreferences:preferencesCopy];
 }
 
 - (void)abDidChange
 {
-  v2 = [(FMFSessionProxy *)self session];
-  [v2 abDidChange];
+  session = [(FMFSessionProxy *)self session];
+  [session abDidChange];
 }
 
 - (void)abPreferencesDidChange
 {
-  v2 = [(FMFSessionProxy *)self session];
-  [v2 abPreferencesDidChange];
+  session = [(FMFSessionProxy *)self session];
+  [session abPreferencesDidChange];
 }
 
-- (void)didUpdateFollowers:(id)a3
+- (void)didUpdateFollowers:(id)followers
 {
-  v4 = a3;
-  v5 = [(FMFSessionProxy *)self session];
-  [v5 didUpdateFollowers:v4];
+  followersCopy = followers;
+  session = [(FMFSessionProxy *)self session];
+  [session didUpdateFollowers:followersCopy];
 }
 
-- (void)didUpdateFollowing:(id)a3
+- (void)didUpdateFollowing:(id)following
 {
-  v4 = a3;
-  v5 = [(FMFSessionProxy *)self session];
-  [v5 didUpdateFollowing:v4];
+  followingCopy = following;
+  session = [(FMFSessionProxy *)self session];
+  [session didUpdateFollowing:followingCopy];
 }
 
-- (void)didUpdateLocations:(id)a3
+- (void)didUpdateLocations:(id)locations
 {
-  v4 = a3;
-  v5 = [(FMFSessionProxy *)self session];
-  [v5 didUpdateLocations:v4];
+  locationsCopy = locations;
+  session = [(FMFSessionProxy *)self session];
+  [session didUpdateLocations:locationsCopy];
 }
 
-- (void)didReceiveServerError:(id)a3
+- (void)didReceiveServerError:(id)error
 {
-  v4 = a3;
-  v5 = [(FMFSessionProxy *)self session];
-  [v5 didReceiveServerError:v4];
+  errorCopy = error;
+  session = [(FMFSessionProxy *)self session];
+  [session didReceiveServerError:errorCopy];
 }
 
 - (FMFSession)session

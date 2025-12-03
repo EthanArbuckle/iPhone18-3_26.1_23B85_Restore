@@ -1,22 +1,22 @@
 @interface CAFTestComplexNestedListItem
-- (CAFTestComplexNestedListItem)initWithDictionary:(id)a3;
-- (CAFTestComplexNestedListItem)initWithNestedKey:(id)a3 nestedValue:(id)a4;
+- (CAFTestComplexNestedListItem)initWithDictionary:(id)dictionary;
+- (CAFTestComplexNestedListItem)initWithNestedKey:(id)key nestedValue:(id)value;
 - (NSDictionary)dictionaryRepresentation;
 - (id)description;
 @end
 
 @implementation CAFTestComplexNestedListItem
 
-- (CAFTestComplexNestedListItem)initWithDictionary:(id)a3
+- (CAFTestComplexNestedListItem)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = CAFTestComplexNestedListItem;
   v5 = [(CAFTestComplexNestedListItem *)&v13 init];
   if (v5)
   {
     objc_opt_class();
-    v6 = [v4 objectForKey:@"nestedKey"];
+    v6 = [dictionaryCopy objectForKey:@"nestedKey"];
     if (v6 && (objc_opt_isKindOfClass() & 1) != 0)
     {
       v7 = v6;
@@ -31,7 +31,7 @@
     v5->_nestedKey = v7;
 
     objc_opt_class();
-    v9 = [v4 objectForKey:@"nestedValue"];
+    v9 = [dictionaryCopy objectForKey:@"nestedValue"];
     if (v9 && (objc_opt_isKindOfClass() & 1) != 0)
     {
       v10 = v9;
@@ -49,18 +49,18 @@
   return v5;
 }
 
-- (CAFTestComplexNestedListItem)initWithNestedKey:(id)a3 nestedValue:(id)a4
+- (CAFTestComplexNestedListItem)initWithNestedKey:(id)key nestedValue:(id)value
 {
-  v7 = a3;
-  v8 = a4;
+  keyCopy = key;
+  valueCopy = value;
   v12.receiver = self;
   v12.super_class = CAFTestComplexNestedListItem;
   v9 = [(CAFTestComplexNestedListItem *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_nestedKey, a3);
-    objc_storeStrong(&v10->_nestedValue, a4);
+    objc_storeStrong(&v9->_nestedKey, key);
+    objc_storeStrong(&v10->_nestedValue, value);
   }
 
   return v10;
@@ -70,30 +70,30 @@
 {
   v12[2] = *MEMORY[0x277D85DE8];
   v11[0] = @"nestedKey";
-  v3 = [(CAFTestComplexNestedListItem *)self nestedKey];
-  v4 = v3;
-  if (!v3)
+  nestedKey = [(CAFTestComplexNestedListItem *)self nestedKey];
+  null = nestedKey;
+  if (!nestedKey)
   {
-    v4 = [MEMORY[0x277CBEB68] null];
+    null = [MEMORY[0x277CBEB68] null];
   }
 
   v11[1] = @"nestedValue";
-  v12[0] = v4;
-  v5 = [(CAFTestComplexNestedListItem *)self nestedValue];
-  v6 = [v5 arrayRepresentation];
-  v7 = v6;
-  if (!v6)
+  v12[0] = null;
+  nestedValue = [(CAFTestComplexNestedListItem *)self nestedValue];
+  arrayRepresentation = [nestedValue arrayRepresentation];
+  null2 = arrayRepresentation;
+  if (!arrayRepresentation)
   {
-    v7 = [MEMORY[0x277CBEB68] null];
+    null2 = [MEMORY[0x277CBEB68] null];
   }
 
-  v12[1] = v7;
+  v12[1] = null2;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:v11 count:2];
-  if (!v6)
+  if (!arrayRepresentation)
   {
   }
 
-  if (!v3)
+  if (!nestedKey)
   {
   }
 
@@ -106,9 +106,9 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(CAFTestComplexNestedListItem *)self nestedKey];
-  v6 = [(CAFTestComplexNestedListItem *)self nestedValue];
-  v7 = [v3 stringWithFormat:@"<%@: %p { %@: %@, %@: %@ }>", v4, self, @"nestedKey", v5, @"nestedValue", v6];
+  nestedKey = [(CAFTestComplexNestedListItem *)self nestedKey];
+  nestedValue = [(CAFTestComplexNestedListItem *)self nestedValue];
+  v7 = [v3 stringWithFormat:@"<%@: %p { %@: %@, %@: %@ }>", v4, self, @"nestedKey", nestedKey, @"nestedValue", nestedValue];
 
   return v7;
 }

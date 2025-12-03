@@ -1,21 +1,21 @@
 @interface LACUIKeyboardView
 - (CGSize)intrinsicContentSize;
-- (LACUIKeyboardView)initWithKeyboard:(id)a3;
+- (LACUIKeyboardView)initWithKeyboard:(id)keyboard;
 - (void)_setup;
 @end
 
 @implementation LACUIKeyboardView
 
-- (LACUIKeyboardView)initWithKeyboard:(id)a3
+- (LACUIKeyboardView)initWithKeyboard:(id)keyboard
 {
-  v4 = a3;
+  keyboardCopy = keyboard;
   v8.receiver = self;
   v8.super_class = LACUIKeyboardView;
   v5 = [(LACUIKeyboardView *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_keyboard, v4);
+    objc_storeWeak(&v5->_keyboard, keyboardCopy);
     [(LACUIKeyboardView *)v6 _setup];
   }
 

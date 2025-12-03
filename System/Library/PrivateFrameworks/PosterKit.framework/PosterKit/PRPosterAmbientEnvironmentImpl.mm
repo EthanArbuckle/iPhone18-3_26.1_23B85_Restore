@@ -1,20 +1,20 @@
 @interface PRPosterAmbientEnvironmentImpl
 - (BOOL)isDisplayStyleRedMode;
-- (PRPosterAmbientEnvironmentImpl)initWithTraitCollection:(id)a3;
+- (PRPosterAmbientEnvironmentImpl)initWithTraitCollection:(id)collection;
 @end
 
 @implementation PRPosterAmbientEnvironmentImpl
 
-- (PRPosterAmbientEnvironmentImpl)initWithTraitCollection:(id)a3
+- (PRPosterAmbientEnvironmentImpl)initWithTraitCollection:(id)collection
 {
-  v5 = a3;
+  collectionCopy = collection;
   v9.receiver = self;
   v9.super_class = PRPosterAmbientEnvironmentImpl;
   v6 = [(PRPosterAmbientEnvironmentImpl *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_traitCollection, a3);
+    objc_storeStrong(&v6->_traitCollection, collection);
   }
 
   return v7;
@@ -22,9 +22,9 @@
 
 - (BOOL)isDisplayStyleRedMode
 {
-  v2 = [(UITraitCollection *)self->_traitCollection ambientDisplayStyle];
+  ambientDisplayStyle = [(UITraitCollection *)self->_traitCollection ambientDisplayStyle];
 
-  return MEMORY[0x1EEDEB650](v2);
+  return MEMORY[0x1EEDEB650](ambientDisplayStyle);
 }
 
 @end

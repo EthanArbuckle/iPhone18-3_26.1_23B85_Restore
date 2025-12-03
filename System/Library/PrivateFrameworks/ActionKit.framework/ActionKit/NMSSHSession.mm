@@ -1,36 +1,36 @@
 @interface NMSSHSession
-+ (id)URLForHost:(id)a3;
-+ (id)connectToHost:(id)a3 port:(int64_t)a4 withUsername:(id)a5;
-+ (id)connectToHost:(id)a3 withUsername:(id)a4;
-- (BOOL)addKnownHostName:(id)a3 port:(int64_t)a4 toFile:(id)a5 withSalt:(id)a6;
-- (BOOL)authenticateByInMemoryPublicKey:(id)a3 privateKey:(id)a4 andPassword:(id)a5;
-- (BOOL)authenticateByKeyboardInteractiveUsingBlock:(id)a3;
-- (BOOL)authenticateByPassword:(id)a3;
-- (BOOL)authenticateByPublicKey:(id)a3 privateKey:(id)a4 andPassword:(id)a5;
++ (id)URLForHost:(id)host;
++ (id)connectToHost:(id)host port:(int64_t)port withUsername:(id)username;
++ (id)connectToHost:(id)host withUsername:(id)username;
+- (BOOL)addKnownHostName:(id)name port:(int64_t)port toFile:(id)file withSalt:(id)salt;
+- (BOOL)authenticateByInMemoryPublicKey:(id)key privateKey:(id)privateKey andPassword:(id)password;
+- (BOOL)authenticateByKeyboardInteractiveUsingBlock:(id)block;
+- (BOOL)authenticateByPassword:(id)password;
+- (BOOL)authenticateByPublicKey:(id)key privateKey:(id)privateKey andPassword:(id)password;
 - (BOOL)connect;
 - (BOOL)connectToAgent;
-- (BOOL)connectWithTimeout:(id)a3;
+- (BOOL)connectWithTimeout:(id)timeout;
 - (BOOL)isAuthorized;
-- (BOOL)supportsAuthenticationMethod:(id)a3;
+- (BOOL)supportsAuthenticationMethod:(id)method;
 - (NMSFTP)sftp;
 - (NMSSHChannel)channel;
-- (NMSSHSession)initWithHost:(id)a3 andUsername:(id)a4;
-- (NMSSHSession)initWithHost:(id)a3 configs:(id)a4 withDefaultPort:(int64_t)a5 defaultUsername:(id)a6;
-- (NMSSHSession)initWithHost:(id)a3 port:(int64_t)a4 andUsername:(id)a5;
+- (NMSSHSession)initWithHost:(id)host andUsername:(id)username;
+- (NMSSHSession)initWithHost:(id)host configs:(id)configs withDefaultPort:(int64_t)port defaultUsername:(id)username;
+- (NMSSHSession)initWithHost:(id)host port:(int64_t)port andUsername:(id)username;
 - (NMSSHSessionDelegate)delegate;
 - (NSError)lastError;
 - (NSNumber)timeout;
 - (NSString)remoteBanner;
 - (id)applicationSupportDirectory;
-- (id)fingerprint:(int64_t)a3;
+- (id)fingerprint:(int64_t)fingerprint;
 - (id)hostIPAddresses;
-- (id)keyboardInteractiveRequest:(id)a3;
+- (id)keyboardInteractiveRequest:(id)request;
 - (id)supportedAuthenticationMethods;
 - (id)userKnownHostsFileName;
-- (int64_t)knownHostStatusInFiles:(id)a3;
-- (int64_t)knownHostStatusWithFile:(id)a3;
+- (int64_t)knownHostStatusInFiles:(id)files;
+- (int64_t)knownHostStatusWithFile:(id)file;
 - (void)disconnect;
-- (void)setTimeout:(id)a3;
+- (void)setTimeout:(id)timeout;
 @end
 
 @implementation NMSSHSession
@@ -72,42 +72,42 @@
   return channel;
 }
 
-- (id)keyboardInteractiveRequest:(id)a3
+- (id)keyboardInteractiveRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = +[NMSSHLogger sharedLogger];
-  v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"Server request '%@'", v4];
-  [v5 logVerbose:v6];
+  requestCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Server request '%@'", requestCopy];
+  [v5 logVerbose:requestCopy];
 
-  v7 = [(NMSSHSession *)self kbAuthenticationBlock];
+  kbAuthenticationBlock = [(NMSSHSession *)self kbAuthenticationBlock];
 
-  if (v7)
+  if (kbAuthenticationBlock)
   {
-    v8 = [(NMSSHSession *)self kbAuthenticationBlock];
-    v9 = (v8)[2](v8, v4);
+    kbAuthenticationBlock2 = [(NMSSHSession *)self kbAuthenticationBlock];
+    v9 = (kbAuthenticationBlock2)[2](kbAuthenticationBlock2, requestCopy);
 LABEL_3:
     v10 = v9;
     goto LABEL_8;
   }
 
-  v11 = [(NMSSHSession *)self delegate];
-  if (v11)
+  delegate = [(NMSSHSession *)self delegate];
+  if (delegate)
   {
-    v12 = v11;
-    v13 = [(NMSSHSession *)self delegate];
+    v12 = delegate;
+    delegate2 = [(NMSSHSession *)self delegate];
     v14 = objc_opt_respondsToSelector();
 
     if (v14)
     {
-      v8 = [(NMSSHSession *)self delegate];
-      v9 = [v8 session:self keyboardInteractiveRequest:v4];
+      kbAuthenticationBlock2 = [(NMSSHSession *)self delegate];
+      v9 = [kbAuthenticationBlock2 session:self keyboardInteractiveRequest:requestCopy];
       goto LABEL_3;
     }
   }
 
-  v8 = +[NMSSHLogger sharedLogger];
+  kbAuthenticationBlock2 = +[NMSSHLogger sharedLogger];
   v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"Keyboard interactive requires a delegate that responds to session:keyboardInteractiveRequest: or a block!"];
-  [v8 logWarn:v15];
+  [kbAuthenticationBlock2 logWarn:v15];
 
   v10 = &stru_2850323E8;
 LABEL_8:
@@ -115,25 +115,25 @@ LABEL_8:
   return v10;
 }
 
-- (BOOL)addKnownHostName:(id)a3 port:(int64_t)a4 toFile:(id)a5 withSalt:(id)a6
+- (BOOL)addKnownHostName:(id)name port:(int64_t)port toFile:(id)file withSalt:(id)salt
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  if (a4 == 22)
+  nameCopy = name;
+  fileCopy = file;
+  saltCopy = salt;
+  if (port == 22)
   {
-    v13 = v10;
+    port = nameCopy;
   }
 
   else
   {
-    v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"[%@]:%d", v10, a4];
+    port = [MEMORY[0x277CCACA8] stringWithFormat:@"[%@]:%d", nameCopy, port];
   }
 
-  v14 = v13;
-  if (!v11)
+  v14 = port;
+  if (!fileCopy)
   {
-    v11 = [(NMSSHSession *)self userKnownHostsFileName];
+    fileCopy = [(NMSSHSession *)self userKnownHostsFileName];
   }
 
   *v46 = 0;
@@ -162,7 +162,7 @@ LABEL_13:
   }
 
   v18 = v17;
-  [v11 UTF8String];
+  [fileCopy UTF8String];
   v19 = libssh2_knownhost_readfile(v18);
   if ((v19 & 0x80000000) == 0 || v19 == -16)
   {
@@ -176,7 +176,7 @@ LABEL_13:
       v28 = 851968;
     }
 
-    if (v12)
+    if (saltCopy)
     {
       v29 = 2;
     }
@@ -186,22 +186,22 @@ LABEL_13:
       v29 = 1;
     }
 
-    v30 = [v14 UTF8String];
-    v31 = [v12 UTF8String];
-    v32 = libssh2_knownhost_addc(v18, v30, v31, v16, *v46, 0, 0, v28 | v29, 0);
+    uTF8String = [v14 UTF8String];
+    uTF8String2 = [saltCopy UTF8String];
+    v32 = libssh2_knownhost_addc(v18, uTF8String, uTF8String2, v16, *v46, 0, 0, v28 | v29, 0);
     if (v32)
     {
       v33 = v32;
       v34 = +[NMSSHLogger sharedLogger];
       v35 = MEMORY[0x277CCACA8];
-      v36 = [(NMSSHSession *)self lastError];
-      v37 = [v35 stringWithFormat:@"Failed to add host to known hosts: error %d (%@)", v33, v36];
+      lastError = [(NMSSHSession *)self lastError];
+      v37 = [v35 stringWithFormat:@"Failed to add host to known hosts: error %d (%@)", v33, lastError];
       [v34 logError:v37];
     }
 
     else
     {
-      [v11 UTF8String];
+      [fileCopy UTF8String];
       v38 = libssh2_knownhost_writefile(v18);
       v39 = +[NMSSHLogger sharedLogger];
       v40 = MEMORY[0x277CCACA8];
@@ -214,9 +214,9 @@ LABEL_13:
         goto LABEL_27;
       }
 
-      v42 = [(NMSSHSession *)self userKnownHostsFileName];
-      v43 = [(NMSSHSession *)self lastError];
-      v44 = [v40 stringWithFormat:@"Couldn't write to %@: %@", v42, v43];
+      userKnownHostsFileName = [(NMSSHSession *)self userKnownHostsFileName];
+      lastError2 = [(NMSSHSession *)self lastError];
+      v44 = [v40 stringWithFormat:@"Couldn't write to %@: %@", userKnownHostsFileName, lastError2];
       [v39 logError:v44];
     }
 
@@ -238,9 +238,9 @@ LABEL_15:
   return v26;
 }
 
-- (int64_t)knownHostStatusWithFile:(id)a3
+- (int64_t)knownHostStatusWithFile:(id)file
 {
-  v4 = a3;
+  fileCopy = file;
   v5 = libssh2_knownhost_init([(NMSSHSession *)self rawSession]);
   if (!v5)
   {
@@ -248,7 +248,7 @@ LABEL_15:
   }
 
   v6 = v5;
-  [v4 UTF8String];
+  [fileCopy UTF8String];
   v7 = libssh2_knownhost_readfile(v6);
   if (v7 < 0)
   {
@@ -257,15 +257,15 @@ LABEL_15:
     v26 = +[NMSSHLogger sharedLogger];
     if (v25 == -16)
     {
-      v27 = [MEMORY[0x277CCACA8] stringWithFormat:@"No known hosts file %@.", v4];
-      [v26 logInfo:v27];
+      fileCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"No known hosts file %@.", fileCopy];
+      [v26 logInfo:fileCopy];
 
       v23 = 2;
       goto LABEL_16;
     }
 
-    v31 = [MEMORY[0x277CCACA8] stringWithFormat:@"Failed to read known hosts file %@.", v4];
-    [v26 logError:v31];
+    fileCopy2 = [MEMORY[0x277CCACA8] stringWithFormat:@"Failed to read known hosts file %@.", fileCopy];
+    [v26 logError:fileCopy2];
 
 LABEL_15:
     v23 = 3;
@@ -290,15 +290,15 @@ LABEL_15:
   v33 = 0;
   v11 = +[NMSSHLogger sharedLogger];
   v12 = MEMORY[0x277CCACA8];
-  v13 = [(NMSSHSession *)self host];
-  v14 = [(NMSSHSession *)self port];
-  v15 = [v12 stringWithFormat:@"Check for host %@, port %@ in file %@", v13, v14, v4];
-  [v11 logInfo:v15];
+  host = [(NMSSHSession *)self host];
+  port = [(NMSSHSession *)self port];
+  fileCopy3 = [v12 stringWithFormat:@"Check for host %@, port %@ in file %@", host, port, fileCopy];
+  [v11 logInfo:fileCopy3];
 
-  v16 = [(NMSSHSession *)self host];
-  v17 = [v16 UTF8String];
-  v18 = [(NMSSHSession *)self port];
-  v19 = [v18 intValue];
+  host2 = [(NMSSHSession *)self host];
+  uTF8String = [host2 UTF8String];
+  port2 = [(NMSSHSession *)self port];
+  intValue = [port2 intValue];
   if (v10 == 1)
   {
     v20 = 589825;
@@ -309,7 +309,7 @@ LABEL_15:
     v20 = 851969;
   }
 
-  v21 = libssh2_knownhost_checkp(v6, v17, v19, v9, v34, v20, &v33);
+  v21 = libssh2_knownhost_checkp(v6, uTF8String, intValue, v9, v34, v20, &v33);
 
   libssh2_knownhost_free(v6);
   v22 = +[NMSSHLogger sharedLogger];
@@ -332,22 +332,22 @@ LABEL_16:
   return v23;
 }
 
-- (int64_t)knownHostStatusInFiles:(id)a3
+- (int64_t)knownHostStatusInFiles:(id)files
 {
   v19[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  filesCopy = files;
+  if (!filesCopy)
   {
-    v5 = [(NMSSHSession *)self userKnownHostsFileName];
-    v19[0] = v5;
-    v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v19 count:1];
+    userKnownHostsFileName = [(NMSSHSession *)self userKnownHostsFileName];
+    v19[0] = userKnownHostsFileName;
+    filesCopy = [MEMORY[0x277CBEA60] arrayWithObjects:v19 count:1];
   }
 
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = v4;
+  v6 = filesCopy;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -392,8 +392,8 @@ LABEL_5:
 
 - (id)userKnownHostsFileName
 {
-  v2 = [(NMSSHSession *)self applicationSupportDirectory];
-  v3 = [v2 stringByAppendingPathComponent:@"known_hosts"];
+  applicationSupportDirectory = [(NMSSHSession *)self applicationSupportDirectory];
+  v3 = [applicationSupportDirectory stringByAppendingPathComponent:@"known_hosts"];
 
   return v3;
 }
@@ -403,23 +403,23 @@ LABEL_5:
   v2 = NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, 1uLL, 1);
   v3 = [v2 objectAtIndexedSubscript:0];
   v4 = [v3 stringByAppendingPathComponent:@"NMSSH"];
-  v5 = [MEMORY[0x277CCAA00] defaultManager];
-  v6 = [v5 fileExistsAtPath:v4];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v6 = [defaultManager fileExistsAtPath:v4];
 
   if ((v6 & 1) == 0)
   {
-    v7 = [MEMORY[0x277CCAA00] defaultManager];
-    [v7 createDirectoryAtPath:v4 withIntermediateDirectories:1 attributes:0 error:0];
+    defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+    [defaultManager2 createDirectoryAtPath:v4 withIntermediateDirectories:1 attributes:0 error:0];
   }
 
   return v4;
 }
 
-- (id)fingerprint:(int64_t)a3
+- (id)fingerprint:(int64_t)fingerprint
 {
   if ([(NMSSHSession *)self rawSession])
   {
-    if (a3)
+    if (fingerprint)
     {
       v5 = 0;
     }
@@ -429,8 +429,8 @@ LABEL_5:
       v5 = 16;
     }
 
-    v6 = a3 == 1 || a3 == 0;
-    if (a3 == 1)
+    v6 = fingerprint == 1 || fingerprint == 0;
+    if (fingerprint == 1)
     {
       v7 = 20;
     }
@@ -440,14 +440,14 @@ LABEL_5:
       v7 = v5;
     }
 
-    if (a3 == 1)
+    if (fingerprint == 1)
     {
       v8 = 2;
     }
 
     else
     {
-      v8 = a3 == 0;
+      v8 = fingerprint == 0;
     }
 
     v9 = libssh2_hostkey_hash([(NMSSHSession *)self rawSession], v8);
@@ -500,23 +500,23 @@ LABEL_5:
   return v16;
 }
 
-- (BOOL)supportsAuthenticationMethod:(id)a3
+- (BOOL)supportsAuthenticationMethod:(id)method
 {
-  v4 = a3;
-  v5 = [(NMSSHSession *)self supportedAuthenticationMethods];
-  v6 = [v5 containsObject:v4];
+  methodCopy = method;
+  supportedAuthenticationMethods = [(NMSSHSession *)self supportedAuthenticationMethods];
+  v6 = [supportedAuthenticationMethods containsObject:methodCopy];
 
   return v6;
 }
 
 - (id)supportedAuthenticationMethods
 {
-  v3 = [(NMSSHSession *)self rawSession];
-  v4 = [(NMSSHSession *)self username];
-  v5 = [v4 UTF8String];
-  v6 = [(NMSSHSession *)self username];
-  v7 = strlen([v6 UTF8String]);
-  v8 = libssh2_userauth_list(v3, v5, v7);
+  rawSession = [(NMSSHSession *)self rawSession];
+  username = [(NMSSHSession *)self username];
+  uTF8String = [username UTF8String];
+  username2 = [(NMSSHSession *)self username];
+  v7 = strlen([username2 UTF8String]);
+  v8 = libssh2_userauth_list(rawSession, uTF8String, v7);
 
   if (v8)
   {
@@ -532,9 +532,9 @@ LABEL_5:
   {
     v9 = +[NMSSHLogger sharedLogger];
     v13 = MEMORY[0x277CCACA8];
-    v14 = [(NMSSHSession *)self host];
-    v15 = [(NMSSHSession *)self port];
-    v16 = [v13 stringWithFormat:@"Failed to get authentication method for host %@:%@", v14, v15];
+    host = [(NMSSHSession *)self host];
+    port = [(NMSSHSession *)self port];
+    v16 = [v13 stringWithFormat:@"Failed to get authentication method for host %@:%@", host, port];
     [v9 logInfo:v16];
 
     v12 = 0;
@@ -589,12 +589,12 @@ LABEL_13:
         goto LABEL_13;
       }
 
-      v8 = [(NMSSHSession *)self agent];
-      v9 = [(NMSSHSession *)self username];
-      v10 = [v9 UTF8String];
-      LODWORD(v8) = libssh2_agent_userauth(v8, v10, i);
+      agent = [(NMSSHSession *)self agent];
+      username = [(NMSSHSession *)self username];
+      uTF8String = [username UTF8String];
+      LODWORD(agent) = libssh2_agent_userauth(agent, uTF8String, i);
 
-      if (!v8)
+      if (!agent)
       {
         break;
       }
@@ -606,18 +606,18 @@ LABEL_13:
   return v3;
 }
 
-- (BOOL)authenticateByKeyboardInteractiveUsingBlock:(id)a3
+- (BOOL)authenticateByKeyboardInteractiveUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   if ([(NMSSHSession *)self supportsAuthenticationMethod:@"keyboard-interactive"])
   {
-    [(NMSSHSession *)self setKbAuthenticationBlock:v4];
-    v5 = [(NMSSHSession *)self rawSession];
-    v6 = [(NMSSHSession *)self username];
-    v7 = [v6 UTF8String];
-    v8 = [(NMSSHSession *)self username];
-    v9 = strlen([v8 UTF8String]);
-    v10 = libssh2_userauth_keyboard_interactive_ex(v5, v7, v9, kb_callback);
+    [(NMSSHSession *)self setKbAuthenticationBlock:blockCopy];
+    rawSession = [(NMSSHSession *)self rawSession];
+    username = [(NMSSHSession *)self username];
+    uTF8String = [username UTF8String];
+    username2 = [(NMSSHSession *)self username];
+    v9 = strlen([username2 UTF8String]);
+    v10 = libssh2_userauth_keyboard_interactive_ex(rawSession, uTF8String, v9, kb_callback);
 
     [(NMSSHSession *)self setKbAuthenticationBlock:0];
     v11 = +[NMSSHLogger sharedLogger];
@@ -626,7 +626,7 @@ LABEL_13:
       v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"Keyboard-interactive authentication succeeded."];
       [v11 logVerbose:v15];
 
-      v13 = [(NMSSHSession *)self isAuthorized];
+      isAuthorized = [(NMSSHSession *)self isAuthorized];
       goto LABEL_5;
     }
 
@@ -634,29 +634,29 @@ LABEL_13:
     [v11 logError:v12];
   }
 
-  v13 = 0;
+  isAuthorized = 0;
 LABEL_5:
 
-  return v13;
+  return isAuthorized;
 }
 
-- (BOOL)authenticateByInMemoryPublicKey:(id)a3 privateKey:(id)a4 andPassword:(id)a5
+- (BOOL)authenticateByInMemoryPublicKey:(id)key privateKey:(id)privateKey andPassword:(id)password
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  keyCopy = key;
+  privateKeyCopy = privateKey;
+  passwordCopy = password;
   if ([(NMSSHSession *)self supportsAuthenticationMethod:@"publickey"])
   {
-    if (!v10)
+    if (!passwordCopy)
     {
-      v10 = &stru_2850323E8;
+      passwordCopy = &stru_2850323E8;
     }
 
-    v20 = [(NMSSHSession *)self rawSession];
-    v11 = [(NMSSHSession *)self username];
-    v19 = [v11 UTF8String];
-    v12 = [(NMSSHSession *)self username];
-    v13 = libssh2_userauth_publickey_frommemory(v20, v19, [v12 length], objc_msgSend(v8, "UTF8String"), objc_msgSend(v8, "length"), objc_msgSend(v9, "UTF8String"), objc_msgSend(v9, "length"), -[__CFString UTF8String](v10, "UTF8String"));
+    rawSession = [(NMSSHSession *)self rawSession];
+    username = [(NMSSHSession *)self username];
+    uTF8String = [username UTF8String];
+    username2 = [(NMSSHSession *)self username];
+    v13 = libssh2_userauth_publickey_frommemory(rawSession, uTF8String, [username2 length], objc_msgSend(keyCopy, "UTF8String"), objc_msgSend(keyCopy, "length"), objc_msgSend(privateKeyCopy, "UTF8String"), objc_msgSend(privateKeyCopy, "length"), -[__CFString UTF8String](passwordCopy, "UTF8String"));
 
     v14 = +[NMSSHLogger sharedLogger];
     if (!v13)
@@ -664,7 +664,7 @@ LABEL_5:
       v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"Public key authentication succeeded."];
       [v14 logVerbose:v18];
 
-      v16 = [(NMSSHSession *)self isAuthorized];
+      isAuthorized = [(NMSSHSession *)self isAuthorized];
       goto LABEL_7;
     }
 
@@ -672,36 +672,36 @@ LABEL_5:
     [v14 logError:v15];
   }
 
-  v16 = 0;
+  isAuthorized = 0;
 LABEL_7:
 
-  return v16;
+  return isAuthorized;
 }
 
-- (BOOL)authenticateByPublicKey:(id)a3 privateKey:(id)a4 andPassword:(id)a5
+- (BOOL)authenticateByPublicKey:(id)key privateKey:(id)privateKey andPassword:(id)password
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  keyCopy = key;
+  privateKeyCopy = privateKey;
+  passwordCopy = password;
   if ([(NMSSHSession *)self supportsAuthenticationMethod:@"publickey"])
   {
-    if (!v10)
+    if (!passwordCopy)
     {
-      v10 = &stru_2850323E8;
+      passwordCopy = &stru_2850323E8;
     }
 
-    v11 = [v8 stringByExpandingTildeInPath];
-    v25 = [v11 UTF8String];
+    stringByExpandingTildeInPath = [keyCopy stringByExpandingTildeInPath];
+    uTF8String = [stringByExpandingTildeInPath UTF8String];
 
-    v12 = [v9 stringByExpandingTildeInPath];
-    v13 = [v12 UTF8String];
+    stringByExpandingTildeInPath2 = [privateKeyCopy stringByExpandingTildeInPath];
+    uTF8String2 = [stringByExpandingTildeInPath2 UTF8String];
 
-    v14 = [(NMSSHSession *)self rawSession];
-    v15 = [(NMSSHSession *)self username];
-    v16 = [v15 UTF8String];
-    v17 = [(NMSSHSession *)self username];
-    v18 = strlen([v17 UTF8String]);
-    v19 = libssh2_userauth_publickey_fromfile_ex(v14, v16, v18, v25, v13, [(__CFString *)v10 UTF8String]);
+    rawSession = [(NMSSHSession *)self rawSession];
+    username = [(NMSSHSession *)self username];
+    uTF8String3 = [username UTF8String];
+    username2 = [(NMSSHSession *)self username];
+    v18 = strlen([username2 UTF8String]);
+    v19 = libssh2_userauth_publickey_fromfile_ex(rawSession, uTF8String3, v18, uTF8String, uTF8String2, [(__CFString *)passwordCopy UTF8String]);
 
     v20 = +[NMSSHLogger sharedLogger];
     if (!v19)
@@ -709,7 +709,7 @@ LABEL_7:
       v24 = [MEMORY[0x277CCACA8] stringWithFormat:@"Public key authentication succeeded."];
       [v20 logVerbose:v24];
 
-      v22 = [(NMSSHSession *)self isAuthorized];
+      isAuthorized = [(NMSSHSession *)self isAuthorized];
       goto LABEL_7;
     }
 
@@ -717,25 +717,25 @@ LABEL_7:
     [v20 logError:v21];
   }
 
-  v22 = 0;
+  isAuthorized = 0;
 LABEL_7:
 
-  return v22;
+  return isAuthorized;
 }
 
-- (BOOL)authenticateByPassword:(id)a3
+- (BOOL)authenticateByPassword:(id)password
 {
-  v4 = a3;
-  if (v4 && [(NMSSHSession *)self supportsAuthenticationMethod:@"password"])
+  passwordCopy = password;
+  if (passwordCopy && [(NMSSHSession *)self supportsAuthenticationMethod:@"password"])
   {
-    v5 = [(NMSSHSession *)self rawSession];
-    v6 = [(NMSSHSession *)self username];
-    v7 = [v6 UTF8String];
-    v8 = [(NMSSHSession *)self username];
-    v9 = strlen([v8 UTF8String]);
-    v10 = [v4 UTF8String];
-    v11 = strlen([v4 UTF8String]);
-    v12 = libssh2_userauth_password_ex(v5, v7, v9, v10, v11, 0);
+    rawSession = [(NMSSHSession *)self rawSession];
+    username = [(NMSSHSession *)self username];
+    uTF8String = [username UTF8String];
+    username2 = [(NMSSHSession *)self username];
+    v9 = strlen([username2 UTF8String]);
+    uTF8String2 = [passwordCopy UTF8String];
+    v11 = strlen([passwordCopy UTF8String]);
+    v12 = libssh2_userauth_password_ex(rawSession, uTF8String, v9, uTF8String2, v11, 0);
 
     v13 = +[NMSSHLogger sharedLogger];
     if (!v12)
@@ -743,7 +743,7 @@ LABEL_7:
       v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"Password authentication succeeded."];
       [v13 logVerbose:v17];
 
-      v15 = [(NMSSHSession *)self isAuthorized];
+      isAuthorized = [(NMSSHSession *)self isAuthorized];
       goto LABEL_6;
     }
 
@@ -751,21 +751,21 @@ LABEL_7:
     [v13 logError:v14];
   }
 
-  v15 = 0;
+  isAuthorized = 0;
 LABEL_6:
 
-  return v15;
+  return isAuthorized;
 }
 
 - (BOOL)isAuthorized
 {
-  v3 = [(NMSSHSession *)self rawSession];
-  if (v3)
+  rawSession = [(NMSSHSession *)self rawSession];
+  if (rawSession)
   {
-    LOBYTE(v3) = libssh2_userauth_authenticated([(NMSSHSession *)self rawSession]) == 1;
+    LOBYTE(rawSession) = libssh2_userauth_authenticated([(NMSSHSession *)self rawSession]) == 1;
   }
 
-  return v3;
+  return rawSession;
 }
 
 - (void)disconnect
@@ -818,10 +818,10 @@ LABEL_6:
   [(NMSSHSession *)self setConnected:0];
 }
 
-- (BOOL)connectWithTimeout:(id)a3
+- (BOOL)connectWithTimeout:(id)timeout
 {
   v66 = *MEMORY[0x277D85DE8];
-  v55 = a3;
+  timeoutCopy = timeout;
   if ([(NMSSHSession *)self isConnected])
   {
     [(NMSSHSession *)self disconnect];
@@ -843,15 +843,15 @@ LABEL_6:
 
   if (*(v58 + 24) != 1)
   {
-    v21 = 0;
+    isConnected = 0;
     goto LABEL_32;
   }
 
-  v4 = [(NMSSHSession *)self port];
-  v5 = [v4 integerValue];
+  port = [(NMSSHSession *)self port];
+  integerValue = [port integerValue];
 
-  v6 = [(NMSSHSession *)self hostIPAddresses];
-  if (!v6)
+  hostIPAddresses = [(NMSSHSession *)self hostIPAddresses];
+  if (!hostIPAddresses)
   {
 LABEL_24:
     v22 = +[NMSSHLogger sharedLogger];
@@ -863,12 +863,12 @@ LABEL_24:
   }
 
   v7 = 0;
-  v54 = bswap32(v5) >> 16;
+  v54 = bswap32(integerValue) >> 16;
   v8 = *MEMORY[0x277CBECE8];
   v9 = 1;
-  while (v7 < [v6 count] && v9)
+  while (v7 < [hostIPAddresses count] && v9)
   {
-    v10 = [v6 objectAtIndexedSubscript:v7];
+    v10 = [hostIPAddresses objectAtIndexedSubscript:v7];
     if ([v10 length] == 16)
     {
       *bytes = 0;
@@ -929,24 +929,24 @@ LABEL_24:
 LABEL_28:
 
 LABEL_29:
-      v21 = 0;
+      isConnected = 0;
       goto LABEL_30;
     }
 
     socket = self->_socket;
-    [v55 doubleValue];
+    [timeoutCopy doubleValue];
     v9 = CFSocketConnectToAddress(socket, v12, v17);
     CFRelease(v12);
     v18 = +[NMSSHLogger sharedLogger];
     if (v9)
     {
-      v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"Socket connection to %@ on port %ld failed with reason %li, trying next address...", v11, v5, v9];
+      v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"Socket connection to %@ on port %ld failed with reason %li, trying next address...", v11, integerValue, v9];
       [v18 logVerbose:v19];
     }
 
     else
     {
-      v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"Socket connection to %@ on port %ld succesful", v11, v5];
+      v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"Socket connection to %@ on port %ld succesful", v11, integerValue];
       [v18 logInfo:v19];
     }
 
@@ -962,15 +962,15 @@ LABEL_21:
   [(NMSSHSession *)self setSession:libssh2_session_init_ex(0, 0, 0, self)];
   libssh2_session_callback_set([(NMSSHSession *)self rawSession], 2u, disconnect_callback);
   libssh2_session_set_blocking([(NMSSHSession *)self rawSession], 1);
-  v30 = [(NMSSHSession *)self banner];
-  if (v30)
+  banner = [(NMSSHSession *)self banner];
+  if (banner)
   {
-    v31 = [(NMSSHSession *)self rawSession];
-    v32 = [(NMSSHSession *)self banner];
-    v33 = v32;
-    LOBYTE(v31) = libssh2_session_banner_set(v31, [v32 UTF8String]) == 0;
+    rawSession = [(NMSSHSession *)self rawSession];
+    banner2 = [(NMSSHSession *)self banner];
+    v33 = banner2;
+    LOBYTE(rawSession) = libssh2_session_banner_set(rawSession, [banner2 UTF8String]) == 0;
 
-    if ((v31 & 1) == 0)
+    if ((rawSession & 1) == 0)
     {
       v34 = +[NMSSHLogger sharedLogger];
       v35 = [MEMORY[0x277CCACA8] stringWithFormat:@"Failure setting the banner"];
@@ -978,14 +978,14 @@ LABEL_21:
     }
   }
 
-  v36 = [(NMSSHSession *)self rawSession];
+  rawSession2 = [(NMSSHSession *)self rawSession];
   v37 = CFSocketGetNative(self->_socket);
-  if (!libssh2_session_handshake(v36, v37))
+  if (!libssh2_session_handshake(rawSession2, v37))
   {
     v40 = +[NMSSHLogger sharedLogger];
     v41 = MEMORY[0x277CCACA8];
-    v42 = [(NMSSHSession *)self remoteBanner];
-    v43 = [v41 stringWithFormat:@"Remote host banner is %@", v42];
+    remoteBanner = [(NMSSHSession *)self remoteBanner];
+    v43 = [v41 stringWithFormat:@"Remote host banner is %@", remoteBanner];
     [v40 logVerbose:v43];
 
     v10 = [(NMSSHSession *)self fingerprint:[(NMSSHSession *)self fingerprintHash]];
@@ -993,14 +993,14 @@ LABEL_21:
     v45 = [MEMORY[0x277CCACA8] stringWithFormat:@"The host's fingerprint is %@", v10];
     [v44 logInfo:v45];
 
-    v46 = [(NMSSHSession *)self delegate];
-    if (v46)
+    delegate = [(NMSSHSession *)self delegate];
+    if (delegate)
     {
-      v47 = [(NMSSHSession *)self delegate];
+      delegate2 = [(NMSSHSession *)self delegate];
       if (objc_opt_respondsToSelector())
       {
-        v48 = [(NMSSHSession *)self delegate];
-        v49 = [v48 session:self shouldConnectToHostWithFingerprint:v10];
+        delegate3 = [(NMSSHSession *)self delegate];
+        v49 = [delegate3 session:self shouldConnectToHostWithFingerprint:v10];
 
         if ((v49 & 1) == 0)
         {
@@ -1023,7 +1023,7 @@ LABEL_21:
     [v52 logVerbose:v53];
 
     [(NMSSHSession *)self setConnected:1];
-    v21 = [(NMSSHSession *)self isConnected];
+    isConnected = [(NMSSHSession *)self isConnected];
 LABEL_30:
 
     goto LABEL_31;
@@ -1035,14 +1035,14 @@ LABEL_30:
 
   [(NMSSHSession *)self disconnect];
 LABEL_25:
-  v21 = 0;
+  isConnected = 0;
 LABEL_31:
 
 LABEL_32:
   _Block_object_dispose(&v57, 8);
 
   v28 = *MEMORY[0x277D85DE8];
-  return v21;
+  return isConnected;
 }
 
 void __35__NMSSHSession_connectWithTimeout___block_invoke(uint64_t a1)
@@ -1110,12 +1110,12 @@ void __35__NMSSHSession_connectWithTimeout___block_invoke(uint64_t a1)
   return v8;
 }
 
-- (void)setTimeout:(id)a3
+- (void)setTimeout:(id)timeout
 {
-  v4 = a3;
+  timeoutCopy = timeout;
   if ([(NMSSHSession *)self rawSession])
   {
-    libssh2_session_set_timeout(-[NMSSHSession rawSession](self, "rawSession"), 1000 * [v4 longValue]);
+    libssh2_session_set_timeout(-[NMSSHSession rawSession](self, "rawSession"), 1000 * [timeoutCopy longValue]);
   }
 }
 
@@ -1210,37 +1210,37 @@ LABEL_10:
   return v14;
 }
 
-- (NMSSHSession)initWithHost:(id)a3 andUsername:(id)a4
+- (NMSSHSession)initWithHost:(id)host andUsername:(id)username
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [objc_opt_class() URLForHost:v7];
+  usernameCopy = username;
+  hostCopy = host;
+  v8 = [objc_opt_class() URLForHost:hostCopy];
 
-  v9 = [v8 host];
-  v10 = [v8 port];
-  v11 = v10;
-  if (!v10)
+  host = [v8 host];
+  port = [v8 port];
+  v11 = port;
+  if (!port)
   {
-    v10 = &unk_28509BB28;
+    port = &unk_28509BB28;
   }
 
-  v12 = -[NMSSHSession initWithHost:port:andUsername:](self, "initWithHost:port:andUsername:", v9, [v10 intValue], v6);
+  v12 = -[NMSSHSession initWithHost:port:andUsername:](self, "initWithHost:port:andUsername:", host, [port intValue], usernameCopy);
 
   return v12;
 }
 
-- (NMSSHSession)initWithHost:(id)a3 configs:(id)a4 withDefaultPort:(int64_t)a5 defaultUsername:(id)a6
+- (NMSSHSession)initWithHost:(id)host configs:(id)configs withDefaultPort:(int64_t)port defaultUsername:(id)username
 {
   v34 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
+  hostCopy = host;
+  configsCopy = configs;
+  usernameCopy = username;
   v12 = objc_alloc_init(NMSSHHostConfig);
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v13 = v10;
+  v13 = configsCopy;
   v14 = [v13 countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (v14)
   {
@@ -1256,7 +1256,7 @@ LABEL_10:
           objc_enumerationMutation(v13);
         }
 
-        v18 = [*(*(&v29 + 1) + 8 * v17) hostConfigForHost:v9];
+        v18 = [*(*(&v29 + 1) + 8 * v17) hostConfigForHost:hostCopy];
         if (v18)
         {
           [(NMSSHHostConfig *)v12 mergeFrom:v18];
@@ -1273,17 +1273,17 @@ LABEL_10:
   }
 
   v19 = objc_alloc_init(NMSSHHostConfig);
-  [(NMSSHHostConfig *)v19 setHostname:v9];
-  v20 = [MEMORY[0x277CCABB0] numberWithInteger:a5];
+  [(NMSSHHostConfig *)v19 setHostname:hostCopy];
+  v20 = [MEMORY[0x277CCABB0] numberWithInteger:port];
   [(NMSSHHostConfig *)v19 setPort:v20];
 
-  [(NMSSHHostConfig *)v19 setUser:v11];
+  [(NMSSHHostConfig *)v19 setUser:usernameCopy];
   [(NMSSHHostConfig *)v12 mergeFrom:v19];
-  v21 = [(NMSSHHostConfig *)v12 hostname];
-  v22 = [(NMSSHHostConfig *)v12 port];
-  v23 = [v22 integerValue];
-  v24 = [(NMSSHHostConfig *)v12 user];
-  v25 = [(NMSSHSession *)self initWithHost:v21 port:v23 andUsername:v24];
+  hostname = [(NMSSHHostConfig *)v12 hostname];
+  port = [(NMSSHHostConfig *)v12 port];
+  integerValue = [port integerValue];
+  user = [(NMSSHHostConfig *)v12 user];
+  v25 = [(NMSSHSession *)self initWithHost:hostname port:integerValue andUsername:user];
 
   if (v25)
   {
@@ -1294,21 +1294,21 @@ LABEL_10:
   return v25;
 }
 
-- (NMSSHSession)initWithHost:(id)a3 port:(int64_t)a4 andUsername:(id)a5
+- (NMSSHSession)initWithHost:(id)host port:(int64_t)port andUsername:(id)username
 {
-  v8 = a3;
-  v9 = a5;
+  hostCopy = host;
+  usernameCopy = username;
   v14.receiver = self;
   v14.super_class = NMSSHSession;
   v10 = [(NMSSHSession *)&v14 init];
   v11 = v10;
   if (v10)
   {
-    [(NMSSHSession *)v10 setHost:v8];
-    v12 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+    [(NMSSHSession *)v10 setHost:hostCopy];
+    v12 = [MEMORY[0x277CCABB0] numberWithInteger:port];
     [(NMSSHSession *)v11 setPort:v12];
 
-    [(NMSSHSession *)v11 setUsername:v9];
+    [(NMSSHSession *)v11 setUsername:usernameCopy];
     [(NMSSHSession *)v11 setConnected:0];
     [(NMSSHSession *)v11 setFingerprintHash:0];
   }
@@ -1316,47 +1316,47 @@ LABEL_10:
   return v11;
 }
 
-+ (id)URLForHost:(id)a3
++ (id)URLForHost:(id)host
 {
-  v3 = a3;
-  v4 = [v3 componentsSeparatedByString:@":"];
+  hostCopy = host;
+  v4 = [hostCopy componentsSeparatedByString:@":"];
   if ([v4 count] >= 3)
   {
-    v5 = [v3 hasPrefix:@"["];
+    v5 = [hostCopy hasPrefix:@"["];
 
     if (v5)
     {
       goto LABEL_5;
     }
 
-    [MEMORY[0x277CCACA8] stringWithFormat:@"[%@]", v3];
-    v3 = v4 = v3;
+    [MEMORY[0x277CCACA8] stringWithFormat:@"[%@]", hostCopy];
+    hostCopy = v4 = hostCopy;
   }
 
 LABEL_5:
   v6 = MEMORY[0x277CBEBC0];
-  v7 = [@"ssh://" stringByAppendingString:v3];
+  v7 = [@"ssh://" stringByAppendingString:hostCopy];
   v8 = [v6 URLWithString:v7];
 
   return v8;
 }
 
-+ (id)connectToHost:(id)a3 withUsername:(id)a4
++ (id)connectToHost:(id)host withUsername:(id)username
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[NMSSHSession alloc] initWithHost:v6 andUsername:v5];
+  usernameCopy = username;
+  hostCopy = host;
+  v7 = [[NMSSHSession alloc] initWithHost:hostCopy andUsername:usernameCopy];
 
   [(NMSSHSession *)v7 connect];
 
   return v7;
 }
 
-+ (id)connectToHost:(id)a3 port:(int64_t)a4 withUsername:(id)a5
++ (id)connectToHost:(id)host port:(int64_t)port withUsername:(id)username
 {
-  v7 = a5;
-  v8 = a3;
-  v9 = [[NMSSHSession alloc] initWithHost:v8 port:a4 andUsername:v7];
+  usernameCopy = username;
+  hostCopy = host;
+  v9 = [[NMSSHSession alloc] initWithHost:hostCopy port:port andUsername:usernameCopy];
 
   [(NMSSHSession *)v9 connect];
 

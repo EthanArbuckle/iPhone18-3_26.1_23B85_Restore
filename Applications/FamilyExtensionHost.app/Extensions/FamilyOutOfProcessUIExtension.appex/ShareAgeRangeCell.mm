@@ -1,15 +1,15 @@
 @interface ShareAgeRangeCell
-- (_TtC29FamilyOutOfProcessUIExtension17ShareAgeRangeCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4;
+- (_TtC29FamilyOutOfProcessUIExtension17ShareAgeRangeCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated;
 @end
 
 @implementation ShareAgeRangeCell
 
-- (_TtC29FamilyOutOfProcessUIExtension17ShareAgeRangeCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC29FamilyOutOfProcessUIExtension17ShareAgeRangeCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
-    a4 = sub_10001BD30();
+    identifier = sub_10001BD30();
     v6 = v5;
   }
 
@@ -18,13 +18,13 @@
     v6 = 0;
   }
 
-  return sub_10001531C(a3, a4, v6);
+  return sub_10001531C(style, identifier, v6);
 }
 
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
-  v6 = self;
-  sub_100015550(a3, a4);
+  selfCopy = self;
+  sub_100015550(selected, animated);
 }
 
 @end

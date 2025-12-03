@@ -1,18 +1,18 @@
 @interface TSUWeakProxy
-- (BOOL)respondsToSelector:(SEL)a3;
-- (TSUWeakProxy)initWithTarget:(id)a3;
-- (id)forwardingTargetForSelector:(SEL)a3;
-- (id)methodSignatureForSelector:(SEL)a3;
+- (BOOL)respondsToSelector:(SEL)selector;
+- (TSUWeakProxy)initWithTarget:(id)target;
+- (id)forwardingTargetForSelector:(SEL)selector;
+- (id)methodSignatureForSelector:(SEL)selector;
 - (id)target;
-- (void)forwardInvocation:(id)a3;
+- (void)forwardInvocation:(id)invocation;
 @end
 
 @implementation TSUWeakProxy
 
-- (TSUWeakProxy)initWithTarget:(id)a3
+- (TSUWeakProxy)initWithTarget:(id)target
 {
-  v4 = a3;
-  objc_storeWeak(&self->_target, v4);
+  targetCopy = target;
+  objc_storeWeak(&self->_target, targetCopy);
   v5 = objc_opt_class();
 
   targetClass = self->_targetClass;
@@ -21,21 +21,21 @@
   return self;
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
-  v3 = [(TSUWeakProxy *)self target];
+  target = [(TSUWeakProxy *)self target];
   v4 = objc_opt_respondsToSelector();
 
   return v4 & 1;
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
-  v5 = [(TSUWeakProxy *)self target];
-  v6 = [v5 methodSignatureForSelector:a3];
-  if (!v5)
+  target = [(TSUWeakProxy *)self target];
+  v6 = [target methodSignatureForSelector:selector];
+  if (!target)
   {
-    v7 = [(objc_class *)[(TSUWeakProxy *)self targetClass] instanceMethodSignatureForSelector:a3];
+    v7 = [(objc_class *)[(TSUWeakProxy *)self targetClass] instanceMethodSignatureForSelector:selector];
 
     v6 = v7;
   }
@@ -43,31 +43,31 @@
   return v6;
 }
 
-- (id)forwardingTargetForSelector:(SEL)a3
+- (id)forwardingTargetForSelector:(SEL)selector
 {
-  v4 = [(TSUWeakProxy *)self target];
+  target = [(TSUWeakProxy *)self target];
   if (objc_opt_respondsToSelector())
   {
-    v5 = v4;
+    selfCopy = target;
   }
 
   else
   {
-    v5 = self;
+    selfCopy = self;
   }
 
-  v6 = v5;
+  v6 = selfCopy;
 
-  return v5;
+  return selfCopy;
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
-  v5 = a3;
-  v4 = [(TSUWeakProxy *)self target];
-  if (v4)
+  invocationCopy = invocation;
+  target = [(TSUWeakProxy *)self target];
+  if (target)
   {
-    [v5 invokeWithTarget:v4];
+    [invocationCopy invokeWithTarget:target];
   }
 }
 

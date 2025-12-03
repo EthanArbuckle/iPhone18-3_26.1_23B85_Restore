@@ -1,6 +1,6 @@
 @interface CSAudioPowerServiceClient
-+ (unint64_t)_getTimeIntervalFromFrequency:(int64_t)a3;
-- (CSAudioPowerServiceClient)initWithQueue:(id)a3 frequency:(int64_t)a4 delegate:(id)a5;
++ (unint64_t)_getTimeIntervalFromFrequency:(int64_t)frequency;
+- (CSAudioPowerServiceClient)initWithQueue:(id)queue frequency:(int64_t)frequency delegate:(id)delegate;
 - (id)_connection;
 - (id)_newConnection;
 - (id)_service;
@@ -96,21 +96,21 @@ void __46__CSAudioPowerServiceClient__fetchPowerLevels__block_invoke(uint64_t a1
 
 - (void)_fetchPowerLevels
 {
-  v3 = [(CSAudioPowerServiceClient *)self _service];
+  _service = [(CSAudioPowerServiceClient *)self _service];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __46__CSAudioPowerServiceClient__fetchPowerLevels__block_invoke;
   v4[3] = &unk_1E865B448;
   v4[4] = self;
-  [v3 getAudioPowerUpdateWithCompletion:v4];
+  [_service getAudioPowerUpdateWithCompletion:v4];
 }
 
 - (id)_service
 {
-  v2 = [(CSAudioPowerServiceClient *)self _connection];
-  v3 = [v2 remoteObjectProxy];
+  _connection = [(CSAudioPowerServiceClient *)self _connection];
+  remoteObjectProxy = [_connection remoteObjectProxy];
 
-  return v3;
+  return remoteObjectProxy;
 }
 
 - (id)_connection
@@ -128,9 +128,9 @@ void __46__CSAudioPowerServiceClient__fetchPowerLevels__block_invoke(uint64_t a1
       _os_log_impl(&dword_1DDA4B000, v4, OS_LOG_TYPE_DEFAULT, "%s Creating new xpc connection...", buf, 0xCu);
     }
 
-    v5 = [(CSAudioPowerServiceClient *)self _newConnection];
+    _newConnection = [(CSAudioPowerServiceClient *)self _newConnection];
     v6 = self->_xpcConnection;
-    self->_xpcConnection = v5;
+    self->_xpcConnection = _newConnection;
 
     objc_initWeak(buf, self);
     v7 = self->_xpcConnection;
@@ -288,34 +288,34 @@ void __40__CSAudioPowerServiceClient__connection__block_invoke_3(uint64_t a1)
   dispatch_async(queue, block);
 }
 
-- (CSAudioPowerServiceClient)initWithQueue:(id)a3 frequency:(int64_t)a4 delegate:(id)a5
+- (CSAudioPowerServiceClient)initWithQueue:(id)queue frequency:(int64_t)frequency delegate:(id)delegate
 {
-  v9 = a3;
-  v10 = a5;
+  queueCopy = queue;
+  delegateCopy = delegate;
   v14.receiver = self;
   v14.super_class = CSAudioPowerServiceClient;
   v11 = [(CSAudioPowerServiceClient *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_queue, a3);
-    v12->_frequency = a4;
-    objc_storeWeak(&v12->_delegate, v10);
+    objc_storeStrong(&v11->_queue, queue);
+    v12->_frequency = frequency;
+    objc_storeWeak(&v12->_delegate, delegateCopy);
   }
 
   return v12;
 }
 
-+ (unint64_t)_getTimeIntervalFromFrequency:(int64_t)a3
++ (unint64_t)_getTimeIntervalFromFrequency:(int64_t)frequency
 {
-  if ((a3 - 1) > 2)
+  if ((frequency - 1) > 2)
   {
     return 0;
   }
 
   else
   {
-    return qword_1DDB1FA50[a3 - 1];
+    return qword_1DDB1FA50[frequency - 1];
   }
 }
 

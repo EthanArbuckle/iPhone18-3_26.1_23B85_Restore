@@ -1,55 +1,55 @@
 @interface AMSDFraudReportPrivacyTask
-+ (id)_blindedTransactionWithTransactionID:(id)a3 pks:(id)a4 keyID:(id)a5 error:(id *)a6;
-+ (id)performUnBlindingFraudReportForResponse:(id)a3 tdmToken:(id)a4 pks:(id)a5 error:(id *)a6;
-- (AMSDFraudReportPrivacyTask)initWithBag:(id)a3;
-- (id)performBlindingWithTransactionID:(id)a3 keyID:(id)a4;
++ (id)_blindedTransactionWithTransactionID:(id)d pks:(id)pks keyID:(id)iD error:(id *)error;
++ (id)performUnBlindingFraudReportForResponse:(id)response tdmToken:(id)token pks:(id)pks error:(id *)error;
+- (AMSDFraudReportPrivacyTask)initWithBag:(id)bag;
+- (id)performBlindingWithTransactionID:(id)d keyID:(id)iD;
 @end
 
 @implementation AMSDFraudReportPrivacyTask
 
-- (AMSDFraudReportPrivacyTask)initWithBag:(id)a3
+- (AMSDFraudReportPrivacyTask)initWithBag:(id)bag
 {
-  v5 = a3;
-  if (!v5)
+  bagCopy = bag;
+  if (!bagCopy)
   {
     v10 = [NSException exceptionWithName:NSInvalidArgumentException reason:@"bag must not be nil" userInfo:0];
     objc_exception_throw(v10);
   }
 
-  v6 = v5;
+  v6 = bagCopy;
   v11.receiver = self;
   v11.super_class = AMSDFraudReportPrivacyTask;
   v7 = [(AMSDFraudReportPrivacyTask *)&v11 init];
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_bag, a3);
+    objc_storeStrong(&v7->_bag, bag);
   }
 
   return v8;
 }
 
-- (id)performBlindingWithTransactionID:(id)a3 keyID:(id)a4
+- (id)performBlindingWithTransactionID:(id)d keyID:(id)iD
 {
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100059B48;
   v9[3] = &unk_1002B0800;
-  v10 = self;
-  v11 = a3;
-  v12 = a4;
-  v5 = v12;
-  v6 = v11;
-  v7 = [(AMSDFraudReportPrivacyTask *)v10 performTaskWithPromiseBlock:v9];
+  selfCopy = self;
+  dCopy = d;
+  iDCopy = iD;
+  v5 = iDCopy;
+  v6 = dCopy;
+  v7 = [(AMSDFraudReportPrivacyTask *)selfCopy performTaskWithPromiseBlock:v9];
 
   return v7;
 }
 
-+ (id)performUnBlindingFraudReportForResponse:(id)a3 tdmToken:(id)a4 pks:(id)a5 error:(id *)a6
++ (id)performUnBlindingFraudReportForResponse:(id)response tdmToken:(id)token pks:(id)pks error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  responseCopy = response;
+  tokenCopy = token;
+  pksCopy = pks;
   v13 = AMSSetLogKeyIfNeeded();
   v14 = +[AMSLogConfig sharedFraudReportConfig];
   if (!v14)
@@ -57,36 +57,36 @@
     v14 = +[AMSLogConfig sharedConfig];
   }
 
-  v15 = [v14 OSLogObject];
-  if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v14 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v33 = a1;
+    selfCopy = self;
     v34 = 2114;
     v35 = v13;
-    _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Running fraud report unblinding response task.", buf, 0x16u);
+    _os_log_impl(&_mh_execute_header, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Running fraud report unblinding response task.", buf, 0x16u);
   }
 
-  v16 = [v10 nameSpace];
-  v17 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@|%hhu|%hhu", v16, [v10 reportedScore], objc_msgSend(v10, "newScore"));
+  nameSpace = [responseCopy nameSpace];
+  v17 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@|%hhu|%hhu", nameSpace, [responseCopy reportedScore], objc_msgSend(responseCopy, "newScore"));
   v18 = [v17 dataUsingEncoding:4];
 
   if (v18)
   {
-    v19 = a1;
-    v30 = a6;
-    v20 = [v10 evaluatedElementData];
-    v21 = [v10 proofData];
+    selfCopy2 = self;
+    errorCopy = error;
+    evaluatedElementData = [responseCopy evaluatedElementData];
+    proofData = [responseCopy proofData];
     v31 = 0;
-    v22 = [v11 finalizeWithEvaluatedElement:v20 proof:v21 publicKey:v12 fsr:v18 error:&v31];
+    v22 = [tokenCopy finalizeWithEvaluatedElement:evaluatedElementData proof:proofData publicKey:pksCopy fsr:v18 error:&v31];
     v23 = v31;
 
     if (v22)
     {
       v24 = [v22 base64EncodedStringWithOptions:0];
-      [v10 _setFinalizedElement:v24];
+      [responseCopy _setFinalizedElement:v24];
 
-      v25 = v10;
+      v25 = responseCopy;
     }
 
     else
@@ -97,23 +97,23 @@
         v26 = +[AMSLogConfig sharedConfig];
       }
 
-      v27 = [v26 OSLogObject];
-      if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
+      oSLogObject2 = [v26 OSLogObject];
+      if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543874;
-        v33 = v19;
+        selfCopy = selfCopy2;
         v34 = 2114;
         v35 = v13;
         v36 = 2114;
         v37 = v23;
-        _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_ERROR, "%{public}@ [%{public}@] Error fraud report unblinding message, cannot create a finalized element: %{public}@", buf, 0x20u);
+        _os_log_impl(&_mh_execute_header, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@ [%{public}@] Error fraud report unblinding message, cannot create a finalized element: %{public}@", buf, 0x20u);
       }
 
-      if (v30)
+      if (errorCopy)
       {
         v28 = v23;
         v25 = 0;
-        *v30 = v23;
+        *errorCopy = v23;
       }
 
       else
@@ -123,10 +123,10 @@
     }
   }
 
-  else if (a6)
+  else if (error)
   {
     AMSError();
-    *a6 = v25 = 0;
+    *error = v25 = 0;
   }
 
   else
@@ -137,29 +137,29 @@
   return v25;
 }
 
-+ (id)_blindedTransactionWithTransactionID:(id)a3 pks:(id)a4 keyID:(id)a5 error:(id *)a6
++ (id)_blindedTransactionWithTransactionID:(id)d pks:(id)pks keyID:(id)iD error:(id *)error
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a3;
+  pksCopy = pks;
+  iDCopy = iD;
+  dCopy = d;
   v12 = AMSSetLogKeyIfNeeded();
-  v13 = [v11 dataUsingEncoding:4];
+  v13 = [dCopy dataUsingEncoding:4];
 
   if (v13)
   {
     v14 = [[TDMToken alloc] initWithTID:v13];
-    v15 = [v14 blindedElement];
+    blindedElement = [v14 blindedElement];
 
-    if (v15)
+    if (blindedElement)
     {
-      v16 = [v10 dataUsingEncoding:4];
-      v17 = [[AMSDFraudReportBlindedTransaction alloc] initWithTDMToken:v14 pks:v9 keyID:v16];
+      v16 = [iDCopy dataUsingEncoding:4];
+      v17 = [[AMSDFraudReportBlindedTransaction alloc] initWithTDMToken:v14 pks:pksCopy keyID:v16];
     }
 
-    else if (a6)
+    else if (error)
     {
       AMSError();
-      *a6 = v17 = 0;
+      *error = v17 = 0;
     }
 
     else
@@ -168,10 +168,10 @@
     }
   }
 
-  else if (a6)
+  else if (error)
   {
     AMSError();
-    *a6 = v17 = 0;
+    *error = v17 = 0;
   }
 
   else

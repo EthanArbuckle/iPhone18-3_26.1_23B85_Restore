@@ -1,17 +1,17 @@
 @interface NTKSnapshotToken
-- (NTKSnapshotToken)initWithPriority:(unint64_t)a3 callback:(id)a4;
+- (NTKSnapshotToken)initWithPriority:(unint64_t)priority callback:(id)callback;
 - (id)callback;
 - (unint64_t)priority;
 - (void)dealloc;
-- (void)setPriority:(unint64_t)a3;
-- (void)setRequest:(id)a3;
+- (void)setPriority:(unint64_t)priority;
+- (void)setRequest:(id)request;
 @end
 
 @implementation NTKSnapshotToken
 
-- (NTKSnapshotToken)initWithPriority:(unint64_t)a3 callback:(id)a4
+- (NTKSnapshotToken)initWithPriority:(unint64_t)priority callback:(id)callback
 {
-  v6 = a4;
+  callbackCopy = callback;
   v13.receiver = self;
   v13.super_class = NTKSnapshotToken;
   v7 = [(NTKSnapshotToken *)&v13 init];
@@ -22,8 +22,8 @@
     v7->_request = 0;
 
     v8->_lock._os_unfair_lock_opaque = 0;
-    v8->_lock_priority = a3;
-    v10 = _Block_copy(v6);
+    v8->_lock_priority = priority;
+    v10 = _Block_copy(callbackCopy);
     callback = v8->_callback;
     v8->_callback = v10;
   }
@@ -47,22 +47,22 @@
   return lock_priority;
 }
 
-- (void)setPriority:(unint64_t)a3
+- (void)setPriority:(unint64_t)priority
 {
   os_unfair_lock_lock(&self->_lock);
-  self->_lock_priority = a3;
+  self->_lock_priority = priority;
   os_unfair_lock_unlock(&self->_lock);
   request = self->_request;
 
   [(NTKSnapshotRequest *)request updatePriority];
 }
 
-- (void)setRequest:(id)a3
+- (void)setRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   os_unfair_lock_lock(&self->_lock);
   request = self->_request;
-  self->_request = v4;
+  self->_request = requestCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }

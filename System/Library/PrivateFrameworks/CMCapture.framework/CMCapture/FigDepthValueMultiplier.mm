@@ -1,15 +1,15 @@
 @interface FigDepthValueMultiplier
-- (FigDepthValueMultiplier)initWithMetalContext:(id)a3;
+- (FigDepthValueMultiplier)initWithMetalContext:(id)context;
 - (int)_initShaders;
-- (int)depthValueInputPixelBuffer:(__CVBuffer *)a3 bias:(float)a4 scaleFactor:(float)a5;
+- (int)depthValueInputPixelBuffer:(__CVBuffer *)buffer bias:(float)bias scaleFactor:(float)factor;
 - (uint64_t)_initShaders;
 @end
 
 @implementation FigDepthValueMultiplier
 
-- (FigDepthValueMultiplier)initWithMetalContext:(id)a3
+- (FigDepthValueMultiplier)initWithMetalContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v13.receiver = self;
   v13.super_class = FigDepthValueMultiplier;
   v6 = [(FigDepthValueMultiplier *)&v13 init];
@@ -22,7 +22,7 @@ LABEL_14:
     goto LABEL_8;
   }
 
-  objc_storeStrong(&v6->_metalContext, a3);
+  objc_storeStrong(&v6->_metalContext, context);
   if (!v7->_metalContext)
   {
     v8 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
@@ -77,36 +77,36 @@ LABEL_8:
   return v6;
 }
 
-- (int)depthValueInputPixelBuffer:(__CVBuffer *)a3 bias:(float)a4 scaleFactor:(float)a5
+- (int)depthValueInputPixelBuffer:(__CVBuffer *)buffer bias:(float)bias scaleFactor:(float)factor
 {
-  v20 = a5;
-  v21 = a4;
+  factorCopy = factor;
+  biasCopy = bias;
   v7 = MEMORY[0x1E69741C0];
-  Width = CVPixelBufferGetWidth(a3);
-  v9 = [v7 texture2DDescriptorWithPixelFormat:25 width:Width height:CVPixelBufferGetHeight(a3) mipmapped:0];
+  Width = CVPixelBufferGetWidth(buffer);
+  v9 = [v7 texture2DDescriptorWithPixelFormat:25 width:Width height:CVPixelBufferGetHeight(buffer) mipmapped:0];
   [v9 setUsage:3];
   [v9 setResourceOptions:0];
-  v10 = [(FigMetalContext *)self->_metalContext commandBuffer];
-  [v10 setLabel:@"FigDepthValueMultiplier::scaleBiasClamp"];
-  v11 = [v10 device];
-  v12 = [v11 newTextureWithDescriptor:v9 iosurface:CVPixelBufferGetIOSurface(a3) plane:0];
+  commandBuffer = [(FigMetalContext *)self->_metalContext commandBuffer];
+  [commandBuffer setLabel:@"FigDepthValueMultiplier::scaleBiasClamp"];
+  device = [commandBuffer device];
+  v12 = [device newTextureWithDescriptor:v9 iosurface:CVPixelBufferGetIOSurface(buffer) plane:0];
 
   if (v12)
   {
-    v13 = [v10 computeCommandEncoder];
-    if (!v13)
+    computeCommandEncoder = [commandBuffer computeCommandEncoder];
+    if (!computeCommandEncoder)
     {
       [FigDepthValueMultiplier depthValueInputPixelBuffer:bias:scaleFactor:];
       v15 = -12786;
       goto LABEL_5;
     }
 
-    v14 = v13;
-    [v13 setLabel:@"FigDepthValueMultiplier::scaleBiasClamp"];
+    v14 = computeCommandEncoder;
+    [computeCommandEncoder setLabel:@"FigDepthValueMultiplier::scaleBiasClamp"];
     [v14 setComputePipelineState:self->_pipelineState];
     [v14 setTexture:v12 atIndex:0];
-    [v14 setBytes:&v21 length:4 atIndex:0];
-    [v14 setBytes:&v20 length:4 atIndex:1];
+    [v14 setBytes:&biasCopy length:4 atIndex:0];
+    [v14 setBytes:&factorCopy length:4 atIndex:1];
     v19[0] = [v12 width];
     v19[1] = [v12 height];
     v19[2] = 1;
@@ -156,7 +156,7 @@ LABEL_5:
   FigDebugAssert3();
   fig_log_get_emitter();
   result = FigSignalErrorAtGM();
-  *a1 = result;
+  *self = result;
   return result;
 }
 

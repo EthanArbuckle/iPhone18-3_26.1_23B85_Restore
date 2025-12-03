@@ -1,16 +1,16 @@
 @interface ProductLookupEvent
 + (NSString)name;
-- (void)configureWithItem:(id)a3 compatibleExtension:(id)a4;
+- (void)configureWithItem:(id)item compatibleExtension:(id)extension;
 @end
 
 @implementation ProductLookupEvent
 
-- (void)configureWithItem:(id)a3 compatibleExtension:(id)a4
+- (void)configureWithItem:(id)item compatibleExtension:(id)extension
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_10002BA8C(v6, a4);
+  itemCopy = item;
+  extensionCopy = extension;
+  selfCopy = self;
+  sub_10002BA8C(itemCopy, extension);
 }
 
 + (NSString)name

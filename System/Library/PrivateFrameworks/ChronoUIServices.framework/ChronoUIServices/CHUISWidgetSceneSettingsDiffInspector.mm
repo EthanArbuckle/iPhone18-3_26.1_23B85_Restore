@@ -1,29 +1,29 @@
 @interface CHUISWidgetSceneSettingsDiffInspector
-- (void)_observerForKey:(int64_t)a3 observer:(id)a4;
-- (void)inspectDiff:(id)a3 withContext:(id)a4;
+- (void)_observerForKey:(int64_t)key observer:(id)observer;
+- (void)inspectDiff:(id)diff withContext:(id)context;
 @end
 
 @implementation CHUISWidgetSceneSettingsDiffInspector
 
-- (void)inspectDiff:(id)a3 withContext:(id)a4
+- (void)inspectDiff:(id)diff withContext:(id)context
 {
   v4.receiver = self;
   v4.super_class = CHUISWidgetSceneSettingsDiffInspector;
-  [(FBSSettingsDiffInspector *)&v4 inspectDiff:a3 withContext:a4];
+  [(FBSSettingsDiffInspector *)&v4 inspectDiff:diff withContext:context];
 }
 
-- (void)_observerForKey:(int64_t)a3 observer:(id)a4
+- (void)_observerForKey:(int64_t)key observer:(id)observer
 {
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  observerCopy = observer;
+  v7 = observerCopy;
+  if (observerCopy)
   {
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __66__CHUISWidgetSceneSettingsDiffInspector__observerForKey_observer___block_invoke;
     v8[3] = &unk_1E8575418;
-    v9 = v6;
-    [(FBSSettingsDiffInspector *)self observeOtherSetting:a3 withBlock:v8];
+    v9 = observerCopy;
+    [(FBSSettingsDiffInspector *)self observeOtherSetting:key withBlock:v8];
   }
 }
 

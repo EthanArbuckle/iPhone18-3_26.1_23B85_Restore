@@ -1,20 +1,20 @@
 @interface PPEventServerRequestHandler
 - (PPEventServerRequestHandler)init;
-- (void)eventHighlightsFrom:(id)a3 to:(id)a4 options:(int)a5 queryId:(unint64_t)a6;
-- (void)eventNameRecordsForClient:(id)a3 queryId:(unint64_t)a4;
-- (void)interactionSummaryMetricsWithQueryId:(unint64_t)a3;
-- (void)registerFeedback:(id)a3 completion:(id)a4;
-- (void)resolveEventNameRecordChanges:(id)a3 client:(id)a4 queryId:(unint64_t)a5;
-- (void)scoredEventsWithQuery:(id)a3 queryId:(unint64_t)a4;
-- (void)sendRTCLogsWithWithCompletion:(id)a3;
+- (void)eventHighlightsFrom:(id)from to:(id)to options:(int)options queryId:(unint64_t)id;
+- (void)eventNameRecordsForClient:(id)client queryId:(unint64_t)id;
+- (void)interactionSummaryMetricsWithQueryId:(unint64_t)id;
+- (void)registerFeedback:(id)feedback completion:(id)completion;
+- (void)resolveEventNameRecordChanges:(id)changes client:(id)client queryId:(unint64_t)id;
+- (void)scoredEventsWithQuery:(id)query queryId:(unint64_t)id;
+- (void)sendRTCLogsWithWithCompletion:(id)completion;
 @end
 
 @implementation PPEventServerRequestHandler
 
-- (void)registerFeedback:(id)a3 completion:(id)a4
+- (void)registerFeedback:(id)feedback completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  feedbackCopy = feedback;
   v7 = pp_xpc_server_log_handle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -23,12 +23,12 @@
   }
 
   v8 = +[PPLocalEventStore defaultStore];
-  [v8 registerFeedback:v6 completion:v5];
+  [v8 registerFeedback:feedbackCopy completion:completionCopy];
 }
 
-- (void)sendRTCLogsWithWithCompletion:(id)a3
+- (void)sendRTCLogsWithWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = pp_xpc_server_log_handle();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -42,8 +42,8 @@
   v7[2] = __61__PPEventServerRequestHandler_sendRTCLogsWithWithCompletion___block_invoke;
   v7[3] = &unk_278976EF8;
   v8 = 0;
-  v9 = v3;
-  v6 = v3;
+  v9 = completionCopy;
+  v6 = completionCopy;
   [v5 sendRTCLogsWithCompletion:v7];
 }
 
@@ -69,14 +69,14 @@ uint64_t __61__PPEventServerRequestHandler_sendRTCLogsWithWithCompletion___block
   return result;
 }
 
-- (void)interactionSummaryMetricsWithQueryId:(unint64_t)a3
+- (void)interactionSummaryMetricsWithQueryId:(unint64_t)id
 {
   v11 = *MEMORY[0x277D85DE8];
   v5 = pp_xpc_server_log_handle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v10 = a3;
+    idCopy = id;
     _os_log_impl(&dword_23224A000, v5, OS_LOG_TYPE_DEFAULT, "PPEventServer: interactionSummaryMetrics queryId: %llu", buf, 0xCu);
   }
 
@@ -86,7 +86,7 @@ uint64_t __61__PPEventServerRequestHandler_sendRTCLogsWithWithCompletion___block
   v8[2] = __68__PPEventServerRequestHandler_interactionSummaryMetricsWithQueryId___block_invoke;
   v8[3] = &unk_278977B20;
   v8[4] = self;
-  v8[5] = a3;
+  v8[5] = id;
   [(PPXPCServerPipelinedBatchQueryManager *)queryManager runConcurrentlyWithRequestThrottle:v8];
   v7 = *MEMORY[0x277D85DE8];
 }
@@ -149,15 +149,15 @@ uint64_t __68__PPEventServerRequestHandler_interactionSummaryMetricsWithQueryId_
   return result;
 }
 
-- (void)scoredEventsWithQuery:(id)a3 queryId:(unint64_t)a4
+- (void)scoredEventsWithQuery:(id)query queryId:(unint64_t)id
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  queryCopy = query;
   v7 = pp_xpc_server_log_handle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v16 = a4;
+    idCopy = id;
     _os_log_impl(&dword_23224A000, v7, OS_LOG_TYPE_DEFAULT, "PPEventServer: scoredEvents queryId: %llu", buf, 0xCu);
   }
 
@@ -166,10 +166,10 @@ uint64_t __68__PPEventServerRequestHandler_interactionSummaryMetricsWithQueryId_
   v11[1] = 3221225472;
   v11[2] = __61__PPEventServerRequestHandler_scoredEventsWithQuery_queryId___block_invoke;
   v11[3] = &unk_278978A80;
-  v12 = v6;
-  v13 = self;
-  v14 = a4;
-  v9 = v6;
+  v12 = queryCopy;
+  selfCopy = self;
+  idCopy2 = id;
+  v9 = queryCopy;
   [(PPXPCServerPipelinedBatchQueryManager *)queryManager runConcurrentlyWithRequestThrottle:v11];
 
   v10 = *MEMORY[0x277D85DE8];
@@ -243,20 +243,20 @@ uint64_t __61__PPEventServerRequestHandler_scoredEventsWithQuery_queryId___block
   return result;
 }
 
-- (void)eventHighlightsFrom:(id)a3 to:(id)a4 options:(int)a5 queryId:(unint64_t)a6
+- (void)eventHighlightsFrom:(id)from to:(id)to options:(int)options queryId:(unint64_t)id
 {
   v31 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
+  fromCopy = from;
+  toCopy = to;
   v12 = pp_xpc_server_log_handle();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v26 = v10;
+    v26 = fromCopy;
     v27 = 2112;
-    v28 = v11;
+    v28 = toCopy;
     v29 = 2048;
-    v30 = a6;
+    idCopy = id;
     _os_log_impl(&dword_23224A000, v12, OS_LOG_TYPE_DEFAULT, "PPSocialHighlightServer: enqueue eventHighlightsFrom:%@ to:%@ queryId:%llu", buf, 0x20u);
   }
 
@@ -270,13 +270,13 @@ uint64_t __61__PPEventServerRequestHandler_scoredEventsWithQuery_queryId___block
   block[1] = 3221225472;
   block[2] = __70__PPEventServerRequestHandler_eventHighlightsFrom_to_options_queryId___block_invoke_2;
   block[3] = &unk_278976ED0;
-  v20 = v10;
-  v21 = v11;
-  v24 = a5;
-  v22 = self;
-  v23 = a6;
-  v14 = v11;
-  v15 = v10;
+  v20 = fromCopy;
+  v21 = toCopy;
+  optionsCopy = options;
+  selfCopy = self;
+  idCopy2 = id;
+  v14 = toCopy;
+  v15 = fromCopy;
   v16 = v13;
   v17 = dispatch_block_create(0, block);
   [(PPXPCServerPipelinedBatchQueryManager *)self->_queryManager waitForBlockWithRequestThrottle:v17];
@@ -383,18 +383,18 @@ void __70__PPEventServerRequestHandler_eventHighlightsFrom_to_options_queryId___
   objc_autoreleasePoolPop(v0);
 }
 
-- (void)resolveEventNameRecordChanges:(id)a3 client:(id)a4 queryId:(unint64_t)a5
+- (void)resolveEventNameRecordChanges:(id)changes client:(id)client queryId:(unint64_t)id
 {
   v24 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  changesCopy = changes;
+  clientCopy = client;
   v10 = pp_xpc_server_log_handle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v21 = v9;
+    v21 = clientCopy;
     v22 = 2048;
-    v23 = a5;
+    idCopy = id;
     _os_log_impl(&dword_23224A000, v10, OS_LOG_TYPE_DEFAULT, "PPEventServer: eventNameRecordChangesForClient: %@ queryId: %llu", buf, 0x16u);
   }
 
@@ -403,12 +403,12 @@ void __70__PPEventServerRequestHandler_eventHighlightsFrom_to_options_queryId___
   v15[1] = 3221225472;
   v15[2] = __76__PPEventServerRequestHandler_resolveEventNameRecordChanges_client_queryId___block_invoke;
   v15[3] = &unk_278978628;
-  v16 = v8;
-  v17 = v9;
-  v18 = self;
-  v19 = a5;
-  v12 = v9;
-  v13 = v8;
+  v16 = changesCopy;
+  v17 = clientCopy;
+  selfCopy = self;
+  idCopy2 = id;
+  v12 = clientCopy;
+  v13 = changesCopy;
   [(PPXPCServerPipelinedBatchQueryManager *)queryManager runConcurrentlyWithRequestThrottle:v15];
 
   v14 = *MEMORY[0x277D85DE8];
@@ -503,17 +503,17 @@ uint64_t __76__PPEventServerRequestHandler_resolveEventNameRecordChanges_client_
   return result;
 }
 
-- (void)eventNameRecordsForClient:(id)a3 queryId:(unint64_t)a4
+- (void)eventNameRecordsForClient:(id)client queryId:(unint64_t)id
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  clientCopy = client;
   v7 = pp_xpc_server_log_handle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v16 = v6;
+    v16 = clientCopy;
     v17 = 2048;
-    v18 = a4;
+    idCopy = id;
     _os_log_impl(&dword_23224A000, v7, OS_LOG_TYPE_DEFAULT, "PPEventServer: eventNameRecordsForClient: %@ queryId: %llu", buf, 0x16u);
   }
 
@@ -522,10 +522,10 @@ uint64_t __76__PPEventServerRequestHandler_resolveEventNameRecordChanges_client_
   v11[1] = 3221225472;
   v11[2] = __65__PPEventServerRequestHandler_eventNameRecordsForClient_queryId___block_invoke;
   v11[3] = &unk_278978A80;
-  v12 = v6;
-  v13 = self;
-  v14 = a4;
-  v9 = v6;
+  v12 = clientCopy;
+  selfCopy = self;
+  idCopy2 = id;
+  v9 = clientCopy;
   [(PPXPCServerPipelinedBatchQueryManager *)queryManager runConcurrentlyWithRequestThrottle:v11];
 
   v10 = *MEMORY[0x277D85DE8];

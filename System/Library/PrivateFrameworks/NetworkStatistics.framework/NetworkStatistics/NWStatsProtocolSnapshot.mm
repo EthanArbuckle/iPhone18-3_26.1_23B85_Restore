@@ -1,17 +1,17 @@
 @interface NWStatsProtocolSnapshot
-+ (double)_intervalWithContinuousTime:(unint64_t)a3;
-+ (double)_referenceIntervalWithContinuousTime:(unint64_t)a3;
-+ (id)_snapshotWithDictionary:(id)a3;
-+ (id)snapshotWithDictionary:(id)a3;
-+ (void)_initializeQUICDescriptor:(nstat_tcp_descriptor *)a3 fromDictionary:(id)a4;
-+ (void)_initializeTCPDescriptor:(nstat_tcp_descriptor *)a3 fromDictionary:(id)a4;
-+ (void)_initializeUDPDescriptor:(nstat_udp_descriptor *)a3 fromDictionary:(id)a4;
++ (double)_intervalWithContinuousTime:(unint64_t)time;
++ (double)_referenceIntervalWithContinuousTime:(unint64_t)time;
++ (id)_snapshotWithDictionary:(id)dictionary;
++ (id)snapshotWithDictionary:(id)dictionary;
++ (void)_initializeQUICDescriptor:(nstat_tcp_descriptor *)descriptor fromDictionary:(id)dictionary;
++ (void)_initializeTCPDescriptor:(nstat_tcp_descriptor *)descriptor fromDictionary:(id)dictionary;
++ (void)_initializeUDPDescriptor:(nstat_udp_descriptor *)descriptor fromDictionary:(id)dictionary;
 + (void)initialize;
-+ (void)logFlowAnomaly:(id)a3 anomaly:(id)a4;
++ (void)logFlowAnomaly:(id)anomaly anomaly:(id)a4;
 - (BOOL)attributedEntityIsBundleName;
 - (BOOL)attributedEntityIsProcessName;
 - (BOOL)hasTrafficDelta;
-- (BOOL)isSimpleInterface:(unsigned int)a3;
+- (BOOL)isSimpleInterface:(unsigned int)interface;
 - (NSString)countsDescription;
 - (NSString)flowType;
 - (NSString)flowTypeLowerCase;
@@ -19,7 +19,7 @@
 - (NSString)savedAccumulatorCountsDescription;
 - (NSString)savedCountsDescription;
 - (NSString)verboseDescription;
-- (id)_createNSUUIDForBytes:(unsigned __int8)a3[16];
+- (id)_createNSUUIDForBytes:(unsigned __int8)bytes[16];
 - (id)_interfaceCellularViaFallbackConciseString;
 - (id)attributionReasonString;
 - (id)briefDescription;
@@ -27,9 +27,9 @@
 - (id)domainDescription;
 - (id)snapshotReasonString;
 - (int)numSpecificBitmaps;
-- (unint64_t)_adjustedByteCount:(unint64_t)a3 packets:(unint64_t)a4;
-- (unint64_t)_byteOverheadForPacketCount:(unint64_t)a3;
-- (unint64_t)_deltaForCurrentBytes:(unint64_t)a3 packets:(unint64_t)a4 prevBytes:(unint64_t)a5 prevPackets:(unint64_t)a6;
+- (unint64_t)_adjustedByteCount:(unint64_t)count packets:(unint64_t)packets;
+- (unint64_t)_byteOverheadForPacketCount:(unint64_t)count;
+- (unint64_t)_deltaForCurrentBytes:(unint64_t)bytes packets:(unint64_t)packets prevBytes:(unint64_t)prevBytes prevPackets:(unint64_t)prevPackets;
 - (unint64_t)deltaAccountingRxAlternateBytes;
 - (unint64_t)deltaAccountingRxCellularBytes;
 - (unint64_t)deltaAccountingRxCompanionLinkBluetoothBytes;
@@ -42,7 +42,7 @@
 - (unint64_t)deltaAccountingTxWiFiInfraBytes;
 - (unint64_t)deltaAccountingTxWiFiNonInfraBytes;
 - (unint64_t)deltaAccountingTxWiredBytes;
-- (void)applyTrafficAdjustmentFactor:(double)a3;
+- (void)applyTrafficAdjustmentFactor:(double)factor;
 - (void)donateBytesToAccumulator;
 - (void)removeBytesFromAccumulator;
 - (void)runConsistencyChecks;
@@ -60,9 +60,9 @@
 - (void)runConsistencyChecks
 {
   v32 = *MEMORY[0x277D85DE8];
-  v3 = [(NWStatsProtocolSnapshot *)self _details_ptr];
-  v4 = [(NWStatsProtocolSnapshot *)self _details_delta_ptr];
-  if (v3->hdr.detailed_counts.nstat_media_stats.ms_total.ts_rxpackets >= v4->savedRxPackets && v3->hdr.detailed_counts.nstat_media_stats.ms_total.ts_rxbytes >= v4->savedRxBytes && v3->hdr.detailed_counts.nstat_media_stats.ms_total.ts_txpackets >= v4->savedTxPackets && v3->hdr.detailed_counts.nstat_media_stats.ms_total.ts_txbytes >= v4->savedTxBytes && v3->hdr.detailed_counts.nstat_media_stats.ms_cellular.ts_rxbytes >= v4->savedRxCellularBytes && v3->hdr.detailed_counts.nstat_media_stats.ms_cellular.ts_txbytes >= v4->savedTxCellularBytes && v3->hdr.detailed_counts.nstat_media_stats.ms_wifi_infra.ts_rxbytes >= v4->savedRxWiFiInfraBytes && v3->hdr.detailed_counts.nstat_media_stats.ms_wifi_infra.ts_txbytes >= v4->savedTxWiFiInfraBytes && v3->hdr.detailed_counts.nstat_media_stats.ms_wifi_non_infra.ts_rxbytes >= v4->savedRxWiFiNonInfraBytes && v3->hdr.detailed_counts.nstat_media_stats.ms_wifi_non_infra.ts_txbytes >= v4->savedTxWiFiNonInfraBytes && v3->hdr.detailed_counts.nstat_media_stats.ms_wired.ts_rxbytes >= v4->savedRxWiredBytes && v3->hdr.detailed_counts.nstat_media_stats.ms_wired.ts_txbytes >= v4->savedTxWiredBytes && v3->hdr.detailed_counts.nstat_media_stats.ms_bluetooth.ts_rxbytes >= v4->savedRxCompanionLinkBluetoothBytes && v3->hdr.detailed_counts.nstat_media_stats.ms_bluetooth.ts_txbytes >= v4->savedTxCompanionLinkBluetoothBytes && v3->hdr.detailed_counts.nstat_rxduplicatebytes >= v4->savedRxDuplicateBytes && v3->hdr.detailed_counts.nstat_rxoutoforderbytes >= v4->savedRxOutOfOrderBytes && v3->hdr.detailed_counts.nstat_txretransmit >= v4->savedTxRetransmittedBytes)
+  _details_ptr = [(NWStatsProtocolSnapshot *)self _details_ptr];
+  _details_delta_ptr = [(NWStatsProtocolSnapshot *)self _details_delta_ptr];
+  if (_details_ptr->hdr.detailed_counts.nstat_media_stats.ms_total.ts_rxpackets >= _details_delta_ptr->savedRxPackets && _details_ptr->hdr.detailed_counts.nstat_media_stats.ms_total.ts_rxbytes >= _details_delta_ptr->savedRxBytes && _details_ptr->hdr.detailed_counts.nstat_media_stats.ms_total.ts_txpackets >= _details_delta_ptr->savedTxPackets && _details_ptr->hdr.detailed_counts.nstat_media_stats.ms_total.ts_txbytes >= _details_delta_ptr->savedTxBytes && _details_ptr->hdr.detailed_counts.nstat_media_stats.ms_cellular.ts_rxbytes >= _details_delta_ptr->savedRxCellularBytes && _details_ptr->hdr.detailed_counts.nstat_media_stats.ms_cellular.ts_txbytes >= _details_delta_ptr->savedTxCellularBytes && _details_ptr->hdr.detailed_counts.nstat_media_stats.ms_wifi_infra.ts_rxbytes >= _details_delta_ptr->savedRxWiFiInfraBytes && _details_ptr->hdr.detailed_counts.nstat_media_stats.ms_wifi_infra.ts_txbytes >= _details_delta_ptr->savedTxWiFiInfraBytes && _details_ptr->hdr.detailed_counts.nstat_media_stats.ms_wifi_non_infra.ts_rxbytes >= _details_delta_ptr->savedRxWiFiNonInfraBytes && _details_ptr->hdr.detailed_counts.nstat_media_stats.ms_wifi_non_infra.ts_txbytes >= _details_delta_ptr->savedTxWiFiNonInfraBytes && _details_ptr->hdr.detailed_counts.nstat_media_stats.ms_wired.ts_rxbytes >= _details_delta_ptr->savedRxWiredBytes && _details_ptr->hdr.detailed_counts.nstat_media_stats.ms_wired.ts_txbytes >= _details_delta_ptr->savedTxWiredBytes && _details_ptr->hdr.detailed_counts.nstat_media_stats.ms_bluetooth.ts_rxbytes >= _details_delta_ptr->savedRxCompanionLinkBluetoothBytes && _details_ptr->hdr.detailed_counts.nstat_media_stats.ms_bluetooth.ts_txbytes >= _details_delta_ptr->savedTxCompanionLinkBluetoothBytes && _details_ptr->hdr.detailed_counts.nstat_rxduplicatebytes >= _details_delta_ptr->savedRxDuplicateBytes && _details_ptr->hdr.detailed_counts.nstat_rxoutoforderbytes >= _details_delta_ptr->savedRxOutOfOrderBytes && _details_ptr->hdr.detailed_counts.nstat_txretransmit >= _details_delta_ptr->savedTxRetransmittedBytes)
   {
     if ((self->_flags & 2) == 0)
     {
@@ -80,11 +80,11 @@
     }
   }
 
-  v6 = v3->hdr.detailed_counts.nstat_media_stats.ms_wifi_infra.ts_rxbytes + v3->hdr.detailed_counts.nstat_media_stats.ms_cellular.ts_rxbytes + v3->hdr.detailed_counts.nstat_media_stats.ms_wifi_non_infra.ts_rxbytes + v3->hdr.detailed_counts.nstat_media_stats.ms_wired.ts_rxbytes + v3->hdr.detailed_counts.nstat_media_stats.ms_bluetooth.ts_rxbytes + v3->hdr.detailed_counts.nstat_media_stats.ms_alternate.ts_rxbytes;
-  if (v6 < v3->hdr.detailed_counts.nstat_media_stats.ms_total.ts_rxbytes && ![(NWStatsProtocolSnapshot *)self interfaceUnknown]&& ![(NWStatsProtocolSnapshot *)self interfaceLoopback]&& ![(NWStatsProtocolSnapshot *)self interfaceCompanionLink])
+  v6 = _details_ptr->hdr.detailed_counts.nstat_media_stats.ms_wifi_infra.ts_rxbytes + _details_ptr->hdr.detailed_counts.nstat_media_stats.ms_cellular.ts_rxbytes + _details_ptr->hdr.detailed_counts.nstat_media_stats.ms_wifi_non_infra.ts_rxbytes + _details_ptr->hdr.detailed_counts.nstat_media_stats.ms_wired.ts_rxbytes + _details_ptr->hdr.detailed_counts.nstat_media_stats.ms_bluetooth.ts_rxbytes + _details_ptr->hdr.detailed_counts.nstat_media_stats.ms_alternate.ts_rxbytes;
+  if (v6 < _details_ptr->hdr.detailed_counts.nstat_media_stats.ms_total.ts_rxbytes && ![(NWStatsProtocolSnapshot *)self interfaceUnknown]&& ![(NWStatsProtocolSnapshot *)self interfaceLoopback]&& ![(NWStatsProtocolSnapshot *)self interfaceCompanionLink])
   {
     flags = self->_flags;
-    if ((flags & 0x50) != 0 && v6 + 100 < v3->hdr.detailed_counts.nstat_media_stats.ms_total.ts_rxbytes)
+    if ((flags & 0x50) != 0 && v6 + 100 < _details_ptr->hdr.detailed_counts.nstat_media_stats.ms_total.ts_rxbytes)
     {
       self->_flags = flags | 0x200;
     }
@@ -93,27 +93,27 @@
 LABEL_26:
   if ((self->_flags & 0x10) != 0)
   {
-    if (v3->hdr.detailed_counts.nstat_media_stats.ms_cellular.ts_rxpackets || (ts_txpackets = v3->hdr.detailed_counts.nstat_media_stats.ms_cellular.ts_txpackets) != 0)
+    if (_details_ptr->hdr.detailed_counts.nstat_media_stats.ms_cellular.ts_rxpackets || (ts_txpackets = _details_ptr->hdr.detailed_counts.nstat_media_stats.ms_cellular.ts_txpackets) != 0)
     {
       LODWORD(ts_txpackets) = 1;
     }
 
-    if (v3->hdr.detailed_counts.nstat_media_stats.ms_wifi_infra.ts_rxpackets || v3->hdr.detailed_counts.nstat_media_stats.ms_wifi_infra.ts_txpackets)
+    if (_details_ptr->hdr.detailed_counts.nstat_media_stats.ms_wifi_infra.ts_rxpackets || _details_ptr->hdr.detailed_counts.nstat_media_stats.ms_wifi_infra.ts_txpackets)
     {
       LODWORD(ts_txpackets) = ts_txpackets + 1;
     }
 
-    if (v3->hdr.detailed_counts.nstat_media_stats.ms_wifi_non_infra.ts_rxpackets || v3->hdr.detailed_counts.nstat_media_stats.ms_wifi_non_infra.ts_txpackets)
+    if (_details_ptr->hdr.detailed_counts.nstat_media_stats.ms_wifi_non_infra.ts_rxpackets || _details_ptr->hdr.detailed_counts.nstat_media_stats.ms_wifi_non_infra.ts_txpackets)
     {
       LODWORD(ts_txpackets) = ts_txpackets + 1;
     }
 
-    if (v3->hdr.detailed_counts.nstat_media_stats.ms_wired.ts_rxpackets || v3->hdr.detailed_counts.nstat_media_stats.ms_wired.ts_txpackets)
+    if (_details_ptr->hdr.detailed_counts.nstat_media_stats.ms_wired.ts_rxpackets || _details_ptr->hdr.detailed_counts.nstat_media_stats.ms_wired.ts_txpackets)
     {
       LODWORD(ts_txpackets) = ts_txpackets + 1;
     }
 
-    if (v3->hdr.detailed_counts.nstat_media_stats.ms_bluetooth.ts_rxpackets || v3->hdr.detailed_counts.nstat_media_stats.ms_bluetooth.ts_txpackets)
+    if (_details_ptr->hdr.detailed_counts.nstat_media_stats.ms_bluetooth.ts_rxpackets || _details_ptr->hdr.detailed_counts.nstat_media_stats.ms_bluetooth.ts_txpackets)
     {
       LODWORD(ts_txpackets) = ts_txpackets + 1;
     }
@@ -124,9 +124,9 @@ LABEL_26:
     }
   }
 
-  v9 = [(NWStatsProtocolSnapshot *)self failedSkywalkAction];
+  failedSkywalkAction = [(NWStatsProtocolSnapshot *)self failedSkywalkAction];
   v10 = self->_flags;
-  if (v9)
+  if (failedSkywalkAction)
   {
     v10 |= 0x800u;
     self->_flags = v10;
@@ -184,7 +184,7 @@ LABEL_26:
         v13 = @"(no flowswitch lookup) ";
       }
 
-      v18 = [(NWStatsProtocolSnapshot *)self verboseDescription];
+      verboseDescription = [(NWStatsProtocolSnapshot *)self verboseDescription];
       v20 = 138413570;
       v21 = v14;
       v22 = 2112;
@@ -196,7 +196,7 @@ LABEL_26:
       v28 = 2112;
       v29 = v13;
       v30 = 2112;
-      v31 = v18;
+      v31 = verboseDescription;
       _os_log_impl(&dword_25BA3A000, v11, OS_LOG_TYPE_ERROR, "failed consistency checks %@%@%@%@%@ %@", &v20, 0x3Eu);
     }
   }
@@ -220,24 +220,24 @@ LABEL_26:
 - (unint64_t)deltaAccountingRxCellularBytes
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [(NWStatsProtocolSnapshot *)self deltaRxCellularBytes];
+  deltaRxCellularBytes = [(NWStatsProtocolSnapshot *)self deltaRxCellularBytes];
   rxCellularBytes = self->_adjustment_bytes.rxCellularBytes;
-  v5 = v3 >= rxCellularBytes;
-  result = v3 - rxCellularBytes;
+  v5 = deltaRxCellularBytes >= rxCellularBytes;
+  result = deltaRxCellularBytes - rxCellularBytes;
   if (!v5)
   {
     v7 = NStatGetLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      v8 = [(NWStatsProtocolSnapshot *)self deltaRxCellularBytes];
+      deltaRxCellularBytes2 = [(NWStatsProtocolSnapshot *)self deltaRxCellularBytes];
       v9 = self->_adjustment_bytes.rxCellularBytes;
-      v10 = [(NWStatsProtocolSnapshot *)self verboseDescription];
+      verboseDescription = [(NWStatsProtocolSnapshot *)self verboseDescription];
       v12 = 134218498;
-      v13 = v8;
+      v13 = deltaRxCellularBytes2;
       v14 = 2048;
       v15 = v9;
       v16 = 2112;
-      v17 = v10;
+      v17 = verboseDescription;
       _os_log_impl(&dword_25BA3A000, v7, OS_LOG_TYPE_ERROR, "Accounting adjustment counts > actual deltas in the snapshot. deltaRxCellularBytes = %llu, adjustmentRxCellularBytes = %llu\n%@", &v12, 0x20u);
     }
 
@@ -251,24 +251,24 @@ LABEL_26:
 - (unint64_t)deltaAccountingRxWiredBytes
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [(NWStatsProtocolSnapshot *)self deltaRxWiredBytes];
+  deltaRxWiredBytes = [(NWStatsProtocolSnapshot *)self deltaRxWiredBytes];
   rxWiredBytes = self->_adjustment_bytes.rxWiredBytes;
-  v5 = v3 >= rxWiredBytes;
-  result = v3 - rxWiredBytes;
+  v5 = deltaRxWiredBytes >= rxWiredBytes;
+  result = deltaRxWiredBytes - rxWiredBytes;
   if (!v5)
   {
     v7 = NStatGetLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      v8 = [(NWStatsProtocolSnapshot *)self deltaRxWiredBytes];
+      deltaRxWiredBytes2 = [(NWStatsProtocolSnapshot *)self deltaRxWiredBytes];
       v9 = self->_adjustment_bytes.rxWiredBytes;
-      v10 = [(NWStatsProtocolSnapshot *)self verboseDescription];
+      verboseDescription = [(NWStatsProtocolSnapshot *)self verboseDescription];
       v12 = 134218498;
-      v13 = v8;
+      v13 = deltaRxWiredBytes2;
       v14 = 2048;
       v15 = v9;
       v16 = 2112;
-      v17 = v10;
+      v17 = verboseDescription;
       _os_log_impl(&dword_25BA3A000, v7, OS_LOG_TYPE_ERROR, "Accounting adjustment counts > actual deltas in the snapshot. deltaRxWiredBytes = %llu, adjustmentRxWiredBytes = %llu\n%@", &v12, 0x20u);
     }
 
@@ -291,32 +291,32 @@ LABEL_26:
 
 - (BOOL)attributedEntityIsProcessName
 {
-  v2 = [(NWStatsSnapshot *)self attributionReason];
+  attributionReason = [(NWStatsSnapshot *)self attributionReason];
 
-  return attributionReasonImpliesProcessName(v2);
+  return attributionReasonImpliesProcessName(attributionReason);
 }
 
 - (unint64_t)deltaAccountingTxWiredBytes
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [(NWStatsProtocolSnapshot *)self deltaTxWiredBytes];
+  deltaTxWiredBytes = [(NWStatsProtocolSnapshot *)self deltaTxWiredBytes];
   txWiredBytes = self->_adjustment_bytes.txWiredBytes;
-  v5 = v3 >= txWiredBytes;
-  result = v3 - txWiredBytes;
+  v5 = deltaTxWiredBytes >= txWiredBytes;
+  result = deltaTxWiredBytes - txWiredBytes;
   if (!v5)
   {
     v7 = NStatGetLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      v8 = [(NWStatsProtocolSnapshot *)self deltaTxWiredBytes];
+      deltaTxWiredBytes2 = [(NWStatsProtocolSnapshot *)self deltaTxWiredBytes];
       v9 = self->_adjustment_bytes.txWiredBytes;
-      v10 = [(NWStatsProtocolSnapshot *)self verboseDescription];
+      verboseDescription = [(NWStatsProtocolSnapshot *)self verboseDescription];
       v12 = 134218498;
-      v13 = v8;
+      v13 = deltaTxWiredBytes2;
       v14 = 2048;
       v15 = v9;
       v16 = 2112;
-      v17 = v10;
+      v17 = verboseDescription;
       _os_log_impl(&dword_25BA3A000, v7, OS_LOG_TYPE_ERROR, "Accounting adjustment counts > actual deltas in the snapshot. deltaTxWiredBytes = %llu, adjustmentTxWiredBytes = %llu\n%@", &v12, 0x20u);
     }
 
@@ -330,24 +330,24 @@ LABEL_26:
 - (unint64_t)deltaAccountingRxWiFiInfraBytes
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [(NWStatsProtocolSnapshot *)self deltaRxWiFiInfraBytes];
+  deltaRxWiFiInfraBytes = [(NWStatsProtocolSnapshot *)self deltaRxWiFiInfraBytes];
   rxWiFiInfraBytes = self->_adjustment_bytes.rxWiFiInfraBytes;
-  v5 = v3 >= rxWiFiInfraBytes;
-  result = v3 - rxWiFiInfraBytes;
+  v5 = deltaRxWiFiInfraBytes >= rxWiFiInfraBytes;
+  result = deltaRxWiFiInfraBytes - rxWiFiInfraBytes;
   if (!v5)
   {
     v7 = NStatGetLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      v8 = [(NWStatsProtocolSnapshot *)self deltaRxWiFiInfraBytes];
+      deltaRxWiFiInfraBytes2 = [(NWStatsProtocolSnapshot *)self deltaRxWiFiInfraBytes];
       v9 = self->_adjustment_bytes.rxWiFiInfraBytes;
-      v10 = [(NWStatsProtocolSnapshot *)self verboseDescription];
+      verboseDescription = [(NWStatsProtocolSnapshot *)self verboseDescription];
       v12 = 134218498;
-      v13 = v8;
+      v13 = deltaRxWiFiInfraBytes2;
       v14 = 2048;
       v15 = v9;
       v16 = 2112;
-      v17 = v10;
+      v17 = verboseDescription;
       _os_log_impl(&dword_25BA3A000, v7, OS_LOG_TYPE_ERROR, "Accounting adjustment counts > actual deltas in the snapshot. deltaRxWiFiInfraBytes = %llu, adjustmentRxWiFiInfraBytes = %llu\n%@", &v12, 0x20u);
     }
 
@@ -361,24 +361,24 @@ LABEL_26:
 - (unint64_t)deltaAccountingTxCellularBytes
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [(NWStatsProtocolSnapshot *)self deltaTxCellularBytes];
+  deltaTxCellularBytes = [(NWStatsProtocolSnapshot *)self deltaTxCellularBytes];
   txCellularBytes = self->_adjustment_bytes.txCellularBytes;
-  v5 = v3 >= txCellularBytes;
-  result = v3 - txCellularBytes;
+  v5 = deltaTxCellularBytes >= txCellularBytes;
+  result = deltaTxCellularBytes - txCellularBytes;
   if (!v5)
   {
     v7 = NStatGetLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      v8 = [(NWStatsProtocolSnapshot *)self deltaTxCellularBytes];
+      deltaTxCellularBytes2 = [(NWStatsProtocolSnapshot *)self deltaTxCellularBytes];
       v9 = self->_adjustment_bytes.txCellularBytes;
-      v10 = [(NWStatsProtocolSnapshot *)self verboseDescription];
+      verboseDescription = [(NWStatsProtocolSnapshot *)self verboseDescription];
       v12 = 134218498;
-      v13 = v8;
+      v13 = deltaTxCellularBytes2;
       v14 = 2048;
       v15 = v9;
       v16 = 2112;
-      v17 = v10;
+      v17 = verboseDescription;
       _os_log_impl(&dword_25BA3A000, v7, OS_LOG_TYPE_ERROR, "Accounting adjustment counts > actual deltas in the snapshot. deltaTxCellularBytes = %llu, adjustmentTxCellularBytes = %llu\n%@", &v12, 0x20u);
     }
 
@@ -391,32 +391,32 @@ LABEL_26:
 
 - (BOOL)attributedEntityIsBundleName
 {
-  v2 = [(NWStatsSnapshot *)self attributionReason];
+  attributionReason = [(NWStatsSnapshot *)self attributionReason];
 
-  return attributionReasonImpliesBundleName(v2);
+  return attributionReasonImpliesBundleName(attributionReason);
 }
 
 - (unint64_t)deltaAccountingTxCompanionLinkBluetoothBytes
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [(NWStatsProtocolSnapshot *)self deltaTxCompanionLinkBluetoothBytes];
+  deltaTxCompanionLinkBluetoothBytes = [(NWStatsProtocolSnapshot *)self deltaTxCompanionLinkBluetoothBytes];
   txCompanionLinkBluetoothBytes = self->_adjustment_bytes.txCompanionLinkBluetoothBytes;
-  v5 = v3 >= txCompanionLinkBluetoothBytes;
-  result = v3 - txCompanionLinkBluetoothBytes;
+  v5 = deltaTxCompanionLinkBluetoothBytes >= txCompanionLinkBluetoothBytes;
+  result = deltaTxCompanionLinkBluetoothBytes - txCompanionLinkBluetoothBytes;
   if (!v5)
   {
     v7 = NStatGetLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      v8 = [(NWStatsProtocolSnapshot *)self deltaTxCompanionLinkBluetoothBytes];
+      deltaTxCompanionLinkBluetoothBytes2 = [(NWStatsProtocolSnapshot *)self deltaTxCompanionLinkBluetoothBytes];
       v9 = self->_adjustment_bytes.txCompanionLinkBluetoothBytes;
-      v10 = [(NWStatsProtocolSnapshot *)self verboseDescription];
+      verboseDescription = [(NWStatsProtocolSnapshot *)self verboseDescription];
       v12 = 134218498;
-      v13 = v8;
+      v13 = deltaTxCompanionLinkBluetoothBytes2;
       v14 = 2048;
       v15 = v9;
       v16 = 2112;
-      v17 = v10;
+      v17 = verboseDescription;
       _os_log_impl(&dword_25BA3A000, v7, OS_LOG_TYPE_ERROR, "Accounting adjustment counts > actual deltas in the snapshot. deltaTxCompanionLinkBluetoothBytes = %llu, adjustmentTxCompanionLinkBluetoothBytes = %llu\n%@", &v12, 0x20u);
     }
 
@@ -430,24 +430,24 @@ LABEL_26:
 - (unint64_t)deltaAccountingRxCompanionLinkBluetoothBytes
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [(NWStatsProtocolSnapshot *)self deltaRxCompanionLinkBluetoothBytes];
+  deltaRxCompanionLinkBluetoothBytes = [(NWStatsProtocolSnapshot *)self deltaRxCompanionLinkBluetoothBytes];
   rxCompanionLinkBluetoothBytes = self->_adjustment_bytes.rxCompanionLinkBluetoothBytes;
-  v5 = v3 >= rxCompanionLinkBluetoothBytes;
-  result = v3 - rxCompanionLinkBluetoothBytes;
+  v5 = deltaRxCompanionLinkBluetoothBytes >= rxCompanionLinkBluetoothBytes;
+  result = deltaRxCompanionLinkBluetoothBytes - rxCompanionLinkBluetoothBytes;
   if (!v5)
   {
     v7 = NStatGetLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      v8 = [(NWStatsProtocolSnapshot *)self deltaRxCompanionLinkBluetoothBytes];
+      deltaRxCompanionLinkBluetoothBytes2 = [(NWStatsProtocolSnapshot *)self deltaRxCompanionLinkBluetoothBytes];
       v9 = self->_adjustment_bytes.rxCompanionLinkBluetoothBytes;
-      v10 = [(NWStatsProtocolSnapshot *)self verboseDescription];
+      verboseDescription = [(NWStatsProtocolSnapshot *)self verboseDescription];
       v12 = 134218498;
-      v13 = v8;
+      v13 = deltaRxCompanionLinkBluetoothBytes2;
       v14 = 2048;
       v15 = v9;
       v16 = 2112;
-      v17 = v10;
+      v17 = verboseDescription;
       _os_log_impl(&dword_25BA3A000, v7, OS_LOG_TYPE_ERROR, "adjustment counts > actual deltas in the snapshot. deltaRxCompanionLinkBluetoothBytes = %llu, adjustmentRxCompanionLinkBluetoothBytes = %llu\n%@", &v12, 0x20u);
     }
 
@@ -461,24 +461,24 @@ LABEL_26:
 - (unint64_t)deltaAccountingTxWiFiNonInfraBytes
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [(NWStatsProtocolSnapshot *)self deltaTxWiFiNonInfraBytes];
+  deltaTxWiFiNonInfraBytes = [(NWStatsProtocolSnapshot *)self deltaTxWiFiNonInfraBytes];
   txWiFiNonInfraBytes = self->_adjustment_bytes.txWiFiNonInfraBytes;
-  v5 = v3 >= txWiFiNonInfraBytes;
-  result = v3 - txWiFiNonInfraBytes;
+  v5 = deltaTxWiFiNonInfraBytes >= txWiFiNonInfraBytes;
+  result = deltaTxWiFiNonInfraBytes - txWiFiNonInfraBytes;
   if (!v5)
   {
     v7 = NStatGetLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      v8 = [(NWStatsProtocolSnapshot *)self deltaTxWiFiNonInfraBytes];
+      deltaTxWiFiNonInfraBytes2 = [(NWStatsProtocolSnapshot *)self deltaTxWiFiNonInfraBytes];
       v9 = self->_adjustment_bytes.txWiFiNonInfraBytes;
-      v10 = [(NWStatsProtocolSnapshot *)self verboseDescription];
+      verboseDescription = [(NWStatsProtocolSnapshot *)self verboseDescription];
       v12 = 134218498;
-      v13 = v8;
+      v13 = deltaTxWiFiNonInfraBytes2;
       v14 = 2048;
       v15 = v9;
       v16 = 2112;
-      v17 = v10;
+      v17 = verboseDescription;
       _os_log_impl(&dword_25BA3A000, v7, OS_LOG_TYPE_ERROR, "Accounting adjustment counts > actual deltas in the snapshot. deltaTxWiFiNonInfraBytes = %llu, adjustmentTxWiFiNonInfraBytes = %llu\n%@", &v12, 0x20u);
     }
 
@@ -492,24 +492,24 @@ LABEL_26:
 - (unint64_t)deltaAccountingRxWiFiNonInfraBytes
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [(NWStatsProtocolSnapshot *)self deltaRxWiFiNonInfraBytes];
+  deltaRxWiFiNonInfraBytes = [(NWStatsProtocolSnapshot *)self deltaRxWiFiNonInfraBytes];
   rxWiFiNonInfraBytes = self->_adjustment_bytes.rxWiFiNonInfraBytes;
-  v5 = v3 >= rxWiFiNonInfraBytes;
-  result = v3 - rxWiFiNonInfraBytes;
+  v5 = deltaRxWiFiNonInfraBytes >= rxWiFiNonInfraBytes;
+  result = deltaRxWiFiNonInfraBytes - rxWiFiNonInfraBytes;
   if (!v5)
   {
     v7 = NStatGetLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      v8 = [(NWStatsProtocolSnapshot *)self deltaRxWiFiNonInfraBytes];
+      deltaRxWiFiNonInfraBytes2 = [(NWStatsProtocolSnapshot *)self deltaRxWiFiNonInfraBytes];
       v9 = self->_adjustment_bytes.rxWiFiNonInfraBytes;
-      v10 = [(NWStatsProtocolSnapshot *)self verboseDescription];
+      verboseDescription = [(NWStatsProtocolSnapshot *)self verboseDescription];
       v12 = 134218498;
-      v13 = v8;
+      v13 = deltaRxWiFiNonInfraBytes2;
       v14 = 2048;
       v15 = v9;
       v16 = 2112;
-      v17 = v10;
+      v17 = verboseDescription;
       _os_log_impl(&dword_25BA3A000, v7, OS_LOG_TYPE_ERROR, "Accounting adjustment counts > actual deltas in the snapshot. deltaRxWiFiNonInfraBytes = %llu, adjustmentRxWiFiNonInfraBytes = %llu\n%@", &v12, 0x20u);
     }
 
@@ -523,24 +523,24 @@ LABEL_26:
 - (unint64_t)deltaAccountingTxWiFiInfraBytes
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [(NWStatsProtocolSnapshot *)self deltaTxWiFiInfraBytes];
+  deltaTxWiFiInfraBytes = [(NWStatsProtocolSnapshot *)self deltaTxWiFiInfraBytes];
   txWiFiInfraBytes = self->_adjustment_bytes.txWiFiInfraBytes;
-  v5 = v3 >= txWiFiInfraBytes;
-  result = v3 - txWiFiInfraBytes;
+  v5 = deltaTxWiFiInfraBytes >= txWiFiInfraBytes;
+  result = deltaTxWiFiInfraBytes - txWiFiInfraBytes;
   if (!v5)
   {
     v7 = NStatGetLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      v8 = [(NWStatsProtocolSnapshot *)self deltaTxWiFiInfraBytes];
+      deltaTxWiFiInfraBytes2 = [(NWStatsProtocolSnapshot *)self deltaTxWiFiInfraBytes];
       v9 = self->_adjustment_bytes.txWiFiInfraBytes;
-      v10 = [(NWStatsProtocolSnapshot *)self verboseDescription];
+      verboseDescription = [(NWStatsProtocolSnapshot *)self verboseDescription];
       v12 = 134218498;
-      v13 = v8;
+      v13 = deltaTxWiFiInfraBytes2;
       v14 = 2048;
       v15 = v9;
       v16 = 2112;
-      v17 = v10;
+      v17 = verboseDescription;
       _os_log_impl(&dword_25BA3A000, v7, OS_LOG_TYPE_ERROR, "Accounting adjustment counts > actual deltas in the snapshot. deltaTxWiFiInfraBytes = %llu, adjustmentTxWiFiInfraBytes = %llu\n%@", &v12, 0x20u);
     }
 
@@ -574,8 +574,8 @@ LABEL_26:
 - (void)removeBytesFromAccumulator
 {
   v4 = +[NWStatsInterfaceRegistry sharedInstance];
-  v3 = [(NWStatsSnapshot *)self euuid];
-  [v4 subtractVPNBytesForVPNProviderAppUUID:v3 fromSnapshot:self];
+  euuid = [(NWStatsSnapshot *)self euuid];
+  [v4 subtractVPNBytesForVPNProviderAppUUID:euuid fromSnapshot:self];
 
   self->_isKnownVPNProvider = 1;
 }
@@ -596,27 +596,27 @@ LABEL_26:
 - (id)description
 {
   v15 = objc_alloc(MEMORY[0x277CCACA8]);
-  v14 = [(NWStatsSnapshot *)self processName];
-  v13 = [(NWStatsProtocolSnapshot *)self flowType];
-  v12 = [(NWStatsProtocolSnapshot *)self sourceIdentifier];
-  v11 = [(NWStatsProtocolSnapshot *)self snapshotReasonString];
-  v3 = [(NWStatsProtocolSnapshot *)self failedConsistencyChecks];
+  processName = [(NWStatsSnapshot *)self processName];
+  flowType = [(NWStatsProtocolSnapshot *)self flowType];
+  sourceIdentifier = [(NWStatsProtocolSnapshot *)self sourceIdentifier];
+  snapshotReasonString = [(NWStatsProtocolSnapshot *)self snapshotReasonString];
+  failedConsistencyChecks = [(NWStatsProtocolSnapshot *)self failedConsistencyChecks];
   v4 = &stru_286D30F78;
-  if (v3)
+  if (failedConsistencyChecks)
   {
     v4 = @"-inconsistent";
   }
 
   v10 = v4;
-  v9 = [(NWStatsProtocolSnapshot *)self _interfaceCellularViaFallbackConciseString];
-  v5 = [(NWStatsProtocolSnapshot *)self flowUsesChannels];
+  _interfaceCellularViaFallbackConciseString = [(NWStatsProtocolSnapshot *)self _interfaceCellularViaFallbackConciseString];
+  flowUsesChannels = [(NWStatsProtocolSnapshot *)self flowUsesChannels];
   v6 = @"so";
-  if (v5)
+  if (flowUsesChannels)
   {
     v6 = @"ch";
   }
 
-  v7 = [v15 initWithFormat:@"%@ %@ flow id %lld (%@%@) %@%@ i/f %d props 0x%x first %d pkts rx %lld tx %lld, bytes %lld %lld cell %lld %lld wifi %lld %lld wired %lld %lld comp_bt %lld %lld deltas %lld %lld %lld %lld %lld %lld %lld %lld %lld %lld acct_deltas %lld %lld %lld %lld %lld %lld %lld %lld", v14, v13, v12, v11, v10, v9, v6, -[NWStatsProtocolSnapshot interfaceIndex](self, "interfaceIndex"), -[NWStatsProtocolSnapshot ifnet_properties](self, "ifnet_properties"), -[NWStatsSnapshot firstOccurrence](self, "firstOccurrence"), -[NWStatsProtocolSnapshot rxPackets](self, "rxPackets"), -[NWStatsProtocolSnapshot txPackets](self, "txPackets"), -[NWStatsProtocolSnapshot rxBytes](self, "rxBytes"), -[NWStatsProtocolSnapshot txBytes](self, "txBytes"), -[NWStatsProtocolSnapshot rxCellularBytes](self, "rxCellularBytes"), -[NWStatsProtocolSnapshot txCellularBytes](self, "txCellularBytes"), -[NWStatsProtocolSnapshot rxWiFiBytes](self, "rxWiFiBytes"), -[NWStatsProtocolSnapshot txWiFiBytes](self, "txWiFiBytes"), -[NWStatsProtocolSnapshot rxWiredBytes](self, "rxWiredBytes"), -[NWStatsProtocolSnapshot txWiredBytes](self, "txWiredBytes"), -[NWStatsProtocolSnapshot rxCompanionLinkBluetoothBytes](self, "rxCompanionLinkBluetoothBytes"), -[NWStatsProtocolSnapshot txCompanionLinkBluetoothBytes](self, "txCompanionLinkBluetoothBytes"), -[NWStatsProtocolSnapshot deltaRxBytes](self, "deltaRxBytes"), -[NWStatsProtocolSnapshot deltaTxBytes](self, "deltaTxBytes"), -[NWStatsProtocolSnapshot deltaRxCellularBytes](self, "deltaRxCellularBytes"), -[NWStatsProtocolSnapshot deltaTxCellularBytes](self, "deltaTxCellularBytes"), -[NWStatsProtocolSnapshot deltaRxWiFiBytes](self, "deltaRxWiFiBytes"), -[NWStatsProtocolSnapshot deltaTxWiFiBytes](self, "deltaTxWiFiBytes"), -[NWStatsProtocolSnapshot deltaRxWiredBytes](self, "deltaRxWiredBytes"), -[NWStatsProtocolSnapshot deltaTxWiredBytes](self, "deltaTxWiredBytes"), -[NWStatsProtocolSnapshot deltaRxCompanionLinkBluetoothBytes](self, "deltaRxCompanionLinkBluetoothBytes"), -[NWStatsProtocolSnapshot deltaTxCompanionLinkBluetoothBytes](self, "deltaTxCompanionLinkBluetoothBytes"), -[NWStatsProtocolSnapshot deltaAccountingRxCellularBytes](self, "deltaAccountingRxCellularBytes"), -[NWStatsProtocolSnapshot deltaAccountingTxCellularBytes](self, "deltaAccountingTxCellularBytes"), -[NWStatsProtocolSnapshot deltaAccountingRxWiFiBytes](self, "deltaAccountingRxWiFiBytes"), -[NWStatsProtocolSnapshot deltaAccountingTxWiFiBytes](self, "deltaAccountingTxWiFiBytes"), -[NWStatsProtocolSnapshot deltaAccountingRxWiredBytes](self, "deltaAccountingRxWiredBytes"), -[NWStatsProtocolSnapshot deltaAccountingTxWiredBytes](self, "deltaAccountingTxWiredBytes"), -[NWStatsProtocolSnapshot deltaAccountingRxCompanionLinkBluetoothBytes](self, "deltaAccountingRxCompanionLinkBluetoothBytes"), -[NWStatsProtocolSnapshot deltaAccountingTxCompanionLinkBluetoothBytes](self, "deltaAccountingTxCompanionLinkBluetoothBytes")];
+  v7 = [v15 initWithFormat:@"%@ %@ flow id %lld (%@%@) %@%@ i/f %d props 0x%x first %d pkts rx %lld tx %lld, bytes %lld %lld cell %lld %lld wifi %lld %lld wired %lld %lld comp_bt %lld %lld deltas %lld %lld %lld %lld %lld %lld %lld %lld %lld %lld acct_deltas %lld %lld %lld %lld %lld %lld %lld %lld", processName, flowType, sourceIdentifier, snapshotReasonString, v10, _interfaceCellularViaFallbackConciseString, v6, -[NWStatsProtocolSnapshot interfaceIndex](self, "interfaceIndex"), -[NWStatsProtocolSnapshot ifnet_properties](self, "ifnet_properties"), -[NWStatsSnapshot firstOccurrence](self, "firstOccurrence"), -[NWStatsProtocolSnapshot rxPackets](self, "rxPackets"), -[NWStatsProtocolSnapshot txPackets](self, "txPackets"), -[NWStatsProtocolSnapshot rxBytes](self, "rxBytes"), -[NWStatsProtocolSnapshot txBytes](self, "txBytes"), -[NWStatsProtocolSnapshot rxCellularBytes](self, "rxCellularBytes"), -[NWStatsProtocolSnapshot txCellularBytes](self, "txCellularBytes"), -[NWStatsProtocolSnapshot rxWiFiBytes](self, "rxWiFiBytes"), -[NWStatsProtocolSnapshot txWiFiBytes](self, "txWiFiBytes"), -[NWStatsProtocolSnapshot rxWiredBytes](self, "rxWiredBytes"), -[NWStatsProtocolSnapshot txWiredBytes](self, "txWiredBytes"), -[NWStatsProtocolSnapshot rxCompanionLinkBluetoothBytes](self, "rxCompanionLinkBluetoothBytes"), -[NWStatsProtocolSnapshot txCompanionLinkBluetoothBytes](self, "txCompanionLinkBluetoothBytes"), -[NWStatsProtocolSnapshot deltaRxBytes](self, "deltaRxBytes"), -[NWStatsProtocolSnapshot deltaTxBytes](self, "deltaTxBytes"), -[NWStatsProtocolSnapshot deltaRxCellularBytes](self, "deltaRxCellularBytes"), -[NWStatsProtocolSnapshot deltaTxCellularBytes](self, "deltaTxCellularBytes"), -[NWStatsProtocolSnapshot deltaRxWiFiBytes](self, "deltaRxWiFiBytes"), -[NWStatsProtocolSnapshot deltaTxWiFiBytes](self, "deltaTxWiFiBytes"), -[NWStatsProtocolSnapshot deltaRxWiredBytes](self, "deltaRxWiredBytes"), -[NWStatsProtocolSnapshot deltaTxWiredBytes](self, "deltaTxWiredBytes"), -[NWStatsProtocolSnapshot deltaRxCompanionLinkBluetoothBytes](self, "deltaRxCompanionLinkBluetoothBytes"), -[NWStatsProtocolSnapshot deltaTxCompanionLinkBluetoothBytes](self, "deltaTxCompanionLinkBluetoothBytes"), -[NWStatsProtocolSnapshot deltaAccountingRxCellularBytes](self, "deltaAccountingRxCellularBytes"), -[NWStatsProtocolSnapshot deltaAccountingTxCellularBytes](self, "deltaAccountingTxCellularBytes"), -[NWStatsProtocolSnapshot deltaAccountingRxWiFiBytes](self, "deltaAccountingRxWiFiBytes"), -[NWStatsProtocolSnapshot deltaAccountingTxWiFiBytes](self, "deltaAccountingTxWiFiBytes"), -[NWStatsProtocolSnapshot deltaAccountingRxWiredBytes](self, "deltaAccountingRxWiredBytes"), -[NWStatsProtocolSnapshot deltaAccountingTxWiredBytes](self, "deltaAccountingTxWiredBytes"), -[NWStatsProtocolSnapshot deltaAccountingRxCompanionLinkBluetoothBytes](self, "deltaAccountingRxCompanionLinkBluetoothBytes"), -[NWStatsProtocolSnapshot deltaAccountingTxCompanionLinkBluetoothBytes](self, "deltaAccountingTxCompanionLinkBluetoothBytes")];
 
   return v7;
 }
@@ -779,10 +779,10 @@ LABEL_26:
 - (id)briefDescription
 {
   v12 = objc_alloc(MEMORY[0x277CCACA8]);
-  v3 = [(NWStatsSnapshot *)self processName];
-  v4 = [(NWStatsProtocolSnapshot *)self flowType];
-  v11 = [(NWStatsProtocolSnapshot *)self sourceIdentifier];
-  v5 = [(NWStatsProtocolSnapshot *)self snapshotReasonString];
+  processName = [(NWStatsSnapshot *)self processName];
+  flowType = [(NWStatsProtocolSnapshot *)self flowType];
+  sourceIdentifier = [(NWStatsProtocolSnapshot *)self sourceIdentifier];
+  snapshotReasonString = [(NWStatsProtocolSnapshot *)self snapshotReasonString];
   if ([(NWStatsProtocolSnapshot *)self failedConsistencyChecks])
   {
     v6 = @"-inconsistent";
@@ -793,7 +793,7 @@ LABEL_26:
     v6 = &stru_286D30F78;
   }
 
-  v7 = [(NWStatsProtocolSnapshot *)self _interfaceCellularViaFallbackConciseString];
+  _interfaceCellularViaFallbackConciseString = [(NWStatsProtocolSnapshot *)self _interfaceCellularViaFallbackConciseString];
   if ([(NWStatsProtocolSnapshot *)self flowUsesChannels])
   {
     v8 = @"ch";
@@ -804,7 +804,7 @@ LABEL_26:
     v8 = @"so";
   }
 
-  v9 = [v12 initWithFormat:@"%@ %@ flow id %lld (%@%@) %@%@ pkts rx %lld tx %lld, bytes %lld %lld", v3, v4, v11, v5, v6, v7, v8, -[NWStatsProtocolSnapshot rxPackets](self, "rxPackets"), -[NWStatsProtocolSnapshot txPackets](self, "txPackets"), -[NWStatsProtocolSnapshot rxBytes](self, "rxBytes"), -[NWStatsProtocolSnapshot txBytes](self, "txBytes")];
+  v9 = [v12 initWithFormat:@"%@ %@ flow id %lld (%@%@) %@%@ pkts rx %lld tx %lld, bytes %lld %lld", processName, flowType, sourceIdentifier, snapshotReasonString, v6, _interfaceCellularViaFallbackConciseString, v8, -[NWStatsProtocolSnapshot rxPackets](self, "rxPackets"), -[NWStatsProtocolSnapshot txPackets](self, "txPackets"), -[NWStatsProtocolSnapshot rxBytes](self, "rxBytes"), -[NWStatsProtocolSnapshot txBytes](self, "txBytes")];
 
   return v9;
 }
@@ -812,48 +812,48 @@ LABEL_26:
 - (id)domainDescription
 {
   v14 = objc_alloc(MEMORY[0x277CCACA8]);
-  v3 = [(NWStatsSnapshot *)self processName];
-  v4 = [(NWStatsProtocolSnapshot *)self flowType];
-  v5 = [(NWStatsProtocolSnapshot *)self sourceIdentifier];
-  v6 = [(NWStatsProtocolSnapshot *)self snapshotReasonString];
-  v7 = [(NWStatsProtocolSnapshot *)self flowuuid];
-  v8 = [(NWStatsSnapshot *)self domainName];
-  v9 = [(NWStatsSnapshot *)self domainOwner];
-  v10 = [(NWStatsSnapshot *)self domainTrackerContext];
-  v11 = [(NWStatsSnapshot *)self domainAttributedBundleId];
-  v12 = [v14 initWithFormat:@"%@ %@ flow id %lld (%@) fuuid %@ domain name %@ owner %@ context %@ attributed %@ silent %d", v3, v4, v5, v6, v7, v8, v9, v10, v11, -[NWStatsSnapshot isSilent](self, "isSilent")];
+  processName = [(NWStatsSnapshot *)self processName];
+  flowType = [(NWStatsProtocolSnapshot *)self flowType];
+  sourceIdentifier = [(NWStatsProtocolSnapshot *)self sourceIdentifier];
+  snapshotReasonString = [(NWStatsProtocolSnapshot *)self snapshotReasonString];
+  flowuuid = [(NWStatsProtocolSnapshot *)self flowuuid];
+  domainName = [(NWStatsSnapshot *)self domainName];
+  domainOwner = [(NWStatsSnapshot *)self domainOwner];
+  domainTrackerContext = [(NWStatsSnapshot *)self domainTrackerContext];
+  domainAttributedBundleId = [(NWStatsSnapshot *)self domainAttributedBundleId];
+  v12 = [v14 initWithFormat:@"%@ %@ flow id %lld (%@) fuuid %@ domain name %@ owner %@ context %@ attributed %@ silent %d", processName, flowType, sourceIdentifier, snapshotReasonString, flowuuid, domainName, domainOwner, domainTrackerContext, domainAttributedBundleId, -[NWStatsSnapshot isSilent](self, "isSilent")];
 
   return v12;
 }
 
 - (NSString)countsDescription
 {
-  v2 = [(NWStatsProtocolSnapshot *)self _details_ptr];
+  _details_ptr = [(NWStatsProtocolSnapshot *)self _details_ptr];
   v3 = objc_alloc(MEMORY[0x277CCACA8]);
-  ts_txbytes = v2->hdr.detailed_counts.nstat_media_stats.ms_bluetooth.ts_txbytes;
-  v5 = v2->hdr.detailed_counts.nstat_media_stats.ms_alternate.ts_txbytes;
-  v6 = [v3 initWithFormat:@"count rx/tx pkts %lld %lld bytes %lld %lld cell %lld %lld wifi-infra %lld %lld non-infra %lld %lld wired %lld %lld bt %lld %lld alternate %lld %lld dup %lld ooo %lld retx %lld", v2->hdr.detailed_counts.nstat_media_stats.ms_total.ts_rxpackets, v2->hdr.detailed_counts.nstat_media_stats.ms_total.ts_txpackets, v2->hdr.detailed_counts.nstat_media_stats.ms_total.ts_rxbytes, v2->hdr.detailed_counts.nstat_media_stats.ms_total.ts_txbytes, v2->hdr.detailed_counts.nstat_media_stats.ms_cellular.ts_rxbytes, v2->hdr.detailed_counts.nstat_media_stats.ms_cellular.ts_txbytes, v2->hdr.detailed_counts.nstat_media_stats.ms_wifi_infra.ts_rxbytes, v2->hdr.detailed_counts.nstat_media_stats.ms_wifi_infra.ts_txbytes, v2->hdr.detailed_counts.nstat_media_stats.ms_wifi_non_infra.ts_rxbytes, v2->hdr.detailed_counts.nstat_media_stats.ms_wifi_non_infra.ts_txbytes, v2->hdr.detailed_counts.nstat_media_stats.ms_wired.ts_rxbytes, v2->hdr.detailed_counts.nstat_media_stats.ms_wired.ts_txbytes, v2->hdr.detailed_counts.nstat_media_stats.ms_bluetooth.ts_rxbytes, ts_txbytes, v2->hdr.detailed_counts.nstat_media_stats.ms_alternate.ts_rxbytes, v5, v2->hdr.detailed_counts.nstat_rxduplicatebytes, v2->hdr.detailed_counts.nstat_rxoutoforderbytes, v2->hdr.detailed_counts.nstat_txretransmit];
+  ts_txbytes = _details_ptr->hdr.detailed_counts.nstat_media_stats.ms_bluetooth.ts_txbytes;
+  v5 = _details_ptr->hdr.detailed_counts.nstat_media_stats.ms_alternate.ts_txbytes;
+  v6 = [v3 initWithFormat:@"count rx/tx pkts %lld %lld bytes %lld %lld cell %lld %lld wifi-infra %lld %lld non-infra %lld %lld wired %lld %lld bt %lld %lld alternate %lld %lld dup %lld ooo %lld retx %lld", _details_ptr->hdr.detailed_counts.nstat_media_stats.ms_total.ts_rxpackets, _details_ptr->hdr.detailed_counts.nstat_media_stats.ms_total.ts_txpackets, _details_ptr->hdr.detailed_counts.nstat_media_stats.ms_total.ts_rxbytes, _details_ptr->hdr.detailed_counts.nstat_media_stats.ms_total.ts_txbytes, _details_ptr->hdr.detailed_counts.nstat_media_stats.ms_cellular.ts_rxbytes, _details_ptr->hdr.detailed_counts.nstat_media_stats.ms_cellular.ts_txbytes, _details_ptr->hdr.detailed_counts.nstat_media_stats.ms_wifi_infra.ts_rxbytes, _details_ptr->hdr.detailed_counts.nstat_media_stats.ms_wifi_infra.ts_txbytes, _details_ptr->hdr.detailed_counts.nstat_media_stats.ms_wifi_non_infra.ts_rxbytes, _details_ptr->hdr.detailed_counts.nstat_media_stats.ms_wifi_non_infra.ts_txbytes, _details_ptr->hdr.detailed_counts.nstat_media_stats.ms_wired.ts_rxbytes, _details_ptr->hdr.detailed_counts.nstat_media_stats.ms_wired.ts_txbytes, _details_ptr->hdr.detailed_counts.nstat_media_stats.ms_bluetooth.ts_rxbytes, ts_txbytes, _details_ptr->hdr.detailed_counts.nstat_media_stats.ms_alternate.ts_rxbytes, v5, _details_ptr->hdr.detailed_counts.nstat_rxduplicatebytes, _details_ptr->hdr.detailed_counts.nstat_rxoutoforderbytes, _details_ptr->hdr.detailed_counts.nstat_txretransmit];
 
   return v6;
 }
 
 - (NSString)savedCountsDescription
 {
-  v2 = [(NWStatsProtocolSnapshot *)self _details_delta_ptr];
+  _details_delta_ptr = [(NWStatsProtocolSnapshot *)self _details_delta_ptr];
   v3 = objc_alloc(MEMORY[0x277CCACA8]);
-  savedTxCompanionLinkBluetoothBytes = v2->savedTxCompanionLinkBluetoothBytes;
-  v5 = [v3 initWithFormat:@"saved rx/tx pkts %lld %lld bytes %lld %lld cell %lld %lld wifi-infra %lld %lld non-infra %lld %lld wired %lld %lld bt %lld %lld alternate %lld %lld dup %d ooo %d retx %d", v2->savedRxPackets, v2->savedTxPackets, v2->savedRxBytes, v2->savedTxBytes, v2->savedRxCellularBytes, v2->savedTxCellularBytes, v2->savedRxWiFiInfraBytes, v2->savedTxWiFiInfraBytes, v2->savedRxWiFiNonInfraBytes, v2->savedTxWiFiNonInfraBytes, v2->savedRxWiredBytes, v2->savedTxWiredBytes, v2->savedRxCompanionLinkBluetoothBytes, savedTxCompanionLinkBluetoothBytes, v2->savedRxAlternateBytes, v2->savedTxAlternateBytes, v2->savedRxDuplicateBytes, v2->savedRxOutOfOrderBytes, v2->savedTxRetransmittedBytes];
+  savedTxCompanionLinkBluetoothBytes = _details_delta_ptr->savedTxCompanionLinkBluetoothBytes;
+  v5 = [v3 initWithFormat:@"saved rx/tx pkts %lld %lld bytes %lld %lld cell %lld %lld wifi-infra %lld %lld non-infra %lld %lld wired %lld %lld bt %lld %lld alternate %lld %lld dup %d ooo %d retx %d", _details_delta_ptr->savedRxPackets, _details_delta_ptr->savedTxPackets, _details_delta_ptr->savedRxBytes, _details_delta_ptr->savedTxBytes, _details_delta_ptr->savedRxCellularBytes, _details_delta_ptr->savedTxCellularBytes, _details_delta_ptr->savedRxWiFiInfraBytes, _details_delta_ptr->savedTxWiFiInfraBytes, _details_delta_ptr->savedRxWiFiNonInfraBytes, _details_delta_ptr->savedTxWiFiNonInfraBytes, _details_delta_ptr->savedRxWiredBytes, _details_delta_ptr->savedTxWiredBytes, _details_delta_ptr->savedRxCompanionLinkBluetoothBytes, savedTxCompanionLinkBluetoothBytes, _details_delta_ptr->savedRxAlternateBytes, _details_delta_ptr->savedTxAlternateBytes, _details_delta_ptr->savedRxDuplicateBytes, _details_delta_ptr->savedRxOutOfOrderBytes, _details_delta_ptr->savedTxRetransmittedBytes];
 
   return v5;
 }
 
 - (NSString)savedAccumulatorCountsDescription
 {
-  v2 = [(NWStatsProtocolSnapshot *)self _details_adjustment_bytes];
+  _details_adjustment_bytes = [(NWStatsProtocolSnapshot *)self _details_adjustment_bytes];
   v3 = objc_alloc(MEMORY[0x277CCACA8]);
-  rxCellularBytes = v2->rxCellularBytes;
-  rxCompanionLinkBluetoothBytes = v2->rxCompanionLinkBluetoothBytes;
-  v6 = [v3 initWithFormat:@"accumulator rx/tx cell %lld %lld wifi-infra %lld %lld non-infra %lld %lld wired %lld %lld bt %lld %lld", v2->rxCellularBytes, v2->txCellularBytes, v2->rxWiFiInfraBytes, v2->txWiFiInfraBytes, v2->rxWiFiNonInfraBytes, v2->txWiFiNonInfraBytes, v2->rxWiredBytes, v2->txWiredBytes, rxCompanionLinkBluetoothBytes, v2->txCompanionLinkBluetoothBytes];
+  rxCellularBytes = _details_adjustment_bytes->rxCellularBytes;
+  rxCompanionLinkBluetoothBytes = _details_adjustment_bytes->rxCompanionLinkBluetoothBytes;
+  v6 = [v3 initWithFormat:@"accumulator rx/tx cell %lld %lld wifi-infra %lld %lld non-infra %lld %lld wired %lld %lld bt %lld %lld", _details_adjustment_bytes->rxCellularBytes, _details_adjustment_bytes->txCellularBytes, _details_adjustment_bytes->rxWiFiInfraBytes, _details_adjustment_bytes->txWiFiInfraBytes, _details_adjustment_bytes->rxWiFiNonInfraBytes, _details_adjustment_bytes->txWiFiNonInfraBytes, _details_adjustment_bytes->rxWiredBytes, _details_adjustment_bytes->txWiredBytes, rxCompanionLinkBluetoothBytes, _details_adjustment_bytes->txCompanionLinkBluetoothBytes];
 
   return v6;
 }
@@ -861,12 +861,12 @@ LABEL_26:
 - (NSString)verboseDescription
 {
   v3 = objc_alloc(MEMORY[0x277CCACA8]);
-  v4 = [(NWStatsProtocolSnapshot *)self briefDescription];
-  v5 = [(NWStatsProtocolSnapshot *)self countsDescription];
-  v6 = [(NWStatsProtocolSnapshot *)self savedCountsDescription];
-  v7 = [(NWStatsProtocolSnapshot *)self savedAccumulatorCountsDescription];
-  v8 = [(NWStatsProtocolSnapshot *)self descriptorDescription];
-  v9 = [v3 initWithFormat:@"%@\n    %@\n    %@\n    %@\n    %@", v4, v5, v6, v7, v8];
+  briefDescription = [(NWStatsProtocolSnapshot *)self briefDescription];
+  countsDescription = [(NWStatsProtocolSnapshot *)self countsDescription];
+  savedCountsDescription = [(NWStatsProtocolSnapshot *)self savedCountsDescription];
+  savedAccumulatorCountsDescription = [(NWStatsProtocolSnapshot *)self savedAccumulatorCountsDescription];
+  descriptorDescription = [(NWStatsProtocolSnapshot *)self descriptorDescription];
+  v9 = [v3 initWithFormat:@"%@\n    %@\n    %@\n    %@\n    %@", briefDescription, countsDescription, savedCountsDescription, savedAccumulatorCountsDescription, descriptorDescription];
 
   return v9;
 }
@@ -942,7 +942,7 @@ LABEL_26:
   }
 }
 
-- (unint64_t)_byteOverheadForPacketCount:(unint64_t)a3
+- (unint64_t)_byteOverheadForPacketCount:(unint64_t)count
 {
   flags = self->_flags;
   LODWORD(v4) = (flags >> 2) & 8;
@@ -973,27 +973,27 @@ LABEL_26:
     v7 = v5;
   }
 
-  return v7 * a3;
+  return v7 * count;
 }
 
-- (unint64_t)_adjustedByteCount:(unint64_t)a3 packets:(unint64_t)a4
+- (unint64_t)_adjustedByteCount:(unint64_t)count packets:(unint64_t)packets
 {
-  if (a3)
+  if (count)
   {
-    v7 = [(NWStatsProtocolSnapshot *)self _byteOverheadForPacketCount:a4];
-    if (a4 >= 0x65 && v7 > 16 * a3)
+    v7 = [(NWStatsProtocolSnapshot *)self _byteOverheadForPacketCount:packets];
+    if (packets >= 0x65 && v7 > 16 * count)
     {
       if ((self->_flags & 0x1000000) == 0)
       {
-        v8 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Possible flow anomaly, flow %lld has minimal average payload when packet counts %lld byte count %lld", -[NWStatsProtocolSnapshot sourceIdentifier](self, "sourceIdentifier"), a4, a3];
+        v8 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Possible flow anomaly, flow %lld has minimal average payload when packet counts %lld byte count %lld", -[NWStatsProtocolSnapshot sourceIdentifier](self, "sourceIdentifier"), packets, count];
         [NWStatsProtocolSnapshot logFlowAnomaly:self anomaly:v8];
         self->_flags |= 0x1000000u;
       }
 
       v7 = [(NWStatsProtocolSnapshot *)self _byteOverheadForPacketCount:100];
-      if (16 * a3 > v7)
+      if (16 * count > v7)
       {
-        v7 = 16 * a3;
+        v7 = 16 * count;
       }
     }
   }
@@ -1003,30 +1003,30 @@ LABEL_26:
     v7 = 0;
   }
 
-  return v7 + a3;
+  return v7 + count;
 }
 
-- (unint64_t)_deltaForCurrentBytes:(unint64_t)a3 packets:(unint64_t)a4 prevBytes:(unint64_t)a5 prevPackets:(unint64_t)a6
+- (unint64_t)_deltaForCurrentBytes:(unint64_t)bytes packets:(unint64_t)packets prevBytes:(unint64_t)prevBytes prevPackets:(unint64_t)prevPackets
 {
   v29 = *MEMORY[0x277D85DE8];
-  if (a3 < a5)
+  if (bytes < prevBytes)
   {
-    v9 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Flow anomaly: flow %lld has negative bytecount delta, old count %lld new count %lld", -[NWStatsProtocolSnapshot sourceIdentifier](self, "sourceIdentifier"), a5, a3];
+    bytes = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Flow anomaly: flow %lld has negative bytecount delta, old count %lld new count %lld", -[NWStatsProtocolSnapshot sourceIdentifier](self, "sourceIdentifier"), prevBytes, bytes];
 LABEL_5:
-    v12 = v9;
-    [NWStatsProtocolSnapshot logFlowAnomaly:self anomaly:v9];
+    v12 = bytes;
+    [NWStatsProtocolSnapshot logFlowAnomaly:self anomaly:bytes];
 
     goto LABEL_6;
   }
 
-  if (a4 < a6)
+  if (packets < prevPackets)
   {
-    v9 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Flow anomaly: flow %lld has negative packet count delta, old count %lld new count %lld", -[NWStatsProtocolSnapshot sourceIdentifier](self, "sourceIdentifier"), a6, a4];
+    bytes = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Flow anomaly: flow %lld has negative packet count delta, old count %lld new count %lld", -[NWStatsProtocolSnapshot sourceIdentifier](self, "sourceIdentifier"), prevPackets, packets];
     goto LABEL_5;
   }
 
-  v15 = [(NWStatsProtocolSnapshot *)self _adjustedByteCount:a3 packets:a4];
-  v16 = [(NWStatsProtocolSnapshot *)self _adjustedByteCount:a5 packets:a6];
+  v15 = [(NWStatsProtocolSnapshot *)self _adjustedByteCount:bytes packets:packets];
+  v16 = [(NWStatsProtocolSnapshot *)self _adjustedByteCount:prevBytes packets:prevPackets];
   v17 = v15 >= v16;
   result = v15 - v16;
   if (v17)
@@ -1038,15 +1038,15 @@ LABEL_5:
   if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
   {
     *buf = 134219008;
-    v20 = [(NWStatsProtocolSnapshot *)self sourceIdentifier];
+    sourceIdentifier = [(NWStatsProtocolSnapshot *)self sourceIdentifier];
     v21 = 2048;
-    v22 = a3;
+    bytesCopy = bytes;
     v23 = 2048;
-    v24 = a4;
+    packetsCopy = packets;
     v25 = 2048;
-    v26 = a5;
+    prevBytesCopy = prevBytes;
     v27 = 2048;
-    v28 = a6;
+    prevPacketsCopy = prevPackets;
     _os_log_impl(&dword_25BA3A000, v18, OS_LOG_TYPE_ERROR, "Inverted numbers in delta calculations for flow %lld, current bytes %lld pkts %lld when previous bytes %lld pkts %lld", buf, 0x34u);
   }
 
@@ -1060,24 +1060,24 @@ LABEL_7:
 - (unint64_t)deltaAccountingRxAlternateBytes
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [(NWStatsProtocolSnapshot *)self deltaRxAlternateBytes];
+  deltaRxAlternateBytes = [(NWStatsProtocolSnapshot *)self deltaRxAlternateBytes];
   rxAlternateBytes = self->_adjustment_bytes.rxAlternateBytes;
-  v5 = v3 >= rxAlternateBytes;
-  result = v3 - rxAlternateBytes;
+  v5 = deltaRxAlternateBytes >= rxAlternateBytes;
+  result = deltaRxAlternateBytes - rxAlternateBytes;
   if (!v5)
   {
     v7 = NStatGetLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      v8 = [(NWStatsProtocolSnapshot *)self deltaRxAlternateBytes];
+      deltaRxAlternateBytes2 = [(NWStatsProtocolSnapshot *)self deltaRxAlternateBytes];
       txAlternateBytes = self->_adjustment_bytes.txAlternateBytes;
-      v10 = [(NWStatsProtocolSnapshot *)self verboseDescription];
+      verboseDescription = [(NWStatsProtocolSnapshot *)self verboseDescription];
       v12 = 134218498;
-      v13 = v8;
+      v13 = deltaRxAlternateBytes2;
       v14 = 2048;
       v15 = txAlternateBytes;
       v16 = 2112;
-      v17 = v10;
+      v17 = verboseDescription;
       _os_log_impl(&dword_25BA3A000, v7, OS_LOG_TYPE_ERROR, "Accounting adjustment counts > actual deltas in the snapshot. deltaRxAlternateBytes = %llu, adjustmentRxAlternateBytes = %llu\n%@", &v12, 0x20u);
     }
 
@@ -1091,24 +1091,24 @@ LABEL_7:
 - (unint64_t)deltaAccountingTxAlternateBytes
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [(NWStatsProtocolSnapshot *)self deltaTxAlternateBytes];
+  deltaTxAlternateBytes = [(NWStatsProtocolSnapshot *)self deltaTxAlternateBytes];
   txAlternateBytes = self->_adjustment_bytes.txAlternateBytes;
-  v5 = v3 >= txAlternateBytes;
-  result = v3 - txAlternateBytes;
+  v5 = deltaTxAlternateBytes >= txAlternateBytes;
+  result = deltaTxAlternateBytes - txAlternateBytes;
   if (!v5)
   {
     v7 = NStatGetLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      v8 = [(NWStatsProtocolSnapshot *)self deltaTxAlternateBytes];
+      deltaTxAlternateBytes2 = [(NWStatsProtocolSnapshot *)self deltaTxAlternateBytes];
       v9 = self->_adjustment_bytes.txAlternateBytes;
-      v10 = [(NWStatsProtocolSnapshot *)self verboseDescription];
+      verboseDescription = [(NWStatsProtocolSnapshot *)self verboseDescription];
       v12 = 134218498;
-      v13 = v8;
+      v13 = deltaTxAlternateBytes2;
       v14 = 2048;
       v15 = v9;
       v16 = 2112;
-      v17 = v10;
+      v17 = verboseDescription;
       _os_log_impl(&dword_25BA3A000, v7, OS_LOG_TYPE_ERROR, "Accounting adjustment counts > actual deltas in the snapshot. deltaTxAlternateBytes = %llu, adjustmentTxAlternateBytes = %llu\n%@", &v12, 0x20u);
     }
 
@@ -1217,22 +1217,22 @@ LABEL_7:
   }
 }
 
-- (id)_createNSUUIDForBytes:(unsigned __int8)a3[16]
+- (id)_createNSUUIDForBytes:(unsigned __int8)bytes[16]
 {
-  if (uuid_is_null(a3))
+  if (uuid_is_null(bytes))
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDBytes:a3];
+    v4 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDBytes:bytes];
   }
 
   return v4;
 }
 
-- (BOOL)isSimpleInterface:(unsigned int)a3
+- (BOOL)isSimpleInterface:(unsigned int)interface
 {
   v9 = 0;
   if ((getifaddrs(&v9) & 0x80000000) == 0)
@@ -1248,7 +1248,7 @@ LABEL_7:
           ifa_name = v4->ifa_name;
           if (ifa_name)
           {
-            if (ifa_addr->sa_family == 18 && *ifa_addr->sa_data == a3)
+            if (ifa_addr->sa_family == 18 && *ifa_addr->sa_data == interface)
             {
               v7 = *ifa_name;
               if (v7 == 112)
@@ -1281,14 +1281,14 @@ LABEL_18:
   return 0;
 }
 
-+ (void)logFlowAnomaly:(id)a3 anomaly:(id)a4
++ (void)logFlowAnomaly:(id)anomaly anomaly:(id)a4
 {
   v14 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  anomalyCopy = anomaly;
   v6 = a4;
   os_unfair_lock_lock(&flowsWithAnomaliesLock);
-  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v5, "sourceIdentifier")}];
-  if ([v5 snapshotReason] == 2)
+  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(anomalyCopy, "sourceIdentifier")}];
+  if ([anomalyCopy snapshotReason] == 2)
   {
     [flowsWithAnomalies removeObject:v7];
   }
@@ -1314,9 +1314,9 @@ LABEL_18:
   v9 = NStatGetLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v5 verboseDescription];
+    verboseDescription = [anomalyCopy verboseDescription];
     v12 = 138412290;
-    v13 = v10;
+    v13 = verboseDescription;
     _os_log_impl(&dword_25BA3A000, v9, OS_LOG_TYPE_DEFAULT, "Flow details for anomalous flow condition: %{pubic}@", &v12, 0xCu);
   }
 
@@ -1326,82 +1326,82 @@ LABEL_10:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)_initializeTCPDescriptor:(nstat_tcp_descriptor *)a3 fromDictionary:(id)a4
++ (void)_initializeTCPDescriptor:(nstat_tcp_descriptor *)descriptor fromDictionary:(id)dictionary
 {
-  v76 = a4;
-  v5 = [v76 objectForKeyedSubscript:@"upid"];
-  a3->upid = [v5 unsignedLongLongValue];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"upid"];
+  descriptor->upid = [v5 unsignedLongLongValue];
 
-  v6 = [v76 objectForKeyedSubscript:@"eupid"];
-  a3->eupid = [v6 unsignedLongLongValue];
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"eupid"];
+  descriptor->eupid = [v6 unsignedLongLongValue];
 
-  v7 = [v76 objectForKeyedSubscript:@"start_timestamp"];
-  a3->start_timestamp = [v7 unsignedLongLongValue];
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"start_timestamp"];
+  descriptor->start_timestamp = [v7 unsignedLongLongValue];
 
-  v8 = [v76 objectForKeyedSubscript:@"timestamp"];
-  a3->timestamp = [v8 unsignedLongLongValue];
+  v8 = [dictionaryCopy objectForKeyedSubscript:@"timestamp"];
+  descriptor->timestamp = [v8 unsignedLongLongValue];
 
-  v9 = [v76 objectForKeyedSubscript:@"ifindex"];
-  a3->ifindex = [v9 unsignedIntValue];
+  v9 = [dictionaryCopy objectForKeyedSubscript:@"ifindex"];
+  descriptor->ifindex = [v9 unsignedIntValue];
 
-  v10 = [v76 objectForKeyedSubscript:@"state"];
-  a3->state = [v10 unsignedIntValue];
+  v10 = [dictionaryCopy objectForKeyedSubscript:@"state"];
+  descriptor->state = [v10 unsignedIntValue];
 
-  v11 = [v76 objectForKeyedSubscript:@"sndbufsize"];
-  a3->sndbufsize = [v11 unsignedIntValue];
+  v11 = [dictionaryCopy objectForKeyedSubscript:@"sndbufsize"];
+  descriptor->sndbufsize = [v11 unsignedIntValue];
 
-  v12 = [v76 objectForKeyedSubscript:@"sndbufused"];
-  a3->sndbufused = [v12 unsignedIntValue];
+  v12 = [dictionaryCopy objectForKeyedSubscript:@"sndbufused"];
+  descriptor->sndbufused = [v12 unsignedIntValue];
 
-  v13 = [v76 objectForKeyedSubscript:@"rcvbufsize"];
-  a3->rcvbufsize = [v13 unsignedIntValue];
+  v13 = [dictionaryCopy objectForKeyedSubscript:@"rcvbufsize"];
+  descriptor->rcvbufsize = [v13 unsignedIntValue];
 
-  v14 = [v76 objectForKeyedSubscript:@"rcvbufused"];
-  a3->rcvbufused = [v14 unsignedIntValue];
+  v14 = [dictionaryCopy objectForKeyedSubscript:@"rcvbufused"];
+  descriptor->rcvbufused = [v14 unsignedIntValue];
 
-  v15 = [v76 objectForKeyedSubscript:@"txunacked"];
-  a3->txunacked = [v15 unsignedIntValue];
+  v15 = [dictionaryCopy objectForKeyedSubscript:@"txunacked"];
+  descriptor->txunacked = [v15 unsignedIntValue];
 
-  v16 = [v76 objectForKeyedSubscript:@"txwindow"];
-  a3->txwindow = [v16 unsignedIntValue];
+  v16 = [dictionaryCopy objectForKeyedSubscript:@"txwindow"];
+  descriptor->txwindow = [v16 unsignedIntValue];
 
-  v17 = [v76 objectForKeyedSubscript:@"txcwindow"];
-  a3->txcwindow = [v17 unsignedIntValue];
+  v17 = [dictionaryCopy objectForKeyedSubscript:@"txcwindow"];
+  descriptor->txcwindow = [v17 unsignedIntValue];
 
-  v18 = [v76 objectForKeyedSubscript:@"traffic_class"];
-  a3->traffic_class = [v18 unsignedIntValue];
+  v18 = [dictionaryCopy objectForKeyedSubscript:@"traffic_class"];
+  descriptor->traffic_class = [v18 unsignedIntValue];
 
-  v19 = [v76 objectForKeyedSubscript:@"traffic_mgt_flags"];
-  a3->traffic_mgt_flags = [v19 unsignedIntValue];
+  v19 = [dictionaryCopy objectForKeyedSubscript:@"traffic_mgt_flags"];
+  descriptor->traffic_mgt_flags = [v19 unsignedIntValue];
 
-  v20 = [v76 objectForKeyedSubscript:@"pid"];
-  a3->pid = [v20 unsignedIntValue];
+  v20 = [dictionaryCopy objectForKeyedSubscript:@"pid"];
+  descriptor->pid = [v20 unsignedIntValue];
 
-  v21 = [v76 objectForKeyedSubscript:@"epid"];
-  a3->epid = [v21 unsignedIntValue];
+  v21 = [dictionaryCopy objectForKeyedSubscript:@"epid"];
+  descriptor->epid = [v21 unsignedIntValue];
 
-  v22 = [v76 objectForKeyedSubscript:@"cc_algo"];
+  v22 = [dictionaryCopy objectForKeyedSubscript:@"cc_algo"];
   if (v22)
   {
     v23 = v22;
-    v24 = [v76 objectForKeyedSubscript:@"cc_algo"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"cc_algo"];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v26 = [v76 objectForKeyedSubscript:@"cc_algo"];
-      v27 = [v26 UTF8String];
-      if (!v27)
+      v26 = [dictionaryCopy objectForKeyedSubscript:@"cc_algo"];
+      uTF8String = [v26 UTF8String];
+      if (!uTF8String)
       {
         goto LABEL_49;
       }
 
-      cc_algo = a3->cc_algo;
+      cc_algo = descriptor->cc_algo;
       v29 = 16;
       while (1)
       {
-        v30 = *v27;
+        v30 = *uTF8String;
         *cc_algo = v30;
         if (!v30)
         {
@@ -1409,7 +1409,7 @@ LABEL_10:
         }
 
         ++cc_algo;
-        ++v27;
+        ++uTF8String;
         if (--v29 <= 1)
         {
           *cc_algo = 0;
@@ -1419,25 +1419,25 @@ LABEL_10:
     }
   }
 
-  v31 = [v76 objectForKeyedSubscript:@"pname"];
+  v31 = [dictionaryCopy objectForKeyedSubscript:@"pname"];
   if (v31)
   {
     v32 = v31;
-    v33 = [v76 objectForKeyedSubscript:@"pname"];
+    v33 = [dictionaryCopy objectForKeyedSubscript:@"pname"];
     objc_opt_class();
     v34 = objc_opt_isKindOfClass();
 
     if (v34)
     {
-      v35 = [v76 objectForKeyedSubscript:@"pname"];
-      v36 = [v35 UTF8String];
-      if (v36)
+      v35 = [dictionaryCopy objectForKeyedSubscript:@"pname"];
+      uTF8String2 = [v35 UTF8String];
+      if (uTF8String2)
       {
-        pname = a3->pname;
+        pname = descriptor->pname;
         v38 = 64;
         while (1)
         {
-          v39 = *v36;
+          v39 = *uTF8String2;
           *pname = v39;
           if (!v39)
           {
@@ -1445,7 +1445,7 @@ LABEL_10:
           }
 
           ++pname;
-          ++v36;
+          ++uTF8String2;
           if (--v38 <= 1)
           {
             *pname = 0;
@@ -1463,97 +1463,97 @@ LABEL_49:
   }
 
 LABEL_17:
-  v40 = [v76 objectForKeyedSubscript:@"uuid"];
+  v40 = [dictionaryCopy objectForKeyedSubscript:@"uuid"];
   if (v40)
   {
     v41 = v40;
-    v42 = [v76 objectForKeyedSubscript:@"uuid"];
+    v42 = [dictionaryCopy objectForKeyedSubscript:@"uuid"];
     objc_opt_class();
     v43 = objc_opt_isKindOfClass();
 
     if (v43)
     {
       v44 = objc_alloc(MEMORY[0x277CCAD78]);
-      v45 = [v76 objectForKeyedSubscript:@"uuid"];
+      v45 = [dictionaryCopy objectForKeyedSubscript:@"uuid"];
       v46 = [v44 initWithUUIDString:v45];
 
       if (v46)
       {
-        [v46 getUUIDBytes:a3->uuid];
+        [v46 getUUIDBytes:descriptor->uuid];
       }
     }
   }
 
-  v47 = [v76 objectForKeyedSubscript:@"euuid"];
+  v47 = [dictionaryCopy objectForKeyedSubscript:@"euuid"];
   if (v47)
   {
     v48 = v47;
-    v49 = [v76 objectForKeyedSubscript:@"euuid"];
+    v49 = [dictionaryCopy objectForKeyedSubscript:@"euuid"];
     objc_opt_class();
     v50 = objc_opt_isKindOfClass();
 
     if (v50)
     {
       v51 = objc_alloc(MEMORY[0x277CCAD78]);
-      v52 = [v76 objectForKeyedSubscript:@"euuid"];
+      v52 = [dictionaryCopy objectForKeyedSubscript:@"euuid"];
       v53 = [v51 initWithUUIDString:v52];
 
       if (v53)
       {
-        [v53 getUUIDBytes:a3->euuid];
+        [v53 getUUIDBytes:descriptor->euuid];
       }
     }
   }
 
-  v54 = [v76 objectForKeyedSubscript:@"vuuid"];
+  v54 = [dictionaryCopy objectForKeyedSubscript:@"vuuid"];
   if (v54)
   {
     v55 = v54;
-    v56 = [v76 objectForKeyedSubscript:@"vuuid"];
+    v56 = [dictionaryCopy objectForKeyedSubscript:@"vuuid"];
     objc_opt_class();
     v57 = objc_opt_isKindOfClass();
 
     if (v57)
     {
       v58 = objc_alloc(MEMORY[0x277CCAD78]);
-      v59 = [v76 objectForKeyedSubscript:@"vuuid"];
+      v59 = [dictionaryCopy objectForKeyedSubscript:@"vuuid"];
       v60 = [v58 initWithUUIDString:v59];
 
       if (v60)
       {
-        [v60 getUUIDBytes:a3->vuuid];
+        [v60 getUUIDBytes:descriptor->vuuid];
       }
     }
   }
 
-  v61 = [v76 objectForKeyedSubscript:@"fuuid"];
+  v61 = [dictionaryCopy objectForKeyedSubscript:@"fuuid"];
   if (v61)
   {
     v62 = v61;
-    v63 = [v76 objectForKeyedSubscript:@"fuuid"];
+    v63 = [dictionaryCopy objectForKeyedSubscript:@"fuuid"];
     objc_opt_class();
     v64 = objc_opt_isKindOfClass();
 
     if (v64)
     {
       v65 = objc_alloc(MEMORY[0x277CCAD78]);
-      v66 = [v76 objectForKeyedSubscript:@"fuuid"];
+      v66 = [dictionaryCopy objectForKeyedSubscript:@"fuuid"];
       v67 = [v65 initWithUUIDString:v66];
 
       if (v67)
       {
-        [v67 getUUIDBytes:a3->fuuid];
+        [v67 getUUIDBytes:descriptor->fuuid];
       }
     }
   }
 
-  v68 = [v76 objectForKeyedSubscript:@"ifnet_properties"];
-  a3->ifnet_properties = [v68 unsignedShortValue];
+  v68 = [dictionaryCopy objectForKeyedSubscript:@"ifnet_properties"];
+  descriptor->ifnet_properties = [v68 unsignedShortValue];
 
-  v69 = [v76 objectForKeyedSubscript:@"probe_activated"];
-  a3->var0.__pad_connstatus[0] = a3->var0.__pad_connstatus[0] & 0xFE | [v69 BOOLValue];
+  v69 = [dictionaryCopy objectForKeyedSubscript:@"probe_activated"];
+  descriptor->var0.__pad_connstatus[0] = descriptor->var0.__pad_connstatus[0] & 0xFE | [v69 BOOLValue];
 
-  v70 = [v76 objectForKeyedSubscript:@"write_probe_failed"];
+  v70 = [dictionaryCopy objectForKeyedSubscript:@"write_probe_failed"];
   if ([v70 BOOLValue])
   {
     v71 = 2;
@@ -1564,9 +1564,9 @@ LABEL_17:
     v71 = 0;
   }
 
-  a3->var0.__pad_connstatus[0] = a3->var0.__pad_connstatus[0] & 0xFD | v71;
+  descriptor->var0.__pad_connstatus[0] = descriptor->var0.__pad_connstatus[0] & 0xFD | v71;
 
-  v72 = [v76 objectForKeyedSubscript:@"read_probe_failed"];
+  v72 = [dictionaryCopy objectForKeyedSubscript:@"read_probe_failed"];
   if ([v72 BOOLValue])
   {
     v73 = 4;
@@ -1577,9 +1577,9 @@ LABEL_17:
     v73 = 0;
   }
 
-  a3->var0.__pad_connstatus[0] = a3->var0.__pad_connstatus[0] & 0xFB | v73;
+  descriptor->var0.__pad_connstatus[0] = descriptor->var0.__pad_connstatus[0] & 0xFB | v73;
 
-  v74 = [v76 objectForKeyedSubscript:@"conn_probe_failed"];
+  v74 = [dictionaryCopy objectForKeyedSubscript:@"conn_probe_failed"];
   if ([v74 BOOLValue])
   {
     v75 = 8;
@@ -1590,65 +1590,65 @@ LABEL_17:
     v75 = 0;
   }
 
-  a3->var0.__pad_connstatus[0] = a3->var0.__pad_connstatus[0] & 0xF7 | v75;
+  descriptor->var0.__pad_connstatus[0] = descriptor->var0.__pad_connstatus[0] & 0xF7 | v75;
 }
 
-+ (void)_initializeUDPDescriptor:(nstat_udp_descriptor *)a3 fromDictionary:(id)a4
++ (void)_initializeUDPDescriptor:(nstat_udp_descriptor *)descriptor fromDictionary:(id)dictionary
 {
-  v53 = a4;
-  v5 = [v53 objectForKeyedSubscript:@"upid"];
-  a3->upid = [v5 unsignedLongLongValue];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"upid"];
+  descriptor->upid = [v5 unsignedLongLongValue];
 
-  v6 = [v53 objectForKeyedSubscript:@"eupid"];
-  a3->eupid = [v6 unsignedLongLongValue];
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"eupid"];
+  descriptor->eupid = [v6 unsignedLongLongValue];
 
-  v7 = [v53 objectForKeyedSubscript:@"start_timestamp"];
-  a3->start_timestamp = [v7 unsignedLongLongValue];
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"start_timestamp"];
+  descriptor->start_timestamp = [v7 unsignedLongLongValue];
 
-  v8 = [v53 objectForKeyedSubscript:@"timestamp"];
-  a3->timestamp = [v8 unsignedLongLongValue];
+  v8 = [dictionaryCopy objectForKeyedSubscript:@"timestamp"];
+  descriptor->timestamp = [v8 unsignedLongLongValue];
 
-  v9 = [v53 objectForKeyedSubscript:@"ifindex"];
-  a3->ifindex = [v9 unsignedIntValue];
+  v9 = [dictionaryCopy objectForKeyedSubscript:@"ifindex"];
+  descriptor->ifindex = [v9 unsignedIntValue];
 
-  v10 = [v53 objectForKeyedSubscript:@"rcvbufsize"];
-  a3->rcvbufsize = [v10 unsignedIntValue];
+  v10 = [dictionaryCopy objectForKeyedSubscript:@"rcvbufsize"];
+  descriptor->rcvbufsize = [v10 unsignedIntValue];
 
-  v11 = [v53 objectForKeyedSubscript:@"rcvbufused"];
-  a3->rcvbufused = [v11 unsignedIntValue];
+  v11 = [dictionaryCopy objectForKeyedSubscript:@"rcvbufused"];
+  descriptor->rcvbufused = [v11 unsignedIntValue];
 
-  v12 = [v53 objectForKeyedSubscript:@"traffic_class"];
-  a3->traffic_class = [v12 unsignedIntValue];
+  v12 = [dictionaryCopy objectForKeyedSubscript:@"traffic_class"];
+  descriptor->traffic_class = [v12 unsignedIntValue];
 
-  v13 = [v53 objectForKeyedSubscript:@"pid"];
-  a3->pid = [v13 unsignedIntValue];
+  v13 = [dictionaryCopy objectForKeyedSubscript:@"pid"];
+  descriptor->pid = [v13 unsignedIntValue];
 
-  v14 = [v53 objectForKeyedSubscript:@"epid"];
-  a3->epid = [v14 unsignedIntValue];
+  v14 = [dictionaryCopy objectForKeyedSubscript:@"epid"];
+  descriptor->epid = [v14 unsignedIntValue];
 
-  v15 = [v53 objectForKeyedSubscript:@"pname"];
+  v15 = [dictionaryCopy objectForKeyedSubscript:@"pname"];
   if (v15)
   {
     v16 = v15;
-    v17 = [v53 objectForKeyedSubscript:@"pname"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"pname"];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v19 = [v53 objectForKeyedSubscript:@"pname"];
-      v20 = [v19 UTF8String];
-      if (!v20)
+      v19 = [dictionaryCopy objectForKeyedSubscript:@"pname"];
+      uTF8String = [v19 UTF8String];
+      if (!uTF8String)
       {
         __break(1u);
         return;
       }
 
-      pname = a3->pname;
+      pname = descriptor->pname;
       v22 = 64;
       while (1)
       {
-        v23 = *v20;
+        v23 = *uTF8String;
         *pname = v23;
         if (!v23)
         {
@@ -1656,7 +1656,7 @@ LABEL_17:
         }
 
         ++pname;
-        ++v20;
+        ++uTF8String;
         if (--v22 <= 1)
         {
           *pname = 0;
@@ -1666,170 +1666,170 @@ LABEL_17:
     }
   }
 
-  v24 = [v53 objectForKeyedSubscript:@"uuid"];
+  v24 = [dictionaryCopy objectForKeyedSubscript:@"uuid"];
   if (v24)
   {
     v25 = v24;
-    v26 = [v53 objectForKeyedSubscript:@"uuid"];
+    v26 = [dictionaryCopy objectForKeyedSubscript:@"uuid"];
     objc_opt_class();
     v27 = objc_opt_isKindOfClass();
 
     if (v27)
     {
       v28 = objc_alloc(MEMORY[0x277CCAD78]);
-      v29 = [v53 objectForKeyedSubscript:@"uuid"];
+      v29 = [dictionaryCopy objectForKeyedSubscript:@"uuid"];
       v30 = [v28 initWithUUIDString:v29];
 
       if (v30)
       {
-        [v30 getUUIDBytes:a3->uuid];
+        [v30 getUUIDBytes:descriptor->uuid];
       }
     }
   }
 
-  v31 = [v53 objectForKeyedSubscript:@"euuid"];
+  v31 = [dictionaryCopy objectForKeyedSubscript:@"euuid"];
   if (v31)
   {
     v32 = v31;
-    v33 = [v53 objectForKeyedSubscript:@"euuid"];
+    v33 = [dictionaryCopy objectForKeyedSubscript:@"euuid"];
     objc_opt_class();
     v34 = objc_opt_isKindOfClass();
 
     if (v34)
     {
       v35 = objc_alloc(MEMORY[0x277CCAD78]);
-      v36 = [v53 objectForKeyedSubscript:@"euuid"];
+      v36 = [dictionaryCopy objectForKeyedSubscript:@"euuid"];
       v37 = [v35 initWithUUIDString:v36];
 
       if (v37)
       {
-        [v37 getUUIDBytes:a3->euuid];
+        [v37 getUUIDBytes:descriptor->euuid];
       }
     }
   }
 
-  v38 = [v53 objectForKeyedSubscript:@"vuuid"];
+  v38 = [dictionaryCopy objectForKeyedSubscript:@"vuuid"];
   if (v38)
   {
     v39 = v38;
-    v40 = [v53 objectForKeyedSubscript:@"vuuid"];
+    v40 = [dictionaryCopy objectForKeyedSubscript:@"vuuid"];
     objc_opt_class();
     v41 = objc_opt_isKindOfClass();
 
     if (v41)
     {
       v42 = objc_alloc(MEMORY[0x277CCAD78]);
-      v43 = [v53 objectForKeyedSubscript:@"vuuid"];
+      v43 = [dictionaryCopy objectForKeyedSubscript:@"vuuid"];
       v44 = [v42 initWithUUIDString:v43];
 
       if (v44)
       {
-        [v44 getUUIDBytes:a3->vuuid];
+        [v44 getUUIDBytes:descriptor->vuuid];
       }
     }
   }
 
-  v45 = [v53 objectForKeyedSubscript:@"fuuid"];
+  v45 = [dictionaryCopy objectForKeyedSubscript:@"fuuid"];
   if (v45)
   {
     v46 = v45;
-    v47 = [v53 objectForKeyedSubscript:@"fuuid"];
+    v47 = [dictionaryCopy objectForKeyedSubscript:@"fuuid"];
     objc_opt_class();
     v48 = objc_opt_isKindOfClass();
 
     if (v48)
     {
       v49 = objc_alloc(MEMORY[0x277CCAD78]);
-      v50 = [v53 objectForKeyedSubscript:@"fuuid"];
+      v50 = [dictionaryCopy objectForKeyedSubscript:@"fuuid"];
       v51 = [v49 initWithUUIDString:v50];
 
       if (v51)
       {
-        [v51 getUUIDBytes:a3->fuuid];
+        [v51 getUUIDBytes:descriptor->fuuid];
       }
     }
   }
 
-  v52 = [v53 objectForKeyedSubscript:@"ifnet_properties"];
-  a3->ifnet_properties = [v52 unsignedShortValue];
+  v52 = [dictionaryCopy objectForKeyedSubscript:@"ifnet_properties"];
+  descriptor->ifnet_properties = [v52 unsignedShortValue];
 }
 
-+ (void)_initializeQUICDescriptor:(nstat_tcp_descriptor *)a3 fromDictionary:(id)a4
++ (void)_initializeQUICDescriptor:(nstat_tcp_descriptor *)descriptor fromDictionary:(id)dictionary
 {
-  v76 = a4;
-  v5 = [v76 objectForKeyedSubscript:@"upid"];
-  a3->upid = [v5 unsignedLongLongValue];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"upid"];
+  descriptor->upid = [v5 unsignedLongLongValue];
 
-  v6 = [v76 objectForKeyedSubscript:@"eupid"];
-  a3->eupid = [v6 unsignedLongLongValue];
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"eupid"];
+  descriptor->eupid = [v6 unsignedLongLongValue];
 
-  v7 = [v76 objectForKeyedSubscript:@"start_timestamp"];
-  a3->start_timestamp = [v7 unsignedLongLongValue];
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"start_timestamp"];
+  descriptor->start_timestamp = [v7 unsignedLongLongValue];
 
-  v8 = [v76 objectForKeyedSubscript:@"timestamp"];
-  a3->timestamp = [v8 unsignedLongLongValue];
+  v8 = [dictionaryCopy objectForKeyedSubscript:@"timestamp"];
+  descriptor->timestamp = [v8 unsignedLongLongValue];
 
-  v9 = [v76 objectForKeyedSubscript:@"ifindex"];
-  a3->ifindex = [v9 unsignedIntValue];
+  v9 = [dictionaryCopy objectForKeyedSubscript:@"ifindex"];
+  descriptor->ifindex = [v9 unsignedIntValue];
 
-  v10 = [v76 objectForKeyedSubscript:@"state"];
-  a3->state = [v10 unsignedIntValue];
+  v10 = [dictionaryCopy objectForKeyedSubscript:@"state"];
+  descriptor->state = [v10 unsignedIntValue];
 
-  v11 = [v76 objectForKeyedSubscript:@"sndbufsize"];
-  a3->sndbufsize = [v11 unsignedIntValue];
+  v11 = [dictionaryCopy objectForKeyedSubscript:@"sndbufsize"];
+  descriptor->sndbufsize = [v11 unsignedIntValue];
 
-  v12 = [v76 objectForKeyedSubscript:@"sndbufused"];
-  a3->sndbufused = [v12 unsignedIntValue];
+  v12 = [dictionaryCopy objectForKeyedSubscript:@"sndbufused"];
+  descriptor->sndbufused = [v12 unsignedIntValue];
 
-  v13 = [v76 objectForKeyedSubscript:@"rcvbufsize"];
-  a3->rcvbufsize = [v13 unsignedIntValue];
+  v13 = [dictionaryCopy objectForKeyedSubscript:@"rcvbufsize"];
+  descriptor->rcvbufsize = [v13 unsignedIntValue];
 
-  v14 = [v76 objectForKeyedSubscript:@"rcvbufused"];
-  a3->rcvbufused = [v14 unsignedIntValue];
+  v14 = [dictionaryCopy objectForKeyedSubscript:@"rcvbufused"];
+  descriptor->rcvbufused = [v14 unsignedIntValue];
 
-  v15 = [v76 objectForKeyedSubscript:@"txunacked"];
-  a3->txunacked = [v15 unsignedIntValue];
+  v15 = [dictionaryCopy objectForKeyedSubscript:@"txunacked"];
+  descriptor->txunacked = [v15 unsignedIntValue];
 
-  v16 = [v76 objectForKeyedSubscript:@"txwindow"];
-  a3->txwindow = [v16 unsignedIntValue];
+  v16 = [dictionaryCopy objectForKeyedSubscript:@"txwindow"];
+  descriptor->txwindow = [v16 unsignedIntValue];
 
-  v17 = [v76 objectForKeyedSubscript:@"txcwindow"];
-  a3->txcwindow = [v17 unsignedIntValue];
+  v17 = [dictionaryCopy objectForKeyedSubscript:@"txcwindow"];
+  descriptor->txcwindow = [v17 unsignedIntValue];
 
-  v18 = [v76 objectForKeyedSubscript:@"traffic_class"];
-  a3->traffic_class = [v18 unsignedIntValue];
+  v18 = [dictionaryCopy objectForKeyedSubscript:@"traffic_class"];
+  descriptor->traffic_class = [v18 unsignedIntValue];
 
-  v19 = [v76 objectForKeyedSubscript:@"traffic_mgt_flags"];
-  a3->traffic_mgt_flags = [v19 unsignedIntValue];
+  v19 = [dictionaryCopy objectForKeyedSubscript:@"traffic_mgt_flags"];
+  descriptor->traffic_mgt_flags = [v19 unsignedIntValue];
 
-  v20 = [v76 objectForKeyedSubscript:@"pid"];
-  a3->pid = [v20 unsignedIntValue];
+  v20 = [dictionaryCopy objectForKeyedSubscript:@"pid"];
+  descriptor->pid = [v20 unsignedIntValue];
 
-  v21 = [v76 objectForKeyedSubscript:@"epid"];
-  a3->epid = [v21 unsignedIntValue];
+  v21 = [dictionaryCopy objectForKeyedSubscript:@"epid"];
+  descriptor->epid = [v21 unsignedIntValue];
 
-  v22 = [v76 objectForKeyedSubscript:@"cc_algo"];
+  v22 = [dictionaryCopy objectForKeyedSubscript:@"cc_algo"];
   if (v22)
   {
     v23 = v22;
-    v24 = [v76 objectForKeyedSubscript:@"cc_algo"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"cc_algo"];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v26 = [v76 objectForKeyedSubscript:@"cc_algo"];
-      v27 = [v26 UTF8String];
-      if (!v27)
+      v26 = [dictionaryCopy objectForKeyedSubscript:@"cc_algo"];
+      uTF8String = [v26 UTF8String];
+      if (!uTF8String)
       {
         goto LABEL_49;
       }
 
-      cc_algo = a3->cc_algo;
+      cc_algo = descriptor->cc_algo;
       v29 = 16;
       while (1)
       {
-        v30 = *v27;
+        v30 = *uTF8String;
         *cc_algo = v30;
         if (!v30)
         {
@@ -1837,7 +1837,7 @@ LABEL_17:
         }
 
         ++cc_algo;
-        ++v27;
+        ++uTF8String;
         if (--v29 <= 1)
         {
           *cc_algo = 0;
@@ -1847,25 +1847,25 @@ LABEL_17:
     }
   }
 
-  v31 = [v76 objectForKeyedSubscript:@"pname"];
+  v31 = [dictionaryCopy objectForKeyedSubscript:@"pname"];
   if (v31)
   {
     v32 = v31;
-    v33 = [v76 objectForKeyedSubscript:@"pname"];
+    v33 = [dictionaryCopy objectForKeyedSubscript:@"pname"];
     objc_opt_class();
     v34 = objc_opt_isKindOfClass();
 
     if (v34)
     {
-      v35 = [v76 objectForKeyedSubscript:@"pname"];
-      v36 = [v35 UTF8String];
-      if (v36)
+      v35 = [dictionaryCopy objectForKeyedSubscript:@"pname"];
+      uTF8String2 = [v35 UTF8String];
+      if (uTF8String2)
       {
-        pname = a3->pname;
+        pname = descriptor->pname;
         v38 = 64;
         while (1)
         {
-          v39 = *v36;
+          v39 = *uTF8String2;
           *pname = v39;
           if (!v39)
           {
@@ -1873,7 +1873,7 @@ LABEL_17:
           }
 
           ++pname;
-          ++v36;
+          ++uTF8String2;
           if (--v38 <= 1)
           {
             *pname = 0;
@@ -1891,97 +1891,97 @@ LABEL_49:
   }
 
 LABEL_17:
-  v40 = [v76 objectForKeyedSubscript:@"uuid"];
+  v40 = [dictionaryCopy objectForKeyedSubscript:@"uuid"];
   if (v40)
   {
     v41 = v40;
-    v42 = [v76 objectForKeyedSubscript:@"uuid"];
+    v42 = [dictionaryCopy objectForKeyedSubscript:@"uuid"];
     objc_opt_class();
     v43 = objc_opt_isKindOfClass();
 
     if (v43)
     {
       v44 = objc_alloc(MEMORY[0x277CCAD78]);
-      v45 = [v76 objectForKeyedSubscript:@"uuid"];
+      v45 = [dictionaryCopy objectForKeyedSubscript:@"uuid"];
       v46 = [v44 initWithUUIDString:v45];
 
       if (v46)
       {
-        [v46 getUUIDBytes:a3->uuid];
+        [v46 getUUIDBytes:descriptor->uuid];
       }
     }
   }
 
-  v47 = [v76 objectForKeyedSubscript:@"euuid"];
+  v47 = [dictionaryCopy objectForKeyedSubscript:@"euuid"];
   if (v47)
   {
     v48 = v47;
-    v49 = [v76 objectForKeyedSubscript:@"euuid"];
+    v49 = [dictionaryCopy objectForKeyedSubscript:@"euuid"];
     objc_opt_class();
     v50 = objc_opt_isKindOfClass();
 
     if (v50)
     {
       v51 = objc_alloc(MEMORY[0x277CCAD78]);
-      v52 = [v76 objectForKeyedSubscript:@"euuid"];
+      v52 = [dictionaryCopy objectForKeyedSubscript:@"euuid"];
       v53 = [v51 initWithUUIDString:v52];
 
       if (v53)
       {
-        [v53 getUUIDBytes:a3->euuid];
+        [v53 getUUIDBytes:descriptor->euuid];
       }
     }
   }
 
-  v54 = [v76 objectForKeyedSubscript:@"vuuid"];
+  v54 = [dictionaryCopy objectForKeyedSubscript:@"vuuid"];
   if (v54)
   {
     v55 = v54;
-    v56 = [v76 objectForKeyedSubscript:@"vuuid"];
+    v56 = [dictionaryCopy objectForKeyedSubscript:@"vuuid"];
     objc_opt_class();
     v57 = objc_opt_isKindOfClass();
 
     if (v57)
     {
       v58 = objc_alloc(MEMORY[0x277CCAD78]);
-      v59 = [v76 objectForKeyedSubscript:@"vuuid"];
+      v59 = [dictionaryCopy objectForKeyedSubscript:@"vuuid"];
       v60 = [v58 initWithUUIDString:v59];
 
       if (v60)
       {
-        [v60 getUUIDBytes:a3->vuuid];
+        [v60 getUUIDBytes:descriptor->vuuid];
       }
     }
   }
 
-  v61 = [v76 objectForKeyedSubscript:@"fuuid"];
+  v61 = [dictionaryCopy objectForKeyedSubscript:@"fuuid"];
   if (v61)
   {
     v62 = v61;
-    v63 = [v76 objectForKeyedSubscript:@"fuuid"];
+    v63 = [dictionaryCopy objectForKeyedSubscript:@"fuuid"];
     objc_opt_class();
     v64 = objc_opt_isKindOfClass();
 
     if (v64)
     {
       v65 = objc_alloc(MEMORY[0x277CCAD78]);
-      v66 = [v76 objectForKeyedSubscript:@"fuuid"];
+      v66 = [dictionaryCopy objectForKeyedSubscript:@"fuuid"];
       v67 = [v65 initWithUUIDString:v66];
 
       if (v67)
       {
-        [v67 getUUIDBytes:a3->fuuid];
+        [v67 getUUIDBytes:descriptor->fuuid];
       }
     }
   }
 
-  v68 = [v76 objectForKeyedSubscript:@"ifnet_properties"];
-  a3->ifnet_properties = [v68 unsignedShortValue];
+  v68 = [dictionaryCopy objectForKeyedSubscript:@"ifnet_properties"];
+  descriptor->ifnet_properties = [v68 unsignedShortValue];
 
-  v69 = [v76 objectForKeyedSubscript:@"probe_activated"];
-  a3->var0.__pad_connstatus[0] = a3->var0.__pad_connstatus[0] & 0xFE | [v69 BOOLValue];
+  v69 = [dictionaryCopy objectForKeyedSubscript:@"probe_activated"];
+  descriptor->var0.__pad_connstatus[0] = descriptor->var0.__pad_connstatus[0] & 0xFE | [v69 BOOLValue];
 
-  v70 = [v76 objectForKeyedSubscript:@"write_probe_failed"];
+  v70 = [dictionaryCopy objectForKeyedSubscript:@"write_probe_failed"];
   if ([v70 BOOLValue])
   {
     v71 = 2;
@@ -1992,9 +1992,9 @@ LABEL_17:
     v71 = 0;
   }
 
-  a3->var0.__pad_connstatus[0] = a3->var0.__pad_connstatus[0] & 0xFD | v71;
+  descriptor->var0.__pad_connstatus[0] = descriptor->var0.__pad_connstatus[0] & 0xFD | v71;
 
-  v72 = [v76 objectForKeyedSubscript:@"read_probe_failed"];
+  v72 = [dictionaryCopy objectForKeyedSubscript:@"read_probe_failed"];
   if ([v72 BOOLValue])
   {
     v73 = 4;
@@ -2005,9 +2005,9 @@ LABEL_17:
     v73 = 0;
   }
 
-  a3->var0.__pad_connstatus[0] = a3->var0.__pad_connstatus[0] & 0xFB | v73;
+  descriptor->var0.__pad_connstatus[0] = descriptor->var0.__pad_connstatus[0] & 0xFB | v73;
 
-  v74 = [v76 objectForKeyedSubscript:@"conn_probe_failed"];
+  v74 = [dictionaryCopy objectForKeyedSubscript:@"conn_probe_failed"];
   if ([v74 BOOLValue])
   {
     v75 = 8;
@@ -2018,14 +2018,14 @@ LABEL_17:
     v75 = 0;
   }
 
-  a3->var0.__pad_connstatus[0] = a3->var0.__pad_connstatus[0] & 0xF7 | v75;
+  descriptor->var0.__pad_connstatus[0] = descriptor->var0.__pad_connstatus[0] & 0xF7 | v75;
 }
 
-+ (id)_snapshotWithDictionary:(id)a3
++ (id)_snapshotWithDictionary:(id)dictionary
 {
   v139[43] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  bzero(&v115, 0x338uLL);
+  dictionaryCopy = dictionary;
+  bzero(&unsignedIntValue, 0x338uLL);
   v110 = 0u;
   v111 = 0u;
   v108 = 0u;
@@ -2035,8 +2035,8 @@ LABEL_17:
   v103 = 0u;
   v100 = 0u;
   v97 = 0u;
-  v5 = [v4 objectForKeyedSubscript:@"details"];
-  v6 = [v4 objectForKeyedSubscript:@"_prev_items"];
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"details"];
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"_prev_items"];
   v7 = [v5 objectForKeyedSubscript:@"hdr"];
   v8 = [v5 objectForKeyedSubscript:@"counts"];
   v9 = [v6 objectForKeyedSubscript:@"savedRxPackets"];
@@ -2058,22 +2058,22 @@ LABEL_17:
   v96[5] = [v14 longLongValue];
 
   v15 = [v6 objectForKeyedSubscript:@"savedRxWiFiInfraBytes"];
-  v98 = [v15 longLongValue];
+  longLongValue = [v15 longLongValue];
 
   v16 = [v6 objectForKeyedSubscript:@"savedTxWiFiInfraBytes"];
-  v99 = [v16 longLongValue];
+  longLongValue2 = [v16 longLongValue];
 
   v17 = [v6 objectForKeyedSubscript:@"savedRxWiFiNonInfraBytes"];
-  v101 = [v17 longLongValue];
+  longLongValue3 = [v17 longLongValue];
 
   v18 = [v6 objectForKeyedSubscript:@"savedTxWiFiNonInfraBytes"];
-  v102 = [v18 longLongValue];
+  longLongValue4 = [v18 longLongValue];
 
   v19 = [v6 objectForKeyedSubscript:@"savedRxWiredBytes"];
-  v104 = [v19 longLongValue];
+  longLongValue5 = [v19 longLongValue];
 
   v20 = [v6 objectForKeyedSubscript:@"savedTxWiredBytes"];
-  v105 = [v20 longLongValue];
+  longLongValue6 = [v20 longLongValue];
 
   v21 = [v6 objectForKeyedSubscript:@"savedRxDuplicateBytes"];
   LODWORD(v111) = [v21 unsignedIntValue];
@@ -2085,86 +2085,86 @@ LABEL_17:
   DWORD2(v111) = [v23 unsignedIntValue];
 
   v24 = [v7 objectForKeyedSubscript:@"context"];
-  v114 = [v24 longLongValue];
+  longLongValue7 = [v24 longLongValue];
 
   v25 = [v7 objectForKeyedSubscript:@"type"];
-  v115 = [v25 unsignedIntValue];
+  unsignedIntValue = [v25 unsignedIntValue];
 
   v26 = [v7 objectForKeyedSubscript:@"length"];
-  v116 = [v26 unsignedShortValue];
+  unsignedShortValue = [v26 unsignedShortValue];
 
   v27 = [v7 objectForKeyedSubscript:@"flags"];
-  v117 = [v27 unsignedShortValue];
+  unsignedShortValue2 = [v27 unsignedShortValue];
 
   v28 = [v5 objectForKeyedSubscript:@"srcref"];
-  v118 = [v28 longLongValue];
+  longLongValue8 = [v28 longLongValue];
 
   v29 = [v5 objectForKeyedSubscript:@"event_flags"];
-  v119 = [v29 longLongValue];
+  longLongValue9 = [v29 longLongValue];
 
   v30 = [v8 objectForKeyedSubscript:@"nstat_rxpackets"];
-  v120 = [v30 longLongValue];
+  longLongValue10 = [v30 longLongValue];
 
   v31 = [v8 objectForKeyedSubscript:@"nstat_txpackets"];
-  v122 = [v31 longLongValue];
+  longLongValue11 = [v31 longLongValue];
 
   v32 = [v8 objectForKeyedSubscript:@"nstat_rxbytes"];
-  v121 = [v32 longLongValue];
+  longLongValue12 = [v32 longLongValue];
 
   v33 = [v8 objectForKeyedSubscript:@"nstat_txbytes"];
-  v123 = [v33 longLongValue];
+  longLongValue13 = [v33 longLongValue];
 
   v34 = [v8 objectForKeyedSubscript:@"nstat_cell_rxbytes"];
-  v124 = [v34 longLongValue];
+  longLongValue14 = [v34 longLongValue];
 
   v35 = [v8 objectForKeyedSubscript:@"nstat_cell_txbytes"];
-  v125 = [v35 longLongValue];
+  longLongValue15 = [v35 longLongValue];
 
   v36 = [v8 objectForKeyedSubscript:@"nstat_wifi_infra_rxbytes"];
-  v126 = [v36 longLongValue];
+  longLongValue16 = [v36 longLongValue];
 
   v37 = [v8 objectForKeyedSubscript:@"nstat_wifi_infra_txbytes"];
-  v127 = [v37 longLongValue];
+  longLongValue17 = [v37 longLongValue];
 
   v38 = [v8 objectForKeyedSubscript:@"nstat_wifi_non_infra_rxbytes"];
-  v128 = [v38 longLongValue];
+  longLongValue18 = [v38 longLongValue];
 
   v39 = [v8 objectForKeyedSubscript:@"nstat_wifi_non_infra_txbytes"];
-  v129 = [v39 longLongValue];
+  longLongValue19 = [v39 longLongValue];
 
   v40 = [v8 objectForKeyedSubscript:@"nstat_wired_rxbytes"];
-  v130 = [v40 longLongValue];
+  longLongValue20 = [v40 longLongValue];
 
   v41 = [v8 objectForKeyedSubscript:@"nstat_wired_txbytes"];
-  v131 = [v41 longLongValue];
+  longLongValue21 = [v41 longLongValue];
 
   v42 = [v8 objectForKeyedSubscript:@"nstat_rxduplicatebytes"];
-  v132 = [v42 unsignedIntValue];
+  unsignedIntValue2 = [v42 unsignedIntValue];
 
   v43 = [v8 objectForKeyedSubscript:@"nstat_rxoutoforderbytes"];
-  v133 = [v43 unsignedIntValue];
+  unsignedIntValue3 = [v43 unsignedIntValue];
 
   v44 = [v8 objectForKeyedSubscript:@"nstat_txretransmit"];
-  v134 = [v44 unsignedIntValue];
+  unsignedIntValue4 = [v44 unsignedIntValue];
 
   v45 = [v8 objectForKeyedSubscript:@"nstat_min_rtt"];
-  v135 = [v45 unsignedIntValue];
+  unsignedIntValue5 = [v45 unsignedIntValue];
 
   v46 = [v8 objectForKeyedSubscript:@"nstat_avg_rtt"];
-  v136 = [v46 unsignedIntValue];
+  unsignedIntValue6 = [v46 unsignedIntValue];
 
   v47 = [v8 objectForKeyedSubscript:@"nstat_var_rtt"];
-  v137 = [v47 unsignedIntValue];
+  unsignedIntValue7 = [v47 unsignedIntValue];
 
   v48 = [v5 objectForKeyedSubscript:@"provider"];
-  v49 = [v48 unsignedIntValue];
-  v138 = v49;
+  unsignedIntValue8 = [v48 unsignedIntValue];
+  v138 = unsignedIntValue8;
 
-  v50 = [v4 objectForKeyedSubscript:@"_startStamp"];
+  v50 = [dictionaryCopy objectForKeyedSubscript:@"_startStamp"];
 
   if (v50)
   {
-    v51 = [v4 objectForKeyedSubscript:@"_startStamp"];
+    v51 = [dictionaryCopy objectForKeyedSubscript:@"_startStamp"];
     [v51 floatValue];
     v53 = v52;
   }
@@ -2174,33 +2174,33 @@ LABEL_17:
     v53 = 0.0;
   }
 
-  v54 = [v4 objectForKeyedSubscript:@"_startStampUsecs"];
+  v54 = [dictionaryCopy objectForKeyedSubscript:@"_startStampUsecs"];
 
   if (v54)
   {
-    v55 = [v4 objectForKeyedSubscript:@"_startStampUsecs"];
+    v55 = [dictionaryCopy objectForKeyedSubscript:@"_startStampUsecs"];
     v53 = [v55 unsignedLongLongValue] / 1000000.0;
   }
 
-  if (v49 > 0xA)
+  if (unsignedIntValue8 > 0xA)
   {
     goto LABEL_26;
   }
 
-  if (((1 << v49) & 0x430) != 0)
+  if (((1 << unsignedIntValue8) & 0x430) != 0)
   {
     v56 = [v5 objectForKeyedSubscript:@"udp_descriptor"];
-    [a1 _initializeUDPDescriptor:v139 fromDictionary:v56];
+    [self _initializeUDPDescriptor:v139 fromDictionary:v56];
     v57 = off_27996D9C8;
     goto LABEL_13;
   }
 
-  if (((1 << v49) & 0xC) == 0)
+  if (((1 << unsignedIntValue8) & 0xC) == 0)
   {
-    if (v49 == 8)
+    if (unsignedIntValue8 == 8)
     {
       v56 = [v5 objectForKeyedSubscript:@"quic_descriptor"];
-      [a1 _initializeQUICDescriptor:v139 fromDictionary:v56];
+      [self _initializeQUICDescriptor:v139 fromDictionary:v56];
       v57 = off_27996D9A8;
       goto LABEL_13;
     }
@@ -2210,7 +2210,7 @@ LABEL_26:
     if (os_log_type_enabled(v88, OS_LOG_TYPE_ERROR))
     {
       *buf = 67109120;
-      v113 = v49;
+      v113 = unsignedIntValue8;
       _os_log_impl(&dword_25BA3A000, v88, OS_LOG_TYPE_ERROR, "unknown provider %d type for snapshot", buf, 8u);
     }
 
@@ -2219,29 +2219,29 @@ LABEL_26:
   }
 
   v56 = [v5 objectForKeyedSubscript:@"tcp_descriptor"];
-  [a1 _initializeTCPDescriptor:v139 fromDictionary:v56];
+  [self _initializeTCPDescriptor:v139 fromDictionary:v56];
   v57 = off_27996D9B8;
 LABEL_13:
 
   v58 = objc_alloc(*v57);
-  v59 = [v4 objectForKeyedSubscript:@"_flags"];
-  v60 = [v58 initWithDetails:&v114 startTime:objc_msgSend(v59 flowFlags:"unsignedIntValue") previously:v96 peerEgressCellularCounts:{0, v53}];
+  v59 = [dictionaryCopy objectForKeyedSubscript:@"_flags"];
+  v60 = [v58 initWithDetails:&longLongValue7 startTime:objc_msgSend(v59 flowFlags:"unsignedIntValue") previously:v96 peerEgressCellularCounts:{0, v53}];
 
   if (!v60)
   {
     goto LABEL_30;
   }
 
-  v61 = [v4 objectForKeyedSubscript:@"snapshotReason"];
+  v61 = [dictionaryCopy objectForKeyedSubscript:@"snapshotReason"];
   [v60 setSnapshotReason:{objc_msgSend(v61, "intValue")}];
 
-  v62 = [v4 objectForKeyedSubscript:@"attributedEntity"];
+  v62 = [dictionaryCopy objectForKeyedSubscript:@"attributedEntity"];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v64 = [v4 objectForKeyedSubscript:@"attributedEntity"];
+    v64 = [dictionaryCopy objectForKeyedSubscript:@"attributedEntity"];
   }
 
   else
@@ -2249,7 +2249,7 @@ LABEL_13:
     v64 = @"<unknown>";
   }
 
-  v65 = [v4 objectForKeyedSubscript:@"delegateName"];
+  v65 = [dictionaryCopy objectForKeyedSubscript:@"delegateName"];
   objc_opt_class();
   v66 = objc_opt_isKindOfClass();
 
@@ -2258,7 +2258,7 @@ LABEL_13:
   v93 = v7;
   if (v66)
   {
-    v67 = [v4 objectForKeyedSubscript:@"delegateName"];
+    v67 = [dictionaryCopy objectForKeyedSubscript:@"delegateName"];
   }
 
   else
@@ -2266,28 +2266,28 @@ LABEL_13:
     v67 = 0;
   }
 
-  v68 = [v4 objectForKeyedSubscript:@"attributionReason"];
-  v69 = [v68 intValue];
-  [v4 objectForKeyedSubscript:@"delegateAttributionReason"];
-  v71 = v70 = v4;
+  v68 = [dictionaryCopy objectForKeyedSubscript:@"attributionReason"];
+  intValue = [v68 intValue];
+  [dictionaryCopy objectForKeyedSubscript:@"delegateAttributionReason"];
+  v71 = v70 = dictionaryCopy;
   v91 = v67;
   v92 = v64;
-  [v60 setAttribution:v64 derivation:v69 delegateName:v67 delegateDerivation:objc_msgSend(v71 extensionName:{"intValue"), 0}];
+  [v60 setAttribution:v64 derivation:intValue delegateName:v67 delegateDerivation:objc_msgSend(v71 extensionName:{"intValue"), 0}];
 
   v72 = [v70 objectForKeyedSubscript:@"uiBackgroundAudioCapable"];
   [v60 setIsUIBackgroundAudioCapable:{objc_msgSend(v72, "BOOLValue")}];
 
   v73 = [v70 objectForKeyedSubscript:@"snapshotAppStateIsForeground"];
-  v74 = [v73 BOOLValue];
+  bOOLValue = [v73 BOOLValue];
   v75 = [v70 objectForKeyedSubscript:@"snapshotScreenStateOn"];
-  v76 = [v75 BOOLValue];
+  bOOLValue2 = [v75 BOOLValue];
   v77 = [v70 objectForKeyedSubscript:@"startAppStateIsForeground"];
-  v78 = [v77 BOOLValue];
+  bOOLValue3 = [v77 BOOLValue];
   v79 = [v70 objectForKeyedSubscript:@"startScreenStateOn"];
-  v80 = [v79 BOOLValue];
-  v81 = v74;
-  v4 = v70;
-  [v60 setAppStateIsForeground:v81 screenStateOn:v76 startAppStateIsForeground:v78 startScreenStateOn:v80];
+  bOOLValue4 = [v79 BOOLValue];
+  v81 = bOOLValue;
+  dictionaryCopy = v70;
+  [v60 setAppStateIsForeground:v81 screenStateOn:bOOLValue2 startAppStateIsForeground:bOOLValue3 startScreenStateOn:bOOLValue4];
 
   v82 = [v70 objectForKeyedSubscript:@"_snapStampUsecs"];
   if (v82 && (v83 = v82, [v70 objectForKeyedSubscript:@"_snapStampUsecs"], v84 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), v85 = objc_opt_isKindOfClass(), v84, v83, (v85 & 1) != 0))
@@ -2323,10 +2323,10 @@ LABEL_30:
   return v60;
 }
 
-+ (id)snapshotWithDictionary:(id)a3
++ (id)snapshotWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  if (!v4 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  dictionaryCopy = dictionary;
+  if (!dictionaryCopy || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v9 = 0;
     v7 = 0;
@@ -2335,7 +2335,7 @@ LABEL_30:
     goto LABEL_20;
   }
 
-  v5 = [v4 objectForKeyedSubscript:@"details"];
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"details"];
   if (!v5 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v9 = 0;
@@ -2375,12 +2375,12 @@ LABEL_30:
   }
 
   v12 = [v5 objectForKeyedSubscript:@"provider"];
-  v13 = [v12 unsignedIntValue];
+  unsignedIntValue = [v12 unsignedIntValue];
 
   v14 = 0;
-  if (v13 <= 0xA)
+  if (unsignedIntValue <= 0xA)
   {
-    if (((1 << v13) & 0x430) != 0)
+    if (((1 << unsignedIntValue) & 0x430) != 0)
     {
       if (v7)
       {
@@ -2390,9 +2390,9 @@ LABEL_30:
 
     else
     {
-      if (((1 << v13) & 0xC) == 0)
+      if (((1 << unsignedIntValue) & 0xC) == 0)
       {
-        if (v13 != 8)
+        if (unsignedIntValue != 8)
         {
           goto LABEL_21;
         }
@@ -2411,7 +2411,7 @@ LABEL_26:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v14 = [a1 _snapshotWithDictionary:v4];
+          v14 = [self _snapshotWithDictionary:dictionaryCopy];
           goto LABEL_21;
         }
       }
@@ -2429,19 +2429,19 @@ LABEL_21:
 
 - (id)attributionReasonString
 {
-  v2 = [(NWStatsSnapshot *)self attributionReason];
+  attributionReason = [(NWStatsSnapshot *)self attributionReason];
 
-  return attributionReasonString(v2);
+  return attributionReasonString(attributionReason);
 }
 
-+ (double)_intervalWithContinuousTime:(unint64_t)a3
++ (double)_intervalWithContinuousTime:(unint64_t)time
 {
   LODWORD(v3) = timebase_info_0;
   LODWORD(v4) = *algn_280C54FD4;
-  return a3 * v3 / v4 / 1000000000.0;
+  return time * v3 / v4 / 1000000000.0;
 }
 
-+ (double)_referenceIntervalWithContinuousTime:(unint64_t)a3
++ (double)_referenceIntervalWithContinuousTime:(unint64_t)time
 {
   v5 = 9;
   do
@@ -2450,30 +2450,30 @@ LABEL_21:
     [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
     v8 = v7;
     v9 = mach_continuous_time() - v6;
-    [a1 _intervalWithContinuousTime:v9];
+    [self _intervalWithContinuousTime:v9];
   }
 
   while (v10 * 1000000.0 >= 50.0 && v5-- != 0);
   v12 = v6 + (v9 >> 1);
-  if (v12 <= a3)
+  if (v12 <= time)
   {
-    [a1 _intervalWithContinuousTime:a3 - v12];
+    [self _intervalWithContinuousTime:time - v12];
     return v8 + v15;
   }
 
   else
   {
-    [a1 _intervalWithContinuousTime:v12 - a3];
+    [self _intervalWithContinuousTime:v12 - time];
     return v8 - v13;
   }
 }
 
-- (void)applyTrafficAdjustmentFactor:(double)a3
+- (void)applyTrafficAdjustmentFactor:(double)factor
 {
   [(NWStatsProtocolSnapshot *)self flowDuration];
-  if (a3 > 0.0 && v5 > a3)
+  if (factor > 0.0 && v5 > factor)
   {
-    v7 = (v5 - a3) / v5;
+    v7 = (v5 - factor) / v5;
     self->_adjustment_bytes.rxCellularBytes = (v7 * [(NWStatsProtocolSnapshot *)self deltaAccountingRxCellularBytes]);
     self->_adjustment_bytes.txCellularBytes = (v7 * [(NWStatsProtocolSnapshot *)self deltaAccountingTxCellularBytes]);
     self->_adjustment_bytes.rxWiFiInfraBytes = (v7 * [(NWStatsProtocolSnapshot *)self deltaAccountingRxWiFiInfraBytes]);

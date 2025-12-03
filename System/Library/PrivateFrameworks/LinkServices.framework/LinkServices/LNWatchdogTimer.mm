@@ -3,8 +3,8 @@
 - (BOOL)cancelIfNotAlreadyCanceled;
 - (BOOL)isCanceled;
 - (BOOL)isStopped;
-- (LNWatchdogTimer)initWithTimeoutInterval:(double)a3 onQueue:(id)a4 singleUse:(BOOL)a5 timeoutHandler:(id)a6;
-- (LNWatchdogTimer)initWithTimeoutInterval:(double)a3 timeoutHandler:(id)a4;
+- (LNWatchdogTimer)initWithTimeoutInterval:(double)interval onQueue:(id)queue singleUse:(BOOL)use timeoutHandler:(id)handler;
+- (LNWatchdogTimer)initWithTimeoutInterval:(double)interval timeoutHandler:(id)handler;
 - (void)_cancel;
 - (void)_reset;
 - (void)_start;
@@ -26,8 +26,8 @@
     v4 = dispatch_time(0, (self->_remainingInterval * 1000000000.0));
     dispatch_source_set_timer(timerSource, v4, 0xFFFFFFFFFFFFFFFFLL, 0);
     dispatch_resume(self->_timerSource);
-    v5 = [MEMORY[0x1E696AE30] processInfo];
-    [v5 systemUptime];
+    processInfo = [MEMORY[0x1E696AE30] processInfo];
+    [processInfo systemUptime];
     [(LNWatchdogTimer *)self setStartTime:?];
 
     [(LNWatchdogTimer *)self setStopped:0];
@@ -71,8 +71,8 @@
 {
   if ([(LNWatchdogTimer *)self _isStopped])
   {
-    v3 = [(LNWatchdogTimer *)self timerSource];
-    dispatch_resume(v3);
+    timerSource = [(LNWatchdogTimer *)self timerSource];
+    dispatch_resume(timerSource);
   }
 
   v4.receiver = self;
@@ -104,8 +104,8 @@
   if (![(LNWatchdogTimer *)self _isStopped])
   {
     dispatch_suspend(self->_timerSource);
-    v3 = [MEMORY[0x1E696AE30] processInfo];
-    [v3 systemUptime];
+    processInfo = [MEMORY[0x1E696AE30] processInfo];
+    [processInfo systemUptime];
     v5 = v4 - self->_startTime;
 
     [(LNWatchdogTimer *)self setRemainingInterval:fmax(self->_interval - v5, 0.0)];
@@ -116,13 +116,13 @@
 
 - (BOOL)_cancelIfNotAlreadyCanceled
 {
-  v3 = [(LNWatchdogTimer *)self _isCanceled];
-  if (!v3)
+  _isCanceled = [(LNWatchdogTimer *)self _isCanceled];
+  if (!_isCanceled)
   {
     [(LNWatchdogTimer *)self _cancel];
   }
 
-  return !v3;
+  return !_isCanceled;
 }
 
 - (BOOL)isStopped
@@ -214,22 +214,22 @@ uint64_t __45__LNWatchdogTimer_cancelIfNotAlreadyCanceled__block_invoke(uint64_t
   dispatch_sync(internalQueue, block);
 }
 
-- (LNWatchdogTimer)initWithTimeoutInterval:(double)a3 onQueue:(id)a4 singleUse:(BOOL)a5 timeoutHandler:(id)a6
+- (LNWatchdogTimer)initWithTimeoutInterval:(double)interval onQueue:(id)queue singleUse:(BOOL)use timeoutHandler:(id)handler
 {
-  v11 = a4;
-  v12 = a6;
-  if (a3 >= 0.0)
+  queueCopy = queue;
+  handlerCopy = handler;
+  if (interval >= 0.0)
   {
-    if (v11)
+    if (queueCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_8:
-    v24 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v24 handleFailureInMethod:a2 object:self file:@"LNWatchdogTimer.m" lineNumber:62 description:{@"Invalid parameter not satisfying: %@", @"queue"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNWatchdogTimer.m" lineNumber:62 description:{@"Invalid parameter not satisfying: %@", @"queue"}];
 
-    if (v12)
+    if (handlerCopy)
     {
       goto LABEL_4;
     }
@@ -237,23 +237,23 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v23 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v23 handleFailureInMethod:a2 object:self file:@"LNWatchdogTimer.m" lineNumber:61 description:{@"Invalid parameter not satisfying: %@", @"timeoutInterval >= 0"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"LNWatchdogTimer.m" lineNumber:61 description:{@"Invalid parameter not satisfying: %@", @"timeoutInterval >= 0"}];
 
-  if (!v11)
+  if (!queueCopy)
   {
     goto LABEL_8;
   }
 
 LABEL_3:
-  if (v12)
+  if (handlerCopy)
   {
     goto LABEL_4;
   }
 
 LABEL_9:
-  v25 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v25 handleFailureInMethod:a2 object:self file:@"LNWatchdogTimer.m" lineNumber:63 description:{@"Invalid parameter not satisfying: %@", @"timeoutHandler"}];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"LNWatchdogTimer.m" lineNumber:63 description:{@"Invalid parameter not satisfying: %@", @"timeoutHandler"}];
 
 LABEL_4:
   v31.receiver = self;
@@ -262,9 +262,9 @@ LABEL_4:
   v14 = v13;
   if (v13)
   {
-    v13->_interval = a3;
-    v13->_remainingInterval = a3;
-    v15 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, v11);
+    v13->_interval = interval;
+    v13->_remainingInterval = interval;
+    v15 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, queueCopy);
     timerSource = v14->_timerSource;
     v14->_timerSource = v15;
 
@@ -280,8 +280,8 @@ LABEL_4:
     handler[2] = __76__LNWatchdogTimer_initWithTimeoutInterval_onQueue_singleUse_timeoutHandler___block_invoke;
     handler[3] = &unk_1E74B1570;
     objc_copyWeak(&v28, &location);
-    v29 = a5;
-    v27 = v12;
+    useCopy = use;
+    v27 = handlerCopy;
     dispatch_source_set_event_handler(v20, handler);
     v14->_stopped = 1;
     v21 = v14;
@@ -310,10 +310,10 @@ void __76__LNWatchdogTimer_initWithTimeoutInterval_onQueue_singleUse_timeoutHand
   (*(*(a1 + 32) + 16))();
 }
 
-- (LNWatchdogTimer)initWithTimeoutInterval:(double)a3 timeoutHandler:(id)a4
+- (LNWatchdogTimer)initWithTimeoutInterval:(double)interval timeoutHandler:(id)handler
 {
   v7 = dispatch_get_global_queue(17, 0);
-  v8 = [(LNWatchdogTimer *)self initWithTimeoutInterval:v7 onQueue:1 singleUse:a4 timeoutHandler:a3];
+  v8 = [(LNWatchdogTimer *)self initWithTimeoutInterval:v7 onQueue:1 singleUse:handler timeoutHandler:interval];
 
   return v8;
 }

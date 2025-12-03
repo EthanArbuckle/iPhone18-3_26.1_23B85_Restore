@@ -1,24 +1,24 @@
 @interface Scene
-+ (id)newInstancedCornellBoxSceneWithDevice:(id)a3 useIntersectionFunctions:(BOOL)a4;
-- (Scene)initWithDevice:(id)a3;
++ (id)newInstancedCornellBoxSceneWithDevice:(id)device useIntersectionFunctions:(BOOL)functions;
+- (Scene)initWithDevice:(id)device;
 - (id).cxx_construct;
-- (void)addLight:(_OWORD *)a3;
+- (void)addLight:(_OWORD *)light;
 - (void)clear;
 - (void)uploadToBuffers;
 @end
 
 @implementation Scene
 
-- (Scene)initWithDevice:(id)a3
+- (Scene)initWithDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v13.receiver = self;
   v13.super_class = Scene;
   v6 = [(Scene *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_device, a3);
+    objc_storeStrong(&v6->_device, device);
     v8 = objc_alloc_init(NSMutableArray);
     geometries = v7->_geometries;
     v7->_geometries = v8;
@@ -42,13 +42,13 @@
   self->_lights.__end_ = self->_lights.__begin_;
 }
 
-- (void)addLight:(_OWORD *)a3
+- (void)addLight:(_OWORD *)light
 {
-  v4 = a1[4];
-  v5 = a1[5];
+  v4 = self[4];
+  v5 = self[5];
   if (v4 >= v5)
   {
-    v10 = a1[3];
+    v10 = self[3];
     v11 = 0xCCCCCCCCCCCCCCCDLL * ((v4 - v10) >> 4);
     v12 = v11 + 1;
     if (v11 + 1 > 0x333333333333333)
@@ -74,27 +74,27 @@
 
     if (v14)
     {
-      sub_1000037F8((a1 + 3), v14);
+      sub_1000037F8((self + 3), v14);
     }
 
     v15 = 80 * v11;
-    *v15 = *a3;
-    v16 = a3[1];
-    v17 = a3[2];
-    v18 = a3[4];
-    *(v15 + 48) = a3[3];
+    *v15 = *light;
+    v16 = light[1];
+    v17 = light[2];
+    v18 = light[4];
+    *(v15 + 48) = light[3];
     *(v15 + 64) = v18;
     *(v15 + 16) = v16;
     *(v15 + 32) = v17;
     v9 = 80 * v11 + 80;
-    v19 = a1[3];
-    v20 = a1[4] - v19;
+    v19 = self[3];
+    v20 = self[4] - v19;
     v21 = v15 - v20;
     memcpy((v15 - v20), v19, v20);
-    v22 = a1[3];
-    a1[3] = v21;
-    a1[4] = v9;
-    a1[5] = 0;
+    v22 = self[3];
+    self[3] = v21;
+    self[4] = v9;
+    self[5] = 0;
     if (v22)
     {
       operator delete(v22);
@@ -103,18 +103,18 @@
 
   else
   {
-    *v4 = *a3;
-    v6 = a3[1];
-    v7 = a3[2];
-    v8 = a3[4];
-    v4[3] = a3[3];
+    *v4 = *light;
+    v6 = light[1];
+    v7 = light[2];
+    v8 = light[4];
+    v4[3] = light[3];
     v4[4] = v8;
     v4[1] = v6;
     v4[2] = v7;
     v9 = (v4 + 5);
   }
 
-  a1[4] = v9;
+  self[4] = v9;
 }
 
 - (void)uploadToBuffers
@@ -158,16 +158,16 @@
   memcpy([*p_lightBuffer contents], p_lights->__begin_, objc_msgSend(*p_lightBuffer, "length"));
 }
 
-+ (id)newInstancedCornellBoxSceneWithDevice:(id)a3 useIntersectionFunctions:(BOOL)a4
++ (id)newInstancedCornellBoxSceneWithDevice:(id)device useIntersectionFunctions:(BOOL)functions
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = [[Scene alloc] initWithDevice:v5];
+  functionsCopy = functions;
+  deviceCopy = device;
+  v6 = [[Scene alloc] initWithDevice:deviceCopy];
   [(Scene *)v6 setCameraPosition:0.0078125];
   [(Scene *)v6 setCameraTarget:?];
   [(Scene *)v6 setCameraUp:0.0078125];
-  v96 = [[TriangleGeometry alloc] initWithDevice:v5];
-  v87 = v5;
+  v96 = [[TriangleGeometry alloc] initWithDevice:deviceCopy];
+  v87 = deviceCopy;
   [(Scene *)v6 addGeometry:?];
   *v7.i64 = matrix4x4_translation(0.0, 1.0, 0.0);
   v110 = v8;
@@ -190,7 +190,7 @@
   __asm { FMOV            V0.4S, #1.0 }
 
   [(TriangleGeometry *)v96 addCubeWithFaces:8 color:1 transform:*&_Q0 inwardNormals:*v124.i64, *&v125, *&v126, *&v127];
-  v21 = [[TriangleGeometry alloc] initWithDevice:v5];
+  v21 = [[TriangleGeometry alloc] initWithDevice:deviceCopy];
   [(Scene *)v6 addGeometry:v21];
   *v22.i64 = matrix4x4_translation(0.0, 1.0, 0.0);
   v111 = v23;
@@ -257,9 +257,9 @@
 
   while (v44 != 64);
   [(TriangleGeometry *)v21 addCubeWithFaces:63 color:0 transform:0.000332031224 inwardNormals:*v124.i64, *&v125, *&v126, *&v127];
-  if (v4)
+  if (functionsCopy)
   {
-    v49 = [[SphereGeometry alloc] initWithDevice:v5];
+    v49 = [[SphereGeometry alloc] initWithDevice:deviceCopy];
     [(Scene *)v6 addGeometry:v49];
     LODWORD(v50) = 1050253722;
     [(SphereGeometry *)v49 addSphereWithOrigin:0.000000381469873 radius:v50 color:0.000332031224];
@@ -330,12 +330,12 @@
       v115 = v76;
       v78 = [[GeometryInstance alloc] initWithGeometry:v96 transform:4 mask:v74, v75, v76, v77];
       [(Scene *)v6 addInstance:v78];
-      v79 = [[GeometryInstance alloc] initWithGeometry:v21 transform:1 mask:v123, v121, v115, v109];
-      [(Scene *)v6 addInstance:v79];
-      if (v4)
+      v109 = [[GeometryInstance alloc] initWithGeometry:v21 transform:1 mask:v123, v121, v115, v109];
+      [(Scene *)v6 addInstance:v109];
+      if (functionsCopy)
       {
-        v80 = [[GeometryInstance alloc] initWithGeometry:v49 transform:2 mask:v123, v121, v115, v109];
-        [(Scene *)v6 addInstance:v80];
+        v1092 = [[GeometryInstance alloc] initWithGeometry:v49 transform:2 mask:v123, v121, v115, v109];
+        [(Scene *)v6 addInstance:v1092];
       }
 
       v81 = rand();

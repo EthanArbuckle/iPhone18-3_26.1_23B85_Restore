@@ -4,9 +4,9 @@
 - (CSAudioRouteChangeMonitor)init;
 - (void)_invalidateSystemStateMonitorIfNeeded;
 - (void)_setupAudioAccessorySystemStateMonitoring;
-- (void)_updateAndBroadcastHearstHijackability:(BOOL)a3 forReason:(int64_t)a4;
+- (void)_updateAndBroadcastHearstHijackability:(BOOL)hijackability forReason:(int64_t)reason;
 - (void)dealloc;
-- (void)routeIsDoAPSupportedWithRouteUID:(id)a3 withCompletion:(id)a4;
+- (void)routeIsDoAPSupportedWithRouteUID:(id)d withCompletion:(id)completion;
 - (void)startMonitoringHearstHijackEligibility;
 - (void)stopMonitoringHearstHijackEligibility;
 @end
@@ -19,9 +19,9 @@
   if (+[CSUtils supportsHearstSmartRoutingImprovements])
   {
     v3 = +[CSFPreferences sharedPreferences];
-    v4 = [v3 forceHearstHijackEligibility];
+    forceHearstHijackEligibility = [v3 forceHearstHijackEligibility];
 
-    if (v4)
+    if (forceHearstHijackEligibility)
     {
       v5 = CSLogContextFacilityCoreSpeech;
       if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
@@ -121,34 +121,34 @@ void *__47__CSAudioRouteChangeMonitor_isHearstHijackable__block_invoke(void *res
   [(CSEventMonitor *)&v6 dealloc];
 }
 
-- (void)_updateAndBroadcastHearstHijackability:(BOOL)a3 forReason:(int64_t)a4
+- (void)_updateAndBroadcastHearstHijackability:(BOOL)hijackability forReason:(int64_t)reason
 {
-  v5 = a3;
+  hijackabilityCopy = hijackability;
   v23 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_queue);
   isHearstHijackable = self->_isHearstHijackable;
   v8 = CSLogContextFacilityCoreSpeech;
   v9 = os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT);
-  if (isHearstHijackable == v5)
+  if (isHearstHijackable == hijackabilityCopy)
   {
     if (v9)
     {
       v10 = v8;
-      if ((a4 - 1) > 5)
+      if ((reason - 1) > 5)
       {
         v11 = @"Unknown";
       }
 
       else
       {
-        v11 = off_1E865C178[a4 - 1];
+        v11 = off_1E865C178[reason - 1];
       }
 
       v14 = v11;
       v17 = 136315650;
       v18 = "[CSAudioRouteChangeMonitor _updateAndBroadcastHearstHijackability:forReason:]";
       v19 = 1024;
-      v20 = v5;
+      v20 = hijackabilityCopy;
       v21 = 2112;
       v22 = v14;
       _os_log_impl(&dword_1DDA4B000, v10, OS_LOG_TYPE_DEFAULT, "%s Maintaining isHearstHijackable: %d forReason: %@", &v17, 0x1Cu);
@@ -160,27 +160,27 @@ void *__47__CSAudioRouteChangeMonitor_isHearstHijackable__block_invoke(void *res
     if (v9)
     {
       v12 = v8;
-      if ((a4 - 1) > 5)
+      if ((reason - 1) > 5)
       {
         v13 = @"Unknown";
       }
 
       else
       {
-        v13 = off_1E865C178[a4 - 1];
+        v13 = off_1E865C178[reason - 1];
       }
 
       v15 = v13;
       v17 = 136315650;
       v18 = "[CSAudioRouteChangeMonitor _updateAndBroadcastHearstHijackability:forReason:]";
       v19 = 1024;
-      v20 = v5;
+      v20 = hijackabilityCopy;
       v21 = 2112;
       v22 = v15;
       _os_log_impl(&dword_1DDA4B000, v12, OS_LOG_TYPE_DEFAULT, "%s Updating isHearstHijackable: %d forReason: %@", &v17, 0x1Cu);
     }
 
-    self->_isHearstHijackable = v5;
+    self->_isHearstHijackable = hijackabilityCopy;
     [(CSAudioRouteChangeMonitor *)self hearstHijackEligibilityUpdated];
   }
 
@@ -379,21 +379,21 @@ void __70__CSAudioRouteChangeMonitor__setupAudioAccessorySystemStateMonitoring__
   }
 }
 
-- (void)routeIsDoAPSupportedWithRouteUID:(id)a3 withCompletion:(id)a4
+- (void)routeIsDoAPSupportedWithRouteUID:(id)d withCompletion:(id)completion
 {
-  v5 = a4;
-  v6 = [a3 componentsSeparatedByString:@"-"];
-  v7 = [v6 firstObject];
+  completionCopy = completion;
+  v6 = [d componentsSeparatedByString:@"-"];
+  firstObject = [v6 firstObject];
 
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __77__CSAudioRouteChangeMonitor_routeIsDoAPSupportedWithRouteUID_withCompletion___block_invoke;
   v14[3] = &unk_1E865C0A8;
-  v8 = v5;
+  v8 = completionCopy;
   v15 = v8;
   v9 = MEMORY[0x1E12BA300](v14);
   v10 = v9;
-  if (v7)
+  if (firstObject)
   {
     v11 = +[CSBluetoothManager sharedInstance];
     v12[0] = MEMORY[0x1E69E9820];
@@ -401,7 +401,7 @@ void __70__CSAudioRouteChangeMonitor__setupAudioAccessorySystemStateMonitoring__
     v12[2] = __77__CSAudioRouteChangeMonitor_routeIsDoAPSupportedWithRouteUID_withCompletion___block_invoke_2;
     v12[3] = &unk_1E865C0D0;
     v13 = v10;
-    [v11 getBTDeviceInfoWithBTAddressString:v7 withCompletion:v12];
+    [v11 getBTDeviceInfoWithBTAddressString:firstObject withCompletion:v12];
   }
 
   else

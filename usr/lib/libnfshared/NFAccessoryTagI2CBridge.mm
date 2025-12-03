@@ -1,27 +1,27 @@
 @interface NFAccessoryTagI2CBridge
-- (NFAccessoryTagI2CBridge)initWithType:(int64_t)a3 delegate:(id)a4;
-- (id)_bridgeType0ReadMultipleSRAMPagesWithBuffer:(id)a3;
-- (id)_bridgeType0WritePollForCompletionWithTimeout:(double)a3;
-- (id)_readFromBridgeType0:(id *)a3 fragmentationSupport:(BOOL)a4;
+- (NFAccessoryTagI2CBridge)initWithType:(int64_t)type delegate:(id)delegate;
+- (id)_bridgeType0ReadMultipleSRAMPagesWithBuffer:(id)buffer;
+- (id)_bridgeType0WritePollForCompletionWithTimeout:(double)timeout;
+- (id)_readFromBridgeType0:(id *)type0 fragmentationSupport:(BOOL)support;
 - (id)_selectTagType0;
-- (id)_type0GetSystemInfo:(id *)a3;
-- (id)_type0ReadConfigRange:(_NSRange)a3 data:(id *)a4;
-- (id)_type0WriteConfigReg:(unsigned __int8)a3 data:(id)a4;
-- (id)_type0WriteSRAM:(unsigned __int8)a3 data:(id)a4;
+- (id)_type0GetSystemInfo:(id *)info;
+- (id)_type0ReadConfigRange:(_NSRange)range data:(id *)data;
+- (id)_type0WriteConfigReg:(unsigned __int8)reg data:(id)data;
+- (id)_type0WriteSRAM:(unsigned __int8)m data:(id)data;
 - (id)selectTag;
-- (void)_bridgeType0CreateAccessoryHeaderWithBuffer:(id)a3 pageLength:(unint64_t)a4 isLastPage:(BOOL)a5;
+- (void)_bridgeType0CreateAccessoryHeaderWithBuffer:(id)buffer pageLength:(unint64_t)length isLastPage:(BOOL)page;
 @end
 
 @implementation NFAccessoryTagI2CBridge
 
-- (NFAccessoryTagI2CBridge)initWithType:(int64_t)a3 delegate:(id)a4
+- (NFAccessoryTagI2CBridge)initWithType:(int64_t)type delegate:(id)delegate
 {
   v6.receiver = self;
   v6.super_class = NFAccessoryTagI2CBridge;
-  result = [(NFAccessoryTag *)&v6 initWithDelegate:a4];
+  result = [(NFAccessoryTag *)&v6 initWithDelegate:delegate];
   if (result)
   {
-    result->_type = a3;
+    result->_type = type;
   }
 
   return result;
@@ -93,18 +93,18 @@
   return v24;
 }
 
-- (void)_bridgeType0CreateAccessoryHeaderWithBuffer:(id)a3 pageLength:(unint64_t)a4 isLastPage:(BOOL)a5
+- (void)_bridgeType0CreateAccessoryHeaderWithBuffer:(id)buffer pageLength:(unint64_t)length isLastPage:(BOOL)page
 {
-  v14 = a4;
-  v7 = a3;
+  lengthCopy = length;
+  bufferCopy = buffer;
   v15 = objc_msgSend_transactionCounter(self, v8, v9);
-  v16 = a5;
+  pageCopy = page;
   v10 = objc_alloc(MEMORY[0x277CBEA90]);
-  v12 = objc_msgSend_initWithBytes_length_(v10, v11, &v14, 4);
-  objc_msgSend_appendData_(v7, v13, v12);
+  v12 = objc_msgSend_initWithBytes_length_(v10, v11, &lengthCopy, 4);
+  objc_msgSend_appendData_(bufferCopy, v13, v12);
 }
 
-- (id)_bridgeType0WritePollForCompletionWithTimeout:(double)a3
+- (id)_bridgeType0WritePollForCompletionWithTimeout:(double)timeout
 {
   v35 = *MEMORY[0x277D85DE8];
   v6 = objc_msgSend_now(MEMORY[0x277CBEAA8], a2, v3);
@@ -151,7 +151,7 @@
     v22 = v21;
 
     objc_autoreleasePoolPop(v8);
-    if (v22 > a3)
+    if (v22 > timeout)
     {
       v23 = objc_alloc(MEMORY[0x277CCA9B8]);
       v10 = objc_msgSend_initWithDomain_code_userInfo_(v23, v24, NFAccessoryTagI2CBridgeErrorDomain, 5, 0);
@@ -184,10 +184,10 @@ LABEL_15:
   return v10;
 }
 
-- (id)_bridgeType0ReadMultipleSRAMPagesWithBuffer:(id)a3
+- (id)_bridgeType0ReadMultipleSRAMPagesWithBuffer:(id)buffer
 {
   v71 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  bufferCopy = buffer;
   v6 = 0;
   while (1)
   {
@@ -249,7 +249,7 @@ LABEL_15:
     if (v18 < 0xD)
     {
       v30 = objc_msgSend_subdataWithRange_(v12, v17, 4);
-      objc_msgSend_appendData_(v5, v31, v30);
+      objc_msgSend_appendData_(bufferCopy, v31, v30);
 
       v25 = v12;
 LABEL_13:
@@ -263,7 +263,7 @@ LABEL_13:
 
     v20 = v18 - 12;
     v21 = objc_msgSend_subdataWithRange_(v12, v17, 4, 12);
-    objc_msgSend_appendData_(v5, v22, v21);
+    objc_msgSend_appendData_(bufferCopy, v22, v21);
 
     v23 = vcvtpd_s64_f64(vcvtd_n_f64_u32(v20, 2uLL));
     v60 = v12;
@@ -286,7 +286,7 @@ LABEL_38:
     }
 
     v27 = objc_msgSend_subdataWithRange_(v25, v26, 0, v20);
-    objc_msgSend_appendData_(v5, v28, v27);
+    objc_msgSend_appendData_(bufferCopy, v28, v27);
 
     v6 = 0;
     if ((v23 & 0xFFFFFFFE) != 0x3A)
@@ -373,7 +373,7 @@ LABEL_39:
   return v8;
 }
 
-- (id)_readFromBridgeType0:(id *)a3 fragmentationSupport:(BOOL)a4
+- (id)_readFromBridgeType0:(id *)type0 fragmentationSupport:(BOOL)support
 {
   v63 = *MEMORY[0x277D85DE8];
   v8 = NFSharedSignpostLog();
@@ -383,7 +383,7 @@ LABEL_39:
     _os_signpost_emit_with_name_impl(&dword_22EEC4000, v8, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "transceiveToI2c_read", &unk_22EEECD33, buf, 2u);
   }
 
-  if (a4)
+  if (support)
   {
     v10 = objc_opt_new();
     v12 = objc_msgSend__bridgeType0ReadMultipleSRAMPagesWithBuffer_(self, v11, v10);
@@ -404,7 +404,7 @@ LABEL_13:
     else
     {
       v23 = objc_alloc(MEMORY[0x277CBEA90]);
-      *a3 = objc_msgSend_initWithData_(v23, v24, v10);
+      *type0 = objc_msgSend_initWithData_(v23, v24, v10);
       v13 = NFSharedSignpostLog();
       if (os_signpost_enabled(v13))
       {
@@ -506,7 +506,7 @@ LABEL_13:
     goto LABEL_31;
   }
 
-  v29 = objc_msgSend__type0ReadSRAM_numOfBlocks_data_(self, v19, 0, 64, a3);
+  v29 = objc_msgSend__type0ReadSRAM_numOfBlocks_data_(self, v19, 0, 64, type0);
   v30 = NFSharedSignpostLog();
   v31 = os_signpost_enabled(v30);
   if (!v29)
@@ -516,7 +516,7 @@ LABEL_13:
       goto LABEL_33;
     }
 
-    v54 = objc_msgSend_length(*a3, v32, v33);
+    v54 = objc_msgSend_length(*type0, v32, v33);
     *buf = 134349056;
     *v58 = v54;
     v34 = "totalLen=%{public,signpost.description:attribute}lu";
@@ -548,11 +548,11 @@ LABEL_35:
   return v28;
 }
 
-- (id)_type0ReadConfigRange:(_NSRange)a3 data:(id *)a4
+- (id)_type0ReadConfigRange:(_NSRange)range data:(id *)data
 {
-  length = a3.length;
-  location = a3.location;
-  v8 = objc_msgSend_tagUUID(self, a2, a3.location);
+  length = range.length;
+  location = range.location;
+  v8 = objc_msgSend_tagUUID(self, a2, range.location);
   if (v8)
   {
     v11 = v8;
@@ -633,7 +633,7 @@ LABEL_13:
     {
       v49 = objc_msgSend_length(v43, v47, v48);
       objc_msgSend_subdataWithRange_(v43, v50, 1, v49 - 1);
-      *a4 = v24 = 0;
+      *data = v24 = 0;
     }
   }
 
@@ -642,9 +642,9 @@ LABEL_21:
   return v24;
 }
 
-- (id)_type0WriteConfigReg:(unsigned __int8)a3 data:(id)a4
+- (id)_type0WriteConfigReg:(unsigned __int8)reg data:(id)data
 {
-  v6 = a4;
+  dataCopy = data;
   v9 = objc_msgSend_tagUUID(self, v7, v8);
   if (v9)
   {
@@ -660,7 +660,7 @@ LABEL_21:
     }
   }
 
-  if (objc_msgSend_length(v6, v10, v11) != 4)
+  if (objc_msgSend_length(dataCopy, v10, v11) != 4)
   {
     v22 = objc_alloc(MEMORY[0x277CCA9B8]);
     v24 = objc_msgSend_initWithDomain_code_userInfo_(v22, v23, NFAccessoryTagI2CBridgeErrorDomain, 2, 0);
@@ -705,9 +705,9 @@ LABEL_12:
     }
   }
 
-  v55 = a3;
-  objc_msgSend_appendBytes_length_(v31, v35, &v55, 1);
-  objc_msgSend_appendData_(v31, v42, v6);
+  regCopy = reg;
+  objc_msgSend_appendBytes_length_(v31, v35, &regCopy, 1);
+  objc_msgSend_appendData_(v31, v42, dataCopy);
   v45 = objc_msgSend_delegate(self, v43, v44);
   v54 = 0;
   v27 = objc_msgSend_transceive_response_maxTimeout_(v45, v46, v31, &v54, 2.0);
@@ -733,9 +733,9 @@ LABEL_20:
   return v27;
 }
 
-- (id)_type0WriteSRAM:(unsigned __int8)a3 data:(id)a4
+- (id)_type0WriteSRAM:(unsigned __int8)m data:(id)data
 {
-  v6 = a4;
+  dataCopy = data;
   v9 = objc_msgSend_tagUUID(self, v7, v8);
   if (v9)
   {
@@ -751,7 +751,7 @@ LABEL_20:
     }
   }
 
-  if ((objc_msgSend_length(v6, v10, v11) & 3) != 0 || !objc_msgSend_length(v6, v17, v18))
+  if ((objc_msgSend_length(dataCopy, v10, v11) & 3) != 0 || !objc_msgSend_length(dataCopy, v17, v18))
   {
     v19 = objc_alloc(MEMORY[0x277CCA9B8]);
     v21 = objc_msgSend_initWithDomain_code_userInfo_(v19, v20, NFAccessoryTagI2CBridgeErrorDomain, 2, 0);
@@ -760,7 +760,7 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v28 = objc_msgSend_length(v6, v26, v27) >> 2;
+  v28 = objc_msgSend_length(dataCopy, v26, v27) >> 2;
   v63 = 4;
   v62 = -11518;
   if (objc_msgSend_selected(self, v29, v30))
@@ -798,10 +798,10 @@ LABEL_16:
     }
   }
 
-  v61[0] = a3;
+  v61[0] = m;
   v61[1] = v35;
   objc_msgSend_appendBytes_length_(v38, v42, v61, 2);
-  objc_msgSend_appendData_(v38, v49, v6);
+  objc_msgSend_appendData_(v38, v49, dataCopy);
   v52 = objc_msgSend_delegate(self, v50, v51);
   v60 = 0;
   v24 = objc_msgSend_transceive_response_maxTimeout_(v52, v53, v38, &v60, 2.0);
@@ -827,9 +827,9 @@ LABEL_7:
   return v24;
 }
 
-- (id)_type0GetSystemInfo:(id *)a3
+- (id)_type0GetSystemInfo:(id *)info
 {
-  v5 = objc_msgSend_tagUUID(self, a2, a3);
+  v5 = objc_msgSend_tagUUID(self, a2, info);
   if (v5)
   {
     v8 = v5;
@@ -898,7 +898,7 @@ LABEL_8:
     {
       v38 = objc_msgSend_length(v32, v36, v37);
       objc_msgSend_subdataWithRange_(v32, v39, 1, v38 - 1);
-      *a3 = v31 = 0;
+      *info = v31 = 0;
     }
   }
 

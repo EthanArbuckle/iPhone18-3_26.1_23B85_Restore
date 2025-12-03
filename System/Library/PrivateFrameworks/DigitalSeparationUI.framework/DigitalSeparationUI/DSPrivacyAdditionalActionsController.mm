@@ -22,8 +22,8 @@
   else
   {
     v6 = MEMORY[0x277D755D0];
-    v7 = [MEMORY[0x277D75348] systemBlueColor];
-    v3 = [v6 configurationWithHierarchicalColor:v7];
+    systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
+    v3 = [v6 configurationWithHierarchicalColor:systemBlueColor];
 
     v4 = DSUILocStringForKey(@"APP_ACCESS_COMPLETE");
     v8 = DSUILocStringForKey(@"APP_ACCESS_COMPLETE_DETAIL");
@@ -51,17 +51,17 @@
 
 - (void)back
 {
-  v3 = [(DSPrivacyAdditionalActionsController *)self navigationController];
-  v2 = [v3 popViewControllerAnimated:1];
+  navigationController = [(DSPrivacyAdditionalActionsController *)self navigationController];
+  v2 = [navigationController popViewControllerAnimated:1];
 }
 
 - (void)pushNextPane
 {
-  v3 = [(DSPrivacyAdditionalActionsController *)self boldButton];
-  [v3 showsBusyIndicator];
+  boldButton = [(DSPrivacyAdditionalActionsController *)self boldButton];
+  [boldButton showsBusyIndicator];
 
-  v4 = [(DSPrivacyAdditionalActionsController *)self delegate];
-  [v4 pushNextPane];
+  delegate = [(DSPrivacyAdditionalActionsController *)self delegate];
+  [delegate pushNextPane];
 }
 
 - (DSNavigationDelegate)delegate

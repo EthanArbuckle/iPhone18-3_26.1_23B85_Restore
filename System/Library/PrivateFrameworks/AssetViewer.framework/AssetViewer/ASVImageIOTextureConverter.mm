@@ -1,42 +1,42 @@
 @interface ASVImageIOTextureConverter
-- ($7DEDF3842AEFB7F1E6DF5AF62E424A02)estimatedMemoryDeltaForTextureWithDescription:(id)a3;
-- (int64_t)maxNativeDownsamplingFactorForDownsamplingFactor:(int64_t)a3 fileType:(int64_t)a4;
+- ($7DEDF3842AEFB7F1E6DF5AF62E424A02)estimatedMemoryDeltaForTextureWithDescription:(id)description;
+- (int64_t)maxNativeDownsamplingFactorForDownsamplingFactor:(int64_t)factor fileType:(int64_t)type;
 @end
 
 @implementation ASVImageIOTextureConverter
 
-- ($7DEDF3842AEFB7F1E6DF5AF62E424A02)estimatedMemoryDeltaForTextureWithDescription:(id)a3
+- ($7DEDF3842AEFB7F1E6DF5AF62E424A02)estimatedMemoryDeltaForTextureWithDescription:(id)description
 {
   v64 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 originalPixelFormat];
+  descriptionCopy = description;
+  originalPixelFormat = [descriptionCopy originalPixelFormat];
   v7 = v6;
-  if (v5 == 1)
+  if (originalPixelFormat == 1)
   {
-    if ([v4 fileType] >= 8)
+    if ([descriptionCopy fileType] >= 8)
     {
-      v5 = 1;
+      originalPixelFormat = 1;
     }
 
     else
     {
-      v5 = 2;
+      originalPixelFormat = 2;
     }
   }
 
-  [v4 originalSize];
+  [descriptionCopy originalSize];
   v42 = v8;
-  [v4 destinationSize];
+  [descriptionCopy destinationSize];
   v44 = v9;
-  v10 = [v4 destinationPixelFormat];
+  destinationPixelFormat = [descriptionCopy destinationPixelFormat];
   v12 = v11;
-  v13 = [ASVTextureDescription bytesPerPixelForPixelFormat:v5, v7];
-  v14 = [ASVTextureDescription bytesPerPixelForPixelFormat:v10, v12];
-  v15 = [v4 generateMipmaps];
+  v13 = [ASVTextureDescription bytesPerPixelForPixelFormat:originalPixelFormat, v7];
+  v14 = [ASVTextureDescription bytesPerPixelForPixelFormat:destinationPixelFormat, v12];
+  generateMipmaps = [descriptionCopy generateMipmaps];
   v16 = v44 * SHIDWORD(v44);
   v17 = v14 * v16;
   v18 = 1.33333333;
-  if (!v15)
+  if (!generateMipmaps)
   {
     v18 = 1.0;
   }
@@ -44,16 +44,16 @@
   v19 = [(ASVTextureConverter *)self alignUp:(v18 * (v14 * v16)) toAlignment:getpagesize()];
   v20 = v42 * SHIDWORD(v42);
   v21 = v13 * v20;
-  if ([v4 originalPixelFormat] == 6)
+  if ([descriptionCopy originalPixelFormat] == 6)
   {
-    if ([v4 destinationPixelFormat] == 4)
+    if ([descriptionCopy destinationPixelFormat] == 4)
     {
 LABEL_9:
       v22 = v17 + v21;
       goto LABEL_28;
     }
 
-    if ([v4 destinationPixelFormat] == 2)
+    if ([descriptionCopy destinationPixelFormat] == 2)
     {
       v22 = v14 * (v16 + v20);
     }
@@ -66,24 +66,24 @@ LABEL_9:
 
   else
   {
-    if ([v4 fileType] == 1)
+    if ([descriptionCopy fileType] == 1)
     {
-      v23 = -[ASVImageIOTextureConverter maxNativeDownsamplingFactorForDownsamplingFactor:fileType:](self, "maxNativeDownsamplingFactorForDownsamplingFactor:fileType:", [v4 downsamplingFactor], 1);
+      v23 = -[ASVImageIOTextureConverter maxNativeDownsamplingFactorForDownsamplingFactor:fileType:](self, "maxNativeDownsamplingFactorForDownsamplingFactor:fileType:", [descriptionCopy downsamplingFactor], 1);
       v22 = v21 / (v23 * v23) + v17;
       goto LABEL_28;
     }
 
-    if ([v4 fileType] == 7)
+    if ([descriptionCopy fileType] == 7)
     {
-      v24 = -[ASVImageIOTextureConverter maxNativeDownsamplingFactorForDownsamplingFactor:fileType:](self, "maxNativeDownsamplingFactorForDownsamplingFactor:fileType:", [v4 downsamplingFactor], 7);
-      [v4 originalPixelFormat];
+      v24 = -[ASVImageIOTextureConverter maxNativeDownsamplingFactorForDownsamplingFactor:fileType:](self, "maxNativeDownsamplingFactorForDownsamplingFactor:fileType:", [descriptionCopy downsamplingFactor], 7);
+      [descriptionCopy originalPixelFormat];
       v22 = (v21 / (v24 * v24) + v17) << (v25 == 2);
       goto LABEL_28;
     }
 
-    if ([v4 fileType] == 4)
+    if ([descriptionCopy fileType] == 4)
     {
-      v26 = -[ASVImageIOTextureConverter maxNativeDownsamplingFactorForDownsamplingFactor:fileType:](self, "maxNativeDownsamplingFactorForDownsamplingFactor:fileType:", [v4 downsamplingFactor], 4);
+      v26 = -[ASVImageIOTextureConverter maxNativeDownsamplingFactorForDownsamplingFactor:fileType:](self, "maxNativeDownsamplingFactorForDownsamplingFactor:fileType:", [descriptionCopy downsamplingFactor], 4);
       v27 = v21 / (v26 * v26);
       v28 = 2 * v27;
       v29 = v27 + v17;
@@ -100,9 +100,9 @@ LABEL_9:
       goto LABEL_28;
     }
 
-    if ([v4 fileType] != 2)
+    if ([descriptionCopy fileType] != 2)
     {
-      if ([v4 fileType] == 5)
+      if ([descriptionCopy fileType] == 5)
       {
         if (v17 + v21 <= v21 + v20)
         {
@@ -117,13 +117,13 @@ LABEL_9:
         goto LABEL_28;
       }
 
-      if ([v4 fileType] != 3)
+      if ([descriptionCopy fileType] != 3)
       {
         goto LABEL_9;
       }
     }
 
-    if (![v4 requiresDownsampling])
+    if (![descriptionCopy requiresDownsampling])
     {
       goto LABEL_9;
     }
@@ -132,12 +132,12 @@ LABEL_9:
   }
 
 LABEL_28:
-  if ([v4 fileType] == 1)
+  if ([descriptionCopy fileType] == 1)
   {
     v22 += 35968;
   }
 
-  else if ([v4 fileType] == 4)
+  else if ([descriptionCopy fileType] == 4)
   {
     v22 += 1572864;
   }
@@ -145,21 +145,21 @@ LABEL_28:
   v30 = AssetViewerLogHandleForCategory(1);
   if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
   {
-    v31 = [v4 fileType];
-    v32 = [v4 downsamplingFactor];
-    [v4 originalSize];
+    fileType = [descriptionCopy fileType];
+    downsamplingFactor = [descriptionCopy downsamplingFactor];
+    [descriptionCopy originalSize];
     v45 = v33;
-    [v4 originalSize];
+    [descriptionCopy originalSize];
     v43 = v34;
-    [v4 destinationSize];
+    [descriptionCopy destinationSize];
     v41 = v35;
-    [v4 destinationSize];
+    [descriptionCopy destinationSize];
     v40 = v36;
-    v37 = [v4 name];
+    name = [descriptionCopy name];
     *buf = 134220034;
-    v47 = v31;
+    v47 = fileType;
     v48 = 2048;
-    v49 = v32;
+    v49 = downsamplingFactor;
     v50 = 2048;
     v51 = v22 >> 10;
     v52 = 2048;
@@ -173,7 +173,7 @@ LABEL_28:
     v60 = 1024;
     v61 = v40;
     v62 = 2112;
-    v63 = v37;
+    v63 = name;
     _os_log_impl(&dword_241215000, v30, OS_LOG_TYPE_DEFAULT, "fileType: %lu. factor: %lu,\tpeak: %lluKB,\tfootprint: %lluKB, (%d x %d) -> (%d x %d) - '%@'", buf, 0x4Cu);
   }
 
@@ -184,21 +184,21 @@ LABEL_28:
   return result;
 }
 
-- (int64_t)maxNativeDownsamplingFactorForDownsamplingFactor:(int64_t)a3 fileType:(int64_t)a4
+- (int64_t)maxNativeDownsamplingFactorForDownsamplingFactor:(int64_t)factor fileType:(int64_t)type
 {
-  if ((a4 - 1) > 6)
+  if ((type - 1) > 6)
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = qword_241364760[a4 - 1];
+    v4 = qword_241364760[type - 1];
   }
 
-  if (v4 >= a3)
+  if (v4 >= factor)
   {
-    return a3;
+    return factor;
   }
 
   else

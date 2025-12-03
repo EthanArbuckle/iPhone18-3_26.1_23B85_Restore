@@ -1,12 +1,12 @@
 @interface UICollectionViewTableCell
-- (BOOL)_beginReorderingForCell:(id)a3 touch:(id)a4;
+- (BOOL)_beginReorderingForCell:(id)cell touch:(id)touch;
 - (BOOL)_effectiveDefaultAllowsFocus;
 - (BOOL)_isInteractiveMoveShadowInstalled;
 - (BOOL)_isShowingIndex;
 - (BOOL)_sectionContentInsetFollowsLayoutMargins;
 - (BOOL)_separatorInsetIsRelativeToCellEdges;
-- (BOOL)_shouldHaveFooterViewForSection:(int64_t)a3;
-- (BOOL)_shouldHaveHeaderViewForSection:(int64_t)a3;
+- (BOOL)_shouldHaveFooterViewForSection:(int64_t)section;
+- (BOOL)_shouldHaveHeaderViewForSection:(int64_t)section;
 - (BOOL)allowsMultipleSelection;
 - (BOOL)allowsMultipleSelectionDuringEditing;
 - (BOOL)cellLayoutMarginsFollowReadableWidth;
@@ -20,10 +20,10 @@
 - (BOOL)showingDeleteConfirmation;
 - (BOOL)showsReorderControl;
 - (BOOL)usesVariableMargins;
-- (CGRect)_calloutTargetRectForCell:(id)a3;
+- (CGRect)_calloutTargetRectForCell:(id)cell;
 - (CGRect)_indexFrame;
 - (UICollectionViewLayout)currentLayout;
-- (UICollectionViewTableCell)initWithFrame:(CGRect)a3;
+- (UICollectionViewTableCell)initWithFrame:(CGRect)frame;
 - (UICollectionViewTableLayout)_tableLayout;
 - (UICollectionViewTableLayoutAttributes)_tableAttributes;
 - (UIColor)_accessoryBaseColor;
@@ -56,9 +56,9 @@
 - (double)sectionHeaderHeight;
 - (id)backgroundColor;
 - (id)backgroundView;
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3;
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes;
 - (id)selectedBackgroundView;
-- (int64_t)_numberOfRowsInSection:(int64_t)a3;
+- (int64_t)_numberOfRowsInSection:(int64_t)section;
 - (int64_t)_numberOfSections;
 - (int64_t)accessoryType;
 - (int64_t)editingAccessoryType;
@@ -66,76 +66,76 @@
 - (int64_t)focusStyle;
 - (int64_t)indentationLevel;
 - (int64_t)selectionStyle;
-- (void)_accessoryButtonAction:(id)a3;
-- (void)_animateDeletionOfRowAtIndexPath:(id)a3;
-- (void)_animateDeletionOfRowWithCell:(id)a3;
+- (void)_accessoryButtonAction:(id)action;
+- (void)_animateDeletionOfRowAtIndexPath:(id)path;
+- (void)_animateDeletionOfRowWithCell:(id)cell;
 - (void)_commonSetupTableCell;
-- (void)_didInsertRowForTableCell:(id)a3;
-- (void)_endReorderingForCell:(id)a3 wasCancelled:(BOOL)a4 animated:(BOOL)a5;
+- (void)_didInsertRowForTableCell:(id)cell;
+- (void)_endReorderingForCell:(id)cell wasCancelled:(BOOL)cancelled animated:(BOOL)animated;
 - (void)_insertInteractiveMoveShadowViews;
 - (void)_layoutInteractiveMoveShadow;
 - (void)_layoutTableViewCell;
 - (void)_removeInteractiveMoveShadowViews;
-- (void)_setupForEditing:(BOOL)a3 atIndexPath:(id)a4 multiselect:(BOOL)a5 editingStyle:(int64_t)a6 shouldIndentWhileEditing:(BOOL)a7 showsReorderControl:(BOOL)a8 accessoryType:(int64_t)a9 updateSeparators:(BOOL)a10;
-- (void)_swipeToDeleteCell:(id)a3;
-- (void)_trackAnimator:(id)a3;
-- (void)_updateCollectionViewInteractiveMovementTargetPositionForTouch:(id)a3;
+- (void)_setupForEditing:(BOOL)editing atIndexPath:(id)path multiselect:(BOOL)multiselect editingStyle:(int64_t)style shouldIndentWhileEditing:(BOOL)whileEditing showsReorderControl:(BOOL)control accessoryType:(int64_t)type updateSeparators:(BOOL)self0;
+- (void)_swipeToDeleteCell:(id)cell;
+- (void)_trackAnimator:(id)animator;
+- (void)_updateCollectionViewInteractiveMovementTargetPositionForTouch:(id)touch;
 - (void)_updateEditing;
-- (void)_updateInternalCellForTableLayout:(BOOL)a3 animated:(BOOL)a4;
-- (void)applyLayoutAttributes:(id)a3;
+- (void)_updateInternalCellForTableLayout:(BOOL)layout animated:(BOOL)animated;
+- (void)applyLayoutAttributes:(id)attributes;
 - (void)awakeFromNib;
-- (void)didTransitionFromLayout:(id)a3 toLayout:(id)a4;
-- (void)didTransitionToState:(unint64_t)a3;
+- (void)didTransitionFromLayout:(id)layout toLayout:(id)toLayout;
+- (void)didTransitionToState:(unint64_t)state;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setAccessoryType:(int64_t)a3;
-- (void)setAccessoryView:(id)a3;
-- (void)setBackgroundColor:(id)a3;
-- (void)setBackgroundView:(id)a3;
-- (void)setBorderShadowVisible:(BOOL)a3;
-- (void)setEditing:(BOOL)a3;
-- (void)setEditingAccessoryType:(int64_t)a3;
-- (void)setEditingAccessoryView:(id)a3;
-- (void)setFocusStyle:(int64_t)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setIndentationLevel:(int64_t)a3;
-- (void)setIndentationWidth:(double)a3;
-- (void)setInteractiveMoveEffectsVisible:(BOOL)a3;
-- (void)setMultipleSelectionBackgroundView:(id)a3;
-- (void)setSelected:(BOOL)a3;
-- (void)setSelectedBackgroundView:(id)a3;
-- (void)setSelectionStyle:(int64_t)a3;
-- (void)setSeparatorInset:(UIEdgeInsets)a3;
-- (void)setShouldIndentWhileEditing:(BOOL)a3;
-- (void)setShowsReorderControl:(BOOL)a3;
-- (void)willTransitionFromLayout:(id)a3 toLayout:(id)a4;
-- (void)willTransitionToState:(unint64_t)a3;
+- (void)setAccessoryType:(int64_t)type;
+- (void)setAccessoryView:(id)view;
+- (void)setBackgroundColor:(id)color;
+- (void)setBackgroundView:(id)view;
+- (void)setBorderShadowVisible:(BOOL)visible;
+- (void)setEditing:(BOOL)editing;
+- (void)setEditingAccessoryType:(int64_t)type;
+- (void)setEditingAccessoryView:(id)view;
+- (void)setFocusStyle:(int64_t)style;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setIndentationLevel:(int64_t)level;
+- (void)setIndentationWidth:(double)width;
+- (void)setInteractiveMoveEffectsVisible:(BOOL)visible;
+- (void)setMultipleSelectionBackgroundView:(id)view;
+- (void)setSelected:(BOOL)selected;
+- (void)setSelectedBackgroundView:(id)view;
+- (void)setSelectionStyle:(int64_t)style;
+- (void)setSeparatorInset:(UIEdgeInsets)inset;
+- (void)setShouldIndentWhileEditing:(BOOL)editing;
+- (void)setShowsReorderControl:(BOOL)control;
+- (void)willTransitionFromLayout:(id)layout toLayout:(id)toLayout;
+- (void)willTransitionToState:(unint64_t)state;
 @end
 
 @implementation UICollectionViewTableCell
 
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes
 {
-  v4 = a3;
+  attributesCopy = attributes;
   WeakRetained = objc_loadWeakRetained(&self->super.super._collectionView);
-  v6 = [WeakRetained collectionViewLayout];
-  if (v6)
+  collectionViewLayout = [WeakRetained collectionViewLayout];
+  if (collectionViewLayout)
   {
-    v7 = v6;
+    v7 = collectionViewLayout;
     v8 = objc_loadWeakRetained(&self->super.super._collectionView);
-    v9 = [v8 collectionViewLayout];
-    v10 = [v9 _estimatesSizes];
+    collectionViewLayout2 = [v8 collectionViewLayout];
+    _estimatesSizes = [collectionViewLayout2 _estimatesSizes];
 
-    if (v10)
+    if (_estimatesSizes)
     {
       v11 = objc_loadWeakRetained(&self->super.super._collectionView);
-      v12 = [v11 collectionViewLayout];
-      v13 = [v12 _cellsShouldConferWithAutolayoutEngineForSizingInfo];
+      collectionViewLayout3 = [v11 collectionViewLayout];
+      _cellsShouldConferWithAutolayoutEngineForSizingInfo = [collectionViewLayout3 _cellsShouldConferWithAutolayoutEngineForSizingInfo];
 
-      if (v13)
+      if (_cellsShouldConferWithAutolayoutEngineForSizingInfo)
       {
-        v14 = [(UICollectionViewTableCell *)self tableViewCell];
-        v15 = _preferredAttributesFittingAttributesWithInnerView(self, v4, v14);
+        tableViewCell = [(UICollectionViewTableCell *)self tableViewCell];
+        v15 = _preferredAttributesFittingAttributesWithInnerView(self, attributesCopy, tableViewCell);
 
         goto LABEL_7;
       }
@@ -146,7 +146,7 @@
   {
   }
 
-  v15 = v4;
+  v15 = attributesCopy;
 LABEL_7:
 
   return v15;
@@ -158,8 +158,8 @@ LABEL_7:
   [(UIView *)v10 setAutoresizingMask:18];
   [(UITableViewCell *)v10 _setTableView:self];
   [(UICollectionViewTableCell *)self setTableViewCell:v10];
-  v3 = [(UICollectionViewCell *)self contentView];
-  v4 = [(UITableViewCell *)v10 contentView];
+  contentView = [(UICollectionViewCell *)self contentView];
+  contentView2 = [(UITableViewCell *)v10 contentView];
   v5 = [UIView alloc];
   [(UIView *)v10 bounds];
   v6 = [(UIView *)v5 initWithFrame:?];
@@ -170,35 +170,35 @@ LABEL_7:
   [(UIView *)self->_swipeableView setEdgesPreservingSuperviewLayoutMargins:10];
   [(UIView *)self->_swipeableView setEdgesInsettingLayoutMarginsFromSafeArea:[(UIView *)self->_swipeableView edgesInsettingLayoutMarginsFromSafeArea]& 0xA];
   [(UIView *)v10 addSubview:self->_swipeableView];
-  [v4 removeFromSuperview];
-  [(UIView *)self->_swipeableView addSubview:v4];
-  v8 = [v3 subviews];
-  v9 = [v8 count];
+  [contentView2 removeFromSuperview];
+  [(UIView *)self->_swipeableView addSubview:contentView2];
+  subviews = [contentView subviews];
+  v9 = [subviews count];
 
   if (v9)
   {
-    [v4 bounds];
-    [v3 setFrame:?];
-    [v3 setAutoresizingMask:18];
-    [v4 addSubview:v3];
+    [contentView2 bounds];
+    [contentView setFrame:?];
+    [contentView setAutoresizingMask:18];
+    [contentView2 addSubview:contentView];
   }
 
   else
   {
-    [v3 removeFromSuperview];
+    [contentView removeFromSuperview];
   }
 
   [(UIView *)self setEdgesPreservingSuperviewLayoutMargins:10];
   [(UIView *)self setEdgesInsettingLayoutMarginsFromSafeArea:[(UIView *)self edgesInsettingLayoutMarginsFromSafeArea]& 0xA];
   [(UIView *)self addSubview:v10];
-  [(UICollectionViewCell *)self _setContentView:v4 addToHierarchy:0];
+  [(UICollectionViewCell *)self _setContentView:contentView2 addToHierarchy:0];
 }
 
-- (UICollectionViewTableCell)initWithFrame:(CGRect)a3
+- (UICollectionViewTableCell)initWithFrame:(CGRect)frame
 {
   v5.receiver = self;
   v5.super_class = UICollectionViewTableCell;
-  v3 = [(UICollectionViewCell *)&v5 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UICollectionViewCell *)&v5 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(UICollectionViewTableCell *)v3 _commonSetupTableCell];
   return v3;
 }
@@ -213,10 +213,10 @@ LABEL_7:
 
 - (UIEdgeInsets)_contentViewInset
 {
-  v3 = [(UICollectionViewTableCell *)self tableViewCell];
-  v4 = [v3 currentStateMask];
-  v5 = [v3 layoutManager];
-  [v5 contentEndingRectForCell:v3 forNewEditingState:v4 & 1];
+  tableViewCell = [(UICollectionViewTableCell *)self tableViewCell];
+  currentStateMask = [tableViewCell currentStateMask];
+  layoutManager = [tableViewCell layoutManager];
+  [layoutManager contentEndingRectForCell:tableViewCell forNewEditingState:currentStateMask & 1];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -265,16 +265,16 @@ LABEL_7:
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(UICollectionViewTableCell *)self tableViewCell];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  tableViewCell = [(UICollectionViewTableCell *)self tableViewCell];
+  [tableViewCell setFrame:{v4, v6, v8, v10}];
 }
 
 - (void)_layoutInteractiveMoveShadow
 {
-  v3 = [(UICollectionViewTableCell *)self borderShadowVisible];
-  if (v3 != [(UICollectionViewTableCell *)self _isInteractiveMoveShadowInstalled])
+  borderShadowVisible = [(UICollectionViewTableCell *)self borderShadowVisible];
+  if (borderShadowVisible != [(UICollectionViewTableCell *)self _isInteractiveMoveShadowInstalled])
   {
-    if (v3)
+    if (borderShadowVisible)
     {
 
       [(UICollectionViewTableCell *)self _insertInteractiveMoveShadowViews];
@@ -290,8 +290,8 @@ LABEL_7:
 
 - (BOOL)_isInteractiveMoveShadowInstalled
 {
-  v2 = [(UIView *)self->_borderShadowTopView superview];
-  v3 = v2 != 0;
+  superview = [(UIView *)self->_borderShadowTopView superview];
+  v3 = superview != 0;
 
   return v3;
 }
@@ -314,8 +314,8 @@ LABEL_7:
     borderShadowTopView = self->_borderShadowTopView;
   }
 
-  v9 = [(UICollectionViewTableCell *)self tableViewCell];
-  [(UIView *)self insertSubview:borderShadowTopView belowSubview:v9];
+  tableViewCell = [(UICollectionViewTableCell *)self tableViewCell];
+  [(UIView *)self insertSubview:borderShadowTopView belowSubview:tableViewCell];
 
   borderShadowBottomView = self->_borderShadowBottomView;
   if (!borderShadowBottomView)
@@ -333,8 +333,8 @@ LABEL_7:
     borderShadowBottomView = self->_borderShadowBottomView;
   }
 
-  v16 = [(UICollectionViewTableCell *)self tableViewCell];
-  [(UIView *)self insertSubview:borderShadowBottomView belowSubview:v16];
+  tableViewCell2 = [(UICollectionViewTableCell *)self tableViewCell];
+  [(UIView *)self insertSubview:borderShadowBottomView belowSubview:tableViewCell2];
 }
 
 - (void)_removeInteractiveMoveShadowViews
@@ -352,32 +352,32 @@ LABEL_7:
 {
   [(UICollectionViewTableCell *)self _layoutTableViewCell];
   [(UICollectionViewTableCell *)self _layoutInteractiveMoveShadow];
-  v3 = [(UICollectionViewTableCell *)self tableViewCell];
-  [v3 layoutIfNeeded];
+  tableViewCell = [(UICollectionViewTableCell *)self tableViewCell];
+  [tableViewCell layoutIfNeeded];
 
   v4.receiver = self;
   v4.super_class = UICollectionViewTableCell;
   [(UICollectionViewCell *)&v4 layoutSubviews];
 }
 
-- (void)setInteractiveMoveEffectsVisible:(BOOL)a3
+- (void)setInteractiveMoveEffectsVisible:(BOOL)visible
 {
-  if (self->_interactiveMoveEffectsVisible != a3)
+  if (self->_interactiveMoveEffectsVisible != visible)
   {
-    self->_interactiveMoveEffectsVisible = a3;
-    if (a3)
+    self->_interactiveMoveEffectsVisible = visible;
+    if (visible)
     {
-      v4 = [(UICollectionViewTableCell *)self _tableLayout];
-      v5 = [v4 _constants];
-      v6 = [v5 reorderingCellWantsShadows];
+      _tableLayout = [(UICollectionViewTableCell *)self _tableLayout];
+      _constants = [_tableLayout _constants];
+      reorderingCellWantsShadows = [_constants reorderingCellWantsShadows];
     }
 
     else
     {
-      v6 = 0;
+      reorderingCellWantsShadows = 0;
     }
 
-    [(UICollectionViewTableCell *)self setBorderShadowVisible:v6];
+    [(UICollectionViewTableCell *)self setBorderShadowVisible:reorderingCellWantsShadows];
     if (self->_interactiveMoveEffectsVisible)
     {
       v7 = objc_opt_new();
@@ -392,15 +392,15 @@ LABEL_7:
     interactiveMoveEffectsVisible = self->_interactiveMoveEffectsVisible;
     if (interactiveMoveEffectsVisible)
     {
-      v9 = [(UICollectionViewTableCell *)self selectedBackgroundView];
+      selectedBackgroundView = [(UICollectionViewTableCell *)self selectedBackgroundView];
     }
 
     else
     {
-      v9 = 0;
+      selectedBackgroundView = 0;
     }
 
-    objc_storeStrong(&self->_selectedBackgroundViewToRestoreWhenInteractiveMoveEnds, v9);
+    objc_storeStrong(&self->_selectedBackgroundViewToRestoreWhenInteractiveMoveEnds, selectedBackgroundView);
     if (interactiveMoveEffectsVisible)
     {
     }
@@ -409,45 +409,45 @@ LABEL_7:
   }
 }
 
-- (void)setBorderShadowVisible:(BOOL)a3
+- (void)setBorderShadowVisible:(BOOL)visible
 {
-  if (self->_borderShadowVisible != a3)
+  if (self->_borderShadowVisible != visible)
   {
-    self->_borderShadowVisible = a3;
+    self->_borderShadowVisible = visible;
     [(UIView *)self setNeedsLayout];
   }
 }
 
-- (void)applyLayoutAttributes:(id)a3
+- (void)applyLayoutAttributes:(id)attributes
 {
   v13.receiver = self;
   v13.super_class = UICollectionViewTableCell;
-  [(UICollectionReusableView *)&v13 applyLayoutAttributes:a3];
-  v4 = [(UICollectionViewTableCell *)self tableViewCell];
-  v5 = [(UICollectionViewTableCell *)self _tableAttributes];
-  v6 = [(UICollectionViewTableCell *)self currentLayout];
+  [(UICollectionReusableView *)&v13 applyLayoutAttributes:attributes];
+  tableViewCell = [(UICollectionViewTableCell *)self tableViewCell];
+  _tableAttributes = [(UICollectionViewTableCell *)self _tableAttributes];
+  currentLayout = [(UICollectionViewTableCell *)self currentLayout];
 
-  if (!v6)
+  if (!currentLayout)
   {
-    v7 = [(UICollectionReusableView *)self _collectionView];
-    v8 = [v7 collectionViewLayout];
-    [(UICollectionViewTableCell *)self setCurrentLayout:v8];
+    _collectionView = [(UICollectionReusableView *)self _collectionView];
+    collectionViewLayout = [_collectionView collectionViewLayout];
+    [(UICollectionViewTableCell *)self setCurrentLayout:collectionViewLayout];
 
     [(UICollectionViewTableCell *)self _updateInternalCellForTableLayout:[(UICollectionViewTableCell *)self isInTableLayout] animated:0];
     [(UICollectionViewTableCell *)self updateCellForTableLayout:[(UICollectionViewTableCell *)self isInTableLayout]];
   }
 
-  if (v5)
+  if (_tableAttributes)
   {
     v9 = objc_opt_class();
-    [v9 applyValuesFromAttributes:v5 toAttributes:v4 valueOptions:{objc_msgSend(objc_opt_class(), "automaticValueOptionsForRepresentedElementCategory:", objc_msgSend(v5, "representedElementCategory"))}];
-    v10 = [(UICollectionViewTableCell *)self _tableLayout];
-    v11 = v10;
-    if (v10)
+    [v9 applyValuesFromAttributes:_tableAttributes toAttributes:tableViewCell valueOptions:{objc_msgSend(objc_opt_class(), "automaticValueOptionsForRepresentedElementCategory:", objc_msgSend(_tableAttributes, "representedElementCategory"))}];
+    _tableLayout = [(UICollectionViewTableCell *)self _tableLayout];
+    v11 = _tableLayout;
+    if (_tableLayout)
     {
-      v12 = [v10 _constants];
-      [v12 defaultLayoutMarginsForCell:v4 inTableView:v11];
-      [v4 setLayoutMargins:?];
+      _constants = [_tableLayout _constants];
+      [_constants defaultLayoutMarginsForCell:tableViewCell inTableView:v11];
+      [tableViewCell setLayoutMargins:?];
     }
   }
 
@@ -476,7 +476,7 @@ void __51__UICollectionViewTableCell_applyLayoutAttributes___block_invoke()
 
 - (void)_updateEditing
 {
-  v7 = [(UICollectionViewTableCell *)self _tableAttributes];
+  _tableAttributes = [(UICollectionViewTableCell *)self _tableAttributes];
   if (![(UICollectionViewTableCell *)self isInTableLayout])
   {
     goto LABEL_7;
@@ -484,44 +484,44 @@ void __51__UICollectionViewTableCell_applyLayoutAttributes___block_invoke()
 
   if (![(UICollectionViewTableCell *)self isEditing]&& [(UICollectionViewTableCell *)self allowsMultipleSelection])
   {
-    v3 = 1;
+    allowsMultipleSelectionDuringEditing = 1;
     goto LABEL_8;
   }
 
   if ([(UICollectionViewTableCell *)self isEditing])
   {
-    v3 = [(UICollectionViewTableCell *)self allowsMultipleSelectionDuringEditing];
+    allowsMultipleSelectionDuringEditing = [(UICollectionViewTableCell *)self allowsMultipleSelectionDuringEditing];
   }
 
   else
   {
 LABEL_7:
-    v3 = 0;
+    allowsMultipleSelectionDuringEditing = 0;
   }
 
 LABEL_8:
-  v4 = [(UICollectionViewTableCell *)self isEditing];
-  v5 = [v7 indexPath];
+  isEditing = [(UICollectionViewTableCell *)self isEditing];
+  indexPath = [_tableAttributes indexPath];
   LOBYTE(v6) = 1;
-  -[UICollectionViewTableCell _setupForEditing:atIndexPath:multiselect:editingStyle:shouldIndentWhileEditing:showsReorderControl:accessoryType:updateSeparators:](self, "_setupForEditing:atIndexPath:multiselect:editingStyle:shouldIndentWhileEditing:showsReorderControl:accessoryType:updateSeparators:", v4, v5, v3, [v7 editingStyle], objc_msgSend(v7, "shouldIndentWhileEditing"), objc_msgSend(v7, "showsReorderControl"), objc_msgSend(v7, "accessoryType"), v6);
+  -[UICollectionViewTableCell _setupForEditing:atIndexPath:multiselect:editingStyle:shouldIndentWhileEditing:showsReorderControl:accessoryType:updateSeparators:](self, "_setupForEditing:atIndexPath:multiselect:editingStyle:shouldIndentWhileEditing:showsReorderControl:accessoryType:updateSeparators:", isEditing, indexPath, allowsMultipleSelectionDuringEditing, [_tableAttributes editingStyle], objc_msgSend(_tableAttributes, "shouldIndentWhileEditing"), objc_msgSend(_tableAttributes, "showsReorderControl"), objc_msgSend(_tableAttributes, "accessoryType"), v6);
 }
 
-- (void)_updateInternalCellForTableLayout:(BOOL)a3 animated:(BOOL)a4
+- (void)_updateInternalCellForTableLayout:(BOOL)layout animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
+  animatedCopy = animated;
+  layoutCopy = layout;
   v33[3] = *MEMORY[0x1E69E9840];
-  v7 = [(UICollectionViewTableCell *)self tableViewCell];
+  tableViewCell = [(UICollectionViewTableCell *)self tableViewCell];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if (v5)
+    if (layoutCopy)
     {
       aBlock[0] = MEMORY[0x1E69E9820];
       aBlock[1] = 3221225472;
       aBlock[2] = __72__UICollectionViewTableCell__updateInternalCellForTableLayout_animated___block_invoke;
       aBlock[3] = &unk_1E70FE928;
-      v8 = v7;
+      v8 = tableViewCell;
       v32 = v8;
       v9 = _Block_copy(aBlock);
       v33[0] = v9;
@@ -549,13 +549,13 @@ LABEL_8:
       v22[2] = __72__UICollectionViewTableCell__updateInternalCellForTableLayout_animated___block_invoke_4;
       v22[3] = &unk_1E70F6B40;
       v23 = v12;
-      v24 = self;
+      selfCopy = self;
       v25 = v14;
       v16 = v15;
       v26 = v16;
       v17 = v14;
       [UIView performWithoutAnimation:v22];
-      if (v4)
+      if (animatedCopy)
       {
         v18 = 0.25;
       }
@@ -576,9 +576,9 @@ LABEL_8:
 
     else
     {
-      [v7 setAccessoryType:0];
-      [v7 _setSeparatorHidden:1];
-      [v7 _setAccessoryViewsHidden:1];
+      [tableViewCell setAccessoryType:0];
+      [tableViewCell _setSeparatorHidden:1];
+      [tableViewCell _setAccessoryViewsHidden:1];
     }
   }
 }
@@ -678,11 +678,11 @@ void __72__UICollectionViewTableCell__updateInternalCellForTableLayout_animated_
   }
 }
 
-- (void)willTransitionFromLayout:(id)a3 toLayout:(id)a4
+- (void)willTransitionFromLayout:(id)layout toLayout:(id)toLayout
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(UICollectionViewTableCell *)self tableViewCell];
+  layoutCopy = layout;
+  toLayoutCopy = toLayout;
+  tableViewCell = [(UICollectionViewTableCell *)self tableViewCell];
   objc_opt_class();
   v9 = objc_opt_isKindOfClass() & 1;
   objc_opt_class();
@@ -690,13 +690,13 @@ void __72__UICollectionViewTableCell__updateInternalCellForTableLayout_animated_
   if (v9 != (isKindOfClass & 1))
   {
     v11 = isKindOfClass;
-    [v8 removeEditingData];
+    [tableViewCell removeEditingData];
     [(UICollectionViewTableCell *)self setTransitioningLayouts:1];
-    [(UICollectionViewTableCell *)self setCurrentLayout:v7];
+    [(UICollectionViewTableCell *)self setCurrentLayout:toLayoutCopy];
     [(UICollectionViewTableCell *)self _updateEditing];
     if (v11)
     {
-      [v8 _setAccessoryViewsHidden:1];
+      [tableViewCell _setAccessoryViewsHidden:1];
     }
 
     else
@@ -706,15 +706,15 @@ void __72__UICollectionViewTableCell__updateInternalCellForTableLayout_animated_
       v12[1] = 3221225472;
       v12[2] = __63__UICollectionViewTableCell_willTransitionFromLayout_toLayout___block_invoke;
       v12[3] = &unk_1E70F3590;
-      v13 = v6;
+      v13 = layoutCopy;
       [UIView performWithoutAnimation:v12];
     }
   }
 }
 
-- (void)didTransitionFromLayout:(id)a3 toLayout:(id)a4
+- (void)didTransitionFromLayout:(id)layout toLayout:(id)toLayout
 {
-  if ([(UICollectionViewTableCell *)self transitioningLayouts:a3])
+  if ([(UICollectionViewTableCell *)self transitioningLayouts:layout])
   {
     if ([(UICollectionViewTableCell *)self isInTableLayout])
     {
@@ -725,31 +725,31 @@ void __72__UICollectionViewTableCell__updateInternalCellForTableLayout_animated_
   }
 }
 
-- (void)_trackAnimator:(id)a3
+- (void)_trackAnimator:(id)animator
 {
-  v4 = a3;
+  animatorCopy = animator;
   trackedAnimators = self->_trackedAnimators;
   if (trackedAnimators)
   {
-    [(NSMutableSet *)trackedAnimators addObject:v4];
+    [(NSMutableSet *)trackedAnimators addObject:animatorCopy];
   }
 
   else
   {
-    v6 = [MEMORY[0x1E695DFA8] setWithObject:v4];
+    v6 = [MEMORY[0x1E695DFA8] setWithObject:animatorCopy];
     v7 = self->_trackedAnimators;
     self->_trackedAnimators = v6;
   }
 
   objc_initWeak(&location, self);
-  objc_initWeak(&from, v4);
+  objc_initWeak(&from, animatorCopy);
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __44__UICollectionViewTableCell__trackAnimator___block_invoke;
   v8[3] = &unk_1E70F5A00;
   objc_copyWeak(&v9, &location);
   objc_copyWeak(&v10, &from);
-  [v4 addCompletion:v8];
+  [animatorCopy addCompletion:v8];
   objc_destroyWeak(&v10);
   objc_destroyWeak(&v9);
   objc_destroyWeak(&from);
@@ -839,15 +839,15 @@ void __44__UICollectionViewTableCell__trackAnimator___block_invoke(uint64_t a1)
     }
   }
 
-  v13 = [(UICollectionViewTableCell *)self swipeableView];
-  v14 = [v13 superview];
-  [v14 bounds];
+  swipeableView = [(UICollectionViewTableCell *)self swipeableView];
+  superview = [swipeableView superview];
+  [superview bounds];
   v16 = v15;
   v18 = v17;
   v20 = v19;
   v22 = v21;
-  v23 = [(UICollectionViewTableCell *)self swipeableView];
-  [v23 setFrame:{v16, v18, v20, v22}];
+  swipeableView2 = [(UICollectionViewTableCell *)self swipeableView];
+  [swipeableView2 setFrame:{v16, v18, v20, v22}];
 
   [(UICollectionViewTableCell *)self _setOffsetForRevealingDeleteConfirmationButton:0.0];
   [(UITableViewCell *)self->_tableViewCell prepareForReuse];
@@ -865,34 +865,34 @@ void __44__UICollectionViewTableCell__trackAnimator___block_invoke(uint64_t a1)
 
 - (BOOL)isInTableLayout
 {
-  v2 = [(UICollectionViewTableCell *)self currentLayout];
+  currentLayout = [(UICollectionViewTableCell *)self currentLayout];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   return isKindOfClass & 1;
 }
 
-- (void)setEditing:(BOOL)a3
+- (void)setEditing:(BOOL)editing
 {
-  if (self->_editing != a3)
+  if (self->_editing != editing)
   {
-    self->_editing = a3;
+    self->_editing = editing;
     [(UICollectionViewTableCell *)self _updateEditing];
   }
 }
 
-- (void)_setupForEditing:(BOOL)a3 atIndexPath:(id)a4 multiselect:(BOOL)a5 editingStyle:(int64_t)a6 shouldIndentWhileEditing:(BOOL)a7 showsReorderControl:(BOOL)a8 accessoryType:(int64_t)a9 updateSeparators:(BOOL)a10
+- (void)_setupForEditing:(BOOL)editing atIndexPath:(id)path multiselect:(BOOL)multiselect editingStyle:(int64_t)style shouldIndentWhileEditing:(BOOL)whileEditing showsReorderControl:(BOOL)control accessoryType:(int64_t)type updateSeparators:(BOOL)self0
 {
-  v10 = a8;
-  v11 = a7;
-  v13 = a5;
-  v14 = a3;
-  v16 = [(UICollectionViewTableCell *)self tableViewCell:a3];
-  if (v14)
+  controlCopy = control;
+  whileEditingCopy = whileEditing;
+  multiselectCopy = multiselect;
+  editingCopy = editing;
+  v16 = [(UICollectionViewTableCell *)self tableViewCell:editing];
+  if (editingCopy)
   {
-    [v16 _setShowsReorderControl:v10];
-    [v16 _setEditingStyle:a6];
-    [v16 _setShouldIndentWhileEditing:v11];
+    [v16 _setShowsReorderControl:controlCopy];
+    [v16 _setEditingStyle:style];
+    [v16 _setShouldIndentWhileEditing:whileEditingCopy];
     [v16 _setEditing:1 animated:1 cellOrAncestorViewForAnimatedLayout:self];
   }
 
@@ -906,10 +906,10 @@ void __44__UICollectionViewTableCell__trackAnimator___block_invoke(uint64_t a1)
     [v16 _setShowingDeleteConfirmation:0];
   }
 
-  [v16 _setMultiselecting:v13];
+  [v16 _setMultiselecting:multiselectCopy];
 }
 
-- (CGRect)_calloutTargetRectForCell:(id)a3
+- (CGRect)_calloutTargetRectForCell:(id)cell
 {
   v3 = *MEMORY[0x1E695F058];
   v4 = *(MEMORY[0x1E695F058] + 8);
@@ -922,34 +922,34 @@ void __44__UICollectionViewTableCell__trackAnimator___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)_swipeToDeleteCell:(id)a3
+- (void)_swipeToDeleteCell:(id)cell
 {
-  v4 = [(UICollectionViewTableCell *)self _tableLayout];
-  [v4 _swipeToDeleteCell:self];
+  _tableLayout = [(UICollectionViewTableCell *)self _tableLayout];
+  [_tableLayout _swipeToDeleteCell:self];
 }
 
-- (BOOL)_beginReorderingForCell:(id)a3 touch:(id)a4
+- (BOOL)_beginReorderingForCell:(id)cell touch:(id)touch
 {
   v28 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [(UICollectionReusableView *)self _collectionView];
-  v7 = [(UICollectionReusableView *)self _layoutAttributes];
-  v8 = [v7 indexPath];
-  v9 = [v6 beginInteractiveMovementForItemAtIndexPath:v8];
+  touchCopy = touch;
+  _collectionView = [(UICollectionReusableView *)self _collectionView];
+  _layoutAttributes = [(UICollectionReusableView *)self _layoutAttributes];
+  indexPath = [_layoutAttributes indexPath];
+  v9 = [_collectionView beginInteractiveMovementForItemAtIndexPath:indexPath];
 
   if (v9)
   {
-    v10 = [(UICollectionReusableView *)self _layoutAttributes];
-    [v10 center];
+    _layoutAttributes2 = [(UICollectionReusableView *)self _layoutAttributes];
+    [_layoutAttributes2 center];
     self->_reorderingCenterX = v11;
 
     v24 = 0u;
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v21 = v5;
-    v12 = [v5 gestureRecognizers];
-    v13 = [v12 countByEnumeratingWithState:&v22 objects:v27 count:16];
+    v21 = touchCopy;
+    gestureRecognizers = [touchCopy gestureRecognizers];
+    v13 = [gestureRecognizers countByEnumeratingWithState:&v22 objects:v27 count:16];
     if (v13)
     {
       v14 = v13;
@@ -960,7 +960,7 @@ void __44__UICollectionViewTableCell__trackAnimator___block_invoke(uint64_t a1)
         {
           if (*v23 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(gestureRecognizers);
           }
 
           v17 = *(*(&v22 + 1) + 8 * i);
@@ -973,124 +973,124 @@ void __44__UICollectionViewTableCell__trackAnimator___block_invoke(uint64_t a1)
           }
         }
 
-        v14 = [v12 countByEnumeratingWithState:&v22 objects:v27 count:16];
+        v14 = [gestureRecognizers countByEnumeratingWithState:&v22 objects:v27 count:16];
       }
 
       while (v14);
     }
 
     [(UICollectionViewTableCell *)self setInteractiveMoveEffectsVisible:1];
-    v5 = v21;
+    touchCopy = v21;
     [(UICollectionViewTableCell *)self _updateCollectionViewInteractiveMovementTargetPositionForTouch:v21];
   }
 
   return v9;
 }
 
-- (void)_updateCollectionViewInteractiveMovementTargetPositionForTouch:(id)a3
+- (void)_updateCollectionViewInteractiveMovementTargetPositionForTouch:(id)touch
 {
-  v8 = a3;
-  if (v8)
+  touchCopy = touch;
+  if (touchCopy)
   {
-    v4 = [(UICollectionReusableView *)self _collectionView];
-    [v8 locationInView:v4];
+    _collectionView = [(UICollectionReusableView *)self _collectionView];
+    [touchCopy locationInView:_collectionView];
   }
 
   else
   {
-    v4 = [(UICollectionReusableView *)self _layoutAttributes];
-    [v4 center];
+    _collectionView = [(UICollectionReusableView *)self _layoutAttributes];
+    [_collectionView center];
   }
 
   v6 = v5;
 
-  v7 = [(UICollectionReusableView *)self _collectionView];
-  [v7 updateInteractiveMovementTargetPosition:{self->_reorderingCenterX, v6}];
+  _collectionView2 = [(UICollectionReusableView *)self _collectionView];
+  [_collectionView2 updateInteractiveMovementTargetPosition:{self->_reorderingCenterX, v6}];
 }
 
-- (void)_endReorderingForCell:(id)a3 wasCancelled:(BOOL)a4 animated:(BOOL)a5
+- (void)_endReorderingForCell:(id)cell wasCancelled:(BOOL)cancelled animated:(BOOL)animated
 {
-  v5 = a4;
-  [(UICollectionViewTableCell *)self setInteractiveMoveEffectsVisible:0, a4, a5];
-  v7 = [(UICollectionReusableView *)self _collectionView];
-  v8 = v7;
-  if (v5)
+  cancelledCopy = cancelled;
+  [(UICollectionViewTableCell *)self setInteractiveMoveEffectsVisible:0, cancelled, animated];
+  _collectionView = [(UICollectionReusableView *)self _collectionView];
+  v8 = _collectionView;
+  if (cancelledCopy)
   {
-    [v7 cancelInteractiveMovement];
+    [_collectionView cancelInteractiveMovement];
   }
 
   else
   {
-    [v7 endInteractiveMovement];
+    [_collectionView endInteractiveMovement];
   }
 
   self->_reorderingCenterX = 0.0;
 }
 
-- (void)_didInsertRowForTableCell:(id)a3
+- (void)_didInsertRowForTableCell:(id)cell
 {
-  v8 = [(UICollectionReusableView *)self _collectionView];
-  v4 = [v8 delegate];
+  _collectionView = [(UICollectionReusableView *)self _collectionView];
+  delegate = [_collectionView delegate];
   if (objc_opt_respondsToSelector())
   {
-    v5 = [(UICollectionViewTableCell *)self _tableLayout];
-    v6 = [(UICollectionReusableView *)self _layoutAttributes];
-    v7 = [v6 indexPath];
-    [v4 collectionView:v8 tableLayout:v5 commitEditingStyle:2 forRowAtIndexPath:v7];
+    _tableLayout = [(UICollectionViewTableCell *)self _tableLayout];
+    _layoutAttributes = [(UICollectionReusableView *)self _layoutAttributes];
+    indexPath = [_layoutAttributes indexPath];
+    [delegate collectionView:_collectionView tableLayout:_tableLayout commitEditingStyle:2 forRowAtIndexPath:indexPath];
   }
 }
 
-- (void)_animateDeletionOfRowAtIndexPath:(id)a3
+- (void)_animateDeletionOfRowAtIndexPath:(id)path
 {
-  v7 = a3;
-  v4 = [(UICollectionReusableView *)self _collectionView];
-  v5 = [v4 delegate];
+  pathCopy = path;
+  _collectionView = [(UICollectionReusableView *)self _collectionView];
+  delegate = [_collectionView delegate];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [(UICollectionViewTableCell *)self _tableLayout];
-    [v5 collectionView:v4 tableLayout:v6 commitEditingStyle:1 forRowAtIndexPath:v7];
+    _tableLayout = [(UICollectionViewTableCell *)self _tableLayout];
+    [delegate collectionView:_collectionView tableLayout:_tableLayout commitEditingStyle:1 forRowAtIndexPath:pathCopy];
   }
 }
 
-- (void)_animateDeletionOfRowWithCell:(id)a3
+- (void)_animateDeletionOfRowWithCell:(id)cell
 {
-  v5 = [(UICollectionReusableView *)self _layoutAttributes];
-  v4 = [v5 indexPath];
-  [(UICollectionViewTableCell *)self _animateDeletionOfRowAtIndexPath:v4];
+  _layoutAttributes = [(UICollectionReusableView *)self _layoutAttributes];
+  indexPath = [_layoutAttributes indexPath];
+  [(UICollectionViewTableCell *)self _animateDeletionOfRowAtIndexPath:indexPath];
 }
 
-- (void)_accessoryButtonAction:(id)a3
+- (void)_accessoryButtonAction:(id)action
 {
-  v4 = [(UICollectionReusableView *)self _layoutAttributes];
-  v6 = [v4 indexPath];
+  _layoutAttributes = [(UICollectionReusableView *)self _layoutAttributes];
+  indexPath = [_layoutAttributes indexPath];
 
-  v5 = [(UICollectionViewTableCell *)self _tableLayout];
-  [v5 _cellAccessoryButtonTappedAtIndexPath:v6];
+  _tableLayout = [(UICollectionViewTableCell *)self _tableLayout];
+  [_tableLayout _cellAccessoryButtonTappedAtIndexPath:indexPath];
 }
 
 - (BOOL)selectionFollowsFocus
 {
-  v2 = [(UICollectionReusableView *)self _collectionView];
-  v3 = [v2 selectionFollowsFocus];
+  _collectionView = [(UICollectionReusableView *)self _collectionView];
+  selectionFollowsFocus = [_collectionView selectionFollowsFocus];
 
-  return v3;
+  return selectionFollowsFocus;
 }
 
 - (BOOL)_effectiveDefaultAllowsFocus
 {
-  v2 = [(UICollectionReusableView *)self _collectionView];
-  v3 = [v2 _effectiveDefaultAllowsFocus];
+  _collectionView = [(UICollectionReusableView *)self _collectionView];
+  _effectiveDefaultAllowsFocus = [_collectionView _effectiveDefaultAllowsFocus];
 
-  return v3;
+  return _effectiveDefaultAllowsFocus;
 }
 
 - (UICollectionViewTableLayout)_tableLayout
 {
-  v2 = [(UICollectionViewTableCell *)self currentLayout];
+  currentLayout = [(UICollectionViewTableCell *)self currentLayout];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = currentLayout;
   }
 
   else
@@ -1103,11 +1103,11 @@ void __44__UICollectionViewTableCell__trackAnimator___block_invoke(uint64_t a1)
 
 - (UICollectionViewTableLayoutAttributes)_tableAttributes
 {
-  v2 = [(UICollectionReusableView *)self _layoutAttributes];
+  _layoutAttributes = [(UICollectionReusableView *)self _layoutAttributes];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = _layoutAttributes;
   }
 
   else
@@ -1120,11 +1120,11 @@ void __44__UICollectionViewTableCell__trackAnimator___block_invoke(uint64_t a1)
 
 - (double)_rowSpacing
 {
-  v3 = [(UICollectionViewTableCell *)self _tableLayout];
-  if (v3)
+  _tableLayout = [(UICollectionViewTableCell *)self _tableLayout];
+  if (_tableLayout)
   {
-    v4 = [(UICollectionViewTableCell *)self _tableLayout];
-    [v4 _rowSpacing];
+    _tableLayout2 = [(UICollectionViewTableCell *)self _tableLayout];
+    [_tableLayout2 _rowSpacing];
     v6 = v5;
   }
 
@@ -1138,11 +1138,11 @@ void __44__UICollectionViewTableCell__trackAnimator___block_invoke(uint64_t a1)
 
 - (UIEdgeInsets)_rawSeparatorInset
 {
-  v3 = [(UICollectionViewTableCell *)self _tableLayout];
-  if (v3)
+  _tableLayout = [(UICollectionViewTableCell *)self _tableLayout];
+  if (_tableLayout)
   {
-    v4 = [(UICollectionViewTableCell *)self _tableLayout];
-    [v4 _rawSeparatorInset];
+    _tableLayout2 = [(UICollectionViewTableCell *)self _tableLayout];
+    [_tableLayout2 _rawSeparatorInset];
     v6 = v5;
     v8 = v7;
     v10 = v9;
@@ -1170,79 +1170,79 @@ void __44__UICollectionViewTableCell__trackAnimator___block_invoke(uint64_t a1)
 
 - (UIScrollView)_scrollView
 {
-  v3 = [(UICollectionViewTableCell *)self _tableLayout];
-  if (v3)
+  _tableLayout = [(UICollectionViewTableCell *)self _tableLayout];
+  if (_tableLayout)
   {
-    v4 = [(UICollectionViewTableCell *)self _tableLayout];
-    v5 = [v4 _scrollView];
+    _tableLayout2 = [(UICollectionViewTableCell *)self _tableLayout];
+    _scrollView = [_tableLayout2 _scrollView];
   }
 
   else
   {
-    v5 = 0;
+    _scrollView = 0;
   }
 
-  return v5;
+  return _scrollView;
 }
 
 - (int64_t)_numberOfSections
 {
-  v3 = [(UICollectionViewTableCell *)self _tableLayout];
-  if (v3)
+  _tableLayout = [(UICollectionViewTableCell *)self _tableLayout];
+  if (_tableLayout)
   {
-    v4 = [(UICollectionViewTableCell *)self _tableLayout];
-    v5 = [v4 _numberOfSections];
+    _tableLayout2 = [(UICollectionViewTableCell *)self _tableLayout];
+    _numberOfSections = [_tableLayout2 _numberOfSections];
   }
 
   else
   {
-    v5 = 0;
+    _numberOfSections = 0;
   }
 
-  return v5;
+  return _numberOfSections;
 }
 
 - (BOOL)allowsMultipleSelection
 {
-  v3 = [(UICollectionViewTableCell *)self _tableLayout];
-  if (v3)
+  _tableLayout = [(UICollectionViewTableCell *)self _tableLayout];
+  if (_tableLayout)
   {
-    v4 = [(UICollectionViewTableCell *)self _tableLayout];
-    v5 = [v4 allowsMultipleSelection];
+    _tableLayout2 = [(UICollectionViewTableCell *)self _tableLayout];
+    allowsMultipleSelection = [_tableLayout2 allowsMultipleSelection];
   }
 
   else
   {
-    v5 = 0;
+    allowsMultipleSelection = 0;
   }
 
-  return v5;
+  return allowsMultipleSelection;
 }
 
 - (BOOL)allowsMultipleSelectionDuringEditing
 {
-  v3 = [(UICollectionViewTableCell *)self _tableLayout];
-  if (v3)
+  _tableLayout = [(UICollectionViewTableCell *)self _tableLayout];
+  if (_tableLayout)
   {
-    v4 = [(UICollectionViewTableCell *)self _tableLayout];
-    v5 = [v4 allowsMultipleSelectionDuringEditing];
+    _tableLayout2 = [(UICollectionViewTableCell *)self _tableLayout];
+    allowsMultipleSelectionDuringEditing = [_tableLayout2 allowsMultipleSelectionDuringEditing];
   }
 
   else
   {
-    v5 = 0;
+    allowsMultipleSelectionDuringEditing = 0;
   }
 
-  return v5;
+  return allowsMultipleSelectionDuringEditing;
 }
 
 - (double)rowHeight
 {
-  v3 = [(UICollectionViewTableCell *)self _tableLayout];
-  if (v3)
+  _tableLayout = [(UICollectionViewTableCell *)self _tableLayout];
+  if (_tableLayout)
   {
-    v4 = [(UICollectionViewTableCell *)self _tableLayout];
-    [v4 rowHeight];
+    _tableLayout2 = [(UICollectionViewTableCell *)self _tableLayout];
+    [_tableLayout2 rowHeight];
     v6 = v5;
   }
 
@@ -1256,11 +1256,11 @@ void __44__UICollectionViewTableCell__trackAnimator___block_invoke(uint64_t a1)
 
 - (double)sectionHeaderHeight
 {
-  v3 = [(UICollectionViewTableCell *)self _tableLayout];
-  if (v3)
+  _tableLayout = [(UICollectionViewTableCell *)self _tableLayout];
+  if (_tableLayout)
   {
-    v4 = [(UICollectionViewTableCell *)self _tableLayout];
-    [v4 sectionHeaderHeight];
+    _tableLayout2 = [(UICollectionViewTableCell *)self _tableLayout];
+    [_tableLayout2 sectionHeaderHeight];
     v6 = v5;
   }
 
@@ -1274,11 +1274,11 @@ void __44__UICollectionViewTableCell__trackAnimator___block_invoke(uint64_t a1)
 
 - (double)sectionFooterHeight
 {
-  v3 = [(UICollectionViewTableCell *)self _tableLayout];
-  if (v3)
+  _tableLayout = [(UICollectionViewTableCell *)self _tableLayout];
+  if (_tableLayout)
   {
-    v4 = [(UICollectionViewTableCell *)self _tableLayout];
-    [v4 sectionFooterHeight];
+    _tableLayout2 = [(UICollectionViewTableCell *)self _tableLayout];
+    [_tableLayout2 sectionFooterHeight];
     v6 = v5;
   }
 
@@ -1292,11 +1292,11 @@ void __44__UICollectionViewTableCell__trackAnimator___block_invoke(uint64_t a1)
 
 - (double)estimatedRowHeight
 {
-  v3 = [(UICollectionViewTableCell *)self _tableLayout];
-  if (v3)
+  _tableLayout = [(UICollectionViewTableCell *)self _tableLayout];
+  if (_tableLayout)
   {
-    v4 = [(UICollectionViewTableCell *)self _tableLayout];
-    [v4 estimatedRowHeight];
+    _tableLayout2 = [(UICollectionViewTableCell *)self _tableLayout];
+    [_tableLayout2 estimatedRowHeight];
     v6 = v5;
   }
 
@@ -1310,11 +1310,11 @@ void __44__UICollectionViewTableCell__trackAnimator___block_invoke(uint64_t a1)
 
 - (double)estimatedSectionHeaderHeight
 {
-  v3 = [(UICollectionViewTableCell *)self _tableLayout];
-  if (v3)
+  _tableLayout = [(UICollectionViewTableCell *)self _tableLayout];
+  if (_tableLayout)
   {
-    v4 = [(UICollectionViewTableCell *)self _tableLayout];
-    [v4 estimatedSectionHeaderHeight];
+    _tableLayout2 = [(UICollectionViewTableCell *)self _tableLayout];
+    [_tableLayout2 estimatedSectionHeaderHeight];
     v6 = v5;
   }
 
@@ -1328,11 +1328,11 @@ void __44__UICollectionViewTableCell__trackAnimator___block_invoke(uint64_t a1)
 
 - (double)estimatedSectionFooterHeight
 {
-  v3 = [(UICollectionViewTableCell *)self _tableLayout];
-  if (v3)
+  _tableLayout = [(UICollectionViewTableCell *)self _tableLayout];
+  if (_tableLayout)
   {
-    v4 = [(UICollectionViewTableCell *)self _tableLayout];
-    [v4 estimatedSectionFooterHeight];
+    _tableLayout2 = [(UICollectionViewTableCell *)self _tableLayout];
+    [_tableLayout2 estimatedSectionFooterHeight];
     v6 = v5;
   }
 
@@ -1346,62 +1346,62 @@ void __44__UICollectionViewTableCell__trackAnimator___block_invoke(uint64_t a1)
 
 - (BOOL)_separatorInsetIsRelativeToCellEdges
 {
-  v3 = [(UICollectionViewTableCell *)self _tableLayout];
-  if (v3)
+  _tableLayout = [(UICollectionViewTableCell *)self _tableLayout];
+  if (_tableLayout)
   {
-    v4 = [(UICollectionViewTableCell *)self _tableLayout];
-    v5 = [v4 _separatorInsetIsRelativeToCellEdges];
+    _tableLayout2 = [(UICollectionViewTableCell *)self _tableLayout];
+    _separatorInsetIsRelativeToCellEdges = [_tableLayout2 _separatorInsetIsRelativeToCellEdges];
   }
 
   else
   {
-    v5 = 0;
+    _separatorInsetIsRelativeToCellEdges = 0;
   }
 
-  return v5;
+  return _separatorInsetIsRelativeToCellEdges;
 }
 
 - (BOOL)usesVariableMargins
 {
-  v3 = [(UICollectionViewTableCell *)self _tableLayout];
-  if (v3)
+  _tableLayout = [(UICollectionViewTableCell *)self _tableLayout];
+  if (_tableLayout)
   {
-    v4 = [(UICollectionViewTableCell *)self _tableLayout];
-    v5 = [v4 usesVariableMargins];
+    _tableLayout2 = [(UICollectionViewTableCell *)self _tableLayout];
+    usesVariableMargins = [_tableLayout2 usesVariableMargins];
   }
 
   else
   {
-    v5 = 0;
+    usesVariableMargins = 0;
   }
 
-  return v5;
+  return usesVariableMargins;
 }
 
 - (BOOL)overlapsSectionHeaderViews
 {
-  v3 = [(UICollectionViewTableCell *)self _tableLayout];
-  if (v3)
+  _tableLayout = [(UICollectionViewTableCell *)self _tableLayout];
+  if (_tableLayout)
   {
-    v4 = [(UICollectionViewTableCell *)self _tableLayout];
-    v5 = [v4 overlapsSectionHeaderViews];
+    _tableLayout2 = [(UICollectionViewTableCell *)self _tableLayout];
+    overlapsSectionHeaderViews = [_tableLayout2 overlapsSectionHeaderViews];
   }
 
   else
   {
-    v5 = 0;
+    overlapsSectionHeaderViews = 0;
   }
 
-  return v5;
+  return overlapsSectionHeaderViews;
 }
 
 - (double)_backgroundInset
 {
-  v3 = [(UICollectionViewTableCell *)self _tableLayout];
-  if (v3)
+  _tableLayout = [(UICollectionViewTableCell *)self _tableLayout];
+  if (_tableLayout)
   {
-    v4 = [(UICollectionViewTableCell *)self _tableLayout];
-    [v4 _backgroundInset];
+    _tableLayout2 = [(UICollectionViewTableCell *)self _tableLayout];
+    [_tableLayout2 _backgroundInset];
     v6 = v5;
   }
 
@@ -1415,11 +1415,11 @@ void __44__UICollectionViewTableCell__trackAnimator___block_invoke(uint64_t a1)
 
 - (UIEdgeInsets)_cellSafeAreaInsets
 {
-  v3 = [(UICollectionViewTableCell *)self _tableLayout];
-  if (v3)
+  _tableLayout = [(UICollectionViewTableCell *)self _tableLayout];
+  if (_tableLayout)
   {
-    v4 = [(UICollectionViewTableCell *)self _tableLayout];
-    [v4 _cellSafeAreaInsets];
+    _tableLayout2 = [(UICollectionViewTableCell *)self _tableLayout];
+    [_tableLayout2 _cellSafeAreaInsets];
     v6 = v5;
     v8 = v7;
     v10 = v9;
@@ -1447,45 +1447,45 @@ void __44__UICollectionViewTableCell__trackAnimator___block_invoke(uint64_t a1)
 
 - (BOOL)cellLayoutMarginsFollowReadableWidth
 {
-  v3 = [(UICollectionViewTableCell *)self _tableLayout];
-  if (v3)
+  _tableLayout = [(UICollectionViewTableCell *)self _tableLayout];
+  if (_tableLayout)
   {
-    v4 = [(UICollectionViewTableCell *)self _tableLayout];
-    v5 = [v4 cellLayoutMarginsFollowReadableWidth];
+    _tableLayout2 = [(UICollectionViewTableCell *)self _tableLayout];
+    cellLayoutMarginsFollowReadableWidth = [_tableLayout2 cellLayoutMarginsFollowReadableWidth];
   }
 
   else
   {
-    v5 = 0;
+    cellLayoutMarginsFollowReadableWidth = 0;
   }
 
-  return v5;
+  return cellLayoutMarginsFollowReadableWidth;
 }
 
 - (BOOL)insetsContentViewsToSafeArea
 {
-  v3 = [(UICollectionViewTableCell *)self _tableLayout];
-  if (v3)
+  _tableLayout = [(UICollectionViewTableCell *)self _tableLayout];
+  if (_tableLayout)
   {
-    v4 = [(UICollectionViewTableCell *)self _tableLayout];
-    v5 = [v4 insetsContentViewsToSafeArea];
+    _tableLayout2 = [(UICollectionViewTableCell *)self _tableLayout];
+    insetsContentViewsToSafeArea = [_tableLayout2 insetsContentViewsToSafeArea];
   }
 
   else
   {
-    v5 = 1;
+    insetsContentViewsToSafeArea = 1;
   }
 
-  return v5;
+  return insetsContentViewsToSafeArea;
 }
 
 - (double)_topPadding
 {
-  v3 = [(UICollectionViewTableCell *)self _tableLayout];
-  if (v3)
+  _tableLayout = [(UICollectionViewTableCell *)self _tableLayout];
+  if (_tableLayout)
   {
-    v4 = [(UICollectionViewTableCell *)self _tableLayout];
-    [v4 _topPadding];
+    _tableLayout2 = [(UICollectionViewTableCell *)self _tableLayout];
+    [_tableLayout2 _topPadding];
     v6 = v5;
   }
 
@@ -1499,11 +1499,11 @@ void __44__UICollectionViewTableCell__trackAnimator___block_invoke(uint64_t a1)
 
 - (double)_bottomPadding
 {
-  v3 = [(UICollectionViewTableCell *)self _tableLayout];
-  if (v3)
+  _tableLayout = [(UICollectionViewTableCell *)self _tableLayout];
+  if (_tableLayout)
   {
-    v4 = [(UICollectionViewTableCell *)self _tableLayout];
-    [v4 _bottomPadding];
+    _tableLayout2 = [(UICollectionViewTableCell *)self _tableLayout];
+    [_tableLayout2 _bottomPadding];
     v6 = v5;
   }
 
@@ -1517,28 +1517,28 @@ void __44__UICollectionViewTableCell__trackAnimator___block_invoke(uint64_t a1)
 
 - (BOOL)_isShowingIndex
 {
-  v3 = [(UICollectionViewTableCell *)self _tableLayout];
-  if (v3)
+  _tableLayout = [(UICollectionViewTableCell *)self _tableLayout];
+  if (_tableLayout)
   {
-    v4 = [(UICollectionViewTableCell *)self _tableLayout];
-    v5 = [v4 _isShowingIndex];
+    _tableLayout2 = [(UICollectionViewTableCell *)self _tableLayout];
+    _isShowingIndex = [_tableLayout2 _isShowingIndex];
   }
 
   else
   {
-    v5 = 0;
+    _isShowingIndex = 0;
   }
 
-  return v5;
+  return _isShowingIndex;
 }
 
 - (CGRect)_indexFrame
 {
-  v3 = [(UICollectionViewTableCell *)self _tableLayout];
-  if (v3)
+  _tableLayout = [(UICollectionViewTableCell *)self _tableLayout];
+  if (_tableLayout)
   {
-    v4 = [(UICollectionViewTableCell *)self _tableLayout];
-    [v4 _indexFrame];
+    _tableLayout2 = [(UICollectionViewTableCell *)self _tableLayout];
+    [_tableLayout2 _indexFrame];
     v6 = v5;
     v8 = v7;
     v10 = v9;
@@ -1566,11 +1566,11 @@ void __44__UICollectionViewTableCell__trackAnimator___block_invoke(uint64_t a1)
 
 - (double)_indexBarExtentFromEdge
 {
-  v3 = [(UICollectionViewTableCell *)self _tableLayout];
-  if (v3)
+  _tableLayout = [(UICollectionViewTableCell *)self _tableLayout];
+  if (_tableLayout)
   {
-    v4 = [(UICollectionViewTableCell *)self _tableLayout];
-    [v4 _indexBarExtentFromEdge];
+    _tableLayout2 = [(UICollectionViewTableCell *)self _tableLayout];
+    [_tableLayout2 _indexBarExtentFromEdge];
     v6 = v5;
   }
 
@@ -1584,11 +1584,11 @@ void __44__UICollectionViewTableCell__trackAnimator___block_invoke(uint64_t a1)
 
 - (UIEdgeInsets)_sectionContentInset
 {
-  v3 = [(UICollectionViewTableCell *)self _tableLayout];
-  if (v3)
+  _tableLayout = [(UICollectionViewTableCell *)self _tableLayout];
+  if (_tableLayout)
   {
-    v4 = [(UICollectionViewTableCell *)self _tableLayout];
-    [v4 _sectionContentInset];
+    _tableLayout2 = [(UICollectionViewTableCell *)self _tableLayout];
+    [_tableLayout2 _sectionContentInset];
     v6 = v5;
     v8 = v7;
     v10 = v9;
@@ -1616,11 +1616,11 @@ void __44__UICollectionViewTableCell__trackAnimator___block_invoke(uint64_t a1)
 
 - (UIEdgeInsets)_rawSectionContentInset
 {
-  v3 = [(UICollectionViewTableCell *)self _tableLayout];
-  if (v3)
+  _tableLayout = [(UICollectionViewTableCell *)self _tableLayout];
+  if (_tableLayout)
   {
-    v4 = [(UICollectionViewTableCell *)self _tableLayout];
-    [v4 _rawSectionContentInset];
+    _tableLayout2 = [(UICollectionViewTableCell *)self _tableLayout];
+    [_tableLayout2 _rawSectionContentInset];
     v6 = v5;
     v8 = v7;
     v10 = v9;
@@ -1648,11 +1648,11 @@ void __44__UICollectionViewTableCell__trackAnimator___block_invoke(uint64_t a1)
 
 - (double)_sectionCornerRadius
 {
-  v3 = [(UICollectionViewTableCell *)self _tableLayout];
-  if (v3)
+  _tableLayout = [(UICollectionViewTableCell *)self _tableLayout];
+  if (_tableLayout)
   {
-    v4 = [(UICollectionViewTableCell *)self _tableLayout];
-    [v4 _sectionCornerRadius];
+    _tableLayout2 = [(UICollectionViewTableCell *)self _tableLayout];
+    [_tableLayout2 _sectionCornerRadius];
     v6 = v5;
   }
 
@@ -1666,340 +1666,340 @@ void __44__UICollectionViewTableCell__trackAnimator___block_invoke(uint64_t a1)
 
 - (BOOL)_sectionContentInsetFollowsLayoutMargins
 {
-  v3 = [(UICollectionViewTableCell *)self _tableLayout];
-  if (v3)
+  _tableLayout = [(UICollectionViewTableCell *)self _tableLayout];
+  if (_tableLayout)
   {
-    v4 = [(UICollectionViewTableCell *)self _tableLayout];
-    v5 = [v4 _sectionContentInsetFollowsLayoutMargins];
+    _tableLayout2 = [(UICollectionViewTableCell *)self _tableLayout];
+    _sectionContentInsetFollowsLayoutMargins = [_tableLayout2 _sectionContentInsetFollowsLayoutMargins];
   }
 
   else
   {
-    v5 = 0;
+    _sectionContentInsetFollowsLayoutMargins = 0;
   }
 
-  return v5;
+  return _sectionContentInsetFollowsLayoutMargins;
 }
 
 - (UIColor)_accessoryBaseColor
 {
-  v3 = [(UICollectionViewTableCell *)self _tableLayout];
-  if (v3)
+  _tableLayout = [(UICollectionViewTableCell *)self _tableLayout];
+  if (_tableLayout)
   {
-    v4 = [(UICollectionViewTableCell *)self _tableLayout];
-    v5 = [v4 _accessoryBaseColor];
+    _tableLayout2 = [(UICollectionViewTableCell *)self _tableLayout];
+    _accessoryBaseColor = [_tableLayout2 _accessoryBaseColor];
   }
 
   else
   {
-    v5 = 0;
+    _accessoryBaseColor = 0;
   }
 
-  return v5;
+  return _accessoryBaseColor;
 }
 
 - (UIColor)_multiselectCheckmarkColor
 {
-  v3 = [(UICollectionViewTableCell *)self _tableLayout];
-  if (v3)
+  _tableLayout = [(UICollectionViewTableCell *)self _tableLayout];
+  if (_tableLayout)
   {
-    v4 = [(UICollectionViewTableCell *)self _tableLayout];
-    v5 = [v4 _multiselectCheckmarkColor];
+    _tableLayout2 = [(UICollectionViewTableCell *)self _tableLayout];
+    _multiselectCheckmarkColor = [_tableLayout2 _multiselectCheckmarkColor];
   }
 
   else
   {
-    v5 = 0;
+    _multiselectCheckmarkColor = 0;
   }
 
+  return _multiselectCheckmarkColor;
+}
+
+- (int64_t)_numberOfRowsInSection:(int64_t)section
+{
+  _tableLayout = [(UICollectionViewTableCell *)self _tableLayout];
+  v5 = [_tableLayout _numberOfRowsInSection:section];
+
   return v5;
 }
 
-- (int64_t)_numberOfRowsInSection:(int64_t)a3
+- (BOOL)_shouldHaveHeaderViewForSection:(int64_t)section
 {
-  v4 = [(UICollectionViewTableCell *)self _tableLayout];
-  v5 = [v4 _numberOfRowsInSection:a3];
+  _tableLayout = [(UICollectionViewTableCell *)self _tableLayout];
+  LOBYTE(section) = [_tableLayout _shouldHaveHeaderViewForSection:section];
 
-  return v5;
+  return section;
 }
 
-- (BOOL)_shouldHaveHeaderViewForSection:(int64_t)a3
+- (BOOL)_shouldHaveFooterViewForSection:(int64_t)section
 {
-  v4 = [(UICollectionViewTableCell *)self _tableLayout];
-  LOBYTE(a3) = [v4 _shouldHaveHeaderViewForSection:a3];
+  _tableLayout = [(UICollectionViewTableCell *)self _tableLayout];
+  LOBYTE(section) = [_tableLayout _shouldHaveFooterViewForSection:section];
 
-  return a3;
-}
-
-- (BOOL)_shouldHaveFooterViewForSection:(int64_t)a3
-{
-  v4 = [(UICollectionViewTableCell *)self _tableLayout];
-  LOBYTE(a3) = [v4 _shouldHaveFooterViewForSection:a3];
-
-  return a3;
+  return section;
 }
 
 - (UIImageView)imageView
 {
-  v2 = [(UICollectionViewTableCell *)self tableViewCell];
-  v3 = [v2 imageView];
+  tableViewCell = [(UICollectionViewTableCell *)self tableViewCell];
+  imageView = [tableViewCell imageView];
 
-  return v3;
+  return imageView;
 }
 
 - (UILabel)textLabel
 {
-  v2 = [(UICollectionViewTableCell *)self tableViewCell];
-  v3 = [v2 textLabel];
+  tableViewCell = [(UICollectionViewTableCell *)self tableViewCell];
+  textLabel = [tableViewCell textLabel];
 
-  return v3;
+  return textLabel;
 }
 
 - (UILabel)detailTextLabel
 {
-  v2 = [(UICollectionViewTableCell *)self tableViewCell];
-  v3 = [v2 detailTextLabel];
+  tableViewCell = [(UICollectionViewTableCell *)self tableViewCell];
+  detailTextLabel = [tableViewCell detailTextLabel];
 
-  return v3;
+  return detailTextLabel;
 }
 
 - (id)backgroundView
 {
-  v2 = [(UICollectionViewTableCell *)self tableViewCell];
-  v3 = [v2 backgroundView];
+  tableViewCell = [(UICollectionViewTableCell *)self tableViewCell];
+  backgroundView = [tableViewCell backgroundView];
 
-  return v3;
+  return backgroundView;
 }
 
-- (void)setBackgroundView:(id)a3
+- (void)setBackgroundView:(id)view
 {
-  v4 = a3;
-  v5 = [(UICollectionViewTableCell *)self tableViewCell];
-  [v5 setBackgroundView:v4];
+  viewCopy = view;
+  tableViewCell = [(UICollectionViewTableCell *)self tableViewCell];
+  [tableViewCell setBackgroundView:viewCopy];
 }
 
 - (id)selectedBackgroundView
 {
-  v2 = [(UICollectionViewTableCell *)self tableViewCell];
-  v3 = [v2 selectedBackgroundView];
+  tableViewCell = [(UICollectionViewTableCell *)self tableViewCell];
+  selectedBackgroundView = [tableViewCell selectedBackgroundView];
 
-  return v3;
+  return selectedBackgroundView;
 }
 
-- (void)setSelectedBackgroundView:(id)a3
+- (void)setSelectedBackgroundView:(id)view
 {
-  v4 = a3;
-  v5 = [(UICollectionViewTableCell *)self tableViewCell];
-  [v5 setSelectedBackgroundView:v4];
+  viewCopy = view;
+  tableViewCell = [(UICollectionViewTableCell *)self tableViewCell];
+  [tableViewCell setSelectedBackgroundView:viewCopy];
 }
 
 - (UIView)multipleSelectionBackgroundView
 {
-  v2 = [(UICollectionViewTableCell *)self tableViewCell];
-  v3 = [v2 multipleSelectionBackgroundView];
+  tableViewCell = [(UICollectionViewTableCell *)self tableViewCell];
+  multipleSelectionBackgroundView = [tableViewCell multipleSelectionBackgroundView];
 
-  return v3;
+  return multipleSelectionBackgroundView;
 }
 
-- (void)setMultipleSelectionBackgroundView:(id)a3
+- (void)setMultipleSelectionBackgroundView:(id)view
 {
-  v4 = a3;
-  v5 = [(UICollectionViewTableCell *)self tableViewCell];
-  [v5 setMultipleSelectionBackgroundView:v4];
+  viewCopy = view;
+  tableViewCell = [(UICollectionViewTableCell *)self tableViewCell];
+  [tableViewCell setMultipleSelectionBackgroundView:viewCopy];
 }
 
 - (id)backgroundColor
 {
-  v2 = [(UICollectionViewTableCell *)self tableViewCell];
-  v3 = [v2 backgroundColor];
+  tableViewCell = [(UICollectionViewTableCell *)self tableViewCell];
+  backgroundColor = [tableViewCell backgroundColor];
 
-  return v3;
+  return backgroundColor;
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
-  v4 = a3;
-  v5 = [(UICollectionViewTableCell *)self tableViewCell];
-  [v5 setBackgroundColor:v4];
+  colorCopy = color;
+  tableViewCell = [(UICollectionViewTableCell *)self tableViewCell];
+  [tableViewCell setBackgroundColor:colorCopy];
 }
 
 - (int64_t)selectionStyle
 {
-  v2 = [(UICollectionViewTableCell *)self tableViewCell];
-  v3 = [v2 selectionStyle];
+  tableViewCell = [(UICollectionViewTableCell *)self tableViewCell];
+  selectionStyle = [tableViewCell selectionStyle];
 
-  return v3;
+  return selectionStyle;
 }
 
-- (void)setSelectionStyle:(int64_t)a3
+- (void)setSelectionStyle:(int64_t)style
 {
-  v4 = [(UICollectionViewTableCell *)self tableViewCell];
-  [v4 setSelectionStyle:a3];
+  tableViewCell = [(UICollectionViewTableCell *)self tableViewCell];
+  [tableViewCell setSelectionStyle:style];
 }
 
 - (BOOL)isSelected
 {
-  v2 = [(UICollectionViewTableCell *)self tableViewCell];
-  v3 = [v2 isSelected];
+  tableViewCell = [(UICollectionViewTableCell *)self tableViewCell];
+  isSelected = [tableViewCell isSelected];
 
-  return v3;
+  return isSelected;
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v3 = a3;
-  v4 = [(UICollectionViewTableCell *)self tableViewCell];
-  [v4 setSelected:v3 animated:{+[UIView _isInAnimationBlockWithAnimationsEnabled](UIView, "_isInAnimationBlockWithAnimationsEnabled")}];
+  selectedCopy = selected;
+  tableViewCell = [(UICollectionViewTableCell *)self tableViewCell];
+  [tableViewCell setSelected:selectedCopy animated:{+[UIView _isInAnimationBlockWithAnimationsEnabled](UIView, "_isInAnimationBlockWithAnimationsEnabled")}];
 }
 
 - (BOOL)isHighlighted
 {
-  v2 = [(UICollectionViewTableCell *)self tableViewCell];
-  v3 = [v2 isHighlighted];
+  tableViewCell = [(UICollectionViewTableCell *)self tableViewCell];
+  isHighlighted = [tableViewCell isHighlighted];
 
-  return v3;
+  return isHighlighted;
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
-  v4 = [(UICollectionViewTableCell *)self tableViewCell];
-  [v4 setHighlighted:v3 animated:{+[UIView _isInAnimationBlockWithAnimationsEnabled](UIView, "_isInAnimationBlockWithAnimationsEnabled")}];
+  highlightedCopy = highlighted;
+  tableViewCell = [(UICollectionViewTableCell *)self tableViewCell];
+  [tableViewCell setHighlighted:highlightedCopy animated:{+[UIView _isInAnimationBlockWithAnimationsEnabled](UIView, "_isInAnimationBlockWithAnimationsEnabled")}];
 }
 
 - (int64_t)editingStyle
 {
-  v2 = [(UICollectionViewTableCell *)self tableViewCell];
-  v3 = [v2 editingStyle];
+  tableViewCell = [(UICollectionViewTableCell *)self tableViewCell];
+  editingStyle = [tableViewCell editingStyle];
 
-  return v3;
+  return editingStyle;
 }
 
 - (BOOL)showsReorderControl
 {
-  v2 = [(UICollectionViewTableCell *)self tableViewCell];
-  v3 = [v2 showsReorderControl];
+  tableViewCell = [(UICollectionViewTableCell *)self tableViewCell];
+  showsReorderControl = [tableViewCell showsReorderControl];
 
-  return v3;
+  return showsReorderControl;
 }
 
-- (void)setShowsReorderControl:(BOOL)a3
+- (void)setShowsReorderControl:(BOOL)control
 {
-  v3 = a3;
-  v4 = [(UICollectionViewTableCell *)self tableViewCell];
-  [v4 setShowsReorderControl:v3];
+  controlCopy = control;
+  tableViewCell = [(UICollectionViewTableCell *)self tableViewCell];
+  [tableViewCell setShowsReorderControl:controlCopy];
 }
 
 - (BOOL)shouldIndentWhileEditing
 {
-  v2 = [(UICollectionViewTableCell *)self tableViewCell];
-  v3 = [v2 shouldIndentWhileEditing];
+  tableViewCell = [(UICollectionViewTableCell *)self tableViewCell];
+  shouldIndentWhileEditing = [tableViewCell shouldIndentWhileEditing];
 
-  return v3;
+  return shouldIndentWhileEditing;
 }
 
-- (void)setShouldIndentWhileEditing:(BOOL)a3
+- (void)setShouldIndentWhileEditing:(BOOL)editing
 {
-  v3 = a3;
-  v4 = [(UICollectionViewTableCell *)self tableViewCell];
-  [v4 setShouldIndentWhileEditing:v3];
+  editingCopy = editing;
+  tableViewCell = [(UICollectionViewTableCell *)self tableViewCell];
+  [tableViewCell setShouldIndentWhileEditing:editingCopy];
 }
 
 - (int64_t)accessoryType
 {
-  v2 = [(UICollectionViewTableCell *)self tableViewCell];
-  v3 = [v2 accessoryType];
+  tableViewCell = [(UICollectionViewTableCell *)self tableViewCell];
+  accessoryType = [tableViewCell accessoryType];
 
-  return v3;
+  return accessoryType;
 }
 
-- (void)setAccessoryType:(int64_t)a3
+- (void)setAccessoryType:(int64_t)type
 {
-  self->_accessoryType = a3;
+  self->_accessoryType = type;
   if ([(UICollectionViewTableCell *)self isInTableLayout])
   {
-    v5 = [(UICollectionViewTableCell *)self tableViewCell];
-    [v5 setAccessoryType:a3];
+    tableViewCell = [(UICollectionViewTableCell *)self tableViewCell];
+    [tableViewCell setAccessoryType:type];
   }
 }
 
 - (UIView)accessoryView
 {
-  v2 = [(UICollectionViewTableCell *)self tableViewCell];
-  v3 = [v2 accessoryView];
+  tableViewCell = [(UICollectionViewTableCell *)self tableViewCell];
+  accessoryView = [tableViewCell accessoryView];
 
-  return v3;
+  return accessoryView;
 }
 
-- (void)setAccessoryView:(id)a3
+- (void)setAccessoryView:(id)view
 {
-  v4 = a3;
-  v5 = [(UICollectionViewTableCell *)self tableViewCell];
-  [v5 setAccessoryView:v4];
+  viewCopy = view;
+  tableViewCell = [(UICollectionViewTableCell *)self tableViewCell];
+  [tableViewCell setAccessoryView:viewCopy];
 }
 
 - (int64_t)editingAccessoryType
 {
-  v2 = [(UICollectionViewTableCell *)self tableViewCell];
-  v3 = [v2 editingAccessoryType];
+  tableViewCell = [(UICollectionViewTableCell *)self tableViewCell];
+  editingAccessoryType = [tableViewCell editingAccessoryType];
 
-  return v3;
+  return editingAccessoryType;
 }
 
-- (void)setEditingAccessoryType:(int64_t)a3
+- (void)setEditingAccessoryType:(int64_t)type
 {
-  v4 = [(UICollectionViewTableCell *)self tableViewCell];
-  [v4 setEditingAccessoryType:a3];
+  tableViewCell = [(UICollectionViewTableCell *)self tableViewCell];
+  [tableViewCell setEditingAccessoryType:type];
 }
 
 - (UIView)editingAccessoryView
 {
-  v2 = [(UICollectionViewTableCell *)self tableViewCell];
-  v3 = [v2 editingAccessoryView];
+  tableViewCell = [(UICollectionViewTableCell *)self tableViewCell];
+  editingAccessoryView = [tableViewCell editingAccessoryView];
 
-  return v3;
+  return editingAccessoryView;
 }
 
-- (void)setEditingAccessoryView:(id)a3
+- (void)setEditingAccessoryView:(id)view
 {
-  v4 = a3;
-  v5 = [(UICollectionViewTableCell *)self tableViewCell];
-  [v5 setEditingAccessoryView:v4];
+  viewCopy = view;
+  tableViewCell = [(UICollectionViewTableCell *)self tableViewCell];
+  [tableViewCell setEditingAccessoryView:viewCopy];
 }
 
 - (int64_t)indentationLevel
 {
-  v2 = [(UICollectionViewTableCell *)self tableViewCell];
-  v3 = [v2 indentationLevel];
+  tableViewCell = [(UICollectionViewTableCell *)self tableViewCell];
+  indentationLevel = [tableViewCell indentationLevel];
 
-  return v3;
+  return indentationLevel;
 }
 
-- (void)setIndentationLevel:(int64_t)a3
+- (void)setIndentationLevel:(int64_t)level
 {
-  v4 = [(UICollectionViewTableCell *)self tableViewCell];
-  [v4 setIndentationLevel:a3];
+  tableViewCell = [(UICollectionViewTableCell *)self tableViewCell];
+  [tableViewCell setIndentationLevel:level];
 }
 
 - (double)indentationWidth
 {
-  v2 = [(UICollectionViewTableCell *)self tableViewCell];
-  [v2 indentationWidth];
+  tableViewCell = [(UICollectionViewTableCell *)self tableViewCell];
+  [tableViewCell indentationWidth];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setIndentationWidth:(double)a3
+- (void)setIndentationWidth:(double)width
 {
-  v4 = [(UICollectionViewTableCell *)self tableViewCell];
-  [v4 setIndentationWidth:a3];
+  tableViewCell = [(UICollectionViewTableCell *)self tableViewCell];
+  [tableViewCell setIndentationWidth:width];
 }
 
 - (UIEdgeInsets)separatorInset
 {
-  v2 = [(UICollectionViewTableCell *)self tableViewCell];
-  [v2 separatorInset];
+  tableViewCell = [(UICollectionViewTableCell *)self tableViewCell];
+  [tableViewCell separatorInset];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -2016,48 +2016,48 @@ void __44__UICollectionViewTableCell__trackAnimator___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setSeparatorInset:(UIEdgeInsets)a3
+- (void)setSeparatorInset:(UIEdgeInsets)inset
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
-  v7 = [(UICollectionViewTableCell *)self tableViewCell];
-  [v7 setSeparatorInset:{top, left, bottom, right}];
+  right = inset.right;
+  bottom = inset.bottom;
+  left = inset.left;
+  top = inset.top;
+  tableViewCell = [(UICollectionViewTableCell *)self tableViewCell];
+  [tableViewCell setSeparatorInset:{top, left, bottom, right}];
 }
 
 - (BOOL)showingDeleteConfirmation
 {
-  v2 = [(UICollectionViewTableCell *)self tableViewCell];
-  v3 = [v2 showingDeleteConfirmation];
+  tableViewCell = [(UICollectionViewTableCell *)self tableViewCell];
+  showingDeleteConfirmation = [tableViewCell showingDeleteConfirmation];
 
-  return v3;
+  return showingDeleteConfirmation;
 }
 
 - (int64_t)focusStyle
 {
-  v2 = [(UICollectionViewTableCell *)self tableViewCell];
-  v3 = [v2 focusStyle];
+  tableViewCell = [(UICollectionViewTableCell *)self tableViewCell];
+  focusStyle = [tableViewCell focusStyle];
 
-  return v3;
+  return focusStyle;
 }
 
-- (void)setFocusStyle:(int64_t)a3
+- (void)setFocusStyle:(int64_t)style
 {
-  v4 = [(UICollectionViewTableCell *)self tableViewCell];
-  [v4 setFocusStyle:a3];
+  tableViewCell = [(UICollectionViewTableCell *)self tableViewCell];
+  [tableViewCell setFocusStyle:style];
 }
 
-- (void)willTransitionToState:(unint64_t)a3
+- (void)willTransitionToState:(unint64_t)state
 {
-  v4 = [(UICollectionViewTableCell *)self tableViewCell];
-  [v4 willTransitionToState:a3];
+  tableViewCell = [(UICollectionViewTableCell *)self tableViewCell];
+  [tableViewCell willTransitionToState:state];
 }
 
-- (void)didTransitionToState:(unint64_t)a3
+- (void)didTransitionToState:(unint64_t)state
 {
-  v4 = [(UICollectionViewTableCell *)self tableViewCell];
-  [v4 didTransitionToState:a3];
+  tableViewCell = [(UICollectionViewTableCell *)self tableViewCell];
+  [tableViewCell didTransitionToState:state];
 }
 
 - (UICollectionViewLayout)currentLayout

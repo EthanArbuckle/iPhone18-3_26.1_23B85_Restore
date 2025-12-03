@@ -2,7 +2,7 @@
 + (id)pivotDataField;
 - (EDPivotDataField)init;
 - (id)description;
-- (void)setName:(id)a3;
+- (void)setName:(id)name;
 @end
 
 @implementation EDPivotDataField
@@ -29,16 +29,16 @@
   return result;
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   mName = self->mName;
   p_mName = &self->mName;
-  if (mName != v5)
+  if (mName != nameCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_mName, a3);
-    v5 = v8;
+    v8 = nameCopy;
+    objc_storeStrong(p_mName, name);
+    nameCopy = v8;
   }
 }
 

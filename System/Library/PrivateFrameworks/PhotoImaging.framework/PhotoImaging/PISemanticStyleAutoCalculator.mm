@@ -1,17 +1,17 @@
 @interface PISemanticStyleAutoCalculator
-+ (BOOL)canRenderStylesOnComposition:(id)a3;
-+ (BOOL)isStylableFromImageProperties:(id)a3 error:(id *)a4;
-- (id)_resultFromImageProperties:(id)a3 error:(id *)a4;
-- (id)submitSynchronous:(id *)a3;
-- (void)submit:(id)a3;
++ (BOOL)canRenderStylesOnComposition:(id)composition;
++ (BOOL)isStylableFromImageProperties:(id)properties error:(id *)error;
+- (id)_resultFromImageProperties:(id)properties error:(id *)error;
+- (id)submitSynchronous:(id *)synchronous;
+- (void)submit:(id)submit;
 @end
 
 @implementation PISemanticStyleAutoCalculator
 
-- (id)submitSynchronous:(id *)a3
+- (id)submitSynchronous:(id *)synchronous
 {
   v29 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!synchronous)
   {
     v11 = NUAssertLogger_1658();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -33,8 +33,8 @@
         v19 = dispatch_get_specific(*v13);
         v20 = MEMORY[0x1E696AF00];
         v21 = v19;
-        v22 = [v20 callStackSymbols];
-        v23 = [v22 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v20 callStackSymbols];
+        v23 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v26 = v19;
         v27 = 2114;
@@ -45,8 +45,8 @@
 
     else if (v16)
     {
-      v17 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v18 = [v17 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v18 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v26 = v18;
       _os_log_error_impl(&dword_1C7694000, v15, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -61,34 +61,34 @@
     v24 = 0;
     v6 = [v5 submitSynchronous:&v24];
     v7 = v24;
-    v8 = [v6 properties];
+    properties = [v6 properties];
 
-    if (v8)
+    if (properties)
     {
-      v9 = [(PISemanticStyleAutoCalculator *)self _resultFromImageProperties:v8 error:a3];
+      v9 = [(PISemanticStyleAutoCalculator *)self _resultFromImageProperties:properties error:synchronous];
     }
 
     else
     {
       [MEMORY[0x1E69B3A48] errorWithCode:1 reason:@"Properties request failed" object:0 underlyingError:v7];
-      *a3 = v9 = 0;
+      *synchronous = v9 = 0;
     }
   }
 
   else
   {
     [MEMORY[0x1E69B3A48] unsupportedError:@"Styles not supported on current platform" object:0];
-    *a3 = v9 = 0;
+    *synchronous = v9 = 0;
   }
 
   return v9;
 }
 
-- (id)_resultFromImageProperties:(id)a3 error:(id *)a4
+- (id)_resultFromImageProperties:(id)properties error:(id *)error
 {
   v34 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  propertiesCopy = properties;
+  if (!propertiesCopy)
   {
     v17 = NUAssertLogger_1658();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -110,8 +110,8 @@
         v25 = dispatch_get_specific(*v19);
         v26 = MEMORY[0x1E696AF00];
         v27 = v25;
-        v28 = [v26 callStackSymbols];
-        v29 = [v28 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v26 callStackSymbols];
+        v29 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v31 = v25;
         v32 = 2114;
@@ -122,8 +122,8 @@
 
     else if (v22)
     {
-      v23 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v24 = [v23 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v24 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v31 = v24;
       _os_log_error_impl(&dword_1C7694000, v21, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -132,23 +132,23 @@
     _NUAssertFailHandler();
   }
 
-  v6 = v5;
-  if ([objc_opt_class() isStylableFromImageProperties:v5 error:a4])
+  v6 = propertiesCopy;
+  if ([objc_opt_class() isStylableFromImageProperties:propertiesCopy error:error])
   {
-    v7 = [v6 metadata];
-    v8 = [v7 objectForKeyedSubscript:*MEMORY[0x1E696DE30]];
+    metadata = [v6 metadata];
+    v8 = [metadata objectForKeyedSubscript:*MEMORY[0x1E696DE30]];
 
     v9 = [v8 objectForKeyedSubscript:*MEMORY[0x1E6986850]];
     if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v10 = PISemanticStyleSettingsFromMakerNoteProperties(v9);
       v11 = [v10 objectForKeyedSubscript:@"version"];
-      v12 = [v11 integerValue];
+      integerValue = [v11 integerValue];
 
       v13 = [objc_alloc(MEMORY[0x1E69B3CF0]) initWithMajor:1 minor:0];
-      v14 = [v13 major];
+      major = [v13 major];
 
-      if (v12 <= v14)
+      if (integerValue <= major)
       {
         v15 = v10;
       }
@@ -156,14 +156,14 @@
       else
       {
         [MEMORY[0x1E69B3A48] unsupportedError:@"Unsupported style rendering version" object:v10];
-        *a4 = v15 = 0;
+        *error = v15 = 0;
       }
     }
 
     else
     {
       [MEMORY[0x1E69B3A48] invalidError:@"Invalid MakerNote Style dictionary" object:v9];
-      *a4 = v15 = 0;
+      *error = v15 = 0;
     }
   }
 
@@ -175,11 +175,11 @@
   return v15;
 }
 
-- (void)submit:(id)a3
+- (void)submit:(id)submit
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  submitCopy = submit;
+  if (!submitCopy)
   {
     v9 = NUAssertLogger_1658();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -201,8 +201,8 @@
         v17 = dispatch_get_specific(*v11);
         v18 = MEMORY[0x1E696AF00];
         v19 = v17;
-        v20 = [v18 callStackSymbols];
-        v21 = [v20 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v18 callStackSymbols];
+        v21 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v25 = v17;
         v26 = 2114;
@@ -213,8 +213,8 @@
 
     else if (v14)
     {
-      v15 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v16 = [v15 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v16 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v25 = v16;
       _os_log_error_impl(&dword_1C7694000, v13, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -223,7 +223,7 @@
     _NUAssertFailHandler();
   }
 
-  v5 = v4;
+  v5 = submitCopy;
   if (PISemanticStyleIsRenderSupported())
   {
     v6 = [objc_alloc(MEMORY[0x1E69B3B30]) initWithRequest:self];
@@ -283,11 +283,11 @@ void __40__PISemanticStyleAutoCalculator_submit___block_invoke(uint64_t a1, void
   }
 }
 
-+ (BOOL)canRenderStylesOnComposition:(id)a3
++ (BOOL)canRenderStylesOnComposition:(id)composition
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  compositionCopy = composition;
+  if (!compositionCopy)
   {
     v16 = NUAssertLogger_1658();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -298,7 +298,7 @@ void __40__PISemanticStyleAutoCalculator_submit___block_invoke(uint64_t a1, void
       _os_log_error_impl(&dword_1C7694000, v16, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v8 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     specific = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v5 = NUAssertLogger_1658();
     v18 = os_log_type_enabled(v5, OS_LOG_TYPE_ERROR);
@@ -306,11 +306,11 @@ void __40__PISemanticStyleAutoCalculator_submit___block_invoke(uint64_t a1, void
     {
       if (v18)
       {
-        specific = dispatch_get_specific(*v8);
+        specific = dispatch_get_specific(*callStackSymbols);
         v19 = MEMORY[0x1E696AF00];
         v3 = specific;
-        v8 = [v19 callStackSymbols];
-        v20 = [v8 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v19 callStackSymbols];
+        v20 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v23 = specific;
         v24 = 2114;
@@ -322,9 +322,9 @@ void __40__PISemanticStyleAutoCalculator_submit___block_invoke(uint64_t a1, void
     else if (v18)
     {
       specific = [MEMORY[0x1E696AF00] callStackSymbols];
-      v8 = [(PISemanticStyleAutoCalculator *)specific componentsJoinedByString:@"\n"];
+      callStackSymbols = [(PISemanticStyleAutoCalculator *)specific componentsJoinedByString:@"\n"];
       *buf = 138543362;
-      v23 = v8;
+      v23 = callStackSymbols;
       _os_log_error_impl(&dword_1C7694000, v5, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
     }
 
@@ -336,7 +336,7 @@ LABEL_5:
     if (os_log_type_enabled(*MEMORY[0x1E69B3D80], OS_LOG_TYPE_INFO))
     {
       v12 = v11;
-      v13 = [v8 description];
+      v13 = [callStackSymbols description];
       *buf = 138543362;
       v23 = v13;
       _os_log_impl(&dword_1C7694000, v12, OS_LOG_TYPE_INFO, "PISemanticStyleAutoCalculator - not supported: %{public}@", buf, 0xCu);
@@ -345,20 +345,20 @@ LABEL_5:
     goto LABEL_11;
   }
 
-  v5 = v4;
-  specific = [(NURenderRequest *)[PISemanticStyleAutoCalculator alloc] initWithComposition:v4];
+  v5 = compositionCopy;
+  specific = [(NURenderRequest *)[PISemanticStyleAutoCalculator alloc] initWithComposition:compositionCopy];
   v21 = 0;
   v3 = [(PISemanticStyleAutoCalculator *)specific submitSynchronous:&v21];
   v7 = v21;
-  v8 = v7;
+  callStackSymbols = v7;
   if (v3)
   {
     goto LABEL_11;
   }
 
-  v9 = [v7 code];
+  code = [v7 code];
   v10 = *MEMORY[0x1E69B3D78];
-  if (v9 == 9)
+  if (code == 9)
   {
     if (v10 == -1)
     {
@@ -377,7 +377,7 @@ LABEL_5:
   if (os_log_type_enabled(*MEMORY[0x1E69B3D80], OS_LOG_TYPE_ERROR))
   {
     *buf = 138543362;
-    v23 = v8;
+    v23 = callStackSymbols;
     _os_log_error_impl(&dword_1C7694000, v14, OS_LOG_TYPE_ERROR, "PISemanticStyleAutoCalculator - error: %{public}@", buf, 0xCu);
   }
 
@@ -386,19 +386,19 @@ LABEL_11:
   return v3 != 0;
 }
 
-+ (BOOL)isStylableFromImageProperties:(id)a3 error:(id *)a4
++ (BOOL)isStylableFromImageProperties:(id)properties error:(id *)error
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if ([MEMORY[0x1E69B3AB0] shouldEnableStylesForProRaw] && (objc_msgSend(v5, "rawProperties"), v6 = objc_claimAutoreleasedReturnValue(), v6, v6))
+  propertiesCopy = properties;
+  if ([MEMORY[0x1E69B3AB0] shouldEnableStylesForProRaw] && (objc_msgSend(propertiesCopy, "rawProperties"), v6 = objc_claimAutoreleasedReturnValue(), v6, v6))
   {
     v7 = 1;
   }
 
   else
   {
-    v8 = [v5 semanticStyleProperties];
-    if (v8)
+    semanticStyleProperties = [propertiesCopy semanticStyleProperties];
+    if (semanticStyleProperties)
     {
       v9 = [objc_alloc(MEMORY[0x1E69B3CF0]) initWithMajor:2 minor:15];
       if (*MEMORY[0x1E69B3D78] != -1)
@@ -410,29 +410,29 @@ LABEL_11:
       if (os_log_type_enabled(*MEMORY[0x1E69B3D80], OS_LOG_TYPE_INFO))
       {
         v11 = v10;
-        v12 = [v8 version];
+        version = [semanticStyleProperties version];
         v17 = 138543618;
         v18 = v9;
         v19 = 2114;
-        v20 = v12;
+        v20 = version;
         _os_log_impl(&dword_1C7694000, v11, OS_LOG_TYPE_INFO, "PISemanticStyleAutoCalculator - Check metadata version: Photos supported version: %{public}@ - Asset metadata version: %{public}@", &v17, 0x16u);
       }
 
-      v13 = [v8 version];
-      v7 = [v13 isCompatibleWithVersion:v9];
+      version2 = [semanticStyleProperties version];
+      v7 = [version2 isCompatibleWithVersion:v9];
 
       if ((v7 & 1) == 0)
       {
         v14 = MEMORY[0x1E69B3A48];
-        v15 = [v8 version];
-        *a4 = [v14 unsupportedError:@"Unsupported style metadata version" object:v15];
+        version3 = [semanticStyleProperties version];
+        *error = [v14 unsupportedError:@"Unsupported style metadata version" object:version3];
       }
     }
 
     else
     {
       [MEMORY[0x1E69B3A48] unsupportedError:@"Asset is not stylable" object:0];
-      *a4 = v7 = 0;
+      *error = v7 = 0;
     }
   }
 

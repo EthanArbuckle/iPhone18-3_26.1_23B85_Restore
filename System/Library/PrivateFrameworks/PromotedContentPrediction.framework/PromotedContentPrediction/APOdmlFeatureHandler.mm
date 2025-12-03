@@ -1,36 +1,36 @@
 @interface APOdmlFeatureHandler
-- (APOdmlFeatureHandler)initWithResponses:(id)a3 assetManager:(id)a4 model:(id)a5;
-- (BOOL)isTwoDimensional:(id)a3;
-- (id)_translateFeaturesToTwoDimensional:(id)a3;
-- (id)adSpecificFeatures:(id)a3;
-- (id)computeUserQueryVectorWithResponses:(id)a3;
-- (id)featuresForResponse:(id)a3 adSpecificFeatures:(id)a4;
-- (void)addOnDeviceFeaturesToDictionary:(id)a3;
+- (APOdmlFeatureHandler)initWithResponses:(id)responses assetManager:(id)manager model:(id)model;
+- (BOOL)isTwoDimensional:(id)dimensional;
+- (id)_translateFeaturesToTwoDimensional:(id)dimensional;
+- (id)adSpecificFeatures:(id)features;
+- (id)computeUserQueryVectorWithResponses:(id)responses;
+- (id)featuresForResponse:(id)response adSpecificFeatures:(id)features;
+- (void)addOnDeviceFeaturesToDictionary:(id)dictionary;
 - (void)fetchOnDeviceFeatures;
-- (void)saveFeaturesFromResponse:(id)a3;
+- (void)saveFeaturesFromResponse:(id)response;
 - (void)saveUserQueryVector;
 @end
 
 @implementation APOdmlFeatureHandler
 
-- (APOdmlFeatureHandler)initWithResponses:(id)a3 assetManager:(id)a4 model:(id)a5
+- (APOdmlFeatureHandler)initWithResponses:(id)responses assetManager:(id)manager model:(id)model
 {
   v85 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  responsesCopy = responses;
+  managerCopy = manager;
+  modelCopy = model;
   v83.receiver = self;
   v83.super_class = APOdmlFeatureHandler;
   v11 = [(APOdmlFeatureHandler *)&v83 init];
   v12 = v11;
   if (v11)
   {
-    v68 = v9;
-    objc_storeStrong(&v11->_assetManager, a4);
-    v66 = v10;
-    v12->_isTwoDimensional = objc_msgSend_isTwoDimensional_(v12, v13, v10);
+    v68 = managerCopy;
+    objc_storeStrong(&v11->_assetManager, manager);
+    v66 = modelCopy;
+    v12->_isTwoDimensional = objc_msgSend_isTwoDimensional_(v12, v13, modelCopy);
     objc_msgSend_fetchOnDeviceFeatures(v12, v14, v15);
-    v17 = objc_msgSend_valueForKey_(v8, v16, @"odmlResponse");
+    v17 = objc_msgSend_valueForKey_(responsesCopy, v16, @"odmlResponse");
     v19 = objc_msgSend_computeUserQueryVectorWithResponses_(v12, v18, v17);
     objc_msgSend_setUserQueryVector_(v12, v20, v19);
 
@@ -44,14 +44,14 @@
     v82 = v22;
     dispatch_async(v21, block);
 
-    v24 = objc_msgSend_valueForKey_(v8, v23, @"adamID");
+    v24 = objc_msgSend_valueForKey_(responsesCopy, v23, @"adamID");
     v27 = objc_msgSend_array(MEMORY[0x277CBEB18], v25, v26);
     v77 = 0u;
     v78 = 0u;
     v79 = 0u;
     v80 = 0u;
-    v69 = v8;
-    v28 = v8;
+    v69 = responsesCopy;
+    v28 = responsesCopy;
     v30 = objc_msgSend_countByEnumeratingWithState_objects_count_(v28, v29, &v77, v84, 16);
     if (v30)
     {
@@ -114,15 +114,15 @@
     }
 
     v57 = objc_alloc_init(APOdmlFeatureValidator);
-    v10 = v66;
+    modelCopy = v66;
     v59 = objc_msgSend_validateFeatures_predictionModel_(v57, v58, v42, v66);
     v60 = objc_alloc(MEMORY[0x277CBFEB0]);
     v62 = objc_msgSend_initWithFeatureProviderArray_(v60, v61, v59);
     batchInput = v22->_batchInput;
     v22->_batchInput = v62;
 
-    v9 = v68;
-    v8 = v69;
+    managerCopy = v68;
+    responsesCopy = v69;
     v12 = v67;
   }
 
@@ -130,21 +130,21 @@
   return v12;
 }
 
-- (id)adSpecificFeatures:(id)a3
+- (id)adSpecificFeatures:(id)features
 {
   v46 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  featuresCopy = features;
   v6 = objc_msgSend_UTF8String(@"DupeFirstOrganic", v4, v5);
-  v7 = objc_getAssociatedObject(v3, v6);
+  v7 = objc_getAssociatedObject(featuresCopy, v6);
   v10 = objc_msgSend_UTF8String(@"Installed", v8, v9);
-  v11 = objc_getAssociatedObject(v3, v10);
+  v11 = objc_getAssociatedObject(featuresCopy, v10);
   v16 = objc_msgSend_dictionary(MEMORY[0x277CBEB38], v12, v13);
   if (v7)
   {
     v17 = OdmlLogForCategory(5uLL);
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
-      v20 = objc_msgSend_adamID(v3, v18, v19);
+      v20 = objc_msgSend_adamID(featuresCopy, v18, v19);
       v23 = objc_msgSend_BOOLValue(v7, v21, v22);
       v24 = @" not ";
       if (v23)
@@ -168,7 +168,7 @@
     v28 = OdmlLogForCategory(5uLL);
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
     {
-      v31 = objc_msgSend_adamID(v3, v29, v30);
+      v31 = objc_msgSend_adamID(featuresCopy, v29, v30);
       v34 = objc_msgSend_BOOLValue(v11, v32, v33);
       v35 = @" not ";
       if (v34)
@@ -194,13 +194,13 @@
   return v39;
 }
 
-- (id)featuresForResponse:(id)a3 adSpecificFeatures:(id)a4
+- (id)featuresForResponse:(id)response adSpecificFeatures:(id)features
 {
   v46 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
+  featuresCopy = features;
+  responseCopy = response;
   isTwoDimensional = objc_msgSend_isTwoDimensional(self, v8, v9);
-  v13 = objc_msgSend_featureValues(v7, v11, v12);
+  v13 = objc_msgSend_featureValues(responseCopy, v11, v12);
 
   if (isTwoDimensional)
   {
@@ -216,7 +216,7 @@
   objc_msgSend_addOnDeviceFeaturesToDictionary_(self, v20, v19);
   if (objc_msgSend_isTwoDimensional(self, v21, v22))
   {
-    v24 = objc_msgSend__translateFeaturesToTwoDimensional_(self, v23, v6);
+    v24 = objc_msgSend__translateFeaturesToTwoDimensional_(self, v23, featuresCopy);
     v27 = objc_msgSend_mutableCopy(v24, v25, v26);
 
     objc_msgSend_addEntriesFromDictionary_(v19, v28, v27);
@@ -224,7 +224,7 @@
 
   else
   {
-    objc_msgSend_addEntriesFromDictionary_(v19, v23, v6);
+    objc_msgSend_addEntriesFromDictionary_(v19, v23, featuresCopy);
   }
 
   v29 = objc_alloc(MEMORY[0x277CBFED0]);
@@ -253,16 +253,16 @@
   return v34;
 }
 
-- (id)computeUserQueryVectorWithResponses:(id)a3
+- (id)computeUserQueryVectorWithResponses:(id)responses
 {
   v93 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  responsesCopy = responses;
   v87 = objc_msgSend_array(MEMORY[0x277CBEB18], v4, v5);
   v88 = 0u;
   v89 = 0u;
   v90 = 0u;
   v91 = 0u;
-  obj = v3;
+  obj = responsesCopy;
   v7 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v6, &v88, v92, 16);
   if (v7)
   {
@@ -448,15 +448,15 @@
   }
 }
 
-- (void)addOnDeviceFeaturesToDictionary:(id)a3
+- (void)addOnDeviceFeaturesToDictionary:(id)dictionary
 {
-  v48 = a3;
+  dictionaryCopy = dictionary;
   if (objc_msgSend_isTwoDimensional(self, v4, v5))
   {
-    v8 = objc_msgSend_copy(v48, v6, v7);
+    v8 = objc_msgSend_copy(dictionaryCopy, v6, v7);
     v10 = objc_msgSend__translateFeaturesToTwoDimensional_(self, v9, v8);
     v13 = objc_msgSend_mutableCopy(v10, v11, v12);
-    objc_msgSend_addEntriesFromDictionary_(v48, v14, v13);
+    objc_msgSend_addEntriesFromDictionary_(dictionaryCopy, v14, v13);
   }
 
   v15 = objc_msgSend_appUsageVector(self, v6, v7);
@@ -464,10 +464,10 @@
   if (v15)
   {
     v18 = objc_msgSend_appUsageVector(self, v16, v17);
-    objc_msgSend_setValue_forKey_(v48, v19, v18, @"appUsageVector");
+    objc_msgSend_setValue_forKey_(dictionaryCopy, v19, v18, @"appUsageVector");
 
     v22 = objc_msgSend_appUsageVector(self, v20, v21);
-    objc_msgSend_setValue_forKey_(v48, v23, v22, @"AppUsageVector");
+    objc_msgSend_setValue_forKey_(dictionaryCopy, v23, v22, @"AppUsageVector");
   }
 
   v24 = objc_msgSend_appDownloadVector(self, v16, v17);
@@ -475,10 +475,10 @@
   if (v24)
   {
     v27 = objc_msgSend_appDownloadVector(self, v25, v26);
-    objc_msgSend_setValue_forKey_(v48, v28, v27, @"appDownloadVector");
+    objc_msgSend_setValue_forKey_(dictionaryCopy, v28, v27, @"appDownloadVector");
 
     v31 = objc_msgSend_appDownloadVector(self, v29, v30);
-    objc_msgSend_setValue_forKey_(v48, v32, v31, @"AppDownloadVector");
+    objc_msgSend_setValue_forKey_(dictionaryCopy, v32, v31, @"AppDownloadVector");
   }
 
   v33 = objc_msgSend_installedAppVector(self, v25, v26);
@@ -486,28 +486,28 @@
   if (v33)
   {
     v36 = objc_msgSend_installedAppVector(self, v34, v35);
-    objc_msgSend_setValue_forKey_(v48, v37, v36, @"installedAppVector");
+    objc_msgSend_setValue_forKey_(dictionaryCopy, v37, v36, @"installedAppVector");
 
     v40 = objc_msgSend_installedAppVector(self, v38, v39);
-    objc_msgSend_setValue_forKey_(v48, v41, v40, @"AppInstalledVector");
+    objc_msgSend_setValue_forKey_(dictionaryCopy, v41, v40, @"AppInstalledVector");
   }
 
   v42 = objc_msgSend_userQueryVector(self, v34, v35);
 
-  v45 = v48;
+  v45 = dictionaryCopy;
   if (v42)
   {
     v46 = objc_msgSend_userQueryVector(self, v43, v44);
-    objc_msgSend_setValue_forKey_(v48, v47, v46, @"userQueryVector");
+    objc_msgSend_setValue_forKey_(dictionaryCopy, v47, v46, @"userQueryVector");
 
-    v45 = v48;
+    v45 = dictionaryCopy;
   }
 }
 
-- (BOOL)isTwoDimensional:(id)a3
+- (BOOL)isTwoDimensional:(id)dimensional
 {
   v31 = *MEMORY[0x277D85DE8];
-  v3 = objc_msgSend_modelDescription(a3, a2, a3);
+  v3 = objc_msgSend_modelDescription(dimensional, a2, dimensional);
   v6 = objc_msgSend_inputDescriptionsByName(v3, v4, v5);
   v9 = objc_msgSend_allValues(v6, v7, v8);
 
@@ -556,16 +556,16 @@ LABEL_11:
   return v14;
 }
 
-- (id)_translateFeaturesToTwoDimensional:(id)a3
+- (id)_translateFeaturesToTwoDimensional:(id)dimensional
 {
   v41 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v6 = objc_msgSend_mutableCopy(v3, v4, v5);
+  dimensionalCopy = dimensional;
+  v6 = objc_msgSend_mutableCopy(dimensionalCopy, v4, v5);
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  obj = v3;
+  obj = dimensionalCopy;
   v8 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v7, &v36, v40, 16);
   if (v8)
   {
@@ -607,15 +607,15 @@ LABEL_11:
   return v32;
 }
 
-- (void)saveFeaturesFromResponse:(id)a3
+- (void)saveFeaturesFromResponse:(id)response
 {
   v48 = *MEMORY[0x277D85DE8];
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v42 = a3;
-  obj = objc_msgSend_featureValues(v42, v4, v5);
+  responseCopy = response;
+  obj = objc_msgSend_featureValues(responseCopy, v4, v5);
   v7 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v6, &v43, v47, 16);
   if (v7)
   {
@@ -632,7 +632,7 @@ LABEL_11:
         }
 
         v12 = *(*(&v43 + 1) + 8 * v11);
-        v13 = objc_msgSend_featureValues(v42, v8, v9);
+        v13 = objc_msgSend_featureValues(responseCopy, v8, v9);
         v15 = objc_msgSend_valueForKey_(v13, v14, v12);
 
         v16 = [APOdmlVector alloc];

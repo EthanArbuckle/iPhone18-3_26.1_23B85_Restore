@@ -1,8 +1,8 @@
 @interface UIKBKeyDisplayContents
 + (id)displayContents;
 - (id)description;
-- (void)setDisplayPathType:(int64_t)a3;
-- (void)setDisplayString:(id)a3;
+- (void)setDisplayPathType:(int64_t)type;
+- (void)setDisplayString:(id)string;
 @end
 
 @implementation UIKBKeyDisplayContents
@@ -17,67 +17,67 @@
 - (id)description
 {
   v3 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"<%@: %p", objc_opt_class(), self];
-  v4 = [(UIKBKeyDisplayContents *)self displayString];
+  displayString = [(UIKBKeyDisplayContents *)self displayString];
 
-  if (v4)
+  if (displayString)
   {
-    v5 = [(UIKBKeyDisplayContents *)self displayString];
-    [v3 appendFormat:@"; displayString = %@", v5];
+    displayString2 = [(UIKBKeyDisplayContents *)self displayString];
+    [v3 appendFormat:@"; displayString = %@", displayString2];
   }
 
-  v6 = [(UIKBKeyDisplayContents *)self displayStringImage];
+  displayStringImage = [(UIKBKeyDisplayContents *)self displayStringImage];
 
-  if (v6)
+  if (displayStringImage)
   {
-    v7 = [(UIKBKeyDisplayContents *)self displayStringImage];
-    [v3 appendFormat:@"; displayStringImage = %@", v7];
+    displayStringImage2 = [(UIKBKeyDisplayContents *)self displayStringImage];
+    [v3 appendFormat:@"; displayStringImage = %@", displayStringImage2];
   }
 
-  v8 = [(UIKBKeyDisplayContents *)self secondaryDisplayStrings];
+  secondaryDisplayStrings = [(UIKBKeyDisplayContents *)self secondaryDisplayStrings];
 
-  if (v8)
+  if (secondaryDisplayStrings)
   {
-    v9 = [(UIKBKeyDisplayContents *)self secondaryDisplayStrings];
-    [v3 appendFormat:@"; secondaryDisplayStrings = %@", v9];
+    secondaryDisplayStrings2 = [(UIKBKeyDisplayContents *)self secondaryDisplayStrings];
+    [v3 appendFormat:@"; secondaryDisplayStrings = %@", secondaryDisplayStrings2];
   }
 
-  v10 = [(UIKBKeyDisplayContents *)self secondaryDisplayStringImages];
+  secondaryDisplayStringImages = [(UIKBKeyDisplayContents *)self secondaryDisplayStringImages];
 
-  if (v10)
+  if (secondaryDisplayStringImages)
   {
-    v11 = [(UIKBKeyDisplayContents *)self secondaryDisplayStringImages];
-    [v3 appendFormat:@"; secondaryDisplayStrings = %@", v11];
+    secondaryDisplayStringImages2 = [(UIKBKeyDisplayContents *)self secondaryDisplayStringImages];
+    [v3 appendFormat:@"; secondaryDisplayStrings = %@", secondaryDisplayStringImages2];
   }
 
-  v12 = [(UIKBKeyDisplayContents *)self variantDisplayContents];
+  variantDisplayContents = [(UIKBKeyDisplayContents *)self variantDisplayContents];
 
-  if (v12)
+  if (variantDisplayContents)
   {
-    v13 = [(UIKBKeyDisplayContents *)self variantDisplayContents];
-    [v3 appendFormat:@"; variantDisplayContents = %@", v13];
+    variantDisplayContents2 = [(UIKBKeyDisplayContents *)self variantDisplayContents];
+    [v3 appendFormat:@"; variantDisplayContents = %@", variantDisplayContents2];
   }
 
-  v14 = [(UIKBKeyDisplayContents *)self highlightedVariantsList];
+  highlightedVariantsList = [(UIKBKeyDisplayContents *)self highlightedVariantsList];
 
-  if (v14)
+  if (highlightedVariantsList)
   {
-    v15 = [(UIKBKeyDisplayContents *)self highlightedVariantsList];
-    [v3 appendFormat:@"; highlightedVariantList = %@", v15];
+    highlightedVariantsList2 = [(UIKBKeyDisplayContents *)self highlightedVariantsList];
+    [v3 appendFormat:@"; highlightedVariantList = %@", highlightedVariantsList2];
   }
 
   if ([(UIKBKeyDisplayContents *)self displayPathType])
   {
-    v16 = [(UIKBKeyDisplayContents *)self displayPathType];
+    displayPathType = [(UIKBKeyDisplayContents *)self displayPathType];
     v17 = @"Delete";
-    if (v16 == 1)
+    if (displayPathType == 1)
     {
       v17 = @"Shift";
     }
 
     [v3 appendFormat:@"; displayPathType = %@", v17];
-    v18 = [(UIKBKeyDisplayContents *)self fillPath];
+    fillPath = [(UIKBKeyDisplayContents *)self fillPath];
     v19 = "NO";
-    if (v18)
+    if (fillPath)
     {
       v19 = "YES";
     }
@@ -90,12 +90,12 @@
     [v3 appendString:@"; force1xImages"];
   }
 
-  v20 = [(UIKBKeyDisplayContents *)self fallbackContents];
+  fallbackContents = [(UIKBKeyDisplayContents *)self fallbackContents];
 
-  if (v20)
+  if (fallbackContents)
   {
-    v21 = [(UIKBKeyDisplayContents *)self fallbackContents];
-    [v3 appendFormat:@"; fallbackContents = %@", v21];
+    fallbackContents2 = [(UIKBKeyDisplayContents *)self fallbackContents];
+    [v3 appendFormat:@"; fallbackContents = %@", fallbackContents2];
   }
 
   if ([(UIKBKeyDisplayContents *)self stringKeycapOverImage])
@@ -108,12 +108,12 @@
     [v3 appendFormat:@"; flipImageHorizontally"];
   }
 
-  v22 = [(UIKBKeyDisplayContents *)self bundlePathOverride];
+  bundlePathOverride = [(UIKBKeyDisplayContents *)self bundlePathOverride];
 
-  if (v22)
+  if (bundlePathOverride)
   {
-    v23 = [(UIKBKeyDisplayContents *)self bundlePathOverride];
-    [v3 appendFormat:@"; bundlePathOverride = %@", v23];
+    bundlePathOverride2 = [(UIKBKeyDisplayContents *)self bundlePathOverride];
+    [v3 appendFormat:@"; bundlePathOverride = %@", bundlePathOverride2];
   }
 
   [v3 appendString:@">"];
@@ -121,16 +121,16 @@
   return v3;
 }
 
-- (void)setDisplayString:(id)a3
+- (void)setDisplayString:(id)string
 {
-  objc_storeStrong(&self->_displayString, a3);
+  objc_storeStrong(&self->_displayString, string);
   self->_displayPathType = 0;
   self->_fillPath = 0;
 }
 
-- (void)setDisplayPathType:(int64_t)a3
+- (void)setDisplayPathType:(int64_t)type
 {
-  self->_displayPathType = a3;
+  self->_displayPathType = type;
   displayString = self->_displayString;
   self->_displayString = 0;
 

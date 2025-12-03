@@ -1,31 +1,31 @@
 @interface MRGroupTopologyModificationRequest
-+ (BOOL)_initiatorShouldClearPredictedRoutesByDefault:(id)a3 forModificationType:(unint64_t)a4;
-- (MRGroupTopologyModificationRequest)initWithCoder:(id)a3;
-- (MRGroupTopologyModificationRequest)initWithData:(id)a3;
-- (MRGroupTopologyModificationRequest)initWithProtobuf:(id)a3;
-- (MRGroupTopologyModificationRequest)initWithRequestDetails:(id)a3 type:(unint64_t)a4 outputDeviceUIDs:(id)a5;
-- (MRGroupTopologyModificationRequest)initWithRequestDetails:(id)a3 type:(unint64_t)a4 outputDevices:(id)a5;
++ (BOOL)_initiatorShouldClearPredictedRoutesByDefault:(id)default forModificationType:(unint64_t)type;
+- (MRGroupTopologyModificationRequest)initWithCoder:(id)coder;
+- (MRGroupTopologyModificationRequest)initWithData:(id)data;
+- (MRGroupTopologyModificationRequest)initWithProtobuf:(id)protobuf;
+- (MRGroupTopologyModificationRequest)initWithRequestDetails:(id)details type:(unint64_t)type outputDeviceUIDs:(id)ds;
+- (MRGroupTopologyModificationRequest)initWithRequestDetails:(id)details type:(unint64_t)type outputDevices:(id)devices;
 - (NSData)data;
 - (_MRGroupTopologyModificationRequestProtobuf)protobuf;
-- (id)copyWithOutputDeviceUIDs:(id)a3;
-- (id)copyWithType:(unint64_t)a3 outputDeviceUIDs:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithOutputDeviceUIDs:(id)ds;
+- (id)copyWithType:(unint64_t)type outputDeviceUIDs:(id)ds;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MRGroupTopologyModificationRequest
 
-- (MRGroupTopologyModificationRequest)initWithRequestDetails:(id)a3 type:(unint64_t)a4 outputDevices:(id)a5
+- (MRGroupTopologyModificationRequest)initWithRequestDetails:(id)details type:(unint64_t)type outputDevices:(id)devices
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [v8 msv_compactMap:&__block_literal_global_99];
-  v11 = [(MRGroupTopologyModificationRequest *)self initWithRequestDetails:v9 type:a4 outputDeviceUIDs:v10];
+  devicesCopy = devices;
+  detailsCopy = details;
+  v10 = [devicesCopy msv_compactMap:&__block_literal_global_99];
+  v11 = [(MRGroupTopologyModificationRequest *)self initWithRequestDetails:detailsCopy type:type outputDeviceUIDs:v10];
 
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [devicesCopy copy];
     outputDevices = v11->_outputDevices;
     v11->_outputDevices = v12;
   }
@@ -33,47 +33,47 @@
   return v11;
 }
 
-- (MRGroupTopologyModificationRequest)initWithRequestDetails:(id)a3 type:(unint64_t)a4 outputDeviceUIDs:(id)a5
+- (MRGroupTopologyModificationRequest)initWithRequestDetails:(id)details type:(unint64_t)type outputDeviceUIDs:(id)ds
 {
-  v9 = a3;
-  v10 = a5;
+  detailsCopy = details;
+  dsCopy = ds;
   v18.receiver = self;
   v18.super_class = MRGroupTopologyModificationRequest;
   v11 = [(MRGroupTopologyModificationRequest *)&v18 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_requestDetails, a3);
-    v12->_type = a4;
-    v13 = [v10 copy];
+    objc_storeStrong(&v11->_requestDetails, details);
+    v12->_type = type;
+    v13 = [dsCopy copy];
     outputDeviceUIDs = v12->_outputDeviceUIDs;
     v12->_outputDeviceUIDs = v13;
 
     v15 = objc_opt_class();
-    v16 = [v9 initiator];
-    v12->_shouldClearPredictedRoutes = [v15 _initiatorShouldClearPredictedRoutesByDefault:v16 forModificationType:a4];
+    initiator = [detailsCopy initiator];
+    v12->_shouldClearPredictedRoutes = [v15 _initiatorShouldClearPredictedRoutesByDefault:initiator forModificationType:type];
   }
 
   return v12;
 }
 
-- (id)copyWithOutputDeviceUIDs:(id)a3
+- (id)copyWithOutputDeviceUIDs:(id)ds
 {
-  v4 = a3;
-  v5 = [(MRGroupTopologyModificationRequest *)self copyWithType:[(MRGroupTopologyModificationRequest *)self type] outputDeviceUIDs:v4];
+  dsCopy = ds;
+  v5 = [(MRGroupTopologyModificationRequest *)self copyWithType:[(MRGroupTopologyModificationRequest *)self type] outputDeviceUIDs:dsCopy];
 
   return v5;
 }
 
-- (id)copyWithType:(unint64_t)a3 outputDeviceUIDs:(id)a4
+- (id)copyWithType:(unint64_t)type outputDeviceUIDs:(id)ds
 {
-  v6 = a4;
-  v7 = [(MRGroupTopologyModificationRequest *)self protobuf];
-  v8 = [v6 mutableCopy];
+  dsCopy = ds;
+  protobuf = [(MRGroupTopologyModificationRequest *)self protobuf];
+  v8 = [dsCopy mutableCopy];
 
-  [v7 setOutputDeviceUIDs:v8];
-  [v7 setType:a3];
-  v9 = [objc_alloc(objc_opt_class()) initWithProtobuf:v7];
+  [protobuf setOutputDeviceUIDs:v8];
+  [protobuf setType:type];
+  v9 = [objc_alloc(objc_opt_class()) initWithProtobuf:protobuf];
 
   return v9;
 }
@@ -82,8 +82,8 @@
 {
   v3 = objc_alloc(MEMORY[0x1E696AD60]);
   v4 = MRGroupTopologyModificationRequestTypeDescription([(MRGroupTopologyModificationRequest *)self type]);
-  v5 = [(MRGroupTopologyModificationRequest *)self requestDetails];
-  v6 = [v3 initWithFormat:@"requestType=%@/%@/", v4, v5];
+  requestDetails = [(MRGroupTopologyModificationRequest *)self requestDetails];
+  v6 = [v3 initWithFormat:@"requestType=%@/%@/", v4, requestDetails];
 
   if (self->_fadeAudio)
   {
@@ -120,105 +120,105 @@
     [v6 appendFormat:@"shouldWaitForUpdatedOutputDevices/"];
   }
 
-  v7 = [(MRGroupTopologyModificationRequest *)self outputDeviceUIDs];
-  [v6 appendFormat:@"outputDeviceUIDs=%@", v7];
+  outputDeviceUIDs = [(MRGroupTopologyModificationRequest *)self outputDeviceUIDs];
+  [v6 appendFormat:@"outputDeviceUIDs=%@", outputDeviceUIDs];
 
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(MRGroupTopologyModificationRequest *)self protobuf];
-  [v4 encodeObject:v5 forKey:@"protobuf"];
+  coderCopy = coder;
+  protobuf = [(MRGroupTopologyModificationRequest *)self protobuf];
+  [coderCopy encodeObject:protobuf forKey:@"protobuf"];
 }
 
-- (MRGroupTopologyModificationRequest)initWithCoder:(id)a3
+- (MRGroupTopologyModificationRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"protobuf"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"protobuf"];
 
   v6 = [(MRGroupTopologyModificationRequest *)self initWithProtobuf:v5];
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v3 = self;
-  v4 = [(MRGroupTopologyModificationRequest *)v3 protobuf];
-  v5 = [(MRGroupTopologyModificationRequest *)v3 initWithProtobuf:v4];
+  selfCopy = self;
+  protobuf = [(MRGroupTopologyModificationRequest *)selfCopy protobuf];
+  v5 = [(MRGroupTopologyModificationRequest *)selfCopy initWithProtobuf:protobuf];
 
   return v5;
 }
 
-- (MRGroupTopologyModificationRequest)initWithData:(id)a3
+- (MRGroupTopologyModificationRequest)initWithData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[_MRGroupTopologyModificationRequestProtobuf alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[_MRGroupTopologyModificationRequestProtobuf alloc] initWithData:dataCopy];
 
     self = [(MRGroupTopologyModificationRequest *)self initWithProtobuf:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (MRGroupTopologyModificationRequest)initWithProtobuf:(id)a3
+- (MRGroupTopologyModificationRequest)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
-  if (v4)
+  protobufCopy = protobuf;
+  if (protobufCopy)
   {
     v5 = [MRRequestDetails alloc];
-    v6 = [v4 details];
-    v7 = [(MRRequestDetails *)v5 initWithProtobuf:v6];
-    v8 = [v4 type];
-    v9 = [v4 outputDeviceUIDs];
-    v10 = [(MRGroupTopologyModificationRequest *)self initWithRequestDetails:v7 type:v8 outputDeviceUIDs:v9];
+    details = [protobufCopy details];
+    v7 = [(MRRequestDetails *)v5 initWithProtobuf:details];
+    type = [protobufCopy type];
+    outputDeviceUIDs = [protobufCopy outputDeviceUIDs];
+    v10 = [(MRGroupTopologyModificationRequest *)self initWithRequestDetails:v7 type:type outputDeviceUIDs:outputDeviceUIDs];
 
     if (v10)
     {
-      v10->_fadeAudio = [v4 fadeAudio];
-      v10->_shouldNotPauseIfLastDeviceRemoved = [v4 shouldNotPauseIfLastDeviceRemoved];
-      v10->_suppressErrorDialog = [v4 suppressErrorDialog];
-      v10->_muteUntilFinished = [v4 muteUntilFinished];
-      v10->_shouldModifyPredictedRoutes = [v4 shouldModifyPredictedRoutes];
-      v10->_shouldClearPredictedRoutes = [v4 shouldClearPredictedRoutes];
-      v10->_password = [v4 password];
-      v10->_shouldWaitForUpdatedOutputDevices = [v4 shouldWaitForUpdatedOutputDevices];
+      v10->_fadeAudio = [protobufCopy fadeAudio];
+      v10->_shouldNotPauseIfLastDeviceRemoved = [protobufCopy shouldNotPauseIfLastDeviceRemoved];
+      v10->_suppressErrorDialog = [protobufCopy suppressErrorDialog];
+      v10->_muteUntilFinished = [protobufCopy muteUntilFinished];
+      v10->_shouldModifyPredictedRoutes = [protobufCopy shouldModifyPredictedRoutes];
+      v10->_shouldClearPredictedRoutes = [protobufCopy shouldClearPredictedRoutes];
+      v10->_password = [protobufCopy password];
+      v10->_shouldWaitForUpdatedOutputDevices = [protobufCopy shouldWaitForUpdatedOutputDevices];
     }
 
     self = v10;
-    v11 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
 - (NSData)data
 {
-  v2 = [(MRGroupTopologyModificationRequest *)self protobuf];
-  v3 = [v2 data];
+  protobuf = [(MRGroupTopologyModificationRequest *)self protobuf];
+  data = [protobuf data];
 
-  return v3;
+  return data;
 }
 
 - (_MRGroupTopologyModificationRequestProtobuf)protobuf
 {
   v3 = objc_alloc_init(_MRGroupTopologyModificationRequestProtobuf);
-  v4 = [(MRRequestDetails *)self->_requestDetails protobuf];
-  [(_MRGroupTopologyModificationRequestProtobuf *)v3 setDetails:v4];
+  protobuf = [(MRRequestDetails *)self->_requestDetails protobuf];
+  [(_MRGroupTopologyModificationRequestProtobuf *)v3 setDetails:protobuf];
 
   [(_MRGroupTopologyModificationRequestProtobuf *)v3 setType:LODWORD(self->_type)];
   if ([(NSArray *)self->_outputDevices count])
@@ -246,10 +246,10 @@
   return v3;
 }
 
-+ (BOOL)_initiatorShouldClearPredictedRoutesByDefault:(id)a3 forModificationType:(unint64_t)a4
++ (BOOL)_initiatorShouldClearPredictedRoutesByDefault:(id)default forModificationType:(unint64_t)type
 {
-  v5 = [a3 isEqualToString:@"RoutePicker"] ^ 1;
-  if (a4 == 3)
+  v5 = [default isEqualToString:@"RoutePicker"] ^ 1;
+  if (type == 3)
   {
     return v5;
   }

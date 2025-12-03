@@ -1,24 +1,24 @@
 @interface AMSCloudDataSavedRecordsResult
-- (AMSCloudDataSavedRecordsResult)initWithSavedRecords:(id)a3 deletedRecords:(id)a4 error:(id)a5;
+- (AMSCloudDataSavedRecordsResult)initWithSavedRecords:(id)records deletedRecords:(id)deletedRecords error:(id)error;
 - (NSString)hashedDescription;
 @end
 
 @implementation AMSCloudDataSavedRecordsResult
 
-- (AMSCloudDataSavedRecordsResult)initWithSavedRecords:(id)a3 deletedRecords:(id)a4 error:(id)a5
+- (AMSCloudDataSavedRecordsResult)initWithSavedRecords:(id)records deletedRecords:(id)deletedRecords error:(id)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  recordsCopy = records;
+  deletedRecordsCopy = deletedRecords;
+  errorCopy = error;
   v15.receiver = self;
   v15.super_class = AMSCloudDataSavedRecordsResult;
   v12 = [(AMSCloudDataSavedRecordsResult *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_savedRecords, a3);
-    objc_storeStrong(&v13->_deletedRecords, a4);
-    objc_storeStrong(&v13->_error, a5);
+    objc_storeStrong(&v12->_savedRecords, records);
+    objc_storeStrong(&v13->_deletedRecords, deletedRecords);
+    objc_storeStrong(&v13->_error, error);
   }
 
   return v13;
@@ -27,15 +27,15 @@
 - (NSString)hashedDescription
 {
   v3 = [NSMutableString stringWithFormat:@"<%@: %p> {", objc_opt_class(), self];
-  v4 = [(AMSCloudDataSavedRecordsResult *)self savedRecords];
+  savedRecords = [(AMSCloudDataSavedRecordsResult *)self savedRecords];
   v5 = AMSHashIfNeeded();
   [v3 appendFormat:@"  savedRecords = %@, \n", v5];
 
-  v6 = [(AMSCloudDataSavedRecordsResult *)self deletedRecords];
+  deletedRecords = [(AMSCloudDataSavedRecordsResult *)self deletedRecords];
   v7 = AMSHashIfNeeded();
   [v3 appendFormat:@"  deletedRecords = %@, \n", v7];
 
-  v8 = [(AMSCloudDataSavedRecordsResult *)self error];
+  error = [(AMSCloudDataSavedRecordsResult *)self error];
   v9 = AMSHashIfNeeded();
   [v3 appendFormat:@"  error = %@, \n", v9];
 

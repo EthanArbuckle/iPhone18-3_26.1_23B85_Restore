@@ -1,13 +1,13 @@
 @interface PKLinkedAppIconView
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (CGSize)intrinsicContentSize;
-- (PKLinkedAppIconView)initWithLinkedApplication:(id)a3;
-- (void)_updateWithIconImage:(id)a3 animated:(BOOL)a4;
+- (PKLinkedAppIconView)initWithLinkedApplication:(id)application;
+- (void)_updateWithIconImage:(id)image animated:(BOOL)animated;
 - (void)dealloc;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
-- (void)linkedApplicationDidChangeState:(id)a3;
-- (void)tapped:(id)a3;
+- (void)linkedApplicationDidChangeState:(id)state;
+- (void)tapped:(id)tapped;
 @end
 
 @implementation PKLinkedAppIconView
@@ -29,16 +29,16 @@
   return result;
 }
 
-- (PKLinkedAppIconView)initWithLinkedApplication:(id)a3
+- (PKLinkedAppIconView)initWithLinkedApplication:(id)application
 {
-  v5 = a3;
+  applicationCopy = application;
   v12.receiver = self;
   v12.super_class = PKLinkedAppIconView;
   v6 = [(PKLinkedAppIconView *)&v12 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_linkedApplication, a3);
+    objc_storeStrong(&v6->_linkedApplication, application);
     [(PKLinkedApplication *)v7->_linkedApplication addObserver:v7];
     v8 = [[WLEasyToHitCustomButton alloc] initWithMargins:10.0, 10.0, 10.0, 10.0];
     iconButton = v7->_iconButton;
@@ -48,8 +48,8 @@
     [(WLEasyToHitCustomButton *)v7->_iconButton setAlpha:0.0];
     [(WLEasyToHitCustomButton *)v7->_iconButton setMargins:10.0, 10.0, 10.0, 10.0];
     [(WLEasyToHitCustomButton *)v7->_iconButton setAccessibilityIdentifier:*MEMORY[0x1E69B9AE0]];
-    v10 = [(PKLinkedApplication *)v7->_linkedApplication iconImage];
-    [(PKLinkedAppIconView *)v7 _updateWithIconImage:v10 animated:0];
+    iconImage = [(PKLinkedApplication *)v7->_linkedApplication iconImage];
+    [(PKLinkedAppIconView *)v7 _updateWithIconImage:iconImage animated:0];
 
     [(PKLinkedAppIconView *)v7 setAccessibilityIgnoresInvertColors:1];
     [(PKLinkedAppIconView *)v7 setAccessibilityIdentifier:*MEMORY[0x1E69B9900]];
@@ -71,25 +71,25 @@
   v4.receiver = self;
   v4.super_class = PKLinkedAppIconView;
   [(PKLinkedAppIconView *)&v4 didMoveToWindow];
-  v3 = [(PKLinkedAppIconView *)self window];
+  window = [(PKLinkedAppIconView *)self window];
 
-  if (v3)
+  if (window)
   {
     [(PKLinkedApplication *)self->_linkedApplication reloadApplicationStateIfNecessary];
   }
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = self;
+  y = inside.y;
+  x = inside.x;
+  selfCopy = self;
   iconButton = self->_iconButton;
-  v8 = a4;
-  [(PKLinkedAppIconView *)v6 convertPoint:iconButton toView:x, y];
-  LOBYTE(v6) = [(WLEasyToHitCustomButton *)iconButton pointInside:v8 withEvent:?];
+  eventCopy = event;
+  [(PKLinkedAppIconView *)selfCopy convertPoint:iconButton toView:x, y];
+  LOBYTE(selfCopy) = [(WLEasyToHitCustomButton *)iconButton pointInside:eventCopy withEvent:?];
 
-  return v6;
+  return selfCopy;
 }
 
 - (void)layoutSubviews
@@ -119,14 +119,14 @@
   PKSizeAlignedInRect();
   v12 = v11;
   v14 = v13;
-  v15 = [(WLEasyToHitCustomButton *)self->_iconButton layer];
-  [v15 anchorPoint];
+  layer = [(WLEasyToHitCustomButton *)self->_iconButton layer];
+  [layer anchorPoint];
   v17 = v16;
   v19 = v18;
-  [v15 bounds];
+  [layer bounds];
   if (v21 != v4 || v20 != v6)
   {
-    [v15 setBounds:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), v4, v6}];
+    [layer setBounds:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), v4, v6}];
     [(WLEasyToHitCustomButton *)self->_iconButton setNeedsLayout];
   }
 
@@ -134,19 +134,19 @@
   v23 = fmin(v10, v9);
   CATransform3DMakeScale(&v27, v23, v23, 1.0);
   v26 = v27;
-  [v15 setTransform:&v26];
-  [v15 setPosition:{v12 + v17 * v25, v14 + v19 * v24}];
+  [layer setTransform:&v26];
+  [layer setPosition:{v12 + v17 * v25, v14 + v19 * v24}];
 }
 
-- (void)_updateWithIconImage:(id)a3 animated:(BOOL)a4
+- (void)_updateWithIconImage:(id)image animated:(BOOL)animated
 {
-  v4 = a4;
-  v7 = a3;
-  if (self->_iconImage != v7)
+  animatedCopy = animated;
+  imageCopy = image;
+  if (self->_iconImage != imageCopy)
   {
-    objc_storeStrong(&self->_iconImage, a3);
-    v8 = [(WLEasyToHitCustomButton *)self->_iconButton superview];
-    if (v8)
+    objc_storeStrong(&self->_iconImage, image);
+    superview = [(WLEasyToHitCustomButton *)self->_iconButton superview];
+    if (superview)
     {
       v9 = self->_iconImage == 0;
     }
@@ -158,12 +158,12 @@
 
     if (v9)
     {
-      if (v4)
+      if (animatedCopy)
       {
         v10 = [(WLEasyToHitCustomButton *)self->_iconButton snapshotViewAfterScreenUpdates:0];
         [(WLEasyToHitCustomButton *)self->_iconButton frame];
         [v10 setFrame:?];
-        [v8 addSubview:v10];
+        [superview addSubview:v10];
         v11 = [MEMORY[0x1E69B92B0] springAnimationWithKeyPath:@"opacity"];
         [v10 alpha];
         [v11 pkui_updateForAdditiveAnimationFromScalar:? toScalar:?];
@@ -174,8 +174,8 @@
         v22 = v10;
         v12 = v10;
         [v11 pkui_setCompletionHandler:v21];
-        v13 = [v12 layer];
-        v14 = [v13 pkui_addAdditiveAnimation:v11];
+        layer = [v12 layer];
+        v14 = [layer pkui_addAdditiveAnimation:v11];
 
         [v12 setAlpha:0.0];
       }
@@ -192,19 +192,19 @@
     if (self->_iconImage)
     {
       [(PKLinkedAppIconView *)self setNeedsLayout];
-      if (!v8)
+      if (!superview)
       {
         [(PKLinkedAppIconView *)self layoutIfNeeded];
         [(WLEasyToHitCustomButton *)self->_iconButton alpha];
         v16 = v15;
         [(PKLinkedAppIconView *)self addSubview:self->_iconButton];
         [(WLEasyToHitCustomButton *)self->_iconButton setAlpha:1.0];
-        if (v4 && v16 != 1.0)
+        if (animatedCopy && v16 != 1.0)
         {
           v17 = [MEMORY[0x1E69B92B0] springAnimationWithKeyPath:@"opacity"];
           [v17 pkui_updateForAdditiveAnimationFromScalar:v16 toScalar:1.0];
-          v18 = [(WLEasyToHitCustomButton *)self->_iconButton layer];
-          v19 = [v18 pkui_addAdditiveAnimation:v17];
+          layer2 = [(WLEasyToHitCustomButton *)self->_iconButton layer];
+          v19 = [layer2 pkui_addAdditiveAnimation:v17];
         }
       }
     }
@@ -219,31 +219,31 @@ void __53__PKLinkedAppIconView__updateWithIconImage_animated___block_invoke_2(ui
   [v2 clearHasBeenCommitted];
 }
 
-- (void)tapped:(id)a3
+- (void)tapped:(id)tapped
 {
   if (([(PKLinkedApplication *)self->_linkedApplication state]& 0xFFFFFFFFFFFFFFFDLL) != 0)
   {
     linkedApplication = self->_linkedApplication;
-    v5 = [(UIView *)self pkui_viewControllerFromResponderChain];
-    [(PKLinkedApplication *)linkedApplication openApplication:v5];
+    pkui_viewControllerFromResponderChain = [(UIView *)self pkui_viewControllerFromResponderChain];
+    [(PKLinkedApplication *)linkedApplication openApplication:pkui_viewControllerFromResponderChain];
   }
 }
 
-- (void)linkedApplicationDidChangeState:(id)a3
+- (void)linkedApplicationDidChangeState:(id)state
 {
-  v6 = a3;
-  if (![v6 state])
+  stateCopy = state;
+  if (![stateCopy state])
   {
-    v4 = [(PKLinkedAppIconView *)self window];
+    window = [(PKLinkedAppIconView *)self window];
 
-    if (v4)
+    if (window)
     {
-      [v6 reloadApplicationStateIfNecessary];
+      [stateCopy reloadApplicationStateIfNecessary];
     }
   }
 
-  v5 = [v6 iconImage];
-  [(PKLinkedAppIconView *)self _updateWithIconImage:v5 animated:1];
+  iconImage = [stateCopy iconImage];
+  [(PKLinkedAppIconView *)self _updateWithIconImage:iconImage animated:1];
 }
 
 @end

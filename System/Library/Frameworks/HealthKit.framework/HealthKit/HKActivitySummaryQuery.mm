@@ -1,11 +1,11 @@
 @interface HKActivitySummaryQuery
-+ (void)configureClientInterface:(id)a3;
++ (void)configureClientInterface:(id)interface;
 - (HKActivitySummaryQuery)initWithPredicate:(NSPredicate *)predicate resultsHandler:(void *)handler;
 - (id)completionHandler;
-- (void)client_deliverActivitySummaries:(id)a3 isFinalBatch:(BOOL)a4 clearPendingBatches:(BOOL)a5 queryUUID:(id)a6;
-- (void)queue_deliverError:(id)a3;
-- (void)queue_populateConfiguration:(id)a3;
-- (void)queue_queryDidDeactivate:(id)a3;
+- (void)client_deliverActivitySummaries:(id)summaries isFinalBatch:(BOOL)batch clearPendingBatches:(BOOL)batches queryUUID:(id)d;
+- (void)queue_deliverError:(id)error;
+- (void)queue_populateConfiguration:(id)configuration;
+- (void)queue_queryDidDeactivate:(id)deactivate;
 - (void)queue_validate;
 - (void)setUpdateHandler:(void *)updateHandler;
 @end
@@ -43,7 +43,7 @@
 {
   v5 = updateHandler;
   [(HKQuery *)self _throwInvalidArgumentExceptionIfHasBeenExecuted:a2];
-  v6 = [(HKQuery *)self queue];
+  queue = [(HKQuery *)self queue];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __43__HKActivitySummaryQuery_setUpdateHandler___block_invoke;
@@ -51,7 +51,7 @@
   v8[4] = self;
   v9 = v5;
   v7 = v5;
-  dispatch_sync(v6, v8);
+  dispatch_sync(queue, v8);
 }
 
 uint64_t __43__HKActivitySummaryQuery_setUpdateHandler___block_invoke(uint64_t a1)
@@ -71,23 +71,23 @@ uint64_t __43__HKActivitySummaryQuery_setUpdateHandler___block_invoke(uint64_t a
   return v2;
 }
 
-- (void)client_deliverActivitySummaries:(id)a3 isFinalBatch:(BOOL)a4 clearPendingBatches:(BOOL)a5 queryUUID:(id)a6
+- (void)client_deliverActivitySummaries:(id)summaries isFinalBatch:(BOOL)batch clearPendingBatches:(BOOL)batches queryUUID:(id)d
 {
-  v10 = a3;
-  v11 = a6;
-  v12 = [(HKQuery *)self queue];
+  summariesCopy = summaries;
+  dCopy = d;
+  queue = [(HKQuery *)self queue];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __101__HKActivitySummaryQuery_client_deliverActivitySummaries_isFinalBatch_clearPendingBatches_queryUUID___block_invoke;
   v15[3] = &unk_1E7379FC0;
-  v18 = a5;
+  batchesCopy = batches;
   v15[4] = self;
-  v16 = v10;
-  v19 = a4;
-  v17 = v11;
-  v13 = v11;
-  v14 = v10;
-  dispatch_async(v12, v15);
+  v16 = summariesCopy;
+  batchCopy = batch;
+  v17 = dCopy;
+  v13 = dCopy;
+  v14 = summariesCopy;
+  dispatch_async(queue, v15);
 }
 
 void __101__HKActivitySummaryQuery_client_deliverActivitySummaries_isFinalBatch_clearPendingBatches_queryUUID___block_invoke(uint64_t a1)
@@ -157,32 +157,32 @@ uint64_t __101__HKActivitySummaryQuery_client_deliverActivitySummaries_isFinalBa
   return result;
 }
 
-+ (void)configureClientInterface:(id)a3
++ (void)configureClientInterface:(id)interface
 {
-  v4 = a3;
-  v6.receiver = a1;
+  interfaceCopy = interface;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___HKActivitySummaryQuery;
-  objc_msgSendSuper2(&v6, sel_configureClientInterface_, v4);
-  v5 = [v4 hk_setArrayOfClass:objc_opt_class() forSelector:sel_client_deliverActivitySummaries_isFinalBatch_clearPendingBatches_queryUUID_ argumentIndex:0 ofReply:0];
+  objc_msgSendSuper2(&v6, sel_configureClientInterface_, interfaceCopy);
+  v5 = [interfaceCopy hk_setArrayOfClass:objc_opt_class() forSelector:sel_client_deliverActivitySummaries_isFinalBatch_clearPendingBatches_queryUUID_ argumentIndex:0 ofReply:0];
 }
 
-- (void)queue_populateConfiguration:(id)a3
+- (void)queue_populateConfiguration:(id)configuration
 {
   v5.receiver = self;
   v5.super_class = HKActivitySummaryQuery;
-  v4 = a3;
-  [(HKQuery *)&v5 queue_populateConfiguration:v4];
-  [v4 setShouldIncludeActivitySummaryPrivateProperties:{-[HKActivitySummaryQuery shouldIncludeActivitySummaryPrivateProperties](self, "shouldIncludeActivitySummaryPrivateProperties", v5.receiver, v5.super_class)}];
-  [v4 setShouldIncludeActivitySummaryStatistics:{-[HKActivitySummaryQuery shouldIncludeActivitySummaryStatistics](self, "shouldIncludeActivitySummaryStatistics")}];
-  [v4 setOrderByDateAscending:{-[HKActivitySummaryQuery orderByDateAscending](self, "orderByDateAscending")}];
-  [v4 setLimit:{-[HKActivitySummaryQuery limit](self, "limit")}];
+  configurationCopy = configuration;
+  [(HKQuery *)&v5 queue_populateConfiguration:configurationCopy];
+  [configurationCopy setShouldIncludeActivitySummaryPrivateProperties:{-[HKActivitySummaryQuery shouldIncludeActivitySummaryPrivateProperties](self, "shouldIncludeActivitySummaryPrivateProperties", v5.receiver, v5.super_class)}];
+  [configurationCopy setShouldIncludeActivitySummaryStatistics:{-[HKActivitySummaryQuery shouldIncludeActivitySummaryStatistics](self, "shouldIncludeActivitySummaryStatistics")}];
+  [configurationCopy setOrderByDateAscending:{-[HKActivitySummaryQuery orderByDateAscending](self, "orderByDateAscending")}];
+  [configurationCopy setLimit:{-[HKActivitySummaryQuery limit](self, "limit")}];
 }
 
-- (void)queue_queryDidDeactivate:(id)a3
+- (void)queue_queryDidDeactivate:(id)deactivate
 {
   v6.receiver = self;
   v6.super_class = HKActivitySummaryQuery;
-  [(HKQuery *)&v6 queue_queryDidDeactivate:a3];
+  [(HKQuery *)&v6 queue_queryDidDeactivate:deactivate];
   completionHandler = self->_completionHandler;
   self->_completionHandler = 0;
 
@@ -201,16 +201,16 @@ uint64_t __101__HKActivitySummaryQuery_client_deliverActivitySummaries_isFinalBa
   }
 }
 
-- (void)queue_deliverError:(id)a3
+- (void)queue_deliverError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = _Block_copy(self->_updateHandler);
   v6 = _Block_copy(self->_completionHandler);
   if (HKProgramSDKAtLeast())
   {
     initialHandlerCalled = self->_initialHandlerCalled;
     self->_initialHandlerCalled = 1;
-    v8 = [(HKQuery *)self clientQueue];
+    clientQueue = [(HKQuery *)self clientQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __45__HKActivitySummaryQuery_queue_deliverError___block_invoke;
@@ -220,11 +220,11 @@ uint64_t __101__HKActivitySummaryQuery_client_deliverActivitySummaries_isFinalBa
     v17 = v5;
     block[4] = self;
     v10 = &v16;
-    v16 = v4;
+    v16 = errorCopy;
     v18 = v6;
-    dispatch_async(v8, block);
+    dispatch_async(clientQueue, block);
 
-    v11 = v18;
+    clientQueue2 = v18;
 LABEL_5:
 
     goto LABEL_6;
@@ -232,7 +232,7 @@ LABEL_5:
 
   if (v6)
   {
-    v11 = [(HKQuery *)self clientQueue];
+    clientQueue2 = [(HKQuery *)self clientQueue];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __45__HKActivitySummaryQuery_queue_deliverError___block_invoke_2;
@@ -241,8 +241,8 @@ LABEL_5:
     v14 = v6;
     v12[4] = self;
     v10 = &v13;
-    v13 = v4;
-    dispatch_async(v11, v12);
+    v13 = errorCopy;
+    dispatch_async(clientQueue2, v12);
     goto LABEL_5;
   }
 

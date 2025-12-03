@@ -38,9 +38,9 @@
       _os_log_impl(&dword_25D171000, v10, OS_LOG_TYPE_DEFAULT, "AutoLPMManager initiating...", v14, 2u);
     }
 
-    v11 = [MEMORY[0x277CFE318] userContext];
+    userContext = [MEMORY[0x277CFE318] userContext];
     context = v2->_context;
-    v2->_context = v11;
+    v2->_context = userContext;
 
     v2->_didEnableAutoLPM = [(NSUserDefaults *)v2->_defaults BOOLForKey:@"autoLPMState"];
   }
@@ -51,10 +51,10 @@
 - (void)start
 {
   v3 = MEMORY[0x277CFE360];
-  v4 = [MEMORY[0x277CFE338] keyPathForBatteryLevel];
-  v5 = [MEMORY[0x277CFE338] keyPathForBatteryLevel];
-  v6 = [MEMORY[0x277CFE338] keyPathForBatteryLevel];
-  v7 = [v3 predicateForKeyPath:v4 withFormat:@"SELF.%@.value == %@ OR SELF.%@.value == %@", v5, &unk_286EB8BE8, v6, &unk_286EB8C00];
+  keyPathForBatteryLevel = [MEMORY[0x277CFE338] keyPathForBatteryLevel];
+  keyPathForBatteryLevel2 = [MEMORY[0x277CFE338] keyPathForBatteryLevel];
+  keyPathForBatteryLevel3 = [MEMORY[0x277CFE338] keyPathForBatteryLevel];
+  v7 = [v3 predicateForKeyPath:keyPathForBatteryLevel withFormat:@"SELF.%@.value == %@ OR SELF.%@.value == %@", keyPathForBatteryLevel2, &unk_286EB8BE8, keyPathForBatteryLevel3, &unk_286EB8C00];
 
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
@@ -64,8 +64,8 @@
   v8 = [MEMORY[0x277CFE350] localWakingRegistrationWithIdentifier:@"com.apple.osintelligence.iblm.autoLPM" contextualPredicate:v7 clientIdentifier:@"com.apple.osintelligence.iblm.contextstore-registration" callback:v19];
   [(_CDLocalContext *)self->_context registerCallback:v8];
   v9 = MEMORY[0x277CFE360];
-  v10 = [MEMORY[0x277CFE338] keyPathForLowPowerModeStatus];
-  v11 = [v9 predicateForChangeAtKeyPath:v10];
+  keyPathForLowPowerModeStatus = [MEMORY[0x277CFE338] keyPathForLowPowerModeStatus];
+  v11 = [v9 predicateForChangeAtKeyPath:keyPathForLowPowerModeStatus];
 
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
@@ -76,8 +76,8 @@
 
   [(_CDLocalContext *)self->_context registerCallback:v12];
   v13 = MEMORY[0x277CFE360];
-  v14 = [MEMORY[0x277CFE338] keyPathForPluginStatus];
-  v15 = [v13 predicateForChangeAtKeyPath:v14];
+  keyPathForPluginStatus = [MEMORY[0x277CFE338] keyPathForPluginStatus];
+  v15 = [v13 predicateForChangeAtKeyPath:keyPathForPluginStatus];
 
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
@@ -104,24 +104,24 @@
 - (BOOL)isPluggedIn
 {
   context = self->_context;
-  v3 = [MEMORY[0x277CFE338] keyPathForBatteryStateDataDictionary];
-  v4 = [(_CDLocalContext *)context objectForKeyedSubscript:v3];
+  keyPathForBatteryStateDataDictionary = [MEMORY[0x277CFE338] keyPathForBatteryStateDataDictionary];
+  v4 = [(_CDLocalContext *)context objectForKeyedSubscript:keyPathForBatteryStateDataDictionary];
 
-  v5 = [MEMORY[0x277CFE338] batteryExternalConnectedKey];
-  v6 = [v4 objectForKeyedSubscript:v5];
-  v7 = [v6 BOOLValue];
+  batteryExternalConnectedKey = [MEMORY[0x277CFE338] batteryExternalConnectedKey];
+  v6 = [v4 objectForKeyedSubscript:batteryExternalConnectedKey];
+  bOOLValue = [v6 BOOLValue];
 
-  return v7;
+  return bOOLValue;
 }
 
 - (void)engageAutoLPM
 {
   v3 = +[_OSIBLMState sharedInstance];
-  v4 = [v3 isIBLMCurrentlyEnabled];
+  isIBLMCurrentlyEnabled = [v3 isIBLMCurrentlyEnabled];
 
   v5 = [(_OSIAutoLPMManager *)self log];
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
-  if (v4)
+  if (isIBLMCurrentlyEnabled)
   {
     if (v6)
     {
@@ -129,8 +129,8 @@
       _os_log_impl(&dword_25D171000, v5, OS_LOG_TYPE_DEFAULT, "Engaging Auto LPM", buf, 2u);
     }
 
-    v7 = [MEMORY[0x277D244D8] sharedInstance];
-    v8 = [v7 setPowerMode:1 fromSource:*MEMORY[0x277D244E0]];
+    mEMORY[0x277D244D8] = [MEMORY[0x277D244D8] sharedInstance];
+    v8 = [mEMORY[0x277D244D8] setPowerMode:1 fromSource:*MEMORY[0x277D244E0]];
 
     if (v8)
     {
@@ -175,11 +175,11 @@
 - (void)disengageAutoLPM
 {
   v3 = +[_OSIBLMState sharedInstance];
-  v4 = [v3 isIBLMCurrentlyEnabled];
+  isIBLMCurrentlyEnabled = [v3 isIBLMCurrentlyEnabled];
 
   v5 = [(_OSIAutoLPMManager *)self log];
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
-  if (v4)
+  if (isIBLMCurrentlyEnabled)
   {
     if (v6)
     {
@@ -187,8 +187,8 @@
       _os_log_impl(&dword_25D171000, v5, OS_LOG_TYPE_DEFAULT, "Disengaging Auto LPM", buf, 2u);
     }
 
-    v7 = [MEMORY[0x277D244D8] sharedInstance];
-    v8 = [v7 setPowerMode:0 fromSource:*MEMORY[0x277D244E0]];
+    mEMORY[0x277D244D8] = [MEMORY[0x277D244D8] sharedInstance];
+    v8 = [mEMORY[0x277D244D8] setPowerMode:0 fromSource:*MEMORY[0x277D244E0]];
 
     if (v8)
     {
@@ -224,12 +224,12 @@
 
 - (void)evaluateAutoLPMEngagement
 {
-  v3 = [(_OSIAutoLPMManager *)self context];
-  v4 = [MEMORY[0x277CFE338] keyPathForLowPowerModeStatus];
-  v5 = [v3 objectForKeyedSubscript:v4];
-  v6 = [v5 BOOLValue];
+  context = [(_OSIAutoLPMManager *)self context];
+  keyPathForLowPowerModeStatus = [MEMORY[0x277CFE338] keyPathForLowPowerModeStatus];
+  v5 = [context objectForKeyedSubscript:keyPathForLowPowerModeStatus];
+  bOOLValue = [v5 BOOLValue];
 
-  if (v6)
+  if (bOOLValue)
   {
     log = self->_log;
     if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
@@ -255,14 +255,14 @@
 - (void)evaluateAutoLPMDisengagement
 {
   context = self->_context;
-  v4 = [MEMORY[0x277CFE338] keyPathForBatteryStateDataDictionary];
-  v8 = [(_CDLocalContext *)context objectForKeyedSubscript:v4];
+  keyPathForBatteryStateDataDictionary = [MEMORY[0x277CFE338] keyPathForBatteryStateDataDictionary];
+  v8 = [(_CDLocalContext *)context objectForKeyedSubscript:keyPathForBatteryStateDataDictionary];
 
-  v5 = [MEMORY[0x277CFE338] batteryPercentageKey];
-  v6 = [v8 objectForKeyedSubscript:v5];
-  v7 = [v6 integerValue];
+  batteryPercentageKey = [MEMORY[0x277CFE338] batteryPercentageKey];
+  v6 = [v8 objectForKeyedSubscript:batteryPercentageKey];
+  integerValue = [v6 integerValue];
 
-  if (v7 >= 20 && [(_OSIAutoLPMManager *)self didEnableAutoLPM])
+  if (integerValue >= 20 && [(_OSIAutoLPMManager *)self didEnableAutoLPM])
   {
     [(_OSIAutoLPMManager *)self disengageAutoLPM];
   }

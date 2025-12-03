@@ -1,6 +1,6 @@
 @interface TUIWPDocument
 - (TUIWPDocument)init;
-- (TUIWPDocument)initWithContext:(id)a3;
+- (TUIWPDocument)initWithContext:(id)context;
 @end
 
 @implementation TUIWPDocument
@@ -13,15 +13,15 @@
   return v4;
 }
 
-- (TUIWPDocument)initWithContext:(id)a3
+- (TUIWPDocument)initWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v9.receiver = self;
   v9.super_class = TUIWPDocument;
-  v5 = [(TUIWPDocument *)&v9 initWithContext:v4];
+  v5 = [(TUIWPDocument *)&v9 initWithContext:contextCopy];
   if (v5)
   {
-    v6 = [[TSSStylesheet alloc] initWithContext:v4];
+    v6 = [[TSSStylesheet alloc] initWithContext:contextCopy];
     stylesheet = v5->_stylesheet;
     v5->_stylesheet = v6;
 

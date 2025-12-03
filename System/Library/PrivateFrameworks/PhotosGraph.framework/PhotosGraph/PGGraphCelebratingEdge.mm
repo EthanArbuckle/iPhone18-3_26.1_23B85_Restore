@@ -1,15 +1,15 @@
 @interface PGGraphCelebratingEdge
 + (id)filter;
-- (id)initFromMomentNode:(id)a3 toHolidayNode:(id)a4;
+- (id)initFromMomentNode:(id)node toHolidayNode:(id)holidayNode;
 @end
 
 @implementation PGGraphCelebratingEdge
 
-- (id)initFromMomentNode:(id)a3 toHolidayNode:(id)a4
+- (id)initFromMomentNode:(id)node toHolidayNode:(id)holidayNode
 {
   v5.receiver = self;
   v5.super_class = PGGraphCelebratingEdge;
-  return [(PGGraphEdge *)&v5 initWithSourceNode:a3 targetNode:a4];
+  return [(PGGraphEdge *)&v5 initWithSourceNode:node targetNode:holidayNode];
 }
 
 + (id)filter

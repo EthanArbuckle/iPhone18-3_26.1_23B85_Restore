@@ -1,20 +1,20 @@
 @interface UIKBDictationDisplayView
-- (UIKBDictationDisplayView)initWithFrame:(CGRect)a3 keyplane:(id)a4 key:(id)a5;
+- (UIKBDictationDisplayView)initWithFrame:(CGRect)frame keyplane:(id)keyplane key:(id)key;
 - (void)dealloc;
 - (void)prepareForDisplay;
 - (void)removeFromSuperview;
-- (void)setRenderConfig:(id)a3;
+- (void)setRenderConfig:(id)config;
 - (void)updateDictationColor;
-- (void)updateForKeyplane:(id)a3 key:(id)a4;
+- (void)updateForKeyplane:(id)keyplane key:(id)key;
 @end
 
 @implementation UIKBDictationDisplayView
 
-- (UIKBDictationDisplayView)initWithFrame:(CGRect)a3 keyplane:(id)a4 key:(id)a5
+- (UIKBDictationDisplayView)initWithFrame:(CGRect)frame keyplane:(id)keyplane key:(id)key
 {
   v8.receiver = self;
   v8.super_class = UIKBDictationDisplayView;
-  v5 = [(UIKBKeyView *)&v8 initWithFrame:a4 keyplane:a5 key:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v5 = [(UIKBKeyView *)&v8 initWithFrame:keyplane keyplane:key key:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v6 = v5;
   if (v5)
   {
@@ -26,13 +26,13 @@
 
 - (void)dealloc
 {
-  v3 = [(UIKBDictationDisplayView *)self dictationView];
-  v4 = [v3 superview];
+  dictationView = [(UIKBDictationDisplayView *)self dictationView];
+  superview = [dictationView superview];
 
-  if (v4 == self)
+  if (superview == self)
   {
-    v5 = [(UIKBDictationDisplayView *)self dictationView];
-    [v5 removeFromSuperview];
+    dictationView2 = [(UIKBDictationDisplayView *)self dictationView];
+    [dictationView2 removeFromSuperview];
   }
 
   [(UIKBDictationDisplayView *)self setDictationView:0];
@@ -41,39 +41,39 @@
   [(UIKBKeyView *)&v6 dealloc];
 }
 
-- (void)setRenderConfig:(id)a3
+- (void)setRenderConfig:(id)config
 {
   v4.receiver = self;
   v4.super_class = UIKBDictationDisplayView;
-  [(UIKBKeyView *)&v4 setRenderConfig:a3];
+  [(UIKBKeyView *)&v4 setRenderConfig:config];
   [(UIKBDictationDisplayView *)self updateDictationColor];
 }
 
 - (void)updateDictationColor
 {
-  v3 = [(UIKBDictationDisplayView *)self dictationView];
+  dictationView = [(UIKBDictationDisplayView *)self dictationView];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v6 = [(UIKBDictationDisplayView *)self dictationView];
-    v5 = [(UIKBKeyView *)self renderConfig];
-    [v6 setRenderConfig:v5];
+    dictationView2 = [(UIKBDictationDisplayView *)self dictationView];
+    renderConfig = [(UIKBKeyView *)self renderConfig];
+    [dictationView2 setRenderConfig:renderConfig];
   }
 }
 
-- (void)updateForKeyplane:(id)a3 key:(id)a4
+- (void)updateForKeyplane:(id)keyplane key:(id)key
 {
-  v4 = [UIDictationController sharedInstance:a3];
+  v4 = [UIDictationController sharedInstance:keyplane];
   [v4 startDictation];
 }
 
 - (void)prepareForDisplay
 {
-  v3 = [(UIKBDictationDisplayView *)self dictationView];
+  dictationView = [(UIKBDictationDisplayView *)self dictationView];
 
-  if (!v3)
+  if (!dictationView)
   {
     v4 = +[UIDictationView sharedInstance];
     [v4 setDisplayDelegate:0];
@@ -87,16 +87,16 @@
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  v14 = [(UIKBDictationDisplayView *)self dictationView];
-  [v14 setFrame:{v7, v9, v11, v13}];
+  dictationView2 = [(UIKBDictationDisplayView *)self dictationView];
+  [dictationView2 setFrame:{v7, v9, v11, v13}];
 
-  v15 = [(UIKBDictationDisplayView *)self dictationView];
-  v16 = [v15 superview];
+  dictationView3 = [(UIKBDictationDisplayView *)self dictationView];
+  superview = [dictationView3 superview];
 
-  if (v16 != self)
+  if (superview != self)
   {
-    v17 = [(UIKBDictationDisplayView *)self dictationView];
-    [(UIView *)self addSubview:v17];
+    dictationView4 = [(UIKBDictationDisplayView *)self dictationView];
+    [(UIView *)self addSubview:dictationView4];
   }
 
   [(UIKBDictationDisplayView *)self updateDictationColor];
@@ -113,13 +113,13 @@
     [v3 stopDictation];
   }
 
-  v4 = [(UIKBDictationDisplayView *)self dictationView];
-  v5 = [v4 superview];
+  dictationView = [(UIKBDictationDisplayView *)self dictationView];
+  superview = [dictationView superview];
 
-  if (v5 == self)
+  if (superview == self)
   {
-    v6 = [(UIKBDictationDisplayView *)self dictationView];
-    [v6 removeFromSuperview];
+    dictationView2 = [(UIKBDictationDisplayView *)self dictationView];
+    [dictationView2 removeFromSuperview];
   }
 }
 

@@ -1,16 +1,16 @@
 @interface TSUDispatchData
 - (OS_dispatch_data)data;
-- (TSUDispatchData)initWithData:(id)a3;
-- (void)append:(id)a3;
+- (TSUDispatchData)initWithData:(id)data;
+- (void)append:(id)append;
 - (void)defragmentData;
 @end
 
 @implementation TSUDispatchData
 
-- (TSUDispatchData)initWithData:(id)a3
+- (TSUDispatchData)initWithData:(id)data
 {
-  v5 = a3;
-  if (v5)
+  dataCopy = data;
+  if (dataCopy)
   {
     v10.receiver = self;
     v10.super_class = TSUDispatchData;
@@ -18,33 +18,33 @@
     v7 = v6;
     if (v6)
     {
-      objc_storeStrong(&v6->_data, a3);
-      v7->_size = dispatch_data_get_size(v5);
-      objc_storeStrong(&v7->_fragmentedData, a3);
+      objc_storeStrong(&v6->_data, data);
+      v7->_size = dispatch_data_get_size(dataCopy);
+      objc_storeStrong(&v7->_fragmentedData, data);
       v7->_fragmentsCount = v7->_size != 0;
       v7->_maxFragmentsCount = 1000;
     }
 
     self = v7;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (void)append:(id)a3
+- (void)append:(id)append
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  appendCopy = append;
+  v5 = appendCopy;
+  if (appendCopy)
   {
-    data2 = v4;
-    size = dispatch_data_get_size(v4);
+    data2 = appendCopy;
+    size = dispatch_data_get_size(appendCopy);
     v5 = data2;
     if (size)
     {

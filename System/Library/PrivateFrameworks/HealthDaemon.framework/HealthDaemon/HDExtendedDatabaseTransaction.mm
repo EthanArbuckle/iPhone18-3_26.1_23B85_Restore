@@ -1,35 +1,35 @@
 @interface HDExtendedDatabaseTransaction
-- (BOOL)commitWithErrorOut:(id *)a3;
-- (BOOL)performInTransactionWithErrorOut:(id *)a3 block:(id)a4;
-- (BOOL)rollbackDueToError:(id)a3 errorOut:(id *)a4;
+- (BOOL)commitWithErrorOut:(id *)out;
+- (BOOL)performInTransactionWithErrorOut:(id *)out block:(id)block;
+- (BOOL)rollbackDueToError:(id)error errorOut:(id *)out;
 - (HDDatabase)database;
-- (HDExtendedDatabaseTransaction)initWithDatabase:(id)a3 context:(id)a4 transactionTimeout:(double)a5 continuationTimeout:(double)a6 error:(id *)a7;
+- (HDExtendedDatabaseTransaction)initWithDatabase:(id)database context:(id)context transactionTimeout:(double)timeout continuationTimeout:(double)continuationTimeout error:(id *)error;
 - (void)_enableAutomaticRollbackTimer;
 - (void)dealloc;
 @end
 
 @implementation HDExtendedDatabaseTransaction
 
-- (HDExtendedDatabaseTransaction)initWithDatabase:(id)a3 context:(id)a4 transactionTimeout:(double)a5 continuationTimeout:(double)a6 error:(id *)a7
+- (HDExtendedDatabaseTransaction)initWithDatabase:(id)database context:(id)context transactionTimeout:(double)timeout continuationTimeout:(double)continuationTimeout error:(id *)error
 {
-  v13 = a3;
-  v14 = a4;
-  if (!v13)
+  databaseCopy = database;
+  contextCopy = context;
+  if (!databaseCopy)
   {
-    v39 = [MEMORY[0x277CCA890] currentHandler];
-    [v39 handleFailureInMethod:a2 object:self file:@"HDExtendedDatabaseTransaction.m" lineNumber:52 description:{@"Invalid parameter not satisfying: %@", @"database != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDExtendedDatabaseTransaction.m" lineNumber:52 description:{@"Invalid parameter not satisfying: %@", @"database != nil"}];
   }
 
-  if (a5 <= 0.0)
+  if (timeout <= 0.0)
   {
-    v40 = [MEMORY[0x277CCA890] currentHandler];
-    [v40 handleFailureInMethod:a2 object:self file:@"HDExtendedDatabaseTransaction.m" lineNumber:53 description:{@"Invalid parameter not satisfying: %@", @"transactionTimeout > 0"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"HDExtendedDatabaseTransaction.m" lineNumber:53 description:{@"Invalid parameter not satisfying: %@", @"transactionTimeout > 0"}];
   }
 
-  if (a6 <= 0.0)
+  if (continuationTimeout <= 0.0)
   {
-    v41 = [MEMORY[0x277CCA890] currentHandler];
-    [v41 handleFailureInMethod:a2 object:self file:@"HDExtendedDatabaseTransaction.m" lineNumber:54 description:{@"Invalid parameter not satisfying: %@", @"continuationTimeout > 0"}];
+    currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"HDExtendedDatabaseTransaction.m" lineNumber:54 description:{@"Invalid parameter not satisfying: %@", @"continuationTimeout > 0"}];
   }
 
   v50.receiver = self;
@@ -38,12 +38,12 @@
   if (v15)
   {
     v16 = v15;
-    objc_storeWeak(&v15->_database, v13);
-    *(v16 + 96) = a5;
-    *(v16 + 104) = a6;
-    v17 = [MEMORY[0x277CCAD78] UUID];
+    objc_storeWeak(&v15->_database, databaseCopy);
+    *(v16 + 96) = timeout;
+    *(v16 + 104) = continuationTimeout;
+    uUID = [MEMORY[0x277CCAD78] UUID];
     v18 = *(v16 + 16);
-    *(v16 + 16) = v17;
+    *(v16 + 16) = uUID;
 
     v19 = HKCreateSerialDispatchQueue();
     v20 = *(v16 + 32);
@@ -84,7 +84,7 @@
     block[3] = &unk_278613920;
     v32 = v16;
     v45 = v32;
-    v46 = v14;
+    v46 = contextCopy;
     dispatch_async(v31, block);
     dispatch_semaphore_wait(*(v16 + 48), 0xFFFFFFFFFFFFFFFFLL);
     lastError = v32->_lastError;
@@ -92,10 +92,10 @@
     {
       v34 = lastError;
       v35 = v34;
-      if (a7)
+      if (error)
       {
         v36 = v34;
-        *a7 = v35;
+        *error = v35;
       }
 
       else
@@ -161,15 +161,15 @@ void __103__HDExtendedDatabaseTransaction_initWithDatabase_context_transactionTi
 
 - (void)_enableAutomaticRollbackTimer
 {
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 64);
+    v2 = *(self + 64);
     if (v2)
     {
-      if (*(a1 + 80) <= 1uLL)
+      if (*(self + 80) <= 1uLL)
       {
-        v3 = dispatch_time(0, (*(a1 + 104) * 1000000000.0));
-        v4 = (*(a1 + 104) * 1000000000.0);
+        v3 = dispatch_time(0, (*(self + 104) * 1000000000.0));
+        v4 = (*(self + 104) * 1000000000.0);
 
         dispatch_source_set_timer(v2, v3, 0xFFFFFFFFFFFFFFFFLL, v4);
       }
@@ -262,9 +262,9 @@ void __103__HDExtendedDatabaseTransaction_initWithDatabase_context_transactionTi
   [(HDExtendedDatabaseTransaction *)&v5 dealloc];
 }
 
-- (BOOL)performInTransactionWithErrorOut:(id *)a3 block:(id)a4
+- (BOOL)performInTransactionWithErrorOut:(id *)out block:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -281,7 +281,7 @@ void __103__HDExtendedDatabaseTransaction_initWithDatabase_context_transactionTi
   v14[2] = __72__HDExtendedDatabaseTransaction_performInTransactionWithErrorOut_block___block_invoke;
   v14[3] = &unk_27861E9A8;
   v14[4] = self;
-  v8 = v6;
+  v8 = blockCopy;
   v15 = v8;
   v16 = &v18;
   v17 = &v22;
@@ -293,10 +293,10 @@ void __103__HDExtendedDatabaseTransaction_initWithDatabase_context_transactionTi
     v11 = v10;
     if (v10)
     {
-      if (a3)
+      if (out)
       {
         v12 = v10;
-        *a3 = v11;
+        *out = v11;
       }
 
       else
@@ -350,30 +350,30 @@ void __72__HDExtendedDatabaseTransaction_performInTransactionWithErrorOut_block_
   objc_storeStrong(v11, v10);
 }
 
-- (BOOL)commitWithErrorOut:(id *)a3
+- (BOOL)commitWithErrorOut:(id *)out
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __52__HDExtendedDatabaseTransaction_commitWithErrorOut___block_invoke;
   v4[3] = &unk_278616048;
   v4[4] = self;
-  return [(HDExtendedDatabaseTransaction *)self performInTransactionWithErrorOut:a3 block:v4];
+  return [(HDExtendedDatabaseTransaction *)self performInTransactionWithErrorOut:out block:v4];
 }
 
-- (BOOL)rollbackDueToError:(id)a3 errorOut:(id *)a4
+- (BOOL)rollbackDueToError:(id)error errorOut:(id *)out
 {
-  v6 = a3;
+  errorCopy = error;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __61__HDExtendedDatabaseTransaction_rollbackDueToError_errorOut___block_invoke;
   v9[3] = &unk_278613218;
   v9[4] = self;
-  v10 = v6;
-  v7 = v6;
-  [(HDExtendedDatabaseTransaction *)self performInTransactionWithErrorOut:a4 block:v9];
-  LOBYTE(a4) = self->_status == 3;
+  v10 = errorCopy;
+  v7 = errorCopy;
+  [(HDExtendedDatabaseTransaction *)self performInTransactionWithErrorOut:out block:v9];
+  LOBYTE(out) = self->_status == 3;
 
-  return a4;
+  return out;
 }
 
 uint64_t __61__HDExtendedDatabaseTransaction_rollbackDueToError_errorOut___block_invoke(uint64_t a1)

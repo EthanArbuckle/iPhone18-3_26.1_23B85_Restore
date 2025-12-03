@@ -1,7 +1,7 @@
 @interface MFBufferedDataConsumer
 - (MFBufferedDataConsumer)init;
 - (id)data;
-- (int64_t)appendData:(id)a3;
+- (int64_t)appendData:(id)data;
 - (void)dealloc;
 - (void)done;
 @end
@@ -81,14 +81,14 @@ LABEL_3:
   return result;
 }
 
-- (int64_t)appendData:(id)a3
+- (int64_t)appendData:(id)data
 {
   if (self->_complete)
   {
     return -1;
   }
 
-  v3 = [a3 length];
+  v3 = [data length];
   v6 = [(NSMutableData *)self->_unwritten length];
   if (v6 + v3 < sDefaultThreshold)
   {
@@ -99,8 +99,8 @@ LABEL_3:
   if (!self->_path)
   {
     pthread_once(&sMFDataOnce, _MFDataInit);
-    v8 = [MEMORY[0x1E696AC08] defaultManager];
-    v9 = [v8 mf_makeUniqueFileInDirectory:sMFDataPath];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    v9 = [defaultManager mf_makeUniqueFileInDirectory:sMFDataPath];
     self->_path = v9;
     if (!v9)
     {
@@ -138,11 +138,11 @@ LABEL_10:
 LABEL_13:
   if (v3 < sDefaultThreshold)
   {
-    [(NSMutableData *)self->_unwritten appendData:a3];
+    [(NSMutableData *)self->_unwritten appendData:data];
     return v3;
   }
 
-  v3 = write(self->_fd, [a3 bytes], v3);
+  v3 = write(self->_fd, [data bytes], v3);
   if (v3 != -1)
   {
     return v3;

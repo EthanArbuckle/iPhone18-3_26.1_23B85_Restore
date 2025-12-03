@@ -1,27 +1,27 @@
 @interface SearchUIRowCardSectionViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)_axApplyTrailingImageView:(id)a3;
-- (void)updateWithRowModel:(id)a3;
+- (void)_axApplyTrailingImageView:(id)view;
+- (void)updateWithRowModel:(id)model;
 @end
 
 @implementation SearchUIRowCardSectionViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SearchUIRowCardSectionView" isKindOfClass:@"SearchUICardSectionView"];
-  [v3 validateClass:@"SearchUICardSectionView" hasInstanceMethod:@"section" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SearchUIRowCardSectionView" isKindOfClass:@"SearchUICardSectionView"];
-  [v3 validateClass:@"SearchUICardSectionView" hasInstanceMethod:@"rowModel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SearchUICardSectionView" hasInstanceMethod:@"contentView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"TLKSimpleRowView" hasInstanceMethod:@"trailingImageView" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SearchUIRowCardSectionView" isKindOfClass:@"SearchUICardSectionView"];
+  [validationsCopy validateClass:@"SearchUICardSectionView" hasInstanceMethod:@"section" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SearchUIRowCardSectionView" isKindOfClass:@"SearchUICardSectionView"];
+  [validationsCopy validateClass:@"SearchUICardSectionView" hasInstanceMethod:@"rowModel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SearchUICardSectionView" hasInstanceMethod:@"contentView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"TLKSimpleRowView" hasInstanceMethod:@"trailingImageView" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel
 {
-  v2 = [(SearchUIRowCardSectionViewAccessibility *)self _accessibleSubviews];
+  _accessibleSubviews = [(SearchUIRowCardSectionViewAccessibility *)self _accessibleSubviews];
   v3 = MEMORY[0x29ED341C0]();
 
   return v3;
@@ -36,38 +36,38 @@
   [(SearchUIRowCardSectionViewAccessibility *)self _axApplyTrailingImageView:v3];
 }
 
-- (void)_axApplyTrailingImageView:(id)a3
+- (void)_axApplyTrailingImageView:(id)view
 {
   v21 = *MEMORY[0x29EDCA608];
-  v4 = a3;
+  viewCopy = view;
   NSClassFromString(&cfstr_Searchuicardse_2.isa);
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 cardSection];
-    v6 = [v5 punchoutOptions];
-    v7 = [v6 firstObject];
-    v8 = [v7 bundleIdentifier];
+    cardSection = [viewCopy cardSection];
+    punchoutOptions = [cardSection punchoutOptions];
+    firstObject = [punchoutOptions firstObject];
+    bundleIdentifier = [firstObject bundleIdentifier];
 
-    if (!v8)
+    if (!bundleIdentifier)
     {
-      v9 = [v5 image];
+      image = [cardSection image];
       NSClassFromString(&cfstr_Sfappiconimage.isa);
       if (objc_opt_isKindOfClass())
       {
-        if ([v9 iconType] == 1)
+        if ([image iconType] == 1)
         {
-          v8 = @"web-browser";
+          bundleIdentifier = @"web-browser";
         }
 
         else
         {
-          v8 = 0;
+          bundleIdentifier = 0;
         }
       }
 
       else
       {
-        v8 = 0;
+        bundleIdentifier = 0;
       }
     }
 
@@ -88,19 +88,19 @@
     }
 
     [v11 setIsAccessibilityElement:v11 != 0];
-    [v11 setAccessibilityIdentifier:v8];
+    [v11 setAccessibilityIdentifier:bundleIdentifier];
   }
 
   v16 = *MEMORY[0x29EDCA608];
 }
 
-- (void)updateWithRowModel:(id)a3
+- (void)updateWithRowModel:(id)model
 {
   v5.receiver = self;
   v5.super_class = SearchUIRowCardSectionViewAccessibility;
-  v4 = a3;
-  [(SearchUIRowCardSectionViewAccessibility *)&v5 updateWithRowModel:v4];
-  [(SearchUIRowCardSectionViewAccessibility *)self _axApplyTrailingImageView:v4, v5.receiver, v5.super_class];
+  modelCopy = model;
+  [(SearchUIRowCardSectionViewAccessibility *)&v5 updateWithRowModel:modelCopy];
+  [(SearchUIRowCardSectionViewAccessibility *)self _axApplyTrailingImageView:modelCopy, v5.receiver, v5.super_class];
 }
 
 @end

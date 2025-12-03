@@ -1,10 +1,10 @@
 @interface SavedRecordingSearchIndexController
-+ (id)_lookupSearchableItemForRecordingInModel:(id)a3 recordingURI:(id)a4;
-- (BOOL)deleteSearchMetadata:(id *)a3;
++ (id)_lookupSearchableItemForRecordingInModel:(id)model recordingURI:(id)i;
+- (BOOL)deleteSearchMetadata:(id *)metadata;
 - (SavedRecordingSearchIndexController)init;
 - (id)_voiceMemosSearchableIndex;
-- (void)_reloadSearchMetadataAsReset:(BOOL)a3 completionBlock:(id)a4;
-- (void)_updateSearchMetadataWithRecordingURIsToInsert:(id)a3 recordingURIsToUpdate:(id)a4 recordingURIsToDelete:(id)a5 completionBlock:(id)a6;
+- (void)_reloadSearchMetadataAsReset:(BOOL)reset completionBlock:(id)block;
+- (void)_updateSearchMetadataWithRecordingURIsToInsert:(id)insert recordingURIsToUpdate:(id)update recordingURIsToDelete:(id)delete completionBlock:(id)block;
 @end
 
 @implementation SavedRecordingSearchIndexController
@@ -24,7 +24,7 @@
   return v2;
 }
 
-- (BOOL)deleteSearchMetadata:(id *)a3
+- (BOOL)deleteSearchMetadata:(id *)metadata
 {
   v13 = 0;
   v14 = &v13;
@@ -45,9 +45,9 @@
     v11 = v7;
     [(CSSearchableIndex *)searchableIndex deleteAllSearchableItemsWithCompletionHandler:v10];
     dispatch_semaphore_wait(v7, 0xFFFFFFFFFFFFFFFFLL);
-    if (a3)
+    if (metadata)
     {
-      *a3 = v14[5];
+      *metadata = v14[5];
     }
 
     v8 = v14[5] != 0;
@@ -79,51 +79,51 @@
   return searchableIndex;
 }
 
-- (void)_reloadSearchMetadataAsReset:(BOOL)a3 completionBlock:(id)a4
+- (void)_reloadSearchMetadataAsReset:(BOOL)reset completionBlock:(id)block
 {
-  v6 = a4;
-  v7 = [(SavedRecordingSearchIndexController *)self _voiceMemosSearchableIndex];
-  v8 = [[SerializedIndexUpdateTransaction alloc] initWithSearchIndex:v7 identifier:@"SavedRecordingSearchIndexController.reload"];
+  blockCopy = block;
+  _voiceMemosSearchableIndex = [(SavedRecordingSearchIndexController *)self _voiceMemosSearchableIndex];
+  v8 = [[SerializedIndexUpdateTransaction alloc] initWithSearchIndex:_voiceMemosSearchableIndex identifier:@"SavedRecordingSearchIndexController.reload"];
   v9 = dispatch_queue_create(0, 0);
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_10000D004;
   v16[3] = &unk_1000557F8;
-  v19 = a3;
+  resetCopy = reset;
   v17 = v8;
-  v18 = v7;
+  v18 = _voiceMemosSearchableIndex;
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_10000D330;
   v13[3] = &unk_1000554A8;
   v14 = v17;
-  v15 = v6;
+  v15 = blockCopy;
   v10 = v17;
-  v11 = v6;
-  v12 = v7;
+  v11 = blockCopy;
+  v12 = _voiceMemosSearchableIndex;
   [(SerializedIndexUpdateTransaction *)v10 performTransactionOnQueue:v9 processingBlock:v16 finishedBlock:v13];
 }
 
-- (void)_updateSearchMetadataWithRecordingURIsToInsert:(id)a3 recordingURIsToUpdate:(id)a4 recordingURIsToDelete:(id)a5 completionBlock:(id)a6
+- (void)_updateSearchMetadataWithRecordingURIsToInsert:(id)insert recordingURIsToUpdate:(id)update recordingURIsToDelete:(id)delete completionBlock:(id)block
 {
-  v10 = a6;
-  if (a3)
+  blockCopy = block;
+  if (insert)
   {
-    v11 = a3;
+    insertCopy = insert;
   }
 
   else
   {
-    v11 = &__NSArray0__struct;
+    insertCopy = &__NSArray0__struct;
   }
 
-  v12 = v11;
-  v13 = a5;
-  v14 = a4;
-  v15 = v14;
-  if (v14)
+  v12 = insertCopy;
+  deleteCopy = delete;
+  updateCopy = update;
+  v15 = updateCopy;
+  if (updateCopy)
   {
-    v16 = v14;
+    v16 = updateCopy;
   }
 
   else
@@ -133,9 +133,9 @@
 
   v17 = v16;
 
-  if (v13)
+  if (deleteCopy)
   {
-    v18 = v13;
+    v18 = deleteCopy;
   }
 
   else
@@ -145,8 +145,8 @@
 
   v19 = v18;
 
-  v20 = [(SavedRecordingSearchIndexController *)self _voiceMemosSearchableIndex];
-  v21 = [[SerializedIndexUpdateTransaction alloc] initWithSearchIndex:v20 identifier:@"SavedRecordingSearchIndexController.update"];
+  _voiceMemosSearchableIndex = [(SavedRecordingSearchIndexController *)self _voiceMemosSearchableIndex];
+  v21 = [[SerializedIndexUpdateTransaction alloc] initWithSearchIndex:_voiceMemosSearchableIndex identifier:@"SavedRecordingSearchIndexController.update"];
   processingQueue = self->_processingQueue;
   v32[0] = _NSConcreteStackBlock;
   v32[1] = 3221225472;
@@ -156,25 +156,25 @@
   v34 = v17;
   v35 = v19;
   v36 = v21;
-  v37 = v20;
+  v37 = _voiceMemosSearchableIndex;
   v29[0] = _NSConcreteStackBlock;
   v29[1] = 3221225472;
   v29[2] = sub_10000D950;
   v29[3] = &unk_1000554A8;
   v30 = v36;
-  v31 = v10;
+  v31 = blockCopy;
   v23 = v36;
-  v24 = v10;
-  v25 = v20;
+  v24 = blockCopy;
+  v25 = _voiceMemosSearchableIndex;
   v26 = v19;
   v27 = v17;
   v28 = v12;
   [(SerializedIndexUpdateTransaction *)v23 performTransactionOnQueue:processingQueue processingBlock:v32 finishedBlock:v29];
 }
 
-+ (id)_lookupSearchableItemForRecordingInModel:(id)a3 recordingURI:(id)a4
++ (id)_lookupSearchableItemForRecordingInModel:(id)model recordingURI:(id)i
 {
-  v4 = [a3 recordingWithURIRepresentation:a4];
+  v4 = [model recordingWithURIRepresentation:i];
   v5 = RCSearchableItemForRecording();
 
   return v5;

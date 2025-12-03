@@ -1,15 +1,15 @@
 @interface PKPaymentOfferWebServiceDynamicContentResponse
-- (PKPaymentOfferWebServiceDynamicContentResponse)initWithData:(id)a3;
+- (PKPaymentOfferWebServiceDynamicContentResponse)initWithData:(id)data;
 @end
 
 @implementation PKPaymentOfferWebServiceDynamicContentResponse
 
-- (PKPaymentOfferWebServiceDynamicContentResponse)initWithData:(id)a3
+- (PKPaymentOfferWebServiceDynamicContentResponse)initWithData:(id)data
 {
   v21 = *MEMORY[0x1E69E9840];
   v16.receiver = self;
   v16.super_class = PKPaymentOfferWebServiceDynamicContentResponse;
-  v3 = [(PKWebServiceResponse *)&v16 initWithData:a3];
+  v3 = [(PKWebServiceResponse *)&v16 initWithData:data];
   v4 = v3;
   if (!v3)
   {
@@ -18,11 +18,11 @@ LABEL_6:
     goto LABEL_10;
   }
 
-  v5 = [(PKWebServiceResponse *)v3 JSONObject];
+  jSONObject = [(PKWebServiceResponse *)v3 JSONObject];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v5 PKDictionaryForKey:@"dynamicContent"];
+    v6 = [jSONObject PKDictionaryForKey:@"dynamicContent"];
     if ([v6 count])
     {
       v7 = [[PKPaymentOfferDynamicContent alloc] initWithDictionary:v6];

@@ -1,25 +1,25 @@
 @interface ATXMPBAppLaunchOverallCaptureRateTracker
-- (BOOL)isEqual:(id)a3;
-- (id)captureTypeAsString:(int)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)captureTypeAsString:(int)string;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)iconLocationAsString:(int)a3;
-- (int)StringAsCaptureType:(id)a3;
-- (int)StringAsIconLocation:(id)a3;
+- (id)iconLocationAsString:(int)string;
+- (int)StringAsCaptureType:(id)type;
+- (int)StringAsIconLocation:(id)location;
 - (int)captureType;
 - (int)iconLocation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasAppLibraryEnabled:(BOOL)a3;
-- (void)setHasAppPredictionPanelEnabled:(BOOL)a3;
-- (void)setHasAppPredictionPanelTodayEnabled:(BOOL)a3;
-- (void)setHasIconLocation:(BOOL)a3;
-- (void)setHasSpotlightEnabled:(BOOL)a3;
-- (void)setHasSuggestionsWidgetEnabled:(BOOL)a3;
-- (void)setHasSuggestionsWidgetTodayEnabled:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasAppLibraryEnabled:(BOOL)enabled;
+- (void)setHasAppPredictionPanelEnabled:(BOOL)enabled;
+- (void)setHasAppPredictionPanelTodayEnabled:(BOOL)enabled;
+- (void)setHasIconLocation:(BOOL)location;
+- (void)setHasSpotlightEnabled:(BOOL)enabled;
+- (void)setHasSuggestionsWidgetEnabled:(BOOL)enabled;
+- (void)setHasSuggestionsWidgetTodayEnabled:(BOOL)enabled;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ATXMPBAppLaunchOverallCaptureRateTracker
@@ -37,70 +37,70 @@
   }
 }
 
-- (id)captureTypeAsString:(int)a3
+- (id)captureTypeAsString:(int)string
 {
-  if (a3 >= 0xA)
+  if (string >= 0xA)
   {
-    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&a3];
+    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   else
   {
-    v4 = off_1E80C6698[a3];
+    v4 = off_1E80C6698[string];
   }
 
   return v4;
 }
 
-- (int)StringAsCaptureType:(id)a3
+- (int)StringAsCaptureType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Other"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"Other"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"HomeScreen"])
+  else if ([typeCopy isEqualToString:@"HomeScreen"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"HomeScreenDock"])
+  else if ([typeCopy isEqualToString:@"HomeScreenDock"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Spotlight"])
+  else if ([typeCopy isEqualToString:@"Spotlight"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"AppLibrary"])
+  else if ([typeCopy isEqualToString:@"AppLibrary"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"HomeScreenOrTodayWidget"])
+  else if ([typeCopy isEqualToString:@"HomeScreenOrTodayWidget"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"AppPredictionPanel"])
+  else if ([typeCopy isEqualToString:@"AppPredictionPanel"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"AppPredictionPanelToday"])
+  else if ([typeCopy isEqualToString:@"AppPredictionPanelToday"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"SuggestionsWidget"])
+  else if ([typeCopy isEqualToString:@"SuggestionsWidget"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"SuggestionsWidgetToday"])
+  else if ([typeCopy isEqualToString:@"SuggestionsWidgetToday"])
   {
     v4 = 9;
   }
@@ -126,9 +126,9 @@
   }
 }
 
-- (void)setHasIconLocation:(BOOL)a3
+- (void)setHasIconLocation:(BOOL)location
 {
-  if (a3)
+  if (location)
   {
     v3 = 2;
   }
@@ -141,65 +141,65 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)iconLocationAsString:(int)a3
+- (id)iconLocationAsString:(int)string
 {
-  if (a3 >= 9)
+  if (string >= 9)
   {
-    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&a3];
+    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   else
   {
-    v4 = off_1E80C66E8[a3];
+    v4 = off_1E80C66E8[string];
   }
 
   return v4;
 }
 
-- (int)StringAsIconLocation:(id)a3
+- (int)StringAsIconLocation:(id)location
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"NotOnHomeScreen"])
+  locationCopy = location;
+  if ([locationCopy isEqualToString:@"NotOnHomeScreen"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Dock"])
+  else if ([locationCopy isEqualToString:@"Dock"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Page1"])
+  else if ([locationCopy isEqualToString:@"Page1"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Page2"])
+  else if ([locationCopy isEqualToString:@"Page2"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"Page3"])
+  else if ([locationCopy isEqualToString:@"Page3"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"Page4"])
+  else if ([locationCopy isEqualToString:@"Page4"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"Page5"])
+  else if ([locationCopy isEqualToString:@"Page5"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"Page6"])
+  else if ([locationCopy isEqualToString:@"Page6"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"OtherPages"])
+  else if ([locationCopy isEqualToString:@"OtherPages"])
   {
     v4 = 8;
   }
@@ -212,9 +212,9 @@
   return v4;
 }
 
-- (void)setHasSpotlightEnabled:(BOOL)a3
+- (void)setHasSpotlightEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 32;
   }
@@ -227,9 +227,9 @@
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasAppLibraryEnabled:(BOOL)a3
+- (void)setHasAppLibraryEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 4;
   }
@@ -242,9 +242,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasAppPredictionPanelEnabled:(BOOL)a3
+- (void)setHasAppPredictionPanelEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 8;
   }
@@ -257,9 +257,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasAppPredictionPanelTodayEnabled:(BOOL)a3
+- (void)setHasAppPredictionPanelTodayEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 16;
   }
@@ -272,9 +272,9 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasSuggestionsWidgetEnabled:(BOOL)a3
+- (void)setHasSuggestionsWidgetEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 64;
   }
@@ -287,9 +287,9 @@
   *&self->_has = *&self->_has & 0xBF | v3;
 }
 
-- (void)setHasSuggestionsWidgetTodayEnabled:(BOOL)a3
+- (void)setHasSuggestionsWidgetTodayEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 0x80;
   }
@@ -308,15 +308,15 @@
   v8.receiver = self;
   v8.super_class = ATXMPBAppLaunchOverallCaptureRateTracker;
   v4 = [(ATXMPBAppLaunchOverallCaptureRateTracker *)&v8 description];
-  v5 = [(ATXMPBAppLaunchOverallCaptureRateTracker *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ATXMPBAppLaunchOverallCaptureRateTracker *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if (has)
   {
@@ -331,7 +331,7 @@
       v6 = off_1E80C6698[captureType];
     }
 
-    [v3 setObject:v6 forKey:@"captureType"];
+    [dictionary setObject:v6 forKey:@"captureType"];
 
     has = self->_has;
   }
@@ -349,7 +349,7 @@
       v8 = off_1E80C66E8[iconLocation];
     }
 
-    [v3 setObject:v8 forKey:@"iconLocation"];
+    [dictionary setObject:v8 forKey:@"iconLocation"];
 
     has = self->_has;
   }
@@ -357,7 +357,7 @@
   if ((has & 0x20) != 0)
   {
     v10 = [MEMORY[0x1E696AD98] numberWithBool:self->_spotlightEnabled];
-    [v3 setObject:v10 forKey:@"spotlightEnabled"];
+    [dictionary setObject:v10 forKey:@"spotlightEnabled"];
 
     has = self->_has;
     if ((has & 4) == 0)
@@ -378,7 +378,7 @@ LABEL_13:
   }
 
   v11 = [MEMORY[0x1E696AD98] numberWithBool:self->_appLibraryEnabled];
-  [v3 setObject:v11 forKey:@"appLibraryEnabled"];
+  [dictionary setObject:v11 forKey:@"appLibraryEnabled"];
 
   has = self->_has;
   if ((has & 8) == 0)
@@ -394,7 +394,7 @@ LABEL_14:
 
 LABEL_22:
   v12 = [MEMORY[0x1E696AD98] numberWithBool:self->_appPredictionPanelEnabled];
-  [v3 setObject:v12 forKey:@"appPredictionPanelEnabled"];
+  [dictionary setObject:v12 forKey:@"appPredictionPanelEnabled"];
 
   has = self->_has;
   if ((has & 0x10) == 0)
@@ -407,7 +407,7 @@ LABEL_15:
 
 LABEL_24:
     v14 = [MEMORY[0x1E696AD98] numberWithBool:self->_suggestionsWidgetEnabled];
-    [v3 setObject:v14 forKey:@"suggestionsWidgetEnabled"];
+    [dictionary setObject:v14 forKey:@"suggestionsWidgetEnabled"];
 
     if ((*&self->_has & 0x80) == 0)
     {
@@ -419,7 +419,7 @@ LABEL_24:
 
 LABEL_23:
   v13 = [MEMORY[0x1E696AD98] numberWithBool:self->_appPredictionPanelTodayEnabled];
-  [v3 setObject:v13 forKey:@"appPredictionPanelTodayEnabled"];
+  [dictionary setObject:v13 forKey:@"appPredictionPanelTodayEnabled"];
 
   has = self->_has;
   if ((has & 0x40) != 0)
@@ -435,16 +435,16 @@ LABEL_16:
 
 LABEL_25:
   v15 = [MEMORY[0x1E696AD98] numberWithBool:self->_suggestionsWidgetTodayEnabled];
-  [v3 setObject:v15 forKey:@"suggestionsWidgetTodayEnabled"];
+  [dictionary setObject:v15 forKey:@"suggestionsWidgetTodayEnabled"];
 
 LABEL_17:
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -548,14 +548,14 @@ LABEL_19:
 LABEL_9:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[2] = self->_captureType;
-    *(v4 + 24) |= 1u;
+    toCopy[2] = self->_captureType;
+    *(toCopy + 24) |= 1u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -574,8 +574,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[3] = self->_iconLocation;
-  *(v4 + 24) |= 2u;
+  toCopy[3] = self->_iconLocation;
+  *(toCopy + 24) |= 2u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -589,8 +589,8 @@ LABEL_4:
   }
 
 LABEL_14:
-  *(v4 + 19) = self->_spotlightEnabled;
-  *(v4 + 24) |= 0x20u;
+  *(toCopy + 19) = self->_spotlightEnabled;
+  *(toCopy + 24) |= 0x20u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -604,8 +604,8 @@ LABEL_5:
   }
 
 LABEL_15:
-  *(v4 + 16) = self->_appLibraryEnabled;
-  *(v4 + 24) |= 4u;
+  *(toCopy + 16) = self->_appLibraryEnabled;
+  *(toCopy + 24) |= 4u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -619,8 +619,8 @@ LABEL_6:
   }
 
 LABEL_16:
-  *(v4 + 17) = self->_appPredictionPanelEnabled;
-  *(v4 + 24) |= 8u;
+  *(toCopy + 17) = self->_appPredictionPanelEnabled;
+  *(toCopy + 24) |= 8u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -631,8 +631,8 @@ LABEL_7:
     }
 
 LABEL_18:
-    *(v4 + 20) = self->_suggestionsWidgetEnabled;
-    *(v4 + 24) |= 0x40u;
+    *(toCopy + 20) = self->_suggestionsWidgetEnabled;
+    *(toCopy + 24) |= 0x40u;
     if ((*&self->_has & 0x80) == 0)
     {
       goto LABEL_9;
@@ -642,8 +642,8 @@ LABEL_18:
   }
 
 LABEL_17:
-  *(v4 + 18) = self->_appPredictionPanelTodayEnabled;
-  *(v4 + 24) |= 0x10u;
+  *(toCopy + 18) = self->_appPredictionPanelTodayEnabled;
+  *(toCopy + 24) |= 0x10u;
   has = self->_has;
   if ((has & 0x40) != 0)
   {
@@ -657,14 +657,14 @@ LABEL_8:
   }
 
 LABEL_19:
-  *(v4 + 21) = self->_suggestionsWidgetTodayEnabled;
-  *(v4 + 24) |= 0x80u;
+  *(toCopy + 21) = self->_suggestionsWidgetTodayEnabled;
+  *(toCopy + 24) |= 0x80u;
 LABEL_9:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if (has)
   {
@@ -776,184 +776,184 @@ LABEL_16:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_56;
   }
 
   if (*&self->_has)
   {
-    if ((v4[24] & 1) == 0 || self->_captureType != *(v4 + 2))
+    if ((equalCopy[24] & 1) == 0 || self->_captureType != *(equalCopy + 2))
     {
       goto LABEL_56;
     }
   }
 
-  else if (v4[24])
+  else if (equalCopy[24])
   {
     goto LABEL_56;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((v4[24] & 2) == 0 || self->_iconLocation != *(v4 + 3))
+    if ((equalCopy[24] & 2) == 0 || self->_iconLocation != *(equalCopy + 3))
     {
       goto LABEL_56;
     }
   }
 
-  else if ((v4[24] & 2) != 0)
+  else if ((equalCopy[24] & 2) != 0)
   {
     goto LABEL_56;
   }
 
   if ((*&self->_has & 0x20) != 0)
   {
-    if ((v4[24] & 0x20) == 0)
+    if ((equalCopy[24] & 0x20) == 0)
     {
       goto LABEL_56;
     }
 
     if (self->_spotlightEnabled)
     {
-      if ((v4[19] & 1) == 0)
+      if ((equalCopy[19] & 1) == 0)
       {
         goto LABEL_56;
       }
     }
 
-    else if (v4[19])
+    else if (equalCopy[19])
     {
       goto LABEL_56;
     }
   }
 
-  else if ((v4[24] & 0x20) != 0)
+  else if ((equalCopy[24] & 0x20) != 0)
   {
     goto LABEL_56;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((v4[24] & 4) == 0)
+    if ((equalCopy[24] & 4) == 0)
     {
       goto LABEL_56;
     }
 
     if (self->_appLibraryEnabled)
     {
-      if ((v4[16] & 1) == 0)
+      if ((equalCopy[16] & 1) == 0)
       {
         goto LABEL_56;
       }
     }
 
-    else if (v4[16])
+    else if (equalCopy[16])
     {
       goto LABEL_56;
     }
   }
 
-  else if ((v4[24] & 4) != 0)
+  else if ((equalCopy[24] & 4) != 0)
   {
     goto LABEL_56;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((v4[24] & 8) == 0)
+    if ((equalCopy[24] & 8) == 0)
     {
       goto LABEL_56;
     }
 
     if (self->_appPredictionPanelEnabled)
     {
-      if ((v4[17] & 1) == 0)
+      if ((equalCopy[17] & 1) == 0)
       {
         goto LABEL_56;
       }
     }
 
-    else if (v4[17])
+    else if (equalCopy[17])
     {
       goto LABEL_56;
     }
   }
 
-  else if ((v4[24] & 8) != 0)
+  else if ((equalCopy[24] & 8) != 0)
   {
     goto LABEL_56;
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((v4[24] & 0x10) == 0)
+    if ((equalCopy[24] & 0x10) == 0)
     {
       goto LABEL_56;
     }
 
     if (self->_appPredictionPanelTodayEnabled)
     {
-      if ((v4[18] & 1) == 0)
+      if ((equalCopy[18] & 1) == 0)
       {
         goto LABEL_56;
       }
     }
 
-    else if (v4[18])
+    else if (equalCopy[18])
     {
       goto LABEL_56;
     }
   }
 
-  else if ((v4[24] & 0x10) != 0)
+  else if ((equalCopy[24] & 0x10) != 0)
   {
     goto LABEL_56;
   }
 
   if ((*&self->_has & 0x40) != 0)
   {
-    if ((v4[24] & 0x40) == 0)
+    if ((equalCopy[24] & 0x40) == 0)
     {
       goto LABEL_56;
     }
 
     if (self->_suggestionsWidgetEnabled)
     {
-      if ((v4[20] & 1) == 0)
+      if ((equalCopy[20] & 1) == 0)
       {
         goto LABEL_56;
       }
     }
 
-    else if (v4[20])
+    else if (equalCopy[20])
     {
       goto LABEL_56;
     }
   }
 
-  else if ((v4[24] & 0x40) != 0)
+  else if ((equalCopy[24] & 0x40) != 0)
   {
     goto LABEL_56;
   }
 
-  v5 = v4[24] >= 0;
+  v5 = equalCopy[24] >= 0;
   if ((*&self->_has & 0x80) != 0)
   {
-    if (v4[24] < 0)
+    if (equalCopy[24] < 0)
     {
       if (self->_suggestionsWidgetTodayEnabled)
       {
-        if (v4[21])
+        if (equalCopy[21])
         {
           goto LABEL_59;
         }
       }
 
-      else if (!v4[21])
+      else if (!equalCopy[21])
       {
 LABEL_59:
         v5 = 1;
@@ -1080,15 +1080,15 @@ LABEL_9:
   return v3 ^ v2 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 24);
+  fromCopy = from;
+  v5 = *(fromCopy + 24);
   if (v5)
   {
-    self->_captureType = *(v4 + 2);
+    self->_captureType = *(fromCopy + 2);
     *&self->_has |= 1u;
-    v5 = *(v4 + 24);
+    v5 = *(fromCopy + 24);
     if ((v5 & 2) == 0)
     {
 LABEL_3:
@@ -1101,14 +1101,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 24) & 2) == 0)
+  else if ((*(fromCopy + 24) & 2) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_iconLocation = *(v4 + 3);
+  self->_iconLocation = *(fromCopy + 3);
   *&self->_has |= 2u;
-  v5 = *(v4 + 24);
+  v5 = *(fromCopy + 24);
   if ((v5 & 0x20) == 0)
   {
 LABEL_4:
@@ -1121,9 +1121,9 @@ LABEL_4:
   }
 
 LABEL_14:
-  self->_spotlightEnabled = *(v4 + 19);
+  self->_spotlightEnabled = *(fromCopy + 19);
   *&self->_has |= 0x20u;
-  v5 = *(v4 + 24);
+  v5 = *(fromCopy + 24);
   if ((v5 & 4) == 0)
   {
 LABEL_5:
@@ -1136,9 +1136,9 @@ LABEL_5:
   }
 
 LABEL_15:
-  self->_appLibraryEnabled = *(v4 + 16);
+  self->_appLibraryEnabled = *(fromCopy + 16);
   *&self->_has |= 4u;
-  v5 = *(v4 + 24);
+  v5 = *(fromCopy + 24);
   if ((v5 & 8) == 0)
   {
 LABEL_6:
@@ -1151,9 +1151,9 @@ LABEL_6:
   }
 
 LABEL_16:
-  self->_appPredictionPanelEnabled = *(v4 + 17);
+  self->_appPredictionPanelEnabled = *(fromCopy + 17);
   *&self->_has |= 8u;
-  v5 = *(v4 + 24);
+  v5 = *(fromCopy + 24);
   if ((v5 & 0x10) == 0)
   {
 LABEL_7:
@@ -1163,9 +1163,9 @@ LABEL_7:
     }
 
 LABEL_18:
-    self->_suggestionsWidgetEnabled = *(v4 + 20);
+    self->_suggestionsWidgetEnabled = *(fromCopy + 20);
     *&self->_has |= 0x40u;
-    if ((*(v4 + 24) & 0x80) == 0)
+    if ((*(fromCopy + 24) & 0x80) == 0)
     {
       goto LABEL_9;
     }
@@ -1174,9 +1174,9 @@ LABEL_18:
   }
 
 LABEL_17:
-  self->_appPredictionPanelTodayEnabled = *(v4 + 18);
+  self->_appPredictionPanelTodayEnabled = *(fromCopy + 18);
   *&self->_has |= 0x10u;
-  v5 = *(v4 + 24);
+  v5 = *(fromCopy + 24);
   if ((v5 & 0x40) != 0)
   {
     goto LABEL_18;
@@ -1189,7 +1189,7 @@ LABEL_8:
   }
 
 LABEL_19:
-  self->_suggestionsWidgetTodayEnabled = *(v4 + 21);
+  self->_suggestionsWidgetTodayEnabled = *(fromCopy + 21);
   *&self->_has |= 0x80u;
 LABEL_9:
 }

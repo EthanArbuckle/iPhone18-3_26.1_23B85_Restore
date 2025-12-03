@@ -1,10 +1,10 @@
 @interface HMDBackingStoreCacheFetchModelObjects
-- (HMDBackingStoreCacheFetchModelObjects)initWithGroup:(id)a3 names:(id)a4 fetchResult:(id)a5;
-- (HMDBackingStoreCacheFetchModelObjects)initWithGroup:(id)a3 parent:(id)a4 type:(id)a5 fetchResult:(id)a6;
-- (HMDBackingStoreCacheFetchModelObjects)initWithGroup:(id)a3 uuids:(id)a4 fetchResult:(id)a5;
-- (HMDBackingStoreCacheFetchModelObjects)initWithNames:(id)a3 fetchResult:(id)a4;
-- (HMDBackingStoreCacheFetchModelObjects)initWithParent:(id)a3 type:(id)a4 fetchResult:(id)a5;
-- (HMDBackingStoreCacheFetchModelObjects)initWithUUIDs:(id)a3 fetchResult:(id)a4;
+- (HMDBackingStoreCacheFetchModelObjects)initWithGroup:(id)group names:(id)names fetchResult:(id)result;
+- (HMDBackingStoreCacheFetchModelObjects)initWithGroup:(id)group parent:(id)parent type:(id)type fetchResult:(id)result;
+- (HMDBackingStoreCacheFetchModelObjects)initWithGroup:(id)group uuids:(id)uuids fetchResult:(id)result;
+- (HMDBackingStoreCacheFetchModelObjects)initWithNames:(id)names fetchResult:(id)result;
+- (HMDBackingStoreCacheFetchModelObjects)initWithParent:(id)parent type:(id)type fetchResult:(id)result;
+- (HMDBackingStoreCacheFetchModelObjects)initWithUUIDs:(id)ds fetchResult:(id)result;
 - (id)mainReturningError;
 @end
 
@@ -12,7 +12,7 @@
 
 - (id)mainReturningError
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
@@ -25,51 +25,51 @@
   aBlock[3] = &unk_278671630;
   v23 = &v24;
   aBlock[4] = self;
-  v4 = v3;
+  v4 = array;
   v22 = v4;
   v5 = _Block_copy(aBlock);
-  v6 = [(HMDBackingStoreCacheFetchModelObjects *)self names];
+  names = [(HMDBackingStoreCacheFetchModelObjects *)self names];
 
-  if (v6)
+  if (names)
   {
-    v7 = [(HMDBackingStoreOperation *)self store];
-    v8 = [v7 local];
-    v9 = [(HMDBackingStoreCacheFetchModelObjects *)self group];
-    v10 = [v9 groupID];
-    v11 = [(HMDBackingStoreCacheFetchModelObjects *)self names];
-    [v8 _fetchRecordsWithGroupID:v10 names:v11 callback:v5];
+    store = [(HMDBackingStoreOperation *)self store];
+    local = [store local];
+    group = [(HMDBackingStoreCacheFetchModelObjects *)self group];
+    groupID = [group groupID];
+    names2 = [(HMDBackingStoreCacheFetchModelObjects *)self names];
+    [local _fetchRecordsWithGroupID:groupID names:names2 callback:v5];
   }
 
   else
   {
-    v12 = [(HMDBackingStoreCacheFetchModelObjects *)self uuids];
+    uuids = [(HMDBackingStoreCacheFetchModelObjects *)self uuids];
 
-    if (v12)
+    if (uuids)
     {
-      v7 = [(HMDBackingStoreOperation *)self store];
-      v8 = [v7 local];
-      v9 = [(HMDBackingStoreCacheFetchModelObjects *)self group];
-      v13 = [v9 groupID];
-      v11 = [(HMDBackingStoreCacheFetchModelObjects *)self uuids];
-      [v8 _fetchRecordsWithGroupID:v13 uuids:v11 callback:v5];
+      store = [(HMDBackingStoreOperation *)self store];
+      local = [store local];
+      group = [(HMDBackingStoreCacheFetchModelObjects *)self group];
+      groupID2 = [group groupID];
+      names2 = [(HMDBackingStoreCacheFetchModelObjects *)self uuids];
+      [local _fetchRecordsWithGroupID:groupID2 uuids:names2 callback:v5];
     }
 
     else
     {
-      v14 = [(HMDBackingStoreCacheFetchModelObjects *)self parent];
+      parent = [(HMDBackingStoreCacheFetchModelObjects *)self parent];
 
-      if (!v14)
+      if (!parent)
       {
         goto LABEL_8;
       }
 
-      v7 = [(HMDBackingStoreOperation *)self store];
-      v8 = [v7 local];
-      v9 = [(HMDBackingStoreCacheFetchModelObjects *)self group];
-      v15 = [v9 groupID];
-      v11 = [(HMDBackingStoreCacheFetchModelObjects *)self parent];
-      v16 = [(HMDBackingStoreCacheFetchModelObjects *)self type];
-      [v8 _fetchRecordsWithGroupID:v15 parent:v11 type:v16 callback:v5];
+      store = [(HMDBackingStoreOperation *)self store];
+      local = [store local];
+      group = [(HMDBackingStoreCacheFetchModelObjects *)self group];
+      groupID3 = [group groupID];
+      names2 = [(HMDBackingStoreCacheFetchModelObjects *)self parent];
+      type = [(HMDBackingStoreCacheFetchModelObjects *)self type];
+      [local _fetchRecordsWithGroupID:groupID3 parent:names2 type:type callback:v5];
     }
   }
 
@@ -80,12 +80,12 @@ LABEL_8:
     v4 = 0;
   }
 
-  v17 = [(HMDBackingStoreCacheFetchModelObjects *)self fetchResult];
+  fetchResult = [(HMDBackingStoreCacheFetchModelObjects *)self fetchResult];
 
-  if (v17)
+  if (fetchResult)
   {
-    v18 = [(HMDBackingStoreCacheFetchModelObjects *)self fetchResult];
-    (v18)[2](v18, v4, v25[5]);
+    fetchResult2 = [(HMDBackingStoreCacheFetchModelObjects *)self fetchResult];
+    (fetchResult2)[2](fetchResult2, v4, v25[5]);
   }
 
   v19 = v25[5];
@@ -153,129 +153,129 @@ BOOL __59__HMDBackingStoreCacheFetchModelObjects_mainReturningError__block_invok
   return v15;
 }
 
-- (HMDBackingStoreCacheFetchModelObjects)initWithGroup:(id)a3 parent:(id)a4 type:(id)a5 fetchResult:(id)a6
+- (HMDBackingStoreCacheFetchModelObjects)initWithGroup:(id)group parent:(id)parent type:(id)type fetchResult:(id)result
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  groupCopy = group;
+  parentCopy = parent;
+  resultCopy = result;
   v19.receiver = self;
   v19.super_class = HMDBackingStoreCacheFetchModelObjects;
   v13 = [(HMDBackingStoreOperation *)&v19 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_group, a3);
-    v15 = _Block_copy(v12);
+    objc_storeStrong(&v13->_group, group);
+    v15 = _Block_copy(resultCopy);
     fetchResult = v14->_fetchResult;
     v14->_fetchResult = v15;
 
-    objc_storeStrong(&v14->_parent, a4);
+    objc_storeStrong(&v14->_parent, parent);
     v17 = v14;
   }
 
   return v14;
 }
 
-- (HMDBackingStoreCacheFetchModelObjects)initWithParent:(id)a3 type:(id)a4 fetchResult:(id)a5
+- (HMDBackingStoreCacheFetchModelObjects)initWithParent:(id)parent type:(id)type fetchResult:(id)result
 {
-  v8 = a3;
-  v9 = a5;
+  parentCopy = parent;
+  resultCopy = result;
   v15.receiver = self;
   v15.super_class = HMDBackingStoreCacheFetchModelObjects;
   v10 = [(HMDBackingStoreOperation *)&v15 init];
   if (v10)
   {
-    v11 = _Block_copy(v9);
+    v11 = _Block_copy(resultCopy);
     fetchResult = v10->_fetchResult;
     v10->_fetchResult = v11;
 
-    objc_storeStrong(&v10->_parent, a3);
+    objc_storeStrong(&v10->_parent, parent);
     v13 = v10;
   }
 
   return v10;
 }
 
-- (HMDBackingStoreCacheFetchModelObjects)initWithGroup:(id)a3 names:(id)a4 fetchResult:(id)a5
+- (HMDBackingStoreCacheFetchModelObjects)initWithGroup:(id)group names:(id)names fetchResult:(id)result
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  groupCopy = group;
+  namesCopy = names;
+  resultCopy = result;
   v18.receiver = self;
   v18.super_class = HMDBackingStoreCacheFetchModelObjects;
   v12 = [(HMDBackingStoreOperation *)&v18 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_group, a3);
-    v14 = _Block_copy(v11);
+    objc_storeStrong(&v12->_group, group);
+    v14 = _Block_copy(resultCopy);
     fetchResult = v13->_fetchResult;
     v13->_fetchResult = v14;
 
-    objc_storeStrong(&v13->_names, a4);
+    objc_storeStrong(&v13->_names, names);
     v16 = v13;
   }
 
   return v13;
 }
 
-- (HMDBackingStoreCacheFetchModelObjects)initWithNames:(id)a3 fetchResult:(id)a4
+- (HMDBackingStoreCacheFetchModelObjects)initWithNames:(id)names fetchResult:(id)result
 {
-  v7 = a3;
-  v8 = a4;
+  namesCopy = names;
+  resultCopy = result;
   v14.receiver = self;
   v14.super_class = HMDBackingStoreCacheFetchModelObjects;
   v9 = [(HMDBackingStoreOperation *)&v14 init];
   if (v9)
   {
-    v10 = _Block_copy(v8);
+    v10 = _Block_copy(resultCopy);
     fetchResult = v9->_fetchResult;
     v9->_fetchResult = v10;
 
-    objc_storeStrong(&v9->_names, a3);
+    objc_storeStrong(&v9->_names, names);
     v12 = v9;
   }
 
   return v9;
 }
 
-- (HMDBackingStoreCacheFetchModelObjects)initWithGroup:(id)a3 uuids:(id)a4 fetchResult:(id)a5
+- (HMDBackingStoreCacheFetchModelObjects)initWithGroup:(id)group uuids:(id)uuids fetchResult:(id)result
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  groupCopy = group;
+  uuidsCopy = uuids;
+  resultCopy = result;
   v18.receiver = self;
   v18.super_class = HMDBackingStoreCacheFetchModelObjects;
   v12 = [(HMDBackingStoreOperation *)&v18 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_group, a3);
-    v14 = _Block_copy(v11);
+    objc_storeStrong(&v12->_group, group);
+    v14 = _Block_copy(resultCopy);
     fetchResult = v13->_fetchResult;
     v13->_fetchResult = v14;
 
-    objc_storeStrong(&v13->_uuids, a4);
+    objc_storeStrong(&v13->_uuids, uuids);
     v16 = v13;
   }
 
   return v13;
 }
 
-- (HMDBackingStoreCacheFetchModelObjects)initWithUUIDs:(id)a3 fetchResult:(id)a4
+- (HMDBackingStoreCacheFetchModelObjects)initWithUUIDs:(id)ds fetchResult:(id)result
 {
-  v7 = a3;
-  v8 = a4;
+  dsCopy = ds;
+  resultCopy = result;
   v14.receiver = self;
   v14.super_class = HMDBackingStoreCacheFetchModelObjects;
   v9 = [(HMDBackingStoreOperation *)&v14 init];
   if (v9)
   {
-    v10 = _Block_copy(v8);
+    v10 = _Block_copy(resultCopy);
     fetchResult = v9->_fetchResult;
     v9->_fetchResult = v10;
 
-    objc_storeStrong(&v9->_uuids, a3);
+    objc_storeStrong(&v9->_uuids, ds);
     v12 = v9;
   }
 

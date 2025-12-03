@@ -1,17 +1,17 @@
 @interface BSTransactionBlockObserver
-- (void)addTransactionDidBeginBlock:(id)a3;
-- (void)addTransactionDidCompleteBlock:(id)a3;
-- (void)addTransactionDidFinishWorkBlock:(id)a3;
-- (void)addTransactionWillBeginBlock:(id)a3;
-- (void)transactionDidBegin:(id)a3;
-- (void)transactionDidComplete:(id)a3;
-- (void)transactionDidFinishWork:(id)a3;
-- (void)transactionWillBegin:(id)a3;
+- (void)addTransactionDidBeginBlock:(id)block;
+- (void)addTransactionDidCompleteBlock:(id)block;
+- (void)addTransactionDidFinishWorkBlock:(id)block;
+- (void)addTransactionWillBeginBlock:(id)block;
+- (void)transactionDidBegin:(id)begin;
+- (void)transactionDidComplete:(id)complete;
+- (void)transactionDidFinishWork:(id)work;
+- (void)transactionWillBegin:(id)begin;
 @end
 
 @implementation BSTransactionBlockObserver
 
-- (void)addTransactionWillBeginBlock:(id)a3
+- (void)addTransactionWillBeginBlock:(id)block
 {
   willBeginBlocks = self->_willBeginBlocks;
   if (!willBeginBlocks)
@@ -23,12 +23,12 @@
     willBeginBlocks = self->_willBeginBlocks;
   }
 
-  v9 = [a3 copy];
+  v9 = [block copy];
   v8 = MEMORY[0x193AE5AC0]();
   [(NSMutableArray *)willBeginBlocks addObject:v8];
 }
 
-- (void)addTransactionDidBeginBlock:(id)a3
+- (void)addTransactionDidBeginBlock:(id)block
 {
   didBeginBlocks = self->_didBeginBlocks;
   if (!didBeginBlocks)
@@ -40,12 +40,12 @@
     didBeginBlocks = self->_didBeginBlocks;
   }
 
-  v9 = [a3 copy];
+  v9 = [block copy];
   v8 = MEMORY[0x193AE5AC0]();
   [(NSMutableArray *)didBeginBlocks addObject:v8];
 }
 
-- (void)addTransactionDidFinishWorkBlock:(id)a3
+- (void)addTransactionDidFinishWorkBlock:(id)block
 {
   didFinishWorkBlocks = self->_didFinishWorkBlocks;
   if (!didFinishWorkBlocks)
@@ -57,12 +57,12 @@
     didFinishWorkBlocks = self->_didFinishWorkBlocks;
   }
 
-  v9 = [a3 copy];
+  v9 = [block copy];
   v8 = MEMORY[0x193AE5AC0]();
   [(NSMutableArray *)didFinishWorkBlocks addObject:v8];
 }
 
-- (void)addTransactionDidCompleteBlock:(id)a3
+- (void)addTransactionDidCompleteBlock:(id)block
 {
   didCompleteBlocks = self->_didCompleteBlocks;
   if (!didCompleteBlocks)
@@ -74,12 +74,12 @@
     didCompleteBlocks = self->_didCompleteBlocks;
   }
 
-  v9 = [a3 copy];
+  v9 = [block copy];
   v8 = MEMORY[0x193AE5AC0]();
   [(NSMutableArray *)didCompleteBlocks addObject:v8];
 }
 
-- (void)transactionWillBegin:(id)a3
+- (void)transactionWillBegin:(id)begin
 {
   v13 = *MEMORY[0x1E69E9840];
   v8 = 0u;
@@ -114,7 +114,7 @@
   [(NSMutableArray *)self->_willBeginBlocks removeAllObjects];
 }
 
-- (void)transactionDidBegin:(id)a3
+- (void)transactionDidBegin:(id)begin
 {
   v13 = *MEMORY[0x1E69E9840];
   v8 = 0u;
@@ -149,7 +149,7 @@
   [(NSMutableArray *)self->_didBeginBlocks removeAllObjects];
 }
 
-- (void)transactionDidFinishWork:(id)a3
+- (void)transactionDidFinishWork:(id)work
 {
   v13 = *MEMORY[0x1E69E9840];
   v8 = 0u;
@@ -184,7 +184,7 @@
   [(NSMutableArray *)self->_didFinishWorkBlocks removeAllObjects];
 }
 
-- (void)transactionDidComplete:(id)a3
+- (void)transactionDidComplete:(id)complete
 {
   v13 = *MEMORY[0x1E69E9840];
   v8 = 0u;

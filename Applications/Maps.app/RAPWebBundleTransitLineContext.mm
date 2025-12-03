@@ -7,29 +7,29 @@
 - (NSDictionary)context
 {
   v3 = objc_alloc_init(NSMutableDictionary);
-  v4 = [(RAPWebBundleTransitLineContext *)self name];
+  name = [(RAPWebBundleTransitLineContext *)self name];
 
-  if (v4)
+  if (name)
   {
-    v5 = [(RAPWebBundleTransitLineContext *)self name];
-    [v3 setObject:v5 forKeyedSubscript:@"name"];
+    name2 = [(RAPWebBundleTransitLineContext *)self name];
+    [v3 setObject:name2 forKeyedSubscript:@"name"];
   }
 
-  v6 = [(RAPWebBundleTransitLineContext *)self identifier];
+  identifier = [(RAPWebBundleTransitLineContext *)self identifier];
 
-  if (v6)
+  if (identifier)
   {
-    v7 = [(RAPWebBundleTransitLineContext *)self identifier];
-    [v3 setObject:v7 forKeyedSubscript:@"muid"];
+    identifier2 = [(RAPWebBundleTransitLineContext *)self identifier];
+    [v3 setObject:identifier2 forKeyedSubscript:@"muid"];
   }
 
-  v8 = [(RAPWebBundleTransitLineContext *)self imageContext];
+  imageContext = [(RAPWebBundleTransitLineContext *)self imageContext];
 
-  if (v8)
+  if (imageContext)
   {
-    v9 = [(RAPWebBundleTransitLineContext *)self imageContext];
-    v10 = [v9 identifier];
-    [v3 setObject:v10 forKeyedSubscript:@"artworkURL"];
+    imageContext2 = [(RAPWebBundleTransitLineContext *)self imageContext];
+    identifier3 = [imageContext2 identifier];
+    [v3 setObject:identifier3 forKeyedSubscript:@"artworkURL"];
   }
 
   v11 = [v3 copy];

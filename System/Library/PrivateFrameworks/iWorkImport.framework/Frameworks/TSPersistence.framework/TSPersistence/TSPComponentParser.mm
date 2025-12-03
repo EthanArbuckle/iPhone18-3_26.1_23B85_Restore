@@ -1,11 +1,11 @@
 @interface TSPComponentParser
-- (BOOL)readFromStream:(DispatchDataInputStream *)a3 error:(id *)a4;
+- (BOOL)readFromStream:(DispatchDataInputStream *)stream error:(id *)error;
 - (TSPComponentParser)init;
-- (TSPComponentParser)initWithDelegate:(id)a3;
-- (unint64_t)readArchiveFromStream:(DispatchDataInputStream *)a3 error:(id *)a4;
-- (unint64_t)readArchiveInfoFromStream:(DispatchDataInputStream *)a3 error:(id *)a4;
-- (unint64_t)readArchiveInfoLengthFromStream:(DispatchDataInputStream *)a3 error:(id *)a4;
-- (void)readWithChannel:(id)a3 completionQueue:(id)a4 completion:(id)a5;
+- (TSPComponentParser)initWithDelegate:(id)delegate;
+- (unint64_t)readArchiveFromStream:(DispatchDataInputStream *)stream error:(id *)error;
+- (unint64_t)readArchiveInfoFromStream:(DispatchDataInputStream *)stream error:(id *)error;
+- (unint64_t)readArchiveInfoLengthFromStream:(DispatchDataInputStream *)stream error:(id *)error;
+- (void)readWithChannel:(id)channel completionQueue:(id)queue completion:(id)completion;
 @end
 
 @implementation TSPComponentParser
@@ -26,36 +26,36 @@
   objc_exception_throw(v13);
 }
 
-- (TSPComponentParser)initWithDelegate:(id)a3
+- (TSPComponentParser)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v8.receiver = self;
   v8.super_class = TSPComponentParser;
   v5 = [(TSPComponentParser *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
   }
 
   return v6;
 }
 
-- (void)readWithChannel:(id)a3 completionQueue:(id)a4 completion:(id)a5
+- (void)readWithChannel:(id)channel completionQueue:(id)queue completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  channelCopy = channel;
+  queueCopy = queue;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = sub_276A769C0;
   aBlock[3] = &unk_27A6E58D0;
-  v11 = v9;
+  v11 = queueCopy;
   v26 = v11;
-  v12 = v10;
+  v12 = completionCopy;
   v27 = v12;
   v14 = _Block_copy(aBlock);
-  if (v8)
+  if (channelCopy)
   {
     v23[0] = 0;
     v23[1] = v23;
@@ -80,7 +80,7 @@
   (*(v14 + 2))(v14, 0, 0);
 }
 
-- (BOOL)readFromStream:(DispatchDataInputStream *)a3 error:(id *)a4
+- (BOOL)readFromStream:(DispatchDataInputStream *)stream error:(id *)error
 {
   state = self->_state;
   while (state <= 1)
@@ -92,12 +92,12 @@
         goto LABEL_13;
       }
 
-      ArchiveInfoFromStream_error = objc_msgSend_readArchiveInfoFromStream_error_(self, a2, a3, a4);
+      ArchiveInfoFromStream_error = objc_msgSend_readArchiveInfoFromStream_error_(self, a2, stream, error);
     }
 
     else
     {
-      ArchiveInfoFromStream_error = objc_msgSend_readArchiveInfoLengthFromStream_error_(self, a2, a3, a4);
+      ArchiveInfoFromStream_error = objc_msgSend_readArchiveInfoLengthFromStream_error_(self, a2, stream, error);
     }
 
 LABEL_9:
@@ -112,7 +112,7 @@ LABEL_9:
 
   if (state == 2)
   {
-    ArchiveInfoFromStream_error = objc_msgSend_readArchiveFromStream_error_(self, a2, a3, a4);
+    ArchiveInfoFromStream_error = objc_msgSend_readArchiveFromStream_error_(self, a2, stream, error);
     goto LABEL_9;
   }
 
@@ -131,13 +131,13 @@ LABEL_13:
   return 0;
 }
 
-- (unint64_t)readArchiveInfoLengthFromStream:(DispatchDataInputStream *)a3 error:(id *)a4
+- (unint64_t)readArchiveInfoLengthFromStream:(DispatchDataInputStream *)stream error:(id *)error
 {
-  if (sub_276A01088(a3) >= 5)
+  if (sub_276A01088(stream) >= 5)
   {
     v13 = 0;
     v14 = 0;
-    v15 = a3;
+    streamCopy = stream;
     v16[0] = 0;
     *(v16 + 6) = 0;
     v16[2] = 0x7FFFFFFFLL;
@@ -174,9 +174,9 @@ LABEL_13:
         sub_276BD5AE8();
       }
 
-      if (!*a4)
+      if (!*error)
       {
-        *a4 = objc_msgSend_tsp_readCorruptedDocumentErrorWithUserInfo_(MEMORY[0x277CCA9B8], v11, 0);
+        *error = objc_msgSend_tsp_readCorruptedDocumentErrorWithUserInfo_(MEMORY[0x277CCA9B8], v11, 0);
       }
 
       v9 = 3;
@@ -193,16 +193,16 @@ LABEL_9:
   return 0;
 }
 
-- (unint64_t)readArchiveInfoFromStream:(DispatchDataInputStream *)a3 error:(id *)a4
+- (unint64_t)readArchiveInfoFromStream:(DispatchDataInputStream *)stream error:(id *)error
 {
-  if (sub_276A01088(a3) < self->_archiveInfoLength)
+  if (sub_276A01088(stream) < self->_archiveInfoLength)
   {
     return 1;
   }
 
   v14[0] = 0;
   v14[1] = 0;
-  v14[2] = a3;
+  v14[2] = stream;
   v15[0] = 0;
   *(v15 + 6) = 0;
   v15[2] = 0x7FFFFFFFLL;
@@ -246,9 +246,9 @@ LABEL_9:
       sub_276BD5B10();
     }
 
-    if (!*a4)
+    if (!*error)
     {
-      *a4 = objc_msgSend_tsp_readCorruptedDocumentErrorWithUserInfo_(MEMORY[0x277CCA9B8], v8, 0);
+      *error = objc_msgSend_tsp_readCorruptedDocumentErrorWithUserInfo_(MEMORY[0x277CCA9B8], v8, 0);
     }
 
     v7 = 3;
@@ -258,15 +258,15 @@ LABEL_9:
   return v7;
 }
 
-- (unint64_t)readArchiveFromStream:(DispatchDataInputStream *)a3 error:(id *)a4
+- (unint64_t)readArchiveFromStream:(DispatchDataInputStream *)stream error:(id *)error
 {
-  if (sub_276A01088(a3) < self->_messagesLength)
+  if (sub_276A01088(stream) < self->_messagesLength)
   {
     return 2;
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  ArchiveInfo_stream_error = objc_msgSend_componentParser_didReadArchiveInfo_stream_error_(WeakRetained, v9, self, &self->_archiveInfo, a3, a4);
+  ArchiveInfo_stream_error = objc_msgSend_componentParser_didReadArchiveInfo_stream_error_(WeakRetained, v9, self, &self->_archiveInfo, stream, error);
 
   if (ArchiveInfo_stream_error)
   {

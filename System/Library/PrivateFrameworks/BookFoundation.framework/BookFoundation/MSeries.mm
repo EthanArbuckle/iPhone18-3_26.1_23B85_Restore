@@ -14,7 +14,7 @@
 
 - (NSNumber)authorCount
 {
-  v2 = self;
+  selfCopy = self;
   MSeries.authorCount.getter();
   if (v3)
   {
@@ -31,7 +31,7 @@
 
 - (NSArray)assets
 {
-  v2 = self;
+  selfCopy = self;
   if (MSeries.assetsResourceSet.getter() && (v3 = sub_241CF1858(), , v3))
   {
     sub_241CB6F3C(v3, &unk_27EC6A150, &unk_241CFC8B8);
@@ -53,7 +53,7 @@
 
 - (NSArray)genres
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_241CA8170(@"genres");
   if (v3)
   {
@@ -112,7 +112,7 @@
 
 - (BOOL)isExplicit
 {
-  v2 = self;
+  selfCopy = self;
   v3 = MSeries.isExplicit.getter();
 
   return v3 & 1;
@@ -120,7 +120,7 @@
 
 - (NSArray)authorNames
 {
-  v2 = self;
+  selfCopy = self;
   v3 = MSeries.authorNames.getter();
 
   if (v3)

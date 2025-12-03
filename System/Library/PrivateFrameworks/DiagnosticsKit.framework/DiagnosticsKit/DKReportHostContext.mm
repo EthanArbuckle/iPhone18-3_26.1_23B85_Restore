@@ -2,9 +2,9 @@
 + (id)_extensionAuxiliaryHostProtocol;
 + (id)_extensionAuxiliaryVendorProtocol;
 - (DKExtensionHostAdapterDelegate)delegate;
-- (void)cancelWithCompletion:(id)a3;
-- (void)completeRemoteWithReport:(id)a3 completion:(id)a4;
-- (void)startWithPayload:(id)a3 completion:(id)a4;
+- (void)cancelWithCompletion:(id)completion;
+- (void)completeRemoteWithReport:(id)report completion:(id)completion;
+- (void)startWithPayload:(id)payload completion:(id)completion;
 @end
 
 @implementation DKReportHostContext
@@ -55,11 +55,11 @@ void __54__DKReportHostContext__extensionAuxiliaryHostProtocol__block_invoke()
   [v2 setClasses:v3 forSelector:sel_completeRemoteWithReport_completion_ argumentIndex:0 ofReply:0];
 }
 
-- (void)startWithPayload:(id)a3 completion:(id)a4
+- (void)startWithPayload:(id)payload completion:(id)completion
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  payloadCopy = payload;
+  completionCopy = completion;
   v8 = DiagnosticsKitLogHandleForCategory(4);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -68,33 +68,33 @@ void __54__DKReportHostContext__extensionAuxiliaryHostProtocol__block_invoke()
     _os_log_impl(&dword_248B9D000, v8, OS_LOG_TYPE_DEFAULT, "%s", buf, 0xCu);
   }
 
-  v9 = [(DKReportHostContext *)self _auxiliaryConnection];
+  _auxiliaryConnection = [(DKReportHostContext *)self _auxiliaryConnection];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __51__DKReportHostContext_startWithPayload_completion___block_invoke;
   v14[3] = &unk_278F6BFA8;
   v14[4] = self;
-  v10 = [v9 remoteObjectProxyWithErrorHandler:v14];
+  v10 = [_auxiliaryConnection remoteObjectProxyWithErrorHandler:v14];
 
-  v11 = [(DKReportHostContext *)self _auxiliaryConnection];
-  [v11 setInterruptionHandler:&__block_literal_global_61];
+  _auxiliaryConnection2 = [(DKReportHostContext *)self _auxiliaryConnection];
+  [_auxiliaryConnection2 setInterruptionHandler:&__block_literal_global_61];
 
-  v12 = [(DKReportHostContext *)self _auxiliaryConnection];
-  [v12 setInvalidationHandler:&__block_literal_global_64];
+  _auxiliaryConnection3 = [(DKReportHostContext *)self _auxiliaryConnection];
+  [_auxiliaryConnection3 setInvalidationHandler:&__block_literal_global_64];
 
-  if (!v7)
+  if (!completionCopy)
   {
-    v7 = &__block_literal_global_67;
+    completionCopy = &__block_literal_global_67;
   }
 
   if (v10)
   {
-    [v10 startRemoteReportWithComponentIdentity:v6 completion:v7];
+    [v10 startRemoteReportWithComponentIdentity:payloadCopy completion:completionCopy];
   }
 
   else
   {
-    v7[2](v7, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -125,27 +125,27 @@ void __51__DKReportHostContext_startWithPayload_completion___block_invoke_2()
   [DKAnalytics sendAnalyticsWithEvent:1 error:v0];
 }
 
-- (void)cancelWithCompletion:(id)a3
+- (void)cancelWithCompletion:(id)completion
 {
-  v6 = a3;
-  v4 = [(DKReportHostContext *)self delegate];
-  [v4 cancelExtensionRequest];
+  completionCopy = completion;
+  delegate = [(DKReportHostContext *)self delegate];
+  [delegate cancelExtensionRequest];
 
-  v5 = v6;
-  if (v6)
+  v5 = completionCopy;
+  if (completionCopy)
   {
-    (*(v6 + 2))(v6);
-    v5 = v6;
+    (*(completionCopy + 2))(completionCopy);
+    v5 = completionCopy;
   }
 }
 
-- (void)completeRemoteWithReport:(id)a3 completion:(id)a4
+- (void)completeRemoteWithReport:(id)report completion:(id)completion
 {
-  v6 = *(a4 + 2);
-  v7 = a3;
-  v6(a4);
-  v8 = [(DKReportHostContext *)self delegate];
-  [v8 completeWithPayload:v7 completion:&__block_literal_global_69];
+  v6 = *(completion + 2);
+  reportCopy = report;
+  v6(completion);
+  delegate = [(DKReportHostContext *)self delegate];
+  [delegate completeWithPayload:reportCopy completion:&__block_literal_global_69];
 }
 
 - (DKExtensionHostAdapterDelegate)delegate

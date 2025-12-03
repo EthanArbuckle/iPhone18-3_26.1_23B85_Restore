@@ -1,18 +1,18 @@
 @interface ATLegacyMessageLink
-- (ATLegacyMessageLink)initWithSocket:(id)a3;
-- (BOOL)_sendData:(const char *)a3 offset:(unsigned int)a4 len:(unsigned int)a5 error:(id *)a6;
+- (ATLegacyMessageLink)initWithSocket:(id)socket;
+- (BOOL)_sendData:(const char *)data offset:(unsigned int)offset len:(unsigned int)len error:(id *)error;
 - (BOOL)idleTimeoutEnabled;
 - (BOOL)open;
 - (NSString)description;
 - (double)_idleTimeoutInterval;
 - (void)_checkMessageTimeouts;
-- (void)_handlePingMessage:(id)a3 fromLink:(id)a4;
+- (void)_handlePingMessage:(id)message fromLink:(id)link;
 - (void)_sendPingMessage;
 - (void)close;
-- (void)removeHandlerForMessage:(id)a3;
-- (void)sendMessage:(id)a3 withCompletion:(id)a4;
-- (void)setHandlerForMessage:(id)a3 handler:(id)a4;
-- (void)socket:(id)a3 hasDataAvailable:(const char *)a4 length:(int64_t)a5;
+- (void)removeHandlerForMessage:(id)message;
+- (void)sendMessage:(id)message withCompletion:(id)completion;
+- (void)setHandlerForMessage:(id)message handler:(id)handler;
+- (void)socket:(id)socket hasDataAvailable:(const char *)available length:(int64_t)length;
 @end
 
 @implementation ATLegacyMessageLink
@@ -27,7 +27,7 @@
   return v6;
 }
 
-- (void)_handlePingMessage:(id)a3 fromLink:(id)a4
+- (void)_handlePingMessage:(id)message fromLink:(id)link
 {
   v5 = [MEMORY[0x277CEA448] messageWithName:@"Pong" parameters:0];
   v6[0] = MEMORY[0x277D85DD0];
@@ -95,7 +95,7 @@ void __39__ATLegacyMessageLink__sendPingMessage__block_invoke(uint64_t a1, void 
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
-      v11 = self;
+      selfCopy = self;
       _os_log_impl(&dword_223819000, v7, OS_LOG_TYPE_ERROR, "%{public}@ inactivity timeout fired - sending idle exit message and closing link", buf, 0xCu);
     }
 
@@ -135,9 +135,9 @@ void __44__ATLegacyMessageLink__checkMessageTimeouts__block_invoke(uint64_t a1, 
 
 - (double)_idleTimeoutInterval
 {
-  v2 = [(ATLegacyMessageLink *)self hostSupportsLocalCloudDownloads];
+  hostSupportsLocalCloudDownloads = [(ATLegacyMessageLink *)self hostSupportsLocalCloudDownloads];
   result = 45.0;
-  if (v2)
+  if (hostSupportsLocalCloudDownloads)
   {
     return 180.0;
   }
@@ -145,14 +145,14 @@ void __44__ATLegacyMessageLink__checkMessageTimeouts__block_invoke(uint64_t a1, 
   return result;
 }
 
-- (BOOL)_sendData:(const char *)a3 offset:(unsigned int)a4 len:(unsigned int)a5 error:(id *)a6
+- (BOOL)_sendData:(const char *)data offset:(unsigned int)offset len:(unsigned int)len error:(id *)error
 {
-  v7 = *&a5;
-  v8 = *&a4;
-  v10 = [(ATConcreteMessageLink *)self socket];
-  LOBYTE(a6) = [v10 send:a3 offset:v8 len:v7 error:a6] == v7;
+  v7 = *&len;
+  v8 = *&offset;
+  socket = [(ATConcreteMessageLink *)self socket];
+  LOBYTE(error) = [socket send:data offset:v8 len:v7 error:error] == v7;
 
-  return a6;
+  return error;
 }
 
 - (BOOL)idleTimeoutEnabled
@@ -167,21 +167,21 @@ void __44__ATLegacyMessageLink__checkMessageTimeouts__block_invoke(uint64_t a1, 
   return v3;
 }
 
-- (void)socket:(id)a3 hasDataAvailable:(const char *)a4 length:(int64_t)a5
+- (void)socket:(id)socket hasDataAvailable:(const char *)available length:(int64_t)length
 {
   v29 = *MEMORY[0x277D85DE8];
-  v24 = a3;
+  socketCopy = socket;
   v8 = _ATLogCategoryiTunesSync_Oversize();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v26 = self;
+    selfCopy2 = self;
     v27 = 1024;
-    LODWORD(v28) = a5;
+    LODWORD(v28) = length;
     _os_log_impl(&dword_223819000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ received %d bytes of data", buf, 0x12u);
   }
 
-  [(NSMutableData *)self->_incomingData appendBytes:a4 length:a5];
+  [(NSMutableData *)self->_incomingData appendBytes:available length:length];
   if ([(NSMutableData *)self->_incomingData length]>= 4)
   {
     while (1)
@@ -195,16 +195,16 @@ void __44__ATLegacyMessageLink__checkMessageTimeouts__block_invoke(uint64_t a1, 
 
       v11 = [MEMORY[0x277CBEA90] dataWithBytesNoCopy:-[NSMutableData bytes](self->_incomingData length:"bytes") + 4 freeWhenDone:{v9, 0}];
       v12 = [MEMORY[0x277CEA448] messageFromData:v11];
-      v13 = [v12 name];
-      v14 = [v13 isEqualToString:@"AssetManifest"];
+      name = [v12 name];
+      v14 = [name isEqualToString:@"AssetManifest"];
 
       if (v14)
       {
         break;
       }
 
-      v16 = [v12 name];
-      v17 = [v16 isEqualToString:@"LocalCloudDownloadResponse"];
+      name2 = [v12 name];
+      v17 = [name2 isEqualToString:@"LocalCloudDownloadResponse"];
 
       if ((v17 & 1) == 0)
       {
@@ -221,8 +221,8 @@ LABEL_12:
       v18 = self->_requestHandlerTable;
       objc_sync_enter(v18);
       requestHandlerTable = self->_requestHandlerTable;
-      v20 = [v12 name];
-      v21 = [(NSMutableDictionary *)requestHandlerTable objectForKey:v20];
+      name3 = [v12 name];
+      v21 = [(NSMutableDictionary *)requestHandlerTable objectForKey:name3];
 
       if (v21)
       {
@@ -230,8 +230,8 @@ LABEL_12:
       }
 
       objc_sync_exit(v18);
-      v22 = [v12 name];
-      v23 = [v22 isEqualToString:@"Pong"];
+      name4 = [v12 name];
+      v23 = [name4 isEqualToString:@"Pong"];
 
       if ((v23 & 1) == 0)
       {
@@ -251,7 +251,7 @@ LABEL_12:
     {
 LABEL_10:
       *buf = 138543618;
-      v26 = self;
+      selfCopy2 = self;
       v27 = 2114;
       v28 = v12;
       _os_log_impl(&dword_223819000, v15, OS_LOG_TYPE_DEFAULT, "%{public}@ <--- %{public}@", buf, 0x16u);
@@ -265,20 +265,20 @@ LABEL_11:
 LABEL_17:
 }
 
-- (void)sendMessage:(id)a3 withCompletion:(id)a4
+- (void)sendMessage:(id)message withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __50__ATLegacyMessageLink_sendMessage_withCompletion___block_invoke;
   block[3] = &unk_2784E58C0;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = messageCopy;
+  selfCopy = self;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  v10 = messageCopy;
   dispatch_async(queue, block);
 }
 
@@ -379,24 +379,24 @@ LABEL_17:
   }
 }
 
-- (void)removeHandlerForMessage:(id)a3
+- (void)removeHandlerForMessage:(id)message
 {
-  v5 = a3;
+  messageCopy = message;
   v4 = self->_requestHandlerTable;
   objc_sync_enter(v4);
-  [(NSMutableDictionary *)self->_requestHandlerTable removeObjectForKey:v5];
+  [(NSMutableDictionary *)self->_requestHandlerTable removeObjectForKey:messageCopy];
   objc_sync_exit(v4);
 }
 
-- (void)setHandlerForMessage:(id)a3 handler:(id)a4
+- (void)setHandlerForMessage:(id)message handler:(id)handler
 {
-  v10 = a3;
-  v6 = a4;
+  messageCopy = message;
+  handlerCopy = handler;
   v7 = self->_requestHandlerTable;
   objc_sync_enter(v7);
   requestHandlerTable = self->_requestHandlerTable;
-  v9 = [v6 copy];
-  [(NSMutableDictionary *)requestHandlerTable setObject:v9 forKey:v10];
+  v9 = [handlerCopy copy];
+  [(NSMutableDictionary *)requestHandlerTable setObject:v9 forKey:messageCopy];
 
   objc_sync_exit(v7);
 }
@@ -427,8 +427,8 @@ LABEL_17:
   [(ATLegacyMessageLink *)self setHandlerForMessage:@"Pong" handler:v6];
   v5.receiver = self;
   v5.super_class = ATLegacyMessageLink;
-  v3 = [(ATConcreteMessageLink *)&v5 open];
-  if (v3)
+  open = [(ATConcreteMessageLink *)&v5 open];
+  if (open)
   {
     [(ATConcreteMessageLink *)self setInitialized:1];
   }
@@ -436,7 +436,7 @@ LABEL_17:
   objc_destroyWeak(&v7);
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
-  return v3;
+  return open;
 }
 
 void __27__ATLegacyMessageLink_open__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -455,17 +455,17 @@ void __27__ATLegacyMessageLink_open__block_invoke_2(uint64_t a1, void *a2, void 
   [WeakRetained _handlePongMessage:v5 fromLink:v6];
 }
 
-- (ATLegacyMessageLink)initWithSocket:(id)a3
+- (ATLegacyMessageLink)initWithSocket:(id)socket
 {
-  v4 = a3;
+  socketCopy = socket;
   v16.receiver = self;
   v16.super_class = ATLegacyMessageLink;
-  v5 = [(ATLockdownMessageLink *)&v16 initWithSocket:v4];
+  v5 = [(ATLockdownMessageLink *)&v16 initWithSocket:socketCopy];
   v6 = v5;
   if (v5)
   {
     [(ATConcreteMessageLink *)v5 setEndpointType:0];
-    [v4 setSocketMode:1];
+    [socketCopy setSocketMode:1];
     v7 = objc_opt_class();
     Name = class_getName(v7);
     v9 = dispatch_queue_create(Name, 0);

@@ -5,8 +5,8 @@
 + (NSString)endOfBookKey;
 + (NSString)primaryKey;
 + (NSString)sceneTypeKey;
-+ (id)sceneTypekeyForSceneController:(id)a3;
-+ (unint64_t)sceneTypeFrom:(id)a3;
++ (id)sceneTypekeyForSceneController:(id)controller;
++ (unint64_t)sceneTypeFrom:(id)from;
 - (BKSceneControllerUtilities)init;
 @end
 
@@ -54,17 +54,17 @@
   return v2;
 }
 
-+ (id)sceneTypekeyForSceneController:(id)a3
++ (id)sceneTypekeyForSceneController:(id)controller
 {
   swift_unknownObjectRetain();
-  sub_1006984B8(a3);
+  sub_1006984B8(controller);
   swift_unknownObjectRelease();
   v4 = sub_1007A2214();
 
   return v4;
 }
 
-+ (unint64_t)sceneTypeFrom:(id)a3
++ (unint64_t)sceneTypeFrom:(id)from
 {
   v3 = sub_1007A2254();
   v5 = sub_1006985B0(v3, v4);

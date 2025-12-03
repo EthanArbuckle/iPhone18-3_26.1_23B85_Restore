@@ -1,48 +1,48 @@
 @interface ENConfigurationManager
-+ (BOOL)isRampModeEnabledFromServerResponse:(id)a3;
-+ (BOOL)serverResponse:(id)a3 isOnRampMode:(unint64_t)a4;
-+ (BOOL)verifyAppleServerResponse:(id)a3 signatureHeader:(id)a4;
-+ (double)randomSelectPercentagePerDayFromServerResponse:(id)a3;
++ (BOOL)isRampModeEnabledFromServerResponse:(id)response;
++ (BOOL)serverResponse:(id)response isOnRampMode:(unint64_t)mode;
++ (BOOL)verifyAppleServerResponse:(id)response signatureHeader:(id)header;
++ (double)randomSelectPercentagePerDayFromServerResponse:(id)response;
 + (id)iCloudServerEndpoint;
-+ (id)staticRegionForBundleID:(id)a3;
-+ (unint64_t)rampModeFromServerResponse:(id)a3;
-+ (void)_printServerConfiguration:(id)a3;
++ (id)staticRegionForBundleID:(id)d;
++ (unint64_t)rampModeFromServerResponse:(id)response;
++ (void)_printServerConfiguration:(id)configuration;
 - (BOOL)isInGracePeriodTransition;
-- (BOOL)updateRampModeForRegion:(id)a3 rampMode:(unint64_t)a4;
-- (ENConfigurationManager)initWithDelegate:(id)a3 activeEntity:(id)a4;
+- (BOOL)updateRampModeForRegion:(id)region rampMode:(unint64_t)mode;
+- (ENConfigurationManager)initWithDelegate:(id)delegate activeEntity:(id)entity;
 - (ENConfigurationManagerDelegate)delegate;
 - (uint64_t)_scheduleRegionConfigurationRefresh;
-- (unint64_t)readCachedRampModeForRegion:(id)a3;
+- (unint64_t)readCachedRampModeForRegion:(id)region;
 - (void)_activate;
-- (void)_processServerConfiguration:(id)a3 forceUpdate:(BOOL)a4;
-- (void)_reportErrorMetricForHTTPStatus:(int64_t)a3;
-- (void)_saveAndRemoveStaleConfigurations:(id)a3 region:(id)a4 error:(id)a5;
+- (void)_processServerConfiguration:(id)configuration forceUpdate:(BOOL)update;
+- (void)_reportErrorMetricForHTTPStatus:(int64_t)status;
+- (void)_saveAndRemoveStaleConfigurations:(id)configurations region:(id)region error:(id)error;
 - (void)_scheduleRegionConfigurationRefresh;
-- (void)_serverFetchRegionConfiguration:(id)a3 userInitiated:(BOOL)a4 completion:(id)a5;
+- (void)_serverFetchRegionConfiguration:(id)configuration userInitiated:(BOOL)initiated completion:(id)completion;
 - (void)activate;
 - (void)dealloc;
-- (void)fetchServerConfigurationsForRegion:(id)a3 userInitiated:(BOOL)a4 withCompletion:(id)a5;
-- (void)overrideRampModeForRegion:(id)a3 rampMode:(unint64_t)a4;
+- (void)fetchServerConfigurationsForRegion:(id)region userInitiated:(BOOL)initiated withCompletion:(id)completion;
+- (void)overrideRampModeForRegion:(id)region rampMode:(unint64_t)mode;
 - (void)prefsChanged;
 - (void)refreshServerConfigurationsUponProfileChange;
-- (void)regionMonitor:(id)a3 authorizationStateDidChange:(unint64_t)a4;
-- (void)regionMonitor:(id)a3 regionDidChange:(id)a4;
+- (void)regionMonitor:(id)monitor authorizationStateDidChange:(unint64_t)change;
+- (void)regionMonitor:(id)monitor regionDidChange:(id)change;
 - (void)resetConfigurationCache;
 - (void)resetConfigurationManager;
-- (void)serverFetchRegionConfiguration:(id)a3 userInitiated:(BOOL)a4 completion:(id)a5;
-- (void)setActiveEntity:(id)a3;
-- (void)setRegionMonitor:(id)a3;
-- (void)setupGracePeriodFetchTimerWithDelay:(double)a3;
+- (void)serverFetchRegionConfiguration:(id)configuration userInitiated:(BOOL)initiated completion:(id)completion;
+- (void)setActiveEntity:(id)entity;
+- (void)setRegionMonitor:(id)monitor;
+- (void)setupGracePeriodFetchTimerWithDelay:(double)delay;
 - (void)stopGracePeriodTimer;
 - (void)updateRegionMonitorModeForCurrentRegion;
 @end
 
 @implementation ENConfigurationManager
 
-- (ENConfigurationManager)initWithDelegate:(id)a3 activeEntity:(id)a4
+- (ENConfigurationManager)initWithDelegate:(id)delegate activeEntity:(id)entity
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  entityCopy = entity;
   v14.receiver = self;
   v14.super_class = ENConfigurationManager;
   v8 = [(ENConfigurationManager *)&v14 init];
@@ -58,8 +58,8 @@
     v12 = objc_alloc_init(ENConfigurationStore);
     [(ENConfigurationManager *)v8 setConfigurationStore:v12];
 
-    [(ENConfigurationManager *)v8 setDelegate:v6];
-    [(ENConfigurationManager *)v8 setActiveEntity:v7];
+    [(ENConfigurationManager *)v8 setDelegate:delegateCopy];
+    [(ENConfigurationManager *)v8 setActiveEntity:entityCopy];
   }
 
   return v8;
@@ -67,13 +67,13 @@
 
 - (void)activate
 {
-  v3 = [(ENConfigurationManager *)self serialQueue];
+  serialQueue = [(ENConfigurationManager *)self serialQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __34__ENConfigurationManager_activate__block_invoke;
   block[3] = &unk_278FD0F90;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(serialQueue, block);
 }
 
 - (void)_activate
@@ -102,8 +102,8 @@
   regionMonitor = self->_regionMonitor;
   self->_regionMonitor = 0;
 
-  v4 = [(ENConfigurationManager *)self serverConfigurationFetchTimer];
-  [v4 invalidate];
+  serverConfigurationFetchTimer = [(ENConfigurationManager *)self serverConfigurationFetchTimer];
+  [serverConfigurationFetchTimer invalidate];
 
   [(ENConfigurationManager *)self setServerConfigurationFetchTimer:0];
   v5.receiver = self;
@@ -111,13 +111,13 @@
   [(ENConfigurationManager *)&v5 dealloc];
 }
 
-- (void)_reportErrorMetricForHTTPStatus:(int64_t)a3
+- (void)_reportErrorMetricForHTTPStatus:(int64_t)status
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v7 = WeakRetained;
-  if (a3 <= 0x3E7)
+  if (status <= 0x3E7)
   {
-    v6 = (a3 + 10000);
+    v6 = (status + 10000);
   }
 
   else
@@ -128,52 +128,52 @@
   [WeakRetained configurationManager:self errorDetected:v6];
 }
 
-- (void)serverFetchRegionConfiguration:(id)a3 userInitiated:(BOOL)a4 completion:(id)a5
+- (void)serverFetchRegionConfiguration:(id)configuration userInitiated:(BOOL)initiated completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(ENConfigurationManager *)self serialQueue];
+  configurationCopy = configuration;
+  completionCopy = completion;
+  serialQueue = [(ENConfigurationManager *)self serialQueue];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __82__ENConfigurationManager_serverFetchRegionConfiguration_userInitiated_completion___block_invoke;
   v13[3] = &unk_278FD24C8;
   v13[4] = self;
-  v14 = v8;
-  v16 = a4;
-  v15 = v9;
-  v11 = v9;
-  v12 = v8;
-  dispatch_async(v10, v13);
+  v14 = configurationCopy;
+  initiatedCopy = initiated;
+  v15 = completionCopy;
+  v11 = completionCopy;
+  v12 = configurationCopy;
+  dispatch_async(serialQueue, v13);
 }
 
-- (void)_serverFetchRegionConfiguration:(id)a3 userInitiated:(BOOL)a4 completion:(id)a5
+- (void)_serverFetchRegionConfiguration:(id)configuration userInitiated:(BOOL)initiated completion:(id)completion
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
+  initiatedCopy = initiated;
+  configurationCopy = configuration;
+  completionCopy = completion;
   if (_MergedGlobals_0 <= 30 && (_MergedGlobals_0 != -1 || _LogCategory_Initialize()))
   {
     v10 = "no";
-    if (v6)
+    if (initiatedCopy)
     {
       v10 = "yes";
     }
 
-    v45 = v8;
+    v45 = configurationCopy;
     v47 = v10;
     LogPrintF_safe();
   }
 
-  v11 = [v8 countryCode];
+  countryCode = [configurationCopy countryCode];
 
-  if (!v11)
+  if (!countryCode)
   {
-    [ENConfigurationManager _serverFetchRegionConfiguration:v9 userInitiated:? completion:?];
+    [ENConfigurationManager _serverFetchRegionConfiguration:completionCopy userInitiated:? completion:?];
     goto LABEL_40;
   }
 
-  v12 = [v8 countryCode];
-  v13 = [v12 uppercaseString];
+  countryCode2 = [configurationCopy countryCode];
+  uppercaseString = [countryCode2 uppercaseString];
 
   if (!CFPrefs_GetInt64())
   {
@@ -185,91 +185,91 @@
     v16 = +[ENConfigurationManager iCloudServerEndpoint];
     v53 = [v16 URLByAppendingPathComponent:@"/v2/app/config"];
 
-    v17 = [MEMORY[0x277CBEB30] dictionary];
-    v18 = [MEMORY[0x277CBEAA0] date];
-    [v18 timeIntervalSince1970];
+    dictionary = [MEMORY[0x277CBEB30] dictionary];
+    date = [MEMORY[0x277CBEAA0] date];
+    [date timeIntervalSince1970];
     v20 = (v19 * 1000.0);
 
     v52 = [MEMORY[0x277CCACA0] stringWithFormat:@"%lld", v20];
-    [v17 setObject:? forKey:?];
-    v21 = [v13 uppercaseString];
-    [v17 setObject:v21 forKey:@"x-apple-ct-region-identifier"];
+    [dictionary setObject:? forKey:?];
+    v13UppercaseString = [uppercaseString uppercaseString];
+    [dictionary setObject:v13UppercaseString forKey:@"x-apple-ct-region-identifier"];
 
-    v22 = [(ENConfigurationManager *)self configurationStore];
-    v23 = [v22 regionHashForRegion:v8];
+    configurationStore = [(ENConfigurationManager *)self configurationStore];
+    v23 = [configurationStore regionHashForRegion:configurationCopy];
 
     if (v23)
     {
-      [v17 setObject:v23 forKey:@"x-apple-ct-region-hash"];
+      [dictionary setObject:v23 forKey:@"x-apple-ct-region-hash"];
     }
 
-    v24 = [MEMORY[0x277CCAB60] string];
+    string = [MEMORY[0x277CCAB60] string];
     v25 = GestaltCopyAnswer();
     v26 = v25;
     if (v25)
     {
-      [v24 appendFormat:@"%@/", v25];
+      [string appendFormat:@"%@/", v25];
     }
 
     v27 = GestaltCopyAnswer();
     if (v27)
     {
-      [v24 appendString:v27];
+      [string appendString:v27];
     }
 
-    if ([v24 length])
+    if ([string length])
     {
-      [v17 setObject:v24 forKey:@"x-apple-en-os-version"];
+      [dictionary setObject:string forKey:@"x-apple-en-os-version"];
     }
 
     v50 = v27;
     v51 = v26;
     if (CFPrefs_GetInt64())
     {
-      [v17 setObject:@"true" forKey:@"x-apple-test-application"];
+      [dictionary setObject:@"true" forKey:@"x-apple-test-application"];
     }
 
-    v28 = [(ENConfigurationManager *)self regionRampModeOverride];
-    v29 = [v28 objectForKeyedSubscript:v8];
+    regionRampModeOverride = [(ENConfigurationManager *)self regionRampModeOverride];
+    v29 = [regionRampModeOverride objectForKeyedSubscript:configurationCopy];
 
     if (v29)
     {
-      v30 = [(ENConfigurationManager *)self regionRampModeOverride];
-      v31 = [v30 objectForKeyedSubscript:v8];
-      v32 = [v31 unsignedIntegerValue];
+      regionRampModeOverride2 = [(ENConfigurationManager *)self regionRampModeOverride];
+      v31 = [regionRampModeOverride2 objectForKeyedSubscript:configurationCopy];
+      unsignedIntegerValue = [v31 unsignedIntegerValue];
 
-      v33 = [(ENConfigurationManager *)self regionRampModeOverride];
-      [v33 setObject:0 forKeyedSubscript:v8];
+      regionRampModeOverride3 = [(ENConfigurationManager *)self regionRampModeOverride];
+      [regionRampModeOverride3 setObject:0 forKeyedSubscript:configurationCopy];
 
-      if (!v32)
+      if (!unsignedIntegerValue)
       {
 LABEL_35:
-        v35 = [ENCloudNetworkRequest requestWithURL:v53 httpMethod:0 headers:v17 parameters:MEMORY[0x277CBEC08] andBody:0, v46];
-        v36 = [(ENConfigurationManager *)self delegate];
+        v35 = [ENCloudNetworkRequest requestWithURL:v53 httpMethod:0 headers:dictionary parameters:MEMORY[0x277CBEC08] andBody:0, v46];
+        delegate = [(ENConfigurationManager *)self delegate];
         if (_MergedGlobals_0 <= 30 && (_MergedGlobals_0 != -1 || _LogCategory_Initialize()))
         {
           [ENConfigurationManager _serverFetchRegionConfiguration:userInitiated:completion:];
         }
 
-        v37 = [(ENConfigurationManager *)self cloudServerChannel];
+        cloudServerChannel = [(ENConfigurationManager *)self cloudServerChannel];
         v54[0] = MEMORY[0x277D85DD0];
         v54[1] = 3221225472;
         v54[2] = __83__ENConfigurationManager__serverFetchRegionConfiguration_userInitiated_completion___block_invoke_3;
         v54[3] = &unk_278FD28B0;
         v54[4] = v35;
-        v54[5] = v36;
-        v56 = v9;
+        v54[5] = delegate;
+        v56 = completionCopy;
         v54[6] = self;
-        v55 = v8;
-        [v37 enqueueRequest:v35 withCompletion:v54];
+        v55 = configurationCopy;
+        [cloudServerChannel enqueueRequest:v35 withCompletion:v54];
 
         v15 = v53;
         goto LABEL_39;
       }
 
 LABEL_34:
-      v34 = [MEMORY[0x277CCACA0] stringWithFormat:@"%lu", v32, v48];
-      [v17 setObject:v34 forKey:@"x-apple-ramp-mode"];
+      v34 = [MEMORY[0x277CCACA0] stringWithFormat:@"%lu", unsignedIntegerValue, v48];
+      [dictionary setObject:v34 forKey:@"x-apple-ramp-mode"];
 
       goto LABEL_35;
     }
@@ -281,7 +281,7 @@ LABEL_34:
         [ENConfigurationManager _serverFetchRegionConfiguration:userInitiated:completion:];
       }
 
-      v32 = 1;
+      unsignedIntegerValue = 1;
       goto LABEL_34;
     }
 
@@ -290,19 +290,19 @@ LABEL_34:
       [ENConfigurationManager _serverFetchRegionConfiguration:userInitiated:completion:];
     }
 
-    v38 = [(ENConfigurationManager *)self activeEntity];
-    v39 = [v38 entity];
-    v40 = [v39 region];
+    activeEntity = [(ENConfigurationManager *)self activeEntity];
+    entity = [activeEntity entity];
+    region = [entity region];
 
-    if (!v40)
+    if (!region)
     {
       goto LABEL_64;
     }
 
-    v49 = [(ENConfigurationManager *)self activeEntity];
-    v41 = [v49 entity];
-    v42 = [v41 region];
-    v43 = [(ENConfigurationManager *)self readCachedRampModeForRegion:v42];
+    activeEntity2 = [(ENConfigurationManager *)self activeEntity];
+    entity2 = [activeEntity2 entity];
+    region2 = [entity2 region];
+    v43 = [(ENConfigurationManager *)self readCachedRampModeForRegion:region2];
 
     if (v43 > 1)
     {
@@ -314,7 +314,7 @@ LABEL_34:
         }
 
 LABEL_84:
-        v32 = 2;
+        unsignedIntegerValue = 2;
         goto LABEL_34;
       }
 
@@ -325,7 +325,7 @@ LABEL_84:
           [ENConfigurationManager _serverFetchRegionConfiguration:? userInitiated:? completion:?];
         }
 
-        v32 = 3;
+        unsignedIntegerValue = 3;
         goto LABEL_34;
       }
 
@@ -366,25 +366,25 @@ LABEL_64:
         }
 
 LABEL_67:
-        v44 = [(ENConfigurationManager *)self readCachedRampModeForRegion:v8];
+        v44 = [(ENConfigurationManager *)self readCachedRampModeForRegion:configurationCopy];
         if (!v44)
         {
           goto LABEL_80;
         }
 
-        v32 = v44;
+        unsignedIntegerValue = v44;
         if (_MergedGlobals_0 <= 30 && (_MergedGlobals_0 != -1 || _LogCategory_Initialize()))
         {
-          v46 = v8;
-          v48 = v32;
+          v46 = configurationCopy;
+          v48 = unsignedIntegerValue;
           LogPrintF_safe();
         }
 
-        if (v32 != 1)
+        if (unsignedIntegerValue != 1)
         {
           if (_MergedGlobals_0 <= 30 && (_MergedGlobals_0 != -1 || _LogCategory_Initialize()))
           {
-            v48 = v32;
+            v48 = unsignedIntegerValue;
             LogPrintF_safe();
           }
 
@@ -394,7 +394,7 @@ LABEL_67:
         if (_MergedGlobals_0 <= 30 && (_MergedGlobals_0 != -1 || _LogCategory_Initialize()))
         {
           [ENConfigurationManager _serverFetchRegionConfiguration:userInitiated:completion:];
-          if (!v6)
+          if (!initiatedCopy)
           {
             goto LABEL_35;
           }
@@ -403,7 +403,7 @@ LABEL_67:
         else
         {
 LABEL_80:
-          if (!v6)
+          if (!initiatedCopy)
           {
             goto LABEL_35;
           }
@@ -427,14 +427,14 @@ LABEL_80:
     [ENConfigurationManager _serverFetchRegionConfiguration:userInitiated:completion:];
   }
 
-  v14 = [(ENConfigurationManager *)self configurationStore];
+  configurationStore2 = [(ENConfigurationManager *)self configurationStore];
   v57[0] = MEMORY[0x277D85DD0];
   v57[1] = 3221225472;
   v57[2] = __83__ENConfigurationManager__serverFetchRegionConfiguration_userInitiated_completion___block_invoke;
   v57[3] = &unk_278FD27B8;
   v57[4] = self;
-  v58 = v9;
-  [v14 allCachedServerResponseConfigurationsWithCompletion:v57];
+  v58 = completionCopy;
+  [configurationStore2 allCachedServerResponseConfigurationsWithCompletion:v57];
 
   v15 = v58;
 LABEL_39:
@@ -676,32 +676,32 @@ LABEL_37:
 LABEL_59:
 }
 
-- (BOOL)updateRampModeForRegion:(id)a3 rampMode:(unint64_t)a4
+- (BOOL)updateRampModeForRegion:(id)region rampMode:(unint64_t)mode
 {
-  v6 = a3;
+  regionCopy = region;
   if (_MergedGlobals_0 <= 30 && (_MergedGlobals_0 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF_safe();
   }
 
-  if (!v6)
+  if (!regionCopy)
   {
     [ENConfigurationManager updateRampModeForRegion:? rampMode:?];
     v10 = v14;
     goto LABEL_23;
   }
 
-  v7 = [(ENConfigurationManager *)self configurationStore];
-  v8 = [v7 configurationForRegion:v6];
+  configurationStore = [(ENConfigurationManager *)self configurationStore];
+  v8 = [configurationStore configurationForRegion:regionCopy];
 
   if (v8)
   {
-    if (a4 <= 3)
+    if (mode <= 3)
     {
-      [v8 setEnRampMode:a4];
-      v9 = [(ENConfigurationManager *)self configurationStore];
+      [v8 setEnRampMode:mode];
+      configurationStore2 = [(ENConfigurationManager *)self configurationStore];
       v13 = 0;
-      v10 = [v9 saveRegionConfiguration:v8 error:&v13];
+      v10 = [configurationStore2 saveRegionConfiguration:v8 error:&v13];
       v11 = v13;
 
       if ((v10 & 1) == 0 && _MergedGlobals_0 <= 90 && (_MergedGlobals_0 != -1 || _LogCategory_Initialize()))
@@ -730,35 +730,35 @@ LABEL_23:
   return v10;
 }
 
-- (unint64_t)readCachedRampModeForRegion:(id)a3
+- (unint64_t)readCachedRampModeForRegion:(id)region
 {
-  v4 = a3;
+  regionCopy = region;
   if (_MergedGlobals_0 <= 30 && (_MergedGlobals_0 != -1 || _LogCategory_Initialize()))
   {
     [ENConfigurationManager readCachedRampModeForRegion:];
-    if (v4)
+    if (regionCopy)
     {
       goto LABEL_5;
     }
 
 LABEL_14:
     [ENConfigurationManager readCachedRampModeForRegion:?];
-    v7 = v9;
+    enRampMode = v9;
     goto LABEL_12;
   }
 
-  if (!v4)
+  if (!regionCopy)
   {
     goto LABEL_14;
   }
 
 LABEL_5:
-  v5 = [(ENConfigurationManager *)self configurationStore];
-  v6 = [v5 configurationForRegion:v4];
+  configurationStore = [(ENConfigurationManager *)self configurationStore];
+  v6 = [configurationStore configurationForRegion:regionCopy];
 
   if (v6)
   {
-    v7 = [v6 enRampMode];
+    enRampMode = [v6 enRampMode];
   }
 
   else
@@ -768,11 +768,11 @@ LABEL_5:
       [ENConfigurationManager readCachedRampModeForRegion:];
     }
 
-    v7 = 0;
+    enRampMode = 0;
   }
 
 LABEL_12:
-  return v7;
+  return enRampMode;
 }
 
 + (id)iCloudServerEndpoint
@@ -795,7 +795,7 @@ LABEL_12:
 
 - (void)_scheduleRegionConfigurationRefresh
 {
-  v1 = [a1 countryCode];
+  countryCode = [self countryCode];
   LogPrintF_safe();
 }
 
@@ -952,8 +952,8 @@ void __61__ENConfigurationManager__scheduleRegionConfigurationRefresh__block_inv
     [ENConfigurationManager resetConfigurationCache];
   }
 
-  v3 = [(ENConfigurationManager *)self configurationStore];
-  [v3 resetStore];
+  configurationStore = [(ENConfigurationManager *)self configurationStore];
+  [configurationStore resetStore];
 
   [(ENConfigurationManager *)self resetConfigurationManager];
 }
@@ -965,13 +965,13 @@ void __61__ENConfigurationManager__scheduleRegionConfigurationRefresh__block_inv
     [ENConfigurationManager resetConfigurationManager];
   }
 
-  v3 = [(ENConfigurationManager *)self serialQueue];
+  serialQueue = [(ENConfigurationManager *)self serialQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __51__ENConfigurationManager_resetConfigurationManager__block_invoke;
   block[3] = &unk_278FD0F90;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(serialQueue, block);
 }
 
 uint64_t __51__ENConfigurationManager_resetConfigurationManager__block_invoke(uint64_t a1)
@@ -985,10 +985,10 @@ uint64_t __51__ENConfigurationManager_resetConfigurationManager__block_invoke(ui
   return [v3 stopGracePeriodTimer];
 }
 
-+ (void)_printServerConfiguration:(id)a3
++ (void)_printServerConfiguration:(id)configuration
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  configurationCopy = configuration;
   if (_MergedGlobals_0 <= 30 && (_MergedGlobals_0 != -1 || _LogCategory_Initialize()))
   {
     +[ENConfigurationManager _printServerConfiguration:];
@@ -998,8 +998,8 @@ uint64_t __51__ENConfigurationManager_resetConfigurationManager__block_invoke(ui
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [v3 allKeys];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  allKeys = [configurationCopy allKeys];
+  v5 = [allKeys countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1011,7 +1011,7 @@ uint64_t __51__ENConfigurationManager_resetConfigurationManager__block_invoke(ui
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allKeys);
         }
 
         if (_MergedGlobals_0 <= 30)
@@ -1019,7 +1019,7 @@ uint64_t __51__ENConfigurationManager_resetConfigurationManager__block_invoke(ui
           v9 = *(*(&v12 + 1) + 8 * v8);
           if (_MergedGlobals_0 != -1 || _LogCategory_Initialize())
           {
-            [(ENConfigurationManager *)v3 _printServerConfiguration:v9];
+            [(ENConfigurationManager *)configurationCopy _printServerConfiguration:v9];
           }
         }
 
@@ -1027,7 +1027,7 @@ uint64_t __51__ENConfigurationManager_resetConfigurationManager__block_invoke(ui
       }
 
       while (v6 != v8);
-      v10 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v10 = [allKeys countByEnumeratingWithState:&v12 objects:v16 count:16];
       v6 = v10;
     }
 
@@ -1039,23 +1039,23 @@ uint64_t __51__ENConfigurationManager_resetConfigurationManager__block_invoke(ui
 
 - (BOOL)isInGracePeriodTransition
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(ENConfigurationManager *)self serialQueue];
+  serialQueue = [(ENConfigurationManager *)self serialQueue];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __51__ENConfigurationManager_isInGracePeriodTransition__block_invoke;
   v5[3] = &unk_278FD2370;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  dispatch_sync(v3, v5);
+  dispatch_sync(serialQueue, v5);
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
 void __51__ENConfigurationManager_isInGracePeriodTransition__block_invoke(uint64_t a1)
@@ -1064,37 +1064,37 @@ void __51__ENConfigurationManager_isInGracePeriodTransition__block_invoke(uint64
   *(*(*(a1 + 40) + 8) + 24) = v2 != 0;
 }
 
-- (void)setupGracePeriodFetchTimerWithDelay:(double)a3
+- (void)setupGracePeriodFetchTimerWithDelay:(double)delay
 {
   if (_MergedGlobals_0 <= 30 && (_MergedGlobals_0 != -1 || _LogCategory_Initialize()))
   {
     [ENConfigurationManager setupGracePeriodFetchTimerWithDelay:];
   }
 
-  v5 = [(ENConfigurationManager *)self gracePeriodConfigurationFetchTimer];
+  gracePeriodConfigurationFetchTimer = [(ENConfigurationManager *)self gracePeriodConfigurationFetchTimer];
 
-  if (v5)
+  if (gracePeriodConfigurationFetchTimer)
   {
-    v6 = [(ENConfigurationManager *)self gracePeriodConfigurationFetchTimer];
-    [v6 invalidate];
+    gracePeriodConfigurationFetchTimer2 = [(ENConfigurationManager *)self gracePeriodConfigurationFetchTimer];
+    [gracePeriodConfigurationFetchTimer2 invalidate];
 
     [(ENConfigurationManager *)self setGracePeriodConfigurationFetchTimer:0];
   }
 
-  v7 = [(ENConfigurationManager *)self serialQueue];
-  v8 = [(ENConfigurationManager *)self regionMonitor];
+  serialQueue = [(ENConfigurationManager *)self serialQueue];
+  regionMonitor = [(ENConfigurationManager *)self regionMonitor];
   objc_initWeak(&location, self);
   v9 = [ENXPCTimer alloc];
   v13 = MEMORY[0x277D85DD0];
   v14 = 3221225472;
   v15 = __62__ENConfigurationManager_setupGracePeriodFetchTimerWithDelay___block_invoke;
   v16 = &unk_278FD2950;
-  v10 = v7;
+  v10 = serialQueue;
   v17 = v10;
   objc_copyWeak(&v19, &location);
-  v11 = v8;
+  v11 = regionMonitor;
   v18 = v11;
-  v12 = [(ENXPCTimer *)v9 initWithName:@"com.apple.bluetooth.exposureNotification.gracePeriodConfigurationFetchTimer" delay:1 gracePeriod:193 priority:&v13 options:a3 block:30.0];
+  v12 = [(ENXPCTimer *)v9 initWithName:@"com.apple.bluetooth.exposureNotification.gracePeriodConfigurationFetchTimer" delay:1 gracePeriod:193 priority:&v13 options:delay block:30.0];
   [(ENConfigurationManager *)self setGracePeriodConfigurationFetchTimer:v12, v13, v14, v15, v16];
 
   objc_destroyWeak(&v19);
@@ -1207,17 +1207,17 @@ LABEL_27:
 
 - (void)stopGracePeriodTimer
 {
-  v3 = [(ENConfigurationManager *)self gracePeriodConfigurationFetchTimer];
+  gracePeriodConfigurationFetchTimer = [(ENConfigurationManager *)self gracePeriodConfigurationFetchTimer];
 
-  if (v3)
+  if (gracePeriodConfigurationFetchTimer)
   {
     if (_MergedGlobals_0 <= 30 && (_MergedGlobals_0 != -1 || _LogCategory_Initialize()))
     {
       [ENConfigurationManager stopGracePeriodTimer];
     }
 
-    v4 = [(ENConfigurationManager *)self gracePeriodConfigurationFetchTimer];
-    [v4 invalidate];
+    gracePeriodConfigurationFetchTimer2 = [(ENConfigurationManager *)self gracePeriodConfigurationFetchTimer];
+    [gracePeriodConfigurationFetchTimer2 invalidate];
 
     [(ENConfigurationManager *)self setGracePeriodConfigurationFetchTimer:0];
   }
@@ -1225,18 +1225,18 @@ LABEL_27:
   CFPrefs_RemoveValue();
 }
 
-- (void)_processServerConfiguration:(id)a3 forceUpdate:(BOOL)a4
+- (void)_processServerConfiguration:(id)configuration forceUpdate:(BOOL)update
 {
-  v4 = a4;
-  v28 = a3;
-  v6 = [(ENConfigurationManager *)self activeEntity];
-  v7 = [v6 entity];
-  v8 = [v7 region];
+  updateCopy = update;
+  configurationCopy = configuration;
+  activeEntity = [(ENConfigurationManager *)self activeEntity];
+  entity = [activeEntity entity];
+  region = [entity region];
 
-  if (v8)
+  if (region)
   {
-    v9 = [(ENConfigurationManager *)self configurationStore];
-    v10 = [v9 serverConfigurationForRegion:v8];
+    configurationStore = [(ENConfigurationManager *)self configurationStore];
+    v10 = [configurationStore serverConfigurationForRegion:region];
   }
 
   else
@@ -1246,67 +1246,67 @@ LABEL_27:
 
   [(ENConfigurationManager *)self updateRegionMonitorModeForCurrentRegion];
   v11 = +[ENLoggingPrefs sharedENLoggingPrefs];
-  v12 = [v11 isSensitiveLoggingAllowed];
+  isSensitiveLoggingAllowed = [v11 isSensitiveLoggingAllowed];
 
-  if ((v12 & 1) != 0 && _MergedGlobals_0 <= 30 && (_MergedGlobals_0 != -1 || _LogCategory_Initialize()))
+  if ((isSensitiveLoggingAllowed & 1) != 0 && _MergedGlobals_0 <= 30 && (_MergedGlobals_0 != -1 || _LogCategory_Initialize()))
   {
-    [ENConfigurationManager _processServerConfiguration:v28 forceUpdate:?];
+    [ENConfigurationManager _processServerConfiguration:configurationCopy forceUpdate:?];
   }
 
   if ([v10 enEnabled])
   {
-    if (v4)
+    if (updateCopy)
     {
 LABEL_20:
-      v19 = [(ENConfigurationManager *)self configurationStore];
-      v20 = [v28 region];
-      v21 = [v19 configurationForRegion:v20];
+      configurationStore2 = [(ENConfigurationManager *)self configurationStore];
+      region2 = [configurationCopy region];
+      v21 = [configurationStore2 configurationForRegion:region2];
 
-      v22 = [(ENConfigurationManager *)self delegate];
-      [v22 configurationManager:self exposureNotificationRegionConfigurationChanged:v21];
+      delegate = [(ENConfigurationManager *)self delegate];
+      [delegate configurationManager:self exposureNotificationRegionConfigurationChanged:v21];
 
       goto LABEL_28;
     }
   }
 
-  else if (([v28 enEnabled] & 1) != 0 || v4)
+  else if (([configurationCopy enEnabled] & 1) != 0 || updateCopy)
   {
     goto LABEL_20;
   }
 
-  v13 = [(ENConfigurationManager *)self gracePeriodConfigurationFetchTimer];
+  gracePeriodConfigurationFetchTimer = [(ENConfigurationManager *)self gracePeriodConfigurationFetchTimer];
 
   v14 = +[ENLoggingPrefs sharedENLoggingPrefs];
-  v15 = [v14 isSensitiveLoggingAllowed];
+  isSensitiveLoggingAllowed2 = [v14 isSensitiveLoggingAllowed];
 
-  if (v13)
+  if (gracePeriodConfigurationFetchTimer)
   {
-    [ENConfigurationManager _processServerConfiguration:v15 forceUpdate:self];
+    [ENConfigurationManager _processServerConfiguration:isSensitiveLoggingAllowed2 forceUpdate:self];
   }
 
   else
   {
-    v16 = v28;
-    if (v15)
+    v16 = configurationCopy;
+    if (isSensitiveLoggingAllowed2)
     {
       if (_MergedGlobals_0 <= 30)
       {
-        if (_MergedGlobals_0 != -1 || (v17 = _LogCategory_Initialize(), v16 = v28, v17))
+        if (_MergedGlobals_0 != -1 || (v17 = _LogCategory_Initialize(), v16 = configurationCopy, v17))
         {
           [ENConfigurationManager _processServerConfiguration:v16 forceUpdate:?];
-          v16 = v28;
+          v16 = configurationCopy;
         }
       }
     }
 
     if ([v16 enEnabled])
     {
-      [v28 regionTransitionGracePeriod];
+      [configurationCopy regionTransitionGracePeriod];
     }
 
     else
     {
-      [v28 regionDisabledTransitionGracePeriod];
+      [configurationCopy regionDisabledTransitionGracePeriod];
     }
 
     v23 = v18;
@@ -1324,8 +1324,8 @@ LABEL_20:
       }
     }
 
-    v26 = [MEMORY[0x277CBEAA0] date];
-    v27 = [v26 dateByAddingTimeInterval:v23];
+    date = [MEMORY[0x277CBEAA0] date];
+    v27 = [date dateByAddingTimeInterval:v23];
     [v27 timeIntervalSince1970];
     CFPrefs_SetDouble();
 
@@ -1337,14 +1337,14 @@ LABEL_28:
 
 - (void)refreshServerConfigurationsUponProfileChange
 {
-  v4 = [(ENConfigurationManager *)self serialQueue];
+  serialQueue = [(ENConfigurationManager *)self serialQueue];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __70__ENConfigurationManager_refreshServerConfigurationsUponProfileChange__block_invoke;
   v5[3] = &unk_278FD11C8;
   v5[4] = self;
   v5[5] = a2;
-  dispatch_async(v4, v5);
+  dispatch_async(serialQueue, v5);
 }
 
 void __70__ENConfigurationManager_refreshServerConfigurationsUponProfileChange__block_invoke(uint64_t a1)
@@ -1492,22 +1492,22 @@ void __70__ENConfigurationManager_refreshServerConfigurationsUponProfileChange__
   }
 }
 
-- (void)fetchServerConfigurationsForRegion:(id)a3 userInitiated:(BOOL)a4 withCompletion:(id)a5
+- (void)fetchServerConfigurationsForRegion:(id)region userInitiated:(BOOL)initiated withCompletion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(ENConfigurationManager *)self serialQueue];
+  regionCopy = region;
+  completionCopy = completion;
+  serialQueue = [(ENConfigurationManager *)self serialQueue];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __90__ENConfigurationManager_fetchServerConfigurationsForRegion_userInitiated_withCompletion___block_invoke;
   v13[3] = &unk_278FD24C8;
   v13[4] = self;
-  v14 = v8;
-  v16 = a4;
-  v15 = v9;
-  v11 = v9;
-  v12 = v8;
-  dispatch_async(v10, v13);
+  v14 = regionCopy;
+  initiatedCopy = initiated;
+  v15 = completionCopy;
+  v11 = completionCopy;
+  v12 = regionCopy;
+  dispatch_async(serialQueue, v13);
 }
 
 void __87__ENConfigurationManager__fetchServerConfigurationsForRegion_userInitiated_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1546,41 +1546,41 @@ uint64_t __87__ENConfigurationManager__fetchServerConfigurationsForRegion_userIn
   return result;
 }
 
-- (void)_saveAndRemoveStaleConfigurations:(id)a3 region:(id)a4 error:(id)a5
+- (void)_saveAndRemoveStaleConfigurations:(id)configurations region:(id)region error:(id)error
 {
   v65 = *MEMORY[0x277D85DE8];
-  v45 = a3;
-  v48 = a4;
-  v47 = a5;
+  configurationsCopy = configurations;
+  regionCopy = region;
+  errorCopy = error;
   val = self;
-  v46 = [(ENConfigurationManager *)self delegate];
-  if (v47)
+  delegate = [(ENConfigurationManager *)self delegate];
+  if (errorCopy)
   {
     if (dword_2813465E8 <= 90 && (dword_2813465E8 != -1 || _LogCategory_Initialize()))
     {
-      [ENConfigurationManager _saveAndRemoveStaleConfigurations:v48 region:? error:?];
+      [ENConfigurationManager _saveAndRemoveStaleConfigurations:regionCopy region:? error:?];
     }
 
-    v8 = [(ENConfigurationManager *)self configurationStore];
-    v9 = [v8 configurationForRegion:v48];
+    configurationStore = [(ENConfigurationManager *)self configurationStore];
+    v9 = [configurationStore configurationForRegion:regionCopy];
     if (v9)
     {
-      v10 = v47;
-      v11 = [v10 domain];
-      if ([v11 isEqualToString:@"ENConfigurationManagerErrorDomain"])
+      v10 = errorCopy;
+      domain = [v10 domain];
+      if ([domain isEqualToString:@"ENConfigurationManagerErrorDomain"])
       {
-        v12 = [v10 code];
+        code = [v10 code];
 
-        if (v12 == 5)
+        if (code == 5)
         {
-          v13 = [(ENConfigurationManager *)val configurationStore];
+          configurationStore2 = [(ENConfigurationManager *)val configurationStore];
           v63 = 0;
-          v14 = [v13 removeConfigurationsForRegion:v48 includingSubdivisions:1 error:&v63];
+          v14 = [configurationStore2 removeConfigurationsForRegion:regionCopy includingSubdivisions:1 error:&v63];
           v15 = v63;
 
           if (v14)
           {
-            [v46 configurationManager:val exposureNotificationRegionConfigurationRemovedForRegion:v48];
+            [delegate configurationManager:val exposureNotificationRegionConfigurationRemovedForRegion:regionCopy];
           }
 
           else if (dword_2813465E8 <= 90 && (dword_2813465E8 != -1 || _LogCategory_Initialize()))
@@ -1598,31 +1598,31 @@ uint64_t __87__ENConfigurationManager__fetchServerConfigurationsForRegion_userIn
 
   if (dword_2813465E8 <= 30 && (dword_2813465E8 != -1 || _LogCategory_Initialize()))
   {
-    [ENConfigurationManager _saveAndRemoveStaleConfigurations:v45 region:v48 error:?];
+    [ENConfigurationManager _saveAndRemoveStaleConfigurations:configurationsCopy region:regionCopy error:?];
   }
 
   context = objc_autoreleasePoolPush();
   objc_initWeak(&location, self);
-  v16 = [(ENConfigurationManager *)self configurationStore];
-  v17 = [v48 countryCode];
+  configurationStore3 = [(ENConfigurationManager *)self configurationStore];
+  countryCode = [regionCopy countryCode];
   v57[0] = MEMORY[0x277D85DD0];
   v57[1] = 3221225472;
   v57[2] = __73__ENConfigurationManager__saveAndRemoveStaleConfigurations_region_error___block_invoke;
   v57[3] = &unk_278FD29C8;
   objc_copyWeak(&v61, &location);
-  v18 = v45;
+  v18 = configurationsCopy;
   v58 = v18;
-  v19 = v48;
+  v19 = regionCopy;
   v59 = v19;
-  v60 = v46;
-  [v16 enumerateCachedRegionServerConfigurationsWithCountryCode:v17 handler:v57];
+  v60 = delegate;
+  [configurationStore3 enumerateCachedRegionServerConfigurationsWithCountryCode:countryCode handler:v57];
 
   v56[0] = MEMORY[0x277D85DD0];
   v56[1] = 3221225472;
   v56[2] = __73__ENConfigurationManager__saveAndRemoveStaleConfigurations_region_error___block_invoke_3;
   v56[3] = &unk_278FD29F0;
   v56[4] = val;
-  v56[5] = v46;
+  v56[5] = delegate;
   v50 = MEMORY[0x24C214430](v56);
   v54 = 0u;
   v55 = 0u;
@@ -1657,8 +1657,8 @@ uint64_t __87__ENConfigurationManager__fetchServerConfigurationsForRegion_userIn
 
           if ([ENConfigurationManager isRampModeEnabledFromServerResponse:v24, *&v41, v42, v43, context])
           {
-            v26 = [v25 region];
-            v27 = [v26 isEqual:v19];
+            region = [v25 region];
+            v27 = [region isEqual:v19];
 
             if (v27)
             {
@@ -1705,9 +1705,9 @@ uint64_t __87__ENConfigurationManager__fetchServerConfigurationsForRegion_userIn
 
                   break;
                 case 3uLL:
-                  v32 = [(ENConfigurationManager *)val configurationStore];
-                  v33 = [v25 region];
-                  v34 = [v32 serverConfigurationForRegion:v33];
+                  configurationStore4 = [(ENConfigurationManager *)val configurationStore];
+                  region2 = [v25 region];
+                  v34 = [configurationStore4 serverConfigurationForRegion:region2];
 
                   if (v34)
                   {
@@ -1772,10 +1772,10 @@ LABEL_69:
 
             if (_MergedGlobals_0 <= 30 && (_MergedGlobals_0 != -1 || _LogCategory_Initialize()))
             {
-              v29 = [v25 region];
+              region3 = [v25 region];
               v42 = [ENConfigurationManager rampModeFromServerResponse:v24];
               v43 = v19;
-              v41 = *&v29;
+              v41 = *&region3;
               LogPrintF_safe();
             }
           }
@@ -1790,8 +1790,8 @@ LABEL_69:
               LogPrintF_safe();
             }
 
-            v30 = [v25 region];
-            v31 = [v30 isEqual:v19];
+            region4 = [v25 region];
+            v31 = [region4 isEqual:v19];
 
             if (v31)
             {
@@ -1959,25 +1959,25 @@ void __73__ENConfigurationManager__saveAndRemoveStaleConfigurations_region_error
   }
 }
 
-- (void)overrideRampModeForRegion:(id)a3 rampMode:(unint64_t)a4
+- (void)overrideRampModeForRegion:(id)region rampMode:(unint64_t)mode
 {
-  v6 = a3;
-  v7 = [(ENConfigurationManager *)self regionRampModeOverride];
+  regionCopy = region;
+  regionRampModeOverride = [(ENConfigurationManager *)self regionRampModeOverride];
 
-  if (!v7)
+  if (!regionRampModeOverride)
   {
     v8 = objc_alloc_init(MEMORY[0x277CBEB30]);
     [(ENConfigurationManager *)self setRegionRampModeOverride:v8];
   }
 
-  v10 = [MEMORY[0x277CCABA8] numberWithUnsignedInteger:a4];
-  v9 = [(ENConfigurationManager *)self regionRampModeOverride];
-  [v9 setObject:v10 forKeyedSubscript:v6];
+  v10 = [MEMORY[0x277CCABA8] numberWithUnsignedInteger:mode];
+  regionRampModeOverride2 = [(ENConfigurationManager *)self regionRampModeOverride];
+  [regionRampModeOverride2 setObject:v10 forKeyedSubscript:regionCopy];
 }
 
-+ (BOOL)isRampModeEnabledFromServerResponse:(id)a3
++ (BOOL)isRampModeEnabledFromServerResponse:(id)response
 {
-  v3 = a3;
+  responseCopy = response;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -2008,18 +2008,18 @@ void __73__ENConfigurationManager__saveAndRemoveStaleConfigurations_region_error
   return v5;
 }
 
-+ (BOOL)serverResponse:(id)a3 isOnRampMode:(unint64_t)a4
++ (BOOL)serverResponse:(id)response isOnRampMode:(unint64_t)mode
 {
-  v5 = a3;
+  responseCopy = response;
   objc_opt_class();
-  v6 = (objc_opt_isKindOfClass() & 1) != 0 && [ENConfigurationManager isRampModeEnabledFromServerResponse:v5]&& [ENConfigurationManager rampModeFromServerResponse:v5]== a4;
+  v6 = (objc_opt_isKindOfClass() & 1) != 0 && [ENConfigurationManager isRampModeEnabledFromServerResponse:responseCopy]&& [ENConfigurationManager rampModeFromServerResponse:responseCopy]== mode;
 
   return v6;
 }
 
-+ (unint64_t)rampModeFromServerResponse:(id)a3
++ (unint64_t)rampModeFromServerResponse:(id)response
 {
-  v3 = a3;
+  responseCopy = response;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -2036,12 +2036,12 @@ void __73__ENConfigurationManager__saveAndRemoveStaleConfigurations_region_error
   return Int64;
 }
 
-+ (double)randomSelectPercentagePerDayFromServerResponse:(id)a3
++ (double)randomSelectPercentagePerDayFromServerResponse:(id)response
 {
-  v3 = a3;
+  responseCopy = response;
   objc_opt_class();
   v4 = 0.0;
-  if ((objc_opt_isKindOfClass() & 1) != 0 && [ENConfigurationManager serverResponse:v3 isOnRampMode:3])
+  if ((objc_opt_isKindOfClass() & 1) != 0 && [ENConfigurationManager serverResponse:responseCopy isOnRampMode:3])
   {
     CFDictionaryGetTypeID();
     v5 = CFDictionaryGetTypedValue();
@@ -2052,18 +2052,18 @@ void __73__ENConfigurationManager__saveAndRemoveStaleConfigurations_region_error
   return v4;
 }
 
-- (void)setActiveEntity:(id)a3
+- (void)setActiveEntity:(id)entity
 {
-  v4 = a3;
-  v5 = [(ENConfigurationManager *)self serialQueue];
+  entityCopy = entity;
+  serialQueue = [(ENConfigurationManager *)self serialQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __42__ENConfigurationManager_setActiveEntity___block_invoke;
   v7[3] = &unk_278FD1120;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = entityCopy;
+  v6 = entityCopy;
+  dispatch_sync(serialQueue, v7);
 }
 
 uint64_t __42__ENConfigurationManager_setActiveEntity___block_invoke(uint64_t a1)
@@ -2093,7 +2093,7 @@ uint64_t __42__ENConfigurationManager_setActiveEntity___block_invoke(uint64_t a1
 
 - (void)updateRegionMonitorModeForCurrentRegion
 {
-  v1 = NSStringFromSelector(a1);
+  v1 = NSStringFromSelector(self);
   LogPrintF_safe();
 }
 
@@ -2130,18 +2130,18 @@ uint64_t __42__ENConfigurationManager_setActiveEntity___block_invoke(uint64_t a1
   }
 }
 
-- (void)setRegionMonitor:(id)a3
+- (void)setRegionMonitor:(id)monitor
 {
-  v4 = a3;
-  v5 = [(ENConfigurationManager *)self serialQueue];
+  monitorCopy = monitor;
+  serialQueue = [(ENConfigurationManager *)self serialQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __43__ENConfigurationManager_setRegionMonitor___block_invoke;
   v7[3] = &unk_278FD1120;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = monitorCopy;
+  selfCopy = self;
+  v6 = monitorCopy;
+  dispatch_sync(serialQueue, v7);
 }
 
 void __43__ENConfigurationManager_setRegionMonitor___block_invoke(uint64_t a1)
@@ -2165,19 +2165,19 @@ void __43__ENConfigurationManager_setRegionMonitor___block_invoke(uint64_t a1)
   }
 }
 
-- (void)regionMonitor:(id)a3 regionDidChange:(id)a4
+- (void)regionMonitor:(id)monitor regionDidChange:(id)change
 {
-  v6 = a4;
-  v7 = [(ENConfigurationManager *)self serialQueue];
+  changeCopy = change;
+  serialQueue = [(ENConfigurationManager *)self serialQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __56__ENConfigurationManager_regionMonitor_regionDidChange___block_invoke;
   block[3] = &unk_278FD1558;
-  v10 = v6;
-  v11 = self;
+  v10 = changeCopy;
+  selfCopy = self;
   v12 = a2;
-  v8 = v6;
-  dispatch_async(v7, block);
+  v8 = changeCopy;
+  dispatch_async(serialQueue, block);
 }
 
 void __56__ENConfigurationManager_regionMonitor_regionDidChange___block_invoke(uint64_t a1)
@@ -2313,16 +2313,16 @@ void __56__ENConfigurationManager_regionMonitor_regionDidChange___block_invoke_2
   }
 }
 
-- (void)regionMonitor:(id)a3 authorizationStateDidChange:(unint64_t)a4
+- (void)regionMonitor:(id)monitor authorizationStateDidChange:(unint64_t)change
 {
-  v6 = [(ENConfigurationManager *)self serialQueue];
+  serialQueue = [(ENConfigurationManager *)self serialQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __68__ENConfigurationManager_regionMonitor_authorizationStateDidChange___block_invoke;
   v7[3] = &unk_278FD11C8;
   v7[4] = self;
-  v7[5] = a4;
-  dispatch_async(v6, v7);
+  v7[5] = change;
+  dispatch_async(serialQueue, v7);
 }
 
 void __68__ENConfigurationManager_regionMonitor_authorizationStateDidChange___block_invoke(uint64_t a1)
@@ -2367,11 +2367,11 @@ void __68__ENConfigurationManager_regionMonitor_authorizationStateDidChange___bl
   return WeakRetained;
 }
 
-+ (BOOL)verifyAppleServerResponse:(id)a3 signatureHeader:(id)a4
++ (BOOL)verifyAppleServerResponse:(id)response signatureHeader:(id)header
 {
   v24[3] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  responseCopy = response;
+  headerCopy = header;
   if (IsAppleInternalBuild() && CFPrefs_GetInt64())
   {
     if (_MergedGlobals_0 <= 30 && (_MergedGlobals_0 != -1 || _LogCategory_Initialize()))
@@ -2384,7 +2384,7 @@ void __68__ENConfigurationManager_regionMonitor_authorizationStateDidChange___bl
   }
 
   v7 = 0;
-  if (!v5 || !v6)
+  if (!responseCopy || !headerCopy)
   {
     goto LABEL_48;
   }
@@ -2424,7 +2424,7 @@ void __68__ENConfigurationManager_regionMonitor_authorizationStateDidChange___bl
   v16 = error;
   if (!error)
   {
-    [v6 utf8ValueSafe];
+    [headerCopy utf8ValueSafe];
     v17 = NSDataWithHex();
     if (_MergedGlobals_0 <= 10 && (_MergedGlobals_0 != -1 || _LogCategory_Initialize()))
     {
@@ -2432,7 +2432,7 @@ void __68__ENConfigurationManager_regionMonitor_authorizationStateDidChange___bl
       LogPrintF_safe();
     }
 
-    v18 = SecKeyVerifySignature(v15, *MEMORY[0x277CDC2F8], v5, v17, &error);
+    v18 = SecKeyVerifySignature(v15, *MEMORY[0x277CDC2F8], responseCopy, v17, &error);
     v7 = v18 != 0;
     if (v18)
     {
@@ -2487,16 +2487,16 @@ LABEL_48:
   return v7;
 }
 
-+ (id)staticRegionForBundleID:(id)a3
++ (id)staticRegionForBundleID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = ENDaemonBundle();
   v5 = [v4 URLForResource:@"RegionBundleID" withExtension:@".plist"];
 
   if (v5)
   {
     v6 = [MEMORY[0x277CBEAC8] dictionaryWithContentsOfURL:v5];
-    v7 = [v6 objectForKeyedSubscript:v3];
+    v7 = [v6 objectForKeyedSubscript:dCopy];
   }
 
   else

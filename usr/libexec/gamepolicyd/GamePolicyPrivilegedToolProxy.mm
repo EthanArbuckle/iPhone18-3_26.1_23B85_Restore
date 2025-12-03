@@ -1,25 +1,25 @@
 @interface GamePolicyPrivilegedToolProxy
 - (id)requestLaunchGamesApp;
 - (void)ping;
-- (void)requestCCUIGameModeStatusInfoWithReply:(id)a3;
-- (void)requestCCUIGameModeStatusWithReply:(id)a3;
-- (void)requestGameModeWithCompletionHandler:(id)a3;
-- (void)requestGetIgnoreDeviceRestrictionsWithReply:(id)a3;
-- (void)requestLaunchGameOverlayWithConditional:(BOOL)a3 fallbackToApp:(BOOL)a4 withReply:(id)a5;
-- (void)requestSEMAllowlistWithReply:(id)a3;
-- (void)requestSEMClearAllowlistWithReply:(id)a3;
-- (void)requestSetGameModeWithGameModeEnabled:(BOOL)a3 completionHandler:(id)a4;
-- (void)requestSetIgnoreDeviceRestrictions:(BOOL)a3 withReply:(id)a4;
+- (void)requestCCUIGameModeStatusInfoWithReply:(id)reply;
+- (void)requestCCUIGameModeStatusWithReply:(id)reply;
+- (void)requestGameModeWithCompletionHandler:(id)handler;
+- (void)requestGetIgnoreDeviceRestrictionsWithReply:(id)reply;
+- (void)requestLaunchGameOverlayWithConditional:(BOOL)conditional fallbackToApp:(BOOL)app withReply:(id)reply;
+- (void)requestSEMAllowlistWithReply:(id)reply;
+- (void)requestSEMClearAllowlistWithReply:(id)reply;
+- (void)requestSetGameModeWithGameModeEnabled:(BOOL)enabled completionHandler:(id)handler;
+- (void)requestSetIgnoreDeviceRestrictions:(BOOL)restrictions withReply:(id)reply;
 @end
 
 @implementation GamePolicyPrivilegedToolProxy
 
-- (void)requestLaunchGameOverlayWithConditional:(BOOL)a3 fallbackToApp:(BOOL)a4 withReply:(id)a5
+- (void)requestLaunchGameOverlayWithConditional:(BOOL)conditional fallbackToApp:(BOOL)app withReply:(id)reply
 {
-  v7 = _Block_copy(a5);
+  v7 = _Block_copy(reply);
   _Block_copy(v7);
 
-  sub_100020FC4(a3, a4, v7);
+  sub_100020FC4(conditional, app, v7);
   _Block_release(v7);
   _Block_release(v7);
 }
@@ -30,9 +30,9 @@
   sub_10001ED1C();
 }
 
-- (void)requestSetIgnoreDeviceRestrictions:(BOOL)a3 withReply:(id)a4
+- (void)requestSetIgnoreDeviceRestrictions:(BOOL)restrictions withReply:(id)reply
 {
-  v4 = _Block_copy(a4);
+  v4 = _Block_copy(reply);
   type metadata accessor for GlobalPreferences();
   dispatch thunk of static GlobalPreferences.shared.getter();
   dispatch thunk of GlobalPreferences.ignoreDeviceRestrictions.setter();
@@ -42,9 +42,9 @@
   _Block_release(v4);
 }
 
-- (void)requestGetIgnoreDeviceRestrictionsWithReply:(id)a3
+- (void)requestGetIgnoreDeviceRestrictionsWithReply:(id)reply
 {
-  v3 = _Block_copy(a3);
+  v3 = _Block_copy(reply);
   type metadata accessor for GlobalPreferences();
   dispatch thunk of static GlobalPreferences.shared.getter();
   v4 = dispatch thunk of GlobalPreferences.ignoreDeviceRestrictions.getter();
@@ -54,9 +54,9 @@
   _Block_release(v3);
 }
 
-- (void)requestSEMAllowlistWithReply:(id)a3
+- (void)requestSEMAllowlistWithReply:(id)reply
 {
-  v3 = _Block_copy(a3);
+  v3 = _Block_copy(reply);
   type metadata accessor for GlobalPreferences();
   dispatch thunk of static GlobalPreferences.shared.getter();
   dispatch thunk of GlobalPreferences.semAllowList.getter();
@@ -68,9 +68,9 @@
   _Block_release(v3);
 }
 
-- (void)requestSEMClearAllowlistWithReply:(id)a3
+- (void)requestSEMClearAllowlistWithReply:(id)reply
 {
-  v3 = _Block_copy(a3);
+  v3 = _Block_copy(reply);
   type metadata accessor for GlobalPreferences();
   static GlobalPreferences.defaultSEMAllowList.getter();
   dispatch thunk of static GlobalPreferences.shared.getter();
@@ -84,9 +84,9 @@
   _Block_release(v3);
 }
 
-- (void)requestCCUIGameModeStatusInfoWithReply:(id)a3
+- (void)requestCCUIGameModeStatusInfoWithReply:(id)reply
 {
-  v3 = _Block_copy(a3);
+  v3 = _Block_copy(reply);
 
   v4 = sub_10001F414(0, 1);
   v3[2](v3, v4);
@@ -94,9 +94,9 @@
   _Block_release(v3);
 }
 
-- (void)requestCCUIGameModeStatusWithReply:(id)a3
+- (void)requestCCUIGameModeStatusWithReply:(id)reply
 {
-  v3 = _Block_copy(a3);
+  v3 = _Block_copy(reply);
 
   v4 = sub_10001F414(0, 1);
   v5 = dispatch thunk of GameModeCCUIStatusInfo.revlock.getter();
@@ -106,13 +106,13 @@
   _Block_release(v3);
 }
 
-- (void)requestGameModeWithCompletionHandler:(id)a3
+- (void)requestGameModeWithCompletionHandler:(id)handler
 {
   v5 = sub_100003870(&qword_100054460, &qword_10003E7B8);
   v6 = *(*(v5 - 8) + 64);
   __chkstk_darwin(v5 - 8);
   v8 = &v14 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -132,15 +132,15 @@
   sub_100020540(0, 0, v8, &unk_10003EC68, v13);
 }
 
-- (void)requestSetGameModeWithGameModeEnabled:(BOOL)a3 completionHandler:(id)a4
+- (void)requestSetGameModeWithGameModeEnabled:(BOOL)enabled completionHandler:(id)handler
 {
   v7 = sub_100003870(&qword_100054460, &qword_10003E7B8);
   v8 = *(*(v7 - 8) + 64);
   __chkstk_darwin(v7 - 8);
   v10 = &v16 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   v12 = swift_allocObject();
-  *(v12 + 16) = a3;
+  *(v12 + 16) = enabled;
   *(v12 + 24) = v11;
   *(v12 + 32) = self;
   v13 = type metadata accessor for TaskPriority();

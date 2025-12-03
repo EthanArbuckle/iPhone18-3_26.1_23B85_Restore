@@ -1,144 +1,144 @@
 @interface TIKeyboardInputManagerKeyboardContext
-- (TIKeyboardInputManagerKeyboardContext)initWithKeyboardState:(id)a3;
-- (void)acceptCandidate:(id)a3;
+- (TIKeyboardInputManagerKeyboardContext)initWithKeyboardState:(id)state;
+- (void)acceptCandidate:(id)candidate;
 - (void)clearInputForMarkedText;
-- (void)deleteBackward:(unint64_t)a3;
-- (void)deleteForward:(unint64_t)a3;
-- (void)deleteHandwritingStrokes:(id)a3;
-- (void)deleteTextBackward:(id)a3;
-- (void)insertText:(id)a3;
-- (void)insertTextAfterSelection:(id)a3;
-- (void)unmarkText:(id)a3;
+- (void)deleteBackward:(unint64_t)backward;
+- (void)deleteForward:(unint64_t)forward;
+- (void)deleteHandwritingStrokes:(id)strokes;
+- (void)deleteTextBackward:(id)backward;
+- (void)insertText:(id)text;
+- (void)insertTextAfterSelection:(id)selection;
+- (void)unmarkText:(id)text;
 @end
 
 @implementation TIKeyboardInputManagerKeyboardContext
 
-- (void)deleteHandwritingStrokes:(id)a3
+- (void)deleteHandwritingStrokes:(id)strokes
 {
-  v4 = a3;
-  v5 = [(TIKeyboardInputManagerKeyboardContext *)self output];
-  [v5 setHandwritingStrokesToDelete:v4];
+  strokesCopy = strokes;
+  output = [(TIKeyboardInputManagerKeyboardContext *)self output];
+  [output setHandwritingStrokesToDelete:strokesCopy];
 }
 
-- (void)acceptCandidate:(id)a3
+- (void)acceptCandidate:(id)candidate
 {
-  v4 = a3;
-  v11 = [v4 candidate];
-  v5 = [v11 length];
-  v6 = [(TIKeyboardState *)self->_currentState documentState];
-  v7 = [v6 documentStateAfterSettingMarkedText:v11 selectedRange:{v5, 0}];
+  candidateCopy = candidate;
+  candidate = [candidateCopy candidate];
+  v5 = [candidate length];
+  documentState = [(TIKeyboardState *)self->_currentState documentState];
+  v7 = [documentState documentStateAfterSettingMarkedText:candidate selectedRange:{v5, 0}];
   [(TIKeyboardState *)self->_currentState setDocumentState:v7];
 
-  v8 = [(TIKeyboardState *)self->_currentState documentState];
-  v9 = [v8 documentStateAfterUnmarkingText];
-  [(TIKeyboardState *)self->_currentState setDocumentState:v9];
+  documentState2 = [(TIKeyboardState *)self->_currentState documentState];
+  documentStateAfterUnmarkingText = [documentState2 documentStateAfterUnmarkingText];
+  [(TIKeyboardState *)self->_currentState setDocumentState:documentStateAfterUnmarkingText];
 
   [(TIKeyboardInputManagerKeyboardContext *)self clearInputForMarkedText];
-  v10 = [(TIKeyboardInputManagerKeyboardContext *)self output];
-  [v10 setAcceptedCandidate:v4];
+  output = [(TIKeyboardInputManagerKeyboardContext *)self output];
+  [output setAcceptedCandidate:candidateCopy];
 }
 
-- (void)unmarkText:(id)a3
+- (void)unmarkText:(id)text
 {
   currentState = self->_currentState;
-  v5 = a3;
-  v6 = [(TIKeyboardState *)currentState documentState];
-  v7 = [v6 documentStateAfterSettingMarkedText:v5 selectedRange:{objc_msgSend(v5, "length"), 0}];
+  textCopy = text;
+  documentState = [(TIKeyboardState *)currentState documentState];
+  v7 = [documentState documentStateAfterSettingMarkedText:textCopy selectedRange:{objc_msgSend(textCopy, "length"), 0}];
   [(TIKeyboardState *)self->_currentState setDocumentState:v7];
 
-  v8 = [(TIKeyboardState *)self->_currentState documentState];
-  v9 = [v8 documentStateAfterUnmarkingText];
-  [(TIKeyboardState *)self->_currentState setDocumentState:v9];
+  documentState2 = [(TIKeyboardState *)self->_currentState documentState];
+  documentStateAfterUnmarkingText = [documentState2 documentStateAfterUnmarkingText];
+  [(TIKeyboardState *)self->_currentState setDocumentState:documentStateAfterUnmarkingText];
 
   [(TIKeyboardInputManagerKeyboardContext *)self clearInputForMarkedText];
-  v10 = [(TIKeyboardInputManagerKeyboardContext *)self output];
-  [v10 setTextToCommit:v5];
+  output = [(TIKeyboardInputManagerKeyboardContext *)self output];
+  [output setTextToCommit:textCopy];
 }
 
-- (void)deleteForward:(unint64_t)a3
+- (void)deleteForward:(unint64_t)forward
 {
   [(TIKeyboardInputManagerKeyboardContext *)self clearInputForMarkedText];
-  if (a3)
+  if (forward)
   {
-    v5 = a3;
+    forwardCopy = forward;
     do
     {
-      v6 = [(TIKeyboardState *)self->_currentState documentState];
-      v7 = [v6 documentStateAfterDeletingForward];
-      [(TIKeyboardState *)self->_currentState setDocumentState:v7];
+      documentState = [(TIKeyboardState *)self->_currentState documentState];
+      documentStateAfterDeletingForward = [documentState documentStateAfterDeletingForward];
+      [(TIKeyboardState *)self->_currentState setDocumentState:documentStateAfterDeletingForward];
 
-      --v5;
+      --forwardCopy;
     }
 
-    while (v5);
+    while (forwardCopy);
   }
 
-  v8 = [(TIKeyboardInputManagerKeyboardContext *)self output];
-  [v8 deleteForward:a3];
+  output = [(TIKeyboardInputManagerKeyboardContext *)self output];
+  [output deleteForward:forward];
 }
 
-- (void)deleteTextBackward:(id)a3
+- (void)deleteTextBackward:(id)backward
 {
-  v6 = a3;
-  v4 = [v6 length];
+  backwardCopy = backward;
+  v4 = [backwardCopy length];
   for (i = 0; v4; ++i)
   {
-    v4 = [v6 _rangeOfBackwardDeletionClusterAtIndex:v4 - 1];
+    v4 = [backwardCopy _rangeOfBackwardDeletionClusterAtIndex:v4 - 1];
   }
 
   [(TIKeyboardInputManagerKeyboardContext *)self deleteBackward:i];
 }
 
-- (void)deleteBackward:(unint64_t)a3
+- (void)deleteBackward:(unint64_t)backward
 {
   [(TIKeyboardInputManagerKeyboardContext *)self clearInputForMarkedText];
-  if (a3)
+  if (backward)
   {
-    v5 = a3;
+    backwardCopy = backward;
     do
     {
-      v6 = [(TIKeyboardState *)self->_currentState documentState];
-      v7 = [v6 documentStateAfterDeletingBackward];
-      [(TIKeyboardState *)self->_currentState setDocumentState:v7];
+      documentState = [(TIKeyboardState *)self->_currentState documentState];
+      documentStateAfterDeletingBackward = [documentState documentStateAfterDeletingBackward];
+      [(TIKeyboardState *)self->_currentState setDocumentState:documentStateAfterDeletingBackward];
 
-      v8 = [(TIKeyboardInputManagerKeyboardContext *)self revisionHistory];
-      [v8 deleteBackward];
+      revisionHistory = [(TIKeyboardInputManagerKeyboardContext *)self revisionHistory];
+      [revisionHistory deleteBackward];
 
-      --v5;
+      --backwardCopy;
     }
 
-    while (v5);
+    while (backwardCopy);
   }
 
-  v9 = [(TIKeyboardInputManagerKeyboardContext *)self output];
-  [v9 deleteBackward:a3];
+  output = [(TIKeyboardInputManagerKeyboardContext *)self output];
+  [output deleteBackward:backward];
 }
 
-- (void)insertTextAfterSelection:(id)a3
+- (void)insertTextAfterSelection:(id)selection
 {
-  v4 = a3;
+  selectionCopy = selection;
   [(TIKeyboardInputManagerKeyboardContext *)self clearInputForMarkedText];
-  v5 = [(TIKeyboardState *)self->_currentState documentState];
-  v6 = [v5 documentStateAfterInsertingTextAfterSelection:v4];
+  documentState = [(TIKeyboardState *)self->_currentState documentState];
+  v6 = [documentState documentStateAfterInsertingTextAfterSelection:selectionCopy];
   [(TIKeyboardState *)self->_currentState setDocumentState:v6];
 
-  v7 = [(TIKeyboardInputManagerKeyboardContext *)self output];
-  [v7 insertTextAfterSelection:v4];
+  output = [(TIKeyboardInputManagerKeyboardContext *)self output];
+  [output insertTextAfterSelection:selectionCopy];
 }
 
-- (void)insertText:(id)a3
+- (void)insertText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   [(TIKeyboardInputManagerKeyboardContext *)self clearInputForMarkedText];
-  v5 = [(TIKeyboardState *)self->_currentState documentState];
-  v6 = [v5 documentStateAfterInsertingText:v4];
+  documentState = [(TIKeyboardState *)self->_currentState documentState];
+  v6 = [documentState documentStateAfterInsertingText:textCopy];
   [(TIKeyboardState *)self->_currentState setDocumentState:v6];
 
-  v7 = [(TIKeyboardInputManagerKeyboardContext *)self revisionHistory];
-  [v7 insertText:v4];
+  revisionHistory = [(TIKeyboardInputManagerKeyboardContext *)self revisionHistory];
+  [revisionHistory insertText:textCopy];
 
-  v8 = [(TIKeyboardInputManagerKeyboardContext *)self output];
-  [v8 insertText:v4];
+  output = [(TIKeyboardInputManagerKeyboardContext *)self output];
+  [output insertText:textCopy];
 }
 
 - (void)clearInputForMarkedText
@@ -149,16 +149,16 @@
   [(TIKeyboardState *)currentState setSearchStringForMarkedText:0];
 }
 
-- (TIKeyboardInputManagerKeyboardContext)initWithKeyboardState:(id)a3
+- (TIKeyboardInputManagerKeyboardContext)initWithKeyboardState:(id)state
 {
-  v5 = a3;
+  stateCopy = state;
   v11.receiver = self;
   v11.super_class = TIKeyboardInputManagerKeyboardContext;
   v6 = [(TIKeyboardInputManagerKeyboardContext *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_currentState, a3);
+    objc_storeStrong(&v6->_currentState, state);
     v8 = objc_alloc_init(MEMORY[0x277D6F410]);
     output = v7->_output;
     v7->_output = v8;

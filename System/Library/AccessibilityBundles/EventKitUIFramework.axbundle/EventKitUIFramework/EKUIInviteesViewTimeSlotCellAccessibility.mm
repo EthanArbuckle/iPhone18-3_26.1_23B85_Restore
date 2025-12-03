@@ -1,6 +1,6 @@
 @interface EKUIInviteesViewTimeSlotCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (EKUIInviteesViewTimeSlotCellAccessibility)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (EKUIInviteesViewTimeSlotCellAccessibility)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (id)accessibilityLabel;
 - (unint64_t)accessibilityTraits;
 - (void)_accessibilityLoadAccessibilityInformation;
@@ -8,22 +8,22 @@
 
 @implementation EKUIInviteesViewTimeSlotCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"EKUIInviteesViewTimeSlotCell" hasInstanceMethod:@"checked" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"EKUIInviteesViewTimeSlotCell" hasInstanceMethod:@"topTimeLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"EKUIInviteesViewTimeSlotCell" hasInstanceMethod:@"bottomTimeLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"EKUIInviteesViewTimeSlotCell" hasInstanceMethod:@"participantsTextView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"UITextView" hasInstanceMethod:@"text" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"EKUIInviteesViewTimeSlotCell" hasInstanceMethod:@"initWithStyle: reuseIdentifier:" withFullSignature:{"@", "q", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"EKUIInviteesViewTimeSlotCell" hasInstanceMethod:@"checked" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"EKUIInviteesViewTimeSlotCell" hasInstanceMethod:@"topTimeLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"EKUIInviteesViewTimeSlotCell" hasInstanceMethod:@"bottomTimeLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"EKUIInviteesViewTimeSlotCell" hasInstanceMethod:@"participantsTextView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"UITextView" hasInstanceMethod:@"text" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"EKUIInviteesViewTimeSlotCell" hasInstanceMethod:@"initWithStyle: reuseIdentifier:" withFullSignature:{"@", "q", "@", 0}];
 }
 
 - (unint64_t)accessibilityTraits
 {
   v7.receiver = self;
   v7.super_class = EKUIInviteesViewTimeSlotCellAccessibility;
-  v3 = [(EKUIInviteesViewTimeSlotCellAccessibility *)&v7 accessibilityTraits];
+  accessibilityTraits = [(EKUIInviteesViewTimeSlotCellAccessibility *)&v7 accessibilityTraits];
   v4 = [(EKUIInviteesViewTimeSlotCellAccessibility *)self safeBoolForKey:@"checked"];
   v5 = *MEMORY[0x29EDC7FC0];
   if (!v4)
@@ -31,7 +31,7 @@
     v5 = 0;
   }
 
-  return v5 | v3;
+  return v5 | accessibilityTraits;
 }
 
 - (id)accessibilityLabel
@@ -54,11 +54,11 @@
   [v3 setIsAccessibilityElement:0];
 }
 
-- (EKUIInviteesViewTimeSlotCellAccessibility)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (EKUIInviteesViewTimeSlotCellAccessibility)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v6.receiver = self;
   v6.super_class = EKUIInviteesViewTimeSlotCellAccessibility;
-  v4 = [(EKUIInviteesViewTimeSlotCellAccessibility *)&v6 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(EKUIInviteesViewTimeSlotCellAccessibility *)&v6 initWithStyle:style reuseIdentifier:identifier];
   [(EKUIInviteesViewTimeSlotCellAccessibility *)v4 _accessibilityLoadAccessibilityInformation];
 
   return v4;

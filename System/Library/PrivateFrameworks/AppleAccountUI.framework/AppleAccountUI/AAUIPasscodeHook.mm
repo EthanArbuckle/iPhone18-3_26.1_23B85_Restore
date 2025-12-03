@@ -1,41 +1,41 @@
 @interface AAUIPasscodeHook
-- (BOOL)shouldMatchElement:(id)a3;
-- (BOOL)shouldMatchModel:(id)a3;
+- (BOOL)shouldMatchElement:(id)element;
+- (BOOL)shouldMatchModel:(id)model;
 - (RUIServerHookDelegate)delegate;
-- (void)_validatePasscodeWithServerAttributes:(id)a3 completion:(id)a4;
-- (void)processObjectModel:(id)a3 completion:(id)a4;
+- (void)_validatePasscodeWithServerAttributes:(id)attributes completion:(id)completion;
+- (void)processObjectModel:(id)model completion:(id)completion;
 @end
 
 @implementation AAUIPasscodeHook
 
-- (BOOL)shouldMatchElement:(id)a3
+- (BOOL)shouldMatchElement:(id)element
 {
-  v3 = [a3 name];
-  v4 = [v3 isEqualToString:@"passcode:validate"];
+  name = [element name];
+  v4 = [name isEqualToString:@"passcode:validate"];
 
   return v4;
 }
 
-- (BOOL)shouldMatchModel:(id)a3
+- (BOOL)shouldMatchModel:(id)model
 {
-  v3 = [a3 clientInfo];
-  v4 = [v3 objectForKey:*MEMORY[0x1E69C7058]];
+  clientInfo = [model clientInfo];
+  v4 = [clientInfo objectForKey:*MEMORY[0x1E69C7058]];
   v5 = [v4 isEqualToString:@"passcode:validate"];
 
   return v5;
 }
 
-- (void)processObjectModel:(id)a3 completion:(id)a4
+- (void)processObjectModel:(id)model completion:(id)completion
 {
-  v6 = a4;
-  v7 = [a3 clientInfo];
-  [(AAUIPasscodeHook *)self _validatePasscodeWithServerAttributes:v7 completion:v6];
+  completionCopy = completion;
+  clientInfo = [model clientInfo];
+  [(AAUIPasscodeHook *)self _validatePasscodeWithServerAttributes:clientInfo completion:completionCopy];
 }
 
-- (void)_validatePasscodeWithServerAttributes:(id)a3 completion:(id)a4
+- (void)_validatePasscodeWithServerAttributes:(id)attributes completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  attributesCopy = attributes;
+  completionCopy = completion;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -44,7 +44,7 @@
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v9 = [WeakRetained presentationContextForHook:self];
   objc_opt_class();
-  v10 = [v6 objectForKeyedSubscript:*MEMORY[0x1E69C7068]];
+  v10 = [attributesCopy objectForKeyedSubscript:*MEMORY[0x1E69C7068]];
   v11 = 0;
   if (objc_opt_isKindOfClass())
   {
@@ -58,7 +58,7 @@
   v14[1] = 3221225472;
   v14[2] = __69__AAUIPasscodeHook__validatePasscodeWithServerAttributes_completion___block_invoke;
   v14[3] = &unk_1E820C800;
-  v13 = v7;
+  v13 = completionCopy;
   v15 = v13;
   v16 = &v17;
   [v12 validatePasscodeStateWithCompletion:v14];

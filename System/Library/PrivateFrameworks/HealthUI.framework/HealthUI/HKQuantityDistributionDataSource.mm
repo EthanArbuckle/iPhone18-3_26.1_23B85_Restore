@@ -1,52 +1,52 @@
 @interface HKQuantityDistributionDataSource
-+ (id)bucketSizeForBloodGlucoseWithUnit:(id)a3;
-+ (id)bucketSizeForDisplayType:(id)a3 preferredUnit:(id)a4;
-+ (id)bucketSizeForQuantityType:(id)a3 preferredUnit:(id)a4;
-- (HKQuantityDistributionDataSource)initWithQuantityType:(id)a3 unitController:(id)a4 healthStore:(id)a5 contextStyle:(int64_t)a6 predicate:(id)a7 options:(unint64_t)a8 baseDisplayType:(id)a9 specificStartDate:(id)a10 specificEndDate:(id)a11 userInfoCreationBlock:(id)a12;
-- (id)_bucketDateForHistogramData:(id)a3;
-- (id)_dataBlockFromHistograms:(id)a3;
-- (id)_quickDate:(id)a3;
-- (id)chartPointsFromQueryData:(id)a3 dataIsFromRemoteSource:(BOOL)a4;
-- (id)generateSharableQueryDataForRequest:(id)a3 healthStore:(id)a4 completionHandler:(id)a5;
-- (id)queriesForRequest:(id)a3 completionHandler:(id)a4;
++ (id)bucketSizeForBloodGlucoseWithUnit:(id)unit;
++ (id)bucketSizeForDisplayType:(id)type preferredUnit:(id)unit;
++ (id)bucketSizeForQuantityType:(id)type preferredUnit:(id)unit;
+- (HKQuantityDistributionDataSource)initWithQuantityType:(id)type unitController:(id)controller healthStore:(id)store contextStyle:(int64_t)style predicate:(id)predicate options:(unint64_t)options baseDisplayType:(id)displayType specificStartDate:(id)self0 specificEndDate:(id)self1 userInfoCreationBlock:(id)self2;
+- (id)_bucketDateForHistogramData:(id)data;
+- (id)_dataBlockFromHistograms:(id)histograms;
+- (id)_quickDate:(id)date;
+- (id)chartPointsFromQueryData:(id)data dataIsFromRemoteSource:(BOOL)source;
+- (id)generateSharableQueryDataForRequest:(id)request healthStore:(id)store completionHandler:(id)handler;
+- (id)queriesForRequest:(id)request completionHandler:(id)handler;
 - (id)queryDescription;
 @end
 
 @implementation HKQuantityDistributionDataSource
 
-- (HKQuantityDistributionDataSource)initWithQuantityType:(id)a3 unitController:(id)a4 healthStore:(id)a5 contextStyle:(int64_t)a6 predicate:(id)a7 options:(unint64_t)a8 baseDisplayType:(id)a9 specificStartDate:(id)a10 specificEndDate:(id)a11 userInfoCreationBlock:(id)a12
+- (HKQuantityDistributionDataSource)initWithQuantityType:(id)type unitController:(id)controller healthStore:(id)store contextStyle:(int64_t)style predicate:(id)predicate options:(unint64_t)options baseDisplayType:(id)displayType specificStartDate:(id)self0 specificEndDate:(id)self1 userInfoCreationBlock:(id)self2
 {
-  v35 = a3;
-  v17 = a4;
-  v34 = a7;
-  v18 = a9;
-  v33 = a10;
-  v32 = a11;
-  v19 = a12;
+  typeCopy = type;
+  controllerCopy = controller;
+  predicateCopy = predicate;
+  displayTypeCopy = displayType;
+  dateCopy = date;
+  endDateCopy = endDate;
+  blockCopy = block;
   v36.receiver = self;
   v36.super_class = HKQuantityDistributionDataSource;
-  v20 = [(HKHealthQueryChartCacheDataSource *)&v36 initWithDisplayType:v18 healthStore:a5];
+  v20 = [(HKHealthQueryChartCacheDataSource *)&v36 initWithDisplayType:displayTypeCopy healthStore:store];
   v21 = v20;
   if (v20)
   {
-    objc_storeStrong(&v20->_quantityType, a3);
-    objc_storeStrong(&v21->_unitController, a4);
-    v22 = [v17 unitForDisplayType:v18];
-    v23 = [HKQuantityDistributionDataSource bucketSizeForQuantityType:v35 preferredUnit:v22];
+    objc_storeStrong(&v20->_quantityType, type);
+    objc_storeStrong(&v21->_unitController, controller);
+    v22 = [controllerCopy unitForDisplayType:displayTypeCopy];
+    v23 = [HKQuantityDistributionDataSource bucketSizeForQuantityType:typeCopy preferredUnit:v22];
     [v23 doubleValue];
     v21->_bucketSize = v24;
 
     v21->_bucketAnchor = 0.0;
-    v21->_contextStyle = a6;
-    objc_storeStrong(&v21->_predicate, a7);
-    v21->_options = a8;
-    objc_storeStrong(&v21->_specificStartDate, a10);
-    objc_storeStrong(&v21->_specificEndDate, a11);
+    v21->_contextStyle = style;
+    objc_storeStrong(&v21->_predicate, predicate);
+    v21->_options = options;
+    objc_storeStrong(&v21->_specificStartDate, date);
+    objc_storeStrong(&v21->_specificEndDate, endDate);
     preferredUnit = v21->_preferredUnit;
     v21->_preferredUnit = v22;
     v26 = v22;
 
-    v27 = _Block_copy(v19);
+    v27 = _Block_copy(blockCopy);
     userInfoCreationBlock = v21->_userInfoCreationBlock;
     v21->_userInfoCreationBlock = v27;
   }
@@ -54,44 +54,44 @@
   return v21;
 }
 
-+ (id)bucketSizeForQuantityType:(id)a3 preferredUnit:(id)a4
++ (id)bucketSizeForQuantityType:(id)type preferredUnit:(id)unit
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 code] == 15)
+  typeCopy = type;
+  unitCopy = unit;
+  if ([typeCopy code] == 15)
   {
-    [a1 bucketSizeForBloodGlucoseWithUnit:v7];
+    [self bucketSizeForBloodGlucoseWithUnit:unitCopy];
   }
 
   else
   {
-    HKQuantityDistributionBucketSizeForQuantityType(v6);
+    HKQuantityDistributionBucketSizeForQuantityType(typeCopy);
   }
   v8 = ;
 
   return v8;
 }
 
-+ (id)bucketSizeForDisplayType:(id)a3 preferredUnit:(id)a4
++ (id)bucketSizeForDisplayType:(id)type preferredUnit:(id)unit
 {
-  v6 = a4;
-  v7 = [a3 objectType];
-  v8 = [a1 bucketSizeForQuantityType:v7 preferredUnit:v6];
+  unitCopy = unit;
+  objectType = [type objectType];
+  v8 = [self bucketSizeForQuantityType:objectType preferredUnit:unitCopy];
 
   return v8;
 }
 
-+ (id)bucketSizeForBloodGlucoseWithUnit:(id)a3
++ (id)bucketSizeForBloodGlucoseWithUnit:(id)unit
 {
-  v5 = a3;
-  v6 = [MEMORY[0x1E696C510] _milligramsPerDeciliterUnit];
-  v7 = [v5 isEqual:v6];
+  unitCopy = unit;
+  _milligramsPerDeciliterUnit = [MEMORY[0x1E696C510] _milligramsPerDeciliterUnit];
+  v7 = [unitCopy isEqual:_milligramsPerDeciliterUnit];
 
   v8 = 4.0;
   if ((v7 & 1) == 0)
   {
-    v9 = [MEMORY[0x1E696C510] _millimolesBloodGlucosePerLiterUnit];
-    v10 = [v5 isEqual:v9];
+    _millimolesBloodGlucosePerLiterUnit = [MEMORY[0x1E696C510] _millimolesBloodGlucosePerLiterUnit];
+    v10 = [unitCopy isEqual:_millimolesBloodGlucosePerLiterUnit];
 
     if (v10)
     {
@@ -100,15 +100,15 @@
 
     else
     {
-      v11 = [MEMORY[0x1E696AAA8] currentHandler];
-      v12 = [v5 unitString];
-      [v11 handleFailureInMethod:a2 object:a1 file:@"HKQuantityDistributionDataSource.m" lineNumber:113 description:{@"Unsupported glucose unit: %@", v12}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      unitString = [unitCopy unitString];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"HKQuantityDistributionDataSource.m" lineNumber:113 description:{@"Unsupported glucose unit: %@", unitString}];
 
       _HKInitializeLogging();
       v13 = *MEMORY[0x1E696B988];
       if (os_log_type_enabled(*MEMORY[0x1E696B988], OS_LOG_TYPE_ERROR))
       {
-        [(HKQuantityDistributionDataSource *)v13 bucketSizeForBloodGlucoseWithUnit:v5];
+        [(HKQuantityDistributionDataSource *)v13 bucketSizeForBloodGlucoseWithUnit:unitCopy];
       }
     }
   }
@@ -118,16 +118,16 @@
   return v14;
 }
 
-- (id)_quickDate:(id)a3
+- (id)_quickDate:(id)date
 {
   v3 = MEMORY[0x1E696AB78];
-  v4 = a3;
+  dateCopy = date;
   v5 = objc_alloc_init(v3);
   [v5 setDateFormat:@"MM/dd/YYYY-HH:mm:ss"];
-  v6 = [MEMORY[0x1E695DFE8] localTimeZone];
-  [v5 setTimeZone:v6];
+  localTimeZone = [MEMORY[0x1E695DFE8] localTimeZone];
+  [v5 setTimeZone:localTimeZone];
 
-  v7 = [v5 stringFromDate:v4];
+  v7 = [v5 stringFromDate:dateCopy];
 
   return v7;
 }
@@ -135,73 +135,73 @@
 - (id)queryDescription
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [(HKQuantityDistributionDataSource *)self quantityType];
-  v4 = [v3 hk_localizedName];
-  v5 = [v2 stringWithFormat:@"HKQuantityDistribution(%@)", v4];
+  quantityType = [(HKQuantityDistributionDataSource *)self quantityType];
+  hk_localizedName = [quantityType hk_localizedName];
+  v5 = [v2 stringWithFormat:@"HKQuantityDistribution(%@)", hk_localizedName];
 
   return v5;
 }
 
-- (id)queriesForRequest:(id)a3 completionHandler:(id)a4
+- (id)queriesForRequest:(id)request completionHandler:(id)handler
 {
   v41[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v35 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   specificStartDate = self->_specificStartDate;
   if (specificStartDate)
   {
-    v8 = specificStartDate;
+    startDate = specificStartDate;
   }
 
   else
   {
-    v8 = [v6 startDate];
+    startDate = [requestCopy startDate];
   }
 
-  v38 = v8;
+  v38 = startDate;
   specificEndDate = self->_specificEndDate;
   if (specificEndDate)
   {
-    v10 = specificEndDate;
+    endDate = specificEndDate;
   }
 
   else
   {
-    v10 = [v6 endDate];
+    endDate = [requestCopy endDate];
   }
 
-  v37 = v10;
-  v11 = [(HKHealthQueryChartCacheDataSource *)self displayType];
-  v12 = [v11 presentation];
-  [v12 adjustedDoubleForClientDouble:self->_bucketSize];
+  v37 = endDate;
+  displayType = [(HKHealthQueryChartCacheDataSource *)self displayType];
+  presentation = [displayType presentation];
+  [presentation adjustedDoubleForClientDouble:self->_bucketSize];
   v14 = v13;
 
-  v15 = [(HKHealthQueryChartCacheDataSource *)self displayType];
-  v16 = [v15 presentation];
-  [v16 adjustedDoubleForClientDouble:self->_bucketAnchor];
+  displayType2 = [(HKHealthQueryChartCacheDataSource *)self displayType];
+  presentation2 = [displayType2 presentation];
+  [presentation2 adjustedDoubleForClientDouble:self->_bucketAnchor];
   v18 = v17;
 
-  v19 = [(HKQuantityDistributionDataSource *)self unitController];
-  v20 = [(HKHealthQueryChartCacheDataSource *)self displayType];
-  v34 = [v19 unitForDisplayType:v20];
+  unitController = [(HKQuantityDistributionDataSource *)self unitController];
+  displayType3 = [(HKHealthQueryChartCacheDataSource *)self displayType];
+  v34 = [unitController unitForDisplayType:displayType3];
 
   v21 = [MEMORY[0x1E696C348] quantityWithUnit:v34 doubleValue:v14];
   v22 = [MEMORY[0x1E696C348] quantityWithUnit:v34 doubleValue:v18];
   v23 = objc_alloc(MEMORY[0x1E696C658]);
-  v24 = [(HKQuantityDistributionDataSource *)self quantityType];
+  quantityType = [(HKQuantityDistributionDataSource *)self quantityType];
   contextStyle = self->_contextStyle;
   predicate = self->_predicate;
-  v27 = [v6 startDate];
-  [v6 statisticsInterval];
-  v28 = v33 = v6;
+  startDate2 = [requestCopy startDate];
+  [requestCopy statisticsInterval];
+  v28 = v33 = requestCopy;
   options = self->_options;
   v39[0] = MEMORY[0x1E69E9820];
   v39[1] = 3221225472;
   v39[2] = __72__HKQuantityDistributionDataSource_queriesForRequest_completionHandler___block_invoke;
   v39[3] = &unk_1E81B7040;
-  v40 = v35;
-  v36 = v35;
-  v30 = [v23 initWithQuantityType:v24 startDate:v38 endDate:v37 contextStyle:contextStyle predicate:predicate anchorDate:v27 intervalComponents:v28 histogramAnchor:v22 histogramBucketSize:v21 options:options completionHandler:v39];
+  v40 = handlerCopy;
+  v36 = handlerCopy;
+  v30 = [v23 initWithQuantityType:quantityType startDate:v38 endDate:v37 contextStyle:contextStyle predicate:predicate anchorDate:startDate2 intervalComponents:v28 histogramAnchor:v22 histogramBucketSize:v21 options:options completionHandler:v39];
 
   [v30 setDebugIdentifier:@"charting (distribution)"];
   v41[0] = v30;
@@ -210,20 +210,20 @@
   return v31;
 }
 
-- (id)_dataBlockFromHistograms:(id)a3
+- (id)_dataBlockFromHistograms:(id)histograms
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  histogramsCopy = histograms;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v6 = [(HKQuantityDistributionDataSource *)self unitController];
-  v7 = [(HKHealthQueryChartCacheDataSource *)self displayType];
-  v8 = [v6 unitForDisplayType:v7];
+  unitController = [(HKQuantityDistributionDataSource *)self unitController];
+  displayType = [(HKHealthQueryChartCacheDataSource *)self displayType];
+  v8 = [unitController unitForDisplayType:displayType];
 
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  obj = v4;
+  obj = histogramsCopy;
   v9 = [obj countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v9)
   {
@@ -242,8 +242,8 @@
         v14 = [HKQuantityDistributionChartPoint alloc];
         v15 = [(HKQuantityDistributionDataSource *)self _bucketDateForHistogramData:v13];
         bucketSize = self->_bucketSize;
-        v17 = [(HKHealthQueryChartCacheDataSource *)self displayType];
-        v18 = [(HKQuantityDistributionChartPoint *)v14 initWithHistogramData:v13 bucketDate:v15 bucketIncrement:v8 unit:v17 displayType:bucketSize];
+        displayType2 = [(HKHealthQueryChartCacheDataSource *)self displayType];
+        v18 = [(HKQuantityDistributionChartPoint *)v14 initWithHistogramData:v13 bucketDate:v15 bucketIncrement:v8 unit:displayType2 displayType:bucketSize];
 
         v19 = (*(self->_userInfoCreationBlock + 2))();
         [(HKQuantityDistributionChartPoint *)v18 setUserInfo:v19];
@@ -263,59 +263,59 @@
   return v20;
 }
 
-- (id)_bucketDateForHistogramData:(id)a3
+- (id)_bucketDateForHistogramData:(id)data
 {
   v4 = MEMORY[0x1E696AB80];
-  v5 = a3;
+  dataCopy = data;
   v6 = [v4 alloc];
-  v7 = [v5 startDate];
-  v8 = [v5 endDate];
+  startDate = [dataCopy startDate];
+  endDate = [dataCopy endDate];
 
-  v9 = [v6 initWithStartDate:v7 endDate:v8];
+  v9 = [v6 initWithStartDate:startDate endDate:endDate];
   if ([(HKHealthQueryChartCacheDataSource *)self queryAlignment]== 1)
   {
     [v9 duration];
     v11 = v10;
-    v12 = [MEMORY[0x1E695DF10] hk_oneDay];
-    [v12 hk_approximateDuration];
+    hk_oneDay = [MEMORY[0x1E695DF10] hk_oneDay];
+    [hk_oneDay hk_approximateDuration];
     v14 = v13;
 
     if (v11 >= v14)
     {
-      v15 = [MEMORY[0x1E695DEE8] hk_gregorianCalendar];
-      v16 = [v9 hk_dateIntervalUnshiftedFromQueryAlignment:1 calendar:v15];
+      hk_gregorianCalendar = [MEMORY[0x1E695DEE8] hk_gregorianCalendar];
+      v16 = [v9 hk_dateIntervalUnshiftedFromQueryAlignment:1 calendar:hk_gregorianCalendar];
 
       v9 = v16;
     }
   }
 
-  v17 = [v9 startDate];
-  v18 = [v9 endDate];
-  v19 = HKUIMidDate(v17, v18);
+  startDate2 = [v9 startDate];
+  endDate2 = [v9 endDate];
+  v19 = HKUIMidDate(startDate2, endDate2);
 
   return v19;
 }
 
-- (id)generateSharableQueryDataForRequest:(id)a3 healthStore:(id)a4 completionHandler:(id)a5
+- (id)generateSharableQueryDataForRequest:(id)request healthStore:(id)store completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  requestCopy = request;
+  storeCopy = store;
+  handlerCopy = handler;
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __102__HKQuantityDistributionDataSource_generateSharableQueryDataForRequest_healthStore_completionHandler___block_invoke;
   v25[3] = &unk_1E81B7088;
-  v26 = v8;
-  v27 = self;
-  v28 = v10;
-  v11 = v10;
-  v12 = v8;
+  v26 = requestCopy;
+  selfCopy = self;
+  v28 = handlerCopy;
+  v11 = handlerCopy;
+  v12 = requestCopy;
   v13 = [(HKQuantityDistributionDataSource *)self queriesForRequest:v12 completionHandler:v25];
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __102__HKQuantityDistributionDataSource_generateSharableQueryDataForRequest_healthStore_completionHandler___block_invoke_2;
   v23[3] = &unk_1E81B6D60;
-  v14 = v9;
+  v14 = storeCopy;
   v24 = v14;
   [v13 enumerateObjectsUsingBlock:v23];
   v20[0] = MEMORY[0x1E69E9820];
@@ -404,14 +404,14 @@ void __102__HKQuantityDistributionDataSource_generateSharableQueryDataForRequest
   [v1 enumerateObjectsUsingBlock:v2];
 }
 
-- (id)chartPointsFromQueryData:(id)a3 dataIsFromRemoteSource:(BOOL)a4
+- (id)chartPointsFromQueryData:(id)data dataIsFromRemoteSource:(BOOL)source
 {
-  v5 = a3;
-  if ([v5 hasTimeZoneName])
+  dataCopy = data;
+  if ([dataCopy hasTimeZoneName])
   {
     v6 = objc_alloc(MEMORY[0x1E695DFE8]);
-    v7 = [v5 timeZoneName];
-    v8 = [v6 initWithName:v7];
+    timeZoneName = [dataCopy timeZoneName];
+    v8 = [v6 initWithName:timeZoneName];
   }
 
   else
@@ -421,9 +421,9 @@ void __102__HKQuantityDistributionDataSource_generateSharableQueryDataForRequest
 
   v9 = self->_preferredUnit;
   v10 = [HKCodableChartQuantityDistributionDataSourceQueryData alloc];
-  v11 = [v5 queryDataObject];
-  v12 = [(HKCodableChartQuantityDistributionDataSourceQueryData *)v10 initWithData:v11];
-  v13 = [(HKCodableChartQuantityDistributionDataSourceQueryData *)v12 quantityDistributionDatas];
+  queryDataObject = [dataCopy queryDataObject];
+  v12 = [(HKCodableChartQuantityDistributionDataSourceQueryData *)v10 initWithData:queryDataObject];
+  quantityDistributionDatas = [(HKCodableChartQuantityDistributionDataSourceQueryData *)v12 quantityDistributionDatas];
 
   v19 = MEMORY[0x1E69E9820];
   v20 = 3221225472;
@@ -433,7 +433,7 @@ void __102__HKQuantityDistributionDataSource_generateSharableQueryDataForRequest
   v24 = v9;
   v14 = v9;
   v15 = v8;
-  v16 = [v13 hk_map:&v19];
+  v16 = [quantityDistributionDatas hk_map:&v19];
   v17 = [(HKQuantityDistributionDataSource *)self _dataBlockFromHistograms:v16, v19, v20, v21, v22];
 
   return v17;

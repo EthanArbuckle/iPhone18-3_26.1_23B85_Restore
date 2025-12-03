@@ -1,24 +1,24 @@
 @interface AVCRateControlFeedbackController
-- (AVCRateControlFeedbackController)initWithStatisticsCollector:(id)a3;
-- (BOOL)getFeedbackMessage:(id *)a3 type:(unsigned int)a4 metaData:(id *)a5 error:(id *)a6;
-- (BOOL)getRateControlFeedbackMessage:(id *)a3 type:(unsigned int)a4 metaData:(id *)a5 error:(id *)a6;
-- (BOOL)getVCStatisticsFeedbackMessage:(tagVCStatisticsMessage *)a3 time:(double)a4;
-- (BOOL)processFeedbackMessage:(id)a3 type:(unsigned int)a4 metaData:(id)a5 error:(id *)a6;
-- (BOOL)processRateControlLocalRCEvent:(tagVCStatisticsLocalRCEvent *)a3 type:(unsigned int)a4 error:(id *)a5 time:(double)a6;
-- (BOOL)processRateControlMessageArray:(id)a3 type:(unsigned int)a4;
-- (BOOL)processRateControlPacketReceived:(id *)a3 type:(unsigned int)a4 error:(id *)a5 time:(double)a6;
-- (BOOL)processRateControlPacketSent:(id *)a3 type:(unsigned int)a4 error:(id *)a5 time:(double)a6;
-- (BOOL)processRateControlProbingMessage:(id *)a3 type:(unsigned int)a4 error:(id *)a5;
-- (BOOL)processRateControlServerStats:(id *)a3 type:(unsigned int)a4 error:(id *)a5 time:(double)a6;
-- (BOOL)validateMessageArray:(id)a3 type:(unsigned int)a4;
-- (id)translateRateControlDataWithFeedbackMessage:(id *)a3;
+- (AVCRateControlFeedbackController)initWithStatisticsCollector:(id)collector;
+- (BOOL)getFeedbackMessage:(id *)message type:(unsigned int)type metaData:(id *)data error:(id *)error;
+- (BOOL)getRateControlFeedbackMessage:(id *)message type:(unsigned int)type metaData:(id *)data error:(id *)error;
+- (BOOL)getVCStatisticsFeedbackMessage:(tagVCStatisticsMessage *)message time:(double)time;
+- (BOOL)processFeedbackMessage:(id)message type:(unsigned int)type metaData:(id)data error:(id *)error;
+- (BOOL)processRateControlLocalRCEvent:(tagVCStatisticsLocalRCEvent *)event type:(unsigned int)type error:(id *)error time:(double)time;
+- (BOOL)processRateControlMessageArray:(id)array type:(unsigned int)type;
+- (BOOL)processRateControlPacketReceived:(id *)received type:(unsigned int)type error:(id *)error time:(double)time;
+- (BOOL)processRateControlPacketSent:(id *)sent type:(unsigned int)type error:(id *)error time:(double)time;
+- (BOOL)processRateControlProbingMessage:(id *)message type:(unsigned int)type error:(id *)error;
+- (BOOL)processRateControlServerStats:(id *)stats type:(unsigned int)type error:(id *)error time:(double)time;
+- (BOOL)validateMessageArray:(id)array type:(unsigned int)type;
+- (id)translateRateControlDataWithFeedbackMessage:(id *)message;
 - (void)dealloc;
 - (void)resetBurstyLossStatistics;
 @end
 
 @implementation AVCRateControlFeedbackController
 
-- (AVCRateControlFeedbackController)initWithStatisticsCollector:(id)a3
+- (AVCRateControlFeedbackController)initWithStatisticsCollector:(id)collector
 {
   v8 = *MEMORY[0x1E69E9840];
   v7.receiver = self;
@@ -27,7 +27,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_statisticsCollector = a3;
+    v4->_statisticsCollector = collector;
     v4->_isECNEnabled = VCDefaults_GetBoolValueForKey(@"ecnEnabled", 0);
     v5->_txLinkType = 0;
   }
@@ -44,15 +44,15 @@
   [(AVCRateControlFeedbackController *)&v3 dealloc];
 }
 
-- (BOOL)getFeedbackMessage:(id *)a3 type:(unsigned int)a4 metaData:(id *)a5 error:(id *)a6
+- (BOOL)getFeedbackMessage:(id *)message type:(unsigned int)type metaData:(id *)data error:(id *)error
 {
   mode = self->_mode;
   v7 = mode > 7;
   v8 = (1 << mode) & 0x8E;
-  return !v7 && v8 != 0 && [(AVCRateControlFeedbackController *)self getRateControlFeedbackMessage:a3 type:*&a4 metaData:a5 error:a6];
+  return !v7 && v8 != 0 && [(AVCRateControlFeedbackController *)self getRateControlFeedbackMessage:message type:*&type metaData:data error:error];
 }
 
-- (BOOL)processFeedbackMessage:(id)a3 type:(unsigned int)a4 metaData:(id)a5 error:(id *)a6
+- (BOOL)processFeedbackMessage:(id)message type:(unsigned int)type metaData:(id)data error:(id *)error
 {
   v30 = *MEMORY[0x1E69E9840];
   v10 = micro();
@@ -71,27 +71,27 @@ LABEL_2:
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v12 = [a3 bytes];
-    v13 = v12[1];
-    v14 = v12[2];
+    bytes = [message bytes];
+    v13 = bytes[1];
+    v14 = bytes[2];
     DWORD2(v19) = v14 >> 12;
-    DWORD1(v21) = *v12;
+    DWORD1(v21) = *bytes;
     DWORD1(v20) = v14 & 0xFFF;
-    v15 = v12[4];
-    v18[1] = v12[3];
+    v15 = bytes[4];
+    v18[1] = bytes[3];
     LODWORD(v19) = v13;
     v18[0] = v15;
-    *&v22 = RTPUnpackDouble(v12[5]);
-    return _AVCRateControlFeedbackController_ProcessRateControlFeedbackMessage(self, v18, a4, v10);
+    *&v22 = RTPUnpackDouble(bytes[5]);
+    return _AVCRateControlFeedbackController_ProcessRateControlFeedbackMessage(self, v18, type, v10);
   }
 
   if (mode == 7)
   {
-    if (a5)
+    if (data)
     {
-      if ([a5 objectForKeyedSubscript:@"MetaDataTestSimulationTime"])
+      if ([data objectForKeyedSubscript:@"MetaDataTestSimulationTime"])
       {
-        [objc_msgSend(a5 objectForKeyedSubscript:{@"MetaDataTestSimulationTime", "doubleValue"}];
+        [objc_msgSend(data objectForKeyedSubscript:{@"MetaDataTestSimulationTime", "doubleValue"}];
         v10 = v17;
       }
     }
@@ -102,25 +102,25 @@ LABEL_2:
   return 0;
 }
 
-- (BOOL)processRateControlServerStats:(id *)a3 type:(unsigned int)a4 error:(id *)a5 time:(double)a6
+- (BOOL)processRateControlServerStats:(id *)stats type:(unsigned int)type error:(id *)error time:(double)time
 {
   v10 = *MEMORY[0x1E69E9840];
   v9 = 0;
   memset(v8, 0, sizeof(v8));
   ++self->_feedbackMessageCount;
-  if (a4 == 3)
+  if (type == 3)
   {
     LODWORD(v8[0]) = 5;
-    *(v8 + 1) = a6;
-    *(&v8[1] + 12) = *&a3->var1;
-    DWORD2(v8[2]) = a3->var4;
+    *(v8 + 1) = time;
+    *(&v8[1] + 12) = *&stats->var1;
+    DWORD2(v8[2]) = stats->var4;
     AVCStatisticsCollector_SetVCStatistics(self->_statisticsCollector, v8);
   }
 
-  return a4 == 3;
+  return type == 3;
 }
 
-- (BOOL)processRateControlPacketReceived:(id *)a3 type:(unsigned int)a4 error:(id *)a5 time:(double)a6
+- (BOOL)processRateControlPacketReceived:(id *)received type:(unsigned int)type error:(id *)error time:(double)time
 {
   v22 = *MEMORY[0x1E69E9840];
   v21 = 0;
@@ -136,20 +136,20 @@ LABEL_2:
   v12 = 0u;
   v9 = 0u;
   v10 = 0u;
-  if (a4 == 4)
+  if (type == 4)
   {
-    *(&v9 + 1) = a6;
+    *(&v9 + 1) = time;
     LODWORD(v9) = 7;
-    var9 = a3->var9;
+    var9 = received->var9;
     DWORD2(v10) = 2;
     HIDWORD(v13) = var9;
     AVCStatisticsCollector_SetVCStatistics(self->_statisticsCollector, &v9);
   }
 
-  return a4 == 4;
+  return type == 4;
 }
 
-- (BOOL)processRateControlPacketSent:(id *)a3 type:(unsigned int)a4 error:(id *)a5 time:(double)a6
+- (BOOL)processRateControlPacketSent:(id *)sent type:(unsigned int)type error:(id *)error time:(double)time
 {
   v19 = *MEMORY[0x1E69E9840];
   v18 = 0;
@@ -163,18 +163,18 @@ LABEL_2:
   v11 = 0u;
   v9 = 0u;
   memset(v8, 0, sizeof(v8));
-  if (a4 == 5)
+  if (type == 5)
   {
-    *&v8[0].var2 = a6;
+    *&v8[0].var2 = time;
     v8[0].var0 = 6;
-    v8[1] = *a3;
+    v8[1] = *sent;
     AVCStatisticsCollector_SetVCStatistics(self->_statisticsCollector, v8);
   }
 
-  return a4 == 5;
+  return type == 5;
 }
 
-- (BOOL)processRateControlLocalRCEvent:(tagVCStatisticsLocalRCEvent *)a3 type:(unsigned int)a4 error:(id *)a5 time:(double)a6
+- (BOOL)processRateControlLocalRCEvent:(tagVCStatisticsLocalRCEvent *)event type:(unsigned int)type error:(id *)error time:(double)time
 {
   v19 = *MEMORY[0x1E69E9840];
   v18 = 0;
@@ -188,36 +188,36 @@ LABEL_2:
   v11 = 0u;
   v9 = 0u;
   memset(v8, 0, sizeof(v8));
-  if (a4 == 6)
+  if (type == 6)
   {
-    v8[0].recentFeedbackTime = a6;
+    v8[0].recentFeedbackTime = time;
     LODWORD(v8[0].recentSendTime) = 14;
-    v8[1] = *a3;
+    v8[1] = *event;
     AVCStatisticsCollector_SetVCStatistics(self->_statisticsCollector, v8);
   }
 
-  return a4 == 6;
+  return type == 6;
 }
 
-- (BOOL)validateMessageArray:(id)a3 type:(unsigned int)a4
+- (BOOL)validateMessageArray:(id)array type:(unsigned int)type
 {
-  if (a4 - 1 > 7)
+  if (type - 1 > 7)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = dword_1DBD45890[a4 - 1];
+    v4 = dword_1DBD45890[type - 1];
   }
 
-  return v4 == [a3 count];
+  return v4 == [array count];
 }
 
-- (BOOL)processRateControlMessageArray:(id)a3 type:(unsigned int)a4
+- (BOOL)processRateControlMessageArray:(id)array type:(unsigned int)type
 {
   v40 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!array)
   {
     [AVCRateControlFeedbackController processRateControlMessageArray:? type:?];
     return v32;
@@ -225,20 +225,20 @@ LABEL_2:
 
   if (![AVCRateControlFeedbackController validateMessageArray:"validateMessageArray:type:" type:?])
   {
-    [AVCRateControlFeedbackController processRateControlMessageArray:a3 type:&v32];
+    [AVCRateControlFeedbackController processRateControlMessageArray:array type:&v32];
     return v32;
   }
 
   v7 = 0;
   v8 = micro();
-  if (a4 > 3)
+  if (type > 3)
   {
-    if (a4 <= 5)
+    if (type <= 5)
     {
-      if (a4 == 4)
+      if (type == 4)
       {
         *&v34[32] = 0;
-        *&v34[36] = [objc_msgSend(a3 objectAtIndexedSubscript:{0, 0, 0, 0, 0, 0, 0, *&v34[32]), "unsignedIntValue"}];
+        *&v34[36] = [objc_msgSend(array objectAtIndexedSubscript:{0, 0, 0, 0, 0, 0, 0, *&v34[32]), "unsignedIntValue"}];
         if ([(AVCRateControlFeedbackController *)self processRateControlPacketReceived:&v32 type:4 error:0 time:v8])
         {
           goto LABEL_29;
@@ -247,10 +247,10 @@ LABEL_2:
 
       else
       {
-        v21 = [objc_msgSend(a3 objectAtIndexedSubscript:{0), "unsignedIntValue"}];
-        v22 = [objc_msgSend(a3 objectAtIndexedSubscript:{1), "unsignedIntValue"}];
-        v23 = [objc_msgSend(a3 objectAtIndexedSubscript:{2), "unsignedIntValue"}];
-        [objc_msgSend(a3 objectAtIndexedSubscript:{3), "doubleValue"}];
+        v21 = [objc_msgSend(array objectAtIndexedSubscript:{0), "unsignedIntValue"}];
+        v22 = [objc_msgSend(array objectAtIndexedSubscript:{1), "unsignedIntValue"}];
+        v23 = [objc_msgSend(array objectAtIndexedSubscript:{2), "unsignedIntValue"}];
+        [objc_msgSend(array objectAtIndexedSubscript:{3), "doubleValue"}];
         v32 = __PAIR64__(v22, v21);
         *&v33 = v23;
         *v34 = v24;
@@ -263,14 +263,14 @@ LABEL_2:
       return 0;
     }
 
-    if (a4 == 6)
+    if (type == 6)
     {
-      [objc_msgSend(a3 objectAtIndexedSubscript:{0), "doubleValue"}];
+      [objc_msgSend(array objectAtIndexedSubscript:{0), "doubleValue"}];
       v29 = v28;
-      [objc_msgSend(a3 objectAtIndexedSubscript:{1), "doubleValue"}];
+      [objc_msgSend(array objectAtIndexedSubscript:{1), "doubleValue"}];
       v32 = v29;
       v33 = v30;
-      *v34 = [objc_msgSend(a3 objectAtIndexedSubscript:{2), "unsignedIntValue"}];
+      *v34 = [objc_msgSend(array objectAtIndexedSubscript:{2), "unsignedIntValue"}];
       if ([(AVCRateControlFeedbackController *)self processRateControlLocalRCEvent:&v32 type:6 error:0 time:v8])
       {
         goto LABEL_29;
@@ -279,17 +279,17 @@ LABEL_2:
       return 0;
     }
 
-    if (a4 != 7)
+    if (type != 7)
     {
-      if (a4 == 8)
+      if (type == 8)
       {
-        v9 = [objc_msgSend(a3 objectAtIndexedSubscript:{6), "unsignedIntValue"}];
-        v10 = [objc_msgSend(a3 objectAtIndexedSubscript:{1), "unsignedIntValue"}];
-        v11 = [objc_msgSend(a3 objectAtIndexedSubscript:{2), "unsignedIntValue"}];
-        v12 = [objc_msgSend(a3 objectAtIndexedSubscript:{3), "unsignedIntValue"}];
-        v13 = [objc_msgSend(a3 objectAtIndexedSubscript:{0), "unsignedIntValue"}];
-        v14 = [objc_msgSend(a3 objectAtIndexedSubscript:{5), "unsignedIntValue"}];
-        v15 = [objc_msgSend(a3 objectAtIndexedSubscript:{4), "BOOLValue"}];
+        v9 = [objc_msgSend(array objectAtIndexedSubscript:{6), "unsignedIntValue"}];
+        v10 = [objc_msgSend(array objectAtIndexedSubscript:{1), "unsignedIntValue"}];
+        v11 = [objc_msgSend(array objectAtIndexedSubscript:{2), "unsignedIntValue"}];
+        v12 = [objc_msgSend(array objectAtIndexedSubscript:{3), "unsignedIntValue"}];
+        v13 = [objc_msgSend(array objectAtIndexedSubscript:{0), "unsignedIntValue"}];
+        v14 = [objc_msgSend(array objectAtIndexedSubscript:{5), "unsignedIntValue"}];
+        v15 = [objc_msgSend(array objectAtIndexedSubscript:{4), "BOOLValue"}];
         if (self->_mode == 12)
         {
           v37 = unk_1DBD45858;
@@ -340,22 +340,22 @@ LABEL_21:
     return 0;
   }
 
-  if (a4 > 1)
+  if (type > 1)
   {
-    if (a4 == 2)
+    if (type == 2)
     {
       BYTE4(v32) = 0;
       LODWORD(v32) = 0;
       memset(&v34[12], 0, 60);
-      [objc_msgSend(a3 objectAtIndexedSubscript:{0, v32), "doubleValue"}];
+      [objc_msgSend(array objectAtIndexedSubscript:{0, v32), "doubleValue"}];
       v26 = v25;
-      v27 = [objc_msgSend(a3 objectAtIndexedSubscript:{1), "unsignedIntValue"}];
-      BYTE5(v32) = [objc_msgSend(a3 objectAtIndexedSubscript:{2), "BOOLValue"}];
+      v27 = [objc_msgSend(array objectAtIndexedSubscript:{1), "unsignedIntValue"}];
+      BYTE5(v32) = [objc_msgSend(array objectAtIndexedSubscript:{2), "BOOLValue"}];
       HIWORD(v32) = 0;
-      LODWORD(v33) = [objc_msgSend(a3 objectAtIndexedSubscript:{3), "unsignedIntValue"}];
+      LODWORD(v33) = [objc_msgSend(array objectAtIndexedSubscript:{3), "unsignedIntValue"}];
       HIDWORD(v33) = v27;
       *v34 = v26;
-      *&v34[8] = [objc_msgSend(a3 objectAtIndexedSubscript:{4), "unsignedIntValue"}];
+      *&v34[8] = [objc_msgSend(array objectAtIndexedSubscript:{4), "unsignedIntValue"}];
       if ([(AVCRateControlFeedbackController *)self processRateControlProbingMessage:&v32 type:2 error:0])
       {
         goto LABEL_29;
@@ -366,9 +366,9 @@ LABEL_21:
     {
       memset(&v34[4], 0, 68);
       LODWORD(v32) = 0;
-      HIDWORD(v32) = [objc_msgSend(a3 objectAtIndexedSubscript:{0), "unsignedIntValue"}];
-      *&v33 = [objc_msgSend(a3 objectAtIndexedSubscript:{1), "unsignedIntValue"}];
-      *v34 = [objc_msgSend(a3 objectAtIndexedSubscript:{2), "unsignedIntValue"}];
+      HIDWORD(v32) = [objc_msgSend(array objectAtIndexedSubscript:{0), "unsignedIntValue"}];
+      *&v33 = [objc_msgSend(array objectAtIndexedSubscript:{1), "unsignedIntValue"}];
+      *v34 = [objc_msgSend(array objectAtIndexedSubscript:{2), "unsignedIntValue"}];
       if ([(AVCRateControlFeedbackController *)self processRateControlServerStats:&v32 type:3 error:0 time:v8])
       {
         goto LABEL_29;
@@ -378,12 +378,12 @@ LABEL_21:
     return 0;
   }
 
-  if (!a4)
+  if (!type)
   {
     goto LABEL_21;
   }
 
-  if (a4 == 1)
+  if (type == 1)
   {
     *&v34[24] = 0;
     *&v34[16] = 0;
@@ -392,12 +392,12 @@ LABEL_21:
     memset(v36, 0, sizeof(v36));
     v37 = 0u;
     v38 = 0u;
-    v16 = [objc_msgSend(a3 objectAtIndexedSubscript:{5), "unsignedIntValue"}];
-    v17 = [objc_msgSend(a3 objectAtIndexedSubscript:{2), "unsignedIntValue"}];
-    v18 = [objc_msgSend(a3 objectAtIndexedSubscript:{3), "unsignedIntValue"}];
-    v19 = [objc_msgSend(a3 objectAtIndexedSubscript:{4), "unsignedIntValue"}];
-    v20 = [objc_msgSend(a3 objectAtIndexedSubscript:{1), "unsignedIntValue"}];
-    LODWORD(v32) = [objc_msgSend(a3 objectAtIndexedSubscript:{0), "unsignedIntValue"}];
+    v16 = [objc_msgSend(array objectAtIndexedSubscript:{5), "unsignedIntValue"}];
+    v17 = [objc_msgSend(array objectAtIndexedSubscript:{2), "unsignedIntValue"}];
+    v18 = [objc_msgSend(array objectAtIndexedSubscript:{3), "unsignedIntValue"}];
+    v19 = [objc_msgSend(array objectAtIndexedSubscript:{4), "unsignedIntValue"}];
+    v20 = [objc_msgSend(array objectAtIndexedSubscript:{1), "unsignedIntValue"}];
+    LODWORD(v32) = [objc_msgSend(array objectAtIndexedSubscript:{0), "unsignedIntValue"}];
     HIDWORD(v32) = v20;
     *&v33 = v17;
     *v34 = v18;
@@ -405,7 +405,7 @@ LABEL_21:
     *&v34[12] = v19;
     *&v34[28] = v16;
     *&v34[32] = 0;
-    *&v34[40] = [objc_msgSend(a3 objectAtIndexedSubscript:{6), "unsignedIntValue"}];
+    *&v34[40] = [objc_msgSend(array objectAtIndexedSubscript:{6), "unsignedIntValue"}];
     if (_AVCRateControlFeedbackController_ProcessRateControlFeedbackMessage(self, &v32, 1, v8))
     {
       goto LABEL_29;
@@ -417,21 +417,21 @@ LABEL_21:
   return v7;
 }
 
-- (BOOL)getRateControlFeedbackMessage:(id *)a3 type:(unsigned int)a4 metaData:(id *)a5 error:(id *)a6
+- (BOOL)getRateControlFeedbackMessage:(id *)message type:(unsigned int)type metaData:(id *)data error:(id *)error
 {
   v14 = *MEMORY[0x1E69E9840];
-  if (a4 == 2)
+  if (type == 2)
   {
     LOBYTE(v10) = 1;
   }
 
-  else if (a4 == 1 && a3)
+  else if (type == 1 && message)
   {
     memset(v13, 0, sizeof(v13));
     v9 = micro();
-    if (a5 && *a5)
+    if (data && *data)
     {
-      [objc_msgSend(*a5 objectForKeyedSubscript:{@"MetaDataTestSimulationTime", v9), "doubleValue"}];
+      [objc_msgSend(*data objectForKeyedSubscript:{@"MetaDataTestSimulationTime", v9), "doubleValue"}];
     }
 
     v10 = [(AVCRateControlFeedbackController *)self getVCStatisticsFeedbackMessage:v13 time:v9];
@@ -448,7 +448,7 @@ LABEL_21:
       v12[1] = *&v13[40];
       v12[2] = *&v13[56];
       v12[3] = *&v13[72];
-      *a3 = [(AVCRateControlFeedbackController *)self translateRateControlDataWithFeedbackMessage:v12];
+      *message = [(AVCRateControlFeedbackController *)self translateRateControlDataWithFeedbackMessage:v12];
       [(AVCRateControlFeedbackController *)self resetBurstyLossStatistics];
     }
 
@@ -470,14 +470,14 @@ LABEL_21:
   return v10;
 }
 
-- (BOOL)getVCStatisticsFeedbackMessage:(tagVCStatisticsMessage *)a3 time:(double)a4
+- (BOOL)getVCStatisticsFeedbackMessage:(tagVCStatisticsMessage *)message time:(double)time
 {
-  if (a3)
+  if (message)
   {
     statisticsCollector = self->_statisticsCollector;
     if (statisticsCollector)
     {
-      [(AVCStatisticsCollector *)statisticsCollector getVCStatisticsWithType:2 time:a4];
+      [(AVCStatisticsCollector *)statisticsCollector getVCStatisticsWithType:2 time:time];
     }
 
     else
@@ -497,58 +497,58 @@ LABEL_21:
       v8 = 0u;
     }
 
-    *(&a3->var0.addRemoveEndPoint + 17) = v17;
-    *(&a3->var0.addRemoveEndPoint + 19) = v18;
-    *(&a3->var0.addRemoveEndPoint + 21) = v19;
-    *(&a3->var0.addRemoveEndPoint + 9) = v13;
-    *(&a3->var0.addRemoveEndPoint + 11) = v14;
-    *(&a3->var0.addRemoveEndPoint + 13) = v15;
-    *(&a3->var0.addRemoveEndPoint + 15) = v16;
-    *&a3->var0.rtcpRR.lastSequenceNumber = v9;
-    *(&a3->var0.addRemoveEndPoint + 3) = v10;
-    *(&a3->var0.addRemoveEndPoint + 5) = v11;
-    *(&a3->var0.addRemoveEndPoint + 7) = v12;
-    *&a3->type = v7;
-    *&a3->isVCRCInternal = v8;
+    *(&message->var0.addRemoveEndPoint + 17) = v17;
+    *(&message->var0.addRemoveEndPoint + 19) = v18;
+    *(&message->var0.addRemoveEndPoint + 21) = v19;
+    *(&message->var0.addRemoveEndPoint + 9) = v13;
+    *(&message->var0.addRemoveEndPoint + 11) = v14;
+    *(&message->var0.addRemoveEndPoint + 13) = v15;
+    *(&message->var0.addRemoveEndPoint + 15) = v16;
+    *&message->var0.rtcpRR.lastSequenceNumber = v9;
+    *(&message->var0.addRemoveEndPoint + 3) = v10;
+    *(&message->var0.addRemoveEndPoint + 5) = v11;
+    *(&message->var0.addRemoveEndPoint + 7) = v12;
+    *&message->type = v7;
+    *&message->isVCRCInternal = v8;
   }
 
-  return a3 != 0;
+  return message != 0;
 }
 
-- (BOOL)processRateControlProbingMessage:(id *)a3 type:(unsigned int)a4 error:(id *)a5
+- (BOOL)processRateControlProbingMessage:(id *)message type:(unsigned int)type error:(id *)error
 {
   v11 = *MEMORY[0x1E69E9840];
   v10 = 0;
   memset(v9, 0, sizeof(v9));
-  if (a4 == 2)
+  if (type == 2)
   {
-    *(&v9[0] + 1) = *&a3->var6;
-    v6 = *&a3->var6;
-    *(&v9[3] + 8) = *&a3->var9.var0;
-    v7 = *&a3->var9.var6;
-    *(&v9[4] + 8) = *&a3->var9.var4;
+    *(&v9[0] + 1) = *&message->var6;
+    v6 = *&message->var6;
+    *(&v9[3] + 8) = *&message->var9.var0;
+    v7 = *&message->var9.var6;
+    *(&v9[4] + 8) = *&message->var9.var4;
     *(&v9[5] + 8) = v7;
-    *(&v9[1] + 8) = *&a3->var0;
+    *(&v9[1] + 8) = *&message->var0;
     LODWORD(v9[0]) = 4;
     BYTE3(v9[1]) = 1;
-    *(&v9[6] + 1) = *&a3->var9.var8;
+    *(&v9[6] + 1) = *&message->var9.var8;
     *(&v9[2] + 8) = v6;
     AVCStatisticsCollector_SetVCStatistics(self->_statisticsCollector, v9);
   }
 
-  return a4 == 2;
+  return type == 2;
 }
 
-- (id)translateRateControlDataWithFeedbackMessage:(id *)a3
+- (id)translateRateControlDataWithFeedbackMessage:(id *)message
 {
   v6 = *MEMORY[0x1E69E9840];
-  v5[0] = a3->var11;
-  v5[1] = a3->var2;
-  v5[2] = a3->var7 & 0xFFF | (LOWORD(a3->var4) << 12);
-  var0 = a3->var0;
-  v5[3] = a3->var1;
+  v5[0] = message->var11;
+  v5[1] = message->var2;
+  v5[2] = message->var7 & 0xFFF | (LOWORD(message->var4) << 12);
+  var0 = message->var0;
+  v5[3] = message->var1;
   v5[4] = var0;
-  v5[5] = RTPPackDouble(a3->var13);
+  v5[5] = RTPPackDouble(message->var13);
   return [MEMORY[0x1E695DEF0] dataWithBytes:v5 length:12];
 }
 

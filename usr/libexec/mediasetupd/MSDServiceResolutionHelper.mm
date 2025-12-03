@@ -1,24 +1,24 @@
 @interface MSDServiceResolutionHelper
-+ (id)createMSResolutionInfoObject:(id)a3 homeUserID:(id)a4 sharedUserID:(id)a5;
++ (id)createMSResolutionInfoObject:(id)object homeUserID:(id)d sharedUserID:(id)iD;
 @end
 
 @implementation MSDServiceResolutionHelper
 
-+ (id)createMSResolutionInfoObject:(id)a3 homeUserID:(id)a4 sharedUserID:(id)a5
++ (id)createMSResolutionInfoObject:(id)object homeUserID:(id)d sharedUserID:(id)iD
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [MSDPublicDBManager getCachedPublicInfoForBundleID:v9];
+  iDCopy = iD;
+  dCopy = d;
+  objectCopy = object;
+  v10 = [MSDPublicDBManager getCachedPublicInfoForBundleID:objectCopy];
   v11 = [MSServiceAppInfo alloc];
-  v12 = [v10 serviceName];
-  v13 = [v11 initWithServiceName:v12 serviceBundleID:v9];
+  serviceName = [v10 serviceName];
+  v13 = [v11 initWithServiceName:serviceName serviceBundleID:objectCopy];
 
-  v14 = [v10 bundleIDS];
-  v15 = [v14 copy];
+  bundleIDS = [v10 bundleIDS];
+  v15 = [bundleIDS copy];
   [v13 setAlternateBundleIDS:v15];
 
-  v16 = [[MSUserAccountInfo alloc] initWithHomeUserID:v8 sharedUserID:v7];
+  v16 = [[MSUserAccountInfo alloc] initWithHomeUserID:dCopy sharedUserID:iDCopy];
   v17 = [[MSServiceResolutionInfo alloc] initWithServiceAppInfo:v13 userAccountInfo:v16];
 
   return v17;

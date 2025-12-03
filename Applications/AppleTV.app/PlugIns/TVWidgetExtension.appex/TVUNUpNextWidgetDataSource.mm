@@ -1,18 +1,18 @@
 @interface TVUNUpNextWidgetDataSource
-+ (id)_contentGroupWithContinuations:(id)a3 widgetSize:(unint64_t)a4 expiration:(id)a5;
-+ (id)_contentItemWithContinuation:(id)a3 mediaItem:(id)a4 widgetSize:(unint64_t)a5 itemPosition:(int)a6;
-+ (id)_contentItemsWithContinuations:(id)a3 widgetSize:(unint64_t)a4;
-+ (id)cropCodeForContentType:(unint64_t)a3;
-+ (void)_completeUpNextItemCollectionResponse:(id)a3 widgetSize:(unint64_t)a4 expirationDate:(id)a5 resourceType:(int64_t)a6 withCompletion:(id)a7;
-+ (void)_processContinuationsDelta:(id)a3 withCompletion:(id)a4;
-+ (void)fetchUpNext:(unint64_t)a3 withCompletion:(id)a4;
++ (id)_contentGroupWithContinuations:(id)continuations widgetSize:(unint64_t)size expiration:(id)expiration;
++ (id)_contentItemWithContinuation:(id)continuation mediaItem:(id)item widgetSize:(unint64_t)size itemPosition:(int)position;
++ (id)_contentItemsWithContinuations:(id)continuations widgetSize:(unint64_t)size;
++ (id)cropCodeForContentType:(unint64_t)type;
++ (void)_completeUpNextItemCollectionResponse:(id)response widgetSize:(unint64_t)size expirationDate:(id)date resourceType:(int64_t)type withCompletion:(id)completion;
++ (void)_processContinuationsDelta:(id)delta withCompletion:(id)completion;
++ (void)fetchUpNext:(unint64_t)next withCompletion:(id)completion;
 @end
 
 @implementation TVUNUpNextWidgetDataSource
 
-+ (void)fetchUpNext:(unint64_t)a3 withCompletion:(id)a4
++ (void)fetchUpNext:(unint64_t)next withCompletion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   if (qword_1001283C8[0] != -1)
   {
     sub_1000D12B0();
@@ -31,7 +31,7 @@
   v20[2] = sub_10000365C;
   v7 = v20[3] = &unk_100117950;
   v21 = v7;
-  v8 = v5;
+  v8 = completionCopy;
   v22 = v8;
   v9 = objc_retainBlock(v20);
   if (_os_feature_enabled_impl())
@@ -43,7 +43,7 @@
     v10 = &v17;
     v17 = v9;
     v18 = v8;
-    v19 = a3;
+    nextCopy = next;
     v11 = v9;
     [_TtC17TVWidgetExtension24TVUTSNetworkManagerProxy fetchConfiguration:0 completion:v16];
     v12 = v18;
@@ -58,23 +58,23 @@
     v14[3] = &unk_1001179F0;
     v10 = v15;
     v15[0] = v9;
-    v15[1] = a3;
+    v15[1] = next;
     v13 = v9;
     [v12 fetchConfigurationWithCompletionHandler:v14];
   }
 }
 
-+ (void)_completeUpNextItemCollectionResponse:(id)a3 widgetSize:(unint64_t)a4 expirationDate:(id)a5 resourceType:(int64_t)a6 withCompletion:(id)a7
++ (void)_completeUpNextItemCollectionResponse:(id)response widgetSize:(unint64_t)size expirationDate:(id)date resourceType:(int64_t)type withCompletion:(id)completion
 {
-  v12 = a5;
-  v13 = a7;
-  v14 = a3;
-  v15 = [v14 items];
-  v16 = [v15 mutableCopy];
+  dateCopy = date;
+  completionCopy = completion;
+  responseCopy = response;
+  items = [responseCopy items];
+  v16 = [items mutableCopy];
 
-  v17 = [v14 items];
+  items2 = [responseCopy items];
 
-  if (!v17)
+  if (!items2)
   {
     v18 = objc_alloc_init(NSMutableArray);
 
@@ -83,7 +83,7 @@
 
   v19 = sub_100002C80();
   v20 = os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT);
-  if (a6 == 1)
+  if (type == 1)
   {
     if (v20)
     {
@@ -96,15 +96,15 @@
     v31[1] = 3221225472;
     v31[2] = sub_100004574;
     v31[3] = &unk_100117A18;
-    v35 = a1;
+    selfCopy = self;
     v22 = &v32;
     v23 = &v33;
     v32 = v16;
-    v33 = v12;
-    v36 = a4;
-    v34 = v13;
-    v24 = v13;
-    v25 = v12;
+    v33 = dateCopy;
+    sizeCopy = size;
+    v34 = completionCopy;
+    v24 = completionCopy;
+    v25 = dateCopy;
     [v21 delete:v31];
   }
 
@@ -120,22 +120,22 @@
     v28[1] = 3221225472;
     v28[2] = sub_100004718;
     v28[3] = &unk_100117A40;
-    v30[1] = a1;
-    v30[2] = a4;
+    v30[1] = self;
+    v30[2] = size;
     v22 = &v29;
     v23 = v30;
-    v29 = v12;
-    v30[0] = v13;
-    v26 = v13;
-    v27 = v12;
-    [a1 _processContinuationsDelta:v16 withCompletion:v28];
+    v29 = dateCopy;
+    v30[0] = completionCopy;
+    v26 = completionCopy;
+    v27 = dateCopy;
+    [self _processContinuationsDelta:v16 withCompletion:v28];
   }
 }
 
-+ (id)_contentGroupWithContinuations:(id)a3 widgetSize:(unint64_t)a4 expiration:(id)a5
++ (id)_contentGroupWithContinuations:(id)continuations widgetSize:(unint64_t)size expiration:(id)expiration
 {
-  v8 = a5;
-  v9 = [a1 _contentItemsWithContinuations:a3 widgetSize:a4];
+  expirationCopy = expiration;
+  v9 = [self _contentItemsWithContinuations:continuations widgetSize:size];
   if ([v9 count])
   {
     v10 = objc_alloc_init(TVUNContentItemGroup);
@@ -144,7 +144,7 @@
     [(TVUNContentItemGroup *)v10 setTitle:v12];
 
     [(TVUNContentItemGroup *)v10 setItems:v9];
-    [(TVUNContentItemGroup *)v10 setExpirationDate:v8];
+    [(TVUNContentItemGroup *)v10 setExpirationDate:expirationCopy];
   }
 
   else
@@ -155,10 +155,10 @@
   return v10;
 }
 
-+ (void)_processContinuationsDelta:(id)a3 withCompletion:(id)a4
++ (void)_processContinuationsDelta:(id)delta withCompletion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  deltaCopy = delta;
+  completionCopy = completion;
   v7 = sub_100002C80();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -173,17 +173,17 @@
   v13[2] = sub_100004A74;
   v13[3] = &unk_100117A68;
   v14 = v8;
-  v15 = v5;
-  v16 = v6;
-  v10 = v6;
-  v11 = v5;
+  v15 = deltaCopy;
+  v16 = completionCopy;
+  v10 = completionCopy;
+  v11 = deltaCopy;
   v12 = v8;
   [v9 read:v13];
 }
 
-+ (id)_contentItemsWithContinuations:(id)a3 widgetSize:(unint64_t)a4
++ (id)_contentItemsWithContinuations:(id)continuations widgetSize:(unint64_t)size
 {
-  v6 = a3;
+  continuationsCopy = continuations;
   v7 = objc_alloc_init(NSMutableArray);
   +[TVUNRentalUtilities fetchRentals];
   v18[0] = 0;
@@ -194,13 +194,13 @@
   v12[1] = 3221225472;
   v12[2] = sub_100005204;
   v8 = v12[3] = &unk_100117A90;
-  v16 = a1;
-  v17 = a4;
+  selfCopy = self;
+  sizeCopy = size;
   v13 = v8;
   v15 = v18;
   v9 = v7;
   v14 = v9;
-  [v6 enumerateObjectsUsingBlock:v12];
+  [continuationsCopy enumerateObjectsUsingBlock:v12];
   v10 = [v9 copy];
 
   _Block_object_dispose(v18, 8);
@@ -208,15 +208,15 @@
   return v10;
 }
 
-+ (id)_contentItemWithContinuation:(id)a3 mediaItem:(id)a4 widgetSize:(unint64_t)a5 itemPosition:(int)a6
++ (id)_contentItemWithContinuation:(id)continuation mediaItem:(id)item widgetSize:(unint64_t)size itemPosition:(int)position
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = [v9 movieOrShowContent];
+  continuationCopy = continuation;
+  itemCopy = item;
+  movieOrShowContent = [continuationCopy movieOrShowContent];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v12 = v9;
+    v12 = continuationCopy;
   }
 
   else
@@ -228,7 +228,7 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v14 = v9;
+    v14 = continuationCopy;
   }
 
   else
@@ -237,14 +237,14 @@
   }
 
   v15 = v14;
-  v16 = [v11 canonicalID];
+  canonicalID = [movieOrShowContent canonicalID];
 
-  if (!v16)
+  if (!canonicalID)
   {
     v18 = sub_100002C80();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_FAULT))
     {
-      sub_1000D1350(v9, v18);
+      sub_1000D1350(continuationCopy, v18);
     }
 
     goto LABEL_21;
@@ -252,7 +252,7 @@
 
   if (v13)
   {
-    v17 = [v13 tvun_punchoutURL:0];
+    tvun_defaultActionURL = [v13 tvun_punchoutURL:0];
   }
 
   else
@@ -262,17 +262,17 @@
       goto LABEL_19;
     }
 
-    v17 = [v15 tvun_defaultActionURL];
+    tvun_defaultActionURL = [v15 tvun_defaultActionURL];
   }
 
-  v19 = v17;
-  if (!v17)
+  v19 = tvun_defaultActionURL;
+  if (!tvun_defaultActionURL)
   {
 LABEL_19:
     v18 = sub_100002C80();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
-      sub_1000D12C4(v9, v18);
+      sub_1000D12C4(continuationCopy, v18);
     }
 
 LABEL_21:
@@ -280,28 +280,28 @@ LABEL_21:
     goto LABEL_73;
   }
 
-  v84 = v10;
-  v87 = [v11 canonicalID];
-  v88 = [v9 localizedContext];
-  v90 = [v11 title];
-  v20 = [v11 genres];
-  v21 = [v20 firstObject];
-  v22 = [v21 name];
+  v84 = itemCopy;
+  canonicalID2 = [movieOrShowContent canonicalID];
+  localizedContext = [continuationCopy localizedContext];
+  title = [movieOrShowContent title];
+  genres = [movieOrShowContent genres];
+  firstObject = [genres firstObject];
+  name = [firstObject name];
 
-  v89 = [v9 tvun_contextString];
-  v86 = +[TVUNUpNextWidgetDataSource cropCodeForContentType:](TVUNUpNextWidgetDataSource, "cropCodeForContentType:", [v11 contentType]);
-  if ([v9 contextEnum] == 1)
+  tvun_contextString = [continuationCopy tvun_contextString];
+  v86 = +[TVUNUpNextWidgetDataSource cropCodeForContentType:](TVUNUpNextWidgetDataSource, "cropCodeForContentType:", [movieOrShowContent contentType]);
+  if ([continuationCopy contextEnum] == 1)
   {
     if (v13)
     {
-      v23 = [v13 playable];
-      v24 = [v23 playEvent];
+      playable = [v13 playable];
+      playEvent = [playable playEvent];
 
-      if (v24)
+      if (playEvent)
       {
-        [v24 elapsedTime];
+        [playEvent elapsedTime];
         v26 = v25;
-        [v24 duration];
+        [playEvent duration];
         v85 = [NSNumber numberWithDouble:fmax(v26 / v27, 0.025)];
       }
 
@@ -322,7 +322,7 @@ LABEL_21:
 
   else
   {
-    if ([v9 contextEnum] == 12 || objc_msgSend(v9, "contextEnum") == 13)
+    if ([continuationCopy contextEnum] == 12 || objc_msgSend(continuationCopy, "contextEnum") == 13)
     {
       v85 = 0;
       v80 = 0;
@@ -333,40 +333,40 @@ LABEL_21:
 
     v85 = 0;
     v29 = 0;
-    v80 = [v9 contextEnum] == 2;
+    v80 = [continuationCopy contextEnum] == 2;
   }
 
   v30 = 28;
 LABEL_31:
   objc_opt_class();
   v83 = v15;
-  v82 = a6;
-  v81 = a5;
+  positionCopy = position;
+  sizeCopy = size;
   v79 = v29;
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      if ([v9 isRental])
+      if ([continuationCopy isRental])
       {
         v78 = v19;
-        v41 = [v84 tvun_expirationDate];
-        v42 = [v84 tvun_expirationString];
-        v31 = v42;
-        if (v42)
+        tvun_expirationDate = [v84 tvun_expirationDate];
+        tvun_expirationString = [v84 tvun_expirationString];
+        v31 = tvun_expirationString;
+        if (tvun_expirationString)
         {
-          v31 = v42;
+          v31 = tvun_expirationString;
 
-          v43 = v88;
-          v44 = 0;
-          v89 = v43;
-          v22 = v31;
+          v43 = localizedContext;
+          leagueShortName = 0;
+          tvun_contextString = v43;
+          name = v31;
         }
 
         else
         {
-          v44 = 0;
+          leagueShortName = 0;
         }
 
         goto LABEL_54;
@@ -380,134 +380,134 @@ LABEL_31:
       {
         v77 = v30;
         v78 = v19;
-        v31 = v11;
-        v52 = [v31 shortTitle];
+        v31 = movieOrShowContent;
+        shortTitle = [v31 shortTitle];
 
-        v53 = [v31 leagueName];
+        leagueName = [v31 leagueName];
 
-        v44 = [v31 leagueShortName];
+        leagueShortName = [v31 leagueShortName];
         if (v29)
         {
-          v41 = 0;
-          v22 = v53;
-          v90 = v52;
+          tvun_expirationDate = 0;
+          name = leagueName;
+          title = shortTitle;
         }
 
         else
         {
-          v90 = v52;
-          v69 = [v13 playable];
+          title = shortTitle;
+          playable2 = [v13 playable];
 
-          if (v69)
+          if (playable2)
           {
-            v70 = [v13 playable];
-            v71 = [v70 airingType];
+            playable3 = [v13 playable];
+            airingType = [playable3 airingType];
 
-            v41 = 0;
+            tvun_expirationDate = 0;
             v72 = 30;
-            if (v71 == 1)
+            if (airingType == 1)
             {
               v72 = 28;
             }
 
-            v22 = v53;
+            name = leagueName;
             v30 = v72;
             goto LABEL_54;
           }
 
-          v41 = 0;
-          v22 = v53;
+          tvun_expirationDate = 0;
+          name = leagueName;
         }
 
         goto LABEL_53;
       }
     }
 
-    v41 = 0;
-    v44 = 0;
+    tvun_expirationDate = 0;
+    leagueShortName = 0;
     goto LABEL_55;
   }
 
   v78 = v19;
-  v31 = v11;
-  v32 = [v31 showTitle];
-  v76 = v32;
+  v31 = movieOrShowContent;
+  showTitle = [v31 showTitle];
+  v76 = showTitle;
   v77 = v30;
-  if (v32)
+  if (showTitle)
   {
-    v33 = v32;
+    v33 = showTitle;
 
-    v90 = v33;
+    title = v33;
   }
 
-  v34 = [v31 seasonNumber];
-  v35 = [v31 episodeNumber];
-  v75 = v35;
-  if (v34 && v35)
+  seasonNumber = [v31 seasonNumber];
+  episodeNumber = [v31 episodeNumber];
+  v75 = episodeNumber;
+  if (seasonNumber && episodeNumber)
   {
-    v36 = v35;
+    v36 = episodeNumber;
     v37 = +[NSBundle mainBundle];
     v38 = [v37 localizedStringForKey:@"EPISODE_SEASON_EPISODE_FORMAT" value:&stru_10011D978 table:0];
-    v74 = [NSString localizedStringWithFormat:v38, v34, v36];
+    v74 = [NSString localizedStringWithFormat:v38, seasonNumber, v36];
 
     v39 = +[NSBundle mainBundle];
     v40 = [v39 localizedStringForKey:@"EPISODE_SEASON_EPISODE_FORMAT_SHORT" value:&stru_10011D978 table:0];
-    [NSString localizedStringWithFormat:v40, v34, v36];
+    [NSString localizedStringWithFormat:v40, seasonNumber, v36];
   }
 
   else
   {
-    if (!v34)
+    if (!seasonNumber)
     {
-      v51 = [v31 title];
-      v44 = 0;
-      v47 = v22;
+      title2 = [v31 title];
+      leagueShortName = 0;
+      v47 = name;
       goto LABEL_51;
     }
 
     v45 = +[NSBundle mainBundle];
     v46 = [v45 localizedStringForKey:@"EPISODE_SEASON_FORMAT" value:&stru_10011D978 table:0];
-    v74 = [NSString localizedStringWithFormat:v46, v34];
+    v74 = [NSString localizedStringWithFormat:v46, seasonNumber];
 
     v39 = +[NSBundle mainBundle];
     v40 = [v39 localizedStringForKey:@"EPISODE_SEASON_FORMAT_SHORT" value:&stru_10011D978 table:0];
-    [NSString localizedStringWithFormat:v40, v34, v73];
+    [NSString localizedStringWithFormat:v40, seasonNumber, v73];
   }
-  v44 = ;
+  leagueShortName = ;
 
-  if (v44)
+  if (leagueShortName)
   {
     v47 = +[NSBundle mainBundle];
     v48 = [v47 localizedStringForKey:@"SUBTITLE_WITH_CONTEXT_FORMAT" value:&stru_10011D978 table:0];
-    v49 = [v9 tvun_contextString];
-    v50 = [NSString localizedStringWithFormat:v48, v49, v44];
+    tvun_contextString2 = [continuationCopy tvun_contextString];
+    v50 = [NSString localizedStringWithFormat:v48, tvun_contextString2, leagueShortName];
 
-    v89 = v50;
-    v51 = v74;
+    tvun_contextString = v50;
+    title2 = v74;
 LABEL_51:
 
     goto LABEL_52;
   }
 
-  v51 = v74;
+  title2 = v74;
 LABEL_52:
 
-  v41 = 0;
-  v22 = v51;
+  tvun_expirationDate = 0;
+  name = title2;
 LABEL_53:
   v30 = v77;
 LABEL_54:
 
   v19 = v78;
 LABEL_55:
-  if (v82)
+  if (positionCopy)
   {
     v54 = 0;
   }
 
   else
   {
-    v54 = (v81 & 0xFFFFFFFFFFFFFFFELL) == 2;
+    v54 = (sizeCopy & 0xFFFFFFFFFFFFFFFELL) == 2;
   }
 
   if (v54)
@@ -515,42 +515,42 @@ LABEL_55:
     v30 = 27;
   }
 
-  v55 = [v11 images];
-  v56 = [v55 artworkVariantOfType:v30];
+  images = [movieOrShowContent images];
+  v56 = [images artworkVariantOfType:v30];
 
   if (v56)
   {
     goto LABEL_65;
   }
 
-  v57 = v22;
+  v57 = name;
   if (v30 != 28)
   {
     v58 = sub_100002C80();
     if (os_log_type_enabled(v58, OS_LOG_TYPE_DEFAULT))
     {
-      v59 = [v11 title];
+      title3 = [movieOrShowContent title];
       *buf = 138412290;
-      v92 = v59;
+      v92 = title3;
       _os_log_impl(&_mh_execute_header, v58, OS_LOG_TYPE_DEFAULT, "TVUNUpNextWidgetDataSource - Artwork is nil for %@. Fall back to ShelfItemImage", buf, 0xCu);
     }
 
-    v60 = [v11 images];
-    v56 = [v60 artworkVariantOfType:28];
+    images2 = [movieOrShowContent images];
+    v56 = [images2 artworkVariantOfType:28];
 
 LABEL_65:
-    v57 = v22;
+    v57 = name;
   }
 
   v61 = objc_alloc_init(TVUNContentItem);
-  [(TVUNContentItem *)v61 setIdentifier:v87];
-  [(TVUNContentItem *)v61 setTitle:v90];
+  [(TVUNContentItem *)v61 setIdentifier:canonicalID2];
+  [(TVUNContentItem *)v61 setTitle:title];
   [(TVUNContentItem *)v61 setSubtitle:v57];
-  [(TVUNContentItem *)v61 setSubtitleShort:v44];
-  [(TVUNContentItem *)v61 setSubtitleComposed:v89];
-  [(TVUNContentItem *)v61 setContext:v88];
+  [(TVUNContentItem *)v61 setSubtitleShort:leagueShortName];
+  [(TVUNContentItem *)v61 setSubtitleComposed:tvun_contextString];
+  [(TVUNContentItem *)v61 setContext:localizedContext];
   [(TVUNContentItem *)v61 setPlaybackPercentage:v85];
-  [(TVUNContentItem *)v61 setRentalExpirationDate:v41];
+  [(TVUNContentItem *)v61 setRentalExpirationDate:tvun_expirationDate];
   [(TVUNContentItem *)v61 setLiveEvent:v79];
   [(TVUNContentItem *)v61 setNewEpisode:v80];
   [(TVUNContentItem *)v61 setCropCode:v86];
@@ -566,16 +566,16 @@ LABEL_65:
     }
 
     v19 = v62;
-    v57 = v22;
+    v57 = name;
   }
 
   [(TVUNContentItem *)v61 setActionURL:v19];
   if (v56)
   {
-    v64 = [v56 artworkURLString];
-    [(TVUNContentItem *)v61 setImageURLTemplate:v64];
+    artworkURLString = [v56 artworkURLString];
+    [(TVUNContentItem *)v61 setImageURLTemplate:artworkURLString];
 
-    v57 = v22;
+    v57 = name;
     [v56 artworkSize];
     v66 = v65;
     [v56 artworkSize];
@@ -586,15 +586,15 @@ LABEL_65:
 
   v28 = v18;
   v15 = v83;
-  v10 = v84;
+  itemCopy = v84;
 LABEL_73:
 
   return v28;
 }
 
-+ (id)cropCodeForContentType:(unint64_t)a3
++ (id)cropCodeForContentType:(unint64_t)type
 {
-  if (a3 == 5)
+  if (type == 5)
   {
     return @"sh";
   }

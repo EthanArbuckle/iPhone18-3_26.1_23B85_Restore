@@ -1,12 +1,12 @@
 @interface ScreenshotCollectionViewCell
-- (_TtC20ProductPageExtension28ScreenshotCollectionViewCell)initWithCoder:(id)a3;
+- (_TtC20ProductPageExtension28ScreenshotCollectionViewCell)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 @end
 
 @implementation ScreenshotCollectionViewCell
 
-- (_TtC20ProductPageExtension28ScreenshotCollectionViewCell)initWithCoder:(id)a3
+- (_TtC20ProductPageExtension28ScreenshotCollectionViewCell)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC20ProductPageExtension28ScreenshotCollectionViewCell_itemLayoutContext;
   v5 = sub_10076341C();
@@ -22,13 +22,13 @@
 
 - (void)prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   sub_100369F58();
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_10036A068();
 }
 

@@ -1,17 +1,17 @@
 @interface WFTumblrPostAction
 - (BOOL)inputsMultipleItems;
-- (BOOL)setParameterState:(id)a3 forKey:(id)a4;
+- (BOOL)setParameterState:(id)state forKey:(id)key;
 - (TMAPIClient)client;
-- (id)defaultSerializedRepresentationForEnumeration:(id)a3;
-- (id)enumeration:(id)a3 localizedLabelForPossibleState:(id)a4;
+- (id)defaultSerializedRepresentationForEnumeration:(id)enumeration;
+- (id)enumeration:(id)enumeration localizedLabelForPossibleState:(id)state;
 - (id)generatedResourceNodes;
 - (id)inputContentClasses;
-- (id)possibleStatesForEnumeration:(id)a3;
-- (id)smartPromptWithContentDescription:(id)a3 contentDestination:(id)a4 workflowName:(id)a5;
+- (id)possibleStatesForEnumeration:(id)enumeration;
+- (id)smartPromptWithContentDescription:(id)description contentDestination:(id)destination workflowName:(id)name;
 - (void)initializeParameters;
-- (void)openFiles:(id)a3;
-- (void)openPostWithType:(id)a3 withParameters:(id)a4;
-- (void)runAsynchronouslyWithInput:(id)a3;
+- (void)openFiles:(id)files;
+- (void)openPostWithType:(id)type withParameters:(id)parameters;
+- (void)runAsynchronouslyWithInput:(id)input;
 - (void)updateTagsParameterHidden;
 @end
 
@@ -22,8 +22,8 @@
   v31 = *MEMORY[0x277D85DE8];
   v28.receiver = self;
   v28.super_class = WFTumblrPostAction;
-  v2 = [(WFTumblrPostAction *)&v28 generatedResourceNodes];
-  v3 = [v2 mutableCopy];
+  generatedResourceNodes = [(WFTumblrPostAction *)&v28 generatedResourceNodes];
+  v3 = [generatedResourceNodes mutableCopy];
 
   v26 = 0u;
   v27 = 0u;
@@ -46,7 +46,7 @@
         }
 
         v10 = *(*(&v24 + 1) + 8 * i);
-        v11 = [v10 resource];
+        resource = [v10 resource];
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
 
@@ -72,11 +72,11 @@
   v14 = objc_alloc(MEMORY[0x277D7C6F0]);
   v15 = [v14 initWithParameterKey:@"WFComposeInApp" parameterValues:&unk_28509CD10 relation:*MEMORY[0x277D7CEE0]];
   v16 = objc_alloc(MEMORY[0x277D7C818]);
-  v17 = [v7 resource];
+  resource2 = [v7 resource];
   v18 = [objc_alloc(MEMORY[0x277D7C818]) initWithResource:v15];
   v29 = v18;
   v19 = [MEMORY[0x277CBEA60] arrayWithObjects:&v29 count:1];
-  v20 = [v16 initWithResource:v17 subnodes:v19];
+  v20 = [v16 initWithResource:resource2 subnodes:v19];
 
   [v4 removeObject:v7];
   [v4 addObject:v20];
@@ -86,21 +86,21 @@
   return v4;
 }
 
-- (id)smartPromptWithContentDescription:(id)a3 contentDestination:(id)a4 workflowName:(id)a5
+- (id)smartPromptWithContentDescription:(id)description contentDestination:(id)destination workflowName:(id)name
 {
-  v6 = a3;
+  descriptionCopy = description;
   v7 = MEMORY[0x277CCACA8];
-  v8 = a5;
-  if (v6)
+  nameCopy = name;
+  if (descriptionCopy)
   {
     v9 = WFLocalizedString(@"Allow “%1$@” to post %2$@ on Tumblr?");
-    [v7 localizedStringWithFormat:v9, v8, v6];
+    [v7 localizedStringWithFormat:v9, nameCopy, descriptionCopy];
   }
 
   else
   {
     v9 = WFLocalizedString(@"Allow “%1$@” to post on Tumblr?");
-    [v7 localizedStringWithFormat:v9, v8, v12];
+    [v7 localizedStringWithFormat:v9, nameCopy, v12];
   }
   v10 = ;
 
@@ -119,9 +119,9 @@
   v24[3] = &unk_28509CCF8;
   v25[3] = objc_opt_class();
   v3 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v25 forKeys:v24 count:4];
-  v4 = [(WFTumblrPostAction *)self workflow];
+  workflow = [(WFTumblrPostAction *)self workflow];
 
-  if (v4)
+  if (workflow)
   {
     v5 = [(WFTumblrPostAction *)self parameterStateForKey:@"WFPostType"];
     v18 = 0u;
@@ -144,14 +144,14 @@
           }
 
           v11 = *(*(&v18 + 1) + 8 * i);
-          v12 = [v5 value];
-          v13 = [v11 containsObject:v12];
+          value = [v5 value];
+          v13 = [v11 containsObject:value];
 
           if (v13)
           {
             v15 = [v6 objectForKey:v11];
             v22 = v15;
-            v14 = [MEMORY[0x277CBEA60] arrayWithObjects:&v22 count:1];
+            allValues = [MEMORY[0x277CBEA60] arrayWithObjects:&v22 count:1];
 
             goto LABEL_12;
           }
@@ -167,34 +167,34 @@
       }
     }
 
-    v14 = [v6 allValues];
+    allValues = [v6 allValues];
 LABEL_12:
   }
 
   else
   {
-    v14 = [v3 allValues];
+    allValues = [v3 allValues];
   }
 
   v16 = *MEMORY[0x277D85DE8];
 
-  return v14;
+  return allValues;
 }
 
 - (BOOL)inputsMultipleItems
 {
   v2 = [(WFTumblrPostAction *)self parameterStateForKey:@"WFPostType"];
-  v3 = [v2 value];
-  v4 = [v3 isEqualToString:@"Photos"];
+  value = [v2 value];
+  v4 = [value isEqualToString:@"Photos"];
 
   return v4;
 }
 
-- (id)enumeration:(id)a3 localizedLabelForPossibleState:(id)a4
+- (id)enumeration:(id)enumeration localizedLabelForPossibleState:(id)state
 {
-  v4 = [a4 value];
+  value = [state value];
   v5 = @"Text";
-  if ([v4 isEqualToString:@"Text"] & 1) != 0 || (v5 = @"Quote", (objc_msgSend(v4, "isEqualToString:", @"Quote")) || (v5 = @"Chat", (objc_msgSend(v4, "isEqualToString:", @"Chat")) || (v5 = @"Photos", (objc_msgSend(v4, "isEqualToString:", @"Photos")) || (v5 = @"Link", (objc_msgSend(v4, "isEqualToString:", @"Link")) || (v5 = @"Audio", (objc_msgSend(v4, "isEqualToString:", @"Audio")) || (v5 = @"Video", objc_msgSend(v4, "isEqualToString:", @"Video")))
+  if ([value isEqualToString:@"Text"] & 1) != 0 || (v5 = @"Quote", (objc_msgSend(value, "isEqualToString:", @"Quote")) || (v5 = @"Chat", (objc_msgSend(value, "isEqualToString:", @"Chat")) || (v5 = @"Photos", (objc_msgSend(value, "isEqualToString:", @"Photos")) || (v5 = @"Link", (objc_msgSend(value, "isEqualToString:", @"Link")) || (v5 = @"Audio", (objc_msgSend(value, "isEqualToString:", @"Audio")) || (v5 = @"Video", objc_msgSend(value, "isEqualToString:", @"Video")))
   {
     v6 = WFLocalizedString(v5);
   }
@@ -207,19 +207,19 @@ LABEL_12:
   return v6;
 }
 
-- (id)possibleStatesForEnumeration:(id)a3
+- (id)possibleStatesForEnumeration:(id)enumeration
 {
   v3 = [(WFTumblrPostAction *)self parameterStateForKey:@"WFComposeInApp"];
-  v4 = [v3 number];
-  if (v4)
+  number = [v3 number];
+  if (number)
   {
-    v5 = v4;
-    v6 = [v3 number];
-    v7 = [v6 BOOLValue];
+    v5 = number;
+    number2 = [v3 number];
+    bOOLValue = [number2 BOOLValue];
 
     v8 = [&unk_28509CC80 mutableCopy];
     v9 = v8;
-    if (v7)
+    if (bOOLValue)
     {
       [v8 removeObjectsInArray:&unk_28509CC98];
     }
@@ -244,15 +244,15 @@ id __51__WFTumblrPostAction_possibleStatesForEnumeration___block_invoke(uint64_t
   return v4;
 }
 
-- (id)defaultSerializedRepresentationForEnumeration:(id)a3
+- (id)defaultSerializedRepresentationForEnumeration:(id)enumeration
 {
-  v3 = [a3 possibleStates];
-  v4 = [v3 firstObject];
-  v5 = [v4 value];
+  possibleStates = [enumeration possibleStates];
+  firstObject = [possibleStates firstObject];
+  value = [firstObject value];
 
-  if (v5)
+  if (value)
   {
-    v6 = [MEMORY[0x277D7C928] serializedRepresentationFromValue:v5];
+    v6 = [MEMORY[0x277D7C928] serializedRepresentationFromValue:value];
   }
 
   else
@@ -263,20 +263,20 @@ id __51__WFTumblrPostAction_possibleStatesForEnumeration___block_invoke(uint64_t
   return v6;
 }
 
-- (BOOL)setParameterState:(id)a3 forKey:(id)a4
+- (BOOL)setParameterState:(id)state forKey:(id)key
 {
-  v6 = a4;
+  keyCopy = key;
   v10.receiver = self;
   v10.super_class = WFTumblrPostAction;
-  v7 = [(WFTumblrPostAction *)&v10 setParameterState:a3 forKey:v6];
+  v7 = [(WFTumblrPostAction *)&v10 setParameterState:state forKey:keyCopy];
   if (v7)
   {
-    if ([v6 isEqualToString:@"WFPostType"])
+    if ([keyCopy isEqualToString:@"WFPostType"])
     {
       [(WFTumblrPostAction *)self updateTagsParameterHidden];
     }
 
-    if ([v6 isEqualToString:@"WFComposeInApp"])
+    if ([keyCopy isEqualToString:@"WFComposeInApp"])
     {
       v8 = [(WFTumblrPostAction *)self parameterForKey:@"WFPostType"];
       [v8 reloadPossibleStates];
@@ -289,11 +289,11 @@ id __51__WFTumblrPostAction_possibleStatesForEnumeration___block_invoke(uint64_t
 - (void)updateTagsParameterHidden
 {
   v10 = [(WFTumblrPostAction *)self parameterStateForKey:@"WFComposeInApp"];
-  v3 = [v10 number];
-  if (v3)
+  number = [v10 number];
+  if (number)
   {
-    v4 = [v10 number];
-    v5 = [v4 BOOLValue] ^ 1;
+    number2 = [v10 number];
+    v5 = [number2 BOOLValue] ^ 1;
   }
 
   else
@@ -311,32 +311,32 @@ id __51__WFTumblrPostAction_possibleStatesForEnumeration___block_invoke(uint64_t
 
   else
   {
-    v9 = [v6 value];
-    [v8 setHidden:{objc_msgSend(&unk_28509CC68, "containsObject:", v9)}];
+    value = [v6 value];
+    [v8 setHidden:{objc_msgSend(&unk_28509CC68, "containsObject:", value)}];
   }
 }
 
-- (void)openPostWithType:(id)a3 withParameters:(id)a4
+- (void)openPostWithType:(id)type withParameters:(id)parameters
 {
-  v6 = a4;
-  v7 = a3;
+  parametersCopy = parameters;
+  typeCopy = type;
   v8 = objc_opt_new();
   [v8 setScheme:@"tumblr"];
   [v8 setHost:@"x-callback-url"];
-  v9 = [@"/" stringByAppendingString:v7];
+  v9 = [@"/" stringByAppendingString:typeCopy];
 
   [v8 setPath:v9];
-  v10 = [MEMORY[0x277CBEBC0] dc_queryStringWithQueryDictionary:v6];
+  v10 = [MEMORY[0x277CBEBC0] dc_queryStringWithQueryDictionary:parametersCopy];
 
   [v8 setPercentEncodedQuery:v10];
   v11 = MEMORY[0x277D7C558];
   v12 = [v8 URL];
   v13 = [(WFTumblrPostAction *)self app];
-  v14 = [v13 schemes];
-  v15 = [v14 firstObject];
-  v16 = [(WFTumblrPostAction *)self userInterface];
-  v17 = [(WFTumblrPostAction *)self appDescriptor];
-  v18 = [v17 bundleIdentifier];
+  schemes = [v13 schemes];
+  firstObject = [schemes firstObject];
+  userInterface = [(WFTumblrPostAction *)self userInterface];
+  appDescriptor = [(WFTumblrPostAction *)self appDescriptor];
+  bundleIdentifier = [appDescriptor bundleIdentifier];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __54__WFTumblrPostAction_openPostWithType_withParameters___block_invoke;
@@ -347,22 +347,22 @@ id __51__WFTumblrPostAction_possibleStatesForEnumeration___block_invoke(uint64_t
   v21[2] = __54__WFTumblrPostAction_openPostWithType_withParameters___block_invoke_2;
   v21[3] = &unk_278C221F8;
   v21[4] = self;
-  v19 = [v11 requestWithURL:v12 scheme:v15 userInterface:v16 bundleIdentifier:v18 successHandler:v22 failureHandler:v21];
+  v19 = [v11 requestWithURL:v12 scheme:firstObject userInterface:userInterface bundleIdentifier:bundleIdentifier successHandler:v22 failureHandler:v21];
 
-  v20 = [MEMORY[0x277D7C548] sharedManager];
-  [v20 performRequest:v19];
+  mEMORY[0x277D7C548] = [MEMORY[0x277D7C548] sharedManager];
+  [mEMORY[0x277D7C548] performRequest:v19];
 }
 
-- (void)openFiles:(id)a3
+- (void)openFiles:(id)files
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  filesCopy = files;
   v5 = objc_opt_new();
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v6 = v4;
+  v6 = filesCopy;
   v7 = [v6 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v7)
   {
@@ -389,23 +389,23 @@ id __51__WFTumblrPostAction_possibleStatesForEnumeration___block_invoke(uint64_t
   }
 
   v11 = [WFShareExtensionAction alloc];
-  v12 = [(WFTumblrPostAction *)self identifier];
-  v13 = [(WFTumblrPostAction *)self definition];
-  v14 = [(WFTumblrPostAction *)self serializedParameters];
-  v15 = [(WFShareExtensionAction *)v11 initWithIdentifier:v12 definition:v13 serializedParameters:v14];
+  identifier = [(WFTumblrPostAction *)self identifier];
+  definition = [(WFTumblrPostAction *)self definition];
+  serializedParameters = [(WFTumblrPostAction *)self serializedParameters];
+  v15 = [(WFShareExtensionAction *)v11 initWithIdentifier:identifier definition:definition serializedParameters:serializedParameters];
 
-  v16 = [(WFTumblrPostAction *)self processedParameters];
-  [(WFShareExtensionAction *)v15 setProcessedParameters:v16];
+  processedParameters = [(WFTumblrPostAction *)self processedParameters];
+  [(WFShareExtensionAction *)v15 setProcessedParameters:processedParameters];
 
-  v17 = [(WFTumblrPostAction *)self userInterface];
-  v18 = [(WFTumblrPostAction *)self runningDelegate];
-  v19 = [(WFTumblrPostAction *)self variableSource];
+  userInterface = [(WFTumblrPostAction *)self userInterface];
+  runningDelegate = [(WFTumblrPostAction *)self runningDelegate];
+  variableSource = [(WFTumblrPostAction *)self variableSource];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __32__WFTumblrPostAction_openFiles___block_invoke;
   v21[3] = &unk_278C21E70;
   v21[4] = self;
-  [(WFShareExtensionAction *)v15 runWithInput:v5 userInterface:v17 runningDelegate:v18 variableSource:v19 workQueue:MEMORY[0x277D85CD0] completionHandler:v21];
+  [(WFShareExtensionAction *)v15 runWithInput:v5 userInterface:userInterface runningDelegate:runningDelegate variableSource:variableSource workQueue:MEMORY[0x277D85CD0] completionHandler:v21];
 
   v20 = *MEMORY[0x277D85DE8];
 }
@@ -421,26 +421,26 @@ void __32__WFTumblrPostAction_openFiles___block_invoke(uint64_t a1, uint64_t a2,
   [*(a1 + 32) finishRunningWithError:v5];
 }
 
-- (void)runAsynchronouslyWithInput:(id)a3
+- (void)runAsynchronouslyWithInput:(id)input
 {
   v74[2] = *MEMORY[0x277D85DE8];
-  v30 = a3;
+  inputCopy = input;
   v4 = [(WFTumblrPostAction *)self parameterValueForKey:@"WFPostType" ofClass:objc_opt_class()];
-  v5 = [v4 lowercaseString];
+  lowercaseString = [v4 lowercaseString];
 
-  if ([(__CFString *)v5 isEqualToString:@"photos"])
+  if ([(__CFString *)lowercaseString isEqualToString:@"photos"])
   {
 
-    v5 = @"photo";
+    lowercaseString = @"photo";
   }
 
   v6 = [(WFTumblrPostAction *)self parameterValueForKey:@"WFComposeInApp" ofClass:objc_opt_class()];
-  v7 = [v6 BOOLValue];
+  bOOLValue = [v6 BOOLValue];
 
   v8 = [(WFTumblrPostAction *)self parameterValueForKey:@"WFBlogName" ofClass:objc_opt_class()];
-  v9 = [v8 host];
+  host = [v8 host];
 
-  if ([v9 length] || v7 && ((-[__CFString isEqualToString:](v5, "isEqualToString:", @"photo") & 1) != 0 || (-[__CFString isEqualToString:](v5, "isEqualToString:", @"audio") & 1) != 0 || (-[__CFString isEqualToString:](v5, "isEqualToString:", @"video") & 1) != 0))
+  if ([host length] || bOOLValue && ((-[__CFString isEqualToString:](lowercaseString, "isEqualToString:", @"photo") & 1) != 0 || (-[__CFString isEqualToString:](lowercaseString, "isEqualToString:", @"audio") & 1) != 0 || (-[__CFString isEqualToString:](lowercaseString, "isEqualToString:", @"video") & 1) != 0))
   {
     v71[0] = @"Post Now";
     v71[1] = @"Save as Draft";
@@ -451,7 +451,7 @@ void __32__WFTumblrPostAction_openFiles___block_invoke(uint64_t a1, uint64_t a2,
     v72[2] = @"queue";
     v72[3] = @"private";
     v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v72 forKeys:v71 count:4];
-    v11 = [MEMORY[0x277CBEB38] dictionaryWithObjectsAndKeys:{v5, @"type", v9, @"host", 0}];
+    v11 = [MEMORY[0x277CBEB38] dictionaryWithObjectsAndKeys:{lowercaseString, @"type", host, @"host", 0}];
     v12 = [(WFTumblrPostAction *)self parameterValueForKey:@"WFPostState" ofClass:objc_opt_class()];
     v13 = [v10 objectForKey:v12];
     [v11 setValue:v13 forKey:@"state"];
@@ -465,7 +465,7 @@ void __32__WFTumblrPostAction_openFiles___block_invoke(uint64_t a1, uint64_t a2,
     aBlock[3] = &unk_278C1E878;
     aBlock[4] = self;
     v15 = _Block_copy(aBlock);
-    if ([(__CFString *)v5 isEqualToString:@"text"])
+    if ([(__CFString *)lowercaseString isEqualToString:@"text"])
     {
       v70[0] = objc_opt_class();
       v70[1] = objc_opt_class();
@@ -475,18 +475,18 @@ void __32__WFTumblrPostAction_openFiles___block_invoke(uint64_t a1, uint64_t a2,
       v60[2] = __49__WFTumblrPostAction_runAsynchronouslyWithInput___block_invoke_2;
       v60[3] = &unk_278C1B758;
       v61 = v11;
-      v62 = self;
-      v66 = v7;
-      v63 = v5;
-      v64 = v9;
+      selfCopy = self;
+      v66 = bOOLValue;
+      v63 = lowercaseString;
+      v64 = host;
       v65 = v15;
-      v17 = v30;
-      [v30 generateCollectionByCoercingToItemClasses:v16 completionHandler:v60];
+      v17 = inputCopy;
+      [inputCopy generateCollectionByCoercingToItemClasses:v16 completionHandler:v60];
 
       v18 = v61;
     }
 
-    else if ([(__CFString *)v5 isEqualToString:@"quote"])
+    else if ([(__CFString *)lowercaseString isEqualToString:@"quote"])
     {
       v54[0] = MEMORY[0x277D85DD0];
       v54[1] = 3221225472;
@@ -494,17 +494,17 @@ void __32__WFTumblrPostAction_openFiles___block_invoke(uint64_t a1, uint64_t a2,
       v54[3] = &unk_278C1B780;
       v54[4] = self;
       v55 = v11;
-      v59 = v7;
-      v56 = v5;
-      v57 = v9;
+      v59 = bOOLValue;
+      v56 = lowercaseString;
+      v57 = host;
       v58 = v15;
-      v17 = v30;
-      [v30 getStringRepresentation:v54];
+      v17 = inputCopy;
+      [inputCopy getStringRepresentation:v54];
 
       v18 = v55;
     }
 
-    else if ([(__CFString *)v5 isEqualToString:@"link"])
+    else if ([(__CFString *)lowercaseString isEqualToString:@"link"])
     {
       v48[0] = MEMORY[0x277D85DD0];
       v48[1] = 3221225472;
@@ -512,17 +512,17 @@ void __32__WFTumblrPostAction_openFiles___block_invoke(uint64_t a1, uint64_t a2,
       v48[3] = &unk_278C1B7A8;
       v48[4] = self;
       v49 = v11;
-      v53 = v7;
-      v50 = v5;
-      v51 = v9;
+      v53 = bOOLValue;
+      v50 = lowercaseString;
+      v51 = host;
       v52 = v15;
-      v17 = v30;
-      [v30 getObjectRepresentation:v48 forClass:objc_opt_class()];
+      v17 = inputCopy;
+      [inputCopy getObjectRepresentation:v48 forClass:objc_opt_class()];
 
       v18 = v49;
     }
 
-    else if ([(__CFString *)v5 isEqualToString:@"chat"])
+    else if ([(__CFString *)lowercaseString isEqualToString:@"chat"])
     {
       v42[0] = MEMORY[0x277D85DD0];
       v42[1] = 3221225472;
@@ -530,20 +530,20 @@ void __32__WFTumblrPostAction_openFiles___block_invoke(uint64_t a1, uint64_t a2,
       v42[3] = &unk_278C1B780;
       v42[4] = self;
       v43 = v11;
-      v47 = v7;
-      v44 = v5;
-      v45 = v9;
+      v47 = bOOLValue;
+      v44 = lowercaseString;
+      v45 = host;
       v46 = v15;
-      v17 = v30;
-      [v30 getStringRepresentation:v42];
+      v17 = inputCopy;
+      [inputCopy getStringRepresentation:v42];
 
       v18 = v43;
     }
 
     else
     {
-      v17 = v30;
-      if (([(__CFString *)v5 isEqualToString:@"photo"]& 1) == 0 && ([(__CFString *)v5 isEqualToString:@"audio"]& 1) == 0 && ![(__CFString *)v5 isEqualToString:@"video"])
+      v17 = inputCopy;
+      if (([(__CFString *)lowercaseString isEqualToString:@"photo"]& 1) == 0 && ([(__CFString *)lowercaseString isEqualToString:@"audio"]& 1) == 0 && ![(__CFString *)lowercaseString isEqualToString:@"video"])
       {
         goto LABEL_23;
       }
@@ -551,13 +551,13 @@ void __32__WFTumblrPostAction_openFiles___block_invoke(uint64_t a1, uint64_t a2,
       v23 = [(WFTumblrPostAction *)self parameterValueForKey:@"WFPostCaption" ofClass:objc_opt_class()];
       [v11 setValue:v23 forKey:@"caption"];
 
-      if (![(__CFString *)v5 isEqualToString:@"photo"])
+      if (![(__CFString *)lowercaseString isEqualToString:@"photo"])
       {
         v68[0] = @"audio";
         v26 = [MEMORY[0x277D79F68] typeWithUTType:*MEMORY[0x277CE1DE0]];
         v68[1] = @"video";
         v69[0] = v26;
-        v17 = v30;
+        v17 = inputCopy;
         v27 = [MEMORY[0x277D79F68] typeWithUTType:*MEMORY[0x277CE1DF0]];
         v69[1] = v27;
         v29 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v69 forKeys:v68 count:2];
@@ -567,13 +567,13 @@ void __32__WFTumblrPostAction_openFiles___block_invoke(uint64_t a1, uint64_t a2,
         v31[2] = __49__WFTumblrPostAction_runAsynchronouslyWithInput___block_invoke_16;
         v31[3] = &unk_278C1B820;
         v31[4] = self;
-        v36 = v7;
-        v32 = v5;
-        v33 = v9;
+        v36 = bOOLValue;
+        v32 = lowercaseString;
+        v33 = host;
         v34 = v11;
         v35 = v15;
         v28 = [v29 objectForKey:v32];
-        [v30 getFileRepresentation:v31 forType:v28];
+        [inputCopy getFileRepresentation:v31 forType:v28];
 
         goto LABEL_23;
       }
@@ -584,11 +584,11 @@ void __32__WFTumblrPostAction_openFiles___block_invoke(uint64_t a1, uint64_t a2,
       v37[2] = __49__WFTumblrPostAction_runAsynchronouslyWithInput___block_invoke_9;
       v37[3] = &unk_278C1B7F8;
       v37[4] = self;
-      v41 = v7;
-      v38 = v9;
+      v41 = bOOLValue;
+      v38 = host;
       v39 = v11;
       v40 = v15;
-      [v30 generateCollectionByCoercingToItemClass:v24 completionHandler:v37];
+      [inputCopy generateCollectionByCoercingToItemClass:v24 completionHandler:v37];
 
       v18 = v38;
     }
@@ -609,7 +609,7 @@ LABEL_23:
   v22 = [v19 errorWithDomain:v20 code:5 userInfo:v21];
   [(WFTumblrPostAction *)self finishRunningWithError:v22];
 
-  v17 = v30;
+  v17 = inputCopy;
 LABEL_24:
 
   v25 = *MEMORY[0x277D85DE8];

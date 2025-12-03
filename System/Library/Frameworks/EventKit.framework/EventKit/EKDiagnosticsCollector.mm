@@ -1,28 +1,28 @@
 @interface EKDiagnosticsCollector
 - (EKDiagnosticsCollectionDelegate)delegate;
-- (EKDiagnosticsCollector)initWithEventStore:(id)a3 delegate:(id)a4;
+- (EKDiagnosticsCollector)initWithEventStore:(id)store delegate:(id)delegate;
 - (NSArray)files;
 - (void)cancel;
 - (void)cancelDiagnosticsCollection;
 - (void)collectDiagnostics;
 - (void)disconnected;
-- (void)receivedBatchResultsFromServer:(id)a3 finished:(BOOL)a4;
+- (void)receivedBatchResultsFromServer:(id)server finished:(BOOL)finished;
 @end
 
 @implementation EKDiagnosticsCollector
 
-- (EKDiagnosticsCollector)initWithEventStore:(id)a3 delegate:(id)a4
+- (EKDiagnosticsCollector)initWithEventStore:(id)store delegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
+  storeCopy = store;
+  delegateCopy = delegate;
   v14.receiver = self;
   v14.super_class = EKDiagnosticsCollector;
   v9 = [(EKDiagnosticsCollector *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_store, a3);
-    objc_storeWeak(&v10->_delegate, v8);
+    objc_storeStrong(&v9->_store, store);
+    objc_storeWeak(&v10->_delegate, delegateCopy);
     v10->_trafficLogsCollectionMode = 2;
     v10->_lock._os_unfair_lock_opaque = 0;
     v11 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -35,20 +35,20 @@
 
 - (void)collectDiagnostics
 {
-  v3 = [(EKEventStore *)self->_store connection];
-  self->_token = [v3 addCancellableRemoteOperation:self];
+  connection = [(EKEventStore *)self->_store connection];
+  self->_token = [connection addCancellableRemoteOperation:self];
 
   redactLogs = self->_redactLogs;
-  v5 = [(EKEventStore *)self->_store connection];
-  v6 = [v5 CADOperationProxySync];
+  connection2 = [(EKEventStore *)self->_store connection];
+  cADOperationProxySync = [connection2 CADOperationProxySync];
   token = self->_token;
-  v8 = [(EKDiagnosticsCollector *)self trafficLogsCollectionMode];
+  trafficLogsCollectionMode = [(EKDiagnosticsCollector *)self trafficLogsCollectionMode];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __44__EKDiagnosticsCollector_collectDiagnostics__block_invoke;
   v9[3] = &unk_1E77FFD10;
   v9[4] = self;
-  [v6 CADDiagnosticsCollectWithToken:token options:!redactLogs trafficLogsCollectionMode:v8 reply:v9];
+  [cADOperationProxySync CADDiagnosticsCollectWithToken:token options:!redactLogs trafficLogsCollectionMode:trafficLogsCollectionMode reply:v9];
 }
 
 void __44__EKDiagnosticsCollector_collectDiagnostics__block_invoke(uint64_t a1, uint64_t a2)
@@ -68,24 +68,24 @@ void __44__EKDiagnosticsCollector_collectDiagnostics__block_invoke(uint64_t a1, 
 
 - (void)cancelDiagnosticsCollection
 {
-  v3 = [(EKEventStore *)self->_store connection];
-  [v3 cancelRemoteOperation:self->_token];
+  connection = [(EKEventStore *)self->_store connection];
+  [connection cancelRemoteOperation:self->_token];
 }
 
 - (NSArray)files
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(NSMutableDictionary *)self->_files allKeys];
+  allKeys = [(NSMutableDictionary *)self->_files allKeys];
   os_unfair_lock_unlock(&self->_lock);
 
-  return v3;
+  return allKeys;
 }
 
 - (void)cancel
 {
-  v4 = [(EKEventStore *)self->_store connection];
-  v3 = [v4 CADOperationProxySync];
-  [v3 CADDiagnosticsCancelCollectionWithToken:self->_token reply:&__block_literal_global_63];
+  connection = [(EKEventStore *)self->_store connection];
+  cADOperationProxySync = [connection CADOperationProxySync];
+  [cADOperationProxySync CADDiagnosticsCancelCollectionWithToken:self->_token reply:&__block_literal_global_63];
 }
 
 void __32__EKDiagnosticsCollector_cancel__block_invoke(uint64_t a1, uint64_t a2)
@@ -113,20 +113,20 @@ void __32__EKDiagnosticsCollector_cancel__block_invoke(uint64_t a1, uint64_t a2)
   {
     self->_finished = 1;
     os_unfair_lock_unlock(&self->_lock);
-    v4 = [(EKDiagnosticsCollector *)self delegate];
+    delegate = [(EKDiagnosticsCollector *)self delegate];
     if (objc_opt_respondsToSelector())
     {
       v3 = [MEMORY[0x1E696ABC0] errorWithCADResult:1015];
-      [v4 diagnosticsCollector:self finishedWithError:v3];
+      [delegate diagnosticsCollector:self finishedWithError:v3];
     }
   }
 }
 
-- (void)receivedBatchResultsFromServer:(id)a3 finished:(BOOL)a4
+- (void)receivedBatchResultsFromServer:(id)server finished:(BOOL)finished
 {
-  v4 = a4;
+  finishedCopy = finished;
   v40 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  serverCopy = server;
   os_unfair_lock_lock(&self->_lock);
   if (self->_finished)
   {
@@ -134,27 +134,27 @@ void __32__EKDiagnosticsCollector_cancel__block_invoke(uint64_t a1, uint64_t a2)
     v7 = EKLogHandle;
     if (os_log_type_enabled(EKLogHandle, OS_LOG_TYPE_ERROR))
     {
-      [EKDiagnosticsCollector receivedBatchResultsFromServer:v6 finished:v7];
+      [EKDiagnosticsCollector receivedBatchResultsFromServer:serverCopy finished:v7];
     }
   }
 
   else
   {
-    v30 = v4;
-    if (v4)
+    v30 = finishedCopy;
+    if (finishedCopy)
     {
       self->_finished = 1;
     }
 
-    v33 = self;
+    selfCopy = self;
     os_unfair_lock_unlock(&self->_lock);
-    v31 = v6;
+    v31 = serverCopy;
     v32 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     v35 = 0u;
     v36 = 0u;
     v37 = 0u;
     v38 = 0u;
-    obj = v6;
+    obj = serverCopy;
     v8 = [obj countByEnumeratingWithState:&v35 objects:v39 count:16];
     if (v8)
     {
@@ -190,20 +190,20 @@ void __32__EKDiagnosticsCollector_cancel__block_invoke(uint64_t a1, uint64_t a2)
           {
             v20 = v12;
             v21 = v11;
-            os_unfair_lock_lock(&v33->_lock);
-            v22 = [(NSMutableDictionary *)v33->_files objectForKeyedSubscript:v16];
-            [(NSMutableDictionary *)v33->_files setObject:v18 forKeyedSubscript:v16];
-            os_unfair_lock_unlock(&v33->_lock);
-            v23 = [v22 unsignedIntegerValue];
-            v24 = [v18 unsignedIntegerValue];
-            if (v23)
+            os_unfair_lock_lock(&selfCopy->_lock);
+            v22 = [(NSMutableDictionary *)selfCopy->_files objectForKeyedSubscript:v16];
+            [(NSMutableDictionary *)selfCopy->_files setObject:v18 forKeyedSubscript:v16];
+            os_unfair_lock_unlock(&selfCopy->_lock);
+            unsignedIntegerValue = [v22 unsignedIntegerValue];
+            unsignedIntegerValue2 = [v18 unsignedIntegerValue];
+            if (unsignedIntegerValue)
             {
               v25 = 1;
             }
 
             else
             {
-              v25 = (v24 - 1) > 1;
+              v25 = (unsignedIntegerValue2 - 1) > 1;
             }
 
             if (!v25)
@@ -222,27 +222,27 @@ void __32__EKDiagnosticsCollector_cancel__block_invoke(uint64_t a1, uint64_t a2)
       while (v9);
     }
 
-    v26 = [(EKDiagnosticsCollector *)v33 delegate];
-    if (!v33->_determinedOutputFiles)
+    delegate = [(EKDiagnosticsCollector *)selfCopy delegate];
+    if (!selfCopy->_determinedOutputFiles)
     {
-      v33->_determinedOutputFiles = 1;
+      selfCopy->_determinedOutputFiles = 1;
       if (objc_opt_respondsToSelector())
       {
-        v27 = [(EKDiagnosticsCollector *)v33 files];
-        [v26 diagnosticsCollector:v33 determinedExpectedOutputFiles:v27];
+        files = [(EKDiagnosticsCollector *)selfCopy files];
+        [delegate diagnosticsCollector:selfCopy determinedExpectedOutputFiles:files];
       }
     }
 
-    v6 = v31;
+    serverCopy = v31;
     if ([v32 count] && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      v28 = [v32 allObjects];
-      [v26 diagnosticsCollector:v33 createdOutputFiles:v28];
+      allObjects = [v32 allObjects];
+      [delegate diagnosticsCollector:selfCopy createdOutputFiles:allObjects];
     }
 
     if (v30 && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      [v26 diagnosticsCollector:v33 finishedWithError:0];
+      [delegate diagnosticsCollector:selfCopy finishedWithError:0];
     }
   }
 

@@ -1,12 +1,12 @@
 @interface FMCommandBase
-- (BOOL)isTransactionCompleteWithError:(id)a3;
+- (BOOL)isTransactionCompleteWithError:(id)error;
 - (BOOL)wasSuccessful;
 - (FMCommandBase)init;
 - (FMServerInteractionController)serverInteractionController;
 - (id)authHeaders;
 - (id)headers;
-- (id)valueForResponseHTTPHeader:(id)a3;
-- (void)_dataTaskCompletionHandlerWithData:(id)a3 response:(id)a4 error:(id)a5;
+- (id)valueForResponseHTTPHeader:(id)header;
+- (void)_dataTaskCompletionHandlerWithData:(id)data response:(id)response error:(id)error;
 - (void)cancel;
 - (void)sendRequest;
 @end
@@ -43,8 +43,8 @@
 
 - (void)cancel
 {
-  v3 = [(FMCommandBase *)self task];
-  [v3 cancel];
+  task = [(FMCommandBase *)self task];
+  [task cancel];
 
   v4.receiver = self;
   v4.super_class = FMCommandBase;
@@ -54,40 +54,40 @@
 - (void)sendRequest
 {
   v54 = *MEMORY[0x277D85DE8];
-  v3 = [(FMCommandBase *)self headers];
-  v37 = [(FMCommandBase *)self serverInteractionController];
-  v38 = [v37 session];
-  if (v38)
+  headers = [(FMCommandBase *)self headers];
+  serverInteractionController = [(FMCommandBase *)self serverInteractionController];
+  session = [serverInteractionController session];
+  if (session)
   {
-    v4 = [MEMORY[0x277CCABD8] currentQueue];
-    objc_initWeak(&location, v4);
+    currentQueue = [MEMORY[0x277CCABD8] currentQueue];
+    objc_initWeak(&location, currentQueue);
 
     [(FMCommandBase *)self timeout];
     when = dispatch_time(0, (v5 * 1000000000.0));
     objc_initWeak(&from, self);
     v6 = MEMORY[0x277CCAB68];
-    v7 = [(FMCommandBase *)self scheme];
-    v8 = [(FMCommandBase *)self host];
-    v36 = [v6 stringWithFormat:@"%@://%@", v7, v8];
+    scheme = [(FMCommandBase *)self scheme];
+    host = [(FMCommandBase *)self host];
+    v36 = [v6 stringWithFormat:@"%@://%@", scheme, host];
 
-    v9 = [(FMCommandBase *)self port];
-    LOBYTE(v4) = v9 == 0;
+    port = [(FMCommandBase *)self port];
+    LOBYTE(currentQueue) = port == 0;
 
-    if ((v4 & 1) == 0)
+    if ((currentQueue & 1) == 0)
     {
-      v10 = [(FMCommandBase *)self port];
-      [v36 appendFormat:@":%@", v10];
+      port2 = [(FMCommandBase *)self port];
+      [v36 appendFormat:@":%@", port2];
     }
 
-    v11 = [(FMCommandBase *)self path];
-    [v36 appendString:v11];
+    path = [(FMCommandBase *)self path];
+    [v36 appendString:path];
 
     v35 = [MEMORY[0x277CBEBC0] URLWithString:v36];
     v12 = LogCategory_Networking();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
       *buf = 134218242;
-      v51 = self;
+      selfCopy2 = self;
       v52 = 2112;
       v53 = v35;
       _os_log_impl(&dword_24A2EE000, v12, OS_LOG_TYPE_INFO, "[%p] request_url: %@", buf, 0x16u);
@@ -95,11 +95,11 @@
 
     v13 = objc_alloc(MEMORY[0x277CCAB70]);
     [(FMCommandBase *)self timeout];
-    v14 = [v13 initWithURL:v35 cachePolicy:4 timeoutInterval:?];
-    v15 = [(FMCommandBase *)self method];
-    [v14 setHTTPMethod:v15];
+    task2 = [v13 initWithURL:v35 cachePolicy:4 timeoutInterval:?];
+    method = [(FMCommandBase *)self method];
+    [task2 setHTTPMethod:method];
 
-    v16 = [v3 mutableCopy];
+    v16 = [headers mutableCopy];
     v17 = [v16 objectForKeyedSubscript:@"Authorization"];
 
     if (v17)
@@ -111,7 +111,7 @@
     if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
     {
       *buf = 134218242;
-      v51 = self;
+      selfCopy2 = self;
       v52 = 2112;
       v53 = v16;
       _os_log_impl(&dword_24A2EE000, v18, OS_LOG_TYPE_INFO, "[%p] request_headers: %@", buf, 0x16u);
@@ -121,8 +121,8 @@
     v44 = 0u;
     v45 = 0u;
     v43 = 0u;
-    v19 = [v3 allKeys];
-    v20 = [v19 countByEnumeratingWithState:&v43 objects:v49 count:16];
+    allKeys = [headers allKeys];
+    v20 = [allKeys countByEnumeratingWithState:&v43 objects:v49 count:16];
     if (v20)
     {
       v21 = *v44;
@@ -132,28 +132,28 @@
         {
           if (*v44 != v21)
           {
-            objc_enumerationMutation(v19);
+            objc_enumerationMutation(allKeys);
           }
 
           v23 = *(*(&v43 + 1) + 8 * i);
-          v24 = [v3 objectForKeyedSubscript:v23];
-          [v14 addValue:v24 forHTTPHeaderField:v23];
+          v24 = [headers objectForKeyedSubscript:v23];
+          [task2 addValue:v24 forHTTPHeaderField:v23];
         }
 
-        v20 = [v19 countByEnumeratingWithState:&v43 objects:v49 count:16];
+        v20 = [allKeys countByEnumeratingWithState:&v43 objects:v49 count:16];
       }
 
       while (v20);
     }
 
-    v25 = [(FMCommandBase *)self body];
-    [v14 setHTTPBody:v25];
+    body = [(FMCommandBase *)self body];
+    [task2 setHTTPBody:body];
 
-    v26 = [(FMCommandBase *)self connection];
-    [v26 cancel];
+    connection = [(FMCommandBase *)self connection];
+    [connection cancel];
 
     [(FMCommandBase *)self setConnection:0];
-    v27 = [v14 copy];
+    v27 = [task2 copy];
     [(FMCommandBase *)self setRequest:v27];
 
     [(FMCommandBase *)self setResponse:0];
@@ -167,17 +167,17 @@
     objc_copyWeak(&v42, &from);
     dispatch_after(when, v28, block);
 
-    v29 = [(FMCommandBase *)self request];
+    request = [(FMCommandBase *)self request];
     v39[0] = MEMORY[0x277D85DD0];
     v39[1] = 3221225472;
     v39[2] = __28__FMCommandBase_sendRequest__block_invoke_32;
     v39[3] = &unk_278FD9730;
     v39[4] = self;
-    v30 = [v38 dataTaskWithRequest:v29 completionHandler:v39];
+    v30 = [session dataTaskWithRequest:request completionHandler:v39];
     [(FMCommandBase *)self setTask:v30];
 
-    v31 = [(FMCommandBase *)self task];
-    [v31 resume];
+    task = [(FMCommandBase *)self task];
+    [task resume];
 
     objc_destroyWeak(&v42);
     objc_destroyWeak(&v41);
@@ -194,8 +194,8 @@
       [(FMCommandBase *)v32 sendRequest];
     }
 
-    v14 = [(FMCommandBase *)self task];
-    [v14 cancel];
+    task2 = [(FMCommandBase *)self task];
+    [task2 cancel];
   }
 
   v33 = *MEMORY[0x277D85DE8];
@@ -241,15 +241,15 @@ void __28__FMCommandBase_sendRequest__block_invoke_2(uint64_t a1)
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_dataTaskCompletionHandlerWithData:(id)a3 response:(id)a4 error:(id)a5
+- (void)_dataTaskCompletionHandlerWithData:(id)data response:(id)response error:(id)error
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(FMCommandBase *)self task];
-  v12 = [v11 state];
+  errorCopy = error;
+  responseCopy = response;
+  dataCopy = data;
+  task = [(FMCommandBase *)self task];
+  state = [task state];
 
-  if (v12 != 3)
+  if (state != 3)
   {
     v13 = LogCategory_Networking();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -259,14 +259,14 @@ void __28__FMCommandBase_sendRequest__block_invoke_2(uint64_t a1)
   }
 
   [(FMCommandBase *)self setCommandTaskComplete:1];
-  v14 = [v10 copy];
+  v14 = [dataCopy copy];
 
   [(FMCommandBase *)self setResponseData:v14];
-  [(FMCommandBase *)self setError:v8];
+  [(FMCommandBase *)self setError:errorCopy];
 
-  [(FMCommandBase *)self setResponse:v9];
-  v15 = [(FMCommandBase *)self error];
-  v16 = [(FMCommandBase *)self isTransactionCompleteWithError:v15];
+  [(FMCommandBase *)self setResponse:responseCopy];
+  error = [(FMCommandBase *)self error];
+  v16 = [(FMCommandBase *)self isTransactionCompleteWithError:error];
 
   if (v16)
   {
@@ -277,58 +277,58 @@ void __28__FMCommandBase_sendRequest__block_invoke_2(uint64_t a1)
 
 - (id)headers
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = [(FMCommandBase *)self authHeaders];
-  [v3 addEntriesFromDictionary:v4];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  authHeaders = [(FMCommandBase *)self authHeaders];
+  [dictionary addEntriesFromDictionary:authHeaders];
 
-  return v3;
+  return dictionary;
 }
 
 - (BOOL)wasSuccessful
 {
-  v2 = [(FMCommandBase *)self response];
-  v3 = [v2 statusCode];
+  response = [(FMCommandBase *)self response];
+  statusCode = [response statusCode];
 
-  return (v3 - 200) < 0x64;
+  return (statusCode - 200) < 0x64;
 }
 
-- (id)valueForResponseHTTPHeader:(id)a3
+- (id)valueForResponseHTTPHeader:(id)header
 {
-  v4 = a3;
-  v5 = [(FMCommandBase *)self response];
-  v6 = [v5 allHeaderFields];
-  v7 = [v6 valueForKey:v4];
+  headerCopy = header;
+  response = [(FMCommandBase *)self response];
+  allHeaderFields = [response allHeaderFields];
+  v7 = [allHeaderFields valueForKey:headerCopy];
 
   return v7;
 }
 
-- (BOOL)isTransactionCompleteWithError:(id)a3
+- (BOOL)isTransactionCompleteWithError:(id)error
 {
   v39 = *MEMORY[0x277D85DE8];
-  v5 = [(FMCommandBase *)self response];
+  response = [(FMCommandBase *)self response];
 
-  if (!v5)
+  if (!response)
   {
     goto LABEL_11;
   }
 
-  v6 = [(FMCommandBase *)self response];
-  v7 = [v6 allHeaderFields];
+  response2 = [(FMCommandBase *)self response];
+  allHeaderFields = [response2 allHeaderFields];
 
-  v8 = [(FMCommandBase *)self response];
-  v9 = [v8 statusCode];
+  response3 = [(FMCommandBase *)self response];
+  statusCode = [response3 statusCode];
 
   v10 = LogCategory_Networking();
   v11 = v10;
-  if (v9 < 400)
+  if (statusCode < 400)
   {
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
-      v12 = [(FMCommandBase *)self response];
+      response4 = [(FMCommandBase *)self response];
       *buf = 134218240;
-      v36 = self;
+      selfCopy3 = self;
       v37 = 2048;
-      v38 = [v12 statusCode];
+      statusCode2 = [response4 statusCode];
       v13 = v11;
       v14 = OS_LOG_TYPE_INFO;
       goto LABEL_7;
@@ -337,11 +337,11 @@ void __28__FMCommandBase_sendRequest__block_invoke_2(uint64_t a1)
 
   else if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [(FMCommandBase *)self response];
+    response4 = [(FMCommandBase *)self response];
     *buf = 134218240;
-    v36 = self;
+    selfCopy3 = self;
     v37 = 2048;
-    v38 = [v12 statusCode];
+    statusCode2 = [response4 statusCode];
     v13 = v11;
     v14 = OS_LOG_TYPE_DEFAULT;
 LABEL_7:
@@ -352,33 +352,33 @@ LABEL_7:
   if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
   {
     *buf = 134218242;
-    v36 = self;
+    selfCopy3 = self;
     v37 = 2112;
-    v38 = v7;
+    statusCode2 = allHeaderFields;
     _os_log_impl(&dword_24A2EE000, v15, OS_LOG_TYPE_INFO, "[%p] response_headers: %@", buf, 0x16u);
   }
 
 LABEL_11:
-  if (!a3)
+  if (!error)
   {
-    v16 = [(FMCommandBase *)self response];
-    v17 = [v16 statusCode];
+    response5 = [(FMCommandBase *)self response];
+    statusCode3 = [response5 statusCode];
 
-    if (v17 == 330)
+    if (statusCode3 == 330)
     {
-      v18 = [(FMCommandBase *)self request];
-      v19 = [v18 URL];
+      request = [(FMCommandBase *)self request];
+      v19 = [request URL];
 
-      v20 = [v19 host];
+      host = [v19 host];
       v21 = [(FMCommandBase *)self valueForResponseHTTPHeader:@"X-Apple-Mme-Host"];
-      if ([v20 length] && objc_msgSend(v21, "length"))
+      if ([host length] && objc_msgSend(v21, "length"))
       {
         if ([(FMCommandBase *)self redirectCount]<= 4)
         {
           [(FMCommandBase *)self setRedirectCount:[(FMCommandBase *)self redirectCount]+ 1];
           if (!self->_originalHostname)
           {
-            v27 = [v20 copy];
+            v27 = [host copy];
             originalHostname = self->_originalHostname;
             self->_originalHostname = v27;
           }
@@ -390,11 +390,11 @@ LABEL_11:
           [(FMCommandBase *)self setHost:v21];
           v33[0] = @"originalHostname";
           v33[1] = @"redirectedHostname";
-          v34[0] = v20;
+          v34[0] = host;
           v34[1] = v21;
           v31 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v34 forKeys:v33 count:2];
-          v32 = [MEMORY[0x277CCAB98] defaultCenter];
-          [v32 postNotificationName:FMCommandRedirectedNotification object:self userInfo:v31];
+          defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+          [defaultCenter postNotificationName:FMCommandRedirectedNotification object:self userInfo:v31];
 
           [(FMCommandBase *)self sendRequest];
           v23 = 0;
@@ -432,18 +432,18 @@ LABEL_18:
 - (id)authHeaders
 {
   v17[1] = *MEMORY[0x277D85DE8];
-  v3 = [(FMCommandBase *)self username];
-  if ([v3 length])
+  username = [(FMCommandBase *)self username];
+  if ([username length])
   {
-    v4 = [(FMCommandBase *)self password];
-    v5 = [v4 length];
+    password = [(FMCommandBase *)self password];
+    v5 = [password length];
 
     if (v5)
     {
       v6 = MEMORY[0x277CCACA8];
-      v7 = [(FMCommandBase *)self username];
-      v8 = [(FMCommandBase *)self password];
-      v9 = [v6 stringWithFormat:@"%@:%@", v7, v8];
+      username2 = [(FMCommandBase *)self username];
+      password2 = [(FMCommandBase *)self password];
+      v9 = [v6 stringWithFormat:@"%@:%@", username2, password2];
       v10 = [v9 dataUsingEncoding:1];
 
       v11 = [v10 base64EncodedStringWithOptions:0];

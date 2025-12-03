@@ -1,89 +1,89 @@
 @interface ASCPlatformPublicKeyCredentialAssertion
-- (ASCPlatformPublicKeyCredentialAssertion)initWithCoder:(id)a3;
-- (ASCPlatformPublicKeyCredentialAssertion)initWithRelyingPartyIdentifier:(id)a3 authenticatorData:(id)a4 signature:(id)a5 userHandle:(id)a6 rawClientDataJSON:(id)a7 credentialID:(id)a8 extensions:(id)a9 attachment:(id)a10 isExternal:(BOOL)a11;
-- (void)encodeWithCoder:(id)a3;
+- (ASCPlatformPublicKeyCredentialAssertion)initWithCoder:(id)coder;
+- (ASCPlatformPublicKeyCredentialAssertion)initWithRelyingPartyIdentifier:(id)identifier authenticatorData:(id)data signature:(id)signature userHandle:(id)handle rawClientDataJSON:(id)n credentialID:(id)d extensions:(id)extensions attachment:(id)self0 isExternal:(BOOL)self1;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ASCPlatformPublicKeyCredentialAssertion
 
-- (ASCPlatformPublicKeyCredentialAssertion)initWithRelyingPartyIdentifier:(id)a3 authenticatorData:(id)a4 signature:(id)a5 userHandle:(id)a6 rawClientDataJSON:(id)a7 credentialID:(id)a8 extensions:(id)a9 attachment:(id)a10 isExternal:(BOOL)a11
+- (ASCPlatformPublicKeyCredentialAssertion)initWithRelyingPartyIdentifier:(id)identifier authenticatorData:(id)data signature:(id)signature userHandle:(id)handle rawClientDataJSON:(id)n credentialID:(id)d extensions:(id)extensions attachment:(id)self0 isExternal:(BOOL)self1
 {
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
-  v20 = a6;
-  v21 = a7;
-  v22 = a8;
-  v23 = a9;
-  v24 = a10;
+  identifierCopy = identifier;
+  dataCopy = data;
+  signatureCopy = signature;
+  handleCopy = handle;
+  nCopy = n;
+  dCopy = d;
+  extensionsCopy = extensions;
+  attachmentCopy = attachment;
   v42.receiver = self;
   v42.super_class = ASCPlatformPublicKeyCredentialAssertion;
   v25 = [(ASCPlatformPublicKeyCredentialAssertion *)&v42 init];
   if (v25)
   {
-    v26 = [v22 copy];
+    v26 = [dCopy copy];
     credentialID = v25->_credentialID;
     v25->_credentialID = v26;
 
-    v28 = [v21 copy];
+    v28 = [nCopy copy];
     rawClientDataJSON = v25->_rawClientDataJSON;
     v25->_rawClientDataJSON = v28;
 
-    v30 = [v17 copy];
+    v30 = [identifierCopy copy];
     relyingPartyIdentifier = v25->_relyingPartyIdentifier;
     v25->_relyingPartyIdentifier = v30;
 
-    v32 = [v18 copy];
+    v32 = [dataCopy copy];
     authenticatorData = v25->_authenticatorData;
     v25->_authenticatorData = v32;
 
-    v34 = [v19 copy];
+    v34 = [signatureCopy copy];
     signature = v25->_signature;
     v25->_signature = v34;
 
-    v36 = [v20 copy];
+    v36 = [handleCopy copy];
     userHandle = v25->_userHandle;
     v25->_userHandle = v36;
 
-    objc_storeStrong(&v25->_extensions, a9);
-    v38 = [v24 copy];
+    objc_storeStrong(&v25->_extensions, extensions);
+    v38 = [attachmentCopy copy];
     attachment = v25->_attachment;
     v25->_attachment = v38;
 
-    v25->_isExternal = a11;
+    v25->_isExternal = external;
     v40 = v25;
   }
 
   return v25;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   extensions = self->_extensions;
-  v5 = a3;
-  [v5 encodeObject:extensions forKey:@"extensions"];
-  [v5 encodeObject:self->_relyingPartyIdentifier forKey:@"relyingPartyIdentifier"];
-  [v5 encodeObject:self->_authenticatorData forKey:@"authenticatorData"];
-  [v5 encodeObject:self->_signature forKey:@"signature"];
-  [v5 encodeObject:self->_userHandle forKey:@"userHandle"];
-  [v5 encodeObject:self->_rawClientDataJSON forKey:@"rawClientDataJSON"];
-  [v5 encodeObject:self->_credentialID forKey:@"credentialID"];
-  [v5 encodeObject:self->_attachment forKey:@"attachment"];
-  [v5 encodeBool:self->_isExternal forKey:@"isExternal"];
+  coderCopy = coder;
+  [coderCopy encodeObject:extensions forKey:@"extensions"];
+  [coderCopy encodeObject:self->_relyingPartyIdentifier forKey:@"relyingPartyIdentifier"];
+  [coderCopy encodeObject:self->_authenticatorData forKey:@"authenticatorData"];
+  [coderCopy encodeObject:self->_signature forKey:@"signature"];
+  [coderCopy encodeObject:self->_userHandle forKey:@"userHandle"];
+  [coderCopy encodeObject:self->_rawClientDataJSON forKey:@"rawClientDataJSON"];
+  [coderCopy encodeObject:self->_credentialID forKey:@"credentialID"];
+  [coderCopy encodeObject:self->_attachment forKey:@"attachment"];
+  [coderCopy encodeBool:self->_isExternal forKey:@"isExternal"];
 }
 
-- (ASCPlatformPublicKeyCredentialAssertion)initWithCoder:(id)a3
+- (ASCPlatformPublicKeyCredentialAssertion)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v4 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"relyingPartyIdentifier"];
-  v5 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"authenticatorData"];
-  v6 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"signature"];
-  v7 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"userHandle"];
-  v8 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"rawClientDataJSON"];
-  v9 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"credentialID"];
-  v10 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"extensions"];
-  v11 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"attachment"];
-  v12 = [v3 decodeBoolForKey:@"isExternal"];
+  coderCopy = coder;
+  v4 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"relyingPartyIdentifier"];
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"authenticatorData"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"signature"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"userHandle"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"rawClientDataJSON"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"credentialID"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"extensions"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"attachment"];
+  v12 = [coderCopy decodeBoolForKey:@"isExternal"];
 
   LOBYTE(v15) = v12;
   v13 = [(ASCPlatformPublicKeyCredentialAssertion *)self initWithRelyingPartyIdentifier:v4 authenticatorData:v5 signature:v6 userHandle:v7 rawClientDataJSON:v8 credentialID:v9 extensions:v10 attachment:v11 isExternal:v15];

@@ -1,21 +1,21 @@
 @interface PPSVersioningUtilities
-+ (id)_groupMetricsByBuild:(id)a3 withFilepath:(id)a4;
-+ (id)buildEventsWithFilepath:(id)a3;
-+ (id)timelineWithFilepath:(id)a3 andMetrics:(id)a4;
++ (id)_groupMetricsByBuild:(id)build withFilepath:(id)filepath;
++ (id)buildEventsWithFilepath:(id)filepath;
++ (id)timelineWithFilepath:(id)filepath andMetrics:(id)metrics;
 @end
 
 @implementation PPSVersioningUtilities
 
-+ (id)buildEventsWithFilepath:(id)a3
++ (id)buildEventsWithFilepath:(id)filepath
 {
-  v3 = a3;
+  filepathCopy = filepath;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __50__PPSVersioningUtilities_buildEventsWithFilepath___block_invoke;
   block[3] = &unk_279A11428;
-  v10 = v3;
+  v10 = filepathCopy;
   v4 = buildEventsWithFilepath__onceToken;
-  v5 = v3;
+  v5 = filepathCopy;
   if (v4 != -1)
   {
     dispatch_once(&buildEventsWithFilepath__onceToken, block);
@@ -138,24 +138,24 @@ LABEL_19:
 LABEL_26:
 }
 
-+ (id)timelineWithFilepath:(id)a3 andMetrics:(id)a4
++ (id)timelineWithFilepath:(id)filepath andMetrics:(id)metrics
 {
   v41 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  filepathCopy = filepath;
+  metricsCopy = metrics;
   v35 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  if (a1)
+  if (self)
   {
-    v31 = v7;
-    v34 = [PPSVersioningUtilities _groupMetricsByBuild:v7 withFilepath:v6];
-    v8 = [v34 allKeys];
-    v9 = [v8 sortedArrayUsingSelector:sel_compare_];
+    v31 = metricsCopy;
+    v34 = [PPSVersioningUtilities _groupMetricsByBuild:metricsCopy withFilepath:filepathCopy];
+    allKeys = [v34 allKeys];
+    v9 = [allKeys sortedArrayUsingSelector:sel_compare_];
 
-    v32 = v6;
-    v10 = [PPSTimestampConverterRegistry converterForFilepath:v6];
+    v32 = filepathCopy;
+    v10 = [PPSTimestampConverterRegistry converterForFilepath:filepathCopy];
     v11 = MEMORY[0x277CCABB0];
-    v12 = [MEMORY[0x277CBEAA8] date];
-    [v12 timeIntervalSince1970];
+    date = [MEMORY[0x277CBEAA8] date];
+    [date timeIntervalSince1970];
     v29 = v10;
     [v10 monotonicTimeFromEpochTime:?];
     v13 = [v11 numberWithDouble:?];
@@ -207,8 +207,8 @@ LABEL_26:
       while (v15);
     }
 
-    v7 = v31;
-    v6 = v32;
+    metricsCopy = v31;
+    filepathCopy = v32;
   }
 
   v27 = *MEMORY[0x277D85DE8];
@@ -216,23 +216,23 @@ LABEL_26:
   return v35;
 }
 
-+ (id)_groupMetricsByBuild:(id)a3 withFilepath:(id)a4
++ (id)_groupMetricsByBuild:(id)build withFilepath:(id)filepath
 {
   v68 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277CBEB38] dictionary];
-  v8 = [MEMORY[0x277CBEB38] dictionary];
+  buildCopy = build;
+  filepathCopy = filepath;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  dictionary2 = [MEMORY[0x277CBEB38] dictionary];
   v56 = 0u;
   v57 = 0u;
   v58 = 0u;
   v59 = 0u;
-  obj = v5;
+  obj = buildCopy;
   v47 = [obj countByEnumeratingWithState:&v56 objects:v67 count:16];
   if (v47)
   {
     v46 = *v57;
-    v49 = v6;
+    v49 = filepathCopy;
     do
     {
       v9 = 0;
@@ -245,17 +245,17 @@ LABEL_26:
 
         v48 = v9;
         v10 = *(*(&v56 + 1) + 8 * v9);
-        v11 = [v10 subsystem];
-        v12 = [v10 category];
-        v13 = [v10 name];
-        if (v6)
+        subsystem = [v10 subsystem];
+        category = [v10 category];
+        name = [v10 name];
+        if (filepathCopy)
         {
-          [PPSOffDeviceIngesterUtilities metricDefinitionHistoryForFilepath:v6 subsystem:v11 category:v12 metricName:v13];
+          [PPSOffDeviceIngesterUtilities metricDefinitionHistoryForFilepath:filepathCopy subsystem:subsystem category:category metricName:name];
         }
 
         else
         {
-          [PPSOnDeviceIngesterUtilities metricDefinitionHistoryForSubsystem:v11 category:v12 metricName:v13];
+          [PPSOnDeviceIngesterUtilities metricDefinitionHistoryForSubsystem:subsystem category:category metricName:name];
         }
         v14 = ;
 
@@ -284,8 +284,8 @@ LABEL_26:
                 }
 
                 v19 = *(*(&v52 + 1) + 8 * v18);
-                v20 = [v19 build];
-                v21 = [v8 objectForKeyedSubscript:v20];
+                build = [v19 build];
+                v21 = [dictionary2 objectForKeyedSubscript:build];
 
                 if (v21)
                 {
@@ -293,50 +293,50 @@ LABEL_26:
                 }
 
                 v22 = MEMORY[0x277CCAC30];
-                v23 = [v19 build];
-                v24 = [v19 build];
-                v25 = [v22 predicateWithFormat:@"(build == %@ OR Build == %@)", v23, v24];
+                build2 = [v19 build];
+                build3 = [v19 build];
+                v25 = [v22 predicateWithFormat:@"(build == %@ OR Build == %@)", build2, build3];
 
                 v26 = [PPSVersioningUtilities buildEventsWithFilepath:v49];
                 v27 = [v26 filteredTimeSeriesUsingPredicate:v25];
 
                 v28 = MEMORY[0x277CCABB0];
-                v29 = [v27 firstObject];
-                [v29 monotonicTimestamp];
-                v30 = [v28 numberWithDouble:?];
+                firstObject = [v27 firstObject];
+                [firstObject monotonicTimestamp];
+                name2 = [v28 numberWithDouble:?];
 
                 v31 = PPSReaderLog();
                 v32 = os_log_type_enabled(v31, OS_LOG_TYPE_DEBUG);
-                if (v30)
+                if (name2)
                 {
                   if (v32)
                   {
-                    v37 = [v19 build];
+                    build4 = [v19 build];
                     *buf = 138412546;
-                    v64 = v37;
+                    v64 = build4;
                     v65 = 2112;
-                    v66 = v30;
+                    v66 = name2;
                     _os_log_debug_impl(&dword_25E225000, v31, OS_LOG_TYPE_DEBUG, "Found build timestamp for build '%@': '%@'", buf, 0x16u);
                   }
 
-                  v33 = [v19 build];
-                  [v8 setObject:v30 forKey:v33];
+                  build5 = [v19 build];
+                  [dictionary2 setObject:name2 forKey:build5];
 
 LABEL_20:
-                  v34 = [v19 build];
-                  v25 = [v8 objectForKeyedSubscript:v34];
+                  build6 = [v19 build];
+                  v25 = [dictionary2 objectForKeyedSubscript:build6];
 
-                  v35 = [v7 objectForKeyedSubscript:v25];
+                  v35 = [dictionary objectForKeyedSubscript:v25];
 
                   if (!v35)
                   {
                     v36 = objc_opt_new();
-                    [v7 setObject:v36 forKeyedSubscript:v25];
+                    [dictionary setObject:v36 forKeyedSubscript:v25];
                   }
 
-                  v27 = [v7 objectForKeyedSubscript:v25];
-                  v30 = [v19 name];
-                  [v27 setObject:v19 forKeyedSubscript:v30];
+                  v27 = [dictionary objectForKeyedSubscript:v25];
+                  name2 = [v19 name];
+                  [v27 setObject:v19 forKeyedSubscript:name2];
                   goto LABEL_23;
                 }
 
@@ -354,28 +354,28 @@ LABEL_23:
               v17 = v38;
               if (!v38)
               {
-                v6 = v49;
+                filepathCopy = v49;
                 v15 = v45;
                 goto LABEL_33;
               }
             }
           }
 
-          v6 = v49;
+          filepathCopy = v49;
         }
 
         else
         {
           v50 = PPSReaderLog();
-          v6 = v49;
+          filepathCopy = v49;
           if (os_log_type_enabled(v50, OS_LOG_TYPE_ERROR))
           {
-            v39 = [v10 subsystem];
-            v40 = [v10 category];
+            subsystem2 = [v10 subsystem];
+            category2 = [v10 category];
             *buf = 138412546;
-            v64 = v39;
+            v64 = subsystem2;
             v65 = 2112;
-            v66 = v40;
+            v66 = category2;
             _os_log_error_impl(&dword_25E225000, v50, OS_LOG_TYPE_ERROR, "No metric history found for '%@::%@'", buf, 0x16u);
           }
         }
@@ -392,7 +392,7 @@ LABEL_33:
     while (v47);
   }
 
-  v41 = [v7 copy];
+  v41 = [dictionary copy];
   v42 = *MEMORY[0x277D85DE8];
 
   return v41;

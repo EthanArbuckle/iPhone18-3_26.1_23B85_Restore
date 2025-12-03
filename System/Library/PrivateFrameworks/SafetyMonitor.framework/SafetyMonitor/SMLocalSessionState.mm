@@ -1,24 +1,24 @@
 @interface SMLocalSessionState
-+ (int64_t)convertBoolToSMDeviceConfigurationLowPowerModeWarningState:(BOOL)a3;
-- (BOOL)isEqual:(id)a3;
-- (SMLocalSessionState)initWithCoder:(id)a3;
-- (SMLocalSessionState)initWithUnsupportedDeviceSeparationState:(BOOL)a3 userDisabledConnectivity:(BOOL)a4 separatedLPMConnectivityWarningState:(BOOL)a5;
++ (int64_t)convertBoolToSMDeviceConfigurationLowPowerModeWarningState:(BOOL)state;
+- (BOOL)isEqual:(id)equal;
+- (SMLocalSessionState)initWithCoder:(id)coder;
+- (SMLocalSessionState)initWithUnsupportedDeviceSeparationState:(BOOL)state userDisabledConnectivity:(BOOL)connectivity separatedLPMConnectivityWarningState:(BOOL)warningState;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SMLocalSessionState
 
-- (SMLocalSessionState)initWithUnsupportedDeviceSeparationState:(BOOL)a3 userDisabledConnectivity:(BOOL)a4 separatedLPMConnectivityWarningState:(BOOL)a5
+- (SMLocalSessionState)initWithUnsupportedDeviceSeparationState:(BOOL)state userDisabledConnectivity:(BOOL)connectivity separatedLPMConnectivityWarningState:(BOOL)warningState
 {
   v9.receiver = self;
   v9.super_class = SMLocalSessionState;
   result = [(SMLocalSessionState *)&v9 init];
   if (result)
   {
-    result->_unsupportedDeviceSeparationState = a3;
-    result->_userDisabledConnectivity = a4;
-    result->_separatedLPMConnectivityWarningState = a5;
+    result->_unsupportedDeviceSeparationState = state;
+    result->_userDisabledConnectivity = connectivity;
+    result->_separatedLPMConnectivityWarningState = warningState;
   }
 
   return result;
@@ -60,28 +60,28 @@
   return [v3 stringWithFormat:@"{UnsupportDeviceSeparationState: %@}, {UserDisabledConnectivity: %@}, {SeparatedLPMConnectivityWarningState: %@}", v4, v5, v6];
 }
 
-- (SMLocalSessionState)initWithCoder:(id)a3
+- (SMLocalSessionState)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeBoolForKey:@"__kSMLocalSessionStateUnsupportedDeviceSeparationStateKey"];
-  v6 = [v4 decodeBoolForKey:@"__kSMLocalSessionStateUserDisabledConnectivityKey"];
-  v7 = [v4 decodeBoolForKey:@"__kSMLocalSessionStateSeparatedLPMConnectivityWarningStateKey"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeBoolForKey:@"__kSMLocalSessionStateUnsupportedDeviceSeparationStateKey"];
+  v6 = [coderCopy decodeBoolForKey:@"__kSMLocalSessionStateUserDisabledConnectivityKey"];
+  v7 = [coderCopy decodeBoolForKey:@"__kSMLocalSessionStateSeparatedLPMConnectivityWarningStateKey"];
 
   return [(SMLocalSessionState *)self initWithUnsupportedDeviceSeparationState:v5 userDisabledConnectivity:v6 separatedLPMConnectivityWarningState:v7];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeBool:-[SMLocalSessionState unsupportedDeviceSeparationState](self forKey:{"unsupportedDeviceSeparationState"), @"__kSMLocalSessionStateUnsupportedDeviceSeparationStateKey"}];
-  [v4 encodeBool:-[SMLocalSessionState userDisabledConnectivity](self forKey:{"userDisabledConnectivity"), @"__kSMLocalSessionStateUserDisabledConnectivityKey"}];
-  [v4 encodeBool:-[SMLocalSessionState separatedLPMConnectivityWarningState](self forKey:{"separatedLPMConnectivityWarningState"), @"__kSMLocalSessionStateSeparatedLPMConnectivityWarningStateKey"}];
+  coderCopy = coder;
+  [coderCopy encodeBool:-[SMLocalSessionState unsupportedDeviceSeparationState](self forKey:{"unsupportedDeviceSeparationState"), @"__kSMLocalSessionStateUnsupportedDeviceSeparationStateKey"}];
+  [coderCopy encodeBool:-[SMLocalSessionState userDisabledConnectivity](self forKey:{"userDisabledConnectivity"), @"__kSMLocalSessionStateUserDisabledConnectivityKey"}];
+  [coderCopy encodeBool:-[SMLocalSessionState separatedLPMConnectivityWarningState](self forKey:{"separatedLPMConnectivityWarningState"), @"__kSMLocalSessionStateSeparatedLPMConnectivityWarningStateKey"}];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
@@ -91,15 +91,15 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(SMLocalSessionState *)self unsupportedDeviceSeparationState];
-      v7 = v6 ^ [(SMLocalSessionState *)v5 unsupportedDeviceSeparationState];
-      v8 = [(SMLocalSessionState *)self userDisabledConnectivity];
-      v9 = v7 | v8 ^ [(SMLocalSessionState *)v5 userDisabledConnectivity];
-      v10 = [(SMLocalSessionState *)self separatedLPMConnectivityWarningState];
-      LOBYTE(v8) = [(SMLocalSessionState *)v5 separatedLPMConnectivityWarningState];
+      v5 = equalCopy;
+      unsupportedDeviceSeparationState = [(SMLocalSessionState *)self unsupportedDeviceSeparationState];
+      v7 = unsupportedDeviceSeparationState ^ [(SMLocalSessionState *)v5 unsupportedDeviceSeparationState];
+      userDisabledConnectivity = [(SMLocalSessionState *)self userDisabledConnectivity];
+      v9 = v7 | userDisabledConnectivity ^ [(SMLocalSessionState *)v5 userDisabledConnectivity];
+      separatedLPMConnectivityWarningState = [(SMLocalSessionState *)self separatedLPMConnectivityWarningState];
+      LOBYTE(userDisabledConnectivity) = [(SMLocalSessionState *)v5 separatedLPMConnectivityWarningState];
 
-      v11 = (v9 | v10 ^ v8) ^ 1;
+      v11 = (v9 | separatedLPMConnectivityWarningState ^ userDisabledConnectivity) ^ 1;
     }
 
     else
@@ -111,9 +111,9 @@
   return v11;
 }
 
-+ (int64_t)convertBoolToSMDeviceConfigurationLowPowerModeWarningState:(BOOL)a3
++ (int64_t)convertBoolToSMDeviceConfigurationLowPowerModeWarningState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     return 2;
   }

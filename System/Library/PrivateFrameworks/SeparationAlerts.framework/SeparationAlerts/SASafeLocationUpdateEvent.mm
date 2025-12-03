@@ -1,88 +1,88 @@
 @interface SASafeLocationUpdateEvent
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (SASafeLocationUpdateEvent)initWithCoder:(id)a3;
-- (SASafeLocationUpdateEvent)initWithSafeLocation:(id)a3 eventType:(unint64_t)a4 lastEvent:(BOOL)a5 date:(id)a6;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SASafeLocationUpdateEvent)initWithCoder:(id)coder;
+- (SASafeLocationUpdateEvent)initWithSafeLocation:(id)location eventType:(unint64_t)type lastEvent:(BOOL)event date:(id)date;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)descriptionDictionary;
 - (void)description;
-- (void)encodeWithCoder:(id)a3;
-- (void)encodeWithOSLogCoder:(id)a3 options:(unint64_t)a4 maxLength:(unint64_t)a5;
+- (void)encodeWithCoder:(id)coder;
+- (void)encodeWithOSLogCoder:(id)coder options:(unint64_t)options maxLength:(unint64_t)length;
 @end
 
 @implementation SASafeLocationUpdateEvent
 
-- (SASafeLocationUpdateEvent)initWithCoder:(id)a3
+- (SASafeLocationUpdateEvent)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectForKey:@"SASafeLocationUpdateEventSafeLocation"];
-  v6 = [v4 decodeIntegerForKey:@"SASafeLocationUpdateEventType"];
-  v7 = [v4 decodeBoolForKey:@"SASafeLocationUpdateEventLast"];
-  v8 = [v4 decodeObjectForKey:@"SASafeLocationUpdateEventDate"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectForKey:@"SASafeLocationUpdateEventSafeLocation"];
+  v6 = [coderCopy decodeIntegerForKey:@"SASafeLocationUpdateEventType"];
+  v7 = [coderCopy decodeBoolForKey:@"SASafeLocationUpdateEventLast"];
+  v8 = [coderCopy decodeObjectForKey:@"SASafeLocationUpdateEventDate"];
 
   v9 = [(SASafeLocationUpdateEvent *)self initWithSafeLocation:v5 eventType:v6 lastEvent:v7 date:v8];
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(SASafeLocationUpdateEvent *)self safeLocation];
-  [v4 encodeObject:v5 forKey:@"SASafeLocationUpdateEventSafeLocation"];
+  coderCopy = coder;
+  safeLocation = [(SASafeLocationUpdateEvent *)self safeLocation];
+  [coderCopy encodeObject:safeLocation forKey:@"SASafeLocationUpdateEventSafeLocation"];
 
-  [v4 encodeInteger:-[SASafeLocationUpdateEvent eventType](self forKey:{"eventType"), @"SASafeLocationUpdateEventType"}];
-  [v4 encodeBool:-[SASafeLocationUpdateEvent lastEvent](self forKey:{"lastEvent"), @"SASafeLocationUpdateEventLast"}];
-  v6 = [(SASafeLocationUpdateEvent *)self date];
-  [v4 encodeObject:v6 forKey:@"SASafeLocationUpdateEventDate"];
+  [coderCopy encodeInteger:-[SASafeLocationUpdateEvent eventType](self forKey:{"eventType"), @"SASafeLocationUpdateEventType"}];
+  [coderCopy encodeBool:-[SASafeLocationUpdateEvent lastEvent](self forKey:{"lastEvent"), @"SASafeLocationUpdateEventLast"}];
+  date = [(SASafeLocationUpdateEvent *)self date];
+  [coderCopy encodeObject:date forKey:@"SASafeLocationUpdateEventDate"];
 }
 
-- (void)encodeWithOSLogCoder:(id)a3 options:(unint64_t)a4 maxLength:(unint64_t)a5
+- (void)encodeWithOSLogCoder:(id)coder options:(unint64_t)options maxLength:(unint64_t)length
 {
-  v8 = a3;
+  coderCopy = coder;
   v6 = objc_autoreleasePoolPush();
   v7 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:self requiringSecureCoding:1 error:0];
-  [v8 appendBytes:objc_msgSend(v7 length:{"bytes"), objc_msgSend(v7, "length")}];
+  [coderCopy appendBytes:objc_msgSend(v7 length:{"bytes"), objc_msgSend(v7, "length")}];
 
   objc_autoreleasePoolPop(v6);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [SASafeLocationUpdateEvent allocWithZone:a3];
-  v5 = [(SASafeLocationUpdateEvent *)self safeLocation];
-  v6 = [(SASafeLocationUpdateEvent *)self eventType];
-  v7 = [(SASafeLocationUpdateEvent *)self lastEvent];
-  v8 = [(SASafeLocationUpdateEvent *)self date];
-  v9 = [(SASafeLocationUpdateEvent *)v4 initWithSafeLocation:v5 eventType:v6 lastEvent:v7 date:v8];
+  v4 = [SASafeLocationUpdateEvent allocWithZone:zone];
+  safeLocation = [(SASafeLocationUpdateEvent *)self safeLocation];
+  eventType = [(SASafeLocationUpdateEvent *)self eventType];
+  lastEvent = [(SASafeLocationUpdateEvent *)self lastEvent];
+  date = [(SASafeLocationUpdateEvent *)self date];
+  v9 = [(SASafeLocationUpdateEvent *)v4 initWithSafeLocation:safeLocation eventType:eventType lastEvent:lastEvent date:date];
 
   return v9;
 }
 
-- (SASafeLocationUpdateEvent)initWithSafeLocation:(id)a3 eventType:(unint64_t)a4 lastEvent:(BOOL)a5 date:(id)a6
+- (SASafeLocationUpdateEvent)initWithSafeLocation:(id)location eventType:(unint64_t)type lastEvent:(BOOL)event date:(id)date
 {
-  v10 = a3;
-  v11 = a6;
+  locationCopy = location;
+  dateCopy = date;
   v19.receiver = self;
   v19.super_class = SASafeLocationUpdateEvent;
   v12 = [(SASafeLocationUpdateEvent *)&v19 init];
   if (v12)
   {
-    if (!v11)
+    if (!dateCopy)
     {
       v17 = 0;
       goto LABEL_8;
     }
 
-    if (v10)
+    if (locationCopy)
     {
-      v13 = [v10 copy];
+      v13 = [locationCopy copy];
       safeLocation = v12->_safeLocation;
       v12->_safeLocation = v13;
     }
 
-    v12->_eventType = a4;
-    v12->_lastEvent = a5;
-    v15 = [v11 copy];
+    v12->_eventType = type;
+    v12->_lastEvent = event;
+    v15 = [dateCopy copy];
     date = v12->_date;
     v12->_date = v15;
   }
@@ -93,10 +93,10 @@ LABEL_8:
   return v17;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
-  if (self == v6)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -106,18 +106,18 @@ LABEL_8:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = v6;
-      v8 = [(SASafeLocationUpdateEvent *)self safeLocation];
-      v9 = [(SASafeLocationUpdateEvent *)v7 safeLocation];
-      if (v8 == v9 || (-[SASafeLocationUpdateEvent safeLocation](self, "safeLocation"), v3 = objc_claimAutoreleasedReturnValue(), -[SASafeLocationUpdateEvent safeLocation](v7, "safeLocation"), v4 = objc_claimAutoreleasedReturnValue(), [v3 isEqual:v4]))
+      v7 = equalCopy;
+      safeLocation = [(SASafeLocationUpdateEvent *)self safeLocation];
+      safeLocation2 = [(SASafeLocationUpdateEvent *)v7 safeLocation];
+      if (safeLocation == safeLocation2 || (-[SASafeLocationUpdateEvent safeLocation](self, "safeLocation"), v3 = objc_claimAutoreleasedReturnValue(), -[SASafeLocationUpdateEvent safeLocation](v7, "safeLocation"), v4 = objc_claimAutoreleasedReturnValue(), [v3 isEqual:v4]))
       {
-        v11 = [(SASafeLocationUpdateEvent *)self eventType];
-        if (v11 == [(SASafeLocationUpdateEvent *)v7 eventType]&& (v12 = [(SASafeLocationUpdateEvent *)self lastEvent], v12 == [(SASafeLocationUpdateEvent *)v7 lastEvent]))
+        eventType = [(SASafeLocationUpdateEvent *)self eventType];
+        if (eventType == [(SASafeLocationUpdateEvent *)v7 eventType]&& (v12 = [(SASafeLocationUpdateEvent *)self lastEvent], v12 == [(SASafeLocationUpdateEvent *)v7 lastEvent]))
         {
-          v14 = [(SASafeLocationUpdateEvent *)self date];
-          v15 = [(SASafeLocationUpdateEvent *)v7 date];
-          v16 = v15;
-          if (v14 == v15)
+          date = [(SASafeLocationUpdateEvent *)self date];
+          date2 = [(SASafeLocationUpdateEvent *)v7 date];
+          v16 = date2;
+          if (date == date2)
           {
 
             v10 = 1;
@@ -125,10 +125,10 @@ LABEL_8:
 
           else
           {
-            v17 = [(SASafeLocationUpdateEvent *)self date];
+            date3 = [(SASafeLocationUpdateEvent *)self date];
             [(SASafeLocationUpdateEvent *)v7 date];
-            v18 = v19 = v14;
-            v10 = [v17 isEqual:v18];
+            v18 = v19 = date;
+            v10 = [date3 isEqual:v18];
           }
         }
 
@@ -137,7 +137,7 @@ LABEL_8:
           v10 = 0;
         }
 
-        if (v8 == v9)
+        if (safeLocation == safeLocation2)
         {
           goto LABEL_13;
         }
@@ -168,11 +168,11 @@ LABEL_14:
   v5 = NSStringFromClass(v4);
   v16[0] = v5;
   v15[1] = @"SASafeLocationUpdateEventSafeLocation";
-  v6 = [(SASafeLocationUpdateEvent *)self safeLocation];
-  if (v6)
+  safeLocation = [(SASafeLocationUpdateEvent *)self safeLocation];
+  if (safeLocation)
   {
-    v2 = [(SASafeLocationUpdateEvent *)self safeLocation];
-    v7 = [v2 description];
+    safeLocation2 = [(SASafeLocationUpdateEvent *)self safeLocation];
+    v7 = [safeLocation2 description];
   }
 
   else
@@ -188,12 +188,12 @@ LABEL_14:
   v9 = [MEMORY[0x277CCABB0] numberWithBool:{-[SASafeLocationUpdateEvent lastEvent](self, "lastEvent")}];
   v16[3] = v9;
   v15[4] = @"SASafeLocationUpdateEventDate";
-  v10 = [(SASafeLocationUpdateEvent *)self date];
-  v11 = [v10 getDateString];
-  v16[4] = v11;
+  date = [(SASafeLocationUpdateEvent *)self date];
+  getDateString = [date getDateString];
+  v16[4] = getDateString;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:v15 count:5];
 
-  if (v6)
+  if (safeLocation)
   {
   }
 
@@ -204,9 +204,9 @@ LABEL_14:
 
 - (NSString)description
 {
-  v2 = [(SASafeLocationUpdateEvent *)self descriptionDictionary];
+  descriptionDictionary = [(SASafeLocationUpdateEvent *)self descriptionDictionary];
   v9 = 0;
-  v3 = [MEMORY[0x277CCAAA0] JSONStringFromNSDictionary:v2 error:&v9];
+  v3 = [MEMORY[0x277CCAAA0] JSONStringFromNSDictionary:descriptionDictionary error:&v9];
   v4 = v9;
   if (v4)
   {
@@ -216,15 +216,15 @@ LABEL_14:
       [(SASafeLocationUpdateEvent *)v5 description];
     }
 
-    v6 = [MEMORY[0x277CCACA8] string];
+    string = [MEMORY[0x277CCACA8] string];
   }
 
   else
   {
-    v6 = v3;
+    string = v3;
   }
 
-  v7 = v6;
+  v7 = string;
 
   return v7;
 }
@@ -232,7 +232,7 @@ LABEL_14:
 - (void)description
 {
   v12 = *MEMORY[0x277D85DE8];
-  v1 = a1;
+  selfCopy = self;
   v2 = objc_opt_class();
   v3 = NSStringFromClass(v2);
   OUTLINED_FUNCTION_0();

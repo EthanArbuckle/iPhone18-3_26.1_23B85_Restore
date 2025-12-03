@@ -1,24 +1,24 @@
 @interface HSTRecordingManager
-- (BOOL)saveRecording:(id)a3;
-- (BOOL)writeRecordingToPath:(id)a3;
-- (HSTRecordingManager)initWithPlaybackQueue:(id)a3;
+- (BOOL)saveRecording:(id)recording;
+- (BOOL)writeRecordingToPath:(id)path;
+- (HSTRecordingManager)initWithPlaybackQueue:(id)queue;
 - (id).cxx_construct;
-- (id)HSTRecordingManagerProxy_saveRecording:(id)a3;
-- (id)_recordingNameWithSuffix:(id)a3;
-- (id)preferenceValueForKey:(id)a3;
+- (id)HSTRecordingManagerProxy_saveRecording:(id)recording;
+- (id)_recordingNameWithSuffix:(id)suffix;
+- (id)preferenceValueForKey:(id)key;
 - (id)preferences;
-- (void)setPreferenceValue:(id)a3 forKey:(id)a4;
-- (void)stage:(id)a3 postedNotification:(id)a4;
+- (void)setPreferenceValue:(id)value forKey:(id)key;
+- (void)stage:(id)stage postedNotification:(id)notification;
 @end
 
 @implementation HSTRecordingManager
 
-- (HSTRecordingManager)initWithPlaybackQueue:(id)a3
+- (HSTRecordingManager)initWithPlaybackQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v10.receiver = self;
   v10.super_class = HSTRecordingManager;
-  v5 = [(HSRecordingPlaybackStage *)&v10 initWithPlaybackQueue:v4];
+  v5 = [(HSRecordingPlaybackStage *)&v10 initWithPlaybackQueue:queueCopy];
   v6 = v5;
   if (v5)
   {
@@ -34,16 +34,16 @@
   return v6;
 }
 
-- (BOOL)writeRecordingToPath:(id)a3
+- (BOOL)writeRecordingToPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v9 = 0xAAAAAAAAAAAAAAAALL;
   *&v5 = 0xAAAAAAAAAAAAAAAALL;
   *(&v5 + 1) = 0xAAAAAAAAAAAAAAAALL;
   v8[1] = v5;
   v8[2] = v5;
   v8[0] = v5;
-  HSUtil::File::File(v8, [v4 UTF8String], 420);
+  HSUtil::File::File(v8, [pathCopy UTF8String], 420);
   if ((v9 & 1) == 0)
   {
     memset(__b, 170, sizeof(__b));
@@ -77,17 +77,17 @@ LABEL_9:
   return v6;
 }
 
-- (id)_recordingNameWithSuffix:(id)a3
+- (id)_recordingNameWithSuffix:(id)suffix
 {
-  v3 = [NSString stringWithFormat:@"TouchRecording-%@.hscoder", a3];
+  suffix = [NSString stringWithFormat:@"TouchRecording-%@.hscoder", suffix];
 
-  return v3;
+  return suffix;
 }
 
-- (BOOL)saveRecording:(id)a3
+- (BOOL)saveRecording:(id)recording
 {
-  v5 = a3;
-  if (!v5)
+  recordingCopy = recording;
+  if (!recordingCopy)
   {
     v16 = +[NSAssertionHandler currentHandler];
     [v16 handleFailureInMethod:a2 object:self file:@"HSTRecordingManager.mm" lineNumber:57 description:{@"Invalid parameter not satisfying: %@", @"path"}];
@@ -140,7 +140,7 @@ LABEL_11:
   {
     HSUtil::File::flush(v17);
     v12 = [NSString stringWithUTF8String:__b];
-    HSAccessProvider::MoveFile(v12, v5, v13);
+    HSAccessProvider::MoveFile(v12, recordingCopy, v13);
 
     v14 = 1;
   }
@@ -163,13 +163,13 @@ LABEL_16:
   return v14;
 }
 
-- (void)stage:(id)a3 postedNotification:(id)a4
+- (void)stage:(id)stage postedNotification:(id)notification
 {
-  v5 = a3;
+  stageCopy = stage;
   v8 = 0xAAAAAAAAAAAAAAAALL;
   v9 = 0xAAAAAAAAAAAAAAAALL;
   HSUtil::ObjectLock::ObjectLock(&v8, self);
-  if (v5 == self && (v6 = [(HSRecordingPlaybackStage *)self mode]== 1, self->_state.recording != v6))
+  if (stageCopy == self && (v6 = [(HSRecordingPlaybackStage *)self mode]== 1, self->_state.recording != v6))
   {
     self->_state.recording = v6;
     v7 = 1;
@@ -205,13 +205,13 @@ LABEL_16:
   return v2;
 }
 
-- (id)preferenceValueForKey:(id)a3
+- (id)preferenceValueForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v8[0] = 0xAAAAAAAAAAAAAAAALL;
   v8[1] = 0xAAAAAAAAAAAAAAAALL;
   HSUtil::ObjectLock::ObjectLock(v8, self);
-  if ([v4 isEqualToString:@"recordingEnabled"])
+  if ([keyCopy isEqualToString:@"recordingEnabled"])
   {
     v5 = [NSNumber numberWithBool:self->_state.recording];
 LABEL_5:
@@ -219,7 +219,7 @@ LABEL_5:
     goto LABEL_7;
   }
 
-  if ([v4 isEqualToString:@"maxSize"])
+  if ([keyCopy isEqualToString:@"maxSize"])
   {
     v5 = [NSNumber numberWithUnsignedLong:self->_state.maxSizeMB];
     goto LABEL_5;
@@ -232,24 +232,24 @@ LABEL_7:
   return v6;
 }
 
-- (void)setPreferenceValue:(id)a3 forKey:(id)a4
+- (void)setPreferenceValue:(id)value forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  valueCopy = value;
+  keyCopy = key;
   v12 = 0xAAAAAAAAAAAAAAAALL;
   v13 = 0xAAAAAAAAAAAAAAAALL;
   HSUtil::ObjectLock::ObjectLock(&v12, self);
-  if ([v7 isEqualToString:@"recordingEnabled"])
+  if ([keyCopy isEqualToString:@"recordingEnabled"])
   {
-    v8 = v6;
+    v8 = valueCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       if (v8)
       {
-        v9 = [v8 BOOLValue];
-        self->_state.recording = v9;
-        [(HSRecordingPlaybackStage *)self setMode:v9];
+        bOOLValue = [v8 BOOLValue];
+        self->_state.recording = bOOLValue;
+        [(HSRecordingPlaybackStage *)self setMode:bOOLValue];
 LABEL_9:
         v11 = 1;
 LABEL_12:
@@ -263,17 +263,17 @@ LABEL_12:
     goto LABEL_10;
   }
 
-  if ([v7 isEqualToString:@"maxSize"])
+  if ([keyCopy isEqualToString:@"maxSize"])
   {
-    v8 = v6;
+    v8 = valueCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       if (v8)
       {
-        v10 = [v8 unsignedIntegerValue];
-        self->_state.maxSizeMB = v10;
-        [(HSRecordingPlaybackStage *)self recordingSetMaxSize:v10 << 20];
+        unsignedIntegerValue = [v8 unsignedIntegerValue];
+        self->_state.maxSizeMB = unsignedIntegerValue;
+        [(HSRecordingPlaybackStage *)self recordingSetMaxSize:unsignedIntegerValue << 20];
         goto LABEL_9;
       }
 
@@ -307,9 +307,9 @@ LABEL_14:
   return self;
 }
 
-- (id)HSTRecordingManagerProxy_saveRecording:(id)a3
+- (id)HSTRecordingManagerProxy_saveRecording:(id)recording
 {
-  v3 = HSProxySynth::HSTRecordingManagerProxy_saveRecording_call1<BOOL>(self, a3);
+  v3 = HSProxySynth::HSTRecordingManagerProxy_saveRecording_call1<BOOL>(self, recording);
 
   return v3;
 }

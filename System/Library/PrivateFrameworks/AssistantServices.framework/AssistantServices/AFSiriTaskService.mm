@@ -1,31 +1,31 @@
 @interface AFSiriTaskService
 + (id)appTaskService;
-- (AFSiriTaskService)initWithMachServiceName:(id)a3;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (AFSiriTaskService)initWithMachServiceName:(id)name;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (void)dealloc;
 - (void)resume;
-- (void)setDelegate:(id)a3;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation AFSiriTaskService
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [v5 valueForEntitlement:@"com.apple.siri.task.client"];
-  v7 = [v6 BOOLValue];
+  connectionCopy = connection;
+  v6 = [connectionCopy valueForEntitlement:@"com.apple.siri.task.client"];
+  bOOLValue = [v6 BOOLValue];
 
-  if (v7)
+  if (bOOLValue)
   {
     queue = self->_queue;
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __56__AFSiriTaskService_listener_shouldAcceptNewConnection___block_invoke;
     v14[3] = &unk_1E7349860;
-    v9 = v5;
+    v9 = connectionCopy;
     v15 = v9;
-    v16 = self;
+    selfCopy = self;
     dispatch_async(queue, v14);
     v10 = AFSiriLogContextConnection;
     if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_INFO))
@@ -46,7 +46,7 @@
       *buf = 136315650;
       v18 = "[AFSiriTaskService listener:shouldAcceptNewConnection:]";
       v19 = 2112;
-      v20 = v5;
+      v20 = connectionCopy;
       v21 = 2112;
       v22 = @"com.apple.siri.task.client";
       _os_log_impl(&dword_1912FE000, v11, OS_LOG_TYPE_INFO, "%s rejecting incoming connection (%@) because it doesn't have the %@ entitlement", buf, 0x20u);
@@ -54,7 +54,7 @@
   }
 
   v12 = *MEMORY[0x1E69E9840];
-  return v7;
+  return bOOLValue;
 }
 
 uint64_t __56__AFSiriTaskService_listener_shouldAcceptNewConnection___block_invoke(uint64_t a1)
@@ -69,17 +69,17 @@ uint64_t __56__AFSiriTaskService_listener_shouldAcceptNewConnection___block_invo
   return [v4 resume];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __33__AFSiriTaskService_setDelegate___block_invoke;
   v7[3] = &unk_1E7349860;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = delegateCopy;
+  v6 = delegateCopy;
   dispatch_async(queue, v7);
 }
 
@@ -103,17 +103,17 @@ uint64_t __56__AFSiriTaskService_listener_shouldAcceptNewConnection___block_invo
   [(AFSiriTaskService *)&v3 dealloc];
 }
 
-- (AFSiriTaskService)initWithMachServiceName:(id)a3
+- (AFSiriTaskService)initWithMachServiceName:(id)name
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  nameCopy = name;
   v5 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     v20 = "[AFSiriTaskService initWithMachServiceName:]";
     v21 = 2112;
-    v22 = v4;
+    v22 = nameCopy;
     _os_log_impl(&dword_1912FE000, v5, OS_LOG_TYPE_INFO, "%s %@", buf, 0x16u);
   }
 
@@ -122,15 +122,15 @@ uint64_t __56__AFSiriTaskService_listener_shouldAcceptNewConnection___block_invo
   v6 = [(AFSiriTaskService *)&v18 init];
   if (v6)
   {
-    v7 = [@"SiriTaskService-" stringByAppendingString:v4];
-    v8 = [v7 UTF8String];
+    v7 = [@"SiriTaskService-" stringByAppendingString:nameCopy];
+    uTF8String = [v7 UTF8String];
     v9 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v10 = dispatch_queue_create(v8, v9);
+    v10 = dispatch_queue_create(uTF8String, v9);
 
     queue = v6->_queue;
     v6->_queue = v10;
 
-    v12 = [objc_alloc(MEMORY[0x1E696B0D8]) initWithMachServiceName:v4];
+    v12 = [objc_alloc(MEMORY[0x1E696B0D8]) initWithMachServiceName:nameCopy];
     listener = v6->_listener;
     v6->_listener = v12;
 
@@ -149,16 +149,16 @@ uint64_t __56__AFSiriTaskService_listener_shouldAcceptNewConnection___block_invo
 
 + (id)appTaskService
 {
-  v4 = [MEMORY[0x1E696AAE8] mainBundle];
-  if (!v4)
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  if (!mainBundle)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:a1 file:@"AFSiriTaskService.m" lineNumber:48 description:@"Cannot create an app task service for a process without a bundle"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"AFSiriTaskService.m" lineNumber:48 description:@"Cannot create an app task service for a process without a bundle"];
   }
 
-  v5 = [v4 bundleIdentifier];
-  v6 = [a1 _machServiceNameForAppTaskServiceWithBundleIdentifier:v5];
-  v7 = [[a1 alloc] initWithMachServiceName:v6];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v6 = [self _machServiceNameForAppTaskServiceWithBundleIdentifier:bundleIdentifier];
+  v7 = [[self alloc] initWithMachServiceName:v6];
 
   return v7;
 }

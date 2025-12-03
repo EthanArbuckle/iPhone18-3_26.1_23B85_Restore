@@ -1,31 +1,31 @@
 @interface SPMacBeaconConfig
-- (SPMacBeaconConfig)initWithCoder:(id)a3;
-- (SPMacBeaconConfig)initWithInitialNoBeaconDuration:(double)a3 fastRollAdvertisementDuration:(double)a4 fastRollAdvertisementInterval:(double)a5 slowRollAdvertisementDuration:(double)a6 slowRollNoAdvertisementDuration:(double)a7 noAdvertisementDurationDecayFactor:(double)a8 postInitialDayAdvertisementTimes:(id)a9;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SPMacBeaconConfig)initWithCoder:(id)coder;
+- (SPMacBeaconConfig)initWithInitialNoBeaconDuration:(double)duration fastRollAdvertisementDuration:(double)advertisementDuration fastRollAdvertisementInterval:(double)interval slowRollAdvertisementDuration:(double)rollAdvertisementDuration slowRollNoAdvertisementDuration:(double)noAdvertisementDuration noAdvertisementDurationDecayFactor:(double)factor postInitialDayAdvertisementTimes:(id)times;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
 - (id)initFromPrefs;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)persistToPrefs;
 @end
 
 @implementation SPMacBeaconConfig
 
-- (SPMacBeaconConfig)initWithInitialNoBeaconDuration:(double)a3 fastRollAdvertisementDuration:(double)a4 fastRollAdvertisementInterval:(double)a5 slowRollAdvertisementDuration:(double)a6 slowRollNoAdvertisementDuration:(double)a7 noAdvertisementDurationDecayFactor:(double)a8 postInitialDayAdvertisementTimes:(id)a9
+- (SPMacBeaconConfig)initWithInitialNoBeaconDuration:(double)duration fastRollAdvertisementDuration:(double)advertisementDuration fastRollAdvertisementInterval:(double)interval slowRollAdvertisementDuration:(double)rollAdvertisementDuration slowRollNoAdvertisementDuration:(double)noAdvertisementDuration noAdvertisementDurationDecayFactor:(double)factor postInitialDayAdvertisementTimes:(id)times
 {
-  v16 = a9;
+  timesCopy = times;
   v22.receiver = self;
   v22.super_class = SPMacBeaconConfig;
   v17 = [(SPMacBeaconConfig *)&v22 init];
   v18 = v17;
   if (v17)
   {
-    v17->_initialNoBeaconDuration = a3;
-    v17->_fastRollAdvertisementDuration = a4;
-    v17->_fastRollAdvertisementInterval = a5;
-    v17->_slowRollAdvertisementDuration = a6;
-    v17->_slowRollNoAdvertisementDuration = a7;
-    v17->_noAdvertisementDurationDecayFactor = a8;
-    v19 = [objc_alloc(MEMORY[0x277CBEA60]) initWithArray:v16 copyItems:1];
+    v17->_initialNoBeaconDuration = duration;
+    v17->_fastRollAdvertisementDuration = advertisementDuration;
+    v17->_fastRollAdvertisementInterval = interval;
+    v17->_slowRollAdvertisementDuration = rollAdvertisementDuration;
+    v17->_slowRollNoAdvertisementDuration = noAdvertisementDuration;
+    v17->_noAdvertisementDurationDecayFactor = factor;
+    v19 = [objc_alloc(MEMORY[0x277CBEA60]) initWithArray:timesCopy copyItems:1];
     postInitialDayAdvertisementTimes = v18->_postInitialDayAdvertisementTimes;
     v18->_postInitialDayAdvertisementTimes = v19;
   }
@@ -81,8 +81,8 @@
 
   v13 = MEMORY[0x277D07B70];
   v14 = [MEMORY[0x277CCABB0] numberWithDouble:self->_noAdvertisementDurationDecayFactor];
-  v15 = [v14 stringValue];
-  [v13 setString:v15 forKey:@"noAdvertisementDurationDecayFactor" inDomain:@"com.apple.icloud.searchpartyd.mac-beacon"];
+  stringValue = [v14 stringValue];
+  [v13 setString:stringValue forKey:@"noAdvertisementDurationDecayFactor" inDomain:@"com.apple.icloud.searchpartyd.mac-beacon"];
 
   v16 = MEMORY[0x277D07B70];
   postInitialDayAdvertisementTimes = self->_postInitialDayAdvertisementTimes;
@@ -90,7 +90,7 @@
   [v16 setArray:postInitialDayAdvertisementTimes forKey:@"postInitialDayAdvertisementTimes" inDomain:@"com.apple.icloud.searchpartyd.mac-beacon"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [SPMacBeaconConfig alloc];
   initialNoBeaconDuration = self->_initialNoBeaconDuration;
@@ -104,25 +104,25 @@
   return [(SPMacBeaconConfig *)v4 initWithInitialNoBeaconDuration:postInitialDayAdvertisementTimes fastRollAdvertisementDuration:initialNoBeaconDuration fastRollAdvertisementInterval:fastRollAdvertisementDuration slowRollAdvertisementDuration:fastRollAdvertisementInterval slowRollNoAdvertisementDuration:slowRollAdvertisementDuration noAdvertisementDurationDecayFactor:slowRollNoAdvertisementDuration postInitialDayAdvertisementTimes:noAdvertisementDurationDecayFactor];
 }
 
-- (SPMacBeaconConfig)initWithCoder:(id)a3
+- (SPMacBeaconConfig)initWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 decodeDoubleForKey:@"initialNoBeaconDuration"];
+  coderCopy = coder;
+  [coderCopy decodeDoubleForKey:@"initialNoBeaconDuration"];
   self->_initialNoBeaconDuration = v5;
-  [v4 decodeDoubleForKey:@"fastRollAdvertisementDuration"];
+  [coderCopy decodeDoubleForKey:@"fastRollAdvertisementDuration"];
   self->_fastRollAdvertisementDuration = v6;
-  [v4 decodeDoubleForKey:@"fastRollAdvertisementInterval"];
+  [coderCopy decodeDoubleForKey:@"fastRollAdvertisementInterval"];
   self->_fastRollAdvertisementInterval = v7;
-  [v4 decodeDoubleForKey:@"slowRollAdvertisementDuration"];
+  [coderCopy decodeDoubleForKey:@"slowRollAdvertisementDuration"];
   self->_slowRollAdvertisementDuration = v8;
-  [v4 decodeDoubleForKey:@"slowRollNoAdvertisementDuration"];
+  [coderCopy decodeDoubleForKey:@"slowRollNoAdvertisementDuration"];
   self->_slowRollNoAdvertisementDuration = v9;
-  [v4 decodeDoubleForKey:@"noAdvertisementDurationDecayFactor"];
+  [coderCopy decodeDoubleForKey:@"noAdvertisementDurationDecayFactor"];
   self->_noAdvertisementDurationDecayFactor = v10;
   v11 = MEMORY[0x277CBEB98];
   v12 = objc_opt_class();
   v13 = [v11 setWithObjects:{v12, objc_opt_class(), 0}];
-  v14 = [v4 decodeObjectOfClasses:v13 forKey:@"postInitialDayAdvertisementTimes"];
+  v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"postInitialDayAdvertisementTimes"];
 
   postInitialDayAdvertisementTimes = self->_postInitialDayAdvertisementTimes;
   self->_postInitialDayAdvertisementTimes = v14;
@@ -130,17 +130,17 @@
   return self;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   initialNoBeaconDuration = self->_initialNoBeaconDuration;
-  v5 = a3;
-  [v5 encodeDouble:@"initialNoBeaconDuration" forKey:initialNoBeaconDuration];
-  [v5 encodeDouble:@"fastRollAdvertisementDuration" forKey:self->_fastRollAdvertisementDuration];
-  [v5 encodeDouble:@"fastRollAdvertisementInterval" forKey:self->_fastRollAdvertisementInterval];
-  [v5 encodeDouble:@"slowRollAdvertisementDuration" forKey:self->_slowRollAdvertisementDuration];
-  [v5 encodeDouble:@"slowRollNoAdvertisementDuration" forKey:self->_slowRollNoAdvertisementDuration];
-  [v5 encodeDouble:@"noAdvertisementDurationDecayFactor" forKey:self->_noAdvertisementDurationDecayFactor];
-  [v5 encodeObject:self->_postInitialDayAdvertisementTimes forKey:@"postInitialDayAdvertisementTimes"];
+  coderCopy = coder;
+  [coderCopy encodeDouble:@"initialNoBeaconDuration" forKey:initialNoBeaconDuration];
+  [coderCopy encodeDouble:@"fastRollAdvertisementDuration" forKey:self->_fastRollAdvertisementDuration];
+  [coderCopy encodeDouble:@"fastRollAdvertisementInterval" forKey:self->_fastRollAdvertisementInterval];
+  [coderCopy encodeDouble:@"slowRollAdvertisementDuration" forKey:self->_slowRollAdvertisementDuration];
+  [coderCopy encodeDouble:@"slowRollNoAdvertisementDuration" forKey:self->_slowRollNoAdvertisementDuration];
+  [coderCopy encodeDouble:@"noAdvertisementDurationDecayFactor" forKey:self->_noAdvertisementDurationDecayFactor];
+  [coderCopy encodeObject:self->_postInitialDayAdvertisementTimes forKey:@"postInitialDayAdvertisementTimes"];
 }
 
 - (id)debugDescription

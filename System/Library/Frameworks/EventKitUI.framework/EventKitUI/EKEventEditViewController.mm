@@ -1,29 +1,29 @@
 @interface EKEventEditViewController
-+ (EKEventEditViewController)eventEditViewControllerWithEvent:(id)a3 eventStore:(id)a4 editViewDelegate:(id)a5;
-+ (id)eventOrIntegrationViewControllerWithEvent:(id)a3 creationMethod:(unint64_t)a4 viewStart:(unint64_t)a5 eventEditViewDelegate:(id)a6;
-+ (void)registerIntegrationEditViewControllerCreator:(id)a3;
++ (EKEventEditViewController)eventEditViewControllerWithEvent:(id)event eventStore:(id)store editViewDelegate:(id)delegate;
++ (id)eventOrIntegrationViewControllerWithEvent:(id)event creationMethod:(unint64_t)method viewStart:(unint64_t)start eventEditViewDelegate:(id)delegate;
++ (void)registerIntegrationEditViewControllerCreator:(id)creator;
 - (BOOL)displayingRootView;
 - (CGSize)preferredContentSize;
 - (EKCalendar)calendarToMakeVisibleOnSave;
-- (EKEventEditViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (EKEventEditViewController)initWithRemoteUI:(BOOL)a3;
+- (EKEventEditViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (EKEventEditViewController)initWithRemoteUI:(BOOL)i;
 - (EKEventOrIntegrationEditViewDelegate)internalEditViewDelegate;
 - (EKEventStore)eventStore;
 - (void)commonInit;
 - (void)configureAppearanceForSplitDayView;
 - (void)setEvent:(EKEvent *)event;
 - (void)setEventStore:(EKEventStore *)eventStore;
-- (void)viewIsAppearing:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewIsAppearing:(BOOL)appearing;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation EKEventEditViewController
 
-- (EKEventEditViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (EKEventEditViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v9.receiver = self;
   v9.super_class = EKEventEditViewController;
-  v4 = [(EKEventEditViewController *)&v9 initWithNibName:a3 bundle:a4];
+  v4 = [(EKEventEditViewController *)&v9 initWithNibName:name bundle:bundle];
   v5 = v4;
   if (v4)
   {
@@ -38,9 +38,9 @@
   return v5;
 }
 
-- (EKEventEditViewController)initWithRemoteUI:(BOOL)a3
+- (EKEventEditViewController)initWithRemoteUI:(BOOL)i
 {
-  v3 = a3;
+  iCopy = i;
   v9.receiver = self;
   v9.super_class = EKEventEditViewController;
   v4 = [(EKEventEditViewController *)&v9 initWithNibName:0 bundle:0];
@@ -48,7 +48,7 @@
   if (v4)
   {
     [(EKEventEditViewController *)v4 commonInit];
-    v6 = [SwappableViewControllerImplementationFactory eventEditViewControllerImplWithRemoteUI:v3];
+    v6 = [SwappableViewControllerImplementationFactory eventEditViewControllerImplWithRemoteUI:iCopy];
     impl = v5->_impl;
     v5->_impl = v6;
 
@@ -60,8 +60,8 @@
 
 - (void)commonInit
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 addObserver:self selector:sel__contentSizeCategoryChanged_ name:*MEMORY[0x1E69DDC48] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__contentSizeCategoryChanged_ name:*MEMORY[0x1E69DDC48] object:0];
 
   [(EKEventEditViewController *)self _setClipUnderlapWhileTransitioning:1];
 }
@@ -74,61 +74,61 @@
   return result;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v7.receiver = self;
   v7.super_class = EKEventEditViewController;
-  [(EKEventEditViewController *)&v7 viewWillAppear:a3];
-  v4 = [(EKEventEditViewController *)self presentationController];
-  v5 = [v4 delegate];
+  [(EKEventEditViewController *)&v7 viewWillAppear:appear];
+  presentationController = [(EKEventEditViewController *)self presentationController];
+  delegate = [presentationController delegate];
 
-  if (!v5)
+  if (!delegate)
   {
-    v6 = [(EKEventEditViewController *)self presentationController];
-    [v6 setDelegate:self];
+    presentationController2 = [(EKEventEditViewController *)self presentationController];
+    [presentationController2 setDelegate:self];
   }
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
   v11.receiver = self;
   v11.super_class = EKEventEditViewController;
-  [(EKEventEditViewController *)&v11 viewIsAppearing:a3];
-  v4 = [MEMORY[0x1E69933F8] shared];
-  v5 = [v4 isCurrentProcessAnApplicationExtension];
+  [(EKEventEditViewController *)&v11 viewIsAppearing:appearing];
+  mEMORY[0x1E69933F8] = [MEMORY[0x1E69933F8] shared];
+  isCurrentProcessAnApplicationExtension = [mEMORY[0x1E69933F8] isCurrentProcessAnApplicationExtension];
 
-  if (v5)
+  if (isCurrentProcessAnApplicationExtension)
   {
     v6 = +[EKUIApplicationExtensionOverrides shared];
-    v7 = [v6 viewHierarchyOrOverride];
+    viewHierarchyOrOverride = [v6 viewHierarchyOrOverride];
 
-    v8 = [v7 ekui_tintColor];
-    v9 = [(EKEventEditViewController *)self view];
-    v10 = [v9 window];
-    [v10 setTintColor:v8];
+    ekui_tintColor = [viewHierarchyOrOverride ekui_tintColor];
+    view = [(EKEventEditViewController *)self view];
+    window = [view window];
+    [window setTintColor:ekui_tintColor];
   }
 }
 
 - (void)setEvent:(EKEvent *)event
 {
   v12 = event;
-  v4 = [(EKEventEditViewControllerImpl *)self->_impl event];
+  event = [(EKEventEditViewControllerImpl *)self->_impl event];
 
   v5 = v12;
-  if (v4 != v12)
+  if (event != v12)
   {
-    v6 = [(EKEventEditViewControllerImpl *)self->_impl eventStore];
-    if (v6)
+    eventStore = [(EKEventEditViewControllerImpl *)self->_impl eventStore];
+    if (eventStore)
     {
-      v7 = v6;
-      v8 = [(EKEvent *)v12 eventStore];
-      if (v8)
+      v7 = eventStore;
+      eventStore2 = [(EKEvent *)v12 eventStore];
+      if (eventStore2)
       {
-        v9 = v8;
-        v10 = [(EKEvent *)v12 eventStore];
-        v11 = [(EKEventEditViewControllerImpl *)self->_impl eventStore];
+        v9 = eventStore2;
+        eventStore3 = [(EKEvent *)v12 eventStore];
+        eventStore4 = [(EKEventEditViewControllerImpl *)self->_impl eventStore];
 
-        if (v10 != v11)
+        if (eventStore3 != eventStore4)
         {
           [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"Event does not belong to eventStore"];
         }
@@ -147,24 +147,24 @@
 - (void)setEventStore:(EKEventStore *)eventStore
 {
   v18 = eventStore;
-  v4 = [(EKEventEditViewControllerImpl *)self->_impl eventStore];
+  eventStore = [(EKEventEditViewControllerImpl *)self->_impl eventStore];
 
   v5 = v18;
-  if (v4 != v18)
+  if (eventStore != v18)
   {
-    v6 = [(EKEventEditViewControllerImpl *)self->_impl event];
-    if (v6)
+    event = [(EKEventEditViewControllerImpl *)self->_impl event];
+    if (event)
     {
-      v7 = v6;
-      v8 = [(EKEventEditViewControllerImpl *)self->_impl event];
-      v9 = [v8 eventStore];
-      if (v9)
+      v7 = event;
+      event2 = [(EKEventEditViewControllerImpl *)self->_impl event];
+      eventStore2 = [event2 eventStore];
+      if (eventStore2)
       {
-        v10 = v9;
-        v11 = [(EKEventEditViewControllerImpl *)self->_impl event];
-        v12 = [v11 eventStore];
+        v10 = eventStore2;
+        event3 = [(EKEventEditViewControllerImpl *)self->_impl event];
+        eventStore3 = [event3 eventStore];
 
-        if (v12 != v18)
+        if (eventStore3 != v18)
         {
           [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"Event does not belong to eventStore"];
         }
@@ -176,20 +176,20 @@
     }
 
     [(EKEventEditViewControllerImpl *)self->_impl setEventStore:v18];
-    v13 = [(EKEventEditViewControllerImpl *)self->_impl event];
+    event4 = [(EKEventEditViewControllerImpl *)self->_impl event];
 
     v5 = v18;
-    if (!v13)
+    if (!event4)
     {
       v14 = [MEMORY[0x1E6966A08] eventWithEventStore:v18];
-      v15 = [MEMORY[0x1E695DF00] date];
-      [v14 setStartDate:v15];
+      date = [MEMORY[0x1E695DF00] date];
+      [v14 setStartDate:date];
 
-      v16 = [MEMORY[0x1E695DF00] date];
-      [v14 setEndDate:v16];
+      date2 = [MEMORY[0x1E695DF00] date];
+      [v14 setEndDate:date2];
 
-      v17 = [(EKEventStore *)v18 defaultCalendarForNewEvents];
-      [v14 setCalendar:v17];
+      defaultCalendarForNewEvents = [(EKEventStore *)v18 defaultCalendarForNewEvents];
+      [v14 setCalendar:defaultCalendarForNewEvents];
 
       [(EKEventEditViewControllerImpl *)self->_impl setEvent:v14];
       [(EKEventEditViewControllerImpl *)self->_impl setCreatedOwnEKEvent:1];
@@ -201,9 +201,9 @@
 
 - (EKEventStore)eventStore
 {
-  v3 = [(EKEventEditViewControllerImpl *)self->_impl eventStore];
+  eventStore = [(EKEventEditViewControllerImpl *)self->_impl eventStore];
 
-  if (!v3)
+  if (!eventStore)
   {
     v4 = kEKUILogHandle;
     if (os_log_type_enabled(kEKUILogHandle, OS_LOG_TYPE_ERROR))
@@ -213,17 +213,17 @@
     }
   }
 
-  v5 = [(EKEventEditViewControllerImpl *)self->_impl eventStore];
+  eventStore2 = [(EKEventEditViewControllerImpl *)self->_impl eventStore];
 
-  return v5;
+  return eventStore2;
 }
 
 - (EKEventOrIntegrationEditViewDelegate)internalEditViewDelegate
 {
-  v2 = [(EKEventEditViewControllerImpl *)self->_impl editViewDelegate];
-  if ([v2 conformsToProtocol:&unk_1F4F5A698])
+  editViewDelegate = [(EKEventEditViewControllerImpl *)self->_impl editViewDelegate];
+  if ([editViewDelegate conformsToProtocol:&unk_1F4F5A698])
   {
-    v3 = v2;
+    v3 = editViewDelegate;
   }
 
   else
@@ -236,10 +236,10 @@
 
 - (BOOL)displayingRootView
 {
-  v3 = [(EKEventEditViewController *)self visibleViewController];
-  v4 = [(EKEventEditViewController *)self viewControllers];
-  v5 = [v4 firstObject];
-  v6 = v3 == v5;
+  visibleViewController = [(EKEventEditViewController *)self visibleViewController];
+  viewControllers = [(EKEventEditViewController *)self viewControllers];
+  firstObject = [viewControllers firstObject];
+  v6 = visibleViewController == firstObject;
 
   return v6;
 }
@@ -250,57 +250,57 @@
   {
     v4 = objc_alloc_init(MEMORY[0x1E69DCCC8]);
     [v4 configureWithOpaqueBackground];
-    v3 = [(EKEventEditViewController *)self navigationBar];
-    [v3 setScrollEdgeAppearance:v4];
+    navigationBar = [(EKEventEditViewController *)self navigationBar];
+    [navigationBar setScrollEdgeAppearance:v4];
   }
 }
 
 - (EKCalendar)calendarToMakeVisibleOnSave
 {
-  v2 = [(EKEventEditViewController *)self event];
-  v3 = [v2 calendar];
+  event = [(EKEventEditViewController *)self event];
+  calendar = [event calendar];
 
-  return v3;
+  return calendar;
 }
 
-+ (EKEventEditViewController)eventEditViewControllerWithEvent:(id)a3 eventStore:(id)a4 editViewDelegate:(id)a5
++ (EKEventEditViewController)eventEditViewControllerWithEvent:(id)event eventStore:(id)store editViewDelegate:(id)delegate
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  delegateCopy = delegate;
+  storeCopy = store;
+  eventCopy = event;
   v10 = [[EKEventEditViewController alloc] initWithNibName:0 bundle:0];
-  [(EKEventEditViewController *)v10 setEvent:v9];
+  [(EKEventEditViewController *)v10 setEvent:eventCopy];
 
-  [(EKEventEditViewController *)v10 setEventStore:v8];
-  [(EKEventEditViewController *)v10 setEditViewDelegate:v7];
+  [(EKEventEditViewController *)v10 setEventStore:storeCopy];
+  [(EKEventEditViewController *)v10 setEditViewDelegate:delegateCopy];
 
   return v10;
 }
 
-+ (void)registerIntegrationEditViewControllerCreator:(id)a3
++ (void)registerIntegrationEditViewControllerCreator:(id)creator
 {
-  v3 = a3;
+  creatorCopy = creator;
   v4 = _integrationEditViewControllerCreators;
-  v7 = v3;
+  v7 = creatorCopy;
   if (!_integrationEditViewControllerCreators)
   {
     v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v6 = _integrationEditViewControllerCreators;
     _integrationEditViewControllerCreators = v5;
 
-    v3 = v7;
+    creatorCopy = v7;
     v4 = _integrationEditViewControllerCreators;
   }
 
-  [v4 addObject:v3];
+  [v4 addObject:creatorCopy];
 }
 
-+ (id)eventOrIntegrationViewControllerWithEvent:(id)a3 creationMethod:(unint64_t)a4 viewStart:(unint64_t)a5 eventEditViewDelegate:(id)a6
++ (id)eventOrIntegrationViewControllerWithEvent:(id)event creationMethod:(unint64_t)method viewStart:(unint64_t)start eventEditViewDelegate:(id)delegate
 {
   v25 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a6;
-  if ([v9 isIntegrationEvent])
+  eventCopy = event;
+  delegateCopy = delegate;
+  if ([eventCopy isIntegrationEvent])
   {
     v22 = 0u;
     v23 = 0u;
@@ -322,7 +322,7 @@ LABEL_4:
         }
 
         v16 = *(*(&v20 + 1) + 8 * v15);
-        if ([v16 useThisIntegrationEditorForEvent:{v9, v20}])
+        if ([v16 useThisIntegrationEditorForEvent:{eventCopy, v20}])
         {
           break;
         }
@@ -339,7 +339,7 @@ LABEL_4:
         }
       }
 
-      v17 = [v16 integrationViewControllerForEvent:v9 eventEditViewDelegate:v10];
+      v17 = [v16 integrationViewControllerForEvent:eventCopy eventEditViewDelegate:delegateCopy];
 
       if (v17)
       {
@@ -353,11 +353,11 @@ LABEL_10:
     }
   }
 
-  v18 = [v9 eventStore];
-  v17 = [EKEventEditViewController eventEditViewControllerWithEvent:v9 eventStore:v18 editViewDelegate:v10];
+  eventStore = [eventCopy eventStore];
+  v17 = [EKEventEditViewController eventEditViewControllerWithEvent:eventCopy eventStore:eventStore editViewDelegate:delegateCopy];
 
-  [v17 setEventCreationMethod:a4];
-  [v17 setEventCreationViewStart:a5];
+  [v17 setEventCreationMethod:method];
+  [v17 setEventCreationViewStart:start];
 LABEL_13:
 
   return v17;

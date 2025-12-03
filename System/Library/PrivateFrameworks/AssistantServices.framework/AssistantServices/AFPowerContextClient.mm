@@ -1,8 +1,8 @@
 @interface AFPowerContextClient
 - (AFPowerContextClient)init;
-- (BOOL)updateCurrentPowerPolicy:(id)a3 withError:(id *)a4;
-- (id)currentPowerPolicyWithError:(id *)a3;
-- (unint64_t)currentEncodedPowerPolicyWithError:(id *)a3;
+- (BOOL)updateCurrentPowerPolicy:(id)policy withError:(id *)error;
+- (id)currentPowerPolicyWithError:(id *)error;
+- (unint64_t)currentEncodedPowerPolicyWithError:(id *)error;
 - (void)_registerForDarwinNotificationIfNeeded;
 @end
 
@@ -16,14 +16,14 @@
   }
 }
 
-- (id)currentPowerPolicyWithError:(id *)a3
+- (id)currentPowerPolicyWithError:(id *)error
 {
-  v3 = [[AFPowerContextPolicy alloc] initWithEncodedPolicy:[(AFPowerContextClient *)self currentEncodedPowerPolicyWithError:a3]];
+  v3 = [[AFPowerContextPolicy alloc] initWithEncodedPolicy:[(AFPowerContextClient *)self currentEncodedPowerPolicyWithError:error]];
 
   return v3;
 }
 
-- (unint64_t)currentEncodedPowerPolicyWithError:(id *)a3
+- (unint64_t)currentEncodedPowerPolicyWithError:(id *)error
 {
   v22 = *MEMORY[0x1E69E9840];
   [(AFPowerContextClient *)self _registerForDarwinNotificationIfNeeded];
@@ -35,13 +35,13 @@
       *buf = 136315138;
       v17 = "[AFPowerContextClient currentEncodedPowerPolicyWithError:]";
       _os_log_error_impl(&dword_1912FE000, v10, OS_LOG_TYPE_ERROR, "%s PowerContextClient: Error retrieving current power policy - unregistered token", buf, 0xCu);
-      if (!a3)
+      if (!error)
       {
         goto LABEL_16;
       }
     }
 
-    else if (!a3)
+    else if (!error)
     {
       goto LABEL_16;
     }
@@ -64,13 +64,13 @@
       v18 = 1024;
       LODWORD(v19) = v7;
       _os_log_error_impl(&dword_1912FE000, v6, OS_LOG_TYPE_ERROR, "%s PowerContextClient: Error retrieving current power policy - failed to get state with status code: %u", buf, 0x12u);
-      if (a3)
+      if (error)
       {
         goto LABEL_5;
       }
     }
 
-    else if (a3)
+    else if (error)
     {
 LABEL_5:
       v8 = objc_alloc(MEMORY[0x1E696ABC0]);
@@ -79,7 +79,7 @@ LABEL_9:
       v11 = [v8 initWithDomain:@"kAFAssistantErrorDomain" code:v9 userInfo:0];
       v12 = v11;
       result = 0;
-      *a3 = v11;
+      *error = v11;
       goto LABEL_17;
     }
 
@@ -120,10 +120,10 @@ LABEL_17:
   return v3;
 }
 
-- (BOOL)updateCurrentPowerPolicy:(id)a3 withError:(id *)a4
+- (BOOL)updateCurrentPowerPolicy:(id)policy withError:(id *)error
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  policyCopy = policy;
   [(AFPowerContextClient *)self _registerForDarwinNotificationIfNeeded];
   if (![(AFPowerContextClient *)self _isNotificationTokenRegistered])
   {
@@ -133,13 +133,13 @@ LABEL_17:
       v17 = 136315138;
       v18 = "[AFPowerContextClient(PolicyProvider) updateCurrentPowerPolicy:withError:]";
       _os_log_error_impl(&dword_1912FE000, v13, OS_LOG_TYPE_ERROR, "%s PowerContextClient: Error updating current power policy - unregistered token", &v17, 0xCu);
-      if (!a4)
+      if (!error)
       {
         goto LABEL_16;
       }
     }
 
-    else if (!a4)
+    else if (!error)
     {
       goto LABEL_16;
     }
@@ -149,8 +149,8 @@ LABEL_17:
     goto LABEL_9;
   }
 
-  v7 = [v6 encodePolicy];
-  v8 = notify_set_state(self->_notificationToken, v7);
+  encodePolicy = [policyCopy encodePolicy];
+  v8 = notify_set_state(self->_notificationToken, encodePolicy);
   v9 = AFSiriLogContextPower;
   if (v8)
   {
@@ -162,20 +162,20 @@ LABEL_17:
       v19 = 1024;
       LODWORD(v20) = v10;
       _os_log_error_impl(&dword_1912FE000, v9, OS_LOG_TYPE_ERROR, "%s PowerContextClient: Error updating current power policy - failed to set state with status code: %u", &v17, 0x12u);
-      if (a4)
+      if (error)
       {
         goto LABEL_5;
       }
     }
 
-    else if (a4)
+    else if (error)
     {
 LABEL_5:
       v11 = objc_alloc(MEMORY[0x1E696ABC0]);
       v12 = 7102;
 LABEL_9:
       v14 = 0;
-      *a4 = [v11 initWithDomain:@"kAFAssistantErrorDomain" code:v12 userInfo:0];
+      *error = [v11 initWithDomain:@"kAFAssistantErrorDomain" code:v12 userInfo:0];
       goto LABEL_17;
     }
 
@@ -189,9 +189,9 @@ LABEL_16:
     v17 = 136315650;
     v18 = "[AFPowerContextClient(PolicyProvider) updateCurrentPowerPolicy:withError:]";
     v19 = 2048;
-    v20 = v7;
+    v20 = encodePolicy;
     v21 = 2048;
-    v22 = v7;
+    v22 = encodePolicy;
     _os_log_debug_impl(&dword_1912FE000, v9, OS_LOG_TYPE_DEBUG, "%s PowerContextClient: Updated current power policy: %llu -> 0x%llx", &v17, 0x20u);
   }
 

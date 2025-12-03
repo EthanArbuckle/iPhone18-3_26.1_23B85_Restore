@@ -3,81 +3,81 @@
 - (NSURL)applyServiceURL;
 - (NSURL)inAppPaymentServicesURL;
 - (NSURL)paymentOffersServiceURL;
-- (PKPaymentWebServiceRegion)initWithCeritficates:(id)a3 brokerURL:(id)a4 trustedServiceManagerURL:(id)a5 trustedServiceManagerPushTopic:(id)a6 paymentServicesURL:(id)a7 inAppPaymentServicesURL:(id)a8 consistencyCheckBackoffLevel:(int64_t)a9 lastUpdatedTag:(id)a10;
-- (PKPaymentWebServiceRegion)initWithCoder:(id)a3;
-- (PKPaymentWebServiceRegion)initWithDictionary:(id)a3 hasPeerPaymentAccount:(BOOL)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PKPaymentWebServiceRegion)initWithCeritficates:(id)ceritficates brokerURL:(id)l trustedServiceManagerURL:(id)rL trustedServiceManagerPushTopic:(id)topic paymentServicesURL:(id)uRL inAppPaymentServicesURL:(id)servicesURL consistencyCheckBackoffLevel:(int64_t)level lastUpdatedTag:(id)self0;
+- (PKPaymentWebServiceRegion)initWithCoder:(id)coder;
+- (PKPaymentWebServiceRegion)initWithDictionary:(id)dictionary hasPeerPaymentAccount:(BOOL)account;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)regionBySettingConsistencyCheckBackoffLevel:(int64_t)a3;
-- (id)regionBySettingLastDeviceCheckInBuildVersion:(id)a3;
-- (id)regionBySettingLastDeviceUpgradeTaskBuildVersion:(id)a3;
-- (id)regionBySettingLastUpdatedTag:(id)a3;
-- (id)regionBySettingOutstandingCheckInAction:(int64_t)a3 lastDeviceCheckInBuildVersion:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (id)regionBySettingConsistencyCheckBackoffLevel:(int64_t)level;
+- (id)regionBySettingLastDeviceCheckInBuildVersion:(id)version;
+- (id)regionBySettingLastDeviceUpgradeTaskBuildVersion:(id)version;
+- (id)regionBySettingLastUpdatedTag:(id)tag;
+- (id)regionBySettingOutstandingCheckInAction:(int64_t)action lastDeviceCheckInBuildVersion:(id)version;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPaymentWebServiceRegion
 
-- (PKPaymentWebServiceRegion)initWithDictionary:(id)a3 hasPeerPaymentAccount:(BOOL)a4
+- (PKPaymentWebServiceRegion)initWithDictionary:(id)dictionary hasPeerPaymentAccount:(BOOL)account
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   v61.receiver = self;
   v61.super_class = PKPaymentWebServiceRegion;
   v7 = [(PKPaymentWebServiceRegion *)&v61 init];
   if (v7)
   {
-    v8 = [v6 PKArrayContaining:objc_opt_class() forKey:@"certificates"];
+    v8 = [dictionaryCopy PKArrayContaining:objc_opt_class() forKey:@"certificates"];
     v9 = [v8 pk_arrayBySafelyApplyingBlock:&__block_literal_global_130];
     certificates = v7->_certificates;
     v7->_certificates = v9;
 
     v11 = MEMORY[0x1E695DFF8];
-    v12 = [v6 PKStringForKey:@"brokerURL"];
+    v12 = [dictionaryCopy PKStringForKey:@"brokerURL"];
     v13 = [v11 URLWithString:v12];
     brokerURL = v7->_brokerURL;
     v7->_brokerURL = v13;
 
-    v15 = [v6 PKStringForKey:@"region"];
+    v15 = [dictionaryCopy PKStringForKey:@"region"];
     regionCode = v7->_regionCode;
     v7->_regionCode = v15;
 
-    v17 = [v6 PKURLForKey:@"paymentServicesURL"];
+    v17 = [dictionaryCopy PKURLForKey:@"paymentServicesURL"];
     paymentServicesURL = v7->_paymentServicesURL;
     v7->_paymentServicesURL = v17;
 
-    v19 = [v6 PKURLForKey:@"inAppPaymentServicesURL"];
+    v19 = [dictionaryCopy PKURLForKey:@"inAppPaymentServicesURL"];
     inAppPaymentServicesURL = v7->_inAppPaymentServicesURL;
     v7->_inAppPaymentServicesURL = v19;
 
-    v21 = [v6 PKURLForKey:@"paymentServicesMerchantURL"];
+    v21 = [dictionaryCopy PKURLForKey:@"paymentServicesMerchantURL"];
     paymentServicesMerchantURL = v7->_paymentServicesMerchantURL;
     v7->_paymentServicesMerchantURL = v21;
 
-    v23 = [v6 PKURLForKey:@"partnerServiceURL"];
+    v23 = [dictionaryCopy PKURLForKey:@"partnerServiceURL"];
     partnerServiceURL = v7->_partnerServiceURL;
     v7->_partnerServiceURL = v23;
 
-    v25 = [v6 PKURLForKey:@"trustedServiceManagerURL"];
+    v25 = [dictionaryCopy PKURLForKey:@"trustedServiceManagerURL"];
     trustedServiceManagerURL = v7->_trustedServiceManagerURL;
     v7->_trustedServiceManagerURL = v25;
 
-    v27 = [v6 PKStringForKey:@"trustedServiceManagerPushTopic"];
+    v27 = [dictionaryCopy PKStringForKey:@"trustedServiceManagerPushTopic"];
     trustedServiceManagerPushTopic = v7->_trustedServiceManagerPushTopic;
     v7->_trustedServiceManagerPushTopic = v27;
 
-    v29 = [v6 PKStringForKey:@"userNotificationPushTopic"];
+    v29 = [dictionaryCopy PKStringForKey:@"userNotificationPushTopic"];
     userNotificationPushTopic = v7->_userNotificationPushTopic;
     v7->_userNotificationPushTopic = v29;
 
-    v31 = [v6 PKStringForKey:@"deviceCheckInPushTopic"];
+    v31 = [dictionaryCopy PKStringForKey:@"deviceCheckInPushTopic"];
     deviceCheckInPushTopic = v7->_deviceCheckInPushTopic;
     v7->_deviceCheckInPushTopic = v31;
 
-    v33 = [v6 PKURLForKey:@"peerPaymentServiceURL"];
+    v33 = [dictionaryCopy PKURLForKey:@"peerPaymentServiceURL"];
     peerPaymentServiceURL = v7->_peerPaymentServiceURL;
     v7->_peerPaymentServiceURL = v33;
 
-    v35 = [v6 objectForKey:@"hasPeerPaymentAccount"];
+    v35 = [dictionaryCopy objectForKey:@"hasPeerPaymentAccount"];
     if (v35 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v7->_hasPeerPaymentAccount = [v35 BOOLValue];
@@ -85,56 +85,56 @@
 
     else if ([(NSString *)v7->_regionCode isEqualToString:@"US"])
     {
-      v7->_hasPeerPaymentAccount = a4;
+      v7->_hasPeerPaymentAccount = account;
     }
 
-    v36 = [v6 PKURLForKey:@"accountServiceURL"];
+    v36 = [dictionaryCopy PKURLForKey:@"accountServiceURL"];
     accountServiceURL = v7->_accountServiceURL;
     v7->_accountServiceURL = v36;
 
-    v38 = [v6 PKStringForKey:@"accountServicePushTopic"];
+    v38 = [dictionaryCopy PKStringForKey:@"accountServicePushTopic"];
     accountServicePushTopic = v7->_accountServicePushTopic;
     v7->_accountServicePushTopic = v38;
 
-    v7->_hasAccounts = [v6 PKBoolForKey:@"hasAccounts"];
-    v40 = [v6 PKURLForKey:@"applyServiceURL"];
+    v7->_hasAccounts = [dictionaryCopy PKBoolForKey:@"hasAccounts"];
+    v40 = [dictionaryCopy PKURLForKey:@"applyServiceURL"];
     applyServiceURL = v7->_applyServiceURL;
     v7->_applyServiceURL = v40;
 
-    v42 = [v6 PKStringForKey:@"applyServicePushTopic"];
+    v42 = [dictionaryCopy PKStringForKey:@"applyServicePushTopic"];
     applyServicePushTopic = v7->_applyServicePushTopic;
     v7->_applyServicePushTopic = v42;
 
-    v7->_hasApplications = [v6 PKBoolForKey:@"hasApplications"];
-    v44 = [v6 PKStringForKey:@"productsPushTopic"];
+    v7->_hasApplications = [dictionaryCopy PKBoolForKey:@"hasApplications"];
+    v44 = [dictionaryCopy PKStringForKey:@"productsPushTopic"];
     productsPushTopic = v7->_productsPushTopic;
     v7->_productsPushTopic = v44;
 
-    v46 = [v6 PKStringForKey:@"transactionZonePushTopic"];
+    v46 = [dictionaryCopy PKStringForKey:@"transactionZonePushTopic"];
     transactionZonePushTopic = v7->_transactionZonePushTopic;
     v7->_transactionZonePushTopic = v46;
 
-    v48 = [v6 PKStringForKey:@"provisioningTargetsPushTopic"];
+    v48 = [dictionaryCopy PKStringForKey:@"provisioningTargetsPushTopic"];
     provisioningTargetsPushTopic = v7->_provisioningTargetsPushTopic;
     v7->_provisioningTargetsPushTopic = v48;
 
-    v50 = [v6 PKStringForKey:@"ownershipTokensPushTopic"];
+    v50 = [dictionaryCopy PKStringForKey:@"ownershipTokensPushTopic"];
     ownershipTokensPushTopic = v7->_ownershipTokensPushTopic;
     v7->_ownershipTokensPushTopic = v50;
 
-    v52 = [v6 PKStringForKey:@"auxiliaryRegistrationRequirementPushTopic"];
+    v52 = [dictionaryCopy PKStringForKey:@"auxiliaryRegistrationRequirementPushTopic"];
     auxiliaryRegistrationRequirementPushTopic = v7->_auxiliaryRegistrationRequirementPushTopic;
     v7->_auxiliaryRegistrationRequirementPushTopic = v52;
 
-    v54 = [v6 PKURLForKey:@"paymentOffersServiceURL"];
+    v54 = [dictionaryCopy PKURLForKey:@"paymentOffersServiceURL"];
     paymentOffersServiceURL = v7->_paymentOffersServiceURL;
     v7->_paymentOffersServiceURL = v54;
 
-    v56 = [v6 PKStringForKey:@"paymentOffersServicePushTopic"];
+    v56 = [dictionaryCopy PKStringForKey:@"paymentOffersServicePushTopic"];
     paymentOffersServicePushTopic = v7->_paymentOffersServicePushTopic;
     v7->_paymentOffersServicePushTopic = v56;
 
-    v58 = [v6 PKStringForKey:@"merchantTokensPushTopic"];
+    v58 = [dictionaryCopy PKStringForKey:@"merchantTokensPushTopic"];
     merchantTokensPushTopic = v7->_merchantTokensPushTopic;
     v7->_merchantTokensPushTopic = v58;
   }
@@ -151,152 +151,152 @@ id __70__PKPaymentWebServiceRegion_initWithDictionary_hasPeerPaymentAccount___bl
   return v4;
 }
 
-- (PKPaymentWebServiceRegion)initWithCeritficates:(id)a3 brokerURL:(id)a4 trustedServiceManagerURL:(id)a5 trustedServiceManagerPushTopic:(id)a6 paymentServicesURL:(id)a7 inAppPaymentServicesURL:(id)a8 consistencyCheckBackoffLevel:(int64_t)a9 lastUpdatedTag:(id)a10
+- (PKPaymentWebServiceRegion)initWithCeritficates:(id)ceritficates brokerURL:(id)l trustedServiceManagerURL:(id)rL trustedServiceManagerPushTopic:(id)topic paymentServicesURL:(id)uRL inAppPaymentServicesURL:(id)servicesURL consistencyCheckBackoffLevel:(int64_t)level lastUpdatedTag:(id)self0
 {
-  v26 = a3;
-  v25 = a4;
-  v24 = a5;
-  v23 = a6;
-  v22 = a7;
-  v17 = a8;
-  v18 = a10;
+  ceritficatesCopy = ceritficates;
+  lCopy = l;
+  rLCopy = rL;
+  topicCopy = topic;
+  uRLCopy = uRL;
+  servicesURLCopy = servicesURL;
+  tagCopy = tag;
   v27.receiver = self;
   v27.super_class = PKPaymentWebServiceRegion;
   v19 = [(PKPaymentWebServiceRegion *)&v27 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_certificates, a3);
-    objc_storeStrong(&v20->_brokerURL, a4);
-    objc_storeStrong(&v20->_paymentServicesURL, a7);
-    objc_storeStrong(&v20->_inAppPaymentServicesURL, a8);
-    objc_storeStrong(&v20->_trustedServiceManagerURL, a5);
-    objc_storeStrong(&v20->_trustedServiceManagerPushTopic, a6);
-    objc_storeStrong(&v20->_lastUpdatedTag, a10);
-    v20->_consistencyCheckBackoffLevel = a9;
+    objc_storeStrong(&v19->_certificates, ceritficates);
+    objc_storeStrong(&v20->_brokerURL, l);
+    objc_storeStrong(&v20->_paymentServicesURL, uRL);
+    objc_storeStrong(&v20->_inAppPaymentServicesURL, servicesURL);
+    objc_storeStrong(&v20->_trustedServiceManagerURL, rL);
+    objc_storeStrong(&v20->_trustedServiceManagerPushTopic, topic);
+    objc_storeStrong(&v20->_lastUpdatedTag, tag);
+    v20->_consistencyCheckBackoffLevel = level;
   }
 
   return v20;
 }
 
-- (PKPaymentWebServiceRegion)initWithCoder:(id)a3
+- (PKPaymentWebServiceRegion)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v61.receiver = self;
   v61.super_class = PKPaymentWebServiceRegion;
   v5 = [(PKPaymentWebServiceRegion *)&v61 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lastUpdatedTag"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lastUpdatedTag"];
     lastUpdatedTag = v5->_lastUpdatedTag;
     v5->_lastUpdatedTag = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"brokerURL"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"brokerURL"];
     brokerURL = v5->_brokerURL;
     v5->_brokerURL = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"regionCode"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"regionCode"];
     regionCode = v5->_regionCode;
     v5->_regionCode = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"paymentServicesURL"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"paymentServicesURL"];
     paymentServicesURL = v5->_paymentServicesURL;
     v5->_paymentServicesURL = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"inAppPaymentServicesURL"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"inAppPaymentServicesURL"];
     inAppPaymentServicesURL = v5->_inAppPaymentServicesURL;
     v5->_inAppPaymentServicesURL = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"paymentServicesMerchantURL"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"paymentServicesMerchantURL"];
     paymentServicesMerchantURL = v5->_paymentServicesMerchantURL;
     v5->_paymentServicesMerchantURL = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"partnerServiceURL"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"partnerServiceURL"];
     partnerServiceURL = v5->_partnerServiceURL;
     v5->_partnerServiceURL = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"trustedServiceManagerURL"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"trustedServiceManagerURL"];
     trustedServiceManagerURL = v5->_trustedServiceManagerURL;
     v5->_trustedServiceManagerURL = v20;
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"trustedServiceManagerPushTopic"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"trustedServiceManagerPushTopic"];
     trustedServiceManagerPushTopic = v5->_trustedServiceManagerPushTopic;
     v5->_trustedServiceManagerPushTopic = v22;
 
-    v24 = [v4 decodePropertyListForKey:@"certificates"];
+    v24 = [coderCopy decodePropertyListForKey:@"certificates"];
     certificates = v5->_certificates;
     v5->_certificates = v24;
 
-    v5->_consistencyCheckBackoffLevel = [v4 decodeIntegerForKey:@"consistencyCheckBackoff"];
-    v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"userNotificationPushTopic"];
+    v5->_consistencyCheckBackoffLevel = [coderCopy decodeIntegerForKey:@"consistencyCheckBackoff"];
+    v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"userNotificationPushTopic"];
     userNotificationPushTopic = v5->_userNotificationPushTopic;
     v5->_userNotificationPushTopic = v26;
 
-    v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"peerPaymentServiceURL"];
+    v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"peerPaymentServiceURL"];
     peerPaymentServiceURL = v5->_peerPaymentServiceURL;
     v5->_peerPaymentServiceURL = v28;
 
-    v5->_hasPeerPaymentAccount = [v4 decodeBoolForKey:@"hasPeerPaymentAccount"];
-    v30 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"deviceCheckInPushTopic"];
+    v5->_hasPeerPaymentAccount = [coderCopy decodeBoolForKey:@"hasPeerPaymentAccount"];
+    v30 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"deviceCheckInPushTopic"];
     deviceCheckInPushTopic = v5->_deviceCheckInPushTopic;
     v5->_deviceCheckInPushTopic = v30;
 
-    v32 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lastDeviceCheckInBuildVersion"];
+    v32 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lastDeviceCheckInBuildVersion"];
     lastDeviceCheckInBuildVersion = v5->_lastDeviceCheckInBuildVersion;
     v5->_lastDeviceCheckInBuildVersion = v32;
 
-    v5->_outstandingCheckInAction = [v4 decodeIntegerForKey:@"outstandingCheckInAction"];
-    v34 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"deviceUpgradeTasksBuildVersion"];
+    v5->_outstandingCheckInAction = [coderCopy decodeIntegerForKey:@"outstandingCheckInAction"];
+    v34 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"deviceUpgradeTasksBuildVersion"];
     lastDeviceUpgradeTaskBuildVersion = v5->_lastDeviceUpgradeTaskBuildVersion;
     v5->_lastDeviceUpgradeTaskBuildVersion = v34;
 
-    v5->_hasApplications = [v4 decodeBoolForKey:@"hasApplications"];
-    v36 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"applyServiceURL"];
+    v5->_hasApplications = [coderCopy decodeBoolForKey:@"hasApplications"];
+    v36 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"applyServiceURL"];
     applyServiceURL = v5->_applyServiceURL;
     v5->_applyServiceURL = v36;
 
-    v38 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"applyServicePushTopic"];
+    v38 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"applyServicePushTopic"];
     applyServicePushTopic = v5->_applyServicePushTopic;
     v5->_applyServicePushTopic = v38;
 
-    v5->_hasAccounts = [v4 decodeBoolForKey:@"hasAccounts"];
-    v40 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"accountServiceURL"];
+    v5->_hasAccounts = [coderCopy decodeBoolForKey:@"hasAccounts"];
+    v40 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"accountServiceURL"];
     accountServiceURL = v5->_accountServiceURL;
     v5->_accountServiceURL = v40;
 
-    v42 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"accountServicePushTopic"];
+    v42 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"accountServicePushTopic"];
     accountServicePushTopic = v5->_accountServicePushTopic;
     v5->_accountServicePushTopic = v42;
 
-    v44 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"productsPushTopic"];
+    v44 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"productsPushTopic"];
     productsPushTopic = v5->_productsPushTopic;
     v5->_productsPushTopic = v44;
 
-    v46 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"transactionZonePushTopic"];
+    v46 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"transactionZonePushTopic"];
     transactionZonePushTopic = v5->_transactionZonePushTopic;
     v5->_transactionZonePushTopic = v46;
 
-    v48 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"provisioningTargetsPushTopic"];
+    v48 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"provisioningTargetsPushTopic"];
     provisioningTargetsPushTopic = v5->_provisioningTargetsPushTopic;
     v5->_provisioningTargetsPushTopic = v48;
 
-    v50 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ownershipTokensPushTopic"];
+    v50 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ownershipTokensPushTopic"];
     ownershipTokensPushTopic = v5->_ownershipTokensPushTopic;
     v5->_ownershipTokensPushTopic = v50;
 
-    v52 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"auxiliaryRegistrationRequirementPushTopic"];
+    v52 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"auxiliaryRegistrationRequirementPushTopic"];
     auxiliaryRegistrationRequirementPushTopic = v5->_auxiliaryRegistrationRequirementPushTopic;
     v5->_auxiliaryRegistrationRequirementPushTopic = v52;
 
-    v54 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"paymentOffersServiceURL"];
+    v54 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"paymentOffersServiceURL"];
     paymentOffersServiceURL = v5->_paymentOffersServiceURL;
     v5->_paymentOffersServiceURL = v54;
 
-    v56 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"paymentOffersServicePushTopic"];
+    v56 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"paymentOffersServicePushTopic"];
     paymentOffersServicePushTopic = v5->_paymentOffersServicePushTopic;
     v5->_paymentOffersServicePushTopic = v56;
 
-    v58 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"merchantTokensPushTopic"];
+    v58 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"merchantTokensPushTopic"];
     merchantTokensPushTopic = v5->_merchantTokensPushTopic;
     v5->_merchantTokensPushTopic = v58;
   }
@@ -304,45 +304,45 @@ id __70__PKPaymentWebServiceRegion_initWithDictionary_hasPeerPaymentAccount___bl
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   certificates = self->_certificates;
-  v5 = a3;
-  [v5 encodeObject:certificates forKey:@"certificates"];
-  [v5 encodeObject:self->_lastUpdatedTag forKey:@"lastUpdatedTag"];
-  [v5 encodeObject:self->_brokerURL forKey:@"brokerURL"];
-  [v5 encodeObject:self->_regionCode forKey:@"regionCode"];
-  [v5 encodeObject:self->_paymentServicesURL forKey:@"paymentServicesURL"];
-  [v5 encodeObject:self->_inAppPaymentServicesURL forKey:@"inAppPaymentServicesURL"];
-  [v5 encodeObject:self->_paymentServicesMerchantURL forKey:@"paymentServicesMerchantURL"];
-  [v5 encodeObject:self->_partnerServiceURL forKey:@"partnerServiceURL"];
-  [v5 encodeObject:self->_trustedServiceManagerURL forKey:@"trustedServiceManagerURL"];
-  [v5 encodeObject:self->_trustedServiceManagerPushTopic forKey:@"trustedServiceManagerPushTopic"];
-  [v5 encodeInteger:self->_consistencyCheckBackoffLevel forKey:@"consistencyCheckBackoff"];
-  [v5 encodeObject:self->_userNotificationPushTopic forKey:@"userNotificationPushTopic"];
-  [v5 encodeObject:self->_peerPaymentServiceURL forKey:@"peerPaymentServiceURL"];
-  [v5 encodeBool:self->_hasPeerPaymentAccount forKey:@"hasPeerPaymentAccount"];
-  [v5 encodeObject:self->_deviceCheckInPushTopic forKey:@"deviceCheckInPushTopic"];
-  [v5 encodeObject:self->_lastDeviceCheckInBuildVersion forKey:@"lastDeviceCheckInBuildVersion"];
-  [v5 encodeInteger:self->_outstandingCheckInAction forKey:@"outstandingCheckInAction"];
-  [v5 encodeObject:self->_lastDeviceUpgradeTaskBuildVersion forKey:@"deviceUpgradeTasksBuildVersion"];
-  [v5 encodeBool:self->_hasApplications forKey:@"hasApplications"];
-  [v5 encodeObject:self->_applyServiceURL forKey:@"applyServiceURL"];
-  [v5 encodeObject:self->_applyServicePushTopic forKey:@"applyServicePushTopic"];
-  [v5 encodeBool:self->_hasAccounts forKey:@"hasAccounts"];
-  [v5 encodeObject:self->_accountServiceURL forKey:@"accountServiceURL"];
-  [v5 encodeObject:self->_accountServicePushTopic forKey:@"accountServicePushTopic"];
-  [v5 encodeObject:self->_productsPushTopic forKey:@"productsPushTopic"];
-  [v5 encodeObject:self->_transactionZonePushTopic forKey:@"transactionZonePushTopic"];
-  [v5 encodeObject:self->_provisioningTargetsPushTopic forKey:@"provisioningTargetsPushTopic"];
-  [v5 encodeObject:self->_ownershipTokensPushTopic forKey:@"ownershipTokensPushTopic"];
-  [v5 encodeObject:self->_auxiliaryRegistrationRequirementPushTopic forKey:@"auxiliaryRegistrationRequirementPushTopic"];
-  [v5 encodeObject:self->_paymentOffersServiceURL forKey:@"paymentOffersServiceURL"];
-  [v5 encodeObject:self->_paymentOffersServicePushTopic forKey:@"paymentOffersServicePushTopic"];
-  [v5 encodeObject:self->_merchantTokensPushTopic forKey:@"merchantTokensPushTopic"];
+  coderCopy = coder;
+  [coderCopy encodeObject:certificates forKey:@"certificates"];
+  [coderCopy encodeObject:self->_lastUpdatedTag forKey:@"lastUpdatedTag"];
+  [coderCopy encodeObject:self->_brokerURL forKey:@"brokerURL"];
+  [coderCopy encodeObject:self->_regionCode forKey:@"regionCode"];
+  [coderCopy encodeObject:self->_paymentServicesURL forKey:@"paymentServicesURL"];
+  [coderCopy encodeObject:self->_inAppPaymentServicesURL forKey:@"inAppPaymentServicesURL"];
+  [coderCopy encodeObject:self->_paymentServicesMerchantURL forKey:@"paymentServicesMerchantURL"];
+  [coderCopy encodeObject:self->_partnerServiceURL forKey:@"partnerServiceURL"];
+  [coderCopy encodeObject:self->_trustedServiceManagerURL forKey:@"trustedServiceManagerURL"];
+  [coderCopy encodeObject:self->_trustedServiceManagerPushTopic forKey:@"trustedServiceManagerPushTopic"];
+  [coderCopy encodeInteger:self->_consistencyCheckBackoffLevel forKey:@"consistencyCheckBackoff"];
+  [coderCopy encodeObject:self->_userNotificationPushTopic forKey:@"userNotificationPushTopic"];
+  [coderCopy encodeObject:self->_peerPaymentServiceURL forKey:@"peerPaymentServiceURL"];
+  [coderCopy encodeBool:self->_hasPeerPaymentAccount forKey:@"hasPeerPaymentAccount"];
+  [coderCopy encodeObject:self->_deviceCheckInPushTopic forKey:@"deviceCheckInPushTopic"];
+  [coderCopy encodeObject:self->_lastDeviceCheckInBuildVersion forKey:@"lastDeviceCheckInBuildVersion"];
+  [coderCopy encodeInteger:self->_outstandingCheckInAction forKey:@"outstandingCheckInAction"];
+  [coderCopy encodeObject:self->_lastDeviceUpgradeTaskBuildVersion forKey:@"deviceUpgradeTasksBuildVersion"];
+  [coderCopy encodeBool:self->_hasApplications forKey:@"hasApplications"];
+  [coderCopy encodeObject:self->_applyServiceURL forKey:@"applyServiceURL"];
+  [coderCopy encodeObject:self->_applyServicePushTopic forKey:@"applyServicePushTopic"];
+  [coderCopy encodeBool:self->_hasAccounts forKey:@"hasAccounts"];
+  [coderCopy encodeObject:self->_accountServiceURL forKey:@"accountServiceURL"];
+  [coderCopy encodeObject:self->_accountServicePushTopic forKey:@"accountServicePushTopic"];
+  [coderCopy encodeObject:self->_productsPushTopic forKey:@"productsPushTopic"];
+  [coderCopy encodeObject:self->_transactionZonePushTopic forKey:@"transactionZonePushTopic"];
+  [coderCopy encodeObject:self->_provisioningTargetsPushTopic forKey:@"provisioningTargetsPushTopic"];
+  [coderCopy encodeObject:self->_ownershipTokensPushTopic forKey:@"ownershipTokensPushTopic"];
+  [coderCopy encodeObject:self->_auxiliaryRegistrationRequirementPushTopic forKey:@"auxiliaryRegistrationRequirementPushTopic"];
+  [coderCopy encodeObject:self->_paymentOffersServiceURL forKey:@"paymentOffersServiceURL"];
+  [coderCopy encodeObject:self->_paymentOffersServicePushTopic forKey:@"paymentOffersServicePushTopic"];
+  [coderCopy encodeObject:self->_merchantTokensPushTopic forKey:@"merchantTokensPushTopic"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(PKPaymentWebServiceRegion);
   objc_storeStrong(&v4->_certificates, self->_certificates);
@@ -407,8 +407,8 @@ id __70__PKPaymentWebServiceRegion_initWithDictionary_hasPeerPaymentAccount___bl
   [v3 appendFormat:@"regionCode: '%@'; ", self->_regionCode];
   [v3 appendFormat:@"paymentServicesURL: '%@'; ", self->_paymentServicesURL];
   inAppPaymentServicesURL = self->_inAppPaymentServicesURL;
-  v5 = [(PKPaymentWebServiceRegion *)self inAppPaymentServicesURL];
-  [v3 appendFormat:@"inAppPaymentServicesURL: '%@' (resolved '%@'); ", inAppPaymentServicesURL, v5];
+  inAppPaymentServicesURL = [(PKPaymentWebServiceRegion *)self inAppPaymentServicesURL];
+  [v3 appendFormat:@"inAppPaymentServicesURL: '%@' (resolved '%@'); ", inAppPaymentServicesURL, inAppPaymentServicesURL];
 
   [v3 appendFormat:@"paymentServicesMerchantURL: '%@'; ", self->_paymentServicesMerchantURL];
   [v3 appendFormat:@"trustedServiceManagerURL: '%@'; ", self->_trustedServiceManagerURL];
@@ -553,51 +553,51 @@ id __70__PKPaymentWebServiceRegion_initWithDictionary_hasPeerPaymentAccount___bl
   return v6;
 }
 
-- (id)regionBySettingLastUpdatedTag:(id)a3
+- (id)regionBySettingLastUpdatedTag:(id)tag
 {
-  v4 = a3;
+  tagCopy = tag;
   v5 = [(PKPaymentWebServiceRegion *)self copy];
   v6 = v5[24];
-  v5[24] = v4;
+  v5[24] = tagCopy;
 
   return v5;
 }
 
-- (id)regionBySettingOutstandingCheckInAction:(int64_t)a3 lastDeviceCheckInBuildVersion:(id)a4
+- (id)regionBySettingOutstandingCheckInAction:(int64_t)action lastDeviceCheckInBuildVersion:(id)version
 {
-  v6 = a4;
+  versionCopy = version;
   v7 = [(PKPaymentWebServiceRegion *)self copy];
-  v7[27] = a3;
+  v7[27] = action;
   v8 = v7[25];
-  v7[25] = v6;
+  v7[25] = versionCopy;
 
   return v7;
 }
 
-- (id)regionBySettingLastDeviceCheckInBuildVersion:(id)a3
+- (id)regionBySettingLastDeviceCheckInBuildVersion:(id)version
 {
-  v4 = a3;
+  versionCopy = version;
   v5 = [(PKPaymentWebServiceRegion *)self copy];
   v6 = v5[25];
-  v5[25] = v4;
+  v5[25] = versionCopy;
 
   return v5;
 }
 
-- (id)regionBySettingLastDeviceUpgradeTaskBuildVersion:(id)a3
+- (id)regionBySettingLastDeviceUpgradeTaskBuildVersion:(id)version
 {
-  v4 = a3;
+  versionCopy = version;
   v5 = [(PKPaymentWebServiceRegion *)self copy];
   v6 = v5[26];
-  v5[26] = v4;
+  v5[26] = versionCopy;
 
   return v5;
 }
 
-- (id)regionBySettingConsistencyCheckBackoffLevel:(int64_t)a3
+- (id)regionBySettingConsistencyCheckBackoffLevel:(int64_t)level
 {
   v4 = [(PKPaymentWebServiceRegion *)self copy];
-  v4[28] = a3;
+  v4[28] = level;
 
   return v4;
 }

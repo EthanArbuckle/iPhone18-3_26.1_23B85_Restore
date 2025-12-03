@@ -1,10 +1,10 @@
 @interface COSPasskeyEntryViewController
 - (COSPasskeyEntryViewController)init;
 - (void)returnToPasskeyEntry;
-- (void)textDidChange:(id)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)textDidChange:(id)change;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)viewWillLayoutSubviews;
 @end
 
@@ -69,21 +69,21 @@
   return v2;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = COSPasskeyEntryViewController;
-  [(COSPasskeyEntryViewController *)&v5 viewWillAppear:a3];
+  [(COSPasskeyEntryViewController *)&v5 viewWillAppear:appear];
   [(UITextField *)self->_passkeyField becomeFirstResponder];
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 addObserver:self selector:"textDidChange:" name:UITextFieldTextDidChangeNotification object:self->_passkeyField];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = COSPasskeyEntryViewController;
-  [(COSPasskeyEntryViewController *)&v5 viewDidDisappear:a3];
+  [(COSPasskeyEntryViewController *)&v5 viewDidDisappear:disappear];
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 removeObserver:self name:UITextFieldTextDidChangeNotification object:self->_passkeyField];
 }
@@ -93,35 +93,35 @@
   v9.receiver = self;
   v9.super_class = COSPasskeyEntryViewController;
   [(COSPasskeyEntryViewController *)&v9 viewDidLoad];
-  v3 = [(COSPasskeyEntryViewController *)self view];
-  [v3 addSubview:self->_instructionLabel];
+  view = [(COSPasskeyEntryViewController *)self view];
+  [view addSubview:self->_instructionLabel];
 
-  v4 = [(COSPasskeyEntryViewController *)self view];
-  [v4 addSubview:self->_passkeyField];
+  view2 = [(COSPasskeyEntryViewController *)self view];
+  [view2 addSubview:self->_passkeyField];
 
-  v5 = [(COSPasskeyEntryViewController *)self view];
-  [v5 addSubview:self->_pinKeyView];
+  view3 = [(COSPasskeyEntryViewController *)self view];
+  [view3 addSubview:self->_pinKeyView];
 
-  v6 = [(COSPasskeyEntryViewController *)self view];
-  [v6 addSubview:self->_activityView];
+  view4 = [(COSPasskeyEntryViewController *)self view];
+  [view4 addSubview:self->_activityView];
 
-  v7 = [(COSPasskeyEntryViewController *)self view];
+  view5 = [(COSPasskeyEntryViewController *)self view];
   v8 = BPSBackgroundColor();
-  [v7 setBackgroundColor:v8];
+  [view5 setBackgroundColor:v8];
 }
 
 - (void)viewWillLayoutSubviews
 {
-  v3 = [(COSPasskeyEntryViewController *)self view];
-  [v3 bounds];
+  view = [(COSPasskeyEntryViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   rect_16 = v8;
   v11 = v10;
 
-  v12 = [(COSPasskeyEntryViewController *)self view];
-  [v12 safeAreaInsets];
+  view2 = [(COSPasskeyEntryViewController *)self view];
+  [view2 safeAreaInsets];
   v14 = v13;
 
   v32.origin.x = v5;
@@ -173,22 +173,22 @@
   [(UIActivityIndicatorView *)activityView setFrame:v28, MinY, v23, v25];
 }
 
-- (void)textDidChange:(id)a3
+- (void)textDidChange:(id)change
 {
-  v4 = [(UITextField *)self->_passkeyField text];
-  v5 = [v4 length];
+  text = [(UITextField *)self->_passkeyField text];
+  v5 = [text length];
 
   pinKeyView = self->_pinKeyView;
-  v7 = [(UITextField *)self->_passkeyField text];
-  [(COSPinKeyView *)pinKeyView setDigits:v7];
+  text2 = [(UITextField *)self->_passkeyField text];
+  [(COSPinKeyView *)pinKeyView setDigits:text2];
 
   [(COSPinKeyView *)self->_pinKeyView setCodeLength:v5];
   v8 = pbb_setupflow_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(UITextField *)self->_passkeyField text];
+    text3 = [(UITextField *)self->_passkeyField text];
     *buf = 138412290;
-    v18 = v9;
+    v18 = text3;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Passkey Text Did Change: (%@)", buf, 0xCu);
   }
 
@@ -197,15 +197,15 @@
     v10 = +[NSNotificationCenter defaultCenter];
     [v10 removeObserver:self name:UITextFieldTextDidChangeNotification object:self->_passkeyField];
 
-    v11 = [(UITextField *)self->_passkeyField text];
-    [(COSPasskeyEntryViewController *)self enteredPasskey:v11];
+    text4 = [(UITextField *)self->_passkeyField text];
+    [(COSPasskeyEntryViewController *)self enteredPasskey:text4];
 
     v12 = pbb_setupflow_log();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [(UITextField *)self->_passkeyField text];
+      text5 = [(UITextField *)self->_passkeyField text];
       *buf = 138412290;
-      v18 = v13;
+      v18 = text5;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Passkey Entered: (%@)", buf, 0xCu);
     }
 
@@ -217,9 +217,9 @@
     v16[3] = &unk_1002682F0;
     v16[4] = self;
     [UIView animateWithDuration:v16 animations:0.25];
-    v14 = [(COSPasskeyEntryViewController *)self navigationItem];
-    v15 = [v14 rightBarButtonItem];
-    [v15 setEnabled:0];
+    navigationItem = [(COSPasskeyEntryViewController *)self navigationItem];
+    rightBarButtonItem = [navigationItem rightBarButtonItem];
+    [rightBarButtonItem setEnabled:0];
   }
 }
 

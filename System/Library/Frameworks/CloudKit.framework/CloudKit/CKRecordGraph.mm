@@ -1,17 +1,17 @@
 @interface CKRecordGraph
-+ (id)topologicallySortRecords:(id)a3 withError:(id *)a4;
-- (BOOL)addRecords:(id)a3 error:(id *)a4;
++ (id)topologicallySortRecords:(id)records withError:(id *)error;
+- (BOOL)addRecords:(id)records error:(id *)error;
 - (CKRecordGraph)init;
 - (id)description;
-- (id)recordsByTopologicalSortWithError:(id *)a3;
+- (id)recordsByTopologicalSortWithError:(id *)error;
 @end
 
 @implementation CKRecordGraph
 
-- (BOOL)addRecords:(id)a3 error:(id *)a4
+- (BOOL)addRecords:(id)records error:(id *)error
 {
   v152 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  recordsCopy = records;
   v6 = objc_opt_new();
   v7 = objc_opt_new();
   v121 = objc_opt_new();
@@ -19,7 +19,7 @@
   v144 = 0u;
   v145 = 0u;
   v146 = 0u;
-  v8 = v5;
+  v8 = recordsCopy;
   v10 = objc_msgSend_countByEnumeratingWithState_objects_count_(v8, v9, &v143, v151, 16);
   v123 = v7;
   v115 = v8;
@@ -301,10 +301,10 @@ LABEL_3:
   }
 
   v107 = v121;
-  if (a4)
+  if (error)
   {
     v110 = objc_msgSend_recordID(v16, v21, v22);
-    *a4 = objc_msgSend_errorWithDomain_code_format_(CKPrettyError, v111, @"CKInternalErrorDomain", 1017, @"Asked to sort multiple records with identical recordID: %@", v110);
+    *error = objc_msgSend_errorWithDomain_code_format_(CKPrettyError, v111, @"CKInternalErrorDomain", 1017, @"Asked to sort multiple records with identical recordID: %@", v110);
   }
 
   v109 = v115;
@@ -332,7 +332,7 @@ LABEL_65:
   return v2;
 }
 
-- (id)recordsByTopologicalSortWithError:(id *)a3
+- (id)recordsByTopologicalSortWithError:(id *)error
 {
   v54 = *MEMORY[0x1E69E9840];
   if (self)
@@ -344,14 +344,14 @@ LABEL_65:
       goto LABEL_33;
     }
 
-    v48 = a3;
+    errorCopy2 = error;
     v6 = objc_opt_new();
     objc_msgSend_CKFilter_(self->_nodes, v7, &unk_1EFA30870);
   }
 
   else
   {
-    v48 = a3;
+    errorCopy2 = error;
     v6 = objc_opt_new();
     objc_msgSend_CKFilter_(0, v47, &unk_1EFA30870);
   }
@@ -447,10 +447,10 @@ LABEL_65:
       objc_msgSend_removeAllObjects(0, v41, v42);
     }
 
-    if (v48)
+    if (errorCopy2)
     {
       objc_msgSend_errorWithDomain_code_format_(CKPrettyError, v43, @"CKInternalErrorDomain", 1017, @"Cycle detected in record graph");
-      *v48 = v5 = 0;
+      *errorCopy2 = v5 = 0;
     }
 
     else
@@ -491,12 +491,12 @@ LABEL_33:
   return objc_msgSend_description(self, a2, v2);
 }
 
-+ (id)topologicallySortRecords:(id)a3 withError:(id *)a4
++ (id)topologicallySortRecords:(id)records withError:(id *)error
 {
-  v5 = a3;
+  recordsCopy = records;
   v6 = objc_alloc_init(CKRecordGraph);
   v17 = 0;
-  v8 = objc_msgSend_addRecords_error_(v6, v7, v5, &v17);
+  v8 = objc_msgSend_addRecords_error_(v6, v7, recordsCopy, &v17);
 
   v9 = v17;
   v12 = v9;
@@ -507,7 +507,7 @@ LABEL_33:
     v14 = v16;
 
     v12 = v14;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_7;
     }
@@ -516,7 +516,7 @@ LABEL_33:
   else
   {
     v13 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_7;
     }
@@ -524,7 +524,7 @@ LABEL_33:
 
   if (v12)
   {
-    *a4 = objc_msgSend_CKClientSuitableError(v12, v10, v11);
+    *error = objc_msgSend_CKClientSuitableError(v12, v10, v11);
   }
 
 LABEL_7:

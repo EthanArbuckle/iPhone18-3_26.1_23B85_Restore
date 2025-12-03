@@ -1,6 +1,6 @@
 @interface MultiPlayerContainerGradientView
 + (Class)layerClass;
-- (void)layoutSublayersOfLayer:(id)a3;
+- (void)layoutSublayersOfLayer:(id)layer;
 @end
 
 @implementation MultiPlayerContainerGradientView
@@ -12,10 +12,10 @@
   return swift_getObjCClassFromMetadata();
 }
 
-- (void)layoutSublayersOfLayer:(id)a3
+- (void)layoutSublayersOfLayer:(id)layer
 {
-  v4 = a3;
-  v5 = self;
+  layerCopy = layer;
+  selfCopy = self;
   v6 = OUTLINED_FUNCTION_1_26();
   sub_1E3FD78C0(v6);
 }

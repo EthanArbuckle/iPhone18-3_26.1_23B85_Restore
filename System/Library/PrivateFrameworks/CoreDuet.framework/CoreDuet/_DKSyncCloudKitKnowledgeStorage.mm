@@ -1,68 +1,68 @@
 @interface _DKSyncCloudKitKnowledgeStorage
-+ (id)deviceIDFromZoneID:(id)a3;
++ (id)deviceIDFromZoneID:(id)d;
 + (id)sharedInstance;
-+ (id)zoneIDWithDeviceID:(id)a3;
-+ (void)setMySyncZoneID:(uint64_t)a1;
-- (BOOL)hasAdditionsFlagForPeer:(id)a3;
-- (BOOL)hasDeletionsFlagForPeer:(id)a3;
++ (id)zoneIDWithDeviceID:(id)d;
++ (void)setMySyncZoneID:(uint64_t)d;
+- (BOOL)hasAdditionsFlagForPeer:(id)peer;
+- (BOOL)hasDeletionsFlagForPeer:(id)peer;
 - (_DKSyncCloudKitKnowledgeStorage)init;
-- (id)_handleAnySpecialnessWithOperationError:(id *)a1;
-- (id)_previousServerChangeTokenKeyForRecordZoneID:(uint64_t)a1;
+- (id)_handleAnySpecialnessWithOperationError:(id *)error;
+- (id)_previousServerChangeTokenKeyForRecordZoneID:(uint64_t)d;
 - (id)executionCriteriaForUpdateSourceDeviceIdentifiersPeriodicJob;
 - (id)name;
 - (int64_t)transportType;
-- (uint64_t)_queueOperationForPrivateCloudDatabase:(int)a3 dependent:(void *)a4 policy:(void *)a5 error:;
-- (uint64_t)hasZoneAdditionChangesForZone:(uint64_t)a1;
-- (uint64_t)hasZoneDeletionChangesForZone:(uint64_t)a1;
-- (uint64_t)populateLastSeenDateIfNeededByPeer:(uint64_t)a1;
+- (uint64_t)_queueOperationForPrivateCloudDatabase:(int)database dependent:(void *)dependent policy:(void *)policy error:;
+- (uint64_t)hasZoneAdditionChangesForZone:(uint64_t)zone;
+- (uint64_t)hasZoneDeletionChangesForZone:(uint64_t)zone;
+- (uint64_t)populateLastSeenDateIfNeededByPeer:(uint64_t)peer;
 - (uint64_t)scheduleRetryUpdateSourceDeviceIdentifiers;
 - (uint64_t)startShouldUpdateSourceDeviceIdentifiers;
-- (void)_cloudSyncAvailabilityDidChange:(id)a3;
+- (void)_cloudSyncAvailabilityDidChange:(id)change;
 - (void)_createPushConnection;
-- (void)_createZoneWithZoneID:(void *)a3 completion:;
-- (void)_deleteZoneWithZoneID:(void *)a3 completion:;
-- (void)_performThrottledUpdateSourceDeviceIdentifiersWithCompletion:(void *)a1;
+- (void)_createZoneWithZoneID:(void *)d completion:;
+- (void)_deleteZoneWithZoneID:(void *)d completion:;
+- (void)_performThrottledUpdateSourceDeviceIdentifiersWithCompletion:(void *)completion;
 - (void)_registerCloudSyncAvailablityObserver;
 - (void)_registerDatabaseChangesSubscription;
-- (void)_resetPreviousServerChangeTokenForRecordZoneID:(uint64_t)a1;
+- (void)_resetPreviousServerChangeTokenForRecordZoneID:(uint64_t)d;
 - (void)_unregisterCloudSyncAvailablityObserver;
-- (void)addSourceDeviceIdentifierWithRecordZoneID:(uint64_t)a1;
+- (void)addSourceDeviceIdentifierWithRecordZoneID:(uint64_t)d;
 - (void)cancelOutstandingOperations;
 - (void)clearPrewarmedFlag;
 - (void)commitFetchDatabaseChangesServerChangeToken;
-- (void)configureCloudPseudoPeerWithMySyncZoneID:(id *)a1;
-- (void)configurePeerWithSourceDeviceID:(void *)a3 zoneID:;
-- (void)connection:(id)a3 didReceiveIncomingMessage:(id)a4;
-- (void)connection:(id)a3 didReceivePublicToken:(id)a4;
+- (void)configureCloudPseudoPeerWithMySyncZoneID:(id *)d;
+- (void)configurePeerWithSourceDeviceID:(void *)d zoneID:;
+- (void)connection:(id)connection didReceiveIncomingMessage:(id)message;
+- (void)connection:(id)connection didReceivePublicToken:(id)token;
 - (void)dealloc;
-- (void)fastForwardPastDeletionsInNewZone:(void *)a3 sourceDeviceID:;
-- (void)fetchChangedZonesWithCompletion:(id *)a1;
-- (void)fetchEventsFromPeer:(id)a3 windows:(id)a4 streamNames:(id)a5 limit:(unint64_t)a6 fetchOrder:(int64_t)a7 highPriority:(BOOL)a8 completion:(id)a9;
-- (void)fetchSourceDeviceIDFromPeer:(id)a3 highPriority:(BOOL)a4 completion:(id)a5;
+- (void)fastForwardPastDeletionsInNewZone:(void *)zone sourceDeviceID:;
+- (void)fetchChangedZonesWithCompletion:(id *)completion;
+- (void)fetchEventsFromPeer:(id)peer windows:(id)windows streamNames:(id)names limit:(unint64_t)limit fetchOrder:(int64_t)order highPriority:(BOOL)priority completion:(id)completion;
+- (void)fetchSourceDeviceIDFromPeer:(id)peer highPriority:(BOOL)priority completion:(id)completion;
 - (void)finishStartBecauseCloudIsAvailable;
-- (void)finishStartOrError:(uint64_t)a1;
-- (void)finishUpdatingSourceDeviceIdentifiersWithZoneIDsBySourceDeviceID:(void *)a3 orError:(void *)a4 completion:;
-- (void)performUpdateSourceDeviceIdentifiersWithCompletion:(uint64_t)a1;
-- (void)prewarmFetchWithCompletion:(id)a3;
-- (void)registerUpdateSourceDeviceIdentifiersPeriodicJobWithCompletion:(id *)a1;
-- (void)removeSourceDeviceIdentifierWithRecordZoneID:(id *)a1;
-- (void)runUpdateSourceDeviceIdentifiersPeriodicJobWithCompletion:(uint64_t)a1;
-- (void)setFetchDelegate:(id)a3;
-- (void)setHasAdditionsFlag:(BOOL)a3 forPeer:(id)a4;
-- (void)setHasDeletionsFlag:(BOOL)a3 forPeer:(id)a4;
-- (void)setHasZoneAdditionChanges:(uint64_t)a3 forZone:(uint64_t)a4;
-- (void)setHasZoneDeletionChanges:(uint64_t)a3 forZone:(uint64_t)a4;
+- (void)finishStartOrError:(uint64_t)error;
+- (void)finishUpdatingSourceDeviceIdentifiersWithZoneIDsBySourceDeviceID:(void *)d orError:(void *)error completion:;
+- (void)performUpdateSourceDeviceIdentifiersWithCompletion:(uint64_t)completion;
+- (void)prewarmFetchWithCompletion:(id)completion;
+- (void)registerUpdateSourceDeviceIdentifiersPeriodicJobWithCompletion:(id *)completion;
+- (void)removeSourceDeviceIdentifierWithRecordZoneID:(id *)d;
+- (void)runUpdateSourceDeviceIdentifiersPeriodicJobWithCompletion:(uint64_t)completion;
+- (void)setFetchDelegate:(id)delegate;
+- (void)setHasAdditionsFlag:(BOOL)flag forPeer:(id)peer;
+- (void)setHasDeletionsFlag:(BOOL)flag forPeer:(id)peer;
+- (void)setHasZoneAdditionChanges:(uint64_t)changes forZone:(uint64_t)zone;
+- (void)setHasZoneDeletionChanges:(uint64_t)changes forZone:(uint64_t)zone;
 - (void)setPrewarmedFlag;
-- (void)setZoneIDsBySourceDeviceID:(uint64_t)a1;
+- (void)setZoneIDsBySourceDeviceID:(uint64_t)d;
 - (void)start;
 - (void)startShouldUpdateSourceDeviceIdentifiers;
-- (void)syncDownAdditionsFromCloudWithZoneID:(void *)a3 windows:(void *)a4 streamNames:(unint64_t)a5 limit:(void *)a6 fetchOrder:(void *)a7 completion:;
-- (void)syncDownDeletionsFromCloudWithZoneID:(uint64_t)a3 completion:(uint64_t)a4;
-- (void)syncDownDeletionsFromCloudWithZoneID:(void *)a3 deletedRecordIDsAndTypes:(void *)a4 attempt:(void *)a5 completion:;
-- (void)syncUpToCloudWithRecordsToSave:(void *)a3 recordIDsToDelete:(void *)a4 completion:;
+- (void)syncDownAdditionsFromCloudWithZoneID:(void *)d windows:(void *)windows streamNames:(unint64_t)names limit:(void *)limit fetchOrder:(void *)order completion:;
+- (void)syncDownDeletionsFromCloudWithZoneID:(uint64_t)d completion:(uint64_t)completion;
+- (void)syncDownDeletionsFromCloudWithZoneID:(void *)d deletedRecordIDsAndTypes:(void *)types attempt:(void *)attempt completion:;
+- (void)syncUpToCloudWithRecordsToSave:(void *)save recordIDsToDelete:(void *)delete completion:;
 - (void)unregisterUpdateSourceDeviceIdentifiersPeriodicJob;
-- (void)updateSourceDeviceIdentifiersWithRecordZonesByZoneID:(void *)a3 completion:;
-- (void)updateStorageWithAddedEvents:(id)a3 deletedEventIDs:(id)a4 highPriority:(BOOL)a5 completion:(id)a6;
+- (void)updateSourceDeviceIdentifiersWithRecordZonesByZoneID:(void *)d completion:;
+- (void)updateStorageWithAddedEvents:(id)events deletedEventIDs:(id)ds highPriority:(BOOL)priority completion:(id)completion;
 @end
 
 @implementation _DKSyncCloudKitKnowledgeStorage
@@ -80,7 +80,7 @@
   return v0;
 }
 
-+ (void)setMySyncZoneID:(uint64_t)a1
++ (void)setMySyncZoneID:(uint64_t)d
 {
   v2 = a2;
   objc_opt_self();
@@ -88,25 +88,25 @@
   _DKMySyncZoneID = v2;
 }
 
-+ (id)zoneIDWithDeviceID:(id)a3
++ (id)zoneIDWithDeviceID:(id)d
 {
-  v3 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@", @"source-device-id:", a3];
+  v3 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@", @"source-device-id:", d];
   v4 = objc_alloc(MEMORY[0x1E695BA90]);
   v5 = [v4 initWithZoneName:v3 ownerName:*MEMORY[0x1E695B790]];
 
   return v5;
 }
 
-+ (id)deviceIDFromZoneID:(id)a3
++ (id)deviceIDFromZoneID:(id)d
 {
-  v3 = a3;
-  v4 = [v3 zoneName];
-  v5 = [v4 hasPrefix:@"source-device-id:"];
+  dCopy = d;
+  zoneName = [dCopy zoneName];
+  v5 = [zoneName hasPrefix:@"source-device-id:"];
 
   if (v5)
   {
-    v6 = [v3 zoneName];
-    v7 = [v6 substringFromIndex:{objc_msgSend(@"source-device-id:", "length")}];
+    zoneName2 = [dCopy zoneName];
+    v7 = [zoneName2 substringFromIndex:{objc_msgSend(@"source-device-id:", "length")}];
   }
 
   else
@@ -128,9 +128,9 @@
     recordZonesByZoneID = v2->_recordZonesByZoneID;
     v2->_recordZonesByZoneID = v3;
 
-    v5 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     outstandingOperations = v2->_outstandingOperations;
-    v2->_outstandingOperations = v5;
+    v2->_outstandingOperations = weakObjectsHashTable;
   }
 
   return v2;
@@ -158,11 +158,11 @@
 - (uint64_t)startShouldUpdateSourceDeviceIdentifiers
 {
   v14 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    if ([*(a1 + 32) isSingleDevice])
+    if ([*(self + 32) isSingleDevice])
     {
-      v2 = [*(a1 + 16) numberForKey:@"HaveCreatedMyZone"];
+      v2 = [*(self + 16) numberForKey:@"HaveCreatedMyZone"];
       v3 = v2;
       if (v2 && [v2 BOOLValue])
       {
@@ -170,7 +170,7 @@
         v11 = &v10;
         v12 = 0x2020000000;
         v13 = 0;
-        v4 = *(a1 + 24);
+        v4 = *(self + 24);
         v9[0] = MEMORY[0x1E69E9820];
         v9[1] = 3221225472;
         v9[2] = __75___DKSyncCloudKitKnowledgeStorage_startShouldUpdateSourceDeviceIdentifiers__block_invoke;
@@ -213,15 +213,15 @@
   return v5;
 }
 
-- (void)registerUpdateSourceDeviceIdentifiersPeriodicJobWithCompletion:(id *)a1
+- (void)registerUpdateSourceDeviceIdentifiersPeriodicJobWithCompletion:(id *)completion
 {
   v3 = a2;
-  if (a1)
+  if (completion)
   {
     v4 = +[_DKSyncSerializer underlyingQueue];
     dispatch_assert_queue_V2(v4);
 
-    if (!a1[5])
+    if (!completion[5])
     {
       v5 = +[_CDLogging syncChannel];
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -229,24 +229,24 @@
         [_DKSyncCloudKitKnowledgeStorage registerUpdateSourceDeviceIdentifiersPeriodicJobWithCompletion:];
       }
 
-      objc_initWeak(&location, a1);
+      objc_initWeak(&location, completion);
       v12 = MEMORY[0x1E69E9820];
       v13 = 3221225472;
       v14 = __98___DKSyncCloudKitKnowledgeStorage_registerUpdateSourceDeviceIdentifiersPeriodicJobWithCompletion___block_invoke;
       v15 = &unk_1E7367E80;
       objc_copyWeak(&v18, &location);
-      v16 = a1;
+      completionCopy = completion;
       v17 = v3;
       v6 = MEMORY[0x193B00C50](&v12);
-      v7 = [(_DKSyncCloudKitKnowledgeStorage *)a1 executionCriteriaForUpdateSourceDeviceIdentifiersPeriodicJob];
+      executionCriteriaForUpdateSourceDeviceIdentifiersPeriodicJob = [(_DKSyncCloudKitKnowledgeStorage *)completion executionCriteriaForUpdateSourceDeviceIdentifiersPeriodicJob];
       v8 = [_DKSyncSerializer underlyingQueue:v12];
       v9 = [_CDPeriodicSchedulerJob jobWithInterval:@"com.apple.coreduet.sync.update-source-device-identifiers" schedulerJobName:v8 queue:1 asynchronousHandler:v6 handler:30.0];
-      v10 = a1[5];
-      a1[5] = v9;
+      v10 = completion[5];
+      completion[5] = v9;
 
-      [a1[5] setExecutionCriteria:v7];
+      [completion[5] setExecutionCriteria:executionCriteriaForUpdateSourceDeviceIdentifiersPeriodicJob];
       v11 = +[_CDPeriodicScheduler sharedInstance];
-      [v11 registerJob:a1[5]];
+      [v11 registerJob:completion[5]];
 
       objc_destroyWeak(&v18);
       objc_destroyWeak(&location);
@@ -260,8 +260,8 @@
   v3 = +[_DKSyncSerializer underlyingQueue];
   dispatch_assert_queue_V2(v3);
 
-  v4 = [(NSHashTable *)self->_outstandingOperations allObjects];
-  v5 = [v4 copy];
+  allObjects = [(NSHashTable *)self->_outstandingOperations allObjects];
+  v5 = [allObjects copy];
 
   [(NSHashTable *)self->_outstandingOperations removeAllObjects];
   v15 = 0u;
@@ -299,7 +299,7 @@
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_cloudSyncAvailabilityDidChange:(id)a3
+- (void)_cloudSyncAvailabilityDidChange:(id)change
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
@@ -309,12 +309,12 @@
   [_DKSyncSerializer performAsyncBlock:v3];
 }
 
-- (void)_createZoneWithZoneID:(void *)a3 completion:
+- (void)_createZoneWithZoneID:(void *)d completion:
 {
   v30[1] = *MEMORY[0x1E69E9840];
   v22 = a2;
-  v5 = a3;
-  if (a1)
+  dCopy = d;
+  if (self)
   {
     v6 = +[_DKSyncSerializer underlyingQueue];
     dispatch_assert_queue_V2(v6);
@@ -333,8 +333,8 @@
     v12 = objc_opt_new();
     [(_DKModifyRecordZonesOperation *)v11 setGroup:v12];
 
-    v13 = [(_DKModifyRecordZonesOperation *)v11 group];
-    [v13 setName:@"CreateZone"];
+    group = [(_DKModifyRecordZonesOperation *)v11 group];
+    [group setName:@"CreateZone"];
 
     objc_initWeak(&location, v11);
     v24[0] = MEMORY[0x1E69E9820];
@@ -342,10 +342,10 @@
     v24[2] = __68___DKSyncCloudKitKnowledgeStorage__createZoneWithZoneID_completion___block_invoke;
     v24[3] = &unk_1E7367B10;
     objc_copyWeak(&v28, &location);
-    v24[4] = a1;
+    v24[4] = self;
     v14 = v9;
     v25 = v14;
-    v15 = v5;
+    v15 = dCopy;
     v27 = v15;
     v16 = v7;
     v26 = v16;
@@ -359,7 +359,7 @@
     }
 
     v23 = 0;
-    v18 = [(_DKSyncCloudKitKnowledgeStorage *)a1 _queueOperationForPrivateCloudDatabase:v11 dependent:1 policy:0 error:&v23];
+    v18 = [(_DKSyncCloudKitKnowledgeStorage *)self _queueOperationForPrivateCloudDatabase:v11 dependent:1 policy:0 error:&v23];
     v19 = v23;
     if (v15)
     {
@@ -376,9 +376,9 @@
       (*(v15 + 2))(v15, v19);
     }
 
-    if (([*(a1 + 16) BOOLForKey:{@"DidRegisterDatabaseChangesSubscription", v22}] & 1) == 0)
+    if (([*(self + 16) BOOLForKey:{@"DidRegisterDatabaseChangesSubscription", v22}] & 1) == 0)
     {
-      [(_DKSyncCloudKitKnowledgeStorage *)a1 _registerDatabaseChangesSubscription];
+      [(_DKSyncCloudKitKnowledgeStorage *)self _registerDatabaseChangesSubscription];
     }
 
     objc_destroyWeak(&v28);
@@ -388,12 +388,12 @@
   v21 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_deleteZoneWithZoneID:(void *)a3 completion:
+- (void)_deleteZoneWithZoneID:(void *)d completion:
 {
   v34[1] = *MEMORY[0x1E69E9840];
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  dCopy = d;
+  if (self)
   {
     v7 = +[_DKSyncSerializer underlyingQueue];
     dispatch_assert_queue_V2(v7);
@@ -416,8 +416,8 @@
     v13 = objc_opt_new();
     [(_DKModifyRecordZonesOperation *)v12 setGroup:v13];
 
-    v14 = [(_DKModifyRecordZonesOperation *)v12 group];
-    [v14 setName:@"DeleteZone"];
+    group = [(_DKModifyRecordZonesOperation *)v12 group];
+    [group setName:@"DeleteZone"];
 
     objc_initWeak(&location, v12);
     v24[0] = MEMORY[0x1E69E9820];
@@ -425,10 +425,10 @@
     v24[2] = __68___DKSyncCloudKitKnowledgeStorage__deleteZoneWithZoneID_completion___block_invoke;
     v24[3] = &unk_1E7367B10;
     objc_copyWeak(&v28, &location);
-    v24[4] = a1;
+    v24[4] = self;
     v15 = v9;
     v25 = v15;
-    v16 = v6;
+    v16 = dCopy;
     v27 = v16;
     v17 = v8;
     v26 = v17;
@@ -442,7 +442,7 @@
     }
 
     v23 = 0;
-    v19 = [(_DKSyncCloudKitKnowledgeStorage *)a1 _queueOperationForPrivateCloudDatabase:v12 dependent:1 policy:0 error:&v23];
+    v19 = [(_DKSyncCloudKitKnowledgeStorage *)self _queueOperationForPrivateCloudDatabase:v12 dependent:1 policy:0 error:&v23];
     v20 = v23;
     if (v16)
     {
@@ -466,11 +466,11 @@
   v22 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_performThrottledUpdateSourceDeviceIdentifiersWithCompletion:(void *)a1
+- (void)_performThrottledUpdateSourceDeviceIdentifiersWithCompletion:(void *)completion
 {
   location[4] = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (completion)
   {
     v4 = +[_DKSyncSerializer underlyingQueue];
     dispatch_assert_queue_V2(v4);
@@ -486,10 +486,10 @@
     v8 = objc_opt_new();
     [v7 setGroup:v8];
 
-    v9 = [v7 group];
-    [v9 setName:@"UpdateSourceDeviceIdentifiers"];
+    group = [v7 group];
+    [group setName:@"UpdateSourceDeviceIdentifiers"];
 
-    objc_initWeak(location, a1);
+    objc_initWeak(location, completion);
     objc_initWeak(&from, v7);
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
@@ -497,7 +497,7 @@
     v18[3] = &unk_1E7367A98;
     objc_copyWeak(&v21, location);
     objc_copyWeak(&v22, &from);
-    v18[4] = a1;
+    v18[4] = completion;
     v10 = v3;
     v20 = v10;
     v11 = v5;
@@ -512,7 +512,7 @@
     }
 
     v17 = 0;
-    v13 = [(_DKSyncCloudKitKnowledgeStorage *)a1 _queueOperationForPrivateCloudDatabase:v7 dependent:1 policy:0 error:&v17];
+    v13 = [(_DKSyncCloudKitKnowledgeStorage *)completion _queueOperationForPrivateCloudDatabase:v7 dependent:1 policy:0 error:&v17];
     v14 = v17;
     if (v10)
     {
@@ -538,11 +538,11 @@
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchChangedZonesWithCompletion:(id *)a1
+- (void)fetchChangedZonesWithCompletion:(id *)completion
 {
   v51 = *MEMORY[0x1E69E9840];
   v27 = a2;
-  if (a1)
+  if (completion)
   {
     v3 = +[_DKSyncSerializer underlyingQueue];
     dispatch_assert_queue_V2(v3);
@@ -554,8 +554,8 @@
       [_DKSyncCloudKitKnowledgeStorage fetchChangedZonesWithCompletion:];
     }
 
-    v6 = a1[2];
-    v7 = a1[16];
+    v6 = completion[2];
+    v7 = completion[16];
     if (!v7)
     {
       v8 = [v6 dataForKey:{@"FetchDatabaseChangesServerChangeToken", v27}];
@@ -582,7 +582,7 @@
             _os_log_debug_impl(&dword_191750000, v11, OS_LOG_TYPE_DEBUG, "%{public}@: Token %{public}@ is %@ (%@)", buf, 0x2Au);
           }
 
-          objc_storeStrong(a1 + 16, v7);
+          objc_storeStrong(completion + 16, v7);
         }
 
         else
@@ -603,7 +603,7 @@
             [_DKSyncCloudKitKnowledgeStorage fetchChangedZonesWithCompletion:];
           }
 
-          [a1[2] removeObjectForKey:@"FetchDatabaseChangesServerChangeToken"];
+          [completion[2] removeObjectForKey:@"FetchDatabaseChangesServerChangeToken"];
         }
       }
 
@@ -623,38 +623,38 @@
     v16 = objc_opt_new();
     [(_DKFetchDatabaseChangesOperation *)v15 setGroup:v16];
 
-    v17 = [(_DKFetchDatabaseChangesOperation *)v15 group];
-    [v17 setName:@"FetchChangedZones"];
+    group = [(_DKFetchDatabaseChangesOperation *)v15 group];
+    [group setName:@"FetchChangedZones"];
 
     [(_DKFetchDatabaseChangesOperation *)v15 setFetchAllChanges:1];
-    objc_initWeak(&location, a1);
+    objc_initWeak(&location, completion);
     objc_initWeak(&from, v15);
     v38[0] = MEMORY[0x1E69E9820];
     v38[1] = 3221225472;
     v38[2] = __67___DKSyncCloudKitKnowledgeStorage_fetchChangedZonesWithCompletion___block_invoke;
     v38[3] = &unk_1E7367B88;
-    v38[4] = a1;
+    v38[4] = completion;
     objc_copyWeak(&v39, &location);
     [(_DKFetchDatabaseChangesOperation *)v15 setRecordZoneWithIDChangedBlock:v38];
     v36[0] = MEMORY[0x1E69E9820];
     v36[1] = 3221225472;
     v36[2] = __67___DKSyncCloudKitKnowledgeStorage_fetchChangedZonesWithCompletion___block_invoke_182;
     v36[3] = &unk_1E7367B88;
-    v36[4] = a1;
+    v36[4] = completion;
     objc_copyWeak(&v37, &location);
     [(_DKFetchDatabaseChangesOperation *)v15 setRecordZoneWithIDWasDeletedBlock:v36];
     v35[0] = MEMORY[0x1E69E9820];
     v35[1] = 3221225472;
     v35[2] = __67___DKSyncCloudKitKnowledgeStorage_fetchChangedZonesWithCompletion___block_invoke_184;
     v35[3] = &unk_1E7367BB0;
-    v35[4] = a1;
+    v35[4] = completion;
     [(_DKFetchDatabaseChangesOperation *)v15 setChangeTokenUpdatedBlock:v35];
     v29[0] = MEMORY[0x1E69E9820];
     v29[1] = 3221225472;
     v29[2] = __67___DKSyncCloudKitKnowledgeStorage_fetchChangedZonesWithCompletion___block_invoke_187;
     v29[3] = &unk_1E7367C00;
     objc_copyWeak(&v33, &from);
-    v29[4] = a1;
+    v29[4] = completion;
     objc_copyWeak(&v34, &location);
     v18 = v6;
     v30 = v18;
@@ -672,7 +672,7 @@
     }
 
     v28 = 0;
-    v22 = [(_DKSyncCloudKitKnowledgeStorage *)a1 _queueOperationForPrivateCloudDatabase:v15 dependent:0 policy:0 error:&v28];
+    v22 = [(_DKSyncCloudKitKnowledgeStorage *)completion _queueOperationForPrivateCloudDatabase:v15 dependent:0 policy:0 error:&v28];
     v23 = v28;
     if (v19)
     {
@@ -700,11 +700,11 @@
   v25 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)hasAdditionsFlagForPeer:(id)a3
+- (BOOL)hasAdditionsFlagForPeer:(id)peer
 {
-  v3 = a3;
-  v4 = [v3 zoneName];
-  if (v4)
+  peerCopy = peer;
+  zoneName = [peerCopy zoneName];
+  if (zoneName)
   {
     [_DKSyncCloudKitKnowledgeStorage hasAdditionsFlagForPeer:];
     v6 = v8;
@@ -724,14 +724,14 @@
   return v6;
 }
 
-- (void)setHasAdditionsFlag:(BOOL)a3 forPeer:(id)a4
+- (void)setHasAdditionsFlag:(BOOL)flag forPeer:(id)peer
 {
-  v6 = a4;
-  v7 = [v6 zoneName];
+  peerCopy = peer;
+  zoneName = [peerCopy zoneName];
 
-  if (v7)
+  if (zoneName)
   {
-    [(_DKSyncCloudKitKnowledgeStorage *)v6 setHasAdditionsFlag:a3 forPeer:?];
+    [(_DKSyncCloudKitKnowledgeStorage *)peerCopy setHasAdditionsFlag:flag forPeer:?];
   }
 
   else
@@ -744,11 +744,11 @@
   }
 }
 
-- (BOOL)hasDeletionsFlagForPeer:(id)a3
+- (BOOL)hasDeletionsFlagForPeer:(id)peer
 {
-  v3 = a3;
-  v4 = [v3 zoneName];
-  if (v4)
+  peerCopy = peer;
+  zoneName = [peerCopy zoneName];
+  if (zoneName)
   {
     [_DKSyncCloudKitKnowledgeStorage hasDeletionsFlagForPeer:];
     v6 = v8;
@@ -768,14 +768,14 @@
   return v6;
 }
 
-- (void)setHasDeletionsFlag:(BOOL)a3 forPeer:(id)a4
+- (void)setHasDeletionsFlag:(BOOL)flag forPeer:(id)peer
 {
-  v6 = a4;
-  v7 = [v6 zoneName];
+  peerCopy = peer;
+  zoneName = [peerCopy zoneName];
 
-  if (v7)
+  if (zoneName)
   {
-    [(_DKSyncCloudKitKnowledgeStorage *)v6 setHasDeletionsFlag:a3 forPeer:?];
+    [(_DKSyncCloudKitKnowledgeStorage *)peerCopy setHasDeletionsFlag:flag forPeer:?];
   }
 
   else
@@ -799,66 +799,66 @@
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)prewarmFetchWithCompletion:(id)a3
+- (void)prewarmFetchWithCompletion:(id)completion
 {
-  v7 = a3;
+  completionCopy = completion;
   v4 = +[_DKSyncSerializer underlyingQueue];
   dispatch_assert_queue_V2(v4);
 
   if (self->_isPrewarmed)
   {
-    v5 = v7;
-    if (!v7)
+    v5 = completionCopy;
+    if (!completionCopy)
     {
       goto LABEL_9;
     }
 
-    (*(v7 + 2))(v7, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 
   else if (+[_DKCloudUtilities isSyncAvailableAndEnabled])
   {
-    [(_DKSyncCloudKitKnowledgeStorage *)&self->super.isa fetchChangedZonesWithCompletion:v7];
+    [(_DKSyncCloudKitKnowledgeStorage *)&self->super.isa fetchChangedZonesWithCompletion:completionCopy];
   }
 
   else
   {
-    v5 = v7;
-    if (!v7)
+    v5 = completionCopy;
+    if (!completionCopy)
     {
       goto LABEL_9;
     }
 
     v6 = +[_DKSyncErrors disabled];
-    (*(v7 + 2))(v7, v6);
+    (*(completionCopy + 2))(completionCopy, v6);
   }
 
-  v5 = v7;
+  v5 = completionCopy;
 LABEL_9:
 }
 
-- (void)fetchEventsFromPeer:(id)a3 windows:(id)a4 streamNames:(id)a5 limit:(unint64_t)a6 fetchOrder:(int64_t)a7 highPriority:(BOOL)a8 completion:(id)a9
+- (void)fetchEventsFromPeer:(id)peer windows:(id)windows streamNames:(id)names limit:(unint64_t)limit fetchOrder:(int64_t)order highPriority:(BOOL)priority completion:(id)completion
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a9;
+  peerCopy = peer;
+  windowsCopy = windows;
+  namesCopy = names;
+  completionCopy = completion;
   v18 = +[_DKSyncSerializer underlyingQueue];
   dispatch_assert_queue_V2(v18);
 
   if (+[_DKCloudUtilities isSyncAvailableAndEnabled])
   {
-    v19 = [v14 zoneName];
-    if (v19)
+    zoneName = [peerCopy zoneName];
+    if (zoneName)
     {
       v20 = objc_alloc(MEMORY[0x1E695BA90]);
-      v21 = [v20 initWithZoneName:v19 ownerName:*MEMORY[0x1E695B790]];
+      v21 = [v20 initWithZoneName:zoneName ownerName:*MEMORY[0x1E695B790]];
       v23[0] = MEMORY[0x1E69E9820];
       v23[1] = 3221225472;
       v23[2] = __116___DKSyncCloudKitKnowledgeStorage_fetchEventsFromPeer_windows_streamNames_limit_fetchOrder_highPriority_completion___block_invoke;
       v23[3] = &unk_1E7367C50;
-      v24 = v17;
-      [(_DKSyncCloudKitKnowledgeStorage *)self syncDownAdditionsFromCloudWithZoneID:v21 windows:v15 streamNames:v16 limit:a6 fetchOrder:a7 completion:v23];
+      v24 = completionCopy;
+      [(_DKSyncCloudKitKnowledgeStorage *)self syncDownAdditionsFromCloudWithZoneID:v21 windows:windowsCopy streamNames:namesCopy limit:limit fetchOrder:order completion:v23];
     }
 
     else
@@ -869,46 +869,46 @@ LABEL_9:
         [_DKSyncCloudKitKnowledgeStorage hasAdditionsFlagForPeer:];
       }
 
-      if (!v17)
+      if (!completionCopy)
       {
         goto LABEL_11;
       }
 
       v21 = +[_DKSyncErrors invalidRequest];
-      (*(v17 + 2))(v17, 0, 0, v21);
+      (*(completionCopy + 2))(completionCopy, 0, 0, v21);
     }
 
 LABEL_11:
     goto LABEL_12;
   }
 
-  if (v17)
+  if (completionCopy)
   {
-    v19 = +[_DKSyncErrors disabled];
-    (*(v17 + 2))(v17, 0, 0, v19);
+    zoneName = +[_DKSyncErrors disabled];
+    (*(completionCopy + 2))(completionCopy, 0, 0, zoneName);
     goto LABEL_11;
   }
 
 LABEL_12:
 }
 
-- (void)syncDownAdditionsFromCloudWithZoneID:(void *)a3 windows:(void *)a4 streamNames:(unint64_t)a5 limit:(void *)a6 fetchOrder:(void *)a7 completion:
+- (void)syncDownAdditionsFromCloudWithZoneID:(void *)d windows:(void *)windows streamNames:(unint64_t)names limit:(void *)limit fetchOrder:(void *)order completion:
 {
   v96 = *MEMORY[0x1E69E9840];
   v67 = a2;
-  v68 = a3;
-  v64 = a4;
-  v65 = a7;
-  val = a1;
-  if (a1)
+  dCopy = d;
+  windowsCopy = windows;
+  orderCopy = order;
+  val = self;
+  if (self)
   {
     v63 = os_transaction_create();
     v11 = +[_CDLogging syncChannel];
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
       v53 = [objc_opt_class() description];
-      v54 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v68, "count")}];
-      v55 = _CDPrettyPrintCollection(v64, 0, 0, 0);
+      v54 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(dCopy, "count")}];
+      v55 = _CDPrettyPrintCollection(windowsCopy, 0, 0, 0);
       *buf = 138544130;
       *&buf[4] = v53;
       v86 = 2112;
@@ -920,35 +920,35 @@ LABEL_12:
       _os_log_debug_impl(&dword_191750000, v11, OS_LOG_TYPE_DEBUG, "%{public}@: Syncing down records in %@ windows from %@ for streams %{public}@", buf, 0x2Au);
     }
 
-    if ([v68 count])
+    if ([dCopy count])
     {
-      if ([v68 count] < 2)
+      if ([dCopy count] < 2)
       {
-        v16 = [v68 firstObject];
+        firstObject = [dCopy firstObject];
       }
 
       else
       {
-        v12 = [v68 firstObject];
-        v13 = [(_DKSyncWindow *)v12 startDate];
-        v14 = [v68 lastObject];
-        v15 = [(_DKSyncType *)v14 urgency];
-        v16 = [_DKSyncWindow syncWindowWithStartDate:v13 endDate:v15];
+        firstObject2 = [dCopy firstObject];
+        startDate = [(_DKSyncWindow *)firstObject2 startDate];
+        lastObject = [dCopy lastObject];
+        urgency = [(_DKSyncType *)lastObject urgency];
+        firstObject = [_DKSyncWindow syncWindowWithStartDate:startDate endDate:urgency];
 
         v17 = +[_CDLogging syncChannel];
         if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
         {
           v56 = [objc_opt_class() description];
-          v57 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v68, "count")}];
-          v58 = _CDPrettyPrintCollection(v64, 0, 0, 0);
+          v57 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(dCopy, "count")}];
+          v58 = _CDPrettyPrintCollection(windowsCopy, 0, 0, 0);
           *buf = 138544642;
           *&buf[4] = v56;
           v86 = 2112;
           v87 = v57;
           v88 = 2114;
-          v89 = v16;
+          v89 = firstObject;
           v90 = 2114;
-          v91 = v68;
+          v91 = dCopy;
           v92 = 2112;
           v93 = v67;
           v94 = 2114;
@@ -957,9 +957,9 @@ LABEL_12:
         }
       }
 
-      v18 = [(_DKSyncWindow *)v16 startDate];
-      v19 = [(_DKSyncType *)v16 urgency];
-      if (a6 == 2)
+      startDate2 = [(_DKSyncWindow *)firstObject startDate];
+      urgency2 = [(_DKSyncType *)firstObject urgency];
+      if (limit == 2)
       {
         v20 = @"%K >= %@";
       }
@@ -969,7 +969,7 @@ LABEL_12:
         v20 = @"%K > %@";
       }
 
-      if (a6 == 2)
+      if (limit == 2)
       {
         v21 = @"%K < %@";
       }
@@ -979,48 +979,48 @@ LABEL_12:
         v21 = @"%K <= %@";
       }
 
-      v22 = [MEMORY[0x1E696AE18] predicateWithFormat:v20, @"eventCreationDate", v18];
-      v23 = [MEMORY[0x1E696AE18] predicateWithFormat:v21, @"eventCreationDate", v19];
+      v22 = [MEMORY[0x1E696AE18] predicateWithFormat:v20, @"eventCreationDate", startDate2];
+      v23 = [MEMORY[0x1E696AE18] predicateWithFormat:v21, @"eventCreationDate", urgency2];
       v24 = MEMORY[0x1E696AB28];
       v84[0] = v22;
       v84[1] = v23;
       v25 = [MEMORY[0x1E695DEC8] arrayWithObjects:v84 count:2];
       v26 = [v24 andPredicateWithSubpredicates:v25];
 
-      v27 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K IN %@", @"streamName", v64];
+      windowsCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K IN %@", @"streamName", windowsCopy];
       v28 = MEMORY[0x1E696AB28];
       v83[0] = v26;
-      v83[1] = v27;
+      v83[1] = windowsCopy;
       v29 = [MEMORY[0x1E695DEC8] arrayWithObjects:v83 count:2];
       v61 = [v28 andPredicateWithSubpredicates:v29];
 
-      v60 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"eventCreationDate" ascending:a6 != 2];
+      v60 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"eventCreationDate" ascending:limit != 2];
       v30 = [objc_alloc(MEMORY[0x1E695BA30]) initWithRecordType:@"DKEvent" predicate:v61];
       v82 = v60;
       v31 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v82 count:1];
       [v30 setSortDescriptors:v31];
 
       v32 = @"SyncDownAdditionsFromCloud";
-      if (a5 == 1)
+      if (names == 1)
       {
         v32 = @"QueryRecordFromCloud";
       }
 
       v33 = v32;
       v34 = *MEMORY[0x1E695B7A8];
-      if (a5)
+      if (names)
       {
-        v35 = a5;
+        namesCopy = names;
       }
 
       else
       {
-        v35 = *MEMORY[0x1E695B7A8];
+        namesCopy = *MEMORY[0x1E695B7A8];
       }
 
       if (v34)
       {
-        v36 = v35 > v34;
+        v36 = namesCopy > v34;
       }
 
       else
@@ -1029,22 +1029,22 @@ LABEL_12:
       }
 
       v37 = v36;
-      if (((v35 > 1) & v37) != 0)
+      if (((namesCopy > 1) & v37) != 0)
       {
         v38 = *MEMORY[0x1E695B7A8];
       }
 
       else
       {
-        v38 = v35;
+        v38 = namesCopy;
       }
 
       v39 = [(CKQueryOperation *)[_DKQueryOperation alloc] initWithQuery:v30];
       v40 = objc_opt_new();
       [(_DKQueryOperation *)v39 setGroup:v40];
 
-      v41 = [(_DKQueryOperation *)v39 group];
-      [v41 setName:v33];
+      group = [(_DKQueryOperation *)v39 group];
+      [group setName:v33];
 
       [(_DKQueryOperation *)v39 setAllowsCellularAccess:0];
       [(CKQueryOperation *)v39 setResultsLimit:v38];
@@ -1067,11 +1067,11 @@ LABEL_12:
       v44 = v43;
       v71 = v44;
       v72 = v67;
-      v73 = v68;
+      v73 = dCopy;
       objc_copyWeak(&v76, &from);
       v77[1] = v38;
-      v77[2] = a6;
-      v45 = v65;
+      v77[2] = limit;
+      v45 = orderCopy;
       v75 = v45;
       objc_copyWeak(v77, &location);
       v74 = v63;
@@ -1084,7 +1084,7 @@ LABEL_12:
         [_DKSyncCloudKitKnowledgeStorage syncDownAdditionsFromCloudWithZoneID:windows:streamNames:limit:fetchOrder:completion:];
       }
 
-      v47 = v27;
+      v47 = windowsCopy;
       v48 = [_DKSync2Policy policyForSyncTransportType:4];
       v69 = 0;
       v49 = [(_DKSyncCloudKitKnowledgeStorage *)val _queueOperationForPrivateCloudDatabase:v39 dependent:1 policy:v48 error:&v69];
@@ -1111,7 +1111,7 @@ LABEL_12:
       objc_destroyWeak(&location);
     }
 
-    else if (([_DKSyncCloudKitKnowledgeStorage syncDownAdditionsFromCloudWithZoneID:v65 windows:buf streamNames:? limit:? fetchOrder:? completion:?]& 1) == 0)
+    else if (([_DKSyncCloudKitKnowledgeStorage syncDownAdditionsFromCloudWithZoneID:orderCopy windows:buf streamNames:? limit:? fetchOrder:? completion:?]& 1) == 0)
     {
     }
   }
@@ -1119,13 +1119,13 @@ LABEL_12:
   v52 = *MEMORY[0x1E69E9840];
 }
 
-- (void)syncDownDeletionsFromCloudWithZoneID:(void *)a3 deletedRecordIDsAndTypes:(void *)a4 attempt:(void *)a5 completion:
+- (void)syncDownDeletionsFromCloudWithZoneID:(void *)d deletedRecordIDsAndTypes:(void *)types attempt:(void *)attempt completion:
 {
   v40[1] = *MEMORY[0x1E69E9840];
   v9 = a2;
-  v28 = a3;
-  v27 = a5;
-  if (a1)
+  dCopy = d;
+  attemptCopy = attempt;
+  if (self)
   {
     v10 = +[_CDLogging syncChannel];
     v11 = v10;
@@ -1138,7 +1138,7 @@ LABEL_12:
 
       v11 = objc_opt_new();
       [v11 setDesiredKeys:MEMORY[0x1E695E0F0]];
-      v26 = [(_DKSyncCloudKitKnowledgeStorage *)a1 _previousServerChangeTokenForRecordZoneID:v9];
+      v26 = [(_DKSyncCloudKitKnowledgeStorage *)self _previousServerChangeTokenForRecordZoneID:v9];
       if (v26)
       {
         [v11 setPreviousServerChangeToken:v26];
@@ -1154,16 +1154,16 @@ LABEL_12:
       v16 = objc_opt_new();
       [(_DKFetchRecordZoneChangesOperation *)v15 setGroup:v16];
 
-      v17 = [(_DKFetchRecordZoneChangesOperation *)v15 group];
-      [v17 setName:@"SyncDownDeletionsFromCloud"];
+      group = [(_DKFetchRecordZoneChangesOperation *)v15 group];
+      [group setName:@"SyncDownDeletionsFromCloud"];
 
       [(_DKFetchRecordZoneChangesOperation *)v15 setFetchAllChanges:1];
-      objc_initWeak(&location, a1);
+      objc_initWeak(&location, self);
       v37[0] = MEMORY[0x1E69E9820];
       v37[1] = 3221225472;
       v37[2] = __116___DKSyncCloudKitKnowledgeStorage_syncDownDeletionsFromCloudWithZoneID_deletedRecordIDsAndTypes_attempt_completion___block_invoke;
       v37[3] = &unk_1E7367D40;
-      v18 = v28;
+      v18 = dCopy;
       v38 = v18;
       [(_DKFetchRecordZoneChangesOperation *)v15 setRecordWithIDWasDeletedBlock:v37];
       v35[0] = MEMORY[0x1E69E9820];
@@ -1176,12 +1176,12 @@ LABEL_12:
       v30[1] = 3221225472;
       v30[2] = __116___DKSyncCloudKitKnowledgeStorage_syncDownDeletionsFromCloudWithZoneID_deletedRecordIDsAndTypes_attempt_completion___block_invoke_5;
       v30[3] = &unk_1E7367DE0;
-      v30[4] = a1;
+      v30[4] = self;
       v31 = v9;
       objc_copyWeak(v34, &location);
-      v34[1] = a4;
+      v34[1] = types;
       v32 = v18;
-      v19 = v27;
+      v19 = attemptCopy;
       v33 = v19;
       [(_DKFetchRecordZoneChangesOperation *)v15 setFetchRecordZoneChangesCompletionBlock:v30];
       v20 = +[_CDLogging syncChannel];
@@ -1194,7 +1194,7 @@ LABEL_12:
 
       v21 = [_DKSync2Policy policyForSyncTransportType:4];
       v29 = 0;
-      v22 = [(_DKSyncCloudKitKnowledgeStorage *)a1 _queueOperationForPrivateCloudDatabase:v15 dependent:1 policy:v21 error:&v29];
+      v22 = [(_DKSyncCloudKitKnowledgeStorage *)self _queueOperationForPrivateCloudDatabase:v15 dependent:1 policy:v21 error:&v29];
       v23 = v29;
       if (v19)
       {
@@ -1226,58 +1226,58 @@ LABEL_12:
   v25 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchSourceDeviceIDFromPeer:(id)a3 highPriority:(BOOL)a4 completion:(id)a5
+- (void)fetchSourceDeviceIDFromPeer:(id)peer highPriority:(BOOL)priority completion:(id)completion
 {
-  v12 = a3;
-  v6 = a5;
+  peerCopy = peer;
+  completionCopy = completion;
   v7 = +[_DKSyncSerializer underlyingQueue];
   dispatch_assert_queue_V2(v7);
 
-  if (v6)
+  if (completionCopy)
   {
     v8 = objc_alloc(MEMORY[0x1E696AFB0]);
-    v9 = [v12 sourceDeviceID];
-    v10 = [v8 initWithUUIDString:v9];
+    sourceDeviceID = [peerCopy sourceDeviceID];
+    v10 = [v8 initWithUUIDString:sourceDeviceID];
 
     if (v10)
     {
-      (*(v6 + 2))(v6, v10, 0, 0);
+      (*(completionCopy + 2))(completionCopy, v10, 0, 0);
     }
 
     else
     {
       v11 = +[_DKSyncErrors invalidData];
-      (*(v6 + 2))(v6, 0, 0, v11);
+      (*(completionCopy + 2))(completionCopy, 0, 0, v11);
     }
   }
 }
 
-- (void)setFetchDelegate:(id)a3
+- (void)setFetchDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v5 = +[_DKSyncSerializer underlyingQueue];
   dispatch_assert_queue_V2(v5);
 
   delegate = self->_delegate;
-  self->_delegate = v4;
+  self->_delegate = delegateCopy;
 }
 
-- (void)updateStorageWithAddedEvents:(id)a3 deletedEventIDs:(id)a4 highPriority:(BOOL)a5 completion:(id)a6
+- (void)updateStorageWithAddedEvents:(id)events deletedEventIDs:(id)ds highPriority:(BOOL)priority completion:(id)completion
 {
   v57 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a6;
-  if ([v8 count] || -[_DKSyncDeletedEventIDs count](v9))
+  eventsCopy = events;
+  dsCopy = ds;
+  completionCopy = completion;
+  if ([eventsCopy count] || -[_DKSyncDeletedEventIDs count](dsCopy))
   {
     v11 = 0x1E7366000uLL;
-    if ([v8 count])
+    if ([eventsCopy count])
     {
       v12 = [_DKEventCKConverter alloc];
       v13 = +[_DKSyncCloudKitKnowledgeStorage mySyncZoneID];
       v14 = [(_DKEventCKConverter *)v12 initWithZoneID:v13];
 
-      v15 = [(_DKEventCKConverter *)v14 recordsFromEvents:v8];
+      v15 = [(_DKEventCKConverter *)v14 recordsFromEvents:eventsCopy];
     }
 
     else
@@ -1285,13 +1285,13 @@ LABEL_12:
       v15 = 0;
     }
 
-    if ([(_DKSyncDeletedEventIDs *)v9 count])
+    if ([(_DKSyncDeletedEventIDs *)dsCopy count])
     {
       v38 = v15;
-      v39 = v10;
-      v40 = v8;
+      v39 = completionCopy;
+      v40 = eventsCopy;
       v43 = objc_opt_new();
-      [(_DKSyncDeletedEventIDs *)v9 sourceDeviceIDs];
+      [(_DKSyncDeletedEventIDs *)dsCopy sourceDeviceIDs];
       v46 = 0u;
       v47 = 0u;
       v48 = 0u;
@@ -1316,8 +1316,8 @@ LABEL_12:
             v21 = v11;
             v22 = [*(v11 + 2376) zoneIDWithDeviceID:v19];
             v23 = [[_DKEventCKConverter alloc] initWithZoneID:v22];
-            v24 = v9;
-            v25 = [(_DKSyncDeletedEventIDs *)v9 deletedEventIDsForSourceDeviceID:v19];
+            v24 = dsCopy;
+            v25 = [(_DKSyncDeletedEventIDs *)dsCopy deletedEventIDsForSourceDeviceID:v19];
             if ([v25 count])
             {
               v26 = [(_DKEventCKConverter *)v23 recordIDsFromEventIDs:v25];
@@ -1343,7 +1343,7 @@ LABEL_12:
 
             objc_autoreleasePoolPop(v20);
             ++v18;
-            v9 = v24;
+            dsCopy = v24;
             v11 = v21;
           }
 
@@ -1354,8 +1354,8 @@ LABEL_12:
         while (v17);
       }
 
-      v10 = v39;
-      v8 = v40;
+      completionCopy = v39;
+      eventsCopy = v40;
       v15 = v38;
     }
 
@@ -1365,14 +1365,14 @@ LABEL_12:
     }
 
     v27 = [v15 count];
-    if (v27 != [v8 count])
+    if (v27 != [eventsCopy count])
     {
       v28 = +[_CDLogging syncChannel];
       if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
       {
         v32 = [objc_opt_class() description];
-        v33 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v8, "count") - objc_msgSend(v15, "count")}];
-        v34 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v8, "count")}];
+        v33 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(eventsCopy, "count") - objc_msgSend(v15, "count")}];
+        v34 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(eventsCopy, "count")}];
         *buf = 138543874;
         v51 = v32;
         v52 = 2112;
@@ -1384,14 +1384,14 @@ LABEL_12:
     }
 
     v29 = [v43 count];
-    if (v29 != [(_DKSyncDeletedEventIDs *)v9 count])
+    if (v29 != [(_DKSyncDeletedEventIDs *)dsCopy count])
     {
       v30 = +[_CDLogging syncChannel];
       if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
       {
         v35 = [objc_opt_class() description];
-        v36 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[_DKSyncDeletedEventIDs count](v9) - objc_msgSend(v43, "count")}];
-        v37 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:-[_DKSyncDeletedEventIDs count](v9)];
+        v36 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[_DKSyncDeletedEventIDs count](dsCopy) - objc_msgSend(v43, "count")}];
+        v37 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:-[_DKSyncDeletedEventIDs count](dsCopy)];
         *buf = 138543874;
         v51 = v35;
         v52 = 2112;
@@ -1402,24 +1402,24 @@ LABEL_12:
       }
     }
 
-    [(_DKSyncCloudKitKnowledgeStorage *)self syncUpToCloudWithRecordsToSave:v15 recordIDsToDelete:v43 completion:v10];
+    [(_DKSyncCloudKitKnowledgeStorage *)self syncUpToCloudWithRecordsToSave:v15 recordIDsToDelete:v43 completion:completionCopy];
   }
 
-  else if (v10)
+  else if (completionCopy)
   {
-    (*(v10 + 2))(v10, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 
   v31 = *MEMORY[0x1E69E9840];
 }
 
-- (void)syncUpToCloudWithRecordsToSave:(void *)a3 recordIDsToDelete:(void *)a4 completion:
+- (void)syncUpToCloudWithRecordsToSave:(void *)save recordIDsToDelete:(void *)delete completion:
 {
   location[4] = *MEMORY[0x1E69E9840];
   v7 = a2;
-  v8 = a3;
-  v9 = a4;
-  if (a1)
+  saveCopy = save;
+  deleteCopy = delete;
+  if (self)
   {
     v10 = os_transaction_create();
     v11 = +[_CDLogging syncChannel];
@@ -1428,27 +1428,27 @@ LABEL_12:
       [_DKSyncCloudKitKnowledgeStorage syncUpToCloudWithRecordsToSave:recordIDsToDelete:completion:];
     }
 
-    v12 = [[_DKModifyRecordsOperation alloc] initWithRecordsToSave:v7 recordIDsToDelete:v8];
+    v12 = [[_DKModifyRecordsOperation alloc] initWithRecordsToSave:v7 recordIDsToDelete:saveCopy];
     v13 = objc_opt_new();
     [(_DKModifyRecordsOperation *)v12 setGroup:v13];
 
-    v14 = [(_DKModifyRecordsOperation *)v12 group];
-    [v14 setName:@"SyncUpToCloud"];
+    group = [(_DKModifyRecordsOperation *)v12 group];
+    [group setName:@"SyncUpToCloud"];
 
     [(_DKModifyRecordsOperation *)v12 setSavePolicy:1];
     [(_DKModifyRecordsOperation *)v12 setAtomic:1];
-    objc_initWeak(location, a1);
+    objc_initWeak(location, self);
     objc_initWeak(&from, v12);
     v24[0] = MEMORY[0x1E69E9820];
     v24[1] = 3221225472;
     v24[2] = __95___DKSyncCloudKitKnowledgeStorage_syncUpToCloudWithRecordsToSave_recordIDsToDelete_completion___block_invoke;
     v24[3] = &unk_1E7367E58;
     objc_copyWeak(&v29, &from);
-    v24[4] = a1;
+    v24[4] = self;
     v25 = v7;
-    v26 = v8;
+    v26 = saveCopy;
     objc_copyWeak(&v30, location);
-    v15 = v9;
+    v15 = deleteCopy;
     v28 = v15;
     v16 = v10;
     v27 = v16;
@@ -1463,7 +1463,7 @@ LABEL_12:
 
     v18 = [_DKSync2Policy policyForSyncTransportType:8];
     v23 = 0;
-    v19 = [(_DKSyncCloudKitKnowledgeStorage *)a1 _queueOperationForPrivateCloudDatabase:v12 dependent:1 policy:v18 error:&v23];
+    v19 = [(_DKSyncCloudKitKnowledgeStorage *)self _queueOperationForPrivateCloudDatabase:v12 dependent:1 policy:v18 error:&v23];
     v20 = v23;
     if (v15)
     {
@@ -1504,7 +1504,7 @@ LABEL_12:
 - (id)executionCriteriaForUpdateSourceDeviceIdentifiersPeriodicJob
 {
   keys[6] = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     v1 = *MEMORY[0x1E69E9C98];
     keys[0] = *MEMORY[0x1E69E9C68];
@@ -1537,9 +1537,9 @@ LABEL_12:
   return v4;
 }
 
-- (void)connection:(id)a3 didReceivePublicToken:(id)a4
+- (void)connection:(id)connection didReceivePublicToken:(id)token
 {
-  v4 = a4;
+  tokenCopy = token;
   v5 = +[_CDLogging syncChannel];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -1547,9 +1547,9 @@ LABEL_12:
   }
 }
 
-- (void)connection:(id)a3 didReceiveIncomingMessage:(id)a4
+- (void)connection:(id)connection didReceiveIncomingMessage:(id)message
 {
-  v5 = a4;
+  messageCopy = message;
   v6 = +[_CDLogging syncChannel];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
@@ -1577,42 +1577,42 @@ LABEL_12:
 
 - (void)_unregisterCloudSyncAvailablityObserver
 {
-  if (a1 && *(a1 + 48) == 1)
+  if (self && *(self + 48) == 1)
   {
-    v2 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v2 removeObserver:a1 name:@"_DKCloudSyncAvailablityChangedNotification" object:0];
-    *(a1 + 48) = 0;
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter removeObserver:self name:@"_DKCloudSyncAvailablityChangedNotification" object:0];
+    *(self + 48) = 0;
   }
 }
 
 - (void)_registerCloudSyncAvailablityObserver
 {
-  if (a1 && (*(a1 + 48) & 1) == 0)
+  if (self && (*(self + 48) & 1) == 0)
   {
-    v2 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v2 addObserver:a1 selector:sel__cloudSyncAvailabilityDidChange_ name:@"_DKCloudSyncAvailablityChangedNotification" object:0];
-    *(a1 + 48) = 1;
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:self selector:sel__cloudSyncAvailabilityDidChange_ name:@"_DKCloudSyncAvailablityChangedNotification" object:0];
+    *(self + 48) = 1;
   }
 }
 
 - (void)finishStartBecauseCloudIsAvailable
 {
-  if (a1)
+  if (self)
   {
-    if ([(_DKSyncCloudKitKnowledgeStorage *)a1 startShouldUpdateSourceDeviceIdentifiers])
+    if ([(_DKSyncCloudKitKnowledgeStorage *)self startShouldUpdateSourceDeviceIdentifiers])
     {
       OUTLINED_FUNCTION_0_1();
       OUTLINED_FUNCTION_14();
       v3 = __69___DKSyncCloudKitKnowledgeStorage_finishStartBecauseCloudIsAvailable__block_invoke;
       v4 = &unk_1E73675F8;
-      v5 = a1;
-      [(_DKSyncCloudKitKnowledgeStorage *)a1 registerUpdateSourceDeviceIdentifiersPeriodicJobWithCompletion:v2];
+      selfCopy = self;
+      [(_DKSyncCloudKitKnowledgeStorage *)self registerUpdateSourceDeviceIdentifiersPeriodicJobWithCompletion:v2];
     }
 
     else
     {
 
-      [(_DKSyncCloudKitKnowledgeStorage *)a1 finishStartOrError:?];
+      [(_DKSyncCloudKitKnowledgeStorage *)self finishStartOrError:?];
     }
   }
 }
@@ -1620,7 +1620,7 @@ LABEL_12:
 - (void)_createPushConnection
 {
   v32 = *MEMORY[0x1E69E9840];
-  if (a1 && !*(a1 + 64))
+  if (self && !*(self + 64))
   {
     v2 = [_CDEntitlementsUtilities entitlementValueForKey:@"aps-environment"];
     v3 = v2;
@@ -1649,14 +1649,14 @@ LABEL_12:
     v7 = objc_alloc(MEMORY[0x1E698CF30]);
     v8 = +[_DKSyncSerializer underlyingQueue];
     v9 = [v7 initWithEnvironmentName:v5 namedDelegatePort:@"com.apple.coreduet.knowledge.sync.push" queue:v8];
-    v10 = *(a1 + 64);
-    *(a1 + 64) = v9;
+    v10 = *(self + 64);
+    *(self + 64) = v9;
 
-    v11 = *(a1 + 64);
+    v11 = *(self + 64);
     if (v11)
     {
       [v11 setEnabledTopics:0 ignoredTopics:0 opportunisticTopics:&unk_1F05EF1E8];
-      [*(a1 + 64) setDelegate:a1];
+      [*(self + 64) setDelegate:self];
       v12 = +[_CDLogging syncChannel];
       if (OUTLINED_FUNCTION_44(v12))
       {
@@ -1697,12 +1697,12 @@ LABEL_12:
 - (void)unregisterUpdateSourceDeviceIdentifiersPeriodicJob
 {
   v13 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     v2 = +[_DKSyncSerializer underlyingQueue];
     dispatch_assert_queue_V2(v2);
 
-    if (*(a1 + 40))
+    if (*(self + 40))
     {
       v3 = +[_CDLogging syncChannel];
       if (OUTLINED_FUNCTION_80(v3))
@@ -1716,19 +1716,19 @@ LABEL_12:
       v4 = +[_CDPeriodicScheduler sharedInstance];
       [v4 unregisterJob:@"com.apple.coreduet.sync.update-source-device-identifiers"];
 
-      v5 = *(a1 + 40);
-      *(a1 + 40) = 0;
+      v5 = *(self + 40);
+      *(self + 40) = 0;
     }
   }
 
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)finishStartOrError:(uint64_t)a1
+- (void)finishStartOrError:(uint64_t)error
 {
   v13 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (error)
   {
     v4 = +[_DKSyncSerializer underlyingQueue];
     dispatch_assert_queue_V2(v4);
@@ -1739,7 +1739,7 @@ LABEL_12:
       if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
       {
         v8 = [objc_opt_class() description];
-        v9 = [v3 domain];
+        domain = [v3 domain];
         [v3 code];
         v10 = 138544130;
         v11 = v8;
@@ -1755,16 +1755,16 @@ LABEL_12:
       objc_claimAutoreleasedReturnValue();
       v6 = OUTLINED_FUNCTION_16_0();
       [(_DKSyncCloudKitKnowledgeStorage *)v6 configureCloudPseudoPeerWithMySyncZoneID:v4];
-      if (([*(a1 + 16) BOOLForKey:@"DidRegisterDatabaseChangesSubscription"] & 1) == 0)
+      if (([*(error + 16) BOOLForKey:@"DidRegisterDatabaseChangesSubscription"] & 1) == 0)
       {
-        [(_DKSyncCloudKitKnowledgeStorage *)a1 _registerDatabaseChangesSubscription];
+        [(_DKSyncCloudKitKnowledgeStorage *)error _registerDatabaseChangesSubscription];
       }
 
-      if ((*(a1 + 152) & 1) == 0)
+      if ((*(error + 152) & 1) == 0)
       {
-        *(a1 + 152) = 1;
+        *(error + 152) = 1;
         v7 = +[_CDObservationCenter sharedInstance];
-        [v7 postNotificationName:@"_DKCloudTransportAvailablityChangedNotification" userInfo:0 sender:a1];
+        [v7 postNotificationName:@"_DKCloudTransportAvailablityChangedNotification" userInfo:0 sender:error];
       }
     }
   }
@@ -1772,21 +1772,21 @@ LABEL_12:
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)configureCloudPseudoPeerWithMySyncZoneID:(id *)a1
+- (void)configureCloudPseudoPeerWithMySyncZoneID:(id *)d
 {
   v20 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (d)
   {
     v4 = a2;
     v5 = [_DKSyncCloudKitKnowledgeStorage deviceIDFromZoneID:v4];
-    v6 = a1[4];
-    v7 = [v4 zoneName];
+    v6 = d[4];
+    zoneName = [v4 zoneName];
 
-    v8 = [v6 peerWithZoneName:v7 sourceDeviceID:v5];
+    v8 = [v6 peerWithZoneName:zoneName sourceDeviceID:v5];
 
     [v8 setMe:1];
-    [a1[4] addActiveTransports:8 toPeer:v8];
-    [a1[4] addActiveTransports:4 toPeer:v8];
+    [d[4] addActiveTransports:8 toPeer:v8];
+    [d[4] addActiveTransports:4 toPeer:v8];
     v9 = +[_CDLogging syncChannel];
     if (OUTLINED_FUNCTION_44(v9))
     {
@@ -1794,19 +1794,19 @@ LABEL_12:
       objc_claimAutoreleasedReturnValue();
       v11 = &stru_1F05B9908;
       [OUTLINED_FUNCTION_73() me];
-      v12 = [v8 identifier];
-      v13 = [v8 model];
-      if (v13)
+      identifier = [v8 identifier];
+      model = [v8 model];
+      if (model)
       {
         v14 = MEMORY[0x1E696AEC0];
-        v2 = [v8 model];
-        v11 = [v14 stringWithFormat:@" (%@)", v2];
+        model2 = [v8 model];
+        v11 = [v14 stringWithFormat:@" (%@)", model2];
       }
 
       OUTLINED_FUNCTION_25_0();
       OUTLINED_FUNCTION_12_1();
       _os_log_debug_impl(v15, v16, v17, v18, v19, 0x2Au);
-      if (v13)
+      if (model)
       {
       }
     }
@@ -1818,7 +1818,7 @@ LABEL_12:
 - (void)_registerDatabaseChangesSubscription
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     v3 = objc_alloc_init(MEMORY[0x1E695B9F0]);
     [v3 setShouldSendContentAvailable:1];
@@ -1834,7 +1834,7 @@ LABEL_12:
     OUTLINED_FUNCTION_14();
     v11 = __71___DKSyncCloudKitKnowledgeStorage__registerDatabaseChangesSubscription__block_invoke;
     v12 = &unk_1E73679F8;
-    v13 = a1;
+    selfCopy = self;
     [v5 setModifySubscriptionsCompletionBlock:v10];
     v6 = +[_CDLogging syncChannel];
     if (OUTLINED_FUNCTION_79(v6))
@@ -1846,18 +1846,18 @@ LABEL_12:
     }
 
     v9 = 0;
-    [(_DKSyncCloudKitKnowledgeStorage *)a1 _queueOperationForPrivateCloudDatabase:v5 dependent:0 policy:0 error:&v9];
+    [(_DKSyncCloudKitKnowledgeStorage *)self _queueOperationForPrivateCloudDatabase:v5 dependent:0 policy:0 error:&v9];
   }
 
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (uint64_t)_queueOperationForPrivateCloudDatabase:(int)a3 dependent:(void *)a4 policy:(void *)a5 error:
+- (uint64_t)_queueOperationForPrivateCloudDatabase:(int)database dependent:(void *)dependent policy:(void *)policy error:
 {
   v98 = *MEMORY[0x1E69E9840];
   v9 = a2;
-  v10 = a4;
-  if (!a1)
+  dependentCopy = dependent;
+  if (!self)
   {
     v21 = 0;
     goto LABEL_77;
@@ -1866,23 +1866,23 @@ LABEL_12:
   v11 = +[_DKSyncSerializer underlyingQueue];
   dispatch_assert_queue_V2(v11);
 
-  if (a5)
+  if (policy)
   {
-    *a5 = 0;
+    *policy = 0;
   }
 
-  v12 = *(a1 + 56);
+  v12 = *(self + 56);
   if (!v12)
   {
-    v13 = objc_opt_new();
-    [v13 setUseZoneWidePCS:1];
+    privateCloudDatabase = objc_opt_new();
+    [privateCloudDatabase setUseZoneWidePCS:1];
     v11 = @"com.apple.knowledgestore4";
     v14 = [objc_alloc(MEMORY[0x1E695B8A0]) initWithContainerIdentifier:@"com.apple.knowledgestore4" environment:1];
-    v15 = [objc_alloc(MEMORY[0x1E695B888]) initWithContainerID:v14 options:v13];
-    v16 = *(a1 + 56);
-    *(a1 + 56) = v15;
+    v15 = [objc_alloc(MEMORY[0x1E695B888]) initWithContainerID:v14 options:privateCloudDatabase];
+    v16 = *(self + 56);
+    *(self + 56) = v15;
 
-    if (!*(a1 + 56))
+    if (!*(self + 56))
     {
       v35 = +[_CDLogging syncChannel];
       if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
@@ -1895,9 +1895,9 @@ LABEL_12:
         OUTLINED_FUNCTION_43(&dword_191750000, v35, v64, "%{public}@: Unable to instantiate container: %@", &v94);
       }
 
-      if (a5)
+      if (policy)
       {
-        *a5 = +[_DKSyncErrors disabled];
+        *policy = +[_DKSyncErrors disabled];
       }
 
 LABEL_36:
@@ -1905,14 +1905,14 @@ LABEL_36:
       goto LABEL_76;
     }
 
-    v12 = *(a1 + 56);
+    v12 = *(self + 56);
   }
 
-  v13 = [v12 privateCloudDatabase];
-  if (v13)
+  privateCloudDatabase = [v12 privateCloudDatabase];
+  if (privateCloudDatabase)
   {
     v17 = objc_opt_new();
-    [v17 setContainer:*(a1 + 56)];
+    [v17 setContainer:*(self + 56)];
     [v17 setTimeoutIntervalForResource:1800.0];
     [v17 setAutomaticallyRetryNetworkFailures:0];
     v18 = +[_DKSyncUrgencyTracker sharedInstance];
@@ -1930,17 +1930,17 @@ LABEL_36:
     }
 
     [v17 setDiscretionaryNetworkBehavior:v19];
-    v22 = [*(a1 + 160) syncType];
-    v83 = v22;
-    if (v22)
+    syncType = [*(self + 160) syncType];
+    v83 = syncType;
+    if (syncType)
     {
-      v23 = [(_DKSyncType *)v22 xpcActivity];
-      if (v23)
+      xpcActivity = [(_DKSyncType *)syncType xpcActivity];
+      if (xpcActivity)
       {
 LABEL_17:
-        v24 = v23;
-        v82 = v23;
-        if (!xpc_activity_get_state(v23))
+        v24 = xpcActivity;
+        v82 = xpcActivity;
+        if (!xpc_activity_get_state(xpcActivity))
         {
           v36 = v18;
           v37 = +[_CDLogging syncChannel];
@@ -1954,9 +1954,9 @@ LABEL_17:
             _os_log_error_impl(v65, v66, v67, v68, v69, 0x16u);
           }
 
-          if (a5)
+          if (policy)
           {
-            *a5 = +[_DKSyncErrors internalFailure];
+            *policy = +[_DKSyncErrors internalFailure];
           }
 
           v92 = 0;
@@ -1967,24 +1967,24 @@ LABEL_17:
         [v17 setXpcActivity:v24];
 LABEL_23:
         [v9 setConfiguration:v17];
-        [v9 setDatabase:v13];
-        if (a3)
+        [v9 setDatabase:privateCloudDatabase];
+        if (database)
         {
-          WeakRetained = objc_loadWeakRetained((a1 + 136));
+          WeakRetained = objc_loadWeakRetained((self + 136));
           v26 = WeakRetained;
           if (WeakRetained && ([WeakRetained isFinished] & 1) == 0)
           {
             [v9 addDependency:v26];
           }
 
-          objc_storeWeak((a1 + 136), v9);
+          objc_storeWeak((self + 136), v9);
         }
 
-        v80 = v10;
+        v80 = dependentCopy;
         v27 = objc_alloc(MEMORY[0x1E695B8E8]);
-        v28 = [v9 group];
-        v29 = [v28 name];
-        v30 = [v27 initWithEventName:v29];
+        group = [v9 group];
+        name = [group name];
+        v30 = [v27 initWithEventName:name];
 
         v88[0] = MEMORY[0x1E69E9820];
         v88[1] = 3221225472;
@@ -1994,7 +1994,7 @@ LABEL_23:
         v89 = v31;
         v32 = v9;
         v90 = v32;
-        v91 = a1;
+        selfCopy = self;
         [_DKSyncBlockOperation blockOperationWithBlock:v88];
         v77 = v76 = v32;
         [v77 addDependency:v32];
@@ -2096,16 +2096,16 @@ LABEL_61:
 
         [v31 setMetricValue:v45 forKey:@"isSingleDevice"];
 LABEL_65:
-        v79 = v13;
+        v79 = privateCloudDatabase;
         v81 = v9;
         v46 = +[_DKSyncUrgencyTracker sharedInstance];
-        v47 = [(_DKSyncUrgencyTracker *)v46 allUrgencies];
+        allUrgencies = [(_DKSyncUrgencyTracker *)v46 allUrgencies];
 
         v86 = 0u;
         v87 = 0u;
         v84 = 0u;
         v85 = 0u;
-        v48 = v47;
+        v48 = allUrgencies;
         v49 = [v48 countByEnumeratingWithState:&v84 objects:v93 count:16];
         if (v49)
         {
@@ -2136,22 +2136,22 @@ LABEL_65:
         v57 = [_DKSync2Policy policyForSyncTransportType:8];
         if (v56 | v57)
         {
-          v58 = [v56 version];
-          [v31 setMetricValue:v58 forKey:@"version(down)"];
+          version = [v56 version];
+          [v31 setMetricValue:version forKey:@"version(down)"];
 
-          v59 = [v57 version];
-          [v31 setMetricValue:v59 forKey:@"version(up)"];
+          version2 = [v57 version];
+          [v31 setMetricValue:version2 forKey:@"version(up)"];
         }
 
         [_DKSyncSerializer addOperation:v76];
-        [*(a1 + 144) addObject:v76];
+        [*(self + 144) addObject:v76];
         [_DKSyncSerializer addOperation:v77];
-        [*(a1 + 144) addObject:v77];
+        [*(self + 144) addObject:v77];
         v92 = 1;
 
-        v10 = v80;
+        dependentCopy = v80;
         v9 = v81;
-        v13 = v79;
+        privateCloudDatabase = v79;
         v36 = v78;
 LABEL_75:
 
@@ -2160,13 +2160,13 @@ LABEL_75:
       }
     }
 
-    else if (*(a1 + 40))
+    else if (*(self + 40))
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v23 = [*(a1 + 40) activity];
-        if (v23)
+        xpcActivity = [*(self + 40) activity];
+        if (xpcActivity)
         {
           goto LABEL_17;
         }
@@ -2187,13 +2187,13 @@ LABEL_75:
     _os_log_error_impl(v40, v41, v42, v43, v44, 0xCu);
   }
 
-  if (!a5)
+  if (!policy)
   {
     goto LABEL_36;
   }
 
   +[_DKSyncErrors disabled];
-  *a5 = v21 = 0;
+  *policy = v21 = 0;
 LABEL_76:
 
 LABEL_77:
@@ -2201,12 +2201,12 @@ LABEL_77:
   return v21;
 }
 
-- (id)_handleAnySpecialnessWithOperationError:(id *)a1
+- (id)_handleAnySpecialnessWithOperationError:(id *)error
 {
   v145 = *MEMORY[0x1E69E9840];
   v4 = a2;
   v5 = v4;
-  if (a1)
+  if (error)
   {
     v6 = v4;
     if ([_DKCKError isUnrecoverableDecryptionError:v6])
@@ -2221,19 +2221,19 @@ LABEL_77:
       if (OUTLINED_FUNCTION_60(v7))
       {
         v102 = [objc_opt_class() description];
-        v103 = [v6 domain];
+        domain = [v6 domain];
         [v6 code];
         OUTLINED_FUNCTION_65();
         *(v104 + 196) = v102;
         v139 = 2114;
-        *(v104 + 206) = v103;
+        *(v104 + 206) = domain;
         OUTLINED_FUNCTION_35();
         OUTLINED_FUNCTION_19();
         _os_log_error_impl(v105, v106, v107, v108, v109, 0x2Au);
       }
 
       v112 = v6;
-      v8 = [_DKCKError zoneIDsWithUnrecoverableDecryptionError:v6];
+      zoneName = [_DKCKError zoneIDsWithUnrecoverableDecryptionError:v6];
       v9 = +[_CDLogging syncChannel];
       v10 = 0x1E7366000uLL;
       if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
@@ -2256,7 +2256,7 @@ LABEL_77:
       v134 = 0u;
       v135 = 0u;
       v136 = 0u;
-      v20 = v8;
+      v20 = zoneName;
       v21 = [v20 countByEnumeratingWithState:&v133 objects:v144 count:16];
       v123 = v20;
       if (v21)
@@ -2283,16 +2283,16 @@ LABEL_77:
               v28 = [_DKSyncCloudKitKnowledgeStorage deviceIDFromZoneID:v26];
               if (v28)
               {
-                v29 = [a1[4] existingPeerWithSourceDeviceID:v28];
+                v29 = [error[4] existingPeerWithSourceDeviceID:v28];
                 v9 = v29;
                 if (v29)
                 {
-                  v8 = [v29 zoneName];
+                  zoneName = [v29 zoneName];
 
-                  if (v8)
+                  if (zoneName)
                   {
-                    v30 = [*(v10 + 648) syncChannel];
-                    if (OUTLINED_FUNCTION_60(v30))
+                    syncChannel = [*(v10 + 648) syncChannel];
+                    if (OUTLINED_FUNCTION_60(syncChannel))
                     {
                       v119 = [objc_opt_class() description];
                       v64 = [v9 me];
@@ -2303,13 +2303,13 @@ LABEL_77:
                       }
 
                       v117 = v65;
-                      v120 = [v9 identifier];
-                      v118 = [v9 model];
-                      if (v118)
+                      identifier = [v9 identifier];
+                      model = [v9 model];
+                      if (model)
                       {
                         v66 = MEMORY[0x1E696AEC0];
-                        v115 = [v9 model];
-                        v110 = v115;
+                        model2 = [v9 model];
+                        v110 = model2;
                         v114 = [v66 stringWithFormat:@" (%@)"];
                       }
 
@@ -2318,32 +2318,32 @@ LABEL_77:
                       v139 = 2114;
                       *(v67 + 206) = v117;
                       v140 = 2114;
-                      v141 = v120;
+                      v141 = identifier;
                       v142 = 2114;
                       *(v67 + 226) = v68;
                       v143 = 2114;
                       *(v67 + 236) = v26;
                       OUTLINED_FUNCTION_19();
                       _os_log_error_impl(v69, v70, v71, "%{public}@: Deactivating %{public}@peer %{public}@%{public}@ due to unrecoverable decryption error for zone %{public}@", v72, 0x34u);
-                      if (v118)
+                      if (model)
                       {
                       }
 
                       v10 = 0x1E7366000;
                     }
 
-                    [a1[4] removeActiveTransports:4 fromPeer:v9];
-                    [a1 setHasAdditionsFlag:0 forPeer:v9];
-                    [a1 setHasDeletionsFlag:0 forPeer:v9];
+                    [error[4] removeActiveTransports:4 fromPeer:v9];
+                    [error setHasAdditionsFlag:0 forPeer:v9];
+                    [error setHasDeletionsFlag:0 forPeer:v9];
                     goto LABEL_29;
                   }
                 }
 
-                v31 = [*(v10 + 648) syncChannel];
-                if (OUTLINED_FUNCTION_63(v31))
+                syncChannel2 = [*(v10 + 648) syncChannel];
+                if (OUTLINED_FUNCTION_63(syncChannel2))
                 {
                   v44 = [objc_opt_class() description];
-                  OUTLINED_FUNCTION_9_1(v44, v45, v46, v47, v48, v49, v50, v51, v110, v111, v112, v113, v114, v115, v116, *(&v116 + 1), v117, v118, v119, v44, v121);
+                  OUTLINED_FUNCTION_9_1(v44, v45, v46, v47, v48, v49, v50, v51, v110, v111, v112, v113, v114, model2, v116, *(&v116 + 1), v117, model, v119, v44, v121);
                   OUTLINED_FUNCTION_17_1();
                   _os_log_debug_impl(v52, v53, v54, "%{public}@: Ignoring unrecoverable decryption error for unknown peer zone %{public}@", v55, 0x16u);
                 }
@@ -2353,11 +2353,11 @@ LABEL_27:
 
               else
               {
-                v32 = [*(v10 + 648) syncChannel];
-                if (OUTLINED_FUNCTION_80(v32))
+                syncChannel3 = [*(v10 + 648) syncChannel];
+                if (OUTLINED_FUNCTION_80(syncChannel3))
                 {
-                  v8 = [objc_opt_class() description];
-                  OUTLINED_FUNCTION_9_1(v8, v56, v57, v58, v59, v60, v61, v62, v110, v111, v112, v113, v114, v115, v116, *(&v116 + 1), v117, v118, v119, v120, v121);
+                  zoneName = [objc_opt_class() description];
+                  OUTLINED_FUNCTION_9_1(zoneName, v56, v57, v58, v59, v60, v61, v62, v110, v111, v112, v113, v114, model2, v116, *(&v116 + 1), v117, model, v119, identifier, v121);
                   _os_log_debug_impl(&dword_191750000, v9, OS_LOG_TYPE_DEBUG, "%{public}@: Ignoring unrecoverable decryption error for non-peer zone %{public}@", v63, 0x16u);
                   goto LABEL_27;
                 }
@@ -2370,13 +2370,13 @@ LABEL_29:
             }
 
             [(_DKEventStatsCounter *)qword_1EADBD5B8 incrementCountByNumber:?];
-            if ([a1[15] containsObject:v26])
+            if ([error[15] containsObject:v26])
             {
-              v27 = [*(v10 + 648) syncChannel];
-              if (OUTLINED_FUNCTION_60(v27))
+              syncChannel4 = [*(v10 + 648) syncChannel];
+              if (OUTLINED_FUNCTION_60(syncChannel4))
               {
                 v9 = [objc_opt_class() description];
-                OUTLINED_FUNCTION_9_1(v9, v33, v34, v35, v36, v37, v38, v39, v110, v111, v112, v113, v114, v115, v116, *(&v116 + 1), v117, v118, v119, v120, v121);
+                OUTLINED_FUNCTION_9_1(v9, v33, v34, v35, v36, v37, v38, v39, v110, v111, v112, v113, v114, model2, v116, *(&v116 + 1), v117, model, v119, identifier, v121);
                 OUTLINED_FUNCTION_19();
                 _os_log_error_impl(v40, v41, v42, "%{public}@: Repeating unrecoverable decryption error fix for zone %{public}@", v43, 0x16u);
               }
@@ -2397,7 +2397,7 @@ LABEL_30:
         while (v73);
       }
 
-      v74 = a1[15];
+      v74 = error[15];
       if (v74)
       {
         [v74 unionSet:v20];
@@ -2406,8 +2406,8 @@ LABEL_30:
       else
       {
         v79 = [v20 mutableCopy];
-        v80 = a1[15];
-        a1[15] = v79;
+        v80 = error[15];
+        error[15] = v79;
       }
 
       v81 = objc_opt_new();
@@ -2437,26 +2437,26 @@ LABEL_30:
             if (os_log_type_enabled(v89, OS_LOG_TYPE_INFO))
             {
               v90 = [objc_opt_class() description];
-              OUTLINED_FUNCTION_9_1(v90, v91, v92, v93, v94, v95, v96, v97, v110, v111, v112, v113, v114, v115, v116, *(&v116 + 1), v117, v118, v119, v120, v122);
+              OUTLINED_FUNCTION_9_1(v90, v91, v92, v93, v94, v95, v96, v97, v110, v111, v112, v113, v114, model2, v116, *(&v116 + 1), v117, model, v119, identifier, v122);
               _os_log_impl(&dword_191750000, v89, OS_LOG_TYPE_INFO, "%{public}@: Fixing unrecoverable decryption error for zone %{public}@", v98, 0x16u);
             }
 
             if ([v88 isEqual:v124])
             {
-              [a1[2] setBool:0 forKey:@"HaveCreatedMyZone"];
+              [error[2] setBool:0 forKey:@"HaveCreatedMyZone"];
             }
 
             v125[0] = MEMORY[0x1E69E9820];
             v125[1] = 3221225472;
             v125[2] = __75___DKSyncCloudKitKnowledgeStorage__handleAnySpecialnessWithOperationError___block_invoke_87;
             v125[3] = &unk_1E7367A20;
-            v125[4] = a1;
+            v125[4] = error;
             v125[5] = v88;
             v126 = v124;
             v127 = v81;
             v99 = v82;
             v128 = v99;
-            [(_DKSyncCloudKitKnowledgeStorage *)a1 _deleteZoneWithZoneID:v88 completion:v125];
+            [(_DKSyncCloudKitKnowledgeStorage *)error _deleteZoneWithZoneID:v88 completion:v125];
           }
 
           v85 = [v99 countByEnumeratingWithState:&v129 objects:v137 count:16];
@@ -2482,12 +2482,12 @@ LABEL_30:
       if (os_log_type_enabled(v75, OS_LOG_TYPE_INFO))
       {
         v76 = [objc_opt_class() description];
-        v77 = [v6 domain];
+        domain2 = [v6 domain];
         [v6 code];
         OUTLINED_FUNCTION_65();
         *(v78 + 196) = v76;
         v139 = 2114;
-        *(v78 + 206) = v77;
+        *(v78 + 206) = domain2;
         OUTLINED_FUNCTION_35();
         _os_log_impl(&dword_191750000, v75, OS_LOG_TYPE_INFO, "%{public}@: Failure is temporary, ignoring : %{public}@:%lld (%@)", buf, 0x2Au);
       }
@@ -2506,21 +2506,21 @@ LABEL_60:
   return v6;
 }
 
-- (void)performUpdateSourceDeviceIdentifiersWithCompletion:(uint64_t)a1
+- (void)performUpdateSourceDeviceIdentifiersWithCompletion:(uint64_t)completion
 {
   v3 = a2;
-  if (a1)
+  if (completion)
   {
     v4 = +[_DKSyncSerializer underlyingQueue];
     dispatch_assert_queue_V2(v4);
 
-    v5 = *(a1 + 24);
+    v5 = *(completion + 24);
     v6 = +[_DKSyncSerializer underlyingQueue];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __86___DKSyncCloudKitKnowledgeStorage_performUpdateSourceDeviceIdentifiersWithCompletion___block_invoke;
     v13[3] = &unk_1E73674E0;
-    v13[4] = a1;
+    v13[4] = completion;
     v14 = v3;
     OUTLINED_FUNCTION_0_1();
     v9 = 3221225472;
@@ -2556,12 +2556,12 @@ LABEL_60:
   return result;
 }
 
-- (void)updateSourceDeviceIdentifiersWithRecordZonesByZoneID:(void *)a3 completion:
+- (void)updateSourceDeviceIdentifiersWithRecordZonesByZoneID:(void *)d completion:
 {
   v83 = *MEMORY[0x1E69E9840];
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  dCopy = d;
+  if (self)
   {
     v7 = +[_CDLogging syncChannel];
     if (OUTLINED_FUNCTION_63(v7))
@@ -2575,10 +2575,10 @@ LABEL_60:
       _os_log_debug_impl(v53, v54, v55, v56, v57, 0x16u);
     }
 
-    v64 = v6;
+    v64 = dCopy;
 
     v68 = +[_DKSyncCloudKitKnowledgeStorage mySyncZoneID];
-    v8 = MEMORY[0x1E695DF90];
+    zoneName = MEMORY[0x1E695DF90];
     v66 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v5, "count")}];
     v74 = 0u;
     v75 = 0u;
@@ -2603,8 +2603,8 @@ LABEL_60:
           }
 
           v14 = *(*(&v74 + 1) + 8 * i);
-          v8 = [v14 zoneName];
-          if ([v8 hasPrefix:@"source-device-id:"])
+          zoneName = [v14 zoneName];
+          if ([zoneName hasPrefix:@"source-device-id:"])
           {
             v15 = [_DKSyncCloudKitKnowledgeStorage deviceIDFromZoneID:v14];
             if ([v14 isEqual:v12])
@@ -2640,14 +2640,14 @@ LABEL_60:
 
                 [v66 setObject:v14 forKeyedSubscript:v15];
                 v16 = [obj objectForKeyedSubscript:v14];
-                [a1[11] setObject:v16 forKeyedSubscript:v14];
+                [self[11] setObject:v16 forKeyedSubscript:v14];
               }
 
               else if (v18)
               {
                 v39 = [objc_opt_class() description];
                 OUTLINED_FUNCTION_14_1(v39, v40, v41, v42, v43, v44, v45, v46, v64, v65, v47);
-                *(v48 + 14) = v8;
+                *(v48 + 14) = zoneName;
                 _os_log_debug_impl(&dword_191750000, v16, OS_LOG_TYPE_DEBUG, "%{public}@: Invalid source device id from zone name: %@", buf, 0x16u);
               }
 
@@ -2655,7 +2655,7 @@ LABEL_60:
             }
           }
 
-          [a1[15] removeObject:v14];
+          [self[15] removeObject:v14];
         }
 
         v10 = [obj countByEnumeratingWithState:&v74 objects:v78 count:16];
@@ -2680,44 +2680,44 @@ LABEL_60:
       _os_log_debug_impl(v59, v60, v61, v62, v63, 0xCu);
     }
 
-    v6 = v64;
+    dCopy = v64;
     v5 = v65;
     if (v67)
     {
       v50 = v66;
-      [(_DKSyncCloudKitKnowledgeStorage *)a1 finishUpdatingSourceDeviceIdentifiersWithZoneIDsBySourceDeviceID:v66 orError:0 completion:v64];
+      [(_DKSyncCloudKitKnowledgeStorage *)self finishUpdatingSourceDeviceIdentifiersWithZoneIDsBySourceDeviceID:v66 orError:0 completion:v64];
     }
 
     else
     {
-      [a1[2] setBool:0 forKey:@"HaveCreatedMyZone"];
+      [self[2] setBool:0 forKey:@"HaveCreatedMyZone"];
       v70[0] = MEMORY[0x1E69E9820];
       v70[1] = 3221225472;
       v70[2] = __99___DKSyncCloudKitKnowledgeStorage_updateSourceDeviceIdentifiersWithRecordZonesByZoneID_completion___block_invoke;
       v70[3] = &unk_1E7367AC0;
-      v70[4] = a1;
+      v70[4] = self;
       v71 = v12;
       v50 = v66;
       v72 = v66;
       v73 = v64;
-      [(_DKSyncCloudKitKnowledgeStorage *)a1 _createZoneWithZoneID:v71 completion:v70];
+      [(_DKSyncCloudKitKnowledgeStorage *)self _createZoneWithZoneID:v71 completion:v70];
     }
   }
 
   v51 = *MEMORY[0x1E69E9840];
 }
 
-- (void)finishUpdatingSourceDeviceIdentifiersWithZoneIDsBySourceDeviceID:(void *)a3 orError:(void *)a4 completion:
+- (void)finishUpdatingSourceDeviceIdentifiersWithZoneIDsBySourceDeviceID:(void *)d orError:(void *)error completion:
 {
   v10 = a2;
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (a1)
+  dCopy = d;
+  errorCopy = error;
+  v9 = errorCopy;
+  if (self)
   {
-    if (v7)
+    if (dCopy)
     {
-      if (!v8)
+      if (!errorCopy)
       {
         goto LABEL_5;
       }
@@ -2725,25 +2725,25 @@ LABEL_60:
       goto LABEL_4;
     }
 
-    *(a1 + 72) = 0;
-    [(_DKSyncCloudKitKnowledgeStorage *)a1 setZoneIDsBySourceDeviceID:v10];
+    *(self + 72) = 0;
+    [(_DKSyncCloudKitKnowledgeStorage *)self setZoneIDsBySourceDeviceID:v10];
     if (v9)
     {
 LABEL_4:
-      (v9)[2](v9, v7);
+      (v9)[2](v9, dCopy);
     }
   }
 
 LABEL_5:
 }
 
-- (void)setZoneIDsBySourceDeviceID:(uint64_t)a1
+- (void)setZoneIDsBySourceDeviceID:(uint64_t)d
 {
   v18 = *MEMORY[0x1E69E9840];
   v4 = a2;
-  if (a1)
+  if (d)
   {
-    objc_storeStrong((a1 + 80), a2);
+    objc_storeStrong((d + 80), a2);
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
@@ -2765,7 +2765,7 @@ LABEL_5:
 
           v10 = *(*(&v13 + 1) + 8 * i);
           v11 = [v5 objectForKeyedSubscript:{v10, v13}];
-          [(_DKSyncCloudKitKnowledgeStorage *)a1 configurePeerWithSourceDeviceID:v10 zoneID:v11];
+          [(_DKSyncCloudKitKnowledgeStorage *)d configurePeerWithSourceDeviceID:v10 zoneID:v11];
         }
 
         v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -2778,18 +2778,18 @@ LABEL_5:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)configurePeerWithSourceDeviceID:(void *)a3 zoneID:
+- (void)configurePeerWithSourceDeviceID:(void *)d zoneID:
 {
   v35 = *MEMORY[0x1E69E9840];
   v6 = a2;
-  v7 = a3;
-  if (a1)
+  dCopy = d;
+  if (self)
   {
-    v8 = [*(a1 + 32) existingPeerWithSourceDeviceID:v6];
+    v8 = [*(self + 32) existingPeerWithSourceDeviceID:v6];
     v9 = v8;
     if (v8 && ([v8 zoneName], v10 = objc_claimAutoreleasedReturnValue(), v10, v10))
     {
-      if (([*(a1 + 32) activeTransportsForPeer:v9] & 4) == 0)
+      if (([*(self + 32) activeTransportsForPeer:v9] & 4) == 0)
       {
         v13 = +[_CDLogging syncChannel];
         if (OUTLINED_FUNCTION_79(v13))
@@ -2808,15 +2808,15 @@ LABEL_5:
 
           [v9 identifier];
           objc_claimAutoreleasedReturnValue();
-          v16 = [OUTLINED_FUNCTION_67() model];
-          if (v16)
+          model = [OUTLINED_FUNCTION_67() model];
+          if (model)
           {
             v17 = MEMORY[0x1E696AEC0];
-            v20 = [v9 model];
-            v14 = [v17 stringWithFormat:@" (%@)", v20];
+            model2 = [v9 model];
+            v14 = [v17 stringWithFormat:@" (%@)", model2];
           }
 
-          v18 = [v7 zoneName];
+          zoneName = [dCopy zoneName];
           v25 = 138544386;
           v26 = v21;
           v27 = 2114;
@@ -2826,25 +2826,25 @@ LABEL_5:
           v31 = 2114;
           v32 = v14;
           v33 = 2112;
-          v34 = v18;
+          v34 = zoneName;
           OUTLINED_FUNCTION_49(&dword_191750000, v10, v19, "%{public}@: Instantiated existing %{public}@peer %{public}@%{public}@ with zone name %@", &v25);
 
-          if (v16)
+          if (model)
           {
           }
         }
 
-        [(_DKSyncCloudKitKnowledgeStorage *)a1 populateLastSeenDateIfNeededByPeer:v9];
-        [*(a1 + 32) addActiveTransports:4 toPeer:v9];
+        [(_DKSyncCloudKitKnowledgeStorage *)self populateLastSeenDateIfNeededByPeer:v9];
+        [*(self + 32) addActiveTransports:4 toPeer:v9];
       }
     }
 
     else
     {
-      v12 = [*(a1 + 88) objectForKeyedSubscript:v7];
+      v12 = [*(self + 88) objectForKeyedSubscript:dCopy];
       if (v12)
       {
-        [(_DKSyncCloudKitKnowledgeStorage *)a1 fastForwardPastDeletionsInNewZone:v12 sourceDeviceID:v6];
+        [(_DKSyncCloudKitKnowledgeStorage *)self fastForwardPastDeletionsInNewZone:v12 sourceDeviceID:v6];
       }
 
       else
@@ -2853,10 +2853,10 @@ LABEL_5:
         v22[1] = 3221225472;
         v22[2] = __74___DKSyncCloudKitKnowledgeStorage_configurePeerWithSourceDeviceID_zoneID___block_invoke;
         v22[3] = &unk_1E7367C28;
-        v22[4] = a1;
-        v23 = v7;
+        v22[4] = self;
+        v23 = dCopy;
         v24 = v6;
-        [(_DKSyncCloudKitKnowledgeStorage *)a1 performUpdateSourceDeviceIdentifiersWithCompletion:v22];
+        [(_DKSyncCloudKitKnowledgeStorage *)self performUpdateSourceDeviceIdentifiersWithCompletion:v22];
       }
     }
   }
@@ -2864,7 +2864,7 @@ LABEL_5:
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setHasZoneAdditionChanges:(uint64_t)a3 forZone:(uint64_t)a4
+- (void)setHasZoneAdditionChanges:(uint64_t)changes forZone:(uint64_t)zone
 {
   OUTLINED_FUNCTION_39();
   v11 = v10;
@@ -2939,7 +2939,7 @@ LABEL_14:
   OUTLINED_FUNCTION_38_0();
 }
 
-- (void)setHasZoneDeletionChanges:(uint64_t)a3 forZone:(uint64_t)a4
+- (void)setHasZoneDeletionChanges:(uint64_t)changes forZone:(uint64_t)zone
 {
   OUTLINED_FUNCTION_39();
   v11 = v10;
@@ -3014,17 +3014,17 @@ LABEL_14:
   OUTLINED_FUNCTION_38_0();
 }
 
-- (void)addSourceDeviceIdentifierWithRecordZoneID:(uint64_t)a1
+- (void)addSourceDeviceIdentifierWithRecordZoneID:(uint64_t)d
 {
   v14 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (d)
   {
     v4 = +[_DKSyncSerializer underlyingQueue];
     dispatch_assert_queue_V2(v4);
 
-    v5 = [v3 zoneName];
-    if ([v5 hasPrefix:@"source-device-id:"])
+    zoneName = [v3 zoneName];
+    if ([zoneName hasPrefix:@"source-device-id:"])
     {
       v6 = [_DKSyncCloudKitKnowledgeStorage deviceIDFromZoneID:v3];
       +[_DKSyncCloudKitKnowledgeStorage mySyncZoneID];
@@ -3033,7 +3033,7 @@ LABEL_14:
       {
         if (([v3 isEqual:0x1E7366000uLL] & 1) == 0)
         {
-          v7 = [*(a1 + 80) objectForKeyedSubscript:v6];
+          v7 = [*(d + 80) objectForKeyedSubscript:v6];
 
           if (!v7)
           {
@@ -3046,8 +3046,8 @@ LABEL_14:
               OUTLINED_FUNCTION_33(&dword_191750000, v9, v11, "%{public}@: Adding peer source device id %@", v12);
             }
 
-            [*(a1 + 80) setObject:v3 forKeyedSubscript:v6];
-            [(_DKSyncCloudKitKnowledgeStorage *)a1 configurePeerWithSourceDeviceID:v6 zoneID:v3];
+            [*(d + 80) setObject:v3 forKeyedSubscript:v6];
+            [(_DKSyncCloudKitKnowledgeStorage *)d configurePeerWithSourceDeviceID:v6 zoneID:v3];
           }
         }
       }
@@ -3057,17 +3057,17 @@ LABEL_14:
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeSourceDeviceIdentifierWithRecordZoneID:(id *)a1
+- (void)removeSourceDeviceIdentifierWithRecordZoneID:(id *)d
 {
   v17 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (d)
   {
     v4 = +[_DKSyncSerializer underlyingQueue];
     dispatch_assert_queue_V2(v4);
 
-    v5 = [v3 zoneName];
-    if ([v5 hasPrefix:@"source-device-id:"])
+    zoneName = [v3 zoneName];
+    if ([zoneName hasPrefix:@"source-device-id:"])
     {
       v6 = [_DKSyncCloudKitKnowledgeStorage deviceIDFromZoneID:v3];
       +[_DKSyncCloudKitKnowledgeStorage mySyncZoneID];
@@ -3076,7 +3076,7 @@ LABEL_14:
       {
         if (([v3 isEqual:0x1E7366000uLL] & 1) == 0)
         {
-          v7 = [a1[10] objectForKeyedSubscript:v6];
+          v7 = [d[10] objectForKeyedSubscript:v6];
 
           if (v7)
           {
@@ -3089,18 +3089,18 @@ LABEL_14:
               OUTLINED_FUNCTION_33(&dword_191750000, v8, v14, "%{public}@: Deleting peer source device id %{public}@", v15);
             }
 
-            [a1[10] setObject:0 forKeyedSubscript:v6];
-            [a1[11] setObject:0 forKeyedSubscript:v3];
-            v9 = a1[4];
-            v10 = [v3 zoneName];
-            v11 = [v9 peerWithZoneName:v10 sourceDeviceID:v6];
+            [d[10] setObject:0 forKeyedSubscript:v6];
+            [d[11] setObject:0 forKeyedSubscript:v3];
+            v9 = d[4];
+            zoneName2 = [v3 zoneName];
+            v11 = [v9 peerWithZoneName:zoneName2 sourceDeviceID:v6];
 
-            [a1[4] removeActiveTransports:4 fromPeer:v11];
-            [a1 setHasAdditionsFlag:0 forPeer:v11];
-            [a1 setHasDeletionsFlag:0 forPeer:v11];
-            if (![a1[4] activeTransportsForPeer:v11])
+            [d[4] removeActiveTransports:4 fromPeer:v11];
+            [d setHasAdditionsFlag:0 forPeer:v11];
+            [d setHasDeletionsFlag:0 forPeer:v11];
+            if (![d[4] activeTransportsForPeer:v11])
             {
-              [a1[4] removePeer:v11];
+              [d[4] removePeer:v11];
             }
           }
         }
@@ -3114,7 +3114,7 @@ LABEL_14:
 - (void)commitFetchDatabaseChangesServerChangeToken
 {
   v38 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     v2 = +[_DKSyncSerializer underlyingQueue];
     dispatch_assert_queue_V2(v2);
@@ -3129,7 +3129,7 @@ LABEL_14:
       _os_log_debug_impl(v17, v18, v19, v20, v21, 0x16u);
     }
 
-    if (*(a1 + 128))
+    if (*(self + 128))
     {
       OUTLINED_FUNCTION_45();
       v5 = [v4 archivedDataWithRootObject:? requiringSecureCoding:? error:?];
@@ -3141,7 +3141,7 @@ LABEL_14:
         if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
         {
           v22 = [objc_opt_class() description];
-          v23 = *(a1 + 128);
+          v23 = *(self + 128);
           *buf = 138544130;
           v30 = v22;
           v31 = 2114;
@@ -3153,7 +3153,7 @@ LABEL_14:
           _os_log_debug_impl(&dword_191750000, v7, OS_LOG_TYPE_DEBUG, "%{public}@: Setting token %{public}@ to %@ (%@)", buf, 0x2Au);
         }
 
-        [*(a1 + 16) setData:v5 forKey:@"FetchDatabaseChangesServerChangeToken"];
+        [*(self + 16) setData:v5 forKey:@"FetchDatabaseChangesServerChangeToken"];
       }
 
       else
@@ -3161,14 +3161,14 @@ LABEL_14:
         if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
         {
           v24 = [objc_opt_class() description];
-          v25 = [v2 domain];
+          domain = [v2 domain];
           [v2 code];
           *buf = 138544386;
           v30 = v24;
           OUTLINED_FUNCTION_25_0();
           v32 = @"FetchDatabaseChangesServerChangeToken";
           v33 = v26;
-          v34 = v25;
+          v34 = domain;
           OUTLINED_FUNCTION_23_0();
           v37 = v2;
           OUTLINED_FUNCTION_17(&dword_191750000, v7, v27, "%{public}@: Error archiving token %{public}@: %{public}@:%lld (%@)", buf);
@@ -3196,7 +3196,7 @@ LABEL_14:
 - (void)setPrewarmedFlag
 {
   v11 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     v2 = +[_DKSyncSerializer underlyingQueue];
     dispatch_assert_queue_V2(v2);
@@ -3210,39 +3210,39 @@ LABEL_14:
       _os_log_debug_impl(v6, v7, v8, v9, v10, 0xCu);
     }
 
-    *(a1 + 97) = 1;
+    *(self + 97) = 1;
   }
 
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fastForwardPastDeletionsInNewZone:(void *)a3 sourceDeviceID:
+- (void)fastForwardPastDeletionsInNewZone:(void *)zone sourceDeviceID:
 {
   v43 = *MEMORY[0x1E69E9840];
   v7 = a2;
-  if (a1)
+  if (self)
   {
-    v8 = a3;
-    v9 = [OUTLINED_FUNCTION_71() underlyingQueue];
-    dispatch_assert_queue_V2(v9);
+    zoneCopy = zone;
+    underlyingQueue = [OUTLINED_FUNCTION_71() underlyingQueue];
+    dispatch_assert_queue_V2(underlyingQueue);
 
-    v10 = [v7 zoneID];
+    zoneID = [v7 zoneID];
     v11 = +[_CDLogging syncChannel];
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
       v12 = [objc_opt_class() description];
-      v4 = [v10 zoneName];
+      zoneName = [zoneID zoneName];
       v33 = 138543618;
       v34 = v12;
       v35 = 2114;
-      v36 = v4;
+      v36 = zoneName;
       OUTLINED_FUNCTION_33(&dword_191750000, v11, v13, "%{public}@: Fast forwarding past deletions in zone with name %{public}@", &v33);
     }
 
-    v14 = [v7 currentServerChangeToken];
-    if (v14)
+    currentServerChangeToken = [v7 currentServerChangeToken];
+    if (currentServerChangeToken)
     {
-      [(_DKSyncCloudKitKnowledgeStorage *)a1 _setPreviousServerChangeToken:v14 forRecordZoneID:v10];
+      [(_DKSyncCloudKitKnowledgeStorage *)self _setPreviousServerChangeToken:currentServerChangeToken forRecordZoneID:zoneID];
     }
 
     else
@@ -3252,18 +3252,18 @@ LABEL_14:
       {
         [objc_opt_class() description];
         objc_claimAutoreleasedReturnValue();
-        v16 = [OUTLINED_FUNCTION_67() zoneName];
+        zoneName2 = [OUTLINED_FUNCTION_67() zoneName];
         v33 = 138543618;
-        v34 = v4;
+        v34 = zoneName;
         v35 = 2114;
-        v36 = v16;
+        v36 = zoneName2;
         OUTLINED_FUNCTION_43(&dword_191750000, v15, v17, "%{public}@: Unable to fast forward past deletions in zone with name %{public}@ due to missing currentServerChangeToken", &v33);
       }
     }
 
-    v18 = *(a1 + 32);
-    v19 = [v10 zoneName];
-    v20 = [v18 peerWithZoneName:v19 sourceDeviceID:v3];
+    v18 = *(self + 32);
+    zoneName3 = [zoneID zoneName];
+    v20 = [v18 peerWithZoneName:zoneName3 sourceDeviceID:v3];
 
     v21 = +[_CDLogging syncChannel];
     if (OUTLINED_FUNCTION_79(v21))
@@ -3281,51 +3281,51 @@ LABEL_14:
         v23 = &stru_1F05B9908;
       }
 
-      v24 = [v20 identifier];
-      v25 = [v20 model];
-      if (v25)
+      identifier = [v20 identifier];
+      model = [v20 model];
+      if (model)
       {
         v26 = MEMORY[0x1E696AEC0];
-        v30 = [v20 model];
-        v22 = [v26 stringWithFormat:@" (%@)", v30];
+        model2 = [v20 model];
+        v22 = [v26 stringWithFormat:@" (%@)", model2];
       }
 
-      v27 = [v10 zoneName];
+      zoneName4 = [zoneID zoneName];
       v33 = 138544386;
       v34 = v32;
       v35 = 2114;
       v36 = v23;
       v37 = 2114;
-      v38 = v24;
+      v38 = identifier;
       v39 = 2114;
       v40 = v22;
       v41 = 2114;
-      v42 = v27;
+      v42 = zoneName4;
       OUTLINED_FUNCTION_49(&dword_191750000, v3, v28, "%{public}@: Instantiated %{public}@peer %{public}@%{public}@ from new zone with name %{public}@", &v33);
 
-      if (v25)
+      if (model)
       {
       }
 
       v7 = v31;
     }
 
-    [(_DKSyncCloudKitKnowledgeStorage *)a1 populateLastSeenDateIfNeededByPeer:v20];
-    [*(a1 + 32) addActiveTransports:4 toPeer:v20];
+    [(_DKSyncCloudKitKnowledgeStorage *)self populateLastSeenDateIfNeededByPeer:v20];
+    [*(self + 32) addActiveTransports:4 toPeer:v20];
   }
 
   v29 = *MEMORY[0x1E69E9840];
 }
 
-- (uint64_t)populateLastSeenDateIfNeededByPeer:(uint64_t)a1
+- (uint64_t)populateLastSeenDateIfNeededByPeer:(uint64_t)peer
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (peer)
   {
     v7 = v3;
-    v5 = [v3 lastSeenDate];
-    if (!v5)
+    lastSeenDate = [v3 lastSeenDate];
+    if (!lastSeenDate)
     {
       v3 = [v7 me];
       v4 = v7;
@@ -3334,8 +3334,8 @@ LABEL_14:
         goto LABEL_6;
       }
 
-      v5 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:-1296000.0];
-      [*(a1 + 32) setLastSeenDate:v5 onPeer:v7];
+      lastSeenDate = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:-1296000.0];
+      [*(peer + 32) setLastSeenDate:lastSeenDate onPeer:v7];
     }
 
     v4 = v7;
@@ -3346,49 +3346,49 @@ LABEL_6:
   return MEMORY[0x1EEE66BB8](v3, v4);
 }
 
-- (uint64_t)hasZoneAdditionChangesForZone:(uint64_t)a1
+- (uint64_t)hasZoneAdditionChangesForZone:(uint64_t)zone
 {
   v3 = a2;
-  if (a1)
+  if (zone)
   {
     OUTLINED_FUNCTION_0_1();
     OUTLINED_FUNCTION_14();
     v6 = __65___DKSyncCloudKitKnowledgeStorage_hasZoneAdditionChangesForZone___block_invoke;
     v7 = &unk_1E7367440;
-    v8 = a1;
+    zoneCopy = zone;
     if (hasZoneAdditionChangesForZone__onceToken != -1)
     {
       dispatch_once(&hasZoneAdditionChangesForZone__onceToken, block);
     }
 
-    a1 = [*(a1 + 104) containsObject:v3];
+    zone = [*(zone + 104) containsObject:v3];
   }
 
-  return a1;
+  return zone;
 }
 
-- (uint64_t)hasZoneDeletionChangesForZone:(uint64_t)a1
+- (uint64_t)hasZoneDeletionChangesForZone:(uint64_t)zone
 {
   v3 = a2;
-  if (a1)
+  if (zone)
   {
     OUTLINED_FUNCTION_0_1();
     OUTLINED_FUNCTION_14();
     v6 = __65___DKSyncCloudKitKnowledgeStorage_hasZoneDeletionChangesForZone___block_invoke;
     v7 = &unk_1E7367440;
-    v8 = a1;
+    zoneCopy = zone;
     if (hasZoneDeletionChangesForZone__onceToken != -1)
     {
       dispatch_once(&hasZoneDeletionChangesForZone__onceToken, block);
     }
 
-    a1 = [*(a1 + 112) containsObject:v3];
+    zone = [*(zone + 112) containsObject:v3];
   }
 
-  return a1;
+  return zone;
 }
 
-- (void)syncDownDeletionsFromCloudWithZoneID:(uint64_t)a3 completion:(uint64_t)a4
+- (void)syncDownDeletionsFromCloudWithZoneID:(uint64_t)d completion:(uint64_t)completion
 {
   OUTLINED_FUNCTION_10_2();
   a23 = v24;
@@ -3419,13 +3419,13 @@ LABEL_6:
   OUTLINED_FUNCTION_9_0();
 }
 
-- (id)_previousServerChangeTokenKeyForRecordZoneID:(uint64_t)a1
+- (id)_previousServerChangeTokenKeyForRecordZoneID:(uint64_t)d
 {
-  if (a1)
+  if (d)
   {
     v2 = MEMORY[0x1E696AEC0];
-    v3 = [a2 zoneName];
-    v4 = [v2 stringWithFormat:@"FetchRecordZoneChangesPreviousServerChangeToken/%@", v3];
+    zoneName = [a2 zoneName];
+    v4 = [v2 stringWithFormat:@"FetchRecordZoneChangesPreviousServerChangeToken/%@", zoneName];
   }
 
   else
@@ -3436,13 +3436,13 @@ LABEL_6:
   return v4;
 }
 
-- (void)_resetPreviousServerChangeTokenForRecordZoneID:(uint64_t)a1
+- (void)_resetPreviousServerChangeTokenForRecordZoneID:(uint64_t)d
 {
   v13 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (d)
   {
-    v4 = [(_DKSyncCloudKitKnowledgeStorage *)a1 _previousServerChangeTokenKeyForRecordZoneID:a2];
-    [*(a1 + 16) removeObjectForKey:v4];
+    v4 = [(_DKSyncCloudKitKnowledgeStorage *)d _previousServerChangeTokenKeyForRecordZoneID:a2];
+    [*(d + 16) removeObjectForKey:v4];
     v5 = +[_CDLogging syncChannel];
     if (OUTLINED_FUNCTION_80(v5))
     {
@@ -3456,11 +3456,11 @@ LABEL_6:
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)runUpdateSourceDeviceIdentifiersPeriodicJobWithCompletion:(uint64_t)a1
+- (void)runUpdateSourceDeviceIdentifiersPeriodicJobWithCompletion:(uint64_t)completion
 {
   v22 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (completion)
   {
     v4 = +[_DKSyncSerializer underlyingQueue];
     dispatch_assert_queue_V2(v4);
@@ -3476,16 +3476,16 @@ LABEL_6:
       OUTLINED_FUNCTION_33(&dword_191750000, v4, v7, "%{public}@: Running periodic job: %{public}@", &v18);
     }
 
-    v8 = [*(a1 + 40) activity];
+    activity = [*(completion + 40) activity];
     OUTLINED_FUNCTION_0_1();
     OUTLINED_FUNCTION_14();
     v13 = __93___DKSyncCloudKitKnowledgeStorage_runUpdateSourceDeviceIdentifiersPeriodicJobWithCompletion___block_invoke;
     v14 = &unk_1E7367EA8;
-    v15 = a1;
+    completionCopy = completion;
     v16 = v9;
     v17 = v3;
-    v10 = v8;
-    [(_DKSyncCloudKitKnowledgeStorage *)a1 performUpdateSourceDeviceIdentifiersWithCompletion:v12];
+    v10 = activity;
+    [(_DKSyncCloudKitKnowledgeStorage *)completion performUpdateSourceDeviceIdentifiersWithCompletion:v12];
   }
 
   v11 = *MEMORY[0x1E69E9840];

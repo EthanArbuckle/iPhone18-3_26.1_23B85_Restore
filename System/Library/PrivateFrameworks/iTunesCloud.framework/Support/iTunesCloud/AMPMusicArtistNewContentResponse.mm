@@ -1,26 +1,26 @@
 @interface AMPMusicArtistNewContentResponse
-- (BOOL)isEqual:(id)a3;
-- (BOOL)readFrom:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)readFrom:(id)from;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addArtistContent:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addArtistContent:(id)content;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AMPMusicArtistNewContentResponse
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = v4[1];
+  v5 = fromCopy[1];
   v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
@@ -44,12 +44,12 @@
     while (v7);
   }
 
-  if (v4[3])
+  if (fromCopy[3])
   {
     [(AMPMusicArtistNewContentResponse *)self setRecoId:?];
   }
 
-  if (v4[2])
+  if (fromCopy[2])
   {
     [(AMPMusicArtistNewContentResponse *)self setModel:?];
   }
@@ -62,13 +62,13 @@
   return v4 ^ [(NSData *)self->_model hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((artistContents = self->_artistContents, !(artistContents | v4[1])) || -[NSMutableArray isEqual:](artistContents, "isEqual:")) && ((recoId = self->_recoId, !(recoId | v4[3])) || -[NSString isEqual:](recoId, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((artistContents = self->_artistContents, !(artistContents | equalCopy[1])) || -[NSMutableArray isEqual:](artistContents, "isEqual:")) && ((recoId = self->_recoId, !(recoId | equalCopy[3])) || -[NSString isEqual:](recoId, "isEqual:")))
   {
     model = self->_model;
-    if (model | v4[2])
+    if (model | equalCopy[2])
     {
       v8 = [(NSData *)model isEqual:?];
     }
@@ -87,9 +87,9 @@
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -110,7 +110,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v17 + 1) + 8 * v10) copyWithZone:{a3, v17}];
+        v11 = [*(*(&v17 + 1) + 8 * v10) copyWithZone:{zone, v17}];
         [v5 addArtistContent:v11];
 
         v10 = v10 + 1;
@@ -123,51 +123,51 @@
     while (v8);
   }
 
-  v12 = [(NSString *)self->_recoId copyWithZone:a3];
+  v12 = [(NSString *)self->_recoId copyWithZone:zone];
   v13 = v5[3];
   v5[3] = v12;
 
-  v14 = [(NSData *)self->_model copyWithZone:a3];
+  v14 = [(NSData *)self->_model copyWithZone:zone];
   v15 = v5[2];
   v5[2] = v14;
 
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v9 = a3;
+  toCopy = to;
   if ([(AMPMusicArtistNewContentResponse *)self artistContentsCount])
   {
-    [v9 clearArtistContents];
-    v4 = [(AMPMusicArtistNewContentResponse *)self artistContentsCount];
-    if (v4)
+    [toCopy clearArtistContents];
+    artistContentsCount = [(AMPMusicArtistNewContentResponse *)self artistContentsCount];
+    if (artistContentsCount)
     {
-      v5 = v4;
+      v5 = artistContentsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(AMPMusicArtistNewContentResponse *)self artistContentAtIndex:i];
-        [v9 addArtistContent:v7];
+        [toCopy addArtistContent:v7];
       }
     }
   }
 
   if (self->_recoId)
   {
-    [v9 setRecoId:?];
+    [toCopy setRecoId:?];
   }
 
-  v8 = v9;
+  v8 = toCopy;
   if (self->_model)
   {
-    [v9 setModel:?];
-    v8 = v9;
+    [toCopy setModel:?];
+    v8 = toCopy;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -211,16 +211,16 @@
   }
 }
 
-- (BOOL)readFrom:(id)a3
+- (BOOL)readFrom:(id)from
 {
-  v5 = [a3 position];
-  if (v5 < [a3 length])
+  position = [from position];
+  if (position < [from length])
   {
     while (1)
     {
-      if ([a3 hasError])
+      if ([from hasError])
       {
-        return [a3 hasError] ^ 1;
+        return [from hasError] ^ 1;
       }
 
       v6 = 0;
@@ -229,18 +229,18 @@
       while (1)
       {
         LOBYTE(v20[0]) = 0;
-        v9 = [a3 position] + 1;
-        if (v9 >= [a3 position] && (v10 = objc_msgSend(a3, "position") + 1, v10 <= objc_msgSend(a3, "length")))
+        v9 = [from position] + 1;
+        if (v9 >= [from position] && (v10 = objc_msgSend(from, "position") + 1, v10 <= objc_msgSend(from, "length")))
         {
-          v11 = [a3 data];
-          [v11 getBytes:v20 range:{objc_msgSend(a3, "position"), 1}];
+          data = [from data];
+          [data getBytes:v20 range:{objc_msgSend(from, "position"), 1}];
 
-          [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+          [from setPosition:{objc_msgSend(from, "position") + 1}];
         }
 
         else
         {
-          [a3 _setError];
+          [from _setError];
         }
 
         v8 |= (v20[0] & 0x7F) << v6;
@@ -257,11 +257,11 @@
         }
       }
 
-      v13 = [a3 hasError] ? 0 : v8;
+      v13 = [from hasError] ? 0 : v8;
 LABEL_15:
-      if (([a3 hasError] & 1) != 0 || (v13 & 7) == 4)
+      if (([from hasError] & 1) != 0 || (v13 & 7) == 4)
       {
-        return [a3 hasError] ^ 1;
+        return [from hasError] ^ 1;
       }
 
       v14 = v13 >> 3;
@@ -288,7 +288,7 @@ LABEL_26:
         [(AMPMusicArtistNewContentResponse *)self addArtistContent:v15];
         v20[0] = 0;
         v20[1] = 0;
-        if (!PBReaderPlaceMark() || !sub_1000C8C30(v15, a3))
+        if (!PBReaderPlaceMark() || !sub_1000C8C30(v15, from))
         {
 
           return 0;
@@ -304,10 +304,10 @@ LABEL_26:
       }
 
 LABEL_28:
-      v18 = [a3 position];
-      if (v18 >= [a3 length])
+      position2 = [from position];
+      if (position2 >= [from length])
       {
-        return [a3 hasError] ^ 1;
+        return [from hasError] ^ 1;
       }
     }
 
@@ -316,7 +316,7 @@ LABEL_28:
     goto LABEL_25;
   }
 
-  return [a3 hasError] ^ 1;
+  return [from hasError] ^ 1;
 }
 
 - (id)dictionaryRepresentation
@@ -344,8 +344,8 @@ LABEL_28:
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v14 + 1) + 8 * i) dictionaryRepresentation];
-          [v4 addObject:v10];
+          dictionaryRepresentation = [*(*(&v14 + 1) + 8 * i) dictionaryRepresentation];
+          [v4 addObject:dictionaryRepresentation];
         }
 
         v7 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -377,28 +377,28 @@ LABEL_28:
   v7.receiver = self;
   v7.super_class = AMPMusicArtistNewContentResponse;
   v3 = [(AMPMusicArtistNewContentResponse *)&v7 description];
-  v4 = [(AMPMusicArtistNewContentResponse *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(AMPMusicArtistNewContentResponse *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
 
-- (void)addArtistContent:(id)a3
+- (void)addArtistContent:(id)content
 {
-  v4 = a3;
+  contentCopy = content;
   artistContents = self->_artistContents;
-  v8 = v4;
+  v8 = contentCopy;
   if (!artistContents)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_artistContents;
     self->_artistContents = v6;
 
-    v4 = v8;
+    contentCopy = v8;
     artistContents = self->_artistContents;
   }
 
-  [(NSMutableArray *)artistContents addObject:v4];
+  [(NSMutableArray *)artistContents addObject:contentCopy];
 }
 
 @end

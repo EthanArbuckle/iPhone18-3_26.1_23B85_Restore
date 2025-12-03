@@ -1,33 +1,33 @@
 @interface _UIBarCustomizationReservoirCell
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (void)layoutSubviews;
-- (void)setChiclet:(id)a3;
+- (void)setChiclet:(id)chiclet;
 @end
 
 @implementation _UIBarCustomizationReservoirCell
 
-- (void)setChiclet:(id)a3
+- (void)setChiclet:(id)chiclet
 {
-  v5 = a3;
+  chicletCopy = chiclet;
   chiclet = self->_chiclet;
-  if (chiclet != v5)
+  if (chiclet != chicletCopy)
   {
-    v10 = v5;
-    v7 = [(UIView *)chiclet superview];
-    v8 = [(UICollectionViewCell *)self contentView];
+    v10 = chicletCopy;
+    superview = [(UIView *)chiclet superview];
+    contentView = [(UICollectionViewCell *)self contentView];
 
-    if (v7 == v8)
+    if (superview == contentView)
     {
       [(UIView *)self->_chiclet removeFromSuperview];
     }
 
-    objc_storeStrong(&self->_chiclet, a3);
-    v9 = [(UICollectionViewCell *)self contentView];
-    [v9 addSubview:self->_chiclet];
+    objc_storeStrong(&self->_chiclet, chiclet);
+    contentView2 = [(UICollectionViewCell *)self contentView];
+    [contentView2 addSubview:self->_chiclet];
 
     [(UIView *)self setNeedsLayout];
-    v5 = v10;
+    chicletCopy = v10;
   }
 }
 
@@ -36,24 +36,24 @@
   v11.receiver = self;
   v11.super_class = _UIBarCustomizationReservoirCell;
   [(UICollectionViewCell *)&v11 layoutSubviews];
-  v3 = [(UICollectionViewCell *)self contentView];
-  [v3 bounds];
+  contentView = [(UICollectionViewCell *)self contentView];
+  [contentView bounds];
   v6 = v5 + v4 * 0.5;
   v9 = v8 + v7 * 0.5;
-  v10 = [(_UIBarCustomizationReservoirCell *)self chiclet];
-  [v10 setCenter:{v6, v9}];
+  chiclet = [(_UIBarCustomizationReservoirCell *)self chiclet];
+  [chiclet setCenter:{v6, v9}];
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [(_UIBarCustomizationReservoirCell *)self chiclet];
-  if (v8)
+  y = inside.y;
+  x = inside.x;
+  eventCopy = event;
+  chiclet = [(_UIBarCustomizationReservoirCell *)self chiclet];
+  if (chiclet)
   {
-    [(UIView *)self convertPoint:v8 toView:x, y];
-    v9 = [v8 pointInside:v7 withEvent:?];
+    [(UIView *)self convertPoint:chiclet toView:x, y];
+    v9 = [chiclet pointInside:eventCopy withEvent:?];
   }
 
   else
@@ -64,17 +64,17 @@
   return v9;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [(_UIBarCustomizationReservoirCell *)self chiclet];
-  if (v8)
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
+  chiclet = [(_UIBarCustomizationReservoirCell *)self chiclet];
+  if (chiclet)
   {
-    v9 = [(_UIBarCustomizationReservoirCell *)self chiclet];
-    [(UIView *)self convertPoint:v9 toView:x, y];
-    v10 = [v9 hitTest:v7 withEvent:?];
+    chiclet2 = [(_UIBarCustomizationReservoirCell *)self chiclet];
+    [(UIView *)self convertPoint:chiclet2 toView:x, y];
+    v10 = [chiclet2 hitTest:eventCopy withEvent:?];
   }
 
   else

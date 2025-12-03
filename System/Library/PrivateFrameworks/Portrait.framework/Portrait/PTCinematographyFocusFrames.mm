@@ -1,25 +1,25 @@
 @interface PTCinematographyFocusFrames
-- (PTCinematographyFocusFrames)initWithFrames:(id)a3 options:(id)a4;
-- (int64_t)_framesIndex:(unint64_t)a3 earlierBy:(id *)a4;
-- (int64_t)startIndexForLinearRackFocusPullToFrameAtIndex:(unint64_t)a3;
+- (PTCinematographyFocusFrames)initWithFrames:(id)frames options:(id)options;
+- (int64_t)_framesIndex:(unint64_t)index earlierBy:(id *)by;
+- (int64_t)startIndexForLinearRackFocusPullToFrameAtIndex:(unint64_t)index;
 @end
 
 @implementation PTCinematographyFocusFrames
 
-- (PTCinematographyFocusFrames)initWithFrames:(id)a3 options:(id)a4
+- (PTCinematographyFocusFrames)initWithFrames:(id)frames options:(id)options
 {
-  v7 = a3;
-  v8 = a4;
+  framesCopy = frames;
+  optionsCopy = options;
   v14.receiver = self;
   v14.super_class = PTCinematographyFocusFrames;
   v9 = [(PTCinematographyFocusFrames *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_frames, a3);
-    if (v8)
+    objc_storeStrong(&v9->_frames, frames);
+    if (optionsCopy)
     {
-      v11 = [v8 copy];
+      v11 = [optionsCopy copy];
     }
 
     else
@@ -34,7 +34,7 @@
   return v10;
 }
 
-- (int64_t)startIndexForLinearRackFocusPullToFrameAtIndex:(unint64_t)a3
+- (int64_t)startIndexForLinearRackFocusPullToFrameAtIndex:(unint64_t)index
 {
   memset(&v35[1], 0, sizeof(CMTime));
   options = self->_options;
@@ -53,13 +53,13 @@
   [(PTCinematographyFocusFramesOptions *)v7 maximumDisparityPerSecond];
   v9 = v8;
   time1 = v35[1];
-  v10 = [(PTCinematographyFocusFrames *)self _framesIndex:a3 earlierBy:&time1];
+  v10 = [(PTCinematographyFocusFrames *)self _framesIndex:index earlierBy:&time1];
   time1 = v35[1];
   time2 = v35[0];
   if (CMTimeCompare(&time1, &time2))
   {
     memset(&time1, 0, sizeof(time1));
-    v11 = [(NSArray *)self->_frames objectAtIndexedSubscript:a3];
+    v11 = [(NSArray *)self->_frames objectAtIndexedSubscript:index];
     v12 = v11;
     if (v11)
     {
@@ -74,7 +74,7 @@
     rhs = v35[0];
     CMTimeSubtract(&time1, &time2, &rhs);
 
-    v13 = [(NSArray *)self->_frames objectAtIndexedSubscript:a3];
+    v13 = [(NSArray *)self->_frames objectAtIndexedSubscript:index];
     [v13 focusDistance];
     v15 = v14;
 
@@ -114,7 +114,7 @@ LABEL_27:
           break;
         }
 
-        v19 = [(NSArray *)self->_frames objectAtIndexedSubscript:a3];
+        v19 = [(NSArray *)self->_frames objectAtIndexedSubscript:index];
         v20 = v19;
         if (v19)
         {
@@ -169,16 +169,16 @@ LABEL_27:
   return v10;
 }
 
-- (int64_t)_framesIndex:(unint64_t)a3 earlierBy:(id *)a4
+- (int64_t)_framesIndex:(unint64_t)index earlierBy:(id *)by
 {
-  v5 = a3;
-  if ([(NSArray *)self->_frames count]<= a3)
+  indexCopy = index;
+  if ([(NSArray *)self->_frames count]<= index)
   {
     [PTCinematographyFocusFrames _framesIndex:earlierBy:];
   }
 
   memset(&v16, 0, sizeof(v16));
-  v7 = [(NSArray *)self->_frames objectAtIndexedSubscript:v5];
+  v7 = [(NSArray *)self->_frames objectAtIndexedSubscript:indexCopy];
   v8 = v7;
   if (v7)
   {
@@ -190,17 +190,17 @@ LABEL_27:
     memset(&lhs, 0, sizeof(lhs));
   }
 
-  v14 = *a4;
+  v14 = *by;
   CMTimeSubtract(&v16, &lhs, &v14);
 
-  if (v5 < 0)
+  if (indexCopy < 0)
   {
     [PTCinematographyFocusFrames _framesIndex:earlierBy:];
   }
 
   while (1)
   {
-    v9 = [(NSArray *)self->_frames objectAtIndexedSubscript:v5];
+    v9 = [(NSArray *)self->_frames objectAtIndexedSubscript:indexCopy];
     v10 = v9;
     if (v9)
     {
@@ -220,13 +220,13 @@ LABEL_27:
       break;
     }
 
-    if (v5-- <= 0)
+    if (indexCopy-- <= 0)
     {
       return 0;
     }
   }
 
-  return v5 + 1;
+  return indexCopy + 1;
 }
 
 @end

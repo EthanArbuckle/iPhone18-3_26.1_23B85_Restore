@@ -1,13 +1,13 @@
 @interface STUIStatusBarDisplayItemPlacementBatteryGroup
-+ (id)groupWithHighPriority:(int64_t)a3 lowPriority:(int64_t)a4;
++ (id)groupWithHighPriority:(int64_t)priority lowPriority:(int64_t)lowPriority;
 @end
 
 @implementation STUIStatusBarDisplayItemPlacementBatteryGroup
 
-+ (id)groupWithHighPriority:(int64_t)a3 lowPriority:(int64_t)a4
++ (id)groupWithHighPriority:(int64_t)priority lowPriority:(int64_t)lowPriority
 {
   v16[3] = *MEMORY[0x277D85DE8];
-  v6 = a3 - a4;
+  v6 = priority - lowPriority;
   v7 = +[STUIStatusBarBatteryItem staticIconDisplayIdentifier];
   v8 = [STUIStatusBarDisplayItemPlacement placementWithIdentifier:v7 priority:v6 + 2];
 
@@ -21,7 +21,7 @@
   v16[1] = v10;
   v16[2] = v8;
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:3];
-  v14 = [a1 groupWithPriority:a4 placements:v13];
+  v14 = [self groupWithPriority:lowPriority placements:v13];
 
   return v14;
 }

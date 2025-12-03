@@ -6,19 +6,19 @@
 
 - (void)item
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1[1];
+    v2 = self[1];
     if (v2)
     {
       v2 = v2[2];
     }
 
-    a1 = v2;
+    self = v2;
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 @end

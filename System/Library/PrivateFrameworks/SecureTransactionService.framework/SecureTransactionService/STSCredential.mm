@@ -1,79 +1,79 @@
 @interface STSCredential
-+ (id)unifiedAccessCredentialWithAID:(id)a3 publicKeyIdentifier:(id)a4;
-+ (id)unifiedAccessCredentialWithAIDs:(id)a3 primaryPublicKeyIdentifier:(id)a4 secondaryAid:(id)a5 secondaryPublicKeyIdentifier:(id)a6;
-- (STSCredential)initWithCoder:(id)a3;
-- (STSCredential)initWithType:(unsigned __int8)a3 identifier:(id)a4 subIdentifier:(id)a5 secondaryIdentifier:(id)a6 secondarySubIdentifier:(id)a7;
++ (id)unifiedAccessCredentialWithAID:(id)d publicKeyIdentifier:(id)identifier;
++ (id)unifiedAccessCredentialWithAIDs:(id)ds primaryPublicKeyIdentifier:(id)identifier secondaryAid:(id)aid secondaryPublicKeyIdentifier:(id)keyIdentifier;
+- (STSCredential)initWithCoder:(id)coder;
+- (STSCredential)initWithType:(unsigned __int8)type identifier:(id)identifier subIdentifier:(id)subIdentifier secondaryIdentifier:(id)secondaryIdentifier secondarySubIdentifier:(id)secondarySubIdentifier;
 - (__SecAccessControl)copyAccessControl;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation STSCredential
 
-+ (id)unifiedAccessCredentialWithAID:(id)a3 publicKeyIdentifier:(id)a4
++ (id)unifiedAccessCredentialWithAID:(id)d publicKeyIdentifier:(id)identifier
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[STSCredential alloc] initWithType:3 identifier:v6 subIdentifier:v5];
+  identifierCopy = identifier;
+  dCopy = d;
+  v7 = [[STSCredential alloc] initWithType:3 identifier:dCopy subIdentifier:identifierCopy];
 
   return v7;
 }
 
-+ (id)unifiedAccessCredentialWithAIDs:(id)a3 primaryPublicKeyIdentifier:(id)a4 secondaryAid:(id)a5 secondaryPublicKeyIdentifier:(id)a6
++ (id)unifiedAccessCredentialWithAIDs:(id)ds primaryPublicKeyIdentifier:(id)identifier secondaryAid:(id)aid secondaryPublicKeyIdentifier:(id)keyIdentifier
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [[STSCredential alloc] initWithType:3 identifier:v12 subIdentifier:v11 secondaryIdentifier:v10 secondarySubIdentifier:v9];
+  keyIdentifierCopy = keyIdentifier;
+  aidCopy = aid;
+  identifierCopy = identifier;
+  dsCopy = ds;
+  v13 = [[STSCredential alloc] initWithType:3 identifier:dsCopy subIdentifier:identifierCopy secondaryIdentifier:aidCopy secondarySubIdentifier:keyIdentifierCopy];
 
   return v13;
 }
 
-- (STSCredential)initWithType:(unsigned __int8)a3 identifier:(id)a4 subIdentifier:(id)a5 secondaryIdentifier:(id)a6 secondarySubIdentifier:(id)a7
+- (STSCredential)initWithType:(unsigned __int8)type identifier:(id)identifier subIdentifier:(id)subIdentifier secondaryIdentifier:(id)secondaryIdentifier secondarySubIdentifier:(id)secondarySubIdentifier
 {
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  identifierCopy = identifier;
+  subIdentifierCopy = subIdentifier;
+  secondaryIdentifierCopy = secondaryIdentifier;
+  secondarySubIdentifierCopy = secondarySubIdentifier;
   v20.receiver = self;
   v20.super_class = STSCredential;
   v17 = [(STSCredential *)&v20 init];
   v18 = v17;
   if (v17)
   {
-    v17->_type = a3;
-    objc_storeStrong(&v17->_identifier, a4);
-    objc_storeStrong(&v18->_subIdentifier, a5);
-    objc_storeStrong(&v18->_secondaryIdentifier, a6);
-    objc_storeStrong(&v18->_secondarySubIdentifier, a7);
+    v17->_type = type;
+    objc_storeStrong(&v17->_identifier, identifier);
+    objc_storeStrong(&v18->_subIdentifier, subIdentifier);
+    objc_storeStrong(&v18->_secondaryIdentifier, secondaryIdentifier);
+    objc_storeStrong(&v18->_secondarySubIdentifier, secondarySubIdentifier);
   }
 
   return v18;
 }
 
-- (STSCredential)initWithCoder:(id)a3
+- (STSCredential)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = STSCredential;
   v5 = [(STSCredential *)&v15 init];
   if (v5)
   {
-    v5->_type = [v4 decodeIntForKey:@"STSCredentialType"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"STSCredentialIdentifier"];
+    v5->_type = [coderCopy decodeIntForKey:@"STSCredentialType"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"STSCredentialIdentifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"STSCredentialSubIdentifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"STSCredentialSubIdentifier"];
     subIdentifier = v5->_subIdentifier;
     v5->_subIdentifier = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"STSCredentialSecondaryIdentifier"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"STSCredentialSecondaryIdentifier"];
     secondaryIdentifier = v5->_secondaryIdentifier;
     v5->_secondaryIdentifier = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"STSCredentialSecondarySubIdentifier"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"STSCredentialSecondarySubIdentifier"];
     secondarySubIdentifier = v5->_secondarySubIdentifier;
     v5->_secondarySubIdentifier = v12;
   }
@@ -81,15 +81,15 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   type = self->_type;
-  v5 = a3;
-  [v5 encodeInt:type forKey:@"STSCredentialType"];
-  [v5 encodeObject:self->_identifier forKey:@"STSCredentialIdentifier"];
-  [v5 encodeObject:self->_subIdentifier forKey:@"STSCredentialSubIdentifier"];
-  [v5 encodeObject:self->_secondaryIdentifier forKey:@"STSCredentialSecondaryIdentifier"];
-  [v5 encodeObject:self->_secondarySubIdentifier forKey:@"STSCredentialSecondarySubIdentifier"];
+  coderCopy = coder;
+  [coderCopy encodeInt:type forKey:@"STSCredentialType"];
+  [coderCopy encodeObject:self->_identifier forKey:@"STSCredentialIdentifier"];
+  [coderCopy encodeObject:self->_subIdentifier forKey:@"STSCredentialSubIdentifier"];
+  [coderCopy encodeObject:self->_secondaryIdentifier forKey:@"STSCredentialSecondaryIdentifier"];
+  [coderCopy encodeObject:self->_secondarySubIdentifier forKey:@"STSCredentialSecondarySubIdentifier"];
 }
 
 - (id)description

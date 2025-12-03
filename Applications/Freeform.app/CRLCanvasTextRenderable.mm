@@ -1,42 +1,42 @@
 @interface CRLCanvasTextRenderable
 + (id)renderable;
-+ (id)renderableFromTextLayer:(id)a3;
++ (id)renderableFromTextLayer:(id)layer;
 - (CGColor)foregroundColor;
-- (CRLCanvasTextRenderable)initWithTextLayer:(id)a3;
+- (CRLCanvasTextRenderable)initWithTextLayer:(id)layer;
 - (NSString)alignmentMode;
 - (NSString)truncationMode;
 - (double)fontSize;
 - (id)p_textLayer;
 - (id)string;
 - (void)font;
-- (void)setAlignmentMode:(id)a3;
-- (void)setFont:(void *)a3;
-- (void)setFontSize:(double)a3;
-- (void)setForegroundColor:(CGColor *)a3;
-- (void)setString:(id)a3;
-- (void)setTruncationMode:(id)a3;
+- (void)setAlignmentMode:(id)mode;
+- (void)setFont:(void *)font;
+- (void)setFontSize:(double)size;
+- (void)setForegroundColor:(CGColor *)color;
+- (void)setString:(id)string;
+- (void)setTruncationMode:(id)mode;
 @end
 
 @implementation CRLCanvasTextRenderable
 
-- (CRLCanvasTextRenderable)initWithTextLayer:(id)a3
+- (CRLCanvasTextRenderable)initWithTextLayer:(id)layer
 {
   v4.receiver = self;
   v4.super_class = CRLCanvasTextRenderable;
-  return [(CRLCanvasRenderable *)&v4 initWithCALayer:a3];
+  return [(CRLCanvasRenderable *)&v4 initWithCALayer:layer];
 }
 
-+ (id)renderableFromTextLayer:(id)a3
++ (id)renderableFromTextLayer:(id)layer
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithTextLayer:v4];
+  layerCopy = layer;
+  v5 = [[self alloc] initWithTextLayer:layerCopy];
 
   return v5;
 }
 
 + (id)renderable
 {
-  v2 = [a1 alloc];
+  v2 = [self alloc];
   v3 = +[CATextLayer layer];
   v4 = [v2 initWithTextLayer:v3];
 
@@ -46,98 +46,98 @@
 - (id)p_textLayer
 {
   v3 = objc_opt_class();
-  v4 = [(CRLCanvasRenderable *)self layer];
-  v5 = sub_100014370(v3, v4);
+  layer = [(CRLCanvasRenderable *)self layer];
+  v5 = sub_100014370(v3, layer);
 
   return v5;
 }
 
 - (id)string
 {
-  v2 = [(CRLCanvasTextRenderable *)self p_textLayer];
-  v3 = [v2 string];
+  p_textLayer = [(CRLCanvasTextRenderable *)self p_textLayer];
+  string = [p_textLayer string];
 
-  return v3;
+  return string;
 }
 
-- (void)setString:(id)a3
+- (void)setString:(id)string
 {
-  v4 = a3;
-  v5 = [(CRLCanvasTextRenderable *)self p_textLayer];
-  [v5 setString:v4];
+  stringCopy = string;
+  p_textLayer = [(CRLCanvasTextRenderable *)self p_textLayer];
+  [p_textLayer setString:stringCopy];
 }
 
 - (double)fontSize
 {
-  v2 = [(CRLCanvasTextRenderable *)self p_textLayer];
-  [v2 fontSize];
+  p_textLayer = [(CRLCanvasTextRenderable *)self p_textLayer];
+  [p_textLayer fontSize];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setFontSize:(double)a3
+- (void)setFontSize:(double)size
 {
-  v4 = [(CRLCanvasTextRenderable *)self p_textLayer];
-  [v4 setFontSize:a3];
+  p_textLayer = [(CRLCanvasTextRenderable *)self p_textLayer];
+  [p_textLayer setFontSize:size];
 }
 
 - (NSString)truncationMode
 {
-  v2 = [(CRLCanvasTextRenderable *)self p_textLayer];
-  v3 = [v2 truncationMode];
+  p_textLayer = [(CRLCanvasTextRenderable *)self p_textLayer];
+  truncationMode = [p_textLayer truncationMode];
 
-  return v3;
+  return truncationMode;
 }
 
-- (void)setTruncationMode:(id)a3
+- (void)setTruncationMode:(id)mode
 {
-  v4 = a3;
-  v5 = [(CRLCanvasTextRenderable *)self p_textLayer];
-  [v5 setTruncationMode:v4];
+  modeCopy = mode;
+  p_textLayer = [(CRLCanvasTextRenderable *)self p_textLayer];
+  [p_textLayer setTruncationMode:modeCopy];
 }
 
-- (void)setFont:(void *)a3
+- (void)setFont:(void *)font
 {
-  v4 = [(CRLCanvasTextRenderable *)self p_textLayer];
-  [v4 setFont:a3];
+  p_textLayer = [(CRLCanvasTextRenderable *)self p_textLayer];
+  [p_textLayer setFont:font];
 }
 
 - (void)font
 {
-  v2 = [(CRLCanvasTextRenderable *)self p_textLayer];
-  v3 = [v2 font];
+  p_textLayer = [(CRLCanvasTextRenderable *)self p_textLayer];
+  font = [p_textLayer font];
 
-  return v3;
+  return font;
 }
 
-- (void)setForegroundColor:(CGColor *)a3
+- (void)setForegroundColor:(CGColor *)color
 {
-  v4 = [(CRLCanvasTextRenderable *)self p_textLayer];
-  [v4 setForegroundColor:a3];
+  p_textLayer = [(CRLCanvasTextRenderable *)self p_textLayer];
+  [p_textLayer setForegroundColor:color];
 }
 
 - (CGColor)foregroundColor
 {
-  v2 = [(CRLCanvasTextRenderable *)self p_textLayer];
-  v3 = [v2 foregroundColor];
+  p_textLayer = [(CRLCanvasTextRenderable *)self p_textLayer];
+  foregroundColor = [p_textLayer foregroundColor];
 
-  return v3;
+  return foregroundColor;
 }
 
 - (NSString)alignmentMode
 {
-  v2 = [(CRLCanvasTextRenderable *)self p_textLayer];
-  v3 = [v2 alignmentMode];
+  p_textLayer = [(CRLCanvasTextRenderable *)self p_textLayer];
+  alignmentMode = [p_textLayer alignmentMode];
 
-  return v3;
+  return alignmentMode;
 }
 
-- (void)setAlignmentMode:(id)a3
+- (void)setAlignmentMode:(id)mode
 {
-  v4 = a3;
-  v5 = [(CRLCanvasTextRenderable *)self p_textLayer];
-  [v5 setAlignmentMode:v4];
+  modeCopy = mode;
+  p_textLayer = [(CRLCanvasTextRenderable *)self p_textLayer];
+  [p_textLayer setAlignmentMode:modeCopy];
 }
 
 @end

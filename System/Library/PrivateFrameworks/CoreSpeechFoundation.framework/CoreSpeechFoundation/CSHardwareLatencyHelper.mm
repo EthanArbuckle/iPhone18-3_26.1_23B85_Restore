@@ -1,27 +1,27 @@
 @interface CSHardwareLatencyHelper
 + (id)sharedInstance;
-- (BOOL)_valuesAreMinimalyValidForInfoDictionary:(id)a3 type:(unint64_t)a4;
-- (BOOL)addHWLatencyToOption:(id)a3 withCorrection:(double)a4 streamHandle:(unint64_t)a5 voiceController:(id)a6;
-- (id)_adjustmentSecondsFromLatencyInfo:(id)a3 error:(id *)a4;
-- (id)_hardwareLatenciesUsingStreamHandle:(unint64_t)a3 andVoiceController:(id)a4;
-- (id)_hardwareLatencyAdjustmentSeconds:(id)a3 hwLatencyType:(unint64_t)a4 error:(id *)a5;
-- (id)_hardwareLatencyAdjustmentSecondsUsingStreamHandle:(unint64_t)a3 andVoiceController:(id)a4;
+- (BOOL)_valuesAreMinimalyValidForInfoDictionary:(id)dictionary type:(unint64_t)type;
+- (BOOL)addHWLatencyToOption:(id)option withCorrection:(double)correction streamHandle:(unint64_t)handle voiceController:(id)controller;
+- (id)_adjustmentSecondsFromLatencyInfo:(id)info error:(id *)error;
+- (id)_hardwareLatenciesUsingStreamHandle:(unint64_t)handle andVoiceController:(id)controller;
+- (id)_hardwareLatencyAdjustmentSeconds:(id)seconds hwLatencyType:(unint64_t)type error:(id *)error;
+- (id)_hardwareLatencyAdjustmentSecondsUsingStreamHandle:(unint64_t)handle andVoiceController:(id)controller;
 @end
 
 @implementation CSHardwareLatencyHelper
 
-- (BOOL)_valuesAreMinimalyValidForInfoDictionary:(id)a3 type:(unint64_t)a4
+- (BOOL)_valuesAreMinimalyValidForInfoDictionary:(id)dictionary type:(unint64_t)type
 {
-  v5 = a3;
-  v6 = v5;
-  if (a4 == 1)
+  dictionaryCopy = dictionary;
+  v6 = dictionaryCopy;
+  if (type == 1)
   {
     v7 = MEMORY[0x1E6958380];
   }
 
   else
   {
-    if (a4 != 2)
+    if (type != 2)
     {
 LABEL_7:
       isKindOfClass = 0;
@@ -31,7 +31,7 @@ LABEL_7:
     v7 = MEMORY[0x1E6958388];
   }
 
-  v8 = [v5 objectForKey:*v7];
+  v8 = [dictionaryCopy objectForKey:*v7];
   if (!v8)
   {
     goto LABEL_7;
@@ -45,12 +45,12 @@ LABEL_8:
   return isKindOfClass & 1;
 }
 
-- (id)_hardwareLatencyAdjustmentSeconds:(id)a3 hwLatencyType:(unint64_t)a4 error:(id *)a5
+- (id)_hardwareLatencyAdjustmentSeconds:(id)seconds hwLatencyType:(unint64_t)type error:(id *)error
 {
-  v8 = a3;
-  if (!v8)
+  secondsCopy = seconds;
+  if (!secondsCopy)
   {
-    if (!a5)
+    if (!error)
     {
       goto LABEL_15;
     }
@@ -59,13 +59,13 @@ LABEL_8:
     v11 = &unk_1F5916590;
 LABEL_14:
     [v10 errorWithDomain:@"com.apple.corespeech" code:114 userInfo:v11];
-    *a5 = v15 = 0;
+    *error = v15 = 0;
     goto LABEL_16;
   }
 
-  if (![(CSHardwareLatencyHelper *)self _valuesAreMinimalyValidForInfoDictionary:v8 type:a4])
+  if (![(CSHardwareLatencyHelper *)self _valuesAreMinimalyValidForInfoDictionary:secondsCopy type:type])
   {
-    if (!a5)
+    if (!error)
     {
       goto LABEL_15;
     }
@@ -75,18 +75,18 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  if (a4 == 1)
+  if (type == 1)
   {
     v9 = MEMORY[0x1E6958380];
     goto LABEL_11;
   }
 
-  if (a4 == 2)
+  if (type == 2)
   {
     v9 = MEMORY[0x1E6958388];
 LABEL_11:
     v12 = *v9;
-    v13 = [v8 objectForKey:v12];
+    v13 = [secondsCopy objectForKey:v12];
     v14 = MEMORY[0x1E696AD98];
     [v13 floatValue];
     v15 = [v14 numberWithFloat:?];
@@ -94,7 +94,7 @@ LABEL_11:
     goto LABEL_16;
   }
 
-  if (a5)
+  if (error)
   {
     v10 = MEMORY[0x1E696ABC0];
     v11 = &unk_1F59165E0;
@@ -108,20 +108,20 @@ LABEL_16:
   return v15;
 }
 
-- (id)_adjustmentSecondsFromLatencyInfo:(id)a3 error:(id *)a4
+- (id)_adjustmentSecondsFromLatencyInfo:(id)info error:(id *)error
 {
-  v6 = a3;
+  infoCopy = info;
   v22 = 0;
-  v7 = [(CSHardwareLatencyHelper *)self _hardwareLatencyAdjustmentSeconds:v6 hwLatencyType:2 error:&v22];
+  v7 = [(CSHardwareLatencyHelper *)self _hardwareLatencyAdjustmentSeconds:infoCopy hwLatencyType:2 error:&v22];
   v8 = v22;
   if (v8)
   {
     v9 = v8;
-    if (a4)
+    if (error)
     {
       v10 = v8;
       v11 = 0;
-      *a4 = v9;
+      *error = v9;
     }
 
     else
@@ -133,16 +133,16 @@ LABEL_16:
   else
   {
     v21 = 0;
-    v12 = [(CSHardwareLatencyHelper *)self _hardwareLatencyAdjustmentSeconds:v6 hwLatencyType:1 error:&v21];
+    v12 = [(CSHardwareLatencyHelper *)self _hardwareLatencyAdjustmentSeconds:infoCopy hwLatencyType:1 error:&v21];
     v13 = v21;
     v9 = v13;
     if (v13)
     {
-      if (a4)
+      if (error)
       {
         v14 = v13;
         v11 = 0;
-        *a4 = v9;
+        *error = v9;
       }
 
       else
@@ -165,9 +165,9 @@ LABEL_16:
   return v11;
 }
 
-- (id)_hardwareLatenciesUsingStreamHandle:(unint64_t)a3 andVoiceController:(id)a4
+- (id)_hardwareLatenciesUsingStreamHandle:(unint64_t)handle andVoiceController:(id)controller
 {
-  v5 = a4;
+  controllerCopy = controller;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -178,9 +178,9 @@ LABEL_16:
   v9[1] = 3221225472;
   v9[2] = __82__CSHardwareLatencyHelper__hardwareLatenciesUsingStreamHandle_andVoiceController___block_invoke;
   v9[3] = &unk_1E865C920;
-  v6 = v5;
+  v6 = controllerCopy;
   v11 = &v13;
-  v12 = a3;
+  handleCopy = handle;
   v10 = v6;
   [CSUtils withElapsedTimeLogging:@"CRFetchCarPlayCapabilities" execute:v9];
   v7 = v14[5];
@@ -249,10 +249,10 @@ void __82__CSHardwareLatencyHelper__hardwareLatenciesUsingStreamHandle_andVoiceC
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_hardwareLatencyAdjustmentSecondsUsingStreamHandle:(unint64_t)a3 andVoiceController:(id)a4
+- (id)_hardwareLatencyAdjustmentSecondsUsingStreamHandle:(unint64_t)handle andVoiceController:(id)controller
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = [(CSHardwareLatencyHelper *)self _hardwareLatenciesUsingStreamHandle:a3 andVoiceController:a4];
+  v5 = [(CSHardwareLatencyHelper *)self _hardwareLatenciesUsingStreamHandle:handle andVoiceController:controller];
   v13 = 0;
   v6 = [(CSHardwareLatencyHelper *)self _adjustmentSecondsFromLatencyInfo:v5 error:&v13];
   v7 = v13;
@@ -262,13 +262,13 @@ void __82__CSHardwareLatencyHelper__hardwareLatenciesUsingStreamHandle_andVoiceC
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_ERROR))
     {
       v11 = v8;
-      v12 = [v7 localizedDescription];
+      localizedDescription = [v7 localizedDescription];
       *buf = 136315650;
       v15 = "[CSHardwareLatencyHelper _hardwareLatencyAdjustmentSecondsUsingStreamHandle:andVoiceController:]";
       v16 = 2114;
       v17 = v5;
       v18 = 2114;
-      v19 = v12;
+      v19 = localizedDescription;
       _os_log_error_impl(&dword_1DDA4B000, v11, OS_LOG_TYPE_ERROR, "%s Error getting adjustment for hardware latency. infoDict=%{public}@; err=%{public}@", buf, 0x20u);
     }
   }
@@ -278,17 +278,17 @@ void __82__CSHardwareLatencyHelper__hardwareLatenciesUsingStreamHandle_andVoiceC
   return v6;
 }
 
-- (BOOL)addHWLatencyToOption:(id)a3 withCorrection:(double)a4 streamHandle:(unint64_t)a5 voiceController:(id)a6
+- (BOOL)addHWLatencyToOption:(id)option withCorrection:(double)correction streamHandle:(unint64_t)handle voiceController:(id)controller
 {
   v33 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = [(CSHardwareLatencyHelper *)self _hardwareLatencyAdjustmentSecondsUsingStreamHandle:a5 andVoiceController:a6];
+  optionCopy = option;
+  v11 = [(CSHardwareLatencyHelper *)self _hardwareLatencyAdjustmentSecondsUsingStreamHandle:handle andVoiceController:controller];
   v12 = v11;
   if (v11 && ([v11 isEqualToNumber:&unk_1F5916850] & 1) == 0)
   {
     [v12 floatValue];
     v16 = v15;
-    v17 = v15 + a4;
+    v17 = v15 + correction;
     v18 = v17;
     v19 = [MEMORY[0x1E6958498] hostTimeForSeconds:v17];
     v20 = CSLogContextFacilityCoreSpeech;
@@ -303,11 +303,11 @@ void __82__CSHardwareLatencyHelper__hardwareLatenciesUsingStreamHandle_andVoiceC
       v29 = 2048;
       v30 = v16;
       v31 = 2048;
-      v32 = a4;
+      correctionCopy = correction;
       _os_log_impl(&dword_1DDA4B000, v20, OS_LOG_TYPE_DEFAULT, "%s Applying adjustment for hardware latency %{public}f secs, %{public}llu ticks (AVF=%f Correction=%f)", &v23, 0x34u);
     }
 
-    [v10 adjustStartRecordingHostTime:v19];
+    [optionCopy adjustStartRecordingHostTime:v19];
     v14 = 1;
   }
 

@@ -1,15 +1,15 @@
 @interface ATXIntentComparator
-+ (BOOL)intent:(id)a3 isEqualToIntent:(id)a4;
++ (BOOL)intent:(id)intent isEqualToIntent:(id)toIntent;
 - (ATXIntentComparator)init;
 @end
 
 @implementation ATXIntentComparator
 
-+ (BOOL)intent:(id)a3 isEqualToIntent:(id)a4
++ (BOOL)intent:(id)intent isEqualToIntent:(id)toIntent
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = sub_244194024(v5, v6);
+  intentCopy = intent;
+  toIntentCopy = toIntent;
+  v7 = sub_244194024(intentCopy, toIntentCopy);
 
   return v7 & 1;
 }

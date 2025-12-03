@@ -1,26 +1,26 @@
 @interface FMSymbolBulletedListItemView
 - (NSLayoutYAxisAnchor)firstBaselineAnchor;
 - (NSLayoutYAxisAnchor)lastBaselineAnchor;
-- (_TtC6FindMy28FMSymbolBulletedListItemView)initWithFrame:(CGRect)a3;
+- (_TtC6FindMy28FMSymbolBulletedListItemView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation FMSymbolBulletedListItemView
 
 - (NSLayoutYAxisAnchor)firstBaselineAnchor
 {
-  v2 = [*(&self->super.super.super.super.isa + OBJC_IVAR____TtC6FindMy28FMSymbolBulletedListItemView_titleLabel) firstBaselineAnchor];
+  firstBaselineAnchor = [*(&self->super.super.super.super.isa + OBJC_IVAR____TtC6FindMy28FMSymbolBulletedListItemView_titleLabel) firstBaselineAnchor];
 
-  return v2;
+  return firstBaselineAnchor;
 }
 
 - (NSLayoutYAxisAnchor)lastBaselineAnchor
 {
-  v2 = [*(&self->super.super.super.super.isa + OBJC_IVAR____TtC6FindMy28FMSymbolBulletedListItemView_subtitleLabel) lastBaselineAnchor];
+  lastBaselineAnchor = [*(&self->super.super.super.super.isa + OBJC_IVAR____TtC6FindMy28FMSymbolBulletedListItemView_subtitleLabel) lastBaselineAnchor];
 
-  return v2;
+  return lastBaselineAnchor;
 }
 
-- (_TtC6FindMy28FMSymbolBulletedListItemView)initWithFrame:(CGRect)a3
+- (_TtC6FindMy28FMSymbolBulletedListItemView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

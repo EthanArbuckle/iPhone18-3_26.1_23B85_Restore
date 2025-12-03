@@ -1,7 +1,7 @@
 @interface CPLChangedRecordView
-- (CPLChangedRecordView)initWithChange:(id)a3 overRecordView:(id)a4;
+- (CPLChangedRecordView)initWithChange:(id)change overRecordView:(id)view;
 - (Class)recordClass;
-- (id)changeForType:(unint64_t)a3;
+- (id)changeForType:(unint64_t)type;
 - (id)description;
 - (id)placeholderRecord;
 - (id)recordChangeData;
@@ -14,7 +14,7 @@
 
 - (Class)recordClass
 {
-  v2 = [(CPLChangedRecordView *)self change];
+  change = [(CPLChangedRecordView *)self change];
   v3 = objc_opt_class();
 
   return v3;
@@ -23,9 +23,9 @@
 - (id)redactedDescription
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(CPLRecordView *)self->_baseRecordView redactedDescription];
-  v5 = [(CPLRecordChange *)self->_change redactedDescription];
-  v6 = [v3 initWithFormat:@"%@+[%@]", v4, v5];
+  redactedDescription = [(CPLRecordView *)self->_baseRecordView redactedDescription];
+  redactedDescription2 = [(CPLRecordChange *)self->_change redactedDescription];
+  v6 = [v3 initWithFormat:@"%@+[%@]", redactedDescription, redactedDescription2];
 
   return v6;
 }
@@ -41,75 +41,75 @@
 
 - (id)sharingRecordChangeData
 {
-  v3 = [(CPLRecordChange *)self->_change sharingRecordChangeData];
-  v4 = v3;
-  if (v3)
+  sharingRecordChangeData = [(CPLRecordChange *)self->_change sharingRecordChangeData];
+  v4 = sharingRecordChangeData;
+  if (sharingRecordChangeData)
   {
-    v5 = v3;
+    sharingRecordChangeData2 = sharingRecordChangeData;
   }
 
   else
   {
-    v5 = [(CPLRecordView *)self->_baseRecordView sharingRecordChangeData];
+    sharingRecordChangeData2 = [(CPLRecordView *)self->_baseRecordView sharingRecordChangeData];
   }
 
-  v6 = v5;
+  v6 = sharingRecordChangeData2;
 
   return v6;
 }
 
 - (id)recordChangeData
 {
-  v3 = [(CPLRecordChange *)self->_change recordChangeData];
-  v4 = v3;
-  if (v3)
+  recordChangeData = [(CPLRecordChange *)self->_change recordChangeData];
+  v4 = recordChangeData;
+  if (recordChangeData)
   {
-    v5 = v3;
+    recordChangeData2 = recordChangeData;
   }
 
   else
   {
-    v5 = [(CPLRecordView *)self->_baseRecordView recordChangeData];
+    recordChangeData2 = [(CPLRecordView *)self->_baseRecordView recordChangeData];
   }
 
-  v6 = v5;
+  v6 = recordChangeData2;
 
   return v6;
 }
 
-- (id)changeForType:(unint64_t)a3
+- (id)changeForType:(unint64_t)type
 {
-  if (!a3)
+  if (!type)
   {
-    v7 = [(CPLChangedRecordView *)self synthesizedRecord];
+    synthesizedRecord = [(CPLChangedRecordView *)self synthesizedRecord];
     goto LABEL_9;
   }
 
-  v5 = [(CPLRecordChange *)self->_change isFullRecord];
+  isFullRecord = [(CPLRecordChange *)self->_change isFullRecord];
   change = self->_change;
-  if (v5)
+  if (isFullRecord)
   {
-    v7 = change;
+    synthesizedRecord = change;
 LABEL_9:
-    v9 = v7;
+    v9 = synthesizedRecord;
     goto LABEL_10;
   }
 
-  v8 = [(CPLRecordChange *)change changeType]& a3;
+  v8 = [(CPLRecordChange *)change changeType]& type;
   if (!v8)
   {
-    v7 = [(CPLRecordView *)self->_baseRecordView changeForType:a3];
+    synthesizedRecord = [(CPLRecordView *)self->_baseRecordView changeForType:type];
     goto LABEL_9;
   }
 
-  if (v8 == a3)
+  if (v8 == type)
   {
-    v7 = self->_change;
+    synthesizedRecord = self->_change;
     goto LABEL_9;
   }
 
-  v11 = [(CPLRecordView *)self->_baseRecordView changeForType:v8 ^ a3];
-  v9 = [v11 copy];
+  type = [(CPLRecordView *)self->_baseRecordView changeForType:v8 ^ type];
+  v9 = [type copy];
 
   [(CPLRecordChange *)v9 applyChangeType:v8 fromChange:self->_change];
 LABEL_10:
@@ -121,36 +121,36 @@ LABEL_10:
 {
   if ([(CPLRecordChange *)self->_change hasChangeType:2])
   {
-    v3 = [[CPLPlaceholderRecord alloc] initWithRecord:self->_change];
+    placeholderRecord = [[CPLPlaceholderRecord alloc] initWithRecord:self->_change];
   }
 
   else
   {
-    v3 = [(CPLRecordView *)self->_baseRecordView placeholderRecord];
+    placeholderRecord = [(CPLRecordView *)self->_baseRecordView placeholderRecord];
   }
 
-  return v3;
+  return placeholderRecord;
 }
 
 - (id)synthesizedRecord
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = [(CPLRecordChange *)self->_change isFullRecord];
+  isFullRecord = [(CPLRecordChange *)self->_change isFullRecord];
   change = self->_change;
-  if (v4)
+  if (isFullRecord)
   {
     v6 = change;
   }
 
   else
   {
-    v7 = [(CPLRecordChange *)change changeType];
-    v8 = [(CPLRecordChange *)self->_change fullChangeTypeForFullRecord];
-    if ((v8 & ~v7) != 0)
+    changeType = [(CPLRecordChange *)change changeType];
+    fullChangeTypeForFullRecord = [(CPLRecordChange *)self->_change fullChangeTypeForFullRecord];
+    if ((fullChangeTypeForFullRecord & ~changeType) != 0)
     {
-      v9 = v8;
-      v10 = [(CPLRecordView *)self->_baseRecordView synthesizedRecord];
-      if (([v10 isFullRecord] & 1) == 0)
+      v9 = fullChangeTypeForFullRecord;
+      synthesizedRecord = [(CPLRecordView *)self->_baseRecordView synthesizedRecord];
+      if (([synthesizedRecord isFullRecord] & 1) == 0)
       {
         if ((_CPLSilentLogging & 1) == 0)
         {
@@ -158,19 +158,19 @@ LABEL_10:
           if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
           {
             *buf = 138412290;
-            v17 = v10;
+            v17 = synthesizedRecord;
             _os_log_impl(&dword_1DC05A000, v13, OS_LOG_TYPE_ERROR, "%@ should be a full record", buf, 0xCu);
           }
         }
 
-        v14 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
         v15 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/Storage/CPLChangedRecordStorageView.m"];
-        [v14 handleFailureInMethod:a2 object:self file:v15 lineNumber:63 description:{@"%@ should be a full record", v10}];
+        [currentHandler handleFailureInMethod:a2 object:self file:v15 lineNumber:63 description:{@"%@ should be a full record", synthesizedRecord}];
 
         abort();
       }
 
-      v6 = [v10 copyChangeType:v9 & ~v7];
+      v6 = [synthesizedRecord copyChangeType:v9 & ~changeType];
       [(CPLRecordChange *)v6 applyChange:self->_change];
       [(CPLRecordChange *)v6 setChangeType:0];
     }
@@ -187,12 +187,12 @@ LABEL_10:
   return v6;
 }
 
-- (CPLChangedRecordView)initWithChange:(id)a3 overRecordView:(id)a4
+- (CPLChangedRecordView)initWithChange:(id)change overRecordView:(id)view
 {
   v23 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  if ([v8 isDelete])
+  changeCopy = change;
+  viewCopy = view;
+  if ([changeCopy isDelete])
   {
     if ((_CPLSilentLogging & 1) == 0)
     {
@@ -202,15 +202,15 @@ LABEL_10:
         *buf = 138412546;
         v20 = objc_opt_class();
         v21 = 2112;
-        v22 = v8;
+        v22 = changeCopy;
         v15 = v20;
         _os_log_impl(&dword_1DC05A000, v14, OS_LOG_TYPE_ERROR, "Should not create a %@ with %@", buf, 0x16u);
       }
     }
 
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v17 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/Storage/CPLChangedRecordStorageView.m"];
-    [v16 handleFailureInMethod:a2 object:self file:v17 lineNumber:37 description:{@"Should not create a %@ with %@", objc_opt_class(), v8}];
+    [currentHandler handleFailureInMethod:a2 object:self file:v17 lineNumber:37 description:{@"Should not create a %@ with %@", objc_opt_class(), changeCopy}];
 
     abort();
   }
@@ -221,8 +221,8 @@ LABEL_10:
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_baseRecordView, a4);
-    objc_storeStrong(&v11->_change, a3);
+    objc_storeStrong(&v10->_baseRecordView, view);
+    objc_storeStrong(&v11->_change, change);
   }
 
   v12 = *MEMORY[0x1E69E9840];

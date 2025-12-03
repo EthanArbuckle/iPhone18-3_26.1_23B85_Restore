@@ -57,9 +57,9 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v5 = [v3 place];
+  place = [v3 place];
 
-  if (!v5)
+  if (!place)
   {
     v18 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -73,22 +73,22 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  v6 = [v4 place];
-  v7 = [v6 mapItem];
+  place2 = [v4 place];
+  mapItem = [place2 mapItem];
 
-  if (v7)
+  if (mapItem)
   {
     v8 = MEMORY[0x277D011A0];
-    v9 = [v4 place];
-    v10 = [v9 mapItem];
-    v11 = [v8 createWithManagedObject:v10];
+    place3 = [v4 place];
+    mapItem2 = [place3 mapItem];
+    v11 = [v8 createWithManagedObject:mapItem2];
 
     v12 = objc_alloc(MEMORY[0x277D01128]);
-    v13 = [v4 placeConfidence];
-    [v13 doubleValue];
+    placeConfidence = [v4 placeConfidence];
+    [placeConfidence doubleValue];
     v15 = v14;
-    v16 = [v4 placeSource];
-    v17 = [v12 initWithMapItem:v11 confidence:objc_msgSend(v16 source:{"unsignedIntegerValue"), v15}];
+    placeSource = [v4 placeSource];
+    v17 = [v12 initWithMapItem:v11 confidence:objc_msgSend(placeSource source:{"unsignedIntegerValue"), v15}];
 
     goto LABEL_13;
   }

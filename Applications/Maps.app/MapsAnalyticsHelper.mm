@@ -1,23 +1,23 @@
 @interface MapsAnalyticsHelper
-+ (id)acSuggestionEntriesFromAutoCompleteObjects:(id)a3 personalizedItems:(id)a4 context:(id)a5 mapsSuggestionsInsights:(id)a6 skipReportASearchItems:(BOOL)a7 traits:(id)a8 usedForLogging:(BOOL)a9 shouldUseDistanceFeatureServerResults:(BOOL)a10;
-+ (id)acSuggestionEntriesFromSections:(id)a3 personalizedItems:(id)a4 context:(id)a5 mapsSuggestionsInsights:(id)a6 skipReportASearchItems:(BOOL)a7 selectedChildItemIndexPath:(id)a8 indexOfResultWithSelectedChildItem:(id)a9 traits:(id)a10 usedForLogging:(BOOL)a11 shouldUseDistanceFeatureServerResults:(BOOL)a12 placeSummaryMetadata:(id)a13;
-+ (id)analyticsResultsInfoArrayFromAutoCompleteResultsArray:(id)a3 selectedIndex:(unint64_t)a4;
-+ (id)hyperlinkMetadataWithTemplate:(id)a3 mapItem:(id)a4 metadata:(id)a5;
++ (id)acSuggestionEntriesFromAutoCompleteObjects:(id)objects personalizedItems:(id)items context:(id)context mapsSuggestionsInsights:(id)insights skipReportASearchItems:(BOOL)searchItems traits:(id)traits usedForLogging:(BOOL)logging shouldUseDistanceFeatureServerResults:(BOOL)self0;
++ (id)acSuggestionEntriesFromSections:(id)sections personalizedItems:(id)items context:(id)context mapsSuggestionsInsights:(id)insights skipReportASearchItems:(BOOL)searchItems selectedChildItemIndexPath:(id)path indexOfResultWithSelectedChildItem:(id)item traits:(id)self0 usedForLogging:(BOOL)self1 shouldUseDistanceFeatureServerResults:(BOOL)self2 placeSummaryMetadata:(id)self3;
++ (id)analyticsResultsInfoArrayFromAutoCompleteResultsArray:(id)array selectedIndex:(unint64_t)index;
++ (id)hyperlinkMetadataWithTemplate:(id)template mapItem:(id)item metadata:(id)metadata;
 - (MapsAnalyticsHelper)init;
-- (MapsAnalyticsHelper)initWithLabelMarker:(id)a3;
-- (MapsAnalyticsHelper)initWithMapItem:(id)a3;
+- (MapsAnalyticsHelper)initWithLabelMarker:(id)marker;
+- (MapsAnalyticsHelper)initWithMapItem:(id)item;
 @end
 
 @implementation MapsAnalyticsHelper
 
-- (MapsAnalyticsHelper)initWithMapItem:(id)a3
+- (MapsAnalyticsHelper)initWithMapItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v5 = [(MapsAnalyticsHelper *)self init];
   if (v5)
   {
-    v6 = [v4 _geoMapItem];
-    v7 = [GEOPlaceActionDetails actionDetailsWithMapItem:v6 timestamp:0xFFFFFFFFLL resultIndex:0.0];
+    _geoMapItem = [itemCopy _geoMapItem];
+    v7 = [GEOPlaceActionDetails actionDetailsWithMapItem:_geoMapItem timestamp:0xFFFFFFFFLL resultIndex:0.0];
     actionDetails = v5->_actionDetails;
     v5->_actionDetails = v7;
   }
@@ -25,36 +25,36 @@
   return v5;
 }
 
-- (MapsAnalyticsHelper)initWithLabelMarker:(id)a3
+- (MapsAnalyticsHelper)initWithLabelMarker:(id)marker
 {
-  v4 = a3;
+  markerCopy = marker;
   v5 = [(MapsAnalyticsHelper *)self init];
   if (v5)
   {
-    v6 = [v4 featureAnnotation];
-    v7 = v6;
-    if (!v6 || ![v6 conformsToProtocol:&OBJC_PROTOCOL___CustomPOIAnnotation])
+    featureAnnotation = [markerCopy featureAnnotation];
+    v7 = featureAnnotation;
+    if (!featureAnnotation || ![featureAnnotation conformsToProtocol:&OBJC_PROTOCOL___CustomPOIAnnotation])
     {
-      if ([v4 isFlyoverTour])
+      if ([markerCopy isFlyoverTour])
       {
-        v14 = +[GEOPlaceActionDetails actionDetailsWithTargetID:](GEOPlaceActionDetails, "actionDetailsWithTargetID:", [v4 featureID]);
+        v14 = +[GEOPlaceActionDetails actionDetailsWithTargetID:](GEOPlaceActionDetails, "actionDetailsWithTargetID:", [markerCopy featureID]);
         v15 = 0;
-        v16 = 0;
+        _maps_analyticsEventValue = 0;
         v17 = 1037;
       }
 
-      else if ([v4 isTransitLine])
+      else if ([markerCopy isTransitLine])
       {
-        if ([v4 _maps_numLines] == 1)
+        if ([markerCopy _maps_numLines] == 1)
         {
-          v14 = +[GEOPlaceActionDetails actionDetailsWithTargetID:](GEOPlaceActionDetails, "actionDetailsWithTargetID:", [v4 featureID]);
+          v14 = +[GEOPlaceActionDetails actionDetailsWithTargetID:](GEOPlaceActionDetails, "actionDetailsWithTargetID:", [markerCopy featureID]);
           v15 = 0;
-          v16 = 0;
+          _maps_analyticsEventValue = 0;
         }
 
         else
         {
-          v16 = [v4 _maps_analyticsEventValue];
+          _maps_analyticsEventValue = [markerCopy _maps_analyticsEventValue];
           v15 = 0;
           v14 = 0;
         }
@@ -62,26 +62,26 @@
         v17 = 1035;
       }
 
-      else if ([v4 isTrafficIncident])
+      else if ([markerCopy isTrafficIncident])
       {
         v15 = 0;
         v14 = 0;
-        v16 = 0;
+        _maps_analyticsEventValue = 0;
         v17 = 1031;
       }
 
-      else if ([v4 isCluster])
+      else if ([markerCopy isCluster])
       {
-        v55 = v4;
+        v55 = markerCopy;
         v56 = v5;
-        v26 = [v4 clusterFeatureAnnotations];
-        v57 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v26, "count")}];
-        v27 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v26 count]);
+        clusterFeatureAnnotations = [markerCopy clusterFeatureAnnotations];
+        v57 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(clusterFeatureAnnotations, "count")}];
+        v27 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [clusterFeatureAnnotations count]);
         v61 = 0u;
         v62 = 0u;
         v63 = 0u;
         v64 = 0u;
-        v28 = v26;
+        v28 = clusterFeatureAnnotations;
         v29 = [v28 countByEnumeratingWithState:&v61 objects:v67 count:16];
         if (v29)
         {
@@ -102,12 +102,12 @@
 
               if ([v7 conformsToProtocol:&OBJC_PROTOCOL___CustomPOIAnnotation])
               {
-                v34 = [v7 searchResult];
-                if (v34)
+                searchResult = [v7 searchResult];
+                if (searchResult)
                 {
-                  [v57 addObject:v34];
-                  v35 = [v34 mapItem];
-                  v36 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v35 _muid]);
+                  [v57 addObject:searchResult];
+                  mapItem = [searchResult mapItem];
+                  v36 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [mapItem _muid]);
                   [v27 addObject:v36];
                 }
               }
@@ -123,7 +123,7 @@
           while (v30);
         }
 
-        v16 = [v27 componentsJoinedByString:{@", "}];
+        _maps_analyticsEventValue = [v27 componentsJoinedByString:{@", "}];
         v59[0] = _NSConcreteStackBlock;
         v59[1] = 3221225472;
         v59[2] = sub_100B59D7C;
@@ -135,30 +135,30 @@
         v7 = 0;
         v14 = 0;
         v17 = 1018;
-        v4 = v55;
+        markerCopy = v55;
         v5 = v56;
       }
 
       else
       {
-        if ([v4 _mapkit_hasMUID])
+        if ([markerCopy _mapkit_hasMUID])
         {
           v44 = +[UIApplication sharedMapsDelegate];
-          v45 = [v44 poiSearchManager];
-          [v4 identifier];
-          v47 = v46 = v4;
-          v48 = [v45 searchResultForIdentifier:v47];
+          poiSearchManager = [v44 poiSearchManager];
+          [markerCopy identifier];
+          v47 = v46 = markerCopy;
+          v48 = [poiSearchManager searchResultForIdentifier:v47];
 
-          v49 = [v48 mapItem];
-          if (!v49)
+          mapItem2 = [v48 mapItem];
+          if (!mapItem2)
           {
-            v49 = [[MKMapItem alloc] _initWithLabelMarker:v46];
+            mapItem2 = [[MKMapItem alloc] _initWithLabelMarker:v46];
           }
 
-          v50 = [v49 _geoMapItem];
-          v14 = [GEOPlaceActionDetails actionDetailsWithMapItem:v50 timestamp:0xFFFFFFFFLL resultIndex:0.0];
+          _geoMapItem = [mapItem2 _geoMapItem];
+          v14 = [GEOPlaceActionDetails actionDetailsWithMapItem:_geoMapItem timestamp:0xFFFFFFFFLL resultIndex:0.0];
 
-          v4 = v46;
+          markerCopy = v46;
           if ([v46 isTransitAccessPoint])
           {
             v17 = 1062;
@@ -194,30 +194,30 @@
           v17 = 0;
         }
 
-        v16 = 0;
+        _maps_analyticsEventValue = 0;
       }
 
       goto LABEL_19;
     }
 
-    v8 = v4;
+    v8 = markerCopy;
     v7 = v7;
-    v9 = [v7 parkedCar];
-    v10 = [v7 searchResult];
-    v11 = [v7 mapItem];
-    v12 = v11;
-    if (v9)
+    parkedCar = [v7 parkedCar];
+    searchResult2 = [v7 searchResult];
+    mapItem3 = [v7 mapItem];
+    v12 = mapItem3;
+    if (parkedCar)
     {
-      v13 = [v11 _geoMapItem];
-      v14 = [GEOPlaceActionDetails actionDetailsWithMapItem:v13 timestamp:0xFFFFFFFFLL resultIndex:0.0];
+      _geoMapItem2 = [mapItem3 _geoMapItem];
+      v14 = [GEOPlaceActionDetails actionDetailsWithMapItem:_geoMapItem2 timestamp:0xFFFFFFFFLL resultIndex:0.0];
 
 LABEL_6:
       v15 = 0;
-      v16 = 0;
+      _maps_analyticsEventValue = 0;
       v17 = 1010;
 LABEL_16:
 
-      v4 = v8;
+      markerCopy = v8;
 LABEL_19:
       v5->_tapAction = v17;
       v5->_target = 502;
@@ -226,8 +226,8 @@ LABEL_19:
       v20 = v14;
 
       eventValue = v5->_eventValue;
-      v5->_eventValue = v16;
-      v22 = v16;
+      v5->_eventValue = _maps_analyticsEventValue;
+      v22 = _maps_analyticsEventValue;
 
       v23 = objc_retainBlock(v15);
       populateTapEvent = v5->_populateTapEvent;
@@ -236,52 +236,52 @@ LABEL_19:
       goto LABEL_20;
     }
 
-    v18 = [v7 searchDotPlace];
+    searchDotPlace = [v7 searchDotPlace];
 
-    if (v18)
+    if (searchDotPlace)
     {
       v15 = 0;
       v14 = 0;
-      v16 = 0;
+      _maps_analyticsEventValue = 0;
       v17 = 194;
       goto LABEL_16;
     }
 
-    if (v10)
+    if (searchResult2)
     {
-      v38 = [v10 mapItem];
-      v39 = [v38 _geoMapItem];
-      v14 = [GEOPlaceActionDetails actionDetailsWithMapItem:v39 timestamp:0xFFFFFFFFLL resultIndex:0.0];
+      mapItem4 = [searchResult2 mapItem];
+      _geoMapItem3 = [mapItem4 _geoMapItem];
+      v14 = [GEOPlaceActionDetails actionDetailsWithMapItem:_geoMapItem3 timestamp:0xFFFFFFFFLL resultIndex:0.0];
 
-      if ([v10 isHomeOrWork])
+      if ([searchResult2 isHomeOrWork])
       {
         goto LABEL_6;
       }
 
-      v40 = [v10 type];
-      if (v40 <= 0xD)
+      type = [searchResult2 type];
+      if (type <= 0xD)
       {
-        if (((1 << v40) & 0x2221) != 0)
+        if (((1 << type) & 0x2221) != 0)
         {
           v65[0] = _NSConcreteStackBlock;
           v65[1] = 3221225472;
           v65[2] = sub_100B59C8C;
           v65[3] = &unk_101661B18;
-          v41 = v10;
+          v41 = searchResult2;
           v66 = v41;
           v15 = objc_retainBlock(v65);
-          v42 = [v41 mapItem];
-          v58 = [v42 _hasHikeInfo];
+          mapItem5 = [v41 mapItem];
+          _hasHikeInfo = [mapItem5 _hasHikeInfo];
 
-          if (v58)
+          if (_hasHikeInfo)
           {
-            v43 = [v41 mapItem];
-            v16 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%llu", [v43 _muid]);
+            mapItem6 = [v41 mapItem];
+            _maps_analyticsEventValue = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%llu", [mapItem6 _muid]);
           }
 
           else
           {
-            v16 = 0;
+            _maps_analyticsEventValue = 0;
           }
 
           v17 = 1017;
@@ -289,7 +289,7 @@ LABEL_19:
 
         else
         {
-          if (v40 == 4)
+          if (type == 4)
           {
             v52 = 1034;
           }
@@ -300,7 +300,7 @@ LABEL_19:
           }
 
           v15 = 0;
-          if (((1 << v40) & 0x1008) != 0)
+          if (((1 << type) & 0x1008) != 0)
           {
             v17 = 1020;
           }
@@ -310,7 +310,7 @@ LABEL_19:
             v17 = v52;
           }
 
-          v16 = 0;
+          _maps_analyticsEventValue = 0;
         }
 
         goto LABEL_16;
@@ -323,24 +323,24 @@ LABEL_19:
     {
       if (v12 && [v12 _hasMUID])
       {
-        v51 = [v12 _geoMapItem];
-        v14 = [GEOPlaceActionDetails actionDetailsWithMapItem:v51 timestamp:0xFFFFFFFFLL resultIndex:0.0];
+        _geoMapItem4 = [v12 _geoMapItem];
+        v14 = [GEOPlaceActionDetails actionDetailsWithMapItem:_geoMapItem4 timestamp:0xFFFFFFFFLL resultIndex:0.0];
 
         if ([v8 isTransit])
         {
           v15 = 0;
-          v16 = 0;
+          _maps_analyticsEventValue = 0;
           v17 = 1011;
         }
 
         else
         {
-          v53 = [v12 _geoMapItem];
-          v54 = [v53 _isInLinkedPlaceRelationship];
+          _geoMapItem5 = [v12 _geoMapItem];
+          _isInLinkedPlaceRelationship = [_geoMapItem5 _isInLinkedPlaceRelationship];
 
           v15 = 0;
-          v16 = 0;
-          if (v54)
+          _maps_analyticsEventValue = 0;
+          if (_isInLinkedPlaceRelationship)
           {
             v17 = 1017;
           }
@@ -359,7 +359,7 @@ LABEL_19:
     }
 
     v17 = 0;
-    v16 = 0;
+    _maps_analyticsEventValue = 0;
     goto LABEL_16;
   }
 
@@ -385,66 +385,66 @@ LABEL_20:
   return v3;
 }
 
-+ (id)hyperlinkMetadataWithTemplate:(id)a3 mapItem:(id)a4 metadata:(id)a5
++ (id)hyperlinkMetadataWithTemplate:(id)template mapItem:(id)item metadata:(id)metadata
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (![v7 containsUserGeneratedGuideUnit])
+  templateCopy = template;
+  itemCopy = item;
+  metadataCopy = metadata;
+  if (![templateCopy containsUserGeneratedGuideUnit])
   {
 LABEL_6:
-    if ([v7 containsCuratedGuideUnit])
+    if ([templateCopy containsCuratedGuideUnit])
     {
-      v15 = [v8 _placeCollections];
-      v16 = [v15 count];
+      _placeCollections = [itemCopy _placeCollections];
+      v16 = [_placeCollections count];
 
       if (v16 == 1)
       {
         v14 = objc_alloc_init(GEOHyperlinkMetaData);
-        v17 = [v8 _placeCollections];
-        v11 = [v17 firstObject];
+        _placeCollections2 = [itemCopy _placeCollections];
+        firstObject = [_placeCollections2 firstObject];
 
         [v14 setHyperlinkType:1];
-        v18 = [v11 publisherAttribution];
-        v19 = [v18 displayName];
-        v20 = [v11 collectionTitle];
-        v21 = [NSString stringWithFormat:@"%@: %@", v19, v20];
+        publisherAttribution = [firstObject publisherAttribution];
+        displayName = [publisherAttribution displayName];
+        collectionTitle = [firstObject collectionTitle];
+        v21 = [NSString stringWithFormat:@"%@: %@", displayName, collectionTitle];
         [v14 setDisplayedString:v21];
 
         goto LABEL_26;
       }
 
-      v22 = [v8 _placeCollections];
-      v23 = [v22 count];
+      _placeCollections3 = [itemCopy _placeCollections];
+      v23 = [_placeCollections3 count];
 
       if (v23 >= 2)
       {
         v14 = objc_alloc_init(GEOHyperlinkMetaData);
         [v14 setHyperlinkType:1];
-        v24 = [v8 _placeCollections];
-        v25 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"Featured in %lu Guides", [v24 count]);
+        _placeCollections4 = [itemCopy _placeCollections];
+        v25 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"Featured in %lu Guides", [_placeCollections4 count]);
         [v14 setDisplayedString:v25];
 
         goto LABEL_27;
       }
     }
 
-    if ([v7 containsContainmentParentUnit])
+    if ([templateCopy containsContainmentParentUnit])
     {
-      v26 = [v8 _geoMapItem];
-      v27 = [v26 _containedPlace];
-      v28 = [v27 parent];
-      v11 = [v28 _identifier];
+      _geoMapItem = [itemCopy _geoMapItem];
+      _containedPlace = [_geoMapItem _containedPlace];
+      parent = [_containedPlace parent];
+      firstObject = [parent _identifier];
 
-      if (v11)
+      if (firstObject)
       {
-        v29 = [v11 muid];
-        if (v29)
+        muid = [firstObject muid];
+        if (muid)
         {
 LABEL_14:
           v14 = objc_alloc_init(GEOHyperlinkMetaData);
           [v14 setHyperlinkType:2];
-          v30 = [NSString stringWithFormat:@"Location %llu", v29];
+          v30 = [NSString stringWithFormat:@"Location %llu", muid];
           [v14 setDisplayedString:v30];
 
           goto LABEL_26;
@@ -453,20 +453,20 @@ LABEL_14:
 
       else
       {
-        v31 = [v8 _venueInfo];
-        v32 = [v31 parent];
-        v29 = [v32 businessID];
+        _venueInfo = [itemCopy _venueInfo];
+        parent2 = [_venueInfo parent];
+        muid = [parent2 businessID];
 
-        if (v29)
+        if (muid)
         {
           goto LABEL_14;
         }
       }
     }
 
-    v33 = [v8 _geoMapItem];
-    v34 = [v33 _identifier];
-    v35 = [v7 containsTappableEntityWithIdentifier:v34 metadata:v9];
+    _geoMapItem2 = [itemCopy _geoMapItem];
+    _identifier = [_geoMapItem2 _identifier];
+    v35 = [templateCopy containsTappableEntityWithIdentifier:_identifier metadata:metadataCopy];
 
     if (v35)
     {
@@ -477,14 +477,14 @@ LABEL_14:
 
     else
     {
-      if (![v7 containsTransitShieldsUnit] || !objc_msgSend(v8, "_hasTransitLabels"))
+      if (![templateCopy containsTransitShieldsUnit] || !objc_msgSend(itemCopy, "_hasTransitLabels"))
       {
-        v11 = [v7 stringUnitContent];
-        if ([v11 length])
+        firstObject = [templateCopy stringUnitContent];
+        if ([firstObject length])
         {
           v14 = objc_alloc_init(GEOHyperlinkMetaData);
           [v14 setHyperlinkType:4];
-          [v14 setDisplayedString:v11];
+          [v14 setDisplayedString:firstObject];
         }
 
         else
@@ -505,9 +505,9 @@ LABEL_14:
   }
 
   v10 = +[CollectionManager sharedManager];
-  v11 = [v10 firstUserGuideContainingMapItem:v8 requiresOrdering:1];
+  firstObject = [v10 firstUserGuideContainingMapItem:itemCopy requiresOrdering:1];
 
-  if (!v11 || ([v11 title], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "length"), v12, !v13))
+  if (!firstObject || ([firstObject title], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "length"), v12, !v13))
   {
 
     goto LABEL_6;
@@ -522,26 +522,26 @@ LABEL_27:
   return v14;
 }
 
-+ (id)acSuggestionEntriesFromSections:(id)a3 personalizedItems:(id)a4 context:(id)a5 mapsSuggestionsInsights:(id)a6 skipReportASearchItems:(BOOL)a7 selectedChildItemIndexPath:(id)a8 indexOfResultWithSelectedChildItem:(id)a9 traits:(id)a10 usedForLogging:(BOOL)a11 shouldUseDistanceFeatureServerResults:(BOOL)a12 placeSummaryMetadata:(id)a13
++ (id)acSuggestionEntriesFromSections:(id)sections personalizedItems:(id)items context:(id)context mapsSuggestionsInsights:(id)insights skipReportASearchItems:(BOOL)searchItems selectedChildItemIndexPath:(id)path indexOfResultWithSelectedChildItem:(id)item traits:(id)self0 usedForLogging:(BOOL)self1 shouldUseDistanceFeatureServerResults:(BOOL)self2 placeSummaryMetadata:(id)self3
 {
-  v336 = a3;
-  v17 = a4;
-  v314 = a5;
-  v301 = a6;
-  v309 = a8;
-  v311 = a9;
-  v18 = a10;
-  v317 = a13;
-  v300 = v18;
-  v319 = [v18 copy];
-  v352 = v17;
-  if (v17)
+  sectionsCopy = sections;
+  itemsCopy = items;
+  contextCopy = context;
+  insightsCopy = insights;
+  pathCopy = path;
+  itemCopy = item;
+  traitsCopy = traits;
+  metadataCopy = metadata;
+  v300 = traitsCopy;
+  v319 = [traitsCopy copy];
+  v352 = itemsCopy;
+  if (itemsCopy)
   {
     v405 = 0u;
     v404 = 0u;
     v403 = 0u;
     v402 = 0u;
-    obj = v336;
+    obj = sectionsCopy;
     v348 = [obj countByEnumeratingWithState:&v402 objects:v420 count:16];
     if (v348)
     {
@@ -560,8 +560,8 @@ LABEL_27:
 
           v350 = v19;
           v21 = *(*(&v402 + 1) + 8 * v19);
-          v22 = [v21 items];
-          v23 = [v22 count] == 0;
+          items = [v21 items];
+          v23 = [items count] == 0;
 
           if (!v23)
           {
@@ -569,14 +569,14 @@ LABEL_27:
             do
             {
               v25 = [v352 objectAtIndexedSubscript:v24];
-              v26 = [v21 items];
-              v27 = [v26 objectAtIndexedSubscript:v24];
+              items2 = [v21 items];
+              v27 = [items2 objectAtIndexedSubscript:v24];
               v28 = v25 == v27;
 
               if (!v28)
               {
-                v29 = [v21 items];
-                v30 = [v29 objectAtIndexedSubscript:v24];
+                items3 = [v21 items];
+                v30 = [items3 objectAtIndexedSubscript:v24];
 
                 objc_opt_class();
                 if (objc_opt_isKindOfClass())
@@ -595,8 +595,8 @@ LABEL_27:
                 v400 = 0u;
                 v399 = 0u;
                 v398 = 0u;
-                v33 = [v32 items];
-                v34 = [v33 countByEnumeratingWithState:&v398 objects:v419 count:16];
+                items4 = [v32 items];
+                v34 = [items4 countByEnumeratingWithState:&v398 objects:v419 count:16];
                 if (v34)
                 {
                   v35 = *v399;
@@ -606,13 +606,13 @@ LABEL_15:
                   {
                     if (*v399 != v35)
                     {
-                      objc_enumerationMutation(v33);
+                      objc_enumerationMutation(items4);
                     }
 
-                    v37 = [*(*(&v398 + 1) + 8 * v36) autocompleteObject];
+                    autocompleteObject = [*(*(&v398 + 1) + 8 * v36) autocompleteObject];
                     v38 = [v352 objectAtIndexedSubscript:v24];
-                    v39 = [v38 autocompleteObject];
-                    v40 = v37 == v39;
+                    autocompleteObject2 = [v38 autocompleteObject];
+                    v40 = autocompleteObject == autocompleteObject2;
 
                     if (v40)
                     {
@@ -621,7 +621,7 @@ LABEL_15:
 
                     if (v34 == ++v36)
                     {
-                      v34 = [v33 countByEnumeratingWithState:&v398 objects:v419 count:16];
+                      v34 = [items4 countByEnumeratingWithState:&v398 objects:v419 count:16];
                       if (v34)
                       {
                         goto LABEL_15;
@@ -633,8 +633,8 @@ LABEL_15:
                 }
               }
 
-              v41 = [v21 items];
-              v42 = [v41 count];
+              items5 = [v21 items];
+              v42 = [items5 count];
 
               ++v24;
             }
@@ -654,11 +654,11 @@ LABEL_15:
   }
 
   v43 = +[MKLocationManager sharedLocationManager];
-  v302 = [v43 currentLocation];
+  currentLocation = [v43 currentLocation];
 
-  if (v302)
+  if (currentLocation)
   {
-    [v302 coordinate];
+    [currentLocation coordinate];
     v307 = v44;
     v46 = v45;
   }
@@ -676,7 +676,7 @@ LABEL_15:
   v397 = 0u;
   v394 = 0u;
   v395 = 0u;
-  v306 = v336;
+  v306 = sectionsCopy;
   v304 = [v306 countByEnumeratingWithState:&v394 objects:v418 count:16];
   if (v304)
   {
@@ -696,16 +696,16 @@ LABEL_15:
 
         v305 = v47;
         v323 = *(*(&v394 + 1) + 8 * v47);
-        v49 = [v323 items];
-        v50 = [v49 count] == 0;
+        items6 = [v323 items];
+        v50 = [items6 count] == 0;
 
         if (!v50)
         {
           v332 = 0;
           while (1)
           {
-            v51 = [v323 items];
-            obja = [v51 objectAtIndexedSubscript:v332];
+            items7 = [v323 items];
+            obja = [items7 objectAtIndexedSubscript:v332];
 
             objc_opt_class();
             if ((objc_opt_isKindOfClass() & 1) == 0 || ([obja autocompleteObject], v52 = objc_claimAutoreleasedReturnValue(), v53 = v52 == 0, v52, v53))
@@ -743,7 +743,7 @@ LABEL_15:
               break;
             }
 
-            if (!a7)
+            if (!searchItems)
             {
               [v322 addObject:v54];
               v59 = +[NSNull null];
@@ -755,8 +755,8 @@ LABEL_15:
 
 LABEL_209:
 
-            v170 = [v323 items];
-            v171 = [v170 count];
+            items8 = [v323 items];
+            v171 = [items8 count];
 
             if (++v332 >= v171)
             {
@@ -764,26 +764,26 @@ LABEL_209:
             }
           }
 
-          v60 = [v314 matchInfoForObject:obja];
+          v60 = [contextCopy matchInfoForObject:obja];
           if (v60)
           {
-            v338 = v60;
+            matchInfo = v60;
           }
 
           else
           {
-            v338 = [v334 matchInfo];
+            matchInfo = [v334 matchInfo];
 
-            if (!v338)
+            if (!matchInfo)
             {
               if ([obja conformsToProtocol:&OBJC_PROTOCOL___AutocompleteItemWithMatchInfo])
               {
-                v338 = [obja matchInfo];
+                matchInfo = [obja matchInfo];
               }
 
               else
               {
-                v338 = 0;
+                matchInfo = 0;
               }
             }
           }
@@ -795,14 +795,14 @@ LABEL_209:
           v416 = sub_100B5CCF0;
           v417 = 0;
           [v54 setSuggestionType:0];
-          [v54 setShownToUser:{objc_msgSend(v338, "shownToUser")}];
-          v61 = [v334 autocompleteAnalytics];
-          v62 = [v61 hasDiscreteFeatureValuesContributedToLatestClientRankingScore];
+          [v54 setShownToUser:{objc_msgSend(matchInfo, "shownToUser")}];
+          autocompleteAnalytics = [v334 autocompleteAnalytics];
+          hasDiscreteFeatureValuesContributedToLatestClientRankingScore = [autocompleteAnalytics hasDiscreteFeatureValuesContributedToLatestClientRankingScore];
 
-          if (v62)
+          if (hasDiscreteFeatureValuesContributedToLatestClientRankingScore)
           {
-            v63 = [v334 autocompleteAnalytics];
-            [v54 setDiscreteFeatureValuesAvailable:{objc_msgSend(v63, "discreteFeatureValuesContributedToLatestClientRankingScore")}];
+            autocompleteAnalytics2 = [v334 autocompleteAnalytics];
+            [v54 setDiscreteFeatureValuesAvailable:{objc_msgSend(autocompleteAnalytics2, "discreteFeatureValuesContributedToLatestClientRankingScore")}];
           }
 
           v389 = 0;
@@ -815,10 +815,10 @@ LABEL_209:
           {
             [v54 setSuggestionType:9];
             v328 = obja;
-            v64 = [v328 mapItem];
-            v65 = [v64 _geoMapItem];
+            mapItem = [v328 mapItem];
+            _geoMapItem = [mapItem _geoMapItem];
             v66 = *(*&buf[8] + 40);
-            *(*&buf[8] + 40) = v65;
+            *(*&buf[8] + 40) = _geoMapItem;
 
             v388 = 0uLL;
             if ([v328 getCoordinate:&v388])
@@ -829,9 +829,9 @@ LABEL_209:
                 v67 = [CLLocation alloc];
                 v68 = [v67 initWithLatitude:v388 longitude:?];
                 v69 = [[MKMapItem alloc] initWithCLLocation:v68 placeType:{objc_msgSend(v328, "_placeType")}];
-                v70 = [v69 _geoMapItem];
+                _geoMapItem2 = [v69 _geoMapItem];
                 v71 = *(*&buf[8] + 40);
-                *(*&buf[8] + 40) = v70;
+                *(*&buf[8] + 40) = _geoMapItem2;
               }
             }
 
@@ -847,10 +847,10 @@ LABEL_209:
             }
 
             [v54 setServerEntryType:v73];
-            v74 = [v328 mapItem];
-            v75 = [v74 _geoMapItem];
-            v76 = [v75 _childItems];
-            v77 = [v76 count];
+            mapItem2 = [v328 mapItem];
+            _geoMapItem3 = [mapItem2 _geoMapItem];
+            _childItems = [_geoMapItem3 _childItems];
+            v77 = [_childItems count];
             if (v77)
             {
               v78 = 1;
@@ -858,8 +858,8 @@ LABEL_209:
 
             else
             {
-              v310 = [v328 childItems];
-              v78 = v310 != 0;
+              childItems = [v328 childItems];
+              v78 = childItems != 0;
             }
 
             [v54 setIsProminentResult:v78];
@@ -880,24 +880,24 @@ LABEL_209:
 
             [v54 setAutocompleteResultCellType:v121];
             [v54 setTapBehavior:{objc_msgSend(v328, "entryTapBehavior") == 1}];
-            if (v317)
+            if (metadataCopy)
             {
-              v122 = [_TtC4Maps27PlaceSummaryTemplateFactory autocompleteTemplateWithCompletion:v328 metadata:v317];
-              v123 = [v328 mapItem];
-              v124 = [a1 hyperlinkMetadataWithTemplate:v122 mapItem:v123 metadata:v317];
+              v122 = [_TtC4Maps27PlaceSummaryTemplateFactory autocompleteTemplateWithCompletion:v328 metadata:metadataCopy];
+              mapItem3 = [v328 mapItem];
+              v124 = [self hyperlinkMetadataWithTemplate:v122 mapItem:mapItem3 metadata:metadataCopy];
               [v54 setHyperlinkMetadata:v124];
             }
 
             v125 = [NSMutableArray alloc];
-            v126 = [v328 childItems];
-            v127 = [v125 initWithCapacity:{objc_msgSend(v126, "count")}];
+            childItems2 = [v328 childItems];
+            v127 = [v125 initWithCapacity:{objc_msgSend(childItems2, "count")}];
 
             v386 = 0u;
             v387 = 0u;
             v384 = 0u;
             v385 = 0u;
-            v128 = [v328 childItems];
-            v129 = [v128 countByEnumeratingWithState:&v384 objects:v413 count:16];
+            childItems3 = [v328 childItems];
+            v129 = [childItems3 countByEnumeratingWithState:&v384 objects:v413 count:16];
             if (v129)
             {
               v130 = *v385;
@@ -907,18 +907,18 @@ LABEL_209:
                 {
                   if (*v385 != v130)
                   {
-                    objc_enumerationMutation(v128);
+                    objc_enumerationMutation(childItems3);
                   }
 
                   v132 = *(*(&v384 + 1) + 8 * i);
-                  v133 = [v132 childItemAction];
-                  v134 = [v133 childActionType] == 8;
+                  childItemAction = [v132 childItemAction];
+                  v134 = [childItemAction childActionType] == 8;
 
                   if (v134)
                   {
                     v135 = +[MapsOfflineUIHelper sharedHelper];
-                    v136 = [*(*&buf[8] + 40) offlineDownloadRegion];
-                    v137 = [v135 isRegionDownloaded:v136 requireFullyDownloaded:0];
+                    offlineDownloadRegion = [*(*&buf[8] + 40) offlineDownloadRegion];
+                    v137 = [v135 isRegionDownloaded:offlineDownloadRegion requireFullyDownloaded:0];
 
                     if (v137)
                     {
@@ -929,7 +929,7 @@ LABEL_209:
                   [v127 addObject:v132];
                 }
 
-                v129 = [v128 countByEnumeratingWithState:&v384 objects:v413 count:16];
+                v129 = [childItems3 countByEnumeratingWithState:&v384 objects:v413 count:16];
               }
 
               while (v129);
@@ -937,15 +937,15 @@ LABEL_209:
 
             if ([v127 count])
             {
-              v138 = v309;
-              if (v311)
+              v138 = pathCopy;
+              if (itemCopy)
               {
-                v139 = [v306 indexOfObject:{v323, v309}];
-                if (v139 == [v311 section])
+                v139 = [v306 indexOfObject:{v323, pathCopy}];
+                if (v139 == [itemCopy section])
                 {
-                  if (v332 == [v311 row])
+                  if (v332 == [itemCopy row])
                   {
-                    v138 = v309;
+                    v138 = pathCopy;
                   }
 
                   else
@@ -968,97 +968,97 @@ LABEL_209:
           }
 
           [v54 setSuggestionType:10];
-          [v338 fractionOfMatch];
+          [matchInfo fractionOfMatch];
           [v54 setFractionOfMatch:?];
-          v79 = [v338 prefixLastTokenMatchCover];
-          v80 = v79 == 0;
+          prefixLastTokenMatchCover = [matchInfo prefixLastTokenMatchCover];
+          v80 = prefixLastTokenMatchCover == 0;
 
           if (!v80)
           {
-            v81 = [v338 prefixLastTokenMatchCover];
-            [v81 floatValue];
+            prefixLastTokenMatchCover2 = [matchInfo prefixLastTokenMatchCover];
+            [prefixLastTokenMatchCover2 floatValue];
             [v54 setPrefixLastTokenMatchCover:?];
           }
 
-          v82 = [v338 prefixMatchCover];
-          v83 = v82 == 0;
+          prefixMatchCover = [matchInfo prefixMatchCover];
+          v83 = prefixMatchCover == 0;
 
           if (!v83)
           {
-            v84 = [v338 prefixMatchCover];
-            [v84 floatValue];
+            prefixMatchCover2 = [matchInfo prefixMatchCover];
+            [prefixMatchCover2 floatValue];
             [v54 setPrefixMatchCover:?];
           }
 
-          v85 = [v338 prefixMatchPosition];
-          v86 = v85 == 0;
+          prefixMatchPosition = [matchInfo prefixMatchPosition];
+          v86 = prefixMatchPosition == 0;
 
           if (!v86)
           {
-            v87 = [v338 prefixMatchPosition];
-            [v54 setPrefixMatchPosition:{objc_msgSend(v87, "intValue")}];
+            prefixMatchPosition2 = [matchInfo prefixMatchPosition];
+            [v54 setPrefixMatchPosition:{objc_msgSend(prefixMatchPosition2, "intValue")}];
           }
 
-          [v54 setPrefixMatchWordBoundary:{objc_msgSend(v338, "prefixMatchesWordBoundary")}];
-          v88 = [v338 firstPrefixToken];
-          v89 = v88 == 0;
+          [v54 setPrefixMatchWordBoundary:{objc_msgSend(matchInfo, "prefixMatchesWordBoundary")}];
+          firstPrefixToken = [matchInfo firstPrefixToken];
+          v89 = firstPrefixToken == 0;
 
           if (!v89)
           {
-            v90 = [v338 firstPrefixToken];
-            [v54 setPrefixTokenMatchLengthFirstQueryToken:{objc_msgSend(v90, "matchLength")}];
-            [v54 setPrefixTokenMatchPositionFirstQueryToken:{objc_msgSend(v90, "matchPostion")}];
-            [v54 setPrefixTokenIsNumberFirstQueryToken:{objc_msgSend(v90, "isNumber")}];
-            [v54 setPrefixTokenMatchLocationFirstQueryToken:{objc_msgSend(v90, "matchLocation")}];
+            firstPrefixToken2 = [matchInfo firstPrefixToken];
+            [v54 setPrefixTokenMatchLengthFirstQueryToken:{objc_msgSend(firstPrefixToken2, "matchLength")}];
+            [v54 setPrefixTokenMatchPositionFirstQueryToken:{objc_msgSend(firstPrefixToken2, "matchPostion")}];
+            [v54 setPrefixTokenIsNumberFirstQueryToken:{objc_msgSend(firstPrefixToken2, "isNumber")}];
+            [v54 setPrefixTokenMatchLocationFirstQueryToken:{objc_msgSend(firstPrefixToken2, "matchLocation")}];
           }
 
-          v91 = [v338 secondPrefixToken];
-          v92 = v91 == 0;
+          secondPrefixToken = [matchInfo secondPrefixToken];
+          v92 = secondPrefixToken == 0;
 
           if (!v92)
           {
-            v93 = [v338 secondPrefixToken];
-            [v54 setPrefixTokenMatchLengthSecondQueryToken:{objc_msgSend(v93, "matchLength")}];
-            [v54 setPrefixTokenMatchPositionSecondQueryToken:{objc_msgSend(v93, "matchPostion")}];
-            [v54 setPrefixTokenIsNumberSecondQueryToken:{objc_msgSend(v93, "isNumber")}];
-            [v54 setPrefixTokenMatchLocationSecondQueryToken:{objc_msgSend(v93, "matchLocation")}];
+            secondPrefixToken2 = [matchInfo secondPrefixToken];
+            [v54 setPrefixTokenMatchLengthSecondQueryToken:{objc_msgSend(secondPrefixToken2, "matchLength")}];
+            [v54 setPrefixTokenMatchPositionSecondQueryToken:{objc_msgSend(secondPrefixToken2, "matchPostion")}];
+            [v54 setPrefixTokenIsNumberSecondQueryToken:{objc_msgSend(secondPrefixToken2, "isNumber")}];
+            [v54 setPrefixTokenMatchLocationSecondQueryToken:{objc_msgSend(secondPrefixToken2, "matchLocation")}];
           }
 
-          if (([v338 matchType] & 4) != 0)
+          if (([matchInfo matchType] & 4) != 0)
           {
             [v54 setMatchedUsingAddress:1];
           }
 
-          if (([v338 matchType] & 0x10) != 0)
+          if (([matchInfo matchType] & 0x10) != 0)
           {
             [v54 setMatchedUsingEventName:1];
           }
 
-          if (([v338 matchType] & 8) != 0)
+          if (([matchInfo matchType] & 8) != 0)
           {
             [v54 setMatchedUsingLabel:1];
           }
 
-          if ([v338 matchType])
+          if ([matchInfo matchType])
           {
             [v54 setMatchedUsingName:1];
           }
 
-          if (([v338 matchType] & 2) != 0)
+          if (([matchInfo matchType] & 2) != 0)
           {
             [v54 setMatchedUsingOrganization:1];
           }
 
-          [v338 peopleSuggesterRank];
+          [matchInfo peopleSuggesterRank];
           if (v94 != 0.0)
           {
-            [v338 peopleSuggesterRank];
+            [matchInfo peopleSuggesterRank];
             [v54 setPeopleSuggesterRank:v95];
           }
 
-          if (([v338 ageInSeconds] & 0x80000000) == 0)
+          if (([matchInfo ageInSeconds] & 0x80000000) == 0)
           {
-            [v54 setAge:{objc_msgSend(v338, "ageInSeconds")}];
+            [v54 setAge:{objc_msgSend(matchInfo, "ageInSeconds")}];
           }
 
           objc_opt_class();
@@ -1066,7 +1066,7 @@ LABEL_209:
           {
             [v54 setSuggestionType:4];
             v328 = obja;
-            v96 = [v328 historyEntry];
+            historyEntry = [v328 historyEntry];
             v381[0] = _NSConcreteStackBlock;
             v381[1] = 3221225472;
             v381[2] = sub_100B5CCF8;
@@ -1087,7 +1087,7 @@ LABEL_209:
             v374 = v378;
             v375 = &v389;
             v376 = buf;
-            [v96 ifSearch:v381 ifRoute:v377 ifPlaceDisplay:v373 ifTransitLineItem:&stru_10163AA58];
+            [historyEntry ifSearch:v381 ifRoute:v377 ifPlaceDisplay:v373 ifTransitLineItem:&stru_10163AA58];
 
             goto LABEL_156;
           }
@@ -1097,34 +1097,34 @@ LABEL_209:
           {
             [v54 setSuggestionType:7];
             v97 = obja;
-            v98 = [v97 contact];
-            v99 = [v97 geocodedMapItem];
+            contact = [v97 contact];
+            geocodedMapItem = [v97 geocodedMapItem];
             v328 = v97;
 
-            if (v99)
+            if (geocodedMapItem)
             {
-              v100 = [v97 geocodedMapItem];
-              [v100 _coordinate];
+              geocodedMapItem2 = [v97 geocodedMapItem];
+              [geocodedMapItem2 _coordinate];
               v102 = v101;
               v104 = v103;
 
               v105 = v390;
               v390[4] = v102;
               v105[5] = v104;
-              v106 = [v97 geocodedMapItem];
-              v107 = [v106 _geoMapItem];
+              geocodedMapItem3 = [v97 geocodedMapItem];
+              _geoMapItem4 = [geocodedMapItem3 _geoMapItem];
               v108 = *(*&buf[8] + 40);
-              *(*&buf[8] + 40) = v107;
+              *(*&buf[8] + 40) = _geoMapItem4;
             }
 
-            if (!a11)
+            if (!logging)
             {
               v371 = 0u;
               v372 = 0u;
               v369 = 0u;
               v370 = 0u;
-              v109 = [v98 postalAddresses];
-              v110 = [v109 countByEnumeratingWithState:&v369 objects:v412 count:16];
+              postalAddresses = [contact postalAddresses];
+              v110 = [postalAddresses countByEnumeratingWithState:&v369 objects:v412 count:16];
               if (v110)
               {
                 v111 = *v370;
@@ -1134,12 +1134,12 @@ LABEL_209:
                   {
                     if (*v370 != v111)
                     {
-                      objc_enumerationMutation(v109);
+                      objc_enumerationMutation(postalAddresses);
                     }
 
                     v113 = *(*(&v369 + 1) + 8 * j);
-                    v114 = [v113 label];
-                    v115 = [v114 isEqualToString:CNLabelHome];
+                    label = [v113 label];
+                    v115 = [label isEqualToString:CNLabelHome];
 
                     if (v115)
                     {
@@ -1148,8 +1148,8 @@ LABEL_209:
 
                     else
                     {
-                      v116 = [v113 label];
-                      v117 = [v116 isEqualToString:CNLabelWork];
+                      label2 = [v113 label];
+                      v117 = [label2 isEqualToString:CNLabelWork];
 
                       if (v117)
                       {
@@ -1158,8 +1158,8 @@ LABEL_209:
 
                       else
                       {
-                        v118 = [v113 label];
-                        v119 = [v118 isEqualToString:CNLabelSchool];
+                        label3 = [v113 label];
+                        v119 = [label3 isEqualToString:CNLabelSchool];
 
                         if (v119)
                         {
@@ -1174,7 +1174,7 @@ LABEL_209:
                     }
                   }
 
-                  v110 = [v109 countByEnumeratingWithState:&v369 objects:v412 count:16];
+                  v110 = [postalAddresses countByEnumeratingWithState:&v369 objects:v412 count:16];
                 }
 
                 while (v110);
@@ -1192,7 +1192,7 @@ LABEL_158:
               v155 = *(v390 + 4);
               if (v155 >= -90.0 && v155 <= 90.0 && v312 <= 180.0 && v46 >= -90.0 && v46 <= 90.0)
               {
-                if (a12 && !a11 || a11 && (v156 = [v54 suggestionType], v154 = v390, v156 != 9))
+                if (results && !logging || logging && (v156 = [v54 suggestionType], v154 = v390, v156 != 9))
                 {
                   GEOCalculateDistance();
                   [v54 setDistanceToSuggestion:v157];
@@ -1204,13 +1204,13 @@ LABEL_158:
             if (fabs(v154[5]) <= 180.0)
             {
               v158 = v154[4];
-              if (v158 >= -90.0 && v158 <= 90.0 && [v319 hasMapRegion] && (!a11 || objc_msgSend(v54, "suggestionType") == 9))
+              if (v158 >= -90.0 && v158 <= 90.0 && [v319 hasMapRegion] && (!logging || objc_msgSend(v54, "suggestionType") == 9))
               {
-                v159 = [v319 mapRegion];
-                [v54 setIsContainedInViewport:{objc_msgSend(v159, "containsCoordinate:", *(v390 + 4), *(v390 + 5))}];
-                [v159 centerLat];
+                mapRegion = [v319 mapRegion];
+                [v54 setIsContainedInViewport:{objc_msgSend(mapRegion, "containsCoordinate:", *(v390 + 4), *(v390 + 5))}];
+                [mapRegion centerLat];
                 v161 = v160;
-                [v159 centerLng];
+                [mapRegion centerLng];
                 if (fabs(v162) <= 180.0 && v161 >= -90.0 && v161 <= 90.0)
                 {
                   GEOCalculateDistance();
@@ -1219,7 +1219,7 @@ LABEL_158:
               }
             }
 
-            if ([v319 hasTimeSinceMapViewportChanged] && !a11)
+            if ([v319 hasTimeSinceMapViewportChanged] && !logging)
             {
               [v54 setTimeSinceMapViewportChangedSeconds:{objc_msgSend(v319, "timeSinceMapViewportChanged")}];
             }
@@ -1255,11 +1255,11 @@ LABEL_158:
                 }
 
 LABEL_197:
-                v164 = [v323 title];
-                v165 = v164;
-                if (v164)
+                title = [v323 title];
+                v165 = title;
+                if (title)
                 {
-                  v166 = v164;
+                  v166 = title;
                 }
 
                 else
@@ -1270,15 +1270,15 @@ LABEL_197:
                 [v54 setSuggestionSectionType:v166];
 
                 [v322 addObject:v54];
-                v167 = v98;
-                if (!v98)
+                v167 = contact;
+                if (!contact)
                 {
                   v316 = +[NSNull null];
                   v167 = v316;
                 }
 
                 [v320 addObject:v167];
-                if (!v98)
+                if (!contact)
                 {
                 }
 
@@ -1314,17 +1314,17 @@ LABEL_196:
           {
             [v54 setSuggestionType:7];
             v328 = obja;
-            v140 = [v328 handle];
-            v141 = v140 == 0;
+            handle = [v328 handle];
+            v141 = handle == 0;
 
             if (!v141)
             {
               [v54 setIsContactWithLiveLocation:1];
             }
 
-            v142 = [v328 contact];
-            v98 = v142;
-            if (a11)
+            contact2 = [v328 contact];
+            contact = contact2;
+            if (logging)
             {
               goto LABEL_157;
             }
@@ -1333,8 +1333,8 @@ LABEL_196:
             v368 = 0u;
             v365 = 0u;
             v366 = 0u;
-            v109 = [v142 postalAddresses];
-            v143 = [v109 countByEnumeratingWithState:&v365 objects:v411 count:16];
+            postalAddresses = [contact2 postalAddresses];
+            v143 = [postalAddresses countByEnumeratingWithState:&v365 objects:v411 count:16];
             if (v143)
             {
               v144 = *v366;
@@ -1344,12 +1344,12 @@ LABEL_196:
                 {
                   if (*v366 != v144)
                   {
-                    objc_enumerationMutation(v109);
+                    objc_enumerationMutation(postalAddresses);
                   }
 
                   v146 = *(*(&v365 + 1) + 8 * k);
-                  v147 = [v146 label];
-                  v148 = [v147 isEqualToString:CNLabelHome];
+                  label4 = [v146 label];
+                  v148 = [label4 isEqualToString:CNLabelHome];
 
                   if (v148)
                   {
@@ -1358,8 +1358,8 @@ LABEL_196:
 
                   else
                   {
-                    v149 = [v146 label];
-                    v150 = [v149 isEqualToString:CNLabelWork];
+                    label5 = [v146 label];
+                    v150 = [label5 isEqualToString:CNLabelWork];
 
                     if (v150)
                     {
@@ -1368,8 +1368,8 @@ LABEL_196:
 
                     else
                     {
-                      v151 = [v146 label];
-                      v152 = [v151 isEqualToString:CNLabelSchool];
+                      label6 = [v146 label];
+                      v152 = [label6 isEqualToString:CNLabelSchool];
 
                       if (v152)
                       {
@@ -1384,7 +1384,7 @@ LABEL_196:
                   }
                 }
 
-                v143 = [v109 countByEnumeratingWithState:&v365 objects:v411 count:16];
+                v143 = [postalAddresses countByEnumeratingWithState:&v365 objects:v411 count:16];
               }
 
               while (v143);
@@ -1418,7 +1418,7 @@ LABEL_258:
 LABEL_214:
             [v54 setSuggestionType:v172];
 LABEL_215:
-            v98 = 0;
+            contact = 0;
             goto LABEL_158;
           }
 
@@ -1426,23 +1426,23 @@ LABEL_215:
           if (objc_opt_isKindOfClass())
           {
             v328 = obja;
-            v173 = [v328 mapItem];
-            v174 = [v173 _geoMapItem];
+            mapItem4 = [v328 mapItem];
+            _geoMapItem5 = [mapItem4 _geoMapItem];
             v175 = *(*&buf[8] + 40);
-            *(*&buf[8] + 40) = v174;
+            *(*&buf[8] + 40) = _geoMapItem5;
 
             [v328 coordinate];
             v177 = v176;
             v179 = v178;
-            v180 = [v328 type];
-            if (v180 == 3)
+            type = [v328 type];
+            if (type == 3)
             {
               v197 = 13;
             }
 
             else
             {
-              if (v180 == 4)
+              if (type == 4)
               {
                 [v54 setSuggestionType:11];
                 v177 = v46;
@@ -1451,21 +1451,21 @@ LABEL_243:
                 v198 = v390;
                 *(v390 + 4) = v177;
                 v198[5] = v179;
-                v199 = [v328 mapItem];
-                v200 = [v199 _geoMapItem];
-                v201 = [v200 _childItems];
-                [v54 setIsProminentResult:{objc_msgSend(v201, "count") != 0}];
+                mapItem5 = [v328 mapItem];
+                _geoMapItem6 = [mapItem5 _geoMapItem];
+                _childItems2 = [_geoMapItem6 _childItems];
+                [v54 setIsProminentResult:{objc_msgSend(_childItems2, "count") != 0}];
 
-                if (v317)
+                if (metadataCopy)
                 {
                   v202 = +[PlaceSummaryTemplateFactory autocompleteTemplateWithSearchResult:searchAlongRoute:](_TtC4Maps27PlaceSummaryTemplateFactory, "autocompleteTemplateWithSearchResult:searchAlongRoute:", v328, [v319 navigating]);
-                  v203 = [v328 mapItem];
-                  v204 = [a1 hyperlinkMetadataWithTemplate:v202 mapItem:v203 metadata:v317];
+                  mapItem6 = [v328 mapItem];
+                  v204 = [self hyperlinkMetadataWithTemplate:v202 mapItem:mapItem6 metadata:metadataCopy];
                   [v54 setHyperlinkMetadata:v204];
                 }
 
 LABEL_156:
-                v98 = 0;
+                contact = 0;
                 goto LABEL_157;
               }
 
@@ -1482,26 +1482,26 @@ LABEL_156:
             if ([obja conformsToProtocol:&OBJC_PROTOCOL___PersonalizedItem])
             {
               v328 = obja;
-              v109 = [v328 mapItem];
-              v189 = [v109 _geoMapItem];
+              postalAddresses = [v328 mapItem];
+              _geoMapItem7 = [postalAddresses _geoMapItem];
               v190 = *(*&buf[8] + 40);
-              *(*&buf[8] + 40) = v189;
+              *(*&buf[8] + 40) = _geoMapItem7;
 
-              if (v109)
+              if (postalAddresses)
               {
-                [v109 _coordinate];
+                [postalAddresses _coordinate];
                 v191 = v390;
                 v390[4] = v192;
                 v191[5] = v193;
               }
 
-              v194 = [v328 address];
-              v195 = v194 == 0;
+              address = [v328 address];
+              v195 = address == 0;
 
               if (v195)
               {
-                v210 = [v328 locationOfInterest];
-                v211 = v210 == 0;
+                locationOfInterest = [v328 locationOfInterest];
+                v211 = locationOfInterest == 0;
 
                 if (v211)
                 {
@@ -1514,14 +1514,14 @@ LABEL_156:
                 }
 
                 [v54 setSuggestionType:v212];
-                v98 = 0;
+                contact = 0;
               }
 
               else
               {
                 [v54 setSuggestionType:7];
-                v196 = [v328 address];
-                v98 = [v196 contact];
+                address2 = [v328 address];
+                contact = [address2 contact];
               }
 
               goto LABEL_258;
@@ -1545,7 +1545,7 @@ LABEL_156:
               v328 = v206;
 
               [v328 originCoordinate];
-              v98 = 0;
+              contact = 0;
               v207 = v390;
               v390[4] = v208;
               v207[5] = v209;
@@ -1556,10 +1556,10 @@ LABEL_156:
           }
 
           v328 = obja;
-          v181 = [v328 type];
-          if (v181 <= 4)
+          type2 = [v328 type];
+          if (type2 <= 4)
           {
-            if ((v181 - 1) < 4)
+            if ((type2 - 1) < 4)
             {
               v182 = 1;
               goto LABEL_231;
@@ -1570,7 +1570,7 @@ LABEL_260:
             goto LABEL_231;
           }
 
-          switch(v181)
+          switch(type2)
           {
             case 5:
               v182 = 4;
@@ -1588,17 +1588,17 @@ LABEL_231:
               goto LABEL_260;
           }
 
-          v183 = [v328 MKMapItem];
-          v127 = v183;
-          if (v183)
+          mKMapItem = [v328 MKMapItem];
+          v127 = mKMapItem;
+          if (mKMapItem)
           {
-            [v183 _coordinate];
+            [mKMapItem _coordinate];
             v184 = v390;
             v390[4] = v185;
             v184[5] = v186;
-            v187 = [v127 _geoMapItem];
+            _geoMapItem8 = [v127 _geoMapItem];
             v188 = *(*&buf[8] + 40);
-            *(*&buf[8] + 40) = v187;
+            *(*&buf[8] + 40) = _geoMapItem8;
           }
 
 LABEL_155:
@@ -1617,7 +1617,7 @@ LABEL_262:
     while (v304);
   }
 
-  if (!v301)
+  if (!insightsCopy)
   {
     goto LABEL_360;
   }
@@ -1653,8 +1653,8 @@ LABEL_262:
 
       v329 = v213;
       v339 = *(*(&v361 + 1) + 8 * v213);
-      v215 = [v339 items];
-      v216 = [v215 count] == 0;
+      items9 = [v339 items];
+      v216 = [items9 count] == 0;
 
       if (!v216)
       {
@@ -1688,7 +1688,7 @@ LABEL_262:
 
           objb = 0;
 LABEL_279:
-          v220 = [v320 objectAtIndexedSubscript:v217];
+          postalAddresses3 = [v320 objectAtIndexedSubscript:v217];
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
@@ -1713,9 +1713,9 @@ LABEL_279:
                 while (1)
                 {
                   v224 = [v351 objectAtIndexedSubscript:v222];
-                  v225 = [v224 identifier];
-                  v226 = [v221 identifier];
-                  v227 = [v225 isEqualToString:v226];
+                  identifier = [v224 identifier];
+                  identifier2 = [v221 identifier];
+                  v227 = [identifier isEqualToString:identifier2];
 
                   if ((v227 & 1) == 0)
                   {
@@ -1745,8 +1745,8 @@ LABEL_279:
               }
             }
 
-            v233 = [v221 postalAddresses];
-            v234 = [v233 count] == 0;
+            postalAddresses2 = [v221 postalAddresses];
+            v234 = [postalAddresses2 count] == 0;
 
             if (v234)
             {
@@ -1754,8 +1754,8 @@ LABEL_279:
               v241 = +[NSNull null];
               [v347 addObject:v241];
 
-              v220 = [NSNumber numberWithUnsignedInteger:v217];
-              v407 = v220;
+              postalAddresses3 = [NSNumber numberWithUnsignedInteger:v217];
+              v407 = postalAddresses3;
               v242 = [NSArray arrayWithObjects:&v407 count:1];
               [v349 addObject:v242];
             }
@@ -1766,8 +1766,8 @@ LABEL_279:
               v360 = 0u;
               v357 = 0u;
               v358 = 0u;
-              v220 = [v221 postalAddresses];
-              v235 = [v220 countByEnumeratingWithState:&v357 objects:v409 count:16];
+              postalAddresses3 = [v221 postalAddresses];
+              v235 = [postalAddresses3 countByEnumeratingWithState:&v357 objects:v409 count:16];
               if (v235)
               {
                 v236 = *v358;
@@ -1777,7 +1777,7 @@ LABEL_279:
                   {
                     if (*v358 != v236)
                     {
-                      objc_enumerationMutation(v220);
+                      objc_enumerationMutation(postalAddresses3);
                     }
 
                     v238 = *(*(&v357 + 1) + 8 * m);
@@ -1789,7 +1789,7 @@ LABEL_279:
                     [v349 addObject:v240];
                   }
 
-                  v235 = [v220 countByEnumeratingWithState:&v357 objects:v409 count:16];
+                  v235 = [postalAddresses3 countByEnumeratingWithState:&v357 objects:v409 count:16];
                 }
 
                 while (v235);
@@ -1798,8 +1798,8 @@ LABEL_279:
           }
 
 LABEL_291:
-          v231 = [v339 items];
-          v232 = [v231 count];
+          items10 = [v339 items];
+          v232 = [items10 count];
 
           if (++v217 >= v232)
           {
@@ -1826,7 +1826,7 @@ LABEL_305:
 
   if ([v335 count])
   {
-    v243 = [v301 confidenceScoresForMapItems:v335];
+    v243 = [insightsCopy confidenceScoresForMapItems:v335];
   }
 
   else
@@ -1836,7 +1836,7 @@ LABEL_305:
 
   if (+[AddressBookManager addressBookAllowed](AddressBookManager, "addressBookAllowed") && [v351 count])
   {
-    objc = [v301 confidenceScoresForContacts:v351 addresses:v347];
+    objc = [insightsCopy confidenceScoresForContacts:v351 addresses:v347];
   }
 
   else
@@ -1860,11 +1860,11 @@ LABEL_305:
             [v246 confidence];
             v248 = v247;
             v249 = [v243 objectAtIndexedSubscript:v244];
-            v250 = [v249 lastInteractionTime];
+            lastInteractionTime = [v249 lastInteractionTime];
             *buf = 134218242;
             *&buf[4] = v248;
             *&buf[12] = 2112;
-            *&buf[14] = v250;
+            *&buf[14] = lastInteractionTime;
             _os_log_impl(&_mh_execute_header, v245, OS_LOG_TYPE_DEBUG, "confidence: %f, time: %@", buf, 0x16u);
           }
         }
@@ -1874,12 +1874,12 @@ LABEL_305:
         v253 = v252;
 
         v340 = [v243 objectAtIndexedSubscript:v244];
-        v330 = [v340 lastInteractionTime];
-        [v330 timeIntervalSinceNow];
+        lastInteractionTime2 = [v340 lastInteractionTime];
+        [lastInteractionTime2 timeIntervalSinceNow];
         LODWORD(v251) = v254 >= 0.0;
         v255 = [v243 objectAtIndexedSubscript:v244];
-        v256 = [v255 lastInteractionTime];
-        [v256 timeIntervalSinceNow];
+        lastInteractionTime3 = [v255 lastInteractionTime];
+        [lastInteractionTime3 timeIntervalSinceNow];
         if (!v251)
         {
           v257 = -v257;
@@ -1889,12 +1889,12 @@ LABEL_305:
         if (v257 > 0.0)
         {
           v327 = [v243 objectAtIndexedSubscript:v244];
-          v259 = [v327 lastInteractionTime];
-          [v259 timeIntervalSinceNow];
+          lastInteractionTime4 = [v327 lastInteractionTime];
+          [lastInteractionTime4 timeIntervalSinceNow];
           v261 = v260 < 0.0;
           v262 = [v243 objectAtIndexedSubscript:v244];
-          v263 = [v262 lastInteractionTime];
-          [v263 timeIntervalSinceNow];
+          lastInteractionTime5 = [v262 lastInteractionTime];
+          [lastInteractionTime5 timeIntervalSinceNow];
           if (v261)
           {
             v258 = -v264;
@@ -1907,12 +1907,12 @@ LABEL_305:
         }
 
         v265 = [v333 objectAtIndexedSubscript:v244];
-        v266 = [v265 unsignedIntegerValue];
+        unsignedIntegerValue = [v265 unsignedIntegerValue];
 
-        v267 = [v322 objectAtIndexedSubscript:v266];
+        v267 = [v322 objectAtIndexedSubscript:unsignedIntegerValue];
         [v267 setMapsSuggestionsPoiRevelanceScore:v253];
 
-        v268 = [v322 objectAtIndexedSubscript:v266];
+        v268 = [v322 objectAtIndexedSubscript:unsignedIntegerValue];
         [v268 setTimeSinceLastInteractedSeconds:v258];
       }
 
@@ -1938,11 +1938,11 @@ LABEL_305:
             [v271 confidence];
             v273 = v272;
             v274 = [objc objectAtIndexedSubscript:v269];
-            v275 = [v274 lastInteractionTime];
+            lastInteractionTime6 = [v274 lastInteractionTime];
             *buf = 134218242;
             *&buf[4] = v273;
             *&buf[12] = 2112;
-            *&buf[14] = v275;
+            *&buf[14] = lastInteractionTime6;
             _os_log_impl(&_mh_execute_header, v270, OS_LOG_TYPE_DEBUG, "confidence: %f, time: %@", buf, 0x16u);
           }
         }
@@ -1952,12 +1952,12 @@ LABEL_305:
         v278 = v277;
 
         v279 = [objc objectAtIndexedSubscript:v269];
-        v341 = [v279 lastInteractionTime];
-        [v341 timeIntervalSinceNow];
+        lastInteractionTime7 = [v279 lastInteractionTime];
+        [lastInteractionTime7 timeIntervalSinceNow];
         LODWORD(v276) = v280 >= 0.0;
         v281 = [objc objectAtIndexedSubscript:v269];
-        v282 = [v281 lastInteractionTime];
-        [v282 timeIntervalSinceNow];
+        lastInteractionTime8 = [v281 lastInteractionTime];
+        [lastInteractionTime8 timeIntervalSinceNow];
         if (!v276)
         {
           v283 = -v283;
@@ -1967,12 +1967,12 @@ LABEL_305:
         if (v283 > 0.0)
         {
           v331 = [objc objectAtIndexedSubscript:v269];
-          v285 = [v331 lastInteractionTime];
-          [v285 timeIntervalSinceNow];
+          lastInteractionTime9 = [v331 lastInteractionTime];
+          [lastInteractionTime9 timeIntervalSinceNow];
           v287 = v286 < 0.0;
           v288 = [objc objectAtIndexedSubscript:v269];
-          v289 = [v288 lastInteractionTime];
-          [v289 timeIntervalSinceNow];
+          lastInteractionTime10 = [v288 lastInteractionTime];
+          [lastInteractionTime10 timeIntervalSinceNow];
           if (v287)
           {
             v284 = -v290;
@@ -2033,26 +2033,26 @@ LABEL_360:
   return v322;
 }
 
-+ (id)acSuggestionEntriesFromAutoCompleteObjects:(id)a3 personalizedItems:(id)a4 context:(id)a5 mapsSuggestionsInsights:(id)a6 skipReportASearchItems:(BOOL)a7 traits:(id)a8 usedForLogging:(BOOL)a9 shouldUseDistanceFeatureServerResults:(BOOL)a10
++ (id)acSuggestionEntriesFromAutoCompleteObjects:(id)objects personalizedItems:(id)items context:(id)context mapsSuggestionsInsights:(id)insights skipReportASearchItems:(BOOL)searchItems traits:(id)traits usedForLogging:(BOOL)logging shouldUseDistanceFeatureServerResults:(BOOL)self0
 {
-  v11 = a7;
-  v16 = a9;
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
-  v20 = a6;
-  v21 = a8;
-  if ([v17 count])
+  searchItemsCopy = searchItems;
+  loggingCopy2 = logging;
+  objectsCopy = objects;
+  itemsCopy = items;
+  contextCopy = context;
+  insightsCopy = insights;
+  traitsCopy = traits;
+  if ([objectsCopy count])
   {
-    v29 = [AutocompleteSection sectionWithTitle:0 items:v17 isQuerySuggestionsSection:0];
-    v22 = a1;
-    v23 = v11;
+    v29 = [AutocompleteSection sectionWithTitle:0 items:objectsCopy isQuerySuggestionsSection:0];
+    selfCopy = self;
+    v23 = searchItemsCopy;
     v24 = v29;
     v25 = [NSArray arrayWithObjects:&v29 count:1];
 
-    v11 = v23;
-    a1 = v22;
-    v16 = a9;
+    searchItemsCopy = v23;
+    self = selfCopy;
+    loggingCopy2 = logging;
   }
 
   else
@@ -2060,18 +2060,18 @@ LABEL_360:
     v25 = &__NSArray0__struct;
   }
 
-  BYTE1(v28) = a10;
-  LOBYTE(v28) = v16;
-  v26 = [a1 acSuggestionEntriesFromSections:v25 personalizedItems:v18 context:v19 mapsSuggestionsInsights:v20 skipReportASearchItems:v11 selectedChildItemIndexPath:0 indexOfResultWithSelectedChildItem:0 traits:v21 usedForLogging:v28 shouldUseDistanceFeatureServerResults:0 placeSummaryMetadata:?];
+  BYTE1(v28) = results;
+  LOBYTE(v28) = loggingCopy2;
+  v26 = [self acSuggestionEntriesFromSections:v25 personalizedItems:itemsCopy context:contextCopy mapsSuggestionsInsights:insightsCopy skipReportASearchItems:searchItemsCopy selectedChildItemIndexPath:0 indexOfResultWithSelectedChildItem:0 traits:traitsCopy usedForLogging:v28 shouldUseDistanceFeatureServerResults:0 placeSummaryMetadata:?];
 
   return v26;
 }
 
-+ (id)analyticsResultsInfoArrayFromAutoCompleteResultsArray:(id)a3 selectedIndex:(unint64_t)a4
++ (id)analyticsResultsInfoArrayFromAutoCompleteResultsArray:(id)array selectedIndex:(unint64_t)index
 {
-  v5 = a3;
+  arrayCopy = array;
   v6 = objc_alloc_init(NSMutableArray);
-  if ([v5 count])
+  if ([arrayCopy count])
   {
     v7 = 0;
     v37 = CRRecentContactMetadataFrom;
@@ -2082,13 +2082,13 @@ LABEL_360:
     v35 = CRAddressKindEmail;
     while (1)
     {
-      v10 = [v5 objectAtIndexedSubscript:{v7, v34}];
+      v10 = [arrayCopy objectAtIndexedSubscript:{v7, v34}];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v11 = [v10 autocompleteObject];
+        autocompleteObject = [v10 autocompleteObject];
 
-        v10 = v11;
+        v10 = autocompleteObject;
       }
 
       v12 = objc_alloc_init(v9[125]);
@@ -2100,7 +2100,7 @@ LABEL_360:
       }
 
       [v12 setSuggestionsAcType:10];
-      if (a4 == v7)
+      if (index == v7)
       {
         goto LABEL_22;
       }
@@ -2111,24 +2111,24 @@ LABEL_360:
         [v12 setSuggestionsAcType:4];
         v15 = v10;
         [v15 historyEntry];
-        v16 = v5;
+        v16 = arrayCopy;
         v17 = v6;
         v18 = p_superclass;
-        v20 = v19 = a4;
+        v20 = v19 = index;
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
 
         v22 = 4;
-        a4 = v19;
+        index = v19;
         p_superclass = v18;
         v6 = v17;
-        v5 = v16;
+        arrayCopy = v16;
         if (isKindOfClass)
         {
           goto LABEL_20;
         }
 
-        v23 = [v15 historyEntry];
+        historyEntry = [v15 historyEntry];
         objc_opt_class();
         v24 = objc_opt_isKindOfClass();
 
@@ -2138,7 +2138,7 @@ LABEL_360:
           goto LABEL_20;
         }
 
-        v25 = [v15 historyEntry];
+        historyEntry2 = [v15 historyEntry];
         objc_opt_class();
         v26 = objc_opt_isKindOfClass();
 
@@ -2173,8 +2173,8 @@ LABEL_20:
       if (objc_opt_isKindOfClass())
       {
         [v12 setSuggestionsAcType:3];
-        v27 = [v10 metadata];
-        v28 = [v27 objectForKeyedSubscript:v37];
+        metadata = [v10 metadata];
+        v28 = [metadata objectForKeyedSubscript:v37];
 
         v9 = &GEOMapsAuthEnvironmentKey_ptr;
         objc_opt_class();
@@ -2231,7 +2231,7 @@ LABEL_38:
 LABEL_22:
       [v6 addObject:v12];
 
-      if (++v7 >= [v5 count])
+      if (++v7 >= [arrayCopy count])
       {
         goto LABEL_43;
       }

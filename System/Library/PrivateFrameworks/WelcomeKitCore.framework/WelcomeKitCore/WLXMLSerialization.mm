@@ -1,46 +1,46 @@
 @interface WLXMLSerialization
-- (id)XMLObjectWithData:(id)a3;
-- (id)XMLObjectWithString:(id)a3;
-- (id)parseXMLContent:(_xmlNode *)a3;
+- (id)XMLObjectWithData:(id)data;
+- (id)XMLObjectWithString:(id)string;
+- (id)parseXMLContent:(_xmlNode *)content;
 @end
 
 @implementation WLXMLSerialization
 
-- (id)XMLObjectWithString:(id)a3
+- (id)XMLObjectWithString:(id)string
 {
-  v4 = [a3 dataUsingEncoding:4];
+  v4 = [string dataUsingEncoding:4];
   v5 = [(WLXMLSerialization *)self XMLObjectWithData:v4];
 
   return v5;
 }
 
-- (id)XMLObjectWithData:(id)a3
+- (id)XMLObjectWithData:(id)data
 {
-  v5 = a3;
-  v6 = a3;
-  v7 = [v6 bytes];
-  v8 = [v6 length];
+  dataCopy = data;
+  dataCopy2 = data;
+  bytes = [dataCopy2 bytes];
+  v8 = [dataCopy2 length];
 
-  Memory = xmlReadMemory(v7, v8, 0, 0, 0);
+  Memory = xmlReadMemory(bytes, v8, 0, 0, 0);
   v10 = [(WLXMLSerialization *)self parseXMLContent:xmlDocGetRootElement(Memory)];
   xmlFreeDoc(Memory);
 
   return v10;
 }
 
-- (id)parseXMLContent:(_xmlNode *)a3
+- (id)parseXMLContent:(_xmlNode *)content
 {
-  if (!a3)
+  if (!content)
   {
 LABEL_16:
     v12 = &stru_2882CBB40;
     goto LABEL_19;
   }
 
-  children = a3->children;
+  children = content->children;
   if (!children)
   {
-    Content = xmlNodeGetContent(a3);
+    Content = xmlNodeGetContent(content);
     if (Content)
     {
       v12 = [objc_alloc(MEMORY[0x277CCACA8]) initWithUTF8String:Content];

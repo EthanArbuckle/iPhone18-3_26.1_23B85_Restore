@@ -5,10 +5,10 @@
 + (uint64_t)nfcIcon;
 + (uint64_t)qrCodeIcon;
 + (uint64_t)viewfinderIcon;
-- (BCSNotificationIcon)initWithAction:(id)a3;
+- (BCSNotificationIcon)initWithAction:(id)action;
 - (NSURL)imageURL;
-- (id)_clipIconURLForAction:(id)a3 scale:(double)a4;
-- (id)_notificationIconDataURLForApp:(id)a3 scale:(float)a4;
+- (id)_clipIconURLForAction:(id)action scale:(double)scale;
+- (id)_notificationIconDataURLForApp:(id)app scale:(float)scale;
 @end
 
 @implementation BCSNotificationIcon
@@ -67,16 +67,16 @@
   return v4;
 }
 
-- (BCSNotificationIcon)initWithAction:(id)a3
+- (BCSNotificationIcon)initWithAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   v9.receiver = self;
   v9.super_class = BCSNotificationIcon;
   v5 = [(BCSNotificationIcon *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_action, v4);
+    objc_storeWeak(&v5->_action, actionCopy);
     v7 = v6;
   }
 
@@ -86,7 +86,7 @@
 - (NSURL)imageURL
 {
   WeakRetained = objc_loadWeakRetained(&self->_action);
-  v4 = [WeakRetained defaultActionTargetApplicationBundleIdentifier];
+  defaultActionTargetApplicationBundleIdentifier = [WeakRetained defaultActionTargetApplicationBundleIdentifier];
   MGGetFloat32Answer();
   v6 = v5;
   if (v5 == 3.0)
@@ -99,7 +99,7 @@
     v7 = @"CellularData@2x";
   }
 
-  if ([v4 isEqualToString:@"com.apple.Preferences.cellularData"])
+  if ([defaultActionTargetApplicationBundleIdentifier isEqualToString:@"com.apple.Preferences.cellularData"])
   {
     v8 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v9 = [v8 URLForResource:v7 withExtension:@"png"];
@@ -107,7 +107,7 @@
     goto LABEL_21;
   }
 
-  if (![v4 length])
+  if (![defaultActionTargetApplicationBundleIdentifier length])
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -127,12 +127,12 @@ LABEL_16:
   }
 
   objc_opt_class();
-  if (objc_opt_isKindOfClass() & 1) != 0 && [WeakRetained isAMSAction] && ((objc_msgSend(v4, "isEqualToString:", @"com.apple.ios.StoreKitUIService") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"com.apple.AMSEngagementViewService")))
+  if (objc_opt_isKindOfClass() & 1) != 0 && [WeakRetained isAMSAction] && ((objc_msgSend(defaultActionTargetApplicationBundleIdentifier, "isEqualToString:", @"com.apple.ios.StoreKitUIService") & 1) != 0 || (objc_msgSend(defaultActionTargetApplicationBundleIdentifier, "isEqualToString:", @"com.apple.AMSEngagementViewService")))
   {
     goto LABEL_16;
   }
 
-  v10 = [getLSApplicationProxyClass() applicationProxyForIdentifier:v4];
+  v10 = [getLSApplicationProxyClass() applicationProxyForIdentifier:defaultActionTargetApplicationBundleIdentifier];
   if (v10)
   {
     *&v11 = v6;
@@ -155,17 +155,17 @@ LABEL_21:
   return v9;
 }
 
-- (id)_clipIconURLForAction:(id)a3 scale:(double)a4
+- (id)_clipIconURLForAction:(id)action scale:(double)scale
 {
   v31 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  actionCopy = action;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v5 clipMetadataRequest];
-    v7 = [v6 getClipMetadataSynchronously];
+    clipMetadataRequest = [actionCopy clipMetadataRequest];
+    getClipMetadataSynchronously = [clipMetadataRequest getClipMetadataSynchronously];
 
-    if (v7)
+    if (getClipMetadataSynchronously)
     {
       v23 = 0;
       v24 = &v23;
@@ -175,16 +175,16 @@ LABEL_21:
       v28 = 0;
       v8 = dispatch_group_create();
       dispatch_group_enter(v8);
-      v9 = [v5 clipMetadataRequest];
+      clipMetadataRequest2 = [actionCopy clipMetadataRequest];
       v19[0] = MEMORY[0x277D85DD0];
       v19[1] = 3221225472;
       v19[2] = __51__BCSNotificationIcon__clipIconURLForAction_scale___block_invoke;
       v19[3] = &unk_278CFF088;
       v10 = v8;
-      v22 = a4;
+      scaleCopy = scale;
       v20 = v10;
       v21 = &v23;
-      [v9 requestDownloadedIconWithMetadata:v7 completion:v19];
+      [clipMetadataRequest2 requestDownloadedIconWithMetadata:getClipMetadataSynchronously completion:v19];
 
       v11 = dispatch_time(0, 1000000000);
       dispatch_group_wait(v10, v11);
@@ -204,7 +204,7 @@ LABEL_21:
 
       else
       {
-        if (a4 == 3.0)
+        if (scale == 3.0)
         {
           v15 = @"AppClips@3x";
         }
@@ -267,21 +267,21 @@ void __51__BCSNotificationIcon__clipIconURLForAction_scale___block_invoke_2(uint
   dispatch_group_leave(*(a1 + 32));
 }
 
-- (id)_notificationIconDataURLForApp:(id)a3 scale:(float)a4
+- (id)_notificationIconDataURLForApp:(id)app scale:(float)scale
 {
   v38 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  appCopy = app;
   v6 = _bcs_notificationIconBaseURL();
   v7 = MEMORY[0x277CCACA8];
-  v8 = [v5 bundleIdentifier];
-  v9 = [v7 stringWithFormat:@"%@.png", v8];
+  bundleIdentifier = [appCopy bundleIdentifier];
+  v9 = [v7 stringWithFormat:@"%@.png", bundleIdentifier];
   v10 = [v6 URLByAppendingPathComponent:v9];
 
   if (v10)
   {
-    v11 = [MEMORY[0x277CCAA00] defaultManager];
-    v12 = [v10 absoluteString];
-    v13 = [v11 fileExistsAtPath:v12 isDirectory:0];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    absoluteString = [v10 absoluteString];
+    v13 = [defaultManager fileExistsAtPath:absoluteString isDirectory:0];
 
     if (v13)
     {
@@ -289,12 +289,12 @@ void __51__BCSNotificationIcon__clipIconURLForAction_scale___block_invoke_2(uint
       goto LABEL_33;
     }
 
-    if (a4 == 2.0)
+    if (scale == 2.0)
     {
       v15 = 17;
     }
 
-    else if (a4 == 3.0)
+    else if (scale == 3.0)
     {
       v15 = 34;
     }
@@ -304,7 +304,7 @@ void __51__BCSNotificationIcon__clipIconURLForAction_scale___block_invoke_2(uint
       v15 = 64;
     }
 
-    v16 = [v5 iconDataForVariant:v15];
+    v16 = [appCopy iconDataForVariant:v15];
     if (v16)
     {
       v29 = 0;
@@ -326,9 +326,9 @@ void __51__BCSNotificationIcon__clipIconURLForAction_scale___block_invoke_2(uint
       _Block_object_dispose(&v29, 8);
       if (!v17)
       {
-        v26 = [MEMORY[0x277CCA890] currentHandler];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
         v27 = [MEMORY[0x277CCACA8] stringWithUTF8String:"CGImageRef _LICreateIconFromCachedBitmap(CFDataRef)"];
-        [v26 handleFailureInFunction:v27 file:@"BCSNotificationIcon.mm" lineNumber:31 description:{@"%s", dlerror()}];
+        [currentHandler handleFailureInFunction:v27 file:@"BCSNotificationIcon.mm" lineNumber:31 description:{@"%s", dlerror()}];
 
         __break(1u);
       }
@@ -348,8 +348,8 @@ void __51__BCSNotificationIcon__clipIconURLForAction_scale___block_invoke_2(uint
         v21 = v28;
         if (v21 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
         {
-          v22 = [v21 _bcs_privacyPreservingDescription];
-          [BCSNotificationIcon _notificationIconDataURLForApp:v22 scale:buf];
+          _bcs_privacyPreservingDescription = [v21 _bcs_privacyPreservingDescription];
+          [BCSNotificationIcon _notificationIconDataURLForApp:_bcs_privacyPreservingDescription scale:buf];
         }
 
         CGImageRelease(v19);
@@ -401,7 +401,7 @@ LABEL_33:
 + (uint64_t)qrCodeIcon
 {
   result = [MEMORY[0x277CE1FB0] iconNamed:@"QR_section_icon"];
-  *a1 = result;
+  *self = result;
   qword_27E551498 = result;
   _MergedGlobals = 1;
   return result;
@@ -410,7 +410,7 @@ LABEL_33:
 + (uint64_t)nfcIcon
 {
   result = [MEMORY[0x277CE1FB0] iconNamed:@"NFC_section_icon"];
-  *a1 = result;
+  *self = result;
   qword_27E5514A0 = result;
   byte_27E551491 = 1;
   return result;
@@ -419,7 +419,7 @@ LABEL_33:
 + (uint64_t)viewfinderIcon
 {
   result = [MEMORY[0x277CE1FB0] iconNamed:@"Viewfinder_section_icon"];
-  *a1 = result;
+  *self = result;
   qword_27E5514A8 = result;
   byte_27E551492 = 1;
   return result;

@@ -1,43 +1,43 @@
 @interface BPSStingSetupModel
-+ (id)defaultBundleIDForActionType:(unint64_t)a3;
-+ (id)fileNameForIdentifier:(id)a3;
-+ (id)subtitleForActionType:(unint64_t)a3;
-- (BOOL)_shouldShowItem:(id)a3 isTinker:(BOOL)a4 compassInstalled:(BOOL)a5;
++ (id)defaultBundleIDForActionType:(unint64_t)type;
++ (id)fileNameForIdentifier:(id)identifier;
++ (id)subtitleForActionType:(unint64_t)type;
+- (BOOL)_shouldShowItem:(id)item isTinker:(BOOL)tinker compassInstalled:(BOOL)installed;
 - (BPSStingSetupModel)init;
-- (id)_modelItemWithActionType:(unint64_t)a3;
+- (id)_modelItemWithActionType:(unint64_t)type;
 - (id)defaultSetupActionItems;
 @end
 
 @implementation BPSStingSetupModel
 
-+ (id)defaultBundleIDForActionType:(unint64_t)a3
++ (id)defaultBundleIDForActionType:(unint64_t)type
 {
-  if (a3 - 1 > 0x27)
+  if (type - 1 > 0x27)
   {
     return 0;
   }
 
   else
   {
-    return *(&off_C300 + a3 - 1);
+    return *(&off_C300 + type - 1);
   }
 }
 
-+ (id)fileNameForIdentifier:(id)a3
++ (id)fileNameForIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = v3;
+  identifierCopy = identifier;
+  v4 = identifierCopy;
   v5 = @"StartDive";
-  if (v3)
+  if (identifierCopy)
   {
-    v5 = v3;
+    v5 = identifierCopy;
   }
 
   v6 = v5;
   v7 = +[NRPairedDeviceRegistry sharedInstance];
   v8 = +[NRPairedDeviceRegistry activeDeviceSelectorBlock];
   v9 = [v7 getAllDevicesWithArchivedAltAccountDevicesMatching:v8];
-  v10 = [v9 firstObject];
+  firstObject = [v9 firstObject];
 
   v11 = +[UIApplication sharedApplication];
   if ([v11 userInterfaceLayoutDirection] == &dword_0 + 1)
@@ -55,7 +55,7 @@
   {
   }
 
-  if (-[__CFString isEqualToString:](v4, "isEqualToString:", @"StartBacktrack") && (v14 = [[NSUUID alloc] initWithUUIDString:@"622B6312-95FA-4F09-9148-69E286A9C31F"], v15 = objc_msgSend(v10, "supportsCapability:", v14), v14, !v15))
+  if (-[__CFString isEqualToString:](v4, "isEqualToString:", @"StartBacktrack") && (v14 = [[NSUUID alloc] initWithUUIDString:@"622B6312-95FA-4F09-9148-69E286A9C31F"], v15 = objc_msgSend(firstObject, "supportsCapability:", v14), v14, !v15))
   {
     v13 = @"-PreWorkoutBacktrack-N199";
   }
@@ -79,16 +79,16 @@ LABEL_11:
   return v16;
 }
 
-+ (id)subtitleForActionType:(unint64_t)a3
++ (id)subtitleForActionType:(unint64_t)type
 {
-  if (a3 - 1 > 0x27)
+  if (type - 1 > 0x27)
   {
     v3 = @"STING_SUBTITLE_DEFAULT";
   }
 
   else
   {
-    v3 = *(&off_C440 + a3 - 1);
+    v3 = *(&off_C440 + type - 1);
   }
 
   v4 = [NSBundle bundleForClass:objc_opt_class()];
@@ -105,45 +105,45 @@ LABEL_11:
   v3 = v2;
   if (v2)
   {
-    v4 = [(BPSStingSetupModel *)v2 defaultQuickActionItems];
+    defaultQuickActionItems = [(BPSStingSetupModel *)v2 defaultQuickActionItems];
     defaultSetupActionItems = v3->_defaultSetupActionItems;
-    v3->_defaultSetupActionItems = v4;
+    v3->_defaultSetupActionItems = defaultQuickActionItems;
   }
 
   return v3;
 }
 
-- (BOOL)_shouldShowItem:(id)a3 isTinker:(BOOL)a4 compassInstalled:(BOOL)a5
+- (BOOL)_shouldShowItem:(id)item isTinker:(BOOL)tinker compassInstalled:(BOOL)installed
 {
-  v7 = a3;
-  v8 = [v7 actionType];
-  v9 = [v8 integerValue];
+  itemCopy = item;
+  actionType = [itemCopy actionType];
+  integerValue = [actionType integerValue];
 
-  if (v9 == &dword_0 + 2)
+  if (integerValue == &dword_0 + 2)
   {
     v10 = 0;
   }
 
   else
   {
-    v11 = [v7 actionType];
-    if ([v11 integerValue] == &dword_C)
+    actionType2 = [itemCopy actionType];
+    if ([actionType2 integerValue] == &dword_C)
     {
     }
 
     else
     {
-      v12 = [v7 actionType];
-      v13 = [v12 integerValue];
+      actionType3 = [itemCopy actionType];
+      integerValue2 = [actionType3 integerValue];
 
-      if (v13 != &dword_4 + 1)
+      if (integerValue2 != &dword_4 + 1)
       {
         v10 = 1;
         goto LABEL_8;
       }
     }
 
-    v10 = a5 & ~a4;
+    v10 = installed & ~tinker;
   }
 
 LABEL_8:
@@ -151,13 +151,13 @@ LABEL_8:
   return v10;
 }
 
-- (id)_modelItemWithActionType:(unint64_t)a3
+- (id)_modelItemWithActionType:(unint64_t)type
 {
   v4 = [CSLPRFStingSettingsModel actionNameForActionType:?];
-  v5 = [CSLPRFStingSettingsModel sfSymbolAssetNameForActionType:a3];
+  v5 = [CSLPRFStingSettingsModel sfSymbolAssetNameForActionType:type];
   v6 = CSLPRFLinkActionTypeToIdentifier();
   v7 = [CSLPRFStingSettingsItem alloc];
-  v8 = [NSNumber numberWithUnsignedInteger:a3];
+  v8 = [NSNumber numberWithUnsignedInteger:type];
   v9 = [v7 initWithIdentifier:v6 title:v4 actionType:v8 assetName:v5];
 
   return v9;
@@ -169,11 +169,11 @@ LABEL_8:
   v3 = +[NRPairedDeviceRegistry sharedInstance];
   v4 = +[NRPairedDeviceRegistry activeDeviceSelectorBlock];
   v5 = [v3 getAllDevicesWithArchivedAltAccountDevicesMatching:v4];
-  v6 = [v5 firstObject];
+  firstObject = [v5 firstObject];
 
-  v23 = v6;
-  v7 = [v6 valueForProperty:NRDevicePropertyIsAltAccount];
-  v8 = [v7 BOOLValue];
+  v23 = firstObject;
+  v7 = [firstObject valueForProperty:NRDevicePropertyIsAltAccount];
+  bOOLValue = [v7 BOOLValue];
 
   v9 = [[LSApplicationRecord alloc] initWithBundleIdentifier:@"com.apple.compass" allowPlaceholder:0 error:0];
   v25 = 0u;
@@ -196,16 +196,16 @@ LABEL_8:
         }
 
         v15 = *(*(&v25 + 1) + 8 * i);
-        v16 = [v15 actionType];
-        v17 = [v16 integerValue];
+        actionType = [v15 actionType];
+        integerValue = [actionType integerValue];
 
-        if (v17 == &dword_4 + 2)
+        if (integerValue == &dword_4 + 2)
         {
           v18 = [NSNumber numberWithInteger:9];
           [v15 setActionType:v18];
         }
 
-        if ([(BPSStingSetupModel *)self _shouldShowItem:v15 isTinker:v8 compassInstalled:v9 != 0])
+        if ([(BPSStingSetupModel *)self _shouldShowItem:v15 isTinker:bOOLValue compassInstalled:v9 != 0])
         {
           [v24 addObject:v15];
         }
@@ -215,11 +215,11 @@ LABEL_8:
           v19 = bps_setup_log();
           if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
           {
-            v20 = [v15 title];
+            title = [v15 title];
             *buf = 136315394;
             v30 = "[BPSStingSetupModel defaultSetupActionItems]";
             v31 = 2112;
-            v32 = v20;
+            v32 = title;
             _os_log_impl(&dword_0, v19, OS_LOG_TYPE_DEFAULT, "%s: Not adding %@ to sting tile list", buf, 0x16u);
           }
         }

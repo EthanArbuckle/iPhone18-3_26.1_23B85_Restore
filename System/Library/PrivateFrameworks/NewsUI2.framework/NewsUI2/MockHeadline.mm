@@ -1,7 +1,7 @@
 @interface MockHeadline
 - (NSDate)displayDate;
 - (_TtC7NewsUI212MockHeadline)init;
-- (void)setDisplayDate:(id)a3;
+- (void)setDisplayDate:(id)date;
 @end
 
 @implementation MockHeadline
@@ -21,12 +21,12 @@
   return v8;
 }
 
-- (void)setDisplayDate:(id)a3
+- (void)setDisplayDate:(id)date
 {
   sub_2186DCF58();
   MEMORY[0x28223BE20](v5 - 8);
   v7 = &v11 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
-  if (a3)
+  if (date)
   {
     sub_219BDBCA4();
     v8 = sub_219BDBD34();
@@ -39,7 +39,7 @@
     (*(*(v9 - 8) + 56))(v7, 1, 1, v9);
   }
 
-  v10 = self;
+  selfCopy = self;
   sub_2199B7A54(v7);
 }
 

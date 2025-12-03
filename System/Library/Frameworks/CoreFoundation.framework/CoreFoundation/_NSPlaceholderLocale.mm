@@ -1,14 +1,14 @@
 @interface _NSPlaceholderLocale
-- (_NSPlaceholderLocale)initWithLocaleIdentifier:(id)a3;
+- (_NSPlaceholderLocale)initWithLocaleIdentifier:(id)identifier;
 @end
 
 @implementation _NSPlaceholderLocale
 
-- (_NSPlaceholderLocale)initWithLocaleIdentifier:(id)a3
+- (_NSPlaceholderLocale)initWithLocaleIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
-    return CFLocaleCreate(&__kCFAllocatorSystemDefault, a3);
+    return CFLocaleCreate(&__kCFAllocatorSystemDefault, identifier);
   }
 
   else

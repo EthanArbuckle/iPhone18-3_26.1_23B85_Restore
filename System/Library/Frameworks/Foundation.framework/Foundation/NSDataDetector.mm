@@ -1,14 +1,14 @@
 @interface NSDataDetector
 + (NSDataDetector)dataDetectorWithTypes:(NSTextCheckingTypes)checkingTypes error:(NSError *)error;
 + (void)initialize;
-- (BOOL)isEqual:(id)a3;
-- (NSDataDetector)initWithCoder:(id)a3;
-- (NSDataDetector)initWithPattern:(id)a3 options:(unint64_t)a4 error:(id *)a5;
+- (BOOL)isEqual:(id)equal;
+- (NSDataDetector)initWithCoder:(id)coder;
+- (NSDataDetector)initWithPattern:(id)pattern options:(unint64_t)options error:(id *)error;
 - (NSDataDetector)initWithTypes:(NSTextCheckingTypes)checkingTypes error:(NSError *)error;
 - (id)description;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)enumerateMatchesInString:(id)a3 options:(unint64_t)a4 range:(_NSRange)a5 usingBlock:(id)a6;
+- (void)encodeWithCoder:(id)coder;
+- (void)enumerateMatchesInString:(id)string options:(unint64_t)options range:(_NSRange)range usingBlock:(id)block;
 @end
 
 @implementation NSDataDetector
@@ -30,16 +30,16 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
-    [a1 setVersion:1];
+    [self setVersion:1];
   }
 }
 
 + (NSDataDetector)dataDetectorWithTypes:(NSTextCheckingTypes)checkingTypes error:(NSError *)error
 {
-  v4 = [[a1 alloc] initWithTypes:checkingTypes error:error];
+  v4 = [[self alloc] initWithTypes:checkingTypes error:error];
 
   return v4;
 }
@@ -162,44 +162,44 @@
   return v8;
 }
 
-- (NSDataDetector)initWithPattern:(id)a3 options:(unint64_t)a4 error:(id *)a5
+- (NSDataDetector)initWithPattern:(id)pattern options:(unint64_t)options error:(id *)error
 {
   v6 = [NSString stringWithFormat:@"%@: Not valid for NSDataDetector", _NSMethodExceptionProem(self, a2)];
 
   objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:v6 userInfo:0]);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5[1] = *MEMORY[0x1E69E9840];
-  v4 = [(NSDataDetector *)self checkingTypes];
-  if ([a3 allowsKeyedCoding])
+  checkingTypes = [(NSDataDetector *)self checkingTypes];
+  if ([coder allowsKeyedCoding])
   {
 
-    [a3 encodeInt64:v4 forKey:@"NSCheckingTypes"];
+    [coder encodeInt64:checkingTypes forKey:@"NSCheckingTypes"];
   }
 
   else
   {
-    v5[0] = v4;
-    [a3 encodeValueOfObjCType:"Q" at:v5];
+    v5[0] = checkingTypes;
+    [coder encodeValueOfObjCType:"Q" at:v5];
   }
 }
 
-- (NSDataDetector)initWithCoder:(id)a3
+- (NSDataDetector)initWithCoder:(id)coder
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  if ([a3 allowsKeyedCoding])
+  if ([coder allowsKeyedCoding])
   {
-    v6 = [a3 decodeInt64ForKey:@"NSCheckingTypes"];
+    v6 = [coder decodeInt64ForKey:@"NSCheckingTypes"];
     return [(NSDataDetector *)self initWithTypes:v6 error:0];
   }
 
   v11[0] = 0;
-  v7 = [a3 versionForClassName:@"NSDataDetector"];
+  v7 = [coder versionForClassName:@"NSDataDetector"];
   if (v7 == 1)
   {
-    [a3 decodeValueOfObjCType:"Q" at:v11 size:8];
+    [coder decodeValueOfObjCType:"Q" at:v11 size:8];
     v6 = v11[0];
     return [(NSDataDetector *)self initWithTypes:v6 error:0];
   }
@@ -211,20 +211,20 @@
   return 0;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
 
-  if (!a3 || (objc_opt_isKindOfClass() & 1) == 0)
+  if (!equal || (objc_opt_isKindOfClass() & 1) == 0)
   {
     return 0;
   }
 
-  v5 = [(NSDataDetector *)self checkingTypes];
-  return v5 == [a3 checkingTypes];
+  checkingTypes = [(NSDataDetector *)self checkingTypes];
+  return checkingTypes == [equal checkingTypes];
 }
 
 - (id)description
@@ -235,15 +235,15 @@
   return [NSString stringWithFormat:@"%@ 0x%llx", [(NSRegularExpression *)&v3 description], self->_types];
 }
 
-- (void)enumerateMatchesInString:(id)a3 options:(unint64_t)a4 range:(_NSRange)a5 usingBlock:(id)a6
+- (void)enumerateMatchesInString:(id)string options:(unint64_t)options range:(_NSRange)range usingBlock:(id)block
 {
-  length = a5.length;
-  location = a5.location;
-  v9 = a4;
+  length = range.length;
+  location = range.location;
+  optionsCopy = options;
   v81[1] = *MEMORY[0x1E69E9840];
-  v13 = [a3 length];
-  v61 = v9;
-  v62 = [(NSDataDetector *)self checkingTypes];
+  v13 = [string length];
+  v61 = optionsCopy;
+  checkingTypes = [(NSDataDetector *)self checkingTypes];
   v76 = 0;
   v72 = 0;
   v73 = &v72;
@@ -257,13 +257,13 @@
   v65[1] = 3221225472;
   v65[2] = __68__NSDataDetector_enumerateMatchesInString_options_range_usingBlock___block_invoke;
   v65[3] = &unk_1E69F7790;
-  v66 = (v9 & 4) != 0;
-  v67 = v9 & 1;
-  v65[4] = a6;
+  v66 = (optionsCopy & 4) != 0;
+  v67 = optionsCopy & 1;
+  v65[4] = block;
   v65[5] = &v68;
-  v59 = a6;
+  blockCopy = block;
   v65[6] = &v72;
-  if (!a3)
+  if (!string)
   {
     v50 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: nil argument", _NSMethodExceptionProem(self, a2)), 0}];
     objc_exception_throw(v50);
@@ -276,28 +276,28 @@
   }
 
   v14 = 0;
-  v15 = self;
+  selfCopy = self;
   internal = self->super._internal;
-  v56 = v15;
-  atomic_compare_exchange_strong(&v15->super._checkout, &v14, 1u);
+  v56 = selfCopy;
+  atomic_compare_exchange_strong(&selfCopy->super._checkout, &v14, 1u);
   v58 = v14 == 0;
   if (v14)
   {
-    internal = off_1ED440048((v62 & 0x1818) == 0, 1, 0);
+    internal = off_1ED440048((checkingTypes & 0x1818) == 0, 1, 0);
   }
 
   if (internal)
   {
-    v55 = v9 & 5;
-    if ((v9 & 5) != 0)
+    v55 = optionsCopy & 5;
+    if ((optionsCopy & 5) != 0)
     {
       off_1ED440050(internal, v65);
     }
 
-    if (off_1ED440058(internal, a3, location, length))
+    if (off_1ED440058(internal, string, location, length))
     {
       v64 = 0;
-      v60 = v9 & 4;
+      v60 = optionsCopy & 4;
       v63 = location + length;
       while (1)
       {
@@ -375,7 +375,7 @@ LABEL_107:
           v69[3] = v22;
           if (v63 > v22)
           {
-            if (off_1ED440058(internal, a3, v22, v63 - v22))
+            if (off_1ED440058(internal, string, v22, v63 - v22))
             {
               continue;
             }
@@ -386,20 +386,20 @@ LABEL_107:
       }
 
       v30 = off_1ED440098(ValueAtIndex);
-      if ((v62 & 0x20) != 0 && (!*(&xmmword_1ED4400B8 + 1) ? (cf = xmmword_1ED4400B8(ValueAtIndex)) : (cf = (*(&xmmword_1ED4400B8 + 1))(ValueAtIndex, 0)), cf))
+      if ((checkingTypes & 0x20) != 0 && (!*(&xmmword_1ED4400B8 + 1) ? (cf = xmmword_1ED4400B8(ValueAtIndex)) : (cf = (*(&xmmword_1ED4400B8 + 1))(ValueAtIndex, 0)), cf))
       {
         if (([@"PhoneNumber" isEqualToString:v30] & 1) == 0 && (objc_msgSend(@"QuotedShortPhoneNumber", "isEqualToString:", v30) & 1) == 0 && (objc_msgSend(@"UnquotedShortPhoneNumber", "isEqualToString:", v30) & 1) == 0)
         {
-          v33 = [MEMORY[0x1E695DFF8] URLWithString:cf];
-          if (v33 || (v33 = [MEMORY[0x1E695DFF8] URLWithString:{CFURLCreateStringByAddingPercentEscapes(0, objc_msgSend(cf, "stringByReplacingPercentEscapesUsingEncoding:", 4), @"#", 0, 0x8000100u)}]) != 0)
+          valueAtIndex = [MEMORY[0x1E695DFF8] URLWithString:cf];
+          if (valueAtIndex || (valueAtIndex = [MEMORY[0x1E695DFF8] URLWithString:{CFURLCreateStringByAddingPercentEscapes(0, objc_msgSend(cf, "stringByReplacingPercentEscapesUsingEncoding:", 4), @"#", 0, 0x8000100u)}]) != 0)
           {
-            v33 = [[NSLinkCheckingResult alloc] initWithRange:v23 URL:v25, v33];
+            valueAtIndex = [[NSLinkCheckingResult alloc] initWithRange:v23 URL:v25, valueAtIndex];
           }
 
 LABEL_98:
           CFRelease(cf);
 LABEL_99:
-          if (v33)
+          if (valueAtIndex)
           {
             if (v64)
             {
@@ -418,10 +418,10 @@ LABEL_99:
 
             else
             {
-              v46 = v33;
+              v46 = valueAtIndex;
             }
 
-            v59[2](v59, v46, v45, &v76);
+            blockCopy[2](blockCopy, v46, v45, &v76);
           }
 
           goto LABEL_107;
@@ -436,11 +436,11 @@ LABEL_99:
         v54 = 1;
       }
 
-      if ((v62 & 0x10) != 0 && (([@"FullAddress" isEqualToString:v30] & 1) != 0 || objc_msgSend(@"SignatureBlock", "isEqualToString:", v30)))
+      if ((checkingTypes & 0x10) != 0 && (([@"FullAddress" isEqualToString:v30] & 1) != 0 || objc_msgSend(@"SignatureBlock", "isEqualToString:", v30)))
       {
-        v31 = [MEMORY[0x1E695DF90] dictionary];
-        addAddressResultsToComponents(ValueAtIndex, v31);
-        if ([v31 count])
+        dictionary = [MEMORY[0x1E695DF90] dictionary];
+        addAddressResultsToComponents(ValueAtIndex, dictionary);
+        if ([dictionary count])
         {
           v32 = [NSAddressCheckingResult alloc];
           goto LABEL_54;
@@ -449,22 +449,22 @@ LABEL_99:
         goto LABEL_65;
       }
 
-      if ((v62 & 0x1000) != 0 && [@"FlightInformation" isEqualToString:v30])
+      if ((checkingTypes & 0x1000) != 0 && [@"FlightInformation" isEqualToString:v30])
       {
-        v31 = [MEMORY[0x1E695DF90] dictionary];
-        addAddressResultsToComponents(ValueAtIndex, v31);
-        if ([v31 count])
+        dictionary = [MEMORY[0x1E695DF90] dictionary];
+        addAddressResultsToComponents(ValueAtIndex, dictionary);
+        if ([dictionary count])
         {
           v32 = [NSTransitInformationCheckingResult alloc];
 LABEL_54:
-          v33 = [(NSAddressCheckingResult *)v32 initWithRange:v23 components:v25 underlyingResult:v31, ValueAtIndex];
+          valueAtIndex = [(NSAddressCheckingResult *)v32 initWithRange:v23 components:v25 underlyingResult:dictionary, ValueAtIndex];
           goto LABEL_97;
         }
 
         goto LABEL_65;
       }
 
-      if ((v62 & 0x800) != 0 && [@"PhoneNumber" isEqualToString:v30])
+      if ((checkingTypes & 0x800) != 0 && [@"PhoneNumber" isEqualToString:v30])
       {
         v81[0] = 0;
         if (off_1ED4400D8 && off_1ED4400D8(ValueAtIndex, v81, 0) && v81[0] || (v34 = off_1ED4400B0(ValueAtIndex), (v81[0] = v34) != 0) && (CFRetain(v34), v81[0]))
@@ -473,12 +473,12 @@ LABEL_54:
           if (TypeID == CFGetTypeID(v81[0]))
           {
             v36 = [NSPhoneNumberCheckingResult alloc];
-            v33 = [(NSPhoneNumberCheckingResult *)v36 initWithRange:v23 phoneNumber:v25 underlyingResult:v81[0], ValueAtIndex];
+            valueAtIndex = [(NSPhoneNumberCheckingResult *)v36 initWithRange:v23 phoneNumber:v25 underlyingResult:v81[0], ValueAtIndex];
           }
 
           else
           {
-            v33 = 0;
+            valueAtIndex = 0;
           }
 
           v44 = v81[0];
@@ -498,19 +498,19 @@ LABEL_97:
         }
       }
 
-      else if ((v62 & 8) != 0 && (([@"Date" isEqualToString:v30] & 1) != 0 || (objc_msgSend(@"Time", "isEqualToString:", v30) & 1) != 0 || (objc_msgSend(@"DateTime", "isEqualToString:", v30) & 1) != 0 || (objc_msgSend(@"DateDuration", "isEqualToString:", v30) & 1) != 0 || (objc_msgSend(@"TimeDuration", "isEqualToString:", v30) & 1) != 0 || objc_msgSend(@"Timestamp", "isEqualToString:", v30)))
+      else if ((checkingTypes & 8) != 0 && (([@"Date" isEqualToString:v30] & 1) != 0 || (objc_msgSend(@"Time", "isEqualToString:", v30) & 1) != 0 || (objc_msgSend(@"DateTime", "isEqualToString:", v30) & 1) != 0 || (objc_msgSend(@"DateDuration", "isEqualToString:", v30) & 1) != 0 || (objc_msgSend(@"TimeDuration", "isEqualToString:", v30) & 1) != 0 || objc_msgSend(@"Timestamp", "isEqualToString:", v30)))
       {
         v80 = 0;
         v81[0] = 0;
         v78 = 0;
         v79 = 0;
-        v53 = [MEMORY[0x1E695DF00] date];
-        v37 = [MEMORY[0x1E695DFE8] defaultTimeZone];
+        date = [MEMORY[0x1E695DF00] date];
+        defaultTimeZone = [MEMORY[0x1E695DFE8] defaultTimeZone];
         v77 = 0;
         [v30 rangeOfString:@"Duration"];
-        if (!v38 || !off_1ED4400D0(ValueAtIndex, v81, &v79, &v80, &v78, &v77, v53, v37))
+        if (!v38 || !off_1ED4400D0(ValueAtIndex, v81, &v79, &v80, &v78, &v77, date, defaultTimeZone))
         {
-          off_1ED4400C8(ValueAtIndex, v53, v37, &v77, v81, &v79);
+          off_1ED4400C8(ValueAtIndex, date, defaultTimeZone, &v77, v81, &v79);
         }
 
         v39 = v81[0];
@@ -536,7 +536,7 @@ LABEL_97:
           }
 
           LOWORD(v52) = v77 == 0;
-          v33 = [(NSDateCheckingResult *)v42 initWithRange:v23 date:v25 timeZone:v81[0] duration:v43 referenceDate:v53 underlyingResult:ValueAtIndex timeIsSignificant:v40 timeIsApproximate:v52];
+          valueAtIndex = [(NSDateCheckingResult *)v42 initWithRange:v23 date:v25 timeZone:v81[0] duration:v43 referenceDate:date underlyingResult:ValueAtIndex timeIsSignificant:v40 timeIsApproximate:v52];
           if (v81[0])
           {
             CFRelease(v81[0]);
@@ -545,7 +545,7 @@ LABEL_97:
 
         else
         {
-          v33 = 0;
+          valueAtIndex = 0;
         }
 
         if (v79)
@@ -568,7 +568,7 @@ LABEL_97:
       }
 
 LABEL_65:
-      v33 = 0;
+      valueAtIndex = 0;
       goto LABEL_97;
     }
 
@@ -605,7 +605,7 @@ LABEL_115:
       v49 = v48;
     }
 
-    v59[2](v59, 0, v49, &v76);
+    blockCopy[2](blockCopy, 0, v49, &v76);
   }
 
   if (internal)

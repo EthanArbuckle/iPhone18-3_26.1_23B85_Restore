@@ -1,15 +1,15 @@
 @interface LinkableFooterView
-- (_TtC18ASMessagesProviderP33_325AD3F8116EAD3DD531EDE1E760761818LinkableFooterView)initWithCoder:(id)a3;
-- (_TtC18ASMessagesProviderP33_325AD3F8116EAD3DD531EDE1E760761818LinkableFooterView)initWithReuseIdentifier:(id)a3;
+- (_TtC18ASMessagesProviderP33_325AD3F8116EAD3DD531EDE1E760761818LinkableFooterView)initWithCoder:(id)coder;
+- (_TtC18ASMessagesProviderP33_325AD3F8116EAD3DD531EDE1E760761818LinkableFooterView)initWithReuseIdentifier:(id)identifier;
 - (void)layoutSubviews;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation LinkableFooterView
 
-- (_TtC18ASMessagesProviderP33_325AD3F8116EAD3DD531EDE1E760761818LinkableFooterView)initWithReuseIdentifier:(id)a3
+- (_TtC18ASMessagesProviderP33_325AD3F8116EAD3DD531EDE1E760761818LinkableFooterView)initWithReuseIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v3 = sub_769240();
   }
@@ -23,7 +23,7 @@
   return sub_3ED878(v3, v4);
 }
 
-- (_TtC18ASMessagesProviderP33_325AD3F8116EAD3DD531EDE1E760761818LinkableFooterView)initWithCoder:(id)a3
+- (_TtC18ASMessagesProviderP33_325AD3F8116EAD3DD531EDE1E760761818LinkableFooterView)initWithCoder:(id)coder
 {
   v4 = sub_7666D0();
   v5 = *(v4 - 8);
@@ -46,15 +46,15 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_3EDD00();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_3EDF98(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_3EDF98(change);
 }
 
 @end

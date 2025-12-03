@@ -1,15 +1,15 @@
 @interface ULMapPoint
-- (BOOL)isEqual:(id)a3;
-- (ULMapPoint)initWithCoder:(id)a3;
-- (ULMapPoint)initWithX:(float)a3 Y:(float)a4 Z:(float)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (ULMapPoint)initWithCoder:(id)coder;
+- (ULMapPoint)initWithX:(float)x Y:(float)y Z:(float)z;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ULMapPoint
 
-- (ULMapPoint)initWithX:(float)a3 Y:(float)a4 Z:(float)a5
+- (ULMapPoint)initWithX:(float)x Y:(float)y Z:(float)z
 {
   v14.receiver = self;
   v14.super_class = ULMapPoint;
@@ -17,20 +17,20 @@
   v10 = v8;
   if (v8)
   {
-    *&v9 = a3;
+    *&v9 = x;
     [(ULMapPoint *)v8 setX:v9];
-    *&v11 = a4;
+    *&v11 = y;
     [(ULMapPoint *)v10 setY:v11];
-    *&v12 = a5;
+    *&v12 = z;
     [(ULMapPoint *)v10 setZ:v12];
   }
 
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   [(ULMapPoint *)self x];
   v6 = v5;
   [(ULMapPoint *)self y];
@@ -43,33 +43,33 @@
   return [v4 initWithX:v10 Y:v11 Z:v9];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x277CCABB0];
   x = self->_x;
-  v6 = a3;
+  coderCopy = coder;
   *&v7 = x;
   v8 = [v4 numberWithFloat:v7];
-  [v6 encodeObject:v8 forKey:@"x"];
+  [coderCopy encodeObject:v8 forKey:@"x"];
 
   *&v9 = self->_y;
   v10 = [MEMORY[0x277CCABB0] numberWithFloat:v9];
-  [v6 encodeObject:v10 forKey:@"y"];
+  [coderCopy encodeObject:v10 forKey:@"y"];
 
   *&v11 = self->_z;
   v12 = [MEMORY[0x277CCABB0] numberWithFloat:v11];
-  [v6 encodeObject:v12 forKey:@"z"];
+  [coderCopy encodeObject:v12 forKey:@"z"];
 }
 
-- (ULMapPoint)initWithCoder:(id)a3
+- (ULMapPoint)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = ULMapPoint;
   v5 = [(ULMapPoint *)&v17 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"x"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"x"];
     v7 = v6;
     if (v6)
     {
@@ -77,7 +77,7 @@
       v9 = v8;
 
       v5->_x = v9;
-      v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"y"];
+      v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"y"];
       v7 = v10;
       if (v10)
       {
@@ -85,7 +85,7 @@
         v12 = v11;
 
         v5->_y = v12;
-        v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"z"];
+        v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"z"];
         v7 = v13;
         if (v13)
         {
@@ -125,13 +125,13 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     [(ULMapPoint *)self x];
     v7 = v6;
     [v5 x];

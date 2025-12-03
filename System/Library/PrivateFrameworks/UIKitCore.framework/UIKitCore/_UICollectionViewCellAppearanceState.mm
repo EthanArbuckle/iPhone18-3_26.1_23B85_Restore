@@ -24,15 +24,15 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(_UICollectionViewCellAppearanceState *)self dragState];
-  if (v6 > 8)
+  dragState = [(_UICollectionViewCellAppearanceState *)self dragState];
+  if (dragState > 8)
   {
     v7 = @"<unknown>";
   }
 
   else
   {
-    v7 = off_1E7100408[v6];
+    v7 = off_1E7100408[dragState];
   }
 
   if (!self)

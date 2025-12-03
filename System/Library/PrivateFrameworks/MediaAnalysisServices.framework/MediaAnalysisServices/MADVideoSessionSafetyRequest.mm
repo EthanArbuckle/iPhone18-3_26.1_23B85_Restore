@@ -1,8 +1,8 @@
 @interface MADVideoSessionSafetyRequest
 - (MADVideoSessionSafetyRequest)init;
-- (MADVideoSessionSafetyRequest)initWithCoder:(id)a3;
+- (MADVideoSessionSafetyRequest)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MADVideoSessionSafetyRequest
@@ -20,37 +20,37 @@
   return result;
 }
 
-- (MADVideoSessionSafetyRequest)initWithCoder:(id)a3
+- (MADVideoSessionSafetyRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = MADVideoSessionSafetyRequest;
-  v5 = [(MADVideoSessionRequest *)&v7 initWithCoder:v4];
+  v5 = [(MADVideoSessionRequest *)&v7 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_enableDetectionTypeN = [v4 decodeBoolForKey:@"EnableDetectionTypeN"];
-    v5->_enableDetectionTypeGV = [v4 decodeBoolForKey:@"EnableDetectionTypeGV"];
+    v5->_enableDetectionTypeN = [coderCopy decodeBoolForKey:@"EnableDetectionTypeN"];
+    v5->_enableDetectionTypeGV = [coderCopy decodeBoolForKey:@"EnableDetectionTypeGV"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5.receiver = self;
   v5.super_class = MADVideoSessionSafetyRequest;
-  [(MADVideoSessionRequest *)&v5 encodeWithCoder:v4];
-  [v4 encodeBool:self->_enableDetectionTypeN forKey:@"EnableDetectionTypeN"];
-  [v4 encodeBool:self->_enableDetectionTypeGV forKey:@"EnableDetectionTypeGV"];
+  [(MADVideoSessionRequest *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeBool:self->_enableDetectionTypeN forKey:@"EnableDetectionTypeN"];
+  [coderCopy encodeBool:self->_enableDetectionTypeGV forKey:@"EnableDetectionTypeGV"];
 }
 
 - (id)description
 {
-  v3 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  [v3 appendFormat:@"<%@ %p, ", v5, self];
+  [string appendFormat:@"<%@ %p, ", v5, self];
 
   if (self->_enableDetectionTypeN)
   {
@@ -62,7 +62,7 @@
     v6 = @"NO";
   }
 
-  [v3 appendFormat:@"EnableDetectionTypeN: %@, ", v6];
+  [string appendFormat:@"EnableDetectionTypeN: %@, ", v6];
   if (self->_enableDetectionTypeGV)
   {
     v7 = @"YES";
@@ -73,11 +73,11 @@
     v7 = @"NO";
   }
 
-  [v3 appendFormat:@"EnableDetectionTypeGV: %@, ", v7];
-  v8 = [(MADVideoSessionRequest *)self requestID];
-  [v3 appendFormat:@"RequestID: %@>", v8];
+  [string appendFormat:@"EnableDetectionTypeGV: %@, ", v7];
+  requestID = [(MADVideoSessionRequest *)self requestID];
+  [string appendFormat:@"RequestID: %@>", requestID];
 
-  return v3;
+  return string;
 }
 
 @end

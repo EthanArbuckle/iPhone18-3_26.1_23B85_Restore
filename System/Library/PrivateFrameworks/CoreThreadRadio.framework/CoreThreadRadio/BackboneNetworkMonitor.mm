@@ -13,23 +13,23 @@
   v4 = nw_path_monitor_create();
   [(BackboneNetworkMonitor *)self setMonitor:v4];
 
-  v5 = [(BackboneNetworkMonitor *)self monitor];
-  nw_path_monitor_prohibit_interface_type(v5, nw_interface_type_other);
+  monitor = [(BackboneNetworkMonitor *)self monitor];
+  nw_path_monitor_prohibit_interface_type(monitor, nw_interface_type_other);
 
-  v6 = [(BackboneNetworkMonitor *)self monitor];
-  v7 = [(BackboneNetworkMonitor *)self monitorQueue];
-  nw_path_monitor_set_queue(v6, v7);
+  monitor2 = [(BackboneNetworkMonitor *)self monitor];
+  monitorQueue = [(BackboneNetworkMonitor *)self monitorQueue];
+  nw_path_monitor_set_queue(monitor2, monitorQueue);
 
-  v8 = [(BackboneNetworkMonitor *)self monitor];
+  monitor3 = [(BackboneNetworkMonitor *)self monitor];
   update_handler[0] = _NSConcreteStackBlock;
   update_handler[1] = 3221225472;
   update_handler[2] = __48__BackboneNetworkMonitor_startNetworkMonitoring__block_invoke;
   update_handler[3] = &unk_1004C1658;
   update_handler[4] = self;
-  nw_path_monitor_set_update_handler(v8, update_handler);
+  nw_path_monitor_set_update_handler(monitor3, update_handler);
 
-  v9 = [(BackboneNetworkMonitor *)self monitor];
-  nw_path_monitor_start(v9);
+  monitor4 = [(BackboneNetworkMonitor *)self monitor];
+  nw_path_monitor_start(monitor4);
 
   objc_autoreleasePoolPop(v3);
 }
@@ -163,12 +163,12 @@ void __48__BackboneNetworkMonitor_startNetworkMonitoring__block_invoke(uint64_t 
 - (void)stopNetworkMonitoring
 {
   v3 = objc_autoreleasePoolPush();
-  v4 = [(BackboneNetworkMonitor *)self monitor];
+  monitor = [(BackboneNetworkMonitor *)self monitor];
 
-  if (v4)
+  if (monitor)
   {
-    v5 = [(BackboneNetworkMonitor *)self monitor];
-    nw_path_monitor_cancel(v5);
+    monitor2 = [(BackboneNetworkMonitor *)self monitor];
+    nw_path_monitor_cancel(monitor2);
   }
 
   [(BackboneNetworkMonitor *)self setMonitor:0];
@@ -178,16 +178,16 @@ void __48__BackboneNetworkMonitor_startNetworkMonitoring__block_invoke(uint64_t 
 
 - (const)getInterfaceName
 {
-  v2 = [(BackboneNetworkMonitor *)self interfaceName];
-  v3 = [v2 cStringUsingEncoding:4];
+  interfaceName = [(BackboneNetworkMonitor *)self interfaceName];
+  v3 = [interfaceName cStringUsingEncoding:4];
 
   return v3;
 }
 
 - (BOOL)isOdeonInterface
 {
-  v2 = [(BackboneNetworkMonitor *)self interfaceName];
-  v3 = [v2 cStringUsingEncoding:4];
+  interfaceName = [(BackboneNetworkMonitor *)self interfaceName];
+  v3 = [interfaceName cStringUsingEncoding:4];
 
   return v3 && strcmp(v3, "ir0") == 0;
 }

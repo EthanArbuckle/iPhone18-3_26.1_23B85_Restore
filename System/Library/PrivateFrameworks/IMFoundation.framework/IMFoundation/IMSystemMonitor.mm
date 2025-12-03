@@ -25,46 +25,46 @@
 - (NSDate)dateScreenLightLastChanged;
 - (NSDate)dateSystemLockLastChanged;
 - (double)systemIdleTime;
-- (void)_addEarlyListener:(id)a3;
+- (void)_addEarlyListener:(id)listener;
 - (void)_alreadyLocked_clearIdleTimer;
-- (void)_applicationDidBecomeActive:(id)a3;
-- (void)_applicationDidEnterBackground:(id)a3;
-- (void)_applicationDidRemoveDeactivationReason:(id)a3;
-- (void)_applicationWillAddDeactivationReason:(id)a3;
-- (void)_applicationWillEnterForeground:(id)a3;
-- (void)_applicationWillResignActive:(id)a3;
+- (void)_applicationDidBecomeActive:(id)active;
+- (void)_applicationDidEnterBackground:(id)background;
+- (void)_applicationDidRemoveDeactivationReason:(id)reason;
+- (void)_applicationWillAddDeactivationReason:(id)reason;
+- (void)_applicationWillEnterForeground:(id)foreground;
+- (void)_applicationWillResignActive:(id)active;
 - (void)_checkRestoredFromBackup;
 - (void)_clearIdleTimer;
-- (void)_deliverNotificationSelector:(SEL)a3;
-- (void)_overrideAndDisableIdleTimer:(BOOL)a3;
+- (void)_deliverNotificationSelector:(SEL)selector;
+- (void)_overrideAndDisableIdleTimer:(BOOL)timer;
 - (void)_postScreenLocked;
 - (void)_postScreenSaverStarted;
 - (void)_receivedMemoryNotification;
 - (void)_registerForRestoreNotifications;
 - (void)_registerForSetupNotifications;
-- (void)_removeEarlyListener:(id)a3;
+- (void)_removeEarlyListener:(id)listener;
 - (void)_restoreDidStart;
 - (void)_restoreDidStop;
-- (void)_screenLocked:(id)a3;
-- (void)_screenSaverStarted:(id)a3;
-- (void)_screenSaverStopped:(id)a3;
-- (void)_screenUnlocked:(id)a3;
-- (void)_setIdleState:(BOOL)a3;
-- (void)_setSystemLockState:(BOOL)a3;
-- (void)_setSystemScreenState:(BOOL)a3;
+- (void)_screenLocked:(id)locked;
+- (void)_screenSaverStarted:(id)started;
+- (void)_screenSaverStopped:(id)stopped;
+- (void)_screenUnlocked:(id)unlocked;
+- (void)_setIdleState:(BOOL)state;
+- (void)_setSystemLockState:(BOOL)state;
+- (void)_setSystemScreenState:(BOOL)state;
 - (void)_setupStateChanged;
 - (void)_systemDidWake;
 - (void)_systemWillSleep;
 - (void)_unregisterForRestoreNotifications;
-- (void)addListener:(id)a3;
+- (void)addListener:(id)listener;
 - (void)dealloc;
-- (void)removeListener:(id)a3;
-- (void)setActive:(BOOL)a3;
-- (void)setReceivesMemoryWarnings:(BOOL)a3;
-- (void)setUsesPowerNotifications:(BOOL)a3;
-- (void)setWatchesDataProtectionLockState:(BOOL)a3;
-- (void)setWatchesScreenLightState:(BOOL)a3;
-- (void)setWatchesSystemLockState:(BOOL)a3;
+- (void)removeListener:(id)listener;
+- (void)setActive:(BOOL)active;
+- (void)setReceivesMemoryWarnings:(BOOL)warnings;
+- (void)setUsesPowerNotifications:(BOOL)notifications;
+- (void)setWatchesDataProtectionLockState:(BOOL)state;
+- (void)setWatchesScreenLightState:(BOOL)state;
+- (void)setWatchesSystemLockState:(BOOL)state;
 @end
 
 @implementation IMSystemMonitor
@@ -482,11 +482,11 @@ LABEL_6:
   [(IMSystemMonitor *)&v12 dealloc];
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
-  v3 = a3;
+  activeCopy = active;
   os_unfair_lock_lock(&self->_ivarLock);
-  if (v3)
+  if (activeCopy)
   {
     self->_active = 1;
   }
@@ -494,10 +494,10 @@ LABEL_6:
   os_unfair_lock_unlock(&self->_ivarLock);
 }
 
-- (void)_deliverNotificationSelector:(SEL)a3
+- (void)_deliverNotificationSelector:(SEL)selector
 {
   v33 = *MEMORY[0x1E69E9840];
-  if (objc_msgSend_isActive(self, a2, a3))
+  if (objc_msgSend_isActive(self, a2, selector))
   {
     os_unfair_lock_lock(&self->_ivarLock);
     v7 = objc_msgSend_allObjects(self->_earlyListeners, v5, v6);
@@ -525,7 +525,7 @@ LABEL_6:
           v14 = *(*(&v28 + 1) + 8 * v13);
           if (objc_opt_respondsToSelector())
           {
-            objc_msgSend_performSelector_withObject_(v14, v15, a3, 0);
+            objc_msgSend_performSelector_withObject_(v14, v15, selector, 0);
           }
 
           ++v13;
@@ -564,7 +564,7 @@ LABEL_6:
           v25 = *(*(&v28 + 1) + 8 * v24);
           if (objc_opt_respondsToSelector())
           {
-            objc_msgSend_performSelector_withObject_(v25, v26, a3, 0);
+            objc_msgSend_performSelector_withObject_(v25, v26, selector, 0);
           }
 
           ++v24;
@@ -609,9 +609,9 @@ LABEL_6:
   }
 }
 
-- (void)_screenLocked:(id)a3
+- (void)_screenLocked:(id)locked
 {
-  objc_msgSend_cancelPendingExecutions(self->__postScreenLockedTask, a2, a3);
+  objc_msgSend_cancelPendingExecutions(self->__postScreenLockedTask, a2, locked);
   os_unfair_lock_lock(&self->_ivarLock);
   screenLocked = self->_screenLocked;
   os_unfair_lock_unlock(&self->_ivarLock);
@@ -623,9 +623,9 @@ LABEL_6:
   }
 }
 
-- (void)_screenUnlocked:(id)a3
+- (void)_screenUnlocked:(id)unlocked
 {
-  objc_msgSend_cancelPendingExecutions(self->__postScreenLockedTask, a2, a3);
+  objc_msgSend_cancelPendingExecutions(self->__postScreenLockedTask, a2, unlocked);
   os_unfair_lock_lock(&self->_ivarLock);
   if (self->_screenLocked)
   {
@@ -655,7 +655,7 @@ LABEL_6:
   return isSystemLocked;
 }
 
-- (void)_applicationWillResignActive:(id)a3
+- (void)_applicationWillResignActive:(id)active
 {
   os_unfair_lock_lock(&self->_ivarLock);
   resignActiveCount = self->_resignActiveCount;
@@ -668,7 +668,7 @@ LABEL_6:
   }
 }
 
-- (void)_applicationDidBecomeActive:(id)a3
+- (void)_applicationDidBecomeActive:(id)active
 {
   os_unfair_lock_lock(&self->_ivarLock);
   resignActiveCount = self->_resignActiveCount;
@@ -710,9 +710,9 @@ LABEL_6:
   }
 }
 
-- (void)_screenSaverStopped:(id)a3
+- (void)_screenSaverStopped:(id)stopped
 {
-  objc_msgSend_cancelPendingExecutions(self->__postScreenSaverStartedTask, a2, a3);
+  objc_msgSend_cancelPendingExecutions(self->__postScreenSaverStartedTask, a2, stopped);
   os_unfair_lock_lock(&self->_ivarLock);
   if (self->_screensaverActive)
   {
@@ -729,9 +729,9 @@ LABEL_6:
   }
 }
 
-- (void)_screenSaverStarted:(id)a3
+- (void)_screenSaverStarted:(id)started
 {
-  objc_msgSend_cancelPendingExecutions(self->__postScreenSaverStartedTask, a2, a3);
+  objc_msgSend_cancelPendingExecutions(self->__postScreenSaverStartedTask, a2, started);
   os_unfair_lock_lock(&self->_ivarLock);
   screensaverActive = self->_screensaverActive;
   os_unfair_lock_unlock(&self->_ivarLock);
@@ -743,7 +743,7 @@ LABEL_6:
   }
 }
 
-- (void)_applicationWillEnterForeground:(id)a3
+- (void)_applicationWillEnterForeground:(id)foreground
 {
   os_unfair_lock_lock(&self->_ivarLock);
   self->_inBackground = 0;
@@ -756,7 +756,7 @@ LABEL_6:
   objc_msgSend__deliverNotificationSelector_(self, v6, sel_systemApplicationWillEnterForeground);
 }
 
-- (void)_applicationDidEnterBackground:(id)a3
+- (void)_applicationDidEnterBackground:(id)background
 {
   os_unfair_lock_lock(&self->_ivarLock);
   self->_inBackground = 1;
@@ -769,35 +769,35 @@ LABEL_6:
   objc_msgSend__deliverNotificationSelector_(self, v6, sel_systemApplicationDidEnterBackground);
 }
 
-- (void)_applicationWillAddDeactivationReason:(id)a3
+- (void)_applicationWillAddDeactivationReason:(id)reason
 {
-  v12 = a3;
-  v6 = objc_msgSend_userInfo(v12, v4, v5);
+  reasonCopy = reason;
+  v6 = objc_msgSend_userInfo(reasonCopy, v4, v5);
   v8 = objc_msgSend_objectForKey_(v6, v7, qword_1ED5176B8);
 
   if (objc_msgSend_intValue(v8, v9, v10) == 1)
   {
-    objc_msgSend__notificationCenterWillAppear_(self, v11, v12);
+    objc_msgSend__notificationCenterWillAppear_(self, v11, reasonCopy);
   }
 }
 
-- (void)_applicationDidRemoveDeactivationReason:(id)a3
+- (void)_applicationDidRemoveDeactivationReason:(id)reason
 {
-  v12 = a3;
-  v6 = objc_msgSend_userInfo(v12, v4, v5);
+  reasonCopy = reason;
+  v6 = objc_msgSend_userInfo(reasonCopy, v4, v5);
   v8 = objc_msgSend_objectForKey_(v6, v7, qword_1ED5176B8);
 
   if (objc_msgSend_intValue(v8, v9, v10) == 1)
   {
-    objc_msgSend__notificationCenterDidDisappear_(self, v11, v12);
+    objc_msgSend__notificationCenterDidDisappear_(self, v11, reasonCopy);
   }
 }
 
-- (void)setWatchesDataProtectionLockState:(BOOL)a3
+- (void)setWatchesDataProtectionLockState:(BOOL)state
 {
-  v3 = a3;
+  stateCopy = state;
   os_unfair_lock_lock(&self->_ivarLock);
-  if (v3 && !self->_watchesDataProtectionLockState)
+  if (stateCopy && !self->_watchesDataProtectionLockState)
   {
     self->_watchesDataProtectionLockState = 1;
     os_unfair_lock_unlock(&self->_ivarLock);
@@ -827,11 +827,11 @@ LABEL_6:
   os_unfair_lock_unlock(&self->_ivarLock);
 }
 
-- (void)setWatchesSystemLockState:(BOOL)a3
+- (void)setWatchesSystemLockState:(BOOL)state
 {
-  v3 = a3;
+  stateCopy = state;
   os_unfair_lock_lock(&self->_ivarLock);
-  if (v3 && !self->_watchesSystemLockState)
+  if (stateCopy && !self->_watchesSystemLockState)
   {
     self->_watchesSystemLockState = 1;
     os_unfair_lock_unlock(&self->_ivarLock);
@@ -860,11 +860,11 @@ LABEL_6:
   os_unfair_lock_unlock(p_ivarLock);
 }
 
-- (void)setWatchesScreenLightState:(BOOL)a3
+- (void)setWatchesScreenLightState:(BOOL)state
 {
-  v3 = a3;
+  stateCopy = state;
   os_unfair_lock_lock(&self->_ivarLock);
-  if (v3 && !self->_watchesScreenLightState)
+  if (stateCopy && !self->_watchesScreenLightState)
   {
     self->_watchesScreenLightState = 1;
     os_unfair_lock_unlock(&self->_ivarLock);
@@ -893,11 +893,11 @@ LABEL_6:
   os_unfair_lock_unlock(p_ivarLock);
 }
 
-- (void)setUsesPowerNotifications:(BOOL)a3
+- (void)setUsesPowerNotifications:(BOOL)notifications
 {
-  v3 = a3;
+  notificationsCopy = notifications;
   os_unfair_lock_lock(&self->_ivarLock);
-  if (v3 && !self->_usesPowerNotifications)
+  if (notificationsCopy && !self->_usesPowerNotifications)
   {
     self->_usesPowerNotifications = 1;
     os_unfair_lock_unlock(&self->_ivarLock);
@@ -912,11 +912,11 @@ LABEL_6:
   }
 }
 
-- (void)_setSystemScreenState:(BOOL)a3
+- (void)_setSystemScreenState:(BOOL)state
 {
-  v3 = a3;
+  stateCopy = state;
   os_unfair_lock_lock(&self->_ivarLock);
-  if (self->_screenLit == v3)
+  if (self->_screenLit == stateCopy)
   {
 
     os_unfair_lock_unlock(&self->_ivarLock);
@@ -924,13 +924,13 @@ LABEL_6:
 
   else
   {
-    self->_screenLit = v3;
+    self->_screenLit = stateCopy;
     v5 = objc_alloc_init(MEMORY[0x1E695DF00]);
     dateScreenLightLastChanged = self->_dateScreenLightLastChanged;
     self->_dateScreenLightLastChanged = v5;
 
     os_unfair_lock_unlock(&self->_ivarLock);
-    if (v3)
+    if (stateCopy)
     {
       v8 = sel_systemScreenDidPowerUp;
     }
@@ -944,11 +944,11 @@ LABEL_6:
   }
 }
 
-- (void)_setSystemLockState:(BOOL)a3
+- (void)_setSystemLockState:(BOOL)state
 {
-  v3 = a3;
+  stateCopy = state;
   os_unfair_lock_lock(&self->_ivarLock);
-  if (self->_systemLocked == v3)
+  if (self->_systemLocked == stateCopy)
   {
 
     os_unfair_lock_unlock(&self->_ivarLock);
@@ -956,13 +956,13 @@ LABEL_6:
 
   else
   {
-    self->_systemLocked = v3;
+    self->_systemLocked = stateCopy;
     v5 = objc_alloc_init(MEMORY[0x1E695DF00]);
     dateSystemLockLastChanged = self->_dateSystemLockLastChanged;
     self->_dateSystemLockLastChanged = v5;
 
     os_unfair_lock_unlock(&self->_ivarLock);
-    if (v3)
+    if (stateCopy)
     {
       v8 = sel_systemDidLock;
     }
@@ -976,11 +976,11 @@ LABEL_6:
   }
 }
 
-- (void)_setIdleState:(BOOL)a3
+- (void)_setIdleState:(BOOL)state
 {
-  v3 = a3;
+  stateCopy = state;
   os_unfair_lock_lock(&self->_ivarLock);
-  if (((self->_idleStart == 0) ^ v3))
+  if (((self->_idleStart == 0) ^ stateCopy))
   {
     goto LABEL_5;
   }
@@ -989,7 +989,7 @@ LABEL_6:
   idleStart = self->_idleStart;
   self->_idleStart = 0;
 
-  if (v3)
+  if (stateCopy)
   {
     v10 = objc_alloc(MEMORY[0x1E695DF00]);
     v13 = objc_msgSend_initWithTimeIntervalSinceNow_(v10, v11, v12, -self->_delayTime);
@@ -1022,11 +1022,11 @@ LABEL_5:
   }
 }
 
-- (void)_overrideAndDisableIdleTimer:(BOOL)a3
+- (void)_overrideAndDisableIdleTimer:(BOOL)timer
 {
-  v3 = a3;
+  timerCopy = timer;
   os_unfair_lock_lock(&self->_ivarLock);
-  if (self->_idleOverride == v3)
+  if (self->_idleOverride == timerCopy)
   {
 
     os_unfair_lock_unlock(&self->_ivarLock);
@@ -1035,11 +1035,11 @@ LABEL_5:
   else
   {
     idleStart = self->_idleStart;
-    self->_idleOverride = v3;
+    self->_idleOverride = timerCopy;
     os_unfair_lock_unlock(&self->_ivarLock);
-    if (v3 || !idleStart)
+    if (timerCopy || !idleStart)
     {
-      if (!v3 || !idleStart)
+      if (!timerCopy || !idleStart)
       {
         return;
       }
@@ -1103,13 +1103,13 @@ LABEL_5:
   return v6;
 }
 
-- (void)_addEarlyListener:(id)a3
+- (void)_addEarlyListener:(id)listener
 {
-  v9 = a3;
+  listenerCopy = listener;
   os_unfair_lock_lock(&self->_ivarLock);
-  if ((objc_msgSend_containsObject_(self->_earlyListeners, v4, v9) & 1) == 0)
+  if ((objc_msgSend_containsObject_(self->_earlyListeners, v4, listenerCopy) & 1) == 0)
   {
-    objc_msgSend_addObject_(self->_earlyListeners, v5, v9);
+    objc_msgSend_addObject_(self->_earlyListeners, v5, listenerCopy);
   }
 
   if (self->_listeningForSetupAssistantNotifications)
@@ -1128,22 +1128,22 @@ LABEL_5:
   }
 }
 
-- (void)_removeEarlyListener:(id)a3
+- (void)_removeEarlyListener:(id)listener
 {
-  v4 = a3;
+  listenerCopy = listener;
   os_unfair_lock_lock(&self->_ivarLock);
-  objc_msgSend_removeObject_(self->_earlyListeners, v5, v4);
+  objc_msgSend_removeObject_(self->_earlyListeners, v5, listenerCopy);
 
   os_unfair_lock_unlock(&self->_ivarLock);
 }
 
-- (void)addListener:(id)a3
+- (void)addListener:(id)listener
 {
-  v9 = a3;
+  listenerCopy = listener;
   os_unfair_lock_lock(&self->_ivarLock);
-  if ((objc_msgSend_containsObject_(self->_listeners, v4, v9) & 1) == 0)
+  if ((objc_msgSend_containsObject_(self->_listeners, v4, listenerCopy) & 1) == 0)
   {
-    objc_msgSend_addObject_(self->_listeners, v5, v9);
+    objc_msgSend_addObject_(self->_listeners, v5, listenerCopy);
   }
 
   if (self->_listeningForSetupAssistantNotifications)
@@ -1162,11 +1162,11 @@ LABEL_5:
   }
 }
 
-- (void)removeListener:(id)a3
+- (void)removeListener:(id)listener
 {
-  v4 = a3;
+  listenerCopy = listener;
   os_unfair_lock_lock(&self->_ivarLock);
-  objc_msgSend_removeObject_(self->_listeners, v5, v4);
+  objc_msgSend_removeObject_(self->_listeners, v5, listenerCopy);
 
   os_unfair_lock_unlock(&self->_ivarLock);
 }
@@ -1239,9 +1239,9 @@ LABEL_5:
   objc_msgSend__deliverNotificationSelector_(self, v4, sel_systemDidEnterMemoryPressure);
 }
 
-- (void)setReceivesMemoryWarnings:(BOOL)a3
+- (void)setReceivesMemoryWarnings:(BOOL)warnings
 {
-  if (a3)
+  if (warnings)
   {
     os_unfair_lock_lock(&unk_1ED517458);
     if (!qword_1EAED9050)

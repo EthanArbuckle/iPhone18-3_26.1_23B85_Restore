@@ -1,43 +1,43 @@
 @interface HAP2CoAPClient
 - (BOOL)connected;
-- (HAP2CoAPClient)initWithSocketAddress:(const sockaddr *)a3 withAccessoryName:(id)a4 maxTransmitAttempts:(unint64_t)a5 initialACKTimeout:(double)a6;
+- (HAP2CoAPClient)initWithSocketAddress:(const sockaddr *)address withAccessoryName:(id)name maxTransmitAttempts:(unint64_t)attempts initialACKTimeout:(double)timeout;
 - (HAP2CoAPClientDelegate)delegate;
-- (char)_initWithIPAddress:(unsigned int)a3 port:(uint64_t)a4 maxTransmitAttempts:(void *)a5 initialACKTimeout:(double)a6 workQueue:;
-- (char)initWithSocketAddress:(void *)a3 withAccessoryName:(void *)a4 workQueue:(uint64_t)a5 maxTransmitAttempts:(double)a6 initialACKTimeout:;
-- (coap_session_t)shouldOpenSessionWithContext:(coap_context_t *)a3;
+- (char)_initWithIPAddress:(unsigned int)address port:(uint64_t)port maxTransmitAttempts:(void *)attempts initialACKTimeout:(double)timeout workQueue:;
+- (char)initWithSocketAddress:(void *)address withAccessoryName:(void *)name workQueue:(uint64_t)queue maxTransmitAttempts:(double)attempts initialACKTimeout:;
+- (coap_session_t)shouldOpenSessionWithContext:(coap_context_t *)context;
 - (double)initialACKTimeout;
 - (id)openCompletion;
 - (id)responseCompletionsByToken;
 - (uint64_t)_queueSessionCompletion;
 - (unint64_t)maxTransmitAttempts;
-- (void)_callResponseCompletion:(void *)a3 response:(void *)a4 error:;
-- (void)_didOpenWithError:(uint64_t)a1;
-- (void)_ioThreadDidReceivePongInSession:(uint64_t)a1 messageID:(uint64_t)a2;
-- (void)_ioThreadRequestFailed:(uint64_t)a1;
-- (void)_queueSessionBlock:(uint64_t)a3 withTimeout:(double)a4 requiresCompletion:;
-- (void)alterMaxTransmitAttempts:(unint64_t)a3 initialACKTimeout:(double)a4;
-- (void)closeWithError:(id)a3 completion:(id)a4;
+- (void)_callResponseCompletion:(void *)completion response:(void *)response error:;
+- (void)_didOpenWithError:(uint64_t)error;
+- (void)_ioThreadDidReceivePongInSession:(uint64_t)session messageID:(uint64_t)d;
+- (void)_ioThreadRequestFailed:(uint64_t)failed;
+- (void)_queueSessionBlock:(uint64_t)block withTimeout:(double)timeout requiresCompletion:;
+- (void)alterMaxTransmitAttempts:(unint64_t)attempts initialACKTimeout:(double)timeout;
+- (void)closeWithError:(id)error completion:(id)completion;
 - (void)didCloseSession;
-- (void)didFailToSendMessageInSession:(coap_session_t *)a3 messageID:(unint64_t)a4 message:(coap_pdu_t *)a5 reason:(unint64_t)a6;
-- (void)didReceiveRequestInSession:(coap_session_t *)a3 messageID:(unint64_t)a4 request:(coap_pdu_t *)a5 response:(coap_pdu_t *)a6;
-- (void)didReceiveResponseInSession:(coap_session_t *)a3 messageID:(unint64_t)a4 response:(coap_pdu_t *)a5;
+- (void)didFailToSendMessageInSession:(coap_session_t *)session messageID:(unint64_t)d message:(coap_pdu_t *)message reason:(unint64_t)reason;
+- (void)didReceiveRequestInSession:(coap_session_t *)session messageID:(unint64_t)d request:(coap_pdu_t *)request response:(coap_pdu_t *)response;
+- (void)didReceiveResponseInSession:(coap_session_t *)session messageID:(unint64_t)d response:(coap_pdu_t *)response;
 - (void)didRegister;
 - (void)didUnregister;
-- (void)openWithCompletion:(id)a3;
-- (void)sendRequestWithMethod:(unsigned __int8)a3 path:(id)a4 payload:(id)a5 dscpPriority:(int64_t)a6 completion:(id)a7;
-- (void)setCloseCompletion:(uint64_t)a1;
-- (void)setConnected:(BOOL)a3;
-- (void)setDelegate:(id)a3;
-- (void)setInitialACKTimeout:(double)a3;
-- (void)setMaxTransmitAttempts:(unint64_t)a3;
-- (void)setOpenCompletion:(uint64_t)a1;
+- (void)openWithCompletion:(id)completion;
+- (void)sendRequestWithMethod:(unsigned __int8)method path:(id)path payload:(id)payload dscpPriority:(int64_t)priority completion:(id)completion;
+- (void)setCloseCompletion:(uint64_t)completion;
+- (void)setConnected:(BOOL)connected;
+- (void)setDelegate:(id)delegate;
+- (void)setInitialACKTimeout:(double)timeout;
+- (void)setMaxTransmitAttempts:(unint64_t)attempts;
+- (void)setOpenCompletion:(uint64_t)completion;
 @end
 
 @implementation HAP2CoAPClient
 
 - (void)didUnregister
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     self = self->_workQueue;
@@ -47,11 +47,11 @@
   block[1] = 3221225472;
   block[2] = __31__HAP2CoAPClient_didUnregister__block_invoke;
   block[3] = &unk_2786D6CA0;
-  block[4] = v2;
+  block[4] = selfCopy;
   dispatch_async(&self->super.super, block);
-  if (v2)
+  if (selfCopy)
   {
-    objc_storeWeak(&v2->_ioThread, 0);
+    objc_storeWeak(&selfCopy->_ioThread, 0);
   }
 }
 
@@ -66,11 +66,11 @@ void __31__HAP2CoAPClient_didUnregister__block_invoke(uint64_t a1)
 
 - (void)didRegister
 {
-  v3 = [MEMORY[0x277CCACC8] currentThread];
-  v4 = v3;
+  currentThread = [MEMORY[0x277CCACC8] currentThread];
+  v4 = currentThread;
   if (self)
   {
-    objc_storeWeak(&self->_ioThread, v3);
+    objc_storeWeak(&self->_ioThread, currentThread);
 
     workQueue = self->_workQueue;
   }
@@ -98,10 +98,10 @@ void __29__HAP2CoAPClient_didRegister__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_ioThreadDidReceivePongInSession:(uint64_t)a1 messageID:(uint64_t)a2
+- (void)_ioThreadDidReceivePongInSession:(uint64_t)session messageID:(uint64_t)d
 {
   v7 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (session)
   {
     if (hap2LogInitialize_onceToken != -1)
     {
@@ -112,7 +112,7 @@ void __29__HAP2CoAPClient_didRegister__block_invoke(uint64_t a1)
     if (os_log_type_enabled(hap2Log_coap, OS_LOG_TYPE_DEBUG))
     {
       v5 = 134217984;
-      v6 = a2;
+      dCopy = d;
       _os_log_debug_impl(&dword_22AADC000, v3, OS_LOG_TYPE_DEBUG, "<Pong id=%lu> received", &v5, 0xCu);
     }
   }
@@ -120,7 +120,7 @@ void __29__HAP2CoAPClient_didRegister__block_invoke(uint64_t a1)
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didFailToSendMessageInSession:(coap_session_t *)a3 messageID:(unint64_t)a4 message:(coap_pdu_t *)a5 reason:(unint64_t)a6
+- (void)didFailToSendMessageInSession:(coap_session_t *)session messageID:(unint64_t)d message:(coap_pdu_t *)message reason:(unint64_t)reason
 {
   v27 = *MEMORY[0x277D85DE8];
   if (!self)
@@ -128,15 +128,15 @@ void __29__HAP2CoAPClient_didRegister__block_invoke(uint64_t a1)
     goto LABEL_28;
   }
 
-  if (!*&a5->var0 && !a5->var4 && a6 == 2 && !a5->var11)
+  if (!*&message->var0 && !message->var4 && reason == 2 && !message->var11)
   {
-    [HAP2CoAPClient _ioThreadDidReceivePongInSession:a5->var5 messageID:?];
+    [HAP2CoAPClient _ioThreadDidReceivePongInSession:message->var5 messageID:?];
     workQueue = self->_workQueue;
     *block = MEMORY[0x277D85DD0];
     *&block[8] = 3221225472;
     *&block[16] = __72__HAP2CoAPClient__ioThreadDidFailToSendMessageInSession_message_reason___block_invoke;
     v23 = &unk_2786D6CA0;
-    v24 = self;
+    selfCopy2 = self;
     dispatch_async(workQueue, block);
     goto LABEL_28;
   }
@@ -150,15 +150,15 @@ void __29__HAP2CoAPClient_didRegister__block_invoke(uint64_t a1)
   if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
   {
     v18 = self->_accessoryName;
-    v19 = _stringForMessage(a5, 0);
-    if (a6 >= 5)
+    v19 = _stringForMessage(message, 0);
+    if (reason >= 5)
     {
-      v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"Unknown (%lu)", a6];
+      reason = [MEMORY[0x277CCACA8] stringWithFormat:@"Unknown (%lu)", reason];
     }
 
     else
     {
-      v20 = off_2786D4E90[a6];
+      reason = off_2786D4E90[reason];
     }
 
     *block = 138478339;
@@ -166,13 +166,13 @@ void __29__HAP2CoAPClient_didRegister__block_invoke(uint64_t a1)
     *&block[12] = 2112;
     *&block[14] = v19;
     *&block[22] = 2112;
-    v23 = v20;
+    v23 = reason;
     _os_log_error_impl(&dword_22AADC000, v9, OS_LOG_TYPE_ERROR, "[%{private}@] %@ failed to send with reason: %@", block, 0x20u);
   }
 
-  if (a6 > 2)
+  if (reason > 2)
   {
-    if (a6 - 3 >= 2)
+    if (reason - 3 >= 2)
     {
       goto LABEL_19;
     }
@@ -182,7 +182,7 @@ void __29__HAP2CoAPClient_didRegister__block_invoke(uint64_t a1)
     goto LABEL_16;
   }
 
-  if (!a6)
+  if (!reason)
   {
     v11 = MEMORY[0x277CCA9B8];
     v12 = 24;
@@ -203,7 +203,7 @@ LABEL_19:
     if (os_log_type_enabled(hap2Log_coap, OS_LOG_TYPE_ERROR))
     {
       *block = 134217984;
-      *&block[4] = a6;
+      *&block[4] = reason;
       _os_log_error_impl(&dword_22AADC000, v13, OS_LOG_TYPE_ERROR, "Unhandled failure reason: %lu", block, 0xCu);
     }
 
@@ -211,7 +211,7 @@ LABEL_19:
     goto LABEL_24;
   }
 
-  if (a6 == 1)
+  if (reason == 1)
   {
     v10 = [MEMORY[0x277CCA9B8] hapErrorWithCode:19 description:@"HAP2 CoAP failed due to HAP2CoAPIOConsumerFailureReasonNotDeliverable" reason:@"HAP2 CoAP failed due to HAP2CoAPIOConsumerFailureReasonNotDeliverable" suggestion:0 underlyingError:0 marker:102];
     if (v10)
@@ -222,7 +222,7 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  if (a6 != 2)
+  if (reason != 2)
   {
     goto LABEL_19;
   }
@@ -234,9 +234,9 @@ LABEL_19:
   }
 
 LABEL_24:
-  if (a5->var4 == 4)
+  if (message->var4 == 4)
   {
-    v14 = *a5->var10;
+    v14 = *message->var10;
   }
 
   else
@@ -250,7 +250,7 @@ LABEL_24:
   *&block[16] = __72__HAP2CoAPClient__ioThreadDidFailToSendMessageInSession_message_reason___block_invoke_77;
   v23 = &unk_2786D4E70;
   v26 = v14;
-  v24 = self;
+  selfCopy2 = self;
   v25 = v10;
   v16 = v10;
   dispatch_async(v15, block);
@@ -282,24 +282,24 @@ void __72__HAP2CoAPClient__ioThreadDidFailToSendMessageInSession_message_reason_
   return result;
 }
 
-- (void)_callResponseCompletion:(void *)a3 response:(void *)a4 error:
+- (void)_callResponseCompletion:(void *)completion response:(void *)response error:
 {
   v21 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (a1)
+  completionCopy = completion;
+  responseCopy = response;
+  if (self)
   {
-    dispatch_assert_queue_V2(*(a1 + 136));
+    dispatch_assert_queue_V2(*(self + 136));
     v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:a2];
-    v10 = [(HAP2CoAPClient *)a1 responseCompletionsByToken];
-    v11 = [v10 objectForKeyedSubscript:v9];
+    responseCompletionsByToken = [(HAP2CoAPClient *)self responseCompletionsByToken];
+    v11 = [responseCompletionsByToken objectForKeyedSubscript:v9];
 
     if (v11)
     {
-      v12 = [(HAP2CoAPClient *)a1 responseCompletionsByToken];
-      [v12 setObject:0 forKeyedSubscript:v9];
+      responseCompletionsByToken2 = [(HAP2CoAPClient *)self responseCompletionsByToken];
+      [responseCompletionsByToken2 setObject:0 forKeyedSubscript:v9];
 
-      (v11)[2](v11, v7, v8);
+      (v11)[2](v11, completionCopy, responseCopy);
     }
 
     else
@@ -317,7 +317,7 @@ void __72__HAP2CoAPClient__ioThreadDidFailToSendMessageInSession_message_reason_
         v17 = 138412546;
         v18 = v16;
         v19 = 2112;
-        v20 = v8;
+        v20 = responseCopy;
         _os_log_error_impl(&dword_22AADC000, v15, OS_LOG_TYPE_ERROR, "<Response token=%@> received after we already called its completion handler: %@", &v17, 0x16u);
       }
     }
@@ -328,13 +328,13 @@ void __72__HAP2CoAPClient__ioThreadDidFailToSendMessageInSession_message_reason_
 
 - (id)responseCompletionsByToken
 {
-  dispatch_assert_queue_V2(*(a1 + 136));
-  v2 = *(a1 + 88);
+  dispatch_assert_queue_V2(*(self + 136));
+  v2 = *(self + 88);
 
   return v2;
 }
 
-- (void)didReceiveRequestInSession:(coap_session_t *)a3 messageID:(unint64_t)a4 request:(coap_pdu_t *)a5 response:(coap_pdu_t *)a6
+- (void)didReceiveRequestInSession:(coap_session_t *)session messageID:(unint64_t)d request:(coap_pdu_t *)request response:(coap_pdu_t *)response
 {
   v39 = *MEMORY[0x277D85DE8];
   if (self)
@@ -345,8 +345,8 @@ void __72__HAP2CoAPClient__ioThreadDidFailToSendMessageInSession_message_reason_
     v13 = [v10 stringWithFormat:@"%@ Received Request", v12];
 
     v33 = [objc_alloc(MEMORY[0x277D0F770]) initWithName:v13];
-    [v33 markWithFormat:@"Message id: %lu", a4];
-    v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
+    [v33 markWithFormat:@"Message id: %lu", d];
+    v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:d];
     v15 = self->_previousEventMessageIDs;
     v16 = [(NSMutableOrderedSet *)v15 containsObject:v14];
 
@@ -360,20 +360,20 @@ void __72__HAP2CoAPClient__ioThreadDidFailToSendMessageInSession_message_reason_
       v17 = hap2Log_coap;
       if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
       {
-        v18 = _stringForMessage(a6, 0);
+        v18 = _stringForMessage(response, 0);
         *buf = 138412290;
         *&buf[4] = v18;
         _os_log_impl(&dword_22AADC000, v17, OS_LOG_TYPE_INFO, "%@ received more than once", buf, 0xCu);
       }
 
-      a6->var1 = 67;
+      response->var1 = 67;
     }
 
     else
     {
       v31 = 0;
       v32 = 0;
-      if (coap_get_data(a5, &v32, &v31))
+      if (coap_get_data(request, &v32, &v31))
       {
         if (hap2LogInitialize_onceToken != -1)
         {
@@ -383,7 +383,7 @@ void __72__HAP2CoAPClient__ioThreadDidFailToSendMessageInSession_message_reason_
         v19 = hap2Log_coap;
         if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
         {
-          v20 = _stringForMessage(a5, 0);
+          v20 = _stringForMessage(request, 0);
           *buf = 138412546;
           *&buf[4] = v20;
           *&buf[12] = 2048;
@@ -403,7 +403,7 @@ void __72__HAP2CoAPClient__ioThreadDidFailToSendMessageInSession_message_reason_
         v24 = self->_previousEventMessageIDs;
         [(NSMutableOrderedSet *)v24 addObject:v14];
 
-        a6->var1 = 67;
+        response->var1 = 67;
         v25 = [MEMORY[0x277CBEA90] dataWithBytes:v31 length:v32];
         workQueue = self->_workQueue;
         *buf = MEMORY[0x277D85DD0];
@@ -411,7 +411,7 @@ void __72__HAP2CoAPClient__ioThreadDidFailToSendMessageInSession_message_reason_
         *&buf[16] = __81__HAP2CoAPClient__ioThreadDidReceiveRequestInSession_messageID_request_response___block_invoke;
         v35 = &unk_2786D7078;
         v36 = v33;
-        v37 = self;
+        selfCopy = self;
         v38 = v25;
         v27 = v25;
         dispatch_async(workQueue, buf);
@@ -427,13 +427,13 @@ void __72__HAP2CoAPClient__ioThreadDidFailToSendMessageInSession_message_reason_
         v28 = hap2Log_coap;
         if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
         {
-          v29 = _stringForMessage(a5, 0);
+          v29 = _stringForMessage(request, 0);
           *buf = 138412290;
           *&buf[4] = v29;
           _os_log_impl(&dword_22AADC000, v28, OS_LOG_TYPE_INFO, "%@ received, but contains no data", buf, 0xCu);
         }
 
-        a6->var0 = 3;
+        response->var0 = 3;
       }
     }
 
@@ -464,7 +464,7 @@ void __81__HAP2CoAPClient__ioThreadDidReceiveRequestInSession_messageID_request_
   __HMFActivityScopeLeave();
 }
 
-- (void)didReceiveResponseInSession:(coap_session_t *)a3 messageID:(unint64_t)a4 response:(coap_pdu_t *)a5
+- (void)didReceiveResponseInSession:(coap_session_t *)session messageID:(unint64_t)d response:(coap_pdu_t *)response
 {
   v67 = *MEMORY[0x277D85DE8];
   if (self)
@@ -475,10 +475,10 @@ void __81__HAP2CoAPClient__ioThreadDidReceiveRequestInSession_messageID_request_
     v12 = [v9 stringWithFormat:@"%@ Received Response", v11];
 
     v59 = [objc_alloc(MEMORY[0x277D0F770]) initWithName:v12];
-    [v59 markWithFormat:@"Message id: %lu", a4];
-    if (a5->var4 == 4)
+    [v59 markWithFormat:@"Message id: %lu", d];
+    if (response->var4 == 4)
     {
-      v13 = *a5->var10;
+      v13 = *response->var10;
     }
 
     else
@@ -486,9 +486,9 @@ void __81__HAP2CoAPClient__ioThreadDidReceiveRequestInSession_messageID_request_
       v13 = 0;
     }
 
-    v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
+    v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:d];
     v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v13];
-    var0 = a5->var0;
+    var0 = response->var0;
     if (!v13 || ([(NSMutableSet *)self->_activeTokens containsObject:v15]& 1) == 0)
     {
       if (var0 <= 1)
@@ -506,7 +506,7 @@ void __81__HAP2CoAPClient__ioThreadDidReceiveRequestInSession_messageID_request_
           if (v22)
           {
             v23 = v21;
-            v24 = _stringForMessage(a5, 0);
+            v24 = _stringForMessage(response, 0);
             *buf = 138412290;
             *&buf[4] = v24;
             _os_log_impl(&dword_22AADC000, v23, OS_LOG_TYPE_INFO, "%@ received more than once", buf, 0xCu);
@@ -518,13 +518,13 @@ void __81__HAP2CoAPClient__ioThreadDidReceiveRequestInSession_messageID_request_
           if (v22)
           {
             v25 = v21;
-            v26 = _stringForMessage(a5, 0);
+            v26 = _stringForMessage(response, 0);
             *buf = 138412290;
             *&buf[4] = v26;
             _os_log_impl(&dword_22AADC000, v25, OS_LOG_TYPE_INFO, "%@ received unexpectedly", buf, 0xCu);
           }
 
-          coap_send_message_type(&a3->var0, a5);
+          coap_send_message_type(&session->var0, response);
         }
       }
 
@@ -542,7 +542,7 @@ void __81__HAP2CoAPClient__ioThreadDidReceiveRequestInSession_messageID_request_
     v17 = stringForToken(v13);
     [v59 markWithFormat:@"Token: %@", v17];
 
-    if (a5->var0 == 3)
+    if (response->var0 == 3)
     {
       if (hap2LogInitialize_onceToken != -1)
       {
@@ -552,7 +552,7 @@ void __81__HAP2CoAPClient__ioThreadDidReceiveRequestInSession_messageID_request_
       v18 = hap2Log_coap;
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
-        v47 = _stringForMessage(a5, 1);
+        v47 = _stringForMessage(response, 1);
         *buf = 138412290;
         *&buf[4] = v47;
         _os_log_error_impl(&dword_22AADC000, v18, OS_LOG_TYPE_ERROR, "%@ received RST", buf, 0xCu);
@@ -562,7 +562,7 @@ void __81__HAP2CoAPClient__ioThreadDidReceiveRequestInSession_messageID_request_
       goto LABEL_62;
     }
 
-    if ((a5->var1 & 0xE0) == 0x40)
+    if ((response->var1 & 0xE0) == 0x40)
     {
       if (hap2LogInitialize_onceToken != -1)
       {
@@ -573,7 +573,7 @@ void __81__HAP2CoAPClient__ioThreadDidReceiveRequestInSession_messageID_request_
       if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
       {
         v28 = self->_accessoryName;
-        v29 = _stringForMessage(a5, 1);
+        v29 = _stringForMessage(response, 1);
         *buf = 138478083;
         *&buf[4] = v28;
         *&buf[12] = 2112;
@@ -581,8 +581,8 @@ void __81__HAP2CoAPClient__ioThreadDidReceiveRequestInSession_messageID_request_
         _os_log_impl(&dword_22AADC000, v27, OS_LOG_TYPE_DEFAULT, "[%{private}@] %@ succeeded", buf, 0x16u);
       }
 
-      var11 = a5->var11;
-      if (var11 && (v31 = &a5->var10[a5->var8 - var11]) != 0)
+      var11 = response->var11;
+      if (var11 && (v31 = &response->var10[response->var8 - var11]) != 0)
       {
         if (hap2LogInitialize_onceToken != -1)
         {
@@ -592,7 +592,7 @@ void __81__HAP2CoAPClient__ioThreadDidReceiveRequestInSession_messageID_request_
         v32 = hap2Log_coap;
         if (os_log_type_enabled(v32, OS_LOG_TYPE_DEBUG))
         {
-          v57 = _stringForMessage(a5, 1);
+          v57 = _stringForMessage(response, 1);
           v58 = "s";
           *buf = 138412802;
           *&buf[4] = v57;
@@ -608,7 +608,7 @@ void __81__HAP2CoAPClient__ioThreadDidReceiveRequestInSession_messageID_request_
           _os_log_debug_impl(&dword_22AADC000, v32, OS_LOG_TYPE_DEBUG, "%@ carries %lu byte%s of payload", buf, 0x20u);
         }
 
-        v33 = [MEMORY[0x277CBEA90] dataWithBytes:var11 length:v31];
+        data = [MEMORY[0x277CBEA90] dataWithBytes:var11 length:v31];
       }
 
       else
@@ -621,16 +621,16 @@ void __81__HAP2CoAPClient__ioThreadDidReceiveRequestInSession_messageID_request_
         v37 = hap2Log_coap;
         if (os_log_type_enabled(v37, OS_LOG_TYPE_DEBUG))
         {
-          v52 = _stringForMessage(a5, 1);
+          v52 = _stringForMessage(response, 1);
           *buf = 138412290;
           *&buf[4] = v52;
           _os_log_debug_impl(&dword_22AADC000, v37, OS_LOG_TYPE_DEBUG, "%@ carries no payload", buf, 0xCu);
         }
 
-        v33 = [MEMORY[0x277CBEA90] data];
+        data = [MEMORY[0x277CBEA90] data];
       }
 
-      v36 = v33;
+      v36 = data;
       v19 = 0;
       goto LABEL_63;
     }
@@ -643,9 +643,9 @@ void __81__HAP2CoAPClient__ioThreadDidReceiveRequestInSession_messageID_request_
     v34 = hap2Log_coap;
     if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
     {
-      v48 = _stringForMessage(a5, 1);
+      v48 = _stringForMessage(response, 1);
       v49 = v48;
-      var1 = a5->var1;
+      var1 = response->var1;
       if (var1 == 65)
       {
         v51 = &coap_error;
@@ -678,10 +678,10 @@ LABEL_74:
       _os_log_error_impl(&dword_22AADC000, v34, OS_LOG_TYPE_ERROR, "%@ failed: %s", buf, 0x16u);
     }
 
-    v35 = a5->var1;
+    v35 = response->var1;
     if (v35 > 0x84)
     {
-      if (a5->var1 <= 0xA0u)
+      if (response->var1 <= 0xA0u)
       {
         if (v35 != 133 && v35 != 143)
         {
@@ -702,8 +702,8 @@ LABEL_74:
           v38 = 24;
 LABEL_61:
           v39 = MEMORY[0x277CCACA8];
-          v40 = [MEMORY[0x277CCACA8] stringWithFormat:@"%u.%02u", v35 >> 5, v35 & 0x1F];
-          v41 = [v39 stringWithFormat:@"CoAP responded with a failure code: %@", v40];
+          0x1F = [MEMORY[0x277CCACA8] stringWithFormat:@"%u.%02u", v35 >> 5, v35 & 0x1F];
+          v41 = [v39 stringWithFormat:@"CoAP responded with a failure code: %@", 0x1F];
 
           v42 = MEMORY[0x277CCA9B8];
           v43 = [MEMORY[0x277CCACA8] stringWithFormat:@"COAP Response Code: %ldd", v35];
@@ -720,7 +720,7 @@ LABEL_63:
           *&buf[16] = __74__HAP2CoAPClient__ioThreadDidReceiveResponseInSession_messageID_response___block_invoke;
           v61 = &unk_2786D4E48;
           v62 = v59;
-          v63 = self;
+          selfCopy = self;
           v66 = v13;
           v64 = v36;
           v65 = v19;
@@ -742,7 +742,7 @@ LABEL_68:
 
     else
     {
-      if (a5->var1 <= 0x7Fu)
+      if (response->var1 <= 0x7Fu)
       {
         v19 = 0;
         v36 = 0;
@@ -816,7 +816,7 @@ void __74__HAP2CoAPClient__ioThreadDidReceiveResponseInSession_messageID_respons
     block[2] = __42__HAP2CoAPClient__ioThreadDidCloseSession__block_invoke;
     block[3] = &unk_2786D7050;
     v11 = v7;
-    v12 = self;
+    selfCopy = self;
     dispatch_async(workQueue, block);
 
     __HMFActivityScopeLeave();
@@ -897,66 +897,66 @@ void __42__HAP2CoAPClient__ioThreadDidCloseSession__block_invoke(uint64_t a1)
 
 - (id)openCompletion
 {
-  dispatch_assert_queue_V2(*(a1 + 136));
-  v2 = MEMORY[0x231885210](*(a1 + 72));
+  dispatch_assert_queue_V2(*(self + 136));
+  v2 = MEMORY[0x231885210](*(self + 72));
 
   return v2;
 }
 
-- (void)_didOpenWithError:(uint64_t)a1
+- (void)_didOpenWithError:(uint64_t)error
 {
   v5 = a2;
-  if (a1)
+  if (error)
   {
-    dispatch_assert_queue_V2(*(a1 + 136));
-    dispatch_assert_queue_V2(*(a1 + 136));
-    if (*(a1 + 41) == 1)
+    dispatch_assert_queue_V2(*(error + 136));
+    dispatch_assert_queue_V2(*(error + 136));
+    if (*(error + 41) == 1)
     {
-      v3 = [(HAP2CoAPClient *)a1 openCompletion];
-      [(HAP2CoAPClient *)a1 setOpenCompletion:?];
+      openCompletion = [(HAP2CoAPClient *)error openCompletion];
+      [(HAP2CoAPClient *)error setOpenCompletion:?];
       if (v5)
       {
-        [a1 setConnected:0];
-        dispatch_assert_queue_V2(*(a1 + 136));
-        *(a1 + 41) = 0;
-        [HAP2CoAPIO unregisterConsumer:a1];
+        [error setConnected:0];
+        dispatch_assert_queue_V2(*(error + 136));
+        *(error + 41) = 0;
+        [HAP2CoAPIO unregisterConsumer:error];
       }
 
       else
       {
-        [a1 setConnected:1];
-        v4 = [MEMORY[0x277D0F860] sharedManager];
-        [v4 registerWoWAssertionForObject:a1];
+        [error setConnected:1];
+        mEMORY[0x277D0F860] = [MEMORY[0x277D0F860] sharedManager];
+        [mEMORY[0x277D0F860] registerWoWAssertionForObject:error];
       }
 
-      (v3)[2](v3, v5);
+      (openCompletion)[2](openCompletion, v5);
     }
   }
 }
 
-- (void)setCloseCompletion:(uint64_t)a1
+- (void)setCloseCompletion:(uint64_t)completion
 {
-  v3 = *(a1 + 136);
+  v3 = *(completion + 136);
   v4 = a2;
   dispatch_assert_queue_V2(v3);
   v5 = MEMORY[0x231885210](v4);
 
-  v6 = *(a1 + 80);
-  *(a1 + 80) = v5;
+  v6 = *(completion + 80);
+  *(completion + 80) = v5;
 }
 
-- (void)setOpenCompletion:(uint64_t)a1
+- (void)setOpenCompletion:(uint64_t)completion
 {
-  v3 = *(a1 + 136);
+  v3 = *(completion + 136);
   v4 = a2;
   dispatch_assert_queue_V2(v3);
   v5 = MEMORY[0x231885210](v4);
 
-  v6 = *(a1 + 72);
-  *(a1 + 72) = v5;
+  v6 = *(completion + 72);
+  *(completion + 72) = v5;
 }
 
-- (coap_session_t)shouldOpenSessionWithContext:(coap_context_t *)a3
+- (coap_session_t)shouldOpenSessionWithContext:(coap_context_t *)context
 {
   v104 = *MEMORY[0x277D85DE8];
   if (!self)
@@ -972,7 +972,7 @@ void __42__HAP2CoAPClient__ioThreadDidCloseSession__block_invoke(uint64_t a1)
 
   v97 = [objc_alloc(MEMORY[0x277D0F770]) initWithName:v8];
   p_address = &self->_address;
-  session = coap_make_session(1, 1, 0, 0, &self->_address.size, 0, a3, 0);
+  session = coap_make_session(1, 1, 0, 0, &self->_address.size, 0, context, 0);
   v11 = session;
   if (!session)
   {
@@ -1218,7 +1218,7 @@ LABEL_65:
   *(v11 + 11) = v11 + 104;
   *(v11 + 24) = 64;
   *(v11 + 25) = v62;
-  var7 = a3->var7;
+  var7 = context->var7;
   if (var7)
   {
     var0 = var7->var7.var0;
@@ -1234,9 +1234,9 @@ LABEL_65:
   {
     *(v11 + 7) = 0;
     *(v11 + 8) = 0;
-    a3->var7 = v11;
+    context->var7 = v11;
     v67 = malloc_type_malloc(0x40uLL, 0x10200405F856B24uLL);
-    a3->var7->var7.var0 = v67;
+    context->var7->var7.var0 = v67;
     if (!v67)
     {
       goto LABEL_116;
@@ -1246,13 +1246,13 @@ LABEL_65:
     *(v67 + 3) = 0u;
     *v67 = 0u;
     *(v67 + 1) = 0u;
-    v68 = a3->var7;
+    v68 = context->var7;
     v69 = v68->var7.var0;
     *(v69 + 1) = 0x500000020;
     *(v69 + 3) = &v68->var7;
     *(v69 + 4) = 48;
     v70 = malloc_type_malloc(0x200uLL, 0x1020040EDED9539uLL);
-    *a3->var7->var7.var0 = v70;
+    *context->var7->var7.var0 = v70;
     if (!v70)
     {
       goto LABEL_116;
@@ -1290,7 +1290,7 @@ LABEL_65:
     v70[3] = 0u;
     *v70 = 0u;
     v70[1] = 0u;
-    var0 = a3->var7->var7.var0;
+    var0 = context->var7->var7.var0;
     *(var0 + 14) = -1609490463;
   }
 
@@ -1484,7 +1484,7 @@ LABEL_60:
   *&block[16] = __50__HAP2CoAPClient__ioThreadOpenSessionWithContext___block_invoke;
   *&block[24] = &unk_2786D7078;
   v101 = v97;
-  v102 = self;
+  selfCopy = self;
   v103 = v36;
   v38 = v36;
   dispatch_async(workQueue, block);
@@ -1504,10 +1504,10 @@ void __50__HAP2CoAPClient__ioThreadOpenSessionWithContext___block_invoke(uint64_
   __HMFActivityScopeLeave();
 }
 
-- (void)closeWithError:(id)a3 completion:(id)a4
+- (void)closeWithError:(id)error completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  errorCopy = error;
+  completionCopy = completion;
   v8 = MEMORY[0x277CCACA8];
   v9 = objc_opt_class();
   v10 = NSStringFromClass(v9);
@@ -1530,11 +1530,11 @@ void __50__HAP2CoAPClient__ioThreadOpenSessionWithContext___block_invoke(uint64_
   block[2] = __44__HAP2CoAPClient_closeWithError_completion___block_invoke;
   block[3] = &unk_2786D66C8;
   v17 = v12;
-  v18 = self;
-  v19 = v6;
-  v20 = v7;
-  v14 = v7;
-  v15 = v6;
+  selfCopy = self;
+  v19 = errorCopy;
+  v20 = completionCopy;
+  v14 = completionCopy;
+  v15 = errorCopy;
   dispatch_async(workQueue, block);
 
   __HMFActivityScopeLeave();
@@ -1627,27 +1627,27 @@ uint64_t __44__HAP2CoAPClient_closeWithError_completion___block_invoke_2(uint64_
   return [v2 invalidate];
 }
 
-- (void)alterMaxTransmitAttempts:(unint64_t)a3 initialACKTimeout:(double)a4
+- (void)alterMaxTransmitAttempts:(unint64_t)attempts initialACKTimeout:(double)timeout
 {
-  v4 = self;
-  if (fabs(a4) >= 2.22044605e-16)
+  selfCopy = self;
+  if (fabs(timeout) >= 2.22044605e-16)
   {
-    v5 = a4;
+    timeoutCopy = timeout;
   }
 
   else
   {
-    v5 = 1.428;
+    timeoutCopy = 1.428;
   }
 
-  if (a3)
+  if (attempts)
   {
-    v6 = a3;
+    attemptsCopy = attempts;
   }
 
   else
   {
-    v6 = 3;
+    attemptsCopy = 3;
   }
 
   if (self)
@@ -1659,13 +1659,13 @@ uint64_t __44__HAP2CoAPClient_closeWithError_completion___block_invoke_2(uint64_
   v9[1] = 3221225472;
   v9[2] = __61__HAP2CoAPClient_alterMaxTransmitAttempts_initialACKTimeout___block_invoke;
   v9[3] = &unk_2786D4D60;
-  v9[4] = v4;
-  v9[5] = v6;
-  *&v9[6] = v5;
+  v9[4] = selfCopy;
+  v9[5] = attemptsCopy;
+  *&v9[6] = timeoutCopy;
   [(HAP2CoAPClient *)self performWritingBlock:v9];
-  if (v4)
+  if (selfCopy)
   {
-    workQueue = v4->_workQueue;
+    workQueue = selfCopy->_workQueue;
   }
 
   else
@@ -1677,9 +1677,9 @@ uint64_t __44__HAP2CoAPClient_closeWithError_completion___block_invoke_2(uint64_
   v8[1] = 3221225472;
   v8[2] = __61__HAP2CoAPClient_alterMaxTransmitAttempts_initialACKTimeout___block_invoke_2;
   v8[3] = &unk_2786D4D60;
-  v8[4] = v4;
-  v8[5] = v6;
-  *&v8[6] = v5;
+  v8[4] = selfCopy;
+  v8[5] = attemptsCopy;
+  *&v8[6] = timeoutCopy;
   dispatch_async(workQueue, v8);
 }
 
@@ -1760,11 +1760,11 @@ void __62__HAP2CoAPClient__alterMaxTransmitAttempts_initialACKTimeout___block_in
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_queueSessionBlock:(uint64_t)a3 withTimeout:(double)a4 requiresCompletion:
+- (void)_queueSessionBlock:(uint64_t)block withTimeout:(double)timeout requiresCompletion:
 {
   v7 = a2;
-  dispatch_assert_queue_V2(a1[17]);
-  objc_initWeak(&location, a1);
+  dispatch_assert_queue_V2(self[17]);
+  objc_initWeak(&location, self);
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __68__HAP2CoAPClient__queueSessionBlock_withTimeout_requiresCompletion___block_invoke;
@@ -1772,7 +1772,7 @@ void __62__HAP2CoAPClient__alterMaxTransmitAttempts_initialACKTimeout___block_in
   objc_copyWeak(&v11, &location);
   v8 = v7;
   v10 = v8;
-  [HAP2CoAPIO queueSessionBlockForConsumer:a1 sessionBlock:v9 withTimeout:a3 requiresCompletion:a4];
+  [HAP2CoAPIO queueSessionBlockForConsumer:self sessionBlock:v9 withTimeout:block requiresCompletion:timeout];
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);
@@ -1788,11 +1788,11 @@ uint64_t __68__HAP2CoAPClient__queueSessionBlock_withTimeout_requiresCompletion_
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)sendRequestWithMethod:(unsigned __int8)a3 path:(id)a4 payload:(id)a5 dscpPriority:(int64_t)a6 completion:(id)a7
+- (void)sendRequestWithMethod:(unsigned __int8)method path:(id)path payload:(id)payload dscpPriority:(int64_t)priority completion:(id)completion
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a7;
+  pathCopy = path;
+  payloadCopy = payload;
+  completionCopy = completion;
   v15 = MEMORY[0x277CCACA8];
   v16 = objc_opt_class();
   v17 = NSStringFromClass(v16);
@@ -1815,15 +1815,15 @@ uint64_t __68__HAP2CoAPClient__queueSessionBlock_withTimeout_requiresCompletion_
   block[2] = __77__HAP2CoAPClient_sendRequestWithMethod_path_payload_dscpPriority_completion___block_invoke;
   block[3] = &unk_2786D4D38;
   v25 = v19;
-  v26 = self;
-  v31 = a3;
-  v27 = v12;
-  v28 = v13;
-  v29 = v14;
-  v30 = a6;
-  v21 = v14;
-  v22 = v13;
-  v23 = v12;
+  selfCopy = self;
+  methodCopy = method;
+  v27 = pathCopy;
+  v28 = payloadCopy;
+  v29 = completionCopy;
+  priorityCopy = priority;
+  v21 = completionCopy;
+  v22 = payloadCopy;
+  v23 = pathCopy;
   dispatch_async(workQueue, block);
 
   __HMFActivityScopeLeave();
@@ -2215,14 +2215,14 @@ LABEL_50:
   v49 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_ioThreadRequestFailed:(uint64_t)a1
+- (void)_ioThreadRequestFailed:(uint64_t)failed
 {
-  v2 = *(a1 + 136);
+  v2 = *(failed + 136);
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __41__HAP2CoAPClient__ioThreadRequestFailed___block_invoke;
   v3[3] = &unk_2786D6740;
-  v3[4] = a1;
+  v3[4] = failed;
   v4 = a2;
   dispatch_async(v2, v3);
 }
@@ -2236,9 +2236,9 @@ void __41__HAP2CoAPClient__ioThreadRequestFailed___block_invoke(uint64_t a1)
   [(HAP2CoAPClient *)v2 _callResponseCompletion:v3 response:0 error:v4];
 }
 
-- (void)openWithCompletion:(id)a3
+- (void)openWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = MEMORY[0x277CCACA8];
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
@@ -2261,9 +2261,9 @@ void __41__HAP2CoAPClient__ioThreadRequestFailed___block_invoke(uint64_t a1)
   block[2] = __37__HAP2CoAPClient_openWithCompletion___block_invoke;
   block[3] = &unk_2786D69E0;
   v13 = v9;
-  v14 = self;
-  v15 = v4;
-  v11 = v4;
+  selfCopy = self;
+  v15 = completionCopy;
+  v11 = completionCopy;
   dispatch_async(workQueue, block);
 
   __HMFActivityScopeLeave();
@@ -2313,16 +2313,16 @@ uint64_t __37__HAP2CoAPClient_openWithCompletion___block_invoke_2(uint64_t a1)
   return [v2 invalidate];
 }
 
-- (void)setInitialACKTimeout:(double)a3
+- (void)setInitialACKTimeout:(double)timeout
 {
-  v4 = self;
+  selfCopy = self;
   if (self)
   {
     self = self->_propertyLock;
   }
 
   [(HAP2CoAPClient *)self assertOwner];
-  v4->_initialACKTimeout = a3;
+  selfCopy->_initialACKTimeout = timeout;
 }
 
 - (double)initialACKTimeout
@@ -2362,16 +2362,16 @@ double __35__HAP2CoAPClient_initialACKTimeout__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setMaxTransmitAttempts:(unint64_t)a3
+- (void)setMaxTransmitAttempts:(unint64_t)attempts
 {
-  v4 = self;
+  selfCopy = self;
   if (self)
   {
     self = self->_propertyLock;
   }
 
   [(HAP2CoAPClient *)self assertOwner];
-  v4->_maxTransmitAttempts = a3;
+  selfCopy->_maxTransmitAttempts = attempts;
 }
 
 - (unint64_t)maxTransmitAttempts
@@ -2404,7 +2404,7 @@ double __35__HAP2CoAPClient_initialACKTimeout__block_invoke(uint64_t a1)
   return v5;
 }
 
-- (void)setConnected:(BOOL)a3
+- (void)setConnected:(BOOL)connected
 {
   if (self)
   {
@@ -2421,7 +2421,7 @@ double __35__HAP2CoAPClient_initialACKTimeout__block_invoke(uint64_t a1)
   v4[2] = __31__HAP2CoAPClient_setConnected___block_invoke;
   v4[3] = &unk_2786D6768;
   v4[4] = self;
-  v5 = a3;
+  connectedCopy = connected;
   [(HAP2PropertyLock *)propertyLock performWritingBlock:v4];
 }
 
@@ -2455,9 +2455,9 @@ double __35__HAP2CoAPClient_initialACKTimeout__block_invoke(uint64_t a1)
   return v5;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   if (self)
   {
     propertyLock = self->_propertyLock;
@@ -2473,8 +2473,8 @@ double __35__HAP2CoAPClient_initialACKTimeout__block_invoke(uint64_t a1)
   v7[2] = __30__HAP2CoAPClient_setDelegate___block_invoke;
   v7[3] = &unk_2786D7050;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = delegateCopy;
+  v6 = delegateCopy;
   [(HAP2PropertyLock *)propertyLock performWritingBlock:v7];
 }
 
@@ -2521,28 +2521,28 @@ uint64_t __26__HAP2CoAPClient_delegate__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (char)_initWithIPAddress:(unsigned int)a3 port:(uint64_t)a4 maxTransmitAttempts:(void *)a5 initialACKTimeout:(double)a6 workQueue:
+- (char)_initWithIPAddress:(unsigned int)address port:(uint64_t)port maxTransmitAttempts:(void *)attempts initialACKTimeout:(double)timeout workQueue:
 {
   v21 = *MEMORY[0x277D85DE8];
   v11 = a2;
-  v12 = a5;
-  if (a1)
+  attemptsCopy = attempts;
+  if (self)
   {
-    if (a3)
+    if (address)
     {
-      v13 = a3;
+      addressCopy = address;
     }
 
     else
     {
-      v13 = 5683;
+      addressCopy = 5683;
     }
 
     memset(v18, 0, sizeof(v18));
-    if ([HAP2CoAPIO setCoapAddressFromString:v11 port:v13 coapAddress:v18])
+    if ([HAP2CoAPIO setCoapAddressFromString:v11 port:addressCopy coapAddress:v18])
     {
-      a1 = [(HAP2CoAPClient *)a1 initWithSocketAddress:0 withAccessoryName:v12 workQueue:a4 maxTransmitAttempts:a6 initialACKTimeout:?];
-      v14 = a1;
+      self = [(HAP2CoAPClient *)self initWithSocketAddress:0 withAccessoryName:attemptsCopy workQueue:port maxTransmitAttempts:timeout initialACKTimeout:?];
+      selfCopy = self;
     }
 
     else
@@ -2560,38 +2560,38 @@ uint64_t __26__HAP2CoAPClient_delegate__block_invoke(uint64_t a1)
         _os_log_error_impl(&dword_22AADC000, v15, OS_LOG_TYPE_ERROR, "Failed to parse address from string: %@", buf, 0xCu);
       }
 
-      v14 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v14 = 0;
+    selfCopy = 0;
   }
 
   v16 = *MEMORY[0x277D85DE8];
-  return v14;
+  return selfCopy;
 }
 
-- (char)initWithSocketAddress:(void *)a3 withAccessoryName:(void *)a4 workQueue:(uint64_t)a5 maxTransmitAttempts:(double)a6 initialACKTimeout:
+- (char)initWithSocketAddress:(void *)address withAccessoryName:(void *)name workQueue:(uint64_t)queue maxTransmitAttempts:(double)attempts initialACKTimeout:
 {
-  v11 = a3;
-  v12 = a4;
+  addressCopy = address;
+  nameCopy = name;
   v13 = a2[1];
-  if (v12)
+  if (nameCopy)
   {
-    v14 = v12;
+    v14 = nameCopy;
   }
 
   else
   {
-    v15 = HAPDispatchQueueName(a1, @"workQueue");
+    v15 = HAPDispatchQueueName(self, @"workQueue");
     v16 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v17 = dispatch_get_global_queue(17, 0);
     v14 = dispatch_queue_create_with_target_V2(v15, v16, v17);
   }
 
-  v36.receiver = a1;
+  v36.receiver = self;
   v36.super_class = HAP2CoAPClient;
   v18 = objc_msgSendSuper2(&v36, sel_init);
   v19 = v18;
@@ -2618,14 +2618,14 @@ uint64_t __26__HAP2CoAPClient_delegate__block_invoke(uint64_t a1)
       v22 = v21;
     }
 
-    if (!a5)
+    if (!queue)
     {
-      a5 = 3;
+      queue = 3;
     }
 
-    if (a6 <= 0.0)
+    if (attempts <= 0.0)
     {
-      a6 = 1.428;
+      attempts = 1.428;
     }
 
     *(v18 + 12) = 0;
@@ -2639,9 +2639,9 @@ uint64_t __26__HAP2CoAPClient_delegate__block_invoke(uint64_t a1)
     v24 = *(v19 + 16);
     *(v19 + 16) = v23;
 
-    if (v11)
+    if (addressCopy)
     {
-      v25 = v11;
+      v25 = addressCopy;
     }
 
     else
@@ -2651,11 +2651,11 @@ uint64_t __26__HAP2CoAPClient_delegate__block_invoke(uint64_t a1)
 
     objc_storeStrong(v19 + 18, v25);
     objc_storeStrong(v19 + 17, v14);
-    *(v19 + 7) = a5;
-    *(v19 + 8) = a6;
-    v26 = [MEMORY[0x277CBEB38] dictionary];
+    *(v19 + 7) = queue;
+    *(v19 + 8) = attempts;
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v27 = *(v19 + 11);
-    *(v19 + 11) = v26;
+    *(v19 + 11) = dictionary;
 
     v28 = *(v19 + 12);
     *(v19 + 12) = 0;
@@ -2664,23 +2664,23 @@ uint64_t __26__HAP2CoAPClient_delegate__block_invoke(uint64_t a1)
     v30 = *(v19 + 13);
     *(v19 + 13) = v29;
 
-    v31 = [MEMORY[0x277CBEB40] orderedSet];
+    orderedSet = [MEMORY[0x277CBEB40] orderedSet];
     v32 = *(v19 + 14);
-    *(v19 + 14) = v31;
+    *(v19 + 14) = orderedSet;
 
-    v33 = [MEMORY[0x277CBEB40] orderedSet];
+    orderedSet2 = [MEMORY[0x277CBEB40] orderedSet];
     v34 = *(v19 + 15);
-    *(v19 + 15) = v33;
+    *(v19 + 15) = orderedSet2;
   }
 
   return v19;
 }
 
-- (HAP2CoAPClient)initWithSocketAddress:(const sockaddr *)a3 withAccessoryName:(id)a4 maxTransmitAttempts:(unint64_t)a5 initialACKTimeout:(double)a6
+- (HAP2CoAPClient)initWithSocketAddress:(const sockaddr *)address withAccessoryName:(id)name maxTransmitAttempts:(unint64_t)attempts initialACKTimeout:(double)timeout
 {
   if (self)
   {
-    return [(HAP2CoAPClient *)self initWithSocketAddress:a4 withAccessoryName:0 workQueue:a5 maxTransmitAttempts:a6 initialACKTimeout:?];
+    return [(HAP2CoAPClient *)self initWithSocketAddress:name withAccessoryName:0 workQueue:attempts maxTransmitAttempts:timeout initialACKTimeout:?];
   }
 
   return self;

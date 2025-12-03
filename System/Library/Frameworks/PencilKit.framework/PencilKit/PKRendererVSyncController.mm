@@ -2,8 +2,8 @@
 + (id)sharedController;
 - (PKRendererVSyncController)init;
 - (uint64_t)isActive;
-- (void)addRendererController:(uint64_t)a1;
-- (void)removeRendererController:(uint64_t)a1;
+- (void)addRendererController:(uint64_t)controller;
+- (void)removeRendererController:(uint64_t)controller;
 @end
 
 @implementation PKRendererVSyncController
@@ -145,18 +145,18 @@ void __45__PKRendererVSyncController_sharedController__block_invoke()
 
 - (uint64_t)isActive
 {
-  if (a1)
+  if (self)
   {
     v5 = 0;
     v6 = &v5;
     v7 = 0x2020000000;
     v8 = 0;
-    v1 = *(a1 + 8);
+    v1 = *(self + 8);
     v4[0] = MEMORY[0x1E69E9820];
     v4[1] = 3221225472;
     v4[2] = __37__PKRendererVSyncController_isActive__block_invoke;
     v4[3] = &unk_1E82D6868;
-    v4[4] = a1;
+    v4[4] = self;
     v4[5] = &v5;
     dispatch_sync(v1, v4);
     v2 = *(v6 + 24);
@@ -171,35 +171,35 @@ void __45__PKRendererVSyncController_sharedController__block_invoke()
   return v2 & 1;
 }
 
-- (void)addRendererController:(uint64_t)a1
+- (void)addRendererController:(uint64_t)controller
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (controller)
   {
-    v5 = *(a1 + 8);
+    v5 = *(controller + 8);
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __51__PKRendererVSyncController_addRendererController___block_invoke;
     v6[3] = &unk_1E82D6890;
-    v6[4] = a1;
+    v6[4] = controller;
     v7 = v3;
     dispatch_async(v5, v6);
   }
 }
 
-- (void)removeRendererController:(uint64_t)a1
+- (void)removeRendererController:(uint64_t)controller
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (controller)
   {
-    v5 = *(a1 + 8);
+    v5 = *(controller + 8);
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __54__PKRendererVSyncController_removeRendererController___block_invoke;
     v6[3] = &unk_1E82D6890;
-    v6[4] = a1;
+    v6[4] = controller;
     v7 = v3;
     dispatch_sync(v5, v6);
   }

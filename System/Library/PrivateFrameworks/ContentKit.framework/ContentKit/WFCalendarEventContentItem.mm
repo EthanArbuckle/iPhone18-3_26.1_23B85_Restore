@@ -1,65 +1,65 @@
 @interface WFCalendarEventContentItem
 + (id)coercions;
 + (id)contentCategories;
-+ (id)dateByApplyingComponents:(id)a3 toDateComponents:(id)a4;
-+ (id)itemWithEKEvent:(id)a3 fromEventStore:(id)a4;
-+ (id)localizedFilterDescriptionWithContext:(id)a3;
-+ (id)localizedPluralFilterDescriptionWithContext:(id)a3;
-+ (id)localizedPluralTypeDescriptionWithContext:(id)a3;
-+ (id)localizedTypeDescriptionWithContext:(id)a3;
++ (id)dateByApplyingComponents:(id)components toDateComponents:(id)dateComponents;
++ (id)itemWithEKEvent:(id)event fromEventStore:(id)store;
++ (id)localizedFilterDescriptionWithContext:(id)context;
++ (id)localizedPluralFilterDescriptionWithContext:(id)context;
++ (id)localizedPluralTypeDescriptionWithContext:(id)context;
++ (id)localizedTypeDescriptionWithContext:(id)context;
 + (id)ownedTypes;
 + (id)propertyBuilders;
 + (id)stringConversionBehavior;
-+ (void)runQuery:(id)a3 withItems:(id)a4 permissionRequestor:(id)a5 completionHandler:(id)a6;
-- (BOOL)getListAltText:(id)a3;
-- (BOOL)getListSubtitle:(id)a3;
++ (void)runQuery:(id)query withItems:(id)items permissionRequestor:(id)requestor completionHandler:(id)handler;
+- (BOOL)getListAltText:(id)text;
+- (BOOL)getListSubtitle:(id)subtitle;
 - (EKEvent)event;
 - (EKEventStore)eventStore;
 - (NSString)location;
 - (id)attachments;
 - (id)changeTransaction;
 - (id)color;
-- (id)defaultSourceForRepresentation:(id)a3;
+- (id)defaultSourceForRepresentation:(id)representation;
 - (id)isCanceled;
 - (id)myStatus;
 - (id)structuredLocation;
-- (void)getMapItemRepresentationIfPresent:(id)a3;
+- (void)getMapItemRepresentationIfPresent:(id)present;
 @end
 
 @implementation WFCalendarEventContentItem
 
-+ (id)localizedPluralFilterDescriptionWithContext:(id)a3
++ (id)localizedPluralFilterDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"Calendar Events", @"Calendar Events");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
 
-+ (id)localizedFilterDescriptionWithContext:(id)a3
++ (id)localizedFilterDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"Calendar Event", @"Calendar Event");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
 
-+ (id)localizedPluralTypeDescriptionWithContext:(id)a3
++ (id)localizedPluralTypeDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"Calendar events", @"Calendar events");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
 
-+ (id)localizedTypeDescriptionWithContext:(id)a3
++ (id)localizedTypeDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"Calendar event", @"Calendar event");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
@@ -352,12 +352,12 @@ void __52__WFCalendarEventContentItem_mapItemCoercionHandler__block_invoke(uint6
 {
   v38[11] = *MEMORY[0x277D85DE8];
   v37 = [WFObjectType typeWithClassName:@"CLPlacemark" frameworkName:@"CoreLocation" location:0];
-  v36 = [a1 placemarkCoercionHandler];
-  v35 = [WFCoercion coercionToType:v37 handler:v36];
+  placemarkCoercionHandler = [self placemarkCoercionHandler];
+  v35 = [WFCoercion coercionToType:v37 handler:placemarkCoercionHandler];
   v38[0] = v35;
   v3 = objc_opt_class();
-  v34 = [a1 streetAddressCoercionHandler];
-  v33 = [WFCoercion coercionToClass:v3 handler:v34];
+  streetAddressCoercionHandler = [self streetAddressCoercionHandler];
+  v33 = [WFCoercion coercionToClass:v3 handler:streetAddressCoercionHandler];
   v38[1] = v33;
   v4 = objc_opt_class();
   v32 = [WFCoercionHandler keyPath:@"event.startDate"];
@@ -372,146 +372,146 @@ void __52__WFCalendarEventContentItem_mapItemCoercionHandler__block_invoke(uint6
   v27 = [WFCoercion coercionToClass:v6 handler:v28];
   v38[4] = v27;
   v7 = objc_opt_class();
-  v26 = [a1 mapsLinkCoercionHandler];
-  v25 = [WFCoercion coercionToClass:v7 handler:v26];
+  mapsLinkCoercionHandler = [self mapsLinkCoercionHandler];
+  v25 = [WFCoercion coercionToClass:v7 handler:mapsLinkCoercionHandler];
   v38[5] = v25;
   v24 = [MEMORY[0x277D79F68] typeWithString:@"com.apple.ical.ics"];
-  v23 = [a1 icsCoercionHandler];
-  v22 = [WFCoercion coercionToType:v24 handler:v23];
+  icsCoercionHandler = [self icsCoercionHandler];
+  v22 = [WFCoercion coercionToType:v24 handler:icsCoercionHandler];
   v38[6] = v22;
   v8 = objc_opt_class();
-  v21 = [a1 participantsCoercionHandler];
-  v9 = [WFCoercion coercionToClass:v8 handler:v21];
+  participantsCoercionHandler = [self participantsCoercionHandler];
+  v9 = [WFCoercion coercionToClass:v8 handler:participantsCoercionHandler];
   v38[7] = v9;
   v10 = [WFObjectType typeWithClassName:@"MKMapItem" frameworkName:@"MapKit" location:2];
-  v11 = [a1 mapItemCoercionHandler];
-  v12 = [WFCoercion coercionToType:v10 handler:v11];
+  mapItemCoercionHandler = [self mapItemCoercionHandler];
+  v12 = [WFCoercion coercionToType:v10 handler:mapItemCoercionHandler];
   v38[8] = v12;
   v13 = [WFObjectType typeWithClassName:@"CLLocation" frameworkName:@"CoreLocation" location:0];
   v14 = [WFCoercionHandler keyPath:@"structuredLocation.geoLocation" unavailableIfNilOrEmpty:1];
   v15 = [WFCoercion coercionToType:v13 handler:v14];
   v38[9] = v15;
   v16 = [WFObjectType typeWithClassName:@"LNEntity" frameworkName:@"LinkMetadata" location:1];
-  v17 = [a1 linkEntityCoercionHandler];
-  v18 = [WFCoercion coercionToType:v16 handler:v17];
+  linkEntityCoercionHandler = [self linkEntityCoercionHandler];
+  v18 = [WFCoercion coercionToType:v16 handler:linkEntityCoercionHandler];
   v38[10] = v18;
   v20 = [MEMORY[0x277CBEA60] arrayWithObjects:v38 count:11];
 
   return v20;
 }
 
-+ (id)dateByApplyingComponents:(id)a3 toDateComponents:(id)a4
++ (id)dateByApplyingComponents:(id)components toDateComponents:(id)dateComponents
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 year] == 0x7FFFFFFFFFFFFFFFLL)
+  componentsCopy = components;
+  dateComponentsCopy = dateComponents;
+  if ([componentsCopy year] == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v7 = v6;
+    v7 = dateComponentsCopy;
   }
 
   else
   {
-    v7 = v5;
+    v7 = componentsCopy;
   }
 
-  [v6 setYear:{objc_msgSend(v7, "year")}];
-  if ([v5 month] == 0x7FFFFFFFFFFFFFFFLL)
+  [dateComponentsCopy setYear:{objc_msgSend(v7, "year")}];
+  if ([componentsCopy month] == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v8 = v6;
+    v8 = dateComponentsCopy;
   }
 
   else
   {
-    v8 = v5;
+    v8 = componentsCopy;
   }
 
-  [v6 setMonth:{objc_msgSend(v8, "month")}];
-  if ([v5 weekOfYear] == 0x7FFFFFFFFFFFFFFFLL)
+  [dateComponentsCopy setMonth:{objc_msgSend(v8, "month")}];
+  if ([componentsCopy weekOfYear] == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v9 = v6;
+    v9 = dateComponentsCopy;
   }
 
   else
   {
-    v9 = v5;
+    v9 = componentsCopy;
   }
 
-  [v6 setWeekOfYear:{objc_msgSend(v9, "weekOfYear")}];
-  if ([v5 day] == 0x7FFFFFFFFFFFFFFFLL)
+  [dateComponentsCopy setWeekOfYear:{objc_msgSend(v9, "weekOfYear")}];
+  if ([componentsCopy day] == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v10 = v6;
+    v10 = dateComponentsCopy;
   }
 
   else
   {
-    v10 = v5;
+    v10 = componentsCopy;
   }
 
-  [v6 setDay:{objc_msgSend(v10, "day")}];
-  if ([v5 hour] == 0x7FFFFFFFFFFFFFFFLL)
+  [dateComponentsCopy setDay:{objc_msgSend(v10, "day")}];
+  if ([componentsCopy hour] == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v11 = v6;
+    v11 = dateComponentsCopy;
   }
 
   else
   {
-    v11 = v5;
+    v11 = componentsCopy;
   }
 
-  [v6 setHour:{objc_msgSend(v11, "hour")}];
-  if ([v5 minute] == 0x7FFFFFFFFFFFFFFFLL)
+  [dateComponentsCopy setHour:{objc_msgSend(v11, "hour")}];
+  if ([componentsCopy minute] == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v12 = v6;
+    v12 = dateComponentsCopy;
   }
 
   else
   {
-    v12 = v5;
+    v12 = componentsCopy;
   }
 
-  [v6 setMinute:{objc_msgSend(v12, "minute")}];
-  if ([v5 second] == 0x7FFFFFFFFFFFFFFFLL)
+  [dateComponentsCopy setMinute:{objc_msgSend(v12, "minute")}];
+  if ([componentsCopy second] == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v13 = v6;
+    v13 = dateComponentsCopy;
   }
 
   else
   {
-    v13 = v5;
+    v13 = componentsCopy;
   }
 
-  [v6 setSecond:{objc_msgSend(v13, "second")}];
-  v14 = [MEMORY[0x277CBEA80] currentCalendar];
-  v15 = [v14 dateFromComponents:v6];
+  [dateComponentsCopy setSecond:{objc_msgSend(v13, "second")}];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  v15 = [currentCalendar dateFromComponents:dateComponentsCopy];
 
   return v15;
 }
 
 + (id)stringConversionBehavior
 {
-  v2 = [a1 propertyForName:@"Title"];
+  v2 = [self propertyForName:@"Title"];
   v3 = [WFContentItemStringConversionBehavior accessingProperty:v2];
 
   return v3;
 }
 
-+ (void)runQuery:(id)a3 withItems:(id)a4 permissionRequestor:(id)a5 completionHandler:(id)a6
++ (void)runQuery:(id)query withItems:(id)items permissionRequestor:(id)requestor completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (![v11 count])
+  queryCopy = query;
+  itemsCopy = items;
+  requestorCopy = requestor;
+  handlerCopy = handler;
+  if (![itemsCopy count])
   {
-    v14 = [v10 predicate];
-    v15 = [WFCalendarEventFiltering itemsToQueryForPredicate:v14];
+    predicate = [queryCopy predicate];
+    v15 = [WFCalendarEventFiltering itemsToQueryForPredicate:predicate];
 
-    v11 = v15;
+    itemsCopy = v15;
   }
 
-  v16.receiver = a1;
+  v16.receiver = self;
   v16.super_class = &OBJC_METACLASS___WFCalendarEventContentItem;
-  objc_msgSendSuper2(&v16, sel_runQuery_withItems_permissionRequestor_completionHandler_, v10, v11, v12, v13);
+  objc_msgSendSuper2(&v16, sel_runQuery_withItems_permissionRequestor_completionHandler_, queryCopy, itemsCopy, requestorCopy, handlerCopy);
 }
 
 + (id)propertyBuilders
@@ -525,7 +525,7 @@ void __52__WFCalendarEventContentItem_mapItemCoercionHandler__block_invoke(uint6
   v108[2] = __46__WFCalendarEventContentItem_propertyBuilders__block_invoke;
   v108[3] = &__block_descriptor_48_e74_v24__0__WFCalendarEventContentItemChangeTransaction_8__NSDateComponents_16l;
   v108[4] = 8444;
-  v108[5] = a1;
+  v108[5] = self;
   v103 = [v104 setterBlock:v108];
   v102 = [v103 removable:0];
   v109[0] = v102;
@@ -537,7 +537,7 @@ void __52__WFCalendarEventContentItem_mapItemCoercionHandler__block_invoke(uint6
   v107[2] = __46__WFCalendarEventContentItem_propertyBuilders__block_invoke_2;
   v107[3] = &__block_descriptor_48_e56_v24__0__WFCalendarEventContentItemChangeTransaction_8_16l;
   v107[4] = 8444;
-  v107[5] = a1;
+  v107[5] = self;
   v98 = [v99 setterBlock:v107];
   v97 = [v98 removable:0];
   v109[1] = v97;
@@ -1284,62 +1284,62 @@ void __46__WFCalendarEventContentItem_propertyBuilders__block_invoke_3(uint64_t 
   [v4 setAllDay:a3];
 }
 
-+ (id)itemWithEKEvent:(id)a3 fromEventStore:(id)a4
++ (id)itemWithEKEvent:(id)event fromEventStore:(id)store
 {
-  v6 = a4;
-  v7 = [a1 itemWithObject:a3 named:0];
-  [v7 setEventStore:v6];
+  storeCopy = store;
+  v7 = [self itemWithObject:event named:0];
+  [v7 setEventStore:storeCopy];
 
   return v7;
 }
 
-- (id)defaultSourceForRepresentation:(id)a3
+- (id)defaultSourceForRepresentation:(id)representation
 {
-  v4 = a3;
-  v5 = [v4 wfType];
-  v6 = [v5 conformsToClass:getEKEventClass()];
+  representationCopy = representation;
+  wfType = [representationCopy wfType];
+  v6 = [wfType conformsToClass:getEKEventClass()];
 
   if (v6)
   {
-    v7 = [v4 object];
+    object = [representationCopy object];
 
-    v8 = [v7 calendar];
-    v9 = [v8 source];
-    v10 = [WFContentLocation locationWithCalendarSource:v9];
-    v11 = [(WFContentItem *)self cachingIdentifier];
-    v12 = [WFContentAttributionSet attributionSetWithOrigin:v10 disclosureLevel:1 originalItemIdentifier:v11];
+    calendar = [object calendar];
+    source = [calendar source];
+    v10 = [WFContentLocation locationWithCalendarSource:source];
+    cachingIdentifier = [(WFContentItem *)self cachingIdentifier];
+    v12 = [WFContentAttributionSet attributionSetWithOrigin:v10 disclosureLevel:1 originalItemIdentifier:cachingIdentifier];
   }
 
   else
   {
     v14.receiver = self;
     v14.super_class = WFCalendarEventContentItem;
-    v12 = [(WFContentItem *)&v14 defaultSourceForRepresentation:v4];
+    v12 = [(WFContentItem *)&v14 defaultSourceForRepresentation:representationCopy];
   }
 
   return v12;
 }
 
-- (void)getMapItemRepresentationIfPresent:(id)a3
+- (void)getMapItemRepresentationIfPresent:(id)present
 {
-  v4 = a3;
-  v5 = [(WFCalendarEventContentItem *)self event];
-  v6 = [v5 structuredLocation];
-  v7 = [v6 mapKitHandle];
+  presentCopy = present;
+  event = [(WFCalendarEventContentItem *)self event];
+  structuredLocation = [event structuredLocation];
+  mapKitHandle = [structuredLocation mapKitHandle];
 
-  if (v7)
+  if (mapKitHandle)
   {
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __64__WFCalendarEventContentItem_getMapItemRepresentationIfPresent___block_invoke;
     v8[3] = &unk_278349C38;
-    v9 = v4;
+    v9 = presentCopy;
     [(WFContentItem *)self getObjectRepresentation:v8 forClass:getMKMapItemClass_4749()];
   }
 
   else
   {
-    (*(v4 + 2))(v4, 0, 0);
+    (*(presentCopy + 2))(presentCopy, 0, 0);
   }
 }
 
@@ -1360,8 +1360,8 @@ void __46__WFCalendarEventContentItem_propertyBuilders__block_invoke_3(uint64_t 
 
   else
   {
-    v4 = [(WFCalendarEventContentItem *)self event];
-    v3 = objc_getAssociatedObject(v4, &WFDeserializingEventStoreKey);
+    event = [(WFCalendarEventContentItem *)self event];
+    v3 = objc_getAssociatedObject(event, &WFDeserializingEventStoreKey);
   }
 
   return v3;
@@ -1369,13 +1369,13 @@ void __46__WFCalendarEventContentItem_propertyBuilders__block_invoke_3(uint64_t 
 
 - (id)color
 {
-  v2 = [(WFCalendarEventContentItem *)self event];
-  v3 = [v2 calendar];
-  v4 = [v3 CGColor];
+  event = [(WFCalendarEventContentItem *)self event];
+  calendar = [event calendar];
+  cGColor = [calendar CGColor];
 
-  if (v4)
+  if (cGColor)
   {
-    v5 = [MEMORY[0x277D79E20] colorWithCGColor:v4];
+    v5 = [MEMORY[0x277D79E20] colorWithCGColor:cGColor];
   }
 
   else
@@ -1388,14 +1388,14 @@ void __46__WFCalendarEventContentItem_propertyBuilders__block_invoke_3(uint64_t 
 
 - (id)attachments
 {
-  v3 = [(WFCalendarEventContentItem *)self event];
-  v4 = [v3 hasAttachment];
+  event = [(WFCalendarEventContentItem *)self event];
+  hasAttachment = [event hasAttachment];
 
-  if (v4)
+  if (hasAttachment)
   {
-    v5 = [(WFCalendarEventContentItem *)self event];
-    v6 = [v5 attachments];
-    v7 = [v6 if_map:&__block_literal_global_283];
+    event2 = [(WFCalendarEventContentItem *)self event];
+    attachments = [event2 attachments];
+    v7 = [attachments if_map:&__block_literal_global_283];
   }
 
   else
@@ -1416,20 +1416,20 @@ id __41__WFCalendarEventContentItem_attachments__block_invoke(uint64_t a1, void 
 
 - (id)structuredLocation
 {
-  v2 = [(WFCalendarEventContentItem *)self event];
-  v3 = [v2 structuredLocation];
+  event = [(WFCalendarEventContentItem *)self event];
+  structuredLocation = [event structuredLocation];
 
-  return v3;
+  return structuredLocation;
 }
 
 - (NSString)location
 {
-  v2 = [(WFCalendarEventContentItem *)self event];
-  v3 = [v2 location];
+  event = [(WFCalendarEventContentItem *)self event];
+  location = [event location];
 
-  if ([v3 length])
+  if ([location length])
   {
-    v4 = v3;
+    v4 = location;
   }
 
   else
@@ -1445,20 +1445,20 @@ id __41__WFCalendarEventContentItem_attachments__block_invoke(uint64_t a1, void 
 - (id)isCanceled
 {
   v2 = MEMORY[0x277CCABB0];
-  v3 = [(WFCalendarEventContentItem *)self event];
-  v4 = [v2 numberWithInt:{objc_msgSend(v3, "status") == 3}];
+  event = [(WFCalendarEventContentItem *)self event];
+  v4 = [v2 numberWithInt:{objc_msgSend(event, "status") == 3}];
 
   return v4;
 }
 
 - (id)myStatus
 {
-  v2 = [(WFCalendarEventContentItem *)self event];
-  v3 = [v2 selfAttendee];
+  event = [(WFCalendarEventContentItem *)self event];
+  selfAttendee = [event selfAttendee];
 
-  if (v3)
+  if (selfAttendee)
   {
-    v4 = WFStatusPropertyValueForEKParticipantStatus([v3 participantStatus]);
+    v4 = WFStatusPropertyValueForEKParticipantStatus([selfAttendee participantStatus]);
   }
 
   else
@@ -1472,32 +1472,32 @@ id __41__WFCalendarEventContentItem_attachments__block_invoke(uint64_t a1, void 
 - (id)changeTransaction
 {
   v3 = [WFCalendarEventContentItemChangeTransaction alloc];
-  v4 = [(WFCalendarEventContentItem *)self eventStore];
-  v5 = [(WFCalendarEventContentItemChangeTransaction *)v3 initWithContentItem:self eventStore:v4];
+  eventStore = [(WFCalendarEventContentItem *)self eventStore];
+  v5 = [(WFCalendarEventContentItemChangeTransaction *)v3 initWithContentItem:self eventStore:eventStore];
 
   return v5;
 }
 
-- (BOOL)getListAltText:(id)a3
+- (BOOL)getListAltText:(id)text
 {
-  if (a3)
+  if (text)
   {
-    v4 = a3;
-    v5 = [(WFCalendarEventContentItem *)self event];
-    v6 = [v5 startDate];
+    textCopy = text;
+    event = [(WFCalendarEventContentItem *)self event];
+    startDate = [event startDate];
     v7 = objc_opt_new();
     [v7 setDateStyle:1];
     [v7 setTimeStyle:1];
     [v7 setDoesRelativeDateFormatting:1];
-    if ([v5 isAllDay])
+    if ([event isAllDay])
     {
       [v7 setTimeStyle:0];
     }
 
     else
     {
-      v8 = [MEMORY[0x277CBEA80] currentCalendar];
-      v9 = [v8 isDateInToday:v6];
+      currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+      v9 = [currentCalendar isDateInToday:startDate];
 
       if (v9)
       {
@@ -1505,24 +1505,24 @@ id __41__WFCalendarEventContentItem_attachments__block_invoke(uint64_t a1, void 
       }
     }
 
-    v10 = [v7 stringFromDate:v6];
-    v4[2](v4, v10);
+    v10 = [v7 stringFromDate:startDate];
+    textCopy[2](textCopy, v10);
   }
 
   return 1;
 }
 
-- (BOOL)getListSubtitle:(id)a3
+- (BOOL)getListSubtitle:(id)subtitle
 {
-  v4 = a3;
-  v5 = [(WFCalendarEventContentItem *)self event];
-  v6 = [v5 location];
+  subtitleCopy = subtitle;
+  event = [(WFCalendarEventContentItem *)self event];
+  location = [event location];
 
-  v7 = [v6 length];
+  v7 = [location length];
   v8 = v7;
-  if (v4 && v7)
+  if (subtitleCopy && v7)
   {
-    v4[2](v4, v6);
+    subtitleCopy[2](subtitleCopy, location);
   }
 
   return v8 != 0;

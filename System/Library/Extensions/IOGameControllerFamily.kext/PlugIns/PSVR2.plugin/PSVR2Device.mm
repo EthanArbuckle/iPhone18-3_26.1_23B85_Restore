@@ -1,9 +1,9 @@
 @interface PSVR2Device
 - (PSVR2Device)init;
-- (id)getProperty:(id)a3;
-- (int)probe:(id)a3 service:(unsigned int)a4 outScore:(int *)a5;
-- (int)queryInterface:(id)a3 outInterface:(void *)a4;
-- (int)start:(id)a3 service:(unsigned int)a4;
+- (id)getProperty:(id)property;
+- (int)probe:(id)probe service:(unsigned int)service outScore:(int *)score;
+- (int)queryInterface:(id)interface outInterface:(void *)outInterface;
+- (int)start:(id)start service:(unsigned int)service;
 - (int)stop;
 @end
 
@@ -23,9 +23,9 @@
   return v2;
 }
 
-- (int)queryInterface:(id)a3 outInterface:(void *)a4
+- (int)queryInterface:(id)interface outInterface:(void *)outInterface
 {
-  v6 = CFUUIDCreateFromUUIDBytes(0, a3);
+  v6 = CFUUIDCreateFromUUIDBytes(0, interface);
   v7 = CFUUIDGetConstantUUIDWithBytes(kCFAllocatorSystemDefault, 0, 0, 0, 0, 0, 0, 0, 0, 0xC0u, 0, 0, 0, 0, 0, 0, 0x46u);
   if (CFEqual(v6, v7) || (v8 = CFUUIDGetConstantUUIDWithBytes(0, 0xC2u, 0x44u, 0xE8u, 0x58u, 0x10u, 0x9Cu, 0x11u, 0xD4u, 0x91u, 0xD4u, 0, 0x50u, 0xE4u, 0xC6u, 0x42u, 0x6Fu), CFEqual(v6, v8)))
   {
@@ -44,7 +44,7 @@
     v9 = 16;
   }
 
-  *a4 = self + v9;
+  *outInterface = self + v9;
   CFRetain(self);
   v10 = 0;
 LABEL_5:
@@ -52,19 +52,19 @@ LABEL_5:
   return v10;
 }
 
-- (int)probe:(id)a3 service:(unsigned int)a4 outScore:(int *)a5
+- (int)probe:(id)probe service:(unsigned int)service outScore:(int *)score
 {
-  if (!IOObjectConformsTo(a4, "PSVR2SenseDevice"))
+  if (!IOObjectConformsTo(service, "PSVR2SenseDevice"))
   {
     return -536870201;
   }
 
   result = 0;
-  *a5 = 1001;
+  *score = 1001;
   return result;
 }
 
-- (int)start:(id)a3 service:(unsigned int)a4
+- (int)start:(id)start service:(unsigned int)service
 {
   v9 = 0;
   v10 = &v9;
@@ -77,7 +77,7 @@ LABEL_5:
   block[3] = &unk_10330;
   block[4] = self;
   block[5] = &v9;
-  v8 = a4;
+  serviceCopy = service;
   dispatch_sync(queue, block);
   v5 = *(v10 + 6);
   _Block_object_dispose(&v9, 8);
@@ -96,9 +96,9 @@ LABEL_5:
   return 0;
 }
 
-- (id)getProperty:(id)a3
+- (id)getProperty:(id)property
 {
-  v4 = a3;
+  propertyCopy = property;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -110,10 +110,10 @@ LABEL_5:
   block[1] = 3221225472;
   block[2] = sub_74AC;
   block[3] = &unk_10380;
-  v10 = v4;
+  v10 = propertyCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = propertyCopy;
   dispatch_sync(queue, block);
   v7 = v13[5];
 

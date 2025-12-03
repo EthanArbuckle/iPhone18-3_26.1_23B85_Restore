@@ -1,10 +1,10 @@
 @interface VKLabelMarker
-+ (VKLabelMarker)markerWithLabelMarker:(const void *)a3;
++ (VKLabelMarker)markerWithLabelMarker:(const void *)marker;
 - ($1AB5FA073B851C12C2339EC22442E995)coordinate3D;
-- (BOOL)positionOfInterest:(id *)a3 zoom:(float *)a4;
+- (BOOL)positionOfInterest:(id *)interest zoom:(float *)zoom;
 - (Box<double,)_bounds;
-- (CGPoint)calloutAnchorPointWithSnapToPixels:(BOOL)a3;
-- (CGRect)_calloutAnchorRect:(BOOL)a3;
+- (CGPoint)calloutAnchorPointWithSnapToPixels:(BOOL)pixels;
+- (CGRect)_calloutAnchorRect:(BOOL)rect;
 - (CGRect)calloutAnchorRect;
 - (CGRect)lateralCalloutAnchorRect;
 - (CGRect)screenBounds;
@@ -16,7 +16,7 @@
 - (NSArray)relatedTexts;
 - (NSArray)shields;
 - (NSArray)transitSystems;
-- (VKLabelMarker)initWithLabelMarkerPtr:(const void *)a3;
+- (VKLabelMarker)initWithLabelMarkerPtr:(const void *)ptr;
 - (float)buildingFaceAzimuth;
 - (float)facingDirection;
 - (id).cxx_construct;
@@ -241,9 +241,9 @@
   return result;
 }
 
-- (CGPoint)calloutAnchorPointWithSnapToPixels:(BOOL)a3
+- (CGPoint)calloutAnchorPointWithSnapToPixels:(BOOL)pixels
 {
-  (*(*self->_labelMarker.__ptr_ + 664))(self->_labelMarker.__ptr_, a3);
+  (*(*self->_labelMarker.__ptr_ + 664))(self->_labelMarker.__ptr_, pixels);
   result.y = v4;
   result.x = v3;
   return result;
@@ -426,12 +426,12 @@
   }
 }
 
-- (BOOL)positionOfInterest:(id *)a3 zoom:(float *)a4
+- (BOOL)positionOfInterest:(id *)interest zoom:(float *)zoom
 {
   v6 = vdupq_n_s64(0xC066800000000000);
   v7 = 0x7FEFFFFFFFFFFFFFLL;
-  result = (*(*self->_labelMarker.__ptr_ + 632))(self->_labelMarker.__ptr_, &v6, a4);
-  *a3 = v6;
+  result = (*(*self->_labelMarker.__ptr_ + 632))(self->_labelMarker.__ptr_, &v6, zoom);
+  *interest = v6;
   return result;
 }
 
@@ -455,9 +455,9 @@
   return result;
 }
 
-- (CGRect)_calloutAnchorRect:(BOOL)a3
+- (CGRect)_calloutAnchorRect:(BOOL)rect
 {
-  v4 = (*(*self->_labelMarker.__ptr_ + 560))(self->_labelMarker.__ptr_, a3);
+  v4 = (*(*self->_labelMarker.__ptr_ + 560))(self->_labelMarker.__ptr_, rect);
   v5 = 1.0 / *(self->_labelMarker.__ptr_ + 62);
   v7 = -(v6 * v5);
   v9 = ((v8 - v4) * v5);
@@ -807,10 +807,10 @@
   return v5;
 }
 
-- (VKLabelMarker)initWithLabelMarkerPtr:(const void *)a3
+- (VKLabelMarker)initWithLabelMarkerPtr:(const void *)ptr
 {
-  v4 = *(a3 + 1);
-  v11 = *a3;
+  v4 = *(ptr + 1);
+  v11 = *ptr;
   v12 = v4;
   if (v4)
   {
@@ -827,8 +827,8 @@
 
   if (v5)
   {
-    v7 = *a3;
-    v6 = *(a3 + 1);
+    v7 = *ptr;
+    v6 = *(ptr + 1);
     if (v6)
     {
       atomic_fetch_add_explicit((v6 + 8), 1uLL, memory_order_relaxed);
@@ -846,11 +846,11 @@
   return v5;
 }
 
-+ (VKLabelMarker)markerWithLabelMarker:(const void *)a3
++ (VKLabelMarker)markerWithLabelMarker:(const void *)marker
 {
-  if (*a3)
+  if (*marker)
   {
-    v4 = *(*a3 + 24);
+    v4 = *(*marker + 24);
     v5 = v4;
     if (v4)
     {
@@ -859,7 +859,7 @@
 
     else
     {
-      v6 = [[VKLabelMarker alloc] initWithLabelMarkerPtr:a3];
+      v6 = [[VKLabelMarker alloc] initWithLabelMarkerPtr:marker];
     }
 
     v7 = v6;

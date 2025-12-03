@@ -1,6 +1,6 @@
 @interface ATCommunicationMetadata
 - (_TtC9AskToCore23ATCommunicationMetadata)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATCommunicationMetadata
@@ -12,11 +12,11 @@
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  ATCommunicationMetadata.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  ATCommunicationMetadata.encode(with:)(coderCopy);
 }
 
 @end

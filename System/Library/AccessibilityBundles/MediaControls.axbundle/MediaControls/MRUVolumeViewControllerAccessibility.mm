@@ -1,22 +1,22 @@
 @interface MRUVolumeViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation MRUVolumeViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MRUVolumeView"];
-  [v3 validateClass:@"MRUVolumeViewController" hasInstanceMethod:@"updatePrimarySliderVolumeValueAnimated:" withFullSignature:{"v", "B", 0}];
-  [v3 validateClass:@"MRUVolumeViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"MRUVolumeView" hasInstanceMethod:@"primarySlider" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MRUContinuousSliderView" isKindOfClass:@"CCUIContinuousSliderView"];
-  [v3 validateClass:@"CCUIContinuousSliderView" isKindOfClass:@"CCUIBaseSliderView"];
-  [v3 validateClass:@"CCUIBaseSliderView" hasInstanceMethod:@"value" withFullSignature:{"f", 0}];
-  [v3 validateClass:@"MRUVolumeView" hasInstanceMethod:@"environmentSlider" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MRUVolumeViewController" hasInstanceMethod:@"updateEnvironmentSliderValueAnimated:" withFullSignature:{"v", "B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MRUVolumeView"];
+  [validationsCopy validateClass:@"MRUVolumeViewController" hasInstanceMethod:@"updatePrimarySliderVolumeValueAnimated:" withFullSignature:{"v", "B", 0}];
+  [validationsCopy validateClass:@"MRUVolumeViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"MRUVolumeView" hasInstanceMethod:@"primarySlider" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MRUContinuousSliderView" isKindOfClass:@"CCUIContinuousSliderView"];
+  [validationsCopy validateClass:@"CCUIContinuousSliderView" isKindOfClass:@"CCUIBaseSliderView"];
+  [validationsCopy validateClass:@"CCUIBaseSliderView" hasInstanceMethod:@"value" withFullSignature:{"f", 0}];
+  [validationsCopy validateClass:@"MRUVolumeView" hasInstanceMethod:@"environmentSlider" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MRUVolumeViewController" hasInstanceMethod:@"updateEnvironmentSliderValueAnimated:" withFullSignature:{"v", "B", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

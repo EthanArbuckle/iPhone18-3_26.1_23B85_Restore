@@ -1,20 +1,20 @@
 @interface JEMetricsDataPredicate
-+ (id)predicateWithConfiguration:(id)a3;
-+ (id)predicateWithType:(id)a3 argument:(id)a4;
-- (BOOL)evaluateWithMetricsData:(id)a3;
-- (JEMetricsDataPredicate)initWithConfigDictionary:(id)a3;
-- (JEMetricsDataPredicate)initWithFormat:(id)a3;
++ (id)predicateWithConfiguration:(id)configuration;
++ (id)predicateWithType:(id)type argument:(id)argument;
+- (BOOL)evaluateWithMetricsData:(id)data;
+- (JEMetricsDataPredicate)initWithConfigDictionary:(id)dictionary;
+- (JEMetricsDataPredicate)initWithFormat:(id)format;
 @end
 
 @implementation JEMetricsDataPredicate
 
-+ (id)predicateWithType:(id)a3 argument:(id)a4
++ (id)predicateWithType:(id)type argument:(id)argument
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 isEqualToString:@"valueMatches"])
+  typeCopy = type;
+  argumentCopy = argument;
+  if ([typeCopy isEqualToString:@"valueMatches"])
   {
-    v7 = v6;
+    v7 = argumentCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -37,9 +37,9 @@
     }
   }
 
-  else if ([v5 isEqualToString:@"nonEmpty"] && (objc_opt_respondsToSelector() & 1) != 0)
+  else if ([typeCopy isEqualToString:@"nonEmpty"] && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    if ([v6 BOOLValue])
+    if ([argumentCopy BOOLValue])
     {
       v9 = @"self != nil && self != ''";
     }
@@ -60,13 +60,13 @@
   return v10;
 }
 
-+ (id)predicateWithConfiguration:(id)a3
++ (id)predicateWithConfiguration:(id)configuration
 {
-  v3 = a3;
+  configurationCopy = configuration;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [[JEMetricsDataPredicate alloc] initWithConfigDictionary:v3];
+    v4 = [[JEMetricsDataPredicate alloc] initWithConfigDictionary:configurationCopy];
 LABEL_5:
     v5 = v4;
     goto LABEL_7;
@@ -75,7 +75,7 @@ LABEL_5:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [[JEMetricsDataPredicate alloc] initWithFormat:v3];
+    v4 = [[JEMetricsDataPredicate alloc] initWithFormat:configurationCopy];
     goto LABEL_5;
   }
 
@@ -85,17 +85,17 @@ LABEL_7:
   return v5;
 }
 
-- (JEMetricsDataPredicate)initWithFormat:(id)a3
+- (JEMetricsDataPredicate)initWithFormat:(id)format
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  formatCopy = format;
   v11.receiver = self;
   v11.super_class = JEMetricsDataPredicate;
   v5 = [(JEMetricsDataPredicate *)&v11 init];
   if (v5)
   {
     v13 = @"_";
-    v6 = [MEMORY[0x1E696AE18] predicateWithFormat:v4];
+    v6 = [MEMORY[0x1E696AE18] predicateWithFormat:formatCopy];
     v12 = v6;
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v12 count:1];
     v14[0] = v7;
@@ -107,22 +107,22 @@ LABEL_7:
   return v5;
 }
 
-- (JEMetricsDataPredicate)initWithConfigDictionary:(id)a3
+- (JEMetricsDataPredicate)initWithConfigDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = JEMetricsDataPredicate;
   v5 = [(JEMetricsDataPredicate *)&v13 init];
   if (v5)
   {
-    v6 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v4, "count")}];
+    v6 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(dictionaryCopy, "count")}];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __51__JEMetricsDataPredicate_initWithConfigDictionary___block_invoke;
     v11[3] = &unk_1E794A830;
     v12 = v6;
     v7 = v6;
-    [v4 enumerateKeysAndObjectsUsingBlock:v11];
+    [dictionaryCopy enumerateKeysAndObjectsUsingBlock:v11];
     v8 = [v7 copy];
     fieldPredicates = v5->_fieldPredicates;
     v5->_fieldPredicates = v8;
@@ -257,9 +257,9 @@ LABEL_14:
 LABEL_16:
 }
 
-- (BOOL)evaluateWithMetricsData:(id)a3
+- (BOOL)evaluateWithMetricsData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -279,7 +279,7 @@ LABEL_16:
   v9[1] = 3221225472;
   v9[2] = __50__JEMetricsDataPredicate_evaluateWithMetricsData___block_invoke;
   v9[3] = &unk_1E794A858;
-  v7 = v4;
+  v7 = dataCopy;
   v10 = v7;
   v11 = &v12;
   [(NSDictionary *)v6 enumerateKeysAndObjectsUsingBlock:v9];

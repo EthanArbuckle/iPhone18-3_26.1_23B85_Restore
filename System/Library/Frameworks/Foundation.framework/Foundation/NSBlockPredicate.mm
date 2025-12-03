@@ -1,8 +1,8 @@
 @interface NSBlockPredicate
-- (BOOL)evaluateWithObject:(id)a3 substitutionVariables:(id)a4;
-- (NSBlockPredicate)initWithBlock:(id)a3;
-- (NSBlockPredicate)predicateWithSubstitutionVariables:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)evaluateWithObject:(id)object substitutionVariables:(id)variables;
+- (NSBlockPredicate)initWithBlock:(id)block;
+- (NSBlockPredicate)predicateWithSubstitutionVariables:(id)variables;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
 @end
 
@@ -18,7 +18,7 @@
   [(NSBlockPredicate *)&v3 dealloc];
 }
 
-- (NSBlockPredicate)initWithBlock:(id)a3
+- (NSBlockPredicate)initWithBlock:(id)block
 {
   v7 = *MEMORY[0x1E69E9840];
   v6.receiver = self;
@@ -26,13 +26,13 @@
   v4 = [(NSBlockPredicate *)&v6 init];
   if (v4)
   {
-    v4->_block = [a3 copy];
+    v4->_block = [block copy];
   }
 
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   block = self->_block;
@@ -40,7 +40,7 @@
   return [v4 initWithBlock:block];
 }
 
-- (BOOL)evaluateWithObject:(id)a3 substitutionVariables:(id)a4
+- (BOOL)evaluateWithObject:(id)object substitutionVariables:(id)variables
 {
   v18 = *MEMORY[0x1E69E9840];
   if (![(NSPredicate *)self _allowsEvaluation])
@@ -50,7 +50,7 @@
 
   v6 = objc_autoreleasePoolPush();
   v7 = [[_NSPerformanceMeter alloc] initWithTarget:self, 0];
-  if (!a4 || (v8 = a4, object_getClass(a4) != _NSNestedDictionary))
+  if (!variables || (v8 = variables, object_getClass(variables) != _NSNestedDictionary))
   {
     v16 = 0u;
     v17 = 0u;
@@ -61,11 +61,11 @@
     v9 = objc_opt_class();
     v8 = &v12;
     object_setClass(&v12, v9);
-    *&v13 = a4;
+    *&v13 = variables;
   }
 
   v10 = (*(self->_block + 2))();
-  if (v8 != a4)
+  if (v8 != variables)
   {
   }
 
@@ -78,7 +78,7 @@
   return v10;
 }
 
-- (NSBlockPredicate)predicateWithSubstitutionVariables:(id)a3
+- (NSBlockPredicate)predicateWithSubstitutionVariables:(id)variables
 {
   v3 = [(NSBlockPredicate *)self copy];
 

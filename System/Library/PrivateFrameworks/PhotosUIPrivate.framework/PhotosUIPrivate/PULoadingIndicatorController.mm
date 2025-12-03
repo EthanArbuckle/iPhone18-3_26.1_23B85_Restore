@@ -1,37 +1,37 @@
 @interface PULoadingIndicatorController
-- (BOOL)shouldInvalidateLoadingIndicatorForAssetViewModelChange:(id)a3;
-- (int64_t)loadingIndicatorStyleForAssetViewModel:(id)a3;
+- (BOOL)shouldInvalidateLoadingIndicatorForAssetViewModelChange:(id)change;
+- (int64_t)loadingIndicatorStyleForAssetViewModel:(id)model;
 @end
 
 @implementation PULoadingIndicatorController
 
-- (BOOL)shouldInvalidateLoadingIndicatorForAssetViewModelChange:(id)a3
+- (BOOL)shouldInvalidateLoadingIndicatorForAssetViewModelChange:(id)change
 {
-  v3 = a3;
+  changeCopy = change;
   v4 = +[PUOneUpSettings sharedInstance];
-  v5 = [v4 showLoadingIndicatorDuringDownload];
+  showLoadingIndicatorDuringDownload = [v4 showLoadingIndicatorDuringDownload];
 
-  if (v5 && ([v3 loadingStatusChanged] & 1) != 0 || (objc_msgSend(v3, "assetChanged") & 1) != 0)
+  if (showLoadingIndicatorDuringDownload && ([changeCopy loadingStatusChanged] & 1) != 0 || (objc_msgSend(changeCopy, "assetChanged") & 1) != 0)
   {
-    v6 = 1;
+    isUpdatingDisplayedContentChanged = 1;
   }
 
   else
   {
-    v6 = [v3 isUpdatingDisplayedContentChanged];
+    isUpdatingDisplayedContentChanged = [changeCopy isUpdatingDisplayedContentChanged];
   }
 
-  return v6;
+  return isUpdatingDisplayedContentChanged;
 }
 
-- (int64_t)loadingIndicatorStyleForAssetViewModel:(id)a3
+- (int64_t)loadingIndicatorStyleForAssetViewModel:(id)model
 {
-  v3 = a3;
+  modelCopy = model;
   v4 = +[PUOneUpSettings sharedInstance];
   if ([v4 showLoadingIndicatorDuringDownload])
   {
-    v5 = [v3 loadingStatus];
-    v6 = [v5 state] == 1;
+    loadingStatus = [modelCopy loadingStatus];
+    v6 = [loadingStatus state] == 1;
   }
 
   else
@@ -40,10 +40,10 @@
     v6 = 0;
   }
 
-  v7 = [v3 asset];
-  v8 = [v7 isTemporaryPlaceholder];
+  asset = [modelCopy asset];
+  isTemporaryPlaceholder = [asset isTemporaryPlaceholder];
 
-  if (v8)
+  if (isTemporaryPlaceholder)
   {
     v9 = 1;
   }
@@ -53,7 +53,7 @@
     v9 = v6;
   }
 
-  if ([v3 isUpdatingDisplayedContent])
+  if ([modelCopy isUpdatingDisplayedContent])
   {
     v9 = 3;
   }

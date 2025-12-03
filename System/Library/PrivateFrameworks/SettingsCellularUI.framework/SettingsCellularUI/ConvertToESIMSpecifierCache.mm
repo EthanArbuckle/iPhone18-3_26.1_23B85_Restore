@@ -1,23 +1,23 @@
 @interface ConvertToESIMSpecifierCache
-- (ConvertToESIMSpecifierCache)initWithDelegate:(id)a3 isViewControllerPopNeeded:(BOOL)a4 odcFlow:(id)a5 delegate:(id)a6 iccid:(id)a7;
+- (ConvertToESIMSpecifierCache)initWithDelegate:(id)delegate isViewControllerPopNeeded:(BOOL)needed odcFlow:(id)flow delegate:(id)a6 iccid:(id)iccid;
 - (UINavigationController)navigationController;
 - (void)dealloc;
-- (void)simSetupFlowCompleted:(unint64_t)a3;
+- (void)simSetupFlowCompleted:(unint64_t)completed;
 @end
 
 @implementation ConvertToESIMSpecifierCache
 
-- (ConvertToESIMSpecifierCache)initWithDelegate:(id)a3 isViewControllerPopNeeded:(BOOL)a4 odcFlow:(id)a5 delegate:(id)a6 iccid:(id)a7
+- (ConvertToESIMSpecifierCache)initWithDelegate:(id)delegate isViewControllerPopNeeded:(BOOL)needed odcFlow:(id)flow delegate:(id)a6 iccid:(id)iccid
 {
-  v12 = a3;
-  v13 = a5;
+  delegateCopy = delegate;
+  flowCopy = flow;
   v14 = a6;
-  v15 = a7;
-  v16 = [(ConvertToESIMSpecifierCache *)self getLogger];
-  if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+  iccidCopy = iccid;
+  getLogger = [(ConvertToESIMSpecifierCache *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
-    _os_log_impl(&dword_2658DE000, v16, OS_LOG_TYPE_DEFAULT, "in initWithSpecifer for ConvertToESIMSpecifierCache\n", buf, 2u);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "in initWithSpecifer for ConvertToESIMSpecifierCache\n", buf, 2u);
   }
 
   v20.receiver = self;
@@ -26,10 +26,10 @@
   v18 = v17;
   if (v17)
   {
-    objc_storeWeak(&v17->_navigationController, v12);
-    objc_storeStrong(&v18->_flow, a5);
-    v18->_isViewControllerPopNeeded = a4;
-    objc_storeStrong(&v18->_iccid, a7);
+    objc_storeWeak(&v17->_navigationController, delegateCopy);
+    objc_storeStrong(&v18->_flow, flow);
+    v18->_isViewControllerPopNeeded = needed;
+    objc_storeStrong(&v18->_iccid, iccid);
     objc_storeStrong(&v18->_delegate, a6);
     [(TSSIMSetupFlow *)v18->_flow setDelegate:v18];
   }
@@ -40,17 +40,17 @@
 - (void)dealloc
 {
   v10 = *MEMORY[0x277D85DE8];
-  v3 = [(ConvertToESIMSpecifierCache *)self getLogger];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(ConvertToESIMSpecifierCache *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     flow = self->_flow;
     *buf = 138412290;
     v9 = flow;
-    _os_log_impl(&dword_2658DE000, v3, OS_LOG_TYPE_DEFAULT, "ODC complete releasing SS flow: %@", buf, 0xCu);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "ODC complete releasing SS flow: %@", buf, 0xCu);
   }
 
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v7.receiver = self;
   v7.super_class = ConvertToESIMSpecifierCache;
@@ -58,15 +58,15 @@
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)simSetupFlowCompleted:(unint64_t)a3
+- (void)simSetupFlowCompleted:(unint64_t)completed
 {
   v11 = *MEMORY[0x277D85DE8];
-  v5 = [(ConvertToESIMSpecifierCache *)self getLogger];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(ConvertToESIMSpecifierCache *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v10 = a3;
-    _os_log_impl(&dword_2658DE000, v5, OS_LOG_TYPE_DEFAULT, "ConvertToESIMSpecifierCache simSetupFlowCompleted with completionType:%ld", buf, 0xCu);
+    completedCopy = completed;
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "ConvertToESIMSpecifierCache simSetupFlowCompleted with completionType:%ld", buf, 0xCu);
   }
 
   objc_initWeak(buf, self);
@@ -75,7 +75,7 @@
   block[2] = __53__ConvertToESIMSpecifierCache_simSetupFlowCompleted___block_invoke;
   block[3] = &unk_279BA9FE0;
   objc_copyWeak(v8, buf);
-  v8[1] = a3;
+  v8[1] = completed;
   block[4] = self;
   dispatch_async(MEMORY[0x277D85CD0], block);
   objc_destroyWeak(v8);

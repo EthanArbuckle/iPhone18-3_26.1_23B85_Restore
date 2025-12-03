@@ -3,10 +3,10 @@
 - (__n128)_currentFrustumInfo;
 - (__n128)_currentTransforms;
 - (unint64_t)_currentFrameHash;
-- (void)configureStageInputOutputDescriptor:(id)a3 withDeformerFunction:(id)a4;
+- (void)configureStageInputOutputDescriptor:(id)descriptor withDeformerFunction:(id)function;
 - (void)dealloc;
-- (void)initWithWrappedInstanceForStack:(void *)a3 deformer:(uint64_t)a4 node:(uint64_t)a5 outputs:(uint64_t)a6 computeVertexCount:(const void *)a7 stageInputOutputDescriptors:;
-- (void)setStageInputOutputBuffersToComputeEncoder:(SCNMTLComputeCommandEncoder *)a3;
+- (void)initWithWrappedInstanceForStack:(void *)stack deformer:(uint64_t)deformer node:(uint64_t)node outputs:(uint64_t)outputs computeVertexCount:(const void *)count stageInputOutputDescriptors:;
+- (void)setStageInputOutputBuffersToComputeEncoder:(SCNMTLComputeCommandEncoder *)encoder;
 - (void)setStageInputOutputBuffersToCurrentComputeEncoder;
 @end
 
@@ -19,15 +19,15 @@
   [(SCNGeometryDeformerInstanceWrapper *)&v3 dealloc];
 }
 
-- (void)configureStageInputOutputDescriptor:(id)a3 withDeformerFunction:(id)a4
+- (void)configureStageInputOutputDescriptor:(id)descriptor withDeformerFunction:(id)function
 {
   v27 = *MEMORY[0x277D85DE8];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v6 = [a4 stageInputAttributes];
-  v7 = [v6 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  stageInputAttributes = [function stageInputAttributes];
+  v7 = [stageInputAttributes countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v7)
   {
     v8 = v7;
@@ -38,7 +38,7 @@
       {
         if (*v23 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(stageInputAttributes);
         }
 
         v11 = *(*(&v22 + 1) + 8 * i);
@@ -49,7 +49,7 @@
             v12 = *&self->_stageInputOutputDescriptors.dstPositions.bufferAttributeOffset;
             v20 = *&self->_stageInputOutputDescriptors.dstPositions.isActive;
             v21 = v12;
-            v13 = a3;
+            descriptorCopy6 = descriptor;
             v14 = 3;
           }
 
@@ -58,7 +58,7 @@
             v16 = *&self->_stageInputOutputDescriptors.srcNormals.bufferAttributeOffset;
             v20 = *&self->_stageInputOutputDescriptors.srcNormals.isActive;
             v21 = v16;
-            v13 = a3;
+            descriptorCopy6 = descriptor;
             v14 = 1;
           }
 
@@ -67,7 +67,7 @@
             v17 = *&self->_stageInputOutputDescriptors.dstNormals.bufferAttributeOffset;
             v20 = *&self->_stageInputOutputDescriptors.dstNormals.isActive;
             v21 = v17;
-            v13 = a3;
+            descriptorCopy6 = descriptor;
             v14 = 4;
           }
 
@@ -76,7 +76,7 @@
             v18 = *&self->_stageInputOutputDescriptors.srcTangents.bufferAttributeOffset;
             v20 = *&self->_stageInputOutputDescriptors.srcTangents.isActive;
             v21 = v18;
-            v13 = a3;
+            descriptorCopy6 = descriptor;
             v14 = 2;
           }
 
@@ -90,7 +90,7 @@
             v19 = *&self->_stageInputOutputDescriptors.dstTangents.bufferAttributeOffset;
             v20 = *&self->_stageInputOutputDescriptors.dstTangents.isActive;
             v21 = v19;
-            v13 = a3;
+            descriptorCopy6 = descriptor;
             v14 = 5;
           }
         }
@@ -100,14 +100,14 @@
           v15 = *&self->_stageInputOutputDescriptors.srcPositions.bufferAttributeOffset;
           v20 = *&self->_stageInputOutputDescriptors.srcPositions.isActive;
           v21 = v15;
-          v13 = a3;
+          descriptorCopy6 = descriptor;
           v14 = 0;
         }
 
-        _configureStageInputOutputDescriptorWithDeformerFunction(v13, v14, &v20);
+        _configureStageInputOutputDescriptorWithDeformerFunction(descriptorCopy6, v14, &v20);
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v8 = [stageInputAttributes countByEnumeratingWithState:&v22 objects:v26 count:16];
     }
 
     while (v8);
@@ -117,17 +117,17 @@
 - (unint64_t)_currentFrameHash
 {
   currentUpdateRenderContext = self->_stack->_currentUpdateRenderContext;
-  v3 = [(SCNMTLRenderContext *)currentUpdateRenderContext engineContext];
-  SystemTime = C3DEngineContextGetSystemTime(v3);
-  v5 = [(SCNMTLOpenSubdivComputeEvaluator *)currentUpdateRenderContext computeEvaluator];
-  v6 = 0x9DDFEA08EB382D69 * (v5 ^ ((0x9DDFEA08EB382D69 * (v5 ^ currentUpdateRenderContext)) >> 47) ^ (0x9DDFEA08EB382D69 * (v5 ^ currentUpdateRenderContext)));
+  engineContext = [(SCNMTLRenderContext *)currentUpdateRenderContext engineContext];
+  SystemTime = C3DEngineContextGetSystemTime(engineContext);
+  computeEvaluator = [(SCNMTLOpenSubdivComputeEvaluator *)currentUpdateRenderContext computeEvaluator];
+  v6 = 0x9DDFEA08EB382D69 * (computeEvaluator ^ ((0x9DDFEA08EB382D69 * (computeEvaluator ^ currentUpdateRenderContext)) >> 47) ^ (0x9DDFEA08EB382D69 * (computeEvaluator ^ currentUpdateRenderContext)));
   v7 = 0xC6A4A7935BD1E995 * ((0xC6A4A7935BD1E995 * ((0xC6A4A7935BD1E995 * *&SystemTime) ^ ((0xC6A4A7935BD1E995 * *&SystemTime) >> 47))) ^ 0x35253C9ADE8F4CA8 ^ (0x9DDFEA08EB382D69 * (v6 ^ (v6 >> 47))));
   return (0xC6A4A7935BD1E995 * (v7 ^ (v7 >> 47))) ^ ((0xC6A4A7935BD1E995 * (v7 ^ (v7 >> 47))) >> 47);
 }
 
 - (__n128)_currentTransforms
 {
-  v2 = *(a1 + 8);
+  v2 = *(self + 8);
   v3 = *(v2 + 560);
   *(a2 + 128) = *(v2 + 544);
   *(a2 + 144) = v3;
@@ -152,7 +152,7 @@
 
 - (__n128)_currentFrustumInfo
 {
-  v2 = *(a1 + 8);
+  v2 = *(self + 8);
   v3 = *(v2 + 688);
   *(a2 + 64) = *(v2 + 672);
   *(a2 + 80) = v3;
@@ -166,14 +166,14 @@
   return result;
 }
 
-- (void)setStageInputOutputBuffersToComputeEncoder:(SCNMTLComputeCommandEncoder *)a3
+- (void)setStageInputOutputBuffersToComputeEncoder:(SCNMTLComputeCommandEncoder *)encoder
 {
   if (self->_stageInputOutputDescriptors.srcPositions.isActive)
   {
     srcPositions = self->_currentUpdateBuffers.srcPositions;
-    if (a3->_buffers[10] == srcPositions)
+    if (encoder->_buffers[10] == srcPositions)
     {
-      if (!a3->_offsets[10])
+      if (!encoder->_offsets[10])
       {
         goto LABEL_6;
       }
@@ -181,11 +181,11 @@
 
     else
     {
-      a3->_buffers[10] = srcPositions;
+      encoder->_buffers[10] = srcPositions;
     }
 
-    a3->_offsets[10] = 0;
-    a3->_buffersToBind[0] |= 0x400uLL;
+    encoder->_offsets[10] = 0;
+    encoder->_buffersToBind[0] |= 0x400uLL;
   }
 
 LABEL_6:
@@ -195,9 +195,9 @@ LABEL_6:
   }
 
   dstPositions = self->_currentUpdateBuffers.dstPositions;
-  if (a3->_buffers[13] == dstPositions)
+  if (encoder->_buffers[13] == dstPositions)
   {
-    if (!a3->_offsets[13])
+    if (!encoder->_offsets[13])
     {
       goto LABEL_11;
     }
@@ -205,11 +205,11 @@ LABEL_6:
 
   else
   {
-    a3->_buffers[13] = dstPositions;
+    encoder->_buffers[13] = dstPositions;
   }
 
-  a3->_offsets[13] = 0;
-  a3->_buffersToBind[0] |= 0x2000uLL;
+  encoder->_offsets[13] = 0;
+  encoder->_buffersToBind[0] |= 0x2000uLL;
 LABEL_11:
   if (!self->_stageInputOutputDescriptors.srcNormals.isActive)
   {
@@ -217,9 +217,9 @@ LABEL_11:
   }
 
   srcNormals = self->_currentUpdateBuffers.srcNormals;
-  if (a3->_buffers[11] == srcNormals)
+  if (encoder->_buffers[11] == srcNormals)
   {
-    if (!a3->_offsets[11])
+    if (!encoder->_offsets[11])
     {
       goto LABEL_16;
     }
@@ -227,11 +227,11 @@ LABEL_11:
 
   else
   {
-    a3->_buffers[11] = srcNormals;
+    encoder->_buffers[11] = srcNormals;
   }
 
-  a3->_offsets[11] = 0;
-  a3->_buffersToBind[0] |= 0x800uLL;
+  encoder->_offsets[11] = 0;
+  encoder->_buffersToBind[0] |= 0x800uLL;
 LABEL_16:
   if (!self->_stageInputOutputDescriptors.dstNormals.isActive)
   {
@@ -239,9 +239,9 @@ LABEL_16:
   }
 
   dstNormals = self->_currentUpdateBuffers.dstNormals;
-  if (a3->_buffers[14] == dstNormals)
+  if (encoder->_buffers[14] == dstNormals)
   {
-    if (!a3->_offsets[14])
+    if (!encoder->_offsets[14])
     {
       goto LABEL_21;
     }
@@ -249,11 +249,11 @@ LABEL_16:
 
   else
   {
-    a3->_buffers[14] = dstNormals;
+    encoder->_buffers[14] = dstNormals;
   }
 
-  a3->_offsets[14] = 0;
-  a3->_buffersToBind[0] |= 0x4000uLL;
+  encoder->_offsets[14] = 0;
+  encoder->_buffersToBind[0] |= 0x4000uLL;
 LABEL_21:
   if (!self->_stageInputOutputDescriptors.srcTangents.isActive)
   {
@@ -261,9 +261,9 @@ LABEL_21:
   }
 
   srcTangents = self->_currentUpdateBuffers.srcTangents;
-  if (a3->_buffers[12] == srcTangents)
+  if (encoder->_buffers[12] == srcTangents)
   {
-    if (!a3->_offsets[12])
+    if (!encoder->_offsets[12])
     {
       goto LABEL_26;
     }
@@ -271,11 +271,11 @@ LABEL_21:
 
   else
   {
-    a3->_buffers[12] = srcTangents;
+    encoder->_buffers[12] = srcTangents;
   }
 
-  a3->_offsets[12] = 0;
-  a3->_buffersToBind[0] |= 0x1000uLL;
+  encoder->_offsets[12] = 0;
+  encoder->_buffersToBind[0] |= 0x1000uLL;
 LABEL_26:
   if (!self->_stageInputOutputDescriptors.dstTangents.isActive)
   {
@@ -283,9 +283,9 @@ LABEL_26:
   }
 
   dstTangents = self->_currentUpdateBuffers.dstTangents;
-  if (a3->_buffers[15] == dstTangents)
+  if (encoder->_buffers[15] == dstTangents)
   {
-    if (!a3->_offsets[15])
+    if (!encoder->_offsets[15])
     {
       return;
     }
@@ -293,11 +293,11 @@ LABEL_26:
 
   else
   {
-    a3->_buffers[15] = dstTangents;
+    encoder->_buffers[15] = dstTangents;
   }
 
-  a3->_offsets[15] = 0;
-  a3->_buffersToBind[0] |= 0x8000uLL;
+  encoder->_offsets[15] = 0;
+  encoder->_buffersToBind[0] |= 0x8000uLL;
 }
 
 - (void)setStageInputOutputBuffersToCurrentComputeEncoder
@@ -355,23 +355,23 @@ LABEL_26:
   return result;
 }
 
-- (void)initWithWrappedInstanceForStack:(void *)a3 deformer:(uint64_t)a4 node:(uint64_t)a5 outputs:(uint64_t)a6 computeVertexCount:(const void *)a7 stageInputOutputDescriptors:
+- (void)initWithWrappedInstanceForStack:(void *)stack deformer:(uint64_t)deformer node:(uint64_t)node outputs:(uint64_t)outputs computeVertexCount:(const void *)count stageInputOutputDescriptors:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v16.receiver = a1;
+  v16.receiver = self;
   v16.super_class = SCNGeometryDeformerInstanceWrapper;
   v13 = objc_msgSendSuper2(&v16, sel_init);
   v14 = v13;
   if (v13)
   {
     v13[1] = a2;
-    v13[2] = a3;
-    memcpy(v13 + 4, a7, 0x180uLL);
-    v14[3] = [a3 newDeformerInstanceForNode:a4 outputs:a5 computeVertexCount:a6 context:v14];
+    v13[2] = stack;
+    memcpy(v13 + 4, count, 0x180uLL);
+    v14[3] = [stack newDeformerInstanceForNode:deformer outputs:node computeVertexCount:outputs context:v14];
   }
 
   return v14;

@@ -1,8 +1,8 @@
 @interface AX_AvatarCarousel
-- (AX_AvatarCarousel)initWithMessagesController:(id)a3 accessibilityContainer:(id)a4;
-- (BOOL)_accessibilityScrollCarousel:(BOOL)a3;
+- (AX_AvatarCarousel)initWithMessagesController:(id)controller accessibilityContainer:(id)container;
+- (BOOL)_accessibilityScrollCarousel:(BOOL)carousel;
 - (BOOL)_axMessagesControllerIsExpanded;
-- (BOOL)accessibilityScroll:(int64_t)a3;
+- (BOOL)accessibilityScroll:(int64_t)scroll;
 - (BOOL)isAccessibilityElement;
 - (CGRect)accessibilityFrameInContainerSpace;
 - (id)_axContainerAvatarController;
@@ -14,16 +14,16 @@
 
 @implementation AX_AvatarCarousel
 
-- (AX_AvatarCarousel)initWithMessagesController:(id)a3 accessibilityContainer:(id)a4
+- (AX_AvatarCarousel)initWithMessagesController:(id)controller accessibilityContainer:(id)container
 {
-  v6 = a3;
+  controllerCopy = controller;
   v11.receiver = self;
   v11.super_class = AX_AvatarCarousel;
-  v7 = [(AX_AvatarCarousel *)&v11 initWithAccessibilityContainer:a4];
+  v7 = [(AX_AvatarCarousel *)&v11 initWithAccessibilityContainer:container];
   v8 = v7;
   if (v7)
   {
-    [(AX_AvatarCarousel *)v7 setMessagesController:v6];
+    [(AX_AvatarCarousel *)v7 setMessagesController:controllerCopy];
     v10 = v8;
     AXPerformSafeBlock();
   }
@@ -33,24 +33,24 @@
 
 - (id)_axContainerAvatarController
 {
-  v2 = [(AX_AvatarCarousel *)self messagesController];
-  v3 = [v2 safeValueForKeyPath:@"_avatarListController.multiAvatarController"];
+  messagesController = [(AX_AvatarCarousel *)self messagesController];
+  v3 = [messagesController safeValueForKeyPath:@"_avatarListController.multiAvatarController"];
 
   return v3;
 }
 
 - (BOOL)_axMessagesControllerIsExpanded
 {
-  v2 = [(AX_AvatarCarousel *)self messagesController];
-  v3 = [v2 safeUnsignedIntegerForKey:@"presentationStyle"] == 1;
+  messagesController = [(AX_AvatarCarousel *)self messagesController];
+  v3 = [messagesController safeUnsignedIntegerForKey:@"presentationStyle"] == 1;
 
   return v3;
 }
 
 - (BOOL)isAccessibilityElement
 {
-  v2 = [(AX_AvatarCarousel *)self messagesController];
-  v3 = [v2 safeUnsignedIntegerForKey:@"_UIState"];
+  messagesController = [(AX_AvatarCarousel *)self messagesController];
+  v3 = [messagesController safeUnsignedIntegerForKey:@"_UIState"];
 
   return v3 != 1 && v3 != 4;
 }
@@ -64,22 +64,22 @@
 
   else
   {
-    v3 = [(AX_AvatarCarousel *)self _axContainerAvatarController];
+    _axContainerAvatarController = [(AX_AvatarCarousel *)self _axContainerAvatarController];
     if ([(AX_AvatarCarousel *)self _axMessagesControllerIsExpanded])
     {
-      v4 = [(AX_AvatarCarousel *)self messagesController];
-      v5 = [v4 safeValueForKey:@"_puppetCollectionViewController"];
+      messagesController = [(AX_AvatarCarousel *)self messagesController];
+      v5 = [messagesController safeValueForKey:@"_puppetCollectionViewController"];
       v6 = [v5 safeValueForKey:@"selectedRecord"];
     }
 
     else
     {
-      v6 = [v3 safeValueForKey:@"displayedRecord"];
+      v6 = [_axContainerAvatarController safeValueForKey:@"displayedRecord"];
     }
 
     v8 = [MEMORY[0x29EDBDE08] descriptionForAvatarWithRecord:v6 includeVideoPrefix:0];
-    v9 = [(AX_AvatarCarousel *)self messagesController];
-    v10 = [v9 safeUIViewForKey:@"_userInfoView"];
+    messagesController2 = [(AX_AvatarCarousel *)self messagesController];
+    v10 = [messagesController2 safeUIViewForKey:@"_userInfoView"];
 
     [v10 alpha];
     if (v11 <= 0.0)
@@ -100,8 +100,8 @@
 
 - (id)accessibilityHint
 {
-  v2 = [(AX_AvatarCarousel *)self messagesController];
-  v3 = [v2 safeUnsignedIntegerForKey:@"_arSessionState"];
+  messagesController = [(AX_AvatarCarousel *)self messagesController];
+  v3 = [messagesController safeUnsignedIntegerForKey:@"_arSessionState"];
 
   if (v3 == 4)
   {
@@ -127,44 +127,44 @@ LABEL_7:
 {
   v7.receiver = self;
   v7.super_class = AX_AvatarCarousel;
-  v3 = [(AX_AvatarCarousel *)&v7 accessibilityTraits];
-  v4 = [(AX_AvatarCarousel *)self _axMessagesControllerIsExpanded];
+  accessibilityTraits = [(AX_AvatarCarousel *)&v7 accessibilityTraits];
+  _axMessagesControllerIsExpanded = [(AX_AvatarCarousel *)self _axMessagesControllerIsExpanded];
   v5 = *MEMORY[0x29EDC7F60];
-  if (v4)
+  if (_axMessagesControllerIsExpanded)
   {
     v5 = 0;
   }
 
-  return v5 | v3;
+  return v5 | accessibilityTraits;
 }
 
-- (BOOL)_accessibilityScrollCarousel:(BOOL)a3
+- (BOOL)_accessibilityScrollCarousel:(BOOL)carousel
 {
-  v3 = self;
-  v4 = [(AX_AvatarCarousel *)self _axContainerAvatarController];
-  [(AX_AvatarCarousel *)v3 _axCurrentIndex];
+  selfCopy = self;
+  _axContainerAvatarController = [(AX_AvatarCarousel *)self _axContainerAvatarController];
+  [(AX_AvatarCarousel *)selfCopy _axCurrentIndex];
   v7 = 0;
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v6 = v4;
+  v6 = _axContainerAvatarController;
   AXPerformSafeBlock();
-  LOBYTE(v3) = *(v8 + 24);
+  LOBYTE(selfCopy) = *(v8 + 24);
 
   _Block_object_dispose(&v7, 8);
-  return v3;
+  return selfCopy;
 }
 
-- (BOOL)accessibilityScroll:(int64_t)a3
+- (BOOL)accessibilityScroll:(int64_t)scroll
 {
-  if (a3 == 1)
+  if (scroll == 1)
   {
     v5 = 0;
 
     return [(AX_AvatarCarousel *)self _accessibilityScrollCarousel:v5];
   }
 
-  if (a3 == 2)
+  if (scroll == 2)
   {
     v5 = 1;
 
@@ -180,8 +180,8 @@ LABEL_7:
 
 - (CGRect)accessibilityFrameInContainerSpace
 {
-  v2 = [(AX_AvatarCarousel *)self accessibilityContainer];
-  [v2 frame];
+  accessibilityContainer = [(AX_AvatarCarousel *)self accessibilityContainer];
+  [accessibilityContainer frame];
   v4 = v3;
   v6 = v5;
   v8 = v7;

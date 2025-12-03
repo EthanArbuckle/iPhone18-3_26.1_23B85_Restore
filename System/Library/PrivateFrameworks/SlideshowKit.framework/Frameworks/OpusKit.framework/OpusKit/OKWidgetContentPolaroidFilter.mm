@@ -1,5 +1,5 @@
 @interface OKWidgetContentPolaroidFilter
-+ (void)setupJavascriptContext:(id)a3;
++ (void)setupJavascriptContext:(id)context;
 - (id)outputImage;
 @end
 
@@ -13,12 +13,12 @@
   return [v2 valueForKey:v3];
 }
 
-+ (void)setupJavascriptContext:(id)a3
++ (void)setupJavascriptContext:(id)context
 {
-  [a3 setObject:objc_opt_class() forKeyedSubscript:@"OKWidgetContentPolaroidFilter"];
+  [context setObject:objc_opt_class() forKeyedSubscript:@"OKWidgetContentPolaroidFilter"];
   v4 = objc_opt_class();
 
-  [OKSettings exportClassSettings:v4 toJavaScriptContext:a3];
+  [OKSettings exportClassSettings:v4 toJavaScriptContext:context];
 }
 
 @end

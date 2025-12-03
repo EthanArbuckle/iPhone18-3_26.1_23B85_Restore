@@ -1,28 +1,28 @@
 @interface HPSHomeKitSettingHelper
-+ (id)compatibleReadResult:(id)a3;
-+ (id)compatibleReadResults:(id)a3;
-+ (id)compatibleReadSetting:(id)a3;
-+ (id)compatibleWriteSetting:(id)a3;
-+ (id)fixUpAutoAdjustSiriVolumeEnabled:(id)a3;
-+ (id)fixUpHoldDuration:(id)a3;
-+ (id)fixUpIgnoreRepeat:(id)a3;
-+ (id)fixUpSpeakingRate:(id)a3;
-+ (id)fixUpTapAssistanceSelection:(id)a3;
-+ (id)fixUpTimeoutInterval:(id)a3;
++ (id)compatibleReadResult:(id)result;
++ (id)compatibleReadResults:(id)results;
++ (id)compatibleReadSetting:(id)setting;
++ (id)compatibleWriteSetting:(id)setting;
++ (id)fixUpAutoAdjustSiriVolumeEnabled:(id)enabled;
++ (id)fixUpHoldDuration:(id)duration;
++ (id)fixUpIgnoreRepeat:(id)repeat;
++ (id)fixUpSpeakingRate:(id)rate;
++ (id)fixUpTapAssistanceSelection:(id)selection;
++ (id)fixUpTimeoutInterval:(id)interval;
 + (id)readSettingFixupMap;
 + (id)writeSettingFixupMap;
 @end
 
 @implementation HPSHomeKitSettingHelper
 
-+ (id)compatibleReadSetting:(id)a3
++ (id)compatibleReadSetting:(id)setting
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  location = v4;
+  settingCopy = setting;
+  location = settingCopy;
   v5 = +[HPSHomeKitSettingHelper readSettingFixupMap];
-  v6 = [v4 keyPath];
-  v7 = [v5 objectForKey:v6];
+  keyPath = [settingCopy keyPath];
+  v7 = [v5 objectForKey:keyPath];
   v8 = v7;
   if (v7 && (v9 = NSSelectorFromString(v7), (objc_opt_respondsToSelector() & 1) != 0))
   {
@@ -32,15 +32,15 @@
       *buf = 136315394;
       *&buf[4] = "+[HPSHomeKitSettingHelper compatibleReadSetting:]";
       v19 = 2112;
-      v20 = v6;
+      v20 = keyPath;
       _os_log_impl(&dword_2542B7000, v10, OS_LOG_TYPE_INFO, "%s fixing up %@", buf, 0x16u);
     }
 
     v11 = MEMORY[0x277CBEAE8];
-    v12 = [a1 methodSignatureForSelector:v9];
+    v12 = [self methodSignatureForSelector:v9];
     v13 = [v11 invocationWithMethodSignature:v12];
 
-    [v13 setTarget:a1];
+    [v13 setTarget:self];
     [v13 setSelector:v9];
     [v13 setArgument:&location atIndex:2];
     [v13 invoke];
@@ -52,7 +52,7 @@
 
   else
   {
-    v14 = v4;
+    v14 = settingCopy;
   }
 
   v15 = *MEMORY[0x277D85DE8];
@@ -60,14 +60,14 @@
   return v14;
 }
 
-+ (id)compatibleWriteSetting:(id)a3
++ (id)compatibleWriteSetting:(id)setting
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  location = v4;
+  settingCopy = setting;
+  location = settingCopy;
   v5 = +[HPSHomeKitSettingHelper writeSettingFixupMap];
-  v6 = [v4 keyPath];
-  v7 = [v5 objectForKey:v6];
+  keyPath = [settingCopy keyPath];
+  v7 = [v5 objectForKey:keyPath];
   v8 = v7;
   if (v7 && (v9 = NSSelectorFromString(v7), (objc_opt_respondsToSelector() & 1) != 0))
   {
@@ -77,15 +77,15 @@
       *buf = 136315394;
       *&buf[4] = "+[HPSHomeKitSettingHelper compatibleWriteSetting:]";
       v19 = 2112;
-      v20 = v6;
+      v20 = keyPath;
       _os_log_impl(&dword_2542B7000, v10, OS_LOG_TYPE_INFO, "%s fixing up %@", buf, 0x16u);
     }
 
     v11 = MEMORY[0x277CBEAE8];
-    v12 = [a1 methodSignatureForSelector:v9];
+    v12 = [self methodSignatureForSelector:v9];
     v13 = [v11 invocationWithMethodSignature:v12];
 
-    [v13 setTarget:a1];
+    [v13 setTarget:self];
     [v13 setSelector:v9];
     [v13 setArgument:&location atIndex:2];
     [v13 invoke];
@@ -97,7 +97,7 @@
 
   else
   {
-    v14 = v4;
+    v14 = settingCopy;
   }
 
   v15 = *MEMORY[0x277D85DE8];
@@ -105,30 +105,30 @@
   return v14;
 }
 
-+ (id)compatibleReadResult:(id)a3
++ (id)compatibleReadResult:(id)result
 {
-  v4 = a3;
-  v5 = [v4 setting];
-  if (v5)
+  resultCopy = result;
+  setting = [resultCopy setting];
+  if (setting)
   {
-    v6 = [a1 compatibleReadSetting:v5];
-    if (v5 != v6)
+    v6 = [self compatibleReadSetting:setting];
+    if (setting != v6)
     {
       v7 = [HPSResult alloc];
-      v8 = [v4 accessoryIdentifier];
-      v9 = [v4 error];
-      v10 = -[HPSResult initWithSetting:accessoryIdentifier:error:result:](v7, "initWithSetting:accessoryIdentifier:error:result:", v6, v8, v9, [v4 isSuccess]);
+      accessoryIdentifier = [resultCopy accessoryIdentifier];
+      error = [resultCopy error];
+      v10 = -[HPSResult initWithSetting:accessoryIdentifier:error:result:](v7, "initWithSetting:accessoryIdentifier:error:result:", v6, accessoryIdentifier, error, [resultCopy isSuccess]);
 
-      v4 = v10;
+      resultCopy = v10;
     }
   }
 
-  return v4;
+  return resultCopy;
 }
 
-+ (id)compatibleReadResults:(id)a3
++ (id)compatibleReadResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -140,8 +140,8 @@
   v9[2] = __49__HPSHomeKitSettingHelper_compatibleReadResults___block_invoke;
   v9[3] = &unk_279773FA0;
   v11 = &v13;
-  v12 = a1;
-  v5 = v4;
+  selfCopy = self;
+  v5 = resultsCopy;
   v10 = v5;
   [v5 enumerateObjectsUsingBlock:v9];
   v6 = v14[5];
@@ -242,13 +242,13 @@ void __47__HPSHomeKitSettingHelper_writeSettingFixupMap__block_invoke()
   v2 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)fixUpTapAssistanceSelection:(id)a3
++ (id)fixUpTapAssistanceSelection:(id)selection
 {
-  v3 = a3;
-  v4 = [v3 keyPath];
-  v5 = [v3 value];
+  selectionCopy = selection;
+  keyPath = [selectionCopy keyPath];
+  value = [selectionCopy value];
 
-  v6 = v5;
+  v6 = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -270,20 +270,20 @@ void __47__HPSHomeKitSettingHelper_writeSettingFixupMap__block_invoke()
     v11 = *MEMORY[0x277CBE658];
     v12 = objc_opt_class();
     v9 = NSStringFromClass(v12);
-    [v10 raise:v11 format:{@"%@ value should not be a %@", v4, v9}];
+    [v10 raise:v11 format:{@"%@ value should not be a %@", keyPath, v9}];
     v8 = v6;
   }
 
 LABEL_6:
-  v13 = [[HPSConstrainedNumberSetting alloc] initWithKeyPath:v4 numberValue:v8 minimumValue:&unk_286656138 maximumValue:&unk_286656150 stepValue:&unk_286656168];
+  v13 = [[HPSConstrainedNumberSetting alloc] initWithKeyPath:keyPath numberValue:v8 minimumValue:&unk_286656138 maximumValue:&unk_286656150 stepValue:&unk_286656168];
 
   return v13;
 }
 
-+ (id)fixUpSpeakingRate:(id)a3
++ (id)fixUpSpeakingRate:(id)rate
 {
-  v3 = a3;
-  v4 = [v3 keyPath];
+  rateCopy = rate;
+  keyPath = [rateCopy keyPath];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -291,20 +291,20 @@ LABEL_6:
     v6 = *MEMORY[0x277CBE658];
     v7 = objc_opt_class();
     v8 = NSStringFromClass(v7);
-    [v5 raise:v6 format:{@"%@ should not be a %@", v4, v8}];
+    [v5 raise:v6 format:{@"%@ should not be a %@", keyPath, v8}];
   }
 
   v9 = [HPSConstrainedNumberSetting alloc];
-  v10 = [v3 numberValue];
-  v11 = [(HPSConstrainedNumberSetting *)v9 initWithKeyPath:v4 numberValue:v10 minimumValue:&unk_286656180 maximumValue:&unk_286656168 stepValue:&unk_2866561C8];
+  numberValue = [rateCopy numberValue];
+  v11 = [(HPSConstrainedNumberSetting *)v9 initWithKeyPath:keyPath numberValue:numberValue minimumValue:&unk_286656180 maximumValue:&unk_286656168 stepValue:&unk_2866561C8];
 
   return v11;
 }
 
-+ (id)fixUpTimeoutInterval:(id)a3
++ (id)fixUpTimeoutInterval:(id)interval
 {
-  v3 = a3;
-  v4 = [v3 keyPath];
+  intervalCopy = interval;
+  keyPath = [intervalCopy keyPath];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -312,20 +312,20 @@ LABEL_6:
     v6 = *MEMORY[0x277CBE658];
     v7 = objc_opt_class();
     v8 = NSStringFromClass(v7);
-    [v5 raise:v6 format:{@"%@ should not be a %@", v4, v8}];
+    [v5 raise:v6 format:{@"%@ should not be a %@", keyPath, v8}];
   }
 
   v9 = [HPSConstrainedNumberSetting alloc];
-  v10 = [v3 numberValue];
-  v11 = [(HPSConstrainedNumberSetting *)v9 initWithKeyPath:v4 numberValue:v10 minimumValue:&unk_2866561D8 maximumValue:&unk_2866561E8 stepValue:&unk_2866561F8];
+  numberValue = [intervalCopy numberValue];
+  v11 = [(HPSConstrainedNumberSetting *)v9 initWithKeyPath:keyPath numberValue:numberValue minimumValue:&unk_2866561D8 maximumValue:&unk_2866561E8 stepValue:&unk_2866561F8];
 
   return v11;
 }
 
-+ (id)fixUpIgnoreRepeat:(id)a3
++ (id)fixUpIgnoreRepeat:(id)repeat
 {
-  v3 = a3;
-  v4 = [v3 keyPath];
+  repeatCopy = repeat;
+  keyPath = [repeatCopy keyPath];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -333,20 +333,20 @@ LABEL_6:
     v6 = *MEMORY[0x277CBE658];
     v7 = objc_opt_class();
     v8 = NSStringFromClass(v7);
-    [v5 raise:v6 format:{@"%@ should not be a %@", v4, v8}];
+    [v5 raise:v6 format:{@"%@ should not be a %@", keyPath, v8}];
   }
 
   v9 = [HPSConstrainedNumberSetting alloc];
-  v10 = [v3 numberValue];
-  v11 = [(HPSConstrainedNumberSetting *)v9 initWithKeyPath:v4 numberValue:v10 minimumValue:&unk_286656208 maximumValue:&unk_286656198 stepValue:&unk_286656208];
+  numberValue = [repeatCopy numberValue];
+  v11 = [(HPSConstrainedNumberSetting *)v9 initWithKeyPath:keyPath numberValue:numberValue minimumValue:&unk_286656208 maximumValue:&unk_286656198 stepValue:&unk_286656208];
 
   return v11;
 }
 
-+ (id)fixUpHoldDuration:(id)a3
++ (id)fixUpHoldDuration:(id)duration
 {
-  v3 = a3;
-  v4 = [v3 keyPath];
+  durationCopy = duration;
+  keyPath = [durationCopy keyPath];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -354,20 +354,20 @@ LABEL_6:
     v6 = *MEMORY[0x277CBE658];
     v7 = objc_opt_class();
     v8 = NSStringFromClass(v7);
-    [v5 raise:v6 format:{@"%@ should not be a %@", v4, v8}];
+    [v5 raise:v6 format:{@"%@ should not be a %@", keyPath, v8}];
   }
 
   v9 = [HPSConstrainedNumberSetting alloc];
-  v10 = [v3 numberValue];
-  v11 = [(HPSConstrainedNumberSetting *)v9 initWithKeyPath:v4 numberValue:v10 minimumValue:&unk_286656208 maximumValue:&unk_286656198 stepValue:&unk_286656208];
+  numberValue = [durationCopy numberValue];
+  v11 = [(HPSConstrainedNumberSetting *)v9 initWithKeyPath:keyPath numberValue:numberValue minimumValue:&unk_286656208 maximumValue:&unk_286656198 stepValue:&unk_286656208];
 
   return v11;
 }
 
-+ (id)fixUpAutoAdjustSiriVolumeEnabled:(id)a3
++ (id)fixUpAutoAdjustSiriVolumeEnabled:(id)enabled
 {
-  v3 = a3;
-  v4 = [v3 keyPath];
+  enabledCopy = enabled;
+  keyPath = [enabledCopy keyPath];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -375,10 +375,10 @@ LABEL_6:
     v6 = *MEMORY[0x277CBE658];
     v7 = objc_opt_class();
     v8 = NSStringFromClass(v7);
-    [v5 raise:v6 format:{@"%@ should not be a %@", v4, v8}];
+    [v5 raise:v6 format:{@"%@ should not be a %@", keyPath, v8}];
   }
 
-  v9 = +[HPSBooleanSetting settingWithKeyPath:BOOLeanValue:](HPSBooleanSetting, "settingWithKeyPath:BOOLeanValue:", v4, [v3 BOOLeanValue] ^ 1);
+  v9 = +[HPSBooleanSetting settingWithKeyPath:BOOLeanValue:](HPSBooleanSetting, "settingWithKeyPath:BOOLeanValue:", keyPath, [enabledCopy BOOLeanValue] ^ 1);
 
   return v9;
 }

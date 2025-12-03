@@ -1,19 +1,19 @@
 @interface AMDUserDataManager
-+ (id)clearDataForUser:(id)a3 error:(id *)a4;
-+ (id)deleteAllUserData:(id *)a3;
++ (id)clearDataForUser:(id)user error:(id *)error;
++ (id)deleteAllUserData:(id *)data;
 @end
 
 @implementation AMDUserDataManager
 
-+ (id)deleteAllUserData:(id *)a3
++ (id)deleteAllUserData:(id *)data
 {
   v53 = *MEMORY[0x277D85DE8];
-  v44 = a1;
+  selfCopy = self;
   v43 = a2;
-  v42 = a3;
+  dataCopy = data;
   v41 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v40 = [AMDAppEvent deleteAllEvents:v42];
-  if (*v42)
+  v40 = [AMDAppEvent deleteAllEvents:dataCopy];
+  if (*dataCopy)
   {
     v39 = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
     v38 = 16;
@@ -21,11 +21,11 @@
     {
       log = v39;
       type = v38;
-      v17 = [*v42 localizedDescription];
-      v37 = MEMORY[0x277D82BE0](v17);
+      localizedDescription = [*dataCopy localizedDescription];
+      v37 = MEMORY[0x277D82BE0](localizedDescription);
       __os_log_helper_16_2_1_8_64(v52, v37);
       _os_log_error_impl(&dword_240CB9000, log, type, "Error deleting previous user's events: %@", v52, 0xCu);
-      MEMORY[0x277D82BD8](v17);
+      MEMORY[0x277D82BD8](localizedDescription);
       objc_storeStrong(&v37, 0);
     }
 
@@ -57,8 +57,8 @@
   }
 
   objc_storeStrong(&v34, 0);
-  v31 = [AMDAppSegment deleteAllSegments:v42];
-  if (*v42)
+  v31 = [AMDAppSegment deleteAllSegments:dataCopy];
+  if (*dataCopy)
   {
     v30 = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
     v29 = OS_LOG_TYPE_ERROR;
@@ -66,11 +66,11 @@
     {
       v10 = v30;
       v11 = v29;
-      v12 = [*v42 localizedDescription];
-      v28 = MEMORY[0x277D82BE0](v12);
+      localizedDescription2 = [*dataCopy localizedDescription];
+      v28 = MEMORY[0x277D82BE0](localizedDescription2);
       __os_log_helper_16_2_1_8_64(v50, v28);
       _os_log_error_impl(&dword_240CB9000, v10, v11, "Error deleting previous user's in-app segments: %@", v50, 0xCu);
-      MEMORY[0x277D82BD8](v12);
+      MEMORY[0x277D82BD8](localizedDescription2);
       objc_storeStrong(&v28, 0);
     }
 
@@ -102,8 +102,8 @@
   }
 
   objc_storeStrong(&v25, 0);
-  v22 = [AMDTasteProfile deleteAll:v42];
-  if (*v42)
+  v22 = [AMDTasteProfile deleteAll:dataCopy];
+  if (*dataCopy)
   {
     v21 = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
     v20 = OS_LOG_TYPE_ERROR;
@@ -111,11 +111,11 @@
     {
       v5 = v21;
       v6 = v20;
-      v7 = [*v42 localizedDescription];
-      v19 = MEMORY[0x277D82BE0](v7);
+      localizedDescription3 = [*dataCopy localizedDescription];
+      v19 = MEMORY[0x277D82BE0](localizedDescription3);
       __os_log_helper_16_2_1_8_64(v48, v19);
       _os_log_error_impl(&dword_240CB9000, v5, v6, "Error deleting previous user's taste profile: %@", v48, 0xCu);
-      MEMORY[0x277D82BD8](v7);
+      MEMORY[0x277D82BD8](localizedDescription3);
       objc_storeStrong(&v19, 0);
     }
 
@@ -135,7 +135,7 @@
     [v41 setObject:v22 forKey:@"tpFeaturesDeleted"];
   }
 
-  *v42 = 0;
+  *dataCopy = 0;
   v45 = @"userDataDeletionSummary";
   v46 = v41;
   v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v46 forKeys:&v45 count:1];
@@ -148,14 +148,14 @@
   return v4;
 }
 
-+ (id)clearDataForUser:(id)a3 error:(id *)a4
++ (id)clearDataForUser:(id)user error:(id *)error
 {
   v75 = *MEMORY[0x277D85DE8];
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v63 = a4;
+  objc_storeStrong(location, user);
+  errorCopy = error;
   v62 = [location[0] objectForKey:@"dsid"];
   v61 = [location[0] objectForKey:@"domain"];
   v60 = [location[0] objectForKey:@"storefrontId"];
@@ -181,11 +181,11 @@
       {
         v23 = oslog;
         v24 = v50;
-        v25 = [v55 localizedDescription];
-        v49 = MEMORY[0x277D82BE0](v25);
+        localizedDescription = [v55 localizedDescription];
+        v49 = MEMORY[0x277D82BE0](localizedDescription);
         __os_log_helper_16_2_1_8_64(v71, v49);
         _os_log_error_impl(&dword_240CB9000, v23, v24, "KV store update with clear data timestamp failed: %@", v71, 0xCu);
-        MEMORY[0x277D82BD8](v25);
+        MEMORY[0x277D82BD8](localizedDescription);
         objc_storeStrong(&v49, 0);
       }
 
@@ -193,8 +193,8 @@
     }
 
     v48 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    v47 = [AMDAppEvent deleteAllEventsForUser:v62 error:v63];
-    if (*v63)
+    v47 = [AMDAppEvent deleteAllEventsForUser:v62 error:errorCopy];
+    if (*errorCopy)
     {
       v46 = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
       v45 = OS_LOG_TYPE_ERROR;
@@ -202,11 +202,11 @@
       {
         v20 = v46;
         v21 = v45;
-        v22 = [*v63 localizedDescription];
-        v44 = MEMORY[0x277D82BE0](v22);
+        localizedDescription2 = [*errorCopy localizedDescription];
+        v44 = MEMORY[0x277D82BE0](localizedDescription2);
         __os_log_helper_16_2_1_8_64(v70, v44);
         _os_log_error_impl(&dword_240CB9000, v20, v21, "Clearing user data failed: Engagement events could not be deleted: %@", v70, 0xCu);
-        MEMORY[0x277D82BD8](v22);
+        MEMORY[0x277D82BD8](localizedDescription2);
         objc_storeStrong(&v44, 0);
       }
 
@@ -227,8 +227,8 @@
 
       objc_storeStrong(&v43, 0);
       [v48 setObject:v47 forKey:@"engagmentEventsDeleted"];
-      v41 = [AMDAppStoreEvent deleteEventsForUser:v62 error:v63];
-      if (*v63)
+      v41 = [AMDAppStoreEvent deleteEventsForUser:v62 error:errorCopy];
+      if (*errorCopy)
       {
         v40 = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
         v39 = OS_LOG_TYPE_ERROR;
@@ -236,11 +236,11 @@
         {
           v17 = v40;
           v18 = v39;
-          v19 = [*v63 localizedDescription];
-          v38 = MEMORY[0x277D82BE0](v19);
+          localizedDescription3 = [*errorCopy localizedDescription];
+          v38 = MEMORY[0x277D82BE0](localizedDescription3);
           __os_log_helper_16_2_1_8_64(v68, v38);
           _os_log_error_impl(&dword_240CB9000, v17, v18, "Clearing user data failed: Impression events could not be deleted: %@", v68, 0xCu);
-          MEMORY[0x277D82BD8](v19);
+          MEMORY[0x277D82BD8](localizedDescription3);
           objc_storeStrong(&v38, 0);
         }
 
@@ -254,9 +254,9 @@
         [v48 setObject:v41 forKey:@"impressionEventsDeleted"];
         v15 = v61;
         v16 = v62;
-        v5 = [v60 intValue];
-        v37 = [AMDTasteProfile refreshAggregationTasteProfileForDomain:v15 forUser:v16 andStoreFrontId:v5 error:v63];
-        if (*v63)
+        intValue = [v60 intValue];
+        v37 = [AMDTasteProfile refreshAggregationTasteProfileForDomain:v15 forUser:v16 andStoreFrontId:intValue error:errorCopy];
+        if (*errorCopy)
         {
           v36 = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
           v35 = OS_LOG_TYPE_ERROR;
@@ -264,11 +264,11 @@
           {
             v12 = v36;
             v13 = v35;
-            v14 = [*v63 localizedDescription];
-            v34 = MEMORY[0x277D82BE0](v14);
+            localizedDescription4 = [*errorCopy localizedDescription];
+            v34 = MEMORY[0x277D82BE0](localizedDescription4);
             __os_log_helper_16_2_1_8_64(v67, v34);
             _os_log_error_impl(&dword_240CB9000, v12, v13, "Clearing user data failed: Taste profiles could not be refreshed: %@", v67, 0xCu);
-            MEMORY[0x277D82BD8](v14);
+            MEMORY[0x277D82BD8](localizedDescription4);
             objc_storeStrong(&v34, 0);
           }
 
@@ -280,8 +280,8 @@
         else
         {
           [v48 setObject:v37 forKey:@"tasteProfilesRefreshed"];
-          v33 = [AMDAppSegment refreshSegmentsForAllTreatmentsForUser:v62 error:v63];
-          if (*v63)
+          v33 = [AMDAppSegment refreshSegmentsForAllTreatmentsForUser:v62 error:errorCopy];
+          if (*errorCopy)
           {
             v32 = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
             v31 = OS_LOG_TYPE_ERROR;
@@ -289,11 +289,11 @@
             {
               v9 = v32;
               v10 = v31;
-              v11 = [*v63 localizedDescription];
-              v30 = MEMORY[0x277D82BE0](v11);
+              localizedDescription5 = [*errorCopy localizedDescription];
+              v30 = MEMORY[0x277D82BE0](localizedDescription5);
               __os_log_helper_16_2_1_8_64(v66, v30);
               _os_log_error_impl(&dword_240CB9000, v9, v10, "Clearing user data failed: Segments could not be refreshed: %@", v66, 0xCu);
-              MEMORY[0x277D82BD8](v11);
+              MEMORY[0x277D82BD8](localizedDescription5);
               objc_storeStrong(&v30, 0);
             }
 
@@ -344,7 +344,7 @@
     objc_storeStrong(&v58, 0);
     v28 = [AMDError allocError:15 withMessage:v59];
     v4 = v28;
-    *v63 = v28;
+    *errorCopy = v28;
     v65 = 0;
     v56 = 1;
     objc_storeStrong(&v59, 0);

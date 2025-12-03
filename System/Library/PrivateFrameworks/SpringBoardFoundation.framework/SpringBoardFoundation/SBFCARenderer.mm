@@ -138,10 +138,10 @@ void __23__SBFCARenderer_warmup__block_invoke_2()
 
 + (BOOL)shouldUseXPCServiceForRendering
 {
-  v2 = [MEMORY[0x1E69DC668] sharedApplication];
-  v3 = [v2 isFrontBoard];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  isFrontBoard = [mEMORY[0x1E69DC668] isFrontBoard];
 
-  return v3;
+  return isFrontBoard;
 }
 
 @end

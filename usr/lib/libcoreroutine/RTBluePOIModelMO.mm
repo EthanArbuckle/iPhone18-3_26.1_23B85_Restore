@@ -1,15 +1,15 @@
 @interface RTBluePOIModelMO
-+ (id)managedObjectWithBluePOIModel:(id)a3 inManagedObjectContext:(id)a4;
++ (id)managedObjectWithBluePOIModel:(id)model inManagedObjectContext:(id)context;
 @end
 
 @implementation RTBluePOIModelMO
 
-+ (id)managedObjectWithBluePOIModel:(id)a3 inManagedObjectContext:(id)a4
++ (id)managedObjectWithBluePOIModel:(id)model inManagedObjectContext:(id)context
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (!v5)
+  modelCopy = model;
+  contextCopy = context;
+  v7 = contextCopy;
+  if (!modelCopy)
   {
     v12 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -25,16 +25,16 @@ LABEL_12:
     goto LABEL_7;
   }
 
-  if (v6)
+  if (contextCopy)
   {
-    v8 = [[RTBluePOIModelMO alloc] initWithContext:v6];
-    v9 = [v5 identifier];
-    [(RTBluePOIModelMO *)v8 setIdentifier:v9];
+    v8 = [[RTBluePOIModelMO alloc] initWithContext:contextCopy];
+    identifier = [modelCopy identifier];
+    [(RTBluePOIModelMO *)v8 setIdentifier:identifier];
 
-    v10 = [v5 featureToHashedApMapping];
-    [(RTBluePOIModelMO *)v8 setFeatureToHashedApMapping:v10];
+    featureToHashedApMapping = [modelCopy featureToHashedApMapping];
+    [(RTBluePOIModelMO *)v8 setFeatureToHashedApMapping:featureToHashedApMapping];
 
-    v11 = [v5 url];
+    v11 = [modelCopy url];
     [(RTBluePOIModelMO *)v8 setUrl:v11];
 
     goto LABEL_8;

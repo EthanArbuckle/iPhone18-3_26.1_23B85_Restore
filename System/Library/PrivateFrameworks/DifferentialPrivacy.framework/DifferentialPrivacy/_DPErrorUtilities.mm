@@ -1,16 +1,16 @@
 @interface _DPErrorUtilities
-+ (BOOL)isCoreDataFatalError:(id)a3;
++ (BOOL)isCoreDataFatalError:(id)error;
 @end
 
 @implementation _DPErrorUtilities
 
-+ (BOOL)isCoreDataFatalError:(id)a3
++ (BOOL)isCoreDataFatalError:(id)error
 {
-  v3 = [a3 userInfo];
-  v4 = [v3 objectForKey:*MEMORY[0x277CBE2C8]];
+  userInfo = [error userInfo];
+  v4 = [userInfo objectForKey:*MEMORY[0x277CBE2C8]];
 
-  LOBYTE(v3) = [v4 isEqualToValue:&unk_283975FE8];
-  return v3;
+  LOBYTE(userInfo) = [v4 isEqualToValue:&unk_283975FE8];
+  return userInfo;
 }
 
 @end

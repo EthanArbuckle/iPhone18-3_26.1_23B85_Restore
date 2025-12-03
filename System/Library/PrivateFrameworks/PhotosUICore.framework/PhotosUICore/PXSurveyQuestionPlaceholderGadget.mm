@@ -2,9 +2,9 @@
 - (CGSize)sizeThatFits:(CGSize)result;
 - (PXGadgetDelegate)delegate;
 - (UIViewController)overrideContainerViewController;
-- (void)placeholderGadgetView:(id)a3 invokeActionWithCompletionHandler:(id)a4;
-- (void)placeholderGadgetViewSizeThatFitsDidChange:(id)a3;
-- (void)prepareCollectionViewItem:(id)a3;
+- (void)placeholderGadgetView:(id)view invokeActionWithCompletionHandler:(id)handler;
+- (void)placeholderGadgetViewSizeThatFitsDidChange:(id)change;
+- (void)prepareCollectionViewItem:(id)item;
 @end
 
 @implementation PXSurveyQuestionPlaceholderGadget
@@ -23,19 +23,19 @@
   return WeakRetained;
 }
 
-- (void)placeholderGadgetViewSizeThatFitsDidChange:(id)a3
+- (void)placeholderGadgetViewSizeThatFitsDidChange:(id)change
 {
-  v4 = [(PXSurveyQuestionPlaceholderGadget *)self delegate];
-  [v4 gadget:self didChange:64];
+  delegate = [(PXSurveyQuestionPlaceholderGadget *)self delegate];
+  [delegate gadget:self didChange:64];
 }
 
-- (void)placeholderGadgetView:(id)a3 invokeActionWithCompletionHandler:(id)a4
+- (void)placeholderGadgetView:(id)view invokeActionWithCompletionHandler:(id)handler
 {
-  v12 = a3;
-  v7 = a4;
-  if (v12)
+  viewCopy = view;
+  handlerCopy = handler;
+  if (viewCopy)
   {
-    if (v7)
+    if (handlerCopy)
     {
       goto LABEL_3;
     }
@@ -43,29 +43,29 @@
 
   else
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PXSurveyQuestionPlaceholderGadget.m" lineNumber:84 description:{@"Invalid parameter not satisfying: %@", @"view"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSurveyQuestionPlaceholderGadget.m" lineNumber:84 description:{@"Invalid parameter not satisfying: %@", @"view"}];
 
-    if (v7)
+    if (handlerCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v11 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v11 handleFailureInMethod:a2 object:self file:@"PXSurveyQuestionPlaceholderGadget.m" lineNumber:85 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXSurveyQuestionPlaceholderGadget.m" lineNumber:85 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
 
 LABEL_3:
-  v8 = [(PXSurveyQuestionPlaceholderGadget *)self delegate];
-  v9 = [v8 presentationEnvironmentForGadget:self];
+  delegate = [(PXSurveyQuestionPlaceholderGadget *)self delegate];
+  v9 = [delegate presentationEnvironmentForGadget:self];
 
-  PXGenerateSurveyQuestionsWithOptions(533075965, -1, v9, v7);
+  PXGenerateSurveyQuestionsWithOptions(533075965, -1, v9, handlerCopy);
 }
 
-- (void)prepareCollectionViewItem:(id)a3
+- (void)prepareCollectionViewItem:(id)item
 {
-  v19 = a3;
-  if (v19)
+  itemCopy = item;
+  if (itemCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -73,43 +73,43 @@ LABEL_3:
       goto LABEL_3;
     }
 
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v17 = objc_opt_class();
     v16 = NSStringFromClass(v17);
-    v18 = [(PXSurveyQuestionPlaceholderGadgetView *)v19 px_descriptionForAssertionMessage];
-    [v14 handleFailureInMethod:a2 object:self file:@"PXSurveyQuestionPlaceholderGadget.m" lineNumber:50 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"collectionViewItem", v16, v18}];
+    px_descriptionForAssertionMessage = [(PXSurveyQuestionPlaceholderGadgetView *)itemCopy px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSurveyQuestionPlaceholderGadget.m" lineNumber:50 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"collectionViewItem", v16, px_descriptionForAssertionMessage}];
   }
 
   else
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v15 = objc_opt_class();
     v16 = NSStringFromClass(v15);
-    [v14 handleFailureInMethod:a2 object:self file:@"PXSurveyQuestionPlaceholderGadget.m" lineNumber:50 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"collectionViewItem", v16}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSurveyQuestionPlaceholderGadget.m" lineNumber:50 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"collectionViewItem", v16}];
   }
 
 LABEL_3:
   view = self->_view;
-  self->_view = v19;
+  self->_view = itemCopy;
 
-  v6 = [MEMORY[0x1E69DC8C8] emptyConfiguration];
+  emptyConfiguration = [MEMORY[0x1E69DC8C8] emptyConfiguration];
   v7 = PXLocalizedStringFromTable(@"PXForYouPhotosChallengePlaceholderTitle", @"PhotosUICore");
-  [v6 setText:v7];
+  [emptyConfiguration setText:v7];
 
   v8 = PXLocalizedStringFromTable(@"PXForYouPhotosChallengePlaceholderMessage", @"PhotosUICore");
-  [v6 setSecondaryText:v8];
+  [emptyConfiguration setSecondaryText:v8];
 
   v9 = PXLocalizedStringFromTable(@"PXForYouPhotosChallengePlaceholderButtonTitle", @"PhotosUICore");
-  v10 = [v6 buttonProperties];
-  v11 = [v10 configuration];
-  [v11 setTitle:v9];
+  buttonProperties = [emptyConfiguration buttonProperties];
+  configuration = [buttonProperties configuration];
+  [configuration setTitle:v9];
 
-  [(PXSurveyQuestionPlaceholderGadgetView *)self->_view setPlaceholderContentUnavailableConfiguration:v6];
-  v12 = [MEMORY[0x1E69DC8C8] loadingConfiguration];
+  [(PXSurveyQuestionPlaceholderGadgetView *)self->_view setPlaceholderContentUnavailableConfiguration:emptyConfiguration];
+  loadingConfiguration = [MEMORY[0x1E69DC8C8] loadingConfiguration];
   v13 = PXLocalizedStringFromTable(@"PXForYouPhotosChallengePlaceholderActivityTitle", @"PhotosUICore");
-  [v12 setText:v13];
+  [loadingConfiguration setText:v13];
 
-  [(PXSurveyQuestionPlaceholderGadgetView *)self->_view setLoadingContentUnavailableConfiguration:v12];
+  [(PXSurveyQuestionPlaceholderGadgetView *)self->_view setLoadingContentUnavailableConfiguration:loadingConfiguration];
   [(PXSurveyQuestionPlaceholderGadgetView *)self->_view setDelegate:self];
 }
 

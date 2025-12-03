@@ -1,27 +1,27 @@
 @interface HUContactDetailsTableViewCell
 - (CNContact)contact;
-- (HUContactDetailsTableViewCell)initWithCoder:(id)a3;
-- (HUContactDetailsTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (HUContactDetailsTableViewCell)initWithCoder:(id)coder;
+- (HUContactDetailsTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (NSString)descriptionText;
 - (NSString)titleText;
 - (UIImage)photo;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setContact:(id)a3;
-- (void)setDescriptionText:(id)a3;
-- (void)setPhoto:(id)a3;
-- (void)setTitleText:(id)a3;
+- (void)setContact:(id)contact;
+- (void)setDescriptionText:(id)text;
+- (void)setPhoto:(id)photo;
+- (void)setTitleText:(id)text;
 - (void)updateConstraints;
 @end
 
 @implementation HUContactDetailsTableViewCell
 
-- (HUContactDetailsTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (HUContactDetailsTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v32[2] = *MEMORY[0x277D85DE8];
   v30.receiver = self;
   v30.super_class = HUContactDetailsTableViewCell;
-  v4 = [(HUContactDetailsTableViewCell *)&v30 initWithStyle:0 reuseIdentifier:a4];
+  v4 = [(HUContactDetailsTableViewCell *)&v30 initWithStyle:0 reuseIdentifier:identifier];
   if (v4)
   {
     v5 = objc_alloc(MEMORY[0x277CBDBE8]);
@@ -56,8 +56,8 @@
     v22 = [MEMORY[0x277D74300] preferredFontForTextStyle:v18];
     [(UILabel *)v4->_descriptionLabel setFont:v22];
 
-    v23 = [MEMORY[0x277D75348] systemGrayColor];
-    [(UILabel *)v4->_descriptionLabel setTextColor:v23];
+    systemGrayColor = [MEMORY[0x277D75348] systemGrayColor];
+    [(UILabel *)v4->_descriptionLabel setTextColor:systemGrayColor];
 
     v24 = v4->_containerView;
     v32[0] = v4->_titleLabel;
@@ -65,24 +65,24 @@
     v25 = [MEMORY[0x277CBEA60] arrayWithObjects:v32 count:2];
     [(UIView *)v24 naui_addAutoLayoutSubviews:v25];
 
-    v26 = [(HUContactDetailsTableViewCell *)v4 contentView];
+    contentView = [(HUContactDetailsTableViewCell *)v4 contentView];
     v31[0] = v4->_avatarView;
     v31[1] = v4->_containerView;
     v27 = [MEMORY[0x277CBEA60] arrayWithObjects:v31 count:2];
-    [v26 naui_addAutoLayoutSubviews:v27];
+    [contentView naui_addAutoLayoutSubviews:v27];
 
-    v28 = [(HUContactDetailsTableViewCell *)v4 contentView];
-    [v28 addSubview:v4->_photoView];
+    contentView2 = [(HUContactDetailsTableViewCell *)v4 contentView];
+    [contentView2 addSubview:v4->_photoView];
   }
 
   return v4;
 }
 
-- (HUContactDetailsTableViewCell)initWithCoder:(id)a3
+- (HUContactDetailsTableViewCell)initWithCoder:(id)coder
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v6 = NSStringFromSelector(sel_initWithStyle_reuseIdentifier_);
-  [v5 handleFailureInMethod:a2 object:self file:@"HUContactDetailsTableViewCell.m" lineNumber:64 description:{@"%s is unavailable; use %@ instead", "-[HUContactDetailsTableViewCell initWithCoder:]", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUContactDetailsTableViewCell.m" lineNumber:64 description:{@"%s is unavailable; use %@ instead", "-[HUContactDetailsTableViewCell initWithCoder:]", v6}];
 
   return 0;
 }
@@ -94,225 +94,225 @@
   [(HUContactDetailsTableViewCell *)&v4 prepareForReuse];
   [(HUContactDetailsTableViewCell *)self setTitleText:0];
   [(HUContactDetailsTableViewCell *)self setDescriptionText:0];
-  v3 = [(HUContactDetailsTableViewCell *)self avatarView];
-  [v3 setContacts:MEMORY[0x277CBEBF8]];
+  avatarView = [(HUContactDetailsTableViewCell *)self avatarView];
+  [avatarView setContacts:MEMORY[0x277CBEBF8]];
 
   [(HUContactDetailsTableViewCell *)self setPhoto:0];
 }
 
 - (NSString)titleText
 {
-  v2 = [(HUContactDetailsTableViewCell *)self titleLabel];
-  v3 = [v2 text];
+  titleLabel = [(HUContactDetailsTableViewCell *)self titleLabel];
+  text = [titleLabel text];
 
-  return v3;
+  return text;
 }
 
-- (void)setTitleText:(id)a3
+- (void)setTitleText:(id)text
 {
-  v4 = a3;
-  v5 = [(HUContactDetailsTableViewCell *)self titleLabel];
-  [v5 setText:v4];
+  textCopy = text;
+  titleLabel = [(HUContactDetailsTableViewCell *)self titleLabel];
+  [titleLabel setText:textCopy];
 }
 
 - (NSString)descriptionText
 {
-  v2 = [(HUContactDetailsTableViewCell *)self descriptionLabel];
-  v3 = [v2 text];
+  descriptionLabel = [(HUContactDetailsTableViewCell *)self descriptionLabel];
+  text = [descriptionLabel text];
 
-  return v3;
+  return text;
 }
 
-- (void)setDescriptionText:(id)a3
+- (void)setDescriptionText:(id)text
 {
-  v4 = a3;
-  v5 = [(HUContactDetailsTableViewCell *)self descriptionLabel];
-  [v5 setText:v4];
+  textCopy = text;
+  descriptionLabel = [(HUContactDetailsTableViewCell *)self descriptionLabel];
+  [descriptionLabel setText:textCopy];
 }
 
 - (CNContact)contact
 {
-  v2 = [(HUContactDetailsTableViewCell *)self avatarView];
-  v3 = [v2 contacts];
-  v4 = [v3 firstObject];
+  avatarView = [(HUContactDetailsTableViewCell *)self avatarView];
+  contacts = [avatarView contacts];
+  firstObject = [contacts firstObject];
 
-  return v4;
+  return firstObject;
 }
 
-- (void)setContact:(id)a3
+- (void)setContact:(id)contact
 {
   v9 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  contactCopy = contact;
   v4 = MEMORY[0x277CBEA60];
-  v5 = a3;
-  v6 = [v4 arrayWithObjects:&v8 count:1];
+  contactCopy2 = contact;
+  v6 = [v4 arrayWithObjects:&contactCopy count:1];
 
-  v7 = [(HUContactDetailsTableViewCell *)self avatarView:v8];
+  v7 = [(HUContactDetailsTableViewCell *)self avatarView:contactCopy];
   [v7 setContacts:v6];
 }
 
 - (UIImage)photo
 {
-  v2 = [(HUContactDetailsTableViewCell *)self photoView];
-  v3 = [v2 image];
+  photoView = [(HUContactDetailsTableViewCell *)self photoView];
+  image = [photoView image];
 
-  return v3;
+  return image;
 }
 
-- (void)setPhoto:(id)a3
+- (void)setPhoto:(id)photo
 {
-  v4 = a3;
-  v5 = [(HUContactDetailsTableViewCell *)self photoView];
-  [v5 setImage:v4];
+  photoCopy = photo;
+  photoView = [(HUContactDetailsTableViewCell *)self photoView];
+  [photoView setImage:photoCopy];
 
-  v6 = [(HUContactDetailsTableViewCell *)self photoView];
-  [v6 setHidden:v4 == 0];
+  photoView2 = [(HUContactDetailsTableViewCell *)self photoView];
+  [photoView2 setHidden:photoCopy == 0];
 
-  v7 = [(HUContactDetailsTableViewCell *)self avatarView];
-  [v7 setHidden:v4 != 0];
+  avatarView = [(HUContactDetailsTableViewCell *)self avatarView];
+  [avatarView setHidden:photoCopy != 0];
 }
 
 - (void)updateConstraints
 {
-  v3 = [(HUContactDetailsTableViewCell *)self constraints];
+  constraints = [(HUContactDetailsTableViewCell *)self constraints];
 
-  if (!v3)
+  if (!constraints)
   {
-    v4 = [MEMORY[0x277CBEB18] array];
-    v5 = [(HUContactDetailsTableViewCell *)self avatarView];
-    v6 = [v5 leadingAnchor];
-    v7 = [(HUContactDetailsTableViewCell *)self contentView];
-    v8 = [v7 layoutMarginsGuide];
-    v9 = [v8 leadingAnchor];
-    v10 = [v6 constraintEqualToAnchor:v9];
-    [v4 addObject:v10];
+    array = [MEMORY[0x277CBEB18] array];
+    avatarView = [(HUContactDetailsTableViewCell *)self avatarView];
+    leadingAnchor = [avatarView leadingAnchor];
+    contentView = [(HUContactDetailsTableViewCell *)self contentView];
+    layoutMarginsGuide = [contentView layoutMarginsGuide];
+    leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+    v10 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
+    [array addObject:v10];
 
-    v11 = [(HUContactDetailsTableViewCell *)self avatarView];
-    v12 = [v11 widthAnchor];
-    v13 = [v12 constraintEqualToConstant:42.0];
-    [v4 addObject:v13];
+    avatarView2 = [(HUContactDetailsTableViewCell *)self avatarView];
+    widthAnchor = [avatarView2 widthAnchor];
+    v13 = [widthAnchor constraintEqualToConstant:42.0];
+    [array addObject:v13];
 
-    v14 = [(HUContactDetailsTableViewCell *)self containerView];
-    v15 = [v14 leadingAnchor];
-    v16 = [(HUContactDetailsTableViewCell *)self avatarView];
-    v17 = [v16 trailingAnchor];
-    v18 = [v15 constraintEqualToAnchor:v17 constant:15.0];
-    [v4 addObject:v18];
+    containerView = [(HUContactDetailsTableViewCell *)self containerView];
+    leadingAnchor3 = [containerView leadingAnchor];
+    avatarView3 = [(HUContactDetailsTableViewCell *)self avatarView];
+    trailingAnchor = [avatarView3 trailingAnchor];
+    v18 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor constant:15.0];
+    [array addObject:v18];
 
-    v19 = [(HUContactDetailsTableViewCell *)self containerView];
-    v20 = [v19 trailingAnchor];
-    v21 = [(HUContactDetailsTableViewCell *)self contentView];
-    v22 = [v21 layoutMarginsGuide];
-    v23 = [v22 trailingAnchor];
-    v24 = [v20 constraintEqualToAnchor:v23];
-    [v4 addObject:v24];
+    containerView2 = [(HUContactDetailsTableViewCell *)self containerView];
+    trailingAnchor2 = [containerView2 trailingAnchor];
+    contentView2 = [(HUContactDetailsTableViewCell *)self contentView];
+    layoutMarginsGuide2 = [contentView2 layoutMarginsGuide];
+    trailingAnchor3 = [layoutMarginsGuide2 trailingAnchor];
+    v24 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3];
+    [array addObject:v24];
 
-    v25 = [(HUContactDetailsTableViewCell *)self titleLabel];
-    v26 = [v25 leadingAnchor];
-    v27 = [(HUContactDetailsTableViewCell *)self containerView];
-    v28 = [v27 leadingAnchor];
-    v29 = [v26 constraintEqualToAnchor:v28];
-    [v4 addObject:v29];
+    titleLabel = [(HUContactDetailsTableViewCell *)self titleLabel];
+    leadingAnchor4 = [titleLabel leadingAnchor];
+    containerView3 = [(HUContactDetailsTableViewCell *)self containerView];
+    leadingAnchor5 = [containerView3 leadingAnchor];
+    v29 = [leadingAnchor4 constraintEqualToAnchor:leadingAnchor5];
+    [array addObject:v29];
 
-    v30 = [(HUContactDetailsTableViewCell *)self titleLabel];
-    v31 = [v30 trailingAnchor];
-    v32 = [(HUContactDetailsTableViewCell *)self containerView];
-    v33 = [v32 trailingAnchor];
-    v34 = [v31 constraintEqualToAnchor:v33];
-    [v4 addObject:v34];
+    titleLabel2 = [(HUContactDetailsTableViewCell *)self titleLabel];
+    trailingAnchor4 = [titleLabel2 trailingAnchor];
+    containerView4 = [(HUContactDetailsTableViewCell *)self containerView];
+    trailingAnchor5 = [containerView4 trailingAnchor];
+    v34 = [trailingAnchor4 constraintEqualToAnchor:trailingAnchor5];
+    [array addObject:v34];
 
-    v35 = [(HUContactDetailsTableViewCell *)self descriptionLabel];
-    v36 = [v35 leadingAnchor];
-    v37 = [(HUContactDetailsTableViewCell *)self containerView];
-    v38 = [v37 leadingAnchor];
-    v39 = [v36 constraintEqualToAnchor:v38];
-    [v4 addObject:v39];
+    descriptionLabel = [(HUContactDetailsTableViewCell *)self descriptionLabel];
+    leadingAnchor6 = [descriptionLabel leadingAnchor];
+    containerView5 = [(HUContactDetailsTableViewCell *)self containerView];
+    leadingAnchor7 = [containerView5 leadingAnchor];
+    v39 = [leadingAnchor6 constraintEqualToAnchor:leadingAnchor7];
+    [array addObject:v39];
 
-    v40 = [(HUContactDetailsTableViewCell *)self descriptionLabel];
-    v41 = [v40 trailingAnchor];
-    v42 = [(HUContactDetailsTableViewCell *)self containerView];
-    v43 = [v42 trailingAnchor];
-    v44 = [v41 constraintEqualToAnchor:v43];
-    [v4 addObject:v44];
+    descriptionLabel2 = [(HUContactDetailsTableViewCell *)self descriptionLabel];
+    trailingAnchor6 = [descriptionLabel2 trailingAnchor];
+    containerView6 = [(HUContactDetailsTableViewCell *)self containerView];
+    trailingAnchor7 = [containerView6 trailingAnchor];
+    v44 = [trailingAnchor6 constraintEqualToAnchor:trailingAnchor7];
+    [array addObject:v44];
 
-    v45 = [(HUContactDetailsTableViewCell *)self avatarView];
-    v46 = [v45 topAnchor];
-    v47 = [(HUContactDetailsTableViewCell *)self contentView];
-    v48 = [v47 layoutMarginsGuide];
-    v49 = [v48 topAnchor];
-    v50 = [v46 constraintGreaterThanOrEqualToAnchor:v49];
-    [v4 addObject:v50];
+    avatarView4 = [(HUContactDetailsTableViewCell *)self avatarView];
+    topAnchor = [avatarView4 topAnchor];
+    contentView3 = [(HUContactDetailsTableViewCell *)self contentView];
+    layoutMarginsGuide3 = [contentView3 layoutMarginsGuide];
+    topAnchor2 = [layoutMarginsGuide3 topAnchor];
+    v50 = [topAnchor constraintGreaterThanOrEqualToAnchor:topAnchor2];
+    [array addObject:v50];
 
-    v51 = [(HUContactDetailsTableViewCell *)self avatarView];
-    v52 = [v51 bottomAnchor];
-    v53 = [(HUContactDetailsTableViewCell *)self contentView];
-    v54 = [v53 layoutMarginsGuide];
-    v55 = [v54 bottomAnchor];
-    v56 = [v52 constraintLessThanOrEqualToAnchor:v55];
-    [v4 addObject:v56];
+    avatarView5 = [(HUContactDetailsTableViewCell *)self avatarView];
+    bottomAnchor = [avatarView5 bottomAnchor];
+    contentView4 = [(HUContactDetailsTableViewCell *)self contentView];
+    layoutMarginsGuide4 = [contentView4 layoutMarginsGuide];
+    bottomAnchor2 = [layoutMarginsGuide4 bottomAnchor];
+    v56 = [bottomAnchor constraintLessThanOrEqualToAnchor:bottomAnchor2];
+    [array addObject:v56];
 
-    v57 = [(HUContactDetailsTableViewCell *)self avatarView];
-    v58 = [v57 centerYAnchor];
-    v59 = [(HUContactDetailsTableViewCell *)self contentView];
-    v60 = [v59 layoutMarginsGuide];
-    v61 = [v60 centerYAnchor];
-    v62 = [v58 constraintEqualToAnchor:v61];
-    [v4 addObject:v62];
+    avatarView6 = [(HUContactDetailsTableViewCell *)self avatarView];
+    centerYAnchor = [avatarView6 centerYAnchor];
+    contentView5 = [(HUContactDetailsTableViewCell *)self contentView];
+    layoutMarginsGuide5 = [contentView5 layoutMarginsGuide];
+    centerYAnchor2 = [layoutMarginsGuide5 centerYAnchor];
+    v62 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
+    [array addObject:v62];
 
-    v63 = [(HUContactDetailsTableViewCell *)self avatarView];
-    v64 = [v63 heightAnchor];
-    v65 = [v64 constraintEqualToConstant:42.0];
-    [v4 addObject:v65];
+    avatarView7 = [(HUContactDetailsTableViewCell *)self avatarView];
+    heightAnchor = [avatarView7 heightAnchor];
+    v65 = [heightAnchor constraintEqualToConstant:42.0];
+    [array addObject:v65];
 
-    v66 = [(HUContactDetailsTableViewCell *)self containerView];
-    v67 = [v66 topAnchor];
-    v68 = [(HUContactDetailsTableViewCell *)self contentView];
-    v69 = [v68 layoutMarginsGuide];
-    v70 = [v69 topAnchor];
-    v71 = [v67 constraintGreaterThanOrEqualToAnchor:v70];
-    [v4 addObject:v71];
+    containerView7 = [(HUContactDetailsTableViewCell *)self containerView];
+    topAnchor3 = [containerView7 topAnchor];
+    contentView6 = [(HUContactDetailsTableViewCell *)self contentView];
+    layoutMarginsGuide6 = [contentView6 layoutMarginsGuide];
+    topAnchor4 = [layoutMarginsGuide6 topAnchor];
+    v71 = [topAnchor3 constraintGreaterThanOrEqualToAnchor:topAnchor4];
+    [array addObject:v71];
 
-    v72 = [(HUContactDetailsTableViewCell *)self containerView];
-    v73 = [v72 bottomAnchor];
-    v74 = [(HUContactDetailsTableViewCell *)self contentView];
-    v75 = [v74 layoutMarginsGuide];
-    v76 = [v75 bottomAnchor];
-    v77 = [v73 constraintLessThanOrEqualToAnchor:v76];
-    [v4 addObject:v77];
+    containerView8 = [(HUContactDetailsTableViewCell *)self containerView];
+    bottomAnchor3 = [containerView8 bottomAnchor];
+    contentView7 = [(HUContactDetailsTableViewCell *)self contentView];
+    layoutMarginsGuide7 = [contentView7 layoutMarginsGuide];
+    bottomAnchor4 = [layoutMarginsGuide7 bottomAnchor];
+    v77 = [bottomAnchor3 constraintLessThanOrEqualToAnchor:bottomAnchor4];
+    [array addObject:v77];
 
-    v78 = [(HUContactDetailsTableViewCell *)self containerView];
-    v79 = [v78 centerYAnchor];
-    v80 = [(HUContactDetailsTableViewCell *)self contentView];
-    v81 = [v80 layoutMarginsGuide];
-    v82 = [v81 centerYAnchor];
-    v83 = [v79 constraintEqualToAnchor:v82];
-    [v4 addObject:v83];
+    containerView9 = [(HUContactDetailsTableViewCell *)self containerView];
+    centerYAnchor3 = [containerView9 centerYAnchor];
+    contentView8 = [(HUContactDetailsTableViewCell *)self contentView];
+    layoutMarginsGuide8 = [contentView8 layoutMarginsGuide];
+    centerYAnchor4 = [layoutMarginsGuide8 centerYAnchor];
+    v83 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
+    [array addObject:v83];
 
-    v84 = [(HUContactDetailsTableViewCell *)self titleLabel];
-    v85 = [v84 topAnchor];
-    v86 = [(HUContactDetailsTableViewCell *)self containerView];
-    v87 = [v86 topAnchor];
-    v88 = [v85 constraintEqualToAnchor:v87];
-    [v4 addObject:v88];
+    titleLabel3 = [(HUContactDetailsTableViewCell *)self titleLabel];
+    topAnchor5 = [titleLabel3 topAnchor];
+    containerView10 = [(HUContactDetailsTableViewCell *)self containerView];
+    topAnchor6 = [containerView10 topAnchor];
+    v88 = [topAnchor5 constraintEqualToAnchor:topAnchor6];
+    [array addObject:v88];
 
-    v89 = [(HUContactDetailsTableViewCell *)self titleLabel];
-    v90 = [v89 bottomAnchor];
-    v91 = [(HUContactDetailsTableViewCell *)self descriptionLabel];
-    v92 = [v91 topAnchor];
-    v93 = [v90 constraintEqualToAnchor:v92];
-    [v4 addObject:v93];
+    titleLabel4 = [(HUContactDetailsTableViewCell *)self titleLabel];
+    bottomAnchor5 = [titleLabel4 bottomAnchor];
+    descriptionLabel3 = [(HUContactDetailsTableViewCell *)self descriptionLabel];
+    topAnchor7 = [descriptionLabel3 topAnchor];
+    v93 = [bottomAnchor5 constraintEqualToAnchor:topAnchor7];
+    [array addObject:v93];
 
-    v94 = [(HUContactDetailsTableViewCell *)self descriptionLabel];
-    v95 = [v94 bottomAnchor];
-    v96 = [(HUContactDetailsTableViewCell *)self containerView];
-    v97 = [v96 bottomAnchor];
-    v98 = [v95 constraintEqualToAnchor:v97];
-    [v4 addObject:v98];
+    descriptionLabel4 = [(HUContactDetailsTableViewCell *)self descriptionLabel];
+    bottomAnchor6 = [descriptionLabel4 bottomAnchor];
+    containerView11 = [(HUContactDetailsTableViewCell *)self containerView];
+    bottomAnchor7 = [containerView11 bottomAnchor];
+    v98 = [bottomAnchor6 constraintEqualToAnchor:bottomAnchor7];
+    [array addObject:v98];
 
-    [(HUContactDetailsTableViewCell *)self setConstraints:v4];
+    [(HUContactDetailsTableViewCell *)self setConstraints:array];
     v99 = MEMORY[0x277CCAAD0];
-    v100 = [(HUContactDetailsTableViewCell *)self constraints];
-    [v99 activateConstraints:v100];
+    constraints2 = [(HUContactDetailsTableViewCell *)self constraints];
+    [v99 activateConstraints:constraints2];
   }
 
   v101.receiver = self;
@@ -325,21 +325,21 @@
   v18.receiver = self;
   v18.super_class = HUContactDetailsTableViewCell;
   [(HUContactDetailsTableViewCell *)&v18 layoutSubviews];
-  v3 = [(HUContactDetailsTableViewCell *)self avatarView];
-  [v3 frame];
+  avatarView = [(HUContactDetailsTableViewCell *)self avatarView];
+  [avatarView frame];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(HUContactDetailsTableViewCell *)self photoView];
-  [v12 setFrame:{v5, v7, v9, v11}];
+  photoView = [(HUContactDetailsTableViewCell *)self photoView];
+  [photoView setFrame:{v5, v7, v9, v11}];
 
-  v13 = [(HUContactDetailsTableViewCell *)self photoView];
-  [v13 bounds];
+  photoView2 = [(HUContactDetailsTableViewCell *)self photoView];
+  [photoView2 bounds];
   v15 = v14 * 0.5;
-  v16 = [(HUContactDetailsTableViewCell *)self photoView];
-  v17 = [v16 layer];
-  [v17 setCornerRadius:v15];
+  photoView3 = [(HUContactDetailsTableViewCell *)self photoView];
+  layer = [photoView3 layer];
+  [layer setCornerRadius:v15];
 }
 
 @end

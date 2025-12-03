@@ -1,66 +1,66 @@
 @interface MADMovieCurationScoreEntry
-+ (id)entryWithTimeRange:(id *)a3 score:(double)a4;
++ (id)entryWithTimeRange:(id *)range score:(double)score;
 - ($1C75447F214D9465CD650DD956230C7F)timeRange;
-- (MADMovieCurationScoreEntry)initWithCoder:(id)a3;
-- (MADMovieCurationScoreEntry)initWithTimeRange:(id *)a3 score:(double)a4;
+- (MADMovieCurationScoreEntry)initWithCoder:(id)coder;
+- (MADMovieCurationScoreEntry)initWithTimeRange:(id *)range score:(double)score;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MADMovieCurationScoreEntry
 
-- (MADMovieCurationScoreEntry)initWithTimeRange:(id *)a3 score:(double)a4
+- (MADMovieCurationScoreEntry)initWithTimeRange:(id *)range score:(double)score
 {
   v9.receiver = self;
   v9.super_class = MADMovieCurationScoreEntry;
   result = [(MADMovieCurationScoreEntry *)&v9 init];
   if (result)
   {
-    v7 = *&a3->var0.var0;
-    v8 = *&a3->var1.var1;
-    *&result->_timeRange.start.epoch = *&a3->var0.var3;
+    v7 = *&range->var0.var0;
+    v8 = *&range->var1.var1;
+    *&result->_timeRange.start.epoch = *&range->var0.var3;
     *&result->_timeRange.duration.timescale = v8;
     *&result->_timeRange.start.value = v7;
-    result->_score = a4;
+    result->_score = score;
   }
 
   return result;
 }
 
-+ (id)entryWithTimeRange:(id *)a3 score:(double)a4
++ (id)entryWithTimeRange:(id *)range score:(double)score
 {
-  v6 = [a1 alloc];
-  v7 = *&a3->var0.var3;
-  v10[0] = *&a3->var0.var0;
+  v6 = [self alloc];
+  v7 = *&range->var0.var3;
+  v10[0] = *&range->var0.var0;
   v10[1] = v7;
-  v10[2] = *&a3->var1.var1;
-  v8 = [v6 initWithTimeRange:v10 score:a4];
+  v10[2] = *&range->var1.var1;
+  v8 = [v6 initWithTimeRange:v10 score:score];
 
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = *&self->_timeRange.start.epoch;
   v6[0] = *&self->_timeRange.start.value;
   v6[1] = v5;
   v6[2] = *&self->_timeRange.duration.timescale;
-  [v4 encodeCMTimeRange:v6 forKey:@"TimeRange"];
-  [v4 encodeDouble:@"Score" forKey:self->_score];
+  [coderCopy encodeCMTimeRange:v6 forKey:@"TimeRange"];
+  [coderCopy encodeDouble:@"Score" forKey:self->_score];
 }
 
-- (MADMovieCurationScoreEntry)initWithCoder:(id)a3
+- (MADMovieCurationScoreEntry)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = MADMovieCurationScoreEntry;
   v5 = [(MADMovieCurationScoreEntry *)&v11 init];
   if (v5)
   {
-    if (v4)
+    if (coderCopy)
     {
-      [v4 decodeCMTimeRangeForKey:@"TimeRange"];
+      [coderCopy decodeCMTimeRangeForKey:@"TimeRange"];
     }
 
     else
@@ -73,7 +73,7 @@
     *&v5->_timeRange.start.value = v8;
     *&v5->_timeRange.start.epoch = v9;
     *&v5->_timeRange.duration.timescale = v10;
-    [v4 decodeDoubleForKey:{@"Score", v8, v9, v10}];
+    [coderCopy decodeDoubleForKey:{@"Score", v8, v9, v10}];
     v5->_score = v6;
   }
 
@@ -82,10 +82,10 @@
 
 - (id)description
 {
-  v3 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  [v3 appendFormat:@"<%@ %p, ", v5, self];
+  [string appendFormat:@"<%@ %p, ", v5, self];
 
   *&time.start.value = *&self->_timeRange.start.value;
   time.start.epoch = self->_timeRange.start.epoch;
@@ -95,10 +95,10 @@
   *&time.start.epoch = v7;
   *&time.duration.timescale = *&self->_timeRange.duration.timescale;
   CMTimeRangeGetEnd(&v10, &time);
-  [v3 appendFormat:@"%@: %-.4fs-%-.4fs, ", @"TimeRange", *&Seconds, CMTimeGetSeconds(&v10)];
-  [v3 appendFormat:@"%@: %.2f>", @"Score", *&self->_score];
+  [string appendFormat:@"%@: %-.4fs-%-.4fs, ", @"TimeRange", *&Seconds, CMTimeGetSeconds(&v10)];
+  [string appendFormat:@"%@: %.2f>", @"Score", *&self->_score];
 
-  return v3;
+  return string;
 }
 
 - ($1C75447F214D9465CD650DD956230C7F)timeRange

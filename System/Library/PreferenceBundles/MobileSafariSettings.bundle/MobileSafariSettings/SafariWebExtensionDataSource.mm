@@ -1,11 +1,11 @@
 @interface SafariWebExtensionDataSource
 - (id)_defaultWebExtensionsController;
-- (void)_addSize:(double)a3 forExtensionWithComposedIdentifier:(id)a4;
-- (void)_calculateTotalExtensionStorageWithCompletionHandler:(id)a3;
-- (void)_deleteDataForWebExtensionWithComposedIdentifier:(id)a3;
-- (void)createSpecifiersWithCompletionHandler:(id)a3;
-- (void)deleteDataForSpecifier:(id)a3;
-- (void)totalUsageWithCompletionHandler:(id)a3;
+- (void)_addSize:(double)size forExtensionWithComposedIdentifier:(id)identifier;
+- (void)_calculateTotalExtensionStorageWithCompletionHandler:(id)handler;
+- (void)_deleteDataForWebExtensionWithComposedIdentifier:(id)identifier;
+- (void)createSpecifiersWithCompletionHandler:(id)handler;
+- (void)deleteDataForSpecifier:(id)specifier;
+- (void)totalUsageWithCompletionHandler:(id)handler;
 @end
 
 @implementation SafariWebExtensionDataSource
@@ -13,32 +13,32 @@
 - (id)_defaultWebExtensionsController
 {
   v2 = +[SafariSettingsController extensionsProfilesDataSource];
-  v3 = [v2 profileServerIDToWebExtensionsControllers];
-  v4 = [v3 objectForKeyedSubscript:WBSDefaultProfileIdentifier];
+  profileServerIDToWebExtensionsControllers = [v2 profileServerIDToWebExtensionsControllers];
+  v4 = [profileServerIDToWebExtensionsControllers objectForKeyedSubscript:WBSDefaultProfileIdentifier];
 
   return v4;
 }
 
-- (void)deleteDataForSpecifier:(id)a3
+- (void)deleteDataForSpecifier:(id)specifier
 {
-  v5 = [a3 userInfo];
-  v4 = [v5 objectForKeyedSubscript:WBSWebExtensionComposedIdentifierKey];
+  userInfo = [specifier userInfo];
+  v4 = [userInfo objectForKeyedSubscript:WBSWebExtensionComposedIdentifierKey];
   [(SafariWebExtensionDataSource *)self _deleteDataForWebExtensionWithComposedIdentifier:v4];
 }
 
-- (void)_deleteDataForWebExtensionWithComposedIdentifier:(id)a3
+- (void)_deleteDataForWebExtensionWithComposedIdentifier:(id)identifier
 {
-  v19 = self;
-  v20 = a3;
+  selfCopy = self;
+  identifierCopy = identifier;
   v3 = +[SafariSettingsController extensionsProfilesDataSource];
-  v4 = [v3 profileServerIDToWebExtensionsControllers];
-  v5 = [v4 allValues];
+  profileServerIDToWebExtensionsControllers = [v3 profileServerIDToWebExtensionsControllers];
+  allValues = [profileServerIDToWebExtensionsControllers allValues];
 
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v6 = v5;
+  v6 = allValues;
   v7 = [v6 countByEnumeratingWithState:&v21 objects:v26 count:16];
   if (v7)
   {
@@ -55,18 +55,18 @@
         }
 
         v12 = *(*(&v21 + 1) + 8 * i);
-        [v12 initializeWebKitControllerIfNeededFromSettings:{1, v19}];
-        v13 = [v12 webKitController];
+        [v12 initializeWebKitControllerIfNeededFromSettings:{1, selfCopy}];
+        webKitController = [v12 webKitController];
         v14 = objc_opt_respondsToSelector();
 
         if (v14)
         {
-          v15 = [v12 webKitController];
+          webKitController2 = [v12 webKitController];
           v16 = [NSSet setWithObject:v10];
-          v17 = [(NSMutableDictionary *)v19->_composedIdentifierToDataRecordsMap objectForKeyedSubscript:v20];
+          v17 = [(NSMutableDictionary *)selfCopy->_composedIdentifierToDataRecordsMap objectForKeyedSubscript:identifierCopy];
           v25 = v17;
           v18 = [NSArray arrayWithObjects:&v25 count:1];
-          [v15 removeDataOfTypes:v16 fromDataRecords:v18 completionHandler:&__block_literal_global_6];
+          [webKitController2 removeDataOfTypes:v16 fromDataRecords:v18 completionHandler:&__block_literal_global_6];
         }
       }
 
@@ -77,39 +77,39 @@
   }
 }
 
-- (void)totalUsageWithCompletionHandler:(id)a3
+- (void)totalUsageWithCompletionHandler:(id)handler
 {
   if (self->_composedIdentifierToExtensionTotalStorage)
   {
-    (*(a3 + 2))(a3, 1, self->_totalUsage);
+    (*(handler + 2))(handler, 1, self->_totalUsage);
   }
 
   else
   {
-    [(SafariWebExtensionDataSource *)self _calculateTotalExtensionStorageWithCompletionHandler:a3];
+    [(SafariWebExtensionDataSource *)self _calculateTotalExtensionStorageWithCompletionHandler:handler];
   }
 }
 
-- (void)_calculateTotalExtensionStorageWithCompletionHandler:(id)a3
+- (void)_calculateTotalExtensionStorageWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v31 = self;
-  v5 = [(SafariWebExtensionDataSource *)self _defaultWebExtensionsController];
-  v6 = [v5 hasDiscoveredExtensions];
+  handlerCopy = handler;
+  selfCopy = self;
+  _defaultWebExtensionsController = [(SafariWebExtensionDataSource *)self _defaultWebExtensionsController];
+  hasDiscoveredExtensions = [_defaultWebExtensionsController hasDiscoveredExtensions];
 
-  if (v6)
+  if (hasDiscoveredExtensions)
   {
-    v24 = v4;
+    v24 = handlerCopy;
     v7 = +[SafariSettingsController extensionsProfilesDataSource];
-    v8 = [v7 profileServerIDToWebExtensionsControllers];
-    v9 = [v8 allValues];
+    profileServerIDToWebExtensionsControllers = [v7 profileServerIDToWebExtensionsControllers];
+    allValues = [profileServerIDToWebExtensionsControllers allValues];
 
     v10 = dispatch_group_create();
     v42 = 0u;
     v43 = 0u;
     v44 = 0u;
     v45 = 0u;
-    obj = v9;
+    obj = allValues;
     v27 = [obj countByEnumeratingWithState:&v42 objects:v47 count:16];
     if (v27)
     {
@@ -131,8 +131,8 @@
           v39 = 0u;
           v40 = 0u;
           v41 = 0u;
-          v29 = [v12 extensions];
-          v13 = [v29 countByEnumeratingWithState:&v38 objects:v46 count:16];
+          extensions = [v12 extensions];
+          v13 = [extensions countByEnumeratingWithState:&v38 objects:v46 count:16];
           if (v13)
           {
             v14 = v13;
@@ -144,32 +144,32 @@
               {
                 if (*v39 != v15)
                 {
-                  objc_enumerationMutation(v29);
+                  objc_enumerationMutation(extensions);
                 }
 
                 v17 = *(*(&v38 + 1) + 8 * v16);
                 dispatch_group_enter(v10);
                 v18 = [v12 webExtensionForExtension:v17];
-                v19 = [v18 composedIdentifier];
+                composedIdentifier = [v18 composedIdentifier];
                 [v12 initializeWebKitControllerIfNeededFromSettings:1];
-                v20 = [v12 webKitController];
+                webKitController = [v12 webKitController];
                 v21 = [NSSet setWithObjects:v30, 0];
-                v22 = [v18 webKitContext];
+                webKitContext = [v18 webKitContext];
                 v34[0] = _NSConcreteStackBlock;
                 v34[1] = 3221225472;
                 v34[2] = __85__SafariWebExtensionDataSource__calculateTotalExtensionStorageWithCompletionHandler___block_invoke;
                 v34[3] = &unk_89FF0;
                 v35 = v10;
-                v36 = v31;
-                v37 = v19;
-                v23 = v19;
-                [v20 fetchDataRecordOfTypes:v21 forExtensionContext:v22 completionHandler:v34];
+                v36 = selfCopy;
+                v37 = composedIdentifier;
+                v23 = composedIdentifier;
+                [webKitController fetchDataRecordOfTypes:v21 forExtensionContext:webKitContext completionHandler:v34];
 
                 v16 = v16 + 1;
               }
 
               while (v14 != v16);
-              v14 = [v29 countByEnumeratingWithState:&v38 objects:v46 count:16];
+              v14 = [extensions countByEnumeratingWithState:&v38 objects:v46 count:16];
             }
 
             while (v14);
@@ -189,15 +189,15 @@
     block[1] = 3221225472;
     block[2] = __85__SafariWebExtensionDataSource__calculateTotalExtensionStorageWithCompletionHandler___block_invoke_2;
     block[3] = &unk_8A018;
-    v4 = v24;
-    block[4] = v31;
+    handlerCopy = v24;
+    block[4] = selfCopy;
     v33 = v24;
     dispatch_group_notify(v10, &_dispatch_main_q, block);
   }
 
   else
   {
-    (*(v4 + 2))(v4, 0, 0.0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0.0);
   }
 }
 
@@ -235,15 +235,15 @@ void __85__SafariWebExtensionDataSource__calculateTotalExtensionStorageWithCompl
   dispatch_group_leave(*(a1 + 32));
 }
 
-- (void)createSpecifiersWithCompletionHandler:(id)a3
+- (void)createSpecifiersWithCompletionHandler:(id)handler
 {
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = __70__SafariWebExtensionDataSource_createSpecifiersWithCompletionHandler___block_invoke;
   v11[3] = &unk_89960;
   v11[4] = self;
-  v4 = a3;
-  v12 = v4;
+  handlerCopy = handler;
+  v12 = handlerCopy;
   v5 = objc_retainBlock(v11);
   v6 = v5;
   if (self->_composedIdentifierToExtensionTotalStorage)
@@ -319,23 +319,23 @@ void __70__SafariWebExtensionDataSource_createSpecifiersWithCompletionHandler___
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)_addSize:(double)a3 forExtensionWithComposedIdentifier:(id)a4
+- (void)_addSize:(double)size forExtensionWithComposedIdentifier:(id)identifier
 {
   composedIdentifierToExtensionTotalStorage = self->_composedIdentifierToExtensionTotalStorage;
-  v7 = a4;
-  v8 = [(NSMutableDictionary *)composedIdentifierToExtensionTotalStorage objectForKeyedSubscript:v7];
-  v9 = a3;
+  identifierCopy = identifier;
+  v8 = [(NSMutableDictionary *)composedIdentifierToExtensionTotalStorage objectForKeyedSubscript:identifierCopy];
+  sizeCopy = size;
   v12 = v8;
   if (v8)
   {
     [v8 doubleValue];
-    v9 = v10 + a3;
+    sizeCopy = v10 + size;
   }
 
-  v11 = [NSNumber numberWithDouble:v9];
-  [(NSMutableDictionary *)self->_composedIdentifierToExtensionTotalStorage setObject:v11 forKeyedSubscript:v7];
+  v11 = [NSNumber numberWithDouble:sizeCopy];
+  [(NSMutableDictionary *)self->_composedIdentifierToExtensionTotalStorage setObject:v11 forKeyedSubscript:identifierCopy];
 
-  self->_totalUsage = self->_totalUsage + a3;
+  self->_totalUsage = self->_totalUsage + size;
 }
 
 @end

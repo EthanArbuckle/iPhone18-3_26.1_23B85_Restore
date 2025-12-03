@@ -1,5 +1,5 @@
 @interface FMAccessoryDiscoveryAccessoryConfirmationCard
-- (_TtC6FindMy45FMAccessoryDiscoveryAccessoryConfirmationCard)initWithContentView:(id)a3;
+- (_TtC6FindMy45FMAccessoryDiscoveryAccessoryConfirmationCard)initWithContentView:(id)view;
 - (void)viewDidLoad;
 @end
 
@@ -15,7 +15,7 @@
   sub_10048F3A8();
 }
 
-- (_TtC6FindMy45FMAccessoryDiscoveryAccessoryConfirmationCard)initWithContentView:(id)a3
+- (_TtC6FindMy45FMAccessoryDiscoveryAccessoryConfirmationCard)initWithContentView:(id)view
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

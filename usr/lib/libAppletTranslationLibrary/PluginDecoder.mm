@@ -1,20 +1,20 @@
 @interface PluginDecoder
-+ (id)decoderWithData:(uint64_t)a1;
-+ (id)persistentContext:(id)a3;
++ (id)decoderWithData:(uint64_t)data;
++ (id)persistentContext:(id)context;
 - (id).cxx_construct;
-- (id)GetAppletProperties:(id)a3 withPackage:(id)a4 withModule:(id)a5 withTransceiver:(id)a6 withError:(id *)p_data;
-- (id)getAppletStateAndHistory:(id)a3 withApplet:(id)a4 withPackage:(id)a5 withModule:(id)a6 withError:(id *)p_data;
-- (id)getServiceProviderData:(id)a3 withPackage:(id)a4 withModule:(id)a5 withPublicKey:(id)a6 withEncryptionScheme:(id)a7 withTransceiver:(id)a8 withError:(id *)a9;
-- (id)getServiceProviderData:(id)a3 withPackage:(id)a4 withModule:(id)a5 withTransceiver:(id)a6 withError:(id *)p_data;
-- (id)initWithData:(id)a1;
-- (id)parseHCIEvent:(id)a3 withApplet:(id)a4 withPackage:(id)a5 withModule:(id)a6 withTransceiver:(id)a7 withError:(id *)p_data;
-- (id)processEndOfTransaction:(id)a3 withApplet:(id)a4 withPackage:(id)a5 withModule:(id)a6 withError:(id *)p_data;
+- (id)GetAppletProperties:(id)properties withPackage:(id)package withModule:(id)module withTransceiver:(id)transceiver withError:(id *)p_data;
+- (id)getAppletStateAndHistory:(id)history withApplet:(id)applet withPackage:(id)package withModule:(id)module withError:(id *)p_data;
+- (id)getServiceProviderData:(id)data withPackage:(id)package withModule:(id)module withPublicKey:(id)key withEncryptionScheme:(id)scheme withTransceiver:(id)transceiver withError:(id *)error;
+- (id)getServiceProviderData:(id)data withPackage:(id)package withModule:(id)module withTransceiver:(id)transceiver withError:(id *)p_data;
+- (id)initWithData:(id)data;
+- (id)parseHCIEvent:(id)event withApplet:(id)applet withPackage:(id)package withModule:(id)module withTransceiver:(id)transceiver withError:(id *)p_data;
+- (id)processEndOfTransaction:(id)transaction withApplet:(id)applet withPackage:(id)package withModule:(id)module withError:(id *)p_data;
 - (uint64_t)classChecker;
 @end
 
 @implementation PluginDecoder
 
-+ (id)decoderWithData:(uint64_t)a1
++ (id)decoderWithData:(uint64_t)data
 {
   v2 = a2;
   objc_opt_self();
@@ -23,22 +23,22 @@
   return v3;
 }
 
-- (id)initWithData:(id)a1
+- (id)initWithData:(id)data
 {
   v13 = *MEMORY[0x277D85DE8];
   v3 = a2;
-  if (a1)
+  if (data)
   {
-    v11.receiver = a1;
+    v11.receiver = data;
     v11.super_class = PluginDecoder;
-    a1 = objc_msgSendSuper2(&v11, sel_init);
-    if (a1)
+    data = objc_msgSendSuper2(&v11, sel_init);
+    if (data)
     {
       OVM::Deserialize(v3, v9);
       if (v10)
       {
         v4 = caulk::expected<std::shared_ptr<OVM::Script>,OVM::Error>::value(v9);
-        [(PluginDecoder *)a1 initWithData:v4, v9];
+        [(PluginDecoder *)data initWithData:v4, v9];
       }
 
       else
@@ -51,36 +51,36 @@
         }
 
         caulk::__expected_detail::base<std::shared_ptr<OVM::Script>,OVM::Error>::~base(v9);
-        a1 = 0;
+        data = 0;
       }
     }
   }
 
   v6 = *MEMORY[0x277D85DE8];
-  return a1;
+  return data;
 }
 
-- (id)getAppletStateAndHistory:(id)a3 withApplet:(id)a4 withPackage:(id)a5 withModule:(id)a6 withError:(id *)p_data
+- (id)getAppletStateAndHistory:(id)history withApplet:(id)applet withPackage:(id)package withModule:(id)module withError:(id *)p_data
 {
   v84[0] = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  historyCopy = history;
+  appletCopy = applet;
+  packageCopy = package;
+  moduleCopy = module;
   v51 = 3;
   v52 = 0;
   v53 = 2;
   LODWORD(v69) = 3;
-  v70 = v12;
+  v70 = historyCopy;
   v71 = 2;
   v72 = 3;
-  v73 = v13;
+  v73 = appletCopy;
   v74 = 2;
   v75 = 3;
-  v76 = v14;
+  v76 = packageCopy;
   v77 = 2;
   v78 = 3;
-  v79 = v15;
+  v79 = moduleCopy;
   v80 = 2;
   v81 = 4;
   v82 = &v51;
@@ -331,31 +331,31 @@ LABEL_53:
   return result;
 }
 
-- (id)parseHCIEvent:(id)a3 withApplet:(id)a4 withPackage:(id)a5 withModule:(id)a6 withTransceiver:(id)a7 withError:(id *)p_data
+- (id)parseHCIEvent:(id)event withApplet:(id)applet withPackage:(id)package withModule:(id)module withTransceiver:(id)transceiver withError:(id *)p_data
 {
   v90[0] = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
+  eventCopy = event;
+  appletCopy = applet;
+  packageCopy = package;
+  moduleCopy = module;
+  transceiverCopy = transceiver;
   v54 = 3;
   v55 = 0;
   v56 = 2;
   LODWORD(v72) = 3;
-  v73 = v14;
+  v73 = eventCopy;
   v74 = 2;
   v75 = 3;
-  v76 = v15;
+  v76 = appletCopy;
   v77 = 2;
   v78 = 3;
-  v79 = v16;
+  v79 = packageCopy;
   v80 = 2;
   v81 = 3;
-  v82 = v17;
+  v82 = moduleCopy;
   v83 = 2;
   v84 = 3;
-  v85 = v18;
+  v85 = transceiverCopy;
   v86 = 2;
   v87 = 4;
   v88 = &v54;
@@ -589,27 +589,27 @@ LABEL_53:
   return p_data;
 }
 
-- (id)GetAppletProperties:(id)a3 withPackage:(id)a4 withModule:(id)a5 withTransceiver:(id)a6 withError:(id *)p_data
+- (id)GetAppletProperties:(id)properties withPackage:(id)package withModule:(id)module withTransceiver:(id)transceiver withError:(id *)p_data
 {
   v84[0] = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  propertiesCopy = properties;
+  packageCopy = package;
+  moduleCopy = module;
+  transceiverCopy = transceiver;
   v51 = 3;
   v52 = 0;
   v53 = 2;
   LODWORD(v69) = 3;
-  v70 = v12;
+  v70 = propertiesCopy;
   v71 = 2;
   v72 = 3;
-  v73 = v13;
+  v73 = packageCopy;
   v74 = 2;
   v75 = 3;
-  v76 = v14;
+  v76 = moduleCopy;
   v77 = 2;
   v78 = 3;
-  v79 = v15;
+  v79 = transceiverCopy;
   v80 = 2;
   v81 = 4;
   v82 = &v51;
@@ -843,27 +843,27 @@ LABEL_53:
   return p_data;
 }
 
-- (id)processEndOfTransaction:(id)a3 withApplet:(id)a4 withPackage:(id)a5 withModule:(id)a6 withError:(id *)p_data
+- (id)processEndOfTransaction:(id)transaction withApplet:(id)applet withPackage:(id)package withModule:(id)module withError:(id *)p_data
 {
   v85[0] = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  transactionCopy = transaction;
+  appletCopy = applet;
+  packageCopy = package;
+  moduleCopy = module;
   v52 = 3;
   v53 = 0;
   v54 = 2;
   LODWORD(v70) = 3;
-  v71 = v13;
+  v71 = appletCopy;
   v72 = 2;
   v73 = 3;
-  v74 = v14;
+  v74 = packageCopy;
   v75 = 2;
   v76 = 3;
-  v77 = v15;
+  v77 = moduleCopy;
   v78 = 2;
   v79 = 3;
-  v80 = v12;
+  v80 = transactionCopy;
   v81 = 2;
   v82 = 4;
   v83 = &v52;
@@ -1102,35 +1102,35 @@ LABEL_55:
   return p_data;
 }
 
-- (id)getServiceProviderData:(id)a3 withPackage:(id)a4 withModule:(id)a5 withPublicKey:(id)a6 withEncryptionScheme:(id)a7 withTransceiver:(id)a8 withError:(id *)a9
+- (id)getServiceProviderData:(id)data withPackage:(id)package withModule:(id)module withPublicKey:(id)key withEncryptionScheme:(id)scheme withTransceiver:(id)transceiver withError:(id *)error
 {
   v97[0] = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
+  dataCopy = data;
+  packageCopy = package;
+  moduleCopy = module;
+  keyCopy = key;
+  schemeCopy = scheme;
+  transceiverCopy = transceiver;
   v58 = 3;
   v59 = 0;
   v60 = 2;
   LODWORD(v76) = 3;
-  v77 = v15;
+  v77 = dataCopy;
   v78 = 2;
   v79 = 3;
-  v80 = v16;
+  v80 = packageCopy;
   v81 = 2;
   v82 = 3;
-  v83 = v17;
+  v83 = moduleCopy;
   v84 = 2;
   v85 = 3;
-  v86 = v18;
+  v86 = keyCopy;
   v87 = 2;
   v88 = 3;
-  v89 = v19;
+  v89 = schemeCopy;
   v90 = 2;
   v91 = 3;
-  v92 = v20;
+  v92 = transceiverCopy;
   v93 = 2;
   v94 = 4;
   v95 = &v58;
@@ -1202,21 +1202,21 @@ LABEL_55:
     if (SHIBYTE(__p.__r_.__value_.__r.__words[2]) < 0)
     {
       operator delete(__p.__r_.__value_.__l.__data_);
-      if (!a9)
+      if (!error)
       {
         goto LABEL_54;
       }
     }
 
-    else if (!a9)
+    else if (!error)
     {
       goto LABEL_54;
     }
 
-    v28 = *a9;
+    v28 = *error;
     v29 = MEMORY[0x277CCA9B8];
     v30 = *MEMORY[0x277CCA450];
-    if (*a9)
+    if (*error)
     {
       v31 = *MEMORY[0x277CCA7E8];
       v69[0] = *MEMORY[0x277CCA450];
@@ -1234,12 +1234,12 @@ LABEL_55:
     }
 
     v32 = LABEL_44:;
-    *a9 = [v29 errorWithDomain:@"ATL" code:8 userInfo:v32];
+    *error = [v29 errorWithDomain:@"ATL" code:8 userInfo:v32];
 
     goto LABEL_54;
   }
 
-  if (a9)
+  if (error)
   {
     if (v58 == 3)
     {
@@ -1256,7 +1256,7 @@ LABEL_55:
       v22 = 0;
     }
 
-    *a9 = v22;
+    *error = v22;
   }
 
   if (v76 != 3)
@@ -1272,15 +1272,15 @@ LABEL_55:
     v35 = objc_alloc(MEMORY[0x277CCACA8]);
     v36 = [v35 initWithFormat:@"Plugin returned wrong dynamic type %d", v76];
     v27 = v36;
-    if (!a9)
+    if (!error)
     {
       goto LABEL_54;
     }
 
-    v37 = *a9;
+    v37 = *error;
     v29 = MEMORY[0x277CCA9B8];
     v38 = *MEMORY[0x277CCA450];
-    if (*a9)
+    if (*error)
     {
       v39 = *MEMORY[0x277CCA7E8];
       v65[0] = *MEMORY[0x277CCA450];
@@ -1324,12 +1324,12 @@ LABEL_55:
 
   v42 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Plugin returned wrong class %@", objc_opt_class()];
   v43 = v42;
-  if (a9)
+  if (error)
   {
-    v44 = *a9;
+    v44 = *error;
     v50 = MEMORY[0x277CCA9B8];
     v45 = *MEMORY[0x277CCA450];
-    if (*a9)
+    if (*error)
     {
       v46 = *MEMORY[0x277CCA7E8];
       v61[0] = *MEMORY[0x277CCA450];
@@ -1346,7 +1346,7 @@ LABEL_55:
       [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v64 forKeys:&v63 count:1];
     }
     v47 = ;
-    *a9 = [v50 errorWithDomain:@"ATL" code:8 userInfo:v47];
+    *error = [v50 errorWithDomain:@"ATL" code:8 userInfo:v47];
   }
 
 LABEL_54:
@@ -1370,27 +1370,27 @@ LABEL_55:
   return v33;
 }
 
-- (id)getServiceProviderData:(id)a3 withPackage:(id)a4 withModule:(id)a5 withTransceiver:(id)a6 withError:(id *)p_data
+- (id)getServiceProviderData:(id)data withPackage:(id)package withModule:(id)module withTransceiver:(id)transceiver withError:(id *)p_data
 {
   v85 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  dataCopy = data;
+  packageCopy = package;
+  moduleCopy = module;
+  transceiverCopy = transceiver;
   v52 = 3;
   v53 = 0;
   v54 = 2;
   LODWORD(v70) = 3;
-  v71 = v12;
+  v71 = dataCopy;
   v72 = 2;
   v73 = 3;
-  v74 = v13;
+  v74 = packageCopy;
   v75 = 2;
   v76 = 3;
-  v77 = v14;
+  v77 = moduleCopy;
   v78 = 2;
   v79 = 3;
-  v80 = v15;
+  v80 = transceiverCopy;
   v81 = 2;
   v82 = 4;
   v83 = &v52;
@@ -1636,23 +1636,23 @@ LABEL_55:
   return self;
 }
 
-+ (id)persistentContext:(id)a3
++ (id)persistentContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   if (+[PluginDecoder(IndirectMethods) persistentContext:]::onceToken != -1)
   {
     +[PluginDecoder(IndirectMethods) persistentContext:];
   }
 
-  v4 = [+[PluginDecoder(IndirectMethods) persistentContext:]::persistentStore objectForKeyedSubscript:v3];
-  if (!v4)
+  dictionary = [+[PluginDecoder(IndirectMethods) persistentContext:]::persistentStore objectForKeyedSubscript:contextCopy];
+  if (!dictionary)
   {
     v5 = +[PluginDecoder(IndirectMethods) persistentContext:]::persistentStore;
-    v4 = [MEMORY[0x277CBEB38] dictionary];
-    [v5 setObject:v4 forKeyedSubscript:v3];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    [v5 setObject:dictionary forKeyedSubscript:contextCopy];
   }
 
-  return v4;
+  return dictionary;
 }
 
 uint64_t __52__PluginDecoder_IndirectMethods__persistentContext___block_invoke()

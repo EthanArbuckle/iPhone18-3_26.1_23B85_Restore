@@ -1,11 +1,11 @@
 @interface INCancelRideIntentResponse
-- (INCancelRideIntentResponse)initWithBackingStore:(id)a3;
+- (INCancelRideIntentResponse)initWithBackingStore:(id)store;
 - (INCancelRideIntentResponse)initWithCode:(INCancelRideIntentResponseCode)code userActivity:(NSUserActivity *)userActivity;
-- (INCancelRideIntentResponse)initWithCoder:(id)a3;
+- (INCancelRideIntentResponse)initWithCoder:(id)coder;
 - (INCancelRideIntentResponseCode)code;
 - (id)_dictionaryRepresentation;
-- (id)_initWithCode:(int64_t)a3 userActivity:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (id)_initWithCode:(int64_t)code userActivity:(id)activity;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation INCancelRideIntentResponse
@@ -14,30 +14,30 @@
 {
   v12[2] = *MEMORY[0x1E69E9840];
   v11[0] = @"code";
-  v3 = [(INCancelRideIntentResponse *)self code];
-  v4 = v3;
-  if (v3 <= INCancelRideIntentResponseCodeFailure)
+  code = [(INCancelRideIntentResponse *)self code];
+  v4 = code;
+  if (code <= INCancelRideIntentResponseCodeFailure)
   {
-    v5 = *(&off_1E727DD60 + v3);
+    null = *(&off_1E727DD60 + code);
   }
 
   else
   {
-    v5 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
   v11[1] = @"userActivity";
-  v12[0] = v5;
-  v6 = [(INIntentResponse *)self userActivity];
-  v7 = v6;
-  if (!v6)
+  v12[0] = null;
+  userActivity = [(INIntentResponse *)self userActivity];
+  null2 = userActivity;
+  if (!userActivity)
   {
-    v7 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v12[1] = v7;
+  v12[1] = null2;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:v11 count:2];
-  if (!v6)
+  if (!userActivity)
   {
   }
 
@@ -50,14 +50,14 @@
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = INCancelRideIntentResponse;
-  v4 = a3;
-  [(INIntentResponse *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_cancellationFee forKey:{@"cancellationFee", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_cancellationFeeThreshold forKey:@"cancellationFeeThreshold"];
+  coderCopy = coder;
+  [(INIntentResponse *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_cancellationFee forKey:{@"cancellationFee", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_cancellationFeeThreshold forKey:@"cancellationFeeThreshold"];
 }
 
 - (INCancelRideIntentResponseCode)code
@@ -67,33 +67,33 @@
   return [(INIntentResponse *)&v3 code];
 }
 
-- (INCancelRideIntentResponse)initWithBackingStore:(id)a3
+- (INCancelRideIntentResponse)initWithBackingStore:(id)store
 {
   v4.receiver = self;
   v4.super_class = INCancelRideIntentResponse;
-  return [(INIntentResponse *)&v4 initWithBackingStore:a3];
+  return [(INIntentResponse *)&v4 initWithBackingStore:store];
 }
 
-- (id)_initWithCode:(int64_t)a3 userActivity:(id)a4
+- (id)_initWithCode:(int64_t)code userActivity:(id)activity
 {
   v5.receiver = self;
   v5.super_class = INCancelRideIntentResponse;
-  return [(INIntentResponse *)&v5 _initWithCode:a3 userActivity:a4];
+  return [(INIntentResponse *)&v5 _initWithCode:code userActivity:activity];
 }
 
-- (INCancelRideIntentResponse)initWithCoder:(id)a3
+- (INCancelRideIntentResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = INCancelRideIntentResponse;
-  v5 = [(INIntentResponse *)&v11 initWithCoder:v4];
+  v5 = [(INIntentResponse *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"cancellationFee"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"cancellationFee"];
     cancellationFee = v5->_cancellationFee;
     v5->_cancellationFee = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"cancellationFeeThreshold"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"cancellationFeeThreshold"];
     cancellationFeeThreshold = v5->_cancellationFeeThreshold;
     v5->_cancellationFeeThreshold = v8;
   }

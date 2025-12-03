@@ -1,28 +1,28 @@
 @interface BMMiningTask
 + (id)supergreenMiningTask;
 - (BMMiningTask)init;
-- (BMMiningTask)initWithDomain:(id)a3 types:(id)a4 targetTypes:(id)a5 samplingInterval:(double)a6 absoluteSupport:(unint64_t)a7 confidence:(double)a8 rulePersistBatchSize:(unint64_t)a9 miningInterval:(double)a10;
-- (BMMiningTask)initWithStorageURL:(id)a3 types:(id)a4 targetTypes:(id)a5 samplingInterval:(double)a6 absoluteSupport:(unint64_t)a7 confidence:(double)a8 rulePersistBatchSize:(unint64_t)a9 miningInterval:(double)a10;
+- (BMMiningTask)initWithDomain:(id)domain types:(id)types targetTypes:(id)targetTypes samplingInterval:(double)interval absoluteSupport:(unint64_t)support confidence:(double)confidence rulePersistBatchSize:(unint64_t)size miningInterval:(double)self0;
+- (BMMiningTask)initWithStorageURL:(id)l types:(id)types targetTypes:(id)targetTypes samplingInterval:(double)interval absoluteSupport:(unint64_t)support confidence:(double)confidence rulePersistBatchSize:(unint64_t)size miningInterval:(double)self0;
 - (BMMiningTaskDelegate)delegate;
-- (void)finishWithCompletionStatus:(int64_t)a3;
-- (void)finishWithError:(id)a3;
+- (void)finishWithCompletionStatus:(int64_t)status;
+- (void)finishWithError:(id)error;
 - (void)mine;
 - (void)terminateEarly;
 @end
 
 @implementation BMMiningTask
 
-- (BMMiningTask)initWithDomain:(id)a3 types:(id)a4 targetTypes:(id)a5 samplingInterval:(double)a6 absoluteSupport:(unint64_t)a7 confidence:(double)a8 rulePersistBatchSize:(unint64_t)a9 miningInterval:(double)a10
+- (BMMiningTask)initWithDomain:(id)domain types:(id)types targetTypes:(id)targetTypes samplingInterval:(double)interval absoluteSupport:(unint64_t)support confidence:(double)confidence rulePersistBatchSize:(unint64_t)size miningInterval:(double)self0
 {
-  v18 = a3;
-  v19 = a5;
-  v20 = a4;
-  v21 = BMStorageURLForDomain(v18);
-  v22 = [(BMMiningTask *)self initWithStorageURL:v21 types:v20 targetTypes:v19 samplingInterval:a7 absoluteSupport:a9 confidence:a6 rulePersistBatchSize:a8 miningInterval:a10];
+  domainCopy = domain;
+  targetTypesCopy = targetTypes;
+  typesCopy = types;
+  v21 = BMStorageURLForDomain(domainCopy);
+  v22 = [(BMMiningTask *)self initWithStorageURL:v21 types:typesCopy targetTypes:targetTypesCopy samplingInterval:support absoluteSupport:size confidence:interval rulePersistBatchSize:confidence miningInterval:miningInterval];
 
   if (v22)
   {
-    v23 = [v18 copy];
+    v23 = [domainCopy copy];
     domain = v22->_domain;
     v22->_domain = v23;
   }
@@ -30,37 +30,37 @@
   return v22;
 }
 
-- (BMMiningTask)initWithStorageURL:(id)a3 types:(id)a4 targetTypes:(id)a5 samplingInterval:(double)a6 absoluteSupport:(unint64_t)a7 confidence:(double)a8 rulePersistBatchSize:(unint64_t)a9 miningInterval:(double)a10
+- (BMMiningTask)initWithStorageURL:(id)l types:(id)types targetTypes:(id)targetTypes samplingInterval:(double)interval absoluteSupport:(unint64_t)support confidence:(double)confidence rulePersistBatchSize:(unint64_t)size miningInterval:(double)self0
 {
-  v18 = a3;
-  v19 = a4;
-  v20 = a5;
+  lCopy = l;
+  typesCopy = types;
+  targetTypesCopy = targetTypes;
   v30.receiver = self;
   v30.super_class = BMMiningTask;
   v21 = [(BMMiningTask *)&v30 init];
   v22 = v21;
   if (v21)
   {
-    v21->_miningInterval = a10;
+    v21->_miningInterval = miningInterval;
     v21->_completionStatus = -2;
-    v23 = [v18 copy];
+    v23 = [lCopy copy];
     storageURL = v22->_storageURL;
     v22->_storageURL = v23;
 
-    objc_storeStrong(&v22->_types, a4);
-    objc_storeStrong(&v22->_targetTypes, a5);
-    v22->_samplingInterval = a6;
-    v22->_absoluteSupport = a7;
-    v22->_confidence = a8;
-    v22->_rulePersistBatchSize = a9;
+    objc_storeStrong(&v22->_types, types);
+    objc_storeStrong(&v22->_targetTypes, targetTypes);
+    v22->_samplingInterval = interval;
+    v22->_absoluteSupport = support;
+    v22->_confidence = confidence;
+    v22->_rulePersistBatchSize = size;
     v22->_maxItemsetSize = 0;
     v25 = objc_alloc_init(BMMiningTaskConfig);
     bmMiningTaskConfig = v22->_bmMiningTaskConfig;
     v22->_bmMiningTaskConfig = v25;
 
-    v27 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     coreAnalyticsDict = v22->_coreAnalyticsDict;
-    v22->_coreAnalyticsDict = v27;
+    v22->_coreAnalyticsDict = dictionary;
   }
 
   return v22;
@@ -111,45 +111,45 @@
   return v11;
 }
 
-- (void)finishWithError:(id)a3
+- (void)finishWithError:(id)error
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
+  errorCopy = error;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v6 = BMLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
     [BMMiningTask finishWithError:];
   }
 
-  v7 = [(BMMiningTask *)v5 delegate];
+  delegate = [(BMMiningTask *)selfCopy delegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(BMMiningTask *)v5 delegate];
-    [v9 miningTask:v5 didError:v4];
+    delegate2 = [(BMMiningTask *)selfCopy delegate];
+    [delegate2 miningTask:selfCopy didError:errorCopy];
   }
 
-  [(BMMiningTask *)v5 finishWithCompletionStatus:2];
-  objc_sync_exit(v5);
+  [(BMMiningTask *)selfCopy finishWithCompletionStatus:2];
+  objc_sync_exit(selfCopy);
 }
 
-- (void)finishWithCompletionStatus:(int64_t)a3
+- (void)finishWithCompletionStatus:(int64_t)status
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = self;
-  objc_sync_enter(v4);
-  if (![(BMMiningTask *)v4 isFinished])
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (![(BMMiningTask *)selfCopy isFinished])
   {
-    v5 = [(BMMiningTask *)v4 start];
-    [v5 timeIntervalSinceNow];
+    start = [(BMMiningTask *)selfCopy start];
+    [start timeIntervalSinceNow];
     v7 = v6;
 
     v8 = BMLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+      v9 = [MEMORY[0x277CCABB0] numberWithInteger:status];
       v14 = 134218242;
       v15 = -v7;
       v16 = 2112;
@@ -157,18 +157,18 @@
       _os_log_impl(&dword_241ACA000, v8, OS_LOG_TYPE_DEFAULT, "Finished behavioral mining with elapsed time %.2f seconds, completion status: %@.", &v14, 0x16u);
     }
 
-    [(BMMiningTask *)v4 setCompletionStatus:a3];
-    v10 = [(BMMiningTask *)v4 delegate];
+    [(BMMiningTask *)selfCopy setCompletionStatus:status];
+    delegate = [(BMMiningTask *)selfCopy delegate];
     v11 = objc_opt_respondsToSelector();
 
     if (v11)
     {
-      v12 = [(BMMiningTask *)v4 delegate];
-      [v12 miningTaskDidFinish:v4];
+      delegate2 = [(BMMiningTask *)selfCopy delegate];
+      [delegate2 miningTaskDidFinish:selfCopy];
     }
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 
   v13 = *MEMORY[0x277D85DE8];
 }
@@ -177,8 +177,8 @@
 {
   v12 = *MEMORY[0x277D85DE8];
   v1 = MEMORY[0x277CCABB0];
-  v2 = [a1 bmMiningTaskConfig];
-  v3 = [v1 numberWithBool:{objc_msgSend(v2, "interactionExtractedTopicFromAttachmentFactorInUse")}];
+  bmMiningTaskConfig = [self bmMiningTaskConfig];
+  v3 = [v1 numberWithBool:{objc_msgSend(bmMiningTaskConfig, "interactionExtractedTopicFromAttachmentFactorInUse")}];
   OUTLINED_FUNCTION_0();
   OUTLINED_FUNCTION_1(&dword_241ACA000, v4, v5, "Passing bmMiningTaskConfig to BMEventExtractor with interactionExtractedTopicFromAttachmentFactorInUse as %@", v6, v7, v8, v9, v11);
 
@@ -230,8 +230,8 @@ BOOL __20__BMMiningTask_mine__block_invoke(uint64_t a1, void *a2)
 
 - (void)terminateEarly
 {
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v3 = BMLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
@@ -239,40 +239,40 @@ BOOL __20__BMMiningTask_mine__block_invoke(uint64_t a1, void *a2)
     _os_log_impl(&dword_241ACA000, v3, OS_LOG_TYPE_DEFAULT, "Stopping mining task with early termination completion status.", v12, 2u);
   }
 
-  v4 = [(BMMiningTask *)v2 eventExtractor];
+  eventExtractor = [(BMMiningTask *)selfCopy eventExtractor];
 
-  if (v4)
+  if (eventExtractor)
   {
-    v5 = [(BMMiningTask *)v2 eventExtractor];
-    [v5 terminateEarly];
+    eventExtractor2 = [(BMMiningTask *)selfCopy eventExtractor];
+    [eventExtractor2 terminateEarly];
   }
 
-  v6 = [(BMMiningTask *)v2 basketExtractor];
+  basketExtractor = [(BMMiningTask *)selfCopy basketExtractor];
 
-  if (v6)
+  if (basketExtractor)
   {
-    v7 = [(BMMiningTask *)v2 basketExtractor];
-    [v7 terminateEarly];
+    basketExtractor2 = [(BMMiningTask *)selfCopy basketExtractor];
+    [basketExtractor2 terminateEarly];
   }
 
-  v8 = [(BMMiningTask *)v2 patternMiner];
+  patternMiner = [(BMMiningTask *)selfCopy patternMiner];
 
-  if (v8)
+  if (patternMiner)
   {
-    v9 = [(BMMiningTask *)v2 patternMiner];
-    [v9 terminateEarly];
+    patternMiner2 = [(BMMiningTask *)selfCopy patternMiner];
+    [patternMiner2 terminateEarly];
   }
 
-  v10 = [(BMMiningTask *)v2 ruleExtractor];
+  ruleExtractor = [(BMMiningTask *)selfCopy ruleExtractor];
 
-  if (v10)
+  if (ruleExtractor)
   {
-    v11 = [(BMMiningTask *)v2 ruleExtractor];
-    [v11 terminateEarly];
+    ruleExtractor2 = [(BMMiningTask *)selfCopy ruleExtractor];
+    [ruleExtractor2 terminateEarly];
   }
 
-  [(BMMiningTask *)v2 finishWithCompletionStatus:1];
-  objc_sync_exit(v2);
+  [(BMMiningTask *)selfCopy finishWithCompletionStatus:1];
+  objc_sync_exit(selfCopy);
 }
 
 - (BMMiningTaskDelegate)delegate

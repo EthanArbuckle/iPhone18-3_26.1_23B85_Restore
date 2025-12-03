@@ -1,13 +1,13 @@
 @interface OSLogEventStore
 + (id)localStore;
-+ (id)localStoreWithRelativePaths:(id)a3;
-+ (id)storeWithArchiveURL:(id)a3;
-+ (id)storeWithArchiveURL:(id)a3 relativePaths:(id)a4;
-+ (id)storeWithFileURL:(id)a3;
-- (OSLogEventStore)initWithArchiveURL:(id)a3;
-- (OSLogEventStore)initWithArchiveURL:(id)a3 relativePaths:(id)a4;
-- (void)addFilesToSource:(id)a3 forCollection:(id)a4 withProgress:(id)a5;
-- (void)prepareWithCompletionHandler:(id)a3;
++ (id)localStoreWithRelativePaths:(id)paths;
++ (id)storeWithArchiveURL:(id)l;
++ (id)storeWithArchiveURL:(id)l relativePaths:(id)paths;
++ (id)storeWithFileURL:(id)l;
+- (OSLogEventStore)initWithArchiveURL:(id)l;
+- (OSLogEventStore)initWithArchiveURL:(id)l relativePaths:(id)paths;
+- (void)addFilesToSource:(id)source forCollection:(id)collection withProgress:(id)progress;
+- (void)prepareWithCompletionHandler:(id)handler;
 @end
 
 @implementation OSLogEventStore
@@ -19,9 +19,9 @@
   return v2;
 }
 
-- (void)prepareWithCompletionHandler:(id)a3
+- (void)prepareWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = [MEMORY[0x277CCAC48] progressWithTotalUnitCount:6];
   archiveURL = self->_archiveURL;
   if (!archiveURL)
@@ -29,7 +29,7 @@
     v16 = _OSLogError(1);
 LABEL_10:
     v18 = v16;
-    v4[2](v4, 0, v16);
+    handlerCopy[2](handlerCopy, 0, v16);
 
     goto LABEL_52;
   }
@@ -89,9 +89,9 @@ LABEL_65:
 
 LABEL_12:
   v19 = v5;
-  v20 = self;
+  selfCopy = self;
   [v19 setCompletedUnitCount:{objc_msgSend(v19, "completedUnitCount") + 1}];
-  progressHandler = v20->_progressHandler;
+  progressHandler = selfCopy->_progressHandler;
 
   if (progressHandler)
   {
@@ -108,7 +108,7 @@ LABEL_12:
   if (!v24)
   {
     v35 = _OSLogPOSIXError(4, [v25 code]);
-    v4[2](v4, 0, v35);
+    handlerCopy[2](handlerCopy, 0, v35);
 
     [(_OSLogCollectionReference *)v23 close];
     goto LABEL_51;
@@ -118,9 +118,9 @@ LABEL_12:
   v75 = v10;
   v73 = v9;
   v27 = v19;
-  v28 = v20;
+  v28 = selfCopy;
   [v27 setCompletedUnitCount:{objc_msgSend(v27, "completedUnitCount") + 1}];
-  v29 = v20->_progressHandler;
+  v29 = selfCopy->_progressHandler;
 
   if (v29)
   {
@@ -139,7 +139,7 @@ LABEL_12:
         v36 = v27;
         v37 = v28;
         [v36 setCompletedUnitCount:{objc_msgSend(v36, "completedUnitCount") + 1}];
-        v38 = v20->_progressHandler;
+        v38 = selfCopy->_progressHandler;
         v71 = v37;
 
         if (v38)
@@ -162,7 +162,7 @@ LABEL_12:
           {
             v63 = __error();
             v64 = _OSLogPOSIXError(3, *v63);
-            v4[2](v4, 0, v64);
+            handlerCopy[2](handlerCopy, 0, v64);
 
             [(_OSLogDirectoryReference *)v73 close];
             [(_OSLogDirectoryReference *)v75 close];
@@ -179,13 +179,13 @@ LABEL_12:
         v45 = _os_trace_mmap_at();
         if (!v45)
         {
-          v39 = *__error();
+          version = *__error();
           v40 = 5;
 LABEL_48:
-          v42 = _OSLogPOSIXError(v40, v39);
+          v42 = _OSLogPOSIXError(v40, version);
 LABEL_49:
           v59 = v42;
-          v4[2](v4, 0, v42);
+          handlerCopy[2](handlerCopy, 0, v42);
 
           [(_OSLogCollectionReference *)v23 close];
 LABEL_50:
@@ -202,7 +202,7 @@ LABEL_50:
         {
           _OSLogInternalError(5, v47);
           v62 = v61 = 0;
-          v4[2](v4, 0, v62);
+          handlerCopy[2](handlerCopy, 0, v62);
 
           [(_OSLogCollectionReference *)v72 close];
           v57 = v70;
@@ -219,7 +219,7 @@ LABEL_62:
         v48 = [[_OSLogEventStoreMetadata alloc] initWithDictionary:v46];
         if (!v48)
         {
-          v49 = v20->_progressHandler;
+          v49 = selfCopy->_progressHandler;
           if (v49)
           {
             [v36 fractionCompleted];
@@ -234,7 +234,7 @@ LABEL_62:
         v53 = v36;
         v54 = v71;
         [v53 setCompletedUnitCount:{objc_msgSend(v53, "completedUnitCount") + 1}];
-        v55 = v20->_progressHandler;
+        v55 = selfCopy->_progressHandler;
 
         if (v55)
         {
@@ -246,7 +246,7 @@ LABEL_62:
         {
           v65 = __error();
           v66 = _OSLogPOSIXError(12, *v65);
-          v4[2](v4, 0, v66);
+          handlerCopy[2](handlerCopy, 0, v66);
 
           [(_OSLogCollectionReference *)v72 close];
           v57 = v70;
@@ -269,7 +269,7 @@ LABEL_61:
 
         else
         {
-          v67 = _enumerateArchiveIntoSource(v56, v72, v20->_progressHandler, v4);
+          v67 = _enumerateArchiveIntoSource(v56, v72, selfCopy->_progressHandler, handlerCopy);
           v57 = v70;
           v58 = v68;
           if (!v67)
@@ -283,25 +283,25 @@ LABEL_60:
 
         [v53 resignCurrent];
         _progress(v54, v53, 0);
-        (v4)[2](v4, v56, 0);
+        (handlerCopy)[2](handlerCopy, v56, 0);
         goto LABEL_60;
       }
 
-      v30 = [(_OSLogVersioning *)v24 state];
-      if (v30 == 3)
+      state = [(_OSLogVersioning *)v24 state];
+      if (state == 3)
       {
         break;
       }
 
-      if (v30 == 2)
+      if (state == 2)
       {
         v41 = 11;
         goto LABEL_34;
       }
 
-      if (!v30)
+      if (!state)
       {
-        v39 = [(_OSLogVersioning *)v24 version];
+        version = [(_OSLogVersioning *)v24 version];
         v40 = 10;
         goto LABEL_48;
       }
@@ -330,7 +330,7 @@ LABEL_34:
   }
 
   v34 = _OSLogPOSIXError(9, [v33 code]);
-  v4[2](v4, 0, v34);
+  handlerCopy[2](handlerCopy, 0, v34);
 
   [(_OSLogCollectionReference *)v23 close];
   v26 = v33;
@@ -341,15 +341,15 @@ LABEL_51:
 LABEL_52:
 }
 
-- (void)addFilesToSource:(id)a3 forCollection:(id)a4 withProgress:(id)a5
+- (void)addFilesToSource:(id)source forCollection:(id)collection withProgress:(id)progress
 {
   v38 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v8;
-  v29 = v10;
-  v30 = self;
+  sourceCopy = source;
+  collectionCopy = collection;
+  progressCopy = progress;
+  v11 = sourceCopy;
+  v29 = progressCopy;
+  selfCopy = self;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
@@ -370,7 +370,7 @@ LABEL_52:
           objc_enumerationMutation(v12);
         }
 
-        v16 = [objc_alloc((p_vtable + 87)) initWithCollection:v9 subpath:{objc_msgSend(*(*(&v33 + 1) + 8 * v15), "fileSystemRepresentation")}];
+        v16 = [objc_alloc((p_vtable + 87)) initWithCollection:collectionCopy subpath:{objc_msgSend(*(*(&v33 + 1) + 8 * v15), "fileSystemRepresentation")}];
         v17 = [_OSLogIndexFile alloc];
         v32 = 0;
         v18 = [(_OSLogIndexFile *)v17 initWithTraceFile:v16 error:&v32];
@@ -382,21 +382,21 @@ LABEL_52:
 
         else
         {
-          progressHandler = v30->_progressHandler;
+          progressHandler = selfCopy->_progressHandler;
           if (progressHandler)
           {
             [v29 fractionCompleted];
             v22 = v21;
             _OSLogInternalError(17, v19);
             v23 = v13;
-            v24 = v9;
+            v24 = collectionCopy;
             v25 = v12;
             v27 = v26 = v11;
             progressHandler[2](progressHandler, v27, v22);
 
             v11 = v26;
             v12 = v25;
-            v9 = v24;
+            collectionCopy = v24;
             v13 = v23;
             p_vtable = (&OBJC_METACLASS____OSLogIndex + 24);
           }
@@ -415,62 +415,62 @@ LABEL_52:
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (OSLogEventStore)initWithArchiveURL:(id)a3 relativePaths:(id)a4
+- (OSLogEventStore)initWithArchiveURL:(id)l relativePaths:(id)paths
 {
-  v7 = a3;
-  v8 = a4;
+  lCopy = l;
+  pathsCopy = paths;
   v9 = [(OSLogEventStore *)self init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_archiveURL, a3);
-    objc_storeStrong(&v10->_relativeFilePaths, a4);
+    objc_storeStrong(&v9->_archiveURL, l);
+    objc_storeStrong(&v10->_relativeFilePaths, paths);
   }
 
   return v10;
 }
 
-- (OSLogEventStore)initWithArchiveURL:(id)a3
+- (OSLogEventStore)initWithArchiveURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   v6 = [(OSLogEventStore *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_archiveURL, a3);
+    objc_storeStrong(&v6->_archiveURL, l);
   }
 
   return v7;
 }
 
-+ (id)storeWithArchiveURL:(id)a3 relativePaths:(id)a4
++ (id)storeWithArchiveURL:(id)l relativePaths:(id)paths
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithArchiveURL:v7 relativePaths:v6];
+  pathsCopy = paths;
+  lCopy = l;
+  v8 = [[self alloc] initWithArchiveURL:lCopy relativePaths:pathsCopy];
 
   return v8;
 }
 
-+ (id)storeWithFileURL:(id)a3
++ (id)storeWithFileURL:(id)l
 {
   v16[1] = *MEMORY[0x277D85DE8];
-  v4 = [a3 pathComponents];
-  v5 = [v4 mutableCopy];
+  pathComponents = [l pathComponents];
+  v5 = [pathComponents mutableCopy];
 
-  v6 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   while ([v5 count])
   {
-    v7 = [v5 lastObject];
-    v8 = [v7 hasSuffix:@".logarchive"];
+    lastObject = [v5 lastObject];
+    v8 = [lastObject hasSuffix:@".logarchive"];
 
     if (v8)
     {
       break;
     }
 
-    v9 = [v5 lastObject];
-    [v6 insertObject:v9 atIndex:0];
+    lastObject2 = [v5 lastObject];
+    [array insertObject:lastObject2 atIndex:0];
 
     [v5 removeLastObject];
   }
@@ -485,9 +485,9 @@ LABEL_52:
     v10 = 0;
   }
 
-  if ([v6 count])
+  if ([array count])
   {
-    v11 = [v6 componentsJoinedByString:@"/"];
+    v11 = [array componentsJoinedByString:@"/"];
     v16[0] = v11;
     v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:1];
   }
@@ -497,26 +497,26 @@ LABEL_52:
     v12 = 0;
   }
 
-  v13 = [[a1 alloc] initWithArchiveURL:v10 relativePaths:v12];
+  v13 = [[self alloc] initWithArchiveURL:v10 relativePaths:v12];
 
   v14 = *MEMORY[0x277D85DE8];
 
   return v13;
 }
 
-+ (id)storeWithArchiveURL:(id)a3
++ (id)storeWithArchiveURL:(id)l
 {
-  v3 = a3;
-  v4 = [[OSLogEventStore alloc] initWithArchiveURL:v3];
+  lCopy = l;
+  v4 = [[OSLogEventStore alloc] initWithArchiveURL:lCopy];
 
   return v4;
 }
 
-+ (id)localStoreWithRelativePaths:(id)a3
++ (id)localStoreWithRelativePaths:(id)paths
 {
-  v3 = a3;
+  pathsCopy = paths;
   v4 = objc_alloc_init(OSLogEventLocalStore);
-  [(OSLogEventStore *)v4 set_relativeFilePaths:v3];
+  [(OSLogEventStore *)v4 set_relativeFilePaths:pathsCopy];
 
   return v4;
 }

@@ -1,39 +1,39 @@
 @interface SBHIconGridSizeClassSet
-+ (SBHIconGridSizeClassSet)allocWithZone:(_NSZone *)a3;
++ (SBHIconGridSizeClassSet)allocWithZone:(_NSZone *)zone;
 + (id)gridSizeClassSetForAllGridSizeClasses;
 + (id)gridSizeClassSetForAllNonDefaultGridSizeClasses;
 + (id)gridSizeClassSetForDefaultGridSizeClass;
-- (BOOL)containsGridSizeClass:(id)a3;
-- (BOOL)containsGridSizeClass:(id)a3 inDomain:(id)a4;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)containsGridSizeClass:(id)class;
+- (BOOL)containsGridSizeClass:(id)class inDomain:(id)domain;
+- (BOOL)isEqual:(id)equal;
 - (NSSet)allGridSizeClasses;
 - (NSString)description;
 - (SBHIconGridSizeClassSet)init;
-- (SBHIconGridSizeClassSet)initWithAllGridSizeClassesInDomain:(id)a3;
-- (SBHIconGridSizeClassSet)initWithAllNonDefaultGridSizeClassesInDomain:(id)a3;
-- (SBHIconGridSizeClassSet)initWithCHSWidgetFamilyMask:(unint64_t)a3;
-- (SBHIconGridSizeClassSet)initWithCHSWidgetFamilyMask:(unint64_t)a3 inDomain:(id)a4;
-- (SBHIconGridSizeClassSet)initWithCoder:(id)a3;
-- (SBHIconGridSizeClassSet)initWithGridSizeClass:(id)a3;
-- (SBHIconGridSizeClassSet)initWithGridSizeClasses:(id)a3;
-- (SBHIconGridSizeClassSet)initWithIconGridSizeClassSet:(id)a3;
-- (id)allGridSizeClassesInDomain:(id)a3;
-- (id)descriptionWithGridSizeClassDomain:(id)a3;
-- (id)gridSizeClassSetByAddingGridSizeClass:(id)a3;
-- (id)gridSizeClassSetByIntersectingWithGridSizeClassSet:(id)a3;
-- (id)gridSizeClassSetByRemovingGridSizeClass:(id)a3;
-- (id)gridSizeClassSetByUnioningWithGridSizeClassSet:(id)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (SBHIconGridSizeClassSet)initWithAllGridSizeClassesInDomain:(id)domain;
+- (SBHIconGridSizeClassSet)initWithAllNonDefaultGridSizeClassesInDomain:(id)domain;
+- (SBHIconGridSizeClassSet)initWithCHSWidgetFamilyMask:(unint64_t)mask;
+- (SBHIconGridSizeClassSet)initWithCHSWidgetFamilyMask:(unint64_t)mask inDomain:(id)domain;
+- (SBHIconGridSizeClassSet)initWithCoder:(id)coder;
+- (SBHIconGridSizeClassSet)initWithGridSizeClass:(id)class;
+- (SBHIconGridSizeClassSet)initWithGridSizeClasses:(id)classes;
+- (SBHIconGridSizeClassSet)initWithIconGridSizeClassSet:(id)set;
+- (id)allGridSizeClassesInDomain:(id)domain;
+- (id)descriptionWithGridSizeClassDomain:(id)domain;
+- (id)gridSizeClassSetByAddingGridSizeClass:(id)class;
+- (id)gridSizeClassSetByIntersectingWithGridSizeClassSet:(id)set;
+- (id)gridSizeClassSetByRemovingGridSizeClass:(id)class;
+- (id)gridSizeClassSetByUnioningWithGridSizeClassSet:(id)set;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)chsWidgetFamilyMask;
-- (unint64_t)chsWidgetFamilyMaskInDomain:(id)a3;
+- (unint64_t)chsWidgetFamilyMaskInDomain:(id)domain;
 - (unint64_t)count;
-- (unint64_t)countInDomain:(id)a3;
+- (unint64_t)countInDomain:(id)domain;
 - (unint64_t)hash;
-- (void)appendDescriptionToFormatter:(id)a3;
-- (void)appendDescriptionToFormatter:(id)a3 gridSizeClassDomain:(id)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)enumerateGridSizeClassesInDomain:(id)a3 usingBlock:(id)a4;
-- (void)enumerateGridSizeClassesUsingBlock:(id)a3;
+- (void)appendDescriptionToFormatter:(id)formatter;
+- (void)appendDescriptionToFormatter:(id)formatter gridSizeClassDomain:(id)domain;
+- (void)encodeWithCoder:(id)coder;
+- (void)enumerateGridSizeClassesInDomain:(id)domain usingBlock:(id)block;
+- (void)enumerateGridSizeClassesUsingBlock:(id)block;
 @end
 
 @implementation SBHIconGridSizeClassSet
@@ -61,61 +61,61 @@ void __66__SBHIconGridSizeClassSet_gridSizeClassSetForDefaultGridSizeClass__bloc
 
 - (unint64_t)hash
 {
-  v3 = [(SBHIconGridSizeClassSet *)self gridSizeClasses];
-  v4 = [v3 hash];
-  v5 = [(SBHIconGridSizeClassSet *)self _removedGridSizeClasses];
-  v6 = [v5 hash];
+  gridSizeClasses = [(SBHIconGridSizeClassSet *)self gridSizeClasses];
+  v4 = [gridSizeClasses hash];
+  _removedGridSizeClasses = [(SBHIconGridSizeClassSet *)self _removedGridSizeClasses];
+  v6 = [_removedGridSizeClasses hash];
 
   return v6 ^ v4;
 }
 
-+ (SBHIconGridSizeClassSet)allocWithZone:(_NSZone *)a3
++ (SBHIconGridSizeClassSet)allocWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_self();
 
-  if (v5 == a1)
+  if (v5 == self)
   {
 
-    return [(SBHIconGridSizeClassSet *)SBHImmutableIconGridSizeClassSet allocWithZone:a3];
+    return [(SBHIconGridSizeClassSet *)SBHImmutableIconGridSizeClassSet allocWithZone:zone];
   }
 
   else
   {
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___SBHIconGridSizeClassSet;
-    return objc_msgSendSuper2(&v7, sel_allocWithZone_, a3);
+    return objc_msgSendSuper2(&v7, sel_allocWithZone_, zone);
   }
 }
 
-- (SBHIconGridSizeClassSet)initWithGridSizeClasses:(id)a3
+- (SBHIconGridSizeClassSet)initWithGridSizeClasses:(id)classes
 {
   v4.receiver = self;
   v4.super_class = SBHIconGridSizeClassSet;
   return [(SBHIconGridSizeClassSet *)&v4 init];
 }
 
-- (SBHIconGridSizeClassSet)initWithGridSizeClass:(id)a3
+- (SBHIconGridSizeClassSet)initWithGridSizeClass:(id)class
 {
-  v4 = [MEMORY[0x1E695DFD8] setWithObject:a3];
+  v4 = [MEMORY[0x1E695DFD8] setWithObject:class];
   v5 = [(SBHIconGridSizeClassSet *)self initWithGridSizeClasses:v4];
 
   return v5;
 }
 
-- (SBHIconGridSizeClassSet)initWithAllGridSizeClassesInDomain:(id)a3
+- (SBHIconGridSizeClassSet)initWithAllGridSizeClassesInDomain:(id)domain
 {
-  v4 = [a3 allGridSizeClasses];
-  v5 = [v4 allGridSizeClasses];
-  v6 = [(SBHIconGridSizeClassSet *)self initWithGridSizeClasses:v5];
+  allGridSizeClasses = [domain allGridSizeClasses];
+  v4AllGridSizeClasses = [allGridSizeClasses allGridSizeClasses];
+  v6 = [(SBHIconGridSizeClassSet *)self initWithGridSizeClasses:v4AllGridSizeClasses];
 
   return v6;
 }
 
-- (SBHIconGridSizeClassSet)initWithAllNonDefaultGridSizeClassesInDomain:(id)a3
+- (SBHIconGridSizeClassSet)initWithAllNonDefaultGridSizeClassesInDomain:(id)domain
 {
-  v4 = [a3 allNonDefaultGridSizeClasses];
-  v5 = [v4 allGridSizeClasses];
-  v6 = [(SBHIconGridSizeClassSet *)self initWithGridSizeClasses:v5];
+  allNonDefaultGridSizeClasses = [domain allNonDefaultGridSizeClasses];
+  allGridSizeClasses = [allNonDefaultGridSizeClasses allGridSizeClasses];
+  v6 = [(SBHIconGridSizeClassSet *)self initWithGridSizeClasses:allGridSizeClasses];
 
   return v6;
 }
@@ -128,10 +128,10 @@ void __66__SBHIconGridSizeClassSet_gridSizeClassSetForDefaultGridSizeClass__bloc
   return v4;
 }
 
-- (SBHIconGridSizeClassSet)initWithIconGridSizeClassSet:(id)a3
+- (SBHIconGridSizeClassSet)initWithIconGridSizeClassSet:(id)set
 {
-  v4 = [a3 gridSizeClasses];
-  v5 = [(SBHIconGridSizeClassSet *)self initWithGridSizeClasses:v4];
+  gridSizeClasses = [set gridSizeClasses];
+  v5 = [(SBHIconGridSizeClassSet *)self initWithGridSizeClasses:gridSizeClasses];
 
   return v5;
 }
@@ -178,31 +178,31 @@ uint64_t __74__SBHIconGridSizeClassSet_gridSizeClassSetForAllNonDefaultGridSizeC
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-- (BOOL)containsGridSizeClass:(id)a3
+- (BOOL)containsGridSizeClass:(id)class
 {
-  v4 = a3;
-  v5 = [(SBHIconGridSizeClassSet *)self _removedGridSizeClasses];
-  if ([v5 containsObject:v4])
+  classCopy = class;
+  _removedGridSizeClasses = [(SBHIconGridSizeClassSet *)self _removedGridSizeClasses];
+  if ([_removedGridSizeClasses containsObject:classCopy])
   {
     v6 = 0;
   }
 
   else
   {
-    v7 = [(SBHIconGridSizeClassSet *)self gridSizeClasses];
-    v6 = [v7 containsObject:v4];
+    gridSizeClasses = [(SBHIconGridSizeClassSet *)self gridSizeClasses];
+    v6 = [gridSizeClasses containsObject:classCopy];
   }
 
   return v6;
 }
 
-- (BOOL)containsGridSizeClass:(id)a3 inDomain:(id)a4
+- (BOOL)containsGridSizeClass:(id)class inDomain:(id)domain
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(SBHIconGridSizeClassSet *)self containsGridSizeClass:v6])
+  classCopy = class;
+  domainCopy = domain;
+  if ([(SBHIconGridSizeClassSet *)self containsGridSizeClass:classCopy])
   {
-    v8 = [v7 containsGridSizeClass:v6];
+    v8 = [domainCopy containsGridSizeClass:classCopy];
   }
 
   else
@@ -215,21 +215,21 @@ uint64_t __74__SBHIconGridSizeClassSet_gridSizeClassSetForAllNonDefaultGridSizeC
 
 - (NSSet)allGridSizeClasses
 {
-  v3 = [(SBHIconGridSizeClassSet *)self gridSizeClasses];
-  v4 = [(SBHIconGridSizeClassSet *)self _removedGridSizeClasses];
-  if ([v4 count])
+  gridSizeClasses = [(SBHIconGridSizeClassSet *)self gridSizeClasses];
+  _removedGridSizeClasses = [(SBHIconGridSizeClassSet *)self _removedGridSizeClasses];
+  if ([_removedGridSizeClasses count])
   {
-    v5 = [v3 mutableCopy];
+    v5 = [gridSizeClasses mutableCopy];
     v6 = v5;
-    if (v4)
+    if (_removedGridSizeClasses)
     {
-      [(NSSet *)v5 minusSet:v4];
+      [(NSSet *)v5 minusSet:_removedGridSizeClasses];
     }
   }
 
   else
   {
-    v6 = v3;
+    v6 = gridSizeClasses;
   }
 
   v7 = v6;
@@ -237,87 +237,87 @@ uint64_t __74__SBHIconGridSizeClassSet_gridSizeClassSetForAllNonDefaultGridSizeC
   return v6;
 }
 
-- (id)allGridSizeClassesInDomain:(id)a3
+- (id)allGridSizeClassesInDomain:(id)domain
 {
-  v4 = [a3 allGridSizeClasses];
-  v5 = [(SBHIconGridSizeClassSet *)self gridSizeClassSetByIntersectingWithGridSizeClassSet:v4];
-  v6 = [v5 allGridSizeClasses];
+  allGridSizeClasses = [domain allGridSizeClasses];
+  v5 = [(SBHIconGridSizeClassSet *)self gridSizeClassSetByIntersectingWithGridSizeClassSet:allGridSizeClasses];
+  allGridSizeClasses2 = [v5 allGridSizeClasses];
 
-  return v6;
+  return allGridSizeClasses2;
 }
 
 - (unint64_t)count
 {
-  v2 = [(SBHIconGridSizeClassSet *)self allGridSizeClasses];
-  v3 = [v2 count];
+  allGridSizeClasses = [(SBHIconGridSizeClassSet *)self allGridSizeClasses];
+  v3 = [allGridSizeClasses count];
 
   return v3;
 }
 
-- (void)enumerateGridSizeClassesUsingBlock:(id)a3
+- (void)enumerateGridSizeClassesUsingBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(SBHIconGridSizeClassSet *)self allGridSizeClasses];
-  [v5 enumerateObjectsUsingBlock:v4];
+  blockCopy = block;
+  allGridSizeClasses = [(SBHIconGridSizeClassSet *)self allGridSizeClasses];
+  [allGridSizeClasses enumerateObjectsUsingBlock:blockCopy];
 }
 
-- (void)enumerateGridSizeClassesInDomain:(id)a3 usingBlock:(id)a4
+- (void)enumerateGridSizeClassesInDomain:(id)domain usingBlock:(id)block
 {
-  v6 = a4;
-  v7 = [(SBHIconGridSizeClassSet *)self allGridSizeClassesInDomain:a3];
-  [v7 enumerateObjectsUsingBlock:v6];
+  blockCopy = block;
+  v7 = [(SBHIconGridSizeClassSet *)self allGridSizeClassesInDomain:domain];
+  [v7 enumerateObjectsUsingBlock:blockCopy];
 }
 
-- (unint64_t)countInDomain:(id)a3
+- (unint64_t)countInDomain:(id)domain
 {
-  v3 = [(SBHIconGridSizeClassSet *)self allGridSizeClassesInDomain:a3];
+  v3 = [(SBHIconGridSizeClassSet *)self allGridSizeClassesInDomain:domain];
   v4 = [v3 count];
 
   return v4;
 }
 
-- (id)gridSizeClassSetByUnioningWithGridSizeClassSet:(id)a3
+- (id)gridSizeClassSetByUnioningWithGridSizeClassSet:(id)set
 {
-  v4 = a3;
-  v5 = [(SBHIconGridSizeClassSet *)self gridSizeClasses];
-  v6 = [v4 gridSizeClasses];
-  if ([v5 isEqualToSet:v6])
+  setCopy = set;
+  gridSizeClasses = [(SBHIconGridSizeClassSet *)self gridSizeClasses];
+  gridSizeClasses2 = [setCopy gridSizeClasses];
+  if ([gridSizeClasses isEqualToSet:gridSizeClasses2])
   {
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = [(SBHIconGridSizeClassSet *)self mutableCopy];
-    [(SBHIconGridSizeClassSet *)v7 unionGridSizeClassSet:v4];
+    selfCopy = [(SBHIconGridSizeClassSet *)self mutableCopy];
+    [(SBHIconGridSizeClassSet *)selfCopy unionGridSizeClassSet:setCopy];
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (id)gridSizeClassSetByIntersectingWithGridSizeClassSet:(id)a3
+- (id)gridSizeClassSetByIntersectingWithGridSizeClassSet:(id)set
 {
-  v4 = a3;
-  v5 = [(SBHIconGridSizeClassSet *)self gridSizeClasses];
-  v6 = [v4 gridSizeClasses];
-  if ([v5 isEqualToSet:v6])
+  setCopy = set;
+  gridSizeClasses = [(SBHIconGridSizeClassSet *)self gridSizeClasses];
+  gridSizeClasses2 = [setCopy gridSizeClasses];
+  if ([gridSizeClasses isEqualToSet:gridSizeClasses2])
   {
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = [(SBHIconGridSizeClassSet *)self mutableCopy];
-    [(SBHIconGridSizeClassSet *)v7 intersectGridSizeClassSet:v4];
+    selfCopy = [(SBHIconGridSizeClassSet *)self mutableCopy];
+    [(SBHIconGridSizeClassSet *)selfCopy intersectGridSizeClassSet:setCopy];
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (id)gridSizeClassSetByAddingGridSizeClass:(id)a3
+- (id)gridSizeClassSetByAddingGridSizeClass:(id)class
 {
-  v4 = a3;
-  if ([(SBHIconGridSizeClassSet *)self containsGridSizeClass:v4])
+  classCopy = class;
+  if ([(SBHIconGridSizeClassSet *)self containsGridSizeClass:classCopy])
   {
     v5 = [(SBHIconGridSizeClassSet *)self copy];
   }
@@ -325,19 +325,19 @@ uint64_t __74__SBHIconGridSizeClassSet_gridSizeClassSetForAllNonDefaultGridSizeC
   else
   {
     v5 = [(SBHIconGridSizeClassSet *)self mutableCopy];
-    [v5 addGridSizeClass:v4];
+    [v5 addGridSizeClass:classCopy];
   }
 
   return v5;
 }
 
-- (id)gridSizeClassSetByRemovingGridSizeClass:(id)a3
+- (id)gridSizeClassSetByRemovingGridSizeClass:(id)class
 {
-  v4 = a3;
-  if ([(SBHIconGridSizeClassSet *)self containsGridSizeClass:v4])
+  classCopy = class;
+  if ([(SBHIconGridSizeClassSet *)self containsGridSizeClass:classCopy])
   {
     v5 = [(SBHIconGridSizeClassSet *)self mutableCopy];
-    [v5 removeGridSizeClass:v4];
+    [v5 removeGridSizeClass:classCopy];
   }
 
   else
@@ -348,10 +348,10 @@ uint64_t __74__SBHIconGridSizeClassSet_gridSizeClassSetForAllNonDefaultGridSizeC
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -363,9 +363,9 @@ uint64_t __74__SBHIconGridSizeClassSet_gridSizeClassSetForAllNonDefaultGridSizeC
 
     if (isKindOfClass)
     {
-      v7 = v4;
-      v8 = [(SBHIconGridSizeClassSet *)self gridSizeClasses];
-      v9 = [(SBHIconGridSizeClassSet *)v7 gridSizeClasses];
+      v7 = equalCopy;
+      gridSizeClasses = [(SBHIconGridSizeClassSet *)self gridSizeClasses];
+      gridSizeClasses2 = [(SBHIconGridSizeClassSet *)v7 gridSizeClasses];
 
       v10 = BSEqualSets();
     }
@@ -388,68 +388,68 @@ uint64_t __74__SBHIconGridSizeClassSet_gridSizeClassSetForAllNonDefaultGridSizeC
   return v4;
 }
 
-- (id)descriptionWithGridSizeClassDomain:(id)a3
+- (id)descriptionWithGridSizeClassDomain:(id)domain
 {
   v4 = MEMORY[0x1E698E688];
-  v5 = a3;
+  domainCopy = domain;
   v6 = objc_alloc_init(v4);
-  [(SBHIconGridSizeClassSet *)self appendDescriptionToFormatter:v6 gridSizeClassDomain:v5];
+  [(SBHIconGridSizeClassSet *)self appendDescriptionToFormatter:v6 gridSizeClassDomain:domainCopy];
 
   v7 = [v6 description];
 
   return v7;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [(SBHIconGridSizeClassSet *)SBHMutableIconGridSizeClassSet allocWithZone:a3];
+  v4 = [(SBHIconGridSizeClassSet *)SBHMutableIconGridSizeClassSet allocWithZone:zone];
 
   return [(SBHMutableIconGridSizeClassSet *)v4 initWithIconGridSizeClassSet:self];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(SBHIconGridSizeClassSet *)self gridSizeClasses];
-  [v4 encodeObject:v5 forKey:@"gridSizeClasses"];
+  coderCopy = coder;
+  gridSizeClasses = [(SBHIconGridSizeClassSet *)self gridSizeClasses];
+  [coderCopy encodeObject:gridSizeClasses forKey:@"gridSizeClasses"];
 }
 
-- (SBHIconGridSizeClassSet)initWithCoder:(id)a3
+- (SBHIconGridSizeClassSet)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E695DFD8];
-  v5 = a3;
+  coderCopy = coder;
   v6 = objc_opt_self();
   v7 = objc_opt_self();
   v8 = [v4 setWithObjects:{v6, v7, 0}];
-  v9 = [v5 decodeObjectOfClasses:v8 forKey:@"gridSizeClasses"];
+  v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"gridSizeClasses"];
 
   v10 = [(SBHIconGridSizeClassSet *)self initWithGridSizeClasses:v9];
   return v10;
 }
 
-- (void)appendDescriptionToFormatter:(id)a3
+- (void)appendDescriptionToFormatter:(id)formatter
 {
-  v4 = a3;
+  formatterCopy = formatter;
   v5 = +[SBHIconGridSizeClassDomain globalDomain];
-  [(SBHIconGridSizeClassSet *)self appendDescriptionToFormatter:v4 gridSizeClassDomain:v5];
+  [(SBHIconGridSizeClassSet *)self appendDescriptionToFormatter:formatterCopy gridSizeClassDomain:v5];
 }
 
-- (void)appendDescriptionToFormatter:(id)a3 gridSizeClassDomain:(id)a4
+- (void)appendDescriptionToFormatter:(id)formatter gridSizeClassDomain:(id)domain
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SBHIconGridSizeClassSet *)self gridSizeClasses];
-  if ([v8 count])
+  formatterCopy = formatter;
+  domainCopy = domain;
+  gridSizeClasses = [(SBHIconGridSizeClassSet *)self gridSizeClasses];
+  if ([gridSizeClasses count])
   {
-    v9 = [v8 allObjects];
+    allObjects = [gridSizeClasses allObjects];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __76__SBHIconGridSizeClassSet_appendDescriptionToFormatter_gridSizeClassDomain___block_invoke;
     v12[3] = &unk_1E808C8D0;
-    v13 = v7;
-    v10 = [v9 bs_map:v12];
+    v13 = domainCopy;
+    v10 = [allObjects bs_map:v12];
     v11 = [v10 componentsJoinedByString:{@", "}];
-    [v6 appendString:v11 withName:@"gridSizeClasses" skipIfEmpty:1];
+    [formatterCopy appendString:v11 withName:@"gridSizeClasses" skipIfEmpty:1];
   }
 }
 
@@ -465,29 +465,29 @@ id __76__SBHIconGridSizeClassSet_appendDescriptionToFormatter_gridSizeClassDomai
   return v4;
 }
 
-- (SBHIconGridSizeClassSet)initWithCHSWidgetFamilyMask:(unint64_t)a3
+- (SBHIconGridSizeClassSet)initWithCHSWidgetFamilyMask:(unint64_t)mask
 {
   v5 = +[SBHIconGridSizeClassDomain globalDomain];
-  v6 = [(SBHIconGridSizeClassSet *)self initWithCHSWidgetFamilyMask:a3 inDomain:v5];
+  v6 = [(SBHIconGridSizeClassSet *)self initWithCHSWidgetFamilyMask:mask inDomain:v5];
 
   return v6;
 }
 
-- (SBHIconGridSizeClassSet)initWithCHSWidgetFamilyMask:(unint64_t)a3 inDomain:(id)a4
+- (SBHIconGridSizeClassSet)initWithCHSWidgetFamilyMask:(unint64_t)mask inDomain:(id)domain
 {
-  v6 = a4;
+  domainCopy = domain;
   v7 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-  if (a3)
+  if (mask)
   {
     v8 = 0;
-    v9 = vcnt_s8(a3);
+    v9 = vcnt_s8(mask);
     v9.i16[0] = vaddlv_u8(v9);
     v10 = v9.i32[0];
     do
     {
-      if (a3)
+      if (mask)
       {
-        v11 = [v6 iconGridSizeClassForCHSWidgetFamily:v8];
+        v11 = [domainCopy iconGridSizeClassForCHSWidgetFamily:v8];
         if (v11)
         {
           [v7 addObject:v11];
@@ -496,7 +496,7 @@ id __76__SBHIconGridSizeClassSet_appendDescriptionToFormatter_gridSizeClassDomai
         --v10;
       }
 
-      a3 >>= 1;
+      mask >>= 1;
       ++v8;
     }
 
@@ -516,9 +516,9 @@ id __76__SBHIconGridSizeClassSet_appendDescriptionToFormatter_gridSizeClassDomai
   return v4;
 }
 
-- (unint64_t)chsWidgetFamilyMaskInDomain:(id)a3
+- (unint64_t)chsWidgetFamilyMaskInDomain:(id)domain
 {
-  v4 = a3;
+  domainCopy = domain;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -527,7 +527,7 @@ id __76__SBHIconGridSizeClassSet_appendDescriptionToFormatter_gridSizeClassDomai
   v8[1] = 3221225472;
   v8[2] = __75__SBHIconGridSizeClassSet_SBHCHSWidgetFamily__chsWidgetFamilyMaskInDomain___block_invoke;
   v8[3] = &unk_1E808EBF8;
-  v5 = v4;
+  v5 = domainCopy;
   v9 = v5;
   v10 = &v11;
   [(SBHIconGridSizeClassSet *)self enumerateGridSizeClassesUsingBlock:v8];

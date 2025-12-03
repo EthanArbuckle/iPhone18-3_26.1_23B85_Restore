@@ -1,38 +1,38 @@
 @interface LACDTORatchetStateMonitor
-- (LACDTORatchetStateMonitor)initWithRatchetStateProvider:(id)a3 workQueue:(id)a4;
+- (LACDTORatchetStateMonitor)initWithRatchetStateProvider:(id)provider workQueue:(id)queue;
 - (void)_scheduleNextStatusCheck;
-- (void)handleEvent:(id)a3 sender:(id)a4;
-- (void)ratchetStateCompositeWithCompletion:(id)a3;
-- (void)ratchetStateWithCompletion:(id)a3;
-- (void)setRatchetState:(id)a3;
+- (void)handleEvent:(id)event sender:(id)sender;
+- (void)ratchetStateCompositeWithCompletion:(id)completion;
+- (void)ratchetStateWithCompletion:(id)completion;
+- (void)setRatchetState:(id)state;
 @end
 
 @implementation LACDTORatchetStateMonitor
 
-- (LACDTORatchetStateMonitor)initWithRatchetStateProvider:(id)a3 workQueue:(id)a4
+- (LACDTORatchetStateMonitor)initWithRatchetStateProvider:(id)provider workQueue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
+  providerCopy = provider;
+  queueCopy = queue;
   v12.receiver = self;
   v12.super_class = LACDTORatchetStateMonitor;
   v9 = [(LACDTORatchetStateMonitor *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_ratchetStateProvider, a3);
-    objc_storeStrong(&v10->_workQueue, a4);
+    objc_storeStrong(&v9->_ratchetStateProvider, provider);
+    objc_storeStrong(&v10->_workQueue, queue);
   }
 
   return v10;
 }
 
-- (void)setRatchetState:(id)a3
+- (void)setRatchetState:(id)state
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  stateCopy = state;
   dispatch_assert_queue_V2(self->_workQueue);
   p_ratchetState = &self->_ratchetState;
-  if ([(LACDTORatchetState *)self->_ratchetState isEqual:v5])
+  if ([(LACDTORatchetState *)self->_ratchetState isEqual:stateCopy])
   {
     if (![(LACTimer *)self->_timer isRunning])
     {
@@ -49,18 +49,18 @@
       v14 = 138543618;
       v15 = v8;
       v16 = 2114;
-      v17 = v5;
+      v17 = stateCopy;
       _os_log_impl(&dword_1B0233000, v7, OS_LOG_TYPE_DEFAULT, "Ratchet state changed from: %{public}@ to %{public}@", &v14, 0x16u);
     }
 
     v9 = *p_ratchetState;
-    objc_storeStrong(&self->_ratchetState, a3);
-    v10 = [v9 rawValue];
-    if (v10 != [*p_ratchetState rawValue])
+    objc_storeStrong(&self->_ratchetState, state);
+    rawValue = [v9 rawValue];
+    if (rawValue != [*p_ratchetState rawValue])
     {
       v11 = [[LACDTOEvent alloc] initWithRawValue:0 value:self->_ratchetState];
-      v12 = [(LACDTORatchetStateMonitor *)self eventBus];
-      [v12 dispatchEvent:v11 sender:self];
+      eventBus = [(LACDTORatchetStateMonitor *)self eventBus];
+      [eventBus dispatchEvent:v11 sender:self];
     }
 
     [(LACDTORatchetStateMonitor *)self _scheduleNextStatusCheck];
@@ -69,18 +69,18 @@
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleEvent:(id)a3 sender:(id)a4
+- (void)handleEvent:(id)event sender:(id)sender
 {
-  if ([a3 rawValue])
+  if ([event rawValue])
   {
 
     [(LACDTORatchetStateMonitor *)self ratchetStateWithCompletion:&__block_literal_global_16];
   }
 }
 
-- (void)ratchetStateWithCompletion:(id)a3
+- (void)ratchetStateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_workQueue);
   objc_initWeak(&location, self);
   ratchetStateProvider = self->_ratchetStateProvider;
@@ -89,7 +89,7 @@
   v7[2] = __56__LACDTORatchetStateMonitor_ratchetStateWithCompletion___block_invoke;
   v7[3] = &unk_1E7A95A38;
   objc_copyWeak(&v9, &location);
-  v6 = v4;
+  v6 = completionCopy;
   v8 = v6;
   [(LACDTORatchetStateProvider *)ratchetStateProvider ratchetStateWithCompletion:v7];
 
@@ -114,9 +114,9 @@ void __56__LACDTORatchetStateMonitor_ratchetStateWithCompletion___block_invoke(u
   }
 }
 
-- (void)ratchetStateCompositeWithCompletion:(id)a3
+- (void)ratchetStateCompositeWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_workQueue);
   objc_initWeak(&location, self);
   ratchetStateProvider = self->_ratchetStateProvider;
@@ -125,7 +125,7 @@ void __56__LACDTORatchetStateMonitor_ratchetStateWithCompletion___block_invoke(u
   v7[2] = __65__LACDTORatchetStateMonitor_ratchetStateCompositeWithCompletion___block_invoke;
   v7[3] = &unk_1E7A95A60;
   objc_copyWeak(&v9, &location);
-  v6 = v4;
+  v6 = completionCopy;
   v8 = v6;
   [(LACDTORatchetStateProvider *)ratchetStateProvider ratchetStateCompositeWithCompletion:v7];
 
@@ -165,8 +165,8 @@ void __65__LACDTORatchetStateMonitor_ratchetStateCompositeWithCompletion___block
   v5 = self->_timer;
   self->_timer = v4;
 
-  v6 = [(LACDTORatchetStateMonitor *)self ratchetState];
-  [v6 effectiveDuration];
+  ratchetState = [(LACDTORatchetStateMonitor *)self ratchetState];
+  [ratchetState effectiveDuration];
   v8 = v7;
 
   v9 = LACLogDTOTimers();

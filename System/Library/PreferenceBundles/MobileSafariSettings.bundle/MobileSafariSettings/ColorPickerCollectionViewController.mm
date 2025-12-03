@@ -1,24 +1,24 @@
 @interface ColorPickerCollectionViewController
-- (ColorPickerCollectionViewController)initWithColors:(id)a3;
+- (ColorPickerCollectionViewController)initWithColors:(id)colors;
 - (ColorPickerCollectionViewControllerDelegate)delegate;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
 - (void)loadView;
-- (void)setSelectedIndex:(int64_t)a3;
+- (void)setSelectedIndex:(int64_t)index;
 - (void)viewDidLoad;
 @end
 
 @implementation ColorPickerCollectionViewController
 
-- (ColorPickerCollectionViewController)initWithColors:(id)a3
+- (ColorPickerCollectionViewController)initWithColors:(id)colors
 {
-  v5 = a3;
+  colorsCopy = colors;
   v10.receiver = self;
   v10.super_class = ColorPickerCollectionViewController;
   v6 = [(ColorPickerCollectionViewController *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_colors, a3);
+    objc_storeStrong(&v6->_colors, colors);
     v8 = v7;
   }
 
@@ -52,8 +52,8 @@
   [(UICollectionView *)self->_colorCollectionView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UICollectionView *)self->_colorCollectionView setDelegate:self];
   [(UICollectionView *)self->_colorCollectionView setShowsVerticalScrollIndicator:0];
-  v9 = [(UICollectionView *)self->_colorCollectionView layer];
-  [v9 setMasksToBounds:1];
+  layer = [(UICollectionView *)self->_colorCollectionView layer];
+  [layer setMasksToBounds:1];
 
   v10 = [UICollectionViewDiffableDataSource alloc];
   v11 = self->_colorCollectionView;
@@ -87,11 +87,11 @@ void __47__ColorPickerCollectionViewController_loadView__block_invoke(uint64_t a
   [v5 setColor:v6];
 }
 
-- (void)setSelectedIndex:(int64_t)a3
+- (void)setSelectedIndex:(int64_t)index
 {
-  if (self->_selectedIndex != a3)
+  if (self->_selectedIndex != index)
   {
-    self->_selectedIndex = a3;
+    self->_selectedIndex = index;
     colorCollectionView = self->_colorCollectionView;
     v5 = [NSIndexPath indexPathForItem:"indexPathForItem:inSection:" inSection:?];
     [(UICollectionView *)colorCollectionView selectItemAtIndexPath:v5 animated:0 scrollPosition:0];
@@ -108,14 +108,14 @@ void __47__ColorPickerCollectionViewController_loadView__block_invoke(uint64_t a
   [(UICollectionView *)colorCollectionView selectItemAtIndexPath:v4 animated:0 scrollPosition:0];
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v5 = a4;
-  self->_selectedIndex = [v5 item];
+  pathCopy = path;
+  self->_selectedIndex = [pathCopy item];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v6 = [v5 item];
+  item = [pathCopy item];
 
-  [WeakRetained colorPickerCollectionViewController:self didSelectColorAtIndex:v6];
+  [WeakRetained colorPickerCollectionViewController:self didSelectColorAtIndex:item];
 }
 
 - (ColorPickerCollectionViewControllerDelegate)delegate

@@ -1,35 +1,35 @@
 @interface PersonalizedItemStyleAttributesAdornment
-+ (PersonalizedItemStyleAttributesAdornment)adornmentWithStyleAttributes:(id)a3 additionalAttributes:(id)a4;
++ (PersonalizedItemStyleAttributesAdornment)adornmentWithStyleAttributes:(id)attributes additionalAttributes:(id)additionalAttributes;
 + (id)defaultAdornment;
-- (PersonalizedItemStyleAttributesAdornment)initWithStyleAttributes:(id)a3 additionalAttributes:(id)a4;
-- (id)combineAdornment:(id)a3;
+- (PersonalizedItemStyleAttributesAdornment)initWithStyleAttributes:(id)attributes additionalAttributes:(id)additionalAttributes;
+- (id)combineAdornment:(id)adornment;
 @end
 
 @implementation PersonalizedItemStyleAttributesAdornment
 
 + (id)defaultAdornment
 {
-  v2 = [a1 alloc];
+  v2 = [self alloc];
   v3 = objc_alloc_init(GEOFeatureStyleAttributes);
   v4 = [v2 initWithStyleAttributes:v3 additionalAttributes:0];
 
   return v4;
 }
 
-- (id)combineAdornment:(id)a3
+- (id)combineAdornment:(id)adornment
 {
   v4 = 999999;
-  v5 = [a3 styleAttributes];
-  v6 = [(GEOFeatureStyleAttributes *)self->_styleAttributes poiType];
-  if (v6 <= 346)
+  styleAttributes = [adornment styleAttributes];
+  poiType = [(GEOFeatureStyleAttributes *)self->_styleAttributes poiType];
+  if (poiType <= 346)
   {
     v7 = 999999;
-    if (v6 == 169)
+    if (poiType == 169)
     {
       goto LABEL_12;
     }
 
-    if (v6 == 346)
+    if (poiType == 346)
     {
       v7 = 1000001;
       goto LABEL_12;
@@ -38,7 +38,7 @@
 
   else
   {
-    switch(v6)
+    switch(poiType)
     {
       case 349:
         v7 = 900000;
@@ -52,17 +52,17 @@
     }
   }
 
-  v7 = v6;
+  v7 = poiType;
 LABEL_12:
-  v8 = [v5 poiType];
-  if (v8 <= 346)
+  poiType2 = [styleAttributes poiType];
+  if (poiType2 <= 346)
   {
-    if (v8 == 169)
+    if (poiType2 == 169)
     {
       goto LABEL_23;
     }
 
-    if (v8 == 346)
+    if (poiType2 == 346)
     {
       v4 = 1000001;
       goto LABEL_23;
@@ -71,7 +71,7 @@ LABEL_12:
 
   else
   {
-    switch(v8)
+    switch(poiType2)
     {
       case 349:
         v4 = 900000;
@@ -85,23 +85,23 @@ LABEL_12:
     }
   }
 
-  v4 = v8;
+  v4 = poiType2;
 LABEL_23:
   if (v7 <= v4)
   {
     v9 = self->_styleAttributes;
-    styleAttributes = v5;
+    styleAttributes = styleAttributes;
   }
 
   else
   {
-    v9 = v5;
+    v9 = styleAttributes;
     styleAttributes = self->_styleAttributes;
   }
 
   v11 = styleAttributes;
   v12 = [(GEOFeatureStyleAttributes *)v9 copy];
-  if (v5 && [v5 countAttrs])
+  if (styleAttributes && [styleAttributes countAttrs])
   {
     v13 = [(GEOFeatureStyleAttributes *)v9 copy];
 
@@ -114,20 +114,20 @@ LABEL_23:
   return v14;
 }
 
-- (PersonalizedItemStyleAttributesAdornment)initWithStyleAttributes:(id)a3 additionalAttributes:(id)a4
+- (PersonalizedItemStyleAttributesAdornment)initWithStyleAttributes:(id)attributes additionalAttributes:(id)additionalAttributes
 {
-  v6 = a3;
-  v7 = a4;
+  attributesCopy = attributes;
+  additionalAttributesCopy = additionalAttributes;
   v32.receiver = self;
   v32.super_class = PersonalizedItemStyleAttributesAdornment;
   v8 = [(PersonalizedItemStyleAttributesAdornment *)&v32 init];
   if (v8)
   {
-    v9 = [v7 count];
+    v9 = [additionalAttributesCopy count];
     v10 = v9;
     if (v9)
     {
-      v25 = [v6 copy];
+      v25 = [attributesCopy copy];
 
       v24 = &v24;
       v27 = &v24 - ((8 * v10 + 15) & 0xFFFFFFFF0);
@@ -135,8 +135,8 @@ LABEL_23:
       v30 = 0u;
       v29 = 0u;
       v28 = 0u;
-      v26 = v7;
-      v11 = v7;
+      v26 = additionalAttributesCopy;
+      v11 = additionalAttributesCopy;
       v12 = [v11 countByEnumeratingWithState:&v28 objects:v33 count:16];
       if (v12)
       {
@@ -175,13 +175,13 @@ LABEL_23:
       v21 = [v11 count];
       v22 = v25;
       [v25 replaceAttributes:v27 count:v21];
-      v6 = v22;
-      v7 = v26;
+      attributesCopy = v22;
+      additionalAttributesCopy = v26;
     }
 
     else
     {
-      v22 = v6;
+      v22 = attributesCopy;
     }
 
     objc_storeStrong(&v8->_styleAttributes, v22);
@@ -190,21 +190,21 @@ LABEL_23:
   return v8;
 }
 
-+ (PersonalizedItemStyleAttributesAdornment)adornmentWithStyleAttributes:(id)a3 additionalAttributes:(id)a4
++ (PersonalizedItemStyleAttributesAdornment)adornmentWithStyleAttributes:(id)attributes additionalAttributes:(id)additionalAttributes
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [a1 alloc];
+  attributesCopy = attributes;
+  additionalAttributesCopy = additionalAttributes;
+  v8 = [self alloc];
   v9 = v8;
-  if (v6)
+  if (attributesCopy)
   {
-    v10 = [v8 initWithStyleAttributes:v6 additionalAttributes:v7];
+    v10 = [v8 initWithStyleAttributes:attributesCopy additionalAttributes:additionalAttributesCopy];
   }
 
   else
   {
     v11 = objc_alloc_init(GEOFeatureStyleAttributes);
-    v10 = [v9 initWithStyleAttributes:v11 additionalAttributes:v7];
+    v10 = [v9 initWithStyleAttributes:v11 additionalAttributes:additionalAttributesCopy];
   }
 
   return v10;

@@ -1,20 +1,20 @@
 @interface ICASBioAuthData
-- (ICASBioAuthData)initWithBioAuthType:(id)a3;
+- (ICASBioAuthData)initWithBioAuthType:(id)type;
 - (id)toDict;
 @end
 
 @implementation ICASBioAuthData
 
-- (ICASBioAuthData)initWithBioAuthType:(id)a3
+- (ICASBioAuthData)initWithBioAuthType:(id)type
 {
-  v5 = a3;
+  typeCopy = type;
   v9.receiver = self;
   v9.super_class = ICASBioAuthData;
   v6 = [(ICASBioAuthData *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_bioAuthType, a3);
+    objc_storeStrong(&v6->_bioAuthType, type);
   }
 
   return v7;
@@ -24,19 +24,19 @@
 {
   v10[1] = *MEMORY[0x277D85DE8];
   v9 = @"bioAuthType";
-  v3 = [(ICASBioAuthData *)self bioAuthType];
-  if (v3)
+  bioAuthType = [(ICASBioAuthData *)self bioAuthType];
+  if (bioAuthType)
   {
-    v4 = [(ICASBioAuthData *)self bioAuthType];
+    bioAuthType2 = [(ICASBioAuthData *)self bioAuthType];
   }
 
   else
   {
-    v4 = objc_opt_new();
+    bioAuthType2 = objc_opt_new();
   }
 
-  v5 = v4;
-  v10[0] = v4;
+  v5 = bioAuthType2;
+  v10[0] = bioAuthType2;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v10 forKeys:&v9 count:1];
 
   v7 = *MEMORY[0x277D85DE8];

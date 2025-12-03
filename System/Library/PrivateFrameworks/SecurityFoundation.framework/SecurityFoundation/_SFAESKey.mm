@@ -1,14 +1,14 @@
 @interface _SFAESKey
-- (id)initRandomKeyWithSpecifier:(id)a3 error:(id *)a4;
+- (id)initRandomKeyWithSpecifier:(id)specifier error:(id *)error;
 @end
 
 @implementation _SFAESKey
 
-- (id)initRandomKeyWithSpecifier:(id)a3 error:(id *)a4
+- (id)initRandomKeyWithSpecifier:(id)specifier error:(id *)error
 {
   v5.receiver = self;
   v5.super_class = _SFAESKey;
-  return [(_SFSymmetricKey *)&v5 initRandomKeyWithSpecifier:a3 error:a4];
+  return [(_SFSymmetricKey *)&v5 initRandomKeyWithSpecifier:specifier error:error];
 }
 
 @end

@@ -14,7 +14,7 @@
     return 0;
   }
 
-  v8 = [a1 invocationWithMethodSignature:v7];
+  v8 = [self invocationWithMethodSignature:v7];
   [v8 retainArguments];
   [v8 setSelector:a3];
   [v8 setTarget:a4];
@@ -24,7 +24,7 @@
 + (void)mf_invocationWithSelector:()MailExtensions target:object:
 {
   v7 = a5;
-  v5 = [a1 mf_invocationWithSelector:? target:?];
+  v5 = [self mf_invocationWithSelector:? target:?];
   if ([objc_msgSend(v5 "methodSignature")] >= 3)
   {
     [v5 setArgument:&v7 atIndex:2];
@@ -36,7 +36,7 @@
 + (void)mf_invocationWithSelector:()MailExtensions target:object1:object2:
 {
   v8 = a6;
-  v6 = [a1 mf_invocationWithSelector:? target:? object:?];
+  v6 = [self mf_invocationWithSelector:? target:? object:?];
   if ([objc_msgSend(v6 "methodSignature")] >= 4)
   {
     [v6 setArgument:&v8 atIndex:3];

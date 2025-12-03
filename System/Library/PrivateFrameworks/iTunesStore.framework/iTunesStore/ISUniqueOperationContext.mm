@@ -1,7 +1,7 @@
 @interface ISUniqueOperationContext
 - (ISUniqueOperationContext)init;
 - (void)dealloc;
-- (void)setUniqueOperation:(id)a3 forKey:(id)a4;
+- (void)setUniqueOperation:(id)operation forKey:(id)key;
 @end
 
 @implementation ISUniqueOperationContext
@@ -30,17 +30,17 @@
   return v2;
 }
 
-- (void)setUniqueOperation:(id)a3 forKey:(id)a4
+- (void)setUniqueOperation:(id)operation forKey:(id)key
 {
   uniqueOperations = self->_uniqueOperations;
-  if (a3)
+  if (operation)
   {
-    [(NSMutableDictionary *)uniqueOperations setObject:a3 forKey:a4];
+    [(NSMutableDictionary *)uniqueOperations setObject:operation forKey:key];
   }
 
   else
   {
-    [(NSMutableDictionary *)uniqueOperations removeObjectForKey:a4];
+    [(NSMutableDictionary *)uniqueOperations removeObjectForKey:key];
   }
 }
 

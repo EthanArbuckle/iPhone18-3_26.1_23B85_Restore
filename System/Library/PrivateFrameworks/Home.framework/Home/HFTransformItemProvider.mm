@@ -1,7 +1,7 @@
 @interface HFTransformItemProvider
 - (HFTransformItemProvider)init;
-- (HFTransformItemProvider)initWithSourceProvider:(id)a3 transformationBlock:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (HFTransformItemProvider)initWithSourceProvider:(id)provider transformationBlock:(id)block;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)invalidationReasons;
 - (id)items;
 - (id)reloadItems;
@@ -11,42 +11,42 @@
 
 - (HFTransformItemProvider)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithSourceProvider_transformationBlock_);
-  [v4 handleFailureInMethod:a2 object:self file:@"HFTransformItemProvider.m" lineNumber:24 description:{@"%s is unavailable; use %@ instead", "-[HFTransformItemProvider init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFTransformItemProvider.m" lineNumber:24 description:{@"%s is unavailable; use %@ instead", "-[HFTransformItemProvider init]", v5}];
 
   return 0;
 }
 
-- (HFTransformItemProvider)initWithSourceProvider:(id)a3 transformationBlock:(id)a4
+- (HFTransformItemProvider)initWithSourceProvider:(id)provider transformationBlock:(id)block
 {
-  v7 = a3;
-  v8 = a4;
+  providerCopy = provider;
+  blockCopy = block;
   v16.receiver = self;
   v16.super_class = HFTransformItemProvider;
   v9 = [(HFItemProvider *)&v16 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_sourceProvider, a3);
-    v11 = _Block_copy(v8);
+    objc_storeStrong(&v9->_sourceProvider, provider);
+    v11 = _Block_copy(blockCopy);
     transformationBlock = v10->_transformationBlock;
     v10->_transformationBlock = v11;
 
-    v13 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     transformedItems = v10->_transformedItems;
-    v10->_transformedItems = v13;
+    v10->_transformedItems = dictionary;
   }
 
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(HFTransformItemProvider *)self sourceProvider];
-  v6 = [(HFTransformItemProvider *)self transformationBlock];
-  v7 = [v4 initWithSourceProvider:v5 transformationBlock:v6];
+  sourceProvider = [(HFTransformItemProvider *)self sourceProvider];
+  transformationBlock = [(HFTransformItemProvider *)self transformationBlock];
+  v7 = [v4 initWithSourceProvider:sourceProvider transformationBlock:transformationBlock];
 
   return v7;
 }
@@ -54,14 +54,14 @@
 - (id)reloadItems
 {
   objc_initWeak(&location, self);
-  v3 = [(HFTransformItemProvider *)self sourceProvider];
-  v4 = [v3 reloadItems];
+  sourceProvider = [(HFTransformItemProvider *)self sourceProvider];
+  reloadItems = [sourceProvider reloadItems];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __38__HFTransformItemProvider_reloadItems__block_invoke;
   v7[3] = &unk_277DF30B8;
   objc_copyWeak(&v8, &location);
-  v5 = [v4 flatMap:v7];
+  v5 = [reloadItems flatMap:v7];
   objc_destroyWeak(&v8);
 
   objc_destroyWeak(&location);
@@ -185,9 +185,9 @@ void __38__HFTransformItemProvider_reloadItems__block_invoke_4(uint64_t a1, uint
 - (id)items
 {
   v2 = MEMORY[0x277CBEB98];
-  v3 = [(HFTransformItemProvider *)self transformedItems];
-  v4 = [v3 allValues];
-  v5 = [v2 setWithArray:v4];
+  transformedItems = [(HFTransformItemProvider *)self transformedItems];
+  allValues = [transformedItems allValues];
+  v5 = [v2 setWithArray:allValues];
 
   return v5;
 }
@@ -196,10 +196,10 @@ void __38__HFTransformItemProvider_reloadItems__block_invoke_4(uint64_t a1, uint
 {
   v8.receiver = self;
   v8.super_class = HFTransformItemProvider;
-  v3 = [(HFItemProvider *)&v8 invalidationReasons];
-  v4 = [(HFTransformItemProvider *)self sourceProvider];
-  v5 = [v4 invalidationReasons];
-  v6 = [v3 setByAddingObjectsFromSet:v5];
+  invalidationReasons = [(HFItemProvider *)&v8 invalidationReasons];
+  sourceProvider = [(HFTransformItemProvider *)self sourceProvider];
+  invalidationReasons2 = [sourceProvider invalidationReasons];
+  v6 = [invalidationReasons setByAddingObjectsFromSet:invalidationReasons2];
 
   return v6;
 }

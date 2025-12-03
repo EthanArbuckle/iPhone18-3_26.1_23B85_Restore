@@ -1,22 +1,22 @@
 @interface _UIClickPresentation
 - (BOOL)_presentsSelf;
-- (_UIClickPresentation)initWithPresentedViewController:(id)a3 presentationController:(id)a4;
+- (_UIClickPresentation)initWithPresentedViewController:(id)controller presentationController:(id)presentationController;
 @end
 
 @implementation _UIClickPresentation
 
-- (_UIClickPresentation)initWithPresentedViewController:(id)a3 presentationController:(id)a4
+- (_UIClickPresentation)initWithPresentedViewController:(id)controller presentationController:(id)presentationController
 {
-  v7 = a3;
-  v8 = a4;
+  controllerCopy = controller;
+  presentationControllerCopy = presentationController;
   v12.receiver = self;
   v12.super_class = _UIClickPresentation;
   v9 = [(_UIClickPresentation *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_viewController, a3);
-    objc_storeStrong(&v10->_presentationController, a4);
+    objc_storeStrong(&v9->_viewController, controller);
+    objc_storeStrong(&v10->_presentationController, presentationController);
   }
 
   return v10;
@@ -29,10 +29,10 @@
     return 0;
   }
 
-  v3 = [(_UIClickPresentation *)self viewController];
-  v4 = [(_UIClickPresentation *)self presentationController];
-  v5 = [v4 presentingViewController];
-  v6 = v3 == v5;
+  viewController = [(_UIClickPresentation *)self viewController];
+  presentationController = [(_UIClickPresentation *)self presentationController];
+  presentingViewController = [presentationController presentingViewController];
+  v6 = viewController == presentingViewController;
 
   return v6;
 }

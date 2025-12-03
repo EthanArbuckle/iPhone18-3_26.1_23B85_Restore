@@ -1,9 +1,9 @@
 @interface AVAudioSessionChannelDescription
-+ (id)privateCreate:(id)a3 portUID:(id)a4 channelNumber:(unsigned int)a5;
-+ (id)privateCreateArray:(id)a3 portUID:(id)a4;
++ (id)privateCreate:(id)create portUID:(id)d channelNumber:(unsigned int)number;
++ (id)privateCreateArray:(id)array portUID:(id)d;
 - (AVAudioSessionChannelDescription)init;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToChannel:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToChannel:(id)channel;
 - (id)description;
 - (void)dealloc;
 @end
@@ -37,41 +37,41 @@
   [(AVAudioSessionChannelDescription *)&v4 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(AVAudioSessionChannelDescription *)self isEqualToChannel:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(AVAudioSessionChannelDescription *)self isEqualToChannel:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToChannel:(id)a3
+- (BOOL)isEqualToChannel:(id)channel
 {
-  v4 = a3;
-  if (self == v4)
+  channelCopy = channel;
+  if (self == channelCopy)
   {
     v12 = 1;
   }
 
   else
   {
-    v5 = [(AVAudioSessionChannelDescription *)self channelName];
-    v6 = [(AVAudioSessionChannelDescription *)v4 channelName];
-    v7 = [v5 isEqualToString:v6];
+    channelName = [(AVAudioSessionChannelDescription *)self channelName];
+    channelName2 = [(AVAudioSessionChannelDescription *)channelCopy channelName];
+    v7 = [channelName isEqualToString:channelName2];
 
-    if (v7 & 1) != 0 && (-[AVAudioSessionChannelDescription owningPortUID](self, "owningPortUID"), v8 = objc_claimAutoreleasedReturnValue(), -[AVAudioSessionChannelDescription owningPortUID](v4, "owningPortUID"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v8 isEqualToString:v9], v9, v8, (v10))
+    if (v7 & 1) != 0 && (-[AVAudioSessionChannelDescription owningPortUID](self, "owningPortUID"), v8 = objc_claimAutoreleasedReturnValue(), -[AVAudioSessionChannelDescription owningPortUID](channelCopy, "owningPortUID"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v8 isEqualToString:v9], v9, v8, (v10))
     {
-      v11 = [(AVAudioSessionChannelDescription *)self channelNumber];
-      v12 = v11 == [(AVAudioSessionChannelDescription *)v4 channelNumber];
+      channelNumber = [(AVAudioSessionChannelDescription *)self channelNumber];
+      v12 = channelNumber == [(AVAudioSessionChannelDescription *)channelCopy channelNumber];
     }
 
     else
@@ -94,47 +94,47 @@
   return v7;
 }
 
-+ (id)privateCreate:(id)a3 portUID:(id)a4 channelNumber:(unsigned int)a5
++ (id)privateCreate:(id)create portUID:(id)d channelNumber:(unsigned int)number
 {
   v27 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  createCopy = create;
+  dCopy = d;
+  v9 = dCopy;
+  if (createCopy)
   {
     v10 = objc_alloc_init(AVAudioSessionChannelDescription);
-    v11 = [(AVAudioSessionChannelDescription *)v10 privateGetImplementation];
+    privateGetImplementation = [(AVAudioSessionChannelDescription *)v10 privateGetImplementation];
     v12 = *MEMORY[0x1E69B05E8];
-    v13 = [v7 objectForKey:v12];
+    v13 = [createCopy objectForKey:v12];
 
     v14 = *MEMORY[0x1E69B05E0];
-    v15 = [v7 objectForKey:v14];
+    v15 = [createCopy objectForKey:v14];
 
     if (v13)
     {
       v16 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithString:v13];
-      v17 = *v11;
-      *v11 = v16;
+      v17 = *privateGetImplementation;
+      *privateGetImplementation = v16;
     }
 
     if (v9)
     {
       v18 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithString:v9];
-      v19 = *(v11 + 8);
-      *(v11 + 8) = v18;
+      v19 = *(privateGetImplementation + 8);
+      *(privateGetImplementation + 8) = v18;
     }
 
     if (v15)
     {
-      *(v11 + 20) = [v15 unsignedIntValue];
+      *(privateGetImplementation + 20) = [v15 unsignedIntValue];
     }
 
-    *(v11 + 16) = a5;
+    *(privateGetImplementation + 16) = number;
   }
 
   else
   {
-    v20 = *avas::client::gSessionClientLog(v8);
+    v20 = *avas::client::gSessionClientLog(dCopy);
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
       v23 = 136315394;
@@ -151,19 +151,19 @@
   return v10;
 }
 
-+ (id)privateCreateArray:(id)a3 portUID:(id)a4
++ (id)privateCreateArray:(id)array portUID:(id)d
 {
-  v5 = a3;
-  v6 = a4;
-  if (v5 && (v7 = [v5 count]) != 0)
+  arrayCopy = array;
+  dCopy = d;
+  if (arrayCopy && (v7 = [arrayCopy count]) != 0)
   {
     v8 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v7];
     v9 = 0;
     do
     {
-      v10 = [v5 objectAtIndex:v9];
+      v10 = [arrayCopy objectAtIndex:v9];
       v11 = v9 + 1;
-      v12 = [AVAudioSessionChannelDescription privateCreate:v10 portUID:v6 channelNumber:v9 + 1];
+      v12 = [AVAudioSessionChannelDescription privateCreate:v10 portUID:dCopy channelNumber:v9 + 1];
       if (v12)
       {
         [v8 insertObject:v12 atIndex:v9];

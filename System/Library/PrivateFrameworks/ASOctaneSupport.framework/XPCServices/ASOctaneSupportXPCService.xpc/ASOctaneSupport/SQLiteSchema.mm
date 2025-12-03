@@ -1,47 +1,47 @@
 @interface SQLiteSchema
-- (BOOL)column:(id)a3 existsInTable:(id)a4;
-- (BOOL)migrateToVersion:(int64_t)a3 usingBlock:(id)a4;
-- (BOOL)tableExists:(id)a3;
-- (SQLiteSchema)initWithConnection:(id)a3;
+- (BOOL)column:(id)column existsInTable:(id)table;
+- (BOOL)migrateToVersion:(int64_t)version usingBlock:(id)block;
+- (BOOL)tableExists:(id)exists;
+- (SQLiteSchema)initWithConnection:(id)connection;
 - (int64_t)currentUserVersion;
-- (void)_setUserVersion:(int64_t)a3;
+- (void)_setUserVersion:(int64_t)version;
 @end
 
 @implementation SQLiteSchema
 
-- (SQLiteSchema)initWithConnection:(id)a3
+- (SQLiteSchema)initWithConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v9.receiver = self;
   v9.super_class = SQLiteSchema;
   v6 = [(SQLiteSchema *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_connection, a3);
+    objc_storeStrong(&v6->_connection, connection);
   }
 
   return v7;
 }
 
-- (BOOL)column:(id)a3 existsInTable:(id)a4
+- (BOOL)column:(id)column existsInTable:(id)table
 {
-  v6 = a3;
-  v7 = a4;
+  columnCopy = column;
+  tableCopy = table;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
   v18 = 0;
   connection = self->_connection;
-  v9 = [NSString stringWithFormat:@"PRAGMA table_info(%@)", v7];;
+  tableCopy = [NSString stringWithFormat:@"PRAGMA table_info(%@)", tableCopy];;
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_10000AE70;
   v12[3] = &unk_1002784A8;
   v14 = &v15;
-  v10 = v6;
+  v10 = columnCopy;
   v13 = v10;
-  [(SQLiteConnection *)connection executeQuery:v9 withResults:v12];
+  [(SQLiteConnection *)connection executeQuery:tableCopy withResults:v12];
 
   LOBYTE(connection) = *(v16 + 24);
   _Block_object_dispose(&v15, 8);
@@ -67,9 +67,9 @@
   return v3;
 }
 
-- (BOOL)migrateToVersion:(int64_t)a3 usingBlock:(id)a4
+- (BOOL)migrateToVersion:(int64_t)version usingBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
@@ -80,8 +80,8 @@
   v10[2] = sub_10000B168;
   v10[3] = &unk_1002784F8;
   v10[4] = self;
-  v13 = a3;
-  v8 = v6;
+  versionCopy = version;
+  v8 = blockCopy;
   v11 = v8;
   v12 = &v14;
   [(SQLiteConnection *)connection performTransaction:v10];
@@ -91,21 +91,21 @@
   return self;
 }
 
-- (BOOL)tableExists:(id)a3
+- (BOOL)tableExists:(id)exists
 {
-  v4 = a3;
+  existsCopy = exists;
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
   v12 = 0;
   connection = self->_connection;
-  v6 = [NSString stringWithFormat:@"SELECT name FROM sqlite_master where name = '%@'", v4];
+  existsCopy = [NSString stringWithFormat:@"SELECT name FROM sqlite_master where name = '%@'", existsCopy];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10000B440;
   v8[3] = &unk_1002784D0;
   v8[4] = &v9;
-  [(SQLiteConnection *)connection executeQuery:v6 withResults:v8];
+  [(SQLiteConnection *)connection executeQuery:existsCopy withResults:v8];
 
   LOBYTE(connection) = *(v10 + 24);
   _Block_object_dispose(&v9, 8);
@@ -113,10 +113,10 @@
   return connection;
 }
 
-- (void)_setUserVersion:(int64_t)a3
+- (void)_setUserVersion:(int64_t)version
 {
-  v4 = [NSString stringWithFormat:@"PRAGMA user_version = %lld", a3];;
-  [(SQLiteConnection *)self->_connection executeStatement:v4 error:0];
+  version = [NSString stringWithFormat:@"PRAGMA user_version = %lld", version];;
+  [(SQLiteConnection *)self->_connection executeStatement:version error:0];
 }
 
 @end

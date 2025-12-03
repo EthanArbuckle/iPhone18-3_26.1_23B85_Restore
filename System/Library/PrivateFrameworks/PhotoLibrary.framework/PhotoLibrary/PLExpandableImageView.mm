@@ -1,31 +1,31 @@
 @interface PLExpandableImageView
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (CGRect)_snappedExpandedFrame;
 - (CGRect)frameOfImage;
-- (CGSize)_newSizeFromSize:(CGSize)a3;
+- (CGSize)_newSizeFromSize:(CGSize)size;
 - (CGSize)imageSize;
-- (PLExpandableImageView)initWithFrame:(CGRect)a3 frameStyle:(int)a4 withBorder:(BOOL)a5;
-- (float)_borderAlphaForExpansionFraction:(float)a3;
+- (PLExpandableImageView)initWithFrame:(CGRect)frame frameStyle:(int)style withBorder:(BOOL)border;
+- (float)_borderAlphaForExpansionFraction:(float)fraction;
 - (float)_currentScale;
 - (float)_expandedScale;
 - (float)_expansionFraction;
-- (float)completeTrackingPinch:(id)a3 toState:(int)a4 duration:(double)a5;
-- (float)continueTrackingPinch:(id)a3;
+- (float)completeTrackingPinch:(id)pinch toState:(int)state duration:(double)duration;
+- (float)continueTrackingPinch:(id)pinch;
 - (id)_contentView;
-- (void)_bounceBack:(id)a3 finished:(id)a4 context:(void *)a5;
-- (void)_bounceToPlace:(id)a3 finished:(id)a4 context:(void *)a5;
+- (void)_bounceBack:(id)back finished:(id)finished context:(void *)context;
+- (void)_bounceToPlace:(id)place finished:(id)finished context:(void *)context;
 - (void)_updateBorderAndAccessoriesAlpha;
-- (void)_updatePinchWidthAndScaleWithLeftPoint:(CGPoint)a3 rightPoint:(CGPoint)a4;
-- (void)beginTrackingPinch:(id)a3;
+- (void)_updatePinchWidthAndScaleWithLeftPoint:(CGPoint)point rightPoint:(CGPoint)rightPoint;
+- (void)beginTrackingPinch:(id)pinch;
 - (void)dealloc;
 - (void)finishTransition;
 - (void)layoutSubviews;
-- (void)setCenter:(CGPoint)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setImage:(id)a3 isFullscreen:(BOOL)a4;
-- (void)setSize:(CGSize)a3 angle:(float)a4;
-- (void)setTransformAndCenterForFrame:(CGRect)a3;
-- (void)stateDidChangeFrom:(int)a3;
+- (void)setCenter:(CGPoint)center;
+- (void)setFrame:(CGRect)frame;
+- (void)setImage:(id)image isFullscreen:(BOOL)fullscreen;
+- (void)setSize:(CGSize)size angle:(float)angle;
+- (void)setTransformAndCenterForFrame:(CGRect)frame;
+- (void)stateDidChangeFrom:(int)from;
 @end
 
 @implementation PLExpandableImageView
@@ -34,10 +34,10 @@
 {
   *&self->_exImageFlags &= ~8u;
   [(PLExpandableImageView *)self layoutIfNeeded];
-  v3 = [(PLExpandableImageView *)self superview];
+  superview = [(PLExpandableImageView *)self superview];
   [-[PLExpandableImageView imageView](self "imageView")];
 
-  [v3 convertRect:self fromView:?];
+  [superview convertRect:self fromView:?];
   result.size.height = v7;
   result.size.width = v6;
   result.origin.y = v5;
@@ -47,24 +47,24 @@
 
 - (CGSize)imageSize
 {
-  v2 = [(PLImageView *)self->_imageView image];
+  image = [(PLImageView *)self->_imageView image];
 
-  [v2 size];
+  [image size];
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-- (void)setImage:(id)a3 isFullscreen:(BOOL)a4
+- (void)setImage:(id)image isFullscreen:(BOOL)fullscreen
 {
-  v4 = a4;
+  fullscreenCopy = fullscreen;
   if ([(PLExpandableView *)self allowsExpansion]|| [(PLExpandableView *)self state]!= 1)
   {
-    v7 = v4 ? 64 : 0;
+    v7 = fullscreenCopy ? 64 : 0;
     *&self->_exImageFlags = *&self->_exImageFlags & 0xBF | v7;
-    [(PLImageView *)self->_imageView setImage:a3];
+    [(PLImageView *)self->_imageView setImage:image];
     [(PLImageView *)self->_imageView setOpaque:1];
-    if (a3)
+    if (image)
     {
       *&self->_exImageFlags &= ~8u;
 
@@ -73,10 +73,10 @@
   }
 }
 
-- (void)setCenter:(CGPoint)a3
+- (void)setCenter:(CGPoint)center
 {
-  y = a3.y;
-  x = a3.x;
+  y = center.y;
+  x = center.x;
   [(PLExpandableImageView *)self center];
   if (x != v7 || y != v6)
   {
@@ -86,11 +86,11 @@
   }
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = PLExpandableImageView;
-  [(PLExpandableImageView *)&v4 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(PLExpandableImageView *)&v4 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   *&self->_exImageFlags &= ~8u;
   [(PLExpandableImageView *)self layoutBelowIfNeeded];
   [(PLImageView *)self->_imageView updateFullSizeImageVisibleArea];
@@ -127,11 +127,11 @@
   [(PLExpandableView *)&v3 finishTransition];
 }
 
-- (void)_bounceToPlace:(id)a3 finished:(id)a4 context:(void *)a5
+- (void)_bounceToPlace:(id)place finished:(id)finished context:(void *)context
 {
-  if (([(PLExpandableView *)self state:a3]& 0xFFFFFFFB) == 2)
+  if (([(PLExpandableView *)self state:place]& 0xFFFFFFFB) == 2)
   {
-    if ([a4 BOOLValue])
+    if ([finished BOOLValue])
     {
       v8[0] = MEMORY[0x277D85DD0];
       v8[1] = 3221225472;
@@ -162,11 +162,11 @@ uint64_t __57__PLExpandableImageView__bounceToPlace_finished_context___block_inv
   return [v1 setTransformAndCenterForFrame:?];
 }
 
-- (void)_bounceBack:(id)a3 finished:(id)a4 context:(void *)a5
+- (void)_bounceBack:(id)back finished:(id)finished context:(void *)context
 {
-  if (([(PLExpandableView *)self state:a3]& 0xFFFFFFFB) == 2)
+  if (([(PLExpandableView *)self state:back]& 0xFFFFFFFB) == 2)
   {
-    if ([a4 BOOLValue])
+    if ([finished BOOLValue])
     {
       [MEMORY[0x277D75D18] beginAnimations:0 context:0];
       [MEMORY[0x277D75D18] setAnimationDuration:0.15];
@@ -196,9 +196,9 @@ uint64_t __57__PLExpandableImageView__bounceToPlace_finished_context___block_inv
   }
 }
 
-- (float)completeTrackingPinch:(id)a3 toState:(int)a4 duration:(double)a5
+- (float)completeTrackingPinch:(id)pinch toState:(int)state duration:(double)duration
 {
-  v9 = [(PLExpandableView *)self state];
+  state = [(PLExpandableView *)self state];
   [(PLExpandableImageView *)self _currentScale];
   v11 = v10;
   if ((*&self->_exImageFlags & 2) == 0)
@@ -217,11 +217,11 @@ uint64_t __57__PLExpandableImageView__bounceToPlace_finished_context___block_inv
   [-[PLExpandableImageView layer](self "layer")];
   [(PLExpandableImageView *)self setCenter:v15, v17];
   v22 = 0.0;
-  if (a4)
+  if (state)
   {
-    if (a4 == 4)
+    if (state == 4)
     {
-      if (v9 == 6 && (v22 = self->super._pinchVelocity, v22 > 0.0))
+      if (state == 6 && (v22 = self->super._pinchVelocity, v22 > 0.0))
       {
         v23 = 1;
         v24 = 0.2;
@@ -266,7 +266,7 @@ uint64_t __57__PLExpandableImageView__bounceToPlace_finished_context___block_inv
       {
         v65 = v63;
         v66 = v64;
-        if (a3)
+        if (pinch)
         {
           [(PLExpandableImageView *)self _expansionFraction];
           v68 = (1.0 - v67) * 0.05 + 1.0;
@@ -363,10 +363,10 @@ uint64_t __57__PLExpandableImageView__bounceToPlace_finished_context___block_inv
     v36 = v35 * 0.0009765625;
     if (self->super._pinchVelocity >= 0.0)
     {
-      v39 = 0.2;
-      if (v9 != 3 || a5 >= 0.2)
+      durationCopy = 0.2;
+      if (state != 3 || duration >= 0.2)
       {
-        v39 = a5;
+        durationCopy = duration;
       }
     }
 
@@ -374,22 +374,22 @@ uint64_t __57__PLExpandableImageView__bounceToPlace_finished_context___block_inv
     {
       pinchWidth = self->_pinchWidth;
       [(PLExpandableImageView *)self _currentScale];
-      v39 = (pinchWidth / v38 - self->_pinchWidth) / self->super._pinchVelocity;
+      durationCopy = (pinchWidth / v38 - self->_pinchWidth) / self->super._pinchVelocity;
     }
 
-    if (v39 < v34)
+    if (durationCopy < v34)
     {
-      v39 = v34;
+      durationCopy = v34;
     }
 
-    if (v39 < v36)
+    if (durationCopy < v36)
     {
-      v39 = v36;
+      durationCopy = v36;
     }
 
-    if (v39 <= 0.3)
+    if (durationCopy <= 0.3)
     {
-      v46 = v39;
+      v46 = durationCopy;
     }
 
     else
@@ -458,23 +458,23 @@ uint64_t __57__PLExpandableImageView__bounceToPlace_finished_context___block_inv
   return *&v22;
 }
 
-- (void)setTransformAndCenterForFrame:(CGRect)a3
+- (void)setTransformAndCenterForFrame:(CGRect)frame
 {
-  [(PLExpandableImageView *)self _newSizeFromSize:a3.size.width, a3.size.height];
+  [(PLExpandableImageView *)self _newSizeFromSize:frame.size.width, frame.size.height];
   [PLExpandableImageView setSize:"setSize:angle:" angle:?];
   UIRectGetCenter();
 
   [(PLExpandableImageView *)self setCenter:?];
 }
 
-- (CGSize)_newSizeFromSize:(CGSize)a3
+- (CGSize)_newSizeFromSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [(PLExpandableImageView *)self image];
-  if (v5)
+  height = size.height;
+  width = size.width;
+  image = [(PLExpandableImageView *)self image];
+  if (image)
   {
-    [v5 size];
+    [image size];
   }
 
   else
@@ -503,13 +503,13 @@ uint64_t __57__PLExpandableImageView__bounceToPlace_finished_context___block_inv
   return result;
 }
 
-- (float)continueTrackingPinch:(id)a3
+- (float)continueTrackingPinch:(id)pinch
 {
-  v5 = [(PLExpandableImageView *)self _contentView];
-  [(PLExpandableImageView *)self convertPoint:v5 toView:self->super._leftTouchLocation.x, self->super._leftTouchLocation.y];
+  _contentView = [(PLExpandableImageView *)self _contentView];
+  [(PLExpandableImageView *)self convertPoint:_contentView toView:self->super._leftTouchLocation.x, self->super._leftTouchLocation.y];
   v7 = v6;
   v9 = v8;
-  [(PLExpandableImageView *)self convertPoint:v5 toView:self->super._rightTouchLocation.x, self->super._rightTouchLocation.y];
+  [(PLExpandableImageView *)self convertPoint:_contentView toView:self->super._rightTouchLocation.x, self->super._rightTouchLocation.y];
   v11 = v10;
   v12 = (v7 + v10) * 0.5;
   v14 = (v9 + v13) * 0.5;
@@ -564,11 +564,11 @@ uint64_t __57__PLExpandableImageView__bounceToPlace_finished_context___block_inv
 
   v52 = v12 + self->_centerOffset.width;
   v34 = v14 + self->_centerOffset.height;
-  [(PLExpandableImageView *)self convertPoint:v5 toView:self->super._previousLeftLocation.x, self->super._previousLeftLocation.y];
-  [(PLExpandableImageView *)self convertPoint:v5 toView:self->super._previousRightLocation.x, self->super._previousRightLocation.y];
+  [(PLExpandableImageView *)self convertPoint:_contentView toView:self->super._previousLeftLocation.x, self->super._previousLeftLocation.y];
+  [(PLExpandableImageView *)self convertPoint:_contentView toView:self->super._previousRightLocation.x, self->super._previousRightLocation.y];
   UIDistanceBetweenPoints();
   *&v35 = v35;
-  if (*&v35 < 1.0 && ([a3 velocity], fabs(v36) <= 0.05))
+  if (*&v35 < 1.0 && ([pinch velocity], fabs(v36) <= 0.05))
   {
     if ([(PLExpandableView *)self state]== 1)
     {
@@ -634,7 +634,7 @@ uint64_t __47__PLExpandableImageView_continueTrackingPinch___block_invoke(uint64
   return [*(a1 + 32) _updateBorderAndAccessoriesAlpha];
 }
 
-- (void)_updatePinchWidthAndScaleWithLeftPoint:(CGPoint)a3 rightPoint:(CGPoint)a4
+- (void)_updatePinchWidthAndScaleWithLeftPoint:(CGPoint)point rightPoint:(CGPoint)rightPoint
 {
   UIDistanceBetweenPoints();
   self->_pinchWidth = v5;
@@ -658,9 +658,9 @@ uint64_t __47__PLExpandableImageView_continueTrackingPinch___block_invoke(uint64
   [(PLImageView *)imageView setBorderAndAccessoriesAlpha:?];
 }
 
-- (float)_borderAlphaForExpansionFraction:(float)a3
+- (float)_borderAlphaForExpansionFraction:(float)fraction
 {
-  v3 = fmax(a3 * -2.0 + 1.0, 0.0);
+  v3 = fmax(fraction * -2.0 + 1.0, 0.0);
   if (v3 > 1.0)
   {
     return 1.0;
@@ -669,10 +669,10 @@ uint64_t __47__PLExpandableImageView_continueTrackingPinch___block_invoke(uint64
   return v3;
 }
 
-- (void)setSize:(CGSize)a3 angle:(float)a4
+- (void)setSize:(CGSize)size angle:(float)angle
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(PLExpandableImageView *)self frame];
   v9 = v8;
   v11 = v10;
@@ -710,7 +710,7 @@ uint64_t __47__PLExpandableImageView_continueTrackingPinch___block_invoke(uint64
     v17 = height;
   }
 
-  v19 = self->_imageRotationAngle + a4;
+  v19 = self->_imageRotationAngle + angle;
   currentAngle = self->_currentAngle;
   v21 = vabdd_f64(v18, v9);
   v22 = vabds_f32(v19, currentAngle) < 1.0 && v21 < 1.0;
@@ -740,10 +740,10 @@ uint64_t __47__PLExpandableImageView_continueTrackingPinch___block_invoke(uint64
   }
 }
 
-- (void)beginTrackingPinch:(id)a3
+- (void)beginTrackingPinch:(id)pinch
 {
-  v5 = [(PLExpandableView *)self state];
-  if (v5 == 1)
+  state = [(PLExpandableView *)self state];
+  if (state == 1)
   {
     [(PLImageView *)self->_imageView bounds];
     [(PLExpandableView *)self pinchRect:self->_imageView inView:1 insetTouches:?];
@@ -780,18 +780,18 @@ uint64_t __47__PLExpandableImageView_continueTrackingPinch___block_invoke(uint64
   }
 
   *&self->_exImageFlags = v26;
-  v35 = [(PLExpandableImageView *)self superview];
-  [a3 locationOfTouch:self->super._leftTouchIndex inView:v35];
+  superview = [(PLExpandableImageView *)self superview];
+  [pinch locationOfTouch:self->super._leftTouchIndex inView:superview];
   v37 = v36;
   v39 = v38;
-  [a3 locationOfTouch:self->super._rightTouchIndex inView:v35];
+  [pinch locationOfTouch:self->super._rightTouchIndex inView:superview];
   v41 = v40;
   self->_anchorPoint.x = ((v37 + v40) * 0.5 - v15) / v19;
   self->_anchorPoint.y = ((v39 + v42) * 0.5 - v17) / v21;
   self->_originalAngle = atan((v39 - v42) / (v40 - v37));
-  v43 = [(PLExpandableImageView *)self _contentView];
-  [a3 locationOfTouch:self->super._leftTouchIndex inView:v43];
-  [a3 locationOfTouch:self->super._rightTouchIndex inView:v43];
+  _contentView = [(PLExpandableImageView *)self _contentView];
+  [pinch locationOfTouch:self->super._leftTouchIndex inView:_contentView];
+  [pinch locationOfTouch:self->super._rightTouchIndex inView:_contentView];
   UIDistanceBetweenPoints();
   self->_originalWidth = originalWidth;
   if (v37 > v41)
@@ -804,7 +804,7 @@ uint64_t __47__PLExpandableImageView_continueTrackingPinch___block_invoke(uint64
   self->_pinchAngle = self->_originalAngle;
   self->_pinchScale = 1.0;
   v45 = *&self->_exImageFlags & 0xDC;
-  if (v5 == 1)
+  if (state == 1)
   {
     *&self->_exImageFlags = v45 | 2;
   }
@@ -825,7 +825,7 @@ uint64_t __47__PLExpandableImageView_continueTrackingPinch___block_invoke(uint64
   [(PLExpandableImageView *)self _setOriginalSize:v50, v51];
 }
 
-- (void)stateDidChangeFrom:(int)a3
+- (void)stateDidChangeFrom:(int)from
 {
   if ([(PLExpandableView *)self state]== 1)
   {
@@ -880,10 +880,10 @@ uint64_t __47__PLExpandableImageView_continueTrackingPinch___block_invoke(uint64
     v6 = v14;
   }
 
-  v15 = [(PLExpandableView *)self isTracking];
+  isTracking = [(PLExpandableView *)self isTracking];
   if (v8 <= v10)
   {
-    if (v15)
+    if (isTracking)
     {
       v17 = self->_pinchScale * self->_originalSize.height;
     }
@@ -900,7 +900,7 @@ uint64_t __47__PLExpandableImageView_continueTrackingPinch___block_invoke(uint64
 
   else
   {
-    if (v15)
+    if (isTracking)
     {
       v16 = self->_pinchScale * self->_originalSize.width;
     }
@@ -939,10 +939,10 @@ uint64_t __47__PLExpandableImageView_continueTrackingPinch___block_invoke(uint64
   return v4 / v5;
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   imageView = self->_imageView;
   [(PLImageView *)imageView bounds];
   [(PLImageView *)imageView convertRect:self toView:?];
@@ -965,11 +965,11 @@ uint64_t __47__PLExpandableImageView_continueTrackingPinch___block_invoke(uint64
   if ((exImageFlags & 0x18) != 8)
   {
     *&self->_exImageFlags = exImageFlags | 8;
-    v4 = [(PLExpandableImageView *)self image];
-    v5 = [(PLExpandableImageView *)self videoView];
-    if (v4 | v5)
+    image = [(PLExpandableImageView *)self image];
+    videoView = [(PLExpandableImageView *)self videoView];
+    if (image | videoView)
     {
-      v6 = v5;
+      v6 = videoView;
       [(PLExpandableImageView *)self bounds];
       v8 = v7;
       v10 = v9;
@@ -989,7 +989,7 @@ uint64_t __47__PLExpandableImageView_continueTrackingPinch___block_invoke(uint64
       }
 
       v18 = (*&self->_exImageFlags & 0x40) == 0 || ([objc_msgSend(MEMORY[0x277D75418] "currentDevice")] & 0xFFFFFFFFFFFFFFFBLL) != 1;
-      if (v4)
+      if (image)
       {
         [(PLImageView *)self->_imageView sizeThatFits:v18 allowRounding:v17, v17];
         v20 = v19;
@@ -1003,7 +1003,7 @@ uint64_t __47__PLExpandableImageView_continueTrackingPinch___block_invoke(uint64
       }
 
       v23 = [objc_msgSend(MEMORY[0x277D75418] "currentDevice")];
-      if (v4 && (v23 & 0xFFFFFFFFFFFFFFFBLL) == 1 && (v20 > v12 || v22 > v14))
+      if (image && (v23 & 0xFFFFFFFFFFFFFFFBLL) == 1 && (v20 > v12 || v22 > v14))
       {
         v24 = v20;
         v12 = rintf(v24);
@@ -1011,7 +1011,7 @@ uint64_t __47__PLExpandableImageView_continueTrackingPinch___block_invoke(uint64
         [(PLExpandableImageView *)self setBounds:v8, v10, v12, v14];
       }
 
-      if (([objc_msgSend(MEMORY[0x277D75418] "currentDevice")] & 0xFFFFFFFFFFFFFFFBLL) == 1 && (!v4 ? (v25 = v6 == 0) : (v25 = 1), v25 ? (v26 = 0) : (v26 = 1), (*&self->_exImageFlags & 0x40) != 0 || v26))
+      if (([objc_msgSend(MEMORY[0x277D75418] "currentDevice")] & 0xFFFFFFFFFFFFFFFBLL) == 1 && (!image ? (v25 = v6 == 0) : (v25 = 1), v25 ? (v26 = 0) : (v26 = 1), (*&self->_exImageFlags & 0x40) != 0 || v26))
       {
         v27 = v8 + (v12 - v20) * 0.5;
         v28 = v10 + (v14 - v22) * 0.5;
@@ -1037,20 +1037,20 @@ uint64_t __47__PLExpandableImageView_continueTrackingPinch___block_invoke(uint64
   [(PLExpandableView *)&v3 dealloc];
 }
 
-- (PLExpandableImageView)initWithFrame:(CGRect)a3 frameStyle:(int)a4 withBorder:(BOOL)a5
+- (PLExpandableImageView)initWithFrame:(CGRect)frame frameStyle:(int)style withBorder:(BOOL)border
 {
-  v5 = a5;
-  height = a3.size.height;
-  width = a3.size.width;
+  borderCopy = border;
+  height = frame.size.height;
+  width = frame.size.width;
   v10.receiver = self;
   v10.super_class = PLExpandableImageView;
-  v8 = [(PLExpandableView *)&v10 initWithFrame:*&a4, a3.origin.x, a3.origin.y];
+  v8 = [(PLExpandableView *)&v10 initWithFrame:*&style, frame.origin.x, frame.origin.y];
   if (v8)
   {
     v8->_imageView = [[PLImageView alloc] initWithFrame:0.0, 0.0, width, height];
     [-[PLExpandableImageView layer](v8 "layer")];
     [(PLImageView *)v8->_imageView setOpaque:1];
-    [(PLExpandableImageView *)v8 setBorderAndAccessoriesVisible:v5];
+    [(PLExpandableImageView *)v8 setBorderAndAccessoriesVisible:borderCopy];
     [(PLExpandableImageView *)v8 addSubview:v8->_imageView];
   }
 

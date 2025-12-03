@@ -4,7 +4,7 @@
 - (BOOL)networkAccessEnabledForContacts;
 - (__CTServerConnection)ctServerConnection;
 - (void)dealloc;
-- (void)setNetworkAccessEnabledForContacts:(BOOL)a3;
+- (void)setNetworkAccessEnabledForContacts:(BOOL)contacts;
 @end
 
 @implementation NCContactsSyncDataAccessHelper
@@ -60,29 +60,29 @@
 {
   [(NCContactsSyncDataAccessHelper *)self ctServerConnection];
   _CTServerConnectionCopyCellularUsagePolicy();
-  v2 = [objc_opt_class() os_log];
-  if (os_log_type_enabled(v2, OS_LOG_TYPE_ERROR))
+  os_log = [objc_opt_class() os_log];
+  if (os_log_type_enabled(os_log, OS_LOG_TYPE_ERROR))
   {
     sub_EB48();
   }
 
-  v3 = [objc_opt_class() os_log];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  os_log2 = [objc_opt_class() os_log];
+  if (os_log_type_enabled(os_log2, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446466;
     v6 = "[NCContactsSyncDataAccessHelper networkAccessEnabledForContacts]";
     v7 = 1024;
     LODWORD(v8) = 1;
-    _os_log_impl(&dword_0, v3, OS_LOG_TYPE_DEFAULT, "%{public}s - return networkAccessEnabledForContacts: %d", buf, 0x12u);
+    _os_log_impl(&dword_0, os_log2, OS_LOG_TYPE_DEFAULT, "%{public}s - return networkAccessEnabledForContacts: %d", buf, 0x12u);
   }
 
   return 1;
 }
 
-- (void)setNetworkAccessEnabledForContacts:(BOOL)a3
+- (void)setNetworkAccessEnabledForContacts:(BOOL)contacts
 {
   v4 = &kCTCellularDataUsagePolicyAlwaysAllow;
-  if (!a3)
+  if (!contacts)
   {
     v4 = &kCTCellularDataUsagePolicyDeny;
   }
@@ -98,17 +98,17 @@
 
   [(NCContactsSyncDataAccessHelper *)self ctServerConnection];
   LODWORD(v5) = _CTServerConnectionSetCellularUsagePolicy();
-  v7 = [objc_opt_class() os_log];
-  v8 = v7;
+  os_log = [objc_opt_class() os_log];
+  v8 = os_log;
   if (v5)
   {
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(os_log, OS_LOG_TYPE_ERROR))
     {
       sub_EBBC();
     }
   }
 
-  else if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+  else if (os_log_type_enabled(os_log, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 136446210;
     v10 = "[NCContactsSyncDataAccessHelper setNetworkAccessEnabledForContacts:]";

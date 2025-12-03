@@ -1,31 +1,31 @@
 @interface PBFPosterGalleryPreviewView
 - (CGRect)posterPreviewFrame;
 - (CGSize)intrinsicContentSize;
-- (PBFPosterGalleryPreviewView)initWithFrame:(CGRect)a3;
+- (PBFPosterGalleryPreviewView)initWithFrame:(CGRect)frame;
 - (id)makeComplicationsPortalView;
 - (id)pbf_displayContext;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setReusableViewMap:(id)a3;
-- (void)setShowsLoadingIndicator:(BOOL)a3;
+- (void)setReusableViewMap:(id)map;
+- (void)setShowsLoadingIndicator:(BOOL)indicator;
 - (void)sizeToFit;
-- (void)updatePreview:(id)a3 posterPreviewView:(id)a4 layoutOrientation:(int64_t)a5 index:(unint64_t)a6;
+- (void)updatePreview:(id)preview posterPreviewView:(id)view layoutOrientation:(int64_t)orientation index:(unint64_t)index;
 @end
 
 @implementation PBFPosterGalleryPreviewView
 
-- (PBFPosterGalleryPreviewView)initWithFrame:(CGRect)a3
+- (PBFPosterGalleryPreviewView)initWithFrame:(CGRect)frame
 {
   v21.receiver = self;
   v21.super_class = PBFPosterGalleryPreviewView;
-  v3 = [(PBFPosterGalleryPreviewView *)&v21 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PBFPosterGalleryPreviewView *)&v21 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(PBFPosterGalleryPreviewView *)v3 window];
-    v6 = [v5 screen];
-    v7 = [PBFPosterGalleryViewSpec specForScreen:v6];
+    window = [(PBFPosterGalleryPreviewView *)v3 window];
+    screen = [window screen];
+    v7 = [PBFPosterGalleryViewSpec specForScreen:screen];
     [v7 posterCornerRadius];
     v9 = v8;
 
@@ -91,18 +91,18 @@
   v14.receiver = self;
   v14.super_class = PBFPosterGalleryPreviewView;
   [(PBFPosterGalleryPreviewView *)&v14 didMoveToWindow];
-  v3 = [(PBFPosterGalleryPreviewView *)self window];
-  v4 = [v3 screen];
-  v5 = [PBFPosterGalleryViewSpec specForScreen:v4];
+  window = [(PBFPosterGalleryPreviewView *)self window];
+  screen = [window screen];
+  v5 = [PBFPosterGalleryViewSpec specForScreen:screen];
   [v5 posterCornerRadius];
   v7 = v6;
 
   v8 = v7;
   if (self->_previewType == PBFPreviewTypeHero)
   {
-    v9 = [(PBFPosterGalleryPreviewView *)self window];
-    v10 = [v9 screen];
-    v11 = [PBFPosterGalleryViewSpec specForScreen:v10];
+    window2 = [(PBFPosterGalleryPreviewView *)self window];
+    screen2 = [window2 screen];
+    v11 = [PBFPosterGalleryViewSpec specForScreen:screen2];
     [v11 posterHeroContentSize];
     v13 = v12;
 
@@ -118,8 +118,8 @@
   v8.receiver = self;
   v8.super_class = PBFPosterGalleryPreviewView;
   [(PBFPosterGalleryPreviewView *)&v8 layoutSubviews];
-  v3 = [(PBFPosterGalleryPreviewView *)self pbf_displayContext];
-  [v3 pbf_frame];
+  pbf_displayContext = [(PBFPosterGalleryPreviewView *)self pbf_displayContext];
+  [pbf_displayContext pbf_frame];
 
   [(PBFPosterGalleryPreviewView *)self bounds];
   x = v9.origin.x;
@@ -145,9 +145,9 @@
 
 - (CGSize)intrinsicContentSize
 {
-  v3 = [(PBFPosterGalleryPreviewView *)self window];
-  v4 = [v3 screen];
-  v5 = [PBFPosterGalleryViewSpec specForScreen:v4];
+  window = [(PBFPosterGalleryPreviewView *)self window];
+  screen = [window screen];
+  v5 = [PBFPosterGalleryViewSpec specForScreen:screen];
 
   if (self->_previewType == PBFPreviewTypeHero)
   {
@@ -169,26 +169,26 @@
   return result;
 }
 
-- (void)updatePreview:(id)a3 posterPreviewView:(id)a4 layoutOrientation:(int64_t)a5 index:(unint64_t)a6
+- (void)updatePreview:(id)preview posterPreviewView:(id)view layoutOrientation:(int64_t)orientation index:(unint64_t)index
 {
-  v14 = a3;
-  v11 = a4;
-  [(PBFPosterGalleryPreviewContentView *)self->_posterPreviewContentView updatePreview:v14 posterPreviewView:v11 layoutOrientation:a5 index:a6];
-  if (self->_layoutOrientation != a5)
+  previewCopy = preview;
+  viewCopy = view;
+  [(PBFPosterGalleryPreviewContentView *)self->_posterPreviewContentView updatePreview:previewCopy posterPreviewView:viewCopy layoutOrientation:orientation index:index];
+  if (self->_layoutOrientation != orientation)
   {
     goto LABEL_5;
   }
 
-  v12 = [(PBFPosterGalleryPreviewContentView *)self->_posterPreviewContentView posterPreviewView];
-  if (v12 != v11 || self->_preview != v14)
+  posterPreviewView = [(PBFPosterGalleryPreviewContentView *)self->_posterPreviewContentView posterPreviewView];
+  if (posterPreviewView != viewCopy || self->_preview != previewCopy)
   {
 
 LABEL_5:
-    self->_index = a6;
-    objc_storeStrong(&self->_preview, a3);
-    self->_previewType = [(PBFPosterPreview *)v14 type];
-    self->_layoutOrientation = a5;
-    [(PBFPosterGalleryPreviewComplicationContentView *)self->_posterPreviewComplicationContentView setLayoutOrientation:a5];
+    self->_index = index;
+    objc_storeStrong(&self->_preview, preview);
+    self->_previewType = [(PBFPosterPreview *)previewCopy type];
+    self->_layoutOrientation = orientation;
+    [(PBFPosterGalleryPreviewComplicationContentView *)self->_posterPreviewComplicationContentView setLayoutOrientation:orientation];
     [(PBFPosterGalleryPreviewView *)self invalidateIntrinsicContentSize];
     [(PBFPosterGalleryPreviewView *)self setNeedsLayout];
     goto LABEL_6;
@@ -196,7 +196,7 @@ LABEL_5:
 
   index = self->_index;
 
-  if (index != a6)
+  if (index != index)
   {
     goto LABEL_5;
   }
@@ -217,25 +217,25 @@ LABEL_6:
   return result;
 }
 
-- (void)setShowsLoadingIndicator:(BOOL)a3
+- (void)setShowsLoadingIndicator:(BOOL)indicator
 {
   v37[6] = *MEMORY[0x277D85DE8];
-  if (self->_showsLoadingIndicator != a3)
+  if (self->_showsLoadingIndicator != indicator)
   {
-    self->_showsLoadingIndicator = a3;
-    if (a3)
+    self->_showsLoadingIndicator = indicator;
+    if (indicator)
     {
       v4 = objc_alloc_init(MEMORY[0x277D75D18]);
       v5 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:0.4];
       [v4 setBackgroundColor:v5];
 
-      v6 = [v4 layer];
-      [v6 setCompositingFilter:*MEMORY[0x277CDA610]];
+      layer = [v4 layer];
+      [layer setCompositingFilter:*MEMORY[0x277CDA610]];
 
       [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
       v7 = [objc_alloc(MEMORY[0x277D750E8]) initWithActivityIndicatorStyle:100];
-      v8 = [MEMORY[0x277D75348] whiteColor];
-      [v7 setColor:v8];
+      whiteColor = [MEMORY[0x277D75348] whiteColor];
+      [v7 setColor:whiteColor];
 
       [v7 startAnimating];
       [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -244,29 +244,29 @@ LABEL_6:
       [(PBFPosterGalleryPreviewView *)self addSubview:v4];
       v25 = MEMORY[0x277CCAAD0];
       v34 = v7;
-      v33 = [v7 centerXAnchor];
-      v32 = [v4 centerXAnchor];
-      v31 = [v33 constraintEqualToAnchor:v32];
+      centerXAnchor = [v7 centerXAnchor];
+      centerXAnchor2 = [v4 centerXAnchor];
+      v31 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
       v37[0] = v31;
-      v30 = [v7 centerYAnchor];
-      v29 = [v4 centerYAnchor];
-      v28 = [v30 constraintEqualToAnchor:v29];
+      centerYAnchor = [v7 centerYAnchor];
+      centerYAnchor2 = [v4 centerYAnchor];
+      v28 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
       v37[1] = v28;
-      v27 = [v4 topAnchor];
-      v26 = [(PBFPosterGalleryPreviewView *)self topAnchor];
-      v24 = [v27 constraintEqualToAnchor:v26];
+      topAnchor = [v4 topAnchor];
+      topAnchor2 = [(PBFPosterGalleryPreviewView *)self topAnchor];
+      v24 = [topAnchor constraintEqualToAnchor:topAnchor2];
       v37[2] = v24;
-      v23 = [v4 bottomAnchor];
-      v22 = [(PBFPosterGalleryPreviewView *)self bottomAnchor];
-      v9 = [v23 constraintEqualToAnchor:v22];
+      bottomAnchor = [v4 bottomAnchor];
+      bottomAnchor2 = [(PBFPosterGalleryPreviewView *)self bottomAnchor];
+      v9 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
       v37[3] = v9;
-      v10 = [v4 leadingAnchor];
-      v11 = [(PBFPosterGalleryPreviewView *)self leadingAnchor];
-      v12 = [v10 constraintEqualToAnchor:v11];
+      leadingAnchor = [v4 leadingAnchor];
+      leadingAnchor2 = [(PBFPosterGalleryPreviewView *)self leadingAnchor];
+      v12 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
       v37[4] = v12;
-      v13 = [v4 trailingAnchor];
-      v14 = [(PBFPosterGalleryPreviewView *)self trailingAnchor];
-      v15 = [v13 constraintEqualToAnchor:v14];
+      trailingAnchor = [v4 trailingAnchor];
+      trailingAnchor2 = [(PBFPosterGalleryPreviewView *)self trailingAnchor];
+      v15 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
       v37[5] = v15;
       v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v37 count:6];
       [v25 activateConstraints:v16];
@@ -293,13 +293,13 @@ LABEL_6:
   }
 }
 
-- (void)setReusableViewMap:(id)a3
+- (void)setReusableViewMap:(id)map
 {
-  v5 = a3;
+  mapCopy = map;
   if (([(PUIReusableViewMap *)self->_reusableViewMap isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_reusableViewMap, a3);
-    [(PBFPosterGalleryPreviewComplicationContentView *)self->_posterPreviewComplicationContentView setReusableViewMap:v5];
+    objc_storeStrong(&self->_reusableViewMap, map);
+    [(PBFPosterGalleryPreviewComplicationContentView *)self->_posterPreviewComplicationContentView setReusableViewMap:mapCopy];
   }
 }
 
@@ -307,8 +307,8 @@ LABEL_6:
 {
   v6.receiver = self;
   v6.super_class = PBFPosterGalleryPreviewView;
-  v3 = [(UIView *)&v6 pbf_displayContext];
-  v4 = [v3 displayContextWithUpdatedInterfaceOrientation:{-[PBFPosterGalleryPreviewView layoutOrientation](self, "layoutOrientation")}];
+  pbf_displayContext = [(UIView *)&v6 pbf_displayContext];
+  v4 = [pbf_displayContext displayContextWithUpdatedInterfaceOrientation:{-[PBFPosterGalleryPreviewView layoutOrientation](self, "layoutOrientation")}];
 
   return v4;
 }

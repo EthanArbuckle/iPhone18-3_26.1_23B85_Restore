@@ -1,13 +1,13 @@
 @interface SNLPEmbedder
-+ (const)getTokenCleanValueString:(id)a3 error:(id *)a4;
-- (id)getEmbeddings:(id)a3;
-- (id)getEmbeddingsBySentence:(id)a3;
-- (id)getEmbeddingsBySentenceWithError:(id)a3 error:(id *)a4;
-- (id)getEmbeddingsWithError:(id)a3 error:(id *)a4;
-- (id)initFromAssetDirectoryURL:(id)a3;
-- (id)initFromAssetDirectoryURLWithError:(id)a3 error:(id *)a4;
-- (id)initFromSourceVocabPath:(id)a3 bertModelPath:(id)a4 bertConfigPath:(id)a5 reformulatorPath:(id)a6;
-- (id)initFromSourceVocabPathWithError:(id)a3 bertModelPath:(id)a4 bertConfigPath:(id)a5 reformulatorPath:(id)a6 error:(id *)a7;
++ (const)getTokenCleanValueString:(id)string error:(id *)error;
+- (id)getEmbeddings:(id)embeddings;
+- (id)getEmbeddingsBySentence:(id)sentence;
+- (id)getEmbeddingsBySentenceWithError:(id)error error:(id *)a4;
+- (id)getEmbeddingsWithError:(id)error error:(id *)a4;
+- (id)initFromAssetDirectoryURL:(id)l;
+- (id)initFromAssetDirectoryURLWithError:(id)error error:(id *)a4;
+- (id)initFromSourceVocabPath:(id)path bertModelPath:(id)modelPath bertConfigPath:(id)configPath reformulatorPath:(id)reformulatorPath;
+- (id)initFromSourceVocabPathWithError:(id)error bertModelPath:(id)path bertConfigPath:(id)configPath reformulatorPath:(id)reformulatorPath error:(id *)a7;
 - (void)warmup;
 @end
 
@@ -74,10 +74,10 @@
   std::vector<nlv4_inference_orchestrator::orchestration::Token>::__init_with_size[abi:ne200100]<nlv4_inference_orchestrator::orchestration::Token const*,nlv4_inference_orchestrator::orchestration::Token const*>(v3, &buf, v22, 2uLL);
 }
 
-- (id)getEmbeddings:(id)a3
+- (id)getEmbeddings:(id)embeddings
 {
   v8 = 0;
-  v3 = [(SNLPEmbedder *)self getEmbeddingsWithError:a3 error:&v8];
+  v3 = [(SNLPEmbedder *)self getEmbeddingsWithError:embeddings error:&v8];
   v4 = v8;
   if (v4)
   {
@@ -92,10 +92,10 @@
   return v3;
 }
 
-- (id)getEmbeddingsWithError:(id)a3 error:(id *)a4
+- (id)getEmbeddingsWithError:(id)error error:(id *)a4
 {
   v61 = *MEMORY[0x277D85DE8];
-  v41 = a3;
+  errorCopy = error;
   v4 = SNLPOSLoggerForCategory(7);
   v5 = os_signpost_id_generate(v4);
 
@@ -117,53 +117,53 @@
   v53 = 0;
   v54 = 0;
   v55 = 0;
-  v9 = [v41 tokenChain];
-  std::vector<nlv4_inference_orchestrator::orchestration::Token>::reserve(&v53, [v9 tokensCount]);
+  tokenChain = [errorCopy tokenChain];
+  std::vector<nlv4_inference_orchestrator::orchestration::Token>::reserve(&v53, [tokenChain tokensCount]);
 
   std::string::basic_string[abi:ne200100]<0>(&v52, "");
   std::string::basic_string[abi:ne200100]<0>(&v51, "");
-  v10 = [v41 text];
-  v11 = v10 == 0;
+  text = [errorCopy text];
+  v11 = text == 0;
 
   if (!v11)
   {
     v12 = SNLPOSLoggerForCategory(5);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
-      v13 = [v41 text];
+      text2 = [errorCopy text];
       LODWORD(buf) = 138739971;
-      *(&buf + 4) = v13;
+      *(&buf + 4) = text2;
       _os_log_impl(&dword_22284A000, v12, OS_LOG_TYPE_DEBUG, "Incoming request.text: %{sensitive}@", &buf, 0xCu);
     }
 
-    v14 = [v41 text];
-    v15 = v14;
-    v16 = [v14 UTF8String];
+    text3 = [errorCopy text];
+    v15 = text3;
+    uTF8String = [text3 UTF8String];
 
-    if (!v16)
+    if (!uTF8String)
     {
       v17 = SNLPOSLoggerForCategory(5);
       if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
       {
-        v18 = [v41 text];
+        text4 = [errorCopy text];
         LODWORD(buf) = 138412290;
-        *(&buf + 4) = v18;
+        *(&buf + 4) = text4;
         _os_log_impl(&dword_22284A000, v17, OS_LOG_TYPE_ERROR, "Bad request.text: %@", &buf, 0xCu);
       }
     }
 
-    MEMORY[0x223DC46D0](&v52, v16);
-    MEMORY[0x223DC46D0](&v51, v16);
+    MEMORY[0x223DC46D0](&v52, uTF8String);
+    MEMORY[0x223DC46D0](&v51, uTF8String);
   }
 
   v49 = 0u;
   v50 = 0u;
   v47 = 0u;
   v48 = 0u;
-  v19 = [v41 tokenChain];
-  v20 = [v19 tokens];
+  tokenChain2 = [errorCopy tokenChain];
+  tokens = [tokenChain2 tokens];
 
-  v21 = [v20 countByEnumeratingWithState:&v47 objects:v60 count:16];
+  v21 = [tokens countByEnumeratingWithState:&v47 objects:v60 count:16];
   if (!v21)
   {
 LABEL_29:
@@ -202,7 +202,7 @@ LABEL_16:
   {
     if (*v48 != v22)
     {
-      objc_enumerationMutation(v20);
+      objc_enumerationMutation(tokens);
     }
 
     v24 = *(*(&v47 + 1) + 8 * v23);
@@ -218,8 +218,8 @@ LABEL_16:
 
     if (([v24 isWhitespace] & 1) == 0)
     {
-      v29 = [v24 cleanValue];
-      v30 = [v29 length] == 0;
+      cleanValue = [v24 cleanValue];
+      v30 = [cleanValue length] == 0;
 
       if (!v30)
       {
@@ -270,7 +270,7 @@ LABEL_16:
 
     if (v21 == ++v23)
     {
-      v21 = [v20 countByEnumeratingWithState:&v47 objects:v60 count:16];
+      v21 = [tokens countByEnumeratingWithState:&v47 objects:v60 count:16];
       if (!v21)
       {
         goto LABEL_29;
@@ -304,10 +304,10 @@ LABEL_16:
   return 0;
 }
 
-- (id)getEmbeddingsBySentence:(id)a3
+- (id)getEmbeddingsBySentence:(id)sentence
 {
   v8 = 0;
-  v3 = [(SNLPEmbedder *)self getEmbeddingsBySentenceWithError:a3 error:&v8];
+  v3 = [(SNLPEmbedder *)self getEmbeddingsBySentenceWithError:sentence error:&v8];
   v4 = v8;
   if (v4)
   {
@@ -322,40 +322,40 @@ LABEL_16:
   return v3;
 }
 
-- (id)getEmbeddingsBySentenceWithError:(id)a3 error:(id *)a4
+- (id)getEmbeddingsBySentenceWithError:(id)error error:(id *)a4
 {
   v50 = *MEMORY[0x277D85DE8];
   v47 = 0;
   v46 = 0;
   v48 = 0;
-  v31 = a3;
-  v5 = [v31 tokenChain];
-  std::vector<nlv4_inference_orchestrator::orchestration::Token>::reserve(&v46, [v5 tokensCount]);
+  errorCopy = error;
+  tokenChain = [errorCopy tokenChain];
+  std::vector<nlv4_inference_orchestrator::orchestration::Token>::reserve(&v46, [tokenChain tokensCount]);
 
   std::string::basic_string[abi:ne200100]<0>(&__s, "");
   std::string::basic_string[abi:ne200100]<0>(&v44, "");
-  v6 = [v31 text];
-  v7 = v6 == 0;
+  text = [errorCopy text];
+  v7 = text == 0;
 
   if (!v7)
   {
-    v8 = [v31 text];
-    v9 = v8;
-    MEMORY[0x223DC46D0](&__s, [v8 UTF8String]);
+    text2 = [errorCopy text];
+    v9 = text2;
+    MEMORY[0x223DC46D0](&__s, [text2 UTF8String]);
 
-    v10 = [v31 text];
-    v11 = v10;
-    MEMORY[0x223DC46D0](&v44, [v10 UTF8String]);
+    text3 = [errorCopy text];
+    v11 = text3;
+    MEMORY[0x223DC46D0](&v44, [text3 UTF8String]);
   }
 
   v42 = 0u;
   v43 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v12 = [v31 tokenChain];
-  v13 = [v12 tokens];
+  tokenChain2 = [errorCopy tokenChain];
+  tokens = [tokenChain2 tokens];
 
-  v14 = [v13 countByEnumeratingWithState:&v40 objects:v49 count:16];
+  v14 = [tokens countByEnumeratingWithState:&v40 objects:v49 count:16];
   if (!v14)
   {
 LABEL_16:
@@ -392,7 +392,7 @@ LABEL_5:
   {
     if (*v41 != v15)
     {
-      objc_enumerationMutation(v13);
+      objc_enumerationMutation(tokens);
     }
 
     v17 = *(*(&v40 + 1) + 8 * v16);
@@ -452,7 +452,7 @@ LABEL_5:
 
     if (v14 == ++v16)
     {
-      v14 = [v13 countByEnumeratingWithState:&v40 objects:v49 count:16];
+      v14 = [tokens countByEnumeratingWithState:&v40 objects:v49 count:16];
       if (!v14)
       {
         goto LABEL_16;
@@ -486,10 +486,10 @@ LABEL_5:
   return 0;
 }
 
-- (id)initFromSourceVocabPath:(id)a3 bertModelPath:(id)a4 bertConfigPath:(id)a5 reformulatorPath:(id)a6
+- (id)initFromSourceVocabPath:(id)path bertModelPath:(id)modelPath bertConfigPath:(id)configPath reformulatorPath:(id)reformulatorPath
 {
   v12 = 0;
-  v6 = [(SNLPEmbedder *)self initFromSourceVocabPathWithError:a3 bertModelPath:a4 bertConfigPath:a5 reformulatorPath:a6 error:&v12];
+  v6 = [(SNLPEmbedder *)self initFromSourceVocabPathWithError:path bertModelPath:modelPath bertConfigPath:configPath reformulatorPath:reformulatorPath error:&v12];
   v7 = v12;
   v8 = v6;
   if (v7)
@@ -505,24 +505,24 @@ LABEL_5:
   return v8;
 }
 
-- (id)initFromSourceVocabPathWithError:(id)a3 bertModelPath:(id)a4 bertConfigPath:(id)a5 reformulatorPath:(id)a6 error:(id *)a7
+- (id)initFromSourceVocabPathWithError:(id)error bertModelPath:(id)path bertConfigPath:(id)configPath reformulatorPath:(id)reformulatorPath error:(id *)a7
 {
   v31 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  errorCopy = error;
+  pathCopy = path;
+  configPathCopy = configPath;
+  reformulatorPathCopy = reformulatorPath;
   v30.receiver = self;
   v30.super_class = SNLPEmbedder;
   [(SNLPEmbedder *)&v30 init];
-  v15 = v11;
-  std::string::basic_string[abi:ne200100]<0>(&v29, [v11 UTF8String]);
-  v16 = v12;
-  std::string::basic_string[abi:ne200100]<0>(&v28, [v12 UTF8String]);
-  v17 = v13;
-  std::string::basic_string[abi:ne200100]<0>(&v27, [v13 UTF8String]);
-  v18 = v14;
-  std::string::basic_string[abi:ne200100]<0>(&__p, [v14 UTF8String]);
+  v15 = errorCopy;
+  std::string::basic_string[abi:ne200100]<0>(&v29, [errorCopy UTF8String]);
+  v16 = pathCopy;
+  std::string::basic_string[abi:ne200100]<0>(&v28, [pathCopy UTF8String]);
+  v17 = configPathCopy;
+  std::string::basic_string[abi:ne200100]<0>(&v27, [configPathCopy UTF8String]);
+  v18 = reformulatorPathCopy;
+  std::string::basic_string[abi:ne200100]<0>(&__p, [reformulatorPathCopy UTF8String]);
   v19 = SNLPOSLoggerForCategory(7);
   v20 = os_signpost_id_generate(v19);
 
@@ -544,10 +544,10 @@ LABEL_5:
   operator new();
 }
 
-- (id)initFromAssetDirectoryURL:(id)a3
+- (id)initFromAssetDirectoryURL:(id)l
 {
   v9 = 0;
-  v3 = [(SNLPEmbedder *)self initFromAssetDirectoryURLWithError:a3 error:&v9];
+  v3 = [(SNLPEmbedder *)self initFromAssetDirectoryURLWithError:l error:&v9];
   v4 = v9;
   v5 = v3;
   if (v4)
@@ -563,15 +563,15 @@ LABEL_5:
   return v5;
 }
 
-- (id)initFromAssetDirectoryURLWithError:(id)a3 error:(id *)a4
+- (id)initFromAssetDirectoryURLWithError:(id)error error:(id *)a4
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  errorCopy = error;
   v15.receiver = self;
   v15.super_class = SNLPEmbedder;
   [(SNLPEmbedder *)&v15 init];
-  v6 = v5;
-  *buf = [v5 fileSystemRepresentation];
+  v6 = errorCopy;
+  *buf = [errorCopy fileSystemRepresentation];
   std::__fs::filesystem::path::path[abi:ne200100]<char const*,void>(&__p, buf);
   v7 = SNLPOSLoggerForCategory(7);
   v8 = os_signpost_id_generate(v7);
@@ -594,13 +594,13 @@ LABEL_5:
   operator new();
 }
 
-+ (const)getTokenCleanValueString:(id)a3 error:(id *)a4
++ (const)getTokenCleanValueString:(id)string error:(id *)error
 {
   v27[2] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (![v5 hasCleanValue] || (objc_msgSend(v5, "cleanValue"), v6 = objc_claimAutoreleasedReturnValue(), v6, !v6))
+  stringCopy = string;
+  if (![stringCopy hasCleanValue] || (objc_msgSend(stringCopy, "cleanValue"), v6 = objc_claimAutoreleasedReturnValue(), v6, !v6))
   {
-    if (a4)
+    if (error)
     {
       v16 = MEMORY[0x277CCA9B8];
       v17 = *MEMORY[0x277CCA470];
@@ -608,42 +608,42 @@ LABEL_5:
       v26[1] = v17;
       v27[0] = @"Encountered a token without a clean value";
       v27[1] = @"Encountered a token without a clean value";
-      v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v27 forKeys:v26 count:2];
-      *a4 = [v16 errorWithDomain:@"SNLPNaturalLanguageParserErrorDomain" code:2 userInfo:v9];
+      string = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v27 forKeys:v26 count:2];
+      *error = [v16 errorWithDomain:@"SNLPNaturalLanguageParserErrorDomain" code:2 userInfo:string];
 LABEL_10:
     }
 
 LABEL_11:
-    v8 = 0;
+    uTF8String = 0;
     goto LABEL_12;
   }
 
-  v7 = [v5 cleanValue];
-  v8 = [v7 UTF8String];
+  cleanValue = [stringCopy cleanValue];
+  uTF8String = [cleanValue UTF8String];
 
-  if (!v8)
+  if (!uTF8String)
   {
-    if (a4)
+    if (error)
     {
-      v9 = [MEMORY[0x277CCAB68] string];
+      string = [MEMORY[0x277CCAB68] string];
       for (i = 0; ; ++i)
       {
-        v11 = [v5 cleanValue];
-        v12 = [v11 length];
+        cleanValue2 = [stringCopy cleanValue];
+        v12 = [cleanValue2 length];
 
         if (i >= v12)
         {
           break;
         }
 
-        v13 = [v5 cleanValue];
-        v14 = [v13 characterAtIndex:i];
+        cleanValue3 = [stringCopy cleanValue];
+        v14 = [cleanValue3 characterAtIndex:i];
 
         v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"[%x]", v14];
-        [v9 appendString:v15];
+        [string appendString:v15];
       }
 
-      v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"Hit invalid token clean value: %s", objc_msgSend(v9, "UTF8String")];
+      v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"Hit invalid token clean value: %s", objc_msgSend(string, "UTF8String")];
       v21 = MEMORY[0x277CCA9B8];
       v22 = *MEMORY[0x277CCA470];
       v24[0] = *MEMORY[0x277CCA450];
@@ -651,7 +651,7 @@ LABEL_11:
       v25[0] = v20;
       v25[1] = v20;
       v23 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v25 forKeys:v24 count:2];
-      *a4 = [v21 errorWithDomain:@"SNLPNaturalLanguageParserErrorDomain" code:2 userInfo:v23];
+      *error = [v21 errorWithDomain:@"SNLPNaturalLanguageParserErrorDomain" code:2 userInfo:v23];
 
       goto LABEL_10;
     }
@@ -662,7 +662,7 @@ LABEL_11:
 LABEL_12:
 
   v18 = *MEMORY[0x277D85DE8];
-  return v8;
+  return uTF8String;
 }
 
 @end

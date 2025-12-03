@@ -1,39 +1,39 @@
 @interface SIRINLUINTERNALITFMITFMHypothesis
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasProbability:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasProbability:(BOOL)probability;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SIRINLUINTERNALITFMITFMHypothesis
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 24);
+  fromCopy = from;
+  v5 = *(fromCopy + 24);
   if (v5)
   {
-    self->_label = *(v4 + 2);
+    self->_label = *(fromCopy + 2);
     *&self->_has |= 1u;
-    v5 = *(v4 + 24);
+    v5 = *(fromCopy + 24);
   }
 
   if ((v5 & 2) != 0)
   {
-    self->_probability = *(v4 + 3);
+    self->_probability = *(fromCopy + 3);
     *&self->_has |= 2u;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
-    v6 = v4;
+    v6 = fromCopy;
     [(SIRINLUINTERNALITFMITFMHypothesis *)self setStringLabel:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 }
 
@@ -87,24 +87,24 @@ LABEL_3:
   return v12 ^ v8 ^ [(NSString *)self->_stringLabel hash:v3];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_14;
   }
 
-  v5 = *(v4 + 24);
+  v5 = *(equalCopy + 24);
   if (*&self->_has)
   {
-    if ((*(v4 + 24) & 1) == 0 || self->_label != *(v4 + 2))
+    if ((*(equalCopy + 24) & 1) == 0 || self->_label != *(equalCopy + 2))
     {
       goto LABEL_14;
     }
   }
 
-  else if (*(v4 + 24))
+  else if (*(equalCopy + 24))
   {
 LABEL_14:
     v7 = 0;
@@ -113,19 +113,19 @@ LABEL_14:
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 24) & 2) == 0 || self->_probability != *(v4 + 3))
+    if ((*(equalCopy + 24) & 2) == 0 || self->_probability != *(equalCopy + 3))
     {
       goto LABEL_14;
     }
   }
 
-  else if ((*(v4 + 24) & 2) != 0)
+  else if ((*(equalCopy + 24) & 2) != 0)
   {
     goto LABEL_14;
   }
 
   stringLabel = self->_stringLabel;
-  if (stringLabel | *(v4 + 2))
+  if (stringLabel | *(equalCopy + 2))
   {
     v7 = [(NSString *)stringLabel isEqual:?];
   }
@@ -140,9 +140,9 @@ LABEL_15:
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if (has)
@@ -158,48 +158,48 @@ LABEL_15:
     *(v5 + 24) |= 2u;
   }
 
-  v8 = [(NSString *)self->_stringLabel copyWithZone:a3];
+  v8 = [(NSString *)self->_stringLabel copyWithZone:zone];
   v9 = v6[2];
   v6[2] = v8;
 
   return v6;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[2] = self->_label;
-    *(v4 + 24) |= 1u;
+    toCopy[2] = self->_label;
+    *(toCopy + 24) |= 1u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    v4[3] = LODWORD(self->_probability);
-    *(v4 + 24) |= 2u;
+    toCopy[3] = LODWORD(self->_probability);
+    *(toCopy + 24) |= 2u;
   }
 
   if (self->_stringLabel)
   {
-    v6 = v4;
-    [v4 setStringLabel:?];
-    v4 = v6;
+    v6 = toCopy;
+    [toCopy setStringLabel:?];
+    toCopy = v6;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v8 = v4;
+  v8 = toCopy;
   if (has)
   {
     label = self->_label;
     PBDataWriterWriteInt32Field();
-    v4 = v8;
+    toCopy = v8;
     has = self->_has;
   }
 
@@ -207,24 +207,24 @@ LABEL_15:
   {
     probability = self->_probability;
     PBDataWriterWriteFloatField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_stringLabel)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if (has)
   {
     v6 = [MEMORY[0x1E696AD98] numberWithInt:self->_label];
-    [v3 setObject:v6 forKey:@"label"];
+    [dictionary setObject:v6 forKey:@"label"];
 
     has = self->_has;
   }
@@ -233,16 +233,16 @@ LABEL_15:
   {
     *&v4 = self->_probability;
     v7 = [MEMORY[0x1E696AD98] numberWithFloat:v4];
-    [v3 setObject:v7 forKey:@"probability"];
+    [dictionary setObject:v7 forKey:@"probability"];
   }
 
   stringLabel = self->_stringLabel;
   if (stringLabel)
   {
-    [v3 setObject:stringLabel forKey:@"string_label"];
+    [dictionary setObject:stringLabel forKey:@"string_label"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -251,15 +251,15 @@ LABEL_15:
   v8.receiver = self;
   v8.super_class = SIRINLUINTERNALITFMITFMHypothesis;
   v4 = [(SIRINLUINTERNALITFMITFMHypothesis *)&v8 description];
-  v5 = [(SIRINLUINTERNALITFMITFMHypothesis *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SIRINLUINTERNALITFMITFMHypothesis *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)setHasProbability:(BOOL)a3
+- (void)setHasProbability:(BOOL)probability
 {
-  if (a3)
+  if (probability)
   {
     v3 = 2;
   }

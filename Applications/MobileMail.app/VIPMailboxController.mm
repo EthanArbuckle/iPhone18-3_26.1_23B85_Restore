@@ -4,24 +4,24 @@
 - (id)navigationTitle;
 - (id)unreadCriterion;
 - (id)unscopedCountPredicate;
-- (void)_showVIPSettingsFromSelectionTarget:(id)a3 item:(id)a4 animated:(BOOL)a5;
-- (void)presentFromSelectionTarget:(id)a3 item:(id)a4 accessoryTapped:(BOOL)a5 animated:(BOOL)a6;
+- (void)_showVIPSettingsFromSelectionTarget:(id)target item:(id)item animated:(BOOL)animated;
+- (void)presentFromSelectionTarget:(id)target item:(id)item accessoryTapped:(BOOL)tapped animated:(BOOL)animated;
 @end
 
 @implementation VIPMailboxController
 
 - (id)unreadCriterion
 {
-  v2 = [(VIPMailboxController *)self criterion];
+  criterion = [(VIPMailboxController *)self criterion];
   v3 = +[NSUserDefaults standardUserDefaults];
   v4 = [v3 BOOLForKey:DisableThreadingKey];
 
   if ((v4 & 1) == 0)
   {
-    [v2 setIncludeRelatedMessages:1];
+    [criterion setIncludeRelatedMessages:1];
   }
 
-  return v2;
+  return criterion;
 }
 
 - (id)unscopedCountPredicate
@@ -52,40 +52,40 @@
   return v3;
 }
 
-- (void)presentFromSelectionTarget:(id)a3 item:(id)a4 accessoryTapped:(BOOL)a5 animated:(BOOL)a6
+- (void)presentFromSelectionTarget:(id)target item:(id)item accessoryTapped:(BOOL)tapped animated:(BOOL)animated
 {
-  v10 = a3;
-  v11 = a4;
+  targetCopy = target;
+  itemCopy = item;
   v12 = +[VIPManager defaultInstance];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_10025BFD8;
   v15[3] = &unk_100656B68;
-  v18 = a5;
+  tappedCopy = tapped;
   v15[4] = self;
-  v13 = v10;
+  v13 = targetCopy;
   v16 = v13;
-  v14 = v11;
+  v14 = itemCopy;
   v17 = v14;
-  v19 = a6;
+  animatedCopy = animated;
   [v12 getAllVIPsWithCompletion:v15];
 }
 
-- (void)_showVIPSettingsFromSelectionTarget:(id)a3 item:(id)a4 animated:(BOOL)a5
+- (void)_showVIPSettingsFromSelectionTarget:(id)target item:(id)item animated:(BOOL)animated
 {
-  v5 = a5;
-  v9 = a3;
-  v7 = a4;
+  animatedCopy = animated;
+  targetCopy = target;
+  itemCopy = item;
   v8 = [[MFVIPSendersListTableViewController alloc] initWithStyle:2];
-  [v9 selectCustomViewController:v8 item:v7 animated:v5];
+  [targetCopy selectCustomViewController:v8 item:itemCopy animated:animatedCopy];
 }
 
 - (BOOL)wantsDisclosureButton
 {
   v2 = +[VIPManager defaultInstance];
-  v3 = [v2 hasVIPs];
+  hasVIPs = [v2 hasVIPs];
 
-  return v3;
+  return hasVIPs;
 }
 
 @end

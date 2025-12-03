@@ -1,56 +1,56 @@
 @interface CloudBookmarkCKReferenceValueTransformer
-- (CloudBookmarkCKReferenceValueTransformer)initWithCKRecordZoneID:(id)a3 action:(unint64_t)a4;
-- (id)reverseTransformedValue:(id)a3;
-- (id)transformedValue:(id)a3;
-- (id)transformerForRecord:(id)a3;
+- (CloudBookmarkCKReferenceValueTransformer)initWithCKRecordZoneID:(id)d action:(unint64_t)action;
+- (id)reverseTransformedValue:(id)value;
+- (id)transformedValue:(id)value;
+- (id)transformerForRecord:(id)record;
 @end
 
 @implementation CloudBookmarkCKReferenceValueTransformer
 
-- (CloudBookmarkCKReferenceValueTransformer)initWithCKRecordZoneID:(id)a3 action:(unint64_t)a4
+- (CloudBookmarkCKReferenceValueTransformer)initWithCKRecordZoneID:(id)d action:(unint64_t)action
 {
-  v7 = a3;
+  dCopy = d;
   v12.receiver = self;
   v12.super_class = CloudBookmarkCKReferenceValueTransformer;
   v8 = [(CloudBookmarkCKReferenceValueTransformer *)&v12 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_recordZoneID, a3);
-    v9->_action = a4;
+    objc_storeStrong(&v8->_recordZoneID, d);
+    v9->_action = action;
     v10 = v9;
   }
 
   return v9;
 }
 
-- (id)transformerForRecord:(id)a3
+- (id)transformerForRecord:(id)record
 {
-  v4 = [a3 recordID];
-  v5 = [v4 zoneID];
+  recordID = [record recordID];
+  zoneID = [recordID zoneID];
 
-  if ([v5 isEqual:self->_recordZoneID])
+  if ([zoneID isEqual:self->_recordZoneID])
   {
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = [objc_alloc(objc_opt_class()) initWithCKRecordZoneID:v5 action:self->_action];
+    selfCopy = [objc_alloc(objc_opt_class()) initWithCKRecordZoneID:zoneID action:self->_action];
   }
 
-  v7 = v6;
+  v7 = selfCopy;
 
   return v7;
 }
 
-- (id)transformedValue:(id)a3
+- (id)transformedValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = valueCopy;
     if ([v5 length])
     {
       v6 = [CKReference alloc];
@@ -72,44 +72,44 @@
   return v8;
 }
 
-- (id)reverseTransformedValue:(id)a3
+- (id)reverseTransformedValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v10 = 0;
+    recordName = 0;
     goto LABEL_10;
   }
 
-  v5 = v4;
-  v6 = [v5 recordID];
-  v7 = [v6 zoneID];
-  if ([v7 isEqual:self->_recordZoneID])
+  v5 = valueCopy;
+  recordID = [v5 recordID];
+  zoneID = [recordID zoneID];
+  if ([zoneID isEqual:self->_recordZoneID])
   {
-    v8 = [v5 referenceAction];
+    referenceAction = [v5 referenceAction];
     action = self->_action;
 
-    if (v8 != action)
+    if (referenceAction != action)
     {
-      v10 = 0;
+      recordName = 0;
       goto LABEL_9;
     }
 
-    v6 = [v5 recordID];
-    v10 = [v6 recordName];
+    recordID = [v5 recordID];
+    recordName = [recordID recordName];
   }
 
   else
   {
 
-    v10 = 0;
+    recordName = 0;
   }
 
 LABEL_9:
 LABEL_10:
 
-  return v10;
+  return recordName;
 }
 
 @end

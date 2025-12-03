@@ -95,24 +95,24 @@ LABEL_9:
         }
       }
 
-      v8 = [MEMORY[0x1E69A89E8] color];
+      color = [MEMORY[0x1E69A89E8] color];
       goto LABEL_13;
     }
 
     v9 = MEMORY[0x1E69A89E8];
     if (v5)
     {
-      v10 = [v5 ciColor];
-      [v10 red];
+      ciColor = [v5 ciColor];
+      [ciColor red];
       v12 = v11;
-      v13 = [v6 ciColor];
-      [v13 green];
+      ciColor2 = [v6 ciColor];
+      [ciColor2 green];
       v15 = v14;
-      v16 = [v6 ciColor];
-      [v16 blue];
+      ciColor3 = [v6 ciColor];
+      [ciColor3 blue];
       v18 = v17;
-      v19 = [v6 ciColor];
-      [v19 alpha];
+      ciColor4 = [v6 ciColor];
+      [ciColor4 alpha];
       v21 = [v9 tintWithRed:v12 green:v15 blue:v18 alpha:v20];
 
       goto LABEL_14;
@@ -121,9 +121,9 @@ LABEL_9:
     v22 = MEMORY[0x1E69A89E8];
   }
 
-  v8 = [v22 clear];
+  color = [v22 clear];
 LABEL_13:
-  v21 = v8;
+  v21 = color;
 LABEL_14:
 
   return v21;
@@ -133,26 +133,26 @@ LABEL_14:
 {
   v50 = *MEMORY[0x1E69E9840];
   v17 = a9;
-  v28 = [a1 _deviceClassFromPlatform:a6];
-  v18 = [a1 _icrAppearanceFromAppearance:a7];
-  v19 = [a1 _icrRenderingModeFromAppearanceVariant:a8 tintColor:v17];
+  v28 = [self _deviceClassFromPlatform:a6];
+  v18 = [self _icrAppearanceFromAppearance:a7];
+  v19 = [self _icrRenderingModeFromAppearanceVariant:a8 tintColor:v17];
   v20 = IFDefaultLog();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
   {
-    v27 = [a1 layers];
-    v26 = [v17 ciColor];
-    v23 = [v26 stringRepresentation];
-    v25 = v23;
+    layers = [self layers];
+    ciColor = [v17 ciColor];
+    stringRepresentation = [ciColor stringRepresentation];
+    v25 = stringRepresentation;
     *buf = 138414594;
     v24 = @"empty";
-    v31 = a1;
-    if (v23)
+    selfCopy = self;
+    if (stringRepresentation)
     {
-      v24 = v23;
+      v24 = stringRepresentation;
     }
 
     v32 = 2112;
-    v33 = v27;
+    v33 = layers;
     v34 = 2048;
     v35 = a2;
     v36 = 2048;
@@ -173,12 +173,12 @@ LABEL_14:
 
   if (a10)
   {
-    [a1 legacyFinalizedIconWithSize:a5 scale:v28 deviceClass:v18 appearance:v19 renderingMode:{a2, a3}];
+    [self legacyFinalizedIconWithSize:a5 scale:v28 deviceClass:v18 appearance:v19 renderingMode:{a2, a3}];
   }
 
   else
   {
-    [a1 finalizedIconWithSize:a5 scale:v28 deviceClass:v18 appearance:v19 renderingMode:{a2, a3}];
+    [self finalizedIconWithSize:a5 scale:v28 deviceClass:v18 appearance:v19 renderingMode:{a2, a3}];
   }
   v21 = ;
 
@@ -188,7 +188,7 @@ LABEL_14:
 - (IFImage)_IF_ImageWithSize:()IconFoundationAdditions_Internal scale:platform:appearance:appearanceVariant:tintColor:isLegacy:encapsulationShape:
 {
   v20 = a11;
-  v21 = [a1 _IF_finalizedIconWithSize:a5 scale:a6 platform:a7 appearance:a8 appearanceVariant:a9 tintColor:a10 isLegacy:{a2, a3}];
+  v21 = [self _IF_finalizedIconWithSize:a5 scale:a6 platform:a7 appearance:a8 appearanceVariant:a9 tintColor:a10 isLegacy:{a2, a3}];
   v22 = v21;
   if (v21)
   {

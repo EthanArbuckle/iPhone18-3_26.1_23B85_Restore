@@ -1,11 +1,11 @@
 @interface WFAutoShortcutsPreferences
-+ (id)appDescriptorWithBundleIdentifier:(id)a3;
-+ (id)defaultSettingsForAppDescriptor:(id)a3;
-+ (int)crossPlatformHashForAppDescriptor:(id)a3;
-- (WFAutoShortcutsPreferences)initWithAppDescriptor:(id)a3 isSiriEnabled:(BOOL)a4 isSpotlightEnabled:(BOOL)a5 disabledAutoShortcuts:(id)a6 cloudKitMetadata:(id)a7 lastSyncedHash:(int64_t)a8;
-- (WFAutoShortcutsPreferences)initWithCoder:(id)a3;
++ (id)appDescriptorWithBundleIdentifier:(id)identifier;
++ (id)defaultSettingsForAppDescriptor:(id)descriptor;
++ (int)crossPlatformHashForAppDescriptor:(id)descriptor;
+- (WFAutoShortcutsPreferences)initWithAppDescriptor:(id)descriptor isSiriEnabled:(BOOL)enabled isSpotlightEnabled:(BOOL)spotlightEnabled disabledAutoShortcuts:(id)shortcuts cloudKitMetadata:(id)metadata lastSyncedHash:(int64_t)hash;
+- (WFAutoShortcutsPreferences)initWithCoder:(id)coder;
 - (int64_t)computedSyncHash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFAutoShortcutsPreferences
@@ -13,21 +13,21 @@
 - (int64_t)computedSyncHash
 {
   v3 = objc_opt_new();
-  v4 = [(WFAutoShortcutsPreferences *)self appDescriptor];
+  appDescriptor = [(WFAutoShortcutsPreferences *)self appDescriptor];
 
-  if (v4)
+  if (appDescriptor)
   {
-    v5 = [(WFAutoShortcutsPreferences *)self appDescriptor];
-    v6 = [v3 combineInteger:{+[WFAutoShortcutsPreferences crossPlatformHashForAppDescriptor:](WFAutoShortcutsPreferences, "crossPlatformHashForAppDescriptor:", v5)}];
+    appDescriptor2 = [(WFAutoShortcutsPreferences *)self appDescriptor];
+    v6 = [v3 combineInteger:{+[WFAutoShortcutsPreferences crossPlatformHashForAppDescriptor:](WFAutoShortcutsPreferences, "crossPlatformHashForAppDescriptor:", appDescriptor2)}];
   }
 
-  v7 = [(WFAutoShortcutsPreferences *)self disabledAutoShortcuts];
+  disabledAutoShortcuts = [(WFAutoShortcutsPreferences *)self disabledAutoShortcuts];
 
-  if (v7)
+  if (disabledAutoShortcuts)
   {
-    v8 = [(WFAutoShortcutsPreferences *)self disabledAutoShortcuts];
-    v9 = [v8 allObjects];
-    v10 = [v9 sortedArrayUsingSelector:sel_compare_];
+    disabledAutoShortcuts2 = [(WFAutoShortcutsPreferences *)self disabledAutoShortcuts];
+    allObjects = [disabledAutoShortcuts2 allObjects];
+    v10 = [allObjects sortedArrayUsingSelector:sel_compare_];
 
     v11 = [v3 combineContentsOfPropertyListObject:v10];
   }
@@ -39,85 +39,85 @@
   return v14;
 }
 
-- (WFAutoShortcutsPreferences)initWithCoder:(id)a3
+- (WFAutoShortcutsPreferences)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"appDescriptor"];
-  v6 = [v4 decodeBoolForKey:@"isSiriEnabled"];
-  v7 = [v4 decodeBoolForKey:@"isSpotlightEnabled"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"appDescriptor"];
+  v6 = [coderCopy decodeBoolForKey:@"isSiriEnabled"];
+  v7 = [coderCopy decodeBoolForKey:@"isSpotlightEnabled"];
   v8 = MEMORY[0x1E695DFD8];
   v9 = objc_opt_class();
   v10 = [v8 setWithObjects:{v9, objc_opt_class(), 0}];
-  v11 = [v4 decodeObjectOfClasses:v10 forKey:@"disabledAutoShortcuts"];
+  v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"disabledAutoShortcuts"];
 
-  v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"cloudKitMetadata"];
-  v13 = [v4 decodeInt64ForKey:@"lastSyncedHash"];
+  v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"cloudKitMetadata"];
+  v13 = [coderCopy decodeInt64ForKey:@"lastSyncedHash"];
 
   v14 = [(WFAutoShortcutsPreferences *)self initWithAppDescriptor:v5 isSiriEnabled:v6 isSpotlightEnabled:v7 disabledAutoShortcuts:v11 cloudKitMetadata:v12 lastSyncedHash:v13];
   return v14;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
-  v4 = [(WFAutoShortcutsPreferences *)self appDescriptor];
-  [v7 encodeObject:v4 forKey:@"appDescriptor"];
+  coderCopy = coder;
+  appDescriptor = [(WFAutoShortcutsPreferences *)self appDescriptor];
+  [coderCopy encodeObject:appDescriptor forKey:@"appDescriptor"];
 
-  [v7 encodeBool:-[WFAutoShortcutsPreferences isSiriEnabled](self forKey:{"isSiriEnabled"), @"isSiriEnabled"}];
-  [v7 encodeBool:-[WFAutoShortcutsPreferences isSpotlightEnabled](self forKey:{"isSpotlightEnabled"), @"isSpotlightEnabled"}];
-  v5 = [(WFAutoShortcutsPreferences *)self disabledAutoShortcuts];
-  [v7 encodeObject:v5 forKey:@"disabledAutoShortcuts"];
+  [coderCopy encodeBool:-[WFAutoShortcutsPreferences isSiriEnabled](self forKey:{"isSiriEnabled"), @"isSiriEnabled"}];
+  [coderCopy encodeBool:-[WFAutoShortcutsPreferences isSpotlightEnabled](self forKey:{"isSpotlightEnabled"), @"isSpotlightEnabled"}];
+  disabledAutoShortcuts = [(WFAutoShortcutsPreferences *)self disabledAutoShortcuts];
+  [coderCopy encodeObject:disabledAutoShortcuts forKey:@"disabledAutoShortcuts"];
 
-  v6 = [(WFAutoShortcutsPreferences *)self cloudKitMetadata];
-  [v7 encodeObject:v6 forKey:@"cloudKitMetadata"];
+  cloudKitMetadata = [(WFAutoShortcutsPreferences *)self cloudKitMetadata];
+  [coderCopy encodeObject:cloudKitMetadata forKey:@"cloudKitMetadata"];
 
-  [v7 encodeInt64:-[WFAutoShortcutsPreferences lastSyncedHash](self forKey:{"lastSyncedHash"), @"lastSyncedHash"}];
+  [coderCopy encodeInt64:-[WFAutoShortcutsPreferences lastSyncedHash](self forKey:{"lastSyncedHash"), @"lastSyncedHash"}];
 }
 
-- (WFAutoShortcutsPreferences)initWithAppDescriptor:(id)a3 isSiriEnabled:(BOOL)a4 isSpotlightEnabled:(BOOL)a5 disabledAutoShortcuts:(id)a6 cloudKitMetadata:(id)a7 lastSyncedHash:(int64_t)a8
+- (WFAutoShortcutsPreferences)initWithAppDescriptor:(id)descriptor isSiriEnabled:(BOOL)enabled isSpotlightEnabled:(BOOL)spotlightEnabled disabledAutoShortcuts:(id)shortcuts cloudKitMetadata:(id)metadata lastSyncedHash:(int64_t)hash
 {
-  v15 = a3;
-  v16 = a6;
-  v17 = a7;
+  descriptorCopy = descriptor;
+  shortcutsCopy = shortcuts;
+  metadataCopy = metadata;
   v22.receiver = self;
   v22.super_class = WFAutoShortcutsPreferences;
   v18 = [(WFAutoShortcutsPreferences *)&v22 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_appDescriptor, a3);
-    v19->_isSiriEnabled = a4;
-    v19->_isSpotlightEnabled = a5;
-    objc_storeStrong(&v19->_disabledAutoShortcuts, a6);
-    objc_storeStrong(&v19->_cloudKitMetadata, a7);
-    v19->_lastSyncedHash = a8;
+    objc_storeStrong(&v18->_appDescriptor, descriptor);
+    v19->_isSiriEnabled = enabled;
+    v19->_isSpotlightEnabled = spotlightEnabled;
+    objc_storeStrong(&v19->_disabledAutoShortcuts, shortcuts);
+    objc_storeStrong(&v19->_cloudKitMetadata, metadata);
+    v19->_lastSyncedHash = hash;
     v20 = v19;
   }
 
   return v19;
 }
 
-+ (int)crossPlatformHashForAppDescriptor:(id)a3
++ (int)crossPlatformHashForAppDescriptor:(id)descriptor
 {
-  v5 = a3;
-  if (!v5)
+  descriptorCopy = descriptor;
+  if (!descriptorCopy)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:a1 file:@"WFAutoShortcutsPreferences.m" lineNumber:50 description:{@"Invalid parameter not satisfying: %@", @"appDescriptor"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFAutoShortcutsPreferences.m" lineNumber:50 description:{@"Invalid parameter not satisfying: %@", @"appDescriptor"}];
   }
 
   v6 = objc_opt_new();
-  v7 = [v5 applicationRecord];
-  v8 = [v7 infoDictionary];
-  v9 = [v8 objectForKey:@"CFBundleDisplayName" ofClass:objc_opt_class()];
+  applicationRecord = [descriptorCopy applicationRecord];
+  infoDictionary = [applicationRecord infoDictionary];
+  v9 = [infoDictionary objectForKey:@"CFBundleDisplayName" ofClass:objc_opt_class()];
   if (!v9)
   {
-    v9 = [v8 objectForKey:@"CFBundleName" ofClass:objc_opt_class()];
+    v9 = [infoDictionary objectForKey:@"CFBundleName" ofClass:objc_opt_class()];
   }
 
   v10 = [v9 hash];
-  v11 = [v5 teamIdentifier];
-  v12 = [v11 hash];
+  teamIdentifier = [descriptorCopy teamIdentifier];
+  v12 = [teamIdentifier hash];
 
   v13 = [v6 combineInteger:v10];
   v14 = [v6 combineInteger:v12];
@@ -126,27 +126,27 @@
   return v10;
 }
 
-+ (id)appDescriptorWithBundleIdentifier:(id)a3
++ (id)appDescriptorWithBundleIdentifier:(id)identifier
 {
   v3 = MEMORY[0x1E69635F8];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithBundleIdentifier:v4 allowPlaceholder:0 error:0];
+  identifierCopy = identifier;
+  v5 = [[v3 alloc] initWithBundleIdentifier:identifierCopy allowPlaceholder:0 error:0];
 
   v6 = [objc_alloc(MEMORY[0x1E696E720]) initWithApplicationRecord:v5];
 
   return v6;
 }
 
-+ (id)defaultSettingsForAppDescriptor:(id)a3
++ (id)defaultSettingsForAppDescriptor:(id)descriptor
 {
-  v4 = a3;
-  v5 = [v4 bundleIdentifier];
-  v6 = [v5 lowercaseString];
-  v7 = [v6 hasPrefix:@"com.apple."];
+  descriptorCopy = descriptor;
+  bundleIdentifier = [descriptorCopy bundleIdentifier];
+  lowercaseString = [bundleIdentifier lowercaseString];
+  v7 = [lowercaseString hasPrefix:@"com.apple."];
 
-  v8 = [a1 alloc];
+  v8 = [self alloc];
   v9 = objc_opt_new();
-  v10 = [v8 initWithAppDescriptor:v4 isSiriEnabled:v7 isSpotlightEnabled:1 disabledAutoShortcuts:v9 cloudKitMetadata:0 lastSyncedHash:0x7FFFFFFFFFFFFFFFLL];
+  v10 = [v8 initWithAppDescriptor:descriptorCopy isSiriEnabled:v7 isSpotlightEnabled:1 disabledAutoShortcuts:v9 cloudKitMetadata:0 lastSyncedHash:0x7FFFFFFFFFFFFFFFLL];
 
   return v10;
 }

@@ -1,20 +1,20 @@
 @interface FetchWebImpressionTask
-- (FetchWebImpressionTask)initWithWebParams:(id)a3;
-- (void)mainWithCompletionHandler:(id)a3;
+- (FetchWebImpressionTask)initWithWebParams:(id)params;
+- (void)mainWithCompletionHandler:(id)handler;
 @end
 
 @implementation FetchWebImpressionTask
 
-- (FetchWebImpressionTask)initWithWebParams:(id)a3
+- (FetchWebImpressionTask)initWithWebParams:(id)params
 {
-  v5 = a3;
+  paramsCopy = params;
   v17.receiver = self;
   v17.super_class = FetchWebImpressionTask;
   v6 = [(Task *)&v17 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong((v6 + 50), a3);
+    objc_storeStrong((v6 + 50), params);
     v8 = [InstallAttributionDatabaseStore alloc];
     v9 = sub_1001C0DF0();
     v10 = sub_1001C0FB8(v9);
@@ -23,17 +23,17 @@
     *(v7 + 58) = v11;
 
     v13 = +[BagService appstoredService];
-    v14 = [v13 lastBag];
+    lastBag = [v13 lastBag];
     v15 = *(v7 + 66);
-    *(v7 + 66) = v14;
+    *(v7 + 66) = lastBag;
   }
 
   return v7;
 }
 
-- (void)mainWithCompletionHandler:(id)a3
+- (void)mainWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = [NSSet setWithObjects:@"Accept-Language", 0];
   if (sub_1002B31B0(self))
   {
@@ -46,23 +46,23 @@
     v7 = v6;
     if (v6)
     {
-      v8 = [v6 host];
-      v9 = [v7 port];
+      host = [v6 host];
+      port = [v7 port];
       v69[0] = @"HTTPEnable";
       v69[1] = @"HTTPSEnable";
       *&buf = &off_1005479F8;
       *(&buf + 1) = &off_1005479F8;
       v69[2] = kCFStreamPropertyHTTPProxyPort;
       v69[3] = kCFStreamPropertyHTTPSProxyPort;
-      v71 = v9;
-      v72 = v9;
+      v71 = port;
+      v72 = port;
       v10 = [NSDictionary dictionaryWithObjects:&buf forKeys:v69 count:4];
       v11 = v10;
-      if (v8)
+      if (host)
       {
         v12 = [v10 mutableCopy];
-        [v12 setObject:v8 forKeyedSubscript:kCFStreamPropertyHTTPProxyHost];
-        [v12 setObject:v8 forKeyedSubscript:kCFStreamPropertyHTTPSProxyHost];
+        [v12 setObject:host forKeyedSubscript:kCFStreamPropertyHTTPProxyHost];
+        [v12 setObject:host forKeyedSubscript:kCFStreamPropertyHTTPSProxyHost];
         v13 = [v12 copy];
 
         v11 = v13;
@@ -76,11 +76,11 @@
 
     else
     {
-      v8 = ASDLogHandleForCategory();
-      if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+      host = ASDLogHandleForCategory();
+      if (os_log_type_enabled(host, OS_LOG_TYPE_ERROR))
       {
         *v68 = 0;
-        _os_log_error_impl(&_mh_execute_header, v8, OS_LOG_TYPE_ERROR, "Could not get install attribution postback proxy URL from the bag", v68, 2u);
+        _os_log_error_impl(&_mh_execute_header, host, OS_LOG_TYPE_ERROR, "Could not get install attribution postback proxy URL from the bag", v68, 2u);
       }
 
       v14 = 0;
@@ -98,7 +98,7 @@ LABEL_35:
         _os_log_error_impl(&_mh_execute_header, v34, OS_LOG_TYPE_ERROR, "Failed to send postback since proxy URL could not be found in the bag %{public}@", &buf, 0xCu);
       }
 
-      v4[2](v4, v14);
+      handlerCopy[2](handlerCopy, v14);
       goto LABEL_76;
     }
   }
@@ -116,7 +116,7 @@ LABEL_35:
         _os_log_error_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "Error in creating URLSessionConfig", &buf, 2u);
       }
 
-      v4[2](v4, v14);
+      handlerCopy[2](handlerCopy, v14);
       goto LABEL_76;
     }
   }
@@ -158,7 +158,7 @@ LABEL_35:
       }
 
       v63 = ASDErrorWithDescription();
-      v4[2](v4, v63);
+      handlerCopy[2](handlerCopy, v63);
       goto LABEL_75;
     }
 
@@ -215,17 +215,17 @@ LABEL_35:
         [v63 setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
         v60 = v18;
         v57 = ASDErrorWithDescription();
-        v36 = [v60 absoluteString];
+        absoluteString = [v60 absoluteString];
 
         v37 = +[NSDate date];
         [v37 timeIntervalSince1970];
-        v39 = [NSString stringWithFormat:@"%@%@;%f", @"App Store", v36, v38];;
+        v39 = [NSString stringWithFormat:@"%@%@;%f", @"App Store", absoluteString, v38];;
 
-        v59 = [v39 stringByRemovingPercentEncoding];
+        stringByRemovingPercentEncoding = [v39 stringByRemovingPercentEncoding];
 
-        if (v59)
+        if (stringByRemovingPercentEncoding)
         {
-          v40 = [v59 dataUsingEncoding:4];
+          v40 = [stringByRemovingPercentEncoding dataUsingEncoding:4];
           v58 = v40;
           if (v40)
           {
@@ -233,9 +233,9 @@ LABEL_35:
             if ([oslog length])
             {
               v41 = +[BagService appstoredService];
-              v42 = [v41 amsBag];
+              amsBag = [v41 amsBag];
               v69[0] = 0;
-              v54 = [AMSMescal signatureFromData:v58 type:1 bag:v42 error:v69];
+              v54 = [AMSMescal signatureFromData:v58 type:1 bag:amsBag error:v69];
               log = v69[0];
 
               if (log)
@@ -317,9 +317,9 @@ LABEL_35:
           v48 = ASDLogHandleForCategory();
           if (os_log_type_enabled(v48, OS_LOG_TYPE_ERROR))
           {
-            v52 = [v60 absoluteString];
+            absoluteString2 = [v60 absoluteString];
             LODWORD(buf) = 138543362;
-            *(&buf + 4) = v52;
+            *(&buf + 4) = absoluteString2;
             _os_log_error_impl(&_mh_execute_header, v48, OS_LOG_TYPE_ERROR, "Failed to generate proxy header for URL:%{public}@", &buf, 0xCu);
           }
 
@@ -333,7 +333,7 @@ LABEL_35:
             }
 
             v50 = ASDErrorWithDescription();
-            v4[2](v4, v50);
+            handlerCopy[2](handlerCopy, v50);
 
             v31 = 0;
             goto LABEL_74;
@@ -346,7 +346,7 @@ LABEL_35:
         v64[2] = sub_1002B3250;
         v64[3] = &unk_100520AD8;
         objc_copyWeak(&v66, &buf);
-        v65 = v4;
+        v65 = handlerCopy;
         v51 = [v16 dataTaskWithRequest:v63 completionHandler:v64];
         [v51 resume];
 
@@ -368,7 +368,7 @@ LABEL_75:
     }
 
     v31 = ASDErrorWithDescription();
-    v4[2](v4, v31);
+    handlerCopy[2](handlerCopy, v31);
     goto LABEL_74;
   }
 
@@ -380,7 +380,7 @@ LABEL_75:
     _os_log_error_impl(&_mh_execute_header, v33, OS_LOG_TYPE_ERROR, "Failed to initialize url session", &buf, 2u);
   }
 
-  v4[2](v4, v32);
+  handlerCopy[2](handlerCopy, v32);
 LABEL_76:
 }
 

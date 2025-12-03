@@ -1,61 +1,61 @@
 @interface PBPlaceholder
-+ (int)placeholderTypeFromTextType:(int)a3;
-+ (int)readPlaceholderSize:(int)a3;
-+ (int)readPlaceholderType:(int)a3;
-+ (void)writePlaceholder:(id)a3 toPlaceholderAtom:(PptOEPlaceholderAtom *)a4 isMaster:(BOOL)a5 isNotes:(BOOL)a6;
++ (int)placeholderTypeFromTextType:(int)type;
++ (int)readPlaceholderSize:(int)size;
++ (int)readPlaceholderType:(int)type;
++ (void)writePlaceholder:(id)placeholder toPlaceholderAtom:(PptOEPlaceholderAtom *)atom isMaster:(BOOL)master isNotes:(BOOL)notes;
 @end
 
 @implementation PBPlaceholder
 
-+ (int)readPlaceholderType:(int)a3
++ (int)readPlaceholderType:(int)type
 {
-  if (a3 < 0x1B)
+  if (type < 0x1B)
   {
-    return dword_25D70F418[a3];
+    return dword_25D70F418[type];
   }
 
   TCVerifyInputMeetsCondition(0);
   return 0;
 }
 
-+ (int)readPlaceholderSize:(int)a3
++ (int)readPlaceholderSize:(int)size
 {
-  if (a3 >= 3)
+  if (size >= 3)
   {
     return -1;
   }
 
   else
   {
-    return a3;
+    return size;
   }
 }
 
-+ (int)placeholderTypeFromTextType:(int)a3
++ (int)placeholderTypeFromTextType:(int)type
 {
-  if (a3 > 8)
+  if (type > 8)
   {
     return -1;
   }
 
   else
   {
-    return dword_25D70F484[a3];
+    return dword_25D70F484[type];
   }
 }
 
-+ (void)writePlaceholder:(id)a3 toPlaceholderAtom:(PptOEPlaceholderAtom *)a4 isMaster:(BOOL)a5 isNotes:(BOOL)a6
++ (void)writePlaceholder:(id)placeholder toPlaceholderAtom:(PptOEPlaceholderAtom *)atom isMaster:(BOOL)master isNotes:(BOOL)notes
 {
-  v6 = a6;
-  v7 = a5;
-  v14 = a3;
-  a4->var6 = [v14 index];
-  *(a4 + 53) = [v14 size];
-  v9 = [v14 orientation];
-  switch([v14 type])
+  notesCopy = notes;
+  masterCopy = master;
+  placeholderCopy = placeholder;
+  atom->var6 = [placeholderCopy index];
+  *(atom + 53) = [placeholderCopy size];
+  orientation = [placeholderCopy orientation];
+  switch([placeholderCopy type])
   {
     case 0u:
-      if (v9 == 1)
+      if (orientation == 1)
       {
         v10 = 17;
       }
@@ -65,14 +65,14 @@
         v10 = 13;
       }
 
-      if (v7)
+      if (masterCopy)
       {
         v10 = 1;
       }
 
       break;
     case 1u:
-      if (v9 == 1)
+      if (orientation == 1)
       {
         v10 = 18;
       }
@@ -82,7 +82,7 @@
         v10 = 14;
       }
 
-      if (v7)
+      if (masterCopy)
       {
         v10 = 2;
         v13 = 6;
@@ -93,19 +93,19 @@
         v13 = 12;
       }
 
-      if (v6)
+      if (notesCopy)
       {
         v10 = v13;
       }
 
       break;
     case 2u:
-      v11 = !v7;
+      v11 = !masterCopy;
       v10 = 15;
       v12 = 3;
       goto LABEL_15;
     case 3u:
-      v11 = !v7;
+      v11 = !masterCopy;
       v10 = 16;
       v12 = 11;
       goto LABEL_15;
@@ -122,7 +122,7 @@
       v10 = 10;
       break;
     case 8u:
-      if (v9 == 1)
+      if (orientation == 1)
       {
         v10 = 25;
       }
@@ -149,7 +149,7 @@
       v10 = 24;
       break;
     case 0xEu:
-      v11 = !v7;
+      v11 = !masterCopy;
       v10 = 11;
       v12 = 5;
 LABEL_15:
@@ -167,7 +167,7 @@ LABEL_15:
       break;
   }
 
-  *(a4 + 52) = v10;
+  *(atom + 52) = v10;
 }
 
 @end

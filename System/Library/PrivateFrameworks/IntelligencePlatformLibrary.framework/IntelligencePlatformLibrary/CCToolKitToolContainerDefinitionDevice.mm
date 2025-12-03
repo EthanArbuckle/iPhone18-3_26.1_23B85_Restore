@@ -1,24 +1,24 @@
 @interface CCToolKitToolContainerDefinitionDevice
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4;
-- (CCToolKitToolContainerDefinitionDevice)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (CCToolKitToolContainerDefinitionDevice)initWithKind:(id)a3 kindType:(unsigned int)a4 error:(id *)a5;
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error;
+- (CCToolKitToolContainerDefinitionDevice)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (CCToolKitToolContainerDefinitionDevice)initWithKind:(id)kind kindType:(unsigned int)type error:(id *)error;
 - (NSString)remote;
 - (id)jsonDictionary;
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4;
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type;
 @end
 
 @implementation CCToolKitToolContainerDefinitionDevice
 
-- (CCToolKitToolContainerDefinitionDevice)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (CCToolKitToolContainerDefinitionDevice)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
   v8 = 0;
   if (IsInstanceOfExpectedClass)
   {
-    v9 = [v6 objectForKeyedSubscript:@"local"];
-    v10 = [v6 objectForKeyedSubscript:@"remote"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"local"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"remote"];
     if (v9)
     {
       v11 = v9;
@@ -38,7 +38,7 @@
       v12 = 2;
     }
 
-    v13 = [[CCToolKitToolContainerDefinitionDevice alloc] initWithKind:v14 kindType:v12 error:a4];
+    v13 = [[CCToolKitToolContainerDefinitionDevice alloc] initWithKind:v14 kindType:v12 error:error];
   }
 
   else
@@ -64,8 +64,8 @@
 
   if (kindType == 2 && self->_remote)
   {
-    v6 = [(CCToolKitToolContainerDefinitionDevice *)self remote];
-    [v3 setObject:v6 forKeyedSubscript:@"remote"];
+    remote = [(CCToolKitToolContainerDefinitionDevice *)self remote];
+    [v3 setObject:remote forKeyedSubscript:@"remote"];
   }
 
   v7 = [v3 copy];
@@ -73,18 +73,18 @@
   return v7;
 }
 
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type
 {
-  v9 = a3;
+  blockCopy = block;
   v5 = objc_alloc(MEMORY[0x1E69939F0]);
   v6 = *MEMORY[0x1E69939A8];
   v7 = [v5 initWithFieldType:v6 enumValue:self->_local];
-  v9[2](v9, v7);
+  blockCopy[2](blockCopy, v7);
 
   if (self->_remote)
   {
     v8 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:v6 stringValue:self->_remote];
-    v9[2](v9, v8);
+    blockCopy[2](blockCopy, v8);
   }
 }
 
@@ -95,10 +95,10 @@
   return v2;
 }
 
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error
 {
-  v5 = a3;
-  v6 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:v5];
+  dataCopy = data;
+  v6 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:dataCopy];
   v7 = MEMORY[0x1E6993AB8];
   v8 = MEMORY[0x1E6993AB0];
   v9 = MEMORY[0x1E6993AA8];
@@ -239,11 +239,11 @@ LABEL_36:
       {
         v32 = objc_opt_class();
         NSStringFromClass(v32);
-        v34 = v33 = v5;
+        v34 = v33 = dataCopy;
         v35 = *&v6[*v9];
         v10 = CCSkipFieldErrorForMessage();
 
-        v5 = v33;
+        dataCopy = v33;
         goto LABEL_38;
       }
 
@@ -285,11 +285,11 @@ LABEL_45:
   return v40;
 }
 
-- (CCToolKitToolContainerDefinitionDevice)initWithKind:(id)a3 kindType:(unsigned int)a4 error:(id *)a5
+- (CCToolKitToolContainerDefinitionDevice)initWithKind:(id)kind kindType:(unsigned int)type error:(id *)error
 {
-  v8 = a3;
+  kindCopy = kind;
   v9 = objc_opt_new();
-  if (v8 && a4 == 1)
+  if (kindCopy && type == 1)
   {
     objc_opt_class();
     IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
@@ -297,11 +297,11 @@ LABEL_45:
     if (!IsInstanceOfExpectedClass)
     {
       CCSetError();
-      v16 = 0;
+      selfCopy = 0;
       goto LABEL_13;
     }
 
-    [v8 unsignedIntegerValue];
+    [kindCopy unsignedIntegerValue];
     v12 = CCValidateEnumField();
     v13 = v11;
 
@@ -314,7 +314,7 @@ LABEL_45:
   else
   {
     v13 = 0;
-    if (v8 && a4 == 2)
+    if (kindCopy && type == 2)
     {
       objc_opt_class();
       v14 = CCValidateIsInstanceOfExpectedClass();
@@ -322,7 +322,7 @@ LABEL_45:
       if (!v14)
       {
         CCSetError();
-        v16 = 0;
+        selfCopy = 0;
         v11 = v13;
         goto LABEL_13;
       }
@@ -331,14 +331,14 @@ LABEL_45:
     }
   }
 
-  v15 = [v9 immutableData];
-  self = [(CCItemMessage *)self initWithData:v15 error:a5];
+  immutableData = [v9 immutableData];
+  self = [(CCItemMessage *)self initWithData:immutableData error:error];
 
   v11 = v13;
-  v16 = self;
+  selfCopy = self;
 LABEL_13:
 
-  return v16;
+  return selfCopy;
 }
 
 @end

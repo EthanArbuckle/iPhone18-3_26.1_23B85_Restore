@@ -1,20 +1,20 @@
 @interface Browse_MDM
-- (Browse_MDM)initWithQueue:(id)a3;
+- (Browse_MDM)initWithQueue:(id)queue;
 - (void)start;
 @end
 
 @implementation Browse_MDM
 
-- (Browse_MDM)initWithQueue:(id)a3
+- (Browse_MDM)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v9.receiver = self;
   v9.super_class = Browse_MDM;
   v6 = [(Browse_MDM *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_queue, a3);
+    objc_storeStrong(&v6->_queue, queue);
   }
 
   return v7;
@@ -22,17 +22,17 @@
 
 - (void)start
 {
-  v3 = [(objc_class *)off_1000C7B48() sharedConnection];
-  v20 = [v3 knownAirPrintIPPURLStrings];
+  sharedConnection = [(objc_class *)off_1000C7B48() sharedConnection];
+  knownAirPrintIPPURLStrings = [sharedConnection knownAirPrintIPPURLStrings];
 
-  v4 = [(Browse_Implementation *)self session];
-  v5 = [v4 clientBundleIdentifier];
+  session = [(Browse_Implementation *)self session];
+  clientBundleIdentifier = [session clientBundleIdentifier];
 
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v6 = v20;
+  v6 = knownAirPrintIPPURLStrings;
   v7 = [v6 countByEnumeratingWithState:&v23 objects:v29 count:16];
   if (v7)
   {
@@ -49,8 +49,8 @@
 
         v10 = PKURLWithString(*(*(&v23 + 1) + 8 * v9));
         queue = self->_queue;
-        v12 = [(Browse_Implementation *)self addEntity];
-        sub_10005A93C(v10, v5, queue, v12);
+        addEntity = [(Browse_Implementation *)self addEntity];
+        sub_10005A93C(v10, clientBundleIdentifier, queue, addEntity);
 
         v9 = v9 + 1;
       }
@@ -78,15 +78,15 @@
 
     if (v15)
     {
-      v17 = [(Browse_Implementation *)self addEntity];
+      addEntity2 = [(Browse_Implementation *)self addEntity];
       v18 = self->_queue;
       v21[0] = _NSConcreteStackBlock;
       v21[1] = 3221225472;
       v21[2] = sub_10005ADEC;
       v21[3] = &unk_1000A3C00;
-      v22 = v17;
-      v19 = v17;
-      sub_10005A93C(v15, v5, v18, v21);
+      v22 = addEntity2;
+      v19 = addEntity2;
+      sub_10005A93C(v15, clientBundleIdentifier, v18, v21);
     }
   }
 }

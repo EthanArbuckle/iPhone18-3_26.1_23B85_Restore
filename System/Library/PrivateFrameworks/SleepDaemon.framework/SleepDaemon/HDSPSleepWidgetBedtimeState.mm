@@ -16,9 +16,9 @@
     _os_log_impl(&dword_269B11000, v3, OS_LOG_TYPE_DEFAULT, "[%{public}@] received bedtime expired event due", &v8, 0xCu);
   }
 
-  v5 = [(HKSPStateMachineState *)self stateMachine];
-  v6 = [v5 bedtimeInProgressState];
-  [v5 enterState:v6];
+  stateMachine = [(HKSPStateMachineState *)self stateMachine];
+  bedtimeInProgressState = [stateMachine bedtimeInProgressState];
+  [stateMachine enterState:bedtimeInProgressState];
 
   v7 = *MEMORY[0x277D85DE8];
 }

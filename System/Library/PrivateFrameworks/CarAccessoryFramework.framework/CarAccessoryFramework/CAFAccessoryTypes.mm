@@ -2,8 +2,8 @@
 + (NSDictionary)accessoryNameByType;
 + (NSDictionary)accessoryTypeByName;
 + (NSSet)stateCaptureValues;
-+ (id)accessoryNameFor:(id)a3;
-+ (id)accessoryNameForType:(id)a3;
++ (id)accessoryNameFor:(id)for;
++ (id)accessoryNameForType:(id)type;
 @end
 
 @implementation CAFAccessoryTypes
@@ -240,24 +240,24 @@ void __39__CAFAccessoryTypes_stateCaptureValues__block_invoke()
   v4 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)accessoryNameForType:(id)a3
++ (id)accessoryNameForType:(id)type
 {
-  v4 = a3;
-  v5 = [a1 accessoryNameByType];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  typeCopy = type;
+  accessoryNameByType = [self accessoryNameByType];
+  v6 = [accessoryNameByType objectForKeyedSubscript:typeCopy];
 
   if (!v6)
   {
-    v6 = v4;
+    v6 = typeCopy;
   }
 
   return v6;
 }
 
-+ (id)accessoryNameFor:(id)a3
++ (id)accessoryNameFor:(id)for
 {
-  v4 = [a1 accessoryTypeFor:a3];
-  v5 = [a1 accessoryNameForType:v4];
+  v4 = [self accessoryTypeFor:for];
+  v5 = [self accessoryNameForType:v4];
 
   return v5;
 }

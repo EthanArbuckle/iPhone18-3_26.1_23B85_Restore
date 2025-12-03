@@ -1,37 +1,37 @@
 @interface CUTCPConnection
 - ($4FF8D77539A8BD95DCE0A545902499A9)peerAddr;
 - ($4FF8D77539A8BD95DCE0A545902499A9)selfAddr;
-- (BOOL)_activateDirectAndReturnError:(id *)a3;
-- (BOOL)_prepareWriteRequest:(id)a3 error:(id *)a4;
+- (BOOL)_activateDirectAndReturnError:(id *)error;
+- (BOOL)_prepareWriteRequest:(id)request error:(id *)error;
 - (BOOL)_readStatus;
 - (BOOL)_readableData;
-- (BOOL)_setupIOAndReturnError:(id *)a3;
-- (BOOL)_startConnectingToBonjourDevice:(id)a3 error:(id *)a4;
-- (BOOL)_startConnectingToDestination:(id)a3 error:(id *)a4;
-- (BOOL)activateDirectAndReturnError:(id *)a3;
+- (BOOL)_setupIOAndReturnError:(id *)error;
+- (BOOL)_startConnectingToBonjourDevice:(id)device error:(id *)error;
+- (BOOL)_startConnectingToDestination:(id)destination error:(id *)error;
+- (BOOL)activateDirectAndReturnError:(id *)error;
 - (CUTCPConnection)init;
 - (id)description;
-- (void)_abortReadsWithError:(id)a3;
-- (void)_abortWritesWithError:(id)a3;
-- (void)_completeReadRequest:(id)a3 error:(id)a4;
-- (void)_completeWriteRequest:(id)a3 error:(id)a4;
+- (void)_abortReadsWithError:(id)error;
+- (void)_abortWritesWithError:(id)error;
+- (void)_completeReadRequest:(id)request error:(id)error;
+- (void)_completeWriteRequest:(id)request error:(id)error;
 - (void)_invalidate;
 - (void)_invalidated;
 - (void)_logMetrics;
 - (void)_netLinkStateChanged;
-- (void)_prepareReadRequest:(id)a3;
-- (void)_processReads:(BOOL)a3;
+- (void)_prepareReadRequest:(id)request;
+- (void)_processReads:(BOOL)reads;
 - (void)_processSocketEvents;
-- (void)_processWrites:(BOOL)a3;
+- (void)_processWrites:(BOOL)writes;
 - (void)_updateTrafficRegistration;
-- (void)activateWithCompletion:(id)a3;
+- (void)activateWithCompletion:(id)completion;
 - (void)dealloc;
 - (void)invalidate;
-- (void)readWithRequest:(id)a3;
-- (void)setLabel:(id)a3;
-- (void)setTrafficFlags:(unsigned int)a3;
-- (void)writeEndOfDataWithCompletion:(id)a3;
-- (void)writeWithRequest:(id)a3;
+- (void)readWithRequest:(id)request;
+- (void)setLabel:(id)label;
+- (void)setTrafficFlags:(unsigned int)flags;
+- (void)writeEndOfDataWithCompletion:(id)completion;
+- (void)writeWithRequest:(id)request;
 @end
 
 @implementation CUTCPConnection
@@ -117,10 +117,10 @@ LABEL_15:
   return self;
 }
 
-- (void)_completeWriteRequest:(id)a3 error:(id)a4
+- (void)_completeWriteRequest:(id)request error:(id)error
 {
-  v15 = a3;
-  v10 = a4;
+  requestCopy = request;
+  errorCopy = error;
   rawIOLogLevel = self->_rawIOLogLevel;
   ucat = self->_ucat;
   if (ucat->var0 <= rawIOLogLevel)
@@ -128,7 +128,7 @@ LABEL_15:
     if (ucat->var0 != -1)
     {
 LABEL_3:
-      LogPrintF(ucat, "[CUTCPConnection _completeWriteRequest:error:]", rawIOLogLevel, "Write completed: %{error}\n", v6, v7, v8, v9, v10);
+      LogPrintF(ucat, "[CUTCPConnection _completeWriteRequest:error:]", rawIOLogLevel, "Write completed: %{error}\n", v6, v7, v8, v9, errorCopy);
       goto LABEL_5;
     }
 
@@ -141,24 +141,24 @@ LABEL_3:
   }
 
 LABEL_5:
-  v13 = v15[1];
-  v15[1] = v10;
+  v13 = requestCopy[1];
+  requestCopy[1] = errorCopy;
 
-  v14 = [v15 completion];
-  [v15 setCompletion:0];
-  if (v14)
+  completion = [requestCopy completion];
+  [requestCopy setCompletion:0];
+  if (completion)
   {
-    v14[2](v14);
+    completion[2](completion);
   }
 }
 
-- (void)_abortWritesWithError:(id)a3
+- (void)_abortWritesWithError:(id)error
 {
   v53 = *MEMORY[0x1E69E9840];
-  v12 = a3;
+  errorCopy = error;
   if (!self->_invalidateCalled && !self->_firstError)
   {
-    objc_storeStrong(&self->_firstError, a3);
+    objc_storeStrong(&self->_firstError, error);
   }
 
   netLinkManager = self->_netLinkManager;
@@ -183,7 +183,7 @@ LABEL_5:
 LABEL_11:
         v16 = NSPrintF("%##a", v5, netLinkEndpoint, v7, v8, v9, v10, v11, &self->_peerAddr);
         v24 = NSPrintF("%##a", v17, v18, v19, v20, v21, v22, v23, &self->_selfAddr);
-        v47 = NSPrintF("%{error}", v25, v26, v27, v28, v29, v30, v31, v12);
+        v47 = NSPrintF("%{error}", v25, v26, v27, v28, v29, v30, v31, errorCopy);
         LogPrintF(ucat, "[CUTCPConnection _abortWritesWithError:]", 0x1Eu, "Abort writes: peer=%@, self=%@, error=%@", v32, v33, v34, v35, v16);
 
         goto LABEL_13;
@@ -204,7 +204,7 @@ LABEL_13:
     writeRequestCurrent = self->_writeRequestCurrent;
     self->_writeRequestCurrent = 0;
 
-    [(CUTCPConnection *)self _completeWriteRequest:v36 error:v12];
+    [(CUTCPConnection *)self _completeWriteRequest:v36 error:errorCopy];
   }
 
   v50 = 0u;
@@ -230,7 +230,7 @@ LABEL_13:
 
         v36 = *(*(&v48 + 1) + 8 * v42);
 
-        [(CUTCPConnection *)self _completeWriteRequest:v36 error:v12];
+        [(CUTCPConnection *)self _completeWriteRequest:v36 error:errorCopy];
         ++v42;
         v43 = v36;
       }
@@ -253,7 +253,7 @@ LABEL_13:
   errorHandler = self->_errorHandler;
   if (errorHandler)
   {
-    errorHandler[2](errorHandler, v12);
+    errorHandler[2](errorHandler, errorCopy);
     v46 = self->_errorHandler;
   }
 
@@ -267,35 +267,35 @@ LABEL_13:
   [(CUTCPConnection *)self _invalidated];
 }
 
-- (BOOL)_prepareWriteRequest:(id)a3 error:(id *)a4
+- (BOOL)_prepareWriteRequest:(id)request error:(id *)error
 {
   v46 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 dataArray];
-  v8 = v7;
-  if (!v7)
+  requestCopy = request;
+  dataArray = [requestCopy dataArray];
+  v8 = dataArray;
+  if (!dataArray)
   {
-    *(v6 + 34) = v6 + 16;
-    LODWORD(v18) = [v6 bytesIOCount];
+    *(requestCopy + 34) = requestCopy + 16;
+    LODWORD(v18) = [requestCopy bytesIOCount];
     goto LABEL_14;
   }
 
-  v9 = [v7 count];
-  if (v9 <= [v6 bytesIOMaxCount])
+  v9 = [dataArray count];
+  if (v9 <= [requestCopy bytesIOMaxCount])
   {
-    v19 = v6 + 16;
+    v19 = requestCopy + 16;
     v43 = 0u;
     v44 = 0u;
     v41 = 0u;
     v42 = 0u;
     v20 = v8;
     v21 = [v20 countByEnumeratingWithState:&v41 objects:v45 count:16];
-    v22 = v6 + 16;
+    v22 = requestCopy + 16;
     if (v21)
     {
       v23 = v21;
       v24 = *v42;
-      v22 = v6 + 16;
+      v22 = requestCopy + 16;
       do
       {
         for (i = 0; i != v23; ++i)
@@ -317,13 +317,13 @@ LABEL_13:
       while (v23);
     }
 
-    *(v6 + 34) = v19;
+    *(requestCopy + 34) = v19;
     v18 = (v22 - v19) >> 4;
 LABEL_14:
-    *(v6 + 70) = v18;
-    *(v6 + 36) = 0;
-    v27 = *(v6 + 1);
-    *(v6 + 1) = 0;
+    *(requestCopy + 70) = v18;
+    *(requestCopy + 36) = 0;
+    v27 = *(requestCopy + 1);
+    *(requestCopy + 1) = 0;
 
     rawIOLogLevel = self->_rawIOLogLevel;
     if (gLogCategory_CUTCPConnection > rawIOLogLevel || gLogCategory_CUTCPConnection == -1 && !_LogCategory_Initialize(&gLogCategory_CUTCPConnection, rawIOLogLevel))
@@ -331,12 +331,12 @@ LABEL_14:
       goto LABEL_27;
     }
 
-    v33 = *(v6 + 70);
+    v33 = *(requestCopy + 70);
     if (v33)
     {
       v34 = 0;
       v35 = 16 * v33;
-      v36 = (*(v6 + 34) + 8);
+      v36 = (*(requestCopy + 34) + 8);
       do
       {
         v37 = *v36;
@@ -364,7 +364,7 @@ LABEL_14:
 
       ucat = self->_ucat;
       v38 = self->_rawIOLogLevel;
-      v33 = *(v6 + 70);
+      v33 = *(requestCopy + 70);
     }
 
     LogPrintF(ucat, "[CUTCPConnection _prepareWriteRequest:error:]", v38, "Write prepared (%d iov, %zu total)\n", v28, v29, v30, v31, v33);
@@ -373,11 +373,11 @@ LABEL_27:
     goto LABEL_28;
   }
 
-  if (a4)
+  if (error)
   {
-    v10 = [v6 bytesIOMaxCount];
-    NSErrorWithOSStatusF(4294960532, "Too many write elements (%zu max)", v11, v12, v13, v14, v15, v16, v10);
-    *a4 = v17 = 0;
+    bytesIOMaxCount = [requestCopy bytesIOMaxCount];
+    NSErrorWithOSStatusF(4294960532, "Too many write elements (%zu max)", v11, v12, v13, v14, v15, v16, bytesIOMaxCount);
+    *error = v17 = 0;
   }
 
   else
@@ -390,9 +390,9 @@ LABEL_28:
   return v17;
 }
 
-- (void)_processWrites:(BOOL)a3
+- (void)_processWrites:(BOOL)writes
 {
-  if (a3)
+  if (writes)
   {
     flowControlState = self->_flowControlState;
     if (flowControlState != 10)
@@ -460,8 +460,8 @@ LABEL_14:
     v15 = self->_writeRequestCurrent;
     if (!v15)
     {
-      v24 = [(NSMutableArray *)self->_writeRequests firstObject];
-      if (!v24)
+      firstObject = [(NSMutableArray *)self->_writeRequests firstObject];
+      if (!firstObject)
       {
         if ((!self->_flowControlChangedHandler || self->_flowControlState == 10) && !self->_writeSuspended)
         {
@@ -473,7 +473,7 @@ LABEL_14:
         goto LABEL_72;
       }
 
-      v15 = v24;
+      v15 = firstObject;
       [(NSMutableArray *)self->_writeRequests removeObjectAtIndex:0];
       v49 = 0;
       [(CUTCPConnection *)self _prepareWriteRequest:v15 error:&v49];
@@ -645,18 +645,18 @@ LABEL_41:
   }
 }
 
-- (void)writeEndOfDataWithCompletion:(id)a3
+- (void)writeEndOfDataWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = objc_alloc_init(CUWriteRequest);
   [(CUWriteRequest *)v5 setEndOfData:1];
-  if (v4)
+  if (completionCopy)
   {
     v6 = MEMORY[0x1E69E9820];
     v7 = 3221225472;
     v8 = __48__CUTCPConnection_writeEndOfDataWithCompletion___block_invoke;
     v9 = &unk_1E73A49A0;
-    v11 = v4;
+    v11 = completionCopy;
     v10 = v5;
     [(CUWriteRequest *)v10 setCompletion:&v6];
   }
@@ -671,17 +671,17 @@ void __48__CUTCPConnection_writeEndOfDataWithCompletion___block_invoke(uint64_t 
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)writeWithRequest:(id)a3
+- (void)writeWithRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __36__CUTCPConnection_writeWithRequest___block_invoke;
   v7[3] = &unk_1E73A49F0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = requestCopy;
+  v6 = requestCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -707,15 +707,15 @@ void __36__CUTCPConnection_writeWithRequest___block_invoke(uint64_t a1, uint64_t
   }
 }
 
-- (void)_completeReadRequest:(id)a3 error:(id)a4
+- (void)_completeReadRequest:(id)request error:(id)error
 {
-  v17 = a3;
-  v6 = a4;
+  requestCopy = request;
+  errorCopy = error;
   rawIOLogLevel = self->_rawIOLogLevel;
   ucat = self->_ucat;
   if (ucat->var0 <= rawIOLogLevel)
   {
-    v9 = v17;
+    v9 = requestCopy;
     if (ucat->var0 != -1)
     {
 LABEL_3:
@@ -728,20 +728,20 @@ LABEL_3:
     {
       ucat = self->_ucat;
       rawIOLogLevel = self->_rawIOLogLevel;
-      v9 = v17;
+      v9 = requestCopy;
       goto LABEL_3;
     }
   }
 
 LABEL_5:
-  v15 = v17[2];
-  v17[2] = v6;
+  v15 = requestCopy[2];
+  requestCopy[2] = errorCopy;
 
-  v16 = [v17 completion];
-  [v17 setCompletion:0];
-  if (v16)
+  completion = [requestCopy completion];
+  [requestCopy setCompletion:0];
+  if (completion)
   {
-    v16[2](v16);
+    completion[2](completion);
   }
 }
 
@@ -756,13 +756,13 @@ LABEL_5:
   return v3 > 0;
 }
 
-- (void)_abortReadsWithError:(id)a3
+- (void)_abortReadsWithError:(id)error
 {
   v53 = *MEMORY[0x1E69E9840];
-  v12 = a3;
+  errorCopy = error;
   if (!self->_invalidateCalled && !self->_firstError)
   {
-    objc_storeStrong(&self->_firstError, a3);
+    objc_storeStrong(&self->_firstError, error);
   }
 
   netLinkManager = self->_netLinkManager;
@@ -787,7 +787,7 @@ LABEL_5:
 LABEL_11:
         v16 = NSPrintF("%##a", v5, netLinkEndpoint, v7, v8, v9, v10, v11, &self->_peerAddr);
         v24 = NSPrintF("%##a", v17, v18, v19, v20, v21, v22, v23, &self->_selfAddr);
-        v47 = NSPrintF("%{error}", v25, v26, v27, v28, v29, v30, v31, v12);
+        v47 = NSPrintF("%{error}", v25, v26, v27, v28, v29, v30, v31, errorCopy);
         LogPrintF(ucat, "[CUTCPConnection _abortReadsWithError:]", 0x1Eu, "Abort reads: peer=%@, self=%@, error=%@", v32, v33, v34, v35, v16);
 
         goto LABEL_13;
@@ -808,7 +808,7 @@ LABEL_13:
     readRequestCurrent = self->_readRequestCurrent;
     self->_readRequestCurrent = 0;
 
-    [(CUTCPConnection *)self _completeReadRequest:v36 error:v12];
+    [(CUTCPConnection *)self _completeReadRequest:v36 error:errorCopy];
   }
 
   v50 = 0u;
@@ -834,7 +834,7 @@ LABEL_13:
 
         v36 = *(*(&v48 + 1) + 8 * v42);
 
-        [(CUTCPConnection *)self _completeReadRequest:v36 error:v12];
+        [(CUTCPConnection *)self _completeReadRequest:v36 error:errorCopy];
         ++v42;
         v43 = v36;
       }
@@ -857,7 +857,7 @@ LABEL_13:
   errorHandler = self->_errorHandler;
   if (errorHandler)
   {
-    errorHandler[2](errorHandler, v12);
+    errorHandler[2](errorHandler, errorCopy);
     v46 = self->_errorHandler;
   }
 
@@ -871,62 +871,62 @@ LABEL_13:
   [(CUTCPConnection *)self _invalidated];
 }
 
-- (void)_prepareReadRequest:(id)a3
+- (void)_prepareReadRequest:(id)request
 {
-  v22 = a3;
-  if ([v22 bufferBytes])
+  requestCopy = request;
+  if ([requestCopy bufferBytes])
   {
-    v22[1] = [v22 bufferBytes];
-    [v22 setData:0];
+    requestCopy[1] = [requestCopy bufferBytes];
+    [requestCopy setData:0];
   }
 
   else
   {
-    v4 = [v22 bufferData];
+    bufferData = [requestCopy bufferData];
 
-    if (v4)
+    if (bufferData)
     {
-      v5 = [v22 bufferData];
-      v6 = [v5 length];
-      v7 = [v22 maxLength];
+      bufferData2 = [requestCopy bufferData];
+      v6 = [bufferData2 length];
+      maxLength = [requestCopy maxLength];
 
-      if (v6 < v7)
+      if (v6 < maxLength)
       {
-        v8 = [v22 maxLength];
-        v9 = [v22 bufferData];
-        [v9 setLength:v8];
+        maxLength2 = [requestCopy maxLength];
+        bufferData3 = [requestCopy bufferData];
+        [bufferData3 setLength:maxLength2];
       }
     }
 
     else
     {
-      v10 = [objc_alloc(MEMORY[0x1E695DF88]) initWithLength:{objc_msgSend(v22, "maxLength")}];
-      [v22 setBufferData:v10];
+      v10 = [objc_alloc(MEMORY[0x1E695DF88]) initWithLength:{objc_msgSend(requestCopy, "maxLength")}];
+      [requestCopy setBufferData:v10];
     }
 
-    v11 = [v22 bufferData];
-    v22[1] = [v11 mutableBytes];
+    bufferData4 = [requestCopy bufferData];
+    requestCopy[1] = [bufferData4 mutableBytes];
 
-    v12 = [v22 bufferData];
-    [v22 setData:v12];
+    bufferData5 = [requestCopy bufferData];
+    [requestCopy setData:bufferData5];
   }
 
-  v13 = v22[2];
-  v22[2] = 0;
-  v22[3] = 0;
+  v13 = requestCopy[2];
+  requestCopy[2] = 0;
+  requestCopy[3] = 0;
 
-  [v22 setStatusFlags:0];
+  [requestCopy setStatusFlags:0];
   rawIOLogLevel = self->_rawIOLogLevel;
   ucat = self->_ucat;
   if (ucat->var0 <= rawIOLogLevel)
   {
-    v16 = v22;
+    v16 = requestCopy;
     if (ucat->var0 != -1)
     {
 LABEL_10:
-      v17 = [v16 minLength];
-      [v22 maxLength];
-      LogPrintF(ucat, "[CUTCPConnection _prepareReadRequest:]", rawIOLogLevel, "Read prepared (%zu min, %zu max)\n", v18, v19, v20, v21, v17);
+      minLength = [v16 minLength];
+      [requestCopy maxLength];
+      LogPrintF(ucat, "[CUTCPConnection _prepareReadRequest:]", rawIOLogLevel, "Read prepared (%zu min, %zu max)\n", v18, v19, v20, v21, minLength);
       goto LABEL_12;
     }
 
@@ -934,7 +934,7 @@ LABEL_10:
     {
       ucat = self->_ucat;
       rawIOLogLevel = self->_rawIOLogLevel;
-      v16 = v22;
+      v16 = requestCopy;
       goto LABEL_10;
     }
   }
@@ -942,9 +942,9 @@ LABEL_10:
 LABEL_12:
 }
 
-- (void)_processReads:(BOOL)a3
+- (void)_processReads:(BOOL)reads
 {
-  v29 = a3;
+  readsCopy = reads;
   v4 = 0;
   while (1)
   {
@@ -954,10 +954,10 @@ LABEL_12:
       goto LABEL_5;
     }
 
-    v6 = [(NSMutableArray *)self->_readRequests firstObject];
-    if (!v6)
+    firstObject = [(NSMutableArray *)self->_readRequests firstObject];
+    if (!firstObject)
     {
-      if (v29)
+      if (readsCopy)
       {
         if (v4)
         {
@@ -966,9 +966,9 @@ LABEL_12:
 
         else
         {
-          v27 = [(CUTCPConnection *)self _readStatus];
+          _readStatus = [(CUTCPConnection *)self _readStatus];
           readSuspended = self->_readSuspended;
-          if (v27)
+          if (_readStatus)
           {
             if (!self->_readSuspended)
             {
@@ -992,7 +992,7 @@ LABEL_40:
       goto LABEL_24;
     }
 
-    obja = v6;
+    obja = firstObject;
     [(NSMutableArray *)self->_readRequests removeObjectAtIndex:0];
     [(CUTCPConnection *)self _prepareReadRequest:obja];
     objc_storeStrong(&self->_readRequestCurrent, obja);
@@ -1081,17 +1081,17 @@ LABEL_9:
 LABEL_24:
 }
 
-- (void)readWithRequest:(id)a3
+- (void)readWithRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __35__CUTCPConnection_readWithRequest___block_invoke;
   v7[3] = &unk_1E73A49F0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = requestCopy;
+  v6 = requestCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -1198,8 +1198,8 @@ LABEL_8:
     if (firstError)
     {
       v10 = objc_alloc(MEMORY[0x1E696AEC0]);
-      v2 = [(NSError *)self->_firstError domain];
-      v11 = [v10 initWithFormat:@"%@:%d", v2, -[NSError code](self->_firstError, "code")];
+      domain = [(NSError *)self->_firstError domain];
+      v11 = [v10 initWithFormat:@"%@:%d", domain, -[NSError code](self->_firstError, "code")];
     }
 
     else
@@ -1364,7 +1364,7 @@ LABEL_7:
   }
 }
 
-- (BOOL)_setupIOAndReturnError:(id *)a3
+- (BOOL)_setupIOAndReturnError:(id *)error
 {
   socketFD = self->_socketFD;
   v58 = 1;
@@ -1724,10 +1724,10 @@ LABEL_63:
 LABEL_58:
   v30 = NSErrorWithOSStatusF(InterfaceInfo, v19, v6, v7, v8, v9, v10, v11, v45);
   v31 = v30 != 0;
-  if (a3 && v30)
+  if (error && v30)
   {
     v30 = v30;
-    *a3 = v30;
+    *error = v30;
     v31 = 1;
   }
 
@@ -1769,9 +1769,9 @@ uint64_t __42__CUTCPConnection__setupIOAndReturnError___block_invoke_7(uint64_t 
   return [v4 _invalidated];
 }
 
-- (BOOL)_startConnectingToDestination:(id)a3 error:(id *)a4
+- (BOOL)_startConnectingToDestination:(id)destination error:(id *)error
 {
-  v10 = a3;
+  destinationCopy = destination;
   ucat = self->_ucat;
   if (ucat->var0 > 30)
   {
@@ -1787,7 +1787,7 @@ uint64_t __42__CUTCPConnection__setupIOAndReturnError___block_invoke_7(uint64_t 
   {
     ucat = self->_ucat;
 LABEL_3:
-    LogPrintF(ucat, "[CUTCPConnection _startConnectingToDestination:error:]", 0x1Eu, "Connecting to '%@'\n", v6, v7, v8, v9, v10);
+    LogPrintF(ucat, "[CUTCPConnection _startConnectingToDestination:error:]", 0x1Eu, "Connecting to '%@'\n", v6, v7, v8, v9, destinationCopy);
   }
 
 LABEL_5:
@@ -1813,7 +1813,7 @@ LABEL_5:
     v15 = (connectTimeoutSecs * 1000000000.0);
   }
 
-  v16 = self;
+  selfCopy = self;
   v41 = 0u;
   v42 = 0u;
   v39 = 0u;
@@ -1823,25 +1823,25 @@ LABEL_5:
   v34 = 0u;
   v35 = 0u;
   v38 = 160;
-  v29 = [v10 UTF8String];
-  defaultPort = v16->_defaultPort;
+  uTF8String = [destinationCopy UTF8String];
+  defaultPort = selfCopy->_defaultPort;
   v31 = v13;
   v32 = v15;
   v33 = -1;
   *&v35 = _connectHandler;
-  *(&v35 + 1) = v16;
-  *&v36 = v16->_dispatchQueue;
-  *&v39 = [(NSString *)v16->_label UTF8String];
-  v17 = AsyncConnection_ConnectEx(&v16->_connector, &v29);
+  *(&v35 + 1) = selfCopy;
+  *&v36 = selfCopy->_dispatchQueue;
+  *&v39 = [(NSString *)selfCopy->_label UTF8String];
+  v17 = AsyncConnection_ConnectEx(&selfCopy->_connector, &uTF8String);
   if (v17)
   {
     v25 = NSErrorWithOSStatusF(v17, "Start connect failed", v18, v19, v20, v21, v22, v23, v28);
-    CFRelease(v16);
+    CFRelease(selfCopy);
     v24 = v25 != 0;
-    if (a4 && v25)
+    if (error && v25)
     {
       v27 = v25;
-      *a4 = v25;
+      *error = v25;
       v24 = 1;
     }
   }
@@ -1855,16 +1855,16 @@ LABEL_5:
   return !v24;
 }
 
-- (BOOL)_startConnectingToBonjourDevice:(id)a3 error:(id *)a4
+- (BOOL)_startConnectingToBonjourDevice:(id)device error:(id *)error
 {
-  v10 = a3;
+  deviceCopy = device;
   ucat = self->_ucat;
   if (ucat->var0 <= 30)
   {
     if (ucat->var0 != -1)
     {
 LABEL_3:
-      LogPrintF(ucat, "[CUTCPConnection _startConnectingToBonjourDevice:error:]", 0x1Eu, "Connecting to '%@'\n", v6, v7, v8, v9, v10);
+      LogPrintF(ucat, "[CUTCPConnection _startConnectingToBonjourDevice:error:]", 0x1Eu, "Connecting to '%@'\n", v6, v7, v8, v9, deviceCopy);
       goto LABEL_5;
     }
 
@@ -1878,7 +1878,7 @@ LABEL_3:
 LABEL_5:
   interfaceName = self->_interfaceName;
   v35 = 0;
-  v13 = [v10 copyConnectionInfoWithFlags:0 interfaceName:interfaceName error:&v35];
+  v13 = [deviceCopy copyConnectionInfoWithFlags:0 interfaceName:interfaceName error:&v35];
   v14 = v35;
   v15 = v14;
   if (v13)
@@ -1905,7 +1905,7 @@ LABEL_5:
       v19 = (connectTimeoutSecs * 1000000000.0);
     }
 
-    v20 = self;
+    selfCopy = self;
     v24 = 0u;
     v25 = 0u;
     v31 = 0u;
@@ -1917,26 +1917,26 @@ LABEL_5:
     v26 = 0u;
     v27 = 0u;
     v30 = 160;
-    DWORD2(v24) = v20->_defaultPort;
+    DWORD2(v24) = selfCopy->_defaultPort;
     HIDWORD(v24) = v17;
     *&v25 = v19;
     *(&v25 + 1) = -1;
     *(&v31 + 1) = _connectCompletion;
     *&v32 = v13;
-    dispatchQueue = v20->_dispatchQueue;
-    *(&v27 + 1) = v20;
+    dispatchQueue = selfCopy->_dispatchQueue;
+    *(&v27 + 1) = selfCopy;
     *&v28 = dispatchQueue;
-    *&v31 = [(NSString *)v20->_label UTF8String];
-    if (AsyncConnection_ConnectEx(&v20->_connector, &v24))
+    *&v31 = [(NSString *)selfCopy->_label UTF8String];
+    if (AsyncConnection_ConnectEx(&selfCopy->_connector, &v24))
     {
-      CFRelease(v20);
+      CFRelease(selfCopy);
     }
   }
 
-  else if (a4)
+  else if (error)
   {
     v23 = v14;
-    *a4 = v15;
+    *error = v15;
   }
 
   return v13 != 0;
@@ -2104,7 +2104,7 @@ LABEL_6:
   dispatch_async(dispatchQueue, block);
 }
 
-- (BOOL)_activateDirectAndReturnError:(id *)a3
+- (BOOL)_activateDirectAndReturnError:(id *)error
 {
   self->_activateTicks = mach_absolute_time();
   socketFD = self->_socketFD;
@@ -2248,11 +2248,11 @@ LABEL_28:
   }
 
 LABEL_30:
-  if (a3)
+  if (error)
   {
     v33 = v16;
     v30 = 0;
-    *a3 = v16;
+    *error = v16;
   }
 
   else
@@ -2265,19 +2265,19 @@ LABEL_21:
   return v30;
 }
 
-- (BOOL)activateDirectAndReturnError:(id *)a3
+- (BOOL)activateDirectAndReturnError:(id *)error
 {
   dispatch_assert_queue_V2(self->_dispatchQueue);
   pthread_mutex_lock(&self->_mutex);
   self->_activateCalled = 1;
   pthread_mutex_unlock(&self->_mutex);
 
-  return [(CUTCPConnection *)self _activateDirectAndReturnError:a3];
+  return [(CUTCPConnection *)self _activateDirectAndReturnError:error];
 }
 
-- (void)activateWithCompletion:(id)a3
+- (void)activateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   pthread_mutex_lock(&self->_mutex);
   self->_activateCalled = 1;
   dispatchQueue = self->_dispatchQueue;
@@ -2286,8 +2286,8 @@ LABEL_21:
   v7[2] = __42__CUTCPConnection_activateWithCompletion___block_invoke;
   v7[3] = &unk_1E73A49A0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(dispatchQueue, v7);
   pthread_mutex_unlock(&self->_mutex);
 }
@@ -2313,12 +2313,12 @@ void __42__CUTCPConnection_activateWithCompletion___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setTrafficFlags:(unsigned int)a3
+- (void)setTrafficFlags:(unsigned int)flags
 {
   pthread_mutex_lock(&self->_mutex);
-  if (self->_trafficFlags != a3)
+  if (self->_trafficFlags != flags)
   {
-    self->_trafficFlags = a3;
+    self->_trafficFlags = flags;
     if (self->_activateCalled && !self->_trafficFlagsPending)
     {
       self->_trafficFlagsPending = 1;
@@ -2335,13 +2335,13 @@ void __42__CUTCPConnection_activateWithCompletion___block_invoke(uint64_t a1)
   pthread_mutex_unlock(&self->_mutex);
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
-  objc_storeStrong(&self->_label, a3);
-  v13 = a3;
+  objc_storeStrong(&self->_label, label);
+  labelCopy = label;
   v5 = qword_1EADEA528;
-  v6 = v13;
-  [v13 UTF8String];
+  v6 = labelCopy;
+  [labelCopy UTF8String];
   LogCategoryReplaceF(&self->_ucat, "%s-%s", v7, v8, v9, v10, v11, v12, v5);
 }
 

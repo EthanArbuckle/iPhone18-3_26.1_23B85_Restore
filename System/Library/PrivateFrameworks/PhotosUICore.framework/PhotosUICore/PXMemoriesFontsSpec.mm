@@ -1,18 +1,18 @@
 @interface PXMemoriesFontsSpec
-+ (double)baselineDistanceForFontSet:(int64_t)a3 specSet:(int64_t)a4 variant:(int64_t)a5 size:(CGSize)a6 shouldScale:(BOOL)a7;
++ (double)baselineDistanceForFontSet:(int64_t)set specSet:(int64_t)specSet variant:(int64_t)variant size:(CGSize)size shouldScale:(BOOL)scale;
 + (id)_fontSetByTitleFontName;
 + (id)_fontSpecCache;
 + (id)_titleFontNameByFontSet;
-+ (id)memoriesFontsSpecForDescriptor:(PXViewSpecDescriptor *)a3 extendedTraitCollection:(id)a4;
++ (id)memoriesFontsSpecForDescriptor:(PXViewSpecDescriptor *)descriptor extendedTraitCollection:(id)collection;
 + (id)supportedTitleFontNames;
-+ (id)textAttributesForFontName:(id)a3 fontSize:(double)a4 lineHeight:(double)a5 tracking:(double)a6 stroke:(double)a7 shadow:(id)a8 capitalizationStyle:(int64_t)a9;
-+ (id)textAttributesForFontSet:(int64_t)a3 specSet:(int64_t)a4 labelKind:(int64_t)a5 variant:(int64_t)a6 size:(CGSize)a7 shouldScale:(BOOL)a8;
-+ (int64_t)capitalizationStyleForLabelKind:(int64_t)a3;
-+ (int64_t)numberOfLinesForLabelKind:(int64_t)a3;
-+ (void)_getSpecSet:(int64_t *)a3 variant:(int64_t *)a4 forDescriptor:(PXViewSpecDescriptor *)a5 extendedTraitCollection:(id)a6;
-+ (void)preloadFontsSpecsForExtendedTraitCollection:(id)a3;
++ (id)textAttributesForFontName:(id)name fontSize:(double)size lineHeight:(double)height tracking:(double)tracking stroke:(double)stroke shadow:(id)shadow capitalizationStyle:(int64_t)style;
++ (id)textAttributesForFontSet:(int64_t)set specSet:(int64_t)specSet labelKind:(int64_t)kind variant:(int64_t)variant size:(CGSize)size shouldScale:(BOOL)scale;
++ (int64_t)capitalizationStyleForLabelKind:(int64_t)kind;
++ (int64_t)numberOfLinesForLabelKind:(int64_t)kind;
++ (void)_getSpecSet:(int64_t *)set variant:(int64_t *)variant forDescriptor:(PXViewSpecDescriptor *)descriptor extendedTraitCollection:(id)collection;
++ (void)preloadFontsSpecsForExtendedTraitCollection:(id)collection;
 - (UIEdgeInsets)padding;
-- (id)_initWithIdentifier:(PXMemoryFontsSpecIdentifier *)a3;
+- (id)_initWithIdentifier:(PXMemoryFontsSpecIdentifier *)identifier;
 @end
 
 @implementation PXMemoriesFontsSpec
@@ -30,20 +30,20 @@
   return result;
 }
 
-- (id)_initWithIdentifier:(PXMemoryFontsSpecIdentifier *)a3
+- (id)_initWithIdentifier:(PXMemoryFontsSpecIdentifier *)identifier
 {
   v19.receiver = self;
   v19.super_class = PXMemoriesFontsSpec;
   v4 = [(PXMemoriesFontsSpec *)&v19 init];
   if (v4)
   {
-    var0 = a3->var0;
-    var1 = a3->var1;
-    var2 = a3->var2;
-    width = a3->var3.width;
-    height = a3->var3.height;
-    var5 = a3->var5;
-    v11 = [objc_opt_class() textAttributesForFontSet:a3->var0 specSet:var1 labelKind:0 variant:var2 size:var5 shouldScale:{width, height}];
+    var0 = identifier->var0;
+    var1 = identifier->var1;
+    var2 = identifier->var2;
+    width = identifier->var3.width;
+    height = identifier->var3.height;
+    var5 = identifier->var5;
+    v11 = [objc_opt_class() textAttributesForFontSet:identifier->var0 specSet:var1 labelKind:0 variant:var2 size:var5 shouldScale:{width, height}];
     titleTextAttributes = v4->_titleTextAttributes;
     v4->_titleTextAttributes = v11;
 
@@ -63,12 +63,12 @@
   return 0;
 }
 
-+ (void)_getSpecSet:(int64_t *)a3 variant:(int64_t *)a4 forDescriptor:(PXViewSpecDescriptor *)a5 extendedTraitCollection:(id)a6
++ (void)_getSpecSet:(int64_t *)set variant:(int64_t *)variant forDescriptor:(PXViewSpecDescriptor *)descriptor extendedTraitCollection:(id)collection
 {
-  v6 = a6;
-  [v6 userInterfaceIdiom];
-  [v6 layoutSizeClass];
-  [v6 layoutOrientation];
+  collectionCopy = collection;
+  [collectionCopy userInterfaceIdiom];
+  [collectionCopy layoutSizeClass];
+  [collectionCopy layoutOrientation];
 
   PXMemoryTileKindForViewSpecContext();
 }
@@ -147,24 +147,24 @@ void __46__PXMemoriesFontsSpec__fontSetByTitleFontName__block_invoke()
   _fontSetByTitleFontName_fontSets = v1;
 }
 
-+ (id)memoriesFontsSpecForDescriptor:(PXViewSpecDescriptor *)a3 extendedTraitCollection:(id)a4
++ (id)memoriesFontsSpecForDescriptor:(PXViewSpecDescriptor *)descriptor extendedTraitCollection:(id)collection
 {
-  v6 = a4;
+  collectionCopy = collection;
   memset(&v27[8], 0, 48);
   *v27 = 2;
-  var2 = a3->var2;
-  v23 = *&a3->var0;
+  var2 = descriptor->var2;
+  v23 = *&descriptor->var0;
   v24 = var2;
-  [a1 _getSpecSet:&v27[8] variant:&v27[16] forDescriptor:&v23 extendedTraitCollection:v6];
-  *&v27[24] = a3->var2;
-  [v6 layoutMargins];
+  [self _getSpecSet:&v27[8] variant:&v27[16] forDescriptor:&v23 extendedTraitCollection:collectionCopy];
+  *&v27[24] = descriptor->var2;
+  [collectionCopy layoutMargins];
   v9 = v8;
   v10 = +[PXMemoriesRelatedSettings sharedInstance];
-  v11 = [v10 enableIPadWideHeader];
+  enableIPadWideHeader = [v10 enableIPadWideHeader];
   v12 = *&v27[8] == 0;
 
   v13 = fmin(v9, 20.0);
-  if ((v11 & v12) != 0)
+  if ((enableIPadWideHeader & v12) != 0)
   {
     v13 = v9;
   }
@@ -181,11 +181,11 @@ void __46__PXMemoriesFontsSpec__fontSetByTitleFontName__block_invoke()
 
   *&v27[40] = v13;
   v15 = 1;
-  if (v6 && (a3->var1 & 0x1000) == 0 && !*&v27[8])
+  if (collectionCopy && (descriptor->var1 & 0x1000) == 0 && !*&v27[8])
   {
-    v16 = [v6 userInterfaceIdiom];
-    v17 = [v6 userInterfaceIdiom] == 1 && objc_msgSend(v6, "layoutOrientation") == 2;
-    v15 = v16 != 2 && !v17;
+    userInterfaceIdiom = [collectionCopy userInterfaceIdiom];
+    v17 = [collectionCopy userInterfaceIdiom] == 1 && objc_msgSend(collectionCopy, "layoutOrientation") == 2;
+    v15 = userInterfaceIdiom != 2 && !v17;
   }
 
   v27[48] = v15;
@@ -198,7 +198,7 @@ void __46__PXMemoriesFontsSpec__fontSetByTitleFontName__block_invoke()
   v20 = [v18 objectForKey:v19];
   if (!v20)
   {
-    v21 = [a1 alloc];
+    v21 = [self alloc];
     v23 = *v27;
     v24 = *&v27[16];
     v25 = *&v27[32];
@@ -210,16 +210,16 @@ void __46__PXMemoriesFontsSpec__fontSetByTitleFontName__block_invoke()
   return v20;
 }
 
-+ (double)baselineDistanceForFontSet:(int64_t)a3 specSet:(int64_t)a4 variant:(int64_t)a5 size:(CGSize)a6 shouldScale:(BOOL)a7
++ (double)baselineDistanceForFontSet:(int64_t)set specSet:(int64_t)specSet variant:(int64_t)variant size:(CGSize)size shouldScale:(BOOL)scale
 {
-  v7 = a7;
-  width = a6.width;
-  result = _BaselineDistanceForFontSetSpecSetVariant(a3, a4);
-  if (v7)
+  scaleCopy = scale;
+  width = size.width;
+  result = _BaselineDistanceForFontSetSpecSetVariant(set, specSet);
+  if (scaleCopy)
   {
     v12 = round(width);
     v13 = 0.913999975;
-    if (a5 != 4)
+    if (variant != 4)
     {
       v13 = 1.0;
     }
@@ -229,33 +229,33 @@ void __46__PXMemoriesFontsSpec__fontSetByTitleFontName__block_invoke()
       return round(result * v13);
     }
 
-    if (a4 == 2)
+    if (specSet == 2)
     {
-      v14 = 1;
+      specSetCopy = 1;
     }
 
     else
     {
-      v14 = a4;
+      specSetCopy = specSet;
     }
 
-    if (v14 == 1)
+    if (specSetCopy == 1)
     {
-      v16 = a5 == 2;
+      v16 = variant == 2;
       v17 = &unk_1A53810A0;
     }
 
     else
     {
       v15 = 0.0;
-      if (v14)
+      if (specSetCopy)
       {
 LABEL_13:
         v13 = v13 * (v12 / v15);
         return round(result * v13);
       }
 
-      v16 = a5 == 4;
+      v16 = variant == 4;
       v17 = &unk_1A53810B0;
     }
 
@@ -266,19 +266,19 @@ LABEL_13:
   return result;
 }
 
-+ (id)textAttributesForFontSet:(int64_t)a3 specSet:(int64_t)a4 labelKind:(int64_t)a5 variant:(int64_t)a6 size:(CGSize)a7 shouldScale:(BOOL)a8
++ (id)textAttributesForFontSet:(int64_t)set specSet:(int64_t)specSet labelKind:(int64_t)kind variant:(int64_t)variant size:(CGSize)size shouldScale:(BOOL)scale
 {
-  v8 = a8;
-  width = a7.width;
-  v15 = _FontNameForFontSetSpecSetVariant(a5, a3);
-  v16 = [a1 capitalizationStyleForLabelKind:a5];
-  v17 = _FontSizeForFontSetSpecSetVariant(a5, a3, a4, a6);
-  v18 = _TrackingForSpecSet(a5, a3);
-  v19 = _LineHeightForSpecSet(a5, a3, a4, a6);
-  if (a3 && v8)
+  scaleCopy = scale;
+  width = size.width;
+  v15 = _FontNameForFontSetSpecSetVariant(kind, set);
+  v16 = [self capitalizationStyleForLabelKind:kind];
+  v17 = _FontSizeForFontSetSpecSetVariant(kind, set, specSet, variant);
+  v18 = _TrackingForSpecSet(kind, set);
+  v19 = _LineHeightForSpecSet(kind, set, specSet, variant);
+  if (set && scaleCopy)
   {
     v20 = 0.913999975;
-    if (a6 != 4)
+    if (variant != 4)
     {
       v20 = 1.0;
     }
@@ -288,26 +288,26 @@ LABEL_13:
       goto LABEL_15;
     }
 
-    if (a4 == 2)
+    if (specSet == 2)
     {
-      v21 = 1;
+      specSetCopy = 1;
     }
 
     else
     {
-      v21 = a4;
+      specSetCopy = specSet;
     }
 
-    if (v21 == 1)
+    if (specSetCopy == 1)
     {
-      v23 = a6 == 2;
+      v23 = variant == 2;
       v24 = &unk_1A53810A0;
     }
 
     else
     {
       v22 = 0.0;
-      if (v21)
+      if (specSetCopy)
       {
 LABEL_14:
         v20 = v20 * (width / v22);
@@ -317,7 +317,7 @@ LABEL_15:
         goto LABEL_16;
       }
 
-      v23 = a6 == 4;
+      v23 = variant == 4;
       v24 = &unk_1A53810B0;
     }
 
@@ -332,18 +332,18 @@ LABEL_16:
   [v25 setShadowColor:v26];
 
   [v25 setShadowOffset:{*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)}];
-  v27 = [a1 textAttributesForFontName:v15 fontSize:v25 lineHeight:v16 tracking:v17 stroke:v19 shadow:v18 capitalizationStyle:0.0];
+  v27 = [self textAttributesForFontName:v15 fontSize:v25 lineHeight:v16 tracking:v17 stroke:v19 shadow:v18 capitalizationStyle:0.0];
 
   return v27;
 }
 
-+ (id)textAttributesForFontName:(id)a3 fontSize:(double)a4 lineHeight:(double)a5 tracking:(double)a6 stroke:(double)a7 shadow:(id)a8 capitalizationStyle:(int64_t)a9
++ (id)textAttributesForFontName:(id)name fontSize:(double)size lineHeight:(double)height tracking:(double)tracking stroke:(double)stroke shadow:(id)shadow capitalizationStyle:(int64_t)style
 {
-  v10 = a3;
-  v11 = a8;
+  nameCopy = name;
+  shadowCopy = shadow;
   [MEMORY[0x1E695DF90] dictionaryWithCapacity:5];
   objc_claimAutoreleasedReturnValue();
-  if (v10)
+  if (nameCopy)
   {
     PXFontCreate();
   }
@@ -351,19 +351,19 @@ LABEL_16:
   PXFloatApproximatelyEqualToFloat();
 }
 
-+ (int64_t)numberOfLinesForLabelKind:(int64_t)a3
++ (int64_t)numberOfLinesForLabelKind:(int64_t)kind
 {
-  if (!a3)
+  if (!kind)
   {
     return 2;
   }
 
-  if (a3 != 1)
+  if (kind != 1)
   {
     v13 = v4;
     v14 = v3;
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:a1 file:@"PXMemoriesFontsSpec.m" lineNumber:418 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXMemoriesFontsSpec.m" lineNumber:418 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
@@ -371,19 +371,19 @@ LABEL_16:
   return 1;
 }
 
-+ (int64_t)capitalizationStyleForLabelKind:(int64_t)a3
++ (int64_t)capitalizationStyleForLabelKind:(int64_t)kind
 {
-  if (!a3)
+  if (!kind)
   {
     return 1;
   }
 
-  if (a3 != 1)
+  if (kind != 1)
   {
     v13 = v4;
     v14 = v3;
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:a1 file:@"PXMemoriesFontsSpec.m" lineNumber:408 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXMemoriesFontsSpec.m" lineNumber:408 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
@@ -410,18 +410,18 @@ void __37__PXMemoriesFontsSpec__fontSpecCache__block_invoke()
   _fontSpecCache_cache = v0;
 }
 
-+ (void)preloadFontsSpecsForExtendedTraitCollection:(id)a3
++ (void)preloadFontsSpecsForExtendedTraitCollection:(id)collection
 {
-  if (a3)
+  if (collection)
   {
-    v4 = [off_1E7721858 sharedScheduler];
+    sharedScheduler = [off_1E7721858 sharedScheduler];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __67__PXMemoriesFontsSpec_preloadFontsSpecsForExtendedTraitCollection___block_invoke;
     v6[3] = &unk_1E77498A0;
-    v7 = v4;
-    v8 = a1;
-    v5 = v4;
+    v7 = sharedScheduler;
+    selfCopy = self;
+    v5 = sharedScheduler;
     [v5 scheduleTaskWithQoS:1 block:v6];
   }
 }

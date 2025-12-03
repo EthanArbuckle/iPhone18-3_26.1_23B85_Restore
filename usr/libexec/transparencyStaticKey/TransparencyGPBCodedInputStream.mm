@@ -1,44 +1,44 @@
 @interface TransparencyGPBCodedInputStream
-+ (id)streamWithData:(id)a3;
-- (BOOL)skipField:(int)a3;
-- (TransparencyGPBCodedInputStream)initWithData:(id)a3;
++ (id)streamWithData:(id)data;
+- (BOOL)skipField:(int)field;
+- (TransparencyGPBCodedInputStream)initWithData:(id)data;
 - (double)readDouble;
 - (float)readFloat;
 - (id)readBytes;
 - (id)readString;
 - (int)readSFixed32;
 - (int64_t)readSFixed64;
-- (unint64_t)pushLimit:(unint64_t)a3;
+- (unint64_t)pushLimit:(unint64_t)limit;
 - (unint64_t)readFixed64;
 - (unsigned)readFixed32;
-- (void)checkLastTagWas:(int)a3;
+- (void)checkLastTagWas:(int)was;
 - (void)dealloc;
-- (void)readGroup:(int)a3 message:(id)a4 extensionRegistry:(id)a5;
-- (void)readMapEntry:(id)a3 extensionRegistry:(id)a4 field:(id)a5 parentMessage:(id)a6;
-- (void)readMessage:(id)a3 extensionRegistry:(id)a4;
-- (void)readUnknownGroup:(int)a3 message:(id)a4;
+- (void)readGroup:(int)group message:(id)message extensionRegistry:(id)registry;
+- (void)readMapEntry:(id)entry extensionRegistry:(id)registry field:(id)field parentMessage:(id)message;
+- (void)readMessage:(id)message extensionRegistry:(id)registry;
+- (void)readUnknownGroup:(int)group message:(id)message;
 - (void)skipMessage;
 @end
 
 @implementation TransparencyGPBCodedInputStream
 
-+ (id)streamWithData:(id)a3
++ (id)streamWithData:(id)data
 {
-  v3 = [[a1 alloc] initWithData:a3];
+  v3 = [[self alloc] initWithData:data];
 
   return v3;
 }
 
-- (TransparencyGPBCodedInputStream)initWithData:(id)a3
+- (TransparencyGPBCodedInputStream)initWithData:(id)data
 {
   v7.receiver = self;
   v7.super_class = TransparencyGPBCodedInputStream;
   v4 = [(TransparencyGPBCodedInputStream *)&v7 init];
   if (v4)
   {
-    v4->buffer_ = a3;
-    v4->state_.bytes = [a3 bytes];
-    v5 = [a3 length];
+    v4->buffer_ = data;
+    v4->state_.bytes = [data bytes];
+    v5 = [data length];
     v4->state_.bufferSize = v5;
     v4->state_.currentLimit = v5;
   }
@@ -53,17 +53,17 @@
   [(TransparencyGPBCodedInputStream *)&v3 dealloc];
 }
 
-- (void)checkLastTagWas:(int)a3
+- (void)checkLastTagWas:(int)was
 {
-  if (self->state_.lastTag != a3)
+  if (self->state_.lastTag != was)
   {
     sub_100038ED0(-103, @"Unexpected tag read");
   }
 }
 
-- (BOOL)skipField:(int)a3
+- (BOOL)skipField:(int)field
 {
-  v5 = sub_10002518C(a3);
+  v5 = sub_10002518C(field);
   result = 0;
   if (v5 <= 1)
   {
@@ -93,7 +93,7 @@
         break;
       case 3:
         [(TransparencyGPBCodedInputStream *)self skipMessage];
-        v9 = sub_100025194(a3);
+        v9 = sub_100025194(field);
         if (self->state_.lastTag != sub_100025184(v9, 4))
         {
           sub_100038ED0(-103, @"Unexpected tag read");
@@ -123,10 +123,10 @@
   while (v3 && [(TransparencyGPBCodedInputStream *)self skipField:v3]);
 }
 
-- (unint64_t)pushLimit:(unint64_t)a3
+- (unint64_t)pushLimit:(unint64_t)limit
 {
   currentLimit = self->state_.currentLimit;
-  v5 = self->state_.bufferPos + a3;
+  v5 = self->state_.bufferPos + limit;
   if (v5 > currentLimit)
   {
     sub_100038ED0(-102, 0);
@@ -179,7 +179,7 @@
   return v2;
 }
 
-- (void)readGroup:(int)a3 message:(id)a4 extensionRegistry:(id)a5
+- (void)readGroup:(int)group message:(id)message extensionRegistry:(id)registry
 {
   recursionDepth = self->state_.recursionDepth;
   if (recursionDepth >= 0x64)
@@ -189,8 +189,8 @@
   }
 
   self->state_.recursionDepth = recursionDepth + 1;
-  [a4 mergeFromCodedInputStream:self extensionRegistry:a5];
-  if (self->state_.lastTag != sub_100025184(a3, 4))
+  [message mergeFromCodedInputStream:self extensionRegistry:registry];
+  if (self->state_.lastTag != sub_100025184(group, 4))
   {
     sub_100038ED0(-103, @"Unexpected tag read");
   }
@@ -198,7 +198,7 @@
   --self->state_.recursionDepth;
 }
 
-- (void)readUnknownGroup:(int)a3 message:(id)a4
+- (void)readUnknownGroup:(int)group message:(id)message
 {
   recursionDepth = self->state_.recursionDepth;
   if (recursionDepth >= 0x64)
@@ -208,8 +208,8 @@
   }
 
   self->state_.recursionDepth = recursionDepth + 1;
-  [a4 mergeFromCodedInputStream:self];
-  if (self->state_.lastTag != sub_100025184(a3, 4))
+  [message mergeFromCodedInputStream:self];
+  if (self->state_.lastTag != sub_100025184(group, 4))
   {
     sub_100038ED0(-103, @"Unexpected tag read");
   }
@@ -217,7 +217,7 @@
   --self->state_.recursionDepth;
 }
 
-- (void)readMessage:(id)a3 extensionRegistry:(id)a4
+- (void)readMessage:(id)message extensionRegistry:(id)registry
 {
   if (self->state_.recursionDepth >= 0x64)
   {
@@ -234,7 +234,7 @@
 
   self->state_.currentLimit = v9;
   ++self->state_.recursionDepth;
-  [a3 mergeFromCodedInputStream:self extensionRegistry:a4];
+  [message mergeFromCodedInputStream:self extensionRegistry:registry];
   if (self->state_.lastTag)
   {
     sub_100038ED0(-103, @"Unexpected tag read");
@@ -244,7 +244,7 @@
   self->state_.currentLimit = currentLimit;
 }
 
-- (void)readMapEntry:(id)a3 extensionRegistry:(id)a4 field:(id)a5 parentMessage:(id)a6
+- (void)readMapEntry:(id)entry extensionRegistry:(id)registry field:(id)field parentMessage:(id)message
 {
   if (self->state_.recursionDepth >= 0x64)
   {
@@ -261,7 +261,7 @@
 
   self->state_.currentLimit = v13;
   ++self->state_.recursionDepth;
-  sub_100039D84(a3, self, a4, a5, a6);
+  sub_100039D84(entry, self, registry, field, message);
   if (self->state_.lastTag)
   {
     sub_100038ED0(-103, @"Unexpected tag read");

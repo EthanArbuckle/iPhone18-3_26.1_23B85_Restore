@@ -8,12 +8,12 @@
 - (id)encodeForKey
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [a1 zoneID];
-  v4 = [v3 ownerName];
-  v5 = [a1 zoneID];
-  v6 = [v5 zoneName];
-  v7 = [a1 recordName];
-  v8 = [v2 stringWithFormat:@"%@/%@/%@", v4, v6, v7];
+  zoneID = [self zoneID];
+  ownerName = [zoneID ownerName];
+  zoneID2 = [self zoneID];
+  zoneName = [zoneID2 zoneName];
+  recordName = [self recordName];
+  v8 = [v2 stringWithFormat:@"%@/%@/%@", ownerName, zoneName, recordName];
 
   return v8;
 }

@@ -9,13 +9,13 @@
 
 - (uint64_t)CUIKEditingContext_saveWithSpan:()Saving error:
 {
-  [a1 fixInvalidatedVirtualConferenceURLs:?];
-  v7 = [a1 eventStore];
-  v8 = [v7 saveEvent:a1 span:a3 commit:0 error:a4];
+  [self fixInvalidatedVirtualConferenceURLs:?];
+  eventStore = [self eventStore];
+  v8 = [eventStore saveEvent:self span:a3 commit:0 error:a4];
 
   if (v8)
   {
-    [a1 postModifiedNotification];
+    [self postModifiedNotification];
   }
 
   else
@@ -32,13 +32,13 @@
 
 - (uint64_t)CUIKEditingContext_removeWithSpan:()Saving error:
 {
-  v7 = [a1 eventStore];
-  v8 = [v7 removeEvent:a1 span:a3 commit:0 error:a4];
+  eventStore = [self eventStore];
+  v8 = [eventStore removeEvent:self span:a3 commit:0 error:a4];
 
   if (v8)
   {
-    [a1 postModifiedNotification];
-    [CUIKEditingContext postLiveEditNotificationForObject:a1];
+    [self postModifiedNotification];
+    [CUIKEditingContext postLiveEditNotificationForObject:self];
   }
 
   else
@@ -56,13 +56,13 @@
 - (void)fixInvalidatedVirtualConferenceURLs:()Saving
 {
   v38 = *MEMORY[0x1E69E9840];
-  [a1 virtualConference];
+  [self virtualConference];
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v22 = v32 = 0u;
-  v5 = [v22 joinMethods];
-  v6 = [v5 countByEnumeratingWithState:&v29 objects:v37 count:16];
+  joinMethods = [v22 joinMethods];
+  v6 = [joinMethods countByEnumeratingWithState:&v29 objects:v37 count:16];
   if (!v6)
   {
     goto LABEL_20;
@@ -71,7 +71,7 @@
   v7 = v6;
   v8 = *v30;
   v24 = 0;
-  obj = v5;
+  obj = joinMethods;
   do
   {
     for (i = 0; i != v7; ++i)
@@ -89,7 +89,7 @@
       v25[3] = &unk_1E839A2B0;
       v12 = v10;
       v26 = v12;
-      v27 = a1;
+      selfCopy = self;
       v28 = a3;
       v13 = [v11 validURLForConferenceURL:v12 completion:v25];
       v14 = v13;
@@ -145,8 +145,8 @@
 
   if (v24)
   {
-    [a1 setVirtualConference:v24];
-    v5 = v24;
+    [self setVirtualConference:v24];
+    joinMethods = v24;
 LABEL_20:
   }
 }
@@ -184,8 +184,8 @@ LABEL_20:
 
         if (v17)
         {
-          v18 = [v7 joinMethods];
-          v19 = [v18 mutableCopy];
+          joinMethods = [v7 joinMethods];
+          v19 = [joinMethods mutableCopy];
 
           v20 = [v15 copy];
           [v20 setURL:v22];

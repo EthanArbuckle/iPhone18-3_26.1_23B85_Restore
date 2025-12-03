@@ -1,33 +1,33 @@
 @interface MTTimerManagerExportedObject
 - (MTTimerManager)timerManager;
-- (MTTimerManagerExportedObject)initWithTimerManager:(id)a3;
-- (void)_didReceiveTimerServerReadyNotification:(id)a3;
+- (MTTimerManagerExportedObject)initWithTimerManager:(id)manager;
+- (void)_didReceiveTimerServerReadyNotification:(id)notification;
 - (void)dealloc;
-- (void)favoriteTimerDurationsUpdated:(id)a3;
-- (void)latestTimerDurationUpdated:(id)a3;
-- (void)nextTimerChanged:(id)a3;
-- (void)recentTimerDurationsUpdated:(id)a3;
-- (void)timerDismissed:(id)a3;
-- (void)timerFired:(id)a3;
-- (void)timersAdded:(id)a3;
-- (void)timersRemoved:(id)a3;
-- (void)timersUpdated:(id)a3;
+- (void)favoriteTimerDurationsUpdated:(id)updated;
+- (void)latestTimerDurationUpdated:(id)updated;
+- (void)nextTimerChanged:(id)changed;
+- (void)recentTimerDurationsUpdated:(id)updated;
+- (void)timerDismissed:(id)dismissed;
+- (void)timerFired:(id)fired;
+- (void)timersAdded:(id)added;
+- (void)timersRemoved:(id)removed;
+- (void)timersUpdated:(id)updated;
 @end
 
 @implementation MTTimerManagerExportedObject
 
-- (MTTimerManagerExportedObject)initWithTimerManager:(id)a3
+- (MTTimerManagerExportedObject)initWithTimerManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v9.receiver = self;
   v9.super_class = MTTimerManagerExportedObject;
   v5 = [(MTTimerManagerExportedObject *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_timerManager, v4);
-    v7 = [MEMORY[0x1E696ABB0] defaultCenter];
-    [v7 addObserver:v6 selector:sel__didReceiveTimerServerReadyNotification_ name:@"com.apple.MTTimerServer.ready" object:0];
+    objc_storeWeak(&v5->_timerManager, managerCopy);
+    defaultCenter = [MEMORY[0x1E696ABB0] defaultCenter];
+    [defaultCenter addObserver:v6 selector:sel__didReceiveTimerServerReadyNotification_ name:@"com.apple.MTTimerServer.ready" object:0];
   }
 
   return v6;
@@ -40,12 +40,12 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B1F9F000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ deallocing...", buf, 0xCu);
   }
 
-  v4 = [MEMORY[0x1E696ABB0] defaultCenter];
-  [v4 removeObserver:self name:@"com.apple.MTTimerServer.ready" object:0];
+  defaultCenter = [MEMORY[0x1E696ABB0] defaultCenter];
+  [defaultCenter removeObserver:self name:@"com.apple.MTTimerServer.ready" object:0];
 
   v6.receiver = self;
   v6.super_class = MTTimerManagerExportedObject;
@@ -53,21 +53,21 @@
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_didReceiveTimerServerReadyNotification:(id)a3
+- (void)_didReceiveTimerServerReadyNotification:(id)notification
 {
   v12 = *MEMORY[0x1E69E9840];
   v4 = MTLogForCategory(4);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [(MTTimerManagerExportedObject *)self timerManager];
+    timerManager = [(MTTimerManagerExportedObject *)self timerManager];
     *buf = 138543362;
-    v11 = v5;
+    v11 = timerManager;
     _os_log_impl(&dword_1B1F9F000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@ received MTTimerServerReadyNotification", buf, 0xCu);
   }
 
-  v6 = [(MTTimerManagerExportedObject *)self timerManager];
-  v7 = [v6 cache];
-  [v7 markNeedsUpdate];
+  timerManager2 = [(MTTimerManagerExportedObject *)self timerManager];
+  cache = [timerManager2 cache];
+  [cache markNeedsUpdate];
 
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -86,33 +86,33 @@ void __72__MTTimerManagerExportedObject__didReceiveTimerServerReadyNotification_
   [v2 postNotificationName:@"MTTimerManagerStateReset" object:v3];
 }
 
-- (void)timersAdded:(id)a3
+- (void)timersAdded:(id)added
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  addedCopy = added;
   v5 = MTLogForCategory(4);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(MTTimerManagerExportedObject *)self timerManager];
-    v7 = [v4 valueForKey:@"timerID"];
+    timerManager = [(MTTimerManagerExportedObject *)self timerManager];
+    v7 = [addedCopy valueForKey:@"timerID"];
     *buf = 138543618;
-    v16 = v6;
+    v16 = timerManager;
     v17 = 2114;
     v18 = v7;
     _os_log_impl(&dword_1B1F9F000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ notified timers added: %{public}@", buf, 0x16u);
   }
 
-  v8 = [(MTTimerManagerExportedObject *)self timerManager];
-  v9 = [v8 cache];
-  [v9 markNeedsUpdate];
+  timerManager2 = [(MTTimerManagerExportedObject *)self timerManager];
+  cache = [timerManager2 cache];
+  [cache markNeedsUpdate];
 
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __44__MTTimerManagerExportedObject_timersAdded___block_invoke;
   v12[3] = &unk_1E7B0C928;
-  v13 = v4;
-  v14 = self;
-  v10 = v4;
+  v13 = addedCopy;
+  selfCopy = self;
+  v10 = addedCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v12);
 
   v11 = *MEMORY[0x1E69E9840];
@@ -149,33 +149,33 @@ void __44__MTTimerManagerExportedObject_timersAdded___block_invoke(uint64_t a1)
   [v9 postNotificationName:@"MTTimerManagerTimersChanged" object:v10 userInfo:v4];
 }
 
-- (void)timersUpdated:(id)a3
+- (void)timersUpdated:(id)updated
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  updatedCopy = updated;
   v5 = MTLogForCategory(4);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(MTTimerManagerExportedObject *)self timerManager];
-    v7 = [v4 valueForKey:@"timerID"];
+    timerManager = [(MTTimerManagerExportedObject *)self timerManager];
+    v7 = [updatedCopy valueForKey:@"timerID"];
     *buf = 138543618;
-    v16 = v6;
+    v16 = timerManager;
     v17 = 2114;
     v18 = v7;
     _os_log_impl(&dword_1B1F9F000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ notified timers update: %{public}@", buf, 0x16u);
   }
 
-  v8 = [(MTTimerManagerExportedObject *)self timerManager];
-  v9 = [v8 cache];
-  [v9 markNeedsUpdate];
+  timerManager2 = [(MTTimerManagerExportedObject *)self timerManager];
+  cache = [timerManager2 cache];
+  [cache markNeedsUpdate];
 
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __46__MTTimerManagerExportedObject_timersUpdated___block_invoke;
   v12[3] = &unk_1E7B0C928;
-  v13 = v4;
-  v14 = self;
-  v10 = v4;
+  v13 = updatedCopy;
+  selfCopy = self;
+  v10 = updatedCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v12);
 
   v11 = *MEMORY[0x1E69E9840];
@@ -212,33 +212,33 @@ void __46__MTTimerManagerExportedObject_timersUpdated___block_invoke(uint64_t a1
   [v9 postNotificationName:@"MTTimerManagerTimersChanged" object:v10 userInfo:v4];
 }
 
-- (void)timersRemoved:(id)a3
+- (void)timersRemoved:(id)removed
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  removedCopy = removed;
   v5 = MTLogForCategory(4);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(MTTimerManagerExportedObject *)self timerManager];
-    v7 = [v4 valueForKey:@"timerID"];
+    timerManager = [(MTTimerManagerExportedObject *)self timerManager];
+    v7 = [removedCopy valueForKey:@"timerID"];
     *buf = 138543618;
-    v16 = v6;
+    v16 = timerManager;
     v17 = 2114;
     v18 = v7;
     _os_log_impl(&dword_1B1F9F000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ notified timers removed: %{public}@", buf, 0x16u);
   }
 
-  v8 = [(MTTimerManagerExportedObject *)self timerManager];
-  v9 = [v8 cache];
-  [v9 markNeedsUpdate];
+  timerManager2 = [(MTTimerManagerExportedObject *)self timerManager];
+  cache = [timerManager2 cache];
+  [cache markNeedsUpdate];
 
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __46__MTTimerManagerExportedObject_timersRemoved___block_invoke;
   v12[3] = &unk_1E7B0C928;
-  v13 = v4;
-  v14 = self;
-  v10 = v4;
+  v13 = removedCopy;
+  selfCopy = self;
+  v10 = removedCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v12);
 
   v11 = *MEMORY[0x1E69E9840];
@@ -275,33 +275,33 @@ void __46__MTTimerManagerExportedObject_timersRemoved___block_invoke(uint64_t a1
   [v9 postNotificationName:@"MTTimerManagerTimersChanged" object:v10 userInfo:v4];
 }
 
-- (void)timerFired:(id)a3
+- (void)timerFired:(id)fired
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  firedCopy = fired;
   v5 = MTLogForCategory(4);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(MTTimerManagerExportedObject *)self timerManager];
-    v7 = [v4 timerID];
+    timerManager = [(MTTimerManagerExportedObject *)self timerManager];
+    timerID = [firedCopy timerID];
     *buf = 138543618;
-    v16 = v6;
+    v16 = timerManager;
     v17 = 2114;
-    v18 = v7;
+    v18 = timerID;
     _os_log_impl(&dword_1B1F9F000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ notified timer fired: %{public}@", buf, 0x16u);
   }
 
-  v8 = [(MTTimerManagerExportedObject *)self timerManager];
-  v9 = [v8 cache];
-  [v9 markNeedsUpdate];
+  timerManager2 = [(MTTimerManagerExportedObject *)self timerManager];
+  cache = [timerManager2 cache];
+  [cache markNeedsUpdate];
 
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __43__MTTimerManagerExportedObject_timerFired___block_invoke;
   v12[3] = &unk_1E7B0C928;
-  v13 = v4;
-  v14 = self;
-  v10 = v4;
+  v13 = firedCopy;
+  selfCopy = self;
+  v10 = firedCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v12);
 
   v11 = *MEMORY[0x1E69E9840];
@@ -338,33 +338,33 @@ void __43__MTTimerManagerExportedObject_timerFired___block_invoke(uint64_t a1)
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)timerDismissed:(id)a3
+- (void)timerDismissed:(id)dismissed
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dismissedCopy = dismissed;
   v5 = MTLogForCategory(4);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(MTTimerManagerExportedObject *)self timerManager];
-    v7 = [v4 timerID];
+    timerManager = [(MTTimerManagerExportedObject *)self timerManager];
+    timerID = [dismissedCopy timerID];
     *buf = 138543618;
-    v16 = v6;
+    v16 = timerManager;
     v17 = 2114;
-    v18 = v7;
+    v18 = timerID;
     _os_log_impl(&dword_1B1F9F000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ notified timer dismissed: %{public}@", buf, 0x16u);
   }
 
-  v8 = [(MTTimerManagerExportedObject *)self timerManager];
-  v9 = [v8 cache];
-  [v9 markNeedsUpdate];
+  timerManager2 = [(MTTimerManagerExportedObject *)self timerManager];
+  cache = [timerManager2 cache];
+  [cache markNeedsUpdate];
 
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __47__MTTimerManagerExportedObject_timerDismissed___block_invoke;
   v12[3] = &unk_1E7B0C928;
-  v13 = v4;
-  v14 = self;
-  v10 = v4;
+  v13 = dismissedCopy;
+  selfCopy = self;
+  v10 = dismissedCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v12);
 
   v11 = *MEMORY[0x1E69E9840];
@@ -401,33 +401,33 @@ void __47__MTTimerManagerExportedObject_timerDismissed___block_invoke(uint64_t a
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)nextTimerChanged:(id)a3
+- (void)nextTimerChanged:(id)changed
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  changedCopy = changed;
   v5 = MTLogForCategory(4);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(MTTimerManagerExportedObject *)self timerManager];
-    v7 = [v4 timerID];
+    timerManager = [(MTTimerManagerExportedObject *)self timerManager];
+    timerID = [changedCopy timerID];
     *buf = 138543618;
-    v16 = v6;
+    v16 = timerManager;
     v17 = 2114;
-    v18 = v7;
+    v18 = timerID;
     _os_log_impl(&dword_1B1F9F000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ notified next timer changed: %{public}@", buf, 0x16u);
   }
 
-  v8 = [(MTTimerManagerExportedObject *)self timerManager];
-  v9 = [v8 cache];
-  [v9 markNeedsUpdate];
+  timerManager2 = [(MTTimerManagerExportedObject *)self timerManager];
+  cache = [timerManager2 cache];
+  [cache markNeedsUpdate];
 
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __49__MTTimerManagerExportedObject_nextTimerChanged___block_invoke;
   v12[3] = &unk_1E7B0C928;
-  v13 = v4;
-  v14 = self;
-  v10 = v4;
+  v13 = changedCopy;
+  selfCopy = self;
+  v10 = changedCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v12);
 
   v11 = *MEMORY[0x1E69E9840];
@@ -477,16 +477,16 @@ void __49__MTTimerManagerExportedObject_nextTimerChanged___block_invoke(uint64_t
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)recentTimerDurationsUpdated:(id)a3
+- (void)recentTimerDurationsUpdated:(id)updated
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  updatedCopy = updated;
   v5 = MTLogForCategory(4);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(MTTimerManagerExportedObject *)self timerManager];
+    timerManager = [(MTTimerManagerExportedObject *)self timerManager];
     *buf = 138543362;
-    v13 = v6;
+    v13 = timerManager;
     _os_log_impl(&dword_1B1F9F000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ notified recent durations updated", buf, 0xCu);
   }
 
@@ -494,9 +494,9 @@ void __49__MTTimerManagerExportedObject_nextTimerChanged___block_invoke(uint64_t
   v9[1] = 3221225472;
   v9[2] = __60__MTTimerManagerExportedObject_recentTimerDurationsUpdated___block_invoke;
   v9[3] = &unk_1E7B0C928;
-  v10 = v4;
-  v11 = self;
-  v7 = v4;
+  v10 = updatedCopy;
+  selfCopy = self;
+  v7 = updatedCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v9);
 
   v8 = *MEMORY[0x1E69E9840];
@@ -515,16 +515,16 @@ void __60__MTTimerManagerExportedObject_recentTimerDurationsUpdated___block_invo
   }
 }
 
-- (void)favoriteTimerDurationsUpdated:(id)a3
+- (void)favoriteTimerDurationsUpdated:(id)updated
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  updatedCopy = updated;
   v5 = MTLogForCategory(4);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(MTTimerManagerExportedObject *)self timerManager];
+    timerManager = [(MTTimerManagerExportedObject *)self timerManager];
     *buf = 138543362;
-    v13 = v6;
+    v13 = timerManager;
     _os_log_impl(&dword_1B1F9F000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ notified favorite durations updated", buf, 0xCu);
   }
 
@@ -532,9 +532,9 @@ void __60__MTTimerManagerExportedObject_recentTimerDurationsUpdated___block_invo
   v9[1] = 3221225472;
   v9[2] = __62__MTTimerManagerExportedObject_favoriteTimerDurationsUpdated___block_invoke;
   v9[3] = &unk_1E7B0C928;
-  v10 = v4;
-  v11 = self;
-  v7 = v4;
+  v10 = updatedCopy;
+  selfCopy = self;
+  v7 = updatedCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v9);
 
   v8 = *MEMORY[0x1E69E9840];
@@ -553,16 +553,16 @@ void __62__MTTimerManagerExportedObject_favoriteTimerDurationsUpdated___block_in
   }
 }
 
-- (void)latestTimerDurationUpdated:(id)a3
+- (void)latestTimerDurationUpdated:(id)updated
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  updatedCopy = updated;
   v5 = MTLogForCategory(4);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(MTTimerManagerExportedObject *)self timerManager];
+    timerManager = [(MTTimerManagerExportedObject *)self timerManager];
     *buf = 138543362;
-    v13 = v6;
+    v13 = timerManager;
     _os_log_impl(&dword_1B1F9F000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ notified latest duration updated", buf, 0xCu);
   }
 
@@ -570,9 +570,9 @@ void __62__MTTimerManagerExportedObject_favoriteTimerDurationsUpdated___block_in
   v9[1] = 3221225472;
   v9[2] = __59__MTTimerManagerExportedObject_latestTimerDurationUpdated___block_invoke;
   v9[3] = &unk_1E7B0C928;
-  v10 = v4;
-  v11 = self;
-  v7 = v4;
+  v10 = updatedCopy;
+  selfCopy = self;
+  v7 = updatedCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v9);
 
   v8 = *MEMORY[0x1E69E9840];

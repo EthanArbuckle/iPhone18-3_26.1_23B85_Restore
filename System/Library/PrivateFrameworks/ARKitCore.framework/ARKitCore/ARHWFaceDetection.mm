@@ -1,47 +1,47 @@
 @interface ARHWFaceDetection
-+ (id)faceDetectionFromDictionary:(id)a3;
-- (ARHWFaceDetection)initWithCoder:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToFaceDetection:(id)a3;
++ (id)faceDetectionFromDictionary:(id)dictionary;
+- (ARHWFaceDetection)initWithCoder:(id)coder;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToFaceDetection:(id)detection;
 - (CGRect)boundingBox;
-- (void)encodeWithCoder:(id)a3;
-- (void)setTime:(id *)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setTime:(id *)time;
 @end
 
 @implementation ARHWFaceDetection
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   ID = self->_ID;
-  v5 = a3;
-  [v5 encodeInt64:ID forKey:@"ID"];
-  [v5 encodeDouble:@"rollAngleInDegrees" forKey:self->_rollAngleInDegrees];
-  [v5 encodeRect:@"boundingBox" forKey:{self->_boundingBox.origin.x, self->_boundingBox.origin.y, self->_boundingBox.size.width, self->_boundingBox.size.height}];
-  [v5 encodeInteger:self->_detectionOrientation forKey:@"detectionOrientation"];
+  coderCopy = coder;
+  [coderCopy encodeInt64:ID forKey:@"ID"];
+  [coderCopy encodeDouble:@"rollAngleInDegrees" forKey:self->_rollAngleInDegrees];
+  [coderCopy encodeRect:@"boundingBox" forKey:{self->_boundingBox.origin.x, self->_boundingBox.origin.y, self->_boundingBox.size.width, self->_boundingBox.size.height}];
+  [coderCopy encodeInteger:self->_detectionOrientation forKey:@"detectionOrientation"];
   time = self->_time;
-  [v5 encodeCMTime:&time forKey:@"time"];
+  [coderCopy encodeCMTime:&time forKey:@"time"];
 }
 
-- (ARHWFaceDetection)initWithCoder:(id)a3
+- (ARHWFaceDetection)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = ARHWFaceDetection;
   v5 = [(ARHWFaceDetection *)&v14 init];
   if (v5)
   {
-    v5->_ID = [v4 decodeInt64ForKey:@"ID"];
-    [v4 decodeDoubleForKey:@"rollAngleInDegrees"];
+    v5->_ID = [coderCopy decodeInt64ForKey:@"ID"];
+    [coderCopy decodeDoubleForKey:@"rollAngleInDegrees"];
     v5->_rollAngleInDegrees = v6;
-    [v4 decodeRectForKey:@"boundingBox"];
+    [coderCopy decodeRectForKey:@"boundingBox"];
     v5->_boundingBox.origin.x = v7;
     v5->_boundingBox.origin.y = v8;
     v5->_boundingBox.size.width = v9;
     v5->_boundingBox.size.height = v10;
-    v5->_detectionOrientation = [v4 decodeIntegerForKey:@"detectionOrientation"];
-    if (v4)
+    v5->_detectionOrientation = [coderCopy decodeIntegerForKey:@"detectionOrientation"];
+    if (coderCopy)
     {
-      [v4 decodeCMTimeForKey:@"time"];
+      [coderCopy decodeCMTimeForKey:@"time"];
     }
 
     else
@@ -57,25 +57,25 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(ARHWFaceDetection *)self isEqualToFaceDetection:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(ARHWFaceDetection *)self isEqualToFaceDetection:equalCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToFaceDetection:(id)a3
+- (BOOL)isEqualToFaceDetection:(id)detection
 {
-  v4 = a3;
+  detectionCopy = detection;
   v5 = [(ARHWFaceDetection *)self ID];
-  if (v5 == [v4 ID] && (-[ARHWFaceDetection rollAngleInDegrees](self, "rollAngleInDegrees"), v7 = v6, objc_msgSend(v4, "rollAngleInDegrees"), v7 == v8) && (-[ARHWFaceDetection boundingBox](self, "boundingBox"), v10 = v9, v12 = v11, v14 = v13, v16 = v15, objc_msgSend(v4, "boundingBox"), v27.origin.x = v17, v27.origin.y = v18, v27.size.width = v19, v27.size.height = v20, v26.origin.x = v10, v26.origin.y = v12, v26.size.width = v14, v26.size.height = v16, CGRectEqualToRect(v26, v27)) && (v21 = -[ARHWFaceDetection detectionOrientation](self, "detectionOrientation"), v21 == objc_msgSend(v4, "detectionOrientation")))
+  if (v5 == [detectionCopy ID] && (-[ARHWFaceDetection rollAngleInDegrees](self, "rollAngleInDegrees"), v7 = v6, objc_msgSend(detectionCopy, "rollAngleInDegrees"), v7 == v8) && (-[ARHWFaceDetection boundingBox](self, "boundingBox"), v10 = v9, v12 = v11, v14 = v13, v16 = v15, objc_msgSend(detectionCopy, "boundingBox"), v27.origin.x = v17, v27.origin.y = v18, v27.size.width = v19, v27.size.height = v20, v26.origin.x = v10, v26.origin.y = v12, v26.size.width = v14, v26.size.height = v16, CGRectEqualToRect(v26, v27)) && (v21 = -[ARHWFaceDetection detectionOrientation](self, "detectionOrientation"), v21 == objc_msgSend(detectionCopy, "detectionOrientation")))
   {
     [(ARHWFaceDetection *)self time];
-    if (v4)
+    if (detectionCopy)
     {
-      [v4 time];
+      [detectionCopy time];
     }
 
     else
@@ -94,25 +94,25 @@
   return v22;
 }
 
-+ (id)faceDetectionFromDictionary:(id)a3
++ (id)faceDetectionFromDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [v3 objectForKey:@"AngleInfoRoll"];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy objectForKey:@"AngleInfoRoll"];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  if (isKindOfClass & 1) != 0 && ([v3 objectForKey:@"Rect"], v6 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), v7 = objc_opt_isKindOfClass(), v6, (v7) && (objc_msgSend(v3, "objectForKey:", @"timestamp"), v8 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), v9 = objc_opt_isKindOfClass(), v8, (v9) && (objc_msgSend(v3, "objectForKey:", @"FaceID"), v10 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), v11 = objc_opt_isKindOfClass(), v10, (v11) && (memset(&rect, 0, sizeof(rect)), objc_msgSend(v3, "objectForKey:", @"Rect"), v12 = objc_claimAutoreleasedReturnValue(), v13 = CGRectMakeWithDictionaryRepresentation(v12, &rect), v12, v13))
+  if (isKindOfClass & 1) != 0 && ([dictionaryCopy objectForKey:@"Rect"], v6 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), v7 = objc_opt_isKindOfClass(), v6, (v7) && (objc_msgSend(dictionaryCopy, "objectForKey:", @"timestamp"), v8 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), v9 = objc_opt_isKindOfClass(), v8, (v9) && (objc_msgSend(dictionaryCopy, "objectForKey:", @"FaceID"), v10 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), v11 = objc_opt_isKindOfClass(), v10, (v11) && (memset(&rect, 0, sizeof(rect)), objc_msgSend(dictionaryCopy, "objectForKey:", @"Rect"), v12 = objc_claimAutoreleasedReturnValue(), v13 = CGRectMakeWithDictionaryRepresentation(v12, &rect), v12, v13))
   {
     v14 = objc_opt_new();
-    v15 = [v3 objectForKey:@"FaceID"];
+    v15 = [dictionaryCopy objectForKey:@"FaceID"];
     [v14 setID:{objc_msgSend(v15, "integerValue")}];
 
-    v16 = [v3 objectForKey:@"AngleInfoRoll"];
+    v16 = [dictionaryCopy objectForKey:@"AngleInfoRoll"];
     [v16 doubleValue];
     [v14 setRollAngleInDegrees:?];
 
     [v14 setBoundingBox:{rect.origin.x, rect.origin.y, rect.size.width, rect.size.height}];
-    v17 = [v3 objectForKey:@"timestamp"];
+    v17 = [dictionaryCopy objectForKey:@"timestamp"];
     CMTimeMake(&v20, [v17 integerValue], 1);
     v19 = v20;
     [v14 setTime:&v19];
@@ -139,10 +139,10 @@
   return result;
 }
 
-- (void)setTime:(id *)a3
+- (void)setTime:(id *)time
 {
-  v3 = *&a3->var0;
-  self->_time.epoch = a3->var3;
+  v3 = *&time->var0;
+  self->_time.epoch = time->var3;
   *&self->_time.value = v3;
 }
 

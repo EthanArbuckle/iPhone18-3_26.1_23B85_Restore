@@ -1,50 +1,50 @@
 @interface ASNotificationEvent
-+ (id)achievementCompletionEventWithAchievement:(id)a3;
-+ (id)deletedWorkoutEventWithUUID:(id)a3;
-+ (id)goalCompletionEventWithActivitySummary:(id)a3;
-+ (id)notificationEventWithRecord:(id)a3 friendUUID:(id)a4;
-+ (id)workoutCompletionEventWithWorkout:(id)a3;
++ (id)achievementCompletionEventWithAchievement:(id)achievement;
++ (id)deletedWorkoutEventWithUUID:(id)d;
++ (id)goalCompletionEventWithActivitySummary:(id)summary;
++ (id)notificationEventWithRecord:(id)record friendUUID:(id)d;
++ (id)workoutCompletionEventWithWorkout:(id)workout;
 - (NSString)description;
-- (id)recordWithZoneID:(id)a3 recordEncryptionType:(int64_t)a4;
+- (id)recordWithZoneID:(id)d recordEncryptionType:(int64_t)type;
 @end
 
 @implementation ASNotificationEvent
 
-- (id)recordWithZoneID:(id)a3 recordEncryptionType:(int64_t)a4
+- (id)recordWithZoneID:(id)d recordEncryptionType:(int64_t)type
 {
-  v6 = a3;
-  v7 = [(ASNotificationEvent *)self type];
-  v8 = [(ASNotificationEvent *)self triggerUUID];
-  v9 = ASWorkoutNotificationRecordIDForType(v7, v8, v6);
+  dCopy = d;
+  type = [(ASNotificationEvent *)self type];
+  triggerUUID = [(ASNotificationEvent *)self triggerUUID];
+  v9 = ASWorkoutNotificationRecordIDForType(type, triggerUUID, dCopy);
 
   v10 = [objc_alloc(MEMORY[0x277CBC5A0]) initWithRecordType:@"ActivitySharingEvent" recordID:v9];
-  _ASUpdateSchemaVersionOnRecord(2, v10, a4);
+  _ASUpdateSchemaVersionOnRecord(2, v10, type);
   v11 = objc_alloc_init(ASCodableCloudKitNotificationEvent);
-  v12 = [(ASNotificationEvent *)self date];
-  [v12 timeIntervalSinceReferenceDate];
+  date = [(ASNotificationEvent *)self date];
+  [date timeIntervalSinceReferenceDate];
   [(ASCodableCloudKitNotificationEvent *)v11 setDate:?];
 
   [(ASCodableCloudKitNotificationEvent *)v11 setType:[(ASNotificationEvent *)self type]];
-  v13 = [(ASNotificationEvent *)self triggerUUID];
-  v14 = [v13 hk_dataForUUIDBytes];
-  [(ASCodableCloudKitNotificationEvent *)v11 setTriggerUUID:v14];
+  triggerUUID2 = [(ASNotificationEvent *)self triggerUUID];
+  hk_dataForUUIDBytes = [triggerUUID2 hk_dataForUUIDBytes];
+  [(ASCodableCloudKitNotificationEvent *)v11 setTriggerUUID:hk_dataForUUIDBytes];
 
   [(ASCodableCloudKitNotificationEvent *)v11 setTriggerSnapshotIndex:[(ASNotificationEvent *)self triggerSnapshotIndex]];
-  v15 = [(ASCodableCloudKitNotificationEvent *)v11 data];
-  v16 = [v10 encryptedValues];
-  [v16 setObject:v15 forKeyedSubscript:@"EncryptedData"];
+  data = [(ASCodableCloudKitNotificationEvent *)v11 data];
+  encryptedValues = [v10 encryptedValues];
+  [encryptedValues setObject:data forKeyedSubscript:@"EncryptedData"];
 
   return v10;
 }
 
-+ (id)notificationEventWithRecord:(id)a3 friendUUID:(id)a4
++ (id)notificationEventWithRecord:(id)record friendUUID:(id)d
 {
-  v5 = a3;
-  v6 = a4;
-  if (_ASCloudKitSchemaVersionForRecord(v5) == 2)
+  recordCopy = record;
+  dCopy = d;
+  if (_ASCloudKitSchemaVersionForRecord(recordCopy) == 2)
   {
-    v7 = [v5 encryptedValues];
-    v8 = [v7 objectForKeyedSubscript:@"EncryptedData"];
+    encryptedValues = [recordCopy encryptedValues];
+    v8 = [encryptedValues objectForKeyedSubscript:@"EncryptedData"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -67,12 +67,12 @@
 
       [(ASNotificationEvent *)v10 setType:[(ASCodableCloudKitNotificationEvent *)v11 type]];
       v14 = MEMORY[0x277CCAD78];
-      v15 = [(ASCodableCloudKitNotificationEvent *)v11 triggerUUID];
-      v16 = [v14 hk_UUIDWithData:v15];
+      triggerUUID = [(ASCodableCloudKitNotificationEvent *)v11 triggerUUID];
+      v16 = [v14 hk_UUIDWithData:triggerUUID];
       [(ASNotificationEvent *)v10 setTriggerUUID:v16];
 
       [(ASNotificationEvent *)v10 setTriggerSnapshotIndex:[(ASCodableCloudKitNotificationEvent *)v11 triggerSnapshotIndex]];
-      [(ASNotificationEvent *)v10 setFriendUUID:v6];
+      [(ASNotificationEvent *)v10 setFriendUUID:dCopy];
     }
 
     else
@@ -101,71 +101,71 @@
   return v10;
 }
 
-+ (id)goalCompletionEventWithActivitySummary:(id)a3
++ (id)goalCompletionEventWithActivitySummary:(id)summary
 {
-  v3 = a3;
+  summaryCopy = summary;
   v4 = objc_alloc_init(ASNotificationEvent);
   [(ASNotificationEvent *)v4 setType:0];
-  v5 = [MEMORY[0x277CBEAA8] date];
-  [(ASNotificationEvent *)v4 setDate:v5];
+  date = [MEMORY[0x277CBEAA8] date];
+  [(ASNotificationEvent *)v4 setDate:date];
 
   [(ASNotificationEvent *)v4 setTriggerUUID:0];
-  v6 = [v3 _activitySummaryIndex];
+  _activitySummaryIndex = [summaryCopy _activitySummaryIndex];
 
-  [(ASNotificationEvent *)v4 setTriggerSnapshotIndex:v6];
+  [(ASNotificationEvent *)v4 setTriggerSnapshotIndex:_activitySummaryIndex];
 
   return v4;
 }
 
-+ (id)workoutCompletionEventWithWorkout:(id)a3
++ (id)workoutCompletionEventWithWorkout:(id)workout
 {
-  v3 = a3;
+  workoutCopy = workout;
   v4 = objc_alloc_init(ASNotificationEvent);
   [(ASNotificationEvent *)v4 setType:2];
-  v5 = [MEMORY[0x277CBEAA8] date];
-  [(ASNotificationEvent *)v4 setDate:v5];
+  date = [MEMORY[0x277CBEAA8] date];
+  [(ASNotificationEvent *)v4 setDate:date];
 
-  v6 = [v3 UUID];
-  [(ASNotificationEvent *)v4 setTriggerUUID:v6];
+  uUID = [workoutCopy UUID];
+  [(ASNotificationEvent *)v4 setTriggerUUID:uUID];
 
-  v7 = [v3 endDate];
+  endDate = [workoutCopy endDate];
 
-  v8 = [MEMORY[0x277CBEA80] currentCalendar];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
   v9 = _HKActivityCacheDateComponentsFromDate();
   [(ASNotificationEvent *)v4 setTriggerSnapshotIndex:_HKCacheIndexFromDateComponents()];
 
   return v4;
 }
 
-+ (id)achievementCompletionEventWithAchievement:(id)a3
++ (id)achievementCompletionEventWithAchievement:(id)achievement
 {
-  v3 = a3;
+  achievementCopy = achievement;
   v4 = objc_alloc_init(ASNotificationEvent);
   [(ASNotificationEvent *)v4 setType:1];
-  v5 = [MEMORY[0x277CBEAA8] date];
-  [(ASNotificationEvent *)v4 setDate:v5];
+  date = [MEMORY[0x277CBEAA8] date];
+  [(ASNotificationEvent *)v4 setDate:date];
 
-  v6 = [v3 completedDate];
+  completedDate = [achievementCopy completedDate];
 
-  v7 = [MEMORY[0x277CBEA80] currentCalendar];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
   v8 = _HKActivityCacheDateComponentsFromDate();
   [(ASNotificationEvent *)v4 setTriggerSnapshotIndex:_HKCacheIndexFromDateComponents()];
 
-  v9 = [MEMORY[0x277CCAD78] UUID];
-  [(ASNotificationEvent *)v4 setTriggerUUID:v9];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  [(ASNotificationEvent *)v4 setTriggerUUID:uUID];
 
   return v4;
 }
 
-+ (id)deletedWorkoutEventWithUUID:(id)a3
++ (id)deletedWorkoutEventWithUUID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = objc_alloc_init(ASNotificationEvent);
   [(ASNotificationEvent *)v4 setType:3];
-  v5 = [MEMORY[0x277CBEAA8] date];
-  [(ASNotificationEvent *)v4 setDate:v5];
+  date = [MEMORY[0x277CBEAA8] date];
+  [(ASNotificationEvent *)v4 setDate:date];
 
-  [(ASNotificationEvent *)v4 setTriggerUUID:v3];
+  [(ASNotificationEvent *)v4 setTriggerUUID:dCopy];
 
   return v4;
 }
@@ -175,12 +175,12 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(ASNotificationEvent *)self type];
-  v7 = [(ASNotificationEvent *)self date];
-  v8 = [(ASNotificationEvent *)self triggerUUID];
-  v9 = [(ASNotificationEvent *)self triggerSnapshotIndex];
-  v10 = [(ASNotificationEvent *)self friendUUID];
-  v11 = [v3 stringWithFormat:@"%@:%p type:%ld date:%@ triggerUUID:%@ triggerSnapshotIndex:%lld friendUUID:%@", v5, self, v6, v7, v8, v9, v10];
+  type = [(ASNotificationEvent *)self type];
+  date = [(ASNotificationEvent *)self date];
+  triggerUUID = [(ASNotificationEvent *)self triggerUUID];
+  triggerSnapshotIndex = [(ASNotificationEvent *)self triggerSnapshotIndex];
+  friendUUID = [(ASNotificationEvent *)self friendUUID];
+  v11 = [v3 stringWithFormat:@"%@:%p type:%ld date:%@ triggerUUID:%@ triggerSnapshotIndex:%lld friendUUID:%@", v5, self, type, date, triggerUUID, triggerSnapshotIndex, friendUUID];
 
   return v11;
 }

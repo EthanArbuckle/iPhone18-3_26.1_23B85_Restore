@@ -1,34 +1,34 @@
 @interface FHPropensityModel
-- (FHPropensityModel)initWithModelName:(id)a3 namespaceName:(id)a4 modelFactorName:(id)a5 defaultModel:(id)a6;
-- (FHPropensityModel)initWithModelURL:(id)a3 modelName:(id)a4;
-- (id)getNewbookRank:(id)a3;
+- (FHPropensityModel)initWithModelName:(id)name namespaceName:(id)namespaceName modelFactorName:(id)factorName defaultModel:(id)model;
+- (FHPropensityModel)initWithModelURL:(id)l modelName:(id)name;
+- (id)getNewbookRank:(id)rank;
 - (void)_createNewBookRankMapping;
 @end
 
 @implementation FHPropensityModel
 
-- (FHPropensityModel)initWithModelURL:(id)a3 modelName:(id)a4
+- (FHPropensityModel)initWithModelURL:(id)l modelName:(id)name
 {
-  v6 = a4;
-  v7 = a3;
+  nameCopy = name;
+  lCopy = l;
   [(FHPropensityModel *)self _createNewBookRankMapping];
   v10.receiver = self;
   v10.super_class = FHPropensityModel;
-  v8 = [(FHModel *)&v10 initWithModelURL:v7 modelName:v6];
+  v8 = [(FHModel *)&v10 initWithModelURL:lCopy modelName:nameCopy];
 
   return v8;
 }
 
-- (FHPropensityModel)initWithModelName:(id)a3 namespaceName:(id)a4 modelFactorName:(id)a5 defaultModel:(id)a6
+- (FHPropensityModel)initWithModelName:(id)name namespaceName:(id)namespaceName modelFactorName:(id)factorName defaultModel:(id)model
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  modelCopy = model;
+  factorNameCopy = factorName;
+  namespaceNameCopy = namespaceName;
+  nameCopy = name;
   [(FHPropensityModel *)self _createNewBookRankMapping];
   v16.receiver = self;
   v16.super_class = FHPropensityModel;
-  v14 = [(FHTrialModel *)&v16 initWithModelName:v13 namespaceName:v12 modelFactorName:v11 defaultModel:v10];
+  v14 = [(FHTrialModel *)&v16 initWithModelName:nameCopy namespaceName:namespaceNameCopy modelFactorName:factorNameCopy defaultModel:modelCopy];
 
   return v14;
 }
@@ -57,9 +57,9 @@
       v9 = FinHealthLogObject(@"FinHealthCore");
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
-        v10 = [v7 localizedDescription];
+        localizedDescription = [v7 localizedDescription];
         *buf = 138412290;
-        v23 = v10;
+        v23 = localizedDescription;
         _os_log_impl(&dword_226DD4000, v9, OS_LOG_TYPE_ERROR, "Error serializing new book rank mapping %@", buf, 0xCu);
       }
     }
@@ -87,9 +87,9 @@
     v17 = FinHealthLogObject(@"FinHealthCore");
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
-      v18 = [v15 localizedDescription];
+      localizedDescription2 = [v15 localizedDescription];
       *buf = 138412290;
-      v23 = v18;
+      v23 = localizedDescription2;
       _os_log_impl(&dword_226DD4000, v17, OS_LOG_TYPE_ERROR, "Error serializing new book rank mapping %@", buf, 0xCu);
     }
   }
@@ -100,10 +100,10 @@ LABEL_15:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (id)getNewbookRank:(id)a3
+- (id)getNewbookRank:(id)rank
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  rankCopy = rank;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
@@ -132,10 +132,10 @@ LABEL_15:
         [v14 doubleValue];
         v16 = v15;
 
-        [v4 doubleValue];
+        [rankCopy doubleValue];
         if (v16 >= v17)
         {
-          [v4 doubleValue];
+          [rankCopy doubleValue];
           if (v13 < v18)
           {
             v19 = [v10 objectForKey:@"newbook_rank"];
@@ -164,7 +164,7 @@ LABEL_15:
   if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412290;
-    v29 = v4;
+    v29 = rankCopy;
     _os_log_impl(&dword_226DD4000, v20, OS_LOG_TYPE_ERROR, "No newbook rank found for score %@", buf, 0xCu);
   }
 

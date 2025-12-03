@@ -1,5 +1,5 @@
 @interface PSGWordBoundarySuggestionsExpConfig
-- (PSGWordBoundarySuggestionsExpConfig)initWithNamespaceName:(id)a3 withTrialClient:(id)a4 shouldDownloadAssets:(BOOL)a5;
+- (PSGWordBoundarySuggestionsExpConfig)initWithNamespaceName:(id)name withTrialClient:(id)client shouldDownloadAssets:(BOOL)assets;
 - (void)_fillDefaultValuesForFactors;
 - (void)_setDefaultValuesForFactors;
 @end
@@ -11,44 +11,44 @@
   v16 = objc_opt_new();
   if ([(NSString *)self->_treatmentName length])
   {
-    v3 = self->_treatmentName;
+    treatmentName = self->_treatmentName;
   }
 
   else
   {
-    v3 = [v16 treatmentName];
+    treatmentName = [v16 treatmentName];
   }
 
   treatmentName = self->_treatmentName;
-  self->_treatmentName = v3;
+  self->_treatmentName = treatmentName;
 
-  v5 = [(TRIRolloutIdentifiers *)self->_rolloutIdentifiers rolloutId];
-  if ([v5 length])
+  rolloutId = [(TRIRolloutIdentifiers *)self->_rolloutIdentifiers rolloutId];
+  if ([rolloutId length])
   {
-    v6 = self->_rolloutIdentifiers;
+    rolloutIdentifiers = self->_rolloutIdentifiers;
   }
 
   else
   {
-    v6 = [v16 rolloutIdentifiers];
+    rolloutIdentifiers = [v16 rolloutIdentifiers];
   }
 
   rolloutIdentifiers = self->_rolloutIdentifiers;
-  self->_rolloutIdentifiers = v6;
+  self->_rolloutIdentifiers = rolloutIdentifiers;
 
-  v8 = [(TRIExperimentIdentifiers *)self->_experimentIdentifiers treatmentId];
-  if ([v8 length])
+  treatmentId = [(TRIExperimentIdentifiers *)self->_experimentIdentifiers treatmentId];
+  if ([treatmentId length])
   {
-    v9 = self->_experimentIdentifiers;
+    experimentIdentifiers = self->_experimentIdentifiers;
   }
 
   else
   {
-    v9 = [v16 experimentIdentifiers];
+    experimentIdentifiers = [v16 experimentIdentifiers];
   }
 
   experimentIdentifiers = self->_experimentIdentifiers;
-  self->_experimentIdentifiers = v9;
+  self->_experimentIdentifiers = experimentIdentifiers;
 
   isMLModelEnabled = self->_isMLModelEnabled;
   if ((isMLModelEnabled & 1) == 0)
@@ -59,67 +59,67 @@
   self->_isMLModelEnabled = isMLModelEnabled;
   if ([(NSString *)self->_inferenceModelConfigPath length])
   {
-    v12 = self->_inferenceModelConfigPath;
+    inferenceModelConfigPath = self->_inferenceModelConfigPath;
   }
 
   else
   {
-    v12 = [v16 inferenceModelConfigPath];
+    inferenceModelConfigPath = [v16 inferenceModelConfigPath];
   }
 
   inferenceModelConfigPath = self->_inferenceModelConfigPath;
-  self->_inferenceModelConfigPath = v12;
+  self->_inferenceModelConfigPath = inferenceModelConfigPath;
 
   if ([(NSString *)self->_espressoBinFilePath length])
   {
-    v14 = self->_espressoBinFilePath;
+    espressoBinFilePath = self->_espressoBinFilePath;
   }
 
   else
   {
-    v14 = [v16 espressoBinFilePath];
+    espressoBinFilePath = [v16 espressoBinFilePath];
   }
 
   espressoBinFilePath = self->_espressoBinFilePath;
-  self->_espressoBinFilePath = v14;
+  self->_espressoBinFilePath = espressoBinFilePath;
 }
 
 - (void)_setDefaultValuesForFactors
 {
   v13 = objc_opt_new();
   self->_isMLModelEnabled = [v13 isMLModelEnabled];
-  v3 = [v13 treatmentName];
+  treatmentName = [v13 treatmentName];
   treatmentName = self->_treatmentName;
-  self->_treatmentName = v3;
+  self->_treatmentName = treatmentName;
 
-  v5 = [v13 rolloutIdentifiers];
+  rolloutIdentifiers = [v13 rolloutIdentifiers];
   rolloutIdentifiers = self->_rolloutIdentifiers;
-  self->_rolloutIdentifiers = v5;
+  self->_rolloutIdentifiers = rolloutIdentifiers;
 
-  v7 = [v13 experimentIdentifiers];
+  experimentIdentifiers = [v13 experimentIdentifiers];
   experimentIdentifiers = self->_experimentIdentifiers;
-  self->_experimentIdentifiers = v7;
+  self->_experimentIdentifiers = experimentIdentifiers;
 
-  v9 = [v13 inferenceModelConfigPath];
+  inferenceModelConfigPath = [v13 inferenceModelConfigPath];
   inferenceModelConfigPath = self->_inferenceModelConfigPath;
-  self->_inferenceModelConfigPath = v9;
+  self->_inferenceModelConfigPath = inferenceModelConfigPath;
 
-  v11 = [v13 espressoBinFilePath];
+  espressoBinFilePath = [v13 espressoBinFilePath];
   espressoBinFilePath = self->_espressoBinFilePath;
-  self->_espressoBinFilePath = v11;
+  self->_espressoBinFilePath = espressoBinFilePath;
 }
 
-- (PSGWordBoundarySuggestionsExpConfig)initWithNamespaceName:(id)a3 withTrialClient:(id)a4 shouldDownloadAssets:(BOOL)a5
+- (PSGWordBoundarySuggestionsExpConfig)initWithNamespaceName:(id)name withTrialClient:(id)client shouldDownloadAssets:(BOOL)assets
 {
   v91[1] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
+  nameCopy = name;
+  clientCopy = client;
   v76.receiver = self;
   v76.super_class = PSGWordBoundarySuggestionsExpConfig;
   v11 = [(PSGWordBoundarySuggestionsExpConfig *)&v76 init];
   if (v11)
   {
-    if (!v9)
+    if (!nameCopy)
     {
       goto LABEL_30;
     }
@@ -128,45 +128,45 @@
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v78 = v9;
+      v78 = nameCopy;
       _os_log_impl(&dword_260D36000, v12, OS_LOG_TYPE_DEFAULT, "WordBoundary config -- setting up config for namespace %@", buf, 0xCu);
     }
 
-    [v10 refresh];
-    objc_storeStrong(&v11->_namespaceName, a3);
-    v13 = [v10 rolloutIdentifiersWithNamespaceName:v11->_namespaceName];
+    [clientCopy refresh];
+    objc_storeStrong(&v11->_namespaceName, name);
+    v13 = [clientCopy rolloutIdentifiersWithNamespaceName:v11->_namespaceName];
     rolloutIdentifiers = v11->_rolloutIdentifiers;
     v11->_rolloutIdentifiers = v13;
 
-    v15 = [v10 experimentIdentifiersWithNamespaceName:v11->_namespaceName];
+    v15 = [clientCopy experimentIdentifiersWithNamespaceName:v11->_namespaceName];
     experimentIdentifiers = v11->_experimentIdentifiers;
     v11->_experimentIdentifiers = v15;
 
-    v17 = [(TRIExperimentIdentifiers *)v11->_experimentIdentifiers treatmentId];
-    if (![v17 length])
+    treatmentId = [(TRIExperimentIdentifiers *)v11->_experimentIdentifiers treatmentId];
+    if (![treatmentId length])
     {
-      v18 = [(TRIRolloutIdentifiers *)v11->_rolloutIdentifiers rolloutId];
-      v19 = [v18 length];
+      rolloutId = [(TRIRolloutIdentifiers *)v11->_rolloutIdentifiers rolloutId];
+      v19 = [rolloutId length];
 
       if (v19)
       {
         goto LABEL_8;
       }
 
-      v17 = psg_default_log_handle();
-      if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
+      treatmentId = psg_default_log_handle();
+      if (os_log_type_enabled(treatmentId, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 0;
-        _os_log_impl(&dword_260D36000, v17, OS_LOG_TYPE_DEFAULT, "WordBoundary using on-device values since treatment id and rollout id is unset.", buf, 2u);
+        _os_log_impl(&dword_260D36000, treatmentId, OS_LOG_TYPE_DEFAULT, "WordBoundary using on-device values since treatment id and rollout id is unset.", buf, 2u);
       }
     }
 
 LABEL_8:
-    v20 = [(TRIExperimentIdentifiers *)v11->_experimentIdentifiers treatmentId];
-    if ([v20 length])
+    treatmentId2 = [(TRIExperimentIdentifiers *)v11->_experimentIdentifiers treatmentId];
+    if ([treatmentId2 length])
     {
-      v21 = [(TRIExperimentIdentifiers *)v11->_experimentIdentifiers experimentId];
-      v22 = [v21 length];
+      experimentId = [(TRIExperimentIdentifiers *)v11->_experimentIdentifiers experimentId];
+      v22 = [experimentId length];
 
       if (!v22)
       {
@@ -187,17 +187,17 @@ LABEL_8:
     {
     }
 
-    v25 = [v10 levelForFactor:@"treatmentName" withNamespaceName:v11->_namespaceName];
-    v26 = [v25 stringValue];
+    v25 = [clientCopy levelForFactor:@"treatmentName" withNamespaceName:v11->_namespaceName];
+    stringValue = [v25 stringValue];
     treatmentName = v11->_treatmentName;
-    v11->_treatmentName = v26;
+    v11->_treatmentName = stringValue;
 
-    v28 = [v10 levelForFactor:@"modelDescription" withNamespaceName:v11->_namespaceName];
-    v29 = [v28 stringValue];
+    v28 = [clientCopy levelForFactor:@"modelDescription" withNamespaceName:v11->_namespaceName];
+    stringValue2 = [v28 stringValue];
     inferenceModelDescription = v11->_inferenceModelDescription;
-    v11->_inferenceModelDescription = v29;
+    v11->_inferenceModelDescription = stringValue2;
 
-    v31 = [v10 levelForFactor:@"mlModelEnabled" withNamespaceName:v11->_namespaceName];
+    v31 = [clientCopy levelForFactor:@"mlModelEnabled" withNamespaceName:v11->_namespaceName];
     v11->_isMLModelEnabled = [v31 BOOLeanValue];
 
     if ([(NSString *)v11->_treatmentName length])
@@ -214,34 +214,34 @@ LABEL_8:
           }
         }
 
-        v33 = [v10 levelForFactor:@"modelAssets" withNamespaceName:v11->_namespaceName];
-        v34 = [v33 directoryValue];
+        v33 = [clientCopy levelForFactor:@"modelAssets" withNamespaceName:v11->_namespaceName];
+        directoryValue = [v33 directoryValue];
 
-        if ([v34 hasPath] & 1) != 0 || (objc_msgSend(v34, "isOnDemand"))
+        if ([directoryValue hasPath] & 1) != 0 || (objc_msgSend(directoryValue, "isOnDemand"))
         {
-          if (([v34 hasPath] & 1) != 0 || a5)
+          if (([directoryValue hasPath] & 1) != 0 || assets)
           {
-            if ([v34 hasPath])
+            if ([directoryValue hasPath])
             {
-              v35 = [v34 path];
+              path = [directoryValue path];
               v71 = 0;
-              v40 = [MEMORY[0x277CCAA00] defaultManager];
-              v41 = [v40 fileExistsAtPath:v35 isDirectory:&v71];
+              defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+              v41 = [defaultManager fileExistsAtPath:path isDirectory:&v71];
 
               if (v41 && (v71 & 1) != 0)
               {
                 v42 = [(NSString *)v11->_treatmentName stringByAppendingString:@".config.plist"];
                 v43 = [(NSString *)v11->_treatmentName stringByAppendingString:@".espresso.bin"];
-                v44 = [v35 stringByAppendingPathComponent:v42];
+                v44 = [path stringByAppendingPathComponent:v42];
                 inferenceModelConfigPath = v11->_inferenceModelConfigPath;
                 v11->_inferenceModelConfigPath = v44;
 
-                v46 = [v35 stringByAppendingPathComponent:v43];
+                v46 = [path stringByAppendingPathComponent:v43];
                 espressoBinFilePath = v11->_espressoBinFilePath;
                 v11->_espressoBinFilePath = v46;
 
-                v48 = [MEMORY[0x277CCAA00] defaultManager];
-                v49 = [v48 isReadableFileAtPath:v11->_inferenceModelConfigPath];
+                defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+                v49 = [defaultManager2 isReadableFileAtPath:v11->_inferenceModelConfigPath];
 
                 if ((v49 & 1) == 0)
                 {
@@ -249,8 +249,8 @@ LABEL_8:
                   v11->_inferenceModelConfigPath = 0;
                 }
 
-                v51 = [MEMORY[0x277CCAA00] defaultManager];
-                v52 = [v51 isReadableFileAtPath:v11->_espressoBinFilePath];
+                defaultManager3 = [MEMORY[0x277CCAA00] defaultManager];
+                v52 = [defaultManager3 isReadableFileAtPath:v11->_espressoBinFilePath];
 
                 if ((v52 & 1) == 0)
                 {
@@ -268,8 +268,8 @@ LABEL_8:
                     v70 = v11->_espressoBinFilePath;
                     v67 = v11->_treatmentName;
                     v68 = v11->_inferenceModelConfigPath;
-                    v56 = [(TRIExperimentIdentifiers *)v11->_experimentIdentifiers experimentId];
-                    v57 = [(TRIExperimentIdentifiers *)v11->_experimentIdentifiers treatmentId];
+                    experimentId2 = [(TRIExperimentIdentifiers *)v11->_experimentIdentifiers experimentId];
+                    treatmentId3 = [(TRIExperimentIdentifiers *)v11->_experimentIdentifiers treatmentId];
                     isMLModelEnabled = v11->_isMLModelEnabled;
                     *buf = 138413826;
                     v78 = v67;
@@ -280,9 +280,9 @@ LABEL_8:
                     v83 = 2112;
                     v84 = v70;
                     v85 = 2112;
-                    v86 = v56;
+                    v86 = experimentId2;
                     v87 = 2112;
-                    v88 = v57;
+                    v88 = treatmentId3;
                     v89 = 1024;
                     v90 = isMLModelEnabled;
                     _os_log_impl(&dword_260D36000, v54, OS_LOG_TYPE_DEFAULT, "WordBoundary reading from trial factor values {treatmentName: %@ inferenceModelDescription: %@ inferenceModelConfigPath: %@ espresso.bin: %@ experimentId: %@ treatmentId: %@ isMLModelEnabled: %d}", buf, 0x44u);
@@ -338,41 +338,41 @@ LABEL_8:
 
             v91[0] = @"modelAssets";
             v60 = MEMORY[0x277CBEA60];
-            v35 = initWithNamespaceName_withTrialClient_shouldDownloadAssets___pasExprOnceResult;
+            path = initWithNamespaceName_withTrialClient_shouldDownloadAssets___pasExprOnceResult;
             v61 = [v60 arrayWithObjects:v91 count:1];
             v62 = v11->_namespaceName;
             v74[0] = MEMORY[0x277D85DD0];
             v74[1] = 3221225472;
             v74[2] = __98__PSGWordBoundarySuggestionsExpConfig_initWithNamespaceName_withTrialClient_shouldDownloadAssets___block_invoke_2;
             v74[3] = &unk_279ABE428;
-            v75 = v9;
+            v75 = nameCopy;
             v72[0] = MEMORY[0x277D85DD0];
             v72[1] = 3221225472;
             v72[2] = __98__PSGWordBoundarySuggestionsExpConfig_initWithNamespaceName_withTrialClient_shouldDownloadAssets___block_invoke_29;
             v72[3] = &unk_279ABE450;
             v73 = v11;
-            [v10 downloadLevelsForFactors:v61 withNamespace:v62 queue:v35 options:0 progress:v74 completion:v72];
+            [clientCopy downloadLevelsForFactors:v61 withNamespace:v62 queue:path options:0 progress:v74 completion:v72];
           }
 
           else
           {
-            v35 = psg_default_log_handle();
-            if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
+            path = psg_default_log_handle();
+            if (os_log_type_enabled(path, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138412290;
-              v78 = v9;
-              _os_log_impl(&dword_260D36000, v35, OS_LOG_TYPE_DEFAULT, "WordBoundary: assets for %@ not found on device, not downloading for this request", buf, 0xCu);
+              v78 = nameCopy;
+              _os_log_impl(&dword_260D36000, path, OS_LOG_TYPE_DEFAULT, "WordBoundary: assets for %@ not found on device, not downloading for this request", buf, 0xCu);
             }
           }
         }
 
         else
         {
-          v35 = psg_default_log_handle();
-          if (os_log_type_enabled(v35, OS_LOG_TYPE_FAULT))
+          path = psg_default_log_handle();
+          if (os_log_type_enabled(path, OS_LOG_TYPE_FAULT))
           {
             *buf = 0;
-            _os_log_fault_impl(&dword_260D36000, v35, OS_LOG_TYPE_FAULT, "WordBoundary: directory factor isn't downloadable on-demand and also isn't found on device", buf, 2u);
+            _os_log_fault_impl(&dword_260D36000, path, OS_LOG_TYPE_FAULT, "WordBoundary: directory factor isn't downloadable on-demand and also isn't found on device", buf, 2u);
           }
         }
 

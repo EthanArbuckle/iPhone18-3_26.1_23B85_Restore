@@ -1,38 +1,38 @@
 @interface TransitMutablePreferences
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setMode:(unint64_t)a3 disabled:(BOOL)a4;
-- (void)toggleModeEnabled:(unint64_t)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setMode:(unint64_t)mode disabled:(BOOL)disabled;
+- (void)toggleModeEnabled:(unint64_t)enabled;
 @end
 
 @implementation TransitMutablePreferences
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [TransitPreferences allocWithZone:a3];
-  v5 = [(WatchSyncedPreferences *)self defaults];
-  v6 = [(WatchSyncedPreferences *)v4 initWithDefaults:v5];
+  v4 = [TransitPreferences allocWithZone:zone];
+  defaults = [(WatchSyncedPreferences *)self defaults];
+  v6 = [(WatchSyncedPreferences *)v4 initWithDefaults:defaults];
 
   [(TransitPreferences *)self _copyPropertiesTo:v6];
   return v6;
 }
 
-- (void)toggleModeEnabled:(unint64_t)a3
+- (void)toggleModeEnabled:(unint64_t)enabled
 {
-  v4 = [objc_opt_class() disabledModesByTogglingMode:a3 inModes:{-[TransitPreferences disabledModes](self, "disabledModes")}];
+  v4 = [objc_opt_class() disabledModesByTogglingMode:enabled inModes:{-[TransitPreferences disabledModes](self, "disabledModes")}];
 
   [(TransitPreferences *)self setDisabledModes:v4];
 }
 
-- (void)setMode:(unint64_t)a3 disabled:(BOOL)a4
+- (void)setMode:(unint64_t)mode disabled:(BOOL)disabled
 {
-  if (a4)
+  if (disabled)
   {
-    v5 = [(TransitPreferences *)self disabledModes]| a3;
+    v5 = [(TransitPreferences *)self disabledModes]| mode;
   }
 
   else
   {
-    v5 = [(TransitPreferences *)self disabledModes]& ~a3;
+    v5 = [(TransitPreferences *)self disabledModes]& ~mode;
   }
 
   [(TransitPreferences *)self setDisabledModes:v5];

@@ -1,52 +1,52 @@
 @interface NERelayConfiguration
-+ (uint64_t)fqdnOverlap:(void *)a3 otherRelay:;
-- (BOOL)checkValidityAndCollectErrors:(id)a3;
++ (uint64_t)fqdnOverlap:(void *)overlap otherRelay:;
+- (BOOL)checkValidityAndCollectErrors:(id)errors;
 - (BOOL)isFullDevice;
-- (BOOL)overlapsWithAppVPNConfiguration:(id)a3;
-- (BOOL)overlapsWithRelayConfiguration:(id)a3;
-- (BOOL)overlapsWithVPNConfiguration:(id)a3;
+- (BOOL)overlapsWithAppVPNConfiguration:(id)configuration;
+- (BOOL)overlapsWithRelayConfiguration:(id)configuration;
+- (BOOL)overlapsWithVPNConfiguration:(id)configuration;
 - (NERelayConfiguration)init;
-- (NERelayConfiguration)initWithCoder:(id)a3;
+- (NERelayConfiguration)initWithCoder:(id)coder;
 - (NSArray)excludedDomains;
 - (NSArray)matchDomains;
-- (id)copyWithZone:(_NSZone *)a3;
-- (uint64_t)onDemandRules:(void *)a1 overlapWithOtherRules:(void *)a2;
-- (uint64_t)overlapsWithAppsFromOtherAppRules:(uint64_t)a1;
-- (void)encodeWithCoder:(id)a3;
-- (void)setExcludedDomains:(id)a3;
-- (void)setMatchDomains:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (uint64_t)onDemandRules:(void *)rules overlapWithOtherRules:(void *)otherRules;
+- (uint64_t)overlapsWithAppsFromOtherAppRules:(uint64_t)rules;
+- (void)encodeWithCoder:(id)coder;
+- (void)setExcludedDomains:(id)domains;
+- (void)setMatchDomains:(id)domains;
 @end
 
 @implementation NERelayConfiguration
 
 - (BOOL)isFullDevice
 {
-  v3 = [(NERelayConfiguration *)self matchDomains];
-  if ([v3 count])
+  matchDomains = [(NERelayConfiguration *)self matchDomains];
+  if ([matchDomains count])
   {
     v4 = 0;
   }
 
   else
   {
-    v5 = [(NERelayConfiguration *)self matchFQDNs];
-    v4 = [v5 count] == 0;
+    matchFQDNs = [(NERelayConfiguration *)self matchFQDNs];
+    v4 = [matchFQDNs count] == 0;
   }
 
   return v4;
 }
 
-- (BOOL)overlapsWithAppVPNConfiguration:(id)a3
+- (BOOL)overlapsWithAppVPNConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(NERelayConfiguration *)self perApp];
-  v6 = [v5 appRules];
-  v7 = [v6 count];
+  configurationCopy = configuration;
+  perApp = [(NERelayConfiguration *)self perApp];
+  appRules = [perApp appRules];
+  v7 = [appRules count];
 
   if (v7)
   {
-    v8 = [v4 appRules];
-    v9 = [(NERelayConfiguration *)self overlapsWithAppsFromOtherAppRules:v8];
+    appRules2 = [configurationCopy appRules];
+    v9 = [(NERelayConfiguration *)self overlapsWithAppsFromOtherAppRules:appRules2];
   }
 
   else
@@ -57,15 +57,15 @@
   return v9;
 }
 
-- (uint64_t)overlapsWithAppsFromOtherAppRules:(uint64_t)a1
+- (uint64_t)overlapsWithAppsFromOtherAppRules:(uint64_t)rules
 {
   v31 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (rules)
   {
-    v4 = [a1 perApp];
-    v5 = [v4 appRules];
-    if ([v5 count])
+    perApp = [rules perApp];
+    appRules = [perApp appRules];
+    if ([appRules count])
     {
       v6 = [v3 count];
 
@@ -75,10 +75,10 @@
         v28 = 0u;
         v25 = 0u;
         v26 = 0u;
-        v7 = [a1 perApp];
-        v8 = [v7 appRules];
+        perApp2 = [rules perApp];
+        appRules2 = [perApp2 appRules];
 
-        v9 = [v8 countByEnumeratingWithState:&v25 objects:v30 count:16];
+        v9 = [appRules2 countByEnumeratingWithState:&v25 objects:v30 count:16];
         if (v9)
         {
           v10 = v9;
@@ -90,7 +90,7 @@
             {
               if (*v26 != v11)
               {
-                objc_enumerationMutation(v8);
+                objc_enumerationMutation(appRules2);
               }
 
               v13 = *(*(&v25 + 1) + 8 * v12);
@@ -117,7 +117,7 @@
                     if ([v13 overlapsWithRule:*(*(&v21 + 1) + 8 * v18)])
                     {
 
-                      a1 = 1;
+                      rules = 1;
                       goto LABEL_23;
                     }
 
@@ -139,7 +139,7 @@
             }
 
             while (v12 != v10);
-            v10 = [v8 countByEnumeratingWithState:&v25 objects:v30 count:16];
+            v10 = [appRules2 countByEnumeratingWithState:&v25 objects:v30 count:16];
           }
 
           while (v10);
@@ -151,73 +151,73 @@
     {
     }
 
-    a1 = 0;
+    rules = 0;
   }
 
 LABEL_23:
 
   v19 = *MEMORY[0x1E69E9840];
-  return a1;
+  return rules;
 }
 
-- (BOOL)overlapsWithVPNConfiguration:(id)a3
+- (BOOL)overlapsWithVPNConfiguration:(id)configuration
 {
-  v4 = [(NERelayConfiguration *)self perApp];
-  v5 = [v4 appRules];
-  v6 = [v5 count];
+  perApp = [(NERelayConfiguration *)self perApp];
+  appRules = [perApp appRules];
+  v6 = [appRules count];
 
-  v7 = [(NERelayConfiguration *)self matchDomains];
-  v8 = v6 | [v7 count];
+  matchDomains = [(NERelayConfiguration *)self matchDomains];
+  v8 = v6 | [matchDomains count];
 
   return v8 == 0;
 }
 
-- (BOOL)overlapsWithRelayConfiguration:(id)a3
+- (BOOL)overlapsWithRelayConfiguration:(id)configuration
 {
   v89 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(NERelayConfiguration *)self perApp];
-  v6 = [v5 appRules];
-  v7 = [v6 count];
+  configurationCopy = configuration;
+  perApp = [(NERelayConfiguration *)self perApp];
+  appRules = [perApp appRules];
+  v7 = [appRules count];
 
-  v8 = [v4 perApp];
-  v9 = [v8 appRules];
-  v10 = [v9 count];
+  perApp2 = [configurationCopy perApp];
+  appRules2 = [perApp2 appRules];
+  v10 = [appRules2 count];
 
   if ((v7 != 0) != (v10 == 0))
   {
-    v11 = [(NERelayConfiguration *)self matchDomains];
-    if ([v11 count])
+    matchDomains = [(NERelayConfiguration *)self matchDomains];
+    if ([matchDomains count])
     {
       v12 = 1;
     }
 
     else
     {
-      v13 = [(NERelayConfiguration *)self matchFQDNs];
-      v12 = [v13 count] != 0;
+      matchFQDNs = [(NERelayConfiguration *)self matchFQDNs];
+      v12 = [matchFQDNs count] != 0;
     }
 
-    v14 = [v4 matchDomains];
-    if ([v14 count])
+    matchDomains2 = [configurationCopy matchDomains];
+    if ([matchDomains2 count])
     {
       v15 = 1;
     }
 
     else
     {
-      v16 = [v4 matchFQDNs];
-      v15 = v16 != 0;
+      matchFQDNs2 = [configurationCopy matchFQDNs];
+      v15 = matchFQDNs2 != 0;
     }
 
     if (v15 == v12)
     {
-      v17 = [v4 onDemandRules];
-      v18 = v17;
+      onDemandRules = [configurationCopy onDemandRules];
+      v18 = onDemandRules;
       if (self)
       {
-        v19 = [(NERelayConfiguration *)self onDemandRules];
-        if (![v19 count])
+        onDemandRules2 = [(NERelayConfiguration *)self onDemandRules];
+        if (![onDemandRules2 count])
         {
           goto LABEL_13;
         }
@@ -231,30 +231,30 @@ LABEL_14:
           goto LABEL_15;
         }
 
-        v19 = [(NERelayConfiguration *)self onDemandRules];
-        if ([NERelayConfiguration onDemandRules:v19 overlapWithOtherRules:v18])
+        onDemandRules2 = [(NERelayConfiguration *)self onDemandRules];
+        if ([NERelayConfiguration onDemandRules:onDemandRules2 overlapWithOtherRules:v18])
         {
 LABEL_13:
 
           goto LABEL_14;
         }
 
-        v53 = [(NERelayConfiguration *)self onDemandRules];
-        v54 = [NERelayConfiguration onDemandRules:v18 overlapWithOtherRules:v53];
+        onDemandRules3 = [(NERelayConfiguration *)self onDemandRules];
+        v54 = [NERelayConfiguration onDemandRules:v18 overlapWithOtherRules:onDemandRules3];
 
         if (v54)
         {
 LABEL_15:
-          v21 = [v4 perApp];
-          v22 = [v21 appRules];
-          v23 = [(NERelayConfiguration *)self overlapsWithAppsFromOtherAppRules:v22];
+          perApp3 = [configurationCopy perApp];
+          appRules3 = [perApp3 appRules];
+          v23 = [(NERelayConfiguration *)self overlapsWithAppsFromOtherAppRules:appRules3];
 
-          v24 = v4;
-          v25 = [(NERelayConfiguration *)self matchDomains];
-          if ([v25 count])
+          v24 = configurationCopy;
+          matchDomains3 = [(NERelayConfiguration *)self matchDomains];
+          if ([matchDomains3 count])
           {
-            v26 = [v24 matchDomains];
-            v27 = [v26 count];
+            matchDomains4 = [v24 matchDomains];
+            v27 = [matchDomains4 count];
 
             if (v27)
             {
@@ -262,15 +262,15 @@ LABEL_15:
               v84 = 0u;
               v81 = 0u;
               v82 = 0u;
-              v28 = [(NERelayConfiguration *)self matchDomains];
-              v64 = [v28 countByEnumeratingWithState:&v81 objects:v88 count:16];
+              matchDomains5 = [(NERelayConfiguration *)self matchDomains];
+              v64 = [matchDomains5 countByEnumeratingWithState:&v81 objects:v88 count:16];
               if (v64)
               {
                 v29 = *v82;
-                v59 = v4;
-                v60 = v28;
+                v59 = configurationCopy;
+                v60 = matchDomains5;
                 v63 = v7;
-                v66 = self;
+                selfCopy = self;
                 v67 = v24;
                 v61 = v23;
                 v62 = v12;
@@ -282,7 +282,7 @@ LABEL_15:
                   {
                     if (*v82 != v29)
                     {
-                      objc_enumerationMutation(v28);
+                      objc_enumerationMutation(matchDomains5);
                     }
 
                     v65 = v30;
@@ -315,8 +315,8 @@ LABEL_15:
                               v76 = 0u;
                               v73 = 0u;
                               v74 = 0u;
-                              v37 = [v67 excludedDomains];
-                              v38 = [v37 countByEnumeratingWithState:&v73 objects:v86 count:16];
+                              excludedDomains = [v67 excludedDomains];
+                              v38 = [excludedDomains countByEnumeratingWithState:&v73 objects:v86 count:16];
                               if (v38)
                               {
                                 v39 = v38;
@@ -327,7 +327,7 @@ LABEL_15:
                                   {
                                     if (*v74 != v40)
                                     {
-                                      objc_enumerationMutation(v37);
+                                      objc_enumerationMutation(excludedDomains);
                                     }
 
                                     if ([v31 hasSuffix:*(*(&v73 + 1) + 8 * j)])
@@ -337,7 +337,7 @@ LABEL_15:
                                     }
                                   }
 
-                                  v39 = [v37 countByEnumeratingWithState:&v73 objects:v86 count:16];
+                                  v39 = [excludedDomains countByEnumeratingWithState:&v73 objects:v86 count:16];
                                   if (v39)
                                   {
                                     continue;
@@ -354,8 +354,8 @@ LABEL_41:
                               v72 = 0u;
                               v69 = 0u;
                               v70 = 0u;
-                              v43 = [(NERelayConfiguration *)v66 excludedDomains];
-                              v44 = [v43 countByEnumeratingWithState:&v69 objects:v85 count:16];
+                              excludedDomains2 = [(NERelayConfiguration *)selfCopy excludedDomains];
+                              v44 = [excludedDomains2 countByEnumeratingWithState:&v69 objects:v85 count:16];
                               if (v44)
                               {
                                 v45 = v44;
@@ -366,7 +366,7 @@ LABEL_41:
                                   {
                                     if (*v70 != v46)
                                     {
-                                      objc_enumerationMutation(v43);
+                                      objc_enumerationMutation(excludedDomains2);
                                     }
 
                                     if ([v36 hasSuffix:*(*(&v69 + 1) + 8 * k)])
@@ -376,7 +376,7 @@ LABEL_41:
                                     }
                                   }
 
-                                  v45 = [v43 countByEnumeratingWithState:&v69 objects:v85 count:16];
+                                  v45 = [excludedDomains2 countByEnumeratingWithState:&v69 objects:v85 count:16];
                                   if (v45)
                                   {
                                     continue;
@@ -390,7 +390,7 @@ LABEL_41:
                               {
 
                                 v52 = 0;
-                                v4 = v59;
+                                configurationCopy = v59;
                                 v7 = v63;
                                 v23 = v61;
                                 LOBYTE(v12) = v62;
@@ -410,11 +410,11 @@ LABEL_52:
                       }
 
                       v7 = v63;
-                      self = v66;
+                      self = selfCopy;
                       v24 = v67;
                       v23 = v61;
                       LOBYTE(v12) = v62;
-                      v28 = v60;
+                      matchDomains5 = v60;
                       v29 = v58;
                     }
 
@@ -422,8 +422,8 @@ LABEL_52:
                   }
 
                   while (v65 + 1 != v64);
-                  v4 = v59;
-                  v64 = [v28 countByEnumeratingWithState:&v81 objects:v88 count:16];
+                  configurationCopy = v59;
+                  v64 = [matchDomains5 countByEnumeratingWithState:&v81 objects:v88 count:16];
                 }
 
                 while (v64);
@@ -435,8 +435,8 @@ LABEL_52:
           {
           }
 
-          v48 = [(NERelayConfiguration *)self matchFQDNs];
-          if ([v48 count])
+          matchFQDNs3 = [(NERelayConfiguration *)self matchFQDNs];
+          if ([matchFQDNs3 count])
           {
             v49 = [NERelayConfiguration fqdnOverlap:v24 otherRelay:?];
 
@@ -450,8 +450,8 @@ LABEL_52:
           {
           }
 
-          v50 = [v24 matchFQDNs];
-          if ([v50 count])
+          matchFQDNs4 = [v24 matchFQDNs];
+          if ([matchFQDNs4 count])
           {
             v51 = [NERelayConfiguration fqdnOverlap:v24 otherRelay:self];
 
@@ -488,18 +488,18 @@ LABEL_71:
   return v55 & 1;
 }
 
-+ (uint64_t)fqdnOverlap:(void *)a3 otherRelay:
++ (uint64_t)fqdnOverlap:(void *)overlap otherRelay:
 {
   v62 = *MEMORY[0x1E69E9840];
   v4 = a2;
-  v5 = a3;
+  overlapCopy = overlap;
   objc_opt_self();
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
   v56 = 0u;
-  v6 = [v4 matchFQDNs];
-  v36 = [v6 countByEnumeratingWithState:&v53 objects:v61 count:16];
+  matchFQDNs = [v4 matchFQDNs];
+  v36 = [matchFQDNs countByEnumeratingWithState:&v53 objects:v61 count:16];
   if (v36)
   {
     v7 = *v54;
@@ -509,7 +509,7 @@ LABEL_71:
       {
         if (*v54 != v7)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(matchFQDNs);
         }
 
         v9 = *(*(&v53 + 1) + 8 * i);
@@ -517,8 +517,8 @@ LABEL_71:
         v50 = 0u;
         v51 = 0u;
         v52 = 0u;
-        v10 = [v5 matchFQDNs];
-        v11 = [v10 countByEnumeratingWithState:&v49 objects:v60 count:16];
+        matchFQDNs2 = [overlapCopy matchFQDNs];
+        v11 = [matchFQDNs2 countByEnumeratingWithState:&v49 objects:v60 count:16];
         if (v11)
         {
           v12 = v11;
@@ -529,7 +529,7 @@ LABEL_71:
             {
               if (*v50 != v13)
               {
-                objc_enumerationMutation(v10);
+                objc_enumerationMutation(matchFQDNs2);
               }
 
               if ([v9 isEqualToString:*(*(&v49 + 1) + 8 * j)])
@@ -539,7 +539,7 @@ LABEL_71:
               }
             }
 
-            v12 = [v10 countByEnumeratingWithState:&v49 objects:v60 count:16];
+            v12 = [matchFQDNs2 countByEnumeratingWithState:&v49 objects:v60 count:16];
             if (v12)
             {
               continue;
@@ -555,8 +555,8 @@ LABEL_71:
         v48 = 0u;
         v45 = 0u;
         v46 = 0u;
-        v15 = [v5 matchDomains];
-        v16 = [v15 countByEnumeratingWithState:&v45 objects:v59 count:16];
+        matchDomains = [overlapCopy matchDomains];
+        v16 = [matchDomains countByEnumeratingWithState:&v45 objects:v59 count:16];
         if (v16)
         {
           v17 = v16;
@@ -568,13 +568,13 @@ LABEL_71:
             {
               if (*v46 != v19)
               {
-                objc_enumerationMutation(v15);
+                objc_enumerationMutation(matchDomains);
               }
 
               v18 |= [v9 hasSuffix:{*(*(&v45 + 1) + 8 * k), v35}];
             }
 
-            v17 = [v15 countByEnumeratingWithState:&v45 objects:v59 count:16];
+            v17 = [matchDomains countByEnumeratingWithState:&v45 objects:v59 count:16];
           }
 
           while (v17);
@@ -585,8 +585,8 @@ LABEL_71:
             v44 = 0u;
             v41 = 0u;
             v42 = 0u;
-            v21 = [v5 excludedFQDNs];
-            v22 = [v21 countByEnumeratingWithState:&v41 objects:v58 count:16];
+            excludedFQDNs = [overlapCopy excludedFQDNs];
+            v22 = [excludedFQDNs countByEnumeratingWithState:&v41 objects:v58 count:16];
             if (v22)
             {
               v23 = v22;
@@ -598,13 +598,13 @@ LABEL_71:
                 {
                   if (*v42 != v24)
                   {
-                    objc_enumerationMutation(v21);
+                    objc_enumerationMutation(excludedFQDNs);
                   }
 
                   v25 &= [v9 isEqualToString:*(*(&v41 + 1) + 8 * m)] ^ 1;
                 }
 
-                v23 = [v21 countByEnumeratingWithState:&v41 objects:v58 count:16];
+                v23 = [excludedFQDNs countByEnumeratingWithState:&v41 objects:v58 count:16];
               }
 
               while (v23);
@@ -619,8 +619,8 @@ LABEL_71:
             v40 = 0u;
             v37 = 0u;
             v38 = 0u;
-            v27 = [v5 excludedDomains];
-            v28 = [v27 countByEnumeratingWithState:&v37 objects:v57 count:16];
+            excludedDomains = [overlapCopy excludedDomains];
+            v28 = [excludedDomains countByEnumeratingWithState:&v37 objects:v57 count:16];
             if (v28)
             {
               v29 = v28;
@@ -631,13 +631,13 @@ LABEL_71:
                 {
                   if (*v38 != v30)
                   {
-                    objc_enumerationMutation(v27);
+                    objc_enumerationMutation(excludedDomains);
                   }
 
                   v25 &= [v9 hasSuffix:*(*(&v37 + 1) + 8 * n)] ^ 1;
                 }
 
-                v29 = [v27 countByEnumeratingWithState:&v37 objects:v57 count:16];
+                v29 = [excludedDomains countByEnumeratingWithState:&v37 objects:v57 count:16];
               }
 
               while (v29);
@@ -660,7 +660,7 @@ LABEL_44:
       }
 
       v32 = 0;
-      v36 = [v6 countByEnumeratingWithState:&v53 objects:v61 count:16];
+      v36 = [matchFQDNs countByEnumeratingWithState:&v53 objects:v61 count:16];
       if (v36)
       {
         continue;
@@ -681,29 +681,29 @@ LABEL_46:
   return v32;
 }
 
-- (uint64_t)onDemandRules:(void *)a1 overlapWithOtherRules:(void *)a2
+- (uint64_t)onDemandRules:(void *)rules overlapWithOtherRules:(void *)otherRules
 {
   v65 = *MEMORY[0x1E69E9840];
-  v3 = a1;
-  v39 = a2;
+  rulesCopy = rules;
+  otherRulesCopy = otherRules;
   v59 = 0u;
   v60 = 0u;
   v61 = 0u;
   v62 = 0u;
-  v4 = v3;
+  v4 = rulesCopy;
   v5 = [v4 countByEnumeratingWithState:&v59 objects:v64 count:16];
   if (!v5)
   {
     goto LABEL_51;
   }
 
-  v6 = v5;
+  dNSSearchDomainMatch3 = v5;
   v7 = *v60;
   v38 = v4;
   v36 = *v60;
 LABEL_3:
-  v8 = 0;
-  v37 = v6;
+  dNSSearchDomainMatch4 = 0;
+  v37 = dNSSearchDomainMatch3;
   while (1)
   {
     if (*v60 != v7)
@@ -711,17 +711,17 @@ LABEL_3:
       objc_enumerationMutation(v4);
     }
 
-    v9 = *(*(&v59 + 1) + 8 * v8);
+    v9 = *(*(&v59 + 1) + 8 * dNSSearchDomainMatch4);
     if ([v9 action] != 2 && objc_msgSend(v9, "action") != 4)
     {
       break;
     }
 
 LABEL_49:
-    if (++v8 == v6)
+    if (++dNSSearchDomainMatch4 == dNSSearchDomainMatch3)
     {
-      v6 = [v4 countByEnumeratingWithState:&v59 objects:v64 count:16];
-      if (!v6)
+      dNSSearchDomainMatch3 = [v4 countByEnumeratingWithState:&v59 objects:v64 count:16];
+      if (!dNSSearchDomainMatch3)
       {
 LABEL_51:
         v33 = 0;
@@ -732,12 +732,12 @@ LABEL_51:
     }
   }
 
-  v40 = v8;
+  v40 = dNSSearchDomainMatch4;
   v57 = 0u;
   v58 = 0u;
   v55 = 0u;
   v56 = 0u;
-  obj = v39;
+  obj = otherRulesCopy;
   v10 = [obj countByEnumeratingWithState:&v55 objects:v63 count:16];
   v54 = v9;
   if (!v10)
@@ -771,57 +771,57 @@ LABEL_10:
       goto LABEL_32;
     }
 
-    v16 = [v14 DNSSearchDomainMatch];
-    v17 = [v15 DNSSearchDomainMatch];
-    if (v16 != v17)
+    dNSSearchDomainMatch = [v14 DNSSearchDomainMatch];
+    dNSSearchDomainMatch2 = [v15 DNSSearchDomainMatch];
+    if (dNSSearchDomainMatch != dNSSearchDomainMatch2)
     {
-      v6 = [v14 DNSSearchDomainMatch];
-      v8 = [v15 DNSSearchDomainMatch];
-      if (![v6 isEqualToArray:v8])
+      dNSSearchDomainMatch3 = [v14 DNSSearchDomainMatch];
+      dNSSearchDomainMatch4 = [v15 DNSSearchDomainMatch];
+      if (![dNSSearchDomainMatch3 isEqualToArray:dNSSearchDomainMatch4])
       {
         goto LABEL_30;
       }
     }
 
-    v51 = v8;
-    v52 = v6;
-    v6 = [v14 DNSServerAddressMatch];
-    v18 = [v15 DNSServerAddressMatch];
-    v8 = v18;
-    if (v6 != v18)
+    v51 = dNSSearchDomainMatch4;
+    v52 = dNSSearchDomainMatch3;
+    dNSSearchDomainMatch3 = [v14 DNSServerAddressMatch];
+    dNSServerAddressMatch = [v15 DNSServerAddressMatch];
+    dNSSearchDomainMatch4 = dNSServerAddressMatch;
+    if (dNSSearchDomainMatch3 != dNSServerAddressMatch)
     {
-      v19 = v17;
-      v20 = v18;
-      v21 = [v14 DNSServerAddressMatch];
-      v48 = [v15 DNSServerAddressMatch];
-      v49 = v21;
-      if (![v21 isEqualToArray:?])
+      v19 = dNSSearchDomainMatch2;
+      v20 = dNSServerAddressMatch;
+      dNSServerAddressMatch2 = [v14 DNSServerAddressMatch];
+      dNSServerAddressMatch3 = [v15 DNSServerAddressMatch];
+      v49 = dNSServerAddressMatch2;
+      if (![dNSServerAddressMatch2 isEqualToArray:?])
       {
         v53 = 0;
-        v8 = v20;
-        v17 = v19;
+        dNSSearchDomainMatch4 = v20;
+        dNSSearchDomainMatch2 = v19;
         goto LABEL_28;
       }
 
-      v8 = v20;
-      v17 = v19;
+      dNSSearchDomainMatch4 = v20;
+      dNSSearchDomainMatch2 = v19;
     }
 
-    v22 = [v14 interfaceTypeMatch];
-    if (v22 == [v15 interfaceTypeMatch])
+    interfaceTypeMatch = [v14 interfaceTypeMatch];
+    if (interfaceTypeMatch == [v15 interfaceTypeMatch])
     {
-      v23 = [v14 SSIDMatch];
-      v24 = [v15 SSIDMatch];
-      v45 = v23;
-      v25 = v23 == v24;
+      sSIDMatch = [v14 SSIDMatch];
+      sSIDMatch2 = [v15 SSIDMatch];
+      v45 = sSIDMatch;
+      v25 = sSIDMatch == sSIDMatch2;
       v12 = v46;
       if (v25 || ([v14 SSIDMatch], v26 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v15, "SSIDMatch"), v42 = objc_claimAutoreleasedReturnValue(), v43 = v26, objc_msgSend(v26, "isEqualToArray:")))
       {
-        v44 = v24;
-        v27 = [v14 probeURL];
-        v28 = [v15 probeURL];
-        v29 = v28;
-        if (v27 == v28)
+        v44 = sSIDMatch2;
+        probeURL = [v14 probeURL];
+        probeURL2 = [v15 probeURL];
+        v29 = probeURL2;
+        if (probeURL == probeURL2)
         {
 
           v53 = 1;
@@ -830,12 +830,12 @@ LABEL_10:
         else
         {
           [v14 probeURL];
-          v30 = v41 = v27;
-          v31 = [v15 probeURL];
-          v53 = [v30 isEqual:v31];
+          v30 = v41 = probeURL;
+          probeURL3 = [v15 probeURL];
+          v53 = [v30 isEqual:probeURL3];
         }
 
-        v24 = v44;
+        sSIDMatch2 = v44;
         v32 = v45;
         v12 = v46;
         if (v45 == v44)
@@ -843,7 +843,7 @@ LABEL_10:
 LABEL_37:
 
           v11 = v47;
-          if (v6 == v8)
+          if (dNSSearchDomainMatch3 == dNSSearchDomainMatch4)
           {
             goto LABEL_39;
           }
@@ -862,13 +862,13 @@ LABEL_37:
     }
 
     v12 = v46;
-    if (v6 == v8)
+    if (dNSSearchDomainMatch3 == dNSSearchDomainMatch4)
     {
 
       v11 = v47;
-      v8 = v51;
-      v6 = v52;
-      if (v16 != v17)
+      dNSSearchDomainMatch4 = v51;
+      dNSSearchDomainMatch3 = v52;
+      if (dNSSearchDomainMatch != dNSSearchDomainMatch2)
       {
 LABEL_30:
       }
@@ -883,7 +883,7 @@ LABEL_28:
 LABEL_38:
 
 LABEL_39:
-    if (v16 == v17)
+    if (dNSSearchDomainMatch == dNSSearchDomainMatch2)
     {
       break;
     }
@@ -915,10 +915,10 @@ LABEL_46:
   if ([v14 action] == 2 || objc_msgSend(v14, "action") == 4)
   {
 
-    v6 = v37;
+    dNSSearchDomainMatch3 = v37;
     v4 = v38;
     v7 = v36;
-    v8 = v40;
+    dNSSearchDomainMatch4 = v40;
     goto LABEL_49;
   }
 
@@ -932,26 +932,26 @@ LABEL_53:
   return v33;
 }
 
-- (BOOL)checkValidityAndCollectErrors:(id)a3
+- (BOOL)checkValidityAndCollectErrors:(id)errors
 {
   v141 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(NERelayConfiguration *)self relays];
-  v6 = [v5 count];
+  errorsCopy = errors;
+  relays = [(NERelayConfiguration *)self relays];
+  v6 = [relays count];
   v7 = v6 != 0;
 
   if (!v6)
   {
-    [NEConfiguration addError:v4 toList:?];
+    [NEConfiguration addError:errorsCopy toList:?];
   }
 
   v130 = 0u;
   v131 = 0u;
   v128 = 0u;
   v129 = 0u;
-  v87 = self;
-  v8 = [(NERelayConfiguration *)self relays];
-  v9 = [v8 countByEnumeratingWithState:&v128 objects:v140 count:16];
+  selfCopy = self;
+  relays2 = [(NERelayConfiguration *)self relays];
+  v9 = [relays2 countByEnumeratingWithState:&v128 objects:v140 count:16];
   if (v9)
   {
     v10 = v9;
@@ -962,13 +962,13 @@ LABEL_53:
       {
         if (*v129 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(relays2);
         }
 
-        v7 &= [*(*(&v128 + 1) + 8 * i) checkValidityAndCollectErrors:v4];
+        v7 &= [*(*(&v128 + 1) + 8 * i) checkValidityAndCollectErrors:errorsCopy];
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v128 objects:v140 count:16];
+      v10 = [relays2 countByEnumeratingWithState:&v128 objects:v140 count:16];
     }
 
     while (v10);
@@ -978,8 +978,8 @@ LABEL_53:
   v127 = 0u;
   v124 = 0u;
   v125 = 0u;
-  v13 = [(NERelayConfiguration *)v87 matchDomains];
-  v14 = [v13 countByEnumeratingWithState:&v124 objects:v139 count:16];
+  matchDomains = [(NERelayConfiguration *)selfCopy matchDomains];
+  v14 = [matchDomains countByEnumeratingWithState:&v124 objects:v139 count:16];
   if (v14)
   {
     v15 = v14;
@@ -990,17 +990,17 @@ LABEL_53:
       {
         if (*v125 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(matchDomains);
         }
 
         if ((isa_nsstring(*(*(&v124 + 1) + 8 * j)) & 1) == 0)
         {
-          [NEConfiguration addError:v4 toList:?];
+          [NEConfiguration addError:errorsCopy toList:?];
           v7 = 0;
         }
       }
 
-      v15 = [v13 countByEnumeratingWithState:&v124 objects:v139 count:16];
+      v15 = [matchDomains countByEnumeratingWithState:&v124 objects:v139 count:16];
     }
 
     while (v15);
@@ -1010,8 +1010,8 @@ LABEL_53:
   v123 = 0u;
   v120 = 0u;
   v121 = 0u;
-  v18 = [(NERelayConfiguration *)v87 excludedDomains];
-  v19 = [v18 countByEnumeratingWithState:&v120 objects:v138 count:16];
+  excludedDomains = [(NERelayConfiguration *)selfCopy excludedDomains];
+  v19 = [excludedDomains countByEnumeratingWithState:&v120 objects:v138 count:16];
   if (v19)
   {
     v20 = v19;
@@ -1022,29 +1022,29 @@ LABEL_53:
       {
         if (*v121 != v21)
         {
-          objc_enumerationMutation(v18);
+          objc_enumerationMutation(excludedDomains);
         }
 
         if ((isa_nsstring(*(*(&v120 + 1) + 8 * k)) & 1) == 0)
         {
-          [NEConfiguration addError:v4 toList:?];
+          [NEConfiguration addError:errorsCopy toList:?];
           v7 = 0;
         }
       }
 
-      v20 = [v18 countByEnumeratingWithState:&v120 objects:v138 count:16];
+      v20 = [excludedDomains countByEnumeratingWithState:&v120 objects:v138 count:16];
     }
 
     while (v20);
   }
 
-  v95 = v4;
+  v95 = errorsCopy;
 
   v118 = 0u;
   v119 = 0u;
   v116 = 0u;
   v117 = 0u;
-  obj = [(NERelayConfiguration *)v87 matchFQDNs];
+  obj = [(NERelayConfiguration *)selfCopy matchFQDNs];
   v23 = [obj countByEnumeratingWithState:&v116 objects:v137 count:16];
   if (v23)
   {
@@ -1086,7 +1086,7 @@ LABEL_53:
   v115 = 0u;
   v112 = 0u;
   v113 = 0u;
-  obja = [(NERelayConfiguration *)v87 excludedFQDNs];
+  obja = [(NERelayConfiguration *)selfCopy excludedFQDNs];
   v30 = [obja countByEnumeratingWithState:&v112 objects:v136 count:16];
   if (v30)
   {
@@ -1124,24 +1124,24 @@ LABEL_53:
     while (v31);
   }
 
-  v37 = v87;
-  v38 = [(NERelayConfiguration *)v87 matchFQDNs];
+  v37 = selfCopy;
+  matchFQDNs = [(NERelayConfiguration *)selfCopy matchFQDNs];
   v39 = v95;
-  if (![v38 count])
+  if (![matchFQDNs count])
   {
     goto LABEL_53;
   }
 
-  v40 = [(NERelayConfiguration *)v87 matchDomains];
-  if ([v40 count])
+  matchDomains2 = [(NERelayConfiguration *)selfCopy matchDomains];
+  if ([matchDomains2 count])
   {
 
 LABEL_53:
     goto LABEL_54;
   }
 
-  v75 = [(NERelayConfiguration *)v87 excludedDomains];
-  if ([v75 count])
+  excludedDomains2 = [(NERelayConfiguration *)selfCopy excludedDomains];
+  if ([excludedDomains2 count])
   {
 
 LABEL_99:
@@ -1150,8 +1150,8 @@ LABEL_99:
     goto LABEL_116;
   }
 
-  v76 = [(NERelayConfiguration *)v87 excludedFQDNs];
-  v77 = [v76 count];
+  excludedFQDNs = [(NERelayConfiguration *)selfCopy excludedFQDNs];
+  v77 = [excludedFQDNs count];
 
   if (v77)
   {
@@ -1159,14 +1159,14 @@ LABEL_99:
   }
 
 LABEL_54:
-  v41 = [(NERelayConfiguration *)v87 perApp];
-  if (v41)
+  perApp = [(NERelayConfiguration *)selfCopy perApp];
+  if (perApp)
   {
-    v42 = v41;
-    v43 = [(NERelayConfiguration *)v87 perApp];
-    v44 = [v43 checkValidityAndCollectErrors:v95];
+    v42 = perApp;
+    perApp2 = [(NERelayConfiguration *)selfCopy perApp];
+    v44 = [perApp2 checkValidityAndCollectErrors:v95];
 
-    v37 = v87;
+    v37 = selfCopy;
     if (v44 & v7)
     {
       goto LABEL_56;
@@ -1183,11 +1183,11 @@ LABEL_94:
   }
 
 LABEL_56:
-  v45 = [(NERelayConfiguration *)v37 perApp];
-  if ([v45 restrictDomains])
+  perApp3 = [(NERelayConfiguration *)v37 perApp];
+  if ([perApp3 restrictDomains])
   {
-    v46 = [(NERelayConfiguration *)v37 matchDomains];
-    v47 = [v46 count];
+    matchDomains3 = [(NERelayConfiguration *)v37 matchDomains];
+    v47 = [matchDomains3 count];
 
     if (!v47)
     {
@@ -1195,13 +1195,13 @@ LABEL_56:
       goto LABEL_104;
     }
 
-    v45 = objc_alloc_init(MEMORY[0x1E695DF70]);
+    perApp3 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v108 = 0u;
     v109 = 0u;
     v110 = 0u;
     v111 = 0u;
-    v48 = [(NERelayConfiguration *)v37 relays];
-    v49 = [v48 countByEnumeratingWithState:&v108 objects:v135 count:16];
+    relays3 = [(NERelayConfiguration *)v37 relays];
+    v49 = [relays3 countByEnumeratingWithState:&v108 objects:v135 count:16];
     if (v49)
     {
       v50 = v49;
@@ -1212,70 +1212,70 @@ LABEL_56:
         {
           if (*v109 != v51)
           {
-            objc_enumerationMutation(v48);
+            objc_enumerationMutation(relays3);
           }
 
           v53 = *(*(&v108 + 1) + 8 * ii);
-          v54 = [v53 HTTP3RelayURL];
-          v55 = [v54 host];
-          v56 = NECopyETLDPlusOne(v55);
+          hTTP3RelayURL = [v53 HTTP3RelayURL];
+          host = [hTTP3RelayURL host];
+          v56 = NECopyETLDPlusOne(host);
 
           if (v56)
           {
-            [v45 addObject:v56];
+            [perApp3 addObject:v56];
           }
 
-          v57 = [v53 HTTP2RelayURL];
-          v58 = [v57 host];
-          v59 = NECopyETLDPlusOne(v58);
+          hTTP2RelayURL = [v53 HTTP2RelayURL];
+          host2 = [hTTP2RelayURL host];
+          v59 = NECopyETLDPlusOne(host2);
 
           if (v59)
           {
-            [v45 addObject:v59];
+            [perApp3 addObject:v59];
           }
         }
 
-        v50 = [v48 countByEnumeratingWithState:&v108 objects:v135 count:16];
+        v50 = [relays3 countByEnumeratingWithState:&v108 objects:v135 count:16];
       }
 
       while (v50);
     }
 
-    if ([v45 count])
+    if ([perApp3 count])
     {
       v88 = objc_alloc_init(MEMORY[0x1E695DF70]);
       v104 = 0u;
       v105 = 0u;
       v106 = 0u;
       v107 = 0u;
-      v91 = [(NERelayConfiguration *)v87 matchDomains];
+      matchDomains4 = [(NERelayConfiguration *)selfCopy matchDomains];
       v39 = v95;
-      objb = [v91 countByEnumeratingWithState:&v104 objects:v134 count:16];
+      objb = [matchDomains4 countByEnumeratingWithState:&v104 objects:v134 count:16];
       if (objb)
       {
         v60 = *v105;
         v89 = *v105;
-        v90 = v45;
+        v90 = perApp3;
         do
         {
           for (jj = 0; jj != objb; jj = jj + 1)
           {
             if (*v105 != v60)
             {
-              objc_enumerationMutation(v91);
+              objc_enumerationMutation(matchDomains4);
             }
 
             v62 = *(*(&v104 + 1) + 8 * jj);
             v63 = [MEMORY[0x1E696AB08] characterSetWithCharactersInString:@"*."];
             v64 = [v62 stringByTrimmingCharactersInSet:v63];
 
-            if (([v45 containsObject:v64] & 1) == 0)
+            if (([perApp3 containsObject:v64] & 1) == 0)
             {
               v102 = 0u;
               v103 = 0u;
               v100 = 0u;
               v101 = 0u;
-              v65 = v45;
+              v65 = perApp3;
               v66 = [v65 countByEnumeratingWithState:&v100 objects:v133 count:16];
               if (v66)
               {
@@ -1314,11 +1314,11 @@ LABEL_56:
 LABEL_87:
               v39 = v95;
               v60 = v89;
-              v45 = v90;
+              perApp3 = v90;
             }
           }
 
-          objb = [v91 countByEnumeratingWithState:&v104 objects:v134 count:16];
+          objb = [matchDomains4 countByEnumeratingWithState:&v104 objects:v134 count:16];
         }
 
         while (objb);
@@ -1339,7 +1339,7 @@ LABEL_87:
       v74 = 0;
     }
 
-    v37 = v87;
+    v37 = selfCopy;
   }
 
   else
@@ -1348,16 +1348,16 @@ LABEL_87:
   }
 
 LABEL_104:
-  v78 = [(NERelayConfiguration *)v37 onDemandRules];
+  onDemandRules = [(NERelayConfiguration *)v37 onDemandRules];
 
-  if (v78)
+  if (onDemandRules)
   {
     v98 = 0u;
     v99 = 0u;
     v96 = 0u;
     v97 = 0u;
-    v79 = [(NERelayConfiguration *)v37 onDemandRules];
-    v80 = [v79 countByEnumeratingWithState:&v96 objects:v132 count:16];
+    onDemandRules2 = [(NERelayConfiguration *)v37 onDemandRules];
+    v80 = [onDemandRules2 countByEnumeratingWithState:&v96 objects:v132 count:16];
     if (v80)
     {
       v81 = v80;
@@ -1368,7 +1368,7 @@ LABEL_104:
         {
           if (*v97 != v82)
           {
-            objc_enumerationMutation(v79);
+            objc_enumerationMutation(onDemandRules2);
           }
 
           v84 = *(*(&v96 + 1) + 8 * mm);
@@ -1385,7 +1385,7 @@ LABEL_104:
           }
         }
 
-        v81 = [v79 countByEnumeratingWithState:&v96 objects:v132 count:16];
+        v81 = [onDemandRules2 countByEnumeratingWithState:&v96 objects:v132 count:16];
       }
 
       while (v81);
@@ -1398,83 +1398,83 @@ LABEL_116:
   return v74;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[NERelayConfiguration allocWithZone:?]];
   [(NERelayConfiguration *)v4 setEnabled:[(NERelayConfiguration *)self isEnabled]];
   [(NERelayConfiguration *)v4 setUiToggleEnabled:[(NERelayConfiguration *)self isUIToggleEnabled]];
   [(NERelayConfiguration *)v4 setAllowDNSFailover:[(NERelayConfiguration *)self isDNSFailoverAllowed]];
-  v5 = [(NERelayConfiguration *)self relays];
-  [(NERelayConfiguration *)v4 setRelays:v5];
+  relays = [(NERelayConfiguration *)self relays];
+  [(NERelayConfiguration *)v4 setRelays:relays];
 
-  v6 = [(NERelayConfiguration *)self matchDomains];
-  [(NERelayConfiguration *)v4 setMatchDomains:v6];
+  matchDomains = [(NERelayConfiguration *)self matchDomains];
+  [(NERelayConfiguration *)v4 setMatchDomains:matchDomains];
 
-  v7 = [(NERelayConfiguration *)self excludedDomains];
-  [(NERelayConfiguration *)v4 setExcludedDomains:v7];
+  excludedDomains = [(NERelayConfiguration *)self excludedDomains];
+  [(NERelayConfiguration *)v4 setExcludedDomains:excludedDomains];
 
-  v8 = [(NERelayConfiguration *)self matchFQDNs];
-  [(NERelayConfiguration *)v4 setMatchFQDNs:v8];
+  matchFQDNs = [(NERelayConfiguration *)self matchFQDNs];
+  [(NERelayConfiguration *)v4 setMatchFQDNs:matchFQDNs];
 
-  v9 = [(NERelayConfiguration *)self excludedFQDNs];
-  [(NERelayConfiguration *)v4 setExcludedFQDNs:v9];
+  excludedFQDNs = [(NERelayConfiguration *)self excludedFQDNs];
+  [(NERelayConfiguration *)v4 setExcludedFQDNs:excludedFQDNs];
 
-  v10 = [(NERelayConfiguration *)self perApp];
-  [(NERelayConfiguration *)v4 setPerApp:v10];
+  perApp = [(NERelayConfiguration *)self perApp];
+  [(NERelayConfiguration *)v4 setPerApp:perApp];
 
-  v11 = [(NERelayConfiguration *)self onDemandRules];
+  onDemandRules = [(NERelayConfiguration *)self onDemandRules];
 
-  if (v11)
+  if (onDemandRules)
   {
     v12 = objc_alloc(MEMORY[0x1E695DEC8]);
-    v13 = [(NERelayConfiguration *)self onDemandRules];
-    v14 = [v12 initWithArray:v13 copyItems:1];
+    onDemandRules2 = [(NERelayConfiguration *)self onDemandRules];
+    v14 = [v12 initWithArray:onDemandRules2 copyItems:1];
     [(NERelayConfiguration *)v4 setOnDemandRules:v14];
   }
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeBool:-[NERelayConfiguration isEnabled](self forKey:{"isEnabled"), @"Enabled"}];
-  [v4 encodeBool:-[NERelayConfiguration isUIToggleEnabled](self forKey:{"isUIToggleEnabled"), @"ToggleEnabled"}];
-  [v4 encodeBool:-[NERelayConfiguration isDNSFailoverAllowed](self forKey:{"isDNSFailoverAllowed"), @"AllowDNSFailover"}];
-  v5 = [(NERelayConfiguration *)self relays];
-  [v4 encodeObject:v5 forKey:@"Relays"];
+  coderCopy = coder;
+  [coderCopy encodeBool:-[NERelayConfiguration isEnabled](self forKey:{"isEnabled"), @"Enabled"}];
+  [coderCopy encodeBool:-[NERelayConfiguration isUIToggleEnabled](self forKey:{"isUIToggleEnabled"), @"ToggleEnabled"}];
+  [coderCopy encodeBool:-[NERelayConfiguration isDNSFailoverAllowed](self forKey:{"isDNSFailoverAllowed"), @"AllowDNSFailover"}];
+  relays = [(NERelayConfiguration *)self relays];
+  [coderCopy encodeObject:relays forKey:@"Relays"];
 
-  v6 = [(NERelayConfiguration *)self matchDomains];
-  [v4 encodeObject:v6 forKey:@"MatchDomains"];
+  matchDomains = [(NERelayConfiguration *)self matchDomains];
+  [coderCopy encodeObject:matchDomains forKey:@"MatchDomains"];
 
-  v7 = [(NERelayConfiguration *)self excludedDomains];
-  [v4 encodeObject:v7 forKey:@"ExcludedDomains"];
+  excludedDomains = [(NERelayConfiguration *)self excludedDomains];
+  [coderCopy encodeObject:excludedDomains forKey:@"ExcludedDomains"];
 
-  v8 = [(NERelayConfiguration *)self matchFQDNs];
-  [v4 encodeObject:v8 forKey:@"MatchFQDNs"];
+  matchFQDNs = [(NERelayConfiguration *)self matchFQDNs];
+  [coderCopy encodeObject:matchFQDNs forKey:@"MatchFQDNs"];
 
-  v9 = [(NERelayConfiguration *)self excludedFQDNs];
-  [v4 encodeObject:v9 forKey:@"ExcludedFQDNs"];
+  excludedFQDNs = [(NERelayConfiguration *)self excludedFQDNs];
+  [coderCopy encodeObject:excludedFQDNs forKey:@"ExcludedFQDNs"];
 
-  v10 = [(NERelayConfiguration *)self perApp];
-  [v4 encodeObject:v10 forKey:@"PerApp"];
+  perApp = [(NERelayConfiguration *)self perApp];
+  [coderCopy encodeObject:perApp forKey:@"PerApp"];
 
-  v11 = [(NERelayConfiguration *)self onDemandRules];
-  [v4 encodeObject:v11 forKey:@"OnDemandRules"];
+  onDemandRules = [(NERelayConfiguration *)self onDemandRules];
+  [coderCopy encodeObject:onDemandRules forKey:@"OnDemandRules"];
 }
 
-- (NERelayConfiguration)initWithCoder:(id)a3
+- (NERelayConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v38.receiver = self;
   v38.super_class = NERelayConfiguration;
   v5 = [(NERelayConfiguration *)&v38 init];
   if (v5)
   {
-    v5->_enabled = [v4 decodeBoolForKey:@"Enabled"];
-    if ([v4 containsValueForKey:@"ToggleEnabled"])
+    v5->_enabled = [coderCopy decodeBoolForKey:@"Enabled"];
+    if ([coderCopy containsValueForKey:@"ToggleEnabled"])
     {
-      v6 = [v4 decodeBoolForKey:@"ToggleEnabled"];
+      v6 = [coderCopy decodeBoolForKey:@"ToggleEnabled"];
     }
 
     else
@@ -1483,48 +1483,48 @@ LABEL_116:
     }
 
     v5->_uiToggleEnabled = v6;
-    v5->_allowDNSFailover = [v4 decodeBoolForKey:@"AllowDNSFailover"];
+    v5->_allowDNSFailover = [coderCopy decodeBoolForKey:@"AllowDNSFailover"];
     v7 = MEMORY[0x1E695DFD8];
     v8 = objc_opt_class();
     v9 = [v7 setWithObjects:{v8, objc_opt_class(), 0}];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"Relays"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"Relays"];
     relays = v5->_relays;
     v5->_relays = v10;
 
     v12 = MEMORY[0x1E695DFD8];
     v13 = objc_opt_class();
     v14 = [v12 setWithObjects:{v13, objc_opt_class(), 0}];
-    v15 = [v4 decodeObjectOfClasses:v14 forKey:@"MatchDomains"];
+    v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"MatchDomains"];
     [(NERelayConfiguration *)v5 setMatchDomains:v15];
 
     v16 = MEMORY[0x1E695DFD8];
     v17 = objc_opt_class();
     v18 = [v16 setWithObjects:{v17, objc_opt_class(), 0}];
-    v19 = [v4 decodeObjectOfClasses:v18 forKey:@"ExcludedDomains"];
+    v19 = [coderCopy decodeObjectOfClasses:v18 forKey:@"ExcludedDomains"];
     [(NERelayConfiguration *)v5 setExcludedDomains:v19];
 
     v20 = MEMORY[0x1E695DFD8];
     v21 = objc_opt_class();
     v22 = [v20 setWithObjects:{v21, objc_opt_class(), 0}];
-    v23 = [v4 decodeObjectOfClasses:v22 forKey:@"MatchFQDNs"];
+    v23 = [coderCopy decodeObjectOfClasses:v22 forKey:@"MatchFQDNs"];
     matchFQDNs = v5->_matchFQDNs;
     v5->_matchFQDNs = v23;
 
     v25 = MEMORY[0x1E695DFD8];
     v26 = objc_opt_class();
     v27 = [v25 setWithObjects:{v26, objc_opt_class(), 0}];
-    v28 = [v4 decodeObjectOfClasses:v27 forKey:@"ExcludedFQDNs"];
+    v28 = [coderCopy decodeObjectOfClasses:v27 forKey:@"ExcludedFQDNs"];
     excludedFQDNs = v5->_excludedFQDNs;
     v5->_excludedFQDNs = v28;
 
-    v30 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PerApp"];
+    v30 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PerApp"];
     perApp = v5->_perApp;
     v5->_perApp = v30;
 
     v32 = MEMORY[0x1E695DFD8];
     v33 = objc_opt_class();
     v34 = [v32 setWithObjects:{v33, objc_opt_class(), 0}];
-    v35 = [v4 decodeObjectOfClasses:v34 forKey:@"OnDemandRules"];
+    v35 = [coderCopy decodeObjectOfClasses:v34 forKey:@"OnDemandRules"];
     onDemandRules = v5->_onDemandRules;
     v5->_onDemandRules = v35;
   }
@@ -1534,17 +1534,17 @@ LABEL_116:
 
 - (NSArray)excludedDomains
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_internalExcludedDomains;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_internalExcludedDomains;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)setExcludedDomains:(id)a3
+- (void)setExcludedDomains:(id)domains
 {
-  v4 = trimStars(a3);
+  v4 = trimStars(domains);
   obj = self;
   objc_sync_enter(obj);
   internalExcludedDomains = obj->_internalExcludedDomains;
@@ -1555,17 +1555,17 @@ LABEL_116:
 
 - (NSArray)matchDomains
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_internalMatchDomains;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_internalMatchDomains;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)setMatchDomains:(id)a3
+- (void)setMatchDomains:(id)domains
 {
-  v4 = trimStars(a3);
+  v4 = trimStars(domains);
   obj = self;
   objc_sync_enter(obj);
   internalMatchDomains = obj->_internalMatchDomains;

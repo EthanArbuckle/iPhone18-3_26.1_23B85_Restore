@@ -1,16 +1,16 @@
 @interface PKPencilSqueezeContainerViewOverlay
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 @end
 
 @implementation PKPencilSqueezeContainerViewOverlay
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = v7;
-  if (v7 && [v7 PK_isEventFromPencil] && objc_msgSend(v8, "type") != 11 && (pencilHitTestWithEventHandler = self->_pencilHitTestWithEventHandler) != 0)
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
+  v8 = eventCopy;
+  if (eventCopy && [eventCopy PK_isEventFromPencil] && objc_msgSend(v8, "type") != 11 && (pencilHitTestWithEventHandler = self->_pencilHitTestWithEventHandler) != 0)
   {
     v10 = pencilHitTestWithEventHandler[2](pencilHitTestWithEventHandler, v8, x, y);
   }

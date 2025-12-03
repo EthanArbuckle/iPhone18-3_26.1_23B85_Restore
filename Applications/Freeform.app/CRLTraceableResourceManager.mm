@@ -5,7 +5,7 @@
 - (id)knownTraceableResources;
 - (id)serializationDescription;
 - (void)logSerializationAsError;
-- (void)registerTraceableResource:(id)a3;
+- (void)registerTraceableResource:(id)resource;
 @end
 
 @implementation CRLTraceableResourceManager
@@ -42,9 +42,9 @@
   return v2;
 }
 
-- (void)registerTraceableResource:(id)a3
+- (void)registerTraceableResource:(id)resource
 {
-  objc_initWeak(&location, a3);
+  objc_initWeak(&location, resource);
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -81,8 +81,8 @@
 
 - (void)logSerializationAsError
 {
-  v2 = [(CRLTraceableResourceManager *)self knownTraceableResources];
-  v3 = [v2 count];
+  knownTraceableResources = [(CRLTraceableResourceManager *)self knownTraceableResources];
+  v3 = [knownTraceableResources count];
   if (qword_101AD5A08 != -1)
   {
     sub_1013848C8();
@@ -98,7 +98,7 @@
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = v2;
+  v5 = knownTraceableResources;
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
@@ -136,14 +136,14 @@
 
 - (id)serializationDescription
 {
-  v2 = [(CRLTraceableResourceManager *)self knownTraceableResources];
+  knownTraceableResources = [(CRLTraceableResourceManager *)self knownTraceableResources];
   v3 = objc_opt_new();
-  [v3 appendFormat:@"%tu traceable resource(s)\n", objc_msgSend(v2, "count")];
+  [v3 appendFormat:@"%tu traceable resource(s)\n", objc_msgSend(knownTraceableResources, "count")];
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = v2;
+  v4 = knownTraceableResources;
   v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
@@ -181,8 +181,8 @@
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(CRLTraceableResourceManager *)self serializationDescription];
-  v6 = [NSString stringWithFormat:@"<%@: %p>\n%@", v4, self, v5];
+  serializationDescription = [(CRLTraceableResourceManager *)self serializationDescription];
+  v6 = [NSString stringWithFormat:@"<%@: %p>\n%@", v4, self, serializationDescription];
 
   return v6;
 }

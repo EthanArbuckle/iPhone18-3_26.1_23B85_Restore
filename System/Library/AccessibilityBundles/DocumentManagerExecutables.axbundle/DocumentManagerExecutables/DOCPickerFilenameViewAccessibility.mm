@@ -1,17 +1,17 @@
 @interface DOCPickerFilenameViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)updateTagButtonAccessibility:(id)a3;
+- (void)updateTagButtonAccessibility:(id)accessibility;
 @end
 
 @implementation DOCPickerFilenameViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"DocumentManagerExecutables.DOCPickerFilenameView" hasInstanceMethod:@"updateTagButtonAccessibility:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"DocumentManagerExecutables.DOCPickerFilenameView" hasInstanceMethod:@"tags" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"DocumentManagerExecutables.DOCPickerFilenameView" hasInstanceMethod:@"tagButton" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"DocumentManagerExecutables.DOCPickerFilenameView" hasInstanceMethod:@"updateTagButtonAccessibility:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"DocumentManagerExecutables.DOCPickerFilenameView" hasInstanceMethod:@"tags" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"DocumentManagerExecutables.DOCPickerFilenameView" hasInstanceMethod:@"tagButton" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -26,9 +26,9 @@
   [(DOCPickerFilenameViewAccessibility *)self updateTagButtonAccessibility:v4];
 }
 
-- (void)updateTagButtonAccessibility:(id)a3
+- (void)updateTagButtonAccessibility:(id)accessibility
 {
-  v4 = a3;
+  accessibilityCopy = accessibility;
   v7 = [(DOCPickerFilenameViewAccessibility *)self safeArrayForKey:@"tags"];
   if ([v7 count])
   {
@@ -41,7 +41,7 @@
   }
 
   v6 = accessibilityLocalizedString(v5);
-  [v4 setAccessibilityLabel:v6];
+  [accessibilityCopy setAccessibilityLabel:v6];
 }
 
 @end

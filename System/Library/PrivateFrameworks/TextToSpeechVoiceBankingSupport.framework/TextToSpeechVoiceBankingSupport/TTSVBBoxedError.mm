@@ -1,21 +1,21 @@
 @interface TTSVBBoxedError
 - (NSString)description;
 - (_TtC31TextToSpeechVoiceBankingSupport15TTSVBBoxedError)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TTSVBBoxedError
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_233127474(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_233127474(coderCopy);
 }
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   TTSVBError.description.getter();
 
   v3 = sub_23328D95C();

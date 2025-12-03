@@ -23,7 +23,7 @@
 
 - (NSDictionary)dictionaryRepresentation
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000134E4();
 
   sub_100706B30(&qword_100CB4F40);

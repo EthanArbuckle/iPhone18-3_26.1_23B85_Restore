@@ -1,8 +1,8 @@
 @interface CHSInteractionEventService
 - (CHSInteractionEventService)init;
-- (CHSInteractionEventService)initWithConnection:(id)a3;
-- (void)applicationEnteredForegroundWithBundleID:(id)a3;
-- (void)userEnteredAddGalleryForHost:(id)a3;
+- (CHSInteractionEventService)initWithConnection:(id)connection;
+- (void)applicationEnteredForegroundWithBundleID:(id)d;
+- (void)userEnteredAddGalleryForHost:(id)host;
 @end
 
 @implementation CHSInteractionEventService
@@ -15,52 +15,52 @@
   return v4;
 }
 
-- (CHSInteractionEventService)initWithConnection:(id)a3
+- (CHSInteractionEventService)initWithConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v9.receiver = self;
   v9.super_class = CHSInteractionEventService;
   v6 = [(CHSInteractionEventService *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_connection, a3);
+    objc_storeStrong(&v6->_connection, connection);
   }
 
   return v7;
 }
 
-- (void)userEnteredAddGalleryForHost:(id)a3
+- (void)userEnteredAddGalleryForHost:(id)host
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  hostCopy = host;
   v5 = CHSLogChronoServices();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138543362;
-    v8 = v4;
+    v8 = hostCopy;
     _os_log_impl(&dword_195EB2000, v5, OS_LOG_TYPE_DEFAULT, "User entered add gallery for host: %{public}@", &v7, 0xCu);
   }
 
-  [(CHSChronoServicesConnection *)self->_connection performDescriptorDiscoveryForHost:v4];
+  [(CHSChronoServicesConnection *)self->_connection performDescriptorDiscoveryForHost:hostCopy];
   [(CHSChronoServicesConnection *)self->_connection retryStuckRemotePairings];
 
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)applicationEnteredForegroundWithBundleID:(id)a3
+- (void)applicationEnteredForegroundWithBundleID:(id)d
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dCopy = d;
   v5 = CHSLogChronoServices();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = dCopy;
     _os_log_impl(&dword_195EB2000, v5, OS_LOG_TYPE_DEFAULT, "noting foreground launch for %@ with widget extension; trigger metadata query", &v7, 0xCu);
   }
 
-  [(CHSChronoServicesConnection *)self->_connection reloadDescriptorsForContainerBundleIdentifier:v4 completion:&__block_literal_global_7];
+  [(CHSChronoServicesConnection *)self->_connection reloadDescriptorsForContainerBundleIdentifier:dCopy completion:&__block_literal_global_7];
   v6 = *MEMORY[0x1E69E9840];
 }
 

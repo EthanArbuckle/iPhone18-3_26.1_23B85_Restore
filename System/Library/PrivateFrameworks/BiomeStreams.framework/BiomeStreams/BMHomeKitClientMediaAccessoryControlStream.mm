@@ -13,10 +13,10 @@
   if (v2)
   {
     v3 = BMRootLibraryBridge();
-    v4 = [v3 HomeKit];
-    v5 = [v4 Client];
-    v6 = [v5 MediaAccessoryControl];
-    v7 = [v6 storeStreamWithLegacyClass:objc_opt_class()];
+    homeKit = [v3 HomeKit];
+    client = [homeKit Client];
+    mediaAccessoryControl = [client MediaAccessoryControl];
+    v7 = [mediaAccessoryControl storeStreamWithLegacyClass:objc_opt_class()];
     storeStream = v2->_storeStream;
     v2->_storeStream = v7;
 
@@ -36,8 +36,8 @@
 - (id)publisher
 {
   v3 = [BMDSLStreamPublisher alloc];
-  v4 = [(BMHomeKitClientMediaAccessoryControlStream *)self identifier];
-  v5 = [(BMDSLStreamPublisher *)v3 initWithIdentifier:v4 streamType:1 eventDataClass:objc_opt_class()];
+  identifier = [(BMHomeKitClientMediaAccessoryControlStream *)self identifier];
+  v5 = [(BMDSLStreamPublisher *)v3 initWithIdentifier:identifier streamType:1 eventDataClass:objc_opt_class()];
 
   return v5;
 }

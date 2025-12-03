@@ -1,29 +1,29 @@
 @interface CUMobileDeviceSession
 - (CUMobileDeviceSession)init;
 - (void)_invalidated;
-- (void)_pairSetupWithFlags:(unsigned int)a3 completion:(id)a4;
-- (void)_pairVerifyWithFlags:(unsigned int)a3 completion:(id)a4;
-- (void)_unpairWithCompletion:(id)a3;
+- (void)_pairSetupWithFlags:(unsigned int)flags completion:(id)completion;
+- (void)_pairVerifyWithFlags:(unsigned int)flags completion:(id)completion;
+- (void)_unpairWithCompletion:(id)completion;
 - (void)activate;
 - (void)invalidate;
-- (void)pairSetupTryPIN:(id)a3;
-- (void)pairSetupWithFlags:(unsigned int)a3 completion:(id)a4;
-- (void)pairVerifyWithFlags:(unsigned int)a3 completion:(id)a4;
-- (void)unpairWithCompletion:(id)a3;
+- (void)pairSetupTryPIN:(id)n;
+- (void)pairSetupWithFlags:(unsigned int)flags completion:(id)completion;
+- (void)pairVerifyWithFlags:(unsigned int)flags completion:(id)completion;
+- (void)unpairWithCompletion:(id)completion;
 @end
 
 @implementation CUMobileDeviceSession
 
-- (void)_unpairWithCompletion:(id)a3
+- (void)_unpairWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __47__CUMobileDeviceSession__unpairWithCompletion___block_invoke;
   block[3] = &unk_1E73A4FD0;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -51,17 +51,17 @@ void __47__CUMobileDeviceSession__unpairWithCompletion___block_invoke(uint64_t a
   }
 }
 
-- (void)unpairWithCompletion:(id)a3
+- (void)unpairWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __46__CUMobileDeviceSession_unpairWithCompletion___block_invoke;
   v7[3] = &unk_1E73A49A0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -79,16 +79,16 @@ void __46__CUMobileDeviceSession_unpairWithCompletion___block_invoke(uint64_t a1
   [v3 performBlock:v4];
 }
 
-- (void)_pairVerifyWithFlags:(unsigned int)a3 completion:(id)a4
+- (void)_pairVerifyWithFlags:(unsigned int)flags completion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __57__CUMobileDeviceSession__pairVerifyWithFlags_completion___block_invoke;
   block[3] = &unk_1E73A4FD0;
-  v9 = v5;
-  v7 = v5;
+  v9 = completionCopy;
+  v7 = completionCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -113,18 +113,18 @@ void __57__CUMobileDeviceSession__pairVerifyWithFlags_completion___block_invoke(
   (*(v1 + 16))(v1, v8);
 }
 
-- (void)pairVerifyWithFlags:(unsigned int)a3 completion:(id)a4
+- (void)pairVerifyWithFlags:(unsigned int)flags completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __56__CUMobileDeviceSession_pairVerifyWithFlags_completion___block_invoke;
   block[3] = &unk_1E73A3658;
-  v11 = a3;
+  flagsCopy = flags;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = completionCopy;
+  v8 = completionCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -142,30 +142,30 @@ void __56__CUMobileDeviceSession_pairVerifyWithFlags_completion___block_invoke(u
   [v2 performBlock:v3];
 }
 
-- (void)pairSetupTryPIN:(id)a3
+- (void)pairSetupTryPIN:(id)n
 {
-  v4 = a3;
+  nCopy = n;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __41__CUMobileDeviceSession_pairSetupTryPIN___block_invoke;
   v7[3] = &unk_1E73A49F0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = nCopy;
+  v6 = nCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (void)_pairSetupWithFlags:(unsigned int)a3 completion:(id)a4
+- (void)_pairSetupWithFlags:(unsigned int)flags completion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __56__CUMobileDeviceSession__pairSetupWithFlags_completion___block_invoke;
   block[3] = &unk_1E73A4FD0;
-  v9 = v5;
-  v7 = v5;
+  v9 = completionCopy;
+  v7 = completionCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -190,18 +190,18 @@ void __56__CUMobileDeviceSession__pairSetupWithFlags_completion___block_invoke(u
   (*(v1 + 16))(v1, v8);
 }
 
-- (void)pairSetupWithFlags:(unsigned int)a3 completion:(id)a4
+- (void)pairSetupWithFlags:(unsigned int)flags completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __55__CUMobileDeviceSession_pairSetupWithFlags_completion___block_invoke;
   block[3] = &unk_1E73A3658;
-  v11 = a3;
+  flagsCopy = flags;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = completionCopy;
+  v8 = completionCopy;
   dispatch_async(dispatchQueue, block);
 }
 

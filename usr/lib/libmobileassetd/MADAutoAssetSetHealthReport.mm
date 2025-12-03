@@ -1,9 +1,9 @@
 @interface MADAutoAssetSetHealthReport
-+ (id)bucketedTimeSinceDate:(id)a3;
-+ (id)errorSummaryForSplunk:(id)a3;
-+ (id)formattedDate:(id)a3;
-+ (id)shortUUID:(id)a3;
-+ (id)trimmedSetIdentifier:(id)a3;
++ (id)bucketedTimeSinceDate:(id)date;
++ (id)errorSummaryForSplunk:(id)splunk;
++ (id)formattedDate:(id)date;
++ (id)shortUUID:(id)d;
++ (id)trimmedSetIdentifier:(id)identifier;
 - (id)description;
 - (id)eventPayloadForCoreAnalytics;
 - (id)eventPayloadForSplunk;
@@ -11,9 +11,9 @@
 
 @implementation MADAutoAssetSetHealthReport
 
-+ (id)trimmedSetIdentifier:(id)a3
++ (id)trimmedSetIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -33,11 +33,11 @@
         }
 
         v8 = *(*(&v11 + 1) + 8 * i);
-        if ([v3 hasPrefix:v8])
+        if ([identifierCopy hasPrefix:v8])
         {
-          v9 = [v3 substringFromIndex:{objc_msgSend(v8, "length")}];
+          v9 = [identifierCopy substringFromIndex:{objc_msgSend(v8, "length")}];
 
-          v3 = v9;
+          identifierCopy = v9;
         }
       }
 
@@ -47,16 +47,16 @@
     while (v5);
   }
 
-  return v3;
+  return identifierCopy;
 }
 
-+ (id)shortUUID:(id)a3
++ (id)shortUUID:(id)d
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  dCopy = d;
+  v4 = dCopy;
+  if (dCopy)
   {
-    if ([v3 length] < 0xD)
+    if ([dCopy length] < 0xD)
     {
       v5 = v4;
     }
@@ -77,16 +77,16 @@
   return v6;
 }
 
-+ (id)formattedDate:(id)a3
++ (id)formattedDate:(id)date
 {
   v3 = formattedDate__onceToken;
-  v4 = a3;
+  dateCopy = date;
   if (v3 != -1)
   {
     +[MADAutoAssetSetHealthReport formattedDate:];
   }
 
-  v5 = [formattedDate__formatter stringFromDate:v4];
+  v5 = [formattedDate__formatter stringFromDate:dateCopy];
 
   return v5;
 }
@@ -102,17 +102,17 @@ void __45__MADAutoAssetSetHealthReport_formattedDate___block_invoke(id a1)
   [formattedDate__formatter setTimeZone:v3];
 }
 
-+ (id)bucketedTimeSinceDate:(id)a3
++ (id)bucketedTimeSinceDate:(id)date
 {
-  v3 = a3;
-  if (!v3)
+  dateCopy = date;
+  if (!dateCopy)
   {
     v9 = 0;
     goto LABEL_11;
   }
 
   v4 = +[NSDate now];
-  [v4 timeIntervalSinceDate:v3];
+  [v4 timeIntervalSinceDate:dateCopy];
   v6 = v5;
 
   v7 = v6 / 60.0 / 60.0;
@@ -148,10 +148,10 @@ LABEL_11:
   return v9;
 }
 
-+ (id)errorSummaryForSplunk:(id)a3
++ (id)errorSummaryForSplunk:(id)splunk
 {
-  v3 = [a3 checkedSummary];
-  v4 = [v3 stringByReplacingOccurrencesOfString:@"com.apple.MobileAssetError.AutoAsset" withString:@"MA"];
+  checkedSummary = [splunk checkedSummary];
+  v4 = [checkedSummary stringByReplacingOccurrencesOfString:@"com.apple.MobileAssetError.AutoAsset" withString:@"MA"];
 
   return v4;
 }
@@ -160,33 +160,33 @@ LABEL_11:
 {
   v3 = +[NSMutableDictionary dictionary];
   v4 = objc_opt_class();
-  v5 = [(MADAutoAssetSetHealthReport *)self setIdentifier];
-  v6 = [v4 trimmedSetIdentifier:v5];
+  setIdentifier = [(MADAutoAssetSetHealthReport *)self setIdentifier];
+  v6 = [v4 trimmedSetIdentifier:setIdentifier];
   [v3 setSafeObject:v6 forKey:@"SetID"];
 
-  v7 = [(MADAutoAssetSetHealthReport *)self availableForUseError];
+  availableForUseError = [(MADAutoAssetSetHealthReport *)self availableForUseError];
 
-  if (v7)
+  if (availableForUseError)
   {
     v8 = objc_opt_class();
-    v9 = [(MADAutoAssetSetHealthReport *)self availableForUseError];
-    v10 = [v8 errorSummaryForSplunk:v9];
+    availableForUseError2 = [(MADAutoAssetSetHealthReport *)self availableForUseError];
+    v10 = [v8 errorSummaryForSplunk:availableForUseError2];
     [v3 setSafeObject:v10 forKey:@"AvailErr"];
   }
 
-  v11 = [(MADAutoAssetSetHealthReport *)self newerVersionError];
+  newerVersionError = [(MADAutoAssetSetHealthReport *)self newerVersionError];
 
-  if (v11)
+  if (newerVersionError)
   {
     v12 = objc_opt_class();
-    v13 = [(MADAutoAssetSetHealthReport *)self newerVersionError];
-    v14 = [v12 errorSummaryForSplunk:v13];
+    newerVersionError2 = [(MADAutoAssetSetHealthReport *)self newerVersionError];
+    v14 = [v12 errorSummaryForSplunk:newerVersionError2];
     [v3 setSafeObject:v14 forKey:@"NewerErr"];
   }
 
   v15 = objc_opt_class();
-  v16 = [(MADAutoAssetSetHealthReport *)self latestToVendAssetSetUUID];
-  v17 = [v15 shortUUID:v16];
+  latestToVendAssetSetUUID = [(MADAutoAssetSetHealthReport *)self latestToVendAssetSetUUID];
+  v17 = [v15 shortUUID:latestToVendAssetSetUUID];
   v18 = v17;
   if (v17)
   {
@@ -200,15 +200,15 @@ LABEL_11:
 
   [v3 setSafeObject:v19 forKey:@"Vend"];
 
-  v20 = [(MADAutoAssetSetHealthReport *)self latestDiscoveredAssetSetUUID];
-  v21 = [(MADAutoAssetSetHealthReport *)self latestToVendAssetSetUUID];
-  v22 = [SUCore stringIsEqual:v20 to:v21];
+  latestDiscoveredAssetSetUUID = [(MADAutoAssetSetHealthReport *)self latestDiscoveredAssetSetUUID];
+  latestToVendAssetSetUUID2 = [(MADAutoAssetSetHealthReport *)self latestToVendAssetSetUUID];
+  v22 = [SUCore stringIsEqual:latestDiscoveredAssetSetUUID to:latestToVendAssetSetUUID2];
 
   if ((v22 & 1) == 0)
   {
     v23 = objc_opt_class();
-    v24 = [(MADAutoAssetSetHealthReport *)self latestDiscoveredAssetSetUUID];
-    v25 = [v23 shortUUID:v24];
+    latestDiscoveredAssetSetUUID2 = [(MADAutoAssetSetHealthReport *)self latestDiscoveredAssetSetUUID];
+    v25 = [v23 shortUUID:latestDiscoveredAssetSetUUID2];
     v26 = v25;
     if (v25)
     {
@@ -230,8 +230,8 @@ LABEL_11:
   [v3 setSafeObject:v29 forKey:@"VendingConfig"];
 
   v30 = objc_opt_class();
-  v31 = [(MADAutoAssetSetHealthReport *)self LastCheckedDate];
-  v32 = [v30 formattedDate:v31];
+  lastCheckedDate = [(MADAutoAssetSetHealthReport *)self LastCheckedDate];
+  v32 = [v30 formattedDate:lastCheckedDate];
   v33 = v32;
   if (v32)
   {
@@ -249,8 +249,8 @@ LABEL_11:
   [v3 setSafeObject:v35 forKey:@"PSUS"];
 
   v36 = objc_opt_class();
-  v37 = [(MADAutoAssetSetHealthReport *)self configurationChangedDate];
-  v38 = [v36 formattedDate:v37];
+  configurationChangedDate = [(MADAutoAssetSetHealthReport *)self configurationChangedDate];
+  v38 = [v36 formattedDate:configurationChangedDate];
   v39 = v38;
   if (v38)
   {
@@ -265,8 +265,8 @@ LABEL_11:
   [v3 setSafeObject:v40 forKey:@"ConfigChange"];
 
   v41 = objc_opt_class();
-  v42 = [(MADAutoAssetSetHealthReport *)self configurationChangedDate];
-  v43 = [v41 bucketedTimeSinceDate:v42];
+  configurationChangedDate2 = [(MADAutoAssetSetHealthReport *)self configurationChangedDate];
+  v43 = [v41 bucketedTimeSinceDate:configurationChangedDate2];
   v44 = v43;
   if (v43)
   {
@@ -286,32 +286,32 @@ LABEL_11:
 - (id)eventPayloadForCoreAnalytics
 {
   v3 = +[NSMutableDictionary dictionary];
-  v4 = [(MADAutoAssetSetHealthReport *)self setIdentifier];
-  [v3 setSafeObject:v4 forKey:@"SetID"];
+  setIdentifier = [(MADAutoAssetSetHealthReport *)self setIdentifier];
+  [v3 setSafeObject:setIdentifier forKey:@"SetID"];
 
-  v5 = [(MADAutoAssetSetHealthReport *)self availableForUseError];
+  availableForUseError = [(MADAutoAssetSetHealthReport *)self availableForUseError];
 
-  if (v5)
+  if (availableForUseError)
   {
-    v6 = [(MADAutoAssetSetHealthReport *)self availableForUseError];
-    v7 = [v6 checkedDescription];
-    [v3 setSafeObject:v7 forKey:@"AvailErr"];
+    availableForUseError2 = [(MADAutoAssetSetHealthReport *)self availableForUseError];
+    checkedDescription = [availableForUseError2 checkedDescription];
+    [v3 setSafeObject:checkedDescription forKey:@"AvailErr"];
   }
 
-  v8 = [(MADAutoAssetSetHealthReport *)self newerVersionError];
+  newerVersionError = [(MADAutoAssetSetHealthReport *)self newerVersionError];
 
-  if (v8)
+  if (newerVersionError)
   {
-    v9 = [(MADAutoAssetSetHealthReport *)self newerVersionError];
-    v10 = [v9 checkedDescription];
-    [v3 setSafeObject:v10 forKey:@"NewerErr"];
+    newerVersionError2 = [(MADAutoAssetSetHealthReport *)self newerVersionError];
+    checkedDescription2 = [newerVersionError2 checkedDescription];
+    [v3 setSafeObject:checkedDescription2 forKey:@"NewerErr"];
   }
 
-  v11 = [(MADAutoAssetSetHealthReport *)self latestToVendAssetSetUUID];
-  v12 = v11;
-  if (v11)
+  latestToVendAssetSetUUID = [(MADAutoAssetSetHealthReport *)self latestToVendAssetSetUUID];
+  v12 = latestToVendAssetSetUUID;
+  if (latestToVendAssetSetUUID)
   {
-    v13 = v11;
+    v13 = latestToVendAssetSetUUID;
   }
 
   else
@@ -321,11 +321,11 @@ LABEL_11:
 
   [v3 setSafeObject:v13 forKey:@"Vend"];
 
-  v14 = [(MADAutoAssetSetHealthReport *)self latestDiscoveredAssetSetUUID];
-  v15 = v14;
-  if (v14)
+  latestDiscoveredAssetSetUUID = [(MADAutoAssetSetHealthReport *)self latestDiscoveredAssetSetUUID];
+  v15 = latestDiscoveredAssetSetUUID;
+  if (latestDiscoveredAssetSetUUID)
   {
-    v16 = v14;
+    v16 = latestDiscoveredAssetSetUUID;
   }
 
   else
@@ -342,8 +342,8 @@ LABEL_11:
   [v3 setSafeObject:v18 forKey:@"VendingConfig"];
 
   v19 = objc_opt_class();
-  v20 = [(MADAutoAssetSetHealthReport *)self LastCheckedDate];
-  v21 = [v19 formattedDate:v20];
+  lastCheckedDate = [(MADAutoAssetSetHealthReport *)self LastCheckedDate];
+  v21 = [v19 formattedDate:lastCheckedDate];
   v22 = v21;
   if (v21)
   {
@@ -361,8 +361,8 @@ LABEL_11:
   [v3 setSafeObject:v24 forKey:@"PSUS"];
 
   v25 = objc_opt_class();
-  v26 = [(MADAutoAssetSetHealthReport *)self configurationChangedDate];
-  v27 = [v25 formattedDate:v26];
+  configurationChangedDate = [(MADAutoAssetSetHealthReport *)self configurationChangedDate];
+  v27 = [v25 formattedDate:configurationChangedDate];
   v28 = v27;
   if (v27)
   {
@@ -377,8 +377,8 @@ LABEL_11:
   [v3 setSafeObject:v29 forKey:@"ConfigChange"];
 
   v30 = objc_opt_class();
-  v31 = [(MADAutoAssetSetHealthReport *)self configurationChangedDate];
-  v32 = [v30 bucketedTimeSinceDate:v31];
+  configurationChangedDate2 = [(MADAutoAssetSetHealthReport *)self configurationChangedDate];
+  v32 = [v30 bucketedTimeSinceDate:configurationChangedDate2];
   v33 = v32;
   if (v32)
   {
@@ -397,50 +397,50 @@ LABEL_11:
 
 - (id)description
 {
-  v3 = [(MADAutoAssetSetHealthReport *)self setIdentifier];
-  if (v3)
+  setIdentifier = [(MADAutoAssetSetHealthReport *)self setIdentifier];
+  if (setIdentifier)
   {
-    v4 = [(MADAutoAssetSetHealthReport *)self setIdentifier];
+    setIdentifier2 = [(MADAutoAssetSetHealthReport *)self setIdentifier];
   }
 
   else
   {
-    v4 = @"N";
+    setIdentifier2 = @"N";
   }
 
-  v22 = [(MADAutoAssetSetHealthReport *)self latestDiscoveredAssetSetUUID];
-  if (v22)
+  latestDiscoveredAssetSetUUID = [(MADAutoAssetSetHealthReport *)self latestDiscoveredAssetSetUUID];
+  if (latestDiscoveredAssetSetUUID)
   {
-    v5 = [(MADAutoAssetSetHealthReport *)self latestDiscoveredAssetSetUUID];
-  }
-
-  else
-  {
-    v5 = @"N";
-  }
-
-  v6 = [(MADAutoAssetSetHealthReport *)self latestToVendAssetSetUUID];
-  if (v6)
-  {
-    v7 = [(MADAutoAssetSetHealthReport *)self latestToVendAssetSetUUID];
+    latestDiscoveredAssetSetUUID2 = [(MADAutoAssetSetHealthReport *)self latestDiscoveredAssetSetUUID];
   }
 
   else
   {
-    v7 = @"N";
+    latestDiscoveredAssetSetUUID2 = @"N";
   }
 
-  v8 = [(MADAutoAssetSetHealthReport *)self LastCheckedDate];
-  v9 = @"N";
-  v23 = v4;
-  if (v8)
+  latestToVendAssetSetUUID = [(MADAutoAssetSetHealthReport *)self latestToVendAssetSetUUID];
+  if (latestToVendAssetSetUUID)
   {
-    v25 = [(MADAutoAssetSetHealthReport *)self LastCheckedDate];
+    latestToVendAssetSetUUID2 = [(MADAutoAssetSetHealthReport *)self latestToVendAssetSetUUID];
   }
 
   else
   {
-    v25 = @"N";
+    latestToVendAssetSetUUID2 = @"N";
+  }
+
+  lastCheckedDate = [(MADAutoAssetSetHealthReport *)self LastCheckedDate];
+  checkedDescription = @"N";
+  v23 = setIdentifier2;
+  if (lastCheckedDate)
+  {
+    lastCheckedDate2 = [(MADAutoAssetSetHealthReport *)self LastCheckedDate];
+  }
+
+  else
+  {
+    lastCheckedDate2 = @"N";
   }
 
   if ([(MADAutoAssetSetHealthReport *)self lastestToVendIsLocked])
@@ -464,44 +464,44 @@ LABEL_11:
     v11 = @"N";
   }
 
-  v12 = [(MADAutoAssetSetHealthReport *)self availableForUseError];
-  if (v12)
+  availableForUseError = [(MADAutoAssetSetHealthReport *)self availableForUseError];
+  if (availableForUseError)
   {
-    v19 = [(MADAutoAssetSetHealthReport *)self availableForUseError];
-    v9 = [v19 checkedDescription];
+    availableForUseError2 = [(MADAutoAssetSetHealthReport *)self availableForUseError];
+    checkedDescription = [availableForUseError2 checkedDescription];
   }
 
-  v21 = v6;
-  v24 = v3;
-  v13 = [(MADAutoAssetSetHealthReport *)self newerVersionError];
-  if (v13)
+  v21 = latestToVendAssetSetUUID;
+  v24 = setIdentifier;
+  newerVersionError = [(MADAutoAssetSetHealthReport *)self newerVersionError];
+  if (newerVersionError)
   {
-    v3 = [(MADAutoAssetSetHealthReport *)self newerVersionError];
-    v14 = [v3 checkedDescription];
+    setIdentifier = [(MADAutoAssetSetHealthReport *)self newerVersionError];
+    checkedDescription2 = [setIdentifier checkedDescription];
   }
 
   else
   {
-    v14 = @"N";
+    checkedDescription2 = @"N";
   }
 
-  v15 = [(MADAutoAssetSetHealthReport *)self latestInstanceFromPreSUStaging];
+  latestInstanceFromPreSUStaging = [(MADAutoAssetSetHealthReport *)self latestInstanceFromPreSUStaging];
   v16 = @"Y";
-  if (!v15)
+  if (!latestInstanceFromPreSUStaging)
   {
     v16 = @"N";
   }
 
-  v17 = [NSString stringWithFormat:@"setIdentifier:%@ | latestDiscoveredAssetSetUUID:%@ | latestToVendAssetSetUUID:%@ | LastCheckedDate:%@ | lastestToVendIsLocked:%@ | lastestToVendMatchesSetConfig:%@ | availableForUseError:%@ | newerVersionError:%@ | latestInstanceFromPreSUStaging:%@", v23, v5, v7, v25, v20, v11, v9, v14, v16];
-  if (v13)
+  v17 = [NSString stringWithFormat:@"setIdentifier:%@ | latestDiscoveredAssetSetUUID:%@ | latestToVendAssetSetUUID:%@ | LastCheckedDate:%@ | lastestToVendIsLocked:%@ | lastestToVendMatchesSetConfig:%@ | availableForUseError:%@ | newerVersionError:%@ | latestInstanceFromPreSUStaging:%@", v23, latestDiscoveredAssetSetUUID2, latestToVendAssetSetUUID2, lastCheckedDate2, v20, v11, checkedDescription, checkedDescription2, v16];
+  if (newerVersionError)
   {
   }
 
-  if (v12)
+  if (availableForUseError)
   {
   }
 
-  if (v8)
+  if (lastCheckedDate)
   {
   }
 
@@ -509,7 +509,7 @@ LABEL_11:
   {
   }
 
-  if (v22)
+  if (latestDiscoveredAssetSetUUID)
   {
   }
 

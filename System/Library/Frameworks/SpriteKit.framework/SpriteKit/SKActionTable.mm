@@ -1,31 +1,31 @@
 @interface SKActionTable
-+ (id)actionTableWithContentsOfDictionary:(id)a3;
-- (BOOL)isEqualToActionTable:(id)a3;
-- (SKActionTable)initWithCoder:(id)a3;
-- (SKActionTable)initWithContentsOfDictionary:(id)a3;
-- (id)actionForName:(id)a3;
-- (void)encodeWithCoder:(id)a3;
++ (id)actionTableWithContentsOfDictionary:(id)dictionary;
+- (BOOL)isEqualToActionTable:(id)table;
+- (SKActionTable)initWithCoder:(id)coder;
+- (SKActionTable)initWithContentsOfDictionary:(id)dictionary;
+- (id)actionForName:(id)name;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SKActionTable
 
-+ (id)actionTableWithContentsOfDictionary:(id)a3
++ (id)actionTableWithContentsOfDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [[SKActionTable alloc] initWithContentsOfDictionary:v3];
+  dictionaryCopy = dictionary;
+  v4 = [[SKActionTable alloc] initWithContentsOfDictionary:dictionaryCopy];
 
   return v4;
 }
 
-- (SKActionTable)initWithContentsOfDictionary:(id)a3
+- (SKActionTable)initWithContentsOfDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = SKActionTable;
   v5 = [(SKActionTable *)&v10 init];
   if (v5)
   {
-    v6 = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:v4];
+    v6 = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:dictionaryCopy];
     actionTableDictionary = v5->_actionTableDictionary;
     v5->_actionTableDictionary = v6;
 
@@ -36,10 +36,10 @@
   return v5;
 }
 
-- (SKActionTable)initWithCoder:(id)a3
+- (SKActionTable)initWithCoder:(id)coder
 {
   v15[4] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = SKActionTable;
   v5 = [(SKActionTable *)&v14 init];
@@ -53,14 +53,14 @@
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:4];
     [v6 addObjectsFromArray:v7];
 
-    v8 = [v4 allowedClasses];
-    [v6 unionSet:v8];
+    allowedClasses = [coderCopy allowedClasses];
+    [v6 unionSet:allowedClasses];
 
-    v9 = [v4 decodeObjectOfClasses:v6 forKey:@"_actionTableDict"];
+    v9 = [coderCopy decodeObjectOfClasses:v6 forKey:@"_actionTableDict"];
     actionTableDictionary = v5->_actionTableDictionary;
     v5->_actionTableDictionary = v9;
 
-    v11 = [v4 decodeObjectOfClasses:v6 forKey:@"_info"];
+    v11 = [coderCopy decodeObjectOfClasses:v6 forKey:@"_info"];
     info = v5->__info;
     v5->__info = v11;
   }
@@ -68,18 +68,18 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeObject:self->_actionTableDictionary forKey:@"_actionTableDict"];
-  [v4 encodeObject:self->__info forKey:@"_info"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_actionTableDictionary forKey:@"_actionTableDict"];
+  [coderCopy encodeObject:self->__info forKey:@"_info"];
 }
 
-- (BOOL)isEqualToActionTable:(id)a3
+- (BOOL)isEqualToActionTable:(id)table
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (self == v4)
+  tableCopy = table;
+  if (self == tableCopy)
   {
     v13 = 1;
   }
@@ -106,7 +106,7 @@
 
           v9 = *(*(&v15 + 1) + 8 * i);
           v10 = [(NSDictionary *)self->_actionTableDictionary objectForKey:v9, v15];
-          v11 = [(NSDictionary *)v4->_actionTableDictionary objectForKey:v9];
+          v11 = [(NSDictionary *)tableCopy->_actionTableDictionary objectForKey:v9];
           if (!v11)
           {
 
@@ -145,9 +145,9 @@ LABEL_16:
   return v13;
 }
 
-- (id)actionForName:(id)a3
+- (id)actionForName:(id)name
 {
-  v3 = [(NSDictionary *)self->_actionTableDictionary objectForKeyedSubscript:a3];
+  v3 = [(NSDictionary *)self->_actionTableDictionary objectForKeyedSubscript:name];
 
   return v3;
 }

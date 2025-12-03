@@ -1,7 +1,7 @@
 @interface PAEnrollmentNode
-+ (id)nodeWithSection:(unint64_t)a3 andType:(unint64_t)a4 comparing:(unint64_t)a5 with:(unint64_t)a6;
-+ (id)nodeWithSection:(unint64_t)a3 type:(unint64_t)a4 andConfiguration:(id)a5;
-- (BOOL)isEqual:(id)a3;
++ (id)nodeWithSection:(unint64_t)section andType:(unint64_t)type comparing:(unint64_t)comparing with:(unint64_t)with;
++ (id)nodeWithSection:(unint64_t)section type:(unint64_t)type andConfiguration:(id)configuration;
+- (BOOL)isEqual:(id)equal;
 - (NSArray)stimuli;
 - (NSString)heading;
 - (NSString)instructions;
@@ -13,45 +13,45 @@
 
 @implementation PAEnrollmentNode
 
-+ (id)nodeWithSection:(unint64_t)a3 type:(unint64_t)a4 andConfiguration:(id)a5
++ (id)nodeWithSection:(unint64_t)section type:(unint64_t)type andConfiguration:(id)configuration
 {
-  v7 = a5;
+  configurationCopy = configuration;
   v8 = objc_alloc_init(PAEnrollmentNode);
   [(PAEnrollmentNode *)v8 setStimuli:MEMORY[0x277CBEBF8]];
   [(PAEnrollmentNode *)v8 setHeading:&stru_287029760];
   [(PAEnrollmentNode *)v8 setInstructions:&stru_287029760];
-  [(PAEnrollmentNode *)v8 setSection:a3];
-  [(PAEnrollmentNode *)v8 setType:a4];
+  [(PAEnrollmentNode *)v8 setSection:section];
+  [(PAEnrollmentNode *)v8 setType:type];
   [(PAEnrollmentNode *)v8 setTotalSteps:6];
-  [(PAEnrollmentNode *)v8 setConfiguration:v7];
+  [(PAEnrollmentNode *)v8 setConfiguration:configurationCopy];
 
   [(PAEnrollmentNode *)v8 setTuningDescription:&stru_287029760];
 
   return v8;
 }
 
-+ (id)nodeWithSection:(unint64_t)a3 andType:(unint64_t)a4 comparing:(unint64_t)a5 with:(unint64_t)a6
++ (id)nodeWithSection:(unint64_t)section andType:(unint64_t)type comparing:(unint64_t)comparing with:(unint64_t)with
 {
-  v10 = [PAConfiguration configurationFromType:a5];
-  v11 = [PAEnrollmentNode nodeWithSection:a3 type:a4 andConfiguration:v10];
+  v10 = [PAConfiguration configurationFromType:comparing];
+  v11 = [PAEnrollmentNode nodeWithSection:section type:type andConfiguration:v10];
 
-  if (a5 != a6)
+  if (comparing != with)
   {
-    v12 = [MEMORY[0x277CBEB18] array];
-    v13 = [PAConfiguration configurationFromType:a5];
-    v14 = [PAEnrollmentNode nodeWithSection:a3 type:a5 andConfiguration:v13];
-    [v12 hcSafeAddObject:v14];
+    array = [MEMORY[0x277CBEB18] array];
+    v13 = [PAConfiguration configurationFromType:comparing];
+    v14 = [PAEnrollmentNode nodeWithSection:section type:comparing andConfiguration:v13];
+    [array hcSafeAddObject:v14];
 
-    v15 = [PAConfiguration configurationFromType:a6];
-    v16 = [PAEnrollmentNode nodeWithSection:a3 type:a6 andConfiguration:v15];
-    [v12 hcSafeAddObject:v16];
+    v15 = [PAConfiguration configurationFromType:with];
+    v16 = [PAEnrollmentNode nodeWithSection:section type:with andConfiguration:v15];
+    [array hcSafeAddObject:v16];
 
-    [v11 setOptions:v12];
+    [v11 setOptions:array];
   }
 
   v17 = paLocString(@"PersonalAudioOptionA");
   v18 = paLocString(@"PersonalAudioOptionB");
-  if (a3 == 2)
+  if (section == 2)
   {
     v19 = @"PersonalAudioOptionNo";
     v20 = @"PersonalAudioOptionYes";
@@ -59,7 +59,7 @@
 
   else
   {
-    if (a3 != 6)
+    if (section != 6)
     {
       goto LABEL_8;
     }
@@ -75,62 +75,62 @@
   v18 = v22;
   v17 = v21;
 LABEL_8:
-  v23 = [v11 options];
-  v24 = [v23 firstObject];
+  options = [v11 options];
+  firstObject = [options firstObject];
 
-  v25 = [v11 options];
-  v26 = [v25 lastObject];
+  options2 = [v11 options];
+  lastObject = [options2 lastObject];
 
   if ([v11 section] != 2)
   {
-    [v24 setSelected:1];
+    [firstObject setSelected:1];
   }
 
-  [v24 setName:v17];
-  [v26 setName:v18];
+  [firstObject setName:v17];
+  [lastObject setName:v18];
 
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(PAEnrollmentNode *)self section];
-    if (v6 != [v5 section])
+    v5 = equalCopy;
+    section = [(PAEnrollmentNode *)self section];
+    if (section != [v5 section])
     {
       goto LABEL_18;
     }
 
-    v7 = [(PAEnrollmentNode *)self type];
-    if (v7 != [v5 type])
+    type = [(PAEnrollmentNode *)self type];
+    if (type != [v5 type])
     {
       goto LABEL_18;
     }
 
-    v8 = [(PAEnrollmentNode *)self index];
-    if (v8 != [v5 index])
+    index = [(PAEnrollmentNode *)self index];
+    if (index != [v5 index])
     {
       goto LABEL_18;
     }
 
-    v9 = [(PAEnrollmentNode *)self totalSteps];
-    if (v9 != [v5 totalSteps])
+    totalSteps = [(PAEnrollmentNode *)self totalSteps];
+    if (totalSteps != [v5 totalSteps])
     {
       goto LABEL_18;
     }
 
-    v10 = [(PAEnrollmentNode *)self heading];
-    v11 = [v5 heading];
-    v12 = v11;
-    if ((v10 != 0) == (v11 == 0))
+    heading = [(PAEnrollmentNode *)self heading];
+    heading2 = [v5 heading];
+    v12 = heading2;
+    if ((heading != 0) == (heading2 == 0))
     {
-      v14 = [(PAEnrollmentNode *)self heading];
-      v15 = [v5 heading];
-      v16 = [v14 isEqualToString:v15];
+      heading3 = [(PAEnrollmentNode *)self heading];
+      heading4 = [v5 heading];
+      v16 = [heading3 isEqualToString:heading4];
 
       if (!v16)
       {
@@ -142,14 +142,14 @@ LABEL_8:
     {
     }
 
-    v17 = [(PAEnrollmentNode *)self instructions];
-    v18 = [v5 instructions];
-    v19 = v18;
-    if ((v17 != 0) == (v18 == 0))
+    instructions = [(PAEnrollmentNode *)self instructions];
+    instructions2 = [v5 instructions];
+    v19 = instructions2;
+    if ((instructions != 0) == (instructions2 == 0))
     {
-      v20 = [(PAEnrollmentNode *)self instructions];
-      v21 = [v5 instructions];
-      v22 = [v20 isEqualToString:v21];
+      instructions3 = [(PAEnrollmentNode *)self instructions];
+      instructions4 = [v5 instructions];
+      v22 = [instructions3 isEqualToString:instructions4];
 
       if (!v22)
       {
@@ -161,14 +161,14 @@ LABEL_8:
     {
     }
 
-    v23 = [(PAEnrollmentNode *)self configuration];
-    v24 = [v5 configuration];
-    v25 = v24;
-    if ((v23 != 0) == (v24 == 0))
+    configuration = [(PAEnrollmentNode *)self configuration];
+    configuration2 = [v5 configuration];
+    v25 = configuration2;
+    if ((configuration != 0) == (configuration2 == 0))
     {
-      v26 = [(PAEnrollmentNode *)self configuration];
-      v27 = [v5 configuration];
-      v28 = [v26 isEqual:v27];
+      configuration3 = [(PAEnrollmentNode *)self configuration];
+      configuration4 = [v5 configuration];
+      v28 = [configuration3 isEqual:configuration4];
 
       if (!v28)
       {
@@ -180,10 +180,10 @@ LABEL_8:
     {
     }
 
-    v29 = [(PAEnrollmentNode *)self options];
-    v30 = [v29 count];
-    v31 = [v5 options];
-    v32 = [v31 count];
+    options = [(PAEnrollmentNode *)self options];
+    v30 = [options count];
+    options2 = [v5 options];
+    v32 = [options2 count];
 
     if (v30 == v32)
     {
@@ -191,14 +191,14 @@ LABEL_8:
       v39 = &v38;
       v40 = 0x2020000000;
       v41 = 1;
-      v33 = [(PAEnrollmentNode *)self options];
+      options3 = [(PAEnrollmentNode *)self options];
       v35[0] = MEMORY[0x277D85DD0];
       v35[1] = 3221225472;
       v35[2] = __28__PAEnrollmentNode_isEqual___block_invoke;
       v35[3] = &unk_279A1D298;
       v36 = v5;
       v37 = &v38;
-      [v33 enumerateObjectsUsingBlock:v35];
+      [options3 enumerateObjectsUsingBlock:v35];
 
       v13 = *(v39 + 24);
       _Block_object_dispose(&v38, 8);
@@ -361,18 +361,18 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  v4 = [(PAEnrollmentNode *)self index];
+  index = [(PAEnrollmentNode *)self index];
   v5 = 0;
-  if (v4 <= 2)
+  if (index <= 2)
   {
-    if (v4 == 1)
+    if (index == 1)
     {
       v3 = @"PersonalAudioSpeechTitle";
     }
 
     else
     {
-      if (v4 != 2)
+      if (index != 2)
       {
         goto LABEL_20;
       }
@@ -383,19 +383,19 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  if ((v4 - 3) < 3)
+  if ((index - 3) < 3)
   {
     v3 = @"PersonalAudioMediaTitle";
     goto LABEL_19;
   }
 
-  if (v4 == 7)
+  if (index == 7)
   {
     v5 = paLocString(@"PersonalAudioSetupComplete");
     v6 = +[PASettings sharedInstance];
-    v7 = [v6 personalMediaConfiguration];
+    personalMediaConfiguration = [v6 personalMediaConfiguration];
 
-    if (!v7)
+    if (!personalMediaConfiguration)
     {
       v8 = paLocString(@"PersonalAudioSetupCompleteOff");
 
@@ -410,17 +410,17 @@ LABEL_20:
 
 - (NSString)tuningDescription
 {
-  v3 = [(PAEnrollmentNode *)self configuration];
-  v4 = [v3 level];
+  configuration = [(PAEnrollmentNode *)self configuration];
+  level = [configuration level];
 
-  v5 = [(PAEnrollmentNode *)self configuration];
-  v6 = [v5 shape];
+  configuration2 = [(PAEnrollmentNode *)self configuration];
+  shape = [configuration2 shape];
 
-  switch(v6)
+  switch(shape)
   {
     case 3:
-      v7 = v4 - 1;
-      if ((v4 - 1) < 3)
+      v7 = level - 1;
+      if ((level - 1) < 3)
       {
         v8 = off_279A1D338;
         goto LABEL_10;
@@ -428,8 +428,8 @@ LABEL_20:
 
       goto LABEL_11;
     case 2:
-      v7 = v4 - 1;
-      if ((v4 - 1) < 3)
+      v7 = level - 1;
+      if ((level - 1) < 3)
       {
         v8 = off_279A1D320;
         goto LABEL_10;
@@ -439,8 +439,8 @@ LABEL_11:
       v10 = 0;
       goto LABEL_16;
     case 1:
-      v7 = v4 - 1;
-      if ((v4 - 1) < 3)
+      v7 = level - 1;
+      if ((level - 1) < 3)
       {
         v8 = off_279A1D308;
 LABEL_10:
@@ -454,7 +454,7 @@ LABEL_15:
   }
 
   v10 = 0;
-  if (v6 == 12 && v4 == 12)
+  if (shape == 12 && level == 12)
   {
     v9 = @"PersonalAudioResultAudiogram";
     goto LABEL_15;
@@ -467,24 +467,24 @@ LABEL_16:
 
 - (id)key
 {
-  v3 = [(PAEnrollmentNode *)self options];
-  v4 = [v3 count];
+  options = [(PAEnrollmentNode *)self options];
+  v4 = [options count];
 
-  v5 = [(PAEnrollmentNode *)self section];
-  v6 = v5;
+  section = [(PAEnrollmentNode *)self section];
+  v6 = section;
   if (v4 == 2)
   {
-    v7 = [(PAEnrollmentNode *)self options];
-    v8 = [v7 firstObject];
-    v9 = [v8 type];
-    v10 = [(PAEnrollmentNode *)self options];
-    v11 = [v10 lastObject];
-    v12 = paKeyFromNodeParameters(v6, v9, [v11 type]);
+    options2 = [(PAEnrollmentNode *)self options];
+    firstObject = [options2 firstObject];
+    type = [firstObject type];
+    options3 = [(PAEnrollmentNode *)self options];
+    lastObject = [options3 lastObject];
+    v12 = paKeyFromNodeParameters(v6, type, [lastObject type]);
   }
 
   else
   {
-    v12 = paKeyFromNodeParameters(v5, 0, 0);
+    v12 = paKeyFromNodeParameters(section, 0, 0);
   }
 
   return v12;
@@ -495,10 +495,10 @@ LABEL_16:
   v3 = MEMORY[0x277CCACA8];
   v4 = paLocString(@"PersonalAudioStepTemplate");
   v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[PAEnrollmentNode index](self, "index")}];
-  v6 = [v5 localizedFormat];
+  localizedFormat = [v5 localizedFormat];
   v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[PAEnrollmentNode totalSteps](self, "totalSteps")}];
-  v8 = [v7 localizedFormat];
-  v9 = [v3 stringWithFormat:v4, v6, v8];
+  localizedFormat2 = [v7 localizedFormat];
+  v9 = [v3 stringWithFormat:v4, localizedFormat, localizedFormat2];
 
   return v9;
 }
@@ -509,12 +509,12 @@ LABEL_16:
   v12.receiver = self;
   v12.super_class = PAEnrollmentNode;
   v4 = [(PAEnrollmentNode *)&v12 description];
-  v5 = [(PAEnrollmentNode *)self section];
-  v6 = [(PAEnrollmentNode *)self type];
-  v7 = [(PAEnrollmentNode *)self configuration];
-  v8 = [v7 level];
-  v9 = [(PAEnrollmentNode *)self configuration];
-  v10 = [v3 stringWithFormat:@"%@ - %lu, %lu [%lu, %lu]", v4, v5, v6, v8, objc_msgSend(v9, "shape")];
+  section = [(PAEnrollmentNode *)self section];
+  type = [(PAEnrollmentNode *)self type];
+  configuration = [(PAEnrollmentNode *)self configuration];
+  level = [configuration level];
+  configuration2 = [(PAEnrollmentNode *)self configuration];
+  v10 = [v3 stringWithFormat:@"%@ - %lu, %lu [%lu, %lu]", v4, section, type, level, objc_msgSend(configuration2, "shape")];
 
   return v10;
 }

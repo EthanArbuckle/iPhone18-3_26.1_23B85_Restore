@@ -3,75 +3,75 @@
 - ($F24F406B2B787EFB06265DBA3D28CBD5)highlightTimeRange;
 - ($F24F406B2B787EFB06265DBA3D28CBD5)selectedTimeRange;
 - ($F24F406B2B787EFB06265DBA3D28CBD5)setHighlightTimeRange;
-- ($F24F406B2B787EFB06265DBA3D28CBD5)timeRangeByInsettingVisibleTimeRange:(id)a3 inset:(double)a4;
+- ($F24F406B2B787EFB06265DBA3D28CBD5)timeRangeByInsettingVisibleTimeRange:(id)range inset:(double)inset;
 - ($F24F406B2B787EFB06265DBA3D28CBD5)visibleTimeRange;
-- ($F24F406B2B787EFB06265DBA3D28CBD5)waveformSelectionOverlay:(id)a3 willChangeSelectedTimeRange:(id)a4 isTrackingMin:(BOOL)a5 isTrackingMax:(BOOL)a6;
+- ($F24F406B2B787EFB06265DBA3D28CBD5)waveformSelectionOverlay:(id)overlay willChangeSelectedTimeRange:(id)range isTrackingMin:(BOOL)min isTrackingMax:(BOOL)max;
 - (BOOL)_isScrubbingSelectionTimeRange;
-- (CGRect)_frameForTimeMarkerView:(id)a3;
-- (CGRect)waveformRectForLayoutBounds:(CGRect)a3;
+- (CGRect)_frameForTimeMarkerView:(id)view;
+- (CGRect)waveformRectForLayoutBounds:(CGRect)bounds;
 - (RCTimeController)activeTimeController;
-- (RCWaveformViewController)initWithOverviewWaveform:(BOOL)a3 duration:(double)a4;
+- (RCWaveformViewController)initWithOverviewWaveform:(BOOL)waveform duration:(double)duration;
 - (RCWaveformViewDelegate)delegate;
-- (double)waveformSelectionOverlay:(id)a3 offsetForTime:(double)a4;
-- (double)waveformSelectionOverlay:(id)a3 timeForOffset:(double)a4;
-- (double)waveformSelectionOverlay:(id)a3 willChangeAssetCurrentTime:(double)a4 isTracking:(BOOL)a5;
+- (double)waveformSelectionOverlay:(id)overlay offsetForTime:(double)time;
+- (double)waveformSelectionOverlay:(id)overlay timeForOffset:(double)offset;
+- (double)waveformSelectionOverlay:(id)overlay willChangeAssetCurrentTime:(double)time isTracking:(BOOL)tracking;
 - (void)_autoscrollOverlayIfNecessary;
 - (void)_layoutTimeMarkerViewsForCurrentlyVisibleTimeRange;
-- (void)_scrollViewPanGestureRecognized:(id)a3;
-- (void)_setSelectedTimeRange:(id)a3 updateVisibleTimeRange:(BOOL)a4 updateWaveformViewContentSizeAndOffset:(BOOL)a5 notifyDelegate:(BOOL)a6 animationDuration:(double)a7;
-- (void)_setTimeMarkerViewUpdatesDisabled:(BOOL)a3;
-- (void)_setVisibleTimeRange:(id)a3 animationDuration:(double)a4 completionBlock:(id)a5;
+- (void)_scrollViewPanGestureRecognized:(id)recognized;
+- (void)_setSelectedTimeRange:(id)range updateVisibleTimeRange:(BOOL)timeRange updateWaveformViewContentSizeAndOffset:(BOOL)offset notifyDelegate:(BOOL)delegate animationDuration:(double)duration;
+- (void)_setTimeMarkerViewUpdatesDisabled:(BOOL)disabled;
+- (void)_setVisibleTimeRange:(id)range animationDuration:(double)duration completionBlock:(id)block;
 - (void)_updateAnnotationViews;
 - (void)_updateBackgroundWaveformHighlight;
 - (void)_updateCurrentTimeDisplay;
-- (void)_updateSelectionOverlayWithAnimationDuration:(double)a3;
-- (void)_updateVisibleAreaWithAnimationDuration:(double)a3;
+- (void)_updateSelectionOverlayWithAnimationDuration:(double)duration;
+- (void)_updateVisibleAreaWithAnimationDuration:(double)duration;
 - (void)_updateWaveformViewContentSizeAndOffset;
-- (void)_updateWaveformViewContentSizeAndOffsetToSize:(double)a3;
+- (void)_updateWaveformViewContentSizeAndOffsetToSize:(double)size;
 - (void)dealloc;
-- (void)enableZooming:(BOOL)a3;
+- (void)enableZooming:(BOOL)zooming;
 - (void)fixupScrollPositionToMatchIndicatorPositionTime;
 - (void)resetZoomScale;
-- (void)scaleWaveform:(id)a3;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
-- (void)setCapturing:(BOOL)a3;
-- (void)setClipTimeMarkersToDuration:(BOOL)a3;
-- (void)setCurrentTimeDisplayOptions:(unint64_t)a3;
-- (void)setDataSource:(id)a3;
-- (void)setDesiredTimeDeltaForVisibleTimeRange:(double)a3;
-- (void)setDuration:(double)a3;
-- (void)setEditing:(BOOL)a3;
-- (void)setHighlightTimeRange:(id)a3;
-- (void)setIsCompactView:(BOOL)a3;
-- (void)setIsOverview:(BOOL)a3;
-- (void)setIsPlayback:(BOOL)a3;
-- (void)setMaximumSelectionDuration:(double)a3;
-- (void)setPlaying:(BOOL)a3;
-- (void)setScrubbingEnabled:(BOOL)a3;
-- (void)setSelectedTimeRangeEditingEnabled:(BOOL)a3;
-- (void)setShowPlayBarOnly:(BOOL)a3;
-- (void)setVisibleTimeRange:(id)a3;
+- (void)scaleWaveform:(id)waveform;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
+- (void)setCapturing:(BOOL)capturing;
+- (void)setClipTimeMarkersToDuration:(BOOL)duration;
+- (void)setCurrentTimeDisplayOptions:(unint64_t)options;
+- (void)setDataSource:(id)source;
+- (void)setDesiredTimeDeltaForVisibleTimeRange:(double)range;
+- (void)setDuration:(double)duration;
+- (void)setEditing:(BOOL)editing;
+- (void)setHighlightTimeRange:(id)range;
+- (void)setIsCompactView:(BOOL)view;
+- (void)setIsOverview:(BOOL)overview;
+- (void)setIsPlayback:(BOOL)playback;
+- (void)setMaximumSelectionDuration:(double)duration;
+- (void)setPlaying:(BOOL)playing;
+- (void)setScrubbingEnabled:(BOOL)enabled;
+- (void)setSelectedTimeRangeEditingEnabled:(BOOL)enabled;
+- (void)setShowPlayBarOnly:(BOOL)only;
+- (void)setVisibleTimeRange:(id)range;
 - (void)stopScrolling;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateBackgroundColor;
 - (void)updateColors;
 - (void)updateVisibleTimeRangeToFullDuration;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
-- (void)waveformRenderer:(id)a3 contentWidthDidChange:(double)a4;
-- (void)waveformSelectionOverlay:(id)a3 didFinishTrackingSelectionBeginTime:(BOOL)a4 endTime:(BOOL)a5 assetCurrentTime:(BOOL)a6;
-- (void)waveformSelectionOverlay:(id)a3 willBeginTrackingSelectionBeginTime:(BOOL)a4 endTime:(BOOL)a5 assetCurrentTime:(BOOL)a6;
-- (void)willMoveToParentViewController:(id)a3;
+- (void)waveformRenderer:(id)renderer contentWidthDidChange:(double)change;
+- (void)waveformSelectionOverlay:(id)overlay didFinishTrackingSelectionBeginTime:(BOOL)time endTime:(BOOL)endTime assetCurrentTime:(BOOL)currentTime;
+- (void)waveformSelectionOverlay:(id)overlay willBeginTrackingSelectionBeginTime:(BOOL)time endTime:(BOOL)endTime assetCurrentTime:(BOOL)currentTime;
+- (void)willMoveToParentViewController:(id)controller;
 @end
 
 @implementation RCWaveformViewController
 
-- (RCWaveformViewController)initWithOverviewWaveform:(BOOL)a3 duration:(double)a4
+- (RCWaveformViewController)initWithOverviewWaveform:(BOOL)waveform duration:(double)duration
 {
-  v5 = a3;
+  waveformCopy = waveform;
   v18.receiver = self;
   v18.super_class = RCWaveformViewController;
   v6 = [(RCWaveformViewController *)&v18 init];
@@ -82,20 +82,20 @@
     v6->_rendererController = v7;
 
     [(RCWaveformRenderer *)v6->_rendererController setRendererDelegate:v6];
-    v6->_isOverview = v5;
-    if (a4 > 0.0 && v5)
+    v6->_isOverview = waveformCopy;
+    if (duration > 0.0 && waveformCopy)
     {
-      v9 = a4;
+      durationCopy = duration;
     }
 
     else
     {
-      v9 = 6.0;
+      durationCopy = 6.0;
     }
 
-    v6->_visibleTimeRange.beginTime = RCTimeRangeMake(0.0, v9);
+    v6->_visibleTimeRange.beginTime = RCTimeRangeMake(0.0, durationCopy);
     v6->_visibleTimeRange.endTime = v10;
-    [(RCWaveformRenderer *)v6->_rendererController setIsOverview:v5];
+    [(RCWaveformRenderer *)v6->_rendererController setIsOverview:waveformCopy];
     v6->_highlightTimeRange = RCTimeRangeInvalid;
     v6->_currentTimeDisplayOptions = 0;
     v6->_clipTimeMarkersToDuration = 1;
@@ -148,17 +148,17 @@
   [(RCWaveformViewController *)&v5 dealloc];
 }
 
-- (void)willMoveToParentViewController:(id)a3
+- (void)willMoveToParentViewController:(id)controller
 {
   v7.receiver = self;
   v7.super_class = RCWaveformViewController;
   [(RCWaveformViewController *)&v7 willMoveToParentViewController:?];
-  if (!a3)
+  if (!controller)
   {
     [(RCWaveformViewController *)self setDataSource:0];
     [(RCWaveformRenderer *)self->_rendererController willMoveToParentViewController:0];
-    v5 = [(RCWaveformRenderer *)self->_rendererController view];
-    [v5 removeFromSuperview];
+    view = [(RCWaveformRenderer *)self->_rendererController view];
+    [view removeFromSuperview];
 
     [(RCWaveformRenderer *)self->_rendererController removeFromParentViewController];
     rendererController = self->_rendererController;
@@ -166,18 +166,18 @@
   }
 }
 
-- (void)setDataSource:(id)a3
+- (void)setDataSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   [(RCWaveformViewController *)self stopScrolling];
-  [(RCWaveformRenderer *)self->_rendererController setDataSource:v4];
+  [(RCWaveformRenderer *)self->_rendererController setDataSource:sourceCopy];
 
   [(RCWaveformViewController *)self _updateWaveformViewContentSizeAndOffset];
 
   [(RCWaveformViewController *)self _updateAnnotationViews];
 }
 
-- (void)setScrubbingEnabled:(BOOL)a3
+- (void)setScrubbingEnabled:(BOOL)enabled
 {
   [(RCWaveformViewController *)self isOverview];
   self->_scrubbingEnabled = 0;
@@ -186,11 +186,11 @@
   [(RCWaveformScrollView *)scrollView setScrollEnabled:0];
 }
 
-- (void)setPlaying:(BOOL)a3
+- (void)setPlaying:(BOOL)playing
 {
-  if (self->_playing != a3)
+  if (self->_playing != playing)
   {
-    self->_playing = a3;
+    self->_playing = playing;
     [(RCWaveformRenderer *)self->_rendererController setFrequentUpdatesSegmentUpdatesExpectedHint:0];
     [(RCWaveformViewController *)self _updateSelectionOverlayWithAnimationDuration:0.0];
 
@@ -198,64 +198,64 @@
   }
 }
 
-- (void)setCapturing:(BOOL)a3
+- (void)setCapturing:(BOOL)capturing
 {
-  if (self->_capturing != a3)
+  if (self->_capturing != capturing)
   {
-    v4 = a3;
-    self->_capturing = a3;
+    capturingCopy = capturing;
+    self->_capturing = capturing;
     [(RCWaveformRenderer *)self->_rendererController setCalcBlockShouldRefreshAllSlices:1];
-    [(RCWaveformRenderer *)self->_rendererController setIsRecordWaveform:v4];
-    [(RCWaveformRenderer *)self->_rendererController setFrequentUpdatesSegmentUpdatesExpectedHint:v4];
-    [(RCWaveformSelectionOverlay *)self->_selectionOverlay setIsRecording:v4];
+    [(RCWaveformRenderer *)self->_rendererController setIsRecordWaveform:capturingCopy];
+    [(RCWaveformRenderer *)self->_rendererController setFrequentUpdatesSegmentUpdatesExpectedHint:capturingCopy];
+    [(RCWaveformSelectionOverlay *)self->_selectionOverlay setIsRecording:capturingCopy];
     [(RCWaveformViewController *)self _layoutTimeMarkerViewsForCurrentlyVisibleTimeRange];
 
     [(RCWaveformViewController *)self _updateBackgroundWaveformHighlight];
   }
 }
 
-- (void)setEditing:(BOOL)a3
+- (void)setEditing:(BOOL)editing
 {
-  if (self->_editing != a3)
+  if (self->_editing != editing)
   {
-    self->_editing = a3;
+    self->_editing = editing;
     [(RCWaveformRenderer *)self->_rendererController setIsEditMode:?];
   }
 }
 
-- (void)setIsPlayback:(BOOL)a3
+- (void)setIsPlayback:(BOOL)playback
 {
-  self->_isPlayback = a3;
+  self->_isPlayback = playback;
   [(RCWaveformRenderer *)self->_rendererController setIsPlayback:?];
 
   [(RCWaveformViewController *)self updateBackgroundColor];
 }
 
-- (void)setCurrentTimeDisplayOptions:(unint64_t)a3
+- (void)setCurrentTimeDisplayOptions:(unint64_t)options
 {
-  if (self->_currentTimeDisplayOptions != a3)
+  if (self->_currentTimeDisplayOptions != options)
   {
-    self->_currentTimeDisplayOptions = a3;
+    self->_currentTimeDisplayOptions = options;
     [(RCWaveformViewController *)self _updateCurrentTimeDisplay];
   }
 }
 
-- (void)setClipTimeMarkersToDuration:(BOOL)a3
+- (void)setClipTimeMarkersToDuration:(BOOL)duration
 {
-  if (self->_clipTimeMarkersToDuration != a3)
+  if (self->_clipTimeMarkersToDuration != duration)
   {
-    self->_clipTimeMarkersToDuration = a3;
+    self->_clipTimeMarkersToDuration = duration;
   }
 
   [(RCWaveformViewController *)self _layoutTimeMarkerViewsForCurrentlyVisibleTimeRange];
 }
 
-- (CGRect)waveformRectForLayoutBounds:(CGRect)a3
+- (CGRect)waveformRectForLayoutBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v7 = +[RCRecorderStyleProvider sharedStyleProvider];
   [v7 annotationViewHeight];
   v9 = height - v8;
@@ -271,15 +271,15 @@
   return result;
 }
 
-- (void)setIsOverview:(BOOL)a3
+- (void)setIsOverview:(BOOL)overview
 {
-  v3 = a3;
-  if (self->_isOverview != a3)
+  overviewCopy = overview;
+  if (self->_isOverview != overview)
   {
-    self->_isOverview = a3;
+    self->_isOverview = overview;
   }
 
-  if (a3)
+  if (overview)
   {
     [(RCWaveformRenderer *)self->_rendererController setIsOverview:1];
     [(RCWaveformRenderer *)self->_rendererController setIsCompactView:0];
@@ -287,10 +287,10 @@
     [(RCWaveformSelectionOverlay *)self->_selectionOverlay setHidden:0];
     [(UIView *)self->_selectionBackgroundView setHidden:0];
     v6 = +[RCRecorderStyleProvider sharedStyleProvider];
-    v7 = [v6 shouldShowOverviewWaveform];
+    shouldShowOverviewWaveform = [v6 shouldShowOverviewWaveform];
 
     v8 = 20.0;
-    if (!v7)
+    if (!shouldShowOverviewWaveform)
     {
       goto LABEL_11;
     }
@@ -301,9 +301,9 @@
   else
   {
     v10 = +[RCRecorderStyleProvider sharedStyleProvider];
-    v11 = [v10 shouldShowOverviewWaveform];
+    shouldShowOverviewWaveform2 = [v10 shouldShowOverviewWaveform];
 
-    if (v11)
+    if (shouldShowOverviewWaveform2)
     {
       v12 = @"AX_DETAIL_WAVEFORM";
     }
@@ -324,25 +324,25 @@ LABEL_11:
   [(RCWaveformSelectionOverlay *)self->_selectionOverlay setAxSegment:v8];
   selectionOverlay = self->_selectionOverlay;
 
-  [(RCWaveformSelectionOverlay *)selectionOverlay setIsOverView:v3];
+  [(RCWaveformSelectionOverlay *)selectionOverlay setIsOverView:overviewCopy];
 }
 
-- (void)setDuration:(double)a3
+- (void)setDuration:(double)duration
 {
-  if (self->_duration == a3)
+  if (self->_duration == duration)
   {
     return;
   }
 
-  self->_duration = a3;
-  [(RCWaveformSelectionOverlay *)self->_selectionOverlay setAssetDuration:a3];
+  self->_duration = duration;
+  [(RCWaveformSelectionOverlay *)self->_selectionOverlay setAssetDuration:duration];
   if ([(RCWaveformSelectionOverlay *)self->_selectionOverlay isEditingEnabled])
   {
     beginTime = self->_selectedTimeRange.beginTime;
     endTime = self->_selectedTimeRange.endTime;
     if (endTime <= beginTime)
     {
-      if (endTime <= a3 && beginTime <= a3)
+      if (endTime <= duration && beginTime <= duration)
       {
 LABEL_14:
         if (!RCTimeRangeEqualToTimeRange(self->_selectedTimeRange.beginTime, self->_selectedTimeRange.endTime, beginTime, endTime))
@@ -353,25 +353,25 @@ LABEL_14:
         goto LABEL_16;
       }
 
-      v8 = a3;
+      durationCopy = duration;
     }
 
     else
     {
-      if (beginTime < a3)
+      if (beginTime < duration)
       {
-        if (endTime > a3)
+        if (endTime > duration)
         {
-          self->_selectedTimeRange.endTime = a3;
+          self->_selectedTimeRange.endTime = duration;
         }
 
         goto LABEL_14;
       }
 
-      v8 = 0.0;
+      durationCopy = 0.0;
     }
 
-    beginTime = RCTimeRangeMake(v8, a3);
+    beginTime = RCTimeRangeMake(durationCopy, duration);
     endTime = v9;
     goto LABEL_14;
   }
@@ -416,8 +416,8 @@ LABEL_16:
 - (void)updateVisibleTimeRangeToFullDuration
 {
   duration = self->_duration;
-  v4 = [(RCWaveformViewController *)self dataSource];
-  [v4 duration];
+  dataSource = [(RCWaveformViewController *)self dataSource];
+  [dataSource duration];
   v6 = v5;
 
   if (duration < v6)
@@ -429,7 +429,7 @@ LABEL_16:
   [v7 overviewWaveformMinimumDurationToDisplayWhenRecording];
   v9 = v8;
 
-  v10 = [(RCWaveformViewController *)self isPlayback];
+  isPlayback = [(RCWaveformViewController *)self isPlayback];
   if (duration >= v9)
   {
     v11 = 1;
@@ -437,7 +437,7 @@ LABEL_16:
 
   else
   {
-    v11 = v10;
+    v11 = isPlayback;
   }
 
   if (v11)
@@ -457,10 +457,10 @@ LABEL_16:
   [(RCWaveformViewController *)self setVisibleTimeRange:v13 animationDuration:v15, 0.0];
 }
 
-- (void)setVisibleTimeRange:(id)a3
+- (void)setVisibleTimeRange:(id)range
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = range.var1;
+  var0 = range.var0;
   if ([(RCWaveformViewController *)self isOverview])
   {
 
@@ -474,12 +474,12 @@ LABEL_16:
   }
 }
 
-- (void)setHighlightTimeRange:(id)a3
+- (void)setHighlightTimeRange:(id)range
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = range.var1;
+  var0 = range.var0;
   p_highlightTimeRange = &self->_highlightTimeRange;
-  if (!RCTimeRangeEqualToTimeRange(self->_highlightTimeRange.beginTime, self->_highlightTimeRange.endTime, a3.var0, a3.var1))
+  if (!RCTimeRangeEqualToTimeRange(self->_highlightTimeRange.beginTime, self->_highlightTimeRange.endTime, range.var0, range.var1))
   {
     p_highlightTimeRange->beginTime = var0;
     p_highlightTimeRange->endTime = var1;
@@ -507,12 +507,12 @@ LABEL_16:
   return result;
 }
 
-- ($F24F406B2B787EFB06265DBA3D28CBD5)timeRangeByInsettingVisibleTimeRange:(id)a3 inset:(double)a4
+- ($F24F406B2B787EFB06265DBA3D28CBD5)timeRangeByInsettingVisibleTimeRange:(id)range inset:(double)inset
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = range.var1;
+  var0 = range.var0;
   [(RCWaveformRenderer *)self->_rendererController pointsPerSecondWithVisibleTimeRange:?];
-  v8 = 1.0 / v7 * a4;
+  v8 = 1.0 / v7 * inset;
   v9 = var0 - v8;
   v10 = var1 + v8;
   result.var1 = v10;
@@ -520,22 +520,22 @@ LABEL_16:
   return result;
 }
 
-- (void)setMaximumSelectionDuration:(double)a3
+- (void)setMaximumSelectionDuration:(double)duration
 {
-  self->_maximumSelectionDuration = a3;
+  self->_maximumSelectionDuration = duration;
   [(RCWaveformViewController *)self maximumSelectionDuration];
   selectionOverlay = self->_selectionOverlay;
 
   [(RCWaveformSelectionOverlay *)selectionOverlay setSelectedTimeRangeMaximumDuration:?];
 }
 
-- (void)setSelectedTimeRangeEditingEnabled:(BOOL)a3
+- (void)setSelectedTimeRangeEditingEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  self->_selectedTimeRangeEditingEnabled = a3;
+  enabledCopy = enabled;
+  self->_selectedTimeRangeEditingEnabled = enabled;
   [(RCWaveformViewController *)self _updateWaveformViewContentSizeAndOffset];
   [(RCWaveformSelectionOverlay *)self->_selectionOverlay setInsertMode:[(RCWaveformViewController *)self selectionOverlayShouldUseInsertMode]];
-  [(RCWaveformSelectionOverlay *)self->_selectionOverlay setEditingEnabled:v3];
+  [(RCWaveformSelectionOverlay *)self->_selectionOverlay setEditingEnabled:enabledCopy];
 
   [(RCWaveformViewController *)self _layoutTimeMarkerViewsForCurrentlyVisibleTimeRange];
 }
@@ -552,13 +552,13 @@ LABEL_16:
   [(RCWaveformViewController *)self fixupScrollPositionToMatchIndicatorPositionTime];
 }
 
-- (void)scaleWaveform:(id)a3
+- (void)scaleWaveform:(id)waveform
 {
-  v12 = a3;
-  [v12 scale];
-  if ([v12 state] == &dword_0 + 1 || objc_msgSend(v12, "state") == &dword_0 + 2)
+  waveformCopy = waveform;
+  [waveformCopy scale];
+  if ([waveformCopy state] == &dword_0 + 1 || objc_msgSend(waveformCopy, "state") == &dword_0 + 2)
   {
-    [v12 scale];
+    [waveformCopy scale];
     v6 = v5 * self->_pointsPerSecondScale;
     self->_pointsPerSecondScale = v6;
     v7 = 4.0;
@@ -567,7 +567,7 @@ LABEL_16:
       self->_pointsPerSecondScale = v7;
     }
 
-    [v12 setScale:1.0];
+    [waveformCopy setScale:1.0];
     layoutWidth = self->_layoutWidth;
     [(RCWaveformViewController *)self pointsPerSecond];
     [(RCWaveformViewController *)self setDesiredTimeDeltaForVisibleTimeRange:layoutWidth / v9];
@@ -584,9 +584,9 @@ LABEL_16:
   }
 }
 
-- (void)enableZooming:(BOOL)a3
+- (void)enableZooming:(BOOL)zooming
 {
-  v3 = a3;
+  zoomingCopy = zooming;
   if (![(RCWaveformViewController *)self isOverview])
   {
     pinchGesture = self->_pinchGesture;
@@ -595,26 +595,26 @@ LABEL_16:
       [(RCWaveformScrollView *)self->_scrollView setBouncesZoom:0];
       [(RCWaveformScrollView *)self->_scrollView setMaximumZoomScale:2.0];
       [(RCWaveformScrollView *)self->_scrollView setMinimumZoomScale:0.5];
-      v6 = [(RCWaveformScrollView *)self->_scrollView pinchGestureRecognizer];
+      pinchGestureRecognizer = [(RCWaveformScrollView *)self->_scrollView pinchGestureRecognizer];
       v7 = self->_pinchGesture;
-      self->_pinchGesture = v6;
+      self->_pinchGesture = pinchGestureRecognizer;
 
       [(UIPinchGestureRecognizer *)self->_pinchGesture addTarget:self action:"scaleWaveform:"];
       pinchGesture = self->_pinchGesture;
     }
 
-    [(UIPinchGestureRecognizer *)pinchGesture setEnabled:v3];
+    [(UIPinchGestureRecognizer *)pinchGesture setEnabled:zoomingCopy];
   }
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v3 = [(RCWaveformViewController *)self view];
-  [v3 frame];
+  view = [(RCWaveformViewController *)self view];
+  [view frame];
   Width = CGRectGetWidth(v24);
 
-  v5 = [(RCWaveformViewController *)self view];
-  [v5 frame];
+  view2 = [(RCWaveformViewController *)self view];
+  [view2 frame];
   Height = CGRectGetHeight(v25);
 
   if (self->_layoutWidth != Width || self->_layoutHeight != Height)
@@ -638,8 +638,8 @@ LABEL_16:
       [(RCWaveformViewController *)self fixupScrollPositionToMatchIndicatorPositionTime];
     }
 
-    v18 = [(RCWaveformViewController *)self view];
-    [v18 frame];
+    view3 = [(RCWaveformViewController *)self view];
+    [view3 frame];
     v20 = v19;
 
     v21 = 6.0;
@@ -656,35 +656,35 @@ LABEL_16:
   }
 }
 
-- (void)setIsCompactView:(BOOL)a3
+- (void)setIsCompactView:(BOOL)view
 {
-  v3 = a3;
-  self->_isCompactView = a3;
+  viewCopy = view;
+  self->_isCompactView = view;
   [(UIView *)self->_timeMarkerView setHidden:?];
-  v5 = v3 && !self->_showPlayBarOnly;
+  v5 = viewCopy && !self->_showPlayBarOnly;
   [(RCWaveformSelectionOverlay *)self->_selectionOverlay setHidden:v5];
-  [(UIView *)self->_selectionBackgroundView setHidden:v3];
-  [(UIView *)self->_backgroundWaveFormHighlightView setHidden:v3];
-  [(RCWaveformRenderer *)self->_rendererController setIsCompactView:v3];
+  [(UIView *)self->_selectionBackgroundView setHidden:viewCopy];
+  [(UIView *)self->_backgroundWaveFormHighlightView setHidden:viewCopy];
+  [(RCWaveformRenderer *)self->_rendererController setIsCompactView:viewCopy];
   [(RCWaveformViewController *)self updateBackgroundColor];
-  v6 = [(RCWaveformViewController *)self view];
-  [v6 setNeedsLayout];
+  view = [(RCWaveformViewController *)self view];
+  [view setNeedsLayout];
 }
 
-- (void)setShowPlayBarOnly:(BOOL)a3
+- (void)setShowPlayBarOnly:(BOOL)only
 {
-  v3 = a3;
-  self->_showPlayBarOnly = a3;
+  onlyCopy = only;
+  self->_showPlayBarOnly = only;
   [(RCWaveformSelectionOverlay *)self->_selectionOverlay setPlayBarOnly:?];
-  if (self->_isCompactView && v3)
+  if (self->_isCompactView && onlyCopy)
   {
     [(RCWaveformSelectionOverlay *)self->_selectionOverlay setHidden:0];
   }
 
-  [(RCWaveformSelectionOverlay *)self->_selectionOverlay setSelectionMode:v3];
+  [(RCWaveformSelectionOverlay *)self->_selectionOverlay setSelectionMode:onlyCopy];
   rendererController = self->_rendererController;
 
-  [(RCWaveformRenderer *)rendererController setIsPlayBarOnlyMode:v3];
+  [(RCWaveformRenderer *)rendererController setIsPlayBarOnlyMode:onlyCopy];
 }
 
 - (void)viewDidLoad
@@ -693,8 +693,8 @@ LABEL_16:
   v171.super_class = RCWaveformViewController;
   [(RCWaveformViewController *)&v171 viewDidLoad];
   v3 = [RCWaveformScrollView alloc];
-  v4 = [(RCWaveformViewController *)self view];
-  [v4 bounds];
+  view = [(RCWaveformViewController *)self view];
+  [view bounds];
   v5 = [(RCWaveformScrollView *)v3 initWithFrame:?];
   scrollView = self->_scrollView;
   self->_scrollView = v5;
@@ -705,8 +705,8 @@ LABEL_16:
   [(RCWaveformScrollView *)self->_scrollView setBackgroundColor:v7];
 
   [(RCWaveformScrollView *)self->_scrollView setBounces:1];
-  v8 = [(RCWaveformViewController *)self view];
-  [v8 bounds];
+  view2 = [(RCWaveformViewController *)self view];
+  [view2 bounds];
   [(RCWaveformScrollView *)self->_scrollView setContentInset:0.0, v9 * 0.5, 0.0, 0.0];
 
   [(RCWaveformScrollView *)self->_scrollView setDelegate:self];
@@ -714,8 +714,8 @@ LABEL_16:
   [(RCWaveformScrollView *)self->_scrollView setScrollEnabled:1];
   [(RCWaveformScrollView *)self->_scrollView setShowsHorizontalScrollIndicator:0];
   [(RCWaveformScrollView *)self->_scrollView setShowsVerticalScrollIndicator:0];
-  v10 = [(RCWaveformScrollView *)self->_scrollView panGestureRecognizer];
-  [v10 addTarget:self action:"_scrollViewPanGestureRecognized:"];
+  panGestureRecognizer = [(RCWaveformScrollView *)self->_scrollView panGestureRecognizer];
+  [panGestureRecognizer addTarget:self action:"_scrollViewPanGestureRecognized:"];
 
   [(RCWaveformScrollView *)self->_scrollView addSubview:self->_timeMarkerView];
   [(UIView *)self->_timeMarkerView setHidden:[(RCWaveformViewController *)self isCompactView]];
@@ -769,14 +769,14 @@ LABEL_16:
 
   v24 = [RCWaveformSelectionOverlay alloc];
   [(RCWaveformScrollView *)self->_scrollView bounds];
-  v26 = [(RCWaveformSelectionOverlay *)v24 initWithDelegate:self height:v25 selectionAreaInsets:UIEdgeInsetsZero.top, left, bottom, right];
+  right = [(RCWaveformSelectionOverlay *)v24 initWithDelegate:self height:v25 selectionAreaInsets:UIEdgeInsetsZero.top, left, bottom, right];
   selectionOverlay = self->_selectionOverlay;
-  self->_selectionOverlay = v26;
+  self->_selectionOverlay = right;
 
   [(RCWaveformSelectionOverlay *)self->_selectionOverlay setSelectedTimeRangeMinimumDuration:1.0];
-  v28 = [(RCWaveformViewController *)self isOverview];
+  isOverview = [(RCWaveformViewController *)self isOverview];
   v29 = self->_selectionOverlay;
-  if (v28)
+  if (isOverview)
   {
     [(RCWaveformSelectionOverlay *)v29 setOverviewTrimHandleStyle:1];
     [(RCWaveformSelectionOverlay *)self->_selectionOverlay setBarMatchesKnobRadius:1];
@@ -802,7 +802,7 @@ LABEL_16:
 
   [(RCWaveformSelectionOverlay *)self->_selectionOverlay setPlayWidthMultiplier:?];
 
-  [(RCWaveformSelectionOverlay *)self->_selectionOverlay setEnableTimeTrackingInView:v28];
+  [(RCWaveformSelectionOverlay *)self->_selectionOverlay setEnableTimeTrackingInView:isOverview];
   v33 = 0.0;
   v34 = [[UIView alloc] initWithFrame:{0.0, 0.0, 0.0, 0.0}];
   selectionBackgroundView = self->_selectionBackgroundView;
@@ -823,35 +823,35 @@ LABEL_16:
     v40 = +[RCRecorderStyleProvider sharedStyleProvider];
     [v40 overviewWaveformCornerRadius];
     v42 = v41;
-    v43 = [(UIView *)self->_backgroundView layer];
-    [v43 setCornerRadius:v42];
+    layer = [(UIView *)self->_backgroundView layer];
+    [layer setCornerRadius:v42];
 
-    v44 = [(UIView *)self->_backgroundView layer];
-    [v44 setMasksToBounds:1];
+    layer2 = [(UIView *)self->_backgroundView layer];
+    [layer2 setMasksToBounds:1];
 
     v45 = +[RCRecorderStyleProvider sharedStyleProvider];
     [v45 overviewWaveformCornerRadius];
     v47 = v46;
-    v48 = [(UIView *)self->_backgroundWaveFormHighlightView layer];
-    [v48 setCornerRadius:v47];
+    layer3 = [(UIView *)self->_backgroundWaveFormHighlightView layer];
+    [layer3 setCornerRadius:v47];
 
-    v49 = [(UIView *)self->_backgroundWaveFormHighlightView layer];
-    [v49 setMasksToBounds:1];
+    layer4 = [(UIView *)self->_backgroundWaveFormHighlightView layer];
+    [layer4 setMasksToBounds:1];
 
     v50 = +[RCRecorderStyleProvider sharedStyleProvider];
     [v50 overviewWaveformCornerRadius];
     v52 = v51;
-    v53 = [(RCWaveformRenderer *)self->_rendererController view];
-    v54 = [v53 layer];
-    [v54 setCornerRadius:v52];
+    view3 = [(RCWaveformRenderer *)self->_rendererController view];
+    layer5 = [view3 layer];
+    [layer5 setCornerRadius:v52];
 
-    v55 = [(RCWaveformRenderer *)self->_rendererController view];
-    v56 = [v55 layer];
-    [v56 setMasksToBounds:1];
+    view4 = [(RCWaveformRenderer *)self->_rendererController view];
+    layer6 = [view4 layer];
+    [layer6 setMasksToBounds:1];
   }
 
-  v57 = [(RCWaveformViewController *)self view];
-  [v57 addSubview:self->_backgroundView];
+  view5 = [(RCWaveformViewController *)self view];
+  [view5 addSubview:self->_backgroundView];
 
   if ([(RCWaveformViewController *)self isOverview])
   {
@@ -862,26 +862,26 @@ LABEL_16:
 
   [(UIView *)self->_backgroundView setTranslatesAutoresizingMaskIntoConstraints:0];
   v60 = self->_backgroundView;
-  v61 = [(RCWaveformViewController *)self view];
-  v62 = [NSLayoutConstraint constraintWithItem:v60 attribute:1 relatedBy:0 toItem:v61 attribute:1 multiplier:1.0 constant:0.0];
+  view6 = [(RCWaveformViewController *)self view];
+  v62 = [NSLayoutConstraint constraintWithItem:v60 attribute:1 relatedBy:0 toItem:view6 attribute:1 multiplier:1.0 constant:0.0];
 
   LODWORD(v63) = 1144750080;
   [v62 setPriority:v63];
   v64 = self->_backgroundView;
-  v65 = [(RCWaveformViewController *)self view];
-  v66 = [NSLayoutConstraint constraintWithItem:v64 attribute:2 relatedBy:0 toItem:v65 attribute:2 multiplier:1.0 constant:0.0];
+  view7 = [(RCWaveformViewController *)self view];
+  v66 = [NSLayoutConstraint constraintWithItem:v64 attribute:2 relatedBy:0 toItem:view7 attribute:2 multiplier:1.0 constant:0.0];
 
   LODWORD(v67) = 1144750080;
   [v66 setPriority:v67];
   v68 = self->_backgroundView;
-  v69 = [(RCWaveformViewController *)self view];
-  v70 = [NSLayoutConstraint constraintWithItem:v68 attribute:3 relatedBy:0 toItem:v69 attribute:3 multiplier:1.0 constant:v33];
+  view8 = [(RCWaveformViewController *)self view];
+  v70 = [NSLayoutConstraint constraintWithItem:v68 attribute:3 relatedBy:0 toItem:view8 attribute:3 multiplier:1.0 constant:v33];
 
   LODWORD(v71) = 1144750080;
   [v70 setPriority:v71];
   v72 = self->_backgroundView;
-  v73 = [(RCWaveformViewController *)self view];
-  v74 = [NSLayoutConstraint constraintWithItem:v72 attribute:4 relatedBy:0 toItem:v73 attribute:4 multiplier:1.0 constant:-v33];
+  view9 = [(RCWaveformViewController *)self view];
+  v74 = [NSLayoutConstraint constraintWithItem:v72 attribute:4 relatedBy:0 toItem:view9 attribute:4 multiplier:1.0 constant:-v33];
 
   LODWORD(v75) = 1144750080;
   [v74 setPriority:v75];
@@ -895,38 +895,38 @@ LABEL_16:
   v76 = [NSArray arrayWithObjects:v176 count:4];
   [NSLayoutConstraint activateConstraints:v76];
 
-  v77 = [(RCWaveformRenderer *)self->_rendererController view];
-  [v77 setUserInteractionEnabled:0];
+  view10 = [(RCWaveformRenderer *)self->_rendererController view];
+  [view10 setUserInteractionEnabled:0];
 
-  v78 = [(RCWaveformViewController *)self view];
-  v79 = [(RCWaveformRenderer *)self->_rendererController view];
-  [v78 addSubview:v79];
+  view11 = [(RCWaveformViewController *)self view];
+  view12 = [(RCWaveformRenderer *)self->_rendererController view];
+  [view11 addSubview:view12];
 
-  v80 = [(RCWaveformRenderer *)self->_rendererController view];
-  [v80 setTranslatesAutoresizingMaskIntoConstraints:0];
+  view13 = [(RCWaveformRenderer *)self->_rendererController view];
+  [view13 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v81 = [(RCWaveformRenderer *)self->_rendererController view];
-  v82 = [(RCWaveformViewController *)self view];
-  v83 = [NSLayoutConstraint constraintWithItem:v81 attribute:1 relatedBy:0 toItem:v82 attribute:1 multiplier:1.0 constant:0.0];
+  view14 = [(RCWaveformRenderer *)self->_rendererController view];
+  view15 = [(RCWaveformViewController *)self view];
+  v83 = [NSLayoutConstraint constraintWithItem:view14 attribute:1 relatedBy:0 toItem:view15 attribute:1 multiplier:1.0 constant:0.0];
 
   LODWORD(v84) = 1144750080;
   [v83 setPriority:v84];
-  v85 = [(RCWaveformRenderer *)self->_rendererController view];
-  v86 = [(RCWaveformViewController *)self view];
-  v87 = [NSLayoutConstraint constraintWithItem:v85 attribute:2 relatedBy:0 toItem:v86 attribute:2 multiplier:1.0 constant:0.0];
+  view16 = [(RCWaveformRenderer *)self->_rendererController view];
+  view17 = [(RCWaveformViewController *)self view];
+  v87 = [NSLayoutConstraint constraintWithItem:view16 attribute:2 relatedBy:0 toItem:view17 attribute:2 multiplier:1.0 constant:0.0];
 
   LODWORD(v88) = 1144750080;
   [v87 setPriority:v88];
-  v89 = [(RCWaveformRenderer *)self->_rendererController view];
-  v90 = [(RCWaveformViewController *)self view];
-  v91 = [NSLayoutConstraint constraintWithItem:v89 attribute:3 relatedBy:0 toItem:v90 attribute:3 multiplier:1.0 constant:v33];
+  view18 = [(RCWaveformRenderer *)self->_rendererController view];
+  view19 = [(RCWaveformViewController *)self view];
+  v91 = [NSLayoutConstraint constraintWithItem:view18 attribute:3 relatedBy:0 toItem:view19 attribute:3 multiplier:1.0 constant:v33];
 
   v92 = v91;
   LODWORD(v93) = 1144750080;
   [v91 setPriority:v93];
-  v94 = [(RCWaveformRenderer *)self->_rendererController view];
-  v95 = [(RCWaveformViewController *)self view];
-  v96 = [NSLayoutConstraint constraintWithItem:v94 attribute:4 relatedBy:0 toItem:v95 attribute:4 multiplier:1.0 constant:0.0];
+  view20 = [(RCWaveformRenderer *)self->_rendererController view];
+  view21 = [(RCWaveformViewController *)self view];
+  v96 = [NSLayoutConstraint constraintWithItem:view20 attribute:4 relatedBy:0 toItem:view21 attribute:4 multiplier:1.0 constant:0.0];
   renderViewBottomInsetConstraint = self->_renderViewBottomInsetConstraint;
   self->_renderViewBottomInsetConstraint = v96;
 
@@ -951,36 +951,36 @@ LABEL_16:
   v104 = [NSArray arrayWithObjects:v175 count:4];
   [NSLayoutConstraint activateConstraints:v104];
 
-  v105 = [(RCWaveformViewController *)self view];
+  view22 = [(RCWaveformViewController *)self view];
   v162 = v87;
-  [v105 addSubview:self->_scrollView];
+  [view22 addSubview:self->_scrollView];
 
   [(RCWaveformScrollView *)self->_scrollView setTranslatesAutoresizingMaskIntoConstraints:0];
   v106 = self->_scrollView;
-  v107 = [(RCWaveformViewController *)self view];
-  v108 = [NSLayoutConstraint constraintWithItem:v106 attribute:1 relatedBy:0 toItem:v107 attribute:1 multiplier:1.0 constant:0.0];
+  view23 = [(RCWaveformViewController *)self view];
+  v108 = [NSLayoutConstraint constraintWithItem:v106 attribute:1 relatedBy:0 toItem:view23 attribute:1 multiplier:1.0 constant:0.0];
 
   v109 = v108;
   v161 = v108;
   LODWORD(v110) = 1144750080;
   [v108 setPriority:v110];
   v111 = self->_scrollView;
-  v112 = [(RCWaveformViewController *)self view];
-  v113 = [NSLayoutConstraint constraintWithItem:v111 attribute:2 relatedBy:0 toItem:v112 attribute:2 multiplier:1.0 constant:0.0];
+  view24 = [(RCWaveformViewController *)self view];
+  v113 = [NSLayoutConstraint constraintWithItem:v111 attribute:2 relatedBy:0 toItem:view24 attribute:2 multiplier:1.0 constant:0.0];
 
   v160 = v113;
   LODWORD(v114) = 1144750080;
   [v113 setPriority:v114];
   v115 = self->_scrollView;
-  v116 = [(RCWaveformViewController *)self view];
-  v117 = [NSLayoutConstraint constraintWithItem:v115 attribute:3 relatedBy:0 toItem:v116 attribute:3 multiplier:1.0 constant:0.0];
+  view25 = [(RCWaveformViewController *)self view];
+  v117 = [NSLayoutConstraint constraintWithItem:v115 attribute:3 relatedBy:0 toItem:view25 attribute:3 multiplier:1.0 constant:0.0];
 
   v159 = v117;
   LODWORD(v118) = 1144750080;
   [v117 setPriority:v118];
   v119 = self->_scrollView;
-  v120 = [(RCWaveformViewController *)self view];
-  v158 = [NSLayoutConstraint constraintWithItem:v119 attribute:4 relatedBy:0 toItem:v120 attribute:4 multiplier:1.0 constant:0.0];
+  view26 = [(RCWaveformViewController *)self view];
+  v158 = [NSLayoutConstraint constraintWithItem:v119 attribute:4 relatedBy:0 toItem:view26 attribute:4 multiplier:1.0 constant:0.0];
 
   LODWORD(v121) = 1144750080;
   [v158 setPriority:v121];
@@ -991,39 +991,39 @@ LABEL_16:
   v122 = [NSArray arrayWithObjects:v174 count:4];
   [NSLayoutConstraint activateConstraints:v122];
 
-  v123 = [(RCWaveformViewController *)self view];
-  [v123 sendSubviewToBack:self->_backgroundView];
+  view27 = [(RCWaveformViewController *)self view];
+  [view27 sendSubviewToBack:self->_backgroundView];
 
-  v124 = [(RCWaveformViewController *)self view];
+  view28 = [(RCWaveformViewController *)self view];
   v157 = v83;
-  [v124 insertSubview:self->_backgroundWaveFormHighlightView above:self->_backgroundView];
+  [view28 insertSubview:self->_backgroundWaveFormHighlightView above:self->_backgroundView];
 
   [(UIView *)self->_backgroundWaveFormHighlightView setTranslatesAutoresizingMaskIntoConstraints:0];
   v125 = self->_backgroundWaveFormHighlightView;
-  v126 = [(RCWaveformViewController *)self view];
-  v127 = [NSLayoutConstraint constraintWithItem:v125 attribute:1 relatedBy:0 toItem:v126 attribute:1 multiplier:1.0 constant:0.0];
+  view29 = [(RCWaveformViewController *)self view];
+  v127 = [NSLayoutConstraint constraintWithItem:v125 attribute:1 relatedBy:0 toItem:view29 attribute:1 multiplier:1.0 constant:0.0];
   backgroundWaveFormHighlightViewLeftAlignment = self->_backgroundWaveFormHighlightViewLeftAlignment;
   self->_backgroundWaveFormHighlightViewLeftAlignment = v127;
 
   LODWORD(v129) = 1144750080;
   [(NSLayoutConstraint *)self->_backgroundWaveFormHighlightViewLeftAlignment setPriority:v129];
   v130 = self->_backgroundWaveFormHighlightView;
-  v131 = [(RCWaveformViewController *)self view];
-  v132 = [NSLayoutConstraint constraintWithItem:v130 attribute:2 relatedBy:0 toItem:v131 attribute:2 multiplier:1.0 constant:0.0];
+  view30 = [(RCWaveformViewController *)self view];
+  v132 = [NSLayoutConstraint constraintWithItem:v130 attribute:2 relatedBy:0 toItem:view30 attribute:2 multiplier:1.0 constant:0.0];
   backgroundWaveFormHighlightViewRightAlignment = self->_backgroundWaveFormHighlightViewRightAlignment;
   self->_backgroundWaveFormHighlightViewRightAlignment = v132;
 
   LODWORD(v134) = 1144750080;
   [(NSLayoutConstraint *)self->_backgroundWaveFormHighlightViewRightAlignment setPriority:v134];
   v135 = self->_backgroundWaveFormHighlightView;
-  v136 = [(RCWaveformViewController *)self view];
-  v137 = [NSLayoutConstraint constraintWithItem:v135 attribute:3 relatedBy:0 toItem:v136 attribute:3 multiplier:1.0 constant:v33];
+  view31 = [(RCWaveformViewController *)self view];
+  v137 = [NSLayoutConstraint constraintWithItem:v135 attribute:3 relatedBy:0 toItem:view31 attribute:3 multiplier:1.0 constant:v33];
 
   LODWORD(v138) = 1144750080;
   [v137 setPriority:v138];
   v139 = self->_backgroundWaveFormHighlightView;
-  v140 = [(RCWaveformViewController *)self view];
-  v141 = [NSLayoutConstraint constraintWithItem:v139 attribute:4 relatedBy:0 toItem:v140 attribute:4 multiplier:1.0 constant:-v33];
+  view32 = [(RCWaveformViewController *)self view];
+  v141 = [NSLayoutConstraint constraintWithItem:v139 attribute:4 relatedBy:0 toItem:view32 attribute:4 multiplier:1.0 constant:-v33];
 
   LODWORD(v142) = 1144750080;
   [v141 setPriority:v142];
@@ -1036,12 +1036,12 @@ LABEL_16:
   [NSLayoutConstraint activateConstraints:v144];
 
   [(UIView *)self->_selectionBackgroundView setHidden:self->_isCompactView];
-  v145 = [(RCWaveformViewController *)self view];
-  [v145 insertSubview:self->_selectionBackgroundView above:self->_backgroundWaveFormHighlightView];
+  view33 = [(RCWaveformViewController *)self view];
+  [view33 insertSubview:self->_selectionBackgroundView above:self->_backgroundWaveFormHighlightView];
 
   [(RCWaveformSelectionOverlay *)self->_selectionOverlay setHidden:self->_isCompactView];
-  v146 = [(RCWaveformViewController *)self view];
-  [v146 addSubview:self->_selectionOverlay];
+  view34 = [(RCWaveformViewController *)self view];
+  [view34 addSubview:self->_selectionOverlay];
 
   [(RCWaveformSelectionOverlay *)self->_selectionOverlay setTranslatesAutoresizingMaskIntoConstraints:0];
   v147 = [NSLayoutConstraint constraintWithItem:self->_selectionOverlay attribute:1 relatedBy:0 toItem:self->_scrollView attribute:1 multiplier:1.0 constant:0.0];
@@ -1066,8 +1066,8 @@ LABEL_16:
   [(RCWaveformViewController *)self _updateVisibleAreaWithAnimationDuration:0.0];
   [(RCWaveformViewController *)self _updateWaveformViewContentSizeAndOffset];
   [(RCWaveformViewController *)self setScrubbingEnabled:1];
-  v156 = [(RCWaveformViewController *)self view];
-  [v156 setNeedsLayout];
+  view35 = [(RCWaveformViewController *)self view];
+  [view35 setNeedsLayout];
 }
 
 - (void)viewWillLayoutSubviews
@@ -1102,30 +1102,30 @@ LABEL_16:
 {
   if (self->_scrubbing)
   {
-    v3 = [(RCWaveformViewController *)self isSelectedTimeRangeEditingEnabled];
-    if (v3)
+    isSelectedTimeRangeEditingEnabled = [(RCWaveformViewController *)self isSelectedTimeRangeEditingEnabled];
+    if (isSelectedTimeRangeEditingEnabled)
     {
       [(RCWaveformViewController *)self selectedTimeRange];
-      LOBYTE(v3) = RCTimeRangeDeltaWithUIPrecision(v4, v5) != 0.0;
+      LOBYTE(isSelectedTimeRangeEditingEnabled) = RCTimeRangeDeltaWithUIPrecision(v4, v5) != 0.0;
     }
   }
 
   else
   {
-    LOBYTE(v3) = 0;
+    LOBYTE(isSelectedTimeRangeEditingEnabled) = 0;
   }
 
-  return v3;
+  return isSelectedTimeRangeEditingEnabled;
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v15 = a3;
-  v4 = [v15 isZooming];
-  v5 = v15;
-  if ((v4 & 1) == 0)
+  scrollCopy = scroll;
+  isZooming = [scrollCopy isZooming];
+  v5 = scrollCopy;
+  if ((isZooming & 1) == 0)
   {
-    v6 = v15;
+    v6 = scrollCopy;
     [v6 beginIgnoringContentOffsetChanges];
     if (self->_scrubbing)
     {
@@ -1151,15 +1151,15 @@ LABEL_16:
 
     [v6 endIgnoringContentOffsetChanges];
 
-    v5 = v15;
+    v5 = scrollCopy;
   }
 }
 
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
-  x = a5->x;
+  x = offset->x;
   desiredTimeDeltaForVisibleTimeRange = self->_desiredTimeDeltaForVisibleTimeRange;
-  [(RCWaveformScrollView *)self->_scrollView bounds:a3];
+  [(RCWaveformScrollView *)self->_scrollView bounds:dragging];
   v9 = CGRectGetWidth(v16) * 0.5;
   [(RCWaveformViewController *)self currentTimeIndicatorCoordinate];
   v11 = v9 - v10;
@@ -1176,12 +1176,12 @@ LABEL_16:
     }
   }
 
-  a5->x = v14;
+  offset->x = v14;
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
-  if (!a4)
+  if (!decelerate)
   {
     [(RCWaveformViewController *)self _scrubbingDidFinish];
   }
@@ -1199,23 +1199,23 @@ LABEL_16:
   [(RCWaveformViewController *)self fixupScrollPositionToMatchIndicatorPositionTime];
 }
 
-- (void)waveformSelectionOverlay:(id)a3 willBeginTrackingSelectionBeginTime:(BOOL)a4 endTime:(BOOL)a5 assetCurrentTime:(BOOL)a6
+- (void)waveformSelectionOverlay:(id)overlay willBeginTrackingSelectionBeginTime:(BOOL)time endTime:(BOOL)endTime assetCurrentTime:(BOOL)currentTime
 {
-  if (a4 || a5)
+  if (time || endTime)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     [WeakRetained waveformViewControllerWillBeginEditingSelectedTimeRange:self];
   }
 }
 
-- (void)waveformSelectionOverlay:(id)a3 didFinishTrackingSelectionBeginTime:(BOOL)a4 endTime:(BOOL)a5 assetCurrentTime:(BOOL)a6
+- (void)waveformSelectionOverlay:(id)overlay didFinishTrackingSelectionBeginTime:(BOOL)time endTime:(BOOL)endTime assetCurrentTime:(BOOL)currentTime
 {
-  v6 = a5;
-  [(NSTimer *)self->_overlayAutoscrollTimer invalidate:a3];
+  endTimeCopy = endTime;
+  [(NSTimer *)self->_overlayAutoscrollTimer invalidate:overlay];
   overlayAutoscrollTimer = self->_overlayAutoscrollTimer;
   self->_overlayAutoscrollTimer = 0;
 
-  if (a4 || v6)
+  if (time || endTimeCopy)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     [WeakRetained waveformViewControllerDidEndEditingSelectedTimeRange:self];
@@ -1224,11 +1224,11 @@ LABEL_16:
   [(RCWaveformViewController *)self _updateWaveformViewContentSizeAndOffset];
 }
 
-- ($F24F406B2B787EFB06265DBA3D28CBD5)waveformSelectionOverlay:(id)a3 willChangeSelectedTimeRange:(id)a4 isTrackingMin:(BOOL)a5 isTrackingMax:(BOOL)a6
+- ($F24F406B2B787EFB06265DBA3D28CBD5)waveformSelectionOverlay:(id)overlay willChangeSelectedTimeRange:(id)range isTrackingMin:(BOOL)min isTrackingMax:(BOOL)max
 {
-  v6 = a6;
-  v7 = a5;
-  [(RCWaveformViewController *)self _setSelectedTimeRange:0 updateVisibleTimeRange:0 updateWaveformViewContentSizeAndOffset:1 notifyDelegate:a4.var0 animationDuration:a4.var1, 0.0];
+  maxCopy = max;
+  minCopy = min;
+  [(RCWaveformViewController *)self _setSelectedTimeRange:0 updateVisibleTimeRange:0 updateWaveformViewContentSizeAndOffset:1 notifyDelegate:range.var0 animationDuration:range.var1, 0.0];
   if (!self->_overlayAutoscrollTimer && !self->_isOverview)
   {
     v9 = [NSTimer scheduledTimerWithTimeInterval:self target:"_autoscrollOverlayIfNecessary" selector:0 userInfo:1 repeats:0.1];
@@ -1241,18 +1241,18 @@ LABEL_16:
 
   if (self->_selectedTimeRangeEditingEnabled && self->_isOverview && !self->_playing && !self->_scrubbing)
   {
-    if (!v7 || v6)
+    if (!minCopy || maxCopy)
     {
-      if (!v6 || v7)
+      if (!maxCopy || minCopy)
       {
-        if (v7 && v6)
+        if (minCopy && maxCopy)
         {
           MidTime = RCTimeRangeGetMidTime(self->_selectedTimeRange.beginTime, self->_selectedTimeRange.endTime);
           if (self->_currentTime != MidTime)
           {
             WeakRetained = objc_loadWeakRetained(&self->_delegate);
             v12 = WeakRetained;
-            v14 = self;
+            selfCopy2 = self;
             endTime = MidTime;
             goto LABEL_17;
           }
@@ -1274,9 +1274,9 @@ LABEL_16:
       v12 = WeakRetained;
       endTime = self->_selectedTimeRange.beginTime;
 LABEL_16:
-      v14 = self;
+      selfCopy2 = self;
 LABEL_17:
-      [WeakRetained waveformViewController:v14 didScrubToTime:1 finished:endTime];
+      [WeakRetained waveformViewController:selfCopy2 didScrubToTime:1 finished:endTime];
     }
   }
 
@@ -1287,64 +1287,64 @@ LABEL_17:
   return result;
 }
 
-- (double)waveformSelectionOverlay:(id)a3 willChangeAssetCurrentTime:(double)a4 isTracking:(BOOL)a5
+- (double)waveformSelectionOverlay:(id)overlay willChangeAssetCurrentTime:(double)time isTracking:(BOOL)tracking
 {
   if (self->_selectedTimeRangeEditingEnabled)
   {
-    v7 = a3;
-    [v7 selectedTimeRange];
+    overlayCopy = overlay;
+    [overlayCopy selectedTimeRange];
     v9 = v8;
-    [v7 selectedTimeRange];
+    [overlayCopy selectedTimeRange];
     v11 = v10;
 
-    if (v11 <= a4)
+    if (v11 <= time)
     {
-      v12 = v11;
+      timeCopy = v11;
     }
 
     else
     {
-      v12 = a4;
+      timeCopy = time;
     }
 
-    if (v12 >= v9)
+    if (timeCopy >= v9)
     {
-      a4 = v12;
+      time = timeCopy;
     }
 
     else
     {
-      a4 = v9;
+      time = v9;
     }
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained waveformViewController:self didScrubToTime:0 finished:a4];
+  [WeakRetained waveformViewController:self didScrubToTime:0 finished:time];
 
-  return a4;
+  return time;
 }
 
-- (double)waveformSelectionOverlay:(id)a3 offsetForTime:(double)a4
+- (double)waveformSelectionOverlay:(id)overlay offsetForTime:(double)time
 {
-  [(RCWaveformRenderer *)self->_rendererController horizontalOffsetAtTime:a3, self->_visibleTimeRange.beginTime];
+  [(RCWaveformRenderer *)self->_rendererController horizontalOffsetAtTime:overlay, self->_visibleTimeRange.beginTime];
   v7 = v6;
-  [(RCWaveformRenderer *)self->_rendererController horizontalOffsetAtTime:a4];
+  [(RCWaveformRenderer *)self->_rendererController horizontalOffsetAtTime:time];
   return v8 - v7;
 }
 
-- (double)waveformSelectionOverlay:(id)a3 timeForOffset:(double)a4
+- (double)waveformSelectionOverlay:(id)overlay timeForOffset:(double)offset
 {
-  [(RCWaveformRenderer *)self->_rendererController horizontalOffsetAtTime:a3, self->_visibleTimeRange.beginTime];
+  [(RCWaveformRenderer *)self->_rendererController horizontalOffsetAtTime:overlay, self->_visibleTimeRange.beginTime];
   rendererController = self->_rendererController;
-  v8 = v7 + a4;
+  v8 = v7 + offset;
 
   [(RCWaveformRenderer *)rendererController timeAtHorizontalOffset:v8];
   return result;
 }
 
-- (void)waveformRenderer:(id)a3 contentWidthDidChange:(double)a4
+- (void)waveformRenderer:(id)renderer contentWidthDidChange:(double)change
 {
-  [(RCWaveformViewController *)self _updateWaveformViewContentSizeAndOffsetToSize:a3, a4];
+  [(RCWaveformViewController *)self _updateWaveformViewContentSizeAndOffsetToSize:renderer, change];
   [(RCWaveformViewController *)self _updateSelectionOverlayWithAnimationDuration:0.0];
   [(RCWaveformViewController *)self _updateBackgroundWaveformHighlight];
   if (!self->_isOverview)
@@ -1358,51 +1358,51 @@ LABEL_17:
 - (RCTimeController)activeTimeController
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v3 = [WeakRetained activeTimeController];
+  activeTimeController = [WeakRetained activeTimeController];
 
-  return v3;
+  return activeTimeController;
 }
 
-- (void)setDesiredTimeDeltaForVisibleTimeRange:(double)a3
+- (void)setDesiredTimeDeltaForVisibleTimeRange:(double)range
 {
-  if (a3 <= 0.0)
+  if (range <= 0.0)
   {
-    a3 = 6.0;
+    range = 6.0;
   }
 
-  if (self->_desiredTimeDeltaForVisibleTimeRange != a3)
+  if (self->_desiredTimeDeltaForVisibleTimeRange != range)
   {
-    self->_desiredTimeDeltaForVisibleTimeRange = a3;
+    self->_desiredTimeDeltaForVisibleTimeRange = range;
   }
 }
 
 - (void)updateColors
 {
-  v3 = [(RCWaveformViewController *)self traitCollection];
-  v4 = [v3 isUserInterfaceStyleDark];
+  traitCollection = [(RCWaveformViewController *)self traitCollection];
+  isUserInterfaceStyleDark = [traitCollection isUserInterfaceStyleDark];
 
   [(RCWaveformViewController *)self updateBackgroundColor];
-  v5 = [(UIView *)self->_timeMarkerView subviews];
+  subviews = [(UIView *)self->_timeMarkerView subviews];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_247FC;
   v6[3] = &unk_6D888;
-  v7 = v4;
-  [v5 enumerateObjectsUsingBlock:v6];
+  v7 = isUserInterfaceStyleDark;
+  [subviews enumerateObjectsUsingBlock:v6];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v8.receiver = self;
   v8.super_class = RCWaveformViewController;
-  v4 = a3;
-  [(RCWaveformViewController *)&v8 traitCollectionDidChange:v4];
-  v5 = [v4 userInterfaceStyle];
+  changeCopy = change;
+  [(RCWaveformViewController *)&v8 traitCollectionDidChange:changeCopy];
+  userInterfaceStyle = [changeCopy userInterfaceStyle];
 
-  v6 = [(RCWaveformViewController *)self traitCollection];
-  v7 = [v6 userInterfaceStyle];
+  traitCollection = [(RCWaveformViewController *)self traitCollection];
+  userInterfaceStyle2 = [traitCollection userInterfaceStyle];
 
-  if (v5 != v7)
+  if (userInterfaceStyle != userInterfaceStyle2)
   {
     [(RCWaveformViewController *)self updateColors];
     [(RCWaveformRenderer *)self->_rendererController setCalcBlockShouldRefreshAllSlices:1];
@@ -1412,27 +1412,27 @@ LABEL_17:
 - (void)updateBackgroundColor
 {
   v9 = +[RCRecorderStyleProvider sharedStyleProvider];
-  v3 = [(RCWaveformViewController *)self traitCollection];
-  v4 = [v3 isUserInterfaceStyleDark];
+  traitCollection = [(RCWaveformViewController *)self traitCollection];
+  isUserInterfaceStyleDark = [traitCollection isUserInterfaceStyleDark];
 
   if ([(RCWaveformViewController *)self isCompactView]&& ![(RCWaveformViewController *)self isOverview])
   {
-    v7 = [v9 waveformCompactBackgroundColor];
-    [(UIView *)self->_backgroundView setBackgroundColor:v7];
+    waveformCompactBackgroundColor = [v9 waveformCompactBackgroundColor];
+    [(UIView *)self->_backgroundView setBackgroundColor:waveformCompactBackgroundColor];
 
-    v6 = [v9 waveformCompactHighlightedBackgroundColor];
+    waveformCompactHighlightedBackgroundColor = [v9 waveformCompactHighlightedBackgroundColor];
   }
 
   else
   {
-    v5 = [v9 waveformPlaybackBackgroundColor:v4];
+    v5 = [v9 waveformPlaybackBackgroundColor:isUserInterfaceStyleDark];
     [(UIView *)self->_backgroundView setBackgroundColor:v5];
 
-    v6 = [v9 waveformPlaybackHighlightedBackgroundColor:v4];
+    waveformCompactHighlightedBackgroundColor = [v9 waveformPlaybackHighlightedBackgroundColor:isUserInterfaceStyleDark];
   }
 
-  v8 = v6;
-  [(UIView *)self->_backgroundWaveFormHighlightView setBackgroundColor:v6];
+  v8 = waveformCompactHighlightedBackgroundColor;
+  [(UIView *)self->_backgroundWaveFormHighlightView setBackgroundColor:waveformCompactHighlightedBackgroundColor];
 }
 
 - ($F24F406B2B787EFB06265DBA3D28CBD5)_visibleTimeRangeForCurrentSelectionTimeRange
@@ -1453,11 +1453,11 @@ LABEL_17:
   return result;
 }
 
-- (void)_setVisibleTimeRange:(id)a3 animationDuration:(double)a4 completionBlock:(id)a5
+- (void)_setVisibleTimeRange:(id)range animationDuration:(double)duration completionBlock:(id)block
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
-  v9 = a5;
+  var1 = range.var1;
+  var0 = range.var0;
+  blockCopy = block;
   if (RCTimeRangeDeltaWithUIPrecision(var0, var1) < 2.22044605e-16)
   {
     var1 = var0 + 2.22044605e-16;
@@ -1480,8 +1480,8 @@ LABEL_17:
       [(RCWaveformViewController *)self _setTimeMarkerViewsNeedInitialLayout:1];
     }
 
-    v13 = [(RCWaveformViewController *)self view];
-    v14 = [v13 viewWithTag:92314];
+    view = [(RCWaveformViewController *)self view];
+    v14 = [view viewWithTag:92314];
 
     if (!v14)
     {
@@ -1490,8 +1490,8 @@ LABEL_17:
       v15 = +[UIColor clearColor];
       [v14 setBackgroundColor:v15];
 
-      v16 = [(RCWaveformViewController *)self view];
-      [v16 addSubview:v14];
+      view2 = [(RCWaveformViewController *)self view];
+      [view2 addSubview:v14];
     }
 
     [v14 setAlpha:1.0];
@@ -1500,17 +1500,17 @@ LABEL_17:
     v22[2] = sub_24D40;
     v22[3] = &unk_6D8B0;
     v22[4] = self;
-    v24 = a4;
+    durationCopy = duration;
     v17 = v14;
     v23 = v17;
     v18 = objc_retainBlock(v22);
     v19 = v18;
-    if (a4 <= 0.0)
+    if (duration <= 0.0)
     {
       (v18[2])(v18);
-      if (v9)
+      if (blockCopy)
       {
-        v9[2](v9, 1);
+        blockCopy[2](blockCopy, 1);
       }
     }
 
@@ -1520,21 +1520,21 @@ LABEL_17:
       v20[1] = 3221225472;
       v20[2] = sub_24D98;
       v20[3] = &unk_6D840;
-      v21 = v9;
-      [UIView animateWithDuration:0x20000 delay:v19 options:v20 animations:a4 completion:0.0];
+      v21 = blockCopy;
+      [UIView animateWithDuration:0x20000 delay:v19 options:v20 animations:duration completion:0.0];
     }
   }
 }
 
-- (void)_setSelectedTimeRange:(id)a3 updateVisibleTimeRange:(BOOL)a4 updateWaveformViewContentSizeAndOffset:(BOOL)a5 notifyDelegate:(BOOL)a6 animationDuration:(double)a7
+- (void)_setSelectedTimeRange:(id)range updateVisibleTimeRange:(BOOL)timeRange updateWaveformViewContentSizeAndOffset:(BOOL)offset notifyDelegate:(BOOL)delegate animationDuration:(double)duration
 {
-  v7 = a6;
-  v8 = a5;
-  v10 = a4;
-  v12 = fmax(a3.var0, 0.0);
-  if (self->_duration >= a3.var1)
+  delegateCopy = delegate;
+  offsetCopy = offset;
+  timeRangeCopy = timeRange;
+  v12 = fmax(range.var0, 0.0);
+  if (self->_duration >= range.var1)
   {
-    var1 = a3.var1;
+    var1 = range.var1;
   }
 
   else
@@ -1547,12 +1547,12 @@ LABEL_17:
   {
     p_selectedTimeRange->beginTime = v12;
     p_selectedTimeRange->endTime = var1;
-    if (v8)
+    if (offsetCopy)
     {
       [(RCWaveformViewController *)self _updateWaveformViewContentSizeAndOffset];
     }
 
-    if (v10)
+    if (timeRangeCopy)
     {
       if (self->_isOverview)
       {
@@ -1566,14 +1566,14 @@ LABEL_17:
         v18 = v17;
         if (!RCTimeRangeEqualToTimeRange(v15, v17, self->_visibleTimeRange.beginTime, self->_visibleTimeRange.endTime))
         {
-          [(RCWaveformViewController *)self setVisibleTimeRange:v16 animationDuration:v18, a7];
+          [(RCWaveformViewController *)self setVisibleTimeRange:v16 animationDuration:v18, duration];
         }
       }
     }
 
-    [(RCWaveformViewController *)self _updateSelectionOverlayWithAnimationDuration:a7];
+    [(RCWaveformViewController *)self _updateSelectionOverlayWithAnimationDuration:duration];
     [(RCWaveformViewController *)self _updateBackgroundWaveformHighlight];
-    if (v7)
+    if (delegateCopy)
     {
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
       [WeakRetained waveformViewController:self didChangeToSelectedTimeRange:{p_selectedTimeRange->beginTime, p_selectedTimeRange->endTime}];
@@ -1583,8 +1583,8 @@ LABEL_17:
 
 - (void)_autoscrollOverlayIfNecessary
 {
-  v3 = [(RCWaveformSelectionOverlay *)self->_selectionOverlay beginTimeIndicatorSelectionAffinity];
-  v4 = [(RCWaveformSelectionOverlay *)self->_selectionOverlay endTimeIndicatorSelectionAffinity];
+  beginTimeIndicatorSelectionAffinity = [(RCWaveformSelectionOverlay *)self->_selectionOverlay beginTimeIndicatorSelectionAffinity];
+  endTimeIndicatorSelectionAffinity = [(RCWaveformSelectionOverlay *)self->_selectionOverlay endTimeIndicatorSelectionAffinity];
   desiredTimeDeltaForVisibleTimeRange = self->_desiredTimeDeltaForVisibleTimeRange;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
@@ -1594,7 +1594,7 @@ LABEL_17:
   v9[4] = self;
   v6 = objc_retainBlock(v9);
   p_visibleTimeRange = &self->_visibleTimeRange;
-  if (((v6[2])(v6, @"[min-marker, max]", v3, 0, 1, self->_visibleTimeRange.endTime - self->_selectedTimeRange.beginTime) & 1) == 0 && ((v6[2])(v6, @"[min-marker, min]", v3, 0, 0xFFFFFFFFLL, self->_selectedTimeRange.beginTime - p_visibleTimeRange->beginTime) & 1) == 0 && ((v6[2])(v6, @"[max-marker, max]", v4, 1, 1, self->_visibleTimeRange.endTime - self->_selectedTimeRange.endTime) & 1) == 0 && ((v6[2])(v6, @"[max-marker, min]", v4, 1, 0xFFFFFFFFLL, self->_selectedTimeRange.endTime - p_visibleTimeRange->beginTime) & 1) == 0)
+  if (((v6[2])(v6, @"[min-marker, max]", beginTimeIndicatorSelectionAffinity, 0, 1, self->_visibleTimeRange.endTime - self->_selectedTimeRange.beginTime) & 1) == 0 && ((v6[2])(v6, @"[min-marker, min]", beginTimeIndicatorSelectionAffinity, 0, 0xFFFFFFFFLL, self->_selectedTimeRange.beginTime - p_visibleTimeRange->beginTime) & 1) == 0 && ((v6[2])(v6, @"[max-marker, max]", endTimeIndicatorSelectionAffinity, 1, 1, self->_visibleTimeRange.endTime - self->_selectedTimeRange.endTime) & 1) == 0 && ((v6[2])(v6, @"[max-marker, min]", endTimeIndicatorSelectionAffinity, 1, 0xFFFFFFFFLL, self->_selectedTimeRange.endTime - p_visibleTimeRange->beginTime) & 1) == 0)
   {
     [(NSTimer *)self->_overlayAutoscrollTimer invalidate];
     overlayAutoscrollTimer = self->_overlayAutoscrollTimer;
@@ -1602,18 +1602,18 @@ LABEL_17:
   }
 }
 
-- (void)_setTimeMarkerViewUpdatesDisabled:(BOOL)a3
+- (void)_setTimeMarkerViewUpdatesDisabled:(BOOL)disabled
 {
-  self->_timeMarkerViewsUpdatesDisabled = a3;
-  if (a3)
+  self->_timeMarkerViewsUpdatesDisabled = disabled;
+  if (disabled)
   {
-    v4 = [(RCWaveformViewController *)self view];
+    view = [(RCWaveformViewController *)self view];
     v5 = 0.200000003;
   }
 
   else
   {
-    v4 = self->_timeMarkerView;
+    view = self->_timeMarkerView;
     v5 = 1.0;
   }
 
@@ -1622,8 +1622,8 @@ LABEL_17:
   v9[1] = 3221225472;
   v9[2] = sub_254E0;
   v9[3] = &unk_6D900;
-  v10 = v4;
-  v7 = v4;
+  v10 = view;
+  v7 = view;
   [(NSMutableArray *)timeMarkerViews enumerateObjectsUsingBlock:v9];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
@@ -1716,16 +1716,16 @@ LABEL_17:
   }
 }
 
-- (void)_updateWaveformViewContentSizeAndOffsetToSize:(double)a3
+- (void)_updateWaveformViewContentSizeAndOffsetToSize:(double)size
 {
-  v5 = [(RCWaveformViewController *)self view];
-  [v5 bounds];
-  v7 = v6 * 0.5 + a3;
+  view = [(RCWaveformViewController *)self view];
+  [view bounds];
+  v7 = v6 * 0.5 + size;
 
   if (self->_isPlayback || self->_isOverview || !self->_selectedTimeRangeEditingEnabled || [(RCWaveformSelectionOverlay *)self->_selectionOverlay isCurrentlyTracking])
   {
-    v8 = [(RCWaveformViewController *)self view];
-    [v8 bounds];
+    view2 = [(RCWaveformViewController *)self view];
+    [view2 bounds];
     v10 = v9;
 
     if (v7 >= v10)
@@ -1736,8 +1736,8 @@ LABEL_17:
     p_scrollView = &self->_scrollView;
     [(RCWaveformScrollView *)self->_scrollView bounds];
     [(RCWaveformScrollView *)self->_scrollView setContentSize:v10, v12];
-    v22 = [(RCWaveformViewController *)self view];
-    [v22 bounds];
+    view3 = [(RCWaveformViewController *)self view];
+    [view3 bounds];
     v14 = v13 * 0.5;
     v15 = 0.0;
   }
@@ -1751,10 +1751,10 @@ LABEL_17:
     p_scrollView = &self->_scrollView;
     [(RCWaveformScrollView *)self->_scrollView bounds];
     [(RCWaveformScrollView *)self->_scrollView setContentSize:v7, v20];
-    v22 = [(RCWaveformViewController *)self view];
-    [v22 bounds];
+    view3 = [(RCWaveformViewController *)self view];
+    [view3 bounds];
     v14 = v21 * 0.5 - v17;
-    v15 = -(a3 - v19);
+    v15 = -(size - v19);
   }
 
   [(RCWaveformScrollView *)*p_scrollView setContentInset:0.0, v14, 0.0, v15];
@@ -1795,7 +1795,7 @@ LABEL_17:
   }
 }
 
-- (void)_updateVisibleAreaWithAnimationDuration:(double)a3
+- (void)_updateVisibleAreaWithAnimationDuration:(double)duration
 {
   [(RCWaveformRenderer *)self->_rendererController setVisibleTimeRange:self->_visibleTimeRange.beginTime, self->_visibleTimeRange.endTime];
   if (!self->_scrubbing)
@@ -1808,7 +1808,7 @@ LABEL_17:
     v10.size.width = v6;
     v10.size.height = v9.size.height;
     v7 = CGRectIntersectsRect(v9, v10);
-    if (a3 == 0.0 || !v7)
+    if (duration == 0.0 || !v7)
     {
       [(RCWaveformScrollView *)self->_scrollView setContentOffset:0 animated:v6, 0.0];
     }
@@ -1822,14 +1822,14 @@ LABEL_17:
       v8[4] = self;
       *&v8[5] = v6;
       v8[6] = 0;
-      [UIView animateWithDuration:131076 delay:v8 options:0 animations:a3 completion:0.0];
+      [UIView animateWithDuration:131076 delay:v8 options:0 animations:duration completion:0.0];
     }
   }
 
   [(RCWaveformViewController *)self _updateAnnotationViews];
 }
 
-- (void)_updateSelectionOverlayWithAnimationDuration:(double)a3
+- (void)_updateSelectionOverlayWithAnimationDuration:(double)duration
 {
   if (!self->_scrubbing || [(RCWaveformViewController *)self _isScrubbingSelectionTimeRange])
   {
@@ -1856,7 +1856,7 @@ LABEL_17:
 
     else
     {
-      [(RCWaveformSelectionOverlay *)self->_selectionOverlay setSelectedTimeRange:beginTime withAnimationDuration:endTime, a3];
+      [(RCWaveformSelectionOverlay *)self->_selectionOverlay setSelectedTimeRange:beginTime withAnimationDuration:endTime, duration];
     }
 
     currentTime = -1.0;
@@ -1903,15 +1903,15 @@ LABEL_17:
   }
 }
 
-- (CGRect)_frameForTimeMarkerView:(id)a3
+- (CGRect)_frameForTimeMarkerView:(id)view
 {
   rendererController = self->_rendererController;
-  v5 = a3;
-  [v5 visibleTimeRange];
+  viewCopy = view;
+  [viewCopy visibleTimeRange];
   [(RCWaveformRenderer *)rendererController horizontalOffsetAtTime:?];
   v7 = RCRoundCoord(v6);
   v8 = self->_rendererController;
-  [v5 visibleTimeRange];
+  [viewCopy visibleTimeRange];
   v10 = v9;
 
   [(RCWaveformRenderer *)v8 horizontalOffsetAtTime:v10];
@@ -1951,9 +1951,9 @@ LABEL_17:
   [UIView performWithoutAnimation:v2];
 }
 
-- (void)_scrollViewPanGestureRecognized:(id)a3
+- (void)_scrollViewPanGestureRecognized:(id)recognized
 {
-  if ([a3 state] == &dword_0 + 1)
+  if ([recognized state] == &dword_0 + 1)
   {
     self->_scrubbing = 1;
   }

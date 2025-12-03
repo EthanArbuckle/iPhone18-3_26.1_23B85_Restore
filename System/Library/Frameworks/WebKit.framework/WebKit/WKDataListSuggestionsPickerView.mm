@@ -6,10 +6,10 @@
 
 - (void)controlEndEditing
 {
-  v3 = [(WKDataListSuggestionsPickerView *)self control];
+  control = [(WKDataListSuggestionsPickerView *)self control];
   v4 = [(WKDataListSuggestionsPickerView *)self selectedRowInComponent:0];
 
-  [(WKDataListSuggestionsControl *)v3 didSelectOptionAtIndex:v4];
+  [(WKDataListSuggestionsControl *)control didSelectOptionAtIndex:v4];
 }
 
 @end

@@ -1,5 +1,5 @@
 @interface CDPServiceViewController
-- (void)offsetForCurrentKeyboard:(id)a3;
+- (void)offsetForCurrentKeyboard:(id)keyboard;
 - (void)viewDidLoad;
 @end
 
@@ -12,8 +12,8 @@
   [(CDPServiceViewController *)&v21 viewDidLoad];
   v3 = objc_alloc_init(MEMORY[0x277D3FAC8]);
   v4 = objc_alloc_init(CDPRemoteUILocalSecretEntryViewController);
-  v5 = [(CDPRemoteUILocalSecretEntryViewController *)v4 navigationItem];
-  [v5 setAccessibilityIdentifier:@"local-secret-entry-view"];
+  navigationItem = [(CDPRemoteUILocalSecretEntryViewController *)v4 navigationItem];
+  [navigationItem setAccessibilityIdentifier:@"local-secret-entry-view"];
 
   [v3 showController:v4];
   objc_storeStrong(&self->_contentViewController, v3);
@@ -35,38 +35,38 @@
 
   v7 = v6;
   _Block_object_dispose(&v23, 8);
-  v8 = [v6 sharedStyle];
-  [v8 applyThemeToNavigationController:v3];
+  sharedStyle = [v6 sharedStyle];
+  [sharedStyle applyThemeToNavigationController:v3];
 
   [(UIViewController *)self->_contentViewController willMoveToParentViewController:self];
   [(CDPServiceViewController *)self addChildViewController:self->_contentViewController];
-  v9 = [(CDPServiceViewController *)self view];
-  [v9 bounds];
+  view = [(CDPServiceViewController *)self view];
+  [view bounds];
   v11 = v10;
   v13 = v12;
   v15 = v14;
   v17 = v16;
-  v18 = [(UIViewController *)self->_contentViewController view];
-  [v18 setFrame:{v11, v13, v15, v17}];
+  view2 = [(UIViewController *)self->_contentViewController view];
+  [view2 setFrame:{v11, v13, v15, v17}];
 
-  v19 = [(CDPServiceViewController *)self view];
-  v20 = [(UIViewController *)self->_contentViewController view];
-  [v19 addSubview:v20];
+  view3 = [(CDPServiceViewController *)self view];
+  view4 = [(UIViewController *)self->_contentViewController view];
+  [view3 addSubview:view4];
 
   [(UIViewController *)self->_contentViewController didMoveToParentViewController:self];
 }
 
-- (void)offsetForCurrentKeyboard:(id)a3
+- (void)offsetForCurrentKeyboard:(id)keyboard
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  keyboardCopy = keyboard;
+  v5 = keyboardCopy;
+  if (keyboardCopy)
   {
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __53__CDPServiceViewController_offsetForCurrentKeyboard___block_invoke;
     v10[3] = &unk_278E2C008;
-    v6 = v4;
+    v6 = keyboardCopy;
     v11 = v6;
     v7 = [(CDPServiceViewController *)self _remoteViewControllerProxyWithErrorHandler:v10];
     v8[0] = MEMORY[0x277D85DD0];

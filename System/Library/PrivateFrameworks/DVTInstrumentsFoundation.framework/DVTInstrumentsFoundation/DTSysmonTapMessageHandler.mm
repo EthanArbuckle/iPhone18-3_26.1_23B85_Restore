@@ -1,38 +1,38 @@
 @interface DTSysmonTapMessageHandler
-- (id)messageReceived:(id)a3;
+- (id)messageReceived:(id)received;
 @end
 
 @implementation DTSysmonTapMessageHandler
 
-- (id)messageReceived:(id)a3
+- (id)messageReceived:(id)received
 {
-  v4 = a3;
+  receivedCopy = received;
   v28.receiver = self;
   v28.super_class = DTSysmonTapMessageHandler;
-  v5 = [(DTTapMessageHandler *)&v28 messageReceived:v4];
-  if (!v4 || v5)
+  v5 = [(DTTapMessageHandler *)&v28 messageReceived:receivedCopy];
+  if (!receivedCopy || v5)
   {
     v11 = v5;
     goto LABEL_19;
   }
 
-  v6 = [(DTTapMessageHandler *)self config];
+  config = [(DTTapMessageHandler *)self config];
   v27 = 0;
-  v7 = [v4 getBufferWithReturnedLength:&v27];
+  v7 = [receivedCopy getBufferWithReturnedLength:&v27];
   if (!v7)
   {
     v13 = [MEMORY[0x277CBEB98] setWithObject:objc_opt_class()];
-    v12 = [v4 objectWithAllowedClasses:v13];
+    v12 = [receivedCopy objectWithAllowedClasses:v13];
 
     if (v12)
     {
-      v14 = [v12 kind];
+      kind = [v12 kind];
       v15 = 0;
-      if (v14 <= 6)
+      if (kind <= 6)
       {
-        if (v14)
+        if (kind)
         {
-          if (v14 == 5)
+          if (kind == 5)
           {
             v15 = objc_opt_new();
             [v15 setTapVersion:self->_tapVersion];
@@ -49,9 +49,9 @@
         goto LABEL_17;
       }
 
-      if (v14 != 7)
+      if (kind != 7)
       {
-        if (v14 == 1024)
+        if (kind == 1024)
         {
           v15 = objc_opt_new();
           [v15 setTapVersion:self->_tapVersion];
@@ -73,8 +73,8 @@
         goto LABEL_17;
       }
 
-      v24 = [v12 runningMetadata];
-      [v6 _runningMetadataChanged:v24];
+      runningMetadata = [v12 runningMetadata];
+      [config _runningMetadataChanged:runningMetadata];
     }
 
     v15 = 0;

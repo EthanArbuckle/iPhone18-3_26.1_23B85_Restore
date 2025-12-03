@@ -1,34 +1,34 @@
 @interface SSVLeaseRequestOperation
-- (BOOL)_loadCertificateDataIfNecessary:(id *)a3;
-- (BOOL)_resolveConfigurationAndURLReturningError:(id *)a3;
-- (BOOL)_shouldRetryForError:(id)a3;
+- (BOOL)_loadCertificateDataIfNecessary:(id *)necessary;
+- (BOOL)_resolveConfigurationAndURLReturningError:(id *)error;
+- (BOOL)_shouldRetryForError:(id)error;
 - (NSString)certificateURLBagKey;
-- (SSVLeaseRequestOperation)initWithLeaseRequest:(id)a3 URLBag:(id)a4;
-- (SSVLeaseRequestOperation)initWithLeaseRequest:(id)a3 configuration:(id)a4;
+- (SSVLeaseRequestOperation)initWithLeaseRequest:(id)request URLBag:(id)bag;
+- (SSVLeaseRequestOperation)initWithLeaseRequest:(id)request configuration:(id)configuration;
 - (SSVPlaybackLeaseRequest)leaseRequest;
 - (id)outputBlock;
 - (void)cancel;
 - (void)main;
-- (void)setCertificateURLBagKey:(id)a3;
-- (void)setOutputBlock:(id)a3;
+- (void)setCertificateURLBagKey:(id)key;
+- (void)setOutputBlock:(id)block;
 @end
 
 @implementation SSVLeaseRequestOperation
 
-- (SSVLeaseRequestOperation)initWithLeaseRequest:(id)a3 configuration:(id)a4
+- (SSVLeaseRequestOperation)initWithLeaseRequest:(id)request configuration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  configurationCopy = configuration;
   v14.receiver = self;
   v14.super_class = SSVLeaseRequestOperation;
   v8 = [(SSVOperation *)&v14 init];
   if (v8)
   {
-    v9 = [v7 copy];
+    v9 = [configurationCopy copy];
     configuration = v8->_configuration;
     v8->_configuration = v9;
 
-    v11 = [v6 copy];
+    v11 = [requestCopy copy];
     request = v8->_request;
     v8->_request = v11;
   }
@@ -36,10 +36,10 @@
   return v8;
 }
 
-- (SSVLeaseRequestOperation)initWithLeaseRequest:(id)a3 URLBag:(id)a4
+- (SSVLeaseRequestOperation)initWithLeaseRequest:(id)request URLBag:(id)bag
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  bagCopy = bag;
   v14.receiver = self;
   v14.super_class = SSVLeaseRequestOperation;
   v8 = [(SSVOperation *)&v14 init];
@@ -49,11 +49,11 @@
     bagLoadSemaphore = v8->_bagLoadSemaphore;
     v8->_bagLoadSemaphore = v9;
 
-    v11 = [v6 copy];
+    v11 = [requestCopy copy];
     request = v8->_request;
     v8->_request = v11;
 
-    objc_storeStrong(&v8->_urlBag, a4);
+    objc_storeStrong(&v8->_urlBag, bag);
   }
 
   return v8;
@@ -146,16 +146,16 @@ void __39__SSVLeaseRequestOperation_outputBlock__block_invoke(uint64_t a1)
   *(v3 + 40) = v2;
 }
 
-- (void)setCertificateURLBagKey:(id)a3
+- (void)setCertificateURLBagKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __52__SSVLeaseRequestOperation_setCertificateURLBagKey___block_invoke;
   v6[3] = &unk_1E84AC028;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = keyCopy;
+  v5 = keyCopy;
   [(SSVOperation *)self dispatchAsync:v6];
 }
 
@@ -167,16 +167,16 @@ void __52__SSVLeaseRequestOperation_setCertificateURLBagKey___block_invoke(uint6
   *(v3 + 312) = v2;
 }
 
-- (void)setOutputBlock:(id)a3
+- (void)setOutputBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __43__SSVLeaseRequestOperation_setOutputBlock___block_invoke;
   v6[3] = &unk_1E84AC360;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = blockCopy;
+  v5 = blockCopy;
   [(SSVOperation *)self dispatchAsync:v6];
 }
 
@@ -216,21 +216,21 @@ void __43__SSVLeaseRequestOperation_setOutputBlock___block_invoke(uint64_t a1)
       v28 = +[SSLogConfig sharedConfig];
     }
 
-    v29 = [v28 shouldLog];
-    v30 = [v28 shouldLogToDisk];
-    v31 = [v28 OSLogObject];
-    v32 = v31;
-    if (v30)
+    shouldLog = [v28 shouldLog];
+    shouldLogToDisk = [v28 shouldLogToDisk];
+    oSLogObject = [v28 OSLogObject];
+    v32 = oSLogObject;
+    if (shouldLogToDisk)
     {
-      v29 |= 2u;
+      shouldLog |= 2u;
     }
 
-    if (!os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
-      v29 &= 2u;
+      shouldLog &= 2u;
     }
 
-    if (v29)
+    if (shouldLog)
     {
       v33 = objc_opt_class();
       v34 = NSStringFromClass(v33);
@@ -272,21 +272,21 @@ LABEL_38:
       v43 = +[SSLogConfig sharedConfig];
     }
 
-    v44 = [v43 shouldLog];
-    v45 = [v43 shouldLogToDisk];
-    v46 = [v43 OSLogObject];
-    v47 = v46;
-    if (v45)
+    shouldLog2 = [v43 shouldLog];
+    shouldLogToDisk2 = [v43 shouldLogToDisk];
+    oSLogObject2 = [v43 OSLogObject];
+    v47 = oSLogObject2;
+    if (shouldLogToDisk2)
     {
-      v44 |= 2u;
+      shouldLog2 |= 2u;
     }
 
-    if (!os_log_type_enabled(v46, OS_LOG_TYPE_DEFAULT))
+    if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
     {
-      v44 &= 2u;
+      shouldLog2 &= 2u;
     }
 
-    if (v44)
+    if (shouldLog2)
     {
       v48 = objc_opt_class();
       v49 = NSStringFromClass(v48);
@@ -328,8 +328,8 @@ LABEL_37:
   while (1)
   {
     v7 = objc_alloc(MEMORY[0x1E696AD68]);
-    v8 = [(SSVPlaybackLeaseRequest *)self->_request _URL];
-    v9 = [v7 initWithURL:v8];
+    _URL = [(SSVPlaybackLeaseRequest *)self->_request _URL];
+    v9 = [v7 initWithURL:_URL];
 
     [v9 setHTTPMethod:@"POST"];
     v10 = [[SSVLoadURLOperation alloc] initWithURLRequest:v9];
@@ -339,8 +339,8 @@ LABEL_37:
 
     [(SSVLoadURLOperation *)v10 setITunesStoreRequest:1];
     [(SSVLoadURLOperation *)v10 setMachineDataStyle:3];
-    v12 = [(SSVPlaybackLeaseConfiguration *)self->_configuration storeFrontSuffix];
-    [(SSVLoadURLOperation *)v10 setStoreFrontSuffix:v12];
+    storeFrontSuffix = [(SSVPlaybackLeaseConfiguration *)self->_configuration storeFrontSuffix];
+    [(SSVLoadURLOperation *)v10 setStoreFrontSuffix:storeFrontSuffix];
 
     v99[0] = MEMORY[0x1E69E9820];
     v99[1] = 3221225472;
@@ -368,21 +368,21 @@ LABEL_37:
       v13 = +[SSLogConfig sharedConfig];
     }
 
-    v14 = [v13 shouldLog];
-    v15 = [v13 shouldLogToDisk];
-    v16 = [v13 OSLogObject];
-    v17 = v16;
-    if (v15)
+    shouldLog3 = [v13 shouldLog];
+    shouldLogToDisk3 = [v13 shouldLogToDisk];
+    oSLogObject3 = [v13 OSLogObject];
+    v17 = oSLogObject3;
+    if (shouldLogToDisk3)
     {
-      v14 |= 2u;
+      shouldLog3 |= 2u;
     }
 
-    if (!os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
+    if (!os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_DEBUG))
     {
-      v14 &= 2u;
+      shouldLog3 &= 2u;
     }
 
-    if (v14)
+    if (shouldLog3)
     {
       v18 = objc_opt_class();
       v19 = NSStringFromClass(v18);
@@ -409,39 +409,39 @@ LABEL_15:
     v6 = v10;
   }
 
-  v59 = [(SSVLoadURLOperation *)v10 URLResponse];
+  uRLResponse = [(SSVLoadURLOperation *)v10 URLResponse];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v60 = [*(*&v116[8] + 40) objectForKey:@"failureType"];
     if (v60)
     {
-      v61 = objc_alloc_init(MEMORY[0x1E695DF90]);
-      v62 = [*(*&v116[8] + 40) objectForKey:@"dialog"];
+      leaseInfoData = objc_alloc_init(MEMORY[0x1E695DF90]);
+      subscriptionKeyBagData = [*(*&v116[8] + 40) objectForKey:@"dialog"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [v61 setObject:v62 forKey:@"SSVPlaybackResponseErrorUserInfoKeyDialogDictionary"];
+        [leaseInfoData setObject:subscriptionKeyBagData forKey:@"SSVPlaybackResponseErrorUserInfoKeyDialogDictionary"];
       }
 
-      if (![v61 count])
+      if (![leaseInfoData count])
       {
 
-        v61 = 0;
+        leaseInfoData = 0;
       }
 
       v63 = MEMORY[0x1E696ABC0];
       if (objc_opt_respondsToSelector())
       {
-        v64 = [v60 integerValue];
+        integerValue = [v60 integerValue];
       }
 
       else
       {
-        v64 = 0;
+        integerValue = 0;
       }
 
-      v71 = [v63 errorWithDomain:@"SSServerErrorDomain" code:v64 userInfo:v61];
+      v71 = [v63 errorWithDomain:@"SSServerErrorDomain" code:integerValue userInfo:leaseInfoData];
       v58 = 0;
       v69 = v107[5];
       v107[5] = v71;
@@ -451,23 +451,23 @@ LABEL_55:
     }
 
     v66 = [SSVPlaybackLeaseResponse alloc];
-    v58 = [(SSVPlaybackResponse *)v66 initWithDictionary:*(*&v116[8] + 40) URLResponse:v59];
-    v67 = [(SSVPlaybackLeaseConfiguration *)self->_configuration pastisKeyServerURL];
-    [(SSVPlaybackResponse *)v58 setFallbackStreamingKeyServerURL:v67];
+    v58 = [(SSVPlaybackResponse *)v66 initWithDictionary:*(*&v116[8] + 40) URLResponse:uRLResponse];
+    pastisKeyServerURL = [(SSVPlaybackLeaseConfiguration *)self->_configuration pastisKeyServerURL];
+    [(SSVPlaybackResponse *)v58 setFallbackStreamingKeyServerURL:pastisKeyServerURL];
 
-    v68 = [(SSVPlaybackLeaseConfiguration *)self->_configuration pastisCertificateURL];
-    [(SSVPlaybackResponse *)v58 setFallbackStreamingKeyCertificateURL:v68];
+    pastisCertificateURL = [(SSVPlaybackLeaseConfiguration *)self->_configuration pastisCertificateURL];
+    [(SSVPlaybackResponse *)v58 setFallbackStreamingKeyCertificateURL:pastisCertificateURL];
 
     if (![(SSVPlaybackLeaseRequest *)self->_request _leaseType])
     {
-      v61 = [(SSVPlaybackLeaseResponse *)v58 leaseInfoData];
-      v62 = [(SSVPlaybackLeaseResponse *)v58 subscriptionKeyBagData];
-      if (v61 | v62)
+      leaseInfoData = [(SSVPlaybackLeaseResponse *)v58 leaseInfoData];
+      subscriptionKeyBagData = [(SSVPlaybackLeaseResponse *)v58 subscriptionKeyBagData];
+      if (leaseInfoData | subscriptionKeyBagData)
       {
         v69 = objc_alloc_init(SSVFairPlaySubscriptionController);
         v70 = (v107 + 5);
         v97 = v107[5];
-        [(SSVFairPlaySubscriptionController *)v69 importSubscriptionKeyBagData:v62 leaseInfoData:v61 returningError:&v97];
+        [(SSVFairPlaySubscriptionController *)v69 importSubscriptionKeyBagData:subscriptionKeyBagData leaseInfoData:leaseInfoData returningError:&v97];
         objc_storeStrong(v70, v97);
         goto LABEL_55;
       }
@@ -494,13 +494,13 @@ LABEL_57:
 
   if (v101[3])
   {
-    v72 = [(SSVPlaybackLeaseResponse *)v58 leaseInfoData];
-    v73 = v72;
-    if (v72)
+    leaseInfoData2 = [(SSVPlaybackLeaseResponse *)v58 leaseInfoData];
+    v73 = leaseInfoData2;
+    if (leaseInfoData2)
     {
       v96 = 0;
       v74 = v101[3];
-      v75 = v72;
+      v75 = leaseInfoData2;
       v76 = C956s6fM(v74, [v73 bytes], objc_msgSend(v73, "length"), &v96);
       if (v76)
       {
@@ -510,21 +510,21 @@ LABEL_57:
           v77 = +[SSLogConfig sharedConfig];
         }
 
-        v78 = [v77 shouldLog];
-        v79 = [v77 shouldLogToDisk];
-        v80 = [v77 OSLogObject];
-        v81 = v80;
-        if (v79)
+        shouldLog4 = [v77 shouldLog];
+        shouldLogToDisk4 = [v77 shouldLogToDisk];
+        oSLogObject4 = [v77 OSLogObject];
+        v81 = oSLogObject4;
+        if (shouldLogToDisk4)
         {
-          v78 |= 2u;
+          shouldLog4 |= 2u;
         }
 
-        if (!os_log_type_enabled(v80, OS_LOG_TYPE_DEFAULT))
+        if (!os_log_type_enabled(oSLogObject4, OS_LOG_TYPE_DEFAULT))
         {
-          v78 &= 2u;
+          shouldLog4 &= 2u;
         }
 
-        if (v78)
+        if (shouldLog4)
         {
           v82 = objc_opt_class();
           v83 = NSStringFromClass(v82);
@@ -563,15 +563,15 @@ LABEL_70:
   _Block_object_dispose(v116, 8);
   _Block_object_dispose(&v100, 8);
 LABEL_76:
-  v91 = [(SSVPlaybackLeaseRequest *)self->_request _certificateData];
-  [(SSVPlaybackLeaseResponse *)v58 setCertificateData:v91];
+  _certificateData = [(SSVPlaybackLeaseRequest *)self->_request _certificateData];
+  [(SSVPlaybackLeaseResponse *)v58 setCertificateData:_certificateData];
 
   [(SSVPlaybackLeaseResponse *)v58 setKDMovieIdentifier:[(SSVPlaybackLeaseRequest *)self->_request _KDMovieIdentifier]];
-  v92 = [(SSVLeaseRequestOperation *)self outputBlock];
-  v93 = v92;
-  if (v92)
+  outputBlock = [(SSVLeaseRequestOperation *)self outputBlock];
+  v93 = outputBlock;
+  if (outputBlock)
   {
-    (*(v92 + 16))(v92, v58, v107[5]);
+    (*(outputBlock + 16))(outputBlock, v58, v107[5]);
   }
 
   _Block_object_dispose(&v106, 8);
@@ -672,7 +672,7 @@ LABEL_14:
   [v23 enumerateKeysAndObjectsUsingBlock:v27];
 }
 
-- (BOOL)_loadCertificateDataIfNecessary:(id *)a3
+- (BOOL)_loadCertificateDataIfNecessary:(id *)necessary
 {
   v17 = 0;
   v18 = &v17;
@@ -684,8 +684,8 @@ LABEL_14:
   v14 = __Block_byref_object_copy__56;
   v15 = __Block_byref_object_dispose__56;
   v16 = 0;
-  v5 = [(SSVPlaybackLeaseRequest *)self->_request _certificateData];
-  if (v5)
+  _certificateData = [(SSVPlaybackLeaseRequest *)self->_request _certificateData];
+  if (_certificateData)
   {
     v6 = 1;
     *(v18 + 24) = 1;
@@ -694,8 +694,8 @@ LABEL_14:
   else
   {
     v7 = [[SSVLeaseCertificateRequestOperation alloc] initWithConfiguration:self->_configuration];
-    v8 = [(SSVLeaseRequestOperation *)self certificateURLBagKey];
-    [(SSVLeaseCertificateRequestOperation *)v7 setCertificateURLBagKey:v8];
+    certificateURLBagKey = [(SSVLeaseRequestOperation *)self certificateURLBagKey];
+    [(SSVLeaseCertificateRequestOperation *)v7 setCertificateURLBagKey:certificateURLBagKey];
 
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
@@ -708,9 +708,9 @@ LABEL_14:
     [(SSVOperation *)self runChildOperation:v7];
 
     v6 = *(v18 + 24);
-    if (a3 && (v18[3] & 1) == 0)
+    if (necessary && (v18[3] & 1) == 0)
     {
-      *a3 = v12[5];
+      *necessary = v12[5];
       v6 = *(v18 + 24);
     }
   }
@@ -729,7 +729,7 @@ void __60__SSVLeaseRequestOperation__loadCertificateDataIfNecessary___block_invo
   [*(a1[4] + 336) _setCertificateData:v7];
 }
 
-- (BOOL)_resolveConfigurationAndURLReturningError:(id *)a3
+- (BOOL)_resolveConfigurationAndURLReturningError:(id *)error
 {
   v28 = 0;
   v29 = &v28;
@@ -737,14 +737,14 @@ void __60__SSVLeaseRequestOperation__loadCertificateDataIfNecessary___block_invo
   v31 = __Block_byref_object_copy__56;
   v32 = __Block_byref_object_dispose__56;
   v33 = 0;
-  v5 = [(SSVPlaybackLeaseRequest *)self->_request _URLBagKey];
-  v6 = v5;
+  _URLBagKey = [(SSVPlaybackLeaseRequest *)self->_request _URLBagKey];
+  v6 = _URLBagKey;
   if (self->_urlBag)
   {
-    if (v5)
+    if (_URLBagKey)
     {
-      v7 = [(SSVPlaybackLeaseRequest *)self->_request _URL];
-      if (v7)
+      _URL = [(SSVPlaybackLeaseRequest *)self->_request _URL];
+      if (_URL)
       {
         configuration = self->_configuration;
 
@@ -778,7 +778,7 @@ void __60__SSVLeaseRequestOperation__loadCertificateDataIfNecessary___block_invo
     v22 = __70__SSVLeaseRequestOperation__resolveConfigurationAndURLReturningError___block_invoke;
     v23 = &unk_1E84B1D40;
     v24 = v6;
-    v25 = self;
+    selfCopy = self;
     v27 = &v28;
     v13 = v11;
     v26 = v13;
@@ -802,7 +802,7 @@ LABEL_18:
     }
 
     v16 = 0;
-    if (a3)
+    if (error)
     {
       goto LABEL_15;
     }
@@ -826,10 +826,10 @@ LABEL_12:
 
 LABEL_14:
   v16 = 1;
-  if (a3)
+  if (error)
   {
 LABEL_15:
-    *a3 = v29[5];
+    *error = v29[5];
   }
 
 LABEL_16:
@@ -886,11 +886,11 @@ LABEL_11:
   dispatch_semaphore_signal(*(a1 + 48));
 }
 
-- (BOOL)_shouldRetryForError:(id)a3
+- (BOOL)_shouldRetryForError:(id)error
 {
-  v4 = a3;
-  v5 = [v4 domain];
-  if (![v5 isEqualToString:*MEMORY[0x1E696A978]])
+  errorCopy = error;
+  domain = [errorCopy domain];
+  if (![domain isEqualToString:*MEMORY[0x1E696A978]])
   {
 
 LABEL_6:
@@ -898,9 +898,9 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v6 = [v4 code];
+  code = [errorCopy code];
 
-  if (v6 != -1001)
+  if (code != -1001)
   {
     goto LABEL_6;
   }

@@ -1,67 +1,67 @@
 @interface HKNumericAxis
-+ (double)_adjustRangeDownWithStartValue:(double)a3 endValue:(double)a4 factor:(double)a5;
-+ (double)_adjustRangeUpWithStartValue:(double)a3 endValue:(double)a4 factor:(double)a5;
++ (double)_adjustRangeDownWithStartValue:(double)value endValue:(double)endValue factor:(double)factor;
++ (double)_adjustRangeUpWithStartValue:(double)value endValue:(double)endValue factor:(double)factor;
 + (id)preferredAxisStyle;
-+ (id)standardNumericYAxisWithConfigurationOverrides:(id)a3;
-+ (id)ticksAndLabelsForRangeInModelCoordinates:(id)a3 maximumLabelCount:(int64_t)a4 endingOptions:(int64_t)a5 dimension:(id)a6;
-- (HKNumericAxis)initWithConfiguration:(id)a3;
-- (id)adjustValueRangeForLabels:(id)a3;
-- (id)adjustedRangeForFittedRange:(id)a3 chartRange:(HKRange)a4;
-- (id)findAxisLabelsInModelRange:(id)a3 zoomScale:(double)a4;
++ (id)standardNumericYAxisWithConfigurationOverrides:(id)overrides;
++ (id)ticksAndLabelsForRangeInModelCoordinates:(id)coordinates maximumLabelCount:(int64_t)count endingOptions:(int64_t)options dimension:(id)dimension;
+- (HKNumericAxis)initWithConfiguration:(id)configuration;
+- (id)adjustValueRangeForLabels:(id)labels;
+- (id)adjustedRangeForFittedRange:(id)range chartRange:(HKRange)chartRange;
+- (id)findAxisLabelsInModelRange:(id)range zoomScale:(double)scale;
 @end
 
 @implementation HKNumericAxis
 
-- (HKNumericAxis)initWithConfiguration:(id)a3
+- (HKNumericAxis)initWithConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [v4 zoomScaleEngine];
+  configurationCopy = configuration;
+  zoomScaleEngine = [configurationCopy zoomScaleEngine];
 
-  if (!v5)
+  if (!zoomScaleEngine)
   {
     v6 = objc_alloc_init(HKScalarZoomScale);
-    [v4 setZoomScaleEngine:v6];
+    [configurationCopy setZoomScaleEngine:v6];
   }
 
   v14.receiver = self;
   v14.super_class = HKNumericAxis;
-  v7 = [(HKAxis *)&v14 initWithConfiguration:v4];
+  v7 = [(HKAxis *)&v14 initWithConfiguration:configurationCopy];
   if (v7)
   {
-    v8 = [v4 labelDimension];
-    v9 = v8;
-    if (!v8)
+    labelDimension = [configurationCopy labelDimension];
+    v9 = labelDimension;
+    if (!labelDimension)
     {
       v9 = objc_alloc_init(HKAxisLabelDimensionScalar);
     }
 
     objc_storeStrong(&v7->_labelDimension, v9);
-    if (!v8)
+    if (!labelDimension)
     {
     }
 
-    [v4 topVerticalLabelPadding];
+    [configurationCopy topVerticalLabelPadding];
     v7->_topVerticalLabelPadding = v10;
-    [v4 bottomVerticalLabelPadding];
+    [configurationCopy bottomVerticalLabelPadding];
     v7->_bottomVerticalLabelPadding = v11;
-    [v4 bottomLegendViewPadding];
+    [configurationCopy bottomLegendViewPadding];
     v7->_bottomLegendViewPadding = v12;
   }
 
   return v7;
 }
 
-- (id)adjustedRangeForFittedRange:(id)a3 chartRange:(HKRange)a4
+- (id)adjustedRangeForFittedRange:(id)range chartRange:(HKRange)chartRange
 {
-  var1 = a4.var1;
-  var0 = a4.var0;
-  v7 = a3;
-  v8 = [v7 minValue];
-  [v8 doubleValue];
+  var1 = chartRange.var1;
+  var0 = chartRange.var0;
+  rangeCopy = range;
+  minValue = [rangeCopy minValue];
+  [minValue doubleValue];
   v10 = v9;
-  v11 = [v7 maxValue];
+  maxValue = [rangeCopy maxValue];
 
-  [v11 doubleValue];
+  [maxValue doubleValue];
   v13 = v12;
 
   if (var1 >= 0.0)
@@ -93,48 +93,48 @@
   return v20;
 }
 
-- (id)findAxisLabelsInModelRange:(id)a3 zoomScale:(double)a4
+- (id)findAxisLabelsInModelRange:(id)range zoomScale:(double)scale
 {
-  v5 = a3;
-  v6 = [HKNumericAxis ticksAndLabelsForRangeInModelCoordinates:v5 maximumLabelCount:[(HKAxis *)self maxLabels] endingOptions:[(HKAxis *)self axisLabelEndings] dimension:self->_labelDimension];
+  rangeCopy = range;
+  v6 = [HKNumericAxis ticksAndLabelsForRangeInModelCoordinates:rangeCopy maximumLabelCount:[(HKAxis *)self maxLabels] endingOptions:[(HKAxis *)self axisLabelEndings] dimension:self->_labelDimension];
 
   return v6;
 }
 
-- (id)adjustValueRangeForLabels:(id)a3
+- (id)adjustValueRangeForLabels:(id)labels
 {
-  v4 = a3;
-  v5 = [HKNumericAxis ticksAndLabelsForRangeInModelCoordinates:v4 maximumLabelCount:[(HKAxis *)self maxLabels] endingOptions:0 dimension:self->_labelDimension];
+  labelsCopy = labels;
+  v5 = [HKNumericAxis ticksAndLabelsForRangeInModelCoordinates:labelsCopy maximumLabelCount:[(HKAxis *)self maxLabels] endingOptions:0 dimension:self->_labelDimension];
   v6 = v5;
   if (v5 && [v5 count] >= 2)
   {
-    v7 = [v6 firstObject];
-    v8 = [v6 lastObject];
-    v9 = [v7 location];
-    v10 = [v8 location];
-    v11 = [HKValueRange valueRangeWithMinValue:v9 maxValue:v10];
+    firstObject = [v6 firstObject];
+    lastObject = [v6 lastObject];
+    location = [firstObject location];
+    location2 = [lastObject location];
+    v11 = [HKValueRange valueRangeWithMinValue:location maxValue:location2];
   }
 
   else
   {
-    v11 = v4;
+    v11 = labelsCopy;
   }
 
   return v11;
 }
 
-+ (id)ticksAndLabelsForRangeInModelCoordinates:(id)a3 maximumLabelCount:(int64_t)a4 endingOptions:(int64_t)a5 dimension:(id)a6
++ (id)ticksAndLabelsForRangeInModelCoordinates:(id)coordinates maximumLabelCount:(int64_t)count endingOptions:(int64_t)options dimension:(id)dimension
 {
-  v7 = a5;
-  v9 = a3;
-  v10 = a6;
-  v11 = [v9 minValue];
-  [v11 doubleValue];
+  optionsCopy = options;
+  coordinatesCopy = coordinates;
+  dimensionCopy = dimension;
+  minValue = [coordinatesCopy minValue];
+  [minValue doubleValue];
   v13 = v12;
   v14 = v12;
 
-  v15 = [v9 maxValue];
-  [v15 doubleValue];
+  maxValue = [coordinatesCopy maxValue];
+  [maxValue doubleValue];
   v17 = v16;
   v18 = v16;
 
@@ -158,17 +158,17 @@
     }
 
     v24 = v23 == INFINITY || v21;
-    if (a4 >= 1 && ((v24 | v22) & 1) == 0)
+    if (count >= 1 && ((v24 | v22) & 1) == 0)
     {
-      [v10 niceStepSizeLargerThan:(v17 - v13) / (a4 + 1)];
+      [dimensionCopy niceStepSizeLargerThan:(v17 - v13) / (count + 1)];
       v26 = v25;
-      v27 = [v10 endingLabelsFactorOverride];
+      endingLabelsFactorOverride = [dimensionCopy endingLabelsFactorOverride];
 
       v28 = v26;
-      if (v27)
+      if (endingLabelsFactorOverride)
       {
-        v29 = [v10 endingLabelsFactorOverride];
-        [v29 floatValue];
+        endingLabelsFactorOverride2 = [dimensionCopy endingLabelsFactorOverride];
+        [endingLabelsFactorOverride2 floatValue];
         v28 = v30;
       }
 
@@ -180,7 +180,7 @@
       v31 = 0.0;
       while (1)
       {
-        if (v7)
+        if (optionsCopy)
         {
           [HKNumericAxis _roundUpByMultiple:v13 factor:v28];
           v33 = v34;
@@ -194,11 +194,11 @@
           v70 = v32;
         }
 
-        if ((v7 & 2) != 0)
+        if ((optionsCopy & 2) != 0)
         {
           [HKNumericAxis _roundDownByMultiple:v17 factor:v28];
           v37 = v38;
-          if (v27)
+          if (endingLabelsFactorOverride)
           {
             [HKNumericAxis _adjustRangeDownWithStartValue:v33 endValue:v38 factor:v26];
             v37 = v39;
@@ -211,7 +211,7 @@
         {
           [HKNumericAxis _roundUpByMultiple:v17 factor:v28];
           v36 = v35;
-          if (v27)
+          if (endingLabelsFactorOverride)
           {
             [HKNumericAxis _adjustRangeUpWithStartValue:v33 endValue:v35 factor:v26];
             v36 = v35;
@@ -221,7 +221,7 @@
         }
 
         v40 = rint((v36 - v70) / v26);
-        if (a4 == 2 && v40 >= 2)
+        if (count == 2 && v40 >= 2)
         {
           v41 = v33;
           v43 = v37 - v33;
@@ -229,17 +229,17 @@
         }
 
         v41 = v33;
-        if (v40 < a4)
+        if (v40 < count)
         {
           break;
         }
 
-        [v10 niceStepSizeLargerThan:{v26, v37}];
+        [dimensionCopy niceStepSizeLargerThan:{v26, v37}];
         v26 = v42;
         v43 = 0.0;
         if (v42 > 0.0)
         {
-          if (!v27)
+          if (!endingLabelsFactorOverride)
           {
             v28 = v42;
           }
@@ -264,7 +264,7 @@ LABEL_46:
 
       else
       {
-        [v10 ticksPerStepSize:v26];
+        [dimensionCopy ticksPerStepSize:v26];
         if (v44 <= 0.0)
         {
           v45 = v26;
@@ -275,7 +275,7 @@ LABEL_46:
           v45 = v26 / v44;
         }
 
-        if (v27)
+        if (endingLabelsFactorOverride)
         {
           v46 = v28;
         }
@@ -285,7 +285,7 @@ LABEL_46:
           v46 = v45;
         }
 
-        if (v7)
+        if (optionsCopy)
         {
           [HKNumericAxis _roundUpByMultiple:v70 factor:v46];
           v47 = v48;
@@ -296,14 +296,14 @@ LABEL_46:
           v47 = v70;
         }
 
-        v68 = v9;
-        if ((v7 & 2) != 0)
+        v68 = coordinatesCopy;
+        if ((optionsCopy & 2) != 0)
         {
           [HKNumericAxis _roundDownByMultiple:v36 factor:v46];
           v36 = v49;
         }
 
-        v71 = [v10 formatterForLabelStepSize:v26];
+        v71 = [dimensionCopy formatterForLabelStepSize:v26];
         v19 = objc_alloc_init(MEMORY[0x1E695DF70]);
         v50 = rint((v36 - v47) / v45);
         if ((v50 & 0x8000000000000000) == 0)
@@ -324,19 +324,19 @@ LABEL_46:
             if (v51 % v52 == v53)
             {
               [v57 setLabelType:1];
-              v59 = [v57 location];
-              [v10 stringForLocation:v59 formatterForStepSize:v71];
+              location = [v57 location];
+              [dimensionCopy stringForLocation:location formatterForStepSize:v71];
               v60 = v19;
               v61 = v54;
               v62 = v53;
-              v63 = v10;
+              v63 = dimensionCopy;
               v64 = v56;
               v66 = v65 = v55;
               [v57 setText:v66];
 
               v55 = v65;
               v56 = v64;
-              v10 = v63;
+              dimensionCopy = v63;
               v53 = v62;
               v54 = v61;
               v19 = v60;
@@ -357,7 +357,7 @@ LABEL_46:
           while (v54 != v51);
         }
 
-        v9 = v68;
+        coordinatesCopy = v68;
       }
     }
   }
@@ -365,25 +365,25 @@ LABEL_46:
   return v19;
 }
 
-+ (double)_adjustRangeDownWithStartValue:(double)a3 endValue:(double)a4 factor:(double)a5
++ (double)_adjustRangeDownWithStartValue:(double)value endValue:(double)endValue factor:(double)factor
 {
-  v7 = fmod(a4 - a3, a5);
-  result = a4 - (a5 - v7);
+  v7 = fmod(endValue - value, factor);
+  result = endValue - (factor - v7);
   if (v7 <= 0)
   {
-    return a4;
+    return endValue;
   }
 
   return result;
 }
 
-+ (double)_adjustRangeUpWithStartValue:(double)a3 endValue:(double)a4 factor:(double)a5
++ (double)_adjustRangeUpWithStartValue:(double)value endValue:(double)endValue factor:(double)factor
 {
-  v7 = fmod(a4 - a3, a5);
-  result = a5 - v7 + a4;
+  v7 = fmod(endValue - value, factor);
+  result = factor - v7 + endValue;
   if (v7 <= 0)
   {
-    return a4;
+    return endValue;
   }
 
   return result;
@@ -392,49 +392,49 @@ LABEL_46:
 + (id)preferredAxisStyle
 {
   v2 = objc_alloc_init(HKSolidFillStyle);
-  v3 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  [(HKSolidFillStyle *)v2 setColor:v3];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  [(HKSolidFillStyle *)v2 setColor:systemBackgroundColor];
 
   v4 = objc_alloc_init(HKAxisStyle);
-  v5 = [MEMORY[0x1E69DC888] hk_chartAxisLabelColor];
-  v6 = [MEMORY[0x1E69DB878] hk_chartAxisLabelFont];
-  v7 = [HKAxisLabelStyle labelStyleWithColor:v5 font:v6 horizontalAlignment:2 verticalAlignment:2 hyphenationFactor:&unk_1F4384970];
+  hk_chartAxisLabelColor = [MEMORY[0x1E69DC888] hk_chartAxisLabelColor];
+  hk_chartAxisLabelFont = [MEMORY[0x1E69DB878] hk_chartAxisLabelFont];
+  v7 = [HKAxisLabelStyle labelStyleWithColor:hk_chartAxisLabelColor font:hk_chartAxisLabelFont horizontalAlignment:2 verticalAlignment:2 hyphenationFactor:&unk_1F4384970];
   [(HKAxisStyle *)v4 setLabelStyle:v7];
 
   [(HKAxisStyle *)v4 setTickPositions:1];
-  v8 = [MEMORY[0x1E69DC888] hk_chartGrayGraphColor];
-  v9 = [HKStrokeStyle strokeStyleWithColor:v8 lineWidth:2.0];
+  hk_chartGrayGraphColor = [MEMORY[0x1E69DC888] hk_chartGrayGraphColor];
+  v9 = [HKStrokeStyle strokeStyleWithColor:hk_chartGrayGraphColor lineWidth:2.0];
   [(HKAxisStyle *)v4 setAxisLineStyle:v9];
 
   [(HKAxisStyle *)v4 setFillStyle:v2];
-  v10 = [MEMORY[0x1E69DC888] hk_chartGrayGraphColor];
-  v11 = [HKStrokeStyle strokeStyleWithColor:v10 lineWidth:HKUIOnePixel()];
+  hk_chartGrayGraphColor2 = [MEMORY[0x1E69DC888] hk_chartGrayGraphColor];
+  v11 = [HKStrokeStyle strokeStyleWithColor:hk_chartGrayGraphColor2 lineWidth:HKUIOnePixel()];
 
   [(HKAxisStyle *)v4 setBorderStyleForFill:v11];
   [(HKAxisStyle *)v4 setFillInnerPadding:4.0];
   [(HKAxisStyle *)v4 setFillOuterPadding:6.0];
   [(HKAxisStyle *)v4 setLocation:1];
   [(HKAxisStyle *)v4 setShowGridLines:1];
-  v12 = [MEMORY[0x1E69DC888] hk_chartGrayGraphColor];
-  v13 = [v12 colorWithAlphaComponent:0.5];
+  hk_chartGrayGraphColor3 = [MEMORY[0x1E69DC888] hk_chartGrayGraphColor];
+  v13 = [hk_chartGrayGraphColor3 colorWithAlphaComponent:0.5];
   v14 = [HKStrokeStyle strokeStyleWithColor:v13 lineWidth:0.5];
   [(HKAxisStyle *)v4 setGridLineStyle:v14];
 
   return v4;
 }
 
-+ (id)standardNumericYAxisWithConfigurationOverrides:(id)a3
++ (id)standardNumericYAxisWithConfigurationOverrides:(id)overrides
 {
-  v4 = a3;
+  overridesCopy = overrides;
   v5 = objc_alloc_init(HKNumericAxisConfiguration);
-  v6 = [a1 preferredAxisStyle];
-  [(HKAxisConfiguration *)v5 setPreferredStyle:v6];
+  preferredAxisStyle = [self preferredAxisStyle];
+  [(HKAxisConfiguration *)v5 setPreferredStyle:preferredAxisStyle];
 
   [(HKNumericAxisConfiguration *)v5 setTopVerticalLabelPadding:4.0];
   [(HKNumericAxisConfiguration *)v5 setBottomVerticalLabelPadding:4.0];
-  if (v4)
+  if (overridesCopy)
   {
-    [(HKNumericAxisConfiguration *)v5 applyOverridesFromNumericAxisConfiguration:v4];
+    [(HKNumericAxisConfiguration *)v5 applyOverridesFromNumericAxisConfiguration:overridesCopy];
   }
 
   v7 = [[HKNumericAxis alloc] initWithConfiguration:v5];

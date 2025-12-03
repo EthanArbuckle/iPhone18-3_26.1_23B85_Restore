@@ -33,10 +33,10 @@
 
   else
   {
-    v4 = [(CIMedianFilter *)self _kernel3x3];
+    _kernel3x3 = [(CIMedianFilter *)self _kernel3x3];
     [(CIImage *)self->inputImage extent];
     v12[0] = self->inputImage;
-    v9 = [v4 applyWithExtent:&__block_literal_global_48 roiCallback:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v12, 1), v5, v6, v7, v8}];
+    v9 = [_kernel3x3 applyWithExtent:&__block_literal_global_48 roiCallback:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v12, 1), v5, v6, v7, v8}];
     if (CI_ENABLE_MPS())
     {
       v10 = [CIMedianProcessor applyMedianToImage:self->inputImage width:3];

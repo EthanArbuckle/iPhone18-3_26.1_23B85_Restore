@@ -1,27 +1,27 @@
 @interface FCUISettingsListController
-- (id)_configuredModeForSemanticType:(int64_t)a3;
-- (void)_handleSetupRequestForSemanticType:(int64_t)a3;
+- (id)_configuredModeForSemanticType:(int64_t)type;
+- (void)_handleSetupRequestForSemanticType:(int64_t)type;
 - (void)_presentSetupControllerForUnknownMode;
 - (void)_processSetupFlowRequest;
 - (void)dealloc;
 - (void)emitNavigationEvent;
-- (void)handleURL:(id)a3 withCompletion:(id)a4;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)presentSetupControllerForPlaceholderMode:(id)a3;
-- (void)setSpecifier:(id)a3;
-- (void)setupNavigationController:(id)a3 createDefaultModeConfigurationForMode:(id)a4;
+- (void)handleURL:(id)l withCompletion:(id)completion;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)presentSetupControllerForPlaceholderMode:(id)mode;
+- (void)setSpecifier:(id)specifier;
+- (void)setupNavigationController:(id)controller createDefaultModeConfigurationForMode:(id)mode;
 - (void)viewDidLoad;
 @end
 
 @implementation FCUISettingsListController
 
-- (void)setSpecifier:(id)a3
+- (void)setSpecifier:(id)specifier
 {
   v7.receiver = self;
   v7.super_class = FCUISettingsListController;
-  v4 = a3;
-  [(FCUISettingsListController *)&v7 setSpecifier:v4];
-  v5 = [v4 propertyForKey:{@"FCUISettingsDeferredURLStateKey", v7.receiver, v7.super_class}];
+  specifierCopy = specifier;
+  [(FCUISettingsListController *)&v7 setSpecifier:specifierCopy];
+  v5 = [specifierCopy propertyForKey:{@"FCUISettingsDeferredURLStateKey", v7.receiver, v7.super_class}];
 
   deferredURLState = self->_deferredURLState;
   self->_deferredURLState = v5;
@@ -42,20 +42,20 @@
   [v7 addTarget:self action:"_addButtonPressed:" forControlEvents:64];
   [v7 setFrame:{0.0, 0.0, 44.0, 44.0}];
   [v7 setImage:v6 forState:0];
-  v8 = [v7 imageView];
-  [v8 setContentMode:4];
+  imageView = [v7 imageView];
+  [imageView setContentMode:4];
 
-  v9 = [v7 imageView];
-  v10 = [(FCUISettingsListController *)self tintColor];
-  [v9 setTintColor:v10];
+  imageView2 = [v7 imageView];
+  tintColor = [(FCUISettingsListController *)self tintColor];
+  [imageView2 setTintColor:tintColor];
 
   v11 = [[UIBarButtonItem alloc] initWithCustomView:v7];
   addButtomItem = self->_addButtomItem;
   self->_addButtomItem = v11;
 
   [(UIBarButtonItem *)self->_addButtomItem setHidden:self->_addButtonHidden];
-  v13 = [(FCUISettingsListController *)self navigationItem];
-  [v13 setRightBarButtonItem:self->_addButtomItem];
+  navigationItem = [(FCUISettingsListController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:self->_addButtomItem];
 
   deferredURLState = self->_deferredURLState;
   if (deferredURLState)
@@ -65,19 +65,19 @@
   }
 }
 
-- (void)handleURL:(id)a3 withCompletion:(id)a4
+- (void)handleURL:(id)l withCompletion:(id)completion
 {
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_56FC;
   v9[3] = &unk_20F80;
-  v10 = a3;
-  v11 = self;
-  v12 = a4;
+  lCopy = l;
+  selfCopy = self;
+  completionCopy = completion;
   v8.receiver = self;
   v8.super_class = FCUISettingsListController;
-  v6 = v12;
-  v7 = v10;
+  v6 = completionCopy;
+  v7 = lCopy;
   [(FCUISettingsListController *)&v8 handleURL:v7 withCompletion:v9];
 }
 
@@ -95,21 +95,21 @@
   [(FCUISettingsListController *)&v5 dealloc];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a5;
-  if (a6 == &off_20F70)
+  changeCopy = change;
+  if (context == &off_20F70)
   {
-    v12 = a3;
+    pathCopy = path;
     v13 = NSStringFromSelector("shouldPresentSetupFlow");
-    v14 = [v12 isEqualToString:v13];
+    v14 = [pathCopy isEqualToString:v13];
 
     if (v14)
     {
-      v15 = [v10 objectForKeyedSubscript:NSKeyValueChangeNewKey];
-      v16 = [v15 BOOLValue];
+      v15 = [changeCopy objectForKeyedSubscript:NSKeyValueChangeNewKey];
+      bOOLValue = [v15 BOOLValue];
 
-      if (v16)
+      if (bOOLValue)
       {
         block[0] = _NSConcreteStackBlock;
         block[1] = 3221225472;
@@ -125,32 +125,32 @@
   {
     v17.receiver = self;
     v17.super_class = FCUISettingsListController;
-    v11 = a3;
-    [(FCUISettingsListController *)&v17 observeValueForKeyPath:v11 ofObject:a4 change:v10 context:a6];
+    pathCopy2 = path;
+    [(FCUISettingsListController *)&v17 observeValueForKeyPath:pathCopy2 ofObject:object change:changeCopy context:context];
   }
 }
 
-- (void)presentSetupControllerForPlaceholderMode:(id)a3
+- (void)presentSetupControllerForPlaceholderMode:(id)mode
 {
-  v4 = a3;
+  modeCopy = mode;
   v5 = [DNDMode alloc];
-  v6 = [v4 name];
-  v7 = [v4 modeIdentifier];
-  v8 = [v4 symbolImageName];
-  v9 = [v4 tintColorName];
-  v10 = [v4 semanticType];
+  name = [modeCopy name];
+  modeIdentifier = [modeCopy modeIdentifier];
+  symbolImageName = [modeCopy symbolImageName];
+  tintColorName = [modeCopy tintColorName];
+  semanticType = [modeCopy semanticType];
 
-  v12 = [v5 initWithName:v6 modeIdentifier:v7 symbolImageName:v8 tintColorName:v9 semanticType:v10];
+  v12 = [v5 initWithName:name modeIdentifier:modeIdentifier symbolImageName:symbolImageName tintColorName:tintColorName semanticType:semanticType];
   v11 = [FCUISetupNavigationController setupNavigationControllerForMode:v12];
   [v11 setSetupDelegate:self];
   [(FCUISettingsListController *)self presentViewController:v11 animated:1 completion:0];
 }
 
-- (void)setupNavigationController:(id)a3 createDefaultModeConfigurationForMode:(id)a4
+- (void)setupNavigationController:(id)controller createDefaultModeConfigurationForMode:(id)mode
 {
-  v5 = a4;
-  v6 = [(FCUISettingsListController *)self specifierDataSource];
-  [v6 createDefaultModeConfigurationForMode:v5];
+  modeCopy = mode;
+  specifierDataSource = [(FCUISettingsListController *)self specifierDataSource];
+  [specifierDataSource createDefaultModeConfigurationForMode:modeCopy];
 }
 
 - (void)_processSetupFlowRequest
@@ -160,34 +160,34 @@
   [(FCUISettingsListController *)self _presentSetupControllerForUnknownMode];
 }
 
-- (id)_configuredModeForSemanticType:(int64_t)a3
+- (id)_configuredModeForSemanticType:(int64_t)type
 {
-  v4 = [(FCUISettingsListController *)self specifierDataSource];
-  v5 = [v4 allReservedModes];
+  specifierDataSource = [(FCUISettingsListController *)self specifierDataSource];
+  allReservedModes = [specifierDataSource allReservedModes];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_5D24;
   v8[3] = &unk_20DF0;
-  v8[4] = a3;
-  v6 = [v5 bs_firstObjectPassingTest:v8];
+  v8[4] = type;
+  v6 = [allReservedModes bs_firstObjectPassingTest:v8];
 
   return v6;
 }
 
 - (void)_presentSetupControllerForUnknownMode
 {
-  v6 = [(FCUISettingsListController *)self specifierDataSource];
-  v3 = [v6 placeholderModes];
-  v4 = [v6 allReservedModes];
-  v5 = [FCUISetupNavigationController setupNavigationControllerForUnknownModeWithPlaceholderModes:v3 allReservedModes:v4];
+  specifierDataSource = [(FCUISettingsListController *)self specifierDataSource];
+  placeholderModes = [specifierDataSource placeholderModes];
+  allReservedModes = [specifierDataSource allReservedModes];
+  v5 = [FCUISetupNavigationController setupNavigationControllerForUnknownModeWithPlaceholderModes:placeholderModes allReservedModes:allReservedModes];
   [v5 setSetupDelegate:self];
   [(FCUISettingsListController *)self presentViewController:v5 animated:1 completion:0];
 }
 
-- (void)_handleSetupRequestForSemanticType:(int64_t)a3
+- (void)_handleSetupRequestForSemanticType:(int64_t)type
 {
-  v6 = [(FCUISettingsListController *)self specifierDataSource];
-  v5 = [v6 placeholderModeForSemanticType:a3];
+  specifierDataSource = [(FCUISettingsListController *)self specifierDataSource];
+  v5 = [specifierDataSource placeholderModeForSemanticType:type];
   [(FCUISettingsListController *)self presentSetupControllerForPlaceholderMode:v5];
 }
 
@@ -195,11 +195,11 @@
 {
   v3 = [NSURL URLWithString:@"settings-navigation://com.apple.Settings.Focus"];
   v4 = [NSBundle bundleForClass:objc_opt_class()];
-  v5 = [v4 bundleURL];
+  bundleURL = [v4 bundleURL];
 
   v6 = [_NSLocalizedStringResource alloc];
   v7 = +[NSLocale currentLocale];
-  v8 = [v6 initWithKey:@"Focus" table:0 locale:v7 bundleURL:v5];
+  v8 = [v6 initWithKey:@"Focus" table:0 locale:v7 bundleURL:bundleURL];
 
   v10 = v8;
   v9 = [NSArray arrayWithObjects:&v10 count:1];

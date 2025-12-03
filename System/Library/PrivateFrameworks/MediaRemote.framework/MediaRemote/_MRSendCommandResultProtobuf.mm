@@ -1,15 +1,15 @@
 @interface _MRSendCommandResultProtobuf
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsSendError:(id)a3;
+- (int)StringAsSendError:(id)error;
 - (int)sendError;
 - (unint64_t)hash;
-- (void)addStatuses:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addStatuses:(id)statuses;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _MRSendCommandResultProtobuf
@@ -27,60 +27,60 @@
   }
 }
 
-- (int)StringAsSendError:(id)a3
+- (int)StringAsSendError:(id)error
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"None"])
+  errorCopy = error;
+  if ([errorCopy isEqualToString:@"None"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"ApplicationNotFound"])
+  else if ([errorCopy isEqualToString:@"ApplicationNotFound"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"ConnectionFailed"])
+  else if ([errorCopy isEqualToString:@"ConnectionFailed"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Ignored"])
+  else if ([errorCopy isEqualToString:@"Ignored"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"CouldNotLaunchApplication"])
+  else if ([errorCopy isEqualToString:@"CouldNotLaunchApplication"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"TimedOut"])
+  else if ([errorCopy isEqualToString:@"TimedOut"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"OriginDoesNotExist"])
+  else if ([errorCopy isEqualToString:@"OriginDoesNotExist"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"InvalidOptions"])
+  else if ([errorCopy isEqualToString:@"InvalidOptions"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"NoCommandHandlers"])
+  else if ([errorCopy isEqualToString:@"NoCommandHandlers"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"ApplicationNotInstalled"])
+  else if ([errorCopy isEqualToString:@"ApplicationNotInstalled"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"NotSupported"])
+  else if ([errorCopy isEqualToString:@"NotSupported"])
   {
     v4 = 10;
   }
@@ -93,22 +93,22 @@
   return v4;
 }
 
-- (void)addStatuses:(id)a3
+- (void)addStatuses:(id)statuses
 {
-  v4 = a3;
+  statusesCopy = statuses;
   statuses = self->_statuses;
-  v8 = v4;
+  v8 = statusesCopy;
   if (!statuses)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_statuses;
     self->_statuses = v6;
 
-    v4 = v8;
+    statusesCopy = v8;
     statuses = self->_statuses;
   }
 
-  [(NSMutableArray *)statuses addObject:v4];
+  [(NSMutableArray *)statuses addObject:statusesCopy];
 }
 
 - (id)description
@@ -117,8 +117,8 @@
   v8.receiver = self;
   v8.super_class = _MRSendCommandResultProtobuf;
   v4 = [(_MRSendCommandResultProtobuf *)&v8 description];
-  v5 = [(_MRSendCommandResultProtobuf *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(_MRSendCommandResultProtobuf *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -126,12 +126,12 @@
 - (id)dictionaryRepresentation
 {
   v25 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   playerPath = self->_playerPath;
   if (playerPath)
   {
-    v5 = [(_MRNowPlayingPlayerPathProtobuf *)playerPath dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"playerPath"];
+    dictionaryRepresentation = [(_MRNowPlayingPlayerPathProtobuf *)playerPath dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"playerPath"];
   }
 
   if (*&self->_has)
@@ -147,7 +147,7 @@
       v7 = off_1E769CC20[sendError];
     }
 
-    [v3 setObject:v7 forKey:@"sendError"];
+    [dictionary setObject:v7 forKey:@"sendError"];
   }
 
   if ([(NSMutableArray *)self->_statuses count])
@@ -172,8 +172,8 @@
             objc_enumerationMutation(v9);
           }
 
-          v14 = [*(*(&v20 + 1) + 8 * i) dictionaryRepresentation];
-          [v8 addObject:v14];
+          dictionaryRepresentation2 = [*(*(&v20 + 1) + 8 * i) dictionaryRepresentation];
+          [v8 addObject:dictionaryRepresentation2];
         }
 
         v11 = [(NSMutableArray *)v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
@@ -182,31 +182,31 @@
       while (v11);
     }
 
-    [v3 setObject:v8 forKey:@"statuses"];
+    [dictionary setObject:v8 forKey:@"statuses"];
   }
 
   sendErrorDescription = self->_sendErrorDescription;
   if (sendErrorDescription)
   {
-    [v3 setObject:sendErrorDescription forKey:@"sendErrorDescription"];
+    [dictionary setObject:sendErrorDescription forKey:@"sendErrorDescription"];
   }
 
   error = self->_error;
   if (error)
   {
-    v17 = [(_MRErrorProtobuf *)error dictionaryRepresentation];
-    [v3 setObject:v17 forKey:@"error"];
+    dictionaryRepresentation3 = [(_MRErrorProtobuf *)error dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation3 forKey:@"error"];
   }
 
   v18 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_playerPath)
   {
     PBDataWriterWriteSubmessage();
@@ -263,29 +263,29 @@
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v10 = v4;
+  toCopy = to;
+  v10 = toCopy;
   if (self->_playerPath)
   {
-    [v4 setPlayerPath:?];
-    v4 = v10;
+    [toCopy setPlayerPath:?];
+    toCopy = v10;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 6) = self->_sendError;
-    *(v4 + 48) |= 1u;
+    *(toCopy + 6) = self->_sendError;
+    *(toCopy + 48) |= 1u;
   }
 
   if ([(_MRSendCommandResultProtobuf *)self statusesCount])
   {
     [v10 clearStatuses];
-    v5 = [(_MRSendCommandResultProtobuf *)self statusesCount];
-    if (v5)
+    statusesCount = [(_MRSendCommandResultProtobuf *)self statusesCount];
+    if (statusesCount)
     {
-      v6 = v5;
+      v6 = statusesCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(_MRSendCommandResultProtobuf *)self statusesAtIndex:i];
@@ -307,11 +307,11 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v25 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(_MRNowPlayingPlayerPathProtobuf *)self->_playerPath copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(_MRNowPlayingPlayerPathProtobuf *)self->_playerPath copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
@@ -341,7 +341,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v20 + 1) + 8 * v12) copyWithZone:{a3, v20}];
+        v13 = [*(*(&v20 + 1) + 8 * v12) copyWithZone:{zone, v20}];
         [v5 addStatuses:v13];
 
         ++v12;
@@ -354,11 +354,11 @@
     while (v10);
   }
 
-  v14 = [(NSString *)self->_sendErrorDescription copyWithZone:a3];
+  v14 = [(NSString *)self->_sendErrorDescription copyWithZone:zone];
   v15 = *(v5 + 32);
   *(v5 + 32) = v14;
 
-  v16 = [(_MRErrorProtobuf *)self->_error copyWithZone:a3];
+  v16 = [(_MRErrorProtobuf *)self->_error copyWithZone:zone];
   v17 = *(v5 + 8);
   *(v5 + 8) = v16;
 
@@ -366,16 +366,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_15;
   }
 
   playerPath = self->_playerPath;
-  if (playerPath | *(v4 + 2))
+  if (playerPath | *(equalCopy + 2))
   {
     if (![(_MRNowPlayingPlayerPathProtobuf *)playerPath isEqual:?])
     {
@@ -383,16 +383,16 @@
     }
   }
 
-  v6 = *(v4 + 48);
+  v6 = *(equalCopy + 48);
   if (*&self->_has)
   {
-    if ((*(v4 + 48) & 1) == 0 || self->_sendError != *(v4 + 6))
+    if ((*(equalCopy + 48) & 1) == 0 || self->_sendError != *(equalCopy + 6))
     {
       goto LABEL_15;
     }
   }
 
-  else if (*(v4 + 48))
+  else if (*(equalCopy + 48))
   {
 LABEL_15:
     v10 = 0;
@@ -400,13 +400,13 @@ LABEL_15:
   }
 
   statuses = self->_statuses;
-  if (statuses | *(v4 + 5) && ![(NSMutableArray *)statuses isEqual:?])
+  if (statuses | *(equalCopy + 5) && ![(NSMutableArray *)statuses isEqual:?])
   {
     goto LABEL_15;
   }
 
   sendErrorDescription = self->_sendErrorDescription;
-  if (sendErrorDescription | *(v4 + 4))
+  if (sendErrorDescription | *(equalCopy + 4))
   {
     if (![(NSString *)sendErrorDescription isEqual:?])
     {
@@ -415,7 +415,7 @@ LABEL_15:
   }
 
   error = self->_error;
-  if (error | *(v4 + 1))
+  if (error | *(equalCopy + 1))
   {
     v10 = [(_MRErrorProtobuf *)error isEqual:?];
   }
@@ -449,12 +449,12 @@ LABEL_16:
   return v7 ^ [(_MRErrorProtobuf *)self->_error hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  fromCopy = from;
   playerPath = self->_playerPath;
-  v6 = *(v4 + 2);
+  v6 = *(fromCopy + 2);
   if (playerPath)
   {
     if (v6)
@@ -468,9 +468,9 @@ LABEL_16:
     [(_MRSendCommandResultProtobuf *)self setPlayerPath:?];
   }
 
-  if (*(v4 + 48))
+  if (*(fromCopy + 48))
   {
-    self->_sendError = *(v4 + 6);
+    self->_sendError = *(fromCopy + 6);
     *&self->_has |= 1u;
   }
 
@@ -478,7 +478,7 @@ LABEL_16:
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = *(v4 + 5);
+  v7 = *(fromCopy + 5);
   v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
@@ -502,13 +502,13 @@ LABEL_16:
     while (v9);
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(_MRSendCommandResultProtobuf *)self setSendErrorDescription:?];
   }
 
   error = self->_error;
-  v13 = *(v4 + 1);
+  v13 = *(fromCopy + 1);
   if (error)
   {
     if (v13)

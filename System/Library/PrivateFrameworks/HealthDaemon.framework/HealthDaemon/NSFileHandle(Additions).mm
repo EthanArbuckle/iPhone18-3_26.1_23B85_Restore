@@ -8,9 +8,9 @@
 - (BOOL)hk_writeValue:()Additions size:error:
 {
   v8 = [MEMORY[0x277CBEA90] dataWithBytes:? length:?];
-  v9 = [a1 offsetInFile];
-  [a1 writeData:v8];
-  v10 = v9 + a4 == [a1 offsetInFile];
+  offsetInFile = [self offsetInFile];
+  [self writeData:v8];
+  v10 = offsetInFile + a4 == [self offsetInFile];
 
   v11 = 0;
   if (a5 && !v10)
@@ -26,7 +26,7 @@
 - (BOOL)hk_readValue:()Additions ofSize:error:
 {
   v9 = objc_autoreleasePoolPush();
-  v10 = [a1 readDataOfLength:a4];
+  v10 = [self readDataOfLength:a4];
   v11 = [v10 length];
   v12 = v11 == a4;
   if (v11 == a4)

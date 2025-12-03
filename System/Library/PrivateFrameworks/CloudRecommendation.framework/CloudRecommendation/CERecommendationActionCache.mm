@@ -1,8 +1,8 @@
 @interface CERecommendationActionCache
 - (CERecommendationActionCache)init;
-- (id)_timestamp:(id)a3 tableName:(id)a4;
-- (void)_clearAction:(id)a3 tableName:(id)a4;
-- (void)_trackAction:(id)a3 tableName:(id)a4;
+- (id)_timestamp:(id)_timestamp tableName:(id)name;
+- (void)_clearAction:(id)action tableName:(id)name;
+- (void)_trackAction:(id)action tableName:(id)name;
 - (void)flushCache;
 @end
 
@@ -23,28 +23,28 @@
   return v2;
 }
 
-- (id)_timestamp:(id)a3 tableName:(id)a4
+- (id)_timestamp:(id)_timestamp tableName:(id)name
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CERecommendationActionCache *)self defaults];
-  v9 = [v8 dictionaryForKey:v6];
+  nameCopy = name;
+  _timestampCopy = _timestamp;
+  defaults = [(CERecommendationActionCache *)self defaults];
+  v9 = [defaults dictionaryForKey:nameCopy];
 
-  v10 = [v7 identifier];
+  identifier = [_timestampCopy identifier];
 
-  v11 = [v9 objectForKeyedSubscript:v10];
+  v11 = [v9 objectForKeyedSubscript:identifier];
 
   return v11;
 }
 
-- (void)_trackAction:(id)a3 tableName:(id)a4
+- (void)_trackAction:(id)action tableName:(id)name
 {
-  v14 = a3;
-  v6 = a4;
+  actionCopy = action;
+  nameCopy = name;
   v7 = objc_opt_class();
   objc_sync_enter(v7);
-  v8 = [(CERecommendationActionCache *)self defaults];
-  v9 = [v8 dictionaryForKey:v6];
+  defaults = [(CERecommendationActionCache *)self defaults];
+  v9 = [defaults dictionaryForKey:nameCopy];
   v10 = [v9 mutableCopy];
 
   if (!v10)
@@ -52,33 +52,33 @@
     v10 = [MEMORY[0x277CBEC10] mutableCopy];
   }
 
-  v11 = [MEMORY[0x277CBEAA8] date];
-  v12 = [v14 identifier];
-  [v10 setObject:v11 forKeyedSubscript:v12];
+  date = [MEMORY[0x277CBEAA8] date];
+  identifier = [actionCopy identifier];
+  [v10 setObject:date forKeyedSubscript:identifier];
 
-  v13 = [(CERecommendationActionCache *)self defaults];
-  [v13 setObject:v10 forKey:v6];
+  defaults2 = [(CERecommendationActionCache *)self defaults];
+  [defaults2 setObject:v10 forKey:nameCopy];
 
   objc_sync_exit(v7);
 }
 
-- (void)_clearAction:(id)a3 tableName:(id)a4
+- (void)_clearAction:(id)action tableName:(id)name
 {
-  v13 = a3;
-  v6 = a4;
+  actionCopy = action;
+  nameCopy = name;
   v7 = objc_opt_class();
   objc_sync_enter(v7);
-  v8 = [(CERecommendationActionCache *)self defaults];
-  v9 = [v8 dictionaryForKey:v6];
+  defaults = [(CERecommendationActionCache *)self defaults];
+  v9 = [defaults dictionaryForKey:nameCopy];
   v10 = [v9 mutableCopy];
 
   if (v10)
   {
-    v11 = [v13 identifier];
-    [v10 setObject:0 forKeyedSubscript:v11];
+    identifier = [actionCopy identifier];
+    [v10 setObject:0 forKeyedSubscript:identifier];
 
-    v12 = [(CERecommendationActionCache *)self defaults];
-    [v12 setObject:v10 forKey:v6];
+    defaults2 = [(CERecommendationActionCache *)self defaults];
+    [defaults2 setObject:v10 forKey:nameCopy];
   }
 
   objc_sync_exit(v7);
@@ -86,14 +86,14 @@
 
 - (void)flushCache
 {
-  v3 = [(CERecommendationActionCache *)self defaults];
-  [v3 removeObjectForKey:@"CERecommendationCompletedActionsTable"];
+  defaults = [(CERecommendationActionCache *)self defaults];
+  [defaults removeObjectForKey:@"CERecommendationCompletedActionsTable"];
 
-  v4 = [(CERecommendationActionCache *)self defaults];
-  [v4 removeObjectForKey:@"CERecommendationCanceledActionsTable"];
+  defaults2 = [(CERecommendationActionCache *)self defaults];
+  [defaults2 removeObjectForKey:@"CERecommendationCanceledActionsTable"];
 
-  v5 = [(CERecommendationActionCache *)self defaults];
-  [v5 removeObjectForKey:@"CERecommendationDismissedActionsTable"];
+  defaults3 = [(CERecommendationActionCache *)self defaults];
+  [defaults3 removeObjectForKey:@"CERecommendationDismissedActionsTable"];
 }
 
 @end

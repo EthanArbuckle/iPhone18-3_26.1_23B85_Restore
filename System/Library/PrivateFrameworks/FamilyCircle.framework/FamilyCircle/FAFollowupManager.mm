@@ -1,28 +1,28 @@
 @interface FAFollowupManager
 + (id)_followupManager;
-+ (void)synchronizeFollowupWithPayload:(id)a3 altDSID:(id)a4;
-+ (void)tearDownFollowupItemWithIdentifier:(id)a3 completion:(id)a4;
-+ (void)teardownFollowUpWithContext:(id)a3 completion:(id)a4;
++ (void)synchronizeFollowupWithPayload:(id)payload altDSID:(id)d;
++ (void)tearDownFollowupItemWithIdentifier:(id)identifier completion:(id)completion;
++ (void)teardownFollowUpWithContext:(id)context completion:(id)completion;
 + (void)teardownPendingFollowup;
 @end
 
 @implementation FAFollowupManager
 
-+ (void)tearDownFollowupItemWithIdentifier:(id)a3 completion:(id)a4
++ (void)tearDownFollowupItemWithIdentifier:(id)identifier completion:(id)completion
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  completionCopy = completion;
   v6 = MEMORY[0x1E6997AC8];
-  v7 = a3;
+  identifierCopy = identifier;
   v8 = [[v6 alloc] initWithClientIdentifier:@"com.icloud.family"];
-  v14[0] = v7;
+  v14[0] = identifierCopy;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __67__FAFollowupManager_tearDownFollowupItemWithIdentifier_completion___block_invoke;
   v12[3] = &unk_1E7CA47F0;
-  v13 = v5;
-  v10 = v5;
+  v13 = completionCopy;
+  v10 = completionCopy;
   [v8 clearPendingFollowUpItemsWithUniqueIdentifiers:v9 completion:v12];
 
   v11 = *MEMORY[0x1E69E9840];
@@ -47,13 +47,13 @@ void __67__FAFollowupManager_tearDownFollowupItemWithIdentifier_completion___blo
   }
 }
 
-+ (void)synchronizeFollowupWithPayload:(id)a3 altDSID:(id)a4
++ (void)synchronizeFollowupWithPayload:(id)payload altDSID:(id)d
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 _followupManager];
+  dCopy = d;
+  payloadCopy = payload;
+  _followupManager = [self _followupManager];
   v13 = 0;
-  v9 = [v8 synchronizeFollowUpsWithServerPayload:v7 altDSID:v6 error:&v13];
+  v9 = [_followupManager synchronizeFollowUpsWithServerPayload:payloadCopy altDSID:dCopy error:&v13];
 
   v10 = v13;
   v11 = _FALogSystem();
@@ -75,33 +75,33 @@ void __67__FAFollowupManager_tearDownFollowupItemWithIdentifier_completion___blo
 + (void)teardownPendingFollowup
 {
   v9 = *MEMORY[0x1E69E9840];
-  v1 = [a1 description];
+  v1 = [self description];
   OUTLINED_FUNCTION_0(&dword_1B70B0000, v2, v3, "Failed to clear pending family followup items with error: %@", v4, v5, v6, v7, 2u);
 
   v8 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)teardownFollowUpWithContext:(id)a3 completion:(id)a4
++ (void)teardownFollowUpWithContext:(id)context completion:(id)completion
 {
   v16 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   v8 = _FALogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v15 = v6;
+    v15 = contextCopy;
     _os_log_impl(&dword_1B70B0000, v8, OS_LOG_TYPE_DEFAULT, "teardownFollowUpWithContext called with context: %@", buf, 0xCu);
   }
 
-  v9 = [a1 _followupManager];
+  _followupManager = [self _followupManager];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __60__FAFollowupManager_teardownFollowUpWithContext_completion___block_invoke;
   v12[3] = &unk_1E7CA47F0;
-  v13 = v7;
-  v10 = v7;
-  [v9 teardownFollowUpWithContext:v6 completion:v12];
+  v13 = completionCopy;
+  v10 = completionCopy;
+  [_followupManager teardownFollowUpWithContext:contextCopy completion:v12];
 
   v11 = *MEMORY[0x1E69E9840];
 }

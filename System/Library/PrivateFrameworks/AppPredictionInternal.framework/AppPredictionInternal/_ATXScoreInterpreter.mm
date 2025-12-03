@@ -1,17 +1,17 @@
 @interface _ATXScoreInterpreter
-+ (id)_bytecodeInstructionForOp:(void *)a3 unsignedIntegerArgument:(void *)a4 doubleArgument:;
-+ (uint64_t)operatorFromFunctionName:(uint64_t)a1;
-+ (void)_expectedArity:(uint64_t)a1;
++ (id)_bytecodeInstructionForOp:(void *)op unsignedIntegerArgument:(void *)argument doubleArgument:;
++ (uint64_t)operatorFromFunctionName:(uint64_t)name;
++ (void)_expectedArity:(uint64_t)arity;
 - (NSSet)subscoreNames;
-- (_ATXScoreInterpreter)initWithParseRoot:(id)a3;
-- (double)_evalVariable:(void *)a3 withCtx:;
-- (id)_compileToBytecode:(id *)a1;
-- (id)evaluateWithInputScoreDict:(id)a3 intentType:(id)a4;
-- (id)evaluateWithInputScores:(id)a3 intentType:(id)a4;
-- (id)retainBytecodeDependencyObject:(id *)a1;
-- (void)_compileBytecode:(uint64_t)a1;
-- (void)_runBytecode:(void *)a3 context:;
-- (void)_runOperator:(unint64_t)a3 arity:(void *)a4 context:;
+- (_ATXScoreInterpreter)initWithParseRoot:(id)root;
+- (double)_evalVariable:(void *)variable withCtx:;
+- (id)_compileToBytecode:(id *)bytecode;
+- (id)evaluateWithInputScoreDict:(id)dict intentType:(id)type;
+- (id)evaluateWithInputScores:(id)scores intentType:(id)type;
+- (id)retainBytecodeDependencyObject:(id *)object;
+- (void)_compileBytecode:(uint64_t)bytecode;
+- (void)_runBytecode:(void *)bytecode context:;
+- (void)_runOperator:(unint64_t)operator arity:(void *)arity context:;
 @end
 
 @implementation _ATXScoreInterpreter
@@ -19,31 +19,31 @@
 - (NSSet)subscoreNames
 {
   v3 = objc_alloc(MEMORY[0x277CBEB98]);
-  v4 = [(NSDictionary *)self->_bytecode allKeys];
-  v5 = [v3 initWithArray:v4];
+  allKeys = [(NSDictionary *)self->_bytecode allKeys];
+  v5 = [v3 initWithArray:allKeys];
 
   return v5;
 }
 
-- (_ATXScoreInterpreter)initWithParseRoot:(id)a3
+- (_ATXScoreInterpreter)initWithParseRoot:(id)root
 {
-  v4 = a3;
+  rootCopy = root;
   v9.receiver = self;
   v9.super_class = _ATXScoreInterpreter;
   v5 = [(_ATXScoreInterpreter *)&v9 init];
   if (v5)
   {
-    v7 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     bytecodeDependencies = v5->_bytecodeDependencies;
-    v5->_bytecodeDependencies = v7;
+    v5->_bytecodeDependencies = array;
 
-    [(_ATXScoreInterpreter *)v5 _compileBytecode:v4];
+    [(_ATXScoreInterpreter *)v5 _compileBytecode:rootCopy];
   }
 
   return v5;
 }
 
-+ (uint64_t)operatorFromFunctionName:(uint64_t)a1
++ (uint64_t)operatorFromFunctionName:(uint64_t)name
 {
   v2 = a2;
   objc_opt_self();
@@ -51,18 +51,18 @@
 
   if (v3)
   {
-    v4 = [v3 unsignedIntegerValue];
+    unsignedIntegerValue = [v3 unsignedIntegerValue];
   }
 
   else
   {
-    v4 = -1;
+    unsignedIntegerValue = -1;
   }
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
-+ (void)_expectedArity:(uint64_t)a1
++ (void)_expectedArity:(uint64_t)arity
 {
   objc_opt_self();
   if ((a2 + 1) >= 0x14)
@@ -82,26 +82,26 @@
   }
 }
 
-- (void)_runOperator:(unint64_t)a3 arity:(void *)a4 context:
+- (void)_runOperator:(unint64_t)operator arity:(void *)arity context:
 {
   v82 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = v7;
-  if (a1)
+  arityCopy = arity;
+  v8 = arityCopy;
+  if (self)
   {
     switch(a2)
     {
       case 0:
         if (([_ATXScoreInterpreter _runOperator:arity:context:]& 1) != 0)
         {
-          [_ATXScoreInterpreter _runOperator:a3 arity:v8 context:?];
+          [_ATXScoreInterpreter _runOperator:operator arity:v8 context:?];
         }
 
         break;
       case 1:
         if (([_ATXScoreInterpreter _runOperator:arity:context:]& 1) != 0)
         {
-          [_ATXScoreInterpreter _runOperator:a3 arity:v8 context:?];
+          [_ATXScoreInterpreter _runOperator:operator arity:v8 context:?];
         }
 
         break;
@@ -114,10 +114,10 @@
           break;
         }
 
-        v33 = &v8[v8[1] - a3];
+        v33 = &v8[v8[1] - operator];
         v35 = *(v33 + 2);
         v34 = *(v33 + 3);
-        drop(v8, a3);
+        drop(v8, operator);
         if (v35 <= 0.0)
         {
           [_ATXScoreInterpreter _runOperator:arity:context:];
@@ -156,7 +156,7 @@ LABEL_97:
         v9 = v58 / log10(v34);
         goto LABEL_12;
       case 4:
-        if (([(_ATXScoreInterpreter *)v7 _runOperator:a3 arity:&v71 context:buf]& 1) == 0)
+        if (([(_ATXScoreInterpreter *)arityCopy _runOperator:operator arity:&v71 context:buf]& 1) == 0)
         {
           [_ATXScoreInterpreter _runOperator:v8 arity:? context:?];
         }
@@ -168,8 +168,8 @@ LABEL_97:
           break;
         }
 
-        v37 = *&v8[v8[1] - a3 + 2];
-        drop(v8, a3);
+        v37 = *&v8[v8[1] - operator + 2];
+        drop(v8, operator);
         if (v37 <= 0.0)
         {
           [_ATXScoreInterpreter _runOperator:arity:context:];
@@ -183,16 +183,16 @@ LABEL_97:
         v9 = log(v37);
         goto LABEL_12;
       case 6:
-        if (shouldReturnUndefined(v7, 2uLL))
+        if (shouldReturnUndefined(arityCopy, 2uLL))
         {
-          drop(v8, a3);
+          drop(v8, operator);
           goto LABEL_5;
         }
 
-        v10 = &v8[v8[1] - a3];
+        v10 = &v8[v8[1] - operator];
         v11 = *(v10 + 2);
         v12 = *(v10 + 3);
-        drop(v8, a3);
+        drop(v8, operator);
         if (v11 <= 0.0 && (v11 != 0.0 || v12 <= 0.0) && v12 != v12)
         {
           [_ATXScoreInterpreter _runOperator:arity:context:];
@@ -206,11 +206,11 @@ LABEL_97:
           break;
         }
 
-        v39 = &v8[v8[1] - a3];
+        v39 = &v8[v8[1] - operator];
         v41 = v39[2];
         v40 = v39[3];
         v25 = v39[4];
-        drop(v8, a3);
+        drop(v8, operator);
         if (v41 < 0.0)
         {
           [_ATXScoreInterpreter _runOperator:arity:context:];
@@ -260,11 +260,11 @@ LABEL_13:
           break;
         }
 
-        v23 = &v8[v8[1] - a3];
+        v23 = &v8[v8[1] - operator];
         v24 = v23[2];
         v25 = v23[3];
         v26 = v23[4];
-        drop(v8, a3);
+        drop(v8, operator);
         if (v26 == 1.0)
         {
           [_ATXScoreInterpreter _runOperator:arity:context:];
@@ -308,12 +308,12 @@ LABEL_106:
           break;
         }
 
-        v15 = &v8[v8[1] - a3];
+        v15 = &v8[v8[1] - operator];
         v17 = v15[2];
         v16 = v15[3];
         v19 = v15[4];
         v18 = v15[5];
-        drop(v8, a3);
+        drop(v8, operator);
         if (v16 > v18)
         {
           [_ATXScoreInterpreter _runOperator:arity:context:];
@@ -363,13 +363,13 @@ LABEL_106:
         v9 = v21;
         goto LABEL_13;
       case 13:
-        [_ATXScoreInterpreter _runOperator:v7 arity:? context:?];
+        [_ATXScoreInterpreter _runOperator:arityCopy arity:? context:?];
         break;
       case 14:
         [_ATXScoreInterpreter _runOperator:arity:context:];
         break;
       case 15:
-        [_ATXScoreInterpreter _runOperator:v7 arity:a3 context:a1];
+        [_ATXScoreInterpreter _runOperator:arityCopy arity:operator context:self];
         break;
       case 16:
         if (([_ATXScoreInterpreter _runOperator:arity:context:]& 1) == 0)
@@ -377,7 +377,7 @@ LABEL_106:
           break;
         }
 
-        v28 = [*(a1 + 16) objectAtIndexedSubscript:*&v8[v8[1] - a3 + 2]];
+        v28 = [*(self + 16) objectAtIndexedSubscript:*&v8[v8[1] - operator + 2]];
         if ([v28 hasOutputIndexedSubscript])
         {
           v29 = pop(v8);
@@ -390,20 +390,20 @@ LABEL_106:
 
         v66 = v29;
         v43 = objc_opt_new();
-        v44 = [v28 numberOfFeatures];
-        if (!v44)
+        numberOfFeatures = [v28 numberOfFeatures];
+        if (!numberOfFeatures)
         {
           goto LABEL_93;
         }
 
-        v45 = v44;
+        v45 = numberOfFeatures;
         v46 = 0;
         v67 = v28;
         v68 = v43;
         while (2)
         {
           v47 = [v28 featureAtIndex:v45 + ~v46];
-          v48 = [v47 featureName];
+          featureName = [v47 featureName];
           if ([v47 featureType] == 2)
           {
             v49 = [MEMORY[0x277CCABB0] numberWithDouble:pop(v8)];
@@ -412,10 +412,10 @@ LABEL_106:
 
           if ([v47 featureType] == 5)
           {
-            v69 = v48;
-            v50 = [v47 multiArraySize];
+            v69 = featureName;
+            multiArraySize = [v47 multiArraySize];
             v51 = objc_alloc(MEMORY[0x277CBFF48]);
-            v52 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v50];
+            v52 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:multiArraySize];
             v72 = v52;
             v53 = [MEMORY[0x277CBEA60] arrayWithObjects:&v72 count:1];
             v70 = 0;
@@ -424,9 +424,9 @@ LABEL_106:
 
             if (!v54)
             {
-              if (v50)
+              if (multiArraySize)
               {
-                v55 = v50 - 1;
+                v55 = multiArraySize - 1;
                 do
                 {
                   v56 = [MEMORY[0x277CCABB0] numberWithDouble:pop(v8)];
@@ -440,9 +440,9 @@ LABEL_106:
 
               v28 = v67;
               v43 = v68;
-              v48 = v69;
+              featureName = v69;
 LABEL_92:
-              [v43 setObject:v49 forKeyedSubscript:v48];
+              [v43 setObject:v49 forKeyedSubscript:featureName];
 
               if (++v46 == v45)
               {
@@ -457,7 +457,7 @@ LABEL_93:
             }
 
             v64 = __atxlog_handle_default();
-            v48 = v69;
+            featureName = v69;
             if (os_log_type_enabled(v64, OS_LOG_TYPE_ERROR))
             {
               [_ATXScoreInterpreter _runOperator:arity:context:];
@@ -493,10 +493,10 @@ LABEL_117:
           break;
         }
 
-        v30 = &v8[v8[1] - a3];
+        v30 = &v8[v8[1] - operator];
         v31 = v30[2];
         v32 = v30[3];
-        drop(v8, a3);
+        drop(v8, operator);
         if (v31 > v32)
         {
           [_ATXScoreInterpreter _runOperator:arity:context:];
@@ -519,29 +519,29 @@ LABEL_117:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_runBytecode:(void *)a3 context:
+- (void)_runBytecode:(void *)bytecode context:
 {
   v29 = *MEMORY[0x277D85DE8];
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  bytecodeCopy = bytecode;
+  if (self)
   {
-    v7 = [v5 bytes];
+    bytes = [v5 bytes];
     v8 = [v5 length];
     if (v8 >= 1)
     {
-      v9 = v7 + v8;
-      v10 = (v7 + 1);
+      v9 = bytes + v8;
+      v10 = (bytes + 1);
       v11 = 2;
       do
       {
-        v12 = *v7;
-        if (*v7 > 0xFCu)
+        v12 = *bytes;
+        if (*bytes > 0xFCu)
         {
           switch(v12)
           {
             case 0xFD:
-              v19 = pop(v6);
+              v19 = pop(bytecodeCopy);
               if (v19 != -31337.0)
               {
                 v20 = *&v19 <= -1 || ((*&v19 & 0x7FFFFFFFFFFFFFFFuLL) - 0x10000000000000) >> 53 >= 0x3FF;
@@ -565,13 +565,13 @@ LABEL_41:
 
               break;
             case 0xFE:
-              v22 = pop(v6);
+              v22 = pop(bytecodeCopy);
               if (v22 == -31337.0 || (*&v22 & 0x7FFFFFFFFFFFFFFFuLL) > 0x7FEFFFFFFFFFFFFFLL)
               {
                 goto LABEL_38;
               }
 
-              push(v6, v22);
+              push(bytecodeCopy, v22);
               break;
             case 0xFF:
               break;
@@ -597,14 +597,14 @@ LABEL_13:
                 v15 = v13;
               }
 
-              v23 = v6[1];
-              [(_ATXScoreInterpreter *)a1 _runOperator:v12 arity:v15 context:v6];
-              if (v6[1] > v23)
+              v23 = bytecodeCopy[1];
+              [(_ATXScoreInterpreter *)self _runOperator:v12 arity:v15 context:bytecodeCopy];
+              if (bytecodeCopy[1] > v23)
               {
                 v24 = __atxlog_handle_default();
                 if (os_log_type_enabled(v24, OS_LOG_TYPE_FAULT))
                 {
-                  v25 = (v6[1] - v23);
+                  v25 = (bytecodeCopy[1] - v23);
                   *buf = 134217984;
                   v28 = v25;
                   _os_log_fault_impl(&dword_2263AA000, v24, OS_LOG_TYPE_FAULT, "Stack size after op > old stack size! This is an issue. Diff = %lu", buf, 0xCu);
@@ -640,32 +640,32 @@ LABEL_13:
             }
 
             __memcpy_chk();
-            v17 = [*(a1 + 16) objectAtIndexedSubscript:0];
+            v17 = [*(self + 16) objectAtIndexedSubscript:0];
             buf[0] = 0;
-            [v6[502] scoreForKey:v17 found:buf];
+            [bytecodeCopy[502] scoreForKey:v17 found:buf];
             if ((buf[0] & 1) == 0)
             {
-              [v6[503] scoreForKey:v17 found:buf];
+              [bytecodeCopy[503] scoreForKey:v17 found:buf];
               if ((buf[0] & 1) == 0)
               {
-                [(_ATXScoreInterpreter *)a1 _evalVariable:v17 withCtx:v6];
+                [(_ATXScoreInterpreter *)self _evalVariable:v17 withCtx:bytecodeCopy];
               }
             }
 
-            push(v6, v18);
+            push(bytecodeCopy, v18);
 
             goto LABEL_40;
           }
 
           if (v12 == 202)
           {
-            v16 = (v7 + 9);
-            if (v7 + 9 > v9)
+            v16 = (bytes + 9);
+            if (bytes + 9 > v9)
             {
               break;
             }
 
-            push(v6, *v10);
+            push(bytecodeCopy, *v10);
             goto LABEL_41;
           }
 
@@ -683,7 +683,7 @@ LABEL_13:
         }
 
 LABEL_42:
-        v7 = v10;
+        bytes = v10;
         v10 = (v10 + 1);
       }
 
@@ -696,18 +696,18 @@ LABEL_49:
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_compileToBytecode:(id *)a1
+- (id)_compileToBytecode:(id *)bytecode
 {
   v3 = a2;
-  if (a1)
+  if (bytecode)
   {
     v4 = objc_autoreleasePoolPush();
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [_ATXScoreInterpreter _bytecodeInstructionForOp:0 unsignedIntegerArgument:v3 doubleArgument:?];
+      data = [_ATXScoreInterpreter _bytecodeInstructionForOp:0 unsignedIntegerArgument:v3 doubleArgument:?];
 LABEL_16:
-      v15 = v5;
+      v15 = data;
 LABEL_42:
       objc_autoreleasePoolPop(v4);
       goto LABEL_43;
@@ -716,7 +716,7 @@ LABEL_42:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(_ATXScoreInterpreter *)a1 _compileToBytecode:v3, &v62];
+      [(_ATXScoreInterpreter *)bytecode _compileToBytecode:v3, &v62];
       v15 = v62;
       goto LABEL_42;
     }
@@ -724,7 +724,7 @@ LABEL_42:
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v5 = [MEMORY[0x277CBEA90] data];
+      data = [MEMORY[0x277CBEA90] data];
       goto LABEL_16;
     }
 
@@ -776,15 +776,15 @@ LABEL_42:
         case 15:
           if ([v57[5] count] <= 1)
           {
-            v46 = [MEMORY[0x277CCA890] currentHandler];
-            [v46 handleFailureInMethod:sel__compileToBytecode_ object:a1 file:@"_ATXScoreInterpreter.m" lineNumber:890 description:{@"Invalid parameter not satisfying: %@", @"argArray.count >= 2"}];
+            currentHandler = [MEMORY[0x277CCA890] currentHandler];
+            [currentHandler handleFailureInMethod:sel__compileToBytecode_ object:bytecode file:@"_ATXScoreInterpreter.m" lineNumber:890 description:{@"Invalid parameter not satisfying: %@", @"argArray.count >= 2"}];
           }
 
           v22 = [_ATXNeuralNetwork alloc];
           v23 = [v57[5] objectAtIndexedSubscript:0];
           v10 = [(_ATXNeuralNetwork *)v22 initWithData:v23];
 
-          v12 = [(_ATXScoreInterpreter *)a1 retainBytecodeDependencyObject:v10];
+          v12 = [(_ATXScoreInterpreter *)bytecode retainBytecodeDependencyObject:v10];
           v14 = v6[2]();
           [v14 setObject:v12 atIndexedSubscript:0];
           break;
@@ -799,7 +799,7 @@ LABEL_42:
           v57[5] = v26;
 
           v28 = (v24[2])(v24);
-          v29 = [(_ATXScoreInterpreter *)a1 retainBytecodeDependencyObject:v25];
+          v29 = [(_ATXScoreInterpreter *)bytecode retainBytecodeDependencyObject:v25];
           [v28 insertObject:v29 atIndex:0];
 
           v8 = 16;
@@ -807,14 +807,14 @@ LABEL_42:
         case 17:
           if ([v57[5] count] <= 1)
           {
-            v48 = [MEMORY[0x277CCA890] currentHandler];
-            [v48 handleFailureInMethod:sel__compileToBytecode_ object:a1 file:@"_ATXScoreInterpreter.m" lineNumber:880 description:{@"Invalid parameter not satisfying: %@", @"argArray.count >= 2"}];
+            currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+            [currentHandler2 handleFailureInMethod:sel__compileToBytecode_ object:bytecode file:@"_ATXScoreInterpreter.m" lineNumber:880 description:{@"Invalid parameter not satisfying: %@", @"argArray.count >= 2"}];
           }
 
           v9 = objc_alloc(MEMORY[0x277CBEB98]);
           v10 = [v9 initWithArray:v57[5]];
           v11 = MEMORY[0x277CBEA60];
-          v12 = [(_ATXScoreInterpreter *)a1 retainBytecodeDependencyObject:v10];
+          v12 = [(_ATXScoreInterpreter *)bytecode retainBytecodeDependencyObject:v10];
           v13 = [v11 arrayWithObject:v12];
           v14 = v57[5];
           v57[5] = v13;
@@ -828,8 +828,8 @@ LABEL_27:
       v31 = v30;
       if (v30 != 0x7FFFFFFFFFFFFFFFLL && [v57[5] count] != v30)
       {
-        v45 = [MEMORY[0x277CCA890] currentHandler];
-        [v45 handleFailureInMethod:sel__compileToBytecode_ object:a1 file:@"_ATXScoreInterpreter.m" lineNumber:922 description:{@"expected argArray.count (%tu) == expected count (%tu) for operator %hu", objc_msgSend(v57[5], "count"), v31, v8}];
+        currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+        [currentHandler3 handleFailureInMethod:sel__compileToBytecode_ object:bytecode file:@"_ATXScoreInterpreter.m" lineNumber:922 description:{@"expected argArray.count (%tu) == expected count (%tu) for operator %hu", objc_msgSend(v57[5], "count"), v31, v8}];
       }
 
       v15 = objc_opt_new();
@@ -837,7 +837,7 @@ LABEL_27:
       {
         v33 = objc_autoreleasePoolPush();
         v34 = [v57[5] objectAtIndexedSubscript:i];
-        v35 = [(_ATXScoreInterpreter *)a1 _compileToBytecode:v34];
+        v35 = [(_ATXScoreInterpreter *)bytecode _compileToBytecode:v34];
         [v15 appendData:v35];
 
         objc_autoreleasePoolPop(v33);
@@ -864,21 +864,21 @@ LABEL_27:
     {
       if ([v57[5] count] != 3)
       {
-        v47 = [MEMORY[0x277CCA890] currentHandler];
-        [v47 handleFailureInMethod:sel__compileToBytecode_ object:a1 file:@"_ATXScoreInterpreter.m" lineNumber:834 description:{@"Invalid parameter not satisfying: %@", @"argArray.count == 3"}];
+        currentHandler4 = [MEMORY[0x277CCA890] currentHandler];
+        [currentHandler4 handleFailureInMethod:sel__compileToBytecode_ object:bytecode file:@"_ATXScoreInterpreter.m" lineNumber:834 description:{@"Invalid parameter not satisfying: %@", @"argArray.count == 3"}];
       }
 
       v37 = [v57[5] objectAtIndexedSubscript:1];
-      v17 = [(_ATXScoreInterpreter *)a1 _compileToBytecode:v37];
+      v17 = [(_ATXScoreInterpreter *)bytecode _compileToBytecode:v37];
 
       v38 = [v57[5] objectAtIndexedSubscript:2];
-      v19 = [(_ATXScoreInterpreter *)a1 _compileToBytecode:v38];
+      v19 = [(_ATXScoreInterpreter *)bytecode _compileToBytecode:v38];
 
       v39 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v19, "length")}];
       v21 = [_ATXScoreInterpreter _bytecodeInstructionForOp:v39 unsignedIntegerArgument:0 doubleArgument:?];
 
       v40 = [v57[5] objectAtIndexedSubscript:0];
-      v41 = [(_ATXScoreInterpreter *)a1 _compileToBytecode:v40];
+      v41 = [(_ATXScoreInterpreter *)bytecode _compileToBytecode:v40];
 
       v42 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v21, "length") + objc_msgSend(v17, "length")}];
       v43 = [_ATXScoreInterpreter _bytecodeInstructionForOp:v42 unsignedIntegerArgument:0 doubleArgument:?];
@@ -901,18 +901,18 @@ LABEL_27:
 
       if ([v57[5] count] != 2)
       {
-        v49 = [MEMORY[0x277CCA890] currentHandler];
-        [v49 handleFailureInMethod:sel__compileToBytecode_ object:a1 file:@"_ATXScoreInterpreter.m" lineNumber:862 description:{@"Invalid parameter not satisfying: %@", @"argArray.count == 2"}];
+        currentHandler5 = [MEMORY[0x277CCA890] currentHandler];
+        [currentHandler5 handleFailureInMethod:sel__compileToBytecode_ object:bytecode file:@"_ATXScoreInterpreter.m" lineNumber:862 description:{@"Invalid parameter not satisfying: %@", @"argArray.count == 2"}];
       }
 
       v16 = [v57[5] objectAtIndexedSubscript:1];
-      v17 = [(_ATXScoreInterpreter *)a1 _compileToBytecode:v16];
+      v17 = [(_ATXScoreInterpreter *)bytecode _compileToBytecode:v16];
 
       v18 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v17, "length")}];
       v19 = [_ATXScoreInterpreter _bytecodeInstructionForOp:v18 unsignedIntegerArgument:0 doubleArgument:?];
 
       v20 = [v57[5] objectAtIndexedSubscript:0];
-      v21 = [(_ATXScoreInterpreter *)a1 _compileToBytecode:v20];
+      v21 = [(_ATXScoreInterpreter *)bytecode _compileToBytecode:v20];
 
       v15 = [v21 mutableCopy];
       [v15 appendData:v19];
@@ -935,28 +935,28 @@ LABEL_43:
   return v15;
 }
 
-+ (id)_bytecodeInstructionForOp:(void *)a3 unsignedIntegerArgument:(void *)a4 doubleArgument:
++ (id)_bytecodeInstructionForOp:(void *)op unsignedIntegerArgument:(void *)argument doubleArgument:
 {
   v19 = *MEMORY[0x277D85DE8];
   v16 = a2;
-  v6 = a3;
-  v7 = a4;
+  opCopy = op;
+  argumentCopy = argument;
   objc_opt_self();
-  if (v6 && v7)
+  if (opCopy && argumentCopy)
   {
     +[_ATXScoreInterpreter _bytecodeInstructionForOp:unsignedIntegerArgument:doubleArgument:];
   }
 
-  if (v6 | v7)
+  if (opCopy | argumentCopy)
   {
-    if (v6)
+    if (opCopy)
     {
-      v11 = [v6 unsignedIntValue];
-      if (HIWORD(v11))
+      unsignedIntValue = [opCopy unsignedIntValue];
+      if (HIWORD(unsignedIntValue))
       {
         v17 = -4;
         LOBYTE(v18) = a2;
-        *(&v18 + 1) = v11;
+        *(&v18 + 1) = unsignedIntValue;
         v8 = objc_alloc(MEMORY[0x277CBEA90]);
         v9 = &v17;
         v10 = 6;
@@ -965,7 +965,7 @@ LABEL_43:
       else
       {
         v17 = a2;
-        LOWORD(v18) = v11;
+        LOWORD(v18) = unsignedIntValue;
         v8 = objc_alloc(MEMORY[0x277CBEA90]);
         v9 = &v17;
         v10 = 3;
@@ -975,7 +975,7 @@ LABEL_43:
     else
     {
       v17 = a2;
-      [v7 doubleValue];
+      [argumentCopy doubleValue];
       v18 = v12;
       v8 = objc_alloc(MEMORY[0x277CBEA90]);
       v9 = &v17;
@@ -997,14 +997,14 @@ LABEL_43:
   return v13;
 }
 
-- (id)evaluateWithInputScores:(id)a3 intentType:(id)a4
+- (id)evaluateWithInputScores:(id)scores intentType:(id)type
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  scoresCopy = scores;
+  typeCopy = type;
   v8 = [_ATXScoreInterpreterCtx alloc];
-  v9 = [ATXScoreDict scoreDictFromDictionary:v6];
-  v10 = [(_ATXScoreInterpreterCtx *)v8 initWithInputScores:v9 intentType:v7];
+  v9 = [ATXScoreDict scoreDictFromDictionary:scoresCopy];
+  v10 = [(_ATXScoreInterpreterCtx *)v8 initWithInputScores:v9 intentType:typeCopy];
 
   v22 = 0u;
   v23 = 0u;
@@ -1034,19 +1034,19 @@ LABEL_43:
     while (v13);
   }
 
-  v17 = [v10[503] toDictionary];
+  toDictionary = [v10[503] toDictionary];
 
   v18 = *MEMORY[0x277D85DE8];
 
-  return v17;
+  return toDictionary;
 }
 
-- (id)evaluateWithInputScoreDict:(id)a3 intentType:(id)a4
+- (id)evaluateWithInputScoreDict:(id)dict intentType:(id)type
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [[_ATXScoreInterpreterCtx alloc] initWithInputScores:v6 intentType:v7];
+  dictCopy = dict;
+  typeCopy = type;
+  v8 = [[_ATXScoreInterpreterCtx alloc] initWithInputScores:dictCopy intentType:typeCopy];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -1082,9 +1082,9 @@ LABEL_43:
   return subscores;
 }
 
-- (void)_compileBytecode:(uint64_t)a1
+- (void)_compileBytecode:(uint64_t)bytecode
 {
-  if (a1)
+  if (bytecode)
   {
     v3 = MEMORY[0x277CBEB38];
     v4 = a2;
@@ -1093,35 +1093,35 @@ LABEL_43:
     v9[1] = 3221225472;
     v9[2] = __41___ATXScoreInterpreter__compileBytecode___block_invoke;
     v9[3] = &unk_278598A78;
-    v9[4] = a1;
+    v9[4] = bytecode;
     v6 = v5;
     v10 = v6;
     [v4 enumerateKeysAndObjectsUsingBlock:v9];
 
-    v7 = *(a1 + 8);
-    *(a1 + 8) = v6;
+    v7 = *(bytecode + 8);
+    *(bytecode + 8) = v6;
     v8 = v6;
   }
 }
 
-- (double)_evalVariable:(void *)a3 withCtx:
+- (double)_evalVariable:(void *)variable withCtx:
 {
   v17 = *MEMORY[0x277D85DE8];
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  variableCopy = variable;
+  if (self)
   {
     if (!v5)
     {
-      v13 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v14 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[_ATXScoreInterpreter _evalVariable:withCtx:]"];
-      [v13 handleFailureInFunction:v14 file:@"_ATXScoreInterpreter.m" lineNumber:1040 description:{@"Invalid parameter not satisfying: %@", @"varName"}];
+      [currentHandler handleFailureInFunction:v14 file:@"_ATXScoreInterpreter.m" lineNumber:1040 description:{@"Invalid parameter not satisfying: %@", @"varName"}];
     }
 
-    v7 = [*(a1 + 8) objectForKeyedSubscript:v5];
-    [(_ATXScoreInterpreter *)a1 _runBytecode:v7 context:v6];
+    v7 = [*(self + 8) objectForKeyedSubscript:v5];
+    [(_ATXScoreInterpreter *)self _runBytecode:v7 context:variableCopy];
 
-    v8 = pop(v6);
+    v8 = pop(variableCopy);
     if ((*&v8 & 0x7FFFFFFFFFFFFFFFuLL) >= 0x7FF0000000000000)
     {
       v9 = __atxlog_handle_default();
@@ -1134,7 +1134,7 @@ LABEL_43:
       }
     }
 
-    [v6[503] setScore:v5 forKey:v8];
+    [variableCopy[503] setScore:v5 forKey:v8];
   }
 
   else
@@ -1146,17 +1146,17 @@ LABEL_43:
   return v8;
 }
 
-- (id)retainBytecodeDependencyObject:(id *)a1
+- (id)retainBytecodeDependencyObject:(id *)object
 {
-  if (a1)
+  if (object)
   {
-    v3 = a1;
-    [a1[2] addObject:a2];
-    a1 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v3[2], "count") - 1}];
+    objectCopy = object;
+    [object[2] addObject:a2];
+    object = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(objectCopy[2], "count") - 1}];
     v2 = vars8;
   }
 
-  return a1;
+  return object;
 }
 
 + (void)_expectedArity:.cold.1()

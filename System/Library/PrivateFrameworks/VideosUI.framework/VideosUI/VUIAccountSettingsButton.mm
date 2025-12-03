@@ -2,11 +2,11 @@
 - (CGSize)calculateContentSize;
 - (CGSize)contentSize;
 - (CGSize)preferedContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (VUIAccountSettingsButton)initWithType:(unint64_t)a3 interfaceStyle:(unint64_t)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (VUIAccountSettingsButton)initWithType:(unint64_t)type interfaceStyle:(unint64_t)style;
 - (id)largeContentImage;
-- (void)_accountStoreDidChange:(id)a3;
-- (void)_profileImageDidChange:(id)a3;
+- (void)_accountStoreDidChange:(id)change;
+- (void)_profileImageDidChange:(id)change;
 - (void)_setup;
 - (void)_setupAccountImageView;
 - (void)_updateAccessibilityFrame;
@@ -14,21 +14,21 @@
 - (void)_updateAccountImage;
 - (void)_updateImageViewFrame;
 - (void)configureWithLayoutProperties;
-- (void)hideAndDisable:(BOOL)a3;
+- (void)hideAndDisable:(BOOL)disable;
 - (void)layoutSubviews;
-- (void)setFrame:(CGRect)a3;
-- (void)setPreferedContentSize:(CGSize)a3;
-- (void)setTintColor:(id)a3;
+- (void)setFrame:(CGRect)frame;
+- (void)setPreferedContentSize:(CGSize)size;
+- (void)setTintColor:(id)color;
 @end
 
 @implementation VUIAccountSettingsButton
 
-- (VUIAccountSettingsButton)initWithType:(unint64_t)a3 interfaceStyle:(unint64_t)a4
+- (VUIAccountSettingsButton)initWithType:(unint64_t)type interfaceStyle:(unint64_t)style
 {
   v14[1] = *MEMORY[0x1E69E9840];
   v13.receiver = self;
   v13.super_class = VUIAccountSettingsButton;
-  v4 = [(VUIButton *)&v13 initWithType:a3 interfaceStyle:a4];
+  v4 = [(VUIButton *)&v13 initWithType:type interfaceStyle:style];
   if (v4)
   {
     if (MEMORY[0x1E6913230]())
@@ -82,17 +82,17 @@ void __56__VUIAccountSettingsButton_initWithType_interfaceStyle___block_invoke(u
   }
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = VUIAccountSettingsButton;
-  [(VUIAccountSettingsButton *)&v4 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(VUIAccountSettingsButton *)&v4 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(VUIAccountSettingsButton *)self _updateAccessibilityFrame];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(VUIAccountSettingsButton *)self contentSize:a3.width];
+  [(VUIAccountSettingsButton *)self contentSize:fits.width];
   v5 = v4;
   [(VUIButton *)self padding];
   v7 = v5 + v6;
@@ -125,9 +125,9 @@ void __56__VUIAccountSettingsButton_initWithType_interfaceStyle___block_invoke(u
   [(VUIButton *)self setCornerRadius:v6 * 0.5];
 }
 
-- (void)setPreferedContentSize:(CGSize)a3
+- (void)setPreferedContentSize:(CGSize)size
 {
-  self->_preferedContentSize = a3;
+  self->_preferedContentSize = size;
   [(VUIAccountSettingsButton *)self calculateContentSize];
 
   [(VUIAccountSettingsButton *)self setContentSize:?];
@@ -135,10 +135,10 @@ void __56__VUIAccountSettingsButton_initWithType_interfaceStyle___block_invoke(u
 
 - (CGSize)calculateContentSize
 {
-  v3 = [(VUIAccountSettingsButton *)self traitCollection];
-  v4 = [v3 isAXEnabled];
+  traitCollection = [(VUIAccountSettingsButton *)self traitCollection];
+  isAXEnabled = [traitCollection isAXEnabled];
 
-  if (v4)
+  if (isAXEnabled)
   {
     v5 = 44.0;
     v6 = 44.0;
@@ -164,24 +164,24 @@ void __56__VUIAccountSettingsButton_initWithType_interfaceStyle___block_invoke(u
   [(VUIAccountSettingsButton *)self _updateImageViewFrame];
 }
 
-- (void)setTintColor:(id)a3
+- (void)setTintColor:(id)color
 {
-  v4 = a3;
-  v5 = [(VUIButton *)self imageView];
-  [v5 setTintColor:v4];
+  colorCopy = color;
+  imageView = [(VUIButton *)self imageView];
+  [imageView setTintColor:colorCopy];
 }
 
 - (id)largeContentImage
 {
-  v2 = [(VUIButton *)self imageView];
-  v3 = [v2 placeholderImage];
+  imageView = [(VUIButton *)self imageView];
+  placeholderImage = [imageView placeholderImage];
 
-  return v3;
+  return placeholderImage;
 }
 
-- (void)hideAndDisable:(BOOL)a3
+- (void)hideAndDisable:(BOOL)disable
 {
-  [(VUIAccountSettingsButton *)self setHideAndDisable:a3];
+  [(VUIAccountSettingsButton *)self setHideAndDisable:disable];
 
   [(VUIAccountSettingsButton *)self _updateAccountButtonVisibility];
 }
@@ -191,11 +191,11 @@ void __56__VUIAccountSettingsButton_initWithType_interfaceStyle___block_invoke(u
   [(VUIAccountSettingsButton *)self _setupAccountImageView];
   [(VUIAccountSettingsButton *)self _updateAccountImage];
   [(VUIAccountSettingsButton *)self _updateAccountButtonVisibility];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 addObserver:self selector:sel__accountStoreDidChange_ name:@"VUIAuthenticationManagerAccountStoreDidChangeNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__accountStoreDidChange_ name:@"VUIAuthenticationManagerAccountStoreDidChangeNotification" object:0];
 
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 addObserver:self selector:sel__profileImageDidChange_ name:@"VUIAuthenticationManagerProfileImageDidChangeNotification" object:0];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel__profileImageDidChange_ name:@"VUIAuthenticationManagerProfileImageDidChangeNotification" object:0];
 }
 
 - (void)_setupAccountImageView
@@ -207,8 +207,8 @@ void __56__VUIAccountSettingsButton_initWithType_interfaceStyle___block_invoke(u
   [v5 setUserInteractionEnabled:0];
   if (v5)
   {
-    v6 = [v5 image];
-    [v5 setPlaceholderImage:v6];
+    image = [v5 image];
+    [v5 setPlaceholderImage:image];
   }
 
   [(VUIButton *)self setImageView:v5 forHighlightedState:0];
@@ -232,11 +232,11 @@ void __56__VUIAccountSettingsButton_initWithType_interfaceStyle___block_invoke(u
       goto LABEL_26;
     }
 
-    v9 = [(VUIAccountSettingsButton *)self monogramAvatarView];
-    [v9 removeFromSuperview];
+    monogramAvatarView = [(VUIAccountSettingsButton *)self monogramAvatarView];
+    [monogramAvatarView removeFromSuperview];
 
-    v7 = [(VUIButton *)self imageView];
-    [v7 setHidden:0];
+    imageView = [(VUIButton *)self imageView];
+    [imageView setHidden:0];
 LABEL_21:
     v4 = 0;
     goto LABEL_25;
@@ -272,8 +272,8 @@ LABEL_21:
         _os_log_impl(&dword_1E323F000, v13, OS_LOG_TYPE_INFO, "AccountSettingButton:: No profile image, use monogram image", v22, 2u);
       }
 
-      v7 = [MEMORY[0x1E69DCEB0] mainScreen];
-      [v7 scale];
+      imageView = [MEMORY[0x1E69DCEB0] mainScreen];
+      [imageView scale];
       v4 = [VUIAuthenticationManager monogramAvatarForSize:[(VUIAccountSettingsButton *)self vuiIsRTL] scale:v11 isRTL:v10, v18];
       goto LABEL_25;
     }
@@ -284,17 +284,17 @@ LABEL_21:
       _os_log_impl(&dword_1E323F000, v13, OS_LOG_TYPE_INFO, "AccountSettingButton:: No profile image, use monogram avatar view", v23, 2u);
     }
 
-    v15 = [(VUIAccountSettingsButton *)self monogramAvatarView];
-    v7 = [_TtC8VideosUI21AvatarViewFactoryObjC makeAccountAvatarViewWithExisting:v15];
+    monogramAvatarView2 = [(VUIAccountSettingsButton *)self monogramAvatarView];
+    imageView = [_TtC8VideosUI21AvatarViewFactoryObjC makeAccountAvatarViewWithExisting:monogramAvatarView2];
 
     [(VUIAccountSettingsButton *)self bounds];
-    [v7 setFrame:?];
-    v16 = [(VUIAccountSettingsButton *)self monogramAvatarView];
-    [(VUIAccountSettingsButton *)self vui_addSubview:v7 oldView:v16];
+    [imageView setFrame:?];
+    monogramAvatarView3 = [(VUIAccountSettingsButton *)self monogramAvatarView];
+    [(VUIAccountSettingsButton *)self vui_addSubview:imageView oldView:monogramAvatarView3];
 
-    [(VUIAccountSettingsButton *)self setMonogramAvatarView:v7];
-    v17 = [(VUIButton *)self imageView];
-    [v17 setHidden:1];
+    [(VUIAccountSettingsButton *)self setMonogramAvatarView:imageView];
+    imageView2 = [(VUIButton *)self imageView];
+    [imageView2 setHidden:1];
 
     goto LABEL_21;
   }
@@ -309,20 +309,20 @@ LABEL_21:
 
   if (MEMORY[0x1E6913230]())
   {
-    v6 = [(VUIAccountSettingsButton *)self monogramAvatarView];
-    [v6 removeFromSuperview];
+    monogramAvatarView4 = [(VUIAccountSettingsButton *)self monogramAvatarView];
+    [monogramAvatarView4 removeFromSuperview];
 
-    v7 = [(VUIButton *)self imageView];
-    [v7 setHidden:0];
+    imageView = [(VUIButton *)self imageView];
+    [imageView setHidden:0];
 LABEL_25:
   }
 
 LABEL_26:
-  v19 = [(VUIButton *)self imageView];
+  imageView3 = [(VUIButton *)self imageView];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v19 setImage:v4];
+    [imageView3 setImage:v4];
   }
 }
 
@@ -364,8 +364,8 @@ LABEL_26:
   v10 = v9;
   [(VUIAccountSettingsButton *)self convertRect:0 toView:?];
   [(VUIAccountSettingsButton *)self setAccessibilityFrame:?];
-  v11 = [(VUIButton *)self imageView];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  imageView = [(VUIButton *)self imageView];
+  [imageView setFrame:{v4, v6, v8, v10}];
 }
 
 - (void)_updateImageViewFrame
@@ -380,28 +380,28 @@ LABEL_26:
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(VUIButton *)self imageView];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  imageView = [(VUIButton *)self imageView];
+  [imageView setFrame:{v4, v6, v8, v10}];
 
   if (MEMORY[0x1E6913230]())
   {
-    v12 = [(VUIAccountSettingsButton *)self monogramAvatarView];
+    monogramAvatarView = [(VUIAccountSettingsButton *)self monogramAvatarView];
 
-    if (v12)
+    if (monogramAvatarView)
     {
-      v13 = [(VUIAccountSettingsButton *)self monogramAvatarView];
-      [v13 setFrame:{v4, v6, v8, v10}];
+      monogramAvatarView2 = [(VUIAccountSettingsButton *)self monogramAvatarView];
+      [monogramAvatarView2 setFrame:{v4, v6, v8, v10}];
     }
   }
 }
 
-- (void)_accountStoreDidChange:(id)a3
+- (void)_accountStoreDidChange:(id)change
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   v4 = __51__VUIAccountSettingsButton__accountStoreDidChange___block_invoke;
   v5 = &unk_1E872D768;
-  v6 = self;
+  selfCopy = self;
   if ([MEMORY[0x1E696AF00] isMainThread])
   {
     v4(block);
@@ -421,13 +421,13 @@ uint64_t __51__VUIAccountSettingsButton__accountStoreDidChange___block_invoke(ui
   return [v2 _updateAccountImage];
 }
 
-- (void)_profileImageDidChange:(id)a3
+- (void)_profileImageDidChange:(id)change
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   v4 = __51__VUIAccountSettingsButton__profileImageDidChange___block_invoke;
   v5 = &unk_1E872D768;
-  v6 = self;
+  selfCopy = self;
   if ([MEMORY[0x1E696AF00] isMainThread])
   {
     v4(block);

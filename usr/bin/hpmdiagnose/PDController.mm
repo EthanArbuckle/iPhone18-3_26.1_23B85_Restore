@@ -1,55 +1,55 @@
 @interface PDController
-+ (id)knownPDControllers:(int64_t)a3;
-- (id)registerFormatter4CCWithBuffer:(void *)a3 andLength:(unint64_t)a4;
-- (id)registerFormatterBCDVersionWithBuffer:(void *)a3 andLength:(unint64_t)a4;
-- (id)registerFormatterDIDWithBuffer:(void *)a3 andLength:(unint64_t)a4;
-- (id)registerFormatterDecimal16WithBuffer:(void *)a3 andLength:(unint64_t)a4;
-- (id)registerFormatterDecimal32MillisecondsWithBuffer:(void *)a3 andLength:(unint64_t)a4;
-- (id)registerFormatterDecimal32WithBuffer:(void *)a3 andLength:(unint64_t)a4;
-- (id)registerFormatterDecimal64WithBuffer:(void *)a3 andLength:(unint64_t)a4;
-- (id)registerFormatterDecimal8WithBuffer:(void *)a3 andLength:(unint64_t)a4;
-- (id)registerFormatterHex16WithBuffer:(void *)a3 andLength:(unint64_t)a4;
-- (id)registerFormatterHex32WithBuffer:(void *)a3 andLength:(unint64_t)a4;
-- (id)registerFormatterHexDumpNarrowWithBuffer:(void *)a3 andLength:(unint64_t)a4;
-- (id)registerFormatterHexDumpWithBuffer:(void *)a3 andLength:(unint64_t)a4;
-- (id)registerFormatterRxVDMWithBuffer:(void *)a3 andLength:(unint64_t)a4;
-- (id)registerFormatterUUIDWithBuffer:(void *)a3 andLength:(unint64_t)a4;
-- (id)registerFormatterVIDWithBuffer:(void *)a3 andLength:(unint64_t)a4;
-- (int)printCommand:(unsigned int)a3 withTitle:(id)a4 andFormatter:(SEL)a5 andWriteData:(void *)a6 andWriteDataLength:(unint64_t)a7;
-- (int)receiveVDM:(void *)a3 length:(unint64_t)a4 outSop:(int *)a5 outSequence:(char *)a6 outLength:(unint64_t *)a7;
-- (int)receiveVDMAttention:(void *)a3 length:(unint64_t)a4 outSop:(int *)a5 outSequence:(char *)a6 outLength:(unint64_t *)a7;
-- (int)registerReadRemote:(void *)a3 ofLength:(unint64_t)a4 atAddress:(unsigned int)a5 andOutReadLength:(unint64_t *)a6;
-- (int)registerWriteRemote:(void *)a3 ofLength:(unint64_t)a4 atAddress:(unsigned int)a5;
-- (int)stress:(unsigned int)a3;
-- (int64_t)compare:(id)a3;
-- (void)printRegisterTitle:(id)a3 andDescription:(id)a4;
++ (id)knownPDControllers:(int64_t)controllers;
+- (id)registerFormatter4CCWithBuffer:(void *)buffer andLength:(unint64_t)length;
+- (id)registerFormatterBCDVersionWithBuffer:(void *)buffer andLength:(unint64_t)length;
+- (id)registerFormatterDIDWithBuffer:(void *)buffer andLength:(unint64_t)length;
+- (id)registerFormatterDecimal16WithBuffer:(void *)buffer andLength:(unint64_t)length;
+- (id)registerFormatterDecimal32MillisecondsWithBuffer:(void *)buffer andLength:(unint64_t)length;
+- (id)registerFormatterDecimal32WithBuffer:(void *)buffer andLength:(unint64_t)length;
+- (id)registerFormatterDecimal64WithBuffer:(void *)buffer andLength:(unint64_t)length;
+- (id)registerFormatterDecimal8WithBuffer:(void *)buffer andLength:(unint64_t)length;
+- (id)registerFormatterHex16WithBuffer:(void *)buffer andLength:(unint64_t)length;
+- (id)registerFormatterHex32WithBuffer:(void *)buffer andLength:(unint64_t)length;
+- (id)registerFormatterHexDumpNarrowWithBuffer:(void *)buffer andLength:(unint64_t)length;
+- (id)registerFormatterHexDumpWithBuffer:(void *)buffer andLength:(unint64_t)length;
+- (id)registerFormatterRxVDMWithBuffer:(void *)buffer andLength:(unint64_t)length;
+- (id)registerFormatterUUIDWithBuffer:(void *)buffer andLength:(unint64_t)length;
+- (id)registerFormatterVIDWithBuffer:(void *)buffer andLength:(unint64_t)length;
+- (int)printCommand:(unsigned int)command withTitle:(id)title andFormatter:(SEL)formatter andWriteData:(void *)data andWriteDataLength:(unint64_t)length;
+- (int)receiveVDM:(void *)m length:(unint64_t)length outSop:(int *)sop outSequence:(char *)sequence outLength:(unint64_t *)outLength;
+- (int)receiveVDMAttention:(void *)attention length:(unint64_t)length outSop:(int *)sop outSequence:(char *)sequence outLength:(unint64_t *)outLength;
+- (int)registerReadRemote:(void *)remote ofLength:(unint64_t)length atAddress:(unsigned int)address andOutReadLength:(unint64_t *)readLength;
+- (int)registerWriteRemote:(void *)remote ofLength:(unint64_t)length atAddress:(unsigned int)address;
+- (int)stress:(unsigned int)stress;
+- (int64_t)compare:(id)compare;
+- (void)printRegisterTitle:(id)title andDescription:(id)description;
 @end
 
 @implementation PDController
 
-+ (id)knownPDControllers:(int64_t)a3
++ (id)knownPDControllers:(int64_t)controllers
 {
   v21 = +[NSMutableArray array];
   v4 = +[AppleHPMUserClientManager sharedInstance];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 userClientSet];
-    if (v6)
+    userClientSet = [v4 userClientSet];
+    if (userClientSet)
     {
-      v7 = v6;
+      v7 = userClientSet;
       v20 = v5;
       v28 = 0u;
       v29 = 0u;
       v26 = 0u;
       v27 = 0u;
-      v8 = [v6 countByEnumeratingWithState:&v26 objects:v30 count:16];
+      v8 = [userClientSet countByEnumeratingWithState:&v26 objects:v30 count:16];
       if (v8)
       {
         v9 = v8;
         ChildIterator = 0;
         v11 = *v27;
-        v22 = a3;
+        controllersCopy = controllers;
         do
         {
           for (i = 0; i != v9; i = i + 1)
@@ -78,24 +78,24 @@
                       v23 = 0;
                       if (![IOKitUtilities uint32ForRegistryEntry:v15 andKey:@"Address" outValue:&v24]&& ![IOKitUtilities uint32ForRegistryEntry:v15 andKey:@"Vendor ID" outValue:&v23 + 4]&& ![IOKitUtilities uint32ForRegistryEntry:v15 andKey:@"Device ID" outValue:&v23])
                       {
-                        if (a3 < 0)
+                        if (controllers < 0)
                         {
-                          v16 = HIDWORD(v23);
+                          controllersCopy2 = HIDWORD(v23);
                         }
 
                         else
                         {
-                          HIDWORD(v23) = a3;
-                          v16 = a3;
+                          HIDWORD(v23) = controllers;
+                          controllersCopy2 = controllers;
                         }
 
-                        v17 = [PDController pdControllerForVID:v16 DID:v23 address:v24 userClient:v13];
+                        v17 = [PDController pdControllerForVID:controllersCopy2 DID:v23 address:v24 userClient:v13];
                         if (v17)
                         {
                           [v21 addObject:v17];
                         }
 
-                        a3 = v22;
+                        controllers = controllersCopy;
                       }
                     }
 
@@ -131,21 +131,21 @@
   return v18;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  if (v4)
+  compareCopy = compare;
+  if (compareCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(PDController *)self userClient];
-      v7 = [v6 routerID];
-      v8 = [v5 userClient];
-      v9 = [v8 routerID];
+      v5 = compareCopy;
+      userClient = [(PDController *)self userClient];
+      routerID = [userClient routerID];
+      userClient2 = [v5 userClient];
+      routerID2 = [userClient2 routerID];
 
-      if (v7 > v9)
+      if (routerID > routerID2)
       {
 LABEL_4:
         v10 = 1;
@@ -154,35 +154,35 @@ LABEL_9:
         goto LABEL_10;
       }
 
-      v11 = [(PDController *)self userClient];
-      v12 = [v11 routerID];
-      v13 = [v5 userClient];
-      v14 = [v13 routerID];
+      userClient3 = [(PDController *)self userClient];
+      routerID3 = [userClient3 routerID];
+      userClient4 = [v5 userClient];
+      routerID4 = [userClient4 routerID];
 
-      if (v12 >= v14)
+      if (routerID3 >= routerID4)
       {
-        v16 = [(PDController *)self userClient];
-        v17 = [v16 routeString];
-        v18 = [v5 userClient];
-        v19 = [v18 routeString];
+        userClient5 = [(PDController *)self userClient];
+        routeString = [userClient5 routeString];
+        userClient6 = [v5 userClient];
+        routeString2 = [userClient6 routeString];
 
-        if (v17 > v19)
+        if (routeString > routeString2)
         {
           goto LABEL_4;
         }
 
-        v20 = [(PDController *)self userClient];
-        v21 = [v20 routeString];
-        v22 = [v5 userClient];
-        v23 = [v22 routeString];
+        userClient7 = [(PDController *)self userClient];
+        routeString3 = [userClient7 routeString];
+        userClient8 = [v5 userClient];
+        routeString4 = [userClient8 routeString];
 
-        if (v21 >= v23)
+        if (routeString3 >= routeString4)
         {
-          v24 = [(PDController *)self address];
-          if (v24 <= [v5 address])
+          address = [(PDController *)self address];
+          if (address <= [v5 address])
           {
-            v25 = [(PDController *)self address];
-            if (v25 >= [v5 address])
+            address2 = [(PDController *)self address];
+            if (address2 >= [v5 address])
             {
               v10 = 0;
             }
@@ -203,7 +203,7 @@ LABEL_9:
       goto LABEL_9;
     }
 
-    v10 = [v4 compare:self];
+    v10 = [compareCopy compare:self];
   }
 
   else
@@ -216,17 +216,17 @@ LABEL_10:
   return v10;
 }
 
-- (int)registerReadRemote:(void *)a3 ofLength:(unint64_t)a4 atAddress:(unsigned int)a5 andOutReadLength:(unint64_t *)a6
+- (int)registerReadRemote:(void *)remote ofLength:(unint64_t)length atAddress:(unsigned int)address andOutReadLength:(unint64_t *)readLength
 {
   v17 = 1229275987;
   v18 = 0;
   v11 = malloc_type_malloc(0x40uLL, 0x1853CEF8uLL);
   memset(v20, 0, sizeof(v20));
-  v19 = (a4 << 24) | (a5 << 8) | 0x10000;
-  v12 = [(PDController *)self userClient];
+  v19 = (length << 24) | (address << 8) | 0x10000;
+  userClient = [(PDController *)self userClient];
   LODWORD(v16) = 0;
   LODWORD(v15) = 0x400000;
-  v13 = [v12 IECSAtomicCommand:1 cmdBuffer:&v17 dataBuffer:v20 extDataBuffer:&v19 returnDataBuffer:v11 returnExtDataBuffer:&v18 inputDataLength:v15 returnDataBufferLength:1 timeoutInSeconds:-[PDController address](self forDevice:"address") flags:v16];
+  v13 = [userClient IECSAtomicCommand:1 cmdBuffer:&v17 dataBuffer:v20 extDataBuffer:&v19 returnDataBuffer:v11 returnExtDataBuffer:&v18 inputDataLength:v15 returnDataBufferLength:1 timeoutInSeconds:-[PDController address](self forDevice:"address") flags:v16];
 
   if (!v13)
   {
@@ -248,14 +248,14 @@ LABEL_10:
     else
     {
       v13 = 0;
-      *a6 = (v18 >> 24) & 0x7F;
+      *readLength = (v18 >> 24) & 0x7F;
     }
   }
 
-  memcpy(a3, v11, a4);
-  if (!a5)
+  memcpy(remote, v11, length);
+  if (!address)
   {
-    [(PDController *)self setRemote_vid:*a3];
+    [(PDController *)self setRemote_vid:*remote];
   }
 
   if (v11)
@@ -266,37 +266,37 @@ LABEL_10:
   return v13;
 }
 
-- (int)registerWriteRemote:(void *)a3 ofLength:(unint64_t)a4 atAddress:(unsigned int)a5
+- (int)registerWriteRemote:(void *)remote ofLength:(unint64_t)length atAddress:(unsigned int)address
 {
-  v5 = a5;
+  addressCopy = address;
   v19 = 1396917577;
   v9 = malloc_type_malloc(0x40uLL, 0x3EC852D2uLL);
-  v20 = (a4 << 24) | (v5 << 8);
+  v20 = (length << 24) | (addressCopy << 8);
   if (!v9)
   {
     return -536870211;
   }
 
   v10 = v9;
-  v11 = [(PDController *)self userClient];
-  v12 = [v11 iecsWriteCommandForDevice:-[PDController address](self withAddress:"address") buffer:19 length:&v20 flags:{a4, 0}];
+  userClient = [(PDController *)self userClient];
+  v12 = [userClient iecsWriteCommandForDevice:-[PDController address](self withAddress:"address") buffer:19 length:&v20 flags:{length, 0}];
 
   if (!v12)
   {
-    v13 = [(PDController *)self userClient];
-    v12 = [v13 iecsWriteCommandForDevice:-[PDController address](self withAddress:"address") buffer:9 length:a3 flags:{a4, 0}];
+    userClient2 = [(PDController *)self userClient];
+    v12 = [userClient2 iecsWriteCommandForDevice:-[PDController address](self withAddress:"address") buffer:9 length:remote flags:{length, 0}];
 
     if (!v12)
     {
-      v14 = [(PDController *)self userClient];
-      [v14 iecsWriteCommandForDevice:-[PDController address](self withAddress:"address") buffer:8 length:&v19 flags:{4, 0}];
+      userClient3 = [(PDController *)self userClient];
+      [userClient3 iecsWriteCommandForDevice:-[PDController address](self withAddress:"address") buffer:8 length:&v19 flags:{4, 0}];
 
       v15 = 99;
       do
       {
         usleep(0x64u);
-        v16 = [(PDController *)self userClient];
-        v12 = [v16 iecsReadCommandForDevice:-[PDController address](self withAddress:"address") buffer:8 length:v10 flags:a4 andOutReadLength:{0, 0}];
+        userClient4 = [(PDController *)self userClient];
+        v12 = [userClient4 iecsReadCommandForDevice:-[PDController address](self withAddress:"address") buffer:8 length:v10 flags:length andOutReadLength:{0, 0}];
       }
 
       while (*v10 == 73 && v15-- != 0);
@@ -307,23 +307,23 @@ LABEL_10:
   return v12;
 }
 
-- (int)receiveVDM:(void *)a3 length:(unint64_t)a4 outSop:(int *)a5 outSequence:(char *)a6 outLength:(unint64_t *)a7
+- (int)receiveVDM:(void *)m length:(unint64_t)length outSop:(int *)sop outSequence:(char *)sequence outLength:(unint64_t *)outLength
 {
-  v13 = [(PDController *)self userClient];
-  LODWORD(a7) = [v13 receiveVDMForDevice:-[PDController address](self buffer:"address") length:a3 flags:a4 outSOP:0 outSequence:a5 outLength:{a6, a7}];
+  userClient = [(PDController *)self userClient];
+  LODWORD(outLength) = [userClient receiveVDMForDevice:-[PDController address](self buffer:"address") length:m flags:length outSOP:0 outSequence:sop outLength:{sequence, outLength}];
 
-  return a7;
+  return outLength;
 }
 
-- (int)receiveVDMAttention:(void *)a3 length:(unint64_t)a4 outSop:(int *)a5 outSequence:(char *)a6 outLength:(unint64_t *)a7
+- (int)receiveVDMAttention:(void *)attention length:(unint64_t)length outSop:(int *)sop outSequence:(char *)sequence outLength:(unint64_t *)outLength
 {
-  v13 = [(PDController *)self userClient];
-  LODWORD(a7) = [v13 receiveVDMAttentionForDevice:-[PDController address](self buffer:"address") length:a3 flags:a4 outSOP:0 outSequence:a5 outLength:{a6, a7}];
+  userClient = [(PDController *)self userClient];
+  LODWORD(outLength) = [userClient receiveVDMAttentionForDevice:-[PDController address](self buffer:"address") length:attention flags:length outSOP:0 outSequence:sop outLength:{sequence, outLength}];
 
-  return a7;
+  return outLength;
 }
 
-- (int)stress:(unsigned int)a3
+- (int)stress:(unsigned int)stress
 {
   v5 = malloc_type_malloc(0x40uLL, 0x15E0A7B2uLL);
   if (v5)
@@ -334,7 +334,7 @@ LABEL_10:
     v9 = v8;
     if (v7)
     {
-      if (a3)
+      if (stress)
       {
         v10 = 0;
         qmemcpy(v21, "/.-,+*)('&%$#! ?>=<;:9876543210", sizeof(v21));
@@ -357,7 +357,7 @@ LABEL_10:
             break;
           }
 
-          if (a3 == ++v10)
+          if (stress == ++v10)
           {
             goto LABEL_9;
           }
@@ -430,11 +430,11 @@ LABEL_20:
   return v12;
 }
 
-- (int)printCommand:(unsigned int)a3 withTitle:(id)a4 andFormatter:(SEL)a5 andWriteData:(void *)a6 andWriteDataLength:(unint64_t)a7
+- (int)printCommand:(unsigned int)command withTitle:(id)title andFormatter:(SEL)formatter andWriteData:(void *)data andWriteDataLength:(unint64_t)length
 {
-  v7 = a7;
-  v19 = a3;
-  v11 = a4;
+  lengthCopy = length;
+  commandCopy = command;
+  titleCopy = title;
   v12 = malloc_type_malloc(0x40uLL, 0xB5863B51uLL);
   if (!v12)
   {
@@ -443,8 +443,8 @@ LABEL_20:
   }
 
   WORD1(v18) = 64;
-  LOWORD(v18) = v7;
-  v13 = [(PDController *)self executeIECSAtomicCommand:1 cmdBuffer:&v19 dataBuffer:a6 extDataBuffer:0 returnDataBuffer:v12 returnExtDataBuffer:0 inputDataLength:v18 returnDataBufferLength:10 timeoutInSeconds:?];
+  LOWORD(v18) = lengthCopy;
+  v13 = [(PDController *)self executeIECSAtomicCommand:1 cmdBuffer:&commandCopy dataBuffer:data extDataBuffer:0 returnDataBuffer:v12 returnExtDataBuffer:0 inputDataLength:v18 returnDataBufferLength:10 timeoutInSeconds:?];
   if (v13)
   {
 LABEL_13:
@@ -452,12 +452,12 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v14 = off_100025A30(self, a5, v12, 64, a6, 64);
+  v14 = off_100025A30(self, formatter, v12, 64, data, 64);
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
 LABEL_14:
-    [(PDController *)self printCommand:v19 withTitle:v11 andDescription:v14];
+    [(PDController *)self printCommand:commandCopy withTitle:titleCopy andDescription:v14];
     goto LABEL_15;
   }
 
@@ -477,7 +477,7 @@ LABEL_14:
 
         else
         {
-          [(PDController *)self printCommand:v19 withTitle:v11 andDescription:v16];
+          [(PDController *)self printCommand:commandCopy withTitle:titleCopy andDescription:v16];
         }
 
         ++v15;
@@ -489,7 +489,7 @@ LABEL_14:
 
   else
   {
-    [(PDController *)self printCommand:v19 withTitle:v11 andDescription:&stru_10001C6C8];
+    [(PDController *)self printCommand:commandCopy withTitle:titleCopy andDescription:&stru_10001C6C8];
   }
 
 LABEL_15:
@@ -501,150 +501,150 @@ LABEL_15:
   return v13;
 }
 
-- (void)printRegisterTitle:(id)a3 andDescription:(id)a4
+- (void)printRegisterTitle:(id)title andDescription:(id)description
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [a3 UTF8String];
-  v9 = [v7 UTF8String];
+  titleCopy = title;
+  descriptionCopy = description;
+  uTF8String = [title UTF8String];
+  uTF8String2 = [descriptionCopy UTF8String];
 
-  printf("%s\t%s\n", v8, v9);
+  printf("%s\t%s\n", uTF8String, uTF8String2);
 }
 
-- (id)registerFormatterDecimal8WithBuffer:(void *)a3 andLength:(unint64_t)a4
+- (id)registerFormatterDecimal8WithBuffer:(void *)buffer andLength:(unint64_t)length
 {
-  if (a4 == 1)
+  if (length == 1)
   {
-    [NSString stringWithFormat:@"%d", *a3];
+    [NSString stringWithFormat:@"%d", *buffer];
   }
 
   else
   {
-    [NSString stringWithFormat:@"ERROR: length %lld != 1", a4];
+    [NSString stringWithFormat:@"ERROR: length %lld != 1", length];
   }
   v4 = ;
 
   return v4;
 }
 
-- (id)registerFormatterDecimal16WithBuffer:(void *)a3 andLength:(unint64_t)a4
+- (id)registerFormatterDecimal16WithBuffer:(void *)buffer andLength:(unint64_t)length
 {
-  if (a4 == 2)
+  if (length == 2)
   {
-    [NSString stringWithFormat:@"%d", *a3];
+    [NSString stringWithFormat:@"%d", *buffer];
   }
 
   else
   {
-    [NSString stringWithFormat:@"ERROR: length %lld != 2", a4];
+    [NSString stringWithFormat:@"ERROR: length %lld != 2", length];
   }
   v4 = ;
 
   return v4;
 }
 
-- (id)registerFormatterDecimal32WithBuffer:(void *)a3 andLength:(unint64_t)a4
+- (id)registerFormatterDecimal32WithBuffer:(void *)buffer andLength:(unint64_t)length
 {
-  if (a4 == 4)
+  if (length == 4)
   {
-    [NSString stringWithFormat:@"%d", *a3];
+    [NSString stringWithFormat:@"%d", *buffer];
   }
 
   else
   {
-    [NSString stringWithFormat:@"ERROR: length %lld != 4", a4];
+    [NSString stringWithFormat:@"ERROR: length %lld != 4", length];
   }
   v4 = ;
 
   return v4;
 }
 
-- (id)registerFormatterDecimal64WithBuffer:(void *)a3 andLength:(unint64_t)a4
+- (id)registerFormatterDecimal64WithBuffer:(void *)buffer andLength:(unint64_t)length
 {
-  if (a4 == 8)
+  if (length == 8)
   {
-    [NSString stringWithFormat:@"%lld", *a3];
+    [NSString stringWithFormat:@"%lld", *buffer];
   }
 
   else
   {
-    [NSString stringWithFormat:@"ERROR: length %lld != 8", a4];
+    [NSString stringWithFormat:@"ERROR: length %lld != 8", length];
   }
   v4 = ;
 
   return v4;
 }
 
-- (id)registerFormatterHex16WithBuffer:(void *)a3 andLength:(unint64_t)a4
+- (id)registerFormatterHex16WithBuffer:(void *)buffer andLength:(unint64_t)length
 {
-  if (a4 == 2)
+  if (length == 2)
   {
-    [NSString stringWithFormat:@"0x%04x", *a3];
+    [NSString stringWithFormat:@"0x%04x", *buffer];
   }
 
   else
   {
-    [NSString stringWithFormat:@"ERROR: length %lld != 2", a4];
+    [NSString stringWithFormat:@"ERROR: length %lld != 2", length];
   }
   v4 = ;
 
   return v4;
 }
 
-- (id)registerFormatterHex32WithBuffer:(void *)a3 andLength:(unint64_t)a4
+- (id)registerFormatterHex32WithBuffer:(void *)buffer andLength:(unint64_t)length
 {
-  if (a4 == 4)
+  if (length == 4)
   {
-    [NSString stringWithFormat:@"0x%08x", *a3];
+    [NSString stringWithFormat:@"0x%08x", *buffer];
   }
 
   else
   {
-    [NSString stringWithFormat:@"ERROR: length %lld != 4", a4];
+    [NSString stringWithFormat:@"ERROR: length %lld != 4", length];
   }
   v4 = ;
 
   return v4;
 }
 
-- (id)registerFormatter4CCWithBuffer:(void *)a3 andLength:(unint64_t)a4
+- (id)registerFormatter4CCWithBuffer:(void *)buffer andLength:(unint64_t)length
 {
-  if (a4 == 4)
+  if (length == 4)
   {
-    [NSString stringWithFormat:@"%c%c%c%c", *a3, *(a3 + 1), *(a3 + 2), *(a3 + 3)];
+    [NSString stringWithFormat:@"%c%c%c%c", *buffer, *(buffer + 1), *(buffer + 2), *(buffer + 3)];
   }
 
   else
   {
-    [NSString stringWithFormat:@"ERROR: length %lld != 4", a4, v6, v7, v8];
+    [NSString stringWithFormat:@"ERROR: length %lld != 4", length, v6, v7, v8];
   }
   v4 = ;
 
   return v4;
 }
 
-- (id)registerFormatterUUIDWithBuffer:(void *)a3 andLength:(unint64_t)a4
+- (id)registerFormatterUUIDWithBuffer:(void *)buffer andLength:(unint64_t)length
 {
-  if (a4 == 16)
+  if (length == 16)
   {
     memset(out, 0, 37);
-    uuid_unparse(a3, out);
+    uuid_unparse(buffer, out);
     [NSString stringWithFormat:@"%s", out];
   }
 
   else
   {
-    [NSString stringWithFormat:@"ERROR: length %lld != 4", a4];
+    [NSString stringWithFormat:@"ERROR: length %lld != 4", length];
   }
   v4 = ;
 
   return v4;
 }
 
-- (id)registerFormatterHexDumpWithBuffer:(void *)a3 andLength:(unint64_t)a4
+- (id)registerFormatterHexDumpWithBuffer:(void *)buffer andLength:(unint64_t)length
 {
   v6 = +[NSMutableArray array];
-  if (!a4)
+  if (!length)
   {
     goto LABEL_7;
   }
@@ -656,14 +656,14 @@ LABEL_15:
     if (!v8)
     {
       v8 = +[NSMutableString string];
-      [(__CFString *)v8 appendFormat:@"0x%02llX\t", a4];
+      [(__CFString *)v8 appendFormat:@"0x%02llX\t", length];
       [(__CFString *)v8 appendString:@"0x"];
     }
 
-    [(__CFString *)v8 appendFormat:@"%02X", *(a3 + v7++)];
+    [(__CFString *)v8 appendFormat:@"%02X", *(buffer + v7++)];
   }
 
-  while (a4 != v7);
+  while (length != v7);
   v9 = v8;
   if (!v8)
   {
@@ -677,10 +677,10 @@ LABEL_7:
   return v6;
 }
 
-- (id)registerFormatterHexDumpNarrowWithBuffer:(void *)a3 andLength:(unint64_t)a4
+- (id)registerFormatterHexDumpNarrowWithBuffer:(void *)buffer andLength:(unint64_t)length
 {
   v6 = +[NSMutableArray array];
-  if (a4)
+  if (length)
   {
     v7 = 0;
     v8 = 0;
@@ -691,8 +691,8 @@ LABEL_7:
         v8 = +[NSMutableString string];
       }
 
-      [v8 appendFormat:@"0x%02X ", *(a3 + v7++)];
-      if ((v7 & 7) == 0 || v7 >= a4)
+      [v8 appendFormat:@"0x%02X ", *(buffer + v7++)];
+      if ((v7 & 7) == 0 || v7 >= length)
       {
         [v6 addObject:v8];
 
@@ -700,7 +700,7 @@ LABEL_7:
       }
     }
 
-    while (a4 != v7);
+    while (length != v7);
   }
 
   else
@@ -711,46 +711,46 @@ LABEL_7:
   return v6;
 }
 
-- (id)registerFormatterDecimal32MillisecondsWithBuffer:(void *)a3 andLength:(unint64_t)a4
+- (id)registerFormatterDecimal32MillisecondsWithBuffer:(void *)buffer andLength:(unint64_t)length
 {
-  if (a4 == 4)
+  if (length == 4)
   {
-    [NSString stringWithFormat:@"%d ms", *a3];
+    [NSString stringWithFormat:@"%d ms", *buffer];
   }
 
   else
   {
-    [NSString stringWithFormat:@"ERROR: length %lld != 4", a4];
+    [NSString stringWithFormat:@"ERROR: length %lld != 4", length];
   }
   v4 = ;
 
   return v4;
 }
 
-- (id)registerFormatterBCDVersionWithBuffer:(void *)a3 andLength:(unint64_t)a4
+- (id)registerFormatterBCDVersionWithBuffer:(void *)buffer andLength:(unint64_t)length
 {
-  if (a4 == 4)
+  if (length == 4)
   {
-    [NSString stringWithFormat:@"%X.%X.%X", *(a3 + 1), *(a3 + 1), *a3];
+    [NSString stringWithFormat:@"%X.%X.%X", *(buffer + 1), *(buffer + 1), *buffer];
   }
 
   else
   {
-    [NSString stringWithFormat:@"ERROR: length %lld != 4", a4, v6, v7];
+    [NSString stringWithFormat:@"ERROR: length %lld != 4", length, v6, v7];
   }
   v4 = ;
 
   return v4;
 }
 
-- (id)registerFormatterRxVDMWithBuffer:(void *)a3 andLength:(unint64_t)a4
+- (id)registerFormatterRxVDMWithBuffer:(void *)buffer andLength:(unint64_t)length
 {
   v6 = +[NSMutableString string];
   v7 = v6;
-  if (a4 == 29)
+  if (length == 29)
   {
-    v9 = *a3;
-    v8 = (a3 + 1);
+    v9 = *buffer;
+    v8 = (buffer + 1);
     v10 = v9 & 7;
     [v6 appendFormat:@"seq=%d cnt=%d ", (v9 >> 5) & 3, v10];
     if (v10)
@@ -768,59 +768,59 @@ LABEL_7:
 
   else
   {
-    [v6 appendFormat:@"ERROR: length %lld != 29", a4];
+    [v6 appendFormat:@"ERROR: length %lld != 29", length];
   }
 
   return v7;
 }
 
-- (id)registerFormatterVIDWithBuffer:(void *)a3 andLength:(unint64_t)a4
+- (id)registerFormatterVIDWithBuffer:(void *)buffer andLength:(unint64_t)length
 {
-  if (a4 == 4)
+  if (length == 4)
   {
-    if (*a3 == 40)
+    if (*buffer == 40)
     {
       [NSString stringWithFormat:@"0x%08X (TI)", 40];
     }
 
-    else if (*a3 == 2599)
+    else if (*buffer == 2599)
     {
       [NSString stringWithFormat:@"0x%08X (Apple Inc.)", 2599];
     }
 
     else
     {
-      [NSString stringWithFormat:@"0x%08X", *a3];
+      [NSString stringWithFormat:@"0x%08X", *buffer];
     }
   }
 
   else
   {
-    [NSString stringWithFormat:@"ERROR: length %lld != 4", a4];
+    [NSString stringWithFormat:@"ERROR: length %lld != 4", length];
   }
   v4 = ;
 
   return v4;
 }
 
-- (id)registerFormatterDIDWithBuffer:(void *)a3 andLength:(unint64_t)a4
+- (id)registerFormatterDIDWithBuffer:(void *)buffer andLength:(unint64_t)length
 {
-  if (a4 == 4)
+  if (length == 4)
   {
-    if (*a3 == 24)
+    if (*buffer == 24)
     {
       [NSString stringWithFormat:@"0x%08X (PDControllerType1[USB-C])", 24];
     }
 
     else
     {
-      [NSString stringWithFormat:@"0x%08X", *a3];
+      [NSString stringWithFormat:@"0x%08X", *buffer];
     }
   }
 
   else
   {
-    [NSString stringWithFormat:@"ERROR: length %lld != 4", a4];
+    [NSString stringWithFormat:@"ERROR: length %lld != 4", length];
   }
   v4 = ;
 

@@ -1,9 +1,9 @@
 @interface PXDataSectionEnablementForwarder
-- (PXDataSectionEnablementForwarder)initWithSourceDataSectionManager:(id)a3;
+- (PXDataSectionEnablementForwarder)initWithSourceDataSectionManager:(id)manager;
 - (PXDataSectionManagerEnabling)enablementTarget;
 - (void)_updateEnablement;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)setEnablementTarget:(id)a3;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)setEnablementTarget:(id)target;
 @end
 
 @implementation PXDataSectionEnablementForwarder
@@ -15,25 +15,25 @@
   return WeakRetained;
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  if (PXDataSectionEnablementForwarderContext == a5)
+  if (PXDataSectionEnablementForwarderContext == context)
   {
-    [(PXDataSectionEnablementForwarder *)self _updateEnablement:a3];
+    [(PXDataSectionEnablementForwarder *)self _updateEnablement:observable];
   }
 }
 
 - (void)_updateEnablement
 {
-  v5 = [(PXDataSectionEnablementForwarder *)self sourceDataSectionManager];
-  v3 = [v5 isDataSectionEmpty];
-  v4 = [(PXDataSectionEnablementForwarder *)self enablementTarget];
-  [v4 setEnabled:v3 ^ 1u];
+  sourceDataSectionManager = [(PXDataSectionEnablementForwarder *)self sourceDataSectionManager];
+  isDataSectionEmpty = [sourceDataSectionManager isDataSectionEmpty];
+  enablementTarget = [(PXDataSectionEnablementForwarder *)self enablementTarget];
+  [enablementTarget setEnabled:isDataSectionEmpty ^ 1u];
 }
 
-- (void)setEnablementTarget:(id)a3
+- (void)setEnablementTarget:(id)target
 {
-  obj = a3;
+  obj = target;
   WeakRetained = objc_loadWeakRetained(&self->_enablementTarget);
 
   v5 = obj;
@@ -45,17 +45,17 @@
   }
 }
 
-- (PXDataSectionEnablementForwarder)initWithSourceDataSectionManager:(id)a3
+- (PXDataSectionEnablementForwarder)initWithSourceDataSectionManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v9.receiver = self;
   v9.super_class = PXDataSectionEnablementForwarder;
   v6 = [(PXDataSectionEnablementForwarder *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_sourceDataSectionManager, a3);
-    [v5 registerChangeObserver:v7 context:PXDataSectionEnablementForwarderContext];
+    objc_storeStrong(&v6->_sourceDataSectionManager, manager);
+    [managerCopy registerChangeObserver:v7 context:PXDataSectionEnablementForwarderContext];
   }
 
   return v7;

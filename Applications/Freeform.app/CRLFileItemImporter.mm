@@ -1,11 +1,11 @@
 @interface CRLFileItemImporter
-+ (BOOL)protected_canImportFileAtURL:(id)a3 type:(id)a4;
-+ (BOOL)protected_canImportFileWithPreinsertionAsset:(id)a3 type:(id)a4;
++ (BOOL)protected_canImportFileAtURL:(id)l type:(id)type;
++ (BOOL)protected_canImportFileWithPreinsertionAsset:(id)asset type:(id)type;
 + (NSArray)protected_supportedFileUTTypes;
 - (NSError)error;
-- (_TtC8Freeform19CRLFileItemImporter)initWithURL:(id)a3 boardItemFactory:(id)a4;
+- (_TtC8Freeform19CRLFileItemImporter)initWithURL:(id)l boardItemFactory:(id)factory;
 - (void)cancel;
-- (void)importBoardItemWithCompletionHandler:(id)a3;
+- (void)importBoardItemWithCompletionHandler:(id)handler;
 @end
 
 @implementation CRLFileItemImporter
@@ -21,7 +21,7 @@
   return v2.super.isa;
 }
 
-+ (BOOL)protected_canImportFileAtURL:(id)a3 type:(id)a4
++ (BOOL)protected_canImportFileAtURL:(id)l type:(id)type
 {
   v4 = type metadata accessor for URL();
   v5 = *(v4 - 8);
@@ -35,7 +35,7 @@
   return v8 & 1;
 }
 
-+ (BOOL)protected_canImportFileWithPreinsertionAsset:(id)a3 type:(id)a4
++ (BOOL)protected_canImportFileWithPreinsertionAsset:(id)asset type:(id)type
 {
   v4 = type metadata accessor for UTType();
   v5 = *(v4 - 8);
@@ -69,7 +69,7 @@
 {
   if (*(&self->super.super.isa + OBJC_IVAR____TtC8Freeform19CRLFileItemImporter_importBoardItemTask))
   {
-    v2 = self;
+    selfCopy = self;
 
     sub_1005B981C(&unk_1019F6B40);
     Task.cancel()();
@@ -77,18 +77,18 @@
 
   else
   {
-    v3 = self;
+    selfCopy2 = self;
   }
 
   [*(&self->super.super.isa + OBJC_IVAR____TtC8Freeform19CRLFileItemImporter_fileCoordinator) cancel];
 }
 
-- (void)importBoardItemWithCompletionHandler:(id)a3
+- (void)importBoardItemWithCompletionHandler:(id)handler
 {
   v5 = sub_1005B981C(&qword_1019FB750);
   __chkstk_darwin(v5 - 8);
   v7 = &v14 - v6;
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   *(v9 + 24) = self;
@@ -104,7 +104,7 @@
   v12[3] = 0;
   v12[4] = &unk_1014938A0;
   v12[5] = v11;
-  v13 = self;
+  selfCopy = self;
   sub_10119D67C(0, 0, v7, &unk_101470870, v12);
 }
 
@@ -129,13 +129,13 @@
   return v3;
 }
 
-- (_TtC8Freeform19CRLFileItemImporter)initWithURL:(id)a3 boardItemFactory:(id)a4
+- (_TtC8Freeform19CRLFileItemImporter)initWithURL:(id)l boardItemFactory:(id)factory
 {
   v5 = type metadata accessor for URL();
   __chkstk_darwin(v5 - 8);
   v7 = &v9 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   static URL._unconditionallyBridgeFromObjectiveC(_:)();
-  return sub_1009DAFE4(v7, a4);
+  return sub_1009DAFE4(v7, factory);
 }
 
 @end

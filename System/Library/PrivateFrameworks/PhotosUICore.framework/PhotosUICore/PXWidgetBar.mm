@@ -1,26 +1,26 @@
 @interface PXWidgetBar
 - (PXScrollViewController)scrollViewController;
-- (PXWidgetBar)initWithScrollViewController:(id)a3;
+- (PXWidgetBar)initWithScrollViewController:(id)controller;
 - (PXWidgetBarDelegate)delegate;
 - (double)viewHeight;
-- (id)checkOutTileWithKind:(int64_t)a3;
+- (id)checkOutTileWithKind:(int64_t)kind;
 - (id)createTileAnimator;
 - (id)createView;
-- (id)tilingController:(id)a3 tileIdentifierConverterForChange:(id)a4;
+- (id)tilingController:(id)controller tileIdentifierConverterForChange:(id)change;
 - (void)_setNeedsUpdate;
-- (void)_setViewHeight:(double)a3;
+- (void)_setViewHeight:(double)height;
 - (void)_updateIfNeeded;
 - (void)_updateLayoutIfNeeded;
 - (void)_updateViewHeightIfNeeded;
 - (void)_updateViewIfNeeded;
-- (void)checkInTile:(id)a3;
-- (void)checkInTile:(void *)a3 withIdentifier:(PXTileIdentifier *)a4;
-- (void)checkOutTileForIdentifier:(PXTileIdentifier *)a3 layout:(id)a4;
+- (void)checkInTile:(id)tile;
+- (void)checkInTile:(void *)tile withIdentifier:(PXTileIdentifier *)identifier;
+- (void)checkOutTileForIdentifier:(PXTileIdentifier *)identifier layout:(id)layout;
 - (void)didSelectDisclosureAffordance;
 - (void)didSelectSubtitle;
-- (void)performChanges:(id)a3;
-- (void)setAllowUserInteractionWithSubtitle:(BOOL)a3;
-- (void)setDelegate:(id)a3;
+- (void)performChanges:(id)changes;
+- (void)setAllowUserInteractionWithSubtitle:(BOOL)subtitle;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation PXWidgetBar
@@ -39,32 +39,32 @@
   return WeakRetained;
 }
 
-- (id)tilingController:(id)a3 tileIdentifierConverterForChange:(id)a4
+- (id)tilingController:(id)controller tileIdentifierConverterForChange:(id)change
 {
   v4 = objc_alloc_init(PXTileIdentifierIdentityConverter);
 
   return v4;
 }
 
-- (void)checkInTile:(void *)a3 withIdentifier:(PXTileIdentifier *)a4
+- (void)checkInTile:(void *)tile withIdentifier:(PXTileIdentifier *)identifier
 {
-  v5 = a3;
-  [(PXWidgetBar *)self checkInTile:v5];
-  v6 = [(PXWidgetBar *)self _tilesInUse];
-  [v6 removeObject:v5];
+  tileCopy = tile;
+  [(PXWidgetBar *)self checkInTile:tileCopy];
+  _tilesInUse = [(PXWidgetBar *)self _tilesInUse];
+  [_tilesInUse removeObject:tileCopy];
 }
 
-- (void)checkOutTileForIdentifier:(PXTileIdentifier *)a3 layout:(id)a4
+- (void)checkOutTileForIdentifier:(PXTileIdentifier *)identifier layout:(id)layout
 {
-  v7 = a4;
+  layoutCopy = layout;
   +[PXWidgetBarLayout tileIdentifier];
-  v8 = *&a3->index[5];
-  v18[2] = *&a3->index[3];
+  v8 = *&identifier->index[5];
+  v18[2] = *&identifier->index[3];
   v18[3] = v8;
-  v18[4] = *&a3->index[7];
-  v19 = a3->index[9];
-  v9 = *&a3->index[1];
-  v18[0] = *&a3->length;
+  v18[4] = *&identifier->index[7];
+  v19 = identifier->index[9];
+  v9 = *&identifier->index[1];
+  v18[0] = *&identifier->length;
   v18[1] = v9;
   v10 = *&v18[0] == v20[0];
   if (*&v18[0] && *&v18[0] == v20[0])
@@ -88,15 +88,15 @@
 
   if (!v10)
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"PXWidgetBar.m" lineNumber:235 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXWidgetBar.m" lineNumber:235 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
   v14 = [(PXWidgetBar *)self checkOutTileWithKind:1];
-  v15 = [(PXWidgetBar *)self _tilesInUse];
-  [v15 addObject:v14];
+  _tilesInUse = [(PXWidgetBar *)self _tilesInUse];
+  [_tilesInUse addObject:v14];
 
   return v14;
 }
@@ -108,8 +108,8 @@
     self->_needsUpdateFlags.layout = 0;
     [(PXWidgetBar *)self _viewHeight];
     v5 = v4;
-    v6 = [(PXWidgetBar *)self _layout];
-    [v6 setHeight:v5];
+    _layout = [(PXWidgetBar *)self _layout];
+    [_layout setHeight:v5];
   }
 }
 
@@ -129,11 +129,11 @@
   if (self->_needsUpdateFlags.view)
   {
     self->_needsUpdateFlags.view = 0;
-    v4 = [(PXWidgetBar *)self view];
-    if (!v4)
+    view = [(PXWidgetBar *)self view];
+    if (!view)
     {
-      v4 = [(PXWidgetBar *)self createView];
-      objc_storeStrong(&self->_view, v4);
+      view = [(PXWidgetBar *)self createView];
+      objc_storeStrong(&self->_view, view);
       [(PXWidgetBar *)self invalidateViewHeight];
     }
 
@@ -158,16 +158,16 @@
 {
   if (!self->_isPerformingChanges && !self->_isPerformingUpdates)
   {
-    v4 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v4 handleFailureInMethod:a2 object:self file:@"PXWidgetBar.m" lineNumber:157 description:@"not inside -performChanges: or -update"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXWidgetBar.m" lineNumber:157 description:@"not inside -performChanges: or -update"];
   }
 }
 
-- (void)performChanges:(id)a3
+- (void)performChanges:(id)changes
 {
   isPerformingChanges = self->_isPerformingChanges;
   self->_isPerformingChanges = 1;
-  (*(a3 + 2))(a3, a2);
+  (*(changes + 2))(changes, a2);
   self->_isPerformingChanges = isPerformingChanges;
   if (!isPerformingChanges)
   {
@@ -176,71 +176,71 @@
   }
 }
 
-- (void)setAllowUserInteractionWithSubtitle:(BOOL)a3
+- (void)setAllowUserInteractionWithSubtitle:(BOOL)subtitle
 {
-  if (self->_allowUserInteractionWithSubtitle != a3)
+  if (self->_allowUserInteractionWithSubtitle != subtitle)
   {
-    self->_allowUserInteractionWithSubtitle = a3;
+    self->_allowUserInteractionWithSubtitle = subtitle;
     [(PXWidgetBar *)self invalidateView];
   }
 }
 
-- (void)_setViewHeight:(double)a3
+- (void)_setViewHeight:(double)height
 {
-  if (self->__viewHeight != a3)
+  if (self->__viewHeight != height)
   {
-    self->__viewHeight = a3;
+    self->__viewHeight = height;
     [(PXWidgetBar *)self _invalidateLayout];
   }
 }
 
 - (double)viewHeight
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  [v4 handleFailureInMethod:a2 object:self file:@"PXWidgetBar.m" lineNumber:114 description:{@"Method %s is a responsibility of subclass %@", "-[PXWidgetBar viewHeight]", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXWidgetBar.m" lineNumber:114 description:{@"Method %s is a responsibility of subclass %@", "-[PXWidgetBar viewHeight]", v6}];
 
   abort();
 }
 
 - (id)createView
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  [v4 handleFailureInMethod:a2 object:self file:@"PXWidgetBar.m" lineNumber:106 description:{@"Method %s is a responsibility of subclass %@", "-[PXWidgetBar createView]", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXWidgetBar.m" lineNumber:106 description:{@"Method %s is a responsibility of subclass %@", "-[PXWidgetBar createView]", v6}];
 
   abort();
 }
 
-- (void)checkInTile:(id)a3
+- (void)checkInTile:(id)tile
 {
-  v5 = a3;
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
+  tileCopy = tile;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v7 = objc_opt_class();
   v8 = NSStringFromClass(v7);
-  [v6 handleFailureInMethod:a2 object:self file:@"PXWidgetBar.m" lineNumber:102 description:{@"Method %s is a responsibility of subclass %@", "-[PXWidgetBar checkInTile:]", v8}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXWidgetBar.m" lineNumber:102 description:{@"Method %s is a responsibility of subclass %@", "-[PXWidgetBar checkInTile:]", v8}];
 
   abort();
 }
 
-- (id)checkOutTileWithKind:(int64_t)a3
+- (id)checkOutTileWithKind:(int64_t)kind
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
-  [v5 handleFailureInMethod:a2 object:self file:@"PXWidgetBar.m" lineNumber:98 description:{@"Method %s is a responsibility of subclass %@", "-[PXWidgetBar checkOutTileWithKind:]", v7}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXWidgetBar.m" lineNumber:98 description:{@"Method %s is a responsibility of subclass %@", "-[PXWidgetBar checkOutTileWithKind:]", v7}];
 
   abort();
 }
 
 - (id)createTileAnimator
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  [v4 handleFailureInMethod:a2 object:self file:@"PXWidgetBar.m" lineNumber:94 description:{@"Method %s is a responsibility of subclass %@", "-[PXWidgetBar createTileAnimator]", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXWidgetBar.m" lineNumber:94 description:{@"Method %s is a responsibility of subclass %@", "-[PXWidgetBar createTileAnimator]", v6}];
 
   abort();
 }
@@ -249,8 +249,8 @@
 {
   if (self->_delegateRespondsTo.didSelectDisclosureAffordance)
   {
-    v4 = [(PXWidgetBar *)self delegate];
-    [v4 widgetBarDidSelectDisclosureAffordance:self];
+    delegate = [(PXWidgetBar *)self delegate];
+    [delegate widgetBarDidSelectDisclosureAffordance:self];
   }
 }
 
@@ -258,14 +258,14 @@
 {
   if (self->_delegateRespondsTo.didSelectSubtitle)
   {
-    v4 = [(PXWidgetBar *)self delegate];
-    [v4 widgetBarDidSelectSubtitle:self];
+    delegate = [(PXWidgetBar *)self delegate];
+    [delegate widgetBarDidSelectSubtitle:self];
   }
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (WeakRetained != obj)
@@ -276,19 +276,19 @@
   }
 }
 
-- (PXWidgetBar)initWithScrollViewController:(id)a3
+- (PXWidgetBar)initWithScrollViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v17.receiver = self;
   v17.super_class = PXWidgetBar;
   v5 = [(PXWidgetBar *)&v17 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_scrollViewController, v4);
-    v7 = [(PXWidgetBar *)v6 createTileAnimator];
+    objc_storeWeak(&v5->_scrollViewController, controllerCopy);
+    createTileAnimator = [(PXWidgetBar *)v6 createTileAnimator];
     tileAnimator = v6->__tileAnimator;
-    v6->__tileAnimator = v7;
+    v6->__tileAnimator = createTileAnimator;
 
     v9 = [MEMORY[0x1E695DFA8] set];
     tilesInUse = v6->__tilesInUse;
@@ -303,7 +303,7 @@
     tilingController = v6->_tilingController;
     v6->_tilingController = v14;
 
-    [(PXTilingController *)v6->_tilingController setScrollController:v4];
+    [(PXTilingController *)v6->_tilingController setScrollController:controllerCopy];
     [(PXTilingController *)v6->_tilingController setTileAnimator:v6->__tileAnimator];
     [(PXTilingController *)v6->_tilingController setTileSource:v6];
     [(PXTilingController *)v6->_tilingController setTransitionDelegate:v6];

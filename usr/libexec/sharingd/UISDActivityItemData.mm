@@ -1,8 +1,8 @@
 @interface UISDActivityItemData
-- (BOOL)canAccessFileURL:(id)a3;
+- (BOOL)canAccessFileURL:(id)l;
 - (UISDActivityItemData)init;
-- (UISDActivityItemData)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (UISDActivityItemData)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation UISDActivityItemData
@@ -46,9 +46,9 @@
   return v2;
 }
 
-- (UISDActivityItemData)initWithCoder:(id)a3
+- (UISDActivityItemData)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(UISDActivityItemData *)self init];
   if (v5)
   {
@@ -79,14 +79,14 @@
 
     v21 = _UISecureStandardPropertyListClasses();
     v22 = NSStringFromSelector("openURLAnnotationsByURL");
-    v23 = [v4 decodeObjectOfClasses:v21 forKey:v22];
+    v23 = [coderCopy decodeObjectOfClasses:v21 forKey:v22];
     openURLAnnotationsByURL = v5->_openURLAnnotationsByURL;
     v5->_openURLAnnotationsByURL = v23;
 
     v25 = objc_opt_class();
     v26 = [NSSet setWithObjects:v25, objc_opt_class(), 0];
     v27 = NSStringFromSelector("securityContexts");
-    v28 = [v4 decodeObjectOfClasses:v26 forKey:v27];
+    v28 = [coderCopy decodeObjectOfClasses:v26 forKey:v27];
     securityContexts = v5->_securityContexts;
     v5->_securityContexts = v28;
   }
@@ -94,61 +94,61 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   attachmentNamesByItem = self->_attachmentNamesByItem;
-  v5 = a3;
+  coderCopy = coder;
   v6 = NSStringFromSelector("attachmentNamesByItem");
-  [v5 encodeObject:attachmentNamesByItem forKey:v6];
+  [coderCopy encodeObject:attachmentNamesByItem forKey:v6];
 
   subjectsByItem = self->_subjectsByItem;
   v8 = NSStringFromSelector("subjectsByItem");
-  [v5 encodeObject:subjectsByItem forKey:v8];
+  [coderCopy encodeObject:subjectsByItem forKey:v8];
 
   previewImagesByItem = self->_previewImagesByItem;
   v10 = NSStringFromSelector("previewImagesByItem");
-  [v5 encodeObject:previewImagesByItem forKey:v10];
+  [coderCopy encodeObject:previewImagesByItem forKey:v10];
 
   previewImageDataByItem = self->_previewImageDataByItem;
   v12 = NSStringFromSelector("previewImageDataByItem");
-  [v5 encodeObject:previewImageDataByItem forKey:v12];
+  [coderCopy encodeObject:previewImageDataByItem forKey:v12];
 
   dataTypesByItem = self->_dataTypesByItem;
   v14 = NSStringFromSelector("dataTypesByItem");
-  [v5 encodeObject:dataTypesByItem forKey:v14];
+  [coderCopy encodeObject:dataTypesByItem forKey:v14];
 
   openURLAnnotationsByURL = self->_openURLAnnotationsByURL;
   v16 = NSStringFromSelector("openURLAnnotationsByURL");
-  [v5 encodeObject:openURLAnnotationsByURL forKey:v16];
+  [coderCopy encodeObject:openURLAnnotationsByURL forKey:v16];
 
   securityContexts = self->_securityContexts;
   v18 = NSStringFromSelector("securityContexts");
-  [v5 encodeObject:securityContexts forKey:v18];
+  [coderCopy encodeObject:securityContexts forKey:v18];
 }
 
-- (BOOL)canAccessFileURL:(id)a3
+- (BOOL)canAccessFileURL:(id)l
 {
-  v5 = a3;
-  if (([v5 isFileURL] & 1) == 0)
+  lCopy = l;
+  if (([lCopy isFileURL] & 1) == 0)
   {
-    sub_10012FEA0(a2, self, v5);
+    sub_10012FEA0(a2, self, lCopy);
   }
 
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
   v17 = 0;
-  v6 = [(UISDActivityItemData *)self securityContexts];
+  securityContexts = [(UISDActivityItemData *)self securityContexts];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10012FB8C;
   v10[3] = &unk_1008D1158;
   v13 = a2;
   v10[4] = self;
-  v7 = v5;
+  v7 = lCopy;
   v11 = v7;
   v12 = &v14;
-  [v6 enumerateObjectsUsingBlock:v10];
+  [securityContexts enumerateObjectsUsingBlock:v10];
 
   v8 = *(v15 + 24);
   _Block_object_dispose(&v14, 8);

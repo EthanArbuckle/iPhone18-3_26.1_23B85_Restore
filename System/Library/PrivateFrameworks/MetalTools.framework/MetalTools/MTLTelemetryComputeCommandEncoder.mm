@@ -1,62 +1,62 @@
 @interface MTLTelemetryComputeCommandEncoder
-- (MTLTelemetryComputeCommandEncoder)initWithComputeCommandEncoder:(id)a3 commandBuffer:(id)a4 descriptor:(id)a5;
-- (void)accumDispatchDistribution:(unint64_t)a3 threadgroupsPerGrid:(id *)a4 threadsPerThreadgroup:(id *)a5 threadsPerGrid:(id *)a6;
-- (void)dispatchThreadgroups:(id *)a3 threadsPerThreadgroup:(id *)a4;
-- (void)dispatchThreadgroupsWithIndirectBuffer:(id)a3 indirectBufferOffset:(unint64_t)a4 threadsPerThreadgroup:(id *)a5;
-- (void)dispatchThreads:(id *)a3 threadsPerThreadgroup:(id *)a4;
-- (void)dispatchThreadsWithIndirectBuffer:(id)a3 indirectBufferOffset:(unint64_t)a4;
+- (MTLTelemetryComputeCommandEncoder)initWithComputeCommandEncoder:(id)encoder commandBuffer:(id)buffer descriptor:(id)descriptor;
+- (void)accumDispatchDistribution:(unint64_t)distribution threadgroupsPerGrid:(id *)grid threadsPerThreadgroup:(id *)threadgroup threadsPerGrid:(id *)perGrid;
+- (void)dispatchThreadgroups:(id *)threadgroups threadsPerThreadgroup:(id *)threadgroup;
+- (void)dispatchThreadgroupsWithIndirectBuffer:(id)buffer indirectBufferOffset:(unint64_t)offset threadsPerThreadgroup:(id *)threadgroup;
+- (void)dispatchThreads:(id *)threads threadsPerThreadgroup:(id *)threadgroup;
+- (void)dispatchThreadsWithIndirectBuffer:(id)buffer indirectBufferOffset:(unint64_t)offset;
 - (void)endEncoding;
-- (void)memoryBarrierWithResources:(const void *)a3 count:(unint64_t)a4;
-- (void)memoryBarrierWithScope:(unint64_t)a3;
-- (void)setComputePipelineState:(id)a3;
-- (void)setTexture:(id)a3 atIndex:(unint64_t)a4;
-- (void)setTextures:(const void *)a3 withRange:(_NSRange)a4;
-- (void)setThreadgroupMemoryLength:(unint64_t)a3 atIndex:(unint64_t)a4;
+- (void)memoryBarrierWithResources:(const void *)resources count:(unint64_t)count;
+- (void)memoryBarrierWithScope:(unint64_t)scope;
+- (void)setComputePipelineState:(id)state;
+- (void)setTexture:(id)texture atIndex:(unint64_t)index;
+- (void)setTextures:(const void *)textures withRange:(_NSRange)range;
+- (void)setThreadgroupMemoryLength:(unint64_t)length atIndex:(unint64_t)index;
 @end
 
 @implementation MTLTelemetryComputeCommandEncoder
 
-- (MTLTelemetryComputeCommandEncoder)initWithComputeCommandEncoder:(id)a3 commandBuffer:(id)a4 descriptor:(id)a5
+- (MTLTelemetryComputeCommandEncoder)initWithComputeCommandEncoder:(id)encoder commandBuffer:(id)buffer descriptor:(id)descriptor
 {
   v10.receiver = self;
   v10.super_class = MTLTelemetryComputeCommandEncoder;
-  v6 = [(MTLToolsComputeCommandEncoder *)&v10 initWithComputeCommandEncoder:a3 parent:a4 descriptor:a5];
+  v6 = [(MTLToolsComputeCommandEncoder *)&v10 initWithComputeCommandEncoder:encoder parent:buffer descriptor:descriptor];
   v7 = v6;
   if (v6)
   {
-    v8 = [(MTLToolsObject *)v6 device];
-    v7->_telemetryDevice = v8;
-    if ([(MTLDevice *)v8 enableTelemetry])
+    device = [(MTLToolsObject *)v6 device];
+    v7->_telemetryDevice = device;
+    if ([(MTLDevice *)device enableTelemetry])
     {
-      v7->_telemetryCommandBuffer = a4;
+      v7->_telemetryCommandBuffer = buffer;
     }
   }
 
   return v7;
 }
 
-- (void)setComputePipelineState:(id)a3
+- (void)setComputePipelineState:(id)state
 {
-  if (a3)
+  if (state)
   {
-    [a3 accumulateUsage];
+    [state accumulateUsage];
   }
 
-  v5 = [(MTLToolsObject *)self baseObject];
-  v6 = [a3 baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [state baseObject];
 
-  [v5 setComputePipelineState:v6];
+  [baseObject setComputePipelineState:baseObject2];
 }
 
-- (void)accumDispatchDistribution:(unint64_t)a3 threadgroupsPerGrid:(id *)a4 threadsPerThreadgroup:(id *)a5 threadsPerGrid:(id *)a6
+- (void)accumDispatchDistribution:(unint64_t)distribution threadgroupsPerGrid:(id *)grid threadsPerThreadgroup:(id *)threadgroup threadsPerGrid:(id *)perGrid
 {
-  v9 = a3;
+  distributionCopy = distribution;
   if ([(MTLTelemetryDevice *)self->_telemetryDevice enableTelemetry])
   {
     ++self->_ceDispatches;
     ++self->_telemetryCommandBuffer->cbDispatches;
     dispatchDistribution = self->_telemetryCommandBuffer->dispatchDistribution;
-    if (!v9)
+    if (!distributionCopy)
     {
       goto LABEL_11;
     }
@@ -64,12 +64,12 @@
     count = dispatchDistribution->var10.count;
     if (count)
     {
-      if (dispatchDistribution->var10.max < v9)
+      if (dispatchDistribution->var10.max < distributionCopy)
       {
-        dispatchDistribution->var10.max = v9;
+        dispatchDistribution->var10.max = distributionCopy;
       }
 
-      if (dispatchDistribution->var10.min <= v9)
+      if (dispatchDistribution->var10.min <= distributionCopy)
       {
         goto LABEL_10;
       }
@@ -77,16 +77,16 @@
 
     else
     {
-      dispatchDistribution->var10.max = v9;
+      dispatchDistribution->var10.max = distributionCopy;
     }
 
-    dispatchDistribution->var10.min = v9;
+    dispatchDistribution->var10.min = distributionCopy;
 LABEL_10:
-    dispatchDistribution->var10.total += v9;
+    dispatchDistribution->var10.total += distributionCopy;
     dispatchDistribution->var10.count = count + 1;
 LABEL_11:
-    var0 = a4->var0;
-    if (!a4->var0)
+    var0 = grid->var0;
+    if (!grid->var0)
     {
       goto LABEL_20;
     }
@@ -115,7 +115,7 @@ LABEL_19:
     dispatchDistribution->var1.total += var0;
     dispatchDistribution->var1.count = v14 + 1;
 LABEL_20:
-    var1 = a4->var1;
+    var1 = grid->var1;
     if (!var1)
     {
       goto LABEL_29;
@@ -145,7 +145,7 @@ LABEL_28:
     dispatchDistribution->var2.total += var1;
     dispatchDistribution->var2.count = v16 + 1;
 LABEL_29:
-    var2 = a4->var2;
+    var2 = grid->var2;
     if (!var2)
     {
       goto LABEL_38;
@@ -175,8 +175,8 @@ LABEL_37:
     dispatchDistribution->var3.total += var2;
     dispatchDistribution->var3.count = v18 + 1;
 LABEL_38:
-    v19 = a5->var0;
-    if (!a5->var0)
+    v19 = threadgroup->var0;
+    if (!threadgroup->var0)
     {
       goto LABEL_47;
     }
@@ -205,7 +205,7 @@ LABEL_46:
     dispatchDistribution->var7.total += v19;
     dispatchDistribution->var7.count = v20 + 1;
 LABEL_47:
-    v21 = a5->var1;
+    v21 = threadgroup->var1;
     if (!v21)
     {
       goto LABEL_56;
@@ -235,7 +235,7 @@ LABEL_55:
     dispatchDistribution->var8.total += v21;
     dispatchDistribution->var8.count = v22 + 1;
 LABEL_56:
-    v23 = a5->var2;
+    v23 = threadgroup->var2;
     if (!v23)
     {
       goto LABEL_65;
@@ -265,8 +265,8 @@ LABEL_64:
     dispatchDistribution->var9.total += v23;
     dispatchDistribution->var9.count = v24 + 1;
 LABEL_65:
-    v25 = a6->var0;
-    if (!a6->var0)
+    v25 = perGrid->var0;
+    if (!perGrid->var0)
     {
       goto LABEL_74;
     }
@@ -295,7 +295,7 @@ LABEL_73:
     dispatchDistribution->var4.total += v25;
     dispatchDistribution->var4.count = v26 + 1;
 LABEL_74:
-    v27 = a6->var1;
+    v27 = perGrid->var1;
     if (!v27)
     {
       goto LABEL_83;
@@ -325,7 +325,7 @@ LABEL_82:
     dispatchDistribution->var5.total += v27;
     dispatchDistribution->var5.count = v28 + 1;
 LABEL_83:
-    v29 = a6->var2;
+    v29 = perGrid->var2;
     if (!v29)
     {
       return;
@@ -357,52 +357,52 @@ LABEL_91:
   }
 }
 
-- (void)setThreadgroupMemoryLength:(unint64_t)a3 atIndex:(unint64_t)a4
+- (void)setThreadgroupMemoryLength:(unint64_t)length atIndex:(unint64_t)index
 {
   memset(v7, 0, sizeof(v7));
   memset(v8, 0, sizeof(v8));
   memset(v9, 0, sizeof(v9));
-  [(MTLTelemetryComputeCommandEncoder *)self accumDispatchDistribution:a3 threadgroupsPerGrid:v9 threadsPerThreadgroup:v8 threadsPerGrid:v7];
+  [(MTLTelemetryComputeCommandEncoder *)self accumDispatchDistribution:length threadgroupsPerGrid:v9 threadsPerThreadgroup:v8 threadsPerGrid:v7];
   [-[MTLToolsObject baseObject](self "baseObject")];
 }
 
-- (void)dispatchThreadgroups:(id *)a3 threadsPerThreadgroup:(id *)a4
+- (void)dispatchThreadgroups:(id *)threadgroups threadsPerThreadgroup:(id *)threadgroup
 {
   memset(v8, 0, sizeof(v8));
-  v10 = *a3;
-  v9 = *a4;
+  v10 = *threadgroups;
+  v9 = *threadgroup;
   [(MTLTelemetryComputeCommandEncoder *)self accumDispatchDistribution:0 threadgroupsPerGrid:&v10 threadsPerThreadgroup:&v9 threadsPerGrid:v8];
-  v7 = [(MTLToolsObject *)self baseObject];
-  v10 = *a3;
-  v9 = *a4;
-  [v7 dispatchThreadgroups:&v10 threadsPerThreadgroup:&v9];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  v10 = *threadgroups;
+  v9 = *threadgroup;
+  [baseObject dispatchThreadgroups:&v10 threadsPerThreadgroup:&v9];
 }
 
-- (void)dispatchThreadgroupsWithIndirectBuffer:(id)a3 indirectBufferOffset:(unint64_t)a4 threadsPerThreadgroup:(id *)a5
+- (void)dispatchThreadgroupsWithIndirectBuffer:(id)buffer indirectBufferOffset:(unint64_t)offset threadsPerThreadgroup:(id *)threadgroup
 {
   memset(v11, 0, sizeof(v11));
   memset(&v13, 0, sizeof(v13));
-  v12 = *a5;
+  v12 = *threadgroup;
   [(MTLTelemetryComputeCommandEncoder *)self accumDispatchDistribution:0 threadgroupsPerGrid:&v13 threadsPerThreadgroup:&v12 threadsPerGrid:v11];
-  v9 = [(MTLToolsObject *)self baseObject];
-  v10 = [a3 baseObject];
-  v13 = *a5;
-  [v9 dispatchThreadgroupsWithIndirectBuffer:v10 indirectBufferOffset:a4 threadsPerThreadgroup:&v13];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [buffer baseObject];
+  v13 = *threadgroup;
+  [baseObject dispatchThreadgroupsWithIndirectBuffer:baseObject2 indirectBufferOffset:offset threadsPerThreadgroup:&v13];
 }
 
-- (void)dispatchThreads:(id *)a3 threadsPerThreadgroup:(id *)a4
+- (void)dispatchThreads:(id *)threads threadsPerThreadgroup:(id *)threadgroup
 {
   memset(&v10, 0, sizeof(v10));
-  v9 = *a4;
-  v8 = *a3;
+  v9 = *threadgroup;
+  v8 = *threads;
   [(MTLTelemetryComputeCommandEncoder *)self accumDispatchDistribution:0 threadgroupsPerGrid:&v10 threadsPerThreadgroup:&v9 threadsPerGrid:&v8];
-  v7 = [(MTLToolsObject *)self baseObject];
-  v10 = *a3;
-  v9 = *a4;
-  [v7 dispatchThreads:&v10 threadsPerThreadgroup:&v9];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  v10 = *threads;
+  v9 = *threadgroup;
+  [baseObject dispatchThreads:&v10 threadsPerThreadgroup:&v9];
 }
 
-- (void)dispatchThreadsWithIndirectBuffer:(id)a3 indirectBufferOffset:(unint64_t)a4
+- (void)dispatchThreadsWithIndirectBuffer:(id)buffer indirectBufferOffset:(unint64_t)offset
 {
   memset(v7, 0, sizeof(v7));
   memset(v8, 0, sizeof(v8));
@@ -446,17 +446,17 @@ LABEL_10:
     }
   }
 
-  v5 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v5 endEncoding];
+  [baseObject endEncoding];
 }
 
-- (void)setTexture:(id)a3 atIndex:(unint64_t)a4
+- (void)setTexture:(id)texture atIndex:(unint64_t)index
 {
   if ([(MTLTelemetryDevice *)self->_telemetryDevice enableTelemetry])
   {
-    v7 = a4 + 1;
-    if (a4 != -1)
+    v7 = index + 1;
+    if (index != -1)
     {
       textureBindCount = self->_telemetryCommandBuffer->textureBindCount;
       if (textureBindCount->count)
@@ -486,20 +486,20 @@ LABEL_10:
     }
   }
 
-  v9 = [(MTLToolsObject *)self baseObject];
-  v10 = [a3 baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [texture baseObject];
 
-  [v9 setTexture:v10 atIndex:a4];
+  [baseObject setTexture:baseObject2 atIndex:index];
 }
 
-- (void)setTextures:(const void *)a3 withRange:(_NSRange)a4
+- (void)setTextures:(const void *)textures withRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v17 = *MEMORY[0x277D85DE8];
-  v8 = [(MTLTelemetryDevice *)self->_telemetryDevice enableTelemetry];
+  enableTelemetry = [(MTLTelemetryDevice *)self->_telemetryDevice enableTelemetry];
   v9 = location + length;
-  if (v8 && v9 != 0)
+  if (enableTelemetry && v9 != 0)
   {
     textureBindCount = self->_telemetryCommandBuffer->textureBindCount;
     if (textureBindCount->count)
@@ -544,7 +544,7 @@ LABEL_16:
   v13 = length;
   do
   {
-    v14 = *a3++;
+    v14 = *textures++;
     *v12++ = [v14 baseObject];
     --v13;
   }
@@ -555,28 +555,28 @@ LABEL_18:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)memoryBarrierWithScope:(unint64_t)a3
+- (void)memoryBarrierWithScope:(unint64_t)scope
 {
   if ([(MTLTelemetryDevice *)self->_telemetryDevice enableTelemetry])
   {
     ++self->_telemetryCommandBuffer->cbMemoryBarriers;
   }
 
-  v5 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v5 memoryBarrierWithScope:a3];
+  [baseObject memoryBarrierWithScope:scope];
 }
 
-- (void)memoryBarrierWithResources:(const void *)a3 count:(unint64_t)a4
+- (void)memoryBarrierWithResources:(const void *)resources count:(unint64_t)count
 {
   if ([(MTLTelemetryDevice *)self->_telemetryDevice enableTelemetry])
   {
     ++self->_telemetryCommandBuffer->cbMemoryBarriers;
   }
 
-  v7 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v7 memoryBarrierWithResources:a3 count:a4];
+  [baseObject memoryBarrierWithResources:resources count:count];
 }
 
 @end

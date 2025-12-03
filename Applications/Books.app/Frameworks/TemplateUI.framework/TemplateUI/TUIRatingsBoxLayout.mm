@@ -1,7 +1,7 @@
 @interface TUIRatingsBoxLayout
 - ($E297CC25127479E857BE23A4F8632EA4)computeIntrinsicHeight;
 - ($E297CC25127479E857BE23A4F8632EA4)computeIntrinsicWidth;
-- (TUIRatingsBoxLayout)initWithModel:(id)a3 parent:(id)a4 controller:(id)a5;
+- (TUIRatingsBoxLayout)initWithModel:(id)model parent:(id)parent controller:(id)controller;
 - (double)computeIntrinsicAspectRatio;
 - (void)_computeIntrinsicContentSize;
 - (void)computeLayout;
@@ -10,11 +10,11 @@
 
 @implementation TUIRatingsBoxLayout
 
-- (TUIRatingsBoxLayout)initWithModel:(id)a3 parent:(id)a4 controller:(id)a5
+- (TUIRatingsBoxLayout)initWithModel:(id)model parent:(id)parent controller:(id)controller
 {
   v6.receiver = self;
   v6.super_class = TUIRatingsBoxLayout;
-  result = [(TUILayout *)&v6 initWithModel:a3 parent:a4 controller:a5];
+  result = [(TUILayout *)&v6 initWithModel:model parent:parent controller:controller];
   if (result)
   {
     result->_intrinsicContentSize = CGSizeZero;

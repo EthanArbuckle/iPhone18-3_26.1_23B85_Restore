@@ -1,17 +1,17 @@
 @interface SFQueueingServiceViewControllerProxy
-- (SFQueueingServiceViewControllerProxy)initWithProtocol:(id)a3;
+- (SFQueueingServiceViewControllerProxy)initWithProtocol:(id)protocol;
 - (SFQueueingServiceViewControllerProxyDelegate)delegate;
-- (id)methodSignatureForSelector:(SEL)a3;
-- (void)forwardInvocation:(id)a3;
-- (void)setTarget:(id)a3;
+- (id)methodSignatureForSelector:(SEL)selector;
+- (void)forwardInvocation:(id)invocation;
+- (void)setTarget:(id)target;
 @end
 
 @implementation SFQueueingServiceViewControllerProxy
 
-- (SFQueueingServiceViewControllerProxy)initWithProtocol:(id)a3
+- (SFQueueingServiceViewControllerProxy)initWithProtocol:(id)protocol
 {
-  objc_storeStrong(&self->_protocol, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_protocol, protocol);
+  protocolCopy = protocol;
   v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
   queuedInvocations = self->_queuedInvocations;
   self->_queuedInvocations = v6;
@@ -19,13 +19,13 @@
   return self;
 }
 
-- (void)setTarget:(id)a3
+- (void)setTarget:(id)target
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (self->_target != v5)
+  targetCopy = target;
+  if (self->_target != targetCopy)
   {
-    objc_storeStrong(&self->_target, a3);
+    objc_storeStrong(&self->_target, target);
     if (self->_target)
     {
       v13 = 0u;
@@ -63,10 +63,10 @@
   }
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
   v4 = self->_protocol;
-  MethodDescription = protocol_getMethodDescription(v4, a3, 1, 1);
+  MethodDescription = protocol_getMethodDescription(v4, selector, 1, 1);
   if (MethodDescription.types)
   {
     v6 = [MEMORY[0x1E695DF68] signatureWithObjCTypes:MethodDescription.types];
@@ -80,27 +80,27 @@
   return v6;
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
-  v8 = a3;
-  v4 = [v8 methodSignature];
-  v5 = [v4 methodReturnType];
+  invocationCopy = invocation;
+  methodSignature = [invocationCopy methodSignature];
+  methodReturnType = [methodSignature methodReturnType];
   do
   {
-    if (!v5)
+    if (!methodReturnType)
     {
 
       goto LABEL_8;
     }
 
-    v6 = *v5++;
+    v6 = *methodReturnType++;
   }
 
   while (v6 != 118);
 
   if (self->_target)
   {
-    [v8 invokeWithTarget:?];
+    [invocationCopy invokeWithTarget:?];
   }
 
   else
@@ -108,8 +108,8 @@
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     [WeakRetained serviceProxyWillQueueInvocation:self];
 
-    [v8 retainArguments];
-    [(NSMutableArray *)self->_queuedInvocations addObject:v8];
+    [invocationCopy retainArguments];
+    [(NSMutableArray *)self->_queuedInvocations addObject:invocationCopy];
   }
 
 LABEL_8:

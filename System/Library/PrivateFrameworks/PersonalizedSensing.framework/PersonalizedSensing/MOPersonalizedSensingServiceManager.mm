@@ -1,21 +1,21 @@
 @interface MOPersonalizedSensingServiceManager
-+ (id)generatePromptSuggestionWithTemplate:(id)a3 context:(id)a4 options:(id)a5;
-+ (void)handleDbAccessRenewalTask:(id)a3;
++ (id)generatePromptSuggestionWithTemplate:(id)template context:(id)context options:(id)options;
++ (void)handleDbAccessRenewalTask:(id)task;
 + (void)primeService;
 - (MOPersonalizedSensingServiceManager)init;
-- (id)makeNewConnectionWithInterfaceFor:(id)a3;
-- (void)_fetchPersonalizedSyncContextWithOptions:(id)a3 withReply:(id)a4;
+- (id)makeNewConnectionWithInterfaceFor:(id)for;
+- (void)_fetchPersonalizedSyncContextWithOptions:(id)options withReply:(id)reply;
 - (void)dealloc;
-- (void)fetchContextWithOptions:(id)a3 predicates:(id)a4 authorizedTypes:(id)a5 withReply:(id)a6;
-- (void)fetchPersonalizedContextWithOptions:(id)a3 withReply:(id)a4;
-- (void)notifyContextFeedback:(id)a3 withReply:(id)a4;
-- (void)refreshMomentsContextWithReply:(id)a3;
-- (void)requestDBAccessForPersonalizedSensingServiceWithReply:(id)a3;
+- (void)fetchContextWithOptions:(id)options predicates:(id)predicates authorizedTypes:(id)types withReply:(id)reply;
+- (void)fetchPersonalizedContextWithOptions:(id)options withReply:(id)reply;
+- (void)notifyContextFeedback:(id)feedback withReply:(id)reply;
+- (void)refreshMomentsContextWithReply:(id)reply;
+- (void)requestDBAccessForPersonalizedSensingServiceWithReply:(id)reply;
 @end
 
 @implementation MOPersonalizedSensingServiceManager
 
-- (id)makeNewConnectionWithInterfaceFor:(id)a3
+- (id)makeNewConnectionWithInterfaceFor:(id)for
 {
   if (+[MOPersonalizedSensingServiceManager isServiceDeployed])
   {
@@ -125,15 +125,15 @@
   [(MOPersonalizedSensingServiceManager *)&v5 dealloc];
 }
 
-- (void)_fetchPersonalizedSyncContextWithOptions:(id)a3 withReply:(id)a4
+- (void)_fetchPersonalizedSyncContextWithOptions:(id)options withReply:(id)reply
 {
   v5 = _fetchPersonalizedSyncContextWithOptions_withReply__onceToken;
-  v6 = a4;
-  v7 = a3;
-  v9 = v7;
+  replyCopy = reply;
+  optionsCopy = options;
+  v9 = optionsCopy;
   if (v5 == -1)
   {
-    v8 = v7;
+    v8 = optionsCopy;
   }
 
   else
@@ -142,7 +142,7 @@
     v8 = v9;
   }
 
-  [_fetchPersonalizedSyncContextWithOptions_withReply__fetchSyncReader loadPersonalizedContextWithOptions:v8 withReply:v6];
+  [_fetchPersonalizedSyncContextWithOptions_withReply__fetchSyncReader loadPersonalizedContextWithOptions:v8 withReply:replyCopy];
 }
 
 uint64_t __90__MOPersonalizedSensingServiceManager__fetchPersonalizedSyncContextWithOptions_withReply___block_invoke()
@@ -152,11 +152,11 @@ uint64_t __90__MOPersonalizedSensingServiceManager__fetchPersonalizedSyncContext
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)fetchPersonalizedContextWithOptions:(id)a3 withReply:(id)a4
+- (void)fetchPersonalizedContextWithOptions:(id)options withReply:(id)reply
 {
   v36[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  optionsCopy = options;
+  replyCopy = reply;
   v8 = _mo_log_facility_get_os_log(MOLogFacilityPersonalizedSensing);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -172,9 +172,9 @@ uint64_t __90__MOPersonalizedSensingServiceManager__fetchPersonalizedSyncContext
       v29[1] = 3221225472;
       v29[2] = __85__MOPersonalizedSensingServiceManager_fetchPersonalizedContextWithOptions_withReply___block_invoke;
       v29[3] = &unk_279A1EFB8;
-      v9 = v6;
+      v9 = optionsCopy;
       v30 = v9;
-      v10 = v7;
+      v10 = replyCopy;
       v31 = v10;
       v11 = MEMORY[0x25F8B4BE0](v29);
       v24 = MEMORY[0x277D85DD0];
@@ -204,8 +204,8 @@ uint64_t __90__MOPersonalizedSensingServiceManager__fetchPersonalizedSyncContext
       {
         v33 = *MEMORY[0x277CCA450];
         v18 = MEMORY[0x277CCACA8];
-        v19 = [v9 contextRetrieval];
-        v20 = [v18 stringWithFormat:@"fetch Context: invalid contextRetrieval: %u", v19, v24, v25, v26, v27];
+        contextRetrieval = [v9 contextRetrieval];
+        v20 = [v18 stringWithFormat:@"fetch Context: invalid contextRetrieval: %u", contextRetrieval, v24, v25, v26, v27];
         v34 = v20;
         v21 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v34 forKeys:&v33 count:1];
 
@@ -216,7 +216,7 @@ uint64_t __90__MOPersonalizedSensingServiceManager__fetchPersonalizedSyncContext
 
     else
     {
-      [(MOPersonalizedSensingServiceManager *)self _fetchPersonalizedSyncContextWithOptions:v6 withReply:v7];
+      [(MOPersonalizedSensingServiceManager *)self _fetchPersonalizedSyncContextWithOptions:optionsCopy withReply:replyCopy];
     }
   }
 
@@ -234,7 +234,7 @@ uint64_t __90__MOPersonalizedSensingServiceManager__fetchPersonalizedSyncContext
     v36[0] = @"Personalized Sensing unavailable";
     v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v36 forKeys:&v35 count:1];
     v17 = [v15 errorWithDomain:@"MOContextErrorDomain" code:1287 userInfo:v16];
-    (*(v7 + 2))(v7, 0, v17);
+    (*(replyCopy + 2))(replyCopy, 0, v17);
   }
 
   v23 = *MEMORY[0x277D85DE8];
@@ -352,12 +352,12 @@ void __85__MOPersonalizedSensingServiceManager_fetchPersonalizedContextWithOptio
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)fetchContextWithOptions:(id)a3 predicates:(id)a4 authorizedTypes:(id)a5 withReply:(id)a6
+- (void)fetchContextWithOptions:(id)options predicates:(id)predicates authorizedTypes:(id)types withReply:(id)reply
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  optionsCopy = options;
+  predicatesCopy = predicates;
+  typesCopy = types;
+  replyCopy = reply;
   v14 = _mo_log_facility_get_os_log(MOLogFacilityPersonalizedSensing);
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
@@ -369,14 +369,14 @@ void __85__MOPersonalizedSensingServiceManager_fetchPersonalizedContextWithOptio
   v24[1] = 3221225472;
   v24[2] = __100__MOPersonalizedSensingServiceManager_fetchContextWithOptions_predicates_authorizedTypes_withReply___block_invoke;
   v24[3] = &unk_279A1F008;
-  v25 = v10;
-  v26 = v11;
-  v27 = v12;
-  v15 = v13;
+  v25 = optionsCopy;
+  v26 = predicatesCopy;
+  v27 = typesCopy;
+  v15 = replyCopy;
   v28 = v15;
-  v16 = v12;
-  v17 = v11;
-  v18 = v10;
+  v16 = typesCopy;
+  v17 = predicatesCopy;
+  v18 = optionsCopy;
   v19 = MEMORY[0x25F8B4BE0](v24);
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
@@ -457,11 +457,11 @@ void __100__MOPersonalizedSensingServiceManager_fetchContextWithOptions_predicat
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)notifyContextFeedback:(id)a3 withReply:(id)a4
+- (void)notifyContextFeedback:(id)feedback withReply:(id)reply
 {
   v24[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  feedbackCopy = feedback;
+  replyCopy = reply;
   v8 = _mo_log_facility_get_os_log(MOLogFacilityPersonalizedSensing);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -485,8 +485,8 @@ void __100__MOPersonalizedSensingServiceManager_fetchContextWithOptions_predicat
     v19[1] = 3221225472;
     v19[2] = __71__MOPersonalizedSensingServiceManager_notifyContextFeedback_withReply___block_invoke;
     v19[3] = &unk_279A1F058;
-    v20 = v6;
-    v21 = v7;
+    v20 = feedbackCopy;
+    v21 = replyCopy;
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __71__MOPersonalizedSensingServiceManager_notifyContextFeedback_withReply___block_invoke_73;
@@ -510,7 +510,7 @@ void __100__MOPersonalizedSensingServiceManager_fetchContextWithOptions_predicat
     v24[0] = @"Personalized Sensing unavailable";
     v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v24 forKeys:&v23 count:1];
     v15 = [v14 errorWithDomain:@"MOContextErrorDomain" code:1287 userInfo:v13];
-    (*(v7 + 2))(v7, 0, v15);
+    (*(replyCopy + 2))(replyCopy, 0, v15);
   }
 
   v16 = *MEMORY[0x277D85DE8];
@@ -572,9 +572,9 @@ void __71__MOPersonalizedSensingServiceManager_notifyContextFeedback_withReply__
   }
 }
 
-- (void)requestDBAccessForPersonalizedSensingServiceWithReply:(id)a3
+- (void)requestDBAccessForPersonalizedSensingServiceWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v5 = +[MOPlatformInfo isIpad];
   v6 = _mo_log_facility_get_os_log(MOLogFacilityPersonalizedSensing);
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
@@ -586,7 +586,7 @@ void __71__MOPersonalizedSensingServiceManager_notifyContextFeedback_withReply__
       _os_log_impl(&dword_25E48F000, v6, OS_LOG_TYPE_DEFAULT, "PSServiceMgr,requestDBAccessForPersonalizedSensingService is only supported on iPhone, called on iPad so do nothing", buf, 2u);
     }
 
-    v4[2](v4, 0);
+    replyCopy[2](replyCopy, 0);
   }
 
   else
@@ -609,7 +609,7 @@ void __71__MOPersonalizedSensingServiceManager_notifyContextFeedback_withReply__
     v12[1] = 3221225472;
     v12[2] = __93__MOPersonalizedSensingServiceManager_requestDBAccessForPersonalizedSensingServiceWithReply___block_invoke;
     v12[3] = &unk_279A1F0A8;
-    v13 = v4;
+    v13 = replyCopy;
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __93__MOPersonalizedSensingServiceManager_requestDBAccessForPersonalizedSensingServiceWithReply___block_invoke_75;
@@ -665,13 +665,13 @@ void __93__MOPersonalizedSensingServiceManager_requestDBAccessForPersonalizedSen
   v6 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)handleDbAccessRenewalTask:(id)a3
++ (void)handleDbAccessRenewalTask:(id)task
 {
-  v3 = a3;
+  taskCopy = task;
   v4 = MEMORY[0x277CF07F0];
-  v5 = [v3 identifier];
+  identifier = [taskCopy identifier];
   v37 = 0;
-  [v4 reportCustomCheckpoint:502 forTask:v5 error:&v37];
+  [v4 reportCustomCheckpoint:502 forTask:identifier error:&v37];
   v6 = v37;
 
   v7 = _mo_log_facility_get_os_log(MOLogFacilityPersonalizedSensing);
@@ -699,7 +699,7 @@ void __93__MOPersonalizedSensingServiceManager_requestDBAccessForPersonalizedSen
   v32[2] = __65__MOPersonalizedSensingServiceManager_handleDbAccessRenewalTask___block_invoke;
   v32[3] = &unk_279A1F0F0;
   v32[4] = buf;
-  [v3 setExpirationHandler:v32];
+  [taskCopy setExpirationHandler:v32];
   v9 = dispatch_semaphore_create(0);
   v10 = objc_alloc_init(MOPersonalizedSensingServiceManager);
   v30[0] = MEMORY[0x277D85DD0];
@@ -722,7 +722,7 @@ void __93__MOPersonalizedSensingServiceManager_requestDBAccessForPersonalizedSen
   if (v34[24] == 1)
   {
     v29 = 0;
-    v14 = [v3 setTaskExpiredWithRetryAfter:&v29 error:0.0];
+    v14 = [taskCopy setTaskExpiredWithRetryAfter:&v29 error:0.0];
     v15 = v29;
     if (v14)
     {
@@ -742,9 +742,9 @@ void __93__MOPersonalizedSensingServiceManager_requestDBAccessForPersonalizedSen
   }
 
   v23 = MEMORY[0x277CF07F0];
-  v24 = [v3 identifier];
+  identifier2 = [taskCopy identifier];
   v28 = 0;
-  [v23 reportCustomCheckpoint:503 forTask:v24 error:&v28];
+  [v23 reportCustomCheckpoint:503 forTask:identifier2 error:&v28];
   v25 = v28;
 
   if (v25)
@@ -766,7 +766,7 @@ void __93__MOPersonalizedSensingServiceManager_requestDBAccessForPersonalizedSen
     }
   }
 
-  [v3 setTaskCompleted];
+  [taskCopy setTaskCompleted];
 LABEL_22:
 
   _Block_object_dispose(buf, 8);
@@ -788,54 +788,54 @@ intptr_t __65__MOPersonalizedSensingServiceManager_handleDbAccessRenewalTask___b
   return result;
 }
 
-+ (id)generatePromptSuggestionWithTemplate:(id)a3 context:(id)a4 options:(id)a5
++ (id)generatePromptSuggestionWithTemplate:(id)template context:(id)context options:(id)options
 {
   v88 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v7 copy];
+  templateCopy = template;
+  contextCopy = context;
+  optionsCopy = options;
+  v10 = [templateCopy copy];
   v11 = _mo_log_facility_get_os_log(MOLogFacilityPersonalizedSensing);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
-    v12 = [v8 associatedContacts];
-    v13 = [v12 firstObject];
-    v14 = [v8 associatedLocations];
-    [v14 firstObject];
+    associatedContacts = [contextCopy associatedContacts];
+    firstObject = [associatedContacts firstObject];
+    associatedLocations = [contextCopy associatedLocations];
+    [associatedLocations firstObject];
     v79 = v10;
-    v16 = v15 = v9;
-    v17 = [v8 associatedTime];
-    v18 = [v17 firstObject];
+    v16 = v15 = optionsCopy;
+    associatedTime = [contextCopy associatedTime];
+    firstObject2 = [associatedTime firstObject];
     *buf = 138413058;
-    v81 = v7;
+    v81 = templateCopy;
     v82 = 2112;
-    v83 = v13;
+    v83 = firstObject;
     v84 = 2112;
     v85 = v16;
     v86 = 2112;
-    v87 = v18;
+    v87 = firstObject2;
     _os_log_impl(&dword_25E48F000, v11, OS_LOG_TYPE_INFO, "generatePromptSuggestionWithTemplate, input context string: %@, contact meta data, %@, location meta data, %@, time meta data, %@", buf, 0x2Au);
 
-    v9 = v15;
+    optionsCopy = v15;
     v10 = v79;
   }
 
-  if ([v7 contentType])
+  if ([templateCopy contentType])
   {
-    v19 = [v8 associatedContacts];
-    v20 = [v19 count];
+    associatedContacts2 = [contextCopy associatedContacts];
+    v20 = [associatedContacts2 count];
 
     if (v20)
     {
-      v21 = [v8 associatedContacts];
-      v22 = [v21 firstObject];
-      v23 = [v22 contactName];
+      associatedContacts3 = [contextCopy associatedContacts];
+      firstObject3 = [associatedContacts3 firstObject];
+      contactName = [firstObject3 contactName];
 
-      if ((([v23 hasSuffix:@"s"] & 1) != 0 || objc_msgSend(v23, "hasSuffix:", @"S")) && (objc_msgSend(v10, "textString"), v24 = objc_claimAutoreleasedReturnValue(), v25 = objc_msgSend(v24, "containsString:", @"Taylor's"), v24, v25))
+      if ((([contactName hasSuffix:@"s"] & 1) != 0 || objc_msgSend(contactName, "hasSuffix:", @"S")) && (objc_msgSend(v10, "textString"), v24 = objc_claimAutoreleasedReturnValue(), v25 = objc_msgSend(v24, "containsString:", @"Taylor's"), v24, v25))
       {
-        v26 = [v10 textString];
-        v27 = [v23 stringByAppendingString:@"'"];
-        v28 = [v26 stringByReplacingOccurrencesOfString:@"Taylor's" withString:v27];
+        textString = [v10 textString];
+        v27 = [contactName stringByAppendingString:@"'"];
+        v28 = [textString stringByReplacingOccurrencesOfString:@"Taylor's" withString:v27];
 
         [v10 setTextString:v28];
         v29 = _mo_log_facility_get_os_log(MOLogFacilityPersonalizedSensing);
@@ -848,8 +848,8 @@ LABEL_12:
 
       else
       {
-        v30 = [v10 textString];
-        v31 = [v30 containsString:@"Taylor"];
+        textString2 = [v10 textString];
+        v31 = [textString2 containsString:@"Taylor"];
 
         if (!v31)
         {
@@ -858,8 +858,8 @@ LABEL_14:
           goto LABEL_15;
         }
 
-        v32 = [v10 textString];
-        v28 = [v32 stringByReplacingOccurrencesOfString:@"Taylor" withString:v23];
+        textString3 = [v10 textString];
+        v28 = [textString3 stringByReplacingOccurrencesOfString:@"Taylor" withString:contactName];
 
         [v10 setTextString:v28];
         v29 = _mo_log_facility_get_os_log(MOLogFacilityPersonalizedSensing);
@@ -874,28 +874,28 @@ LABEL_14:
   }
 
 LABEL_15:
-  if (([v7 contentType] & 4) == 0)
+  if (([templateCopy contentType] & 4) == 0)
   {
     goto LABEL_22;
   }
 
-  v33 = [v8 associatedLocations];
-  if ([v33 count])
+  associatedLocations2 = [contextCopy associatedLocations];
+  if ([associatedLocations2 count])
   {
-    v34 = [v10 textString];
-    v35 = [v34 containsString:@"placeName"];
+    textString4 = [v10 textString];
+    v35 = [textString4 containsString:@"placeName"];
 
     if (!v35)
     {
       goto LABEL_22;
     }
 
-    v36 = [v8 associatedLocations];
-    v37 = [v36 firstObject];
-    v33 = [v37 place];
+    associatedLocations3 = [contextCopy associatedLocations];
+    firstObject4 = [associatedLocations3 firstObject];
+    associatedLocations2 = [firstObject4 place];
 
-    v38 = [v10 textString];
-    v39 = [v38 stringByReplacingOccurrencesOfString:@"placeName" withString:v33];
+    textString5 = [v10 textString];
+    v39 = [textString5 stringByReplacingOccurrencesOfString:@"placeName" withString:associatedLocations2];
 
     [v10 setTextString:v39];
     v40 = _mo_log_facility_get_os_log(MOLogFacilityPersonalizedSensing);
@@ -906,28 +906,28 @@ LABEL_15:
   }
 
 LABEL_22:
-  if (([v7 contentType] & 8) == 0)
+  if (([templateCopy contentType] & 8) == 0)
   {
     goto LABEL_29;
   }
 
-  v41 = [v8 associatedLocations];
-  if ([v41 count])
+  associatedLocations4 = [contextCopy associatedLocations];
+  if ([associatedLocations4 count])
   {
-    v42 = [v10 textString];
-    v43 = [v42 containsString:@"cityName"];
+    textString6 = [v10 textString];
+    v43 = [textString6 containsString:@"cityName"];
 
     if (!v43)
     {
       goto LABEL_29;
     }
 
-    v44 = [v8 associatedLocations];
-    v45 = [v44 firstObject];
-    v41 = [v45 city];
+    associatedLocations5 = [contextCopy associatedLocations];
+    firstObject5 = [associatedLocations5 firstObject];
+    associatedLocations4 = [firstObject5 city];
 
-    v46 = [v10 textString];
-    v47 = [v46 stringByReplacingOccurrencesOfString:@"cityName" withString:v41];
+    textString7 = [v10 textString];
+    v47 = [textString7 stringByReplacingOccurrencesOfString:@"cityName" withString:associatedLocations4];
 
     [v10 setTextString:v47];
     v48 = _mo_log_facility_get_os_log(MOLogFacilityPersonalizedSensing);
@@ -938,27 +938,27 @@ LABEL_22:
   }
 
 LABEL_29:
-  if (([v7 contentType] & 0x4000) != 0)
+  if (([templateCopy contentType] & 0x4000) != 0)
   {
-    v49 = [v8 associatedTime];
-    if (![v49 count])
+    associatedTime2 = [contextCopy associatedTime];
+    if (![associatedTime2 count])
     {
 LABEL_35:
 
       goto LABEL_36;
     }
 
-    v50 = [v10 textString];
-    v51 = [v50 containsString:@"timeReference"];
+    textString8 = [v10 textString];
+    v51 = [textString8 containsString:@"timeReference"];
 
     if (v51)
     {
-      v52 = [v8 associatedTime];
-      v53 = [v52 firstObject];
-      v49 = [v53 timeReferenceString];
+      associatedTime3 = [contextCopy associatedTime];
+      firstObject6 = [associatedTime3 firstObject];
+      associatedTime2 = [firstObject6 timeReferenceString];
 
-      v54 = [v10 textString];
-      v55 = [v54 stringByReplacingOccurrencesOfString:@"timeReference" withString:v49];
+      textString9 = [v10 textString];
+      v55 = [textString9 stringByReplacingOccurrencesOfString:@"timeReference" withString:associatedTime2];
 
       [v10 setTextString:v55];
       v56 = _mo_log_facility_get_os_log(MOLogFacilityPersonalizedSensing);
@@ -972,35 +972,35 @@ LABEL_35:
   }
 
 LABEL_36:
-  if ([v9 appendMusicString])
+  if ([optionsCopy appendMusicString])
   {
-    v57 = [v8 associatedMusic];
-    v58 = [v57 count];
+    associatedMusic = [contextCopy associatedMusic];
+    v58 = [associatedMusic count];
 
     if (v58)
     {
-      v59 = [v8 associatedMusic];
-      v60 = [v59 count];
+      associatedMusic2 = [contextCopy associatedMusic];
+      v60 = [associatedMusic2 count];
 
       if (v60 == 1)
       {
-        v61 = [v10 textString];
-        v62 = [v8 associatedMusic];
-        [v62 firstObject];
+        textString10 = [v10 textString];
+        associatedMusic3 = [contextCopy associatedMusic];
+        [associatedMusic3 firstObject];
       }
 
       else
       {
-        v63 = [v8 associatedMusic];
-        v64 = arc4random_uniform([v63 count]);
+        associatedMusic4 = [contextCopy associatedMusic];
+        v64 = arc4random_uniform([associatedMusic4 count]);
 
-        v61 = [v10 textString];
-        v62 = [v8 associatedMusic];
-        [v62 objectAtIndexedSubscript:v64];
+        textString10 = [v10 textString];
+        associatedMusic3 = [contextCopy associatedMusic];
+        [associatedMusic3 objectAtIndexedSubscript:v64];
       }
       v65 = ;
-      v66 = [v65 musicString];
-      v67 = [v61 stringByAppendingString:v66];
+      musicString = [v65 musicString];
+      v67 = [textString10 stringByAppendingString:musicString];
       [v10 setTextString:v67];
     }
   }
@@ -1011,8 +1011,8 @@ LABEL_36:
     +[MOPersonalizedSensingServiceManager generatePromptSuggestionWithTemplate:context:options:];
   }
 
-  v69 = [v10 textString];
-  v70 = [v69 containsString:@"placeName"];
+  textString11 = [v10 textString];
+  v70 = [textString11 containsString:@"placeName"];
 
   if (v70)
   {
@@ -1028,8 +1028,8 @@ LABEL_53:
     goto LABEL_54;
   }
 
-  v72 = [v10 textString];
-  v73 = [v72 containsString:@"cityName"];
+  textString12 = [v10 textString];
+  v73 = [textString12 containsString:@"cityName"];
 
   if (v73)
   {
@@ -1042,8 +1042,8 @@ LABEL_53:
     goto LABEL_53;
   }
 
-  v74 = [v10 textString];
-  v75 = [v74 containsString:@"timeReference"];
+  textString13 = [v10 textString];
+  v75 = [textString13 containsString:@"timeReference"];
 
   if (v75)
   {
@@ -1064,10 +1064,10 @@ LABEL_54:
   return v76;
 }
 
-- (void)refreshMomentsContextWithReply:(id)a3
+- (void)refreshMomentsContextWithReply:(id)reply
 {
   v23[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  replyCopy = reply;
   if (+[MOPlatformInfo isIpad])
   {
     v5 = MEMORY[0x277CCA9B8];
@@ -1078,14 +1078,14 @@ LABEL_54:
     v8 = 263;
 LABEL_12:
     v13 = [v7 errorWithDomain:@"MOContextErrorDomain" code:v8 userInfo:v6];
-    v4[2](v4, v13);
+    replyCopy[2](replyCopy, v13);
 
     goto LABEL_13;
   }
 
-  if (!v4)
+  if (!replyCopy)
   {
-    v4 = &__block_literal_global_99;
+    replyCopy = &__block_literal_global_99;
   }
 
   v9 = _mo_log_facility_get_os_log(MOLogFacilityPersonalizedSensing);
@@ -1118,13 +1118,13 @@ LABEL_12:
   v17[1] = 3221225472;
   v17[2] = __70__MOPersonalizedSensingServiceManager_refreshMomentsContextWithReply___block_invoke_100;
   v17[3] = &unk_279A1F0A8;
-  v18 = v4;
+  v18 = replyCopy;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __70__MOPersonalizedSensingServiceManager_refreshMomentsContextWithReply___block_invoke_2;
   v15[3] = &unk_279A1EFE0;
-  v4 = v18;
-  v16 = v4;
+  replyCopy = v18;
+  v16 = replyCopy;
   [(MOConnectionManager *)connectionManager callAsyncProxyUsingBlock:v17 onError:v15];
 
   v6 = v18;

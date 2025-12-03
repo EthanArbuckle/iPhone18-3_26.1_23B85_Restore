@@ -1,12 +1,12 @@
 @interface SPParsecSuggestionsDatastore
-- (id)performQuery:(id)a3;
+- (id)performQuery:(id)query;
 @end
 
 @implementation SPParsecSuggestionsDatastore
 
-- (id)performQuery:(id)a3
+- (id)performQuery:(id)query
 {
-  v4 = a3;
+  queryCopy = query;
   v5 = si_tracing_current_span();
   v6 = *(v5 + 16);
   v23 = *v5;
@@ -22,10 +22,10 @@
   *(v5 + 28) = 102;
   *(v5 + 32) = "[SPParsecSuggestionsDatastore performQuery:]";
   si_tracing_log_span_begin();
-  v11 = [v4 queryContext];
-  v12 = [v11 queryKind];
+  queryContext = [queryCopy queryContext];
+  queryKind = [queryContext queryKind];
 
-  if ((v12 - 1) > 1)
+  if ((queryKind - 1) > 1)
   {
     v13 = 0;
   }
@@ -34,7 +34,7 @@
   {
     v22.receiver = self;
     v22.super_class = SPParsecSuggestionsDatastore;
-    v13 = [(SPParsecDatastore *)&v22 performQuery:v4];
+    v13 = [(SPParsecDatastore *)&v22 performQuery:queryCopy];
   }
 
   v14 = *v5;

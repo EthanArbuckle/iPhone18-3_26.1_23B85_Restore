@@ -1,16 +1,16 @@
 @interface VCAggregatorVideoMessaging
-- (VCAggregatorVideoMessaging)initWithDelegate:(id)a3;
+- (VCAggregatorVideoMessaging)initWithDelegate:(id)delegate;
 - (id)aggregatedCallReports;
 - (id)dispatchedVideoMessagingAggregatedReport;
 @end
 
 @implementation VCAggregatorVideoMessaging
 
-- (VCAggregatorVideoMessaging)initWithDelegate:(id)a3
+- (VCAggregatorVideoMessaging)initWithDelegate:(id)delegate
 {
   v5.receiver = self;
   v5.super_class = VCAggregatorVideoMessaging;
-  v3 = [(VCAggregator *)&v5 initWithDelegate:a3 nwParentActivity:0];
+  v3 = [(VCAggregator *)&v5 initWithDelegate:delegate nwParentActivity:0];
   if (!v3)
   {
     [VCAggregatorVideoMessaging initWithDelegate:];
@@ -22,9 +22,9 @@
 - (id)dispatchedVideoMessagingAggregatedReport
 {
   dispatch_assert_queue_V2(self->super._stateQueue);
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  [(VCMediaRecorderDataCollector *)[(VCAggregator *)self mediaRecorderDataCollector] addAggregatedMediaRecorderMetricsToReport:v3];
-  return v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  [(VCMediaRecorderDataCollector *)[(VCAggregator *)self mediaRecorderDataCollector] addAggregatedMediaRecorderMetricsToReport:dictionary];
+  return dictionary;
 }
 
 - (id)aggregatedCallReports

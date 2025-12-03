@@ -1,27 +1,27 @@
 @interface DOCSBFolderPresentationController
-- (BOOL)collectionView:(id)a3 canPerformPrimaryActionForItemAtIndexPath:(id)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
+- (BOOL)collectionView:(id)view canPerformPrimaryActionForItemAtIndexPath:(id)path;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (NSString)description;
 - (_TtC21DockFolderViewService33DOCSBFolderPresentationController)init;
-- (id)collectionView:(id)a3 contextMenuConfiguration:(id)a4 dismissalPreviewForItemAtIndexPath:(id)a5;
-- (id)collectionView:(id)a3 contextMenuConfiguration:(id)a4 highlightPreviewForItemAtIndexPath:(id)a5;
-- (id)collectionView:(id)a3 contextMenuConfigurationForItemsAtIndexPaths:(id)a4 point:(CGPoint)a5;
-- (id)collectionView:(id)a3 dragPreviewParametersForItemAtIndexPath:(id)a4;
-- (id)collectionView:(id)a3 itemsForAddingToDragSession:(id)a4 atIndexPath:(id)a5 point:(CGPoint)a6;
-- (id)collectionView:(id)a3 itemsForBeginningDragSession:(id)a4 atIndexPath:(id)a5;
-- (int64_t)_collectionView:(id)a3 dataOwnerForDragSession:(id)a4 atIndexPath:(id)a5;
-- (void)collectionView:(id)a3 dragSessionDidEnd:(id)a4;
-- (void)collectionView:(id)a3 dragSessionWillBegin:(id)a4;
-- (void)collectionView:(id)a3 performPrimaryActionForItemAtIndexPath:(id)a4;
-- (void)handleCollectionViewBackgroundTapped:(id)a3;
-- (void)handleDockIconTapped:(id)a3;
+- (id)collectionView:(id)view contextMenuConfiguration:(id)configuration dismissalPreviewForItemAtIndexPath:(id)path;
+- (id)collectionView:(id)view contextMenuConfiguration:(id)configuration highlightPreviewForItemAtIndexPath:(id)path;
+- (id)collectionView:(id)view contextMenuConfigurationForItemsAtIndexPaths:(id)paths point:(CGPoint)point;
+- (id)collectionView:(id)view dragPreviewParametersForItemAtIndexPath:(id)path;
+- (id)collectionView:(id)view itemsForAddingToDragSession:(id)session atIndexPath:(id)path point:(CGPoint)point;
+- (id)collectionView:(id)view itemsForBeginningDragSession:(id)session atIndexPath:(id)path;
+- (int64_t)_collectionView:(id)view dataOwnerForDragSession:(id)session atIndexPath:(id)path;
+- (void)collectionView:(id)view dragSessionDidEnd:(id)end;
+- (void)collectionView:(id)view dragSessionWillBegin:(id)begin;
+- (void)collectionView:(id)view performPrimaryActionForItemAtIndexPath:(id)path;
+- (void)handleCollectionViewBackgroundTapped:(id)tapped;
+- (void)handleDockIconTapped:(id)tapped;
 @end
 
 @implementation DOCSBFolderPresentationController
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_10001BD78();
 
   v3 = String._bridgeToObjectiveC()();
@@ -36,7 +36,7 @@
   return result;
 }
 
-- (BOOL)collectionView:(id)a3 canPerformPrimaryActionForItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view canPerformPrimaryActionForItemAtIndexPath:(id)path
 {
   v4 = type metadata accessor for IndexPath();
   v5 = *(v4 - 8);
@@ -48,7 +48,7 @@
   return 1;
 }
 
-- (void)collectionView:(id)a3 performPrimaryActionForItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view performPrimaryActionForItemAtIndexPath:(id)path
 {
   v6 = type metadata accessor for IndexPath();
   v7 = *(v6 - 8);
@@ -56,25 +56,25 @@
   __chkstk_darwin(v6);
   v10 = &v13 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v11 = a3;
-  v12 = self;
-  sub_100029E84(v11);
+  viewCopy = view;
+  selfCopy = self;
+  sub_100029E84(viewCopy);
 
   (*(v7 + 8))(v10, v6);
 }
 
-- (id)collectionView:(id)a3 contextMenuConfigurationForItemsAtIndexPaths:(id)a4 point:(CGPoint)a5
+- (id)collectionView:(id)view contextMenuConfigurationForItemsAtIndexPaths:(id)paths point:(CGPoint)point
 {
   type metadata accessor for IndexPath();
   v7 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v8 = a3;
-  v9 = self;
+  viewCopy = view;
+  selfCopy = self;
   v10 = sub_10003EE74(v7);
 
   return v10;
 }
 
-- (id)collectionView:(id)a3 contextMenuConfiguration:(id)a4 highlightPreviewForItemAtIndexPath:(id)a5
+- (id)collectionView:(id)view contextMenuConfiguration:(id)configuration highlightPreviewForItemAtIndexPath:(id)path
 {
   v8 = type metadata accessor for IndexPath();
   v9 = *(v8 - 8);
@@ -82,17 +82,17 @@
   __chkstk_darwin(v8);
   v12 = &v18 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v13 = a3;
-  v14 = a4;
-  v15 = self;
-  v16 = sub_10002A530(v13, v14);
+  viewCopy = view;
+  configurationCopy = configuration;
+  selfCopy = self;
+  v16 = sub_10002A530(viewCopy, configurationCopy);
 
   (*(v9 + 8))(v12, v8);
 
   return v16;
 }
 
-- (id)collectionView:(id)a3 contextMenuConfiguration:(id)a4 dismissalPreviewForItemAtIndexPath:(id)a5
+- (id)collectionView:(id)view contextMenuConfiguration:(id)configuration dismissalPreviewForItemAtIndexPath:(id)path
 {
   v8 = type metadata accessor for IndexPath();
   v9 = *(v8 - 8);
@@ -100,18 +100,18 @@
   __chkstk_darwin(v8);
   v12 = &v19 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v13 = a3;
-  v14 = a4;
-  v15 = self;
+  viewCopy = view;
+  configurationCopy = configuration;
+  selfCopy = self;
   isa = IndexPath._bridgeToObjectiveC()().super.isa;
-  v17 = [(DOCSBFolderPresentationController *)v15 collectionView:v13 contextMenuConfiguration:v14 highlightPreviewForItemAtIndexPath:isa];
+  v17 = [(DOCSBFolderPresentationController *)selfCopy collectionView:viewCopy contextMenuConfiguration:configurationCopy highlightPreviewForItemAtIndexPath:isa];
 
   (*(v9 + 8))(v12, v8);
 
   return v17;
 }
 
-- (id)collectionView:(id)a3 itemsForBeginningDragSession:(id)a4 atIndexPath:(id)a5
+- (id)collectionView:(id)view itemsForBeginningDragSession:(id)session atIndexPath:(id)path
 {
   v8 = type metadata accessor for IndexPath();
   v9 = *(v8 - 8);
@@ -119,10 +119,10 @@
   __chkstk_darwin(v8);
   v12 = &v17 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v13 = a3;
+  viewCopy = view;
   swift_unknownObjectRetain();
-  v14 = self;
-  sub_10003F3EC(a4, v12);
+  selfCopy = self;
+  sub_10003F3EC(session, v12);
 
   swift_unknownObjectRelease();
   (*(v9 + 8))(v12, v8);
@@ -132,7 +132,7 @@
   return v15.super.isa;
 }
 
-- (id)collectionView:(id)a3 itemsForAddingToDragSession:(id)a4 atIndexPath:(id)a5 point:(CGPoint)a6
+- (id)collectionView:(id)view itemsForAddingToDragSession:(id)session atIndexPath:(id)path point:(CGPoint)point
 {
   v9 = type metadata accessor for IndexPath();
   v10 = *(v9 - 8);
@@ -140,10 +140,10 @@
   __chkstk_darwin(v9);
   v13 = &v18 - ((v12 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v14 = a3;
+  viewCopy = view;
   swift_unknownObjectRetain();
-  v15 = self;
-  sub_10003F838(a4, v13);
+  selfCopy = self;
+  sub_10003F838(session, v13);
 
   swift_unknownObjectRelease();
   (*(v10 + 8))(v13, v9);
@@ -153,7 +153,7 @@
   return v16.super.isa;
 }
 
-- (id)collectionView:(id)a3 dragPreviewParametersForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view dragPreviewParametersForItemAtIndexPath:(id)path
 {
   v6 = type metadata accessor for IndexPath();
   v7 = *(v6 - 8);
@@ -161,8 +161,8 @@
   __chkstk_darwin(v6);
   v10 = &v15 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v11 = a3;
-  v12 = self;
+  viewCopy = view;
+  selfCopy = self;
   v13 = sub_10003FBCC(v10);
 
   (*(v7 + 8))(v10, v6);
@@ -170,33 +170,33 @@
   return v13;
 }
 
-- (void)collectionView:(id)a3 dragSessionWillBegin:(id)a4
+- (void)collectionView:(id)view dragSessionWillBegin:(id)begin
 {
-  v5 = a3;
+  viewCopy = view;
   swift_unknownObjectRetain();
-  v6 = self;
-  sub_10004001C(v5);
+  selfCopy = self;
+  sub_10004001C(viewCopy);
 
   swift_unknownObjectRelease();
 }
 
-- (void)collectionView:(id)a3 dragSessionDidEnd:(id)a4
+- (void)collectionView:(id)view dragSessionDidEnd:(id)end
 {
-  v5 = a3;
+  viewCopy = view;
   swift_unknownObjectRetain();
-  v6 = self;
-  sub_1000402E4(v5);
+  selfCopy = self;
+  sub_1000402E4(viewCopy);
 
   swift_unknownObjectRelease();
 }
 
-- (int64_t)_collectionView:(id)a3 dataOwnerForDragSession:(id)a4 atIndexPath:(id)a5
+- (int64_t)_collectionView:(id)view dataOwnerForDragSession:(id)session atIndexPath:(id)path
 {
   v8 = sub_10000589C(&qword_1000BC448, &qword_100090B98);
   v9 = *(*(v8 - 8) + 64);
   __chkstk_darwin(v8 - 8);
   v11 = &v18 - v10;
-  if (a5)
+  if (path)
   {
     static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
     v12 = type metadata accessor for IndexPath();
@@ -209,9 +209,9 @@
     (*(*(v13 - 8) + 56))(v11, 1, 1, v13);
   }
 
-  v14 = a3;
+  viewCopy = view;
   swift_unknownObjectRetain();
-  v15 = self;
+  selfCopy = self;
   v16 = sub_100040574(v11);
 
   swift_unknownObjectRelease();
@@ -219,25 +219,25 @@
   return v16;
 }
 
-- (void)handleDockIconTapped:(id)a3
+- (void)handleDockIconTapped:(id)tapped
 {
-  v4 = a3;
-  v5 = self;
+  tappedCopy = tapped;
+  selfCopy = self;
   sub_10004070C();
 }
 
-- (void)handleCollectionViewBackgroundTapped:(id)a3
+- (void)handleCollectionViewBackgroundTapped:(id)tapped
 {
-  v4 = a3;
-  v5 = self;
+  tappedCopy = tapped;
+  selfCopy = self;
   sub_100040A30();
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(self) = sub_10002D980(v4);
+  beginCopy = begin;
+  selfCopy = self;
+  LOBYTE(self) = sub_10002D980(beginCopy);
 
   return self & 1;
 }

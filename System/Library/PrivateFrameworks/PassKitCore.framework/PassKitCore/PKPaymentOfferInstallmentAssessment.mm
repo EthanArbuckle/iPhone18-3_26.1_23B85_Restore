@@ -1,16 +1,16 @@
 @interface PKPaymentOfferInstallmentAssessment
-- (BOOL)isEqual:(id)a3;
-- (PKPaymentOfferInstallmentAssessment)initWithCoder:(id)a3;
-- (PKPaymentOfferInstallmentAssessment)initWithDictionary:(id)a3 sessionIdentifier:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (PKPaymentOfferInstallmentAssessment)initWithCoder:(id)coder;
+- (PKPaymentOfferInstallmentAssessment)initWithDictionary:(id)dictionary sessionIdentifier:(id)identifier;
 - (id)_init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (id)ineligibleDynamicContent;
-- (id)installmentOfferWithIdentifier:(id)a3;
+- (id)installmentOfferWithIdentifier:(id)identifier;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)populatePreferredLanguage:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)populatePreferredLanguage:(id)language;
 @end
 
 @implementation PKPaymentOfferInstallmentAssessment
@@ -22,11 +22,11 @@
   return [(PKPaymentOfferInstallmentAssessment *)&v3 init];
 }
 
-- (PKPaymentOfferInstallmentAssessment)initWithDictionary:(id)a3 sessionIdentifier:(id)a4
+- (PKPaymentOfferInstallmentAssessment)initWithDictionary:(id)dictionary sessionIdentifier:(id)identifier
 {
   v67 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  identifierCopy = identifier;
   v65.receiver = self;
   v65.super_class = PKPaymentOfferInstallmentAssessment;
   v8 = [(PKPaymentOfferInstallmentAssessment *)&v65 init];
@@ -36,13 +36,13 @@
     goto LABEL_48;
   }
 
-  objc_storeStrong(&v8->_sessionIdentifier, a4);
-  v10 = [v6 PKStringForKey:@"identifier"];
+  objc_storeStrong(&v8->_sessionIdentifier, identifier);
+  v10 = [dictionaryCopy PKStringForKey:@"identifier"];
   identifier = v9->_identifier;
   v9->_identifier = v10;
 
   v12 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v13 = [v6 PKArrayContaining:objc_opt_class() forKey:@"offers"];
+  v13 = [dictionaryCopy PKArrayContaining:objc_opt_class() forKey:@"offers"];
   v61 = 0u;
   v62 = 0u;
   v63 = 0u;
@@ -75,7 +75,7 @@
     while (v15);
   }
 
-  v19 = [v6 PKStringForKey:@"offerEligibility"];
+  v19 = [dictionaryCopy PKStringForKey:@"offerEligibility"];
   v20 = v19;
   if (v19 == @"eligible")
   {
@@ -173,11 +173,11 @@ LABEL_41:
   offers = v9->_offers;
   v9->_offers = v50;
 
-  v52 = [v6 PKStringForKey:@"selectedOfferIdentifier"];
+  v52 = [dictionaryCopy PKStringForKey:@"selectedOfferIdentifier"];
   selectedOfferIdentifier = v9->_selectedOfferIdentifier;
   v9->_selectedOfferIdentifier = v52;
 
-  v54 = [v6 PKDictionaryForKey:@"dynamicContent"];
+  v54 = [dictionaryCopy PKDictionaryForKey:@"dynamicContent"];
   if ([v54 count])
   {
     v55 = [[PKPaymentOfferDynamicContent alloc] initWithDictionary:v54];
@@ -185,7 +185,7 @@ LABEL_41:
     v9->_dynamicContent = v55;
   }
 
-  v57 = [v6 PKDictionaryForKey:@"action"];
+  v57 = [dictionaryCopy PKDictionaryForKey:@"action"];
   if ([v57 count])
   {
     v58 = [[PKPaymentOfferAction alloc] initWithDictionary:v57];
@@ -208,30 +208,30 @@ LABEL_48:
   v5 = [(NSArray *)self->_offers pk_arrayBySafelyApplyingBlock:&__block_literal_global_183];
   [v3 setObject:v5 forKeyedSubscript:@"offers"];
 
-  v6 = [(PKPaymentOfferAction *)self->_action dictionaryRepresentation];
-  [v3 setObject:v6 forKeyedSubscript:@"action"];
+  dictionaryRepresentation = [(PKPaymentOfferAction *)self->_action dictionaryRepresentation];
+  [v3 setObject:dictionaryRepresentation forKeyedSubscript:@"action"];
 
   [v3 setObject:self->_selectedOfferIdentifier forKeyedSubscript:@"selectedOfferIdentifier"];
-  v7 = [(PKPaymentOfferDynamicContent *)self->_dynamicContent dictionaryRepresentation];
-  [v3 setObject:v7 forKeyedSubscript:@"dynamicContent"];
+  dictionaryRepresentation2 = [(PKPaymentOfferDynamicContent *)self->_dynamicContent dictionaryRepresentation];
+  [v3 setObject:dictionaryRepresentation2 forKeyedSubscript:@"dynamicContent"];
 
   v8 = [v3 copy];
 
   return v8;
 }
 
-- (id)installmentOfferWithIdentifier:(id)a3
+- (id)installmentOfferWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  identifierCopy = identifier;
+  v5 = identifierCopy;
+  if (identifierCopy)
   {
     offers = self->_offers;
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __70__PKPaymentOfferInstallmentAssessment_installmentOfferWithIdentifier___block_invoke;
     v9[3] = &unk_1E79DEAE8;
-    v10 = v4;
+    v10 = identifierCopy;
     v7 = [(NSArray *)offers pk_firstObjectPassingTest:v9];
   }
 
@@ -267,10 +267,10 @@ uint64_t __70__PKPaymentOfferInstallmentAssessment_installmentOfferWithIdentifie
   return v8;
 }
 
-- (void)populatePreferredLanguage:(id)a3
+- (void)populatePreferredLanguage:(id)language
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  languageCopy = language;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -291,7 +291,7 @@ uint64_t __70__PKPaymentOfferInstallmentAssessment_installmentOfferWithIdentifie
           objc_enumerationMutation(v5);
         }
 
-        [*(*(&v10 + 1) + 8 * v9++) setPreferredLanguage:{v4, v10}];
+        [*(*(&v10 + 1) + 8 * v9++) setPreferredLanguage:{languageCopy, v10}];
       }
 
       while (v7 != v9);
@@ -339,18 +339,18 @@ LABEL_7:
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
 
   else
   {
-    if (v4)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -530,39 +530,39 @@ LABEL_37:
   return v3;
 }
 
-- (PKPaymentOfferInstallmentAssessment)initWithCoder:(id)a3
+- (PKPaymentOfferInstallmentAssessment)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v22.receiver = self;
   v22.super_class = PKPaymentOfferInstallmentAssessment;
   v5 = [(PKPaymentOfferInstallmentAssessment *)&v22 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sessionIdentifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sessionIdentifier"];
     sessionIdentifier = v5->_sessionIdentifier;
     v5->_sessionIdentifier = v8;
 
-    v5->_offerEligibility = [v4 decodeIntegerForKey:@"offerEligibility"];
+    v5->_offerEligibility = [coderCopy decodeIntegerForKey:@"offerEligibility"];
     v10 = MEMORY[0x1E695DFD8];
     v11 = objc_opt_class();
     v12 = [v10 setWithObjects:{v11, objc_opt_class(), 0}];
-    v13 = [v4 decodeObjectOfClasses:v12 forKey:@"offers"];
+    v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"offers"];
     offers = v5->_offers;
     v5->_offers = v13;
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"action"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"action"];
     action = v5->_action;
     v5->_action = v15;
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"selectedOfferIdentifier"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"selectedOfferIdentifier"];
     selectedOfferIdentifier = v5->_selectedOfferIdentifier;
     v5->_selectedOfferIdentifier = v17;
 
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dynamicContent"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dynamicContent"];
     dynamicContent = v5->_dynamicContent;
     v5->_dynamicContent = v19;
   }
@@ -570,44 +570,44 @@ LABEL_37:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"identifier"];
-  [v5 encodeObject:self->_sessionIdentifier forKey:@"sessionIdentifier"];
-  [v5 encodeInteger:self->_offerEligibility forKey:@"offerEligibility"];
-  [v5 encodeObject:self->_offers forKey:@"offers"];
-  [v5 encodeObject:self->_action forKey:@"action"];
-  [v5 encodeObject:self->_selectedOfferIdentifier forKey:@"selectedOfferIdentifier"];
-  [v5 encodeObject:self->_dynamicContent forKey:@"dynamicContent"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_sessionIdentifier forKey:@"sessionIdentifier"];
+  [coderCopy encodeInteger:self->_offerEligibility forKey:@"offerEligibility"];
+  [coderCopy encodeObject:self->_offers forKey:@"offers"];
+  [coderCopy encodeObject:self->_action forKey:@"action"];
+  [coderCopy encodeObject:self->_selectedOfferIdentifier forKey:@"selectedOfferIdentifier"];
+  [coderCopy encodeObject:self->_dynamicContent forKey:@"dynamicContent"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[PKPaymentOfferInstallmentAssessment allocWithZone:](PKPaymentOfferInstallmentAssessment init];
-  v6 = [(NSString *)self->_identifier copyWithZone:a3];
+  v6 = [(NSString *)self->_identifier copyWithZone:zone];
   identifier = v5->_identifier;
   v5->_identifier = v6;
 
-  v8 = [(NSString *)self->_sessionIdentifier copyWithZone:a3];
+  v8 = [(NSString *)self->_sessionIdentifier copyWithZone:zone];
   sessionIdentifier = v5->_sessionIdentifier;
   v5->_sessionIdentifier = v8;
 
   v5->_offerEligibility = self->_offerEligibility;
-  v10 = [(NSArray *)self->_offers copyWithZone:a3];
+  v10 = [(NSArray *)self->_offers copyWithZone:zone];
   offers = v5->_offers;
   v5->_offers = v10;
 
-  v12 = [(PKPaymentOfferAction *)self->_action copyWithZone:a3];
+  v12 = [(PKPaymentOfferAction *)self->_action copyWithZone:zone];
   action = v5->_action;
   v5->_action = v12;
 
-  v14 = [(NSString *)self->_selectedOfferIdentifier copyWithZone:a3];
+  v14 = [(NSString *)self->_selectedOfferIdentifier copyWithZone:zone];
   selectedOfferIdentifier = v5->_selectedOfferIdentifier;
   v5->_selectedOfferIdentifier = v14;
 
-  v16 = [(PKPaymentOfferDynamicContent *)self->_dynamicContent copyWithZone:a3];
+  v16 = [(PKPaymentOfferDynamicContent *)self->_dynamicContent copyWithZone:zone];
   dynamicContent = v5->_dynamicContent;
   v5->_dynamicContent = v16;
 

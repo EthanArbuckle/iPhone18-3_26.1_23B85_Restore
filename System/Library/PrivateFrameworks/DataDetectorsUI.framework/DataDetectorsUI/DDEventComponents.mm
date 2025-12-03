@@ -1,30 +1,30 @@
 @interface DDEventComponents
-+ (id)_eventComponents:(id)a3 matchingResult:(__DDResult *)a4 context:(id)a5;
-+ (id)_eventComponents:(id)a3 withSuggestedTitleFromNaturalLanguageContext:(id)a4 context:(id)a5;
-+ (id)_eventsFromIntelligentSuggestions:(id)a3;
-+ (id)_eventsFromNaturalLanguageText:(id)a3 context:(id)a4;
-+ (id)_messageWithNaturalLanguageContext:(id)a3 context:(id)a4;
-+ (id)bestEventComponentsForResult:(__DDResult *)a3 withNaturalLanguageContext:(id)a4 suggestionsContext:(id)a5 context:(id)a6;
-- (DDEventComponents)initWithCoder:(id)a3;
++ (id)_eventComponents:(id)components matchingResult:(__DDResult *)result context:(id)context;
++ (id)_eventComponents:(id)components withSuggestedTitleFromNaturalLanguageContext:(id)context context:(id)a5;
++ (id)_eventsFromIntelligentSuggestions:(id)suggestions;
++ (id)_eventsFromNaturalLanguageText:(id)text context:(id)context;
++ (id)_messageWithNaturalLanguageContext:(id)context context:(id)a4;
++ (id)bestEventComponentsForResult:(__DDResult *)result withNaturalLanguageContext:(id)context suggestionsContext:(id)suggestionsContext context:(id)a6;
+- (DDEventComponents)initWithCoder:(id)coder;
 - (_NSRange)originRange;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DDEventComponents
 
-+ (id)bestEventComponentsForResult:(__DDResult *)a3 withNaturalLanguageContext:(id)a4 suggestionsContext:(id)a5 context:(id)a6
++ (id)bestEventComponentsForResult:(__DDResult *)result withNaturalLanguageContext:(id)context suggestionsContext:(id)suggestionsContext context:(id)a6
 {
   v31[1] = *MEMORY[0x277D85DE8];
-  v10 = a4;
-  v11 = a5;
+  contextCopy = context;
+  suggestionsContextCopy = suggestionsContext;
   v12 = a6;
-  v13 = [v11 bundleIdentifier];
+  bundleIdentifier = [suggestionsContextCopy bundleIdentifier];
   v14 = CFPreferencesCopyAppValue(@"AppCanShowSiriSuggestionsBlacklist", @"com.apple.suggestions");
-  v15 = [v14 containsObject:v13];
+  v15 = [v14 containsObject:bundleIdentifier];
 
   if (v15)
   {
-    v16 = 0;
+    firstObject = 0;
     goto LABEL_27;
   }
 
@@ -61,10 +61,10 @@ LABEL_8:
   v21 = [MEMORY[0x277CCAE60] valueWithRange:{Range, v20}];
   [v18 setObject:v21 forKey:@"_ActionResultRange"];
 
-  if (v11)
+  if (suggestionsContextCopy)
   {
-    v22 = [a1 _eventsFromIntelligentSuggestions:v11];
-    v23 = [a1 _eventComponents:v22 matchingResult:a3 context:v18];
+    v22 = [self _eventsFromIntelligentSuggestions:suggestionsContextCopy];
+    v23 = [self _eventComponents:v22 matchingResult:result context:v18];
 
     if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
     {
@@ -84,8 +84,8 @@ LABEL_13:
       }
 
 LABEL_21:
-      v24 = [a1 _eventsFromNaturalLanguageText:v10 context:v18];
-      v27 = [a1 _eventComponents:v24 matchingResult:a3 context:v18];
+      v24 = [self _eventsFromNaturalLanguageText:contextCopy context:v18];
+      v27 = [self _eventComponents:v24 matchingResult:result context:v18];
       goto LABEL_22;
     }
   }
@@ -100,9 +100,9 @@ LABEL_14:
   if (_os_feature_enabled_impl())
   {
     v24 = [v23 objectAtIndexedSubscript:0];
-    v25 = [v24 eventTypeIdentifier];
+    eventTypeIdentifier = [v24 eventTypeIdentifier];
 
-    if (!v25)
+    if (!eventTypeIdentifier)
     {
       goto LABEL_23;
     }
@@ -112,7 +112,7 @@ LABEL_14:
       +[DDEventComponents bestEventComponentsForResult:withNaturalLanguageContext:suggestionsContext:context:];
     }
 
-    v26 = [a1 _eventComponents:v24 withSuggestedTitleFromNaturalLanguageContext:v10 context:v18];
+    v26 = [self _eventComponents:v24 withSuggestedTitleFromNaturalLanguageContext:contextCopy context:v18];
     v31[0] = v26;
     v27 = [MEMORY[0x277CBEA60] arrayWithObjects:v31 count:1];
 
@@ -123,7 +123,7 @@ LABEL_22:
 LABEL_23:
   }
 
-  v16 = [v23 firstObject];
+  firstObject = [v23 firstObject];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     +[DDEventComponents bestEventComponentsForResult:withNaturalLanguageContext:suggestionsContext:context:];
@@ -132,35 +132,35 @@ LABEL_23:
 LABEL_27:
   v28 = *MEMORY[0x277D85DE8];
 
-  return v16;
+  return firstObject;
 }
 
-- (DDEventComponents)initWithCoder:(id)a3
+- (DDEventComponents)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = DDEventComponents;
   v5 = [(DDEventComponents *)&v17 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"title"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"title"];
     title = v5->_title;
     v5->_title = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"eventTypeIdentifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"eventTypeIdentifier"];
     eventTypeIdentifier = v5->_eventTypeIdentifier;
     v5->_eventTypeIdentifier = v8;
 
-    v5->_source = [v4 decodeIntegerForKey:@"source"];
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"startDate"];
+    v5->_source = [coderCopy decodeIntegerForKey:@"source"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"startDate"];
     startDate = v5->_startDate;
     v5->_startDate = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"endDate"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"endDate"];
     endDate = v5->_endDate;
     v5->_endDate = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"originRange"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"originRange"];
     v5->_originRange.location = [v14 rangeValue];
     v5->_originRange.length = v15;
   }
@@ -168,24 +168,24 @@ LABEL_27:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   title = self->_title;
-  v5 = a3;
-  [v5 encodeObject:title forKey:@"title"];
-  [v5 encodeObject:self->_eventTypeIdentifier forKey:@"eventTypeIdentifier"];
-  [v5 encodeInteger:self->_source forKey:@"source"];
-  [v5 encodeObject:self->_startDate forKey:@"startDate"];
-  [v5 encodeObject:self->_endDate forKey:@"endDate"];
+  coderCopy = coder;
+  [coderCopy encodeObject:title forKey:@"title"];
+  [coderCopy encodeObject:self->_eventTypeIdentifier forKey:@"eventTypeIdentifier"];
+  [coderCopy encodeInteger:self->_source forKey:@"source"];
+  [coderCopy encodeObject:self->_startDate forKey:@"startDate"];
+  [coderCopy encodeObject:self->_endDate forKey:@"endDate"];
   v6 = [MEMORY[0x277CCAE60] valueWithRange:{self->_originRange.location, self->_originRange.length}];
-  [v5 encodeObject:v6 forKey:@"originRange"];
+  [coderCopy encodeObject:v6 forKey:@"originRange"];
 }
 
-+ (id)_eventComponents:(id)a3 matchingResult:(__DDResult *)a4 context:(id)a5
++ (id)_eventComponents:(id)components matchingResult:(__DDResult *)result context:(id)context
 {
-  v7 = a3;
-  v8 = a5;
-  if (a4)
+  componentsCopy = components;
+  contextCopy = context;
+  if (result)
   {
     Range = DDResultGetRange();
     v23[0] = MEMORY[0x277D85DD0];
@@ -195,15 +195,15 @@ LABEL_27:
     v23[4] = Range;
     v23[5] = v10;
     v11 = [MEMORY[0x277CCAC30] predicateWithBlock:v23];
-    a4 = [v7 filteredArrayUsingPredicate:v11];
+    result = [componentsCopy filteredArrayUsingPredicate:v11];
 
     v12 = objc_alloc(MEMORY[0x277CBEA80]);
     v13 = [v12 initWithCalendarIdentifier:*MEMORY[0x277CBE5C0]];
-    v14 = [v8 objectForKey:@"_ActionResultDate"];
+    v14 = [contextCopy objectForKey:@"_ActionResultDate"];
 
     if (v14)
     {
-      v15 = [v8 objectForKey:@"_ActionResultDate"];
+      v15 = [contextCopy objectForKey:@"_ActionResultDate"];
       v14 = [v13 components:28 fromDate:v15];
     }
 
@@ -216,14 +216,14 @@ LABEL_27:
     v21 = v14;
     v16 = v14;
     v17 = v13;
-    [(__DDResult *)a4 enumerateObjectsUsingBlock:v19];
+    [(__DDResult *)result enumerateObjectsUsingBlock:v19];
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
     {
-      [DDEventComponents _eventComponents:v7 matchingResult:a4 context:?];
+      [DDEventComponents _eventComponents:componentsCopy matchingResult:result context:?];
     }
   }
 
-  return a4;
+  return result;
 }
 
 BOOL __61__DDEventComponents__eventComponents_matchingResult_context___block_invoke(NSRange *a1, void *a2)
@@ -260,41 +260,41 @@ void __61__DDEventComponents__eventComponents_matchingResult_context___block_inv
   }
 }
 
-+ (id)_eventsFromNaturalLanguageText:(id)a3 context:(id)a4
++ (id)_eventsFromNaturalLanguageText:(id)text context:(id)context
 {
   v84[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  textCopy = text;
+  contextCopy = context;
   v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v9 = [v7 objectForKeyedSubscript:@"EventTitle"];
-  [v6 result];
+  v9 = [contextCopy objectForKeyedSubscript:@"EventTitle"];
+  [textCopy result];
   v10 = DDResultGetMatchedString();
-  v11 = [a1 _messageWithNaturalLanguageContext:v6 context:v7];
-  v12 = [v11 messageUnits];
-  v13 = [v12 firstObject];
+  v11 = [self _messageWithNaturalLanguageContext:textCopy context:contextCopy];
+  messageUnits = [v11 messageUnits];
+  firstObject = [messageUnits firstObject];
 
-  v78 = v13;
-  if (v13)
+  v78 = firstObject;
+  if (firstObject)
   {
     v73 = v11;
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
     {
-      [DDEventComponents _eventsFromNaturalLanguageText:v6 context:v10];
+      [DDEventComponents _eventsFromNaturalLanguageText:textCopy context:v10];
     }
 
     v74 = v10;
     v81 = 0;
-    v14 = [v6 associatedResults];
+    associatedResults = [textCopy associatedResults];
     v80 = 0;
-    v77 = dd_beginDateOfEventResultsRespectingSpecificEndDates(v14, 1, v7, &v81, &v80);
+    v77 = dd_beginDateOfEventResultsRespectingSpecificEndDates(associatedResults, 1, contextCopy, &v81, &v80);
     v76 = v80;
 
-    [v6 result];
+    [textCopy result];
     IsApprox = DDResultTimeIsApprox();
     v16 = objc_alloc(MEMORY[0x277CBEA80]);
     v75 = [v16 initWithCalendarIdentifier:*MEMORY[0x277CBE5C0]];
-    v17 = [v7 objectForKey:@"_ActionResultDate"];
-    v18 = [v7 objectForKey:@"_ActionResultTimeZone"];
+    v17 = [contextCopy objectForKey:@"_ActionResultDate"];
+    v18 = [contextCopy objectForKey:@"_ActionResultTimeZone"];
     v19 = objc_alloc_init(DDEventComponents);
     [(DDEventComponents *)v19 setSource:2];
     Helper_x8__OBJC_CLASS___IPEventClassificationType = gotLoadHelper_x8__OBJC_CLASS___IPEventClassificationType(v20);
@@ -351,14 +351,14 @@ LABEL_16:
               }
 
 LABEL_33:
-              v35 = [MEMORY[0x277CBEAA8] date];
+              date = [MEMORY[0x277CBEAA8] date];
               v30 = v75;
-              v31 = [v75 components:62 fromDate:v35];
+              v31 = [v75 components:62 fromDate:date];
 
 LABEL_34:
               [v31 setHour:{objc_msgSend(v23, "defaultStartingTimeHour")}];
-              v36 = [v23 defaultStartingTimeMinutes];
-              [v31 setMinute:v36 & ~(v36 >> 31)];
+              defaultStartingTimeMinutes = [v23 defaultStartingTimeMinutes];
+              [v31 setMinute:defaultStartingTimeMinutes & ~(defaultStartingTimeMinutes >> 31)];
               v37 = [v30 dateFromComponents:v31];
               v38 = v37;
               if (v26 <= 0.0 || v76)
@@ -396,8 +396,8 @@ LABEL_34:
             goto LABEL_15;
           }
 
-          v34 = [MEMORY[0x277CBEBB0] defaultTimeZone];
-          [v75 setTimeZone:v34];
+          defaultTimeZone = [MEMORY[0x277CBEBB0] defaultTimeZone];
+          [v75 setTimeZone:defaultTimeZone];
 
           if (v77)
           {
@@ -434,8 +434,8 @@ LABEL_43:
       v71 = v40;
       if (_os_feature_enabled_impl())
       {
-        v41 = [v6 bundleIdentifier];
-        v42 = [v40 containsObject:v41];
+        bundleIdentifier = [textCopy bundleIdentifier];
+        v42 = [v40 containsObject:bundleIdentifier];
       }
 
       else
@@ -461,8 +461,8 @@ LABEL_43:
       {
         [v23 defaultTitle];
         v70 = v23;
-        v45 = v7;
-        v46 = v6;
+        v45 = contextCopy;
+        v46 = textCopy;
         v47 = v32;
         v48 = v9;
         v50 = v49 = v8;
@@ -471,8 +471,8 @@ LABEL_43:
         v8 = v49;
         v9 = v48;
         v32 = v47;
-        v6 = v46;
-        v7 = v45;
+        textCopy = v46;
+        contextCopy = v45;
         v23 = v70;
 
         if (v79 != 1)
@@ -492,16 +492,16 @@ LABEL_54:
             v57 = [v55 titleGenerationModelPredictionForMessageUnits:v56];
             [(DDEventComponents *)v19 setTitle:v57];
 
-            v58 = [(DDEventComponents *)v19 title];
+            title = [(DDEventComponents *)v19 title];
 
-            if (v58)
+            if (title)
             {
               [(DDEventComponents *)v19 setSource:4];
             }
           }
 
-          v59 = [v23 identifier];
-          [(DDEventComponents *)v19 setEventTypeIdentifier:v59];
+          identifier = [v23 identifier];
+          [(DDEventComponents *)v19 setEventTypeIdentifier:identifier];
 
           [(DDEventComponents *)v19 setStartDate:v32];
           [(DDEventComponents *)v19 setEndDate:v72];
@@ -510,8 +510,8 @@ LABEL_54:
           [(DDEventComponents *)v19 setOriginRange:0x7FFFFFFFFFFFFFFFLL, 0];
 
 LABEL_60:
-          v60 = [(DDEventComponents *)v19 title];
-          if ([v60 length])
+          title2 = [(DDEventComponents *)v19 title];
+          if ([title2 length])
           {
             v10 = v74;
             v61 = v75;
@@ -527,7 +527,7 @@ LABEL_60:
             {
 LABEL_67:
               [v8 addObject:v19];
-              v13 = v8;
+              firstObject = v8;
 
               v11 = v73;
               goto LABEL_68;
@@ -542,9 +542,9 @@ LABEL_67:
             v66 = *(v65 + 728);
             v82 = v78;
             v67 = [MEMORY[0x277CBEA60] arrayWithObjects:&v82 count:{1, v64}];
-            v60 = [v66 fallbackEventTitleForMessageUnits:v67 subject:v9 checkForDateInSubject:1];
+            title2 = [v66 fallbackEventTitleForMessageUnits:v67 subject:v9 checkForDateInSubject:1];
 
-            [(DDEventComponents *)v19 setTitle:v60];
+            [(DDEventComponents *)v19 setTitle:title2];
             [(DDEventComponents *)v19 setOriginRange:0x7FFFFFFFFFFFFFFFLL, 0];
           }
 
@@ -552,9 +552,9 @@ LABEL_67:
         }
       }
 
-      v51 = [(DDEventComponents *)v19 title];
+      title3 = [(DDEventComponents *)v19 title];
 
-      if (v51)
+      if (title3)
       {
         [(DDEventComponents *)v19 setSource:4];
       }
@@ -616,18 +616,18 @@ LABEL_68:
 
   v68 = *MEMORY[0x277D85DE8];
 
-  return v13;
+  return firstObject;
 }
 
-+ (id)_eventsFromIntelligentSuggestions:(id)a3
++ (id)_eventsFromIntelligentSuggestions:(id)suggestions
 {
-  v3 = a3;
+  suggestionsCopy = suggestions;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
-    [DDEventComponents _eventsFromIntelligentSuggestions:v3];
-    v26 = [v3 coreSpotlightUniqueIdentifier];
+    [DDEventComponents _eventsFromIntelligentSuggestions:suggestionsCopy];
+    coreSpotlightUniqueIdentifier = [suggestionsCopy coreSpotlightUniqueIdentifier];
 
-    if (v26)
+    if (coreSpotlightUniqueIdentifier)
     {
       goto LABEL_3;
     }
@@ -637,9 +637,9 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  v4 = [v3 coreSpotlightUniqueIdentifier];
+  coreSpotlightUniqueIdentifier2 = [suggestionsCopy coreSpotlightUniqueIdentifier];
 
-  if (!v4)
+  if (!coreSpotlightUniqueIdentifier2)
   {
     goto LABEL_14;
   }
@@ -647,18 +647,18 @@ LABEL_14:
 LABEL_3:
   gotLoadHelper_x8__OBJC_CLASS___CSSearchableItemAttributeSet(v5);
   v7 = objc_alloc(*(v6 + 1208));
-  v8 = [*MEMORY[0x277CE1DF8] identifier];
-  v9 = [v7 initWithItemContentType:v8];
+  identifier = [*MEMORY[0x277CE1DF8] identifier];
+  v9 = [v7 initWithItemContentType:identifier];
 
   gotLoadHelper_x8__OBJC_CLASS___CSSearchableItem(v10);
   v12 = objc_alloc(*(v11 + 1200));
-  v13 = [v3 coreSpotlightUniqueIdentifier];
-  v14 = [v12 initWithUniqueIdentifier:v13 domainIdentifier:0 attributeSet:v9];
+  coreSpotlightUniqueIdentifier3 = [suggestionsCopy coreSpotlightUniqueIdentifier];
+  v14 = [v12 initWithUniqueIdentifier:coreSpotlightUniqueIdentifier3 domainIdentifier:0 attributeSet:v9];
 
   Helper_x8__OBJC_CLASS___SGSuggestionsService = gotLoadHelper_x8__OBJC_CLASS___SGSuggestionsService(v15);
-  v18 = [*(v17 + 280) serviceForMessages];
+  serviceForMessages = [*(v17 + 280) serviceForMessages];
   v19 = MEMORY[0x277CBEBF8];
-  if (v18)
+  if (serviceForMessages)
   {
     v20 = &v32;
     v32 = 0;
@@ -668,16 +668,16 @@ LABEL_3:
     v36 = __Block_byref_object_dispose__0;
     v37 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v21 = dispatch_semaphore_create(0);
-    v22 = [v3 bundleIdentifier];
+    bundleIdentifier = [suggestionsCopy bundleIdentifier];
     v28[0] = MEMORY[0x277D85DD0];
     v28[1] = 3221225472;
     v28[2] = __55__DDEventComponents__eventsFromIntelligentSuggestions___block_invoke;
     v28[3] = &unk_278291040;
-    v29 = v3;
+    v29 = suggestionsCopy;
     v31 = &v32;
     v23 = v21;
     v30 = v23;
-    [v18 harvestedSuggestionsFromMessage:v14 bundleIdentifier:v22 options:2 completionHandler:v28];
+    [serviceForMessages harvestedSuggestionsFromMessage:v14 bundleIdentifier:bundleIdentifier options:2 completionHandler:v28];
 
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
     {
@@ -890,12 +890,12 @@ LABEL_31:
   v45 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)_eventComponents:(id)a3 withSuggestedTitleFromNaturalLanguageContext:(id)a4 context:(id)a5
++ (id)_eventComponents:(id)components withSuggestedTitleFromNaturalLanguageContext:(id)context context:(id)a5
 {
-  v8 = a3;
-  v9 = a4;
+  componentsCopy = components;
+  contextCopy = context;
   v10 = a5;
-  if (([v8 eventAttributes] & 0x1000) != 0)
+  if (([componentsCopy eventAttributes] & 0x1000) != 0)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
     {
@@ -905,40 +905,40 @@ LABEL_31:
 
   else
   {
-    v11 = [a1 _messageWithNaturalLanguageContext:v9 context:v10];
+    v11 = [self _messageWithNaturalLanguageContext:contextCopy context:v10];
     Helper_x8__OBJC_CLASS___IPEventClassificationType = gotLoadHelper_x8__OBJC_CLASS___IPEventClassificationType(v12);
     v15 = *(v14 + 728);
-    v17 = [v16 messageUnits];
-    v18 = [v15 titleGenerationModelPredictionForMessageUnits:v17];
+    messageUnits = [v16 messageUnits];
+    v18 = [v15 titleGenerationModelPredictionForMessageUnits:messageUnits];
 
     if (v18)
     {
-      [v8 setTitle:v18];
-      [v8 setSource:3];
+      [componentsCopy setTitle:v18];
+      [componentsCopy setSource:3];
     }
   }
 
-  return v8;
+  return componentsCopy;
 }
 
-+ (id)_messageWithNaturalLanguageContext:(id)a3 context:(id)a4
++ (id)_messageWithNaturalLanguageContext:(id)context context:(id)a4
 {
   v46[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  contextCopy = context;
   v6 = a4;
-  [v5 result];
+  [contextCopy result];
   v7 = DDResultGetMatchedString();
   v8 = [v6 objectForKeyedSubscript:@"GroupTranscript"];
   if (![v8 length])
   {
-    v13 = [v5 leadingText];
+    leadingText = [contextCopy leadingText];
 
-    if (v13)
+    if (leadingText)
     {
-      v8 = [v13 stringByAppendingString:v7];
+      v8 = [leadingText stringByAppendingString:v7];
 
-      v14 = [v5 trailingText];
-      if (!v14)
+      trailingText = [contextCopy trailingText];
+      if (!trailingText)
       {
         goto LABEL_8;
       }
@@ -947,8 +947,8 @@ LABEL_31:
     else
     {
       v8 = v7;
-      v14 = [v5 trailingText];
-      if (!v14)
+      trailingText = [contextCopy trailingText];
+      if (!trailingText)
       {
 LABEL_8:
 
@@ -963,8 +963,8 @@ LABEL_9:
       }
     }
 
-    v15 = [v5 trailingText];
-    v16 = [v8 stringByAppendingString:v15];
+    trailingText2 = [contextCopy trailingText];
+    v16 = [v8 stringByAppendingString:trailingText2];
 
     v8 = v16;
     goto LABEL_8;
@@ -981,23 +981,23 @@ LABEL_3:
   v11 = v10;
   if (v10)
   {
-    v12 = v10;
+    date = v10;
   }
 
   else
   {
-    v12 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
   }
 
-  v18 = v12;
+  v18 = date;
 
   if (_os_feature_enabled_impl())
   {
     v20 = [v6 objectForKey:@"CoreSpotlightUniqueIdentifier"];
     if (_os_feature_enabled_impl())
     {
-      v22 = [v5 bundleIdentifier];
-      v23 = [v22 isEqualToString:@"com.apple.mobilemail"];
+      bundleIdentifier = [contextCopy bundleIdentifier];
+      v23 = [bundleIdentifier isEqualToString:@"com.apple.mobilemail"];
 
       Helper_x8__IPMessageTypeEmail = gotLoadHelper_x8__IPMessageTypeEmail(v24);
       v27 = *(v26 + 712);
@@ -1043,8 +1043,8 @@ LABEL_3:
   v40 = v39;
   if (v39 && [v39 rangeValue] != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v41 = [v40 rangeValue];
-    [v38 setInteractedDateRange:{v41, v42}];
+    rangeValue = [v40 rangeValue];
+    [v38 setInteractedDateRange:{rangeValue, v42}];
   }
 
   if (v38)

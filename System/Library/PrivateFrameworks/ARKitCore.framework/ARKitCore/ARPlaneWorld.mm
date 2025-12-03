@@ -1,16 +1,16 @@
 @interface ARPlaneWorld
-- (ARPlaneWorld)initWithTextureSize:(unint64_t)a3;
+- (ARPlaneWorld)initWithTextureSize:(unint64_t)size;
 - (BOOL)isBusy;
 - (id).cxx_construct;
 - (id)_fullDescription;
-- (map<std::array<unsigned)updatePlanes:()ARTexturedPlane withCurrentDetections:(std:()16>> :(std:()16> :(ARTexturedPlane>>> *__return_ptr)retstr allocator<std:(ARPlaneWorld *)self :(SEL)a3 pair<const std:(const void *)a4 :(const void *)a5 array<unsigned)char less<std:(BOOL)a6 :array<unsigned)char synchronous:;
+- (map<std::array<unsigned)updatePlanes:()ARTexturedPlane withCurrentDetections:(std:()16>> :(std:()16> :(ARTexturedPlane>>> *__return_ptr)retstr allocator<std:(ARPlaneWorld *)self :(SEL)a3 pair<const std:(const void *)std :(const void *)a5 array<unsigned)char less<std:(BOOL)a6 :array<unsigned)char synchronous:;
 - (vector<ARTexturedPlane,)planes;
-- (void)updatePlanes:(simd_float4)a3 withCameraImage:(simd_float4)a4 exposureOffset:(float32x4_t)a5 transform:(simd_float4)a6 intrinsics:(float32x4_t)a7 synchronous:(float32x4_t)a8;
+- (void)updatePlanes:(simd_float4)planes withCameraImage:(simd_float4)image exposureOffset:(float32x4_t)offset transform:(simd_float4)transform intrinsics:(float32x4_t)intrinsics synchronous:(float32x4_t)synchronous;
 @end
 
 @implementation ARPlaneWorld
 
-- (ARPlaneWorld)initWithTextureSize:(unint64_t)a3
+- (ARPlaneWorld)initWithTextureSize:(unint64_t)size
 {
   v10.receiver = self;
   v10.super_class = ARPlaneWorld;
@@ -21,7 +21,7 @@
     gpuWarper = v4->_gpuWarper;
     v4->_gpuWarper = v5;
 
-    v4->_textureSize = a3;
+    v4->_textureSize = size;
     v7 = dispatch_semaphore_create(1);
     semaphore = v4->_semaphore;
     v4->_semaphore = v7;
@@ -41,11 +41,11 @@
   return v3 != 0;
 }
 
-- (map<std::array<unsigned)updatePlanes:()ARTexturedPlane withCurrentDetections:(std:()16>> :(std:()16> :(ARTexturedPlane>>> *__return_ptr)retstr allocator<std:(ARPlaneWorld *)self :(SEL)a3 pair<const std:(const void *)a4 :(const void *)a5 array<unsigned)char less<std:(BOOL)a6 :array<unsigned)char synchronous:
+- (map<std::array<unsigned)updatePlanes:()ARTexturedPlane withCurrentDetections:(std:()16>> :(std:()16> :(ARTexturedPlane>>> *__return_ptr)retstr allocator<std:(ARPlaneWorld *)self :(SEL)a3 pair<const std:(const void *)std :(const void *)a5 array<unsigned)char less<std:(BOOL)a6 :array<unsigned)char synchronous:
 {
   v153 = a6;
   v212 = *MEMORY[0x1E69E9840];
-  keys<std::array<unsigned char,16ul>,ARTexturedPlane>(a4, v163);
+  keys<std::array<unsigned char,16ul>,ARTexturedPlane>(std, v163);
   keys<std::array<unsigned char,16ul>,ARTexturedPlane>(a5, v162);
   notInLeftButRight<std::array<unsigned char,16ul>>(v163, v162, &v160);
   intersect<std::array<unsigned char,16ul>>(v163, v162, &v158);
@@ -57,7 +57,7 @@
   {
     do
     {
-      keys<std::array<unsigned char,16ul>,ARTexturedPlane>(a4, &v170);
+      keys<std::array<unsigned char,16ul>,ARTexturedPlane>(std, &v170);
       intersect<std::array<unsigned char,16ul>>(&v170, (v6 + 240), &v197);
       std::__tree<std::array<unsigned char,16ul>>::destroy(&v170, *(&v170 + 1));
       *&v170 = v6 + 48;
@@ -99,7 +99,7 @@
   p_end_node = &retstr->__tree_.__end_node_;
   retstr->__tree_.__begin_node_ = &retstr->__tree_.__end_node_;
   v11 = v160;
-  v12 = fminf(sqrtf(16777000.0 / (v161[1] + *(a4 + 2))), 1024.0);
+  v12 = fminf(sqrtf(16777000.0 / (v161[1] + *(std + 2))), 1024.0);
   textureSize = self->_textureSize;
   v145 = v12;
   if (!textureSize)
@@ -186,7 +186,7 @@
     do
     {
       v32 = std::map<std::array<unsigned char,16ul>,ARTexturedPlane>::at(a5, v31 + 25);
-      v33 = std::map<std::array<unsigned char,16ul>,ARTexturedPlane>::at(a4, v31 + 25);
+      v33 = std::map<std::array<unsigned char,16ul>,ARTexturedPlane>::at(std, v31 + 25);
       v213 = __invert_f4(*(v33 + 32));
       v35 = 0;
       v36 = *(v32 + 48);
@@ -345,7 +345,7 @@
           {
             do
             {
-              v70 = std::map<std::array<unsigned char,16ul>,ARTexturedPlane>::at(a4, v69 + 25);
+              v70 = std::map<std::array<unsigned char,16ul>,ARTexturedPlane>::at(std, v69 + 25);
               v71 = self->_gpuWarper;
               v72 = *(v70 + 32);
               v74 = *v70;
@@ -520,8 +520,8 @@
         break;
       }
 
-      v119 = [begin_node[33].__left_ width];
-      if (v119 < [v116[33].__left_ width])
+      width = [begin_node[33].__left_ width];
+      if (width < [v116[33].__left_ width])
       {
         begin_node = v116;
       }
@@ -647,21 +647,21 @@
   return result;
 }
 
-- (void)updatePlanes:(simd_float4)a3 withCameraImage:(simd_float4)a4 exposureOffset:(float32x4_t)a5 transform:(simd_float4)a6 intrinsics:(float32x4_t)a7 synchronous:(float32x4_t)a8
+- (void)updatePlanes:(simd_float4)planes withCameraImage:(simd_float4)image exposureOffset:(float32x4_t)offset transform:(simd_float4)transform intrinsics:(float32x4_t)intrinsics synchronous:(float32x4_t)synchronous
 {
   v107 = *MEMORY[0x1E69E9840];
-  v16 = (a1 + 112);
-  dispatch_semaphore_wait(*(a1 + 112), 0xFFFFFFFFFFFFFFFFLL);
+  v16 = (self + 112);
+  dispatch_semaphore_wait(*(self + 112), 0xFFFFFFFFFFFFFFFFLL);
   std::map<std::array<unsigned char,16ul>,ARTexturedPlane>::map[abi:ne200100](v87, (v16 - 13));
   dispatch_semaphore_signal(*v16);
-  [a1 updatePlanes:v87 withCurrentDetections:a11 synchronous:a13];
-  dispatch_semaphore_wait(*(a1 + 112), 0xFFFFFFFFFFFFFFFFLL);
+  [self updatePlanes:v87 withCurrentDetections:a11 synchronous:a13];
+  dispatch_semaphore_wait(*(self + 112), 0xFFFFFFFFFFFFFFFFLL);
   if (v16 - 13 != &v85)
   {
     std::__tree<std::__value_type<std::array<unsigned char,16ul>,ARTexturedPlane>,std::__map_value_compare<std::array<unsigned char,16ul>,std::__value_type<std::array<unsigned char,16ul>,ARTexturedPlane>,std::less<std::array<unsigned char,16ul>>,true>,std::allocator<std::__value_type<std::array<unsigned char,16ul>,ARTexturedPlane>>>::__assign_multi<std::__tree_const_iterator<std::__value_type<std::array<unsigned char,16ul>,ARTexturedPlane>,std::__tree_node<std::__value_type<std::array<unsigned char,16ul>,ARTexturedPlane>,void *> *,long>>(v16 - 13, v85, &v86);
   }
 
-  dispatch_semaphore_signal(*(a1 + 112));
+  dispatch_semaphore_signal(*(self + 112));
   keys<std::array<unsigned char,16ul>,ARTexturedPlane>(v87, v84);
   keys<std::array<unsigned char,16ul>,ARTexturedPlane>(&v85, v83);
   notInLeftButRight<std::array<unsigned char,16ul>>(v84, v83, &v81);
@@ -672,7 +672,7 @@
   v17 = v79.i64[0];
   if (v79.i64[0] != &v79.u32[2])
   {
-    v77 = vnegq_f32(a5);
+    v77 = vnegq_f32(offset);
     do
     {
       v18 = vmulq_f32(v17[6], v77);
@@ -730,10 +730,10 @@
   }
 
   std::__tree<std::__value_type<std::array<unsigned char,16ul>,ARTexturedPlane>,std::__map_value_compare<std::array<unsigned char,16ul>,std::__value_type<std::array<unsigned char,16ul>,ARTexturedPlane>,std::less<std::array<unsigned char,16ul>>,true>,std::allocator<std::__value_type<std::array<unsigned char,16ul>,ARTexturedPlane>>>::destroy(&v91, v22);
-  v108.columns[0] = a3;
-  v108.columns[1] = a4;
-  v108.columns[2] = a5;
-  v108.columns[3] = a6;
+  v108.columns[0] = planes;
+  v108.columns[1] = image;
+  v108.columns[2] = offset;
+  v108.columns[3] = transform;
   v109 = __invert_f4(v108);
   v76 = v109.columns[1];
   v78 = v109.columns[0];
@@ -758,7 +758,7 @@
         *v29.f32 = dehomogenize(&v106);
         if (v29.f32[2] < 0.0)
         {
-          v106 = vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(a7, v29.f32[0]), a8, *v29.f32, 1), a9, v29, 2);
+          v106 = vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(intrinsics, v29.f32[0]), synchronous, *v29.f32, 1), a9, v29, 2);
           v30 = dehomogenize(&v106);
           if (v30.f32[0] >= 0.0 && v30.f32[0] < Width && v30.f32[1] >= 0.0 && v30.f32[1] < v26)
           {
@@ -857,7 +857,7 @@ LABEL_34:
   {
     do
     {
-      ARPlaneUpdateQueue::insert((a1 + 40), *(v47 + 4), *(v47 + 5), v47 + 6);
+      ARPlaneUpdateQueue::insert((self + 40), *(v47 + 4), *(v47 + 5), v47 + 6);
       v48 = *(v47 + 1);
       if (v48)
       {
@@ -888,7 +888,7 @@ LABEL_34:
     while (v49 != &v79.u32[2]);
   }
 
-  if (*(a1 + 80))
+  if (*(self + 80))
   {
     v50 = -3;
     do
@@ -898,7 +898,7 @@ LABEL_34:
         break;
       }
 
-      v52 = *(*(a1 + 48) + 8 * (*(a1 + 72) / 0x11uLL)) + 240 * (*(a1 + 72) % 0x11uLL);
+      v52 = *(*(self + 48) + 8 * (*(self + 72) / 0x11uLL)) + 240 * (*(self + 72) % 0x11uLL);
       v91 = *v52;
       v54 = *(v52 + 48);
       v53 = *(v52 + 64);
@@ -924,11 +924,11 @@ LABEL_34:
       std::set<std::array<unsigned char,16ul>>::set[abi:ne200100](v104, v52 + 208);
       v105 = *(v52 + 232);
       v106 = v91;
-      std::__tree<std::array<unsigned char,16ul>>::__erase_unique<std::array<unsigned char,16ul>>((a1 + 88), (*(*(a1 + 48) + 8 * (*(a1 + 72) / 0x11uLL)) + 240 * (*(a1 + 72) % 0x11uLL)));
-      std::deque<std::pair<std::array<unsigned char,16ul>,ARTexturedPlane>>::pop_front((a1 + 40));
+      std::__tree<std::array<unsigned char,16ul>>::__erase_unique<std::array<unsigned char,16ul>>((self + 88), (*(*(self + 48) + 8 * (*(self + 72) / 0x11uLL)) + 240 * (*(self + 72) % 0x11uLL)));
+      std::deque<std::pair<std::array<unsigned char,16ul>,ARTexturedPlane>>::pop_front((self + 40));
       v62 = &v82 == std::__tree<std::array<unsigned char,16ul>>::find<std::array<unsigned char,16ul>>(&v81, &v106) ? 1 : 2;
       kdebug_trace();
-      v63 = *(a1 + 32);
+      v63 = *(self + 32);
       v88[8] = v100;
       v88[9] = v101;
       v88[10] = v102;
@@ -944,7 +944,7 @@ LABEL_34:
       std::set<std::array<unsigned char,16ul>>::set[abi:ne200100](v89, v104);
       v90 = v105;
       *&v64 = a2;
-      [v63 warpCameraImage:a12 withExposureOffset:v88 withCameraIntrinsics:v62 withCameraTransform:a13 toPlane:v64 withLoadAction:*a7.i64 synchronous:{*a8.i64, *a9.i64, *a3.i64, *a4.i64, *a5.i64, *a6.i64}];
+      [v63 warpCameraImage:a12 withExposureOffset:v88 withCameraIntrinsics:v62 withCameraTransform:a13 toPlane:v64 withLoadAction:*intrinsics.i64 synchronous:{*synchronous.i64, *a9.i64, *planes.i64, *image.i64, *offset.i64, *transform.i64}];
 
       std::__tree<std::array<unsigned char,16ul>>::destroy(v89, v89[1]);
       kdebug_trace();
@@ -952,7 +952,7 @@ LABEL_34:
       std::__tree<std::array<unsigned char,16ul>>::destroy(v104, v104[1]);
     }
 
-    while (*(a1 + 80));
+    while (*(self + 80));
   }
 
   std::__tree<std::__value_type<std::array<unsigned char,16ul>,ARTexturedPlane>,std::__map_value_compare<std::array<unsigned char,16ul>,std::__value_type<std::array<unsigned char,16ul>,ARTexturedPlane>,std::less<std::array<unsigned char,16ul>>,true>,std::allocator<std::__value_type<std::array<unsigned char,16ul>,ARTexturedPlane>>>::destroy(&v79, v79.i64[1]);
@@ -1016,9 +1016,9 @@ LABEL_34:
   v4 = [(ARPlaneWorld *)self description];
   v5 = [v3 stringWithFormat:@"%@\n", v4];
 
-  v6 = [(ARPlaneWorld *)self isBusy];
+  isBusy = [(ARPlaneWorld *)self isBusy];
   v7 = @"NotBusy";
-  if (v6)
+  if (isBusy)
   {
     v7 = @"Busy";
   }

@@ -1,9 +1,9 @@
 @interface AVControlOverflowButton
-+ (id)_buttonWithImageName:(uint64_t)a3 isLegacyButton:;
-+ (id)overflowButtonBordered:(BOOL)a3;
++ (id)_buttonWithImageName:(uint64_t)name isLegacyButton:;
++ (id)overflowButtonBordered:(BOOL)bordered;
 - (AVControlOverflowButtonDelegate)delegate;
-- (void)contextMenuInteraction:(id)a3 willDisplayMenuForConfiguration:(id)a4 animator:(id)a5;
-- (void)contextMenuInteraction:(id)a3 willEndForConfiguration:(id)a4 animator:(id)a5;
+- (void)contextMenuInteraction:(id)interaction willDisplayMenuForConfiguration:(id)configuration animator:(id)animator;
+- (void)contextMenuInteraction:(id)interaction willEndForConfiguration:(id)configuration animator:(id)animator;
 - (void)updateContextMenu;
 @end
 
@@ -16,20 +16,20 @@
   return WeakRetained;
 }
 
-- (void)contextMenuInteraction:(id)a3 willEndForConfiguration:(id)a4 animator:(id)a5
+- (void)contextMenuInteraction:(id)interaction willEndForConfiguration:(id)configuration animator:(id)animator
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  interactionCopy = interaction;
+  configurationCopy = configuration;
+  animatorCopy = animator;
   v16.receiver = self;
   v16.super_class = AVControlOverflowButton;
-  [(AVControlOverflowButton *)&v16 contextMenuInteraction:v8 willEndForConfiguration:v9 animator:v10];
-  objc_storeWeak(&self->_activeMenuInteraction, v8);
-  v11 = [(AVControlOverflowButton *)self delegate];
+  [(AVControlOverflowButton *)&v16 contextMenuInteraction:interactionCopy willEndForConfiguration:configurationCopy animator:animatorCopy];
+  objc_storeWeak(&self->_activeMenuInteraction, interactionCopy);
+  delegate = [(AVControlOverflowButton *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v12 = [[AVKitGlassInteractionAnimating alloc] initWithInteractionAnimation:v10];
-    [v11 overflowButtonWillHideContextMenu:self animator:v12];
+    v12 = [[AVKitGlassInteractionAnimating alloc] initWithInteractionAnimation:animatorCopy];
+    [delegate overflowButtonWillHideContextMenu:self animator:v12];
   }
 
   objc_initWeak(&location, self);
@@ -38,7 +38,7 @@
   v13[2] = __83__AVControlOverflowButton_contextMenuInteraction_willEndForConfiguration_animator___block_invoke;
   v13[3] = &unk_1E7209EA8;
   objc_copyWeak(&v14, &location);
-  [v10 addCompletion:v13];
+  [animatorCopy addCompletion:v13];
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
 }
@@ -59,19 +59,19 @@ void __83__AVControlOverflowButton_contextMenuInteraction_willEndForConfiguratio
   }
 }
 
-- (void)contextMenuInteraction:(id)a3 willDisplayMenuForConfiguration:(id)a4 animator:(id)a5
+- (void)contextMenuInteraction:(id)interaction willDisplayMenuForConfiguration:(id)configuration animator:(id)animator
 {
-  v8 = a5;
+  animatorCopy = animator;
   v12.receiver = self;
   v12.super_class = AVControlOverflowButton;
-  v9 = a3;
-  [(AVControlOverflowButton *)&v12 contextMenuInteraction:v9 willDisplayMenuForConfiguration:a4 animator:v8];
-  objc_storeWeak(&self->_activeMenuInteraction, v9);
+  interactionCopy = interaction;
+  [(AVControlOverflowButton *)&v12 contextMenuInteraction:interactionCopy willDisplayMenuForConfiguration:configuration animator:animatorCopy];
+  objc_storeWeak(&self->_activeMenuInteraction, interactionCopy);
 
   v10 = [(AVControlOverflowButton *)self delegate:v12.receiver];
   if (objc_opt_respondsToSelector())
   {
-    v11 = [[AVKitGlassInteractionAnimating alloc] initWithInteractionAnimation:v8];
+    v11 = [[AVKitGlassInteractionAnimating alloc] initWithInteractionAnimation:animatorCopy];
     [v10 overflowButtonWillShowContextMenu:self animator:v11];
   }
 
@@ -88,8 +88,8 @@ void __83__AVControlOverflowButton_contextMenuInteraction_willEndForConfiguratio
 
   if (WeakRetained)
   {
-    v4 = [(AVControlOverflowButton *)self delegate];
-    v5 = [v4 overflowMenuItemsForControlOverflowButton:self];
+    delegate = [(AVControlOverflowButton *)self delegate];
+    v5 = [delegate overflowMenuItemsForControlOverflowButton:self];
 
     v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v5, "count")}];
     v19 = 0u;
@@ -220,10 +220,10 @@ LABEL_17:
   return v6;
 }
 
-+ (id)overflowButtonBordered:(BOOL)a3
++ (id)overflowButtonBordered:(BOOL)bordered
 {
   v3 = @"ellipsis";
-  if (a3)
+  if (bordered)
   {
     v3 = @"ellipsis.circle";
   }
@@ -234,13 +234,13 @@ LABEL_17:
   return v5;
 }
 
-+ (id)_buttonWithImageName:(uint64_t)a3 isLegacyButton:
++ (id)_buttonWithImageName:(uint64_t)name isLegacyButton:
 {
   v19[1] = *MEMORY[0x1E69E9840];
   v4 = a2;
   objc_opt_self();
   v5 = AVLocalizedString(@"More Controls");
-  v6 = [(AVButton *)AVControlOverflowButton buttonWithAccessibilityIdentifier:@"More Controls" accessibilityLabel:v5 isFirstGeneration:a3];
+  v6 = [(AVButton *)AVControlOverflowButton buttonWithAccessibilityIdentifier:@"More Controls" accessibilityLabel:v5 isFirstGeneration:name];
 
   if (v6)
   {

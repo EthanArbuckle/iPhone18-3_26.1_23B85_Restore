@@ -1,12 +1,12 @@
 @interface AVPlayerTextualFeedbackPublisher
-- (AVPlayerTextualFeedbackPublisher)initWithSmartSubtitlesController:(id)a3;
+- (AVPlayerTextualFeedbackPublisher)initWithSmartSubtitlesController:(id)controller;
 - (AVPlayerTextualFeedbackPublisherDelegate)delegate;
 - (void)_invalidateQueue;
 - (void)_publishFromQueue;
-- (void)_publishMessage:(id)a3;
+- (void)_publishMessage:(id)message;
 - (void)_publishSubtitlesOnMuteMessageIfNeeded;
 - (void)dealloc;
-- (void)smartSubtitlesController:(id)a3 didToggleSubtitlesOnSkipBackForTimeInterval:(double)a4;
+- (void)smartSubtitlesController:(id)controller didToggleSubtitlesOnSkipBackForTimeInterval:(double)interval;
 - (void)startPublishing;
 - (void)stopPublishing;
 @end
@@ -20,12 +20,12 @@
   return WeakRetained;
 }
 
-- (void)smartSubtitlesController:(id)a3 didToggleSubtitlesOnSkipBackForTimeInterval:(double)a4
+- (void)smartSubtitlesController:(id)controller didToggleSubtitlesOnSkipBackForTimeInterval:(double)interval
 {
   [(AVPlayerTextualFeedbackPublisher *)self _invalidateQueue];
   v6 = MEMORY[0x1E696AEC0];
   v9 = AVLocalizedString(@"SUBTITLES_ON_SKIP_BACK_MESSAGE %@");
-  v7 = [(NSDateComponentsFormatter *)self->_secondsFormatter stringFromTimeInterval:a4];
+  v7 = [(NSDateComponentsFormatter *)self->_secondsFormatter stringFromTimeInterval:interval];
   v8 = [v6 stringWithFormat:v9, v7];
   [(AVPlayerTextualFeedbackPublisher *)self _publishMessage:v8];
 }
@@ -41,8 +41,8 @@
 - (void)_publishFromQueue
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [(NSMutableArray *)self->_messageQueue firstObject];
-  if ([(AVPlayerTextualFeedbackPublisher *)self isPublishing]&& v3 && !self->_messageQueueTimer)
+  firstObject = [(NSMutableArray *)self->_messageQueue firstObject];
+  if ([(AVPlayerTextualFeedbackPublisher *)self isPublishing]&& firstObject && !self->_messageQueueTimer)
   {
     [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
     v5 = v4;
@@ -60,8 +60,8 @@
       messageQueueTimer = self->_messageQueueTimer;
       self->_messageQueueTimer = v10;
 
-      v12 = [MEMORY[0x1E695DFD0] mainRunLoop];
-      [v12 addTimer:self->_messageQueueTimer forMode:*MEMORY[0x1E695DA28]];
+      mainRunLoop = [MEMORY[0x1E695DFD0] mainRunLoop];
+      [mainRunLoop addTimer:self->_messageQueueTimer forMode:*MEMORY[0x1E695DA28]];
 
       objc_destroyWeak(&v14);
       objc_destroyWeak(buf);
@@ -69,19 +69,19 @@
 
     else
     {
-      [(NSMutableArray *)self->_messageQueue removeObject:v3];
+      [(NSMutableArray *)self->_messageQueue removeObject:firstObject];
       v7 = _AVLog();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 136315394;
         v16 = "[AVPlayerTextualFeedbackPublisher _publishFromQueue]";
         v17 = 2114;
-        v18 = v3;
+        v18 = firstObject;
         _os_log_impl(&dword_18B49C000, v7, OS_LOG_TYPE_DEFAULT, "%s Publishing message: %{public}@", buf, 0x16u);
       }
 
-      v8 = [(AVPlayerTextualFeedbackPublisher *)self delegate];
-      [v8 textualFeedbackPublisher:self didPublishMessage:v3];
+      delegate = [(AVPlayerTextualFeedbackPublisher *)self delegate];
+      [delegate textualFeedbackPublisher:self didPublishMessage:firstObject];
 
       self->_timeOfLastPublishedMessage = v5;
     }
@@ -97,12 +97,12 @@ void __53__AVPlayerTextualFeedbackPublisher__publishFromQueue__block_invoke(uint
   [v3 _publishFromQueue];
 }
 
-- (void)_publishMessage:(id)a3
+- (void)_publishMessage:(id)message
 {
-  v4 = a3;
-  if ([(AVPlayerTextualFeedbackPublisher *)self isPublishing]&& ([(NSMutableArray *)self->_messageQueue containsObject:v4]& 1) == 0)
+  messageCopy = message;
+  if ([(AVPlayerTextualFeedbackPublisher *)self isPublishing]&& ([(NSMutableArray *)self->_messageQueue containsObject:messageCopy]& 1) == 0)
   {
-    [(NSMutableArray *)self->_messageQueue addObject:v4];
+    [(NSMutableArray *)self->_messageQueue addObject:messageCopy];
     [(AVPlayerTextualFeedbackPublisher *)self _publishFromQueue];
   }
 }
@@ -151,17 +151,17 @@ void __53__AVPlayerTextualFeedbackPublisher__publishFromQueue__block_invoke(uint
   [(AVPlayerTextualFeedbackPublisher *)&v3 dealloc];
 }
 
-- (AVPlayerTextualFeedbackPublisher)initWithSmartSubtitlesController:(id)a3
+- (AVPlayerTextualFeedbackPublisher)initWithSmartSubtitlesController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v14.receiver = self;
   v14.super_class = AVPlayerTextualFeedbackPublisher;
   v6 = [(AVPlayerTextualFeedbackPublisher *)&v14 init];
   if (v6)
   {
-    v7 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     messageQueue = v6->_messageQueue;
-    v6->_messageQueue = v7;
+    v6->_messageQueue = array;
 
     v9 = objc_alloc_init(MEMORY[0x1E696AB70]);
     secondsFormatter = v6->_secondsFormatter;
@@ -169,7 +169,7 @@ void __53__AVPlayerTextualFeedbackPublisher__publishFromQueue__block_invoke(uint
 
     [(NSDateComponentsFormatter *)v6->_secondsFormatter setAllowedUnits:128];
     [(NSDateComponentsFormatter *)v6->_secondsFormatter setUnitsStyle:3];
-    objc_storeStrong(&v6->_smartSubtitlesController, a3);
+    objc_storeStrong(&v6->_smartSubtitlesController, controller);
     v11 = [[AVObservationController alloc] initWithOwner:v6];
     textualFeedbackKVO = v6->_textualFeedbackKVO;
     v6->_textualFeedbackKVO = v11;

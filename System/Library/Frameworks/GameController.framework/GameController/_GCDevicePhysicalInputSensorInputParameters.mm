@@ -1,9 +1,9 @@
 @interface _GCDevicePhysicalInputSensorInputParameters
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_GCDevicePhysicalInputSensorInputParameters)init;
 - (double)maximumValue;
 - (double)minimumValue;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (uint64_t)setMaximumValue:(uint64_t)result;
 - (uint64_t)setMinimumValue:(uint64_t)result;
 @end
@@ -17,45 +17,45 @@
   return [(_GCDevicePhysicalInputSensorInputParameters *)&v3 init];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5.receiver = self;
   v5.super_class = _GCDevicePhysicalInputSensorInputParameters;
-  result = [(_GCDevicePhysicalInputViewParameters *)&v5 copyWithZone:a3];
+  result = [(_GCDevicePhysicalInputViewParameters *)&v5 copyWithZone:zone];
   *(result + 2) = LODWORD(self->_minimumValue);
   *(result + 3) = LODWORD(self->_maximumValue);
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v7.receiver = self;
   v7.super_class = _GCDevicePhysicalInputSensorInputParameters;
-  v5 = [(_GCDevicePhysicalInputViewParameters *)&v7 isEqual:v4]&& self->_minimumValue == v4[2] && self->_maximumValue == v4[3];
+  v5 = [(_GCDevicePhysicalInputViewParameters *)&v7 isEqual:equalCopy]&& self->_minimumValue == equalCopy[2] && self->_maximumValue == equalCopy[3];
 
   return v5;
 }
 
 - (double)minimumValue
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  LODWORD(result) = *(a1 + 8);
+  LODWORD(result) = *(self + 8);
   return result;
 }
 
 - (double)maximumValue
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  LODWORD(result) = *(a1 + 12);
+  LODWORD(result) = *(self + 12);
   return result;
 }
 

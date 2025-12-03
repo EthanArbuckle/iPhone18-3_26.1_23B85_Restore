@@ -1,12 +1,12 @@
 @interface ProfileRegistryHelper
-+ (id)getFileNames:(int64_t)a3;
++ (id)getFileNames:(int64_t)names;
 @end
 
 @implementation ProfileRegistryHelper
 
-+ (id)getFileNames:(int64_t)a3
++ (id)getFileNames:(int64_t)names
 {
-  IsInternalBuild = Phase::Controller::DeviceInfo::IsInternalBuild(a1);
+  IsInternalBuild = Phase::Controller::DeviceInfo::IsInternalBuild(self);
   if (IsInternalBuild & 0x100) != 0 && (IsInternalBuild)
   {
     v5 = &unk_284D4DA30;
@@ -19,7 +19,7 @@
     v6 = &unk_284D4DA48;
   }
 
-  if (a3 == 1)
+  if (names == 1)
   {
     return v6;
   }

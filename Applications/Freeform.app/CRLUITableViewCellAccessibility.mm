@@ -1,5 +1,5 @@
 @interface CRLUITableViewCellAccessibility
-+ (id)crlaxCastFrom:(id)a3;
++ (id)crlaxCastFrom:(id)from;
 - (BOOL)accessibilityScrollToVisible;
 - (id)_accessibilityTableViewSwitch;
 - (void)crlaxClearChildrenWorkaroundFor20458918;
@@ -7,11 +7,11 @@
 
 @implementation CRLUITableViewCellAccessibility
 
-+ (id)crlaxCastFrom:(id)a3
++ (id)crlaxCastFrom:(id)from
 {
-  v3 = a3;
+  fromCopy = from;
   v4 = objc_opt_class();
-  v5 = __CRLAccessibilityCastAsSafeCategory(v4, v3, 0, 0);
+  v5 = __CRLAccessibilityCastAsSafeCategory(v4, fromCopy, 0, 0);
 
   return v5;
 }
@@ -25,15 +25,15 @@
 
 - (id)_accessibilityTableViewSwitch
 {
-  v3 = [(CRLUITableViewCellAccessibility *)self _crlaxAccessibilityTableViewSwitch];
-  if (!v3)
+  _crlaxAccessibilityTableViewSwitch = [(CRLUITableViewCellAccessibility *)self _crlaxAccessibilityTableViewSwitch];
+  if (!_crlaxAccessibilityTableViewSwitch)
   {
     v5.receiver = self;
     v5.super_class = CRLUITableViewCellAccessibility;
-    v3 = [(CRLUITableViewCellAccessibility *)&v5 _accessibilityTableViewSwitch];
+    _crlaxAccessibilityTableViewSwitch = [(CRLUITableViewCellAccessibility *)&v5 _accessibilityTableViewSwitch];
   }
 
-  return v3;
+  return _crlaxAccessibilityTableViewSwitch;
 }
 
 - (BOOL)accessibilityScrollToVisible
@@ -69,8 +69,8 @@
 
     if (v4)
     {
-      v5 = [v4 visibleCells];
-      v6 = [v5 sortedArrayUsingSelector:NSSelectorFromString(@"accessibilityCompareGeometry:")];
+      visibleCells = [v4 visibleCells];
+      v6 = [visibleCells sortedArrayUsingSelector:NSSelectorFromString(@"accessibilityCompareGeometry:")];
 
       if ([v6 count] < 2)
       {

@@ -1,43 +1,43 @@
 @interface _PFSQLiteArchiveReadonlyTransaction
-- (BOOL)inReadTransaction:(id)a3 error:(id *)a4;
+- (BOOL)inReadTransaction:(id)transaction error:(id *)error;
 - (_PFSQLiteArchiveReadonlyTransaction)init;
-- (_PFSQLiteArchiveReadonlyTransaction)initWithDatabaseConnection:(id)a3 classToObjectMap:(id)a4 queryCache:(id)a5;
-- (id)objectsOfClass:(Class)a3 column:(id)a4 predicate:(id)a5 limitOffset:(id)a6 orderedBy:(id)a7 error:(id *)a8;
-- (id)setupObjectDescriptorForClass:(Class)a3 expectedObjectDescriptor:(id)a4 error:(id *)a5;
-- (id)unarchiveObjectsOfClass:(Class)a3 predicate:(id)a4 limitOffset:(id)a5 orderedBy:(id)a6 error:(id *)a7;
-- (uint64_t)_accessDatabase:(void *)a3 error:;
-- (uint64_t)executeQuery:(void *)a3 error:;
-- (uint64_t)setupForDescriptor:(uint64_t)a1 forClass:(void *)a2 error:(uint64_t)a3;
+- (_PFSQLiteArchiveReadonlyTransaction)initWithDatabaseConnection:(id)connection classToObjectMap:(id)map queryCache:(id)cache;
+- (id)objectsOfClass:(Class)class column:(id)column predicate:(id)predicate limitOffset:(id)offset orderedBy:(id)by error:(id *)error;
+- (id)setupObjectDescriptorForClass:(Class)class expectedObjectDescriptor:(id)descriptor error:(id *)error;
+- (id)unarchiveObjectsOfClass:(Class)class predicate:(id)predicate limitOffset:(id)offset orderedBy:(id)by error:(id *)error;
+- (uint64_t)_accessDatabase:(void *)database error:;
+- (uint64_t)executeQuery:(void *)query error:;
+- (uint64_t)setupForDescriptor:(uint64_t)descriptor forClass:(void *)class error:(uint64_t)error;
 @end
 
 @implementation _PFSQLiteArchiveReadonlyTransaction
 
-- (_PFSQLiteArchiveReadonlyTransaction)initWithDatabaseConnection:(id)a3 classToObjectMap:(id)a4 queryCache:(id)a5
+- (_PFSQLiteArchiveReadonlyTransaction)initWithDatabaseConnection:(id)connection classToObjectMap:(id)map queryCache:(id)cache
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  connectionCopy = connection;
+  mapCopy = map;
+  cacheCopy = cache;
   v17.receiver = self;
   v17.super_class = _PFSQLiteArchiveReadonlyTransaction;
   v12 = [(_PFSQLiteArchiveReadonlyTransaction *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_connection, a3);
-    if (v10)
+    objc_storeStrong(&v12->_connection, connection);
+    if (mapCopy)
     {
-      v14 = v10;
+      strongToStrongObjectsMapTable = mapCopy;
     }
 
     else
     {
-      v14 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+      strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
     }
 
     classToObjectMap = v13->_classToObjectMap;
-    v13->_classToObjectMap = v14;
+    v13->_classToObjectMap = strongToStrongObjectsMapTable;
 
-    objc_storeStrong(&v13->_queryCache, a5);
+    objc_storeStrong(&v13->_queryCache, cache);
   }
 
   return v13;
@@ -50,123 +50,123 @@
   return 0;
 }
 
-- (BOOL)inReadTransaction:(id)a3 error:(id *)a4
+- (BOOL)inReadTransaction:(id)transaction error:(id *)error
 {
-  v6 = a3;
+  transactionCopy = transaction;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __63___PFSQLiteArchiveReadonlyTransaction_inReadTransaction_error___block_invoke;
   v9[3] = &unk_1E81892C0;
   v9[4] = self;
-  v10 = v6;
-  v7 = v6;
-  LOBYTE(a4) = [(_PFSQLiteArchiveReadonlyTransaction *)self _accessDatabase:v9 error:a4];
+  v10 = transactionCopy;
+  v7 = transactionCopy;
+  LOBYTE(error) = [(_PFSQLiteArchiveReadonlyTransaction *)self _accessDatabase:v9 error:error];
 
-  return a4;
+  return error;
 }
 
-- (uint64_t)_accessDatabase:(void *)a3 error:
+- (uint64_t)_accessDatabase:(void *)database error:
 {
   v5 = a2;
   v6 = v5;
-  if (a1)
+  if (self)
   {
-    if (*(a1 + 16) == 1)
+    if (*(self + 16) == 1)
     {
-      (*(v5 + 2))(v5, *(a1 + 24), a3);
-      a1 = 0;
+      (*(v5 + 2))(v5, *(self + 24), database);
+      self = 0;
     }
 
     else
     {
-      *(a1 + 16) = 1;
+      *(self + 16) = 1;
       v16 = 0;
       v17 = &v16;
       v18 = 0x3032000000;
       v19 = __Block_byref_object_copy_;
       v20 = __Block_byref_object_dispose_;
       v21 = 0;
-      v7 = [*(a1 + 8) description];
-      v8 = *(a1 + 8);
+      v7 = [*(self + 8) description];
+      v8 = *(self + 8);
       v12[0] = MEMORY[0x1E69E9820];
       v12[1] = 3221225472;
       v12[2] = __61___PFSQLiteArchiveReadonlyTransaction__accessDatabase_error___block_invoke;
       v12[3] = &unk_1E81892E8;
-      v12[4] = a1;
+      v12[4] = self;
       v14 = v6;
       v15 = &v16;
       v9 = v7;
       v13 = v9;
       [(PFSQLiteDatabaseConnection *)v8 performSyncWithDatabase:v12];
       v10 = v17[5];
-      a1 = v10 == 0;
-      if (a3 && v10)
+      self = v10 == 0;
+      if (database && v10)
       {
-        *a3 = v10;
+        *database = v10;
       }
 
       _Block_object_dispose(&v16, 8);
     }
   }
 
-  return a1;
+  return self;
 }
 
-- (uint64_t)executeQuery:(void *)a3 error:
+- (uint64_t)executeQuery:(void *)query error:
 {
   v5 = a2;
-  if (a1)
+  if (self)
   {
-    v6 = *(a1 + 24);
+    v6 = *(self + 24);
     if (!v6)
     {
-      [_PFSQLiteArchiveReadonlyTransaction executeQuery:a1 error:?];
+      [_PFSQLiteArchiveReadonlyTransaction executeQuery:self error:?];
     }
 
-    a1 = PFSQLite_prepare_and_stepThrough_withBlock(v6, v5, 3, 100000, 0, 0, 0, 0, a3);
+    self = PFSQLite_prepare_and_stepThrough_withBlock(v6, v5, 3, 100000, 0, 0, 0, 0, query);
   }
 
-  return a1;
+  return self;
 }
 
-- (id)setupObjectDescriptorForClass:(Class)a3 expectedObjectDescriptor:(id)a4 error:(id *)a5
+- (id)setupObjectDescriptorForClass:(Class)class expectedObjectDescriptor:(id)descriptor error:(id *)error
 {
   v52[1] = *MEMORY[0x1E69E9840];
-  v8 = a4;
+  descriptorCopy = descriptor;
   v9 = self->_classToObjectMap;
   objc_sync_enter(v9);
-  v10 = [(NSMapTable *)self->_classToObjectMap objectForKey:a3];
-  v11 = v10;
-  if (!v8 || !v10)
+  v10 = [(NSMapTable *)self->_classToObjectMap objectForKey:class];
+  pf_sqliteCodingDescriptor = v10;
+  if (!descriptorCopy || !v10)
   {
     if (v10)
     {
       goto LABEL_10;
     }
 
-    if (v8)
+    if (descriptorCopy)
     {
-      v11 = v8;
+      pf_sqliteCodingDescriptor = descriptorCopy;
       goto LABEL_13;
     }
 
-    if (([(objc_class *)a3 pf_supportsPFSQLiteCoding]& 1) != 0)
+    if (([(objc_class *)class pf_supportsPFSQLiteCoding]& 1) != 0)
     {
       if (objc_opt_respondsToSelector())
       {
-        v11 = [(objc_class *)a3 pf_sqliteCodingDescriptor];
-        if (v11)
+        pf_sqliteCodingDescriptor = [(objc_class *)class pf_sqliteCodingDescriptor];
+        if (pf_sqliteCodingDescriptor)
         {
 LABEL_13:
-          v13 = [v11 tableName];
-          if ([v13 length])
+          tableName = [pf_sqliteCodingDescriptor tableName];
+          if ([tableName length])
           {
-            v17 = [v11 columns];
-            v18 = [v17 count];
+            columns = [pf_sqliteCodingDescriptor columns];
+            v18 = [columns count];
 
             if (v18)
             {
-              v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"PRAGMA table_info('%@')", v13];
+              v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"PRAGMA table_info('%@')", tableName];
               v37 = 0;
               v38 = &v37;
               v39 = 0x2020000000;
@@ -175,16 +175,16 @@ LABEL_13:
               v33[1] = 3221225472;
               v33[2] = __100___PFSQLiteArchiveReadonlyTransaction_setupObjectDescriptorForClass_expectedObjectDescriptor_error___block_invoke;
               v33[3] = &unk_1E8189360;
-              v11 = v11;
-              v34 = v11;
+              pf_sqliteCodingDescriptor = pf_sqliteCodingDescriptor;
+              v34 = pf_sqliteCodingDescriptor;
               v14 = v19;
               v35 = v14;
               v36 = &v37;
-              [(_PFSQLiteArchiveReadonlyTransaction *)self _accessDatabase:v33 error:a5];
+              [(_PFSQLiteArchiveReadonlyTransaction *)self _accessDatabase:v33 error:error];
               if (*(v38 + 24) == 1)
               {
-                [(NSMapTable *)self->_classToObjectMap setObject:v11 forKey:a3];
-                v16 = v11;
+                [(NSMapTable *)self->_classToObjectMap setObject:pf_sqliteCodingDescriptor forKey:class];
+                v16 = pf_sqliteCodingDescriptor;
               }
 
               else
@@ -196,7 +196,7 @@ LABEL_13:
               goto LABEL_7;
             }
 
-            if (a5)
+            if (error)
             {
               v27 = MEMORY[0x1E696ABC0];
               v41 = *MEMORY[0x1E696A588];
@@ -207,7 +207,7 @@ LABEL_13:
             }
           }
 
-          else if (a5)
+          else if (error)
           {
             v23 = MEMORY[0x1E696ABC0];
             v43 = *MEMORY[0x1E696A588];
@@ -221,68 +221,68 @@ LABEL_13:
           goto LABEL_8;
         }
 
-        if (a5)
+        if (error)
         {
           v20 = MEMORY[0x1E696ABC0];
           v45 = *MEMORY[0x1E696A588];
           v21 = MEMORY[0x1E696AEC0];
-          v13 = NSStringFromClass(a3);
-          v14 = [v21 stringWithFormat:@"%@ returned nil for sqliteCodingDescriptor", v13];
+          tableName = NSStringFromClass(class);
+          v14 = [v21 stringWithFormat:@"%@ returned nil for sqliteCodingDescriptor", tableName];
           v46 = v14;
           v22 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v46 forKeys:&v45 count:1];
-          *a5 = [v20 errorWithDomain:@"PFSQLiteArchiver" code:-1 userInfo:v22];
+          *error = [v20 errorWithDomain:@"PFSQLiteArchiver" code:-1 userInfo:v22];
 
 LABEL_33:
-          v11 = 0;
+          pf_sqliteCodingDescriptor = 0;
           v16 = 0;
           goto LABEL_7;
         }
       }
 
-      else if (a5)
+      else if (error)
       {
         v28 = MEMORY[0x1E696ABC0];
         v47 = *MEMORY[0x1E696A588];
         v29 = MEMORY[0x1E696AEC0];
-        v13 = NSStringFromClass(a3);
-        v14 = [v29 stringWithFormat:@"%@ does not respond to PFSQLiteCoding protocol", v13];
+        tableName = NSStringFromClass(class);
+        v14 = [v29 stringWithFormat:@"%@ does not respond to PFSQLiteCoding protocol", tableName];
         v48 = v14;
         v30 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v48 forKeys:&v47 count:1];
-        *a5 = [v28 errorWithDomain:@"PFSQLiteArchiver" code:-1 userInfo:v30];
+        *error = [v28 errorWithDomain:@"PFSQLiteArchiver" code:-1 userInfo:v30];
 
         goto LABEL_33;
       }
     }
 
-    else if (a5)
+    else if (error)
     {
       v24 = MEMORY[0x1E696ABC0];
       v49 = *MEMORY[0x1E696A588];
       v25 = MEMORY[0x1E696AEC0];
-      v13 = NSStringFromClass(a3);
-      v14 = [v25 stringWithFormat:@"%@ does not support PFSQLiteCoding", v13];
+      tableName = NSStringFromClass(class);
+      v14 = [v25 stringWithFormat:@"%@ does not support PFSQLiteCoding", tableName];
       v50 = v14;
       v26 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v50 forKeys:&v49 count:1];
-      *a5 = [v24 errorWithDomain:@"PFSQLiteArchiver" code:-1 userInfo:v26];
+      *error = [v24 errorWithDomain:@"PFSQLiteArchiver" code:-1 userInfo:v26];
 
       goto LABEL_33;
     }
 
-    v11 = 0;
+    pf_sqliteCodingDescriptor = 0;
     goto LABEL_35;
   }
 
-  if ([v10 isEqual:v8])
+  if ([v10 isEqual:descriptorCopy])
   {
 LABEL_10:
     objc_sync_exit(v9);
 
-    v11 = v11;
-    v16 = v11;
+    pf_sqliteCodingDescriptor = pf_sqliteCodingDescriptor;
+    v16 = pf_sqliteCodingDescriptor;
     goto LABEL_37;
   }
 
-  if (!a5)
+  if (!error)
   {
 LABEL_35:
     v16 = 0;
@@ -291,13 +291,13 @@ LABEL_35:
 
   v12 = MEMORY[0x1E696ABC0];
   v51 = *MEMORY[0x1E696A588];
-  v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"expectedObjectDescriptor did not match objectDescriptor. Bailing."];
-  v52[0] = v13;
+  tableName = [MEMORY[0x1E696AEC0] stringWithFormat:@"expectedObjectDescriptor did not match objectDescriptor. Bailing."];
+  v52[0] = tableName;
   v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v52 forKeys:&v51 count:1];
   v15 = [v12 errorWithDomain:@"PFSQLiteArchiver" code:-1 userInfo:v14];
 LABEL_6:
   v16 = 0;
-  *a5 = v15;
+  *error = v15;
 LABEL_7:
 
 LABEL_8:
@@ -310,15 +310,15 @@ LABEL_37:
   return v16;
 }
 
-- (uint64_t)setupForDescriptor:(uint64_t)a1 forClass:(void *)a2 error:(uint64_t)a3
+- (uint64_t)setupForDescriptor:(uint64_t)descriptor forClass:(void *)class error:(uint64_t)error
 {
-  v5 = a2;
-  if (a1)
+  classCopy = class;
+  if (descriptor)
   {
-    v6 = *(a1 + 40);
+    v6 = *(descriptor + 40);
     objc_sync_enter(v6);
-    v7 = [*(a1 + 40) objectForKey:a3];
-    v8 = [v7 isEqual:v5];
+    v7 = [*(descriptor + 40) objectForKey:error];
+    v8 = [v7 isEqual:classCopy];
 
     objc_sync_exit(v6);
   }
@@ -331,11 +331,11 @@ LABEL_37:
   return v8;
 }
 
-- (id)unarchiveObjectsOfClass:(Class)a3 predicate:(id)a4 limitOffset:(id)a5 orderedBy:(id)a6 error:(id *)a7
+- (id)unarchiveObjectsOfClass:(Class)class predicate:(id)predicate limitOffset:(id)offset orderedBy:(id)by error:(id *)error
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  predicateCopy = predicate;
+  offsetCopy = offset;
+  byCopy = by;
   v31 = 0;
   v32 = &v31;
   v33 = 0x3032000000;
@@ -347,12 +347,12 @@ LABEL_37:
   v25[2] = __101___PFSQLiteArchiveReadonlyTransaction_unarchiveObjectsOfClass_predicate_limitOffset_orderedBy_error___block_invoke;
   v25[3] = &unk_1E81893D8;
   v25[4] = self;
-  v30 = a3;
-  v15 = v13;
+  classCopy = class;
+  v15 = offsetCopy;
   v26 = v15;
-  v16 = v12;
+  v16 = predicateCopy;
   v27 = v16;
-  v17 = v14;
+  v17 = byCopy;
   v28 = v17;
   v29 = &v31;
   v24 = 0;
@@ -361,10 +361,10 @@ LABEL_37:
   v19 = v18;
   if (v18)
   {
-    if (a7)
+    if (error)
     {
       v20 = v18;
-      *a7 = v19;
+      *error = v19;
     }
 
     v21 = v32[5];
@@ -378,12 +378,12 @@ LABEL_37:
   return v22;
 }
 
-- (id)objectsOfClass:(Class)a3 column:(id)a4 predicate:(id)a5 limitOffset:(id)a6 orderedBy:(id)a7 error:(id *)a8
+- (id)objectsOfClass:(Class)class column:(id)column predicate:(id)predicate limitOffset:(id)offset orderedBy:(id)by error:(id *)error
 {
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  columnCopy = column;
+  predicateCopy = predicate;
+  offsetCopy = offset;
+  byCopy = by;
   v36 = 0;
   v37 = &v36;
   v38 = 0x3032000000;
@@ -395,14 +395,14 @@ LABEL_37:
   v29[2] = __99___PFSQLiteArchiveReadonlyTransaction_objectsOfClass_column_predicate_limitOffset_orderedBy_error___block_invoke;
   v29[3] = &unk_1E8189400;
   v29[4] = self;
-  v35 = a3;
-  v18 = v14;
+  classCopy = class;
+  v18 = columnCopy;
   v30 = v18;
-  v19 = v15;
+  v19 = predicateCopy;
   v31 = v19;
-  v20 = v16;
+  v20 = offsetCopy;
   v32 = v20;
-  v21 = v17;
+  v21 = byCopy;
   v33 = v21;
   v34 = &v36;
   v28 = 0;
@@ -411,10 +411,10 @@ LABEL_37:
   v23 = v22;
   if (v22)
   {
-    if (a8)
+    if (error)
     {
       v24 = v22;
-      *a8 = v23;
+      *error = v23;
     }
 
     v25 = v37[5];

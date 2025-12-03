@@ -1,15 +1,15 @@
 @interface SFApproveDiscovery
 - (NSArray)devices;
 - (SFApproveDiscovery)init;
-- (void)_activateWithCompletion:(id)a3;
-- (void)_activatedWithError:(id)a3;
-- (void)_discoveryDeviceChanged:(id)a3;
+- (void)_activateWithCompletion:(id)completion;
+- (void)_activatedWithError:(id)error;
+- (void)_discoveryDeviceChanged:(id)changed;
 - (void)_discoveryEnsureStarted;
 - (void)_discoveryEnsureStopped;
-- (void)_discoveryFoundDevice:(id)a3;
-- (void)_discoveryLostDevice:(id)a3;
+- (void)_discoveryFoundDevice:(id)device;
+- (void)_discoveryLostDevice:(id)device;
 - (void)_invalidated;
-- (void)activateWithCompletion:(id)a3;
+- (void)activateWithCompletion:(id)completion;
 - (void)invalidate;
 @end
 
@@ -33,17 +33,17 @@
   return v2;
 }
 
-- (void)activateWithCompletion:(id)a3
+- (void)activateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __45__SFApproveDiscovery_activateWithCompletion___block_invoke;
   v7[3] = &unk_1E788B210;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -61,12 +61,12 @@ uint64_t __45__SFApproveDiscovery_activateWithCompletion___block_invoke(uint64_t
   return [v2 _activateWithCompletion:v3];
 }
 
-- (void)_activateWithCompletion:(id)a3
+- (void)_activateWithCompletion:(id)completion
 {
   dispatchQueue = self->_dispatchQueue;
-  v5 = a3;
+  completionCopy = completion;
   dispatch_assert_queue_V2(dispatchQueue);
-  v6 = _Block_copy(v5);
+  v6 = _Block_copy(completionCopy);
 
   activateHandler = self->_activateHandler;
   self->_activateHandler = v6;
@@ -74,10 +74,10 @@ uint64_t __45__SFApproveDiscovery_activateWithCompletion___block_invoke(uint64_t
   [(SFApproveDiscovery *)self _discoveryEnsureStarted];
 }
 
-- (void)_activatedWithError:(id)a3
+- (void)_activatedWithError:(id)error
 {
   dispatchQueue = self->_dispatchQueue;
-  v5 = a3;
+  errorCopy = error;
   dispatch_assert_queue_V2(dispatchQueue);
   (*(self->_activateHandler + 2))();
 }
@@ -144,16 +144,16 @@ uint64_t __32__SFApproveDiscovery_invalidate__block_invoke(uint64_t result)
 
 - (NSArray)devices
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  devices = v2->_devices;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  devices = selfCopy->_devices;
   if (!devices)
   {
     devices = MEMORY[0x1E695E0F0];
   }
 
   v4 = devices;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v4;
 }
@@ -225,14 +225,14 @@ uint64_t __45__SFApproveDiscovery__discoveryEnsureStarted__block_invoke_4(uint64
   self->_deviceDiscovery = 0;
 }
 
-- (void)_discoveryFoundDevice:(id)a3
+- (void)_discoveryFoundDevice:(id)device
 {
-  v10 = a3;
+  deviceCopy = device;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  v4 = [v10 identifier];
-  if (v4)
+  identifier = [deviceCopy identifier];
+  if (identifier)
   {
-    v5 = [(NSMutableDictionary *)self->_deviceDictionary objectForKeyedSubscript:v4];
+    v5 = [(NSMutableDictionary *)self->_deviceDictionary objectForKeyedSubscript:identifier];
 
     if (v5)
     {
@@ -242,25 +242,25 @@ uint64_t __45__SFApproveDiscovery__discoveryEnsureStarted__block_invoke_4(uint64
       }
     }
 
-    else if ([v10 autoUnlockEnabled])
+    else if ([deviceCopy autoUnlockEnabled])
     {
       if (gLogCategory_SFApproveDiscovery <= 50 && (gLogCategory_SFApproveDiscovery != -1 || _LogCategory_Initialize()))
       {
         [SFApproveDiscovery _discoveryFoundDevice:];
       }
 
-      [(NSMutableDictionary *)self->_deviceDictionary setObject:v10 forKeyedSubscript:v4];
-      v6 = self;
-      objc_sync_enter(v6);
-      v7 = [(NSMutableDictionary *)self->_deviceDictionary allValues];
-      devices = v6->_devices;
-      v6->_devices = v7;
+      [(NSMutableDictionary *)self->_deviceDictionary setObject:deviceCopy forKeyedSubscript:identifier];
+      selfCopy = self;
+      objc_sync_enter(selfCopy);
+      allValues = [(NSMutableDictionary *)self->_deviceDictionary allValues];
+      devices = selfCopy->_devices;
+      selfCopy->_devices = allValues;
 
-      objc_sync_exit(v6);
-      deviceFoundHandler = v6->_deviceFoundHandler;
+      objc_sync_exit(selfCopy);
+      deviceFoundHandler = selfCopy->_deviceFoundHandler;
       if (deviceFoundHandler)
       {
-        deviceFoundHandler[2](deviceFoundHandler, v10);
+        deviceFoundHandler[2](deviceFoundHandler, deviceCopy);
       }
     }
 
@@ -276,12 +276,12 @@ uint64_t __45__SFApproveDiscovery__discoveryEnsureStarted__block_invoke_4(uint64
   }
 }
 
-- (void)_discoveryDeviceChanged:(id)a3
+- (void)_discoveryDeviceChanged:(id)changed
 {
-  v16 = a3;
+  changedCopy = changed;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  v4 = [v16 identifier];
-  if (!v4)
+  identifier = [changedCopy identifier];
+  if (!identifier)
   {
     if (gLogCategory_SFApproveDiscovery <= 90 && (gLogCategory_SFApproveDiscovery != -1 || _LogCategory_Initialize()))
     {
@@ -291,27 +291,27 @@ uint64_t __45__SFApproveDiscovery__discoveryEnsureStarted__block_invoke_4(uint64
     goto LABEL_21;
   }
 
-  v5 = [(NSMutableDictionary *)self->_deviceDictionary objectForKeyedSubscript:v4];
+  v5 = [(NSMutableDictionary *)self->_deviceDictionary objectForKeyedSubscript:identifier];
   if (v5)
   {
   }
 
-  else if ([v16 autoUnlockEnabled])
+  else if ([changedCopy autoUnlockEnabled])
   {
     if (gLogCategory_SFApproveDiscovery <= 50 && (gLogCategory_SFApproveDiscovery != -1 || _LogCategory_Initialize()))
     {
       [SFApproveDiscovery _discoveryDeviceChanged:];
     }
 
-    [(NSMutableDictionary *)self->_deviceDictionary setObject:v16 forKeyedSubscript:v4];
-    v6 = self;
-    objc_sync_enter(v6);
-    v7 = [(NSMutableDictionary *)self->_deviceDictionary allValues];
-    devices = v6->_devices;
-    v6->_devices = v7;
+    [(NSMutableDictionary *)self->_deviceDictionary setObject:changedCopy forKeyedSubscript:identifier];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    allValues = [(NSMutableDictionary *)self->_deviceDictionary allValues];
+    devices = selfCopy->_devices;
+    selfCopy->_devices = allValues;
 
-    objc_sync_exit(v6);
-    deviceFoundHandler = v6->_deviceFoundHandler;
+    objc_sync_exit(selfCopy);
+    deviceFoundHandler = selfCopy->_deviceFoundHandler;
     if (deviceFoundHandler)
     {
       goto LABEL_20;
@@ -320,32 +320,32 @@ uint64_t __45__SFApproveDiscovery__discoveryEnsureStarted__block_invoke_4(uint64
     goto LABEL_21;
   }
 
-  v10 = [(NSMutableDictionary *)self->_deviceDictionary objectForKeyedSubscript:v4];
+  v10 = [(NSMutableDictionary *)self->_deviceDictionary objectForKeyedSubscript:identifier];
   if (v10)
   {
     v11 = v10;
-    v12 = [v16 autoUnlockEnabled];
+    autoUnlockEnabled = [changedCopy autoUnlockEnabled];
 
-    if ((v12 & 1) == 0)
+    if ((autoUnlockEnabled & 1) == 0)
     {
       if (gLogCategory_SFApproveDiscovery <= 50 && (gLogCategory_SFApproveDiscovery != -1 || _LogCategory_Initialize()))
       {
         [SFApproveDiscovery _discoveryDeviceChanged:];
       }
 
-      [(NSMutableDictionary *)self->_deviceDictionary removeObjectForKey:v4];
-      v13 = self;
-      objc_sync_enter(v13);
-      v14 = [(NSMutableDictionary *)self->_deviceDictionary allValues];
-      v15 = v13->_devices;
-      v13->_devices = v14;
+      [(NSMutableDictionary *)self->_deviceDictionary removeObjectForKey:identifier];
+      selfCopy2 = self;
+      objc_sync_enter(selfCopy2);
+      allValues2 = [(NSMutableDictionary *)self->_deviceDictionary allValues];
+      v15 = selfCopy2->_devices;
+      selfCopy2->_devices = allValues2;
 
-      objc_sync_exit(v13);
-      deviceFoundHandler = v13->_deviceLostHandler;
+      objc_sync_exit(selfCopy2);
+      deviceFoundHandler = selfCopy2->_deviceLostHandler;
       if (deviceFoundHandler)
       {
 LABEL_20:
-        deviceFoundHandler[2](deviceFoundHandler, v16);
+        deviceFoundHandler[2](deviceFoundHandler, changedCopy);
       }
     }
   }
@@ -353,14 +353,14 @@ LABEL_20:
 LABEL_21:
 }
 
-- (void)_discoveryLostDevice:(id)a3
+- (void)_discoveryLostDevice:(id)device
 {
-  v10 = a3;
+  deviceCopy = device;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  v4 = [v10 identifier];
-  if (v4)
+  identifier = [deviceCopy identifier];
+  if (identifier)
   {
-    v5 = [(NSMutableDictionary *)self->_deviceDictionary objectForKeyedSubscript:v4];
+    v5 = [(NSMutableDictionary *)self->_deviceDictionary objectForKeyedSubscript:identifier];
 
     if (v5)
     {
@@ -369,18 +369,18 @@ LABEL_21:
         [SFApproveDiscovery _discoveryLostDevice:];
       }
 
-      [(NSMutableDictionary *)self->_deviceDictionary removeObjectForKey:v4];
-      v6 = self;
-      objc_sync_enter(v6);
-      v7 = [(NSMutableDictionary *)self->_deviceDictionary allValues];
-      devices = v6->_devices;
-      v6->_devices = v7;
+      [(NSMutableDictionary *)self->_deviceDictionary removeObjectForKey:identifier];
+      selfCopy = self;
+      objc_sync_enter(selfCopy);
+      allValues = [(NSMutableDictionary *)self->_deviceDictionary allValues];
+      devices = selfCopy->_devices;
+      selfCopy->_devices = allValues;
 
-      objc_sync_exit(v6);
-      deviceLostHandler = v6->_deviceLostHandler;
+      objc_sync_exit(selfCopy);
+      deviceLostHandler = selfCopy->_deviceLostHandler;
       if (deviceLostHandler)
       {
-        deviceLostHandler[2](deviceLostHandler, v10);
+        deviceLostHandler[2](deviceLostHandler, deviceCopy);
       }
     }
 

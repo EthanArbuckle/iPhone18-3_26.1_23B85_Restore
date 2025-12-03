@@ -1,20 +1,20 @@
 @interface HKFeatureAvailabilityRequirementSatisfactionOverrides
-- (HKFeatureAvailabilityRequirementSatisfactionOverrides)initWithFeatureIdentifier:(id)a3;
-- (HKFeatureAvailabilityRequirementSatisfactionOverrides)initWithUserDefaults:(id)a3 featureIdentifier:(id)a4 requirementOverridableEvaluator:(id)a5;
+- (HKFeatureAvailabilityRequirementSatisfactionOverrides)initWithFeatureIdentifier:(id)identifier;
+- (HKFeatureAvailabilityRequirementSatisfactionOverrides)initWithUserDefaults:(id)defaults featureIdentifier:(id)identifier requirementOverridableEvaluator:(id)evaluator;
 - (id)overriddenRequirementIdentifiers;
-- (id)overriddenSatisfactionOfRequirementWithIdentifier:(id)a3;
-- (void)overrideSatisfactionOfRequirementWithIdentifier:(id)a3 isSatisfied:(id)a4;
+- (id)overriddenSatisfactionOfRequirementWithIdentifier:(id)identifier;
+- (void)overrideSatisfactionOfRequirementWithIdentifier:(id)identifier isSatisfied:(id)satisfied;
 - (void)resetAllRequirementSatisfactionOverrides;
 @end
 
 @implementation HKFeatureAvailabilityRequirementSatisfactionOverrides
 
-- (HKFeatureAvailabilityRequirementSatisfactionOverrides)initWithFeatureIdentifier:(id)a3
+- (HKFeatureAvailabilityRequirementSatisfactionOverrides)initWithFeatureIdentifier:(id)identifier
 {
   v4 = MEMORY[0x1E695E000];
-  v5 = a3;
-  v6 = [v4 hk_featureAvailabilityRequirementEvaluationOverridesUserDefaults];
-  v7 = [(HKFeatureAvailabilityRequirementSatisfactionOverrides *)self initWithUserDefaults:v6 featureIdentifier:v5];
+  identifierCopy = identifier;
+  hk_featureAvailabilityRequirementEvaluationOverridesUserDefaults = [v4 hk_featureAvailabilityRequirementEvaluationOverridesUserDefaults];
+  v7 = [(HKFeatureAvailabilityRequirementSatisfactionOverrides *)self initWithUserDefaults:hk_featureAvailabilityRequirementEvaluationOverridesUserDefaults featureIdentifier:identifierCopy];
 
   return v7;
 }
@@ -31,23 +31,23 @@ uint64_t __96__HKFeatureAvailabilityRequirementSatisfactionOverrides_initWithUse
   return v9;
 }
 
-- (HKFeatureAvailabilityRequirementSatisfactionOverrides)initWithUserDefaults:(id)a3 featureIdentifier:(id)a4 requirementOverridableEvaluator:(id)a5
+- (HKFeatureAvailabilityRequirementSatisfactionOverrides)initWithUserDefaults:(id)defaults featureIdentifier:(id)identifier requirementOverridableEvaluator:(id)evaluator
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  defaultsCopy = defaults;
+  identifierCopy = identifier;
+  evaluatorCopy = evaluator;
   v19.receiver = self;
   v19.super_class = HKFeatureAvailabilityRequirementSatisfactionOverrides;
   v12 = [(HKFeatureAvailabilityRequirementSatisfactionOverrides *)&v19 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_userDefaults, a3);
-    v14 = [v10 copy];
+    objc_storeStrong(&v12->_userDefaults, defaults);
+    v14 = [identifierCopy copy];
     featureIdentifier = v13->_featureIdentifier;
     v13->_featureIdentifier = v14;
 
-    v16 = _Block_copy(v11);
+    v16 = _Block_copy(evaluatorCopy);
     requirementOverridableEvaluator = v13->_requirementOverridableEvaluator;
     v13->_requirementOverridableEvaluator = v16;
   }
@@ -55,18 +55,18 @@ uint64_t __96__HKFeatureAvailabilityRequirementSatisfactionOverrides_initWithUse
   return v13;
 }
 
-- (id)overriddenSatisfactionOfRequirementWithIdentifier:(id)a3
+- (id)overriddenSatisfactionOfRequirementWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = +[_HKBehavior sharedBehavior];
-  v6 = [v5 featureRequirementOverrides];
+  featureRequirementOverrides = [v5 featureRequirementOverrides];
 
   v7 = +[_HKBehavior sharedBehavior];
-  v8 = [v7 isAppleInternalInstall];
+  isAppleInternalInstall = [v7 isAppleInternalInstall];
 
-  if ((v8 & 1) == 0)
+  if ((isAppleInternalInstall & 1) == 0)
   {
-    if (!v6)
+    if (!featureRequirementOverrides)
     {
       goto LABEL_17;
     }
@@ -99,7 +99,7 @@ uint64_t __96__HKFeatureAvailabilityRequirementSatisfactionOverrides_initWithUse
     requirementOverridableEvaluator = 0;
   }
 
-  if ((requirementOverridableEvaluator[2](requirementOverridableEvaluator, self->_featureIdentifier, v4) & 1) == 0)
+  if ((requirementOverridableEvaluator[2](requirementOverridableEvaluator, self->_featureIdentifier, identifierCopy) & 1) == 0)
   {
     _HKInitializeLogging();
     v25 = HKLogInfrastructure();
@@ -123,14 +123,14 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  if (!v6)
+  if (!featureRequirementOverrides)
   {
     goto LABEL_19;
   }
 
   v10 = +[_HKBehavior sharedBehavior];
-  v11 = [v10 featureRequirementOverrides];
-  v12 = [v11 objectForKeyedSubscript:self->_featureIdentifier];
+  featureRequirementOverrides2 = [v10 featureRequirementOverrides];
+  v12 = [featureRequirementOverrides2 objectForKeyedSubscript:self->_featureIdentifier];
   if (!v12)
   {
 
@@ -139,18 +139,18 @@ LABEL_16:
 
   v13 = v12;
   v14 = +[_HKBehavior sharedBehavior];
-  v15 = [v14 featureRequirementOverrides];
-  v16 = [v15 objectForKeyedSubscript:self->_featureIdentifier];
-  v17 = [v16 objectForKeyedSubscript:v4];
+  featureRequirementOverrides3 = [v14 featureRequirementOverrides];
+  v16 = [featureRequirementOverrides3 objectForKeyedSubscript:self->_featureIdentifier];
+  v17 = [v16 objectForKeyedSubscript:identifierCopy];
 
   if (!v17)
   {
 LABEL_19:
-    v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_%@", self->_featureIdentifier, v4];
-    v19 = [(NSUserDefaults *)self->_userDefaults objectForKey:v18];
-    if (v19 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+    identifierCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_%@", self->_featureIdentifier, identifierCopy];
+    featureRequirementOverrides4 = [(NSUserDefaults *)self->_userDefaults objectForKey:identifierCopy];
+    if (featureRequirementOverrides4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v21 = v19;
+      v21 = featureRequirementOverrides4;
     }
 
     else
@@ -161,10 +161,10 @@ LABEL_19:
     goto LABEL_23;
   }
 
-  v18 = +[_HKBehavior sharedBehavior];
-  v19 = [v18 featureRequirementOverrides];
-  v20 = [v19 objectForKeyedSubscript:self->_featureIdentifier];
-  v21 = [v20 objectForKeyedSubscript:v4];
+  identifierCopy = +[_HKBehavior sharedBehavior];
+  featureRequirementOverrides4 = [identifierCopy featureRequirementOverrides];
+  v20 = [featureRequirementOverrides4 objectForKeyedSubscript:self->_featureIdentifier];
+  v21 = [v20 objectForKeyedSubscript:identifierCopy];
 
 LABEL_23:
 LABEL_24:
@@ -180,8 +180,8 @@ LABEL_24:
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v3 = [(NSUserDefaults *)self->_userDefaults dictionaryRepresentation];
-  v4 = [v3 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  dictionaryRepresentation = [(NSUserDefaults *)self->_userDefaults dictionaryRepresentation];
+  v4 = [dictionaryRepresentation countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v4)
   {
     v5 = v4;
@@ -192,14 +192,14 @@ LABEL_24:
       {
         if (*v20 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(dictionaryRepresentation);
         }
 
         featureIdentifier = self->_featureIdentifier;
         v9 = MEMORY[0x1E696AEC0];
         v10 = *(*(&v19 + 1) + 8 * i);
-        v11 = [v9 stringWithFormat:@"%@_", featureIdentifier];
-        LODWORD(featureIdentifier) = [v10 hasPrefix:v11];
+        featureIdentifier = [v9 stringWithFormat:@"%@_", featureIdentifier];
+        LODWORD(featureIdentifier) = [v10 hasPrefix:featureIdentifier];
 
         if (featureIdentifier)
         {
@@ -226,7 +226,7 @@ LABEL_24:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v5 = [dictionaryRepresentation countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v5);
@@ -239,16 +239,16 @@ LABEL_24:
   return v15;
 }
 
-- (void)overrideSatisfactionOfRequirementWithIdentifier:(id)a3 isSatisfied:(id)a4
+- (void)overrideSatisfactionOfRequirementWithIdentifier:(id)identifier isSatisfied:(id)satisfied
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  satisfiedCopy = satisfied;
   v8 = +[_HKBehavior sharedBehavior];
-  v9 = [v8 isAppleInternalInstall];
+  isAppleInternalInstall = [v8 isAppleInternalInstall];
 
-  if (v9)
+  if (isAppleInternalInstall)
   {
-    [(HKFeatureAvailabilityRequirementSatisfactionOverrides *)self overrideSatisfactionOfRequirementWithIdentifier:v6 isSatisfied:v7];
+    [(HKFeatureAvailabilityRequirementSatisfactionOverrides *)self overrideSatisfactionOfRequirementWithIdentifier:identifierCopy isSatisfied:satisfiedCopy];
   }
 }
 
@@ -259,8 +259,8 @@ LABEL_24:
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = [(NSUserDefaults *)self->_userDefaults dictionaryRepresentation];
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  dictionaryRepresentation = [(NSUserDefaults *)self->_userDefaults dictionaryRepresentation];
+  v4 = [dictionaryRepresentation countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v4)
   {
     v5 = v4;
@@ -272,14 +272,14 @@ LABEL_24:
       {
         if (*v14 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(dictionaryRepresentation);
         }
 
         featureIdentifier = self->_featureIdentifier;
         v9 = MEMORY[0x1E696AEC0];
         v10 = *(*(&v13 + 1) + 8 * v7);
-        v11 = [v9 stringWithFormat:@"%@_", featureIdentifier];
-        LODWORD(featureIdentifier) = [v10 hasPrefix:v11];
+        featureIdentifier = [v9 stringWithFormat:@"%@_", featureIdentifier];
+        LODWORD(featureIdentifier) = [v10 hasPrefix:featureIdentifier];
 
         if (featureIdentifier)
         {
@@ -290,7 +290,7 @@ LABEL_24:
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v5 = [dictionaryRepresentation countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v5);

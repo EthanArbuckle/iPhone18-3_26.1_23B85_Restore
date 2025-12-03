@@ -1,15 +1,15 @@
 @interface TSWPRangeArray
 - (BOOL)isEmpty;
 - (TSWPRangeArray)init;
-- (TSWPRangeArray)initWithRange:(_NSRange)a3;
-- (TSWPRangeArray)initWithRangeVector:(const void *)a3;
-- (_NSRange)rangeAtIndex:(unint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (TSWPRangeArray)initWithRange:(_NSRange)range;
+- (TSWPRangeArray)initWithRangeVector:(const void *)vector;
+- (_NSRange)rangeAtIndex:(unint64_t)index;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)finish;
 - (unint64_t)start;
 - (void)dealloc;
-- (void)enumerateRangesInRange:(_NSRange)a3 usingBlock:(id)a4;
-- (void)enumerateRangesUsingBlock:(id)a3;
+- (void)enumerateRangesInRange:(_NSRange)range usingBlock:(id)block;
+- (void)enumerateRangesUsingBlock:(id)block;
 @end
 
 @implementation TSWPRangeArray
@@ -26,10 +26,10 @@
   return 0;
 }
 
-- (TSWPRangeArray)initWithRange:(_NSRange)a3
+- (TSWPRangeArray)initWithRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v5 = [(TSWPRangeArray *)self init];
   v6 = v5;
   if (v5)
@@ -94,7 +94,7 @@
   return v6;
 }
 
-- (TSWPRangeArray)initWithRangeVector:(const void *)a3
+- (TSWPRangeArray)initWithRangeVector:(const void *)vector
 {
   v4.receiver = self;
   v4.super_class = TSWPRangeArray;
@@ -126,28 +126,28 @@
   [(TSWPRangeArray *)&v5 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [TSWPRangeArray allocWithZone:a3];
+  v4 = [TSWPRangeArray allocWithZone:zone];
   rangeVectorOpaque = self->_rangeVectorOpaque;
 
   return [(TSWPRangeArray *)v4 initWithRangeVector:rangeVectorOpaque];
 }
 
-- (_NSRange)rangeAtIndex:(unint64_t)a3
+- (_NSRange)rangeAtIndex:(unint64_t)index
 {
   v4 = *self->_rangeVectorOpaque;
   v5 = (*(self->_rangeVectorOpaque + 1) - v4) >> 4;
-  if (v5 <= a3)
+  if (v5 <= index)
   {
-    v7 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPRangeArray rangeAtIndex:]"];
-    [v7 handleFailureInFunction:v8 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPRangeArray.mm"), 83, @"Bogus range index"}];
+    [currentHandler handleFailureInFunction:v8 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPRangeArray.mm"), 83, @"Bogus range index"}];
     v4 = *self->_rangeVectorOpaque;
     v5 = (*(self->_rangeVectorOpaque + 1) - v4) >> 4;
   }
 
-  if (v5 <= a3)
+  if (v5 <= index)
   {
     v11 = 0;
     v10 = 0x7FFFFFFFFFFFFFFFLL;
@@ -155,7 +155,7 @@
 
   else
   {
-    v9 = (v4 + 16 * a3);
+    v9 = (v4 + 16 * index);
     v10 = *v9;
     v11 = v9[1];
   }
@@ -212,18 +212,18 @@
   }
 }
 
-- (void)enumerateRangesUsingBlock:(id)a3
+- (void)enumerateRangesUsingBlock:(id)block
 {
   v11 = 0;
-  v5 = [(TSWPRangeArray *)self rangeCount];
-  if (v5)
+  rangeCount = [(TSWPRangeArray *)self rangeCount];
+  if (rangeCount)
   {
-    v6 = v5;
+    v6 = rangeCount;
     v7 = 1;
     do
     {
       v8 = [(TSWPRangeArray *)self rangeAtIndex:v7 - 1];
-      (*(a3 + 2))(a3, v8, v9, v7 - 1, &v11);
+      (*(block + 2))(block, v8, v9, v7 - 1, &v11);
       if (v11)
       {
         break;
@@ -234,7 +234,7 @@
   }
 }
 
-- (void)enumerateRangesInRange:(_NSRange)a3 usingBlock:(id)a4
+- (void)enumerateRangesInRange:(_NSRange)range usingBlock:(id)block
 {
   v6[0] = 0;
   v6[1] = v6;
@@ -244,8 +244,8 @@
   v4[1] = 3221225472;
   v4[2] = __52__TSWPRangeArray_enumerateRangesInRange_usingBlock___block_invoke;
   v4[3] = &unk_279D497C8;
-  v5 = a3;
-  v4[4] = a4;
+  rangeCopy = range;
+  v4[4] = block;
   v4[5] = v6;
   [(TSWPRangeArray *)self enumerateRangesUsingBlock:v4];
   _Block_object_dispose(v6, 8);

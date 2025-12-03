@@ -1,25 +1,25 @@
 @interface IPFeatureKeyword
-+ (id)featureKeywordWithType:(unint64_t)a3 string:(id)a4 matchRange:(_NSRange)a5;
++ (id)featureKeywordWithType:(unint64_t)type string:(id)string matchRange:(_NSRange)range;
 - (NSMutableDictionary)contextDictionary;
 - (id)description;
 - (id)humandReadableEventTypes;
 - (id)typeDescription;
-- (void)addEventType:(id)a3;
+- (void)addEventType:(id)type;
 @end
 
 @implementation IPFeatureKeyword
 
-+ (id)featureKeywordWithType:(unint64_t)a3 string:(id)a4 matchRange:(_NSRange)a5
++ (id)featureKeywordWithType:(unint64_t)type string:(id)string matchRange:(_NSRange)range
 {
-  length = a5.length;
-  location = a5.location;
-  v8 = a4;
+  length = range.length;
+  location = range.location;
+  stringCopy = string;
   v9 = objc_alloc_init(IPFeatureKeyword);
-  [(IPFeatureKeyword *)v9 setKeywordString:v8];
+  [(IPFeatureKeyword *)v9 setKeywordString:stringCopy];
 
   [(IPFeature *)v9 setMatchRange:location, length];
   [(IPFeatureKeyword *)v9 setEventTypes:MEMORY[0x277CBEBF8]];
-  [(IPFeatureKeyword *)v9 setType:a3];
+  [(IPFeatureKeyword *)v9 setType:type];
 
   return v9;
 }
@@ -29,9 +29,9 @@
   contextDictionary = self->_contextDictionary;
   if (!contextDictionary)
   {
-    v4 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v5 = self->_contextDictionary;
-    self->_contextDictionary = v4;
+    self->_contextDictionary = dictionary;
 
     contextDictionary = self->_contextDictionary;
   }
@@ -39,31 +39,31 @@
   return contextDictionary;
 }
 
-- (void)addEventType:(id)a3
+- (void)addEventType:(id)type
 {
-  v8 = a3;
-  v4 = [(IPFeatureKeyword *)self eventTypes];
-  v5 = [v4 containsObject:v8];
+  typeCopy = type;
+  eventTypes = [(IPFeatureKeyword *)self eventTypes];
+  v5 = [eventTypes containsObject:typeCopy];
 
   if ((v5 & 1) == 0)
   {
-    v6 = [(IPFeatureKeyword *)self eventTypes];
-    v7 = [v6 arrayByAddingObject:v8];
+    eventTypes2 = [(IPFeatureKeyword *)self eventTypes];
+    v7 = [eventTypes2 arrayByAddingObject:typeCopy];
     [(IPFeatureKeyword *)self setEventTypes:v7];
   }
 }
 
 - (id)typeDescription
 {
-  v2 = [(IPFeatureKeyword *)self type];
-  if (v2 > 3)
+  type = [(IPFeatureKeyword *)self type];
+  if (type > 3)
   {
     return @"None";
   }
 
   else
   {
-    return off_278F233A8[v2];
+    return off_278F233A8[type];
   }
 }
 
@@ -73,9 +73,9 @@
   v9.receiver = self;
   v9.super_class = IPFeatureKeyword;
   v4 = [(IPFeature *)&v9 description];
-  v5 = [(IPFeatureKeyword *)self humandReadableEventTypes];
-  v6 = [(IPFeatureKeyword *)self typeDescription];
-  v7 = [v3 stringWithFormat:@"%@ Type: %@ Event Types: <%@>", v4, v5, v6];
+  humandReadableEventTypes = [(IPFeatureKeyword *)self humandReadableEventTypes];
+  typeDescription = [(IPFeatureKeyword *)self typeDescription];
+  v7 = [v3 stringWithFormat:@"%@ Type: %@ Event Types: <%@>", v4, humandReadableEventTypes, typeDescription];
 
   return v7;
 }
@@ -88,8 +88,8 @@
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(IPFeatureKeyword *)self eventTypes];
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  eventTypes = [(IPFeatureKeyword *)self eventTypes];
+  v5 = [eventTypes countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -100,14 +100,14 @@
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(eventTypes);
         }
 
-        v9 = [*(*(&v13 + 1) + 8 * i) identifier];
-        [v3 addObject:v9];
+        identifier = [*(*(&v13 + 1) + 8 * i) identifier];
+        [v3 addObject:identifier];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [eventTypes countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);

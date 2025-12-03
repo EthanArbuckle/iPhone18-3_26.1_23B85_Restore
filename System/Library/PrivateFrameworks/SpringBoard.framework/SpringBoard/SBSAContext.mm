@@ -1,19 +1,19 @@
 @interface SBSAContext
-+ (id)instanceWithBlock:(id)a3;
-+ (id)instanceWithQueryIteration:(unint64_t)a3 block:(id)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)instanceWithBlock:(id)block;
++ (id)instanceWithQueryIteration:(unint64_t)iteration block:(id)block;
+- (BOOL)isEqual:(id)equal;
 - (BSOrderedDictionary)dictionaryDescription;
 - (CGRect)inertContainerFrame;
 - (CGRect)systemContainerBounds;
 - (NSString)description;
-- (SBSAContext)initWithQueryIteration:(unint64_t)a3;
+- (SBSAContext)initWithQueryIteration:(unint64_t)iteration;
 - (UIEdgeInsets)landscapeScreenEdgeInsets;
-- (id)_initWithContext:(id)a3;
-- (id)copyByAddingFlags:(unint64_t)a3 debugRequestingProvider:(id)a4;
-- (id)copyByAddingSignals:(unint64_t)a3 debugRequestingProvider:(id)a4;
-- (id)copyByUpdatingPreferences:(id)a3;
-- (id)copyWithBlock:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_initWithContext:(id)context;
+- (id)copyByAddingFlags:(unint64_t)flags debugRequestingProvider:(id)provider;
+- (id)copyByAddingSignals:(unint64_t)signals debugRequestingProvider:(id)provider;
+- (id)copyByUpdatingPreferences:(id)preferences;
+- (id)copyWithBlock:(id)block;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
@@ -58,158 +58,158 @@
   return result;
 }
 
-- (SBSAContext)initWithQueryIteration:(unint64_t)a3
+- (SBSAContext)initWithQueryIteration:(unint64_t)iteration
 {
   v5.receiver = self;
   v5.super_class = SBSAContext;
   result = [(SBSAContext *)&v5 init];
   if (result)
   {
-    result->_queryIteration = a3;
+    result->_queryIteration = iteration;
   }
 
   return result;
 }
 
-- (id)_initWithContext:(id)a3
+- (id)_initWithContext:(id)context
 {
-  v4 = a3;
-  v5 = -[SBSAContext initWithQueryIteration:](self, "initWithQueryIteration:", [v4 queryIteration]);
+  contextCopy = context;
+  v5 = -[SBSAContext initWithQueryIteration:](self, "initWithQueryIteration:", [contextCopy queryIteration]);
   if (v5)
   {
-    [v4 displayScale];
+    [contextCopy displayScale];
     v5->_displayScale = v6;
-    v5->_minimumNumberOfContainers = [v4 minimumNumberOfContainers];
-    v5->_maximumNumberOfElements = [v4 maximumNumberOfElements];
-    [v4 inertContainerFrame];
+    v5->_minimumNumberOfContainers = [contextCopy minimumNumberOfContainers];
+    v5->_maximumNumberOfElements = [contextCopy maximumNumberOfElements];
+    [contextCopy inertContainerFrame];
     v5->_inertContainerFrame.origin.x = v7;
     v5->_inertContainerFrame.origin.y = v8;
     v5->_inertContainerFrame.size.width = v9;
     v5->_inertContainerFrame.size.height = v10;
-    [v4 systemContainerBounds];
+    [contextCopy systemContainerBounds];
     v5->_systemContainerBounds.origin.x = v11;
     v5->_systemContainerBounds.origin.y = v12;
     v5->_systemContainerBounds.size.width = v13;
     v5->_systemContainerBounds.size.height = v14;
-    v15 = [v4 platformMetrics];
-    v16 = [v15 copy];
+    platformMetrics = [contextCopy platformMetrics];
+    v16 = [platformMetrics copy];
     platformMetrics = v5->_platformMetrics;
     v5->_platformMetrics = v16;
 
-    v5->_layoutDirection = [v4 layoutDirection];
-    [v4 landscapeScreenEdgeInsets];
+    v5->_layoutDirection = [contextCopy layoutDirection];
+    [contextCopy landscapeScreenEdgeInsets];
     v5->_landscapeScreenEdgeInsets.top = v18;
     v5->_landscapeScreenEdgeInsets.left = v19;
     v5->_landscapeScreenEdgeInsets.bottom = v20;
     v5->_landscapeScreenEdgeInsets.right = v21;
-    v5->_overrideRenderingStyle = [v4 overrideRenderingStyle];
-    v5->_cloningStyle = [v4 cloningStyle];
-    v5->_activeDisplay = [v4 activeDisplay];
-    v5->_backlightLuminanceLevel = [v4 backlightLuminanceLevel];
-    v5->_heavyShadowRequiredForTransition = [v4 isHeavyShadowRequiredForTransition];
-    v5->_keyLineRequiredForTransition = [v4 isKeyLineRequiredForTransition];
-    v5->_clearModeEnabled = [v4 isClearModeEnabled];
-    v5->_accessibilityZoomActiveAndEnabled = [v4 isAccessibilityZoomActiveAndEnabled];
-    v5->_reduceTransparencyEnabled = [v4 isReduceTransparencyEnabled];
-    v5->_animatedTransitionInProgress = [v4 isAnimatedTransitionInProgress];
-    v5->_reachabilityActiveOrAnimating = [v4 isReachabilityActiveOrAnimating];
-    v22 = [v4 indicatorElementContext];
-    v23 = [v22 copy];
+    v5->_overrideRenderingStyle = [contextCopy overrideRenderingStyle];
+    v5->_cloningStyle = [contextCopy cloningStyle];
+    v5->_activeDisplay = [contextCopy activeDisplay];
+    v5->_backlightLuminanceLevel = [contextCopy backlightLuminanceLevel];
+    v5->_heavyShadowRequiredForTransition = [contextCopy isHeavyShadowRequiredForTransition];
+    v5->_keyLineRequiredForTransition = [contextCopy isKeyLineRequiredForTransition];
+    v5->_clearModeEnabled = [contextCopy isClearModeEnabled];
+    v5->_accessibilityZoomActiveAndEnabled = [contextCopy isAccessibilityZoomActiveAndEnabled];
+    v5->_reduceTransparencyEnabled = [contextCopy isReduceTransparencyEnabled];
+    v5->_animatedTransitionInProgress = [contextCopy isAnimatedTransitionInProgress];
+    v5->_reachabilityActiveOrAnimating = [contextCopy isReachabilityActiveOrAnimating];
+    indicatorElementContext = [contextCopy indicatorElementContext];
+    v23 = [indicatorElementContext copy];
     indicatorElementContext = v5->_indicatorElementContext;
     v5->_indicatorElementContext = v23;
 
-    v25 = [v4 maintainedPreferences];
-    v26 = [v25 copy];
+    maintainedPreferences = [contextCopy maintainedPreferences];
+    v26 = [maintainedPreferences copy];
     maintainedPreferences = v5->_maintainedPreferences;
     v5->_maintainedPreferences = v26;
 
-    v28 = [v4 containerParentViewDescription];
-    v29 = [v28 copy];
+    containerParentViewDescription = [contextCopy containerParentViewDescription];
+    v29 = [containerParentViewDescription copy];
     containerParentViewDescription = v5->_containerParentViewDescription;
     v5->_containerParentViewDescription = v29;
 
-    v31 = [v4 requests];
-    v32 = [v31 copy];
+    requests = [contextCopy requests];
+    v32 = [requests copy];
     requests = v5->_requests;
     v5->_requests = v32;
 
-    v34 = [v4 elementContexts];
-    v35 = [v34 copy];
+    elementContexts = [contextCopy elementContexts];
+    v35 = [elementContexts copy];
     elementContexts = v5->_elementContexts;
     v5->_elementContexts = v35;
 
-    v37 = [v4 elementInteractionResults];
-    v38 = [v37 copy];
+    elementInteractionResults = [contextCopy elementInteractionResults];
+    v38 = [elementInteractionResults copy];
     elementInteractionResults = v5->_elementInteractionResults;
     v5->_elementInteractionResults = v38;
 
-    v40 = [v4 elementSnapshotContexts];
-    v41 = [v40 copy];
+    elementSnapshotContexts = [contextCopy elementSnapshotContexts];
+    v41 = [elementSnapshotContexts copy];
     elementSnapshotContexts = v5->_elementSnapshotContexts;
     v5->_elementSnapshotContexts = v41;
 
-    v43 = [v4 secureFlipBookElementContexts];
-    v44 = [v43 copy];
+    secureFlipBookElementContexts = [contextCopy secureFlipBookElementContexts];
+    v44 = [secureFlipBookElementContexts copy];
     secureFlipBookElementContexts = v5->_secureFlipBookElementContexts;
     v5->_secureFlipBookElementContexts = v44;
 
-    v46 = [v4 secureFlipBookRenderingContext];
-    v47 = [v46 copy];
+    secureFlipBookRenderingContext = [contextCopy secureFlipBookRenderingContext];
+    v47 = [secureFlipBookRenderingContext copy];
     secureFlipBookRenderingContext = v5->_secureFlipBookRenderingContext;
     v5->_secureFlipBookRenderingContext = v47;
 
-    v49 = [v4 defaultsContext];
-    v50 = [v49 copy];
+    defaultsContext = [contextCopy defaultsContext];
+    v50 = [defaultsContext copy];
     defaultsContext = v5->_defaultsContext;
     v5->_defaultsContext = v50;
 
-    v52 = [v4 gestureDescriptions];
-    v53 = [v52 copy];
+    gestureDescriptions = [contextCopy gestureDescriptions];
+    v53 = [gestureDescriptions copy];
     gestureDescriptions = v5->_gestureDescriptions;
     v5->_gestureDescriptions = v53;
 
-    v55 = [v4 animatedTransitionResults];
-    v56 = [v55 copy];
+    animatedTransitionResults = [contextCopy animatedTransitionResults];
+    v56 = [animatedTransitionResults copy];
     animatedTransitionResults = v5->_animatedTransitionResults;
     v5->_animatedTransitionResults = v56;
 
-    v58 = [v4 elapsedTimerDescriptions];
-    v59 = [v58 copy];
+    elapsedTimerDescriptions = [contextCopy elapsedTimerDescriptions];
+    v59 = [elapsedTimerDescriptions copy];
     elapsedTimerDescriptions = v5->_elapsedTimerDescriptions;
     v5->_elapsedTimerDescriptions = v59;
 
-    v61 = [v4 indicatorContainerViewDescription];
-    v62 = [v61 copy];
+    indicatorContainerViewDescription = [contextCopy indicatorContainerViewDescription];
+    v62 = [indicatorContainerViewDescription copy];
     indicatorContainerViewDescription = v5->_indicatorContainerViewDescription;
     v5->_indicatorContainerViewDescription = v62;
 
-    v64 = [v4 containerViewDescriptions];
-    v65 = [v64 copy];
+    containerViewDescriptions = [contextCopy containerViewDescriptions];
+    v65 = [containerViewDescriptions copy];
     containerViewDescriptions = v5->_containerViewDescriptions;
     v5->_containerViewDescriptions = v65;
 
-    v67 = [v4 preferences];
-    v68 = [v67 copy];
+    preferences = [contextCopy preferences];
+    v68 = [preferences copy];
     preferences = v5->_preferences;
     v5->_preferences = v68;
 
-    v5->_signals = [v4 signals];
-    v5->_flags = [v4 flags];
+    v5->_signals = [contextCopy signals];
+    v5->_flags = [contextCopy flags];
   }
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v101 = [MEMORY[0x277CF0C20] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
+  equalCopy = equal;
+  v101 = [MEMORY[0x277CF0C20] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
   queryIteration = self->_queryIteration;
   v186[0] = MEMORY[0x277D85DD0];
   v186[1] = 3221225472;
   v186[2] = __23__SBSAContext_isEqual___block_invoke;
   v186[3] = &unk_2783A9500;
-  v6 = v4;
+  v6 = equalCopy;
   v187 = v6;
   v100 = [v101 appendUnsignedInteger:queryIteration counterpart:v186];
   maximumNumberOfElements = self->_maximumNumberOfElements;
@@ -406,7 +406,7 @@
   v135[3] = &unk_2783A94B0;
   v51 = v139;
   v136 = v51;
-  v137 = self;
+  selfCopy = self;
   v103 = MEMORY[0x223D6F7F0](v135);
   v132[0] = MEMORY[0x277D85DD0];
   v132[1] = 3221225472;
@@ -414,7 +414,7 @@
   v132[3] = &unk_2783A94B0;
   v52 = v51;
   v133 = v52;
-  v134 = self;
+  selfCopy2 = self;
   v102 = MEMORY[0x223D6F7F0](v132);
   v129[0] = MEMORY[0x277D85DD0];
   v129[1] = 3221225472;
@@ -422,7 +422,7 @@
   v129[3] = &unk_2783A94B0;
   v53 = v52;
   v130 = v53;
-  v131 = self;
+  selfCopy3 = self;
   v77 = MEMORY[0x223D6F7F0](v129);
   v126[0] = MEMORY[0x277D85DD0];
   v126[1] = 3221225472;
@@ -430,7 +430,7 @@
   v126[3] = &unk_2783A94B0;
   v54 = v53;
   v127 = v54;
-  v128 = self;
+  selfCopy4 = self;
   v55 = MEMORY[0x223D6F7F0](v126);
   v123[0] = MEMORY[0x277D85DD0];
   v123[1] = 3221225472;
@@ -438,7 +438,7 @@
   v123[3] = &unk_2783A94B0;
   v56 = v54;
   v124 = v56;
-  v125 = self;
+  selfCopy5 = self;
   v76 = MEMORY[0x223D6F7F0](v123);
   v120[0] = MEMORY[0x277D85DD0];
   v120[1] = 3221225472;
@@ -446,7 +446,7 @@
   v120[3] = &unk_2783A94B0;
   v57 = v56;
   v121 = v57;
-  v122 = self;
+  selfCopy6 = self;
   v75 = MEMORY[0x223D6F7F0](v120);
   v117[0] = MEMORY[0x277D85DD0];
   v117[1] = 3221225472;
@@ -454,7 +454,7 @@
   v117[3] = &unk_2783A94B0;
   v58 = v57;
   v118 = v58;
-  v119 = self;
+  selfCopy7 = self;
   v59 = MEMORY[0x223D6F7F0](v117);
   v114[0] = MEMORY[0x277D85DD0];
   v114[1] = 3221225472;
@@ -462,7 +462,7 @@
   v114[3] = &unk_2783A94B0;
   v60 = v58;
   v115 = v60;
-  v116 = self;
+  selfCopy8 = self;
   v61 = MEMORY[0x223D6F7F0](v114);
   v111[0] = MEMORY[0x277D85DD0];
   v111[1] = 3221225472;
@@ -470,7 +470,7 @@
   v111[3] = &unk_2783A94B0;
   v62 = v60;
   v112 = v62;
-  v113 = self;
+  selfCopy9 = self;
   v63 = MEMORY[0x223D6F7F0](v111);
   v64 = [v104 appendEqualsBlocks:{v138, v103, v102, v77, v55, v76, v75, v59, v61, v63, 0}];
   preferences = self->_preferences;
@@ -594,8 +594,8 @@ uint64_t __23__SBSAContext_isEqual___block_invoke_34(uint64_t a1)
 
 - (unint64_t)hash
 {
-  v45 = [MEMORY[0x277CF0C40] builder];
-  v44 = [v45 appendUnsignedInteger:self->_queryIteration];
+  builder = [MEMORY[0x277CF0C40] builder];
+  v44 = [builder appendUnsignedInteger:self->_queryIteration];
   v43 = [v44 appendUnsignedInteger:self->_minimumNumberOfContainers];
   v42 = [v43 appendUnsignedInteger:self->_maximumNumberOfElements];
   v41 = [v42 appendCGRect:{self->_inertContainerFrame.origin.x, self->_inertContainerFrame.origin.y, self->_inertContainerFrame.size.width, self->_inertContainerFrame.size.height}];
@@ -642,13 +642,13 @@ uint64_t __23__SBSAContext_isEqual___block_invoke_34(uint64_t a1)
 
 - (NSString)description
 {
-  v2 = [(SBSAContext *)self dictionaryDescription];
-  v3 = SBSAStringFromDictionaryDescription(v2);
+  dictionaryDescription = [(SBSAContext *)self dictionaryDescription];
+  v3 = SBSAStringFromDictionaryDescription(dictionaryDescription);
 
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
 
@@ -658,8 +658,8 @@ uint64_t __23__SBSAContext_isEqual___block_invoke_34(uint64_t a1)
 - (BSOrderedDictionary)dictionaryDescription
 {
   v3 = objc_alloc(MEMORY[0x277CF0C78]);
-  v4 = [MEMORY[0x277CF0C98] sortByInsertionOrder];
-  v5 = [v3 initWithKeyOrderingStrategy:v4];
+  sortByInsertionOrder = [MEMORY[0x277CF0C98] sortByInsertionOrder];
+  v5 = [v3 initWithKeyOrderingStrategy:sortByInsertionOrder];
 
   v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%p", self];
   v7 = objc_opt_class();
@@ -851,50 +851,50 @@ uint64_t __23__SBSAContext_isEqual___block_invoke_34(uint64_t a1)
   return v5;
 }
 
-+ (id)instanceWithBlock:(id)a3
++ (id)instanceWithBlock:(id)block
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
 
   return 0;
 }
 
-+ (id)instanceWithQueryIteration:(unint64_t)a3 block:(id)a4
++ (id)instanceWithQueryIteration:(unint64_t)iteration block:(id)block
 {
-  v5 = a4;
-  v6 = [objc_alloc(objc_opt_class()) initWithQueryIteration:a3];
-  v7 = [v6 copyWithBlock:v5];
+  blockCopy = block;
+  v6 = [objc_alloc(objc_opt_class()) initWithQueryIteration:iteration];
+  v7 = [v6 copyWithBlock:blockCopy];
 
   return v7;
 }
 
-- (id)copyWithBlock:(id)a3
+- (id)copyWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = [(SBSAContext *)self copy];
-  if (v4)
+  if (blockCopy)
   {
     v6 = [objc_alloc(objc_msgSend(objc_opt_class() "mutatorClass"))];
-    v4[2](v4, v6);
+    blockCopy[2](blockCopy, v6);
   }
 
   return v5;
 }
 
-- (id)copyByAddingSignals:(unint64_t)a3 debugRequestingProvider:(id)a4
+- (id)copyByAddingSignals:(unint64_t)signals debugRequestingProvider:(id)provider
 {
   v22 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = self;
-  if (a3)
+  providerCopy = provider;
+  selfCopy = self;
+  if (signals)
   {
     v9 = SBLogSystemAperturePreferencesStack();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
-      v12 = [(SBSAContext *)v8 queryIteration];
-      v13 = _StringFromPreferencesStackSignals(a3);
-      v14 = [v7 description];
+      queryIteration = [(SBSAContext *)selfCopy queryIteration];
+      v13 = _StringFromPreferencesStackSignals(signals);
+      v14 = [providerCopy description];
       *buf = 134349570;
-      v17 = v12;
+      v17 = queryIteration;
       v18 = 2112;
       v19 = v13;
       v20 = 2112;
@@ -906,15 +906,15 @@ uint64_t __23__SBSAContext_isEqual___block_invoke_34(uint64_t a1)
     v15[1] = 3221225472;
     v15[2] = __68__SBSAContext_Private__copyByAddingSignals_debugRequestingProvider___block_invoke;
     v15[3] = &unk_2783ACD90;
-    v15[4] = v8;
+    v15[4] = selfCopy;
     v15[5] = a2;
-    v15[6] = a3;
-    v10 = [(SBSAContext *)v8 copyWithBlock:v15];
+    v15[6] = signals;
+    v10 = [(SBSAContext *)selfCopy copyWithBlock:v15];
 
-    v8 = v10;
+    selfCopy = v10;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 void __68__SBSAContext_Private__copyByAddingSignals_debugRequestingProvider___block_invoke(uint64_t a1, void *a2)
@@ -958,21 +958,21 @@ void __68__SBSAContext_Private__copyByAddingSignals_debugRequestingProvider___bl
   [v6 setSignals:{*(a1 + 48) | objc_msgSend(v6, "signals")}];
 }
 
-- (id)copyByAddingFlags:(unint64_t)a3 debugRequestingProvider:(id)a4
+- (id)copyByAddingFlags:(unint64_t)flags debugRequestingProvider:(id)provider
 {
   v22 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = self;
-  if (a3)
+  providerCopy = provider;
+  selfCopy = self;
+  if (flags)
   {
     v9 = SBLogSystemAperturePreferencesStack();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
-      v12 = [(SBSAContext *)v8 queryIteration];
-      v13 = _StringFromPreferencesStackFlags(a3);
-      v14 = [v7 description];
+      queryIteration = [(SBSAContext *)selfCopy queryIteration];
+      v13 = _StringFromPreferencesStackFlags(flags);
+      v14 = [providerCopy description];
       *buf = 134349570;
-      v17 = v12;
+      v17 = queryIteration;
       v18 = 2112;
       v19 = v13;
       v20 = 2112;
@@ -984,15 +984,15 @@ void __68__SBSAContext_Private__copyByAddingSignals_debugRequestingProvider___bl
     v15[1] = 3221225472;
     v15[2] = __66__SBSAContext_Private__copyByAddingFlags_debugRequestingProvider___block_invoke;
     v15[3] = &unk_2783ACD90;
-    v15[4] = v8;
+    v15[4] = selfCopy;
     v15[5] = a2;
-    v15[6] = a3;
-    v10 = [(SBSAContext *)v8 copyWithBlock:v15];
+    v15[6] = flags;
+    v10 = [(SBSAContext *)selfCopy copyWithBlock:v15];
 
-    v8 = v10;
+    selfCopy = v10;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 void __66__SBSAContext_Private__copyByAddingFlags_debugRequestingProvider___block_invoke(uint64_t a1, void *a2)
@@ -1036,17 +1036,17 @@ void __66__SBSAContext_Private__copyByAddingFlags_debugRequestingProvider___bloc
   [v6 setFlags:{*(a1 + 48) | objc_msgSend(v6, "flags")}];
 }
 
-- (id)copyByUpdatingPreferences:(id)a3
+- (id)copyByUpdatingPreferences:(id)preferences
 {
-  v5 = a3;
+  preferencesCopy = preferences;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __50__SBSAContext_Private__copyByUpdatingPreferences___block_invoke;
   v9[3] = &unk_2783AD750;
-  v10 = v5;
+  v10 = preferencesCopy;
   v11 = a2;
   v9[4] = self;
-  v6 = v5;
+  v6 = preferencesCopy;
   v7 = [(SBSAContext *)self copyWithBlock:v9];
 
   return v7;

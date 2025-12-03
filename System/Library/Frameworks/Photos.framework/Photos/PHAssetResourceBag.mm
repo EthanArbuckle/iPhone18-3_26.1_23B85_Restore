@@ -1,20 +1,20 @@
 @interface PHAssetResourceBag
-+ (BOOL)_supportsAssetResourceTypes:(id)a3 mediaType:(int64_t *)a4 mediaSubtype:(unint64_t *)a5 importedBy:(signed __int16)a6;
-+ (id)_primaryAssetResource:(id)a3;
-- (BOOL)_extractValidatedAdjustmentsURL:(id *)a3 fromResource:(id)a4 photoLibrary:(id)a5 error:(id *)a6;
-- (BOOL)_extractValidatedAudioURL:(id *)a3 fromResource:(id)a4 photoLibrary:(id)a5 error:(id *)a6;
-- (BOOL)_extractValidatedImageURL:(id *)a3 imageData:(id *)a4 fromResource:(id)a5 photoLibrary:(id)a6 error:(id *)a7;
-- (BOOL)_extractValidatedVideoURL:(id *)a3 fromResource:(id)a4 photoLibrary:(id)a5 error:(id *)a6;
-- (BOOL)_validateAssetResourcesForAssetCreation:(id)a3 photoLibrary:(id)a4 error:(id *)a5;
++ (BOOL)_supportsAssetResourceTypes:(id)types mediaType:(int64_t *)type mediaSubtype:(unint64_t *)subtype importedBy:(signed __int16)by;
++ (id)_primaryAssetResource:(id)resource;
+- (BOOL)_extractValidatedAdjustmentsURL:(id *)l fromResource:(id)resource photoLibrary:(id)library error:(id *)error;
+- (BOOL)_extractValidatedAudioURL:(id *)l fromResource:(id)resource photoLibrary:(id)library error:(id *)error;
+- (BOOL)_extractValidatedImageURL:(id *)l imageData:(id *)data fromResource:(id)resource photoLibrary:(id)library error:(id *)error;
+- (BOOL)_extractValidatedVideoURL:(id *)l fromResource:(id)resource photoLibrary:(id)library error:(id *)error;
+- (BOOL)_validateAssetResourcesForAssetCreation:(id)creation photoLibrary:(id)library error:(id *)error;
 - (BOOL)hasAdjustments;
-- (BOOL)validateForInsertIntoPhotoLibrary:(id)a3 error:(id *)a4;
+- (BOOL)validateForInsertIntoPhotoLibrary:(id)library error:(id *)error;
 - (PHAssetCreationRequest)assetCreationRequest;
-- (PHAssetResourceBag)initWithAssetResources:(id)a3 assetCreationRequest:(id)a4;
-- (id)_validateAssetResourceForAssetCreation:(id)a3 photoLibrary:(id)a4 error:(id *)a5;
-- (id)_validatedContextForResource:(id)a3;
-- (id)assetResourceWithType:(int64_t)a3;
-- (id)validatedDataForAssetResource:(id)a3;
-- (id)validatedURLForAssetResource:(id)a3;
+- (PHAssetResourceBag)initWithAssetResources:(id)resources assetCreationRequest:(id)request;
+- (id)_validateAssetResourceForAssetCreation:(id)creation photoLibrary:(id)library error:(id *)error;
+- (id)_validatedContextForResource:(id)resource;
+- (id)assetResourceWithType:(int64_t)type;
+- (id)validatedDataForAssetResource:(id)resource;
+- (id)validatedURLForAssetResource:(id)resource;
 @end
 
 @implementation PHAssetResourceBag
@@ -26,31 +26,31 @@
   return WeakRetained;
 }
 
-- (id)validatedDataForAssetResource:(id)a3
+- (id)validatedDataForAssetResource:(id)resource
 {
-  v3 = [(PHAssetResourceBag *)self _validatedContextForResource:a3];
-  v4 = [v3 validatedData];
+  v3 = [(PHAssetResourceBag *)self _validatedContextForResource:resource];
+  validatedData = [v3 validatedData];
 
-  return v4;
+  return validatedData;
 }
 
-- (id)validatedURLForAssetResource:(id)a3
+- (id)validatedURLForAssetResource:(id)resource
 {
-  v3 = [(PHAssetResourceBag *)self _validatedContextForResource:a3];
-  v4 = [v3 validatedURL];
+  v3 = [(PHAssetResourceBag *)self _validatedContextForResource:resource];
+  validatedURL = [v3 validatedURL];
 
-  return v4;
+  return validatedURL;
 }
 
-- (id)_validatedContextForResource:(id)a3
+- (id)_validatedContextForResource:(id)resource
 {
-  v4 = a3;
+  resourceCopy = resource;
   assetResourceContexts = self->_assetResourceContexts;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __51__PHAssetResourceBag__validatedContextForResource___block_invoke;
   v10[3] = &unk_1E75AA360;
-  v6 = v4;
+  v6 = resourceCopy;
   v11 = v6;
   v7 = [(NSArray *)assetResourceContexts indexOfObjectPassingTest:v10];
   if (v7 == 0x7FFFFFFFFFFFFFFFLL)
@@ -75,23 +75,23 @@ BOOL __51__PHAssetResourceBag__validatedContextForResource___block_invoke(uint64
   return v4;
 }
 
-- (BOOL)validateForInsertIntoPhotoLibrary:(id)a3 error:(id *)a4
+- (BOOL)validateForInsertIntoPhotoLibrary:(id)library error:(id *)error
 {
-  v6 = a3;
+  libraryCopy = library;
   if (self->_didValidateForInsertion)
   {
     v7 = 0;
     valid = self->_valid;
     p_valid = &self->_valid;
     v8 = valid;
-    if (!a4 || v8)
+    if (!error || v8)
     {
       goto LABEL_10;
     }
 
 LABEL_9:
     v13 = [MEMORY[0x1E696ABC0] ph_errorWithCode:3302 localizedDescription:@"Previous validation failed"];
-    *a4 = v13;
+    *error = v13;
 
     v7 = 0;
     goto LABEL_10;
@@ -99,17 +99,17 @@ LABEL_9:
 
   assetResources = self->_assetResources;
   v16 = 0;
-  v12 = [(PHAssetResourceBag *)self _validateAssetResourcesForAssetCreation:assetResources photoLibrary:v6 error:&v16];
+  v12 = [(PHAssetResourceBag *)self _validateAssetResourcesForAssetCreation:assetResources photoLibrary:libraryCopy error:&v16];
   v7 = v16;
   self->_valid = v12;
   p_valid = &self->_valid;
   *(p_valid - 1) = 1;
-  if (a4 && !v12)
+  if (error && !v12)
   {
     if (v7)
     {
       v7 = v7;
-      *a4 = v7;
+      *error = v7;
       goto LABEL_10;
     }
 
@@ -135,32 +135,32 @@ LABEL_10:
   return v2;
 }
 
-- (BOOL)_validateAssetResourcesForAssetCreation:(id)a3 photoLibrary:(id)a4 error:(id *)a5
+- (BOOL)_validateAssetResourcesForAssetCreation:(id)creation photoLibrary:(id)library error:(id *)error
 {
   v48 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = [v9 valueForKey:@"type"];
+  creationCopy = creation;
+  libraryCopy = library;
+  v11 = [creationCopy valueForKey:@"type"];
   v12 = objc_opt_class();
-  v13 = [(PHAssetResourceBag *)self assetCreationRequest];
-  LOBYTE(v12) = [v12 _supportsAssetResourceTypes:v11 mediaType:&self->_mediaType mediaSubtype:&self->_mediaSubtype importedBy:{objc_msgSend(v13, "importedBy")}];
+  assetCreationRequest = [(PHAssetResourceBag *)self assetCreationRequest];
+  LOBYTE(v12) = [v12 _supportsAssetResourceTypes:v11 mediaType:&self->_mediaType mediaSubtype:&self->_mediaSubtype importedBy:{objc_msgSend(assetCreationRequest, "importedBy")}];
 
   if (v12)
   {
     v38 = a2;
     v40 = v11;
-    v14 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v9, "count")}];
+    v14 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(creationCopy, "count")}];
     v43 = 0u;
     v44 = 0u;
     v45 = 0u;
     v46 = 0u;
-    v41 = v9;
-    v15 = v9;
+    v41 = creationCopy;
+    v15 = creationCopy;
     v16 = [v15 countByEnumeratingWithState:&v43 objects:v47 count:16];
     if (v16)
     {
       v17 = v16;
-      v39 = a5;
+      errorCopy = error;
       v18 = 0;
       v19 = *v44;
 LABEL_4:
@@ -175,7 +175,7 @@ LABEL_4:
 
         v22 = *(*(&v43 + 1) + 8 * v20);
         v42 = v21;
-        v23 = [(PHAssetResourceBag *)self _validateAssetResourceForAssetCreation:v22 photoLibrary:v10 error:&v42];
+        v23 = [(PHAssetResourceBag *)self _validateAssetResourceForAssetCreation:v22 photoLibrary:libraryCopy error:&v42];
         v18 = v42;
 
         if (!v23)
@@ -200,9 +200,9 @@ LABEL_4:
       }
 
       v11 = v40;
-      v9 = v41;
-      a5 = v39;
-      if (v39)
+      creationCopy = v41;
+      error = errorCopy;
+      if (errorCopy)
       {
         goto LABEL_12;
       }
@@ -216,8 +216,8 @@ LABEL_18:
     v26 = [v14 count];
     if (v26 != [(NSArray *)self->_assetResources count])
     {
-      v37 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v37 handleFailureInMethod:v38 object:self file:@"PHAssetResourceBag.m" lineNumber:605 description:@"expect 1-to-1 resource to validation context"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:v38 object:self file:@"PHAssetResourceBag.m" lineNumber:605 description:@"expect 1-to-1 resource to validation context"];
     }
 
     objc_storeStrong(&self->_assetResourceContexts, v14);
@@ -266,14 +266,14 @@ LABEL_18:
     }
 
     v25 = 1;
-    v9 = v41;
+    creationCopy = v41;
   }
 
   else
   {
     v18 = [MEMORY[0x1E696ABC0] ph_errorWithCode:3300 localizedDescription:@"No known asset format supports this resource combination"];
     v14 = 0;
-    if (!a5)
+    if (!error)
     {
 LABEL_16:
       v25 = 0;
@@ -288,7 +288,7 @@ LABEL_12:
 
     v24 = v18;
     v25 = 0;
-    *a5 = v18;
+    *error = v18;
   }
 
 LABEL_30:
@@ -296,43 +296,43 @@ LABEL_30:
   return v25;
 }
 
-- (id)_validateAssetResourceForAssetCreation:(id)a3 photoLibrary:(id)a4 error:(id *)a5
+- (id)_validateAssetResourceForAssetCreation:(id)creation photoLibrary:(id)library error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 type];
-  v11 = v10;
-  v12 = 0;
+  creationCopy = creation;
+  libraryCopy = library;
+  type = [creationCopy type];
+  v11 = type;
+  fileURL = 0;
   v13 = 0;
-  if (v10 > 106)
+  if (type > 106)
   {
-    if (v10 > 109)
+    if (type > 109)
     {
-      if (v10 == 110)
+      if (type == 110)
       {
 LABEL_13:
-        v12 = [v8 fileURL];
-        v14 = 0;
+        fileURL = [creationCopy fileURL];
+        data = 0;
         v15 = 0;
-        v17 = v12 == 0;
+        v17 = fileURL == 0;
 LABEL_14:
         v13 = !v17;
         goto LABEL_17;
       }
 
-      v14 = 0;
+      data = 0;
       v15 = 0;
-      if (v10 != 111)
+      if (type != 111)
       {
         goto LABEL_17;
       }
     }
 
-    else if (v10 != 107)
+    else if (type != 107)
     {
-      v14 = 0;
+      data = 0;
       v15 = 0;
-      if (v10 != 108)
+      if (type != 108)
       {
         goto LABEL_17;
       }
@@ -340,16 +340,16 @@ LABEL_14:
       goto LABEL_13;
     }
 
-    v12 = [v8 fileURL];
-    v14 = [v8 data];
+    fileURL = [creationCopy fileURL];
+    data = [creationCopy data];
     v15 = 0;
-    v17 = (v12 | v14) == 0;
+    v17 = (fileURL | data) == 0;
     goto LABEL_14;
   }
 
-  v14 = 0;
+  data = 0;
   v15 = 0;
-  switch(v10)
+  switch(type)
   {
     case 1:
     case 4:
@@ -360,9 +360,9 @@ LABEL_14:
       v35 = 0;
       v36 = 0;
       v34 = 0;
-      v13 = [(PHAssetResourceBag *)self _extractValidatedImageURL:&v36 imageData:&v35 fromResource:v8 photoLibrary:v9 error:&v34];
-      v12 = v36;
-      v14 = v35;
+      v13 = [(PHAssetResourceBag *)self _extractValidatedImageURL:&v36 imageData:&v35 fromResource:creationCopy photoLibrary:libraryCopy error:&v34];
+      fileURL = v36;
+      data = v35;
       v15 = v34;
       break;
     case 2:
@@ -375,27 +375,27 @@ LABEL_14:
     case 15:
       v32 = 0;
       v33 = 0;
-      v13 = [(PHAssetResourceBag *)self _extractValidatedVideoURL:&v33 fromResource:v8 photoLibrary:v9 error:&v32];
-      v12 = v33;
+      v13 = [(PHAssetResourceBag *)self _extractValidatedVideoURL:&v33 fromResource:creationCopy photoLibrary:libraryCopy error:&v32];
+      fileURL = v33;
       v16 = v32;
       goto LABEL_4;
     case 3:
       v30 = 0;
       v31 = 0;
-      v13 = [(PHAssetResourceBag *)self _extractValidatedAudioURL:&v31 fromResource:v8 photoLibrary:v9 error:&v30];
-      v12 = v31;
+      v13 = [(PHAssetResourceBag *)self _extractValidatedAudioURL:&v31 fromResource:creationCopy photoLibrary:libraryCopy error:&v30];
+      fileURL = v31;
       v16 = v30;
       goto LABEL_4;
     case 7:
     case 16:
       v28 = 0;
       v29 = 0;
-      v13 = [(PHAssetResourceBag *)self _extractValidatedAdjustmentsURL:&v29 fromResource:v8 photoLibrary:v9 error:&v28];
-      v12 = v29;
+      v13 = [(PHAssetResourceBag *)self _extractValidatedAdjustmentsURL:&v29 fromResource:creationCopy photoLibrary:libraryCopy error:&v28];
+      fileURL = v29;
       v16 = v28;
 LABEL_4:
       v15 = v16;
-      v14 = 0;
+      data = 0;
       break;
     case 17:
     case 18:
@@ -405,26 +405,26 @@ LABEL_4:
   }
 
 LABEL_17:
-  v18 = [v8 creationOptions];
-  v19 = [v18 uniformTypeIdentifier];
+  creationOptions = [creationCopy creationOptions];
+  uniformTypeIdentifier = [creationOptions uniformTypeIdentifier];
 
-  if (v13 && v19)
+  if (v13 && uniformTypeIdentifier)
   {
-    v20 = [MEMORY[0x1E6982C40] typeWithIdentifier:v19];
+    v20 = [MEMORY[0x1E6982C40] typeWithIdentifier:uniformTypeIdentifier];
     v21 = PHUniformTypeConformsToResourceType(v20, v11);
 
     if ((v21 & 1) == 0)
     {
       v22 = MEMORY[0x1E696ABC0];
       v23 = _PHAssetResourceTypeDescription(v11);
-      v24 = [v22 ph_errorWithCode:3302 localizedDescription:{@"Invalid uti '%@' specified for resource type %@", v19, v23}];
+      v24 = [v22 ph_errorWithCode:3302 localizedDescription:{@"Invalid uti '%@' specified for resource type %@", uniformTypeIdentifier, v23}];
 
       v15 = v24;
       goto LABEL_23;
     }
 
 LABEL_22:
-    v25 = [[PHAssetResourceValidatedContext alloc] initWithResource:v8 validatedURL:v12 validatedData:v14];
+    v25 = [[PHAssetResourceValidatedContext alloc] initWithResource:creationCopy validatedURL:fileURL validatedData:data];
     goto LABEL_28;
   }
 
@@ -434,7 +434,7 @@ LABEL_22:
   }
 
 LABEL_23:
-  if (a5)
+  if (error)
   {
     if (!v15)
     {
@@ -443,7 +443,7 @@ LABEL_23:
 
     v26 = v15;
     v25 = 0;
-    *a5 = v15;
+    *error = v15;
   }
 
   else
@@ -456,20 +456,20 @@ LABEL_28:
   return v25;
 }
 
-- (BOOL)_extractValidatedAdjustmentsURL:(id *)a3 fromResource:(id)a4 photoLibrary:(id)a5 error:(id *)a6
+- (BOOL)_extractValidatedAdjustmentsURL:(id *)l fromResource:(id)resource photoLibrary:(id)library error:(id *)error
 {
-  v8 = a4;
-  v9 = [v8 fileURL];
-  if (v9)
+  resourceCopy = resource;
+  fileURL = [resourceCopy fileURL];
+  if (fileURL)
   {
-    v10 = v9;
-    v11 = [objc_alloc(MEMORY[0x1E69C0660]) initWithURL:v9];
+    v10 = fileURL;
+    v11 = [objc_alloc(MEMORY[0x1E69C0660]) initWithURL:fileURL];
 
     if (v11)
     {
       v12 = 0;
       v13 = 1;
-      if (!a3)
+      if (!l)
       {
         goto LABEL_13;
       }
@@ -480,9 +480,9 @@ LABEL_28:
 
   else
   {
-    v14 = [v8 data];
+    data = [resourceCopy data];
 
-    if (v14)
+    if (data)
     {
       v15 = @"NSData unsupported for adjustments; pass a url instead";
       v16 = 3300;
@@ -497,7 +497,7 @@ LABEL_28:
     v12 = [MEMORY[0x1E696ABC0] ph_errorWithCode:v16 localizedDescription:v15];
     if (v12)
     {
-      if (!a6)
+      if (!error)
       {
         goto LABEL_15;
       }
@@ -507,12 +507,12 @@ LABEL_28:
   }
 
   v12 = [MEMORY[0x1E696ABC0] ph_errorWithCode:3302 localizedDescription:@"Unable to obtain adjustment data"];
-  if (!a6)
+  if (!error)
   {
 LABEL_15:
     v13 = 0;
     v10 = 0;
-    if (!a3)
+    if (!l)
     {
       goto LABEL_13;
     }
@@ -524,12 +524,12 @@ LABEL_11:
   v17 = v12;
   v13 = 0;
   v10 = 0;
-  *a6 = v12;
-  if (a3)
+  *error = v12;
+  if (l)
   {
 LABEL_12:
     v18 = v10;
-    *a3 = v10;
+    *l = v10;
   }
 
 LABEL_13:
@@ -537,22 +537,22 @@ LABEL_13:
   return v13;
 }
 
-- (BOOL)_extractValidatedAudioURL:(id *)a3 fromResource:(id)a4 photoLibrary:(id)a5 error:(id *)a6
+- (BOOL)_extractValidatedAudioURL:(id *)l fromResource:(id)resource photoLibrary:(id)library error:(id *)error
 {
-  v8 = a4;
-  v9 = [v8 fileURL];
-  v10 = v9;
-  if (v9)
+  resourceCopy = resource;
+  fileURL = [resourceCopy fileURL];
+  v10 = fileURL;
+  if (fileURL)
   {
     v11 = MEMORY[0x1E69BE670];
-    v12 = [v9 pathExtension];
-    LOBYTE(v11) = [v11 isAudioFileExtension:v12];
+    pathExtension = [fileURL pathExtension];
+    LOBYTE(v11) = [v11 isAudioFileExtension:pathExtension];
 
     if (v11)
     {
       v13 = 0;
       v14 = 1;
-      if (!a3)
+      if (!l)
       {
         goto LABEL_14;
       }
@@ -561,15 +561,15 @@ LABEL_13:
     }
 
     v18 = MEMORY[0x1E696ABC0];
-    v19 = [v10 pathExtension];
-    v13 = [v18 ph_errorWithCode:3302 localizedDescription:{@"Unsupported audio file extension: %@", v19}];
+    pathExtension2 = [v10 pathExtension];
+    v13 = [v18 ph_errorWithCode:3302 localizedDescription:{@"Unsupported audio file extension: %@", pathExtension2}];
   }
 
   else
   {
-    v15 = [v8 data];
+    data = [resourceCopy data];
 
-    if (v15)
+    if (data)
     {
       v16 = @"NSData unsupported for audio; pass a url instead";
       v17 = 3300;
@@ -586,7 +586,7 @@ LABEL_13:
 
   if (v13)
   {
-    if (a6)
+    if (error)
     {
       goto LABEL_12;
     }
@@ -594,7 +594,7 @@ LABEL_13:
 LABEL_16:
     v14 = 0;
     v10 = 0;
-    if (!a3)
+    if (!l)
     {
       goto LABEL_14;
     }
@@ -603,7 +603,7 @@ LABEL_16:
   }
 
   v13 = [MEMORY[0x1E696ABC0] ph_errorWithCode:3302 localizedDescription:@"Unable to obtain audio url"];
-  if (!a6)
+  if (!error)
   {
     goto LABEL_16;
   }
@@ -612,12 +612,12 @@ LABEL_12:
   v20 = v13;
   v14 = 0;
   v10 = 0;
-  *a6 = v13;
-  if (a3)
+  *error = v13;
+  if (l)
   {
 LABEL_13:
     v21 = v10;
-    *a3 = v10;
+    *l = v10;
   }
 
 LABEL_14:
@@ -625,35 +625,35 @@ LABEL_14:
   return v14;
 }
 
-- (BOOL)_extractValidatedVideoURL:(id *)a3 fromResource:(id)a4 photoLibrary:(id)a5 error:(id *)a6
+- (BOOL)_extractValidatedVideoURL:(id *)l fromResource:(id)resource photoLibrary:(id)library error:(id *)error
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = [v10 fileURL];
-  v13 = [[_PHPhotoLibraryValidator alloc] initWithPhotoLibrary:v11];
+  resourceCopy = resource;
+  libraryCopy = library;
+  fileURL = [resourceCopy fileURL];
+  v13 = [[_PHPhotoLibraryValidator alloc] initWithPhotoLibrary:libraryCopy];
 
-  if (v12)
+  if (fileURL)
   {
     v29 = 0;
-    v14 = [(PHValidator *)v13 validateURL:v12 withOptions:8 error:&v29];
+    v14 = [(PHValidator *)v13 validateURL:fileURL withOptions:8 error:&v29];
     v15 = v29;
     if (v14)
     {
       WeakRetained = objc_loadWeakRetained(&self->_assetCreationRequest);
       v28 = v15;
-      v17 = [WeakRetained validateReadAccessForContentURL:v12 assetResource:v10 error:&v28];
+      v17 = [WeakRetained validateReadAccessForContentURL:fileURL assetResource:resourceCopy error:&v28];
       v18 = v28;
 
       if (v17)
       {
         v27 = v18;
-        v19 = [(PHValidator *)v13 validateURL:v12 withOptions:32 error:&v27];
+        v19 = [(PHValidator *)v13 validateURL:fileURL withOptions:32 error:&v27];
         v15 = v27;
 
         if (v19)
         {
           v20 = 1;
-          if (!a3)
+          if (!l)
           {
             goto LABEL_16;
           }
@@ -671,9 +671,9 @@ LABEL_14:
 
   else
   {
-    v21 = [v10 data];
+    data = [resourceCopy data];
 
-    if (v21)
+    if (data)
     {
       v22 = @"NSData unsupported for video; pass a url instead";
       v23 = 3300;
@@ -690,15 +690,15 @@ LABEL_14:
 
   if (v15)
   {
-    if (a6)
+    if (error)
     {
       goto LABEL_14;
     }
 
 LABEL_18:
     v20 = 0;
-    v12 = 0;
-    if (!a3)
+    fileURL = 0;
+    if (!l)
     {
       goto LABEL_16;
     }
@@ -707,7 +707,7 @@ LABEL_18:
   }
 
   v15 = [MEMORY[0x1E696ABC0] ph_errorWithCode:3302 localizedDescription:@"Unable to obtain video url"];
-  if (!a6)
+  if (!error)
   {
     goto LABEL_18;
   }
@@ -715,13 +715,13 @@ LABEL_18:
 LABEL_14:
   v24 = v15;
   v20 = 0;
-  v12 = 0;
-  *a6 = v15;
-  if (a3)
+  fileURL = 0;
+  *error = v15;
+  if (l)
   {
 LABEL_15:
-    v25 = v12;
-    *a3 = v12;
+    v25 = fileURL;
+    *l = fileURL;
   }
 
 LABEL_16:
@@ -729,23 +729,23 @@ LABEL_16:
   return v20;
 }
 
-- (BOOL)_extractValidatedImageURL:(id *)a3 imageData:(id *)a4 fromResource:(id)a5 photoLibrary:(id)a6 error:(id *)a7
+- (BOOL)_extractValidatedImageURL:(id *)l imageData:(id *)data fromResource:(id)resource photoLibrary:(id)library error:(id *)error
 {
-  v13 = a5;
-  v14 = a6;
-  v15 = [v13 data];
-  v16 = [v13 fileURL];
-  v17 = v16;
-  if (v15 && v16)
+  resourceCopy = resource;
+  libraryCopy = library;
+  data = [resourceCopy data];
+  fileURL = [resourceCopy fileURL];
+  v17 = fileURL;
+  if (data && fileURL)
   {
-    v30 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v30 handleFailureInMethod:a2 object:self file:@"PHAssetResourceBag.m" lineNumber:377 description:@"have both image data and url; can't tell which to validate"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHAssetResourceBag.m" lineNumber:377 description:@"have both image data and url; can't tell which to validate"];
   }
 
-  v18 = [v13 type];
-  v19 = [[_PHPhotoLibraryValidator alloc] initWithPhotoLibrary:v14];
+  type = [resourceCopy type];
+  v19 = [[_PHPhotoLibraryValidator alloc] initWithPhotoLibrary:libraryCopy];
 
-  if (!v15)
+  if (!data)
   {
     if (!v17)
     {
@@ -760,31 +760,31 @@ LABEL_16:
       goto LABEL_15;
     }
 
-    v15 = 0;
+    data = 0;
 LABEL_12:
     v23 = 1;
-    if (!a3)
+    if (!l)
     {
       goto LABEL_19;
     }
 
 LABEL_18:
     v27 = v17;
-    *a3 = v17;
+    *l = v17;
     goto LABEL_19;
   }
 
-  if (v18 != 1 && v18 != 19)
+  if (type != 1 && type != 19)
   {
     v24 = MEMORY[0x1E696ABC0];
-    v25 = _PHAssetResourceTypeDescription(v18);
+    v25 = _PHAssetResourceTypeDescription(type);
     v21 = [v24 ph_errorWithCode:3300 localizedDescription:{@"NSData unsupported for resource type %@ pass a url instead", v25}];;
 
     goto LABEL_15;
   }
 
   v32 = 0;
-  v20 = [(PHValidator *)v19 validateData:v15 withOptions:16 error:&v32];
+  v20 = [(PHValidator *)v19 validateData:data withOptions:16 error:&v32];
   v21 = v32;
   if (v20)
   {
@@ -795,7 +795,7 @@ LABEL_15:
 
   if (v21)
   {
-    if (a7)
+    if (error)
     {
       goto LABEL_17;
     }
@@ -805,15 +805,15 @@ LABEL_15:
 
 LABEL_22:
   v21 = [MEMORY[0x1E696ABC0] ph_errorWithCode:3303 localizedDescription:@"Unable to obtain image url"];
-  if (a7)
+  if (error)
   {
 LABEL_17:
     v26 = v21;
     v23 = 0;
     v17 = 0;
-    v15 = 0;
-    *a7 = v21;
-    if (!a3)
+    data = 0;
+    *error = v21;
+    if (!l)
     {
       goto LABEL_19;
     }
@@ -824,30 +824,30 @@ LABEL_17:
 LABEL_23:
   v23 = 0;
   v17 = 0;
-  v15 = 0;
-  if (a3)
+  data = 0;
+  if (l)
   {
     goto LABEL_18;
   }
 
 LABEL_19:
-  if (a4)
+  if (data)
   {
-    v28 = v15;
-    *a4 = v15;
+    v28 = data;
+    *data = data;
   }
 
   return v23;
 }
 
-- (id)assetResourceWithType:(int64_t)a3
+- (id)assetResourceWithType:(int64_t)type
 {
   assetResources = self->_assetResources;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __44__PHAssetResourceBag_assetResourceWithType___block_invoke;
   v8[3] = &__block_descriptor_40_e40_B32__0__PHExternalAssetResource_8Q16_B24l;
-  v8[4] = a3;
+  v8[4] = type;
   v5 = [(NSArray *)assetResources indexOfObjectPassingTest:v8];
   if (v5 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -862,32 +862,32 @@ LABEL_19:
   return v6;
 }
 
-- (PHAssetResourceBag)initWithAssetResources:(id)a3 assetCreationRequest:(id)a4
+- (PHAssetResourceBag)initWithAssetResources:(id)resources assetCreationRequest:(id)request
 {
-  v7 = a3;
-  v8 = a4;
+  resourcesCopy = resources;
+  requestCopy = request;
   v12.receiver = self;
   v12.super_class = PHAssetResourceBag;
   v9 = [(PHAssetResourceBag *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_assetResources, a3);
-    objc_storeWeak(&v10->_assetCreationRequest, v8);
+    objc_storeStrong(&v9->_assetResources, resources);
+    objc_storeWeak(&v10->_assetCreationRequest, requestCopy);
   }
 
   return v10;
 }
 
-+ (id)_primaryAssetResource:(id)a3
++ (id)_primaryAssetResource:(id)resource
 {
   v23 = *MEMORY[0x1E69E9840];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  resourceCopy = resource;
+  v4 = [resourceCopy countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (!v4)
   {
     v6 = 0;
@@ -905,28 +905,28 @@ LABEL_19:
     {
       if (*v19 != v8)
       {
-        objc_enumerationMutation(v3);
+        objc_enumerationMutation(resourceCopy);
       }
 
-      v10 = [*(*(&v18 + 1) + 8 * i) resource];
-      v11 = [v10 type];
-      v12 = v11;
-      if ((v11 - 1) < 2)
+      resource = [*(*(&v18 + 1) + 8 * i) resource];
+      type = [resource type];
+      v12 = type;
+      if ((type - 1) < 2)
       {
         goto LABEL_9;
       }
 
-      if (v11 == 3)
+      if (type == 3)
       {
 
-        v6 = v10;
+        v6 = resource;
         continue;
       }
 
-      if (v11 == 19)
+      if (type == 19)
       {
 LABEL_9:
-        v13 = v10;
+        v13 = resource;
 
         v7 = v13;
       }
@@ -937,7 +937,7 @@ LABEL_9:
       }
     }
 
-    v5 = [v3 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    v5 = [resourceCopy countByEnumeratingWithState:&v18 objects:v22 count:16];
   }
 
   while (v5);
@@ -958,15 +958,15 @@ LABEL_20:
   return v15;
 }
 
-+ (BOOL)_supportsAssetResourceTypes:(id)a3 mediaType:(int64_t *)a4 mediaSubtype:(unint64_t *)a5 importedBy:(signed __int16)a6
++ (BOOL)_supportsAssetResourceTypes:(id)types mediaType:(int64_t *)type mediaSubtype:(unint64_t *)subtype importedBy:(signed __int16)by
 {
   v84 = *MEMORY[0x1E69E9840];
   v78 = 0u;
   v79 = 0u;
   v80 = 0u;
   v81 = 0u;
-  v9 = a3;
-  v10 = [v9 countByEnumeratingWithState:&v78 objects:v83 count:16];
+  typesCopy = types;
+  v10 = [typesCopy countByEnumeratingWithState:&v78 objects:v83 count:16];
   if (v10)
   {
     v11 = v10;
@@ -978,7 +978,7 @@ LABEL_20:
       {
         if (*v79 != v13)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(typesCopy);
         }
 
         v15 = 1 << [*(*(&v78 + 1) + 8 * i) unsignedIntegerValue];
@@ -991,7 +991,7 @@ LABEL_20:
         v12 |= v15;
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v78 objects:v83 count:16];
+      v11 = [typesCopy countByEnumeratingWithState:&v78 objects:v83 count:16];
     }
 
     while (v11);
@@ -1002,14 +1002,14 @@ LABEL_20:
     v12 = 0;
   }
 
-  v65 = a4;
-  v66 = a5;
+  typeCopy = type;
+  subtypeCopy = subtype;
 
   v76 = 0u;
   v77 = 0u;
   v74 = 0u;
   v75 = 0u;
-  v16 = v9;
+  v16 = typesCopy;
   v17 = [v16 countByEnumeratingWithState:&v74 objects:v82 count:16];
   if (!v17)
   {
@@ -1017,14 +1017,14 @@ LABEL_20:
     v69 = 0;
 LABEL_138:
 
-    if (v65)
+    if (typeCopy)
     {
-      *v65 = v19;
+      *typeCopy = v19;
     }
 
-    if (v66)
+    if (subtypeCopy)
     {
-      *v66 = v69;
+      *subtypeCopy = v69;
     }
 
     v53 = 1;
@@ -1034,8 +1034,8 @@ LABEL_138:
   v18 = v17;
   v19 = 0;
   v69 = 0;
-  v20 = a6;
-  v21 = a6 & 0xFFFE;
+  byCopy = by;
+  v21 = by & 0xFFFE;
   v22 = v12 & 0x2AE0A;
   v23 = (v12 & 0x2AE0A) != 175626;
   v24 = (v12 & 0x2AE0A) != 0x2AE0A && (v12 & 0x4004) == 16388;
@@ -1090,7 +1090,7 @@ LABEL_138:
 
   v72 = v38;
   v39 = (v12 & 0x8202) == 0x202 && v28;
-  v40 = v20 != 5 || v28;
+  v40 = byCopy != 5 || v28;
   v61 = v40;
   v62 = v39;
   v64 = v21;
@@ -1132,8 +1132,8 @@ LABEL_67:
       objc_enumerationMutation(v16);
     }
 
-    v49 = [*(*(&v74 + 1) + 8 * v48) integerValue];
-    switch(v49)
+    integerValue = [*(*(&v74 + 1) + 8 * v48) integerValue];
+    switch(integerValue)
     {
       case 1:
         if ((v34 & 1) == 0)
@@ -1331,8 +1331,8 @@ LABEL_96:
       case 20:
         goto LABEL_134;
       default:
-        v50 = v49 - 107;
-        if ((v49 - 107) > 0xC)
+        v50 = integerValue - 107;
+        if ((integerValue - 107) > 0xC)
         {
           goto LABEL_131;
         }
@@ -1347,7 +1347,7 @@ LABEL_96:
           goto LABEL_131;
         }
 
-        if (v49 != 110)
+        if (integerValue != 110)
         {
           if (((1 << v50) & 0x1EA4) != 0)
           {

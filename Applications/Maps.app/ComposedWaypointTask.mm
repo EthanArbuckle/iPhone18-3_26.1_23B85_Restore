@@ -1,39 +1,39 @@
 @interface ComposedWaypointTask
-- (ComposedWaypointTask)initWithRequest:(id)a3;
-- (ComposedWaypointTask)initWithRequest:(id)a3 resolver:(id)a4;
+- (ComposedWaypointTask)initWithRequest:(id)request;
+- (ComposedWaypointTask)initWithRequest:(id)request resolver:(id)resolver;
 - (NSString)debugDescription;
 - (NSString)description;
-- (void)_handleResponseWithHandler:(id)a3 result:(id)a4;
-- (void)_loadWaypointWithAddress:(id)a3 handler:(id)a4 traits:(id)a5 networkActivityHandler:(id)a6;
-- (void)_loadWaypointWithCorrectedMapItem:(id)a3 coordinate:(CLLocationCoordinate2D)a4 handler:(id)a5 traits:(id)a6 networkActivityHandler:(id)a7;
-- (void)_loadWaypointWithMapItem:(id)a3 handler:(id)a4 traits:(id)a5 networkActivityHandler:(id)a6;
-- (void)_maps_buildDescriptionWithBlock:(id)a3;
-- (void)_resolveAddressForWaypointType:(int)a3 completion:(id)a4 traits:(id)a5 networkActivityHandler:(id)a6;
-- (void)_resolveCurrentLocationWithCompletion:(id)a3;
-- (void)_resolveItem:(id)a3 traits:(id)a4 completion:(id)a5 networkActivityHandler:(id)a6;
-- (void)_resolveParkedCarWithCompletion:(id)a3 traits:(id)a4 networkActivityHandler:(id)a5;
-- (void)applyToRAPUserSearch:(id)a3 correctedSearch:(id)a4;
+- (void)_handleResponseWithHandler:(id)handler result:(id)result;
+- (void)_loadWaypointWithAddress:(id)address handler:(id)handler traits:(id)traits networkActivityHandler:(id)activityHandler;
+- (void)_loadWaypointWithCorrectedMapItem:(id)item coordinate:(CLLocationCoordinate2D)coordinate handler:(id)handler traits:(id)traits networkActivityHandler:(id)activityHandler;
+- (void)_loadWaypointWithMapItem:(id)item handler:(id)handler traits:(id)traits networkActivityHandler:(id)activityHandler;
+- (void)_maps_buildDescriptionWithBlock:(id)block;
+- (void)_resolveAddressForWaypointType:(int)type completion:(id)completion traits:(id)traits networkActivityHandler:(id)handler;
+- (void)_resolveCurrentLocationWithCompletion:(id)completion;
+- (void)_resolveItem:(id)item traits:(id)traits completion:(id)completion networkActivityHandler:(id)handler;
+- (void)_resolveParkedCarWithCompletion:(id)completion traits:(id)traits networkActivityHandler:(id)handler;
+- (void)applyToRAPUserSearch:(id)search correctedSearch:(id)correctedSearch;
 - (void)cancel;
-- (void)setRequest:(id)a3;
-- (void)setResult:(id)a3;
-- (void)submitWithHandler:(id)a3 traits:(id)a4 networkActivityHandler:(id)a5;
+- (void)setRequest:(id)request;
+- (void)setResult:(id)result;
+- (void)submitWithHandler:(id)handler traits:(id)traits networkActivityHandler:(id)activityHandler;
 @end
 
 @implementation ComposedWaypointTask
 
-- (void)_maps_buildDescriptionWithBlock:(id)a3
+- (void)_maps_buildDescriptionWithBlock:(id)block
 {
-  v4 = (a3 + 16);
-  v5 = *(a3 + 2);
-  v6 = a3;
+  v4 = (block + 16);
+  v5 = *(block + 2);
+  blockCopy = block;
   v5();
-  (*v4)(v6, @"resolver", self->_resolver);
-  (*v4)(v6, @"identifier", self->_identifier);
+  (*v4)(blockCopy, @"resolver", self->_resolver);
+  (*v4)(blockCopy, @"identifier", self->_identifier);
 }
 
 - (NSString)debugDescription
 {
-  v2 = self;
+  selfCopy = self;
   v14 = _NSConcreteStackBlock;
   v15 = 3221225472;
   v16 = sub_10063E840;
@@ -41,8 +41,8 @@
   v3 = objc_alloc_init(NSMutableArray);
   v18 = v3;
   v4 = objc_retainBlock(&v14);
-  [(ComposedWaypointTask *)v2 _maps_buildDescriptionWithBlock:v4];
-  v5 = v2;
+  [(ComposedWaypointTask *)selfCopy _maps_buildDescriptionWithBlock:v4];
+  v5 = selfCopy;
   if (v5)
   {
     v6 = objc_opt_class();
@@ -76,7 +76,7 @@ LABEL_9:
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   v14 = _NSConcreteStackBlock;
   v15 = 3221225472;
   v16 = sub_10063EA90;
@@ -84,8 +84,8 @@ LABEL_9:
   v3 = objc_alloc_init(NSMutableArray);
   v18 = v3;
   v4 = objc_retainBlock(&v14);
-  [(ComposedWaypointTask *)v2 _maps_buildDescriptionWithBlock:v4];
-  v5 = v2;
+  [(ComposedWaypointTask *)selfCopy _maps_buildDescriptionWithBlock:v4];
+  v5 = selfCopy;
   if (v5)
   {
     v6 = objc_opt_class();
@@ -117,10 +117,10 @@ LABEL_9:
   return v12;
 }
 
-- (void)_handleResponseWithHandler:(id)a3 result:(id)a4
+- (void)_handleResponseWithHandler:(id)handler result:(id)result
 {
-  v6 = a3;
-  v7 = a4;
+  handlerCopy = handler;
+  resultCopy = result;
   if ([(ComposedWaypointTask *)self isCancelled])
   {
     v8 = sub_100798F84();
@@ -135,206 +135,206 @@ LABEL_9:
 
   else
   {
-    [(ComposedWaypointTask *)self setResult:v7];
-    if (v6)
+    [(ComposedWaypointTask *)self setResult:resultCopy];
+    if (handlerCopy)
     {
-      v6[2](v6, v7);
+      handlerCopy[2](handlerCopy, resultCopy);
     }
   }
 }
 
-- (void)_loadWaypointWithAddress:(id)a3 handler:(id)a4 traits:(id)a5 networkActivityHandler:(id)a6
+- (void)_loadWaypointWithAddress:(id)address handler:(id)handler traits:(id)traits networkActivityHandler:(id)activityHandler
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [[AddressBookAddressWaypointRequest alloc] initWithAddress:v13];
+  activityHandlerCopy = activityHandler;
+  traitsCopy = traits;
+  handlerCopy = handler;
+  addressCopy = address;
+  v14 = [[AddressBookAddressWaypointRequest alloc] initWithAddress:addressCopy];
 
   [(ComposedWaypointTask *)self setRequest:v14];
-  v17 = [(ComposedWaypointTask *)self request];
-  v15 = [v17 loadComposedWaypointWithTraits:v11 clientResolvedCompletionHandler:0 completionHandler:v12 networkActivityHandler:v10];
+  request = [(ComposedWaypointTask *)self request];
+  v15 = [request loadComposedWaypointWithTraits:traitsCopy clientResolvedCompletionHandler:0 completionHandler:handlerCopy networkActivityHandler:activityHandlerCopy];
 
   ticket = self->_ticket;
   self->_ticket = v15;
 }
 
-- (void)_loadWaypointWithMapItem:(id)a3 handler:(id)a4 traits:(id)a5 networkActivityHandler:(id)a6
+- (void)_loadWaypointWithMapItem:(id)item handler:(id)handler traits:(id)traits networkActivityHandler:(id)activityHandler
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [[MapItemWaypointRequest alloc] initWithMapItem:v13];
+  activityHandlerCopy = activityHandler;
+  traitsCopy = traits;
+  handlerCopy = handler;
+  itemCopy = item;
+  v14 = [[MapItemWaypointRequest alloc] initWithMapItem:itemCopy];
 
   [(ComposedWaypointTask *)self setRequest:v14];
-  v17 = [(ComposedWaypointTask *)self request];
-  v15 = [v17 loadComposedWaypointWithTraits:v11 clientResolvedCompletionHandler:0 completionHandler:v12 networkActivityHandler:v10];
+  request = [(ComposedWaypointTask *)self request];
+  v15 = [request loadComposedWaypointWithTraits:traitsCopy clientResolvedCompletionHandler:0 completionHandler:handlerCopy networkActivityHandler:activityHandlerCopy];
 
   ticket = self->_ticket;
   self->_ticket = v15;
 }
 
-- (void)_loadWaypointWithCorrectedMapItem:(id)a3 coordinate:(CLLocationCoordinate2D)a4 handler:(id)a5 traits:(id)a6 networkActivityHandler:(id)a7
+- (void)_loadWaypointWithCorrectedMapItem:(id)item coordinate:(CLLocationCoordinate2D)coordinate handler:(id)handler traits:(id)traits networkActivityHandler:(id)activityHandler
 {
-  longitude = a4.longitude;
-  latitude = a4.latitude;
-  v13 = a7;
-  v14 = a6;
-  v15 = a5;
-  v16 = a3;
-  v17 = [[CorrectedLocationMapItemWaypointRequest alloc] initWithCorrectedCoordinate:v16 mapItem:latitude, longitude];
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
+  activityHandlerCopy = activityHandler;
+  traitsCopy = traits;
+  handlerCopy = handler;
+  itemCopy = item;
+  longitude = [[CorrectedLocationMapItemWaypointRequest alloc] initWithCorrectedCoordinate:itemCopy mapItem:latitude, longitude];
 
-  [(ComposedWaypointTask *)self setRequest:v17];
-  v20 = [(ComposedWaypointTask *)self request];
-  v18 = [v20 loadComposedWaypointWithTraits:v14 clientResolvedCompletionHandler:0 completionHandler:v15 networkActivityHandler:v13];
+  [(ComposedWaypointTask *)self setRequest:longitude];
+  request = [(ComposedWaypointTask *)self request];
+  v18 = [request loadComposedWaypointWithTraits:traitsCopy clientResolvedCompletionHandler:0 completionHandler:handlerCopy networkActivityHandler:activityHandlerCopy];
 
   ticket = self->_ticket;
   self->_ticket = v18;
 }
 
-- (void)_resolveAddressForWaypointType:(int)a3 completion:(id)a4 traits:(id)a5 networkActivityHandler:(id)a6
+- (void)_resolveAddressForWaypointType:(int)type completion:(id)completion traits:(id)traits networkActivityHandler:(id)handler
 {
-  v8 = *&a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  v8 = *&type;
+  completionCopy = completion;
+  traitsCopy = traits;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
-  v13 = [(ComposedWaypointTask *)self resolver];
-  v14 = [v13 personalizedItemSource];
+  resolver = [(ComposedWaypointTask *)self resolver];
+  personalizedItemSource = [resolver personalizedItemSource];
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_10063F170;
   v18[3] = &unk_1016248B8;
-  v15 = v11;
+  v15 = traitsCopy;
   v19 = v15;
   objc_copyWeak(&v22, &location);
-  v16 = v10;
+  v16 = completionCopy;
   v20 = v16;
-  v17 = v12;
+  v17 = handlerCopy;
   v21 = v17;
-  [v14 addressOrLOIWithType:v8 completion:v18];
+  [personalizedItemSource addressOrLOIWithType:v8 completion:v18];
 
   objc_destroyWeak(&v22);
   objc_destroyWeak(&location);
 }
 
-- (void)_resolveParkedCarWithCompletion:(id)a3 traits:(id)a4 networkActivityHandler:(id)a5
+- (void)_resolveParkedCarWithCompletion:(id)completion traits:(id)traits networkActivityHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  completionCopy = completion;
+  traitsCopy = traits;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
-  v11 = [(ComposedWaypointTask *)self resolver];
-  v12 = [v11 parkedCarSource];
+  resolver = [(ComposedWaypointTask *)self resolver];
+  parkedCarSource = [resolver parkedCarSource];
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_10063F450;
   v16[3] = &unk_101624890;
-  v13 = v8;
+  v13 = completionCopy;
   v18 = v13;
-  v14 = v9;
+  v14 = traitsCopy;
   v17 = v14;
   objc_copyWeak(&v20, &location);
-  v15 = v10;
+  v15 = handlerCopy;
   v19 = v15;
-  [v12 objectWithCompletion:v16];
+  [parkedCarSource objectWithCompletion:v16];
 
   objc_destroyWeak(&v20);
   objc_destroyWeak(&location);
 }
 
-- (void)_resolveCurrentLocationWithCompletion:(id)a3
+- (void)_resolveCurrentLocationWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v5 = [(ComposedWaypointTask *)self resolver];
-    v6 = [v5 currentLocationSource];
+    resolver = [(ComposedWaypointTask *)self resolver];
+    currentLocationSource = [resolver currentLocationSource];
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_10063F630;
     v7[3] = &unk_101624868;
-    v8 = v4;
-    [v6 objectWithCompletion:v7];
+    v8 = completionCopy;
+    [currentLocationSource objectWithCompletion:v7];
   }
 }
 
-- (void)_resolveItem:(id)a3 traits:(id)a4 completion:(id)a5 networkActivityHandler:(id)a6
+- (void)_resolveItem:(id)item traits:(id)traits completion:(id)completion networkActivityHandler:(id)handler
 {
-  v17 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [v17 itemType];
-  if (v13 > 3)
+  itemCopy = item;
+  traitsCopy = traits;
+  completionCopy = completion;
+  handlerCopy = handler;
+  itemType = [itemCopy itemType];
+  if (itemType > 3)
   {
-    if (v13 == 4)
+    if (itemType == 4)
     {
-      [(ComposedWaypointTask *)self _resolveCurrentLocationWithCompletion:v11];
+      [(ComposedWaypointTask *)self _resolveCurrentLocationWithCompletion:completionCopy];
       goto LABEL_12;
     }
 
-    if (v13 == 5)
+    if (itemType == 5)
     {
 LABEL_10:
       v14 = GEOErrorDomain();
       v15 = [NSError errorWithDomain:v14 code:-8 userInfo:0];
       v16 = [Result resultWithError:v15];
-      v11[2](v11, v16);
+      completionCopy[2](completionCopy, v16);
 
       goto LABEL_12;
     }
 
-    if (v13 != 6)
+    if (itemType != 6)
     {
       goto LABEL_12;
     }
 
 LABEL_9:
-    -[ComposedWaypointTask _resolveAddressForWaypointType:completion:traits:networkActivityHandler:](self, "_resolveAddressForWaypointType:completion:traits:networkActivityHandler:", [v17 itemType], v11, v10, v12);
+    -[ComposedWaypointTask _resolveAddressForWaypointType:completion:traits:networkActivityHandler:](self, "_resolveAddressForWaypointType:completion:traits:networkActivityHandler:", [itemCopy itemType], completionCopy, traitsCopy, handlerCopy);
     goto LABEL_12;
   }
 
-  if ((v13 - 1) < 2)
+  if ((itemType - 1) < 2)
   {
     goto LABEL_9;
   }
 
-  if (!v13)
+  if (!itemType)
   {
     goto LABEL_10;
   }
 
-  if (v13 == 3)
+  if (itemType == 3)
   {
-    [(ComposedWaypointTask *)self _resolveParkedCarWithCompletion:v11 traits:v10 networkActivityHandler:v12];
+    [(ComposedWaypointTask *)self _resolveParkedCarWithCompletion:completionCopy traits:traitsCopy networkActivityHandler:handlerCopy];
   }
 
 LABEL_12:
 }
 
-- (void)setResult:(id)a3
+- (void)setResult:(id)result
 {
-  v5 = a3;
-  if (self->_result != v5)
+  resultCopy = result;
+  if (self->_result != resultCopy)
   {
-    objc_storeStrong(&self->_result, a3);
-    v6 = [(Result *)v5 value];
+    objc_storeStrong(&self->_result, result);
+    value = [(Result *)resultCopy value];
 
     v7 = sub_100798F84();
     v8 = os_log_type_enabled(v7, OS_LOG_TYPE_INFO);
-    if (v6)
+    if (value)
     {
       if (v8)
       {
         identifier = self->_identifier;
-        v10 = [(Result *)v5 value];
-        v11 = [v10 shortDescription];
+        value2 = [(Result *)resultCopy value];
+        shortDescription = [value2 shortDescription];
         v14 = 138543619;
         v15 = identifier;
         v16 = 2113;
-        v17 = v11;
+        v17 = shortDescription;
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "[%{public}@] Composed waypoint loaded successfully: %{private}@", &v14, 0x16u);
       }
     }
@@ -342,23 +342,23 @@ LABEL_12:
     else if (v8)
     {
       v12 = self->_identifier;
-      v13 = [(Result *)v5 error];
+      error = [(Result *)resultCopy error];
       v14 = 138543618;
       v15 = v12;
       v16 = 2112;
-      v17 = v13;
+      v17 = error;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "[%{public}@] Composed waypoint loading failed: %@", &v14, 0x16u);
     }
   }
 }
 
-- (void)setRequest:(id)a3
+- (void)setRequest:(id)request
 {
-  v5 = a3;
+  requestCopy = request;
   p_request = &self->_request;
-  if (self->_request != v5)
+  if (self->_request != requestCopy)
   {
-    objc_storeStrong(&self->_request, a3);
+    objc_storeStrong(&self->_request, request);
     if (*p_request)
     {
       [(WaypointRequest *)*p_request coordinate];
@@ -385,24 +385,24 @@ LABEL_12:
   }
 }
 
-- (void)applyToRAPUserSearch:(id)a3 correctedSearch:(id)a4
+- (void)applyToRAPUserSearch:(id)search correctedSearch:(id)correctedSearch
 {
-  v11 = a3;
-  v6 = a4;
-  [v11 setOrigin:0];
-  v7 = [(ComposedWaypointTask *)self composedWaypoint];
+  searchCopy = search;
+  correctedSearchCopy = correctedSearch;
+  [searchCopy setOrigin:0];
+  composedWaypoint = [(ComposedWaypointTask *)self composedWaypoint];
 
-  if (v7)
+  if (composedWaypoint)
   {
-    v8 = [(ComposedWaypointTask *)self composedWaypoint];
-    v9 = [v8 latLng];
-    [v11 setCoordinate:v9];
+    composedWaypoint2 = [(ComposedWaypointTask *)self composedWaypoint];
+    latLng = [composedWaypoint2 latLng];
+    [searchCopy setCoordinate:latLng];
   }
 
-  v10 = [(ComposedWaypointTask *)self request];
-  [v10 recordRAPInformation:v11];
+  request = [(ComposedWaypointTask *)self request];
+  [request recordRAPInformation:searchCopy];
 
-  [(GEOMapServiceCorrectableTicket *)self->_ticket applyToCorrectedSearch:v6];
+  [(GEOMapServiceCorrectableTicket *)self->_ticket applyToCorrectedSearch:correctedSearchCopy];
 }
 
 - (void)cancel
@@ -415,7 +415,7 @@ LABEL_12:
   {
     identifier = self->_identifier;
     *buf = 138412546;
-    v7 = self;
+    selfCopy = self;
     v8 = 2114;
     v9 = identifier;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "Cancelling task: %@ (%{public}@)", buf, 0x16u);
@@ -425,16 +425,16 @@ LABEL_12:
   os_activity_scope_leave(&v5);
 }
 
-- (void)submitWithHandler:(id)a3 traits:(id)a4 networkActivityHandler:(id)a5
+- (void)submitWithHandler:(id)handler traits:(id)traits networkActivityHandler:(id)activityHandler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  handlerCopy = handler;
+  traitsCopy = traits;
+  activityHandlerCopy = activityHandler;
   v11 = self->_activity;
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v11, &state);
-  if (!v8)
+  if (!handlerCopy)
   {
     v15 = sub_100798F84();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -477,9 +477,9 @@ LABEL_13:
     {
       if (!self->_ticket)
       {
-        if (([v9 hasSource] & 1) == 0)
+        if (([traitsCopy hasSource] & 1) == 0)
         {
-          [v9 setSource:18];
+          [traitsCopy setSource:18];
         }
 
         v24 = self->_identifier;
@@ -493,7 +493,7 @@ LABEL_13:
         objc_copyWeak(&v47, buf);
         v26 = v24;
         v45 = v26;
-        v46 = v8;
+        v46 = handlerCopy;
         v27 = objc_retainBlock(v43);
         v36[0] = _NSConcreteStackBlock;
         v36[1] = 3221225472;
@@ -503,11 +503,11 @@ LABEL_13:
         objc_copyWeak(&v42, buf);
         v15 = v26;
         v38 = v15;
-        v28 = v9;
+        v28 = traitsCopy;
         v39 = v28;
         v35 = v27;
         v40 = v35;
-        v29 = v10;
+        v29 = activityHandlerCopy;
         v41 = v29;
         v30 = objc_retainBlock(v36);
         if ([v28 navigating])
@@ -521,8 +521,8 @@ LABEL_13:
         }
 
         [v28 setSearchOriginationType:v31];
-        v32 = [(ComposedWaypointTask *)self request];
-        v33 = [v32 loadComposedWaypointWithTraits:v28 clientResolvedCompletionHandler:v30 completionHandler:v35 networkActivityHandler:v29];
+        request = [(ComposedWaypointTask *)self request];
+        v33 = [request loadComposedWaypointWithTraits:v28 clientResolvedCompletionHandler:v30 completionHandler:v35 networkActivityHandler:v29];
         ticket = self->_ticket;
         self->_ticket = v33;
 
@@ -565,27 +565,27 @@ LABEL_13:
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "[%{public}@] Already have a response: %@", buf, 0x16u);
   }
 
-  (*(v8 + 2))(v8, self->_result);
+  (*(handlerCopy + 2))(handlerCopy, self->_result);
 LABEL_14:
   os_activity_scope_leave(&state);
 }
 
-- (ComposedWaypointTask)initWithRequest:(id)a3 resolver:(id)a4
+- (ComposedWaypointTask)initWithRequest:(id)request resolver:(id)resolver
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  resolverCopy = resolver;
   v16.receiver = self;
   v16.super_class = ComposedWaypointTask;
   v8 = [(ComposedWaypointTask *)&v16 init];
   v9 = v8;
   if (v8)
   {
-    [(ComposedWaypointTask *)v8 setRequest:v6];
-    objc_storeStrong(&v9->_resolver, a4);
+    [(ComposedWaypointTask *)v8 setRequest:requestCopy];
+    objc_storeStrong(&v9->_resolver, resolver);
     v10 = +[NSUUID UUID];
-    v11 = [v10 UUIDString];
+    uUIDString = [v10 UUIDString];
     identifier = v9->_identifier;
-    v9->_identifier = v11;
+    v9->_identifier = uUIDString;
 
     v13 = _os_activity_create(&_mh_execute_header, "Resolve waypoint", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
     activity = v9->_activity;
@@ -595,11 +595,11 @@ LABEL_14:
   return v9;
 }
 
-- (ComposedWaypointTask)initWithRequest:(id)a3
+- (ComposedWaypointTask)initWithRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = objc_alloc_init(ClientTypeResolver);
-  v6 = [(ComposedWaypointTask *)self initWithRequest:v4 resolver:v5];
+  v6 = [(ComposedWaypointTask *)self initWithRequest:requestCopy resolver:v5];
 
   return v6;
 }

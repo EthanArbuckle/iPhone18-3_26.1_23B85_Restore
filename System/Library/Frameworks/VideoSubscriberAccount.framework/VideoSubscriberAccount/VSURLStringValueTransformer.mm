@@ -1,34 +1,34 @@
 @interface VSURLStringValueTransformer
-- (id)reverseTransformedValue:(id)a3;
-- (id)transformedValue:(id)a3;
+- (id)reverseTransformedValue:(id)value;
+- (id)transformedValue:(id)value;
 @end
 
 @implementation VSURLStringValueTransformer
 
-- (id)transformedValue:(id)a3
+- (id)transformedValue:(id)value
 {
-  v3 = a3;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 absoluteString];
+    absoluteString = [valueCopy absoluteString];
   }
 
   else
   {
-    v4 = 0;
+    absoluteString = 0;
   }
 
-  return v4;
+  return absoluteString;
 }
 
-- (id)reverseTransformedValue:(id)a3
+- (id)reverseTransformedValue:(id)value
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  valueCopy = value;
+  v4 = valueCopy;
+  if (valueCopy)
   {
-    v5 = v3;
+    v5 = valueCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {

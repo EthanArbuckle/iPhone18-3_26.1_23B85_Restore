@@ -1,31 +1,31 @@
 @interface AMSAuthenticateOptions
-+ (id)amsd_createAppProvidedDataWithMultiUserAction:(id)a3 home:(id)a4;
-+ (id)amsd_createAppProvidedDataWithMultiUserAction:(id)a3 homeIdentifier:(id)a4;
-+ (id)amsd_multiUserAuthenticateOptionsWithAppProvidedData:(id)a3;
++ (id)amsd_createAppProvidedDataWithMultiUserAction:(id)action home:(id)home;
++ (id)amsd_createAppProvidedDataWithMultiUserAction:(id)action homeIdentifier:(id)identifier;
++ (id)amsd_multiUserAuthenticateOptionsWithAppProvidedData:(id)data;
 @end
 
 @implementation AMSAuthenticateOptions
 
-+ (id)amsd_multiUserAuthenticateOptionsWithAppProvidedData:(id)a3
++ (id)amsd_multiUserAuthenticateOptionsWithAppProvidedData:(id)data
 {
-  v4 = a3;
-  v5 = objc_alloc_init(a1);
+  dataCopy = data;
+  v5 = objc_alloc_init(self);
   [v5 setAuthenticationType:1];
   [v5 setAppProvidedContext:@"mu"];
-  [v5 setAppProvidedData:v4];
+  [v5 setAppProvidedData:dataCopy];
 
   return v5;
 }
 
-+ (id)amsd_createAppProvidedDataWithMultiUserAction:(id)a3 home:(id)a4
++ (id)amsd_createAppProvidedDataWithMultiUserAction:(id)action home:(id)home
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v6 identifier];
-  v9 = [a1 amsd_createAppProvidedDataWithMultiUserAction:v7 homeIdentifier:v8];
+  homeCopy = home;
+  actionCopy = action;
+  identifier = [homeCopy identifier];
+  v9 = [self amsd_createAppProvidedDataWithMultiUserAction:actionCopy homeIdentifier:identifier];
 
-  LODWORD(v7) = [v6 isCurrentUserOwner];
-  if (v7)
+  LODWORD(actionCopy) = [homeCopy isCurrentUserOwner];
+  if (actionCopy)
   {
     v10 = @"owner";
   }
@@ -40,17 +40,17 @@
   return v9;
 }
 
-+ (id)amsd_createAppProvidedDataWithMultiUserAction:(id)a3 homeIdentifier:(id)a4
++ (id)amsd_createAppProvidedDataWithMultiUserAction:(id)action homeIdentifier:(id)identifier
 {
-  v5 = a4;
-  v6 = a3;
+  identifierCopy = identifier;
+  actionCopy = action;
   v7 = objc_alloc_init(NSMutableDictionary);
-  [v7 setObject:v6 forKeyedSubscript:@"action"];
+  [v7 setObject:actionCopy forKeyedSubscript:@"action"];
 
   [v7 setObject:@"home" forKeyedSubscript:@"context"];
-  v8 = [v5 UUIDString];
+  uUIDString = [identifierCopy UUIDString];
 
-  [v7 ams_setNullableObject:v8 forKey:@"homeId"];
+  [v7 ams_setNullableObject:uUIDString forKey:@"homeId"];
 
   return v7;
 }

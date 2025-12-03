@@ -1,32 +1,32 @@
 @interface PUBrowsingOneUpVisibilityHelper
-- (PUBrowsingOneUpVisibilityHelper)initWithBrowsingViewModel:(id)a3 isPresentedForSecondScreen:(BOOL)a4;
+- (PUBrowsingOneUpVisibilityHelper)initWithBrowsingViewModel:(id)model isPresentedForSecondScreen:(BOOL)screen;
 - (void)dealloc;
-- (void)setIsOneUpVisible:(BOOL)a3;
+- (void)setIsOneUpVisible:(BOOL)visible;
 @end
 
 @implementation PUBrowsingOneUpVisibilityHelper
 
-- (void)setIsOneUpVisible:(BOOL)a3
+- (void)setIsOneUpVisible:(BOOL)visible
 {
-  if (self->_isOneUpVisible != a3)
+  if (self->_isOneUpVisible != visible)
   {
-    self->_isOneUpVisible = a3;
+    self->_isOneUpVisible = visible;
   }
 }
 
 - (void)dealloc
 {
-  v3 = [(PUBrowsingOneUpVisibilityHelper *)self browsingViewModel];
-  [v3 unregisterChangeObserver:self];
+  browsingViewModel = [(PUBrowsingOneUpVisibilityHelper *)self browsingViewModel];
+  [browsingViewModel unregisterChangeObserver:self];
 
   v4.receiver = self;
   v4.super_class = PUBrowsingOneUpVisibilityHelper;
   [(PUBrowsingOneUpVisibilityHelper *)&v4 dealloc];
 }
 
-- (PUBrowsingOneUpVisibilityHelper)initWithBrowsingViewModel:(id)a3 isPresentedForSecondScreen:(BOOL)a4
+- (PUBrowsingOneUpVisibilityHelper)initWithBrowsingViewModel:(id)model isPresentedForSecondScreen:(BOOL)screen
 {
-  v7 = a3;
+  modelCopy = model;
   v11.receiver = self;
   v11.super_class = PUBrowsingOneUpVisibilityHelper;
   v8 = [(PUBrowsingOneUpVisibilityHelper *)&v11 init];
@@ -34,8 +34,8 @@
   if (v8)
   {
     v8->_isOneUpVisible = 0;
-    v8->_isPresentedForSecondScreen = a4;
-    objc_storeStrong(&v8->_browsingViewModel, a3);
+    v8->_isPresentedForSecondScreen = screen;
+    objc_storeStrong(&v8->_browsingViewModel, model);
     [(PUBrowsingViewModel *)v9->_browsingViewModel registerChangeObserver:v9];
   }
 

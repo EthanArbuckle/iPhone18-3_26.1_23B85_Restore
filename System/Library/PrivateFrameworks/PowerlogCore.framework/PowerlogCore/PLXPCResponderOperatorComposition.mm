@@ -1,51 +1,51 @@
 @interface PLXPCResponderOperatorComposition
 - (PLOperator)operator;
-- (PLXPCResponderOperatorComposition)initWithOperator:(id)a3 withRegistration:(id)a4 withBlock:(id)a5;
-- (PLXPCResponderOperatorComposition)initWithWorkQueue:(id)a3 withRegistration:(id)a4 withBlock:(id)a5;
+- (PLXPCResponderOperatorComposition)initWithOperator:(id)operator withRegistration:(id)registration withBlock:(id)block;
+- (PLXPCResponderOperatorComposition)initWithWorkQueue:(id)queue withRegistration:(id)registration withBlock:(id)block;
 - (id)description;
-- (id)respondToRequestForClientID:(signed __int16)a3 withProcessName:(id)a4 withKey:(id)a5 withPayload:(id)a6;
+- (id)respondToRequestForClientID:(signed __int16)d withProcessName:(id)name withKey:(id)key withPayload:(id)payload;
 @end
 
 @implementation PLXPCResponderOperatorComposition
 
-- (PLXPCResponderOperatorComposition)initWithOperator:(id)a3 withRegistration:(id)a4 withBlock:(id)a5
+- (PLXPCResponderOperatorComposition)initWithOperator:(id)operator withRegistration:(id)registration withBlock:(id)block
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
-  v11 = [v8 workQueue];
-  v12 = [(PLXPCResponderOperatorComposition *)self initWithWorkQueue:v11 withRegistration:v10 withBlock:v9];
+  operatorCopy = operator;
+  blockCopy = block;
+  registrationCopy = registration;
+  workQueue = [operatorCopy workQueue];
+  v12 = [(PLXPCResponderOperatorComposition *)self initWithWorkQueue:workQueue withRegistration:registrationCopy withBlock:blockCopy];
 
   if (v12)
   {
-    objc_storeWeak(&v12->_operator, v8);
+    objc_storeWeak(&v12->_operator, operatorCopy);
   }
 
   return v12;
 }
 
-- (PLXPCResponderOperatorComposition)initWithWorkQueue:(id)a3 withRegistration:(id)a4 withBlock:(id)a5
+- (PLXPCResponderOperatorComposition)initWithWorkQueue:(id)queue withRegistration:(id)registration withBlock:(id)block
 {
   v21[2] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  queueCopy = queue;
+  registrationCopy = registration;
+  blockCopy = block;
   v19.receiver = self;
   v19.super_class = PLXPCResponderOperatorComposition;
   v12 = [(PLXPCResponderOperatorComposition *)&v19 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_workQueue, a3);
-    v14 = MEMORY[0x1DA71B0D0](v11);
+    objc_storeStrong(&v12->_workQueue, queue);
+    v14 = MEMORY[0x1DA71B0D0](blockCopy);
     operatorBlock = v13->_operatorBlock;
     v13->_operatorBlock = v14;
 
-    objc_storeStrong(&v13->_registration, a4);
+    objc_storeStrong(&v13->_registration, registration);
     v20[0] = @"type";
     v20[1] = @"registration";
     v21[0] = @"Query";
-    v21[1] = v10;
+    v21[1] = registrationCopy;
     v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v21 forKeys:v20 count:2];
     [PLUtilities postNotificationName:@"register.PLXPCService" object:v13 userInfo:v16];
   }
@@ -54,32 +54,32 @@
   return v13;
 }
 
-- (id)respondToRequestForClientID:(signed __int16)a3 withProcessName:(id)a4 withKey:(id)a5 withPayload:(id)a6
+- (id)respondToRequestForClientID:(signed __int16)d withProcessName:(id)name withKey:(id)key withPayload:(id)payload
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  nameCopy = name;
+  keyCopy = key;
+  payloadCopy = payload;
   v25 = 0;
   v26 = &v25;
   v27 = 0x3032000000;
   v28 = __Block_byref_object_copy__1;
   v29 = __Block_byref_object_dispose__1;
   v30 = 0;
-  v13 = [(PLXPCResponderOperatorComposition *)self workQueue];
+  workQueue = [(PLXPCResponderOperatorComposition *)self workQueue];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __101__PLXPCResponderOperatorComposition_respondToRequestForClientID_withProcessName_withKey_withPayload___block_invoke;
   v19[3] = &unk_1E85191C0;
-  v22 = v12;
+  v22 = payloadCopy;
   v23 = &v25;
-  v24 = a3;
+  dCopy = d;
   v19[4] = self;
-  v20 = v10;
-  v21 = v11;
-  v14 = v12;
-  v15 = v11;
-  v16 = v10;
-  dispatch_sync(v13, v19);
+  v20 = nameCopy;
+  v21 = keyCopy;
+  v14 = payloadCopy;
+  v15 = keyCopy;
+  v16 = nameCopy;
+  dispatch_sync(workQueue, v19);
 
   v17 = v26[5];
   _Block_object_dispose(&v25, 8);
@@ -102,13 +102,13 @@ void __101__PLXPCResponderOperatorComposition_respondToRequestForClientID_withPr
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(PLXPCResponderOperatorComposition *)self operator];
-  v5 = [v4 className];
-  v6 = [(PLXPCResponderOperatorComposition *)self registration];
-  v7 = [v6 description];
+  operator = [(PLXPCResponderOperatorComposition *)self operator];
+  className = [operator className];
+  registration = [(PLXPCResponderOperatorComposition *)self registration];
+  v7 = [registration description];
   v8 = [v7 stringByReplacingOccurrencesOfString:@"\n" withString:&stru_1F539D228];
   v9 = [v8 stringByReplacingOccurrencesOfString:@"\t" withString:&stru_1F539D228];
-  v10 = [v3 stringWithFormat:@"<PLXPCResponderOperatorComposition(%@-%@): %p>", v5, v9, self];
+  v10 = [v3 stringWithFormat:@"<PLXPCResponderOperatorComposition(%@-%@): %p>", className, v9, self];
 
   return v10;
 }

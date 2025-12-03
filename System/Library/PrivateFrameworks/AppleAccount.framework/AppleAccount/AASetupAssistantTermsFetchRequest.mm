@@ -1,21 +1,21 @@
 @interface AASetupAssistantTermsFetchRequest
-- (AASetupAssistantTermsFetchRequest)initWithAccount:(id)a3;
+- (AASetupAssistantTermsFetchRequest)initWithAccount:(id)account;
 - (id)urlRequest;
 - (id)urlString;
 @end
 
 @implementation AASetupAssistantTermsFetchRequest
 
-- (AASetupAssistantTermsFetchRequest)initWithAccount:(id)a3
+- (AASetupAssistantTermsFetchRequest)initWithAccount:(id)account
 {
-  v5 = a3;
+  accountCopy = account;
   v9.receiver = self;
   v9.super_class = AASetupAssistantTermsFetchRequest;
   v6 = [(AASetupAssistantTermsFetchRequest *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_account, a3);
+    objc_storeStrong(&v6->_account, account);
   }
 
   return v7;
@@ -24,9 +24,9 @@
 - (id)urlString
 {
   v2 = +[AASetupAssistantService urlConfiguration];
-  v3 = [v2 upgradeIOSTermsUI];
+  upgradeIOSTermsUI = [v2 upgradeIOSTermsUI];
 
-  return v3;
+  return upgradeIOSTermsUI;
 }
 
 - (id)urlRequest
@@ -34,28 +34,28 @@
   v33 = *MEMORY[0x1E69E9840];
   v30.receiver = self;
   v30.super_class = AASetupAssistantTermsFetchRequest;
-  v3 = [(AARequest *)&v30 urlRequest];
-  v4 = [v3 mutableCopy];
+  urlRequest = [(AARequest *)&v30 urlRequest];
+  v4 = [urlRequest mutableCopy];
 
   [v4 setHTTPMethod:@"POST"];
-  v5 = [(ACAccount *)self->_account username];
-  v6 = v5;
-  if (v5)
+  username = [(ACAccount *)self->_account username];
+  v6 = username;
+  if (username)
   {
-    v7 = v5;
+    username2 = username;
   }
 
   else
   {
-    v7 = [(ACAccount *)self->_account username];
+    username2 = [(ACAccount *)self->_account username];
   }
 
-  v8 = v7;
-  v9 = [(ACAccount *)self->_account aa_password];
+  v8 = username2;
+  aa_password = [(ACAccount *)self->_account aa_password];
 
   v10 = MEMORY[0x1E696AEC0];
   account = self->_account;
-  if (v9)
+  if (aa_password)
   {
     v12 = v8 == 0;
   }
@@ -67,9 +67,9 @@
 
   if (v12)
   {
-    v13 = [(ACAccount *)account aa_personID];
-    v14 = [(ACAccount *)self->_account aa_authToken];
-    v20 = [v10 stringWithFormat:@"%@:%@", v13, v14];
+    aa_personID = [(ACAccount *)account aa_personID];
+    aa_authToken = [(ACAccount *)self->_account aa_authToken];
+    v20 = [v10 stringWithFormat:@"%@:%@", aa_personID, aa_authToken];
 
     v15 = [v20 dataUsingEncoding:4];
     v22 = [v15 base64EncodedStringWithOptions:0];
@@ -89,8 +89,8 @@
     goto LABEL_13;
   }
 
-  v19 = [(ACAccount *)account aa_password];
-  v20 = [v10 stringWithFormat:@"%@:%@", v8, v19];
+  aa_password2 = [(ACAccount *)account aa_password];
+  v20 = [v10 stringWithFormat:@"%@:%@", v8, aa_password2];
 
   v21 = [v20 dataUsingEncoding:4];
   v22 = [v21 base64EncodedStringWithOptions:0];

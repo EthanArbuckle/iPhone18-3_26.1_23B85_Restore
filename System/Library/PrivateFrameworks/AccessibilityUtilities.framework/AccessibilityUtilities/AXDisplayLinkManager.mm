@@ -9,12 +9,12 @@
 - (id)_prepareUpdatedTargetActionsForModification;
 - (void)_didAddFirstTargetAction;
 - (void)_didRemoveLastTargetAction;
-- (void)_displayDidRefresh:(id)a3;
-- (void)addTarget:(id)a3 selector:(SEL)a4;
+- (void)_displayDidRefresh:(id)refresh;
+- (void)addTarget:(id)target selector:(SEL)selector;
 - (void)beginRequiringWarmUpMode;
 - (void)endRequiringWarmUpMode;
-- (void)removeTarget:(id)a3 selector:(SEL)a4;
-- (void)setDisplayLink:(id)a3;
+- (void)removeTarget:(id)target selector:(SEL)selector;
+- (void)setDisplayLink:(id)link;
 @end
 
 @implementation AXDisplayLinkManager
@@ -25,16 +25,16 @@
   v3 = NSStringFromClass(v2);
   if (v3)
   {
-    v4 = [MEMORY[0x1E696AF00] currentThread];
-    v5 = [v4 threadDictionary];
+    currentThread = [MEMORY[0x1E696AF00] currentThread];
+    threadDictionary = [currentThread threadDictionary];
 
-    v6 = [v5 objectForKey:v3];
+    v6 = [threadDictionary objectForKey:v3];
     if (!v6)
     {
       v6 = objc_opt_new();
       if (v6)
       {
-        [v5 setObject:v6 forKey:v3];
+        [threadDictionary setObject:v6 forKey:v3];
       }
     }
   }
@@ -54,10 +54,10 @@
   if (v3)
   {
     v6 = v3;
-    v4 = [MEMORY[0x1E696AF00] currentThread];
-    v5 = [v4 threadDictionary];
+    currentThread = [MEMORY[0x1E696AF00] currentThread];
+    threadDictionary = [currentThread threadDictionary];
 
-    [v5 removeObjectForKey:v6];
+    [threadDictionary removeObjectForKey:v6];
     v3 = v6;
   }
 }
@@ -100,16 +100,16 @@
 
 - (BOOL)isPaused
 {
-  v2 = [(AXDisplayLinkManager *)self storedDisplayLink];
-  v3 = [v2 isPaused];
+  storedDisplayLink = [(AXDisplayLinkManager *)self storedDisplayLink];
+  isPaused = [storedDisplayLink isPaused];
 
-  return v3;
+  return isPaused;
 }
 
 - (double)duration
 {
-  v2 = [(AXDisplayLinkManager *)self storedDisplayLink];
-  [v2 duration];
+  storedDisplayLink = [(AXDisplayLinkManager *)self storedDisplayLink];
+  [storedDisplayLink duration];
   v4 = v3;
 
   return v4;
@@ -117,8 +117,8 @@
 
 - (double)timestamp
 {
-  v2 = [(AXDisplayLinkManager *)self storedDisplayLink];
-  [v2 timestamp];
+  storedDisplayLink = [(AXDisplayLinkManager *)self storedDisplayLink];
+  [storedDisplayLink timestamp];
   v4 = v3;
 
   return v4;
@@ -126,47 +126,47 @@
 
 - (CADisplayLink)displayLink
 {
-  v3 = [(AXDisplayLinkManager *)self storedDisplayLink];
-  if (!v3)
+  storedDisplayLink = [(AXDisplayLinkManager *)self storedDisplayLink];
+  if (!storedDisplayLink)
   {
-    v3 = [MEMORY[0x1E6979330] displayLinkWithTarget:self selector:sel__displayDidRefresh_];
-    v4 = [MEMORY[0x1E695DFD0] currentRunLoop];
-    [v3 addToRunLoop:v4 forMode:*MEMORY[0x1E695D918]];
+    storedDisplayLink = [MEMORY[0x1E6979330] displayLinkWithTarget:self selector:sel__displayDidRefresh_];
+    currentRunLoop = [MEMORY[0x1E695DFD0] currentRunLoop];
+    [storedDisplayLink addToRunLoop:currentRunLoop forMode:*MEMORY[0x1E695D918]];
 
-    [v3 setPaused:1];
-    [(AXDisplayLinkManager *)self setStoredDisplayLink:v3];
+    [storedDisplayLink setPaused:1];
+    [(AXDisplayLinkManager *)self setStoredDisplayLink:storedDisplayLink];
   }
 
-  return v3;
+  return storedDisplayLink;
 }
 
-- (void)setDisplayLink:(id)a3
+- (void)setDisplayLink:(id)link
 {
-  v5 = a3;
-  v4 = [(AXDisplayLinkManager *)self storedDisplayLink];
-  if (v4 != v5)
+  linkCopy = link;
+  storedDisplayLink = [(AXDisplayLinkManager *)self storedDisplayLink];
+  if (storedDisplayLink != linkCopy)
   {
-    [v4 invalidate];
-    [(AXDisplayLinkManager *)self setStoredDisplayLink:v5];
+    [storedDisplayLink invalidate];
+    [(AXDisplayLinkManager *)self setStoredDisplayLink:linkCopy];
   }
 }
 
-- (void)addTarget:(id)a3 selector:(SEL)a4
+- (void)addTarget:(id)target selector:(SEL)selector
 {
-  v6 = a3;
-  v9 = [[AXDisplayLinkManagerTargetAction alloc] initWithTarget:v6 actionSelector:a4];
+  targetCopy = target;
+  v9 = [[AXDisplayLinkManagerTargetAction alloc] initWithTarget:targetCopy actionSelector:selector];
 
   if ([(AXDisplayLinkManager *)self isHandlingDisplayRefresh])
   {
-    v7 = [(AXDisplayLinkManager *)self _prepareUpdatedTargetActionsForModification];
-    [v7 addObject:v9];
+    _prepareUpdatedTargetActionsForModification = [(AXDisplayLinkManager *)self _prepareUpdatedTargetActionsForModification];
+    [_prepareUpdatedTargetActionsForModification addObject:v9];
   }
 
   else
   {
-    v7 = [(AXDisplayLinkManager *)self activeTargetActions];
-    v8 = [v7 count];
-    [v7 addObject:v9];
+    _prepareUpdatedTargetActionsForModification = [(AXDisplayLinkManager *)self activeTargetActions];
+    v8 = [_prepareUpdatedTargetActionsForModification count];
+    [_prepareUpdatedTargetActionsForModification addObject:v9];
     if (!v8)
     {
       [(AXDisplayLinkManager *)self _didAddFirstTargetAction];
@@ -174,23 +174,23 @@
   }
 }
 
-- (void)removeTarget:(id)a3 selector:(SEL)a4
+- (void)removeTarget:(id)target selector:(SEL)selector
 {
-  v6 = a3;
-  v9 = [[AXDisplayLinkManagerTargetAction alloc] initWithTarget:v6 actionSelector:a4];
+  targetCopy = target;
+  v9 = [[AXDisplayLinkManagerTargetAction alloc] initWithTarget:targetCopy actionSelector:selector];
 
   if ([(AXDisplayLinkManager *)self isHandlingDisplayRefresh])
   {
-    v7 = [(AXDisplayLinkManager *)self _prepareUpdatedTargetActionsForModification];
-    [v7 removeObject:v9];
+    _prepareUpdatedTargetActionsForModification = [(AXDisplayLinkManager *)self _prepareUpdatedTargetActionsForModification];
+    [_prepareUpdatedTargetActionsForModification removeObject:v9];
   }
 
   else
   {
-    v7 = [(AXDisplayLinkManager *)self activeTargetActions];
-    v8 = [v7 count];
-    [v7 removeObject:v9];
-    if (v8 && ![v7 count])
+    _prepareUpdatedTargetActionsForModification = [(AXDisplayLinkManager *)self activeTargetActions];
+    v8 = [_prepareUpdatedTargetActionsForModification count];
+    [_prepareUpdatedTargetActionsForModification removeObject:v9];
+    if (v8 && ![_prepareUpdatedTargetActionsForModification count])
     {
       [(AXDisplayLinkManager *)self _didRemoveLastTargetAction];
     }
@@ -200,15 +200,15 @@
 - (id)_prepareUpdatedTargetActionsForModification
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = [(AXDisplayLinkManager *)self updatedTargetActions];
+  updatedTargetActions = [(AXDisplayLinkManager *)self updatedTargetActions];
   if (![(AXDisplayLinkManager *)self hasUpdatedTargetActions])
   {
-    v4 = [(AXDisplayLinkManager *)self activeTargetActions];
+    activeTargetActions = [(AXDisplayLinkManager *)self activeTargetActions];
     v10 = 0u;
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    v5 = [activeTargetActions countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v5)
     {
       v6 = v5;
@@ -219,13 +219,13 @@
         {
           if (*v11 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(activeTargetActions);
           }
 
-          [v3 addObject:*(*(&v10 + 1) + 8 * i)];
+          [updatedTargetActions addObject:*(*(&v10 + 1) + 8 * i)];
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v6 = [activeTargetActions countByEnumeratingWithState:&v10 objects:v14 count:16];
       }
 
       while (v6);
@@ -234,19 +234,19 @@
     [(AXDisplayLinkManager *)self setHasUpdatedTargetActions:1];
   }
 
-  return v3;
+  return updatedTargetActions;
 }
 
 - (void)_didAddFirstTargetAction
 {
-  v2 = [(AXDisplayLinkManager *)self displayLink];
-  [v2 setPaused:0];
+  displayLink = [(AXDisplayLinkManager *)self displayLink];
+  [displayLink setPaused:0];
 }
 
 - (void)_didRemoveLastTargetAction
 {
-  v3 = [(AXDisplayLinkManager *)self storedDisplayLink];
-  [v3 setPaused:1];
+  storedDisplayLink = [(AXDisplayLinkManager *)self storedDisplayLink];
+  [storedDisplayLink setPaused:1];
 
   if (![(AXDisplayLinkManager *)self isWarmUpModeEnabled])
   {
@@ -259,21 +259,21 @@
 
 - (void)beginRequiringWarmUpMode
 {
-  v3 = [(AXDisplayLinkManager *)self warmUpModeRequirementsCount];
-  [(AXDisplayLinkManager *)self setWarmUpModeRequirementsCount:v3 + 1];
-  if (!v3 && ![(AXDisplayLinkManager *)self isHandlingDisplayRefresh])
+  warmUpModeRequirementsCount = [(AXDisplayLinkManager *)self warmUpModeRequirementsCount];
+  [(AXDisplayLinkManager *)self setWarmUpModeRequirementsCount:warmUpModeRequirementsCount + 1];
+  if (!warmUpModeRequirementsCount && ![(AXDisplayLinkManager *)self isHandlingDisplayRefresh])
   {
     if ([(AXDisplayLinkManager *)self hasUpdatedTargetActions])
     {
       _AXAssert();
     }
 
-    v4 = [(AXDisplayLinkManager *)self activeTargetActions];
-    v5 = [v4 count];
+    activeTargetActions = [(AXDisplayLinkManager *)self activeTargetActions];
+    v5 = [activeTargetActions count];
 
     if (!v5)
     {
-      v6 = [(AXDisplayLinkManager *)self displayLink];
+      displayLink = [(AXDisplayLinkManager *)self displayLink];
     }
   }
 }
@@ -289,8 +289,8 @@
       _AXAssert();
     }
 
-    v4 = [(AXDisplayLinkManager *)self activeTargetActions];
-    v5 = [v4 count];
+    activeTargetActions = [(AXDisplayLinkManager *)self activeTargetActions];
+    v5 = [activeTargetActions count];
 
     if (!v5)
     {
@@ -300,10 +300,10 @@
   }
 }
 
-- (void)_displayDidRefresh:(id)a3
+- (void)_displayDidRefresh:(id)refresh
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = [(AXDisplayLinkManager *)self isHandlingDisplayRefresh];
+  isHandlingDisplayRefresh = [(AXDisplayLinkManager *)self isHandlingDisplayRefresh];
   [(AXDisplayLinkManager *)self setHandlingDisplayRefresh:1];
   [(AXDisplayLinkManager *)self activeTargetActions];
   v13 = 0u;
@@ -335,8 +335,8 @@
     while (v7);
   }
 
-  [(AXDisplayLinkManager *)self setHandlingDisplayRefresh:v4];
-  if (v4 || ![(AXDisplayLinkManager *)self hasUpdatedTargetActions])
+  [(AXDisplayLinkManager *)self setHandlingDisplayRefresh:isHandlingDisplayRefresh];
+  if (isHandlingDisplayRefresh || ![(AXDisplayLinkManager *)self hasUpdatedTargetActions])
   {
     v11 = v5;
   }
@@ -344,11 +344,11 @@
   else
   {
     [v5 removeAllObjects];
-    v10 = [(AXDisplayLinkManager *)self updatedTargetActions];
+    updatedTargetActions = [(AXDisplayLinkManager *)self updatedTargetActions];
     [(AXDisplayLinkManager *)self setUpdatedTargetActions:v5];
-    [(AXDisplayLinkManager *)self setActiveTargetActions:v10];
+    [(AXDisplayLinkManager *)self setActiveTargetActions:updatedTargetActions];
     [(AXDisplayLinkManager *)self setHasUpdatedTargetActions:0];
-    v11 = v10;
+    v11 = updatedTargetActions;
 
     v12 = [v11 count];
     if (!v12)

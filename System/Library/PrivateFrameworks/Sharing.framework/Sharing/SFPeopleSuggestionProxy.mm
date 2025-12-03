@@ -1,34 +1,34 @@
 @interface SFPeopleSuggestionProxy
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)load;
 - (NSString)description;
-- (SFPeopleSuggestionProxy)initWithCoder:(id)a3;
-- (SFPeopleSuggestionProxy)initWithPeopleSuggestion:(id)a3;
-- (SFPeopleSuggestionProxy)initWithSuggestionNode:(id)a3;
+- (SFPeopleSuggestionProxy)initWithCoder:(id)coder;
+- (SFPeopleSuggestionProxy)initWithPeopleSuggestion:(id)suggestion;
+- (SFPeopleSuggestionProxy)initWithSuggestionNode:(id)node;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)load;
 @end
 
 @implementation SFPeopleSuggestionProxy
 
-- (SFPeopleSuggestionProxy)initWithPeopleSuggestion:(id)a3
+- (SFPeopleSuggestionProxy)initWithPeopleSuggestion:(id)suggestion
 {
-  v5 = a3;
+  suggestionCopy = suggestion;
   v15.receiver = self;
   v15.super_class = SFPeopleSuggestionProxy;
   v6 = [(SFPeopleSuggestionProxy *)&v15 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_peopleSuggestion, a3);
-    v8 = [MEMORY[0x1E696AFB0] UUID];
+    objc_storeStrong(&v6->_peopleSuggestion, suggestion);
+    uUID = [MEMORY[0x1E696AFB0] UUID];
     identifier = v7->_identifier;
-    v7->_identifier = v8;
+    v7->_identifier = uUID;
 
     v10 = [SFProxyText alloc];
-    v11 = [v5 displayName];
-    v12 = [(SFProxyText *)v10 initWithText:v11];
+    displayName = [suggestionCopy displayName];
+    v12 = [(SFProxyText *)v10 initWithText:displayName];
     displayName = v7->_displayName;
     v7->_displayName = v12;
 
@@ -38,23 +38,23 @@
   return v7;
 }
 
-- (SFPeopleSuggestionProxy)initWithSuggestionNode:(id)a3
+- (SFPeopleSuggestionProxy)initWithSuggestionNode:(id)node
 {
-  v5 = a3;
+  nodeCopy = node;
   v15.receiver = self;
   v15.super_class = SFPeopleSuggestionProxy;
   v6 = [(SFPeopleSuggestionProxy *)&v15 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_suggestionNode, a3);
-    v8 = [MEMORY[0x1E696AFB0] UUID];
+    objc_storeStrong(&v6->_suggestionNode, node);
+    uUID = [MEMORY[0x1E696AFB0] UUID];
     identifier = v7->_identifier;
-    v7->_identifier = v8;
+    v7->_identifier = uUID;
 
     v10 = [SFProxyText alloc];
-    v11 = [v5 displayName];
-    v12 = [(SFProxyText *)v10 initWithText:v11];
+    displayName = [nodeCopy displayName];
+    v12 = [(SFProxyText *)v10 initWithText:displayName];
     displayName = v7->_displayName;
     v7->_displayName = v12;
 
@@ -64,47 +64,47 @@
   return v7;
 }
 
-- (SFPeopleSuggestionProxy)initWithCoder:(id)a3
+- (SFPeopleSuggestionProxy)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(SFPeopleSuggestionProxy *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"displayName"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"displayName"];
     displayName = v5->_displayName;
     v5->_displayName = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"subtitle"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"subtitle"];
     subtitle = v5->_subtitle;
     v5->_subtitle = v10;
 
-    -[SFPeopleSuggestionProxy setAvatarImageSlotID:](v5, "setAvatarImageSlotID:", [v4 decodeInt32ForKey:@"avatarImageSlotID"]);
-    -[SFPeopleSuggestionProxy setTransportImageSlotID:](v5, "setTransportImageSlotID:", [v4 decodeInt32ForKey:@"transportImageSlotID"]);
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"peopleSuggestion"];
+    -[SFPeopleSuggestionProxy setAvatarImageSlotID:](v5, "setAvatarImageSlotID:", [coderCopy decodeInt32ForKey:@"avatarImageSlotID"]);
+    -[SFPeopleSuggestionProxy setTransportImageSlotID:](v5, "setTransportImageSlotID:", [coderCopy decodeInt32ForKey:@"transportImageSlotID"]);
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"peopleSuggestion"];
     peopleSuggestion = v5->_peopleSuggestion;
     v5->_peopleSuggestion = v12;
 
-    v5->_disabled = [v4 decodeBoolForKey:@"disabled"];
+    v5->_disabled = [coderCopy decodeBoolForKey:@"disabled"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"identifier"];
-  [v5 encodeObject:self->_displayName forKey:@"displayName"];
-  [v5 encodeObject:self->_subtitle forKey:@"subtitle"];
-  [v5 encodeInt32:-[SFPeopleSuggestionProxy avatarImageSlotID](self forKey:{"avatarImageSlotID"), @"avatarImageSlotID"}];
-  [v5 encodeInt32:-[SFPeopleSuggestionProxy transportImageSlotID](self forKey:{"transportImageSlotID"), @"transportImageSlotID"}];
-  [v5 encodeObject:self->_peopleSuggestion forKey:@"peopleSuggestion"];
-  [v5 encodeBool:self->_disabled forKey:@"disabled"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_displayName forKey:@"displayName"];
+  [coderCopy encodeObject:self->_subtitle forKey:@"subtitle"];
+  [coderCopy encodeInt32:-[SFPeopleSuggestionProxy avatarImageSlotID](self forKey:{"avatarImageSlotID"), @"avatarImageSlotID"}];
+  [coderCopy encodeInt32:-[SFPeopleSuggestionProxy transportImageSlotID](self forKey:{"transportImageSlotID"), @"transportImageSlotID"}];
+  [coderCopy encodeObject:self->_peopleSuggestion forKey:@"peopleSuggestion"];
+  [coderCopy encodeBool:self->_disabled forKey:@"disabled"];
 }
 
 - (NSString)description
@@ -113,11 +113,11 @@
   v15.receiver = self;
   v15.super_class = SFPeopleSuggestionProxy;
   v3 = [(SFPeopleSuggestionProxy *)&v15 description];
-  v4 = [(SFPeopleSuggestionProxy *)self identifier];
-  v5 = [(SFPeopleSuggestionProxy *)self displayName];
-  v6 = [(SFPeopleSuggestionProxy *)self subtitle];
-  v7 = [(SFPeopleSuggestionProxy *)self avatarImageSlotID];
-  v8 = [(SFPeopleSuggestionProxy *)self transportImageSlotID];
+  identifier = [(SFPeopleSuggestionProxy *)self identifier];
+  displayName = [(SFPeopleSuggestionProxy *)self displayName];
+  subtitle = [(SFPeopleSuggestionProxy *)self subtitle];
+  avatarImageSlotID = [(SFPeopleSuggestionProxy *)self avatarImageSlotID];
+  transportImageSlotID = [(SFPeopleSuggestionProxy *)self transportImageSlotID];
   if ([(SFPeopleSuggestionProxy *)self isDisabled])
   {
     v9 = @"YES";
@@ -128,8 +128,8 @@
     v9 = @"NO";
   }
 
-  v10 = [(SFPeopleSuggestionProxy *)self peopleSuggestion];
-  if (v10)
+  peopleSuggestion = [(SFPeopleSuggestionProxy *)self peopleSuggestion];
+  if (peopleSuggestion)
   {
     v11 = @"YES";
   }
@@ -139,7 +139,7 @@
     v11 = @"NO";
   }
 
-  v12 = [v14 stringWithFormat:@"<%@: identifier:%@, displayName:%@, subtitle:%@, avatarImageSlotID:%u, transportImageSlotID:%u, disabled:%@ peopleSuggestion:%@>", v3, v4, v5, v6, v7, v8, v9, v11];
+  v12 = [v14 stringWithFormat:@"<%@: identifier:%@, displayName:%@, subtitle:%@, avatarImageSlotID:%u, transportImageSlotID:%u, disabled:%@ peopleSuggestion:%@>", v3, identifier, displayName, subtitle, avatarImageSlotID, transportImageSlotID, v9, v11];
 
   return v12;
 }
@@ -150,25 +150,25 @@
   v4 = NSStringFromClass(v3);
   v5 = [v4 hash];
 
-  v6 = [(SFPeopleSuggestionProxy *)self identifier];
-  v7 = [v6 hash];
+  identifier = [(SFPeopleSuggestionProxy *)self identifier];
+  v7 = [identifier hash];
 
-  v8 = [(SFPeopleSuggestionProxy *)self displayName];
-  v9 = v7 ^ [v8 hash];
+  displayName = [(SFPeopleSuggestionProxy *)self displayName];
+  v9 = v7 ^ [displayName hash];
 
   return v9 ^ v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 identifier];
-    v6 = [(SFPeopleSuggestionProxy *)self identifier];
-    v7 = v5;
-    v8 = v6;
+    identifier = [equalCopy identifier];
+    identifier2 = [(SFPeopleSuggestionProxy *)self identifier];
+    v7 = identifier;
+    v8 = identifier2;
     v9 = v8;
     if (v7 == v8)
     {
@@ -179,8 +179,8 @@
       if ((v7 != 0) == (v8 == 0))
       {
         LOBYTE(v11) = 0;
-        v13 = v8;
-        v12 = v7;
+        displayName2 = v8;
+        displayName = v7;
 LABEL_17:
 
         goto LABEL_18;
@@ -197,16 +197,16 @@ LABEL_18:
       }
     }
 
-    v12 = [v4 displayName];
-    v13 = [(SFPeopleSuggestionProxy *)self displayName];
-    if ([v12 isEqual:v13])
+    displayName = [equalCopy displayName];
+    displayName2 = [(SFPeopleSuggestionProxy *)self displayName];
+    if ([displayName isEqual:displayName2])
     {
-      v14 = [v4 subtitle];
-      v15 = [(SFPeopleSuggestionProxy *)self subtitle];
-      if ([v14 isEqual:v15] && (v16 = objc_msgSend(v4, "avatarImageSlotID"), v16 == -[SFPeopleSuggestionProxy avatarImageSlotID](self, "avatarImageSlotID")) && (v17 = objc_msgSend(v4, "transportImageSlotID"), v17 == -[SFPeopleSuggestionProxy transportImageSlotID](self, "transportImageSlotID")))
+      subtitle = [equalCopy subtitle];
+      subtitle2 = [(SFPeopleSuggestionProxy *)self subtitle];
+      if ([subtitle isEqual:subtitle2] && (v16 = objc_msgSend(equalCopy, "avatarImageSlotID"), v16 == -[SFPeopleSuggestionProxy avatarImageSlotID](self, "avatarImageSlotID")) && (v17 = objc_msgSend(equalCopy, "transportImageSlotID"), v17 == -[SFPeopleSuggestionProxy transportImageSlotID](self, "transportImageSlotID")))
       {
-        v18 = [v4 isDisabled];
-        v11 = v18 ^ [(SFPeopleSuggestionProxy *)self isDisabled]^ 1;
+        isDisabled = [equalCopy isDisabled];
+        v11 = isDisabled ^ [(SFPeopleSuggestionProxy *)self isDisabled]^ 1;
       }
 
       else
@@ -231,16 +231,16 @@ LABEL_19:
 
 - (BOOL)load
 {
-  v3 = [(SFPeopleSuggestionProxy *)self loadHandler];
-  if (v3)
+  loadHandler = [(SFPeopleSuggestionProxy *)self loadHandler];
+  if (loadHandler)
   {
     [(SFPeopleSuggestionProxy *)self setLoadHandler:0];
-    v4 = [(SFPeopleSuggestionProxy *)self suggestionNode];
-    v5 = [v4 loadIcon];
+    suggestionNode = [(SFPeopleSuggestionProxy *)self suggestionNode];
+    loadIcon = [suggestionNode loadIcon];
 
-    if (v5)
+    if (loadIcon)
     {
-      v6 = (v3)[2](v3, self);
+      v6 = (loadHandler)[2](loadHandler, self);
     }
 
     else
@@ -266,9 +266,9 @@ LABEL_19:
 - (void)load
 {
   v7 = *MEMORY[0x1E69E9840];
-  v3 = [a1 suggestionNode];
+  suggestionNode = [self suggestionNode];
   v5 = 138412290;
-  v6 = v3;
+  v6 = suggestionNode;
   _os_log_error_impl(&dword_1A9662000, a2, OS_LOG_TYPE_ERROR, "Failed to load icon for suggestionNode:%@", &v5, 0xCu);
 
   v4 = *MEMORY[0x1E69E9840];

@@ -1,5 +1,5 @@
 @interface CSAttendingStopHintInfo
-- (CSAttendingStopHintInfo)initWithOrigin:(unint64_t)a3 reason:(unint64_t)a4;
+- (CSAttendingStopHintInfo)initWithOrigin:(unint64_t)origin reason:(unint64_t)reason;
 - (id)_reasonString;
 - (id)description;
 @end
@@ -13,8 +13,8 @@
   v7.super_class = CSAttendingStopHintInfo;
   v4 = [(CSAttendingHintInfo *)&v7 description];
   [v3 appendFormat:@"%@", v4];
-  v5 = [(CSAttendingStopHintInfo *)self _reasonString];
-  [v3 appendFormat:@"[reason: %@]", v5];
+  _reasonString = [(CSAttendingStopHintInfo *)self _reasonString];
+  [v3 appendFormat:@"[reason: %@]", _reasonString];
 
   return v3;
 }
@@ -33,14 +33,14 @@
   }
 }
 
-- (CSAttendingStopHintInfo)initWithOrigin:(unint64_t)a3 reason:(unint64_t)a4
+- (CSAttendingStopHintInfo)initWithOrigin:(unint64_t)origin reason:(unint64_t)reason
 {
   v6.receiver = self;
   v6.super_class = CSAttendingStopHintInfo;
-  result = [(CSAttendingHintInfo *)&v6 initWithOrigin:a3];
+  result = [(CSAttendingHintInfo *)&v6 initWithOrigin:origin];
   if (result)
   {
-    result->_reason = a4;
+    result->_reason = reason;
   }
 
   return result;

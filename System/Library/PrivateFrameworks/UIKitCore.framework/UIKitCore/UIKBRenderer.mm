@@ -1,59 +1,59 @@
 @interface UIKBRenderer
-+ (CGContext)imageContextWithSize:(CGSize)a3 scale:(double)a4 colorFormat:(int64_t)a5 opaque:(BOOL)a6 invert:(BOOL)a7;
-+ (id)rendererWithContext:(CGContext *)a3 withSize:(CGSize)a4 withScale:(double)a5 opaque:(BOOL)a6 renderFlags:(int64_t)a7 assetIdiom:(int64_t)a8;
++ (CGContext)imageContextWithSize:(CGSize)size scale:(double)scale colorFormat:(int64_t)format opaque:(BOOL)opaque invert:(BOOL)invert;
++ (id)rendererWithContext:(CGContext *)context withSize:(CGSize)size withScale:(double)scale opaque:(BOOL)opaque renderFlags:(int64_t)flags assetIdiom:(int64_t)idiom;
 + (void)clearInternalCaches;
-- (BOOL)_drawKeyString:(id)a3 inRect:(CGRect)a4 withStyle:(id)a5;
-- (BOOL)_drawSingleSymbol:(id)a3 inRect:(CGRect)a4 withStyle:(id)a5;
-- (BOOL)loadCachedImageForHashString:(id)a3;
-- (BOOL)renderKeyPathContents:(id)a3 withTraits:(id)a4;
+- (BOOL)_drawKeyString:(id)string inRect:(CGRect)rect withStyle:(id)style;
+- (BOOL)_drawSingleSymbol:(id)symbol inRect:(CGRect)rect withStyle:(id)style;
+- (BOOL)loadCachedImageForHashString:(id)string;
+- (BOOL)renderKeyPathContents:(id)contents withTraits:(id)traits;
 - (CGContext)context;
 - (CGPath)_deleteGlyphPaths;
 - (CGPath)_thickShiftGlyphPath;
 - (CGPath)_thinShiftGlyphPath;
-- (CGPoint)centroidOfGlyph:(CGPath *)a3;
+- (CGPoint)centroidOfGlyph:(CGPath *)glyph;
 - (CGRect)_layerPaddedFrame;
 - (CGSize)size;
 - (NSData)contextData;
 - (UIColor)singleColor;
 - (UIImage)renderedImage;
-- (UIKBRenderer)initWithContext:(CGContext *)a3 withSize:(CGSize)a4 withScale:(double)a5 opaque:(BOOL)a6 renderFlags:(int64_t)a7 assetIdiom:(int64_t)a8;
-- (id)defaultPathForRenderGeometry:(id)a3;
+- (UIKBRenderer)initWithContext:(CGContext *)context withSize:(CGSize)size withScale:(double)scale opaque:(BOOL)opaque renderFlags:(int64_t)flags assetIdiom:(int64_t)idiom;
+- (id)defaultPathForRenderGeometry:(id)geometry;
 - (id)description;
-- (id)pathForConcaveCornerWithGeometry:(id)a3;
-- (id)pathForFlickGeometry:(id)a3;
-- (id)pathForFlickPopupGeometries:(id)a3;
-- (id)pathForFlickWidth:(double)a3 height:(double)a4 handleLength:(double)a5 keyMiddle:(CGPoint)a6 angle:(double)a7 radius:(double)a8;
-- (id)pathForRenderGeometry:(id)a3;
-- (id)pathForSplitGeometry:(id)a3;
-- (id)symbolImageConfigForKey:(id)a3 traitCollection:(id)a4;
-- (id)watchPathForRenderGeometry:(id)a3;
+- (id)pathForConcaveCornerWithGeometry:(id)geometry;
+- (id)pathForFlickGeometry:(id)geometry;
+- (id)pathForFlickPopupGeometries:(id)geometries;
+- (id)pathForFlickWidth:(double)width height:(double)height handleLength:(double)length keyMiddle:(CGPoint)middle angle:(double)angle radius:(double)radius;
+- (id)pathForRenderGeometry:(id)geometry;
+- (id)pathForSplitGeometry:(id)geometry;
+- (id)symbolImageConfigForKey:(id)key traitCollection:(id)collection;
+- (id)watchPathForRenderGeometry:(id)geometry;
 - (int64_t)contentColorFormat;
-- (unint64_t)renderKeyImageContents:(id)a3 withTraits:(id)a4 status:(unint64_t)a5;
-- (unint64_t)renderKeyStringContents:(id)a3 withTraits:(id)a4 status:(unint64_t)a5;
-- (void)_addDetectedColor:(CGColor *)a3;
-- (void)_completeCacheImageWithTraitsIfNecessary:(id)a3;
-- (void)_drawKeyImage:(id)a3 inRect:(CGRect)a4 withStyle:(id)a5 force1xImages:(BOOL)a6 flipHorizontally:(BOOL)a7 isRGBImage:(BOOL)a8;
-- (void)_drawLinearGradient:(id)a3 inRect:(CGRect)a4;
-- (void)_renderVariantsFromKeyContents:(id)a3 withTraits:(id)a4;
-- (void)addPathForFlickGeometry:(id)a3;
-- (void)addPathForFlickPopupGeometries:(id)a3;
-- (void)addPathForRenderGeometry:(id)a3;
-- (void)addPathForSplitGeometry:(id)a3;
-- (void)addPathForTraits:(id)a3 displayRect:(CGRect *)a4;
-- (void)addRoundRect:(CGRect)a3 radius:(double)a4 corners:(unint64_t)a5;
+- (unint64_t)renderKeyImageContents:(id)contents withTraits:(id)traits status:(unint64_t)status;
+- (unint64_t)renderKeyStringContents:(id)contents withTraits:(id)traits status:(unint64_t)status;
+- (void)_addDetectedColor:(CGColor *)color;
+- (void)_completeCacheImageWithTraitsIfNecessary:(id)necessary;
+- (void)_drawKeyImage:(id)image inRect:(CGRect)rect withStyle:(id)style force1xImages:(BOOL)images flipHorizontally:(BOOL)horizontally isRGBImage:(BOOL)bImage;
+- (void)_drawLinearGradient:(id)gradient inRect:(CGRect)rect;
+- (void)_renderVariantsFromKeyContents:(id)contents withTraits:(id)traits;
+- (void)addPathForFlickGeometry:(id)geometry;
+- (void)addPathForFlickPopupGeometries:(id)geometries;
+- (void)addPathForRenderGeometry:(id)geometry;
+- (void)addPathForSplitGeometry:(id)geometry;
+- (void)addPathForTraits:(id)traits displayRect:(CGRect *)rect;
+- (void)addRoundRect:(CGRect)rect radius:(double)radius corners:(unint64_t)corners;
 - (void)dealloc;
-- (void)detectColorsForEffect:(id)a3;
-- (void)detectColorsForGradient:(id)a3;
-- (void)detectColorsForNamedColor:(id)a3;
-- (void)drawPath:(CGPath *)a3 weight:(double)a4 transform:(CGAffineTransform *)a5 color:(CGColor *)a6 fill:(BOOL)a7;
-- (void)drawShiftPath:(BOOL)a3 weight:(double)a4 transform:(CGAffineTransform *)a5 color:(CGColor *)a6;
+- (void)detectColorsForEffect:(id)effect;
+- (void)detectColorsForGradient:(id)gradient;
+- (void)detectColorsForNamedColor:(id)color;
+- (void)drawPath:(CGPath *)path weight:(double)weight transform:(CGAffineTransform *)transform color:(CGColor *)color fill:(BOOL)fill;
+- (void)drawShiftPath:(BOOL)path weight:(double)weight transform:(CGAffineTransform *)transform color:(CGColor *)color;
 - (void)ensureContext;
-- (void)renderBackgroundTraits:(id)a3;
-- (void)renderBackgroundTraits:(id)a3 allowCaching:(BOOL)a4;
-- (void)renderDivotEffect:(id)a3 withTraits:(id)a4;
-- (void)renderEdgeEffect:(id)a3 withTraits:(id)a4;
-- (void)renderKeyContents:(id)a3 withTraits:(id)a4;
-- (void)renderShadowEffect:(id)a3 withTraits:(id)a4;
+- (void)renderBackgroundTraits:(id)traits;
+- (void)renderBackgroundTraits:(id)traits allowCaching:(BOOL)caching;
+- (void)renderDivotEffect:(id)effect withTraits:(id)traits;
+- (void)renderEdgeEffect:(id)effect withTraits:(id)traits;
+- (void)renderKeyContents:(id)contents withTraits:(id)traits;
+- (void)renderShadowEffect:(id)effect withTraits:(id)traits;
 @end
 
 @implementation UIKBRenderer
@@ -64,33 +64,33 @@
   _MergedGlobals_1178 = 0;
 }
 
-+ (id)rendererWithContext:(CGContext *)a3 withSize:(CGSize)a4 withScale:(double)a5 opaque:(BOOL)a6 renderFlags:(int64_t)a7 assetIdiom:(int64_t)a8
++ (id)rendererWithContext:(CGContext *)context withSize:(CGSize)size withScale:(double)scale opaque:(BOOL)opaque renderFlags:(int64_t)flags assetIdiom:(int64_t)idiom
 {
-  v8 = [[a1 alloc] initWithContext:a3 withSize:a6 withScale:a7 opaque:a8 renderFlags:a4.width assetIdiom:{a4.height, a5}];
+  v8 = [[self alloc] initWithContext:context withSize:opaque withScale:flags opaque:idiom renderFlags:size.width assetIdiom:{size.height, scale}];
 
   return v8;
 }
 
-- (UIKBRenderer)initWithContext:(CGContext *)a3 withSize:(CGSize)a4 withScale:(double)a5 opaque:(BOOL)a6 renderFlags:(int64_t)a7 assetIdiom:(int64_t)a8
+- (UIKBRenderer)initWithContext:(CGContext *)context withSize:(CGSize)size withScale:(double)scale opaque:(BOOL)opaque renderFlags:(int64_t)flags assetIdiom:(int64_t)idiom
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v19.receiver = self;
   v19.super_class = UIKBRenderer;
   v15 = [(UIKBRenderer *)&v19 init];
   if (v15)
   {
-    v15->_ctx = CGContextRetain(a3);
+    v15->_ctx = CGContextRetain(context);
     v15->_size.width = width;
     v15->_size.height = height;
-    v15->_scale = a5;
-    v15->_opaque = a6;
-    v15->_renderFlags = a7;
+    v15->_scale = scale;
+    v15->_opaque = opaque;
+    v15->_renderFlags = flags;
     v15->_forceColorFormat = 0;
     v15->_colorCount = 0;
     v16 = MEMORY[0x1E695F050];
     v15->_contentColorFormat = 1;
-    v15->_assetIdiom = a8;
+    v15->_assetIdiom = idiom;
     v17 = v16[1];
     v15->__layerPaddedFrame.origin = *v16;
     v15->__layerPaddedFrame.size = v17;
@@ -144,9 +144,9 @@
 
 - (int64_t)contentColorFormat
 {
-  v3 = [(UIKBRenderer *)self singleColor];
+  singleColor = [(UIKBRenderer *)self singleColor];
 
-  if (v3)
+  if (singleColor)
   {
     return 2;
   }
@@ -157,14 +157,14 @@
   }
 }
 
-- (void)_addDetectedColor:(CGColor *)a3
+- (void)_addDetectedColor:(CGColor *)color
 {
-  if (!a3 || self->_colorCount > 1)
+  if (!color || self->_colorCount > 1)
   {
     return;
   }
 
-  CopyWithAlpha = CGColorCreateCopyWithAlpha(a3, 1.0);
+  CopyWithAlpha = CGColorCreateCopyWithAlpha(color, 1.0);
   UISCreateCachedColorTransform();
   v5 = CGColorTransformConvertColor();
   CGColorTransformRelease();
@@ -193,14 +193,14 @@ LABEL_9:
   }
 }
 
-- (void)detectColorsForNamedColor:(id)a3
+- (void)detectColorsForNamedColor:(id)color
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  colorCopy = color;
+  v5 = colorCopy;
+  if (colorCopy)
   {
-    v8 = v4;
-    v6 = UIKBGetNamedColor(v4);
+    v8 = colorCopy;
+    v6 = UIKBGetNamedColor(colorCopy);
     [(UIKBRenderer *)self _addDetectedColor:v6];
     v5 = v8;
     if (self->_contentColorFormat == 1)
@@ -215,49 +215,49 @@ LABEL_9:
   }
 }
 
-- (void)detectColorsForGradient:(id)a3
+- (void)detectColorsForGradient:(id)gradient
 {
-  v4 = a3;
-  if (v4)
+  gradientCopy = gradient;
+  if (gradientCopy)
   {
-    v7 = v4;
-    v5 = [v4 flatColorName];
-    [(UIKBRenderer *)self detectColorsForNamedColor:v5];
+    v7 = gradientCopy;
+    flatColorName = [gradientCopy flatColorName];
+    [(UIKBRenderer *)self detectColorsForNamedColor:flatColorName];
     if (self->_contentColorFormat == 1 && [v7 usesRGBColors])
     {
       self->_contentColorFormat = 0;
     }
 
-    if (!v5)
+    if (!flatColorName)
     {
       self->_colorCount = 2;
       singleColor = self->_singleColor;
       self->_singleColor = 0;
     }
 
-    v4 = v7;
+    gradientCopy = v7;
   }
 }
 
-- (void)detectColorsForEffect:(id)a3
+- (void)detectColorsForEffect:(id)effect
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  effectCopy = effect;
+  v5 = effectCopy;
+  if (effectCopy)
   {
-    v9 = v4;
-    v6 = [v4 gradient];
-    [(UIKBRenderer *)self detectColorsForGradient:v6];
+    v9 = effectCopy;
+    gradient = [effectCopy gradient];
+    [(UIKBRenderer *)self detectColorsForGradient:gradient];
 
-    v7 = [v9 CGColor];
-    [(UIKBRenderer *)self _addDetectedColor:v7];
-    CGColorRelease(v7);
+    cGColor = [v9 CGColor];
+    [(UIKBRenderer *)self _addDetectedColor:cGColor];
+    CGColorRelease(cGColor);
     v5 = v9;
     if (self->_contentColorFormat == 1)
     {
-      v8 = [v9 usesRGBColors];
+      usesRGBColors = [v9 usesRGBColors];
       v5 = v9;
-      if (v8)
+      if (usesRGBColors)
       {
         self->_contentColorFormat = 0;
       }
@@ -301,8 +301,8 @@ LABEL_9:
       v6 = [UIKBCachedImage alloc];
       [(UIKBRenderer *)self scale];
       v7 = [(UIImage *)v6 initWithCGImage:Image scale:0 orientation:?];
-      v8 = [(UIKBRenderer *)self singleColor];
-      [(UIImage *)v7 setFormatColor:v8];
+      singleColor = [(UIKBRenderer *)self singleColor];
+      [(UIImage *)v7 setFormatColor:singleColor];
 
       v9 = self->_renderedImage;
       self->_renderedImage = v7;
@@ -335,17 +335,17 @@ LABEL_9:
   return ctx;
 }
 
-+ (CGContext)imageContextWithSize:(CGSize)a3 scale:(double)a4 colorFormat:(int64_t)a5 opaque:(BOOL)a6 invert:(BOOL)a7
++ (CGContext)imageContextWithSize:(CGSize)size scale:(double)scale colorFormat:(int64_t)format opaque:(BOOL)opaque invert:(BOOL)invert
 {
-  LODWORD(v8) = vcvtpd_s64_f64(a3.width * a4);
-  LODWORD(v7) = vcvtpd_s64_f64(a3.height * a4);
+  LODWORD(v8) = vcvtpd_s64_f64(size.width * scale);
+  LODWORD(v7) = vcvtpd_s64_f64(size.height * scale);
   if (v8 < 1 || v7 < 1)
   {
     return 0;
   }
 
-  v11 = a7;
-  if (a5 == 2)
+  invertCopy = invert;
+  if (format == 2)
   {
     DeviceGray = 0;
     v15 = 7;
@@ -353,8 +353,8 @@ LABEL_9:
 
   else
   {
-    v13 = a6;
-    if (a5 == 1)
+    opaqueCopy = opaque;
+    if (format == 1)
     {
       DeviceGray = UIKBColorSpaceDeviceGray_colorspace;
       if (!UIKBColorSpaceDeviceGray_colorspace)
@@ -363,7 +363,7 @@ LABEL_9:
         UIKBColorSpaceDeviceGray_colorspace = DeviceGray;
       }
 
-      v15 = !v13;
+      v15 = !opaqueCopy;
     }
 
     else
@@ -375,7 +375,7 @@ LABEL_9:
         UIKBColorSpaceDeviceRGB_colorspace = DeviceGray;
       }
 
-      if (v13)
+      if (opaqueCopy)
       {
         v15 = 8198;
       }
@@ -392,34 +392,34 @@ LABEL_9:
   v10 = v17;
   if (v17)
   {
-    if (v11)
+    if (invertCopy)
     {
       CGContextTranslateCTM(v17, 0.0, v7);
-      CGContextScaleCTM(v10, a4, -a4);
+      CGContextScaleCTM(v10, scale, -scale);
       CGContextGetCTM(&v19, v10);
       CGContextSetBaseCTM();
     }
 
     else
     {
-      CGContextScaleCTM(v17, a4, a4);
+      CGContextScaleCTM(v17, scale, scale);
     }
   }
 
   return v10;
 }
 
-- (void)renderEdgeEffect:(id)a3 withTraits:(id)a4
+- (void)renderEdgeEffect:(id)effect withTraits:(id)traits
 {
-  v109 = a3;
-  v6 = a4;
-  v7 = [v6 geometry];
-  [v7 paddedFrame];
+  effectCopy = effect;
+  traitsCopy = traits;
+  geometry = [traitsCopy geometry];
+  [geometry paddedFrame];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
-  if ([v109 isValid])
+  if ([effectCopy isValid])
   {
     v111.origin.x = v9;
     v111.origin.y = v11;
@@ -429,20 +429,20 @@ LABEL_9:
     {
       if (self->_colorDetectMode)
       {
-        [(UIKBRenderer *)self detectColorsForEffect:v109];
+        [(UIKBRenderer *)self detectColorsForEffect:effectCopy];
         goto LABEL_54;
       }
 
-      v16 = [(UIKBRenderer *)self context];
-      v17 = [v7 roundRectCorners];
-      [v7 roundRectRadius];
+      context = [(UIKBRenderer *)self context];
+      roundRectCorners = [geometry roundRectCorners];
+      [geometry roundRectRadius];
       v108 = v18;
-      [v109 insets];
+      [effectCopy insets];
       v20 = v19;
       v22 = v21;
       v24 = v23;
       v26 = v25;
-      [v7 displayFrame];
+      [geometry displayFrame];
       v27 = fabs(v20);
       v106 = v24;
       v28 = fabs(v22);
@@ -450,79 +450,79 @@ LABEL_9:
       *&v107[8] = v30 - v27;
       *&v107[16] = v31 - (-v28 - fabs(v26));
       *&v107[24] = v32 - (-fabs(v24) - v27);
-      if ([v109 edges] == 15)
+      if ([effectCopy edges] == 15)
       {
-        if ((v17 + 1) < 2)
+        if ((roundRectCorners + 1) < 2)
         {
-          CGContextSaveGState(v16);
-          v33 = [v109 CGColor];
-          CGContextSetStrokeColorWithColor(v16, v33);
-          v34 = [v6 variantGeometries];
-          if (v34)
+          CGContextSaveGState(context);
+          cGColor = [effectCopy CGColor];
+          CGContextSetStrokeColorWithColor(context, cGColor);
+          variantGeometries = [traitsCopy variantGeometries];
+          if (variantGeometries)
           {
-            v35 = v34;
-            if ([v7 detachedVariants])
+            v35 = variantGeometries;
+            if ([geometry detachedVariants])
             {
 
 LABEL_45:
-              if ([v7 flickDirection] != -3)
+              if ([geometry flickDirection] != -3)
               {
-                v102 = [(UIKBRenderer *)self context];
+                context2 = [(UIKBRenderer *)self context];
                 v114.origin.x = v9 + -0.25;
                 v114.origin.y = v11 + -0.25;
                 v114.size.width = v13 + 0.5;
                 v114.size.height = v15 + 0.5;
-                CGContextAddRect(v102, v114);
+                CGContextAddRect(context2, v114);
               }
 
-              [(UIKBRenderer *)self addPathForTraits:v6 displayRect:0];
-              [v109 weight];
-              CGContextSetLineWidth(v16, v103);
-              CGContextStrokePath(v16);
+              [(UIKBRenderer *)self addPathForTraits:traitsCopy displayRect:0];
+              [effectCopy weight];
+              CGContextSetLineWidth(context, v103);
+              CGContextStrokePath(context);
               goto LABEL_51;
             }
 
-            v97 = [v7 flickDirection];
+            flickDirection = [geometry flickDirection];
 
-            if (v97 != -3)
+            if (flickDirection != -3)
             {
               goto LABEL_45;
             }
           }
 
-          if ([v7 flickDirection] == -3)
+          if ([geometry flickDirection] == -3)
           {
-            if (v108 == 0.0 && !v17)
+            if (v108 == 0.0 && !roundRectCorners)
             {
               v98 = v11 + v20;
               v99 = v13 - (v22 + v26);
               [(UIKBRenderer *)self addRoundRect:0 radius:v9 + v22 corners:v98, v99, v15 - (v20 + v106), 0.0];
-              v100 = [v109 edges];
-              [v109 weight];
-              [(UIKBRenderer *)self addRoundRect:0 radius:UIRectInsetEdges(v100 corners:v9 + v22, v98, v99, v15 - (v20 + v106), v101)];
-              CGContextEOClip(v16);
-              CGContextSetFillColorWithColor(v16, v33);
-              CGContextFillRect(v16, *v107);
+              edges = [effectCopy edges];
+              [effectCopy weight];
+              [(UIKBRenderer *)self addRoundRect:0 radius:UIRectInsetEdges(edges corners:v9 + v22, v98, v99, v15 - (v20 + v106), v101)];
+              CGContextEOClip(context);
+              CGContextSetFillColorWithColor(context, cGColor);
+              CGContextFillRect(context, *v107);
 LABEL_51:
-              v96 = v33;
+              v96 = cGColor;
               goto LABEL_52;
             }
 
-            v104 = [v7 copy];
+            v104 = [geometry copy];
             [v104 applyInsets:{v20, v22, v24, v26}];
             [(UIKBRenderer *)self addPathForRenderGeometry:v104];
           }
 
           else
           {
-            v104 = [v7 copy];
+            v104 = [geometry copy];
             [v104 applyInsets:{v20, v22, v24, v26}];
             [(UIKBRenderer *)self addPathForFlickGeometry:v104];
           }
 
-          [v109 weight];
-          CGContextSetLineWidth(v16, v105);
-          CGContextStrokePath(v16);
+          [effectCopy weight];
+          CGContextSetLineWidth(context, v105);
+          CGContextStrokePath(context);
 
           goto LABEL_51;
         }
@@ -533,43 +533,43 @@ LABEL_51:
 
       else
       {
-        v36 = v17 == 0;
+        v36 = roundRectCorners == 0;
         v37 = v108 == 0.0;
-        if (v108 == 0.0 && !v17)
+        if (v108 == 0.0 && !roundRectCorners)
         {
-          CGContextSaveGState(v16);
+          CGContextSaveGState(context);
           [(UIKBRenderer *)self addRoundRect:0 radius:v9 corners:v11, v13, v15, 0.0];
           [(UIKBRenderer *)self addRoundRect:0 radius:v9 + v22 corners:v11 + v20, v13 - (v22 + v26), v15 - (v20 + v24), 0.0];
-          CGContextEOClip(v16);
-          v38 = [v109 gradient];
+          CGContextEOClip(context);
+          gradient = [effectCopy gradient];
 
-          if (v38)
+          if (gradient)
           {
-            v39 = [v109 gradient];
-            [v7 displayFrame];
-            v44 = self;
-            v45 = v39;
+            gradient2 = [effectCopy gradient];
+            [geometry displayFrame];
+            selfCopy2 = self;
+            v45 = gradient2;
 LABEL_38:
-            [(UIKBRenderer *)v44 _drawLinearGradient:v45 inRect:v40, v41, v42, v43];
+            [(UIKBRenderer *)selfCopy2 _drawLinearGradient:v45 inRect:v40, v41, v42, v43];
 
 LABEL_53:
-            CGContextRestoreGState(v16);
+            CGContextRestoreGState(context);
             goto LABEL_54;
           }
 
 LABEL_39:
-          v95 = [v109 CGColor];
-          CGContextSetFillColorWithColor(v16, v95);
-          CGContextFillRect(v16, *v107);
-          v96 = v95;
+          cGColor2 = [effectCopy CGColor];
+          CGContextSetFillColorWithColor(context, cGColor2);
+          CGContextFillRect(context, *v107);
+          v96 = cGColor2;
 LABEL_52:
           CGColorRelease(v96);
           goto LABEL_53;
         }
       }
 
-      CGContextSaveGState(v16);
-      [v109 insets];
+      CGContextSaveGState(context);
+      [effectCopy insets];
       v50 = v46;
       v51 = v47;
       v52 = v48;
@@ -580,9 +580,9 @@ LABEL_52:
         v82 = v11 + v46;
         v83 = v13 - (v47 + v49);
         v84 = v15 - (v46 + v48);
-        v85 = [v109 edges];
-        [v109 weight];
-        v87 = UIRectInsetEdges(v85, v81, v82, v83, v84, v86);
+        edges2 = [effectCopy edges];
+        [effectCopy weight];
+        v87 = UIRectInsetEdges(edges2, v81, v82, v83, v84, v86);
         v89 = v88;
         v91 = v90;
         v93 = v92;
@@ -590,18 +590,18 @@ LABEL_52:
         v112.origin.y = v82;
         v112.size.width = v83;
         v112.size.height = v84;
-        CGContextAddRect(v16, v112);
+        CGContextAddRect(context, v112);
         v113.origin.x = v87;
         v113.origin.y = v89;
         v113.size.width = v91;
         v113.size.height = v93;
-        CGContextAddRect(v16, v113);
+        CGContextAddRect(context, v113);
       }
 
       else
       {
         v54 = 0.0;
-        if ([v7 popupBias])
+        if ([geometry popupBias])
         {
           v55 = 0.0;
         }
@@ -611,16 +611,16 @@ LABEL_52:
           v55 = v50;
         }
 
-        v56 = [v7 copy];
+        v56 = [geometry copy];
         [v56 paddedFrame];
         v59 = v51 + v53;
         [v56 setPaddedFrame:{v51 + v57, v55 + v58, v60 - v59, v61 - (v52 + v55)}];
         [v56 displayFrame];
         [v56 setDisplayFrame:{v51 + v62, v50 + v63, v64 - v59, v65 - (v50 + v52)}];
         [(UIKBRenderer *)self addPathForRenderGeometry:v56];
-        v66 = [v109 edges];
-        [v109 weight];
-        if (v66)
+        edges3 = [effectCopy edges];
+        [effectCopy weight];
+        if (edges3)
         {
           v68 = v67;
         }
@@ -630,7 +630,7 @@ LABEL_52:
           v68 = 0.0;
         }
 
-        if ((v66 & 2) != 0)
+        if ((edges3 & 2) != 0)
         {
           v69 = v67;
         }
@@ -640,7 +640,7 @@ LABEL_52:
           v69 = 0.0;
         }
 
-        if ((v66 & 4) != 0)
+        if ((edges3 & 4) != 0)
         {
           v70 = v67;
         }
@@ -650,7 +650,7 @@ LABEL_52:
           v70 = 0.0;
         }
 
-        if ((v66 & 8) != 0)
+        if ((edges3 & 8) != 0)
         {
           v71 = v67;
         }
@@ -660,7 +660,7 @@ LABEL_52:
           v71 = 0.0;
         }
 
-        if (![v7 popupBias])
+        if (![geometry popupBias])
         {
           v54 = v68;
         }
@@ -673,14 +673,14 @@ LABEL_52:
         [(UIKBRenderer *)self addPathForRenderGeometry:v56];
       }
 
-      CGContextEOClip(v16);
-      v94 = [v109 gradient];
+      CGContextEOClip(context);
+      gradient3 = [effectCopy gradient];
 
-      if (v94)
+      if (gradient3)
       {
-        v39 = [v109 gradient];
-        v44 = self;
-        v45 = v39;
+        gradient2 = [effectCopy gradient];
+        selfCopy2 = self;
+        v45 = gradient2;
         v40 = *v107;
         v41 = *&v107[8];
         v42 = *&v107[16];
@@ -695,68 +695,68 @@ LABEL_52:
 LABEL_54:
 }
 
-- (void)renderShadowEffect:(id)a3 withTraits:(id)a4
+- (void)renderShadowEffect:(id)effect withTraits:(id)traits
 {
-  v54 = a3;
-  v6 = a4;
-  v7 = [v6 geometry];
-  if ([v54 isValid])
+  effectCopy = effect;
+  traitsCopy = traits;
+  geometry = [traitsCopy geometry];
+  if ([effectCopy isValid])
   {
-    [v7 displayFrame];
+    [geometry displayFrame];
     if (!CGRectIsEmpty(v57))
     {
       if (self->_colorDetectMode)
       {
-        [(UIKBRenderer *)self detectColorsForEffect:v54];
+        [(UIKBRenderer *)self detectColorsForEffect:effectCopy];
         goto LABEL_35;
       }
 
-      v8 = [(UIKBRenderer *)self context];
-      CGContextSaveGState(v8);
-      v9 = [v54 CGColor];
-      [v54 offset];
+      context = [(UIKBRenderer *)self context];
+      CGContextSaveGState(context);
+      cGColor = [effectCopy CGColor];
+      [effectCopy offset];
       v11 = v10;
       v13 = v12;
-      [v54 weight];
+      [effectCopy weight];
       v15 = v14;
       v56.width = v11;
       v56.height = v13;
-      CGContextSetShadowWithColor(v8, v56, v15, v9);
-      CGColorRelease(v9);
+      CGContextSetShadowWithColor(context, v56, v15, cGColor);
+      CGColorRelease(cGColor);
       v16 = +[UIColor whiteColor];
-      CGContextSetFillColorWithColor(v8, [v16 CGColor]);
+      CGContextSetFillColorWithColor(context, [v16 CGColor]);
 
-      v17 = v6;
-      [v54 insets];
+      v17 = traitsCopy;
+      [effectCopy insets];
       if (v21 == 0.0 && v18 == 0.0 && v20 == 0.0 && v19 == 0.0)
       {
         goto LABEL_34;
       }
 
-      v22 = [v7 copy];
-      v23 = [v17 variantGeometries];
-      if (!v23 || [v7 popupBias])
+      v22 = [geometry copy];
+      variantGeometries = [v17 variantGeometries];
+      if (!variantGeometries || [geometry popupBias])
       {
-        [v54 insets];
+        [effectCopy insets];
         [v22 applyShadowInsets:?];
-        v24 = v23;
+        array = variantGeometries;
 LABEL_33:
         v51 = [UIKBRenderTraits traitsWithGeometry:v22];
 
-        [v51 setVariantGeometries:v24];
+        [v51 setVariantGeometries:array];
         v17 = v51;
 LABEL_34:
         [(UIKBRenderer *)self addPathForTraits:v17 displayRect:0];
-        CGContextFillPath(v8);
-        CGContextRestoreGState(v8);
+        CGContextFillPath(context);
+        CGContextRestoreGState(context);
 
         goto LABEL_35;
       }
 
       v52 = v17;
       v53 = v22;
-      v24 = [MEMORY[0x1E695DF70] array];
-      if (![v23 count])
+      array = [MEMORY[0x1E695DF70] array];
+      if (![variantGeometries count])
       {
 LABEL_32:
 
@@ -769,21 +769,21 @@ LABEL_32:
       v26 = 0x1E695D000uLL;
       while (1)
       {
-        v27 = [v23 objectAtIndex:v25];
-        v28 = [*(v26 + 4016) null];
+        v27 = [variantGeometries objectAtIndex:v25];
+        null = [*(v26 + 4016) null];
 
-        if (v27 != v28)
+        if (v27 != null)
         {
           break;
         }
 
-        v38 = [*(v26 + 4016) null];
+        null2 = [*(v26 + 4016) null];
 LABEL_31:
-        [v24 addObject:v38];
+        [array addObject:null2];
 
         ++v25;
         v26 = 0x1E695D000;
-        if (v25 >= [v23 count])
+        if (v25 >= [variantGeometries count])
         {
           goto LABEL_32;
         }
@@ -791,15 +791,15 @@ LABEL_31:
 
       if (!v25)
       {
-        v38 = [v27 copy];
-        [v54 concaveInsets];
-        v43 = v38;
+        null2 = [v27 copy];
+        [effectCopy concaveInsets];
+        v43 = null2;
 LABEL_30:
         [v43 applyInsets:{v39, v40, v41, v42}];
         goto LABEL_31;
       }
 
-      [v54 insets];
+      [effectCopy insets];
       v30 = v29;
       v32 = v31;
       v34 = v33;
@@ -810,14 +810,14 @@ LABEL_30:
         {
           if (v25 == 4)
           {
-            [v54 concaveInsets];
+            [effectCopy concaveInsets];
             v36 = -v44;
             goto LABEL_25;
           }
 
 LABEL_29:
           v43 = [v27 copy];
-          v38 = v43;
+          null2 = v43;
           v39 = v30;
           v40 = v32;
           v41 = v34;
@@ -825,7 +825,7 @@ LABEL_29:
           goto LABEL_30;
         }
 
-        [v54 concaveInsets];
+        [effectCopy concaveInsets];
         v30 = -v48;
       }
 
@@ -835,12 +835,12 @@ LABEL_29:
         {
           if (v25 == 2)
           {
-            [v54 concaveInsets];
+            [effectCopy concaveInsets];
             v32 = -v37;
 LABEL_25:
-            [v54 concaveInsets];
+            [effectCopy concaveInsets];
             v30 = v45;
-            [v54 concaveInsets];
+            [effectCopy concaveInsets];
             v34 = v46;
             goto LABEL_29;
           }
@@ -848,13 +848,13 @@ LABEL_25:
           goto LABEL_29;
         }
 
-        [v54 concaveInsets];
+        [effectCopy concaveInsets];
         v34 = -v47;
       }
 
-      [v54 concaveInsets];
+      [effectCopy concaveInsets];
       v32 = v49;
-      [v54 concaveInsets];
+      [effectCopy concaveInsets];
       v36 = v50;
       goto LABEL_29;
     }
@@ -863,13 +863,13 @@ LABEL_25:
 LABEL_35:
 }
 
-- (void)renderDivotEffect:(id)a3 withTraits:(id)a4
+- (void)renderDivotEffect:(id)effect withTraits:(id)traits
 {
-  v5 = a4;
+  traitsCopy = traits;
   v25 = _UIImageWithName(@"spacekey_grabber_handles.png");
-  v6 = [v5 geometry];
+  geometry = [traitsCopy geometry];
 
-  [v6 frame];
+  [geometry frame];
   v8 = v7;
   v10 = v9;
   v12 = v11;
@@ -879,36 +879,36 @@ LABEL_35:
   v16 = v15;
   v18 = v17;
   v19 = v10 + (v14 - v17) * 0.5 + -1.0;
-  v20 = [(UIKBRenderer *)self context];
+  context = [(UIKBRenderer *)self context];
   v21 = v25;
-  v22 = [v25 CGImage];
+  cGImage = [v25 CGImage];
   v27.origin.x = v8 + 8.0;
   v27.origin.y = v19;
   v27.size.width = v16;
   v27.size.height = v18;
-  CGContextDrawImage(v20, v27, v22);
+  CGContextDrawImage(context, v27, cGImage);
   v23 = v25;
-  v24 = [v25 CGImage];
+  cGImage2 = [v25 CGImage];
   v28.origin.x = v8 + v12 - v16 + -8.0;
   v28.origin.y = v19;
   v28.size.width = v16;
   v28.size.height = v18;
-  CGContextDrawImage(v20, v28, v24);
+  CGContextDrawImage(context, v28, cGImage2);
 }
 
-- (void)_drawLinearGradient:(id)a3 inRect:(CGRect)a4
+- (void)_drawLinearGradient:(id)gradient inRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3;
-  if (v9)
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  gradientCopy = gradient;
+  if (gradientCopy)
   {
-    v16 = v9;
-    v10 = [v9 horizontal];
+    v16 = gradientCopy;
+    horizontal = [gradientCopy horizontal];
     v11 = y + height;
-    if (v10)
+    if (horizontal)
     {
       v12 = x + width;
     }
@@ -918,7 +918,7 @@ LABEL_35:
       v12 = x;
     }
 
-    if (v10)
+    if (horizontal)
     {
       v13 = y;
     }
@@ -928,7 +928,7 @@ LABEL_35:
       v13 = v11;
     }
 
-    v14 = [v16 CGGradient];
+    cGGradient = [v16 CGGradient];
     if (self->_colorDetectMode)
     {
       [(UIKBRenderer *)self detectColorsForGradient:v16];
@@ -936,33 +936,33 @@ LABEL_35:
 
     else if ([(UIKBRenderer *)self context])
     {
-      v15 = [(UIKBRenderer *)self context];
+      context = [(UIKBRenderer *)self context];
       v18.x = x;
       v18.y = y;
       v19.x = v12;
       v19.y = v13;
-      CGContextDrawLinearGradient(v15, v14, v18, v19, 0);
+      CGContextDrawLinearGradient(context, cGGradient, v18, v19, 0);
     }
 
-    CGGradientRelease(v14);
-    v9 = v16;
+    CGGradientRelease(cGGradient);
+    gradientCopy = v16;
   }
 }
 
-- (void)renderBackgroundTraits:(id)a3 allowCaching:(BOOL)a4
+- (void)renderBackgroundTraits:(id)traits allowCaching:(BOOL)caching
 {
-  v4 = a4;
+  cachingCopy = caching;
   v81 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(UIKBRenderer *)self renderFlags];
-  v8 = [(UIKBRenderer *)self renderFlags];
-  v60 = [(UIKBRenderer *)self renderFlags];
-  v61 = [v6 backgroundGradient];
-  v63 = [v6 layeredBackgroundGradient];
-  v64 = [v6 layeredForegroundGradient];
-  v62 = [v6 renderEffects];
-  v9 = (v8 >> 1) & 1;
-  if ([v6 blendForm] != 3)
+  traitsCopy = traits;
+  renderFlags = [(UIKBRenderer *)self renderFlags];
+  renderFlags2 = [(UIKBRenderer *)self renderFlags];
+  renderFlags3 = [(UIKBRenderer *)self renderFlags];
+  backgroundGradient = [traitsCopy backgroundGradient];
+  layeredBackgroundGradient = [traitsCopy layeredBackgroundGradient];
+  layeredForegroundGradient = [traitsCopy layeredForegroundGradient];
+  renderEffects = [traitsCopy renderEffects];
+  v9 = (renderFlags2 >> 1) & 1;
+  if ([traitsCopy blendForm] != 3)
   {
     goto LABEL_9;
   }
@@ -970,15 +970,15 @@ LABEL_35:
   if ([(UIKBRenderer *)self renderFlags]== 2)
   {
     LODWORD(v9) = 0;
-    v7 = 1;
+    renderFlags = 1;
     goto LABEL_9;
   }
 
   if ([(UIKBRenderer *)self renderFlags]== 1)
   {
 
-    v10 = [v6 foregroundRenderEffects];
-    v61 = v64;
+    foregroundRenderEffects = [traitsCopy foregroundRenderEffects];
+    backgroundGradient = layeredForegroundGradient;
   }
 
   else
@@ -988,13 +988,13 @@ LABEL_35:
       goto LABEL_9;
     }
 
-    v10 = 0;
+    foregroundRenderEffects = 0;
   }
 
-  v64 = 0;
-  v62 = v10;
+  layeredForegroundGradient = 0;
+  renderEffects = foregroundRenderEffects;
 LABEL_9:
-  if (v63)
+  if (layeredBackgroundGradient)
   {
     v11 = v9;
   }
@@ -1005,19 +1005,19 @@ LABEL_9:
   }
 
   v59 = v11;
-  v12 = (v64 != 0) & (v60 >> 2);
-  if ([v6 blendForm] == 1)
+  v12 = (layeredForegroundGradient != 0) & (renderFlags3 >> 2);
+  if ([traitsCopy blendForm] == 1)
   {
-    v12 &= [v6 controlOpacities] ^ 1;
+    v12 &= [traitsCopy controlOpacities] ^ 1;
   }
 
-  if (((v7 | v9) & 1) == 0 && !v12)
+  if (((renderFlags | v9) & 1) == 0 && !v12)
   {
     goto LABEL_92;
   }
 
-  v13 = [v6 geometry];
-  [v13 displayFrame];
+  geometry = [traitsCopy geometry];
+  [geometry displayFrame];
   v15 = v14;
   v17 = v16;
   v19 = v18;
@@ -1027,21 +1027,21 @@ LABEL_9:
   v78.size.width = v18;
   v78.size.height = v20;
 
-  v22 = [(UIKBRenderer *)self renderFlags];
+  renderFlags4 = [(UIKBRenderer *)self renderFlags];
   if (self->_colorDetectMode)
   {
     goto LABEL_17;
   }
 
-  v24 = v22;
+  v24 = renderFlags4;
   v57 = 0;
   if (![(UIKBRenderer *)self disableInternalCaching])
   {
     v25 = v24 & 3;
-    if ((v24 & 3) != 0 && v4)
+    if ((v24 & 3) != 0 && cachingCopy)
     {
-      v26 = [v6 hashString];
-      if (!v26 || (cachingContext = self->_cachingContext, v26, cachingContext))
+      hashString = [traitsCopy hashString];
+      if (!hashString || (cachingContext = self->_cachingContext, hashString, cachingContext))
       {
 LABEL_17:
         v57 = 0;
@@ -1053,8 +1053,8 @@ LABEL_17:
         dispatch_once(&qword_1ED49F170, &__block_literal_global_360);
       }
 
-      v28 = [v6 hashString];
-      v57 = [v28 stringByAppendingFormat:@"%d", v25];
+      hashString2 = [traitsCopy hashString];
+      v57 = [hashString2 stringByAppendingFormat:@"%d", v25];
 
       v29 = [_MergedGlobals_1178 objectForKey:v57];
       if (v29)
@@ -1062,25 +1062,25 @@ LABEL_17:
         BlendMode = CGContextGetBlendMode();
         CGContextSetBlendMode(self->_ctx, kCGBlendModeCopy);
         ctx = self->_ctx;
-        v32 = [v29 CGImage];
+        cGImage = [v29 CGImage];
         v82.origin.x = v15;
         v82.origin.y = v17;
         v82.size.width = v19;
         v82.size.height = v21;
-        CGContextDrawImage(ctx, v82, v32);
+        CGContextDrawImage(ctx, v82, cGImage);
         CGContextSetBlendMode(self->_ctx, BlendMode);
         [v29 CGImage];
         v33 = CGImageGetProperty();
-        v34 = [v33 integerValue];
-        if (v34 < self->_contentColorFormat)
+        integerValue = [v33 integerValue];
+        if (integerValue < self->_contentColorFormat)
         {
-          self->_contentColorFormat = v34;
+          self->_contentColorFormat = integerValue;
         }
 
         if ([v29 hasFormatColor])
         {
-          v35 = [v29 formatColor];
-          -[UIKBRenderer _addDetectedColor:](self, "_addDetectedColor:", [v35 CGColor]);
+          formatColor = [v29 formatColor];
+          -[UIKBRenderer _addDetectedColor:](self, "_addDetectedColor:", [formatColor CGColor]);
         }
 
         v36 = v57;
@@ -1097,10 +1097,10 @@ LABEL_17:
   }
 
 LABEL_18:
-  if (v7)
+  if (renderFlags)
   {
-    v23 = ([v6 blurBlending] & 1) != 0 || objc_msgSend(v6, "blendForm") == 3;
-    LODWORD(v58) = v23;
+    v23 = ([traitsCopy blurBlending] & 1) != 0 || objc_msgSend(traitsCopy, "blendForm") == 3;
+    LODWORD(renderFlagsForAboveEffects) = v23;
     if (!v9)
     {
       goto LABEL_39;
@@ -1109,27 +1109,27 @@ LABEL_18:
 
   else
   {
-    LODWORD(v58) = 0;
+    LODWORD(renderFlagsForAboveEffects) = 0;
     if (!v9)
     {
       goto LABEL_39;
     }
   }
 
-  if (([v6 blurBlending] & 1) == 0)
+  if (([traitsCopy blurBlending] & 1) == 0)
   {
-    LODWORD(v56) = [v6 blendForm] != 3;
+    LODWORD(v56) = [traitsCopy blendForm] != 3;
     goto LABEL_41;
   }
 
 LABEL_39:
   LODWORD(v56) = 0;
 LABEL_41:
-  if ([v6 renderFlagsForAboveEffects])
+  if ([traitsCopy renderFlagsForAboveEffects])
   {
-    v58 = [v6 renderFlagsForAboveEffects];
-    v55 = ([(UIKBRenderer *)self renderFlags]& v58) != 0;
-    v56 = (v58 >> 1) & 1;
+    renderFlagsForAboveEffects = [traitsCopy renderFlagsForAboveEffects];
+    v55 = ([(UIKBRenderer *)self renderFlags]& renderFlagsForAboveEffects) != 0;
+    v56 = (renderFlagsForAboveEffects >> 1) & 1;
     if (!v9)
     {
       goto LABEL_63;
@@ -1149,7 +1149,7 @@ LABEL_41:
   v76 = 0u;
   v73 = 0u;
   v74 = 0u;
-  v37 = v62;
+  v37 = renderEffects;
   v38 = [v37 countByEnumeratingWithState:&v73 objects:v80 count:16];
   if (!v38)
   {
@@ -1180,9 +1180,9 @@ LABEL_41:
         if ([(UIKBRenderer *)self context])
         {
           CGContextSaveGState([(UIKBRenderer *)self context]);
-          v43 = [(UIKBRenderer *)self context];
-          CGContextAddRect(v43, v78);
-          [(UIKBRenderer *)self addPathForTraits:v6 displayRect:0];
+          context = [(UIKBRenderer *)self context];
+          CGContextAddRect(context, v78);
+          [(UIKBRenderer *)self addPathForTraits:traitsCopy displayRect:0];
           CGContextEOClip([(UIKBRenderer *)self context]);
 LABEL_54:
           v39 = 1;
@@ -1193,7 +1193,7 @@ LABEL_54:
           v39 = 0;
         }
 
-        [v42 renderEffectWithRenderer:self traits:v6];
+        [v42 renderEffectWithRenderer:self traits:traitsCopy];
       }
 
       ++v41;
@@ -1212,12 +1212,12 @@ LABEL_54:
   }
 
 LABEL_63:
-  if ((v7 | v59 | v12))
+  if ((renderFlags | v59 | v12))
   {
     if ([(UIKBRenderer *)self context])
     {
       CGContextSaveGState([(UIKBRenderer *)self context]);
-      [(UIKBRenderer *)self addPathForTraits:v6 displayRect:&v78];
+      [(UIKBRenderer *)self addPathForTraits:traitsCopy displayRect:&v78];
       if (!CGContextIsPathEmpty([(UIKBRenderer *)self context]))
       {
         CGContextClip([(UIKBRenderer *)self context]);
@@ -1226,17 +1226,17 @@ LABEL_63:
 
     if (v59)
     {
-      [(UIKBRenderer *)self _drawLinearGradient:v63 inRect:*&v78.origin, *&v78.size];
+      [(UIKBRenderer *)self _drawLinearGradient:layeredBackgroundGradient inRect:*&v78.origin, *&v78.size];
     }
 
-    if (v7)
+    if (renderFlags)
     {
-      [(UIKBRenderer *)self _drawLinearGradient:v61 inRect:*&v78.origin, *&v78.size];
+      [(UIKBRenderer *)self _drawLinearGradient:backgroundGradient inRect:*&v78.origin, *&v78.size];
     }
 
     if (v12)
     {
-      [(UIKBRenderer *)self _drawLinearGradient:v64 inRect:*&v78.origin, *&v78.size];
+      [(UIKBRenderer *)self _drawLinearGradient:layeredForegroundGradient inRect:*&v78.origin, *&v78.size];
     }
 
     if ([(UIKBRenderer *)self context])
@@ -1245,13 +1245,13 @@ LABEL_63:
     }
   }
 
-  if ((v56 | v58 | v55))
+  if ((v56 | renderFlagsForAboveEffects | v55))
   {
     v72 = 0u;
     v70 = 0u;
     v71 = 0u;
     v69 = 0u;
-    v45 = v62;
+    v45 = renderEffects;
     v46 = [v45 countByEnumeratingWithState:&v69 objects:v79 count:16];
     if (v46)
     {
@@ -1268,7 +1268,7 @@ LABEL_63:
           v49 = *(*(&v69 + 1) + 8 * i);
           if (([v49 renderUnder] & 1) == 0)
           {
-            [v49 renderEffectWithRenderer:self traits:v6];
+            [v49 renderEffectWithRenderer:self traits:traitsCopy];
           }
         }
 
@@ -1296,9 +1296,9 @@ LABEL_63:
     cachingContextCompletion = self->_cachingContextCompletion;
     self->_cachingContextCompletion = v50;
 
-    if ((v60 >> 2))
+    if ((renderFlags3 >> 2))
     {
-      [(UIKBRenderer *)self _completeCacheImageWithTraitsIfNecessary:v6];
+      [(UIKBRenderer *)self _completeCacheImageWithTraitsIfNecessary:traitsCopy];
     }
 
     objc_destroyWeak(&v67);
@@ -1353,15 +1353,15 @@ void __52__UIKBRenderer_renderBackgroundTraits_allowCaching___block_invoke_2(uin
   }
 }
 
-- (BOOL)loadCachedImageForHashString:(id)a3
+- (BOOL)loadCachedImageForHashString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v5 = 0;
-  if (v4 && _MergedGlobals_1178)
+  if (stringCopy && _MergedGlobals_1178)
   {
-    v6 = [(UIKBRenderer *)self cacheKey];
+    cacheKey = [(UIKBRenderer *)self cacheKey];
 
-    if (v6)
+    if (cacheKey)
     {
       v5 = 0;
     }
@@ -1369,16 +1369,16 @@ void __52__UIKBRenderer_renderBackgroundTraits_allowCaching___block_invoke_2(uin
     else
     {
       v7 = [MEMORY[0x1E696AD98] numberWithInteger:{-[UIKBRenderer renderFlags](self, "renderFlags")}];
-      v8 = [v7 stringValue];
-      v9 = [v4 stringByAppendingString:v8];
+      stringValue = [v7 stringValue];
+      v9 = [stringCopy stringByAppendingString:stringValue];
 
       v10 = [_MergedGlobals_1178 objectForKey:v9];
       if (v10)
       {
         v11 = [UIKBCachedImage alloc];
-        v12 = [v10 CGImage];
+        cGImage = [v10 CGImage];
         [(UIKBRenderer *)self scale];
-        v13 = [(UIImage *)v11 initWithCGImage:v12 scale:1 orientation:?];
+        v13 = [(UIImage *)v11 initWithCGImage:cGImage scale:1 orientation:?];
         renderedImage = self->_renderedImage;
         self->_renderedImage = v13;
       }
@@ -1390,10 +1390,10 @@ void __52__UIKBRenderer_renderBackgroundTraits_allowCaching___block_invoke_2(uin
   return v5;
 }
 
-- (void)_completeCacheImageWithTraitsIfNecessary:(id)a3
+- (void)_completeCacheImageWithTraitsIfNecessary:(id)necessary
 {
-  v4 = [a3 hashString];
-  if (v4)
+  hashString = [necessary hashString];
+  if (hashString)
   {
     cachingContextCompletion = self->_cachingContextCompletion;
 
@@ -1406,18 +1406,18 @@ void __52__UIKBRenderer_renderBackgroundTraits_allowCaching___block_invoke_2(uin
   }
 }
 
-- (void)renderBackgroundTraits:(id)a3
+- (void)renderBackgroundTraits:(id)traits
 {
-  v4 = a3;
+  traitsCopy = traits;
   [(UIKBRenderer *)self ensureContext];
-  [(UIKBRenderer *)self renderBackgroundTraits:v4 allowCaching:0];
+  [(UIKBRenderer *)self renderBackgroundTraits:traitsCopy allowCaching:0];
 }
 
-- (void)renderKeyContents:(id)a3 withTraits:(id)a4
+- (void)renderKeyContents:(id)contents withTraits:(id)traits
 {
   v36 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  contentsCopy = contents;
+  traitsCopy = traits;
   [(UIKBRenderer *)self ensureContext];
   ctx = self->_ctx;
   if (ctx)
@@ -1425,21 +1425,21 @@ void __52__UIKBRenderer_renderBackgroundTraits_allowCaching___block_invoke_2(uin
     CGContextSaveGState(ctx);
   }
 
-  [(UIKBRenderer *)self renderBackgroundTraits:v7 allowCaching:1];
-  if ([v6 stringKeycapOverImage])
+  [(UIKBRenderer *)self renderBackgroundTraits:traitsCopy allowCaching:1];
+  if ([contentsCopy stringKeycapOverImage])
   {
-    v9 = [(UIKBRenderer *)self renderKeyStringContents:v6 withTraits:v7 status:0];
-    if (v9 != 3 && ![(UIKBRenderer *)self renderKeyImageContents:v6 withTraits:v7 status:v9])
+    v9 = [(UIKBRenderer *)self renderKeyStringContents:contentsCopy withTraits:traitsCopy status:0];
+    if (v9 != 3 && ![(UIKBRenderer *)self renderKeyImageContents:contentsCopy withTraits:traitsCopy status:v9])
     {
 LABEL_9:
-      [(UIKBRenderer *)self renderKeyPathContents:v6 withTraits:v7];
+      [(UIKBRenderer *)self renderKeyPathContents:contentsCopy withTraits:traitsCopy];
     }
   }
 
   else
   {
-    v10 = [(UIKBRenderer *)self renderKeyImageContents:v6 withTraits:v7 status:0];
-    if (v10 != 3 && ![(UIKBRenderer *)self renderKeyStringContents:v6 withTraits:v7 status:v10])
+    v10 = [(UIKBRenderer *)self renderKeyImageContents:contentsCopy withTraits:traitsCopy status:0];
+    if (v10 != 3 && ![(UIKBRenderer *)self renderKeyStringContents:contentsCopy withTraits:traitsCopy status:v10])
     {
       goto LABEL_9;
     }
@@ -1451,13 +1451,13 @@ LABEL_9:
     CGContextRestoreGState(v11);
   }
 
-  v12 = [v7 geometry];
-  if (!v12 || (v13 = v12, [v7 geometry], v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "flickDirection"), v14, v13, v15 == -3))
+  geometry = [traitsCopy geometry];
+  if (!geometry || (v13 = geometry, [traitsCopy geometry], v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "flickDirection"), v14, v13, v15 == -3))
   {
-    v16 = [v6 variantDisplayContents];
+    variantDisplayContents = [contentsCopy variantDisplayContents];
 
-    [(UIKBRenderer *)self _completeCacheImageWithTraitsIfNecessary:v7];
-    if (!v16)
+    [(UIKBRenderer *)self _completeCacheImageWithTraitsIfNecessary:traitsCopy];
+    if (!variantDisplayContents)
     {
       goto LABEL_20;
     }
@@ -1465,32 +1465,32 @@ LABEL_9:
     goto LABEL_19;
   }
 
-  v17 = [v7 variantGeometries];
-  if (v17)
+  variantGeometries = [traitsCopy variantGeometries];
+  if (variantGeometries)
   {
-    v18 = v17;
-    v19 = [v6 variantDisplayContents];
+    v18 = variantGeometries;
+    variantDisplayContents2 = [contentsCopy variantDisplayContents];
 
-    if (v19)
+    if (variantDisplayContents2)
     {
-      [(UIKBRenderer *)self _completeCacheImageWithTraitsIfNecessary:v7];
+      [(UIKBRenderer *)self _completeCacheImageWithTraitsIfNecessary:traitsCopy];
 LABEL_19:
-      [(UIKBRenderer *)self _renderVariantsFromKeyContents:v6 withTraits:v7];
+      [(UIKBRenderer *)self _renderVariantsFromKeyContents:contentsCopy withTraits:traitsCopy];
       goto LABEL_20;
     }
   }
 
-  v20 = [v7 variantTraits];
-  v21 = [v20 geometry];
+  variantTraits = [traitsCopy variantTraits];
+  geometry2 = [variantTraits geometry];
 
-  if (v21)
+  if (geometry2)
   {
     v33 = 0u;
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v22 = [v6 highlightedVariantsList];
-    v23 = [v22 countByEnumeratingWithState:&v31 objects:v35 count:16];
+    highlightedVariantsList = [contentsCopy highlightedVariantsList];
+    v23 = [highlightedVariantsList countByEnumeratingWithState:&v31 objects:v35 count:16];
     if (v23)
     {
       v24 = v23;
@@ -1502,41 +1502,41 @@ LABEL_19:
         {
           if (*v32 != v25)
           {
-            objc_enumerationMutation(v22);
+            objc_enumerationMutation(highlightedVariantsList);
           }
 
           v27 = *(*(&v31 + 1) + 8 * v26);
-          v28 = [v6 variantDisplayContents];
-          v29 = [v28 objectAtIndex:{objc_msgSend(v27, "unsignedIntegerValue")}];
+          variantDisplayContents3 = [contentsCopy variantDisplayContents];
+          v29 = [variantDisplayContents3 objectAtIndex:{objc_msgSend(v27, "unsignedIntegerValue")}];
 
-          v30 = [v7 variantTraits];
-          [(UIKBRenderer *)self renderKeyContents:v29 withTraits:v30];
+          variantTraits2 = [traitsCopy variantTraits];
+          [(UIKBRenderer *)self renderKeyContents:v29 withTraits:variantTraits2];
 
           ++v26;
         }
 
         while (v24 != v26);
-        v24 = [v22 countByEnumeratingWithState:&v31 objects:v35 count:16];
+        v24 = [highlightedVariantsList countByEnumeratingWithState:&v31 objects:v35 count:16];
       }
 
       while (v24);
     }
 
-    [(UIKBRenderer *)self _completeCacheImageWithTraitsIfNecessary:v7];
+    [(UIKBRenderer *)self _completeCacheImageWithTraitsIfNecessary:traitsCopy];
   }
 
 LABEL_20:
 }
 
-- (void)_renderVariantsFromKeyContents:(id)a3 withTraits:(id)a4
+- (void)_renderVariantsFromKeyContents:(id)contents withTraits:(id)traits
 {
   v30 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 variantDisplayContents];
-  v8 = [v7 count];
-  v9 = [v6 variantGeometries];
-  v10 = [v9 count];
+  contentsCopy = contents;
+  traitsCopy = traits;
+  variantDisplayContents = [contentsCopy variantDisplayContents];
+  v8 = [variantDisplayContents count];
+  variantGeometries = [traitsCopy variantGeometries];
+  v10 = [variantGeometries count];
 
   if (v8 != v10)
   {
@@ -1546,7 +1546,7 @@ LABEL_20:
       if (os_log_type_enabled(v26, OS_LOG_TYPE_FAULT))
       {
         *buf = 138412290;
-        v29 = v5;
+        v29 = contentsCopy;
         _os_log_fault_impl(&dword_188A29000, v26, OS_LOG_TYPE_FAULT, "keyboard: number of popups didn't match number of geometries: %@", buf, 0xCu);
       }
     }
@@ -1557,17 +1557,17 @@ LABEL_20:
       if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v29 = v5;
+        v29 = contentsCopy;
         _os_log_impl(&dword_188A29000, v25, OS_LOG_TYPE_ERROR, "keyboard: number of popups didn't match number of geometries: %@", buf, 0xCu);
       }
     }
   }
 
-  v11 = [v5 variantDisplayContents];
-  v12 = [v11 count];
+  variantDisplayContents2 = [contentsCopy variantDisplayContents];
+  v12 = [variantDisplayContents2 count];
 
-  v13 = [v6 variantGeometries];
-  v14 = [v13 count];
+  variantGeometries2 = [traitsCopy variantGeometries];
+  v14 = [variantGeometries2 count];
 
   if (v12 >= v14)
   {
@@ -1583,28 +1583,28 @@ LABEL_20:
   {
     for (i = 0; i != v15; ++i)
     {
-      v17 = [v5 variantDisplayContents];
-      v18 = [v17 objectAtIndex:i];
+      variantDisplayContents3 = [contentsCopy variantDisplayContents];
+      v18 = [variantDisplayContents3 objectAtIndex:i];
 
-      v19 = [MEMORY[0x1E695DFB0] null];
+      null = [MEMORY[0x1E695DFB0] null];
 
-      if (v18 != v19)
+      if (v18 != null)
       {
-        v20 = [v5 highlightedVariantsList];
+        highlightedVariantsList = [contentsCopy highlightedVariantsList];
         v21 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:i];
-        if ([v20 containsObject:v21])
+        if ([highlightedVariantsList containsObject:v21])
         {
-          [v6 highlightedVariantTraits];
+          [traitsCopy highlightedVariantTraits];
         }
 
         else
         {
-          [v6 variantTraits];
+          [traitsCopy variantTraits];
         }
         v22 = ;
 
-        v23 = [v6 variantGeometries];
-        v24 = [v23 objectAtIndex:i];
+        variantGeometries3 = [traitsCopy variantGeometries];
+        v24 = [variantGeometries3 objectAtIndex:i];
         [v22 setGeometry:v24];
 
         [(UIKBRenderer *)self renderKeyContents:v18 withTraits:v22];
@@ -1613,63 +1613,63 @@ LABEL_20:
   }
 }
 
-- (void)_drawKeyImage:(id)a3 inRect:(CGRect)a4 withStyle:(id)a5 force1xImages:(BOOL)a6 flipHorizontally:(BOOL)a7 isRGBImage:(BOOL)a8
+- (void)_drawKeyImage:(id)image inRect:(CGRect)rect withStyle:(id)style force1xImages:(BOOL)images flipHorizontally:(BOOL)horizontally isRGBImage:(BOOL)bImage
 {
-  v8 = a8;
-  v9 = a7;
-  v10 = a6;
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v59 = a3;
-  v17 = a5;
+  bImageCopy = bImage;
+  horizontallyCopy = horizontally;
+  imagesCopy = images;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  imageCopy = image;
+  styleCopy = style;
   colorDetectMode = self->_colorDetectMode;
-  v19 = [v17 textColor];
-  v20 = v19;
+  textColor = [styleCopy textColor];
+  v20 = textColor;
   if (!colorDetectMode)
   {
-    v21 = UIKBGetNamedColor(v19);
+    v21 = UIKBGetNamedColor(textColor);
 
     v20 = [UIColor colorWithCGColor:v21];
-    [v17 textOpacity];
+    [styleCopy textOpacity];
     if (v22 != 1.0)
     {
-      [v17 textOpacity];
+      [styleCopy textOpacity];
       v23 = [v20 colorWithAlphaComponent:?];
 
       v20 = v23;
     }
 
-    if (v8)
+    if (bImageCopy)
     {
-      v24 = v59;
+      v24 = imageCopy;
     }
 
     else
     {
-      v24 = [v59 _flatImageWithColor:v20];
+      v24 = [imageCopy _flatImageWithColor:v20];
     }
 
     v25 = v24;
-    [v59 scale];
+    [imageCopy scale];
     v27 = v26;
     [v25 size];
     v29 = v28;
     v31 = v30;
-    if ([v59 isSymbolImage])
+    if ([imageCopy isSymbolImage])
     {
-      [v59 contentInsets];
+      [imageCopy contentInsets];
       v33 = v32;
-      [v59 contentInsets];
+      [imageCopy contentInsets];
       v31 = v31 - (v33 + v34);
-      [v59 contentInsets];
+      [imageCopy contentInsets];
       v36 = v35;
-      [v59 contentInsets];
+      [imageCopy contentInsets];
       v29 = v29 - (v36 + v37);
     }
 
-    if (v10)
+    if (imagesCopy)
     {
       v31 = v27 * v31;
       v29 = v27 * v29;
@@ -1687,37 +1687,37 @@ LABEL_20:
       v31 = v31 * v39;
     }
 
-    [v17 imageScale];
+    [styleCopy imageScale];
     if (v40 != 1.0)
     {
-      [v17 imageScale];
+      [styleCopy imageScale];
       v29 = v29 * v41;
-      [v17 imageScale];
+      [styleCopy imageScale];
       v31 = v31 * v42;
     }
 
-    if (![v17 anchorCorner])
+    if (![styleCopy anchorCorner])
     {
       v46 = v27 * (width - v29) * 0.5;
       v47 = x + fabsf(roundf(v46)) / v27;
-      [v17 textOffset];
+      [styleCopy textOffset];
       v44 = v47 + v48;
       *&v48 = v27 * (height - v31) * 0.5;
       v45 = fabsf(roundf(*&v48)) / v27 - y;
       goto LABEL_26;
     }
 
-    if ([v17 anchorCorner] == 1)
+    if ([styleCopy anchorCorner] == 1)
     {
-      [v17 textOffset];
+      [styleCopy textOffset];
       v44 = x + v43;
 LABEL_24:
       v45 = height - y - v31;
 LABEL_26:
-      [v17 textOffset];
+      [styleCopy textOffset];
       v50 = v45 - v49;
 LABEL_30:
-      if (v9)
+      if (horizontallyCopy)
       {
         v53 = -v44 - v29;
       }
@@ -1727,7 +1727,7 @@ LABEL_30:
         v53 = v44;
       }
 
-      if (v9)
+      if (horizontallyCopy)
       {
         v54 = -1.0;
       }
@@ -1741,60 +1741,60 @@ LABEL_30:
       CGContextTranslateCTM(self->_ctx, 0.0, height);
       CGContextScaleCTM(self->_ctx, v54, -1.0);
       ctx = self->_ctx;
-      v56 = [v25 CGImage];
+      cGImage = [v25 CGImage];
       v61.origin.x = v53;
       v61.origin.y = v50;
       v61.size.width = v29;
       v61.size.height = v31;
-      CGContextDrawImage(ctx, v61, v56);
+      CGContextDrawImage(ctx, v61, cGImage);
       CGContextRestoreGState(self->_ctx);
 
       goto LABEL_37;
     }
 
-    if ([v17 anchorCorner] == 4)
+    if ([styleCopy anchorCorner] == 4)
     {
-      [v17 textOffset];
+      [styleCopy textOffset];
       v44 = x + v51;
     }
 
     else
     {
-      if ([v17 anchorCorner] == 2)
+      if ([styleCopy anchorCorner] == 2)
       {
-        [v17 textOffset];
+        [styleCopy textOffset];
         v44 = x + width - v29 - v57;
         goto LABEL_24;
       }
 
       v50 = 0.0;
       v44 = 0.0;
-      if ([v17 anchorCorner] != 8)
+      if ([styleCopy anchorCorner] != 8)
       {
         goto LABEL_30;
       }
 
-      [v17 textOffset];
+      [styleCopy textOffset];
       v44 = x + width - v29 - v58;
     }
 
-    [v17 textOffset];
+    [styleCopy textOffset];
     v50 = v52 - y;
     goto LABEL_30;
   }
 
-  [(UIKBRenderer *)self detectColorsForNamedColor:v19];
+  [(UIKBRenderer *)self detectColorsForNamedColor:textColor];
 LABEL_37:
 }
 
-- (unint64_t)renderKeyImageContents:(id)a3 withTraits:(id)a4 status:(unint64_t)a5
+- (unint64_t)renderKeyImageContents:(id)contents withTraits:(id)traits status:(unint64_t)status
 {
-  v8 = a3;
-  v9 = a4;
+  contentsCopy = contents;
+  traitsCopy = traits;
   v61 = 0;
   v62 = &v61;
   v63 = 0x2020000000;
-  v64 = a5;
+  statusCopy = status;
   if (([(UIKBRenderer *)self renderFlags]& 0x34) != 0)
   {
     v59[0] = MEMORY[0x1E69E9820];
@@ -1802,24 +1802,24 @@ LABEL_37:
     v59[2] = __57__UIKBRenderer_renderKeyImageContents_withTraits_status___block_invoke;
     v59[3] = &unk_1E710C078;
     v59[4] = self;
-    v10 = v9;
+    v10 = traitsCopy;
     v60 = v10;
     v51 = [UITraitCollection traitCollectionWithTraits:v59];
-    if ((a5 & 2) == 0)
+    if ((status & 2) == 0)
     {
-      v11 = [v8 secondaryDisplayStringImages];
-      if ([v11 count])
+      secondaryDisplayStringImages = [contentsCopy secondaryDisplayStringImages];
+      if ([secondaryDisplayStringImages count])
       {
-        v12 = [v10 secondarySymbolStyles];
-        v13 = [v12 count];
+        secondarySymbolStyles = [v10 secondarySymbolStyles];
+        v13 = [secondarySymbolStyles count];
 
         if (v13)
         {
-          v14 = [v8 secondaryDisplayStringImages];
-          v15 = [v14 count];
+          secondaryDisplayStringImages2 = [contentsCopy secondaryDisplayStringImages];
+          v15 = [secondaryDisplayStringImages2 count];
 
-          v16 = [v10 secondarySymbolStyles];
-          v17 = [v16 count];
+          secondarySymbolStyles2 = [v10 secondarySymbolStyles];
+          v17 = [secondarySymbolStyles2 count];
 
           if ([v10 renderSecondarySymbolsSeparately])
           {
@@ -1841,8 +1841,8 @@ LABEL_32:
 
               else
               {
-                v39 = [v8 secondaryDisplayStringImages];
-                v40 = [v39 objectAtIndex:v18];
+                secondaryDisplayStringImages3 = [contentsCopy secondaryDisplayStringImages];
+                v40 = [secondaryDisplayStringImages3 objectAtIndex:v18];
 
                 if (v40)
                 {
@@ -1855,17 +1855,17 @@ LABEL_32:
                 }
               }
 
-              if (v18 >= v17 || ([v10 secondarySymbolStyles], v42 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v42, "objectAtIndex:", v18), v43 = objc_claimAutoreleasedReturnValue(), v42, !v43))
+              if (v18 >= v17 || ([v10 secondarySymbolStyles], v42 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v42, "objectAtIndex:", v18), lastObject = objc_claimAutoreleasedReturnValue(), v42, !lastObject))
               {
-                v44 = [v10 secondarySymbolStyles];
-                v43 = [v44 lastObject];
+                secondarySymbolStyles3 = [v10 secondarySymbolStyles];
+                lastObject = [secondarySymbolStyles3 lastObject];
               }
 
               if (v41)
               {
-                v45 = [v10 geometry];
-                [v45 symbolFrame];
-                -[UIKBRenderer _drawKeyImage:inRect:withStyle:force1xImages:flipHorizontally:isRGBImage:](self, "_drawKeyImage:inRect:withStyle:force1xImages:flipHorizontally:isRGBImage:", v41, v43, [v8 force1xImages], objc_msgSend(v8, "flipImageHorizontally"), 0, v46, v47, v48, v49);
+                geometry = [v10 geometry];
+                [geometry symbolFrame];
+                -[UIKBRenderer _drawKeyImage:inRect:withStyle:force1xImages:flipHorizontally:isRGBImage:](self, "_drawKeyImage:inRect:withStyle:force1xImages:flipHorizontally:isRGBImage:", v41, lastObject, [contentsCopy force1xImages], objc_msgSend(contentsCopy, "flipImageHorizontally"), 0, v46, v47, v48, v49);
 
                 v62[3] = 3;
               }
@@ -1874,7 +1874,7 @@ LABEL_32:
 
           else
           {
-            v33 = [v8 secondaryDisplayStringImages];
+            secondaryDisplayStringImages4 = [contentsCopy secondaryDisplayStringImages];
             v52[0] = MEMORY[0x1E69E9820];
             v52[1] = 3221225472;
             v52[2] = __57__UIKBRenderer_renderKeyImageContents_withTraits_status___block_invoke_2;
@@ -1884,9 +1884,9 @@ LABEL_32:
             v58 = v17;
             v53 = v10;
             v54 = v51;
-            v55 = v8;
+            v55 = contentsCopy;
             v56 = &v61;
-            [v33 enumerateObjectsUsingBlock:v52];
+            [secondaryDisplayStringImages4 enumerateObjectsUsingBlock:v52];
           }
 
 LABEL_43:
@@ -1900,44 +1900,44 @@ LABEL_43:
       }
     }
 
-    if (a5)
+    if (status)
     {
       goto LABEL_43;
     }
 
-    v20 = [v8 displayStringImage];
-    v21 = [v10 symbolStyle];
-    if ([v21 usesSymbolImage])
+    displayStringImage = [contentsCopy displayStringImage];
+    symbolStyle = [v10 symbolStyle];
+    if ([symbolStyle usesSymbolImage])
     {
       v22 = [(UIKBRenderer *)self symbolImageConfigForKey:v10 traitCollection:v51];
-      v23 = [v8 bundlePathOverride];
+      bundlePathOverride = [contentsCopy bundlePathOverride];
 
-      if (v23)
+      if (bundlePathOverride)
       {
         v24 = MEMORY[0x1E696AAE8];
-        v25 = [v8 bundlePathOverride];
-        v26 = [v24 bundleWithPath:v25];
+        bundlePathOverride2 = [contentsCopy bundlePathOverride];
+        v26 = [v24 bundleWithPath:bundlePathOverride2];
 
-        v27 = [UIImage imageNamed:v20 inBundle:v26 withConfiguration:v22];
-        v28 = [v27 imageWithRenderingMode:{-[UIKBRenderer symbolImageRenderingModeForIdiom:](self, "symbolImageRenderingModeForIdiom:", -[UIKBRenderer assetIdiom](self, "assetIdiom"))}];
+        v27 = [UIImage imageNamed:displayStringImage inBundle:v26 withConfiguration:v22];
+        displayImage2 = [v27 imageWithRenderingMode:{-[UIKBRenderer symbolImageRenderingModeForIdiom:](self, "symbolImageRenderingModeForIdiom:", -[UIKBRenderer assetIdiom](self, "assetIdiom"))}];
       }
 
       else
       {
-        v26 = [UIImage _systemImageNamed:v20 withConfiguration:v22];
-        v28 = [v26 imageWithRenderingMode:{-[UIKBRenderer symbolImageRenderingModeForIdiom:](self, "symbolImageRenderingModeForIdiom:", -[UIKBRenderer assetIdiom](self, "assetIdiom"))}];
+        v26 = [UIImage _systemImageNamed:displayStringImage withConfiguration:v22];
+        displayImage2 = [v26 imageWithRenderingMode:{-[UIKBRenderer symbolImageRenderingModeForIdiom:](self, "symbolImageRenderingModeForIdiom:", -[UIKBRenderer assetIdiom](self, "assetIdiom"))}];
       }
     }
 
     else
     {
-      v29 = [v8 displayImage];
+      displayImage = [contentsCopy displayImage];
 
-      if (v29)
+      if (displayImage)
       {
-        v28 = [v8 displayImage];
+        displayImage2 = [contentsCopy displayImage];
         v30 = 1;
-        if (v28)
+        if (displayImage2)
         {
           goto LABEL_24;
         }
@@ -1945,15 +1945,15 @@ LABEL_43:
         goto LABEL_17;
       }
 
-      v28 = _UIImageWithNameAndTraitCollection(v20, v51);
+      displayImage2 = _UIImageWithNameAndTraitCollection(displayStringImage, v51);
     }
 
     v30 = 0;
-    if (v28)
+    if (displayImage2)
     {
 LABEL_24:
-      v32 = v20;
-      if (!v28)
+      displayStringImage2 = displayStringImage;
+      if (!displayImage2)
       {
         goto LABEL_30;
       }
@@ -1962,30 +1962,30 @@ LABEL_24:
     }
 
 LABEL_17:
-    v31 = [v8 fallbackContents];
-    v32 = [v31 displayStringImage];
+    fallbackContents = [contentsCopy fallbackContents];
+    displayStringImage2 = [fallbackContents displayStringImage];
 
-    if ([v21 usesSymbolImage])
+    if ([symbolStyle usesSymbolImage])
     {
-      [UIImage systemImageNamed:v32 compatibleWithTraitCollection:v51];
+      [UIImage systemImageNamed:displayStringImage2 compatibleWithTraitCollection:v51];
     }
 
     else
     {
-      _UIImageWithNameAndTraitCollection(v32, v51);
+      _UIImageWithNameAndTraitCollection(displayStringImage2, v51);
     }
-    v28 = ;
-    if (!v28)
+    displayImage2 = ;
+    if (!displayImage2)
     {
       goto LABEL_30;
     }
 
 LABEL_28:
-    if (v21)
+    if (symbolStyle)
     {
-      v34 = [v10 geometry];
-      [v34 symbolFrame];
-      -[UIKBRenderer _drawKeyImage:inRect:withStyle:force1xImages:flipHorizontally:isRGBImage:](self, "_drawKeyImage:inRect:withStyle:force1xImages:flipHorizontally:isRGBImage:", v28, v21, [v8 force1xImages], objc_msgSend(v8, "flipImageHorizontally"), v30, v35, v36, v37, v38);
+      geometry2 = [v10 geometry];
+      [geometry2 symbolFrame];
+      -[UIKBRenderer _drawKeyImage:inRect:withStyle:force1xImages:flipHorizontally:isRGBImage:](self, "_drawKeyImage:inRect:withStyle:force1xImages:flipHorizontally:isRGBImage:", displayImage2, symbolStyle, [contentsCopy force1xImages], objc_msgSend(contentsCopy, "flipImageHorizontally"), v30, v35, v36, v37, v38);
 
       v62[3] = 3;
       goto LABEL_43;
@@ -2050,18 +2050,18 @@ void __57__UIKBRenderer_renderKeyImageContents_withTraits_status___block_invoke_
   }
 }
 
-- (id)symbolImageConfigForKey:(id)a3 traitCollection:(id)a4
+- (id)symbolImageConfigForKey:(id)key traitCollection:(id)collection
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 symbolStyle];
-  [v7 fontWeightForSymbolImage];
+  keyCopy = key;
+  collectionCopy = collection;
+  symbolStyle = [keyCopy symbolStyle];
+  [symbolStyle fontWeightForSymbolImage];
   v8 = UISIndexForFontWeight();
 
   if (!v8)
   {
-    v9 = [v5 symbolStyle];
-    [v9 fontWeight];
+    symbolStyle2 = [keyCopy symbolStyle];
+    [symbolStyle2 fontWeight];
     v10 = UISIndexForFontWeight();
 
     if (v10)
@@ -2075,32 +2075,32 @@ void __57__UIKBRenderer_renderKeyImageContents_withTraits_status___block_invoke_
     }
   }
 
-  v11 = [v5 symbolStyle];
-  [v11 fontSizeForSymbolImage];
+  symbolStyle3 = [keyCopy symbolStyle];
+  [symbolStyle3 fontSizeForSymbolImage];
   v13 = v12;
 
   if (v13 == 0.0)
   {
-    v14 = [v5 symbolStyle];
-    [v14 fontSize];
+    symbolStyle4 = [keyCopy symbolStyle];
+    [symbolStyle4 fontSize];
     v13 = v15;
   }
 
-  v16 = [v5 symbolStyle];
-  v17 = +[UIImageSymbolConfiguration configurationWithPointSize:weight:scale:](UIImageSymbolConfiguration, "configurationWithPointSize:weight:scale:", v8, [v16 symbolScale], v13);
+  symbolStyle5 = [keyCopy symbolStyle];
+  v17 = +[UIImageSymbolConfiguration configurationWithPointSize:weight:scale:](UIImageSymbolConfiguration, "configurationWithPointSize:weight:scale:", v8, [symbolStyle5 symbolScale], v13);
 
-  v18 = [v17 configurationWithTraitCollection:v6];
+  v18 = [v17 configurationWithTraitCollection:collectionCopy];
 
   return v18;
 }
 
-- (CGPoint)centroidOfGlyph:(CGPath *)a3
+- (CGPoint)centroidOfGlyph:(CGPath *)glyph
 {
   v34 = *MEMORY[0x1E69E9840];
-  CopyByFlattening = CGPathCreateCopyByFlattening(a3, 1.0);
+  CopyByFlattening = CGPathCreateCopyByFlattening(glyph, 1.0);
   CopyByNormalizing = CGPathCreateCopyByNormalizing(CopyByFlattening, 0);
-  v5 = [MEMORY[0x1E695DF70] array];
-  CGPathApply(CopyByNormalizing, v5, centroidCGPathApplierFunction);
+  array = [MEMORY[0x1E695DF70] array];
+  CGPathApply(CopyByNormalizing, array, centroidCGPathApplierFunction);
   CGPathRelease(CopyByNormalizing);
   CGPathRelease(CopyByFlattening);
   v7 = *MEMORY[0x1E695EFF8];
@@ -2109,7 +2109,7 @@ void __57__UIKBRenderer_renderKeyImageContents_withTraits_status___block_invoke_
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v8 = v5;
+  v8 = array;
   v9 = [v8 countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (v9)
   {
@@ -2169,23 +2169,23 @@ void __57__UIKBRenderer_renderKeyImageContents_withTraits_status___block_invoke_
   return result;
 }
 
-- (BOOL)_drawSingleSymbol:(id)a3 inRect:(CGRect)a4 withStyle:(id)a5
+- (BOOL)_drawSingleSymbol:(id)symbol inRect:(CGRect)rect withStyle:(id)style
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v11 = a3;
-  v12 = a5;
-  if ([v11 length] == 1)
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  symbolCopy = symbol;
+  styleCopy = style;
+  if ([symbolCopy length] == 1)
   {
-    v13 = [v11 characterAtIndex:0];
-    v14 = [v12 fontName];
-    [v12 fontSize];
+    v13 = [symbolCopy characterAtIndex:0];
+    fontName = [styleCopy fontName];
+    [styleCopy fontSize];
     v16 = v15;
-    [v12 fontWeight];
-    [v12 fontWidth];
-    v17 = UIKBGlyphForCharacterWithSymbolStyle(v13, v12);
+    [styleCopy fontWeight];
+    [styleCopy fontWidth];
+    v17 = UIKBGlyphForCharacterWithSymbolStyle(v13, styleCopy);
     glyphs = v17;
     if (!v17)
     {
@@ -2194,7 +2194,7 @@ void __57__UIKBRenderer_renderKeyImageContents_withTraits_status___block_invoke_
 
     do
     {
-      v18 = UIKBCreateCTFontWithSymbolStyle(v12);
+      v18 = UIKBCreateCTFontWithSymbolStyle(styleCopy);
       OpticalBoundsForGlyphs = CTFontGetOpticalBoundsForGlyphs(v18, &glyphs, 0, 1, 0);
       v19 = OpticalBoundsForGlyphs.size.width;
       v20 = OpticalBoundsForGlyphs.size.width > width + -4.0;
@@ -2210,20 +2210,20 @@ void __57__UIKBRenderer_renderKeyImageContents_withTraits_status___block_invoke_
     }
 
     while (v20 && v16 > 0.0);
-    [v12 minFontSize];
+    [styleCopy minFontSize];
     if (v16 >= v21)
     {
-      XHeight = UIKBGetXHeight(v14, v16);
+      XHeight = UIKBGetXHeight(fontName, v16);
       if (XHeight == 0.0)
       {
         XHeight = CTFontGetXHeight(v18);
       }
 
       v23 = y + height * 0.5 + XHeight * 0.5;
-      v24 = [v12 textColor];
-      CopyWithAlpha = UIKBGetNamedColor(v24);
+      textColor = [styleCopy textColor];
+      CopyWithAlpha = UIKBGetNamedColor(textColor);
 
-      [v12 textOpacity];
+      [styleCopy textOpacity];
       if (v26 == 1.0)
       {
         CGColorRetain(CopyWithAlpha);
@@ -2231,7 +2231,7 @@ void __57__UIKBRenderer_renderKeyImageContents_withTraits_status___block_invoke_
 
       else
       {
-        [v12 textOpacity];
+        [styleCopy textOpacity];
         CopyWithAlpha = CGColorCreateCopyWithAlpha(CopyWithAlpha, v27);
       }
 
@@ -2240,29 +2240,29 @@ void __57__UIKBRenderer_renderKeyImageContents_withTraits_status___block_invoke_
       ctx = self->_ctx;
       CGAffineTransformMakeScale(&v44, 1.0, -1.0);
       CGContextSetTextMatrix(ctx, &v44);
-      [v12 textOffset];
+      [styleCopy textOffset];
       v32 = v31;
-      [v12 etchOffset];
+      [styleCopy etchOffset];
       v44.a = v29 + v32 + v33;
-      [v12 textOffset];
+      [styleCopy textOffset];
       v35 = v34;
-      [v12 etchOffset];
+      [styleCopy etchOffset];
       v44.b = -ceil(v23) - (v35 + v36);
-      v37 = [v12 etchColor];
+      etchColor = [styleCopy etchColor];
 
-      if (v37)
+      if (etchColor)
       {
         v38 = self->_ctx;
-        v39 = [v12 etchColor];
-        v40 = UIKBGetNamedColor(v39);
+        etchColor2 = [styleCopy etchColor];
+        v40 = UIKBGetNamedColor(etchColor2);
         CGContextSetFillColorWithColor(v38, v40);
 
         CTFontDrawGlyphs(v18, &glyphs, &v44, 1uLL, self->_ctx);
       }
 
-      [v12 etchOffset];
+      [styleCopy etchOffset];
       v44.a = v44.a - v41;
-      [v12 etchOffset];
+      [styleCopy etchOffset];
       v44.b = v44.b + v42;
       CGContextSetFillColorWithColor(self->_ctx, CopyWithAlpha);
       v28 = 1;
@@ -2286,22 +2286,22 @@ LABEL_15:
   return v28;
 }
 
-- (BOOL)_drawKeyString:(id)a3 inRect:(CGRect)a4 withStyle:(id)a5
+- (BOOL)_drawKeyString:(id)string inRect:(CGRect)rect withStyle:(id)style
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  x = a4.origin.x;
-  y = a4.origin.y;
-  v9 = a3;
-  v10 = a5;
-  if (![(UIKBRenderer *)v9 length])
+  height = rect.size.height;
+  width = rect.size.width;
+  x = rect.origin.x;
+  y = rect.origin.y;
+  stringCopy = string;
+  styleCopy = style;
+  if (![(UIKBRenderer *)stringCopy length])
   {
     goto LABEL_9;
   }
 
-  v11 = [v10 fontName];
+  fontName = [styleCopy fontName];
 
-  if (v11)
+  if (fontName)
   {
     v142.origin.x = x;
     v142.origin.y = y;
@@ -2311,16 +2311,16 @@ LABEL_15:
     {
       if (self->_colorDetectMode)
       {
-        v13 = [v10 textColor];
-        [(UIKBRenderer *)self detectColorsForNamedColor:v13];
+        textColor = [styleCopy textColor];
+        [(UIKBRenderer *)self detectColorsForNamedColor:textColor];
 
-        v14 = [v10 etchColor];
-        [(UIKBRenderer *)self detectColorsForNamedColor:v14];
+        etchColor = [styleCopy etchColor];
+        [(UIKBRenderer *)self detectColorsForNamedColor:etchColor];
 
         if (self->_contentColorFormat)
         {
-          v15 = [v10 fontName];
-          v16 = [v15 isEqualToString:@"AppleColorEmoji"];
+          fontName2 = [styleCopy fontName];
+          v16 = [fontName2 isEqualToString:@"AppleColorEmoji"];
 
           if (v16)
           {
@@ -2334,18 +2334,18 @@ LABEL_15:
         goto LABEL_9;
       }
 
-      if ([v10 anchorCorner] != 1 && objc_msgSend(v10, "anchorCorner") != 4)
+      if ([styleCopy anchorCorner] != 1 && objc_msgSend(styleCopy, "anchorCorner") != 4)
       {
-        if ([v10 anchorCorner] != 2 && objc_msgSend(v10, "anchorCorner") != 8)
+        if ([styleCopy anchorCorner] != 2 && objc_msgSend(styleCopy, "anchorCorner") != 8)
         {
           goto LABEL_17;
         }
 
-        [v10 textOffset];
+        [styleCopy textOffset];
         x = x + v19;
       }
 
-      [v10 textOffset];
+      [styleCopy textOffset];
       width = width - v20;
 LABEL_17:
       if (!qword_1ED49F178)
@@ -2355,14 +2355,14 @@ LABEL_17:
         qword_1ED49F178 = v21;
       }
 
-      if ([v10 selector])
+      if ([styleCopy selector])
       {
         goto LABEL_24;
       }
 
       v23 = qword_1ED49F178;
-      v24 = [v10 fontName];
-      if (![v23 containsObject:v24])
+      fontName3 = [styleCopy fontName];
+      if (![v23 containsObject:fontName3])
       {
 LABEL_23:
 
@@ -2376,18 +2376,18 @@ LABEL_23:
         goto LABEL_23;
       }
 
-      v118 = [(UIKBRenderer *)self _drawSingleSymbol:v9 inRect:v10 withStyle:x, y, width, height];
+      height = [(UIKBRenderer *)self _drawSingleSymbol:stringCopy inRect:styleCopy withStyle:x, y, width, height];
 
-      if (!v118)
+      if (!height)
       {
 LABEL_24:
         v141[0] = 0.0;
-        v128 = self;
+        selfCopy = self;
         v134 = height;
         v135 = width;
-        if ([(UIKBRenderer *)v9 rangeOfString:@"\n" options:2]== 0x7FFFFFFFFFFFFFFFLL)
+        if ([(UIKBRenderer *)stringCopy rangeOfString:@"\n" options:2]== 0x7FFFFFFFFFFFFFFFLL)
         {
-          [v10 fontSize];
+          [styleCopy fontSize];
           v27 = v26;
           v28 = 0;
           v29 = 1;
@@ -2395,7 +2395,7 @@ LABEL_24:
 
         else
         {
-          v28 = [(UIKBRenderer *)v9 componentsSeparatedByString:@"\n"];
+          v28 = [(UIKBRenderer *)stringCopy componentsSeparatedByString:@"\n"];
           v30 = [v28 count];
           v31 = v30;
           if (v30 >= 3)
@@ -2408,7 +2408,7 @@ LABEL_24:
             v29 = v30;
           }
 
-          [v10 fontSize];
+          [styleCopy fontSize];
           v27 = v32;
           if (!v31)
           {
@@ -2419,7 +2419,7 @@ LABEL_24:
             v44 = v32;
 LABEL_50:
             v141[0] = v44;
-            [v10 minFontSize];
+            [styleCopy minFontSize];
             v12 = v27 >= v48;
             if (v27 < v48)
             {
@@ -2431,12 +2431,12 @@ LABEL_50:
               goto LABEL_120;
             }
 
-            v127 = v9;
-            v49 = [v10 textColor];
-            CopyWithAlpha = UIKBGetNamedColor(v49);
+            v127 = stringCopy;
+            textColor2 = [styleCopy textColor];
+            CopyWithAlpha = UIKBGetNamedColor(textColor2);
 
-            [v10 textOpacity];
-            v51 = v128;
+            [styleCopy textOpacity];
+            v51 = selfCopy;
             v119 = v12;
             if (v52 == 1.0)
             {
@@ -2445,7 +2445,7 @@ LABEL_50:
               {
 LABEL_119:
                 CGColorRelease(CopyWithAlpha);
-                v9 = v127;
+                stringCopy = v127;
                 v12 = v119;
 LABEL_120:
 
@@ -2455,7 +2455,7 @@ LABEL_120:
 
             else
             {
-              [v10 textOpacity];
+              [styleCopy textOpacity];
               CopyWithAlpha = CGColorCreateCopyWithAlpha(CopyWithAlpha, v53);
               if (!v47)
               {
@@ -2478,7 +2478,7 @@ LABEL_120:
             v133 = CopyWithAlpha;
             while (1)
             {
-              if ([v10 isVertical])
+              if ([styleCopy isVertical])
               {
                 v57 = v55;
               }
@@ -2488,9 +2488,9 @@ LABEL_120:
                 v57 = v54;
               }
 
-              v58 = [v10 isVertical];
+              isVertical = [styleCopy isVertical];
               v59 = v57;
-              if (v58)
+              if (isVertical)
               {
                 v60 = x + width * v57 / v131;
               }
@@ -2500,7 +2500,7 @@ LABEL_120:
                 v60 = x;
               }
 
-              if (v58)
+              if (isVertical)
               {
                 v61 = y;
               }
@@ -2510,7 +2510,7 @@ LABEL_120:
                 v61 = y + height * v57 / v131;
               }
 
-              if (v58)
+              if (isVertical)
               {
                 v62 = v129;
               }
@@ -2520,7 +2520,7 @@ LABEL_120:
                 v62 = width;
               }
 
-              if (v58)
+              if (isVertical)
               {
                 v63 = height;
               }
@@ -2539,16 +2539,16 @@ LABEL_120:
                   v126 = v64;
                 }
 
-                v43 = UIKBCreateFitCTLineWithSymbolStyle(v64, v10, v141, v60, v61, v62, v63);
+                v43 = UIKBCreateFitCTLineWithSymbolStyle(v64, styleCopy, v141, v60, v61, v62, v63);
                 if (v28)
                 {
                 }
               }
 
               TypographicBounds = CTLineGetTypographicBounds(v43, 0, 0, 0);
-              if ([v10 isVertical])
+              if ([styleCopy isVertical])
               {
-                if ([v10 anchorCorner] || objc_msgSend(v10, "alignment") != 1)
+                if ([styleCopy anchorCorner] || objc_msgSend(styleCopy, "alignment") != 1)
                 {
                   if (os_variant_has_internal_diagnostics())
                   {
@@ -2559,7 +2559,7 @@ LABEL_120:
                       _os_log_fault_impl(&dword_188A29000, v117, OS_LOG_TYPE_FAULT, "only alignment center is supported in vertical orientation", v140, 2u);
                     }
 
-                    v51 = v128;
+                    v51 = selfCopy;
                     height = v134;
                   }
 
@@ -2576,101 +2576,101 @@ LABEL_120:
 
                 v66 = ceil(v122 + v138 * v59);
                 PenOffsetForFlush = CTLineGetPenOffsetForFlush(v43, 0.5, height);
-                [v10 textOffset];
+                [styleCopy textOffset];
                 v69 = PenOffsetForFlush + v68;
-                [v10 etchOffset];
+                [styleCopy etchOffset];
                 v71 = y + v69 + v70;
-                [v10 textOffset];
+                [styleCopy textOffset];
                 v73 = v72;
-                [v10 etchOffset];
+                [styleCopy etchOffset];
                 v75 = v66 + v73 + v74;
                 goto LABEL_103;
               }
 
               v71 = ceil(v124 + v123 * v59);
-              if (![v10 anchorCorner])
+              if (![styleCopy anchorCorner])
               {
                 break;
               }
 
-              if ([v10 anchorCorner] == 1)
+              if ([styleCopy anchorCorner] == 1)
               {
-                [v10 textOffset];
+                [styleCopy textOffset];
                 v77 = v76;
-                [v10 etchOffset];
+                [styleCopy etchOffset];
                 v79 = v77 + v78;
                 goto LABEL_86;
               }
 
-              if ([v10 anchorCorner] == 4)
+              if ([styleCopy anchorCorner] == 4)
               {
-                [v10 textOffset];
+                [styleCopy textOffset];
                 v85 = v84;
-                [v10 etchOffset];
+                [styleCopy etchOffset];
                 v87 = v85 + v86;
               }
 
               else
               {
-                if ([v10 anchorCorner] == 2)
+                if ([styleCopy anchorCorner] == 2)
                 {
-                  [v10 textOffset];
+                  [styleCopy textOffset];
                   v94 = width - v93 - TypographicBounds;
-                  [v10 etchOffset];
+                  [styleCopy etchOffset];
                   v79 = v95 + v94;
 LABEL_86:
                   v75 = v125 + v79;
                   v80 = v141[0];
-                  [v10 textOffset];
+                  [styleCopy textOffset];
                   v82 = v80 + v81;
 LABEL_101:
-                  [v10 etchOffset];
+                  [styleCopy etchOffset];
                   v92 = v82 + v100;
                   goto LABEL_102;
                 }
 
-                if ([v10 anchorCorner] != 8)
+                if ([styleCopy anchorCorner] != 8)
                 {
                   v75 = v125;
                   goto LABEL_103;
                 }
 
-                [v10 textOffset];
+                [styleCopy textOffset];
                 v114 = width - v113 - TypographicBounds;
-                [v10 etchOffset];
+                [styleCopy etchOffset];
                 v87 = v115 + v114;
               }
 
               v75 = v125 + v87;
               v88 = height - v141[0];
-              [v10 textOffset];
+              [styleCopy textOffset];
               v90 = v88 - v89;
-              [v10 etchOffset];
+              [styleCopy etchOffset];
               v92 = v90 - v91;
 LABEL_102:
               v71 = v71 + v92;
 LABEL_103:
-              v101 = [v10 etchColor];
+              etchColor2 = [styleCopy etchColor];
 
-              if (v101)
+              if (etchColor2)
               {
                 ctx = v51->_ctx;
-                v103 = [v10 etchColor];
-                v104 = UIKBGetNamedColor(v103);
-                UIKBDrawCTLineAtPoint(ctx, v43, v104, [v10 isVertical], v75, v71);
+                etchColor3 = [styleCopy etchColor];
+                v104 = UIKBGetNamedColor(etchColor3);
+                UIKBDrawCTLineAtPoint(ctx, v43, v104, [styleCopy isVertical], v75, v71);
 
-                v51 = v128;
+                v51 = selfCopy;
               }
 
-              [v10 etchOffset];
+              [styleCopy etchOffset];
               v106 = v75 - v105;
-              [v10 etchOffset];
+              [styleCopy etchOffset];
               v108 = v71 - v107;
               v109 = v51->_ctx;
-              v110 = [v10 isVertical];
+              isVertical2 = [styleCopy isVertical];
               v111 = v109;
               CopyWithAlpha = v133;
-              UIKBDrawCTLineAtPoint(v111, v43, v133, v110, v106, v108);
+              UIKBDrawCTLineAtPoint(v111, v43, v133, isVertical2, v106, v108);
               if (v43)
               {
                 CFRelease(v43);
@@ -2686,7 +2686,7 @@ LABEL_103:
               }
             }
 
-            if ([v10 alignment] == 1)
+            if ([styleCopy alignment] == 1)
             {
               if (width - TypographicBounds >= 0.0)
               {
@@ -2702,13 +2702,13 @@ LABEL_103:
             else
             {
               v83 = v120;
-              if ([v10 alignment])
+              if ([styleCopy alignment])
               {
                 v75 = v125;
-                if ([v10 alignment] != 2)
+                if ([styleCopy alignment] != 2)
                 {
 LABEL_100:
-                  [v10 textOffset];
+                  [styleCopy textOffset];
                   v82 = v121 + v99;
                   goto LABEL_101;
                 }
@@ -2717,9 +2717,9 @@ LABEL_100:
               }
             }
 
-            [v10 textOffset];
+            [styleCopy textOffset];
             v97 = v83 + v96;
-            [v10 etchOffset];
+            [styleCopy etchOffset];
             v75 = v125 + v97 + v98;
             goto LABEL_100;
           }
@@ -2734,8 +2734,8 @@ LABEL_100:
         do
         {
           v37 = v27;
-          v38 = [v10 isVertical];
-          if (v38)
+          isVertical3 = [styleCopy isVertical];
+          if (isVertical3)
           {
             v39 = x + width * v33 / v34;
           }
@@ -2745,7 +2745,7 @@ LABEL_100:
             v39 = x;
           }
 
-          if (v38)
+          if (isVertical3)
           {
             v40 = y;
           }
@@ -2755,7 +2755,7 @@ LABEL_100:
             v40 = y + v134 * v33 / v34;
           }
 
-          if (v38)
+          if (isVertical3)
           {
             width = v36;
             v41 = v134;
@@ -2766,14 +2766,14 @@ LABEL_100:
             v41 = v132;
           }
 
-          v42 = v9;
+          v42 = stringCopy;
           if (v28)
           {
             v42 = [v28 objectAtIndex:v33];
             self = v42;
           }
 
-          v43 = UIKBCreateFitCTLineWithSymbolStyle(v42, v10, v141, v39, v40, width, v41);
+          v43 = UIKBCreateFitCTLineWithSymbolStyle(v42, styleCopy, v141, v39, v40, width, v41);
           if (v28)
           {
           }
@@ -2816,22 +2816,22 @@ LABEL_10:
   return v12;
 }
 
-- (unint64_t)renderKeyStringContents:(id)a3 withTraits:(id)a4 status:(unint64_t)a5
+- (unint64_t)renderKeyStringContents:(id)contents withTraits:(id)traits status:(unint64_t)status
 {
-  v8 = a3;
-  v9 = a4;
+  contentsCopy = contents;
+  traitsCopy = traits;
   v81 = 0;
   v82 = &v81;
   v83 = 0x2020000000;
-  v84 = a5;
-  v10 = [v8 displayString];
-  v11 = [(UIKBRenderer *)self renderFlags];
-  if (!v9 || (v11 & 0x34) == 0 || !v10)
+  statusCopy = status;
+  displayString = [contentsCopy displayString];
+  renderFlags = [(UIKBRenderer *)self renderFlags];
+  if (!traitsCopy || (renderFlags & 0x34) == 0 || !displayString)
   {
     goto LABEL_43;
   }
 
-  if ([v9 renderSecondarySymbolsSeparately])
+  if ([traitsCopy renderSecondarySymbolsSeparately])
   {
     v12 = 4;
   }
@@ -2841,27 +2841,27 @@ LABEL_10:
     v12 = 52;
   }
 
-  if ((a5 & 2) == 0)
+  if ((status & 2) == 0)
   {
-    v13 = [v8 secondaryDisplayStrings];
-    if ([v13 count])
+    secondaryDisplayStrings = [contentsCopy secondaryDisplayStrings];
+    if ([secondaryDisplayStrings count])
     {
-      v14 = [v9 secondarySymbolStyles];
-      v15 = [v14 count];
+      secondarySymbolStyles = [traitsCopy secondarySymbolStyles];
+      v15 = [secondarySymbolStyles count];
 
       if (v15)
       {
-        v16 = [v8 displayString];
-        v17 = [v16 length];
+        displayString2 = [contentsCopy displayString];
+        v17 = [displayString2 length];
         v73 = v17 != 0;
 
-        v18 = [v8 fallbackContents];
-        v19 = [v18 displayString];
+        fallbackContents = [contentsCopy fallbackContents];
+        displayString3 = [fallbackContents displayString];
 
         if (v17)
         {
-          v20 = [v8 displayStringImage];
-          if ([v20 length])
+          displayStringImage = [contentsCopy displayStringImage];
+          if ([displayStringImage length])
           {
           }
 
@@ -2871,30 +2871,30 @@ LABEL_10:
 
             if (v47)
             {
-              v48 = [v8 displayString];
-              v49 = [v9 geometry];
-              [v49 symbolFrame];
+              displayString4 = [contentsCopy displayString];
+              geometry = [traitsCopy geometry];
+              [geometry symbolFrame];
               v51 = v50;
               v53 = v52;
               v55 = v54;
               v57 = v56;
-              v58 = [v9 symbolStyle];
-              [(UIKBRenderer *)self _drawKeyString:v48 inRect:v58 withStyle:v51, v53, v55, v57];
+              symbolStyle = [traitsCopy symbolStyle];
+              [(UIKBRenderer *)self _drawKeyString:displayString4 inRect:symbolStyle withStyle:v51, v53, v55, v57];
 
               v82[3] |= 1uLL;
             }
           }
         }
 
-        v59 = [v8 secondaryDisplayStrings];
-        v60 = [v59 count];
+        secondaryDisplayStrings2 = [contentsCopy secondaryDisplayStrings];
+        v60 = [secondaryDisplayStrings2 count];
 
-        v61 = [v9 secondarySymbolStyles];
-        v62 = [v61 count];
+        secondarySymbolStyles2 = [traitsCopy secondarySymbolStyles];
+        v62 = [secondarySymbolStyles2 count];
 
-        if (![v9 renderSecondarySymbolsSeparately])
+        if (![traitsCopy renderSecondarySymbolsSeparately])
         {
-          v64 = [v8 secondaryDisplayStrings];
+          secondaryDisplayStrings3 = [contentsCopy secondaryDisplayStrings];
           v74[0] = MEMORY[0x1E69E9820];
           v74[1] = 3221225472;
           v74[2] = __58__UIKBRenderer_renderKeyStringContents_withTraits_status___block_invoke;
@@ -2903,10 +2903,10 @@ LABEL_10:
           v77 = 52;
           v78 = v62;
           v79 = v73;
-          v80 = v19 == @"␣";
-          v75 = v9;
+          v80 = displayString3 == @"␣";
+          v75 = traitsCopy;
           v76 = &v81;
-          [v64 enumerateObjectsUsingBlock:v74];
+          [secondaryDisplayStrings3 enumerateObjectsUsingBlock:v74];
 
           goto LABEL_43;
         }
@@ -2933,26 +2933,26 @@ LABEL_10:
 
         else
         {
-          v65 = [v8 secondaryDisplayStrings];
-          v66 = [v65 objectAtIndex:v63];
+          secondaryDisplayStrings4 = [contentsCopy secondaryDisplayStrings];
+          v66 = [secondaryDisplayStrings4 objectAtIndex:v63];
         }
 
-        if (v63 >= v62 || ([v9 secondarySymbolStyles], v67 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v67, "objectAtIndex:", v63), v68 = objc_claimAutoreleasedReturnValue(), v67, !v68))
+        if (v63 >= v62 || ([traitsCopy secondarySymbolStyles], v67 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v67, "objectAtIndex:", v63), lastObject = objc_claimAutoreleasedReturnValue(), v67, !lastObject))
         {
-          v69 = [v9 secondarySymbolStyles];
-          v68 = [v69 lastObject];
+          secondarySymbolStyles3 = [traitsCopy secondarySymbolStyles];
+          lastObject = [secondarySymbolStyles3 lastObject];
         }
 
         if ([v66 length])
         {
-          if (!v17 && v19 != @"␣")
+          if (!v17 && displayString3 != @"␣")
           {
-            [v68 setTextOffset:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)}];
+            [lastObject setTextOffset:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)}];
           }
 
-          v70 = [v9 geometry];
-          [v70 symbolFrame];
-          [(UIKBRenderer *)self _drawKeyString:v66 inRect:v68 withStyle:?];
+          geometry2 = [traitsCopy geometry];
+          [geometry2 symbolFrame];
+          [(UIKBRenderer *)self _drawKeyString:v66 inRect:lastObject withStyle:?];
 
           v82[3] = 3;
         }
@@ -2966,26 +2966,26 @@ LABEL_10:
     }
   }
 
-  if ((a5 & 1) == 0)
+  if ((status & 1) == 0)
   {
-    v21 = [v9 geometry];
-    [v21 symbolFrame];
+    geometry3 = [traitsCopy geometry];
+    [geometry3 symbolFrame];
     v23 = v22;
     v25 = v24;
     v27 = v26;
     v29 = v28;
-    v30 = [v9 symbolStyle];
-    v31 = [(UIKBRenderer *)self _drawKeyString:v10 inRect:v30 withStyle:v23, v25, v27, v29];
+    symbolStyle2 = [traitsCopy symbolStyle];
+    v31 = [(UIKBRenderer *)self _drawKeyString:displayString inRect:symbolStyle2 withStyle:v23, v25, v27, v29];
 
-    if ([v8 stringKeycapOverImage])
+    if ([contentsCopy stringKeycapOverImage])
     {
       v32 = 0;
     }
 
     else
     {
-      v33 = [v8 displayStringImage];
-      v32 = v33 != 0;
+      displayStringImage2 = [contentsCopy displayStringImage];
+      v32 = displayStringImage2 != 0;
     }
 
     if (v31 || v32)
@@ -2998,16 +2998,16 @@ LABEL_10:
 
     else
     {
-      v34 = [v8 fallbackContents];
-      v35 = [v34 displayString];
-      v36 = [v9 geometry];
-      [v36 symbolFrame];
+      fallbackContents2 = [contentsCopy fallbackContents];
+      displayString5 = [fallbackContents2 displayString];
+      geometry4 = [traitsCopy geometry];
+      [geometry4 symbolFrame];
       v38 = v37;
       v40 = v39;
       v42 = v41;
       v44 = v43;
-      v45 = [v9 fallbackSymbolStyle];
-      v46 = [(UIKBRenderer *)self _drawKeyString:v35 inRect:v45 withStyle:v38, v40, v42, v44];
+      fallbackSymbolStyle = [traitsCopy fallbackSymbolStyle];
+      v46 = [(UIKBRenderer *)self _drawKeyString:displayString5 inRect:fallbackSymbolStyle withStyle:v38, v40, v42, v44];
 
       if (!v46)
       {
@@ -3101,25 +3101,25 @@ CGMutablePathRef __33__UIKBRenderer__deleteGlyphPaths__block_invoke()
   return result;
 }
 
-- (void)drawPath:(CGPath *)a3 weight:(double)a4 transform:(CGAffineTransform *)a5 color:(CGColor *)a6 fill:(BOOL)a7
+- (void)drawPath:(CGPath *)path weight:(double)weight transform:(CGAffineTransform *)transform color:(CGColor *)color fill:(BOOL)fill
 {
-  if (a3 && a6)
+  if (path && color)
   {
-    v8 = a7;
-    MutableCopyByTransformingPath = CGPathCreateMutableCopyByTransformingPath(a3, a5);
+    fillCopy = fill;
+    MutableCopyByTransformingPath = CGPathCreateMutableCopyByTransformingPath(path, transform);
     CGContextSaveGState(self->_ctx);
-    CGContextSetLineWidth(self->_ctx, a4);
+    CGContextSetLineWidth(self->_ctx, weight);
     CGContextSetLineJoin(self->_ctx, kCGLineJoinMiter);
     CGContextSetLineCap(self->_ctx, kCGLineCapSquare);
-    if (v8)
+    if (fillCopy)
     {
       CGContextAddPath(self->_ctx, MutableCopyByTransformingPath);
-      CGContextSetFillColorWithColor(self->_ctx, a6);
+      CGContextSetFillColorWithColor(self->_ctx, color);
       CGContextFillPath(self->_ctx);
     }
 
     CGContextAddPath(self->_ctx, MutableCopyByTransformingPath);
-    CGContextSetStrokeColorWithColor(self->_ctx, a6);
+    CGContextSetStrokeColorWithColor(self->_ctx, color);
     CGContextStrokePath(self->_ctx);
     CGPathRelease(MutableCopyByTransformingPath);
     ctx = self->_ctx;
@@ -3128,12 +3128,12 @@ CGMutablePathRef __33__UIKBRenderer__deleteGlyphPaths__block_invoke()
   }
 }
 
-- (void)drawShiftPath:(BOOL)a3 weight:(double)a4 transform:(CGAffineTransform *)a5 color:(CGColor *)a6
+- (void)drawShiftPath:(BOOL)path weight:(double)weight transform:(CGAffineTransform *)transform color:(CGColor *)color
 {
   v23 = *MEMORY[0x1E69E9840];
-  if (a6)
+  if (color)
   {
-    if (a3)
+    if (path)
     {
       v10 = 0.0;
     }
@@ -3144,7 +3144,7 @@ CGMutablePathRef __33__UIKBRenderer__deleteGlyphPaths__block_invoke()
     }
 
     MutablePathWithPoints = createMutablePathWithPoints(dbl_18A67F420, 7, 0);
-    MutableCopyByTransformingPath = CGPathCreateMutableCopyByTransformingPath(MutablePathWithPoints, a5);
+    MutableCopyByTransformingPath = CGPathCreateMutableCopyByTransformingPath(MutablePathWithPoints, transform);
     v15 = xmmword_18A67F1F0;
     v16 = 0x3FE0000000000000;
     v17 = 6.0 - v10;
@@ -3154,17 +3154,17 @@ CGMutablePathRef __33__UIKBRenderer__deleteGlyphPaths__block_invoke()
     v21 = 6.0 - v10;
     v22 = xmmword_18A67F200;
     v13 = createMutablePathWithPoints(&v15, 5, 0);
-    v14 = CGPathCreateMutableCopyByTransformingPath(v13, a5);
+    v14 = CGPathCreateMutableCopyByTransformingPath(v13, transform);
     CGContextSaveGState(self->_ctx);
     CGContextSetLineJoin(self->_ctx, kCGLineJoinMiter);
     CGContextSetLineCap(self->_ctx, kCGLineCapButt);
-    CGContextSetLineWidth(self->_ctx, a4);
+    CGContextSetLineWidth(self->_ctx, weight);
     CGContextAddPath(self->_ctx, MutableCopyByTransformingPath);
-    CGContextSetStrokeColorWithColor(self->_ctx, a6);
+    CGContextSetStrokeColorWithColor(self->_ctx, color);
     CGContextStrokePath(self->_ctx);
-    CGContextSetLineWidth(self->_ctx, a4 - v10);
+    CGContextSetLineWidth(self->_ctx, weight - v10);
     CGContextAddPath(self->_ctx, v14);
-    CGContextSetStrokeColorWithColor(self->_ctx, a6);
+    CGContextSetStrokeColorWithColor(self->_ctx, color);
     CGContextStrokePath(self->_ctx);
     CGContextRestoreGState(self->_ctx);
     CGPathRelease(MutableCopyByTransformingPath);
@@ -3174,45 +3174,45 @@ CGMutablePathRef __33__UIKBRenderer__deleteGlyphPaths__block_invoke()
   }
 }
 
-- (BOOL)renderKeyPathContents:(id)a3 withTraits:(id)a4
+- (BOOL)renderKeyPathContents:(id)contents withTraits:(id)traits
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 displayPathType];
-  v9 = [(UIKBRenderer *)self renderFlags];
+  contentsCopy = contents;
+  traitsCopy = traits;
+  displayPathType = [contentsCopy displayPathType];
+  renderFlags = [(UIKBRenderer *)self renderFlags];
   v10 = 0;
-  if (v7 && (v9 & 4) != 0 && v8)
+  if (traitsCopy && (renderFlags & 4) != 0 && displayPathType)
   {
     if (self->_colorDetectMode)
     {
-      v11 = [v7 symbolStyle];
-      v12 = [v11 textColor];
-      [(UIKBRenderer *)self detectColorsForNamedColor:v12];
+      symbolStyle = [traitsCopy symbolStyle];
+      textColor = [symbolStyle textColor];
+      [(UIKBRenderer *)self detectColorsForNamedColor:textColor];
 
       v10 = 1;
       goto LABEL_30;
     }
 
-    v13 = [v7 symbolStyle];
-    v14 = [v13 textColor];
-    v15 = [v14 isEqualToString:@"UIKBColorWhite"];
+    symbolStyle2 = [traitsCopy symbolStyle];
+    textColor2 = [symbolStyle2 textColor];
+    v15 = [textColor2 isEqualToString:@"UIKBColorWhite"];
 
-    switch(v8)
+    switch(displayPathType)
     {
       case 1:
         if (v15)
         {
-          v16 = [(UIKBRenderer *)self _thickShiftGlyphPath];
+          _thickShiftGlyphPath = [(UIKBRenderer *)self _thickShiftGlyphPath];
           v17 = 0.0;
         }
 
         else
         {
-          v16 = [(UIKBRenderer *)self _thinShiftGlyphPath];
+          _thickShiftGlyphPath = [(UIKBRenderer *)self _thinShiftGlyphPath];
           v17 = 0.12;
         }
 
-        BoundingBox = CGPathGetBoundingBox(v16);
+        BoundingBox = CGPathGetBoundingBox(_thickShiftGlyphPath);
         x = BoundingBox.origin.x;
         y = BoundingBox.origin.y;
         width = BoundingBox.size.width;
@@ -3225,7 +3225,7 @@ CGMutablePathRef __33__UIKBRenderer__deleteGlyphPaths__block_invoke()
         y = 0.0;
         [v63 addLineToPoint:{1.0, 0.0}];
         [v63 closePath];
-        v16 = [v63 CGPath];
+        _thickShiftGlyphPath = [v63 CGPath];
 
         width = 2.0;
         x = 0.0;
@@ -3237,8 +3237,8 @@ CGMutablePathRef __33__UIKBRenderer__deleteGlyphPaths__block_invoke()
         [v62 moveToPoint:{4.25, 4.25}];
         [v62 addLineToPoint:{10.75, 10.75}];
         [v62 closePath];
-        v16 = [v62 CGPath];
-        v72 = CGPathGetBoundingBox(v16);
+        _thickShiftGlyphPath = [v62 CGPath];
+        v72 = CGPathGetBoundingBox(_thickShiftGlyphPath);
         x = v72.origin.x;
         y = v72.origin.y;
         width = v72.size.width;
@@ -3246,15 +3246,15 @@ CGMutablePathRef __33__UIKBRenderer__deleteGlyphPaths__block_invoke()
 
         break;
       case 2:
-        v16 = [(UIKBRenderer *)self _deleteGlyphPaths];
-        v70 = CGPathGetBoundingBox(v16);
+        _thickShiftGlyphPath = [(UIKBRenderer *)self _deleteGlyphPaths];
+        v70 = CGPathGetBoundingBox(_thickShiftGlyphPath);
         x = v70.origin.x;
         y = v70.origin.y;
         width = v70.size.width;
         height = v70.size.height;
         break;
       default:
-        v16 = 0;
+        _thickShiftGlyphPath = 0;
         x = *MEMORY[0x1E695F058];
         y = *(MEMORY[0x1E695F058] + 8);
         width = *(MEMORY[0x1E695F058] + 16);
@@ -3262,15 +3262,15 @@ CGMutablePathRef __33__UIKBRenderer__deleteGlyphPaths__block_invoke()
         break;
     }
 
-    v20 = [v7 geometry];
-    [v20 symbolFrame];
+    geometry = [traitsCopy geometry];
+    [geometry symbolFrame];
     v22 = v21;
 
     if (width <= v22)
     {
       v26 = floor(height);
-      v27 = [v7 symbolStyle];
-      [v27 fontSize];
+      symbolStyle3 = [traitsCopy symbolStyle];
+      [symbolStyle3 fontSize];
       v29 = v28;
 
       v25 = 1.0;
@@ -3279,28 +3279,28 @@ CGMutablePathRef __33__UIKBRenderer__deleteGlyphPaths__block_invoke()
         goto LABEL_20;
       }
 
-      v23 = [v7 symbolStyle];
-      [v23 fontSize];
+      symbolStyle4 = [traitsCopy symbolStyle];
+      [symbolStyle4 fontSize];
       v25 = v30 / v26;
     }
 
     else
     {
-      v23 = [v7 geometry];
-      [v23 symbolFrame];
+      symbolStyle4 = [traitsCopy geometry];
+      [symbolStyle4 symbolFrame];
       v25 = v24 / width;
     }
 
 LABEL_20:
     memset(&v69, 0, sizeof(v69));
     CGAffineTransformMakeScale(&v69, v25, v25);
-    v31 = [v7 symbolStyle];
-    [v31 textOffset];
+    symbolStyle5 = [traitsCopy symbolStyle];
+    [symbolStyle5 textOffset];
     v33 = v32;
     v64 = v34;
 
-    v35 = [v7 geometry];
-    [v35 symbolFrame];
+    geometry2 = [traitsCopy geometry];
+    [geometry2 symbolFrame];
     v37 = v36;
     v39 = v38;
     v41 = v40;
@@ -3312,12 +3312,12 @@ LABEL_20:
     v67 = v69;
     CGAffineTransformTranslate(&v68, &v67, (v33 + v45) / v25, (v64 + v47 + -1.0) / v25);
     v69 = v68;
-    v48 = [v7 symbolStyle];
-    v49 = [v48 textColor];
-    CopyWithAlpha = UIKBGetNamedColor(v49);
+    symbolStyle6 = [traitsCopy symbolStyle];
+    textColor3 = [symbolStyle6 textColor];
+    CopyWithAlpha = UIKBGetNamedColor(textColor3);
 
-    v51 = [v7 symbolStyle];
-    [v51 textOpacity];
+    symbolStyle7 = [traitsCopy symbolStyle];
+    [symbolStyle7 textOpacity];
     v53 = v52;
 
     if (v53 == 1.0)
@@ -3327,33 +3327,33 @@ LABEL_20:
 
     else
     {
-      v54 = [v7 symbolStyle];
-      [v54 textOpacity];
+      symbolStyle8 = [traitsCopy symbolStyle];
+      [symbolStyle8 textOpacity];
       CopyWithAlpha = CGColorCreateCopyWithAlpha(CopyWithAlpha, v55);
     }
 
-    if ([v6 fillPath])
+    if ([contentsCopy fillPath])
     {
-      v56 = [v7 symbolStyle];
-      [v56 pathWeight];
+      symbolStyle9 = [traitsCopy symbolStyle];
+      [symbolStyle9 pathWeight];
       v68 = v69;
-      v57 = self;
-      v58 = v16;
+      selfCopy2 = self;
+      v58 = _thickShiftGlyphPath;
       v59 = CopyWithAlpha;
       v60 = 1;
     }
 
     else
     {
-      if ([v6 fillPath])
+      if ([contentsCopy fillPath])
       {
         v10 = 0;
         goto LABEL_29;
       }
 
-      v56 = [v7 symbolStyle];
-      [v56 pathWeight];
-      if (v8 == 1)
+      symbolStyle9 = [traitsCopy symbolStyle];
+      [symbolStyle9 pathWeight];
+      if (displayPathType == 1)
       {
         v68 = v69;
         [(UIKBRenderer *)self drawShiftPath:v15 weight:&v68 transform:CopyWithAlpha color:?];
@@ -3361,13 +3361,13 @@ LABEL_20:
       }
 
       v68 = v69;
-      v57 = self;
-      v58 = v16;
+      selfCopy2 = self;
+      v58 = _thickShiftGlyphPath;
       v59 = CopyWithAlpha;
       v60 = 0;
     }
 
-    [(UIKBRenderer *)v57 drawPath:v58 weight:&v68 transform:v59 color:v60 fill:?];
+    [(UIKBRenderer *)selfCopy2 drawPath:v58 weight:&v68 transform:v59 color:v60 fill:?];
 LABEL_26:
 
     v10 = 1;
@@ -3380,56 +3380,56 @@ LABEL_30:
   return v10;
 }
 
-- (void)addRoundRect:(CGRect)a3 radius:(double)a4 corners:(unint64_t)a5
+- (void)addRoundRect:(CGRect)rect radius:(double)radius corners:(unint64_t)corners
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (a4 <= 0.0 || a5 == 0)
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  if (radius <= 0.0 || corners == 0)
   {
-    v11 = [(UIKBRenderer *)self context];
+    context = [(UIKBRenderer *)self context];
     v12 = x;
     v13 = y;
     v14 = width;
     v15 = height;
 
-    CGContextAddRect(v11, *&v12);
+    CGContextAddRect(context, *&v12);
   }
 
   else
   {
-    v18 = [UIBezierPath bezierPathWithRoundedRect:a5 byRoundingCorners:a3.origin.x cornerRadii:a3.origin.y, a3.size.width, a3.size.height, a4, a4];
-    v16 = [(UIKBRenderer *)self context];
-    v17 = v18;
-    CGContextAddPath(v16, [v18 CGPath]);
+    radius = [UIBezierPath bezierPathWithRoundedRect:corners byRoundingCorners:rect.origin.x cornerRadii:rect.origin.y, rect.size.width, rect.size.height, radius, radius];
+    context2 = [(UIKBRenderer *)self context];
+    v17 = radius;
+    CGContextAddPath(context2, [radius CGPath]);
   }
 }
 
-- (void)addPathForTraits:(id)a3 displayRect:(CGRect *)a4
+- (void)addPathForTraits:(id)traits displayRect:(CGRect *)rect
 {
   v63 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = v6;
+  traitsCopy = traits;
+  v7 = traitsCopy;
   if (!self->_colorDetectMode)
   {
-    v8 = [v6 geometry];
-    v9 = [v8 flickDirection];
+    geometry = [traitsCopy geometry];
+    flickDirection = [geometry flickDirection];
 
-    if (v9 == -3)
+    if (flickDirection == -3)
     {
-      v10 = [v7 geometry];
-      v11 = [v10 splitLeftRect];
-      if (v11)
+      geometry2 = [v7 geometry];
+      splitLeftRect = [geometry2 splitLeftRect];
+      if (splitLeftRect)
       {
-        v12 = v11;
-        v13 = [v7 geometry];
-        v14 = [v13 splitRightRect];
+        v12 = splitLeftRect;
+        geometry3 = [v7 geometry];
+        splitRightRect = [geometry3 splitRightRect];
 
-        if (v14)
+        if (splitRightRect)
         {
-          v15 = [v7 geometry];
-          [(UIKBRenderer *)self addPathForSplitGeometry:v15];
+          geometry4 = [v7 geometry];
+          [(UIKBRenderer *)self addPathForSplitGeometry:geometry4];
 LABEL_32:
 
           goto LABEL_33;
@@ -3440,18 +3440,18 @@ LABEL_32:
       {
       }
 
-      v17 = [v7 geometry];
-      if ([v17 detachedVariants])
+      geometry5 = [v7 geometry];
+      if ([geometry5 detachedVariants])
       {
-        v18 = [v7 variantGeometries];
+        variantGeometries = [v7 variantGeometries];
 
-        if (v18)
+        if (variantGeometries)
         {
-          v19 = [v7 geometry];
-          v15 = [v19 copy];
+          geometry6 = [v7 geometry];
+          geometry4 = [geometry6 copy];
 
-          [v15 setPopupBias:0];
-          [(UIKBRenderer *)self addPathForRenderGeometry:v15];
+          [geometry4 setPopupBias:0];
+          [(UIKBRenderer *)self addPathForRenderGeometry:geometry4];
           x = *MEMORY[0x1E695F050];
           y = *(MEMORY[0x1E695F050] + 8);
           width = *(MEMORY[0x1E695F050] + 16);
@@ -3460,8 +3460,8 @@ LABEL_32:
           v61 = 0u;
           v58 = 0u;
           v59 = 0u;
-          v24 = [v7 variantGeometries];
-          v25 = [v24 countByEnumeratingWithState:&v58 objects:v62 count:16];
+          variantGeometries2 = [v7 variantGeometries];
+          v25 = [variantGeometries2 countByEnumeratingWithState:&v58 objects:v62 count:16];
           if (v25)
           {
             v26 = v25;
@@ -3472,7 +3472,7 @@ LABEL_32:
               {
                 if (*v59 != v27)
                 {
-                  objc_enumerationMutation(v24);
+                  objc_enumerationMutation(variantGeometries2);
                 }
 
                 v29 = *(*(&v58 + 1) + 8 * i);
@@ -3501,41 +3501,41 @@ LABEL_32:
                 height = v34;
               }
 
-              v26 = [v24 countByEnumeratingWithState:&v58 objects:v62 count:16];
+              v26 = [variantGeometries2 countByEnumeratingWithState:&v58 objects:v62 count:16];
             }
 
             while (v26);
           }
 
-          v39 = [v7 geometry];
-          if ([v39 roundRectCorners])
+          geometry7 = [v7 geometry];
+          if ([geometry7 roundRectCorners])
           {
           }
 
           else
           {
-            v50 = [v7 geometry];
-            [v50 roundRectRadius];
+            geometry8 = [v7 geometry];
+            [geometry8 roundRectRadius];
             v52 = v51;
 
             if (v52 != 0.0)
             {
 LABEL_30:
-              [v15 setFrame:{x, y, width, height}];
-              [v15 setPaddedFrame:{x, y, width, height}];
-              [v15 setDisplayFrame:{x, y, width, height}];
-              [v15 setRoundRectCorners:-1];
-              v57 = [v7 geometry];
-              [v57 roundRectRadius];
-              [v15 setRoundRectRadius:?];
+              [geometry4 setFrame:{x, y, width, height}];
+              [geometry4 setPaddedFrame:{x, y, width, height}];
+              [geometry4 setDisplayFrame:{x, y, width, height}];
+              [geometry4 setRoundRectCorners:-1];
+              geometry9 = [v7 geometry];
+              [geometry9 roundRectRadius];
+              [geometry4 setRoundRectRadius:?];
 
               goto LABEL_31;
             }
           }
 
-          [v15 roundRectRadius];
+          [geometry4 roundRectRadius];
           v54 = -v53;
-          [v15 roundRectRadius];
+          [geometry4 roundRectRadius];
           v56 = -v55;
           v66.origin.x = x;
           v66.origin.y = y;
@@ -3554,38 +3554,38 @@ LABEL_30:
       {
       }
 
-      v15 = [v7 geometry];
+      geometry4 = [v7 geometry];
 LABEL_31:
-      [(UIKBRenderer *)self addPathForRenderGeometry:v15];
+      [(UIKBRenderer *)self addPathForRenderGeometry:geometry4];
       goto LABEL_32;
     }
 
-    v16 = [v7 variantGeometries];
+    variantGeometries3 = [v7 variantGeometries];
 
-    if (v16)
+    if (variantGeometries3)
     {
-      v15 = [v7 variantGeometries];
-      [(UIKBRenderer *)self addPathForFlickPopupGeometries:v15];
+      geometry4 = [v7 variantGeometries];
+      [(UIKBRenderer *)self addPathForFlickPopupGeometries:geometry4];
       goto LABEL_32;
     }
 
-    v40 = [v7 variantTraits];
-    v41 = [v40 geometry];
+    variantTraits = [v7 variantTraits];
+    geometry10 = [variantTraits geometry];
 
-    v42 = [v7 geometry];
-    if (v41)
+    geometry11 = [v7 geometry];
+    if (geometry10)
     {
-      [(UIKBRenderer *)self addPathForRenderGeometry:v42];
+      [(UIKBRenderer *)self addPathForRenderGeometry:geometry11];
     }
 
     else
     {
-      [(UIKBRenderer *)self addPathForFlickGeometry:v42];
+      [(UIKBRenderer *)self addPathForFlickGeometry:geometry11];
 
-      if (a4)
+      if (rect)
       {
-        v43 = [v7 geometry];
-        [v43 popupSource];
+        geometry12 = [v7 geometry];
+        [geometry12 popupSource];
         v45 = v44;
         v47 = v46;
         v48 = *MEMORY[0x1E695F060];
@@ -3595,7 +3595,7 @@ LABEL_31:
         v68.origin.y = v47;
         v68.size.width = v48;
         v68.size.height = v49;
-        *a4 = CGRectUnion(*a4, v68);
+        *rect = CGRectUnion(*rect, v68);
       }
     }
   }
@@ -3603,80 +3603,80 @@ LABEL_31:
 LABEL_33:
 }
 
-- (void)addPathForRenderGeometry:(id)a3
+- (void)addPathForRenderGeometry:(id)geometry
 {
-  v4 = [(UIKBRenderer *)self pathForRenderGeometry:a3];
+  v4 = [(UIKBRenderer *)self pathForRenderGeometry:geometry];
   if (v4)
   {
     v7 = v4;
-    v5 = [(UIKBRenderer *)self context];
+    context = [(UIKBRenderer *)self context];
     v6 = v7;
-    CGContextAddPath(v5, [v7 CGPath]);
+    CGContextAddPath(context, [v7 CGPath]);
     v4 = v7;
   }
 }
 
-- (void)addPathForFlickGeometry:(id)a3
+- (void)addPathForFlickGeometry:(id)geometry
 {
-  v4 = [(UIKBRenderer *)self pathForFlickGeometry:a3];
+  v4 = [(UIKBRenderer *)self pathForFlickGeometry:geometry];
   if (v4)
   {
     v7 = v4;
-    v5 = [(UIKBRenderer *)self context];
+    context = [(UIKBRenderer *)self context];
     v6 = v7;
-    CGContextAddPath(v5, [v7 CGPath]);
+    CGContextAddPath(context, [v7 CGPath]);
     v4 = v7;
   }
 }
 
-- (void)addPathForFlickPopupGeometries:(id)a3
+- (void)addPathForFlickPopupGeometries:(id)geometries
 {
-  v4 = [(UIKBRenderer *)self pathForFlickPopupGeometries:a3];
+  v4 = [(UIKBRenderer *)self pathForFlickPopupGeometries:geometries];
   if (v4)
   {
     v7 = v4;
-    v5 = [(UIKBRenderer *)self context];
+    context = [(UIKBRenderer *)self context];
     v6 = v7;
-    CGContextAddPath(v5, [v7 CGPath]);
+    CGContextAddPath(context, [v7 CGPath]);
     v4 = v7;
   }
 }
 
-- (void)addPathForSplitGeometry:(id)a3
+- (void)addPathForSplitGeometry:(id)geometry
 {
-  v4 = [(UIKBRenderer *)self pathForSplitGeometry:a3];
+  v4 = [(UIKBRenderer *)self pathForSplitGeometry:geometry];
   if (v4)
   {
     v7 = v4;
-    v5 = [(UIKBRenderer *)self context];
+    context = [(UIKBRenderer *)self context];
     v6 = v7;
-    CGContextAddPath(v5, [v7 CGPath]);
+    CGContextAddPath(context, [v7 CGPath]);
     v4 = v7;
   }
 }
 
-- (id)pathForConcaveCornerWithGeometry:(id)a3
+- (id)pathForConcaveCornerWithGeometry:(id)geometry
 {
-  v3 = a3;
+  geometryCopy = geometry;
   v4 = +[UIBezierPath bezierPath];
-  [v3 paddedFrame];
+  [geometryCopy paddedFrame];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  [v3 roundRectRadius];
+  [geometryCopy roundRectRadius];
   v14 = v13;
-  [v3 roundRectRadius];
+  [geometryCopy roundRectRadius];
   v16 = v15;
-  v17 = [v3 concaveCorner];
-  [v3 concaveCornerOffset];
+  concaveCorner = [geometryCopy concaveCorner];
+  [geometryCopy concaveCornerOffset];
   v19 = v18;
   v21 = v20;
 
   v22 = 0;
-  if (v17 <= 3)
+  if (concaveCorner <= 3)
   {
-    if (v17 == 1)
+    if (concaveCorner == 1)
     {
       v118.origin.x = v6;
       v118.origin.y = v8;
@@ -3763,7 +3763,7 @@ LABEL_33:
 
     else
     {
-      if (v17 != 2)
+      if (concaveCorner != 2)
       {
         goto LABEL_12;
       }
@@ -3866,9 +3866,9 @@ LABEL_10:
     goto LABEL_12;
   }
 
-  if (v17 != 8)
+  if (concaveCorner != 8)
   {
-    if (v17 != 4)
+    if (concaveCorner != 4)
     {
       goto LABEL_12;
     }
@@ -4042,41 +4042,41 @@ LABEL_12:
   return v22;
 }
 
-- (id)pathForRenderGeometry:(id)a3
+- (id)pathForRenderGeometry:(id)geometry
 {
-  v4 = a3;
+  geometryCopy = geometry;
   v5 = +[UIDevice currentDevice];
-  v6 = [v5 userInterfaceIdiom];
+  userInterfaceIdiom = [v5 userInterfaceIdiom];
 
-  if (v6 == 4)
+  if (userInterfaceIdiom == 4)
   {
-    [(UIKBRenderer *)self watchPathForRenderGeometry:v4];
+    [(UIKBRenderer *)self watchPathForRenderGeometry:geometryCopy];
   }
 
   else
   {
-    [(UIKBRenderer *)self defaultPathForRenderGeometry:v4];
+    [(UIKBRenderer *)self defaultPathForRenderGeometry:geometryCopy];
   }
   v7 = ;
 
   return v7;
 }
 
-- (id)defaultPathForRenderGeometry:(id)a3
+- (id)defaultPathForRenderGeometry:(id)geometry
 {
-  v4 = a3;
-  [v4 paddedFrame];
+  geometryCopy = geometry;
+  [geometryCopy paddedFrame];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v96 = v11;
-  [v4 displayFrame];
+  [geometryCopy displayFrame];
   v13 = v12;
   v15 = v14;
   v17 = v16;
   v19 = v18;
-  v20 = [v4 roundRectCorners];
-  [v4 roundRectRadius];
+  roundRectCorners = [geometryCopy roundRectCorners];
+  [geometryCopy roundRectRadius];
   v22 = v21;
   [(UIKBRenderer *)self _layerPaddedFrame];
   if (!CGRectIsNull(v103))
@@ -4092,7 +4092,7 @@ LABEL_12:
 
   v95 = v22;
   recta = v6;
-  if ([v4 popupDirection] == 2)
+  if ([geometryCopy popupDirection] == 2)
   {
     v104.origin.x = v6;
     v104.origin.y = v8;
@@ -4116,28 +4116,28 @@ LABEL_12:
     v8 = MaxY - CGRectGetHeight(v107) - v92;
   }
 
-  [v4 symbolFrame];
+  [geometryCopy symbolFrame];
   v31 = v30;
   v33 = v32;
-  v34 = [v4 popupBias];
-  v35 = [v4 tallPopup];
+  popupBias = [geometryCopy popupBias];
+  tallPopup = [geometryCopy tallPopup];
   v36 = 7.0;
-  if (v35)
+  if (tallPopup)
   {
     v36 = 1.0;
   }
 
   v93 = v36;
-  v37 = v13 + v17 - (v31 + v33) > v33 + 8.0 || v34 == 40;
-  v38 = v31 - v13 > v33 + 8.0 || v34 == 40;
-  if (v34)
+  v37 = v13 + v17 - (v31 + v33) > v33 + 8.0 || popupBias == 40;
+  v38 = v31 - v13 > v33 + 8.0 || popupBias == 40;
+  if (popupBias)
   {
     v39 = recta;
     if (v38)
     {
-      if (v34 == 40)
+      if (popupBias == 40)
       {
-        [v4 layoutMargins];
+        [geometryCopy layoutMargins];
         if (v13 + v40 <= -8.0)
         {
           v13 = v13 + -20.0;
@@ -4150,7 +4150,7 @@ LABEL_12:
       v108.size.width = v17;
       v108.size.height = v19;
       v39 = COERCE_DOUBLE(CGRectInset(v108, 24.0, 0.0)) + 2.0 + -1.0;
-      v34 = 2;
+      popupBias = 2;
     }
   }
 
@@ -4160,7 +4160,7 @@ LABEL_12:
   }
 
   v89 = v39;
-  if (v34)
+  if (popupBias)
   {
     v41 = v37;
   }
@@ -4179,35 +4179,35 @@ LABEL_12:
     v110 = CGRectInset(v109, 24.0, 0.0);
     x = v110.origin.x;
     width = v110.size.width;
-    if (![v4 concaveCorner])
+    if (![geometryCopy concaveCorner])
     {
       v44 = width + -2.0;
       v45 = x + 0.0;
       v46 = v44 + 1.0;
-      v34 = 2;
+      popupBias = 2;
       goto LABEL_33;
     }
 
 LABEL_27:
-    v47 = [(UIKBRenderer *)self pathForConcaveCornerWithGeometry:v4];
+    v47 = [(UIKBRenderer *)self pathForConcaveCornerWithGeometry:geometryCopy];
 LABEL_28:
     v48 = v47;
     goto LABEL_29;
   }
 
-  if ([v4 concaveCorner])
+  if ([geometryCopy concaveCorner])
   {
     goto LABEL_27;
   }
 
   v46 = v10;
   v45 = recta;
-  if (!v34)
+  if (!popupBias)
   {
 LABEL_34:
-    if (v20)
+    if (roundRectCorners)
     {
-      v47 = +[UIBezierPath bezierPathWithRoundedRect:byRoundingCorners:cornerRadii:](UIBezierPath, "bezierPathWithRoundedRect:byRoundingCorners:cornerRadii:", [v4 roundRectCorners], recta, v8, v10, v96, v95, v95);
+      v47 = +[UIBezierPath bezierPathWithRoundedRect:byRoundingCorners:cornerRadii:](UIBezierPath, "bezierPathWithRoundedRect:byRoundingCorners:cornerRadii:", [geometryCopy roundRectCorners], recta, v8, v10, v96, v95, v95);
       goto LABEL_28;
     }
 
@@ -4221,7 +4221,7 @@ LABEL_47:
   }
 
 LABEL_33:
-  if ([v4 popupDirection] == 3)
+  if ([geometryCopy popupDirection] == 3)
   {
     goto LABEL_34;
   }
@@ -4229,9 +4229,9 @@ LABEL_33:
   v86 = v15;
   v97 = recta + v10 * 0.5;
   v50 = v15 + v19 + -6.0;
-  if (v34 > 28)
+  if (popupBias > 28)
   {
-    if (v34 == 29)
+    if (popupBias == 29)
     {
       v48 = +[UIBezierPath bezierPath];
       v76 = recta + v10;
@@ -4268,7 +4268,7 @@ LABEL_33:
       goto LABEL_60;
     }
 
-    if (v34 != 30)
+    if (popupBias != 30)
     {
 LABEL_46:
       v57 = v13;
@@ -4279,9 +4279,9 @@ LABEL_46:
     }
   }
 
-  else if (v34 != 2)
+  else if (popupBias != 2)
   {
-    if (v34 == 21)
+    if (popupBias == 21)
     {
       v48 = +[UIBezierPath bezierPath];
       v51 = v10;
@@ -4384,7 +4384,7 @@ LABEL_60:
   [v48 _addRoundedCornerWithTrueCorner:8 radius:0 corner:v73 clockwise:{v94, v95, v95}];
   [v48 addLineToPoint:{v97, v94}];
   [v48 closePath];
-  if ([v4 popupDirection] == 2)
+  if ([geometryCopy popupDirection] == 2)
   {
     memset(&v101, 0, sizeof(v101));
     CGAffineTransformMakeScale(&v101, 1.0, -1.0);
@@ -4405,28 +4405,28 @@ LABEL_29:
   return v48;
 }
 
-- (id)watchPathForRenderGeometry:(id)a3
+- (id)watchPathForRenderGeometry:(id)geometry
 {
-  v3 = a3;
+  geometryCopy = geometry;
   v4 = +[UIBezierPath bezierPath];
-  [v3 paddedFrame];
+  [geometryCopy paddedFrame];
   v6 = v5;
   v41 = v8;
   v43 = v7;
   v10 = v9;
-  [v3 displayFrame];
+  [geometryCopy displayFrame];
   v12 = v11;
   v14 = v13;
   v16 = v15;
   v18 = v17;
-  [v3 roundRectRadius];
+  [geometryCopy roundRectRadius];
   v20 = v19;
-  [v3 roundRectRadius];
+  [geometryCopy roundRectRadius];
   v22 = v21;
-  v23 = [v3 popupBias];
-  if (v23 > 28)
+  popupBias = [geometryCopy popupBias];
+  if (popupBias > 28)
   {
-    if (v23 == 29)
+    if (popupBias == 29)
     {
       v36 = v6 + v10 * 0.5;
       v24 = v14 + v18;
@@ -4445,10 +4445,10 @@ LABEL_29:
       goto LABEL_11;
     }
 
-    if (v23 != 30)
+    if (popupBias != 30)
     {
 LABEL_9:
-      v35 = +[UIBezierPath bezierPathWithRoundedRect:byRoundingCorners:cornerRadii:](UIBezierPath, "bezierPathWithRoundedRect:byRoundingCorners:cornerRadii:", [v3 roundRectCorners], v6, v43, v10, v41, v20, v22);
+      v35 = +[UIBezierPath bezierPathWithRoundedRect:byRoundingCorners:cornerRadii:](UIBezierPath, "bezierPathWithRoundedRect:byRoundingCorners:cornerRadii:", [geometryCopy roundRectCorners], v6, v43, v10, v41, v20, v22);
 
       v4 = v35;
       goto LABEL_12;
@@ -4475,12 +4475,12 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if (v23 == 2)
+  if (popupBias == 2)
   {
     goto LABEL_7;
   }
 
-  if (v23 != 21)
+  if (popupBias != 21)
   {
     goto LABEL_9;
   }
@@ -4513,19 +4513,19 @@ LABEL_12:
   return v4;
 }
 
-- (id)pathForFlickWidth:(double)a3 height:(double)a4 handleLength:(double)a5 keyMiddle:(CGPoint)a6 angle:(double)a7 radius:(double)a8
+- (id)pathForFlickWidth:(double)width height:(double)height handleLength:(double)length keyMiddle:(CGPoint)middle angle:(double)angle radius:(double)radius
 {
-  y = a6.y;
-  x = a6.x;
+  y = middle.y;
+  x = middle.x;
   v15 = +[UIBezierPath bezierPath];
   [(UIKBRenderer *)self scale];
   v17 = v16;
-  UIRoundToScale(a3 * 0.5 + -8.0, v16);
+  UIRoundToScale(width * 0.5 + -8.0, v16);
   v19 = v18 + v18;
-  v37 = a4;
-  UIRoundToScale(a4 + -16.0, v17);
+  heightCopy = height;
+  UIRoundToScale(height + -16.0, v17);
   v21 = v20;
-  UIRoundToScale(a5 * 0.6, v17);
+  UIRoundToScale(length * 0.6, v17);
   v23 = 0;
   if (v19 > 0.0 && v21 > 0.0)
   {
@@ -4535,11 +4535,11 @@ LABEL_12:
       v36 = y;
       v26 = atan((v22 + -8.0 + v22 + -8.0) / v19);
       v27 = __sincos_stret(v26);
-      v35 = -v37 - v24;
-      [v15 moveToPoint:{v27.__sinval * a8, v27.__cosval * a8 - a8}];
+      v35 = -heightCopy - v24;
+      [v15 moveToPoint:{v27.__sinval * radius, v27.__cosval * radius - radius}];
       v28 = 1.57079633 - v26;
       v29 = v26 + 1.57079633;
-      [v15 addArcWithCenter:1 radius:0.0 startAngle:-a8 endAngle:a8 clockwise:{v28, v29}];
+      [v15 addArcWithCenter:1 radius:0.0 startAngle:-radius endAngle:radius clockwise:{v28, v29}];
       [v15 addLineToPoint:{v19 * -0.5 + v27.__sinval * -8.0, v27.__cosval * 8.0 - v24}];
       [v15 addArcWithCenter:1 radius:v19 * -0.5 startAngle:-v24 endAngle:8.0 clockwise:{v29, 3.14159265}];
       [v15 _addRoundedCornerWithTrueCorner:1 radius:0 corner:v19 * -0.5 + -8.0 clockwise:{v35, 8.0, 8.0}];
@@ -4553,7 +4553,7 @@ LABEL_12:
       UIRoundToScale(v36, v17);
       CGAffineTransformMakeTranslation(&v41, v31, v32);
       v39 = v41;
-      CGAffineTransformRotate(&v40, &v39, a7);
+      CGAffineTransformRotate(&v40, &v39, angle);
       v41 = v40;
       UIRoundToScale(v24 * -0.6, v17);
       v39 = v41;
@@ -4567,51 +4567,51 @@ LABEL_12:
   return v23;
 }
 
-- (id)pathForFlickGeometry:(id)a3
+- (id)pathForFlickGeometry:(id)geometry
 {
-  v4 = a3;
-  [v4 paddedFrame];
+  geometryCopy = geometry;
+  [geometryCopy paddedFrame];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  [v4 popupSource];
+  [geometryCopy popupSource];
   v14 = v13;
   v16 = v15;
-  if (![v4 flickDirection])
+  if (![geometryCopy flickDirection])
   {
     v17 = v16 - (v8 + v12);
     v18 = 0.0;
 LABEL_8:
     v19 = 8.0;
-    v20 = self;
+    selfCopy2 = self;
     v21 = v10;
     v22 = v12;
     goto LABEL_9;
   }
 
-  if ([v4 flickDirection] == 1)
+  if ([geometryCopy flickDirection] == 1)
   {
     v17 = v6 - v14;
     v18 = 1.57079633;
 LABEL_4:
     v19 = 8.0;
-    v20 = self;
+    selfCopy2 = self;
     v21 = v12;
     v22 = v10;
 LABEL_9:
-    v23 = [(UIKBRenderer *)v20 pathForFlickWidth:v21 height:v22 handleLength:v17 keyMiddle:v14 angle:v16 radius:v18, v19];
+    v23 = [(UIKBRenderer *)selfCopy2 pathForFlickWidth:v21 height:v22 handleLength:v17 keyMiddle:v14 angle:v16 radius:v18, v19];
     goto LABEL_10;
   }
 
-  if ([v4 flickDirection] == 2)
+  if ([geometryCopy flickDirection] == 2)
   {
     v17 = v8 - v16;
     v18 = 3.14159265;
     goto LABEL_8;
   }
 
-  if ([v4 flickDirection] == 3)
+  if ([geometryCopy flickDirection] == 3)
   {
     v17 = v14 - (v6 + v10);
     v18 = -1.57079633;
@@ -4624,16 +4624,16 @@ LABEL_10:
   return v23;
 }
 
-- (id)pathForFlickPopupGeometries:(id)a3
+- (id)pathForFlickPopupGeometries:(id)geometries
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && [v3 count] >= 2)
+  geometriesCopy = geometries;
+  v4 = geometriesCopy;
+  if (geometriesCopy && [geometriesCopy count] >= 2)
   {
     v6 = [v4 objectAtIndex:0];
     v7 = [v4 objectAtIndex:4];
-    v8 = [MEMORY[0x1E695DFB0] null];
-    if (v7 == v8)
+    null = [MEMORY[0x1E695DFB0] null];
+    if (v7 == null)
     {
       v9 = 0;
     }
@@ -4646,8 +4646,8 @@ LABEL_10:
     v10 = v9;
 
     v11 = [v4 objectAtIndex:2];
-    v12 = [MEMORY[0x1E695DFB0] null];
-    if (v11 == v12)
+    null2 = [MEMORY[0x1E695DFB0] null];
+    if (v11 == null2)
     {
       v13 = 0;
     }
@@ -4660,8 +4660,8 @@ LABEL_10:
     v14 = v13;
 
     v15 = [v4 objectAtIndex:1];
-    v16 = [MEMORY[0x1E695DFB0] null];
-    if (v15 == v16)
+    null3 = [MEMORY[0x1E695DFB0] null];
+    if (v15 == null3)
     {
       v17 = 0;
     }
@@ -4674,8 +4674,8 @@ LABEL_10:
     v18 = v17;
 
     v19 = [v4 objectAtIndex:3];
-    v20 = [MEMORY[0x1E695DFB0] null];
-    if (v19 == v20)
+    null4 = [MEMORY[0x1E695DFB0] null];
+    if (v19 == null4)
     {
       v21 = 0;
     }
@@ -4746,38 +4746,38 @@ LABEL_10:
   return v5;
 }
 
-- (id)pathForSplitGeometry:(id)a3
+- (id)pathForSplitGeometry:(id)geometry
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && ([v4 splitLeftRect], (v6 = objc_claimAutoreleasedReturnValue()) != 0) && (v7 = v6, objc_msgSend(v5, "splitRightRect"), v8 = objc_claimAutoreleasedReturnValue(), v8, v7, v8))
+  geometryCopy = geometry;
+  v5 = geometryCopy;
+  if (geometryCopy && ([geometryCopy splitLeftRect], (v6 = objc_claimAutoreleasedReturnValue()) != 0) && (v7 = v6, objc_msgSend(v5, "splitRightRect"), v8 = objc_claimAutoreleasedReturnValue(), v8, v7, v8))
   {
-    v9 = [v5 splitLeftRect];
-    [v9 CGRectValue];
+    splitLeftRect = [v5 splitLeftRect];
+    [splitLeftRect CGRectValue];
     v11 = v10;
     v13 = v12;
     v15 = v14;
     v17 = v16;
 
-    v18 = [v5 splitRightRect];
-    [v18 CGRectValue];
+    splitRightRect = [v5 splitRightRect];
+    [splitRightRect CGRectValue];
     v34 = v20;
     v35 = v19;
     v22 = v21;
 
     [(UIKBRenderer *)self size];
     v24 = v23 - v22;
-    LOBYTE(v18) = [v5 roundRectCorners];
-    v25 = [v5 roundRectCorners];
+    LOBYTE(splitRightRect) = [v5 roundRectCorners];
+    roundRectCorners = [v5 roundRectCorners];
     [v5 roundRectRadius];
     v27 = v26;
     [v5 roundRectRadius];
     v29 = v28;
     v30 = +[UIBezierPath bezierPath];
-    v31 = [UIBezierPath bezierPathWithRoundedRect:v18 & 0xA byRoundingCorners:v11 cornerRadii:v13, v15, v17, v27, v29];
+    v31 = [UIBezierPath bezierPathWithRoundedRect:splitRightRect & 0xA byRoundingCorners:v11 cornerRadii:v13, v15, v17, v27, v29];
     [v30 appendPath:v31];
 
-    v32 = [UIBezierPath bezierPathWithRoundedRect:v25 & 5 byRoundingCorners:v24 cornerRadii:v35, v22, v34, v27, v29];
+    v32 = [UIBezierPath bezierPathWithRoundedRect:roundRectCorners & 5 byRoundingCorners:v24 cornerRadii:v35, v22, v34, v27, v29];
     [v30 appendPath:v32];
   }
 

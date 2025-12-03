@@ -1,37 +1,37 @@
 @interface _UIClickHighlightInteractionEffect
-+ (id)effectWithPreview:(id)a3 continuingFromPreview:(id)a4;
++ (id)effectWithPreview:(id)preview continuingFromPreview:(id)fromPreview;
 - (UITargetedPreview)targetedPreviewForEffectContinuation;
-- (_UIClickHighlightInteractionEffect)initWithTargetedPreview:(id)a3 continuingFromPreview:(id)a4;
+- (_UIClickHighlightInteractionEffect)initWithTargetedPreview:(id)preview continuingFromPreview:(id)fromPreview;
 - (void)_completeHighlightEffect;
 - (void)_createHighlightPlatter;
-- (void)interaction:(id)a3 didChangeWithContext:(id)a4;
+- (void)interaction:(id)interaction didChangeWithContext:(id)context;
 @end
 
 @implementation _UIClickHighlightInteractionEffect
 
-+ (id)effectWithPreview:(id)a3 continuingFromPreview:(id)a4
++ (id)effectWithPreview:(id)preview continuingFromPreview:(id)fromPreview
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[_UIClickHighlightInteractionEffect alloc] initWithTargetedPreview:v6 continuingFromPreview:v5];
+  fromPreviewCopy = fromPreview;
+  previewCopy = preview;
+  v7 = [[_UIClickHighlightInteractionEffect alloc] initWithTargetedPreview:previewCopy continuingFromPreview:fromPreviewCopy];
 
   return v7;
 }
 
-- (_UIClickHighlightInteractionEffect)initWithTargetedPreview:(id)a3 continuingFromPreview:(id)a4
+- (_UIClickHighlightInteractionEffect)initWithTargetedPreview:(id)preview continuingFromPreview:(id)fromPreview
 {
-  v7 = a3;
-  v8 = a4;
+  previewCopy = preview;
+  fromPreviewCopy = fromPreview;
   v14.receiver = self;
   v14.super_class = _UIClickHighlightInteractionEffect;
   v9 = [(_UIClickHighlightInteractionEffect *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    [(_UIClickHighlightInteractionEffect *)v9 setContinuationPreview:v8];
-    objc_storeStrong(&v10->_targetedPreview, a3);
-    v11 = [v7 parameters];
-    v12 = [v11 _previewMode] != 1;
+    [(_UIClickHighlightInteractionEffect *)v9 setContinuationPreview:fromPreviewCopy];
+    objc_storeStrong(&v10->_targetedPreview, preview);
+    parameters = [previewCopy parameters];
+    v12 = [parameters _previewMode] != 1;
 
     v10->_phase = v12;
     [(_UIClickHighlightInteractionEffect *)v10 _createHighlightPlatter];
@@ -42,30 +42,30 @@
 
 - (UITargetedPreview)targetedPreviewForEffectContinuation
 {
-  v3 = [(_UIClickHighlightInteractionEffect *)self highlightPlatter];
-  v4 = [v3 anchorView];
+  highlightPlatter = [(_UIClickHighlightInteractionEffect *)self highlightPlatter];
+  anchorView = [highlightPlatter anchorView];
 
-  v5 = [v4 window];
+  window = [anchorView window];
 
-  if (v5)
+  if (window)
   {
-    v6 = [(_UIClickHighlightInteractionEffect *)self targetedPreview];
-    v7 = [v6 target];
+    targetedPreview = [(_UIClickHighlightInteractionEffect *)self targetedPreview];
+    target = [targetedPreview target];
 
-    v8 = [v4 layer];
-    v9 = [v8 presentationLayer];
-    v10 = v9;
-    if (v9)
+    layer = [anchorView layer];
+    presentationLayer = [layer presentationLayer];
+    v10 = presentationLayer;
+    if (presentationLayer)
     {
-      v11 = v9;
+      layer2 = presentationLayer;
     }
 
     else
     {
-      v11 = [v4 layer];
+      layer2 = [anchorView layer];
     }
 
-    v13 = v11;
+    v13 = layer2;
 
     memset(&v26, 0, sizeof(v26));
     if (v13)
@@ -79,18 +79,18 @@
     }
 
     CATransform3DGetAffineTransform(&v26, &v25);
-    [v4 center];
+    [anchorView center];
     v15 = v14;
     v17 = v16;
     v18 = [UIPreviewTarget alloc];
-    v19 = [v7 container];
+    container = [target container];
     *&v25.m11 = *&v26.a;
     *&v25.m13 = *&v26.c;
     *&v25.m21 = *&v26.tx;
-    v20 = [(UIPreviewTarget *)v18 initWithContainer:v19 center:&v25 transform:v15, v17];
+    v20 = [(UIPreviewTarget *)v18 initWithContainer:container center:&v25 transform:v15, v17];
 
-    v21 = [(_UIClickHighlightInteractionEffect *)self targetedPreview];
-    v12 = [v21 retargetedPreviewWithTarget:v20];
+    targetedPreview2 = [(_UIClickHighlightInteractionEffect *)self targetedPreview];
+    v12 = [targetedPreview2 retargetedPreviewWithTarget:v20];
   }
 
   else
@@ -124,18 +124,18 @@
   return v12;
 }
 
-- (void)interaction:(id)a3 didChangeWithContext:(id)a4
+- (void)interaction:(id)interaction didChangeWithContext:(id)context
 {
-  v5 = a4;
-  v6 = [v5 ended];
-  self->_isActive = v6 ^ 1;
-  if (((v6 ^ 1) & 1) == 0 && !+[UIView areAnimationsEnabled])
+  contextCopy = context;
+  ended = [contextCopy ended];
+  self->_isActive = ended ^ 1;
+  if (((ended ^ 1) & 1) == 0 && !+[UIView areAnimationsEnabled])
   {
     [(_UIClickHighlightInteractionEffect *)self _completeHighlightEffect];
     goto LABEL_10;
   }
 
-  [v5 progress];
+  [contextCopy progress];
   v8 = v7;
   if (v7 >= 1.0)
   {
@@ -150,16 +150,16 @@ LABEL_7:
     self->_phase = v9;
   }
 
-  v10 = [(_UIClickHighlightInteractionEffect *)self highlightPlatter];
+  highlightPlatter = [(_UIClickHighlightInteractionEffect *)self highlightPlatter];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __71___UIClickHighlightInteractionEffect_interaction_didChangeWithContext___block_invoke;
   aBlock[3] = &unk_1E7107CE8;
   aBlock[4] = self;
-  v20 = v10;
+  v20 = highlightPlatter;
   v22 = v8;
-  v21 = v5;
-  v11 = v10;
+  v21 = contextCopy;
+  v11 = highlightPlatter;
   v12 = _Block_copy(aBlock);
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
@@ -183,25 +183,25 @@ LABEL_10:
 - (void)_createHighlightPlatter
 {
   v3 = [_UIAnchoredClickHighlightPlatterView alloc];
-  v4 = [(_UIClickHighlightInteractionEffect *)self targetedPreview];
-  v5 = [(_UIAnchoredClickHighlightPlatterView *)v3 initWithTargetedPreview:v4];
+  targetedPreview = [(_UIClickHighlightInteractionEffect *)self targetedPreview];
+  v5 = [(_UIAnchoredClickHighlightPlatterView *)v3 initWithTargetedPreview:targetedPreview];
 
   [(_UIAnchoredClickHighlightPlatterView *)v5 anchorToContainer];
   [(_UIClickHighlightInteractionEffect *)self setHighlightPlatter:v5];
-  v6 = [(_UIClickHighlightInteractionEffect *)self continuationPreview];
-  if ([v6 _isVisible])
+  continuationPreview = [(_UIClickHighlightInteractionEffect *)self continuationPreview];
+  if ([continuationPreview _isVisible])
   {
-    v7 = [v6 view];
-    v8 = [[_UIPortalView alloc] initWithSourceView:v7];
+    view = [continuationPreview view];
+    v8 = [[_UIPortalView alloc] initWithSourceView:view];
     [(_UIPortalView *)v8 setHidesSourceView:1];
-    v9 = [(_UIAnchoredClickHighlightPlatterView *)v5 anchorView];
-    [v9 addContentView:v8];
+    anchorView = [(_UIAnchoredClickHighlightPlatterView *)v5 anchorView];
+    [anchorView addContentView:v8];
 
-    v10 = [v6 target];
-    v11 = v10;
-    if (v10)
+    target = [continuationPreview target];
+    v11 = target;
+    if (target)
     {
-      [v10 transform];
+      [target transform];
     }
 
     else
@@ -211,33 +211,33 @@ LABEL_10:
       v16 = 0u;
     }
 
-    v12 = [(_UIAnchoredClickHighlightPlatterView *)v5 anchorView];
+    anchorView2 = [(_UIAnchoredClickHighlightPlatterView *)v5 anchorView];
     v15[0] = v16;
     v15[1] = v17;
     v15[2] = v18;
-    [v12 setTransform:v15];
+    [anchorView2 setTransform:v15];
 
-    v13 = [(_UIAnchoredClickHighlightPlatterView *)v5 anchorView];
-    [v6 _transferAnimationsToView:v13];
+    anchorView3 = [(_UIAnchoredClickHighlightPlatterView *)v5 anchorView];
+    [continuationPreview _transferAnimationsToView:anchorView3];
   }
 
-  v14 = [(_UIAnchoredClickHighlightPlatterView *)v5 anchorView];
-  [v14 addContentView:v5];
+  anchorView4 = [(_UIAnchoredClickHighlightPlatterView *)v5 anchorView];
+  [anchorView4 addContentView:v5];
 }
 
 - (void)_completeHighlightEffect
 {
-  v3 = [(_UIClickHighlightInteractionEffect *)self highlightPlatter];
-  [v3 deAnchor];
+  highlightPlatter = [(_UIClickHighlightInteractionEffect *)self highlightPlatter];
+  [highlightPlatter deAnchor];
 
   [(_UIClickHighlightInteractionEffect *)self setHighlightPlatter:0];
-  v5 = [(_UIClickHighlightInteractionEffect *)self completionBlock];
+  completionBlock = [(_UIClickHighlightInteractionEffect *)self completionBlock];
   [(_UIClickHighlightInteractionEffect *)self setCompletionBlock:0];
-  v4 = v5;
-  if (v5)
+  v4 = completionBlock;
+  if (completionBlock)
   {
-    (*(v5 + 16))(v5, self);
-    v4 = v5;
+    (*(completionBlock + 16))(completionBlock, self);
+    v4 = completionBlock;
   }
 }
 

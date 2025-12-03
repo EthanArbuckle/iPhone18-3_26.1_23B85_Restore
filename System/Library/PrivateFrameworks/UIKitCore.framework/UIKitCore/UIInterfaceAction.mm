@@ -1,50 +1,50 @@
 @interface UIInterfaceAction
-+ (BOOL)changedProperties:(id)a3 containsAny:(id)a4;
-+ (UIInterfaceAction)actionWithCustomContentView:(id)a3 handler:(id)a4;
-+ (UIInterfaceAction)actionWithCustomContentViewController:(id)a3;
-+ (UIInterfaceAction)actionWithTitle:(id)a3 type:(int64_t)a4 handler:(id)a5;
-- (CGSize)_layoutSizeForImageProperty:(id)a3;
++ (BOOL)changedProperties:(id)properties containsAny:(id)any;
++ (UIInterfaceAction)actionWithCustomContentView:(id)view handler:(id)handler;
++ (UIInterfaceAction)actionWithCustomContentViewController:(id)controller;
++ (UIInterfaceAction)actionWithTitle:(id)title type:(int64_t)type handler:(id)handler;
+- (CGSize)_layoutSizeForImageProperty:(id)property;
 - (CGSize)leadingImageLayoutSize;
 - (CGSize)trailingImageLayoutSize;
-- (UIInterfaceAction)initWithTitle:(id)a3 type:(int64_t)a4 customContentViewController:(id)a5 customContentView:(id)a6 handler:(id)a7;
+- (UIInterfaceAction)initWithTitle:(id)title type:(int64_t)type customContentViewController:(id)controller customContentView:(id)view handler:(id)handler;
 - (UIInterfaceActionRepresentationView)_visualRepresentation;
 - (UIView)customContentView;
 - (_UIInterfaceActionPresenting)_presentingController;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)_addActionDisplayPropertyObserver:(id)a3;
-- (void)_invokeHandlerWithCompletionBlock:(id)a3;
-- (void)_notifyObserversDidChangeActionProperty:(id)a3;
+- (void)_addActionDisplayPropertyObserver:(id)observer;
+- (void)_invokeHandlerWithCompletionBlock:(id)block;
+- (void)_notifyObserversDidChangeActionProperty:(id)property;
 - (void)_notifyObserversVisualStyleDidChange;
-- (void)_removeActionDisplayPropertyObserver:(id)a3;
-- (void)_setImageTintColor:(id)a3;
-- (void)_setIsFocused:(BOOL)a3;
-- (void)_setIsPreferred:(BOOL)a3;
-- (void)_setTitleTextColor:(id)a3;
-- (void)_setVisualStyle:(id)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setLeadingImage:(id)a3;
-- (void)setLeadingImageLayoutSize:(CGSize)a3;
-- (void)setTitle:(id)a3;
-- (void)setTitleAlignment:(int64_t)a3;
-- (void)setTrailingImage:(id)a3;
-- (void)setTrailingImageLayoutSize:(CGSize)a3;
+- (void)_removeActionDisplayPropertyObserver:(id)observer;
+- (void)_setImageTintColor:(id)color;
+- (void)_setIsFocused:(BOOL)focused;
+- (void)_setIsPreferred:(BOOL)preferred;
+- (void)_setTitleTextColor:(id)color;
+- (void)_setVisualStyle:(id)style;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setLeadingImage:(id)image;
+- (void)setLeadingImageLayoutSize:(CGSize)size;
+- (void)setTitle:(id)title;
+- (void)setTitleAlignment:(int64_t)alignment;
+- (void)setTrailingImage:(id)image;
+- (void)setTrailingImageLayoutSize:(CGSize)size;
 @end
 
 @implementation UIInterfaceAction
 
-+ (BOOL)changedProperties:(id)a3 containsAny:(id)a4
++ (BOOL)changedProperties:(id)properties containsAny:(id)any
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if ([v5 count])
+  propertiesCopy = properties;
+  anyCopy = any;
+  if ([propertiesCopy count])
   {
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v7 = v6;
+    v7 = anyCopy;
     v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v8)
     {
@@ -58,7 +58,7 @@
             objc_enumerationMutation(v7);
           }
 
-          if ([v5 containsObject:{*(*(&v12 + 1) + 8 * i), v12}])
+          if ([propertiesCopy containsObject:{*(*(&v12 + 1) + 8 * i), v12}])
           {
             LOBYTE(v8) = 1;
             goto LABEL_12;
@@ -86,56 +86,56 @@ LABEL_12:
   return v8;
 }
 
-+ (UIInterfaceAction)actionWithTitle:(id)a3 type:(int64_t)a4 handler:(id)a5
++ (UIInterfaceAction)actionWithTitle:(id)title type:(int64_t)type handler:(id)handler
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [[a1 alloc] initWithTitle:v9 type:a4 customContentViewController:0 customContentView:0 handler:v8];
+  handlerCopy = handler;
+  titleCopy = title;
+  v10 = [[self alloc] initWithTitle:titleCopy type:type customContentViewController:0 customContentView:0 handler:handlerCopy];
 
   return v10;
 }
 
-+ (UIInterfaceAction)actionWithCustomContentViewController:(id)a3
++ (UIInterfaceAction)actionWithCustomContentViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithTitle:&stru_1EFB14550 type:100 customContentViewController:v4 customContentView:0 handler:0];
+  controllerCopy = controller;
+  v5 = [[self alloc] initWithTitle:&stru_1EFB14550 type:100 customContentViewController:controllerCopy customContentView:0 handler:0];
 
   return v5;
 }
 
-+ (UIInterfaceAction)actionWithCustomContentView:(id)a3 handler:(id)a4
++ (UIInterfaceAction)actionWithCustomContentView:(id)view handler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithTitle:&stru_1EFB14550 type:100 customContentViewController:0 customContentView:v7 handler:v6];
+  handlerCopy = handler;
+  viewCopy = view;
+  v8 = [[self alloc] initWithTitle:&stru_1EFB14550 type:100 customContentViewController:0 customContentView:viewCopy handler:handlerCopy];
 
   return v8;
 }
 
-- (UIInterfaceAction)initWithTitle:(id)a3 type:(int64_t)a4 customContentViewController:(id)a5 customContentView:(id)a6 handler:(id)a7
+- (UIInterfaceAction)initWithTitle:(id)title type:(int64_t)type customContentViewController:(id)controller customContentView:(id)view handler:(id)handler
 {
-  v13 = a3;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  titleCopy = title;
+  controllerCopy = controller;
+  viewCopy = view;
+  handlerCopy = handler;
   v24.receiver = self;
   v24.super_class = UIInterfaceAction;
   v17 = [(UIInterfaceAction *)&v24 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_title, a3);
+    objc_storeStrong(&v17->_title, title);
     v18->_titleAlignment = 1;
-    v18->_type = a4;
-    v19 = _Block_copy(v16);
+    v18->_type = type;
+    v19 = _Block_copy(handlerCopy);
     handler = v18->_handler;
     v18->_handler = v19;
 
-    objc_storeStrong(&v18->_customContentViewController, a5);
-    objc_storeStrong(&v18->_customContentView, a6);
-    v21 = [MEMORY[0x1E696AE08] weakObjectsPointerArray];
+    objc_storeStrong(&v18->_customContentViewController, controller);
+    objc_storeStrong(&v18->_customContentView, view);
+    weakObjectsPointerArray = [MEMORY[0x1E696AE08] weakObjectsPointerArray];
     weakDisplayPropertyObservers = v18->_weakDisplayPropertyObservers;
-    v18->_weakDisplayPropertyObservers = v21;
+    v18->_weakDisplayPropertyObservers = weakObjectsPointerArray;
 
     v18->_enabled = 1;
   }
@@ -143,12 +143,12 @@ LABEL_12:
   return v18;
 }
 
-- (void)_setVisualStyle:(id)a3
+- (void)_setVisualStyle:(id)style
 {
-  v5 = a3;
-  if (([v5 isEqual:self->_visualStyle] & 1) == 0)
+  styleCopy = style;
+  if (([styleCopy isEqual:self->_visualStyle] & 1) == 0)
   {
-    objc_storeStrong(&self->_visualStyle, a3);
+    objc_storeStrong(&self->_visualStyle, style);
     [(UIInterfaceAction *)self _notifyObserversVisualStyleDidChange];
   }
 }
@@ -158,22 +158,22 @@ LABEL_12:
   v10.receiver = self;
   v10.super_class = UIInterfaceAction;
   v3 = [(UIInterfaceAction *)&v10 description];
-  v4 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   if ([(NSString *)self->_title length])
   {
     v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@" title = %@", self->_title];
-    [v4 addObject:v5];
+    [array addObject:v5];
   }
 
   if (self->_customContentView)
   {
     v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@" customContentView = %@", self->_customContentView];
-    [v4 addObject:v6];
+    [array addObject:v6];
   }
 
-  if ([v4 count])
+  if ([array count])
   {
-    v7 = [v4 componentsJoinedByString:{@", "}];
+    v7 = [array componentsJoinedByString:{@", "}];
     v8 = [v3 stringByAppendingFormat:@" %@", v7];
 
     v3 = v8;
@@ -182,7 +182,7 @@ LABEL_12:
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [objc_alloc(objc_opt_class()) initWithTitle:self->_title type:self->_type customContentViewController:self->_customContentViewController customContentView:self->_customContentView handler:self->_handler];
   *(v4 + 48) = self->_titleAlignment;
@@ -195,50 +195,50 @@ LABEL_12:
   return v4;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v5 = a3;
-  if (([v5 isEqual:self->_title] & 1) == 0)
+  titleCopy = title;
+  if (([titleCopy isEqual:self->_title] & 1) == 0)
   {
-    objc_storeStrong(&self->_title, a3);
+    objc_storeStrong(&self->_title, title);
     [(UIInterfaceAction *)self _notifyObserversDidChangeActionProperty:@"title"];
   }
 }
 
-- (void)setTitleAlignment:(int64_t)a3
+- (void)setTitleAlignment:(int64_t)alignment
 {
-  if (self->_titleAlignment != a3)
+  if (self->_titleAlignment != alignment)
   {
-    self->_titleAlignment = a3;
+    self->_titleAlignment = alignment;
     [(UIInterfaceAction *)self _notifyObserversDidChangeActionProperty:@"titleAlignment"];
   }
 }
 
-- (void)setLeadingImage:(id)a3
+- (void)setLeadingImage:(id)image
 {
-  v5 = a3;
-  if (([v5 isEqual:self->_leadingImage] & 1) == 0)
+  imageCopy = image;
+  if (([imageCopy isEqual:self->_leadingImage] & 1) == 0)
   {
-    objc_storeStrong(&self->_leadingImage, a3);
+    objc_storeStrong(&self->_leadingImage, image);
     [(UIInterfaceAction *)self _notifyObserversDidChangeActionProperty:@"leadingImage"];
   }
 }
 
-- (void)setTrailingImage:(id)a3
+- (void)setTrailingImage:(id)image
 {
-  v5 = a3;
-  if (([v5 isEqual:self->_trailingImage] & 1) == 0)
+  imageCopy = image;
+  if (([imageCopy isEqual:self->_trailingImage] & 1) == 0)
   {
-    objc_storeStrong(&self->_trailingImage, a3);
+    objc_storeStrong(&self->_trailingImage, image);
     [(UIInterfaceAction *)self _notifyObserversDidChangeActionProperty:@"trailingImage"];
   }
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  if (self->_enabled != a3)
+  if (self->_enabled != enabled)
   {
-    self->_enabled = a3;
+    self->_enabled = enabled;
     [(UIInterfaceAction *)self _notifyObserversDidChangeActionProperty:@"enabled"];
   }
 }
@@ -248,59 +248,59 @@ LABEL_12:
   customContentView = self->_customContentView;
   if (customContentView)
   {
-    v3 = customContentView;
+    view = customContentView;
   }
 
   else
   {
-    v4 = [(UIInterfaceAction *)self customContentViewController];
-    v3 = [v4 view];
+    customContentViewController = [(UIInterfaceAction *)self customContentViewController];
+    view = [customContentViewController view];
   }
 
-  return v3;
+  return view;
 }
 
-- (void)_setIsPreferred:(BOOL)a3
+- (void)_setIsPreferred:(BOOL)preferred
 {
-  if (self->_preferred != a3)
+  if (self->_preferred != preferred)
   {
-    self->_preferred = a3;
+    self->_preferred = preferred;
     [(UIInterfaceAction *)self _notifyObserversDidChangeActionProperty:@"preferred"];
   }
 }
 
-- (void)_setIsFocused:(BOOL)a3
+- (void)_setIsFocused:(BOOL)focused
 {
-  if (self->_focused != a3)
+  if (self->_focused != focused)
   {
-    self->_focused = a3;
+    self->_focused = focused;
     [(UIInterfaceAction *)self _notifyObserversDidChangeActionProperty:@"focused"];
   }
 }
 
-- (void)_setTitleTextColor:(id)a3
+- (void)_setTitleTextColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   if (![(UIColor *)self->_titleTextColor isEqual:?])
   {
-    objc_storeStrong(&self->_titleTextColor, a3);
+    objc_storeStrong(&self->_titleTextColor, color);
     [(UIInterfaceAction *)self _notifyObserversDidChangeActionProperty:@"titleTextColor"];
   }
 }
 
-- (void)_setImageTintColor:(id)a3
+- (void)_setImageTintColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   if (![(UIColor *)self->_imageTintColor isEqual:?])
   {
-    objc_storeStrong(&self->_imageTintColor, a3);
+    objc_storeStrong(&self->_imageTintColor, color);
     [(UIInterfaceAction *)self _notifyObserversDidChangeActionProperty:@"imageTintColor"];
   }
 }
 
-- (CGSize)_layoutSizeForImageProperty:(id)a3
+- (CGSize)_layoutSizeForImageProperty:(id)property
 {
-  v4 = [a3 stringByAppendingString:@"LayoutSize"];
+  v4 = [property stringByAppendingString:@"LayoutSize"];
   v5 = [(UIInterfaceAction *)self valueForKey:v4];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -323,11 +323,11 @@ LABEL_12:
   return result;
 }
 
-- (void)setLeadingImageLayoutSize:(CGSize)a3
+- (void)setLeadingImageLayoutSize:(CGSize)size
 {
-  if (self->_leadingImageLayoutSize.width != a3.width || self->_leadingImageLayoutSize.height != a3.height)
+  if (self->_leadingImageLayoutSize.width != size.width || self->_leadingImageLayoutSize.height != size.height)
   {
-    self->_leadingImageLayoutSize = a3;
+    self->_leadingImageLayoutSize = size;
     [(UIInterfaceAction *)self _notifyObserversDidChangeActionProperty:@"leadingImageLayoutSize"];
   }
 }
@@ -346,11 +346,11 @@ LABEL_12:
   return result;
 }
 
-- (void)setTrailingImageLayoutSize:(CGSize)a3
+- (void)setTrailingImageLayoutSize:(CGSize)size
 {
-  if (self->_trailingImageLayoutSize.width != a3.width || self->_trailingImageLayoutSize.height != a3.height)
+  if (self->_trailingImageLayoutSize.width != size.width || self->_trailingImageLayoutSize.height != size.height)
   {
-    self->_trailingImageLayoutSize = a3;
+    self->_trailingImageLayoutSize = size;
     [(UIInterfaceAction *)self _notifyObserversDidChangeActionProperty:@"trailingImageLayoutSize"];
   }
 }
@@ -369,19 +369,19 @@ LABEL_12:
   return result;
 }
 
-- (void)_invokeHandlerWithCompletionBlock:(id)a3
+- (void)_invokeHandlerWithCompletionBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(UIInterfaceAction *)self _presentingController];
-  if (v5)
+  blockCopy = block;
+  _presentingController = [(UIInterfaceAction *)self _presentingController];
+  if (_presentingController)
   {
     handler = self->_handler;
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __55__UIInterfaceAction__invokeHandlerWithCompletionBlock___block_invoke;
     v9[3] = &unk_1E70F0F78;
-    v10 = v4;
-    [v5 interfaceAction:self invokeActionHandler:handler completion:v9];
+    v10 = blockCopy;
+    [_presentingController interfaceAction:self invokeActionHandler:handler completion:v9];
   }
 
   else if (__interfaceActionCanInvokeActionsWithoutPresentingController == 1)
@@ -395,21 +395,21 @@ LABEL_12:
   }
 }
 
-- (void)_addActionDisplayPropertyObserver:(id)a3
+- (void)_addActionDisplayPropertyObserver:(id)observer
 {
   weakDisplayPropertyObservers = self->_weakDisplayPropertyObservers;
-  v5 = a3;
+  observerCopy = observer;
   [(NSPointerArray *)weakDisplayPropertyObservers compact];
-  [(NSPointerArray *)self->_weakDisplayPropertyObservers addPointer:v5];
+  [(NSPointerArray *)self->_weakDisplayPropertyObservers addPointer:observerCopy];
 }
 
-- (void)_removeActionDisplayPropertyObserver:(id)a3
+- (void)_removeActionDisplayPropertyObserver:(id)observer
 {
   weakDisplayPropertyObservers = self->_weakDisplayPropertyObservers;
-  v5 = a3;
+  observerCopy = observer;
   [(NSPointerArray *)weakDisplayPropertyObservers compact];
-  v6 = [(NSPointerArray *)self->_weakDisplayPropertyObservers allObjects];
-  v7 = [v6 indexOfObject:v5];
+  allObjects = [(NSPointerArray *)self->_weakDisplayPropertyObservers allObjects];
+  v7 = [allObjects indexOfObject:observerCopy];
 
   if (v7 != 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -457,12 +457,12 @@ LABEL_12:
   }
 }
 
-- (void)_notifyObserversDidChangeActionProperty:(id)a3
+- (void)_notifyObserversDidChangeActionProperty:(id)property
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  propertyCopy = property;
   [(NSPointerArray *)self->_weakDisplayPropertyObservers compact];
-  v5 = [MEMORY[0x1E695DEC8] arrayWithObject:v4];
+  v5 = [MEMORY[0x1E695DEC8] arrayWithObject:propertyCopy];
   WeakRetained = objc_loadWeakRetained(&self->__visualRepresentation);
   [WeakRetained interfaceAction:self reloadDisplayedContentActionProperties:v5];
 

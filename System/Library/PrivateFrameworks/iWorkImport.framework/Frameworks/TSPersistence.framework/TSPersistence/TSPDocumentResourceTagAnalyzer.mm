@@ -3,8 +3,8 @@
 - (NSSet)allTags;
 - (NSSet)untaggedDocumentResourceInfos;
 - (id)description;
-- (id)minimumTagsWithPreferredTags:(id)a3;
-- (void)addDocumentResourceInfo:(id)a3;
+- (id)minimumTagsWithPreferredTags:(id)tags;
+- (void)addDocumentResourceInfo:(id)info;
 @end
 
 @implementation TSPDocumentResourceTagAnalyzer
@@ -20,11 +20,11 @@
   return v6;
 }
 
-- (void)addDocumentResourceInfo:(id)a3
+- (void)addDocumentResourceInfo:(id)info
 {
   v44 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v7 = objc_msgSend_tags(v4, v5, v6);
+  infoCopy = info;
+  v7 = objc_msgSend_tags(infoCopy, v5, v6);
   if (objc_msgSend_count(v7, v8, v9))
   {
     v41 = 0u;
@@ -52,12 +52,12 @@
           if (v19)
           {
             v21 = v19;
-            objc_msgSend_addObject_(v19, v20, v4);
+            objc_msgSend_addObject_(v19, v20, infoCopy);
           }
 
           else
           {
-            v21 = objc_msgSend_setWithObject_(MEMORY[0x277CBEB58], v20, v4);
+            v21 = objc_msgSend_setWithObject_(MEMORY[0x277CBEB58], v20, infoCopy);
             tagsToDocumentResourceInfosDictionary = self->_tagsToDocumentResourceInfosDictionary;
             if (tagsToDocumentResourceInfosDictionary)
             {
@@ -87,13 +87,13 @@
     untaggedDocumentResourceInfos = self->_untaggedDocumentResourceInfos;
     if (untaggedDocumentResourceInfos)
     {
-      objc_msgSend_addObject_(untaggedDocumentResourceInfos, v10, v4);
+      objc_msgSend_addObject_(untaggedDocumentResourceInfos, v10, infoCopy);
     }
 
     else
     {
       v28 = objc_alloc(MEMORY[0x277CBEB58]);
-      v30 = objc_msgSend_initWithObjects_(v28, v29, v4, 0);
+      v30 = objc_msgSend_initWithObjects_(v28, v29, infoCopy, 0);
       v31 = self->_untaggedDocumentResourceInfos;
       self->_untaggedDocumentResourceInfos = v30;
     }
@@ -102,13 +102,13 @@
   documentResourceInfos = self->_documentResourceInfos;
   if (documentResourceInfos)
   {
-    objc_msgSend_addObject_(documentResourceInfos, v26, v4);
+    objc_msgSend_addObject_(documentResourceInfos, v26, infoCopy);
   }
 
   else
   {
     v33 = objc_alloc(MEMORY[0x277CBEB58]);
-    v35 = objc_msgSend_initWithObjects_(v33, v34, v4, 0);
+    v35 = objc_msgSend_initWithObjects_(v33, v34, infoCopy, 0);
     v36 = self->_documentResourceInfos;
     self->_documentResourceInfos = v35;
   }
@@ -132,10 +132,10 @@
   return v7;
 }
 
-- (id)minimumTagsWithPreferredTags:(id)a3
+- (id)minimumTagsWithPreferredTags:(id)tags
 {
   v70 = *MEMORY[0x277D85DE8];
-  v61 = a3;
+  tagsCopy = tags;
   v6 = objc_msgSend_count(self->_tagsToDocumentResourceInfosDictionary, v4, v5);
   if (v6)
   {
@@ -144,7 +144,7 @@
     v66 = 0u;
     v67 = 0u;
     v68 = 0u;
-    v9 = self;
+    selfCopy = self;
     obj = self->_tagsToDocumentResourceInfosDictionary;
     v11 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v10, &v65, v69, 16);
     if (v11)
@@ -166,8 +166,8 @@
           v62[1] = 3221225472;
           v62[2] = sub_276A7BADC;
           v62[3] = &unk_27A6E5A88;
-          v63 = v61;
-          v64 = v9;
+          v63 = tagsCopy;
+          v64 = selfCopy;
           v20 = objc_msgSend_indexOfObject_inSortedRange_options_usingComparator_(v8, v19, v17, 0, v18, 1024, v62);
           objc_msgSend_insertObject_atIndex_(v8, v21, v17, v20);
         }
@@ -183,7 +183,7 @@
     obja = v24;
     v27 = v24;
     v28 = v26;
-    v30 = objc_msgSend_objectForKeyedSubscript_(v9->_tagsToDocumentResourceInfosDictionary, v29, v27);
+    v30 = objc_msgSend_objectForKeyedSubscript_(selfCopy->_tagsToDocumentResourceInfosDictionary, v29, v27);
     v33 = objc_msgSend_mutableCopy(v30, v31, v32);
 
     v36 = objc_msgSend_count(v8, v34, v35);
@@ -194,7 +194,7 @@
       while (1)
       {
         v41 = objc_msgSend_objectAtIndexedSubscript_(v8, v37, v40);
-        v43 = objc_msgSend_objectForKeyedSubscript_(v9->_tagsToDocumentResourceInfosDictionary, v42, v41);
+        v43 = objc_msgSend_objectForKeyedSubscript_(selfCopy->_tagsToDocumentResourceInfosDictionary, v42, v41);
         v46 = objc_msgSend_count(v33, v44, v45);
         objc_msgSend_unionSet_(v33, v47, v43);
         v50 = objc_msgSend_count(v33, v48, v49);
@@ -202,7 +202,7 @@
         {
           v52 = v50;
           objc_msgSend_addObject_(v28, v51, v41);
-          if (v52 >= objc_msgSend_count(v9->_documentResourceInfos, v53, v54))
+          if (v52 >= objc_msgSend_count(selfCopy->_documentResourceInfos, v53, v54))
           {
             break;
           }

@@ -1,21 +1,21 @@
 @interface VCCKShortcutSyncCoordinator
 - (BOOL)checkIfExistingCoherenceSyncRecordsArePresent;
-- (BOOL)containerContainsRecordOfType:(id)a3;
-- (BOOL)recordsContainIncompatibleDeviceForCoherenceSyncMigration:(id)a3;
+- (BOOL)containerContainsRecordOfType:(id)type;
+- (BOOL)recordsContainIncompatibleDeviceForCoherenceSyncMigration:(id)migration;
 - (NSString)accountForSyncToken;
-- (VCCKShortcutSyncCoordinator)initWithDatabaseProvider:(id)a3;
+- (VCCKShortcutSyncCoordinator)initWithDatabaseProvider:(id)provider;
 - (VCCKShortcutSyncService)currentSyncService;
 - (WFCloudKitSyncEventLogger)logger;
 - (void)dealloc;
 - (void)deleteLegacyShortcutsZoneSubscriptionIfNeeded;
-- (void)handleAccountChangedNotification:(id)a3;
+- (void)handleAccountChangedNotification:(id)notification;
 - (void)handleCloudKitSyncEnabledChange;
 - (void)handleCloudKitSyncZoneWasPurgedChange;
 - (void)handleWalrusStatusDidChange;
-- (void)migrateToCoherenceSyncIfPossible:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)removeAndResetCurrentSyncServiceWithDatabase:(id)a3 reason:(id)a4;
-- (void)setSyncEnabled:(BOOL)a3;
+- (void)migrateToCoherenceSyncIfPossible:(id)possible;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)removeAndResetCurrentSyncServiceWithDatabase:(id)database reason:(id)reason;
+- (void)setSyncEnabled:(BOOL)enabled;
 - (void)setupPathMonitor;
 - (void)start;
 - (void)startObservingAccountChanges;
@@ -36,8 +36,8 @@
 - (void)updateCurrentSyncService
 {
   v60 = *MEMORY[0x277D85DE8];
-  v3 = [(VCCKShortcutSyncCoordinator *)self stateAccessQueue];
-  dispatch_assert_queue_V2(v3);
+  stateAccessQueue = [(VCCKShortcutSyncCoordinator *)self stateAccessQueue];
+  dispatch_assert_queue_V2(stateAccessQueue);
 
   v4 = getWFCloudKitSyncLogObject();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -47,9 +47,9 @@
     _os_log_impl(&dword_23103C000, v4, OS_LOG_TYPE_INFO, "%s Trying to re-create a shortcut sync service.", buf, 0xCu);
   }
 
-  v5 = [(VCCKShortcutSyncCoordinator *)self databaseProvider];
+  databaseProvider = [(VCCKShortcutSyncCoordinator *)self databaseProvider];
   v53 = 0;
-  v6 = [v5 databaseWithError:&v53];
+  v6 = [databaseProvider databaseWithError:&v53];
   v7 = v53;
 
   if (v6)
@@ -58,8 +58,8 @@
     {
       if ([(VCCKShortcutSyncCoordinator *)self accountStatus]== 1)
       {
-        v8 = [(VCCKShortcutSyncCoordinator *)self accountForSyncToken];
-        if (!v8)
+        accountForSyncToken = [(VCCKShortcutSyncCoordinator *)self accountForSyncToken];
+        if (!accountForSyncToken)
         {
           v20 = getWFCloudKitSyncLogObject();
           if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
@@ -73,21 +73,21 @@
           goto LABEL_54;
         }
 
-        v9 = [v6 syncToken];
-        v10 = [v9 account];
-        v11 = v8;
+        syncToken = [v6 syncToken];
+        account = [syncToken account];
+        v11 = accountForSyncToken;
         v12 = v11;
-        if (v10 == v11)
+        if (account == v11)
         {
 
-          v21 = v10;
+          v21 = account;
         }
 
         else
         {
-          if (v10)
+          if (account)
           {
-            v13 = [v10 isEqualToString:v11];
+            v13 = [account isEqualToString:v11];
 
             if (v13)
             {
@@ -111,18 +111,18 @@ LABEL_54:
 
               if (self->_currentSyncService)
               {
-                v27 = [v9 account];
+                account2 = [syncToken account];
                 v28 = v12;
                 v29 = v28;
-                if (v27 == v28)
+                if (account2 == v28)
                 {
 
                   goto LABEL_42;
                 }
 
-                if (v27)
+                if (account2)
                 {
-                  v30 = [v27 isEqualToString:v28];
+                  v30 = [account2 isEqualToString:v28];
 
                   if (!v30)
                   {
@@ -155,31 +155,31 @@ LABEL_46:
               v33 = getWFCloudKitSyncLogObject();
               if (os_log_type_enabled(v33, OS_LOG_TYPE_DEBUG))
               {
-                v34 = [v6 coherenceSyncEnabled];
+                coherenceSyncEnabled = [v6 coherenceSyncEnabled];
                 *buf = 136315394;
                 v55 = "[VCCKShortcutSyncCoordinator updateCurrentSyncService]";
                 v56 = 1024;
-                LODWORD(v57) = v34;
+                LODWORD(v57) = coherenceSyncEnabled;
                 _os_log_impl(&dword_23103C000, v33, OS_LOG_TYPE_DEBUG, "%s Coherence sync enabled: %i", buf, 0x12u);
               }
 
-              v35 = [(VCCKShortcutSyncCoordinator *)self logger];
+              logger = [(VCCKShortcutSyncCoordinator *)self logger];
               v36 = MEMORY[0x277CCACA8];
-              v37 = [v6 coherenceSyncEnabled];
+              coherenceSyncEnabled2 = [v6 coherenceSyncEnabled];
               v38 = @"off";
-              if (v37)
+              if (coherenceSyncEnabled2)
               {
                 v38 = @"on";
               }
 
               v39 = [v36 stringWithFormat:@"starting sync service (coherence sync: %@)", v38, v47, v48, v49, v50];
-              [v35 logEvent:v39];
+              [logger logEvent:v39];
 
               v40 = [VCCKShortcutSyncService alloc];
-              v41 = [(VCCKShortcutSyncCoordinator *)self container];
-              v42 = [(VCCKShortcutSyncCoordinator *)self applicationObserver];
-              v43 = [(VCCKShortcutSyncCoordinator *)self logger];
-              v44 = [(VCCKShortcutSyncService *)v40 initWithContainer:v41 database:v6 applicationObserver:v42 debuggingOptions:0 logger:v43];
+              container = [(VCCKShortcutSyncCoordinator *)self container];
+              applicationObserver = [(VCCKShortcutSyncCoordinator *)self applicationObserver];
+              logger2 = [(VCCKShortcutSyncCoordinator *)self logger];
+              v44 = [(VCCKShortcutSyncService *)v40 initWithContainer:container database:v6 applicationObserver:applicationObserver debuggingOptions:0 logger:logger2];
               currentSyncService = self->_currentSyncService;
               self->_currentSyncService = v44;
 
@@ -195,11 +195,11 @@ LABEL_46:
           v22 = getWFCloudKitSyncLogObject();
           if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
           {
-            v23 = [v9 account];
+            account3 = [syncToken account];
             *buf = 136315650;
             v55 = "[VCCKShortcutSyncCoordinator updateCurrentSyncService]";
             v56 = 2114;
-            v57 = v23;
+            v57 = account3;
             v58 = 2114;
             v59 = v12;
             _os_log_impl(&dword_23103C000, v22, OS_LOG_TYPE_INFO, "%s Database sync token account (%{public}@) is different from current account (%{public}@), clearing tombstones and invalidating persisted sync engine metadata", buf, 0x20u);
@@ -226,7 +226,7 @@ LABEL_46:
           v21 = v25;
           [v51 performTransactionWithReason:@"update sync service state" block:&v47 error:0];
 
-          v10 = v51;
+          account = v51;
         }
 
         goto LABEL_32;
@@ -235,11 +235,11 @@ LABEL_46:
       v18 = getWFCloudKitSyncLogObject();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
       {
-        v19 = [(VCCKShortcutSyncCoordinator *)self accountStatus];
+        accountStatus = [(VCCKShortcutSyncCoordinator *)self accountStatus];
         *buf = 136315394;
         v55 = "[VCCKShortcutSyncCoordinator updateCurrentSyncService]";
         v56 = 2048;
-        v57 = v19;
+        v57 = accountStatus;
         _os_log_impl(&dword_23103C000, v18, OS_LOG_TYPE_INFO, "%s iCloud account status is %ld, clearing tombstones and not creating new sync service", buf, 0x16u);
       }
 
@@ -295,7 +295,7 @@ void __47__VCCKShortcutSyncCoordinator_setupPathMonitor__block_invoke(uint64_t a
   }
 }
 
-- (void)handleAccountChangedNotification:(id)a3
+- (void)handleAccountChangedNotification:(id)notification
 {
   v10 = *MEMORY[0x277D85DE8];
   v4 = getWFCloudKitSyncLogObject();
@@ -306,24 +306,24 @@ void __47__VCCKShortcutSyncCoordinator_setupPathMonitor__block_invoke(uint64_t a
     _os_log_impl(&dword_23103C000, v4, OS_LOG_TYPE_INFO, "%s Received CKAccountChangedNotification", buf, 0xCu);
   }
 
-  v5 = [(VCCKShortcutSyncCoordinator *)self stateAccessQueue];
+  stateAccessQueue = [(VCCKShortcutSyncCoordinator *)self stateAccessQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __64__VCCKShortcutSyncCoordinator_handleAccountChangedNotification___block_invoke;
   block[3] = &unk_278900148;
   block[4] = self;
-  dispatch_async(v5, block);
+  dispatch_async(stateAccessQueue, block);
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   v30 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (VCCKShortcutSyncAccountObserverUserDefaultsChangedContext == a6)
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (VCCKShortcutSyncAccountObserverUserDefaultsChangedContext == context)
   {
     v13 = getWFCloudKitSyncLogObject();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
@@ -331,36 +331,36 @@ void __47__VCCKShortcutSyncCoordinator_setupPathMonitor__block_invoke(uint64_t a
       *buf = 136315650;
       v25 = "[VCCKShortcutSyncCoordinator observeValueForKeyPath:ofObject:change:context:]";
       v26 = 2114;
-      v27 = v10;
+      v27 = pathCopy;
       v28 = 2114;
-      v29 = v12;
+      v29 = changeCopy;
       _os_log_impl(&dword_23103C000, v13, OS_LOG_TYPE_INFO, "%s Received user defaults update for keyPath %{public}@, change dictionary: %{public}@", buf, 0x20u);
     }
 
-    v14 = [(VCCKShortcutSyncCoordinator *)self stateAccessQueue];
+    stateAccessQueue = [(VCCKShortcutSyncCoordinator *)self stateAccessQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __78__VCCKShortcutSyncCoordinator_observeValueForKeyPath_ofObject_change_context___block_invoke;
     block[3] = &unk_2788FFFC0;
-    v22 = v10;
-    v23 = self;
-    dispatch_async(v14, block);
+    v22 = pathCopy;
+    selfCopy = self;
+    dispatch_async(stateAccessQueue, block);
   }
 
-  else if (VCCKShortcutSyncAccountObserverApplicationVisibilityChangedContext == a6)
+  else if (VCCKShortcutSyncAccountObserverApplicationVisibilityChangedContext == context)
   {
-    v15 = [(VCCKShortcutSyncCoordinator *)self applicationObserver];
-    v16 = [v15 isApplicationVisible];
+    applicationObserver = [(VCCKShortcutSyncCoordinator *)self applicationObserver];
+    isApplicationVisible = [applicationObserver isApplicationVisible];
 
-    if (v16)
+    if (isApplicationVisible)
     {
-      v17 = [(VCCKShortcutSyncCoordinator *)self stateAccessQueue];
+      stateAccessQueue2 = [(VCCKShortcutSyncCoordinator *)self stateAccessQueue];
       v20[0] = MEMORY[0x277D85DD0];
       v20[1] = 3221225472;
       v20[2] = __78__VCCKShortcutSyncCoordinator_observeValueForKeyPath_ofObject_change_context___block_invoke_2;
       v20[3] = &unk_278900148;
       v20[4] = self;
-      dispatch_async(v17, v20);
+      dispatch_async(stateAccessQueue2, v20);
     }
   }
 
@@ -368,7 +368,7 @@ void __47__VCCKShortcutSyncCoordinator_setupPathMonitor__block_invoke(uint64_t a
   {
     v19.receiver = self;
     v19.super_class = VCCKShortcutSyncCoordinator;
-    [(VCCKShortcutSyncCoordinator *)&v19 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(VCCKShortcutSyncCoordinator *)&v19 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 
   v18 = *MEMORY[0x277D85DE8];
@@ -425,15 +425,15 @@ uint64_t __78__VCCKShortcutSyncCoordinator_observeValueForKeyPath_ofObject_chang
   return result;
 }
 
-- (BOOL)recordsContainIncompatibleDeviceForCoherenceSyncMigration:(id)a3
+- (BOOL)recordsContainIncompatibleDeviceForCoherenceSyncMigration:(id)migration
 {
   v47 = *MEMORY[0x277D85DE8];
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v31 objects:v40 count:16];
+  migrationCopy = migration;
+  v4 = [migrationCopy countByEnumeratingWithState:&v31 objects:v40 count:16];
   if (v4)
   {
     v6 = v4;
@@ -450,7 +450,7 @@ uint64_t __78__VCCKShortcutSyncCoordinator_observeValueForKeyPath_ofObject_chang
       {
         if (*v32 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(migrationCopy);
         }
 
         v11 = *(*(&v31 + 1) + 8 * v10);
@@ -486,8 +486,8 @@ uint64_t __78__VCCKShortcutSyncCoordinator_observeValueForKeyPath_ofObject_chang
             v18 = v9;
             v19 = v8;
             v20 = v7;
-            v22 = v21 = v3;
-            v23 = [v11 modificationDate];
+            v22 = v21 = migrationCopy;
+            modificationDate = [v11 modificationDate];
             *buf = v29;
             *&buf[4] = "[VCCKShortcutSyncCoordinator recordsContainIncompatibleDeviceForCoherenceSyncMigration:]";
             *&buf[12] = 2112;
@@ -497,10 +497,10 @@ uint64_t __78__VCCKShortcutSyncCoordinator_observeValueForKeyPath_ofObject_chang
             v36 = 2112;
             v37 = v13;
             v38 = 2112;
-            v39 = v23;
+            v39 = modificationDate;
             _os_log_impl(&dword_23103C000, v15, OS_LOG_TYPE_INFO, "%s Found device record: name: %@, os type: %@, os version: %@, modification date: %@", buf, 0x34u);
 
-            v3 = v21;
+            migrationCopy = v21;
             v7 = v20;
             v8 = v19;
             v9 = v18;
@@ -547,7 +547,7 @@ uint64_t __78__VCCKShortcutSyncCoordinator_observeValueForKeyPath_ofObject_chang
       }
 
       while (v6 != v10);
-      v6 = [v3 countByEnumeratingWithState:&v31 objects:v40 count:16];
+      v6 = [migrationCopy countByEnumeratingWithState:&v31 objects:v40 count:16];
     }
 
     while (v6);
@@ -560,9 +560,9 @@ LABEL_24:
   return v26;
 }
 
-- (BOOL)containerContainsRecordOfType:(id)a3
+- (BOOL)containerContainsRecordOfType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   v22 = 0;
   v23 = &v22;
   v24 = 0x2020000000;
@@ -571,7 +571,7 @@ LABEL_24:
   v6 = objc_alloc(MEMORY[0x277CBC590]);
   v7 = objc_alloc(MEMORY[0x277CBC578]);
   v8 = [MEMORY[0x277CCAC30] predicateWithValue:1];
-  v9 = [v7 initWithRecordType:v4 predicate:v8];
+  v9 = [v7 initWithRecordType:typeCopy predicate:v8];
   v10 = [v6 initWithQuery:v9];
 
   [v10 setResultsLimit:1];
@@ -590,8 +590,8 @@ LABEL_24:
   v20 = v11;
   [v10 setQueryCompletionBlock:&v16];
   v12 = [(VCCKShortcutSyncCoordinator *)self container:v16];
-  v13 = [v12 privateCloudDatabase];
-  [v13 addOperation:v10];
+  privateCloudDatabase = [v12 privateCloudDatabase];
+  [privateCloudDatabase addOperation:v10];
 
   v14 = dispatch_time(0, 5000000000);
   dispatch_semaphore_wait(v11, v14);
@@ -611,17 +611,17 @@ LABEL_24:
   return [(VCCKShortcutSyncCoordinator *)self containerContainsRecordOfType:@"Shortcut_v2"];
 }
 
-- (void)migrateToCoherenceSyncIfPossible:(id)a3
+- (void)migrateToCoherenceSyncIfPossible:(id)possible
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (([v4 coherenceSyncEnabled] & 1) == 0)
+  possibleCopy = possible;
+  if (([possibleCopy coherenceSyncEnabled] & 1) == 0)
   {
-    v5 = [MEMORY[0x277CBEBD0] lastDeviceRecordsFetchDate];
-    if (v5)
+    lastDeviceRecordsFetchDate = [MEMORY[0x277CBEBD0] lastDeviceRecordsFetchDate];
+    if (lastDeviceRecordsFetchDate)
     {
-      v6 = [MEMORY[0x277CBEAA8] date];
-      [v6 timeIntervalSinceDate:v5];
+      date = [MEMORY[0x277CBEAA8] date];
+      [date timeIntervalSinceDate:lastDeviceRecordsFetchDate];
       v8 = v7;
 
       if (v8 < 172800.0)
@@ -638,24 +638,24 @@ LABEL_24:
     v29 = __Block_byref_object_dispose__5782;
     v30 = 0;
     v10 = MEMORY[0x277D7C1A8];
-    v11 = [(VCCKShortcutSyncCoordinator *)self container];
+    container = [(VCCKShortcutSyncCoordinator *)self container];
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __64__VCCKShortcutSyncCoordinator_migrateToCoherenceSyncIfPossible___block_invoke;
     v21[3] = &unk_2788FFAC0;
     v12 = v9;
     v22 = v12;
-    v23 = self;
+    selfCopy = self;
     v24 = &v25;
-    [v10 fetchDeviceRecordsInContainer:v11 completion:v21];
+    [v10 fetchDeviceRecordsInContainer:container completion:v21];
 
     v13 = dispatch_time(0, 3000000000);
     dispatch_semaphore_wait(v12, v13);
     if (v26[5])
     {
       v14 = MEMORY[0x277CBEBD0];
-      v15 = [MEMORY[0x277CBEAA8] date];
-      [v14 setLastDeviceRecordsFetchDate:v15];
+      date2 = [MEMORY[0x277CBEAA8] date];
+      [v14 setLastDeviceRecordsFetchDate:date2];
 
       if ([(VCCKShortcutSyncCoordinator *)self recordsContainIncompatibleDeviceForCoherenceSyncMigration:v26[5]])
       {
@@ -689,10 +689,10 @@ LABEL_24:
         _os_log_impl(&dword_23103C000, v17, OS_LOG_TYPE_DEFAULT, "%s All devices in user's sync circle have updated, enabling coherence sync", buf, 0xCu);
       }
 
-      v18 = [(VCCKShortcutSyncCoordinator *)self logger];
-      [v18 logEvent:@"enable coherence sync"];
+      logger = [(VCCKShortcutSyncCoordinator *)self logger];
+      [logger logEvent:@"enable coherence sync"];
 
-      [v4 updateSyncTokenWithBlock:&__block_literal_global_252];
+      [possibleCopy updateSyncTokenWithBlock:&__block_literal_global_252];
       [MEMORY[0x277CBEBD0] resetSyncUnavailableMessage];
     }
 
@@ -740,9 +740,9 @@ void __64__VCCKShortcutSyncCoordinator_migrateToCoherenceSyncIfPossible___block_
 {
   if (!self->_logger && [MEMORY[0x277CBEBD0] syncEventLoggingEnabled] && VCIsInternalBuild())
   {
-    v3 = [MEMORY[0x277D7C220] createPersistedSyncEventLogger];
+    createPersistedSyncEventLogger = [MEMORY[0x277D7C220] createPersistedSyncEventLogger];
     logger = self->_logger;
-    self->_logger = v3;
+    self->_logger = createPersistedSyncEventLogger;
   }
 
   v5 = self->_logger;
@@ -752,21 +752,21 @@ void __64__VCCKShortcutSyncCoordinator_migrateToCoherenceSyncIfPossible___block_
 
 - (void)deleteLegacyShortcutsZoneSubscriptionIfNeeded
 {
-  v3 = [(VCCKShortcutSyncCoordinator *)self stateAccessQueue];
-  dispatch_assert_queue_V2(v3);
+  stateAccessQueue = [(VCCKShortcutSyncCoordinator *)self stateAccessQueue];
+  dispatch_assert_queue_V2(stateAccessQueue);
 
-  v4 = [MEMORY[0x277CBEBD0] systemShortcutsUserDefaults];
-  v5 = [v4 BOOLForKey:@"LegacyShortcutsZoneSubscriptionUnsubscribed"];
+  systemShortcutsUserDefaults = [MEMORY[0x277CBEBD0] systemShortcutsUserDefaults];
+  v5 = [systemShortcutsUserDefaults BOOLForKey:@"LegacyShortcutsZoneSubscriptionUnsubscribed"];
 
   if ((v5 & 1) == 0)
   {
-    v6 = [(VCCKShortcutSyncCoordinator *)self container];
+    container = [(VCCKShortcutSyncCoordinator *)self container];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __76__VCCKShortcutSyncCoordinator_deleteLegacyShortcutsZoneSubscriptionIfNeeded__block_invoke;
     v7[3] = &unk_2788FFA98;
     v7[4] = self;
-    [v6 accountStatusWithCompletionHandler:v7];
+    [container accountStatusWithCompletionHandler:v7];
   }
 }
 
@@ -802,17 +802,17 @@ void __76__VCCKShortcutSyncCoordinator_deleteLegacyShortcutsZoneSubscriptionIfNe
   }
 }
 
-- (void)removeAndResetCurrentSyncServiceWithDatabase:(id)a3 reason:(id)a4
+- (void)removeAndResetCurrentSyncServiceWithDatabase:(id)database reason:(id)reason
 {
   if (self->_currentSyncService)
   {
-    v6 = a4;
-    v7 = a3;
-    v8 = [(VCCKShortcutSyncCoordinator *)self logger];
-    v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"clearing sync state and stopping sync service (reason: %@)", v6];
+    reasonCopy = reason;
+    databaseCopy = database;
+    logger = [(VCCKShortcutSyncCoordinator *)self logger];
+    reasonCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"clearing sync state and stopping sync service (reason: %@)", reasonCopy];
 
-    [v8 logEvent:v9];
-    [v7 clearTombstonesAndSyncState];
+    [logger logEvent:reasonCopy];
+    [databaseCopy clearTombstonesAndSyncState];
 
     currentSyncService = self->_currentSyncService;
     self->_currentSyncService = 0;
@@ -845,8 +845,8 @@ void __55__VCCKShortcutSyncCoordinator_updateCurrentSyncService__block_invoke_23
 - (void)updateAccountStatusAndMetadata
 {
   v37 = *MEMORY[0x277D85DE8];
-  v3 = [(VCCKShortcutSyncCoordinator *)self stateAccessQueue];
-  dispatch_assert_queue_V2(v3);
+  stateAccessQueue = [(VCCKShortcutSyncCoordinator *)self stateAccessQueue];
+  dispatch_assert_queue_V2(stateAccessQueue);
 
   v4 = getWFCloudKitSyncLogObject();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -869,22 +869,22 @@ void __55__VCCKShortcutSyncCoordinator_updateCurrentSyncService__block_invoke_23
   v25 = __Block_byref_object_copy__5781;
   v26 = __Block_byref_object_dispose__5782;
   v27 = 0;
-  v6 = [(VCCKShortcutSyncCoordinator *)self container];
+  container = [(VCCKShortcutSyncCoordinator *)self container];
   v14 = MEMORY[0x277D85DD0];
   v15 = 3221225472;
   v16 = __61__VCCKShortcutSyncCoordinator_updateAccountStatusAndMetadata__block_invoke;
   v17 = &unk_2788FFA08;
   v7 = v5;
   v18 = v7;
-  v19 = self;
+  selfCopy = self;
   p_buf = &buf;
   v21 = &v22;
-  [v6 accountInfoWithCompletionHandler:&v14];
+  [container accountInfoWithCompletionHandler:&v14];
 
   dispatch_semaphore_wait(v7, 0xFFFFFFFFFFFFFFFFLL);
   -[VCCKShortcutSyncCoordinator setAccountStatus:](self, "setAccountStatus:", [*(*(&buf + 1) + 40) accountStatus]);
   [(VCCKShortcutSyncCoordinator *)self setUserRecordID:v23[5]];
-  v8 = [*(*(&buf + 1) + 40) walrusStatus];
+  walrusStatus = [*(*(&buf + 1) + 40) walrusStatus];
   v9 = getWFWalrusLogObject();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
@@ -896,7 +896,7 @@ void __55__VCCKShortcutSyncCoordinator_updateCurrentSyncService__block_invoke_23
     _os_log_impl(&dword_23103C000, v9, OS_LOG_TYPE_INFO, "%s Got Walrus status from CloudKit: %@", v28, 0x16u);
   }
 
-  switch(v8)
+  switch(walrusStatus)
   {
     case 2:
       v12 = 0;
@@ -1059,15 +1059,15 @@ void __61__VCCKShortcutSyncCoordinator_updateAccountStatusAndMetadata__block_inv
 
 - (NSString)accountForSyncToken
 {
-  v3 = [(VCCKShortcutSyncCoordinator *)self userRecordID];
-  if (v3)
+  userRecordID = [(VCCKShortcutSyncCoordinator *)self userRecordID];
+  if (userRecordID)
   {
-    v4 = [(VCCKShortcutSyncCoordinator *)self container];
-    v5 = [v4 containerID];
-    [v5 environment];
+    container = [(VCCKShortcutSyncCoordinator *)self container];
+    containerID = [container containerID];
+    [containerID environment];
     v6 = CKContainerEnvironmentString();
 
-    v7 = [MEMORY[0x277D7C238] accountForContainerEnvironmentString:v6 userRecordID:v3];
+    v7 = [MEMORY[0x277D7C238] accountForContainerEnvironmentString:v6 userRecordID:userRecordID];
   }
 
   else
@@ -1119,79 +1119,79 @@ void __64__VCCKShortcutSyncCoordinator_startObservingDataUsagePermission__block_
 
 - (void)stopObservingReachability
 {
-  v2 = [(VCCKShortcutSyncCoordinator *)self pathMonitor];
-  nw_path_monitor_cancel(v2);
+  pathMonitor = [(VCCKShortcutSyncCoordinator *)self pathMonitor];
+  nw_path_monitor_cancel(pathMonitor);
 }
 
 - (void)startObservingReachability
 {
-  v2 = [(VCCKShortcutSyncCoordinator *)self pathMonitor];
-  nw_path_monitor_start(v2);
+  pathMonitor = [(VCCKShortcutSyncCoordinator *)self pathMonitor];
+  nw_path_monitor_start(pathMonitor);
 }
 
 - (void)stopObservingAccountChanges
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277CBBF00] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277CBBF00] object:0];
 }
 
 - (void)startObservingAccountChanges
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 addObserver:self selector:sel_handleAccountChangedNotification_ name:*MEMORY[0x277CBBF00] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_handleAccountChangedNotification_ name:*MEMORY[0x277CBBF00] object:0];
 }
 
 - (void)stopObservingApplicationVisibility
 {
-  v3 = [(VCCKShortcutSyncCoordinator *)self applicationObserver];
-  [v3 removeObserver:self forKeyPath:@"applicationVisible" context:VCCKShortcutSyncAccountObserverApplicationVisibilityChangedContext];
+  applicationObserver = [(VCCKShortcutSyncCoordinator *)self applicationObserver];
+  [applicationObserver removeObserver:self forKeyPath:@"applicationVisible" context:VCCKShortcutSyncAccountObserverApplicationVisibilityChangedContext];
 }
 
 - (void)startObservingApplicationVisibility
 {
-  v3 = [(VCCKShortcutSyncCoordinator *)self applicationObserver];
-  [v3 addObserver:self forKeyPath:@"applicationVisible" options:0 context:VCCKShortcutSyncAccountObserverApplicationVisibilityChangedContext];
+  applicationObserver = [(VCCKShortcutSyncCoordinator *)self applicationObserver];
+  [applicationObserver addObserver:self forKeyPath:@"applicationVisible" options:0 context:VCCKShortcutSyncAccountObserverApplicationVisibilityChangedContext];
 }
 
 - (void)stopObservingUserDefaults
 {
-  v3 = [MEMORY[0x277CBEBD0] workflowUserDefaults];
-  [v3 removeObserver:self forKeyPath:*MEMORY[0x277D7CBD8] context:VCCKShortcutSyncAccountObserverUserDefaultsChangedContext];
+  workflowUserDefaults = [MEMORY[0x277CBEBD0] workflowUserDefaults];
+  [workflowUserDefaults removeObserver:self forKeyPath:*MEMORY[0x277D7CBD8] context:VCCKShortcutSyncAccountObserverUserDefaultsChangedContext];
 
-  v4 = [MEMORY[0x277CBEBD0] workflowUserDefaults];
-  [v4 removeObserver:self forKeyPath:*MEMORY[0x277D7CBE8] context:VCCKShortcutSyncAccountObserverUserDefaultsChangedContext];
+  workflowUserDefaults2 = [MEMORY[0x277CBEBD0] workflowUserDefaults];
+  [workflowUserDefaults2 removeObserver:self forKeyPath:*MEMORY[0x277D7CBE8] context:VCCKShortcutSyncAccountObserverUserDefaultsChangedContext];
 
-  v5 = [MEMORY[0x277CBEBD0] systemShortcutsUserDefaults];
-  [v5 removeObserver:self forKeyPath:*MEMORY[0x277D7D080] context:VCCKShortcutSyncAccountObserverUserDefaultsChangedContext];
+  systemShortcutsUserDefaults = [MEMORY[0x277CBEBD0] systemShortcutsUserDefaults];
+  [systemShortcutsUserDefaults removeObserver:self forKeyPath:*MEMORY[0x277D7D080] context:VCCKShortcutSyncAccountObserverUserDefaultsChangedContext];
 }
 
 - (void)startObservingUserDefaults
 {
   objc_opt_class();
-  v3 = [MEMORY[0x277CBEBD0] workflowUserDefaults];
-  [v3 addObserver:self forKeyPath:*MEMORY[0x277D7CBD8] options:4 context:VCCKShortcutSyncAccountObserverUserDefaultsChangedContext];
+  workflowUserDefaults = [MEMORY[0x277CBEBD0] workflowUserDefaults];
+  [workflowUserDefaults addObserver:self forKeyPath:*MEMORY[0x277D7CBD8] options:4 context:VCCKShortcutSyncAccountObserverUserDefaultsChangedContext];
 
-  v4 = [MEMORY[0x277CBEBD0] workflowUserDefaults];
-  [v4 addObserver:self forKeyPath:*MEMORY[0x277D7CBE8] options:0 context:VCCKShortcutSyncAccountObserverUserDefaultsChangedContext];
+  workflowUserDefaults2 = [MEMORY[0x277CBEBD0] workflowUserDefaults];
+  [workflowUserDefaults2 addObserver:self forKeyPath:*MEMORY[0x277D7CBE8] options:0 context:VCCKShortcutSyncAccountObserverUserDefaultsChangedContext];
 
-  v5 = [MEMORY[0x277CBEBD0] systemShortcutsUserDefaults];
-  [v5 addObserver:self forKeyPath:*MEMORY[0x277D7D080] options:0 context:VCCKShortcutSyncAccountObserverUserDefaultsChangedContext];
+  systemShortcutsUserDefaults = [MEMORY[0x277CBEBD0] systemShortcutsUserDefaults];
+  [systemShortcutsUserDefaults addObserver:self forKeyPath:*MEMORY[0x277D7D080] options:0 context:VCCKShortcutSyncAccountObserverUserDefaultsChangedContext];
 }
 
 - (void)setupPathMonitor
 {
   objc_initWeak(&location, self);
-  v3 = [(VCCKShortcutSyncCoordinator *)self pathMonitor];
+  pathMonitor = [(VCCKShortcutSyncCoordinator *)self pathMonitor];
   v6 = MEMORY[0x277D85DD0];
   v7 = 3221225472;
   v8 = __47__VCCKShortcutSyncCoordinator_setupPathMonitor__block_invoke;
   v9 = &unk_2788FF990;
   objc_copyWeak(&v10, &location);
-  nw_path_monitor_set_update_handler(v3, &v6);
+  nw_path_monitor_set_update_handler(pathMonitor, &v6);
 
   v4 = [(VCCKShortcutSyncCoordinator *)self pathMonitor:v6];
-  v5 = [(VCCKShortcutSyncCoordinator *)self stateAccessQueue];
-  nw_path_monitor_set_queue(v4, v5);
+  stateAccessQueue = [(VCCKShortcutSyncCoordinator *)self stateAccessQueue];
+  nw_path_monitor_set_queue(v4, stateAccessQueue);
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(&location);
@@ -1201,20 +1201,20 @@ void __64__VCCKShortcutSyncCoordinator_startObservingDataUsagePermission__block_
 {
   v16 = *MEMORY[0x277D85DE8];
   v3 = os_transaction_create();
-  v4 = [MEMORY[0x277D7C230] isWalrusEnabled];
+  isWalrusEnabled = [MEMORY[0x277D7C230] isWalrusEnabled];
   v5 = getWFWalrusLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     v13 = "[VCCKShortcutSyncCoordinator handleWalrusStatusDidChange]";
     v14 = 1024;
-    LODWORD(v15) = v4;
+    LODWORD(v15) = isWalrusEnabled;
     _os_log_impl(&dword_23103C000, v5, OS_LOG_TYPE_INFO, "%s Handling CloudKit Walrus status change, walrusEnabled = %d", buf, 0x12u);
   }
 
-  v6 = [(VCCKShortcutSyncCoordinator *)self databaseProvider];
+  databaseProvider = [(VCCKShortcutSyncCoordinator *)self databaseProvider];
   v11 = 0;
-  v7 = [v6 databaseWithError:&v11];
+  v7 = [databaseProvider databaseWithError:&v11];
   v8 = v11;
 
   if (v7)
@@ -1241,14 +1241,14 @@ void __64__VCCKShortcutSyncCoordinator_startObservingDataUsagePermission__block_
 - (void)handleCloudKitSyncZoneWasPurgedChange
 {
   v10 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277D7C230] zoneWasPurged];
+  zoneWasPurged = [MEMORY[0x277D7C230] zoneWasPurged];
   v4 = getWFCloudKitSyncLogObject();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     v6 = 136315394;
     v7 = "[VCCKShortcutSyncCoordinator handleCloudKitSyncZoneWasPurgedChange]";
     v8 = 1024;
-    v9 = v3;
+    v9 = zoneWasPurged;
     _os_log_impl(&dword_23103C000, v4, OS_LOG_TYPE_INFO, "%s Handling CloudKit sync zone purged flag change, zoneWasPurged = %d", &v6, 0x12u);
   }
 
@@ -1258,29 +1258,29 @@ void __64__VCCKShortcutSyncCoordinator_startObservingDataUsagePermission__block_
 
 - (void)handleCloudKitSyncEnabledChange
 {
-  v3 = [MEMORY[0x277D7C230] isSyncEnabled];
+  isSyncEnabled = [MEMORY[0x277D7C230] isSyncEnabled];
 
-  [(VCCKShortcutSyncCoordinator *)self setSyncEnabled:v3];
+  [(VCCKShortcutSyncCoordinator *)self setSyncEnabled:isSyncEnabled];
 }
 
-- (void)setSyncEnabled:(BOOL)a3
+- (void)setSyncEnabled:(BOOL)enabled
 {
   v11 = *MEMORY[0x277D85DE8];
-  if (self->_syncEnabled != a3)
+  if (self->_syncEnabled != enabled)
   {
-    v3 = a3;
-    self->_syncEnabled = a3;
+    enabledCopy = enabled;
+    self->_syncEnabled = enabled;
     v5 = getWFCloudKitSyncLogObject();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v7 = 136315394;
       v8 = "[VCCKShortcutSyncCoordinator setSyncEnabled:]";
       v9 = 1024;
-      v10 = v3;
+      v10 = enabledCopy;
       _os_log_impl(&dword_23103C000, v5, OS_LOG_TYPE_INFO, "%s Handling CloudKit sync enabled setting change, syncEnabled = %d", &v7, 0x12u);
     }
 
-    if (v3)
+    if (enabledCopy)
     {
       [(VCCKShortcutSyncCoordinator *)self startObservingAccountChanges];
       [(VCCKShortcutSyncCoordinator *)self startObservingReachability];
@@ -1310,14 +1310,14 @@ void __64__VCCKShortcutSyncCoordinator_startObservingDataUsagePermission__block_
   v10 = __Block_byref_object_copy__5781;
   v11 = __Block_byref_object_dispose__5782;
   v12 = 0;
-  v3 = [(VCCKShortcutSyncCoordinator *)self stateAccessQueue];
+  stateAccessQueue = [(VCCKShortcutSyncCoordinator *)self stateAccessQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __49__VCCKShortcutSyncCoordinator_currentSyncService__block_invoke;
   v6[3] = &unk_2789000D0;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(stateAccessQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -1327,13 +1327,13 @@ void __64__VCCKShortcutSyncCoordinator_startObservingDataUsagePermission__block_
 
 - (void)start
 {
-  v3 = [(VCCKShortcutSyncCoordinator *)self stateAccessQueue];
+  stateAccessQueue = [(VCCKShortcutSyncCoordinator *)self stateAccessQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __36__VCCKShortcutSyncCoordinator_start__block_invoke;
   block[3] = &unk_278900148;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(stateAccessQueue, block);
 }
 
 uint64_t __36__VCCKShortcutSyncCoordinator_start__block_invoke(uint64_t a1)
@@ -1364,13 +1364,13 @@ uint64_t __36__VCCKShortcutSyncCoordinator_start__block_invoke(uint64_t a1)
 
 - (void)dealloc
 {
-  v3 = [(VCCKShortcutSyncCoordinator *)self stateAccessQueue];
+  stateAccessQueue = [(VCCKShortcutSyncCoordinator *)self stateAccessQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __38__VCCKShortcutSyncCoordinator_dealloc__block_invoke;
   block[3] = &unk_278900148;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(stateAccessQueue, block);
 
   v4.receiver = self;
   v4.super_class = VCCKShortcutSyncCoordinator;
@@ -1396,13 +1396,13 @@ void __38__VCCKShortcutSyncCoordinator_dealloc__block_invoke(uint64_t a1)
   }
 }
 
-- (VCCKShortcutSyncCoordinator)initWithDatabaseProvider:(id)a3
+- (VCCKShortcutSyncCoordinator)initWithDatabaseProvider:(id)provider
 {
-  v6 = a3;
-  if (!v6)
+  providerCopy = provider;
+  if (!providerCopy)
   {
-    v25 = [MEMORY[0x277CCA890] currentHandler];
-    [v25 handleFailureInMethod:a2 object:self file:@"VCCKShortcutSyncCoordinator.m" lineNumber:61 description:{@"Invalid parameter not satisfying: %@", @"databaseProvider"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"VCCKShortcutSyncCoordinator.m" lineNumber:61 description:{@"Invalid parameter not satisfying: %@", @"databaseProvider"}];
   }
 
   v26.receiver = self;
@@ -1411,7 +1411,7 @@ void __38__VCCKShortcutSyncCoordinator_dealloc__block_invoke(uint64_t a1)
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_databaseProvider, a3);
+    objc_storeStrong(&v7->_databaseProvider, provider);
     v9 = WFShortcutsCloudKitContainer();
     container = v8->_container;
     v8->_container = v9;

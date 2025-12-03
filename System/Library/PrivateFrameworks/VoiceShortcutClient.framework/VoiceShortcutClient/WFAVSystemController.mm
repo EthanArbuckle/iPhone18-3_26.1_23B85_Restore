@@ -1,25 +1,25 @@
 @interface WFAVSystemController
 - (BOOL)silentModeActive;
-- (BOOL)toggleSilentModeWithReason:(id)a3 client:(int64_t)a4;
+- (BOOL)toggleSilentModeWithReason:(id)reason client:(int64_t)client;
 - (id)avSystemController;
 @end
 
 @implementation WFAVSystemController
 
-- (BOOL)toggleSilentModeWithReason:(id)a3 client:(int64_t)a4
+- (BOOL)toggleSilentModeWithReason:(id)reason client:(int64_t)client
 {
-  v6 = a3;
-  LOBYTE(a4) = [(WFAVSystemController *)self setSilentMode:[(WFAVSystemController *)self silentModeActive]^ 1 reason:v6 client:a4];
+  reasonCopy = reason;
+  LOBYTE(client) = [(WFAVSystemController *)self setSilentMode:[(WFAVSystemController *)self silentModeActive]^ 1 reason:reasonCopy client:client];
 
-  return a4;
+  return client;
 }
 
 - (BOOL)silentModeActive
 {
-  v2 = [(WFAVSystemController *)self avSystemController];
-  v3 = [v2 getSilentMode];
+  avSystemController = [(WFAVSystemController *)self avSystemController];
+  getSilentMode = [avSystemController getSilentMode];
 
-  return v3;
+  return getSilentMode;
 }
 
 - (id)avSystemController
@@ -42,9 +42,9 @@
 
   v3 = v2;
   _Block_object_dispose(&v7, 8);
-  v4 = [v2 sharedAVSystemController];
+  sharedAVSystemController = [v2 sharedAVSystemController];
 
-  return v4;
+  return sharedAVSystemController;
 }
 
 @end

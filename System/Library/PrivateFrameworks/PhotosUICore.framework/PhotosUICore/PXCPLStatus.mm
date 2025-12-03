@@ -1,24 +1,24 @@
 @interface PXCPLStatus
-+ (PXCPLStatus)statusWithStringRepresentation:(id)a3 currentDate:(id)a4;
-- (BOOL)_isEqualToCPLStatus:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (PXCPLStatus)statusWithStringRepresentation:(id)representation currentDate:(id)date;
+- (BOOL)_isEqualToCPLStatus:(id)status;
+- (BOOL)isEqual:(id)equal;
 - (NSString)stringRepresentation;
 - (PXCPLStatus)init;
 - (float)fractionCompletedForLibraryRebuild;
 - (float)fractionCompletedForUpload;
 - (id)_dictionaryRepresentation;
-- (id)_initWithDictionaryRepresentation:(id)a3 currentDate:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setFractionCompletedForLibraryRebuild:(float)a3;
-- (void)setFractionCompletedForUpload:(float)a3;
+- (id)_initWithDictionaryRepresentation:(id)representation currentDate:(id)date;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setFractionCompletedForLibraryRebuild:(float)rebuild;
+- (void)setFractionCompletedForUpload:(float)upload;
 @end
 
 @implementation PXCPLStatus
 
 - (NSString)stringRepresentation
 {
-  v2 = [(PXCPLStatus *)self _dictionaryRepresentation];
-  v3 = _DictionaryRepresentationToString(v2);
+  _dictionaryRepresentation = [(PXCPLStatus *)self _dictionaryRepresentation];
+  v3 = _DictionaryRepresentationToString(_dictionaryRepresentation);
 
   return v3;
 }
@@ -26,102 +26,102 @@
 - (id)_dictionaryRepresentation
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [(PXCPLStatus *)self isEnabled];
-  v5 = [MEMORY[0x1E696AD98] numberWithBool:v4];
-  v6 = [v5 stringValue];
-  [v3 setObject:v6 forKeyedSubscript:@"enabled"];
+  isEnabled = [(PXCPLStatus *)self isEnabled];
+  v5 = [MEMORY[0x1E696AD98] numberWithBool:isEnabled];
+  stringValue = [v5 stringValue];
+  [v3 setObject:stringValue forKeyedSubscript:@"enabled"];
 
-  v7 = [(PXCPLStatus *)self percentCompletedForLibraryRebuild];
-  if (v7 != -1)
+  percentCompletedForLibraryRebuild = [(PXCPLStatus *)self percentCompletedForLibraryRebuild];
+  if (percentCompletedForLibraryRebuild != -1)
   {
-    v8 = [MEMORY[0x1E696AD98] numberWithInteger:v7];
-    v9 = [v8 stringValue];
-    [v3 setObject:v9 forKeyedSubscript:@"rebuild"];
+    v8 = [MEMORY[0x1E696AD98] numberWithInteger:percentCompletedForLibraryRebuild];
+    stringValue2 = [v8 stringValue];
+    [v3 setObject:stringValue2 forKeyedSubscript:@"rebuild"];
   }
 
   if ([(PXCPLStatus *)self isRebuildingThumbnails])
   {
-    v10 = [MEMORY[0x1E695E118] stringValue];
-    [v3 setObject:v10 forKeyedSubscript:@"thumbnails"];
+    stringValue3 = [MEMORY[0x1E695E118] stringValue];
+    [v3 setObject:stringValue3 forKeyedSubscript:@"thumbnails"];
   }
 
   if ([(PXCPLStatus *)self isSyncing])
   {
-    v11 = [MEMORY[0x1E695E118] stringValue];
-    [v3 setObject:v11 forKeyedSubscript:@"syncing"];
+    stringValue4 = [MEMORY[0x1E695E118] stringValue];
+    [v3 setObject:stringValue4 forKeyedSubscript:@"syncing"];
   }
 
-  v12 = [(PXCPLStatus *)self numberOfItemsToUpload];
-  if (v12)
+  numberOfItemsToUpload = [(PXCPLStatus *)self numberOfItemsToUpload];
+  if (numberOfItemsToUpload)
   {
-    v13 = [MEMORY[0x1E696AD98] numberWithInteger:v12];
-    v14 = [v13 stringValue];
-    [v3 setObject:v14 forKeyedSubscript:@"upload"];
+    v13 = [MEMORY[0x1E696AD98] numberWithInteger:numberOfItemsToUpload];
+    stringValue5 = [v13 stringValue];
+    [v3 setObject:stringValue5 forKeyedSubscript:@"upload"];
   }
 
-  v15 = [(PXCPLStatus *)self percentCompletedForUpload];
-  if (v15 != -1)
+  percentCompletedForUpload = [(PXCPLStatus *)self percentCompletedForUpload];
+  if (percentCompletedForUpload != -1)
   {
-    v16 = [MEMORY[0x1E696AD98] numberWithInteger:v15];
-    v17 = [v16 stringValue];
-    [v3 setObject:v17 forKeyedSubscript:@"progress"];
+    v16 = [MEMORY[0x1E696AD98] numberWithInteger:percentCompletedForUpload];
+    stringValue6 = [v16 stringValue];
+    [v3 setObject:stringValue6 forKeyedSubscript:@"progress"];
   }
 
-  v18 = [(PXCPLStatus *)self numberOfItemsToAdd];
-  if (v18)
+  numberOfItemsToAdd = [(PXCPLStatus *)self numberOfItemsToAdd];
+  if (numberOfItemsToAdd)
   {
-    v19 = [MEMORY[0x1E696AD98] numberWithInteger:v18];
-    v20 = [v19 stringValue];
-    [v3 setObject:v20 forKeyedSubscript:@"add"];
+    v19 = [MEMORY[0x1E696AD98] numberWithInteger:numberOfItemsToAdd];
+    stringValue7 = [v19 stringValue];
+    [v3 setObject:stringValue7 forKeyedSubscript:@"add"];
   }
 
-  v21 = [(PXCPLStatus *)self numberOfOriginalsToDownload];
-  if (v21)
+  numberOfOriginalsToDownload = [(PXCPLStatus *)self numberOfOriginalsToDownload];
+  if (numberOfOriginalsToDownload)
   {
-    v22 = [MEMORY[0x1E696AD98] numberWithInteger:v21];
-    v23 = [v22 stringValue];
-    [v3 setObject:v23 forKeyedSubscript:@"download"];
+    v22 = [MEMORY[0x1E696AD98] numberWithInteger:numberOfOriginalsToDownload];
+    stringValue8 = [v22 stringValue];
+    [v3 setObject:stringValue8 forKeyedSubscript:@"download"];
   }
 
   if ([(PXCPLStatus *)self isOffline])
   {
-    v24 = [MEMORY[0x1E695E118] stringValue];
-    [v3 setObject:v24 forKeyedSubscript:@"offline"];
+    stringValue9 = [MEMORY[0x1E695E118] stringValue];
+    [v3 setObject:stringValue9 forKeyedSubscript:@"offline"];
   }
 
   if ([(PXCPLStatus *)self isInSoftResetSync])
   {
-    v25 = [MEMORY[0x1E695E118] stringValue];
-    [v3 setObject:v25 forKeyedSubscript:@"soft-reset"];
+    stringValue10 = [MEMORY[0x1E695E118] stringValue];
+    [v3 setObject:stringValue10 forKeyedSubscript:@"soft-reset"];
   }
 
   if ([(PXCPLStatus *)self isInHardResetSync])
   {
-    v26 = [MEMORY[0x1E695E118] stringValue];
-    [v3 setObject:v26 forKeyedSubscript:@"hard-reset"];
+    stringValue11 = [MEMORY[0x1E695E118] stringValue];
+    [v3 setObject:stringValue11 forKeyedSubscript:@"hard-reset"];
   }
 
   if ([(PXCPLStatus *)self isExceedingQuota])
   {
-    v27 = [MEMORY[0x1E695E118] stringValue];
-    [v3 setObject:v27 forKeyedSubscript:@"cloud-quota"];
+    stringValue12 = [MEMORY[0x1E695E118] stringValue];
+    [v3 setObject:stringValue12 forKeyedSubscript:@"cloud-quota"];
   }
 
   if ([(PXCPLStatus *)self hasCloudQuotaOffer])
   {
-    v28 = [MEMORY[0x1E695E118] stringValue];
-    [v3 setObject:v28 forKeyedSubscript:@"offer"];
+    stringValue13 = [MEMORY[0x1E695E118] stringValue];
+    [v3 setObject:stringValue13 forKeyedSubscript:@"offer"];
   }
 
-  v29 = [(PXCPLStatus *)self cloudQuotaState];
-  if (v29 == 1)
+  cloudQuotaState = [(PXCPLStatus *)self cloudQuotaState];
+  if (cloudQuotaState == 1)
   {
     v30 = @"almost-full";
   }
 
   else
   {
-    if (v29 != 2)
+    if (cloudQuotaState != 2)
     {
       goto LABEL_30;
     }
@@ -131,180 +131,180 @@
 
   [v3 setObject:v30 forKeyedSubscript:@"quota-state"];
 LABEL_30:
-  v31 = [(PXCPLStatus *)self cloudQuotaTitle];
-  if ([v31 length])
+  cloudQuotaTitle = [(PXCPLStatus *)self cloudQuotaTitle];
+  if ([cloudQuotaTitle length])
   {
-    [v3 setObject:v31 forKeyedSubscript:@"quota-title"];
+    [v3 setObject:cloudQuotaTitle forKeyedSubscript:@"quota-title"];
   }
 
-  v32 = [(PXCPLStatus *)self cloudQuotaMessage];
-  if ([v32 length])
+  cloudQuotaMessage = [(PXCPLStatus *)self cloudQuotaMessage];
+  if ([cloudQuotaMessage length])
   {
-    [v3 setObject:v32 forKeyedSubscript:@"quota-subtitle"];
+    [v3 setObject:cloudQuotaMessage forKeyedSubscript:@"quota-subtitle"];
   }
 
-  v33 = [(PXCPLStatus *)self cloudQuotaActionTitle];
-  if ([v33 length])
+  cloudQuotaActionTitle = [(PXCPLStatus *)self cloudQuotaActionTitle];
+  if ([cloudQuotaActionTitle length])
   {
-    [v3 setObject:v33 forKeyedSubscript:@"quota-action-title"];
+    [v3 setObject:cloudQuotaActionTitle forKeyedSubscript:@"quota-action-title"];
   }
 
   if ([(PXCPLStatus *)self isLowDiskSpace])
   {
-    v34 = [MEMORY[0x1E695E118] stringValue];
-    [v3 setObject:v34 forKeyedSubscript:@"low-disk-space"];
+    stringValue14 = [MEMORY[0x1E695E118] stringValue];
+    [v3 setObject:stringValue14 forKeyedSubscript:@"low-disk-space"];
   }
 
   if ([(PXCPLStatus *)self isVeryLowDiskSpace])
   {
-    v35 = [MEMORY[0x1E695E118] stringValue];
-    [v3 setObject:v35 forKeyedSubscript:@"very-low-disk-space"];
+    stringValue15 = [MEMORY[0x1E695E118] stringValue];
+    [v3 setObject:stringValue15 forKeyedSubscript:@"very-low-disk-space"];
   }
 
   if ([(PXCPLStatus *)self isExceedingBatteryQuota])
   {
-    v36 = [MEMORY[0x1E695E118] stringValue];
-    [v3 setObject:v36 forKeyedSubscript:@"battery-budget"];
+    stringValue16 = [MEMORY[0x1E695E118] stringValue];
+    [v3 setObject:stringValue16 forKeyedSubscript:@"battery-budget"];
   }
 
   if ([(PXCPLStatus *)self isExceedingCellularQuota])
   {
-    v37 = [MEMORY[0x1E695E118] stringValue];
-    [v3 setObject:v37 forKeyedSubscript:@"cellular-budget"];
+    stringValue17 = [MEMORY[0x1E695E118] stringValue];
+    [v3 setObject:stringValue17 forKeyedSubscript:@"cellular-budget"];
   }
 
   if ([(PXCPLStatus *)self isCellularDataDisabled])
   {
-    v38 = [MEMORY[0x1E695E118] stringValue];
-    [v3 setObject:v38 forKeyedSubscript:@"cellular-disabled"];
+    stringValue18 = [MEMORY[0x1E695E118] stringValue];
+    [v3 setObject:stringValue18 forKeyedSubscript:@"cellular-disabled"];
   }
 
   if ([(PXCPLStatus *)self isInAirplaneMode])
   {
-    v39 = [MEMORY[0x1E695E118] stringValue];
-    [v3 setObject:v39 forKeyedSubscript:@"airplane-mode"];
+    stringValue19 = [MEMORY[0x1E695E118] stringValue];
+    [v3 setObject:stringValue19 forKeyedSubscript:@"airplane-mode"];
   }
 
   if ([(PXCPLStatus *)self isUserPaused])
   {
-    v40 = [MEMORY[0x1E695E118] stringValue];
-    [v3 setObject:v40 forKeyedSubscript:@"user"];
+    stringValue20 = [MEMORY[0x1E695E118] stringValue];
+    [v3 setObject:stringValue20 forKeyedSubscript:@"user"];
   }
 
   if ([(PXCPLStatus *)self isInLowDataMode])
   {
-    v41 = [MEMORY[0x1E695E118] stringValue];
-    [v3 setObject:v41 forKeyedSubscript:@"low-data-mode"];
+    stringValue21 = [MEMORY[0x1E695E118] stringValue];
+    [v3 setObject:stringValue21 forKeyedSubscript:@"low-data-mode"];
   }
 
   if ([(PXCPLStatus *)self isInLowPowerMode])
   {
-    v42 = [MEMORY[0x1E695E118] stringValue];
-    [v3 setObject:v42 forKeyedSubscript:@"low-power-mode"];
+    stringValue22 = [MEMORY[0x1E695E118] stringValue];
+    [v3 setObject:stringValue22 forKeyedSubscript:@"low-power-mode"];
   }
 
   if ([(PXCPLStatus *)self isClientVersionTooOld])
   {
-    v43 = [MEMORY[0x1E695E118] stringValue];
-    [v3 setObject:v43 forKeyedSubscript:@"version"];
+    stringValue23 = [MEMORY[0x1E695E118] stringValue];
+    [v3 setObject:stringValue23 forKeyedSubscript:@"version"];
   }
 
   if ([(PXCPLStatus *)self isClientNotAuthenticated])
   {
-    v44 = [MEMORY[0x1E695E118] stringValue];
-    [v3 setObject:v44 forKeyedSubscript:@"authenticate"];
+    stringValue24 = [MEMORY[0x1E695E118] stringValue];
+    [v3 setObject:stringValue24 forKeyedSubscript:@"authenticate"];
   }
 
   if ([(PXCPLStatus *)self isCapturingSnapshot])
   {
-    v45 = [MEMORY[0x1E695E118] stringValue];
-    [v3 setObject:v45 forKeyedSubscript:@"capture-snapshot"];
+    stringValue25 = [MEMORY[0x1E695E118] stringValue];
+    [v3 setObject:stringValue25 forKeyedSubscript:@"capture-snapshot"];
   }
 
   if ([(PXCPLStatus *)self isOptimizingSystemPerformance])
   {
-    v46 = [MEMORY[0x1E695E118] stringValue];
-    [v3 setObject:v46 forKeyedSubscript:@"optimizing-system-performance"];
+    stringValue26 = [MEMORY[0x1E695E118] stringValue];
+    [v3 setObject:stringValue26 forKeyedSubscript:@"optimizing-system-performance"];
   }
 
   if ([(PXCPLStatus *)self isInPoorNetworkConnection])
   {
-    v47 = [MEMORY[0x1E695E118] stringValue];
-    [v3 setObject:v47 forKeyedSubscript:@"poor-network-connection"];
+    stringValue27 = [MEMORY[0x1E695E118] stringValue];
+    [v3 setObject:stringValue27 forKeyedSubscript:@"poor-network-connection"];
   }
 
   if ([(PXCPLStatus *)self isInModerateThermalPressure])
   {
-    v48 = [MEMORY[0x1E695E118] stringValue];
-    [v3 setObject:v48 forKeyedSubscript:@"moderate-thermal-pressure"];
+    stringValue28 = [MEMORY[0x1E695E118] stringValue];
+    [v3 setObject:stringValue28 forKeyedSubscript:@"moderate-thermal-pressure"];
   }
 
   if ([(PXCPLStatus *)self isInHeavyThermalPressure])
   {
-    v49 = [MEMORY[0x1E695E118] stringValue];
-    [v3 setObject:v49 forKeyedSubscript:@"heavy-thermal-pressure"];
+    stringValue29 = [MEMORY[0x1E695E118] stringValue];
+    [v3 setObject:stringValue29 forKeyedSubscript:@"heavy-thermal-pressure"];
   }
 
   if ([(PXCPLStatus *)self isInLowBattery])
   {
-    v50 = [MEMORY[0x1E695E118] stringValue];
-    [v3 setObject:v50 forKeyedSubscript:@"low-battery"];
+    stringValue30 = [MEMORY[0x1E695E118] stringValue];
+    [v3 setObject:stringValue30 forKeyedSubscript:@"low-battery"];
   }
 
-  v51 = [(PXCPLStatus *)self syncDate];
-  if (v51)
+  syncDate = [(PXCPLStatus *)self syncDate];
+  if (syncDate)
   {
     v52 = _SerializationDateFormatter();
-    v53 = [v52 stringFromDate:v51];
+    v53 = [v52 stringFromDate:syncDate];
     [v3 setObject:v53 forKeyedSubscript:@"sync-date"];
   }
 
-  v54 = [(PXCPLStatus *)self exitDate];
-  if (v54)
+  exitDate = [(PXCPLStatus *)self exitDate];
+  if (exitDate)
   {
     v55 = _SerializationDateFormatter();
-    v56 = [v55 stringFromDate:v54];
+    v56 = [v55 stringFromDate:exitDate];
     [v3 setObject:v56 forKeyedSubscript:@"exit-date"];
   }
 
-  v57 = [(PXCPLStatus *)self numberOfItemsFailingToUpload];
-  if (v57)
+  numberOfItemsFailingToUpload = [(PXCPLStatus *)self numberOfItemsFailingToUpload];
+  if (numberOfItemsFailingToUpload)
   {
-    v58 = [MEMORY[0x1E696AD98] numberWithInteger:v57];
-    v59 = [v58 stringValue];
-    [v3 setObject:v59 forKeyedSubscript:@"failed"];
+    v58 = [MEMORY[0x1E696AD98] numberWithInteger:numberOfItemsFailingToUpload];
+    stringValue31 = [v58 stringValue];
+    [v3 setObject:stringValue31 forKeyedSubscript:@"failed"];
   }
 
-  v60 = [(PXCPLStatus *)self numberOfReferencedItems];
-  if (v60)
+  numberOfReferencedItems = [(PXCPLStatus *)self numberOfReferencedItems];
+  if (numberOfReferencedItems)
   {
-    v61 = [MEMORY[0x1E696AD98] numberWithInteger:v60];
-    v62 = [v61 stringValue];
-    [v3 setObject:v62 forKeyedSubscript:@"referenced"];
+    v61 = [MEMORY[0x1E696AD98] numberWithInteger:numberOfReferencedItems];
+    stringValue32 = [v61 stringValue];
+    [v3 setObject:stringValue32 forKeyedSubscript:@"referenced"];
   }
 
-  v63 = [(PXCPLStatus *)self numberOfPhotoAssets];
-  if (v63)
+  numberOfPhotoAssets = [(PXCPLStatus *)self numberOfPhotoAssets];
+  if (numberOfPhotoAssets)
   {
-    v64 = [MEMORY[0x1E696AD98] numberWithInteger:v63];
-    v65 = [v64 stringValue];
-    [v3 setObject:v65 forKeyedSubscript:@"photos"];
+    v64 = [MEMORY[0x1E696AD98] numberWithInteger:numberOfPhotoAssets];
+    stringValue33 = [v64 stringValue];
+    [v3 setObject:stringValue33 forKeyedSubscript:@"photos"];
   }
 
-  v66 = [(PXCPLStatus *)self numberOfVideoAssets];
-  if (v66)
+  numberOfVideoAssets = [(PXCPLStatus *)self numberOfVideoAssets];
+  if (numberOfVideoAssets)
   {
-    v67 = [MEMORY[0x1E696AD98] numberWithInteger:v66];
-    v68 = [v67 stringValue];
-    [v3 setObject:v68 forKeyedSubscript:@"videos"];
+    v67 = [MEMORY[0x1E696AD98] numberWithInteger:numberOfVideoAssets];
+    stringValue34 = [v67 stringValue];
+    [v3 setObject:stringValue34 forKeyedSubscript:@"videos"];
   }
 
-  v69 = [(PXCPLStatus *)self numberOfOtherAssets];
-  if (v69)
+  numberOfOtherAssets = [(PXCPLStatus *)self numberOfOtherAssets];
+  if (numberOfOtherAssets)
   {
-    v70 = [MEMORY[0x1E696AD98] numberWithInteger:v69];
-    v71 = [v70 stringValue];
-    [v3 setObject:v71 forKeyedSubscript:@"others"];
+    v70 = [MEMORY[0x1E696AD98] numberWithInteger:numberOfOtherAssets];
+    stringValue35 = [v70 stringValue];
+    [v3 setObject:stringValue35 forKeyedSubscript:@"others"];
   }
 
   v72 = [(PXCPLStatus *)self sharedLibraryState]- 1;
@@ -313,46 +313,46 @@ LABEL_30:
     [v3 setObject:off_1E7738348[v72] forKeyedSubscript:@"shared-library-state"];
   }
 
-  v73 = [(PXCPLStatus *)self sharedLibraryExitingWithNumberOfAssetsRemaining];
-  if (v73)
+  sharedLibraryExitingWithNumberOfAssetsRemaining = [(PXCPLStatus *)self sharedLibraryExitingWithNumberOfAssetsRemaining];
+  if (sharedLibraryExitingWithNumberOfAssetsRemaining)
   {
-    v74 = [MEMORY[0x1E696AD98] numberWithInteger:v73];
-    v75 = [v74 stringValue];
-    [v3 setObject:v75 forKeyedSubscript:@"shared-library-exiting-count"];
+    v74 = [MEMORY[0x1E696AD98] numberWithInteger:sharedLibraryExitingWithNumberOfAssetsRemaining];
+    stringValue36 = [v74 stringValue];
+    [v3 setObject:stringValue36 forKeyedSubscript:@"shared-library-exiting-count"];
   }
 
-  v76 = [(PXCPLStatus *)self sharedLibraryMovingToShared];
-  if (v76)
+  sharedLibraryMovingToShared = [(PXCPLStatus *)self sharedLibraryMovingToShared];
+  if (sharedLibraryMovingToShared)
   {
-    v77 = [MEMORY[0x1E696AD98] numberWithInteger:v76];
-    v78 = [v77 stringValue];
-    [v3 setObject:v78 forKeyedSubscript:@"move-to-shared"];
+    v77 = [MEMORY[0x1E696AD98] numberWithInteger:sharedLibraryMovingToShared];
+    stringValue37 = [v77 stringValue];
+    [v3 setObject:stringValue37 forKeyedSubscript:@"move-to-shared"];
   }
 
-  v79 = [(PXCPLStatus *)self sharedLibraryMovingToPersonal];
-  if (v79)
+  sharedLibraryMovingToPersonal = [(PXCPLStatus *)self sharedLibraryMovingToPersonal];
+  if (sharedLibraryMovingToPersonal)
   {
-    v80 = [MEMORY[0x1E696AD98] numberWithInteger:v79];
-    v81 = [v80 stringValue];
-    [v3 setObject:v81 forKeyedSubscript:@"move-to-personal"];
+    v80 = [MEMORY[0x1E696AD98] numberWithInteger:sharedLibraryMovingToPersonal];
+    stringValue38 = [v80 stringValue];
+    [v3 setObject:stringValue38 forKeyedSubscript:@"move-to-personal"];
   }
 
   if ([(PXCPLStatus *)self isExceedingSharedLibraryQuota])
   {
-    v82 = [MEMORY[0x1E695E118] stringValue];
-    [v3 setObject:v82 forKeyedSubscript:@"shared-library-cloud-quota"];
+    stringValue39 = [MEMORY[0x1E695E118] stringValue];
+    [v3 setObject:stringValue39 forKeyedSubscript:@"shared-library-cloud-quota"];
   }
 
   if ([(PXCPLStatus *)self isLocalModeEnabled])
   {
-    v83 = [MEMORY[0x1E695E118] stringValue];
-    [v3 setObject:v83 forKeyedSubscript:@"local-mode"];
+    stringValue40 = [MEMORY[0x1E695E118] stringValue];
+    [v3 setObject:stringValue40 forKeyedSubscript:@"local-mode"];
   }
 
   if ([(PXCPLStatus *)self isUpgradeSuggestedToAccessAllPhotos])
   {
-    v84 = [MEMORY[0x1E695E118] stringValue];
-    [v3 setObject:v84 forKeyedSubscript:@"upgrade-suggested"];
+    stringValue41 = [MEMORY[0x1E695E118] stringValue];
+    [v3 setObject:stringValue41 forKeyedSubscript:@"upgrade-suggested"];
   }
 
   v85 = v3;
@@ -360,203 +360,203 @@ LABEL_30:
   return v3;
 }
 
-- (id)_initWithDictionaryRepresentation:(id)a3 currentDate:(id)a4
+- (id)_initWithDictionaryRepresentation:(id)representation currentDate:(id)date
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  representationCopy = representation;
+  dateCopy = date;
+  if (!representationCopy)
   {
-    v158 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v158 handleFailureInMethod:a2 object:self file:@"PXCPLStatus_Serialization.m" lineNumber:298 description:{@"Invalid parameter not satisfying: %@", @"dictionaryRepresentation"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCPLStatus_Serialization.m" lineNumber:298 description:{@"Invalid parameter not satisfying: %@", @"dictionaryRepresentation"}];
   }
 
   v9 = [(PXCPLStatus *)self init];
 
   if (v9)
   {
-    v10 = [v7 objectForKeyedSubscript:@"enabled"];
+    v10 = [representationCopy objectForKeyedSubscript:@"enabled"];
     v11 = v10;
     if (v10)
     {
-      v12 = [v10 BOOLValue];
+      bOOLValue = [v10 BOOLValue];
     }
 
     else
     {
-      v12 = 0;
+      bOOLValue = 0;
     }
 
-    [(PXCPLStatus *)v9 setIsEnabled:v12];
+    [(PXCPLStatus *)v9 setIsEnabled:bOOLValue];
 
-    v13 = [v7 objectForKeyedSubscript:@"rebuild"];
+    v13 = [representationCopy objectForKeyedSubscript:@"rebuild"];
     v14 = v13;
     if (v13 && ([v13 isEqualToString:@"-"] & 1) == 0)
     {
-      v15 = [v14 integerValue];
+      integerValue = [v14 integerValue];
     }
 
     else
     {
-      v15 = -1;
+      integerValue = -1;
     }
 
-    [(PXCPLStatus *)v9 setPercentCompletedForLibraryRebuild:v15];
+    [(PXCPLStatus *)v9 setPercentCompletedForLibraryRebuild:integerValue];
 
-    v16 = [v7 objectForKeyedSubscript:@"thumbnails"];
+    v16 = [representationCopy objectForKeyedSubscript:@"thumbnails"];
     v17 = v16;
     if (v16)
     {
-      v18 = [v16 BOOLValue];
+      bOOLValue2 = [v16 BOOLValue];
     }
 
     else
     {
-      v18 = 0;
+      bOOLValue2 = 0;
     }
 
-    [(PXCPLStatus *)v9 setIsRebuildingThumbnails:v18];
+    [(PXCPLStatus *)v9 setIsRebuildingThumbnails:bOOLValue2];
 
-    v19 = [v7 objectForKeyedSubscript:@"syncing"];
+    v19 = [representationCopy objectForKeyedSubscript:@"syncing"];
     v20 = v19;
     if (v19)
     {
-      v21 = [v19 BOOLValue];
+      bOOLValue3 = [v19 BOOLValue];
     }
 
     else
     {
-      v21 = 0;
+      bOOLValue3 = 0;
     }
 
-    [(PXCPLStatus *)v9 setIsSyncing:v21];
+    [(PXCPLStatus *)v9 setIsSyncing:bOOLValue3];
 
-    v22 = [v7 objectForKeyedSubscript:@"upload"];
+    v22 = [representationCopy objectForKeyedSubscript:@"upload"];
     v23 = v22;
     if (v22)
     {
-      v24 = [v22 integerValue];
+      integerValue2 = [v22 integerValue];
     }
 
     else
     {
-      v24 = 0;
+      integerValue2 = 0;
     }
 
-    [(PXCPLStatus *)v9 setNumberOfItemsToUpload:v24];
+    [(PXCPLStatus *)v9 setNumberOfItemsToUpload:integerValue2];
 
-    v25 = [v7 objectForKeyedSubscript:@"progress"];
+    v25 = [representationCopy objectForKeyedSubscript:@"progress"];
     v26 = v25;
     if (v25 && ([v25 isEqualToString:@"-"] & 1) == 0)
     {
-      v27 = [v26 integerValue];
+      integerValue3 = [v26 integerValue];
     }
 
     else
     {
-      v27 = -1;
+      integerValue3 = -1;
     }
 
-    [(PXCPLStatus *)v9 setPercentCompletedForUpload:v27];
+    [(PXCPLStatus *)v9 setPercentCompletedForUpload:integerValue3];
 
-    v28 = [v7 objectForKeyedSubscript:@"add"];
+    v28 = [representationCopy objectForKeyedSubscript:@"add"];
     v29 = v28;
     if (v28)
     {
-      v30 = [v28 integerValue];
+      integerValue4 = [v28 integerValue];
     }
 
     else
     {
-      v30 = 0;
+      integerValue4 = 0;
     }
 
-    [(PXCPLStatus *)v9 setNumberOfItemsToAdd:v30];
+    [(PXCPLStatus *)v9 setNumberOfItemsToAdd:integerValue4];
 
-    v31 = [v7 objectForKeyedSubscript:@"download"];
+    v31 = [representationCopy objectForKeyedSubscript:@"download"];
     v32 = v31;
     if (v31)
     {
-      v33 = [v31 integerValue];
+      integerValue5 = [v31 integerValue];
     }
 
     else
     {
-      v33 = 0;
+      integerValue5 = 0;
     }
 
-    [(PXCPLStatus *)v9 setNumberOfOriginalsToDownload:v33];
+    [(PXCPLStatus *)v9 setNumberOfOriginalsToDownload:integerValue5];
 
-    v34 = [v7 objectForKeyedSubscript:@"offline"];
+    v34 = [representationCopy objectForKeyedSubscript:@"offline"];
     v35 = v34;
     if (v34)
     {
-      v36 = [v34 BOOLValue];
+      bOOLValue4 = [v34 BOOLValue];
     }
 
     else
     {
-      v36 = 0;
+      bOOLValue4 = 0;
     }
 
-    [(PXCPLStatus *)v9 setIsOffline:v36];
+    [(PXCPLStatus *)v9 setIsOffline:bOOLValue4];
 
-    v37 = [v7 objectForKeyedSubscript:@"soft-reset"];
+    v37 = [representationCopy objectForKeyedSubscript:@"soft-reset"];
     v38 = v37;
     if (v37)
     {
-      v39 = [v37 BOOLValue];
+      bOOLValue5 = [v37 BOOLValue];
     }
 
     else
     {
-      v39 = 0;
+      bOOLValue5 = 0;
     }
 
-    [(PXCPLStatus *)v9 setIsInSoftResetSync:v39];
+    [(PXCPLStatus *)v9 setIsInSoftResetSync:bOOLValue5];
 
-    v40 = [v7 objectForKeyedSubscript:@"hard-reset"];
+    v40 = [representationCopy objectForKeyedSubscript:@"hard-reset"];
     v41 = v40;
     if (v40)
     {
-      v42 = [v40 BOOLValue];
+      bOOLValue6 = [v40 BOOLValue];
     }
 
     else
     {
-      v42 = 0;
+      bOOLValue6 = 0;
     }
 
-    [(PXCPLStatus *)v9 setIsInHardResetSync:v42];
+    [(PXCPLStatus *)v9 setIsInHardResetSync:bOOLValue6];
 
-    v43 = [v7 objectForKeyedSubscript:@"cloud-quota"];
+    v43 = [representationCopy objectForKeyedSubscript:@"cloud-quota"];
     v44 = v43;
     if (v43)
     {
-      v45 = [v43 BOOLValue];
+      bOOLValue7 = [v43 BOOLValue];
     }
 
     else
     {
-      v45 = 0;
+      bOOLValue7 = 0;
     }
 
-    [(PXCPLStatus *)v9 setIsExceedingQuota:v45];
+    [(PXCPLStatus *)v9 setIsExceedingQuota:bOOLValue7];
 
-    v46 = [v7 objectForKeyedSubscript:@"offer"];
+    v46 = [representationCopy objectForKeyedSubscript:@"offer"];
     v47 = v46;
     if (v46)
     {
-      v48 = [v46 BOOLValue];
+      bOOLValue8 = [v46 BOOLValue];
     }
 
     else
     {
-      v48 = 0;
+      bOOLValue8 = 0;
     }
 
-    [(PXCPLStatus *)v9 setHasCloudQuotaOffer:v48];
+    [(PXCPLStatus *)v9 setHasCloudQuotaOffer:bOOLValue8];
 
-    v49 = [v7 objectForKeyedSubscript:@"quota-state"];
+    v49 = [representationCopy objectForKeyedSubscript:@"quota-state"];
     if ([v49 isEqualToString:@"almost-full"])
     {
       v50 = 1;
@@ -574,7 +574,7 @@ LABEL_30:
 
     [(PXCPLStatus *)v9 setCloudQuotaState:v50];
 
-    v51 = [v7 objectForKeyedSubscript:@"quota-title"];
+    v51 = [representationCopy objectForKeyedSubscript:@"quota-title"];
     if ([v51 length] && (objc_msgSend(v51, "isEqualToString:", @"-") & 1) == 0)
     {
       v52 = v51;
@@ -588,7 +588,7 @@ LABEL_30:
     [(PXCPLStatus *)v9 setCloudQuotaTitle:v52];
     v53 = v52;
 
-    v54 = [v7 objectForKeyedSubscript:@"quota-subtitle"];
+    v54 = [representationCopy objectForKeyedSubscript:@"quota-subtitle"];
     if ([v54 length] && (objc_msgSend(v54, "isEqualToString:", @"-") & 1) == 0)
     {
       v55 = v54;
@@ -602,7 +602,7 @@ LABEL_30:
     [(PXCPLStatus *)v9 setCloudQuotaMessage:v55];
     v56 = v55;
 
-    v57 = [v7 objectForKeyedSubscript:@"quota-action-title"];
+    v57 = [representationCopy objectForKeyedSubscript:@"quota-action-title"];
     if ([v57 length] && (objc_msgSend(v57, "isEqualToString:", @"-") & 1) == 0)
     {
       v58 = v57;
@@ -616,249 +616,249 @@ LABEL_30:
     [(PXCPLStatus *)v9 setCloudQuotaActionTitle:v58];
     v59 = v58;
 
-    v60 = [v7 objectForKeyedSubscript:@"low-disk-space"];
+    v60 = [representationCopy objectForKeyedSubscript:@"low-disk-space"];
     v61 = v60;
     if (v60)
     {
-      v62 = [v60 BOOLValue];
+      bOOLValue9 = [v60 BOOLValue];
     }
 
     else
     {
-      v62 = 0;
+      bOOLValue9 = 0;
     }
 
-    [(PXCPLStatus *)v9 setIsLowDiskSpace:v62];
+    [(PXCPLStatus *)v9 setIsLowDiskSpace:bOOLValue9];
 
-    v63 = [v7 objectForKeyedSubscript:@"very-low-disk-space"];
+    v63 = [representationCopy objectForKeyedSubscript:@"very-low-disk-space"];
     v64 = v63;
     if (v63)
     {
-      v65 = [v63 BOOLValue];
+      bOOLValue10 = [v63 BOOLValue];
     }
 
     else
     {
-      v65 = 0;
+      bOOLValue10 = 0;
     }
 
-    [(PXCPLStatus *)v9 setIsVeryLowDiskSpace:v65];
+    [(PXCPLStatus *)v9 setIsVeryLowDiskSpace:bOOLValue10];
 
-    v66 = [v7 objectForKeyedSubscript:@"battery-budget"];
+    v66 = [representationCopy objectForKeyedSubscript:@"battery-budget"];
     v67 = v66;
     if (v66)
     {
-      v68 = [v66 BOOLValue];
+      bOOLValue11 = [v66 BOOLValue];
     }
 
     else
     {
-      v68 = 0;
+      bOOLValue11 = 0;
     }
 
-    [(PXCPLStatus *)v9 setIsExceedingBatteryQuota:v68];
+    [(PXCPLStatus *)v9 setIsExceedingBatteryQuota:bOOLValue11];
 
-    v69 = [v7 objectForKeyedSubscript:@"cellular-budget"];
+    v69 = [representationCopy objectForKeyedSubscript:@"cellular-budget"];
     v70 = v69;
     if (v69)
     {
-      v71 = [v69 BOOLValue];
+      bOOLValue12 = [v69 BOOLValue];
     }
 
     else
     {
-      v71 = 0;
+      bOOLValue12 = 0;
     }
 
-    [(PXCPLStatus *)v9 setIsExceedingCellularQuota:v71];
+    [(PXCPLStatus *)v9 setIsExceedingCellularQuota:bOOLValue12];
 
-    v72 = [v7 objectForKeyedSubscript:@"cellular-disabled"];
+    v72 = [representationCopy objectForKeyedSubscript:@"cellular-disabled"];
     v73 = v72;
     if (v72)
     {
-      v74 = [v72 BOOLValue];
+      bOOLValue13 = [v72 BOOLValue];
     }
 
     else
     {
-      v74 = 0;
+      bOOLValue13 = 0;
     }
 
-    [(PXCPLStatus *)v9 setIsCellularDataDisabled:v74];
+    [(PXCPLStatus *)v9 setIsCellularDataDisabled:bOOLValue13];
 
-    v75 = [v7 objectForKeyedSubscript:@"airplane-mode"];
+    v75 = [representationCopy objectForKeyedSubscript:@"airplane-mode"];
     v76 = v75;
     if (v75)
     {
-      v77 = [v75 BOOLValue];
+      bOOLValue14 = [v75 BOOLValue];
     }
 
     else
     {
-      v77 = 0;
+      bOOLValue14 = 0;
     }
 
-    [(PXCPLStatus *)v9 setIsInAirplaneMode:v77];
+    [(PXCPLStatus *)v9 setIsInAirplaneMode:bOOLValue14];
 
-    v78 = [v7 objectForKeyedSubscript:@"user"];
+    v78 = [representationCopy objectForKeyedSubscript:@"user"];
     v79 = v78;
     if (v78)
     {
-      v80 = [v78 BOOLValue];
+      bOOLValue15 = [v78 BOOLValue];
     }
 
     else
     {
-      v80 = 0;
+      bOOLValue15 = 0;
     }
 
-    [(PXCPLStatus *)v9 setIsUserPaused:v80];
+    [(PXCPLStatus *)v9 setIsUserPaused:bOOLValue15];
 
-    v81 = [v7 objectForKeyedSubscript:@"low-data-mode"];
+    v81 = [representationCopy objectForKeyedSubscript:@"low-data-mode"];
     v82 = v81;
     if (v81)
     {
-      v83 = [v81 BOOLValue];
+      bOOLValue16 = [v81 BOOLValue];
     }
 
     else
     {
-      v83 = 0;
+      bOOLValue16 = 0;
     }
 
-    [(PXCPLStatus *)v9 setIsInLowDataMode:v83];
+    [(PXCPLStatus *)v9 setIsInLowDataMode:bOOLValue16];
 
-    v84 = [v7 objectForKeyedSubscript:@"low-power-mode"];
+    v84 = [representationCopy objectForKeyedSubscript:@"low-power-mode"];
     v85 = v84;
     if (v84)
     {
-      v86 = [v84 BOOLValue];
+      bOOLValue17 = [v84 BOOLValue];
     }
 
     else
     {
-      v86 = 0;
+      bOOLValue17 = 0;
     }
 
-    [(PXCPLStatus *)v9 setIsInLowPowerMode:v86];
+    [(PXCPLStatus *)v9 setIsInLowPowerMode:bOOLValue17];
 
-    v87 = [v7 objectForKeyedSubscript:@"version"];
+    v87 = [representationCopy objectForKeyedSubscript:@"version"];
     v88 = v87;
     if (v87)
     {
-      v89 = [v87 BOOLValue];
+      bOOLValue18 = [v87 BOOLValue];
     }
 
     else
     {
-      v89 = 0;
+      bOOLValue18 = 0;
     }
 
-    [(PXCPLStatus *)v9 setIsClientVersionTooOld:v89];
+    [(PXCPLStatus *)v9 setIsClientVersionTooOld:bOOLValue18];
 
-    v90 = [v7 objectForKeyedSubscript:@"authenticate"];
+    v90 = [representationCopy objectForKeyedSubscript:@"authenticate"];
     v91 = v90;
     if (v90)
     {
-      v92 = [v90 BOOLValue];
+      bOOLValue19 = [v90 BOOLValue];
     }
 
     else
     {
-      v92 = 0;
+      bOOLValue19 = 0;
     }
 
-    [(PXCPLStatus *)v9 setIsClientNotAuthenticated:v92];
+    [(PXCPLStatus *)v9 setIsClientNotAuthenticated:bOOLValue19];
 
-    v93 = [v7 objectForKeyedSubscript:@"capture-snapshot"];
+    v93 = [representationCopy objectForKeyedSubscript:@"capture-snapshot"];
     v94 = v93;
     if (v93)
     {
-      v95 = [v93 BOOLValue];
+      bOOLValue20 = [v93 BOOLValue];
     }
 
     else
     {
-      v95 = 0;
+      bOOLValue20 = 0;
     }
 
-    [(PXCPLStatus *)v9 setIsCapturingSnapshot:v95];
+    [(PXCPLStatus *)v9 setIsCapturingSnapshot:bOOLValue20];
 
-    v96 = [v7 objectForKeyedSubscript:@"optimizing-system-performance"];
+    v96 = [representationCopy objectForKeyedSubscript:@"optimizing-system-performance"];
     v97 = v96;
     if (v96)
     {
-      v98 = [v96 BOOLValue];
+      bOOLValue21 = [v96 BOOLValue];
     }
 
     else
     {
-      v98 = 0;
+      bOOLValue21 = 0;
     }
 
-    [(PXCPLStatus *)v9 setIsOptimizingSystemPerformance:v98];
+    [(PXCPLStatus *)v9 setIsOptimizingSystemPerformance:bOOLValue21];
 
-    v99 = [v7 objectForKeyedSubscript:@"poor-network-connection"];
+    v99 = [representationCopy objectForKeyedSubscript:@"poor-network-connection"];
     v100 = v99;
     if (v99)
     {
-      v101 = [v99 BOOLValue];
+      bOOLValue22 = [v99 BOOLValue];
     }
 
     else
     {
-      v101 = 0;
+      bOOLValue22 = 0;
     }
 
-    [(PXCPLStatus *)v9 setIsInPoorNetworkConnection:v101];
+    [(PXCPLStatus *)v9 setIsInPoorNetworkConnection:bOOLValue22];
 
-    v102 = [v7 objectForKeyedSubscript:@"moderate-thermal-pressure"];
+    v102 = [representationCopy objectForKeyedSubscript:@"moderate-thermal-pressure"];
     v103 = v102;
     if (v102)
     {
-      v104 = [v102 BOOLValue];
+      bOOLValue23 = [v102 BOOLValue];
     }
 
     else
     {
-      v104 = 0;
+      bOOLValue23 = 0;
     }
 
-    [(PXCPLStatus *)v9 setIsInModerateThermalPressure:v104];
+    [(PXCPLStatus *)v9 setIsInModerateThermalPressure:bOOLValue23];
 
-    v105 = [v7 objectForKeyedSubscript:@"heavy-thermal-pressure"];
+    v105 = [representationCopy objectForKeyedSubscript:@"heavy-thermal-pressure"];
     v106 = v105;
     if (v105)
     {
-      v107 = [v105 BOOLValue];
+      bOOLValue24 = [v105 BOOLValue];
     }
 
     else
     {
-      v107 = 0;
+      bOOLValue24 = 0;
     }
 
-    [(PXCPLStatus *)v9 setIsInHeavyThermalPressure:v107];
+    [(PXCPLStatus *)v9 setIsInHeavyThermalPressure:bOOLValue24];
 
-    v108 = [v7 objectForKeyedSubscript:@"low-battery"];
+    v108 = [representationCopy objectForKeyedSubscript:@"low-battery"];
     v109 = v108;
     if (v108)
     {
-      v110 = [v108 BOOLValue];
+      bOOLValue25 = [v108 BOOLValue];
     }
 
     else
     {
-      v110 = 0;
+      bOOLValue25 = 0;
     }
 
-    [(PXCPLStatus *)v9 setIsInLowBattery:v110];
+    [(PXCPLStatus *)v9 setIsInLowBattery:bOOLValue25];
 
-    v111 = [v7 objectForKeyedSubscript:@"sync-date"];
+    v111 = [representationCopy objectForKeyedSubscript:@"sync-date"];
     v112 = v111;
     if (v111 && ([v111 isEqualToString:@"-"] & 1) == 0)
     {
-      v113 = _DateForPlaceholderString(v112, v8);
+      v113 = _DateForPlaceholderString(v112, dateCopy);
       if (!v113)
       {
         v114 = _SerializationDateFormatter();
@@ -874,11 +874,11 @@ LABEL_30:
     [(PXCPLStatus *)v9 setSyncDate:v113];
     v115 = v113;
 
-    v116 = [v7 objectForKeyedSubscript:@"exit-date"];
+    v116 = [representationCopy objectForKeyedSubscript:@"exit-date"];
     v117 = v116;
     if (v116 && ([v116 isEqualToString:@"-"] & 1) == 0)
     {
-      v118 = _DateForPlaceholderString(v117, v8);
+      v118 = _DateForPlaceholderString(v117, dateCopy);
       if (!v118)
       {
         v119 = _SerializationDateFormatter();
@@ -894,77 +894,77 @@ LABEL_30:
     [(PXCPLStatus *)v9 setExitDate:v118];
     v120 = v118;
 
-    v121 = [v7 objectForKeyedSubscript:@"failed"];
+    v121 = [representationCopy objectForKeyedSubscript:@"failed"];
     v122 = v121;
     if (v121)
     {
-      v123 = [v121 integerValue];
+      integerValue6 = [v121 integerValue];
     }
 
     else
     {
-      v123 = 0;
+      integerValue6 = 0;
     }
 
-    [(PXCPLStatus *)v9 setNumberOfItemsFailingToUpload:v123];
+    [(PXCPLStatus *)v9 setNumberOfItemsFailingToUpload:integerValue6];
 
-    v124 = [v7 objectForKeyedSubscript:@"referenced"];
+    v124 = [representationCopy objectForKeyedSubscript:@"referenced"];
     v125 = v124;
     if (v124)
     {
-      v126 = [v124 integerValue];
+      integerValue7 = [v124 integerValue];
     }
 
     else
     {
-      v126 = 0;
+      integerValue7 = 0;
     }
 
-    [(PXCPLStatus *)v9 setNumberOfReferencedItems:v126];
+    [(PXCPLStatus *)v9 setNumberOfReferencedItems:integerValue7];
 
-    v127 = [v7 objectForKeyedSubscript:@"photos"];
+    v127 = [representationCopy objectForKeyedSubscript:@"photos"];
     v128 = v127;
     if (v127)
     {
-      v129 = [v127 integerValue];
+      integerValue8 = [v127 integerValue];
     }
 
     else
     {
-      v129 = 0;
+      integerValue8 = 0;
     }
 
-    [(PXCPLStatus *)v9 setNumberOfPhotoAssets:v129];
+    [(PXCPLStatus *)v9 setNumberOfPhotoAssets:integerValue8];
 
-    v130 = [v7 objectForKeyedSubscript:@"videos"];
+    v130 = [representationCopy objectForKeyedSubscript:@"videos"];
     v131 = v130;
     if (v130)
     {
-      v132 = [v130 integerValue];
+      integerValue9 = [v130 integerValue];
     }
 
     else
     {
-      v132 = 0;
+      integerValue9 = 0;
     }
 
-    [(PXCPLStatus *)v9 setNumberOfVideoAssets:v132];
+    [(PXCPLStatus *)v9 setNumberOfVideoAssets:integerValue9];
 
-    v133 = [v7 objectForKeyedSubscript:@"others"];
+    v133 = [representationCopy objectForKeyedSubscript:@"others"];
     v134 = v133;
     if (v133)
     {
-      v135 = [v133 integerValue];
+      integerValue10 = [v133 integerValue];
     }
 
     else
     {
-      v135 = 0;
+      integerValue10 = 0;
     }
 
-    [(PXCPLStatus *)v9 setNumberOfOtherAssets:v135];
+    [(PXCPLStatus *)v9 setNumberOfOtherAssets:integerValue10];
 
-    v136 = [v7 objectForKeyedSubscript:@"shared-library-state"];
+    v136 = [representationCopy objectForKeyedSubscript:@"shared-library-state"];
     if ([v136 isEqualToString:@"active"])
     {
       v137 = 1;
@@ -987,89 +987,89 @@ LABEL_30:
 
     [(PXCPLStatus *)v9 setSharedLibraryState:v137];
 
-    v138 = [v7 objectForKeyedSubscript:@"shared-library-exiting-count"];
+    v138 = [representationCopy objectForKeyedSubscript:@"shared-library-exiting-count"];
     v139 = v138;
     if (v138)
     {
-      v140 = [v138 integerValue];
+      integerValue11 = [v138 integerValue];
     }
 
     else
     {
-      v140 = 0;
+      integerValue11 = 0;
     }
 
-    [(PXCPLStatus *)v9 setSharedLibraryExitingWithNumberOfAssetsRemaining:v140];
+    [(PXCPLStatus *)v9 setSharedLibraryExitingWithNumberOfAssetsRemaining:integerValue11];
 
-    v141 = [v7 objectForKeyedSubscript:@"move-to-shared"];
+    v141 = [representationCopy objectForKeyedSubscript:@"move-to-shared"];
     v142 = v141;
     if (v141)
     {
-      v143 = [v141 integerValue];
+      integerValue12 = [v141 integerValue];
     }
 
     else
     {
-      v143 = 0;
+      integerValue12 = 0;
     }
 
-    [(PXCPLStatus *)v9 setSharedLibraryMovingToShared:v143];
+    [(PXCPLStatus *)v9 setSharedLibraryMovingToShared:integerValue12];
 
-    v144 = [v7 objectForKeyedSubscript:@"move-to-personal"];
+    v144 = [representationCopy objectForKeyedSubscript:@"move-to-personal"];
     v145 = v144;
     if (v144)
     {
-      v146 = [v144 integerValue];
+      integerValue13 = [v144 integerValue];
     }
 
     else
     {
-      v146 = 0;
+      integerValue13 = 0;
     }
 
-    [(PXCPLStatus *)v9 setSharedLibraryMovingToPersonal:v146];
+    [(PXCPLStatus *)v9 setSharedLibraryMovingToPersonal:integerValue13];
 
-    v147 = [v7 objectForKeyedSubscript:@"shared-library-cloud-quota"];
+    v147 = [representationCopy objectForKeyedSubscript:@"shared-library-cloud-quota"];
     v148 = v147;
     if (v147)
     {
-      v149 = [v147 BOOLValue];
+      bOOLValue26 = [v147 BOOLValue];
     }
 
     else
     {
-      v149 = 0;
+      bOOLValue26 = 0;
     }
 
-    [(PXCPLStatus *)v9 setIsExceedingSharedLibraryQuota:v149];
+    [(PXCPLStatus *)v9 setIsExceedingSharedLibraryQuota:bOOLValue26];
 
-    v150 = [v7 objectForKeyedSubscript:@"local-mode"];
+    v150 = [representationCopy objectForKeyedSubscript:@"local-mode"];
     v151 = v150;
     if (v150)
     {
-      v152 = [v150 BOOLValue];
+      bOOLValue27 = [v150 BOOLValue];
     }
 
     else
     {
-      v152 = 0;
+      bOOLValue27 = 0;
     }
 
-    [(PXCPLStatus *)v9 setIsLocalModeEnabled:v152];
+    [(PXCPLStatus *)v9 setIsLocalModeEnabled:bOOLValue27];
 
-    v153 = [v7 objectForKeyedSubscript:@"upgrade-suggested"];
+    v153 = [representationCopy objectForKeyedSubscript:@"upgrade-suggested"];
     v154 = v153;
     if (v153)
     {
-      v155 = [v153 BOOLValue];
+      bOOLValue28 = [v153 BOOLValue];
     }
 
     else
     {
-      v155 = 0;
+      bOOLValue28 = 0;
     }
 
-    [(PXCPLStatus *)v9 setIsUpgradeSuggestedToAccessAllPhotos:v155];
+    [(PXCPLStatus *)v9 setIsUpgradeSuggestedToAccessAllPhotos:bOOLValue28];
   }
 
   v156 = v9;
@@ -1077,16 +1077,16 @@ LABEL_30:
   return v156;
 }
 
-+ (PXCPLStatus)statusWithStringRepresentation:(id)a3 currentDate:(id)a4
++ (PXCPLStatus)statusWithStringRepresentation:(id)representation currentDate:(id)date
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
+  representationCopy = representation;
+  dateCopy = date;
+  v8 = representationCopy;
   if (!v8)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v17 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"NSDictionary<NSString *, id> * _Nullable _StringToDictionaryRepresentation(NSString *__strong)"}];
-    [v16 handleFailureInFunction:v17 file:@"PXCPLStatus_Serialization.m" lineNumber:140 description:{@"Invalid parameter not satisfying: %@", @"string"}];
+    [currentHandler handleFailureInFunction:v17 file:@"PXCPLStatus_Serialization.m" lineNumber:140 description:{@"Invalid parameter not satisfying: %@", @"string"}];
   }
 
   v19 = 0;
@@ -1116,7 +1116,7 @@ LABEL_30:
 
   if (v13)
   {
-    v14 = [[a1 alloc] _initWithDictionaryRepresentation:v13 currentDate:v7];
+    v14 = [[self alloc] _initWithDictionaryRepresentation:v13 currentDate:dateCopy];
   }
 
   else
@@ -1144,17 +1144,17 @@ LABEL_30:
   return result;
 }
 
-- (void)setFractionCompletedForUpload:(float)a3
+- (void)setFractionCompletedForUpload:(float)upload
 {
-  v4 = a3 <= 1.0 && a3 >= 0.0;
-  if (!v4 && a3 != -1.0)
+  v4 = upload <= 1.0 && upload >= 0.0;
+  if (!v4 && upload != -1.0)
   {
     PXAssertGetLog();
   }
 
-  if (a3 >= 0.0)
+  if (upload >= 0.0)
   {
-    v5 = vcvtps_s32_f32(a3 * 100.0);
+    v5 = vcvtps_s32_f32(upload * 100.0);
     if (v5 >= 100)
     {
       v5 = 100;
@@ -1186,17 +1186,17 @@ LABEL_30:
   return result;
 }
 
-- (void)setFractionCompletedForLibraryRebuild:(float)a3
+- (void)setFractionCompletedForLibraryRebuild:(float)rebuild
 {
-  v4 = a3 <= 1.0 && a3 >= 0.0;
-  if (!v4 && a3 != -1.0)
+  v4 = rebuild <= 1.0 && rebuild >= 0.0;
+  if (!v4 && rebuild != -1.0)
   {
     PXAssertGetLog();
   }
 
-  if (a3 >= 0.0)
+  if (rebuild >= 0.0)
   {
-    v5 = vcvtps_s32_f32(a3 * 100.0);
+    v5 = vcvtps_s32_f32(rebuild * 100.0);
     if (v5 >= 100)
     {
       v5 = 100;
@@ -1211,51 +1211,51 @@ LABEL_30:
   self->_percentCompletedForLibraryRebuild = v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PXCPLStatus *)self _isEqualToCPLStatus:v4];
+  equalCopy = equal;
+  v5 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PXCPLStatus *)self _isEqualToCPLStatus:equalCopy];
 
   return v5;
 }
 
-- (BOOL)_isEqualToCPLStatus:(id)a3
+- (BOOL)_isEqualToCPLStatus:(id)status
 {
-  v4 = a3;
+  statusCopy = status;
   isEnabled = self->_isEnabled;
-  if (isEnabled != [v4 isEnabled])
+  if (isEnabled != [statusCopy isEnabled])
   {
     goto LABEL_65;
   }
 
   percentCompletedForLibraryRebuild = self->_percentCompletedForLibraryRebuild;
-  if (percentCompletedForLibraryRebuild != [v4 percentCompletedForLibraryRebuild])
+  if (percentCompletedForLibraryRebuild != [statusCopy percentCompletedForLibraryRebuild])
   {
     goto LABEL_65;
   }
 
   isRebuildingThumbnails = self->_isRebuildingThumbnails;
-  if (isRebuildingThumbnails != [v4 isRebuildingThumbnails])
+  if (isRebuildingThumbnails != [statusCopy isRebuildingThumbnails])
   {
     goto LABEL_65;
   }
 
   isSyncing = self->_isSyncing;
-  if (isSyncing != [v4 isSyncing])
+  if (isSyncing != [statusCopy isSyncing])
   {
     goto LABEL_65;
   }
 
   syncDate = self->_syncDate;
-  v10 = [v4 syncDate];
-  v11 = v10;
-  if (syncDate == v10)
+  syncDate = [statusCopy syncDate];
+  v11 = syncDate;
+  if (syncDate == syncDate)
   {
   }
 
   else
   {
-    v12 = [(NSDate *)syncDate isEqual:v10];
+    v12 = [(NSDate *)syncDate isEqual:syncDate];
 
     if (!v12)
     {
@@ -1266,15 +1266,15 @@ LABEL_65:
   }
 
   exitDate = self->_exitDate;
-  v14 = [v4 exitDate];
-  v15 = v14;
-  if (exitDate == v14)
+  exitDate = [statusCopy exitDate];
+  v15 = exitDate;
+  if (exitDate == exitDate)
   {
   }
 
   else
   {
-    v16 = [(NSDate *)exitDate isEqual:v14];
+    v16 = [(NSDate *)exitDate isEqual:exitDate];
 
     if (!v16)
     {
@@ -1283,207 +1283,207 @@ LABEL_65:
   }
 
   numberOfItemsToUpload = self->_numberOfItemsToUpload;
-  if (numberOfItemsToUpload != [v4 numberOfItemsToUpload])
+  if (numberOfItemsToUpload != [statusCopy numberOfItemsToUpload])
   {
     goto LABEL_65;
   }
 
   percentCompletedForUpload = self->_percentCompletedForUpload;
-  if (percentCompletedForUpload != [v4 percentCompletedForUpload])
+  if (percentCompletedForUpload != [statusCopy percentCompletedForUpload])
   {
     goto LABEL_65;
   }
 
   numberOfItemsToAdd = self->_numberOfItemsToAdd;
-  if (numberOfItemsToAdd != [v4 numberOfItemsToAdd])
+  if (numberOfItemsToAdd != [statusCopy numberOfItemsToAdd])
   {
     goto LABEL_65;
   }
 
   numberOfOriginalsToDownload = self->_numberOfOriginalsToDownload;
-  if (numberOfOriginalsToDownload != [v4 numberOfOriginalsToDownload])
+  if (numberOfOriginalsToDownload != [statusCopy numberOfOriginalsToDownload])
   {
     goto LABEL_65;
   }
 
   numberOfItemsFailingToUpload = self->_numberOfItemsFailingToUpload;
-  if (numberOfItemsFailingToUpload != [v4 numberOfItemsFailingToUpload])
+  if (numberOfItemsFailingToUpload != [statusCopy numberOfItemsFailingToUpload])
   {
     goto LABEL_65;
   }
 
   numberOfPhotoAssets = self->_numberOfPhotoAssets;
-  if (numberOfPhotoAssets != [v4 numberOfPhotoAssets])
+  if (numberOfPhotoAssets != [statusCopy numberOfPhotoAssets])
   {
     goto LABEL_65;
   }
 
   numberOfVideoAssets = self->_numberOfVideoAssets;
-  if (numberOfVideoAssets != [v4 numberOfVideoAssets])
+  if (numberOfVideoAssets != [statusCopy numberOfVideoAssets])
   {
     goto LABEL_65;
   }
 
   numberOfOtherAssets = self->_numberOfOtherAssets;
-  if (numberOfOtherAssets != [v4 numberOfOtherAssets])
+  if (numberOfOtherAssets != [statusCopy numberOfOtherAssets])
   {
     goto LABEL_65;
   }
 
   numberOfReferencedItems = self->_numberOfReferencedItems;
-  if (numberOfReferencedItems != [v4 numberOfReferencedItems])
+  if (numberOfReferencedItems != [statusCopy numberOfReferencedItems])
   {
     goto LABEL_65;
   }
 
   isUserPaused = self->_isUserPaused;
-  if (isUserPaused != [v4 isUserPaused])
+  if (isUserPaused != [statusCopy isUserPaused])
   {
     goto LABEL_65;
   }
 
   isInLowDataMode = self->_isInLowDataMode;
-  if (isInLowDataMode != [v4 isInLowDataMode])
+  if (isInLowDataMode != [statusCopy isInLowDataMode])
   {
     goto LABEL_65;
   }
 
   isInLowPowerMode = self->_isInLowPowerMode;
-  if (isInLowPowerMode != [v4 isInLowPowerMode])
+  if (isInLowPowerMode != [statusCopy isInLowPowerMode])
   {
     goto LABEL_65;
   }
 
   isExceedingBatteryQuota = self->_isExceedingBatteryQuota;
-  if (isExceedingBatteryQuota != [v4 isExceedingBatteryQuota])
+  if (isExceedingBatteryQuota != [statusCopy isExceedingBatteryQuota])
   {
     goto LABEL_65;
   }
 
   isExceedingCellularQuota = self->_isExceedingCellularQuota;
-  if (isExceedingCellularQuota != [v4 isExceedingCellularQuota])
+  if (isExceedingCellularQuota != [statusCopy isExceedingCellularQuota])
   {
     goto LABEL_65;
   }
 
   isLowDiskSpace = self->_isLowDiskSpace;
-  if (isLowDiskSpace != [v4 isLowDiskSpace])
+  if (isLowDiskSpace != [statusCopy isLowDiskSpace])
   {
     goto LABEL_65;
   }
 
   isVeryLowDiskSpace = self->_isVeryLowDiskSpace;
-  if (isVeryLowDiskSpace != [v4 isVeryLowDiskSpace])
+  if (isVeryLowDiskSpace != [statusCopy isVeryLowDiskSpace])
   {
     goto LABEL_65;
   }
 
   isExceedingQuota = self->_isExceedingQuota;
-  if (isExceedingQuota != [v4 isExceedingQuota])
+  if (isExceedingQuota != [statusCopy isExceedingQuota])
   {
     goto LABEL_65;
   }
 
   isCellularDataDisabled = self->_isCellularDataDisabled;
-  if (isCellularDataDisabled != [v4 isCellularDataDisabled])
+  if (isCellularDataDisabled != [statusCopy isCellularDataDisabled])
   {
     goto LABEL_65;
   }
 
   isInAirplaneMode = self->_isInAirplaneMode;
-  if (isInAirplaneMode != [v4 isInAirplaneMode])
+  if (isInAirplaneMode != [statusCopy isInAirplaneMode])
   {
     goto LABEL_65;
   }
 
   isClientVersionTooOld = self->_isClientVersionTooOld;
-  if (isClientVersionTooOld != [v4 isClientVersionTooOld])
+  if (isClientVersionTooOld != [statusCopy isClientVersionTooOld])
   {
     goto LABEL_65;
   }
 
   isClientNotAuthenticated = self->_isClientNotAuthenticated;
-  if (isClientNotAuthenticated != [v4 isClientNotAuthenticated])
+  if (isClientNotAuthenticated != [statusCopy isClientNotAuthenticated])
   {
     goto LABEL_65;
   }
 
   isOffline = self->_isOffline;
-  if (isOffline != [v4 isOffline])
+  if (isOffline != [statusCopy isOffline])
   {
     goto LABEL_65;
   }
 
   isInSoftResetSync = self->_isInSoftResetSync;
-  if (isInSoftResetSync != [v4 isInSoftResetSync])
+  if (isInSoftResetSync != [statusCopy isInSoftResetSync])
   {
     goto LABEL_65;
   }
 
   isInHardResetSync = self->_isInHardResetSync;
-  if (isInHardResetSync != [v4 isInHardResetSync])
+  if (isInHardResetSync != [statusCopy isInHardResetSync])
   {
     goto LABEL_65;
   }
 
   isCapturingSnapshot = self->_isCapturingSnapshot;
-  if (isCapturingSnapshot != [v4 isCapturingSnapshot])
+  if (isCapturingSnapshot != [statusCopy isCapturingSnapshot])
   {
     goto LABEL_65;
   }
 
   isOptimizingSystemPerformance = self->_isOptimizingSystemPerformance;
-  if (isOptimizingSystemPerformance != [v4 isOptimizingSystemPerformance])
+  if (isOptimizingSystemPerformance != [statusCopy isOptimizingSystemPerformance])
   {
     goto LABEL_65;
   }
 
   isInPoorNetworkConnection = self->_isInPoorNetworkConnection;
-  if (isInPoorNetworkConnection != [v4 isInPoorNetworkConnection])
+  if (isInPoorNetworkConnection != [statusCopy isInPoorNetworkConnection])
   {
     goto LABEL_65;
   }
 
   isInModerateThermalPressure = self->_isInModerateThermalPressure;
-  if (isInModerateThermalPressure != [v4 isInModerateThermalPressure])
+  if (isInModerateThermalPressure != [statusCopy isInModerateThermalPressure])
   {
     goto LABEL_65;
   }
 
   isInHeavyThermalPressure = self->_isInHeavyThermalPressure;
-  if (isInHeavyThermalPressure != [v4 isInHeavyThermalPressure])
+  if (isInHeavyThermalPressure != [statusCopy isInHeavyThermalPressure])
   {
     goto LABEL_65;
   }
 
   isInLowBattery = self->_isInLowBattery;
-  if (isInLowBattery != [v4 isInLowBattery])
+  if (isInLowBattery != [statusCopy isInLowBattery])
   {
     goto LABEL_65;
   }
 
   hasCloudQuotaOffer = self->_hasCloudQuotaOffer;
-  if (hasCloudQuotaOffer != [v4 hasCloudQuotaOffer])
+  if (hasCloudQuotaOffer != [statusCopy hasCloudQuotaOffer])
   {
     goto LABEL_65;
   }
 
   cloudQuotaState = self->_cloudQuotaState;
-  if (cloudQuotaState != [v4 cloudQuotaState])
+  if (cloudQuotaState != [statusCopy cloudQuotaState])
   {
     goto LABEL_65;
   }
 
   cloudQuotaTitle = self->_cloudQuotaTitle;
-  v50 = [v4 cloudQuotaTitle];
-  v51 = v50;
-  if (cloudQuotaTitle == v50)
+  cloudQuotaTitle = [statusCopy cloudQuotaTitle];
+  v51 = cloudQuotaTitle;
+  if (cloudQuotaTitle == cloudQuotaTitle)
   {
   }
 
   else
   {
-    v52 = [(NSString *)cloudQuotaTitle isEqualToString:v50];
+    v52 = [(NSString *)cloudQuotaTitle isEqualToString:cloudQuotaTitle];
 
     if (!v52)
     {
@@ -1492,15 +1492,15 @@ LABEL_65:
   }
 
   cloudQuotaMessage = self->_cloudQuotaMessage;
-  v54 = [v4 cloudQuotaMessage];
-  v55 = v54;
-  if (cloudQuotaMessage == v54)
+  cloudQuotaMessage = [statusCopy cloudQuotaMessage];
+  v55 = cloudQuotaMessage;
+  if (cloudQuotaMessage == cloudQuotaMessage)
   {
   }
 
   else
   {
-    v56 = [(NSString *)cloudQuotaMessage isEqualToString:v54];
+    v56 = [(NSString *)cloudQuotaMessage isEqualToString:cloudQuotaMessage];
 
     if (!v56)
     {
@@ -1509,15 +1509,15 @@ LABEL_65:
   }
 
   cloudQuotaActionTitle = self->_cloudQuotaActionTitle;
-  v58 = [v4 cloudQuotaActionTitle];
-  v59 = v58;
-  if (cloudQuotaActionTitle == v58)
+  cloudQuotaActionTitle = [statusCopy cloudQuotaActionTitle];
+  v59 = cloudQuotaActionTitle;
+  if (cloudQuotaActionTitle == cloudQuotaActionTitle)
   {
   }
 
   else
   {
-    v60 = [(NSString *)cloudQuotaActionTitle isEqualToString:v58];
+    v60 = [(NSString *)cloudQuotaActionTitle isEqualToString:cloudQuotaActionTitle];
 
     if (!v60)
     {
@@ -1526,55 +1526,55 @@ LABEL_65:
   }
 
   sharedLibraryState = self->_sharedLibraryState;
-  if (sharedLibraryState != [v4 sharedLibraryState])
+  if (sharedLibraryState != [statusCopy sharedLibraryState])
   {
     goto LABEL_65;
   }
 
   sharedLibraryExitingWithNumberOfAssetsRemaining = self->_sharedLibraryExitingWithNumberOfAssetsRemaining;
-  if (sharedLibraryExitingWithNumberOfAssetsRemaining != [v4 sharedLibraryExitingWithNumberOfAssetsRemaining])
+  if (sharedLibraryExitingWithNumberOfAssetsRemaining != [statusCopy sharedLibraryExitingWithNumberOfAssetsRemaining])
   {
     goto LABEL_65;
   }
 
   sharedLibraryMovingToShared = self->_sharedLibraryMovingToShared;
-  if (sharedLibraryMovingToShared != [v4 sharedLibraryMovingToShared])
+  if (sharedLibraryMovingToShared != [statusCopy sharedLibraryMovingToShared])
   {
     goto LABEL_65;
   }
 
   sharedLibraryMovingToPersonal = self->_sharedLibraryMovingToPersonal;
-  if (sharedLibraryMovingToPersonal != [v4 sharedLibraryMovingToPersonal])
+  if (sharedLibraryMovingToPersonal != [statusCopy sharedLibraryMovingToPersonal])
   {
     goto LABEL_65;
   }
 
   isExceedingSharedLibraryQuota = self->_isExceedingSharedLibraryQuota;
-  if (isExceedingSharedLibraryQuota != [v4 isExceedingSharedLibraryQuota])
+  if (isExceedingSharedLibraryQuota != [statusCopy isExceedingSharedLibraryQuota])
   {
     goto LABEL_65;
   }
 
   isLocalModeEnabled = self->_isLocalModeEnabled;
-  if (isLocalModeEnabled != [v4 isLocalModeEnabled])
+  if (isLocalModeEnabled != [statusCopy isLocalModeEnabled])
   {
     goto LABEL_65;
   }
 
   isMockStatus = self->_isMockStatus;
-  if (isMockStatus != [v4 isMockStatus])
+  if (isMockStatus != [statusCopy isMockStatus])
   {
     goto LABEL_65;
   }
 
   isUpgradeSuggestedToAccessAllPhotos = self->_isUpgradeSuggestedToAccessAllPhotos;
-  v69 = isUpgradeSuggestedToAccessAllPhotos == [v4 isUpgradeSuggestedToAccessAllPhotos];
+  v69 = isUpgradeSuggestedToAccessAllPhotos == [statusCopy isUpgradeSuggestedToAccessAllPhotos];
 LABEL_66:
 
   return v69;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(PXCPLStatus);
   [(PXCPLStatus *)v4 setIsEnabled:self->_isEnabled];

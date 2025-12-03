@@ -1,8 +1,8 @@
 @interface MBProgress
 - (BOOL)isFinished;
 - (MBProgress)init;
-- (void)addDuration:(double)a3;
-- (void)updateWithDuration:(double)a3 size:(unint64_t)a4;
+- (void)addDuration:(double)duration;
+- (void)updateWithDuration:(double)duration size:(unint64_t)size;
 @end
 
 @implementation MBProgress
@@ -27,21 +27,21 @@
   return current <= total + 0.001 && total + -0.001 <= current;
 }
 
-- (void)addDuration:(double)a3
+- (void)addDuration:(double)duration
 {
-  if (a3 < 0.0)
+  if (duration < 0.0)
   {
     v6 = +[NSAssertionHandler currentHandler];
     [v6 handleFailureInMethod:a2 object:self file:@"MBProgress.m" lineNumber:29 description:@"Negative duration"];
   }
 
-  self->_total = self->_total + a3;
+  self->_total = self->_total + duration;
 }
 
-- (void)updateWithDuration:(double)a3 size:(unint64_t)a4
+- (void)updateWithDuration:(double)duration size:(unint64_t)size
 {
   total = self->_total;
-  v7 = self->_current + a3;
+  v7 = self->_current + duration;
   self->_current = v7;
   if (v7 > total + 0.001)
   {
@@ -52,7 +52,7 @@
   delegate = self->_delegate;
   [(MBProgress *)self percentage];
 
-  [(MBProgressDelegate *)delegate progressUpdatedWithPercentage:a4 size:?];
+  [(MBProgressDelegate *)delegate progressUpdatedWithPercentage:size size:?];
 }
 
 @end

@@ -1,5 +1,5 @@
 @interface FBAAvatarHelper
-+ (id)contactImageForEmailAddress:(id)a3;
++ (id)contactImageForEmailAddress:(id)address;
 - (_TtC18Feedback_Assistant15FBAAvatarHelper)init;
 @end
 
@@ -12,7 +12,7 @@
   return [(FBAAvatarHelper *)&v3 init];
 }
 
-+ (id)contactImageForEmailAddress:(id)a3
++ (id)contactImageForEmailAddress:(id)address
 {
   v3 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v5 = sub_100070554(v3, v4);

@@ -9,34 +9,34 @@
 
 - (id)activeAccessoryDevicesSupportingAnnounce
 {
-  v1 = [a1 activeDevices];
-  v2 = [v1 activeAccessoryDevicesSupportingAnnounce];
+  activeDevices = [self activeDevices];
+  activeAccessoryDevicesSupportingAnnounce = [activeDevices activeAccessoryDevicesSupportingAnnounce];
 
-  return v2;
+  return activeAccessoryDevicesSupportingAnnounce;
 }
 
 - (id)activeDevicesSupportingAnnounce
 {
-  v1 = [a1 activeDevices];
-  v2 = [v1 activeDevicesSupportingAnnounce];
+  activeDevices = [self activeDevices];
+  activeDevicesSupportingAnnounce = [activeDevices activeDevicesSupportingAnnounce];
 
-  return v2;
+  return activeDevicesSupportingAnnounce;
 }
 
 - (id)activePersonalDevicesSupportingAnnounce
 {
-  v1 = [a1 activeDevices];
-  v2 = [v1 activePersonalDevicesSupportingAnnounce];
+  activeDevices = [self activeDevices];
+  activePersonalDevicesSupportingAnnounce = [activeDevices activePersonalDevicesSupportingAnnounce];
 
-  return v2;
+  return activePersonalDevicesSupportingAnnounce;
 }
 
 - (id)pairedCompanion
 {
-  v1 = [a1 activeDevices];
-  v2 = [v1 pairedCompanion];
+  activeDevices = [self activeDevices];
+  pairedCompanion = [activeDevices pairedCompanion];
 
-  return v2;
+  return pairedCompanion;
 }
 
 @end

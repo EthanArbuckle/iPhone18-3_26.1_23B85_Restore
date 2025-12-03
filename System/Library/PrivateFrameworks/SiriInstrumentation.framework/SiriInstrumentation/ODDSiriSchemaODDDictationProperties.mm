@@ -1,36 +1,36 @@
 @interface ODDSiriSchemaODDDictationProperties
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (ODDSiriSchemaODDDictationProperties)initWithDictionary:(id)a3;
-- (ODDSiriSchemaODDDictationProperties)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (ODDSiriSchemaODDDictationProperties)initWithDictionary:(id)dictionary;
+- (ODDSiriSchemaODDDictationProperties)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addEnabledDictationLocales:(id)a3;
-- (void)setHasIsAutoPunctuationEnabled:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addEnabledDictationLocales:(id)locales;
+- (void)setHasIsAutoPunctuationEnabled:(BOOL)enabled;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ODDSiriSchemaODDDictationProperties
 
-- (ODDSiriSchemaODDDictationProperties)initWithDictionary:(id)a3
+- (ODDSiriSchemaODDDictationProperties)initWithDictionary:(id)dictionary
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v23.receiver = self;
   v23.super_class = ODDSiriSchemaODDDictationProperties;
   v5 = [(ODDSiriSchemaODDDictationProperties *)&v23 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"isDictationEnabled"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"isDictationEnabled"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ODDSiriSchemaODDDictationProperties setIsDictationEnabled:](v5, "setIsDictationEnabled:", [v6 BOOLValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"enabledDictationLocales"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"enabledDictationLocales"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -76,7 +76,7 @@
       v6 = v18;
     }
 
-    v15 = [v4 objectForKeyedSubscript:@"isAutoPunctuationEnabled"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"isAutoPunctuationEnabled"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -89,30 +89,30 @@
   return v5;
 }
 
-- (ODDSiriSchemaODDDictationProperties)initWithJSON:(id)a3
+- (ODDSiriSchemaODDDictationProperties)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(ODDSiriSchemaODDDictationProperties *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(ODDSiriSchemaODDDictationProperties *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(ODDSiriSchemaODDDictationProperties *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -126,10 +126,10 @@
 - (id)dictionaryRepresentation
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_enabledDictationLocales count])
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
@@ -149,16 +149,16 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
-          if (v10)
+          dictionaryRepresentation = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation)
           {
-            [v4 addObject:v10];
+            [array addObject:dictionaryRepresentation];
           }
 
           else
           {
-            v11 = [MEMORY[0x1E695DFB0] null];
-            [v4 addObject:v11];
+            null = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null];
           }
         }
 
@@ -168,14 +168,14 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKeyedSubscript:@"enabledDictationLocales"];
+    [dictionary setObject:array forKeyedSubscript:@"enabledDictationLocales"];
   }
 
   v12 = *(&self->_isAutoPunctuationEnabled + 1);
   if ((v12 & 2) != 0)
   {
     v13 = [MEMORY[0x1E696AD98] numberWithBool:{-[ODDSiriSchemaODDDictationProperties isAutoPunctuationEnabled](self, "isAutoPunctuationEnabled")}];
-    [v3 setObject:v13 forKeyedSubscript:@"isAutoPunctuationEnabled"];
+    [dictionary setObject:v13 forKeyedSubscript:@"isAutoPunctuationEnabled"];
 
     v12 = *(&self->_isAutoPunctuationEnabled + 1);
   }
@@ -183,12 +183,12 @@
   if (v12)
   {
     v14 = [MEMORY[0x1E696AD98] numberWithBool:{-[ODDSiriSchemaODDDictationProperties isDictationEnabled](self, "isDictationEnabled")}];
-    [v3 setObject:v14 forKeyedSubscript:@"isDictationEnabled"];
+    [dictionary setObject:v14 forKeyedSubscript:@"isDictationEnabled"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3, v16];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary, v16];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -217,15 +217,15 @@
   return v4 ^ v3 ^ v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_15;
   }
 
-  if (*(&self->_isAutoPunctuationEnabled + 1) != (v4[25] & 1))
+  if (*(&self->_isAutoPunctuationEnabled + 1) != (equalCopy[25] & 1))
   {
     goto LABEL_15;
   }
@@ -233,16 +233,16 @@
   if (*(&self->_isAutoPunctuationEnabled + 1))
   {
     isDictationEnabled = self->_isDictationEnabled;
-    if (isDictationEnabled != [v4 isDictationEnabled])
+    if (isDictationEnabled != [equalCopy isDictationEnabled])
     {
       goto LABEL_15;
     }
   }
 
-  v6 = [(ODDSiriSchemaODDDictationProperties *)self enabledDictationLocales];
-  v7 = [v4 enabledDictationLocales];
-  v8 = v7;
-  if ((v6 != 0) == (v7 == 0))
+  enabledDictationLocales = [(ODDSiriSchemaODDDictationProperties *)self enabledDictationLocales];
+  enabledDictationLocales2 = [equalCopy enabledDictationLocales];
+  v8 = enabledDictationLocales2;
+  if ((enabledDictationLocales != 0) == (enabledDictationLocales2 == 0))
   {
 
 LABEL_15:
@@ -250,13 +250,13 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  v9 = [(ODDSiriSchemaODDDictationProperties *)self enabledDictationLocales];
-  if (v9)
+  enabledDictationLocales3 = [(ODDSiriSchemaODDDictationProperties *)self enabledDictationLocales];
+  if (enabledDictationLocales3)
   {
-    v10 = v9;
-    v11 = [(ODDSiriSchemaODDDictationProperties *)self enabledDictationLocales];
-    v12 = [v4 enabledDictationLocales];
-    v13 = [v11 isEqual:v12];
+    v10 = enabledDictationLocales3;
+    enabledDictationLocales4 = [(ODDSiriSchemaODDDictationProperties *)self enabledDictationLocales];
+    enabledDictationLocales5 = [equalCopy enabledDictationLocales];
+    v13 = [enabledDictationLocales4 isEqual:enabledDictationLocales5];
 
     if (!v13)
     {
@@ -269,7 +269,7 @@ LABEL_15:
   }
 
   v14 = (*(&self->_isAutoPunctuationEnabled + 1) >> 1) & 1;
-  if (v14 != ((v4[25] >> 1) & 1))
+  if (v14 != ((equalCopy[25] >> 1) & 1))
   {
     goto LABEL_15;
   }
@@ -277,7 +277,7 @@ LABEL_15:
   if (v14)
   {
     isAutoPunctuationEnabled = self->_isAutoPunctuationEnabled;
-    if (isAutoPunctuationEnabled != [v4 isAutoPunctuationEnabled])
+    if (isAutoPunctuationEnabled != [equalCopy isAutoPunctuationEnabled])
     {
       goto LABEL_15;
     }
@@ -289,10 +289,10 @@ LABEL_16:
   return v16;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (*(&self->_isAutoPunctuationEnabled + 1))
   {
     PBDataWriterWriteBOOLField();
@@ -335,9 +335,9 @@ LABEL_16:
   }
 }
 
-- (void)setHasIsAutoPunctuationEnabled:(BOOL)a3
+- (void)setHasIsAutoPunctuationEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 2;
   }
@@ -350,32 +350,32 @@ LABEL_16:
   *(&self->_isAutoPunctuationEnabled + 1) = *(&self->_isAutoPunctuationEnabled + 1) & 0xFD | v3;
 }
 
-- (void)addEnabledDictationLocales:(id)a3
+- (void)addEnabledDictationLocales:(id)locales
 {
-  v4 = a3;
+  localesCopy = locales;
   enabledDictationLocales = self->_enabledDictationLocales;
-  v8 = v4;
+  v8 = localesCopy;
   if (!enabledDictationLocales)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_enabledDictationLocales;
-    self->_enabledDictationLocales = v6;
+    self->_enabledDictationLocales = array;
 
-    v4 = v8;
+    localesCopy = v8;
     enabledDictationLocales = self->_enabledDictationLocales;
   }
 
-  [(NSArray *)enabledDictationLocales addObject:v4];
+  [(NSArray *)enabledDictationLocales addObject:localesCopy];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = ODDSiriSchemaODDDictationProperties;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(ODDSiriSchemaODDDictationProperties *)self enabledDictationLocales:v9.receiver];
-  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:v4];
+  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:policyCopy];
 
   [(ODDSiriSchemaODDDictationProperties *)self setEnabledDictationLocales:v7];
 

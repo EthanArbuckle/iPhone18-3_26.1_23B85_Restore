@@ -1,23 +1,23 @@
 @interface HKMultiTouchPressGestureRecognizer
-- (CGPoint)locationInView:(id)a3;
+- (CGPoint)locationInView:(id)view;
 - (CGRect)touchableBounds;
-- (HKMultiTouchPressGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
+- (HKMultiTouchPressGestureRecognizer)initWithTarget:(id)target action:(SEL)action;
 - (NSArray)orderedTouches;
-- (id)touchAtIndex:(unint64_t)a3;
+- (id)touchAtIndex:(unint64_t)index;
 - (void)reset;
-- (void)touchDelayTimerFired:(id)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)touchDelayTimerFired:(id)fired;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation HKMultiTouchPressGestureRecognizer
 
-- (HKMultiTouchPressGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (HKMultiTouchPressGestureRecognizer)initWithTarget:(id)target action:(SEL)action
 {
   v5.receiver = self;
   v5.super_class = HKMultiTouchPressGestureRecognizer;
-  result = [(HKMultiTouchPressGestureRecognizer *)&v5 initWithTarget:a3 action:a4];
+  result = [(HKMultiTouchPressGestureRecognizer *)&v5 initWithTarget:target action:action];
   if (result)
   {
     result->_minimumNumberOfTouches = 1;
@@ -27,34 +27,34 @@
   return result;
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   v59 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v48 = a4;
-  v7 = [(HKMultiTouchPressGestureRecognizer *)self delegate];
-  if (v7)
+  beganCopy = began;
+  eventCopy = event;
+  delegate = [(HKMultiTouchPressGestureRecognizer *)self delegate];
+  if (delegate)
   {
-    v8 = v7;
-    v9 = [(HKMultiTouchPressGestureRecognizer *)self delegate];
+    v8 = delegate;
+    delegate2 = [(HKMultiTouchPressGestureRecognizer *)self delegate];
     v10 = objc_opt_respondsToSelector();
 
     if (v10)
     {
-      v11 = [(HKMultiTouchPressGestureRecognizer *)self delegate];
-      [v11 gestureWillBeginWithRecognizer:self];
+      delegate3 = [(HKMultiTouchPressGestureRecognizer *)self delegate];
+      [delegate3 gestureWillBeginWithRecognizer:self];
     }
   }
 
-  if ([v6 count] <= self->_maximumNumberOfTouches)
+  if ([beganCopy count] <= self->_maximumNumberOfTouches)
   {
-    v12 = [v6 count];
+    v12 = [beganCopy count];
     if ([(NSMutableSet *)self->_touches count]+ v12 <= self->_maximumNumberOfTouches || !self->_touchDelayTimer)
     {
-      v47 = v6;
+      v47 = beganCopy;
       if (CGRectEqualToRect(self->_touchableBounds, *MEMORY[0x1E695F058]))
       {
-        v14 = [v6 mutableCopy];
+        v14 = [beganCopy mutableCopy];
       }
 
       else
@@ -65,7 +65,7 @@
         v54 = 0u;
         v55 = 0u;
         v56 = 0u;
-        v15 = v6;
+        v15 = beganCopy;
         v16 = [v15 countByEnumeratingWithState:&v53 objects:v58 count:16];
         if (v16)
         {
@@ -81,8 +81,8 @@
               }
 
               v20 = *(*(&v53 + 1) + 8 * i);
-              v21 = [(HKMultiTouchPressGestureRecognizer *)self view];
-              [v20 locationInView:v21];
+              view = [(HKMultiTouchPressGestureRecognizer *)self view];
+              [v20 locationInView:view];
               v60.x = v22;
               v60.y = v23;
               v24 = CGRectContainsPoint(self->_touchableBounds, v60);
@@ -101,7 +101,7 @@
       }
 
       touches = self->_touches;
-      v13 = v48;
+      v13 = eventCopy;
       if (touches)
       {
         if ([(NSMutableSet *)touches count]>= self->_maximumNumberOfTouches)
@@ -133,7 +133,7 @@
               v32 = *(*(&v49 + 1) + 8 * j);
               if ([(NSMutableSet *)self->_touches count]>= self->_maximumNumberOfTouches)
               {
-                [(HKMultiTouchPressGestureRecognizer *)self ignoreTouch:v32 forEvent:v48];
+                [(HKMultiTouchPressGestureRecognizer *)self ignoreTouch:v32 forEvent:eventCopy];
               }
 
               else
@@ -167,7 +167,7 @@
             goto LABEL_48;
           }
 
-          v44 = self;
+          selfCopy2 = self;
           v45 = 2;
           goto LABEL_47;
         }
@@ -178,15 +178,15 @@
         if ([v14 count] <= self->_maximumNumberOfTouches)
         {
           v38 = v14;
-          v34 = self->_touches;
+          allObjects = self->_touches;
           self->_touches = v38;
         }
 
         else
         {
           v33 = MEMORY[0x1E695DFA8];
-          v34 = [v14 allObjects];
-          v35 = [v34 subarrayWithRange:{0, self->_maximumNumberOfTouches}];
+          allObjects = [v14 allObjects];
+          v35 = [allObjects subarrayWithRange:{0, self->_maximumNumberOfTouches}];
           v36 = [v33 setWithArray:v35];
           v37 = self->_touches;
           self->_touches = v36;
@@ -203,31 +203,31 @@
           touchDelayTimer = self->_touchDelayTimer;
           self->_touchDelayTimer = v39;
 
-          v41 = [(HKMultiTouchPressGestureRecognizer *)self view];
-          [(HKMultiTouchPressGestureRecognizer *)self locationInView:v41];
+          view2 = [(HKMultiTouchPressGestureRecognizer *)self view];
+          [(HKMultiTouchPressGestureRecognizer *)self locationInView:view2];
           self->_startingPosition.x = v42;
           self->_startingPosition.y = v43;
 
 LABEL_48:
-          v6 = v47;
+          beganCopy = v47;
           goto LABEL_49;
         }
       }
 
-      v44 = self;
+      selfCopy2 = self;
       v45 = 1;
 LABEL_47:
-      [(HKMultiTouchPressGestureRecognizer *)v44 setState:v45, v46];
+      [(HKMultiTouchPressGestureRecognizer *)selfCopy2 setState:v45, v46];
       goto LABEL_48;
     }
   }
 
   [(HKMultiTouchPressGestureRecognizer *)self setState:5];
-  v13 = v48;
+  v13 = eventCopy;
 LABEL_49:
 }
 
-- (void)touchDelayTimerFired:(id)a3
+- (void)touchDelayTimerFired:(id)fired
 {
   [(NSTimer *)self->_touchDelayTimer invalidate];
   touchDelayTimer = self->_touchDelayTimer;
@@ -236,11 +236,11 @@ LABEL_49:
   [(HKMultiTouchPressGestureRecognizer *)self setState:1];
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
-  v12 = a3;
-  v5 = [(HKMultiTouchPressGestureRecognizer *)self view];
-  [(HKMultiTouchPressGestureRecognizer *)self locationInView:v5];
+  movedCopy = moved;
+  view = [(HKMultiTouchPressGestureRecognizer *)self view];
+  [(HKMultiTouchPressGestureRecognizer *)self locationInView:view];
   v7 = v6;
   v9 = v8;
 
@@ -252,20 +252,20 @@ LABEL_49:
     self->_touchDelayTimer = 0;
   }
 
-  if ([(NSMutableSet *)self->_touches intersectsSet:v12]&& [(HKMultiTouchPressGestureRecognizer *)self state]== 2)
+  if ([(NSMutableSet *)self->_touches intersectsSet:movedCopy]&& [(HKMultiTouchPressGestureRecognizer *)self state]== 2)
   {
     [(HKMultiTouchPressGestureRecognizer *)self setState:2];
   }
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  v8 = a3;
-  v5 = [(NSMutableSet *)self->_touches intersectsSet:v8];
-  v6 = v8;
+  endedCopy = ended;
+  v5 = [(NSMutableSet *)self->_touches intersectsSet:endedCopy];
+  v6 = endedCopy;
   if (v5)
   {
-    [(NSMutableSet *)self->_touches minusSet:v8];
+    [(NSMutableSet *)self->_touches minusSet:endedCopy];
     if ([(NSMutableSet *)self->_touches count]>= self->_minimumNumberOfTouches)
     {
       v7 = 2;
@@ -282,7 +282,7 @@ LABEL_49:
     }
 
     [(HKMultiTouchPressGestureRecognizer *)self setState:v7];
-    v6 = v8;
+    v6 = endedCopy;
   }
 }
 
@@ -298,10 +298,10 @@ LABEL_49:
   self->_startingPosition = *MEMORY[0x1E695EFF8];
 }
 
-- (CGPoint)locationInView:(id)a3
+- (CGPoint)locationInView:(id)view
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  viewCopy = view;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
@@ -324,7 +324,7 @@ LABEL_49:
           objc_enumerationMutation(v5);
         }
 
-        [*(*(&v22 + 1) + 8 * i) locationInView:{v4, v22}];
+        [*(*(&v22 + 1) + 8 * i) locationInView:{viewCopy, v22}];
         v10 = v10 + v13;
         v11 = v11 + v14;
       }
@@ -335,7 +335,7 @@ LABEL_49:
 
     while (v7);
 
-    v15 = [(HKMultiTouchPressGestureRecognizer *)self view];
+    view = [(HKMultiTouchPressGestureRecognizer *)self view];
     UIPointRoundToViewScale();
     v17 = v16;
     v19 = v18;
@@ -357,13 +357,13 @@ LABEL_49:
 
 - (NSArray)orderedTouches
 {
-  v3 = [(NSMutableSet *)self->_touches allObjects];
+  allObjects = [(NSMutableSet *)self->_touches allObjects];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __52__HKMultiTouchPressGestureRecognizer_orderedTouches__block_invoke;
   v6[3] = &unk_1E81B8B90;
   v6[4] = self;
-  v4 = [v3 sortedArrayUsingComparator:v6];
+  v4 = [allObjects sortedArrayUsingComparator:v6];
 
   return v4;
 }
@@ -394,17 +394,17 @@ BOOL __52__HKMultiTouchPressGestureRecognizer_orderedTouches__block_invoke(uint6
   }
 }
 
-- (id)touchAtIndex:(unint64_t)a3
+- (id)touchAtIndex:(unint64_t)index
 {
-  v4 = [(HKMultiTouchPressGestureRecognizer *)self orderedTouches];
-  if ([v4 count] <= a3)
+  orderedTouches = [(HKMultiTouchPressGestureRecognizer *)self orderedTouches];
+  if ([orderedTouches count] <= index)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [v4 objectAtIndex:a3];
+    v5 = [orderedTouches objectAtIndex:index];
   }
 
   return v5;

@@ -1,17 +1,17 @@
 @interface MusicKit_SoftLinking_MPSectionedCollection
-- (BOOL)hasSameContentAsSectionedCollection:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)hasSameContentAsSectionedCollection:(id)collection;
+- (BOOL)isEqual:(id)equal;
 - (MusicKit_SoftLinking_MPSectionedCollection)init;
-- (MusicKit_SoftLinking_MPSectionedCollection)initWithUnderlyingSectionedCollection:(id)a3;
-- (id)identifiersForItemAtIndexPath:(id)a3;
-- (id)identifiersForSectionAtIndex:(int64_t)a3;
+- (MusicKit_SoftLinking_MPSectionedCollection)initWithUnderlyingSectionedCollection:(id)collection;
+- (id)identifiersForItemAtIndexPath:(id)path;
+- (id)identifiersForSectionAtIndex:(int64_t)index;
 - (id)itemAtIndexPathBlock;
 - (id)sectionIdentifiersAtIndexBlock;
 - (id)sectionItemAtIndexPathBlock;
-- (void)enumerateItemIdentifiersInSectionAtIndex:(int64_t)a3 usingBlock:(id)a4;
-- (void)enumerateItemIdentifiersUsingBlock:(id)a3;
-- (void)enumerateSectionIdentifiersUsingBlock:(id)a3;
-- (void)enumerateTitledSectionsUsingBlock:(id)a3;
+- (void)enumerateItemIdentifiersInSectionAtIndex:(int64_t)index usingBlock:(id)block;
+- (void)enumerateItemIdentifiersUsingBlock:(id)block;
+- (void)enumerateSectionIdentifiersUsingBlock:(id)block;
+- (void)enumerateTitledSectionsUsingBlock:(id)block;
 @end
 
 @implementation MusicKit_SoftLinking_MPSectionedCollection
@@ -49,16 +49,16 @@
   return v2;
 }
 
-- (MusicKit_SoftLinking_MPSectionedCollection)initWithUnderlyingSectionedCollection:(id)a3
+- (MusicKit_SoftLinking_MPSectionedCollection)initWithUnderlyingSectionedCollection:(id)collection
 {
-  v5 = a3;
+  collectionCopy = collection;
   v9.receiver = self;
   v9.super_class = MusicKit_SoftLinking_MPSectionedCollection;
   v6 = [(MusicKit_SoftLinking_MPSectionedCollection *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_underlyingSectionedCollection, a3);
+    objc_storeStrong(&v6->_underlyingSectionedCollection, collection);
   }
 
   return v7;
@@ -100,17 +100,17 @@
   return v2;
 }
 
-- (id)identifiersForSectionAtIndex:(int64_t)a3
+- (id)identifiersForSectionAtIndex:(int64_t)index
 {
   v5 = [(MPSectionedCollection *)self->_underlyingSectionedCollection identifiersForSectionAtIndex:?];
   if (([v5 musicKit_hasValidIdentifier] & 1) == 0)
   {
-    v6 = [(MPSectionedCollection *)self->_underlyingSectionedCollection sectionAtIndex:a3];
-    v7 = [v6 identifiers];
+    v6 = [(MPSectionedCollection *)self->_underlyingSectionedCollection sectionAtIndex:index];
+    identifiers = [v6 identifiers];
 
-    if (v7)
+    if (identifiers)
     {
-      v8 = v7;
+      v8 = identifiers;
 
       v5 = v8;
     }
@@ -119,18 +119,18 @@
   return v5;
 }
 
-- (id)identifiersForItemAtIndexPath:(id)a3
+- (id)identifiersForItemAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(MPSectionedCollection *)self->_underlyingSectionedCollection identifiersForItemAtIndexPath:v4];
+  pathCopy = path;
+  v5 = [(MPSectionedCollection *)self->_underlyingSectionedCollection identifiersForItemAtIndexPath:pathCopy];
   if (([v5 musicKit_hasValidIdentifier] & 1) == 0)
   {
-    v6 = [(MPSectionedCollection *)self->_underlyingSectionedCollection itemAtIndexPath:v4];
-    v7 = [v6 identifiers];
+    v6 = [(MPSectionedCollection *)self->_underlyingSectionedCollection itemAtIndexPath:pathCopy];
+    identifiers = [v6 identifiers];
 
-    if (v7)
+    if (identifiers)
     {
-      v8 = v7;
+      v8 = identifiers;
 
       v5 = v8;
     }
@@ -139,84 +139,84 @@
   return v5;
 }
 
-- (void)enumerateItemIdentifiersUsingBlock:(id)a3
+- (void)enumerateItemIdentifiersUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   underlyingSectionedCollection = self->_underlyingSectionedCollection;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __81__MusicKit_SoftLinking_MPSectionedCollection_enumerateItemIdentifiersUsingBlock___block_invoke;
   v7[3] = &unk_278229EA0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   [(MPSectionedCollection *)underlyingSectionedCollection enumerateItemIdentifiersUsingBlock:v7];
 }
 
-- (void)enumerateSectionIdentifiersUsingBlock:(id)a3
+- (void)enumerateSectionIdentifiersUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   underlyingSectionedCollection = self->_underlyingSectionedCollection;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __84__MusicKit_SoftLinking_MPSectionedCollection_enumerateSectionIdentifiersUsingBlock___block_invoke;
   v7[3] = &unk_278229EC8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   [(MPSectionedCollection *)underlyingSectionedCollection enumerateSectionIdentifiersUsingBlock:v7];
 }
 
-- (void)enumerateTitledSectionsUsingBlock:(id)a3
+- (void)enumerateTitledSectionsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   underlyingSectionedCollection = self->_underlyingSectionedCollection;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __80__MusicKit_SoftLinking_MPSectionedCollection_enumerateTitledSectionsUsingBlock___block_invoke;
   v7[3] = &unk_278229EF0;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   [(MPSectionedCollection *)underlyingSectionedCollection enumerateSectionsUsingBlock:v7];
 }
 
-- (void)enumerateItemIdentifiersInSectionAtIndex:(int64_t)a3 usingBlock:(id)a4
+- (void)enumerateItemIdentifiersInSectionAtIndex:(int64_t)index usingBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   underlyingSectionedCollection = self->_underlyingSectionedCollection;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __98__MusicKit_SoftLinking_MPSectionedCollection_enumerateItemIdentifiersInSectionAtIndex_usingBlock___block_invoke;
   v9[3] = &unk_278229F18;
-  v10 = v6;
-  v11 = a3;
+  v10 = blockCopy;
+  indexCopy = index;
   v9[4] = self;
-  v8 = v6;
-  [(MPSectionedCollection *)underlyingSectionedCollection enumerateItemIdentifiersInSectionAtIndex:a3 usingBlock:v9];
+  v8 = blockCopy;
+  [(MPSectionedCollection *)underlyingSectionedCollection enumerateItemIdentifiersInSectionAtIndex:index usingBlock:v9];
 }
 
-- (BOOL)hasSameContentAsSectionedCollection:(id)a3
+- (BOOL)hasSameContentAsSectionedCollection:(id)collection
 {
   underlyingSectionedCollection = self->_underlyingSectionedCollection;
-  v4 = [a3 _underlyingSectionedCollection];
-  LOBYTE(underlyingSectionedCollection) = [(MPSectionedCollection *)underlyingSectionedCollection hasSameContentAsSectionedCollection:v4];
+  _underlyingSectionedCollection = [collection _underlyingSectionedCollection];
+  LOBYTE(underlyingSectionedCollection) = [(MPSectionedCollection *)underlyingSectionedCollection hasSameContentAsSectionedCollection:_underlyingSectionedCollection];
 
   return underlyingSectionedCollection;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
 
-  else if ([(MusicKit_SoftLinking_MPSectionedCollection *)v4 isMemberOfClass:objc_opt_class()])
+  else if ([(MusicKit_SoftLinking_MPSectionedCollection *)equalCopy isMemberOfClass:objc_opt_class()])
   {
     underlyingSectionedCollection = self->_underlyingSectionedCollection;
-    v6 = [(MusicKit_SoftLinking_MPSectionedCollection *)v4 _underlyingSectionedCollection];
-    v7 = [(MPSectionedCollection *)underlyingSectionedCollection isEqual:v6];
+    _underlyingSectionedCollection = [(MusicKit_SoftLinking_MPSectionedCollection *)equalCopy _underlyingSectionedCollection];
+    v7 = [(MPSectionedCollection *)underlyingSectionedCollection isEqual:_underlyingSectionedCollection];
   }
 
   else

@@ -1,7 +1,7 @@
 @interface ENXPCClient
-+ (ENXPCClient)clientWithAuditToken:(id *)a3 pid:(int)a4;
++ (ENXPCClient)clientWithAuditToken:(id *)token pid:(int)pid;
 - (id)description;
-- (void)activateWithAppAPIVersion:(int)a3 regionISO:(id)a4;
+- (void)activateWithAppAPIVersion:(int)version regionISO:(id)o;
 @end
 
 @implementation ENXPCClient
@@ -36,10 +36,10 @@
   return v5;
 }
 
-+ (ENXPCClient)clientWithAuditToken:(id *)a3 pid:(int)a4
++ (ENXPCClient)clientWithAuditToken:(id *)token pid:(int)pid
 {
   v5 = objc_alloc_init(ENXPCClient);
-  v5->_pid = a4;
+  v5->_pid = pid;
   v6 = xpc_copy_code_signing_identity_for_token();
   if (v6)
   {
@@ -127,12 +127,12 @@ LABEL_27:
   return v5;
 }
 
-- (void)activateWithAppAPIVersion:(int)a3 regionISO:(id)a4
+- (void)activateWithAppAPIVersion:(int)version regionISO:(id)o
 {
-  self->_appAPIVersion = a3;
-  if (a4)
+  self->_appAPIVersion = version;
+  if (o)
   {
-    v5 = [MEMORY[0x277CC5CA0] regionWithCode:a4];
+    v5 = [MEMORY[0x277CC5CA0] regionWithCode:o];
     appRegion = self->_appRegion;
     self->_appRegion = v5;
   }

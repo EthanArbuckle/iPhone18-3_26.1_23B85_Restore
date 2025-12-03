@@ -1,14 +1,14 @@
 @interface OADArcToPathElement
 - (OADAdjustPoint)semiaxes;
-- (OADArcToPathElement)initWithSemiaxes:(OADAdjustPoint)a3 startAngle:(OADAdjustCoord)a4 angleLength:(OADAdjustCoord)a5;
+- (OADArcToPathElement)initWithSemiaxes:(OADAdjustPoint)semiaxes startAngle:(OADAdjustCoord)angle angleLength:(OADAdjustCoord)length;
 @end
 
 @implementation OADArcToPathElement
 
-- (OADArcToPathElement)initWithSemiaxes:(OADAdjustPoint)a3 startAngle:(OADAdjustCoord)a4 angleLength:(OADAdjustCoord)a5
+- (OADArcToPathElement)initWithSemiaxes:(OADAdjustPoint)semiaxes startAngle:(OADAdjustCoord)angle angleLength:(OADAdjustCoord)length
 {
-  y = a3.y;
-  x = a3.x;
+  y = semiaxes.y;
+  x = semiaxes.x;
   v10.receiver = self;
   v10.super_class = OADArcToPathElement;
   result = [(OADArcToPathElement *)&v10 init];
@@ -16,8 +16,8 @@
   {
     result->mSemiaxes.x = x;
     result->mSemiaxes.y = y;
-    result->mStartAngle = a4;
-    result->mAngleLength = a5;
+    result->mStartAngle = angle;
+    result->mAngleLength = length;
   }
 
   return result;

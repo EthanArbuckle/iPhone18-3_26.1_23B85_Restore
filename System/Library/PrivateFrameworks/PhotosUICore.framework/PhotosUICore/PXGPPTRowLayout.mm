@@ -1,14 +1,14 @@
 @interface PXGPPTRowLayout
-- (CGSize)layout:(id)a3 estimatedContentSizeForSublayoutAtIndex:(int64_t)a4 referenceSize:(CGSize)result;
-- (PXGPPTRowLayout)initWithNumberOfItems:(int64_t)a3 hue:(double)a4;
-- (id)layout:(id)a3 createSublayoutAtIndex:(int64_t)a4;
+- (CGSize)layout:(id)layout estimatedContentSizeForSublayoutAtIndex:(int64_t)index referenceSize:(CGSize)result;
+- (PXGPPTRowLayout)initWithNumberOfItems:(int64_t)items hue:(double)hue;
+- (id)layout:(id)layout createSublayoutAtIndex:(int64_t)index;
 @end
 
 @implementation PXGPPTRowLayout
 
-- (id)layout:(id)a3 createSublayoutAtIndex:(int64_t)a4
+- (id)layout:(id)layout createSublayoutAtIndex:(int64_t)index
 {
-  cos(vcvtd_n_f64_s64(a4, 1uLL));
+  cos(vcvtd_n_f64_s64(index, 1uLL));
   v5 = [PXGPPTRowItemLayout alloc];
   v6 = MEMORY[0x1E69DC888];
   [(PXGPPTRowLayout *)self hue];
@@ -18,14 +18,14 @@
   return v8;
 }
 
-- (CGSize)layout:(id)a3 estimatedContentSizeForSublayoutAtIndex:(int64_t)a4 referenceSize:(CGSize)result
+- (CGSize)layout:(id)layout estimatedContentSizeForSublayoutAtIndex:(int64_t)index referenceSize:(CGSize)result
 {
   height = result.height;
   result.width = height;
   return result;
 }
 
-- (PXGPPTRowLayout)initWithNumberOfItems:(int64_t)a3 hue:(double)a4
+- (PXGPPTRowLayout)initWithNumberOfItems:(int64_t)items hue:(double)hue
 {
   v9.receiver = self;
   v9.super_class = PXGPPTRowLayout;
@@ -33,8 +33,8 @@
   v7 = v6;
   if (v6)
   {
-    v6->_numberOfItems = a3;
-    v6->_hue = a4;
+    v6->_numberOfItems = items;
+    v6->_hue = hue;
     [(PXGStackLayout *)v6 setAxis:2];
     [(PXGStackLayout *)v7 setInterlayoutSpacing:1.0];
     [(PXGStackLayout *)v7 insertSublayoutProvider:v7 inRange:0, v7->_numberOfItems];

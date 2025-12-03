@@ -2,25 +2,25 @@
 + (id)PageView;
 + (id)configurationForPageView;
 + (id)storeConfigurationForPageView;
-+ (id)streamWithName:(id)a3;
++ (id)streamWithName:(id)name;
 + (id)validKeyPaths;
 @end
 
 @implementation _BMProactiveHarvestingSafariLibraryNode
 
-+ (id)streamWithName:(id)a3
++ (id)streamWithName:(id)name
 {
-  if ([a3 isEqualToString:@"PageView"])
+  if ([name isEqualToString:@"PageView"])
   {
-    v4 = [a1 PageView];
+    pageView = [self PageView];
   }
 
   else
   {
-    v4 = 0;
+    pageView = 0;
   }
 
-  return v4;
+  return pageView;
 }
 
 + (id)validKeyPaths
@@ -36,13 +36,13 @@
 
 + (id)configurationForPageView
 {
-  v3 = [a1 storeConfigurationForPageView];
-  v4 = [a1 syncPolicyForPageView];
+  storeConfigurationForPageView = [self storeConfigurationForPageView];
+  syncPolicyForPageView = [self syncPolicyForPageView];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"F0BAD425-8E52-4525-A017-D2640F29AE8C"];
   BYTE2(v9) = 0;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"ProactiveHarvesting.Safari.PageView" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:&unk_1EF3E8970 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"ProactiveHarvesting.Safari.PageView" eventClass:objc_opt_class() storeConfig:storeConfigurationForPageView syncPolicy:syncPolicyForPageView legacyNames:&unk_1EF3E8970 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -58,7 +58,7 @@
 + (id)PageView
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForPageView];
+  configurationForPageView = [self configurationForPageView];
   v3 = +[BMProactiveHarvestingPageView columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -70,7 +70,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"ProactiveHarvesting.Safari.PageView" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"ProactiveHarvesting.Safari.PageView" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"ProactiveHarvesting.Safari.PageView" schema:v9 configuration:configurationForPageView];
 
   v11 = *MEMORY[0x1E69E9840];
 

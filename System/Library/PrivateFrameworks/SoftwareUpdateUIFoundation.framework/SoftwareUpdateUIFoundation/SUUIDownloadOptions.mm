@@ -1,50 +1,50 @@
 @interface SUUIDownloadOptions
 - (BOOL)allowUnrestrictedCellularDownload;
 - (BOOL)downloadOnly;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)userUpdateTonight;
 - (SUUIDescriptor)descriptor;
 - (SUUIDownloadOptions)init;
-- (SUUIDownloadOptions)initWithDescriptor:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SUUIDownloadOptions)initWithDescriptor:(id)descriptor;
+- (id)copyWithZone:(_NSZone *)zone;
 - (int64_t)downloadFeeAgreementStatus;
 - (int64_t)termsAndConditionsAgreementStatus;
 - (unint64_t)hash;
-- (void)setAllowUnrestrictedCellularDownload:(BOOL)a3;
-- (void)setDownloadFeeAgreementStatus:(int64_t)a3;
-- (void)setDownloadOnly:(BOOL)a3;
-- (void)setTermsAndConditionsAgreementStatus:(int64_t)a3;
-- (void)setUserUpdateTonight:(BOOL)a3;
+- (void)setAllowUnrestrictedCellularDownload:(BOOL)download;
+- (void)setDownloadFeeAgreementStatus:(int64_t)status;
+- (void)setDownloadOnly:(BOOL)only;
+- (void)setTermsAndConditionsAgreementStatus:(int64_t)status;
+- (void)setUserUpdateTonight:(BOOL)tonight;
 @end
 
 @implementation SUUIDownloadOptions
 
 - (BOOL)downloadOnly
 {
-  v4 = self;
+  selfCopy = self;
   v3[2] = a2;
   v3[0] = 2;
   p_lock = &self->_lock;
   v6 = 0;
   os_unfair_lock_lock_with_options();
   v3[1] = p_lock;
-  downloadOnly = v4->_downloadOnly;
+  downloadOnly = selfCopy->_downloadOnly;
   v8 = v3;
   os_unfair_lock_unlock(p_lock);
   return downloadOnly;
 }
 
-- (void)setDownloadOnly:(BOOL)a3
+- (void)setDownloadOnly:(BOOL)only
 {
-  v7 = self;
+  selfCopy = self;
   v6 = a2;
-  v5 = a3;
+  onlyCopy = only;
   v4[0] = 2;
   p_lock = &self->_lock;
   v8 = 0;
   os_unfair_lock_lock_with_options();
   v4[1] = p_lock;
-  v7->_downloadOnly = v5;
+  selfCopy->_downloadOnly = onlyCopy;
   v10 = v4;
   switch(v4[0])
   {
@@ -63,30 +63,30 @@
 
 - (BOOL)userUpdateTonight
 {
-  v4 = self;
+  selfCopy = self;
   v3[2] = a2;
   v3[0] = 2;
   p_lock = &self->_lock;
   v6 = 0;
   os_unfair_lock_lock_with_options();
   v3[1] = p_lock;
-  userUpdateTonight = v4->_userUpdateTonight;
+  userUpdateTonight = selfCopy->_userUpdateTonight;
   v8 = v3;
   os_unfair_lock_unlock(p_lock);
   return userUpdateTonight;
 }
 
-- (void)setUserUpdateTonight:(BOOL)a3
+- (void)setUserUpdateTonight:(BOOL)tonight
 {
-  v7 = self;
+  selfCopy = self;
   v6 = a2;
-  v5 = a3;
+  tonightCopy = tonight;
   v4[0] = 2;
   p_lock = &self->_lock;
   v8 = 0;
   os_unfair_lock_lock_with_options();
   v4[1] = p_lock;
-  v7->_userUpdateTonight = v5;
+  selfCopy->_userUpdateTonight = tonightCopy;
   v10 = v4;
   switch(v4[0])
   {
@@ -105,14 +105,14 @@
 
 - (SUUIDescriptor)descriptor
 {
-  v5 = self;
+  selfCopy = self;
   v4[2] = a2;
   v4[0] = 2;
   p_lock = &self->_lock;
   v7 = 0;
   os_unfair_lock_lock_with_options();
   v4[1] = p_lock;
-  v6 = MEMORY[0x277D82BE0](v5->_descriptor);
+  v6 = MEMORY[0x277D82BE0](selfCopy->_descriptor);
   v9 = v4;
   os_unfair_lock_unlock(p_lock);
   v2 = v6;
@@ -122,30 +122,30 @@
 
 - (int64_t)downloadFeeAgreementStatus
 {
-  v4 = self;
+  selfCopy = self;
   v3[2] = a2;
   v3[0] = 2;
   p_lock = &self->_lock;
   v6 = 0;
   os_unfair_lock_lock_with_options();
   v3[1] = p_lock;
-  downloadFeeAgreementStatus = v4->_downloadFeeAgreementStatus;
+  downloadFeeAgreementStatus = selfCopy->_downloadFeeAgreementStatus;
   v8 = v3;
   os_unfair_lock_unlock(p_lock);
   return downloadFeeAgreementStatus;
 }
 
-- (void)setDownloadFeeAgreementStatus:(int64_t)a3
+- (void)setDownloadFeeAgreementStatus:(int64_t)status
 {
-  v7 = self;
+  selfCopy = self;
   v6 = a2;
-  v5 = a3;
+  statusCopy = status;
   v4[0] = 2;
   p_lock = &self->_lock;
   v8 = 0;
   os_unfair_lock_lock_with_options();
   v4[1] = p_lock;
-  v7->_downloadFeeAgreementStatus = v5;
+  selfCopy->_downloadFeeAgreementStatus = statusCopy;
   v10 = v4;
   switch(v4[0])
   {
@@ -164,30 +164,30 @@
 
 - (int64_t)termsAndConditionsAgreementStatus
 {
-  v4 = self;
+  selfCopy = self;
   v3[2] = a2;
   v3[0] = 2;
   p_lock = &self->_lock;
   v6 = 0;
   os_unfair_lock_lock_with_options();
   v3[1] = p_lock;
-  termsAndConditionsAgreementStatus = v4->_termsAndConditionsAgreementStatus;
+  termsAndConditionsAgreementStatus = selfCopy->_termsAndConditionsAgreementStatus;
   v8 = v3;
   os_unfair_lock_unlock(p_lock);
   return termsAndConditionsAgreementStatus;
 }
 
-- (void)setTermsAndConditionsAgreementStatus:(int64_t)a3
+- (void)setTermsAndConditionsAgreementStatus:(int64_t)status
 {
-  v7 = self;
+  selfCopy = self;
   v6 = a2;
-  v5 = a3;
+  statusCopy = status;
   v4[0] = 2;
   p_lock = &self->_lock;
   v8 = 0;
   os_unfair_lock_lock_with_options();
   v4[1] = p_lock;
-  v7->_termsAndConditionsAgreementStatus = v5;
+  selfCopy->_termsAndConditionsAgreementStatus = statusCopy;
   v10 = v4;
   switch(v4[0])
   {
@@ -206,30 +206,30 @@
 
 - (BOOL)allowUnrestrictedCellularDownload
 {
-  v4 = self;
+  selfCopy = self;
   v3[2] = a2;
   v3[0] = 2;
   p_lock = &self->_lock;
   v6 = 0;
   os_unfair_lock_lock_with_options();
   v3[1] = p_lock;
-  allowUnrestrictedCellularDownload = v4->_allowUnrestrictedCellularDownload;
+  allowUnrestrictedCellularDownload = selfCopy->_allowUnrestrictedCellularDownload;
   v8 = v3;
   os_unfair_lock_unlock(p_lock);
   return allowUnrestrictedCellularDownload;
 }
 
-- (void)setAllowUnrestrictedCellularDownload:(BOOL)a3
+- (void)setAllowUnrestrictedCellularDownload:(BOOL)download
 {
-  v7 = self;
+  selfCopy = self;
   v6 = a2;
-  v5 = a3;
+  downloadCopy = download;
   v4[0] = 2;
   p_lock = &self->_lock;
   v8 = 0;
   os_unfair_lock_lock_with_options();
   v4[1] = p_lock;
-  v7->_allowUnrestrictedCellularDownload = v5;
+  selfCopy->_allowUnrestrictedCellularDownload = downloadCopy;
   v10 = v4;
   switch(v4[0])
   {
@@ -253,62 +253,62 @@
   objc_exception_throw(exception);
 }
 
-- (SUUIDownloadOptions)initWithDescriptor:(id)a3
+- (SUUIDownloadOptions)initWithDescriptor:(id)descriptor
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v8;
-  v8 = 0;
+  objc_storeStrong(location, descriptor);
+  v3 = selfCopy;
+  selfCopy = 0;
   v6.receiver = v3;
   v6.super_class = SUUIDownloadOptions;
-  v8 = [(SUUIDownloadOptions *)&v6 init];
-  objc_storeStrong(&v8, v8);
-  if (v8)
+  selfCopy = [(SUUIDownloadOptions *)&v6 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
-    objc_storeStrong(&v8->_descriptor, location[0]);
-    v8->_downloadOnly = 0;
-    v8->_userUpdateTonight = 0;
-    v8->_downloadFeeAgreementStatus = 2;
-    v8->_termsAndConditionsAgreementStatus = 2;
-    v8->_allowUnrestrictedCellularDownload = 0;
-    v8->_lock._os_unfair_lock_opaque = 0;
+    objc_storeStrong(&selfCopy->_descriptor, location[0]);
+    selfCopy->_downloadOnly = 0;
+    selfCopy->_userUpdateTonight = 0;
+    selfCopy->_downloadFeeAgreementStatus = 2;
+    selfCopy->_termsAndConditionsAgreementStatus = 2;
+    selfCopy->_allowUnrestrictedCellularDownload = 0;
+    selfCopy->_lock._os_unfair_lock_opaque = 0;
   }
 
-  v5 = MEMORY[0x277D82BE0](v8);
+  v5 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v8, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v15 = self;
+  selfCopy = self;
   v14 = a2;
-  v13 = a3;
-  v12 = [objc_opt_class() allocWithZone:a3];
+  zoneCopy = zone;
+  v12 = [objc_opt_class() allocWithZone:zone];
   if (v12)
   {
     v8 = MEMORY[0x277D82BE0](v12);
-    v10 = [(SUUIDownloadOptions *)v15 descriptor];
-    v9 = [(SUUIDescriptor *)v10 copyWithZone:v13];
+    descriptor = [(SUUIDownloadOptions *)selfCopy descriptor];
+    v9 = [(SUUIDescriptor *)descriptor copyWithZone:zoneCopy];
     v3 = [v8 initWithDescriptor:?];
     v4 = v12;
     v12 = v3;
     MEMORY[0x277D82BD8](v4);
     MEMORY[0x277D82BD8](v9);
-    MEMORY[0x277D82BD8](v10);
+    MEMORY[0x277D82BD8](descriptor);
     v11[0] = 2;
-    p_lock = &v15->_lock;
+    p_lock = &selfCopy->_lock;
     v16 = 0;
     os_unfair_lock_lock_with_options();
-    v11[1] = &v15->_lock;
-    v12[12] = v15->_downloadOnly;
-    v12[13] = v15->_userUpdateTonight;
-    *(v12 + 3) = v15->_downloadFeeAgreementStatus;
-    *(v12 + 4) = v15->_termsAndConditionsAgreementStatus;
-    v12[14] = v15->_allowUnrestrictedCellularDownload;
+    v11[1] = &selfCopy->_lock;
+    v12[12] = selfCopy->_downloadOnly;
+    v12[13] = selfCopy->_userUpdateTonight;
+    *(v12 + 3) = selfCopy->_downloadFeeAgreementStatus;
+    *(v12 + 4) = selfCopy->_termsAndConditionsAgreementStatus;
+    v12[14] = selfCopy->_allowUnrestrictedCellularDownload;
     v18 = v11;
     switch(v11[0])
     {
@@ -330,13 +330,13 @@
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v21 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (v21 == location[0])
+  objc_storeStrong(location, equal);
+  if (selfCopy == location[0])
   {
     v22 = 1;
     v19 = 1;
@@ -349,7 +349,7 @@
     {
       v18 = MEMORY[0x277D82BE0](location[0]);
       v17[0] = 2;
-      p_lock = &v21->_lock;
+      p_lock = &selfCopy->_lock;
       v25 = 0;
       os_unfair_lock_lock_with_options();
       v17[1] = p_lock;
@@ -360,31 +360,31 @@
       v16 = v24;
       v13 = 0;
       v11 = 0;
-      v10 = [(SUUIDownloadOptions *)v21 downloadOnly];
+      downloadOnly = [(SUUIDownloadOptions *)selfCopy downloadOnly];
       v9 = 0;
-      if (v10 == [v18 downloadOnly])
+      if (downloadOnly == [v18 downloadOnly])
       {
-        v8 = [(SUUIDownloadOptions *)v21 userUpdateTonight];
+        userUpdateTonight = [(SUUIDownloadOptions *)selfCopy userUpdateTonight];
         v9 = 0;
-        if (v8 == [v18 userUpdateTonight])
+        if (userUpdateTonight == [v18 userUpdateTonight])
         {
-          v7 = [(SUUIDownloadOptions *)v21 downloadFeeAgreementStatus];
+          downloadFeeAgreementStatus = [(SUUIDownloadOptions *)selfCopy downloadFeeAgreementStatus];
           v9 = 0;
-          if (v7 == [v18 downloadFeeAgreementStatus])
+          if (downloadFeeAgreementStatus == [v18 downloadFeeAgreementStatus])
           {
-            v6 = [(SUUIDownloadOptions *)v21 termsAndConditionsAgreementStatus];
+            termsAndConditionsAgreementStatus = [(SUUIDownloadOptions *)selfCopy termsAndConditionsAgreementStatus];
             v9 = 0;
-            if (v6 == [v18 termsAndConditionsAgreementStatus])
+            if (termsAndConditionsAgreementStatus == [v18 termsAndConditionsAgreementStatus])
             {
-              v5 = [(SUUIDownloadOptions *)v21 allowUnrestrictedCellularDownload];
+              allowUnrestrictedCellularDownload = [(SUUIDownloadOptions *)selfCopy allowUnrestrictedCellularDownload];
               v9 = 0;
-              if (v5 == [v18 allowUnrestrictedCellularDownload])
+              if (allowUnrestrictedCellularDownload == [v18 allowUnrestrictedCellularDownload])
               {
-                v14 = [(SUUIDownloadOptions *)v21 descriptor];
+                descriptor = [(SUUIDownloadOptions *)selfCopy descriptor];
                 v13 = 1;
-                v12 = [v18 descriptor];
+                descriptor2 = [v18 descriptor];
                 v11 = 1;
-                v9 = [(SUUIDescriptor *)v14 isEqual:?];
+                v9 = [(SUUIDescriptor *)descriptor isEqual:?];
               }
             }
           }
@@ -394,12 +394,12 @@
       v22 = v9 & 1;
       if (v11)
       {
-        MEMORY[0x277D82BD8](v12);
+        MEMORY[0x277D82BD8](descriptor2);
       }
 
       if (v13)
       {
-        MEMORY[0x277D82BD8](v14);
+        MEMORY[0x277D82BD8](descriptor);
       }
 
       v19 = 1;
@@ -446,14 +446,14 @@
 
 - (unint64_t)hash
 {
-  v4 = self;
+  selfCopy = self;
   v3[2] = a2;
   v3[0] = 2;
   p_lock = &self->_lock;
   v6 = 0;
   os_unfair_lock_lock_with_options();
   v3[1] = p_lock;
-  v5 = [(SUUIDescriptor *)v4->_descriptor hash]^ ((2 * v4->_userUpdateTonight) | v4->_downloadOnly | (4 * v4->_allowUnrestrictedCellularDownload)) ^ (v4->_downloadFeeAgreementStatus << 8) ^ (v4->_termsAndConditionsAgreementStatus << 16);
+  v5 = [(SUUIDescriptor *)selfCopy->_descriptor hash]^ ((2 * selfCopy->_userUpdateTonight) | selfCopy->_downloadOnly | (4 * selfCopy->_allowUnrestrictedCellularDownload)) ^ (selfCopy->_downloadFeeAgreementStatus << 8) ^ (selfCopy->_termsAndConditionsAgreementStatus << 16);
   v8 = v3;
   os_unfair_lock_unlock(p_lock);
   return v5;

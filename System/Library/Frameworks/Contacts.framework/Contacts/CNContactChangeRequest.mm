@@ -1,37 +1,37 @@
 @interface CNContactChangeRequest
-+ (id)contactChangeRequestWithKind:(int64_t)a3 contacts:(id)a4 linkIdentifier:(id)a5;
-- (CNContactChangeRequest)initWithCoder:(id)a3;
-- (CNContactChangeRequest)initWithKind:(int64_t)a3 contacts:(id)a4 linkIdentifier:(id)a5;
++ (id)contactChangeRequestWithKind:(int64_t)kind contacts:(id)contacts linkIdentifier:(id)identifier;
+- (CNContactChangeRequest)initWithCoder:(id)coder;
+- (CNContactChangeRequest)initWithKind:(int64_t)kind contacts:(id)contacts linkIdentifier:(id)identifier;
 - (NSArray)contactIdentifiers;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CNContactChangeRequest
 
-+ (id)contactChangeRequestWithKind:(int64_t)a3 contacts:(id)a4 linkIdentifier:(id)a5
++ (id)contactChangeRequestWithKind:(int64_t)kind contacts:(id)contacts linkIdentifier:(id)identifier
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [[a1 alloc] initWithKind:a3 contacts:v9 linkIdentifier:v8];
+  identifierCopy = identifier;
+  contactsCopy = contacts;
+  v10 = [[self alloc] initWithKind:kind contacts:contactsCopy linkIdentifier:identifierCopy];
 
   return v10;
 }
 
-- (CNContactChangeRequest)initWithKind:(int64_t)a3 contacts:(id)a4 linkIdentifier:(id)a5
+- (CNContactChangeRequest)initWithKind:(int64_t)kind contacts:(id)contacts linkIdentifier:(id)identifier
 {
-  v8 = a4;
-  v9 = a5;
+  contactsCopy = contacts;
+  identifierCopy = identifier;
   v16.receiver = self;
   v16.super_class = CNContactChangeRequest;
   v10 = [(CNContactChangeRequest *)&v16 init];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [contactsCopy copy];
     contacts = v10->_contacts;
     v10->_contacts = v11;
 
-    v10->_kind = a3;
-    v13 = [v9 copy];
+    v10->_kind = kind;
+    v13 = [identifierCopy copy];
     linkIdentifier = v10->_linkIdentifier;
     v10->_linkIdentifier = v13;
   }
@@ -39,9 +39,9 @@
   return v10;
 }
 
-- (CNContactChangeRequest)initWithCoder:(id)a3
+- (CNContactChangeRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = CNContactChangeRequest;
   v5 = [(CNContactChangeRequest *)&v16 init];
@@ -50,12 +50,12 @@
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"_contacts"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"_contacts"];
     contacts = v5->_contacts;
     v5->_contacts = v9;
 
-    v5->_kind = [v4 decodeIntegerForKey:@"_kind"];
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_linkIdentifier"];
+    v5->_kind = [coderCopy decodeIntegerForKey:@"_kind"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_linkIdentifier"];
     v12 = [v11 copy];
     linkIdentifier = v5->_linkIdentifier;
     v5->_linkIdentifier = v12;
@@ -67,13 +67,13 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   contacts = self->_contacts;
-  v5 = a3;
-  [v5 encodeObject:contacts forKey:@"_contacts"];
-  [v5 encodeInteger:self->_kind forKey:@"_kind"];
-  [v5 encodeObject:self->_linkIdentifier forKey:@"_linkIdentifier"];
+  coderCopy = coder;
+  [coderCopy encodeObject:contacts forKey:@"_contacts"];
+  [coderCopy encodeInteger:self->_kind forKey:@"_kind"];
+  [coderCopy encodeObject:self->_linkIdentifier forKey:@"_linkIdentifier"];
 }
 
 - (NSArray)contactIdentifiers
@@ -106,8 +106,8 @@
           v20 = 0u;
           v17 = 0u;
           v18 = 0u;
-          v10 = [v9 linkedContactsFromStoreWithIdentifier:{0, 0}];
-          v11 = [v10 countByEnumeratingWithState:&v17 objects:v25 count:16];
+          identifier2 = [v9 linkedContactsFromStoreWithIdentifier:{0, 0}];
+          v11 = [identifier2 countByEnumeratingWithState:&v17 objects:v25 count:16];
           if (v11)
           {
             v12 = v11;
@@ -118,14 +118,14 @@
               {
                 if (*v18 != v13)
                 {
-                  objc_enumerationMutation(v10);
+                  objc_enumerationMutation(identifier2);
                 }
 
-                v15 = [*(*(&v17 + 1) + 8 * j) identifier];
-                [v3 addObject:v15];
+                identifier = [*(*(&v17 + 1) + 8 * j) identifier];
+                [v3 addObject:identifier];
               }
 
-              v12 = [v10 countByEnumeratingWithState:&v17 objects:v25 count:16];
+              v12 = [identifier2 countByEnumeratingWithState:&v17 objects:v25 count:16];
             }
 
             while (v12);
@@ -134,8 +134,8 @@
 
         else
         {
-          v10 = [v9 identifier];
-          [v3 addObject:v10];
+          identifier2 = [v9 identifier];
+          [v3 addObject:identifier2];
         }
       }
 

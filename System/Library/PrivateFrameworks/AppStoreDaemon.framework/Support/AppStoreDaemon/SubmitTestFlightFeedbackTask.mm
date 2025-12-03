@@ -1,12 +1,12 @@
 @interface SubmitTestFlightFeedbackTask
-- (void)mainWithCompletionHandler:(id)a3;
+- (void)mainWithCompletionHandler:(id)handler;
 @end
 
 @implementation SubmitTestFlightFeedbackTask
 
-- (void)mainWithCompletionHandler:(id)a3
+- (void)mainWithCompletionHandler:(id)handler
 {
-  v69 = a3;
+  handlerCopy = handler;
   if (self)
   {
     v4 = *(&self->super.super._finished + 1);
@@ -15,23 +15,23 @@
     v6 = objc_opt_new();
     v7 = *(&self->super.super._finished + 1);
     v8 = sub_100202490(v7);
-    v9 = [v8 unsignedLongLongValue];
+    unsignedLongLongValue = [v8 unsignedLongLongValue];
     if (v6)
     {
       *(v6 + 64) |= 2u;
-      *(v6 + 16) = v9;
+      *(v6 + 16) = unsignedLongLongValue;
     }
 
-    v10 = [v5 timestamp];
+    timestamp = [v5 timestamp];
     if (v6)
     {
       *(v6 + 64) |= 4u;
-      *(v6 + 24) = v10;
+      *(v6 + 24) = timestamp;
     }
 
     v11 = objc_opt_new();
-    v12 = [v5 email];
-    sub_1002313E4(v11, v12);
+    email = [v5 email];
+    sub_1002313E4(v11, email);
 
     v74 = 0u;
     v75 = 0u;
@@ -63,21 +63,21 @@
       while (v16);
     }
 
-    v19 = [v5 comments];
-    sub_1002313FC(v11, v19);
+    comments = [v5 comments];
+    sub_1002313FC(v11, comments);
 
-    v20 = [v5 incidentID];
-    sub_100231414(v11, v20);
+    incidentID = [v5 incidentID];
+    sub_100231414(v11, incidentID);
 
     sub_10032D98C(v6, v11);
     v21 = objc_opt_new();
     v22 = *(&self->super.super._finished + 1);
     v23 = sub_100202B88(v22);
-    v24 = [v23 unsignedLongLongValue];
+    unsignedLongLongValue2 = [v23 unsignedLongLongValue];
     if (v21)
     {
       *(v21 + 72) |= 1u;
-      *(v21 + 8) = v24;
+      *(v21 + 8) = unsignedLongLongValue2;
     }
 
     v25 = *(&self->super.super._finished + 1);
@@ -104,20 +104,20 @@
     v29 = *(&self->super.super._finished + 1);
     v30 = sub_100202548(v29);
 
-    v31 = [v30 bundleID];
-    sub_10040BEBC(v21, v31);
+    bundleID = [v30 bundleID];
+    sub_10040BEBC(v21, bundleID);
 
-    v32 = [v30 bundleVersion];
-    sub_10040BEEC(v21, v32);
+    bundleVersion = [v30 bundleVersion];
+    sub_10040BEEC(v21, bundleVersion);
 
-    v33 = [v30 shortVersion];
-    sub_10040BED4(v21, v33);
+    shortVersion = [v30 shortVersion];
+    sub_10040BED4(v21, shortVersion);
 
     v67 = v30;
-    v34 = [v30 platform];
+    platform = [v30 platform];
     if (v21)
     {
-      if (v34 == 2)
+      if (platform == 2)
       {
         v35 = 3;
       }
@@ -127,16 +127,16 @@
         v35 = 1;
       }
 
-      if (v34 == 1)
+      if (platform == 1)
       {
         v35 = 2;
       }
 
       *(v21 + 72) |= 4u;
       *(v21 + 64) = v35;
-      v36 = [v5 appUptime];
+      appUptime = [v5 appUptime];
       *(v21 + 72) |= 2u;
-      *(v21 + 16) = v36;
+      *(v21 + 16) = appUptime;
     }
 
     else
@@ -146,45 +146,45 @@
 
     sub_10032D9A4(v6, v21);
     v37 = objc_opt_new();
-    v38 = [v5 deviceType];
-    sub_10038C250(v37, v38);
+    deviceType = [v5 deviceType];
+    sub_10038C250(v37, deviceType);
 
-    v39 = [v5 osVersion];
-    sub_10038C268(v37, v39);
+    osVersion = [v5 osVersion];
+    sub_10038C268(v37, osVersion);
 
-    v40 = [v5 architecture];
-    sub_10038C280(v37, v40);
+    architecture = [v5 architecture];
+    sub_10038C280(v37, architecture);
 
-    v41 = [v5 locale];
-    sub_10038C2B0(v37, v41);
+    locale = [v5 locale];
+    sub_10038C2B0(v37, locale);
 
-    v42 = [v5 timeZone];
-    sub_10038C2C8(v37, v42);
+    timeZone = [v5 timeZone];
+    sub_10038C2C8(v37, timeZone);
 
-    v43 = [v5 carrier];
-    sub_10038C2E0(v37, v43);
+    carrier = [v5 carrier];
+    sub_10038C2E0(v37, carrier);
 
-    v44 = [v5 cellularNetworkType];
-    sub_10038C2F8(v37, v44);
+    cellularNetworkType = [v5 cellularNetworkType];
+    sub_10038C2F8(v37, cellularNetworkType);
 
-    v45 = [v5 networkConnectionType];
+    networkConnectionType = [v5 networkConnectionType];
     v68 = v28;
-    if ([v45 isEqualToString:@"WI_FI"])
+    if ([networkConnectionType isEqualToString:@"WI_FI"])
     {
       v46 = 0;
     }
 
-    else if ([v45 isEqualToString:@"MOBILE_DATA"])
+    else if ([networkConnectionType isEqualToString:@"MOBILE_DATA"])
     {
       v46 = 1;
     }
 
-    else if ([v45 isEqualToString:@"WIRE"])
+    else if ([networkConnectionType isEqualToString:@"WIRE"])
     {
       v46 = 2;
     }
 
-    else if ([v45 isEqualToString:@"NONE"])
+    else if ([networkConnectionType isEqualToString:@"NONE"])
     {
       v46 = 3;
     }
@@ -199,9 +199,9 @@
       *(v37 + 104) |= 2u;
       *(v37 + 40) = v46;
 
-      v47 = [v5 batteryPercentage];
+      batteryPercentage = [v5 batteryPercentage];
       *(v37 + 104) |= 1u;
-      *(v37 + 16) = v47;
+      *(v37 + 16) = batteryPercentage;
       if (+[AMSDevice deviceIsiPad])
       {
         v48 = 3;
@@ -226,14 +226,14 @@
     }
 
     v49 = objc_opt_new();
-    v50 = [v5 screenWidth];
+    screenWidth = [v5 screenWidth];
     if (v49)
     {
       *(v49 + 16) |= 2u;
-      *(v49 + 12) = v50;
-      v51 = [v5 screenHeight];
+      *(v49 + 12) = screenWidth;
+      screenHeight = [v5 screenHeight];
       *(v49 + 16) |= 1u;
-      *(v49 + 8) = v51;
+      *(v49 + 8) = screenHeight;
     }
 
     else
@@ -243,14 +243,14 @@
 
     sub_10038C298(v37, v49);
     v52 = objc_opt_new();
-    v53 = [v5 diskAvailable];
+    diskAvailable = [v5 diskAvailable];
     if (v52)
     {
       *(v52 + 24) |= 1u;
-      *(v52 + 8) = v53;
-      v54 = [v5 diskTotal];
+      *(v52 + 8) = diskAvailable;
+      diskTotal = [v5 diskTotal];
       *(v52 + 24) |= 2u;
-      *(v52 + 16) = v54;
+      *(v52 + 16) = diskTotal;
     }
 
     else
@@ -260,20 +260,20 @@
 
     sub_10038C310(v37, v52);
     sub_10032D9BC(v6, v37);
-    v55 = [v5 pairedWatchOSVersion];
-    if (v55)
+    pairedWatchOSVersion = [v5 pairedWatchOSVersion];
+    if (pairedWatchOSVersion)
     {
-      v56 = v55;
-      v57 = [v5 pairedWatchModel];
+      v56 = pairedWatchOSVersion;
+      pairedWatchModel = [v5 pairedWatchModel];
 
-      if (v57)
+      if (pairedWatchModel)
       {
         v58 = objc_opt_new();
-        v59 = [v5 pairedWatchModel];
-        sub_100350A5C(v58, v59);
+        pairedWatchModel2 = [v5 pairedWatchModel];
+        sub_100350A5C(v58, pairedWatchModel2);
 
-        v60 = [v5 pairedWatchOSVersion];
-        sub_100350A74(v58, v60);
+        pairedWatchOSVersion2 = [v5 pairedWatchOSVersion];
+        sub_100350A74(v58, pairedWatchOSVersion2);
 
         sub_10032D9D4(v6, v58);
       }
@@ -295,21 +295,21 @@
   {
     v64 = sub_1002EB0AC(self, v63);
 
-    v65 = [v6 data];
+    data = [v6 data];
     v70[0] = _NSConcreteStackBlock;
     v70[1] = 3221225472;
     v70[2] = sub_1002746DC;
     v70[3] = &unk_10051DCA0;
     v70[4] = self;
-    v71 = v69;
-    sub_1002EAA28(self, 4, v64, v65, v70);
+    v71 = handlerCopy;
+    sub_1002EAA28(self, 4, v64, data, v70);
   }
 
   else
   {
     v64 = [NSString stringWithFormat:@"Failed to find URL for feedback upload"];
     v66 = ASDErrorWithDescription();
-    (*(v69 + 2))(v69, v66);
+    (*(handlerCopy + 2))(handlerCopy, v66);
   }
 }
 

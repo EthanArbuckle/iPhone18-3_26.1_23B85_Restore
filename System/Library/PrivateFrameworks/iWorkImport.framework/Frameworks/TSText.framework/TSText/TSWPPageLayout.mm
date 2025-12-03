@@ -1,18 +1,18 @@
 @interface TSWPPageLayout
 - (BOOL)headerFooterProviderValid;
 - (BOOL)i_updateHeaderFooterLayouts;
-- (BOOL)isHeaderFooterLayout:(id)a3;
-- (BOOL)shouldHeaderFooterBeVisible:(int64_t)a3;
+- (BOOL)isHeaderFooterLayout:(id)layout;
+- (BOOL)shouldHeaderFooterBeVisible:(int64_t)visible;
 - (CGRect)bodyRect;
-- (CGRect)borderRectForHeaderFooter:(int64_t)a3 atIndex:(int64_t)a4;
-- (CGRect)clipRectForHeaderFooter:(int64_t)a3 atIndex:(int64_t)a4;
+- (CGRect)borderRectForHeaderFooter:(int64_t)footer atIndex:(int64_t)index;
+- (CGRect)clipRectForHeaderFooter:(int64_t)footer atIndex:(int64_t)index;
 - (TSWPHeaderFooterProvider)headerFooterProvider;
 - (double)footerHeight;
 - (double)headerHeight;
-- (id)i_insertValidatedHeaderFooterLayouts:(BOOL *)a3;
+- (id)i_insertValidatedHeaderFooterLayouts:(BOOL *)layouts;
 - (void)i_clearHeaderFooterLayouts;
 - (void)p_updateHeaderFooterClipAndBorderRect;
-- (void)parentWillChangeTo:(id)a3;
+- (void)parentWillChangeTo:(id)to;
 @end
 
 @implementation TSWPPageLayout
@@ -119,13 +119,13 @@
   return v4;
 }
 
-- (BOOL)shouldHeaderFooterBeVisible:(int64_t)a3
+- (BOOL)shouldHeaderFooterBeVisible:(int64_t)visible
 {
   result = 0;
-  if (objc_msgSend_headerFooterProviderValid(self, a2, a3))
+  if (objc_msgSend_headerFooterProviderValid(self, a2, visible))
   {
     v7 = objc_msgSend_headerFooterProvider(self, v5, v6);
-    isHeaderFooterEmpty = objc_msgSend_isHeaderFooterEmpty_(v7, v8, a3);
+    isHeaderFooterEmpty = objc_msgSend_isHeaderFooterEmpty_(v7, v8, visible);
 
     if (!isHeaderFooterEmpty)
     {
@@ -136,9 +136,9 @@
   return result;
 }
 
-- (BOOL)isHeaderFooterLayout:(id)a3
+- (BOOL)isHeaderFooterLayout:(id)layout
 {
-  v5 = a3;
+  layoutCopy = layout;
   v6 = 0;
   v7 = 0;
   do
@@ -156,21 +156,21 @@
       ++v8;
     }
 
-    while (v9 != v5);
-    v10 = v6 | (v9 == v5);
+    while (v9 != layoutCopy);
+    v10 = v6 | (v9 == layoutCopy);
     v6 = 1;
     v7 = 1;
   }
 
   while ((v10 & 1) == 0);
 
-  return v9 == v5;
+  return v9 == layoutCopy;
 }
 
-- (CGRect)clipRectForHeaderFooter:(int64_t)a3 atIndex:(int64_t)a4
+- (CGRect)clipRectForHeaderFooter:(int64_t)footer atIndex:(int64_t)index
 {
-  objc_msgSend_p_updateHeaderFooterClipAndBorderRect(self, a2, a3);
-  v7 = &self->_headerFooterClipRects[a3][a4];
+  objc_msgSend_p_updateHeaderFooterClipAndBorderRect(self, a2, footer);
+  v7 = &self->_headerFooterClipRects[footer][index];
   x = v7->origin.x;
   y = v7->origin.y;
   width = v7->size.width;
@@ -182,13 +182,13 @@
   return result;
 }
 
-- (void)parentWillChangeTo:(id)a3
+- (void)parentWillChangeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   v7.receiver = self;
   v7.super_class = TSWPPageLayout;
-  [(TSWPPageLayout *)&v7 parentWillChangeTo:v4];
-  if (!v4)
+  [(TSWPPageLayout *)&v7 parentWillChangeTo:toCopy];
+  if (!toCopy)
   {
     objc_msgSend_i_clearHeaderFooterLayouts(self, v5, v6);
   }
@@ -201,10 +201,10 @@
   objc_msgSend_p_updateHeaderFooterClipAndBorderRects_(self, v3, 1);
 }
 
-- (CGRect)borderRectForHeaderFooter:(int64_t)a3 atIndex:(int64_t)a4
+- (CGRect)borderRectForHeaderFooter:(int64_t)footer atIndex:(int64_t)index
 {
-  objc_msgSend_p_updateHeaderFooterClipAndBorderRect(self, a2, a3);
-  v7 = &self->_headerFooterBorderRects[a3][a4];
+  objc_msgSend_p_updateHeaderFooterClipAndBorderRect(self, a2, footer);
+  v7 = &self->_headerFooterBorderRects[footer][index];
   x = v7->origin.x;
   y = v7->origin.y;
   width = v7->size.width;
@@ -218,22 +218,22 @@
 
 - (BOOL)i_updateHeaderFooterLayouts
 {
-  v3 = self;
+  selfCopy = self;
   v4 = objc_msgSend_headerFooterProvider(self, a2, v2);
   v56 = objc_msgSend_usesSingleHeaderFooter(v4, v5, v6);
 
-  v54 = v3;
+  v54 = selfCopy;
   v55 = 0;
   v9 = 0;
   v10 = 1;
   do
   {
     v11 = v10;
-    v13 = objc_msgSend_headerFooterProvider(v3, v7, v8);
+    v13 = objc_msgSend_headerFooterProvider(selfCopy, v7, v8);
     v53 = v11;
     if (v13)
     {
-      shouldHeaderFooterBeVisible = objc_msgSend_shouldHeaderFooterBeVisible_(v3, v12, v55);
+      shouldHeaderFooterBeVisible = objc_msgSend_shouldHeaderFooterBeVisible_(selfCopy, v12, v55);
     }
 
     else
@@ -242,7 +242,7 @@
     }
 
     v15 = 0;
-    v16 = v3 + 24 * v55;
+    v16 = selfCopy + 24 * v55;
     do
     {
       if (!shouldHeaderFooterBeVisible)
@@ -273,7 +273,7 @@
         if (v18)
         {
           v22 = objc_msgSend_storage(v18, v19, v20);
-          v25 = objc_msgSend_headerFooterProvider(v3, v23, v24);
+          v25 = objc_msgSend_headerFooterProvider(selfCopy, v23, v24);
           if (objc_msgSend_headerFooterTypeForStorage_(v25, v26, v22) == v55)
           {
             v29 = objc_msgSend_headerFooterProvider(v54, v27, v28);
@@ -283,7 +283,7 @@
             {
 LABEL_18:
 
-              v3 = v54;
+              selfCopy = v54;
               goto LABEL_19;
             }
           }
@@ -302,7 +302,7 @@ LABEL_18:
 LABEL_19:
         if (!*(v16 + 33))
         {
-          v36 = objc_msgSend_headerFooterProvider(v3, v19, v20);
+          v36 = objc_msgSend_headerFooterProvider(selfCopy, v19, v20);
           v38 = objc_msgSend_headerFooter_fragmentAtIndex_(v36, v37, v55, v15);
 
           if (!v38)
@@ -321,7 +321,7 @@ LABEL_19:
           *(v16 + 33) = v50;
 
           v9 = 1;
-          v3 = v54;
+          selfCopy = v54;
         }
 
 LABEL_23:
@@ -341,7 +341,7 @@ LABEL_24:
   return v9;
 }
 
-- (id)i_insertValidatedHeaderFooterLayouts:(BOOL *)a3
+- (id)i_insertValidatedHeaderFooterLayouts:(BOOL *)layouts
 {
   v5 = objc_alloc(MEMORY[0x277CBEB98]);
   v8 = objc_msgSend_children(self, v6, v7);
@@ -386,9 +386,9 @@ LABEL_24:
     objc_msgSend_validateLayoutsWithDependencies_(v31, v34, v33);
   }
 
-  if (a3)
+  if (layouts)
   {
-    *a3 = updated;
+    *layouts = updated;
   }
 
   return v13;

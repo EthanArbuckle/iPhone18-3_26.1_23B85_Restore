@@ -70,9 +70,9 @@
     return 0;
   }
 
-  v3 = [(CIUnsharpMask *)self _isIdentity];
+  _isIdentity = [(CIUnsharpMask *)self _isIdentity];
   inputImage = self->inputImage;
-  if (v3)
+  if (_isIdentity)
   {
     v5 = inputImage;
 
@@ -83,12 +83,12 @@
   {
     [(NSNumber *)self->inputRadius doubleValue];
     v7 = [(CIImage *)inputImage imageByApplyingGaussianBlurWithSigma:?];
-    v8 = [(CIUnsharpMask *)self _kernel];
+    _kernel = [(CIUnsharpMask *)self _kernel];
     [(CIImage *)self->inputImage extent];
     v13[0] = self->inputImage;
     v13[1] = v7;
     v13[2] = self->inputIntensity;
-    return [v8 applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v13, 3), v9, v10, v11, v12}];
+    return [_kernel applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v13, 3), v9, v10, v11, v12}];
   }
 }
 

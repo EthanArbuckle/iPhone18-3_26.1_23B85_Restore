@@ -1,6 +1,6 @@
 @interface PXValueDefaultAnimation
-- (PXValueDefaultAnimation)initWithDuration:(double)a3 currentMediaTime:(double)a4 spec:(PXValueAnimationSpec *)a5;
-- (PXValueDefaultAnimation)initWithFromValue:(double)a3 currentMediaTime:(double)a4 spec:(PXValueAnimationSpec *)a5;
+- (PXValueDefaultAnimation)initWithDuration:(double)duration currentMediaTime:(double)time spec:(PXValueAnimationSpec *)spec;
+- (PXValueDefaultAnimation)initWithFromValue:(double)value currentMediaTime:(double)time spec:(PXValueAnimationSpec *)spec;
 - (double)approximateVelocity;
 - (double)currentValue;
 @end
@@ -36,8 +36,8 @@
     }
 
 LABEL_15:
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"PXValueAnimation.m" lineNumber:128 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXValueAnimation.m" lineNumber:128 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
@@ -89,8 +89,8 @@ LABEL_15:
     }
 
 LABEL_13:
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PXValueAnimation.m" lineNumber:103 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXValueAnimation.m" lineNumber:103 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
@@ -124,32 +124,32 @@ LABEL_13:
   return (1.0 - v7) * self->_initialValue;
 }
 
-- (PXValueDefaultAnimation)initWithFromValue:(double)a3 currentMediaTime:(double)a4 spec:(PXValueAnimationSpec *)a5
+- (PXValueDefaultAnimation)initWithFromValue:(double)value currentMediaTime:(double)time spec:(PXValueAnimationSpec *)spec
 {
-  duration = a5->duration;
+  duration = spec->duration;
   v13.receiver = self;
   v13.super_class = PXValueDefaultAnimation;
-  v8 = *&a5->curve;
-  v9 = *&a5->initialVelocity;
-  v11[2] = *&a5->stiffness;
+  v8 = *&spec->curve;
+  v9 = *&spec->initialVelocity;
+  v11[2] = *&spec->stiffness;
   v11[3] = v9;
-  v12 = *&a5->controlPoint2x;
-  v11[0] = *&a5->type;
+  v12 = *&spec->controlPoint2x;
+  v11[0] = *&spec->type;
   v11[1] = v8;
-  result = [(PXValueAnimation *)&v13 initWithDuration:v11 currentMediaTime:duration spec:a4];
+  result = [(PXValueAnimation *)&v13 initWithDuration:v11 currentMediaTime:duration spec:time];
   if (result)
   {
-    result->_initialValue = a3;
-    result->_curve = a5->curve;
+    result->_initialValue = value;
+    result->_curve = spec->curve;
   }
 
   return result;
 }
 
-- (PXValueDefaultAnimation)initWithDuration:(double)a3 currentMediaTime:(double)a4 spec:(PXValueAnimationSpec *)a5
+- (PXValueDefaultAnimation)initWithDuration:(double)duration currentMediaTime:(double)time spec:(PXValueAnimationSpec *)spec
 {
-  v7 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v7 handleFailureInMethod:a2 object:self file:@"PXValueAnimation.m" lineNumber:86 description:{@"%s is not available as initializer", "-[PXValueDefaultAnimation initWithDuration:currentMediaTime:spec:]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXValueAnimation.m" lineNumber:86 description:{@"%s is not available as initializer", "-[PXValueDefaultAnimation initWithDuration:currentMediaTime:spec:]"}];
 
   abort();
 }

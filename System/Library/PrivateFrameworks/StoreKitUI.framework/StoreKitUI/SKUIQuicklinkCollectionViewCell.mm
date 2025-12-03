@@ -1,11 +1,11 @@
 @interface SKUIQuicklinkCollectionViewCell
 - (id)_linkButton;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (void)_linkButtonAction:(id)a3;
-- (void)configureForLink:(id)a3;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (void)_linkButtonAction:(id)action;
+- (void)configureForLink:(id)link;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setColoringWithColorScheme:(id)a3;
+- (void)setColoringWithColorScheme:(id)scheme;
 @end
 
 @implementation SKUIQuicklinkCollectionViewCell
@@ -18,9 +18,9 @@
   [(SKUIQuicklinkCollectionViewCell *)&v3 dealloc];
 }
 
-- (void)configureForLink:(id)a3
+- (void)configureForLink:(id)link
 {
-  v4 = a3;
+  linkCopy = link;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -33,13 +33,13 @@
     }
   }
 
-  v13 = [v4 title];
-  if ([v13 length])
+  title = [linkCopy title];
+  if ([title length])
   {
-    v14 = [(SKUIQuicklinkCollectionViewCell *)self _linkButton];
-    [v14 setHidden:0];
-    v15 = [v4 title];
-    [v14 setTitle:v15 forState:0];
+    _linkButton = [(SKUIQuicklinkCollectionViewCell *)self _linkButton];
+    [_linkButton setHidden:0];
+    title2 = [linkCopy title];
+    [_linkButton setTitle:title2 forState:0];
 
     [(SKUIQuicklinkCollectionViewCell *)self setNeedsLayout];
   }
@@ -50,9 +50,9 @@
   }
 }
 
-- (void)setColoringWithColorScheme:(id)a3
+- (void)setColoringWithColorScheme:(id)scheme
 {
-  v4 = a3;
+  schemeCopy = scheme;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -65,21 +65,21 @@
     }
   }
 
-  v13 = [v4 secondaryTextColor];
-  if (!v13)
+  secondaryTextColor = [schemeCopy secondaryTextColor];
+  if (!secondaryTextColor)
   {
-    v13 = [v4 primaryTextColor];
+    secondaryTextColor = [schemeCopy primaryTextColor];
   }
 
-  v14 = [(SKUIQuicklinkCollectionViewCell *)self _linkButton];
-  [v14 setTintColor:v13];
+  _linkButton = [(SKUIQuicklinkCollectionViewCell *)self _linkButton];
+  [_linkButton setTintColor:secondaryTextColor];
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
   v8.receiver = self;
   v8.super_class = SKUIQuicklinkCollectionViewCell;
-  v5 = [(SKUIQuicklinkCollectionViewCell *)&v8 hitTest:a4 withEvent:a3.x, a3.y];
+  v5 = [(SKUIQuicklinkCollectionViewCell *)&v8 hitTest:event withEvent:test.x, test.y];
   if ([v5 isDescendantOfView:self])
   {
     v6 = self->_linkButton;
@@ -109,8 +109,8 @@
   [(SKUICollectionViewCell *)&v21 layoutSubviews];
   if (self->_linkButton)
   {
-    v11 = [(SKUIQuicklinkCollectionViewCell *)self contentView];
-    [v11 bounds];
+    contentView = [(SKUIQuicklinkCollectionViewCell *)self contentView];
+    [contentView bounds];
     v13 = v12;
     v15 = v14;
 
@@ -131,14 +131,14 @@
   }
 }
 
-- (void)_linkButtonAction:(id)a3
+- (void)_linkButtonAction:(id)action
 {
   v6 = SKUICollectionViewForView(self);
-  v4 = [v6 delegate];
+  delegate = [v6 delegate];
   if (objc_opt_respondsToSelector())
   {
     v5 = [v6 indexPathForCell:self];
-    [v4 collectionView:v6 didSelectItemAtIndexPath:v5];
+    [delegate collectionView:v6 didSelectItemAtIndexPath:v5];
   }
 }
 
@@ -152,12 +152,12 @@
     self->_linkButton = v4;
 
     [(UIButton *)self->_linkButton addTarget:self action:sel__linkButtonAction_ forControlEvents:64];
-    v6 = [(UIButton *)self->_linkButton titleLabel];
+    titleLabel = [(UIButton *)self->_linkButton titleLabel];
     v7 = [MEMORY[0x277D74300] systemFontOfSize:17.0];
-    [v6 setFont:v7];
+    [titleLabel setFont:v7];
 
-    v8 = [(SKUIQuicklinkCollectionViewCell *)self contentView];
-    [v8 addSubview:self->_linkButton];
+    contentView = [(SKUIQuicklinkCollectionViewCell *)self contentView];
+    [contentView addSubview:self->_linkButton];
 
     linkButton = self->_linkButton;
   }

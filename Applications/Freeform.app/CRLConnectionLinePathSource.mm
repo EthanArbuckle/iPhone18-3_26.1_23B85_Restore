@@ -1,27 +1,27 @@
 @interface CRLConnectionLinePathSource
-+ (id)pathSourceAtAngleOfSize:(CGSize)a3 forType:(int64_t)a4;
-+ (id)pathSourceOfLength:(double)a3;
++ (id)pathSourceAtAngleOfSize:(CGSize)size forType:(int64_t)type;
++ (id)pathSourceOfLength:(double)length;
 - (CGPoint)fixedPointForControlKnobChange;
-- (CGPoint)getControlKnobPosition:(unint64_t)a3;
-- (CGPoint)getNewNormalizedPositionForMagnet:(BOOL)a3 withPreviousLayout:(id)a4 onNewLayout:(id)a5;
-- (CRLConnectionLinePathSource)initWithBezierPath:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)crlaxLabelComponentForKnobTag:(unint64_t)a3;
-- (id)crlaxUserInputLabelForKnobTag:(unint64_t)a3;
+- (CGPoint)getControlKnobPosition:(unint64_t)position;
+- (CGPoint)getNewNormalizedPositionForMagnet:(BOOL)magnet withPreviousLayout:(id)layout onNewLayout:(id)newLayout;
+- (CRLConnectionLinePathSource)initWithBezierPath:(id)path;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)crlaxLabelComponentForKnobTag:(unint64_t)tag;
+- (id)crlaxUserInputLabelForKnobTag:(unint64_t)tag;
 - (id)description;
-- (int64_t)pathElementIndexForKnobTag:(unint64_t)a3;
+- (int64_t)pathElementIndexForKnobTag:(unint64_t)tag;
 - (void)bend;
-- (void)p_setBezierPath:(id)a3;
-- (void)scaleToNaturalSize:(CGSize)a3;
-- (void)setControlKnobPosition:(unint64_t)a3 toPoint:(CGPoint)a4;
+- (void)p_setBezierPath:(id)path;
+- (void)scaleToNaturalSize:(CGSize)size;
+- (void)setControlKnobPosition:(unint64_t)position toPoint:(CGPoint)point;
 @end
 
 @implementation CRLConnectionLinePathSource
 
-- (CRLConnectionLinePathSource)initWithBezierPath:(id)a3
+- (CRLConnectionLinePathSource)initWithBezierPath:(id)path
 {
-  v4 = a3;
-  if ([v4 elementCount] < 1)
+  pathCopy = path;
+  if ([pathCopy elementCount] < 1)
   {
     width = CGRectNull.size.width;
     height = CGRectNull.size.height;
@@ -29,15 +29,15 @@
 
   else
   {
-    [v4 controlPointBounds];
+    [pathCopy controlPointBounds];
   }
 
   v7 = width == CGSizeZero.width && height == CGSizeZero.height;
-  if (v7 || (sub_100122890() & 1) != 0 || [v4 elementCount] != 3)
+  if (v7 || (sub_100122890() & 1) != 0 || [pathCopy elementCount] != 3)
   {
-    if ([v4 elementCount] == 2 && objc_msgSend(v4, "elementAtIndex:", 1) == 2)
+    if ([pathCopy elementCount] == 2 && objc_msgSend(pathCopy, "elementAtIndex:", 1) == 2)
     {
-      [v4 elementAtIndex:1 allPoints:v19];
+      [pathCopy elementAtIndex:1 allPoints:v19];
       v8 = +[CRLBezierPath bezierPath];
 
       [v8 moveToPoint:*v19];
@@ -57,7 +57,7 @@
 
       if (os_log_type_enabled(off_1019EDA68, OS_LOG_TYPE_ERROR))
       {
-        sub_1013565B4(v4, v12);
+        sub_1013565B4(pathCopy, v12);
       }
 
       if (qword_101AD5A10 != -1)
@@ -73,7 +73,7 @@
 
       v14 = [NSString stringWithUTF8String:"[CRLConnectionLinePathSource initWithBezierPath:]"];
       v15 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLCanvas/CRLConnectionLinePathSource.m"];
-      [CRLAssertionHandler handleFailureInFunction:v14 file:v15 lineNumber:46 isFatal:0 description:"Ignoring invalid bezier path %@", v4];
+      [CRLAssertionHandler handleFailureInFunction:v14 file:v15 lineNumber:46 isFatal:0 description:"Ignoring invalid bezier path %@", pathCopy];
 
       v8 = +[CRLBezierPath bezierPath];
 
@@ -85,26 +85,26 @@
     }
 
     [v11 lineToPoint:{v9, v10}];
-    v4 = v8;
+    pathCopy = v8;
   }
 
   v18.receiver = self;
   v18.super_class = CRLConnectionLinePathSource;
-  v16 = [(CRLBezierPathSource *)&v18 initWithBezierPath:v4];
+  v16 = [(CRLBezierPathSource *)&v18 initWithBezierPath:pathCopy];
 
   return v16;
 }
 
-- (CGPoint)getNewNormalizedPositionForMagnet:(BOOL)a3 withPreviousLayout:(id)a4 onNewLayout:(id)a5
+- (CGPoint)getNewNormalizedPositionForMagnet:(BOOL)magnet withPreviousLayout:(id)layout onNewLayout:(id)newLayout
 {
-  v6 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v6)
+  magnetCopy = magnet;
+  layoutCopy = layout;
+  newLayoutCopy = newLayout;
+  if (magnetCopy)
   {
-    v10 = [(CRLConnectionLinePathSource *)self headMagnet];
+    headMagnet = [(CRLConnectionLinePathSource *)self headMagnet];
 
-    if (!v10)
+    if (!headMagnet)
     {
       +[CRLAssertionHandler _atomicIncrementAssertCount];
       if (qword_101AD5A10 != -1)
@@ -133,14 +133,14 @@
       [CRLAssertionHandler handleFailureInFunction:v12 file:v13 lineNumber:60 isFatal:0 description:"invalid nil value for '%{public}s'", "self.headMagnet"];
     }
 
-    v14 = [(CRLConnectionLinePathSource *)self headMagnet];
+    headMagnet2 = [(CRLConnectionLinePathSource *)self headMagnet];
   }
 
   else
   {
-    v15 = [(CRLConnectionLinePathSource *)self tailMagnet];
+    tailMagnet = [(CRLConnectionLinePathSource *)self tailMagnet];
 
-    if (!v15)
+    if (!tailMagnet)
     {
       +[CRLAssertionHandler _atomicIncrementAssertCount];
       if (qword_101AD5A10 != -1)
@@ -169,19 +169,19 @@
       [CRLAssertionHandler handleFailureInFunction:v17 file:v18 lineNumber:63 isFatal:0 description:"invalid nil value for '%{public}s'", "self.tailMagnet"];
     }
 
-    v14 = [(CRLConnectionLinePathSource *)self tailMagnet];
+    headMagnet2 = [(CRLConnectionLinePathSource *)self tailMagnet];
   }
 
-  v19 = v14;
-  [v14 magnetNormalizedPosition];
+  v19 = headMagnet2;
+  [headMagnet2 magnetNormalizedPosition];
   v21 = v20;
   v23 = v22;
 
-  v24 = [v8 pureGeometry];
-  v25 = v24;
-  if (v24)
+  pureGeometry = [layoutCopy pureGeometry];
+  v25 = pureGeometry;
+  if (pureGeometry)
   {
-    [v24 fullTransform];
+    [pureGeometry fullTransform];
     a = v43.a;
     b = v43.b;
     c = v43.c;
@@ -200,9 +200,9 @@
     a = 0.0;
   }
 
-  if (v9)
+  if (newLayoutCopy)
   {
-    [v9 pureTransformInRoot];
+    [newLayoutCopy pureTransformInRoot];
   }
 
   else
@@ -212,8 +212,8 @@
 
   CGAffineTransformInvert(&v43, &v42);
   v41 = vaddq_f64(*&v43.tx, vmlaq_n_f64(vmulq_n_f64(*&v43.c, ty + v23 * d + b * v21), *&v43.a, tx + v23 * c + a * v21));
-  v32 = [v9 pureGeometry];
-  [v32 size];
+  pureGeometry2 = [newLayoutCopy pureGeometry];
+  [pureGeometry2 size];
   v33 = sub_10011ECB4();
   v36 = sub_100121720(v41.f64[0], v41.f64[1], v33, v34, v35);
   v38 = v37;
@@ -225,26 +225,26 @@
   return result;
 }
 
-+ (id)pathSourceOfLength:(double)a3
++ (id)pathSourceOfLength:(double)length
 {
   v4 = +[CRLBezierPath bezierPath];
   [v4 moveToPoint:{0.0, 0.0}];
-  [v4 lineToPoint:{a3 * 0.5, 0.0}];
-  [v4 lineToPoint:{a3, 0.0}];
+  [v4 lineToPoint:{length * 0.5, 0.0}];
+  [v4 lineToPoint:{length, 0.0}];
   v5 = [[CRLConnectionLinePathSource alloc] initWithBezierPath:v4];
 
   return v5;
 }
 
-+ (id)pathSourceAtAngleOfSize:(CGSize)a3 forType:(int64_t)a4
++ (id)pathSourceAtAngleOfSize:(CGSize)size forType:(int64_t)type
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v7 = +[CRLBezierPath bezierPath];
   v8 = v7;
-  if (a4)
+  if (type)
   {
-    if (a4 != 1)
+    if (type != 1)
     {
       goto LABEL_6;
     }
@@ -263,7 +263,7 @@
   [v8 lineToPoint:{width, height}];
 LABEL_6:
   v9 = [[CRLConnectionLinePathSource alloc] initWithBezierPath:v8];
-  [(CRLConnectionLinePathSource *)v9 setType:a4];
+  [(CRLConnectionLinePathSource *)v9 setType:type];
 
   return v9;
 }
@@ -300,43 +300,43 @@ LABEL_6:
   [(CRLConnectionLinePathSource *)self setControlKnobPosition:12 toPoint:v28];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = CRLConnectionLinePathSource;
-  v4 = [(CRLBezierPathSource *)&v8 copyWithZone:a3];
+  v4 = [(CRLBezierPathSource *)&v8 copyWithZone:zone];
   [v4 setType:{-[CRLConnectionLinePathSource type](self, "type")}];
   [(CRLConnectionLinePathSource *)self outsetFrom];
   [v4 setOutsetFrom:?];
   [(CRLConnectionLinePathSource *)self outsetTo];
   [v4 setOutsetTo:?];
-  v5 = [(CRLConnectionLinePathSource *)self headMagnet];
-  [v4 setHeadMagnet:v5];
+  headMagnet = [(CRLConnectionLinePathSource *)self headMagnet];
+  [v4 setHeadMagnet:headMagnet];
 
-  v6 = [(CRLConnectionLinePathSource *)self tailMagnet];
-  [v4 setTailMagnet:v6];
+  tailMagnet = [(CRLConnectionLinePathSource *)self tailMagnet];
+  [v4 setTailMagnet:tailMagnet];
 
   [v4 setUserDidSetControlPoint:{-[CRLConnectionLinePathSource userDidSetControlPoint](self, "userDidSetControlPoint")}];
   return v4;
 }
 
-- (int64_t)pathElementIndexForKnobTag:(unint64_t)a3
+- (int64_t)pathElementIndexForKnobTag:(unint64_t)tag
 {
-  if (a3 - 10 > 2)
+  if (tag - 10 > 2)
   {
     return -1;
   }
 
   else
   {
-    return qword_101464CB0[a3 - 10];
+    return qword_101464CB0[tag - 10];
   }
 }
 
-- (CGPoint)getControlKnobPosition:(unint64_t)a3
+- (CGPoint)getControlKnobPosition:(unint64_t)position
 {
   v7 = CGPointZero;
-  v4 = [(CRLConnectionLinePathSource *)self pathElementIndexForKnobTag:a3];
+  v4 = [(CRLConnectionLinePathSource *)self pathElementIndexForKnobTag:position];
   if ((v4 & 0x8000000000000000) == 0)
   {
     [(CRLBezierPath *)self->super.mPath elementAtIndex:v4 associatedPoints:&v7];
@@ -349,19 +349,19 @@ LABEL_6:
   return result;
 }
 
-- (void)setControlKnobPosition:(unint64_t)a3 toPoint:(CGPoint)a4
+- (void)setControlKnobPosition:(unint64_t)position toPoint:(CGPoint)point
 {
-  v5 = [(CRLConnectionLinePathSource *)self pathElementIndexForKnobTag:a3, *&a4.x, *&a4.y];
+  v5 = [(CRLConnectionLinePathSource *)self pathElementIndexForKnobTag:position, *&point.x, *&point.y];
   if ((v5 & 0x8000000000000000) == 0)
   {
     [(CRLBezierPath *)self->super.mPath setAssociatedPoints:&v6 atIndex:v5];
   }
 }
 
-- (void)scaleToNaturalSize:(CGSize)a3
+- (void)scaleToNaturalSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(CRLBezierPath *)self->super.mPath bounds];
   v8 = width / v7;
   v9 = 0.0;
@@ -396,10 +396,10 @@ LABEL_6:
   return result;
 }
 
-- (void)p_setBezierPath:(id)a3
+- (void)p_setBezierPath:(id)path
 {
-  v4 = a3;
-  if (!v4)
+  pathCopy = path;
+  if (!pathCopy)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -428,20 +428,20 @@ LABEL_6:
     [CRLAssertionHandler handleFailureInFunction:v6 file:v7 lineNumber:222 isFatal:0 description:"invalid nil value for '%{public}s'", "path"];
   }
 
-  if ([(CRLBezierPath *)v4 elementCount]== 2 && [(CRLBezierPath *)v4 elementAtIndex:1]== 2)
+  if ([(CRLBezierPath *)pathCopy elementCount]== 2 && [(CRLBezierPath *)pathCopy elementAtIndex:1]== 2)
   {
-    [(CRLBezierPath *)v4 elementAtIndex:1 allPoints:v15];
+    [(CRLBezierPath *)pathCopy elementAtIndex:1 allPoints:v15];
     v8 = +[CRLBezierPath bezierPath];
     [(CRLBezierPath *)v8 moveToPoint:*v15];
     [(CRLBezierPath *)v8 lineToPoint:sub_10011F20C(v15, 0.5)];
     [(CRLBezierPath *)v8 lineToPoint:v16, v17];
 
-    v4 = v8;
+    pathCopy = v8;
   }
 
   mPath = self->super.mPath;
-  self->super.mPath = v4;
-  v10 = v4;
+  self->super.mPath = pathCopy;
+  v10 = pathCopy;
 
   [(CRLBezierPath *)self->super.mPath bounds];
   v12 = v11;
@@ -458,9 +458,9 @@ LABEL_6:
   v3 = [(CRLBezierPathSource *)&v9 description];
   v4 = [v3 mutableCopy];
 
-  v5 = [(CRLConnectionLinePathSource *)self type];
+  type = [(CRLConnectionLinePathSource *)self type];
   v6 = @"curved";
-  if (v5 == 1)
+  if (type == 1)
   {
     v6 = @"orthogonal";
   }
@@ -471,12 +471,12 @@ LABEL_6:
   return v4;
 }
 
-- (id)crlaxLabelComponentForKnobTag:(unint64_t)a3
+- (id)crlaxLabelComponentForKnobTag:(unint64_t)tag
 {
-  v3 = [(CRLConnectionLinePathSource *)self type];
+  type = [(CRLConnectionLinePathSource *)self type];
   v4 = +[NSBundle mainBundle];
   v5 = v4;
-  if (v3 == 1)
+  if (type == 1)
   {
     v6 = @"Path control";
   }
@@ -491,12 +491,12 @@ LABEL_6:
   return v7;
 }
 
-- (id)crlaxUserInputLabelForKnobTag:(unint64_t)a3
+- (id)crlaxUserInputLabelForKnobTag:(unint64_t)tag
 {
-  v3 = [(CRLConnectionLinePathSource *)self type];
+  type = [(CRLConnectionLinePathSource *)self type];
   v4 = +[NSBundle mainBundle];
   v5 = v4;
-  if (v3 == 1)
+  if (type == 1)
   {
     v6 = @"Path";
   }

@@ -1,24 +1,24 @@
 @interface SUAccountViewController
 - (BOOL)shouldSignRequests;
 - (SUAccountViewController)init;
-- (SUAccountViewController)initWithExternalAccountURL:(id)a3;
-- (id)_URLByRemovingBlacklistedParametersWithURL:(id)a3;
-- (id)_authenticationQueryParametersForStyle:(int64_t)a3;
-- (id)_bagKeyForStyle:(int64_t)a3;
-- (id)navigationItem:(id)a3 willChangeLeftItem:(id)a4 toNewItem:(id)a5;
-- (id)navigationItem:(id)a3 willChangeLeftItems:(id)a4 toNewItems:(id)a5;
+- (SUAccountViewController)initWithExternalAccountURL:(id)l;
+- (id)_URLByRemovingBlacklistedParametersWithURL:(id)l;
+- (id)_authenticationQueryParametersForStyle:(int64_t)style;
+- (id)_bagKeyForStyle:(int64_t)style;
+- (id)navigationItem:(id)item willChangeLeftItem:(id)leftItem toNewItem:(id)newItem;
+- (id)navigationItem:(id)item willChangeLeftItems:(id)items toNewItems:(id)newItems;
 - (id)newFetchOperation;
-- (id)newViewControllerForPage:(id)a3 ofType:(int64_t)a4 returningError:(id *)a5;
-- (void)_didEnterBackground:(id)a3;
+- (id)newViewControllerForPage:(id)page ofType:(int64_t)type returningError:(id *)error;
+- (void)_didEnterBackground:(id)background;
 - (void)_forceOrientationBackToSupportedOrientation;
-- (void)_logoutPressed:(id)a3;
-- (void)_mescalDidOpenWithSession:(id)a3 error:(id)a4;
+- (void)_logoutPressed:(id)pressed;
+- (void)_mescalDidOpenWithSession:(id)session error:(id)error;
 - (void)enqueueFetchOperation;
-- (void)handleFailureWithError:(id)a3;
-- (void)setStyle:(int64_t)a3;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)handleFailureWithError:(id)error;
+- (void)setStyle:(int64_t)style;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation SUAccountViewController
@@ -31,20 +31,20 @@
   v2 = [(SUStorePageViewController *)&v15 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E69D4938] sharedConfig];
-    v4 = [v3 shouldLog];
-    if ([v3 shouldLogToDisk])
+    mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+    shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+    if ([mEMORY[0x1E69D4938] shouldLogToDisk])
     {
-      v5 = v4 | 2;
+      v5 = shouldLog | 2;
     }
 
     else
     {
-      v5 = v4;
+      v5 = shouldLog;
     }
 
-    v6 = [v3 OSLogObject];
-    if (!os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [mEMORY[0x1E69D4938] OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v5 &= 2u;
     }
@@ -62,8 +62,8 @@
       {
 LABEL_11:
 
-        v10 = [(SUStorePageViewController *)v2 URLRequestProperties];
-        v11 = [v10 mutableCopy];
+        uRLRequestProperties = [(SUStorePageViewController *)v2 URLRequestProperties];
+        v11 = [uRLRequestProperties mutableCopy];
 
         v12 = [(SUAccountViewController *)v2 _bagKeyForStyle:v2->_style];
         [v11 setURLBagKey:v12];
@@ -72,7 +72,7 @@ LABEL_11:
         return v2;
       }
 
-      v6 = [MEMORY[0x1E696AEC0] stringWithCString:v9 encoding:{4, &v16, v14}];
+      oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v9 encoding:{4, &v16, v14}];
       free(v9);
       SSFileLog();
     }
@@ -83,35 +83,35 @@ LABEL_11:
   return v2;
 }
 
-- (SUAccountViewController)initWithExternalAccountURL:(id)a3
+- (SUAccountViewController)initWithExternalAccountURL:(id)l
 {
   v119 = *MEMORY[0x1E69E9840];
-  v103 = a3;
+  lCopy = l;
   v108.receiver = self;
   v108.super_class = SUAccountViewController;
   v4 = [(SUStorePageViewController *)&v108 init];
   if (v4)
   {
-    v5 = [MEMORY[0x1E69D4938] sharedConfig];
-    v6 = [v5 shouldLog];
-    if ([v5 shouldLogToDisk])
+    mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+    shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+    if ([mEMORY[0x1E69D4938] shouldLogToDisk])
     {
-      v6 |= 2u;
+      shouldLog |= 2u;
     }
 
-    v7 = [v5 OSLogObject];
-    if (!os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [mEMORY[0x1E69D4938] OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
-      v6 &= 2u;
+      shouldLog &= 2u;
     }
 
-    if (v6)
+    if (shouldLog)
     {
       v8 = objc_opt_class();
       *v115 = 138543618;
       *&v115[4] = v8;
       *&v115[12] = 2112;
-      *&v115[14] = v103;
+      *&v115[14] = lCopy;
       v9 = v8;
       LODWORD(v97) = 22;
       v94 = v115;
@@ -122,14 +122,14 @@ LABEL_11:
         goto LABEL_10;
       }
 
-      v7 = [MEMORY[0x1E696AEC0] stringWithCString:v10 encoding:{4, v115, v97}];
+      oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v10 encoding:{4, v115, v97}];
       free(v10);
-      v94 = v7;
+      v94 = oSLogObject;
       SSFileLog();
     }
 
 LABEL_10:
-    v102 = [v103 copyQueryStringDictionaryWithUnescapedValues:1];
+    v102 = [lCopy copyQueryStringDictionaryWithUnescapedValues:1];
     v11 = [v102 objectForKey:@"url"];
     if (v11)
     {
@@ -138,15 +138,15 @@ LABEL_10:
 
     else
     {
-      v13 = [v103 host];
-      v14 = [v13 length] == 0;
+      host = [lCopy host];
+      v14 = [host length] == 0;
 
       if (v14)
       {
         goto LABEL_15;
       }
 
-      v12 = v103;
+      v12 = lCopy;
     }
 
     accountURL = v4->_accountURL;
@@ -185,14 +185,14 @@ LABEL_15:
       {
 LABEL_47:
         v52 = objc_alloc(MEMORY[0x1E69D4970]);
-        v53 = [(NSURL *)v4->_accountURL schemeSwizzledURL];
-        v54 = [v52 initWithURL:v53];
+        schemeSwizzledURL = [(NSURL *)v4->_accountURL schemeSwizzledURL];
+        v54 = [v52 initWithURL:schemeSwizzledURL];
 
         [v54 setRequestParameters:v100];
         if (*(*&v115[8] + 40))
         {
-          v55 = [v54 HTTPHeaders];
-          v56 = [v55 mutableCopy];
+          hTTPHeaders = [v54 HTTPHeaders];
+          v56 = [hTTPHeaders mutableCopy];
 
           if (!v56)
           {
@@ -218,42 +218,42 @@ LABEL_47:
           {
             if ([v59 unsignedLongLongValue])
             {
-              v61 = [(SUStorePageViewController *)v4 authenticationContext];
-              v62 = [v61 mutableCopy];
+              authenticationContext = [(SUStorePageViewController *)v4 authenticationContext];
+              mEMORY[0x1E69D4938]2 = [authenticationContext mutableCopy];
 
-              if (v62)
+              if (mEMORY[0x1E69D4938]2)
               {
-                [v62 setRequiredUniqueIdentifier:v60];
+                [mEMORY[0x1E69D4938]2 setRequiredUniqueIdentifier:v60];
               }
 
               else
               {
-                v62 = [objc_alloc(MEMORY[0x1E69D4968]) initWithAccountIdentifier:v60];
+                mEMORY[0x1E69D4938]2 = [objc_alloc(MEMORY[0x1E69D4968]) initWithAccountIdentifier:v60];
               }
 
-              [(SUStorePageViewController *)v4 setAuthenticationContext:v62];
+              [(SUStorePageViewController *)v4 setAuthenticationContext:mEMORY[0x1E69D4938]2];
               v63 = 0;
               goto LABEL_69;
             }
 
             v63 = 0;
 LABEL_58:
-            v62 = [MEMORY[0x1E69D4938] sharedConfig];
-            v64 = [v62 shouldLog];
-            v65 = [v62 shouldLogToDisk];
-            v66 = [v62 OSLogObject];
-            v67 = v66;
-            if (v65)
+            mEMORY[0x1E69D4938]2 = [MEMORY[0x1E69D4938] sharedConfig];
+            shouldLog2 = [mEMORY[0x1E69D4938]2 shouldLog];
+            shouldLogToDisk = [mEMORY[0x1E69D4938]2 shouldLogToDisk];
+            oSLogObject2 = [mEMORY[0x1E69D4938]2 OSLogObject];
+            v67 = oSLogObject2;
+            if (shouldLogToDisk)
             {
-              v64 |= 2u;
+              shouldLog2 |= 2u;
             }
 
-            if (!os_log_type_enabled(v66, OS_LOG_TYPE_DEFAULT))
+            if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
             {
-              v64 &= 2u;
+              shouldLog2 &= 2u;
             }
 
-            if (v64)
+            if (shouldLog2)
             {
               v68 = objc_opt_class();
               v109 = 138543362;
@@ -288,9 +288,9 @@ LABEL_69:
 
             if (v71 == 1)
             {
-              v72 = [MEMORY[0x1E69D4890] defaultStore];
-              v73 = [v72 activeAccount];
-              v74 = v73 == 0;
+              defaultStore = [MEMORY[0x1E69D4890] defaultStore];
+              activeAccount = [defaultStore activeAccount];
+              v74 = activeAccount == 0;
 
               if (v74)
               {
@@ -311,24 +311,24 @@ LABEL_69:
             [(SUAccountViewController *)v4 setStyle:v75, v96];
             if (v4->_accountURL)
             {
-              v76 = [MEMORY[0x1E69D4938] sharedConfig];
-              v77 = [v76 shouldLog];
-              v78 = [v76 shouldLogToDisk];
-              v79 = [v76 OSLogObject];
-              v80 = v79;
-              if (v78)
+              mEMORY[0x1E69D4938]3 = [MEMORY[0x1E69D4938] sharedConfig];
+              shouldLog3 = [mEMORY[0x1E69D4938]3 shouldLog];
+              shouldLogToDisk2 = [mEMORY[0x1E69D4938]3 shouldLogToDisk];
+              oSLogObject3 = [mEMORY[0x1E69D4938]3 OSLogObject];
+              v80 = oSLogObject3;
+              if (shouldLogToDisk2)
               {
-                v77 |= 2u;
+                shouldLog3 |= 2u;
               }
 
-              if (os_log_type_enabled(v79, OS_LOG_TYPE_DEFAULT))
+              if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_DEFAULT))
               {
-                v81 = v77;
+                v81 = shouldLog3;
               }
 
               else
               {
-                v81 = v77 & 2;
+                v81 = shouldLog3 & 2;
               }
 
               if (!v81)
@@ -338,14 +338,14 @@ LABEL_69:
 
               v82 = objc_opt_class();
               v83 = v4->_accountURL;
-              v84 = [(SUStorePageViewController *)v4 authenticationContext];
-              v85 = [v84 requiredUniqueIdentifier];
+              authenticationContext2 = [(SUStorePageViewController *)v4 authenticationContext];
+              requiredUniqueIdentifier = [authenticationContext2 requiredUniqueIdentifier];
               v109 = 138543874;
               v110 = v82;
               v111 = 2112;
               v112 = v83;
               v113 = 2112;
-              v114 = v85;
+              v114 = requiredUniqueIdentifier;
               LODWORD(v97) = 32;
               v86 = _os_log_send_and_compose_impl();
 
@@ -360,22 +360,22 @@ LABEL_93:
 
             else
             {
-              v76 = [MEMORY[0x1E69D4938] sharedConfig];
-              v87 = [v76 shouldLog];
-              v88 = [v76 shouldLogToDisk];
-              v89 = [v76 OSLogObject];
-              v80 = v89;
-              if (v88)
+              mEMORY[0x1E69D4938]3 = [MEMORY[0x1E69D4938] sharedConfig];
+              shouldLog4 = [mEMORY[0x1E69D4938]3 shouldLog];
+              shouldLogToDisk3 = [mEMORY[0x1E69D4938]3 shouldLogToDisk];
+              oSLogObject4 = [mEMORY[0x1E69D4938]3 OSLogObject];
+              v80 = oSLogObject4;
+              if (shouldLogToDisk3)
               {
-                v87 |= 2u;
+                shouldLog4 |= 2u;
               }
 
-              if (!os_log_type_enabled(v89, OS_LOG_TYPE_ERROR))
+              if (!os_log_type_enabled(oSLogObject4, OS_LOG_TYPE_ERROR))
               {
-                v87 &= 2u;
+                shouldLog4 &= 2u;
               }
 
-              if (!v87)
+              if (!shouldLog4)
               {
                 goto LABEL_93;
               }
@@ -410,32 +410,32 @@ LABEL_93:
         goto LABEL_58;
       }
 
-      v45 = [MEMORY[0x1E698C940] resumptionHeaders];
+      resumptionHeaders = [MEMORY[0x1E698C940] resumptionHeaders];
       v46 = *(*&v115[8] + 40);
-      *(*&v115[8] + 40) = v45;
+      *(*&v115[8] + 40) = resumptionHeaders;
 LABEL_46:
 
       goto LABEL_47;
     }
 
     v20 = v19;
-    v21 = [MEMORY[0x1E69D4938] sharedConfig];
-    v22 = [v21 shouldLog];
-    v23 = [v21 shouldLogToDisk];
-    v24 = [v21 OSLogObject];
-    v25 = v24;
-    if (v23)
+    mEMORY[0x1E69D4938]4 = [MEMORY[0x1E69D4938] sharedConfig];
+    shouldLog5 = [mEMORY[0x1E69D4938]4 shouldLog];
+    shouldLogToDisk4 = [mEMORY[0x1E69D4938]4 shouldLogToDisk];
+    oSLogObject5 = [mEMORY[0x1E69D4938]4 OSLogObject];
+    v25 = oSLogObject5;
+    if (shouldLogToDisk4)
     {
-      v22 |= 2u;
+      shouldLog5 |= 2u;
     }
 
-    if (!os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
+    if (!os_log_type_enabled(oSLogObject5, OS_LOG_TYPE_DEFAULT))
     {
-      v22 &= 2u;
+      shouldLog5 &= 2u;
     }
 
     v98 = v20;
-    if (v22)
+    if (shouldLog5)
     {
       v26 = objc_opt_class();
       v109 = 138543618;
@@ -459,9 +459,9 @@ LABEL_46:
     }
 
 LABEL_27:
-    v29 = [MEMORY[0x1E69D4890] defaultStore];
-    v30 = [v29 activeAccount];
-    v31 = [v30 uniqueIdentifier];
+    defaultStore2 = [MEMORY[0x1E69D4890] defaultStore];
+    activeAccount2 = [defaultStore2 activeAccount];
+    uniqueIdentifier = [activeAccount2 uniqueIdentifier];
 
     v32 = dispatch_semaphore_create(0);
     v33 = objc_alloc_init(MEMORY[0x1E69D48A8]);
@@ -473,7 +473,7 @@ LABEL_27:
     v107 = v115;
     v34 = v32;
     v106 = v34;
-    [v33 getAllCachedBiometricHTTPHeadersWithToken:v20 accountID:v31 evict:1 completionBlock:v104];
+    [v33 getAllCachedBiometricHTTPHeadersWithToken:v20 accountID:uniqueIdentifier evict:1 completionBlock:v104];
     v35 = dispatch_time(0, 3000000000);
     if (!dispatch_semaphore_wait(v34, v35))
     {
@@ -501,22 +501,22 @@ LABEL_27:
       goto LABEL_45;
     }
 
-    v36 = [MEMORY[0x1E69D4938] sharedConfig];
-    v37 = [v36 shouldLog];
-    v38 = [v36 shouldLogToDisk];
-    v39 = [v36 OSLogObject];
-    v40 = v39;
-    if (v38)
+    mEMORY[0x1E69D4938]5 = [MEMORY[0x1E69D4938] sharedConfig];
+    shouldLog6 = [mEMORY[0x1E69D4938]5 shouldLog];
+    shouldLogToDisk5 = [mEMORY[0x1E69D4938]5 shouldLogToDisk];
+    oSLogObject6 = [mEMORY[0x1E69D4938]5 OSLogObject];
+    v40 = oSLogObject6;
+    if (shouldLogToDisk5)
     {
-      v37 |= 2u;
+      shouldLog6 |= 2u;
     }
 
-    if (!os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
+    if (!os_log_type_enabled(oSLogObject6, OS_LOG_TYPE_ERROR))
     {
-      v37 &= 2u;
+      shouldLog6 &= 2u;
     }
 
-    if (v37)
+    if (shouldLog6)
     {
       v41 = objc_opt_class();
       v109 = 138543618;
@@ -610,23 +610,23 @@ LABEL_13:
   dispatch_semaphore_signal(*(a1 + 40));
 }
 
-- (void)setStyle:(int64_t)a3
+- (void)setStyle:(int64_t)style
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = [MEMORY[0x1E69D4938] sharedConfig];
-  v6 = [v5 shouldLog];
-  if ([v5 shouldLogToDisk])
+  mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+  shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+  if ([mEMORY[0x1E69D4938] shouldLogToDisk])
   {
-    v7 = v6 | 2;
+    v7 = shouldLog | 2;
   }
 
   else
   {
-    v7 = v6;
+    v7 = shouldLog;
   }
 
-  v8 = [v5 OSLogObject];
-  if (!os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [mEMORY[0x1E69D4938] OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v7 &= 2u;
   }
@@ -636,7 +636,7 @@ LABEL_13:
     *v15 = 138543618;
     *&v15[4] = objc_opt_class();
     *&v15[12] = 2048;
-    *&v15[14] = a3;
+    *&v15[14] = style;
     v9 = *&v15[4];
     LODWORD(v14) = 22;
     v10 = _os_log_send_and_compose_impl();
@@ -646,17 +646,17 @@ LABEL_13:
       goto LABEL_10;
     }
 
-    v8 = [MEMORY[0x1E696AEC0] stringWithCString:v10 encoding:{4, v15, v14, *v15, *&v15[16]}];
+    oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v10 encoding:{4, v15, v14, *v15, *&v15[16]}];
     free(v10);
     SSFileLog();
   }
 
 LABEL_10:
-  if (self->_style != a3)
+  if (self->_style != style)
   {
-    self->_style = a3;
-    v11 = [(SUStorePageViewController *)self URLRequestProperties];
-    v12 = [v11 mutableCopy];
+    self->_style = style;
+    uRLRequestProperties = [(SUStorePageViewController *)self URLRequestProperties];
+    v12 = [uRLRequestProperties mutableCopy];
 
     v13 = [(SUAccountViewController *)self _bagKeyForStyle:self->_style];
     [v12 setURLBagKey:v13];
@@ -682,20 +682,20 @@ LABEL_10:
 
   else
   {
-    v4 = [MEMORY[0x1E69D4938] sharedConfig];
-    v5 = [v4 shouldLog];
-    if ([v4 shouldLogToDisk])
+    mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+    shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+    if ([mEMORY[0x1E69D4938] shouldLogToDisk])
     {
-      v6 = v5 | 2;
+      v6 = shouldLog | 2;
     }
 
     else
     {
-      v6 = v5;
+      v6 = shouldLog;
     }
 
-    v7 = [v4 OSLogObject];
-    if (!os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [mEMORY[0x1E69D4938] OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v6 &= 2u;
     }
@@ -720,10 +720,10 @@ LABEL_10:
     {
     }
 
-    v11 = [(SUAccountViewController *)self newFetchOperation];
+    newFetchOperation = [(SUAccountViewController *)self newFetchOperation];
     v12 = [SUSetupMescalSessionOperation alloc];
-    v13 = [v11 requestProperties];
-    v14 = [(SUSetupMescalSessionOperation *)v12 initWithURLRequestProperties:v13];
+    requestProperties = [newFetchOperation requestProperties];
+    v14 = [(SUSetupMescalSessionOperation *)v12 initWithURLRequestProperties:requestProperties];
 
     objc_initWeak(location, v14);
     objc_initWeak(&from, self);
@@ -735,8 +735,8 @@ LABEL_10:
     objc_copyWeak(&v19, &from);
     [(SUSetupMescalSessionOperation *)v14 setCompletionBlock:v17];
     self->_mescalState = 1;
-    v15 = [MEMORY[0x1E69E4798] mainQueue];
-    [v15 addOperation:v14];
+    mainQueue = [MEMORY[0x1E69E4798] mainQueue];
+    [mainQueue addOperation:v14];
 
     objc_destroyWeak(&v19);
     objc_destroyWeak(&v18);
@@ -769,18 +769,18 @@ void __48__SUAccountViewController_enqueueFetchOperation__block_invoke_2(uint64_
   [WeakRetained _mescalDidOpenWithSession:v2 error:v3];
 }
 
-- (void)handleFailureWithError:(id)a3
+- (void)handleFailureWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = ISWeakLinkedStringConstantForString();
-  v6 = [v4 domain];
-  v7 = [v6 isEqualToString:v5];
+  domain = [errorCopy domain];
+  v7 = [domain isEqualToString:v5];
 
   if ((v7 & 1) == 0)
   {
     v8.receiver = self;
     v8.super_class = SUAccountViewController;
-    [(SUStorePageViewController *)&v8 handleFailureWithError:v4];
+    [(SUStorePageViewController *)&v8 handleFailureWithError:errorCopy];
   }
 }
 
@@ -788,16 +788,16 @@ void __48__SUAccountViewController_enqueueFetchOperation__block_invoke_2(uint64_
 {
   v14.receiver = self;
   v14.super_class = SUAccountViewController;
-  v3 = [(SUStorePageViewController *)&v14 newFetchOperation];
-  v4 = [(SUStorePageViewController *)self authenticationContext];
-  v5 = [v4 mutableCopy];
+  newFetchOperation = [(SUStorePageViewController *)&v14 newFetchOperation];
+  authenticationContext = [(SUStorePageViewController *)self authenticationContext];
+  v5 = [authenticationContext mutableCopy];
 
   if (!v5)
   {
     v6 = objc_alloc(MEMORY[0x1E69D4968]);
-    v7 = [MEMORY[0x1E69D4890] defaultStore];
-    v8 = [v7 activeAccount];
-    v5 = [v6 initWithAccount:v8];
+    defaultStore = [MEMORY[0x1E69D4890] defaultStore];
+    activeAccount = [defaultStore activeAccount];
+    v5 = [v6 initWithAccount:activeAccount];
   }
 
   [v5 setPromptStyle:1];
@@ -805,9 +805,9 @@ void __48__SUAccountViewController_enqueueFetchOperation__block_invoke_2(uint64_
   [v5 setRequestParameters:v9];
 
   [v5 setShouldFollowAccountButtons:1];
-  [v3 setAuthenticationContext:v5];
-  v10 = [v3 requestProperties];
-  v11 = [v10 mutableCopy];
+  [newFetchOperation setAuthenticationContext:v5];
+  requestProperties = [newFetchOperation requestProperties];
+  v11 = [requestProperties mutableCopy];
 
   if (self->_style == 2)
   {
@@ -821,36 +821,36 @@ void __48__SUAccountViewController_enqueueFetchOperation__block_invoke_2(uint64_
     [v11 setValue:primingSignature forHTTPHeaderField:@"X-Apple-ActionSignature"];
   }
 
-  [v3 setRequestProperties:v11];
+  [newFetchOperation setRequestProperties:v11];
 
-  return v3;
+  return newFetchOperation;
 }
 
-- (id)newViewControllerForPage:(id)a3 ofType:(int64_t)a4 returningError:(id *)a5
+- (id)newViewControllerForPage:(id)page ofType:(int64_t)type returningError:(id *)error
 {
   v32 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  if (!a4)
+  pageCopy = page;
+  if (!type)
   {
-    if ((objc_opt_respondsToSelector() & 1) == 0 || ![v8 didShowDialog])
+    if ((objc_opt_respondsToSelector() & 1) == 0 || ![pageCopy didShowDialog])
     {
       goto LABEL_19;
     }
 
-    v13 = [MEMORY[0x1E69D4938] sharedConfig];
-    v14 = [v13 shouldLog];
-    if ([v13 shouldLogToDisk])
+    mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+    shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+    if ([mEMORY[0x1E69D4938] shouldLogToDisk])
     {
-      v15 = v14 | 2;
+      v15 = shouldLog | 2;
     }
 
     else
     {
-      v15 = v14;
+      v15 = shouldLog;
     }
 
-    v16 = [v13 OSLogObject];
-    if (!os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [mEMORY[0x1E69D4938] OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v15 &= 2u;
     }
@@ -873,7 +873,7 @@ LABEL_29:
         goto LABEL_30;
       }
 
-      v16 = [MEMORY[0x1E696AEC0] stringWithCString:v18 encoding:{4, &v30, v27}];
+      oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v18 encoding:{4, &v30, v27}];
       free(v18);
       SSFileLog();
     }
@@ -881,23 +881,23 @@ LABEL_29:
     goto LABEL_18;
   }
 
-  if (a4 != 1)
+  if (type != 1)
   {
 LABEL_19:
-    v19 = [MEMORY[0x1E69D4938] sharedConfig];
-    v20 = [v19 shouldLog];
-    if ([v19 shouldLogToDisk])
+    mEMORY[0x1E69D4938]2 = [MEMORY[0x1E69D4938] sharedConfig];
+    shouldLog2 = [mEMORY[0x1E69D4938]2 shouldLog];
+    if ([mEMORY[0x1E69D4938]2 shouldLogToDisk])
     {
-      v21 = v20 | 2;
+      v21 = shouldLog2 | 2;
     }
 
     else
     {
-      v21 = v20;
+      v21 = shouldLog2;
     }
 
-    v22 = [v19 OSLogObject];
-    if (!os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
+    oSLogObject2 = [mEMORY[0x1E69D4938]2 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
     {
       v21 &= 2u;
     }
@@ -918,7 +918,7 @@ LABEL_28:
         goto LABEL_29;
       }
 
-      v22 = [MEMORY[0x1E696AEC0] stringWithCString:v24 encoding:{4, &v30, v27}];
+      oSLogObject2 = [MEMORY[0x1E696AEC0] stringWithCString:v24 encoding:{4, &v30, v27}];
       free(v24);
       SSFileLog();
     }
@@ -929,16 +929,16 @@ LABEL_28:
   v28.receiver = self;
   v28.super_class = SUAccountViewController;
   v29 = 0;
-  v9 = [(SUStorePageViewController *)&v28 newViewControllerForPage:v8 ofType:1 returningError:&v29];
+  v9 = [(SUStorePageViewController *)&v28 newViewControllerForPage:pageCopy ofType:1 returningError:&v29];
   v10 = v29;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = [(SUAccountViewController *)self account];
-    [v9 setAccount:v11];
+    account = [(SUAccountViewController *)self account];
+    [v9 setAccount:account];
 
-    v12 = [(SUStorePageViewController *)self authenticationContext];
-    [v9 setAuthenticationContext:v12];
+    authenticationContext = [(SUStorePageViewController *)self authenticationContext];
+    [v9 setAuthenticationContext:authenticationContext];
 
     [v9 _setMescalSession:self->_mescalSession];
     [v9 setStyle:1];
@@ -951,10 +951,10 @@ LABEL_28:
   }
 
 LABEL_30:
-  if (a5)
+  if (error)
   {
     v25 = v10;
-    *a5 = v10;
+    *error = v10;
   }
 
   return v9;
@@ -972,9 +972,9 @@ LABEL_30:
     return 0;
   }
 
-  v4 = [MEMORY[0x1E69E47F8] sharedCache];
+  mEMORY[0x1E69E47F8] = [MEMORY[0x1E69E47F8] sharedCache];
   v5 = [MEMORY[0x1E69D49F8] contextWithBagType:0];
-  v6 = [v4 URLBagForContext:v5];
+  v6 = [mEMORY[0x1E69E47F8] URLBagForContext:v5];
 
   v7 = [(SUAccountViewController *)self _bagKeyForStyle:1];
   v8 = [v6 valueForKey:v7];
@@ -983,14 +983,14 @@ LABEL_30:
   if (objc_opt_isKindOfClass())
   {
     v9 = [MEMORY[0x1E695DFF8] URLWithString:v8];
-    v10 = [v9 path];
+    path = [v9 path];
 
-    v11 = [(NSURL *)self->_accountURL schemeSwizzledURL];
-    v12 = [v11 path];
+    schemeSwizzledURL = [(NSURL *)self->_accountURL schemeSwizzledURL];
+    path2 = [schemeSwizzledURL path];
 
-    if ([v12 length])
+    if ([path2 length])
     {
-      v3 = [v12 isEqualToString:v10];
+      v3 = [path2 isEqualToString:path];
     }
 
     else
@@ -1007,103 +1007,103 @@ LABEL_30:
   return v3;
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v5 postNotificationName:@"SUAccountViewControllerDidDisappearNotification" object:self];
+  disappearCopy = disappear;
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"SUAccountViewControllerDidDisappearNotification" object:self];
 
   v6.receiver = self;
   v6.super_class = SUAccountViewController;
-  [(SUStorePageViewController *)&v6 viewDidDisappear:v3];
+  [(SUStorePageViewController *)&v6 viewDidDisappear:disappearCopy];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v5 addObserver:self selector:sel__didEnterBackground_ name:*MEMORY[0x1E69DDAC8] object:0];
+  appearCopy = appear;
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__didEnterBackground_ name:*MEMORY[0x1E69DDAC8] object:0];
 
   [(SUAccountViewController *)self _forceOrientationBackToSupportedOrientation];
   if ([(SUAccountViewController *)self showAccountGlyph])
   {
-    v6 = [(SUAccountViewController *)self logoutButton];
+    logoutButton = [(SUAccountViewController *)self logoutButton];
 
-    if (!v6)
+    if (!logoutButton)
     {
       v7 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"person.crop.circle"];
       v8 = [objc_alloc(MEMORY[0x1E69DC708]) initWithImage:v7 style:2 target:self action:sel__logoutPressed_];
       [(SUAccountViewController *)self setLogoutButton:v8];
 
-      v9 = [(SUAccountViewController *)self logoutButton];
-      [v9 setTag:424242];
+      logoutButton2 = [(SUAccountViewController *)self logoutButton];
+      [logoutButton2 setTag:424242];
     }
 
-    v10 = [(SUViewController *)self navigationItem];
-    [v10 setDelegate:self];
+    navigationItem = [(SUViewController *)self navigationItem];
+    [navigationItem setDelegate:self];
 
-    v11 = [(SUViewController *)self navigationItem];
-    v12 = [(SUAccountViewController *)self logoutButton];
-    [v11 setLeftBarButtonItem:v12];
+    navigationItem2 = [(SUViewController *)self navigationItem];
+    logoutButton3 = [(SUAccountViewController *)self logoutButton];
+    [navigationItem2 setLeftBarButtonItem:logoutButton3];
   }
 
   v13.receiver = self;
   v13.super_class = SUAccountViewController;
-  [(SUStorePageViewController *)&v13 viewWillAppear:v3];
+  [(SUStorePageViewController *)&v13 viewWillAppear:appearCopy];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v5 removeObserver:self name:*MEMORY[0x1E69DDAC8] object:0];
+  disappearCopy = disappear;
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69DDAC8] object:0];
 
   v6.receiver = self;
   v6.super_class = SUAccountViewController;
-  [(SUStorePageViewController *)&v6 viewWillDisappear:v3];
+  [(SUStorePageViewController *)&v6 viewWillDisappear:disappearCopy];
 }
 
-- (id)navigationItem:(id)a3 willChangeLeftItem:(id)a4 toNewItem:(id)a5
+- (id)navigationItem:(id)item willChangeLeftItem:(id)leftItem toNewItem:(id)newItem
 {
-  v7 = a4;
+  leftItemCopy = leftItem;
   if ([(SUAccountViewController *)self showAccountGlyph])
   {
-    v8 = [(SUAccountViewController *)self logoutButton];
+    logoutButton = [(SUAccountViewController *)self logoutButton];
 
-    v9 = 0;
-    if (!a5 && v8 != v7)
+    logoutButton2 = 0;
+    if (!newItem && logoutButton != leftItemCopy)
     {
-      v9 = [(SUAccountViewController *)self logoutButton];
+      logoutButton2 = [(SUAccountViewController *)self logoutButton];
     }
   }
 
   else
   {
-    v9 = 0;
+    logoutButton2 = 0;
   }
 
-  return v9;
+  return logoutButton2;
 }
 
-- (id)navigationItem:(id)a3 willChangeLeftItems:(id)a4 toNewItems:(id)a5
+- (id)navigationItem:(id)item willChangeLeftItems:(id)items toNewItems:(id)newItems
 {
-  v7 = a4;
-  v8 = a5;
+  itemsCopy = items;
+  newItemsCopy = newItems;
   if (![(SUAccountViewController *)self showAccountGlyph])
   {
     goto LABEL_5;
   }
 
-  v9 = [(SUAccountViewController *)self logoutButton];
-  if (([v7 containsObject:v9] & 1) == 0)
+  logoutButton = [(SUAccountViewController *)self logoutButton];
+  if (([itemsCopy containsObject:logoutButton] & 1) == 0)
   {
-    v11 = [v8 count];
+    v11 = [newItemsCopy count];
 
     if (!v11)
     {
       v12 = MEMORY[0x1E695DEC8];
-      v9 = [(SUAccountViewController *)self logoutButton];
-      v10 = [v12 arrayWithObject:v9];
+      logoutButton = [(SUAccountViewController *)self logoutButton];
+      v10 = [v12 arrayWithObject:logoutButton];
       goto LABEL_7;
     }
 
@@ -1120,10 +1120,10 @@ LABEL_8:
   return v10;
 }
 
-- (void)_logoutPressed:(id)a3
+- (void)_logoutPressed:(id)pressed
 {
-  v4 = [MEMORY[0x1E69DC938] currentDevice];
-  v5 = [v4 userInterfaceIdiom] == 1;
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  v5 = [currentDevice userInterfaceIdiom] == 1;
 
   v6 = [MEMORY[0x1E69DC650] alertControllerWithTitle:0 message:0 preferredStyle:v5];
   v7 = MEMORY[0x1E69DC648];
@@ -1139,10 +1139,10 @@ LABEL_8:
   v11 = [v7 actionWithTitle:v9 style:1 handler:v26];
   [v10 addAction:v11];
 
-  v12 = [MEMORY[0x1E6959A48] ams_sharedAccountStore];
-  v13 = [v12 ams_activeiTunesAccount];
+  ams_sharedAccountStore = [MEMORY[0x1E6959A48] ams_sharedAccountStore];
+  ams_activeiTunesAccount = [ams_sharedAccountStore ams_activeiTunesAccount];
 
-  if (([(objc_class *)getAMSBiometricsClass() isAvailableForAccount:v13]& 1) == 0)
+  if (([(objc_class *)getAMSBiometricsClass() isAvailableForAccount:ams_activeiTunesAccount]& 1) == 0)
   {
     v14 = MEMORY[0x1E69DC648];
     v15 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
@@ -1151,8 +1151,8 @@ LABEL_8:
     v23[1] = 3221225472;
     v23[2] = __42__SUAccountViewController__logoutPressed___block_invoke_89;
     v23[3] = &unk_1E8164F00;
-    v24 = v13;
-    v25 = self;
+    v24 = ams_activeiTunesAccount;
+    selfCopy = self;
     v17 = [v14 actionWithTitle:v16 style:0 handler:v23];
     [v10 addAction:v17];
   }
@@ -1313,9 +1313,9 @@ LABEL_14:
   [v2 dismissViewControllerAnimated:1 completion:0];
 }
 
-- (id)_authenticationQueryParametersForStyle:(int64_t)a3
+- (id)_authenticationQueryParametersForStyle:(int64_t)style
 {
-  if (a3 == 2)
+  if (style == 2)
   {
     v5 = [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{@"true", @"createSession", @"viewAccount", @"why", 0, v3}];
   }
@@ -1328,15 +1328,15 @@ LABEL_14:
   return v5;
 }
 
-- (id)_bagKeyForStyle:(int64_t)a3
+- (id)_bagKeyForStyle:(int64_t)style
 {
   v3 = @"signup";
-  if (a3 != 1)
+  if (style != 1)
   {
     v3 = 0;
   }
 
-  if (a3 == 2)
+  if (style == 2)
   {
     return @"modifyAccount";
   }
@@ -1347,7 +1347,7 @@ LABEL_14:
   }
 }
 
-- (void)_didEnterBackground:(id)a3
+- (void)_didEnterBackground:(id)background
 {
   if (![(SUStorePageViewController *)self didPageViewLoad])
   {
@@ -1358,30 +1358,30 @@ LABEL_14:
 
 - (void)_forceOrientationBackToSupportedOrientation
 {
-  v7 = [MEMORY[0x1E69DC668] sharedApplication];
-  if (([v7 statusBarOrientation] - 3) <= 1 && (-[SUViewController supportedInterfaceOrientations](self, "supportedInterfaceOrientations") & 0x18) == 0)
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  if (([mEMORY[0x1E69DC668] statusBarOrientation] - 3) <= 1 && (-[SUViewController supportedInterfaceOrientations](self, "supportedInterfaceOrientations") & 0x18) == 0)
   {
-    if (!-[SUAccountViewController isViewLoaded](self, "isViewLoaded") || (-[SUAccountViewController view](self, "view"), v3 = objc_claimAutoreleasedReturnValue(), [v3 window], v4 = objc_claimAutoreleasedReturnValue(), v3, !v4))
+    if (!-[SUAccountViewController isViewLoaded](self, "isViewLoaded") || (-[SUAccountViewController view](self, "view"), v3 = objc_claimAutoreleasedReturnValue(), [v3 window], window = objc_claimAutoreleasedReturnValue(), v3, !window))
     {
-      v5 = [(SUAccountViewController *)self presentedViewController];
-      v6 = [v5 view];
-      v4 = [v6 window];
+      presentedViewController = [(SUAccountViewController *)self presentedViewController];
+      view = [presentedViewController view];
+      window = [view window];
 
-      if (!v4)
+      if (!window)
       {
-        v4 = [MEMORY[0x1E69DD2E8] keyWindow];
+        window = [MEMORY[0x1E69DD2E8] keyWindow];
       }
     }
 
-    [v4 _setRotatableViewOrientation:1 duration:1 force:0.0];
+    [window _setRotatableViewOrientation:1 duration:1 force:0.0];
   }
 }
 
-- (void)_mescalDidOpenWithSession:(id)a3 error:(id)a4
+- (void)_mescalDidOpenWithSession:(id)session error:(id)error
 {
   v39 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  sessionCopy = session;
+  errorCopy = error;
   primingSignature = self->_primingSignature;
   self->_primingSignature = 0;
 
@@ -1391,27 +1391,27 @@ LABEL_14:
   v11 = __LatestAccountViewController;
   __LatestAccountViewController = 0;
 
-  if (!v8)
+  if (!errorCopy)
   {
-    v12 = [MEMORY[0x1E69D4938] sharedConfig];
-    v19 = [v12 shouldLog];
-    if ([v12 shouldLogToDisk])
+    mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+    shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+    if ([mEMORY[0x1E69D4938] shouldLogToDisk])
     {
-      v20 = v19 | 2;
+      v20 = shouldLog | 2;
     }
 
     else
     {
-      v20 = v19;
+      v20 = shouldLog;
     }
 
-    v21 = [v12 OSLogObject];
-    if (!os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [mEMORY[0x1E69D4938] OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v20 &= 2u;
     }
 
-    if (!v7)
+    if (!sessionCopy)
     {
       if (v20)
       {
@@ -1428,7 +1428,7 @@ LABEL_14:
           SSFileLog();
         }
 
-        v7 = 0;
+        sessionCopy = 0;
       }
 
       else
@@ -1442,36 +1442,36 @@ LABEL_14:
     {
       v35 = 138543362;
       v36 = objc_opt_class();
-      v34 = v7;
+      v34 = sessionCopy;
       v22 = v36;
       LODWORD(v33) = 12;
       v23 = _os_log_send_and_compose_impl();
 
-      v7 = v34;
+      sessionCopy = v34;
       if (!v23)
       {
         goto LABEL_22;
       }
 
-      v21 = [MEMORY[0x1E696AEC0] stringWithCString:v23 encoding:{4, &v35, v33}];
+      oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v23 encoding:{4, &v35, v33}];
       free(v23);
       SSFileLog();
     }
 
 LABEL_22:
-    objc_storeStrong(&self->_mescalSession, a3);
+    objc_storeStrong(&self->_mescalSession, session);
     v24 = [MEMORY[0x1E69D4A30] weakReferenceWithObject:self];
     v25 = __LatestAccountViewController;
     __LatestAccountViewController = v24;
 
     v26 = self->_mescalSession;
-    v27 = [MEMORY[0x1E695DEF0] data];
-    v12 = [(SUMescalSession *)v26 primeForAccountCreationWithData:v27 error:0];
+    data = [MEMORY[0x1E695DEF0] data];
+    mEMORY[0x1E69D4938] = [(SUMescalSession *)v26 primeForAccountCreationWithData:data error:0];
 
-    if ([v12 length])
+    if ([mEMORY[0x1E69D4938] length])
     {
-      [v12 bytes];
-      [v12 length];
+      [mEMORY[0x1E69D4938] bytes];
+      [mEMORY[0x1E69D4938] length];
       v28 = ISCopyEncodedBase64();
       v29 = self->_primingSignature;
       self->_primingSignature = v28;
@@ -1480,20 +1480,20 @@ LABEL_22:
     goto LABEL_29;
   }
 
-  v12 = [MEMORY[0x1E69D4938] sharedConfig];
-  v13 = [v12 shouldLog];
-  if ([v12 shouldLogToDisk])
+  mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+  shouldLog2 = [mEMORY[0x1E69D4938] shouldLog];
+  if ([mEMORY[0x1E69D4938] shouldLogToDisk])
   {
-    v14 = v13 | 2;
+    v14 = shouldLog2 | 2;
   }
 
   else
   {
-    v14 = v13;
+    v14 = shouldLog2;
   }
 
-  v15 = [v12 OSLogObject];
-  if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+  oSLogObject2 = [mEMORY[0x1E69D4938] OSLogObject];
+  if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
   {
     v16 = v14;
   }
@@ -1511,14 +1511,14 @@ LABEL_22:
   v35 = 138543618;
   v36 = objc_opt_class();
   v37 = 2112;
-  v38 = v8;
+  v38 = errorCopy;
   v17 = v36;
   LODWORD(v33) = 22;
   v18 = _os_log_send_and_compose_impl();
 
   if (v18)
   {
-    v15 = [MEMORY[0x1E696AEC0] stringWithCString:v18 encoding:{4, &v35, v33}];
+    oSLogObject2 = [MEMORY[0x1E696AEC0] stringWithCString:v18 encoding:{4, &v35, v33}];
     free(v18);
     SSFileLog();
 LABEL_11:
@@ -1530,14 +1530,14 @@ LABEL_29:
   [(SUAccountViewController *)self enqueueFetchOperation];
 }
 
-- (id)_URLByRemovingBlacklistedParametersWithURL:(id)a3
+- (id)_URLByRemovingBlacklistedParametersWithURL:(id)l
 {
-  if (a3)
+  if (l)
   {
     v3 = MEMORY[0x1E695DFD8];
-    v4 = a3;
+    lCopy = l;
     v5 = [v3 setWithArray:&unk_1F41EAA60];
-    v6 = [v4 copyQueryStringDictionaryWithUnescapedValues:0];
+    v6 = [lCopy copyQueryStringDictionaryWithUnescapedValues:0];
     v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
     v19 = MEMORY[0x1E69E9820];
     v20 = 3221225472;
@@ -1549,14 +1549,14 @@ LABEL_29:
     v24 = v9;
     [v6 enumerateKeysAndObjectsUsingBlock:&v19];
     v10 = objc_alloc(MEMORY[0x1E696AD60]);
-    v11 = [v4 absoluteString];
-    v12 = [v10 initWithString:v11];
+    absoluteString = [lCopy absoluteString];
+    v12 = [v10 initWithString:absoluteString];
 
-    v13 = [v4 query];
+    query = [lCopy query];
 
-    if (v13)
+    if (query)
     {
-      v14 = [v12 rangeOfString:v13 options:4];
+      v14 = [v12 rangeOfString:query options:4];
       if (v14 != 0x7FFFFFFFFFFFFFFFLL)
       {
         [v12 deleteCharactersInRange:{v14, v15}];

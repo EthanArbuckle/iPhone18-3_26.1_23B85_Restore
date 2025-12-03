@@ -1,17 +1,17 @@
 @interface SignatureEditingPane
 + (BOOL)hasMultipleMailAccounts;
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
 - (PSListController)parentListController;
-- (id)_accountSignatureWithSpecifier:(id)a3;
-- (id)_signatureWithSpecifier:(id)a3;
+- (id)_accountSignatureWithSpecifier:(id)specifier;
+- (id)_signatureWithSpecifier:(id)specifier;
 - (id)accountSignaturesSpecifiers;
 - (id)defaultSignatureSpecifiers;
 - (id)specifiers;
-- (void)_setAccountSignature:(id)a3 withSpecifier:(id)a4;
-- (void)_setSignature:(id)a3 withSpecifier:(id)a4;
-- (void)commitChangesAndDismissKeyboard:(BOOL)a3;
+- (void)_setAccountSignature:(id)signature withSpecifier:(id)specifier;
+- (void)_setSignature:(id)signature withSpecifier:(id)specifier;
+- (void)commitChangesAndDismissKeyboard:(BOOL)keyboard;
 - (void)suspend;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation SignatureEditingPane
@@ -124,8 +124,8 @@ LABEL_13:
             {
               if (!self->_singleAccountActive)
               {
-                v9 = [v8 displayName];
-                v10 = [PSSpecifier groupSpecifierWithName:v9];
+                displayName = [v8 displayName];
+                v10 = [PSSpecifier groupSpecifierWithName:displayName];
                 [(NSArray *)v18 addObject:v10];
               }
 
@@ -230,34 +230,34 @@ LABEL_13:
   return v4;
 }
 
-- (void)commitChangesAndDismissKeyboard:(BOOL)a3
+- (void)commitChangesAndDismissKeyboard:(BOOL)keyboard
 {
-  v3 = a3;
-  v5 = [(SignatureEditingPane *)self table];
-  v6 = [v5 window];
-  v11 = [v6 firstResponder];
+  keyboardCopy = keyboard;
+  table = [(SignatureEditingPane *)self table];
+  window = [table window];
+  firstResponder = [window firstResponder];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if (v3)
+    if (keyboardCopy)
     {
-      [v11 resignFirstResponder];
+      [firstResponder resignFirstResponder];
     }
 
     else
     {
-      v7 = v11;
-      v8 = [v7 delegate];
-      [v8 textContentViewDidEndEditing:v7];
+      v7 = firstResponder;
+      delegate = [v7 delegate];
+      [delegate textContentViewDidEndEditing:v7];
     }
   }
 
   v9 = +[NSNotificationCenter defaultCenter];
   [v9 postNotificationName:@"SignatureEditingPaneSignatureDidChange" object:self];
 
-  v10 = [(SignatureEditingPane *)self parentListController];
-  [v10 reloadSpecifier:*&self->PSListController_opaque[OBJC_IVAR___PSViewController__specifier]];
+  parentListController = [(SignatureEditingPane *)self parentListController];
+  [parentListController reloadSpecifier:*&self->PSListController_opaque[OBJC_IVAR___PSViewController__specifier]];
 }
 
 - (void)suspend
@@ -268,88 +268,88 @@ LABEL_13:
   [(SignatureEditingPane *)self commitChangesAndDismissKeyboard:1];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   v18.receiver = self;
   v18.super_class = SignatureEditingPane;
-  [(SignatureEditingPane *)&v18 tableView:v6 didSelectRowAtIndexPath:v7];
-  v8 = [v7 section];
+  [(SignatureEditingPane *)&v18 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
+  section = [pathCopy section];
   v9 = [(SignatureEditingPane *)self specifierForID:SignatureRadioGroupID];
   v10 = [(SignatureEditingPane *)self indexPathForIndex:[(SignatureEditingPane *)self indexOfSpecifier:v9]];
-  v11 = [v10 section];
+  section2 = [v10 section];
 
-  if (v8 == v11)
+  if (section == section2)
   {
-    v12 = [*&self->PSListController_opaque[OBJC_IVAR___PSListController__specifiers] objectAtIndex:{-[SignatureEditingPane indexForIndexPath:](self, "indexForIndexPath:", v7)}];
+    v12 = [*&self->PSListController_opaque[OBJC_IVAR___PSListController__specifiers] objectAtIndex:{-[SignatureEditingPane indexForIndexPath:](self, "indexForIndexPath:", pathCopy)}];
     v13 = [v12 propertyForKey:PSValueKey];
-    v14 = [v13 BOOLValue];
+    bOOLValue = [v13 BOOLValue];
 
-    if (self->_useAccountSignatures != v14)
+    if (self->_useAccountSignatures != bOOLValue)
     {
-      self->_useAccountSignatures = v14;
+      self->_useAccountSignatures = bOOLValue;
       v15 = +[MFSignatures sharedInstance];
-      [v15 setUseAccountSignatures:v14];
+      [v15 setUseAccountSignatures:bOOLValue];
 
       [(SignatureEditingPane *)self commitChangesAndDismissKeyboard:1];
-      if (v14)
+      if (bOOLValue)
       {
-        v16 = [(SignatureEditingPane *)self defaultSignatureSpecifiers];
+        defaultSignatureSpecifiers = [(SignatureEditingPane *)self defaultSignatureSpecifiers];
         [(SignatureEditingPane *)self accountSignaturesSpecifiers];
       }
 
       else
       {
-        v16 = [(SignatureEditingPane *)self accountSignaturesSpecifiers];
+        defaultSignatureSpecifiers = [(SignatureEditingPane *)self accountSignaturesSpecifiers];
         [(SignatureEditingPane *)self defaultSignatureSpecifiers];
       }
       v17 = ;
-      [(SignatureEditingPane *)self replaceContiguousSpecifiers:v16 withSpecifiers:v17 animated:1];
+      [(SignatureEditingPane *)self replaceContiguousSpecifiers:defaultSignatureSpecifiers withSpecifiers:v17 animated:1];
     }
   }
 }
 
-- (id)_signatureWithSpecifier:(id)a3
+- (id)_signatureWithSpecifier:(id)specifier
 {
   v3 = +[MFSignatures sharedInstance];
-  v4 = [v3 signature];
+  signature = [v3 signature];
 
-  return v4;
+  return signature;
 }
 
-- (void)_setSignature:(id)a3 withSpecifier:(id)a4
+- (void)_setSignature:(id)signature withSpecifier:(id)specifier
 {
-  v5 = a3;
+  signatureCopy = signature;
   v4 = +[MFSignatures sharedInstance];
-  [v4 setSignature:v5];
+  [v4 setSignature:signatureCopy];
 }
 
-- (id)_accountSignatureWithSpecifier:(id)a3
+- (id)_accountSignatureWithSpecifier:(id)specifier
 {
-  v3 = [a3 propertyForKey:AccountPropertyKey];
-  v4 = [v3 customSignature];
-  if (!v4)
+  v3 = [specifier propertyForKey:AccountPropertyKey];
+  customSignature = [v3 customSignature];
+  if (!customSignature)
   {
     v5 = +[MFSignatures sharedInstance];
-    v4 = [v5 signature];
+    customSignature = [v5 signature];
   }
 
-  return v4;
+  return customSignature;
 }
 
-- (void)_setAccountSignature:(id)a3 withSpecifier:(id)a4
+- (void)_setAccountSignature:(id)signature withSpecifier:(id)specifier
 {
-  v7 = a3;
-  v5 = [a4 propertyForKey:AccountPropertyKey];
+  signatureCopy = signature;
+  v5 = [specifier propertyForKey:AccountPropertyKey];
   v6 = +[MFSignatures sharedInstance];
-  [v6 setSignature:v7 forAccount:v5];
+  [v6 setSignature:signatureCopy forAccount:v5];
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  v6 = a4;
-  if ("paste:" == a3)
+  senderCopy = sender;
+  if ("paste:" == action)
   {
     v7 = +[UIPasteboard generalPasteboard];
     LODWORD(self) = [v7 hasImages] ^ 1;
@@ -359,7 +359,7 @@ LABEL_13:
   {
     v9.receiver = self;
     v9.super_class = SignatureEditingPane;
-    LOBYTE(self) = [(SignatureEditingPane *)&v9 canPerformAction:a3 withSender:v6];
+    LOBYTE(self) = [(SignatureEditingPane *)&v9 canPerformAction:action withSender:senderCopy];
   }
 
   return self;

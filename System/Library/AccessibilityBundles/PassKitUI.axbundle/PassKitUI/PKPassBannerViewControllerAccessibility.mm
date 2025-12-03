@@ -1,18 +1,18 @@
 @interface PKPassBannerViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)loadView;
 @end
 
 @implementation PKPassBannerViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PKPassBannerViewController" hasInstanceMethod:@"loadView" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"PKPassBannerViewController" hasInstanceVariable:@"_platter" withType:"PLPlatterView"];
-  [v3 validateClass:@"PKPassBannerViewController" hasInstanceVariable:@"_primaryLabel" withType:"UILabel"];
-  [v3 validateClass:@"PKPassBannerViewController" hasInstanceVariable:@"_secondaryLabel" withType:"UILabel"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PKPassBannerViewController" hasInstanceMethod:@"loadView" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"PKPassBannerViewController" hasInstanceVariable:@"_platter" withType:"PLPlatterView"];
+  [validationsCopy validateClass:@"PKPassBannerViewController" hasInstanceVariable:@"_primaryLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"PKPassBannerViewController" hasInstanceVariable:@"_secondaryLabel" withType:"UILabel"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

@@ -1,6 +1,6 @@
 @interface DMMigrationPluginWrapperWatchdog
-+ (id)_messageStringWithPluginBundleIdentifier:(id)a3 durationDescription:(id)a4 backupDeviceUUID:(id)a5;
-- (DMMigrationPluginWrapperWatchdog)initWithPluginBundleIdentifier:(id)a3 backupDeviceUUID:(id)a4;
++ (id)_messageStringWithPluginBundleIdentifier:(id)identifier durationDescription:(id)description backupDeviceUUID:(id)d;
+- (DMMigrationPluginWrapperWatchdog)initWithPluginBundleIdentifier:(id)identifier backupDeviceUUID:(id)d;
 - (void)_migrationPluginDuration10Minutes;
 - (void)_migrationPluginDuration20Minutes;
 - (void)_migrationPluginDuration40Minutes;
@@ -11,18 +11,18 @@
 
 @implementation DMMigrationPluginWrapperWatchdog
 
-- (DMMigrationPluginWrapperWatchdog)initWithPluginBundleIdentifier:(id)a3 backupDeviceUUID:(id)a4
+- (DMMigrationPluginWrapperWatchdog)initWithPluginBundleIdentifier:(id)identifier backupDeviceUUID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  dCopy = d;
   v19.receiver = self;
   v19.super_class = DMMigrationPluginWrapperWatchdog;
   v8 = [(DMMigrationPluginWrapperWatchdog *)&v19 init];
   v9 = v8;
   if (v8)
   {
-    [(DMMigrationPluginWrapperWatchdog *)v8 setPluginBundleIdentifier:v6];
-    [(DMMigrationPluginWrapperWatchdog *)v9 setBackupDeviceUUID:v7];
+    [(DMMigrationPluginWrapperWatchdog *)v8 setPluginBundleIdentifier:identifierCopy];
+    [(DMMigrationPluginWrapperWatchdog *)v9 setBackupDeviceUUID:dCopy];
     v10 = objc_alloc_init(DMPluginFaulter);
     [(DMMigrationPluginWrapperWatchdog *)v9 setFaulter:v10];
 
@@ -30,15 +30,15 @@
     [(DMMigrationPluginWrapperWatchdog *)v9 setSecondsOfLeeway:10];
     [(DMMigrationPluginWrapperWatchdog *)v9 setFireCount:0];
     v11 = [DMTimer alloc];
-    v12 = [(DMMigrationPluginWrapperWatchdog *)v9 secondsBeforeNextFault];
-    v13 = [(DMMigrationPluginWrapperWatchdog *)v9 secondsOfLeeway];
+    secondsBeforeNextFault = [(DMMigrationPluginWrapperWatchdog *)v9 secondsBeforeNextFault];
+    secondsOfLeeway = [(DMMigrationPluginWrapperWatchdog *)v9 secondsOfLeeway];
     v17[0] = _NSConcreteStackBlock;
     v17[1] = 3221225472;
     v17[2] = sub_100003EE8;
     v17[3] = &unk_10000C3B0;
     v14 = v9;
     v18 = v14;
-    v15 = [v11 initWithSecondsBeforeFirstFire:v12 secondsOfLeeway:v13 fireBlock:v17];
+    v15 = [v11 initWithSecondsBeforeFirstFire:secondsBeforeNextFault secondsOfLeeway:secondsOfLeeway fireBlock:v17];
     [(DMMigrationPluginWrapperWatchdog *)v14 setTimer:v15];
   }
 
@@ -47,69 +47,69 @@
 
 - (void)resume
 {
-  v2 = [(DMMigrationPluginWrapperWatchdog *)self timer];
-  [v2 resume];
+  timer = [(DMMigrationPluginWrapperWatchdog *)self timer];
+  [timer resume];
 }
 
 - (void)cancel
 {
-  v2 = [(DMMigrationPluginWrapperWatchdog *)self timer];
-  [v2 cancelSynchronously];
+  timer = [(DMMigrationPluginWrapperWatchdog *)self timer];
+  [timer cancelSynchronously];
 }
 
 - (void)_migrationPluginDuration5Minutes
 {
-  v3 = [(DMMigrationPluginWrapperWatchdog *)self pluginBundleIdentifier];
-  v4 = [(DMMigrationPluginWrapperWatchdog *)self backupDeviceUUID];
-  v7 = [DMMigrationPluginWrapperWatchdog _messageStringWithPluginBundleIdentifier:v3 durationDescription:@"5 minutes" backupDeviceUUID:v4];
+  pluginBundleIdentifier = [(DMMigrationPluginWrapperWatchdog *)self pluginBundleIdentifier];
+  backupDeviceUUID = [(DMMigrationPluginWrapperWatchdog *)self backupDeviceUUID];
+  v7 = [DMMigrationPluginWrapperWatchdog _messageStringWithPluginBundleIdentifier:pluginBundleIdentifier durationDescription:@"5 minutes" backupDeviceUUID:backupDeviceUUID];
 
-  v5 = [(DMMigrationPluginWrapperWatchdog *)self faulter];
-  v6 = [(DMMigrationPluginWrapperWatchdog *)self pluginBundleIdentifier];
-  [v5 faultWithPluginIdentifier:v6 message:v7];
+  faulter = [(DMMigrationPluginWrapperWatchdog *)self faulter];
+  pluginBundleIdentifier2 = [(DMMigrationPluginWrapperWatchdog *)self pluginBundleIdentifier];
+  [faulter faultWithPluginIdentifier:pluginBundleIdentifier2 message:v7];
 }
 
 - (void)_migrationPluginDuration10Minutes
 {
-  v3 = [(DMMigrationPluginWrapperWatchdog *)self pluginBundleIdentifier];
-  v4 = [(DMMigrationPluginWrapperWatchdog *)self backupDeviceUUID];
-  v7 = [DMMigrationPluginWrapperWatchdog _messageStringWithPluginBundleIdentifier:v3 durationDescription:@"10 minutes" backupDeviceUUID:v4];
+  pluginBundleIdentifier = [(DMMigrationPluginWrapperWatchdog *)self pluginBundleIdentifier];
+  backupDeviceUUID = [(DMMigrationPluginWrapperWatchdog *)self backupDeviceUUID];
+  v7 = [DMMigrationPluginWrapperWatchdog _messageStringWithPluginBundleIdentifier:pluginBundleIdentifier durationDescription:@"10 minutes" backupDeviceUUID:backupDeviceUUID];
 
-  v5 = [(DMMigrationPluginWrapperWatchdog *)self faulter];
-  v6 = [(DMMigrationPluginWrapperWatchdog *)self pluginBundleIdentifier];
-  [v5 faultWithPluginIdentifier:v6 message:v7];
+  faulter = [(DMMigrationPluginWrapperWatchdog *)self faulter];
+  pluginBundleIdentifier2 = [(DMMigrationPluginWrapperWatchdog *)self pluginBundleIdentifier];
+  [faulter faultWithPluginIdentifier:pluginBundleIdentifier2 message:v7];
 }
 
 - (void)_migrationPluginDuration20Minutes
 {
-  v3 = [(DMMigrationPluginWrapperWatchdog *)self pluginBundleIdentifier];
-  v4 = [(DMMigrationPluginWrapperWatchdog *)self backupDeviceUUID];
-  v7 = [DMMigrationPluginWrapperWatchdog _messageStringWithPluginBundleIdentifier:v3 durationDescription:@"20 minutes" backupDeviceUUID:v4];
+  pluginBundleIdentifier = [(DMMigrationPluginWrapperWatchdog *)self pluginBundleIdentifier];
+  backupDeviceUUID = [(DMMigrationPluginWrapperWatchdog *)self backupDeviceUUID];
+  v7 = [DMMigrationPluginWrapperWatchdog _messageStringWithPluginBundleIdentifier:pluginBundleIdentifier durationDescription:@"20 minutes" backupDeviceUUID:backupDeviceUUID];
 
-  v5 = [(DMMigrationPluginWrapperWatchdog *)self faulter];
-  v6 = [(DMMigrationPluginWrapperWatchdog *)self pluginBundleIdentifier];
-  [v5 faultWithPluginIdentifier:v6 message:v7];
+  faulter = [(DMMigrationPluginWrapperWatchdog *)self faulter];
+  pluginBundleIdentifier2 = [(DMMigrationPluginWrapperWatchdog *)self pluginBundleIdentifier];
+  [faulter faultWithPluginIdentifier:pluginBundleIdentifier2 message:v7];
 }
 
 - (void)_migrationPluginDuration40Minutes
 {
-  v3 = [(DMMigrationPluginWrapperWatchdog *)self pluginBundleIdentifier];
-  v4 = [(DMMigrationPluginWrapperWatchdog *)self backupDeviceUUID];
-  v7 = [DMMigrationPluginWrapperWatchdog _messageStringWithPluginBundleIdentifier:v3 durationDescription:@"40 minutes" backupDeviceUUID:v4];
+  pluginBundleIdentifier = [(DMMigrationPluginWrapperWatchdog *)self pluginBundleIdentifier];
+  backupDeviceUUID = [(DMMigrationPluginWrapperWatchdog *)self backupDeviceUUID];
+  v7 = [DMMigrationPluginWrapperWatchdog _messageStringWithPluginBundleIdentifier:pluginBundleIdentifier durationDescription:@"40 minutes" backupDeviceUUID:backupDeviceUUID];
 
-  v5 = [(DMMigrationPluginWrapperWatchdog *)self faulter];
-  v6 = [(DMMigrationPluginWrapperWatchdog *)self pluginBundleIdentifier];
-  [v5 faultWithPluginIdentifier:v6 message:v7];
+  faulter = [(DMMigrationPluginWrapperWatchdog *)self faulter];
+  pluginBundleIdentifier2 = [(DMMigrationPluginWrapperWatchdog *)self pluginBundleIdentifier];
+  [faulter faultWithPluginIdentifier:pluginBundleIdentifier2 message:v7];
 }
 
-+ (id)_messageStringWithPluginBundleIdentifier:(id)a3 durationDescription:(id)a4 backupDeviceUUID:(id)a5
++ (id)_messageStringWithPluginBundleIdentifier:(id)identifier durationDescription:(id)description backupDeviceUUID:(id)d
 {
-  v7 = a5;
-  v8 = [NSString stringWithFormat:@"Migration plugin %@ still running after %@", a3, a4];
-  if (v7)
+  dCopy = d;
+  v8 = [NSString stringWithFormat:@"Migration plugin %@ still running after %@", identifier, description];
+  if (dCopy)
   {
-    v9 = [NSString stringWithFormat:@"%@ - backup device UUID %@", v8, v7];
+    dCopy = [NSString stringWithFormat:@"%@ - backup device UUID %@", v8, dCopy];
 
-    v8 = v9;
+    v8 = dCopy;
   }
 
   return v8;

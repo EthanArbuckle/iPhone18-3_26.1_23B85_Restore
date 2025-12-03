@@ -1,6 +1,6 @@
 @interface BWDeviceOrientationMonitor
 - (BWDeviceOrientationMonitor)init;
-- (int)rotationDegreesFromOrientation:(int)a3 isFrontCamera:(BOOL)a4 isExternalCamera:(BOOL)a5 isMirrored:(BOOL)a6 clientExpectsCameraMountedInLandscapeOrientation:(BOOL)a7;
+- (int)rotationDegreesFromOrientation:(int)orientation isFrontCamera:(BOOL)camera isExternalCamera:(BOOL)externalCamera isMirrored:(BOOL)mirrored clientExpectsCameraMountedInLandscapeOrientation:(BOOL)landscapeOrientation;
 - (uint64_t)_doStart;
 - (uint64_t)_doStop;
 - (uint64_t)_orientationChanged;
@@ -96,13 +96,13 @@ LABEL_10:
   [(BWDeviceOrientationMonitor *)&v3 dealloc];
 }
 
-- (int)rotationDegreesFromOrientation:(int)a3 isFrontCamera:(BOOL)a4 isExternalCamera:(BOOL)a5 isMirrored:(BOOL)a6 clientExpectsCameraMountedInLandscapeOrientation:(BOOL)a7
+- (int)rotationDegreesFromOrientation:(int)orientation isFrontCamera:(BOOL)camera isExternalCamera:(BOOL)externalCamera isMirrored:(BOOL)mirrored clientExpectsCameraMountedInLandscapeOrientation:(BOOL)landscapeOrientation
 {
-  v7 = a6;
-  v8 = a5;
-  v9 = a4;
-  v11 = FigCaptureCameraRequires180DegreesRotation(a4, a5);
-  if (FigCapturePlatformMountsCamerasInLandscapeOrientation(v9, v8))
+  mirroredCopy = mirrored;
+  externalCameraCopy = externalCamera;
+  cameraCopy = camera;
+  v11 = FigCaptureCameraRequires180DegreesRotation(camera, externalCamera);
+  if (FigCapturePlatformMountsCamerasInLandscapeOrientation(cameraCopy, externalCameraCopy))
   {
     if (v11)
     {
@@ -124,17 +124,17 @@ LABEL_10:
       v13 = 0;
     }
 
-    if (a3 != 3)
+    if (orientation != 3)
     {
       v13 = 0;
     }
 
-    if (a3 == 4)
+    if (orientation == 4)
     {
       v13 = v12;
     }
 
-    if ((v8 | v9 & ~v11))
+    if ((externalCameraCopy | cameraCopy & ~v11))
     {
       v14 = 270;
     }
@@ -144,7 +144,7 @@ LABEL_10:
       v14 = 90;
     }
 
-    if ((v8 | v9 & ~v11))
+    if ((externalCameraCopy | cameraCopy & ~v11))
     {
       v15 = 90;
     }
@@ -154,17 +154,17 @@ LABEL_10:
       v15 = 270;
     }
 
-    if (a3 != 2)
+    if (orientation != 2)
     {
       v15 = 0;
     }
 
-    if (a3 == 1)
+    if (orientation == 1)
     {
       v15 = v14;
     }
 
-    if (a3 <= 2)
+    if (orientation <= 2)
     {
       v16 = v15;
     }
@@ -177,7 +177,7 @@ LABEL_10:
 
   else
   {
-    if (v9)
+    if (cameraCopy)
     {
       v17 = 270;
     }
@@ -187,7 +187,7 @@ LABEL_10:
       v17 = 90;
     }
 
-    if (v9)
+    if (cameraCopy)
     {
       v18 = 90;
     }
@@ -197,17 +197,17 @@ LABEL_10:
       v18 = 270;
     }
 
-    if (a3 != 3)
+    if (orientation != 3)
     {
       v18 = 0;
     }
 
-    if (a3 == 4)
+    if (orientation == 4)
     {
       v18 = v17;
     }
 
-    if (a3 == 2)
+    if (orientation == 2)
     {
       v16 = 180;
     }
@@ -218,7 +218,7 @@ LABEL_10:
     }
   }
 
-  return FigCaptureRotationDegreesWithMirroring(v16, v7);
+  return FigCaptureRotationDegreesWithMirroring(v16, mirroredCopy);
 }
 
 void __38__BWDeviceOrientationMonitor__doStart__block_invoke(uint64_t a1)
@@ -280,10 +280,10 @@ void __38__BWDeviceOrientationMonitor__doStart__block_invoke(uint64_t a1)
               if (state64 <= 4 && v1[6] != state64)
               {
                 v1[6] = state64;
-                v4 = [v1 portraitLandscapeUpdateDelegate];
-                if (v4)
+                portraitLandscapeUpdateDelegate = [v1 portraitLandscapeUpdateDelegate];
+                if (portraitLandscapeUpdateDelegate)
                 {
-                  [v4 didUpdatePortraitLandscapeOrientation:v1[6]];
+                  [portraitLandscapeUpdateDelegate didUpdatePortraitLandscapeOrientation:v1[6]];
                 }
               }
 

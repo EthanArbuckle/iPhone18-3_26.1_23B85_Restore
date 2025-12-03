@@ -1,22 +1,22 @@
 @interface BSServiceInitiatingConnection
-- (id)_initWithEndpoint:(uint64_t)a3 options:;
-- (id)remoteTargetWithLaunchingAssertionAttributes:(id)a3;
+- (id)_initWithEndpoint:(uint64_t)endpoint options:;
+- (id)remoteTargetWithLaunchingAssertionAttributes:(id)attributes;
 @end
 
 @implementation BSServiceInitiatingConnection
 
-- (id)_initWithEndpoint:(uint64_t)a3 options:
+- (id)_initWithEndpoint:(uint64_t)endpoint options:
 {
-  v3 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
     v6 = objc_opt_new();
     v7 = objc_autoreleasePoolPush();
-    if (a3)
+    if (endpoint)
     {
       os_unfair_lock_lock((v6 + 8));
       *(v6 + 168) = 1;
-      (*(a3 + 16))(a3, v6);
+      (*(endpoint + 16))(endpoint, v6);
       *(v6 + 168) = 0;
       os_unfair_lock_unlock((v6 + 8));
     }
@@ -29,7 +29,7 @@
     }
 
     objc_autoreleasePoolPop(v7);
-    v10 = [a2 service];
+    service = [a2 service];
     if (a2)
     {
       v11 = a2[3];
@@ -42,7 +42,7 @@
 
     v12 = v11;
     v13 = v12;
-    if (v10 && v12)
+    if (service && v12)
     {
       v14 = *(v6 + 40);
       if (!v14)
@@ -58,7 +58,7 @@
       v18 = *(v6 + 16);
       *(v6 + 16) = v17;
 
-      v19 = v10;
+      v19 = service;
     }
 
     else
@@ -77,9 +77,9 @@
       {
       }
 
-      if (v10)
+      if (service)
       {
-        v19 = v10;
+        v19 = service;
       }
 
       else
@@ -89,21 +89,21 @@
     }
 
     objc_storeStrong((v6 + 24), v19);
-    v23 = [a2 instance];
+    instance = [a2 instance];
     v24 = *(v6 + 32);
-    *(v6 + 32) = v23;
+    *(v6 + 32) = instance;
 
-    v3 = [(BSServiceConnection *)v3 _initWithConfiguration:v6];
+    selfCopy = [(BSServiceConnection *)selfCopy _initWithConfiguration:v6];
   }
 
-  return v3;
+  return selfCopy;
 }
 
-- (id)remoteTargetWithLaunchingAssertionAttributes:(id)a3
+- (id)remoteTargetWithLaunchingAssertionAttributes:(id)attributes
 {
   if (self)
   {
-    self = [(BSXPCServiceConnection *)self->super._connection remoteTargetWithAssertionAttributes:a3 enforcingLaunchConstraints:1];
+    self = [(BSXPCServiceConnection *)self->super._connection remoteTargetWithAssertionAttributes:attributes enforcingLaunchConstraints:1];
     v3 = vars8;
   }
 

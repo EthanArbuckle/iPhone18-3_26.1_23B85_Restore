@@ -1,11 +1,11 @@
 @interface TSCH3DLineProjector
-- (BOOL)projectPoint:(void *)a3 returningPoint:(void *)a4;
+- (BOOL)projectPoint:(void *)point returningPoint:(void *)returningPoint;
 - (id).cxx_construct;
 @end
 
 @implementation TSCH3DLineProjector
 
-- (BOOL)projectPoint:(void *)a3 returningPoint:(void *)a4
+- (BOOL)projectPoint:(void *)point returningPoint:(void *)returningPoint
 {
   v31 = 0;
   v30 = 0;
@@ -33,7 +33,7 @@
     v22 = vsub_f32(v20, v19);
     v23 = 1.0 / sqrtf(COERCE_FLOAT(vmul_f32(v22, v22).i32[1]) + (v22.f32[0] * v22.f32[0]));
     v24 = vmul_n_f32(v22, v23);
-    *&v21 = (vmuls_lane_f32(*(a3 + 1) - v19.f32[1], v24, 1) + ((*a3 - v19.f32[0]) * v24.f32[0])) + ((v23 * 0.0) * 0.0);
+    *&v21 = (vmuls_lane_f32(*(point + 1) - v19.f32[1], v24, 1) + ((*point - v19.f32[0]) * v24.f32[0])) + ((v23 * 0.0) * 0.0);
     v20 = vmul_n_f32(v24, *&v21);
     v19 = vadd_f32(v19, v20);
   }
@@ -42,7 +42,7 @@
   objc_msgSend_objectSpaceLineFromPoint_(self, v10, *&v19, *&v20, v21, &v28);
   v26 = 0;
   v27 = 0;
-  return sub_276155D3C(&self->_line._position.var0.var0, &v29, a4, &v26);
+  return sub_276155D3C(&self->_line._position.var0.var0, &v29, returningPoint, &v26);
 }
 
 - (id).cxx_construct

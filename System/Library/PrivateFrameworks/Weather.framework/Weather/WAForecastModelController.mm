@@ -1,18 +1,18 @@
 @interface WAForecastModelController
-- (BOOL)fetchForecastForCities:(id)a3 completion:(id)a4;
-- (BOOL)fetchForecastForCity:(id)a3 withUnits:(int)a4 requestOptions:(id)a5 completion:(id)a6;
-- (BOOL)isCityBeingUpdated:(id)a3;
-- (BOOL)isPriorityCity:(id)a3;
-- (BOOL)isPriorityCityBeingUpdated:(id)a3;
+- (BOOL)fetchForecastForCities:(id)cities completion:(id)completion;
+- (BOOL)fetchForecastForCity:(id)city withUnits:(int)units requestOptions:(id)options completion:(id)completion;
+- (BOOL)isCityBeingUpdated:(id)updated;
+- (BOOL)isPriorityCity:(id)city;
+- (BOOL)isPriorityCityBeingUpdated:(id)updated;
 - (BOOL)isPriorityForecastOperationsEnabled;
 - (WAForecastModelController)init;
-- (id)_commaSeparatedNamesForUpdatingCities:(id)a3;
+- (id)_commaSeparatedNamesForUpdatingCities:(id)cities;
 - (id)_commaSeparatedPriorityUpdatingCitiesNames;
 - (id)_commaSeparatedUpdatingCitiesNames;
-- (void)_handleForecastOperationCompletion:(id)a3;
+- (void)_handleForecastOperationCompletion:(id)completion;
 - (void)cancelAllFetchRequests;
 - (void)dealloc;
-- (void)setLocationGeocodingSampler:(id)a3;
+- (void)setLocationGeocodingSampler:(id)sampler;
 @end
 
 @implementation WAForecastModelController
@@ -27,8 +27,8 @@
     v3 = objc_opt_new();
     [(WAForecastModelController *)v2 setForecastOperationQueue:v3];
 
-    v4 = [(WAForecastModelController *)v2 forecastOperationQueue];
-    [v4 setMaxConcurrentOperationCount:1];
+    forecastOperationQueue = [(WAForecastModelController *)v2 forecastOperationQueue];
+    [forecastOperationQueue setMaxConcurrentOperationCount:1];
 
     v5 = dispatch_queue_create("com.apple.weather.forecastModelController.incomingRequestQueue", 0);
     [(WAForecastModelController *)v2 setIncomingRequestQueue:v5];
@@ -47,8 +47,8 @@
       v9 = objc_opt_new();
       [(WAForecastModelController *)v2 setPriorityForecastOperationQueue:v9];
 
-      v10 = [(WAForecastModelController *)v2 priorityForecastOperationQueue];
-      [v10 setMaxConcurrentOperationCount:1];
+      priorityForecastOperationQueue = [(WAForecastModelController *)v2 priorityForecastOperationQueue];
+      [priorityForecastOperationQueue setMaxConcurrentOperationCount:1];
 
       v11 = objc_opt_new();
       [(WAForecastModelController *)v2 setPriorityUpdatingCities:v11];
@@ -60,9 +60,9 @@
     v2->_greenTeaLogger = ct_green_tea_logger_create();
     v13 = objc_opt_new();
     v14 = +[WeatherInternalPreferences sharedInternalPreferences];
-    v15 = [v14 isInternalInstall];
+    isInternalInstall = [v14 isInternalInstall];
 
-    if (v15)
+    if (isInternalInstall)
     {
       objc_storeStrong(&v2->_store, v13);
     }
@@ -253,28 +253,28 @@ void __33__WAForecastModelController_init__block_invoke_2_13(uint64_t a1)
   [(WAForecastModelController *)&v3 dealloc];
 }
 
-- (void)setLocationGeocodingSampler:(id)a3
+- (void)setLocationGeocodingSampler:(id)sampler
 {
-  v4 = a3;
-  v5 = [(WAForecastModelController *)self incomingRequestQueue];
+  samplerCopy = sampler;
+  incomingRequestQueue = [(WAForecastModelController *)self incomingRequestQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __57__WAForecastModelController_setLocationGeocodingSampler___block_invoke;
   v7[3] = &unk_279E67CC0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = samplerCopy;
+  v6 = samplerCopy;
+  dispatch_sync(incomingRequestQueue, v7);
 }
 
-- (BOOL)isCityBeingUpdated:(id)a3
+- (BOOL)isCityBeingUpdated:(id)updated
 {
-  v4 = a3;
-  if (v4)
+  updatedCopy = updated;
+  if (updatedCopy)
   {
-    if ([(WAForecastModelController *)self isPriorityCity:v4])
+    if ([(WAForecastModelController *)self isPriorityCity:updatedCopy])
     {
-      v5 = [(WAForecastModelController *)self isPriorityCityBeingUpdated:v4];
+      v5 = [(WAForecastModelController *)self isPriorityCityBeingUpdated:updatedCopy];
     }
 
     else
@@ -283,15 +283,15 @@ void __33__WAForecastModelController_init__block_invoke_2_13(uint64_t a1)
       v12 = &v11;
       v13 = 0x2020000000;
       v14 = 0;
-      v6 = [(WAForecastModelController *)self incomingRequestQueue];
+      incomingRequestQueue = [(WAForecastModelController *)self incomingRequestQueue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __48__WAForecastModelController_isCityBeingUpdated___block_invoke;
       block[3] = &unk_279E69050;
       v10 = &v11;
       block[4] = self;
-      v9 = v4;
-      dispatch_sync(v6, block);
+      v9 = updatedCopy;
+      dispatch_sync(incomingRequestQueue, block);
 
       v5 = *(v12 + 24);
       _Block_object_dispose(&v11, 8);
@@ -312,27 +312,27 @@ void __48__WAForecastModelController_isCityBeingUpdated___block_invoke(uint64_t 
   *(*(*(a1 + 48) + 8) + 24) = [v2 containsObject:*(a1 + 40)];
 }
 
-- (BOOL)isPriorityCityBeingUpdated:(id)a3
+- (BOOL)isPriorityCityBeingUpdated:(id)updated
 {
-  v4 = a3;
+  updatedCopy = updated;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  v5 = [(WAForecastModelController *)self incomingRequestQueue];
+  incomingRequestQueue = [(WAForecastModelController *)self incomingRequestQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __56__WAForecastModelController_isPriorityCityBeingUpdated___block_invoke;
   block[3] = &unk_279E69050;
-  v9 = v4;
+  v9 = updatedCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = updatedCopy;
+  dispatch_sync(incomingRequestQueue, block);
 
-  LOBYTE(v4) = *(v12 + 24);
+  LOBYTE(updatedCopy) = *(v12 + 24);
   _Block_object_dispose(&v11, 8);
-  return v4;
+  return updatedCopy;
 }
 
 void __56__WAForecastModelController_isPriorityCityBeingUpdated___block_invoke(uint64_t a1)
@@ -341,39 +341,39 @@ void __56__WAForecastModelController_isPriorityCityBeingUpdated___block_invoke(u
   *(*(*(a1 + 48) + 8) + 24) = [v2 containsObject:*(a1 + 40)];
 }
 
-- (BOOL)fetchForecastForCity:(id)a3 withUnits:(int)a4 requestOptions:(id)a5 completion:(id)a6
+- (BOOL)fetchForecastForCity:(id)city withUnits:(int)units requestOptions:(id)options completion:(id)completion
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  if (!v12)
+  cityCopy = city;
+  optionsCopy = options;
+  completionCopy = completion;
+  if (!completionCopy)
   {
     goto LABEL_5;
   }
 
-  v13 = [v10 locationID];
+  locationID = [cityCopy locationID];
 
-  if (!v13)
+  if (!locationID)
   {
-    v16 = WAErrorWithCode(4, 0, v10, 0);
-    v12[2](v12, 0, v16);
+    v16 = WAErrorWithCode(4, 0, cityCopy, 0);
+    completionCopy[2](completionCopy, 0, v16);
 
 LABEL_5:
     v15 = 0;
     goto LABEL_6;
   }
 
-  v14 = [(WAForecastModelController *)self incomingRequestQueue];
+  incomingRequestQueue = [(WAForecastModelController *)self incomingRequestQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __86__WAForecastModelController_fetchForecastForCity_withUnits_requestOptions_completion___block_invoke;
   block[3] = &unk_279E69078;
   block[4] = self;
-  v19 = v10;
-  v22 = a4;
-  v20 = v11;
-  v21 = v12;
-  dispatch_async(v14, block);
+  v19 = cityCopy;
+  unitsCopy = units;
+  v20 = optionsCopy;
+  v21 = completionCopy;
+  dispatch_async(incomingRequestQueue, block);
 
   v15 = 1;
 LABEL_6:
@@ -399,19 +399,19 @@ void __86__WAForecastModelController_fetchForecastForCity_withUnits_requestOptio
   [v4 addOperation:v5];
 }
 
-- (BOOL)fetchForecastForCities:(id)a3 completion:(id)a4
+- (BOOL)fetchForecastForCities:(id)cities completion:(id)completion
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v7 && [v6 count])
+  citiesCopy = cities;
+  completionCopy = completion;
+  if (completionCopy && [citiesCopy count])
   {
     v26 = 0u;
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v21 = v6;
-    v8 = v6;
+    v21 = citiesCopy;
+    v8 = citiesCopy;
     v9 = [v8 countByEnumeratingWithState:&v24 objects:v30 count:16];
     if (v9)
     {
@@ -427,9 +427,9 @@ void __86__WAForecastModelController_fetchForecastForCity_withUnits_requestOptio
           }
 
           v13 = *(*(&v24 + 1) + 8 * i);
-          v14 = [v13 locationID];
+          locationID = [v13 locationID];
 
-          if (v14)
+          if (locationID)
           {
             v15 = WALogForCategory(0);
             if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -439,21 +439,21 @@ void __86__WAForecastModelController_fetchForecastForCity_withUnits_requestOptio
               _os_log_impl(&dword_272ACF000, v15, OS_LOG_TYPE_DEFAULT, "Creating forecastOperation for city : %@", buf, 0xCu);
             }
 
-            v16 = [(WAForecastModelController *)self incomingRequestQueue];
+            incomingRequestQueue = [(WAForecastModelController *)self incomingRequestQueue];
             block[0] = MEMORY[0x277D85DD0];
             block[1] = 3221225472;
             block[2] = __63__WAForecastModelController_fetchForecastForCities_completion___block_invoke;
             block[3] = &unk_279E67D10;
             block[4] = self;
             block[5] = v13;
-            v23 = v7;
-            dispatch_async(v16, block);
+            v23 = completionCopy;
+            dispatch_async(incomingRequestQueue, block);
           }
 
           else
           {
             v17 = WAErrorWithCode(4, 0, v13, 0);
-            (*(v7 + 2))(v7, v13, 0, v17);
+            (*(completionCopy + 2))(completionCopy, v13, 0, v17);
           }
         }
 
@@ -464,7 +464,7 @@ void __86__WAForecastModelController_fetchForecastForCity_withUnits_requestOptio
     }
 
     v18 = 1;
-    v6 = v21;
+    citiesCopy = v21;
   }
 
   else
@@ -512,19 +512,19 @@ void __133__WAForecastModelController__queue_executeFetchForCity_withUnits_reque
 
 - (void)cancelAllFetchRequests
 {
-  v3 = [MEMORY[0x277D7B2B0] sharedInstance];
-  v4 = [v3 settings];
-  v5 = [v4 disableForecastRequestCancelation];
+  mEMORY[0x277D7B2B0] = [MEMORY[0x277D7B2B0] sharedInstance];
+  settings = [mEMORY[0x277D7B2B0] settings];
+  disableForecastRequestCancelation = [settings disableForecastRequestCancelation];
 
-  if ((v5 & 1) == 0)
+  if ((disableForecastRequestCancelation & 1) == 0)
   {
-    v6 = [(WAForecastModelController *)self incomingRequestQueue];
+    incomingRequestQueue = [(WAForecastModelController *)self incomingRequestQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __51__WAForecastModelController_cancelAllFetchRequests__block_invoke;
     block[3] = &unk_279E67C98;
     block[4] = self;
-    dispatch_sync(v6, block);
+    dispatch_sync(incomingRequestQueue, block);
   }
 }
 
@@ -626,18 +626,18 @@ void __51__WAForecastModelController_cancelAllFetchRequests__block_invoke_2(uint
   (*(v3 + 2))(v3, 0, *(a1 + 40));
 }
 
-- (void)_handleForecastOperationCompletion:(id)a3
+- (void)_handleForecastOperationCompletion:(id)completion
 {
   v26 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [v5 city];
-  if (!v6)
+  completionCopy = completion;
+  city = [completionCopy city];
+  if (!city)
   {
     [(WAForecastModelController *)a2 _handleForecastOperationCompletion:?];
   }
 
-  v7 = [v5 error];
-  v8 = [v5 forecastModel];
+  error = [completionCopy error];
+  forecastModel = [completionCopy forecastModel];
 
   v9 = WALogForCategory(0);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -645,25 +645,25 @@ void __51__WAForecastModelController_cancelAllFetchRequests__block_invoke_2(uint
     *buf = 136315650;
     v21 = "[WAForecastModelController _handleForecastOperationCompletion:]";
     v22 = 2112;
-    v23 = v6;
+    v23 = city;
     v24 = 2112;
-    v25 = v8;
+    v25 = forecastModel;
     _os_log_impl(&dword_272ACF000, v9, OS_LOG_TYPE_DEFAULT, "%s, completed forecast city=%@, forecastModel=%@", buf, 0x20u);
   }
 
-  v10 = [(WAForecastModelController *)self incomingRequestQueue];
+  incomingRequestQueue = [(WAForecastModelController *)self incomingRequestQueue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __64__WAForecastModelController__handleForecastOperationCompletion___block_invoke;
   v15[3] = &unk_279E68B40;
-  v16 = v7;
-  v17 = v6;
-  v18 = self;
-  v19 = v8;
-  v11 = v8;
-  v12 = v6;
-  v13 = v7;
-  dispatch_async(v10, v15);
+  v16 = error;
+  v17 = city;
+  selfCopy = self;
+  v19 = forecastModel;
+  v11 = forecastModel;
+  v12 = city;
+  v13 = error;
+  dispatch_async(incomingRequestQueue, v15);
 
   v14 = *MEMORY[0x277D85DE8];
 }
@@ -799,26 +799,26 @@ void __64__WAForecastModelController__handleForecastOperationCompletion___block_
 
 - (id)_commaSeparatedUpdatingCitiesNames
 {
-  v3 = [(WAForecastModelController *)self updatingCities];
-  v4 = [(WAForecastModelController *)self _commaSeparatedNamesForUpdatingCities:v3];
+  updatingCities = [(WAForecastModelController *)self updatingCities];
+  v4 = [(WAForecastModelController *)self _commaSeparatedNamesForUpdatingCities:updatingCities];
 
   return v4;
 }
 
 - (id)_commaSeparatedPriorityUpdatingCitiesNames
 {
-  v3 = [(WAForecastModelController *)self priorityUpdatingCities];
-  v4 = [(WAForecastModelController *)self _commaSeparatedNamesForUpdatingCities:v3];
+  priorityUpdatingCities = [(WAForecastModelController *)self priorityUpdatingCities];
+  v4 = [(WAForecastModelController *)self _commaSeparatedNamesForUpdatingCities:priorityUpdatingCities];
 
   return v4;
 }
 
-- (id)_commaSeparatedNamesForUpdatingCities:(id)a3
+- (id)_commaSeparatedNamesForUpdatingCities:(id)cities
 {
-  if (a3)
+  if (cities)
   {
-    v3 = [a3 allObjects];
-    v4 = [v3 valueForKey:@"name"];
+    allObjects = [cities allObjects];
+    v4 = [allObjects valueForKey:@"name"];
     v5 = [v4 componentsJoinedByString:{@", "}];
   }
 
@@ -830,28 +830,28 @@ void __64__WAForecastModelController__handleForecastOperationCompletion___block_
   return v5;
 }
 
-- (BOOL)isPriorityCity:(id)a3
+- (BOOL)isPriorityCity:(id)city
 {
-  v4 = a3;
+  cityCopy = city;
   if ([(WAForecastModelController *)self isPriorityForecastOperationsEnabled])
   {
-    if ([v4 isLocalWeatherCity])
+    if ([cityCopy isLocalWeatherCity])
     {
-      v5 = 1;
+      isTransient = 1;
     }
 
     else
     {
-      v5 = [v4 isTransient];
+      isTransient = [cityCopy isTransient];
     }
   }
 
   else
   {
-    v5 = 0;
+    isTransient = 0;
   }
 
-  return v5;
+  return isTransient;
 }
 
 - (BOOL)isPriorityForecastOperationsEnabled

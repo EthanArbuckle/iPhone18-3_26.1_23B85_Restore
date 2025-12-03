@@ -1,19 +1,19 @@
 @interface SFBrowsingAssistantSearchResultView
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5;
-- (SFBrowsingAssistantSearchResultView)initWithSearchResult:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 contextMenuConfigurationForRowAtIndexPath:(id)a4 point:(CGPoint)a5;
-- (void)didEngageCardSection:(id)a3;
-- (void)didEngageResult:(id)a3;
-- (void)didPerformCommand:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority;
+- (SFBrowsingAssistantSearchResultView)initWithSearchResult:(id)result;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view contextMenuConfigurationForRowAtIndexPath:(id)path point:(CGPoint)point;
+- (void)didEngageCardSection:(id)section;
+- (void)didEngageResult:(id)result;
+- (void)didPerformCommand:(id)command;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation SFBrowsingAssistantSearchResultView
 
-- (SFBrowsingAssistantSearchResultView)initWithSearchResult:(id)a3
+- (SFBrowsingAssistantSearchResultView)initWithSearchResult:(id)result
 {
-  v5 = a3;
+  resultCopy = result;
   v16.receiver = self;
   v16.super_class = SFBrowsingAssistantSearchResultView;
   v6 = *MEMORY[0x1E695F058];
@@ -24,7 +24,7 @@
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_searchResult, a3);
+    objc_storeStrong(&v10->_searchResult, result);
     v12 = [objc_alloc(MEMORY[0x1E69DD020]) initWithFrame:{v6, v7, v8, v9}];
     tableView = v11->_tableView;
     v11->_tableView = v12;
@@ -41,10 +41,10 @@
   return v11;
 }
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v8 = 11;
   do
   {
@@ -70,10 +70,10 @@
   return result;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   v24 = 0;
   v25 = &v24;
   v26 = 0x2050000000;
@@ -102,7 +102,7 @@
 
   v13 = v12;
 
-  v14 = [v6 dequeueReusableCellWithIdentifier:v13];
+  v14 = [viewCopy dequeueReusableCellWithIdentifier:v13];
   if (!v14)
   {
     v24 = 0;
@@ -132,16 +132,16 @@
     [v14 updateWithResult:self->_searchResult];
   }
 
-  v17 = [MEMORY[0x1E69DC6E8] listGroupedCellConfiguration];
-  [v17 setCornerRadius:22.0];
-  [v14 setBackgroundConfiguration:v17];
+  listGroupedCellConfiguration = [MEMORY[0x1E69DC6E8] listGroupedCellConfiguration];
+  [listGroupedCellConfiguration setCornerRadius:22.0];
+  [v14 setBackgroundConfiguration:listGroupedCellConfiguration];
 
   return v14;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = [a3 cellForRowAtIndexPath:a4];
+  v6 = [view cellForRowAtIndexPath:path];
   if (objc_opt_respondsToSelector())
   {
     [v6 executeCommandWithTriggerEvent:2];
@@ -154,18 +154,18 @@
   }
 }
 
-- (id)tableView:(id)a3 contextMenuConfigurationForRowAtIndexPath:(id)a4 point:(CGPoint)a5
+- (id)tableView:(id)view contextMenuConfigurationForRowAtIndexPath:(id)path point:(CGPoint)point
 {
-  v7 = a3;
-  v8 = a4;
+  viewCopy = view;
+  pathCopy = path;
   if ([(SFSearchResult *)self->_searchResult _sf_isMediaResult])
   {
-    v9 = [v7 cellForRowAtIndexPath:v8];
+    v9 = [viewCopy cellForRowAtIndexPath:pathCopy];
     if (objc_opt_respondsToSelector())
     {
       v10 = MEMORY[0x1E69DC8D8];
-      v11 = [v9 contextMenuActionProvider];
-      v12 = [v10 configurationWithIdentifier:0 previewProvider:0 actionProvider:v11];
+      contextMenuActionProvider = [v9 contextMenuActionProvider];
+      v12 = [v10 configurationWithIdentifier:0 previewProvider:0 actionProvider:contextMenuActionProvider];
     }
 
     else
@@ -182,34 +182,34 @@
   return v12;
 }
 
-- (void)didEngageResult:(id)a3
+- (void)didEngageResult:(id)result
 {
   v3 = MEMORY[0x1E69C8EC0];
-  v4 = a3;
-  v5 = [v3 sharedPARSession];
-  [v5 didEngageResult:v4];
+  resultCopy = result;
+  sharedPARSession = [v3 sharedPARSession];
+  [sharedPARSession didEngageResult:resultCopy];
 }
 
-- (void)didEngageCardSection:(id)a3
+- (void)didEngageCardSection:(id)section
 {
   v3 = MEMORY[0x1E69C8EC0];
-  v4 = a3;
-  v5 = [v3 sharedPARSession];
-  [v5 didEngageCardSection:v4];
+  sectionCopy = section;
+  sharedPARSession = [v3 sharedPARSession];
+  [sharedPARSession didEngageCardSection:sectionCopy];
 }
 
-- (void)didPerformCommand:(id)a3
+- (void)didPerformCommand:(id)command
 {
   v4 = MEMORY[0x1E69C8EC0];
-  v5 = a3;
-  v6 = [v4 sharedPARSession];
-  [v6 didPerformCommand:v5];
+  commandCopy = command;
+  sharedPARSession = [v4 sharedPARSession];
+  [sharedPARSession didPerformCommand:commandCopy];
 
-  v7 = [MEMORY[0x1E69C8810] sharedLogger];
-  [v7 didClickEntityCardSBA];
+  mEMORY[0x1E69C8810] = [MEMORY[0x1E69C8810] sharedLogger];
+  [mEMORY[0x1E69C8810] didClickEntityCardSBA];
 
-  v8 = [MEMORY[0x1E69C8EB0] sharedManager];
-  [v8 donateBrowsingAssistantUserInteractionDetectedWithWebPageID:self->_webpageIdentifier componentType:objc_msgSend(MEMORY[0x1E69C8EB0] componentIdentifier:"entityComponentTypeFromResult:" tableOfContentsArrayLength:self->_searchResult) tableOfContentsTextIndex:self->_componentIdentifier readerSectionExpanded:{0, 0, 0}];
+  mEMORY[0x1E69C8EB0] = [MEMORY[0x1E69C8EB0] sharedManager];
+  [mEMORY[0x1E69C8EB0] donateBrowsingAssistantUserInteractionDetectedWithWebPageID:self->_webpageIdentifier componentType:objc_msgSend(MEMORY[0x1E69C8EB0] componentIdentifier:"entityComponentTypeFromResult:" tableOfContentsArrayLength:self->_searchResult) tableOfContentsTextIndex:self->_componentIdentifier readerSectionExpanded:{0, 0, 0}];
 }
 
 @end

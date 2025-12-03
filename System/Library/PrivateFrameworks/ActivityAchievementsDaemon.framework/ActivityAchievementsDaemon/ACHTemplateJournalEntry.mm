@@ -1,26 +1,26 @@
 @interface ACHTemplateJournalEntry
-+ (void)applyEntries:(id)a3 withProfile:(id)a4;
-- (ACHTemplateJournalEntry)initWithCoder:(id)a3;
-- (ACHTemplateJournalEntry)initWithTemplate:(id)a3 provenance:(int64_t)a4 useLegacySyncIdentity:(BOOL)a5 action:(int64_t)a6;
++ (void)applyEntries:(id)entries withProfile:(id)profile;
+- (ACHTemplateJournalEntry)initWithCoder:(id)coder;
+- (ACHTemplateJournalEntry)initWithTemplate:(id)template provenance:(int64_t)provenance useLegacySyncIdentity:(BOOL)identity action:(int64_t)action;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ACHTemplateJournalEntry
 
-- (ACHTemplateJournalEntry)initWithTemplate:(id)a3 provenance:(int64_t)a4 useLegacySyncIdentity:(BOOL)a5 action:(int64_t)a6
+- (ACHTemplateJournalEntry)initWithTemplate:(id)template provenance:(int64_t)provenance useLegacySyncIdentity:(BOOL)identity action:(int64_t)action
 {
-  v11 = a3;
+  templateCopy = template;
   v15.receiver = self;
   v15.super_class = ACHTemplateJournalEntry;
   v12 = [(ACHTemplateJournalEntry *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    v12->_action = a6;
-    objc_storeStrong(&v12->_template, a3);
-    v13->_provenance = a4;
-    v13->_useLegacySyncIdentity = a5;
+    v12->_action = action;
+    objc_storeStrong(&v12->_template, template);
+    v13->_provenance = provenance;
+    v13->_useLegacySyncIdentity = identity;
   }
 
   return v13;
@@ -38,18 +38,18 @@
   return v6;
 }
 
-+ (void)applyEntries:(id)a3 withProfile:(id)a4
++ (void)applyEntries:(id)entries withProfile:(id)profile
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 database];
+  entriesCopy = entries;
+  profileCopy = profile;
+  database = [profileCopy database];
   v19 = 0;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __52__ACHTemplateJournalEntry_applyEntries_withProfile___block_invoke;
   v16[3] = &unk_2784920A0;
-  v17 = v5;
-  v18 = v6;
+  v17 = entriesCopy;
+  v18 = profileCopy;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __52__ACHTemplateJournalEntry_applyEntries_withProfile___block_invoke_2;
@@ -58,7 +58,7 @@
   v14 = v8;
   v9 = v17;
   v15 = v9;
-  v10 = [(HDHealthEntity *)ACHTemplateEntity performWriteTransactionWithHealthDatabase:v7 error:&v19 block:v16 inaccessibilityHandler:v13];
+  v10 = [(HDHealthEntity *)ACHTemplateEntity performWriteTransactionWithHealthDatabase:database error:&v19 block:v16 inaccessibilityHandler:v13];
   v11 = v19;
 
   if (!v10)
@@ -159,16 +159,16 @@ uint64_t __52__ACHTemplateJournalEntry_applyEntries_withProfile___block_invoke_2
   return v6;
 }
 
-- (ACHTemplateJournalEntry)initWithCoder:(id)a3
+- (ACHTemplateJournalEntry)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = ACHTemplateJournalEntry;
-  v5 = [(HDJournalEntry *)&v11 initWithCoder:v4];
+  v5 = [(HDJournalEntry *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_action = [v4 decodeIntegerForKey:@"action"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"template"];
+    v5->_action = [coderCopy decodeIntegerForKey:@"action"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"template"];
     if ([v6 length])
     {
       v7 = [objc_alloc(MEMORY[0x277CE8D18]) initWithData:v6];
@@ -180,32 +180,32 @@ uint64_t __52__ACHTemplateJournalEntry_applyEntries_withProfile___block_invoke_2
       }
     }
 
-    v5->_provenance = [v4 decodeInt64ForKey:@"provenance"];
+    v5->_provenance = [coderCopy decodeInt64ForKey:@"provenance"];
     v5->_useLegacySyncIdentity = 1;
-    if ([v4 containsValueForKey:@"UseLegacySyncIdentity"])
+    if ([coderCopy containsValueForKey:@"UseLegacySyncIdentity"])
     {
-      v5->_useLegacySyncIdentity = [v4 decodeBoolForKey:@"UseLegacySyncIdentity"];
+      v5->_useLegacySyncIdentity = [coderCopy decodeBoolForKey:@"UseLegacySyncIdentity"];
     }
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
-  [v7 encodeInteger:self->_action forKey:@"action"];
-  v4 = [(ACHTemplateJournalEntry *)self template];
+  coderCopy = coder;
+  [coderCopy encodeInteger:self->_action forKey:@"action"];
+  template = [(ACHTemplateJournalEntry *)self template];
   v5 = ACHCodableFromTemplate();
 
-  v6 = [v5 data];
-  if ([v6 length])
+  data = [v5 data];
+  if ([data length])
   {
-    [v7 encodeObject:v6 forKey:@"template"];
+    [coderCopy encodeObject:data forKey:@"template"];
   }
 
-  [v7 encodeInt64:self->_provenance forKey:@"provenance"];
-  [v7 encodeBool:self->_useLegacySyncIdentity forKey:@"UseLegacySyncIdentity"];
+  [coderCopy encodeInt64:self->_provenance forKey:@"provenance"];
+  [coderCopy encodeBool:self->_useLegacySyncIdentity forKey:@"UseLegacySyncIdentity"];
 }
 
 + (void)applyEntries:withProfile:.cold.1()

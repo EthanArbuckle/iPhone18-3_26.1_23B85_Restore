@@ -1,23 +1,23 @@
 @interface TPSListItemsController
-- (void)setSpecifier:(id)a3;
+- (void)setSpecifier:(id)specifier;
 @end
 
 @implementation TPSListItemsController
 
-- (void)setSpecifier:(id)a3
+- (void)setSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   v8.receiver = self;
   v8.super_class = TPSListItemsController;
-  v5 = [(TPSListItemsController *)&v8 specifier];
+  specifier = [(TPSListItemsController *)&v8 specifier];
 
-  if (v5 != v4)
+  if (specifier != specifierCopy)
   {
     v7.receiver = self;
     v7.super_class = TPSListItemsController;
-    [(TPSListItemsController *)&v7 setSpecifier:v4];
-    v6 = [v4 tps_subscriptionContext];
-    [(TPSListItemsController *)self setSubscriptionContext:v6];
+    [(TPSListItemsController *)&v7 setSpecifier:specifierCopy];
+    tps_subscriptionContext = [specifierCopy tps_subscriptionContext];
+    [(TPSListItemsController *)self setSubscriptionContext:tps_subscriptionContext];
   }
 }
 

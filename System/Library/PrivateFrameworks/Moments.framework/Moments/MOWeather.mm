@@ -1,52 +1,52 @@
 @interface MOWeather
-- (BOOL)isEqual:(id)a3;
-- (MOWeather)initWithCoder:(id)a3;
-- (MOWeather)initWithStartDate:(id)a3 endDate:(id)a4 temperature:(id)a5 weatherSummary:(id)a6 weatherSymbolName:(id)a7 windSpeed:(id)a8;
-- (MOWeather)initWithWeatherIdentifier:(id)a3 startDate:(id)a4 endDate:(id)a5 weatherSummary:(id)a6 weatherSymbolName:(id)a7 temperature:(id)a8 windSpeed:(id)a9;
+- (BOOL)isEqual:(id)equal;
+- (MOWeather)initWithCoder:(id)coder;
+- (MOWeather)initWithStartDate:(id)date endDate:(id)endDate temperature:(id)temperature weatherSummary:(id)summary weatherSymbolName:(id)name windSpeed:(id)speed;
+- (MOWeather)initWithWeatherIdentifier:(id)identifier startDate:(id)date endDate:(id)endDate weatherSummary:(id)summary weatherSymbolName:(id)name temperature:(id)temperature windSpeed:(id)speed;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MOWeather
 
-- (MOWeather)initWithStartDate:(id)a3 endDate:(id)a4 temperature:(id)a5 weatherSummary:(id)a6 weatherSymbolName:(id)a7 windSpeed:(id)a8
+- (MOWeather)initWithStartDate:(id)date endDate:(id)endDate temperature:(id)temperature weatherSummary:(id)summary weatherSymbolName:(id)name windSpeed:(id)speed
 {
   v14 = MEMORY[0x277CCAD78];
-  v15 = a8;
-  v16 = a7;
-  v17 = a6;
-  v18 = a5;
-  v19 = a4;
-  v20 = a3;
-  v21 = [v14 UUID];
-  v22 = [(MOWeather *)self initWithWeatherIdentifier:v21 startDate:v20 endDate:v19 weatherSummary:v17 weatherSymbolName:v16 temperature:v18 windSpeed:v15];
+  speedCopy = speed;
+  nameCopy = name;
+  summaryCopy = summary;
+  temperatureCopy = temperature;
+  endDateCopy = endDate;
+  dateCopy = date;
+  uUID = [v14 UUID];
+  v22 = [(MOWeather *)self initWithWeatherIdentifier:uUID startDate:dateCopy endDate:endDateCopy weatherSummary:summaryCopy weatherSymbolName:nameCopy temperature:temperatureCopy windSpeed:speedCopy];
 
   return v22;
 }
 
-- (MOWeather)initWithWeatherIdentifier:(id)a3 startDate:(id)a4 endDate:(id)a5 weatherSummary:(id)a6 weatherSymbolName:(id)a7 temperature:(id)a8 windSpeed:(id)a9
+- (MOWeather)initWithWeatherIdentifier:(id)identifier startDate:(id)date endDate:(id)endDate weatherSummary:(id)summary weatherSymbolName:(id)name temperature:(id)temperature windSpeed:(id)speed
 {
-  v25 = a3;
-  v24 = a4;
-  v23 = a5;
-  v22 = a6;
-  v21 = a7;
-  v16 = a8;
-  v17 = a9;
+  identifierCopy = identifier;
+  dateCopy = date;
+  endDateCopy = endDate;
+  summaryCopy = summary;
+  nameCopy = name;
+  temperatureCopy = temperature;
+  speedCopy = speed;
   v26.receiver = self;
   v26.super_class = MOWeather;
   v18 = [(MOWeather *)&v26 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_weatherIdentifier, a3);
-    objc_storeStrong(&v19->_startDate, a4);
-    objc_storeStrong(&v19->_endDate, a5);
-    objc_storeStrong(&v19->_weatherSummary, a6);
-    objc_storeStrong(&v19->_weatherSymbolName, a7);
-    objc_storeStrong(&v19->_temperature, a8);
-    objc_storeStrong(&v19->_windSpeed, a9);
+    objc_storeStrong(&v18->_weatherIdentifier, identifier);
+    objc_storeStrong(&v19->_startDate, date);
+    objc_storeStrong(&v19->_endDate, endDate);
+    objc_storeStrong(&v19->_weatherSummary, summary);
+    objc_storeStrong(&v19->_weatherSymbolName, name);
+    objc_storeStrong(&v19->_temperature, temperature);
+    objc_storeStrong(&v19->_windSpeed, speed);
     v19->_sourceEventAccessType = 5;
   }
 
@@ -56,50 +56,50 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(MOWeather *)self weatherIdentifier];
-  v5 = [(MOWeather *)self startDate];
-  v6 = [(MOWeather *)self endDate];
-  v7 = [(MOWeather *)self weatherSummary];
-  v8 = [(MOWeather *)self weatherSymbolName];
-  v9 = [(MOWeather *)self temperature];
-  v10 = [(MOWeather *)self windSpeed];
-  v11 = [v3 stringWithFormat:@"<MOWeather identifier, %@, startDate, %@, endDate, %@, weatherSummary, %@, weatherSymbolName, %@, temperature, %@, windSpeed %@>", v4, v5, v6, v7, v8, v9, v10];
+  weatherIdentifier = [(MOWeather *)self weatherIdentifier];
+  startDate = [(MOWeather *)self startDate];
+  endDate = [(MOWeather *)self endDate];
+  weatherSummary = [(MOWeather *)self weatherSummary];
+  weatherSymbolName = [(MOWeather *)self weatherSymbolName];
+  temperature = [(MOWeather *)self temperature];
+  windSpeed = [(MOWeather *)self windSpeed];
+  v11 = [v3 stringWithFormat:@"<MOWeather identifier, %@, startDate, %@, endDate, %@, weatherSummary, %@, weatherSymbolName, %@, temperature, %@, windSpeed %@>", weatherIdentifier, startDate, endDate, weatherSummary, weatherSymbolName, temperature, windSpeed];
 
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   weatherIdentifier = self->_weatherIdentifier;
-  v5 = a3;
-  [v5 encodeObject:weatherIdentifier forKey:@"weatherIdentifier"];
-  [v5 encodeObject:self->_startDate forKey:@"startDate"];
-  [v5 encodeObject:self->_endDate forKey:@"endDate"];
-  [v5 encodeObject:self->_weatherSummary forKey:@"weatherSummary"];
-  [v5 encodeObject:self->_weatherSymbolName forKey:@"weatherSymbolName"];
-  [v5 encodeObject:self->_temperature forKey:@"temperature"];
-  [v5 encodeObject:self->_windSpeed forKey:@"windSpeed"];
-  [v5 encodeInt64:self->_sourceEventAccessType forKey:@"sourceEventAccessType"];
-  [v5 encodeObject:self->_sourceEventIdentifier forKey:@"sourceEventIdentifier"];
+  coderCopy = coder;
+  [coderCopy encodeObject:weatherIdentifier forKey:@"weatherIdentifier"];
+  [coderCopy encodeObject:self->_startDate forKey:@"startDate"];
+  [coderCopy encodeObject:self->_endDate forKey:@"endDate"];
+  [coderCopy encodeObject:self->_weatherSummary forKey:@"weatherSummary"];
+  [coderCopy encodeObject:self->_weatherSymbolName forKey:@"weatherSymbolName"];
+  [coderCopy encodeObject:self->_temperature forKey:@"temperature"];
+  [coderCopy encodeObject:self->_windSpeed forKey:@"windSpeed"];
+  [coderCopy encodeInt64:self->_sourceEventAccessType forKey:@"sourceEventAccessType"];
+  [coderCopy encodeObject:self->_sourceEventIdentifier forKey:@"sourceEventIdentifier"];
 }
 
-- (MOWeather)initWithCoder:(id)a3
+- (MOWeather)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"weatherIdentifier"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"startDate"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"endDate"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"weatherSummary"];
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"weatherSymbolName"];
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"temperature"];
-  v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"windSpeed"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"weatherIdentifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"startDate"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"endDate"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"weatherSummary"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"weatherSymbolName"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"temperature"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"windSpeed"];
   v12 = [(MOWeather *)self initWithWeatherIdentifier:v5 startDate:v6 endDate:v7 weatherSummary:v8 weatherSymbolName:v9 temperature:v10 windSpeed:v11];
   if (v12)
   {
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sourceEventIdentifier"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sourceEventIdentifier"];
     [(MOWeather *)v12 setSourceEventIdentifier:v13];
 
-    -[MOWeather setSourceEventAccessType:](v12, "setSourceEventAccessType:", [v4 decodeInt64ForKey:@"sourceEventAccessType"]);
+    -[MOWeather setSourceEventAccessType:](v12, "setSourceEventAccessType:", [coderCopy decodeInt64ForKey:@"sourceEventAccessType"]);
   }
 
   return v12;
@@ -107,37 +107,37 @@
 
 - (unint64_t)hash
 {
-  v2 = [(MOWeather *)self weatherIdentifier];
-  v3 = [v2 hash];
+  weatherIdentifier = [(MOWeather *)self weatherIdentifier];
+  v3 = [weatherIdentifier hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  v6 = v5;
-  if (self == v5)
+  equalCopy = equal;
+  v6 = equalCopy;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
 
   else
   {
-    if (v5)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
         v7 = v6;
-        v8 = [(MOWeather *)self weatherIdentifier];
-        if (v8 || ([(MOWeather *)v7 weatherIdentifier], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+        weatherIdentifier = [(MOWeather *)self weatherIdentifier];
+        if (weatherIdentifier || ([(MOWeather *)v7 weatherIdentifier], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
         {
-          v9 = [(MOWeather *)self weatherIdentifier];
-          v10 = [(MOWeather *)v7 weatherIdentifier];
-          v11 = [v9 isEqual:v10];
+          weatherIdentifier2 = [(MOWeather *)self weatherIdentifier];
+          weatherIdentifier3 = [(MOWeather *)v7 weatherIdentifier];
+          v11 = [weatherIdentifier2 isEqual:weatherIdentifier3];
 
-          if (v8)
+          if (weatherIdentifier)
           {
 LABEL_12:
 

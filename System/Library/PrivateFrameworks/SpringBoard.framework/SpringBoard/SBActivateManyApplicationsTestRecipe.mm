@@ -1,12 +1,12 @@
 @interface SBActivateManyApplicationsTestRecipe
 + (id)_bundleIdentifiers;
 - (SBActivateManyApplicationsTestRecipe)init;
-- (void)_addAppToStageWithBundleIdentifier:(id)a3;
+- (void)_addAppToStageWithBundleIdentifier:(id)identifier;
 - (void)_addNewNotesSceneToStage;
-- (void)_destroyApplicationSceneHandles:(id)a3;
+- (void)_destroyApplicationSceneHandles:(id)handles;
 - (void)_removeFrontmostScene;
 - (void)_removeNotesScenes;
-- (void)_removeScenesForAppWithBundleIdentifier:(id)a3;
+- (void)_removeScenesForAppWithBundleIdentifier:(id)identifier;
 - (void)handleVolumeDecrease;
 - (void)handleVolumeIncrease;
 @end
@@ -101,15 +101,15 @@ void __58__SBActivateManyApplicationsTestRecipe__bundleIdentifiers__block_invoke
   _bundleIdentifiers_bundleIdentifiers = v0;
 }
 
-- (void)_addAppToStageWithBundleIdentifier:(id)a3
+- (void)_addAppToStageWithBundleIdentifier:(id)identifier
 {
   windowScene = self->_windowScene;
-  v4 = a3;
-  v5 = [(SBWindowScene *)windowScene sceneManager];
-  v6 = v5;
-  if (v5)
+  identifierCopy = identifier;
+  sceneManager = [(SBWindowScene *)windowScene sceneManager];
+  v6 = sceneManager;
+  if (sceneManager)
   {
-    v7 = v5;
+    v7 = sceneManager;
   }
 
   else
@@ -120,11 +120,11 @@ void __58__SBActivateManyApplicationsTestRecipe__bundleIdentifiers__block_invoke
   v8 = v7;
 
   v9 = +[SBApplicationController sharedInstance];
-  v10 = [v9 applicationWithBundleIdentifier:v4];
+  v10 = [v9 applicationWithBundleIdentifier:identifierCopy];
 
   v11 = [SBDeviceApplicationSceneEntity alloc];
-  v12 = [v8 displayIdentity];
-  v13 = [(SBDeviceApplicationSceneEntity *)v11 initWithApplication:v10 generatingNewPrimarySceneIfRequired:1 sceneHandleProvider:v8 displayIdentity:v12];
+  displayIdentity = [v8 displayIdentity];
+  v13 = [(SBDeviceApplicationSceneEntity *)v11 initWithApplication:v10 generatingNewPrimarySceneIfRequired:1 sceneHandleProvider:v8 displayIdentity:displayIdentity];
 
   if (v13)
   {
@@ -167,11 +167,11 @@ void __75__SBActivateManyApplicationsTestRecipe__addAppToStageWithBundleIdentifi
 
 - (void)_addNewNotesSceneToStage
 {
-  v2 = [(SBWindowScene *)self->_windowScene sceneManager];
-  v3 = v2;
-  if (v2)
+  sceneManager = [(SBWindowScene *)self->_windowScene sceneManager];
+  v3 = sceneManager;
+  if (sceneManager)
   {
-    v4 = v2;
+    v4 = sceneManager;
   }
 
   else
@@ -184,8 +184,8 @@ void __75__SBActivateManyApplicationsTestRecipe__addAppToStageWithBundleIdentifi
   v6 = +[SBApplicationController sharedInstance];
   v7 = [v6 applicationWithBundleIdentifier:@"com.apple.mobilenotes"];
 
-  v8 = [v5 displayIdentity];
-  v9 = [SBDeviceApplicationSceneEntity newEntityWithApplication:v7 sceneHandleProvider:v5 displayIdentity:v8];
+  displayIdentity = [v5 displayIdentity];
+  v9 = [SBDeviceApplicationSceneEntity newEntityWithApplication:v7 sceneHandleProvider:v5 displayIdentity:displayIdentity];
 
   if (v9)
   {
@@ -230,11 +230,11 @@ void __64__SBActivateManyApplicationsTestRecipe__addNewNotesSceneToStage__block_
 - (void)_removeNotesScenes
 {
   v3 = @"com.apple.mobilenotes";
-  v4 = [(SBWindowScene *)self->_windowScene sceneManager];
-  v5 = v4;
-  if (v4)
+  sceneManager = [(SBWindowScene *)self->_windowScene sceneManager];
+  v5 = sceneManager;
+  if (sceneManager)
   {
-    v6 = v4;
+    v6 = sceneManager;
   }
 
   else
@@ -288,19 +288,19 @@ void __58__SBActivateManyApplicationsTestRecipe__removeNotesScenes__block_invoke
   }
 }
 
-- (void)_removeScenesForAppWithBundleIdentifier:(id)a3
+- (void)_removeScenesForAppWithBundleIdentifier:(id)identifier
 {
-  v11 = a3;
-  if (!v11)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
     [(SBActivateManyApplicationsTestRecipe *)a2 _removeScenesForAppWithBundleIdentifier:?];
   }
 
-  v5 = [(SBWindowScene *)self->_windowScene sceneManager];
-  v6 = v5;
-  if (v5)
+  sceneManager = [(SBWindowScene *)self->_windowScene sceneManager];
+  v6 = sceneManager;
+  if (sceneManager)
   {
-    v7 = v5;
+    v7 = sceneManager;
   }
 
   else
@@ -310,7 +310,7 @@ void __58__SBActivateManyApplicationsTestRecipe__removeNotesScenes__block_invoke
 
   v8 = v7;
 
-  v9 = [MEMORY[0x277CBEB98] setWithObject:v11];
+  v9 = [MEMORY[0x277CBEB98] setWithObject:identifierCopy];
   v10 = [v8 externalApplicationSceneHandlesForBundleIdentifiers:v9];
 
   [(SBActivateManyApplicationsTestRecipe *)self _destroyApplicationSceneHandles:v10];
@@ -318,38 +318,38 @@ void __58__SBActivateManyApplicationsTestRecipe__removeNotesScenes__block_invoke
 
 - (void)_removeFrontmostScene
 {
-  v3 = [(SBWindowScene *)self->_windowScene switcherController];
-  v4 = [v3 displayItemLayoutAttributesProvider];
-  v5 = [v3 layoutState];
-  v6 = [v5 appLayout];
+  switcherController = [(SBWindowScene *)self->_windowScene switcherController];
+  displayItemLayoutAttributesProvider = [switcherController displayItemLayoutAttributesProvider];
+  layoutState = [switcherController layoutState];
+  appLayout = [layoutState appLayout];
 
-  v7 = [v3 interfaceOrientation];
-  if ((v7 - 1) < 2)
+  interfaceOrientation = [switcherController interfaceOrientation];
+  if ((interfaceOrientation - 1) < 2)
   {
     v8 = 1;
   }
 
   else
   {
-    v8 = 2 * ((v7 - 3) < 2);
+    v8 = 2 * ((interfaceOrientation - 3) < 2);
   }
 
-  v9 = [v4 zOrderedItemsInAppLayout:v6 orientation:v8];
-  v10 = [v6 leafAppLayoutsFromDisplayItems:v9];
+  v9 = [displayItemLayoutAttributesProvider zOrderedItemsInAppLayout:appLayout orientation:v8];
+  v10 = [appLayout leafAppLayoutsFromDisplayItems:v9];
 
-  v11 = [v10 firstObject];
-  v12 = [v3 interfaceOrientation];
-  if ((v12 - 1) < 2)
+  firstObject = [v10 firstObject];
+  interfaceOrientation2 = [switcherController interfaceOrientation];
+  if ((interfaceOrientation2 - 1) < 2)
   {
     v13 = 1;
   }
 
   else
   {
-    v13 = 2 * ((v12 - 3) < 2);
+    v13 = 2 * ((interfaceOrientation2 - 3) < 2);
   }
 
-  v14 = [v4 zOrderedItemsInAppLayout:v11 orientation:v13];
+  v14 = [displayItemLayoutAttributesProvider zOrderedItemsInAppLayout:firstObject orientation:v13];
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
@@ -361,7 +361,7 @@ void __58__SBActivateManyApplicationsTestRecipe__removeNotesScenes__block_invoke
   v19 = __61__SBActivateManyApplicationsTestRecipe__removeFrontmostScene__block_invoke;
   v20 = &unk_2783C0928;
   v22 = &v23;
-  v15 = v3;
+  v15 = switcherController;
   v21 = v15;
   [v14 enumerateObjectsUsingBlock:&v17];
   if (v24[5])
@@ -390,17 +390,17 @@ void __61__SBActivateManyApplicationsTestRecipe__removeFrontmostScene__block_inv
   }
 }
 
-- (void)_destroyApplicationSceneHandles:(id)a3
+- (void)_destroyApplicationSceneHandles:(id)handles
 {
-  v5 = a3;
-  v7 = v5;
-  if (!v5)
+  handlesCopy = handles;
+  v7 = handlesCopy;
+  if (!handlesCopy)
   {
     [(SBActivateManyApplicationsTestRecipe *)a2 _destroyApplicationSceneHandles:?];
-    v5 = 0;
+    handlesCopy = 0;
   }
 
-  if ([v5 count])
+  if ([handlesCopy count])
   {
     v6 = SBApplicationSceneEntityDestructionMakeIntent(1, 1);
     SBWorkspaceDestroyApplicationSceneHandlesWithIntent(v7, v6, &__block_literal_global_38_2);

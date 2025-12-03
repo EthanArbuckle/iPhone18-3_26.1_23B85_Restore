@@ -1,53 +1,53 @@
 @interface _SFAutoFillInternalFeedbackCollectionViewController
-- (_SFAutoFillInternalFeedbackCollectionViewController)initWithDiagnosticsData:(id)a3 reportHandler:(id)a4;
+- (_SFAutoFillInternalFeedbackCollectionViewController)initWithDiagnosticsData:(id)data reportHandler:(id)handler;
 - (id)_createCollectionViewLayout;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
 - (void)_updateContinueInTapToRadarButton;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)collectionViewListCellButtonPressed:(id)a3;
-- (void)textFieldCellTextDidChange:(id)a3;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)collectionViewListCellButtonPressed:(id)pressed;
+- (void)textFieldCellTextDidChange:(id)change;
 - (void)viewDidLoad;
 @end
 
 @implementation _SFAutoFillInternalFeedbackCollectionViewController
 
-- (_SFAutoFillInternalFeedbackCollectionViewController)initWithDiagnosticsData:(id)a3 reportHandler:(id)a4
+- (_SFAutoFillInternalFeedbackCollectionViewController)initWithDiagnosticsData:(id)data reportHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(_SFAutoFillInternalFeedbackCollectionViewController *)self _createCollectionViewLayout];
+  dataCopy = data;
+  handlerCopy = handler;
+  _createCollectionViewLayout = [(_SFAutoFillInternalFeedbackCollectionViewController *)self _createCollectionViewLayout];
   v23.receiver = self;
   v23.super_class = _SFAutoFillInternalFeedbackCollectionViewController;
-  v9 = [(_SFAutoFillInternalFeedbackCollectionViewController *)&v23 initWithCollectionViewLayout:v8];
+  v9 = [(_SFAutoFillInternalFeedbackCollectionViewController *)&v23 initWithCollectionViewLayout:_createCollectionViewLayout];
 
   if (v9)
   {
-    v10 = [objc_alloc(MEMORY[0x1E69C8E90]) initWithDiagnosticsData:v6];
+    v10 = [objc_alloc(MEMORY[0x1E69C8E90]) initWithDiagnosticsData:dataCopy];
     feedbackController = v9->_feedbackController;
     v9->_feedbackController = v10;
 
-    v12 = _Block_copy(v7);
+    v12 = _Block_copy(handlerCopy);
     reportHandler = v9->_reportHandler;
     v9->_reportHandler = v12;
 
-    v14 = [MEMORY[0x1E69C8E90] titleText];
-    v15 = [(_SFAutoFillInternalFeedbackCollectionViewController *)v9 navigationItem];
-    [v15 setTitle:v14];
+    titleText = [MEMORY[0x1E69C8E90] titleText];
+    navigationItem = [(_SFAutoFillInternalFeedbackCollectionViewController *)v9 navigationItem];
+    [navigationItem setTitle:titleText];
 
     v16 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:24 target:v9 action:sel__dismiss_];
-    v17 = [(_SFAutoFillInternalFeedbackCollectionViewController *)v9 navigationItem];
-    [v17 setRightBarButtonItem:v16];
+    navigationItem2 = [(_SFAutoFillInternalFeedbackCollectionViewController *)v9 navigationItem];
+    [navigationItem2 setRightBarButtonItem:v16];
 
-    v18 = [(_SFAutoFillInternalFeedbackCollectionViewController *)v9 collectionView];
-    [v18 setDelegate:v9];
+    collectionView = [(_SFAutoFillInternalFeedbackCollectionViewController *)v9 collectionView];
+    [collectionView setDelegate:v9];
 
-    v19 = [(_SFAutoFillInternalFeedbackCollectionViewController *)v9 collectionView];
-    [v19 setDataSource:v9];
+    collectionView2 = [(_SFAutoFillInternalFeedbackCollectionViewController *)v9 collectionView];
+    [collectionView2 setDataSource:v9];
 
-    v20 = [(_SFAutoFillInternalFeedbackCollectionViewController *)v9 collectionView];
-    [v20 setSelfSizingInvalidation:2];
+    collectionView3 = [(_SFAutoFillInternalFeedbackCollectionViewController *)v9 collectionView];
+    [collectionView3 setSelfSizingInvalidation:2];
 
     v21 = v9;
   }
@@ -73,58 +73,58 @@
   v20.receiver = self;
   v20.super_class = _SFAutoFillInternalFeedbackCollectionViewController;
   [(_SFAutoFillInternalFeedbackCollectionViewController *)&v20 viewDidLoad];
-  v3 = [(_SFAutoFillInternalFeedbackCollectionViewController *)self collectionView];
+  collectionView = [(_SFAutoFillInternalFeedbackCollectionViewController *)self collectionView];
   v4 = objc_opt_class();
   v5 = *MEMORY[0x1E69DDC00];
   v6 = +[_SFCollectionViewListTextSupplementaryView reuseIdentifier];
-  [v3 registerClass:v4 forSupplementaryViewOfKind:v5 withReuseIdentifier:v6];
+  [collectionView registerClass:v4 forSupplementaryViewOfKind:v5 withReuseIdentifier:v6];
 
-  v7 = [(_SFAutoFillInternalFeedbackCollectionViewController *)self collectionView];
+  collectionView2 = [(_SFAutoFillInternalFeedbackCollectionViewController *)self collectionView];
   v8 = objc_opt_class();
   v9 = *MEMORY[0x1E69DDC08];
   v10 = +[_SFCollectionViewListTextSupplementaryView reuseIdentifier];
-  [v7 registerClass:v8 forSupplementaryViewOfKind:v9 withReuseIdentifier:v10];
+  [collectionView2 registerClass:v8 forSupplementaryViewOfKind:v9 withReuseIdentifier:v10];
 
-  v11 = [(_SFAutoFillInternalFeedbackCollectionViewController *)self collectionView];
+  collectionView3 = [(_SFAutoFillInternalFeedbackCollectionViewController *)self collectionView];
   v12 = objc_opt_class();
   v13 = +[_SFAutoFillInternalFeedbackDetailQuestionTextFieldCell reuseIdentifier];
-  [v11 registerClass:v12 forCellWithReuseIdentifier:v13];
+  [collectionView3 registerClass:v12 forCellWithReuseIdentifier:v13];
 
-  v14 = [(_SFAutoFillInternalFeedbackCollectionViewController *)self collectionView];
+  collectionView4 = [(_SFAutoFillInternalFeedbackCollectionViewController *)self collectionView];
   v15 = objc_opt_class();
   v16 = +[_SFButtonCollectionViewListCell reuseIdentifier];
-  [v14 registerClass:v15 forCellWithReuseIdentifier:v16];
+  [collectionView4 registerClass:v15 forCellWithReuseIdentifier:v16];
 
-  v17 = [(_SFAutoFillInternalFeedbackCollectionViewController *)self collectionView];
+  collectionView5 = [(_SFAutoFillInternalFeedbackCollectionViewController *)self collectionView];
   v18 = objc_opt_class();
   v19 = +[_SFCheckableItemCollectionViewListCell reuseIdentifier];
-  [v17 registerClass:v18 forCellWithReuseIdentifier:v19];
+  [collectionView5 registerClass:v18 forCellWithReuseIdentifier:v19];
 }
 
 - (void)_updateContinueInTapToRadarButton
 {
-  v3 = [(_SFAutoFillInternalFeedbackCollectionViewController *)self collectionView];
+  collectionView = [(_SFAutoFillInternalFeedbackCollectionViewController *)self collectionView];
   v4 = [MEMORY[0x1E696AC88] indexPathForRow:0 inSection:4];
-  v5 = [v3 cellForItemAtIndexPath:v4];
+  v5 = [collectionView cellForItemAtIndexPath:v4];
 
   [v5 setEnabled:{-[WBSAutoFillInternalFeedbackController canContinueInTapToRadar](self->_feedbackController, "canContinueInTapToRadar")}];
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
-  v6 = a3;
-  if (a4 <= 1)
+  viewCopy = view;
+  if (section <= 1)
   {
-    if (!a4)
+    if (!section)
     {
       v7 = 7;
       goto LABEL_15;
     }
 
-    if (a4 == 1)
+    if (section == 1)
     {
-      v8 = [(WBSAutoFillInternalFeedbackController *)self->_feedbackController detailTypesForSelectedFeedbackCategory];
-      v7 = 2 * [v8 count];
+      detailTypesForSelectedFeedbackCategory = [(WBSAutoFillInternalFeedbackController *)self->_feedbackController detailTypesForSelectedFeedbackCategory];
+      v7 = 2 * [detailTypesForSelectedFeedbackCategory count];
 
       goto LABEL_15;
     }
@@ -132,15 +132,15 @@
     goto LABEL_14;
   }
 
-  if (a4 != 2)
+  if (section != 2)
   {
-    if (a4 == 3)
+    if (section == 3)
     {
       v7 = 2;
       goto LABEL_15;
     }
 
-    if (a4 == 4)
+    if (section == 4)
     {
       v7 = 1;
       goto LABEL_15;
@@ -166,28 +166,28 @@ LABEL_15:
   return v7;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 section];
+  viewCopy = view;
+  pathCopy = path;
+  section = [pathCopy section];
   v9 = 0;
-  if (v8 > 1)
+  if (section > 1)
   {
-    if (v8 == 2)
+    if (section == 2)
     {
-      v16 = [v7 row];
+      v16 = [pathCopy row];
       if (v16 == 1)
       {
         v29 = +[_SFAutoFillInternalFeedbackDetailQuestionTextFieldCell reuseIdentifier];
-        v9 = [v6 dequeueReusableCellWithReuseIdentifier:v29 forIndexPath:v7];
+        v9 = [viewCopy dequeueReusableCellWithReuseIdentifier:v29 forIndexPath:pathCopy];
 
         [v9 setDelegate:self];
-        v30 = [(WBSAutoFillInternalFeedbackController *)self->_feedbackController knownWorkingBuild];
-        [v9 setText:v30];
+        knownWorkingBuild = [(WBSAutoFillInternalFeedbackController *)self->_feedbackController knownWorkingBuild];
+        [v9 setText:knownWorkingBuild];
 
-        v31 = [MEMORY[0x1E69C8E90] knownWorkingBuildPlaceholderText];
-        [v9 setPlaceholder:v31];
+        knownWorkingBuildPlaceholderText = [MEMORY[0x1E69C8E90] knownWorkingBuildPlaceholderText];
+        [v9 setPlaceholder:knownWorkingBuildPlaceholderText];
 
         goto LABEL_20;
       }
@@ -195,24 +195,24 @@ LABEL_15:
       if (!v16)
       {
         v17 = +[_SFCheckableItemCollectionViewListCell reuseIdentifier];
-        v9 = [v6 dequeueReusableCellWithReuseIdentifier:v17 forIndexPath:v7];
+        v9 = [viewCopy dequeueReusableCellWithReuseIdentifier:v17 forIndexPath:pathCopy];
 
-        v18 = [MEMORY[0x1E69C8E90] isRegressionOptionText];
-        [v9 setText:v18];
+        isRegressionOptionText = [MEMORY[0x1E69C8E90] isRegressionOptionText];
+        [v9 setText:isRegressionOptionText];
 
-        v19 = [(WBSAutoFillInternalFeedbackController *)self->_feedbackController isRegression];
+        isRegression = [(WBSAutoFillInternalFeedbackController *)self->_feedbackController isRegression];
 LABEL_16:
-        [v9 setChecked:v19];
+        [v9 setChecked:isRegression];
         goto LABEL_20;
       }
     }
 
-    else if (v8 != 3)
+    else if (section != 3)
     {
-      if (v8 == 4)
+      if (section == 4)
       {
         v10 = +[_SFButtonCollectionViewListCell reuseIdentifier];
-        v9 = [v6 dequeueReusableCellWithReuseIdentifier:v10 forIndexPath:v7];
+        v9 = [viewCopy dequeueReusableCellWithReuseIdentifier:v10 forIndexPath:pathCopy];
 
         [v9 setDelegate:self];
         v11 = _WBSLocalizedString();
@@ -225,40 +225,40 @@ LABEL_16:
     }
 
     v20 = +[_SFCheckableItemCollectionViewListCell reuseIdentifier];
-    v9 = [v6 dequeueReusableCellWithReuseIdentifier:v20 forIndexPath:v7];
+    v9 = [viewCopy dequeueReusableCellWithReuseIdentifier:v20 forIndexPath:pathCopy];
 
-    v21 = [v7 row];
+    v21 = [pathCopy row];
     v22 = [MEMORY[0x1E69C8E90] titleForAttachmentsType:v21];
     [v9 setText:v22];
 
-    v23 = [(WBSAutoFillInternalFeedbackController *)self->_feedbackController selectedAttachmentsType];
+    selectedAttachmentsType = [(WBSAutoFillInternalFeedbackController *)self->_feedbackController selectedAttachmentsType];
 LABEL_15:
-    v19 = v23 == v21;
+    isRegression = selectedAttachmentsType == v21;
     goto LABEL_16;
   }
 
-  if (!v8)
+  if (!section)
   {
     v24 = +[_SFCheckableItemCollectionViewListCell reuseIdentifier];
-    v9 = [v6 dequeueReusableCellWithReuseIdentifier:v24 forIndexPath:v7];
+    v9 = [viewCopy dequeueReusableCellWithReuseIdentifier:v24 forIndexPath:pathCopy];
 
-    v21 = [v7 row] + 1;
+    v21 = [pathCopy row] + 1;
     v25 = [MEMORY[0x1E69C8E90] titleForFeedbackCategory:v21];
     [v9 setText:v25];
 
-    v23 = [(WBSAutoFillInternalFeedbackController *)self->_feedbackController selectedFeedbackCategory];
+    selectedAttachmentsType = [(WBSAutoFillInternalFeedbackController *)self->_feedbackController selectedFeedbackCategory];
     goto LABEL_15;
   }
 
-  if (v8 == 1)
+  if (section == 1)
   {
-    v12 = [(WBSAutoFillInternalFeedbackController *)self->_feedbackController detailTypesForSelectedFeedbackCategory];
-    v13 = [v12 objectAtIndex:{objc_msgSend(v7, "row") / 2}];
+    detailTypesForSelectedFeedbackCategory = [(WBSAutoFillInternalFeedbackController *)self->_feedbackController detailTypesForSelectedFeedbackCategory];
+    v13 = [detailTypesForSelectedFeedbackCategory objectAtIndex:{objc_msgSend(pathCopy, "row") / 2}];
 
-    if ([v7 row])
+    if ([pathCopy row])
     {
       v26 = +[_SFAutoFillInternalFeedbackDetailQuestionTextFieldCell reuseIdentifier];
-      v9 = [v6 dequeueReusableCellWithReuseIdentifier:v26 forIndexPath:v7];
+      v9 = [viewCopy dequeueReusableCellWithReuseIdentifier:v26 forIndexPath:pathCopy];
 
       [v9 setDelegate:self];
       v27 = [(WBSAutoFillInternalFeedbackController *)self->_feedbackController responseForDetailType:v13];
@@ -271,7 +271,7 @@ LABEL_15:
     else
     {
       v14 = +[_SFCheckableItemCollectionViewListCell reuseIdentifier];
-      v9 = [v6 dequeueReusableCellWithReuseIdentifier:v14 forIndexPath:v7];
+      v9 = [viewCopy dequeueReusableCellWithReuseIdentifier:v14 forIndexPath:pathCopy];
 
       v15 = [MEMORY[0x1E69C8E90] titleForFeedbackDetailType:v13];
       [v9 setText:v15];
@@ -285,21 +285,21 @@ LABEL_20:
   return v9;
 }
 
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 isEqualToString:*MEMORY[0x1E69DDC08]];
-  v12 = [v10 section];
+  viewCopy = view;
+  kindCopy = kind;
+  pathCopy = path;
+  v11 = [kindCopy isEqualToString:*MEMORY[0x1E69DDC08]];
+  section = [pathCopy section];
   if (!v11)
   {
-    if (v12 == 3)
+    if (section == 3)
     {
       v16 = +[_SFCollectionViewListTextSupplementaryView reuseIdentifier];
-      v14 = [v8 dequeueReusableSupplementaryViewOfKind:v9 withReuseIdentifier:v16 forIndexPath:v10];
+      v14 = [viewCopy dequeueReusableSupplementaryViewOfKind:kindCopy withReuseIdentifier:v16 forIndexPath:pathCopy];
 
-      v15 = [(WBSAutoFillInternalFeedbackController *)self->_feedbackController attachmentDetailsText];
+      attachmentDetailsText = [(WBSAutoFillInternalFeedbackController *)self->_feedbackController attachmentDetailsText];
       goto LABEL_7;
     }
 
@@ -308,30 +308,30 @@ LABEL_8:
     goto LABEL_11;
   }
 
-  if (v12 == 3)
+  if (section == 3)
   {
     v18 = +[_SFCollectionViewListTextSupplementaryView reuseIdentifier];
-    v14 = [v8 dequeueReusableSupplementaryViewOfKind:v9 withReuseIdentifier:v18 forIndexPath:v10];
+    v14 = [viewCopy dequeueReusableSupplementaryViewOfKind:kindCopy withReuseIdentifier:v18 forIndexPath:pathCopy];
 
     v17 = _WBSLocalizedString();
-    v19 = [v17 localizedUppercaseString];
-    [v14 setText:v19];
+    localizedUppercaseString = [v17 localizedUppercaseString];
+    [v14 setText:localizedUppercaseString];
 
     goto LABEL_10;
   }
 
-  if (v12)
+  if (section)
   {
     goto LABEL_8;
   }
 
   v13 = +[_SFCollectionViewListTextSupplementaryView reuseIdentifier];
-  v14 = [v8 dequeueReusableSupplementaryViewOfKind:v9 withReuseIdentifier:v13 forIndexPath:v10];
+  v14 = [viewCopy dequeueReusableSupplementaryViewOfKind:kindCopy withReuseIdentifier:v13 forIndexPath:pathCopy];
 
-  v15 = [MEMORY[0x1E69C8E90] informativeText];
+  attachmentDetailsText = [MEMORY[0x1E69C8E90] informativeText];
 LABEL_7:
-  v17 = v15;
-  [v14 setText:v15];
+  v17 = attachmentDetailsText;
+  [v14 setText:attachmentDetailsText];
 LABEL_10:
 
 LABEL_11:
@@ -339,17 +339,17 @@ LABEL_11:
   return v14;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v18 = a3;
-  v6 = a4;
-  v7 = [v6 section];
-  switch(v7)
+  viewCopy = view;
+  pathCopy = path;
+  section = [pathCopy section];
+  switch(section)
   {
     case 3:
       goto LABEL_10;
     case 2:
-      v11 = [v6 row];
+      v11 = [pathCopy row];
       if (v11 == 1)
       {
         break;
@@ -357,40 +357,40 @@ LABEL_11:
 
       if (!v11)
       {
-        v12 = [v18 cellForItemAtIndexPath:v6];
+        v12 = [viewCopy cellForItemAtIndexPath:pathCopy];
         -[WBSAutoFillInternalFeedbackController setRegression:](self->_feedbackController, "setRegression:", [v12 isChecked] ^ 1);
         [v12 setChecked:{-[WBSAutoFillInternalFeedbackController isRegression](self->_feedbackController, "isRegression")}];
-        v13 = [(_SFAutoFillInternalFeedbackCollectionViewController *)self collectionView];
-        [v13 reloadData];
+        collectionView = [(_SFAutoFillInternalFeedbackCollectionViewController *)self collectionView];
+        [collectionView reloadData];
 LABEL_14:
 
         break;
       }
 
 LABEL_10:
-      v14 = [v6 row];
+      v14 = [pathCopy row];
       if (v14 == [(WBSAutoFillInternalFeedbackController *)self->_feedbackController selectedAttachmentsType])
       {
         break;
       }
 
-      v15 = [(WBSAutoFillInternalFeedbackController *)self->_feedbackController selectedAttachmentsType];
-      v16 = [MEMORY[0x1E696AC88] indexPathForRow:v15 inSection:3];
-      v12 = [v18 cellForItemAtIndexPath:v16];
+      selectedAttachmentsType = [(WBSAutoFillInternalFeedbackController *)self->_feedbackController selectedAttachmentsType];
+      v16 = [MEMORY[0x1E696AC88] indexPathForRow:selectedAttachmentsType inSection:3];
+      v12 = [viewCopy cellForItemAtIndexPath:v16];
 
       [v12 setChecked:0];
-      v13 = [v18 cellForItemAtIndexPath:v6];
-      [v13 setChecked:1];
+      collectionView = [viewCopy cellForItemAtIndexPath:pathCopy];
+      [collectionView setChecked:1];
       [(WBSAutoFillInternalFeedbackController *)self->_feedbackController setSelectedAttachmentsType:v14];
       goto LABEL_14;
     case 0:
-      v8 = [v6 row] + 1;
+      v8 = [pathCopy row] + 1;
       if (v8 != [(WBSAutoFillInternalFeedbackController *)self->_feedbackController selectedFeedbackCategory])
       {
-        v9 = [(WBSAutoFillInternalFeedbackController *)self->_feedbackController selectedFeedbackCategory];
-        if (v9)
+        selectedFeedbackCategory = [(WBSAutoFillInternalFeedbackController *)self->_feedbackController selectedFeedbackCategory];
+        if (selectedFeedbackCategory)
         {
-          v10 = [MEMORY[0x1E696AC88] indexPathForRow:v9 - 1 inSection:0];
+          v10 = [MEMORY[0x1E696AC88] indexPathForRow:selectedFeedbackCategory - 1 inSection:0];
         }
 
         else
@@ -398,14 +398,14 @@ LABEL_10:
           v10 = 0;
         }
 
-        v12 = [v18 cellForItemAtIndexPath:v10];
+        v12 = [viewCopy cellForItemAtIndexPath:v10];
 
         [v12 setChecked:0];
-        v13 = [v18 cellForItemAtIndexPath:v6];
-        [v13 setChecked:1];
+        collectionView = [viewCopy cellForItemAtIndexPath:pathCopy];
+        [collectionView setChecked:1];
         [(WBSAutoFillInternalFeedbackController *)self->_feedbackController setSelectedFeedbackCategory:v8];
-        v17 = [(_SFAutoFillInternalFeedbackCollectionViewController *)self collectionView];
-        [v17 reloadData];
+        collectionView2 = [(_SFAutoFillInternalFeedbackCollectionViewController *)self collectionView];
+        [collectionView2 reloadData];
 
         [(_SFAutoFillInternalFeedbackCollectionViewController *)self _updateContinueInTapToRadarButton];
         goto LABEL_14;
@@ -415,34 +415,34 @@ LABEL_10:
   }
 }
 
-- (void)collectionViewListCellButtonPressed:(id)a3
+- (void)collectionViewListCellButtonPressed:(id)pressed
 {
   [(_SFAutoFillInternalFeedbackCollectionViewController *)self dismissViewControllerAnimated:1 completion:0];
   reportHandler = self->_reportHandler;
-  v5 = [(WBSAutoFillInternalFeedbackController *)self->_feedbackController continueInTapToRadarURL];
-  reportHandler[2](reportHandler, v5);
+  continueInTapToRadarURL = [(WBSAutoFillInternalFeedbackController *)self->_feedbackController continueInTapToRadarURL];
+  reportHandler[2](reportHandler, continueInTapToRadarURL);
 }
 
-- (void)textFieldCellTextDidChange:(id)a3
+- (void)textFieldCellTextDidChange:(id)change
 {
-  v10 = a3;
-  v4 = [(_SFAutoFillInternalFeedbackCollectionViewController *)self collectionView];
-  v5 = [v4 indexPathForCell:v10];
+  changeCopy = change;
+  collectionView = [(_SFAutoFillInternalFeedbackCollectionViewController *)self collectionView];
+  v5 = [collectionView indexPathForCell:changeCopy];
 
   if ([v5 section] == 2)
   {
-    v6 = [v10 text];
-    [(WBSAutoFillInternalFeedbackController *)self->_feedbackController setKnownWorkingBuild:v6];
+    text = [changeCopy text];
+    [(WBSAutoFillInternalFeedbackController *)self->_feedbackController setKnownWorkingBuild:text];
   }
 
   else
   {
-    v7 = [(WBSAutoFillInternalFeedbackController *)self->_feedbackController detailTypesForSelectedFeedbackCategory];
-    v6 = [v7 objectAtIndex:{objc_msgSend(v5, "row") / 2}];
+    detailTypesForSelectedFeedbackCategory = [(WBSAutoFillInternalFeedbackController *)self->_feedbackController detailTypesForSelectedFeedbackCategory];
+    text = [detailTypesForSelectedFeedbackCategory objectAtIndex:{objc_msgSend(v5, "row") / 2}];
 
     feedbackController = self->_feedbackController;
-    v9 = [v10 text];
-    [(WBSAutoFillInternalFeedbackController *)feedbackController setResponse:v9 forDetailType:v6];
+    text2 = [changeCopy text];
+    [(WBSAutoFillInternalFeedbackController *)feedbackController setResponse:text2 forDetailType:text];
 
     [(_SFAutoFillInternalFeedbackCollectionViewController *)self _updateContinueInTapToRadarButton];
   }

@@ -1,13 +1,13 @@
 @interface CKActionMenuController
 - (BOOL)isActionMenuVisible;
-- (CGRect)convertActionMenuFrameToView:(id)a3;
-- (CKActionMenuController)initWithActionMenuItems:(id)a3 defaultActionIndex:(unint64_t)a4 blurEffectStyle:(int64_t)a5;
+- (CGRect)convertActionMenuFrameToView:(id)view;
+- (CKActionMenuController)initWithActionMenuItems:(id)items defaultActionIndex:(unint64_t)index blurEffectStyle:(int64_t)style;
 - (CKActionMenuControllerDelegate)delegate;
 - (NSArray)actionMenuItems;
 - (void)dealloc;
-- (void)dismissActionMenuAnimated:(BOOL)a3;
-- (void)presentActionMenuFromPoint:(CGPoint)a3 inView:(id)a4 animated:(BOOL)a5;
-- (void)setActionMenuItems:(id)a3 defaultActionIndex:(unint64_t)a4 animated:(BOOL)a5;
+- (void)dismissActionMenuAnimated:(BOOL)animated;
+- (void)presentActionMenuFromPoint:(CGPoint)point inView:(id)view animated:(BOOL)animated;
+- (void)setActionMenuItems:(id)items defaultActionIndex:(unint64_t)index animated:(BOOL)animated;
 @end
 
 @implementation CKActionMenuController
@@ -20,9 +20,9 @@
   [(CKActionMenuController *)&v3 dealloc];
 }
 
-- (CKActionMenuController)initWithActionMenuItems:(id)a3 defaultActionIndex:(unint64_t)a4 blurEffectStyle:(int64_t)a5
+- (CKActionMenuController)initWithActionMenuItems:(id)items defaultActionIndex:(unint64_t)index blurEffectStyle:(int64_t)style
 {
-  v8 = a3;
+  itemsCopy = items;
   v13.receiver = self;
   v13.super_class = CKActionMenuController;
   v9 = [(CKActionMenuController *)&v13 init];
@@ -30,7 +30,7 @@
   if (v9)
   {
     v9->_shouldDismissOnTap = 1;
-    v11 = [[CKActionMenuView alloc] initWithActionMenuItems:v8 defaultActionIndex:a4 blurEffectStyle:a5];
+    v11 = [[CKActionMenuView alloc] initWithActionMenuItems:itemsCopy defaultActionIndex:index blurEffectStyle:style];
     [(CKActionMenuController *)v10 setActionMenuView:v11];
     [(CKActionMenuView *)v11 setActionMenuController:v10];
   }
@@ -38,67 +38,67 @@
   return v10;
 }
 
-- (void)setActionMenuItems:(id)a3 defaultActionIndex:(unint64_t)a4 animated:(BOOL)a5
+- (void)setActionMenuItems:(id)items defaultActionIndex:(unint64_t)index animated:(BOOL)animated
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = [(CKActionMenuController *)self actionMenuView];
-  [v9 setActionMenuItems:v8 defaultActionIndex:a4 animated:v5];
+  animatedCopy = animated;
+  itemsCopy = items;
+  actionMenuView = [(CKActionMenuController *)self actionMenuView];
+  [actionMenuView setActionMenuItems:itemsCopy defaultActionIndex:index animated:animatedCopy];
 }
 
 - (NSArray)actionMenuItems
 {
-  v2 = [(CKActionMenuController *)self actionMenuView];
-  v3 = [v2 actionMenuItems];
+  actionMenuView = [(CKActionMenuController *)self actionMenuView];
+  actionMenuItems = [actionMenuView actionMenuItems];
 
-  return v3;
+  return actionMenuItems;
 }
 
 - (BOOL)isActionMenuVisible
 {
   v3 = +[CKActionMenuWindow sharedInstance];
-  v4 = [v3 actionMenuView];
-  v5 = [(CKActionMenuController *)self actionMenuView];
-  LOBYTE(self) = v4 == v5;
+  actionMenuView = [v3 actionMenuView];
+  actionMenuView2 = [(CKActionMenuController *)self actionMenuView];
+  LOBYTE(self) = actionMenuView == actionMenuView2;
 
   return self;
 }
 
-- (void)presentActionMenuFromPoint:(CGPoint)a3 inView:(id)a4 animated:(BOOL)a5
+- (void)presentActionMenuFromPoint:(CGPoint)point inView:(id)view animated:(BOOL)animated
 {
-  v5 = a5;
-  y = a3.y;
-  x = a3.x;
-  v13 = a4;
+  animatedCopy = animated;
+  y = point.y;
+  x = point.x;
+  viewCopy = view;
   v9 = +[CKActionMenuWindow sharedInstance];
-  if (v13)
+  if (viewCopy)
   {
-    v10 = [(CKActionMenuController *)self actionMenuView];
+    actionMenuView = [(CKActionMenuController *)self actionMenuView];
     [v9 setShouldDismissOnTap:{-[CKActionMenuController shouldDismissOnTap](self, "shouldDismissOnTap")}];
-    v11 = [v13 window];
-    v12 = [v11 windowScene];
-    [v9 setWindowScene:v12];
+    window = [viewCopy window];
+    windowScene = [window windowScene];
+    [v9 setWindowScene:windowScene];
 
-    [v9 presentActionMenuView:v10 fromPoint:v13 inView:v5 animated:{x, y}];
+    [v9 presentActionMenuView:actionMenuView fromPoint:viewCopy inView:animatedCopy animated:{x, y}];
   }
 }
 
-- (void)dismissActionMenuAnimated:(BOOL)a3
+- (void)dismissActionMenuAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   if ([(CKActionMenuController *)self isActionMenuVisible])
   {
     v4 = +[CKActionMenuWindow sharedInstance];
-    [v4 dismissActionMenuViewAnimated:v3];
+    [v4 dismissActionMenuViewAnimated:animatedCopy];
   }
 }
 
-- (CGRect)convertActionMenuFrameToView:(id)a3
+- (CGRect)convertActionMenuFrameToView:(id)view
 {
-  v4 = a3;
-  v5 = [(CKActionMenuController *)self actionMenuView];
-  [v5 sizeThatFits:{*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)}];
-  [v5 convertRect:v4 toView:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), v6, v7}];
+  viewCopy = view;
+  actionMenuView = [(CKActionMenuController *)self actionMenuView];
+  [actionMenuView sizeThatFits:{*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)}];
+  [actionMenuView convertRect:viewCopy toView:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), v6, v7}];
   v9 = v8;
   v11 = v10;
   v13 = v12;

@@ -1,18 +1,18 @@
 @interface CAMTimelapseJPEGReader
-+ (BOOL)_hasExifRotation:(id)a3;
-+ (CGImage)createCGImageFromData:(id)a3 applyTransform:(BOOL)a4 maxPixelSize:(int64_t)a5 useBGRA:(BOOL)a6;
-+ (__CVBuffer)createPixelBufferFromData:(id)a3 applyTransform:(BOOL)a4 maxPixelSize:(int64_t)a5 useBGRA:(BOOL)a6 cleanApertureSize:(CGSize)a7;
-+ (id)_decodeOptionsWithMaxPixelSize:(int64_t)a3 applyTransform:(BOOL)a4 useBGRA:(BOOL)a5;
-+ (id)newDataFromFilePath:(id)a3;
++ (BOOL)_hasExifRotation:(id)rotation;
++ (CGImage)createCGImageFromData:(id)data applyTransform:(BOOL)transform maxPixelSize:(int64_t)size useBGRA:(BOOL)a;
++ (__CVBuffer)createPixelBufferFromData:(id)data applyTransform:(BOOL)transform maxPixelSize:(int64_t)size useBGRA:(BOOL)a cleanApertureSize:(CGSize)apertureSize;
++ (id)_decodeOptionsWithMaxPixelSize:(int64_t)size applyTransform:(BOOL)transform useBGRA:(BOOL)a;
++ (id)newDataFromFilePath:(id)path;
 @end
 
 @implementation CAMTimelapseJPEGReader
 
-+ (id)newDataFromFilePath:(id)a3
++ (id)newDataFromFilePath:(id)path
 {
-  v3 = a3;
+  pathCopy = path;
   v10 = 0;
-  v4 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithContentsOfFile:v3 options:0 error:&v10];
+  v4 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithContentsOfFile:pathCopy options:0 error:&v10];
   v5 = v10;
   v6 = v5;
   if (v4)
@@ -30,47 +30,47 @@
     v8 = os_log_create("com.apple.camera", "Nebula");
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      [(CAMTimelapseJPEGReader *)v3 newDataFromFilePath:v6, v8];
+      [(CAMTimelapseJPEGReader *)pathCopy newDataFromFilePath:v6, v8];
     }
   }
 
   return v4;
 }
 
-+ (id)_decodeOptionsWithMaxPixelSize:(int64_t)a3 applyTransform:(BOOL)a4 useBGRA:(BOOL)a5
++ (id)_decodeOptionsWithMaxPixelSize:(int64_t)size applyTransform:(BOOL)transform useBGRA:(BOOL)a
 {
-  v5 = a5;
-  v6 = a4;
-  v8 = [MEMORY[0x1E695DF90] dictionary];
-  v9 = v8;
-  if (v5)
+  aCopy = a;
+  transformCopy = transform;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v9 = dictionary;
+  if (aCopy)
   {
-    [v8 setObject:&unk_1F16C7988 forKey:*MEMORY[0x1E6991AE8]];
+    [dictionary setObject:&unk_1F16C7988 forKey:*MEMORY[0x1E6991AE8]];
   }
 
-  if (v6)
+  if (transformCopy)
   {
     [v9 setObject:MEMORY[0x1E695E118] forKey:*MEMORY[0x1E6991AC0]];
   }
 
-  if (a3 >= 1)
+  if (size >= 1)
   {
-    v10 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+    v10 = [MEMORY[0x1E696AD98] numberWithInteger:size];
     [v9 setObject:v10 forKey:*MEMORY[0x1E6991AE0]];
   }
 
   return v9;
 }
 
-+ (CGImage)createCGImageFromData:(id)a3 applyTransform:(BOOL)a4 maxPixelSize:(int64_t)a5 useBGRA:(BOOL)a6
++ (CGImage)createCGImageFromData:(id)data applyTransform:(BOOL)transform maxPixelSize:(int64_t)size useBGRA:(BOOL)a
 {
-  v6 = a6;
-  v8 = a4;
+  aCopy = a;
+  transformCopy = transform;
   v24 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  if (v11)
+  dataCopy = data;
+  if (dataCopy)
   {
-    v12 = [a1 _decodeOptionsWithMaxPixelSize:a5 applyTransform:v8 useBGRA:v6];
+    v12 = [self _decodeOptionsWithMaxPixelSize:size applyTransform:transformCopy useBGRA:aCopy];
     CGImageFromImageData = PFFigCreateCGImageFromImageData();
     if (CGImageFromImageData)
     {
@@ -84,7 +84,7 @@
         v20 = 2048;
         v21 = v14;
         v22 = 2048;
-        v23 = [v11 length];
+        v23 = [dataCopy length];
         _os_log_error_impl(&dword_1A3640000, v15, OS_LOG_TYPE_ERROR, "PFFigCreateCGImageFromImageData %{public}@ returned %ld from %lu", buf, 0x20u);
       }
     }
@@ -93,9 +93,9 @@
   return 0;
 }
 
-+ (BOOL)_hasExifRotation:(id)a3
++ (BOOL)_hasExifRotation:(id)rotation
 {
-  v3 = CGImageSourceCreateWithData(a3, 0);
+  v3 = CGImageSourceCreateWithData(rotation, 0);
   if (!v3)
   {
     return 0;
@@ -121,31 +121,31 @@
   return v8;
 }
 
-+ (__CVBuffer)createPixelBufferFromData:(id)a3 applyTransform:(BOOL)a4 maxPixelSize:(int64_t)a5 useBGRA:(BOOL)a6 cleanApertureSize:(CGSize)a7
++ (__CVBuffer)createPixelBufferFromData:(id)data applyTransform:(BOOL)transform maxPixelSize:(int64_t)size useBGRA:(BOOL)a cleanApertureSize:(CGSize)apertureSize
 {
-  height = a7.height;
-  width = a7.width;
-  v9 = a6;
-  v11 = a4;
+  height = apertureSize.height;
+  width = apertureSize.width;
+  aCopy = a;
+  transformCopy = transform;
   v67[4] = *MEMORY[0x1E69E9840];
-  v14 = a3;
+  dataCopy = data;
   pixelTransferSessionOut = 0;
   pixelBuffer = 0;
   pixelBufferOut = 0;
-  if (!v14)
+  if (!dataCopy)
   {
     goto LABEL_37;
   }
 
   if (width == *MEMORY[0x1E695F060] && height == *(MEMORY[0x1E695F060] + 8))
   {
-    v24 = [a1 _decodeOptionsWithMaxPixelSize:a5 applyTransform:v11 useBGRA:v9];
+    v24 = [self _decodeOptionsWithMaxPixelSize:size applyTransform:transformCopy useBGRA:aCopy];
     v21 = OUTLINED_FUNCTION_0_2(v24, v25, v26, v27);
   }
 
   else
   {
-    if (v9)
+    if (aCopy)
     {
       v16 = 1111970369;
     }
@@ -155,11 +155,11 @@
       v16 = 875704422;
     }
 
-    v17 = [a1 _decodeOptionsWithMaxPixelSize:0 applyTransform:v11 useBGRA:0];
+    v17 = [self _decodeOptionsWithMaxPixelSize:0 applyTransform:transformCopy useBGRA:0];
     v21 = OUTLINED_FUNCTION_0_2(v17, v18, v19, v20);
     if (!v21)
     {
-      if (a5 < 1)
+      if (size < 1)
       {
         v23 = 1.0;
       }
@@ -176,7 +176,7 @@
           v22 = width;
         }
 
-        v23 = fmin(a5 / v22, 1.0);
+        v23 = fmin(size / v22, 1.0);
       }
 
       v29 = width * v23;
@@ -185,7 +185,7 @@
       v32 = vcvtas_u32_f32(v31);
       v33 = CVPixelBufferGetWidth(pixelBuffer);
       v34 = CVPixelBufferGetHeight(pixelBuffer);
-      if (v11 && vabdd_f64(width / height, v34 / v33) < 0.01)
+      if (transformCopy && vabdd_f64(width / height, v34 / v33) < 0.01)
       {
         v35 = v30;
         v36 = height;
@@ -264,7 +264,7 @@ LABEL_30:
   if (os_log_type_enabled(v45, OS_LOG_TYPE_ERROR))
   {
     v48 = NSStringFromSelector(a2);
-    v49 = [v14 length];
+    v49 = [dataCopy length];
     v68.width = width;
     v68.height = height;
     v50 = NSStringFromCGSize(v68);

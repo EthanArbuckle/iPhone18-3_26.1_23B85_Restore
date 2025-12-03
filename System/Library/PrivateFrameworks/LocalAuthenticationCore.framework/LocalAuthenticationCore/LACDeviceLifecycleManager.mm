@@ -1,6 +1,6 @@
 @interface LACDeviceLifecycleManager
 + (LACDeviceLifecycleManager)sharedInstance;
-- (void)rebootDeviceWithReason:(id)a3 forced:(BOOL)a4 completion:(id)a5;
+- (void)rebootDeviceWithReason:(id)reason forced:(BOOL)forced completion:(id)completion;
 @end
 
 @implementation LACDeviceLifecycleManager
@@ -24,20 +24,20 @@ uint64_t __43__LACDeviceLifecycleManager_sharedInstance__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)rebootDeviceWithReason:(id)a3 forced:(BOOL)a4 completion:(id)a5
+- (void)rebootDeviceWithReason:(id)reason forced:(BOOL)forced completion:(id)completion
 {
   v19 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a5;
+  reasonCopy = reason;
+  completionCopy = completion;
   v9 = LACLogDefault();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v17 = 138412290;
-    v18 = v7;
+    v18 = reasonCopy;
     _os_log_impl(&dword_1B0233000, v9, OS_LOG_TYPE_DEFAULT, "Rebooting device with reason: %@", &v17, 0xCu);
   }
 
-  if (a4 || !objc_opt_class())
+  if (forced || !objc_opt_class())
   {
     v14 = reboot3();
     v15 = LACLogDefault();
@@ -63,11 +63,11 @@ uint64_t __43__LACDeviceLifecycleManager_sharedInstance__block_invoke()
 
   else
   {
-    v10 = [objc_alloc(MEMORY[0x1E699FC98]) initWithReason:v7];
+    v10 = [objc_alloc(MEMORY[0x1E699FC98]) initWithReason:reasonCopy];
     [v10 setSource:1];
     [v10 setRebootType:1];
-    v11 = [MEMORY[0x1E699FCA8] sharedService];
-    [v11 shutdownWithOptions:v10];
+    mEMORY[0x1E699FCA8] = [MEMORY[0x1E699FCA8] sharedService];
+    [mEMORY[0x1E699FCA8] shutdownWithOptions:v10];
 
     v12 = LACLogDefault();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -79,7 +79,7 @@ uint64_t __43__LACDeviceLifecycleManager_sharedInstance__block_invoke()
     v13 = 0;
   }
 
-  v8[2](v8, v13);
+  completionCopy[2](completionCopy, v13);
 
   v16 = *MEMORY[0x1E69E9840];
 }

@@ -1,25 +1,25 @@
 @interface MRDMRRelayTransport
-- (MRDMRRelayTransport)initWithOutputDevice:(id)a3;
-- (id)createConnectionWithUserInfo:(id)a3;
+- (MRDMRRelayTransport)initWithOutputDevice:(id)device;
+- (id)createConnectionWithUserInfo:(id)info;
 - (id)debugDescription;
 - (id)error;
 - (id)name;
 - (id)uid;
-- (void)setError:(id)a3;
+- (void)setError:(id)error;
 @end
 
 @implementation MRDMRRelayTransport
 
-- (MRDMRRelayTransport)initWithOutputDevice:(id)a3
+- (MRDMRRelayTransport)initWithOutputDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v8.receiver = self;
   v8.super_class = MRDMRRelayTransport;
   v5 = [(MRDMRRelayTransport *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(MRDMRRelayTransport *)v5 setOutputDevice:v4];
+    [(MRDMRRelayTransport *)v5 setOutputDevice:deviceCopy];
   }
 
   return v6;
@@ -27,22 +27,22 @@
 
 - (id)debugDescription
 {
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v3 = objc_opt_class();
-  v4 = [(MRDMRRelayTransport *)v2 outputDevice];
-  v5 = [v4 debugName];
-  v6 = [(MRDMRRelayTransport *)v2 error];
-  v7 = [NSString stringWithFormat:@"<%@: %p {\n   outputDevice = %@\n   error = %@\n}>", v3, v2, v5, v6];
+  outputDevice = [(MRDMRRelayTransport *)selfCopy outputDevice];
+  debugName = [outputDevice debugName];
+  error = [(MRDMRRelayTransport *)selfCopy error];
+  v7 = [NSString stringWithFormat:@"<%@: %p {\n   outputDevice = %@\n   error = %@\n}>", v3, selfCopy, debugName, error];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v7;
 }
 
-- (id)createConnectionWithUserInfo:(id)a3
+- (id)createConnectionWithUserInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v5 = dispatch_semaphore_create(0);
   v15 = 0;
   v16 = &v15;
@@ -51,8 +51,8 @@
   v19 = sub_100035A9C;
   v20 = 0;
   v6 = +[MRDMRRelayConnectionManager sharedManager];
-  v7 = [(MRDMRRelayTransport *)self outputDevice];
-  v8 = [v7 uid];
+  outputDevice = [(MRDMRRelayTransport *)self outputDevice];
+  v8 = [outputDevice uid];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_10015B3B4;
@@ -73,37 +73,37 @@
 
 - (id)uid
 {
-  v2 = [(MRDMRRelayTransport *)self outputDevice];
-  v3 = [v2 uid];
+  outputDevice = [(MRDMRRelayTransport *)self outputDevice];
+  v3 = [outputDevice uid];
 
   return v3;
 }
 
 - (id)name
 {
-  v2 = [(MRDMRRelayTransport *)self outputDevice];
-  v3 = [v2 name];
+  outputDevice = [(MRDMRRelayTransport *)self outputDevice];
+  name = [outputDevice name];
 
-  return v3;
+  return name;
 }
 
 - (id)error
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSError *)v2->_error copy];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [(NSError *)selfCopy->_error copy];
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)setError:(id)a3
+- (void)setError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   obj = self;
   objc_sync_enter(obj);
   error = obj->_error;
-  obj->_error = v4;
+  obj->_error = errorCopy;
 
   objc_sync_exit(obj);
 }

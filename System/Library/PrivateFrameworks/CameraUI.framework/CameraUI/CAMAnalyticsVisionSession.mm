@@ -1,24 +1,24 @@
 @interface CAMAnalyticsVisionSession
-- (CAMAnalyticsVisionSession)initWithTextDetectionEnabled:(BOOL)a3 MRCDetectionEnabled:(BOOL)a4 documentScanningEnabled:(BOOL)a5;
-- (id)_analyticsValueForQRType:(int64_t)a3;
-- (id)_analyticsValueForQRTypes:(id)a3;
+- (CAMAnalyticsVisionSession)initWithTextDetectionEnabled:(BOOL)enabled MRCDetectionEnabled:(BOOL)detectionEnabled documentScanningEnabled:(BOOL)scanningEnabled;
+- (id)_analyticsValueForQRType:(int64_t)type;
+- (id)_analyticsValueForQRTypes:(id)types;
 - (unint64_t)totalMRCInteractions;
-- (void)_countMRCTypeForAction:(id)a3;
+- (void)_countMRCTypeForAction:(id)action;
 - (void)countButtonPressForDocumentScanning;
-- (void)countButtonPressForMRC:(id)a3 action:(id)a4;
+- (void)countButtonPressForMRC:(id)c action:(id)action;
 - (void)countDocumentScanningCanceledScans;
 - (void)countDocumentScanningCompletedScans;
 - (void)countObservedDocumentScanning;
-- (void)countObservedSignficantMRCs:(id)a3;
-- (void)countObservedSignficantTextRegionCount:(unint64_t)a3;
-- (void)countPillPressForMRC:(id)a3 action:(id)a4;
+- (void)countObservedSignficantMRCs:(id)cs;
+- (void)countObservedSignficantTextRegionCount:(unint64_t)count;
+- (void)countPillPressForMRC:(id)c action:(id)action;
 - (void)countTextButtonPress;
 - (void)publish;
 @end
 
 @implementation CAMAnalyticsVisionSession
 
-- (CAMAnalyticsVisionSession)initWithTextDetectionEnabled:(BOOL)a3 MRCDetectionEnabled:(BOOL)a4 documentScanningEnabled:(BOOL)a5
+- (CAMAnalyticsVisionSession)initWithTextDetectionEnabled:(BOOL)enabled MRCDetectionEnabled:(BOOL)detectionEnabled documentScanningEnabled:(BOOL)scanningEnabled
 {
   v11.receiver = self;
   v11.super_class = CAMAnalyticsVisionSession;
@@ -26,9 +26,9 @@
   v9 = v8;
   if (v8)
   {
-    v8->__textDetectionEnabled = a3;
-    v8->__MRCDetectionEnabled = a4;
-    v8->__documentScanningEnabled = a5;
+    v8->__textDetectionEnabled = enabled;
+    v8->__MRCDetectionEnabled = detectionEnabled;
+    v8->__documentScanningEnabled = scanningEnabled;
     v8->__startTime = CFAbsoluteTimeGetCurrent();
   }
 
@@ -37,27 +37,27 @@
 
 - (void)countTextButtonPress
 {
-  v1 = NSStringFromSelector(a1);
+  v1 = NSStringFromSelector(self);
   OUTLINED_FUNCTION_1();
   OUTLINED_FUNCTION_0(&dword_1A3640000, v2, v3, "%{public}@ called when text detection is disabled", v4, v5, v6, v7, v8);
 }
 
-- (void)countButtonPressForMRC:(id)a3 action:(id)a4
+- (void)countButtonPressForMRC:(id)c action:(id)action
 {
-  v7 = a3;
-  v8 = a4;
+  cCopy = c;
+  actionCopy = action;
   if ([(CAMAnalyticsVisionSession *)self _isMRCDetectionEnabled])
   {
-    v9 = [v7 mrcType];
-    if (v9 == 1)
+    mrcType = [cCopy mrcType];
+    if (mrcType == 1)
     {
       [(CAMAnalyticsVisionSession *)self _setAppClipButtonPressCount:[(CAMAnalyticsVisionSession *)self _appClipButtonPressCount]+ 1];
     }
 
-    else if (!v9)
+    else if (!mrcType)
     {
       [(CAMAnalyticsVisionSession *)self _setQRButtonPressCount:[(CAMAnalyticsVisionSession *)self _qrButtonPressCount]+ 1];
-      [(CAMAnalyticsVisionSession *)self _countMRCTypeForAction:v8];
+      [(CAMAnalyticsVisionSession *)self _countMRCTypeForAction:actionCopy];
     }
   }
 
@@ -71,22 +71,22 @@
   }
 }
 
-- (void)countPillPressForMRC:(id)a3 action:(id)a4
+- (void)countPillPressForMRC:(id)c action:(id)action
 {
-  v7 = a3;
-  v8 = a4;
+  cCopy = c;
+  actionCopy = action;
   if ([(CAMAnalyticsVisionSession *)self _isMRCDetectionEnabled])
   {
-    v9 = [v7 mrcType];
-    if (v9 == 1)
+    mrcType = [cCopy mrcType];
+    if (mrcType == 1)
     {
       [(CAMAnalyticsVisionSession *)self _setAppClipPillPressCount:[(CAMAnalyticsVisionSession *)self _appClipPillPressCount]+ 1];
     }
 
-    else if (!v9)
+    else if (!mrcType)
     {
       [(CAMAnalyticsVisionSession *)self _setQRPillPressCount:[(CAMAnalyticsVisionSession *)self _qrPillPressCount]+ 1];
-      [(CAMAnalyticsVisionSession *)self _countMRCTypeForAction:v8];
+      [(CAMAnalyticsVisionSession *)self _countMRCTypeForAction:actionCopy];
     }
   }
 
@@ -100,23 +100,23 @@
   }
 }
 
-- (void)countObservedSignficantTextRegionCount:(unint64_t)a3
+- (void)countObservedSignficantTextRegionCount:(unint64_t)count
 {
-  v6 = [(CAMAnalyticsVisionSession *)self _isTextDetectionEnabled];
-  if (!a3 || v6)
+  _isTextDetectionEnabled = [(CAMAnalyticsVisionSession *)self _isTextDetectionEnabled];
+  if (!count || _isTextDetectionEnabled)
   {
-    v8 = [(CAMAnalyticsVisionSession *)self _maxTextRegionCount];
-    if (v8 <= a3)
+    _maxTextRegionCount = [(CAMAnalyticsVisionSession *)self _maxTextRegionCount];
+    if (_maxTextRegionCount <= count)
     {
-      v9 = a3;
+      countCopy = count;
     }
 
     else
     {
-      v9 = v8;
+      countCopy = _maxTextRegionCount;
     }
 
-    [(CAMAnalyticsVisionSession *)self _setMaxTextRegionCount:v9];
+    [(CAMAnalyticsVisionSession *)self _setMaxTextRegionCount:countCopy];
   }
 
   else
@@ -129,17 +129,17 @@
   }
 }
 
-- (void)countObservedSignficantMRCs:(id)a3
+- (void)countObservedSignficantMRCs:(id)cs
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (-[CAMAnalyticsVisionSession _isMRCDetectionEnabled](self, "_isMRCDetectionEnabled") || ![v5 count])
+  csCopy = cs;
+  if (-[CAMAnalyticsVisionSession _isMRCDetectionEnabled](self, "_isMRCDetectionEnabled") || ![csCopy count])
   {
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v7 = v5;
+    v7 = csCopy;
     v8 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v8)
     {
@@ -156,13 +156,13 @@
             objc_enumerationMutation(v7);
           }
 
-          v14 = [*(*(&v19 + 1) + 8 * i) mrcType];
-          if (v14 == 1)
+          mrcType = [*(*(&v19 + 1) + 8 * i) mrcType];
+          if (mrcType == 1)
           {
             ++v10;
           }
 
-          else if (!v14)
+          else if (!mrcType)
           {
             ++v11;
           }
@@ -180,10 +180,10 @@
       v11 = 0;
     }
 
-    v15 = [(CAMAnalyticsVisionSession *)self _maxQRCodeCount];
-    if (v11 <= v15)
+    _maxQRCodeCount = [(CAMAnalyticsVisionSession *)self _maxQRCodeCount];
+    if (v11 <= _maxQRCodeCount)
     {
-      v16 = v15;
+      v16 = _maxQRCodeCount;
     }
 
     else
@@ -192,10 +192,10 @@
     }
 
     [(CAMAnalyticsVisionSession *)self _setMaxQRCodeCount:v16, v19];
-    v17 = [(CAMAnalyticsVisionSession *)self _maxAppClipCodeCount];
-    if (v10 <= v17)
+    _maxAppClipCodeCount = [(CAMAnalyticsVisionSession *)self _maxAppClipCodeCount];
+    if (v10 <= _maxAppClipCodeCount)
     {
-      v18 = v17;
+      v18 = _maxAppClipCodeCount;
     }
 
     else
@@ -218,50 +218,50 @@
 
 - (void)publish
 {
-  v3 = [(CAMAnalyticsEvent *)self _eventMap];
+  _eventMap = [(CAMAnalyticsEvent *)self _eventMap];
   Current = CFAbsoluteTimeGetCurrent();
   [(CAMAnalyticsVisionSession *)self _startTime];
   v6 = Current - v5;
   v7 = [MEMORY[0x1E696AD98] numberWithDouble:v6];
-  [v3 setObject:v7 forKeyedSubscript:@"duration"];
+  [_eventMap setObject:v7 forKeyedSubscript:@"duration"];
 
   v8 = [objc_opt_class() durationRangeStringForDuration:v6];
-  [v3 setObject:v8 forKeyedSubscript:@"durationRange"];
+  [_eventMap setObject:v8 forKeyedSubscript:@"durationRange"];
 
   if ([(CAMAnalyticsVisionSession *)self _isTextDetectionEnabled])
   {
     v9 = [MEMORY[0x1E696AD98] numberWithInteger:{-[CAMAnalyticsVisionSession _bucketedCount:](self, "_bucketedCount:", -[CAMAnalyticsVisionSession _textButtonPressCount](self, "_textButtonPressCount"))}];
-    [v3 setObject:v9 forKeyedSubscript:@"textButtonPressCount"];
+    [_eventMap setObject:v9 forKeyedSubscript:@"textButtonPressCount"];
 
     v10 = [MEMORY[0x1E696AD98] numberWithInteger:{-[CAMAnalyticsVisionSession _bucketedCount:](self, "_bucketedCount:", -[CAMAnalyticsVisionSession _maxTextRegionCount](self, "_maxTextRegionCount"))}];
-    [v3 setObject:v10 forKeyedSubscript:@"maxTextRegionCount"];
+    [_eventMap setObject:v10 forKeyedSubscript:@"maxTextRegionCount"];
 
     v11 = [MEMORY[0x1E696AD98] numberWithInt:{-[CAMAnalyticsVisionSession _textButtonPressCount](self, "_textButtonPressCount") != 0}];
-    [v3 setObject:v11 forKeyedSubscript:@"didInteractWithText"];
+    [_eventMap setObject:v11 forKeyedSubscript:@"didInteractWithText"];
 
     v12 = [MEMORY[0x1E696AD98] numberWithInt:{-[CAMAnalyticsVisionSession _maxTextRegionCount](self, "_maxTextRegionCount") != 0}];
-    [v3 setObject:v12 forKeyedSubscript:@"didObserveText"];
+    [_eventMap setObject:v12 forKeyedSubscript:@"didObserveText"];
   }
 
   if ([(CAMAnalyticsVisionSession *)self _isMRCDetectionEnabled])
   {
     v13 = [MEMORY[0x1E696AD98] numberWithInteger:{-[CAMAnalyticsVisionSession _bucketedCount:](self, "_bucketedCount:", -[CAMAnalyticsVisionSession _qrButtonPressCount](self, "_qrButtonPressCount"))}];
-    [v3 setObject:v13 forKeyedSubscript:@"qrButtonPressCount"];
+    [_eventMap setObject:v13 forKeyedSubscript:@"qrButtonPressCount"];
 
     v14 = [MEMORY[0x1E696AD98] numberWithInteger:{-[CAMAnalyticsVisionSession _bucketedCount:](self, "_bucketedCount:", -[CAMAnalyticsVisionSession _appClipButtonPressCount](self, "_appClipButtonPressCount"))}];
-    [v3 setObject:v14 forKeyedSubscript:@"appClipButtonPressCount"];
+    [_eventMap setObject:v14 forKeyedSubscript:@"appClipButtonPressCount"];
 
     v15 = [MEMORY[0x1E696AD98] numberWithInteger:{-[CAMAnalyticsVisionSession _bucketedCount:](self, "_bucketedCount:", -[CAMAnalyticsVisionSession _qrPillPressCount](self, "_qrPillPressCount"))}];
-    [v3 setObject:v15 forKeyedSubscript:@"qrPillPressCount"];
+    [_eventMap setObject:v15 forKeyedSubscript:@"qrPillPressCount"];
 
     v16 = [MEMORY[0x1E696AD98] numberWithInteger:{-[CAMAnalyticsVisionSession _bucketedCount:](self, "_bucketedCount:", -[CAMAnalyticsVisionSession _appClipPillPressCount](self, "_appClipPillPressCount"))}];
-    [v3 setObject:v16 forKeyedSubscript:@"appClipPillPressCount"];
+    [_eventMap setObject:v16 forKeyedSubscript:@"appClipPillPressCount"];
 
     v17 = [MEMORY[0x1E696AD98] numberWithInteger:{-[CAMAnalyticsVisionSession _bucketedCount:](self, "_bucketedCount:", -[CAMAnalyticsVisionSession _maxQRCodeCount](self, "_maxQRCodeCount"))}];
-    [v3 setObject:v17 forKeyedSubscript:@"maxQRCodeCount"];
+    [_eventMap setObject:v17 forKeyedSubscript:@"maxQRCodeCount"];
 
     v18 = [MEMORY[0x1E696AD98] numberWithInteger:{-[CAMAnalyticsVisionSession _bucketedCount:](self, "_bucketedCount:", -[CAMAnalyticsVisionSession _maxAppClipCodeCount](self, "_maxAppClipCodeCount"))}];
-    [v3 setObject:v18 forKeyedSubscript:@"maxAppClipCodeCount"];
+    [_eventMap setObject:v18 forKeyedSubscript:@"maxAppClipCodeCount"];
 
     v19 = MEMORY[0x1E696AD98];
     if ([(CAMAnalyticsVisionSession *)self _qrButtonPressCount])
@@ -275,7 +275,7 @@
     }
 
     v21 = [v19 numberWithInt:v20];
-    [v3 setObject:v21 forKeyedSubscript:@"didInteractWithQR"];
+    [_eventMap setObject:v21 forKeyedSubscript:@"didInteractWithQR"];
 
     v22 = MEMORY[0x1E696AD98];
     if ([(CAMAnalyticsVisionSession *)self _appClipButtonPressCount])
@@ -289,32 +289,32 @@
     }
 
     v24 = [v22 numberWithInt:v23];
-    [v3 setObject:v24 forKeyedSubscript:@"didInteractWithAppClip"];
+    [_eventMap setObject:v24 forKeyedSubscript:@"didInteractWithAppClip"];
 
     v25 = [MEMORY[0x1E696AD98] numberWithInt:{-[CAMAnalyticsVisionSession _maxQRCodeCount](self, "_maxQRCodeCount") != 0}];
-    [v3 setObject:v25 forKeyedSubscript:@"didObserveQR"];
+    [_eventMap setObject:v25 forKeyedSubscript:@"didObserveQR"];
 
     v26 = [MEMORY[0x1E696AD98] numberWithInt:{-[CAMAnalyticsVisionSession _maxAppClipCodeCount](self, "_maxAppClipCodeCount") != 0}];
-    [v3 setObject:v26 forKeyedSubscript:@"didObserveAppClip"];
+    [_eventMap setObject:v26 forKeyedSubscript:@"didObserveAppClip"];
 
-    v27 = [(CAMAnalyticsVisionSession *)self _pressedQRTypes];
-    v28 = [(CAMAnalyticsVisionSession *)self _analyticsValueForQRTypes:v27];
-    [v3 setObject:v28 forKeyedSubscript:@"pressedQRTypes"];
+    _pressedQRTypes = [(CAMAnalyticsVisionSession *)self _pressedQRTypes];
+    v28 = [(CAMAnalyticsVisionSession *)self _analyticsValueForQRTypes:_pressedQRTypes];
+    [_eventMap setObject:v28 forKeyedSubscript:@"pressedQRTypes"];
   }
 
   if ([(CAMAnalyticsVisionSession *)self _isDocumentScanningEnabled])
   {
     v29 = [MEMORY[0x1E696AD98] numberWithInt:{-[CAMAnalyticsVisionSession _countObservedDocuments](self, "_countObservedDocuments") != 0}];
-    [v3 setObject:v29 forKeyedSubscript:@"didObserveDocuments"];
+    [_eventMap setObject:v29 forKeyedSubscript:@"didObserveDocuments"];
 
     v30 = [MEMORY[0x1E696AD98] numberWithInteger:{-[CAMAnalyticsVisionSession _bucketedCount:](self, "_bucketedCount:", -[CAMAnalyticsVisionSession _countDocumentScanningPressCount](self, "_countDocumentScanningPressCount"))}];
-    [v3 setObject:v30 forKeyedSubscript:@"documentScanningPressCount"];
+    [_eventMap setObject:v30 forKeyedSubscript:@"documentScanningPressCount"];
 
     v31 = [MEMORY[0x1E696AD98] numberWithInteger:{-[CAMAnalyticsVisionSession _bucketedCount:](self, "_bucketedCount:", -[CAMAnalyticsVisionSession _countDocumentScanningCompletedScans](self, "_countDocumentScanningCompletedScans"))}];
-    [v3 setObject:v31 forKeyedSubscript:@"documentScanningCompletedScans"];
+    [_eventMap setObject:v31 forKeyedSubscript:@"documentScanningCompletedScans"];
 
     v32 = [MEMORY[0x1E696AD98] numberWithInteger:{-[CAMAnalyticsVisionSession _bucketedCount:](self, "_bucketedCount:", -[CAMAnalyticsVisionSession _countDocumentScanningCanceledScans](self, "_countDocumentScanningCanceledScans"))}];
-    [v3 setObject:v32 forKeyedSubscript:@"documentScaningCanceledScans"];
+    [_eventMap setObject:v32 forKeyedSubscript:@"documentScaningCanceledScans"];
   }
 
   v33.receiver = self;
@@ -322,39 +322,39 @@
   [(CAMAnalyticsEvent *)&v33 publish];
 }
 
-- (void)_countMRCTypeForAction:(id)a3
+- (void)_countMRCTypeForAction:(id)action
 {
-  v6 = a3;
-  v4 = [(CAMAnalyticsVisionSession *)self _pressedQRTypes];
-  if (!v4)
+  actionCopy = action;
+  _pressedQRTypes = [(CAMAnalyticsVisionSession *)self _pressedQRTypes];
+  if (!_pressedQRTypes)
   {
-    v4 = [MEMORY[0x1E695DFA8] set];
-    [(CAMAnalyticsVisionSession *)self _setPressedMRCTypes:v4];
+    _pressedQRTypes = [MEMORY[0x1E695DFA8] set];
+    [(CAMAnalyticsVisionSession *)self _setPressedMRCTypes:_pressedQRTypes];
   }
 
-  v5 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v6, "payloadDataType")}];
-  [v4 addObject:v5];
+  v5 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(actionCopy, "payloadDataType")}];
+  [_pressedQRTypes addObject:v5];
 }
 
-- (id)_analyticsValueForQRTypes:(id)a3
+- (id)_analyticsValueForQRTypes:(id)types
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (types)
   {
     v4 = MEMORY[0x1E696AEB0];
-    v5 = a3;
+    typesCopy = types;
     v6 = [v4 sortDescriptorWithKey:@"integerValue" ascending:1];
     v18[0] = v6;
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:1];
-    v8 = [v5 sortedArrayUsingDescriptors:v7];
+    v8 = [typesCopy sortedArrayUsingDescriptors:v7];
 
-    v9 = [MEMORY[0x1E696AD60] string];
+    string = [MEMORY[0x1E696AD60] string];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __55__CAMAnalyticsVisionSession__analyticsValueForQRTypes___block_invoke;
     v15[3] = &unk_1E76F8178;
     v15[4] = self;
-    v10 = v9;
+    v10 = string;
     v16 = v10;
     v17 = v8;
     v11 = v8;
@@ -381,27 +381,27 @@ void __55__CAMAnalyticsVisionSession__analyticsValueForQRTypes___block_invoke(id
   }
 }
 
-- (id)_analyticsValueForQRType:(int64_t)a3
+- (id)_analyticsValueForQRType:(int64_t)type
 {
-  if (a3 >= 0x12)
+  if (type >= 0x12)
   {
-    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%ld", a3];
+    type = [MEMORY[0x1E696AEC0] stringWithFormat:@"%ld", type];
   }
 
   else
   {
-    v4 = off_1E76F8198[a3];
+    type = off_1E76F8198[type];
   }
 
-  return v4;
+  return type;
 }
 
 - (unint64_t)totalMRCInteractions
 {
-  v3 = [(CAMAnalyticsVisionSession *)self _qrPillPressCount];
-  v4 = [(CAMAnalyticsVisionSession *)self _appClipPillPressCount]+ v3;
-  v5 = [(CAMAnalyticsVisionSession *)self _qrButtonPressCount];
-  return v4 + v5 + [(CAMAnalyticsVisionSession *)self _appClipPillPressCount];
+  _qrPillPressCount = [(CAMAnalyticsVisionSession *)self _qrPillPressCount];
+  v4 = [(CAMAnalyticsVisionSession *)self _appClipPillPressCount]+ _qrPillPressCount;
+  _qrButtonPressCount = [(CAMAnalyticsVisionSession *)self _qrButtonPressCount];
+  return v4 + _qrButtonPressCount + [(CAMAnalyticsVisionSession *)self _appClipPillPressCount];
 }
 
 - (void)countObservedDocumentScanning

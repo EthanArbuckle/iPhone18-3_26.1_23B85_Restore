@@ -1,80 +1,80 @@
 @interface ACDataclassAction
-+ (id)_actionForError:(id)a3;
-+ (id)actionWithType:(int64_t)a3;
-+ (id)destructiveActionWithType:(int64_t)a3;
-+ (id)destructiveActionWithType:(int64_t)a3 affectedContainers:(id)a4;
-- (ACDataclassAction)initWithCoder:(id)a3;
-- (ACDataclassAction)initWithType:(int64_t)a3 destructivity:(BOOL)a4 affectedContainers:(id)a5;
-- (BOOL)isEqual:(id)a3;
++ (id)_actionForError:(id)error;
++ (id)actionWithType:(int64_t)type;
++ (id)destructiveActionWithType:(int64_t)type;
++ (id)destructiveActionWithType:(int64_t)type affectedContainers:(id)containers;
+- (ACDataclassAction)initWithCoder:(id)coder;
+- (ACDataclassAction)initWithType:(int64_t)type destructivity:(BOOL)destructivity affectedContainers:(id)containers;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (id)_encodeProtobuf;
 - (id)_encodeProtobufData;
-- (id)_initWithProtobuf:(id)a3;
-- (id)_initWithProtobufData:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)_initWithProtobuf:(id)protobuf;
+- (id)_initWithProtobufData:(id)data;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ACDataclassAction
 
-+ (id)actionWithType:(int64_t)a3
++ (id)actionWithType:(int64_t)type
 {
-  v3 = [[a1 alloc] initWithType:a3 destructivity:0 affectedContainers:0];
+  v3 = [[self alloc] initWithType:type destructivity:0 affectedContainers:0];
 
   return v3;
 }
 
-+ (id)destructiveActionWithType:(int64_t)a3
++ (id)destructiveActionWithType:(int64_t)type
 {
-  v3 = [[a1 alloc] initWithType:a3 destructivity:1 affectedContainers:0];
+  v3 = [[self alloc] initWithType:type destructivity:1 affectedContainers:0];
 
   return v3;
 }
 
-+ (id)destructiveActionWithType:(int64_t)a3 affectedContainers:(id)a4
++ (id)destructiveActionWithType:(int64_t)type affectedContainers:(id)containers
 {
-  v6 = a4;
-  v7 = [[a1 alloc] initWithType:a3 destructivity:1 affectedContainers:v6];
+  containersCopy = containers;
+  v7 = [[self alloc] initWithType:type destructivity:1 affectedContainers:containersCopy];
 
   return v7;
 }
 
-+ (id)_actionForError:(id)a3
++ (id)_actionForError:(id)error
 {
-  v3 = [[a1 alloc] initWithType:0 destructivity:1 affectedContainers:0];
+  v3 = [[self alloc] initWithType:0 destructivity:1 affectedContainers:0];
 
   return v3;
 }
 
-- (ACDataclassAction)initWithType:(int64_t)a3 destructivity:(BOOL)a4 affectedContainers:(id)a5
+- (ACDataclassAction)initWithType:(int64_t)type destructivity:(BOOL)destructivity affectedContainers:(id)containers
 {
-  v9 = a5;
+  containersCopy = containers;
   v13.receiver = self;
   v13.super_class = ACDataclassAction;
   v10 = [(ACDataclassAction *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    v10->_type = a3;
-    v10->_isDestructive = a4;
-    objc_storeStrong(&v10->_affectedContainers, a5);
+    v10->_type = type;
+    v10->_isDestructive = destructivity;
+    objc_storeStrong(&v10->_affectedContainers, containers);
   }
 
   return v11;
 }
 
-- (ACDataclassAction)initWithCoder:(id)a3
+- (ACDataclassAction)initWithCoder:(id)coder
 {
   v20[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v19.receiver = self;
   v19.super_class = ACDataclassAction;
   v5 = [(ACDataclassAction *)&v19 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"type"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"type"];
     v5->_type = [v6 integerValue];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"destructive"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"destructive"];
     v5->_isDestructive = [v7 BOOLValue];
 
     v8 = MEMORY[0x1E695DFD8];
@@ -82,15 +82,15 @@
     v20[1] = objc_opt_class();
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:2];
     v10 = [v8 setWithArray:v9];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"affectedContainers"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"affectedContainers"];
     affectedContainers = v5->_affectedContainers;
     v5->_affectedContainers = v11;
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"alertReasonTitle"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"alertReasonTitle"];
     undoAlertTitle = v5->_undoAlertTitle;
     v5->_undoAlertTitle = v13;
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"alertReasonMessage"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"alertReasonMessage"];
     undoAlertMessage = v5->_undoAlertMessage;
     v5->_undoAlertMessage = v15;
   }
@@ -99,51 +99,51 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v8 = a3;
+  coderCopy = coder;
   v4 = [MEMORY[0x1E696AD98] numberWithInteger:self->_type];
-  [v8 encodeObject:v4 forKey:@"type"];
+  [coderCopy encodeObject:v4 forKey:@"type"];
 
   v5 = [MEMORY[0x1E696AD98] numberWithBool:self->_isDestructive];
-  [v8 encodeObject:v5 forKey:@"destructive"];
+  [coderCopy encodeObject:v5 forKey:@"destructive"];
 
-  [v8 encodeObject:self->_affectedContainers forKey:@"affectedContainers"];
+  [coderCopy encodeObject:self->_affectedContainers forKey:@"affectedContainers"];
   undoAlertTitle = self->_undoAlertTitle;
   if (undoAlertTitle)
   {
-    [v8 encodeObject:undoAlertTitle forKey:@"alertReasonTitle"];
+    [coderCopy encodeObject:undoAlertTitle forKey:@"alertReasonTitle"];
   }
 
   undoAlertMessage = self->_undoAlertMessage;
   if (undoAlertMessage)
   {
-    [v8 encodeObject:undoAlertMessage forKey:@"alertReasonMessage"];
+    [coderCopy encodeObject:undoAlertMessage forKey:@"alertReasonMessage"];
   }
 }
 
-- (id)_initWithProtobuf:(id)a3
+- (id)_initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v5 = [(ACDataclassAction *)self init];
   if (v5)
   {
-    v6 = v4;
+    v6 = protobufCopy;
     v5->_type = [v6 type];
     v5->_isDestructive = [v6 destructive];
-    v7 = [v6 affectedContainers];
-    v8 = [v7 copy];
+    affectedContainers = [v6 affectedContainers];
+    v8 = [affectedContainers copy];
     affectedContainers = v5->_affectedContainers;
     v5->_affectedContainers = v8;
 
-    v10 = [v6 undoAlertTitle];
-    v11 = [v10 copy];
+    undoAlertTitle = [v6 undoAlertTitle];
+    v11 = [undoAlertTitle copy];
     undoAlertTitle = v5->_undoAlertTitle;
     v5->_undoAlertTitle = v11;
 
-    v13 = [v6 undoAlertMessage];
+    undoAlertMessage = [v6 undoAlertMessage];
 
-    v14 = [v13 copy];
+    v14 = [undoAlertMessage copy];
     undoAlertMessage = v5->_undoAlertMessage;
     v5->_undoAlertMessage = v14;
 
@@ -153,35 +153,35 @@
   return v5;
 }
 
-- (id)_initWithProtobufData:(id)a3
+- (id)_initWithProtobufData:(id)data
 {
-  v5 = a3;
-  if (![v5 length])
+  dataCopy = data;
+  if (![dataCopy length])
   {
     [(ACDataclassAction *)a2 _initWithProtobufData:?];
   }
 
-  if ([v5 length])
+  if ([dataCopy length])
   {
-    v6 = [[ACProtobufDataclassAction alloc] initWithData:v5];
+    v6 = [[ACProtobufDataclassAction alloc] initWithData:dataCopy];
     if (v6)
     {
       self = [(ACDataclassAction *)self _initWithProtobuf:v6];
-      v7 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v7 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
 - (id)_encodeProtobuf
@@ -203,36 +203,36 @@
 
 - (id)_encodeProtobufData
 {
-  v2 = [(ACDataclassAction *)self _encodeProtobuf];
-  v3 = [v2 data];
+  _encodeProtobuf = [(ACDataclassAction *)self _encodeProtobuf];
+  data = [_encodeProtobuf data];
 
-  return v3;
+  return data;
 }
 
 - (NSString)description
 {
-  v2 = [(ACDataclassAction *)self type];
-  if (v2 > 8)
+  type = [(ACDataclassAction *)self type];
+  if (type > 8)
   {
     return @"Unknown ACDataclassAction";
   }
 
   else
   {
-    return off_1E7977548[v2];
+    return off_1E7977548[type];
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(ACDataclassAction *)self type];
+    v5 = equalCopy;
+    type = [(ACDataclassAction *)self type];
     v8 = 0;
-    if (v6 == [v5 type])
+    if (type == [v5 type])
     {
       affectedContainers = self->_affectedContainers;
       if (affectedContainers == v5[3] || [(NSArray *)affectedContainers isEqual:?])

@@ -17,7 +17,7 @@
 
 - (id)operationForRedoing
 {
-  v2 = self;
+  selfCopy = self;
   v3 = DOC_FIDeleteOperation.operationForRedoing()();
 
   return v3;

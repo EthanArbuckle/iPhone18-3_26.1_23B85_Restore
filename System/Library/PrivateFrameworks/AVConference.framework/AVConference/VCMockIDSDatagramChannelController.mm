@@ -1,12 +1,12 @@
 @interface VCMockIDSDatagramChannelController
 + (id)sharedInstance;
-- (id)datagramChannelSocketForDestination:(id)a3 ipPorts:(id)a4;
-- (id)datagramChannelWithDestination:(id)a3 dataPath:(int)a4;
+- (id)datagramChannelSocketForDestination:(id)destination ipPorts:(id)ports;
+- (id)datagramChannelWithDestination:(id)destination dataPath:(int)path;
 - (id)getFirstDatagramChannelIDS;
 - (void)dealloc;
-- (void)setReadyToReadBlockForDatagram:(id)a3 block:(id)a4;
-- (void)setWriteDatagramBlockForDatagram:(id)a3 block:(id)a4;
-- (void)setWriteDatagramsBlockForDatagram:(id)a3 block:(id)a4;
+- (void)setReadyToReadBlockForDatagram:(id)datagram block:(id)block;
+- (void)setWriteDatagramBlockForDatagram:(id)datagram block:(id)block;
+- (void)setWriteDatagramsBlockForDatagram:(id)datagram block:(id)block;
 @end
 
 @implementation VCMockIDSDatagramChannelController
@@ -28,16 +28,16 @@ VCMockIDSDatagramChannelController *__52__VCMockIDSDatagramChannelController_sha
   return result;
 }
 
-- (id)datagramChannelSocketForDestination:(id)a3 ipPorts:(id)a4
+- (id)datagramChannelSocketForDestination:(id)destination ipPorts:(id)ports
 {
-  if (!a3 || !a4)
+  if (!destination || !ports)
   {
     [VCMockIDSDatagramChannelController datagramChannelSocketForDestination:ipPorts:];
     return v16;
   }
 
-  v6 = [a3 hasPrefix:@"loopback:Conference"];
-  v7 = [a3 componentsSeparatedByString:@":"];
+  v6 = [destination hasPrefix:@"loopback:Conference"];
+  v7 = [destination componentsSeparatedByString:@":"];
   if (!v7 || (v8 = v7, [v7 count] < 2) || objc_msgSend(objc_msgSend(v8, "objectAtIndexedSubscript:", 1), "intValue") < 1 || (v9 = objc_msgSend(objc_msgSend(v8, "objectAtIndexedSubscript:", 1), "intValue") << 16) == 0)
   {
     [VCMockIDSDatagramChannelController datagramChannelSocketForDestination:ipPorts:];
@@ -84,19 +84,19 @@ VCMockIDSDatagramChannelController *__52__VCMockIDSDatagramChannelController_sha
     v13 = @"vcDefaultMockDatagramChannelIPPortsKeyLocalPort";
   }
 
-  v14 = -[VCMockIDSDatagramChannelSocket initRequiresOptions:localIP:localPort:remoteIP:remotePort:]([VCMockIDSDatagramChannelSocket alloc], "initRequiresOptions:localIP:localPort:remoteIP:remotePort:", v6, [a4 objectForKeyedSubscript:v10], objc_msgSend(objc_msgSend(a4, "objectForKeyedSubscript:", v12), "shortValue"), objc_msgSend(a4, "objectForKeyedSubscript:", v11), objc_msgSend(objc_msgSend(a4, "objectForKeyedSubscript:", v13), "shortValue"));
+  v14 = -[VCMockIDSDatagramChannelSocket initRequiresOptions:localIP:localPort:remoteIP:remotePort:]([VCMockIDSDatagramChannelSocket alloc], "initRequiresOptions:localIP:localPort:remoteIP:remotePort:", v6, [ports objectForKeyedSubscript:v10], objc_msgSend(objc_msgSend(ports, "objectForKeyedSubscript:", v12), "shortValue"), objc_msgSend(ports, "objectForKeyedSubscript:", v11), objc_msgSend(objc_msgSend(ports, "objectForKeyedSubscript:", v13), "shortValue"));
 
   return v14;
 }
 
-- (id)datagramChannelWithDestination:(id)a3 dataPath:(int)a4
+- (id)datagramChannelWithDestination:(id)destination dataPath:(int)path
 {
-  v4 = *&a4;
+  v4 = *&path;
   v22 = *MEMORY[0x1E69E9840];
   [(VCObject *)self lock];
-  if (a3)
+  if (destination)
   {
-    v7 = [a3 hasPrefix:@"loopback:Conference"];
+    v7 = [destination hasPrefix:@"loopback:Conference"];
   }
 
   else
@@ -104,23 +104,23 @@ VCMockIDSDatagramChannelController *__52__VCMockIDSDatagramChannelController_sha
     v7 = 0;
   }
 
-  v8 = [+[VCDatagramChannelManager sharedInstance](VCDatagramChannelManager destinations];
-  if (a3)
+  destinations = [+[VCDatagramChannelManager sharedInstance](VCDatagramChannelManager destinations];
+  if (destination)
   {
-    v9 = v8;
-    if (v8)
+    v9 = destinations;
+    if (destinations)
     {
-      v10 = [objc_msgSend(v8 "allKeys")];
+      v10 = [objc_msgSend(destinations "allKeys")];
       if (VCDefaults_GetBoolValueForKey(@"enableTestNetworkRouter", 0))
       {
-        if (![v9 objectForKeyedSubscript:a3])
+        if (![v9 objectForKeyedSubscript:destination])
         {
 LABEL_10:
           v11 = VCDefaults_CopyDictionaryValueForKey(@"mockDatagramChannelIPPorts");
           if (v11)
           {
             v12 = v11;
-            v13 = [(VCMockIDSDatagramChannelController *)self datagramChannelSocketForDestination:a3 ipPorts:v11];
+            idsDatagramChannel = [(VCMockIDSDatagramChannelController *)self datagramChannelSocketForDestination:destination ipPorts:v11];
 
             if (VRTraceGetErrorLogLevelForModule() >= 7)
             {
@@ -135,9 +135,9 @@ LABEL_10:
                 *&v19[22] = 1024;
                 LODWORD(v20) = 1215;
                 WORD2(v20) = 2048;
-                *(&v20 + 6) = v13;
+                *(&v20 + 6) = idsDatagramChannel;
                 HIWORD(v20) = 2112;
-                v21 = a3;
+                destinationCopy2 = destination;
 LABEL_17:
                 _os_log_impl(&dword_1DB56E000, v15, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Created datagramChannel=%p for destination=%@", v19, 0x30u);
               }
@@ -146,7 +146,7 @@ LABEL_17:
 
           else
           {
-            v13 = [[VCMockIDSDatagramChannel alloc] initCreateSocketRequiresOptions:v7 dataPath:v4 destination:a3];
+            idsDatagramChannel = [[VCMockIDSDatagramChannel alloc] initCreateSocketRequiresOptions:v7 dataPath:v4 destination:destination];
             if (VRTraceGetErrorLogLevelForModule() >= 7)
             {
               v16 = VRTraceErrorLogLevelToCSTR();
@@ -160,15 +160,15 @@ LABEL_17:
                 *&v19[22] = 1024;
                 LODWORD(v20) = 1218;
                 WORD2(v20) = 2048;
-                *(&v20 + 6) = v13;
+                *(&v20 + 6) = idsDatagramChannel;
                 HIWORD(v20) = 2112;
-                v21 = a3;
+                destinationCopy2 = destination;
                 goto LABEL_17;
               }
             }
           }
 
-          if (v13)
+          if (idsDatagramChannel)
           {
             goto LABEL_22;
           }
@@ -185,18 +185,18 @@ LABEL_17:
   v17 = [(VCMockIDSDatagramChannelController *)self getFirstDatagramChannelIDS:*v19];
   if (v17)
   {
-    v13 = [v17 idsDatagramChannel];
+    idsDatagramChannel = [v17 idsDatagramChannel];
   }
 
   else
   {
-    v13 = 0;
+    idsDatagramChannel = 0;
   }
 
 LABEL_22:
-  [v13 setWriteCompletionHandler:{&__block_literal_global_316, *v19, *&v19[8], v20, v21}];
+  [idsDatagramChannel setWriteCompletionHandler:{&__block_literal_global_316, *v19, *&v19[8], v20, destinationCopy2}];
   [(VCObject *)self unlock];
-  return v13;
+  return idsDatagramChannel;
 }
 
 uint64_t __78__VCMockIDSDatagramChannelController_datagramChannelWithDestination_dataPath___block_invoke(uint64_t a1, uint64_t a2, unint64_t a3)
@@ -217,77 +217,77 @@ uint64_t __78__VCMockIDSDatagramChannelController_datagramChannelWithDestination
   [(VCObject *)&v2 dealloc];
 }
 
-- (void)setWriteDatagramsBlockForDatagram:(id)a3 block:(id)a4
+- (void)setWriteDatagramsBlockForDatagram:(id)datagram block:(id)block
 {
   [(VCObject *)self lock];
-  if (a3)
+  if (datagram)
   {
-    v7 = a3;
+    datagramCopy = datagram;
   }
 
   else
   {
-    v8 = [(VCMockIDSDatagramChannelController *)self getFirstDatagramChannelIDS];
-    if (!v8)
+    getFirstDatagramChannelIDS = [(VCMockIDSDatagramChannelController *)self getFirstDatagramChannelIDS];
+    if (!getFirstDatagramChannelIDS)
     {
       goto LABEL_6;
     }
 
-    v7 = [v8 idsDatagramChannel];
+    datagramCopy = [getFirstDatagramChannelIDS idsDatagramChannel];
   }
 
-  [v7 setWriteDatagramsBlock:a4];
+  [datagramCopy setWriteDatagramsBlock:block];
 LABEL_6:
 
   [(VCObject *)self unlock];
 }
 
-- (void)setWriteDatagramBlockForDatagram:(id)a3 block:(id)a4
+- (void)setWriteDatagramBlockForDatagram:(id)datagram block:(id)block
 {
   [(VCObject *)self lock];
-  if (a3)
+  if (datagram)
   {
-    v7 = a3;
+    datagramCopy = datagram;
   }
 
   else
   {
-    v8 = [(VCMockIDSDatagramChannelController *)self getFirstDatagramChannelIDS];
-    if (!v8)
+    getFirstDatagramChannelIDS = [(VCMockIDSDatagramChannelController *)self getFirstDatagramChannelIDS];
+    if (!getFirstDatagramChannelIDS)
     {
       goto LABEL_6;
     }
 
-    v7 = [v8 idsDatagramChannel];
+    datagramCopy = [getFirstDatagramChannelIDS idsDatagramChannel];
   }
 
-  [v7 setWriteDatagramBlock:a4];
+  [datagramCopy setWriteDatagramBlock:block];
 LABEL_6:
 
   [(VCObject *)self unlock];
 }
 
-- (void)setReadyToReadBlockForDatagram:(id)a3 block:(id)a4
+- (void)setReadyToReadBlockForDatagram:(id)datagram block:(id)block
 {
   [(VCObject *)self lock];
-  if (a3)
+  if (datagram)
   {
-    v7 = a3;
+    datagramCopy = datagram;
   }
 
   else
   {
-    v8 = [(VCMockIDSDatagramChannelController *)self getFirstDatagramChannelIDS];
+    getFirstDatagramChannelIDS = [(VCMockIDSDatagramChannelController *)self getFirstDatagramChannelIDS];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       goto LABEL_6;
     }
 
-    v7 = [v8 idsDatagramChannel];
+    datagramCopy = [getFirstDatagramChannelIDS idsDatagramChannel];
   }
 
-  [v7 setReadyToReadBlock:a4];
+  [datagramCopy setReadyToReadBlock:block];
 LABEL_6:
 
   [(VCObject *)self unlock];
@@ -296,12 +296,12 @@ LABEL_6:
 - (id)getFirstDatagramChannelIDS
 {
   v13 = *MEMORY[0x1E69E9840];
-  v2 = [+[VCDatagramChannelManager sharedInstance](VCDatagramChannelManager datagramChannels];
+  datagramChannels = [+[VCDatagramChannelManager sharedInstance](VCDatagramChannelManager datagramChannels];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  result = [v2 countByEnumeratingWithState:&v9 objects:v8 count:16];
+  result = [datagramChannels countByEnumeratingWithState:&v9 objects:v8 count:16];
   if (result)
   {
     v4 = result;
@@ -313,22 +313,22 @@ LABEL_6:
       {
         if (*v10 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(datagramChannels);
         }
 
         v7 = *(*(&v9 + 1) + 8 * v6);
-        [v2 objectForKeyedSubscript:v7];
+        [datagramChannels objectForKeyedSubscript:v7];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          return [v2 objectForKeyedSubscript:v7];
+          return [datagramChannels objectForKeyedSubscript:v7];
         }
 
         v6 = v6 + 1;
       }
 
       while (v4 != v6);
-      result = [v2 countByEnumeratingWithState:&v9 objects:v8 count:16];
+      result = [datagramChannels countByEnumeratingWithState:&v9 objects:v8 count:16];
       v4 = result;
       if (result)
       {

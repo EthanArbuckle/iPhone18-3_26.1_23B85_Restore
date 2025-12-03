@@ -1,6 +1,6 @@
 @interface SBLostModeBiometricAuthenticationTransientOverlayViewController
 - (NSString)coverSheetIdentifier;
-- (SBLostModeBiometricAuthenticationTransientOverlayViewController)initWithLockScreenManager:(id)a3 biometricResource:(id)a4;
+- (SBLostModeBiometricAuthenticationTransientOverlayViewController)initWithLockScreenManager:(id)manager biometricResource:(id)resource;
 - (SBLostModeBiometricAuthenticationTransientOverlayViewControllerDelegate)delegate;
 - (double)_buttonsBottomSpacing;
 - (id)_biometricAuthenticationButtonAction;
@@ -10,25 +10,25 @@
 - (void)_runLocalAuthenticationEvaluation;
 - (void)dealloc;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation SBLostModeBiometricAuthenticationTransientOverlayViewController
 
-- (SBLostModeBiometricAuthenticationTransientOverlayViewController)initWithLockScreenManager:(id)a3 biometricResource:(id)a4
+- (SBLostModeBiometricAuthenticationTransientOverlayViewController)initWithLockScreenManager:(id)manager biometricResource:(id)resource
 {
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  resourceCopy = resource;
   v13.receiver = self;
   v13.super_class = SBLostModeBiometricAuthenticationTransientOverlayViewController;
   v9 = [(SBLostModeBiometricAuthenticationTransientOverlayViewController *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_lockScreenManager, a3);
-    objc_storeStrong(&v10->_biometricResource, a4);
-    v11 = [v7 coverSheetViewController];
-    [v11 registerExternalLockProvider:v10];
+    objc_storeStrong(&v9->_lockScreenManager, manager);
+    objc_storeStrong(&v10->_biometricResource, resource);
+    coverSheetViewController = [managerCopy coverSheetViewController];
+    [coverSheetViewController registerExternalLockProvider:v10];
   }
 
   return v10;
@@ -36,12 +36,12 @@
 
 - (void)dealloc
 {
-  v3 = [(SBLockScreenManager *)self->_lockScreenManager coverSheetViewController];
-  [v3 unregisterExternalLockProvider:self];
+  coverSheetViewController = [(SBLockScreenManager *)self->_lockScreenManager coverSheetViewController];
+  [coverSheetViewController unregisterExternalLockProvider:self];
   if (!self->_didAuthenticate)
   {
-    v4 = [(SBLostModeBiometricAuthenticationTransientOverlayViewController *)self delegate];
-    [v4 lostModeBiometricAuthenticationViewControllerDidFailOrCancelAuthentication:self];
+    delegate = [(SBLostModeBiometricAuthenticationTransientOverlayViewController *)self delegate];
+    [delegate lostModeBiometricAuthenticationViewControllerDidFailOrCancelAuthentication:self];
   }
 
   v5.receiver = self;
@@ -55,8 +55,8 @@
   v127.receiver = self;
   v127.super_class = SBLostModeBiometricAuthenticationTransientOverlayViewController;
   [(SBTransientOverlayViewController *)&v127 viewDidLoad];
-  v3 = [(SBLostModeBiometricAuthenticationTransientOverlayViewController *)self view];
-  [v3 bounds];
+  view = [(SBLostModeBiometricAuthenticationTransientOverlayViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -68,46 +68,46 @@
   [(CSPasscodeBackgroundView *)self->_backgroundView setAutoresizingMask:18];
   [(CSPasscodeBackgroundView *)self->_backgroundView setFrame:v5, v7, v9, v11];
   [(CSPasscodeBackgroundView *)self->_backgroundView setWeighting:1.0];
-  [v3 addSubview:self->_backgroundView];
+  [view addSubview:self->_backgroundView];
   v14 = MEMORY[0x277CCACA8];
-  v15 = [MEMORY[0x277CCA8D8] mainBundle];
-  v16 = [v15 localizedStringForKey:@"LOST_MODE_BIO_AUTHENTICATION_TITLE" value:&stru_283094718 table:@"SpringBoard"];
-  v17 = [(SBLostModeBiometricAuthenticationTransientOverlayViewController *)self _biometricCapabilityText];
-  v18 = [v14 stringWithFormat:v16, v17];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v16 = [mainBundle localizedStringForKey:@"LOST_MODE_BIO_AUTHENTICATION_TITLE" value:&stru_283094718 table:@"SpringBoard"];
+  _biometricCapabilityText = [(SBLostModeBiometricAuthenticationTransientOverlayViewController *)self _biometricCapabilityText];
+  v18 = [v14 stringWithFormat:v16, _biometricCapabilityText];
 
   v19 = objc_alloc_init(MEMORY[0x277D756B8]);
   titleLabel = self->_titleLabel;
   self->_titleLabel = v19;
 
   v21 = self->_titleLabel;
-  v22 = [MEMORY[0x277D65EC0] pinKeypadStatusTitleViewTitleFont];
-  [(UILabel *)v21 setFont:v22];
+  pinKeypadStatusTitleViewTitleFont = [MEMORY[0x277D65EC0] pinKeypadStatusTitleViewTitleFont];
+  [(UILabel *)v21 setFont:pinKeypadStatusTitleViewTitleFont];
 
   v23 = self->_titleLabel;
-  v24 = [MEMORY[0x277D75348] whiteColor];
-  [(UILabel *)v23 setTextColor:v24];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  [(UILabel *)v23 setTextColor:whiteColor];
 
   [(UILabel *)self->_titleLabel setTextAlignment:1];
   [(UILabel *)self->_titleLabel setAdjustsFontSizeToFitWidth:1];
   v125 = v18;
   [(UILabel *)self->_titleLabel setText:v18];
   v25 = MEMORY[0x277CCACA8];
-  v26 = [MEMORY[0x277CCA8D8] mainBundle];
-  v27 = [v26 localizedStringForKey:@"LOST_MODE_BIO_AUTHENTICATION_SUBTITLE" value:&stru_283094718 table:@"SpringBoard"];
-  v28 = [(SBLostModeBiometricAuthenticationTransientOverlayViewController *)self _biometricCapabilityText];
-  v29 = [v25 stringWithFormat:v27, v28];
+  mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+  v27 = [mainBundle2 localizedStringForKey:@"LOST_MODE_BIO_AUTHENTICATION_SUBTITLE" value:&stru_283094718 table:@"SpringBoard"];
+  _biometricCapabilityText2 = [(SBLostModeBiometricAuthenticationTransientOverlayViewController *)self _biometricCapabilityText];
+  v29 = [v25 stringWithFormat:v27, _biometricCapabilityText2];
 
   v30 = objc_alloc_init(MEMORY[0x277D756B8]);
   subtitleLabel = self->_subtitleLabel;
   self->_subtitleLabel = v30;
 
   v32 = self->_subtitleLabel;
-  v33 = [MEMORY[0x277D65EC0] pinKeypadStatusSubtitleViewTitleFont];
-  [(UILabel *)v32 setFont:v33];
+  pinKeypadStatusSubtitleViewTitleFont = [MEMORY[0x277D65EC0] pinKeypadStatusSubtitleViewTitleFont];
+  [(UILabel *)v32 setFont:pinKeypadStatusSubtitleViewTitleFont];
 
   v34 = self->_subtitleLabel;
-  v35 = [MEMORY[0x277D75348] whiteColor];
-  [(UILabel *)v34 setTextColor:v35];
+  whiteColor2 = [MEMORY[0x277D75348] whiteColor];
+  [(UILabel *)v34 setTextColor:whiteColor2];
 
   [(UILabel *)self->_subtitleLabel setTextAlignment:1];
   [(UILabel *)self->_subtitleLabel setNumberOfLines:0];
@@ -126,22 +126,22 @@
   [(UIStackView *)self->_labelsStackView setAxis:1];
   [(UIStackView *)self->_labelsStackView setSpacing:5.0];
   [(UIStackView *)self->_labelsStackView setTranslatesAutoresizingMaskIntoConstraints:0];
-  [v3 addSubview:self->_labelsStackView];
-  v41 = [MEMORY[0x277D75230] filledButtonConfiguration];
+  [view addSubview:self->_labelsStackView];
+  filledButtonConfiguration = [MEMORY[0x277D75230] filledButtonConfiguration];
   v42 = [MEMORY[0x277D75348] colorWithWhite:1.0 alpha:0.3];
-  [v41 setBaseBackgroundColor:v42];
+  [filledButtonConfiguration setBaseBackgroundColor:v42];
 
-  v43 = [MEMORY[0x277D75348] whiteColor];
-  [v41 setBaseForegroundColor:v43];
+  whiteColor3 = [MEMORY[0x277D75348] whiteColor];
+  [filledButtonConfiguration setBaseForegroundColor:whiteColor3];
 
-  [v41 setCornerStyle:4];
-  v44 = [(SBLostModeBiometricAuthenticationTransientOverlayViewController *)self _biometricCapabilityText];
-  [v41 setTitle:v44];
+  [filledButtonConfiguration setCornerStyle:4];
+  _biometricCapabilityText3 = [(SBLostModeBiometricAuthenticationTransientOverlayViewController *)self _biometricCapabilityText];
+  [filledButtonConfiguration setTitle:_biometricCapabilityText3];
 
   v45 = MEMORY[0x277D75220];
-  v46 = [(SBLostModeBiometricAuthenticationTransientOverlayViewController *)self _biometricAuthenticationButtonAction];
-  v123 = v41;
-  v47 = [v45 buttonWithConfiguration:v41 primaryAction:v46];
+  _biometricAuthenticationButtonAction = [(SBLostModeBiometricAuthenticationTransientOverlayViewController *)self _biometricAuthenticationButtonAction];
+  v123 = filledButtonConfiguration;
+  v47 = [v45 buttonWithConfiguration:filledButtonConfiguration primaryAction:_biometricAuthenticationButtonAction];
   biometricAuthButton = self->_biometricAuthButton;
   self->_biometricAuthButton = v47;
 
@@ -152,110 +152,110 @@
   [(UIButton *)v49 setFont:v52];
 
   [(UIButton *)self->_biometricAuthButton setTranslatesAutoresizingMaskIntoConstraints:0];
-  [v3 addSubview:self->_biometricAuthButton];
-  v53 = [MEMORY[0x277CCA8D8] mainBundle];
-  v54 = [v53 localizedStringForKey:@"LOST_MODE_BIO_AUTHENTICATION_CANCEL" value:&stru_283094718 table:@"SpringBoard"];
+  [view addSubview:self->_biometricAuthButton];
+  mainBundle3 = [MEMORY[0x277CCA8D8] mainBundle];
+  v54 = [mainBundle3 localizedStringForKey:@"LOST_MODE_BIO_AUTHENTICATION_CANCEL" value:&stru_283094718 table:@"SpringBoard"];
 
-  v55 = [MEMORY[0x277D75230] plainButtonConfiguration];
+  plainButtonConfiguration = [MEMORY[0x277D75230] plainButtonConfiguration];
   v122 = v54;
-  [v55 setTitle:v54];
-  v56 = [MEMORY[0x277D75348] whiteColor];
-  [v55 setBaseForegroundColor:v56];
+  [plainButtonConfiguration setTitle:v54];
+  whiteColor4 = [MEMORY[0x277D75348] whiteColor];
+  [plainButtonConfiguration setBaseForegroundColor:whiteColor4];
 
   v57 = [MEMORY[0x277D75220] buttonWithType:1];
   cancelButton = self->_cancelButton;
   self->_cancelButton = v57;
 
-  v121 = v55;
-  [(UIButton *)self->_cancelButton setConfiguration:v55];
+  v121 = plainButtonConfiguration;
+  [(UIButton *)self->_cancelButton setConfiguration:plainButtonConfiguration];
   v59 = self->_cancelButton;
-  v60 = [MEMORY[0x277D75348] whiteColor];
-  [(UIButton *)v59 setTitleColor:v60 forState:0];
+  whiteColor5 = [MEMORY[0x277D75348] whiteColor];
+  [(UIButton *)v59 setTitleColor:whiteColor5 forState:0];
 
   [(UIButton *)self->_cancelButton setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UIButton *)self->_cancelButton addTarget:self action:sel__handleCancelButtonAction forControlEvents:64];
-  v126 = v3;
-  [v3 addSubview:self->_cancelButton];
+  v126 = view;
+  [view addSubview:self->_cancelButton];
   if ([(SBLostModeBiometricAuthenticationTransientOverlayViewController *)self _hasTelephonyCapability])
   {
-    v61 = [MEMORY[0x277CCA8D8] mainBundle];
-    v62 = [v61 localizedStringForKey:@"LOST_MODE_BIO_AUTHENTICATION_EMERGENCY" value:&stru_283094718 table:@"SpringBoard"];
+    mainBundle4 = [MEMORY[0x277CCA8D8] mainBundle];
+    v62 = [mainBundle4 localizedStringForKey:@"LOST_MODE_BIO_AUTHENTICATION_EMERGENCY" value:&stru_283094718 table:@"SpringBoard"];
 
-    v63 = [MEMORY[0x277D75230] plainButtonConfiguration];
-    [v63 setTitle:v62];
-    v64 = [MEMORY[0x277D75348] whiteColor];
-    [v63 setBaseForegroundColor:v64];
+    plainButtonConfiguration2 = [MEMORY[0x277D75230] plainButtonConfiguration];
+    [plainButtonConfiguration2 setTitle:v62];
+    whiteColor6 = [MEMORY[0x277D75348] whiteColor];
+    [plainButtonConfiguration2 setBaseForegroundColor:whiteColor6];
 
     v65 = [MEMORY[0x277D75220] buttonWithType:1];
     emergencyButton = self->_emergencyButton;
     self->_emergencyButton = v65;
 
-    [(UIButton *)self->_emergencyButton setConfiguration:v63];
+    [(UIButton *)self->_emergencyButton setConfiguration:plainButtonConfiguration2];
     v67 = self->_emergencyButton;
-    v68 = [MEMORY[0x277D75348] whiteColor];
-    [(UIButton *)v67 setTitleColor:v68 forState:0];
+    whiteColor7 = [MEMORY[0x277D75348] whiteColor];
+    [(UIButton *)v67 setTitleColor:whiteColor7 forState:0];
 
     [(UIButton *)self->_emergencyButton setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIButton *)self->_emergencyButton addTarget:self action:sel__handleEmergencyButtonAction forControlEvents:64];
-    [v3 addSubview:self->_emergencyButton];
+    [view addSubview:self->_emergencyButton];
   }
 
   v69 = objc_alloc_init(MEMORY[0x277D756D0]);
   layoutGuide = self->_layoutGuide;
   self->_layoutGuide = v69;
 
-  [v3 addLayoutGuide:self->_layoutGuide];
+  [view addLayoutGuide:self->_layoutGuide];
   v105 = MEMORY[0x277CCAAD0];
-  v120 = [(UILayoutGuide *)self->_layoutGuide topAnchor];
-  v119 = [v3 topAnchor];
-  v118 = [v120 constraintEqualToAnchor:v119];
+  topAnchor = [(UILayoutGuide *)self->_layoutGuide topAnchor];
+  topAnchor2 = [view topAnchor];
+  v118 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v129[0] = v118;
-  v117 = [(UILayoutGuide *)self->_layoutGuide leadingAnchor];
-  v116 = [v3 leadingAnchor];
-  v115 = [v117 constraintEqualToAnchor:v116];
+  leadingAnchor = [(UILayoutGuide *)self->_layoutGuide leadingAnchor];
+  leadingAnchor2 = [view leadingAnchor];
+  v115 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v129[1] = v115;
-  v114 = [(UILayoutGuide *)self->_layoutGuide trailingAnchor];
-  v113 = [v3 trailingAnchor];
-  v112 = [v114 constraintEqualToAnchor:v113];
+  trailingAnchor = [(UILayoutGuide *)self->_layoutGuide trailingAnchor];
+  trailingAnchor2 = [view trailingAnchor];
+  v112 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v129[2] = v112;
-  v111 = [(UILayoutGuide *)self->_layoutGuide heightAnchor];
-  v110 = [v3 heightAnchor];
-  v109 = [v111 constraintEqualToAnchor:v110 multiplier:0.5];
+  heightAnchor = [(UILayoutGuide *)self->_layoutGuide heightAnchor];
+  heightAnchor2 = [view heightAnchor];
+  v109 = [heightAnchor constraintEqualToAnchor:heightAnchor2 multiplier:0.5];
   v129[3] = v109;
-  v108 = [(UIStackView *)self->_labelsStackView bottomAnchor];
-  v107 = [(UILayoutGuide *)self->_layoutGuide bottomAnchor];
-  v106 = [v108 constraintEqualToAnchor:v107 constant:-10.0];
+  bottomAnchor = [(UIStackView *)self->_labelsStackView bottomAnchor];
+  bottomAnchor2 = [(UILayoutGuide *)self->_layoutGuide bottomAnchor];
+  v106 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-10.0];
   v129[4] = v106;
-  v104 = [(UIStackView *)self->_labelsStackView leadingAnchor];
-  v103 = [v3 leadingAnchor];
-  v102 = [v104 constraintEqualToAnchor:v103 constant:50.0];
+  leadingAnchor3 = [(UIStackView *)self->_labelsStackView leadingAnchor];
+  leadingAnchor4 = [view leadingAnchor];
+  v102 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:50.0];
   v129[5] = v102;
-  v101 = [(UIStackView *)self->_labelsStackView trailingAnchor];
-  v100 = [v3 trailingAnchor];
-  v99 = [v101 constraintEqualToAnchor:v100 constant:-50.0];
+  trailingAnchor3 = [(UIStackView *)self->_labelsStackView trailingAnchor];
+  trailingAnchor4 = [view trailingAnchor];
+  v99 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:-50.0];
   v129[6] = v99;
-  v98 = [(UIButton *)self->_biometricAuthButton heightAnchor];
-  v97 = [v98 constraintEqualToConstant:50.0];
+  heightAnchor3 = [(UIButton *)self->_biometricAuthButton heightAnchor];
+  v97 = [heightAnchor3 constraintEqualToConstant:50.0];
   v129[7] = v97;
-  v96 = [(UIButton *)self->_biometricAuthButton centerXAnchor];
-  v95 = [v3 centerXAnchor];
-  v94 = [v96 constraintEqualToAnchor:v95];
+  centerXAnchor = [(UIButton *)self->_biometricAuthButton centerXAnchor];
+  centerXAnchor2 = [view centerXAnchor];
+  v94 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v129[8] = v94;
-  v93 = [(UIButton *)self->_biometricAuthButton topAnchor];
-  v92 = [(UILayoutGuide *)self->_layoutGuide bottomAnchor];
-  v91 = [v93 constraintEqualToAnchor:v92 constant:10.0];
+  topAnchor3 = [(UIButton *)self->_biometricAuthButton topAnchor];
+  bottomAnchor3 = [(UILayoutGuide *)self->_layoutGuide bottomAnchor];
+  v91 = [topAnchor3 constraintEqualToAnchor:bottomAnchor3 constant:10.0];
   v129[9] = v91;
-  v71 = [(UIButton *)self->_biometricAuthButton widthAnchor];
-  v72 = [v71 constraintEqualToConstant:175.0];
+  widthAnchor = [(UIButton *)self->_biometricAuthButton widthAnchor];
+  v72 = [widthAnchor constraintEqualToConstant:175.0];
   v129[10] = v72;
-  v73 = [(UIButton *)self->_cancelButton trailingAnchor];
-  v74 = [v126 trailingAnchor];
-  v75 = [v73 constraintEqualToAnchor:v74 constant:-30.0];
+  trailingAnchor5 = [(UIButton *)self->_cancelButton trailingAnchor];
+  trailingAnchor6 = [v126 trailingAnchor];
+  v75 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6 constant:-30.0];
   v129[11] = v75;
-  v76 = [(UIButton *)self->_cancelButton bottomAnchor];
-  v77 = [v126 bottomAnchor];
+  bottomAnchor4 = [(UIButton *)self->_cancelButton bottomAnchor];
+  bottomAnchor5 = [v126 bottomAnchor];
   [(SBLostModeBiometricAuthenticationTransientOverlayViewController *)self _buttonsBottomSpacing];
-  v79 = [v76 constraintLessThanOrEqualToAnchor:v77 constant:-v78];
+  v79 = [bottomAnchor4 constraintLessThanOrEqualToAnchor:bottomAnchor5 constant:-v78];
   v129[12] = v79;
   v80 = [MEMORY[0x277CBEA60] arrayWithObjects:v129 count:13];
   [v105 activateConstraints:v80];
@@ -264,29 +264,29 @@
   if (v81)
   {
     v82 = MEMORY[0x277CCAAD0];
-    v83 = [(UIButton *)v81 leadingAnchor];
-    v84 = [v126 leadingAnchor];
-    v85 = [v83 constraintEqualToAnchor:v84 constant:30.0];
+    leadingAnchor5 = [(UIButton *)v81 leadingAnchor];
+    leadingAnchor6 = [v126 leadingAnchor];
+    v85 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6 constant:30.0];
     v128[0] = v85;
-    v86 = [(UIButton *)self->_emergencyButton bottomAnchor];
-    v87 = [v126 bottomAnchor];
+    bottomAnchor6 = [(UIButton *)self->_emergencyButton bottomAnchor];
+    bottomAnchor7 = [v126 bottomAnchor];
     [(SBLostModeBiometricAuthenticationTransientOverlayViewController *)self _buttonsBottomSpacing];
-    v89 = [v86 constraintLessThanOrEqualToAnchor:v87 constant:-v88];
+    v89 = [bottomAnchor6 constraintLessThanOrEqualToAnchor:bottomAnchor7 constant:-v88];
     v128[1] = v89;
     v90 = [MEMORY[0x277CBEA60] arrayWithObjects:v128 count:2];
     [v82 activateConstraints:v90];
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = SBLostModeBiometricAuthenticationTransientOverlayViewController;
-  [(SBLostModeBiometricAuthenticationTransientOverlayViewController *)&v5 viewWillAppear:a3];
+  [(SBLostModeBiometricAuthenticationTransientOverlayViewController *)&v5 viewWillAppear:disappear];
   if (!self->_didAuthenticate)
   {
-    v4 = [(SBLostModeBiometricAuthenticationTransientOverlayViewController *)self delegate];
-    [v4 lostModeBiometricAuthenticationViewControllerDidFailOrCancelAuthentication:self];
+    delegate = [(SBLostModeBiometricAuthenticationTransientOverlayViewController *)self delegate];
+    [delegate lostModeBiometricAuthenticationViewControllerDidFailOrCancelAuthentication:self];
   }
 }
 
@@ -347,8 +347,8 @@
 
   else
   {
-    v116 = [MEMORY[0x277D75418] currentDevice];
-    if ([v116 userInterfaceIdiom] != 1)
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice userInterfaceIdiom] != 1)
     {
       *(&v141 + 1) = 0x100000000;
       goto LABEL_12;
@@ -358,19 +358,19 @@
   HIDWORD(v141) = v7 ^ 1;
   if (SBFEffectiveHomeButtonType() == 2)
   {
-    v2 = __sb__runningInSpringBoard();
-    if (v2)
+    mainScreen26 = __sb__runningInSpringBoard();
+    if (mainScreen26)
     {
       __sb__mainScreenReferenceBounds();
     }
 
     else
     {
-      v107 = [MEMORY[0x277D759A0] mainScreen];
-      [v107 _referenceBounds];
+      mainScreen = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen _referenceBounds];
     }
 
-    DWORD2(v141) = v2 ^ 1;
+    DWORD2(v141) = mainScreen26 ^ 1;
     BSSizeRoundForScale();
     if (v22 == *(MEMORY[0x277D66E30] + 288) && v21 == *(MEMORY[0x277D66E30] + 296))
     {
@@ -427,8 +427,8 @@ LABEL_12:
 
   else
   {
-    v115 = [MEMORY[0x277D75418] currentDevice];
-    if ([v115 userInterfaceIdiom] != 1)
+    currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice2 userInterfaceIdiom] != 1)
     {
       *&v141 = 0x100000000;
       goto LABEL_21;
@@ -438,19 +438,19 @@ LABEL_12:
   DWORD1(v141) = v14 ^ 1;
   if (SBFEffectiveHomeButtonType() == 2)
   {
-    v2 = __sb__runningInSpringBoard();
-    if (v2)
+    mainScreen26 = __sb__runningInSpringBoard();
+    if (mainScreen26)
     {
       __sb__mainScreenReferenceBounds();
     }
 
     else
     {
-      v106 = [MEMORY[0x277D759A0] mainScreen];
-      [v106 _referenceBounds];
+      mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen2 _referenceBounds];
     }
 
-    LODWORD(v141) = v2 ^ 1;
+    LODWORD(v141) = mainScreen26 ^ 1;
     BSSizeRoundForScale();
     if (v24 >= *(MEMORY[0x277D66E30] + 440))
     {
@@ -506,8 +506,8 @@ LABEL_21:
 
   else
   {
-    v114 = [MEMORY[0x277D75418] currentDevice];
-    if ([v114 userInterfaceIdiom] != 1)
+    currentDevice3 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice3 userInterfaceIdiom] != 1)
     {
       v140 = 0x100000000;
       goto LABEL_30;
@@ -517,19 +517,19 @@ LABEL_21:
   HIDWORD(v140) = v15 ^ 1;
   if (SBFEffectiveHomeButtonType() == 2)
   {
-    v2 = __sb__runningInSpringBoard();
-    if (v2)
+    mainScreen26 = __sb__runningInSpringBoard();
+    if (mainScreen26)
     {
       __sb__mainScreenReferenceBounds();
     }
 
     else
     {
-      v105 = [MEMORY[0x277D759A0] mainScreen];
-      [v105 _referenceBounds];
+      mainScreen3 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen3 _referenceBounds];
     }
 
-    LODWORD(v140) = v2 ^ 1;
+    LODWORD(v140) = mainScreen26 ^ 1;
     BSSizeRoundForScale();
     if (v25 >= *(MEMORY[0x277D66E30] + 376))
     {
@@ -584,8 +584,8 @@ LABEL_30:
 
   else
   {
-    v113 = [MEMORY[0x277D75418] currentDevice];
-    if ([v113 userInterfaceIdiom] != 1)
+    currentDevice4 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice4 userInterfaceIdiom] != 1)
     {
       v139 = 0x100000000;
       goto LABEL_39;
@@ -593,19 +593,19 @@ LABEL_30:
   }
 
   HIDWORD(v139) = v16 ^ 1;
-  v2 = __sb__runningInSpringBoard();
-  if (v2)
+  mainScreen26 = __sb__runningInSpringBoard();
+  if (mainScreen26)
   {
     __sb__mainScreenReferenceBounds();
   }
 
   else
   {
-    v110 = [MEMORY[0x277D759A0] mainScreen];
-    [v110 _referenceBounds];
+    mainScreen4 = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen4 _referenceBounds];
   }
 
-  LODWORD(v139) = v2 ^ 1;
+  LODWORD(v139) = mainScreen26 ^ 1;
   BSSizeRoundForScale();
   if (v17 >= *(MEMORY[0x277D66E30] + 280))
   {
@@ -653,8 +653,8 @@ LABEL_39:
 
   else
   {
-    v112 = [MEMORY[0x277D75418] currentDevice];
-    if ([v112 userInterfaceIdiom] != 1)
+    currentDevice5 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice5 userInterfaceIdiom] != 1)
     {
       v138 = 0x100000000;
       goto LABEL_49;
@@ -662,19 +662,19 @@ LABEL_39:
   }
 
   HIDWORD(v138) = v18 ^ 1;
-  v2 = __sb__runningInSpringBoard();
-  if (v2)
+  mainScreen26 = __sb__runningInSpringBoard();
+  if (mainScreen26)
   {
     __sb__mainScreenReferenceBounds();
   }
 
   else
   {
-    v108 = [MEMORY[0x277D759A0] mainScreen];
-    [v108 _referenceBounds];
+    mainScreen5 = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen5 _referenceBounds];
   }
 
-  LODWORD(v138) = v2 ^ 1;
+  LODWORD(v138) = mainScreen26 ^ 1;
   BSSizeRoundForScale();
   if (v19 >= *(MEMORY[0x277D66E30] + 264))
   {
@@ -721,8 +721,8 @@ LABEL_49:
 
   else
   {
-    v111 = [MEMORY[0x277D75418] currentDevice];
-    if ([v111 userInterfaceIdiom] != 1)
+    currentDevice6 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice6 userInterfaceIdiom] != 1)
     {
       v137 = 0x100000000;
       goto LABEL_188;
@@ -730,19 +730,19 @@ LABEL_49:
   }
 
   HIDWORD(v137) = v20 ^ 1;
-  v2 = __sb__runningInSpringBoard();
-  if (v2)
+  mainScreen26 = __sb__runningInSpringBoard();
+  if (mainScreen26)
   {
     __sb__mainScreenReferenceBounds();
   }
 
   else
   {
-    v104 = [MEMORY[0x277D759A0] mainScreen];
-    [v104 _referenceBounds];
+    mainScreen6 = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen6 _referenceBounds];
   }
 
-  LODWORD(v137) = v2 ^ 1;
+  LODWORD(v137) = mainScreen26 ^ 1;
   BSSizeRoundForScale();
   if (v27 >= *(MEMORY[0x277D66E30] + 248))
   {
@@ -776,8 +776,8 @@ LABEL_49:
   }
 
 LABEL_188:
-  v2 = __sb__runningInSpringBoard();
-  if (v2)
+  mainScreen26 = __sb__runningInSpringBoard();
+  if (mainScreen26)
   {
     if (SBFEffectiveDeviceClass() != 2)
     {
@@ -812,18 +812,18 @@ LABEL_196:
     v11 = 0;
     v12 = 0;
     v13 = *(MEMORY[0x277D02B78] + 216);
-    HIDWORD(v136) = v2 ^ 1;
+    HIDWORD(v136) = mainScreen26 ^ 1;
     goto LABEL_69;
   }
 
-  v109 = [MEMORY[0x277D75418] currentDevice];
-  if ([v109 userInterfaceIdiom] == 1)
+  currentDevice7 = [MEMORY[0x277D75418] currentDevice];
+  if ([currentDevice7 userInterfaceIdiom] == 1)
   {
     goto LABEL_196;
   }
 
 LABEL_190:
-  HIDWORD(v136) = v2 ^ 1;
+  HIDWORD(v136) = mainScreen26 ^ 1;
   if (!_SBF_Private_IsD94Like())
   {
 LABEL_194:
@@ -842,8 +842,8 @@ LABEL_194:
 
   else
   {
-    v102 = [MEMORY[0x277D75418] currentDevice];
-    if ([v102 userInterfaceIdiom])
+    currentDevice8 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice8 userInterfaceIdiom])
     {
       *(&v136 + 4) = 0x100000000;
       goto LABEL_204;
@@ -853,19 +853,19 @@ LABEL_194:
   DWORD2(v136) = v28 ^ 1;
   if (SBFEffectiveHomeButtonType() == 2)
   {
-    v2 = __sb__runningInSpringBoard();
-    if (v2)
+    mainScreen26 = __sb__runningInSpringBoard();
+    if (mainScreen26)
     {
       __sb__mainScreenReferenceBounds();
     }
 
     else
     {
-      v95 = [MEMORY[0x277D759A0] mainScreen];
-      [v95 _referenceBounds];
+      mainScreen7 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen7 _referenceBounds];
     }
 
-    DWORD1(v136) = v2 ^ 1;
+    DWORD1(v136) = mainScreen26 ^ 1;
     BSSizeRoundForScale();
     if (v31 >= *(MEMORY[0x277D66E30] + 200))
     {
@@ -905,8 +905,8 @@ LABEL_194:
   }
 
 LABEL_204:
-  v2 = __sb__runningInSpringBoard();
-  if (v2)
+  mainScreen26 = __sb__runningInSpringBoard();
+  if (mainScreen26)
   {
     if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
     {
@@ -918,8 +918,8 @@ LABEL_204:
 
   else
   {
-    v103 = [MEMORY[0x277D75418] currentDevice];
-    if ([v103 userInterfaceIdiom])
+    currentDevice9 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice9 userInterfaceIdiom])
     {
       v117 = 0;
       LODWORD(v136) = 1;
@@ -927,22 +927,22 @@ LABEL_204:
     }
   }
 
-  LODWORD(v136) = v2 ^ 1;
+  LODWORD(v136) = mainScreen26 ^ 1;
   if (SBFEffectiveHomeButtonType() == 2)
   {
-    v2 = __sb__runningInSpringBoard();
-    if (v2)
+    mainScreen26 = __sb__runningInSpringBoard();
+    if (mainScreen26)
     {
       __sb__mainScreenReferenceBounds();
     }
 
     else
     {
-      v98 = [MEMORY[0x277D759A0] mainScreen];
-      [v98 _referenceBounds];
+      mainScreen8 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen8 _referenceBounds];
     }
 
-    v117 = v2 ^ 1;
+    v117 = mainScreen26 ^ 1;
     BSSizeRoundForScale();
     if (v29 >= *(MEMORY[0x277D66E30] + 200))
     {
@@ -1004,8 +1004,8 @@ LABEL_222:
 
   else
   {
-    v99 = [MEMORY[0x277D75418] currentDevice];
-    if ([v99 userInterfaceIdiom])
+    currentDevice10 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice10 userInterfaceIdiom])
     {
       v135 = 0x100000000;
       goto LABEL_232;
@@ -1015,19 +1015,19 @@ LABEL_222:
   HIDWORD(v135) = v30 ^ 1;
   if (SBFEffectiveHomeButtonType() == 2)
   {
-    v2 = __sb__runningInSpringBoard();
-    if (v2)
+    mainScreen26 = __sb__runningInSpringBoard();
+    if (mainScreen26)
     {
       __sb__mainScreenReferenceBounds();
     }
 
     else
     {
-      v90 = [MEMORY[0x277D759A0] mainScreen];
-      [v90 _referenceBounds];
+      mainScreen9 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen9 _referenceBounds];
     }
 
-    LODWORD(v135) = v2 ^ 1;
+    LODWORD(v135) = mainScreen26 ^ 1;
     BSSizeRoundForScale();
     if (v35 >= *(MEMORY[0x277D66E30] + 136))
     {
@@ -1064,8 +1064,8 @@ LABEL_222:
   }
 
 LABEL_232:
-  v2 = __sb__runningInSpringBoard();
-  if (v2)
+  mainScreen26 = __sb__runningInSpringBoard();
+  if (mainScreen26)
   {
     if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
     {
@@ -1076,30 +1076,30 @@ LABEL_232:
 
   else
   {
-    v101 = [MEMORY[0x277D75418] currentDevice];
-    if ([v101 userInterfaceIdiom])
+    currentDevice11 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice11 userInterfaceIdiom])
     {
       v134 = 0x100000000;
       goto LABEL_242;
     }
   }
 
-  HIDWORD(v134) = v2 ^ 1;
+  HIDWORD(v134) = mainScreen26 ^ 1;
   if (SBFEffectiveHomeButtonType() == 2)
   {
-    v2 = __sb__runningInSpringBoard();
-    if (v2)
+    mainScreen26 = __sb__runningInSpringBoard();
+    if (mainScreen26)
     {
       __sb__mainScreenReferenceBounds();
     }
 
     else
     {
-      v94 = [MEMORY[0x277D759A0] mainScreen];
-      [v94 _referenceBounds];
+      mainScreen10 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen10 _referenceBounds];
     }
 
-    LODWORD(v134) = v2 ^ 1;
+    LODWORD(v134) = mainScreen26 ^ 1;
     BSSizeRoundForScale();
     if (v32 >= *(MEMORY[0x277D66E30] + 136))
     {
@@ -1153,8 +1153,8 @@ LABEL_246:
 
   else
   {
-    v100 = [MEMORY[0x277D75418] currentDevice];
-    if ([v100 userInterfaceIdiom])
+    currentDevice12 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice12 userInterfaceIdiom])
     {
       v133 = 0x100000000;
       goto LABEL_256;
@@ -1164,19 +1164,19 @@ LABEL_246:
   HIDWORD(v133) = v33 ^ 1;
   if (SBFEffectiveHomeButtonType() == 2)
   {
-    v2 = __sb__runningInSpringBoard();
-    if (v2)
+    mainScreen26 = __sb__runningInSpringBoard();
+    if (mainScreen26)
     {
       __sb__mainScreenReferenceBounds();
     }
 
     else
     {
-      v91 = [MEMORY[0x277D759A0] mainScreen];
-      [v91 _referenceBounds];
+      mainScreen11 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen11 _referenceBounds];
     }
 
-    LODWORD(v133) = v2 ^ 1;
+    LODWORD(v133) = mainScreen26 ^ 1;
     BSSizeRoundForScale();
     if (v34 >= *(MEMORY[0x277D66E30] + 136))
     {
@@ -1211,8 +1211,8 @@ LABEL_246:
   }
 
 LABEL_256:
-  v2 = __sb__runningInSpringBoard();
-  if (v2)
+  mainScreen26 = __sb__runningInSpringBoard();
+  if (mainScreen26)
   {
     if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
     {
@@ -1223,30 +1223,30 @@ LABEL_256:
 
   else
   {
-    v97 = [MEMORY[0x277D75418] currentDevice];
-    if ([v97 userInterfaceIdiom])
+    currentDevice13 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice13 userInterfaceIdiom])
     {
       v132 = 0x100000000;
       goto LABEL_266;
     }
   }
 
-  HIDWORD(v132) = v2 ^ 1;
+  HIDWORD(v132) = mainScreen26 ^ 1;
   if (SBFEffectiveHomeButtonType() == 2)
   {
-    v2 = __sb__runningInSpringBoard();
-    if (v2)
+    mainScreen26 = __sb__runningInSpringBoard();
+    if (mainScreen26)
     {
       __sb__mainScreenReferenceBounds();
     }
 
     else
     {
-      v89 = [MEMORY[0x277D759A0] mainScreen];
-      [v89 _referenceBounds];
+      mainScreen12 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen12 _referenceBounds];
     }
 
-    LODWORD(v132) = v2 ^ 1;
+    LODWORD(v132) = mainScreen26 ^ 1;
     BSSizeRoundForScale();
     if (v36 >= *(MEMORY[0x277D66E30] + 136))
     {
@@ -1298,8 +1298,8 @@ LABEL_276:
 
   else
   {
-    v96 = [MEMORY[0x277D75418] currentDevice];
-    if ([v96 userInterfaceIdiom])
+    currentDevice14 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice14 userInterfaceIdiom])
     {
       v131 = 0x100000000;
       goto LABEL_286;
@@ -1317,13 +1317,13 @@ LABEL_276:
 
     else
     {
-      v86 = [MEMORY[0x277D759A0] mainScreen];
-      [v86 _referenceBounds];
+      mainScreen13 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen13 _referenceBounds];
     }
 
-    v2 = v38 ^ 1u;
+    mainScreen26 = v38 ^ 1u;
     BSSizeRoundForScale();
-    LODWORD(v131) = v2;
+    LODWORD(v131) = mainScreen26;
     if (v39 >= *(MEMORY[0x277D66E30] + 120) && _SBF_Private_IsN84OrSimilarDevice())
     {
       v129 = 0;
@@ -1355,8 +1355,8 @@ LABEL_276:
   }
 
 LABEL_286:
-  v2 = __sb__runningInSpringBoard();
-  if (v2)
+  mainScreen26 = __sb__runningInSpringBoard();
+  if (mainScreen26)
   {
     if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
     {
@@ -1367,30 +1367,30 @@ LABEL_286:
 
   else
   {
-    v93 = [MEMORY[0x277D75418] currentDevice];
-    if ([v93 userInterfaceIdiom])
+    currentDevice15 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice15 userInterfaceIdiom])
     {
       v130 = 0x100000000;
       goto LABEL_296;
     }
   }
 
-  HIDWORD(v130) = v2 ^ 1;
+  HIDWORD(v130) = mainScreen26 ^ 1;
   if (SBFEffectiveHomeButtonType() == 2)
   {
-    v2 = __sb__runningInSpringBoard();
-    if (v2)
+    mainScreen26 = __sb__runningInSpringBoard();
+    if (mainScreen26)
     {
       __sb__mainScreenReferenceBounds();
     }
 
     else
     {
-      v85 = [MEMORY[0x277D759A0] mainScreen];
-      [v85 _referenceBounds];
+      mainScreen14 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen14 _referenceBounds];
     }
 
-    LODWORD(v130) = v2 ^ 1;
+    LODWORD(v130) = mainScreen26 ^ 1;
     BSSizeRoundForScale();
     if (v40 >= *(MEMORY[0x277D66E30] + 120))
     {
@@ -1446,8 +1446,8 @@ LABEL_309:
 
   else
   {
-    v88 = [MEMORY[0x277D75418] currentDevice];
-    if ([v88 userInterfaceIdiom])
+    currentDevice16 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice16 userInterfaceIdiom])
     {
       v129 = 0x100000000;
       goto LABEL_316;
@@ -1465,13 +1465,13 @@ LABEL_309:
 
     else
     {
-      v79 = [MEMORY[0x277D759A0] mainScreen];
-      [v79 _referenceBounds];
+      mainScreen15 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen15 _referenceBounds];
     }
 
-    v2 = v42 ^ 1u;
+    mainScreen26 = v42 ^ 1u;
     BSSizeRoundForScale();
-    LODWORD(v129) = v2;
+    LODWORD(v129) = mainScreen26;
     if (v45 >= *(MEMORY[0x277D66E30] + 184))
     {
       v127 = 0;
@@ -1501,8 +1501,8 @@ LABEL_309:
   }
 
 LABEL_316:
-  v2 = __sb__runningInSpringBoard();
-  if (v2)
+  mainScreen26 = __sb__runningInSpringBoard();
+  if (mainScreen26)
   {
     if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
     {
@@ -1513,30 +1513,30 @@ LABEL_316:
 
   else
   {
-    v92 = [MEMORY[0x277D75418] currentDevice];
-    if ([v92 userInterfaceIdiom])
+    currentDevice17 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice17 userInterfaceIdiom])
     {
       v128 = 0x100000000;
       goto LABEL_326;
     }
   }
 
-  HIDWORD(v128) = v2 ^ 1;
+  HIDWORD(v128) = mainScreen26 ^ 1;
   if (SBFEffectiveHomeButtonType() == 2)
   {
-    v2 = __sb__runningInSpringBoard();
-    if (v2)
+    mainScreen26 = __sb__runningInSpringBoard();
+    if (mainScreen26)
     {
       __sb__mainScreenReferenceBounds();
     }
 
     else
     {
-      v82 = [MEMORY[0x277D759A0] mainScreen];
-      [v82 _referenceBounds];
+      mainScreen16 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen16 _referenceBounds];
     }
 
-    LODWORD(v128) = v2 ^ 1;
+    LODWORD(v128) = mainScreen26 ^ 1;
     BSSizeRoundForScale();
     if (v43 >= *(MEMORY[0x277D66E30] + 184))
     {
@@ -1590,8 +1590,8 @@ LABEL_334:
 
   else
   {
-    v84 = [MEMORY[0x277D75418] currentDevice];
-    if ([v84 userInterfaceIdiom])
+    currentDevice18 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice18 userInterfaceIdiom])
     {
       v127 = 0x100000000;
       goto LABEL_344;
@@ -1609,13 +1609,13 @@ LABEL_334:
 
     else
     {
-      v75 = [MEMORY[0x277D759A0] mainScreen];
-      [v75 _referenceBounds];
+      mainScreen17 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen17 _referenceBounds];
     }
 
-    v2 = v46 ^ 1u;
+    mainScreen26 = v46 ^ 1u;
     BSSizeRoundForScale();
-    LODWORD(v127) = v2;
+    LODWORD(v127) = mainScreen26;
     if (v49 >= *(MEMORY[0x277D66E30] + 104))
     {
       v125 = 0;
@@ -1643,8 +1643,8 @@ LABEL_334:
   }
 
 LABEL_344:
-  v2 = __sb__runningInSpringBoard();
-  if (v2)
+  mainScreen26 = __sb__runningInSpringBoard();
+  if (mainScreen26)
   {
     if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
     {
@@ -1655,30 +1655,30 @@ LABEL_344:
 
   else
   {
-    v87 = [MEMORY[0x277D75418] currentDevice];
-    if ([v87 userInterfaceIdiom])
+    currentDevice19 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice19 userInterfaceIdiom])
     {
       v126 = 0x100000000;
       goto LABEL_354;
     }
   }
 
-  HIDWORD(v126) = v2 ^ 1;
+  HIDWORD(v126) = mainScreen26 ^ 1;
   if (SBFEffectiveHomeButtonType() == 2)
   {
-    v2 = __sb__runningInSpringBoard();
-    if (v2)
+    mainScreen26 = __sb__runningInSpringBoard();
+    if (mainScreen26)
     {
       __sb__mainScreenReferenceBounds();
     }
 
     else
     {
-      v78 = [MEMORY[0x277D759A0] mainScreen];
-      [v78 _referenceBounds];
+      mainScreen18 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen18 _referenceBounds];
     }
 
-    LODWORD(v126) = v2 ^ 1;
+    LODWORD(v126) = mainScreen26 ^ 1;
     BSSizeRoundForScale();
     if (v47 >= *(MEMORY[0x277D66E30] + 104))
     {
@@ -1730,8 +1730,8 @@ LABEL_362:
 
   else
   {
-    v80 = [MEMORY[0x277D75418] currentDevice];
-    if ([v80 userInterfaceIdiom])
+    currentDevice20 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice20 userInterfaceIdiom])
     {
       v125 = 0x100000000;
       goto LABEL_372;
@@ -1741,19 +1741,19 @@ LABEL_362:
   HIDWORD(v125) = v48 ^ 1;
   if (SBFEffectiveHomeButtonType() == 2)
   {
-    v2 = __sb__runningInSpringBoard();
-    if (v2)
+    mainScreen26 = __sb__runningInSpringBoard();
+    if (mainScreen26)
     {
       __sb__mainScreenReferenceBounds();
     }
 
     else
     {
-      v71 = [MEMORY[0x277D759A0] mainScreen];
-      [v71 _referenceBounds];
+      mainScreen19 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen19 _referenceBounds];
     }
 
-    LODWORD(v125) = v2 ^ 1;
+    LODWORD(v125) = mainScreen26 ^ 1;
     BSSizeRoundForScale();
     if (v54 >= *(MEMORY[0x277D66E30] + 216))
     {
@@ -1780,8 +1780,8 @@ LABEL_362:
   }
 
 LABEL_372:
-  v2 = __sb__runningInSpringBoard();
-  if (v2)
+  mainScreen26 = __sb__runningInSpringBoard();
+  if (mainScreen26)
   {
     if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
     {
@@ -1792,30 +1792,30 @@ LABEL_372:
 
   else
   {
-    v83 = [MEMORY[0x277D75418] currentDevice];
-    if ([v83 userInterfaceIdiom])
+    currentDevice21 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice21 userInterfaceIdiom])
     {
       v124 = 0x100000000;
       goto LABEL_382;
     }
   }
 
-  HIDWORD(v124) = v2 ^ 1;
+  HIDWORD(v124) = mainScreen26 ^ 1;
   if (SBFEffectiveHomeButtonType() == 2)
   {
-    v2 = __sb__runningInSpringBoard();
-    if (v2)
+    mainScreen26 = __sb__runningInSpringBoard();
+    if (mainScreen26)
     {
       __sb__mainScreenReferenceBounds();
     }
 
     else
     {
-      v74 = [MEMORY[0x277D759A0] mainScreen];
-      [v74 _referenceBounds];
+      mainScreen20 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen20 _referenceBounds];
     }
 
-    LODWORD(v124) = v2 ^ 1;
+    LODWORD(v124) = mainScreen26 ^ 1;
     BSSizeRoundForScale();
     if (v50 >= *(MEMORY[0x277D66E30] + 216))
     {
@@ -1859,8 +1859,8 @@ LABEL_386:
 
   else
   {
-    v81 = [MEMORY[0x277D75418] currentDevice];
-    if ([v81 userInterfaceIdiom])
+    currentDevice22 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice22 userInterfaceIdiom])
     {
       v123 = 0x100000000;
       goto LABEL_396;
@@ -1878,13 +1878,13 @@ LABEL_386:
 
     else
     {
-      v72 = [MEMORY[0x277D759A0] mainScreen];
-      [v72 _referenceBounds];
+      mainScreen21 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen21 _referenceBounds];
     }
 
-    v2 = v52 ^ 1u;
+    mainScreen26 = v52 ^ 1u;
     BSSizeRoundForScale();
-    LODWORD(v123) = v2;
+    LODWORD(v123) = mainScreen26;
     if (v53 >= *(MEMORY[0x277D66E30] + 120))
     {
       v121 = 0;
@@ -1908,8 +1908,8 @@ LABEL_386:
   }
 
 LABEL_396:
-  v2 = __sb__runningInSpringBoard();
-  if (v2)
+  mainScreen26 = __sb__runningInSpringBoard();
+  if (mainScreen26)
   {
     if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
     {
@@ -1920,30 +1920,30 @@ LABEL_396:
 
   else
   {
-    v77 = [MEMORY[0x277D75418] currentDevice];
-    if ([v77 userInterfaceIdiom])
+    currentDevice23 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice23 userInterfaceIdiom])
     {
       v122 = 0x100000000;
       goto LABEL_406;
     }
   }
 
-  HIDWORD(v122) = v2 ^ 1;
+  HIDWORD(v122) = mainScreen26 ^ 1;
   if (SBFEffectiveHomeButtonType() == 2)
   {
-    v2 = __sb__runningInSpringBoard();
-    if (v2)
+    mainScreen26 = __sb__runningInSpringBoard();
+    if (mainScreen26)
     {
       __sb__mainScreenReferenceBounds();
     }
 
     else
     {
-      v70 = [MEMORY[0x277D759A0] mainScreen];
-      [v70 _referenceBounds];
+      mainScreen22 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen22 _referenceBounds];
     }
 
-    LODWORD(v122) = v2 ^ 1;
+    LODWORD(v122) = mainScreen26 ^ 1;
     BSSizeRoundForScale();
     if (v55 >= *(MEMORY[0x277D66E30] + 120))
     {
@@ -1985,8 +1985,8 @@ LABEL_416:
 
   else
   {
-    v76 = [MEMORY[0x277D75418] currentDevice];
-    if ([v76 userInterfaceIdiom])
+    currentDevice24 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice24 userInterfaceIdiom])
     {
       v121 = 0x100000000;
       goto LABEL_426;
@@ -1996,19 +1996,19 @@ LABEL_416:
   HIDWORD(v121) = v56 ^ 1;
   if (SBFEffectiveHomeButtonType() == 2)
   {
-    v2 = __sb__runningInSpringBoard();
-    if (v2)
+    mainScreen26 = __sb__runningInSpringBoard();
+    if (mainScreen26)
     {
       __sb__mainScreenReferenceBounds();
     }
 
     else
     {
-      v69 = [MEMORY[0x277D759A0] mainScreen];
-      [v69 _referenceBounds];
+      mainScreen23 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen23 _referenceBounds];
     }
 
-    LODWORD(v121) = v2 ^ 1;
+    LODWORD(v121) = mainScreen26 ^ 1;
     BSSizeRoundForScale();
     if (v57 >= *(MEMORY[0x277D66E30] + 104))
     {
@@ -2031,8 +2031,8 @@ LABEL_416:
   }
 
 LABEL_426:
-  v2 = __sb__runningInSpringBoard();
-  if (v2)
+  mainScreen26 = __sb__runningInSpringBoard();
+  if (mainScreen26)
   {
     if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
     {
@@ -2043,30 +2043,30 @@ LABEL_426:
 
   else
   {
-    v73 = [MEMORY[0x277D75418] currentDevice];
-    if ([v73 userInterfaceIdiom])
+    currentDevice25 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice25 userInterfaceIdiom])
     {
       v120 = 0x100000000;
       goto LABEL_436;
     }
   }
 
-  HIDWORD(v120) = v2 ^ 1;
+  HIDWORD(v120) = mainScreen26 ^ 1;
   if (SBFEffectiveHomeButtonType() == 2)
   {
-    v2 = __sb__runningInSpringBoard();
-    if (v2)
+    mainScreen26 = __sb__runningInSpringBoard();
+    if (mainScreen26)
     {
       __sb__mainScreenReferenceBounds();
     }
 
     else
     {
-      v68 = [MEMORY[0x277D759A0] mainScreen];
-      [v68 _referenceBounds];
+      mainScreen24 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen24 _referenceBounds];
     }
 
-    LODWORD(v120) = v2 ^ 1;
+    LODWORD(v120) = mainScreen26 ^ 1;
     BSSizeRoundForScale();
     if (v58 >= *(MEMORY[0x277D66E30] + 104))
     {
@@ -2158,8 +2158,8 @@ LABEL_443:
 
   else
   {
-    v67 = [MEMORY[0x277D75418] currentDevice];
-    if ([v67 userInterfaceIdiom])
+    currentDevice26 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice26 userInterfaceIdiom])
     {
       v119 = 0x100000000;
       goto LABEL_463;
@@ -2169,19 +2169,19 @@ LABEL_443:
   HIDWORD(v119) = v59 ^ 1;
   if (SBFEffectiveHomeButtonType() == 2)
   {
-    v2 = __sb__runningInSpringBoard();
-    if (v2)
+    mainScreen26 = __sb__runningInSpringBoard();
+    if (mainScreen26)
     {
       __sb__mainScreenReferenceBounds();
     }
 
     else
     {
-      v65 = [MEMORY[0x277D759A0] mainScreen];
-      [v65 _referenceBounds];
+      mainScreen25 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen25 _referenceBounds];
     }
 
-    LODWORD(v119) = v2 ^ 1;
+    LODWORD(v119) = mainScreen26 ^ 1;
     BSSizeRoundForScale();
     if (v61 >= *(MEMORY[0x277D66E30] + 88))
     {
@@ -2202,8 +2202,8 @@ LABEL_443:
   }
 
 LABEL_463:
-  v2 = __sb__runningInSpringBoard();
-  if (v2)
+  mainScreen26 = __sb__runningInSpringBoard();
+  if (mainScreen26)
   {
     if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
     {
@@ -2215,8 +2215,8 @@ LABEL_463:
 
   else
   {
-    v66 = [MEMORY[0x277D75418] currentDevice];
-    if ([v66 userInterfaceIdiom])
+    currentDevice27 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice27 userInterfaceIdiom])
     {
       v8 = 0;
       v118 = 1;
@@ -2224,22 +2224,22 @@ LABEL_463:
     }
   }
 
-  v118 = v2 ^ 1;
+  v118 = mainScreen26 ^ 1;
   if (SBFEffectiveHomeButtonType() == 2)
   {
-    v3 = __sb__runningInSpringBoard();
-    if (v3)
+    currentDevice29 = __sb__runningInSpringBoard();
+    if (currentDevice29)
     {
       __sb__mainScreenReferenceBounds();
     }
 
     else
     {
-      v2 = [MEMORY[0x277D759A0] mainScreen];
-      [v2 _referenceBounds];
+      mainScreen26 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen26 _referenceBounds];
     }
 
-    v8 = v3 ^ 1;
+    v8 = currentDevice29 ^ 1;
     BSSizeRoundForScale();
     if (v62 >= *(MEMORY[0x277D66E30] + 72))
     {
@@ -2258,8 +2258,8 @@ LABEL_463:
   }
 
 LABEL_473:
-  v3 = __sb__runningInSpringBoard();
-  if (v3)
+  currentDevice29 = __sb__runningInSpringBoard();
+  if (currentDevice29)
   {
     if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
     {
@@ -2271,8 +2271,8 @@ LABEL_473:
 
   else
   {
-    v4 = [MEMORY[0x277D75418] currentDevice];
-    if ([v4 userInterfaceIdiom])
+    currentDevice28 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice28 userInterfaceIdiom])
     {
       v10 = 0;
       v9 = 1;
@@ -2280,20 +2280,20 @@ LABEL_473:
     }
   }
 
-  v9 = v3 ^ 1;
-  v3 = __sb__runningInSpringBoard();
-  if (v3)
+  v9 = currentDevice29 ^ 1;
+  currentDevice29 = __sb__runningInSpringBoard();
+  if (currentDevice29)
   {
     __sb__mainScreenReferenceBounds();
   }
 
   else
   {
-    v6 = [MEMORY[0x277D759A0] mainScreen];
-    [v6 _referenceBounds];
+    mainScreen27 = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen27 _referenceBounds];
   }
 
-  v10 = v3 ^ 1;
+  v10 = currentDevice29 ^ 1;
   BSSizeRoundForScale();
   if (v60 >= *(MEMORY[0x277D66E30] + 56))
   {
@@ -2304,8 +2304,8 @@ LABEL_473:
   }
 
 LABEL_483:
-  v5 = __sb__runningInSpringBoard();
-  if (v5)
+  mainScreen28 = __sb__runningInSpringBoard();
+  if (mainScreen28)
   {
     if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
     {
@@ -2319,8 +2319,8 @@ LABEL_500:
 
   else
   {
-    v3 = [MEMORY[0x277D75418] currentDevice];
-    if ([v3 userInterfaceIdiom])
+    currentDevice29 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice29 userInterfaceIdiom])
     {
       v12 = 0;
       v11 = 1;
@@ -2328,7 +2328,7 @@ LABEL_500:
     }
   }
 
-  v11 = v5 ^ 1;
+  v11 = mainScreen28 ^ 1;
   v63 = __sb__runningInSpringBoard();
   if (v63)
   {
@@ -2337,8 +2337,8 @@ LABEL_500:
 
   else
   {
-    v5 = [MEMORY[0x277D759A0] mainScreen];
-    [v5 _referenceBounds];
+    mainScreen28 = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen28 _referenceBounds];
   }
 
   v12 = v63 ^ 1;
@@ -2615,14 +2615,14 @@ LABEL_75:
 
 - (void)_handleCancelButtonAction
 {
-  v3 = [(SBLostModeBiometricAuthenticationTransientOverlayViewController *)self delegate];
-  [v3 lostModeBiometricAuthenticationViewControllerDidFailOrCancelAuthentication:self];
+  delegate = [(SBLostModeBiometricAuthenticationTransientOverlayViewController *)self delegate];
+  [delegate lostModeBiometricAuthenticationViewControllerDidFailOrCancelAuthentication:self];
 }
 
 - (void)_handleEmergencyButtonAction
 {
-  v3 = [(SBLostModeBiometricAuthenticationTransientOverlayViewController *)self delegate];
-  [v3 lostModeBiometricAuthenticationViewControllerDidTapEmergencyButton:self];
+  delegate = [(SBLostModeBiometricAuthenticationTransientOverlayViewController *)self delegate];
+  [delegate lostModeBiometricAuthenticationViewControllerDidTapEmergencyButton:self];
 }
 
 - (id)_biometricCapabilityText
@@ -2631,8 +2631,8 @@ LABEL_75:
   {
     v3 = @"LOST_MODE_BIO_AUTHENTICATION_TOUCH_ID";
 LABEL_5:
-    v4 = [MEMORY[0x277CCA8D8] mainBundle];
-    v5 = [v4 localizedStringForKey:v3 value:&stru_283094718 table:@"SpringBoard"];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v5 = [mainBundle localizedStringForKey:v3 value:&stru_283094718 table:@"SpringBoard"];
 
     goto LABEL_7;
   }
@@ -2680,7 +2680,7 @@ void __103__SBLostModeBiometricAuthenticationTransientOverlayViewController__bio
 {
   v4 = *MEMORY[0x277D85DE8];
   v2 = 138412290;
-  v3 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_21ED4E000, a2, OS_LOG_TYPE_ERROR, "Cannot evaluate local authentication policy with error: %@", &v2, 0xCu);
 }
 

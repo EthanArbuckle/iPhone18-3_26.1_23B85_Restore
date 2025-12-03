@@ -1,13 +1,13 @@
 @interface _CPLPrequeliteScopeIsEqual
 + (void)initialize;
-- (_CPLPrequeliteScopeIsEqual)initWithIdentifier:(id)a3;
+- (_CPLPrequeliteScopeIsEqual)initWithIdentifier:(id)identifier;
 @end
 
 @implementation _CPLPrequeliteScopeIsEqual
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = [[NSData alloc] initWithBytes:"scopeIdentifier = ?" length:19];
     v3 = qword_1002D29C0;
@@ -15,15 +15,15 @@
   }
 }
 
-- (_CPLPrequeliteScopeIsEqual)initWithIdentifier:(id)a3
+- (_CPLPrequeliteScopeIsEqual)initWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = _CPLPrequeliteScopeIsEqual;
   v5 = [(_CPLPrequeliteScopeIsEqual *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     identifier = v5->_identifier;
     v5->_identifier = v6;
   }

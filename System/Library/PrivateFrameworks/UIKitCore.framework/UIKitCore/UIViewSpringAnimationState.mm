@@ -1,77 +1,77 @@
 @interface UIViewSpringAnimationState
-+ (id)defaultSpringAnimationForKey:(id)a3 mass:(double)a4 stiffness:(double)a5 damping:(double)a6 velocity:(double)a7 allowsOverdamping:(BOOL)a8;
-- (id)_defaultAnimationForKey:(id)a3;
-- (id)animationForLayer:(id)a3 forKey:(id)a4 forView:(id)a5;
-- (void)generateSpringPropertiesForDuration:(double)a3 damping:(double)a4 velocity:(double)a5;
-- (void)generateSpringPropertiesForPerceptualDuration:(double)a3 bounce:(double)a4 velocity:(double)a5;
-- (void)setupWithDuration:(double)a3 delay:(double)a4 view:(id)a5 options:(unint64_t)a6 factory:(id)a7 parentState:(id)a8 start:(id)a9 completion:(id)a10;
++ (id)defaultSpringAnimationForKey:(id)key mass:(double)mass stiffness:(double)stiffness damping:(double)damping velocity:(double)velocity allowsOverdamping:(BOOL)overdamping;
+- (id)_defaultAnimationForKey:(id)key;
+- (id)animationForLayer:(id)layer forKey:(id)key forView:(id)view;
+- (void)generateSpringPropertiesForDuration:(double)duration damping:(double)damping velocity:(double)velocity;
+- (void)generateSpringPropertiesForPerceptualDuration:(double)duration bounce:(double)bounce velocity:(double)velocity;
+- (void)setupWithDuration:(double)duration delay:(double)delay view:(id)view options:(unint64_t)options factory:(id)factory parentState:(id)state start:(id)start completion:(id)self0;
 @end
 
 @implementation UIViewSpringAnimationState
 
-- (void)generateSpringPropertiesForDuration:(double)a3 damping:(double)a4 velocity:(double)a5
+- (void)generateSpringPropertiesForDuration:(double)duration damping:(double)damping velocity:(double)velocity
 {
   self->_mass = 1.0;
-  self->_velocity = a5;
-  parametersOfSpringAnimation(&self->_stiffness, &self->_damping, 0, a3, a4, self->_mass, a5, 0.001);
+  self->_velocity = velocity;
+  parametersOfSpringAnimation(&self->_stiffness, &self->_damping, 0, duration, damping, self->_mass, velocity, 0.001);
 }
 
-- (void)generateSpringPropertiesForPerceptualDuration:(double)a3 bounce:(double)a4 velocity:(double)a5
+- (void)generateSpringPropertiesForPerceptualDuration:(double)duration bounce:(double)bounce velocity:(double)velocity
 {
   self->_mass = 1.0;
-  self->_velocity = a5;
+  self->_velocity = velocity;
   self->_allowsOverdamping = 1;
   v7 = 0.0;
-  [UISpringTimingParameters _convertBounce:&v7 toDampingRatio:a4];
-  [UISpringTimingParameters _convertDampingRatio:&self->_mass response:&self->_stiffness toMass:&self->_damping stiffness:v7 damping:a3];
+  [UISpringTimingParameters _convertBounce:&v7 toDampingRatio:bounce];
+  [UISpringTimingParameters _convertDampingRatio:&self->_mass response:&self->_stiffness toMass:&self->_damping stiffness:v7 damping:duration];
 }
 
-- (id)animationForLayer:(id)a3 forKey:(id)a4 forView:(id)a5
+- (id)animationForLayer:(id)layer forKey:(id)key forView:(id)view
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v10 && (*(v10 + 91) & 2) != 0)
+  layerCopy = layer;
+  keyCopy = key;
+  viewCopy = view;
+  v11 = viewCopy;
+  if (viewCopy && (*(viewCopy + 91) & 2) != 0)
   {
     v12 = 0;
   }
 
   else
   {
-    v12 = [(UIViewSpringAnimationState *)self _defaultAnimationForKey:v9];
-    if ([(UIViewAnimationState *)self _shouldStartFromCurrentStateForLayer:v8 key:v9 forView:v11])
+    v12 = [(UIViewSpringAnimationState *)self _defaultAnimationForKey:keyCopy];
+    if ([(UIViewAnimationState *)self _shouldStartFromCurrentStateForLayer:layerCopy key:keyCopy forView:v11])
     {
-      v13 = [v8 presentationLayer];
-      v14 = [v13 valueForKeyPath:v9];
+      presentationLayer = [layerCopy presentationLayer];
+      v14 = [presentationLayer valueForKeyPath:keyCopy];
       [v12 setFromValue:v14];
     }
 
     else
     {
-      v13 = [v8 valueForKeyPath:v9];
-      [v12 setFromValue:v13];
+      presentationLayer = [layerCopy valueForKeyPath:keyCopy];
+      [v12 setFromValue:presentationLayer];
     }
 
-    [(UIViewAnimationState *)self configureAnimation:v12 forLayer:v8 forKey:v9];
+    [(UIViewAnimationState *)self configureAnimation:v12 forLayer:layerCopy forKey:keyCopy];
     [(UIViewAnimationState *)self setAnimationAttributes:v12 skipDelegateAssignment:0 customCurve:0];
   }
 
   return v12;
 }
 
-+ (id)defaultSpringAnimationForKey:(id)a3 mass:(double)a4 stiffness:(double)a5 damping:(double)a6 velocity:(double)a7 allowsOverdamping:(BOOL)a8
++ (id)defaultSpringAnimationForKey:(id)key mass:(double)mass stiffness:(double)stiffness damping:(double)damping velocity:(double)velocity allowsOverdamping:(BOOL)overdamping
 {
-  v8 = a8;
-  v13 = a3;
+  overdampingCopy = overdamping;
+  keyCopy = key;
   v14 = UIAnimationDragCoefficient();
-  v15 = [MEMORY[0x1E69794A8] animationWithKeyPath:v13];
+  v15 = [MEMORY[0x1E69794A8] animationWithKeyPath:keyCopy];
 
-  [v15 setMass:a4];
-  [v15 setStiffness:a5];
-  [v15 setDamping:a6];
-  [v15 setVelocity:a7];
-  [v15 setAllowsOverdamping:v8];
+  [v15 setMass:mass];
+  [v15 setStiffness:stiffness];
+  [v15 setDamping:damping];
+  [v15 setVelocity:velocity];
+  [v15 setAllowsOverdamping:overdampingCopy];
   if (v14 > 1.0)
   {
     *&v16 = 1.0 / v14;
@@ -81,17 +81,17 @@
   return v15;
 }
 
-- (void)setupWithDuration:(double)a3 delay:(double)a4 view:(id)a5 options:(unint64_t)a6 factory:(id)a7 parentState:(id)a8 start:(id)a9 completion:(id)a10
+- (void)setupWithDuration:(double)duration delay:(double)delay view:(id)view options:(unint64_t)options factory:(id)factory parentState:(id)state start:(id)start completion:(id)self0
 {
   v10.receiver = self;
   v10.super_class = UIViewSpringAnimationState;
-  [(UIViewAnimationState *)&v10 setupWithDuration:a5 delay:a6 & 0xFFFFFFFFFFF8FFFFLL | 0x30000 view:a7 options:a8 factory:a9 parentState:a10 start:a3 completion:a4];
+  [(UIViewAnimationState *)&v10 setupWithDuration:view delay:options & 0xFFFFFFFFFFF8FFFFLL | 0x30000 view:factory options:state factory:start parentState:completion start:duration completion:delay];
 }
 
-- (id)_defaultAnimationForKey:(id)a3
+- (id)_defaultAnimationForKey:(id)key
 {
-  v4 = a3;
-  v5 = [objc_opt_class() defaultSpringAnimationForKey:v4 mass:self->_allowsOverdamping stiffness:self->_mass damping:self->_stiffness velocity:self->_damping allowsOverdamping:self->_velocity];
+  keyCopy = key;
+  v5 = [objc_opt_class() defaultSpringAnimationForKey:keyCopy mass:self->_allowsOverdamping stiffness:self->_mass damping:self->_stiffness velocity:self->_damping allowsOverdamping:self->_velocity];
 
   return v5;
 }

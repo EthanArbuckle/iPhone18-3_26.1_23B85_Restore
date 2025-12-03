@@ -1,23 +1,23 @@
 @interface CRKFetchObservingInstructorsByCourseOperation
-- (CRKFetchObservingInstructorsByCourseOperation)initWithRequestPerformer:(id)a3;
+- (CRKFetchObservingInstructorsByCourseOperation)initWithRequestPerformer:(id)performer;
 - (void)cancel;
-- (void)compileResultsWithFetchCoursesResult:(id)a3 fetchScreenObserversResult:(id)a4;
+- (void)compileResultsWithFetchCoursesResult:(id)result fetchScreenObserversResult:(id)observersResult;
 - (void)main;
-- (void)operationsDidComplete:(id)a3;
+- (void)operationsDidComplete:(id)complete;
 @end
 
 @implementation CRKFetchObservingInstructorsByCourseOperation
 
-- (CRKFetchObservingInstructorsByCourseOperation)initWithRequestPerformer:(id)a3
+- (CRKFetchObservingInstructorsByCourseOperation)initWithRequestPerformer:(id)performer
 {
-  v5 = a3;
+  performerCopy = performer;
   v9.receiver = self;
   v9.super_class = CRKFetchObservingInstructorsByCourseOperation;
   v6 = [(CRKFetchObservingInstructorsByCourseOperation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_requestPerformer, a3);
+    objc_storeStrong(&v6->_requestPerformer, performer);
   }
 
   return v7;
@@ -56,34 +56,34 @@ void __55__CRKFetchObservingInstructorsByCourseOperation_cancel__block_invoke(ui
 {
   if ([MEMORY[0x277CCACC8] isMainThread])
   {
-    v4 = [(CRKFetchObservingInstructorsByCourseOperation *)self requestPerformer];
+    requestPerformer = [(CRKFetchObservingInstructorsByCourseOperation *)self requestPerformer];
     v5 = objc_opt_new();
-    v6 = [v4 operationForRequest:v5];
+    v6 = [requestPerformer operationForRequest:v5];
     [(CRKFetchObservingInstructorsByCourseOperation *)self setFetchCoursesOperation:v6];
 
-    v7 = [(CRKFetchObservingInstructorsByCourseOperation *)self requestPerformer];
+    requestPerformer2 = [(CRKFetchObservingInstructorsByCourseOperation *)self requestPerformer];
     v8 = objc_opt_new();
-    v9 = [v7 operationForRequest:v8];
+    v9 = [requestPerformer2 operationForRequest:v8];
     [(CRKFetchObservingInstructorsByCourseOperation *)self setFetchInstructorsOperation:v9];
 
     v17 = objc_opt_new();
-    v10 = [(CRKFetchObservingInstructorsByCourseOperation *)self fetchCoursesOperation];
-    [v17 addDependency:v10];
+    fetchCoursesOperation = [(CRKFetchObservingInstructorsByCourseOperation *)self fetchCoursesOperation];
+    [v17 addDependency:fetchCoursesOperation];
 
-    v11 = [(CRKFetchObservingInstructorsByCourseOperation *)self fetchInstructorsOperation];
-    [v17 addDependency:v11];
+    fetchInstructorsOperation = [(CRKFetchObservingInstructorsByCourseOperation *)self fetchInstructorsOperation];
+    [v17 addDependency:fetchInstructorsOperation];
 
     [v17 addTarget:self selector:sel_operationsDidComplete_ forOperationEvents:6];
-    v12 = [MEMORY[0x277CF9540] crk_backgroundQueue];
-    v13 = [(CRKFetchObservingInstructorsByCourseOperation *)self fetchCoursesOperation];
-    [v12 addOperation:v13];
+    crk_backgroundQueue = [MEMORY[0x277CF9540] crk_backgroundQueue];
+    fetchCoursesOperation2 = [(CRKFetchObservingInstructorsByCourseOperation *)self fetchCoursesOperation];
+    [crk_backgroundQueue addOperation:fetchCoursesOperation2];
 
-    v14 = [MEMORY[0x277CF9540] crk_backgroundQueue];
-    v15 = [(CRKFetchObservingInstructorsByCourseOperation *)self fetchInstructorsOperation];
-    [v14 addOperation:v15];
+    crk_backgroundQueue2 = [MEMORY[0x277CF9540] crk_backgroundQueue];
+    fetchInstructorsOperation2 = [(CRKFetchObservingInstructorsByCourseOperation *)self fetchInstructorsOperation];
+    [crk_backgroundQueue2 addOperation:fetchInstructorsOperation2];
 
-    v16 = [MEMORY[0x277CF9540] crk_backgroundQueue];
-    [v16 addOperation:v17];
+    crk_backgroundQueue3 = [MEMORY[0x277CF9540] crk_backgroundQueue];
+    [crk_backgroundQueue3 addOperation:v17];
   }
 
   else
@@ -93,30 +93,30 @@ void __55__CRKFetchObservingInstructorsByCourseOperation_cancel__block_invoke(ui
   }
 }
 
-- (void)operationsDidComplete:(id)a3
+- (void)operationsDidComplete:(id)complete
 {
   if (![(CRKFetchObservingInstructorsByCourseOperation *)self isExecuting])
   {
     return;
   }
 
-  v4 = [(CRKFetchObservingInstructorsByCourseOperation *)self fetchCoursesOperation];
-  v5 = [v4 error];
+  fetchCoursesOperation = [(CRKFetchObservingInstructorsByCourseOperation *)self fetchCoursesOperation];
+  error = [fetchCoursesOperation error];
 
-  if (v5)
+  if (error)
   {
-    v6 = [(CRKFetchObservingInstructorsByCourseOperation *)self fetchCoursesOperation];
+    fetchCoursesOperation2 = [(CRKFetchObservingInstructorsByCourseOperation *)self fetchCoursesOperation];
   }
 
   else
   {
-    v7 = [(CRKFetchObservingInstructorsByCourseOperation *)self fetchInstructorsOperation];
-    v8 = [v7 error];
+    fetchInstructorsOperation = [(CRKFetchObservingInstructorsByCourseOperation *)self fetchInstructorsOperation];
+    error2 = [fetchInstructorsOperation error];
 
-    if (!v8)
+    if (!error2)
     {
-      v10 = [(CRKFetchObservingInstructorsByCourseOperation *)self fetchCoursesOperation];
-      v12 = [v10 resultObject];
+      fetchCoursesOperation3 = [(CRKFetchObservingInstructorsByCourseOperation *)self fetchCoursesOperation];
+      resultObject = [fetchCoursesOperation3 resultObject];
 
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -124,8 +124,8 @@ void __55__CRKFetchObservingInstructorsByCourseOperation_cancel__block_invoke(ui
         [CRKFetchObservingInstructorsByCourseOperation operationsDidComplete:];
       }
 
-      v11 = [(CRKFetchObservingInstructorsByCourseOperation *)self fetchInstructorsOperation];
-      v9 = [v11 resultObject];
+      fetchInstructorsOperation2 = [(CRKFetchObservingInstructorsByCourseOperation *)self fetchInstructorsOperation];
+      resultObject2 = [fetchInstructorsOperation2 resultObject];
 
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -133,36 +133,36 @@ void __55__CRKFetchObservingInstructorsByCourseOperation_cancel__block_invoke(ui
         [CRKFetchObservingInstructorsByCourseOperation operationsDidComplete:];
       }
 
-      [(CRKFetchObservingInstructorsByCourseOperation *)self compileResultsWithFetchCoursesResult:v12 fetchScreenObserversResult:v9];
+      [(CRKFetchObservingInstructorsByCourseOperation *)self compileResultsWithFetchCoursesResult:resultObject fetchScreenObserversResult:resultObject2];
       goto LABEL_8;
     }
 
-    v6 = [(CRKFetchObservingInstructorsByCourseOperation *)self fetchInstructorsOperation];
+    fetchCoursesOperation2 = [(CRKFetchObservingInstructorsByCourseOperation *)self fetchInstructorsOperation];
   }
 
-  v12 = v6;
-  v9 = [v6 error];
-  [(CRKFetchObservingInstructorsByCourseOperation *)self endOperationWithError:v9];
+  resultObject = fetchCoursesOperation2;
+  resultObject2 = [fetchCoursesOperation2 error];
+  [(CRKFetchObservingInstructorsByCourseOperation *)self endOperationWithError:resultObject2];
 LABEL_8:
 }
 
-- (void)compileResultsWithFetchCoursesResult:(id)a3 fetchScreenObserversResult:(id)a4
+- (void)compileResultsWithFetchCoursesResult:(id)result fetchScreenObserversResult:(id)observersResult
 {
-  v7 = a3;
-  v8 = a4;
+  resultCopy = result;
+  observersResultCopy = observersResult;
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
     [CRKFetchObservingInstructorsByCourseOperation compileResultsWithFetchCoursesResult:a2 fetchScreenObserversResult:self];
   }
 
-  v9 = [v7 courses];
+  courses = [resultCopy courses];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __113__CRKFetchObservingInstructorsByCourseOperation_compileResultsWithFetchCoursesResult_fetchScreenObserversResult___block_invoke_2;
   v12[3] = &unk_278DC1FB0;
-  v13 = v8;
-  v10 = v8;
-  v11 = [v9 crk_dictionaryUsingKeyGenerator:&__block_literal_global_45 valueGenerator:v12];
+  v13 = observersResultCopy;
+  v10 = observersResultCopy;
+  v11 = [courses crk_dictionaryUsingKeyGenerator:&__block_literal_global_45 valueGenerator:v12];
 
   [(CRKFetchObservingInstructorsByCourseOperation *)self endOperationWithResultObject:v11];
 }

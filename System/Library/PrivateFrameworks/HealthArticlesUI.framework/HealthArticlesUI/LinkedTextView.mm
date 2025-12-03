@@ -1,17 +1,17 @@
 @interface LinkedTextView
-- (BOOL)textView:(id)a3 shouldInteractWithURL:(id)a4 inRange:(_NSRange)a5 interaction:(int64_t)a6;
-- (_TtC16HealthArticlesUI14LinkedTextView)initWithCoder:(id)a3;
-- (_TtC16HealthArticlesUI14LinkedTextView)initWithFrame:(CGRect)a3;
+- (BOOL)textView:(id)view shouldInteractWithURL:(id)l inRange:(_NSRange)range interaction:(int64_t)interaction;
+- (_TtC16HealthArticlesUI14LinkedTextView)initWithCoder:(id)coder;
+- (_TtC16HealthArticlesUI14LinkedTextView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation LinkedTextView
 
-- (_TtC16HealthArticlesUI14LinkedTextView)initWithFrame:(CGRect)a3
+- (_TtC16HealthArticlesUI14LinkedTextView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   sub_25133F8F4();
   sub_25133F8E4();
   sub_25133F894();
@@ -25,7 +25,7 @@
   return v7;
 }
 
-- (_TtC16HealthArticlesUI14LinkedTextView)initWithCoder:(id)a3
+- (_TtC16HealthArticlesUI14LinkedTextView)initWithCoder:(id)coder
 {
   sub_25133F8F4();
   sub_25133F8E4();
@@ -51,7 +51,7 @@
   return result;
 }
 
-- (BOOL)textView:(id)a3 shouldInteractWithURL:(id)a4 inRange:(_NSRange)a5 interaction:(int64_t)a6
+- (BOOL)textView:(id)view shouldInteractWithURL:(id)l inRange:(_NSRange)range interaction:(int64_t)interaction
 {
   v8 = sub_25133EFC4();
   v9 = *(v8 - 8);
@@ -67,8 +67,8 @@
   }
 
   sub_25133EFB4();
-  v14 = a3;
-  v15 = self;
+  viewCopy = view;
+  selfCopy = self;
   v16 = sub_25131D838();
 
   (*(v9 + 8))(v13, v8);

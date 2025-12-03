@@ -1,47 +1,47 @@
 @interface _SFPBRFFont
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBRFFont)initWithDictionary:(id)a3;
-- (_SFPBRFFont)initWithFacade:(id)a3;
-- (_SFPBRFFont)initWithJSON:(id)a3;
+- (_SFPBRFFont)initWithDictionary:(id)dictionary;
+- (_SFPBRFFont)initWithFacade:(id)facade;
+- (_SFPBRFFont)initWithJSON:(id)n;
 - (_SFPBRFFont_RFSystemFont)system;
 - (id)dictionaryRepresentation;
 - (int)name;
 - (unint64_t)hash;
-- (void)setName:(int)a3;
-- (void)setSystem:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setName:(int)name;
+- (void)setSystem:(id)system;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBRFFont
 
-- (_SFPBRFFont)initWithFacade:(id)a3
+- (_SFPBRFFont)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBRFFont *)self init];
   if (v5)
   {
-    if ([v4 hasName])
+    if ([facadeCopy hasName])
     {
-      -[_SFPBRFFont setName:](v5, "setName:", [v4 name]);
+      -[_SFPBRFFont setName:](v5, "setName:", [facadeCopy name]);
     }
 
-    if ([v4 hasSystem])
+    if ([facadeCopy hasSystem])
     {
-      v6 = [v4 system];
+      system = [facadeCopy system];
 
-      if (v6)
+      if (system)
       {
         v7 = [_SFPBRFFont_RFSystemFont alloc];
-        v8 = [v4 system];
-        v9 = [(_SFPBRFFont_RFSystemFont *)v7 initWithFacade:v8];
+        system2 = [facadeCopy system];
+        v9 = [(_SFPBRFFont_RFSystemFont *)v7 initWithFacade:system2];
         [(_SFPBRFFont *)v5 setSystem:v9];
       }
     }
 
-    if ([v4 hasApplySmallCaps])
+    if ([facadeCopy hasApplySmallCaps])
     {
-      -[_SFPBRFFont setApplySmallCaps:](v5, "setApplySmallCaps:", [v4 applySmallCaps]);
+      -[_SFPBRFFont setApplySmallCaps:](v5, "setApplySmallCaps:", [facadeCopy applySmallCaps]);
     }
 
     v10 = v5;
@@ -50,22 +50,22 @@
   return v5;
 }
 
-- (_SFPBRFFont)initWithDictionary:(id)a3
+- (_SFPBRFFont)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = _SFPBRFFont;
   v5 = [(_SFPBRFFont *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"name"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"name"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[_SFPBRFFont setName:](v5, "setName:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"system"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"system"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -73,7 +73,7 @@
       [(_SFPBRFFont *)v5 setSystem:v8];
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"applySmallCaps"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"applySmallCaps"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -86,30 +86,30 @@
   return v5;
 }
 
-- (_SFPBRFFont)initWithJSON:(id)a3
+- (_SFPBRFFont)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBRFFont *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBRFFont *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBRFFont *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -122,46 +122,46 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_applySmallCaps)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithBool:{-[_SFPBRFFont applySmallCaps](self, "applySmallCaps")}];
-    [v3 setObject:v4 forKeyedSubscript:@"applySmallCaps"];
+    [dictionary setObject:v4 forKeyedSubscript:@"applySmallCaps"];
   }
 
   if (self->_name)
   {
-    v5 = [(_SFPBRFFont *)self name];
-    if (v5 >= 0xC)
+    name = [(_SFPBRFFont *)self name];
+    if (name >= 0xC)
     {
-      v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v5];
+      v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", name];
     }
 
     else
     {
-      v6 = off_1E7ACE1C0[v5];
+      v6 = off_1E7ACE1C0[name];
     }
 
-    [v3 setObject:v6 forKeyedSubscript:@"name"];
+    [dictionary setObject:v6 forKeyedSubscript:@"name"];
   }
 
   if (self->_system)
   {
-    v7 = [(_SFPBRFFont *)self system];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    system = [(_SFPBRFFont *)self system];
+    dictionaryRepresentation = [system dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"system"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"system"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"system"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"system"];
     }
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -181,33 +181,33 @@
   return v4 ^ v5 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     name = self->_name;
-    if (name == [v4 name])
+    if (name == [equalCopy name])
     {
-      v6 = [(_SFPBRFFont *)self system];
-      v7 = [v4 system];
-      v8 = v7;
-      if ((v6 != 0) != (v7 == 0))
+      system = [(_SFPBRFFont *)self system];
+      system2 = [equalCopy system];
+      v8 = system2;
+      if ((system != 0) != (system2 == 0))
       {
-        v9 = [(_SFPBRFFont *)self system];
-        if (!v9)
+        system3 = [(_SFPBRFFont *)self system];
+        if (!system3)
         {
 
 LABEL_11:
           applySmallCaps = self->_applySmallCaps;
-          v14 = applySmallCaps == [v4 applySmallCaps];
+          v14 = applySmallCaps == [equalCopy applySmallCaps];
           goto LABEL_9;
         }
 
-        v10 = v9;
-        v11 = [(_SFPBRFFont *)self system];
-        v12 = [v4 system];
-        v13 = [v11 isEqual:v12];
+        v10 = system3;
+        system4 = [(_SFPBRFFont *)self system];
+        system5 = [equalCopy system];
+        v13 = [system4 isEqual:system5];
 
         if (v13)
         {
@@ -227,16 +227,16 @@ LABEL_9:
   return v14;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   if ([(_SFPBRFFont *)self name])
   {
     PBDataWriterWriteInt32Field();
   }
 
-  v4 = [(_SFPBRFFont *)self system];
-  if (v4)
+  system = [(_SFPBRFFont *)self system];
+  if (system)
   {
     PBDataWriterWriteSubmessage();
   }
@@ -262,11 +262,11 @@ LABEL_9:
   return v3;
 }
 
-- (void)setSystem:(id)a3
+- (void)setSystem:(id)system
 {
   self->_name = 0;
-  self->_whichValue = 2 * (a3 != 0);
-  objc_storeStrong(&self->_system, a3);
+  self->_whichValue = 2 * (system != 0);
+  objc_storeStrong(&self->_system, system);
 }
 
 - (int)name
@@ -282,13 +282,13 @@ LABEL_9:
   }
 }
 
-- (void)setName:(int)a3
+- (void)setName:(int)name
 {
   system = self->_system;
   self->_system = 0;
 
   self->_whichValue = 1;
-  self->_name = a3;
+  self->_name = name;
 }
 
 @end

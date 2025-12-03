@@ -1,80 +1,80 @@
 @interface HMAccessoryNumberSetting
-- (HMAccessoryNumberSetting)initWithKey:(id)a3 properties:(unint64_t)a4 value:(id)a5 minimumValue:(id)a6 maximumValue:(id)a7 stepValue:(id)a8;
+- (HMAccessoryNumberSetting)initWithKey:(id)key properties:(unint64_t)properties value:(id)value minimumValue:(id)minimumValue maximumValue:(id)maximumValue stepValue:(id)stepValue;
 - (NSNumber)maximumValue;
 - (NSNumber)minimumValue;
 - (NSNumber)stepValue;
-- (void)updateValue:(id)a3;
+- (void)updateValue:(id)value;
 @end
 
 @implementation HMAccessoryNumberSetting
 
 - (NSNumber)stepValue
 {
-  v2 = [(HMAccessorySetting *)self internal];
-  v3 = [v2 constraintWithType:3];
-  v4 = [v3 value];
+  internal = [(HMAccessorySetting *)self internal];
+  v3 = [internal constraintWithType:3];
+  value = [v3 value];
 
-  return v4;
+  return value;
 }
 
 - (NSNumber)maximumValue
 {
-  v2 = [(HMAccessorySetting *)self internal];
-  v3 = [v2 constraintWithType:2];
-  v4 = [v3 value];
+  internal = [(HMAccessorySetting *)self internal];
+  v3 = [internal constraintWithType:2];
+  value = [v3 value];
 
-  return v4;
+  return value;
 }
 
 - (NSNumber)minimumValue
 {
-  v2 = [(HMAccessorySetting *)self internal];
-  v3 = [v2 constraintWithType:1];
-  v4 = [v3 value];
+  internal = [(HMAccessorySetting *)self internal];
+  v3 = [internal constraintWithType:1];
+  value = [v3 value];
 
-  return v4;
+  return value;
 }
 
-- (void)updateValue:(id)a3
+- (void)updateValue:(id)value
 {
-  v4 = a3;
-  v5 = [(HMAccessorySetting *)self internal];
-  [v5 setValue:v4];
+  valueCopy = value;
+  internal = [(HMAccessorySetting *)self internal];
+  [internal setValue:valueCopy];
 
-  v6 = [(HMAccessorySetting *)self internal];
-  [(HMAccessorySetting *)self _settingDidUpdateValue:v6];
+  internal2 = [(HMAccessorySetting *)self internal];
+  [(HMAccessorySetting *)self _settingDidUpdateValue:internal2];
 }
 
-- (HMAccessoryNumberSetting)initWithKey:(id)a3 properties:(unint64_t)a4 value:(id)a5 minimumValue:(id)a6 maximumValue:(id)a7 stepValue:(id)a8
+- (HMAccessoryNumberSetting)initWithKey:(id)key properties:(unint64_t)properties value:(id)value minimumValue:(id)minimumValue maximumValue:(id)maximumValue stepValue:(id)stepValue
 {
-  v14 = a6;
-  v15 = a7;
-  v16 = a8;
+  minimumValueCopy = minimumValue;
+  maximumValueCopy = maximumValue;
+  stepValueCopy = stepValue;
   v17 = MEMORY[0x1E695DF70];
-  v18 = a5;
-  v19 = a3;
+  valueCopy = value;
+  keyCopy = key;
   v20 = [v17 arrayWithCapacity:2];
-  if (v14)
+  if (minimumValueCopy)
   {
-    v21 = [[HMAccessorySettingConstraint alloc] initWithType:1 value:v14];
+    v21 = [[HMAccessorySettingConstraint alloc] initWithType:1 value:minimumValueCopy];
     [v20 addObject:v21];
   }
 
-  if (v15)
+  if (maximumValueCopy)
   {
-    v22 = [[HMAccessorySettingConstraint alloc] initWithType:2 value:v15];
+    v22 = [[HMAccessorySettingConstraint alloc] initWithType:2 value:maximumValueCopy];
     [v20 addObject:v22];
   }
 
-  if (v16)
+  if (stepValueCopy)
   {
-    v23 = [[HMAccessorySettingConstraint alloc] initWithType:3 value:v16];
+    v23 = [[HMAccessorySettingConstraint alloc] initWithType:3 value:stepValueCopy];
     [v20 addObject:v23];
   }
 
-  v24 = [[_HMAccessorySetting alloc] initWithType:2 properties:a4 name:v19 constraints:v20];
+  v24 = [[_HMAccessorySetting alloc] initWithType:2 properties:properties name:keyCopy constraints:v20];
 
-  [(_HMAccessorySetting *)v24 setValue:v18];
+  [(_HMAccessorySetting *)v24 setValue:valueCopy];
   v25 = [(HMAccessorySetting *)self initWithInternal:v24];
 
   return v25;

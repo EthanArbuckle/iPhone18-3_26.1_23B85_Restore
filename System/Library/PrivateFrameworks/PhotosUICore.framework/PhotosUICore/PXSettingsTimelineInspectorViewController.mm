@@ -1,13 +1,13 @@
 @interface PXSettingsTimelineInspectorViewController
 - (CGSize)widgetSize;
-- (PXSettingsTimelineInspectorViewController)initWithWidgetSizeClass:(unint64_t)a3 timeline:(id)a4 dataSource:(id)a5;
-- (id)px_diagnosticsItemProvidersForPoint:(CGPoint)a3 inCoordinateSpace:(id)a4;
-- (void)displayFilteredContentIndex:(unint64_t)a3;
-- (void)displaySliderTime:(id)a3;
-- (void)displayTimelineEntry:(id)a3;
-- (void)handleTap:(id)a3;
-- (void)sliderValueChanged:(id)a3;
-- (void)switchValueChanged:(id)a3;
+- (PXSettingsTimelineInspectorViewController)initWithWidgetSizeClass:(unint64_t)class timeline:(id)timeline dataSource:(id)source;
+- (id)px_diagnosticsItemProvidersForPoint:(CGPoint)point inCoordinateSpace:(id)space;
+- (void)displayFilteredContentIndex:(unint64_t)index;
+- (void)displaySliderTime:(id)time;
+- (void)displayTimelineEntry:(id)entry;
+- (void)handleTap:(id)tap;
+- (void)sliderValueChanged:(id)changed;
+- (void)switchValueChanged:(id)changed;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
 @end
@@ -23,17 +23,17 @@
   return result;
 }
 
-- (id)px_diagnosticsItemProvidersForPoint:(CGPoint)a3 inCoordinateSpace:(id)a4
+- (id)px_diagnosticsItemProvidersForPoint:(CGPoint)point inCoordinateSpace:(id)space
 {
   v16.receiver = self;
   v16.super_class = PXSettingsTimelineInspectorViewController;
-  v5 = [(UIViewController *)&v16 px_diagnosticsItemProvidersForPoint:a4 inCoordinateSpace:a3.x, a3.y];
+  v5 = [(UIViewController *)&v16 px_diagnosticsItemProvidersForPoint:space inCoordinateSpace:point.x, point.y];
   v6 = [v5 mutableCopy];
 
-  v7 = [(PXSettingsTimelineInspectorViewController *)self assetByAssetLocalIdentifier];
-  v8 = [(PXSettingsTimelineInspectorViewController *)self entryInDisplay];
-  v9 = [v8 assetLocalIdentifier];
-  v10 = [v7 objectForKeyedSubscript:v9];
+  assetByAssetLocalIdentifier = [(PXSettingsTimelineInspectorViewController *)self assetByAssetLocalIdentifier];
+  entryInDisplay = [(PXSettingsTimelineInspectorViewController *)self entryInDisplay];
+  assetLocalIdentifier = [entryInDisplay assetLocalIdentifier];
+  v10 = [assetByAssetLocalIdentifier objectForKeyedSubscript:assetLocalIdentifier];
 
   v11 = objc_alloc_init(PXDiagnosticsItemProvider);
   v14[0] = MEMORY[0x1E69E9820];
@@ -48,15 +48,15 @@
   return v6;
 }
 
-- (void)handleTap:(id)a3
+- (void)handleTap:(id)tap
 {
-  v26 = a3;
-  v4 = [(PXSettingsTimelineInspectorViewController *)self imageView];
-  [v26 locationInView:v4];
+  tapCopy = tap;
+  imageView = [(PXSettingsTimelineInspectorViewController *)self imageView];
+  [tapCopy locationInView:imageView];
   v6 = v5;
 
-  v7 = [(PXSettingsTimelineInspectorViewController *)self imageView];
-  [v7 frame];
+  imageView2 = [(PXSettingsTimelineInspectorViewController *)self imageView];
+  [imageView2 frame];
   v9 = v8;
 
   if ([(PXSettingsTimelineInspectorViewController *)self showFilteredContent])
@@ -75,10 +75,10 @@
     v12 = 0;
     do
     {
-      v13 = [(PXSettingsTimelineInspectorViewController *)self entryInDisplay];
+      entryInDisplay = [(PXSettingsTimelineInspectorViewController *)self entryInDisplay];
       v14 = [v10 objectAtIndex:v11];
 
-      if (v13 == v14)
+      if (entryInDisplay == v14)
       {
         v12 = v11;
       }
@@ -112,83 +112,83 @@
     {
       [(PXSettingsTimelineInspectorViewController *)self displayFilteredContentIndex:v15];
       v17 = v15;
-      v18 = [(PXSettingsTimelineInspectorViewController *)self timeSlider];
+      timeSlider = [(PXSettingsTimelineInspectorViewController *)self timeSlider];
       *&v19 = v17;
-      [v18 setValue:v19];
+      [timeSlider setValue:v19];
     }
 
     else
     {
-      v20 = [v16 startTime];
-      [(PXSettingsTimelineInspectorViewController *)self displaySliderTime:v20];
+      startTime = [v16 startTime];
+      [(PXSettingsTimelineInspectorViewController *)self displaySliderTime:startTime];
 
-      v18 = [v16 startTime];
-      v21 = [(PXSettingsTimelineInspectorViewController *)self currentTime];
-      [v18 timeIntervalSinceDate:v21];
+      timeSlider = [v16 startTime];
+      currentTime = [(PXSettingsTimelineInspectorViewController *)self currentTime];
+      [timeSlider timeIntervalSinceDate:currentTime];
       v23 = v22;
-      v24 = [(PXSettingsTimelineInspectorViewController *)self timeSlider];
+      timeSlider2 = [(PXSettingsTimelineInspectorViewController *)self timeSlider];
       *&v25 = v23;
-      [v24 setValue:v25];
+      [timeSlider2 setValue:v25];
     }
   }
 }
 
-- (void)switchValueChanged:(id)a3
+- (void)switchValueChanged:(id)changed
 {
-  -[PXSettingsTimelineInspectorViewController setShowFilteredContent:](self, "setShowFilteredContent:", [a3 isOn]);
-  v4 = [(PXSettingsTimelineInspectorViewController *)self timeSlider];
-  [v4 setMinimumValue:0.0];
+  -[PXSettingsTimelineInspectorViewController setShowFilteredContent:](self, "setShowFilteredContent:", [changed isOn]);
+  timeSlider = [(PXSettingsTimelineInspectorViewController *)self timeSlider];
+  [timeSlider setMinimumValue:0.0];
 
-  v5 = [(PXSettingsTimelineInspectorViewController *)self timeSlider];
-  [v5 setValue:0.0];
+  timeSlider2 = [(PXSettingsTimelineInspectorViewController *)self timeSlider];
+  [timeSlider2 setValue:0.0];
 
   if ([(PXSettingsTimelineInspectorViewController *)self showFilteredContent])
   {
-    v6 = [(PXSettingsTimelineInspectorViewController *)self filteredContent];
-    v7 = [v6 count] - 1;
+    filteredContent = [(PXSettingsTimelineInspectorViewController *)self filteredContent];
+    v7 = [filteredContent count] - 1;
 
-    v8 = [(PXSettingsTimelineInspectorViewController *)self timeSlider];
+    timeSlider3 = [(PXSettingsTimelineInspectorViewController *)self timeSlider];
     *&v9 = v7;
-    [v8 setMaximumValue:v9];
+    [timeSlider3 setMaximumValue:v9];
 
-    v10 = [(PXSettingsTimelineInspectorViewController *)self filteredContent];
-    v21 = [v10 firstObject];
+    filteredContent2 = [(PXSettingsTimelineInspectorViewController *)self filteredContent];
+    firstObject = [filteredContent2 firstObject];
 
     [(PXSettingsTimelineInspectorViewController *)self displayFilteredContentIndex:0];
   }
 
   else
   {
-    v11 = [(PXSettingsTimelineInspectorViewController *)self timeline];
-    v12 = [v11 lastObject];
-    v13 = [v12 endTime];
-    v14 = [(PXSettingsTimelineInspectorViewController *)self currentTime];
-    [v13 timeIntervalSinceDate:v14];
+    timeline = [(PXSettingsTimelineInspectorViewController *)self timeline];
+    lastObject = [timeline lastObject];
+    endTime = [lastObject endTime];
+    currentTime = [(PXSettingsTimelineInspectorViewController *)self currentTime];
+    [endTime timeIntervalSinceDate:currentTime];
     v16 = v15 + -1.0;
-    v17 = [(PXSettingsTimelineInspectorViewController *)self timeSlider];
+    timeSlider4 = [(PXSettingsTimelineInspectorViewController *)self timeSlider];
     *&v18 = v16;
-    [v17 setMaximumValue:v18];
+    [timeSlider4 setMaximumValue:v18];
 
-    v19 = [(PXSettingsTimelineInspectorViewController *)self timeline];
-    v21 = [v19 firstObject];
+    timeline2 = [(PXSettingsTimelineInspectorViewController *)self timeline];
+    firstObject = [timeline2 firstObject];
 
-    v20 = [(PXSettingsTimelineInspectorViewController *)self currentTime];
-    [(PXSettingsTimelineInspectorViewController *)self displaySliderTime:v20];
+    currentTime2 = [(PXSettingsTimelineInspectorViewController *)self currentTime];
+    [(PXSettingsTimelineInspectorViewController *)self displaySliderTime:currentTime2];
   }
 
-  [(PXSettingsTimelineInspectorViewController *)self displayTimelineEntry:v21];
+  [(PXSettingsTimelineInspectorViewController *)self displayTimelineEntry:firstObject];
 }
 
-- (void)sliderValueChanged:(id)a3
+- (void)sliderValueChanged:(id)changed
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  changedCopy = changed;
   if ([(PXSettingsTimelineInspectorViewController *)self showFilteredContent])
   {
-    [v4 value];
+    [changedCopy value];
     v6 = v5;
-    v7 = [(PXSettingsTimelineInspectorViewController *)self filteredContent];
-    v8 = [v7 objectAtIndex:v6];
+    filteredContent = [(PXSettingsTimelineInspectorViewController *)self filteredContent];
+    v8 = [filteredContent objectAtIndex:v6];
     [(PXSettingsTimelineInspectorViewController *)self displayTimelineEntry:v8];
 
     [(PXSettingsTimelineInspectorViewController *)self displayFilteredContentIndex:v6];
@@ -196,18 +196,18 @@
 
   else
   {
-    v9 = [(PXSettingsTimelineInspectorViewController *)self currentTime];
-    v21 = v4;
-    [v4 value];
-    v11 = [v9 dateByAddingTimeInterval:v10];
+    currentTime = [(PXSettingsTimelineInspectorViewController *)self currentTime];
+    v21 = changedCopy;
+    [changedCopy value];
+    v11 = [currentTime dateByAddingTimeInterval:v10];
 
     [(PXSettingsTimelineInspectorViewController *)self displaySliderTime:v11];
     v24 = 0u;
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v12 = [(PXSettingsTimelineInspectorViewController *)self timeline];
-    v13 = [v12 countByEnumeratingWithState:&v22 objects:v26 count:16];
+    timeline = [(PXSettingsTimelineInspectorViewController *)self timeline];
+    v13 = [timeline countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v13)
     {
       v14 = v13;
@@ -218,13 +218,13 @@
         {
           if (*v23 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(timeline);
           }
 
           v17 = *(*(&v22 + 1) + 8 * i);
-          v18 = [v17 startTime];
-          v19 = [v17 endTime];
-          v20 = [v11 px_isBetweenDate:v18 andDate:v19];
+          startTime = [v17 startTime];
+          endTime = [v17 endTime];
+          v20 = [v11 px_isBetweenDate:startTime andDate:endTime];
 
           if (v20)
           {
@@ -233,7 +233,7 @@
           }
         }
 
-        v14 = [v12 countByEnumeratingWithState:&v22 objects:v26 count:16];
+        v14 = [timeline countByEnumeratingWithState:&v22 objects:v26 count:16];
         if (v14)
         {
           continue;
@@ -245,96 +245,96 @@
 
 LABEL_13:
 
-    v4 = v21;
+    changedCopy = v21;
   }
 }
 
-- (void)displayFilteredContentIndex:(unint64_t)a3
+- (void)displayFilteredContentIndex:(unint64_t)index
 {
   v4 = MEMORY[0x1E696AEC0];
-  v5 = a3 + 1;
-  v8 = [(PXSettingsTimelineInspectorViewController *)self filteredContent];
-  v6 = [v4 stringWithFormat:@"%lu of %lu", v5, objc_msgSend(v8, "count")];
-  v7 = [(PXSettingsTimelineInspectorViewController *)self sliderValueLabel];
-  [v7 setText:v6];
+  v5 = index + 1;
+  filteredContent = [(PXSettingsTimelineInspectorViewController *)self filteredContent];
+  v6 = [v4 stringWithFormat:@"%lu of %lu", v5, objc_msgSend(filteredContent, "count")];
+  sliderValueLabel = [(PXSettingsTimelineInspectorViewController *)self sliderValueLabel];
+  [sliderValueLabel setText:v6];
 }
 
-- (void)displaySliderTime:(id)a3
+- (void)displaySliderTime:(id)time
 {
   v4 = MEMORY[0x1E696AB78];
-  v5 = a3;
+  timeCopy = time;
   v10 = objc_alloc_init(v4);
   [v10 setDateFormat:@"yyyy-MM-dd HH:mm"];
   v6 = MEMORY[0x1E696AEC0];
-  v7 = [v10 stringFromDate:v5];
+  v7 = [v10 stringFromDate:timeCopy];
 
   v8 = [v6 stringWithFormat:@"%@ (Local Time)", v7];
-  v9 = [(PXSettingsTimelineInspectorViewController *)self sliderValueLabel];
-  [v9 setText:v8];
+  sliderValueLabel = [(PXSettingsTimelineInspectorViewController *)self sliderValueLabel];
+  [sliderValueLabel setText:v8];
 }
 
-- (void)displayTimelineEntry:(id)a3
+- (void)displayTimelineEntry:(id)entry
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PXSettingsTimelineInspectorViewController *)self entryInDisplay];
+  entryCopy = entry;
+  entryInDisplay = [(PXSettingsTimelineInspectorViewController *)self entryInDisplay];
 
-  if (v5 != v4)
+  if (entryInDisplay != entryCopy)
   {
-    [(PXSettingsTimelineInspectorViewController *)self setEntryInDisplay:v4];
-    v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@", v4];
-    v7 = [(PXSettingsTimelineInspectorViewController *)self entryInfoTextView];
-    [v7 setText:v6];
+    [(PXSettingsTimelineInspectorViewController *)self setEntryInDisplay:entryCopy];
+    entryCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@", entryCopy];
+    entryInfoTextView = [(PXSettingsTimelineInspectorViewController *)self entryInfoTextView];
+    [entryInfoTextView setText:entryCopy];
 
-    v8 = [v4 assetLocalIdentifier];
-    if (![v8 length])
+    assetLocalIdentifier = [entryCopy assetLocalIdentifier];
+    if (![assetLocalIdentifier length])
     {
-      v10 = PLMemoriesGetLog();
-      if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+      librarySpecificFetchOptions = PLMemoriesGetLog();
+      if (os_log_type_enabled(librarySpecificFetchOptions, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v30 = v4;
-        _os_log_impl(&dword_1A3C1C000, v10, OS_LOG_TYPE_ERROR, "[TimelineInspector] TimelineEntry has nil assetLocalIdentifier: %@", buf, 0xCu);
+        v30 = entryCopy;
+        _os_log_impl(&dword_1A3C1C000, librarySpecificFetchOptions, OS_LOG_TYPE_ERROR, "[TimelineInspector] TimelineEntry has nil assetLocalIdentifier: %@", buf, 0xCu);
       }
 
       goto LABEL_10;
     }
 
-    v9 = [(PXSettingsTimelineInspectorViewController *)self assetByAssetLocalIdentifier];
-    v10 = [v9 objectForKeyedSubscript:v8];
+    assetByAssetLocalIdentifier = [(PXSettingsTimelineInspectorViewController *)self assetByAssetLocalIdentifier];
+    librarySpecificFetchOptions = [assetByAssetLocalIdentifier objectForKeyedSubscript:assetLocalIdentifier];
 
-    if (!v10)
+    if (!librarySpecificFetchOptions)
     {
-      v11 = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
-      v10 = [v11 librarySpecificFetchOptions];
+      px_deprecated_appPhotoLibrary = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
+      librarySpecificFetchOptions = [px_deprecated_appPhotoLibrary librarySpecificFetchOptions];
 
       v28 = *MEMORY[0x1E6978C90];
       v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v28 count:1];
-      [v10 setFetchPropertySets:v12];
+      [librarySpecificFetchOptions setFetchPropertySets:v12];
 
       v13 = MEMORY[0x1E6978630];
-      v27 = v8;
+      v27 = assetLocalIdentifier;
       v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v27 count:1];
-      v15 = [v13 fetchAssetsWithLocalIdentifiers:v14 options:v10];
-      v16 = [v15 firstObject];
+      v15 = [v13 fetchAssetsWithLocalIdentifiers:v14 options:librarySpecificFetchOptions];
+      firstObject = [v15 firstObject];
 
-      if (!v16)
+      if (!firstObject)
       {
         v22 = PLMemoriesGetLog();
         if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412290;
-          v30 = v4;
+          v30 = entryCopy;
           _os_log_impl(&dword_1A3C1C000, v22, OS_LOG_TYPE_ERROR, "[TimelineInspector] key asset is nil for entry: %@", buf, 0xCu);
         }
 
         goto LABEL_7;
       }
 
-      v17 = [(PXSettingsTimelineInspectorViewController *)self assetByAssetLocalIdentifier];
-      [v17 setObject:v16 forKeyedSubscript:v8];
+      assetByAssetLocalIdentifier2 = [(PXSettingsTimelineInspectorViewController *)self assetByAssetLocalIdentifier];
+      [assetByAssetLocalIdentifier2 setObject:firstObject forKeyedSubscript:assetLocalIdentifier];
 
-      v10 = v16;
+      librarySpecificFetchOptions = firstObject;
     }
 
     [(PXSettingsTimelineInspectorViewController *)self widgetSize];
@@ -344,14 +344,14 @@ LABEL_13:
     v22 = objc_alloc_init(MEMORY[0x1E6978868]);
     [v22 setDeliveryMode:1];
     [v22 setResizeMode:1];
-    v23 = [MEMORY[0x1E6978860] defaultManager];
+    defaultManager = [MEMORY[0x1E6978860] defaultManager];
     v24[0] = MEMORY[0x1E69E9820];
     v24[1] = 3221225472;
     v24[2] = __66__PXSettingsTimelineInspectorViewController_displayTimelineEntry___block_invoke;
     v24[3] = &unk_1E7745FC0;
-    v25 = v4;
-    v26 = self;
-    [v23 requestImageForAsset:v10 targetSize:0 contentMode:v22 options:v24 resultHandler:{v19, v21}];
+    v25 = entryCopy;
+    selfCopy = self;
+    [defaultManager requestImageForAsset:librarySpecificFetchOptions targetSize:0 contentMode:v22 options:v24 resultHandler:{v19, v21}];
 
 LABEL_7:
 LABEL_10:
@@ -425,101 +425,101 @@ void __66__PXSettingsTimelineInspectorViewController_displayTimelineEntry___bloc
   v70.receiver = self;
   v70.super_class = PXSettingsTimelineInspectorViewController;
   [(PXSettingsTimelineInspectorViewController *)&v70 viewWillLayoutSubviews];
-  v3 = [MEMORY[0x1E69DC668] sharedApplication];
-  v4 = [v3 windows];
-  v5 = [v4 firstObject];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  windows = [mEMORY[0x1E69DC668] windows];
+  firstObject = [windows firstObject];
 
-  v6 = [v5 windowScene];
-  v7 = [v6 statusBarManager];
-  [v7 statusBarFrame];
+  windowScene = [firstObject windowScene];
+  statusBarManager = [windowScene statusBarManager];
+  [statusBarManager statusBarFrame];
   v9 = v8;
 
-  v10 = [(PXSettingsTimelineInspectorViewController *)self px_screen];
-  [v10 bounds];
+  px_screen = [(PXSettingsTimelineInspectorViewController *)self px_screen];
+  [px_screen bounds];
   v12 = v11;
   v14 = v13;
 
-  [v5 safeAreaInsets];
+  [firstObject safeAreaInsets];
   v16 = v9 + v15;
-  [v5 safeAreaInsets];
+  [firstObject safeAreaInsets];
   v18 = v17;
-  v19 = [(PXSettingsTimelineInspectorViewController *)self imageView];
-  [v19 setFrame:{0.0, v16, v12, v12}];
+  imageView = [(PXSettingsTimelineInspectorViewController *)self imageView];
+  [imageView setFrame:{0.0, v16, v12, v12}];
 
-  v20 = [(PXSettingsTimelineInspectorViewController *)self timeSlider];
-  [v20 setFrame:{0.0, 0.0, v12 + -60.0, 35.0}];
+  timeSlider = [(PXSettingsTimelineInspectorViewController *)self timeSlider];
+  [timeSlider setFrame:{0.0, 0.0, v12 + -60.0, 35.0}];
 
   v21 = v12 * 0.5;
-  v22 = [(PXSettingsTimelineInspectorViewController *)self timeSlider];
-  [v22 frame];
+  timeSlider2 = [(PXSettingsTimelineInspectorViewController *)self timeSlider];
+  [timeSlider2 frame];
   v24 = v14 - v18 - v23;
-  v25 = [(PXSettingsTimelineInspectorViewController *)self timeSlider];
-  [v25 setCenter:{v21, v24}];
+  timeSlider3 = [(PXSettingsTimelineInspectorViewController *)self timeSlider];
+  [timeSlider3 setCenter:{v21, v24}];
 
-  v26 = [(PXSettingsTimelineInspectorViewController *)self timeSlider];
-  [v26 frame];
+  timeSlider4 = [(PXSettingsTimelineInspectorViewController *)self timeSlider];
+  [timeSlider4 frame];
   v28 = v27;
-  v29 = [(PXSettingsTimelineInspectorViewController *)self sliderValueLabel];
-  [v29 setFrame:{0.0, 0.0, v28, 30.0}];
+  sliderValueLabel = [(PXSettingsTimelineInspectorViewController *)self sliderValueLabel];
+  [sliderValueLabel setFrame:{0.0, 0.0, v28, 30.0}];
 
-  v30 = [(PXSettingsTimelineInspectorViewController *)self timeSlider];
-  [v30 center];
+  timeSlider5 = [(PXSettingsTimelineInspectorViewController *)self timeSlider];
+  [timeSlider5 center];
   v32 = v31;
-  v33 = [(PXSettingsTimelineInspectorViewController *)self timeSlider];
-  [v33 frame];
+  timeSlider6 = [(PXSettingsTimelineInspectorViewController *)self timeSlider];
+  [timeSlider6 frame];
   MinY = CGRectGetMinY(v71);
-  v35 = [(PXSettingsTimelineInspectorViewController *)self sliderValueLabel];
-  [v35 frame];
+  sliderValueLabel2 = [(PXSettingsTimelineInspectorViewController *)self sliderValueLabel];
+  [sliderValueLabel2 frame];
   v37 = MinY - v36 * 0.5 + -20.0;
-  v38 = [(PXSettingsTimelineInspectorViewController *)self sliderValueLabel];
-  [v38 setCenter:{v32, v37}];
+  sliderValueLabel3 = [(PXSettingsTimelineInspectorViewController *)self sliderValueLabel];
+  [sliderValueLabel3 setCenter:{v32, v37}];
 
-  v39 = [(PXSettingsTimelineInspectorViewController *)self sliderValueLabel];
-  [v39 frame];
+  sliderValueLabel4 = [(PXSettingsTimelineInspectorViewController *)self sliderValueLabel];
+  [sliderValueLabel4 frame];
   v40 = CGRectGetMinY(v72);
-  v41 = [(PXSettingsTimelineInspectorViewController *)self sliderValueLabel];
-  [v41 frame];
+  sliderValueLabel5 = [(PXSettingsTimelineInspectorViewController *)self sliderValueLabel];
+  [sliderValueLabel5 frame];
   v43 = v40 - v42 + -5.0;
 
-  v44 = [(PXSettingsTimelineInspectorViewController *)self sliderValueLabel];
-  [v44 frame];
+  sliderValueLabel6 = [(PXSettingsTimelineInspectorViewController *)self sliderValueLabel];
+  [sliderValueLabel6 frame];
   MinX = CGRectGetMinX(v73);
-  v46 = [(PXSettingsTimelineInspectorViewController *)self sliderValueLabel];
-  [v46 frame];
+  sliderValueLabel7 = [(PXSettingsTimelineInspectorViewController *)self sliderValueLabel];
+  [sliderValueLabel7 frame];
   v48 = v47 * 3.0 * 0.25;
-  v49 = [(PXSettingsTimelineInspectorViewController *)self showFilteredContentLabel];
-  [v49 setFrame:{MinX, v43, v48, 30.0}];
+  showFilteredContentLabel = [(PXSettingsTimelineInspectorViewController *)self showFilteredContentLabel];
+  [showFilteredContentLabel setFrame:{MinX, v43, v48, 30.0}];
 
-  v50 = [(PXSettingsTimelineInspectorViewController *)self showFilteredContentLabel];
-  [v50 frame];
+  showFilteredContentLabel2 = [(PXSettingsTimelineInspectorViewController *)self showFilteredContentLabel];
+  [showFilteredContentLabel2 frame];
   MaxX = CGRectGetMaxX(v74);
-  v52 = [(PXSettingsTimelineInspectorViewController *)self sliderValueLabel];
-  [v52 frame];
+  sliderValueLabel8 = [(PXSettingsTimelineInspectorViewController *)self sliderValueLabel];
+  [sliderValueLabel8 frame];
   v54 = v53 * 0.25;
-  v55 = [(PXSettingsTimelineInspectorViewController *)self showFilteredContentSwitch];
-  [v55 setFrame:{MaxX, v43, v54, 30.0}];
+  showFilteredContentSwitch = [(PXSettingsTimelineInspectorViewController *)self showFilteredContentSwitch];
+  [showFilteredContentSwitch setFrame:{MaxX, v43, v54, 30.0}];
 
-  v56 = [(PXSettingsTimelineInspectorViewController *)self showFilteredContentLabel];
-  [v56 frame];
+  showFilteredContentLabel3 = [(PXSettingsTimelineInspectorViewController *)self showFilteredContentLabel];
+  [showFilteredContentLabel3 frame];
   v57 = CGRectGetMinY(v75);
-  v58 = [(PXSettingsTimelineInspectorViewController *)self imageView];
-  [v58 frame];
+  imageView2 = [(PXSettingsTimelineInspectorViewController *)self imageView];
+  [imageView2 frame];
   v59 = v57 - CGRectGetMaxY(v76) + -10.0;
 
-  v60 = [(PXSettingsTimelineInspectorViewController *)self sliderValueLabel];
-  [v60 frame];
+  sliderValueLabel9 = [(PXSettingsTimelineInspectorViewController *)self sliderValueLabel];
+  [sliderValueLabel9 frame];
   v62 = v61;
-  v63 = [(PXSettingsTimelineInspectorViewController *)self entryInfoTextView];
-  [v63 setFrame:{0.0, 0.0, v62, v59}];
+  entryInfoTextView = [(PXSettingsTimelineInspectorViewController *)self entryInfoTextView];
+  [entryInfoTextView setFrame:{0.0, 0.0, v62, v59}];
 
-  v64 = [(PXSettingsTimelineInspectorViewController *)self sliderValueLabel];
-  [v64 center];
+  sliderValueLabel10 = [(PXSettingsTimelineInspectorViewController *)self sliderValueLabel];
+  [sliderValueLabel10 center];
   v66 = v65;
-  v67 = [(PXSettingsTimelineInspectorViewController *)self showFilteredContentLabel];
-  [v67 frame];
+  showFilteredContentLabel4 = [(PXSettingsTimelineInspectorViewController *)self showFilteredContentLabel];
+  [showFilteredContentLabel4 frame];
   v68 = CGRectGetMinY(v77) - v59 * 0.5 + -10.0;
-  v69 = [(PXSettingsTimelineInspectorViewController *)self entryInfoTextView];
-  [v69 setCenter:{v66, v68}];
+  entryInfoTextView2 = [(PXSettingsTimelineInspectorViewController *)self entryInfoTextView];
+  [entryInfoTextView2 setCenter:{v66, v68}];
 }
 
 - (void)viewDidLoad
@@ -527,15 +527,15 @@ void __66__PXSettingsTimelineInspectorViewController_displayTimelineEntry___bloc
   v63.receiver = self;
   v63.super_class = PXSettingsTimelineInspectorViewController;
   [(PXSettingsTimelineInspectorViewController *)&v63 viewDidLoad];
-  v3 = [(PXSettingsTimelineInspectorViewController *)self navigationController];
-  [v3 setDelegate:self];
+  navigationController = [(PXSettingsTimelineInspectorViewController *)self navigationController];
+  [navigationController setDelegate:self];
 
-  v4 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  v5 = [(PXSettingsTimelineInspectorViewController *)self view];
-  [v5 setBackgroundColor:v4];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  view = [(PXSettingsTimelineInspectorViewController *)self view];
+  [view setBackgroundColor:systemBackgroundColor];
 
-  v6 = [MEMORY[0x1E695DF00] date];
-  [(PXSettingsTimelineInspectorViewController *)self setCurrentTime:v6];
+  date = [MEMORY[0x1E695DF00] date];
+  [(PXSettingsTimelineInspectorViewController *)self setCurrentTime:date];
 
   v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
   [(PXSettingsTimelineInspectorViewController *)self setAssetByAssetLocalIdentifier:v7];
@@ -543,64 +543,64 @@ void __66__PXSettingsTimelineInspectorViewController_displayTimelineEntry___bloc
   v8 = objc_alloc_init(MEMORY[0x1E69DCAE0]);
   [(PXSettingsTimelineInspectorViewController *)self setImageView:v8];
 
-  v9 = [(PXSettingsTimelineInspectorViewController *)self imageView];
-  [v9 setContentMode:1];
+  imageView = [(PXSettingsTimelineInspectorViewController *)self imageView];
+  [imageView setContentMode:1];
 
-  v10 = [(PXSettingsTimelineInspectorViewController *)self imageView];
-  [v10 setUserInteractionEnabled:1];
+  imageView2 = [(PXSettingsTimelineInspectorViewController *)self imageView];
+  [imageView2 setUserInteractionEnabled:1];
 
-  v11 = [(PXSettingsTimelineInspectorViewController *)self view];
-  v12 = [(PXSettingsTimelineInspectorViewController *)self imageView];
-  [v11 addSubview:v12];
+  view2 = [(PXSettingsTimelineInspectorViewController *)self view];
+  imageView3 = [(PXSettingsTimelineInspectorViewController *)self imageView];
+  [view2 addSubview:imageView3];
 
   v13 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:self action:sel_handleTap_];
-  v14 = [(PXSettingsTimelineInspectorViewController *)self imageView];
-  [v14 addGestureRecognizer:v13];
+  imageView4 = [(PXSettingsTimelineInspectorViewController *)self imageView];
+  [imageView4 addGestureRecognizer:v13];
 
   v15 = objc_alloc_init(MEMORY[0x1E69DD168]);
   [(PXSettingsTimelineInspectorViewController *)self setEntryInfoTextView:v15];
 
-  v16 = [(PXSettingsTimelineInspectorViewController *)self entryInfoTextView];
-  [v16 setTextAlignment:0];
+  entryInfoTextView = [(PXSettingsTimelineInspectorViewController *)self entryInfoTextView];
+  [entryInfoTextView setTextAlignment:0];
 
-  v17 = [(PXSettingsTimelineInspectorViewController *)self entryInfoTextView];
-  [v17 setEditable:0];
+  entryInfoTextView2 = [(PXSettingsTimelineInspectorViewController *)self entryInfoTextView];
+  [entryInfoTextView2 setEditable:0];
 
   v18 = [MEMORY[0x1E69DB878] systemFontOfSize:12.0];
-  v19 = [(PXSettingsTimelineInspectorViewController *)self entryInfoTextView];
-  [v19 setFont:v18];
+  entryInfoTextView3 = [(PXSettingsTimelineInspectorViewController *)self entryInfoTextView];
+  [entryInfoTextView3 setFont:v18];
 
-  v20 = [MEMORY[0x1E69DC888] labelColor];
-  v21 = [(PXSettingsTimelineInspectorViewController *)self entryInfoTextView];
-  [v21 setTextColor:v20];
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  entryInfoTextView4 = [(PXSettingsTimelineInspectorViewController *)self entryInfoTextView];
+  [entryInfoTextView4 setTextColor:labelColor];
 
-  v22 = [(PXSettingsTimelineInspectorViewController *)self view];
-  v23 = [(PXSettingsTimelineInspectorViewController *)self entryInfoTextView];
-  [v22 addSubview:v23];
+  view3 = [(PXSettingsTimelineInspectorViewController *)self view];
+  entryInfoTextView5 = [(PXSettingsTimelineInspectorViewController *)self entryInfoTextView];
+  [view3 addSubview:entryInfoTextView5];
 
   v24 = objc_alloc_init(MEMORY[0x1E69DCC10]);
   [(PXSettingsTimelineInspectorViewController *)self setSliderValueLabel:v24];
 
-  v25 = [(PXSettingsTimelineInspectorViewController *)self sliderValueLabel];
-  [v25 setTextAlignment:1];
+  sliderValueLabel = [(PXSettingsTimelineInspectorViewController *)self sliderValueLabel];
+  [sliderValueLabel setTextAlignment:1];
 
-  v26 = [(PXSettingsTimelineInspectorViewController *)self view];
-  v27 = [(PXSettingsTimelineInspectorViewController *)self sliderValueLabel];
-  [v26 addSubview:v27];
+  view4 = [(PXSettingsTimelineInspectorViewController *)self view];
+  sliderValueLabel2 = [(PXSettingsTimelineInspectorViewController *)self sliderValueLabel];
+  [view4 addSubview:sliderValueLabel2];
 
   v28 = objc_alloc_init(MEMORY[0x1E69DCC10]);
   [(PXSettingsTimelineInspectorViewController *)self setShowFilteredContentLabel:v28];
 
-  v29 = [(PXSettingsTimelineInspectorViewController *)self showFilteredContentLabel];
-  [v29 setTextAlignment:1];
+  showFilteredContentLabel = [(PXSettingsTimelineInspectorViewController *)self showFilteredContentLabel];
+  [showFilteredContentLabel setTextAlignment:1];
 
-  v30 = [(PXSettingsTimelineInspectorViewController *)self filteredContent];
-  v31 = [v30 count] != 0;
-  v32 = [(PXSettingsTimelineInspectorViewController *)self showFilteredContentLabel];
-  [v32 setEnabled:v31];
+  filteredContent = [(PXSettingsTimelineInspectorViewController *)self filteredContent];
+  v31 = [filteredContent count] != 0;
+  showFilteredContentLabel2 = [(PXSettingsTimelineInspectorViewController *)self showFilteredContentLabel];
+  [showFilteredContentLabel2 setEnabled:v31];
 
-  v33 = [(PXSettingsTimelineInspectorViewController *)self showFilteredContentLabel];
-  if ([v33 isEnabled])
+  showFilteredContentLabel3 = [(PXSettingsTimelineInspectorViewController *)self showFilteredContentLabel];
+  if ([showFilteredContentLabel3 isEnabled])
   {
     v34 = @"Show Filtered Content";
   }
@@ -610,69 +610,69 @@ void __66__PXSettingsTimelineInspectorViewController_displayTimelineEntry___bloc
     v34 = @"No Filtered Content";
   }
 
-  v35 = [(PXSettingsTimelineInspectorViewController *)self showFilteredContentLabel];
-  [v35 setText:v34];
+  showFilteredContentLabel4 = [(PXSettingsTimelineInspectorViewController *)self showFilteredContentLabel];
+  [showFilteredContentLabel4 setText:v34];
 
-  v36 = [(PXSettingsTimelineInspectorViewController *)self view];
-  v37 = [(PXSettingsTimelineInspectorViewController *)self showFilteredContentLabel];
-  [v36 addSubview:v37];
+  view5 = [(PXSettingsTimelineInspectorViewController *)self view];
+  showFilteredContentLabel5 = [(PXSettingsTimelineInspectorViewController *)self showFilteredContentLabel];
+  [view5 addSubview:showFilteredContentLabel5];
 
   v38 = objc_alloc_init(MEMORY[0x1E69DCFD0]);
   [(PXSettingsTimelineInspectorViewController *)self setShowFilteredContentSwitch:v38];
 
-  v39 = [(PXSettingsTimelineInspectorViewController *)self showFilteredContentSwitch];
-  [v39 setOn:0];
+  showFilteredContentSwitch = [(PXSettingsTimelineInspectorViewController *)self showFilteredContentSwitch];
+  [showFilteredContentSwitch setOn:0];
 
-  v40 = [(PXSettingsTimelineInspectorViewController *)self filteredContent];
-  v41 = [v40 count] != 0;
-  v42 = [(PXSettingsTimelineInspectorViewController *)self showFilteredContentSwitch];
-  [v42 setEnabled:v41];
+  filteredContent2 = [(PXSettingsTimelineInspectorViewController *)self filteredContent];
+  v41 = [filteredContent2 count] != 0;
+  showFilteredContentSwitch2 = [(PXSettingsTimelineInspectorViewController *)self showFilteredContentSwitch];
+  [showFilteredContentSwitch2 setEnabled:v41];
 
-  v43 = [(PXSettingsTimelineInspectorViewController *)self showFilteredContentSwitch];
-  [v43 addTarget:self action:sel_switchValueChanged_ forControlEvents:4096];
+  showFilteredContentSwitch3 = [(PXSettingsTimelineInspectorViewController *)self showFilteredContentSwitch];
+  [showFilteredContentSwitch3 addTarget:self action:sel_switchValueChanged_ forControlEvents:4096];
 
-  v44 = [(PXSettingsTimelineInspectorViewController *)self view];
-  v45 = [(PXSettingsTimelineInspectorViewController *)self showFilteredContentSwitch];
-  [v44 addSubview:v45];
+  view6 = [(PXSettingsTimelineInspectorViewController *)self view];
+  showFilteredContentSwitch4 = [(PXSettingsTimelineInspectorViewController *)self showFilteredContentSwitch];
+  [view6 addSubview:showFilteredContentSwitch4];
 
   v46 = objc_alloc_init(MEMORY[0x1E69DCF60]);
   [(PXSettingsTimelineInspectorViewController *)self setTimeSlider:v46];
 
-  v47 = [(PXSettingsTimelineInspectorViewController *)self timeSlider];
-  [v47 addTarget:self action:sel_sliderValueChanged_ forControlEvents:4096];
+  timeSlider = [(PXSettingsTimelineInspectorViewController *)self timeSlider];
+  [timeSlider addTarget:self action:sel_sliderValueChanged_ forControlEvents:4096];
 
-  v48 = [(PXSettingsTimelineInspectorViewController *)self timeSlider];
-  [v48 setMinimumValue:0.0];
+  timeSlider2 = [(PXSettingsTimelineInspectorViewController *)self timeSlider];
+  [timeSlider2 setMinimumValue:0.0];
 
-  v49 = [(PXSettingsTimelineInspectorViewController *)self timeline];
-  v50 = [v49 lastObject];
-  v51 = [v50 endTime];
-  v52 = [(PXSettingsTimelineInspectorViewController *)self currentTime];
-  [v51 timeIntervalSinceDate:v52];
+  timeline = [(PXSettingsTimelineInspectorViewController *)self timeline];
+  lastObject = [timeline lastObject];
+  endTime = [lastObject endTime];
+  currentTime = [(PXSettingsTimelineInspectorViewController *)self currentTime];
+  [endTime timeIntervalSinceDate:currentTime];
   v54 = v53 + -1.0;
-  v55 = [(PXSettingsTimelineInspectorViewController *)self timeSlider];
+  timeSlider3 = [(PXSettingsTimelineInspectorViewController *)self timeSlider];
   *&v56 = v54;
-  [v55 setMaximumValue:v56];
+  [timeSlider3 setMaximumValue:v56];
 
-  v57 = [(PXSettingsTimelineInspectorViewController *)self timeSlider];
-  [v57 setValue:0.0];
+  timeSlider4 = [(PXSettingsTimelineInspectorViewController *)self timeSlider];
+  [timeSlider4 setValue:0.0];
 
-  v58 = [(PXSettingsTimelineInspectorViewController *)self view];
-  v59 = [(PXSettingsTimelineInspectorViewController *)self timeSlider];
-  [v58 addSubview:v59];
+  view7 = [(PXSettingsTimelineInspectorViewController *)self view];
+  timeSlider5 = [(PXSettingsTimelineInspectorViewController *)self timeSlider];
+  [view7 addSubview:timeSlider5];
 
-  v60 = [(PXSettingsTimelineInspectorViewController *)self timeline];
-  v61 = [v60 firstObject];
-  [(PXSettingsTimelineInspectorViewController *)self displayTimelineEntry:v61];
+  timeline2 = [(PXSettingsTimelineInspectorViewController *)self timeline];
+  firstObject = [timeline2 firstObject];
+  [(PXSettingsTimelineInspectorViewController *)self displayTimelineEntry:firstObject];
 
-  v62 = [(PXSettingsTimelineInspectorViewController *)self currentTime];
-  [(PXSettingsTimelineInspectorViewController *)self displaySliderTime:v62];
+  currentTime2 = [(PXSettingsTimelineInspectorViewController *)self currentTime];
+  [(PXSettingsTimelineInspectorViewController *)self displaySliderTime:currentTime2];
 }
 
-- (PXSettingsTimelineInspectorViewController)initWithWidgetSizeClass:(unint64_t)a3 timeline:(id)a4 dataSource:(id)a5
+- (PXSettingsTimelineInspectorViewController)initWithWidgetSizeClass:(unint64_t)class timeline:(id)timeline dataSource:(id)source
 {
-  v9 = a4;
-  v10 = a5;
+  timelineCopy = timeline;
+  sourceCopy = source;
   v19.receiver = self;
   v19.super_class = PXSettingsTimelineInspectorViewController;
   v11 = [(PXSettingsTimelineInspectorViewController *)&v19 init];
@@ -680,13 +680,13 @@ void __66__PXSettingsTimelineInspectorViewController_displayTimelineEntry___bloc
   if (v11)
   {
     p_widgetSize = &v11->_widgetSize;
-    [PXTimelineSize widgetSizeForSizeClass:a3];
+    [PXTimelineSize widgetSizeForSizeClass:class];
     *&p_widgetSize->width = v14;
     v12->_widgetSize.height = v15;
-    objc_storeStrong(&v12->_timeline, a4);
-    v16 = [v10 filteredContent];
+    objc_storeStrong(&v12->_timeline, timeline);
+    filteredContent = [sourceCopy filteredContent];
     filteredContent = v12->_filteredContent;
-    v12->_filteredContent = v16;
+    v12->_filteredContent = filteredContent;
   }
 
   return v12;

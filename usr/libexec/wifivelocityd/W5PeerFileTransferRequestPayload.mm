@@ -1,22 +1,22 @@
 @interface W5PeerFileTransferRequestPayload
-+ (id)payloadFromDictionary:(id)a3;
-- (W5PeerFileTransferRequestPayload)initWithRequest:(id)a3;
++ (id)payloadFromDictionary:(id)dictionary;
+- (W5PeerFileTransferRequestPayload)initWithRequest:(id)request;
 - (id)encode;
 @end
 
 @implementation W5PeerFileTransferRequestPayload
 
-+ (id)payloadFromDictionary:(id)a3
++ (id)payloadFromDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithRequest:v3];
+  dictionaryCopy = dictionary;
+  v4 = [objc_alloc(objc_opt_class()) initWithRequest:dictionaryCopy];
 
   return v4;
 }
 
-- (W5PeerFileTransferRequestPayload)initWithRequest:(id)a3
+- (W5PeerFileTransferRequestPayload)initWithRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v22.receiver = self;
   v22.super_class = W5PeerFileTransferRequestPayload;
   v5 = [(W5PeerFileTransferRequestPayload *)&v22 init];
@@ -25,7 +25,7 @@
     goto LABEL_11;
   }
 
-  v6 = [v4 objectForKey:@"version"];
+  v6 = [requestCopy objectForKey:@"version"];
   v5->_version = v6;
   if (!v6)
   {
@@ -33,7 +33,7 @@
   }
 
   v7 = [NSURL alloc];
-  v8 = [v4 objectForKey:@"url"];
+  v8 = [requestCopy objectForKey:@"url"];
   v9 = [v7 initWithString:v8];
   remotePath = v5->_remotePath;
   v5->_remotePath = v9;
@@ -46,7 +46,7 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v11 = [v4 objectForKey:@"type"];
+  v11 = [requestCopy objectForKey:@"type"];
   v12 = [NSSet setWithObjects:objc_opt_class(), 0];
   v21 = 0;
   v13 = [NSKeyedUnarchiver unarchivedObjectOfClasses:v12 fromData:v11 error:&v21];
@@ -56,13 +56,13 @@ LABEL_11:
   type = v5->_type;
   if (type == 1)
   {
-    v16 = [v4 objectForKey:@"targetID"];
+    v16 = [requestCopy objectForKey:@"targetID"];
     targetID = v5->_targetID;
     v5->_targetID = v16;
 
     if (v5->_targetID)
     {
-      v18 = [v4 objectForKey:@"publicKey"];
+      v18 = [requestCopy objectForKey:@"publicKey"];
       p_super = &v5->_publicKey->super;
       v5->_publicKey = v18;
 LABEL_9:
@@ -101,41 +101,41 @@ LABEL_10:
 - (id)encode
 {
   v3 = objc_alloc_init(NSMutableDictionary);
-  v4 = [(W5PeerFileTransferRequestPayload *)self version];
+  version = [(W5PeerFileTransferRequestPayload *)self version];
 
-  if (v4 && (-[W5PeerFileTransferRequestPayload version](self, "version"), v5 = objc_claimAutoreleasedReturnValue(), [v3 setObject:v5 forKey:@"version"], v5, -[W5PeerFileTransferRequestPayload remotePath](self, "remotePath"), v4 = objc_claimAutoreleasedReturnValue(), v4, v4))
+  if (version && (-[W5PeerFileTransferRequestPayload version](self, "version"), v5 = objc_claimAutoreleasedReturnValue(), [v3 setObject:v5 forKey:@"version"], v5, -[W5PeerFileTransferRequestPayload remotePath](self, "remotePath"), version = objc_claimAutoreleasedReturnValue(), version, version))
   {
-    v6 = [(W5PeerFileTransferRequestPayload *)self remotePath];
-    v7 = [v6 absoluteString];
-    [v3 setObject:v7 forKey:@"url"];
+    remotePath = [(W5PeerFileTransferRequestPayload *)self remotePath];
+    absoluteString = [remotePath absoluteString];
+    [v3 setObject:absoluteString forKey:@"url"];
 
     if ([(W5PeerFileTransferRequestPayload *)self type])
     {
       v8 = [[NSNumber alloc] initWithInteger:{-[W5PeerFileTransferRequestPayload type](self, "type")}];
       v21 = 0;
-      v4 = [NSKeyedArchiver archivedDataWithRootObject:v8 requiringSecureCoding:1 error:&v21];
+      version = [NSKeyedArchiver archivedDataWithRootObject:v8 requiringSecureCoding:1 error:&v21];
       v9 = v21;
 
-      [v3 setObject:v4 forKey:@"type"];
+      [v3 setObject:version forKey:@"type"];
       if ([(W5PeerFileTransferRequestPayload *)self type]== 1)
       {
-        v10 = [(W5PeerFileTransferRequestPayload *)self targetID];
+        targetID = [(W5PeerFileTransferRequestPayload *)self targetID];
 
-        if (!v10)
+        if (!targetID)
         {
           goto LABEL_12;
         }
 
-        v11 = [(W5PeerFileTransferRequestPayload *)self targetID];
-        [v3 setObject:v11 forKey:@"targetID"];
+        targetID2 = [(W5PeerFileTransferRequestPayload *)self targetID];
+        [v3 setObject:targetID2 forKey:@"targetID"];
       }
 
-      v12 = [(W5PeerFileTransferRequestPayload *)self publicKey];
+      publicKey = [(W5PeerFileTransferRequestPayload *)self publicKey];
 
-      if (v12)
+      if (publicKey)
       {
-        v13 = [(W5PeerFileTransferRequestPayload *)self publicKey];
-        [v3 setObject:v13 forKey:@"publicKey"];
+        publicKey2 = [(W5PeerFileTransferRequestPayload *)self publicKey];
+        [v3 setObject:publicKey2 forKey:@"publicKey"];
       }
 
       v14 = sub_100098A04();
@@ -158,7 +158,7 @@ LABEL_10:
     else
     {
       v9 = 0;
-      v4 = 0;
+      version = 0;
     }
   }
 

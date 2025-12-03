@@ -1,28 +1,28 @@
 @interface HDSleepPeriodInfo
-- (HDSleepPeriodInfo)initWithUserSetSchedules:(id)a3 incompleteSessions:(id)a4 mappedTimezones:(id)a5;
+- (HDSleepPeriodInfo)initWithUserSetSchedules:(id)schedules incompleteSessions:(id)sessions mappedTimezones:(id)timezones;
 @end
 
 @implementation HDSleepPeriodInfo
 
-- (HDSleepPeriodInfo)initWithUserSetSchedules:(id)a3 incompleteSessions:(id)a4 mappedTimezones:(id)a5
+- (HDSleepPeriodInfo)initWithUserSetSchedules:(id)schedules incompleteSessions:(id)sessions mappedTimezones:(id)timezones
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  schedulesCopy = schedules;
+  sessionsCopy = sessions;
+  timezonesCopy = timezones;
   v19.receiver = self;
   v19.super_class = HDSleepPeriodInfo;
   v11 = [(HDSleepPeriodInfo *)&v19 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [schedulesCopy copy];
     userSetSchedules = v11->_userSetSchedules;
     v11->_userSetSchedules = v12;
 
-    v14 = [v9 copy];
+    v14 = [sessionsCopy copy];
     incompleteSessions = v11->_incompleteSessions;
     v11->_incompleteSessions = v14;
 
-    v16 = [v10 copy];
+    v16 = [timezonesCopy copy];
     mappedTimezones = v11->_mappedTimezones;
     v11->_mappedTimezones = v16;
   }

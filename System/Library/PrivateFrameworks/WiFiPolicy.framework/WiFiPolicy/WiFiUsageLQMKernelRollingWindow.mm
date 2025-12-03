@@ -1,8 +1,8 @@
 @interface WiFiUsageLQMKernelRollingWindow
-+ (id)kernelLQMRollingWindow:(id)a3 withReferenceWindow:(id)a4 andLqmFeatures:(id)a5;
-+ (unint64_t)parseKernelBlobInto:(id)a3;
-+ (void)addSample:(id)a3 To:(id)a4;
-+ (void)advanceReadingPointerOf:(unint64_t)a3;
++ (id)kernelLQMRollingWindow:(id)window withReferenceWindow:(id)referenceWindow andLqmFeatures:(id)features;
++ (unint64_t)parseKernelBlobInto:(id)into;
++ (void)addSample:(id)sample To:(id)to;
++ (void)advanceReadingPointerOf:(unint64_t)of;
 + (void)initialize;
 @end
 
@@ -22,13 +22,13 @@
   [v5 setDateFormat:@"HH:mm:ss"];
 }
 
-+ (id)kernelLQMRollingWindow:(id)a3 withReferenceWindow:(id)a4 andLqmFeatures:(id)a5
++ (id)kernelLQMRollingWindow:(id)window withReferenceWindow:(id)referenceWindow andLqmFeatures:(id)features
 {
   v80 = *MEMORY[0x277D85DE8];
-  v53 = a3;
-  v49 = a4;
-  v55 = a4;
-  v54 = a5;
+  windowCopy = window;
+  referenceWindowCopy = referenceWindow;
+  referenceWindowCopy2 = referenceWindow;
+  featuresCopy = features;
   v60 = MEMORY[0x277CBEAC0];
   v58 = objc_opt_new();
   v66 = objc_opt_new();
@@ -44,27 +44,27 @@
   v13 = objc_opt_new();
   v14 = [v60 dictionaryWithObjectsAndKeys:{v58, @"WiFiUsageLQMKernelSampleRxAmpdu", v66, @"WiFiUsageLQMKernelSampleInfraTXRX", v64, @"WiFiUsageLQMKernelSamplePerACTxStatsUcast", v7, @"WiFiUsageLQMKernelSamplePerACTxStatsMcast", v8, @"WiFiUsageLQMKernelSampleOfdmDesense", v56, @"WiFiUsageLQMKernelSampleBTCoex", v51, @"WiFiUsageLQMKernelSampleAWDLCoex", v9, @"WiFiUsageLQMKernelSampleRC1Coex", v10, @"WiFiUsageLQMKernelSampleRC2Coex", v11, @"WiFiUsageLQMKernelSampleCCA", v12, @"WiFiUsageLQMKernelSampleSecurityErrors", v13, @"WiFiUsageLQMKernelSampleScanSummary", 0}];
 
-  v15 = v54;
+  v15 = featuresCopy;
   v16 = v14;
 
-  objc_storeStrong(&_lqmMetricsBlock, a3);
-  if (!v54 || !v55 || !_lqmMetricsBlock)
+  objc_storeStrong(&_lqmMetricsBlock, window);
+  if (!featuresCopy || !referenceWindowCopy2 || !_lqmMetricsBlock)
   {
     goto LABEL_31;
   }
 
-  objc_storeStrong(&_referenceWindow, v49);
-  v17 = [a1 parseKernelBlobInto:v14];
+  objc_storeStrong(&_referenceWindow, referenceWindowCopy);
+  v17 = [self parseKernelBlobInto:v14];
   v59 = [MEMORY[0x277CCAB68] stringWithFormat:@"\n"];
   v72 = 0u;
   v73 = 0u;
   v74 = 0u;
   v75 = 0u;
-  v18 = [v14 allKeys];
-  obj = [v18 countByEnumeratingWithState:&v72 objects:v79 count:16];
+  allKeys = [v14 allKeys];
+  obj = [allKeys countByEnumeratingWithState:&v72 objects:v79 count:16];
   if (obj)
   {
-    v57 = v18;
+    v57 = allKeys;
     v52 = v17;
     v19 = 0;
     v61 = *v73;
@@ -85,14 +85,14 @@
         {
           v24 = _dateFormatter_0;
           v67 = [v16 objectForKeyedSubscript:v21];
-          v65 = [v67 firstObject];
-          v25 = [v65 timestamp];
-          v26 = [v24 stringFromDate:v25];
+          firstObject = [v67 firstObject];
+          timestamp = [firstObject timestamp];
+          v26 = [v24 stringFromDate:timestamp];
           v27 = _dateFormatter_0;
           v28 = [v16 objectForKeyedSubscript:v21];
-          v29 = [v28 lastObject];
-          v30 = [v29 timestamp];
-          v31 = [v27 stringFromDate:v30];
+          lastObject = [v28 lastObject];
+          timestamp2 = [lastObject timestamp];
+          v31 = [v27 stringFromDate:timestamp2];
           [v16 objectForKeyedSubscript:v21];
           v33 = v32 = v16;
           [v59 appendFormat:@" %@ : window %@ to %@ . samples: %lu\n", v21, v26, v31, objc_msgSend(v33, "count")];
@@ -107,34 +107,34 @@
 
     while (obj);
 
-    v15 = v54;
+    v15 = featuresCopy;
     v17 = v52;
     if ((v19 & 1) == 0)
     {
       goto LABEL_17;
     }
 
-    v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s - Parsing results:%@", "+[WiFiUsageLQMKernelRollingWindow kernelLQMRollingWindow:withReferenceWindow:andLqmFeatures:]", v59];
+    allKeys = [MEMORY[0x277CCACA8] stringWithFormat:@"%s - Parsing results:%@", "+[WiFiUsageLQMKernelRollingWindow kernelLQMRollingWindow:withReferenceWindow:andLqmFeatures:]", v59];
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
-      v34 = [MEMORY[0x277CCACA8] stringWithFormat:@"[WiFiPolicy] %s", objc_msgSend(v18, "UTF8String")];
-      v35 = [v34 UTF8String];
+      v34 = [MEMORY[0x277CCACA8] stringWithFormat:@"[WiFiPolicy] %s", objc_msgSend(allKeys, "UTF8String")];
+      uTF8String = [v34 UTF8String];
       *buf = 136446210;
-      v78 = v35;
+      v78 = uTF8String;
       _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%{public}s", buf, 0xCu);
     }
   }
 
 LABEL_17:
-  v36 = [_referenceWindow samples];
-  if (v17 >= [v36 count])
+  samples = [_referenceWindow samples];
+  if (v17 >= [samples count])
   {
   }
 
   else
   {
-    v37 = [_referenceWindow samples];
-    v38 = [v37 count] - v17;
+    samples2 = [_referenceWindow samples];
+    v38 = [samples2 count] - v17;
 
     if (v38 > 2)
     {
@@ -146,8 +146,8 @@ LABEL_17:
   v71 = 0u;
   v68 = 0u;
   v69 = 0u;
-  v39 = [v16 allValues];
-  v40 = [v39 countByEnumeratingWithState:&v68 objects:v76 count:16];
+  allValues = [v16 allValues];
+  v40 = [allValues countByEnumeratingWithState:&v68 objects:v76 count:16];
   if (v40)
   {
     v41 = v40;
@@ -158,18 +158,18 @@ LABEL_17:
       {
         if (*v69 != v42)
         {
-          objc_enumerationMutation(v39);
+          objc_enumerationMutation(allValues);
         }
 
         v44 = *(*(&v68 + 1) + 8 * j);
         if ([v44 count])
         {
-          v45 = [_referenceWindow label];
-          [WiFiUsageLQMWindowAnalysis computeFeatures:v15 For:v44 WithLogLabel:v45];
+          label = [_referenceWindow label];
+          [WiFiUsageLQMWindowAnalysis computeFeatures:v15 For:v44 WithLogLabel:label];
         }
       }
 
-      v41 = [v39 countByEnumeratingWithState:&v68 objects:v76 count:16];
+      v41 = [allValues countByEnumeratingWithState:&v68 objects:v76 count:16];
     }
 
     while (v41);
@@ -184,27 +184,27 @@ LABEL_31:
   return v15;
 }
 
-+ (void)addSample:(id)a3 To:(id)a4
++ (void)addSample:(id)sample To:(id)to
 {
-  if (a3)
+  if (sample)
   {
-    [a4 addObject:?];
+    [to addObject:?];
   }
 }
 
-+ (void)advanceReadingPointerOf:(unint64_t)a3
++ (void)advanceReadingPointerOf:(unint64_t)of
 {
-  _readingAt += a3;
+  _readingAt += of;
   if (_readingAt >= _endOfBuffer)
   {
     _readingAt = _buffer + _readingAt - _endOfBuffer;
   }
 }
 
-+ (unint64_t)parseKernelBlobInto:(id)a3
++ (unint64_t)parseKernelBlobInto:(id)into
 {
   v77[22] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  intoCopy = into;
   p_info = TBTileMO.info;
   _buffer = [_lqmMetricsBlock bytes];
   _ringheader = 0;
@@ -262,14 +262,14 @@ LABEL_31:
   v9 = *(_buffer + 40);
   if (v9 == 1)
   {
-    v66 = v4;
+    v66 = intoCopy;
     _buffer += 56;
     _endOfBuffer = v8 + 56 + *(v8 + 44);
     _readingAt = v8 + 56 + *(v8 + 48);
     v68 = [MEMORY[0x277CBEAA8] now];
     v67 = clock_gettime_nsec_np(_CLOCK_MONOTONIC_RAW);
     v10 = TBTileMO.info;
-    v70 = a1;
+    selfCopy = self;
     while (1)
     {
       v11 = v6[93];
@@ -279,7 +279,7 @@ LABEL_31:
         break;
       }
 
-      [a1 advanceReadingPointerOf:24];
+      [self advanceReadingPointerOf:24];
       v13 = v7[109];
       if (&v11->name > v13)
       {
@@ -294,19 +294,19 @@ LABEL_31:
         v19 = [WiFiUsageLQMTransformations dateWithMachContinuousTime:*&v11->ivar_base_start WithRef:v68 asNS:v67];
         [(__objc2_class_ro *)v10[92] samples];
         v23 = v22 = v10;
-        v24 = [v23 firstObject];
-        v25 = [v24 timestamp];
-        if ([v19 compare:v25] == 1)
+        firstObject = [v23 firstObject];
+        timestamp = [firstObject timestamp];
+        if ([v19 compare:timestamp] == 1)
         {
-          v26 = [(__objc2_class_ro *)v22[92] samples];
-          v27 = [v26 lastObject];
-          v28 = [v27 timestamp];
-          v29 = [v19 compare:v28];
+          samples = [(__objc2_class_ro *)v22[92] samples];
+          lastObject = [samples lastObject];
+          timestamp2 = [lastObject timestamp];
+          v29 = [v19 compare:timestamp2];
 
           if (v29 == -1)
           {
             v6 = v21;
-            a1 = v70;
+            self = selfCopy;
             p_info = (TBTileMO + 32);
             v10 = (TBTileMO + 32);
             switch(v11->reserved)
@@ -396,13 +396,13 @@ LABEL_31:
                   {
                     [v44 transformTXStats];
                     v53 = [v66 objectForKeyedSubscript:@"WiFiUsageLQMKernelSamplePerACTxStatsUcast"];
-                    a1 = v70;
-                    [v70 addSample:v44 To:v53];
+                    self = selfCopy;
+                    [selfCopy addSample:v44 To:v53];
                     p_info = (TBTileMO + 32);
                     goto LABEL_68;
                   }
 
-                  a1 = v70;
+                  self = selfCopy;
                   p_info = (TBTileMO + 32);
                 }
 
@@ -413,7 +413,7 @@ LABEL_31:
 
                 [v43 transformTXStats];
                 v53 = [v66 objectForKeyedSubscript:@"WiFiUsageLQMKernelSamplePerACTxStatsMcast"];
-                [a1 addSample:v43 To:v53];
+                [self addSample:v43 To:v53];
                 v44 = 0;
 LABEL_68:
 
@@ -538,7 +538,7 @@ LABEL_51:
                   v32 = @"WiFiUsageLQMKernelSampleCCA";
 LABEL_40:
                   v36 = [v31 objectForKeyedSubscript:v32];
-                  [v70 addSample:v30 To:v36];
+                  [selfCopy addSample:v30 To:v36];
                 }
 
                 else
@@ -565,7 +565,7 @@ LABEL_52:
           else
           {
             v6 = v21;
-            a1 = v70;
+            self = selfCopy;
 LABEL_12:
             p_info = (TBTileMO + 32);
 LABEL_13:
@@ -594,12 +594,12 @@ LABEL_13:
         v63 = v16;
         v64 = v17;
         p_info = (TBTileMO + 32);
-        a1 = v70;
+        self = selfCopy;
         NSLog(&cfstr_SErrorWhilePar_0.isa, "+[WiFiUsageLQMKernelRollingWindow parseKernelBlobInto:]", v63, v64, v13, v14, v65, v20, LODWORD(v11->ivar_lyt), v6[93] + LODWORD(v11->ivar_lyt));
       }
 
-      [a1 advanceReadingPointerOf:LODWORD(v11->ivar_lyt)];
-      [a1 advanceReadingPointerOf:HIDWORD(v11->ivar_lyt)];
+      [self advanceReadingPointerOf:LODWORD(v11->ivar_lyt)];
+      [self advanceReadingPointerOf:HIDWORD(v11->ivar_lyt)];
       v7 = (TBTileMO + 32);
     }
 
@@ -607,8 +607,8 @@ LABEL_13:
     v74 = 0u;
     v71 = 0u;
     v72 = 0u;
-    v55 = [v66 allValues];
-    v56 = [v55 countByEnumeratingWithState:&v71 objects:v75 count:16];
+    allValues = [v66 allValues];
+    v56 = [allValues countByEnumeratingWithState:&v71 objects:v75 count:16];
     if (v56)
     {
       v57 = v56;
@@ -620,7 +620,7 @@ LABEL_13:
         {
           if (*v72 != v58)
           {
-            objc_enumerationMutation(v55);
+            objc_enumerationMutation(allValues);
           }
 
           v60 = *(*(&v71 + 1) + 8 * i);
@@ -630,7 +630,7 @@ LABEL_13:
           }
         }
 
-        v57 = [v55 countByEnumeratingWithState:&v71 objects:v75 count:16];
+        v57 = [allValues countByEnumeratingWithState:&v71 objects:v75 count:16];
       }
 
       while (v57);
@@ -641,7 +641,7 @@ LABEL_13:
       v54 = 0;
     }
 
-    v4 = v66;
+    intoCopy = v66;
   }
 
   else

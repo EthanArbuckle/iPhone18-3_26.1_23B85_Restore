@@ -5,8 +5,8 @@
 - (id)learnMoreButtonTitle;
 - (id)titleText;
 - (void)close;
-- (void)learnMoreButtonPressed:(id)a3;
-- (void)presentWithController:(id)a3;
+- (void)learnMoreButtonPressed:(id)pressed;
+- (void)presentWithController:(id)controller;
 - (void)viewDidLoad;
 @end
 
@@ -30,20 +30,20 @@
   v19.receiver = self;
   v19.super_class = COSWatchUnpairInstructionsController;
   [(COSWatchUnpairInstructionsController *)&v19 viewDidLoad];
-  v18 = [(COSWatchUnpairInstructionsController *)self titleText];
-  v17 = [(COSWatchUnpairInstructionsController *)self detailText];
-  v3 = [(COSWatchUnpairInstructionsController *)self headerView];
-  [v3 setTitle:v18];
+  titleText = [(COSWatchUnpairInstructionsController *)self titleText];
+  detailText = [(COSWatchUnpairInstructionsController *)self detailText];
+  headerView = [(COSWatchUnpairInstructionsController *)self headerView];
+  [headerView setTitle:titleText];
 
-  v4 = [(COSWatchUnpairInstructionsController *)self headerView];
-  [v4 setDetailText:v17];
+  headerView2 = [(COSWatchUnpairInstructionsController *)self headerView];
+  [headerView2 setDetailText:detailText];
 
   v5 = [UIImage systemImageNamed:@"gear"];
   v6 = BPSBridgeTintColor();
   v7 = [v5 imageWithTintColor:v6];
 
-  v8 = [(COSWatchUnpairInstructionsController *)self firstBulletText];
-  [(COSWatchUnpairInstructionsController *)self addBulletedListItemWithTitle:v8 description:&stru_10026E598 image:v7];
+  firstBulletText = [(COSWatchUnpairInstructionsController *)self firstBulletText];
+  [(COSWatchUnpairInstructionsController *)self addBulletedListItemWithTitle:firstBulletText description:&stru_10026E598 image:v7];
   v9 = [UIImage systemImageNamed:@"xmark.circle"];
   v10 = BPSBridgeTintColor();
   v11 = [v9 imageWithTintColor:v10];
@@ -58,41 +58,41 @@
   [(COSWatchUnpairInstructionsController *)self addBulletedListItemWithTitle:v16 description:&stru_10026E598 image:v14];
 }
 
-- (void)presentWithController:(id)a3
+- (void)presentWithController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v5 = [[COSNavigationController alloc] initWithRootViewController:self];
   [(COSNavigationController *)v5 setModalPresentationStyle:5];
-  v6 = [(COSNavigationController *)v5 view];
+  view = [(COSNavigationController *)v5 view];
   v7 = +[UIColor clearColor];
-  [v6 setBackgroundColor:v7];
+  [view setBackgroundColor:v7];
 
-  v8 = [(COSNavigationController *)v5 navigationBar];
-  sub_10002C794(v8);
+  navigationBar = [(COSNavigationController *)v5 navigationBar];
+  sub_10002C794(navigationBar);
 
   v9 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:0 target:self action:"close"];
-  v10 = [(COSWatchUnpairInstructionsController *)self navigationItem];
-  [v10 setRightBarButtonItem:v9];
+  navigationItem = [(COSWatchUnpairInstructionsController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:v9];
 
   [(COSNavigationController *)v5 setModalPresentationStyle:1];
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_1000C15A8;
   v17[3] = &unk_100268358;
-  v11 = v4;
+  v11 = controllerCopy;
   v18 = v11;
   v12 = v5;
   v19 = v12;
   v13 = objc_retainBlock(v17);
-  v14 = [v11 transitionCoordinator];
-  if (v14)
+  transitionCoordinator = [v11 transitionCoordinator];
+  if (transitionCoordinator)
   {
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = sub_1000C15BC;
     v15[3] = &unk_10026A4C8;
     v16 = v13;
-    [v14 animateAlongsideTransition:0 completion:v15];
+    [transitionCoordinator animateAlongsideTransition:0 completion:v15];
   }
 
   else
@@ -179,7 +179,7 @@
   return v3;
 }
 
-- (void)learnMoreButtonPressed:(id)a3
+- (void)learnMoreButtonPressed:(id)pressed
 {
   v4 = +[LSApplicationWorkspace defaultWorkspace];
   v3 = [NSURL URLWithString:@"https://support.apple.com/HT209512"];

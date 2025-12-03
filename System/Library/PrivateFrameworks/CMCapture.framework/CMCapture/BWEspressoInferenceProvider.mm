@@ -1,34 +1,34 @@
 @interface BWEspressoInferenceProvider
 + (void)initialize;
-- (BWEspressoInferenceProvider)initWithType:(int)a3 networkURL:(id)a4 networkConfiguration:(id)a5 context:(id)a6 executionTarget:(int)a7 schedulerPriority:(unsigned int)a8 preventionReasons:(id)a9 resourceProvider:(id)a10 allowedCompressionDirection:(unsigned int)a11 concurrentSubmissionLimit:(unint64_t)a12 updateMetadataWithCropRect:(BOOL)a13;
+- (BWEspressoInferenceProvider)initWithType:(int)type networkURL:(id)l networkConfiguration:(id)configuration context:(id)context executionTarget:(int)target schedulerPriority:(unsigned int)priority preventionReasons:(id)reasons resourceProvider:(id)self0 allowedCompressionDirection:(unsigned int)self1 concurrentSubmissionLimit:(unint64_t)self2 updateMetadataWithCropRect:(BOOL)self3;
 - (BWInferenceSubmittable)submittable;
-- (id)bindEspressoInput:(id)a3 fromAttachedMediaUsingKey:(id)a4 withVideoFormat:(id)a5 count:(unint64_t)a6;
-- (id)bindEspressoInput:(id)a3 fromMetadataUsingKeys:(id)a4;
-- (id)bindEspressoOutput:(id)a3 asAttachedMediaUsingKey:(id)a4 withVideoFormat:(id)a5 count:(unint64_t)a6;
-- (id)bindEspressoOutput:(id)a3 asConsolidatedMetadataUsingKeys:(id)a4;
-- (id)bindEspressoOutput:(id)a3 asMetadataUsingKey:(id)a4;
-- (id)bindEspressoOutput:(id)a3 asMetadataUsingKeys:(id)a4;
-- (id)bindOutputByCloningInputRequirement:(id)a3 toAttachedMediaUsingKey:(id)a4;
+- (id)bindEspressoInput:(id)input fromAttachedMediaUsingKey:(id)key withVideoFormat:(id)format count:(unint64_t)count;
+- (id)bindEspressoInput:(id)input fromMetadataUsingKeys:(id)keys;
+- (id)bindEspressoOutput:(id)output asAttachedMediaUsingKey:(id)key withVideoFormat:(id)format count:(unint64_t)count;
+- (id)bindEspressoOutput:(id)output asConsolidatedMetadataUsingKeys:(id)keys;
+- (id)bindEspressoOutput:(id)output asMetadataUsingKey:(id)key;
+- (id)bindEspressoOutput:(id)output asMetadataUsingKeys:(id)keys;
+- (id)bindOutputByCloningInputRequirement:(id)requirement toAttachedMediaUsingKey:(id)key;
 - (id)newStorage;
-- (int)executeOnSampleBuffer:(opaqueCMSampleBuffer *)a3 usingStorage:(id)a4 withExecutionTime:(id *)a5 completionHandler:(id)a6;
-- (int)prewarmUsingLimitedMemory:(BOOL)a3;
-- (int)reconcileWithPlaceholderProvider:(id)a3;
-- (int)submitForSampleBuffer:(opaqueCMSampleBuffer *)a3 usingStorage:(id)a4 withSubmissionTime:(id *)a5 workQueue:(id)a6 completionHandler:(id)a7;
+- (int)executeOnSampleBuffer:(opaqueCMSampleBuffer *)buffer usingStorage:(id)storage withExecutionTime:(id *)time completionHandler:(id)handler;
+- (int)prewarmUsingLimitedMemory:(BOOL)memory;
+- (int)reconcileWithPlaceholderProvider:(id)provider;
+- (int)submitForSampleBuffer:(opaqueCMSampleBuffer *)buffer usingStorage:(id)storage withSubmissionTime:(id *)time workQueue:(id)queue completionHandler:(id)handler;
 - (uint64_t)_ensureEspressoBindingsUsingStorage:(uint64_t)result;
 - (uint64_t)_mapSchedulerToEspressoPriority:(uint64_t)result;
-- (uint64_t)_prepareWithWorkQueue:(uint64_t)a1;
-- (uint64_t)_surfacePropertiesForTensor:(uint64_t)result bindingName:(void *)a2;
+- (uint64_t)_prepareWithWorkQueue:(uint64_t)queue;
+- (uint64_t)_surfacePropertiesForTensor:(uint64_t)result bindingName:(void *)name;
 - (void)dealloc;
-- (void)setCustomInferenceIdentifier:(id)a3;
-- (void)setPropagatable:(id)a3;
-- (void)setTensorMemoryProvider:(id)a3;
+- (void)setCustomInferenceIdentifier:(id)identifier;
+- (void)setPropagatable:(id)propagatable;
+- (void)setTensorMemoryProvider:(id)provider;
 @end
 
 @implementation BWEspressoInferenceProvider
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     FigNote_AllowInternalDefaultLogs();
     fig_note_initialize_category_with_default_work_cf();
@@ -37,7 +37,7 @@
   }
 }
 
-- (BWEspressoInferenceProvider)initWithType:(int)a3 networkURL:(id)a4 networkConfiguration:(id)a5 context:(id)a6 executionTarget:(int)a7 schedulerPriority:(unsigned int)a8 preventionReasons:(id)a9 resourceProvider:(id)a10 allowedCompressionDirection:(unsigned int)a11 concurrentSubmissionLimit:(unint64_t)a12 updateMetadataWithCropRect:(BOOL)a13
+- (BWEspressoInferenceProvider)initWithType:(int)type networkURL:(id)l networkConfiguration:(id)configuration context:(id)context executionTarget:(int)target schedulerPriority:(unsigned int)priority preventionReasons:(id)reasons resourceProvider:(id)self0 allowedCompressionDirection:(unsigned int)self1 concurrentSubmissionLimit:(unint64_t)self2 updateMetadataWithCropRect:(BOOL)self3
 {
   v21.receiver = self;
   v21.super_class = BWEspressoInferenceProvider;
@@ -45,22 +45,22 @@
   v19 = v18;
   if (v18)
   {
-    v18->_type = a3;
-    v18->_networkURL = [a4 copy];
-    v19->_networkConfiguration = [a5 copy];
-    v19->_executionTarget = a7;
-    v19->_preventionReasons = [a9 copy];
-    v19->_allowedCompressionDirection = a11;
-    v19->_concurrentSubmissionLimit = a12;
+    v18->_type = type;
+    v18->_networkURL = [l copy];
+    v19->_networkConfiguration = [configuration copy];
+    v19->_executionTarget = target;
+    v19->_preventionReasons = [reasons copy];
+    v19->_allowedCompressionDirection = direction;
+    v19->_concurrentSubmissionLimit = limit;
     v19->_espressoPriority = [BWEspressoInferenceProvider _mapSchedulerToEspressoPriority:v19];
-    v19->_context = a6;
+    v19->_context = context;
     v19->_bindingNamesByRequirement = objc_alloc_init(MEMORY[0x1E695DF90]);
     v19->_inputVideoRequirements = objc_alloc_init(MEMORY[0x1E695DF70]);
     v19->_outputVideoRequirements = objc_alloc_init(MEMORY[0x1E695DF70]);
     v19->_cloneVideoRequirements = objc_alloc_init(MEMORY[0x1E695DF70]);
     v19->_inputMetadataRequirements = objc_alloc_init(MEMORY[0x1E695DF70]);
     v19->_outputMetadataRequirements = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v19->_updateMetadataWithCropRect = a13;
+    v19->_updateMetadataWithCropRect = rect;
   }
 
   return v19;
@@ -81,16 +81,16 @@
 - (id)newStorage
 {
   inputVideoRequirements = self->_inputVideoRequirements;
-  v4 = [MEMORY[0x1E695DF70] array];
-  [v4 addObjectsFromArray:self->_outputVideoRequirements];
-  v5 = [MEMORY[0x1E695DF70] array];
-  [v5 addObjectsFromArray:self->_outputVideoRequirements];
-  [v5 addObjectsFromArray:self->_inputMetadataRequirements];
-  [v5 addObjectsFromArray:self->_outputMetadataRequirements];
+  array = [MEMORY[0x1E695DF70] array];
+  [array addObjectsFromArray:self->_outputVideoRequirements];
+  array2 = [MEMORY[0x1E695DF70] array];
+  [array2 addObjectsFromArray:self->_outputVideoRequirements];
+  [array2 addObjectsFromArray:self->_inputMetadataRequirements];
+  [array2 addObjectsFromArray:self->_outputMetadataRequirements];
   v6 = [BWEspressoInferenceStorage alloc];
   bindingNamesByRequirement = self->_bindingNamesByRequirement;
 
-  return [(BWEspressoInferenceStorage *)v6 initWithBindingNameByRequirement:bindingNamesByRequirement requirementsNeedingPixelBuffers:inputVideoRequirements requirementsNeedingPixelBufferPools:v4 requirementsNeedingTensors:v5];
+  return [(BWEspressoInferenceStorage *)v6 initWithBindingNameByRequirement:bindingNamesByRequirement requirementsNeedingPixelBuffers:inputVideoRequirements requirementsNeedingPixelBufferPools:array requirementsNeedingTensors:array2];
 }
 
 - (BWInferenceSubmittable)submittable
@@ -103,37 +103,37 @@
   return self;
 }
 
-- (void)setCustomInferenceIdentifier:(id)a3
+- (void)setCustomInferenceIdentifier:(id)identifier
 {
   customInferenceIdentifier = self->_customInferenceIdentifier;
-  if (customInferenceIdentifier != a3)
+  if (customInferenceIdentifier != identifier)
   {
 
-    self->_customInferenceIdentifier = a3;
+    self->_customInferenceIdentifier = identifier;
   }
 }
 
-- (void)setPropagatable:(id)a3
+- (void)setPropagatable:(id)propagatable
 {
   propagator = self->_propagator;
-  if (propagator != a3)
+  if (propagator != propagatable)
   {
 
-    self->_propagator = a3;
+    self->_propagator = propagatable;
   }
 }
 
-- (void)setTensorMemoryProvider:(id)a3
+- (void)setTensorMemoryProvider:(id)provider
 {
   tensorMemoryProvider = self->_tensorMemoryProvider;
-  if (tensorMemoryProvider != a3)
+  if (tensorMemoryProvider != provider)
   {
 
-    self->_tensorMemoryProvider = a3;
+    self->_tensorMemoryProvider = provider;
   }
 }
 
-- (int)executeOnSampleBuffer:(opaqueCMSampleBuffer *)a3 usingStorage:(id)a4 withExecutionTime:(id *)a5 completionHandler:(id)a6
+- (int)executeOnSampleBuffer:(opaqueCMSampleBuffer *)buffer usingStorage:(id)storage withExecutionTime:(id *)time completionHandler:(id)handler
 {
   espressoPlan = self->_espressoPlan;
   v9 = MEMORY[0x1E695FF58];
@@ -144,11 +144,11 @@
 
   if (*MEMORY[0x1E695FF58] == 1)
   {
-    [(BWEspressoInferenceProvider *)self type:a3];
+    [(BWEspressoInferenceProvider *)self type:buffer];
     kdebug_trace();
   }
 
-  v11 = [(BWEspressoInferenceProvider *)self _ensureEspressoBindingsUsingStorage:a4];
+  v11 = [(BWEspressoInferenceProvider *)self _ensureEspressoBindingsUsingStorage:storage];
   if (v11)
   {
     v12 = v11;
@@ -202,17 +202,17 @@ LABEL_9:
     kdebug_trace();
   }
 
-  if (a6)
+  if (handler)
   {
-    (*(a6 + 2))(a6, v12, self);
+    (*(handler + 2))(handler, v12, self);
   }
 
   return v12;
 }
 
-- (int)submitForSampleBuffer:(opaqueCMSampleBuffer *)a3 usingStorage:(id)a4 withSubmissionTime:(id *)a5 workQueue:(id)a6 completionHandler:(id)a7
+- (int)submitForSampleBuffer:(opaqueCMSampleBuffer *)buffer usingStorage:(id)storage withSubmissionTime:(id *)time workQueue:(id)queue completionHandler:(id)handler
 {
-  v11 = [(BWInferencePropagatable *)self->_propagator allowsAsyncPropagation:a3];
+  v11 = [(BWInferencePropagatable *)self->_propagator allowsAsyncPropagation:buffer];
   espressoPlan = self->_espressoPlan;
   if (!espressoPlan || espressoPlan != self->_espressoNetwork.plan || (v13 = v11, ![(BWEspressoInferenceProvider *)self submittable]))
   {
@@ -226,7 +226,7 @@ LABEL_9:
     kdebug_trace();
   }
 
-  v14 = [(BWEspressoInferenceProvider *)self _ensureEspressoBindingsUsingStorage:a4];
+  v14 = [(BWEspressoInferenceProvider *)self _ensureEspressoBindingsUsingStorage:storage];
   if (v14)
   {
     v16 = 1;
@@ -247,12 +247,12 @@ LABEL_9:
 
   if (((1 << executionTarget) & 0xA) != 0)
   {
-    if (a6)
+    if (queue)
     {
       if (espresso_plan_submit())
       {
         v14 = 4294935586;
-        if (!a7)
+        if (!handler)
         {
           return v14;
         }
@@ -271,7 +271,7 @@ LABEL_9:
 
 LABEL_10:
   v13 = v16;
-  if (!a7)
+  if (!handler)
   {
     return v14;
   }
@@ -279,7 +279,7 @@ LABEL_10:
 LABEL_16:
   if (v13)
   {
-    (*(a7 + 2))(a7, v14, self);
+    (*(handler + 2))(handler, v14, self);
   }
 
   return v14;
@@ -341,65 +341,65 @@ uint64_t __113__BWEspressoInferenceProvider_submitForSampleBuffer_usingStorage_w
   return result;
 }
 
-- (id)bindEspressoInput:(id)a3 fromAttachedMediaUsingKey:(id)a4 withVideoFormat:(id)a5 count:(unint64_t)a6
+- (id)bindEspressoInput:(id)input fromAttachedMediaUsingKey:(id)key withVideoFormat:(id)format count:(unint64_t)count
 {
-  v8 = [[BWInferenceVideoRequirement alloc] initWithAttachedMediaKey:a4 videoFormat:a5 count:a6];
+  v8 = [[BWInferenceVideoRequirement alloc] initWithAttachedMediaKey:key videoFormat:format count:count];
   [(NSMutableArray *)self->_inputVideoRequirements addObject:v8];
-  [(NSMutableDictionary *)self->_bindingNamesByRequirement setObject:a3 forKeyedSubscript:v8];
+  [(NSMutableDictionary *)self->_bindingNamesByRequirement setObject:input forKeyedSubscript:v8];
 
   return v8;
 }
 
-- (id)bindEspressoInput:(id)a3 fromMetadataUsingKeys:(id)a4
+- (id)bindEspressoInput:(id)input fromMetadataUsingKeys:(id)keys
 {
-  v6 = [[BWInferenceMetadataRequirement alloc] initWithMetadataKeys:a4];
+  v6 = [[BWInferenceMetadataRequirement alloc] initWithMetadataKeys:keys];
   [(NSMutableArray *)self->_inputMetadataRequirements addObject:v6];
-  [(NSMutableDictionary *)self->_bindingNamesByRequirement setObject:a3 forKeyedSubscript:v6];
+  [(NSMutableDictionary *)self->_bindingNamesByRequirement setObject:input forKeyedSubscript:v6];
 
   return v6;
 }
 
-- (id)bindEspressoOutput:(id)a3 asAttachedMediaUsingKey:(id)a4 withVideoFormat:(id)a5 count:(unint64_t)a6
+- (id)bindEspressoOutput:(id)output asAttachedMediaUsingKey:(id)key withVideoFormat:(id)format count:(unint64_t)count
 {
-  v8 = [[BWInferenceVideoRequirement alloc] initWithAttachedMediaKey:a4 videoFormat:a5 count:a6];
+  v8 = [[BWInferenceVideoRequirement alloc] initWithAttachedMediaKey:key videoFormat:format count:count];
   [(NSMutableArray *)self->_outputVideoRequirements addObject:v8];
-  [(NSMutableDictionary *)self->_bindingNamesByRequirement setObject:a3 forKeyedSubscript:v8];
+  [(NSMutableDictionary *)self->_bindingNamesByRequirement setObject:output forKeyedSubscript:v8];
 
   return v8;
 }
 
-- (id)bindOutputByCloningInputRequirement:(id)a3 toAttachedMediaUsingKey:(id)a4
+- (id)bindOutputByCloningInputRequirement:(id)requirement toAttachedMediaUsingKey:(id)key
 {
-  v5 = [[BWInferenceCloneVideoRequirement alloc] initWithAttachedMediaKey:a4 sourceVideoRequirement:a3];
+  v5 = [[BWInferenceCloneVideoRequirement alloc] initWithAttachedMediaKey:key sourceVideoRequirement:requirement];
   [(NSMutableArray *)self->_cloneVideoRequirements addObject:v5];
 
   return v5;
 }
 
-- (id)bindEspressoOutput:(id)a3 asMetadataUsingKey:(id)a4
+- (id)bindEspressoOutput:(id)output asMetadataUsingKey:(id)key
 {
   v7 = [BWInferenceMetadataRequirement alloc];
-  v10 = a4;
-  v8 = -[BWInferenceMetadataRequirement initWithMetadataKeys:mappingOption:](v7, "initWithMetadataKeys:mappingOption:", [MEMORY[0x1E695DEC8] arrayWithObjects:&v10 count:1], 1);
+  keyCopy = key;
+  v8 = -[BWInferenceMetadataRequirement initWithMetadataKeys:mappingOption:](v7, "initWithMetadataKeys:mappingOption:", [MEMORY[0x1E695DEC8] arrayWithObjects:&keyCopy count:1], 1);
   [(NSMutableArray *)self->_outputMetadataRequirements addObject:v8];
-  [(NSMutableDictionary *)self->_bindingNamesByRequirement setObject:a3 forKeyedSubscript:v8];
+  [(NSMutableDictionary *)self->_bindingNamesByRequirement setObject:output forKeyedSubscript:v8];
   return v8;
 }
 
-- (id)bindEspressoOutput:(id)a3 asMetadataUsingKeys:(id)a4
+- (id)bindEspressoOutput:(id)output asMetadataUsingKeys:(id)keys
 {
-  v6 = [[BWInferenceMetadataRequirement alloc] initWithMetadataKeys:a4];
+  v6 = [[BWInferenceMetadataRequirement alloc] initWithMetadataKeys:keys];
   [(NSMutableArray *)self->_outputMetadataRequirements addObject:v6];
-  [(NSMutableDictionary *)self->_bindingNamesByRequirement setObject:a3 forKeyedSubscript:v6];
+  [(NSMutableDictionary *)self->_bindingNamesByRequirement setObject:output forKeyedSubscript:v6];
 
   return v6;
 }
 
-- (id)bindEspressoOutput:(id)a3 asConsolidatedMetadataUsingKeys:(id)a4
+- (id)bindEspressoOutput:(id)output asConsolidatedMetadataUsingKeys:(id)keys
 {
-  v6 = [[BWInferenceMetadataRequirement alloc] initWithMetadataKeys:a4 mappingOption:2];
+  v6 = [[BWInferenceMetadataRequirement alloc] initWithMetadataKeys:keys mappingOption:2];
   [(NSMutableArray *)self->_outputMetadataRequirements addObject:v6];
-  [(NSMutableDictionary *)self->_bindingNamesByRequirement setObject:a3 forKeyedSubscript:v6];
+  [(NSMutableDictionary *)self->_bindingNamesByRequirement setObject:output forKeyedSubscript:v6];
 
   return v6;
 }
@@ -431,48 +431,48 @@ uint64_t __113__BWEspressoInferenceProvider_submitForSampleBuffer_usingStorage_w
   return result;
 }
 
-- (uint64_t)_prepareWithWorkQueue:(uint64_t)a1
+- (uint64_t)_prepareWithWorkQueue:(uint64_t)queue
 {
-  if (!a1)
+  if (!queue)
   {
     return 0;
   }
 
   v3 = MEMORY[0x1E695FF58];
-  if (*(a1 + 80))
+  if (*(queue + 80))
   {
     goto LABEL_39;
   }
 
   if (*MEMORY[0x1E695FF58] == 1)
   {
-    [a1 type];
+    [queue type];
     OUTLINED_FUNCTION_2_38();
   }
 
-  BWInferenceTypeDescription(*(a1 + 16));
+  BWInferenceTypeDescription(*(queue + 16));
   mach_absolute_time();
-  v5 = [*(a1 + 72) prepareForInference];
-  if (v5)
+  prepareForInference = [*(queue + 72) prepareForInference];
+  if (prepareForInference)
   {
     goto LABEL_49;
   }
 
-  plan = [*(a1 + 72) espressoContext];
+  plan = [*(queue + 72) espressoContext];
   if (!plan)
   {
     goto LABEL_40;
   }
 
   plan = espresso_create_plan();
-  *(a1 + 80) = plan;
+  *(queue + 80) = plan;
   if (!plan)
   {
     goto LABEL_40;
   }
 
-  os_log_and_send_and_compose_flags_and_os_log_type = [*(a1 + 48) fileSystemRepresentation];
-  [a1 executionTarget];
+  os_log_and_send_and_compose_flags_and_os_log_type = [*(queue + 48) fileSystemRepresentation];
+  [queue executionTarget];
   LODWORD(plan) = espresso_plan_add_network();
   if (plan)
   {
@@ -511,27 +511,27 @@ LABEL_48:
     v3 = MEMORY[0x1E695FF58];
   }
 
-  if ([a1 submittable] && *(a1 + 20) == 3 && (a2 && espresso_plan_set_execution_queue() || *(a1 + 40) >= 2uLL && espresso_plan_submit_set_multiple_buffering()) || *(a1 + 104) && espresso_plan_set_priority())
+  if ([queue submittable] && *(queue + 20) == 3 && (a2 && espresso_plan_set_execution_queue() || *(queue + 40) >= 2uLL && espresso_plan_submit_set_multiple_buffering()) || *(queue + 104) && espresso_plan_set_priority())
   {
     os_log_and_send_and_compose_flags_and_os_log_type = 4294935586;
     LODWORD(plan) = 1;
     goto LABEL_41;
   }
 
-  if ([*(a1 + 72) configureIntermediateBufferSharingForPlanPrebuild:*(a1 + 80)])
+  if ([*(queue + 72) configureIntermediateBufferSharingForPlanPrebuild:*(queue + 80)])
   {
     goto LABEL_50;
   }
 
-  v9 = *(a1 + 56);
+  v9 = *(queue + 56);
   if (v9)
   {
     [v9 UTF8String];
-    v5 = espresso_network_select_configuration();
-    if (v5)
+    prepareForInference = espresso_network_select_configuration();
+    if (prepareForInference)
     {
 LABEL_49:
-      os_log_and_send_and_compose_flags_and_os_log_type = v5;
+      os_log_and_send_and_compose_flags_and_os_log_type = prepareForInference;
 LABEL_51:
       LODWORD(plan) = 0;
       goto LABEL_41;
@@ -544,7 +544,7 @@ LABEL_51:
     goto LABEL_48;
   }
 
-  if ([*(a1 + 72) configureIntermediateBufferSharingForPlanPostbuild:*(a1 + 80)])
+  if ([*(queue + 72) configureIntermediateBufferSharingForPlanPostbuild:*(queue + 80)])
   {
 LABEL_50:
     OUTLINED_FUNCTION_3_78();
@@ -552,12 +552,12 @@ LABEL_50:
     goto LABEL_51;
   }
 
-  if (!*(a1 + 160))
+  if (!*(queue + 160))
   {
-    *(a1 + 160) = [[BWInferenceSampleBufferPropagator alloc] initWithVideoRequirements:*(a1 + 128) cloneRequirements:*(a1 + 136) metadataRequirements:*(a1 + 152) updateMetadataWithCropRect:*(a1 + 176)];
+    *(queue + 160) = [[BWInferenceSampleBufferPropagator alloc] initWithVideoRequirements:*(queue + 128) cloneRequirements:*(queue + 136) metadataRequirements:*(queue + 152) updateMetadataWithCropRect:*(queue + 176)];
   }
 
-  *(a1 + 184) = objc_alloc_init(MEMORY[0x1E695DF70]);
+  *(queue + 184) = objc_alloc_init(MEMORY[0x1E695DF70]);
   if (dword_1EB58E3E0)
   {
     OUTLINED_FUNCTION_4_69();
@@ -591,20 +591,20 @@ LABEL_40:
 LABEL_41:
   if (os_log_and_send_and_compose_flags_and_os_log_type | plan)
   {
-    if (*(a1 + 80))
+    if (*(queue + 80))
     {
-      *(a1 + 88) = 0;
-      *(a1 + 96) = 0;
+      *(queue + 88) = 0;
+      *(queue + 96) = 0;
       espresso_plan_destroy();
-      *(a1 + 80) = 0;
+      *(queue + 80) = 0;
     }
 
-    *(a1 + 184) = 0;
+    *(queue + 184) = 0;
   }
 
   if (*v3 == 1)
   {
-    [a1 type];
+    [queue type];
     kdebug_trace();
   }
 
@@ -620,8 +620,8 @@ LABEL_41:
     v70 = 0u;
     v67 = 0u;
     v68 = 0u;
-    v4 = [result inputVideoRequirements];
-    v5 = [v4 countByEnumeratingWithState:&v67 objects:v66 count:16];
+    inputVideoRequirements = [result inputVideoRequirements];
+    v5 = [inputVideoRequirements countByEnumeratingWithState:&v67 objects:v66 count:16];
     if (v5)
     {
       v7 = v5;
@@ -633,7 +633,7 @@ LABEL_41:
         {
           if (*v68 != v8)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(inputVideoRequirements);
           }
 
           v10 = *(*(&v67 + 1) + 8 * v9);
@@ -904,7 +904,7 @@ LABEL_70:
   return result;
 }
 
-- (uint64_t)_surfacePropertiesForTensor:(uint64_t)result bindingName:(void *)a2
+- (uint64_t)_surfacePropertiesForTensor:(uint64_t)result bindingName:(void *)name
 {
   if (!result)
   {
@@ -927,10 +927,10 @@ LABEL_7:
       v4 = 1278226536;
       v6 = 1;
 LABEL_8:
-      v7 = a2[13];
-      v8 = (a2[12] - 1) / v6;
-      v9 = a2[11];
-      v10 = a2[10] * v6;
+      v7 = name[13];
+      v8 = (name[12] - 1) / v6;
+      v9 = name[11];
+      v10 = name[10] * v6;
       v11 = (v10 * v5 - 1) & 0xFFFFFFFFFFFFFFC0;
       v12 = (v9 + v9 * v8) * v7;
       v13[0] = *MEMORY[0x1E696CE50];
@@ -951,7 +951,7 @@ LABEL_8:
   return 0;
 }
 
-- (int)prewarmUsingLimitedMemory:(BOOL)a3
+- (int)prewarmUsingLimitedMemory:(BOOL)memory
 {
   v4 = MEMORY[0x1E695FF58];
   if (*MEMORY[0x1E695FF58] == 1)
@@ -959,10 +959,10 @@ LABEL_8:
     OUTLINED_FUNCTION_2_38();
   }
 
-  v5 = [(BWEspressoInferenceProvider *)self prepareForExecution];
-  if (v5)
+  prepareForExecution = [(BWEspressoInferenceProvider *)self prepareForExecution];
+  if (prepareForExecution)
   {
-    v6 = v5;
+    v6 = prepareForExecution;
   }
 
   else if (espresso_plan_execute_sync())
@@ -983,39 +983,39 @@ LABEL_8:
   return v6;
 }
 
-- (int)reconcileWithPlaceholderProvider:(id)a3
+- (int)reconcileWithPlaceholderProvider:(id)provider
 {
   type = self->_type;
-  if (type != [a3 type])
+  if (type != [provider type])
   {
     return -31783;
   }
 
-  [a3 customInferenceIdentifier];
+  [provider customInferenceIdentifier];
   if (![OUTLINED_FUNCTION_8() isEqualToString:?])
   {
     return -31783;
   }
 
   [(NSMutableArray *)self->_inputVideoRequirements removeAllObjects];
-  [a3 inputVideoRequirements];
+  [provider inputVideoRequirements];
   [OUTLINED_FUNCTION_8() addObjectsFromArray:?];
   [(NSMutableArray *)self->_inputMetadataRequirements removeAllObjects];
-  [a3 inputMetadataRequirements];
+  [provider inputMetadataRequirements];
   [OUTLINED_FUNCTION_8() addObjectsFromArray:?];
   [(NSMutableArray *)self->_outputVideoRequirements removeAllObjects];
-  [a3 outputVideoRequirements];
+  [provider outputVideoRequirements];
   [OUTLINED_FUNCTION_8() addObjectsFromArray:?];
   [(NSMutableArray *)self->_outputMetadataRequirements removeAllObjects];
-  [a3 outputMetadataRequirements];
+  [provider outputMetadataRequirements];
   [OUTLINED_FUNCTION_8() addObjectsFromArray:?];
   [(NSMutableArray *)self->_cloneVideoRequirements removeAllObjects];
-  [a3 cloneVideoRequirements];
+  [provider cloneVideoRequirements];
   [OUTLINED_FUNCTION_8() addObjectsFromArray:?];
   [(NSMutableDictionary *)self->_bindingNamesByRequirement removeAllObjects];
-  if (a3)
+  if (provider)
   {
-    v6 = *(a3 + 14);
+    v6 = *(provider + 14);
   }
 
   else
@@ -1024,7 +1024,7 @@ LABEL_8:
   }
 
   [(NSMutableDictionary *)self->_bindingNamesByRequirement addEntriesFromDictionary:v6];
-  -[BWEspressoInferenceProvider setPropagatable:](self, "setPropagatable:", [a3 propagatable]);
+  -[BWEspressoInferenceProvider setPropagatable:](self, "setPropagatable:", [provider propagatable]);
   return 0;
 }
 

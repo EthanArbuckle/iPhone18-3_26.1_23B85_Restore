@@ -1,10 +1,10 @@
 @interface CIZoomBlur
 + (id)customAttributes;
 - (BOOL)_isIdentity;
-- (id)_blur:(id)a3 pass:(int)a4 weightsFactor:(float)a5;
+- (id)_blur:(id)_blur pass:(int)pass weightsFactor:(float)factor;
 - (id)outputImage;
-- (id)valueForUndefinedKey:(id)a3;
-- (void)setValue:(id)a3 forUndefinedKey:(id)a4;
+- (id)valueForUndefinedKey:(id)key;
+- (void)setValue:(id)value forUndefinedKey:(id)key;
 @end
 
 @implementation CIZoomBlur
@@ -66,25 +66,25 @@
   return [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:v13 count:4];
 }
 
-- (void)setValue:(id)a3 forUndefinedKey:(id)a4
+- (void)setValue:(id)value forUndefinedKey:(id)key
 {
-  if ([a4 isEqualToString:@"inputRadius"])
+  if ([key isEqualToString:@"inputRadius"])
   {
 
-    [(CIZoomBlur *)self setInputAmount:a3];
+    [(CIZoomBlur *)self setInputAmount:value];
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = CIZoomBlur;
-    [(CIFilter *)&v7 setValue:a3 forUndefinedKey:a4];
+    [(CIFilter *)&v7 setValue:value forUndefinedKey:key];
   }
 }
 
-- (id)valueForUndefinedKey:(id)a3
+- (id)valueForUndefinedKey:(id)key
 {
-  if ([a3 isEqualToString:@"inputRadius"])
+  if ([key isEqualToString:@"inputRadius"])
   {
 
     return [(CIZoomBlur *)self inputAmount];
@@ -94,14 +94,14 @@
   {
     v6.receiver = self;
     v6.super_class = CIZoomBlur;
-    return [(CIFilter *)&v6 valueForUndefinedKey:a3];
+    return [(CIFilter *)&v6 valueForUndefinedKey:key];
   }
 }
 
-- (id)_blur:(id)a3 pass:(int)a4 weightsFactor:(float)a5
+- (id)_blur:(id)_blur pass:(int)pass weightsFactor:(float)factor
 {
   v39[5] = *MEMORY[0x1E69E9840];
-  v8 = pow(0.995, (1 << a4));
+  v8 = pow(0.995, (1 << pass));
   [(CIVector *)self->inputCenter X];
   v10 = v9;
   [(CIVector *)self->inputCenter Y];
@@ -111,9 +111,9 @@
   v15 = v10;
   v16 = v12;
   v17 = [CIVector vectorWithX:v15 Y:v12 Z:v13];
-  v18 = [CIVector vectorWithX:a5 * 0.1 Y:a5 * 0.15 Z:a5 * 0.2 W:a5 * 0.25];
-  v19 = [MEMORY[0x1E696AD98] numberWithDouble:(1.0 - a5) + a5 * 0.3];
-  [a3 extent];
+  v18 = [CIVector vectorWithX:factor * 0.1 Y:factor * 0.15 Z:factor * 0.2 W:factor * 0.25];
+  v19 = [MEMORY[0x1E696AD98] numberWithDouble:(1.0 - factor) + factor * 0.3];
+  [_blur extent];
   x = v40.origin.x;
   y = v40.origin.y;
   width = v40.size.width;
@@ -224,18 +224,18 @@ LABEL_12:
   v26 = v43.size.width;
   v27 = v43.size.height;
 LABEL_26:
-  v36 = [(CIZoomBlur *)self _kernel];
+  _kernel = [(CIZoomBlur *)self _kernel];
   v38[0] = MEMORY[0x1E69E9820];
   v38[1] = 3221225472;
   v38[2] = __39__CIZoomBlur__blur_pass_weightsFactor___block_invoke;
   v38[3] = &unk_1E75C24D8;
   v38[4] = v17;
-  v39[0] = a3;
+  v39[0] = _blur;
   v39[1] = self->inputCenter;
   v39[2] = v14;
   v39[3] = v18;
   v39[4] = v19;
-  return [v36 applyWithExtent:v38 roiCallback:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v39, 5), v24, v25, v26, v27}];
+  return [_kernel applyWithExtent:v38 roiCallback:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v39, 5), v24, v25, v26, v27}];
 }
 
 double __39__CIZoomBlur__blur_pass_weightsFactor___block_invoke(uint64_t a1, double a2)
@@ -425,7 +425,7 @@ double __39__CIZoomBlur__blur_pass_weightsFactor___block_invoke(uint64_t a1, dou
       Rectangle::Union(&v51, &v52, &v49, v32);
       *&v51.var0 = v49;
       *&v51.var2 = v50;
-      v33 = [(CIZoomBlur *)self _kernelNew];
+      _kernelNew = [(CIZoomBlur *)self _kernelNew];
       if (vmaxv_u16(vmovn_s32(vmvnq_s8(vuzp1q_s32(vceqq_f64(*&v51.var0, vdupq_n_s64(0xFFDFFFFFFFFFFFFFLL)), vceqq_f64(*&v51.var2, vdupq_n_s64(0x7FEFFFFFFFFFFFFFuLL)))))))
       {
         var0 = v51.var0;
@@ -451,7 +451,7 @@ double __39__CIZoomBlur__blur_pass_weightsFactor___block_invoke(uint64_t a1, dou
       v53[0] = self->inputImage;
       v53[1] = [CIVector vectorWithX:v30 Y:v31, *&y];
       v53[2] = [MEMORY[0x1E696AD98] numberWithDouble:v13];
-      return [v33 applyWithExtent:v47 roiCallback:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v53, 3), var0, var1, var2, var3}];
+      return [_kernelNew applyWithExtent:v47 roiCallback:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v53, 3), var0, var1, var2, var3}];
     }
 
     else

@@ -2,27 +2,27 @@
 - (BOOL)isShowingControls;
 - (TVRUITouchpadDelegate)touchDelegate;
 - (_TVRUIEventDelegate)eventDelegate;
-- (void)_darkenSystemColorsChanged:(id)a3;
+- (void)_darkenSystemColorsChanged:(id)changed;
 - (void)_setupDirectionalArrowView;
 - (void)_setupTouchpadView;
-- (void)_simpleRemoteGesturesEnabled:(id)a3;
+- (void)_simpleRemoteGesturesEnabled:(id)enabled;
 - (void)_toggleControlScale;
 - (void)_transitionToAppropriateView;
 - (void)_transitionToDirectionalControlView;
 - (void)_transitionToTouchpadView;
 - (void)_updateViewState;
-- (void)pointerInteraction:(id)a3 willEnterRegion:(id)a4 animator:(id)a5;
-- (void)setDevice:(id)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setMediaControlsAreVisible:(BOOL)a3;
-- (void)setShowControls:(BOOL)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
-- (void)transitonToViewForDeviceType:(int64_t)a3;
+- (void)pointerInteraction:(id)interaction willEnterRegion:(id)region animator:(id)animator;
+- (void)setDevice:(id)device;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setMediaControlsAreVisible:(BOOL)visible;
+- (void)setShowControls:(BOOL)controls;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
+- (void)transitonToViewForDeviceType:(int64_t)type;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
 @end
 
@@ -45,8 +45,8 @@
     [(TVRUITouchpadViewController *)self _transitionToTouchpadView];
   }
 
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 addObserver:self selector:sel__simpleRemoteGesturesEnabled_ name:*MEMORY[0x277D81C30] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__simpleRemoteGesturesEnabled_ name:*MEMORY[0x277D81C30] object:0];
 
   v4 = _TVRUIViewControllerLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -55,12 +55,12 @@
     _os_log_impl(&dword_26CFEB000, v4, OS_LOG_TYPE_DEFAULT, "Registered to listen for accessibility simple remote gestures", v8, 2u);
   }
 
-  v5 = [(TVRUITouchpadViewController *)self view];
+  view = [(TVRUITouchpadViewController *)self view];
   v6 = [objc_alloc(MEMORY[0x277D75870]) initWithDelegate:self];
-  [v5 addInteraction:v6];
+  [view addInteraction:v6];
 
-  v7 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v7 addObserver:self selector:sel__darkenSystemColorsChanged_ name:*MEMORY[0x277D76460] object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel__darkenSystemColorsChanged_ name:*MEMORY[0x277D76460] object:0];
 
   [(TVRUITouchpadViewController *)self setEnabled:1];
 }
@@ -70,46 +70,46 @@
   v34.receiver = self;
   v34.super_class = TVRUITouchpadViewController;
   [(TVRUITouchpadViewController *)&v34 viewWillLayoutSubviews];
-  v3 = [(TVRUITouchpadViewController *)self backgroundView];
+  backgroundView = [(TVRUITouchpadViewController *)self backgroundView];
 
-  if (v3)
+  if (backgroundView)
   {
-    v4 = [(TVRUITouchpadViewController *)self view];
-    [v4 bounds];
+    view = [(TVRUITouchpadViewController *)self view];
+    [view bounds];
     v6 = v5;
     v8 = v7;
     v10 = v9;
     v12 = v11;
-    v13 = [(TVRUITouchpadViewController *)self backgroundView];
-    [v13 setFrame:{v6, v8, v10, v12}];
+    backgroundView2 = [(TVRUITouchpadViewController *)self backgroundView];
+    [backgroundView2 setFrame:{v6, v8, v10, v12}];
   }
 
-  v14 = [(TVRUITouchpadViewController *)self view];
-  [v14 bounds];
+  view2 = [(TVRUITouchpadViewController *)self view];
+  [view2 bounds];
   v16 = v15;
   v18 = v17;
   v20 = v19;
   v22 = v21;
-  v23 = [(TVRUITouchpadViewController *)self touchpadView];
-  [v23 setFrame:{v16, v18, v20, v22}];
+  touchpadView = [(TVRUITouchpadViewController *)self touchpadView];
+  [touchpadView setFrame:{v16, v18, v20, v22}];
 
-  v24 = [(TVRUITouchpadViewController *)self view];
-  [v24 bounds];
+  view3 = [(TVRUITouchpadViewController *)self view];
+  [view3 bounds];
   v26 = v25;
   v28 = v27;
   v30 = v29;
   v32 = v31;
-  v33 = [(TVRUITouchpadViewController *)self directionalControlView];
-  [v33 setFrame:{v26, v28, v30, v32}];
+  directionalControlView = [(TVRUITouchpadViewController *)self directionalControlView];
+  [directionalControlView setFrame:{v26, v28, v30, v32}];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v7.receiver = self;
   v7.super_class = TVRUITouchpadViewController;
-  [(TVRUITouchpadViewController *)&v7 viewWillDisappear:a3];
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 removeObserver:self name:*MEMORY[0x277D81C30] object:0];
+  [(TVRUITouchpadViewController *)&v7 viewWillDisappear:disappear];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D81C30] object:0];
 
   v5 = _TVRUIViewControllerLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -119,9 +119,9 @@
   }
 }
 
-- (void)transitonToViewForDeviceType:(int64_t)a3
+- (void)transitonToViewForDeviceType:(int64_t)type
 {
-  if (a3 == 2)
+  if (type == 2)
   {
     [(TVRUITouchpadViewController *)self _transitionToDirectionalControlView];
   }
@@ -139,57 +139,57 @@
   self->_touchpadView = v3;
 
   [(TVRUITouchpadView *)self->_touchpadView setAutoresizingMask:18];
-  v5 = [(TVRUITouchpadViewController *)self touchDelegate];
-  [(TVRUITouchpadView *)self->_touchpadView setTouchDelegate:v5];
+  touchDelegate = [(TVRUITouchpadViewController *)self touchDelegate];
+  [(TVRUITouchpadView *)self->_touchpadView setTouchDelegate:touchDelegate];
 
-  v6 = [MEMORY[0x277D75348] clearColor];
-  [(TVRUITouchpadView *)self->_touchpadView setBackgroundColor:v6];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [(TVRUITouchpadView *)self->_touchpadView setBackgroundColor:clearColor];
 
   v7 = [[TVRUIStandardTouchProcessor alloc] initWithTouchpadView:self->_touchpadView];
   touchProcessor = self->_touchProcessor;
   self->_touchProcessor = v7;
 
   v9 = self->_touchProcessor;
-  v10 = [(TVRUITouchpadViewController *)self eventDelegate];
-  [(TVRUITouchProcessor *)v9 setEventDelegate:v10];
+  eventDelegate = [(TVRUITouchpadViewController *)self eventDelegate];
+  [(TVRUITouchProcessor *)v9 setEventDelegate:eventDelegate];
 }
 
 - (void)_setupDirectionalArrowView
 {
   v3 = [TVRUIDirectionalControlView alloc];
-  v4 = [(TVRUITouchpadViewController *)self styleProvider];
-  v5 = [(TVRUIDirectionalControlView *)v3 initWithStyleProvider:v4];
+  styleProvider = [(TVRUITouchpadViewController *)self styleProvider];
+  v5 = [(TVRUIDirectionalControlView *)v3 initWithStyleProvider:styleProvider];
   directionalControlView = self->_directionalControlView;
   self->_directionalControlView = v5;
 
   [(TVRUIDirectionalControlView *)self->_directionalControlView setAutoresizingMask:18];
-  v7 = [MEMORY[0x277D75348] clearColor];
-  [(TVRUIDirectionalControlView *)self->_directionalControlView setBackgroundColor:v7];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [(TVRUIDirectionalControlView *)self->_directionalControlView setBackgroundColor:clearColor];
 
-  v8 = [(TVRUITouchpadViewController *)self eventDelegate];
-  [(TVRUIDirectionalControlView *)self->_directionalControlView setEventDelegate:v8];
+  eventDelegate = [(TVRUITouchpadViewController *)self eventDelegate];
+  [(TVRUIDirectionalControlView *)self->_directionalControlView setEventDelegate:eventDelegate];
 }
 
 - (void)_transitionToTouchpadView
 {
-  v3 = [(TVRUITouchpadViewController *)self directionalControlView];
-  v4 = [v3 superview];
-  v5 = [(TVRUITouchpadViewController *)self view];
-  v6 = [v4 isEqual:v5];
+  directionalControlView = [(TVRUITouchpadViewController *)self directionalControlView];
+  superview = [directionalControlView superview];
+  view = [(TVRUITouchpadViewController *)self view];
+  v6 = [superview isEqual:view];
 
   if (v6)
   {
     v7 = MEMORY[0x277D75D18];
-    v8 = [(TVRUITouchpadViewController *)self directionalControlView];
-    v9 = [(TVRUITouchpadViewController *)self touchpadView];
-    [v7 transitionFromView:v8 toView:v9 duration:5242880 options:0 completion:0.2];
+    directionalControlView2 = [(TVRUITouchpadViewController *)self directionalControlView];
+    touchpadView = [(TVRUITouchpadViewController *)self touchpadView];
+    [v7 transitionFromView:directionalControlView2 toView:touchpadView duration:5242880 options:0 completion:0.2];
   }
 
   else
   {
-    v8 = [(TVRUITouchpadViewController *)self view];
-    v9 = [(TVRUITouchpadViewController *)self touchpadView];
-    [v8 addSubview:v9];
+    directionalControlView2 = [(TVRUITouchpadViewController *)self view];
+    touchpadView = [(TVRUITouchpadViewController *)self touchpadView];
+    [directionalControlView2 addSubview:touchpadView];
   }
 
   [(TVRUITouchpadViewController *)self setTouchpadMode:0];
@@ -197,53 +197,53 @@
 
 - (void)_transitionToDirectionalControlView
 {
-  v3 = [(TVRUITouchpadViewController *)self directionalControlView];
+  directionalControlView = [(TVRUITouchpadViewController *)self directionalControlView];
 
-  if (!v3)
+  if (!directionalControlView)
   {
     [(TVRUITouchpadViewController *)self _setupDirectionalArrowView];
   }
 
-  v4 = [(TVRUITouchpadViewController *)self eventDelegate];
+  eventDelegate = [(TVRUITouchpadViewController *)self eventDelegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(TVRUITouchpadViewController *)self eventDelegate];
-    [v6 willShowDirectionalControls];
+    eventDelegate2 = [(TVRUITouchpadViewController *)self eventDelegate];
+    [eventDelegate2 willShowDirectionalControls];
   }
 
-  v7 = [(TVRUITouchpadViewController *)self touchpadView];
-  v8 = [v7 superview];
-  v9 = [(TVRUITouchpadViewController *)self view];
-  v10 = [v8 isEqual:v9];
+  touchpadView = [(TVRUITouchpadViewController *)self touchpadView];
+  superview = [touchpadView superview];
+  view = [(TVRUITouchpadViewController *)self view];
+  v10 = [superview isEqual:view];
 
   if (v10)
   {
     v11 = MEMORY[0x277D75D18];
-    v12 = [(TVRUITouchpadViewController *)self touchpadView];
-    v13 = [(TVRUITouchpadViewController *)self directionalControlView];
-    [v11 transitionFromView:v12 toView:v13 duration:5242880 options:0 completion:0.2];
+    touchpadView2 = [(TVRUITouchpadViewController *)self touchpadView];
+    directionalControlView2 = [(TVRUITouchpadViewController *)self directionalControlView];
+    [v11 transitionFromView:touchpadView2 toView:directionalControlView2 duration:5242880 options:0 completion:0.2];
   }
 
   else
   {
-    v12 = [(TVRUITouchpadViewController *)self view];
-    v13 = [(TVRUITouchpadViewController *)self directionalControlView];
-    [v12 addSubview:v13];
+    touchpadView2 = [(TVRUITouchpadViewController *)self view];
+    directionalControlView2 = [(TVRUITouchpadViewController *)self directionalControlView];
+    [touchpadView2 addSubview:directionalControlView2];
   }
 
-  v14 = [(TVRUITouchpadViewController *)self directionalControlView];
-  [v14 setAlpha:1.0];
+  directionalControlView3 = [(TVRUITouchpadViewController *)self directionalControlView];
+  [directionalControlView3 setAlpha:1.0];
 
   [(TVRUITouchpadViewController *)self setTouchpadMode:1];
 
   [(TVRUITouchpadViewController *)self _toggleControlScale];
 }
 
-- (void)setDevice:(id)a3
+- (void)setDevice:(id)device
 {
-  objc_storeStrong(&self->_remoteDevice, a3);
+  objc_storeStrong(&self->_remoteDevice, device);
 
   [(TVRUITouchpadViewController *)self _transitionToAppropriateView];
 }
@@ -253,10 +253,10 @@
   if ([(TVRUIDevice *)self->_remoteDevice supportsTouchEvents])
   {
     v3 = _AXSAppleTVRemoteUsesSimpleGestures();
-    v4 = [(TVRUITouchpadViewController *)self touchpadMode];
+    touchpadMode = [(TVRUITouchpadViewController *)self touchpadMode];
     if (!v3)
     {
-      if (v4)
+      if (touchpadMode)
       {
 
         [(TVRUITouchpadViewController *)self _transitionToTouchpadView];
@@ -268,10 +268,10 @@
 
   else
   {
-    v4 = [(TVRUITouchpadViewController *)self touchpadMode];
+    touchpadMode = [(TVRUITouchpadViewController *)self touchpadMode];
   }
 
-  if (v4 != 1)
+  if (touchpadMode != 1)
   {
 
     [(TVRUITouchpadViewController *)self _transitionToDirectionalControlView];
@@ -282,48 +282,48 @@
 {
   if ([(TVRUITouchpadViewController *)self isShowingControls])
   {
-    v3 = [(TVRUITouchpadViewController *)self enabled];
-    if (v3)
+    enabled = [(TVRUITouchpadViewController *)self enabled];
+    if (enabled)
     {
       v4 = 1.0;
     }
 
     else
     {
-      v7 = [(TVRUITouchpadViewController *)self styleProvider];
-      [v7 disabledButtonAlpha];
+      styleProvider = [(TVRUITouchpadViewController *)self styleProvider];
+      [styleProvider disabledButtonAlpha];
       v4 = v5;
     }
 
-    v6 = [(TVRUITouchpadViewController *)self directionalControlView];
-    [v6 setAlpha:v4];
+    directionalControlView = [(TVRUITouchpadViewController *)self directionalControlView];
+    [directionalControlView setAlpha:v4];
 
-    if (!v3)
+    if (!enabled)
     {
     }
   }
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  if (self->_enabled != a3)
+  if (self->_enabled != enabled)
   {
-    self->_enabled = a3;
+    self->_enabled = enabled;
     [(TVRUITouchpadViewController *)self _updateViewState];
   }
 }
 
-- (void)setShowControls:(BOOL)a3
+- (void)setShowControls:(BOOL)controls
 {
-  v3 = a3;
-  v5 = [(TVRUITouchpadViewController *)self directionalControlView];
-  v6 = [v5 superview];
-  v7 = [(TVRUITouchpadViewController *)self view];
-  v8 = [v6 isEqual:v7];
+  controlsCopy = controls;
+  directionalControlView = [(TVRUITouchpadViewController *)self directionalControlView];
+  superview = [directionalControlView superview];
+  view = [(TVRUITouchpadViewController *)self view];
+  v8 = [superview isEqual:view];
 
   if (v8)
   {
-    if (v3)
+    if (controlsCopy)
     {
       v9 = 1.0;
     }
@@ -333,28 +333,28 @@
       v9 = 0.0;
     }
 
-    v10 = [(TVRUITouchpadViewController *)self directionalControlView];
-    [v10 setAlpha:v9];
+    directionalControlView2 = [(TVRUITouchpadViewController *)self directionalControlView];
+    [directionalControlView2 setAlpha:v9];
 
-    v11 = [(TVRUITouchpadViewController *)self touchpadView];
-    [v11 setUserInteractionEnabled:v3];
+    touchpadView = [(TVRUITouchpadViewController *)self touchpadView];
+    [touchpadView setUserInteractionEnabled:controlsCopy];
   }
 }
 
 - (BOOL)isShowingControls
 {
-  v2 = [(TVRUITouchpadViewController *)self directionalControlView];
-  [v2 alpha];
+  directionalControlView = [(TVRUITouchpadViewController *)self directionalControlView];
+  [directionalControlView alpha];
   v4 = v3 > 0.0;
 
   return v4;
 }
 
-- (void)setMediaControlsAreVisible:(BOOL)a3
+- (void)setMediaControlsAreVisible:(BOOL)visible
 {
-  if (self->_mediaControlsAreVisible != a3)
+  if (self->_mediaControlsAreVisible != visible)
   {
-    self->_mediaControlsAreVisible = a3;
+    self->_mediaControlsAreVisible = visible;
     [(TVRUITouchpadViewController *)self _toggleControlScale];
   }
 }
@@ -365,29 +365,29 @@
   v3 = _TVRUIViewControllerLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(TVRUITouchpadViewController *)self isShowingControls];
-    v5 = [(TVRUITouchpadViewController *)self styleProvider];
+    isShowingControls = [(TVRUITouchpadViewController *)self isShowingControls];
+    styleProvider = [(TVRUITouchpadViewController *)self styleProvider];
     v9[0] = 67109376;
-    v9[1] = v4;
+    v9[1] = isShowingControls;
     v10 = 1024;
-    v11 = [v5 isSmallDevice];
+    isSmallDevice = [styleProvider isSmallDevice];
     _os_log_impl(&dword_26CFEB000, v3, OS_LOG_TYPE_DEFAULT, "#directional - toggleControlState %d %d", v9, 0xEu);
   }
 
   if ([(TVRUITouchpadViewController *)self isShowingControls])
   {
-    v6 = [(TVRUITouchpadViewController *)self styleProvider];
-    v7 = [v6 isSmallDevice];
+    styleProvider2 = [(TVRUITouchpadViewController *)self styleProvider];
+    isSmallDevice2 = [styleProvider2 isSmallDevice];
 
-    if (v7)
+    if (isSmallDevice2)
     {
-      v8 = [(TVRUITouchpadViewController *)self directionalControlView];
-      [v8 setOffsetDirectionalPad:self->_mediaControlsAreVisible];
+      directionalControlView = [(TVRUITouchpadViewController *)self directionalControlView];
+      [directionalControlView setOffsetDirectionalPad:self->_mediaControlsAreVisible];
     }
   }
 }
 
-- (void)_simpleRemoteGesturesEnabled:(id)a3
+- (void)_simpleRemoteGesturesEnabled:(id)enabled
 {
   v4 = _TVRUIViewControllerLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -399,55 +399,55 @@
   [(TVRUITouchpadViewController *)self _transitionToAppropriateView];
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v9 = a3;
-  v6 = a4;
+  beganCopy = began;
+  eventCopy = event;
   if (![(TVRUITouchpadViewController *)self touchpadMode])
   {
-    v7 = [(TVRUITouchpadViewController *)self touchProcessor];
-    v8 = [(TVRUITouchpadViewController *)self touchpadView];
-    [v7 touchesBegan:v8 touches:v9 withEvent:v6];
+    touchProcessor = [(TVRUITouchpadViewController *)self touchProcessor];
+    touchpadView = [(TVRUITouchpadViewController *)self touchpadView];
+    [touchProcessor touchesBegan:touchpadView touches:beganCopy withEvent:eventCopy];
   }
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
-  v9 = a3;
-  v6 = a4;
+  movedCopy = moved;
+  eventCopy = event;
   if (![(TVRUITouchpadViewController *)self touchpadMode])
   {
-    v7 = [(TVRUITouchpadViewController *)self touchProcessor];
-    v8 = [(TVRUITouchpadViewController *)self touchpadView];
-    [v7 touchesMoved:v8 touches:v9 withEvent:v6];
+    touchProcessor = [(TVRUITouchpadViewController *)self touchProcessor];
+    touchpadView = [(TVRUITouchpadViewController *)self touchpadView];
+    [touchProcessor touchesMoved:touchpadView touches:movedCopy withEvent:eventCopy];
   }
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  v9 = a3;
-  v6 = a4;
+  endedCopy = ended;
+  eventCopy = event;
   if (![(TVRUITouchpadViewController *)self touchpadMode])
   {
-    v7 = [(TVRUITouchpadViewController *)self touchProcessor];
-    v8 = [(TVRUITouchpadViewController *)self touchpadView];
-    [v7 touchesEnded:v8 touches:v9 withEvent:v6];
+    touchProcessor = [(TVRUITouchpadViewController *)self touchProcessor];
+    touchpadView = [(TVRUITouchpadViewController *)self touchpadView];
+    [touchProcessor touchesEnded:touchpadView touches:endedCopy withEvent:eventCopy];
   }
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
-  v9 = a3;
-  v6 = a4;
+  cancelledCopy = cancelled;
+  eventCopy = event;
   if (![(TVRUITouchpadViewController *)self touchpadMode])
   {
-    v7 = [(TVRUITouchpadViewController *)self touchProcessor];
-    v8 = [(TVRUITouchpadViewController *)self touchpadView];
-    [v7 touchesCancelled:v8 touches:v9 withEvent:v6];
+    touchProcessor = [(TVRUITouchpadViewController *)self touchProcessor];
+    touchpadView = [(TVRUITouchpadViewController *)self touchpadView];
+    [touchProcessor touchesCancelled:touchpadView touches:cancelledCopy withEvent:eventCopy];
   }
 }
 
-- (void)pointerInteraction:(id)a3 willEnterRegion:(id)a4 animator:(id)a5
+- (void)pointerInteraction:(id)interaction willEnterRegion:(id)region animator:(id)animator
 {
   v10 = *MEMORY[0x277D85DE8];
   v6 = _TVRUIViewControllerLog();
@@ -471,7 +471,7 @@
   }
 }
 
-- (void)_darkenSystemColorsChanged:(id)a3
+- (void)_darkenSystemColorsChanged:(id)changed
 {
   v10 = *MEMORY[0x277D85DE8];
   v4 = _TVRUIViewControllerLog();
@@ -482,10 +482,10 @@
     _os_log_impl(&dword_26CFEB000, v4, OS_LOG_TYPE_DEFAULT, "%s", &v8, 0xCu);
   }
 
-  v5 = [(TVRUITouchpadViewController *)self styleProvider];
-  v6 = [v5 touchpadBackgroundColor];
-  v7 = [(TVRUITouchpadViewController *)self view];
-  [v7 setBackgroundColor:v6];
+  styleProvider = [(TVRUITouchpadViewController *)self styleProvider];
+  touchpadBackgroundColor = [styleProvider touchpadBackgroundColor];
+  view = [(TVRUITouchpadViewController *)self view];
+  [view setBackgroundColor:touchpadBackgroundColor];
 }
 
 - (_TVRUIEventDelegate)eventDelegate

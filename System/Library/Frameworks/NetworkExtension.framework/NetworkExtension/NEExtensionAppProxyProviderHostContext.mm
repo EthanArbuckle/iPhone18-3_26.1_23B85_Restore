@@ -1,8 +1,8 @@
 @interface NEExtensionAppProxyProviderHostContext
 + (id)_extensionAuxiliaryHostProtocol;
 + (id)_extensionAuxiliaryVendorProtocol;
-- (void)openFlowDivertControlSocketWithCompletionHandler:(id)a3;
-- (void)setInitialFlowDivertControlSocket:(id)a3;
+- (void)openFlowDivertControlSocketWithCompletionHandler:(id)handler;
+- (void)setInitialFlowDivertControlSocket:(id)socket;
 @end
 
 @implementation NEExtensionAppProxyProviderHostContext
@@ -45,18 +45,18 @@ uint64_t __75__NEExtensionAppProxyProviderHostContext__extensionAuxiliaryVendorP
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)openFlowDivertControlSocketWithCompletionHandler:(id)a3
+- (void)openFlowDivertControlSocketWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(NEExtensionProviderHostContext *)&self->super.super.super.super.isa delegate];
-  [v5 extension:self didRequestFlowDivertControlSocketWithCompletionHandler:v4];
+  handlerCopy = handler;
+  delegate = [(NEExtensionProviderHostContext *)&self->super.super.super.super.isa delegate];
+  [delegate extension:self didRequestFlowDivertControlSocketWithCompletionHandler:handlerCopy];
 }
 
-- (void)setInitialFlowDivertControlSocket:(id)a3
+- (void)setInitialFlowDivertControlSocket:(id)socket
 {
-  v4 = a3;
-  v5 = [(NEExtensionProviderHostContext *)&self->super.super.super.super.isa vendorContext];
-  [v5 setInitialFlowDivertControlSocket:v4];
+  socketCopy = socket;
+  vendorContext = [(NEExtensionProviderHostContext *)&self->super.super.super.super.isa vendorContext];
+  [vendorContext setInitialFlowDivertControlSocket:socketCopy];
 }
 
 @end

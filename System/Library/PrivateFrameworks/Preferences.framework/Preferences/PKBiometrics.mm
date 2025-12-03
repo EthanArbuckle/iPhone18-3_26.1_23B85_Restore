@@ -1,14 +1,14 @@
 @interface PKBiometrics
 + (id)sharedInstance;
 - (BOOL)isPeriocularEnrollmentSupported;
-- (BOOL)removeIdentity:(id)a3;
-- (BOOL)setName:(id)a3 forIdentity:(id)a4;
+- (BOOL)removeIdentity:(id)identity;
+- (BOOL)setName:(id)name forIdentity:(id)identity;
 - (PKBiometrics)init;
-- (id)deviceForType:(int64_t)a3;
-- (id)identitiesForIdentityType:(int64_t)a3;
-- (id)nextIdentityNameForIdentityType:(int64_t)a3;
-- (int64_t)deviceTypeForIdentityType:(int64_t)a3;
-- (int64_t)maximumIdentityCountForIdentityType:(int64_t)a3;
+- (id)deviceForType:(int64_t)type;
+- (id)identitiesForIdentityType:(int64_t)type;
+- (id)nextIdentityNameForIdentityType:(int64_t)type;
+- (int64_t)deviceTypeForIdentityType:(int64_t)type;
+- (int64_t)maximumIdentityCountForIdentityType:(int64_t)type;
 - (void)init;
 @end
 
@@ -20,7 +20,7 @@
   block[1] = 3221225472;
   block[2] = __30__PKBiometrics_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken != -1)
   {
     dispatch_once(&sharedInstance_onceToken, block);
@@ -50,8 +50,8 @@ void __30__PKBiometrics_sharedInstance__block_invoke()
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v3 = [MEMORY[0x1E698F388] availableDevices];
-    v4 = [v3 countByEnumeratingWithState:&v19 objects:v30 count:16];
+    availableDevices = [MEMORY[0x1E698F388] availableDevices];
+    v4 = [availableDevices countByEnumeratingWithState:&v19 objects:v30 count:16];
     if (!v4)
     {
       goto LABEL_20;
@@ -65,12 +65,12 @@ void __30__PKBiometrics_sharedInstance__block_invoke()
       {
         if (*v20 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(availableDevices);
         }
 
         v8 = *(*(&v19 + 1) + 8 * i);
-        v9 = [v8 type];
-        if (v9 == 1)
+        type = [v8 type];
+        if (type == 1)
         {
           v17 = 0;
           v14 = [MEMORY[0x1E698F398] deviceWithDescriptor:v8 error:&v17];
@@ -92,7 +92,7 @@ void __30__PKBiometrics_sharedInstance__block_invoke()
           goto LABEL_15;
         }
 
-        if (v9 == 2)
+        if (type == 2)
         {
           v18 = 0;
           v10 = [MEMORY[0x1E698F390] deviceWithDescriptor:v8 error:&v18];
@@ -125,7 +125,7 @@ LABEL_15:
 LABEL_18:
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v19 objects:v30 count:16];
+      v5 = [availableDevices countByEnumeratingWithState:&v19 objects:v30 count:16];
       if (!v5)
       {
 LABEL_20:
@@ -138,9 +138,9 @@ LABEL_20:
   return v2;
 }
 
-- (id)identitiesForIdentityType:(int64_t)a3
+- (id)identitiesForIdentityType:(int64_t)type
 {
-  v3 = [(PKBiometrics *)self deviceForType:[(PKBiometrics *)self deviceTypeForIdentityType:a3]];
+  v3 = [(PKBiometrics *)self deviceForType:[(PKBiometrics *)self deviceTypeForIdentityType:type]];
   v9 = 0;
   v4 = [v3 identitiesWithError:&v9];
   v5 = v9;
@@ -163,13 +163,13 @@ LABEL_20:
   return v7;
 }
 
-- (int64_t)maximumIdentityCountForIdentityType:(int64_t)a3
+- (int64_t)maximumIdentityCountForIdentityType:(int64_t)type
 {
-  v3 = [(PKBiometrics *)self deviceForType:[(PKBiometrics *)self deviceTypeForIdentityType:a3]];
+  v3 = [(PKBiometrics *)self deviceForType:[(PKBiometrics *)self deviceTypeForIdentityType:type]];
   v9 = 0;
   v4 = [v3 maxIdentityCountWithError:&v9];
   v5 = v9;
-  v6 = [v4 integerValue];
+  integerValue = [v4 integerValue];
 
   if (v5)
   {
@@ -179,31 +179,31 @@ LABEL_20:
       [PKBiometrics maximumIdentityCountForIdentityType:];
     }
 
-    v6 = 0;
+    integerValue = 0;
   }
 
-  return v6;
+  return integerValue;
 }
 
-- (BOOL)setName:(id)a3 forIdentity:(id)a4
+- (BOOL)setName:(id)name forIdentity:(id)identity
 {
-  v6 = a4;
-  [v6 setName:a3];
-  v7 = -[PKBiometrics deviceForType:](self, "deviceForType:", -[PKBiometrics deviceTypeForIdentityType:](self, "deviceTypeForIdentityType:", [v6 type]));
+  identityCopy = identity;
+  [identityCopy setName:name];
+  v7 = -[PKBiometrics deviceForType:](self, "deviceForType:", -[PKBiometrics deviceTypeForIdentityType:](self, "deviceTypeForIdentityType:", [identityCopy type]));
   v12 = 0;
-  v8 = [v7 updateIdentity:v6 error:&v12];
+  v8 = [v7 updateIdentity:identityCopy error:&v12];
 
   v9 = v12;
   if (v8)
   {
-    v10 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v10 postNotificationName:@"PKBiometricsDidUpdate" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"PKBiometricsDidUpdate" object:0];
   }
 
   else
   {
-    v10 = _PSLoggingFacility();
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    defaultCenter = _PSLoggingFacility();
+    if (os_log_type_enabled(defaultCenter, OS_LOG_TYPE_ERROR))
     {
       [PKBiometrics setName:forIdentity:];
     }
@@ -212,24 +212,24 @@ LABEL_20:
   return v8;
 }
 
-- (BOOL)removeIdentity:(id)a3
+- (BOOL)removeIdentity:(id)identity
 {
-  v4 = a3;
-  v5 = -[PKBiometrics deviceForType:](self, "deviceForType:", -[PKBiometrics deviceTypeForIdentityType:](self, "deviceTypeForIdentityType:", [v4 type]));
+  identityCopy = identity;
+  v5 = -[PKBiometrics deviceForType:](self, "deviceForType:", -[PKBiometrics deviceTypeForIdentityType:](self, "deviceTypeForIdentityType:", [identityCopy type]));
   v10 = 0;
-  v6 = [v5 removeIdentity:v4 error:&v10];
+  v6 = [v5 removeIdentity:identityCopy error:&v10];
 
   v7 = v10;
   if (v6)
   {
-    v8 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v8 postNotificationName:@"PKBiometricsDidUpdate" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"PKBiometricsDidUpdate" object:0];
   }
 
   else
   {
-    v8 = _PSLoggingFacility();
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    defaultCenter = _PSLoggingFacility();
+    if (os_log_type_enabled(defaultCenter, OS_LOG_TYPE_ERROR))
     {
       [PKBiometrics removeIdentity:];
     }
@@ -240,21 +240,21 @@ LABEL_20:
 
 - (BOOL)isPeriocularEnrollmentSupported
 {
-  v3 = [(PKBiometrics *)self pearlDevice];
+  pearlDevice = [(PKBiometrics *)self pearlDevice];
 
-  if (!v3)
+  if (!pearlDevice)
   {
     return 0;
   }
 
-  v4 = [(PKBiometrics *)self pearlDevice];
+  pearlDevice2 = [(PKBiometrics *)self pearlDevice];
   v10 = 0;
-  v5 = [v4 supportsPeriocularEnrollmentWithError:&v10];
+  v5 = [pearlDevice2 supportsPeriocularEnrollmentWithError:&v10];
   v6 = v10;
 
   if (v5)
   {
-    v7 = [v5 BOOLValue];
+    bOOLValue = [v5 BOOLValue];
   }
 
   else
@@ -265,22 +265,22 @@ LABEL_20:
       [PKBiometrics isPeriocularEnrollmentSupported];
     }
 
-    v7 = 0;
+    bOOLValue = 0;
   }
 
-  return v7;
+  return bOOLValue;
 }
 
-- (id)deviceForType:(int64_t)a3
+- (id)deviceForType:(int64_t)type
 {
-  if (a3 == 1)
+  if (type == 1)
   {
-    v3 = [(PKBiometrics *)self touchIDDevice];
+    touchIDDevice = [(PKBiometrics *)self touchIDDevice];
   }
 
-  else if (a3 == 2)
+  else if (type == 2)
   {
-    v3 = [(PKBiometrics *)self pearlDevice];
+    touchIDDevice = [(PKBiometrics *)self pearlDevice];
   }
 
   else
@@ -291,16 +291,16 @@ LABEL_20:
       [PKBiometrics deviceForType:];
     }
 
-    v3 = 0;
+    touchIDDevice = 0;
   }
 
-  return v3;
+  return touchIDDevice;
 }
 
-- (int64_t)deviceTypeForIdentityType:(int64_t)a3
+- (int64_t)deviceTypeForIdentityType:(int64_t)type
 {
-  v3 = a3;
-  if ((a3 - 1) >= 2)
+  typeCopy = type;
+  if ((type - 1) >= 2)
   {
     v4 = _PSLoggingFacility();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -311,10 +311,10 @@ LABEL_20:
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  return v3;
+  return typeCopy;
 }
 
-- (id)nextIdentityNameForIdentityType:(int64_t)a3
+- (id)nextIdentityNameForIdentityType:(int64_t)type
 {
   v41 = *MEMORY[0x1E69E9840];
   v4 = [MEMORY[0x1E695DFA8] set];
@@ -323,7 +323,7 @@ LABEL_20:
   v37 = 0u;
   v36 = 0u;
   v5 = +[PKBiometrics sharedInstance];
-  v6 = [v5 identitiesForIdentityType:a3];
+  v6 = [v5 identitiesForIdentityType:type];
 
   v7 = [v6 countByEnumeratingWithState:&v36 objects:v40 count:16];
   if (v7)
@@ -338,10 +338,10 @@ LABEL_20:
           objc_enumerationMutation(v6);
         }
 
-        v10 = [*(*(&v36 + 1) + 8 * i) name];
-        if (v10)
+        name = [*(*(&v36 + 1) + 8 * i) name];
+        if (name)
         {
-          [v4 addObject:v10];
+          [v4 addObject:name];
         }
       }
 
@@ -352,7 +352,7 @@ LABEL_20:
   }
 
   v11 = +[PKBiometrics sharedInstance];
-  v12 = [v11 maximumIdentityCountForIdentityType:a3];
+  v12 = [v11 maximumIdentityCountForIdentityType:type];
 
   v13 = [MEMORY[0x1E695DF70] arrayWithCapacity:v12];
   v14 = objc_alloc_init(MEMORY[0x1E696ADA0]);
@@ -365,13 +365,13 @@ LABEL_20:
       v17 = [v14 stringFromNumber:v16];
 
       v18 = MEMORY[0x1E696AEC0];
-      if (a3 == 1)
+      if (type == 1)
       {
         v21 = PSLocalizablePearlStringForKey(@"IDENTITY_NAME_FORMAT_TOUCH_ID");
         v20 = [v18 stringWithFormat:v21, v17];
       }
 
-      else if (a3 == 2)
+      else if (type == 2)
       {
         v19 = PSLocalizablePearlStringForKey(@"IDENTITY_NAME_FORMAT_FACE_ID");
         v20 = [v18 stringWithFormat:v19, v17];
@@ -436,9 +436,9 @@ unint64_t __48__PKBiometrics_nextIdentityNameForIdentityType___block_invoke_2(ui
 
 - (void)init
 {
-  v7 = [a2 type];
-  *a1 = 134217984;
-  *a3 = v7;
+  type = [a2 type];
+  *self = 134217984;
+  *a3 = type;
 }
 
 - (void)identitiesForIdentityType:.cold.1()

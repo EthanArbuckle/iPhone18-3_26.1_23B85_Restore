@@ -1,19 +1,19 @@
 @interface APDBTrigger
 - (BOOL)removeTriggersThatHaveNoData;
-- (id)_triggerForExperimentId:(id)a3 treatmentId:(id)a4;
-- (id)getOrInsertTriggerWithExperimentId:(id)a3 treatmentId:(id)a4;
-- (id)getTriggersWithReportsForDay:(int64_t)a3 supplySource:(id)a4 limit:(unint64_t)a5 offset:(unint64_t)a6;
+- (id)_triggerForExperimentId:(id)id treatmentId:(id)treatmentId;
+- (id)getOrInsertTriggerWithExperimentId:(id)id treatmentId:(id)treatmentId;
+- (id)getTriggersWithReportsForDay:(int64_t)day supplySource:(id)source limit:(unint64_t)limit offset:(unint64_t)offset;
 @end
 
 @implementation APDBTrigger
 
-- (id)getOrInsertTriggerWithExperimentId:(id)a3 treatmentId:(id)a4
+- (id)getOrInsertTriggerWithExperimentId:(id)id treatmentId:(id)treatmentId
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(APDBTrigger *)self manager];
+  idCopy = id;
+  treatmentIdCopy = treatmentId;
+  manager = [(APDBTrigger *)self manager];
 
-  if (!v8)
+  if (!manager)
   {
     v11 = APLogForCategory();
     if (!os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -31,7 +31,7 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if (!v6 || !v7)
+  if (!idCopy || !treatmentIdCopy)
   {
     v11 = APLogForCategory();
     if (!os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -46,10 +46,10 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  v9 = [(APDBTrigger *)self _triggerForExperimentId:v6 treatmentId:v7];
+  v9 = [(APDBTrigger *)self _triggerForExperimentId:idCopy treatmentId:treatmentIdCopy];
   if (!v9)
   {
-    v11 = [[APDBTriggerRow alloc] initWithExperimentId:v6 treatmentId:v7 table:self];
+    v11 = [[APDBTriggerRow alloc] initWithExperimentId:idCopy treatmentId:treatmentIdCopy table:self];
     if ([v11 save])
     {
       v10 = v11;
@@ -79,52 +79,52 @@ LABEL_15:
   return v14;
 }
 
-- (id)_triggerForExperimentId:(id)a3 treatmentId:(id)a4
+- (id)_triggerForExperimentId:(id)id treatmentId:(id)treatmentId
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[APDatabaseColumn alloc] initWithName:@"experimentId" forColumnType:3 withValue:v7];
+  treatmentIdCopy = treatmentId;
+  idCopy = id;
+  v8 = [[APDatabaseColumn alloc] initWithName:@"experimentId" forColumnType:3 withValue:idCopy];
 
-  v9 = [[APDatabaseColumn alloc] initWithName:@"treatmentId" forColumnType:3 withValue:v6];
-  v10 = [(APDBTrigger *)self manager];
+  v9 = [[APDatabaseColumn alloc] initWithName:@"treatmentId" forColumnType:3 withValue:treatmentIdCopy];
+  manager = [(APDBTrigger *)self manager];
   v15[0] = v8;
   v15[1] = v9;
   v11 = [NSArray arrayWithObjects:v15 count:2];
-  v12 = [v10 executeSelectQuery:@"SELECT rowid forTable:* FROM APDBTrigger WHERE experimentId = ? AND treatmentId = ?" withParameters:{self, v11}];
+  v12 = [manager executeSelectQuery:@"SELECT rowid forTable:* FROM APDBTrigger WHERE experimentId = ? AND treatmentId = ?" withParameters:{self, v11}];
 
   if (v12)
   {
-    v13 = [v12 firstObject];
+    firstObject = [v12 firstObject];
   }
 
   else
   {
-    v13 = 0;
+    firstObject = 0;
   }
 
-  return v13;
+  return firstObject;
 }
 
-- (id)getTriggersWithReportsForDay:(int64_t)a3 supplySource:(id)a4 limit:(unint64_t)a5 offset:(unint64_t)a6
+- (id)getTriggersWithReportsForDay:(int64_t)day supplySource:(id)source limit:(unint64_t)limit offset:(unint64_t)offset
 {
-  v10 = a4;
-  v11 = [(APDBTrigger *)self manager];
+  sourceCopy = source;
+  manager = [(APDBTrigger *)self manager];
 
-  if (v11)
+  if (manager)
   {
-    if (v10)
+    if (sourceCopy)
     {
       v12 = [APDatabaseColumn alloc];
-      v13 = [NSNumber numberWithInteger:a3];
+      v13 = [NSNumber numberWithInteger:day];
       v14 = [v12 initWithName:@"day" forColumnType:0 withValue:v13];
 
-      v15 = [[APDatabaseColumn alloc] initWithName:@"source" forColumnType:0 withValue:v10];
-      v16 = [NSString stringWithFormat:@"SELECT t.rowid, t.experimentId, t.treatmentId FROM APDBTrigger AS t INNER JOIN APDBExperimentationReport AS er ON er.triggerRowId = t.rowid WHERE er.day = ? AND er.source = ? AND (er.slotVisibleAdCount + er.slotVisibleNoAdCount + er.impressionCount + er.clickCount + er.downloadCount + er.redownloadCount + er.preOrderPlacedCount + er.viewDownloadCount + er.viewRedownloadCount + er.viewPreorderPlacedCount) > 0 GROUP BY t.rowid LIMIT %ld OFFSET %ld", a5, a6];
-      v17 = [(APDBTrigger *)self manager];
+      v15 = [[APDatabaseColumn alloc] initWithName:@"source" forColumnType:0 withValue:sourceCopy];
+      offset = [NSString stringWithFormat:@"SELECT t.rowid, t.experimentId, t.treatmentId FROM APDBTrigger AS t INNER JOIN APDBExperimentationReport AS er ON er.triggerRowId = t.rowid WHERE er.day = ? AND er.source = ? AND (er.slotVisibleAdCount + er.slotVisibleNoAdCount + er.impressionCount + er.clickCount + er.downloadCount + er.redownloadCount + er.preOrderPlacedCount + er.viewDownloadCount + er.viewRedownloadCount + er.viewPreorderPlacedCount) > 0 GROUP BY t.rowid LIMIT %ld OFFSET %ld", limit, offset];
+      manager2 = [(APDBTrigger *)self manager];
       v23[0] = v14;
       v23[1] = v15;
       v18 = [NSArray arrayWithObjects:v23 count:2];
-      v19 = [v17 executeSelectQuery:v16 forTable:self withParameters:v18];
+      v19 = [manager2 executeSelectQuery:offset forTable:self withParameters:v18];
 
       goto LABEL_10;
     }
@@ -162,12 +162,12 @@ LABEL_10:
 
 - (BOOL)removeTriggersThatHaveNoData
 {
-  v3 = [(APDBTrigger *)self manager];
+  manager = [(APDBTrigger *)self manager];
 
-  if (v3)
+  if (manager)
   {
-    v4 = [(APDBTrigger *)self manager];
-    v5 = [v4 executeQuery:@"DELETE FROM APDBTrigger WHERE rowid NOT IN (SELECT triggerRowId FROM APDBExperimentationReport GROUP BY triggerRowId) AND rowid NOT IN (SELECT triggerRowId FROM APDBAdSignalTrack GROUP BY triggerRowId)" withParameters:&__NSArray0__struct];
+    manager2 = [(APDBTrigger *)self manager];
+    v5 = [manager2 executeQuery:@"DELETE FROM APDBTrigger WHERE rowid NOT IN (SELECT triggerRowId FROM APDBExperimentationReport GROUP BY triggerRowId) AND rowid NOT IN (SELECT triggerRowId FROM APDBAdSignalTrack GROUP BY triggerRowId)" withParameters:&__NSArray0__struct];
 
     return v5;
   }

@@ -2,10 +2,10 @@
 + (id)sharedInstance;
 - (MNUserOptionsEngine)init;
 - (NSString)currentVoiceLanguage;
-- (id)localizedStringForKey:(id)a3;
-- (void)registerObserver:(id)a3;
-- (void)unregisterObserver:(id)a3;
-- (void)update:(id)a3;
+- (id)localizedStringForKey:(id)key;
+- (void)registerObserver:(id)observer;
+- (void)unregisterObserver:(id)observer;
+- (void)update:(id)update;
 @end
 
 @implementation MNUserOptionsEngine
@@ -22,49 +22,49 @@
   return v3;
 }
 
-- (id)localizedStringForKey:(id)a3
+- (id)localizedStringForKey:(id)key
 {
   v27[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 length])
+  keyCopy = key;
+  if ([keyCopy length])
   {
-    v5 = [MEMORY[0x1E696AAE8] _navigationBundle];
-    v6 = [(MNUserOptionsEngine *)self currentVoiceLanguage];
-    if ([v6 length])
+    _navigationBundle = [MEMORY[0x1E696AAE8] _navigationBundle];
+    currentVoiceLanguage = [(MNUserOptionsEngine *)self currentVoiceLanguage];
+    if ([currentVoiceLanguage length])
     {
       v7 = MEMORY[0x1E696AAE8];
-      v8 = [v5 localizations];
-      v27[0] = v6;
+      localizations = [_navigationBundle localizations];
+      v27[0] = currentVoiceLanguage;
       v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v27 count:1];
-      v10 = [v7 preferredLocalizationsFromArray:v8 forPreferences:v9];
+      v10 = [v7 preferredLocalizationsFromArray:localizations forPreferences:v9];
 
-      v11 = [v10 firstObject];
-      v12 = [v5 localizedStringForKey:v4 value:&stru_1F4EB6B70 table:@"Navigation" localization:v11];
+      firstObject = [v10 firstObject];
+      v12 = [_navigationBundle localizedStringForKey:keyCopy value:&stru_1F4EB6B70 table:@"Navigation" localization:firstObject];
       v13 = GetAudioLogForMNUserOptionsEngineCategory();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
       {
         v21 = 138412802;
-        v22 = v4;
+        v22 = keyCopy;
         v23 = 2112;
-        v24 = v6;
+        v24 = currentVoiceLanguage;
         v25 = 2112;
-        v26 = v11;
+        v26 = firstObject;
         _os_log_impl(&dword_1D311E000, v13, OS_LOG_TYPE_INFO, "⒰ trying to find key: %@, language: %@, canonical language identifier: %@", &v21, 0x20u);
       }
 
       if (v12)
       {
-        if ([v12 isEqualToString:v4])
+        if ([v12 isEqualToString:keyCopy])
         {
           v14 = GetAudioLogForMNUserOptionsEngineCategory();
           if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
           {
             v21 = 138412802;
-            v22 = v4;
+            v22 = keyCopy;
             v23 = 2112;
-            v24 = v6;
+            v24 = currentVoiceLanguage;
             v25 = 2112;
-            v26 = v11;
+            v26 = firstObject;
             _os_log_impl(&dword_1D311E000, v14, OS_LOG_TYPE_ERROR, "⒰ a string for key wasn't found : key: %@, language: %@, canonical language identifier: %@", &v21, 0x20u);
           }
         }
@@ -74,7 +74,7 @@
 
       else
       {
-        v16 = _MNLocalizedStringFromThisBundle(v4);
+        v16 = _MNLocalizedStringFromThisBundle(keyCopy);
         v17 = v16;
         if (v16)
         {
@@ -83,7 +83,7 @@
 
         else
         {
-          v18 = v4;
+          v18 = keyCopy;
         }
 
         v15 = v18;
@@ -106,13 +106,13 @@
   return v15;
 }
 
-- (void)update:(id)a3
+- (void)update:(id)update
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  updateCopy = update;
+  if (updateCopy)
   {
-    if ([(MNUserOptions *)self->_options isEqual:v4])
+    if ([(MNUserOptions *)self->_options isEqual:updateCopy])
     {
       v5 = GetAudioLogForMNUserOptionsEngineCategory();
       if (os_log_type_enabled(&v5->super, OS_LOG_TYPE_INFO))
@@ -125,7 +125,7 @@
     else
     {
       v5 = self->_options;
-      v6 = [v4 copy];
+      v6 = [updateCopy copy];
       options = self->_options;
       self->_options = v6;
 
@@ -147,9 +147,9 @@
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  [(GEOObserverHashTable *)self->_observers unregisterObserver:a3];
+  [(GEOObserverHashTable *)self->_observers unregisterObserver:observer];
   if (([(GEOObserverHashTable *)self->_observers hasObservers]& 1) == 0)
   {
     observers = self->_observers;
@@ -157,10 +157,10 @@
   }
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v9 = a3;
-  if ([v9 conformsToProtocol:&unk_1F4F024C0])
+  observerCopy = observer;
+  if ([observerCopy conformsToProtocol:&unk_1F4F024C0])
   {
     observers = self->_observers;
     if (!observers)
@@ -174,7 +174,7 @@
       observers = self->_observers;
     }
 
-    [(GEOObserverHashTable *)observers registerObserver:v9];
+    [(GEOObserverHashTable *)observers registerObserver:observerCopy];
   }
 }
 

@@ -1,20 +1,20 @@
 @interface NUANFRenderingConfigurationProvider
-- (NUANFRenderingConfigurationProvider)initWithAppConfigurationManager:(id)a3;
+- (NUANFRenderingConfigurationProvider)initWithAppConfigurationManager:(id)manager;
 - (SXRenderingConfiguration)configuration;
 @end
 
 @implementation NUANFRenderingConfigurationProvider
 
-- (NUANFRenderingConfigurationProvider)initWithAppConfigurationManager:(id)a3
+- (NUANFRenderingConfigurationProvider)initWithAppConfigurationManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v9.receiver = self;
   v9.super_class = NUANFRenderingConfigurationProvider;
   v6 = [(NUANFRenderingConfigurationProvider *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_appConfigurationManager, a3);
+    objc_storeStrong(&v6->_appConfigurationManager, manager);
   }
 
   return v7;
@@ -25,11 +25,11 @@
   configuration = self->_configuration;
   if (!configuration)
   {
-    v4 = [(FCNewsAppConfigurationManager *)self->_appConfigurationManager possiblyUnfetchedAppConfiguration];
-    v5 = [v4 anfRenderingConfiguration];
+    possiblyUnfetchedAppConfiguration = [(FCNewsAppConfigurationManager *)self->_appConfigurationManager possiblyUnfetchedAppConfiguration];
+    anfRenderingConfiguration = [possiblyUnfetchedAppConfiguration anfRenderingConfiguration];
 
     v12 = 0;
-    v6 = [MEMORY[0x277CBEAC0] fc_dictionaryFromJSON:v5 error:&v12];
+    v6 = [MEMORY[0x277CBEAC0] fc_dictionaryFromJSON:anfRenderingConfiguration error:&v12];
     v7 = v12;
     if (!v7 && v6)
     {

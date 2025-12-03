@@ -8,7 +8,7 @@
 - (id)compose
 {
   v2 = *((swift_isaMask & self->super.isa) + 0x50);
-  v3 = self;
+  selfCopy = self;
   v4 = v2();
   v5 = type metadata accessor for PHOrientationMonitor_OBJC();
   v6 = objc_allocWithZone(v5);

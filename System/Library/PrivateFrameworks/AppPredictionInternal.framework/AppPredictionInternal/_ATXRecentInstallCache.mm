@@ -1,30 +1,30 @@
 @interface _ATXRecentInstallCache
-- (id)_allRecentlyInstalledApplicationsAfterExpirationDate:(id)a3;
+- (id)_allRecentlyInstalledApplicationsAfterExpirationDate:(id)date;
 - (id)_getRecentInstallationsMap;
 - (id)allRecentlyInstalledApplications;
-- (id)initTrackingAppsMoreRecentThan:(double)a3;
-- (id)initTrackingAppsMoreRecentThan:(double)a3 installMonitor:(id)a4 uninstallMonitor:(id)a5;
-- (void)_notifiedOfInstalls:(id)a3;
-- (void)_notifiedOfUninstalls:(id)a3;
+- (id)initTrackingAppsMoreRecentThan:(double)than;
+- (id)initTrackingAppsMoreRecentThan:(double)than installMonitor:(id)monitor uninstallMonitor:(id)uninstallMonitor;
+- (void)_notifiedOfInstalls:(id)installs;
+- (void)_notifiedOfUninstalls:(id)uninstalls;
 - (void)reset;
 @end
 
 @implementation _ATXRecentInstallCache
 
-- (id)initTrackingAppsMoreRecentThan:(double)a3 installMonitor:(id)a4 uninstallMonitor:(id)a5
+- (id)initTrackingAppsMoreRecentThan:(double)than installMonitor:(id)monitor uninstallMonitor:(id)uninstallMonitor
 {
-  v10 = a4;
-  v11 = a5;
-  if (a3 >= 0.0)
+  monitorCopy = monitor;
+  uninstallMonitorCopy = uninstallMonitor;
+  if (than >= 0.0)
   {
-    if (v10)
+    if (monitorCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_8:
     [_ATXRecentInstallCache initTrackingAppsMoreRecentThan:a2 installMonitor:self uninstallMonitor:?];
-    if (v11)
+    if (uninstallMonitorCopy)
     {
       goto LABEL_4;
     }
@@ -33,13 +33,13 @@ LABEL_8:
   }
 
   [_ATXRecentInstallCache initTrackingAppsMoreRecentThan:a2 installMonitor:self uninstallMonitor:?];
-  if (!v10)
+  if (!monitorCopy)
   {
     goto LABEL_8;
   }
 
 LABEL_3:
-  if (v11)
+  if (uninstallMonitorCopy)
   {
     goto LABEL_4;
   }
@@ -53,13 +53,13 @@ LABEL_4:
   v13 = v12;
   if (v12)
   {
-    v12->_ttl = a3;
+    v12->_ttl = than;
     v14 = objc_opt_new();
     recentInstallations = v13->_recentInstallations;
     v13->_recentInstallations = v14;
 
     objc_initWeak(&location, v13);
-    objc_storeStrong(&v13->_installNotificationMonitor, a4);
+    objc_storeStrong(&v13->_installNotificationMonitor, monitor);
     installNotificationMonitor = v13->_installNotificationMonitor;
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
@@ -67,7 +67,7 @@ LABEL_4:
     v21[3] = &unk_278597FF8;
     objc_copyWeak(&v22, &location);
     [(_ATXInternalInstallNotification *)installNotificationMonitor registerForNotificationsWithInstallBlock:v21];
-    objc_storeStrong(&v13->_uninstallNotificationMonitor, a5);
+    objc_storeStrong(&v13->_uninstallNotificationMonitor, uninstallMonitor);
     uninstallNotificationMonitor = v13->_uninstallNotificationMonitor;
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
@@ -83,26 +83,26 @@ LABEL_4:
   return v13;
 }
 
-- (id)initTrackingAppsMoreRecentThan:(double)a3
+- (id)initTrackingAppsMoreRecentThan:(double)than
 {
   v5 = objc_opt_new();
   v6 = objc_opt_new();
-  v7 = [(_ATXRecentInstallCache *)self initTrackingAppsMoreRecentThan:v5 installMonitor:v6 uninstallMonitor:a3];
+  v7 = [(_ATXRecentInstallCache *)self initTrackingAppsMoreRecentThan:v5 installMonitor:v6 uninstallMonitor:than];
 
   return v7;
 }
 
-- (void)_notifiedOfInstalls:(id)a3
+- (void)_notifiedOfInstalls:(id)installs
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
+  installsCopy = installs;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = v4;
+  v6 = installsCopy;
   v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
@@ -118,7 +118,7 @@ LABEL_4:
 
         v10 = *(*(&v13 + 1) + 8 * i);
         v11 = [v6 objectForKeyedSubscript:{v10, v13}];
-        [(NSMutableDictionary *)v5->_recentInstallations setObject:v11 forKeyedSubscript:v10];
+        [(NSMutableDictionary *)selfCopy->_recentInstallations setObject:v11 forKeyedSubscript:v10];
       }
 
       v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -127,20 +127,20 @@ LABEL_4:
     while (v7);
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_notifiedOfUninstalls:(id)a3
+- (void)_notifiedOfUninstalls:(id)uninstalls
 {
-  v7 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  recentInstallations = v4->_recentInstallations;
-  v6 = [v7 allObjects];
-  [(NSMutableDictionary *)recentInstallations removeObjectsForKeys:v6];
+  uninstallsCopy = uninstalls;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  recentInstallations = selfCopy->_recentInstallations;
+  allObjects = [uninstallsCopy allObjects];
+  [(NSMutableDictionary *)recentInstallations removeObjectsForKeys:allObjects];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (id)allRecentlyInstalledApplications
@@ -151,19 +151,19 @@ LABEL_4:
   return v4;
 }
 
-- (id)_allRecentlyInstalledApplicationsAfterExpirationDate:(id)a3
+- (id)_allRecentlyInstalledApplicationsAfterExpirationDate:(id)date
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dateCopy = date;
   v5 = objc_opt_new();
   v18 = objc_opt_new();
-  v6 = self;
-  objc_sync_enter(v6);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  obj = v6->_recentInstallations;
+  obj = selfCopy->_recentInstallations;
   v7 = [(NSMutableDictionary *)obj countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v7)
   {
@@ -178,9 +178,9 @@ LABEL_4:
         }
 
         v10 = *(*(&v19 + 1) + 8 * i);
-        v11 = [(NSMutableDictionary *)v6->_recentInstallations objectForKeyedSubscript:v10];
-        v12 = [v11 earlierDate:v4];
-        v13 = [v12 isEqualToDate:v4];
+        v11 = [(NSMutableDictionary *)selfCopy->_recentInstallations objectForKeyedSubscript:v10];
+        v12 = [v11 earlierDate:dateCopy];
+        v13 = [v12 isEqualToDate:dateCopy];
 
         if (v13)
         {
@@ -201,8 +201,8 @@ LABEL_4:
     while (v7);
   }
 
-  [(NSMutableDictionary *)v6->_recentInstallations removeObjectsForKeys:v5];
-  objc_sync_exit(v6);
+  [(NSMutableDictionary *)selfCopy->_recentInstallations removeObjectsForKeys:v5];
+  objc_sync_exit(selfCopy);
 
   v15 = *MEMORY[0x277D85DE8];
 
@@ -211,10 +211,10 @@ LABEL_4:
 
 - (id)_getRecentInstallationsMap
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSMutableDictionary *)v2->_recentInstallations copy];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [(NSMutableDictionary *)selfCopy->_recentInstallations copy];
+  objc_sync_exit(selfCopy);
 
   return v3;
 }

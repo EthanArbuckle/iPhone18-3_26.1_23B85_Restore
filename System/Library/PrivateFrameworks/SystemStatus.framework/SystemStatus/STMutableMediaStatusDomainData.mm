@@ -1,36 +1,36 @@
 @interface STMutableMediaStatusDomainData
-- (BOOL)applyDiff:(id)a3;
+- (BOOL)applyDiff:(id)diff;
 - (STMutableListData)cameraAttributionListData;
 - (STMutableListData)microphoneAttributionListData;
 - (STMutableListData)mutedMicrophoneRecordingAttributionListData;
 - (STMutableListData)screenCaptureAttributionListData;
 - (STMutableListData)systemAudioRecordingAttributionListData;
-- (STMutableMediaStatusDomainData)initWithMicrophoneAttributionListData:(id)a3 mutedMicrophoneRecordingAttributionListData:(id)a4 systemAudioRecordingAttributionListData:(id)a5 cameraAttributionListData:(id)a6 screenCaptureAttributionListData:(id)a7;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)addCameraAttribution:(id)a3;
-- (void)addCameraCaptureAttribution:(id)a3;
-- (void)addMicrophoneAttribution:(id)a3;
-- (void)addMicrophoneRecordingAttribution:(id)a3;
-- (void)addMutedMicrophoneRecordingAttribution:(id)a3;
-- (void)addScreenCaptureAttribution:(id)a3;
-- (void)addSystemAudioRecordingAttribution:(id)a3;
-- (void)removeCameraAttribution:(id)a3;
-- (void)removeCameraCaptureAttribution:(id)a3;
-- (void)removeMicrophoneAttribution:(id)a3;
-- (void)removeMicrophoneRecordingAttribution:(id)a3;
-- (void)removeMutedMicrophoneRecordingAttribution:(id)a3;
-- (void)removeScreenCaptureAttribution:(id)a3;
-- (void)removeSystemAudioRecordingAttribution:(id)a3;
-- (void)setAudioRecordingAttributions:(id)a3;
-- (void)setCameraAttributions:(id)a3;
-- (void)setCameraCaptureAttributionList:(id)a3;
-- (void)setCameraCaptureAttributions:(id)a3;
-- (void)setMicrophoneAttributions:(id)a3;
-- (void)setMicrophoneRecordingAttributions:(id)a3;
-- (void)setMutedAudioRecordingAttributions:(id)a3;
-- (void)setMutedMicrophoneRecordingAttributions:(id)a3;
-- (void)setScreenCaptureAttributions:(id)a3;
-- (void)setSystemAudioRecordingAttributions:(id)a3;
+- (STMutableMediaStatusDomainData)initWithMicrophoneAttributionListData:(id)data mutedMicrophoneRecordingAttributionListData:(id)listData systemAudioRecordingAttributionListData:(id)attributionListData cameraAttributionListData:(id)cameraAttributionListData screenCaptureAttributionListData:(id)captureAttributionListData;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)addCameraAttribution:(id)attribution;
+- (void)addCameraCaptureAttribution:(id)attribution;
+- (void)addMicrophoneAttribution:(id)attribution;
+- (void)addMicrophoneRecordingAttribution:(id)attribution;
+- (void)addMutedMicrophoneRecordingAttribution:(id)attribution;
+- (void)addScreenCaptureAttribution:(id)attribution;
+- (void)addSystemAudioRecordingAttribution:(id)attribution;
+- (void)removeCameraAttribution:(id)attribution;
+- (void)removeCameraCaptureAttribution:(id)attribution;
+- (void)removeMicrophoneAttribution:(id)attribution;
+- (void)removeMicrophoneRecordingAttribution:(id)attribution;
+- (void)removeMutedMicrophoneRecordingAttribution:(id)attribution;
+- (void)removeScreenCaptureAttribution:(id)attribution;
+- (void)removeSystemAudioRecordingAttribution:(id)attribution;
+- (void)setAudioRecordingAttributions:(id)attributions;
+- (void)setCameraAttributions:(id)attributions;
+- (void)setCameraCaptureAttributionList:(id)list;
+- (void)setCameraCaptureAttributions:(id)attributions;
+- (void)setMicrophoneAttributions:(id)attributions;
+- (void)setMicrophoneRecordingAttributions:(id)attributions;
+- (void)setMutedAudioRecordingAttributions:(id)attributions;
+- (void)setMutedMicrophoneRecordingAttributions:(id)attributions;
+- (void)setScreenCaptureAttributions:(id)attributions;
+- (void)setSystemAudioRecordingAttributions:(id)attributions;
 @end
 
 @implementation STMutableMediaStatusDomainData
@@ -39,60 +39,60 @@
 {
   v4.receiver = self;
   v4.super_class = STMutableMediaStatusDomainData;
-  v2 = [(STMediaStatusDomainData *)&v4 microphoneAttributionListData];
+  microphoneAttributionListData = [(STMediaStatusDomainData *)&v4 microphoneAttributionListData];
 
-  return v2;
+  return microphoneAttributionListData;
 }
 
 - (STMutableListData)mutedMicrophoneRecordingAttributionListData
 {
   v4.receiver = self;
   v4.super_class = STMutableMediaStatusDomainData;
-  v2 = [(STMediaStatusDomainData *)&v4 mutedMicrophoneRecordingAttributionListData];
+  mutedMicrophoneRecordingAttributionListData = [(STMediaStatusDomainData *)&v4 mutedMicrophoneRecordingAttributionListData];
 
-  return v2;
+  return mutedMicrophoneRecordingAttributionListData;
 }
 
 - (STMutableListData)systemAudioRecordingAttributionListData
 {
   v4.receiver = self;
   v4.super_class = STMutableMediaStatusDomainData;
-  v2 = [(STMediaStatusDomainData *)&v4 systemAudioRecordingAttributionListData];
+  systemAudioRecordingAttributionListData = [(STMediaStatusDomainData *)&v4 systemAudioRecordingAttributionListData];
 
-  return v2;
+  return systemAudioRecordingAttributionListData;
 }
 
 - (STMutableListData)cameraAttributionListData
 {
   v4.receiver = self;
   v4.super_class = STMutableMediaStatusDomainData;
-  v2 = [(STMediaStatusDomainData *)&v4 cameraAttributionListData];
+  cameraAttributionListData = [(STMediaStatusDomainData *)&v4 cameraAttributionListData];
 
-  return v2;
+  return cameraAttributionListData;
 }
 
 - (STMutableListData)screenCaptureAttributionListData
 {
   v4.receiver = self;
   v4.super_class = STMutableMediaStatusDomainData;
-  v2 = [(STMediaStatusDomainData *)&v4 screenCaptureAttributionListData];
+  screenCaptureAttributionListData = [(STMediaStatusDomainData *)&v4 screenCaptureAttributionListData];
 
-  return v2;
+  return screenCaptureAttributionListData;
 }
 
-- (STMutableMediaStatusDomainData)initWithMicrophoneAttributionListData:(id)a3 mutedMicrophoneRecordingAttributionListData:(id)a4 systemAudioRecordingAttributionListData:(id)a5 cameraAttributionListData:(id)a6 screenCaptureAttributionListData:(id)a7
+- (STMutableMediaStatusDomainData)initWithMicrophoneAttributionListData:(id)data mutedMicrophoneRecordingAttributionListData:(id)listData systemAudioRecordingAttributionListData:(id)attributionListData cameraAttributionListData:(id)cameraAttributionListData screenCaptureAttributionListData:(id)captureAttributionListData
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = [a3 mutableCopy];
-  v17 = [v15 mutableCopy];
+  captureAttributionListDataCopy = captureAttributionListData;
+  cameraAttributionListDataCopy = cameraAttributionListData;
+  attributionListDataCopy = attributionListData;
+  listDataCopy = listData;
+  v16 = [data mutableCopy];
+  v17 = [listDataCopy mutableCopy];
 
-  v18 = [v14 mutableCopy];
-  v19 = [v13 mutableCopy];
+  v18 = [attributionListDataCopy mutableCopy];
+  v19 = [cameraAttributionListDataCopy mutableCopy];
 
-  v20 = [v12 mutableCopy];
+  v20 = [captureAttributionListDataCopy mutableCopy];
   v23.receiver = self;
   v23.super_class = STMutableMediaStatusDomainData;
   v21 = [(STMediaStatusDomainData *)&v23 _initWithMicrophoneAttributionListData:v16 mutedMicrophoneRecordingAttributionListData:v17 systemAudioRecordingAttributionListData:v18 cameraAttributionListData:v19 screenCaptureAttributionListData:v20];
@@ -100,122 +100,122 @@
   return v21;
 }
 
-- (void)setCameraAttributions:(id)a3
+- (void)setCameraAttributions:(id)attributions
 {
-  v8 = a3;
-  if (v8)
+  attributionsCopy = attributions;
+  if (attributionsCopy)
   {
-    v4 = [(STMediaStatusDomainData *)self cameraAttributions];
-    v5 = [v4 isEqualToArray:v8];
+    cameraAttributions = [(STMediaStatusDomainData *)self cameraAttributions];
+    v5 = [cameraAttributions isEqualToArray:attributionsCopy];
 
     if ((v5 & 1) == 0)
     {
-      v6 = [(STMutableMediaStatusDomainData *)self cameraAttributionListData];
-      v7 = [v8 copy];
-      [v6 setObjects:v7];
+      cameraAttributionListData = [(STMutableMediaStatusDomainData *)self cameraAttributionListData];
+      v7 = [attributionsCopy copy];
+      [cameraAttributionListData setObjects:v7];
     }
   }
 }
 
-- (void)addCameraAttribution:(id)a3
+- (void)addCameraAttribution:(id)attribution
 {
-  if (a3)
+  if (attribution)
   {
-    v4 = a3;
-    v5 = [(STMutableMediaStatusDomainData *)self cameraAttributionListData];
-    [v5 addObject:v4];
+    attributionCopy = attribution;
+    cameraAttributionListData = [(STMutableMediaStatusDomainData *)self cameraAttributionListData];
+    [cameraAttributionListData addObject:attributionCopy];
   }
 }
 
-- (void)removeCameraAttribution:(id)a3
+- (void)removeCameraAttribution:(id)attribution
 {
-  if (a3)
+  if (attribution)
   {
-    v4 = a3;
-    v5 = [(STMutableMediaStatusDomainData *)self cameraAttributionListData];
-    [v5 removeObject:v4];
+    attributionCopy = attribution;
+    cameraAttributionListData = [(STMutableMediaStatusDomainData *)self cameraAttributionListData];
+    [cameraAttributionListData removeObject:attributionCopy];
   }
 }
 
-- (void)setScreenCaptureAttributions:(id)a3
+- (void)setScreenCaptureAttributions:(id)attributions
 {
-  v8 = a3;
-  if (v8)
+  attributionsCopy = attributions;
+  if (attributionsCopy)
   {
-    v4 = [(STMediaStatusDomainData *)self screenCaptureAttributions];
-    v5 = [v4 isEqualToArray:v8];
+    screenCaptureAttributions = [(STMediaStatusDomainData *)self screenCaptureAttributions];
+    v5 = [screenCaptureAttributions isEqualToArray:attributionsCopy];
 
     if ((v5 & 1) == 0)
     {
-      v6 = [(STMutableMediaStatusDomainData *)self screenCaptureAttributionListData];
-      v7 = [v8 copy];
-      [v6 setObjects:v7];
+      screenCaptureAttributionListData = [(STMutableMediaStatusDomainData *)self screenCaptureAttributionListData];
+      v7 = [attributionsCopy copy];
+      [screenCaptureAttributionListData setObjects:v7];
     }
   }
 }
 
-- (void)addScreenCaptureAttribution:(id)a3
+- (void)addScreenCaptureAttribution:(id)attribution
 {
-  if (a3)
+  if (attribution)
   {
-    v4 = a3;
-    v5 = [(STMutableMediaStatusDomainData *)self screenCaptureAttributionListData];
-    [v5 addObject:v4];
+    attributionCopy = attribution;
+    screenCaptureAttributionListData = [(STMutableMediaStatusDomainData *)self screenCaptureAttributionListData];
+    [screenCaptureAttributionListData addObject:attributionCopy];
   }
 }
 
-- (void)removeScreenCaptureAttribution:(id)a3
+- (void)removeScreenCaptureAttribution:(id)attribution
 {
-  if (a3)
+  if (attribution)
   {
-    v4 = a3;
-    v5 = [(STMutableMediaStatusDomainData *)self screenCaptureAttributionListData];
-    [v5 removeObject:v4];
+    attributionCopy = attribution;
+    screenCaptureAttributionListData = [(STMutableMediaStatusDomainData *)self screenCaptureAttributionListData];
+    [screenCaptureAttributionListData removeObject:attributionCopy];
   }
 }
 
-- (void)setMicrophoneAttributions:(id)a3
+- (void)setMicrophoneAttributions:(id)attributions
 {
-  v8 = a3;
-  if (v8)
+  attributionsCopy = attributions;
+  if (attributionsCopy)
   {
-    v4 = [(STMediaStatusDomainData *)self microphoneAttributions];
-    v5 = [v4 isEqualToArray:v8];
+    microphoneAttributions = [(STMediaStatusDomainData *)self microphoneAttributions];
+    v5 = [microphoneAttributions isEqualToArray:attributionsCopy];
 
     if ((v5 & 1) == 0)
     {
-      v6 = [(STMutableMediaStatusDomainData *)self microphoneAttributionListData];
-      v7 = [v8 copy];
-      [v6 setObjects:v7];
+      microphoneAttributionListData = [(STMutableMediaStatusDomainData *)self microphoneAttributionListData];
+      v7 = [attributionsCopy copy];
+      [microphoneAttributionListData setObjects:v7];
     }
   }
 }
 
-- (void)addMicrophoneAttribution:(id)a3
+- (void)addMicrophoneAttribution:(id)attribution
 {
-  if (a3)
+  if (attribution)
   {
-    v4 = a3;
-    v5 = [(STMutableMediaStatusDomainData *)self microphoneAttributionListData];
-    [v5 addObject:v4];
+    attributionCopy = attribution;
+    microphoneAttributionListData = [(STMutableMediaStatusDomainData *)self microphoneAttributionListData];
+    [microphoneAttributionListData addObject:attributionCopy];
   }
 }
 
-- (void)removeMicrophoneAttribution:(id)a3
+- (void)removeMicrophoneAttribution:(id)attribution
 {
-  if (a3)
+  if (attribution)
   {
-    v4 = a3;
-    v5 = [(STMutableMediaStatusDomainData *)self microphoneAttributionListData];
-    [v5 removeObject:v4];
+    attributionCopy = attribution;
+    microphoneAttributionListData = [(STMutableMediaStatusDomainData *)self microphoneAttributionListData];
+    [microphoneAttributionListData removeObject:attributionCopy];
   }
 }
 
-- (void)setMicrophoneRecordingAttributions:(id)a3
+- (void)setMicrophoneRecordingAttributions:(id)attributions
 {
-  if (a3)
+  if (attributions)
   {
-    v4 = [a3 bs_map:&__block_literal_global_163];
+    v4 = [attributions bs_map:&__block_literal_global_163];
     [(STMutableMediaStatusDomainData *)self setMicrophoneAttributions:v4];
   }
 }
@@ -228,119 +228,119 @@ STMediaStatusDomainMicrophoneRecordingAttribution *__69__STMutableMediaStatusDom
   return v3;
 }
 
-- (void)addMicrophoneRecordingAttribution:(id)a3
+- (void)addMicrophoneRecordingAttribution:(id)attribution
 {
-  if (a3)
+  if (attribution)
   {
-    v4 = a3;
-    v5 = [[STMediaStatusDomainMicrophoneRecordingAttribution alloc] initWithActivityAttribution:v4];
+    attributionCopy = attribution;
+    v5 = [[STMediaStatusDomainMicrophoneRecordingAttribution alloc] initWithActivityAttribution:attributionCopy];
 
     [(STMutableMediaStatusDomainData *)self addMicrophoneAttribution:v5];
   }
 }
 
-- (void)removeMicrophoneRecordingAttribution:(id)a3
+- (void)removeMicrophoneRecordingAttribution:(id)attribution
 {
-  if (a3)
+  if (attribution)
   {
-    v4 = a3;
-    v5 = [[STMediaStatusDomainMicrophoneRecordingAttribution alloc] initWithActivityAttribution:v4];
+    attributionCopy = attribution;
+    v5 = [[STMediaStatusDomainMicrophoneRecordingAttribution alloc] initWithActivityAttribution:attributionCopy];
 
     [(STMutableMediaStatusDomainData *)self removeMicrophoneAttribution:v5];
   }
 }
 
-- (void)setMutedMicrophoneRecordingAttributions:(id)a3
+- (void)setMutedMicrophoneRecordingAttributions:(id)attributions
 {
-  v8 = a3;
-  if (v8)
+  attributionsCopy = attributions;
+  if (attributionsCopy)
   {
-    v4 = [(STMediaStatusDomainData *)self mutedMicrophoneRecordingAttributions];
-    v5 = [v4 isEqualToArray:v8];
+    mutedMicrophoneRecordingAttributions = [(STMediaStatusDomainData *)self mutedMicrophoneRecordingAttributions];
+    v5 = [mutedMicrophoneRecordingAttributions isEqualToArray:attributionsCopy];
 
     if ((v5 & 1) == 0)
     {
-      v6 = [(STMutableMediaStatusDomainData *)self mutedMicrophoneRecordingAttributionListData];
-      v7 = [v8 copy];
-      [v6 setObjects:v7];
+      mutedMicrophoneRecordingAttributionListData = [(STMutableMediaStatusDomainData *)self mutedMicrophoneRecordingAttributionListData];
+      v7 = [attributionsCopy copy];
+      [mutedMicrophoneRecordingAttributionListData setObjects:v7];
     }
   }
 }
 
-- (void)addMutedMicrophoneRecordingAttribution:(id)a3
+- (void)addMutedMicrophoneRecordingAttribution:(id)attribution
 {
-  if (a3)
+  if (attribution)
   {
-    v4 = a3;
-    v5 = [(STMutableMediaStatusDomainData *)self mutedMicrophoneRecordingAttributionListData];
-    [v5 addObject:v4];
+    attributionCopy = attribution;
+    mutedMicrophoneRecordingAttributionListData = [(STMutableMediaStatusDomainData *)self mutedMicrophoneRecordingAttributionListData];
+    [mutedMicrophoneRecordingAttributionListData addObject:attributionCopy];
   }
 }
 
-- (void)removeMutedMicrophoneRecordingAttribution:(id)a3
+- (void)removeMutedMicrophoneRecordingAttribution:(id)attribution
 {
-  if (a3)
+  if (attribution)
   {
-    v4 = a3;
-    v5 = [(STMutableMediaStatusDomainData *)self mutedMicrophoneRecordingAttributionListData];
-    [v5 removeObject:v4];
+    attributionCopy = attribution;
+    mutedMicrophoneRecordingAttributionListData = [(STMutableMediaStatusDomainData *)self mutedMicrophoneRecordingAttributionListData];
+    [mutedMicrophoneRecordingAttributionListData removeObject:attributionCopy];
   }
 }
 
-- (void)setSystemAudioRecordingAttributions:(id)a3
+- (void)setSystemAudioRecordingAttributions:(id)attributions
 {
-  v8 = a3;
-  if (v8)
+  attributionsCopy = attributions;
+  if (attributionsCopy)
   {
-    v4 = [(STMediaStatusDomainData *)self systemAudioRecordingAttributions];
-    v5 = [v4 isEqualToArray:v8];
+    systemAudioRecordingAttributions = [(STMediaStatusDomainData *)self systemAudioRecordingAttributions];
+    v5 = [systemAudioRecordingAttributions isEqualToArray:attributionsCopy];
 
     if ((v5 & 1) == 0)
     {
-      v6 = [(STMutableMediaStatusDomainData *)self systemAudioRecordingAttributionListData];
-      v7 = [v8 copy];
-      [v6 setObjects:v7];
+      systemAudioRecordingAttributionListData = [(STMutableMediaStatusDomainData *)self systemAudioRecordingAttributionListData];
+      v7 = [attributionsCopy copy];
+      [systemAudioRecordingAttributionListData setObjects:v7];
     }
   }
 }
 
-- (void)addSystemAudioRecordingAttribution:(id)a3
+- (void)addSystemAudioRecordingAttribution:(id)attribution
 {
-  if (a3)
+  if (attribution)
   {
-    v4 = a3;
-    v5 = [(STMutableMediaStatusDomainData *)self systemAudioRecordingAttributionListData];
-    [v5 addObject:v4];
+    attributionCopy = attribution;
+    systemAudioRecordingAttributionListData = [(STMutableMediaStatusDomainData *)self systemAudioRecordingAttributionListData];
+    [systemAudioRecordingAttributionListData addObject:attributionCopy];
   }
 }
 
-- (void)removeSystemAudioRecordingAttribution:(id)a3
+- (void)removeSystemAudioRecordingAttribution:(id)attribution
 {
-  if (a3)
+  if (attribution)
   {
-    v4 = a3;
-    v5 = [(STMutableMediaStatusDomainData *)self systemAudioRecordingAttributionListData];
-    [v5 removeObject:v4];
+    attributionCopy = attribution;
+    systemAudioRecordingAttributionListData = [(STMutableMediaStatusDomainData *)self systemAudioRecordingAttributionListData];
+    [systemAudioRecordingAttributionListData removeObject:attributionCopy];
   }
 }
 
-- (void)setAudioRecordingAttributions:(id)a3
+- (void)setAudioRecordingAttributions:(id)attributions
 {
-  v4 = [a3 allObjects];
-  [(STMutableMediaStatusDomainData *)self setAudioRecordingAttributionList:v4];
+  allObjects = [attributions allObjects];
+  [(STMutableMediaStatusDomainData *)self setAudioRecordingAttributionList:allObjects];
 }
 
-- (void)setMutedAudioRecordingAttributions:(id)a3
+- (void)setMutedAudioRecordingAttributions:(id)attributions
 {
-  v4 = [a3 allObjects];
-  [(STMutableMediaStatusDomainData *)self setMutedAudioRecordingAttributionList:v4];
+  allObjects = [attributions allObjects];
+  [(STMutableMediaStatusDomainData *)self setMutedAudioRecordingAttributionList:allObjects];
 }
 
-- (void)setCameraCaptureAttributionList:(id)a3
+- (void)setCameraCaptureAttributionList:(id)list
 {
-  if (a3)
+  if (list)
   {
-    v4 = [a3 bs_map:&__block_literal_global_165];
+    v4 = [list bs_map:&__block_literal_global_165];
     [(STMutableMediaStatusDomainData *)self setCameraAttributions:v4];
   }
 }
@@ -355,53 +355,53 @@ STMediaStatusDomainCameraCaptureAttribution *__66__STMutableMediaStatusDomainDat
   return v5;
 }
 
-- (void)addCameraCaptureAttribution:(id)a3
+- (void)addCameraCaptureAttribution:(id)attribution
 {
-  if (a3)
+  if (attribution)
   {
-    v4 = a3;
+    attributionCopy = attribution;
     v5 = [STMediaStatusDomainCameraCaptureAttribution alloc];
     v7 = objc_alloc_init(STMediaStatusDomainCameraDescriptor);
-    v6 = [(STMediaStatusDomainCameraCaptureAttribution *)v5 initWithCameraDescriptor:v7 activityAttribution:v4];
+    v6 = [(STMediaStatusDomainCameraCaptureAttribution *)v5 initWithCameraDescriptor:v7 activityAttribution:attributionCopy];
 
     [(STMutableMediaStatusDomainData *)self addCameraAttribution:v6];
   }
 }
 
-- (void)removeCameraCaptureAttribution:(id)a3
+- (void)removeCameraCaptureAttribution:(id)attribution
 {
-  if (a3)
+  if (attribution)
   {
-    v4 = a3;
+    attributionCopy = attribution;
     v5 = [STMediaStatusDomainCameraCaptureAttribution alloc];
     v7 = objc_alloc_init(STMediaStatusDomainCameraDescriptor);
-    v6 = [(STMediaStatusDomainCameraCaptureAttribution *)v5 initWithCameraDescriptor:v7 activityAttribution:v4];
+    v6 = [(STMediaStatusDomainCameraCaptureAttribution *)v5 initWithCameraDescriptor:v7 activityAttribution:attributionCopy];
 
     [(STMutableMediaStatusDomainData *)self removeCameraAttribution:v6];
   }
 }
 
-- (void)setCameraCaptureAttributions:(id)a3
+- (void)setCameraCaptureAttributions:(id)attributions
 {
-  v4 = [a3 allObjects];
-  [(STMutableMediaStatusDomainData *)self setCameraCaptureAttributionList:v4];
+  allObjects = [attributions allObjects];
+  [(STMutableMediaStatusDomainData *)self setCameraCaptureAttributionList:allObjects];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [STMediaStatusDomainData allocWithZone:a3];
+  v4 = [STMediaStatusDomainData allocWithZone:zone];
 
   return [(STMediaStatusDomainData *)v4 initWithData:?];
 }
 
-- (BOOL)applyDiff:(id)a3
+- (BOOL)applyDiff:(id)diff
 {
-  v4 = a3;
+  diffCopy = diff;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   if (isKindOfClass)
   {
-    [v4 applyToMutableData:self];
+    [diffCopy applyToMutableData:self];
   }
 
   return isKindOfClass & 1;

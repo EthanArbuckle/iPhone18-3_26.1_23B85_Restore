@@ -1,9 +1,9 @@
 @interface PGSchemaPGClientEvent
-+ (id)getInnerTypeStringByTag:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)getInnerTypeStringByTag:(unint64_t)tag;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (PGSchemaPGClientEvent)initWithDictionary:(id)a3;
-- (PGSchemaPGClientEvent)initWithJSON:(id)a3;
+- (PGSchemaPGClientEvent)initWithDictionary:(id)dictionary;
+- (PGSchemaPGClientEvent)initWithJSON:(id)n;
 - (PGSchemaPGGeneratePlanContext)pgGeneratePlanContext;
 - (PGSchemaPGModelInferenceContext)pgModelInferenceContext;
 - (PGSchemaPGOverridesRequestContext)pgOverridesRequestContext;
@@ -12,7 +12,7 @@
 - (PGSchemaPGPromptTier1)pgPromptTier1;
 - (PGSchemaPGRequestContext)pgRequestContext;
 - (SISchemaInstrumentationMessage)innerEvent;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)getComponentId;
 - (id)qualifiedMessageName;
@@ -26,27 +26,27 @@
 - (void)deletePgPromptResponseTier1;
 - (void)deletePgPromptTier1;
 - (void)deletePgRequestContext;
-- (void)setPgGeneratePlanContext:(id)a3;
-- (void)setPgModelInferenceContext:(id)a3;
-- (void)setPgOverridesRequestContext:(id)a3;
-- (void)setPgPrescribedPlanRequestContext:(id)a3;
-- (void)setPgPromptResponseTier1:(id)a3;
-- (void)setPgPromptTier1:(id)a3;
-- (void)setPgRequestContext:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setPgGeneratePlanContext:(id)context;
+- (void)setPgModelInferenceContext:(id)context;
+- (void)setPgOverridesRequestContext:(id)context;
+- (void)setPgPrescribedPlanRequestContext:(id)context;
+- (void)setPgPromptResponseTier1:(id)tier1;
+- (void)setPgPromptTier1:(id)tier1;
+- (void)setPgRequestContext:(id)context;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PGSchemaPGClientEvent
 
-- (PGSchemaPGClientEvent)initWithDictionary:(id)a3
+- (PGSchemaPGClientEvent)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v25.receiver = self;
   v25.super_class = PGSchemaPGClientEvent;
   v5 = [(PGSchemaPGClientEvent *)&v25 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"eventMetadata"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"eventMetadata"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -55,7 +55,7 @@
     }
 
     v24 = v6;
-    v8 = [v4 objectForKeyedSubscript:@"pgRequestContext"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"pgRequestContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -63,7 +63,7 @@
       [(PGSchemaPGClientEvent *)v5 setPgRequestContext:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"pgPromptTier1"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"pgPromptTier1"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -71,7 +71,7 @@
       [(PGSchemaPGClientEvent *)v5 setPgPromptTier1:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"pgPromptResponseTier1"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"pgPromptResponseTier1"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -79,7 +79,7 @@
       [(PGSchemaPGClientEvent *)v5 setPgPromptResponseTier1:v13];
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"pgModelInferenceContext"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"pgModelInferenceContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -87,7 +87,7 @@
       [(PGSchemaPGClientEvent *)v5 setPgModelInferenceContext:v15];
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"pgOverridesRequestContext"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"pgOverridesRequestContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -95,7 +95,7 @@
       [(PGSchemaPGClientEvent *)v5 setPgOverridesRequestContext:v17];
     }
 
-    v18 = [v4 objectForKeyedSubscript:@"pgPrescribedPlanRequestContext"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"pgPrescribedPlanRequestContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -103,7 +103,7 @@
       [(PGSchemaPGClientEvent *)v5 setPgPrescribedPlanRequestContext:v19];
     }
 
-    v20 = [v4 objectForKeyedSubscript:@"pgGeneratePlanContext"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"pgGeneratePlanContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -117,30 +117,30 @@
   return v5;
 }
 
-- (PGSchemaPGClientEvent)initWithJSON:(id)a3
+- (PGSchemaPGClientEvent)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(PGSchemaPGClientEvent *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(PGSchemaPGClientEvent *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(PGSchemaPGClientEvent *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -153,138 +153,138 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_eventMetadata)
   {
-    v4 = [(PGSchemaPGClientEvent *)self eventMetadata];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    eventMetadata = [(PGSchemaPGClientEvent *)self eventMetadata];
+    dictionaryRepresentation = [eventMetadata dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"eventMetadata"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"eventMetadata"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"eventMetadata"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"eventMetadata"];
     }
   }
 
   if (self->_pgGeneratePlanContext)
   {
-    v7 = [(PGSchemaPGClientEvent *)self pgGeneratePlanContext];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    pgGeneratePlanContext = [(PGSchemaPGClientEvent *)self pgGeneratePlanContext];
+    dictionaryRepresentation2 = [pgGeneratePlanContext dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"pgGeneratePlanContext"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"pgGeneratePlanContext"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"pgGeneratePlanContext"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"pgGeneratePlanContext"];
     }
   }
 
   if (self->_pgModelInferenceContext)
   {
-    v10 = [(PGSchemaPGClientEvent *)self pgModelInferenceContext];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    pgModelInferenceContext = [(PGSchemaPGClientEvent *)self pgModelInferenceContext];
+    dictionaryRepresentation3 = [pgModelInferenceContext dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"pgModelInferenceContext"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"pgModelInferenceContext"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"pgModelInferenceContext"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"pgModelInferenceContext"];
     }
   }
 
   if (self->_pgOverridesRequestContext)
   {
-    v13 = [(PGSchemaPGClientEvent *)self pgOverridesRequestContext];
-    v14 = [v13 dictionaryRepresentation];
-    if (v14)
+    pgOverridesRequestContext = [(PGSchemaPGClientEvent *)self pgOverridesRequestContext];
+    dictionaryRepresentation4 = [pgOverridesRequestContext dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v14 forKeyedSubscript:@"pgOverridesRequestContext"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"pgOverridesRequestContext"];
     }
 
     else
     {
-      v15 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v15 forKeyedSubscript:@"pgOverridesRequestContext"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"pgOverridesRequestContext"];
     }
   }
 
   if (self->_pgPrescribedPlanRequestContext)
   {
-    v16 = [(PGSchemaPGClientEvent *)self pgPrescribedPlanRequestContext];
-    v17 = [v16 dictionaryRepresentation];
-    if (v17)
+    pgPrescribedPlanRequestContext = [(PGSchemaPGClientEvent *)self pgPrescribedPlanRequestContext];
+    dictionaryRepresentation5 = [pgPrescribedPlanRequestContext dictionaryRepresentation];
+    if (dictionaryRepresentation5)
     {
-      [v3 setObject:v17 forKeyedSubscript:@"pgPrescribedPlanRequestContext"];
+      [dictionary setObject:dictionaryRepresentation5 forKeyedSubscript:@"pgPrescribedPlanRequestContext"];
     }
 
     else
     {
-      v18 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v18 forKeyedSubscript:@"pgPrescribedPlanRequestContext"];
+      null5 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null5 forKeyedSubscript:@"pgPrescribedPlanRequestContext"];
     }
   }
 
   if (self->_pgPromptResponseTier1)
   {
-    v19 = [(PGSchemaPGClientEvent *)self pgPromptResponseTier1];
-    v20 = [v19 dictionaryRepresentation];
-    if (v20)
+    pgPromptResponseTier1 = [(PGSchemaPGClientEvent *)self pgPromptResponseTier1];
+    dictionaryRepresentation6 = [pgPromptResponseTier1 dictionaryRepresentation];
+    if (dictionaryRepresentation6)
     {
-      [v3 setObject:v20 forKeyedSubscript:@"pgPromptResponseTier1"];
+      [dictionary setObject:dictionaryRepresentation6 forKeyedSubscript:@"pgPromptResponseTier1"];
     }
 
     else
     {
-      v21 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v21 forKeyedSubscript:@"pgPromptResponseTier1"];
+      null6 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null6 forKeyedSubscript:@"pgPromptResponseTier1"];
     }
   }
 
   if (self->_pgPromptTier1)
   {
-    v22 = [(PGSchemaPGClientEvent *)self pgPromptTier1];
-    v23 = [v22 dictionaryRepresentation];
-    if (v23)
+    pgPromptTier1 = [(PGSchemaPGClientEvent *)self pgPromptTier1];
+    dictionaryRepresentation7 = [pgPromptTier1 dictionaryRepresentation];
+    if (dictionaryRepresentation7)
     {
-      [v3 setObject:v23 forKeyedSubscript:@"pgPromptTier1"];
+      [dictionary setObject:dictionaryRepresentation7 forKeyedSubscript:@"pgPromptTier1"];
     }
 
     else
     {
-      v24 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v24 forKeyedSubscript:@"pgPromptTier1"];
+      null7 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null7 forKeyedSubscript:@"pgPromptTier1"];
     }
   }
 
   if (self->_pgRequestContext)
   {
-    v25 = [(PGSchemaPGClientEvent *)self pgRequestContext];
-    v26 = [v25 dictionaryRepresentation];
-    if (v26)
+    pgRequestContext = [(PGSchemaPGClientEvent *)self pgRequestContext];
+    dictionaryRepresentation8 = [pgRequestContext dictionaryRepresentation];
+    if (dictionaryRepresentation8)
     {
-      [v3 setObject:v26 forKeyedSubscript:@"pgRequestContext"];
+      [dictionary setObject:dictionaryRepresentation8 forKeyedSubscript:@"pgRequestContext"];
     }
 
     else
     {
-      v27 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v27 forKeyedSubscript:@"pgRequestContext"];
+      null8 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null8 forKeyedSubscript:@"pgRequestContext"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -299,34 +299,34 @@
   return v9 ^ [(PGSchemaPGGeneratePlanContext *)self->_pgGeneratePlanContext hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_43;
   }
 
   whichEvent_Type = self->_whichEvent_Type;
-  if (whichEvent_Type != [v4 whichEvent_Type])
+  if (whichEvent_Type != [equalCopy whichEvent_Type])
   {
     goto LABEL_43;
   }
 
-  v6 = [(PGSchemaPGClientEvent *)self eventMetadata];
-  v7 = [v4 eventMetadata];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(PGSchemaPGClientEvent *)self eventMetadata];
+  eventMetadata2 = [equalCopy eventMetadata];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_42;
   }
 
-  v8 = [(PGSchemaPGClientEvent *)self eventMetadata];
-  if (v8)
+  eventMetadata3 = [(PGSchemaPGClientEvent *)self eventMetadata];
+  if (eventMetadata3)
   {
-    v9 = v8;
-    v10 = [(PGSchemaPGClientEvent *)self eventMetadata];
-    v11 = [v4 eventMetadata];
-    v12 = [v10 isEqual:v11];
+    v9 = eventMetadata3;
+    eventMetadata4 = [(PGSchemaPGClientEvent *)self eventMetadata];
+    eventMetadata5 = [equalCopy eventMetadata];
+    v12 = [eventMetadata4 isEqual:eventMetadata5];
 
     if (!v12)
     {
@@ -338,20 +338,20 @@
   {
   }
 
-  v6 = [(PGSchemaPGClientEvent *)self pgRequestContext];
-  v7 = [v4 pgRequestContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(PGSchemaPGClientEvent *)self pgRequestContext];
+  eventMetadata2 = [equalCopy pgRequestContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_42;
   }
 
-  v13 = [(PGSchemaPGClientEvent *)self pgRequestContext];
-  if (v13)
+  pgRequestContext = [(PGSchemaPGClientEvent *)self pgRequestContext];
+  if (pgRequestContext)
   {
-    v14 = v13;
-    v15 = [(PGSchemaPGClientEvent *)self pgRequestContext];
-    v16 = [v4 pgRequestContext];
-    v17 = [v15 isEqual:v16];
+    v14 = pgRequestContext;
+    pgRequestContext2 = [(PGSchemaPGClientEvent *)self pgRequestContext];
+    pgRequestContext3 = [equalCopy pgRequestContext];
+    v17 = [pgRequestContext2 isEqual:pgRequestContext3];
 
     if (!v17)
     {
@@ -363,20 +363,20 @@
   {
   }
 
-  v6 = [(PGSchemaPGClientEvent *)self pgPromptTier1];
-  v7 = [v4 pgPromptTier1];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(PGSchemaPGClientEvent *)self pgPromptTier1];
+  eventMetadata2 = [equalCopy pgPromptTier1];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_42;
   }
 
-  v18 = [(PGSchemaPGClientEvent *)self pgPromptTier1];
-  if (v18)
+  pgPromptTier1 = [(PGSchemaPGClientEvent *)self pgPromptTier1];
+  if (pgPromptTier1)
   {
-    v19 = v18;
-    v20 = [(PGSchemaPGClientEvent *)self pgPromptTier1];
-    v21 = [v4 pgPromptTier1];
-    v22 = [v20 isEqual:v21];
+    v19 = pgPromptTier1;
+    pgPromptTier12 = [(PGSchemaPGClientEvent *)self pgPromptTier1];
+    pgPromptTier13 = [equalCopy pgPromptTier1];
+    v22 = [pgPromptTier12 isEqual:pgPromptTier13];
 
     if (!v22)
     {
@@ -388,20 +388,20 @@
   {
   }
 
-  v6 = [(PGSchemaPGClientEvent *)self pgPromptResponseTier1];
-  v7 = [v4 pgPromptResponseTier1];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(PGSchemaPGClientEvent *)self pgPromptResponseTier1];
+  eventMetadata2 = [equalCopy pgPromptResponseTier1];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_42;
   }
 
-  v23 = [(PGSchemaPGClientEvent *)self pgPromptResponseTier1];
-  if (v23)
+  pgPromptResponseTier1 = [(PGSchemaPGClientEvent *)self pgPromptResponseTier1];
+  if (pgPromptResponseTier1)
   {
-    v24 = v23;
-    v25 = [(PGSchemaPGClientEvent *)self pgPromptResponseTier1];
-    v26 = [v4 pgPromptResponseTier1];
-    v27 = [v25 isEqual:v26];
+    v24 = pgPromptResponseTier1;
+    pgPromptResponseTier12 = [(PGSchemaPGClientEvent *)self pgPromptResponseTier1];
+    pgPromptResponseTier13 = [equalCopy pgPromptResponseTier1];
+    v27 = [pgPromptResponseTier12 isEqual:pgPromptResponseTier13];
 
     if (!v27)
     {
@@ -413,20 +413,20 @@
   {
   }
 
-  v6 = [(PGSchemaPGClientEvent *)self pgModelInferenceContext];
-  v7 = [v4 pgModelInferenceContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(PGSchemaPGClientEvent *)self pgModelInferenceContext];
+  eventMetadata2 = [equalCopy pgModelInferenceContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_42;
   }
 
-  v28 = [(PGSchemaPGClientEvent *)self pgModelInferenceContext];
-  if (v28)
+  pgModelInferenceContext = [(PGSchemaPGClientEvent *)self pgModelInferenceContext];
+  if (pgModelInferenceContext)
   {
-    v29 = v28;
-    v30 = [(PGSchemaPGClientEvent *)self pgModelInferenceContext];
-    v31 = [v4 pgModelInferenceContext];
-    v32 = [v30 isEqual:v31];
+    v29 = pgModelInferenceContext;
+    pgModelInferenceContext2 = [(PGSchemaPGClientEvent *)self pgModelInferenceContext];
+    pgModelInferenceContext3 = [equalCopy pgModelInferenceContext];
+    v32 = [pgModelInferenceContext2 isEqual:pgModelInferenceContext3];
 
     if (!v32)
     {
@@ -438,20 +438,20 @@
   {
   }
 
-  v6 = [(PGSchemaPGClientEvent *)self pgOverridesRequestContext];
-  v7 = [v4 pgOverridesRequestContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(PGSchemaPGClientEvent *)self pgOverridesRequestContext];
+  eventMetadata2 = [equalCopy pgOverridesRequestContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_42;
   }
 
-  v33 = [(PGSchemaPGClientEvent *)self pgOverridesRequestContext];
-  if (v33)
+  pgOverridesRequestContext = [(PGSchemaPGClientEvent *)self pgOverridesRequestContext];
+  if (pgOverridesRequestContext)
   {
-    v34 = v33;
-    v35 = [(PGSchemaPGClientEvent *)self pgOverridesRequestContext];
-    v36 = [v4 pgOverridesRequestContext];
-    v37 = [v35 isEqual:v36];
+    v34 = pgOverridesRequestContext;
+    pgOverridesRequestContext2 = [(PGSchemaPGClientEvent *)self pgOverridesRequestContext];
+    pgOverridesRequestContext3 = [equalCopy pgOverridesRequestContext];
+    v37 = [pgOverridesRequestContext2 isEqual:pgOverridesRequestContext3];
 
     if (!v37)
     {
@@ -463,20 +463,20 @@
   {
   }
 
-  v6 = [(PGSchemaPGClientEvent *)self pgPrescribedPlanRequestContext];
-  v7 = [v4 pgPrescribedPlanRequestContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(PGSchemaPGClientEvent *)self pgPrescribedPlanRequestContext];
+  eventMetadata2 = [equalCopy pgPrescribedPlanRequestContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_42;
   }
 
-  v38 = [(PGSchemaPGClientEvent *)self pgPrescribedPlanRequestContext];
-  if (v38)
+  pgPrescribedPlanRequestContext = [(PGSchemaPGClientEvent *)self pgPrescribedPlanRequestContext];
+  if (pgPrescribedPlanRequestContext)
   {
-    v39 = v38;
-    v40 = [(PGSchemaPGClientEvent *)self pgPrescribedPlanRequestContext];
-    v41 = [v4 pgPrescribedPlanRequestContext];
-    v42 = [v40 isEqual:v41];
+    v39 = pgPrescribedPlanRequestContext;
+    pgPrescribedPlanRequestContext2 = [(PGSchemaPGClientEvent *)self pgPrescribedPlanRequestContext];
+    pgPrescribedPlanRequestContext3 = [equalCopy pgPrescribedPlanRequestContext];
+    v42 = [pgPrescribedPlanRequestContext2 isEqual:pgPrescribedPlanRequestContext3];
 
     if (!v42)
     {
@@ -488,12 +488,12 @@
   {
   }
 
-  v6 = [(PGSchemaPGClientEvent *)self pgGeneratePlanContext];
-  v7 = [v4 pgGeneratePlanContext];
-  if ((v6 != 0) != (v7 == 0))
+  eventMetadata = [(PGSchemaPGClientEvent *)self pgGeneratePlanContext];
+  eventMetadata2 = [equalCopy pgGeneratePlanContext];
+  if ((eventMetadata != 0) != (eventMetadata2 == 0))
   {
-    v43 = [(PGSchemaPGClientEvent *)self pgGeneratePlanContext];
-    if (!v43)
+    pgGeneratePlanContext = [(PGSchemaPGClientEvent *)self pgGeneratePlanContext];
+    if (!pgGeneratePlanContext)
     {
 
 LABEL_46:
@@ -501,10 +501,10 @@ LABEL_46:
       goto LABEL_44;
     }
 
-    v44 = v43;
-    v45 = [(PGSchemaPGClientEvent *)self pgGeneratePlanContext];
-    v46 = [v4 pgGeneratePlanContext];
-    v47 = [v45 isEqual:v46];
+    v44 = pgGeneratePlanContext;
+    pgGeneratePlanContext2 = [(PGSchemaPGClientEvent *)self pgGeneratePlanContext];
+    pgGeneratePlanContext3 = [equalCopy pgGeneratePlanContext];
+    v47 = [pgGeneratePlanContext2 isEqual:pgGeneratePlanContext3];
 
     if (v47)
     {
@@ -524,74 +524,74 @@ LABEL_44:
   return v48;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v21 = a3;
-  v4 = [(PGSchemaPGClientEvent *)self eventMetadata];
+  toCopy = to;
+  eventMetadata = [(PGSchemaPGClientEvent *)self eventMetadata];
 
-  if (v4)
+  if (eventMetadata)
   {
-    v5 = [(PGSchemaPGClientEvent *)self eventMetadata];
+    eventMetadata2 = [(PGSchemaPGClientEvent *)self eventMetadata];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(PGSchemaPGClientEvent *)self pgRequestContext];
+  pgRequestContext = [(PGSchemaPGClientEvent *)self pgRequestContext];
 
-  if (v6)
+  if (pgRequestContext)
   {
-    v7 = [(PGSchemaPGClientEvent *)self pgRequestContext];
+    pgRequestContext2 = [(PGSchemaPGClientEvent *)self pgRequestContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(PGSchemaPGClientEvent *)self pgPromptTier1];
+  pgPromptTier1 = [(PGSchemaPGClientEvent *)self pgPromptTier1];
 
-  if (v8)
+  if (pgPromptTier1)
   {
-    v9 = [(PGSchemaPGClientEvent *)self pgPromptTier1];
+    pgPromptTier12 = [(PGSchemaPGClientEvent *)self pgPromptTier1];
     PBDataWriterWriteSubmessage();
   }
 
-  v10 = [(PGSchemaPGClientEvent *)self pgPromptResponseTier1];
+  pgPromptResponseTier1 = [(PGSchemaPGClientEvent *)self pgPromptResponseTier1];
 
-  if (v10)
+  if (pgPromptResponseTier1)
   {
-    v11 = [(PGSchemaPGClientEvent *)self pgPromptResponseTier1];
+    pgPromptResponseTier12 = [(PGSchemaPGClientEvent *)self pgPromptResponseTier1];
     PBDataWriterWriteSubmessage();
   }
 
-  v12 = [(PGSchemaPGClientEvent *)self pgModelInferenceContext];
+  pgModelInferenceContext = [(PGSchemaPGClientEvent *)self pgModelInferenceContext];
 
-  if (v12)
+  if (pgModelInferenceContext)
   {
-    v13 = [(PGSchemaPGClientEvent *)self pgModelInferenceContext];
+    pgModelInferenceContext2 = [(PGSchemaPGClientEvent *)self pgModelInferenceContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v14 = [(PGSchemaPGClientEvent *)self pgOverridesRequestContext];
+  pgOverridesRequestContext = [(PGSchemaPGClientEvent *)self pgOverridesRequestContext];
 
-  if (v14)
+  if (pgOverridesRequestContext)
   {
-    v15 = [(PGSchemaPGClientEvent *)self pgOverridesRequestContext];
+    pgOverridesRequestContext2 = [(PGSchemaPGClientEvent *)self pgOverridesRequestContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v16 = [(PGSchemaPGClientEvent *)self pgPrescribedPlanRequestContext];
+  pgPrescribedPlanRequestContext = [(PGSchemaPGClientEvent *)self pgPrescribedPlanRequestContext];
 
-  if (v16)
+  if (pgPrescribedPlanRequestContext)
   {
-    v17 = [(PGSchemaPGClientEvent *)self pgPrescribedPlanRequestContext];
+    pgPrescribedPlanRequestContext2 = [(PGSchemaPGClientEvent *)self pgPrescribedPlanRequestContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v18 = [(PGSchemaPGClientEvent *)self pgGeneratePlanContext];
+  pgGeneratePlanContext = [(PGSchemaPGClientEvent *)self pgGeneratePlanContext];
 
-  v19 = v21;
-  if (v18)
+  v19 = toCopy;
+  if (pgGeneratePlanContext)
   {
-    v20 = [(PGSchemaPGClientEvent *)self pgGeneratePlanContext];
+    pgGeneratePlanContext2 = [(PGSchemaPGClientEvent *)self pgGeneratePlanContext];
     PBDataWriterWriteSubmessage();
 
-    v19 = v21;
+    v19 = toCopy;
   }
 }
 
@@ -620,9 +620,9 @@ LABEL_44:
   return v3;
 }
 
-- (void)setPgGeneratePlanContext:(id)a3
+- (void)setPgGeneratePlanContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   pgRequestContext = self->_pgRequestContext;
   self->_pgRequestContext = 0;
 
@@ -642,14 +642,14 @@ LABEL_44:
   self->_pgPrescribedPlanRequestContext = 0;
 
   v11 = 401;
-  if (!v4)
+  if (!contextCopy)
   {
     v11 = 0;
   }
 
   self->_whichEvent_Type = v11;
   pgGeneratePlanContext = self->_pgGeneratePlanContext;
-  self->_pgGeneratePlanContext = v4;
+  self->_pgGeneratePlanContext = contextCopy;
 }
 
 - (void)deletePgPrescribedPlanRequestContext
@@ -677,9 +677,9 @@ LABEL_44:
   return v3;
 }
 
-- (void)setPgPrescribedPlanRequestContext:(id)a3
+- (void)setPgPrescribedPlanRequestContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   pgRequestContext = self->_pgRequestContext;
   self->_pgRequestContext = 0;
 
@@ -699,14 +699,14 @@ LABEL_44:
   self->_pgGeneratePlanContext = 0;
 
   v11 = 301;
-  if (!v4)
+  if (!contextCopy)
   {
     v11 = 0;
   }
 
   self->_whichEvent_Type = v11;
   pgPrescribedPlanRequestContext = self->_pgPrescribedPlanRequestContext;
-  self->_pgPrescribedPlanRequestContext = v4;
+  self->_pgPrescribedPlanRequestContext = contextCopy;
 }
 
 - (void)deletePgOverridesRequestContext
@@ -734,9 +734,9 @@ LABEL_44:
   return v3;
 }
 
-- (void)setPgOverridesRequestContext:(id)a3
+- (void)setPgOverridesRequestContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   pgRequestContext = self->_pgRequestContext;
   self->_pgRequestContext = 0;
 
@@ -756,14 +756,14 @@ LABEL_44:
   self->_pgGeneratePlanContext = 0;
 
   v11 = 201;
-  if (!v4)
+  if (!contextCopy)
   {
     v11 = 0;
   }
 
   self->_whichEvent_Type = v11;
   pgOverridesRequestContext = self->_pgOverridesRequestContext;
-  self->_pgOverridesRequestContext = v4;
+  self->_pgOverridesRequestContext = contextCopy;
 }
 
 - (void)deletePgModelInferenceContext
@@ -791,9 +791,9 @@ LABEL_44:
   return v3;
 }
 
-- (void)setPgModelInferenceContext:(id)a3
+- (void)setPgModelInferenceContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   pgRequestContext = self->_pgRequestContext;
   self->_pgRequestContext = 0;
 
@@ -813,14 +813,14 @@ LABEL_44:
   self->_pgGeneratePlanContext = 0;
 
   v11 = 104;
-  if (!v4)
+  if (!contextCopy)
   {
     v11 = 0;
   }
 
   self->_whichEvent_Type = v11;
   pgModelInferenceContext = self->_pgModelInferenceContext;
-  self->_pgModelInferenceContext = v4;
+  self->_pgModelInferenceContext = contextCopy;
 }
 
 - (void)deletePgPromptResponseTier1
@@ -848,9 +848,9 @@ LABEL_44:
   return v3;
 }
 
-- (void)setPgPromptResponseTier1:(id)a3
+- (void)setPgPromptResponseTier1:(id)tier1
 {
-  v4 = a3;
+  tier1Copy = tier1;
   pgRequestContext = self->_pgRequestContext;
   self->_pgRequestContext = 0;
 
@@ -870,14 +870,14 @@ LABEL_44:
   self->_pgGeneratePlanContext = 0;
 
   v11 = 103;
-  if (!v4)
+  if (!tier1Copy)
   {
     v11 = 0;
   }
 
   self->_whichEvent_Type = v11;
   pgPromptResponseTier1 = self->_pgPromptResponseTier1;
-  self->_pgPromptResponseTier1 = v4;
+  self->_pgPromptResponseTier1 = tier1Copy;
 }
 
 - (void)deletePgPromptTier1
@@ -905,9 +905,9 @@ LABEL_44:
   return v3;
 }
 
-- (void)setPgPromptTier1:(id)a3
+- (void)setPgPromptTier1:(id)tier1
 {
-  v4 = a3;
+  tier1Copy = tier1;
   pgRequestContext = self->_pgRequestContext;
   self->_pgRequestContext = 0;
 
@@ -927,14 +927,14 @@ LABEL_44:
   self->_pgGeneratePlanContext = 0;
 
   v11 = 102;
-  if (!v4)
+  if (!tier1Copy)
   {
     v11 = 0;
   }
 
   self->_whichEvent_Type = v11;
   pgPromptTier1 = self->_pgPromptTier1;
-  self->_pgPromptTier1 = v4;
+  self->_pgPromptTier1 = tier1Copy;
 }
 
 - (void)deletePgRequestContext
@@ -962,9 +962,9 @@ LABEL_44:
   return v3;
 }
 
-- (void)setPgRequestContext:(id)a3
+- (void)setPgRequestContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   pgPromptTier1 = self->_pgPromptTier1;
   self->_pgPromptTier1 = 0;
 
@@ -984,29 +984,29 @@ LABEL_44:
   self->_pgGeneratePlanContext = 0;
 
   v11 = 101;
-  if (!v4)
+  if (!contextCopy)
   {
     v11 = 0;
   }
 
   self->_whichEvent_Type = v11;
   pgRequestContext = self->_pgRequestContext;
-  self->_pgRequestContext = v4;
+  self->_pgRequestContext = contextCopy;
 }
 
 - (id)qualifiedMessageName
 {
-  v2 = [(PGSchemaPGClientEvent *)self whichEvent_Type];
-  if (v2 <= 103)
+  whichEvent_Type = [(PGSchemaPGClientEvent *)self whichEvent_Type];
+  if (whichEvent_Type <= 103)
   {
-    if (v2 == 101)
+    if (whichEvent_Type == 101)
     {
       return @"com.apple.aiml.siri.pg.PGClientEvent.PGRequestContext";
     }
 
-    if (v2 != 102)
+    if (whichEvent_Type != 102)
     {
-      if (v2 == 103)
+      if (whichEvent_Type == 103)
       {
         return @"com.apple.aiml.siri.pg.PGClientEvent.PGPromptResponseTier1";
       }
@@ -1017,11 +1017,11 @@ LABEL_44:
     return @"com.apple.aiml.siri.pg.PGClientEvent.PGPromptTier1";
   }
 
-  else if (v2 > 300)
+  else if (whichEvent_Type > 300)
   {
-    if (v2 != 301)
+    if (whichEvent_Type != 301)
     {
-      if (v2 == 401)
+      if (whichEvent_Type == 401)
       {
         return @"com.apple.aiml.siri.pg.PGClientEvent.PGGeneratePlanContext";
       }
@@ -1034,9 +1034,9 @@ LABEL_44:
 
   else
   {
-    if (v2 != 104)
+    if (whichEvent_Type != 104)
     {
-      if (v2 == 201)
+      if (whichEvent_Type == 201)
       {
         return @"com.apple.aiml.siri.pg.PGClientEvent.PGOverridesRequestContext";
       }
@@ -1048,110 +1048,110 @@ LABEL_44:
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v31.receiver = self;
   v31.super_class = PGSchemaPGClientEvent;
-  v5 = [(SISchemaInstrumentationMessage *)&v31 applySensitiveConditionsPolicy:v4];
-  if ([v4 isConditionSet:2])
+  v5 = [(SISchemaInstrumentationMessage *)&v31 applySensitiveConditionsPolicy:policyCopy];
+  if ([policyCopy isConditionSet:2])
   {
     [(PGSchemaPGClientEvent *)self deletePgPromptTier1];
     [(PGSchemaPGClientEvent *)self deletePgPromptResponseTier1];
   }
 
-  if ([v4 isConditionSet:4])
+  if ([policyCopy isConditionSet:4])
   {
     [(PGSchemaPGClientEvent *)self deletePgPromptTier1];
     [(PGSchemaPGClientEvent *)self deletePgPromptResponseTier1];
   }
 
-  if ([v4 isConditionSet:5])
+  if ([policyCopy isConditionSet:5])
   {
     [(PGSchemaPGClientEvent *)self deletePgPromptTier1];
     [(PGSchemaPGClientEvent *)self deletePgPromptResponseTier1];
   }
 
-  if ([v4 isConditionSet:6])
+  if ([policyCopy isConditionSet:6])
   {
     [(PGSchemaPGClientEvent *)self deletePgPromptTier1];
     [(PGSchemaPGClientEvent *)self deletePgPromptResponseTier1];
   }
 
-  if ([v4 isConditionSet:7])
+  if ([policyCopy isConditionSet:7])
   {
     [(PGSchemaPGClientEvent *)self deletePgPromptTier1];
     [(PGSchemaPGClientEvent *)self deletePgPromptResponseTier1];
   }
 
-  v6 = [(PGSchemaPGClientEvent *)self eventMetadata];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  eventMetadata = [(PGSchemaPGClientEvent *)self eventMetadata];
+  v7 = [eventMetadata applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(PGSchemaPGClientEvent *)self deleteEventMetadata];
   }
 
-  v9 = [(PGSchemaPGClientEvent *)self pgRequestContext];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  pgRequestContext = [(PGSchemaPGClientEvent *)self pgRequestContext];
+  v10 = [pgRequestContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(PGSchemaPGClientEvent *)self deletePgRequestContext];
   }
 
-  v12 = [(PGSchemaPGClientEvent *)self pgPromptTier1];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  pgPromptTier1 = [(PGSchemaPGClientEvent *)self pgPromptTier1];
+  v13 = [pgPromptTier1 applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(PGSchemaPGClientEvent *)self deletePgPromptTier1];
   }
 
-  v15 = [(PGSchemaPGClientEvent *)self pgPromptResponseTier1];
-  v16 = [v15 applySensitiveConditionsPolicy:v4];
-  v17 = [v16 suppressMessage];
+  pgPromptResponseTier1 = [(PGSchemaPGClientEvent *)self pgPromptResponseTier1];
+  v16 = [pgPromptResponseTier1 applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage4 = [v16 suppressMessage];
 
-  if (v17)
+  if (suppressMessage4)
   {
     [(PGSchemaPGClientEvent *)self deletePgPromptResponseTier1];
   }
 
-  v18 = [(PGSchemaPGClientEvent *)self pgModelInferenceContext];
-  v19 = [v18 applySensitiveConditionsPolicy:v4];
-  v20 = [v19 suppressMessage];
+  pgModelInferenceContext = [(PGSchemaPGClientEvent *)self pgModelInferenceContext];
+  v19 = [pgModelInferenceContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage5 = [v19 suppressMessage];
 
-  if (v20)
+  if (suppressMessage5)
   {
     [(PGSchemaPGClientEvent *)self deletePgModelInferenceContext];
   }
 
-  v21 = [(PGSchemaPGClientEvent *)self pgOverridesRequestContext];
-  v22 = [v21 applySensitiveConditionsPolicy:v4];
-  v23 = [v22 suppressMessage];
+  pgOverridesRequestContext = [(PGSchemaPGClientEvent *)self pgOverridesRequestContext];
+  v22 = [pgOverridesRequestContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage6 = [v22 suppressMessage];
 
-  if (v23)
+  if (suppressMessage6)
   {
     [(PGSchemaPGClientEvent *)self deletePgOverridesRequestContext];
   }
 
-  v24 = [(PGSchemaPGClientEvent *)self pgPrescribedPlanRequestContext];
-  v25 = [v24 applySensitiveConditionsPolicy:v4];
-  v26 = [v25 suppressMessage];
+  pgPrescribedPlanRequestContext = [(PGSchemaPGClientEvent *)self pgPrescribedPlanRequestContext];
+  v25 = [pgPrescribedPlanRequestContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage7 = [v25 suppressMessage];
 
-  if (v26)
+  if (suppressMessage7)
   {
     [(PGSchemaPGClientEvent *)self deletePgPrescribedPlanRequestContext];
   }
 
-  v27 = [(PGSchemaPGClientEvent *)self pgGeneratePlanContext];
-  v28 = [v27 applySensitiveConditionsPolicy:v4];
-  v29 = [v28 suppressMessage];
+  pgGeneratePlanContext = [(PGSchemaPGClientEvent *)self pgGeneratePlanContext];
+  v28 = [pgGeneratePlanContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage8 = [v28 suppressMessage];
 
-  if (v29)
+  if (suppressMessage8)
   {
     [(PGSchemaPGClientEvent *)self deletePgGeneratePlanContext];
   }
@@ -1169,27 +1169,27 @@ LABEL_44:
 
 - (int)componentName
 {
-  v3 = [(PGSchemaPGClientEvent *)self eventMetadata];
-  v4 = [v3 ifRequestId];
+  eventMetadata = [(PGSchemaPGClientEvent *)self eventMetadata];
+  ifRequestId = [eventMetadata ifRequestId];
 
-  if (v4 && ([v4 value], (v5 = objc_claimAutoreleasedReturnValue()) != 0) && (v6 = v5, objc_msgSend(v4, "value"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "length"), v7, v6, v8))
+  if (ifRequestId && ([ifRequestId value], (v5 = objc_claimAutoreleasedReturnValue()) != 0) && (v6 = v5, objc_msgSend(ifRequestId, "value"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "length"), v7, v6, v8))
   {
     v9 = 45;
   }
 
   else
   {
-    v10 = [(PGSchemaPGClientEvent *)self eventMetadata];
-    v11 = [v10 planCycleId];
+    eventMetadata2 = [(PGSchemaPGClientEvent *)self eventMetadata];
+    planCycleId = [eventMetadata2 planCycleId];
 
-    if (v11)
+    if (planCycleId)
     {
-      v12 = [v11 value];
-      if (v12)
+      value = [planCycleId value];
+      if (value)
       {
-        v13 = v12;
-        v14 = [v11 value];
-        v15 = [v14 length];
+        v13 = value;
+        value2 = [planCycleId value];
+        v15 = [value2 length];
 
         if (v15)
         {
@@ -1207,13 +1207,13 @@ LABEL_44:
         v9 = 0;
       }
 
-      v4 = v11;
+      ifRequestId = planCycleId;
     }
 
     else
     {
       v9 = 0;
-      v4 = 0;
+      ifRequestId = 0;
     }
   }
 
@@ -1222,17 +1222,17 @@ LABEL_44:
 
 - (id)getComponentId
 {
-  v3 = [(PGSchemaPGClientEvent *)self eventMetadata];
-  v4 = [v3 ifRequestId];
+  eventMetadata = [(PGSchemaPGClientEvent *)self eventMetadata];
+  ifRequestId = [eventMetadata ifRequestId];
 
-  if (v4)
+  if (ifRequestId)
   {
-    v5 = [v4 value];
-    if (v5)
+    value = [ifRequestId value];
+    if (value)
     {
-      v6 = v5;
-      v7 = [v4 value];
-      v8 = [v7 length];
+      v6 = value;
+      value2 = [ifRequestId value];
+      v8 = [value2 length];
 
       if (v8)
       {
@@ -1241,43 +1241,43 @@ LABEL_44:
     }
   }
 
-  v9 = [(PGSchemaPGClientEvent *)self eventMetadata];
-  v10 = [v9 planCycleId];
+  eventMetadata2 = [(PGSchemaPGClientEvent *)self eventMetadata];
+  planCycleId = [eventMetadata2 planCycleId];
 
-  if (v10)
+  if (planCycleId)
   {
-    v11 = [v10 value];
-    if (!v11)
+    value3 = [planCycleId value];
+    if (!value3)
     {
       goto LABEL_10;
     }
 
-    v12 = [v10 value];
-    v13 = [v12 length];
+    value4 = [planCycleId value];
+    v13 = [value4 length];
 
     if (v13)
     {
-      v4 = v10;
+      ifRequestId = planCycleId;
 LABEL_8:
-      v11 = v4;
-      v10 = v11;
+      value3 = ifRequestId;
+      planCycleId = value3;
       goto LABEL_10;
     }
   }
 
-  v11 = 0;
+  value3 = 0;
 LABEL_10:
 
-  return v11;
+  return value3;
 }
 
 - (SISchemaInstrumentationMessage)innerEvent
 {
-  v3 = [(PGSchemaPGClientEvent *)self whichEvent_Type];
+  whichEvent_Type = [(PGSchemaPGClientEvent *)self whichEvent_Type];
   v4 = 0;
-  if (v3 <= 103)
+  if (whichEvent_Type <= 103)
   {
-    switch(v3)
+    switch(whichEvent_Type)
     {
       case 'e':
         v5 = &OBJC_IVAR___PGSchemaPGClientEvent__pgRequestContext;
@@ -1293,16 +1293,16 @@ LABEL_10:
     }
   }
 
-  else if (v3 > 300)
+  else if (whichEvent_Type > 300)
   {
-    if (v3 == 301)
+    if (whichEvent_Type == 301)
     {
       v5 = &OBJC_IVAR___PGSchemaPGClientEvent__pgPrescribedPlanRequestContext;
     }
 
     else
     {
-      if (v3 != 401)
+      if (whichEvent_Type != 401)
       {
         goto LABEL_18;
       }
@@ -1311,14 +1311,14 @@ LABEL_10:
     }
   }
 
-  else if (v3 == 104)
+  else if (whichEvent_Type == 104)
   {
     v5 = &OBJC_IVAR___PGSchemaPGClientEvent__pgModelInferenceContext;
   }
 
   else
   {
-    if (v3 != 201)
+    if (whichEvent_Type != 201)
     {
       goto LABEL_18;
     }
@@ -1332,53 +1332,53 @@ LABEL_18:
   return v4;
 }
 
-+ (id)getInnerTypeStringByTag:(unint64_t)a3
++ (id)getInnerTypeStringByTag:(unint64_t)tag
 {
   v3 = @"pgPrescribedPlanRequestContext";
   v4 = @"pgGeneratePlanContext";
-  if (a3 != 401)
+  if (tag != 401)
   {
     v4 = 0;
   }
 
-  if (a3 != 301)
+  if (tag != 301)
   {
     v3 = v4;
   }
 
   v5 = @"pgOverridesRequestContext";
-  if (a3 != 201)
+  if (tag != 201)
   {
     v5 = 0;
   }
 
-  if (a3 == 104)
+  if (tag == 104)
   {
     v5 = @"pgModelInferenceContext";
   }
 
-  if (a3 <= 300)
+  if (tag <= 300)
   {
     v3 = v5;
   }
 
   v6 = @"pgPromptResponseTier1";
-  if (a3 != 103)
+  if (tag != 103)
   {
     v6 = 0;
   }
 
-  if (a3 == 102)
+  if (tag == 102)
   {
     v6 = @"pgPromptTier1";
   }
 
-  if (a3 == 101)
+  if (tag == 101)
   {
     v6 = @"pgRequestContext";
   }
 
-  if (a3 <= 103)
+  if (tag <= 103)
   {
     return v6;
   }

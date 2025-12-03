@@ -1,8 +1,8 @@
 @interface CHSRemoteDeviceService
 - (CHSRemoteDeviceService)init;
-- (CHSRemoteDeviceService)initWithConnection:(id)a3;
-- (id)browseNearbyDevicesWithHandler:(id)a3 error:(id *)a4;
-- (void)nearbyDevicesDidChange:(id)a3;
+- (CHSRemoteDeviceService)initWithConnection:(id)connection;
+- (id)browseNearbyDevicesWithHandler:(id)handler error:(id *)error;
+- (void)nearbyDevicesDidChange:(id)change;
 @end
 
 @implementation CHSRemoteDeviceService
@@ -15,9 +15,9 @@
   return v4;
 }
 
-- (CHSRemoteDeviceService)initWithConnection:(id)a3
+- (CHSRemoteDeviceService)initWithConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v11.receiver = self;
   v11.super_class = CHSRemoteDeviceService;
   v6 = [(CHSRemoteDeviceService *)&v11 init];
@@ -29,17 +29,17 @@
     lock_monitors = v7->_lock_monitors;
     v7->_lock_monitors = v8;
 
-    objc_storeStrong(&v7->_connection, a3);
+    objc_storeStrong(&v7->_connection, connection);
     [(CHSChronoServicesConnection *)v7->_connection addClient:v7];
   }
 
   return v7;
 }
 
-- (id)browseNearbyDevicesWithHandler:(id)a3 error:(id *)a4
+- (id)browseNearbyDevicesWithHandler:(id)handler error:(id *)error
 {
   v41 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  handlerCopy = handler;
   v33 = 0;
   v34 = &v33;
   v35 = 0x3032000000;
@@ -52,10 +52,10 @@
   v9 = v32;
   v10 = v31;
   v38 = v8;
-  if (a4)
+  if (error)
   {
     v11 = v9;
-    *a4 = v9;
+    *error = v9;
   }
 
   if (v9)
@@ -74,30 +74,30 @@
 
   else
   {
-    v14 = [MEMORY[0x1E696AFB0] UUID];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
     v28[0] = MEMORY[0x1E69E9820];
     v28[1] = 3221225472;
     v28[2] = __63__CHSRemoteDeviceService_browseNearbyDevicesWithHandler_error___block_invoke;
     v28[3] = &unk_1E74546F0;
     v28[4] = self;
-    v30 = v6;
-    v15 = v14;
+    v30 = handlerCopy;
+    v15 = uUID;
     v29 = v15;
     os_unfair_lock_assert_not_owner(&self->_lock);
     os_unfair_lock_lock(&self->_lock);
     __63__CHSRemoteDeviceService_browseNearbyDevicesWithHandler_error___block_invoke(v28);
     os_unfair_lock_unlock(&self->_lock);
     v16 = objc_alloc(MEMORY[0x1E698E778]);
-    v17 = [v15 UUIDString];
+    uUIDString = [v15 UUIDString];
     v21 = MEMORY[0x1E69E9820];
     v22 = 3221225472;
     v23 = __63__CHSRemoteDeviceService_browseNearbyDevicesWithHandler_error___block_invoke_2;
     v24 = &unk_1E7454718;
     v27 = &v33;
-    v25 = self;
+    selfCopy = self;
     v18 = v15;
     v26 = v18;
-    v13 = [v16 initWithIdentifier:v17 forReason:@"monitor devices" invalidationBlock:&v21];
+    v13 = [v16 initWithIdentifier:uUIDString forReason:@"monitor devices" invalidationBlock:&v21];
 
     if ([v10 count])
     {
@@ -137,16 +137,16 @@ void __63__CHSRemoteDeviceService_browseNearbyDevicesWithHandler_error___block_i
   os_unfair_lock_unlock(v2 + 2);
 }
 
-- (void)nearbyDevicesDidChange:(id)a3
+- (void)nearbyDevicesDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __49__CHSRemoteDeviceService_nearbyDevicesDidChange___block_invoke;
   v6[3] = &unk_1E7453000;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = changeCopy;
+  v5 = changeCopy;
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
   __49__CHSRemoteDeviceService_nearbyDevicesDidChange___block_invoke(v6);

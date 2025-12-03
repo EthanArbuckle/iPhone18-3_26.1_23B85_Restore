@@ -2,9 +2,9 @@
 + (id)localizedAppName;
 + (id)localizedComplicationName;
 - (id)currentSwitcherTemplate;
-- (void)fetchWidgetMigrationForDescriptor:(id)a3 completion:(id)a4;
-- (void)getCurrentTimelineEntryWithHandler:(id)a3;
-- (void)getLaunchURLForTimelineEntryDate:(id)a3 timeTravelDate:(id)a4 withHandler:(id)a5;
+- (void)fetchWidgetMigrationForDescriptor:(id)descriptor completion:(id)completion;
+- (void)getCurrentTimelineEntryWithHandler:(id)handler;
+- (void)getLaunchURLForTimelineEntryDate:(id)date timeTravelDate:(id)travelDate withHandler:(id)handler;
 @end
 
 @implementation NearbyTransitComplicationDataSource
@@ -27,49 +27,49 @@
 
 - (id)currentSwitcherTemplate
 {
-  v3 = [(NearbyTransitComplicationDataSource *)self family];
-  v4 = [(NearbyTransitComplicationDataSource *)self device];
-  v5 = [NearbyTransitComplicationFormatter formattedTemplateWithFamily:v3 forDevice:v4];
+  family = [(NearbyTransitComplicationDataSource *)self family];
+  device = [(NearbyTransitComplicationDataSource *)self device];
+  v5 = [NearbyTransitComplicationFormatter formattedTemplateWithFamily:family forDevice:device];
 
   return v5;
 }
 
-- (void)getCurrentTimelineEntryWithHandler:(id)a3
+- (void)getCurrentTimelineEntryWithHandler:(id)handler
 {
-  if (a3)
+  if (handler)
   {
-    v4 = a3;
-    v5 = [(NearbyTransitComplicationDataSource *)self family];
-    v6 = [(NearbyTransitComplicationDataSource *)self device];
-    v9 = [NearbyTransitComplicationFormatter formattedTemplateWithFamily:v5 forDevice:v6];
+    handlerCopy = handler;
+    family = [(NearbyTransitComplicationDataSource *)self family];
+    device = [(NearbyTransitComplicationDataSource *)self device];
+    v9 = [NearbyTransitComplicationFormatter formattedTemplateWithFamily:family forDevice:device];
 
     v7 = +[NSDate date];
     v8 = [CLKComplicationTimelineEntry entryWithDate:v7 complicationTemplate:v9];
 
-    v4[2](v4, v8);
+    handlerCopy[2](handlerCopy, v8);
   }
 }
 
-- (void)getLaunchURLForTimelineEntryDate:(id)a3 timeTravelDate:(id)a4 withHandler:(id)a5
+- (void)getLaunchURLForTimelineEntryDate:(id)date timeTravelDate:(id)travelDate withHandler:(id)handler
 {
-  if (a5)
+  if (handler)
   {
-    v5 = a5;
+    handlerCopy = handler;
     v6 = [NSString stringWithFormat:@"NearbyTransit://"];
     v7 = [NSURL URLWithString:v6];
 
-    v5[2](v5, v7);
+    handlerCopy[2](handlerCopy, v7);
   }
 }
 
-- (void)fetchWidgetMigrationForDescriptor:(id)a3 completion:(id)a4
+- (void)fetchWidgetMigrationForDescriptor:(id)descriptor completion:(id)completion
 {
-  v4 = a4;
+  completionCopy = completion;
   v5 = [CLKWidgetComplicationDescriptor alloc];
-  v6 = [objc_opt_class() appIdentifier];
-  v7 = [v5 initWithExtensionBundleIdentifier:@"com.apple.NanoMaps.NanoMapsWidgetKitComplications" containerBundleIdentifier:v6 kind:@"NearByTransitComplication" intent:0];
+  appIdentifier = [objc_opt_class() appIdentifier];
+  v7 = [v5 initWithExtensionBundleIdentifier:@"com.apple.NanoMaps.NanoMapsWidgetKitComplications" containerBundleIdentifier:appIdentifier kind:@"NearByTransitComplication" intent:0];
 
-  v4[2](v4, v7);
+  completionCopy[2](completionCopy, v7);
 }
 
 @end

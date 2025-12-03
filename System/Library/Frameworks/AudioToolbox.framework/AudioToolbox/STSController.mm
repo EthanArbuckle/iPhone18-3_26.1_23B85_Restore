@@ -1,15 +1,15 @@
 @interface STSController
-- (BOOL)_updateGlobalState:(const STSGlobalState *)a3 didChange:(BOOL *)a4 error:(id *)a5;
-- (BOOL)signalChangeWithError:(id *)a3;
-- (BOOL)updateGlobalState:(STSGlobalState *)a3 didChange:(BOOL *)a4 error:(id *)a5;
-- (BOOL)updateGlobalState:(const STSGlobalState *)a3 labelStates:(const void *)a4 additionalLabelInfo:(id)a5 error:(id *)a6;
-- (BOOL)updateLabel:(__CFString *)a3 state:(STSPerLabelState *)a4 didChange:(BOOL *)a5 error:(id *)a6;
-- (BOOL)updateLabel:(__CFString *)a3 state:(const STSPerLabelState *)a4 didChange:(BOOL *)a5 additionalInfo:(id)a6 error:(id *)a7;
-- (STSController)initWithSTSObject:(OpaqueFigSTS *)a3 error:(id *)a4;
-- (__hash_map_iterator<std::__hash_iterator<std::__hash_node<std::__hash_value_type<std::string,)ensureResourcesAllocatedForLabel:(__CFString *)a3 error:(id *)a4;
+- (BOOL)_updateGlobalState:(const STSGlobalState *)state didChange:(BOOL *)change error:(id *)error;
+- (BOOL)signalChangeWithError:(id *)error;
+- (BOOL)updateGlobalState:(STSGlobalState *)state didChange:(BOOL *)change error:(id *)error;
+- (BOOL)updateGlobalState:(const STSGlobalState *)state labelStates:(const void *)states additionalLabelInfo:(id)info error:(id *)error;
+- (BOOL)updateLabel:(__CFString *)label state:(STSPerLabelState *)state didChange:(BOOL *)change error:(id *)error;
+- (BOOL)updateLabel:(__CFString *)label state:(const STSPerLabelState *)state didChange:(BOOL *)change additionalInfo:(id)info error:(id *)error;
+- (STSController)initWithSTSObject:(OpaqueFigSTS *)object error:(id *)error;
+- (__hash_map_iterator<std::__hash_iterator<std::__hash_node<std::__hash_value_type<std::string,)ensureResourcesAllocatedForLabel:(__CFString *)label error:(id *)error;
 - (id).cxx_construct;
 - (void)cleanupAllLabels;
-- (void)cleanupLabel:(__CFString *)a3;
+- (void)cleanupLabel:(__CFString *)label;
 - (void)dealloc;
 @end
 
@@ -28,12 +28,12 @@
   return self;
 }
 
-- (BOOL)_updateGlobalState:(const STSGlobalState *)a3 didChange:(BOOL *)a4 error:(id *)a5
+- (BOOL)_updateGlobalState:(const STSGlobalState *)state didChange:(BOOL *)change error:(id *)error
 {
   v30 = *MEMORY[0x1E69E9840];
-  if (memcmp(&self->_globalState, a3, 0x50uLL))
+  if (memcmp(&self->_globalState, state, 0x50uLL))
   {
-    *a4 = 1;
+    *change = 1;
     v8 = self->_globalGeneration + 1;
     do
     {
@@ -43,12 +43,12 @@
 
     while (!v9);
     self->_globalGeneration = v9;
-    v10 = *&a3->hostTime;
-    *&v29[24] = *&a3[2].hostTime;
-    v11 = *&a3[6].hostTime;
-    *&v29[40] = *&a3[4].hostTime;
+    v10 = *&state->hostTime;
+    *&v29[24] = *&state[2].hostTime;
+    v11 = *&state[6].hostTime;
+    *&v29[40] = *&state[4].hostTime;
     *&v29[56] = v11;
-    *&v29[72] = *&a3[8].hostTime;
+    *&v29[72] = *&state[8].hostTime;
     *&v29[8] = v10;
     sharedStorage = self->_sharedStorage;
     v28 = 0;
@@ -116,11 +116,11 @@
     }
 
     sharedStorage[1] = v13 + 1;
-    *&self->_globalState.hostTime = *&a3->hostTime;
-    v23 = *&a3[2].hostTime;
-    v24 = *&a3[4].hostTime;
-    v25 = *&a3[8].hostTime;
-    *&self->_anon_78[40] = *&a3[6].hostTime;
+    *&self->_globalState.hostTime = *&state->hostTime;
+    v23 = *&state[2].hostTime;
+    v24 = *&state[4].hostTime;
+    v25 = *&state[8].hostTime;
+    *&self->_anon_78[40] = *&state[6].hostTime;
     *&self->_anon_78[56] = v25;
     *&self->_anon_78[8] = v23;
     *&self->_anon_78[24] = v24;
@@ -130,14 +130,14 @@
   return 1;
 }
 
-- (BOOL)updateLabel:(__CFString *)a3 state:(const STSPerLabelState *)a4 didChange:(BOOL *)a5 additionalInfo:(id)a6 error:(id *)a7
+- (BOOL)updateLabel:(__CFString *)label state:(const STSPerLabelState *)state didChange:(BOOL *)change additionalInfo:(id)info error:(id *)error
 {
   v33[1] = *MEMORY[0x1E69E9840];
-  v12 = a6;
-  v13.var0.var0 = [(STSController *)self ensureResourcesAllocatedForLabel:a3 error:a7];
+  infoCopy = info;
+  v13.var0.var0 = [(STSController *)self ensureResourcesAllocatedForLabel:label error:error];
   if (v13.var0.var0)
   {
-    v14 = [v12 objectForKey:@"STSAdditionalLabelInfoKey_DeferToSystemTuning"];
+    v14 = [infoCopy objectForKey:@"STSAdditionalLabelInfoKey_DeferToSystemTuning"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -148,14 +148,14 @@
     {
       if (v14)
       {
-        if (a7)
+        if (error)
         {
           v32 = *MEMORY[0x1E696A578];
           v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Error: Incorrect type provided for STSAdditionalLabelInfoKey_DeferToSystemTuning - expecting NSNumber, got %@", v14];
           v33[0] = v17;
           v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v33 forKeys:&v32 count:1];
 
-          *a7 = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.STS-N" code:1396926817 userInfo:v18];
+          *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.STS-N" code:1396926817 userInfo:v18];
         }
 
         v16 = 0;
@@ -165,10 +165,10 @@
       v15 = 0;
     }
 
-    if (memcmp(v13.var0.var0 + 64, a4, 0x50uLL) || *(v13.var0.var0 + 144) != v15)
+    if (memcmp(v13.var0.var0 + 64, state, 0x50uLL) || *(v13.var0.var0 + 144) != v15)
     {
       v19 = v13.var0.var0 + 16;
-      *a5 = 1;
+      *change = 1;
       v20 = *(v13.var0.var0 + 7) + 1;
       do
       {
@@ -185,22 +185,22 @@
 
       strcpy(__src + 8, v19);
       *&__src[0] = v21;
-      v22 = *&a4[4].var1;
-      __src[14] = *&a4[2].var3;
+      v22 = *&state[4].var1;
+      __src[14] = *&state[2].var3;
       __src[15] = v22;
-      __src[16] = *&a4[5].var2;
-      v23 = *&a4[1].var2;
-      __src[12] = *&a4->var1;
+      __src[16] = *&state[5].var2;
+      v23 = *&state[1].var2;
+      __src[12] = *&state->var1;
       __src[13] = v23;
       LOBYTE(__src[17]) = v15;
       v24 = (self->_sharedStorage + 928 * *(v13.var0.var0 + 6));
       memcpy(__dst, __src, sizeof(__dst));
       caulk::concurrent::multi_buffer<STSPerLabelStorage,3>::write(v24 + 92, __dst);
-      *(v13.var0.var0 + 4) = *&a4->var1;
-      v25 = *&a4[1].var2;
-      v26 = *&a4[2].var3;
-      v27 = *&a4[5].var2;
-      *(v13.var0.var0 + 7) = *&a4[4].var1;
+      *(v13.var0.var0 + 4) = *&state->var1;
+      v25 = *&state[1].var2;
+      v26 = *&state[2].var3;
+      v27 = *&state[5].var2;
+      *(v13.var0.var0 + 7) = *&state[4].var1;
       *(v13.var0.var0 + 8) = v27;
       *(v13.var0.var0 + 5) = v25;
       *(v13.var0.var0 + 6) = v26;
@@ -220,11 +220,11 @@ LABEL_19:
   return v16;
 }
 
-- (__hash_map_iterator<std::__hash_iterator<std::__hash_node<std::__hash_value_type<std::string,)ensureResourcesAllocatedForLabel:(__CFString *)a3 error:(id *)a4
+- (__hash_map_iterator<std::__hash_iterator<std::__hash_node<std::__hash_value_type<std::string,)ensureResourcesAllocatedForLabel:(__CFString *)label error:(id *)error
 {
   v50[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  std::string::basic_string[abi:ne200100]<0>(&__p, -[__CFString UTF8String](a3, "UTF8String"));
+  labelCopy = label;
+  std::string::basic_string[abi:ne200100]<0>(&__p, -[__CFString UTF8String](label, "UTF8String"));
   v8 = HIBYTE(__p.__r_.__value_.__r.__words[2]);
   size = __p.__r_.__value_.__l.__size_;
   v10 = +[STSController maxLabelLength];
@@ -240,14 +240,14 @@ LABEL_19:
 
   if (v11 > v10)
   {
-    if (a4)
+    if (error)
     {
       v49 = *MEMORY[0x1E696A578];
-      v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Error: label %@ is too long - please keep under %u characters", a3, 180];
+      v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Error: label %@ is too long - please keep under %u characters", label, 180];
       v50[0] = v12;
       v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v50 forKeys:&v49 count:1];
 
-      *a4 = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.STS-N" code:1396924774 userInfo:v13];
+      *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.STS-N" code:1396924774 userInfo:v13];
     }
 
 LABEL_7:
@@ -264,14 +264,14 @@ LABEL_7:
   v17 = self->_availableIndicesWithinSharedStorage.c.__size_;
   if (!v17)
   {
-    if (a4)
+    if (error)
     {
       v47 = *MEMORY[0x1E696A578];
-      v25 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Error: no resources available for new label %@", a3];
-      v48 = v25;
+      label = [MEMORY[0x1E696AEC0] stringWithFormat:@"Error: no resources available for new label %@", label];
+      v48 = label;
       v26 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v48 forKeys:&v47 count:1];
 
-      *a4 = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.STS-N" code:1396924774 userInfo:v26];
+      *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.STS-N" code:1396924774 userInfo:v26];
     }
 
     goto LABEL_7;
@@ -409,16 +409,16 @@ LABEL_9:
   return v14;
 }
 
-- (BOOL)updateGlobalState:(const STSGlobalState *)a3 labelStates:(const void *)a4 additionalLabelInfo:(id)a5 error:(id *)a6
+- (BOOL)updateGlobalState:(const STSGlobalState *)state labelStates:(const void *)states additionalLabelInfo:(id)info error:(id *)error
 {
-  v10 = a5;
-  if (a6)
+  infoCopy = info;
+  if (error)
   {
-    *a6 = 0;
+    *error = 0;
   }
 
-  v11 = a4 + 16;
-  v12 = a4 + 16;
+  v11 = states + 16;
+  v12 = states + 16;
   while (1)
   {
     v12 = *v12;
@@ -427,7 +427,7 @@ LABEL_9:
       break;
     }
 
-    if ([(STSController *)self ensureResourcesAllocatedForLabel:v12[2] error:a6]== 0)
+    if ([(STSController *)self ensureResourcesAllocatedForLabel:v12[2] error:error]== 0)
     {
       v13 = 0;
       goto LABEL_15;
@@ -435,7 +435,7 @@ LABEL_9:
   }
 
   v17 = 0;
-  if (a3 && ![(STSController *)self _updateGlobalState:a3 didChange:&v17 error:a6])
+  if (state && ![(STSController *)self _updateGlobalState:state didChange:&v17 error:error])
   {
 LABEL_11:
     v13 = 0;
@@ -452,8 +452,8 @@ LABEL_11:
         break;
       }
 
-      v14 = [v10 objectForKey:v11[2]];
-      v15 = [(STSController *)self updateLabel:v11[2] state:v11 + 4 didChange:&v17 additionalInfo:v14 error:a6];
+      v14 = [infoCopy objectForKey:v11[2]];
+      v15 = [(STSController *)self updateLabel:v11[2] state:v11 + 4 didChange:&v17 additionalInfo:v14 error:error];
 
       if (!v15)
       {
@@ -464,7 +464,7 @@ LABEL_11:
 
   if ((v17 & 1) != 0 || self->_allowAutomaticHeadTracking)
   {
-    v13 = [(STSController *)self signalChangeWithError:a6];
+    v13 = [(STSController *)self signalChangeWithError:error];
   }
 
 LABEL_15:
@@ -576,11 +576,11 @@ LABEL_17:
   std::__hash_table<std::__hash_value_type<std::string,STSPerLabelControllerState>,std::__unordered_map_hasher<std::string,std::__hash_value_type<std::string,STSPerLabelControllerState>,std::hash<std::string>,std::equal_to<std::string>,true>,std::__unordered_map_equal<std::string,std::__hash_value_type<std::string,STSPerLabelControllerState>,std::equal_to<std::string>,std::hash<std::string>,true>,std::allocator<std::__hash_value_type<std::string,STSPerLabelControllerState>>>::~__hash_table(&v17);
 }
 
-- (void)cleanupLabel:(__CFString *)a3
+- (void)cleanupLabel:(__CFString *)label
 {
   v36 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  std::string::basic_string[abi:ne200100]<0>(__p, -[__CFString UTF8String](a3, "UTF8String"));
+  labelCopy = label;
+  std::string::basic_string[abi:ne200100]<0>(__p, -[__CFString UTF8String](label, "UTF8String"));
   v6 = std::__hash_table<std::__hash_value_type<std::string,STSPerLabelControllerState>,std::__unordered_map_hasher<std::string,std::__hash_value_type<std::string,STSPerLabelControllerState>,std::hash<std::string>,std::equal_to<std::string>,true>,std::__unordered_map_equal<std::string,std::__hash_value_type<std::string,STSPerLabelControllerState>,std::equal_to<std::string>,std::hash<std::string>,true>,std::allocator<std::__hash_value_type<std::string,STSPerLabelControllerState>>>::find<std::string>(&self->_perLabelState.__table_.__bucket_list_.__ptr_, __p);
   if (v6)
   {
@@ -725,7 +725,7 @@ LABEL_26:
     if (!v26 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      *&buf[4] = a3;
+      *&buf[4] = label;
       v33 = 2112;
       v34 = v27;
       _os_log_error_impl(&dword_1B9A08000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "failed to signal cleanup of label %@: %@", buf, 0x16u);
@@ -740,22 +740,22 @@ LABEL_26:
   v28 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)updateGlobalState:(STSGlobalState *)a3 didChange:(BOOL *)a4 error:(id *)a5
+- (BOOL)updateGlobalState:(STSGlobalState *)state didChange:(BOOL *)change error:(id *)error
 {
-  if (a5)
+  if (error)
   {
-    *a5 = 0;
+    *error = 0;
   }
 
   v11 = 0;
-  v8 = [(STSController *)self _updateGlobalState:a3 didChange:&v11 error:a5];
+  v8 = [(STSController *)self _updateGlobalState:state didChange:&v11 error:error];
   LOBYTE(v9) = 0;
   if (v8)
   {
     if (v11 || self->_allowAutomaticHeadTracking)
     {
-      v9 = [(STSController *)self signalChangeWithError:a5];
-      if (!a4)
+      v9 = [(STSController *)self signalChangeWithError:error];
+      if (!change)
       {
         return v9;
       }
@@ -764,7 +764,7 @@ LABEL_26:
     else
     {
       v9 = 1;
-      if (!a4)
+      if (!change)
       {
         return v9;
       }
@@ -772,7 +772,7 @@ LABEL_26:
 
     if (v9)
     {
-      *a4 = v11;
+      *change = v11;
       LOBYTE(v9) = 1;
     }
   }
@@ -780,22 +780,22 @@ LABEL_26:
   return v9;
 }
 
-- (BOOL)updateLabel:(__CFString *)a3 state:(STSPerLabelState *)a4 didChange:(BOOL *)a5 error:(id *)a6
+- (BOOL)updateLabel:(__CFString *)label state:(STSPerLabelState *)state didChange:(BOOL *)change error:(id *)error
 {
-  if (a6)
+  if (error)
   {
-    *a6 = 0;
+    *error = 0;
   }
 
   v12 = 0;
-  v9 = [(STSController *)self updateLabel:a3 state:a4 didChange:&v12 additionalInfo:0 error:a6];
+  v9 = [(STSController *)self updateLabel:label state:state didChange:&v12 additionalInfo:0 error:error];
   LOBYTE(v10) = 0;
   if (v9)
   {
     if (v12)
     {
-      v10 = [(STSController *)self signalChangeWithError:a6];
-      if (!a5)
+      v10 = [(STSController *)self signalChangeWithError:error];
+      if (!change)
       {
         return v10;
       }
@@ -804,7 +804,7 @@ LABEL_26:
     else
     {
       v10 = 1;
-      if (!a5)
+      if (!change)
       {
         return v10;
       }
@@ -812,7 +812,7 @@ LABEL_26:
 
     if (v10)
     {
-      *a5 = v12;
+      *change = v12;
       LOBYTE(v10) = 1;
     }
   }
@@ -820,18 +820,18 @@ LABEL_26:
   return v10;
 }
 
-- (BOOL)signalChangeWithError:(id *)a3
+- (BOOL)signalChangeWithError:(id *)error
 {
   v11[1] = *MEMORY[0x1E69E9840];
   v4 = caulk::mach::semaphore::signal_or_error(&self->_controlSemaphore);
-  if (a3 && (v4 & 0x100000000) == 0)
+  if (error && (v4 & 0x100000000) == 0)
   {
     v10 = *MEMORY[0x1E696A578];
     v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Error: failed to signal change"];
     v11[0] = v5;
     v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:&v10 count:1];
 
-    *a3 = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.STS-N" code:1396929899 userInfo:v6];
+    *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.STS-N" code:1396929899 userInfo:v6];
   }
 
   v7 = *MEMORY[0x1E69E9840];
@@ -858,14 +858,14 @@ LABEL_26:
   [(STSController *)&v5 dealloc];
 }
 
-- (STSController)initWithSTSObject:(OpaqueFigSTS *)a3 error:(id *)a4
+- (STSController)initWithSTSObject:(OpaqueFigSTS *)object error:(id *)error
 {
-  p_isa = a4;
+  p_isa = error;
   v50[1] = *MEMORY[0x1E69E9840];
-  if (a4)
+  if (error)
   {
-    *a4 = 0;
-    if (!a3)
+    *error = 0;
+    if (!object)
     {
       v49 = *MEMORY[0x1E696A578];
       v50[0] = @"Error: NULL FigSTSRef";
@@ -873,12 +873,12 @@ LABEL_26:
       *p_isa = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.STS-N" code:1396926817 userInfo:v8];
 
 LABEL_21:
-      v15 = 0;
+      selfCopy = 0;
       goto LABEL_22;
     }
   }
 
-  else if (!a3)
+  else if (!object)
   {
     goto LABEL_21;
   }
@@ -903,15 +903,15 @@ LABEL_21:
   _Block_object_dispose(&v35, 8);
   if (!v9)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v25 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"const CMBaseVTable *softLink_CMBaseObjectGetVTable(CMBaseObjectRef)"];
-    [v14 handleFailureInFunction:v25 file:@"STSController.mm" lineNumber:27 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v25 file:@"STSController.mm" lineNumber:27 description:{@"%s", dlerror()}];
 
     __break(1u);
     goto LABEL_46;
   }
 
-  v10 = *(*(v9(a3) + 16) + 40);
+  v10 = *(*(v9(object) + 16) + 40);
   if (!v10)
   {
     v11 = 4294954514;
@@ -921,11 +921,11 @@ LABEL_21:
     }
 
 LABEL_19:
-    v15 = 0;
+    selfCopy = 0;
     goto LABEL_20;
   }
 
-  v11 = v10(a3, @"SharedStorage", &xdict);
+  v11 = v10(object, @"SharedStorage", &xdict);
   if (v11)
   {
     v12 = 1;
@@ -945,7 +945,7 @@ LABEL_19:
     }
 
     v18 = xpc_dictionary_get_value(xdict, "sharedstorage");
-    v14 = v18;
+    currentHandler = v18;
     if (!v18 || MEMORY[0x1BFAE5890](v18) != MEMORY[0x1E69E9F08])
     {
       if (p_isa)
@@ -962,14 +962,14 @@ LABEL_19:
     }
 
     region[0] = 0;
-    v4 = xpc_shmem_map(v14, region);
+    v4 = xpc_shmem_map(currentHandler, region);
     v21 = region[0];
     if (!region[0])
     {
       if (!p_isa)
       {
 LABEL_27:
-        v15 = 0;
+        selfCopy = 0;
         goto LABEL_17;
       }
 
@@ -979,7 +979,7 @@ LABEL_27:
       v25 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v44 forKeys:&v43 count:1];
 
       [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.STS-N" code:1396924774 userInfo:v25];
-      *p_isa = v15 = 0;
+      *p_isa = selfCopy = 0;
 LABEL_48:
 
       goto LABEL_17;
@@ -990,8 +990,8 @@ LABEL_48:
       if (p_isa)
       {
         v41 = *MEMORY[0x1E696A578];
-        v22 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Error: STS shared memory region of size %lu isn't large enough (requires %lu)", v4, 59760];
-        v42 = v22;
+        59760 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Error: STS shared memory region of size %lu isn't large enough (requires %lu)", v4, 59760];
+        v42 = 59760;
         v23 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v42 forKeys:&v41 count:1];
 
         *p_isa = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.STS-N" code:1396924774 userInfo:v23];
@@ -1018,7 +1018,7 @@ LABEL_48:
       }
 
       munmap(region[0], v4);
-      v15 = 0;
+      selfCopy = 0;
       goto LABEL_48;
     }
 
@@ -1030,7 +1030,7 @@ LABEL_48:
     if (v29)
     {
       v29->_shmemSize = v4;
-      v29->_sts = CFRetain(a3);
+      v29->_sts = CFRetain(object);
       p_isa[25] = region[0];
       caulk::mach::semaphore::semaphore(&v35);
       caulk::mach::semaphore::operator=();
@@ -1057,7 +1057,7 @@ LABEL_46:
     munmap(region[0], v4);
 LABEL_47:
     self = p_isa;
-    v15 = self;
+    selfCopy = self;
     goto LABEL_48;
   }
 
@@ -1071,17 +1071,17 @@ LABEL_16:
   v47 = *MEMORY[0x1E696A578];
   v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Error: Failed to copy STS shared memory configuration: %d", v11];
   v48 = v13;
-  v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v48 forKeys:&v47 count:1];
+  currentHandler = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v48 forKeys:&v47 count:1];
 
-  [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.STS-N" code:1396924774 userInfo:v14];
-  *p_isa = v15 = 0;
+  [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.STS-N" code:1396924774 userInfo:currentHandler];
+  *p_isa = selfCopy = 0;
 LABEL_17:
 
 LABEL_20:
 LABEL_22:
 
   v16 = *MEMORY[0x1E69E9840];
-  return v15;
+  return selfCopy;
 }
 
 @end

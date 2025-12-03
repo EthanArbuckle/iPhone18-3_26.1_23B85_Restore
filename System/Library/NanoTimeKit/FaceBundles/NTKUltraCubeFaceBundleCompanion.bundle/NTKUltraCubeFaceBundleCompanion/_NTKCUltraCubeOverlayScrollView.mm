@@ -1,15 +1,15 @@
 @interface _NTKCUltraCubeOverlayScrollView
-- (_NTKCUltraCubeOverlayScrollView)initWithCoder:(id)a3;
-- (_NTKCUltraCubeOverlayScrollView)initWithFrame:(CGRect)a3;
+- (_NTKCUltraCubeOverlayScrollView)initWithCoder:(id)coder;
+- (_NTKCUltraCubeOverlayScrollView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation _NTKCUltraCubeOverlayScrollView
 
-- (_NTKCUltraCubeOverlayScrollView)initWithFrame:(CGRect)a3
+- (_NTKCUltraCubeOverlayScrollView)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = _NTKCUltraCubeOverlayScrollView;
-  v3 = [(_NTKCUltraCubeOverlayScrollView *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(_NTKCUltraCubeOverlayScrollView *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -27,11 +27,11 @@
   return v4;
 }
 
-- (_NTKCUltraCubeOverlayScrollView)initWithCoder:(id)a3
+- (_NTKCUltraCubeOverlayScrollView)initWithCoder:(id)coder
 {
   v9.receiver = self;
   v9.super_class = _NTKCUltraCubeOverlayScrollView;
-  v3 = [(_NTKCUltraCubeOverlayScrollView *)&v9 initWithCoder:a3];
+  v3 = [(_NTKCUltraCubeOverlayScrollView *)&v9 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {

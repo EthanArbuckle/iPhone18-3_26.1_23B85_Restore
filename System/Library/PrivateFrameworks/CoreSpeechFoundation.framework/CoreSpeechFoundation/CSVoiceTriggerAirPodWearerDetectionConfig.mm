@@ -1,23 +1,23 @@
 @interface CSVoiceTriggerAirPodWearerDetectionConfig
-- (CSVoiceTriggerAirPodWearerDetectionConfig)initWithThreshold:(float)a3 minimumPhraseLength:(float)a4 shadowMicScoreThreshold:(float)a5 myriadThreshold:(float)a6 phrasesToSkipBoronDecisionMaking:(id)a7;
+- (CSVoiceTriggerAirPodWearerDetectionConfig)initWithThreshold:(float)threshold minimumPhraseLength:(float)length shadowMicScoreThreshold:(float)scoreThreshold myriadThreshold:(float)myriadThreshold phrasesToSkipBoronDecisionMaking:(id)making;
 @end
 
 @implementation CSVoiceTriggerAirPodWearerDetectionConfig
 
-- (CSVoiceTriggerAirPodWearerDetectionConfig)initWithThreshold:(float)a3 minimumPhraseLength:(float)a4 shadowMicScoreThreshold:(float)a5 myriadThreshold:(float)a6 phrasesToSkipBoronDecisionMaking:(id)a7
+- (CSVoiceTriggerAirPodWearerDetectionConfig)initWithThreshold:(float)threshold minimumPhraseLength:(float)length shadowMicScoreThreshold:(float)scoreThreshold myriadThreshold:(float)myriadThreshold phrasesToSkipBoronDecisionMaking:(id)making
 {
-  v13 = a7;
+  makingCopy = making;
   v17.receiver = self;
   v17.super_class = CSVoiceTriggerAirPodWearerDetectionConfig;
   v14 = [(CSVoiceTriggerAirPodWearerDetectionConfig *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    v14->_threshold = a3;
-    v14->_minimumPhraseLength = a4;
-    v14->_shadowMicScoreThreshold = a5;
-    v14->_myriadThreshold = a6;
-    objc_storeStrong(&v14->_phrasesToSkipBoronDecisionMaking, a7);
+    v14->_threshold = threshold;
+    v14->_minimumPhraseLength = length;
+    v14->_shadowMicScoreThreshold = scoreThreshold;
+    v14->_myriadThreshold = myriadThreshold;
+    objc_storeStrong(&v14->_phrasesToSkipBoronDecisionMaking, making);
   }
 
   return v15;

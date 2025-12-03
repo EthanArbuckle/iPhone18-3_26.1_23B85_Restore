@@ -1,9 +1,9 @@
 @interface BMGameControllerEvent
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
-- (BMGameControllerEvent)initWithIsControllerConnected:(BOOL)a3 numberOfControllersConnected:(unint64_t)a4;
-- (BMGameControllerEvent)initWithProto:(id)a3;
-- (BMGameControllerEvent)initWithProtoData:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
+- (BMGameControllerEvent)initWithIsControllerConnected:(BOOL)connected numberOfControllersConnected:(unint64_t)controllersConnected;
+- (BMGameControllerEvent)initWithProto:(id)proto;
+- (BMGameControllerEvent)initWithProtoData:(id)data;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (id)encodeAsProto;
 - (id)proto;
@@ -12,15 +12,15 @@
 
 @implementation BMGameControllerEvent
 
-- (BMGameControllerEvent)initWithIsControllerConnected:(BOOL)a3 numberOfControllersConnected:(unint64_t)a4
+- (BMGameControllerEvent)initWithIsControllerConnected:(BOOL)connected numberOfControllersConnected:(unint64_t)controllersConnected
 {
   v7.receiver = self;
   v7.super_class = BMGameControllerEvent;
   result = [(BMEventBase *)&v7 init];
   if (result)
   {
-    result->_isControllerConnected = a3;
-    result->_numberOfControllersConnected = a4;
+    result->_isControllerConnected = connected;
+    result->_numberOfControllersConnected = controllersConnected;
   }
 
   return result;
@@ -36,29 +36,29 @@
   return v6;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  v5 = a3;
-  v6 = [[a1 alloc] initWithProtoData:v5];
+  dataCopy = data;
+  v6 = [[self alloc] initWithProtoData:dataCopy];
 
   return v6;
 }
 
 - (id)encodeAsProto
 {
-  v2 = [(BMGameControllerEvent *)self proto];
-  v3 = [v2 data];
+  proto = [(BMGameControllerEvent *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
-- (BMGameControllerEvent)initWithProto:(id)a3
+- (BMGameControllerEvent)initWithProto:(id)proto
 {
-  v4 = a3;
-  if (!v4)
+  protoCopy = proto;
+  if (!protoCopy)
   {
 LABEL_7:
-    v8 = 0;
+    selfCopy = 0;
     goto LABEL_8;
   }
 
@@ -74,34 +74,34 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v5 = v4;
-  v6 = [v5 isControllerConnected];
-  v7 = [v5 numberOfControllersConnected];
+  v5 = protoCopy;
+  isControllerConnected = [v5 isControllerConnected];
+  numberOfControllersConnected = [v5 numberOfControllersConnected];
 
-  self = [(BMGameControllerEvent *)self initWithIsControllerConnected:v6 numberOfControllersConnected:v7];
-  v8 = self;
+  self = [(BMGameControllerEvent *)self initWithIsControllerConnected:isControllerConnected numberOfControllersConnected:numberOfControllersConnected];
+  selfCopy = self;
 LABEL_8:
 
-  return v8;
+  return selfCopy;
 }
 
-- (BMGameControllerEvent)initWithProtoData:(id)a3
+- (BMGameControllerEvent)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[BMPBGameControllerEvent alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[BMPBGameControllerEvent alloc] initWithData:dataCopy];
 
     self = [(BMGameControllerEvent *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)proto
@@ -123,13 +123,13 @@ LABEL_8:
   return v6 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     isControllerConnected = self->_isControllerConnected;
     if (isControllerConnected == [v5 isControllerConnected])
     {

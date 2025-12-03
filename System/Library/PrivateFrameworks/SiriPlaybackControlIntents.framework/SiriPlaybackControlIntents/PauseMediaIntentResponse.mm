@@ -1,12 +1,12 @@
 @interface PauseMediaIntentResponse
-- (PauseMediaIntentResponse)initWithPropertiesByName:(id)a3;
+- (PauseMediaIntentResponse)initWithPropertiesByName:(id)name;
 @end
 
 @implementation PauseMediaIntentResponse
 
-- (PauseMediaIntentResponse)initWithPropertiesByName:(id)a3
+- (PauseMediaIntentResponse)initWithPropertiesByName:(id)name
 {
-  if (a3)
+  if (name)
   {
     v3 = sub_268B37B64();
   }

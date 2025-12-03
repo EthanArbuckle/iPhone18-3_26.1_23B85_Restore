@@ -1,15 +1,15 @@
 @interface _TVRUIAppInfoUnhideItemsCell
-- (_TVRUIAppInfoUnhideItemsCell)initWithFrame:(CGRect)a3;
+- (_TVRUIAppInfoUnhideItemsCell)initWithFrame:(CGRect)frame;
 - (void)_configureHierarchy;
 @end
 
 @implementation _TVRUIAppInfoUnhideItemsCell
 
-- (_TVRUIAppInfoUnhideItemsCell)initWithFrame:(CGRect)a3
+- (_TVRUIAppInfoUnhideItemsCell)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = _TVRUIAppInfoUnhideItemsCell;
-  v3 = [(_TVRUIAppInfoUnhideItemsCell *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(_TVRUIAppInfoUnhideItemsCell *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -32,36 +32,36 @@
   [v3 setText:v6];
 
   [v3 setTextAlignment:1];
-  v7 = [(_TVRUIAppInfoUnhideItemsCell *)self contentView];
-  [v7 addSubview:v3];
+  contentView = [(_TVRUIAppInfoUnhideItemsCell *)self contentView];
+  [contentView addSubview:v3];
   v20 = MEMORY[0x277CCAAD0];
-  v25 = [v3 leadingAnchor];
-  v24 = [v7 leadingAnchor];
-  v23 = [v25 constraintEqualToAnchor:v24];
+  leadingAnchor = [v3 leadingAnchor];
+  leadingAnchor2 = [contentView leadingAnchor];
+  v23 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v26[0] = v23;
-  v22 = [v3 trailingAnchor];
-  v21 = [v7 trailingAnchor];
-  v8 = [v22 constraintEqualToAnchor:v21];
+  trailingAnchor = [v3 trailingAnchor];
+  trailingAnchor2 = [contentView trailingAnchor];
+  v8 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v26[1] = v8;
-  v9 = [v3 topAnchor];
-  v10 = [v7 topAnchor];
-  v11 = [v9 constraintEqualToAnchor:v10];
+  topAnchor = [v3 topAnchor];
+  topAnchor2 = [contentView topAnchor];
+  v11 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v26[2] = v11;
-  v12 = [v3 bottomAnchor];
-  v13 = [v7 bottomAnchor];
-  v14 = [v12 constraintEqualToAnchor:v13];
+  bottomAnchor = [v3 bottomAnchor];
+  bottomAnchor2 = [contentView bottomAnchor];
+  v14 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v26[3] = v14;
   v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v26 count:4];
   [v20 activateConstraints:v15];
 
-  [v7 _setContinuousCornerRadius:12.0];
+  [contentView _setContinuousCornerRadius:12.0];
   v16 = [MEMORY[0x277D75348] colorWithWhite:0.3 alpha:1.0];
-  v17 = [v16 CGColor];
-  v18 = [v7 layer];
-  [v18 setBorderColor:v17];
+  cGColor = [v16 CGColor];
+  layer = [contentView layer];
+  [layer setBorderColor:cGColor];
 
-  v19 = [v7 layer];
-  [v19 setBorderWidth:1.0];
+  layer2 = [contentView layer];
+  [layer2 setBorderWidth:1.0];
 }
 
 @end

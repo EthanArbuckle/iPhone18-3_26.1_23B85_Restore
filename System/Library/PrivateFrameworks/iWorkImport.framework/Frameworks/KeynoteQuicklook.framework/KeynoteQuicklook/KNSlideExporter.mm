@@ -1,11 +1,11 @@
 @interface KNSlideExporter
 - (BOOL)incrementPage;
 - (CGRect)boundsRect;
-- (CGRect)monoSlideRectFromScaledClipRect:(CGRect)a3 outScaledClipRect:(CGRect *)a4;
-- (id)slideNodesForPrintHelper:(id)a3;
+- (CGRect)monoSlideRectFromScaledClipRect:(CGRect)rect outScaledClipRect:(CGRect *)clipRect;
+- (id)slideNodesForPrintHelper:(id)helper;
 - (unint64_t)pageCount;
 - (void)p_preparePrintHelperIfNeeded;
-- (void)setCurrentSlideNode:(id)a3;
+- (void)setCurrentSlideNode:(id)node;
 - (void)setup;
 @end
 
@@ -58,21 +58,21 @@
   }
 }
 
-- (CGRect)monoSlideRectFromScaledClipRect:(CGRect)a3 outScaledClipRect:(CGRect *)a4
+- (CGRect)monoSlideRectFromScaledClipRect:(CGRect)rect outScaledClipRect:(CGRect *)clipRect
 {
-  v5 = objc_msgSend_show(*(&self->super.super.super.isa + *MEMORY[0x277D7FFD8]), a2, a4);
+  v5 = objc_msgSend_show(*(&self->super.super.super.isa + *MEMORY[0x277D7FFD8]), a2, clipRect);
   objc_msgSend_size(v5, v6, v7);
   TSUFitOrFillSizeInRect();
   v12 = v8;
   v13 = v9;
   v14 = v10;
   v15 = v11;
-  if (a4)
+  if (clipRect)
   {
-    a4->origin.x = v8;
-    a4->origin.y = v9;
-    a4->size.width = v10;
-    a4->size.height = v11;
+    clipRect->origin.x = v8;
+    clipRect->origin.y = v9;
+    clipRect->size.width = v10;
+    clipRect->size.height = v11;
   }
 
   v16 = v12;
@@ -114,19 +114,19 @@
   return result;
 }
 
-- (void)setCurrentSlideNode:(id)a3
+- (void)setCurrentSlideNode:(id)node
 {
-  v4 = a3;
+  nodeCopy = node;
   v6.receiver = self;
   v6.super_class = KNSlideExporter;
-  [(KNRenderingExporter *)&v6 setCurrentSlideNode:v4];
+  [(KNRenderingExporter *)&v6 setCurrentSlideNode:nodeCopy];
   self->super._currentBuildIndex = 0;
-  objc_msgSend_setCurrentSlideNode_(self->_helper, v5, v4);
+  objc_msgSend_setCurrentSlideNode_(self->_helper, v5, nodeCopy);
 }
 
-- (id)slideNodesForPrintHelper:(id)a3
+- (id)slideNodesForPrintHelper:(id)helper
 {
-  v3 = objc_msgSend_slidesForPrinting(self, a2, a3);
+  v3 = objc_msgSend_slidesForPrinting(self, a2, helper);
 
   return v3;
 }

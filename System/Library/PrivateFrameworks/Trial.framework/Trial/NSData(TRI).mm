@@ -11,31 +11,31 @@
 - (id)triSha256
 {
   v2 = [objc_alloc(MEMORY[0x277CBEB28]) initWithLength:32];
-  v3 = [a1 bytes];
-  v4 = [a1 length];
-  v5 = [v2 mutableBytes];
-  if (!v5)
+  bytes = [self bytes];
+  v4 = [self length];
+  mutableBytes = [v2 mutableBytes];
+  if (!mutableBytes)
   {
     v7 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE728] reason:@"malloc failed" userInfo:0];
     objc_exception_throw(v7);
   }
 
-  CC_SHA256(v3, v4, v5);
+  CC_SHA256(bytes, v4, mutableBytes);
 
   return v2;
 }
 
 - (id)triSha256Base64String
 {
-  v1 = [a1 triSha256];
-  v2 = [v1 base64EncodedStringWithOptions:0];
+  triSha256 = [self triSha256];
+  v2 = [triSha256 base64EncodedStringWithOptions:0];
 
   return v2;
 }
 
 - (id)triHexlify
 {
-  v4 = [a1 length];
+  v4 = [self length];
   v5 = 2 * v4;
   v6 = malloc_type_malloc(2 * v4, 0x1997DC19uLL);
   if (!v6)
@@ -45,13 +45,13 @@
   }
 
   v7 = v6;
-  v8 = [a1 bytes];
+  bytes = [self bytes];
   if (v4)
   {
     v9 = v7 + 1;
     do
     {
-      v11 = *v8++;
+      v11 = *bytes++;
       v10 = v11;
       v12 = v11 & 0xF;
       v13 = (v11 >> 4) | 0x30;
@@ -80,8 +80,8 @@
   v17 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytesNoCopy:v7 length:v5 encoding:1 freeWhenDone:1];
   if (!v17)
   {
-    v19 = [MEMORY[0x277CCA890] currentHandler];
-    [v19 handleFailureInMethod:a2 object:a1 file:@"NSData+TRI.m" lineNumber:54 description:{@"Invalid parameter not satisfying: %@", @"result"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"NSData+TRI.m" lineNumber:54 description:{@"Invalid parameter not satisfying: %@", @"result"}];
   }
 
   return v17;
@@ -120,14 +120,14 @@ LABEL_17:
 
   v8 = v7;
   v9 = [objc_alloc(MEMORY[0x277CBEB28]) initWithLength:0x10000];
-  v10 = [v9 mutableBytes];
-  if (!v10)
+  mutableBytes = [v9 mutableBytes];
+  if (!mutableBytes)
   {
     v39 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE728] reason:@"malloc failed" userInfo:0];
     objc_exception_throw(v39);
   }
 
-  v11 = v10;
+  v11 = mutableBytes;
   while (1)
   {
     v12 = read(v8, v11, [v9 length]);

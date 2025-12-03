@@ -1,6 +1,6 @@
 @interface UARPMetaDataTLV32
 - (UARPMetaDataTLV32)init;
-- (id)tlvValue:(unsigned int)a3;
+- (id)tlvValue:(unsigned int)value;
 @end
 
 @implementation UARPMetaDataTLV32
@@ -12,9 +12,9 @@
   return [(UARPMetaDataTLV *)&v3 init];
 }
 
-- (id)tlvValue:(unsigned int)a3
+- (id)tlvValue:(unsigned int)value
 {
-  v5 = uarpHtonl(a3);
+  v5 = uarpHtonl(value);
   v3 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBytes:&v5 length:4];
 
   return v3;

@@ -1,13 +1,13 @@
 @interface AMUIPosterPhotosAppearanceTransitionCoordinator
-- (void)setPosterViewController:(id)a3 progress:(double)a4;
+- (void)setPosterViewController:(id)controller progress:(double)progress;
 @end
 
 @implementation AMUIPosterPhotosAppearanceTransitionCoordinator
 
-- (void)setPosterViewController:(id)a3 progress:(double)a4
+- (void)setPosterViewController:(id)controller progress:(double)progress
 {
-  v5 = [a3 _posterViewController];
-  [v5 setOpacity:2 forLayers:a4];
+  _posterViewController = [controller _posterViewController];
+  [_posterViewController setOpacity:2 forLayers:progress];
 }
 
 @end

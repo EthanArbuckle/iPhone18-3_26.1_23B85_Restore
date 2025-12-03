@@ -20,8 +20,8 @@
   v12.size.width = width;
   v12.size.height = height;
   v8 = fmin(v7, CGRectGetHeight(v12)) * 0.5;
-  v9 = [(CircularCornerView *)self layer];
-  [v9 setCornerRadius:v8];
+  layer = [(CircularCornerView *)self layer];
+  [layer setCornerRadius:v8];
 }
 
 @end

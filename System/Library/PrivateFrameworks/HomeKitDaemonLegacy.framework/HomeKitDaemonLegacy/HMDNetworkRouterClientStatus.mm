@@ -1,12 +1,12 @@
 @interface HMDNetworkRouterClientStatus
-+ (id)parsedFromData:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)parseFromData:(id)a3 error:(id *)a4;
++ (id)parsedFromData:(id)data error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)parseFromData:(id)data error:(id *)error;
 - (HMDNetworkRouterClientStatus)init;
-- (HMDNetworkRouterClientStatus)initWithClientIdentifier:(id)a3 macAddress:(id)a4 ipAddressList:(id)a5 lanIdentifier:(id)a6 name:(id)a7 rssi:(id)a8;
+- (HMDNetworkRouterClientStatus)initWithClientIdentifier:(id)identifier macAddress:(id)address ipAddressList:(id)list lanIdentifier:(id)lanIdentifier name:(id)name rssi:(id)rssi;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializeWithError:(id *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializeWithError:(id *)error;
 @end
 
 @implementation HMDNetworkRouterClientStatus
@@ -14,21 +14,21 @@
 - (NSString)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HMDNetworkRouterClientStatus *)self clientIdentifier];
-  v5 = [(HMDNetworkRouterClientStatus *)self macAddress];
-  v6 = [(HMDNetworkRouterClientStatus *)self ipAddressList];
-  v7 = [(HMDNetworkRouterClientStatus *)self lanIdentifier];
-  v8 = [(HMDNetworkRouterClientStatus *)self name];
-  v9 = [(HMDNetworkRouterClientStatus *)self rssi];
-  v10 = [v3 stringWithFormat:@"<HMDNetworkRouterClientStatus clientIdentifier=%@, macAddress=%@, ipAddressList=%@, lanIdentifier=%@, name=%@, rssi=%@>", v4, v5, v6, v7, v8, v9];
+  clientIdentifier = [(HMDNetworkRouterClientStatus *)self clientIdentifier];
+  macAddress = [(HMDNetworkRouterClientStatus *)self macAddress];
+  ipAddressList = [(HMDNetworkRouterClientStatus *)self ipAddressList];
+  lanIdentifier = [(HMDNetworkRouterClientStatus *)self lanIdentifier];
+  name = [(HMDNetworkRouterClientStatus *)self name];
+  rssi = [(HMDNetworkRouterClientStatus *)self rssi];
+  v10 = [v3 stringWithFormat:@"<HMDNetworkRouterClientStatus clientIdentifier=%@, macAddress=%@, ipAddressList=%@, lanIdentifier=%@, name=%@, rssi=%@>", clientIdentifier, macAddress, ipAddressList, lanIdentifier, name, rssi];
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -38,34 +38,34 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
-      v7 = [(HMDNetworkRouterClientStatus *)self clientIdentifier];
-      v8 = [(HMDNetworkRouterClientStatus *)v6 clientIdentifier];
-      if (v7 != v8)
+      v6 = equalCopy;
+      clientIdentifier = [(HMDNetworkRouterClientStatus *)self clientIdentifier];
+      clientIdentifier2 = [(HMDNetworkRouterClientStatus *)v6 clientIdentifier];
+      if (clientIdentifier != clientIdentifier2)
       {
-        v9 = [(HMDNetworkRouterClientStatus *)self clientIdentifier];
-        v55 = [(HMDNetworkRouterClientStatus *)v6 clientIdentifier];
-        v56 = v9;
-        if (![v9 isEqual:?])
+        clientIdentifier3 = [(HMDNetworkRouterClientStatus *)self clientIdentifier];
+        clientIdentifier4 = [(HMDNetworkRouterClientStatus *)v6 clientIdentifier];
+        v56 = clientIdentifier3;
+        if (![clientIdentifier3 isEqual:?])
         {
           v10 = 0;
           goto LABEL_37;
         }
       }
 
-      v11 = [(HMDNetworkRouterClientStatus *)self macAddress];
-      v12 = [(HMDNetworkRouterClientStatus *)v6 macAddress];
-      if (v11 != v12)
+      macAddress = [(HMDNetworkRouterClientStatus *)self macAddress];
+      macAddress2 = [(HMDNetworkRouterClientStatus *)v6 macAddress];
+      if (macAddress != macAddress2)
       {
-        v3 = [(HMDNetworkRouterClientStatus *)self macAddress];
-        v53 = [(HMDNetworkRouterClientStatus *)v6 macAddress];
-        if (![v3 isEqual:?])
+        macAddress3 = [(HMDNetworkRouterClientStatus *)self macAddress];
+        macAddress4 = [(HMDNetworkRouterClientStatus *)v6 macAddress];
+        if (![macAddress3 isEqual:?])
         {
           v10 = 0;
 LABEL_35:
 
 LABEL_36:
-          if (v7 == v8)
+          if (clientIdentifier == clientIdentifier2)
           {
 LABEL_38:
 
@@ -78,22 +78,22 @@ LABEL_37:
         }
       }
 
-      v13 = [(HMDNetworkRouterClientStatus *)self ipAddressList];
-      v14 = [(HMDNetworkRouterClientStatus *)v6 ipAddressList];
-      v54 = v13;
-      v15 = v13 == v14;
-      v16 = v14;
+      ipAddressList = [(HMDNetworkRouterClientStatus *)self ipAddressList];
+      ipAddressList2 = [(HMDNetworkRouterClientStatus *)v6 ipAddressList];
+      v54 = ipAddressList;
+      v15 = ipAddressList == ipAddressList2;
+      v16 = ipAddressList2;
       if (v15)
       {
-        v51 = v14;
+        v51 = ipAddressList2;
       }
 
       else
       {
-        v17 = [(HMDNetworkRouterClientStatus *)self ipAddressList];
-        v47 = [(HMDNetworkRouterClientStatus *)v6 ipAddressList];
-        v48 = v17;
-        if (![v17 isEqual:?])
+        ipAddressList3 = [(HMDNetworkRouterClientStatus *)self ipAddressList];
+        ipAddressList4 = [(HMDNetworkRouterClientStatus *)v6 ipAddressList];
+        v48 = ipAddressList3;
+        if (![ipAddressList3 isEqual:?])
         {
           v10 = 0;
           v24 = v16;
@@ -101,7 +101,7 @@ LABEL_37:
 LABEL_33:
 
 LABEL_34:
-          if (v11 == v12)
+          if (macAddress == macAddress2)
           {
             goto LABEL_36;
           }
@@ -112,18 +112,18 @@ LABEL_34:
         v51 = v16;
       }
 
-      v18 = [(HMDNetworkRouterClientStatus *)self lanIdentifier];
-      v19 = [(HMDNetworkRouterClientStatus *)v6 lanIdentifier];
-      v49 = v18;
-      v50 = v3;
-      v15 = v18 == v19;
-      v20 = v19;
+      lanIdentifier = [(HMDNetworkRouterClientStatus *)self lanIdentifier];
+      lanIdentifier2 = [(HMDNetworkRouterClientStatus *)v6 lanIdentifier];
+      v49 = lanIdentifier;
+      v50 = macAddress3;
+      v15 = lanIdentifier == lanIdentifier2;
+      v20 = lanIdentifier2;
       if (!v15)
       {
-        v21 = [(HMDNetworkRouterClientStatus *)self lanIdentifier];
-        v41 = [(HMDNetworkRouterClientStatus *)v6 lanIdentifier];
-        v42 = v21;
-        if (![v21 isEqual:?])
+        lanIdentifier3 = [(HMDNetworkRouterClientStatus *)self lanIdentifier];
+        lanIdentifier4 = [(HMDNetworkRouterClientStatus *)v6 lanIdentifier];
+        v42 = lanIdentifier3;
+        if (![lanIdentifier3 isEqual:?])
         {
           v22 = v51;
           v10 = 0;
@@ -134,7 +134,7 @@ LABEL_32:
           v25 = v54;
           v24 = v22;
           v15 = v54 == v22;
-          v3 = v50;
+          macAddress3 = v50;
           if (v15)
           {
             goto LABEL_34;
@@ -144,39 +144,39 @@ LABEL_32:
         }
       }
 
-      v26 = [(HMDNetworkRouterClientStatus *)self name];
-      v44 = [(HMDNetworkRouterClientStatus *)v6 name];
-      v45 = v26;
+      name = [(HMDNetworkRouterClientStatus *)self name];
+      name2 = [(HMDNetworkRouterClientStatus *)v6 name];
+      v45 = name;
       v46 = v20;
-      v43 = v12;
-      if (v26 == v44)
+      v43 = macAddress2;
+      if (name == name2)
       {
-        v40 = v11;
+        v40 = macAddress;
         v29 = v51;
       }
 
       else
       {
-        v27 = [(HMDNetworkRouterClientStatus *)self name];
-        v38 = [(HMDNetworkRouterClientStatus *)v6 name];
-        v39 = v27;
-        v28 = [v27 isEqual:?];
+        name3 = [(HMDNetworkRouterClientStatus *)self name];
+        name4 = [(HMDNetworkRouterClientStatus *)v6 name];
+        v39 = name3;
+        v28 = [name3 isEqual:?];
         v29 = v51;
         if (!v28)
         {
           v10 = 0;
-          v36 = v44;
+          v36 = name2;
           v35 = v45;
           goto LABEL_28;
         }
 
-        v40 = v11;
+        v40 = macAddress;
       }
 
-      v30 = [(HMDNetworkRouterClientStatus *)self rssi];
-      v31 = [(HMDNetworkRouterClientStatus *)v6 rssi];
-      v32 = v31;
-      if (v30 == v31)
+      rssi = [(HMDNetworkRouterClientStatus *)self rssi];
+      rssi2 = [(HMDNetworkRouterClientStatus *)v6 rssi];
+      v32 = rssi2;
+      if (rssi == rssi2)
       {
 
         v10 = 1;
@@ -186,23 +186,23 @@ LABEL_32:
       {
         [(HMDNetworkRouterClientStatus *)self rssi];
         v33 = v52 = v29;
-        v34 = [(HMDNetworkRouterClientStatus *)v6 rssi];
-        v10 = [v33 isEqual:v34];
+        rssi3 = [(HMDNetworkRouterClientStatus *)v6 rssi];
+        v10 = [v33 isEqual:rssi3];
 
         v29 = v52;
       }
 
-      v36 = v44;
+      v36 = name2;
       v35 = v45;
-      v11 = v40;
-      if (v45 == v44)
+      macAddress = v40;
+      if (v45 == name2)
       {
         v22 = v29;
 LABEL_30:
 
         v23 = v49;
         v20 = v46;
-        v12 = v43;
+        macAddress2 = v43;
         if (v49 == v46)
         {
           goto LABEL_32;
@@ -225,21 +225,21 @@ LABEL_39:
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [HMDNetworkRouterClientStatus allocWithZone:a3];
-  v5 = [(HMDNetworkRouterClientStatus *)self clientIdentifier];
-  v6 = [(HMDNetworkRouterClientStatus *)self macAddress];
-  v7 = [(HMDNetworkRouterClientStatus *)self ipAddressList];
-  v8 = [(HMDNetworkRouterClientStatus *)self lanIdentifier];
-  v9 = [(HMDNetworkRouterClientStatus *)self name];
-  v10 = [(HMDNetworkRouterClientStatus *)self rssi];
-  v11 = [(HMDNetworkRouterClientStatus *)v4 initWithClientIdentifier:v5 macAddress:v6 ipAddressList:v7 lanIdentifier:v8 name:v9 rssi:v10];
+  v4 = [HMDNetworkRouterClientStatus allocWithZone:zone];
+  clientIdentifier = [(HMDNetworkRouterClientStatus *)self clientIdentifier];
+  macAddress = [(HMDNetworkRouterClientStatus *)self macAddress];
+  ipAddressList = [(HMDNetworkRouterClientStatus *)self ipAddressList];
+  lanIdentifier = [(HMDNetworkRouterClientStatus *)self lanIdentifier];
+  name = [(HMDNetworkRouterClientStatus *)self name];
+  rssi = [(HMDNetworkRouterClientStatus *)self rssi];
+  v11 = [(HMDNetworkRouterClientStatus *)v4 initWithClientIdentifier:clientIdentifier macAddress:macAddress ipAddressList:ipAddressList lanIdentifier:lanIdentifier name:name rssi:rssi];
 
   return v11;
 }
 
-- (id)serializeWithError:(id *)a3
+- (id)serializeWithError:(id *)error
 {
   v51 = *MEMORY[0x277D85DE8];
   v49 = 0u;
@@ -264,13 +264,13 @@ LABEL_39:
   v32 = 0u;
   v30 = 0u;
   TLV8BufferInit();
-  v5 = [(HMDNetworkRouterClientStatus *)self clientIdentifier];
+  clientIdentifier = [(HMDNetworkRouterClientStatus *)self clientIdentifier];
 
-  if (v5)
+  if (clientIdentifier)
   {
-    v6 = [(HMDNetworkRouterClientStatus *)self clientIdentifier];
+    clientIdentifier2 = [(HMDNetworkRouterClientStatus *)self clientIdentifier];
     v29 = 0;
-    v7 = [v6 serializeWithError:&v29];
+    v7 = [clientIdentifier2 serializeWithError:&v29];
     v8 = v29;
 
     if (v8)
@@ -286,13 +286,13 @@ LABEL_39:
     }
   }
 
-  v9 = [(HMDNetworkRouterClientStatus *)self macAddress];
+  macAddress = [(HMDNetworkRouterClientStatus *)self macAddress];
 
-  if (v9)
+  if (macAddress)
   {
-    v10 = [(HMDNetworkRouterClientStatus *)self macAddress];
+    macAddress2 = [(HMDNetworkRouterClientStatus *)self macAddress];
     v28 = 0;
-    v7 = [v10 serializeWithError:&v28];
+    v7 = [macAddress2 serializeWithError:&v28];
     v8 = v28;
 
     if (v8)
@@ -308,13 +308,13 @@ LABEL_39:
     }
   }
 
-  v11 = [(HMDNetworkRouterClientStatus *)self ipAddressList];
+  ipAddressList = [(HMDNetworkRouterClientStatus *)self ipAddressList];
 
-  if (v11)
+  if (ipAddressList)
   {
-    v12 = [(HMDNetworkRouterClientStatus *)self ipAddressList];
+    ipAddressList2 = [(HMDNetworkRouterClientStatus *)self ipAddressList];
     v27 = 0;
-    v7 = [v12 serializeWithError:&v27];
+    v7 = [ipAddressList2 serializeWithError:&v27];
     v8 = v27;
 
     if (v8)
@@ -330,16 +330,16 @@ LABEL_39:
     }
   }
 
-  v13 = [(HMDNetworkRouterClientStatus *)self lanIdentifier];
+  lanIdentifier = [(HMDNetworkRouterClientStatus *)self lanIdentifier];
 
-  if (!v13)
+  if (!lanIdentifier)
   {
     goto LABEL_17;
   }
 
-  v14 = [(HMDNetworkRouterClientStatus *)self lanIdentifier];
+  lanIdentifier2 = [(HMDNetworkRouterClientStatus *)self lanIdentifier];
   v26 = 0;
-  v7 = [v14 serializeWithError:&v26];
+  v7 = [lanIdentifier2 serializeWithError:&v26];
   v8 = v26;
 
   if (v8)
@@ -354,11 +354,11 @@ LABEL_39:
 LABEL_20:
 
 LABEL_21:
-    if (a3)
+    if (error)
     {
       HMErrorFromOSStatus();
       v8 = 0;
-      *a3 = v17 = 0;
+      *error = v17 = 0;
       goto LABEL_30;
     }
 
@@ -369,13 +369,13 @@ LABEL_29:
   }
 
 LABEL_17:
-  v15 = [(HMDNetworkRouterClientStatus *)self name];
+  name = [(HMDNetworkRouterClientStatus *)self name];
 
-  if (v15)
+  if (name)
   {
-    v16 = [(HMDNetworkRouterClientStatus *)self name];
+    name2 = [(HMDNetworkRouterClientStatus *)self name];
     v25 = 0;
-    v7 = [v16 serializeWithError:&v25];
+    v7 = [name2 serializeWithError:&v25];
     v8 = v25;
 
     if (v8)
@@ -391,24 +391,24 @@ LABEL_17:
     }
   }
 
-  v18 = [(HMDNetworkRouterClientStatus *)self rssi];
+  rssi = [(HMDNetworkRouterClientStatus *)self rssi];
 
-  if (v18)
+  if (rssi)
   {
-    v19 = [(HMDNetworkRouterClientStatus *)self rssi];
+    rssi2 = [(HMDNetworkRouterClientStatus *)self rssi];
     v24 = 0;
-    v7 = [v19 serializeWithError:&v24];
+    v7 = [rssi2 serializeWithError:&v24];
     v8 = v24;
 
     if (v8)
     {
 LABEL_27:
 
-      if (a3)
+      if (error)
       {
         v20 = v8;
         v17 = 0;
-        *a3 = v8;
+        *error = v8;
         goto LABEL_30;
       }
 
@@ -435,16 +435,16 @@ LABEL_30:
   return v17;
 }
 
-- (BOOL)parseFromData:(id)a3 error:(id *)a4
+- (BOOL)parseFromData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = v6;
-  if (a4)
+  dataCopy = data;
+  v7 = dataCopy;
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
-  v8 = [v6 bytes];
+  bytes = [dataCopy bytes];
   v9 = [v7 length];
   if (!v9)
   {
@@ -464,7 +464,7 @@ LABEL_30:
   v26 = 0;
   v27 = 0;
   v28 = 0;
-  v12 = v8 + v9;
+  v12 = bytes + v9;
   do
   {
     v41 = 0;
@@ -474,10 +474,10 @@ LABEL_30:
     v37 = 0;
     if (TLV8GetNext() || TLV8GetOrCopyCoalesced())
     {
-      if (a4)
+      if (error)
       {
         HMErrorFromOSStatus();
-        *a4 = v18 = 0;
+        *error = v18 = 0;
         goto LABEL_32;
       }
 
@@ -497,11 +497,11 @@ LABEL_31:
       }
 
 LABEL_26:
-      if (a4)
+      if (error)
       {
         v17 = v10;
         v18 = 0;
-        *a4 = v10;
+        *error = v10;
 LABEL_32:
         v20 = v29;
         v19 = v30;
@@ -610,26 +610,26 @@ LABEL_36:
   return v18;
 }
 
-- (HMDNetworkRouterClientStatus)initWithClientIdentifier:(id)a3 macAddress:(id)a4 ipAddressList:(id)a5 lanIdentifier:(id)a6 name:(id)a7 rssi:(id)a8
+- (HMDNetworkRouterClientStatus)initWithClientIdentifier:(id)identifier macAddress:(id)address ipAddressList:(id)list lanIdentifier:(id)lanIdentifier name:(id)name rssi:(id)rssi
 {
-  v23 = a3;
-  v22 = a4;
-  v21 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  identifierCopy = identifier;
+  addressCopy = address;
+  listCopy = list;
+  lanIdentifierCopy = lanIdentifier;
+  nameCopy = name;
+  rssiCopy = rssi;
   v24.receiver = self;
   v24.super_class = HMDNetworkRouterClientStatus;
   v18 = [(HMDNetworkRouterClientStatus *)&v24 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_clientIdentifier, a3);
-    objc_storeStrong(&v19->_macAddress, a4);
-    objc_storeStrong(&v19->_ipAddressList, a5);
-    objc_storeStrong(&v19->_lanIdentifier, a6);
-    objc_storeStrong(&v19->_name, a7);
-    objc_storeStrong(&v19->_rssi, a8);
+    objc_storeStrong(&v18->_clientIdentifier, identifier);
+    objc_storeStrong(&v19->_macAddress, address);
+    objc_storeStrong(&v19->_ipAddressList, list);
+    objc_storeStrong(&v19->_lanIdentifier, lanIdentifier);
+    objc_storeStrong(&v19->_name, name);
+    objc_storeStrong(&v19->_rssi, rssi);
   }
 
   return v19;
@@ -642,24 +642,24 @@ LABEL_36:
   return [(HMDNetworkRouterClientStatus *)&v3 init];
 }
 
-+ (id)parsedFromData:(id)a3 error:(id *)a4
++ (id)parsedFromData:(id)data error:(id *)error
 {
-  v5 = a3;
+  dataCopy = data;
   v6 = objc_alloc_init(HMDNetworkRouterClientStatus);
   v7 = v6;
   if (v6)
   {
     v11 = 0;
-    [(HMDNetworkRouterClientStatus *)v6 parseFromData:v5 error:&v11];
+    [(HMDNetworkRouterClientStatus *)v6 parseFromData:dataCopy error:&v11];
     v8 = v11;
     if (v8)
     {
 
-      if (a4)
+      if (error)
       {
         v9 = v8;
         v7 = 0;
-        *a4 = v8;
+        *error = v8;
       }
 
       else

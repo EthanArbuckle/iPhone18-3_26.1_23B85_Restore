@@ -1,75 +1,75 @@
 @interface PHChange
-+ (BOOL)isPublicPHObjectChangeClass:(Class)a3;
++ (BOOL)isPublicPHObjectChangeClass:(Class)class;
 + (id)handlerQueue;
-+ (id)mergePersistedChanges:(id)a3;
++ (id)mergePersistedChanges:(id)changes;
 + (id)publicPHObjectChangeClasses;
-+ (void)pl_simulateChangeWithAssetContainerList:(id)a3 photoLibrary:(id)a4 handler:(id)a5;
-- (BOOL)_changedRelationshipsContainChangeForRelationshipNames:(id)a3 objectID:(id)a4;
-- (BOOL)anyUpdatedObjectsWithChangedAttributes:(unint64_t)a3 ofEntity:(id)a4;
-- (BOOL)anyUpdatedObjectsWithChangedRelationships:(unint64_t)a3 ofEntity:(id)a4;
-- (BOOL)assetCloudLocalStateChangedForAsset:(id)a3;
-- (BOOL)assetsOrDayGroupAssetsRelationshipChangedForHighlightWithLocalIdentifier:(id)a3;
-- (BOOL)containsChangesForEntityClass:(Class)a3;
-- (BOOL)containsChangesForEntityWithManagedEntityName:(id)a3;
-- (BOOL)contentOrThumbnailChangedForAsset:(id)a3;
-- (BOOL)contentOrThumbnailChangedForPHAssetOID:(id)a3;
-- (BOOL)customUserAssetsChangedForPHMemoryOID:(id)a3;
-- (BOOL)deferredProcessingNeededChangedForPHAssetOID:(id)a3;
-- (BOOL)faceRelationshipChangedForPersonWithLocalIdentifier:(id)a3;
-- (BOOL)favoriteStateChangedForPHAssetOID:(id)a3;
-- (BOOL)hasRelationshipChangesForLocalIdentifier:(id)a3;
-- (BOOL)hiddenStateChangedForPHAssetOID:(id)a3;
-- (BOOL)highlightGroupRelationshipChangedForHighlightWithLocalIdentifier:(id)a3;
-- (BOOL)intersectsWithDetectionCriteria:(id)a3 managedObjectContext:(id)a4;
-- (BOOL)keyAssetPrivateOrDayGroupKeyAssetPrivateChangedForHighlightWithLocalIdentifier:(id)a3;
-- (BOOL)keyAssetSharedOrDayGroupKeyAssetSharedChangedForHighlightWithLocalIdentifier:(id)a3;
-- (BOOL)keyAssetsChangedForPHAssetCollectionOID:(id)a3;
-- (BOOL)keyFaceChangedForPersonOID:(id)a3;
-- (BOOL)membersOrAssetContainmentForSocialGroupChangedWithLocalIdentifier:(id)a3;
-- (BOOL)momentRelationshipChangedForHighlightWithLocalIdentifier:(id)a3;
-- (BOOL)packedBadgeAttributesChangedForPHAssetOID:(id)a3;
-- (BOOL)personRelationshipChangedForFaceWithLocalIdentifier:(id)a3;
-- (BOOL)trashedStateChangedForObjectID:(id)a3;
-- (BOOL)userCuratedAssetsChangedForPHMemoryOID:(id)a3;
-- (BOOL)userFeedbackRelationshipChangedForObject:(id)a3;
++ (void)pl_simulateChangeWithAssetContainerList:(id)list photoLibrary:(id)library handler:(id)handler;
+- (BOOL)_changedRelationshipsContainChangeForRelationshipNames:(id)names objectID:(id)d;
+- (BOOL)anyUpdatedObjectsWithChangedAttributes:(unint64_t)attributes ofEntity:(id)entity;
+- (BOOL)anyUpdatedObjectsWithChangedRelationships:(unint64_t)relationships ofEntity:(id)entity;
+- (BOOL)assetCloudLocalStateChangedForAsset:(id)asset;
+- (BOOL)assetsOrDayGroupAssetsRelationshipChangedForHighlightWithLocalIdentifier:(id)identifier;
+- (BOOL)containsChangesForEntityClass:(Class)class;
+- (BOOL)containsChangesForEntityWithManagedEntityName:(id)name;
+- (BOOL)contentOrThumbnailChangedForAsset:(id)asset;
+- (BOOL)contentOrThumbnailChangedForPHAssetOID:(id)d;
+- (BOOL)customUserAssetsChangedForPHMemoryOID:(id)d;
+- (BOOL)deferredProcessingNeededChangedForPHAssetOID:(id)d;
+- (BOOL)faceRelationshipChangedForPersonWithLocalIdentifier:(id)identifier;
+- (BOOL)favoriteStateChangedForPHAssetOID:(id)d;
+- (BOOL)hasRelationshipChangesForLocalIdentifier:(id)identifier;
+- (BOOL)hiddenStateChangedForPHAssetOID:(id)d;
+- (BOOL)highlightGroupRelationshipChangedForHighlightWithLocalIdentifier:(id)identifier;
+- (BOOL)intersectsWithDetectionCriteria:(id)criteria managedObjectContext:(id)context;
+- (BOOL)keyAssetPrivateOrDayGroupKeyAssetPrivateChangedForHighlightWithLocalIdentifier:(id)identifier;
+- (BOOL)keyAssetSharedOrDayGroupKeyAssetSharedChangedForHighlightWithLocalIdentifier:(id)identifier;
+- (BOOL)keyAssetsChangedForPHAssetCollectionOID:(id)d;
+- (BOOL)keyFaceChangedForPersonOID:(id)d;
+- (BOOL)membersOrAssetContainmentForSocialGroupChangedWithLocalIdentifier:(id)identifier;
+- (BOOL)momentRelationshipChangedForHighlightWithLocalIdentifier:(id)identifier;
+- (BOOL)packedBadgeAttributesChangedForPHAssetOID:(id)d;
+- (BOOL)personRelationshipChangedForFaceWithLocalIdentifier:(id)identifier;
+- (BOOL)trashedStateChangedForObjectID:(id)d;
+- (BOOL)userCuratedAssetsChangedForPHMemoryOID:(id)d;
+- (BOOL)userFeedbackRelationshipChangedForObject:(id)object;
 - (PHChange)init;
-- (PHChange)initWithChangedIdentifiers:(id)a3 unknownMergeEvent:(BOOL)a4 changeToken:(id)a5 library:(id)a6;
-- (PHChange)initWithInsertedObjectIDs:(id)a3 updatedObjectIDs:(id)a4 deletedObjectIDs:(id)a5 deletedUuidsByObjectId:(id)a6 deletedPrimaryLabelCodesByOID:(id)a7 changedAttributesByOID:(id)a8 changedRelationshipsByOID:(id)a9 unknownMergeEvent:(BOOL)a10 changeToken:(id)a11 fetchOptions:(id)a12 library:(id)a13 managedObjectContext:(id)a14 enumerationContext:(id)a15;
+- (PHChange)initWithChangedIdentifiers:(id)identifiers unknownMergeEvent:(BOOL)event changeToken:(id)token library:(id)library;
+- (PHChange)initWithInsertedObjectIDs:(id)ds updatedObjectIDs:(id)iDs deletedObjectIDs:(id)objectIDs deletedUuidsByObjectId:(id)id deletedPrimaryLabelCodesByOID:(id)d changedAttributesByOID:(id)iD changedRelationshipsByOID:(id)oID unknownMergeEvent:(BOOL)self0 changeToken:(id)self1 fetchOptions:(id)self2 library:(id)self3 managedObjectContext:(id)self4 enumerationContext:(id)self5;
 - (PHFetchResultChangeDetails)changeDetailsForFetchResult:(PHFetchResult *)object;
 - (PHObjectChangeDetails)changeDetailsForObject:(PHObject *)object;
-- (id)_changedLocalIdentifiersForEntityClass:(Class)a3 context:(id)a4;
-- (id)_changedLocalIdentifiersWithPublicChangesForEntityClass:(Class)a3 context:(id)a4;
-- (id)_deletedLocalIdentifiersForEntityClass:(Class)a3 context:(id)a4;
-- (id)_deletedObjectIDsMatchingEntities:(id)a3;
-- (id)_deletedObjectIDsMatchingGraphNodeContainerType:(Class)a3;
-- (id)_entityNamesForEntities:(id)a3;
-- (id)_fetchCombinedPublicResultsMapForEntityClass:(Class)a3 predicate:(id)a4 context:(id)a5;
-- (id)_fetchGraphNodeIDsWithRequiredPrimaryLabelCode:(Class)a3 changedObjectIDs:(id)a4;
-- (id)_fetchUUIDMapForObjectIDs:(id)a3 entityClass:(Class)a4 context:(id)a5;
-- (id)_formatEncodedDictionary:(id)a3 withDecodeBlock:(id)a4;
+- (id)_changedLocalIdentifiersForEntityClass:(Class)class context:(id)context;
+- (id)_changedLocalIdentifiersWithPublicChangesForEntityClass:(Class)class context:(id)context;
+- (id)_deletedLocalIdentifiersForEntityClass:(Class)class context:(id)context;
+- (id)_deletedObjectIDsMatchingEntities:(id)entities;
+- (id)_deletedObjectIDsMatchingGraphNodeContainerType:(Class)type;
+- (id)_entityNamesForEntities:(id)entities;
+- (id)_fetchCombinedPublicResultsMapForEntityClass:(Class)class predicate:(id)predicate context:(id)context;
+- (id)_fetchGraphNodeIDsWithRequiredPrimaryLabelCode:(Class)code changedObjectIDs:(id)ds;
+- (id)_fetchUUIDMapForObjectIDs:(id)ds entityClass:(Class)class context:(id)context;
+- (id)_formatEncodedDictionary:(id)dictionary withDecodeBlock:(id)block;
 - (id)_formatedDeletedUUidsByObjectId;
-- (id)_insertedOrUpdatedObjectIDsMatchingEntities:(id)a3;
-- (id)_pl_prettyDescriptionWithIndent:(int64_t)a3;
-- (id)_predicateForPublicResultsWithEntityClass:(Class)a3 objectIDs:(id)a4;
-- (id)_preloadChangeDetailsWithClearCacheForFetchResults:(id)a3 inManagedObjectContext:(id)a4;
-- (id)_preloadChangeDetailsWithRefetchForFetchResults:(id)a3 inManagedObjectContext:(id)a4;
-- (id)_relationshipNamesForObjectID:(id)a3 entityClass:(Class)a4;
-- (id)_requiredLabelCodeNumberForContainerClass:(Class)a3;
-- (id)_retrieveLockingRestrictedUUIDsForUnresolvedAssetObjectIDsFrom:(id)a3 minusResolved:(id)a4;
-- (id)changedLocalIdentifiersForEntityClass:(Class)a3 context:(id)a4;
-- (id)changedPropertyNamesForLocalIdentifier:(id)a3 entityClass:(Class)a4;
-- (id)changedPropertyNamesForObject:(id)a3;
-- (id)changedPropertyNamesForObjectID:(id)a3 entityClass:(Class)a4;
-- (id)changedRelationshipNamesForLocalIdentifier:(id)a3 entityClass:(Class)a4;
-- (id)changedRelationshipNamesForObject:(id)a3;
+- (id)_insertedOrUpdatedObjectIDsMatchingEntities:(id)entities;
+- (id)_pl_prettyDescriptionWithIndent:(int64_t)indent;
+- (id)_predicateForPublicResultsWithEntityClass:(Class)class objectIDs:(id)ds;
+- (id)_preloadChangeDetailsWithClearCacheForFetchResults:(id)results inManagedObjectContext:(id)context;
+- (id)_preloadChangeDetailsWithRefetchForFetchResults:(id)results inManagedObjectContext:(id)context;
+- (id)_relationshipNamesForObjectID:(id)d entityClass:(Class)class;
+- (id)_requiredLabelCodeNumberForContainerClass:(Class)class;
+- (id)_retrieveLockingRestrictedUUIDsForUnresolvedAssetObjectIDsFrom:(id)from minusResolved:(id)resolved;
+- (id)changedLocalIdentifiersForEntityClass:(Class)class context:(id)context;
+- (id)changedPropertyNamesForLocalIdentifier:(id)identifier entityClass:(Class)class;
+- (id)changedPropertyNamesForObject:(id)object;
+- (id)changedPropertyNamesForObjectID:(id)d entityClass:(Class)class;
+- (id)changedRelationshipNamesForLocalIdentifier:(id)identifier entityClass:(Class)class;
+- (id)changedRelationshipNamesForObject:(id)object;
 - (id)description;
-- (id)retrieveUUIDsForAssetObjectIDs:(id)a3 filterPredicate:(id)a4;
+- (id)retrieveUUIDsForAssetObjectIDs:(id)ds filterPredicate:(id)predicate;
 - (unint64_t)totalChangeCount;
-- (void)_prepareCachedValuesForEntity:(id)a3;
-- (void)_propagatePropertyNamesToSubentityNames:(id)a3 moc:(id)a4;
-- (void)_updateChangeHandlingValuesIfNeeded:(id)a3 seedOidsByFetchResult:(id)a4 context:(id)a5;
-- (void)preloadChangeDetailsForFetchResults:(id)a3 inManagedObjectContext:(id)a4 debugEvent:(id)a5 handler:(id)a6;
-- (void)preloadSimulatedChangeDetailsForManualFetchResults:(id)a3 handler:(id)a4;
+- (void)_prepareCachedValuesForEntity:(id)entity;
+- (void)_propagatePropertyNamesToSubentityNames:(id)names moc:(id)moc;
+- (void)_updateChangeHandlingValuesIfNeeded:(id)needed seedOidsByFetchResult:(id)result context:(id)context;
+- (void)preloadChangeDetailsForFetchResults:(id)results inManagedObjectContext:(id)context debugEvent:(id)event handler:(id)handler;
+- (void)preloadSimulatedChangeDetailsForManualFetchResults:(id)results handler:(id)handler;
 @end
 
 @implementation PHChange
@@ -93,9 +93,9 @@
   v2 = [(PHChange *)&v14 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
     changeHandlingMap = v2->_changeHandlingMap;
-    v2->_changeHandlingMap = v3;
+    v2->_changeHandlingMap = strongToStrongObjectsMapTable;
 
     v5 = objc_opt_new();
     changeDetailsForObjects = v2->_changeDetailsForObjects;
@@ -117,36 +117,36 @@
   return v2;
 }
 
-+ (void)pl_simulateChangeWithAssetContainerList:(id)a3 photoLibrary:(id)a4 handler:(id)a5
++ (void)pl_simulateChangeWithAssetContainerList:(id)list photoLibrary:(id)library handler:(id)handler
 {
-  v7 = a5;
-  v8 = [PHFetchResult pl_fetchResultForAssetContainerList:a3 photoLibrary:a4];
+  handlerCopy = handler;
+  v8 = [PHFetchResult pl_fetchResultForAssetContainerList:list photoLibrary:library];
   v9 = objc_opt_new();
   v10 = [MEMORY[0x1E695DFD8] setWithObject:v8];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __94__PHChange_PHAdoptionUtilities__pl_simulateChangeWithAssetContainerList_photoLibrary_handler___block_invoke;
   v12[3] = &unk_1E75A5878;
-  v13 = v7;
-  v11 = v7;
+  v13 = handlerCopy;
+  v11 = handlerCopy;
   [v9 preloadSimulatedChangeDetailsForManualFetchResults:v10 handler:v12];
 }
 
-- (id)_formatEncodedDictionary:(id)a3 withDecodeBlock:(id)a4
+- (id)_formatEncodedDictionary:(id)dictionary withDecodeBlock:(id)block
 {
-  v5 = a4;
+  blockCopy = block;
   v6 = MEMORY[0x1E695DF90];
-  v7 = a3;
-  v8 = [v6 dictionary];
+  dictionaryCopy = dictionary;
+  dictionary = [v6 dictionary];
   v13 = MEMORY[0x1E69E9820];
   v14 = 3221225472;
   v15 = __53__PHChange__formatEncodedDictionary_withDecodeBlock___block_invoke;
   v16 = &unk_1E75A5DC0;
-  v17 = v8;
-  v18 = v5;
-  v9 = v8;
-  v10 = v5;
-  [v7 enumerateKeysAndObjectsUsingBlock:&v13];
+  v17 = dictionary;
+  v18 = blockCopy;
+  v9 = dictionary;
+  v10 = blockCopy;
+  [dictionaryCopy enumerateKeysAndObjectsUsingBlock:&v13];
 
   v11 = [v9 copy];
 
@@ -171,13 +171,13 @@ void __53__PHChange__formatEncodedDictionary_withDecodeBlock___block_invoke(uint
 
 - (id)_formatedDeletedUUidsByObjectId
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   deletedUuidsByObjectId = self->_deletedUuidsByObjectId;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __43__PHChange__formatedDeletedUUidsByObjectId__block_invoke;
   v7[3] = &unk_1E75A5D98;
-  v5 = v3;
+  v5 = dictionary;
   v8 = v5;
   [(NSDictionary *)deletedUuidsByObjectId enumerateKeysAndObjectsUsingBlock:v7];
 
@@ -191,7 +191,7 @@ void __43__PHChange__formatedDeletedUUidsByObjectId__block_invoke(uint64_t a1, v
   [*(a1 + 32) setObject:v5 forKeyedSubscript:v6];
 }
 
-- (id)_pl_prettyDescriptionWithIndent:(int64_t)a3
+- (id)_pl_prettyDescriptionWithIndent:(int64_t)indent
 {
   v3 = pl_result_with_autoreleasepool();
 
@@ -233,21 +233,21 @@ id __44__PHChange__pl_prettyDescriptionWithIndent___block_invoke(uint64_t a1)
   return v2;
 }
 
-- (id)retrieveUUIDsForAssetObjectIDs:(id)a3 filterPredicate:(id)a4
+- (id)retrieveUUIDsForAssetObjectIDs:(id)ds filterPredicate:(id)predicate
 {
   v36 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E695DF90] dictionary];
-  v9 = [v6 mutableCopy];
+  dsCopy = ds;
+  predicateCopy = predicate;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v9 = [dsCopy mutableCopy];
   if ([(NSDictionary *)self->_deletedUuidsByObjectId count])
   {
-    v27 = v7;
+    v27 = predicateCopy;
     v31 = 0u;
     v32 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v10 = v6;
+    v10 = dsCopy;
     v11 = [v10 countByEnumeratingWithState:&v29 objects:v35 count:16];
     if (v11)
     {
@@ -266,7 +266,7 @@ id __44__PHChange__pl_prettyDescriptionWithIndent___block_invoke(uint64_t a1)
           v16 = [(NSDictionary *)self->_deletedUuidsByObjectId objectForKeyedSubscript:v15, v27];
           if (v16)
           {
-            [v8 setObject:v16 forKeyedSubscript:v15];
+            [dictionary setObject:v16 forKeyedSubscript:v15];
             [v9 removeObject:v15];
           }
         }
@@ -277,7 +277,7 @@ id __44__PHChange__pl_prettyDescriptionWithIndent___block_invoke(uint64_t a1)
       while (v12);
     }
 
-    v7 = v27;
+    predicateCopy = v27;
   }
 
   if ([v9 count])
@@ -285,20 +285,20 @@ id __44__PHChange__pl_prettyDescriptionWithIndent___block_invoke(uint64_t a1)
     library = self->_library;
     if (library)
     {
-      v18 = [(PHPhotoLibrary *)library assetsdClient];
-      v19 = [v18 photoKitClient];
+      assetsdClient = [(PHPhotoLibrary *)library assetsdClient];
+      photoKitClient = [assetsdClient photoKitClient];
 
-      v20 = [(PHPhotoLibrary *)self->_library changeHandlingPhotoLibrary];
-      v21 = [v20 managedObjectContext];
+      changeHandlingPhotoLibrary = [(PHPhotoLibrary *)self->_library changeHandlingPhotoLibrary];
+      managedObjectContext = [changeHandlingPhotoLibrary managedObjectContext];
 
-      v22 = [v9 allObjects];
+      allObjects = [v9 allObjects];
       v28 = 0;
-      v23 = [v19 getUUIDsForAssetObjectIDs:v22 filterPredicate:v7 context:v21 error:&v28];
+      v23 = [photoKitClient getUUIDsForAssetObjectIDs:allObjects filterPredicate:predicateCopy context:managedObjectContext error:&v28];
       v24 = v28;
 
       if (v23)
       {
-        [v8 addEntriesFromDictionary:v23];
+        [dictionary addEntriesFromDictionary:v23];
       }
 
       else
@@ -314,15 +314,15 @@ id __44__PHChange__pl_prettyDescriptionWithIndent___block_invoke(uint64_t a1)
     }
   }
 
-  return v8;
+  return dictionary;
 }
 
-- (id)changedRelationshipNamesForLocalIdentifier:(id)a3 entityClass:(Class)a4
+- (id)changedRelationshipNamesForLocalIdentifier:(id)identifier entityClass:(Class)class
 {
-  v6 = [(NSMutableDictionary *)self->_objectIDsByLocalIdentifier objectForKeyedSubscript:a3];
+  v6 = [(NSMutableDictionary *)self->_objectIDsByLocalIdentifier objectForKeyedSubscript:identifier];
   if (v6)
   {
-    [(PHChange *)self _relationshipNamesForObjectID:v6 entityClass:a4];
+    [(PHChange *)self _relationshipNamesForObjectID:v6 entityClass:class];
   }
 
   else
@@ -334,41 +334,41 @@ id __44__PHChange__pl_prettyDescriptionWithIndent___block_invoke(uint64_t a1)
   return v7;
 }
 
-- (id)changedRelationshipNamesForObject:(id)a3
+- (id)changedRelationshipNamesForObject:(id)object
 {
-  v4 = a3;
-  v5 = [v4 objectID];
+  objectCopy = object;
+  objectID = [objectCopy objectID];
   v6 = objc_opt_class();
 
-  v7 = [(PHChange *)self _relationshipNamesForObjectID:v5 entityClass:v6];
+  v7 = [(PHChange *)self _relationshipNamesForObjectID:objectID entityClass:v6];
 
   return v7;
 }
 
-- (id)_relationshipNamesForObjectID:(id)a3 entityClass:(Class)a4
+- (id)_relationshipNamesForObjectID:(id)d entityClass:(Class)class
 {
-  v6 = a3;
-  v7 = [(objc_class *)a4 managedEntityName];
-  v8 = [(NSDictionary *)self->_changedRelationshipsByOID objectForKeyedSubscript:v6];
+  dCopy = d;
+  managedEntityName = [(objc_class *)class managedEntityName];
+  v8 = [(NSDictionary *)self->_changedRelationshipsByOID objectForKeyedSubscript:dCopy];
 
-  v9 = [MEMORY[0x1E69BE6F8] relationshipNamesForIndexValues:objc_msgSend(v8 entity:{"unsignedLongLongValue"), v7}];
+  v9 = [MEMORY[0x1E69BE6F8] relationshipNamesForIndexValues:objc_msgSend(v8 entity:{"unsignedLongLongValue"), managedEntityName}];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __54__PHChange__relationshipNamesForObjectID_entityClass___block_invoke;
   v13[3] = &__block_descriptor_40_e28___NSString_16__0__NSString_8lu32l8;
-  v13[4] = a4;
+  v13[4] = class;
   v10 = [v9 _pl_map:v13];
   v11 = [MEMORY[0x1E695DFD8] setWithArray:v10];
 
   return v11;
 }
 
-- (id)changedPropertyNamesForLocalIdentifier:(id)a3 entityClass:(Class)a4
+- (id)changedPropertyNamesForLocalIdentifier:(id)identifier entityClass:(Class)class
 {
-  v6 = [(NSMutableDictionary *)self->_objectIDsByLocalIdentifier objectForKeyedSubscript:a3];
+  v6 = [(NSMutableDictionary *)self->_objectIDsByLocalIdentifier objectForKeyedSubscript:identifier];
   if (v6)
   {
-    [(PHChange *)self changedPropertyNamesForObjectID:v6 entityClass:a4];
+    [(PHChange *)self changedPropertyNamesForObjectID:v6 entityClass:class];
   }
 
   else
@@ -380,51 +380,51 @@ id __44__PHChange__pl_prettyDescriptionWithIndent___block_invoke(uint64_t a1)
   return v7;
 }
 
-- (id)changedPropertyNamesForObject:(id)a3
+- (id)changedPropertyNamesForObject:(id)object
 {
-  v4 = a3;
-  v5 = [v4 objectID];
+  objectCopy = object;
+  objectID = [objectCopy objectID];
   v6 = objc_opt_class();
 
-  v7 = [(PHChange *)self changedPropertyNamesForObjectID:v5 entityClass:v6];
+  v7 = [(PHChange *)self changedPropertyNamesForObjectID:objectID entityClass:v6];
 
   return v7;
 }
 
-- (id)changedPropertyNamesForObjectID:(id)a3 entityClass:(Class)a4
+- (id)changedPropertyNamesForObjectID:(id)d entityClass:(Class)class
 {
-  v6 = a3;
-  v7 = [(objc_class *)a4 managedEntityName];
-  v8 = [(NSDictionary *)self->_changedAttributesByOID objectForKeyedSubscript:v6];
+  dCopy = d;
+  managedEntityName = [(objc_class *)class managedEntityName];
+  v8 = [(NSDictionary *)self->_changedAttributesByOID objectForKeyedSubscript:dCopy];
 
-  v9 = [MEMORY[0x1E69BE6F8] attributeNamesForIndexValues:objc_msgSend(v8 entity:{"unsignedLongLongValue"), v7}];
+  v9 = [MEMORY[0x1E69BE6F8] attributeNamesForIndexValues:objc_msgSend(v8 entity:{"unsignedLongLongValue"), managedEntityName}];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __56__PHChange_changedPropertyNamesForObjectID_entityClass___block_invoke;
   v13[3] = &__block_descriptor_40_e28___NSString_16__0__NSString_8lu32l8;
-  v13[4] = a4;
+  v13[4] = class;
   v10 = [v9 _pl_map:v13];
   v11 = [MEMORY[0x1E695DFD8] setWithArray:v10];
 
   return v11;
 }
 
-- (id)_fetchCombinedPublicResultsMapForEntityClass:(Class)a3 predicate:(id)a4 context:(id)a5
+- (id)_fetchCombinedPublicResultsMapForEntityClass:(Class)class predicate:(id)predicate context:(id)context
 {
   v64[2] = *MEMORY[0x1E69E9840];
-  v32 = a4;
-  v7 = a5;
+  predicateCopy = predicate;
+  contextCopy = context;
   context = objc_autoreleasePoolPush();
-  v37 = [(objc_class *)a3 entityKeyForPropertyKey:@"uuid"];
+  v37 = [(objc_class *)class entityKeyForPropertyKey:@"uuid"];
   v8 = MEMORY[0x1E695DF70];
-  v9 = [MEMORY[0x1E69BE570] objectIDDescription];
-  v64[0] = v9;
+  objectIDDescription = [MEMORY[0x1E69BE570] objectIDDescription];
+  v64[0] = objectIDDescription;
   v64[1] = v37;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v64 count:2];
   v33 = [v8 arrayWithArray:v10];
 
-  v36 = [(objc_class *)a3 managedObjectSupportsTrashedState];
-  if (v36)
+  managedObjectSupportsTrashedState = [(objc_class *)class managedObjectSupportsTrashedState];
+  if (managedObjectSupportsTrashedState)
   {
     [v33 addObject:@"trashedState"];
     v34 = @"trashedState";
@@ -436,10 +436,10 @@ id __44__PHChange__pl_prettyDescriptionWithIndent___block_invoke(uint64_t a1)
   }
 
   v11 = MEMORY[0x1E695D5E0];
-  v12 = [(objc_class *)a3 managedEntityName];
-  v13 = [v11 fetchRequestWithEntityName:v12];
+  managedEntityName = [(objc_class *)class managedEntityName];
+  v13 = [v11 fetchRequestWithEntityName:managedEntityName];
 
-  [v13 setPredicate:v32];
+  [v13 setPredicate:predicateCopy];
   [v13 setPropertiesToFetch:v33];
   [v13 setResultType:2];
   v53 = 0;
@@ -459,7 +459,7 @@ id __44__PHChange__pl_prettyDescriptionWithIndent___block_invoke(uint64_t a1)
   v42[2] = __75__PHChange__fetchCombinedPublicResultsMapForEntityClass_predicate_context___block_invoke;
   v42[3] = &unk_1E75A9D58;
   v45 = &v47;
-  v14 = v7;
+  v14 = contextCopy;
   v43 = v14;
   v15 = v13;
   v44 = v15;
@@ -469,10 +469,10 @@ id __44__PHChange__pl_prettyDescriptionWithIndent___block_invoke(uint64_t a1)
   v30 = v15;
   if (v48[5])
   {
-    v16 = [MEMORY[0x1E69BE570] objectIDDescription];
-    v17 = [v16 name];
+    objectIDDescription2 = [MEMORY[0x1E69BE570] objectIDDescription];
+    name = [objectIDDescription2 name];
 
-    v18 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v40 = 0u;
     v41 = 0u;
     v38 = 0u;
@@ -492,18 +492,18 @@ id __44__PHChange__pl_prettyDescriptionWithIndent___block_invoke(uint64_t a1)
           }
 
           v22 = *(*(&v38 + 1) + 8 * i);
-          v23 = [v22 objectForKeyedSubscript:v17];
-          v24 = [MEMORY[0x1E695DF90] dictionary];
+          v23 = [v22 objectForKeyedSubscript:name];
+          dictionary2 = [MEMORY[0x1E695DF90] dictionary];
           v25 = [v22 objectForKeyedSubscript:v37];
-          [v24 setObject:v25 forKeyedSubscript:@"uuid"];
+          [dictionary2 setObject:v25 forKeyedSubscript:@"uuid"];
 
-          if (v36)
+          if (managedObjectSupportsTrashedState)
           {
             v26 = [v22 objectForKeyedSubscript:v34];
-            [v24 setObject:v26 forKeyedSubscript:@"trashed"];
+            [dictionary2 setObject:v26 forKeyedSubscript:@"trashed"];
           }
 
-          [v18 setObject:v24 forKeyedSubscript:v23];
+          [dictionary setObject:dictionary2 forKeyedSubscript:v23];
         }
 
         v19 = [obj countByEnumeratingWithState:&v38 objects:v59 count:16];
@@ -515,18 +515,18 @@ id __44__PHChange__pl_prettyDescriptionWithIndent___block_invoke(uint64_t a1)
 
   else
   {
-    v17 = PLPhotoKitGetLog();
-    if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+    name = PLPhotoKitGetLog();
+    if (os_log_type_enabled(name, OS_LOG_TYPE_ERROR))
     {
       v27 = v54[5];
       *buf = 138412546;
       v61 = v27;
       v62 = 2112;
       v63 = v15;
-      _os_log_impl(&dword_19C86F000, v17, OS_LOG_TYPE_ERROR, "Fetch error: %@ while fetching objectIDs with fetch request %@", buf, 0x16u);
+      _os_log_impl(&dword_19C86F000, name, OS_LOG_TYPE_ERROR, "Fetch error: %@ while fetching objectIDs with fetch request %@", buf, 0x16u);
     }
 
-    v18 = MEMORY[0x1E695E0F8];
+    dictionary = MEMORY[0x1E695E0F8];
   }
 
   _Block_object_dispose(&v47, 8);
@@ -534,7 +534,7 @@ id __44__PHChange__pl_prettyDescriptionWithIndent___block_invoke(uint64_t a1)
 
   objc_autoreleasePoolPop(context);
 
-  return v18;
+  return dictionary;
 }
 
 void __75__PHChange__fetchCombinedPublicResultsMapForEntityClass_predicate_context___block_invoke(void *a1)
@@ -550,51 +550,51 @@ void __75__PHChange__fetchCombinedPublicResultsMapForEntityClass_predicate_conte
   *(v6 + 40) = v5;
 }
 
-- (id)_predicateForPublicResultsWithEntityClass:(Class)a3 objectIDs:(id)a4
+- (id)_predicateForPublicResultsWithEntityClass:(Class)class objectIDs:(id)ds
 {
-  v6 = a4;
+  dsCopy = ds;
   v7 = objc_opt_new();
   [v7 setIncludeAssetSourceTypes:1];
-  if ([(objc_class *)a3 managedObjectSupportsTrashedState])
+  if ([(objc_class *)class managedObjectSupportsTrashedState])
   {
     [v7 setIncludeTrashedAssets:1];
   }
 
-  if ([(objc_class *)a3 managedObjectSupportsHiddenState])
+  if ([(objc_class *)class managedObjectSupportsHiddenState])
   {
     [v7 setIncludeHiddenAssets:1];
   }
 
-  if ([(objc_class *)a3 managedObjectSupportsBursts])
+  if ([(objc_class *)class managedObjectSupportsBursts])
   {
     [v7 setIncludeAllBurstAssets:1];
   }
 
-  if (v6)
+  if (dsCopy)
   {
-    v8 = [MEMORY[0x1E696AE18] predicateWithFormat:@"self IN %@", v6];
+    dsCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"self IN %@", dsCopy];
   }
 
   else
   {
-    v8 = 0;
+    dsCopy = 0;
   }
 
-  v9 = [(objc_class *)a3 fetchType];
-  v10 = [PHQuery queryForType:v9 withBasePredicate:v8 inLibrary:self->_library];
+  fetchType = [(objc_class *)class fetchType];
+  v10 = [PHQuery queryForType:fetchType withBasePredicate:dsCopy inLibrary:self->_library];
 
   [v10 setFetchOptions:v7];
-  v11 = [v10 effectivePredicateForPHClass:a3 includingBasePredicate:v8 != 0];
+  v11 = [v10 effectivePredicateForPHClass:class includingBasePredicate:dsCopy != 0];
 
   return v11;
 }
 
-- (id)_changedLocalIdentifiersWithPublicChangesForEntityClass:(Class)a3 context:(id)a4
+- (id)_changedLocalIdentifiersWithPublicChangesForEntityClass:(Class)class context:(id)context
 {
   v54[3] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [(objc_class *)a3 objectIDsMatchingEntityFromObjectIDs:self->_insertedObjectIDs context:v6];
-  v8 = [(objc_class *)a3 objectIDsMatchingEntityFromObjectIDs:self->_changedObjectIDs context:v6];
+  contextCopy = context;
+  v7 = [(objc_class *)class objectIDsMatchingEntityFromObjectIDs:self->_insertedObjectIDs context:contextCopy];
+  v8 = [(objc_class *)class objectIDsMatchingEntityFromObjectIDs:self->_changedObjectIDs context:contextCopy];
   if (v7)
   {
     v9 = [v7 mutableCopy];
@@ -612,25 +612,25 @@ void __75__PHChange__fetchCombinedPublicResultsMapForEntityClass_predicate_conte
   }
 
   v45 = v8;
-  v11 = [(objc_class *)a3 managedEntityName];
-  v12 = [MEMORY[0x1E69BE470] entityName];
-  v41 = v11;
-  LODWORD(v11) = [v11 isEqualToString:v12];
+  managedEntityName = [(objc_class *)class managedEntityName];
+  entityName = [MEMORY[0x1E69BE470] entityName];
+  v41 = managedEntityName;
+  LODWORD(managedEntityName) = [managedEntityName isEqualToString:entityName];
 
-  if (v11)
+  if (managedEntityName)
   {
-    v13 = [(PHChange *)self _fetchGraphNodeIDsWithRequiredPrimaryLabelCode:a3 changedObjectIDs:v10];
+    v13 = [(PHChange *)self _fetchGraphNodeIDsWithRequiredPrimaryLabelCode:class changedObjectIDs:v10];
     [v10 intersectSet:v13];
   }
 
-  v40 = [(PHChange *)self _predicateForPublicResultsWithEntityClass:a3 objectIDs:v10];
-  v14 = [PHChange _fetchCombinedPublicResultsMapForEntityClass:"_fetchCombinedPublicResultsMapForEntityClass:predicate:context:" predicate:a3 context:?];
+  v40 = [(PHChange *)self _predicateForPublicResultsWithEntityClass:class objectIDs:v10];
+  v14 = [PHChange _fetchCombinedPublicResultsMapForEntityClass:"_fetchCombinedPublicResultsMapForEntityClass:predicate:context:" predicate:class context:?];
   v42 = v10;
-  if (-[objc_class isEqual:](a3, "isEqual:", objc_opt_class()) && (v15 = [v14 count], v15 < objc_msgSend(v10, "count")) && (-[PHPhotoLibrary photoLibraryBundle](self->_library, "photoLibraryBundle"), v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "connectionType"), v16, v17 == 1))
+  if (-[objc_class isEqual:](class, "isEqual:", objc_opt_class()) && (v15 = [v14 count], v15 < objc_msgSend(v10, "count")) && (-[PHPhotoLibrary photoLibraryBundle](self->_library, "photoLibraryBundle"), v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "connectionType"), v16, v17 == 1))
   {
     v18 = MEMORY[0x1E695DFD8];
-    v19 = [v14 allKeys];
-    v20 = [v18 setWithArray:v19];
+    allKeys = [v14 allKeys];
+    v20 = [v18 setWithArray:allKeys];
     v21 = [(PHChange *)self _retrieveLockingRestrictedUUIDsForUnresolvedAssetObjectIDsFrom:v10 minusResolved:v20];
   }
 
@@ -645,10 +645,10 @@ void __75__PHChange__fetchCombinedPublicResultsMapForEntityClass_predicate_conte
   aBlock[1] = 3221225472;
   aBlock[2] = __76__PHChange__changedLocalIdentifiersWithPublicChangesForEntityClass_context___block_invoke;
   aBlock[3] = &unk_1E75A5CC0;
-  v52 = a3;
+  classCopy = class;
   v39 = v14;
   v47 = v39;
-  v48 = self;
+  selfCopy = self;
   v24 = v23;
   v49 = v24;
   v25 = v22;
@@ -659,8 +659,8 @@ void __75__PHChange__fetchCombinedPublicResultsMapForEntityClass_predicate_conte
   v43 = v7;
   v27 = [v7 _pl_map:v26];
   v28 = [v45 _pl_map:v26];
-  v44 = v6;
-  v29 = [(PHChange *)self _deletedLocalIdentifiersForEntityClass:a3 context:v6];
+  v44 = contextCopy;
+  v29 = [(PHChange *)self _deletedLocalIdentifiersForEntityClass:class context:contextCopy];
   if ([v25 count])
   {
     if (v29)
@@ -840,17 +840,17 @@ LABEL_16:
   return v8;
 }
 
-- (id)_retrieveLockingRestrictedUUIDsForUnresolvedAssetObjectIDsFrom:(id)a3 minusResolved:(id)a4
+- (id)_retrieveLockingRestrictedUUIDsForUnresolvedAssetObjectIDsFrom:(id)from minusResolved:(id)resolved
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  fromCopy = from;
+  resolvedCopy = resolved;
   v8 = [MEMORY[0x1E695DFA8] set];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v9 = v6;
+  v9 = fromCopy;
   v10 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v10)
   {
@@ -866,7 +866,7 @@ LABEL_16:
         }
 
         v14 = *(*(&v18 + 1) + 8 * i);
-        if (([v7 containsObject:{v14, v18}] & 1) == 0 && (-[PHChange trashedStateChangedForPHAssetOID:](self, "trashedStateChangedForPHAssetOID:", v14) || -[PHChange hiddenStateChangedForPHAssetOID:](self, "hiddenStateChangedForPHAssetOID:", v14)))
+        if (([resolvedCopy containsObject:{v14, v18}] & 1) == 0 && (-[PHChange trashedStateChangedForPHAssetOID:](self, "trashedStateChangedForPHAssetOID:", v14) || -[PHChange hiddenStateChangedForPHAssetOID:](self, "hiddenStateChangedForPHAssetOID:", v14)))
         {
           [v8 addObject:v14];
         }
@@ -884,23 +884,23 @@ LABEL_16:
   return v16;
 }
 
-- (id)_fetchUUIDMapForObjectIDs:(id)a3 entityClass:(Class)a4 context:(id)a5
+- (id)_fetchUUIDMapForObjectIDs:(id)ds entityClass:(Class)class context:(id)context
 {
   v58[2] = *MEMORY[0x1E69E9840];
-  v31 = a3;
-  v7 = a5;
+  dsCopy = ds;
+  contextCopy = context;
   context = objc_autoreleasePoolPush();
   v8 = MEMORY[0x1E695D5E0];
-  v9 = [(objc_class *)a4 managedEntityName];
-  v10 = [v8 fetchRequestWithEntityName:v9];
+  managedEntityName = [(objc_class *)class managedEntityName];
+  v10 = [v8 fetchRequestWithEntityName:managedEntityName];
 
   [v10 setResultType:2];
-  v11 = [MEMORY[0x1E696AE18] predicateWithFormat:@"self IN %@", v31];
-  [v10 setPredicate:v11];
+  dsCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"self IN %@", dsCopy];
+  [v10 setPredicate:dsCopy];
 
-  v12 = [(objc_class *)a4 entityKeyForPropertyKey:@"uuid"];
-  v13 = [MEMORY[0x1E69BE570] objectIDDescription];
-  v58[0] = v13;
+  v12 = [(objc_class *)class entityKeyForPropertyKey:@"uuid"];
+  objectIDDescription = [MEMORY[0x1E69BE570] objectIDDescription];
+  v58[0] = objectIDDescription;
   v58[1] = v12;
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v58 count:2];
   [v10 setPropertiesToFetch:v14];
@@ -922,7 +922,7 @@ LABEL_16:
   v36[2] = __58__PHChange__fetchUUIDMapForObjectIDs_entityClass_context___block_invoke;
   v36[3] = &unk_1E75A9D58;
   v39 = &v41;
-  v15 = v7;
+  v15 = contextCopy;
   v37 = v15;
   v16 = v10;
   v38 = v16;
@@ -931,9 +931,9 @@ LABEL_16:
   v29 = v16;
   if (v42[5])
   {
-    v17 = [MEMORY[0x1E695DF90] dictionary];
-    v18 = [MEMORY[0x1E69BE570] objectIDDescription];
-    v19 = [v18 name];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    objectIDDescription2 = [MEMORY[0x1E69BE570] objectIDDescription];
+    name = [objectIDDescription2 name];
 
     v34 = 0u;
     v35 = 0u;
@@ -955,8 +955,8 @@ LABEL_16:
 
           v24 = *(*(&v32 + 1) + 8 * i);
           v25 = [v24 objectForKeyedSubscript:v12];
-          v26 = [v24 objectForKeyedSubscript:v19];
-          [v17 setObject:v25 forKeyedSubscript:v26];
+          v26 = [v24 objectForKeyedSubscript:name];
+          [dictionary setObject:v25 forKeyedSubscript:v26];
         }
 
         v21 = [v20 countByEnumeratingWithState:&v32 objects:v53 count:16];
@@ -968,18 +968,18 @@ LABEL_16:
 
   else
   {
-    v19 = PLPhotoKitGetLog();
-    if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
+    name = PLPhotoKitGetLog();
+    if (os_log_type_enabled(name, OS_LOG_TYPE_ERROR))
     {
       v27 = v48[5];
       *buf = 138412546;
       v55 = v27;
       v56 = 2112;
-      v57 = v31;
-      _os_log_impl(&dword_19C86F000, v19, OS_LOG_TYPE_ERROR, "Fetch error: %@ while fetching objectIDs: %@", buf, 0x16u);
+      v57 = dsCopy;
+      _os_log_impl(&dword_19C86F000, name, OS_LOG_TYPE_ERROR, "Fetch error: %@ while fetching objectIDs: %@", buf, 0x16u);
     }
 
-    v17 = MEMORY[0x1E695E0F8];
+    dictionary = MEMORY[0x1E695E0F8];
   }
 
   _Block_object_dispose(&v41, 8);
@@ -987,7 +987,7 @@ LABEL_16:
 
   objc_autoreleasePoolPop(context);
 
-  return v17;
+  return dictionary;
 }
 
 void __58__PHChange__fetchUUIDMapForObjectIDs_entityClass_context___block_invoke(void *a1)
@@ -1003,10 +1003,10 @@ void __58__PHChange__fetchUUIDMapForObjectIDs_entityClass_context___block_invoke
   *(v6 + 40) = v5;
 }
 
-- (id)_fetchGraphNodeIDsWithRequiredPrimaryLabelCode:(Class)a3 changedObjectIDs:(id)a4
+- (id)_fetchGraphNodeIDsWithRequiredPrimaryLabelCode:(Class)code changedObjectIDs:(id)ds
 {
-  v6 = a4;
-  v7 = [(PHChange *)self _requiredLabelCodeNumberForContainerClass:a3];
+  dsCopy = ds;
+  v7 = [(PHChange *)self _requiredLabelCodeNumberForContainerClass:code];
   if (v7)
   {
     v21 = 0;
@@ -1019,9 +1019,9 @@ void __58__PHChange__fetchUUIDMapForObjectIDs_entityClass_context___block_invoke
     v15[1] = 3221225472;
     v15[2] = __76__PHChange__fetchGraphNodeIDsWithRequiredPrimaryLabelCode_changedObjectIDs___block_invoke;
     v15[3] = &unk_1E75AAE68;
-    v10 = v6;
+    v10 = dsCopy;
     v16 = v10;
-    v17 = self;
+    selfCopy = self;
     v20 = &v21;
     v18 = v7;
     v11 = v8;
@@ -1044,7 +1044,7 @@ void __58__PHChange__fetchUUIDMapForObjectIDs_entityClass_context___block_invoke
 
   else
   {
-    v13 = v6;
+    v13 = dsCopy;
   }
 
   return v13;
@@ -1102,12 +1102,12 @@ void __76__PHChange__fetchGraphNodeIDsWithRequiredPrimaryLabelCode_changedObject
   }
 }
 
-- (id)_changedLocalIdentifiersForEntityClass:(Class)a3 context:(id)a4
+- (id)_changedLocalIdentifiersForEntityClass:(Class)class context:(id)context
 {
   v34[3] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [(objc_class *)a3 objectIDsMatchingEntityFromObjectIDs:self->_insertedObjectIDs context:v6];
-  v8 = [(objc_class *)a3 objectIDsMatchingEntityFromObjectIDs:self->_changedObjectIDs context:v6];
+  contextCopy = context;
+  v7 = [(objc_class *)class objectIDsMatchingEntityFromObjectIDs:self->_insertedObjectIDs context:contextCopy];
+  v8 = [(objc_class *)class objectIDsMatchingEntityFromObjectIDs:self->_changedObjectIDs context:contextCopy];
   if (v7)
   {
     v9 = [v7 mutableCopy];
@@ -1124,24 +1124,24 @@ void __76__PHChange__fetchGraphNodeIDsWithRequiredPrimaryLabelCode_changedObject
     [v9 unionSet:v8];
   }
 
-  v11 = [(objc_class *)a3 managedEntityName];
-  v12 = [MEMORY[0x1E69BE470] entityName];
-  v26 = v11;
-  LODWORD(v11) = [v11 isEqualToString:v12];
+  managedEntityName = [(objc_class *)class managedEntityName];
+  entityName = [MEMORY[0x1E69BE470] entityName];
+  v26 = managedEntityName;
+  LODWORD(managedEntityName) = [managedEntityName isEqualToString:entityName];
 
-  if (v11)
+  if (managedEntityName)
   {
-    v13 = [(PHChange *)self _fetchGraphNodeIDsWithRequiredPrimaryLabelCode:a3 changedObjectIDs:v10];
+    v13 = [(PHChange *)self _fetchGraphNodeIDsWithRequiredPrimaryLabelCode:class changedObjectIDs:v10];
     [v10 intersectSet:v13];
   }
 
-  v14 = [(PHChange *)self _fetchUUIDMapForObjectIDs:v10 entityClass:a3 context:v6];
+  v14 = [(PHChange *)self _fetchUUIDMapForObjectIDs:v10 entityClass:class context:contextCopy];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __59__PHChange__changedLocalIdentifiersForEntityClass_context___block_invoke;
   aBlock[3] = &unk_1E75A5C98;
-  v31 = self;
-  v32 = a3;
+  selfCopy = self;
+  classCopy = class;
   v24 = v14;
   v30 = v24;
   v15 = _Block_copy(aBlock);
@@ -1149,7 +1149,7 @@ void __76__PHChange__fetchGraphNodeIDsWithRequiredPrimaryLabelCode_changedObject
   v16 = [v7 _pl_map:v15];
   v27 = v8;
   v17 = [v8 _pl_map:v15];
-  v18 = [(PHChange *)self _deletedLocalIdentifiersForEntityClass:a3 context:v6];
+  v18 = [(PHChange *)self _deletedLocalIdentifiersForEntityClass:class context:contextCopy];
   v33[0] = @"PHInsertedLocalIdentifiersKey";
   v19 = v16;
   if (!v16)
@@ -1240,28 +1240,28 @@ id __59__PHChange__changedLocalIdentifiersForEntityClass_context___block_invoke(
   return v5;
 }
 
-- (id)changedLocalIdentifiersForEntityClass:(Class)a3 context:(id)a4
+- (id)changedLocalIdentifiersForEntityClass:(Class)class context:(id)context
 {
-  v6 = a4;
-  if (!v6 || (objc_opt_respondsToSelector() & 1) == 0)
+  contextCopy = context;
+  if (!contextCopy || (objc_opt_respondsToSelector() & 1) == 0)
   {
     goto LABEL_6;
   }
 
   if (![(PHPersistentChangeFetchOptions *)self->_fetchOptions excludesPrivateChanges])
   {
-    v7 = [(PHChange *)self _changedLocalIdentifiersForEntityClass:a3 context:v6];
+    v7 = [(PHChange *)self _changedLocalIdentifiersForEntityClass:class context:contextCopy];
     goto LABEL_8;
   }
 
-  if (![objc_opt_class() isPublicPHObjectChangeClass:a3])
+  if (![objc_opt_class() isPublicPHObjectChangeClass:class])
   {
 LABEL_6:
     v8 = MEMORY[0x1E695E0F8];
     goto LABEL_9;
   }
 
-  v7 = [(PHChange *)self _changedLocalIdentifiersWithPublicChangesForEntityClass:a3 context:v6];
+  v7 = [(PHChange *)self _changedLocalIdentifiersWithPublicChangesForEntityClass:class context:contextCopy];
 LABEL_8:
   v8 = v7;
 LABEL_9:
@@ -1269,9 +1269,9 @@ LABEL_9:
   return v8;
 }
 
-- (id)_deletedObjectIDsMatchingGraphNodeContainerType:(Class)a3
+- (id)_deletedObjectIDsMatchingGraphNodeContainerType:(Class)type
 {
-  v4 = [(PHChange *)self _requiredLabelCodeNumberForContainerClass:a3];
+  v4 = [(PHChange *)self _requiredLabelCodeNumberForContainerClass:type];
   v5 = v4;
   if (v4)
   {
@@ -1279,18 +1279,18 @@ LABEL_9:
     v10 = 3221225472;
     v11 = __60__PHChange__deletedObjectIDsMatchingGraphNodeContainerType___block_invoke;
     v12 = &unk_1E75A5C70;
-    v13 = self;
+    selfCopy = self;
     v14 = v4;
     v6 = _Block_copy(&v9);
-    v7 = [(NSSet *)self->_deletedObjectIDs _pl_filter:v6, v9, v10, v11, v12, v13];
+    selfCopy = [(NSSet *)self->_deletedObjectIDs _pl_filter:v6, v9, v10, v11, v12, selfCopy];
   }
 
   else
   {
-    v7 = [MEMORY[0x1E695DFD8] set];
+    selfCopy = [MEMORY[0x1E695DFD8] set];
   }
 
-  return v7;
+  return selfCopy;
 }
 
 uint64_t __60__PHChange__deletedObjectIDsMatchingGraphNodeContainerType___block_invoke(uint64_t a1, uint64_t a2)
@@ -1301,10 +1301,10 @@ uint64_t __60__PHChange__deletedObjectIDsMatchingGraphNodeContainerType___block_
   return v4;
 }
 
-- (id)_requiredLabelCodeNumberForContainerClass:(Class)a3
+- (id)_requiredLabelCodeNumberForContainerClass:(Class)class
 {
   v11 = *MEMORY[0x1E69E9840];
-  if (objc_opt_class() == a3)
+  if (objc_opt_class() == class)
   {
     v6 = MEMORY[0x1E696AD98];
     v7 = 1000;
@@ -1313,7 +1313,7 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if (objc_opt_class() == a3)
+  if (objc_opt_class() == class)
   {
     v6 = MEMORY[0x1E696AD98];
     v7 = 1100;
@@ -1324,7 +1324,7 @@ LABEL_8:
   if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
   {
     v9 = 138412290;
-    v10 = a3;
+    classCopy = class;
     _os_log_impl(&dword_19C86F000, v4, OS_LOG_TYPE_ERROR, "No node container class for node with class: %@", &v9, 0xCu);
   }
 
@@ -1334,23 +1334,23 @@ LABEL_9:
   return v5;
 }
 
-- (id)_deletedLocalIdentifiersForEntityClass:(Class)a3 context:(id)a4
+- (id)_deletedLocalIdentifiersForEntityClass:(Class)class context:(id)context
 {
-  v6 = a4;
-  if (v6 && (objc_opt_respondsToSelector() & 1) != 0)
+  contextCopy = context;
+  if (contextCopy && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v7 = [(objc_class *)a3 managedEntityName];
-    v8 = [MEMORY[0x1E69BE470] entityName];
-    v9 = [v7 isEqualToString:v8];
+    managedEntityName = [(objc_class *)class managedEntityName];
+    entityName = [MEMORY[0x1E69BE470] entityName];
+    v9 = [managedEntityName isEqualToString:entityName];
 
     if (v9)
     {
-      [(PHChange *)self _deletedObjectIDsMatchingGraphNodeContainerType:a3];
+      [(PHChange *)self _deletedObjectIDsMatchingGraphNodeContainerType:class];
     }
 
     else
     {
-      [(objc_class *)a3 objectIDsMatchingEntityFromObjectIDs:self->_deletedObjectIDs context:v6];
+      [(objc_class *)class objectIDsMatchingEntityFromObjectIDs:self->_deletedObjectIDs context:contextCopy];
     }
     v11 = ;
     v14[0] = MEMORY[0x1E69E9820];
@@ -1358,7 +1358,7 @@ LABEL_9:
     v14[2] = __59__PHChange__deletedLocalIdentifiersForEntityClass_context___block_invoke;
     v14[3] = &unk_1E75A5C48;
     v14[4] = self;
-    v14[5] = a3;
+    v14[5] = class;
     v12 = _Block_copy(v14);
     v10 = [v11 _pl_map:v12];
   }
@@ -1397,18 +1397,18 @@ id __59__PHChange__deletedLocalIdentifiersForEntityClass_context___block_invoke(
   return v5;
 }
 
-- (BOOL)containsChangesForEntityClass:(Class)a3
+- (BOOL)containsChangesForEntityClass:(Class)class
 {
   v45 = *MEMORY[0x1E69E9840];
   if (objc_opt_respondsToSelector())
   {
-    v5 = [(objc_class *)a3 managedEntityName];
+    managedEntityName = [(objc_class *)class managedEntityName];
     v38 = 0u;
     v39 = 0u;
     v40 = 0u;
     v41 = 0u;
-    v6 = [(PHChange *)self insertedObjectIDs];
-    v7 = [v6 countByEnumeratingWithState:&v38 objects:v44 count:16];
+    insertedObjectIDs = [(PHChange *)self insertedObjectIDs];
+    v7 = [insertedObjectIDs countByEnumeratingWithState:&v38 objects:v44 count:16];
     if (v7)
     {
       v8 = v7;
@@ -1419,12 +1419,12 @@ LABEL_4:
       {
         if (*v39 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(insertedObjectIDs);
         }
 
-        v11 = [*(*(&v38 + 1) + 8 * v10) entity];
-        v12 = [v11 name];
-        v13 = [v12 isEqualToString:v5];
+        entity = [*(*(&v38 + 1) + 8 * v10) entity];
+        name = [entity name];
+        v13 = [name isEqualToString:managedEntityName];
 
         if (v13)
         {
@@ -1433,7 +1433,7 @@ LABEL_4:
 
         if (v8 == ++v10)
         {
-          v8 = [v6 countByEnumeratingWithState:&v38 objects:v44 count:16];
+          v8 = [insertedObjectIDs countByEnumeratingWithState:&v38 objects:v44 count:16];
           if (v8)
           {
             goto LABEL_4;
@@ -1448,8 +1448,8 @@ LABEL_4:
     v37 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v6 = [(PHChange *)self deletedObjectIDs];
-    v14 = [v6 countByEnumeratingWithState:&v34 objects:v43 count:16];
+    insertedObjectIDs = [(PHChange *)self deletedObjectIDs];
+    v14 = [insertedObjectIDs countByEnumeratingWithState:&v34 objects:v43 count:16];
     if (v14)
     {
       v15 = v14;
@@ -1460,12 +1460,12 @@ LABEL_12:
       {
         if (*v35 != v16)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(insertedObjectIDs);
         }
 
-        v18 = [*(*(&v34 + 1) + 8 * v17) entity];
-        v19 = [v18 name];
-        v20 = [v19 isEqualToString:v5];
+        entity2 = [*(*(&v34 + 1) + 8 * v17) entity];
+        name2 = [entity2 name];
+        v20 = [name2 isEqualToString:managedEntityName];
 
         if (v20)
         {
@@ -1474,7 +1474,7 @@ LABEL_12:
 
         if (v15 == ++v17)
         {
-          v15 = [v6 countByEnumeratingWithState:&v34 objects:v43 count:16];
+          v15 = [insertedObjectIDs countByEnumeratingWithState:&v34 objects:v43 count:16];
           if (v15)
           {
             goto LABEL_12;
@@ -1489,8 +1489,8 @@ LABEL_12:
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v6 = [(PHChange *)self updatedObjectIDs];
-    v21 = [v6 countByEnumeratingWithState:&v30 objects:v42 count:16];
+    insertedObjectIDs = [(PHChange *)self updatedObjectIDs];
+    v21 = [insertedObjectIDs countByEnumeratingWithState:&v30 objects:v42 count:16];
     if (v21)
     {
       v22 = v21;
@@ -1501,12 +1501,12 @@ LABEL_20:
       {
         if (*v31 != v23)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(insertedObjectIDs);
         }
 
-        v25 = [*(*(&v30 + 1) + 8 * v24) entity];
-        v26 = [v25 name];
-        v27 = [v26 isEqualToString:v5];
+        entity3 = [*(*(&v30 + 1) + 8 * v24) entity];
+        name3 = [entity3 name];
+        v27 = [name3 isEqualToString:managedEntityName];
 
         if (v27)
         {
@@ -1515,7 +1515,7 @@ LABEL_20:
 
         if (v22 == ++v24)
         {
-          v22 = [v6 countByEnumeratingWithState:&v30 objects:v42 count:16];
+          v22 = [insertedObjectIDs countByEnumeratingWithState:&v30 objects:v42 count:16];
           if (v22)
           {
             goto LABEL_20;
@@ -1536,16 +1536,16 @@ LABEL_26:
   return self->_unknownMergeEvent;
 }
 
-- (BOOL)containsChangesForEntityWithManagedEntityName:(id)a3
+- (BOOL)containsChangesForEntityWithManagedEntityName:(id)name
 {
   v44 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  nameCopy = name;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v5 = [(PHChange *)self insertedObjectIDs];
-  v6 = [v5 countByEnumeratingWithState:&v37 objects:v43 count:16];
+  insertedObjectIDs = [(PHChange *)self insertedObjectIDs];
+  v6 = [insertedObjectIDs countByEnumeratingWithState:&v37 objects:v43 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1556,12 +1556,12 @@ LABEL_3:
     {
       if (*v38 != v8)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(insertedObjectIDs);
       }
 
-      v10 = [*(*(&v37 + 1) + 8 * v9) entity];
-      v11 = [v10 name];
-      v12 = [v11 isEqualToString:v4];
+      entity = [*(*(&v37 + 1) + 8 * v9) entity];
+      name = [entity name];
+      v12 = [name isEqualToString:nameCopy];
 
       if (v12)
       {
@@ -1570,7 +1570,7 @@ LABEL_3:
 
       if (v7 == ++v9)
       {
-        v7 = [v5 countByEnumeratingWithState:&v37 objects:v43 count:16];
+        v7 = [insertedObjectIDs countByEnumeratingWithState:&v37 objects:v43 count:16];
         if (v7)
         {
           goto LABEL_3;
@@ -1585,8 +1585,8 @@ LABEL_3:
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v5 = [(PHChange *)self deletedObjectIDs];
-  v13 = [v5 countByEnumeratingWithState:&v33 objects:v42 count:16];
+  insertedObjectIDs = [(PHChange *)self deletedObjectIDs];
+  v13 = [insertedObjectIDs countByEnumeratingWithState:&v33 objects:v42 count:16];
   if (v13)
   {
     v14 = v13;
@@ -1597,12 +1597,12 @@ LABEL_11:
     {
       if (*v34 != v15)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(insertedObjectIDs);
       }
 
-      v17 = [*(*(&v33 + 1) + 8 * v16) entity];
-      v18 = [v17 name];
-      v19 = [v18 isEqualToString:v4];
+      entity2 = [*(*(&v33 + 1) + 8 * v16) entity];
+      name2 = [entity2 name];
+      v19 = [name2 isEqualToString:nameCopy];
 
       if (v19)
       {
@@ -1611,7 +1611,7 @@ LABEL_11:
 
       if (v14 == ++v16)
       {
-        v14 = [v5 countByEnumeratingWithState:&v33 objects:v42 count:16];
+        v14 = [insertedObjectIDs countByEnumeratingWithState:&v33 objects:v42 count:16];
         if (v14)
         {
           goto LABEL_11;
@@ -1626,8 +1626,8 @@ LABEL_11:
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v5 = [(PHChange *)self updatedObjectIDs];
-  v20 = [v5 countByEnumeratingWithState:&v29 objects:v41 count:16];
+  insertedObjectIDs = [(PHChange *)self updatedObjectIDs];
+  v20 = [insertedObjectIDs countByEnumeratingWithState:&v29 objects:v41 count:16];
   if (v20)
   {
     v21 = v20;
@@ -1638,12 +1638,12 @@ LABEL_19:
     {
       if (*v30 != v22)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(insertedObjectIDs);
       }
 
-      v24 = [*(*(&v29 + 1) + 8 * v23) entity];
-      v25 = [v24 name];
-      v26 = [v25 isEqualToString:v4];
+      entity3 = [*(*(&v29 + 1) + 8 * v23) entity];
+      name3 = [entity3 name];
+      v26 = [name3 isEqualToString:nameCopy];
 
       if (v26)
       {
@@ -1652,7 +1652,7 @@ LABEL_19:
 
       if (v21 == ++v23)
       {
-        v21 = [v5 countByEnumeratingWithState:&v29 objects:v41 count:16];
+        v21 = [insertedObjectIDs countByEnumeratingWithState:&v29 objects:v41 count:16];
         if (v21)
         {
           goto LABEL_19;
@@ -1676,12 +1676,12 @@ LABEL_27:
   return unknownMergeEvent;
 }
 
-- (BOOL)intersectsWithDetectionCriteria:(id)a3 managedObjectContext:(id)a4
+- (BOOL)intersectsWithDetectionCriteria:(id)criteria managedObjectContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  criteriaCopy = criteria;
+  contextCopy = context;
+  v8 = contextCopy;
+  if (criteriaCopy)
   {
     v18 = 0;
     v19 = &v18;
@@ -1692,10 +1692,10 @@ LABEL_27:
     v15[2] = __65__PHChange_intersectsWithDetectionCriteria_managedObjectContext___block_invoke;
     v15[3] = &unk_1E75A5C20;
     v15[4] = self;
-    v9 = v7;
+    v9 = contextCopy;
     v16 = v9;
     v17 = &v18;
-    [v6 enumerateEntitiesAndAttributeIndexesUsingBlock:v15];
+    [criteriaCopy enumerateEntitiesAndAttributeIndexesUsingBlock:v15];
     if (v19[3])
     {
       v10 = 1;
@@ -1710,7 +1710,7 @@ LABEL_27:
       v12[4] = self;
       v13 = v9;
       v14 = &v18;
-      [v6 enumerateEntitiesAndRelationshipIndexesBlock:v12];
+      [criteriaCopy enumerateEntitiesAndRelationshipIndexesBlock:v12];
       v10 = *(v19 + 24);
     }
 
@@ -1862,24 +1862,24 @@ uint64_t __35__PHChange_changeDetailsForObject___block_invoke(uint64_t a1)
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (BOOL)deferredProcessingNeededChangedForPHAssetOID:(id)a3
+- (BOOL)deferredProcessingNeededChangedForPHAssetOID:(id)d
 {
   v15[1] = *MEMORY[0x1E69E9840];
   changedAttributesByOID = self->_changedAttributesByOID;
-  v5 = a3;
-  v6 = [(NSDictionary *)changedAttributesByOID objectForKeyedSubscript:v5];
-  v7 = [v6 unsignedLongLongValue];
+  dCopy = d;
+  v6 = [(NSDictionary *)changedAttributesByOID objectForKeyedSubscript:dCopy];
+  unsignedLongLongValue = [v6 unsignedLongLongValue];
 
   v8 = MEMORY[0x1E69BE6F8];
   v15[0] = @"deferredProcessingNeeded";
   v9 = 1;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
-  v11 = [v5 entity];
+  entity = [dCopy entity];
 
-  v12 = [v11 name];
-  v13 = [v8 indexValueForAttributeNames:v10 entity:v12];
+  name = [entity name];
+  v13 = [v8 indexValueForAttributeNames:v10 entity:name];
 
-  if ((v13 & v7) == 0)
+  if ((v13 & unsignedLongLongValue) == 0)
   {
     return self->_unknownMergeEvent;
   }
@@ -1887,92 +1887,92 @@ uint64_t __35__PHChange_changeDetailsForObject___block_invoke(uint64_t a1)
   return v9;
 }
 
-- (BOOL)_changedRelationshipsContainChangeForRelationshipNames:(id)a3 objectID:(id)a4
+- (BOOL)_changedRelationshipsContainChangeForRelationshipNames:(id)names objectID:(id)d
 {
   changedRelationshipsByOID = self->_changedRelationshipsByOID;
-  v7 = a4;
-  v8 = a3;
-  v9 = [(NSDictionary *)changedRelationshipsByOID objectForKeyedSubscript:v7];
-  v10 = [v9 unsignedLongLongValue];
+  dCopy = d;
+  namesCopy = names;
+  v9 = [(NSDictionary *)changedRelationshipsByOID objectForKeyedSubscript:dCopy];
+  unsignedLongLongValue = [v9 unsignedLongLongValue];
 
   v11 = MEMORY[0x1E69BE6F8];
-  v12 = [v7 entity];
+  entity = [dCopy entity];
 
-  v13 = [v12 name];
-  v14 = [v11 indexValueForRelationshipNames:v8 entity:v13];
+  name = [entity name];
+  v14 = [v11 indexValueForRelationshipNames:namesCopy entity:name];
 
-  return (v14 & v10) != 0 || self->_unknownMergeEvent;
+  return (v14 & unsignedLongLongValue) != 0 || self->_unknownMergeEvent;
 }
 
-- (BOOL)customUserAssetsChangedForPHMemoryOID:(id)a3
+- (BOOL)customUserAssetsChangedForPHMemoryOID:(id)d
 {
   v9 = *MEMORY[0x1E69E9840];
   v8 = @"customUserAssets";
   v4 = MEMORY[0x1E695DEC8];
-  v5 = a3;
+  dCopy = d;
   v6 = [v4 arrayWithObjects:&v8 count:1];
-  LOBYTE(self) = [(PHChange *)self _changedRelationshipsContainChangeForRelationshipNames:v6 objectID:v5, v8, v9];
+  LOBYTE(self) = [(PHChange *)self _changedRelationshipsContainChangeForRelationshipNames:v6 objectID:dCopy, v8, v9];
 
   return self;
 }
 
-- (BOOL)userCuratedAssetsChangedForPHMemoryOID:(id)a3
+- (BOOL)userCuratedAssetsChangedForPHMemoryOID:(id)d
 {
   v9 = *MEMORY[0x1E69E9840];
   v8 = @"userCuratedAssets";
   v4 = MEMORY[0x1E695DEC8];
-  v5 = a3;
+  dCopy = d;
   v6 = [v4 arrayWithObjects:&v8 count:1];
-  LOBYTE(self) = [(PHChange *)self _changedRelationshipsContainChangeForRelationshipNames:v6 objectID:v5, v8, v9];
+  LOBYTE(self) = [(PHChange *)self _changedRelationshipsContainChangeForRelationshipNames:v6 objectID:dCopy, v8, v9];
 
   return self;
 }
 
-- (BOOL)keyAssetsChangedForPHAssetCollectionOID:(id)a3
+- (BOOL)keyAssetsChangedForPHAssetCollectionOID:(id)d
 {
   v9 = *MEMORY[0x1E69E9840];
   v8 = @"keyAssets";
   v4 = MEMORY[0x1E695DEC8];
-  v5 = a3;
+  dCopy = d;
   v6 = [v4 arrayWithObjects:&v8 count:1];
-  LOBYTE(self) = [(PHChange *)self _changedRelationshipsContainChangeForRelationshipNames:v6 objectID:v5, v8, v9];
+  LOBYTE(self) = [(PHChange *)self _changedRelationshipsContainChangeForRelationshipNames:v6 objectID:dCopy, v8, v9];
 
   return self;
 }
 
-- (BOOL)assetCloudLocalStateChangedForAsset:(id)a3
+- (BOOL)assetCloudLocalStateChangedForAsset:(id)asset
 {
   v25[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 objectID];
-  v6 = [v4 cloudLocalStateProperties];
+  assetCopy = asset;
+  objectID = [assetCopy objectID];
+  cloudLocalStateProperties = [assetCopy cloudLocalStateProperties];
 
-  v7 = [v6 cloudMasterObjectID];
+  cloudMasterObjectID = [cloudLocalStateProperties cloudMasterObjectID];
 
-  if (v7)
+  if (cloudMasterObjectID)
   {
-    v8 = [(NSDictionary *)self->_changedAttributesByOID objectForKeyedSubscript:v5];
-    v23 = [v8 unsignedLongLongValue];
+    v8 = [(NSDictionary *)self->_changedAttributesByOID objectForKeyedSubscript:objectID];
+    unsignedLongLongValue = [v8 unsignedLongLongValue];
 
-    v9 = [(NSDictionary *)self->_changedAttributesByOID objectForKeyedSubscript:v7];
-    v22 = [v9 unsignedLongLongValue];
+    v9 = [(NSDictionary *)self->_changedAttributesByOID objectForKeyedSubscript:cloudMasterObjectID];
+    unsignedLongLongValue2 = [v9 unsignedLongLongValue];
 
     v10 = MEMORY[0x1E69BE6F8];
     v25[0] = @"cloudLocalState";
     unknownMergeEvent = 1;
     v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v25 count:1];
-    v13 = [v5 entity];
-    v14 = [v13 name];
-    v15 = [v10 indexValueForAttributeNames:v12 entity:v14];
+    entity = [objectID entity];
+    name = [entity name];
+    v15 = [v10 indexValueForAttributeNames:v12 entity:name];
 
     v16 = MEMORY[0x1E69BE6F8];
     v24 = @"cloudLocalState";
     v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v24 count:1];
-    v18 = [v7 entity];
-    v19 = [v18 name];
-    v20 = [v16 indexValueForAttributeNames:v17 entity:v19];
+    entity2 = [cloudMasterObjectID entity];
+    name2 = [entity2 name];
+    v20 = [v16 indexValueForAttributeNames:v17 entity:name2];
 
-    if (!(v15 & v23 | v20 & v22))
+    if (!(v15 & unsignedLongLongValue | v20 & unsignedLongLongValue2))
     {
       unknownMergeEvent = self->_unknownMergeEvent;
     }
@@ -1986,24 +1986,24 @@ uint64_t __35__PHChange_changeDetailsForObject___block_invoke(uint64_t a1)
   return unknownMergeEvent;
 }
 
-- (BOOL)packedBadgeAttributesChangedForPHAssetOID:(id)a3
+- (BOOL)packedBadgeAttributesChangedForPHAssetOID:(id)d
 {
   v15[1] = *MEMORY[0x1E69E9840];
   changedAttributesByOID = self->_changedAttributesByOID;
-  v5 = a3;
-  v6 = [(NSDictionary *)changedAttributesByOID objectForKeyedSubscript:v5];
-  v7 = [v6 unsignedLongLongValue];
+  dCopy = d;
+  v6 = [(NSDictionary *)changedAttributesByOID objectForKeyedSubscript:dCopy];
+  unsignedLongLongValue = [v6 unsignedLongLongValue];
 
   v8 = MEMORY[0x1E69BE6F8];
   v15[0] = @"packedBadgeAttributes";
   v9 = 1;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
-  v11 = [v5 entity];
+  entity = [dCopy entity];
 
-  v12 = [v11 name];
-  v13 = [v8 indexValueForAttributeNames:v10 entity:v12];
+  name = [entity name];
+  v13 = [v8 indexValueForAttributeNames:v10 entity:name];
 
-  if ((v13 & v7) == 0)
+  if ((v13 & unsignedLongLongValue) == 0)
   {
     return self->_unknownMergeEvent;
   }
@@ -2011,24 +2011,24 @@ uint64_t __35__PHChange_changeDetailsForObject___block_invoke(uint64_t a1)
   return v9;
 }
 
-- (BOOL)favoriteStateChangedForPHAssetOID:(id)a3
+- (BOOL)favoriteStateChangedForPHAssetOID:(id)d
 {
   v15[1] = *MEMORY[0x1E69E9840];
   changedAttributesByOID = self->_changedAttributesByOID;
-  v5 = a3;
-  v6 = [(NSDictionary *)changedAttributesByOID objectForKeyedSubscript:v5];
-  v7 = [v6 unsignedLongLongValue];
+  dCopy = d;
+  v6 = [(NSDictionary *)changedAttributesByOID objectForKeyedSubscript:dCopy];
+  unsignedLongLongValue = [v6 unsignedLongLongValue];
 
   v8 = MEMORY[0x1E69BE6F8];
   v15[0] = @"favorite";
   v9 = 1;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
-  v11 = [v5 entity];
+  entity = [dCopy entity];
 
-  v12 = [v11 name];
-  v13 = [v8 indexValueForAttributeNames:v10 entity:v12];
+  name = [entity name];
+  v13 = [v8 indexValueForAttributeNames:v10 entity:name];
 
-  if ((v13 & v7) == 0)
+  if ((v13 & unsignedLongLongValue) == 0)
   {
     return self->_unknownMergeEvent;
   }
@@ -2036,24 +2036,24 @@ uint64_t __35__PHChange_changeDetailsForObject___block_invoke(uint64_t a1)
   return v9;
 }
 
-- (BOOL)hiddenStateChangedForPHAssetOID:(id)a3
+- (BOOL)hiddenStateChangedForPHAssetOID:(id)d
 {
   v15[1] = *MEMORY[0x1E69E9840];
   changedAttributesByOID = self->_changedAttributesByOID;
-  v5 = a3;
-  v6 = [(NSDictionary *)changedAttributesByOID objectForKeyedSubscript:v5];
-  v7 = [v6 unsignedLongLongValue];
+  dCopy = d;
+  v6 = [(NSDictionary *)changedAttributesByOID objectForKeyedSubscript:dCopy];
+  unsignedLongLongValue = [v6 unsignedLongLongValue];
 
   v8 = MEMORY[0x1E69BE6F8];
   v15[0] = @"hidden";
   v9 = 1;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
-  v11 = [v5 entity];
+  entity = [dCopy entity];
 
-  v12 = [v11 name];
-  v13 = [v8 indexValueForAttributeNames:v10 entity:v12];
+  name = [entity name];
+  v13 = [v8 indexValueForAttributeNames:v10 entity:name];
 
-  if ((v13 & v7) == 0)
+  if ((v13 & unsignedLongLongValue) == 0)
   {
     return self->_unknownMergeEvent;
   }
@@ -2061,39 +2061,39 @@ uint64_t __35__PHChange_changeDetailsForObject___block_invoke(uint64_t a1)
   return v9;
 }
 
-- (BOOL)trashedStateChangedForObjectID:(id)a3
+- (BOOL)trashedStateChangedForObjectID:(id)d
 {
   changedAttributesByOID = self->_changedAttributesByOID;
-  v5 = a3;
-  v6 = [(NSDictionary *)changedAttributesByOID objectForKeyedSubscript:v5];
-  v7 = [v6 unsignedLongLongValue];
+  dCopy = d;
+  v6 = [(NSDictionary *)changedAttributesByOID objectForKeyedSubscript:dCopy];
+  unsignedLongLongValue = [v6 unsignedLongLongValue];
 
   v8 = MEMORY[0x1E69BE6F8];
-  v9 = [v5 entity];
+  entity = [dCopy entity];
 
-  v10 = [v9 name];
-  v11 = [v8 indexValueForAttributeNames:&unk_1F102DF88 entity:v10];
+  name = [entity name];
+  v11 = [v8 indexValueForAttributeNames:&unk_1F102DF88 entity:name];
 
-  return (v11 & v7) != 0 || self->_unknownMergeEvent;
+  return (v11 & unsignedLongLongValue) != 0 || self->_unknownMergeEvent;
 }
 
-- (BOOL)contentOrThumbnailChangedForAsset:(id)a3
+- (BOOL)contentOrThumbnailChangedForAsset:(id)asset
 {
-  v4 = [a3 objectID];
-  LOBYTE(self) = [(PHChange *)self contentOrThumbnailChangedForPHAssetOID:v4];
+  objectID = [asset objectID];
+  LOBYTE(self) = [(PHChange *)self contentOrThumbnailChangedForPHAssetOID:objectID];
 
   return self;
 }
 
-- (BOOL)contentOrThumbnailChangedForPHAssetOID:(id)a3
+- (BOOL)contentOrThumbnailChangedForPHAssetOID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   if (!self->_unknownMergeEvent)
   {
-    v6 = [(NSDictionary *)self->_changedAttributesByOID objectForKeyedSubscript:v4];
-    v5 = [v6 unsignedLongLongValue];
+    v6 = [(NSDictionary *)self->_changedAttributesByOID objectForKeyedSubscript:dCopy];
+    unsignedLongLongValue = [v6 unsignedLongLongValue];
 
-    if (!v5)
+    if (!unsignedLongLongValue)
     {
       goto LABEL_12;
     }
@@ -2103,37 +2103,37 @@ uint64_t __35__PHChange_changeDetailsForObject___block_invoke(uint64_t a1)
       dispatch_once(&contentOrThumbnailChangedForPHAssetOID__onceToken, &__block_literal_global_14911);
     }
 
-    v7 = [v4 entity];
-    v8 = [v7 name];
+    entity = [dCopy entity];
+    name = [entity name];
 
-    v9 = [MEMORY[0x1E69BE540] entityName];
-    if ([v8 isEqualToString:v9])
+    entityName = [MEMORY[0x1E69BE540] entityName];
+    if ([name isEqualToString:entityName])
     {
     }
 
     else
     {
-      v10 = [MEMORY[0x1E69BE540] entityName];
-      v11 = [v8 isEqualToString:v10];
+      entityName2 = [MEMORY[0x1E69BE540] entityName];
+      v11 = [name isEqualToString:entityName2];
 
       if (!v11)
       {
-        v12 = [MEMORY[0x1E69BE6F8] indexValueForAttributeNames:contentOrThumbnailChangedForPHAssetOID__genericAssetAttributeNames entity:v8];
+        v12 = [MEMORY[0x1E69BE6F8] indexValueForAttributeNames:contentOrThumbnailChangedForPHAssetOID__genericAssetAttributeNames entity:name];
         goto LABEL_11;
       }
     }
 
     v12 = contentOrThumbnailChangedForPHAssetOID__genericAssetContentAttributes;
 LABEL_11:
-    LOBYTE(v5) = (v12 & v5) != 0;
+    LOBYTE(unsignedLongLongValue) = (v12 & unsignedLongLongValue) != 0;
 
     goto LABEL_12;
   }
 
-  LOBYTE(v5) = 1;
+  LOBYTE(unsignedLongLongValue) = 1;
 LABEL_12:
 
-  return v5;
+  return unsignedLongLongValue;
 }
 
 void __51__PHChange_contentOrThumbnailChangedForPHAssetOID___block_invoke()
@@ -2156,24 +2156,24 @@ void __51__PHChange_contentOrThumbnailChangedForPHAssetOID___block_invoke()
   contentOrThumbnailChangedForPHAssetOID__genericAssetContentAttributes = [v2 indexValueForAttributeNames:v3 entity:v4];
 }
 
-- (BOOL)keyFaceChangedForPersonOID:(id)a3
+- (BOOL)keyFaceChangedForPersonOID:(id)d
 {
   v15[1] = *MEMORY[0x1E69E9840];
   changedRelationshipsByOID = self->_changedRelationshipsByOID;
-  v5 = a3;
-  v6 = [(NSDictionary *)changedRelationshipsByOID objectForKeyedSubscript:v5];
-  v7 = [v6 unsignedLongLongValue];
+  dCopy = d;
+  v6 = [(NSDictionary *)changedRelationshipsByOID objectForKeyedSubscript:dCopy];
+  unsignedLongLongValue = [v6 unsignedLongLongValue];
 
   v8 = MEMORY[0x1E69BE6F8];
   v15[0] = @"keyFace";
   v9 = 1;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
-  v11 = [v5 entity];
+  entity = [dCopy entity];
 
-  v12 = [v11 name];
-  v13 = [v8 indexValueForRelationshipNames:v10 entity:v12];
+  name = [entity name];
+  v13 = [v8 indexValueForRelationshipNames:v10 entity:name];
 
-  if ((v13 & v7) == 0)
+  if ((v13 & unsignedLongLongValue) == 0)
   {
     return self->_unknownMergeEvent;
   }
@@ -2181,12 +2181,12 @@ void __51__PHChange_contentOrThumbnailChangedForPHAssetOID___block_invoke()
   return v9;
 }
 
-- (id)_preloadChangeDetailsWithClearCacheForFetchResults:(id)a3 inManagedObjectContext:(id)a4
+- (id)_preloadChangeDetailsWithClearCacheForFetchResults:(id)results inManagedObjectContext:(id)context
 {
-  v4 = a3;
-  [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v4, "count")}];
-  v9 = v8 = v4;
-  v5 = v4;
+  resultsCopy = results;
+  [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(resultsCopy, "count")}];
+  v9 = v8 = resultsCopy;
+  v5 = resultsCopy;
   pl_dispatch_sync();
   v6 = v9;
 
@@ -2245,18 +2245,18 @@ void __86__PHChange__preloadChangeDetailsWithClearCacheForFetchResults_inManaged
   }
 }
 
-- (id)_preloadChangeDetailsWithRefetchForFetchResults:(id)a3 inManagedObjectContext:(id)a4
+- (id)_preloadChangeDetailsWithRefetchForFetchResults:(id)results inManagedObjectContext:(id)context
 {
   v36 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v24 = a4;
-  v6 = [MEMORY[0x1E695DF90] dictionary];
+  resultsCopy = results;
+  contextCopy = context;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v7 = [MEMORY[0x1E695DFA8] set];
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v8 = v5;
+  v8 = resultsCopy;
   v9 = [v8 countByEnumeratingWithState:&v31 objects:v35 count:16];
   if (v9)
   {
@@ -2272,19 +2272,19 @@ void __86__PHChange__preloadChangeDetailsWithClearCacheForFetchResults_inManaged
         }
 
         v13 = *(*(&v31 + 1) + 8 * i);
-        v14 = [v13 query];
-        v15 = [v14 combinedQueryGroupKey];
+        query = [v13 query];
+        combinedQueryGroupKey = [query combinedQueryGroupKey];
 
-        if (v15)
+        if (combinedQueryGroupKey)
         {
-          v16 = [v6 objectForKeyedSubscript:v15];
-          if (!v16)
+          array = [dictionary objectForKeyedSubscript:combinedQueryGroupKey];
+          if (!array)
           {
-            v16 = [MEMORY[0x1E695DF70] array];
-            [v6 setObject:v16 forKeyedSubscript:v15];
+            array = [MEMORY[0x1E695DF70] array];
+            [dictionary setObject:array forKeyedSubscript:combinedQueryGroupKey];
           }
 
-          [v16 addObject:v13];
+          [array addObject:v13];
         }
 
         if ([v13 collectionFetchType] == 4)
@@ -2299,16 +2299,16 @@ void __86__PHChange__preloadChangeDetailsWithClearCacheForFetchResults_inManaged
     while (v10);
   }
 
-  v17 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary2 = [MEMORY[0x1E695DF90] dictionary];
   v28[0] = MEMORY[0x1E69E9820];
   v28[1] = 3221225472;
   v28[2] = __83__PHChange__preloadChangeDetailsWithRefetchForFetchResults_inManagedObjectContext___block_invoke;
   v28[3] = &unk_1E75A5BF8;
-  v29 = v24;
-  v30 = v17;
-  v18 = v17;
-  v19 = v24;
-  [v6 enumerateKeysAndObjectsUsingBlock:v28];
+  v29 = contextCopy;
+  v30 = dictionary2;
+  v18 = dictionary2;
+  v19 = contextCopy;
+  [dictionary enumerateKeysAndObjectsUsingBlock:v28];
   v20 = [v8 mutableCopy];
   [v20 minusSet:v7];
   [(PHChange *)self _updateChangeHandlingValuesIfNeeded:v20 seedOidsByFetchResult:v18 context:v19];
@@ -2406,17 +2406,17 @@ void __83__PHChange__preloadChangeDetailsWithRefetchForFetchResults_inManagedObj
   }
 }
 
-- (void)_updateChangeHandlingValuesIfNeeded:(id)a3 seedOidsByFetchResult:(id)a4 context:(id)a5
+- (void)_updateChangeHandlingValuesIfNeeded:(id)needed seedOidsByFetchResult:(id)result context:(id)context
 {
   v24 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v18 = a4;
-  v9 = a5;
+  neededCopy = needed;
+  resultCopy = result;
+  contextCopy = context;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v10 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  v10 = [neededCopy countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v10)
   {
     v11 = v10;
@@ -2427,41 +2427,41 @@ void __83__PHChange__preloadChangeDetailsWithRefetchForFetchResults_inManagedObj
       {
         if (*v20 != v12)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(neededCopy);
         }
 
         v14 = *(*(&v19 + 1) + 8 * i);
-        v15 = [v14 changeHandlingKey];
-        if (v15)
+        changeHandlingKey = [v14 changeHandlingKey];
+        if (changeHandlingKey)
         {
-          v16 = [(NSMapTable *)self->_changeHandlingMap objectForKey:v15];
+          v16 = [(NSMapTable *)self->_changeHandlingMap objectForKey:changeHandlingKey];
           if (!v16)
           {
-            v17 = [v18 objectForKeyedSubscript:v14];
-            v16 = [v14 changeHandlingValueUsingSeedOids:v17 withChange:self usingManagedObjectContext:v9];
-            [(NSMapTable *)self->_changeHandlingMap setObject:v16 forKey:v15];
+            v17 = [resultCopy objectForKeyedSubscript:v14];
+            v16 = [v14 changeHandlingValueUsingSeedOids:v17 withChange:self usingManagedObjectContext:contextCopy];
+            [(NSMapTable *)self->_changeHandlingMap setObject:v16 forKey:changeHandlingKey];
           }
         }
       }
 
-      v11 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v11 = [neededCopy countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v11);
   }
 }
 
-- (void)_propagatePropertyNamesToSubentityNames:(id)a3 moc:(id)a4
+- (void)_propagatePropertyNamesToSubentityNames:(id)names moc:(id)moc
 {
   v32 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v22 = a4;
+  namesCopy = names;
+  mocCopy = moc;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v6 = v5;
-  obj = [v5 allKeys];
+  v6 = namesCopy;
+  obj = [namesCopy allKeys];
   v7 = [obj countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v7)
   {
@@ -2495,8 +2495,8 @@ void __83__PHChange__preloadChangeDetailsWithRefetchForFetchResults_inManagedObj
 
         if (!v16)
         {
-          v18 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v18 handleFailureInMethod:a2 object:self file:@"PHChange.m" lineNumber:427 description:{@"Error fetching entityName:%@, moc:%@ error:%@", v11, v22, v15}];
+          currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler handleFailureInMethod:a2 object:self file:@"PHChange.m" lineNumber:427 description:{@"Error fetching entityName:%@, moc:%@ error:%@", v11, mocCopy, v15}];
         }
 
         v23[0] = MEMORY[0x1E69E9820];
@@ -2554,45 +2554,45 @@ void __56__PHChange__propagatePropertyNamesToSubentityNames_moc___block_invoke(u
   [v13 setObject:v12 forKeyedSubscript:v14];
 }
 
-- (id)_deletedObjectIDsMatchingEntities:(id)a3
+- (id)_deletedObjectIDsMatchingEntities:(id)entities
 {
-  v4 = [(PHChange *)self _entityNamesForEntities:a3];
+  v4 = [(PHChange *)self _entityNamesForEntities:entities];
   v5 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   if ([v4 count])
   {
-    v6 = [(PHChange *)self deletedObjectIDs];
-    _addOIDsWithEntityNames(v5, v6, v4);
+    deletedObjectIDs = [(PHChange *)self deletedObjectIDs];
+    _addOIDsWithEntityNames(v5, deletedObjectIDs, v4);
   }
 
   return v5;
 }
 
-- (id)_insertedOrUpdatedObjectIDsMatchingEntities:(id)a3
+- (id)_insertedOrUpdatedObjectIDsMatchingEntities:(id)entities
 {
-  v4 = [(PHChange *)self _entityNamesForEntities:a3];
+  v4 = [(PHChange *)self _entityNamesForEntities:entities];
   v5 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   if ([v4 count])
   {
-    v6 = [(PHChange *)self insertedObjectIDs];
-    _addOIDsWithEntityNames(v5, v6, v4);
+    insertedObjectIDs = [(PHChange *)self insertedObjectIDs];
+    _addOIDsWithEntityNames(v5, insertedObjectIDs, v4);
 
-    v7 = [(PHChange *)self updatedObjectIDs];
-    _addOIDsWithEntityNames(v5, v7, v4);
+    updatedObjectIDs = [(PHChange *)self updatedObjectIDs];
+    _addOIDsWithEntityNames(v5, updatedObjectIDs, v4);
   }
 
   return v5;
 }
 
-- (id)_entityNamesForEntities:(id)a3
+- (id)_entityNamesForEntities:(id)entities
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  entitiesCopy = entities;
   v4 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v3;
+  v5 = entitiesCopy;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -2632,13 +2632,13 @@ void __36__PHChange__entityNamesForEntities___block_invoke(uint64_t a1, void *a2
   [v2 addObject:v3];
 }
 
-- (void)preloadChangeDetailsForFetchResults:(id)a3 inManagedObjectContext:(id)a4 debugEvent:(id)a5 handler:(id)a6
+- (void)preloadChangeDetailsForFetchResults:(id)results inManagedObjectContext:(id)context debugEvent:(id)event handler:(id)handler
 {
   v121 = *MEMORY[0x1E69E9840];
-  v76 = a3;
-  v83 = a4;
-  v77 = a5;
-  v75 = a6;
+  resultsCopy = results;
+  contextCopy = context;
+  eventCopy = event;
+  handlerCopy = handler;
   context = objc_autoreleasePoolPush();
   v9 = PLChangeHandlingGetLog();
   v10 = os_signpost_id_generate(v9);
@@ -2650,7 +2650,7 @@ void __36__PHChange__entityNamesForEntities___block_invoke(uint64_t a1, void *a2
   if (v10 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v11))
   {
     *buf = 134217984;
-    v107 = [v76 count];
+    selfCopy4 = [resultsCopy count];
     _os_signpost_emit_with_name_impl(&dword_19C86F000, v12, OS_SIGNPOST_INTERVAL_BEGIN, v10, "PreloadChangeDetails", "fetch results: %tu", buf, 0xCu);
   }
 
@@ -2658,10 +2658,10 @@ void __36__PHChange__entityNamesForEntities___block_invoke(uint64_t a1, void *a2
 
   v85 = [MEMORY[0x1E695DFA8] set];
   v81 = [MEMORY[0x1E695DFA8] set];
-  v13 = self;
+  selfCopy5 = self;
   if (self->_unknownMergeEvent)
   {
-    [v85 unionSet:v76];
+    [v85 unionSet:resultsCopy];
     goto LABEL_56;
   }
 
@@ -2674,7 +2674,7 @@ void __36__PHChange__entityNamesForEntities___block_invoke(uint64_t a1, void *a2
   v105 = 0u;
   v102 = 0u;
   v103 = 0u;
-  obj = v76;
+  obj = resultsCopy;
   v14 = [obj countByEnumeratingWithState:&v102 objects:v120 count:16];
   if (v14)
   {
@@ -2696,34 +2696,34 @@ void __36__PHChange__entityNamesForEntities___block_invoke(uint64_t a1, void *a2
         {
           if (v18 != 8 || ([v16 fetchedObjectIDs], v19 = objc_claimAutoreleasedReturnValue(), v20 = objc_msgSend(v19, "count") == 0, v19, v20))
           {
-            v21 = [v16 query];
-            v22 = [v21 fetchRequest];
-            v23 = [v22 entity];
+            query = [v16 query];
+            fetchRequest = [query fetchRequest];
+            entity = [fetchRequest entity];
 
-            v24 = [v23 name];
-            v25 = [v21 filteringKeys];
-            v26 = v25;
+            name = [entity name];
+            filteringKeys = [query filteringKeys];
+            v26 = filteringKeys;
             LOBYTE(v27) = v86;
             if (v82)
             {
-              v27 = [v25 containsObject:@"activeLibraryScopeParticipationState"] | v86;
+              v27 = [filteringKeys containsObject:@"activeLibraryScopeParticipationState"] | v86;
             }
 
-            if (v83 && v26 && (v27 & 1) != 0 && ([MEMORY[0x1E69BE6F8] includesToManyRelationship:v26 entity:v24] & 1) == 0 && !objc_msgSend(v21, "requiresFullRefetchForChange:", self))
+            if (contextCopy && v26 && (v27 & 1) != 0 && ([MEMORY[0x1E69BE6F8] includesToManyRelationship:v26 entity:name] & 1) == 0 && !objc_msgSend(query, "requiresFullRefetchForChange:", self))
             {
-              v28 = [v23 name];
-              v29 = [v80 objectForKeyedSubscript:v28];
+              name2 = [entity name];
+              v29 = [v80 objectForKeyedSubscript:name2];
 
               if (!v29)
               {
                 v29 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-                v30 = [v23 name];
-                [v80 setObject:v29 forKeyedSubscript:v30];
+                name3 = [entity name];
+                [v80 setObject:v29 forKeyedSubscript:name3];
               }
 
               [v29 unionSet:v26];
               [v78 addObject:v16];
-              [v79 addObject:v23];
+              [v79 addObject:entity];
             }
 
             else
@@ -2760,7 +2760,7 @@ void __36__PHChange__entityNamesForEntities___block_invoke(uint64_t a1, void *a2
     {
       v34 = [v32 count];
       *buf = 134218754;
-      v107 = self;
+      selfCopy4 = self;
       v108 = 2048;
       v109 = v34;
       v110 = 2048;
@@ -2776,21 +2776,21 @@ void __36__PHChange__entityNamesForEntities___block_invoke(uint64_t a1, void *a2
 
   if ([v32 count] || objc_msgSend(v87, "count"))
   {
-    [(PHChange *)self _propagatePropertyNamesToSubentityNames:v80 moc:v83, spid];
+    [(PHChange *)self _propagatePropertyNamesToSubentityNames:v80 moc:contextCopy, spid];
     v35 = PLPhotoKitGetLog();
     if (os_log_type_enabled(v35, OS_LOG_TYPE_DEBUG))
     {
-      v36 = [v80 _pl_prettyDescription];
+      _pl_prettyDescription = [v80 _pl_prettyDescription];
       *buf = 134218242;
-      v107 = self;
+      selfCopy4 = self;
       v108 = 2112;
-      v109 = v36;
+      v109 = _pl_prettyDescription;
       _os_log_impl(&dword_19C86F000, v35, OS_LOG_TYPE_DEBUG, "PHChange:%p: preloadChangeDetails propertiesToFetchByEntityName:%@", buf, 0x16u);
     }
 
-    v37 = [v89 allObjects];
-    v38 = [(PHChange *)self library];
-    v39 = [PHPropertyFetchingHelper fetchPropertiesForObjectIDs:v37 propertyNamesByEntityName:v80 photoLibrary:v38];
+    allObjects = [v89 allObjects];
+    library = [(PHChange *)self library];
+    v39 = [PHPropertyFetchingHelper fetchPropertiesForObjectIDs:allObjects propertyNamesByEntityName:v80 photoLibrary:library];
 
     v100 = 0u;
     v101 = 0u;
@@ -2809,7 +2809,7 @@ LABEL_52:
         v51 = [v85 count];
         v52 = [v81 count];
         *buf = 134218752;
-        v107 = self;
+        selfCopy4 = self;
         v108 = 2048;
         v109 = v51;
         v110 = 2048;
@@ -2837,8 +2837,8 @@ LABEL_40:
       v47 = [v45 possibleChangesForChange:self propertiesFetchResult:v39];
       if (v47 == 8)
       {
-        v48 = [v45 fetchedObjectIDs];
-        v49 = [v48 count] == 0;
+        fetchedObjectIDs = [v45 fetchedObjectIDs];
+        v49 = [fetchedObjectIDs count] == 0;
 
         if (v49)
         {
@@ -2873,21 +2873,21 @@ LABEL_50:
 
 LABEL_55:
 
-  v13 = self;
+  selfCopy5 = self;
 LABEL_56:
   v53 = [v85 copy];
-  refetchedFetchResults = v13->_refetchedFetchResults;
-  v13->_refetchedFetchResults = v53;
+  refetchedFetchResults = selfCopy5->_refetchedFetchResults;
+  selfCopy5->_refetchedFetchResults = v53;
 
   [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
-  [v77 setPreloadTimestamp:?];
-  [v77 setFetchResultsToRefetchCount:{objc_msgSend(v85, "count")}];
-  [v77 setFetchResultsToClearCount:{objc_msgSend(v81, "count")}];
+  [eventCopy setPreloadTimestamp:?];
+  [eventCopy setFetchResultsToRefetchCount:{objc_msgSend(v85, "count")}];
+  [eventCopy setFetchResultsToClearCount:{objc_msgSend(v81, "count")}];
   v55 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v81, "count") + objc_msgSend(v85, "count")}];
-  v56 = [(PHChange *)self _preloadChangeDetailsWithRefetchForFetchResults:v85 inManagedObjectContext:v83];
+  v56 = [(PHChange *)self _preloadChangeDetailsWithRefetchForFetchResults:v85 inManagedObjectContext:contextCopy];
   [v55 addObjectsFromArray:v56];
 
-  v57 = [(PHChange *)self _preloadChangeDetailsWithClearCacheForFetchResults:v81 inManagedObjectContext:v83];
+  v57 = [(PHChange *)self _preloadChangeDetailsWithClearCacheForFetchResults:v81 inManagedObjectContext:contextCopy];
   [v55 addObjectsFromArray:v57];
 
   v96 = 0;
@@ -2931,7 +2931,7 @@ LABEL_56:
     v68 = [v85 count];
     v69 = [v81 count];
     *buf = 134219264;
-    v107 = v64;
+    selfCopy4 = v64;
     v108 = 2048;
     v109 = v66;
     v110 = 2048;
@@ -2945,33 +2945,33 @@ LABEL_56:
     _os_signpost_emit_with_name_impl(&dword_19C86F000, v63, OS_SIGNPOST_INTERVAL_END, spida, "PreloadChangeDetails", "change details: %tu, inserted: %tu, updated: %tu, deleted: %tu, refetch: %tu, clear: %tu", buf, 0x3Eu);
   }
 
-  v75[2](v75, self);
+  handlerCopy[2](handlerCopy, self);
   objc_autoreleasePoolPop(context);
 }
 
-- (void)preloadSimulatedChangeDetailsForManualFetchResults:(id)a3 handler:(id)a4
+- (void)preloadSimulatedChangeDetailsForManualFetchResults:(id)results handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E695DF70] array];
+  resultsCopy = results;
+  handlerCopy = handler;
+  array = [MEMORY[0x1E695DF70] array];
   v17 = MEMORY[0x1E69E9820];
   v18 = 3221225472;
   v19 = __71__PHChange_preloadSimulatedChangeDetailsForManualFetchResults_handler___block_invoke;
   v20 = &unk_1E75AB248;
-  v21 = v6;
-  v22 = self;
-  v23 = v8;
-  v9 = v6;
+  v21 = resultsCopy;
+  selfCopy = self;
+  v23 = array;
+  v9 = resultsCopy;
   pl_dispatch_sync();
   v10 = +[PHChange handlerQueue];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __71__PHChange_preloadSimulatedChangeDetailsForManualFetchResults_handler___block_invoke_3;
   v13[3] = &unk_1E75AA870;
-  v15 = self;
-  v16 = v7;
+  selfCopy2 = self;
+  v16 = handlerCopy;
   v14 = v23;
-  v11 = v7;
+  v11 = handlerCopy;
   v12 = v23;
   dispatch_async(v10, v13);
 }
@@ -3037,46 +3037,46 @@ void __71__PHChange_preloadSimulatedChangeDetailsForManualFetchResults_handler__
   }
 }
 
-- (BOOL)anyUpdatedObjectsWithChangedRelationships:(unint64_t)a3 ofEntity:(id)a4
+- (BOOL)anyUpdatedObjectsWithChangedRelationships:(unint64_t)relationships ofEntity:(id)entity
 {
-  v6 = a4;
-  v7 = self;
-  objc_sync_enter(v7);
-  [(PHChange *)v7 _prepareCachedValuesForEntity:v6];
-  updatedObjectsChangedRelationshipsByEntityName = v7->_updatedObjectsChangedRelationshipsByEntityName;
-  v9 = [v6 name];
-  v10 = [(NSMutableDictionary *)updatedObjectsChangedRelationshipsByEntityName objectForKeyedSubscript:v9];
-  v11 = [v10 unsignedLongLongValue];
+  entityCopy = entity;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(PHChange *)selfCopy _prepareCachedValuesForEntity:entityCopy];
+  updatedObjectsChangedRelationshipsByEntityName = selfCopy->_updatedObjectsChangedRelationshipsByEntityName;
+  name = [entityCopy name];
+  v10 = [(NSMutableDictionary *)updatedObjectsChangedRelationshipsByEntityName objectForKeyedSubscript:name];
+  unsignedLongLongValue = [v10 unsignedLongLongValue];
 
-  objc_sync_exit(v7);
-  return (v11 & a3) != 0;
+  objc_sync_exit(selfCopy);
+  return (unsignedLongLongValue & relationships) != 0;
 }
 
-- (BOOL)anyUpdatedObjectsWithChangedAttributes:(unint64_t)a3 ofEntity:(id)a4
+- (BOOL)anyUpdatedObjectsWithChangedAttributes:(unint64_t)attributes ofEntity:(id)entity
 {
-  v6 = a4;
-  v7 = self;
-  objc_sync_enter(v7);
-  [(PHChange *)v7 _prepareCachedValuesForEntity:v6];
-  updatedObjectsChangedAttributesByEntityName = v7->_updatedObjectsChangedAttributesByEntityName;
-  v9 = [v6 name];
-  v10 = [(NSMutableDictionary *)updatedObjectsChangedAttributesByEntityName objectForKeyedSubscript:v9];
-  v11 = [v10 unsignedLongLongValue];
+  entityCopy = entity;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(PHChange *)selfCopy _prepareCachedValuesForEntity:entityCopy];
+  updatedObjectsChangedAttributesByEntityName = selfCopy->_updatedObjectsChangedAttributesByEntityName;
+  name = [entityCopy name];
+  v10 = [(NSMutableDictionary *)updatedObjectsChangedAttributesByEntityName objectForKeyedSubscript:name];
+  unsignedLongLongValue = [v10 unsignedLongLongValue];
 
-  objc_sync_exit(v7);
-  return (v11 & a3) != 0;
+  objc_sync_exit(selfCopy);
+  return (unsignedLongLongValue & attributes) != 0;
 }
 
-- (void)_prepareCachedValuesForEntity:(id)a3
+- (void)_prepareCachedValuesForEntity:(id)entity
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 name];
-  v6 = [(NSMutableDictionary *)self->_updatedObjectsChangedAttributesByEntityName objectForKeyedSubscript:v5];
+  entityCopy = entity;
+  name = [entityCopy name];
+  v6 = [(NSMutableDictionary *)self->_updatedObjectsChangedAttributesByEntityName objectForKeyedSubscript:name];
 
   if (!v6)
   {
-    v22 = v5;
+    v22 = name;
     v26 = 0u;
     v27 = 0u;
     v24 = 0u;
@@ -3099,19 +3099,19 @@ void __71__PHChange_preloadSimulatedChangeDetailsForManualFetchResults_handler__
           }
 
           v13 = *(*(&v24 + 1) + 8 * i);
-          v14 = [v13 entity];
-          v15 = [v14 isKindOfEntity:v4];
+          entity = [v13 entity];
+          v15 = [entity isKindOfEntity:entityCopy];
 
           if (v15)
           {
             v16 = [(NSDictionary *)self->_changedAttributesByOID objectForKeyedSubscript:v13];
-            v17 = [v16 unsignedLongLongValue];
+            unsignedLongLongValue = [v16 unsignedLongLongValue];
 
-            v10 |= v17;
+            v10 |= unsignedLongLongValue;
             v18 = [(NSDictionary *)self->_changedRelationshipsByOID objectForKeyedSubscript:v13];
-            v19 = [v18 unsignedLongLongValue];
+            unsignedLongLongValue2 = [v18 unsignedLongLongValue];
 
-            v9 |= v19;
+            v9 |= unsignedLongLongValue2;
           }
         }
 
@@ -3128,7 +3128,7 @@ void __71__PHChange_preloadSimulatedChangeDetailsForManualFetchResults_handler__
     }
 
     v20 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v10];
-    v5 = v22;
+    name = v22;
     [(NSMutableDictionary *)self->_updatedObjectsChangedAttributesByEntityName setObject:v20 forKeyedSubscript:v22];
 
     v21 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v9];
@@ -3138,101 +3138,101 @@ void __71__PHChange_preloadSimulatedChangeDetailsForManualFetchResults_handler__
 
 - (unint64_t)totalChangeCount
 {
-  v3 = [(PHChange *)self insertedObjectIDs];
-  v4 = [v3 count];
+  insertedObjectIDs = [(PHChange *)self insertedObjectIDs];
+  v4 = [insertedObjectIDs count];
 
-  v5 = [(PHChange *)self updatedObjectIDs];
-  v6 = [v5 count];
+  updatedObjectIDs = [(PHChange *)self updatedObjectIDs];
+  v6 = [updatedObjectIDs count];
 
-  v7 = [(PHChange *)self deletedObjectIDs];
-  v8 = [v7 count];
+  deletedObjectIDs = [(PHChange *)self deletedObjectIDs];
+  v8 = [deletedObjectIDs count];
 
   return v6 + v4 + v8;
 }
 
-- (PHChange)initWithInsertedObjectIDs:(id)a3 updatedObjectIDs:(id)a4 deletedObjectIDs:(id)a5 deletedUuidsByObjectId:(id)a6 deletedPrimaryLabelCodesByOID:(id)a7 changedAttributesByOID:(id)a8 changedRelationshipsByOID:(id)a9 unknownMergeEvent:(BOOL)a10 changeToken:(id)a11 fetchOptions:(id)a12 library:(id)a13 managedObjectContext:(id)a14 enumerationContext:(id)a15
+- (PHChange)initWithInsertedObjectIDs:(id)ds updatedObjectIDs:(id)iDs deletedObjectIDs:(id)objectIDs deletedUuidsByObjectId:(id)id deletedPrimaryLabelCodesByOID:(id)d changedAttributesByOID:(id)iD changedRelationshipsByOID:(id)oID unknownMergeEvent:(BOOL)self0 changeToken:(id)self1 fetchOptions:(id)self2 library:(id)self3 managedObjectContext:(id)self4 enumerationContext:(id)self5
 {
-  v49 = a3;
-  v40 = a4;
-  v48 = a4;
-  v47 = a5;
-  v20 = a6;
-  v21 = a7;
-  v46 = a8;
-  v45 = a9;
-  v44 = a11;
-  v43 = a12;
-  v42 = a13;
-  v22 = a14;
-  v23 = a15;
+  dsCopy = ds;
+  iDsCopy = iDs;
+  iDsCopy2 = iDs;
+  objectIDsCopy = objectIDs;
+  idCopy = id;
+  dCopy = d;
+  iDCopy = iD;
+  oIDCopy = oID;
+  tokenCopy = token;
+  optionsCopy = options;
+  libraryCopy = library;
+  contextCopy = context;
+  enumerationContextCopy = enumerationContext;
   v24 = [(PHChange *)self init];
   v25 = v24;
   if (v24)
   {
-    objc_storeStrong(&v24->_insertedObjectIDs, a3);
-    objc_storeStrong(&v25->_changedObjectIDs, v40);
-    objc_storeStrong(&v25->_deletedObjectIDs, a5);
-    v26 = [v20 copy];
+    objc_storeStrong(&v24->_insertedObjectIDs, ds);
+    objc_storeStrong(&v25->_changedObjectIDs, iDsCopy);
+    objc_storeStrong(&v25->_deletedObjectIDs, objectIDs);
+    v26 = [idCopy copy];
     deletedUuidsByObjectId = v25->_deletedUuidsByObjectId;
     v25->_deletedUuidsByObjectId = v26;
 
-    v28 = [v21 copy];
+    v28 = [dCopy copy];
     deletedPrimaryLabelCodesByObjectId = v25->_deletedPrimaryLabelCodesByObjectId;
     v25->_deletedPrimaryLabelCodesByObjectId = v28;
 
-    objc_storeStrong(&v25->_changedAttributesByOID, a8);
-    objc_storeStrong(&v25->_changedRelationshipsByOID, a9);
-    v25->_unknownMergeEvent = a10;
-    objc_storeStrong(&v25->_changeToken, a11);
-    objc_storeStrong(&v25->_fetchOptions, a12);
-    objc_storeStrong(&v25->_context, a14);
-    objc_storeStrong(&v25->_enumerationContext, a15);
-    objc_storeStrong(&v25->_library, a13);
+    objc_storeStrong(&v25->_changedAttributesByOID, iD);
+    objc_storeStrong(&v25->_changedRelationshipsByOID, oID);
+    v25->_unknownMergeEvent = event;
+    objc_storeStrong(&v25->_changeToken, token);
+    objc_storeStrong(&v25->_fetchOptions, options);
+    objc_storeStrong(&v25->_context, context);
+    objc_storeStrong(&v25->_enumerationContext, enumerationContext);
+    objc_storeStrong(&v25->_library, library);
     v30 = objc_alloc(MEMORY[0x1E69BE808]);
-    v31 = [(NSSet *)v25->_changedObjectIDs allObjects];
-    v32 = [v30 initWithChangedObjects:v31];
+    allObjects = [(NSSet *)v25->_changedObjectIDs allObjects];
+    v32 = [v30 initWithChangedObjects:allObjects];
     sortedChangedObjectIDs = v25->_sortedChangedObjectIDs;
     v25->_sortedChangedObjectIDs = v32;
 
-    v34 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     updatedObjectsChangedAttributesByEntityName = v25->_updatedObjectsChangedAttributesByEntityName;
-    v25->_updatedObjectsChangedAttributesByEntityName = v34;
+    v25->_updatedObjectsChangedAttributesByEntityName = dictionary;
 
-    v36 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     updatedObjectsChangedRelationshipsByEntityName = v25->_updatedObjectsChangedRelationshipsByEntityName;
-    v25->_updatedObjectsChangedRelationshipsByEntityName = v36;
+    v25->_updatedObjectsChangedRelationshipsByEntityName = dictionary2;
   }
 
   return v25;
 }
 
-- (PHChange)initWithChangedIdentifiers:(id)a3 unknownMergeEvent:(BOOL)a4 changeToken:(id)a5 library:(id)a6
+- (PHChange)initWithChangedIdentifiers:(id)identifiers unknownMergeEvent:(BOOL)event changeToken:(id)token library:(id)library
 {
   v10 = *MEMORY[0x1E695D320];
-  v11 = a6;
-  v12 = a5;
-  v13 = a3;
-  v14 = [v13 objectForKeyedSubscript:v10];
-  v15 = [v13 objectForKeyedSubscript:*MEMORY[0x1E695D4C8]];
-  v16 = [v13 objectForKeyedSubscript:*MEMORY[0x1E695D2F0]];
-  v17 = [v13 objectForKeyedSubscript:*MEMORY[0x1E69BF120]];
-  v18 = [v13 objectForKeyedSubscript:*MEMORY[0x1E69BF128]];
+  libraryCopy = library;
+  tokenCopy = token;
+  identifiersCopy = identifiers;
+  v14 = [identifiersCopy objectForKeyedSubscript:v10];
+  v15 = [identifiersCopy objectForKeyedSubscript:*MEMORY[0x1E695D4C8]];
+  v16 = [identifiersCopy objectForKeyedSubscript:*MEMORY[0x1E695D2F0]];
+  v17 = [identifiersCopy objectForKeyedSubscript:*MEMORY[0x1E69BF120]];
+  v18 = [identifiersCopy objectForKeyedSubscript:*MEMORY[0x1E69BF128]];
 
-  LOBYTE(v21) = a4;
-  v19 = [(PHChange *)self initWithInsertedObjectIDs:v14 updatedObjectIDs:v15 deletedObjectIDs:v16 deletedUuidsByObjectId:0 deletedPrimaryLabelCodesByOID:0 changedAttributesByOID:v17 changedRelationshipsByOID:v18 unknownMergeEvent:v21 changeToken:v12 fetchOptions:0 library:v11 managedObjectContext:0 enumerationContext:0];
+  LOBYTE(v21) = event;
+  v19 = [(PHChange *)self initWithInsertedObjectIDs:v14 updatedObjectIDs:v15 deletedObjectIDs:v16 deletedUuidsByObjectId:0 deletedPrimaryLabelCodesByOID:0 changedAttributesByOID:v17 changedRelationshipsByOID:v18 unknownMergeEvent:v21 changeToken:tokenCopy fetchOptions:0 library:libraryCopy managedObjectContext:0 enumerationContext:0];
 
   return v19;
 }
 
-+ (id)mergePersistedChanges:(id)a3
++ (id)mergePersistedChanges:(id)changes
 {
   v69 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if ([v3 count])
+  changesCopy = changes;
+  if ([changesCopy count])
   {
-    if ([v3 count] == 1)
+    if ([changesCopy count] == 1)
     {
-      v4 = [v3 firstObject];
+      firstObject = [changesCopy firstObject];
     }
 
     else
@@ -3240,32 +3240,32 @@ void __71__PHChange_preloadSimulatedChangeDetailsForManualFetchResults_handler__
       v58 = [MEMORY[0x1E695DFA8] set];
       v52 = [MEMORY[0x1E695DFA8] set];
       v57 = [MEMORY[0x1E695DFA8] set];
-      v5 = [MEMORY[0x1E695DF90] dictionary];
-      v6 = [MEMORY[0x1E695DF90] dictionary];
-      v56 = [MEMORY[0x1E695DF90] dictionary];
-      v54 = [MEMORY[0x1E695DF90] dictionary];
-      v7 = [v3 lastObject];
-      v48 = [v7 changeToken];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
+      dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary3 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary4 = [MEMORY[0x1E695DF90] dictionary];
+      lastObject = [changesCopy lastObject];
+      changeToken = [lastObject changeToken];
 
-      v8 = [v3 lastObject];
-      v49 = [v8 context];
+      lastObject2 = [changesCopy lastObject];
+      context = [lastObject2 context];
 
-      v9 = [v3 lastObject];
-      v46 = [v9 fetchOptions];
+      lastObject3 = [changesCopy lastObject];
+      fetchOptions = [lastObject3 fetchOptions];
 
-      v10 = [v3 lastObject];
-      v45 = [v10 library];
+      lastObject4 = [changesCopy lastObject];
+      library = [lastObject4 library];
 
-      v11 = [v3 lastObject];
-      v44 = [v11 enumerationContext];
+      lastObject5 = [changesCopy lastObject];
+      enumerationContext = [lastObject5 enumerationContext];
 
       context = objc_autoreleasePoolPush();
       v63 = 0u;
       v64 = 0u;
       v65 = 0u;
       v66 = 0u;
-      v47 = v3;
-      obj = v3;
+      v47 = changesCopy;
+      obj = changesCopy;
       v12 = [obj countByEnumeratingWithState:&v63 objects:v68 count:16];
       if (v12)
       {
@@ -3284,9 +3284,9 @@ void __71__PHChange_preloadSimulatedChangeDetailsForManualFetchResults_handler__
             v17 = objc_autoreleasePoolPush();
             if (([v16 hasIncrementalChanges] & 1) == 0)
             {
-              v36 = [v16 changeToken];
+              changeToken2 = [v16 changeToken];
 
-              v37 = [v16 context];
+              context2 = [v16 context];
 
               objc_autoreleasePoolPop(v17);
               v38 = objc_alloc_init(MEMORY[0x1E695DFA8]);
@@ -3295,36 +3295,36 @@ void __71__PHChange_preloadSimulatedChangeDetailsForManualFetchResults_handler__
               v39 = objc_alloc_init(MEMORY[0x1E695DF90]);
 
               v40 = objc_alloc_init(MEMORY[0x1E695DF90]);
-              v27 = objc_alloc_init(MEMORY[0x1E695DF90]);
+              dictionary6 = objc_alloc_init(MEMORY[0x1E695DF90]);
               v53 = 1;
-              v48 = v36;
-              v35 = v37;
+              changeToken = changeToken2;
+              v35 = context2;
               v34 = v40;
-              v56 = v39;
+              dictionary3 = v39;
               v57 = v28;
-              v26 = v27;
+              dictionary5 = dictionary6;
               v58 = v28;
               goto LABEL_22;
             }
 
-            v18 = [v16 insertedObjectIDs];
-            [v58 unionSet:v18];
+            insertedObjectIDs = [v16 insertedObjectIDs];
+            [v58 unionSet:insertedObjectIDs];
 
-            v19 = [v16 updatedObjectIDs];
-            [v52 unionSet:v19];
+            updatedObjectIDs = [v16 updatedObjectIDs];
+            [v52 unionSet:updatedObjectIDs];
 
-            v20 = [v16 deletedObjectIDs];
-            [v57 unionSet:v20];
+            deletedObjectIDs = [v16 deletedObjectIDs];
+            [v57 unionSet:deletedObjectIDs];
 
-            v21 = [v16 changedAttributesByOID];
-            __34__PHChange_mergePersistedChanges___block_invoke(v21, v5);
-            v22 = [v16 changedRelationshipsByOID];
-            __34__PHChange_mergePersistedChanges___block_invoke(v22, v6);
-            v23 = [v16 deletedUuidsByObjectId];
-            [v56 addEntriesFromDictionary:v23];
+            changedAttributesByOID = [v16 changedAttributesByOID];
+            __34__PHChange_mergePersistedChanges___block_invoke(changedAttributesByOID, dictionary);
+            changedRelationshipsByOID = [v16 changedRelationshipsByOID];
+            __34__PHChange_mergePersistedChanges___block_invoke(changedRelationshipsByOID, dictionary2);
+            deletedUuidsByObjectId = [v16 deletedUuidsByObjectId];
+            [dictionary3 addEntriesFromDictionary:deletedUuidsByObjectId];
 
-            v24 = [v16 deletedPrimaryLabelCodesByObjectId];
-            [v54 addEntriesFromDictionary:v24];
+            deletedPrimaryLabelCodesByObjectId = [v16 deletedPrimaryLabelCodesByObjectId];
+            [dictionary4 addEntriesFromDictionary:deletedPrimaryLabelCodesByObjectId];
 
             objc_autoreleasePoolPop(v17);
           }
@@ -3345,8 +3345,8 @@ void __71__PHChange_preloadSimulatedChangeDetailsForManualFetchResults_handler__
       [v52 minusSet:v58];
       obja = v25;
       [v57 minusSet:v25];
-      v26 = [MEMORY[0x1E695DF90] dictionary];
-      v27 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary5 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary6 = [MEMORY[0x1E695DF90] dictionary];
       v59 = 0u;
       v60 = 0u;
       v61 = 0u;
@@ -3367,8 +3367,8 @@ void __71__PHChange_preloadSimulatedChangeDetailsForManualFetchResults_handler__
             }
 
             v33 = *(*(&v59 + 1) + 8 * j);
-            __34__PHChange_mergePersistedChanges___block_invoke_3(v33, v5, v26);
-            __34__PHChange_mergePersistedChanges___block_invoke_3(v33, v6, v27);
+            __34__PHChange_mergePersistedChanges___block_invoke_3(v33, dictionary, dictionary5);
+            __34__PHChange_mergePersistedChanges___block_invoke_3(v33, dictionary2, dictionary6);
           }
 
           v30 = [v28 countByEnumeratingWithState:&v59 objects:v67 count:16];
@@ -3378,24 +3378,24 @@ void __71__PHChange_preloadSimulatedChangeDetailsForManualFetchResults_handler__
       }
 
       v53 = 0;
-      v34 = v54;
-      v35 = v49;
+      v34 = dictionary4;
+      v35 = context;
 LABEL_22:
       v55 = v34;
       objc_autoreleasePoolPop(context);
       LOBYTE(v42) = v53;
-      v4 = [[PHChange alloc] initWithInsertedObjectIDs:v58 updatedObjectIDs:v28 deletedObjectIDs:v57 deletedUuidsByObjectId:v56 deletedPrimaryLabelCodesByOID:v34 changedAttributesByOID:v26 changedRelationshipsByOID:v27 unknownMergeEvent:v42 changeToken:v48 fetchOptions:v46 library:v45 managedObjectContext:v35 enumerationContext:v44];
+      firstObject = [[PHChange alloc] initWithInsertedObjectIDs:v58 updatedObjectIDs:v28 deletedObjectIDs:v57 deletedUuidsByObjectId:dictionary3 deletedPrimaryLabelCodesByOID:v34 changedAttributesByOID:dictionary5 changedRelationshipsByOID:dictionary6 unknownMergeEvent:v42 changeToken:changeToken fetchOptions:fetchOptions library:library managedObjectContext:v35 enumerationContext:enumerationContext];
 
-      v3 = v47;
+      changesCopy = v47;
     }
   }
 
   else
   {
-    v4 = 0;
+    firstObject = 0;
   }
 
-  return v4;
+  return firstObject;
 }
 
 void __34__PHChange_mergePersistedChanges___block_invoke(void *a1, void *a2)
@@ -3490,12 +3490,12 @@ void __24__PHChange_handlerQueue__block_invoke()
   handlerQueue_handlerQueue = v2;
 }
 
-+ (BOOL)isPublicPHObjectChangeClass:(Class)a3
++ (BOOL)isPublicPHObjectChangeClass:(Class)class
 {
-  v4 = [a1 publicPHObjectChangeClasses];
-  LOBYTE(a3) = [v4 containsObject:a3];
+  publicPHObjectChangeClasses = [self publicPHObjectChangeClasses];
+  LOBYTE(class) = [publicPHObjectChangeClasses containsObject:class];
 
-  return a3;
+  return class;
 }
 
 + (id)publicPHObjectChangeClasses
@@ -3516,28 +3516,28 @@ uint64_t __39__PHChange_publicPHObjectChangeClasses__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (BOOL)membersOrAssetContainmentForSocialGroupChangedWithLocalIdentifier:(id)a3
+- (BOOL)membersOrAssetContainmentForSocialGroupChangedWithLocalIdentifier:(id)identifier
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v4 = [(NSMutableDictionary *)self->_objectIDsByLocalIdentifier objectForKeyedSubscript:a3];
-  v5 = [v4 entity];
-  v6 = [v5 name];
+  v4 = [(NSMutableDictionary *)self->_objectIDsByLocalIdentifier objectForKeyedSubscript:identifier];
+  entity = [v4 entity];
+  name = [entity name];
 
   v7 = [(NSDictionary *)self->_changedAttributesByOID objectForKeyedSubscript:v4];
-  v8 = [v7 unsignedLongLongValue];
+  unsignedLongLongValue = [v7 unsignedLongLongValue];
 
   v9 = MEMORY[0x1E69BE6F8];
   v18[0] = @"changeFlag2";
   unknownMergeEvent = 1;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:1];
-  v12 = [v9 indexValueForAttributeNames:v11 entity:v6];
+  v12 = [v9 indexValueForAttributeNames:v11 entity:name];
 
   v13 = MEMORY[0x1E69BE6F8];
   v17 = @"changeFlag4";
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v17 count:1];
-  v15 = [v13 indexValueForAttributeNames:v14 entity:v6];
+  v15 = [v13 indexValueForAttributeNames:v14 entity:name];
 
-  if (((v12 | v15) & v8) == 0)
+  if (((v12 | v15) & unsignedLongLongValue) == 0)
   {
     unknownMergeEvent = self->_unknownMergeEvent;
   }
@@ -3545,22 +3545,22 @@ uint64_t __39__PHChange_publicPHObjectChangeClasses__block_invoke()
   return unknownMergeEvent;
 }
 
-- (BOOL)userFeedbackRelationshipChangedForObject:(id)a3
+- (BOOL)userFeedbackRelationshipChangedForObject:(id)object
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v4 = [a3 objectID];
-  v5 = [(NSDictionary *)self->_changedRelationshipsByOID objectForKeyedSubscript:v4];
-  v6 = [v5 unsignedLongLongValue];
+  objectID = [object objectID];
+  v5 = [(NSDictionary *)self->_changedRelationshipsByOID objectForKeyedSubscript:objectID];
+  unsignedLongLongValue = [v5 unsignedLongLongValue];
 
   v7 = MEMORY[0x1E69BE6F8];
   v14[0] = @"userFeedbacks";
   unknownMergeEvent = 1;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
-  v10 = [v4 entity];
-  v11 = [v10 name];
-  v12 = [v7 indexValueForRelationshipNames:v9 entity:v11];
+  entity = [objectID entity];
+  name = [entity name];
+  v12 = [v7 indexValueForRelationshipNames:v9 entity:name];
 
-  if ((v12 & v6) == 0)
+  if ((v12 & unsignedLongLongValue) == 0)
   {
     unknownMergeEvent = self->_unknownMergeEvent;
   }
@@ -3568,79 +3568,79 @@ uint64_t __39__PHChange_publicPHObjectChangeClasses__block_invoke()
   return unknownMergeEvent;
 }
 
-- (BOOL)keyAssetSharedOrDayGroupKeyAssetSharedChangedForHighlightWithLocalIdentifier:(id)a3
+- (BOOL)keyAssetSharedOrDayGroupKeyAssetSharedChangedForHighlightWithLocalIdentifier:(id)identifier
 {
   v14[2] = *MEMORY[0x1E69E9840];
-  v4 = [(NSMutableDictionary *)self->_objectIDsByLocalIdentifier objectForKeyedSubscript:a3];
+  v4 = [(NSMutableDictionary *)self->_objectIDsByLocalIdentifier objectForKeyedSubscript:identifier];
   v5 = [(NSDictionary *)self->_changedRelationshipsByOID objectForKeyedSubscript:v4];
-  v6 = [v5 unsignedLongLongValue];
+  unsignedLongLongValue = [v5 unsignedLongLongValue];
 
   v7 = MEMORY[0x1E69BE6F8];
   v14[0] = @"keyAssetShared";
   v14[1] = @"dayGroupKeyAssetShared";
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:2];
-  v9 = [v4 entity];
-  v10 = [v9 name];
-  v11 = [v7 indexValueForRelationshipNames:v8 entity:v10];
+  entity = [v4 entity];
+  name = [entity name];
+  v11 = [v7 indexValueForRelationshipNames:v8 entity:name];
 
-  v12 = (v11 & v6) != 0 || self->_unknownMergeEvent;
+  v12 = (v11 & unsignedLongLongValue) != 0 || self->_unknownMergeEvent;
   return v12;
 }
 
-- (BOOL)keyAssetPrivateOrDayGroupKeyAssetPrivateChangedForHighlightWithLocalIdentifier:(id)a3
+- (BOOL)keyAssetPrivateOrDayGroupKeyAssetPrivateChangedForHighlightWithLocalIdentifier:(id)identifier
 {
   v14[2] = *MEMORY[0x1E69E9840];
-  v4 = [(NSMutableDictionary *)self->_objectIDsByLocalIdentifier objectForKeyedSubscript:a3];
+  v4 = [(NSMutableDictionary *)self->_objectIDsByLocalIdentifier objectForKeyedSubscript:identifier];
   v5 = [(NSDictionary *)self->_changedRelationshipsByOID objectForKeyedSubscript:v4];
-  v6 = [v5 unsignedLongLongValue];
+  unsignedLongLongValue = [v5 unsignedLongLongValue];
 
   v7 = MEMORY[0x1E69BE6F8];
   v14[0] = @"keyAssetPrivate";
   v14[1] = @"dayGroupKeyAssetPrivate";
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:2];
-  v9 = [v4 entity];
-  v10 = [v9 name];
-  v11 = [v7 indexValueForRelationshipNames:v8 entity:v10];
+  entity = [v4 entity];
+  name = [entity name];
+  v11 = [v7 indexValueForRelationshipNames:v8 entity:name];
 
-  v12 = (v11 & v6) != 0 || self->_unknownMergeEvent;
+  v12 = (v11 & unsignedLongLongValue) != 0 || self->_unknownMergeEvent;
   return v12;
 }
 
-- (BOOL)assetsOrDayGroupAssetsRelationshipChangedForHighlightWithLocalIdentifier:(id)a3
+- (BOOL)assetsOrDayGroupAssetsRelationshipChangedForHighlightWithLocalIdentifier:(id)identifier
 {
   v14[2] = *MEMORY[0x1E69E9840];
-  v4 = [(NSMutableDictionary *)self->_objectIDsByLocalIdentifier objectForKeyedSubscript:a3];
+  v4 = [(NSMutableDictionary *)self->_objectIDsByLocalIdentifier objectForKeyedSubscript:identifier];
   v5 = [(NSDictionary *)self->_changedRelationshipsByOID objectForKeyedSubscript:v4];
-  v6 = [v5 unsignedLongLongValue];
+  unsignedLongLongValue = [v5 unsignedLongLongValue];
 
   v7 = MEMORY[0x1E69BE6F8];
   v14[0] = @"assets";
   v14[1] = @"dayGroupAssets";
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:2];
-  v9 = [v4 entity];
-  v10 = [v9 name];
-  v11 = [v7 indexValueForRelationshipNames:v8 entity:v10];
+  entity = [v4 entity];
+  name = [entity name];
+  v11 = [v7 indexValueForRelationshipNames:v8 entity:name];
 
-  v12 = (v11 & v6) != 0 || self->_unknownMergeEvent;
+  v12 = (v11 & unsignedLongLongValue) != 0 || self->_unknownMergeEvent;
   return v12;
 }
 
-- (BOOL)highlightGroupRelationshipChangedForHighlightWithLocalIdentifier:(id)a3
+- (BOOL)highlightGroupRelationshipChangedForHighlightWithLocalIdentifier:(id)identifier
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v4 = [(NSMutableDictionary *)self->_objectIDsByLocalIdentifier objectForKeyedSubscript:a3];
+  v4 = [(NSMutableDictionary *)self->_objectIDsByLocalIdentifier objectForKeyedSubscript:identifier];
   v5 = [(NSDictionary *)self->_changedRelationshipsByOID objectForKeyedSubscript:v4];
-  v6 = [v5 unsignedLongLongValue];
+  unsignedLongLongValue = [v5 unsignedLongLongValue];
 
   v7 = MEMORY[0x1E69BE6F8];
   v14[0] = @"childDayGroupPhotosHighlights";
   unknownMergeEvent = 1;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
-  v10 = [v4 entity];
-  v11 = [v10 name];
-  v12 = [v7 indexValueForRelationshipNames:v9 entity:v11];
+  entity = [v4 entity];
+  name = [entity name];
+  v12 = [v7 indexValueForRelationshipNames:v9 entity:name];
 
-  if ((v12 & v6) == 0)
+  if ((v12 & unsignedLongLongValue) == 0)
   {
     unknownMergeEvent = self->_unknownMergeEvent;
   }
@@ -3648,22 +3648,22 @@ uint64_t __39__PHChange_publicPHObjectChangeClasses__block_invoke()
   return unknownMergeEvent;
 }
 
-- (BOOL)momentRelationshipChangedForHighlightWithLocalIdentifier:(id)a3
+- (BOOL)momentRelationshipChangedForHighlightWithLocalIdentifier:(id)identifier
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v4 = [(NSMutableDictionary *)self->_objectIDsByLocalIdentifier objectForKeyedSubscript:a3];
+  v4 = [(NSMutableDictionary *)self->_objectIDsByLocalIdentifier objectForKeyedSubscript:identifier];
   v5 = [(NSDictionary *)self->_changedRelationshipsByOID objectForKeyedSubscript:v4];
-  v6 = [v5 unsignedLongLongValue];
+  unsignedLongLongValue = [v5 unsignedLongLongValue];
 
   v7 = MEMORY[0x1E69BE6F8];
   v14[0] = @"moments";
   unknownMergeEvent = 1;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
-  v10 = [v4 entity];
-  v11 = [v10 name];
-  v12 = [v7 indexValueForRelationshipNames:v9 entity:v11];
+  entity = [v4 entity];
+  name = [entity name];
+  v12 = [v7 indexValueForRelationshipNames:v9 entity:name];
 
-  if ((v12 & v6) == 0)
+  if ((v12 & unsignedLongLongValue) == 0)
   {
     unknownMergeEvent = self->_unknownMergeEvent;
   }
@@ -3671,22 +3671,22 @@ uint64_t __39__PHChange_publicPHObjectChangeClasses__block_invoke()
   return unknownMergeEvent;
 }
 
-- (BOOL)personRelationshipChangedForFaceWithLocalIdentifier:(id)a3
+- (BOOL)personRelationshipChangedForFaceWithLocalIdentifier:(id)identifier
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v4 = [(NSMutableDictionary *)self->_objectIDsByLocalIdentifier objectForKeyedSubscript:a3];
+  v4 = [(NSMutableDictionary *)self->_objectIDsByLocalIdentifier objectForKeyedSubscript:identifier];
   v5 = [(NSDictionary *)self->_changedRelationshipsByOID objectForKeyedSubscript:v4];
-  v6 = [v5 unsignedLongLongValue];
+  unsignedLongLongValue = [v5 unsignedLongLongValue];
 
   v7 = MEMORY[0x1E69BE6F8];
   v14[0] = @"personForFace";
   unknownMergeEvent = 1;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
-  v10 = [v4 entity];
-  v11 = [v10 name];
-  v12 = [v7 indexValueForRelationshipNames:v9 entity:v11];
+  entity = [v4 entity];
+  name = [entity name];
+  v12 = [v7 indexValueForRelationshipNames:v9 entity:name];
 
-  if ((v12 & v6) == 0)
+  if ((v12 & unsignedLongLongValue) == 0)
   {
     unknownMergeEvent = self->_unknownMergeEvent;
   }
@@ -3694,22 +3694,22 @@ uint64_t __39__PHChange_publicPHObjectChangeClasses__block_invoke()
   return unknownMergeEvent;
 }
 
-- (BOOL)faceRelationshipChangedForPersonWithLocalIdentifier:(id)a3
+- (BOOL)faceRelationshipChangedForPersonWithLocalIdentifier:(id)identifier
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v4 = [(NSMutableDictionary *)self->_objectIDsByLocalIdentifier objectForKeyedSubscript:a3];
+  v4 = [(NSMutableDictionary *)self->_objectIDsByLocalIdentifier objectForKeyedSubscript:identifier];
   v5 = [(NSDictionary *)self->_changedRelationshipsByOID objectForKeyedSubscript:v4];
-  v6 = [v5 unsignedLongLongValue];
+  unsignedLongLongValue = [v5 unsignedLongLongValue];
 
   v7 = MEMORY[0x1E69BE6F8];
   v14[0] = @"detectedFaces";
   unknownMergeEvent = 1;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
-  v10 = [v4 entity];
-  v11 = [v10 name];
-  v12 = [v7 indexValueForRelationshipNames:v9 entity:v11];
+  entity = [v4 entity];
+  name = [entity name];
+  v12 = [v7 indexValueForRelationshipNames:v9 entity:name];
 
-  if ((v12 & v6) == 0)
+  if ((v12 & unsignedLongLongValue) == 0)
   {
     unknownMergeEvent = self->_unknownMergeEvent;
   }
@@ -3717,15 +3717,15 @@ uint64_t __39__PHChange_publicPHObjectChangeClasses__block_invoke()
   return unknownMergeEvent;
 }
 
-- (BOOL)hasRelationshipChangesForLocalIdentifier:(id)a3
+- (BOOL)hasRelationshipChangesForLocalIdentifier:(id)identifier
 {
-  v4 = [(NSMutableDictionary *)self->_objectIDsByLocalIdentifier objectForKeyedSubscript:a3];
+  v4 = [(NSMutableDictionary *)self->_objectIDsByLocalIdentifier objectForKeyedSubscript:identifier];
   if (v4)
   {
     v5 = [(NSDictionary *)self->_changedRelationshipsByOID objectForKeyedSubscript:v4];
-    v6 = [v5 unsignedLongLongValue];
+    unsignedLongLongValue = [v5 unsignedLongLongValue];
 
-    if (v6)
+    if (unsignedLongLongValue)
     {
       unknownMergeEvent = 1;
     }

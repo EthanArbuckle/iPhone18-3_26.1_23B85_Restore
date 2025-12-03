@@ -1,15 +1,15 @@
 @interface NTKPhotoAssetScrubbingOperation
-- (BOOL)scrubAssetAtURL:(id)a3 toDestinationURL:(id)a4 error:(id *)a5;
+- (BOOL)scrubAssetAtURL:(id)l toDestinationURL:(id)rL error:(id *)error;
 @end
 
 @implementation NTKPhotoAssetScrubbingOperation
 
-- (BOOL)scrubAssetAtURL:(id)a3 toDestinationURL:(id)a4 error:(id *)a5
+- (BOOL)scrubAssetAtURL:(id)l toDestinationURL:(id)rL error:(id *)error
 {
   v31 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = CGImageSourceCreateWithURL(v7, 0);
+  lCopy = l;
+  rLCopy = rL;
+  v9 = CGImageSourceCreateWithURL(lCopy, 0);
   if (v9)
   {
     v10 = v9;
@@ -22,12 +22,12 @@
       if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        *&buf[4] = v7;
+        *&buf[4] = lCopy;
         _os_log_impl(&dword_22D9C5000, v23, OS_LOG_TYPE_INFO, "[Resource Scrubber]: Location data not found in asset: '%@'. Passing through.", buf, 0xCu);
       }
 
-      v24 = [MEMORY[0x277CCAA00] defaultManager];
-      v21 = [v24 copyItemAtURL:v7 toURL:v8 error:a5];
+      defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+      v21 = [defaultManager copyItemAtURL:lCopy toURL:rLCopy error:error];
 
       CFRelease(v10);
       goto LABEL_27;
@@ -36,7 +36,7 @@
     Type = CGImageSourceGetType(v10);
     if (Type)
     {
-      v14 = CGImageDestinationCreateWithURL(v8, Type, 1uLL, 0);
+      v14 = CGImageDestinationCreateWithURL(rLCopy, Type, 1uLL, 0);
       if (v14)
       {
         v15 = v14;
@@ -48,7 +48,7 @@
           if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
           {
             *buf = 138412290;
-            *&buf[4] = v7;
+            *&buf[4] = lCopy;
             _os_log_impl(&dword_22D9C5000, v18, OS_LOG_TYPE_INFO, "[Resource Scrubber]: Found location data in asset: '%@'. Will scrub.", buf, 0xCu);
           }
 
@@ -68,10 +68,10 @@
           v22 = *buf;
           if (*buf)
           {
-            if (a5)
+            if (error)
             {
               v22 = *buf;
-              *a5 = v22;
+              *error = v22;
             }
           }
 
@@ -80,7 +80,7 @@
 
         CFRelease(v15);
         CFRelease(v10);
-        if (a5)
+        if (error)
         {
           v25 = MEMORY[0x277CCA9B8];
           v26 = 1004;
@@ -93,7 +93,7 @@ LABEL_26:
       }
 
       CFRelease(v10);
-      if (!a5)
+      if (!error)
       {
         goto LABEL_26;
       }
@@ -105,7 +105,7 @@ LABEL_26:
     else
     {
       CFRelease(v10);
-      if (!a5)
+      if (!error)
       {
         goto LABEL_26;
       }
@@ -116,16 +116,16 @@ LABEL_26:
 
 LABEL_25:
     [v25 errorWithDomain:@"com.apple.nanotimekit.photos" code:v26 userInfo:0];
-    *a5 = v21 = 0;
+    *error = v21 = 0;
 LABEL_27:
 
     goto LABEL_28;
   }
 
-  if (a5)
+  if (error)
   {
     [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.nanotimekit.photos" code:1002 userInfo:0];
-    *a5 = v21 = 0;
+    *error = v21 = 0;
   }
 
   else

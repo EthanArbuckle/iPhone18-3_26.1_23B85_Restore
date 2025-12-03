@@ -1,11 +1,11 @@
 @interface LibcoreIcuTimeZoneNames_ZoneStringsCache
-- (id)createWithId:(id)a3;
+- (id)createWithId:(id)id;
 - (void)dealloc;
 @end
 
 @implementation LibcoreIcuTimeZoneNames_ZoneStringsCache
 
-- (id)createWithId:(id)a3
+- (id)createWithId:(id)id
 {
   JavaLangSystem_currentTimeMillis();
   if ((atomic_load_explicit(LibcoreIcuTimeZoneNames__initialized, memory_order_acquire) & 1) == 0)
@@ -58,13 +58,13 @@
   }
 
   JavaLangSystem_currentTimeMillis();
-  if (!a3)
+  if (!id)
   {
 LABEL_18:
     JreThrowNullPointerException();
   }
 
-  sub_1001ADC40([a3 description], v5);
+  sub_1001ADC40([id description], v5);
   JavaLangSystem_currentTimeMillis();
   sub_1001AE1D4(self, v5);
   JavaLangSystem_currentTimeMillis();

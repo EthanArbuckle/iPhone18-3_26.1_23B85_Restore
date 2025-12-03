@@ -1,74 +1,74 @@
 @interface USKNode
-- (BOOL)clearVariantSelectionForVariantSet:(id)a3;
-- (BOOL)editVariant:(id)a3 variantSet:(id)a4 block:(id)a5;
-- (BOOL)hasSchemaType:(id)a3;
-- (BOOL)hasVariantSet:(id)a3;
+- (BOOL)clearVariantSelectionForVariantSet:(id)set;
+- (BOOL)editVariant:(id)variant variantSet:(id)set block:(id)block;
+- (BOOL)hasSchemaType:(id)type;
+- (BOOL)hasVariantSet:(id)set;
 - (BOOL)hasVariantSets;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)removeProperty:(id)a3;
-- (BOOL)selectVariant:(id)a3 variantSet:(id)a4;
-- (BOOL)setCustomMetadata:(id)a3 value:(id)a4;
-- (BOOL)setDictionaryMetadataWithKey:(id)a3 dictionaryKey:(id)a4 value:(id)a5;
-- (BOOL)setMetadataWithKey:(id)a3 value:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)removeProperty:(id)property;
+- (BOOL)selectVariant:(id)variant variantSet:(id)set;
+- (BOOL)setCustomMetadata:(id)metadata value:(id)value;
+- (BOOL)setDictionaryMetadataWithKey:(id)key dictionaryKey:(id)dictionaryKey value:(id)value;
+- (BOOL)setMetadataWithKey:(id)key value:(id)value;
 - (NSArray)schemaTypes;
 - (NSDictionary)properties;
 - (NSString)type;
-- (USKNode)initWithUsdPrim:(UsdPrim *)a3;
-- (USKNode)initWithUsdPrim:(UsdPrim *)a3 withSceneOwner:(id)a4;
+- (USKNode)initWithUsdPrim:(UsdPrim *)prim;
+- (USKNode)initWithUsdPrim:(UsdPrim *)prim withSceneOwner:(id)owner;
 - (USKToken)typeName;
 - (UsdPrim)usdPrim;
 - (id).cxx_construct;
 - (id)childIterator;
-- (id)createUniqueGeomSubset:(id)a3 elementType:(id)a4 indices:(id)a5 familyName:(id)a6 familyType:(id)a7;
-- (id)customMetadataWithKey:(id)a3;
-- (id)dictionaryMetadataWithKey:(id)a3 dictionaryKey:(id)a4;
+- (id)createUniqueGeomSubset:(id)subset elementType:(id)type indices:(id)indices familyName:(id)name familyType:(id)familyType;
+- (id)customMetadataWithKey:(id)key;
+- (id)dictionaryMetadataWithKey:(id)key dictionaryKey:(id)dictionaryKey;
 - (id)getAllGeomSubsets;
 - (id)getGeomSubsetElementTypeAttr;
 - (id)getGeomSubsetFamilyName;
 - (id)getGeomSubsetIndicesAttr;
-- (id)getGeomSubsets:(id)a3 familyName:(id)a4;
+- (id)getGeomSubsets:(id)subsets familyName:(id)name;
 - (id)inheritedMaterialBinding;
-- (id)inheritedProperty:(id)a3;
+- (id)inheritedProperty:(id)property;
 - (id)inheritedSkeletonAnimationBinding;
 - (id)inheritedSkeletonBinding;
 - (id)loadedChildIterator;
 - (id)loadedSubtreeIterator;
 - (id)masterNode;
 - (id)metadata;
-- (id)metadataWithKey:(id)a3;
+- (id)metadataWithKey:(id)key;
 - (id)name;
-- (id)newCustomPropertyWithName:(id)a3 type:(id)a4 role:(id)a5;
-- (id)newPropertyWithName:(id)a3 type:(id)a4 role:(id)a5 variability:(BOOL)a6;
+- (id)newCustomPropertyWithName:(id)name type:(id)type role:(id)role;
+- (id)newPropertyWithName:(id)name type:(id)type role:(id)role variability:(BOOL)variability;
 - (id)parent;
 - (id)path;
-- (id)property:(id)a3;
+- (id)property:(id)property;
 - (id)propertyList;
 - (id)specifier;
 - (id)subtreeIterator;
 - (id)variantSets;
-- (id)variantsWithVariantSet:(id)a3;
+- (id)variantsWithVariantSet:(id)set;
 - (unint64_t)hash;
-- (void)addReferenceWithPath:(id)a3 nodePath:(id)a4;
-- (void)addReferenceWithPath:(id)a3 nodePath:(id)a4 offset:(id)a5;
-- (void)addReferenceWithURL:(id)a3 nodePath:(id)a4;
-- (void)addVariant:(id)a3 variantSet:(id)a4;
-- (void)addVariantSet:(id)a3;
-- (void)applyType:(id)a3;
+- (void)addReferenceWithPath:(id)path nodePath:(id)nodePath;
+- (void)addReferenceWithPath:(id)path nodePath:(id)nodePath offset:(id)offset;
+- (void)addReferenceWithURL:(id)l nodePath:(id)path;
+- (void)addVariant:(id)variant variantSet:(id)set;
+- (void)addVariantSet:(id)set;
+- (void)applyType:(id)type;
 - (void)clearReferences;
-- (void)setSpecifier:(id)a3;
+- (void)setSpecifier:(id)specifier;
 @end
 
 @implementation USKNode
 
-- (USKNode)initWithUsdPrim:(UsdPrim *)a3
+- (USKNode)initWithUsdPrim:(UsdPrim *)prim
 {
   v9.receiver = self;
   v9.super_class = USKNode;
   v4 = [(USKNode *)&v9 init];
-  if (v4 && (sub_27033E778(a3) & 1) != 0)
+  if (v4 && (sub_27033E778(prim) & 1) != 0)
   {
-    v4->_prim._type = a3->_type;
-    pointer = a3->_prim._p._pointer;
+    v4->_prim._type = prim->_type;
+    pointer = prim->_prim._p._pointer;
     if (pointer)
     {
       atomic_fetch_add_explicit(pointer + 6, 1uLL, memory_order_relaxed);
@@ -81,9 +81,9 @@
     }
 
     v4->_prim._prim._p._pointer = pointer;
-    sub_27032787C(&v4->_prim._proxyPrimPath, &a3->_proxyPrimPath);
-    sub_2703278D4(&v4->_prim._proxyPrimPath._primPart._poolHandle + 4, &a3->_proxyPrimPath._primPart._poolHandle + 1);
-    sub_270325CAC(&v4->_prim._proxyPrimPath._propPart._poolHandle, &a3->_proxyPrimPath._propPart._poolHandle);
+    sub_27032787C(&v4->_prim._proxyPrimPath, &prim->_proxyPrimPath);
+    sub_2703278D4(&v4->_prim._proxyPrimPath._primPart._poolHandle + 4, &prim->_proxyPrimPath._primPart._poolHandle + 1);
+    sub_270325CAC(&v4->_prim._proxyPrimPath._propPart._poolHandle, &prim->_proxyPrimPath._propPart._poolHandle);
     v7 = v4;
   }
 
@@ -95,16 +95,16 @@
   return v7;
 }
 
-- (USKNode)initWithUsdPrim:(UsdPrim *)a3 withSceneOwner:(id)a4
+- (USKNode)initWithUsdPrim:(UsdPrim *)prim withSceneOwner:(id)owner
 {
-  v7 = a4;
+  ownerCopy = owner;
   v13.receiver = self;
   v13.super_class = USKNode;
   v8 = [(USKNode *)&v13 init];
-  if (v8 && (sub_27033E778(a3) & 1) != 0)
+  if (v8 && (sub_27033E778(prim) & 1) != 0)
   {
-    v8->_prim._type = a3->_type;
-    pointer = a3->_prim._p._pointer;
+    v8->_prim._type = prim->_type;
+    pointer = prim->_prim._p._pointer;
     if (pointer)
     {
       atomic_fetch_add_explicit(pointer + 6, 1uLL, memory_order_relaxed);
@@ -117,10 +117,10 @@
     }
 
     v8->_prim._prim._p._pointer = pointer;
-    sub_27032787C(&v8->_prim._proxyPrimPath, &a3->_proxyPrimPath);
-    sub_2703278D4(&v8->_prim._proxyPrimPath._primPart._poolHandle + 4, &a3->_proxyPrimPath._primPart._poolHandle + 1);
-    sub_270325CAC(&v8->_prim._proxyPrimPath._propPart._poolHandle, &a3->_proxyPrimPath._propPart._poolHandle);
-    objc_storeStrong(&v8->_prim._propName._rep._ptrAndBits, a4);
+    sub_27032787C(&v8->_prim._proxyPrimPath, &prim->_proxyPrimPath);
+    sub_2703278D4(&v8->_prim._proxyPrimPath._primPart._poolHandle + 4, &prim->_proxyPrimPath._primPart._poolHandle + 1);
+    sub_270325CAC(&v8->_prim._proxyPrimPath._propPart._poolHandle, &prim->_proxyPrimPath._propPart._poolHandle);
+    objc_storeStrong(&v8->_prim._propName._rep._ptrAndBits, owner);
     v11 = v8;
   }
 
@@ -155,16 +155,16 @@
   return result;
 }
 
-- (id)createUniqueGeomSubset:(id)a3 elementType:(id)a4 indices:(id)a5 familyName:(id)a6 familyType:(id)a7
+- (id)createUniqueGeomSubset:(id)subset elementType:(id)type indices:(id)indices familyName:(id)name familyType:(id)familyType
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v19 = a7;
-  if (v12)
+  subsetCopy = subset;
+  typeCopy = type;
+  indicesCopy = indices;
+  nameCopy = name;
+  familyTypeCopy = familyType;
+  if (subsetCopy)
   {
-    objc_msgSend_token(v12, v16, v17, v18);
+    objc_msgSend_token(subsetCopy, v16, v17, v18);
     v23 = *&v55[0] & 0xFFFFFFFFFFFFFFF8;
     if ((*&v55[0] & 0xFFFFFFFFFFFFFFF8) != 0)
     {
@@ -185,9 +185,9 @@
       atomic_fetch_add_explicit(v23, 0xFFFFFFFE, memory_order_release);
     }
 
-    if (v24 && v13)
+    if (v24 && typeCopy)
     {
-      objc_msgSend_token(v13, v20, v21, v22);
+      objc_msgSend_token(typeCopy, v20, v21, v22);
       v25 = *&v55[0] & 0xFFFFFFFFFFFFFFF8;
       if ((*&v55[0] & 0xFFFFFFFFFFFFFFF8) != 0)
       {
@@ -224,9 +224,9 @@
       v57 = MEMORY[0x277D86740] + 16;
       if (v58 && (*(v58 + 57) & 8) == 0 && ((*(MEMORY[0x277D86740] + 48))(v27) & 1) != 0)
       {
-        v28 = v14;
+        v28 = indicesCopy;
         v32 = objc_msgSend_bytes(v28, v29, v30, v31);
-        v36 = objc_msgSend_length(v14, v33, v34, v35);
+        v36 = objc_msgSend_length(indicesCopy, v33, v34, v35);
         v37 = v36 >> 3;
         v56 = 0;
         memset(v55, 0, sizeof(v55));
@@ -245,11 +245,11 @@
         }
 
         memset(v54, 0, sizeof(v54));
-        objc_msgSend_token(v12, v38, v39, v40);
-        objc_msgSend_token(v13, v43, v44, v45);
-        if (v15)
+        objc_msgSend_token(subsetCopy, v38, v39, v40);
+        objc_msgSend_token(typeCopy, v43, v44, v45);
+        if (nameCopy)
         {
-          objc_msgSend_token(v15, v46, v47, v48);
+          objc_msgSend_token(nameCopy, v46, v47, v48);
         }
 
         else
@@ -257,9 +257,9 @@
           v51 = 0;
         }
 
-        if (v19)
+        if (familyTypeCopy)
         {
-          objc_msgSend_token(v19, v46, v47, v48);
+          objc_msgSend_token(familyTypeCopy, v46, v47, v48);
         }
 
         else
@@ -328,10 +328,10 @@ LABEL_26:
   return v5;
 }
 
-- (id)getGeomSubsets:(id)a3 familyName:(id)a4
+- (id)getGeomSubsets:(id)subsets familyName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  subsetsCopy = subsets;
+  nameCopy = name;
   v20 = 0;
   v21 = 0;
   v22 = 0;
@@ -346,10 +346,10 @@ LABEL_26:
   v17 = 0;
   v18 = 0;
   v19 = 0;
-  if (!v6)
+  if (!subsetsCopy)
   {
     v23 = 0;
-    if (v7)
+    if (nameCopy)
     {
       goto LABEL_6;
     }
@@ -359,14 +359,14 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  objc_msgSend_token(v6, v8, v9, v10);
-  if (!v7)
+  objc_msgSend_token(subsetsCopy, v8, v9, v10);
+  if (!nameCopy)
   {
     goto LABEL_12;
   }
 
 LABEL_6:
-  objc_msgSend_token(v7, v8, v9, v10);
+  objc_msgSend_token(nameCopy, v8, v9, v10);
 LABEL_13:
   pxrInternal__aapl__pxrReserved__::UsdGeomSubset::GetGeomSubsets();
   if ((v16 & 7) != 0)
@@ -552,46 +552,46 @@ LABEL_8:
   return 0;
 }
 
-- (void)applyType:(id)a3
+- (void)applyType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   v37 = 0u;
   v38 = 0;
   LODWORD(v37) = 1;
   pxrInternal__aapl__pxrReserved__::Sdf_Pool<pxrInternal__aapl__pxrReserved__::Sdf_PathPrimTag,24u,8u,16384u>::Handle::Handle();
   pxrInternal__aapl__pxrReserved__::Sdf_Pool<pxrInternal__aapl__pxrReserved__::Sdf_PathPropTag,24u,8u,16384u>::Handle::Handle();
   v39 = 0;
-  if (objc_msgSend_isEqualToString_(v4, v5, @"SkelBindingAPI", v6))
+  if (objc_msgSend_isEqualToString_(typeCopy, v5, @"SkelBindingAPI", v6))
   {
     pxrInternal__aapl__pxrReserved__::UsdSkelBindingAPI::Apply(v36, &self->_prim, v7);
     MEMORY[0x27439E2F0](v36);
   }
 
-  else if (objc_msgSend_isEqualToString_(v4, v7, @"Preliminary_AnchoringAPI", v8))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v7, @"Preliminary_AnchoringAPI", v8))
   {
     pxrInternal__aapl__pxrReserved__::UsdInteractivePreliminary_AnchoringAPI::Apply(v35, &self->_prim, v9);
     MEMORY[0x27439E530](v35);
   }
 
-  else if (objc_msgSend_isEqualToString_(v4, v9, @"MaterialBindingAPI", v10))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v9, @"MaterialBindingAPI", v10))
   {
     pxrInternal__aapl__pxrReserved__::UsdShadeMaterialBindingAPI::Apply(v34, &self->_prim, v11);
     MEMORY[0x27439E470](v34);
   }
 
-  else if (objc_msgSend_isEqualToString_(v4, v11, @"Preliminary_PhysicsColliderAPI", v12))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v11, @"Preliminary_PhysicsColliderAPI", v12))
   {
     pxrInternal__aapl__pxrReserved__::UsdPhysicsPreliminary_PhysicsColliderAPI::Apply(v33, &self->_prim, v13);
     MEMORY[0x27439E560](v33);
   }
 
-  else if (objc_msgSend_isEqualToString_(v4, v13, @"Preliminary_PhysicsMaterialAPI", v14))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v13, @"Preliminary_PhysicsMaterialAPI", v14))
   {
     pxrInternal__aapl__pxrReserved__::UsdPhysicsPreliminary_PhysicsMaterialAPI::Apply(v32, &self->_prim, v15);
     MEMORY[0x27439E580](v32);
   }
 
-  else if (objc_msgSend_isEqualToString_(v4, v15, @"Preliminary_PhysicsRigidBodyAPI", v16))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v15, @"Preliminary_PhysicsRigidBodyAPI", v16))
   {
     pxrInternal__aapl__pxrReserved__::UsdPhysicsPreliminary_PhysicsRigidBodyAPI::Apply(v31, &self->_prim, v17);
     MEMORY[0x27439E5A0](v31);
@@ -599,7 +599,7 @@ LABEL_8:
 
   else
   {
-    v18 = v4;
+    v18 = typeCopy;
     v22 = objc_msgSend_UTF8String(v18, v19, v20, v21);
     MEMORY[0x27439E610](&v30, v22);
     v23 = pxrInternal__aapl__pxrReserved__::UsdPrim::AddAppliedSchema(&self->_prim, &v30);
@@ -610,7 +610,7 @@ LABEL_8:
 
     if ((v23 & 1) == 0)
     {
-      v24 = v4;
+      v24 = typeCopy;
       v28 = objc_msgSend_UTF8String(v24, v25, v26, v27);
       sub_27034ADF8(&self->_prim, &v30);
       Text = pxrInternal__aapl__pxrReserved__::SdfPath::GetText(&v30);
@@ -632,10 +632,10 @@ LABEL_8:
   }
 }
 
-- (BOOL)hasSchemaType:(id)a3
+- (BOOL)hasSchemaType:(id)type
 {
-  v4 = a3;
-  v7 = objc_msgSend_tokenWithSchemaType_(USKToken, v5, v4, v6);
+  typeCopy = type;
+  v7 = objc_msgSend_tokenWithSchemaType_(USKToken, v5, typeCopy, v6);
   v11 = v7;
   if (v7)
   {
@@ -846,13 +846,13 @@ LABEL_8:
   return v30;
 }
 
-- (BOOL)setMetadataWithKey:(id)a3 value:(id)a4
+- (BOOL)setMetadataWithKey:(id)key value:(id)value
 {
   v32 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  valueCopy = value;
   v26 = 0;
-  v8 = v6;
+  v8 = keyCopy;
   v12 = objc_msgSend_UTF8String(v8, v9, v10, v11);
   MEMORY[0x27439E610](&v26, v12);
   v31._storage = 0;
@@ -871,9 +871,9 @@ LABEL_8:
     }
 
     Type = pxrInternal__aapl__pxrReserved__::VtValue::GetType(&v31);
-    if (v7)
+    if (valueCopy)
     {
-      objc_msgSend_value(v7, v17, v18, v19);
+      objc_msgSend_value(valueCopy, v17, v18, v19);
     }
 
     else
@@ -888,9 +888,9 @@ LABEL_8:
     {
       v29 = 0;
       v30 = 0;
-      if (v7)
+      if (valueCopy)
       {
-        objc_msgSend_value(v7, v14, v15, v16);
+        objc_msgSend_value(valueCopy, v14, v15, v16);
       }
 
       else
@@ -909,9 +909,9 @@ LABEL_8:
     else
     {
 LABEL_10:
-      if (v7)
+      if (valueCopy)
       {
-        objc_msgSend_value(v7, v14, v15, v16);
+        objc_msgSend_value(valueCopy, v14, v15, v16);
       }
 
       else
@@ -942,19 +942,19 @@ LABEL_10:
   return v21;
 }
 
-- (BOOL)setDictionaryMetadataWithKey:(id)a3 dictionaryKey:(id)a4 value:(id)a5
+- (BOOL)setDictionaryMetadataWithKey:(id)key dictionaryKey:(id)dictionaryKey value:(id)value
 {
   v46 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  keyCopy = key;
+  dictionaryKeyCopy = dictionaryKey;
+  valueCopy = value;
   v40 = 0;
-  v11 = v8;
+  v11 = keyCopy;
   v15 = objc_msgSend_UTF8String(v11, v12, v13, v14);
   MEMORY[0x27439E610](&v40, v15);
   v39 = 0;
-  v16 = v9;
-  v20 = objc_msgSend_UTF8String(v9, v17, v18, v19);
+  v16 = dictionaryKeyCopy;
+  v20 = objc_msgSend_UTF8String(dictionaryKeyCopy, v17, v18, v19);
   MEMORY[0x27439E610](&v39, v20);
   v43._storage = 0;
   v43._info._ptrAndBits = 0;
@@ -1031,9 +1031,9 @@ LABEL_10:
   if (v43._info._ptrAndBits)
   {
     Type = pxrInternal__aapl__pxrReserved__::VtValue::GetType(&v43);
-    if (v10)
+    if (valueCopy)
     {
-      objc_msgSend_value(v10, v31, v32, v33);
+      objc_msgSend_value(valueCopy, v31, v32, v33);
     }
 
     else
@@ -1048,9 +1048,9 @@ LABEL_10:
     {
       v44 = 0;
       v45 = 0;
-      if (v10)
+      if (valueCopy)
       {
-        objc_msgSend_value(v10, v25, v26, v27);
+        objc_msgSend_value(valueCopy, v25, v26, v27);
       }
 
       else
@@ -1069,9 +1069,9 @@ LABEL_10:
   }
 
 LABEL_28:
-  if (v10)
+  if (valueCopy)
   {
-    objc_msgSend_value(v10, v25, v26, v27);
+    objc_msgSend_value(valueCopy, v25, v26, v27);
   }
 
   else
@@ -1100,11 +1100,11 @@ LABEL_37:
   return v23;
 }
 
-- (BOOL)setCustomMetadata:(id)a3 value:(id)a4
+- (BOOL)setCustomMetadata:(id)metadata value:(id)value
 {
   v24[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  metadataCopy = metadata;
+  valueCopy = value;
   v23 = 0;
   v8 = atomic_load(MEMORY[0x277D86540]);
   if (!v8)
@@ -1124,12 +1124,12 @@ LABEL_37:
   }
 
   v22 = 0;
-  v11 = v6;
+  v11 = metadataCopy;
   v15 = objc_msgSend_UTF8String(v11, v12, v13, v14);
   MEMORY[0x27439E610](&v22, v15);
-  if (v7)
+  if (valueCopy)
   {
-    objc_msgSend_value(v7, v16, v17, v18);
+    objc_msgSend_value(valueCopy, v16, v17, v18);
   }
 
   else
@@ -1154,13 +1154,13 @@ LABEL_37:
   return v19;
 }
 
-- (id)metadataWithKey:(id)a3
+- (id)metadataWithKey:(id)key
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  keyCopy = key;
   v21 = 0;
   v22 = 0;
-  v5 = v4;
+  v5 = keyCopy;
   v9 = objc_msgSend_UTF8String(v5, v6, v7, v8);
   MEMORY[0x27439E610](&v19, v9);
   pxrInternal__aapl__pxrReserved__::UsdObject::GetMetadata(&self->_prim, &v19, &v21);
@@ -1209,18 +1209,18 @@ LABEL_37:
   return v13;
 }
 
-- (id)dictionaryMetadataWithKey:(id)a3 dictionaryKey:(id)a4
+- (id)dictionaryMetadataWithKey:(id)key dictionaryKey:(id)dictionaryKey
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  dictionaryKeyCopy = dictionaryKey;
   v29 = 0;
   v30 = 0;
-  v8 = v6;
+  v8 = keyCopy;
   v12 = objc_msgSend_UTF8String(v8, v9, v10, v11);
   MEMORY[0x27439E610](&v27, v12);
-  v13 = v7;
-  v17 = objc_msgSend_UTF8String(v7, v14, v15, v16);
+  v13 = dictionaryKeyCopy;
+  v17 = objc_msgSend_UTF8String(dictionaryKeyCopy, v14, v15, v16);
   MEMORY[0x27439E610](&Type, v17);
   pxrInternal__aapl__pxrReserved__::UsdObject::GetMetadataByDictKey(&self->_prim, &v27, &Type, &v29);
   if ((Type & 7) != 0)
@@ -1273,10 +1273,10 @@ LABEL_37:
   return v21;
 }
 
-- (id)customMetadataWithKey:(id)a3
+- (id)customMetadataWithKey:(id)key
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  keyCopy = key;
   v22 = 0;
   v23 = 0;
   v5 = atomic_load(MEMORY[0x277D86540]);
@@ -1285,7 +1285,7 @@ LABEL_37:
     sub_27033E930();
   }
 
-  v6 = v4;
+  v6 = keyCopy;
   v10 = objc_msgSend_UTF8String(v6, v7, v8, v9);
   MEMORY[0x27439E610](&v20, v10);
   pxrInternal__aapl__pxrReserved__::UsdObject::GetMetadataByDictKey(&self->_prim, (v5 + 72), &v20, &v22);
@@ -1334,20 +1334,20 @@ LABEL_37:
   return v14;
 }
 
-- (void)addReferenceWithURL:(id)a3 nodePath:(id)a4
+- (void)addReferenceWithURL:(id)l nodePath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  lCopy = l;
+  pathCopy = path;
+  if (lCopy)
   {
     pxrInternal__aapl__pxrReserved__::UsdPrim::GetReferences(&v27, &self->_prim);
-    v11 = objc_msgSend_relativeString(v6, v8, v9, v10);
+    v11 = objc_msgSend_relativeString(lCopy, v8, v9, v10);
     v12 = v11;
     v16 = objc_msgSend_UTF8String(v12, v13, v14, v15);
     sub_2703122D4(__p, v16);
-    if (v7)
+    if (pathCopy)
     {
-      objc_msgSend_path(v7, v17, v18, v19);
+      objc_msgSend_path(pathCopy, v17, v18, v19);
     }
 
     else
@@ -1374,9 +1374,9 @@ LABEL_37:
   {
     pxrInternal__aapl__pxrReserved__::UsdPrim::GetReferences(&v27, &self->_prim);
     sub_2703122D4(__p, "");
-    if (v7)
+    if (pathCopy)
     {
-      objc_msgSend_path(v7, v20, v21, v22);
+      objc_msgSend_path(pathCopy, v20, v21, v22);
     }
 
     else
@@ -1407,19 +1407,19 @@ LABEL_37:
   }
 }
 
-- (void)addReferenceWithPath:(id)a3 nodePath:(id)a4
+- (void)addReferenceWithPath:(id)path nodePath:(id)nodePath
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  pathCopy = path;
+  nodePathCopy = nodePath;
+  if (pathCopy)
   {
     pxrInternal__aapl__pxrReserved__::UsdPrim::GetReferences(&v23, &self->_prim);
-    v8 = v6;
+    v8 = pathCopy;
     v12 = objc_msgSend_UTF8String(v8, v9, v10, v11);
     sub_2703122D4(__p, v12);
-    if (v7)
+    if (nodePathCopy)
     {
-      objc_msgSend_path(v7, v13, v14, v15);
+      objc_msgSend_path(nodePathCopy, v13, v14, v15);
     }
 
     else
@@ -1446,9 +1446,9 @@ LABEL_37:
   {
     pxrInternal__aapl__pxrReserved__::UsdPrim::GetReferences(&v23, &self->_prim);
     sub_2703122D4(__p, "");
-    if (v7)
+    if (nodePathCopy)
     {
-      objc_msgSend_path(v7, v16, v17, v18);
+      objc_msgSend_path(nodePathCopy, v16, v17, v18);
     }
 
     else
@@ -1479,28 +1479,28 @@ LABEL_37:
   }
 }
 
-- (void)addReferenceWithPath:(id)a3 nodePath:(id)a4 offset:(id)a5
+- (void)addReferenceWithPath:(id)path nodePath:(id)nodePath offset:(id)offset
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  pathCopy = path;
+  nodePathCopy = nodePath;
+  offsetCopy = offset;
   __p[0] = 0;
   __p[1] = 0;
   v31 = 0;
   sub_2703122D4(__p, "");
-  if (v8)
+  if (pathCopy)
   {
-    v11 = v8;
+    v11 = pathCopy;
     v15 = objc_msgSend_UTF8String(v11, v12, v13, v14);
     MEMORY[0x27439F260](__p, v15);
   }
 
-  if (v10)
+  if (offsetCopy)
   {
     pxrInternal__aapl__pxrReserved__::UsdPrim::GetReferences(&v26, &self->_prim);
-    if (v9)
+    if (nodePathCopy)
     {
-      objc_msgSend_path(v9, v16, v17, v18);
+      objc_msgSend_path(nodePathCopy, v16, v17, v18);
     }
 
     else
@@ -1508,7 +1508,7 @@ LABEL_37:
       v25 = 0;
     }
 
-    objc_msgSend_sdfLayerOffset(v10, v16, v17, v18);
+    objc_msgSend_sdfLayerOffset(offsetCopy, v16, v17, v18);
     v24[0] = v22;
     v24[1] = v23;
     pxrInternal__aapl__pxrReserved__::UsdReferences::AddReference();
@@ -1525,9 +1525,9 @@ LABEL_37:
   else
   {
     pxrInternal__aapl__pxrReserved__::UsdPrim::GetReferences(&v26, &self->_prim);
-    if (v9)
+    if (nodePathCopy)
     {
-      objc_msgSend_path(v9, v19, v20, v21);
+      objc_msgSend_path(nodePathCopy, v19, v20, v21);
     }
 
     else
@@ -1576,11 +1576,11 @@ LABEL_37:
   }
 }
 
-- (void)addVariantSet:(id)a3
+- (void)addVariantSet:(id)set
 {
-  v4 = a3;
+  setCopy = set;
   pxrInternal__aapl__pxrReserved__::UsdPrim::GetVariantSets(&v12, &self->_prim);
-  v5 = v4;
+  v5 = setCopy;
   v9 = objc_msgSend_UTF8String(v5, v6, v7, v8);
   sub_2703122D4(&v10, v9);
   pxrInternal__aapl__pxrReserved__::UsdVariantSets::AddVariantSet();
@@ -1619,12 +1619,12 @@ LABEL_37:
   }
 }
 
-- (void)addVariant:(id)a3 variantSet:(id)a4
+- (void)addVariant:(id)variant variantSet:(id)set
 {
-  v6 = a3;
-  v7 = a4;
+  variantCopy = variant;
+  setCopy = set;
   pxrInternal__aapl__pxrReserved__::UsdPrim::GetVariantSets(&v32, &self->_prim);
-  v8 = v7;
+  v8 = setCopy;
   v12 = objc_msgSend_UTF8String(v8, v9, v10, v11);
   sub_2703122D4(&__p, v12);
   HasVariantSet = pxrInternal__aapl__pxrReserved__::UsdVariantSets::HasVariantSet();
@@ -1652,7 +1652,7 @@ LABEL_37:
     *v34 = 0u;
     v32 = 0u;
     pxrInternal__aapl__pxrReserved__::UsdPrim::GetVariantSets(&__p, &self->_prim);
-    v14 = v7;
+    v14 = setCopy;
     v18 = objc_msgSend_UTF8String(v14, v15, v16, v17);
     sub_2703122D4(&v26, v18);
     pxrInternal__aapl__pxrReserved__::UsdVariantSets::GetVariantSet();
@@ -1673,7 +1673,7 @@ LABEL_37:
       sub_270314574(v29);
     }
 
-    v19 = v6;
+    v19 = variantCopy;
     v23 = objc_msgSend_UTF8String(v19, v20, v21, v22);
     sub_2703122D4(&__p, v23);
     pxrInternal__aapl__pxrReserved__::UsdVariantSet::AddVariant();
@@ -1717,7 +1717,7 @@ LABEL_37:
       v25 = "";
     }
 
-    NSLog(&cfstr_WarningVariant.isa, v7, v25);
+    NSLog(&cfstr_WarningVariant.isa, setCopy, v25);
   }
 }
 
@@ -1733,11 +1733,11 @@ LABEL_37:
   return result;
 }
 
-- (BOOL)hasVariantSet:(id)a3
+- (BOOL)hasVariantSet:(id)set
 {
-  v4 = a3;
+  setCopy = set;
   pxrInternal__aapl__pxrReserved__::UsdPrim::GetVariantSets(&v14, &self->_prim);
-  v5 = v4;
+  v5 = setCopy;
   v9 = objc_msgSend_UTF8String(v5, v6, v7, v8);
   sub_2703122D4(&__p, v9);
   HasVariantSet = pxrInternal__aapl__pxrReserved__::UsdVariantSets::HasVariantSet();
@@ -1823,16 +1823,16 @@ LABEL_37:
   return v3;
 }
 
-- (id)variantsWithVariantSet:(id)a3
+- (id)variantsWithVariantSet:(id)set
 {
-  v4 = a3;
+  setCopy = set;
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v30 = 0;
   v28 = 0u;
   *v29 = 0u;
   v27 = 0u;
   pxrInternal__aapl__pxrReserved__::UsdPrim::GetVariantSets(&v23, &self->_prim);
-  v6 = v4;
+  v6 = setCopy;
   v10 = objc_msgSend_UTF8String(v6, v7, v8, v9);
   sub_2703122D4(__p, v10);
   pxrInternal__aapl__pxrReserved__::UsdVariantSets::GetVariantSet();
@@ -1913,12 +1913,12 @@ LABEL_37:
   return v19;
 }
 
-- (BOOL)selectVariant:(id)a3 variantSet:(id)a4
+- (BOOL)selectVariant:(id)variant variantSet:(id)set
 {
-  v6 = a3;
-  v7 = a4;
+  variantCopy = variant;
+  setCopy = set;
   pxrInternal__aapl__pxrReserved__::UsdPrim::GetVariantSets(&v40, &self->_prim);
-  v8 = v7;
+  v8 = setCopy;
   v12 = objc_msgSend_UTF8String(v8, v9, v10, v11);
   sub_2703122D4(&__p, v12);
   HasVariantSet = pxrInternal__aapl__pxrReserved__::UsdVariantSets::HasVariantSet();
@@ -1946,7 +1946,7 @@ LABEL_37:
     *v42 = 0u;
     v40 = 0u;
     pxrInternal__aapl__pxrReserved__::UsdPrim::GetVariantSets(&__p, &self->_prim);
-    v14 = v7;
+    v14 = setCopy;
     v18 = objc_msgSend_UTF8String(v14, v15, v16, v17);
     sub_2703122D4(&v34, v18);
     pxrInternal__aapl__pxrReserved__::UsdVariantSets::GetVariantSet();
@@ -1967,7 +1967,7 @@ LABEL_37:
       sub_270314574(v37);
     }
 
-    v19 = v6;
+    v19 = variantCopy;
     v23 = objc_msgSend_UTF8String(v19, v20, v21, v22);
     sub_2703122D4(&__p, v23);
     HasAuthoredVariant = pxrInternal__aapl__pxrReserved__::UsdVariantSet::HasAuthoredVariant();
@@ -1978,7 +1978,7 @@ LABEL_37:
       if (v25)
       {
 LABEL_16:
-        v26 = v6;
+        v26 = variantCopy;
         v30 = objc_msgSend_UTF8String(v26, v27, v28, v29);
         sub_2703122D4(&__p, v30);
         pxrInternal__aapl__pxrReserved__::UsdVariantSet::SetVariantSelection();
@@ -1996,7 +1996,7 @@ LABEL_16:
       goto LABEL_16;
     }
 
-    NSLog(&cfstr_WarningVariant_0.isa, v6, v7);
+    NSLog(&cfstr_WarningVariant_0.isa, variantCopy, setCopy);
 LABEL_25:
     if (SHIBYTE(v43) < 0)
     {
@@ -2033,28 +2033,28 @@ LABEL_25:
     v32 = "";
   }
 
-  NSLog(&cfstr_WarningVariant.isa, v7, v32);
+  NSLog(&cfstr_WarningVariant.isa, setCopy, v32);
   v25 = 0;
 LABEL_31:
 
   return v25;
 }
 
-- (BOOL)editVariant:(id)a3 variantSet:(id)a4 block:(id)a5
+- (BOOL)editVariant:(id)variant variantSet:(id)set block:(id)block
 {
   v29 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v12 = objc_msgSend_selectVariant_variantSet_(self, v11, v8, v9);
+  variantCopy = variant;
+  setCopy = set;
+  blockCopy = block;
+  v12 = objc_msgSend_selectVariant_variantSet_(self, v11, variantCopy, setCopy);
   if (v12)
   {
     v23 = 0;
     memset(v22, 0, sizeof(v22));
     v21 = 0u;
     pxrInternal__aapl__pxrReserved__::UsdPrim::GetVariantSets(&v26, &self->_prim);
-    v13 = v9;
-    v17 = objc_msgSend_UTF8String(v9, v14, v15, v16);
+    v13 = setCopy;
+    v17 = objc_msgSend_UTF8String(setCopy, v14, v15, v16);
     sub_2703122D4(__p, v17);
     pxrInternal__aapl__pxrReserved__::UsdVariantSets::GetVariantSet();
     if (v25 < 0)
@@ -2085,7 +2085,7 @@ LABEL_31:
     __p[0] = 0;
     __p[1] = 0;
     pxrInternal__aapl__pxrReserved__::UsdObject::GetStage(__p, &self->_prim);
-    v10[2](v10);
+    blockCopy[2](blockCopy);
     sub_27036D980(__p, &v26, &v21);
     pxrInternal__aapl__pxrReserved__::Sdf_Pool<pxrInternal__aapl__pxrReserved__::Sdf_PathPropTag,24u,8u,16384u>::Handle::operator BOOL();
     sub_2703143D8(v22);
@@ -2099,11 +2099,11 @@ LABEL_31:
   return v12;
 }
 
-- (BOOL)clearVariantSelectionForVariantSet:(id)a3
+- (BOOL)clearVariantSelectionForVariantSet:(id)set
 {
-  v4 = a3;
+  setCopy = set;
   pxrInternal__aapl__pxrReserved__::UsdPrim::GetVariantSets(&v23, &self->_prim);
-  v5 = v4;
+  v5 = setCopy;
   v9 = objc_msgSend_UTF8String(v5, v6, v7, v8);
   sub_2703122D4(&__p, v9);
   HasVariantSet = pxrInternal__aapl__pxrReserved__::UsdVariantSets::HasVariantSet();
@@ -2131,7 +2131,7 @@ LABEL_31:
     *v25 = 0u;
     v23 = 0u;
     pxrInternal__aapl__pxrReserved__::UsdPrim::GetVariantSets(&__p, &self->_prim);
-    v11 = v4;
+    v11 = setCopy;
     v15 = objc_msgSend_UTF8String(v11, v12, v13, v14);
     sub_2703122D4(&v17, v15);
     pxrInternal__aapl__pxrReserved__::UsdVariantSets::GetVariantSet();
@@ -2304,16 +2304,16 @@ LABEL_31:
   return v6;
 }
 
-- (id)inheritedProperty:(id)a3
+- (id)inheritedProperty:(id)property
 {
-  v4 = a3;
+  propertyCopy = property;
   v24 = 0u;
   v25 = 0u;
   v23 = 0u;
   pxrInternal__aapl__pxrReserved__::UsdSchemaBase::UsdSchemaBase(v22, &self->_prim);
   v22[3] = 0;
   v22[0] = MEMORY[0x277D86790] + 16;
-  v5 = v4;
+  v5 = propertyCopy;
   v9 = objc_msgSend_UTF8String(v5, v6, v7, v8);
   MEMORY[0x27439E610](&v21, v9);
   pxrInternal__aapl__pxrReserved__::UsdGeomPrimvarsAPI::FindPrimvarWithInheritance(&v23, v22, &v21);
@@ -2400,11 +2400,11 @@ LABEL_31:
   return v6;
 }
 
-- (id)property:(id)a3
+- (id)property:(id)property
 {
-  v4 = a3;
+  propertyCopy = property;
   v21 = 0;
-  v5 = v4;
+  v5 = propertyCopy;
   v9 = objc_msgSend_UTF8String(v5, v6, v7, v8);
   MEMORY[0x27439E610](&v21, v9);
   v19 = 0u;
@@ -2467,11 +2467,11 @@ LABEL_31:
   return v12;
 }
 
-- (BOOL)removeProperty:(id)a3
+- (BOOL)removeProperty:(id)property
 {
-  v4 = a3;
+  propertyCopy = property;
   v17 = 0;
-  v5 = v4;
+  v5 = propertyCopy;
   v9 = objc_msgSend_UTF8String(v5, v6, v7, v8);
   MEMORY[0x27439E610](&v17, v9);
   v15 = 0u;
@@ -2607,24 +2607,24 @@ LABEL_31:
   return v5;
 }
 
-- (void)setSpecifier:(id)a3
+- (void)setSpecifier:(id)specifier
 {
-  v4 = a3;
-  if (@"SdfSpecifierDef" == v4 || @"SdfSpecifierOver" == v4 || @"SdfSpecifierClass" == v4)
+  specifierCopy = specifier;
+  if (@"SdfSpecifierDef" == specifierCopy || @"SdfSpecifierOver" == specifierCopy || @"SdfSpecifierClass" == specifierCopy)
   {
     sub_270362568(&self->_prim);
   }
 }
 
-- (id)newPropertyWithName:(id)a3 type:(id)a4 role:(id)a5 variability:(BOOL)a6
+- (id)newPropertyWithName:(id)name type:(id)type role:(id)role variability:(BOOL)variability
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v14 = objc_msgSend_tokenWithDataType_(USKToken, v12, v10, v13);
-  v17 = objc_msgSend_tokenWithRoleType_(USKToken, v15, v11, v16);
+  nameCopy = name;
+  typeCopy = type;
+  roleCopy = role;
+  v14 = objc_msgSend_tokenWithDataType_(USKToken, v12, typeCopy, v13);
+  v17 = objc_msgSend_tokenWithRoleType_(USKToken, v15, roleCopy, v16);
   v70 = 0;
-  v18 = v9;
+  v18 = nameCopy;
   v22 = objc_msgSend_UTF8String(v18, v19, v20, v21);
   MEMORY[0x27439E610](&v70, v22);
   v69 = 0;
@@ -2672,7 +2672,7 @@ LABEL_9:
 
     v43 = 0;
 LABEL_48:
-    v36 = sub_270362600(&type, v9, &v44, &v43);
+    v36 = sub_270362600(&type, nameCopy, &v44, &v43);
     if ((v43 & 7) != 0)
     {
       atomic_fetch_add_explicit((v43 & 0xFFFFFFFFFFFFFFF8), 0xFFFFFFFE, memory_order_release);
@@ -2858,13 +2858,13 @@ LABEL_56:
   return v36;
 }
 
-- (id)newCustomPropertyWithName:(id)a3 type:(id)a4 role:(id)a5
+- (id)newCustomPropertyWithName:(id)name type:(id)type role:(id)role
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v13 = objc_msgSend_tokenWithDataType_(USKToken, v11, v9, v12);
-  v16 = objc_msgSend_tokenWithRoleType_(USKToken, v14, v10, v15);
+  nameCopy = name;
+  typeCopy = type;
+  roleCopy = role;
+  v13 = objc_msgSend_tokenWithDataType_(USKToken, v11, typeCopy, v12);
+  v16 = objc_msgSend_tokenWithRoleType_(USKToken, v14, roleCopy, v15);
   p_prim = &self->_prim;
   type = p_prim->_type;
   pointer = p_prim->_prim._p._pointer;
@@ -2905,7 +2905,7 @@ LABEL_8:
 
   v25 = 0;
 LABEL_11:
-  v23 = sub_270362600(&type, v8, &v26, &v25);
+  v23 = sub_270362600(&type, nameCopy, &v26, &v25);
   if ((v25 & 7) != 0)
   {
     atomic_fetch_add_explicit((v25 & 0xFFFFFFFFFFFFFFF8), 0xFFFFFFFE, memory_order_release);
@@ -3213,16 +3213,16 @@ LABEL_10:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v9 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     objc_msgSend_usdPrim(v5, v6, v7, v8);
     v9 = self->_prim._type == v11 && self->_prim._prim._p._pointer == v12 && self->_prim._proxyPrimPath._primPart._poolHandle == v13 && (v14 ^ self->_prim._proxyPrimPath._propPart._poolHandle) < 8;

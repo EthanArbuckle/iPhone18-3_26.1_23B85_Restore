@@ -1,17 +1,17 @@
 @interface PNPConnectButton
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 @end
 
 @implementation PNPConnectButton
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = [(PNPConnectButton *)self superview];
-  v8 = [(PNPConnectButton *)self superview];
-  [v8 bounds];
-  [v7 convertRect:self toView:?];
+  y = inside.y;
+  x = inside.x;
+  superview = [(PNPConnectButton *)self superview];
+  superview2 = [(PNPConnectButton *)self superview];
+  [superview2 bounds];
+  [superview convertRect:self toView:?];
   v10 = v9;
   v12 = v11;
   v14 = v13;

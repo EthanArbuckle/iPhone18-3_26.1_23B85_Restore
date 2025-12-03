@@ -1,21 +1,21 @@
 @interface PXPhotosViewEventTracker
-+ (id)analyticsViewNameForDataSource:(id)a3;
-- (PXPhotosViewEventTracker)initWithViewModel:(id)a3;
-- (PXPhotosViewEventTracker)initWithViewName:(id)a3;
++ (id)analyticsViewNameForDataSource:(id)source;
+- (PXPhotosViewEventTracker)initWithViewModel:(id)model;
+- (PXPhotosViewEventTracker)initWithViewName:(id)name;
 - (void)_invalidateTrackedValues;
 - (void)_updateTrackedValues;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)setIsInSelectModeValue:(id)a3;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)setIsInSelectModeValue:(id)value;
 @end
 
 @implementation PXPhotosViewEventTracker
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v8 = a3;
-  if (EventTrackerObserverContext_180677 == a5)
+  observableCopy = observable;
+  if (EventTrackerObserverContext_180677 == context)
   {
-    if ((a4 & 8) == 0)
+    if ((change & 8) == 0)
     {
       goto LABEL_6;
     }
@@ -30,9 +30,9 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  if (ViewModelObservationContext_180678 == a5)
+  if (ViewModelObservationContext_180678 == context)
   {
-    if ((a4 & 5) == 0)
+    if ((change & 5) == 0)
     {
       goto LABEL_6;
     }
@@ -42,16 +42,16 @@ LABEL_5:
 
   v10.receiver = self;
   v10.super_class = PXPhotosViewEventTracker;
-  [(PXMediaViewControllerEventTracker *)&v10 observable:v8 didChange:a4 context:a5];
+  [(PXMediaViewControllerEventTracker *)&v10 observable:observableCopy didChange:change context:context];
 LABEL_6:
 }
 
-- (void)setIsInSelectModeValue:(id)a3
+- (void)setIsInSelectModeValue:(id)value
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = v5;
-  if (self->_isInSelectModeValue != v5 && ([(NSNumber *)v5 isEqual:?]& 1) == 0)
+  valueCopy = value;
+  v6 = valueCopy;
+  if (self->_isInSelectModeValue != valueCopy && ([(NSNumber *)valueCopy isEqual:?]& 1) == 0)
   {
     if ([(NSNumber *)self->_isInSelectModeValue BOOLValue])
     {
@@ -62,15 +62,15 @@ LABEL_6:
       {
         v10 = MEMORY[0x1E6991F28];
         v15 = *MEMORY[0x1E6991E20];
-        v11 = [(PXMediaViewControllerEventTracker *)self viewName];
-        v16[0] = v11;
+        viewName = [(PXMediaViewControllerEventTracker *)self viewName];
+        v16[0] = viewName;
         v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:&v15 count:1];
         v13 = [(PXUserInterfaceElementEventTracker *)self finalPayloadWithPayload:v12];
         [v10 sendEvent:@"com.apple.photos.CPAnalytics.selectModeEntered" withPayload:v13];
       }
     }
 
-    objc_storeStrong(&self->_isInSelectModeValue, a3);
+    objc_storeStrong(&self->_isInSelectModeValue, value);
     [(PXUserInterfaceElementEventTracker *)self currentTimestamp];
     self->_isInSelectModeValueTimestamp = v14;
   }
@@ -80,14 +80,14 @@ LABEL_6:
 {
   if ([(PXViewControllerEventTracker *)self isViewVisible])
   {
-    v3 = [(PXPhotosViewEventTracker *)self viewModel];
-    v4 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v3, "isInSelectMode")}];
-    v5 = [v3 currentDataSource];
-    v6 = [v5 containerCollection];
+    viewModel = [(PXPhotosViewEventTracker *)self viewModel];
+    v4 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(viewModel, "isInSelectMode")}];
+    currentDataSource = [viewModel currentDataSource];
+    containerCollection = [currentDataSource containerCollection];
 
-    if ([v6 conformsToProtocol:&unk_1F198AE70])
+    if ([containerCollection conformsToProtocol:&unk_1F198AE70])
     {
-      v8 = v6;
+      v8 = containerCollection;
     }
 
     else
@@ -111,16 +111,16 @@ LABEL_6:
 
 - (void)_invalidateTrackedValues
 {
-  v2 = [(PXUserInterfaceElementEventTracker *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateTrackedValues];
+  updater = [(PXUserInterfaceElementEventTracker *)self updater];
+  [updater setNeedsUpdateOf:sel__updateTrackedValues];
 }
 
-- (PXPhotosViewEventTracker)initWithViewModel:(id)a3
+- (PXPhotosViewEventTracker)initWithViewModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v6 = objc_opt_class();
-  v7 = [v5 currentDataSource];
-  v8 = [v6 analyticsViewNameForDataSource:v7];
+  currentDataSource = [modelCopy currentDataSource];
+  v8 = [v6 analyticsViewNameForDataSource:currentDataSource];
 
   v13.receiver = self;
   v13.super_class = PXPhotosViewEventTracker;
@@ -129,32 +129,32 @@ LABEL_6:
   if (v9)
   {
     [(PXPhotosViewEventTracker *)v9 registerChangeObserver:v9 context:EventTrackerObserverContext_180677];
-    objc_storeStrong(&v10->_viewModel, a3);
+    objc_storeStrong(&v10->_viewModel, model);
     [(PXPhotosViewModel *)v10->_viewModel registerChangeObserver:v10 context:ViewModelObservationContext_180678];
-    v11 = [(PXUserInterfaceElementEventTracker *)v10 updater];
-    [v11 addUpdateSelector:sel__updateTrackedValues];
+    updater = [(PXUserInterfaceElementEventTracker *)v10 updater];
+    [updater addUpdateSelector:sel__updateTrackedValues];
   }
 
   return v10;
 }
 
-- (PXPhotosViewEventTracker)initWithViewName:(id)a3
+- (PXPhotosViewEventTracker)initWithViewName:(id)name
 {
-  v5 = a3;
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"PXPhotosViewEventTracker.m" lineNumber:110 description:{@"%s is not available as initializer", "-[PXPhotosViewEventTracker initWithViewName:]"}];
+  nameCopy = name;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotosViewEventTracker.m" lineNumber:110 description:{@"%s is not available as initializer", "-[PXPhotosViewEventTracker initWithViewName:]"}];
 
   abort();
 }
 
-+ (id)analyticsViewNameForDataSource:(id)a3
++ (id)analyticsViewNameForDataSource:(id)source
 {
-  v3 = a3;
-  v4 = [v3 containerCollection];
-  v5 = v4;
-  if (v4)
+  sourceCopy = source;
+  containerCollection = [sourceCopy containerCollection];
+  v5 = containerCollection;
+  if (containerCollection)
   {
-    if ([v4 px_isRecentsSmartAlbum])
+    if ([containerCollection px_isRecentsSmartAlbum])
     {
       v6 = @"PhotosView_smartAlbumRecents";
       goto LABEL_32;
@@ -195,22 +195,22 @@ LABEL_6:
   v7 = v5;
   if (![v7 isTransient] || (objc_msgSend(v7, "transientIdentifier"), v8 = objc_claimAutoreleasedReturnValue(), v8, !v8))
   {
-    v11 = [v3 container];
+    container = [sourceCopy container];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
-    v13 = [v3 container];
-    v14 = v13;
+    container2 = [sourceCopy container];
+    v14 = container2;
     if (isKindOfClass)
     {
-      v15 = [v13 detectionType];
+      detectionType = [container2 detectionType];
       v16 = @"PhotosView_personUnknown";
-      if (v15 == 3)
+      if (detectionType == 3)
       {
         v16 = @"PhotosView_personDog";
       }
 
-      if (v15 == 4)
+      if (detectionType == 4)
       {
         v17 = @"PhotosView_personCat";
       }
@@ -220,7 +220,7 @@ LABEL_6:
         v17 = v16;
       }
 
-      if (v15 == 1)
+      if (detectionType == 1)
       {
         v6 = @"PhotosView_personHuman";
       }
@@ -251,8 +251,8 @@ LABEL_30:
     goto LABEL_31;
   }
 
-  v9 = [v7 transientIdentifier];
-  v10 = [v9 hasPrefix:@"PXFeaturedPhotosVirtualCollection"];
+  transientIdentifier = [v7 transientIdentifier];
+  v10 = [transientIdentifier hasPrefix:@"PXFeaturedPhotosVirtualCollection"];
 
   if ((v10 & 1) == 0)
   {
@@ -263,8 +263,8 @@ LABEL_30:
     }
 
     v20 = MEMORY[0x1E696AEC0];
-    v21 = [v7 transientIdentifier];
-    v14 = [v20 stringWithFormat:@"PhotosView_%@", v21];
+    transientIdentifier2 = [v7 transientIdentifier];
+    v14 = [v20 stringWithFormat:@"PhotosView_%@", transientIdentifier2];
 
     if ([v14 hasPrefix:@"PhotosView_utility-"])
     {
@@ -300,8 +300,8 @@ LABEL_30:
     }
 
     v22 = MEMORY[0x1E696AEC0];
-    v23 = [v7 transientIdentifier];
-    v6 = [v22 stringWithFormat:@"PhotosView_%@", v23];
+    transientIdentifier3 = [v7 transientIdentifier];
+    v6 = [v22 stringWithFormat:@"PhotosView_%@", transientIdentifier3];
 
     goto LABEL_30;
   }

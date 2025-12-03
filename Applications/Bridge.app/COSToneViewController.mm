@@ -1,28 +1,28 @@
 @interface COSToneViewController
-- (COSToneViewController)initWithCoder:(id)a3;
-- (COSToneViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)tonePickerViewController:(id)a3 selectedToneWithIdentifier:(id)a4;
+- (COSToneViewController)initWithCoder:(id)coder;
+- (COSToneViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)tonePickerViewController:(id)controller selectedToneWithIdentifier:(id)identifier;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation COSToneViewController
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001439B4();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = self;
+  selfCopy = self;
   sub_100144618();
 }
 
-- (void)tonePickerViewController:(id)a3 selectedToneWithIdentifier:(id)a4
+- (void)tonePickerViewController:(id)controller selectedToneWithIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
     v6 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v8 = v7;
@@ -34,42 +34,42 @@
     v8 = 0;
   }
 
-  v9 = a3;
-  v10 = self;
-  sub_100144C80(a3, v6, v8);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_100144C80(controller, v6, v8);
 }
 
-- (COSToneViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (COSToneViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
     *&self->PSViewController_opaque[OBJC_IVAR___COSToneViewController_cancellables] = &_swiftEmptyArrayStorage;
-    v6 = a4;
+    bundleCopy = bundle;
     v7 = String._bridgeToObjectiveC()();
   }
 
   else
   {
     *&self->PSViewController_opaque[OBJC_IVAR___COSToneViewController_cancellables] = &_swiftEmptyArrayStorage;
-    v8 = a4;
+    bundleCopy2 = bundle;
     v7 = 0;
   }
 
   v11.receiver = self;
   v11.super_class = type metadata accessor for ToneViewController();
-  v9 = [(COSToneViewController *)&v11 initWithNibName:v7 bundle:a4];
+  v9 = [(COSToneViewController *)&v11 initWithNibName:v7 bundle:bundle];
 
   return v9;
 }
 
-- (COSToneViewController)initWithCoder:(id)a3
+- (COSToneViewController)initWithCoder:(id)coder
 {
   *&self->PSViewController_opaque[OBJC_IVAR___COSToneViewController_cancellables] = &_swiftEmptyArrayStorage;
   v7.receiver = self;
   v7.super_class = type metadata accessor for ToneViewController();
-  v4 = a3;
-  v5 = [(COSToneViewController *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(COSToneViewController *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

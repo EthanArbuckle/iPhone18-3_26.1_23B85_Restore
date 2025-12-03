@@ -1,24 +1,24 @@
 @interface HighlightAlertCodableState
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasAcknowledged:(BOOL)a3;
-- (void)setHasDismissed:(BOOL)a3;
-- (void)setHasExpirationDate:(BOOL)a3;
-- (void)setHasLatestSupportedVersion:(BOOL)a3;
-- (void)setHasMinimumSupportedVersion:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasAcknowledged:(BOOL)acknowledged;
+- (void)setHasDismissed:(BOOL)dismissed;
+- (void)setHasExpirationDate:(BOOL)date;
+- (void)setHasLatestSupportedVersion:(BOOL)version;
+- (void)setHasMinimumSupportedVersion:(BOOL)version;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HighlightAlertCodableState
 
-- (void)setHasLatestSupportedVersion:(BOOL)a3
+- (void)setHasLatestSupportedVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 4;
   }
@@ -31,9 +31,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasMinimumSupportedVersion:(BOOL)a3
+- (void)setHasMinimumSupportedVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 8;
   }
@@ -46,9 +46,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasExpirationDate:(BOOL)a3
+- (void)setHasExpirationDate:(BOOL)date
 {
-  if (a3)
+  if (date)
   {
     v3 = 2;
   }
@@ -61,9 +61,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasAcknowledged:(BOOL)a3
+- (void)setHasAcknowledged:(BOOL)acknowledged
 {
-  if (a3)
+  if (acknowledged)
   {
     v3 = 16;
   }
@@ -76,9 +76,9 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasDismissed:(BOOL)a3
+- (void)setHasDismissed:(BOOL)dismissed
 {
-  if (a3)
+  if (dismissed)
   {
     v3 = 32;
   }
@@ -97,20 +97,20 @@
   v8.receiver = self;
   v8.super_class = HighlightAlertCodableState;
   v4 = [(HighlightAlertCodableState *)&v8 description];
-  v5 = [(HighlightAlertCodableState *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HighlightAlertCodableState *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if ((has & 4) != 0)
   {
     v5 = [MEMORY[0x29EDBA070] numberWithLongLong:self->_latestSupportedVersion];
-    [v3 setObject:v5 forKey:@"latestSupportedVersion"];
+    [dictionary setObject:v5 forKey:@"latestSupportedVersion"];
 
     has = self->_has;
   }
@@ -118,20 +118,20 @@
   if ((has & 8) != 0)
   {
     v6 = [MEMORY[0x29EDBA070] numberWithLongLong:self->_minimumSupportedVersion];
-    [v3 setObject:v6 forKey:@"minimumSupportedVersion"];
+    [dictionary setObject:v6 forKey:@"minimumSupportedVersion"];
   }
 
   eventUUID = self->_eventUUID;
   if (eventUUID)
   {
-    [v3 setObject:eventUUID forKey:@"eventUUID"];
+    [dictionary setObject:eventUUID forKey:@"eventUUID"];
   }
 
   v8 = self->_has;
   if (v8)
   {
     v11 = [MEMORY[0x29EDBA070] numberWithDouble:self->_eventDate];
-    [v3 setObject:v11 forKey:@"eventDate"];
+    [dictionary setObject:v11 forKey:@"eventDate"];
 
     v8 = self->_has;
     if ((v8 & 2) == 0)
@@ -152,7 +152,7 @@ LABEL_9:
   }
 
   v12 = [MEMORY[0x29EDBA070] numberWithDouble:self->_expirationDate];
-  [v3 setObject:v12 forKey:@"expirationDate"];
+  [dictionary setObject:v12 forKey:@"expirationDate"];
 
   v8 = self->_has;
   if ((v8 & 0x10) == 0)
@@ -168,23 +168,23 @@ LABEL_10:
 
 LABEL_17:
   v13 = [MEMORY[0x29EDBA070] numberWithBool:self->_acknowledged];
-  [v3 setObject:v13 forKey:@"acknowledged"];
+  [dictionary setObject:v13 forKey:@"acknowledged"];
 
   if ((*&self->_has & 0x20) != 0)
   {
 LABEL_11:
     v9 = [MEMORY[0x29EDBA070] numberWithBool:self->_dismissed];
-    [v3 setObject:v9 forKey:@"dismissed"];
+    [dictionary setObject:v9 forKey:@"dismissed"];
   }
 
 LABEL_12:
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v12 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 4) != 0)
   {
@@ -254,35 +254,35 @@ LABEL_11:
 LABEL_12:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 4) != 0)
   {
-    v4[3] = self->_latestSupportedVersion;
-    *(v4 + 52) |= 4u;
+    toCopy[3] = self->_latestSupportedVersion;
+    *(toCopy + 52) |= 4u;
     has = self->_has;
   }
 
   if ((has & 8) != 0)
   {
-    v4[4] = self->_minimumSupportedVersion;
-    *(v4 + 52) |= 8u;
+    toCopy[4] = self->_minimumSupportedVersion;
+    *(toCopy + 52) |= 8u;
   }
 
   if (self->_eventUUID)
   {
-    v7 = v4;
-    [v4 setEventUUID:?];
-    v4 = v7;
+    v7 = toCopy;
+    [toCopy setEventUUID:?];
+    toCopy = v7;
   }
 
   v6 = self->_has;
   if (v6)
   {
-    v4[1] = *&self->_eventDate;
-    *(v4 + 52) |= 1u;
+    toCopy[1] = *&self->_eventDate;
+    *(toCopy + 52) |= 1u;
     v6 = self->_has;
     if ((v6 & 2) == 0)
     {
@@ -301,8 +301,8 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v4[2] = *&self->_expirationDate;
-  *(v4 + 52) |= 2u;
+  toCopy[2] = *&self->_expirationDate;
+  *(toCopy + 52) |= 2u;
   v6 = self->_has;
   if ((v6 & 0x10) == 0)
   {
@@ -316,21 +316,21 @@ LABEL_10:
   }
 
 LABEL_17:
-  *(v4 + 48) = self->_acknowledged;
-  *(v4 + 52) |= 0x10u;
+  *(toCopy + 48) = self->_acknowledged;
+  *(toCopy + 52) |= 0x10u;
   if ((*&self->_has & 0x20) != 0)
   {
 LABEL_11:
-    *(v4 + 49) = self->_dismissed;
-    *(v4 + 52) |= 0x20u;
+    *(toCopy + 49) = self->_dismissed;
+    *(toCopy + 52) |= 0x20u;
   }
 
 LABEL_12:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 4) != 0)
@@ -346,7 +346,7 @@ LABEL_12:
     *(v5 + 52) |= 8u;
   }
 
-  v8 = [(NSString *)self->_eventUUID copyWithZone:a3];
+  v8 = [(NSString *)self->_eventUUID copyWithZone:zone];
   v9 = *(v6 + 40);
   *(v6 + 40) = v8;
 
@@ -400,44 +400,44 @@ LABEL_9:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_33;
   }
 
   has = self->_has;
-  v6 = *(v4 + 52);
+  v6 = *(equalCopy + 52);
   if ((has & 4) != 0)
   {
-    if ((*(v4 + 52) & 4) == 0 || self->_latestSupportedVersion != *(v4 + 3))
+    if ((*(equalCopy + 52) & 4) == 0 || self->_latestSupportedVersion != *(equalCopy + 3))
     {
       goto LABEL_33;
     }
   }
 
-  else if ((*(v4 + 52) & 4) != 0)
+  else if ((*(equalCopy + 52) & 4) != 0)
   {
     goto LABEL_33;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 52) & 8) == 0 || self->_minimumSupportedVersion != *(v4 + 4))
+    if ((*(equalCopy + 52) & 8) == 0 || self->_minimumSupportedVersion != *(equalCopy + 4))
     {
       goto LABEL_33;
     }
   }
 
-  else if ((*(v4 + 52) & 8) != 0)
+  else if ((*(equalCopy + 52) & 8) != 0)
   {
     goto LABEL_33;
   }
 
   eventUUID = self->_eventUUID;
-  if (eventUUID | *(v4 + 5))
+  if (eventUUID | *(equalCopy + 5))
   {
     if (![(NSString *)eventUUID isEqual:?])
     {
@@ -449,71 +449,71 @@ LABEL_9:
 
   if (has)
   {
-    if ((*(v4 + 52) & 1) == 0 || self->_eventDate != *(v4 + 1))
+    if ((*(equalCopy + 52) & 1) == 0 || self->_eventDate != *(equalCopy + 1))
     {
       goto LABEL_33;
     }
   }
 
-  else if (*(v4 + 52))
+  else if (*(equalCopy + 52))
   {
     goto LABEL_33;
   }
 
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 52) & 2) == 0 || self->_expirationDate != *(v4 + 2))
+    if ((*(equalCopy + 52) & 2) == 0 || self->_expirationDate != *(equalCopy + 2))
     {
       goto LABEL_33;
     }
   }
 
-  else if ((*(v4 + 52) & 2) != 0)
+  else if ((*(equalCopy + 52) & 2) != 0)
   {
     goto LABEL_33;
   }
 
   if ((has & 0x10) != 0)
   {
-    if ((*(v4 + 52) & 0x10) == 0)
+    if ((*(equalCopy + 52) & 0x10) == 0)
     {
       goto LABEL_33;
     }
 
-    v10 = *(v4 + 48);
+    v10 = *(equalCopy + 48);
     if (self->_acknowledged)
     {
-      if ((*(v4 + 48) & 1) == 0)
+      if ((*(equalCopy + 48) & 1) == 0)
       {
         goto LABEL_33;
       }
     }
 
-    else if (*(v4 + 48))
+    else if (*(equalCopy + 48))
     {
       goto LABEL_33;
     }
   }
 
-  else if ((*(v4 + 52) & 0x10) != 0)
+  else if ((*(equalCopy + 52) & 0x10) != 0)
   {
     goto LABEL_33;
   }
 
-  v8 = (*(v4 + 52) & 0x20) == 0;
+  v8 = (*(equalCopy + 52) & 0x20) == 0;
   if ((has & 0x20) != 0)
   {
-    if ((*(v4 + 52) & 0x20) != 0)
+    if ((*(equalCopy + 52) & 0x20) != 0)
     {
       if (self->_dismissed)
       {
-        if (*(v4 + 49))
+        if (*(equalCopy + 49))
         {
           goto LABEL_41;
         }
       }
 
-      else if (!*(v4 + 49))
+      else if (!*(equalCopy + 49))
       {
 LABEL_41:
         v8 = 1;
@@ -646,36 +646,36 @@ LABEL_24:
   return v4 ^ v3 ^ v8 ^ v12 ^ v16 ^ v17 ^ v5;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 52);
+  fromCopy = from;
+  v5 = *(fromCopy + 52);
   if ((v5 & 4) != 0)
   {
-    self->_latestSupportedVersion = *(v4 + 3);
+    self->_latestSupportedVersion = *(fromCopy + 3);
     *&self->_has |= 4u;
-    v5 = *(v4 + 52);
+    v5 = *(fromCopy + 52);
   }
 
   if ((v5 & 8) != 0)
   {
-    self->_minimumSupportedVersion = *(v4 + 4);
+    self->_minimumSupportedVersion = *(fromCopy + 4);
     *&self->_has |= 8u;
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
-    v7 = v4;
+    v7 = fromCopy;
     [(HighlightAlertCodableState *)self setEventUUID:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  v6 = *(v4 + 52);
+  v6 = *(fromCopy + 52);
   if (v6)
   {
-    self->_eventDate = *(v4 + 1);
+    self->_eventDate = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v6 = *(v4 + 52);
+    v6 = *(fromCopy + 52);
     if ((v6 & 2) == 0)
     {
 LABEL_9:
@@ -688,14 +688,14 @@ LABEL_9:
     }
   }
 
-  else if ((*(v4 + 52) & 2) == 0)
+  else if ((*(fromCopy + 52) & 2) == 0)
   {
     goto LABEL_9;
   }
 
-  self->_expirationDate = *(v4 + 2);
+  self->_expirationDate = *(fromCopy + 2);
   *&self->_has |= 2u;
-  v6 = *(v4 + 52);
+  v6 = *(fromCopy + 52);
   if ((v6 & 0x10) == 0)
   {
 LABEL_10:
@@ -708,12 +708,12 @@ LABEL_10:
   }
 
 LABEL_17:
-  self->_acknowledged = *(v4 + 48);
+  self->_acknowledged = *(fromCopy + 48);
   *&self->_has |= 0x10u;
-  if ((*(v4 + 52) & 0x20) != 0)
+  if ((*(fromCopy + 52) & 0x20) != 0)
   {
 LABEL_11:
-    self->_dismissed = *(v4 + 49);
+    self->_dismissed = *(fromCopy + 49);
     *&self->_has |= 0x20u;
   }
 

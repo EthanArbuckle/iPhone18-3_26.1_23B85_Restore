@@ -1,11 +1,11 @@
 @interface SKUIRemoveFromWishlistOperation
-- (SKUIRemoveFromWishlistOperation)initWithItemIdentifier:(int64_t)a3 entityIdentifier:(int64_t)a4 reason:(int64_t)a5;
+- (SKUIRemoveFromWishlistOperation)initWithItemIdentifier:(int64_t)identifier entityIdentifier:(int64_t)entityIdentifier reason:(int64_t)reason;
 - (void)main;
 @end
 
 @implementation SKUIRemoveFromWishlistOperation
 
-- (SKUIRemoveFromWishlistOperation)initWithItemIdentifier:(int64_t)a3 entityIdentifier:(int64_t)a4 reason:(int64_t)a5
+- (SKUIRemoveFromWishlistOperation)initWithItemIdentifier:(int64_t)identifier entityIdentifier:(int64_t)entityIdentifier reason:(int64_t)reason
 {
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
@@ -17,9 +17,9 @@
   result = [(SKUIRemoveFromWishlistOperation *)&v10 init];
   if (result)
   {
-    result->_entityID = a4;
-    result->_itemID = a3;
-    result->_reason = a5;
+    result->_entityID = entityIdentifier;
+    result->_itemID = identifier;
+    result->_reason = reason;
   }
 
   return result;
@@ -43,27 +43,27 @@
 
   v6 = [(SSURLConnectionRequest *)[SKUIURLConnectionRequest alloc] initWithRequestProperties:v3];
   [(SSURLConnectionRequest *)v6 setShouldMescalSign:1];
-  v7 = [MEMORY[0x277D69A20] defaultStore];
-  v36 = [v7 activeAccount];
+  defaultStore = [MEMORY[0x277D69A20] defaultStore];
+  activeAccount = [defaultStore activeAccount];
 
-  v35 = [objc_alloc(MEMORY[0x277D69A58]) initWithAccount:v36];
+  v35 = [objc_alloc(MEMORY[0x277D69A58]) initWithAccount:activeAccount];
   [(SSURLConnectionRequest *)v6 setAuthenticationContext:?];
-  v8 = [MEMORY[0x277D69B38] sharedConfig];
-  v9 = [v8 shouldLog];
-  if ([v8 shouldLogToDisk])
+  mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedConfig];
+  shouldLog = [mEMORY[0x277D69B38] shouldLog];
+  if ([mEMORY[0x277D69B38] shouldLogToDisk])
   {
-    v9 |= 2u;
+    shouldLog |= 2u;
   }
 
-  v10 = [v8 OSLogObject];
-  if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
+  oSLogObject = [mEMORY[0x277D69B38] OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
   {
-    v11 = v9;
+    v11 = shouldLog;
   }
 
   else
   {
-    v11 = v9 & 2;
+    v11 = shouldLog & 2;
   }
 
   if (v11)
@@ -122,23 +122,23 @@ LABEL_26:
       goto LABEL_27;
     }
 
-    v33 = [v34 integerValue];
-    v19 = [MEMORY[0x277D69B38] sharedConfig];
-    v20 = [v19 shouldLog];
-    v21 = [v19 shouldLogToDisk];
-    v22 = [v19 OSLogObject];
-    v23 = v22;
-    if (v21)
+    integerValue = [v34 integerValue];
+    mEMORY[0x277D69B38]2 = [MEMORY[0x277D69B38] sharedConfig];
+    shouldLog2 = [mEMORY[0x277D69B38]2 shouldLog];
+    shouldLogToDisk = [mEMORY[0x277D69B38]2 shouldLogToDisk];
+    oSLogObject2 = [mEMORY[0x277D69B38]2 OSLogObject];
+    v23 = oSLogObject2;
+    if (shouldLogToDisk)
     {
-      v24 = v20 | 2;
+      v24 = shouldLog2 | 2;
     }
 
     else
     {
-      v24 = v20;
+      v24 = shouldLog2;
     }
 
-    if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEBUG))
     {
       v25 = v24;
     }
@@ -152,8 +152,8 @@ LABEL_26:
     {
       v26 = self->_itemID;
       v41 = 134218240;
-      v27 = v33;
-      v42 = v33;
+      v27 = integerValue;
+      v42 = integerValue;
       v43 = 2048;
       v44 = v26;
       LODWORD(v32) = 22;
@@ -171,15 +171,15 @@ LABEL_26:
 
     else
     {
-      v27 = v33;
+      v27 = integerValue;
     }
 
 LABEL_24:
     if (v27 <= 1)
     {
       v29 = objc_alloc(MEMORY[0x277D69D58]);
-      v30 = [v36 uniqueIdentifier];
-      v31 = [v29 initWithAccountIdentifier:{objc_msgSend(v30, "longLongValue")}];
+      uniqueIdentifier = [activeAccount uniqueIdentifier];
+      v31 = [v29 initWithAccountIdentifier:{objc_msgSend(uniqueIdentifier, "longLongValue")}];
 
       v37[0] = MEMORY[0x277D85DD0];
       v37[1] = 3221225472;

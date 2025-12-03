@@ -1,15 +1,15 @@
 @interface ASKImageDataConsumer
-- (ASKImageDataConsumer)initWithSize:(CGSize)a3 scale:(double)a4;
+- (ASKImageDataConsumer)initWithSize:(CGSize)size scale:(double)scale;
 - (CGSize)size;
-- (id)objectForData:(id)a3 error:(id *)a4;
+- (id)objectForData:(id)data error:(id *)error;
 @end
 
 @implementation ASKImageDataConsumer
 
-- (ASKImageDataConsumer)initWithSize:(CGSize)a3 scale:(double)a4
+- (ASKImageDataConsumer)initWithSize:(CGSize)size scale:(double)scale
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v8.receiver = self;
   v8.super_class = ASKImageDataConsumer;
   result = [(ASKImageDataConsumer *)&v8 init];
@@ -17,43 +17,43 @@
   {
     result->_size.width = width;
     result->_size.height = height;
-    result->_scale = a4;
+    result->_scale = scale;
     result->_retainAspectRatio = 0;
   }
 
   return result;
 }
 
-- (id)objectForData:(id)a3 error:(id *)a4
+- (id)objectForData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = [[UIImage alloc] initWithData:v6];
+  dataCopy = data;
+  v7 = [[UIImage alloc] initWithData:dataCopy];
 
-  if (a4 && !v7)
+  if (error && !v7)
   {
     v26 = NSLocalizedDescriptionKey;
     v27 = @"Could not decode image";
     v8 = [NSDictionary dictionaryWithObjects:&v27 forKeys:&v26 count:1];
-    *a4 = [NSError errorWithDomain:@"ASKImageDataConsumerErrorDomain" code:-99 userInfo:v8];
+    *error = [NSError errorWithDomain:@"ASKImageDataConsumerErrorDomain" code:-99 userInfo:v8];
   }
 
   [(ASKImageDataConsumer *)self size];
   v11 = v10 == CGSizeZero.width && v9 == CGSizeZero.height;
-  v12 = v7;
+  selfCopy = v7;
   if (!v11)
   {
     if ([(ASKImageDataConsumer *)self retainAspectRatio])
     {
-      v12 = v7;
+      selfCopy = v7;
     }
 
     else
     {
-      v12 = self;
+      selfCopy = self;
     }
   }
 
-  [(ASKImageDataConsumer *)v12 size];
+  [(ASKImageDataConsumer *)selfCopy size];
   v14 = v13;
   v16 = v15;
   v17 = objc_alloc_init(UIGraphicsImageRendererFormat);

@@ -7,8 +7,8 @@
 
 - (BOOL)isPartial
 {
-  v2 = [(NTKDSyncMessage *)self wideLoadId];
-  v3 = v2 != 0;
+  wideLoadId = [(NTKDSyncMessage *)self wideLoadId];
+  v3 = wideLoadId != 0;
 
   return v3;
 }
@@ -16,28 +16,28 @@
 - (id)copyWithoutPayload
 {
   v3 = [NTKDSyncMessage messageOfType:[(NTKDSyncMessage *)self messageType]];
-  v4 = [(NTKDSyncMessage *)self faceUUID];
-  [v3 setFaceUUID:v4];
+  faceUUID = [(NTKDSyncMessage *)self faceUUID];
+  [v3 setFaceUUID:faceUUID];
 
-  v5 = [(NTKDSyncMessage *)self label];
-  [v3 setLabel:v5];
+  label = [(NTKDSyncMessage *)self label];
+  [v3 setLabel:label];
 
   [(NTKDSyncMessage *)self progress];
   [v3 setProgress:?];
-  v6 = [(NTKDSyncMessage *)self complicationCollectionIdentifier];
-  [v3 setComplicationCollectionIdentifier:v6];
+  complicationCollectionIdentifier = [(NTKDSyncMessage *)self complicationCollectionIdentifier];
+  [v3 setComplicationCollectionIdentifier:complicationCollectionIdentifier];
 
-  v7 = [(NTKDSyncMessage *)self complicationClientID];
-  [v3 setComplicationClientID:v7];
+  complicationClientID = [(NTKDSyncMessage *)self complicationClientID];
+  [v3 setComplicationClientID:complicationClientID];
 
-  v8 = [(NTKDSyncMessage *)self complicationDescriptor];
-  [v3 setComplicationDescriptor:v8];
+  complicationDescriptor = [(NTKDSyncMessage *)self complicationDescriptor];
+  [v3 setComplicationDescriptor:complicationDescriptor];
 
-  v9 = [(NTKDSyncMessage *)self complicationFamily];
-  [v3 setComplicationFamily:v9];
+  complicationFamily = [(NTKDSyncMessage *)self complicationFamily];
+  [v3 setComplicationFamily:complicationFamily];
 
-  v10 = [(NTKDSyncMessage *)self wideLoadId];
-  [v3 setWideLoadId:v10];
+  wideLoadId = [(NTKDSyncMessage *)self wideLoadId];
+  [v3 setWideLoadId:wideLoadId];
 
   [v3 setNumberOfParts:{-[NTKDSyncMessage numberOfParts](self, "numberOfParts")}];
   [v3 setPartNumber:{-[NTKDSyncMessage partNumber](self, "partNumber")}];

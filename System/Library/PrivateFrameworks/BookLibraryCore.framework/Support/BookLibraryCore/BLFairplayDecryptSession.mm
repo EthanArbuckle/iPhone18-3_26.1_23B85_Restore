@@ -1,24 +1,24 @@
 @interface BLFairplayDecryptSession
-- (BLFairplayDecryptSession)initWithDPInfo:(id)a3;
-- (id)decryptBytes:(id)a3 error:(id *)a4;
+- (BLFairplayDecryptSession)initWithDPInfo:(id)info;
+- (id)decryptBytes:(id)bytes error:(id *)error;
 - (void)dealloc;
 @end
 
 @implementation BLFairplayDecryptSession
 
-- (BLFairplayDecryptSession)initWithDPInfo:(id)a3
+- (BLFairplayDecryptSession)initWithDPInfo:(id)info
 {
-  v5 = a3;
+  infoCopy = info;
   v6 = [(BLFairplayDecryptSession *)self init];
   if (v6)
   {
-    if ([v5 length])
+    if ([infoCopy length])
     {
-      objc_storeStrong(&v6->_dpInfo, a3);
+      objc_storeStrong(&v6->_dpInfo, info);
       v7 = [NSString alloc];
       v8 = +[NSUUID UUID];
-      v9 = [v8 UUIDString];
-      v10 = [v7 initWithFormat:@"com.apple.itunesstored.fairplay.decryptfile.%@", v9];
+      uUIDString = [v8 UUIDString];
+      v10 = [v7 initWithFormat:@"com.apple.itunesstored.fairplay.decryptfile.%@", uUIDString];
       identifier = v6->_identifier;
       v6->_identifier = v10;
     }
@@ -55,9 +55,9 @@
   [(BLFairplayDecryptSession *)&v4 dealloc];
 }
 
-- (id)decryptBytes:(id)a3 error:(id *)a4
+- (id)decryptBytes:(id)bytes error:(id *)error
 {
-  v6 = a3;
+  bytesCopy = bytes;
   decryptSession = self->_decryptSession;
   if (decryptSession)
   {
@@ -75,9 +75,9 @@
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_ERROR, "%@: Could not begin decrypt", buf, 0xCu);
     }
 
-    if (a4)
+    if (error)
     {
-      *a4 = sub_1000A8F44(15, 0, 0);
+      *error = sub_1000A8F44(15, 0, 0);
     }
   }
 
@@ -89,7 +89,7 @@
   {
 LABEL_8:
     v17 = 0;
-    v11 = sub_1000AAE24(decryptSession, v6, &v17);
+    v11 = sub_1000AAE24(decryptSession, bytesCopy, &v17);
     v12 = v17;
     if ((v11 & 1) == 0)
     {
@@ -103,9 +103,9 @@ LABEL_8:
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "%@: Decrypt failed", buf, 0xCu);
       }
 
-      if (a4)
+      if (error)
       {
-        *a4 = sub_1000A91BC(@"FairPlayErrorDomain", 15, 0, 0);
+        *error = sub_1000A91BC(@"FairPlayErrorDomain", 15, 0, 0);
       }
     }
   }

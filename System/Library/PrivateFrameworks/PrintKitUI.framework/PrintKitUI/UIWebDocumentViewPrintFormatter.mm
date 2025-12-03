@@ -1,19 +1,19 @@
 @interface UIWebDocumentViewPrintFormatter
-- (CGRect)rectForPageAtIndex:(int64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CGRect)rectForPageAtIndex:(int64_t)index;
+- (id)copyWithZone:(_NSZone *)zone;
 - (int64_t)_recalcPageCount;
 - (void)_resetPaginationInfo;
-- (void)drawInRect:(CGRect)a3 forPageAtIndex:(int64_t)a4;
+- (void)drawInRect:(CGRect)rect forPageAtIndex:(int64_t)index;
 - (void)removeFromPrintPageRenderer;
 @end
 
 @implementation UIWebDocumentViewPrintFormatter
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = UIWebDocumentViewPrintFormatter;
-  v4 = [(UIViewPrintFormatter *)&v7 copyWithZone:a3];
+  v4 = [(UIViewPrintFormatter *)&v7 copyWithZone:zone];
   v5 = v4;
   if (v4)
   {
@@ -91,17 +91,17 @@ void __55__UIWebDocumentViewPrintFormatter__resetPaginationInfo__block_invoke(ui
     return 0;
   }
 
-  v20 = [(UIWebDocumentViewPrintFormatter *)self _webDocumentView];
-  v21 = [v20 beginPrintModeWithWidth:1 height:self->_frameToPrint startOffset:v16 shrinkToFit:v18 forFrame:v6 - v14];
+  _webDocumentView = [(UIWebDocumentViewPrintFormatter *)self _webDocumentView];
+  v21 = [_webDocumentView beginPrintModeWithWidth:1 height:self->_frameToPrint startOffset:v16 shrinkToFit:v18 forFrame:v6 - v14];
   paginationInfo = self->_paginationInfo;
   self->_paginationInfo = v21;
 
   return [(UIWebPaginationInfo *)self->_paginationInfo pageCount];
 }
 
-- (CGRect)rectForPageAtIndex:(int64_t)a3
+- (CGRect)rectForPageAtIndex:(int64_t)index
 {
-  [(UIPrintFormatter *)self _pageContentRect:[(UIPrintFormatter *)self startPage]== a3];
+  [(UIPrintFormatter *)self _pageContentRect:[(UIPrintFormatter *)self startPage]== index];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -110,7 +110,7 @@ void __55__UIWebDocumentViewPrintFormatter__resetPaginationInfo__block_invoke(ui
   paginationInfo = self->_paginationInfo;
   if (paginationInfo)
   {
-    [(UIWebPaginationInfo *)paginationInfo sizeForPageAtIndex:a3 - [(UIPrintFormatter *)self startPage]];
+    [(UIWebPaginationInfo *)paginationInfo sizeForPageAtIndex:index - [(UIPrintFormatter *)self startPage]];
     v10 = v14;
     v12 = v15;
   }
@@ -126,12 +126,12 @@ void __55__UIWebDocumentViewPrintFormatter__resetPaginationInfo__block_invoke(ui
   return result;
 }
 
-- (void)drawInRect:(CGRect)a3 forPageAtIndex:(int64_t)a4
+- (void)drawInRect:(CGRect)rect forPageAtIndex:(int64_t)index
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   CurrentContext = UIGraphicsGetCurrentContext();
   CGContextSaveGState(CurrentContext);
   v13.origin.x = x;
@@ -140,8 +140,8 @@ void __55__UIWebDocumentViewPrintFormatter__resetPaginationInfo__block_invoke(ui
   v13.size.height = height;
   CGContextClipToRect(CurrentContext, v13);
   CGContextTranslateCTM(CurrentContext, x, y);
-  v11 = [(UIWebDocumentViewPrintFormatter *)self _webDocumentView];
-  [v11 drawPage:a4 - -[UIPrintFormatter startPage](self withPaginationInfo:{"startPage"), self->_paginationInfo}];
+  _webDocumentView = [(UIWebDocumentViewPrintFormatter *)self _webDocumentView];
+  [_webDocumentView drawPage:index - -[UIPrintFormatter startPage](self withPaginationInfo:{"startPage"), self->_paginationInfo}];
 
   CGContextRestoreGState(CurrentContext);
 }

@@ -1,11 +1,11 @@
 @interface AXWaveformSelectionBarElement
-- (BOOL)accessibilityScroll:(int64_t)a3;
+- (BOOL)accessibilityScroll:(int64_t)scroll;
 - (BOOL)isWaveformOverview;
 - (CGRect)accessibilityFrame;
 - (id)accessibilityLabel;
 - (id)accessibilityValue;
 - (unint64_t)accessibilityTraits;
-- (void)_accessibilityIncreaseValue:(BOOL)a3 isThreeFingerScroll:(BOOL)a4;
+- (void)_accessibilityIncreaseValue:(BOOL)value isThreeFingerScroll:(BOOL)scroll;
 @end
 
 @implementation AXWaveformSelectionBarElement
@@ -13,8 +13,8 @@
 - (BOOL)isWaveformOverview
 {
   v5 = 0;
-  v2 = [(AXWaveformSelectionBarElement *)self accessibilityContainer];
-  v3 = [v2 safeValueForKey:@"_isOverView"];
+  accessibilityContainer = [(AXWaveformSelectionBarElement *)self accessibilityContainer];
+  v3 = [accessibilityContainer safeValueForKey:@"_isOverView"];
   [v3 getValue:&v5];
 
   return v5;
@@ -23,8 +23,8 @@
 - (id)accessibilityLabel
 {
   v10 = 0;
-  v3 = [(AXWaveformSelectionBarElement *)self accessibilityContainer];
-  v4 = [v3 safeValueForKey:@"_insertMode"];
+  accessibilityContainer = [(AXWaveformSelectionBarElement *)self accessibilityContainer];
+  v4 = [accessibilityContainer safeValueForKey:@"_insertMode"];
   [v4 getValue:&v10];
 
   if (v10 == 1)
@@ -42,11 +42,11 @@
 
   else
   {
-    v6 = [(AXWaveformSelectionBarElement *)self isWaveformOverview];
-    v7 = [(AXWaveformSelectionBarElement *)self adjustsStartTime];
-    if (v6)
+    isWaveformOverview = [(AXWaveformSelectionBarElement *)self isWaveformOverview];
+    adjustsStartTime = [(AXWaveformSelectionBarElement *)self adjustsStartTime];
+    if (isWaveformOverview)
     {
-      if (v7)
+      if (adjustsStartTime)
       {
         v5 = @"AX_TRIM_OVERVIEW_WAVEFORM_START";
       }
@@ -57,7 +57,7 @@
       }
     }
 
-    else if (v7)
+    else if (adjustsStartTime)
     {
       v5 = @"AX_TRIM_DETAIL_WAVEFORM_START";
     }
@@ -87,16 +87,16 @@
 
 - (CGRect)accessibilityFrame
 {
-  v3 = [(AXWaveformSelectionBarElement *)self accessibilityContainer];
-  v4 = [v3 safeValueForKey:@"_selectionRect"];
+  accessibilityContainer = [(AXWaveformSelectionBarElement *)self accessibilityContainer];
+  v4 = [accessibilityContainer safeValueForKey:@"_selectionRect"];
   [v4 CGRectValue];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
 
-  v13 = [(AXWaveformSelectionBarElement *)self accessibilityContainer];
-  v14 = [v13 safeValueForKey:@"_xAdjustmentAmount"];
+  accessibilityContainer2 = [(AXWaveformSelectionBarElement *)self accessibilityContainer];
+  v14 = [accessibilityContainer2 safeValueForKey:@"_xAdjustmentAmount"];
   [v14 floatValue];
   v16 = v15;
 
@@ -118,12 +118,12 @@
     MaxX = CGRectGetMaxX(v28);
   }
 
-  v18 = [(AXWaveformSelectionBarElement *)self accessibilityContainer];
+  accessibilityContainer3 = [(AXWaveformSelectionBarElement *)self accessibilityContainer];
   v29.size.width = 10.0;
   v29.origin.x = MaxX;
   v29.origin.y = v8;
   v29.size.height = v12;
-  v30 = UIAccessibilityConvertFrameToScreenCoordinates(v29, v18);
+  v30 = UIAccessibilityConvertFrameToScreenCoordinates(v29, accessibilityContainer3);
   x = v30.origin.x;
   y = v30.origin.y;
   width = v30.size.width;
@@ -147,42 +147,42 @@
   return UIAccessibilityTraitAdjustable | [(AXWaveformSelectionBarElement *)&v3 accessibilityTraits];
 }
 
-- (void)_accessibilityIncreaseValue:(BOOL)a3 isThreeFingerScroll:(BOOL)a4
+- (void)_accessibilityIncreaseValue:(BOOL)value isThreeFingerScroll:(BOOL)scroll
 {
-  v4 = a4;
-  v5 = a3;
+  scrollCopy = scroll;
+  valueCopy = value;
   v41 = 0.0;
   v42 = 0.0;
-  v7 = [(AXWaveformSelectionBarElement *)self accessibilityContainer];
-  v8 = [v7 safeValueForKey:@"_selectedTimeRange"];
+  accessibilityContainer = [(AXWaveformSelectionBarElement *)self accessibilityContainer];
+  v8 = [accessibilityContainer safeValueForKey:@"_selectedTimeRange"];
   [v8 getValue:&v41];
 
   v10 = v41;
   v9 = v42;
   v40 = 0.0;
-  v11 = [(AXWaveformSelectionBarElement *)self accessibilityContainer];
-  v12 = [v11 safeValueForKey:@"_assetDuration"];
+  accessibilityContainer2 = [(AXWaveformSelectionBarElement *)self accessibilityContainer];
+  v12 = [accessibilityContainer2 safeValueForKey:@"_assetDuration"];
   [v12 getValue:&v40];
 
-  v13 = [(AXWaveformSelectionBarElement *)self isWaveformOverview];
+  isWaveformOverview = [(AXWaveformSelectionBarElement *)self isWaveformOverview];
   v14 = 10.0;
   v15 = 6.0;
-  if (!v13)
+  if (!isWaveformOverview)
   {
     v15 = 10.0;
     v14 = 20.0;
   }
 
-  if (v4)
+  if (scrollCopy)
   {
     v14 = v15;
   }
 
   v16 = v40 / v14;
-  v17 = [(AXWaveformSelectionBarElement *)self adjustsStartTime];
-  if (v5)
+  adjustsStartTime = [(AXWaveformSelectionBarElement *)self adjustsStartTime];
+  if (valueCopy)
   {
-    if (v17)
+    if (adjustsStartTime)
     {
       v18 = 0.0;
       if (v10 + v16 >= 0.0)
@@ -211,7 +211,7 @@ LABEL_13:
 
   else
   {
-    if (v17)
+    if (adjustsStartTime)
     {
       v18 = v10 - v16;
       if (v10 - v16 < 0.0)
@@ -240,40 +240,40 @@ LABEL_13:
 LABEL_21:
   if (!RCTimeRangeEqualToTimeRange(v41, v42, v19, v21))
   {
-    v26 = [(AXWaveformSelectionBarElement *)self accessibilityContainer];
-    v27 = [v26 safeValueForKey:@"_delegate"];
-    v28 = [(AXWaveformSelectionBarElement *)self accessibilityContainer];
-    [v27 waveformSelectionOverlay:v28 willChangeSelectedTimeRange:v23 isTrackingMin:v22 isTrackingMax:{v19, v21}];
+    accessibilityContainer3 = [(AXWaveformSelectionBarElement *)self accessibilityContainer];
+    v27 = [accessibilityContainer3 safeValueForKey:@"_delegate"];
+    accessibilityContainer4 = [(AXWaveformSelectionBarElement *)self accessibilityContainer];
+    [v27 waveformSelectionOverlay:accessibilityContainer4 willChangeSelectedTimeRange:v23 isTrackingMin:v22 isTrackingMax:{v19, v21}];
     v30 = v29;
     v32 = v31;
 
     if (v30 >= 0.0 && v32 <= v40)
     {
-      v34 = [(AXWaveformSelectionBarElement *)self accessibilityContainer];
-      [v34 setSelectedTimeRange:{v30, v32}];
+      accessibilityContainer5 = [(AXWaveformSelectionBarElement *)self accessibilityContainer];
+      [accessibilityContainer5 setSelectedTimeRange:{v30, v32}];
     }
   }
 
-  v35 = [(AXWaveformSelectionBarElement *)self accessibilityContainer];
-  v36 = [v35 safeValueForKey:@"_delegate"];
-  v37 = [(AXWaveformSelectionBarElement *)self accessibilityContainer];
-  [v36 waveformSelectionOverlay:v37 didFinishTrackingSelectionBeginTime:v23 endTime:v22 assetCurrentTime:0];
+  accessibilityContainer6 = [(AXWaveformSelectionBarElement *)self accessibilityContainer];
+  v36 = [accessibilityContainer6 safeValueForKey:@"_delegate"];
+  accessibilityContainer7 = [(AXWaveformSelectionBarElement *)self accessibilityContainer];
+  [v36 waveformSelectionOverlay:accessibilityContainer7 didFinishTrackingSelectionBeginTime:v23 endTime:v22 assetCurrentTime:0];
 
   UIAccessibilityPostNotification(UIAccessibilityLayoutChangedNotification, self);
   v38 = UIAccessibilityAnnouncementNotification;
-  v39 = [(AXWaveformSelectionBarElement *)self accessibilityValue];
-  UIAccessibilityPostNotification(v38, v39);
+  accessibilityValue = [(AXWaveformSelectionBarElement *)self accessibilityValue];
+  UIAccessibilityPostNotification(v38, accessibilityValue);
 }
 
-- (BOOL)accessibilityScroll:(int64_t)a3
+- (BOOL)accessibilityScroll:(int64_t)scroll
 {
   v5 = 0;
-  if (a3 == 3)
+  if (scroll == 3)
   {
     goto LABEL_4;
   }
 
-  if (a3 == 4)
+  if (scroll == 4)
   {
     v5 = 1;
 LABEL_4:

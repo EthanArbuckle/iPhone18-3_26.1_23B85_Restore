@@ -1,28 +1,28 @@
 @interface UAResumableActivitiesControlManager
 + (id)resumableActivitiesControlManager;
-- (BOOL)getAdvertisedBytes:(id)a3 completionHandler:(id)a4;
+- (BOOL)getAdvertisedBytes:(id)bytes completionHandler:(id)handler;
 - (UAResumableActivitiesControlManager)init;
 - (id)advertisedItemUUID;
-- (id)allUUIDsOfType:(unint64_t)a3;
+- (id)allUUIDsOfType:(unint64_t)type;
 - (id)currentAdvertisedItemUUID;
 - (id)debuggingInfo;
 - (id)dynamicUserActivities;
 - (id)enabledUUIDs;
-- (id)matchingUUIDForString:(id)a3;
-- (id)recentActions:(BOOL)a3;
+- (id)matchingUUIDForString:(id)string;
+- (id)recentActions:(BOOL)actions;
 - (id)simulatorStatus;
 - (id)status;
-- (id)status:(id)a3 options:(id)a4;
+- (id)status:(id)status options:(id)options;
 - (int)serverPID;
-- (void)callWillSaveDelegate:(id)a3 completionHandler:(id)a4;
-- (void)connectToRemote:(id)a3 port:(int64_t)a4;
+- (void)callWillSaveDelegate:(id)delegate completionHandler:(id)handler;
+- (void)connectToRemote:(id)remote port:(int64_t)port;
 - (void)fetchMoreAppSuggestions;
-- (void)injectBTLEItem:(id)a3 type:(unint64_t)a4 identifier:(id)a5 title:(id)a6 activityPayload:(id)a7 webPageURL:(id)a8 remoteModel:(id)a9 duration:(double)a10 payloadDelay:(double)a11;
-- (void)peerDevices:(id)a3 completionHandler:(id)a4;
-- (void)replayCommands:(id)a3 completionHandler:(id)a4;
+- (void)injectBTLEItem:(id)item type:(unint64_t)type identifier:(id)identifier title:(id)title activityPayload:(id)payload webPageURL:(id)l remoteModel:(id)model duration:(double)self0 payloadDelay:(double)self1;
+- (void)peerDevices:(id)devices completionHandler:(id)handler;
+- (void)replayCommands:(id)commands completionHandler:(id)handler;
 - (void)restartServer;
-- (void)setDebugOption:(id)a3 value:(id)a4;
-- (void)setDefault:(id)a3 value:(id)a4;
+- (void)setDebugOption:(id)option value:(id)value;
+- (void)setDefault:(id)default value:(id)value;
 - (void)synchronize;
 - (void)terminateServer;
 @end
@@ -73,26 +73,26 @@
   v9 = &v8;
   v10 = 0x2020000000;
   v11 = 0;
-  v2 = self;
-  objc_sync_enter(v2);
-  *(v9 + 6) = v2->_pid;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  *(v9 + 6) = selfCopy->_pid;
+  objc_sync_exit(selfCopy);
 
   v3 = *(v9 + 6);
   if (!v3)
   {
-    v4 = [(NSXPCConnection *)v2->connection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_5];
+    v4 = [(NSXPCConnection *)selfCopy->connection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_5];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __48__UAResumableActivitiesControlManager_serverPID__block_invoke_9;
     v7[3] = &unk_2785C3D60;
-    v7[4] = v2;
+    v7[4] = selfCopy;
     v7[5] = &v8;
     [v4 doNOP:@"serverPID" withCompletionHandler:v7];
 
-    v5 = v2;
+    v5 = selfCopy;
     objc_sync_enter(v5);
-    v2->_pid = *(v9 + 6);
+    selfCopy->_pid = *(v9 + 6);
     objc_sync_exit(v5);
 
     v3 = *(v9 + 6);
@@ -142,17 +142,17 @@ void __48__UAResumableActivitiesControlManager_serverPID__block_invoke_9(uint64_
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (id)matchingUUIDForString:(id)a3
+- (id)matchingUUIDForString:(id)string
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  stringCopy = string;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
   v17 = __Block_byref_object_copy__0;
   v18 = __Block_byref_object_dispose__0;
   v19 = 0;
-  v5 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v4];
+  v5 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:stringCopy];
   v6 = v15[5];
   v15[5] = v5;
 
@@ -164,7 +164,7 @@ void __48__UAResumableActivitiesControlManager_serverPID__block_invoke_9(uint64_
     v13[2] = __61__UAResumableActivitiesControlManager_matchingUUIDForString___block_invoke_2;
     v13[3] = &unk_2785C3D88;
     v13[4] = &v14;
-    [v7 doFindMatchingUserActivityForString:v4 withCompletionHandler:v13];
+    [v7 doFindMatchingUserActivityForString:stringCopy withCompletionHandler:v13];
   }
 
   v8 = _uaGetLogForCategory(0);
@@ -172,7 +172,7 @@ void __48__UAResumableActivitiesControlManager_serverPID__block_invoke_9(uint64_
   {
     v9 = v15[5];
     *buf = 138478083;
-    v21 = v4;
+    v21 = stringCopy;
     v22 = 2114;
     v23 = v9;
     _os_log_impl(&dword_226A4E000, v8, OS_LOG_TYPE_DEBUG, "(%{private}@), result = %{public}@", buf, 0x16u);
@@ -236,7 +236,7 @@ void __57__UAResumableActivitiesControlManager_advertisedItemUUID__block_invoke_
   *(v4 + 40) = v3;
 }
 
-- (id)allUUIDsOfType:(unint64_t)a3
+- (id)allUUIDsOfType:(unint64_t)type
 {
   v27 = *MEMORY[0x277D85DE8];
   v15 = 0;
@@ -248,9 +248,9 @@ void __57__UAResumableActivitiesControlManager_advertisedItemUUID__block_invoke_
   v5 = _uaGetLogForCategory(0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    v6 = suggestedActionTypeString(a3);
+    v6 = suggestedActionTypeString(type);
     *buf = 67109378;
-    v22 = a3;
+    typeCopy2 = type;
     v23 = 2114;
     v24 = v6;
     _os_log_impl(&dword_226A4E000, v5, OS_LOG_TYPE_DEBUG, "(%d/%{public}@)", buf, 0x12u);
@@ -262,15 +262,15 @@ void __57__UAResumableActivitiesControlManager_advertisedItemUUID__block_invoke_
   v14[2] = __54__UAResumableActivitiesControlManager_allUUIDsOfType___block_invoke_2;
   v14[3] = &unk_2785C3DB0;
   v14[4] = &v15;
-  [v7 doCopyAllUUIDsOfType:a3 withCompletionHandler:v14];
+  [v7 doCopyAllUUIDsOfType:type withCompletionHandler:v14];
 
   v8 = _uaGetLogForCategory(0);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    v9 = suggestedActionTypeString(a3);
+    v9 = suggestedActionTypeString(type);
     v10 = v16[5];
     *buf = 67109634;
-    v22 = a3;
+    typeCopy2 = type;
     v23 = 2114;
     v24 = v9;
     v25 = 2114;
@@ -444,9 +444,9 @@ void __45__UAResumableActivitiesControlManager_status__block_invoke_2(uint64_t a
   *(v4 + 40) = v3;
 }
 
-- (id)recentActions:(BOOL)a3
+- (id)recentActions:(BOOL)actions
 {
-  v3 = a3;
+  actionsCopy = actions;
   v18[1] = *MEMORY[0x277D85DE8];
   v11 = 0;
   v12 = &v11;
@@ -455,7 +455,7 @@ void __45__UAResumableActivitiesControlManager_status__block_invoke_2(uint64_t a
   v15 = __Block_byref_object_dispose__0;
   v16 = 0;
   v4 = [(NSXPCConnection *)self->connection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_36];
-  if (v3)
+  if (actionsCopy)
   {
     v5 = MEMORY[0x277CBEC38];
   }
@@ -513,10 +513,10 @@ void __54__UAResumableActivitiesControlManager_simulatorStatus__block_invoke_2(u
   *(v4 + 40) = v3;
 }
 
-- (id)status:(id)a3 options:(id)a4
+- (id)status:(id)status options:(id)options
 {
-  v6 = a3;
-  v7 = a4;
+  statusCopy = status;
+  optionsCopy = options;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -529,7 +529,7 @@ void __54__UAResumableActivitiesControlManager_simulatorStatus__block_invoke_2(u
   v11[2] = __54__UAResumableActivitiesControlManager_status_options___block_invoke_2;
   v11[3] = &unk_2785C3E00;
   v11[4] = &v12;
-  [v8 doCopyStatusString:v6 options:v7 completionHandler:v11];
+  [v8 doCopyStatusString:statusCopy options:optionsCopy completionHandler:v11];
 
   v9 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -559,15 +559,15 @@ void __48__UAResumableActivitiesControlManager_defaults___block_invoke_2(uint64_
   *(v4 + 40) = v3;
 }
 
-- (void)setDefault:(id)a3 value:(id)a4
+- (void)setDefault:(id)default value:(id)value
 {
   connection = self->connection;
-  v6 = a4;
-  v7 = a3;
-  v9 = [(NSXPCConnection *)connection remoteObjectProxy];
-  v8 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v6 requiringSecureCoding:1 error:0];
+  valueCopy = value;
+  defaultCopy = default;
+  remoteObjectProxy = [(NSXPCConnection *)connection remoteObjectProxy];
+  v8 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:valueCopy requiringSecureCoding:1 error:0];
 
-  [v9 doSetDefaults:v7 archivedValue:v8];
+  [remoteObjectProxy doSetDefaults:defaultCopy archivedValue:v8];
 }
 
 - (void)restartServer
@@ -607,58 +607,58 @@ void __54__UAResumableActivitiesControlManager_terminateServer__block_invoke(uin
   [v1 doTerminateServer];
 }
 
-- (void)setDebugOption:(id)a3 value:(id)a4
+- (void)setDebugOption:(id)option value:(id)value
 {
   connection = self->connection;
-  v6 = a4;
-  v7 = a3;
-  v8 = [(NSXPCConnection *)connection remoteObjectProxy];
-  [v8 doSetDebugOption:v7 value:v6];
+  valueCopy = value;
+  optionCopy = option;
+  remoteObjectProxy = [(NSXPCConnection *)connection remoteObjectProxy];
+  [remoteObjectProxy doSetDebugOption:optionCopy value:valueCopy];
 }
 
-- (void)injectBTLEItem:(id)a3 type:(unint64_t)a4 identifier:(id)a5 title:(id)a6 activityPayload:(id)a7 webPageURL:(id)a8 remoteModel:(id)a9 duration:(double)a10 payloadDelay:(double)a11
+- (void)injectBTLEItem:(id)item type:(unint64_t)type identifier:(id)identifier title:(id)title activityPayload:(id)payload webPageURL:(id)l remoteModel:(id)model duration:(double)self0 payloadDelay:(double)self1
 {
   connection = self->connection;
-  v20 = a9;
-  v21 = a8;
-  v22 = a7;
-  v23 = a6;
-  v24 = a5;
-  v25 = a3;
+  modelCopy = model;
+  lCopy = l;
+  payloadCopy = payload;
+  titleCopy = title;
+  identifierCopy = identifier;
+  itemCopy = item;
   v26 = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:&__block_literal_global_64];
-  [v26 doInjectBTLEItem:v25 type:a4 identifier:v24 title:v23 activityPayload:v22 webPageURL:v21 remoteModel:a10 duration:a11 payloadDelay:v20];
+  [v26 doInjectBTLEItem:itemCopy type:type identifier:identifierCopy title:titleCopy activityPayload:payloadCopy webPageURL:lCopy remoteModel:duration duration:delay payloadDelay:modelCopy];
 }
 
-- (void)callWillSaveDelegate:(id)a3 completionHandler:(id)a4
+- (void)callWillSaveDelegate:(id)delegate completionHandler:(id)handler
 {
   connection = self->connection;
-  v6 = a4;
-  v7 = a3;
-  v8 = [(NSXPCConnection *)connection remoteObjectProxy];
-  [v8 doWillSaveDelegate:v7 completionHandler:v6];
+  handlerCopy = handler;
+  delegateCopy = delegate;
+  remoteObjectProxy = [(NSXPCConnection *)connection remoteObjectProxy];
+  [remoteObjectProxy doWillSaveDelegate:delegateCopy completionHandler:handlerCopy];
 }
 
-- (void)connectToRemote:(id)a3 port:(int64_t)a4
+- (void)connectToRemote:(id)remote port:(int64_t)port
 {
   connection = self->connection;
-  v6 = a3;
-  v7 = [(NSXPCConnection *)connection remoteObjectProxy];
-  [v7 doSetupNetworkedPairs:v6 port:a4];
+  remoteCopy = remote;
+  remoteObjectProxy = [(NSXPCConnection *)connection remoteObjectProxy];
+  [remoteObjectProxy doSetupNetworkedPairs:remoteCopy port:port];
 }
 
-- (void)peerDevices:(id)a3 completionHandler:(id)a4
+- (void)peerDevices:(id)devices completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   connection = self->connection;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __69__UAResumableActivitiesControlManager_peerDevices_completionHandler___block_invoke;
   v11[3] = &unk_2785C3E70;
-  v12 = v6;
-  v8 = v6;
-  v9 = a3;
+  v12 = handlerCopy;
+  v8 = handlerCopy;
+  devicesCopy = devices;
   v10 = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:v11];
-  [v10 doGetPairedDevices:v9 completionHandler:v8];
+  [v10 doGetPairedDevices:devicesCopy completionHandler:v8];
 }
 
 void __69__UAResumableActivitiesControlManager_peerDevices_completionHandler___block_invoke(uint64_t a1)
@@ -689,19 +689,19 @@ void __81__UAResumableActivitiesControlManager_getSysdiagnoseStringsIncludingPri
   dispatch_group_leave(*(a1 + 32));
 }
 
-- (void)replayCommands:(id)a3 completionHandler:(id)a4
+- (void)replayCommands:(id)commands completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   connection = self->connection;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __72__UAResumableActivitiesControlManager_replayCommands_completionHandler___block_invoke;
   v11[3] = &unk_2785C3E70;
-  v12 = v6;
-  v8 = v6;
-  v9 = a3;
+  v12 = handlerCopy;
+  v8 = handlerCopy;
+  commandsCopy = commands;
   v10 = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:v11];
-  [v10 doReplayCommands:v9 completionHandler:v8];
+  [v10 doReplayCommands:commandsCopy completionHandler:v8];
 }
 
 - (void)synchronize
@@ -710,19 +710,19 @@ void __81__UAResumableActivitiesControlManager_getSysdiagnoseStringsIncludingPri
   [v2 doNOP:@"synchronize" withCompletionHandler:&__block_literal_global_75];
 }
 
-- (BOOL)getAdvertisedBytes:(id)a3 completionHandler:(id)a4
+- (BOOL)getAdvertisedBytes:(id)bytes completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   connection = self->connection;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __76__UAResumableActivitiesControlManager_getAdvertisedBytes_completionHandler___block_invoke;
   v12[3] = &unk_2785C3E70;
-  v13 = v6;
-  v8 = v6;
-  v9 = a3;
+  v13 = handlerCopy;
+  v8 = handlerCopy;
+  bytesCopy = bytes;
   v10 = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:v12];
-  [v10 doGetSFActivityAdvertisement:v9 completionHandler:v8];
+  [v10 doGetSFActivityAdvertisement:bytesCopy completionHandler:v8];
 
   return 1;
 }

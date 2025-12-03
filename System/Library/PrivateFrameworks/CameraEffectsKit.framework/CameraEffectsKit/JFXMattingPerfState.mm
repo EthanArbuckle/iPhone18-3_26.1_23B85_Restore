@@ -1,22 +1,22 @@
 @interface JFXMattingPerfState
 + (CGSize)mattingDepthInputSize;
-- (JFXMattingPerfState)initWithStats:(id)a3 signpostToken:(id)a4;
+- (JFXMattingPerfState)initWithStats:(id)stats signpostToken:(id)token;
 @end
 
 @implementation JFXMattingPerfState
 
-- (JFXMattingPerfState)initWithStats:(id)a3 signpostToken:(id)a4
+- (JFXMattingPerfState)initWithStats:(id)stats signpostToken:(id)token
 {
-  v7 = a3;
-  v8 = a4;
+  statsCopy = stats;
+  tokenCopy = token;
   v12.receiver = self;
   v12.super_class = JFXMattingPerfState;
   v9 = [(JFXMattingPerfState *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_captureFrameStats, a3);
-    v10->_signpostToken = v8;
+    objc_storeStrong(&v9->_captureFrameStats, stats);
+    v10->_signpostToken = tokenCopy;
   }
 
   return v10;

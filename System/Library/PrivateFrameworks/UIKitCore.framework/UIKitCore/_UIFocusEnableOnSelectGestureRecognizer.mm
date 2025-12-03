@@ -1,15 +1,15 @@
 @interface _UIFocusEnableOnSelectGestureRecognizer
-- (_UIFocusEnableOnSelectGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
-- (void)pressesBegan:(id)a3 withEvent:(id)a4;
+- (_UIFocusEnableOnSelectGestureRecognizer)initWithTarget:(id)target action:(SEL)action;
+- (void)pressesBegan:(id)began withEvent:(id)event;
 @end
 
 @implementation _UIFocusEnableOnSelectGestureRecognizer
 
-- (_UIFocusEnableOnSelectGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (_UIFocusEnableOnSelectGestureRecognizer)initWithTarget:(id)target action:(SEL)action
 {
   v7.receiver = self;
   v7.super_class = _UIFocusEnableOnSelectGestureRecognizer;
-  v4 = [(UIGestureRecognizer *)&v7 initWithTarget:a3 action:a4];
+  v4 = [(UIGestureRecognizer *)&v7 initWithTarget:target action:action];
   v5 = v4;
   if (v4)
   {
@@ -20,19 +20,19 @@
   return v5;
 }
 
-- (void)pressesBegan:(id)a3 withEvent:(id)a4
+- (void)pressesBegan:(id)began withEvent:(id)event
 {
-  v11 = a4;
-  v5 = [(UIGestureRecognizer *)self view];
-  v6 = [v5 _focusSystem];
-  v7 = [v6 focusedItem];
-  if (v7)
+  eventCopy = event;
+  view = [(UIGestureRecognizer *)self view];
+  _focusSystem = [view _focusSystem];
+  focusedItem = [_focusSystem focusedItem];
+  if (focusedItem)
   {
     goto LABEL_4;
   }
 
-  v7 = [v11 _screen];
-  v8 = [v7 _capabilityForKey:@"UIScreenCapabilityPrimaryInteractionModelKey"];
+  focusedItem = [eventCopy _screen];
+  v8 = [focusedItem _capabilityForKey:@"UIScreenCapabilityPrimaryInteractionModelKey"];
   if (([v8 integerValue] & 1) == 0)
   {
 
@@ -42,7 +42,7 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  [v11 _hidEvent];
+  [eventCopy _hidEvent];
   IntegerValue = IOHIDEventGetIntegerValue();
 
   if (IntegerValue)

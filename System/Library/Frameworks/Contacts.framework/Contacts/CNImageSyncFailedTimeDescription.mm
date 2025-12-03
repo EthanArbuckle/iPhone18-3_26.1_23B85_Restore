@@ -1,29 +1,29 @@
 @interface CNImageSyncFailedTimeDescription
-- (BOOL)abPropertyID:(int *)a3;
-- (void)decodeUsingCoder:(id)a3 contact:(id)a4;
+- (BOOL)abPropertyID:(int *)d;
+- (void)decodeUsingCoder:(id)coder contact:(id)contact;
 @end
 
 @implementation CNImageSyncFailedTimeDescription
 
-- (void)decodeUsingCoder:(id)a3 contact:(id)a4
+- (void)decodeUsingCoder:(id)coder contact:(id)contact
 {
-  v5 = a4;
-  v6 = a3;
-  v9 = [v6 decodeObjectOfClass:objc_opt_class() forKey:@"_imageSyncFailedTime"];
+  contactCopy = contact;
+  coderCopy = coder;
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_imageSyncFailedTime"];
 
   v7 = [v9 copy];
-  v8 = v5[88];
-  v5[88] = v7;
+  v8 = contactCopy[88];
+  contactCopy[88] = v7;
 }
 
-- (BOOL)abPropertyID:(int *)a3
+- (BOOL)abPropertyID:(int *)d
 {
-  if (a3)
+  if (d)
   {
-    *a3 = *MEMORY[0x1E698A3B0];
+    *d = *MEMORY[0x1E698A3B0];
   }
 
-  return a3 != 0;
+  return d != 0;
 }
 
 @end

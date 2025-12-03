@@ -1,14 +1,14 @@
 @interface ADRequestLifecycleObserver
 + (id)sharedObserver;
 - (ADRequestLifecycleObserver)init;
-- (void)_addListener:(id)a3;
-- (void)_enumerateListenersUsingBlock:(id)a3;
-- (void)_handleMessage:(id)a3 messageType:(id)a4 fromDeviceWithIdentifier:(id)a5 completion:(id)a6;
-- (void)_removeListener:(id)a3;
-- (void)handleMessage:(id)a3 messageType:(id)a4 fromDeviceWithIdentifier:(id)a5 completion:(id)a6;
-- (void)requestDidEndWithInfo:(id)a3 fromOrigin:(int64_t)a4 client:(id)a5;
-- (void)requestWasCancelledWithInfo:(id)a3 forReason:(int64_t)a4 origin:(int64_t)a5 client:(id)a6 successorInfo:(id)a7;
-- (void)requestWillBeginWithInfo:(id)a3 fromOrigin:(int64_t)a4 client:(id)a5;
+- (void)_addListener:(id)listener;
+- (void)_enumerateListenersUsingBlock:(id)block;
+- (void)_handleMessage:(id)message messageType:(id)type fromDeviceWithIdentifier:(id)identifier completion:(id)completion;
+- (void)_removeListener:(id)listener;
+- (void)handleMessage:(id)message messageType:(id)type fromDeviceWithIdentifier:(id)identifier completion:(id)completion;
+- (void)requestDidEndWithInfo:(id)info fromOrigin:(int64_t)origin client:(id)client;
+- (void)requestWasCancelledWithInfo:(id)info forReason:(int64_t)reason origin:(int64_t)origin client:(id)client successorInfo:(id)successorInfo;
+- (void)requestWillBeginWithInfo:(id)info fromOrigin:(int64_t)origin client:(id)client;
 @end
 
 @implementation ADRequestLifecycleObserver
@@ -25,65 +25,65 @@
   return v3;
 }
 
-- (void)_enumerateListenersUsingBlock:(id)a3
+- (void)_enumerateListenersUsingBlock:(id)block
 {
-  v4 = a3;
-  if (v4)
+  blockCopy = block;
+  if (blockCopy)
   {
     os_unfair_lock_lock(&self->_listenersLock);
-    v5 = [(NSHashTable *)self->_listeners setRepresentation];
+    setRepresentation = [(NSHashTable *)self->_listeners setRepresentation];
     os_unfair_lock_unlock(&self->_listenersLock);
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_100228A58;
     v6[3] = &unk_100517230;
-    v7 = v4;
-    [v5 enumerateObjectsUsingBlock:v6];
+    v7 = blockCopy;
+    [setRepresentation enumerateObjectsUsingBlock:v6];
   }
 }
 
-- (void)_removeListener:(id)a3
+- (void)_removeListener:(id)listener
 {
-  if (a3)
+  if (listener)
   {
-    v4 = a3;
+    listenerCopy = listener;
     os_unfair_lock_lock(&self->_listenersLock);
-    [(NSHashTable *)self->_listeners removeObject:v4];
+    [(NSHashTable *)self->_listeners removeObject:listenerCopy];
 
     os_unfair_lock_unlock(&self->_listenersLock);
   }
 }
 
-- (void)_addListener:(id)a3
+- (void)_addListener:(id)listener
 {
-  v4 = a3;
+  listenerCopy = listener;
   os_unfair_lock_lock(&self->_listenersLock);
-  [(NSHashTable *)self->_listeners addObject:v4];
+  [(NSHashTable *)self->_listeners addObject:listenerCopy];
 
   os_unfair_lock_unlock(&self->_listenersLock);
 }
 
-- (void)_handleMessage:(id)a3 messageType:(id)a4 fromDeviceWithIdentifier:(id)a5 completion:(id)a6
+- (void)_handleMessage:(id)message messageType:(id)type fromDeviceWithIdentifier:(id)identifier completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  messageCopy = message;
+  typeCopy = type;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v14 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     v18 = 136315650;
     v19 = "[ADRequestLifecycleObserver _handleMessage:messageType:fromDeviceWithIdentifier:completion:]";
     v20 = 2112;
-    v21 = v12;
+    v21 = identifierCopy;
     v22 = 2112;
-    v23 = v11;
+    v23 = typeCopy;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "%s deviceIdentifier = %@, messageType = %@", &v18, 0x20u);
   }
 
-  if ([v11 isEqualToString:@"requestlifecycle"])
+  if ([typeCopy isEqualToString:@"requestlifecycle"])
   {
-    v15 = [v10 objectForKey:@"event"];
+    v15 = [messageCopy objectForKey:@"event"];
     if ([v15 isEqualToString:@"requestWillBegin"])
     {
       [(ADRequestLifecycleObserver *)self requestWillBeginWithInfo:0 fromOrigin:7 client:0];
@@ -99,14 +99,14 @@
       [(ADRequestLifecycleObserver *)self requestWasCancelledWithInfo:0 forReason:0 origin:7 client:0 successorInfo:0];
     }
 
-    if (!v13)
+    if (!completionCopy)
     {
       goto LABEL_16;
     }
 
     v17 = 0;
 LABEL_15:
-    v13[2](v13, 0, v17);
+    completionCopy[2](completionCopy, 0, v17);
 LABEL_16:
 
     goto LABEL_17;
@@ -118,9 +118,9 @@ LABEL_16:
     v18 = 136315394;
     v19 = "[ADRequestLifecycleObserver _handleMessage:messageType:fromDeviceWithIdentifier:completion:]";
     v20 = 2112;
-    v21 = v11;
+    v21 = typeCopy;
     _os_log_error_impl(&_mh_execute_header, v16, OS_LOG_TYPE_ERROR, "%s Received message from unknown message type: %@", &v18, 0x16u);
-    if (!v13)
+    if (!completionCopy)
     {
       goto LABEL_17;
     }
@@ -128,7 +128,7 @@ LABEL_16:
     goto LABEL_8;
   }
 
-  if (v13)
+  if (completionCopy)
   {
 LABEL_8:
     v17 = [AFError errorWithCode:1004];
@@ -139,44 +139,44 @@ LABEL_8:
 LABEL_17:
 }
 
-- (void)handleMessage:(id)a3 messageType:(id)a4 fromDeviceWithIdentifier:(id)a5 completion:(id)a6
+- (void)handleMessage:(id)message messageType:(id)type fromDeviceWithIdentifier:(id)identifier completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  messageCopy = message;
+  typeCopy = type;
+  identifierCopy = identifier;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100228E94;
   block[3] = &unk_10051D2A0;
   block[4] = self;
-  v20 = v10;
-  v21 = v11;
-  v22 = v12;
-  v23 = v13;
-  v15 = v13;
-  v16 = v12;
-  v17 = v11;
-  v18 = v10;
+  v20 = messageCopy;
+  v21 = typeCopy;
+  v22 = identifierCopy;
+  v23 = completionCopy;
+  v15 = completionCopy;
+  v16 = identifierCopy;
+  v17 = typeCopy;
+  v18 = messageCopy;
   dispatch_async(queue, block);
 }
 
-- (void)requestDidEndWithInfo:(id)a3 fromOrigin:(int64_t)a4 client:(id)a5
+- (void)requestDidEndWithInfo:(id)info fromOrigin:(int64_t)origin client:(id)client
 {
-  v8 = a3;
-  v9 = a5;
+  infoCopy = info;
+  clientCopy = client;
   v10 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     *buf = 136315906;
     v26 = "[ADRequestLifecycleObserver requestDidEndWithInfo:fromOrigin:client:]";
     v27 = 2048;
-    v28 = a4;
+    originCopy = origin;
     v29 = 2112;
-    v30 = v9;
+    v30 = clientCopy;
     v31 = 2112;
-    v32 = v8;
+    v32 = infoCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "%s origin = %ld client = %@ requestInfo = %@", buf, 0x2Au);
   }
 
@@ -184,14 +184,14 @@ LABEL_17:
   v16 = 3221225472;
   v17 = sub_100229098;
   v18 = &unk_100517160;
-  v19 = self;
-  v11 = v8;
+  selfCopy = self;
+  v11 = infoCopy;
   v20 = v11;
-  v22 = a4;
-  v12 = v9;
+  originCopy2 = origin;
+  v12 = clientCopy;
   v21 = v12;
   [(ADRequestLifecycleObserver *)self _enumerateListenersUsingBlock:&v15];
-  if (a4 == 5)
+  if (origin == 5)
   {
     v13 = [ADCompanionService sharedInstance:v15];
     v23 = @"event";
@@ -201,22 +201,22 @@ LABEL_17:
   }
 }
 
-- (void)requestWasCancelledWithInfo:(id)a3 forReason:(int64_t)a4 origin:(int64_t)a5 client:(id)a6 successorInfo:(id)a7
+- (void)requestWasCancelledWithInfo:(id)info forReason:(int64_t)reason origin:(int64_t)origin client:(id)client successorInfo:(id)successorInfo
 {
-  v12 = a3;
-  v13 = a6;
-  v14 = a7;
+  infoCopy = info;
+  clientCopy = client;
+  successorInfoCopy = successorInfo;
   v15 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     *buf = 136315906;
     v34 = "[ADRequestLifecycleObserver requestWasCancelledWithInfo:forReason:origin:client:successorInfo:]";
     v35 = 2048;
-    v36 = a5;
+    originCopy = origin;
     v37 = 2112;
-    v38 = v13;
+    v38 = clientCopy;
     v39 = 2112;
-    v40 = v12;
+    v40 = infoCopy;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "%s origin = %ld client = %@ requestInfo = %@", buf, 0x2Au);
   }
 
@@ -224,17 +224,17 @@ LABEL_17:
   v22 = 3221225472;
   v23 = sub_100229320;
   v24 = &unk_1005171C8;
-  v25 = self;
-  v16 = v12;
+  selfCopy = self;
+  v16 = infoCopy;
   v26 = v16;
-  v29 = a4;
-  v30 = a5;
-  v17 = v13;
+  reasonCopy = reason;
+  originCopy2 = origin;
+  v17 = clientCopy;
   v27 = v17;
-  v18 = v14;
+  v18 = successorInfoCopy;
   v28 = v18;
   [(ADRequestLifecycleObserver *)self _enumerateListenersUsingBlock:&v21];
-  if (a5 == 5)
+  if (origin == 5)
   {
     v19 = [ADCompanionService sharedInstance:v21];
     v31 = @"event";
@@ -244,21 +244,21 @@ LABEL_17:
   }
 }
 
-- (void)requestWillBeginWithInfo:(id)a3 fromOrigin:(int64_t)a4 client:(id)a5
+- (void)requestWillBeginWithInfo:(id)info fromOrigin:(int64_t)origin client:(id)client
 {
-  v8 = a3;
-  v9 = a5;
+  infoCopy = info;
+  clientCopy = client;
   v10 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     *buf = 136315906;
     v26 = "[ADRequestLifecycleObserver requestWillBeginWithInfo:fromOrigin:client:]";
     v27 = 2048;
-    v28 = a4;
+    originCopy = origin;
     v29 = 2112;
-    v30 = v9;
+    v30 = clientCopy;
     v31 = 2112;
-    v32 = v8;
+    v32 = infoCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "%s origin = %ld client = %@ requestInfo = %@", buf, 0x2Au);
   }
 
@@ -266,14 +266,14 @@ LABEL_17:
   v16 = 3221225472;
   v17 = sub_10022957C;
   v18 = &unk_100517160;
-  v19 = self;
-  v11 = v8;
+  selfCopy = self;
+  v11 = infoCopy;
   v20 = v11;
-  v22 = a4;
-  v12 = v9;
+  originCopy2 = origin;
+  v12 = clientCopy;
   v21 = v12;
   [(ADRequestLifecycleObserver *)self _enumerateListenersUsingBlock:&v15];
-  if (a4 == 5)
+  if (origin == 5)
   {
     v13 = [ADCompanionService sharedInstance:v15];
     v23 = @"event";

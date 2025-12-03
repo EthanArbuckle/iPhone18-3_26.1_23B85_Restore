@@ -48,19 +48,19 @@ LABEL_8:
   v3 = MEMORY[0x277D013D0];
   v4 = a3;
   v29 = [v3 alloc];
-  v5 = [v4 identifier];
+  identifier = [v4 identifier];
   v6 = objc_alloc(MEMORY[0x277CCA970]);
-  v7 = [v4 startDate];
-  v8 = [v4 endDate];
-  v9 = [v6 initWithStartDate:v7 endDate:v8];
+  startDate = [v4 startDate];
+  endDate = [v4 endDate];
+  v9 = [v6 initWithStartDate:startDate endDate:endDate];
   [v4 tripDistance_m];
   v11 = v10;
   [v4 tripDistanceUncertainty_m];
   v13 = v12;
-  v14 = [v4 modeOfTransportation];
-  v15 = [v4 isConsumedByClustering];
-  v16 = [v4 tripSegmentSequence];
-  v17 = [v4 tripSegmentSequenceMax];
+  modeOfTransportation = [v4 modeOfTransportation];
+  isConsumedByClustering = [v4 isConsumedByClustering];
+  tripSegmentSequence = [v4 tripSegmentSequence];
+  tripSegmentSequenceMax = [v4 tripSegmentSequenceMax];
   [v4 originLatitude];
   v19 = v18;
   [v4 originLongitude];
@@ -69,9 +69,9 @@ LABEL_8:
   v23 = v22;
   [v4 destinationLongitude];
   v25 = v24;
-  v26 = [v4 tripCommuteID];
+  tripCommuteID = [v4 tripCommuteID];
 
-  v27 = [v29 initWithTripSegmentIdentifier:v5 dateInterval:v9 tripDistance:v14 tripDistanceUncertainty:v15 modeOfTransportation:v16 isConsumedByClustering:v17 tripSegmentSequence:v11 tripSegmentSequenceMax:v13 originLatitude:v19 originLongitude:v21 destinationLatitude:v23 destinationLongitude:v25 tripCommuteID:v26];
+  v27 = [v29 initWithTripSegmentIdentifier:identifier dateInterval:v9 tripDistance:modeOfTransportation tripDistanceUncertainty:isConsumedByClustering modeOfTransportation:tripSegmentSequence isConsumedByClustering:tripSegmentSequenceMax tripSegmentSequence:v11 tripSegmentSequenceMax:v13 originLatitude:v19 originLongitude:v21 destinationLatitude:v23 destinationLongitude:v25 tripCommuteID:tripCommuteID];
 
   return v27;
 }
@@ -80,7 +80,7 @@ LABEL_8:
 {
   if (a3)
   {
-    v3 = [RTTripSegmentMO managedObjectWithTripSegment:a1 inManagedObjectContext:a3];
+    v3 = [RTTripSegmentMO managedObjectWithTripSegment:self inManagedObjectContext:a3];
   }
 
   else

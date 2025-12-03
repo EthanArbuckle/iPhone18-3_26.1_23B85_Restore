@@ -1,34 +1,34 @@
 @interface _DAContactsGroupsProvider
-- (_DAContactsGroupsProvider)initWithContactStore:(id)a3;
-- (id)groupsInContainer:(id)a3;
+- (_DAContactsGroupsProvider)initWithContactStore:(id)store;
+- (id)groupsInContainer:(id)container;
 @end
 
 @implementation _DAContactsGroupsProvider
 
-- (_DAContactsGroupsProvider)initWithContactStore:(id)a3
+- (_DAContactsGroupsProvider)initWithContactStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v9.receiver = self;
   v9.super_class = _DAContactsGroupsProvider;
   v6 = [(_DAContactsGroupsProvider *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_contactStore, a3);
+    objc_storeStrong(&v6->_contactStore, store);
   }
 
   return v7;
 }
 
-- (id)groupsInContainer:(id)a3
+- (id)groupsInContainer:(id)container
 {
-  v4 = [a3 asContainer];
-  v5 = [v4 identifier];
-  v6 = [CNGroup predicateForGroupsInContainerWithIdentifier:v5];
+  asContainer = [container asContainer];
+  identifier = [asContainer identifier];
+  v6 = [CNGroup predicateForGroupsInContainerWithIdentifier:identifier];
 
-  v7 = [(_DAContactsGroupsProvider *)self contactStore];
+  contactStore = [(_DAContactsGroupsProvider *)self contactStore];
   v24 = 0;
-  v8 = [v7 groupsMatchingPredicate:v6 error:&v24];
+  v8 = [contactStore groupsMatchingPredicate:v6 error:&v24];
   v9 = v24;
 
   v10 = +[NSMutableArray array];

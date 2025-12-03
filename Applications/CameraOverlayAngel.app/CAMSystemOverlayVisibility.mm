@@ -3,12 +3,12 @@
 - (CAMSystemOverlayVisibility)init;
 - (CAMSystemOverlayVisibilityDelegate)delegate;
 - (void)_cancelTimer;
-- (void)_handleTimer:(id)a3 firedWithReason:(int64_t)a4;
-- (void)_logReason:(int64_t)a3 visibilityChanged:(BOOL)a4;
-- (void)_startTimerWithReason:(int64_t)a3;
-- (void)addReason:(int64_t)a3;
+- (void)_handleTimer:(id)timer firedWithReason:(int64_t)reason;
+- (void)_logReason:(int64_t)reason visibilityChanged:(BOOL)changed;
+- (void)_startTimerWithReason:(int64_t)reason;
+- (void)addReason:(int64_t)reason;
 - (void)hideImmediately;
-- (void)removeReason:(int64_t)a3;
+- (void)removeReason:(int64_t)reason;
 - (void)showTransiently;
 @end
 
@@ -34,67 +34,67 @@
 
 - (BOOL)isVisible
 {
-  v3 = [(CAMSystemOverlayVisibility *)self _activeReasons];
-  if ([v3 count])
+  _activeReasons = [(CAMSystemOverlayVisibility *)self _activeReasons];
+  if ([_activeReasons count])
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(CAMSystemOverlayVisibility *)self _delayedHidingTimer];
-    v4 = v5 != 0;
+    _delayedHidingTimer = [(CAMSystemOverlayVisibility *)self _delayedHidingTimer];
+    v4 = _delayedHidingTimer != 0;
   }
 
   return v4;
 }
 
-- (void)addReason:(int64_t)a3
+- (void)addReason:(int64_t)reason
 {
-  v5 = [(CAMSystemOverlayVisibility *)self isVisible];
+  isVisible = [(CAMSystemOverlayVisibility *)self isVisible];
   [(CAMSystemOverlayVisibility *)self _cancelTimer];
-  v10 = [(CAMSystemOverlayVisibility *)self _activeReasons];
-  v6 = [NSNumber numberWithInteger:a3];
-  v7 = [v10 containsObject:v6];
+  _activeReasons = [(CAMSystemOverlayVisibility *)self _activeReasons];
+  v6 = [NSNumber numberWithInteger:reason];
+  v7 = [_activeReasons containsObject:v6];
 
-  v8 = [NSNumber numberWithInteger:a3];
-  [v10 addObject:v8];
+  v8 = [NSNumber numberWithInteger:reason];
+  [_activeReasons addObject:v8];
 
-  if (v5)
+  if (isVisible)
   {
     if ((v7 & 1) == 0)
     {
-      [(CAMSystemOverlayVisibility *)self _logReason:a3 visibilityChanged:0];
+      [(CAMSystemOverlayVisibility *)self _logReason:reason visibilityChanged:0];
     }
   }
 
   else
   {
-    [(CAMSystemOverlayVisibility *)self _logReason:a3 visibilityChanged:1];
-    v9 = [(CAMSystemOverlayVisibility *)self delegate];
-    [v9 systemOverlayVisibility:self changedForReason:a3];
+    [(CAMSystemOverlayVisibility *)self _logReason:reason visibilityChanged:1];
+    delegate = [(CAMSystemOverlayVisibility *)self delegate];
+    [delegate systemOverlayVisibility:self changedForReason:reason];
   }
 }
 
-- (void)removeReason:(int64_t)a3
+- (void)removeReason:(int64_t)reason
 {
-  v10 = [(CAMSystemOverlayVisibility *)self _activeReasons];
-  v5 = [NSNumber numberWithInteger:a3];
-  v6 = [v10 containsObject:v5];
+  _activeReasons = [(CAMSystemOverlayVisibility *)self _activeReasons];
+  v5 = [NSNumber numberWithInteger:reason];
+  v6 = [_activeReasons containsObject:v5];
 
-  v7 = [v10 count];
-  v8 = [NSNumber numberWithInteger:a3];
-  [v10 removeObject:v8];
+  v7 = [_activeReasons count];
+  v8 = [NSNumber numberWithInteger:reason];
+  [_activeReasons removeObject:v8];
 
-  v9 = [v10 count];
+  v9 = [_activeReasons count];
   if (v7 && !v9)
   {
-    [(CAMSystemOverlayVisibility *)self _startTimerWithReason:a3];
+    [(CAMSystemOverlayVisibility *)self _startTimerWithReason:reason];
   }
 
   if (v6)
   {
-    [(CAMSystemOverlayVisibility *)self _logReason:a3 visibilityChanged:0];
+    [(CAMSystemOverlayVisibility *)self _logReason:reason visibilityChanged:0];
   }
 }
 
@@ -103,15 +103,15 @@
   if ([(CAMSystemOverlayVisibility *)self isVisible])
   {
     [(CAMSystemOverlayVisibility *)self _cancelTimer];
-    v3 = [(CAMSystemOverlayVisibility *)self _activeReasons];
-    [v3 removeAllObjects];
+    _activeReasons = [(CAMSystemOverlayVisibility *)self _activeReasons];
+    [_activeReasons removeAllObjects];
 
     v4 = os_log_create("com.apple.camera.overlay", "Angel");
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
-      v5 = [(CAMSystemOverlayVisibility *)self name];
+      name = [(CAMSystemOverlayVisibility *)self name];
       v6 = 138543362;
-      v7 = v5;
+      v7 = name;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%{public}@: Changed to NO for hideImmediately", &v6, 0xCu);
     }
   }
@@ -129,26 +129,26 @@
 
 - (void)_cancelTimer
 {
-  v3 = [(CAMSystemOverlayVisibility *)self _delayedHidingTimer];
-  if (v3)
+  _delayedHidingTimer = [(CAMSystemOverlayVisibility *)self _delayedHidingTimer];
+  if (_delayedHidingTimer)
   {
-    v5 = v3;
-    dispatch_source_cancel(v3);
+    v5 = _delayedHidingTimer;
+    dispatch_source_cancel(_delayedHidingTimer);
     [(CAMSystemOverlayVisibility *)self _setDelayedHidingTimer:0];
-    v4 = [(CAMSystemOverlayVisibility *)self delegate];
-    [v4 systemOverlayVisibilityCancelledHidingTimer:self];
+    delegate = [(CAMSystemOverlayVisibility *)self delegate];
+    [delegate systemOverlayVisibilityCancelledHidingTimer:self];
 
-    v3 = v5;
+    _delayedHidingTimer = v5;
   }
 }
 
-- (void)_startTimerWithReason:(int64_t)a3
+- (void)_startTimerWithReason:(int64_t)reason
 {
   [(CAMSystemOverlayVisibility *)self delayedHideDuration];
   if (v5 == 0.0)
   {
-    v11 = [(CAMSystemOverlayVisibility *)self delegate];
-    [v11 systemOverlayVisibility:self changedForReason:a3];
+    delegate = [(CAMSystemOverlayVisibility *)self delegate];
+    [delegate systemOverlayVisibility:self changedForReason:reason];
   }
 
   else
@@ -168,11 +168,11 @@
     handler[3] = &unk_100055360;
     objc_copyWeak(&v13, &location);
     objc_copyWeak(v14, &from);
-    v14[1] = a3;
+    v14[1] = reason;
     dispatch_source_set_event_handler(v8, handler);
     dispatch_resume(v8);
-    v10 = [(CAMSystemOverlayVisibility *)self delegate];
-    [v10 systemOverlayVisibilityBeganHidingTimer:self];
+    delegate2 = [(CAMSystemOverlayVisibility *)self delegate];
+    [delegate2 systemOverlayVisibilityBeganHidingTimer:self];
 
     objc_destroyWeak(v14);
     objc_destroyWeak(&v13);
@@ -181,39 +181,39 @@
   }
 }
 
-- (void)_handleTimer:(id)a3 firedWithReason:(int64_t)a4
+- (void)_handleTimer:(id)timer firedWithReason:(int64_t)reason
 {
-  v6 = a3;
-  v9 = [(CAMSystemOverlayVisibility *)self _delayedHidingTimer];
+  timerCopy = timer;
+  _delayedHidingTimer = [(CAMSystemOverlayVisibility *)self _delayedHidingTimer];
 
-  v7 = v9;
-  if (v9 && v9 == v6)
+  v7 = _delayedHidingTimer;
+  if (_delayedHidingTimer && _delayedHidingTimer == timerCopy)
   {
     [(CAMSystemOverlayVisibility *)self _cancelTimer];
-    [(CAMSystemOverlayVisibility *)self _logReason:a4 visibilityChanged:1];
-    v8 = [(CAMSystemOverlayVisibility *)self delegate];
-    [v8 systemOverlayVisibility:self changedForReason:a4];
+    [(CAMSystemOverlayVisibility *)self _logReason:reason visibilityChanged:1];
+    delegate = [(CAMSystemOverlayVisibility *)self delegate];
+    [delegate systemOverlayVisibility:self changedForReason:reason];
 
-    v7 = v9;
+    v7 = _delayedHidingTimer;
   }
 }
 
-- (void)_logReason:(int64_t)a3 visibilityChanged:(BOOL)a4
+- (void)_logReason:(int64_t)reason visibilityChanged:(BOOL)changed
 {
-  v4 = a4;
-  v7 = [(CAMSystemOverlayVisibility *)self name];
-  v8 = CAMStringForOverlayVisibilityReason(a3);
-  if (v4)
+  changedCopy = changed;
+  name = [(CAMSystemOverlayVisibility *)self name];
+  v8 = CAMStringForOverlayVisibilityReason(reason);
+  if (changedCopy)
   {
     v9 = os_log_create("com.apple.camera.overlay", "Angel");
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [(CAMSystemOverlayVisibility *)self isVisible];
+      isVisible = [(CAMSystemOverlayVisibility *)self isVisible];
       v11 = @"NO";
       *buf = 138543874;
-      v29 = v7;
+      v29 = name;
       v30 = 2114;
-      if (v10)
+      if (isVisible)
       {
         v11 = @"YES";
       }
@@ -227,16 +227,16 @@
 
   else
   {
-    v12 = [(CAMSystemOverlayVisibility *)self _activeReasons];
-    v13 = [NSNumber numberWithInteger:a3];
-    v14 = [v12 containsObject:v13];
+    _activeReasons = [(CAMSystemOverlayVisibility *)self _activeReasons];
+    v13 = [NSNumber numberWithInteger:reason];
+    v14 = [_activeReasons containsObject:v13];
 
-    v15 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v12 count]);
+    v15 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [_activeReasons count]);
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v9 = v12;
+    v9 = _activeReasons;
     v16 = [v9 countByEnumeratingWithState:&v24 objects:v36 count:16];
     if (v16)
     {
@@ -271,7 +271,7 @@
     {
       v23 = @"removed";
       *buf = 138544130;
-      v29 = v7;
+      v29 = name;
       v30 = 2114;
       if (v14)
       {

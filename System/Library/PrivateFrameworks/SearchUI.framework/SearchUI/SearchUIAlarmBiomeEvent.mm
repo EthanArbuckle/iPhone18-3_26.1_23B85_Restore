@@ -1,43 +1,43 @@
 @interface SearchUIAlarmBiomeEvent
-+ (BOOL)supportsEvent:(id)a3 contextualAction:(id)a4;
-- (SearchUIAlarmBiomeEvent)initWithEvent:(id)a3 contextualAction:(id)a4;
-- (void)getEnabledStatusWithCompletion:(id)a3;
++ (BOOL)supportsEvent:(id)event contextualAction:(id)action;
+- (SearchUIAlarmBiomeEvent)initWithEvent:(id)event contextualAction:(id)action;
+- (void)getEnabledStatusWithCompletion:(id)completion;
 @end
 
 @implementation SearchUIAlarmBiomeEvent
 
-+ (BOOL)supportsEvent:(id)a3 contextualAction:(id)a4
++ (BOOL)supportsEvent:(id)event contextualAction:(id)action
 {
-  v4 = a4;
+  actionCopy = action;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   return isKindOfClass & 1;
 }
 
-- (SearchUIAlarmBiomeEvent)initWithEvent:(id)a3 contextualAction:(id)a4
+- (SearchUIAlarmBiomeEvent)initWithEvent:(id)event contextualAction:(id)action
 {
-  v6 = a3;
-  v7 = a4;
+  eventCopy = event;
+  actionCopy = action;
   v11.receiver = self;
   v11.super_class = SearchUIAlarmBiomeEvent;
   v8 = [(BMEventBase *)&v11 init];
   if (v8)
   {
-    v9 = [v7 alarmIdentifier];
-    [(SearchUIAlarmBiomeEvent *)v8 setObservedAlarmIdentifier:v9];
+    alarmIdentifier = [actionCopy alarmIdentifier];
+    [(SearchUIAlarmBiomeEvent *)v8 setObservedAlarmIdentifier:alarmIdentifier];
 
-    [(SearchUIBiomeEvent *)v8 setBiomeEvent:v6];
+    [(SearchUIBiomeEvent *)v8 setBiomeEvent:eventCopy];
   }
 
   return v8;
 }
 
-- (void)getEnabledStatusWithCompletion:(id)a3
+- (void)getEnabledStatusWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(SearchUIAlarmBiomeEvent *)self observedAlarmIdentifier];
-  [SearchUIMobileTimerUtilities getEnablementStatusForAlarmWithIdentifier:v5 completion:v4];
+  completionCopy = completion;
+  observedAlarmIdentifier = [(SearchUIAlarmBiomeEvent *)self observedAlarmIdentifier];
+  [SearchUIMobileTimerUtilities getEnablementStatusForAlarmWithIdentifier:observedAlarmIdentifier completion:completionCopy];
 }
 
 @end

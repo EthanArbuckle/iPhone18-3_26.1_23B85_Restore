@@ -1,15 +1,15 @@
 @interface PISmartBlackAndWhiteAutoCalculator
-- (id)_calculateBlackAndWhiteSettingsFromBufferImage:(id)a3;
-- (void)submit:(id)a3;
+- (id)_calculateBlackAndWhiteSettingsFromBufferImage:(id)image;
+- (void)submit:(id)submit;
 @end
 
 @implementation PISmartBlackAndWhiteAutoCalculator
 
-- (void)submit:(id)a3
+- (void)submit:(id)submit
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  submitCopy = submit;
+  if (!submitCopy)
   {
     v10 = NUAssertLogger();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -29,8 +29,8 @@
       if (v15)
       {
         v18 = dispatch_get_specific(*v12);
-        v19 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v20 = [v19 componentsJoinedByString:@"\n"];
+        callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
+        v20 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v24 = v18;
         v25 = 2114;
@@ -41,8 +41,8 @@
 
     else if (v15)
     {
-      v16 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v17 = [v16 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v17 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v24 = v17;
       _os_log_error_impl(&dword_1C7694000, v14, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -54,11 +54,11 @@
 
   v5 = [objc_alloc(MEMORY[0x1E69B39A0]) initWithRequest:self];
   [v5 setName:@"PISmartBlackAndWhiteAutoCalculator-renderInputImage"];
-  v6 = [MEMORY[0x1E69B3BF0] RGBAh];
-  [v5 setPixelFormat:v6];
+  rGBAh = [MEMORY[0x1E69B3BF0] RGBAh];
+  [v5 setPixelFormat:rGBAh];
 
-  v7 = [MEMORY[0x1E69B3A10] sRGBLinearColorSpace];
-  [v5 setColorSpace:v7];
+  sRGBLinearColorSpace = [MEMORY[0x1E69B3A10] sRGBLinearColorSpace];
+  [v5 setColorSpace:sRGBLinearColorSpace];
 
   v8 = [objc_alloc(MEMORY[0x1E69B3A78]) initWithTargetPixelSize:{100, 100}];
   [v5 setScalePolicy:v8];
@@ -69,7 +69,7 @@
   v21[2] = __45__PISmartBlackAndWhiteAutoCalculator_submit___block_invoke;
   v21[3] = &unk_1E82ACC00;
   v21[4] = self;
-  v9 = v4;
+  v9 = submitCopy;
   v22 = v9;
   [v5 submit:v21];
 }
@@ -95,22 +95,22 @@ void __45__PISmartBlackAndWhiteAutoCalculator_submit___block_invoke(uint64_t a1,
   (*(*(a1 + 40) + 16))();
 }
 
-- (id)_calculateBlackAndWhiteSettingsFromBufferImage:(id)a3
+- (id)_calculateBlackAndWhiteSettingsFromBufferImage:(id)image
 {
-  v3 = a3;
+  imageCopy = image;
   v8 = 0;
   v9 = &v8;
   v10 = 0x3032000000;
   v11 = __Block_byref_object_copy__20523;
   v12 = __Block_byref_object_dispose__20524;
   v13 = 0;
-  v4 = [v3 validRegion];
+  validRegion = [imageCopy validRegion];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __85__PISmartBlackAndWhiteAutoCalculator__calculateBlackAndWhiteSettingsFromBufferImage___block_invoke;
   v7[3] = &unk_1E82ABAE0;
   v7[4] = &v8;
-  [v3 readBufferRegion:v4 withBlock:v7];
+  [imageCopy readBufferRegion:validRegion withBlock:v7];
 
   v5 = v9[5];
   _Block_object_dispose(&v8, 8);

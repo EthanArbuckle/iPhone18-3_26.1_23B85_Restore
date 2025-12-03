@@ -1,15 +1,15 @@
 @interface _UIDebugIdentifierWindow
-- (_UIDebugIdentifierWindow)initWithWindowScene:(id)a3;
+- (_UIDebugIdentifierWindow)initWithWindowScene:(id)scene;
 - (void)_updateSceneIdentifierLabel;
 @end
 
 @implementation _UIDebugIdentifierWindow
 
-- (_UIDebugIdentifierWindow)initWithWindowScene:(id)a3
+- (_UIDebugIdentifierWindow)initWithWindowScene:(id)scene
 {
   v12.receiver = self;
   v12.super_class = _UIDebugIdentifierWindow;
-  v3 = [(UIWindow *)&v12 initWithWindowScene:a3];
+  v3 = [(UIWindow *)&v12 initWithWindowScene:scene];
   v4 = v3;
   if (v3)
   {
@@ -38,19 +38,19 @@
 
 - (void)_updateSceneIdentifierLabel
 {
-  v3 = [(UIWindow *)self windowScene];
-  v4 = [v3 _FBSScene];
-  v11 = [v4 identityToken];
+  windowScene = [(UIWindow *)self windowScene];
+  _FBSScene = [windowScene _FBSScene];
+  identityToken = [_FBSScene identityToken];
 
-  if (v11)
+  if (identityToken)
   {
-    v5 = [v11 stringRepresentation];
-    v6 = [v5 componentsSeparatedByString:@"-"];
-    v7 = [v6 lastObject];
+    stringRepresentation = [identityToken stringRepresentation];
+    v6 = [stringRepresentation componentsSeparatedByString:@"-"];
+    lastObject = [v6 lastObject];
 
-    if (v7)
+    if (lastObject)
     {
-      v8 = v7;
+      v8 = lastObject;
     }
 
     else

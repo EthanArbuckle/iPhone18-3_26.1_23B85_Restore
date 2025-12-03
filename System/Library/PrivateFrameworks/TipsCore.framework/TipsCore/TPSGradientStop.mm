@@ -1,29 +1,29 @@
 @interface TPSGradientStop
-- (BOOL)isEqual:(id)a3;
-- (TPSGradientStop)initWithCoder:(id)a3;
-- (TPSGradientStop)initWithColorString:(id)a3;
-- (TPSGradientStop)initWithDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (TPSGradientStop)initWithCoder:(id)coder;
+- (TPSGradientStop)initWithColorString:(id)string;
+- (TPSGradientStop)initWithDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TPSGradientStop
 
-- (TPSGradientStop)initWithDictionary:(id)a3
+- (TPSGradientStop)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = TPSGradientStop;
-  v5 = [(TPSSerializableObject *)&v11 initWithDictionary:v4];
+  v5 = [(TPSSerializableObject *)&v11 initWithDictionary:dictionaryCopy];
   if (v5)
   {
-    v6 = [v4 TPSSafeNumberForKey:@"stop"];
+    v6 = [dictionaryCopy TPSSafeNumberForKey:@"stop"];
     location = v5->_location;
     v5->_location = v6;
 
-    v8 = [v4 TPSSafeStringForKey:@"color"];
+    v8 = [dictionaryCopy TPSSafeStringForKey:@"color"];
     colorString = v5->_colorString;
     v5->_colorString = v8;
   }
@@ -31,48 +31,48 @@
   return v5;
 }
 
-- (TPSGradientStop)initWithColorString:(id)a3
+- (TPSGradientStop)initWithColorString:(id)string
 {
-  v5 = a3;
+  stringCopy = string;
   v9.receiver = self;
   v9.super_class = TPSGradientStop;
   v6 = [(TPSGradientStop *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_colorString, a3);
+    objc_storeStrong(&v6->_colorString, string);
   }
 
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = TPSGradientStop;
-  v4 = [(TPSSerializableObject *)&v8 copyWithZone:a3];
-  v5 = [(TPSGradientStop *)self location];
-  [v4 setLocation:v5];
+  v4 = [(TPSSerializableObject *)&v8 copyWithZone:zone];
+  location = [(TPSGradientStop *)self location];
+  [v4 setLocation:location];
 
-  v6 = [(TPSGradientStop *)self colorString];
-  [v4 setColorString:v6];
+  colorString = [(TPSGradientStop *)self colorString];
+  [v4 setColorString:colorString];
 
   return v4;
 }
 
-- (TPSGradientStop)initWithCoder:(id)a3
+- (TPSGradientStop)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = TPSGradientStop;
-  v5 = [(TPSSerializableObject *)&v11 initWithCoder:v4];
+  v5 = [(TPSSerializableObject *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"stop"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"stop"];
     location = v5->_location;
     v5->_location = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"color"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"color"];
     colorString = v5->_colorString;
     v5->_colorString = v8;
   }
@@ -80,17 +80,17 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = TPSGradientStop;
-  v4 = a3;
-  [(TPSSerializableObject *)&v7 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(TPSSerializableObject *)&v7 encodeWithCoder:coderCopy];
   v5 = [(TPSGradientStop *)self location:v7.receiver];
-  [v4 encodeObject:v5 forKey:@"stop"];
+  [coderCopy encodeObject:v5 forKey:@"stop"];
 
-  v6 = [(TPSGradientStop *)self colorString];
-  [v4 encodeObject:v6 forKey:@"color"];
+  colorString = [(TPSGradientStop *)self colorString];
+  [coderCopy encodeObject:colorString forKey:@"color"];
 }
 
 - (id)debugDescription
@@ -101,15 +101,15 @@
   v4 = [(TPSSerializableObject *)&v10 debugDescription];
   v5 = [v3 initWithString:v4];
 
-  v6 = [(TPSGradientStop *)self location];
-  [v5 appendFormat:@"\n  %@ = %@", @"stop", v6];
+  location = [(TPSGradientStop *)self location];
+  [v5 appendFormat:@"\n  %@ = %@", @"stop", location];
 
-  v7 = [(TPSGradientStop *)self colorString];
+  colorString = [(TPSGradientStop *)self colorString];
 
-  if (v7)
+  if (colorString)
   {
-    v8 = [(TPSGradientStop *)self colorString];
-    [v5 appendFormat:@"\n  %@ = %@", @"color", v8];
+    colorString2 = [(TPSGradientStop *)self colorString];
+    [v5 appendFormat:@"\n  %@ = %@", @"color", colorString2];
   }
 
   return v5;
@@ -146,19 +146,19 @@ id __30__TPSGradientStop_na_identity__block_invoke_3()
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [objc_opt_class() na_identity];
-  LOBYTE(self) = [v5 isObject:self equalToObject:v4];
+  equalCopy = equal;
+  na_identity = [objc_opt_class() na_identity];
+  LOBYTE(self) = [na_identity isObject:self equalToObject:equalCopy];
 
   return self;
 }
 
 - (unint64_t)hash
 {
-  v3 = [objc_opt_class() na_identity];
-  v4 = [v3 hashOfObject:self];
+  na_identity = [objc_opt_class() na_identity];
+  v4 = [na_identity hashOfObject:self];
 
   return v4;
 }

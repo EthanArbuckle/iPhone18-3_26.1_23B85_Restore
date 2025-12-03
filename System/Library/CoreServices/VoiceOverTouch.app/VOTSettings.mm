@@ -4,20 +4,20 @@
 - (AXVoiceOverActivity)_currentActivity;
 - (AXVoiceOverActivity)currentActivity;
 - (BOOL)speakUpEnabled;
-- (BOOL)stringIsSupported:(id)a3 language:(id)a4;
+- (BOOL)stringIsSupported:(id)supported language:(id)language;
 - (NSArray)voiceRotors;
-- (void)currentElementDidUpdate:(id)a3;
+- (void)currentElementDidUpdate:(id)update;
 - (void)initialize;
-- (void)rotorRateWithCompletionHandler:(id)a3;
-- (void)setCurrentActivity:(id)a3;
-- (void)setRotorRate:(float)a3 completionHandler:(id)a4;
-- (void)setSelectedLanguageIdentifier:(id)a3;
-- (void)setSystemVoiceSelection:(id)a3;
-- (void)set_currentActivity:(id)a3;
-- (void)set_systemVoiceSelection:(id)a3;
-- (void)voiceHasSuperCompactCounterpart:(NSString *)a3 completionHandler:(id)a4;
-- (void)voiceSelectionForAction:(id)a3 languageCode:(id)a4 completionHandler:(id)a5;
-- (void)voiceSelectionWithLanguageCode:(id)a3 withActivity:(id)a4 completionHandler:(id)a5;
+- (void)rotorRateWithCompletionHandler:(id)handler;
+- (void)setCurrentActivity:(id)activity;
+- (void)setRotorRate:(float)rate completionHandler:(id)handler;
+- (void)setSelectedLanguageIdentifier:(id)identifier;
+- (void)setSystemVoiceSelection:(id)selection;
+- (void)set_currentActivity:(id)activity;
+- (void)set_systemVoiceSelection:(id)selection;
+- (void)voiceHasSuperCompactCounterpart:(NSString *)counterpart completionHandler:(id)handler;
+- (void)voiceSelectionForAction:(id)action languageCode:(id)code completionHandler:(id)handler;
+- (void)voiceSelectionWithLanguageCode:(id)code withActivity:(id)activity completionHandler:(id)handler;
 @end
 
 @implementation VOTSettings
@@ -44,15 +44,15 @@
   return v10;
 }
 
-- (void)set_systemVoiceSelection:(id)a3
+- (void)set_systemVoiceSelection:(id)selection
 {
   v5 = sub_100117630(&qword_1001FE890);
   __chkstk_darwin(v5 - 8);
   v7 = &v14 - v6;
-  if (a3)
+  if (selection)
   {
-    v8 = self;
-    v9 = a3;
+    selfCopy = self;
+    selectionCopy = selection;
     static VoiceSelection._unconditionallyBridgeFromObjectiveC(_:)();
 
     v10 = type metadata accessor for VoiceSelection();
@@ -63,7 +63,7 @@
   {
     v11 = type metadata accessor for VoiceSelection();
     (*(*(v11 - 8) + 56))(v7, 1, 1, v11);
-    v12 = self;
+    selfCopy2 = self;
   }
 
   v13 = OBJC_IVAR____TtC3vot11VOTSettings__systemVoiceSelection;
@@ -80,12 +80,12 @@
   swift_getKeyPath();
   v14[1] = self;
   sub_1001240EC(&qword_1001FE858, type metadata accessor for VOTSettings);
-  v6 = self;
+  selfCopy = self;
   ObservationRegistrar.access<A, B>(_:keyPath:)();
 
   v7 = OBJC_IVAR____TtC3vot11VOTSettings__systemVoiceSelection;
   swift_beginAccess();
-  sub_10012346C(v6 + v7, v5, &qword_1001FE890);
+  sub_10012346C(selfCopy + v7, v5, &qword_1001FE890);
 
   v8 = type metadata accessor for VoiceSelection();
   v9 = *(v8 - 8);
@@ -101,15 +101,15 @@
   return v11;
 }
 
-- (void)setSystemVoiceSelection:(id)a3
+- (void)setSystemVoiceSelection:(id)selection
 {
   v5 = sub_100117630(&qword_1001FE890);
   __chkstk_darwin(v5 - 8);
   v7 = &v13 - v6;
-  if (a3)
+  if (selection)
   {
-    v8 = self;
-    v9 = a3;
+    selfCopy = self;
+    selectionCopy = selection;
     static VoiceSelection._unconditionallyBridgeFromObjectiveC(_:)();
 
     v10 = type metadata accessor for VoiceSelection();
@@ -120,7 +120,7 @@
   {
     v11 = type metadata accessor for VoiceSelection();
     (*(*(v11 - 8) + 56))(v7, 1, 1, v11);
-    v12 = self;
+    selfCopy2 = self;
   }
 
   sub_100118474(v7);
@@ -128,7 +128,7 @@
 
 - (NSArray)voiceRotors
 {
-  v2 = self;
+  selfCopy = self;
   AXSettings.VoiceOver.voiceRotors.getter();
 
   type metadata accessor for UserVoiceConfiguration();
@@ -159,17 +159,17 @@
   return v10;
 }
 
-- (void)set_currentActivity:(id)a3
+- (void)set_currentActivity:(id)activity
 {
   v5 = sub_100117630(&qword_1001FE8C0);
   v6 = __chkstk_darwin(v5 - 8);
   v8 = &v17[-((v7 + 15) & 0xFFFFFFFFFFFFFFF0)];
   __chkstk_darwin(v6);
   v10 = &v17[-v9];
-  if (a3)
+  if (activity)
   {
-    v11 = self;
-    v12 = a3;
+    selfCopy = self;
+    activityCopy = activity;
     static AXSettings.VoiceOver.Activity._unconditionallyBridgeFromObjectiveC(_:)();
 
     v13 = type metadata accessor for AXSettings.VoiceOver.Activity();
@@ -180,7 +180,7 @@
   {
     v14 = type metadata accessor for AXSettings.VoiceOver.Activity();
     (*(*(v14 - 8) + 56))(v10, 1, 1, v14);
-    v15 = self;
+    selfCopy2 = self;
   }
 
   v16 = OBJC_IVAR____TtC3vot11VOTSettings__currentActivity;
@@ -203,12 +203,12 @@
   swift_getKeyPath();
   v14[1] = self;
   sub_1001240EC(&qword_1001FE858, type metadata accessor for VOTSettings);
-  v6 = self;
+  selfCopy = self;
   ObservationRegistrar.access<A, B>(_:keyPath:)();
 
   v7 = OBJC_IVAR____TtC3vot11VOTSettings__currentActivity;
   swift_beginAccess();
-  sub_10012346C(v6 + v7, v5, &qword_1001FE8C0);
+  sub_10012346C(selfCopy + v7, v5, &qword_1001FE8C0);
 
   v8 = type metadata accessor for AXSettings.VoiceOver.Activity();
   v9 = *(v8 - 8);
@@ -224,15 +224,15 @@
   return v11;
 }
 
-- (void)setCurrentActivity:(id)a3
+- (void)setCurrentActivity:(id)activity
 {
   v5 = sub_100117630(&qword_1001FE8C0);
   __chkstk_darwin(v5 - 8);
   v7 = &v13 - v6;
-  if (a3)
+  if (activity)
   {
-    v8 = self;
-    v9 = a3;
+    selfCopy = self;
+    activityCopy = activity;
     static AXSettings.VoiceOver.Activity._unconditionallyBridgeFromObjectiveC(_:)();
 
     v10 = type metadata accessor for AXSettings.VoiceOver.Activity();
@@ -243,36 +243,36 @@
   {
     v11 = type metadata accessor for AXSettings.VoiceOver.Activity();
     (*(*(v11 - 8) + 56))(v7, 1, 1, v11);
-    v12 = self;
+    selfCopy2 = self;
   }
 
   sub_100119690(v7);
 }
 
-- (void)currentElementDidUpdate:(id)a3
+- (void)currentElementDidUpdate:(id)update
 {
-  v4 = a3;
-  v5 = self;
-  sub_100119A58(v4);
+  updateCopy = update;
+  selfCopy = self;
+  sub_100119A58(updateCopy);
 }
 
 - (BOOL)speakUpEnabled
 {
-  v2 = self;
+  selfCopy = self;
   v3 = AXSettings.VoiceOver.speakUpEnabled.getter();
 
   return v3 & 1;
 }
 
-- (void)setSelectedLanguageIdentifier:(id)a3
+- (void)setSelectedLanguageIdentifier:(id)identifier
 {
   v5 = sub_100117630(&qword_1001FE850);
   __chkstk_darwin(v5 - 8);
   v7 = &v12 - v6;
-  if (a3)
+  if (identifier)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
-    v8 = self;
+    selfCopy = self;
     Locale.init(withAXRemapping:)();
     v9 = type metadata accessor for Locale();
     (*(*(v9 - 8) + 56))(v7, 0, 1, v9);
@@ -282,19 +282,19 @@
   {
     v10 = type metadata accessor for Locale();
     (*(*(v10 - 8) + 56))(v7, 1, 1, v10);
-    v11 = self;
+    selfCopy2 = self;
   }
 
   sub_10011B48C(v7);
   [*(self + OBJC_IVAR____TtC3vot11VOTSettings_workspace) _preferencesSelectedLanguageChanged];
 }
 
-- (void)rotorRateWithCompletionHandler:(id)a3
+- (void)rotorRateWithCompletionHandler:(id)handler
 {
   v5 = sub_100117630(&qword_1001FE868);
   __chkstk_darwin(v5 - 8);
   v7 = &v14 - v6;
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   *(v9 + 24) = self;
@@ -310,18 +310,18 @@
   v12[3] = 0;
   v12[4] = &unk_10017EA70;
   v12[5] = v11;
-  v13 = self;
+  selfCopy = self;
   sub_100126474(0, 0, v7, &unk_10017EA78, v12);
 }
 
-- (void)setRotorRate:(float)a3 completionHandler:(id)a4
+- (void)setRotorRate:(float)rate completionHandler:(id)handler
 {
   v7 = sub_100117630(&qword_1001FE868);
   __chkstk_darwin(v7 - 8);
   v9 = &v16 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(handler);
   v11 = swift_allocObject();
-  *(v11 + 16) = a3;
+  *(v11 + 16) = rate;
   *(v11 + 24) = v10;
   *(v11 + 32) = self;
   v12 = type metadata accessor for TaskPriority();
@@ -336,16 +336,16 @@
   v14[3] = 0;
   v14[4] = &unk_10017EA50;
   v14[5] = v13;
-  v15 = self;
+  selfCopy = self;
   sub_100126474(0, 0, v9, &unk_10017EA58, v14);
 }
 
-- (void)voiceSelectionForAction:(id)a3 languageCode:(id)a4 completionHandler:(id)a5
+- (void)voiceSelectionForAction:(id)action languageCode:(id)code completionHandler:(id)handler
 {
   v8 = sub_100117630(&qword_1001FE868);
   __chkstk_darwin(v8 - 8);
   v10 = &v22 - v9;
-  v11 = _Block_copy(a5);
+  v11 = _Block_copy(handler);
   v12 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v14 = v13;
   v15 = swift_allocObject();
@@ -358,16 +358,16 @@
   v19[2] = sub_100124F90;
   v19[3] = v15;
   v19[4] = self;
-  v19[5] = a3;
+  v19[5] = action;
   v19[6] = v12;
   v19[7] = v14;
-  v20 = a3;
-  v21 = self;
+  actionCopy = action;
+  selfCopy = self;
 
   sub_1001246AC(0, 0, v16, v17, v10, &unk_10017EA38, v19);
 }
 
-- (void)voiceSelectionWithLanguageCode:(id)a3 withActivity:(id)a4 completionHandler:(id)a5
+- (void)voiceSelectionWithLanguageCode:(id)code withActivity:(id)activity completionHandler:(id)handler
 {
   v8 = sub_100117630(&qword_1001FE868);
   __chkstk_darwin(v8 - 8);
@@ -379,14 +379,14 @@
   v14 = &v34 - ((v12 + 15) & 0xFFFFFFFFFFFFFFF0);
   __chkstk_darwin(v13);
   v16 = &v34 - v15;
-  v17 = _Block_copy(a5);
+  v17 = _Block_copy(handler);
   v18 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v35 = v19;
   v36 = v18;
-  if (a4)
+  if (activity)
   {
-    v20 = self;
-    v21 = a4;
+    selfCopy = self;
+    activityCopy = activity;
     static AXSettings.VoiceOver.Activity._unconditionallyBridgeFromObjectiveC(_:)();
 
     v22 = type metadata accessor for AXSettings.VoiceOver.Activity();
@@ -397,7 +397,7 @@
   {
     v23 = type metadata accessor for AXSettings.VoiceOver.Activity();
     (*(*(v23 - 8) + 56))(v16, 1, 1, v23);
-    v24 = self;
+    selfCopy2 = self;
   }
 
   v25 = swift_allocObject();
@@ -418,7 +418,7 @@
   v30[5] = v32;
   v30[6] = v31;
   sub_10012452C(v14, v30 + v29, &qword_1001FE8C0);
-  v33 = self;
+  selfCopy3 = self;
 
   sub_1001246AC(0, 0, v26, v34, v28, &unk_10017EA18, v30);
 
@@ -427,18 +427,18 @@
 
 - (void)initialize
 {
-  v2 = self;
+  selfCopy = self;
   sub_10012076C();
 }
 
-- (BOOL)stringIsSupported:(id)a3 language:(id)a4
+- (BOOL)stringIsSupported:(id)supported language:(id)language
 {
   v6 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v8 = v7;
-  if (a4)
+  if (language)
   {
     v9 = static String._unconditionallyBridgeFromObjectiveC(_:)();
-    a4 = v10;
+    language = v10;
   }
 
   else
@@ -446,20 +446,20 @@
     v9 = 0;
   }
 
-  v11 = self;
-  v12 = sub_100121108(v6, v8, v9, a4);
+  selfCopy = self;
+  v12 = sub_100121108(v6, v8, v9, language);
 
   return v12 & 1;
 }
 
-- (void)voiceHasSuperCompactCounterpart:(NSString *)a3 completionHandler:(id)a4
+- (void)voiceHasSuperCompactCounterpart:(NSString *)counterpart completionHandler:(id)handler
 {
   v7 = sub_100117630(&qword_1001FE868);
   __chkstk_darwin(v7 - 8);
   v9 = &v17 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(handler);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = counterpart;
   v11[3] = v10;
   v11[4] = self;
   v12 = type metadata accessor for TaskPriority();
@@ -474,8 +474,8 @@
   v14[3] = 0;
   v14[4] = &unk_10017E9F0;
   v14[5] = v13;
-  v15 = a3;
-  v16 = self;
+  counterpartCopy = counterpart;
+  selfCopy = self;
   sub_100126474(0, 0, v9, &unk_10017E9F8, v14);
 }
 

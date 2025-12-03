@@ -1,12 +1,12 @@
 @interface OUCVPixelBufferRotate
-- (OpaqueVTPixelRotationSession)_createRotationSessionByRotationDegree:(int)a3;
-- (__CVBuffer)rotateImage:(__CVBuffer *)a3;
+- (OpaqueVTPixelRotationSession)_createRotationSessionByRotationDegree:(int)degree;
+- (__CVBuffer)rotateImage:(__CVBuffer *)image;
 - (void)dealloc;
 @end
 
 @implementation OUCVPixelBufferRotate
 
-- (OpaqueVTPixelRotationSession)_createRotationSessionByRotationDegree:(int)a3
+- (OpaqueVTPixelRotationSession)_createRotationSessionByRotationDegree:(int)degree
 {
   if (VTImageRotationSessionCreate())
   {
@@ -20,9 +20,9 @@
   return 0;
 }
 
-- (__CVBuffer)rotateImage:(__CVBuffer *)a3
+- (__CVBuffer)rotateImage:(__CVBuffer *)image
 {
-  if (!a3)
+  if (!image)
   {
     return 0;
   }
@@ -44,7 +44,7 @@
     v8 = *p_rotatePixelBuffer;
   }
 
-  if (MEMORY[0x25F8948E0](self->_sessionRotate, a3))
+  if (MEMORY[0x25F8948E0](self->_sessionRotate, image))
   {
     v6 = _OULoggingGetOSLogForCategoryObjectUnderstanding();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))

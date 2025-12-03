@@ -1,13 +1,13 @@
 @interface RCPersistentContainer
-+ (id)storeDescriptionForURL:(id)a3 isXPCClient:(BOOL)a4 configuration:(id)a5;
-- (RCPersistentContainer)initWithURL:(id)a3;
-- (id)loadStore:(id)a3 error:(id *)a4;
++ (id)storeDescriptionForURL:(id)l isXPCClient:(BOOL)client configuration:(id)configuration;
+- (RCPersistentContainer)initWithURL:(id)l;
+- (id)loadStore:(id)store error:(id *)error;
 - (id)newBackgroundModel;
-- (id)newContextWithConcurrencyType:(unint64_t)a3;
-- (id)storeDescriptionWithURL:(id)a3;
-- (void)_configureContext:(id)a3 isViewContext:(BOOL)a4;
-- (void)performBlockAndWaitWithBackgroundModel:(id)a3;
-- (void)performBlockWithBackgroundModel:(id)a3;
+- (id)newContextWithConcurrencyType:(unint64_t)type;
+- (id)storeDescriptionWithURL:(id)l;
+- (void)_configureContext:(id)context isViewContext:(BOOL)viewContext;
+- (void)performBlockAndWaitWithBackgroundModel:(id)model;
+- (void)performBlockWithBackgroundModel:(id)model;
 @end
 
 @implementation RCPersistentContainer
@@ -21,9 +21,9 @@
   return v5;
 }
 
-- (RCPersistentContainer)initWithURL:(id)a3
+- (RCPersistentContainer)initWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v24.receiver = self;
   v24.super_class = RCPersistentContainer;
   v5 = [(RCPersistentContainer *)&v24 init];
@@ -34,36 +34,36 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v6 = [MEMORY[0x277CBE450] rc_newObjectModel];
-  v7 = [objc_alloc(MEMORY[0x277CBE4A0]) initWithName:@"VoiceMemos" managedObjectModel:v6];
+  rc_newObjectModel = [MEMORY[0x277CBE450] rc_newObjectModel];
+  v7 = [objc_alloc(MEMORY[0x277CBE4A0]) initWithName:@"VoiceMemos" managedObjectModel:rc_newObjectModel];
   persistentContainer = v5->_persistentContainer;
   v5->_persistentContainer = v7;
 
   v23 = 0;
-  v9 = [(RCPersistentContainer *)v5 loadStore:v4 error:&v23];
+  v9 = [(RCPersistentContainer *)v5 loadStore:lCopy error:&v23];
   v10 = v23;
   store = v5->_store;
   v5->_store = v9;
 
   if (v5->_store)
   {
-    v12 = [MEMORY[0x277CCAC38] processInfo];
-    v13 = [MEMORY[0x277CCA8D8] mainBundle];
-    v14 = [v13 bundleIdentifier];
-    v15 = v14;
-    if (v14)
+    processInfo = [MEMORY[0x277CCAC38] processInfo];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
+    v15 = bundleIdentifier;
+    if (bundleIdentifier)
     {
-      v16 = v14;
+      processName = bundleIdentifier;
     }
 
     else
     {
-      v16 = [v12 processName];
+      processName = [processInfo processName];
     }
 
-    v19 = v16;
+    v19 = processName;
 
-    v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%d", v19, objc_msgSend(v12, "processIdentifier")];
+    v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%d", v19, objc_msgSend(processInfo, "processIdentifier")];
     transactionAuthor = v5->_transactionAuthor;
     v5->_transactionAuthor = v20;
 
@@ -82,23 +82,23 @@ LABEL_11:
   return v18;
 }
 
-- (id)storeDescriptionWithURL:(id)a3
+- (id)storeDescriptionWithURL:(id)l
 {
-  v3 = a3;
-  v4 = [objc_opt_class() storeDescriptionForURL:v3 isXPCClient:1 configuration:@"Cloud"];
+  lCopy = l;
+  v4 = [objc_opt_class() storeDescriptionForURL:lCopy isXPCClient:1 configuration:@"Cloud"];
 
   return v4;
 }
 
-- (id)loadStore:(id)a3 error:(id *)a4
+- (id)loadStore:(id)store error:(id *)error
 {
   v24[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(RCPersistentContainer *)self storeDescriptionWithURL:v6];
+  storeCopy = store;
+  v7 = [(RCPersistentContainer *)self storeDescriptionWithURL:storeCopy];
   v24[0] = v7;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v24 count:1];
-  v9 = [(RCPersistentContainer *)self persistentContainer];
-  [v9 setPersistentStoreDescriptions:v8];
+  persistentContainer = [(RCPersistentContainer *)self persistentContainer];
+  [persistentContainer setPersistentStoreDescriptions:v8];
 
   v18 = 0;
   v19 = &v18;
@@ -106,23 +106,23 @@ LABEL_11:
   v21 = __Block_byref_object_copy__5;
   v22 = __Block_byref_object_dispose__5;
   v23 = 0;
-  v10 = [(RCPersistentContainer *)self persistentContainer];
+  persistentContainer2 = [(RCPersistentContainer *)self persistentContainer];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __41__RCPersistentContainer_loadStore_error___block_invoke;
   v17[3] = &unk_279E44678;
   v17[4] = &v18;
-  [v10 loadPersistentStoresWithCompletionHandler:v17];
+  [persistentContainer2 loadPersistentStoresWithCompletionHandler:v17];
 
-  if (a4)
+  if (error)
   {
-    *a4 = v19[5];
+    *error = v19[5];
   }
 
-  v11 = [(RCPersistentContainer *)self persistentContainer];
-  v12 = [v11 persistentStoreCoordinator];
+  persistentContainer3 = [(RCPersistentContainer *)self persistentContainer];
+  persistentStoreCoordinator = [persistentContainer3 persistentStoreCoordinator];
   v13 = [v7 URL];
-  v14 = [v12 persistentStoreForURL:v13];
+  v14 = [persistentStoreCoordinator persistentStoreForURL:v13];
 
   _Block_object_dispose(&v18, 8);
   v15 = *MEMORY[0x277D85DE8];
@@ -130,39 +130,39 @@ LABEL_11:
   return v14;
 }
 
-- (id)newContextWithConcurrencyType:(unint64_t)a3
+- (id)newContextWithConcurrencyType:(unint64_t)type
 {
   persistentContainer = self->_persistentContainer;
-  if (a3 == 2)
+  if (type == 2)
   {
-    v5 = [(NSPersistentContainer *)persistentContainer viewContext];
+    viewContext = [(NSPersistentContainer *)persistentContainer viewContext];
     if (!self->_viewContextIsConfigured)
     {
-      [(RCPersistentContainer *)self _configureContext:v5 isViewContext:1];
+      [(RCPersistentContainer *)self _configureContext:viewContext isViewContext:1];
       self->_viewContextIsConfigured = 1;
     }
   }
 
   else
   {
-    v5 = [(NSPersistentContainer *)persistentContainer newBackgroundContext];
-    [(RCPersistentContainer *)self _configureContext:v5 isViewContext:0];
+    viewContext = [(NSPersistentContainer *)persistentContainer newBackgroundContext];
+    [(RCPersistentContainer *)self _configureContext:viewContext isViewContext:0];
   }
 
-  return v5;
+  return viewContext;
 }
 
-- (void)_configureContext:(id)a3 isViewContext:(BOOL)a4
+- (void)_configureContext:(id)context isViewContext:(BOOL)viewContext
 {
-  v6 = a3;
+  contextCopy = context;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __57__RCPersistentContainer__configureContext_isViewContext___block_invoke;
   v8[3] = &unk_279E43E90;
-  v9 = v6;
-  v10 = self;
-  v11 = a4;
-  v7 = v6;
+  v9 = contextCopy;
+  selfCopy = self;
+  viewContextCopy = viewContext;
+  v7 = contextCopy;
   [v7 performBlockAndWait:v8];
 }
 
@@ -185,12 +185,12 @@ uint64_t __57__RCPersistentContainer__configureContext_isViewContext___block_inv
   return [v3 setName:v2];
 }
 
-+ (id)storeDescriptionForURL:(id)a3 isXPCClient:(BOOL)a4 configuration:(id)a5
++ (id)storeDescriptionForURL:(id)l isXPCClient:(BOOL)client configuration:(id)configuration
 {
-  v5 = a4;
+  clientCopy = client;
   v7 = MEMORY[0x277CBE4E0];
-  v8 = a5;
-  v9 = [v7 persistentStoreDescriptionWithURL:a3];
+  configurationCopy = configuration;
+  v9 = [v7 persistentStoreDescriptionWithURL:l];
   v10 = MEMORY[0x277CBEC38];
   [v9 setOption:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277CBE1D8]];
   [v9 setOption:v10 forKey:*MEMORY[0x277CBE178]];
@@ -198,9 +198,9 @@ uint64_t __57__RCPersistentContainer__configureContext_isViewContext___block_inv
   [v9 setOption:v10 forKey:*MEMORY[0x277CBE210]];
   [v9 setOption:v10 forKey:*MEMORY[0x277CBE268]];
   [v9 setOption:v10 forKey:*MEMORY[0x277CBE338]];
-  [v9 setConfiguration:v8];
+  [v9 setConfiguration:configurationCopy];
 
-  if (v5)
+  if (clientCopy)
   {
     [v9 setOption:@"com.apple.voicememod.datastore.Cloud" forKey:*MEMORY[0x277CBE340]];
     [v9 setOption:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277CBE328]];
@@ -217,33 +217,33 @@ uint64_t __57__RCPersistentContainer__configureContext_isViewContext___block_inv
   return v9;
 }
 
-- (void)performBlockWithBackgroundModel:(id)a3
+- (void)performBlockWithBackgroundModel:(id)model
 {
-  v4 = a3;
-  v5 = [(RCPersistentContainer *)self newBackgroundModel];
+  modelCopy = model;
+  newBackgroundModel = [(RCPersistentContainer *)self newBackgroundModel];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __57__RCPersistentContainer_performBlockWithBackgroundModel___block_invoke;
   v8[3] = &unk_279E44380;
-  v9 = v5;
-  v10 = v4;
-  v6 = v5;
-  v7 = v4;
+  v9 = newBackgroundModel;
+  v10 = modelCopy;
+  v6 = newBackgroundModel;
+  v7 = modelCopy;
   [v6 performBlock:v8];
 }
 
-- (void)performBlockAndWaitWithBackgroundModel:(id)a3
+- (void)performBlockAndWaitWithBackgroundModel:(id)model
 {
-  v4 = a3;
-  v5 = [(RCPersistentContainer *)self newBackgroundModel];
+  modelCopy = model;
+  newBackgroundModel = [(RCPersistentContainer *)self newBackgroundModel];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __64__RCPersistentContainer_performBlockAndWaitWithBackgroundModel___block_invoke;
   v8[3] = &unk_279E44380;
-  v9 = v5;
-  v10 = v4;
-  v6 = v5;
-  v7 = v4;
+  v9 = newBackgroundModel;
+  v10 = modelCopy;
+  v6 = newBackgroundModel;
+  v7 = modelCopy;
   [v6 performBlockAndWait:v8];
 }
 

@@ -1,21 +1,21 @@
 @interface PXSidebarDiffableDataSourceController
-- (BOOL)_appendChildrenForParentIfNeeded:(id)a3 inSnapshot:(id)a4;
-- (PXSidebarDiffableDataSourceController)initWithSidebarDataController:(id)a3 dataSource:(id)a4;
+- (BOOL)_appendChildrenForParentIfNeeded:(id)needed inSnapshot:(id)snapshot;
+- (PXSidebarDiffableDataSourceController)initWithSidebarDataController:(id)controller dataSource:(id)source;
 - (PXSidebarDiffableDataSourceControllerDelegate)delegate;
-- (id)_applyChangeDetails:(id)a3 forItem:(id)a4 rootItem:(id)a5 toSnapshot:(id)a6 outChangedItemsBeforeChange:(id *)a7 outChangedItemsAfterChange:(id *)a8;
-- (id)_newSnapshotForRootItem:(id)a3 restoreExpansionState:(BOOL)a4;
-- (id)expandItemsToRevealFirstEditableItemIfNeededAnimated:(BOOL)a3;
-- (id)identifierForSectionContainingItem:(id)a3;
-- (id)sectionSnapshotContainingItem:(id)a3;
-- (void)_configureInitialSnapshotAnimated:(BOOL)a3 expandSubItems:(BOOL)a4;
-- (void)_expandItem:(id)a3 inSnapshot:(id)a4;
-- (void)_expandItemIfNeeded:(id)a3 inSnapshot:(id)a4;
-- (void)_transferStateOfItem:(id)a3 oldSnapshot:(id)a4 toNewItem:(id)a5 newSnapshot:(id)a6;
-- (void)appendChildrenForParentIfNeeded:(id)a3;
-- (void)expandItemsForIdentifiersIfNeeded:(id)a3 animated:(BOOL)a4;
-- (void)sectionControllerWillCollapseItem:(id)a3;
-- (void)sectionControllerWillExpandItem:(id)a3;
-- (void)sidebarDataSourceController:(id)a3 didChangeChildrenOfItem:(id)a4 changeDetails:(id)a5;
+- (id)_applyChangeDetails:(id)details forItem:(id)item rootItem:(id)rootItem toSnapshot:(id)snapshot outChangedItemsBeforeChange:(id *)change outChangedItemsAfterChange:(id *)afterChange;
+- (id)_newSnapshotForRootItem:(id)item restoreExpansionState:(BOOL)state;
+- (id)expandItemsToRevealFirstEditableItemIfNeededAnimated:(BOOL)animated;
+- (id)identifierForSectionContainingItem:(id)item;
+- (id)sectionSnapshotContainingItem:(id)item;
+- (void)_configureInitialSnapshotAnimated:(BOOL)animated expandSubItems:(BOOL)items;
+- (void)_expandItem:(id)item inSnapshot:(id)snapshot;
+- (void)_expandItemIfNeeded:(id)needed inSnapshot:(id)snapshot;
+- (void)_transferStateOfItem:(id)item oldSnapshot:(id)snapshot toNewItem:(id)newItem newSnapshot:(id)newSnapshot;
+- (void)appendChildrenForParentIfNeeded:(id)needed;
+- (void)expandItemsForIdentifiersIfNeeded:(id)needed animated:(BOOL)animated;
+- (void)sectionControllerWillCollapseItem:(id)item;
+- (void)sectionControllerWillExpandItem:(id)item;
+- (void)sidebarDataSourceController:(id)controller didChangeChildrenOfItem:(id)item changeDetails:(id)details;
 @end
 
 @implementation PXSidebarDiffableDataSourceController
@@ -27,57 +27,57 @@
   return WeakRetained;
 }
 
-- (void)sidebarDataSourceController:(id)a3 didChangeChildrenOfItem:(id)a4 changeDetails:(id)a5
+- (void)sidebarDataSourceController:(id)controller didChangeChildrenOfItem:(id)item changeDetails:(id)details
 {
   v57 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  controllerCopy = controller;
+  itemCopy = item;
+  detailsCopy = details;
   v11 = PLSidebarGetLog();
   v12 = os_signpost_id_generate(v11);
   v13 = v11;
   v14 = v13;
   if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v13))
   {
-    v15 = [v9 identifier];
+    identifier = [itemCopy identifier];
     *buf = 138412290;
-    v56 = v15;
+    v56 = identifier;
     _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v14, OS_SIGNPOST_INTERVAL_BEGIN, v12, "sidebarDataSourceController_didChangeChildrenOfItem_changeDetails", "identifier: %@", buf, 0xCu);
   }
 
-  if (v9)
+  if (itemCopy)
   {
     spid = v12;
-    v16 = [(PXSidebarDiffableDataSourceController *)self identifierForSectionContainingItem:v9];
-    v17 = [(PXSidebarDiffableDataSourceController *)self dataController];
-    v18 = [v17 itemForIdentifier:v16];
+    v16 = [(PXSidebarDiffableDataSourceController *)self identifierForSectionContainingItem:itemCopy];
+    dataController = [(PXSidebarDiffableDataSourceController *)self dataController];
+    v18 = [dataController itemForIdentifier:v16];
 
     if (!v18)
     {
       PXAssertGetLog();
     }
 
-    v39 = v8;
-    v19 = [(PXSidebarDiffableDataSourceController *)self dataSource];
-    v20 = [v19 snapshotForSection:v16];
+    v39 = controllerCopy;
+    dataSource = [(PXSidebarDiffableDataSourceController *)self dataSource];
+    v20 = [dataSource snapshotForSection:v16];
     v53 = 0;
     v54 = 0;
-    v38 = v9;
-    [(PXSidebarDiffableDataSourceController *)self _applyChangeDetails:v10 forItem:v9 rootItem:v18 toSnapshot:v20 outChangedItemsBeforeChange:&v54 outChangedItemsAfterChange:&v53];
-    v22 = v21 = v10;
+    v38 = itemCopy;
+    [(PXSidebarDiffableDataSourceController *)self _applyChangeDetails:detailsCopy forItem:itemCopy rootItem:v18 toSnapshot:v20 outChangedItemsBeforeChange:&v54 outChangedItemsAfterChange:&v53];
+    v22 = v21 = detailsCopy;
     v37 = v54;
     v36 = v53;
-    v23 = [v21 insertedIndexes];
+    insertedIndexes = [v21 insertedIndexes];
     v40 = v21;
-    if ([v23 count])
+    if ([insertedIndexes count])
     {
       v24 = 1;
     }
 
     else
     {
-      v27 = [v21 removedIndexes];
-      v24 = [v27 count] != 0;
+      removedIndexes = [v21 removedIndexes];
+      v24 = [removedIndexes count] != 0;
     }
 
     aBlock[0] = MEMORY[0x1E69E9820];
@@ -88,58 +88,58 @@
     v45 = v28;
     v29 = v22;
     v46 = v29;
-    v47 = self;
+    selfCopy = self;
     v52 = v24;
-    v30 = v19;
+    v30 = dataSource;
     v48 = v30;
     v49 = v16;
     v50 = v14;
     v51 = spid;
     v31 = _Block_copy(aBlock);
-    v32 = [(PXSidebarDiffableDataSourceController *)self delegate];
+    delegate = [(PXSidebarDiffableDataSourceController *)self delegate];
 
-    if (v32)
+    if (delegate)
     {
-      v33 = [(PXSidebarDiffableDataSourceController *)self delegate];
+      delegate2 = [(PXSidebarDiffableDataSourceController *)self delegate];
       v42[0] = MEMORY[0x1E69E9820];
       v42[1] = 3221225472;
       v42[2] = __107__PXSidebarDiffableDataSourceController_sidebarDataSourceController_didChangeChildrenOfItem_changeDetails___block_invoke_23;
       v42[3] = &unk_1E774C250;
       v43 = v31;
-      v34 = self;
+      selfCopy2 = self;
       v35 = v36;
-      [v33 sidebarDiffableDataSourceController:v34 willApplySnapshotWithChangedItemsAfterChange:v36 applyBlock:v42];
+      [delegate2 sidebarDiffableDataSourceController:selfCopy2 willApplySnapshotWithChangedItemsAfterChange:v36 applyBlock:v42];
 
-      v9 = v38;
-      v8 = v39;
+      itemCopy = v38;
+      controllerCopy = v39;
     }
 
     else
     {
       v31[2](v31);
-      v9 = v38;
-      v8 = v39;
+      itemCopy = v38;
+      controllerCopy = v39;
       v35 = v36;
     }
 
-    v10 = v40;
+    detailsCopy = v40;
   }
 
   else
   {
-    if (![v10 needsReload])
+    if (![detailsCopy needsReload])
     {
       [(PXSidebarDiffableDataSourceController *)self dataSource];
       [objc_claimAutoreleasedReturnValue() snapshot];
       objc_claimAutoreleasedReturnValue();
-      [v10 removedItems];
+      [detailsCopy removedItems];
       objc_claimAutoreleasedReturnValue();
       PXMap();
     }
 
     [(PXSidebarDiffableDataSourceController *)self reloadFromDataControllerAnimated:0];
-    v25 = [(PXSidebarDiffableDataSourceController *)self delegate];
-    [v25 sidebarDiffableDataSourceController:self didReloadAnimated:0];
+    delegate3 = [(PXSidebarDiffableDataSourceController *)self delegate];
+    [delegate3 sidebarDiffableDataSourceController:self didReloadAnimated:0];
 
     v26 = v14;
     v16 = v26;
@@ -206,42 +206,42 @@ void __107__PXSidebarDiffableDataSourceController_sidebarDataSourceController_di
   }
 }
 
-- (id)_applyChangeDetails:(id)a3 forItem:(id)a4 rootItem:(id)a5 toSnapshot:(id)a6 outChangedItemsBeforeChange:(id *)a7 outChangedItemsAfterChange:(id *)a8
+- (id)_applyChangeDetails:(id)details forItem:(id)item rootItem:(id)rootItem toSnapshot:(id)snapshot outChangedItemsBeforeChange:(id *)change outChangedItemsAfterChange:(id *)afterChange
 {
   v78 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v51 = a5;
-  v16 = a6;
-  v17 = v16;
-  if (v15)
+  detailsCopy = details;
+  itemCopy = item;
+  rootItemCopy = rootItem;
+  snapshotCopy = snapshot;
+  v17 = snapshotCopy;
+  if (itemCopy)
   {
-    if (([v16 containsItem:v15] & 1) != 0 && !objc_msgSend(v14, "needsReload"))
+    if (([snapshotCopy containsItem:itemCopy] & 1) != 0 && !objc_msgSend(detailsCopy, "needsReload"))
     {
-      v43 = a8;
-      v45 = a7;
-      v18 = [v17 snapshotOfParentItem:v15];
+      afterChangeCopy2 = afterChange;
+      changeCopy2 = change;
+      v18 = [v17 snapshotOfParentItem:itemCopy];
       goto LABEL_9;
     }
   }
 
-  else if (([v14 needsReload] & 1) == 0)
+  else if (([detailsCopy needsReload] & 1) == 0)
   {
-    v43 = a8;
-    v45 = a7;
+    afterChangeCopy2 = afterChange;
+    changeCopy2 = change;
     v18 = v17;
 LABEL_9:
     v21 = v18;
-    v50 = [v14 arrayChangeDetails];
-    v48 = [v50 insertedIndexes];
-    v46 = [v50 changedIndexes];
-    v22 = [(PXSidebarDiffableDataSourceController *)self dataController];
-    v49 = [v22 childrenOfListItem:v15];
+    arrayChangeDetails = [detailsCopy arrayChangeDetails];
+    insertedIndexes = [arrayChangeDetails insertedIndexes];
+    changedIndexes = [arrayChangeDetails changedIndexes];
+    dataController = [(PXSidebarDiffableDataSourceController *)self dataController];
+    v49 = [dataController childrenOfListItem:itemCopy];
 
     v73 = 0;
     v74 = &v73;
     v75 = 0x2020000000;
-    if ([v50 hasAnyInsertionsRemovalsOrMoves])
+    if ([arrayChangeDetails hasAnyInsertionsRemovalsOrMoves])
     {
       v23 = 1;
     }
@@ -249,30 +249,30 @@ LABEL_9:
     else
     {
       v24 = [v49 count];
-      v25 = [v21 rootItems];
-      v23 = v24 != [v25 count];
+      rootItems = [v21 rootItems];
+      v23 = v24 != [rootItems count];
     }
 
     v76 = v23;
-    if ((v74[3] & 1) != 0 || ![v46 count])
+    if ((v74[3] & 1) != 0 || ![changedIndexes count])
     {
       goto LABEL_19;
     }
 
-    v26 = [v46 lastIndex];
-    v27 = [v21 rootItems];
-    if (v26 >= [v27 count])
+    lastIndex = [changedIndexes lastIndex];
+    rootItems2 = [v21 rootItems];
+    if (lastIndex >= [rootItems2 count])
     {
     }
 
     else
     {
-      v28 = [v46 lastIndex];
-      LOBYTE(v28) = v28 < [v49 count];
+      lastIndex2 = [changedIndexes lastIndex];
+      LOBYTE(lastIndex2) = lastIndex2 < [v49 count];
 
-      if (v28)
+      if (lastIndex2)
       {
-        v29 = [v50 changedIndexes];
+        changedIndexes2 = [arrayChangeDetails changedIndexes];
         v69[0] = MEMORY[0x1E69E9820];
         v69[1] = 3221225472;
         v69[2] = __144__PXSidebarDiffableDataSourceController__applyChangeDetails_forItem_rootItem_toSnapshot_outChangedItemsBeforeChange_outChangedItemsAfterChange___block_invoke;
@@ -280,7 +280,7 @@ LABEL_9:
         v70 = v21;
         v71 = v49;
         v72 = &v73;
-        [v29 enumerateIndexesUsingBlock:v69];
+        [changedIndexes2 enumerateIndexesUsingBlock:v69];
 
 LABEL_19:
         if (*(v74 + 24) == 1)
@@ -314,7 +314,7 @@ LABEL_19:
             while (v32);
           }
 
-          if ([v48 count])
+          if ([insertedIndexes count])
           {
             v63[0] = MEMORY[0x1E69E9820];
             v63[1] = 3221225472;
@@ -323,7 +323,7 @@ LABEL_19:
             v63[4] = self;
             v30 = v30;
             v64 = v30;
-            [v31 enumerateObjectsAtIndexes:v48 options:0 usingBlock:v63];
+            [v31 enumerateObjectsAtIndexes:insertedIndexes options:0 usingBlock:v63];
           }
         }
 
@@ -332,58 +332,58 @@ LABEL_19:
           v30 = [v21 copy];
         }
 
-        v47 = [MEMORY[0x1E695DF70] array];
-        v35 = [MEMORY[0x1E695DF70] array];
-        v36 = [v14 changedItems];
-        v37 = [v36 count];
+        array = [MEMORY[0x1E695DF70] array];
+        array2 = [MEMORY[0x1E695DF70] array];
+        changedItems = [detailsCopy changedItems];
+        v37 = [changedItems count];
 
         if (v37)
         {
-          v38 = [v14 previousDataSection];
-          v39 = [v50 changedIndexes];
-          if ([v48 count])
+          previousDataSection = [detailsCopy previousDataSection];
+          changedIndexes3 = [arrayChangeDetails changedIndexes];
+          if ([insertedIndexes count])
           {
-            v40 = [v39 mutableCopy];
-            [v40 removeIndexes:v48];
+            v40 = [changedIndexes3 mutableCopy];
+            [v40 removeIndexes:insertedIndexes];
           }
 
           else
           {
-            v40 = v39;
+            v40 = changedIndexes3;
           }
 
           v52[0] = MEMORY[0x1E69E9820];
           v52[1] = 3221225472;
           v52[2] = __144__PXSidebarDiffableDataSourceController__applyChangeDetails_forItem_rootItem_toSnapshot_outChangedItemsBeforeChange_outChangedItemsAfterChange___block_invoke_3;
           v52[3] = &unk_1E7736790;
-          v53 = v50;
-          v41 = v38;
+          v53 = arrayChangeDetails;
+          v41 = previousDataSection;
           v54 = v41;
           v55 = v49;
-          v56 = self;
+          selfCopy = self;
           v57 = v21;
           v58 = v30;
-          v59 = v15;
+          v59 = itemCopy;
           v60 = v17;
-          v61 = v47;
-          v62 = v35;
+          v61 = array;
+          v62 = array2;
           [v40 enumerateIndexesUsingBlock:v52];
         }
 
-        if (v45)
+        if (changeCopy2)
         {
-          *v45 = [v47 copy];
+          *changeCopy2 = [array copy];
         }
 
         if (v44)
         {
-          *v44 = [v35 copy];
+          *v44 = [array2 copy];
         }
 
-        if (v15)
+        if (itemCopy)
         {
           v20 = [v17 copy];
-          [v20 replaceChildrenOfParentItem:v15 withSnapshot:v30];
+          [v20 replaceChildrenOfParentItem:itemCopy withSnapshot:v30];
         }
 
         else
@@ -399,11 +399,11 @@ LABEL_19:
     PXAssertGetLog();
   }
 
-  v19 = [(PXSidebarDiffableDataSourceController *)self _newSnapshotForRootItem:v51 restoreExpansionState:1];
+  v19 = [(PXSidebarDiffableDataSourceController *)self _newSnapshotForRootItem:rootItemCopy restoreExpansionState:1];
   v20 = v19;
-  if (a8)
+  if (afterChange)
   {
-    *a8 = [v19 visibleItems];
+    *afterChange = [v19 visibleItems];
   }
 
 LABEL_43:
@@ -436,66 +436,66 @@ void __144__PXSidebarDiffableDataSourceController__applyChangeDetails_forItem_ro
   }
 }
 
-- (void)_transferStateOfItem:(id)a3 oldSnapshot:(id)a4 toNewItem:(id)a5 newSnapshot:(id)a6
+- (void)_transferStateOfItem:(id)item oldSnapshot:(id)snapshot toNewItem:(id)newItem newSnapshot:(id)newSnapshot
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if ([v10 containsItem:v9])
+  itemCopy = item;
+  snapshotCopy = snapshot;
+  newItemCopy = newItem;
+  newSnapshotCopy = newSnapshot;
+  if ([snapshotCopy containsItem:itemCopy])
   {
-    if ([v10 isExpanded:v9])
+    if ([snapshotCopy isExpanded:itemCopy])
     {
-      v15[0] = v11;
+      v15[0] = newItemCopy;
       v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
-      [v12 expandItems:v13];
+      [newSnapshotCopy expandItems:v13];
     }
 
-    v14 = [v10 snapshotOfParentItem:v9];
-    [v12 replaceChildrenOfParentItem:v11 withSnapshot:v14];
+    v14 = [snapshotCopy snapshotOfParentItem:itemCopy];
+    [newSnapshotCopy replaceChildrenOfParentItem:newItemCopy withSnapshot:v14];
   }
 }
 
-- (void)_expandItemIfNeeded:(id)a3 inSnapshot:(id)a4
+- (void)_expandItemIfNeeded:(id)needed inSnapshot:(id)snapshot
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PXSidebarDiffableDataSourceController *)self dataController];
-  v9 = [v8 isItemExpanded:v6];
+  neededCopy = needed;
+  snapshotCopy = snapshot;
+  dataController = [(PXSidebarDiffableDataSourceController *)self dataController];
+  v9 = [dataController isItemExpanded:neededCopy];
 
   if (v9)
   {
-    v11[0] = v6;
+    v11[0] = neededCopy;
     v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
-    [v7 expandItems:v10];
+    [snapshotCopy expandItems:v10];
 
-    [(PXSidebarDiffableDataSourceController *)self _appendChildrenForParentIfNeeded:v6 inSnapshot:v7];
+    [(PXSidebarDiffableDataSourceController *)self _appendChildrenForParentIfNeeded:neededCopy inSnapshot:snapshotCopy];
   }
 }
 
-- (void)_expandItem:(id)a3 inSnapshot:(id)a4
+- (void)_expandItem:(id)item inSnapshot:(id)snapshot
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PXSidebarDiffableDataSourceController *)self dataController];
-  [v8 setExpanded:1 forItem:v7];
+  snapshotCopy = snapshot;
+  itemCopy = item;
+  dataController = [(PXSidebarDiffableDataSourceController *)self dataController];
+  [dataController setExpanded:1 forItem:itemCopy];
 
-  v10[0] = v7;
+  v10[0] = itemCopy;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
-  [v6 expandItems:v9];
+  [snapshotCopy expandItems:v9];
 
-  [(PXSidebarDiffableDataSourceController *)self _appendChildrenForParentIfNeeded:v7 inSnapshot:v6];
+  [(PXSidebarDiffableDataSourceController *)self _appendChildrenForParentIfNeeded:itemCopy inSnapshot:snapshotCopy];
 }
 
-- (BOOL)_appendChildrenForParentIfNeeded:(id)a3 inSnapshot:(id)a4
+- (BOOL)_appendChildrenForParentIfNeeded:(id)needed inSnapshot:(id)snapshot
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 childrenOfParent:v6];
+  neededCopy = needed;
+  snapshotCopy = snapshot;
+  v8 = [snapshotCopy childrenOfParent:neededCopy];
   v9 = [v8 count];
 
   if (v9)
@@ -505,14 +505,14 @@ void __144__PXSidebarDiffableDataSourceController__applyChangeDetails_forItem_ro
 
   else
   {
-    v11 = [(PXSidebarDiffableDataSourceController *)self dataController];
-    v12 = [v11 childrenOfListItem:v6];
+    dataController = [(PXSidebarDiffableDataSourceController *)self dataController];
+    v12 = [dataController childrenOfListItem:neededCopy];
 
     v13 = [v12 count];
     v10 = v13 != 0;
     if (v13)
     {
-      [v7 appendItems:v12 intoParentItem:v6];
+      [snapshotCopy appendItems:v12 intoParentItem:neededCopy];
       v22 = 0u;
       v23 = 0u;
       v20 = 0u;
@@ -532,7 +532,7 @@ void __144__PXSidebarDiffableDataSourceController__applyChangeDetails_forItem_ro
               objc_enumerationMutation(v14);
             }
 
-            [(PXSidebarDiffableDataSourceController *)self _expandItemIfNeeded:*(*(&v20 + 1) + 8 * i) inSnapshot:v7, v20];
+            [(PXSidebarDiffableDataSourceController *)self _expandItemIfNeeded:*(*(&v20 + 1) + 8 * i) inSnapshot:snapshotCopy, v20];
           }
 
           v16 = [v14 countByEnumeratingWithState:&v20 objects:v24 count:16];
@@ -546,24 +546,24 @@ void __144__PXSidebarDiffableDataSourceController__applyChangeDetails_forItem_ro
   return v10;
 }
 
-- (void)appendChildrenForParentIfNeeded:(id)a3
+- (void)appendChildrenForParentIfNeeded:(id)needed
 {
-  v4 = a3;
-  v7 = [(PXSidebarDiffableDataSourceController *)self identifierForSectionContainingItem:v4];
-  v5 = [(PXSidebarDiffableDataSourceController *)self dataSource];
-  v6 = [v5 snapshotForSection:v7];
-  LODWORD(self) = [(PXSidebarDiffableDataSourceController *)self _appendChildrenForParentIfNeeded:v4 inSnapshot:v6];
+  neededCopy = needed;
+  v7 = [(PXSidebarDiffableDataSourceController *)self identifierForSectionContainingItem:neededCopy];
+  dataSource = [(PXSidebarDiffableDataSourceController *)self dataSource];
+  v6 = [dataSource snapshotForSection:v7];
+  LODWORD(self) = [(PXSidebarDiffableDataSourceController *)self _appendChildrenForParentIfNeeded:neededCopy inSnapshot:v6];
 
   if (self)
   {
-    [v5 applySnapshot:v6 toSection:v7 animatingDifferences:0];
+    [dataSource applySnapshot:v6 toSection:v7 animatingDifferences:0];
   }
 }
 
-- (void)_configureInitialSnapshotAnimated:(BOOL)a3 expandSubItems:(BOOL)a4
+- (void)_configureInitialSnapshotAnimated:(BOOL)animated expandSubItems:(BOOL)items
 {
-  v4 = a4;
-  v5 = a3;
+  itemsCopy = items;
+  animatedCopy = animated;
   v24 = *MEMORY[0x1E69E9840];
   v7 = PLSidebarGetLog();
   v8 = os_signpost_id_generate(v7);
@@ -580,9 +580,9 @@ void __144__PXSidebarDiffableDataSourceController__applyChangeDetails_forItem_ro
     if (os_signpost_enabled(v9))
     {
       *buf = 67109376;
-      v21 = v5;
+      v21 = animatedCopy;
       v22 = 1024;
-      v23 = v4;
+      v23 = itemsCopy;
       _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v10, OS_SIGNPOST_INTERVAL_BEGIN, v8, "_configureInitialSnapshotAnimated_expandSubItems", "animated: %i, expandSubitems: %i", buf, 0xEu);
     }
 
@@ -590,25 +590,25 @@ void __144__PXSidebarDiffableDataSourceController__applyChangeDetails_forItem_ro
     if (os_signpost_enabled(v11))
     {
       *buf = 67109376;
-      v21 = v5;
+      v21 = animatedCopy;
       v22 = 1024;
-      v23 = v4;
+      v23 = itemsCopy;
       _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v11, OS_SIGNPOST_INTERVAL_BEGIN, v8, "_configureInitialSnapshotAnimated_expandSubItems.createSnapshot", "animated: %i, expandSubitems: %i", buf, 0xEu);
     }
   }
 
   [(PXSidebarDiffableDataSourceController *)self dataSource];
   objc_claimAutoreleasedReturnValue();
-  v13 = [(PXSidebarDiffableDataSourceController *)self dataController];
-  [v13 childrenOfListItem:0];
+  dataController = [(PXSidebarDiffableDataSourceController *)self dataController];
+  [dataController childrenOfListItem:0];
   objc_claimAutoreleasedReturnValue();
 
   v14 = MEMORY[0x1E69E9820];
   v15 = 3221225472;
   v16 = __90__PXSidebarDiffableDataSourceController__configureInitialSnapshotAnimated_expandSubItems___block_invoke;
   v17 = &unk_1E7736718;
-  v18 = self;
-  v19 = v4;
+  selfCopy = self;
+  v19 = itemsCopy;
   PXMap();
 }
 
@@ -630,11 +630,11 @@ void __90__PXSidebarDiffableDataSourceController__configureInitialSnapshotAnimat
   [v7 applySnapshot:v9 toSection:v8 animatingDifferences:*(a1 + 48)];
 }
 
-- (id)_newSnapshotForRootItem:(id)a3 restoreExpansionState:(BOOL)a4
+- (id)_newSnapshotForRootItem:(id)item restoreExpansionState:(BOOL)state
 {
-  v4 = a4;
+  stateCopy = state;
   v33 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  itemCopy = item;
   v7 = PLSidebarGetLog();
   v8 = os_signpost_id_generate(v7);
   v9 = v7;
@@ -643,18 +643,18 @@ void __90__PXSidebarDiffableDataSourceController__configureInitialSnapshotAnimat
   if (v8 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v9))
   {
     *buf = 67109120;
-    v32 = v4;
+    v32 = stateCopy;
     _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v10, OS_SIGNPOST_INTERVAL_BEGIN, v8, "_newSnapshotForRootItem", "restoreExpansionState: %i", buf, 8u);
   }
 
   v12 = objc_alloc_init(MEMORY[0x1E69DC5D0]);
-  if ([v6 displayInline])
+  if ([itemCopy displayInline])
   {
-    v13 = [(PXSidebarDiffableDataSourceController *)self dataController];
-    v14 = [v13 childrenOfListItem:v6];
+    dataController = [(PXSidebarDiffableDataSourceController *)self dataController];
+    v14 = [dataController childrenOfListItem:itemCopy];
 
     [v12 appendItems:v14];
-    if (v4)
+    if (stateCopy)
     {
       v24 = v8;
       v27 = 0u;
@@ -693,13 +693,13 @@ void __90__PXSidebarDiffableDataSourceController__configureInitialSnapshotAnimat
 
   else
   {
-    v29 = v6;
+    v29 = itemCopy;
     v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v29 count:1];
     [v12 appendItems:v20];
 
-    if (v4)
+    if (stateCopy)
     {
-      [(PXSidebarDiffableDataSourceController *)self _expandItemIfNeeded:v6 inSnapshot:v12];
+      [(PXSidebarDiffableDataSourceController *)self _expandItemIfNeeded:itemCopy inSnapshot:v12];
     }
   }
 
@@ -714,35 +714,35 @@ void __90__PXSidebarDiffableDataSourceController__configureInitialSnapshotAnimat
   return v12;
 }
 
-- (id)expandItemsToRevealFirstEditableItemIfNeededAnimated:(BOOL)a3
+- (id)expandItemsToRevealFirstEditableItemIfNeededAnimated:(BOOL)animated
 {
-  v22 = a3;
+  animatedCopy = animated;
   v41 = *MEMORY[0x1E69E9840];
-  v4 = [(PXSidebarDiffableDataSourceController *)self dataSource];
-  v24 = [v4 snapshot];
+  dataSource = [(PXSidebarDiffableDataSourceController *)self dataSource];
+  snapshot = [dataSource snapshot];
 
-  v5 = [v24 sectionIdentifiers];
-  v25 = [v5 firstObject];
+  sectionIdentifiers = [snapshot sectionIdentifiers];
+  firstObject = [sectionIdentifiers firstObject];
 
-  v6 = [(PXSidebarDiffableDataSourceController *)self dataSource];
-  v7 = [v6 snapshotForSection:v25];
+  dataSource2 = [(PXSidebarDiffableDataSourceController *)self dataSource];
+  v7 = [dataSource2 snapshotForSection:firstObject];
 
-  v8 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v34 = 0;
   v35 = &v34;
   v36 = 0x3032000000;
   v37 = __Block_byref_object_copy__86679;
   v38 = __Block_byref_object_dispose__86680;
   v39 = 0;
-  v9 = [v7 items];
+  items = [v7 items];
   v31[0] = MEMORY[0x1E69E9820];
   v31[1] = 3221225472;
   v31[2] = __94__PXSidebarDiffableDataSourceController_expandItemsToRevealFirstEditableItemIfNeededAnimated___block_invoke;
   v31[3] = &unk_1E77366C8;
   v33 = &v34;
-  v23 = v8;
+  v23 = array;
   v32 = v23;
-  [v9 enumerateObjectsUsingBlock:v31];
+  [items enumerateObjectsUsingBlock:v31];
 
   if (v35[5])
   {
@@ -840,8 +840,8 @@ LABEL_17:
   if (v10)
   {
 LABEL_21:
-    v19 = [(PXSidebarDiffableDataSourceController *)self dataSource];
-    [v19 applySnapshot:v7 toSection:v25 animatingDifferences:v22];
+    dataSource3 = [(PXSidebarDiffableDataSourceController *)self dataSource];
+    [dataSource3 applySnapshot:v7 toSection:firstObject animatingDifferences:animatedCopy];
   }
 
 LABEL_22:
@@ -877,31 +877,31 @@ void __94__PXSidebarDiffableDataSourceController_expandItemsToRevealFirstEditabl
   }
 }
 
-- (void)expandItemsForIdentifiersIfNeeded:(id)a3 animated:(BOOL)a4
+- (void)expandItemsForIdentifiersIfNeeded:(id)needed animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v33 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 firstObject];
-  if (v7)
+  neededCopy = needed;
+  firstObject = [neededCopy firstObject];
+  if (firstObject)
   {
-    v8 = [(PXSidebarDiffableDataSourceController *)self dataController];
-    v9 = [v8 itemForIdentifier:v7];
+    dataController = [(PXSidebarDiffableDataSourceController *)self dataController];
+    v9 = [dataController itemForIdentifier:firstObject];
 
     if (v9)
     {
-      v25 = v4;
+      v25 = animatedCopy;
       v27 = v9;
       v10 = [(PXSidebarDiffableDataSourceController *)self identifierForSectionContainingItem:v9];
-      v11 = [(PXSidebarDiffableDataSourceController *)self dataSource];
+      dataSource = [(PXSidebarDiffableDataSourceController *)self dataSource];
       v26 = v10;
-      v12 = [v11 snapshotForSection:v10];
+      v12 = [dataSource snapshotForSection:v10];
 
       v30 = 0u;
       v31 = 0u;
       v28 = 0u;
       v29 = 0u;
-      v13 = v6;
+      v13 = neededCopy;
       v14 = [v13 countByEnumeratingWithState:&v28 objects:v32 count:16];
       if (v14)
       {
@@ -917,8 +917,8 @@ void __94__PXSidebarDiffableDataSourceController_expandItemsToRevealFirstEditabl
             }
 
             v18 = *(*(&v28 + 1) + 8 * i);
-            v19 = [(PXSidebarDiffableDataSourceController *)self dataController];
-            v20 = [v19 itemForIdentifier:v18];
+            dataController2 = [(PXSidebarDiffableDataSourceController *)self dataController];
+            v20 = [dataController2 itemForIdentifier:v18];
 
             if ([v20 isExpandable])
             {
@@ -932,98 +932,98 @@ void __94__PXSidebarDiffableDataSourceController_expandItemsToRevealFirstEditabl
         while (v15);
       }
 
-      v21 = [(PXSidebarDiffableDataSourceController *)self dataSource];
-      v22 = [v21 snapshotForSection:v26];
+      dataSource2 = [(PXSidebarDiffableDataSourceController *)self dataSource];
+      v22 = [dataSource2 snapshotForSection:v26];
       v23 = [v12 isEqual:v22];
 
       if ((v23 & 1) == 0)
       {
-        v24 = [(PXSidebarDiffableDataSourceController *)self dataSource];
-        [v24 applySnapshot:v12 toSection:v26 animatingDifferences:v25];
+        dataSource3 = [(PXSidebarDiffableDataSourceController *)self dataSource];
+        [dataSource3 applySnapshot:v12 toSection:v26 animatingDifferences:v25];
       }
     }
   }
 }
 
-- (id)sectionSnapshotContainingItem:(id)a3
+- (id)sectionSnapshotContainingItem:(id)item
 {
-  v4 = [(PXSidebarDiffableDataSourceController *)self identifierForSectionContainingItem:a3];
-  v5 = [(PXSidebarDiffableDataSourceController *)self dataSource];
-  v6 = [v5 snapshotForSection:v4];
+  v4 = [(PXSidebarDiffableDataSourceController *)self identifierForSectionContainingItem:item];
+  dataSource = [(PXSidebarDiffableDataSourceController *)self dataSource];
+  v6 = [dataSource snapshotForSection:v4];
 
   return v6;
 }
 
-- (id)identifierForSectionContainingItem:(id)a3
+- (id)identifierForSectionContainingItem:(id)item
 {
-  v5 = a3;
-  if (!v5)
+  itemCopy = item;
+  if (!itemCopy)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"PXSidebarDiffableDataSourceController.m" lineNumber:55 description:{@"Invalid parameter not satisfying: %@", @"item"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSidebarDiffableDataSourceController.m" lineNumber:55 description:{@"Invalid parameter not satisfying: %@", @"item"}];
   }
 
-  v6 = [(PXSidebarDiffableDataSourceController *)self dataSource];
-  v7 = [v6 snapshot];
+  dataSource = [(PXSidebarDiffableDataSourceController *)self dataSource];
+  snapshot = [dataSource snapshot];
 
-  v8 = [v7 sectionIdentifierForSectionContainingItemIdentifier:v5];
-  if (!v8)
+  identifier2 = [snapshot sectionIdentifierForSectionContainingItemIdentifier:itemCopy];
+  if (!identifier2)
   {
-    v9 = [v7 sectionIdentifiers];
-    v10 = [v5 identifier];
-    v11 = [v9 containsObject:v10];
+    sectionIdentifiers = [snapshot sectionIdentifiers];
+    identifier = [itemCopy identifier];
+    v11 = [sectionIdentifiers containsObject:identifier];
 
     if (v11)
     {
-      v8 = [v5 identifier];
+      identifier2 = [itemCopy identifier];
     }
 
     else
     {
-      v8 = 0;
+      identifier2 = 0;
     }
   }
 
-  return v8;
+  return identifier2;
 }
 
-- (void)sectionControllerWillCollapseItem:(id)a3
+- (void)sectionControllerWillCollapseItem:(id)item
 {
-  v4 = a3;
-  v5 = [(PXSidebarDiffableDataSourceController *)self dataController];
-  [v5 setExpanded:0 forItem:v4];
+  itemCopy = item;
+  dataController = [(PXSidebarDiffableDataSourceController *)self dataController];
+  [dataController setExpanded:0 forItem:itemCopy];
 }
 
-- (void)sectionControllerWillExpandItem:(id)a3
+- (void)sectionControllerWillExpandItem:(id)item
 {
-  v4 = a3;
-  [(PXSidebarDiffableDataSourceController *)self appendChildrenForParentIfNeeded:v4];
-  v5 = [(PXSidebarDiffableDataSourceController *)self dataController];
-  [v5 setExpanded:1 forItem:v4];
+  itemCopy = item;
+  [(PXSidebarDiffableDataSourceController *)self appendChildrenForParentIfNeeded:itemCopy];
+  dataController = [(PXSidebarDiffableDataSourceController *)self dataController];
+  [dataController setExpanded:1 forItem:itemCopy];
 }
 
-- (PXSidebarDiffableDataSourceController)initWithSidebarDataController:(id)a3 dataSource:(id)a4
+- (PXSidebarDiffableDataSourceController)initWithSidebarDataController:(id)controller dataSource:(id)source
 {
-  v8 = a3;
-  v9 = a4;
+  controllerCopy = controller;
+  sourceCopy = source;
   v16.receiver = self;
   v16.super_class = PXSidebarDiffableDataSourceController;
   v10 = [(PXSidebarDiffableDataSourceController *)&v16 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_dataController, a3);
-    v12 = [v8 delegate];
+    objc_storeStrong(&v10->_dataController, controller);
+    delegate = [controllerCopy delegate];
 
-    if (v12)
+    if (delegate)
     {
-      v14 = [MEMORY[0x1E696AAA8] currentHandler];
-      v15 = [v8 delegate];
-      [v14 handleFailureInMethod:a2 object:v11 file:@"PXSidebarDiffableDataSourceController.m" lineNumber:33 description:{@"Expected nil delegate instead of %@ on data controller %@", v15, v8}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      delegate2 = [controllerCopy delegate];
+      [currentHandler handleFailureInMethod:a2 object:v11 file:@"PXSidebarDiffableDataSourceController.m" lineNumber:33 description:{@"Expected nil delegate instead of %@ on data controller %@", delegate2, controllerCopy}];
     }
 
-    [v8 setDelegate:v11];
-    objc_storeStrong(&v11->_dataSource, a4);
+    [controllerCopy setDelegate:v11];
+    objc_storeStrong(&v11->_dataSource, source);
     v11->_animateDataSourceUpdates = 1;
   }
 

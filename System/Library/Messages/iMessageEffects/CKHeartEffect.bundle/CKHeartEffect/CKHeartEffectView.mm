@@ -1,34 +1,34 @@
 @interface CKHeartEffectView
 - (CGPoint)focusPoint;
 - (CGRect)messageRect;
-- (CKHeartEffectView)initWithFrame:(CGRect)a3;
+- (CKHeartEffectView)initWithFrame:(CGRect)frame;
 - (SCNVector3)calculateHandlePosition;
 - (id)_snapshotImage;
 - (void)applicationDidBecomeActive;
 - (void)applicationDidEnterBackground;
 - (void)applicationWillEnterForegroundNotification;
 - (void)applicationWillResignActive;
-- (void)setMessageRect:(CGRect)a3;
+- (void)setMessageRect:(CGRect)rect;
 - (void)startAnimation;
 - (void)stopAnimation;
 @end
 
 @implementation CKHeartEffectView
 
-- (CKHeartEffectView)initWithFrame:(CGRect)a3
+- (CKHeartEffectView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v29.receiver = self;
   v29.super_class = CKHeartEffectView;
   v7 = [(CKHeartEffectView *)&v29 initWithFrame:?];
   if (v7)
   {
-    v8 = [[CKHeartEffectSCNView alloc] initWithFrame:x, y, width, height];
+    height = [[CKHeartEffectSCNView alloc] initWithFrame:x, y, width, height];
     heartView = v7->_heartView;
-    v7->_heartView = v8;
+    v7->_heartView = height;
 
     v10 = +[UIColor clearColor];
     [(CKHeartEffectSCNView *)v7->_heartView setBackgroundColor:v10];
@@ -40,17 +40,17 @@
     v13 = [NSURL fileURLWithPath:v12];
     v14 = [SCNScene sceneWithURL:v13 options:0 error:0];
 
-    v15 = [v14 rootNode];
-    v16 = [v15 childNodeWithName:@"heart" recursively:1];
+    rootNode = [v14 rootNode];
+    v16 = [rootNode childNodeWithName:@"heart" recursively:1];
 
     *&v17 = SCNVector3Zero.x;
     *&v18 = SCNVector3Zero.y;
     *&v19 = SCNVector3Zero.z;
     [v16 setScale:{v17, v18, v19}];
     [(CKHeartEffectSCNView *)v7->_heartView setScene:v14];
-    v20 = [(CKHeartEffectSCNView *)v7->_heartView scene];
-    v21 = [v20 rootNode];
-    v22 = [v21 childNodeWithName:@"heart" recursively:1];
+    scene = [(CKHeartEffectSCNView *)v7->_heartView scene];
+    rootNode2 = [scene rootNode];
+    v22 = [rootNode2 childNodeWithName:@"heart" recursively:1];
     heart = v7->_heart;
     v7->_heart = v22;
 
@@ -75,25 +75,25 @@
   heartView = self->_heartView;
   [(CKHeartEffectView *)self bounds];
   [(CKHeartEffectSCNView *)heartView setFrame:?];
-  v4 = [(CKHeartEffectSCNView *)self->_heartView scene];
-  [v4 setPaused:0];
+  scene = [(CKHeartEffectSCNView *)self->_heartView scene];
+  [scene setPaused:0];
 
   v5 = +[NSDate date];
   [v5 timeIntervalSinceReferenceDate];
   self->_startTime = v6;
 
-  v7 = [(SCNNode *)self->_heart parentNode];
+  parentNode = [(SCNNode *)self->_heart parentNode];
   self->_leftToRight = [(CKHeartEffectView *)self messageOrientation]== 0;
   [(CKHeartEffectView *)self calculateHandlePosition];
-  v140 = v7;
-  [v7 setPosition:?];
-  v8 = [(CKHeartEffectView *)self _snapshotImage];
-  v9 = [(SCNNode *)self->_heart childNodes];
-  v10 = [v9 firstObject];
-  v11 = [v10 geometry];
-  v12 = [v11 firstMaterial];
-  v13 = [v12 reflective];
-  [v13 setContents:v8];
+  v140 = parentNode;
+  [parentNode setPosition:?];
+  _snapshotImage = [(CKHeartEffectView *)self _snapshotImage];
+  childNodes = [(SCNNode *)self->_heart childNodes];
+  firstObject = [childNodes firstObject];
+  geometry = [firstObject geometry];
+  firstMaterial = [geometry firstMaterial];
+  reflective = [firstMaterial reflective];
+  [reflective setContents:_snapshotImage];
 
   v14 = [CAKeyframeAnimation animationWithKeyPath:@"position"];
   [v14 setKeyTimes:&off_46D0];
@@ -354,9 +354,9 @@
 
 - (SCNVector3)calculateHandlePosition
 {
-  v3 = [(SCNNode *)self->_heart parentNode];
+  parentNode = [(SCNNode *)self->_heart parentNode];
   heartView = self->_heartView;
-  [v3 position];
+  [parentNode position];
   [(CKHeartEffectSCNView *)heartView projectPoint:?];
   v6 = v5;
   LODWORD(heartView) = self->_leftToRight;
@@ -399,14 +399,14 @@
 
 - (void)stopAnimation
 {
-  v2 = [(CKHeartEffectSCNView *)self->_heartView scene];
-  [v2 setPaused:1];
+  scene = [(CKHeartEffectSCNView *)self->_heartView scene];
+  [scene setPaused:1];
 }
 
 - (void)applicationWillResignActive
 {
-  v3 = [(CKHeartEffectSCNView *)self->_heartView scene];
-  [v3 setPaused:0];
+  scene = [(CKHeartEffectSCNView *)self->_heartView scene];
+  [scene setPaused:0];
 
   heartView = self->_heartView;
 
@@ -415,8 +415,8 @@
 
 - (void)applicationDidBecomeActive
 {
-  v3 = [(CKHeartEffectSCNView *)self->_heartView scene];
-  [v3 setPaused:0];
+  scene = [(CKHeartEffectSCNView *)self->_heartView scene];
+  [scene setPaused:0];
 
   heartView = self->_heartView;
 
@@ -425,8 +425,8 @@
 
 - (void)applicationDidEnterBackground
 {
-  v3 = [(CKHeartEffectSCNView *)self->_heartView scene];
-  [v3 setPaused:1];
+  scene = [(CKHeartEffectSCNView *)self->_heartView scene];
+  [scene setPaused:1];
 
   heartView = self->_heartView;
 
@@ -435,22 +435,22 @@
 
 - (void)applicationWillEnterForegroundNotification
 {
-  v3 = [(CKHeartEffectSCNView *)self->_heartView scene];
-  [v3 setPaused:0];
+  scene = [(CKHeartEffectSCNView *)self->_heartView scene];
+  [scene setPaused:0];
 
   heartView = self->_heartView;
 
   [(CKHeartEffectSCNView *)heartView setEnableBackgroundRendering:1];
 }
 
-- (void)setMessageRect:(CGRect)a3
+- (void)setMessageRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   p_messageRect = &self->_messageRect;
-  if (!CGRectEqualToRect(self->_messageRect, a3))
+  if (!CGRectEqualToRect(self->_messageRect, rect))
   {
     p_messageRect->origin.x = x;
     p_messageRect->origin.y = y;
@@ -462,11 +462,11 @@
       v13 = v12;
       v15 = v14;
       v17 = v16;
-      v21 = [(SCNNode *)self->_heart parentNode];
+      parentNode = [(SCNNode *)self->_heart parentNode];
       LODWORD(v18) = v13;
       LODWORD(v19) = v15;
       LODWORD(v20) = v17;
-      [v21 setPosition:{v18, v19, v20}];
+      [parentNode setPosition:{v18, v19, v20}];
     }
   }
 }
@@ -477,18 +477,18 @@
   [v3 scale];
   v5 = v4 * 0.5;
 
-  v6 = [(CKHeartEffectView *)self window];
+  window = [(CKHeartEffectView *)self window];
   v7 = +[UIGraphicsImageRendererFormat preferredFormat];
   [v7 setScale:v5];
   v8 = [UIGraphicsImageRenderer alloc];
-  [v6 frame];
+  [window frame];
   v11 = [v8 initWithSize:v7 format:{v9, v10}];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_2410;
   v15[3] = &unk_41E0;
-  v16 = v6;
-  v12 = v6;
+  v16 = window;
+  v12 = window;
   v13 = [v11 imageWithActions:v15];
 
   return v13;

@@ -1,30 +1,30 @@
 @interface PTBoxFilter
-- (PTBoxFilter)initWithMetalContext:(id)a3 options:(int)a4;
-- (int)boxFilter1Channel:(id)a3 inTex:(id)a4 intermediate:(id)a5 outTex:(id)a6 kernelWidth:(int)a7 outputRemapping:;
+- (PTBoxFilter)initWithMetalContext:(id)context options:(int)options;
+- (int)boxFilter1Channel:(id)channel inTex:(id)tex intermediate:(id)intermediate outTex:(id)outTex kernelWidth:(int)width outputRemapping:;
 @end
 
 @implementation PTBoxFilter
 
-- (PTBoxFilter)initWithMetalContext:(id)a3 options:(int)a4
+- (PTBoxFilter)initWithMetalContext:(id)context options:(int)options
 {
-  v7 = a3;
-  v19 = a4;
+  contextCopy = context;
+  optionsCopy = options;
   v18.receiver = self;
   v18.super_class = PTBoxFilter;
   v8 = [(PTBoxFilter *)&v18 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_metalContext, a3);
+    objc_storeStrong(&v8->_metalContext, context);
     v10 = objc_opt_new();
-    [v10 setConstantValue:&v19 type:29 withName:@"kBoxFilterOutputMapping"];
-    v11 = [v7 computePipelineStateFor:@"boxFilter1ChannelHorizontal" withConstants:v10];
+    [v10 setConstantValue:&optionsCopy type:29 withName:@"kBoxFilterOutputMapping"];
+    v11 = [contextCopy computePipelineStateFor:@"boxFilter1ChannelHorizontal" withConstants:v10];
     boxFilter1ChannelHorizontal = v9->_boxFilter1ChannelHorizontal;
     v9->_boxFilter1ChannelHorizontal = v11;
 
     if (v9->_boxFilter1ChannelHorizontal)
     {
-      v13 = [v7 computePipelineStateFor:@"boxFilter1ChannelVertical" withConstants:v10];
+      v13 = [contextCopy computePipelineStateFor:@"boxFilter1ChannelVertical" withConstants:v10];
       boxFilter1ChannelVertical = v9->_boxFilter1ChannelVertical;
       v9->_boxFilter1ChannelVertical = v13;
 
@@ -62,50 +62,50 @@ LABEL_12:
   return v15;
 }
 
-- (int)boxFilter1Channel:(id)a3 inTex:(id)a4 intermediate:(id)a5 outTex:(id)a6 kernelWidth:(int)a7 outputRemapping:
+- (int)boxFilter1Channel:(id)channel inTex:(id)tex intermediate:(id)intermediate outTex:(id)outTex kernelWidth:(int)width outputRemapping:
 {
   v8 = v7;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v28 = a7;
+  texCopy = tex;
+  intermediateCopy = intermediate;
+  outTexCopy = outTex;
+  widthCopy = width;
   v27 = v8;
-  if ((a7 & 0x80000001) == 1)
+  if ((width & 0x80000001) == 1)
   {
-    v17 = [a3 computeCommandEncoder];
-    [v17 setComputePipelineState:self->_boxFilter1ChannelVertical];
-    [v17 setTexture:v14 atIndex:0];
-    [v17 setTexture:v15 atIndex:1];
-    [v17 setBytes:&v28 length:4 atIndex:0];
-    v24 = [v15 width];
-    v25 = [v15 height];
+    computeCommandEncoder = [channel computeCommandEncoder];
+    [computeCommandEncoder setComputePipelineState:self->_boxFilter1ChannelVertical];
+    [computeCommandEncoder setTexture:texCopy atIndex:0];
+    [computeCommandEncoder setTexture:intermediateCopy atIndex:1];
+    [computeCommandEncoder setBytes:&widthCopy length:4 atIndex:0];
+    width = [intermediateCopy width];
+    height = [intermediateCopy height];
     v26 = 1;
     v22 = xmmword_2244A5440;
     v23 = 1;
-    [v17 dispatchThreads:&v24 threadsPerThreadgroup:&v22];
-    [v17 setComputePipelineState:self->_boxFilter1ChannelHorizontal];
-    [v17 setTexture:v15 atIndex:0];
-    [v17 setTexture:v16 atIndex:1];
-    [v17 setBytes:&v28 length:4 atIndex:0];
-    [v17 setBytes:&v27 length:8 atIndex:1];
-    v18 = [v16 width];
-    v19 = [v16 height];
-    v24 = v18;
-    v25 = v19;
+    [computeCommandEncoder dispatchThreads:&width threadsPerThreadgroup:&v22];
+    [computeCommandEncoder setComputePipelineState:self->_boxFilter1ChannelHorizontal];
+    [computeCommandEncoder setTexture:intermediateCopy atIndex:0];
+    [computeCommandEncoder setTexture:outTexCopy atIndex:1];
+    [computeCommandEncoder setBytes:&widthCopy length:4 atIndex:0];
+    [computeCommandEncoder setBytes:&v27 length:8 atIndex:1];
+    width2 = [outTexCopy width];
+    height2 = [outTexCopy height];
+    width = width2;
+    height = height2;
     v26 = 1;
     v22 = xmmword_2244A5440;
     v23 = 1;
-    [v17 dispatchThreads:&v24 threadsPerThreadgroup:&v22];
-    [v17 endEncoding];
+    [computeCommandEncoder dispatchThreads:&width threadsPerThreadgroup:&v22];
+    [computeCommandEncoder endEncoding];
     v20 = 0;
   }
 
   else
   {
-    v17 = _PTLogSystem();
-    if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+    computeCommandEncoder = _PTLogSystem();
+    if (os_log_type_enabled(computeCommandEncoder, OS_LOG_TYPE_ERROR))
     {
-      [PTBoxFilter boxFilter1Channel:v17 inTex:? intermediate:? outTex:? kernelWidth:? outputRemapping:?];
+      [PTBoxFilter boxFilter1Channel:computeCommandEncoder inTex:? intermediate:? outTex:? kernelWidth:? outputRemapping:?];
     }
 
     v20 = -10;

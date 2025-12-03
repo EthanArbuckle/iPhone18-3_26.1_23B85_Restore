@@ -1,43 +1,43 @@
 @interface CarSmallWidgetChromeTransitionAnimator
-- (CarSmallWidgetChromeTransitionAnimator)initWithOperation:(int64_t)a3;
-- (void)_animateOperation:(int64_t)a3 withTransitionContext:(id)a4;
-- (void)animateTransition:(id)a3;
+- (CarSmallWidgetChromeTransitionAnimator)initWithOperation:(int64_t)operation;
+- (void)_animateOperation:(int64_t)operation withTransitionContext:(id)context;
+- (void)animateTransition:(id)transition;
 @end
 
 @implementation CarSmallWidgetChromeTransitionAnimator
 
-- (void)_animateOperation:(int64_t)a3 withTransitionContext:(id)a4
+- (void)_animateOperation:(int64_t)operation withTransitionContext:(id)context
 {
-  v6 = a4;
-  v7 = [v6 viewControllerForKey:UITransitionContextFromViewControllerKey];
-  v8 = [v6 viewControllerForKey:UITransitionContextToViewControllerKey];
-  if (a3 == 1)
+  contextCopy = context;
+  v7 = [contextCopy viewControllerForKey:UITransitionContextFromViewControllerKey];
+  v8 = [contextCopy viewControllerForKey:UITransitionContextToViewControllerKey];
+  if (operation == 1)
   {
-    v9 = [v6 containerView];
-    v10 = [v8 view];
-    [v9 addSubview:v10];
+    containerView = [contextCopy containerView];
+    view = [v8 view];
+    [containerView addSubview:view];
   }
 
   else
   {
-    v9 = [v6 containerView];
-    v10 = [v8 view];
+    containerView = [contextCopy containerView];
+    view = [v8 view];
     if (v7)
     {
-      v11 = [v7 view];
-      [v9 insertSubview:v10 belowSubview:v11];
+      view2 = [v7 view];
+      [containerView insertSubview:view belowSubview:view2];
     }
 
     else
     {
-      [v9 insertSubview:v10 atIndex:0];
+      [containerView insertSubview:view atIndex:0];
     }
   }
 
-  v12 = [v8 view];
-  [v12 setAlpha:0.0];
+  view3 = [v8 view];
+  [view3 setAlpha:0.0];
 
-  [(CarSmallWidgetChromeTransitionAnimator *)self transitionDuration:v6];
+  [(CarSmallWidgetChromeTransitionAnimator *)self transitionDuration:contextCopy];
   v14 = v13;
   v21[0] = _NSConcreteStackBlock;
   v21[1] = 3221225472;
@@ -49,15 +49,15 @@
   v18[1] = 3221225472;
   v18[2] = sub_1008EC598;
   v18[3] = &unk_101661570;
-  v19 = v6;
+  v19 = contextCopy;
   v20 = v22;
   v15 = v22;
-  v16 = v6;
+  v16 = contextCopy;
   v17 = v8;
   [UIView animateWithDuration:0x20000 delay:v21 options:v18 animations:v14 completion:0.0];
 }
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
   if ((self->_operation - 1) <= 1)
   {
@@ -65,14 +65,14 @@
   }
 }
 
-- (CarSmallWidgetChromeTransitionAnimator)initWithOperation:(int64_t)a3
+- (CarSmallWidgetChromeTransitionAnimator)initWithOperation:(int64_t)operation
 {
   v5.receiver = self;
   v5.super_class = CarSmallWidgetChromeTransitionAnimator;
   result = [(CarSmallWidgetChromeTransitionAnimator *)&v5 init];
   if (result)
   {
-    result->_operation = a3;
+    result->_operation = operation;
   }
 
   return result;

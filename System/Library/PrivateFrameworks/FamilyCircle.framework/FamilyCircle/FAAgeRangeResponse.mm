@@ -1,85 +1,85 @@
 @interface FAAgeRangeResponse
 + (id)ageRangeResponseDisplayNames;
 + (id)ageRangeValidationLevelDisplayNames;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualAgeRange:(id)a3;
-- (FAAgeRangeResponse)initWithCoder:(id)a3;
-- (FAAgeRangeResponse)initWithLowerbound:(id)a3 upperbound:(id)a4 validationLevel:(int64_t)a5 response:(int64_t)a6 parentalControlsInformation:(id)a7 isSharingNewInformation:(BOOL)a8;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualAgeRange:(id)range;
+- (FAAgeRangeResponse)initWithCoder:(id)coder;
+- (FAAgeRangeResponse)initWithLowerbound:(id)lowerbound upperbound:(id)upperbound validationLevel:(int64_t)level response:(int64_t)response parentalControlsInformation:(id)information isSharingNewInformation:(BOOL)newInformation;
 - (id)ageRangeResponseToString;
 - (id)ageRangeValidationLevelToString;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FAAgeRangeResponse
 
-- (FAAgeRangeResponse)initWithLowerbound:(id)a3 upperbound:(id)a4 validationLevel:(int64_t)a5 response:(int64_t)a6 parentalControlsInformation:(id)a7 isSharingNewInformation:(BOOL)a8
+- (FAAgeRangeResponse)initWithLowerbound:(id)lowerbound upperbound:(id)upperbound validationLevel:(int64_t)level response:(int64_t)response parentalControlsInformation:(id)information isSharingNewInformation:(BOOL)newInformation
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a7;
+  lowerboundCopy = lowerbound;
+  upperboundCopy = upperbound;
+  informationCopy = information;
   v21.receiver = self;
   v21.super_class = FAAgeRangeResponse;
   v18 = [(FAAgeRangeResponse *)&v21 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_parentalControlsInformation, a7);
-    objc_storeStrong(&v19->_lowerbound, a3);
-    objc_storeStrong(&v19->_upperbound, a4);
-    v19->_validationLevel = a5;
-    v19->_response = a6;
-    objc_storeStrong(&v19->_parentalControlsInformation, a7);
-    v19->_isSharingNewInformation = a8;
+    objc_storeStrong(&v18->_parentalControlsInformation, information);
+    objc_storeStrong(&v19->_lowerbound, lowerbound);
+    objc_storeStrong(&v19->_upperbound, upperbound);
+    v19->_validationLevel = level;
+    v19->_response = response;
+    objc_storeStrong(&v19->_parentalControlsInformation, information);
+    v19->_isSharingNewInformation = newInformation;
   }
 
   return v19;
 }
 
-- (FAAgeRangeResponse)initWithCoder:(id)a3
+- (FAAgeRangeResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(FAAgeRangeResponse *)self init];
   if (v5)
   {
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_lowerbound"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_lowerbound"];
     lowerbound = v5->_lowerbound;
     v5->_lowerbound = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_upperbound"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_upperbound"];
     upperbound = v5->_upperbound;
     v5->_upperbound = v11;
 
-    v5->_validationLevel = [v4 decodeIntegerForKey:@"_validationLevel"];
-    v5->_response = [v4 decodeIntegerForKey:@"_response"];
-    v13 = [v4 decodeObjectOfClasses:v8 forKey:@"parentalControls"];
+    v5->_validationLevel = [coderCopy decodeIntegerForKey:@"_validationLevel"];
+    v5->_response = [coderCopy decodeIntegerForKey:@"_response"];
+    v13 = [coderCopy decodeObjectOfClasses:v8 forKey:@"parentalControls"];
     parentalControlsInformation = v5->_parentalControlsInformation;
     v5->_parentalControlsInformation = v13;
 
-    v5->_isSharingNewInformation = [v4 decodeBoolForKey:@"_isSharingNewInformation"];
+    v5->_isSharingNewInformation = [coderCopy decodeBoolForKey:@"_isSharingNewInformation"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   lowerbound = self->_lowerbound;
-  v5 = a3;
-  [v5 encodeObject:lowerbound forKey:@"_lowerbound"];
-  [v5 encodeObject:self->_upperbound forKey:@"_upperbound"];
-  [v5 encodeInteger:self->_validationLevel forKey:@"_validationLevel"];
-  [v5 encodeInteger:self->_response forKey:@"_response"];
-  [v5 encodeObject:self->_parentalControlsInformation forKey:@"parentalControls"];
-  [v5 encodeBool:self->_isSharingNewInformation forKey:@"_isSharingNewInformation"];
+  coderCopy = coder;
+  [coderCopy encodeObject:lowerbound forKey:@"_lowerbound"];
+  [coderCopy encodeObject:self->_upperbound forKey:@"_upperbound"];
+  [coderCopy encodeInteger:self->_validationLevel forKey:@"_validationLevel"];
+  [coderCopy encodeInteger:self->_response forKey:@"_response"];
+  [coderCopy encodeObject:self->_parentalControlsInformation forKey:@"parentalControls"];
+  [coderCopy encodeBool:self->_isSharingNewInformation forKey:@"_isSharingNewInformation"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_new();
   v5 = [(NSNumber *)self->_lowerbound copy];
@@ -105,9 +105,9 @@
   v3 = MEMORY[0x1E696AEC0];
   lowerbound = self->_lowerbound;
   upperbound = self->_upperbound;
-  v6 = [(FAAgeRangeResponse *)self ageRangeValidationLevelToString];
-  v7 = [(FAAgeRangeResponse *)self ageRangeResponseToString];
-  v8 = v7;
+  ageRangeValidationLevelToString = [(FAAgeRangeResponse *)self ageRangeValidationLevelToString];
+  ageRangeResponseToString = [(FAAgeRangeResponse *)self ageRangeResponseToString];
+  v8 = ageRangeResponseToString;
   parentalControlsInformation = self->_parentalControlsInformation;
   if (self->_isSharingNewInformation)
   {
@@ -119,28 +119,28 @@
     v10 = @"NO";
   }
 
-  v11 = [v3 stringWithFormat:@"Age Range response with lowerbound: %@, upperbound: %@, validationLevel: %@, response: %@, parentalControlsInformation: %@, isSharingNewInformation: %@", lowerbound, upperbound, v6, v7, self->_parentalControlsInformation, v10];
+  v11 = [v3 stringWithFormat:@"Age Range response with lowerbound: %@, upperbound: %@, validationLevel: %@, response: %@, parentalControlsInformation: %@, isSharingNewInformation: %@", lowerbound, upperbound, ageRangeValidationLevelToString, ageRangeResponseToString, self->_parentalControlsInformation, v10];
 
   return v11;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(FAAgeRangeResponse *)self lowerbound];
-  v4 = [v3 hash];
-  v5 = [(FAAgeRangeResponse *)self upperbound];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(FAAgeRangeResponse *)self validationLevel];
-  v8 = v6 ^ v7 ^ [(FAAgeRangeResponse *)self response];
-  v9 = [(FAAgeRangeResponse *)self isSharingNewInformation];
+  lowerbound = [(FAAgeRangeResponse *)self lowerbound];
+  v4 = [lowerbound hash];
+  upperbound = [(FAAgeRangeResponse *)self upperbound];
+  v6 = [upperbound hash] ^ v4;
+  validationLevel = [(FAAgeRangeResponse *)self validationLevel];
+  v8 = v6 ^ validationLevel ^ [(FAAgeRangeResponse *)self response];
+  isSharingNewInformation = [(FAAgeRangeResponse *)self isSharingNewInformation];
 
-  return v8 ^ v9;
+  return v8 ^ isSharingNewInformation;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -148,25 +148,25 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(FAAgeRangeResponse *)self isEqualAgeRange:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(FAAgeRangeResponse *)self isEqualAgeRange:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualAgeRange:(id)a3
+- (BOOL)isEqualAgeRange:(id)range
 {
-  v4 = a3;
-  v5 = [(FAAgeRangeResponse *)self lowerbound];
-  v6 = [v4 lowerbound];
-  if (v5 == v6)
+  rangeCopy = range;
+  lowerbound = [(FAAgeRangeResponse *)self lowerbound];
+  lowerbound2 = [rangeCopy lowerbound];
+  if (lowerbound == lowerbound2)
   {
-    v8 = [(FAAgeRangeResponse *)self upperbound];
-    v9 = [v4 upperbound];
-    if (v8 == v9 && (v10 = -[FAAgeRangeResponse validationLevel](self, "validationLevel"), v10 == [v4 validationLevel]) && (v11 = -[FAAgeRangeResponse response](self, "response"), v11 == objc_msgSend(v4, "response")))
+    upperbound = [(FAAgeRangeResponse *)self upperbound];
+    upperbound2 = [rangeCopy upperbound];
+    if (upperbound == upperbound2 && (v10 = -[FAAgeRangeResponse validationLevel](self, "validationLevel"), v10 == [rangeCopy validationLevel]) && (v11 = -[FAAgeRangeResponse response](self, "response"), v11 == objc_msgSend(rangeCopy, "response")))
     {
-      v12 = [(FAAgeRangeResponse *)self isSharingNewInformation];
-      v7 = v12 ^ [v4 isSharingNewInformation] ^ 1;
+      isSharingNewInformation = [(FAAgeRangeResponse *)self isSharingNewInformation];
+      v7 = isSharingNewInformation ^ [rangeCopy isSharingNewInformation] ^ 1;
     }
 
     else
@@ -215,18 +215,18 @@
 
 - (id)ageRangeValidationLevelToString
 {
-  v3 = [objc_opt_class() ageRangeValidationLevelDisplayNames];
+  ageRangeValidationLevelDisplayNames = [objc_opt_class() ageRangeValidationLevelDisplayNames];
   v4 = [MEMORY[0x1E696AD98] numberWithInteger:{-[FAAgeRangeResponse validationLevel](self, "validationLevel")}];
-  v5 = [v3 objectForKeyedSubscript:v4];
+  v5 = [ageRangeValidationLevelDisplayNames objectForKeyedSubscript:v4];
 
   return v5;
 }
 
 - (id)ageRangeResponseToString
 {
-  v3 = [objc_opt_class() ageRangeResponseDisplayNames];
+  ageRangeResponseDisplayNames = [objc_opt_class() ageRangeResponseDisplayNames];
   v4 = [MEMORY[0x1E696AD98] numberWithInteger:{-[FAAgeRangeResponse response](self, "response")}];
-  v5 = [v3 objectForKeyedSubscript:v4];
+  v5 = [ageRangeResponseDisplayNames objectForKeyedSubscript:v4];
 
   return v5;
 }

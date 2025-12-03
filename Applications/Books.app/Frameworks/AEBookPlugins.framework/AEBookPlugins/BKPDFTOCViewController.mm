@@ -1,41 +1,41 @@
 @interface BKPDFTOCViewController
-- (BKPDFTOCViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (BKPDFTOCViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (double)calculateFontSize;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
-- (id)chapterForIndexPath:(id)a3;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
+- (id)chapterForIndexPath:(id)path;
 - (id)fontFamily;
-- (id)fontForChapter:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)countRowsOfChildren:(id)a3;
-- (int64_t)findOutlineForRow:(int64_t)a3 fromRowCount:(int64_t)a4 fromOutline:(id)a5;
-- (int64_t)indentationLevelForChapter:(id)a3;
-- (int64_t)pageNumberFromChapter:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (unint64_t)pageIndexFromChapter:(id)a3;
+- (id)fontForChapter:(id)chapter;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)countRowsOfChildren:(id)children;
+- (int64_t)findOutlineForRow:(int64_t)row fromRowCount:(int64_t)count fromOutline:(id)outline;
+- (int64_t)indentationLevelForChapter:(id)chapter;
+- (int64_t)pageNumberFromChapter:(id)chapter;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (unint64_t)pageIndexFromChapter:(id)chapter;
 - (void)_updateColors;
 - (void)_updateContentInsets;
 - (void)dealloc;
 - (void)loadView;
 - (void)releaseViews;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)setBook:(id)a3;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)setBook:(id)book;
 - (void)setNeedsRestyle;
-- (void)setPdfDocument:(id)a3;
-- (void)setTheme:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)setPdfDocument:(id)document;
+- (void)setTheme:(id)theme;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)updateView;
 - (void)viewDidLayoutSubviews;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation BKPDFTOCViewController
 
-- (BKPDFTOCViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (BKPDFTOCViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v8.receiver = self;
   v8.super_class = BKPDFTOCViewController;
-  v4 = [(BKTOCViewController *)&v8 initWithNibName:a3 bundle:a4];
+  v4 = [(BKTOCViewController *)&v8 initWithNibName:name bundle:bundle];
   if (v4)
   {
     v5 = +[UITraitCollection bc_allAPITraits];
@@ -66,17 +66,17 @@
   [(BKTOCViewController *)&v3 dealloc];
 }
 
-- (void)setPdfDocument:(id)a3
+- (void)setPdfDocument:(id)document
 {
-  v5 = a3;
-  if (*&self->_preferredFontSize != v5)
+  documentCopy = document;
+  if (*&self->_preferredFontSize != documentCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_preferredFontSize, a3);
-    v6 = [v7 outlineRoot];
-    [(BKPDFTOCViewController *)self setPdfOutlineRoot:v6];
+    v7 = documentCopy;
+    objc_storeStrong(&self->_preferredFontSize, document);
+    outlineRoot = [v7 outlineRoot];
+    [(BKPDFTOCViewController *)self setPdfOutlineRoot:outlineRoot];
 
-    v5 = v7;
+    documentCopy = v7;
   }
 }
 
@@ -85,25 +85,25 @@
   v45.receiver = self;
   v45.super_class = BKPDFTOCViewController;
   [(BKPDFTOCViewController *)&v45 loadView];
-  v3 = [(BKPDFTOCViewController *)self view];
-  [v3 bounds];
+  view = [(BKPDFTOCViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(BKTOCViewController *)self isVertical];
-  if (v12)
+  isVertical = [(BKTOCViewController *)self isVertical];
+  if (isVertical)
   {
     CGAffineTransformMakeRotation(&v44, -1.57079633);
     v43 = v44;
-    [v3 setTransform:&v43];
+    [view setTransform:&v43];
   }
 
   v13 = [[UITableView alloc] initWithFrame:0 style:{v5, v7, v9, v11}];
   currentOutline = self->_currentOutline;
   self->_currentOutline = v13;
 
-  [(PDFOutline *)self->_currentOutline setClipsToBounds:v12];
+  [(PDFOutline *)self->_currentOutline setClipsToBounds:isVertical];
   [(PDFOutline *)self->_currentOutline setDelegate:self];
   [(PDFOutline *)self->_currentOutline setDataSource:self];
   [(PDFOutline *)self->_currentOutline setSeparatorStyle:1];
@@ -135,25 +135,25 @@
   }
 
   [(PDFOutline *)v20 setContentOffset:v19, v21];
-  [v3 addSubview:self->_currentOutline];
-  v25 = [v3 safeAreaLayoutGuide];
-  v40 = [(PDFOutline *)self->_currentOutline leadingAnchor];
-  v41 = v25;
-  v39 = [v25 leadingAnchor];
-  v37 = [v40 constraintEqualToAnchor:v39];
+  [view addSubview:self->_currentOutline];
+  safeAreaLayoutGuide = [view safeAreaLayoutGuide];
+  leadingAnchor = [(PDFOutline *)self->_currentOutline leadingAnchor];
+  v41 = safeAreaLayoutGuide;
+  leadingAnchor2 = [safeAreaLayoutGuide leadingAnchor];
+  v37 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v46[0] = v37;
-  v36 = [(PDFOutline *)self->_currentOutline trailingAnchor];
-  v26 = [v25 trailingAnchor];
-  v27 = [v36 constraintEqualToAnchor:v26];
+  trailingAnchor = [(PDFOutline *)self->_currentOutline trailingAnchor];
+  trailingAnchor2 = [safeAreaLayoutGuide trailingAnchor];
+  v27 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v46[1] = v27;
-  v28 = [(PDFOutline *)self->_currentOutline topAnchor];
-  v38 = v3;
-  v29 = [v3 topAnchor];
-  v30 = [v28 constraintEqualToAnchor:v29];
+  topAnchor = [(PDFOutline *)self->_currentOutline topAnchor];
+  v38 = view;
+  topAnchor2 = [view topAnchor];
+  v30 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v46[2] = v30;
-  v31 = [(PDFOutline *)self->_currentOutline bottomAnchor];
-  v32 = [v3 bottomAnchor];
-  v33 = [v31 constraintEqualToAnchor:v32];
+  bottomAnchor = [(PDFOutline *)self->_currentOutline bottomAnchor];
+  bottomAnchor2 = [view bottomAnchor];
+  v33 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v46[3] = v33;
   v34 = [NSArray arrayWithObjects:v46 count:4];
   [NSLayoutConstraint activateConstraints:v34];
@@ -166,16 +166,16 @@
 
 - (void)_updateContentInsets
 {
-  v3 = [(BKContentViewController *)self layoutDelegate];
+  layoutDelegate = [(BKContentViewController *)self layoutDelegate];
 
-  if (v3)
+  if (layoutDelegate)
   {
-    v4 = [(BKContentViewController *)self layoutDelegate];
-    [v4 edgeInsetsForContentViewController:self];
+    layoutDelegate2 = [(BKContentViewController *)self layoutDelegate];
+    [layoutDelegate2 edgeInsetsForContentViewController:self];
     [(BKContentViewController *)self setContentInsets:?];
 
-    v5 = [(BKContentViewController *)self layoutDelegate];
-    [v5 separatorInsetsForContentViewController:self];
+    layoutDelegate3 = [(BKContentViewController *)self layoutDelegate];
+    [layoutDelegate3 separatorInsetsForContentViewController:self];
     [(BKContentViewController *)self setSeparatorInsets:?];
   }
 }
@@ -197,8 +197,8 @@
       v12 = v11;
       [(BKContentViewController *)self contentInsets];
       v14 = v13;
-      v15 = [(BKPDFTOCViewController *)self view];
-      [v15 bounds];
+      view = [(BKPDFTOCViewController *)self view];
+      [view bounds];
       v17 = v16;
       v19 = v12 + v18;
       v21 = v20 + 0.0;
@@ -235,95 +235,95 @@
 
     [(BKContentViewController *)self separatorInsets];
     [(PDFOutline *)self->_currentOutline setSeparatorInset:?];
-    v29 = [(BKPDFTOCViewController *)self view];
-    v38 = [v29 viewWithTag:9999];
+    view2 = [(BKPDFTOCViewController *)self view];
+    v38 = [view2 viewWithTag:9999];
 
     [v38 removeFromSuperview];
     [(PDFOutline *)self->_currentOutline setAlpha:1.0];
-    v30 = [(PDFOutline *)self->_currentOutline tableFooterView];
-    [v30 frame];
+    tableFooterView = [(PDFOutline *)self->_currentOutline tableFooterView];
+    [tableFooterView frame];
     v32 = v31;
     v34 = v33;
 
     [(PDFOutline *)self->_currentOutline frame];
     v36 = v35;
-    v37 = [(PDFOutline *)self->_currentOutline tableFooterView];
-    [v37 setFrame:{v32, v34, v36, 0.0}];
+    tableFooterView2 = [(PDFOutline *)self->_currentOutline tableFooterView];
+    [tableFooterView2 setFrame:{v32, v34, v36, 0.0}];
   }
 }
 
 - (void)_updateColors
 {
-  v8 = [(BKPDFTOCViewController *)self themePage];
-  v3 = [v8 backgroundColorForTraitEnvironment:self];
-  v4 = [(BKPDFTOCViewController *)self viewIfLoaded];
-  [v4 setBackgroundColor:v3];
+  themePage = [(BKPDFTOCViewController *)self themePage];
+  v3 = [themePage backgroundColorForTraitEnvironment:self];
+  viewIfLoaded = [(BKPDFTOCViewController *)self viewIfLoaded];
+  [viewIfLoaded setBackgroundColor:v3];
 
-  v5 = [(PDFOutline *)self->_currentOutline tableFooterView];
-  [v5 setBackgroundColor:v3];
+  tableFooterView = [(PDFOutline *)self->_currentOutline tableFooterView];
+  [tableFooterView setBackgroundColor:v3];
 
   [(PDFOutline *)self->_currentOutline setBackgroundColor:v3];
-  v6 = [(PDFOutline *)self->_currentOutline tableFooterView];
-  [v6 setBackgroundColor:v3];
+  tableFooterView2 = [(PDFOutline *)self->_currentOutline tableFooterView];
+  [tableFooterView2 setBackgroundColor:v3];
 
-  v7 = [v8 tableViewSeparatorColor];
-  [(PDFOutline *)self->_currentOutline setSeparatorColor:v7];
+  tableViewSeparatorColor = [themePage tableViewSeparatorColor];
+  [(PDFOutline *)self->_currentOutline setSeparatorColor:tableViewSeparatorColor];
 
   [(PDFOutline *)self->_currentOutline reloadData];
 }
 
-- (void)setTheme:(id)a3
+- (void)setTheme:(id)theme
 {
   v4.receiver = self;
   v4.super_class = BKPDFTOCViewController;
-  [(BKTOCViewController *)&v4 setTheme:a3];
+  [(BKTOCViewController *)&v4 setTheme:theme];
   [(BKPDFTOCViewController *)self _updateColors];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = BKPDFTOCViewController;
-  [(BKTOCViewController *)&v4 viewWillAppear:a3];
+  [(BKTOCViewController *)&v4 viewWillAppear:appear];
   [(BKPDFTOCViewController *)self updateView];
   [(BKTOCViewController *)self reload];
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
   if ([(BKTOCViewController *)self isVertical])
   {
-    v4 = [(PDFOutline *)self->_currentOutline visibleCells];
-    v6 = [(PDFOutline *)self->_currentOutline indexPathsForVisibleRows];
-    v5 = [v6 lastObject];
-    [(BKPDFTOCViewController *)self setRecenteredIndexPath:v5];
+    visibleCells = [(PDFOutline *)self->_currentOutline visibleCells];
+    indexPathsForVisibleRows = [(PDFOutline *)self->_currentOutline indexPathsForVisibleRows];
+    lastObject = [indexPathsForVisibleRows lastObject];
+    [(BKPDFTOCViewController *)self setRecenteredIndexPath:lastObject];
   }
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v9.receiver = self;
   v9.super_class = BKPDFTOCViewController;
-  v7 = a4;
-  [(BKTOCViewController *)&v9 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  coordinatorCopy = coordinator;
+  [(BKTOCViewController *)&v9 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_A42DC;
   v8[3] = &unk_1E2A60;
   v8[4] = self;
-  [v7 animateAlongsideTransition:v8 completion:0];
+  [coordinatorCopy animateAlongsideTransition:v8 completion:0];
 }
 
 - (void)viewDidLayoutSubviews
 {
   [(BKPDFTOCViewController *)self updateView];
-  v3 = [(BKTOCViewController *)self isVertical];
+  isVertical = [(BKTOCViewController *)self isVertical];
   currentOutline = self->_currentOutline;
   if (currentOutline)
   {
-    if (v3)
+    if (isVertical)
     {
       [(PDFOutline *)currentOutline frame];
       v5 = CGRectGetWidth(v13) + -8.0;
@@ -355,7 +355,7 @@
   BYTE5(self->super._verticalCenteringInsets.right) = v8;
   if ((BYTE4(self->super._verticalCenteringInsets.right) & 1) == 0)
   {
-    if (v3)
+    if (isVertical)
     {
       v9 = [(PDFOutline *)self->_currentOutline numberOfRowsInSection:0];
       if (v9)
@@ -383,12 +383,12 @@
   [(BKPDFTOCViewController *)&v12 viewDidLayoutSubviews];
 }
 
-- (unint64_t)pageIndexFromChapter:(id)a3
+- (unint64_t)pageIndexFromChapter:(id)chapter
 {
-  v4 = [a3 destination];
-  v5 = [v4 page];
-  v6 = [(BKPDFTOCViewController *)self pdfDocument];
-  v7 = [v6 indexForPage:v5];
+  destination = [chapter destination];
+  page = [destination page];
+  pdfDocument = [(BKPDFTOCViewController *)self pdfDocument];
+  v7 = [pdfDocument indexForPage:page];
 
   if (v7 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -403,9 +403,9 @@
   return v8;
 }
 
-- (int64_t)pageNumberFromChapter:(id)a3
+- (int64_t)pageNumberFromChapter:(id)chapter
 {
-  v3 = [(BKPDFTOCViewController *)self pageIndexFromChapter:a3];
+  v3 = [(BKPDFTOCViewController *)self pageIndexFromChapter:chapter];
 
   return [BKPDFModernBookViewController pageNumberForPageIndex:v3];
 }
@@ -413,9 +413,9 @@
 - (id)fontFamily
 {
   v2 = [UIFont systemFontOfSize:17.0];
-  v3 = [v2 familyName];
+  familyName = [v2 familyName];
 
-  return v3;
+  return familyName;
 }
 
 - (double)calculateFontSize
@@ -437,37 +437,37 @@
   return result;
 }
 
-- (int64_t)indentationLevelForChapter:(id)a3
+- (int64_t)indentationLevelForChapter:(id)chapter
 {
-  v4 = a3;
-  v5 = [v4 parent];
-  if (v5)
+  chapterCopy = chapter;
+  parent = [chapterCopy parent];
+  if (parent)
   {
-    v6 = v5;
+    parent3 = parent;
     v7 = 0;
-    v8 = v4;
+    v8 = chapterCopy;
     while (1)
     {
-      v9 = [v8 parent];
-      v10 = [(BKPDFTOCViewController *)self pdfOutlineRoot];
+      parent2 = [v8 parent];
+      pdfOutlineRoot = [(BKPDFTOCViewController *)self pdfOutlineRoot];
 
-      if (v9 == v10)
+      if (parent2 == pdfOutlineRoot)
       {
         break;
       }
 
       ++v7;
-      v4 = [v8 parent];
+      chapterCopy = [v8 parent];
 
-      v6 = [v4 parent];
-      v8 = v4;
-      if (!v6)
+      parent3 = [chapterCopy parent];
+      v8 = chapterCopy;
+      if (!parent3)
       {
         goto LABEL_8;
       }
     }
 
-    v4 = v8;
+    chapterCopy = v8;
   }
 
   else
@@ -480,11 +480,11 @@ LABEL_8:
   return v7;
 }
 
-- (id)fontForChapter:(id)a3
+- (id)fontForChapter:(id)chapter
 {
-  v4 = a3;
+  chapterCopy = chapter;
   [(BKTOCViewController *)self establishChapterFonts];
-  v5 = [(BKPDFTOCViewController *)self indentationLevelForChapter:v4];
+  v5 = [(BKPDFTOCViewController *)self indentationLevelForChapter:chapterCopy];
 
   if (v5 < 2)
   {
@@ -500,25 +500,25 @@ LABEL_8:
   return v6;
 }
 
-- (id)chapterForIndexPath:(id)a3
+- (id)chapterForIndexPath:(id)path
 {
-  v4 = [a3 row];
-  v5 = [(BKPDFTOCViewController *)self pdfOutlineRoot];
-  [(BKPDFTOCViewController *)self findOutlineForRow:v4 fromRowCount:0 fromOutline:v5];
+  v4 = [path row];
+  pdfOutlineRoot = [(BKPDFTOCViewController *)self pdfOutlineRoot];
+  [(BKPDFTOCViewController *)self findOutlineForRow:v4 fromRowCount:0 fromOutline:pdfOutlineRoot];
 
   return [(BKPDFTOCViewController *)self currentOutline];
 }
 
-- (int64_t)countRowsOfChildren:(id)a3
+- (int64_t)countRowsOfChildren:(id)children
 {
-  v4 = a3;
+  childrenCopy = children;
   v5 = 0;
-  if ([v4 numberOfChildren])
+  if ([childrenCopy numberOfChildren])
   {
     v6 = 0;
     do
     {
-      v7 = [v4 childAtIndex:v6];
+      v7 = [childrenCopy childAtIndex:v6];
       [v7 setIsOpen:1];
       if ([v7 numberOfChildren])
       {
@@ -535,25 +535,25 @@ LABEL_8:
       ++v6;
     }
 
-    while (v6 < [v4 numberOfChildren]);
+    while (v6 < [childrenCopy numberOfChildren]);
   }
 
   return v5;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v5 = [(BKPDFTOCViewController *)self pdfOutlineRoot:a3];
-  v6 = [v5 numberOfChildren];
+  v5 = [(BKPDFTOCViewController *)self pdfOutlineRoot:view];
+  numberOfChildren = [v5 numberOfChildren];
 
   v7 = 0;
-  if (v6)
+  if (numberOfChildren)
   {
     v8 = 0;
     do
     {
-      v9 = [(BKPDFTOCViewController *)self pdfOutlineRoot];
-      v10 = [v9 childAtIndex:v8];
+      pdfOutlineRoot = [(BKPDFTOCViewController *)self pdfOutlineRoot];
+      v10 = [pdfOutlineRoot childAtIndex:v8];
 
       [v10 setIsOpen:1];
       if ([v10 numberOfChildren])
@@ -569,45 +569,45 @@ LABEL_8:
       v7 += v11;
 
       ++v8;
-      v12 = [(BKPDFTOCViewController *)self pdfOutlineRoot];
-      v13 = [v12 numberOfChildren];
+      pdfOutlineRoot2 = [(BKPDFTOCViewController *)self pdfOutlineRoot];
+      numberOfChildren2 = [pdfOutlineRoot2 numberOfChildren];
     }
 
-    while (v8 < v13);
+    while (v8 < numberOfChildren2);
   }
 
   return v7;
 }
 
-- (int64_t)findOutlineForRow:(int64_t)a3 fromRowCount:(int64_t)a4 fromOutline:(id)a5
+- (int64_t)findOutlineForRow:(int64_t)row fromRowCount:(int64_t)count fromOutline:(id)outline
 {
-  v8 = a5;
-  if ([v8 numberOfChildren])
+  outlineCopy = outline;
+  if ([outlineCopy numberOfChildren])
   {
     v9 = 0;
     while (1)
     {
-      v10 = [v8 childAtIndex:v9];
+      v10 = [outlineCopy childAtIndex:v9];
       v11 = v10;
-      if (a4 == a3)
+      if (count == row)
       {
         break;
       }
 
-      ++a4;
+      ++count;
       if ([v10 numberOfChildren])
       {
         if ([v11 isOpen])
         {
-          a4 = [(BKPDFTOCViewController *)self findOutlineForRow:a3 fromRowCount:a4 fromOutline:v11];
-          if (a4 < 0)
+          count = [(BKPDFTOCViewController *)self findOutlineForRow:row fromRowCount:count fromOutline:v11];
+          if (count < 0)
           {
             goto LABEL_10;
           }
         }
       }
 
-      if (++v9 >= [v8 numberOfChildren])
+      if (++v9 >= [outlineCopy numberOfChildren])
       {
         goto LABEL_11;
       }
@@ -616,43 +616,43 @@ LABEL_8:
     [(BKPDFTOCViewController *)self setCurrentOutline:v10];
 LABEL_10:
 
-    a4 = -1;
+    count = -1;
   }
 
 LABEL_11:
 
-  return a4;
+  return count;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BKPDFTOCViewController *)self reuseIdentifier];
+  viewCopy = view;
+  pathCopy = path;
+  reuseIdentifier = [(BKPDFTOCViewController *)self reuseIdentifier];
   objc_opt_class();
-  v57 = v6;
-  v9 = [v6 dequeueReusableCellWithIdentifier:v8];
+  v57 = viewCopy;
+  v9 = [viewCopy dequeueReusableCellWithIdentifier:reuseIdentifier];
   v10 = BUDynamicCast();
 
   if (!v10)
   {
-    v10 = [(BKTOCTableViewCell *)[BKPDFTOCTableViewCell alloc] initWithStyle:0 reuseIdentifier:v8];
+    v10 = [(BKTOCTableViewCell *)[BKPDFTOCTableViewCell alloc] initWithStyle:0 reuseIdentifier:reuseIdentifier];
   }
 
-  v56 = v7;
-  v11 = [v7 row];
-  v12 = [(BKPDFTOCViewController *)self pdfOutlineRoot];
-  [(BKPDFTOCViewController *)self findOutlineForRow:v11 fromRowCount:0 fromOutline:v12];
+  v56 = pathCopy;
+  v11 = [pathCopy row];
+  pdfOutlineRoot = [(BKPDFTOCViewController *)self pdfOutlineRoot];
+  [(BKPDFTOCViewController *)self findOutlineForRow:v11 fromRowCount:0 fromOutline:pdfOutlineRoot];
 
-  v13 = [(BKPDFTOCViewController *)self currentOutline];
+  currentOutline = [(BKPDFTOCViewController *)self currentOutline];
   v61 = 0u;
   v62 = 0u;
   v63 = 0u;
   v64 = 0u;
-  v14 = [(BKPDFTOCTableViewCell *)v10 contentView];
-  v15 = [v14 subviews];
+  contentView = [(BKPDFTOCTableViewCell *)v10 contentView];
+  subviews = [contentView subviews];
 
-  v16 = [v15 countByEnumeratingWithState:&v61 objects:v65 count:16];
+  v16 = [subviews countByEnumeratingWithState:&v61 objects:v65 count:16];
   if (v16)
   {
     v17 = v16;
@@ -663,7 +663,7 @@ LABEL_11:
       {
         if (*v62 != v18)
         {
-          objc_enumerationMutation(v15);
+          objc_enumerationMutation(subviews);
         }
 
         v20 = *(*(&v61 + 1) + 8 * i);
@@ -674,41 +674,41 @@ LABEL_11:
         }
       }
 
-      v17 = [v15 countByEnumeratingWithState:&v61 objects:v65 count:16];
+      v17 = [subviews countByEnumeratingWithState:&v61 objects:v65 count:16];
     }
 
     while (v17);
   }
 
-  [v13 setIsOpen:1];
+  [currentOutline setIsOpen:1];
   [(BKTOCTableViewCell *)v10 setVertical:[(BKTOCViewController *)self isVertical]];
-  [(BKPDFTOCTableViewCell *)v10 setPdfChapter:v13];
+  [(BKPDFTOCTableViewCell *)v10 setPdfChapter:currentOutline];
   if ([(BKTOCViewController *)self isVertical])
   {
     CGAffineTransformMakeRotation(&v60, 1.57079633);
-    v21 = [(BKPDFTOCTableViewCell *)v10 textLabel];
+    textLabel = [(BKPDFTOCTableViewCell *)v10 textLabel];
     v59 = v60;
-    [v21 setTransform:&v59];
+    [textLabel setTransform:&v59];
 
     CGAffineTransformMakeRotation(&v58, 1.57079633);
-    v22 = [(BKTOCTableViewCell *)v10 pageLabel];
+    pageLabel = [(BKTOCTableViewCell *)v10 pageLabel];
     v59 = v58;
-    [v22 setTransform:&v59];
+    [pageLabel setTransform:&v59];
 
     [(BKPDFTOCTableViewCell *)v10 setSelectionStyle:2];
   }
 
-  v23 = [v13 label];
-  v24 = v23;
+  label = [currentOutline label];
+  v24 = label;
   v25 = @" ";
-  if (v23)
+  if (label)
   {
-    v25 = v23;
+    v25 = label;
   }
 
   v26 = v25;
 
-  v27 = [NSNumber numberWithInteger:[(BKPDFTOCViewController *)self pageNumberFromChapter:v13]];
+  v27 = [NSNumber numberWithInteger:[(BKPDFTOCViewController *)self pageNumberFromChapter:currentOutline]];
   v28 = [NSString stringWithFormat:@"%@", v27];
 
   [(BKTOCTableViewCell *)v10 setupSelectedBackgroundNil];
@@ -716,33 +716,33 @@ LABEL_11:
   v30 = v29;
   [(BKContentViewController *)self contentInsets];
   [(BKTOCTableViewCell *)v10 setContentInsets:0.0, v30, 0.0];
-  v31 = [(BKPDFTOCTableViewCell *)v10 textLabel];
-  [v31 setText:v26];
+  textLabel2 = [(BKPDFTOCTableViewCell *)v10 textLabel];
+  [textLabel2 setText:v26];
 
-  v32 = [(BKPDFTOCViewController *)self fontForChapter:v13];
-  v33 = [(BKPDFTOCTableViewCell *)v10 textLabel];
-  [v33 setFont:v32];
+  v32 = [(BKPDFTOCViewController *)self fontForChapter:currentOutline];
+  textLabel3 = [(BKPDFTOCTableViewCell *)v10 textLabel];
+  [textLabel3 setFont:v32];
 
-  v34 = [(BKPDFTOCTableViewCell *)v10 textLabel];
-  [v34 setLineBreakMode:0];
+  textLabel4 = [(BKPDFTOCTableViewCell *)v10 textLabel];
+  [textLabel4 setLineBreakMode:0];
 
-  v35 = [(BKPDFTOCTableViewCell *)v10 textLabel];
-  [v35 setAlpha:1.0];
+  textLabel5 = [(BKPDFTOCTableViewCell *)v10 textLabel];
+  [textLabel5 setAlpha:1.0];
 
-  v36 = [(BKPDFTOCTableViewCell *)v10 textLabel];
-  [v36 setNumberOfLines:0];
+  textLabel6 = [(BKPDFTOCTableViewCell *)v10 textLabel];
+  [textLabel6 setNumberOfLines:0];
 
-  [(BKPDFTOCTableViewCell *)v10 setIndentationLevel:[(BKPDFTOCViewController *)self indentationLevelForChapter:v13]];
+  [(BKPDFTOCTableViewCell *)v10 setIndentationLevel:[(BKPDFTOCViewController *)self indentationLevelForChapter:currentOutline]];
   [(BKPDFTOCTableViewCell *)v10 setIndentationWidth:16.0];
-  v37 = [(BKPDFTOCTableViewCell *)v10 effectiveUserInterfaceLayoutDirection];
+  effectiveUserInterfaceLayoutDirection = [(BKPDFTOCTableViewCell *)v10 effectiveUserInterfaceLayoutDirection];
   [(BKContentViewController *)self separatorInsets];
   v39 = v38;
-  v40 = [(BKPDFTOCTableViewCell *)v10 indentationLevel];
+  indentationLevel = [(BKPDFTOCTableViewCell *)v10 indentationLevel];
   [(BKPDFTOCTableViewCell *)v10 indentationWidth];
-  v42 = v39 + v40 * v41;
+  v42 = v39 + indentationLevel * v41;
   [(BKContentViewController *)self separatorInsets];
   v44 = v43;
-  if (v37 == &dword_0 + 1 || [(BKTOCViewController *)self isVertical])
+  if (effectiveUserInterfaceLayoutDirection == &dword_0 + 1 || [(BKTOCViewController *)self isVertical])
   {
     v45 = v42;
   }
@@ -754,36 +754,36 @@ LABEL_11:
   }
 
   [(BKPDFTOCTableViewCell *)v10 setSeparatorInset:0.0, v44, 0.0, v45];
-  v46 = [(BKTOCTableViewCell *)v10 pageLabel];
-  v47 = v46;
+  pageLabel2 = [(BKTOCTableViewCell *)v10 pageLabel];
+  v47 = pageLabel2;
   if (v28)
   {
-    [v46 setText:v28];
-    v48 = [(BKTOCViewController *)self pageLabelFont];
-    [v47 setFont:v48];
+    [pageLabel2 setText:v28];
+    pageLabelFont = [(BKTOCViewController *)self pageLabelFont];
+    [v47 setFont:pageLabelFont];
   }
 
   [v47 setHidden:v28 == 0];
   [(BKPDFTOCTableViewCell *)v10 setNeedsLayout];
-  v49 = [(BKPDFTOCViewController *)self themePage];
+  themePage = [(BKPDFTOCViewController *)self themePage];
   [(BKTOCTableViewCell *)v10 configureSelectedBackgroundView];
-  v50 = [(PDFOutline *)self->_currentOutline backgroundColor];
-  [(BKPDFTOCTableViewCell *)v10 setBackgroundColor:v50];
+  backgroundColor = [(PDFOutline *)self->_currentOutline backgroundColor];
+  [(BKPDFTOCTableViewCell *)v10 setBackgroundColor:backgroundColor];
 
-  v51 = [v49 primaryTextColor];
-  v52 = [(BKPDFTOCTableViewCell *)v10 textLabel];
-  [v52 setTextColor:v51];
+  primaryTextColor = [themePage primaryTextColor];
+  textLabel7 = [(BKPDFTOCTableViewCell *)v10 textLabel];
+  [textLabel7 setTextColor:primaryTextColor];
 
-  v53 = [v49 tocPageNumberTextColor];
-  v54 = [(BKTOCTableViewCell *)v10 pageLabel];
-  [v54 setTextColor:v53];
+  tocPageNumberTextColor = [themePage tocPageNumberTextColor];
+  pageLabel3 = [(BKTOCTableViewCell *)v10 pageLabel];
+  [pageLabel3 setTextColor:tocPageNumberTextColor];
 
   return v10;
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
-  v5 = a4;
+  pathCopy = path;
   [(PDFOutline *)self->_currentOutline bounds];
   Width = CGRectGetWidth(v30);
   [(BKContentViewController *)self contentInsets];
@@ -795,13 +795,13 @@ LABEL_11:
 
   else
   {
-    v10 = [(BKPDFTOCViewController *)self chapterForIndexPath:v5];
+    v10 = [(BKPDFTOCViewController *)self chapterForIndexPath:pathCopy];
     v11 = [(BKPDFTOCViewController *)self fontForChapter:v10];
-    v12 = [(BKTOCViewController *)self pageLabelFont];
+    pageLabelFont = [(BKTOCViewController *)self pageLabelFont];
     if ([(BKTOCViewController *)self isVertical])
     {
       v28 = NSFontAttributeName;
-      v29 = v12;
+      v29 = pageLabelFont;
       v13 = [NSDictionary dictionaryWithObjects:&v29 forKeys:&v28 count:1];
       [@"8888" boundingRectWithSize:0 options:v13 attributes:0 context:{1.79769313e308, 1.79769313e308}];
       height = v14 + 15.0;
@@ -812,8 +812,8 @@ LABEL_11:
       v16 = [NSNumber numberWithInteger:[(BKPDFTOCViewController *)self pageNumberFromChapter:v10]];
       v17 = [NSString stringWithFormat:@"%@", v16];
 
-      v18 = [v10 label];
-      v19 = [v18 copy];
+      label = [v10 label];
+      v19 = [label copy];
       v20 = v19;
       v21 = @" ";
       if (v19)
@@ -826,7 +826,7 @@ LABEL_11:
       v23 = +[NSCharacterSet newlineCharacterSet];
       v24 = [(__CFString *)v22 stringByTrimmingCharactersInSet:v23];
 
-      [BKTOCTableViewCell pageLabelFrameForString:v17 font:v12 bounds:[(BKViewController *)self layoutDirection] layoutDirection:CGRectZero.origin.x, CGRectZero.origin.y, v9, 52.0];
+      [BKTOCTableViewCell pageLabelFrameForString:v17 font:pageLabelFont bounds:[(BKViewController *)self layoutDirection] layoutDirection:CGRectZero.origin.x, CGRectZero.origin.y, v9, 52.0];
       [BKTOCTableViewCell cellHeightForCellWidth:v24 pageLabelWidth:[(BKPDFTOCViewController *)self indentationLevelForChapter:v10] text:v11 indentationLevel:0 indentationWidth:v9 font:v25 usesPopoverStyle:16.0];
       height = v26;
     }
@@ -835,16 +835,16 @@ LABEL_11:
   return fmax(ceil(height), 52.0);
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v10 = a4;
-  v6 = [a3 cellForRowAtIndexPath:?];
+  pathCopy = path;
+  v6 = [view cellForRowAtIndexPath:?];
   if (BYTE4(self->super._fetchedResultsController))
   {
-    v7 = [(BKPDFTOCViewController *)self chapterForIndexPath:v10];
+    v7 = [(BKPDFTOCViewController *)self chapterForIndexPath:pathCopy];
     v8 = [[BKPageLocation alloc] initWithOrdinal:[(BKPDFTOCViewController *)self ordinal] andOffset:[(BKPDFTOCViewController *)self pageIndexFromChapter:v7]];
-    v9 = [(BKDirectoryContent *)self directoryDelegate];
-    [v9 directoryContent:self didSelectLocation:v8];
+    directoryDelegate = [(BKDirectoryContent *)self directoryDelegate];
+    [directoryDelegate directoryContent:self didSelectLocation:v8];
 
     [v6 setSelected:0 animated:0];
     [v6 setSelectionStyle:0];
@@ -858,21 +858,21 @@ LABEL_11:
   [(BKContentViewController *)&v7 setNeedsRestyle];
   if ([(BKTOCViewController *)self isVertical])
   {
-    v3 = [(PDFOutline *)self->_currentOutline visibleCells];
-    v4 = [(PDFOutline *)self->_currentOutline indexPathsForVisibleRows];
-    v5 = [v4 sortedArrayUsingSelector:"compare:"];
-    v6 = [v5 lastObject];
-    [(BKPDFTOCViewController *)self setRecenteredIndexPath:v6];
+    visibleCells = [(PDFOutline *)self->_currentOutline visibleCells];
+    indexPathsForVisibleRows = [(PDFOutline *)self->_currentOutline indexPathsForVisibleRows];
+    v5 = [indexPathsForVisibleRows sortedArrayUsingSelector:"compare:"];
+    lastObject = [v5 lastObject];
+    [(BKPDFTOCViewController *)self setRecenteredIndexPath:lastObject];
   }
 
   [(BKTOCViewController *)self reload];
 }
 
-- (void)setBook:(id)a3
+- (void)setBook:(id)book
 {
   v3.receiver = self;
   v3.super_class = BKPDFTOCViewController;
-  [(BKContentViewController *)&v3 setBook:a3];
+  [(BKContentViewController *)&v3 setBook:book];
 }
 
 @end

@@ -1,23 +1,23 @@
 @interface _DKEventStream
-+ (id)eventStreamWithName:(id)a3;
-+ (id)eventStreamWithName:(id)a3 valueType:(id)a4;
-+ (id)fromPBCodable:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)eventStreamWithName:(id)name;
++ (id)eventStreamWithName:(id)name valueType:(id)type;
++ (id)fromPBCodable:(id)codable;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (_CDEventStreamProperties)eventProperties;
-- (_DKEventStream)initWithCoder:(id)a3;
-- (_DKEventStream)initWithName:(id)a3 valueType:(id)a4 cache:(id)a5;
+- (_DKEventStream)initWithCoder:(id)coder;
+- (_DKEventStream)initWithName:(id)name valueType:(id)type cache:(id)cache;
 - (id)toPBCodable;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _DKEventStream
 
 - (id)toPBCodable
 {
-  v3 = [(_DKEventStream *)self name];
-  v4 = [(_DKEventStream *)self eventValueType];
+  name = [(_DKEventStream *)self name];
+  eventValueType = [(_DKEventStream *)self eventValueType];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -28,7 +28,7 @@
 
   else
   {
-    v7 = [(_DKEventStream *)self eventValueType];
+    eventValueType2 = [(_DKEventStream *)self eventValueType];
     objc_opt_class();
     v8 = objc_opt_isKindOfClass();
 
@@ -39,7 +39,7 @@
 
     else
     {
-      v9 = [(_DKEventStream *)self eventValueType];
+      eventValueType3 = [(_DKEventStream *)self eventValueType];
       objc_opt_class();
       v10 = objc_opt_isKindOfClass();
 
@@ -57,11 +57,11 @@
 
   v11 = objc_alloc_init(_DKPRValueType);
   [(_DKPRValueType *)v11 setType:v6];
-  v12 = [(_DKEventStream *)self eventValueType];
-  -[_DKPRValueType setTypeCode:](v11, [v12 typeCode]);
+  eventValueType4 = [(_DKEventStream *)self eventValueType];
+  -[_DKPRValueType setTypeCode:](v11, [eventValueType4 typeCode]);
 
   v13 = objc_alloc_init(_DKPRStream);
-  [(_DKPRStream *)v13 setName:v3];
+  [(_DKPRStream *)v13 setName:name];
   [(_DKPRStream *)v13 setType:v11];
 
   return v13;
@@ -77,53 +77,53 @@
   return v6;
 }
 
-+ (id)eventStreamWithName:(id)a3
++ (id)eventStreamWithName:(id)name
 {
-  v3 = a3;
-  v4 = [objc_opt_class() eventStreamWithName:v3 valueType:0];
+  nameCopy = name;
+  v4 = [objc_opt_class() eventStreamWithName:nameCopy valueType:0];
 
   return v4;
 }
 
-+ (id)eventStreamWithName:(id)a3 valueType:(id)a4
++ (id)eventStreamWithName:(id)name valueType:(id)type
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [_CDEventStreams eventStreamPropertiesForKBName:v5];
-  v8 = [v7 valueType];
+  nameCopy = name;
+  typeCopy = type;
+  v7 = [_CDEventStreams eventStreamPropertiesForKBName:nameCopy];
+  valueType = [v7 valueType];
 
-  if (v8)
+  if (valueType)
   {
-    if (v6)
+    if (typeCopy)
     {
-      v9 = [v7 valueType];
-      v10 = [v9 isEqual:v6];
+      valueType2 = [v7 valueType];
+      v10 = [valueType2 isEqual:typeCopy];
 
       if ((v10 & 1) == 0)
       {
         v11 = +[_CDLogging knowledgeChannel];
         if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
         {
-          v12 = [v7 valueType];
+          valueType3 = [v7 valueType];
           v18 = 138412802;
-          v19 = v5;
+          v19 = nameCopy;
           v20 = 2112;
-          v21 = v6;
+          v21 = typeCopy;
           v22 = 2112;
-          v23 = v12;
+          v23 = valueType3;
           _os_log_impl(&dword_191750000, v11, OS_LOG_TYPE_INFO, "Event with stream %@ had valueType %@ but should be %@. Overriding.", &v18, 0x20u);
         }
       }
     }
 
-    v13 = [v7 valueType];
+    valueType4 = [v7 valueType];
 
-    v6 = v13;
+    typeCopy = valueType4;
   }
 
   v14 = +[_DKEventStreamCache sharedCached];
-  v15 = [v14 eventStreamWithName:v5 valueType:v6];
+  v15 = [v14 eventStreamWithName:nameCopy valueType:typeCopy];
 
   v16 = *MEMORY[0x1E69E9840];
 
@@ -132,33 +132,33 @@
 
 - (_CDEventStreamProperties)eventProperties
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  eventProperties = v2->_eventProperties;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  eventProperties = selfCopy->_eventProperties;
   if (!eventProperties)
   {
-    v4 = [_CDEventStreams eventStreamPropertiesForKBName:v2->_name];
-    v5 = v2->_eventProperties;
-    v2->_eventProperties = v4;
+    v4 = [_CDEventStreams eventStreamPropertiesForKBName:selfCopy->_name];
+    v5 = selfCopy->_eventProperties;
+    selfCopy->_eventProperties = v4;
 
-    eventProperties = v2->_eventProperties;
+    eventProperties = selfCopy->_eventProperties;
   }
 
   v6 = eventProperties;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
-- (_DKEventStream)initWithName:(id)a3 valueType:(id)a4 cache:(id)a5
+- (_DKEventStream)initWithName:(id)name valueType:(id)type cache:(id)cache
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
-  if (v9)
+  nameCopy = name;
+  typeCopy = type;
+  cacheCopy = cache;
+  v12 = cacheCopy;
+  if (nameCopy)
   {
-    if (!v11 || ([v11 eventStreamWithName:v9 valueType:v10], (v13 = objc_claimAutoreleasedReturnValue()) == 0))
+    if (!cacheCopy || ([cacheCopy eventStreamWithName:nameCopy valueType:typeCopy], (v13 = objc_claimAutoreleasedReturnValue()) == 0))
     {
       v19.receiver = self;
       v19.super_class = _DKEventStream;
@@ -166,8 +166,8 @@
       p_isa = &v14->super.isa;
       if (v14)
       {
-        objc_storeStrong(&v14->_name, a3);
-        objc_storeStrong(p_isa + 3, a4);
+        objc_storeStrong(&v14->_name, name);
+        objc_storeStrong(p_isa + 3, type);
       }
 
       v13 = p_isa;
@@ -191,11 +191,11 @@
   return v16;
 }
 
-- (_DKEventStream)initWithCoder:(id)a3
+- (_DKEventStream)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"eventValueType"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"eventValueType"];
 
   v7 = +[_DKEventStreamCache sharedCached];
   v8 = [(_DKEventStream *)self initWithName:v5 valueType:v6 cache:v7];
@@ -203,44 +203,44 @@
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   name = self->_name;
-  v5 = a3;
-  [v5 encodeObject:name forKey:@"name"];
-  [v5 encodeObject:self->_eventValueType forKey:@"eventValueType"];
+  coderCopy = coder;
+  [coderCopy encodeObject:name forKey:@"name"];
+  [coderCopy encodeObject:self->_eventValueType forKey:@"eventValueType"];
 }
 
 - (unint64_t)hash
 {
-  v3 = [(_DKEventStream *)self name];
-  v4 = [v3 hash];
-  v5 = [(_DKEventStream *)self eventValueType];
-  v6 = [v5 hash];
+  name = [(_DKEventStream *)self name];
+  v4 = [name hash];
+  eventValueType = [(_DKEventStream *)self eventValueType];
+  v6 = [eventValueType hash];
 
   return v6 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
-    v7 = [(_DKEventStream *)self name];
-    v8 = [(_DKEventStream *)v6 name];
-    if ([v7 isEqualToString:v8])
+    name = [(_DKEventStream *)self name];
+    name2 = [(_DKEventStream *)v6 name];
+    if ([name isEqualToString:name2])
     {
-      v9 = [(_DKEventStream *)self eventValueType];
-      v10 = [v9 typeCode];
-      v11 = [(_DKEventStream *)v6 eventValueType];
-      v12 = v10 == [v11 typeCode];
+      eventValueType = [(_DKEventStream *)self eventValueType];
+      typeCode = [eventValueType typeCode];
+      eventValueType2 = [(_DKEventStream *)v6 eventValueType];
+      v12 = typeCode == [eventValueType2 typeCode];
     }
 
     else
@@ -257,30 +257,30 @@
   return v12;
 }
 
-+ (id)fromPBCodable:(id)a3
++ (id)fromPBCodable:(id)codable
 {
-  v3 = a3;
+  codableCopy = codable;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
-    v5 = [(_DKPRStream *)v4 name];
-    v6 = [(_DKPRStream *)v4 type];
-    v7 = [(_DKPRValueType *)v6 type];
+    v4 = codableCopy;
+    name = [(_DKPRStream *)v4 name];
+    type = [(_DKPRStream *)v4 type];
+    v6Type = [(_DKPRValueType *)type type];
 
-    if (v7 > 2)
+    if (v6Type > 2)
     {
       v10 = 0;
     }
 
     else
     {
-      v8 = *off_1E7368F98[v7];
-      v9 = [(_DKPRStream *)v4 type];
-      v10 = [v8 objectTypeWithTypeCode:-[_DKPRValueType typeCode](v9)];
+      v8 = *off_1E7368F98[v6Type];
+      type2 = [(_DKPRStream *)v4 type];
+      v10 = [v8 objectTypeWithTypeCode:-[_DKPRValueType typeCode](type2)];
     }
 
-    v11 = [_DKEventStream eventStreamWithName:v5 valueType:v10];
+    v11 = [_DKEventStream eventStreamWithName:name valueType:v10];
   }
 
   else

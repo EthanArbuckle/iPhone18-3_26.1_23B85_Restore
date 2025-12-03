@@ -1,22 +1,22 @@
 @interface TSURemotePropertyList
 - (TSURemotePropertyList)init;
-- (TSURemotePropertyList)initWithRemoteURL:(id)a3 localURL:(id)a4;
+- (TSURemotePropertyList)initWithRemoteURL:(id)l localURL:(id)rL;
 - (double)timeIntervalUntilNextUpdate;
-- (id)URLForKey:(id)a3;
+- (id)URLForKey:(id)key;
 - (id)URLRequest;
-- (id)arrayForKey:(id)a3;
-- (id)dictionaryForKey:(id)a3;
-- (id)numberForKey:(id)a3;
-- (id)objectForKey:(id)a3;
-- (id)stringForKey:(id)a3;
-- (void)checkForUpdateWithCompletionHandler:(id)a3;
+- (id)arrayForKey:(id)key;
+- (id)dictionaryForKey:(id)key;
+- (id)numberForKey:(id)key;
+- (id)objectForKey:(id)key;
+- (id)stringForKey:(id)key;
+- (void)checkForUpdateWithCompletionHandler:(id)handler;
 - (void)dealloc;
-- (void)processDidResume:(id)a3;
-- (void)processPropertyList:(id)a3;
-- (void)processResponse:(id)a3 data:(id)a4 error:(id)a5;
-- (void)processWillSuspend:(id)a3;
+- (void)processDidResume:(id)resume;
+- (void)processPropertyList:(id)list;
+- (void)processResponse:(id)response data:(id)data error:(id)error;
+- (void)processWillSuspend:(id)suspend;
 - (void)startUpdateTimer;
-- (void)updateIfNeededWithCompletionHandler:(id)a3;
+- (void)updateIfNeededWithCompletionHandler:(id)handler;
 @end
 
 @implementation TSURemotePropertyList
@@ -37,26 +37,26 @@
   objc_exception_throw(v7);
 }
 
-- (TSURemotePropertyList)initWithRemoteURL:(id)a3 localURL:(id)a4
+- (TSURemotePropertyList)initWithRemoteURL:(id)l localURL:(id)rL
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  rLCopy = rL;
   v30.receiver = self;
   v30.super_class = TSURemotePropertyList;
   v8 = [(TSURemotePropertyList *)&v30 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [lCopy copy];
     remoteURL = v8->_remoteURL;
     v8->_remoteURL = v9;
 
-    v11 = [v7 copy];
+    v11 = [rLCopy copy];
     localURL = v8->_localURL;
     v8->_localURL = v11;
 
-    if (v7)
+    if (rLCopy)
     {
-      if (([v7 isFileURL] & 1) == 0)
+      if (([rLCopy isFileURL] & 1) == 0)
       {
         v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSURemotePropertyList initWithRemoteURL:localURL:]"];
         v14 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/utility/TSURemoteDefaults.m"];
@@ -65,7 +65,7 @@
         +[TSUAssertionHandler logBacktraceThrottled];
       }
 
-      v15 = [objc_alloc(MEMORY[0x277CBEAC0]) initWithContentsOfURL:v7];
+      v15 = [objc_alloc(MEMORY[0x277CBEAC0]) initWithContentsOfURL:rLCopy];
       propertyList = v8->_propertyList;
       v8->_propertyList = v15;
     }
@@ -87,10 +87,10 @@
     v8->_checkQueue = v25;
 
     [(TSURemotePropertyList *)v8 startUpdateTimer];
-    v27 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v28 = *MEMORY[0x277D76648];
-    [v27 addObserver:v8 selector:sel_processWillSuspend_ name:*MEMORY[0x277D76768] object:0];
-    [v27 addObserver:v8 selector:sel_processDidResume_ name:v28 object:0];
+    [defaultCenter addObserver:v8 selector:sel_processWillSuspend_ name:*MEMORY[0x277D76768] object:0];
+    [defaultCenter addObserver:v8 selector:sel_processDidResume_ name:v28 object:0];
   }
 
   return v8;
@@ -98,8 +98,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   updateTimer = self->_updateTimer;
   if (updateTimer)
@@ -133,7 +133,7 @@
   objc_destroyWeak(&location);
 }
 
-- (void)processWillSuspend:(id)a3
+- (void)processWillSuspend:(id)suspend
 {
   updateTimer = self->_updateTimer;
   if (updateTimer)
@@ -144,7 +144,7 @@
   }
 }
 
-- (void)processDidResume:(id)a3
+- (void)processDidResume:(id)resume
 {
   if (!self->_updateTimer)
   {
@@ -152,23 +152,23 @@
   }
 }
 
-- (void)updateIfNeededWithCompletionHandler:(id)a3
+- (void)updateIfNeededWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   checkQueue = self->_checkQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = sub_2770F49E4;
   v7[3] = &unk_27A702858;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(checkQueue, v7);
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -180,10 +180,10 @@
   block[1] = 3221225472;
   block[2] = sub_2770F4B44;
   block[3] = &unk_27A7019E0;
-  v10 = v4;
+  v10 = keyCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = keyCopy;
   dispatch_sync(accessQueue, block);
   v7 = v13[5];
 
@@ -192,31 +192,31 @@
   return v7;
 }
 
-- (id)numberForKey:(id)a3
+- (id)numberForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = objc_opt_class();
-  v6 = [(TSURemotePropertyList *)self objectForKey:v4];
+  v6 = [(TSURemotePropertyList *)self objectForKey:keyCopy];
 
   v7 = TSUDynamicCast(v5, v6);
 
   return v7;
 }
 
-- (id)stringForKey:(id)a3
+- (id)stringForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = objc_opt_class();
-  v6 = [(TSURemotePropertyList *)self objectForKey:v4];
+  v6 = [(TSURemotePropertyList *)self objectForKey:keyCopy];
 
   v7 = TSUDynamicCast(v5, v6);
 
   return v7;
 }
 
-- (id)URLForKey:(id)a3
+- (id)URLForKey:(id)key
 {
-  v3 = [(TSURemotePropertyList *)self objectForKey:a3];
+  v3 = [(TSURemotePropertyList *)self objectForKey:key];
   v4 = objc_opt_class();
   v5 = TSUDynamicCast(v4, v3);
   if (v5)
@@ -247,52 +247,52 @@
   return v5;
 }
 
-- (id)dictionaryForKey:(id)a3
+- (id)dictionaryForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = objc_opt_class();
-  v6 = [(TSURemotePropertyList *)self objectForKey:v4];
+  v6 = [(TSURemotePropertyList *)self objectForKey:keyCopy];
 
   v7 = TSUDynamicCast(v5, v6);
 
   return v7;
 }
 
-- (id)arrayForKey:(id)a3
+- (id)arrayForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = objc_opt_class();
-  v6 = [(TSURemotePropertyList *)self objectForKey:v4];
+  v6 = [(TSURemotePropertyList *)self objectForKey:keyCopy];
 
   v7 = TSUDynamicCast(v5, v6);
 
   return v7;
 }
 
-- (void)checkForUpdateWithCompletionHandler:(id)a3
+- (void)checkForUpdateWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(TSURemotePropertyList *)self URLRequest];
+  handlerCopy = handler;
+  uRLRequest = [(TSURemotePropertyList *)self URLRequest];
   dispatch_suspend(self->_checkQueue);
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = sub_2770F4F3C;
   v8[3] = &unk_27A703A08;
-  v9 = v5;
-  v10 = v4;
+  v9 = uRLRequest;
+  v10 = handlerCopy;
   v8[4] = self;
-  v6 = v5;
-  v7 = v4;
+  v6 = uRLRequest;
+  v7 = handlerCopy;
   [TSUExecutionContext performWithApplication:v8];
 }
 
 - (double)timeIntervalUntilNextUpdate
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
   v5 = [v4 stringByAppendingString:@"NextUpdate"];
-  v6 = [v2 objectForKey:v5];
+  v6 = [standardUserDefaults objectForKey:v5];
 
   v7 = 0.0;
   if (v6)
@@ -302,8 +302,8 @@
 
     if (v9)
     {
-      v10 = [MEMORY[0x277CBEAA8] date];
-      [v6 timeIntervalSinceDate:v10];
+      date = [MEMORY[0x277CBEAA8] date];
+      [v6 timeIntervalSinceDate:date];
       v12 = v11;
 
       v7 = fmax(v12, 0.0);
@@ -315,11 +315,11 @@
 
 - (id)URLRequest
 {
-  v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
   v6 = [v5 stringByAppendingString:@"DownloadURL"];
-  v7 = [v3 stringForKey:v6];
+  v7 = [standardUserDefaults stringForKey:v6];
 
   if (![v7 length] || (objc_msgSend(MEMORY[0x277CBEBC0], "URLWithString:", v7), (v8 = objc_claimAutoreleasedReturnValue()) == 0) || (v9 = v8, -[TSURemotePropertyList validateUserDefaultsDownloadURL:](self, "validateUserDefaultsDownloadURL:", v8), v10 = objc_claimAutoreleasedReturnValue(), v9, !v10))
   {
@@ -332,7 +332,7 @@
   v12 = objc_opt_class();
   v13 = NSStringFromClass(v12);
   v14 = [v13 stringByAppendingString:@"ETag"];
-  v15 = [v3 stringForKey:v14];
+  v15 = [standardUserDefaults stringForKey:v14];
 
   if ([v15 length])
   {
@@ -342,38 +342,38 @@
   return v11;
 }
 
-- (void)processResponse:(id)a3 data:(id)a4 error:(id)a5
+- (void)processResponse:(id)response data:(id)data error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 statusCode];
-  v12 = v11;
-  if (v11 == 304 || v11 == 200)
+  responseCopy = response;
+  dataCopy = data;
+  errorCopy = error;
+  statusCode = [responseCopy statusCode];
+  v12 = statusCode;
+  if (statusCode == 304 || statusCode == 200)
   {
-    v13 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
     v14 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:86400.0];
     v15 = objc_opt_class();
     v16 = NSStringFromClass(v15);
     v17 = [v16 stringByAppendingString:@"NextUpdate"];
-    [v13 setObject:v14 forKey:v17];
+    [standardUserDefaults setObject:v14 forKey:v17];
 
-    if (v12 == 200 && [v9 length])
+    if (v12 == 200 && [dataCopy length])
     {
       v25 = 0;
-      v18 = [(TSURemotePropertyList *)self deserializePropertyListData:v9 error:&v25];
+      v18 = [(TSURemotePropertyList *)self deserializePropertyListData:dataCopy error:&v25];
       v19 = v25;
 
       if (v18 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
         [(TSURemotePropertyList *)self processPropertyList:v18];
-        v20 = [v8 allHeaderFields];
-        v21 = [v20 objectForKey:@"Etag"];
+        allHeaderFields = [responseCopy allHeaderFields];
+        v21 = [allHeaderFields objectForKey:@"Etag"];
 
         v22 = objc_opt_class();
         v23 = NSStringFromClass(v22);
         v24 = [v23 stringByAppendingString:@"ETag"];
-        [v13 setObject:v21 forKey:v24];
+        [standardUserDefaults setObject:v21 forKey:v24];
 
         self->_didUpdateAtLeastOnce = 1;
       }
@@ -383,17 +383,17 @@
         sub_2771158C4();
       }
 
-      v10 = v19;
+      errorCopy = v19;
     }
   }
 }
 
-- (void)processPropertyList:(id)a3
+- (void)processPropertyList:(id)list
 {
-  v4 = a3;
-  v5 = v4;
+  listCopy = list;
+  v5 = listCopy;
   localURL = self->_localURL;
-  if (localURL && ([v4 writeToURL:localURL atomically:0] & 1) == 0 && TSUDefaultCat_init_token != -1)
+  if (localURL && ([listCopy writeToURL:localURL atomically:0] & 1) == 0 && TSUDefaultCat_init_token != -1)
   {
     sub_2771158EC();
   }

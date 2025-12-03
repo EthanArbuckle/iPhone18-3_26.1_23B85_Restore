@@ -1,23 +1,23 @@
 @interface CMRotationRateData
 - (CMRotationRate)rotationRate;
-- (CMRotationRateData)initWithCoder:(id)a3;
-- (CMRotationRateData)initWithRotationRate:(id)a3 andTimestamp:(double)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CMRotationRateData)initWithCoder:(id)coder;
+- (CMRotationRateData)initWithRotationRate:(id)rate andTimestamp:(double)timestamp;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CMRotationRateData
 
-- (CMRotationRateData)initWithRotationRate:(id)a3 andTimestamp:(double)a4
+- (CMRotationRateData)initWithRotationRate:(id)rate andTimestamp:(double)timestamp
 {
-  var2 = a3.var2;
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var2 = rate.var2;
+  var1 = rate.var1;
+  var0 = rate.var0;
   v15.receiver = self;
   v15.super_class = CMRotationRateData;
-  v7 = [(CMLogItem *)&v15 initWithTimestamp:a4];
+  v7 = [(CMLogItem *)&v15 initWithTimestamp:timestamp];
   if (v7)
   {
     v8 = [CMRotationRateDataInternal alloc];
@@ -30,7 +30,7 @@
   return v7;
 }
 
-- (CMRotationRateData)initWithCoder:(id)a3
+- (CMRotationRateData)initWithCoder:(id)coder
 {
   v21.receiver = self;
   v21.super_class = CMRotationRateData;
@@ -39,11 +39,11 @@
   {
     v5 = [CMRotationRateDataInternal alloc];
     v4->_internal = v5;
-    objc_msgSend_decodeDoubleForKey_(a3, v6, @"rotation_x");
+    objc_msgSend_decodeDoubleForKey_(coder, v6, @"rotation_x");
     v8 = v7;
-    objc_msgSend_decodeDoubleForKey_(a3, v9, @"rotation_y");
+    objc_msgSend_decodeDoubleForKey_(coder, v9, @"rotation_y");
     v11 = v10;
-    objc_msgSend_decodeDoubleForKey_(a3, v12, @"rotation_z");
+    objc_msgSend_decodeDoubleForKey_(coder, v12, @"rotation_z");
     HIDWORD(v13) = 1066524486;
     v14 = v8 / 0.0174532924;
     v15 = v11 / 0.0174532924;
@@ -57,7 +57,7 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v11.receiver = self;
   v11.super_class = CMRotationRateData;
@@ -65,9 +65,9 @@
   internal = self->_internal;
   v6 = (internal[3] * 0.017453);
   v7 = (internal[4] * 0.017453);
-  objc_msgSend_encodeDouble_forKey_(a3, v8, @"rotation_x", (internal[2] * 0.017453));
-  objc_msgSend_encodeDouble_forKey_(a3, v9, @"rotation_y", v6);
-  objc_msgSend_encodeDouble_forKey_(a3, v10, @"rotation_z", v7);
+  objc_msgSend_encodeDouble_forKey_(coder, v8, @"rotation_x", (internal[2] * 0.017453));
+  objc_msgSend_encodeDouble_forKey_(coder, v9, @"rotation_y", v6);
+  objc_msgSend_encodeDouble_forKey_(coder, v10, @"rotation_z", v7);
 }
 
 - (void)dealloc
@@ -77,14 +77,14 @@
   [(CMLogItem *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = CMRotationRateData;
   v6 = [(CMLogItem *)&v8 copyWithZone:?];
   if (v6)
   {
-    v6[2] = objc_msgSend_copyWithZone_(self->_internal, v5, a3);
+    v6[2] = objc_msgSend_copyWithZone_(self->_internal, v5, zone);
   }
 
   return v6;

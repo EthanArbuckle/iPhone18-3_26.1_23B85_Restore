@@ -1,17 +1,17 @@
 @interface _SBUISystemApertureCAPackageView
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (double)intrinsicPackageSize;
-- (uint64_t)setIntrinsicPackageSize:(double)a3;
+- (uint64_t)setIntrinsicPackageSize:(double)size;
 @end
 
 @implementation _SBUISystemApertureCAPackageView
 
 - (double)intrinsicPackageSize
 {
-  if (a1)
+  if (self)
   {
-    return *(a1 + 480);
+    return *(self + 480);
   }
 
   else
@@ -20,18 +20,18 @@
   }
 }
 
-- (uint64_t)setIntrinsicPackageSize:(double)a3
+- (uint64_t)setIntrinsicPackageSize:(double)size
 {
   if (result)
   {
     *(result + 480) = a2;
-    *(result + 488) = a3;
+    *(result + 488) = size;
   }
 
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   if (self)
   {
@@ -51,7 +51,7 @@
     v14 = v4;
     v12.receiver = self;
     v12.super_class = _SBUISystemApertureCAPackageView;
-    [(BSUICAPackageView *)&v12 sizeThatFits:a3.width, a3.height, height];
+    [(BSUICAPackageView *)&v12 sizeThatFits:fits.width, fits.height, height];
     width = v8;
     height = v9;
   }

@@ -1,6 +1,6 @@
 @interface AMSUserNotificationSettingsItem
-- (AMSUserNotificationSettingsItem)initWithIdentifier:(id)a3 dictionaryRepresentation:(id)a4;
-- (AMSUserNotificationSettingsItem)initWithIdentifier:(id)a3 enabled:(BOOL)a4;
+- (AMSUserNotificationSettingsItem)initWithIdentifier:(id)identifier dictionaryRepresentation:(id)representation;
+- (AMSUserNotificationSettingsItem)initWithIdentifier:(id)identifier enabled:(BOOL)enabled;
 - (NSDictionary)dictionaryRepresentation;
 - (NSDictionary)updateDictionary;
 - (id)description;
@@ -8,21 +8,21 @@
 
 @implementation AMSUserNotificationSettingsItem
 
-- (AMSUserNotificationSettingsItem)initWithIdentifier:(id)a3 dictionaryRepresentation:(id)a4
+- (AMSUserNotificationSettingsItem)initWithIdentifier:(id)identifier dictionaryRepresentation:(id)representation
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  representationCopy = representation;
   v16.receiver = self;
   v16.super_class = AMSUserNotificationSettingsItem;
   v9 = [(AMSUserNotificationSettingsItem *)&v16 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_identifier, a3);
-    v11 = [v8 valueForKeyPath:@"data"];
+    objc_storeStrong(&v9->_identifier, identifier);
+    v11 = [representationCopy valueForKeyPath:@"data"];
     if (objc_opt_respondsToSelector())
     {
-      v12 = [v8 valueForKeyPath:@"data"];
+      v12 = [representationCopy valueForKeyPath:@"data"];
       v10->_enabled = [v12 BOOLValue];
     }
 
@@ -31,10 +31,10 @@
       v10->_enabled = 0;
     }
 
-    v13 = [v8 valueForKeyPath:@"dataUpdated"];
+    v13 = [representationCopy valueForKeyPath:@"dataUpdated"];
     if (objc_opt_respondsToSelector())
     {
-      v14 = [v8 valueForKeyPath:@"dataUpdated"];
+      v14 = [representationCopy valueForKeyPath:@"dataUpdated"];
       v10->_userChanged = [v14 BOOLValue];
     }
 
@@ -47,17 +47,17 @@
   return v10;
 }
 
-- (AMSUserNotificationSettingsItem)initWithIdentifier:(id)a3 enabled:(BOOL)a4
+- (AMSUserNotificationSettingsItem)initWithIdentifier:(id)identifier enabled:(BOOL)enabled
 {
-  v7 = a3;
+  identifierCopy = identifier;
   v11.receiver = self;
   v11.super_class = AMSUserNotificationSettingsItem;
   v8 = [(AMSUserNotificationSettingsItem *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_identifier, a3);
-    v9->_enabled = a4;
+    objc_storeStrong(&v8->_identifier, identifier);
+    v9->_enabled = enabled;
   }
 
   return v9;
@@ -67,8 +67,8 @@
 {
   v10[3] = *MEMORY[0x1E69E9840];
   v9[0] = @"itemId";
-  v3 = [(AMSUserNotificationSettingsItem *)self identifier];
-  v10[0] = v3;
+  identifier = [(AMSUserNotificationSettingsItem *)self identifier];
+  v10[0] = identifier;
   v9[1] = @"value";
   v4 = [MEMORY[0x1E696AD98] numberWithBool:{-[AMSUserNotificationSettingsItem isEnabled](self, "isEnabled")}];
   v10[1] = v4;

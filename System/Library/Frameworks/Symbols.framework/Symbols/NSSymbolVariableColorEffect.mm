@@ -7,14 +7,14 @@
 - (NSSymbolVariableColorEffect)effectWithNonReversing;
 - (NSSymbolVariableColorEffect)effectWithReversing;
 - (id)_rbOptionsMutable;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation NSSymbolVariableColorEffect
 
 + (NSSymbolVariableColorEffect)effect
 {
-  v4.receiver = a1;
+  v4.receiver = self;
   v4.super_class = &OBJC_METACLASS___NSSymbolVariableColorEffect;
   v2 = objc_msgSendSuper2(&v4, sel__effectWithType_, 1);
   v2[2] = 0;
@@ -74,7 +74,7 @@
 
 - (id)_rbOptionsMutable
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v4 = self->_fillStyle == 1;
   if (self->_fillStyle == 1)
   {
@@ -102,16 +102,16 @@
   }
 
   v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v6];
-  [v3 setObject:v7 forKeyedSubscript:*MEMORY[0x1E69C7270]];
+  [dictionary setObject:v7 forKeyedSubscript:*MEMORY[0x1E69C7270]];
 
-  return v3;
+  return dictionary;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5.receiver = self;
   v5.super_class = NSSymbolVariableColorEffect;
-  result = [(NSSymbolEffect *)&v5 copyWithZone:a3];
+  result = [(NSSymbolEffect *)&v5 copyWithZone:zone];
   *(result + 2) = self->_inactiveStyle;
   *(result + 3) = self->_playbackStyle;
   *(result + 4) = self->_fillStyle;

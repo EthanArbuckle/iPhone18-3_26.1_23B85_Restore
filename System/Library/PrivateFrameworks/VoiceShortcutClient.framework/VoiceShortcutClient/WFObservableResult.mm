@@ -1,10 +1,10 @@
 @interface WFObservableResult
 - (CGSize)glyphSize;
-- (WFObservableResult)initWithValueType:(Class)a3 glyphSize:(CGSize)a4;
-- (void)addResultObserver:(id)a3;
-- (void)databaseDidChange:(id)a3;
+- (WFObservableResult)initWithValueType:(Class)type glyphSize:(CGSize)size;
+- (void)addResultObserver:(id)observer;
+- (void)databaseDidChange:(id)change;
 - (void)dealloc;
-- (void)removeResultObserver:(id)a3;
+- (void)removeResultObserver:(id)observer;
 - (void)startConnectionIfNecessary;
 - (void)stopConnection;
 @end
@@ -20,13 +20,13 @@
   return result;
 }
 
-- (void)databaseDidChange:(id)a3
+- (void)databaseDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v5 = [WFCoreDataChangeNotification alloc];
-  v6 = [v4 userInfo];
+  userInfo = [changeCopy userInfo];
 
-  v7 = [(WFCoreDataChangeNotification *)v5 initWithDictionaryRepresentation:v6];
+  v7 = [(WFCoreDataChangeNotification *)v5 initWithDictionaryRepresentation:userInfo];
   [(WFObservableResult *)self handleChangeNotification:v7];
 }
 
@@ -34,8 +34,8 @@
 {
   if ([(WFObservableResult *)self observingDistributedNotifications])
   {
-    v3 = [MEMORY[0x1E696ABB0] defaultCenter];
-    [v3 removeObserver:self name:@"com.apple.shortcuts.WFCoreDataDatabaseContextDidSaveNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696ABB0] defaultCenter];
+    [defaultCenter removeObserver:self name:@"com.apple.shortcuts.WFCoreDataDatabaseContextDidSaveNotification" object:0];
 
     [(WFObservableResult *)self setObservingDistributedNotifications:0];
   }
@@ -43,30 +43,30 @@
 
 - (void)startConnectionIfNecessary
 {
-  v3 = [(WFObservableResult *)self serialQueue];
-  dispatch_assert_queue_V2(v3);
+  serialQueue = [(WFObservableResult *)self serialQueue];
+  dispatch_assert_queue_V2(serialQueue);
 
   if (![(WFObservableResult *)self observingDistributedNotifications])
   {
-    v4 = [MEMORY[0x1E696ABB0] defaultCenter];
-    [v4 addObserver:self selector:sel_databaseDidChange_ name:@"com.apple.shortcuts.WFCoreDataDatabaseContextDidSaveNotification" object:0 suspensionBehavior:4];
+    defaultCenter = [MEMORY[0x1E696ABB0] defaultCenter];
+    [defaultCenter addObserver:self selector:sel_databaseDidChange_ name:@"com.apple.shortcuts.WFCoreDataDatabaseContextDidSaveNotification" object:0 suspensionBehavior:4];
 
     [(WFObservableResult *)self setObservingDistributedNotifications:1];
   }
 }
 
-- (void)removeResultObserver:(id)a3
+- (void)removeResultObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(WFObservableResult *)self serialQueue];
+  observerCopy = observer;
+  serialQueue = [(WFObservableResult *)self serialQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __43__WFObservableResult_removeResultObserver___block_invoke;
   v7[3] = &unk_1E7B02180;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = observerCopy;
+  v6 = observerCopy;
+  dispatch_sync(serialQueue, v7);
 }
 
 void __43__WFObservableResult_removeResultObserver___block_invoke(uint64_t a1)
@@ -85,18 +85,18 @@ void __43__WFObservableResult_removeResultObserver___block_invoke(uint64_t a1)
   }
 }
 
-- (void)addResultObserver:(id)a3
+- (void)addResultObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(WFObservableResult *)self serialQueue];
+  observerCopy = observer;
+  serialQueue = [(WFObservableResult *)self serialQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __40__WFObservableResult_addResultObserver___block_invoke;
   v7[3] = &unk_1E7B02180;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = observerCopy;
+  v6 = observerCopy;
+  dispatch_sync(serialQueue, v7);
 }
 
 uint64_t __40__WFObservableResult_addResultObserver___block_invoke(uint64_t a1)
@@ -117,14 +117,14 @@ uint64_t __40__WFObservableResult_addResultObserver___block_invoke(uint64_t a1)
   [(WFObservableResult *)&v3 dealloc];
 }
 
-- (WFObservableResult)initWithValueType:(Class)a3 glyphSize:(CGSize)a4
+- (WFObservableResult)initWithValueType:(Class)type glyphSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  if (([(objc_class *)a3 conformsToProtocol:&unk_1F2933888]& 1) == 0)
+  height = size.height;
+  width = size.width;
+  if (([(objc_class *)type conformsToProtocol:&unk_1F2933888]& 1) == 0)
   {
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"WFObservableResult.m" lineNumber:204 description:@"Value type must be secure-codable"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFObservableResult.m" lineNumber:204 description:@"Value type must be secure-codable"];
   }
 
   v22.receiver = self;
@@ -133,7 +133,7 @@ uint64_t __40__WFObservableResult_addResultObserver___block_invoke(uint64_t a1)
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_valueType, a3);
+    objc_storeStrong(&v9->_valueType, type);
     v10->_glyphSize.width = width;
     v10->_glyphSize.height = height;
     v11 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
@@ -146,9 +146,9 @@ uint64_t __40__WFObservableResult_addResultObserver___block_invoke(uint64_t a1)
     observerNotificationQueue = v10->_observerNotificationQueue;
     v10->_observerNotificationQueue = v15;
 
-    v17 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     observers = v10->_observers;
-    v10->_observers = v17;
+    v10->_observers = weakObjectsHashTable;
 
     v19 = v10;
   }

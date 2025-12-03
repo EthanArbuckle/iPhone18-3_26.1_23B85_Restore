@@ -1,14 +1,14 @@
 @interface FCAssetTransformer
-- (BOOL)transformAssetDataFromFilePath:(id)a3 toFilePath:(id)a4 error:(id *)a5;
+- (BOOL)transformAssetDataFromFilePath:(id)path toFilePath:(id)filePath error:(id *)error;
 @end
 
 @implementation FCAssetTransformer
 
-- (BOOL)transformAssetDataFromFilePath:(id)a3 toFilePath:(id)a4 error:(id *)a5
+- (BOOL)transformAssetDataFromFilePath:(id)path toFilePath:(id)filePath error:(id *)error
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  pathCopy = path;
+  filePathCopy = filePath;
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Abstract method"];

@@ -3,21 +3,21 @@
 - (CGRect)renderedBounds;
 - (CPGraphicObject)init;
 - (void)dealloc;
-- (void)setUser:(id)a3;
+- (void)setUser:(id)user;
 @end
 
 @implementation CPGraphicObject
 
-- (void)setUser:(id)a3
+- (void)setUser:(id)user
 {
-  if (self->user != a3)
+  if (self->user != user)
   {
-    if (a3)
+    if (user)
     {
-      [a3 incrementUsedGraphicCount];
+      [user incrementUsedGraphicCount];
     }
 
-    self->user = a3;
+    self->user = user;
   }
 }
 

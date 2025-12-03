@@ -1,70 +1,70 @@
 @interface SBSwitcherShelfViewController
-- (BOOL)_dismissShelfIfNeededWithLocation:(CGPoint)a3 window:(id)a4;
-- (BOOL)switcherContentController:(id)a3 supportsTitleItemsForAppLayout:(id)a4;
-- (BOOL)transientUIHandledTouch:(id)a3 withSystemGestureRecognizer:(id)a4;
-- (CGRect)_frameForCenterItemWithConfiguration:(int64_t)a3 interfaceOrientation:(int64_t)a4;
-- (CGRect)_frameForFloatingAppLayoutInInterfaceOrientation:(int64_t)a3 floatingConfiguration:(int64_t)a4;
-- (CGRect)_frameForItemWithRole:(int64_t)a3 inMainAppLayout:(id)a4 interfaceOrientation:(int64_t)a5;
-- (CGRect)itemFrameForAppLayout:(id)a3;
+- (BOOL)_dismissShelfIfNeededWithLocation:(CGPoint)location window:(id)window;
+- (BOOL)switcherContentController:(id)controller supportsTitleItemsForAppLayout:(id)layout;
+- (BOOL)transientUIHandledTouch:(id)touch withSystemGestureRecognizer:(id)recognizer;
+- (CGRect)_frameForCenterItemWithConfiguration:(int64_t)configuration interfaceOrientation:(int64_t)orientation;
+- (CGRect)_frameForFloatingAppLayoutInInterfaceOrientation:(int64_t)orientation floatingConfiguration:(int64_t)configuration;
+- (CGRect)_frameForItemWithRole:(int64_t)role inMainAppLayout:(id)layout interfaceOrientation:(int64_t)orientation;
+- (CGRect)itemFrameForAppLayout:(id)layout;
 - (CGRect)presentationTargetFrame;
-- (CGRect)switcherContentController:(id)a3 frameForCenterItemWithConfiguration:(int64_t)a4 interfaceOrientation:(int64_t)a5;
-- (CGRect)switcherContentController:(id)a3 frameForFloatingAppLayoutInInterfaceOrientation:(int64_t)a4 floatingConfiguration:(int64_t)a5;
-- (CGRect)switcherContentController:(id)a3 frameForItemWithRole:(int64_t)a4 inMainAppLayout:(id)a5 interfaceOrientation:(int64_t)a6;
-- (SBSwitcherShelfViewController)initWithShelf:(id)a3 dataSource:(id)a4 delegate:(id)a5;
+- (CGRect)switcherContentController:(id)controller frameForCenterItemWithConfiguration:(int64_t)configuration interfaceOrientation:(int64_t)orientation;
+- (CGRect)switcherContentController:(id)controller frameForFloatingAppLayoutInInterfaceOrientation:(int64_t)orientation floatingConfiguration:(int64_t)configuration;
+- (CGRect)switcherContentController:(id)controller frameForItemWithRole:(int64_t)role inMainAppLayout:(id)layout interfaceOrientation:(int64_t)orientation;
+- (SBSwitcherShelfViewController)initWithShelf:(id)shelf dataSource:(id)source delegate:(id)delegate;
 - (SBSwitcherShelfViewControllerDataSource)dataSource;
 - (SBSwitcherShelfViewControllerDelegate)delegate;
 - (id)_appLayouts;
-- (id)_transitionEventForContext:(id)a3 identifier:(id)a4 phase:(unint64_t)a5 animated:(BOOL)a6;
+- (id)_transitionEventForContext:(id)context identifier:(id)identifier phase:(unint64_t)phase animated:(BOOL)animated;
 - (id)_windowScene;
-- (id)shelfLiveContentOverlayCoordinator:(id)a3 liveViewForAppLayout:(id)a4;
-- (id)windowManagementContextForSwitcherContentController:(id)a3;
-- (int64_t)nextDisplayItemInteractionTimeForSwitcherContentController:(id)a3;
-- (void)_dockHeightWillChange:(id)a3;
-- (void)_performNewWindowRequestForBundleIdentifier:(id)a3;
-- (void)_performSwitcherTransitionRequest:(id)a3;
+- (id)shelfLiveContentOverlayCoordinator:(id)coordinator liveViewForAppLayout:(id)layout;
+- (id)windowManagementContextForSwitcherContentController:(id)controller;
+- (int64_t)nextDisplayItemInteractionTimeForSwitcherContentController:(id)controller;
+- (void)_dockHeightWillChange:(id)change;
+- (void)_performNewWindowRequestForBundleIdentifier:(id)identifier;
+- (void)_performSwitcherTransitionRequest:(id)request;
 - (void)_rebuildCachedAppLayouts;
-- (void)assistantWillAppear:(id)a3 windowScene:(id)a4;
-- (void)clientDidResetForUserAttention:(id)a3 withEvent:(id)a4;
+- (void)assistantWillAppear:(id)appear windowScene:(id)scene;
+- (void)clientDidResetForUserAttention:(id)attention withEvent:(id)event;
 - (void)dealloc;
-- (void)dismissShelfWithTransitionSource:(int64_t)a3;
-- (void)layoutStateTransitionCoordinator:(id)a3 transitionDidBeginWithTransitionContext:(id)a4;
-- (void)layoutStateTransitionCoordinator:(id)a3 transitionDidEndWithTransitionContext:(id)a4;
-- (void)layoutStateTransitionCoordinator:(id)a3 transitionWillEndWithTransitionContext:(id)a4;
+- (void)dismissShelfWithTransitionSource:(int64_t)source;
+- (void)layoutStateTransitionCoordinator:(id)coordinator transitionDidBeginWithTransitionContext:(id)context;
+- (void)layoutStateTransitionCoordinator:(id)coordinator transitionDidEndWithTransitionContext:(id)context;
+- (void)layoutStateTransitionCoordinator:(id)coordinator transitionWillEndWithTransitionContext:(id)context;
 - (void)loadView;
-- (void)performKeyboardShortcutAction:(int64_t)a3;
-- (void)performTransitionWithContext:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)setContentOptions:(unint64_t)a3;
-- (void)setContentOrientation:(int64_t)a3;
-- (void)setHomeAffordancePortalView:(id)a3;
-- (void)setIgnoredDisplayItems:(id)a3;
-- (void)setPresented:(BOOL)a3 withTargetFrame:(CGRect)a4 style:(unint64_t)a5 completion:(id)a6;
-- (void)switcherContentController:(id)a3 deletedDisplayItem:(id)a4 inAppLayout:(id)a5 forReason:(int64_t)a6;
-- (void)transientUI:(id)a3 wasIndirectPannedToDismissFromGestureRecognizer:(id)a4;
+- (void)performKeyboardShortcutAction:(int64_t)action;
+- (void)performTransitionWithContext:(id)context animated:(BOOL)animated completion:(id)completion;
+- (void)setContentOptions:(unint64_t)options;
+- (void)setContentOrientation:(int64_t)orientation;
+- (void)setHomeAffordancePortalView:(id)view;
+- (void)setIgnoredDisplayItems:(id)items;
+- (void)setPresented:(BOOL)presented withTargetFrame:(CGRect)frame style:(unint64_t)style completion:(id)completion;
+- (void)switcherContentController:(id)controller deletedDisplayItem:(id)item inAppLayout:(id)layout forReason:(int64_t)reason;
+- (void)transientUI:(id)i wasIndirectPannedToDismissFromGestureRecognizer:(id)recognizer;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation SBSwitcherShelfViewController
 
-- (SBSwitcherShelfViewController)initWithShelf:(id)a3 dataSource:(id)a4 delegate:(id)a5
+- (SBSwitcherShelfViewController)initWithShelf:(id)shelf dataSource:(id)source delegate:(id)delegate
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  shelfCopy = shelf;
+  sourceCopy = source;
+  delegateCopy = delegate;
   v30.receiver = self;
   v30.super_class = SBSwitcherShelfViewController;
   v12 = [(SBSwitcherShelfViewController *)&v30 initWithNibName:0 bundle:0];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_shelf, a3);
-    objc_storeWeak(&v13->_dataSource, v10);
-    objc_storeWeak(&v13->_delegate, v11);
+    objc_storeStrong(&v12->_shelf, shelf);
+    objc_storeWeak(&v13->_dataSource, sourceCopy);
+    objc_storeWeak(&v13->_delegate, delegateCopy);
     v14 = SBAppLayoutGenericAppLayoutWithConfiguration(3);
-    [v10 switcherShelfViewController:v13 frameForItemWithRole:1 inMainAppLayout:v14 interfaceOrientation:3];
+    [sourceCopy switcherShelfViewController:v13 frameForItemWithRole:1 inMainAppLayout:v14 interfaceOrientation:3];
     v13->_halfHalfSize.width = v15;
     v13->_halfHalfSize.height = v16;
 
@@ -133,8 +133,8 @@
   [(SBSwitcherShelfViewController *)self _rebuildCachedAppLayouts];
   if (!self->_activePresentationAndDismissalAnimations && !self->_presented)
   {
-    v3 = [(SBFluidSwitcherViewController *)self->_contentViewController view];
-    [v3 setHidden:1];
+    view = [(SBFluidSwitcherViewController *)self->_contentViewController view];
+    [view setHidden:1];
   }
 }
 
@@ -143,8 +143,8 @@
   v39.receiver = self;
   v39.super_class = SBSwitcherShelfViewController;
   [(SBSwitcherShelfViewController *)&v39 viewWillLayoutSubviews];
-  v3 = [(SBSwitcherShelfViewController *)self view];
-  [v3 bounds];
+  view = [(SBSwitcherShelfViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -153,20 +153,20 @@
   UIRectGetCenter();
   v13 = v12;
   v15 = v14;
-  v16 = [(SBFluidSwitcherViewController *)self->_contentViewController view];
-  [v16 setBounds:{v5, v7, v9, v11}];
+  view2 = [(SBFluidSwitcherViewController *)self->_contentViewController view];
+  [view2 setBounds:{v5, v7, v9, v11}];
 
-  v17 = [(SBFluidSwitcherViewController *)self->_contentViewController view];
-  [v17 setCenter:{v13, v15}];
+  view3 = [(SBFluidSwitcherViewController *)self->_contentViewController view];
+  [view3 setCenter:{v13, v15}];
 
   homeAffordancePortalView = self->_homeAffordancePortalView;
   if (homeAffordancePortalView)
   {
-    v19 = [(SBPortalView *)homeAffordancePortalView sourceView];
-    v20 = v19;
-    if (v19)
+    sourceView = [(SBPortalView *)homeAffordancePortalView sourceView];
+    v20 = sourceView;
+    if (sourceView)
     {
-      [v19 bounds];
+      [sourceView bounds];
       v22 = v21;
       v24 = v23;
       v26 = v25;
@@ -174,8 +174,8 @@
       [v20 center];
       v30 = v29;
       v32 = v31;
-      v33 = [(SBSwitcherShelfViewController *)self view];
-      [v20 convertPoint:v33 toView:{v30, v32}];
+      view4 = [(SBSwitcherShelfViewController *)self view];
+      [v20 convertPoint:view4 toView:{v30, v32}];
       v35 = v34;
       v37 = v36;
 
@@ -183,8 +183,8 @@
       [(SBPortalView *)self->_homeAffordancePortalView setCenter:v35, v37];
     }
 
-    v38 = [(SBSwitcherShelfViewController *)self view];
-    [v38 bringSubviewToFront:self->_homeAffordancePortalView];
+    view5 = [(SBSwitcherShelfViewController *)self view];
+    [view5 bringSubviewToFront:self->_homeAffordancePortalView];
   }
 }
 
@@ -194,69 +194,69 @@
   v9.receiver = self;
   v9.super_class = SBSwitcherShelfViewController;
   [(SBSwitcherShelfViewController *)&v9 viewDidLayoutSubviews];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v10 = @"SBSwitcherShelfHeight";
   v4 = MEMORY[0x277CCABB0];
-  v5 = [(SBSwitcherShelfViewController *)self view];
-  [v5 bounds];
+  view = [(SBSwitcherShelfViewController *)self view];
+  [view bounds];
   v7 = [v4 numberWithDouble:v6];
   v11[0] = v7;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:&v10 count:1];
-  [v3 postNotificationName:@"SBSwitcherShelfHeightDidChangeNotification" object:self userInfo:v8];
+  [defaultCenter postNotificationName:@"SBSwitcherShelfHeightDidChangeNotification" object:self userInfo:v8];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v7.receiver = self;
   v7.super_class = SBSwitcherShelfViewController;
-  [(SBSwitcherShelfViewController *)&v7 viewWillAppear:a3];
-  v4 = [(SBSwitcherShelfViewController *)self _windowScene];
-  v5 = [v4 transientUIInteractionManager];
+  [(SBSwitcherShelfViewController *)&v7 viewWillAppear:appear];
+  _windowScene = [(SBSwitcherShelfViewController *)self _windowScene];
+  transientUIInteractionManager = [_windowScene transientUIInteractionManager];
 
-  [v5 registerParticipantForTapToDismiss:self];
-  [v5 registerParticipantForIndirectPanToDismiss:self];
+  [transientUIInteractionManager registerParticipantForTapToDismiss:self];
+  [transientUIInteractionManager registerParticipantForIndirectPanToDismiss:self];
   [(SBAttentionAwarenessClient *)self->_idleTouchAwarenessClient setEnabled:1];
-  v6 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v6 addObserver:self selector:sel__dockHeightWillChange_ name:@"SBFloatingDockControllerHeightWillChangeNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__dockHeightWillChange_ name:@"SBFloatingDockControllerHeightWillChangeNotification" object:0];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v11[1] = *MEMORY[0x277D85DE8];
   v9.receiver = self;
   v9.super_class = SBSwitcherShelfViewController;
-  [(SBSwitcherShelfViewController *)&v9 viewWillDisappear:a3];
-  v4 = [(SBSwitcherShelfViewController *)self _windowScene];
-  v5 = [v4 transientUIInteractionManager];
+  [(SBSwitcherShelfViewController *)&v9 viewWillDisappear:disappear];
+  _windowScene = [(SBSwitcherShelfViewController *)self _windowScene];
+  transientUIInteractionManager = [_windowScene transientUIInteractionManager];
 
-  [v5 unregisterParticipantForTapToDismiss:self];
-  [v5 unregisterParticipantForIndirectPanToDismiss:self];
+  [transientUIInteractionManager unregisterParticipantForTapToDismiss:self];
+  [transientUIInteractionManager unregisterParticipantForIndirectPanToDismiss:self];
   [(SBAttentionAwarenessClient *)self->_idleTouchAwarenessClient setEnabled:0];
-  v6 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v10 = @"SBSwitcherShelfHeight";
   v11[0] = &unk_283372458;
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:&v10 count:1];
-  [v6 postNotificationName:@"SBSwitcherShelfHeightDidChangeNotification" object:self userInfo:v7];
+  [defaultCenter postNotificationName:@"SBSwitcherShelfHeightDidChangeNotification" object:self userInfo:v7];
 
-  v8 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v8 removeObserver:self];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 removeObserver:self];
 }
 
-- (void)setContentOptions:(unint64_t)a3
+- (void)setContentOptions:(unint64_t)options
 {
-  if (self->_contentOptions != a3)
+  if (self->_contentOptions != options)
   {
-    self->_contentOptions = a3;
+    self->_contentOptions = options;
     [(SBSwitcherShelfViewController *)self _rebuildCachedAppLayouts];
   }
 }
 
-- (void)setIgnoredDisplayItems:(id)a3
+- (void)setIgnoredDisplayItems:(id)items
 {
-  v6 = a3;
+  itemsCopy = items;
   if ((BSEqualSets() & 1) == 0)
   {
-    v4 = [v6 copy];
+    v4 = [itemsCopy copy];
     ignoredDisplayItems = self->_ignoredDisplayItems;
     self->_ignoredDisplayItems = v4;
 
@@ -264,20 +264,20 @@
   }
 }
 
-- (void)setContentOrientation:(int64_t)a3
+- (void)setContentOrientation:(int64_t)orientation
 {
-  v3 = a3;
-  if ((a3 - 1) <= 1 && [(SBSwitcherShelf *)self->_shelf displayMode]== 1)
+  orientationCopy = orientation;
+  if ((orientation - 1) <= 1 && [(SBSwitcherShelf *)self->_shelf displayMode]== 1)
   {
-    v3 = 3;
+    orientationCopy = 3;
   }
 
-  if (v3 != self->_contentOrientation)
+  if (orientationCopy != self->_contentOrientation)
   {
-    self->_contentOrientation = v3;
-    [(SBFluidSwitcherViewController *)self->_contentViewController setContentOrientation:v3];
-    v5 = [(SBSwitcherShelfViewController *)self view];
-    [v5 setNeedsLayout];
+    self->_contentOrientation = orientationCopy;
+    [(SBFluidSwitcherViewController *)self->_contentViewController setContentOrientation:orientationCopy];
+    view = [(SBSwitcherShelfViewController *)self view];
+    [view setNeedsLayout];
   }
 }
 
@@ -289,15 +289,15 @@
     return;
   }
 
-  v2 = self;
+  selfCopy = self;
   v3 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v4 = [(SBSwitcherShelfViewController *)v2 _appLayouts];
+  _appLayouts = [(SBSwitcherShelfViewController *)selfCopy _appLayouts];
   v5 = objc_opt_new();
   v117 = 0u;
   v118 = 0u;
   v119 = 0u;
   v120 = 0u;
-  v6 = v4;
+  v6 = _appLayouts;
   v7 = [v6 countByEnumeratingWithState:&v117 objects:v130 count:16];
   if (v7)
   {
@@ -316,8 +316,8 @@
         if (([v11 containsAnyItemFromSet:v5] & 1) == 0)
         {
           [v3 addObject:v11];
-          v12 = [v11 allItems];
-          [v5 addObjectsFromArray:v12];
+          allItems = [v11 allItems];
+          [v5 addObjectsFromArray:allItems];
         }
       }
 
@@ -328,11 +328,11 @@
   }
 
   v87 = objc_opt_new();
-  v13 = [(SBSwitcherShelf *)v2->_shelf displayMode];
-  v88 = v2;
-  if (v13 == 1)
+  displayMode = [(SBSwitcherShelf *)selfCopy->_shelf displayMode];
+  v88 = selfCopy;
+  if (displayMode == 1)
   {
-    contentOptions = v2->_contentOptions;
+    contentOptions = selfCopy->_contentOptions;
     v84 = v6;
     v76 = v3;
     v77 = v5;
@@ -364,8 +364,8 @@
               v100 = 0u;
               v97 = 0u;
               v98 = 0u;
-              v18 = [v17 leafAppLayouts];
-              v19 = [v18 countByEnumeratingWithState:&v97 objects:v125 count:16];
+              leafAppLayouts = [v17 leafAppLayouts];
+              v19 = [leafAppLayouts countByEnumeratingWithState:&v97 objects:v125 count:16];
               if (v19)
               {
                 v20 = v19;
@@ -376,24 +376,24 @@
                   {
                     if (*v98 != v21)
                     {
-                      objc_enumerationMutation(v18);
+                      objc_enumerationMutation(leafAppLayouts);
                     }
 
                     v23 = *(*(&v97 + 1) + 8 * k);
-                    v24 = [v23 allItems];
-                    v25 = [v24 firstObject];
-                    v26 = [v25 bundleIdentifier];
-                    v27 = [(SBSwitcherShelf *)v2->_shelf bundleIdentifier];
-                    v28 = [v26 isEqual:v27];
+                    allItems2 = [v23 allItems];
+                    firstObject = [allItems2 firstObject];
+                    bundleIdentifier = [firstObject bundleIdentifier];
+                    bundleIdentifier2 = [(SBSwitcherShelf *)selfCopy->_shelf bundleIdentifier];
+                    v28 = [bundleIdentifier isEqual:bundleIdentifier2];
 
-                    v2 = v88;
+                    selfCopy = v88;
                     if (v28 && ([v23 containsAnyItemFromSet:v88->_ignoredDisplayItems] & 1) == 0)
                     {
                       [v87 addObject:v23];
                     }
                   }
 
-                  v20 = [v18 countByEnumeratingWithState:&v97 objects:v125 count:16];
+                  v20 = [leafAppLayouts countByEnumeratingWithState:&v97 objects:v125 count:16];
                 }
 
                 while (v20);
@@ -411,7 +411,7 @@
       }
 
       v3 = v76;
-      contentOptions = v2->_contentOptions;
+      contentOptions = selfCopy->_contentOptions;
       v5 = v77;
     }
 
@@ -450,8 +450,8 @@
             v92 = 0u;
             v89 = 0u;
             v90 = 0u;
-            v34 = [v33 leafAppLayouts];
-            v35 = [v34 countByEnumeratingWithState:&v89 objects:v123 count:16];
+            leafAppLayouts2 = [v33 leafAppLayouts];
+            v35 = [leafAppLayouts2 countByEnumeratingWithState:&v89 objects:v123 count:16];
             if (v35)
             {
               v36 = v35;
@@ -462,15 +462,15 @@
                 {
                   if (*v90 != v37)
                   {
-                    objc_enumerationMutation(v34);
+                    objc_enumerationMutation(leafAppLayouts2);
                   }
 
                   v39 = *(*(&v89 + 1) + 8 * m);
-                  v40 = [v39 allItems];
-                  v41 = [v40 firstObject];
-                  v42 = [v41 bundleIdentifier];
-                  v43 = [(SBSwitcherShelf *)v88->_shelf bundleIdentifier];
-                  v44 = [v42 isEqual:v43];
+                  allItems3 = [v39 allItems];
+                  firstObject2 = [allItems3 firstObject];
+                  bundleIdentifier3 = [firstObject2 bundleIdentifier];
+                  bundleIdentifier4 = [(SBSwitcherShelf *)v88->_shelf bundleIdentifier];
+                  v44 = [bundleIdentifier3 isEqual:bundleIdentifier4];
 
                   if (v44 && ([v39 containsAnyItemFromSet:v88->_ignoredDisplayItems] & 1) == 0)
                   {
@@ -478,7 +478,7 @@
                   }
                 }
 
-                v36 = [v34 countByEnumeratingWithState:&v89 objects:v123 count:16];
+                v36 = [leafAppLayouts2 countByEnumeratingWithState:&v89 objects:v123 count:16];
               }
 
               while (v36);
@@ -503,9 +503,9 @@
     goto LABEL_92;
   }
 
-  if (!v13)
+  if (!displayMode)
   {
-    v14 = v2->_contentOptions;
+    v14 = selfCopy->_contentOptions;
     v77 = v5;
     if ((v14 & 2) != 0)
     {
@@ -541,7 +541,7 @@
         while (v47);
       }
 
-      v2 = v88;
+      selfCopy = v88;
       v14 = v88->_contentOptions;
       v5 = v77;
       if ((v14 & 1) == 0)
@@ -593,7 +593,7 @@ LABEL_15:
       while (v53);
     }
 
-    v2 = v88;
+    selfCopy = v88;
     v5 = v77;
     if ((v88->_contentOptions & 2) == 0)
     {
@@ -637,84 +637,84 @@ LABEL_82:
 LABEL_92:
     v3 = v76;
 
-    v2 = v88;
+    selfCopy = v88;
     v5 = v77;
   }
 
 LABEL_93:
-  if ((v2->_contentOptions & 4) != 0)
+  if ((selfCopy->_contentOptions & 4) != 0)
   {
     v63 = [SBDisplayItem alloc];
-    v64 = [(SBSwitcherShelf *)v2->_shelf bundleIdentifier];
-    v65 = [(SBDisplayItem *)v63 initWithType:6 bundleIdentifier:v64 uniqueIdentifier:&stru_283094718];
+    bundleIdentifier5 = [(SBSwitcherShelf *)selfCopy->_shelf bundleIdentifier];
+    v65 = [(SBDisplayItem *)v63 initWithType:6 bundleIdentifier:bundleIdentifier5 uniqueIdentifier:&stru_283094718];
 
-    v66 = [(UIViewController *)v2 _sbWindowScene];
-    v67 = [v66 layoutStateProvider];
-    v68 = [v67 layoutState];
-    v69 = [v68 displayOrdinal];
+    _sbWindowScene = [(UIViewController *)selfCopy _sbWindowScene];
+    layoutStateProvider = [_sbWindowScene layoutStateProvider];
+    layoutState = [layoutStateProvider layoutState];
+    displayOrdinal = [layoutState displayOrdinal];
 
     v70 = [SBAppLayout alloc];
     v71 = [MEMORY[0x277CCABB0] numberWithInteger:1];
     v121 = v71;
     v122 = v65;
     v72 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v122 forKeys:&v121 count:1];
-    v73 = v69;
-    v2 = v88;
+    v73 = displayOrdinal;
+    selfCopy = v88;
     v74 = [(SBAppLayout *)v70 initWithItemsForLayoutRoles:v72 configuration:1 environment:1 preferredDisplayOrdinal:v73];
 
     [v87 insertObject:v74 atIndex:0];
   }
 
-  objc_storeStrong(&v2->_appLayouts, v87);
-  v75 = [(SBFluidSwitcherViewController *)v2->_contentViewController viewIfLoaded];
+  objc_storeStrong(&selfCopy->_appLayouts, v87);
+  viewIfLoaded = [(SBFluidSwitcherViewController *)selfCopy->_contentViewController viewIfLoaded];
 
-  if (v75)
+  if (viewIfLoaded)
   {
-    [(SBFluidSwitcherViewController *)v2->_contentViewController noteAppLayoutsDidChange];
+    [(SBFluidSwitcherViewController *)selfCopy->_contentViewController noteAppLayoutsDidChange];
   }
 }
 
-- (void)setPresented:(BOOL)a3 withTargetFrame:(CGRect)a4 style:(unint64_t)a5 completion:(id)a6
+- (void)setPresented:(BOOL)presented withTargetFrame:(CGRect)frame style:(unint64_t)style completion:(id)completion
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v11 = a3;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  presentedCopy = presented;
   v32[1] = *MEMORY[0x277D85DE8];
-  v13 = a6;
-  v14 = v13;
-  if (self->_presented == v11)
+  completionCopy = completion;
+  v14 = completionCopy;
+  if (self->_presented == presentedCopy)
   {
-    if (v13)
+    if (completionCopy)
     {
-      (*(v13 + 2))(v13, 1, 0);
+      (*(completionCopy + 2))(completionCopy, 1, 0);
     }
   }
 
   else
   {
-    self->_presented = v11;
+    self->_presented = presentedCopy;
     self->_presentationTargetFrame.origin.x = x;
     self->_presentationTargetFrame.origin.y = y;
     self->_presentationTargetFrame.size.width = width;
     self->_presentationTargetFrame.size.height = height;
-    self->_animationStyle = a5;
-    if (v11)
+    self->_animationStyle = style;
+    if (presentedCopy)
     {
-      v15 = [(SBFluidSwitcherViewController *)self->_contentViewController view];
-      [v15 setHidden:0];
+      view = [(SBFluidSwitcherViewController *)self->_contentViewController view];
+      [view setHidden:0];
 
       v16 = 1;
     }
 
     else
     {
-      v17 = [MEMORY[0x277CCAB98] defaultCenter];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
       v31 = @"SBSwitcherShelfHeight";
       v32[0] = &unk_283372458;
       v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v32 forKeys:&v31 count:1];
-      [v17 postNotificationName:@"SBSwitcherShelfHeightDidChangeNotification" object:self userInfo:v18];
+      [defaultCenter postNotificationName:@"SBSwitcherShelfHeightDidChangeNotification" object:self userInfo:v18];
 
       v16 = 2;
     }
@@ -736,8 +736,8 @@ LABEL_93:
     v28 = v14;
     v21 = MEMORY[0x223D6F7F0](&v24);
     contentViewController = self->_contentViewController;
-    v23 = [v20 applicationContext];
-    [(SBFluidSwitcherViewController *)contentViewController performTransitionWithContext:v23 animated:1 completion:v21];
+    applicationContext = [v20 applicationContext];
+    [(SBFluidSwitcherViewController *)contentViewController performTransitionWithContext:applicationContext animated:1 completion:v21];
 
     [(SBShelfRootSwitcherModifier *)self->_rootModifier setAppearanceState:0];
     objc_destroyWeak(&v29);
@@ -779,20 +779,20 @@ uint64_t __79__SBSwitcherShelfViewController_setPresented_withTargetFrame_style_
   return MEMORY[0x2821F9730](v10);
 }
 
-- (void)performTransitionWithContext:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)performTransitionWithContext:(id)context animated:(BOOL)animated completion:(id)completion
 {
   v42[1] = *MEMORY[0x277D85DE8];
-  v7 = a5;
-  v8 = [a3 request];
-  v9 = [v8 applicationContext];
-  v10 = [v9 layoutState];
+  completionCopy = completion;
+  request = [context request];
+  applicationContext = [request applicationContext];
+  layoutState = [applicationContext layoutState];
 
   if ([(SBSwitcherShelf *)self->_shelf displayMode])
   {
     if ([(SBSwitcherShelf *)self->_shelf displayMode]!= 1 || [(SBSwitcherShelf *)self->_shelf layoutRole]!= 3)
     {
-      v12 = [v10 appLayout];
-      v13 = [v12 leafAppLayoutForRole:{-[SBSwitcherShelf layoutRole](self->_shelf, "layoutRole")}];
+      appLayout = [layoutState appLayout];
+      v13 = [appLayout leafAppLayoutForRole:{-[SBSwitcherShelf layoutRole](self->_shelf, "layoutRole")}];
 
       if (!v13)
       {
@@ -802,21 +802,21 @@ uint64_t __79__SBSwitcherShelfViewController_setPresented_withTargetFrame_style_
       goto LABEL_9;
     }
 
-    v11 = [v10 floatingAppLayout];
+    floatingAppLayout = [layoutState floatingAppLayout];
   }
 
   else
   {
-    v11 = [v10 appLayout];
+    floatingAppLayout = [layoutState appLayout];
   }
 
-  v13 = v11;
-  if (!v11)
+  v13 = floatingAppLayout;
+  if (!floatingAppLayout)
   {
 LABEL_10:
-    if (v7)
+    if (completionCopy)
     {
-      v7[2](v7, 1, 0);
+      completionCopy[2](completionCopy, 1, 0);
     }
 
     v14 = 0;
@@ -829,7 +829,7 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v34 = v8;
+  v34 = request;
   v14 = v13;
   v15 = (self->_contentOptions >> 2) & 1;
   contentViewController = self->_contentViewController;
@@ -869,29 +869,29 @@ LABEL_9:
     v30 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v33];
     v35 = v30;
     v31 = [MEMORY[0x277CBEA60] arrayWithObjects:&v35 count:1];
-    [(SBFluidSwitcherViewController *)v28 performAnimatedInsertionOfAppLayouts:v29 atIndexes:v31 completion:v7];
+    [(SBFluidSwitcherViewController *)v28 performAnimatedInsertionOfAppLayouts:v29 atIndexes:v31 completion:completionCopy];
   }
 
-  else if (v7)
+  else if (completionCopy)
   {
-    v7[2](v7, 1, 0);
+    completionCopy[2](completionCopy, 1, 0);
   }
 
-  v8 = v34;
+  request = v34;
 LABEL_20:
 }
 
-- (void)performKeyboardShortcutAction:(int64_t)a3
+- (void)performKeyboardShortcutAction:(int64_t)action
 {
-  if (a3 == 3)
+  if (action == 3)
   {
     [(SBSwitcherShelfViewController *)self dismissShelfForShelfTransition];
   }
 }
 
-- (CGRect)itemFrameForAppLayout:(id)a3
+- (CGRect)itemFrameForAppLayout:(id)layout
 {
-  [(SBFluidSwitcherViewController *)self->_contentViewController completedTransitionFrameForAppLayout:a3];
+  [(SBFluidSwitcherViewController *)self->_contentViewController completedTransitionFrameForAppLayout:layout];
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -899,12 +899,12 @@ LABEL_20:
   return result;
 }
 
-- (void)setHomeAffordancePortalView:(id)a3
+- (void)setHomeAffordancePortalView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   homeAffordancePortalView = self->_homeAffordancePortalView;
-  v11 = v5;
-  if (homeAffordancePortalView != v5)
+  v11 = viewCopy;
+  if (homeAffordancePortalView != viewCopy)
   {
     if (homeAffordancePortalView)
     {
@@ -913,71 +913,71 @@ LABEL_20:
       self->_homeAffordancePortalView = 0;
     }
 
-    objc_storeStrong(&self->_homeAffordancePortalView, a3);
+    objc_storeStrong(&self->_homeAffordancePortalView, view);
     v8 = self->_homeAffordancePortalView;
     if (v8)
     {
       [(SBPortalView *)v8 setPassesTouchesThrough:1];
-      v9 = [(SBSwitcherShelfViewController *)self view];
-      [v9 addSubview:self->_homeAffordancePortalView];
+      view = [(SBSwitcherShelfViewController *)self view];
+      [view addSubview:self->_homeAffordancePortalView];
 
-      v10 = [(SBSwitcherShelfViewController *)self view];
-      [v10 setNeedsLayout];
+      view2 = [(SBSwitcherShelfViewController *)self view];
+      [view2 setNeedsLayout];
     }
   }
 }
 
-- (void)layoutStateTransitionCoordinator:(id)a3 transitionDidBeginWithTransitionContext:(id)a4
+- (void)layoutStateTransitionCoordinator:(id)coordinator transitionDidBeginWithTransitionContext:(id)context
 {
-  v7 = a3;
-  v6 = a4;
+  coordinatorCopy = coordinator;
+  contextCopy = context;
   if (objc_opt_respondsToSelector())
   {
-    [(SBFluidSwitcherViewController *)self->_contentViewController layoutStateTransitionCoordinator:v7 transitionDidBeginWithTransitionContext:v6];
+    [(SBFluidSwitcherViewController *)self->_contentViewController layoutStateTransitionCoordinator:coordinatorCopy transitionDidBeginWithTransitionContext:contextCopy];
   }
 }
 
-- (void)layoutStateTransitionCoordinator:(id)a3 transitionWillEndWithTransitionContext:(id)a4
+- (void)layoutStateTransitionCoordinator:(id)coordinator transitionWillEndWithTransitionContext:(id)context
 {
-  v7 = a3;
-  v6 = a4;
+  coordinatorCopy = coordinator;
+  contextCopy = context;
   if (objc_opt_respondsToSelector())
   {
-    [(SBFluidSwitcherViewController *)self->_contentViewController layoutStateTransitionCoordinator:v7 transitionWillEndWithTransitionContext:v6];
+    [(SBFluidSwitcherViewController *)self->_contentViewController layoutStateTransitionCoordinator:coordinatorCopy transitionWillEndWithTransitionContext:contextCopy];
   }
 }
 
-- (void)layoutStateTransitionCoordinator:(id)a3 transitionDidEndWithTransitionContext:(id)a4
+- (void)layoutStateTransitionCoordinator:(id)coordinator transitionDidEndWithTransitionContext:(id)context
 {
-  v7 = a3;
-  v6 = a4;
+  coordinatorCopy = coordinator;
+  contextCopy = context;
   if (objc_opt_respondsToSelector())
   {
-    [(SBFluidSwitcherViewController *)self->_contentViewController layoutStateTransitionCoordinator:v7 transitionDidEndWithTransitionContext:v6];
+    [(SBFluidSwitcherViewController *)self->_contentViewController layoutStateTransitionCoordinator:coordinatorCopy transitionDidEndWithTransitionContext:contextCopy];
   }
 }
 
-- (int64_t)nextDisplayItemInteractionTimeForSwitcherContentController:(id)a3
+- (int64_t)nextDisplayItemInteractionTimeForSwitcherContentController:(id)controller
 {
-  v4 = [(SBSwitcherShelfViewController *)self dataSource];
-  v5 = [v4 nextDisplayItemInteractionTimeForSwitcherShelfViewController:self];
+  dataSource = [(SBSwitcherShelfViewController *)self dataSource];
+  v5 = [dataSource nextDisplayItemInteractionTimeForSwitcherShelfViewController:self];
 
   return v5;
 }
 
-- (CGRect)switcherContentController:(id)a3 frameForItemWithRole:(int64_t)a4 inMainAppLayout:(id)a5 interfaceOrientation:(int64_t)a6
+- (CGRect)switcherContentController:(id)controller frameForItemWithRole:(int64_t)role inMainAppLayout:(id)layout interfaceOrientation:(int64_t)orientation
 {
-  v13 = a5;
-  v14 = [(SBSwitcherShelf *)self->_shelf displayMode];
-  if (v14 == 1)
+  layoutCopy = layout;
+  displayMode = [(SBSwitcherShelf *)self->_shelf displayMode];
+  if (displayMode == 1)
   {
     SBRectWithSize();
     goto LABEL_5;
   }
 
-  if (!v14)
+  if (!displayMode)
   {
-    [(SBSwitcherShelfViewController *)self _frameForItemWithRole:a4 inMainAppLayout:v13 interfaceOrientation:a6];
+    [(SBSwitcherShelfViewController *)self _frameForItemWithRole:role inMainAppLayout:layoutCopy interfaceOrientation:orientation];
 LABEL_5:
     v6 = v15;
     v7 = v16;
@@ -996,17 +996,17 @@ LABEL_5:
   return result;
 }
 
-- (CGRect)switcherContentController:(id)a3 frameForFloatingAppLayoutInInterfaceOrientation:(int64_t)a4 floatingConfiguration:(int64_t)a5
+- (CGRect)switcherContentController:(id)controller frameForFloatingAppLayoutInInterfaceOrientation:(int64_t)orientation floatingConfiguration:(int64_t)configuration
 {
-  v8 = [(SBSwitcherShelf *)self->_shelf displayMode];
-  if (v8 == 1)
+  displayMode = [(SBSwitcherShelf *)self->_shelf displayMode];
+  if (displayMode == 1)
   {
     SBRectWithSize();
   }
 
-  else if (!v8)
+  else if (!displayMode)
   {
-    [(SBSwitcherShelfViewController *)self _frameForFloatingAppLayoutInInterfaceOrientation:a4 floatingConfiguration:a5];
+    [(SBSwitcherShelfViewController *)self _frameForFloatingAppLayoutInInterfaceOrientation:orientation floatingConfiguration:configuration];
   }
 
   result.size.height = v12;
@@ -1016,9 +1016,9 @@ LABEL_5:
   return result;
 }
 
-- (CGRect)switcherContentController:(id)a3 frameForCenterItemWithConfiguration:(int64_t)a4 interfaceOrientation:(int64_t)a5
+- (CGRect)switcherContentController:(id)controller frameForCenterItemWithConfiguration:(int64_t)configuration interfaceOrientation:(int64_t)orientation
 {
-  [(SBSwitcherShelfViewController *)self _frameForCenterItemWithConfiguration:a4 interfaceOrientation:a5];
+  [(SBSwitcherShelfViewController *)self _frameForCenterItemWithConfiguration:configuration interfaceOrientation:orientation];
   result.size.height = v8;
   result.size.width = v7;
   result.origin.y = v6;
@@ -1026,12 +1026,12 @@ LABEL_5:
   return result;
 }
 
-- (BOOL)switcherContentController:(id)a3 supportsTitleItemsForAppLayout:(id)a4
+- (BOOL)switcherContentController:(id)controller supportsTitleItemsForAppLayout:(id)layout
 {
-  v4 = a4;
-  if ([v4 type])
+  layoutCopy = layout;
+  if ([layoutCopy type])
   {
-    v5 = [v4 type] == 5;
+    v5 = [layoutCopy type] == 5;
   }
 
   else
@@ -1042,28 +1042,28 @@ LABEL_5:
   return v5;
 }
 
-- (id)windowManagementContextForSwitcherContentController:(id)a3
+- (id)windowManagementContextForSwitcherContentController:(id)controller
 {
   v3 = [[SBSwitcherWindowManagementContext alloc] initWithBaseStyle:1 automaticStageCreationEnabled:0 restoresPreviouslyOpenWindows:0];
 
   return v3;
 }
 
-- (void)switcherContentController:(id)a3 deletedDisplayItem:(id)a4 inAppLayout:(id)a5 forReason:(int64_t)a6
+- (void)switcherContentController:(id)controller deletedDisplayItem:(id)item inAppLayout:(id)layout forReason:(int64_t)reason
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = [v10 layoutRoleForItem:v9];
+  itemCopy = item;
+  layoutCopy = layout;
+  v11 = [layoutCopy layoutRoleForItem:itemCopy];
   contentViewController = self->_contentViewController;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __100__SBSwitcherShelfViewController_switcherContentController_deletedDisplayItem_inAppLayout_forReason___block_invoke;
   v14[3] = &unk_2783AB2A8;
-  v16 = self;
-  v17 = a6;
-  v15 = v9;
-  v13 = v9;
-  [(SBFluidSwitcherViewController *)contentViewController removeLayoutRole:v11 inSpace:v10 mutationBlock:v14 reason:a6];
+  selfCopy = self;
+  reasonCopy = reason;
+  v15 = itemCopy;
+  v13 = itemCopy;
+  [(SBFluidSwitcherViewController *)contentViewController removeLayoutRole:v11 inSpace:layoutCopy mutationBlock:v14 reason:reason];
 }
 
 void __100__SBSwitcherShelfViewController_switcherContentController_deletedDisplayItem_inAppLayout_forReason___block_invoke(uint64_t a1)
@@ -1073,33 +1073,33 @@ void __100__SBSwitcherShelfViewController_switcherContentController_deletedDispl
   [*(a1 + 40) _rebuildCachedAppLayouts];
 }
 
-- (BOOL)_dismissShelfIfNeededWithLocation:(CGPoint)a3 window:(id)a4
+- (BOOL)_dismissShelfIfNeededWithLocation:(CGPoint)location window:(id)window
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [(SBSwitcherShelfViewController *)self view];
-  v9 = [v7 screen];
-  v10 = [v9 fixedCoordinateSpace];
+  y = location.y;
+  x = location.x;
+  windowCopy = window;
+  view = [(SBSwitcherShelfViewController *)self view];
+  screen = [windowCopy screen];
+  fixedCoordinateSpace = [screen fixedCoordinateSpace];
 
-  [v7 convertPoint:v10 toCoordinateSpace:{x, y}];
-  [v8 convertPoint:v10 fromCoordinateSpace:?];
-  v11 = [v8 hitTest:0 withEvent:?];
+  [windowCopy convertPoint:fixedCoordinateSpace toCoordinateSpace:{x, y}];
+  [view convertPoint:fixedCoordinateSpace fromCoordinateSpace:?];
+  v11 = [view hitTest:0 withEvent:?];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v13 = [WeakRetained switcherShelfViewController:self hitTestedToTopAffordance:v7 window:{x, y}];
+  v13 = [WeakRetained switcherShelfViewController:self hitTestedToTopAffordance:windowCopy window:{x, y}];
 
   if (v11)
   {
-    v14 = [(SBSwitcherShelfViewController *)self view];
-    if (v11 == v14)
+    view2 = [(SBSwitcherShelfViewController *)self view];
+    if (v11 == view2)
     {
       v16 = 1;
     }
 
     else
     {
-      v15 = [(SBFluidSwitcherViewController *)self->_contentViewController view];
-      v16 = [v11 isDescendantOfView:v15] ^ 1;
+      view3 = [(SBFluidSwitcherViewController *)self->_contentViewController view];
+      v16 = [v11 isDescendantOfView:view3] ^ 1;
     }
   }
 
@@ -1116,109 +1116,109 @@ void __100__SBSwitcherShelfViewController_switcherContentController_deletedDispl
   return (v13 ^ 1) & v16;
 }
 
-- (BOOL)transientUIHandledTouch:(id)a3 withSystemGestureRecognizer:(id)a4
+- (BOOL)transientUIHandledTouch:(id)touch withSystemGestureRecognizer:(id)recognizer
 {
-  v5 = a3;
-  v6 = [v5 view];
-  [v5 locationInView:v6];
+  touchCopy = touch;
+  view = [touchCopy view];
+  [touchCopy locationInView:view];
   v8 = v7;
   v10 = v9;
 
-  v11 = [v5 window];
-  v12 = [v5 view];
-  [v11 convertPoint:v12 fromView:{v8, v10}];
+  window = [touchCopy window];
+  view2 = [touchCopy view];
+  [window convertPoint:view2 fromView:{v8, v10}];
   v14 = v13;
   v16 = v15;
 
-  v17 = [v5 window];
+  window2 = [touchCopy window];
 
-  LOBYTE(self) = [(SBSwitcherShelfViewController *)self _dismissShelfIfNeededWithLocation:v17 window:v14, v16];
+  LOBYTE(self) = [(SBSwitcherShelfViewController *)self _dismissShelfIfNeededWithLocation:window2 window:v14, v16];
   return self;
 }
 
-- (void)transientUI:(id)a3 wasIndirectPannedToDismissFromGestureRecognizer:(id)a4
+- (void)transientUI:(id)i wasIndirectPannedToDismissFromGestureRecognizer:(id)recognizer
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v6 view];
-  [v6 locationInView:v8];
+  recognizerCopy = recognizer;
+  iCopy = i;
+  view = [recognizerCopy view];
+  [recognizerCopy locationInView:view];
   v10 = v9;
   v12 = v11;
 
-  v13 = [v7 window];
-  v14 = [v6 view];
+  window = [iCopy window];
+  view2 = [recognizerCopy view];
 
-  [v13 convertPoint:v14 fromView:{v10, v12}];
+  [window convertPoint:view2 fromView:{v10, v12}];
   v16 = v15;
   v18 = v17;
 
-  v19 = [v7 window];
+  window2 = [iCopy window];
 
-  [(SBSwitcherShelfViewController *)self _dismissShelfIfNeededWithLocation:v19 window:v16, v18];
+  [(SBSwitcherShelfViewController *)self _dismissShelfIfNeededWithLocation:window2 window:v16, v18];
 }
 
-- (id)shelfLiveContentOverlayCoordinator:(id)a3 liveViewForAppLayout:(id)a4
+- (id)shelfLiveContentOverlayCoordinator:(id)coordinator liveViewForAppLayout:(id)layout
 {
-  v5 = a4;
-  v6 = [(SBSwitcherShelfViewController *)self delegate];
-  v7 = [v6 switcherShelfViewController:self liveViewForAppLayout:v5];
+  layoutCopy = layout;
+  delegate = [(SBSwitcherShelfViewController *)self delegate];
+  v7 = [delegate switcherShelfViewController:self liveViewForAppLayout:layoutCopy];
 
   return v7;
 }
 
-- (void)assistantWillAppear:(id)a3 windowScene:(id)a4
+- (void)assistantWillAppear:(id)appear windowScene:(id)scene
 {
   if (self->_presented)
   {
-    [(SBSwitcherShelfViewController *)self dismissShelfForShelfTransition:a3];
+    [(SBSwitcherShelfViewController *)self dismissShelfForShelfTransition:appear];
   }
 }
 
-- (void)clientDidResetForUserAttention:(id)a3 withEvent:(id)a4
+- (void)clientDidResetForUserAttention:(id)attention withEvent:(id)event
 {
-  v5 = [(SBWorkspace *)SBMainWorkspace mainWorkspace:a3];
-  v6 = [v5 keyboardFocusController];
-  v12 = [v6 sceneWithFocusIncludingSpringBoard];
+  v5 = [(SBWorkspace *)SBMainWorkspace mainWorkspace:attention];
+  keyboardFocusController = [v5 keyboardFocusController];
+  sceneWithFocusIncludingSpringBoard = [keyboardFocusController sceneWithFocusIncludingSpringBoard];
 
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  v8 = v12;
+  v8 = sceneWithFocusIncludingSpringBoard;
   if (isKindOfClass)
   {
-    v9 = [v12 clientHandle];
-    v10 = [v9 processHandle];
+    clientHandle = [sceneWithFocusIncludingSpringBoard clientHandle];
+    processHandle = [clientHandle processHandle];
 
-    v11 = [MEMORY[0x277D46F48] currentProcess];
-    if (([v10 isEqual:v11] & 1) == 0 && self->_presented)
+    currentProcess = [MEMORY[0x277D46F48] currentProcess];
+    if (([processHandle isEqual:currentProcess] & 1) == 0 && self->_presented)
     {
       [(SBSwitcherShelfViewController *)self dismissShelfForShelfTransition];
     }
 
-    v8 = v12;
+    v8 = sceneWithFocusIncludingSpringBoard;
   }
 }
 
 - (id)_windowScene
 {
-  v3 = [(SBSwitcherShelfViewController *)self dataSource];
-  v4 = [v3 windowSceneForSwitcherShelfViewController:self];
+  dataSource = [(SBSwitcherShelfViewController *)self dataSource];
+  v4 = [dataSource windowSceneForSwitcherShelfViewController:self];
 
   return v4;
 }
 
 - (id)_appLayouts
 {
-  v3 = [(SBSwitcherShelfViewController *)self dataSource];
-  v4 = [v3 appLayoutsForSwitcherShelfViewController:self];
+  dataSource = [(SBSwitcherShelfViewController *)self dataSource];
+  v4 = [dataSource appLayoutsForSwitcherShelfViewController:self];
 
   return v4;
 }
 
-- (CGRect)_frameForItemWithRole:(int64_t)a3 inMainAppLayout:(id)a4 interfaceOrientation:(int64_t)a5
+- (CGRect)_frameForItemWithRole:(int64_t)role inMainAppLayout:(id)layout interfaceOrientation:(int64_t)orientation
 {
-  v8 = a4;
-  v9 = [(SBSwitcherShelfViewController *)self dataSource];
-  [v9 switcherShelfViewController:self frameForItemWithRole:a3 inMainAppLayout:v8 interfaceOrientation:a5];
+  layoutCopy = layout;
+  dataSource = [(SBSwitcherShelfViewController *)self dataSource];
+  [dataSource switcherShelfViewController:self frameForItemWithRole:role inMainAppLayout:layoutCopy interfaceOrientation:orientation];
   v11 = v10;
   v13 = v12;
   v15 = v14;
@@ -1235,10 +1235,10 @@ void __100__SBSwitcherShelfViewController_switcherContentController_deletedDispl
   return result;
 }
 
-- (CGRect)_frameForFloatingAppLayoutInInterfaceOrientation:(int64_t)a3 floatingConfiguration:(int64_t)a4
+- (CGRect)_frameForFloatingAppLayoutInInterfaceOrientation:(int64_t)orientation floatingConfiguration:(int64_t)configuration
 {
-  v7 = [(SBSwitcherShelfViewController *)self dataSource];
-  [v7 switcherShelfViewController:self frameForFloatingAppLayoutInInterfaceOrientation:a3 floatingConfiguration:a4];
+  dataSource = [(SBSwitcherShelfViewController *)self dataSource];
+  [dataSource switcherShelfViewController:self frameForFloatingAppLayoutInInterfaceOrientation:orientation floatingConfiguration:configuration];
   v9 = v8;
   v11 = v10;
   v13 = v12;
@@ -1255,10 +1255,10 @@ void __100__SBSwitcherShelfViewController_switcherContentController_deletedDispl
   return result;
 }
 
-- (CGRect)_frameForCenterItemWithConfiguration:(int64_t)a3 interfaceOrientation:(int64_t)a4
+- (CGRect)_frameForCenterItemWithConfiguration:(int64_t)configuration interfaceOrientation:(int64_t)orientation
 {
-  v7 = [(SBSwitcherShelfViewController *)self dataSource];
-  [v7 switcherShelfViewController:self frameForCenterItemWithConfiguration:a3 interfaceOrientation:a4];
+  dataSource = [(SBSwitcherShelfViewController *)self dataSource];
+  [dataSource switcherShelfViewController:self frameForCenterItemWithConfiguration:configuration interfaceOrientation:orientation];
   v9 = v8;
   v11 = v10;
   v13 = v12;
@@ -1275,22 +1275,22 @@ void __100__SBSwitcherShelfViewController_switcherContentController_deletedDispl
   return result;
 }
 
-- (id)_transitionEventForContext:(id)a3 identifier:(id)a4 phase:(unint64_t)a5 animated:(BOOL)a6
+- (id)_transitionEventForContext:(id)context identifier:(id)identifier phase:(unint64_t)phase animated:(BOOL)animated
 {
-  v6 = a6;
-  v10 = a4;
-  v11 = a3;
-  v12 = [(SBSwitcherShelfViewController *)self dataSource];
-  v13 = [v12 switcherShelfViewController:self transitionEventForContext:v11 identifier:v10 phase:a5 animated:v6];
+  animatedCopy = animated;
+  identifierCopy = identifier;
+  contextCopy = context;
+  dataSource = [(SBSwitcherShelfViewController *)self dataSource];
+  v13 = [dataSource switcherShelfViewController:self transitionEventForContext:contextCopy identifier:identifierCopy phase:phase animated:animatedCopy];
 
   return v13;
 }
 
-- (void)_performNewWindowRequestForBundleIdentifier:(id)a3
+- (void)_performNewWindowRequestForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = +[SBApplicationController sharedInstance];
-  v6 = [v5 applicationWithBundleIdentifier:v4];
+  v6 = [v5 applicationWithBundleIdentifier:identifierCopy];
 
   v7 = +[(SBWorkspace *)SBMainWorkspace];
   v9[0] = MEMORY[0x277D85DD0];
@@ -1298,7 +1298,7 @@ void __100__SBSwitcherShelfViewController_switcherContentController_deletedDispl
   v9[2] = __77__SBSwitcherShelfViewController__performNewWindowRequestForBundleIdentifier___block_invoke;
   v9[3] = &unk_2783AAA48;
   v10 = v6;
-  v11 = self;
+  selfCopy = self;
   v8 = v6;
   [v7 requestTransitionWithBuilder:v9];
 }
@@ -1365,17 +1365,17 @@ void __77__SBSwitcherShelfViewController__performNewWindowRequestForBundleIdenti
   }
 }
 
-- (void)_performSwitcherTransitionRequest:(id)a3
+- (void)_performSwitcherTransitionRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = +[SBWorkspace mainWorkspace];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __67__SBSwitcherShelfViewController__performSwitcherTransitionRequest___block_invoke;
   v7[3] = &unk_2783B3CF0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = requestCopy;
+  selfCopy = self;
+  v6 = requestCopy;
   [v5 requestTransitionWithOptions:0 builder:0 validator:v7];
 }
 
@@ -1513,7 +1513,7 @@ void __67__SBSwitcherShelfViewController__performSwitcherTransitionRequest___blo
   [v3 setRequestedAppExposeBundleID:v4];
 }
 
-- (void)dismissShelfWithTransitionSource:(int64_t)a3
+- (void)dismissShelfWithTransitionSource:(int64_t)source
 {
   v5 = +[SBWorkspace mainWorkspace];
   v6[0] = MEMORY[0x277D85DD0];
@@ -1521,7 +1521,7 @@ void __67__SBSwitcherShelfViewController__performSwitcherTransitionRequest___blo
   v6[2] = __66__SBSwitcherShelfViewController_dismissShelfWithTransitionSource___block_invoke;
   v6[3] = &unk_2783B3F08;
   v6[4] = self;
-  v6[5] = a3;
+  v6[5] = source;
   [v5 requestTransitionWithOptions:0 builder:v6 validator:0];
 }
 
@@ -1563,19 +1563,19 @@ void __66__SBSwitcherShelfViewController_dismissShelfWithTransitionSource___bloc
 LABEL_6:
 }
 
-- (void)_dockHeightWillChange:(id)a3
+- (void)_dockHeightWillChange:(id)change
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKey:@"SBFloatingDockControllerHeight"];
+  changeCopy = change;
+  userInfo = [changeCopy userInfo];
+  v6 = [userInfo objectForKey:@"SBFloatingDockControllerHeight"];
   [v6 doubleValue];
 
-  v7 = [v4 userInfo];
+  userInfo2 = [changeCopy userInfo];
 
-  v8 = [v7 objectForKey:@"SBFloatingDockControllerHeightChangeInteractive"];
-  v9 = [v8 BOOLValue];
+  v8 = [userInfo2 objectForKey:@"SBFloatingDockControllerHeightChangeInteractive"];
+  bOOLValue = [v8 BOOLValue];
 
-  if ((BSFloatIsZero() & 1) == 0 && (v9 & 1) == 0 && self->_presented)
+  if ((BSFloatIsZero() & 1) == 0 && (bOOLValue & 1) == 0 && self->_presented)
   {
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;

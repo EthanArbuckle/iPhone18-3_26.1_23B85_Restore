@@ -1,21 +1,21 @@
 @interface DelayedGotoSemaphore
-+ (void)_accessSemaphorePoolUsingBlock:(id)a3;
-+ (void)signalSemaphoreForPushToken:(id)a3;
-- (DelayedGotoSemaphore)initWithDelayedGoto:(id)a3;
++ (void)_accessSemaphorePoolUsingBlock:(id)block;
++ (void)signalSemaphoreForPushToken:(id)token;
+- (DelayedGotoSemaphore)initWithDelayedGoto:(id)goto;
 - (void)wait;
 @end
 
 @implementation DelayedGotoSemaphore
 
-- (DelayedGotoSemaphore)initWithDelayedGoto:(id)a3
+- (DelayedGotoSemaphore)initWithDelayedGoto:(id)goto
 {
-  v4 = a3;
+  gotoCopy = goto;
   v35.receiver = self;
   v35.super_class = DelayedGotoSemaphore;
   v5 = [(DelayedGotoSemaphore *)&v35 init];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"body"];
+    v6 = [gotoCopy objectForKey:@"body"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -24,7 +24,7 @@
       v5->_bodyDictionary = v7;
     }
 
-    v9 = [v4 objectForKey:@"url"];
+    v9 = [gotoCopy objectForKey:@"url"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -34,7 +34,7 @@
       v5->_url = v10;
     }
 
-    v12 = [v4 objectForKey:@"delay"];
+    v12 = [gotoCopy objectForKey:@"delay"];
 
     v13 = objc_opt_respondsToSelector();
     v14 = 30.0;
@@ -44,7 +44,7 @@
     }
 
     v5->_delay = v14;
-    v15 = [v4 objectForKey:@"apnsToken"];
+    v15 = [gotoCopy objectForKey:@"apnsToken"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -84,7 +84,7 @@
   return v5;
 }
 
-+ (void)signalSemaphoreForPushToken:(id)a3
++ (void)signalSemaphoreForPushToken:(id)token
 {
   v9 = 0;
   v10 = &v9;
@@ -97,9 +97,9 @@
   v6[2] = sub_1001F7294;
   v6[3] = &unk_10032C1E0;
   v8 = &v9;
-  v4 = a3;
-  v7 = v4;
-  [a1 _accessSemaphorePoolUsingBlock:v6];
+  tokenCopy = token;
+  v7 = tokenCopy;
+  [self _accessSemaphorePoolUsingBlock:v6];
   v5 = v10[5];
   if (v5)
   {
@@ -123,19 +123,19 @@
         v5 = +[SSLogConfig sharedConfig];
       }
 
-      v6 = [v5 shouldLog];
+      shouldLog = [v5 shouldLog];
       if ([v5 shouldLogToDisk])
       {
-        v7 = v6 | 2;
+        v7 = shouldLog | 2;
       }
 
       else
       {
-        v7 = v6;
+        v7 = shouldLog;
       }
 
-      v8 = [v5 OSLogObject];
-      if (!os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
+      oSLogObject = [v5 OSLogObject];
+      if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
       {
         v7 &= 2u;
       }
@@ -165,19 +165,19 @@
         v5 = +[SSLogConfig sharedConfig];
       }
 
-      v13 = [v5 shouldLog];
+      shouldLog2 = [v5 shouldLog];
       if ([v5 shouldLogToDisk])
       {
-        v14 = v13 | 2;
+        v14 = shouldLog2 | 2;
       }
 
       else
       {
-        v14 = v13;
+        v14 = shouldLog2;
       }
 
-      v8 = [v5 OSLogObject];
-      if (!os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
+      oSLogObject = [v5 OSLogObject];
+      if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
       {
         v14 &= 2u;
       }
@@ -204,7 +204,7 @@
       goto LABEL_24;
     }
 
-    v8 = [NSString stringWithCString:v17 encoding:4, &v22, v20];
+    oSLogObject = [NSString stringWithCString:v17 encoding:4, &v22, v20];
     free(v17);
     SSFileLog();
 LABEL_23:
@@ -225,9 +225,9 @@ LABEL_24:
   }
 }
 
-+ (void)_accessSemaphorePoolUsingBlock:(id)a3
++ (void)_accessSemaphorePoolUsingBlock:(id)block
 {
-  v3 = a3;
+  blockCopy = block;
   if (qword_100384110 != -1)
   {
     sub_1002725F0();
@@ -238,8 +238,8 @@ LABEL_24:
   block[1] = 3221225472;
   block[2] = sub_1001F7750;
   block[3] = &unk_100327198;
-  v7 = v3;
-  v5 = v3;
+  v7 = blockCopy;
+  v5 = blockCopy;
   dispatch_sync(v4, block);
 }
 

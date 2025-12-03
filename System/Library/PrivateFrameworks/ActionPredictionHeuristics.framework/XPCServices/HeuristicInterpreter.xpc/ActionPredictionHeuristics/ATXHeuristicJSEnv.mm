@@ -1,83 +1,83 @@
 @interface ATXHeuristicJSEnv
 + (id)defaultHeuristicBundlePath;
 - (ATXHeuristicJSEnv)init;
-- (ATXHeuristicJSEnv)initWithHeuristicBundle:(id)a3 dataProvider:(id)a4;
-- (BOOL)BOOLByEvaluatingJavaScript:(id)a3;
-- (BOOL)_BOOLForMGQuery:(int)a3;
-- (BOOL)_isEventAtOneWithTimeIntervelOrDate:(id)a3 usesTwelveHourClock:(BOOL)a4;
+- (ATXHeuristicJSEnv)initWithHeuristicBundle:(id)bundle dataProvider:(id)provider;
+- (BOOL)BOOLByEvaluatingJavaScript:(id)script;
+- (BOOL)_BOOLForMGQuery:(int)query;
+- (BOOL)_isEventAtOneWithTimeIntervelOrDate:(id)date usesTwelveHourClock:(BOOL)clock;
 - (BOOL)_isFocusModeActiveFromDataSource;
-- (double)doubleByEvaluatingJavaScript:(id)a3;
-- (id)_allHandlesFromDataSourceWithContact:(id)a3;
+- (double)doubleByEvaluatingJavaScript:(id)script;
+- (id)_allHandlesFromDataSourceWithContact:(id)contact;
 - (id)_allHeuristicClassNames;
 - (id)_allHeuristicNames;
 - (id)_batteryInformationFromDataSource;
 - (id)_bestAppSuggestionFromDataSource;
-- (id)_bestContactHandleFromDataSourceWithContact:(id)a3 serviceString:(id)a4;
-- (id)_bestTimeToInteractFromDataSourceWithContact:(id)a3;
+- (id)_bestContactHandleFromDataSourceWithContact:(id)contact serviceString:(id)string;
+- (id)_bestTimeToInteractFromDataSourceWithContact:(id)contact;
 - (id)_birthdayEventsFromDataSource;
-- (id)_calendarEventsFromDataSourceBetweenStartDate:(id)a3 endDate:(id)a4;
-- (id)_cityNameFromAirportCode:(id)a3;
+- (id)_calendarEventsFromDataSourceBetweenStartDate:(id)date endDate:(id)endDate;
+- (id)_cityNameFromAirportCode:(id)code;
 - (id)_clipboardContentsFromDataSource;
-- (id)_contactsDataSourceWithType:(id)a3 value:(id)a4 identifiers:(id)a5;
+- (id)_contactsDataSourceWithType:(id)type value:(id)value identifiers:(id)identifiers;
 - (id)_currentLocationFromDataSource;
-- (id)_dateFromTimeIntervalOrDate:(id)a3;
-- (id)_duetInteractionCountFromDataSourceWithHandles:(id)a3 date:(id)a4;
-- (id)_enabledAlarmsFromTS:(double)a3 toTS:(double)a4;
-- (id)_eventPassesFromDataSourceWithStyle:(id)a3;
-- (id)_extraordinaryEventsFromDataSourceWithProminentFeature:(id)a3;
-- (id)_favoriteContactsFromDataSourceWithExistingContacts:(id)a3;
-- (id)_fetchWidgetMetadataForAppBundleIds:(id)a3;
-- (id)_functionNameForMGQuery:(int)a3;
-- (id)_getLocationForMostRelevantTripInRangeFrom:(id)a3 to:(id)a4;
-- (id)_holidayEventsFromDataSourceBetweenStartDate:(id)a3 endDate:(id)a4;
-- (id)_latestFlightStatus:(id)a3;
-- (id)_makeIntentDescriptionWithCustomTypeName:(id)a3 parameters:(id)a4;
+- (id)_dateFromTimeIntervalOrDate:(id)date;
+- (id)_duetInteractionCountFromDataSourceWithHandles:(id)handles date:(id)date;
+- (id)_enabledAlarmsFromTS:(double)s toTS:(double)tS;
+- (id)_eventPassesFromDataSourceWithStyle:(id)style;
+- (id)_extraordinaryEventsFromDataSourceWithProminentFeature:(id)feature;
+- (id)_favoriteContactsFromDataSourceWithExistingContacts:(id)contacts;
+- (id)_fetchWidgetMetadataForAppBundleIds:(id)ids;
+- (id)_functionNameForMGQuery:(int)query;
+- (id)_getLocationForMostRelevantTripInRangeFrom:(id)from to:(id)to;
+- (id)_holidayEventsFromDataSourceBetweenStartDate:(id)date endDate:(id)endDate;
+- (id)_latestFlightStatus:(id)status;
+- (id)_makeIntentDescriptionWithCustomTypeName:(id)name parameters:(id)parameters;
 - (id)_modeCorrelatedAppsInCurrentMode;
 - (id)_nlEventsFromDataSource;
 - (id)_peopleSuggestionsFromDataSource;
 - (id)_predictedBedTime;
 - (id)_scheduledBedTime;
 - (id)_timeIntervalSinceUserWakeup;
-- (id)_unreadMessagesWithLimit:(int64_t)a3;
-- (id)_userAppPreferenceFromDataSourceWithIntentName:(id)a3 parameterCombination:(id)a4;
+- (id)_unreadMessagesWithLimit:(int64_t)limit;
+- (id)_userAppPreferenceFromDataSourceWithIntentName:(id)name parameterCombination:(id)combination;
 - (id)_usualAlarmTimeOfDayDataSource;
 - (id)_vipsFromDataSource;
 - (id)_visibleCalendarsFromDataSource;
-- (id)actionsAndExpirersForHeuristics:(id)a3;
-- (id)actionsAndExpirersForHeuristicsExcept:(id)a3;
-- (id)executeHeuristics:(id)a3;
+- (id)actionsAndExpirersForHeuristics:(id)heuristics;
+- (id)actionsAndExpirersForHeuristicsExcept:(id)except;
+- (id)executeHeuristics:(id)heuristics;
 - (id)generateAllHeuristicNames;
 - (id)heuristicResults;
-- (id)objectByEvaluatingJavaScript:(id)a3;
-- (id)resultsForInformationHeuristics:(id)a3;
-- (id)stringByEvaluatingJavaScript:(id)a3;
-- (int)intByEvaluatingJavaScript:(id)a3;
-- (void)_addAction:(id)a3 withCriteria:(id)a4;
-- (void)_expireCacheAfterDarwinNotification:(id)a3;
-- (void)_expireCacheAfterLocalNotification:(id)a3;
-- (void)_expireCacheAfterTime:(double)a3;
-- (void)_expireCacheAtTime:(double)a3;
+- (id)objectByEvaluatingJavaScript:(id)script;
+- (id)resultsForInformationHeuristics:(id)heuristics;
+- (id)stringByEvaluatingJavaScript:(id)script;
+- (int)intByEvaluatingJavaScript:(id)script;
+- (void)_addAction:(id)action withCriteria:(id)criteria;
+- (void)_expireCacheAfterDarwinNotification:(id)notification;
+- (void)_expireCacheAfterLocalNotification:(id)notification;
+- (void)_expireCacheAfterTime:(double)time;
+- (void)_expireCacheAtTime:(double)time;
 - (void)_injectScript;
-- (void)_refreshAfterDarwinNotification:(id)a3 coalescingInterval:(double)a4;
-- (void)_refreshAfterLocalNotification:(id)a3;
-- (void)_refreshAfterTimeInterval:(double)a3;
+- (void)_refreshAfterDarwinNotification:(id)notification coalescingInterval:(double)interval;
+- (void)_refreshAfterLocalNotification:(id)notification;
+- (void)_refreshAfterTimeInterval:(double)interval;
 - (void)_refreshAfterUserWakeUp;
-- (void)_refreshAtTimestamp:(double)a3;
+- (void)_refreshAtTimestamp:(double)timestamp;
 - (void)_refreshOnAirplaneModeToggle;
 - (void)_refreshWithInferredModeStream;
 - (void)_refreshWithUserFocusComputedModeStream;
 - (void)_registerDataSources;
 - (void)_setUpInterpreter;
 - (void)dealloc;
-- (void)mockClipboardContent:(id)a3 createdAt:(id)a4 fromBundleId:(id)a5;
-- (void)mockDataSource:(id)a3 returning:(id)a4;
-- (void)mockEventTravelTimeWithDuration:(double)a3;
-- (void)mockMidnightAndGetHolidayEventsToday:(double)a3;
-- (void)mockMidnightAndGetHolidayEventsTomorrow:(double)a3;
-- (void)mockUsesTwelveHourClock:(BOOL)a3;
-- (void)setNow:(id)a3;
-- (void)trackActionsAndExpirersForHeuristicName:(id)a3 mutableResult:(id)a4 performingBlock:(id)a5;
-- (void)trackCardsAndRefreshTriggersForInformationHeuristicName:(id)a3 mutableResults:(id)a4 performingBlock:(id)a5;
+- (void)mockClipboardContent:(id)content createdAt:(id)at fromBundleId:(id)id;
+- (void)mockDataSource:(id)source returning:(id)returning;
+- (void)mockEventTravelTimeWithDuration:(double)duration;
+- (void)mockMidnightAndGetHolidayEventsToday:(double)today;
+- (void)mockMidnightAndGetHolidayEventsTomorrow:(double)tomorrow;
+- (void)mockUsesTwelveHourClock:(BOOL)clock;
+- (void)setNow:(id)now;
+- (void)trackActionsAndExpirersForHeuristicName:(id)name mutableResult:(id)result performingBlock:(id)block;
+- (void)trackCardsAndRefreshTriggersForInformationHeuristicName:(id)name mutableResults:(id)results performingBlock:(id)block;
 @end
 
 @implementation ATXHeuristicJSEnv
@@ -116,22 +116,22 @@
   if (!v4)
   {
 LABEL_5:
-    v5 = 0;
+    selfCopy = 0;
     goto LABEL_6;
   }
 
   self = [(ATXHeuristicJSEnv *)self initWithHeuristicBundle:v4 dataProvider:0];
-  v5 = self;
+  selfCopy = self;
 LABEL_6:
-  v6 = v5;
+  v6 = selfCopy;
 
   return v6;
 }
 
-- (ATXHeuristicJSEnv)initWithHeuristicBundle:(id)a3 dataProvider:(id)a4
+- (ATXHeuristicJSEnv)initWithHeuristicBundle:(id)bundle dataProvider:(id)provider
 {
-  v7 = a3;
-  v8 = a4;
+  bundleCopy = bundle;
+  providerCopy = provider;
   v26.receiver = self;
   v26.super_class = ATXHeuristicJSEnv;
   v9 = [(ATXHeuristicJSEnv *)&v26 init];
@@ -149,14 +149,14 @@ LABEL_6:
       _os_signpost_emit_with_name_impl(&_mh_execute_header, v12, OS_SIGNPOST_INTERVAL_BEGIN, signpost, "ATXHeuristicJSEnv", " enableTelemetry=YES ", v25, 2u);
     }
 
-    objc_storeStrong(&v9->_heuristicsBundle, a3);
+    objc_storeStrong(&v9->_heuristicsBundle, bundle);
     v14 = [[ATXHeuristicDevice alloc] initWithLocationManager:0];
     device = v9->_device;
     v9->_device = v14;
 
-    if (v8)
+    if (providerCopy)
     {
-      v16 = v8;
+      v16 = providerCopy;
       provider = v9->_provider;
       v9->_provider = v16;
     }
@@ -792,11 +792,11 @@ LABEL_6:
   }
 }
 
-- (id)_makeIntentDescriptionWithCustomTypeName:(id)a3 parameters:(id)a4
+- (id)_makeIntentDescriptionWithCustomTypeName:(id)name parameters:(id)parameters
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[ATXCustomIntentDescription alloc] initWithTypeName:v6 parameters:v5];
+  parametersCopy = parameters;
+  nameCopy = name;
+  v7 = [[ATXCustomIntentDescription alloc] initWithTypeName:nameCopy parameters:parametersCopy];
 
   return v7;
 }
@@ -818,13 +818,13 @@ LABEL_6:
 
 - (id)generateAllHeuristicNames
 {
-  v3 = [(ATXHeuristicJSEnv *)self _allHeuristicClassNames];
+  _allHeuristicClassNames = [(ATXHeuristicJSEnv *)self _allHeuristicClassNames];
   v4 = objc_opt_new();
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = v3;
+  v5 = _allHeuristicClassNames;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -868,23 +868,23 @@ LABEL_6:
   return qword_10002E090;
 }
 
-- (id)executeHeuristics:(id)a3
+- (id)executeHeuristics:(id)heuristics
 {
-  v3 = [(ATXHeuristicJSEnv *)self actionsAndExpirersForHeuristics:a3];
+  v3 = [(ATXHeuristicJSEnv *)self actionsAndExpirersForHeuristics:heuristics];
   v4 = ATXActionsFromEnvResult(v3);
 
   return v4;
 }
 
-- (id)actionsAndExpirersForHeuristics:(id)a3
+- (id)actionsAndExpirersForHeuristics:(id)heuristics
 {
-  v4 = a3;
-  v5 = [(ATXHeuristicJSEnv *)self _allHeuristicNames];
-  v6 = [v5 mutableCopy];
+  heuristicsCopy = heuristics;
+  _allHeuristicNames = [(ATXHeuristicJSEnv *)self _allHeuristicNames];
+  v6 = [_allHeuristicNames mutableCopy];
 
-  if ([v4 count])
+  if ([heuristicsCopy count])
   {
-    v7 = [NSSet setWithArray:v4];
+    v7 = [NSSet setWithArray:heuristicsCopy];
     [v6 minusSet:v7];
   }
 
@@ -893,9 +893,9 @@ LABEL_6:
   return v8;
 }
 
-- (id)actionsAndExpirersForHeuristicsExcept:(id)a3
+- (id)actionsAndExpirersForHeuristicsExcept:(id)except
 {
-  v44 = a3;
+  exceptCopy = except;
   v43 = objc_opt_new();
   [(ATXHeuristicJSEnv *)self _allHeuristicClassNames];
   v54 = 0u;
@@ -921,7 +921,7 @@ LABEL_6:
         v10 = [NSString stringWithFormat:@"%@.name", v8];
         v11 = [(ATXHeuristicJSEnv *)self stringByEvaluatingJavaScript:v10];
 
-        if (([v44 containsObject:v11] & 1) == 0)
+        if (([exceptCopy containsObject:v11] & 1) == 0)
         {
           v53[0] = _NSConcreteStackBlock;
           v53[1] = 3221225472;
@@ -959,8 +959,8 @@ LABEL_6:
   v51 = 0u;
   v52 = 0u;
   v15 = v43;
-  v41 = [v43 allKeys];
-  v16 = [v41 countByEnumeratingWithState:&v49 objects:v59 count:16];
+  allKeys = [v43 allKeys];
+  v16 = [allKeys countByEnumeratingWithState:&v49 objects:v59 count:16];
   if (v16)
   {
     v17 = v16;
@@ -974,13 +974,13 @@ LABEL_6:
       {
         if (*v50 != v18)
         {
-          objc_enumerationMutation(v41);
+          objc_enumerationMutation(allKeys);
         }
 
         v20 = *(*(&v49 + 1) + 8 * v19);
         v21 = [v15 objectForKeyedSubscript:v20];
-        v22 = [v21 actionMakers];
-        v23 = [v22 count];
+        actionMakers = [v21 actionMakers];
+        v23 = [actionMakers count];
 
         if (!v23)
         {
@@ -988,18 +988,18 @@ LABEL_6:
           v48 = 0u;
           v45 = 0u;
           v46 = 0u;
-          v24 = [v21 expirers];
-          v25 = [v24 countByEnumeratingWithState:&v45 objects:v58 count:16];
+          expirers = [v21 expirers];
+          v25 = [expirers countByEnumeratingWithState:&v45 objects:v58 count:16];
           if (!v25)
           {
 
 LABEL_28:
             v31 = [[ATXHeuristicCacheTimeExpirer alloc] initWithFireDate:v38];
             v32 = [ATXHeuristicActionMakersAndExpirers alloc];
-            v33 = [v21 actionMakers];
-            v34 = [v21 expirers];
-            v35 = [v34 setByAddingObject:v31];
-            v36 = [v32 initWithActionMakers:v33 expirers:v35];
+            actionMakers2 = [v21 actionMakers];
+            expirers2 = [v21 expirers];
+            v35 = [expirers2 setByAddingObject:v31];
+            v36 = [v32 initWithActionMakers:actionMakers2 expirers:v35];
 
             v18 = v39;
             [v15 setObject:v36 forKeyedSubscript:v20];
@@ -1017,7 +1017,7 @@ LABEL_28:
             {
               if (*v46 != v28)
               {
-                objc_enumerationMutation(v24);
+                objc_enumerationMutation(expirers);
               }
 
               v30 = *(*(&v45 + 1) + 8 * j);
@@ -1025,7 +1025,7 @@ LABEL_28:
               v27 |= objc_opt_isKindOfClass();
             }
 
-            v26 = [v24 countByEnumeratingWithState:&v45 objects:v58 count:16];
+            v26 = [expirers countByEnumeratingWithState:&v45 objects:v58 count:16];
           }
 
           while (v26);
@@ -1045,7 +1045,7 @@ LABEL_29:
       }
 
       while (v19 != v17);
-      v17 = [v41 countByEnumeratingWithState:&v49 objects:v59 count:16];
+      v17 = [allKeys countByEnumeratingWithState:&v49 objects:v59 count:16];
     }
 
     while (v17);
@@ -1054,15 +1054,15 @@ LABEL_29:
   return v15;
 }
 
-- (id)resultsForInformationHeuristics:(id)a3
+- (id)resultsForInformationHeuristics:(id)heuristics
 {
-  v4 = a3;
-  v5 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v4, "count")}];
+  heuristicsCopy = heuristics;
+  v5 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(heuristicsCopy, "count")}];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  obj = v4;
+  obj = heuristicsCopy;
   v6 = [obj countByEnumeratingWithState:&v17 objects:v25 count:16];
   if (v6)
   {
@@ -1118,67 +1118,67 @@ LABEL_29:
   return v3;
 }
 
-- (id)stringByEvaluatingJavaScript:(id)a3
+- (id)stringByEvaluatingJavaScript:(id)script
 {
-  v3 = [(JSContext *)self->_jsContext evaluateScript:a3];
-  v4 = [v3 toString];
+  v3 = [(JSContext *)self->_jsContext evaluateScript:script];
+  toString = [v3 toString];
 
-  return v4;
+  return toString;
 }
 
-- (id)objectByEvaluatingJavaScript:(id)a3
+- (id)objectByEvaluatingJavaScript:(id)script
 {
-  v3 = [(JSContext *)self->_jsContext evaluateScript:a3];
-  v4 = [v3 toObject];
+  v3 = [(JSContext *)self->_jsContext evaluateScript:script];
+  toObject = [v3 toObject];
 
-  return v4;
+  return toObject;
 }
 
-- (double)doubleByEvaluatingJavaScript:(id)a3
+- (double)doubleByEvaluatingJavaScript:(id)script
 {
-  v3 = [(JSContext *)self->_jsContext evaluateScript:a3];
+  v3 = [(JSContext *)self->_jsContext evaluateScript:script];
   [v3 toDouble];
   v5 = v4;
 
   return v5;
 }
 
-- (int)intByEvaluatingJavaScript:(id)a3
+- (int)intByEvaluatingJavaScript:(id)script
 {
-  v3 = [(JSContext *)self->_jsContext evaluateScript:a3];
-  v4 = [v3 toInt32];
+  v3 = [(JSContext *)self->_jsContext evaluateScript:script];
+  toInt32 = [v3 toInt32];
 
-  return v4;
+  return toInt32;
 }
 
-- (BOOL)BOOLByEvaluatingJavaScript:(id)a3
+- (BOOL)BOOLByEvaluatingJavaScript:(id)script
 {
-  v3 = [(JSContext *)self->_jsContext evaluateScript:a3];
-  v4 = [v3 toBool];
+  v3 = [(JSContext *)self->_jsContext evaluateScript:script];
+  toBool = [v3 toBool];
 
-  return v4;
+  return toBool;
 }
 
-- (void)setNow:(id)a3
+- (void)setNow:(id)now
 {
-  v5 = a3;
+  nowCopy = now;
   p_now = &self->_now;
-  if (self->_now != v5)
+  if (self->_now != nowCopy)
   {
-    v7 = v5;
-    objc_storeStrong(p_now, a3);
+    v7 = nowCopy;
+    objc_storeStrong(p_now, now);
     p_now = [(ATXHeuristicDevice *)self->_device setNow:v7];
   }
 
   _objc_release_x2(p_now);
 }
 
-- (void)trackActionsAndExpirersForHeuristicName:(id)a3 mutableResult:(id)a4 performingBlock:(id)a5
+- (void)trackActionsAndExpirersForHeuristicName:(id)name mutableResult:(id)result performingBlock:(id)block
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v10 copy];
+  blockCopy = block;
+  resultCopy = result;
+  nameCopy = name;
+  v11 = [nameCopy copy];
   currentHeuristicName = self->_currentHeuristicName;
   self->_currentHeuristicName = v11;
 
@@ -1190,7 +1190,7 @@ LABEL_29:
   currentExpirersBuffer = self->_currentExpirersBuffer;
   self->_currentExpirersBuffer = v15;
 
-  v8[2](v8);
+  blockCopy[2](blockCopy);
   v17 = self->_currentActionsBuffer;
   self->_currentActionsBuffer = 0;
   v22 = v17;
@@ -1203,28 +1203,28 @@ LABEL_29:
   self->_currentHeuristicName = 0;
 
   v21 = [[ATXHeuristicActionMakersAndExpirers alloc] initWithActionMakers:v22 expirers:v19];
-  [v9 setObject:v21 forKeyedSubscript:v10];
+  [resultCopy setObject:v21 forKeyedSubscript:nameCopy];
 }
 
-- (void)_addAction:(id)a3 withCriteria:(id)a4
+- (void)_addAction:(id)action withCriteria:(id)criteria
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6 && ((objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0)))
+  actionCopy = action;
+  criteriaCopy = criteria;
+  if (actionCopy && ((objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0)))
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = [[ATXHeuristicActionMakerForAction alloc] initWithAction:v6];
+      v8 = [[ATXHeuristicActionMakerForAction alloc] initWithAction:actionCopy];
     }
 
     else
     {
-      v8 = v6;
+      v8 = actionCopy;
     }
 
     v9 = v8;
-    if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+    if (criteriaCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       v13 = sub_100001940();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -1236,9 +1236,9 @@ LABEL_29:
 
     else
     {
-      [v9 setCriteria:v7];
-      v10 = [v9 actionTypeName];
-      v11 = [@":" stringByAppendingString:v10];
+      [v9 setCriteria:criteriaCopy];
+      actionTypeName = [v9 actionTypeName];
+      v11 = [@":" stringByAppendingString:actionTypeName];
 
       v12 = [(NSString *)self->_currentHeuristicName stringByAppendingString:v11];
       [v9 setHeuristic:v12];
@@ -1258,12 +1258,12 @@ LABEL_29:
   }
 }
 
-- (void)trackCardsAndRefreshTriggersForInformationHeuristicName:(id)a3 mutableResults:(id)a4 performingBlock:(id)a5
+- (void)trackCardsAndRefreshTriggersForInformationHeuristicName:(id)name mutableResults:(id)results performingBlock:(id)block
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v10 copy];
+  blockCopy = block;
+  resultsCopy = results;
+  nameCopy = name;
+  v11 = [nameCopy copy];
   currentInformationHeuristicName = self->_currentInformationHeuristicName;
   self->_currentInformationHeuristicName = v11;
 
@@ -1276,10 +1276,10 @@ LABEL_29:
   self->_currentRefreshTriggerBuffer = v15;
 
   self->_hasCurrentHeuristicFailed = 0;
-  v8[2](v8);
+  blockCopy[2](blockCopy);
 
-  v20 = [[ATXInformationHeuristicResult alloc] initWithHeuristicName:v10 suggestions:self->_currentInfoSuggestionsBuffer refreshTriggers:self->_currentRefreshTriggerBuffer hasFailed:self->_hasCurrentHeuristicFailed];
-  [v9 addObject:v20];
+  v20 = [[ATXInformationHeuristicResult alloc] initWithHeuristicName:nameCopy suggestions:self->_currentInfoSuggestionsBuffer refreshTriggers:self->_currentRefreshTriggerBuffer hasFailed:self->_hasCurrentHeuristicFailed];
+  [resultsCopy addObject:v20];
 
   v17 = self->_currentInformationHeuristicName;
   self->_currentInformationHeuristicName = 0;
@@ -1293,43 +1293,43 @@ LABEL_29:
   self->_hasCurrentHeuristicFailed = 0;
 }
 
-- (void)_refreshAfterTimeInterval:(double)a3
+- (void)_refreshAfterTimeInterval:(double)interval
 {
-  if (a3 > 0.0)
+  if (interval > 0.0)
   {
     v6 = [ATXInformationHeuristicRefreshTimeTrigger alloc];
-    v7 = [NSDate dateWithTimeIntervalSinceNow:a3];
+    v7 = [NSDate dateWithTimeIntervalSinceNow:interval];
     v8 = [v6 initWithFireDate:v7];
 
     [(NSMutableSet *)self->_currentRefreshTriggerBuffer addObject:v8];
   }
 }
 
-- (void)_refreshAtTimestamp:(double)a3
+- (void)_refreshAtTimestamp:(double)timestamp
 {
   +[NSDate timeIntervalSinceReferenceDate];
-  if (v5 < a3)
+  if (v5 < timestamp)
   {
     v6 = [ATXInformationHeuristicRefreshTimeTrigger alloc];
-    v7 = [NSDate dateWithTimeIntervalSinceReferenceDate:a3];
+    v7 = [NSDate dateWithTimeIntervalSinceReferenceDate:timestamp];
     v8 = [v6 initWithFireDate:v7];
 
     [(NSMutableSet *)self->_currentRefreshTriggerBuffer addObject:v8];
   }
 }
 
-- (void)_refreshAfterLocalNotification:(id)a3
+- (void)_refreshAfterLocalNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [[ATXInformationHeuristicRefreshNotitifcationTrigger alloc] initWithNotification:v4 type:0];
+  notificationCopy = notification;
+  v5 = [[ATXInformationHeuristicRefreshNotitifcationTrigger alloc] initWithNotification:notificationCopy type:0];
 
   [(NSMutableSet *)self->_currentRefreshTriggerBuffer addObject:v5];
 }
 
-- (void)_refreshAfterDarwinNotification:(id)a3 coalescingInterval:(double)a4
+- (void)_refreshAfterDarwinNotification:(id)notification coalescingInterval:(double)interval
 {
-  v6 = a3;
-  v7 = [[ATXInformationHeuristicRefreshNotitifcationTrigger alloc] initWithNotification:v6 type:1 coalescingInterval:a4];
+  notificationCopy = notification;
+  v7 = [[ATXInformationHeuristicRefreshNotitifcationTrigger alloc] initWithNotification:notificationCopy type:1 coalescingInterval:interval];
 
   [(NSMutableSet *)self->_currentRefreshTriggerBuffer addObject:v7];
 }
@@ -1364,25 +1364,25 @@ LABEL_29:
   [(NSMutableSet *)self->_currentRefreshTriggerBuffer addObject:v3];
 }
 
-- (id)_functionNameForMGQuery:(int)a3
+- (id)_functionNameForMGQuery:(int)query
 {
-  if (a3 > 5)
+  if (query > 5)
   {
     return 0;
   }
 
   else
   {
-    return *(&off_100025BF0 + a3);
+    return *(&off_100025BF0 + query);
   }
 }
 
-- (BOOL)_BOOLForMGQuery:(int)a3
+- (BOOL)_BOOLForMGQuery:(int)query
 {
   result = 0;
-  if (a3 > 2)
+  if (query > 2)
   {
-    switch(a3)
+    switch(query)
     {
       case 3:
         v7 = @"CoreRoutineCapability";
@@ -1403,7 +1403,7 @@ LABEL_29:
     return _MGGetBoolAnswer(v7, a2);
   }
 
-  switch(a3)
+  switch(query)
   {
     case 0:
       v7 = @"telephony";
@@ -1423,55 +1423,55 @@ LABEL_29:
   return result;
 }
 
-- (void)_expireCacheAfterTime:(double)a3
+- (void)_expireCacheAfterTime:(double)time
 {
-  if (a3 > 0.0)
+  if (time > 0.0)
   {
     v6 = [ATXHeuristicCacheTimeExpirer alloc];
     v7 = [(ATXHeuristicJSEnv *)self now];
-    v8 = [v7 dateByAddingTimeInterval:a3];
+    v8 = [v7 dateByAddingTimeInterval:time];
     v9 = [v6 initWithFireDate:v8];
 
     [(NSMutableSet *)self->_currentExpirersBuffer addObject:v9];
   }
 }
 
-- (void)_expireCacheAtTime:(double)a3
+- (void)_expireCacheAtTime:(double)time
 {
   +[NSDate timeIntervalSinceReferenceDate];
-  if (v5 < a3)
+  if (v5 < time)
   {
     v6 = [ATXHeuristicCacheTimeExpirer alloc];
-    v7 = [NSDate dateWithTimeIntervalSinceReferenceDate:a3];
+    v7 = [NSDate dateWithTimeIntervalSinceReferenceDate:time];
     v8 = [v6 initWithFireDate:v7];
 
     [(NSMutableSet *)self->_currentExpirersBuffer addObject:v8];
   }
 }
 
-- (void)_expireCacheAfterDarwinNotification:(id)a3
+- (void)_expireCacheAfterDarwinNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [[ATXHeuristicCacheNotificationExpirer alloc] initDarwin:v4];
+  notificationCopy = notification;
+  v5 = [[ATXHeuristicCacheNotificationExpirer alloc] initDarwin:notificationCopy];
 
   [(NSMutableSet *)self->_currentExpirersBuffer addObject:v5];
 }
 
-- (void)_expireCacheAfterLocalNotification:(id)a3
+- (void)_expireCacheAfterLocalNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [[ATXHeuristicCacheNotificationExpirer alloc] initLocal:v4];
+  notificationCopy = notification;
+  v5 = [[ATXHeuristicCacheNotificationExpirer alloc] initLocal:notificationCopy];
 
   [(NSMutableSet *)self->_currentExpirersBuffer addObject:v5];
 }
 
-- (id)_dateFromTimeIntervalOrDate:(id)a3
+- (id)_dateFromTimeIntervalOrDate:(id)date
 {
-  v3 = a3;
+  dateCopy = date;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v3 doubleValue];
+    [dateCopy doubleValue];
     v4 = [NSDate dateWithTimeIntervalSinceReferenceDate:?];
 LABEL_5:
     v5 = v4;
@@ -1481,7 +1481,7 @@ LABEL_5:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = dateCopy;
     goto LABEL_5;
   }
 
@@ -1497,25 +1497,25 @@ LABEL_7:
   return v5;
 }
 
-- (BOOL)_isEventAtOneWithTimeIntervelOrDate:(id)a3 usesTwelveHourClock:(BOOL)a4
+- (BOOL)_isEventAtOneWithTimeIntervelOrDate:(id)date usesTwelveHourClock:(BOOL)clock
 {
-  v4 = a4;
-  v5 = [(ATXHeuristicJSEnv *)self _dateFromTimeIntervalOrDate:a3];
+  clockCopy = clock;
+  v5 = [(ATXHeuristicJSEnv *)self _dateFromTimeIntervalOrDate:date];
   if (v5)
   {
     v6 = +[NSCalendar currentCalendar];
     v7 = [v6 components:32 fromDate:v5];
 
-    v8 = [v7 hour];
-    v10 = v8 == 13 || v8 == 1;
-    if (v4)
+    hour = [v7 hour];
+    v10 = hour == 13 || hour == 1;
+    if (clockCopy)
     {
       v11 = v10;
     }
 
     else
     {
-      v11 = v8 == 1;
+      v11 = hour == 1;
     }
   }
 
@@ -1752,11 +1752,11 @@ LABEL_7:
   objc_destroyWeak(location);
 }
 
-- (id)_duetInteractionCountFromDataSourceWithHandles:(id)a3 date:(id)a4
+- (id)_duetInteractionCountFromDataSourceWithHandles:(id)handles date:(id)date
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  handlesCopy = handles;
+  dateCopy = date;
+  if ([handlesCopy count])
   {
     v18 = 0;
     v19 = &v18;
@@ -1771,14 +1771,14 @@ LABEL_7:
     v16[3] = sub_100009950;
     v17 = 0;
     provider = self->_provider;
-    v9 = [NSSet setWithArray:v6];
+    v9 = [NSSet setWithArray:handlesCopy];
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = sub_100010AB0;
     v14[3] = &unk_100025A00;
     v14[4] = &v18;
     v14[5] = &v15;
-    [(ATXHeuristicDataSources *)provider duetInteractionCountForHandles:v9 sinceDate:v7 callback:v14];
+    [(ATXHeuristicDataSources *)provider duetInteractionCountForHandles:v9 sinceDate:dateCopy callback:v14];
 
     if (*(v16[0] + 40))
     {
@@ -1810,10 +1810,10 @@ LABEL_7:
   return v12;
 }
 
-- (id)_userAppPreferenceFromDataSourceWithIntentName:(id)a3 parameterCombination:(id)a4
+- (id)_userAppPreferenceFromDataSourceWithIntentName:(id)name parameterCombination:(id)combination
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  combinationCopy = combination;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -1833,7 +1833,7 @@ LABEL_7:
   v13[3] = &unk_100025A28;
   v13[4] = &v17;
   v13[5] = &v14;
-  [(ATXHeuristicDataSources *)provider preferredAppForIntentName:v6 andParameterCombination:v7 callback:v13];
+  [(ATXHeuristicDataSources *)provider preferredAppForIntentName:nameCopy andParameterCombination:combinationCopy callback:v13];
   if (*(v15[0] + 40))
   {
     v9 = sub_100001940();
@@ -1904,12 +1904,12 @@ LABEL_7:
   return v5;
 }
 
-- (id)_contactsDataSourceWithType:(id)a3 value:(id)a4 identifiers:(id)a5
+- (id)_contactsDataSourceWithType:(id)type value:(id)value identifiers:(id)identifiers
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8)
+  typeCopy = type;
+  valueCopy = value;
+  identifiersCopy = identifiers;
+  if (!typeCopy)
   {
     v14 = 0;
     goto LABEL_28;
@@ -1934,9 +1934,9 @@ LABEL_7:
   v19[4] = &v23;
   v19[5] = &v20;
   v11 = objc_retainBlock(v19);
-  if ([v8 isEqualToString:@"identifiers"])
+  if ([typeCopy isEqualToString:@"identifiers"])
   {
-    [(ATXHeuristicDataSources *)self->_provider contactsWithIdentifiers:v10 callback:v11];
+    [(ATXHeuristicDataSources *)self->_provider contactsWithIdentifiers:identifiersCopy callback:v11];
     if (*(v21[0] + 40))
     {
       v12 = sub_100001940();
@@ -1953,9 +1953,9 @@ LABEL_26:
     }
   }
 
-  else if ([v8 isEqualToString:@"name"])
+  else if ([typeCopy isEqualToString:@"name"])
   {
-    [(ATXHeuristicDataSources *)self->_provider contactsWithName:v9 callback:v11];
+    [(ATXHeuristicDataSources *)self->_provider contactsWithName:valueCopy callback:v11];
     if (*(v21[0] + 40))
     {
       v12 = sub_100001940();
@@ -1969,9 +1969,9 @@ LABEL_26:
     }
   }
 
-  else if ([v8 isEqualToString:@"email"])
+  else if ([typeCopy isEqualToString:@"email"])
   {
-    [(ATXHeuristicDataSources *)self->_provider contactsWithEmail:v9 callback:v11];
+    [(ATXHeuristicDataSources *)self->_provider contactsWithEmail:valueCopy callback:v11];
     if (*(v21[0] + 40))
     {
       v12 = sub_100001940();
@@ -1987,20 +1987,20 @@ LABEL_26:
 
   else
   {
-    if (![v8 isEqualToString:@"phone"])
+    if (![typeCopy isEqualToString:@"phone"])
     {
       v12 = sub_100001940();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v30 = v8;
+        v30 = typeCopy;
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Unknown fetch type: '%@'", buf, 0xCu);
       }
 
       goto LABEL_26;
     }
 
-    [(ATXHeuristicDataSources *)self->_provider contactsWithPhone:v9 callback:v11];
+    [(ATXHeuristicDataSources *)self->_provider contactsWithPhone:valueCopy callback:v11];
     if (*(v21[0] + 40))
     {
       v12 = sub_100001940();
@@ -2071,7 +2071,7 @@ LABEL_28:
   return v5;
 }
 
-- (id)_unreadMessagesWithLimit:(int64_t)a3
+- (id)_unreadMessagesWithLimit:(int64_t)limit
 {
   v12 = 0;
   v13 = &v12;
@@ -2092,7 +2092,7 @@ LABEL_28:
   v8[3] = &unk_100025A78;
   v8[4] = &v12;
   v8[5] = &v9;
-  [(ATXHeuristicDataSources *)provider unreadMessagesWithLimit:a3 callback:v8];
+  [(ATXHeuristicDataSources *)provider unreadMessagesWithLimit:limit callback:v8];
   if (*(v10[0] + 40))
   {
     v4 = sub_100001940();
@@ -2163,7 +2163,7 @@ LABEL_28:
   return v5;
 }
 
-- (id)_enabledAlarmsFromTS:(double)a3 toTS:(double)a4
+- (id)_enabledAlarmsFromTS:(double)s toTS:(double)tS
 {
   v16 = 0;
   v17 = &v16;
@@ -2178,8 +2178,8 @@ LABEL_28:
   v14[3] = sub_100009950;
   v15 = 0;
   provider = self->_provider;
-  v6 = [[NSDate alloc] initWithTimeIntervalSinceReferenceDate:a3];
-  v7 = [[NSDate alloc] initWithTimeIntervalSinceReferenceDate:a4];
+  v6 = [[NSDate alloc] initWithTimeIntervalSinceReferenceDate:s];
+  v7 = [[NSDate alloc] initWithTimeIntervalSinceReferenceDate:tS];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_100012138;
@@ -2212,17 +2212,17 @@ LABEL_28:
   return v10;
 }
 
-- (id)_cityNameFromAirportCode:(id)a3
+- (id)_cityNameFromAirportCode:(id)code
 {
-  v3 = [ATXHeuristicAirportCity cityForAirport:a3];
-  v4 = [v3 name];
+  v3 = [ATXHeuristicAirportCity cityForAirport:code];
+  name = [v3 name];
 
-  return v4;
+  return name;
 }
 
-- (id)_latestFlightStatus:(id)a3
+- (id)_latestFlightStatus:(id)status
 {
-  v4 = a3;
+  statusCopy = status;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -2242,7 +2242,7 @@ LABEL_28:
   v10[3] = &unk_100025A50;
   v10[4] = &v14;
   v10[5] = &v11;
-  [(ATXHeuristicDataSources *)provider flightStatusForFlight:v4 callback:v10];
+  [(ATXHeuristicDataSources *)provider flightStatusForFlight:statusCopy callback:v10];
   if (*(v12[0] + 40))
   {
     v6 = sub_100001940();
@@ -2487,10 +2487,10 @@ LABEL_11:
   return v5;
 }
 
-- (id)_calendarEventsFromDataSourceBetweenStartDate:(id)a3 endDate:(id)a4
+- (id)_calendarEventsFromDataSourceBetweenStartDate:(id)date endDate:(id)endDate
 {
-  v6 = a3;
-  v7 = a4;
+  dateCopy = date;
+  endDateCopy = endDate;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -2510,7 +2510,7 @@ LABEL_11:
   v13[3] = &unk_100025A78;
   v13[4] = &v17;
   v13[5] = &v14;
-  [(ATXHeuristicDataSources *)provider calendarEventsFromStartDate:v6 toEndDate:v7 callback:v13];
+  [(ATXHeuristicDataSources *)provider calendarEventsFromStartDate:dateCopy toEndDate:endDateCopy callback:v13];
   if (*(v15[0] + 40))
   {
     v9 = sub_100001940();
@@ -2535,11 +2535,11 @@ LABEL_11:
   return v11;
 }
 
-- (id)_eventPassesFromDataSourceWithStyle:(id)a3
+- (id)_eventPassesFromDataSourceWithStyle:(id)style
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4 || ([v4 isEqualToString:@"ticket"] & 1) != 0 || (objc_msgSend(v5, "isEqualToString:", @"boardingPass") & 1) != 0)
+  styleCopy = style;
+  v5 = styleCopy;
+  if (!styleCopy || ([styleCopy isEqualToString:@"ticket"] & 1) != 0 || (objc_msgSend(v5, "isEqualToString:", @"boardingPass") & 1) != 0)
   {
     v16 = 0;
     v17 = &v16;
@@ -2689,12 +2689,12 @@ LABEL_11:
   return v5;
 }
 
-- (id)_extraordinaryEventsFromDataSourceWithProminentFeature:(id)a3
+- (id)_extraordinaryEventsFromDataSourceWithProminentFeature:(id)feature
 {
-  v4 = a3;
-  if (v4)
+  featureCopy = feature;
+  if (featureCopy)
   {
-    v5 = [&off_1000282A0 objectForKeyedSubscript:v4];
+    v5 = [&off_1000282A0 objectForKeyedSubscript:featureCopy];
   }
 
   else
@@ -2792,9 +2792,9 @@ LABEL_11:
   return v5;
 }
 
-- (id)_favoriteContactsFromDataSourceWithExistingContacts:(id)a3
+- (id)_favoriteContactsFromDataSourceWithExistingContacts:(id)contacts
 {
-  v4 = a3;
+  contactsCopy = contacts;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -2814,7 +2814,7 @@ LABEL_11:
   v10[3] = &unk_100025A78;
   v10[4] = &v14;
   v10[5] = &v11;
-  [(ATXHeuristicDataSources *)provider favoritesWithContacts:v4 callback:v10];
+  [(ATXHeuristicDataSources *)provider favoritesWithContacts:contactsCopy callback:v10];
   if (*(v12[0] + 40))
   {
     v6 = sub_100001940();
@@ -2839,10 +2839,10 @@ LABEL_11:
   return v8;
 }
 
-- (id)_allHandlesFromDataSourceWithContact:(id)a3
+- (id)_allHandlesFromDataSourceWithContact:(id)contact
 {
-  v4 = a3;
-  if (v4)
+  contactCopy = contact;
+  if (contactCopy)
   {
     v15 = 0;
     v16 = &v15;
@@ -2863,7 +2863,7 @@ LABEL_11:
     v11[3] = &unk_100025A78;
     v11[4] = &v15;
     v11[5] = &v12;
-    [(ATXHeuristicDataSources *)provider allHandlesForContact:v4 callback:v11];
+    [(ATXHeuristicDataSources *)provider allHandlesForContact:contactCopy callback:v11];
     if (*(v13[0] + 40))
     {
       v6 = sub_100001940();
@@ -2900,10 +2900,10 @@ LABEL_11:
   return v8;
 }
 
-- (id)_bestContactHandleFromDataSourceWithContact:(id)a3 serviceString:(id)a4
+- (id)_bestContactHandleFromDataSourceWithContact:(id)contact serviceString:(id)string
 {
-  v6 = a3;
-  v7 = a4;
+  contactCopy = contact;
+  stringCopy = string;
   v20 = @"imessage";
   v21 = @"facetime";
   v26 = IDSServiceNameiMessage;
@@ -2911,7 +2911,7 @@ LABEL_11:
   v22 = @"calling";
   v28 = IDSServiceNameCalling;
   v8 = [NSDictionary dictionaryWithObjects:&v26 forKeys:&v20 count:3];
-  v9 = [v8 objectForKeyedSubscript:v7];
+  v9 = [v8 objectForKeyedSubscript:stringCopy];
   v10 = v9;
   if (v9)
   {
@@ -2927,7 +2927,7 @@ LABEL_11:
     }
   }
 
-  if (v6 && v10)
+  if (contactCopy && v10)
   {
     v26 = 0;
     v27 = &v26;
@@ -2948,7 +2948,7 @@ LABEL_11:
     v19[3] = &unk_100025A28;
     v19[4] = &v26;
     v19[5] = &v20;
-    [(ATXHeuristicDataSources *)provider bestHandleForContact:v6 service:v10 callback:v19];
+    [(ATXHeuristicDataSources *)provider bestHandleForContact:contactCopy service:v10 callback:v19];
     if (v21[5])
     {
       v14 = sub_100001940();
@@ -2985,10 +2985,10 @@ LABEL_11:
   return v16;
 }
 
-- (id)_holidayEventsFromDataSourceBetweenStartDate:(id)a3 endDate:(id)a4
+- (id)_holidayEventsFromDataSourceBetweenStartDate:(id)date endDate:(id)endDate
 {
-  v6 = a3;
-  v7 = a4;
+  dateCopy = date;
+  endDateCopy = endDate;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -3008,7 +3008,7 @@ LABEL_11:
   v13[3] = &unk_100025A78;
   v13[4] = &v17;
   v13[5] = &v14;
-  [(ATXHeuristicDataSources *)provider holidaysFromStartDate:v6 toEndDate:v7 callback:v13];
+  [(ATXHeuristicDataSources *)provider holidaysFromStartDate:dateCopy toEndDate:endDateCopy callback:v13];
   if (*(v15[0] + 40))
   {
     v9 = sub_100001940();
@@ -3079,10 +3079,10 @@ LABEL_11:
   return v5;
 }
 
-- (id)_bestTimeToInteractFromDataSourceWithContact:(id)a3
+- (id)_bestTimeToInteractFromDataSourceWithContact:(id)contact
 {
-  v4 = a3;
-  if (v4)
+  contactCopy = contact;
+  if (contactCopy)
   {
     v15 = 0;
     v16 = &v15;
@@ -3103,7 +3103,7 @@ LABEL_11:
     v11[3] = &unk_100025A50;
     v11[4] = &v15;
     v11[5] = &v12;
-    [(ATXHeuristicDataSources *)provider hourOfDayInteractionProbabilitiesWithContact:v4 callback:v11];
+    [(ATXHeuristicDataSources *)provider hourOfDayInteractionProbabilitiesWithContact:contactCopy callback:v11];
     if (*(v13[0] + 40))
     {
       v6 = sub_100001940();
@@ -3186,9 +3186,9 @@ LABEL_11:
   return v5;
 }
 
-- (id)_fetchWidgetMetadataForAppBundleIds:(id)a3
+- (id)_fetchWidgetMetadataForAppBundleIds:(id)ids
 {
-  v4 = a3;
+  idsCopy = ids;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -3208,7 +3208,7 @@ LABEL_11:
   v10[3] = &unk_100025A50;
   v10[4] = &v14;
   v10[5] = &v11;
-  [(ATXHeuristicDataSources *)provider fetchWidgetMetadataForAppBundleIds:v4 callback:v10];
+  [(ATXHeuristicDataSources *)provider fetchWidgetMetadataForAppBundleIds:idsCopy callback:v10];
   if (*(v12[0] + 40))
   {
     v6 = sub_100001940();
@@ -3233,10 +3233,10 @@ LABEL_11:
   return v8;
 }
 
-- (id)_getLocationForMostRelevantTripInRangeFrom:(id)a3 to:(id)a4
+- (id)_getLocationForMostRelevantTripInRangeFrom:(id)from to:(id)to
 {
-  v6 = a3;
-  v7 = a4;
+  fromCopy = from;
+  toCopy = to;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -3256,7 +3256,7 @@ LABEL_11:
   v13[3] = &unk_100025A50;
   v13[4] = &v17;
   v13[5] = &v14;
-  [(ATXHeuristicDataSources *)provider getLocationForMostRelevantTripInRangeFrom:v6 to:v7 callback:v13];
+  [(ATXHeuristicDataSources *)provider getLocationForMostRelevantTripInRangeFrom:fromCopy to:toCopy callback:v13];
   if (*(v15[0] + 40))
   {
     v9 = sub_100001940();
@@ -3417,22 +3417,22 @@ LABEL_11:
   return v6;
 }
 
-- (void)mockClipboardContent:(id)a3 createdAt:(id)a4 fromBundleId:(id)a5
+- (void)mockClipboardContent:(id)content createdAt:(id)at fromBundleId:(id)id
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  contentCopy = content;
+  atCopy = at;
+  idCopy = id;
   objc_initWeak(&location, self);
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100016290;
   v15[3] = &unk_100025B40;
   objc_copyWeak(&v19, &location);
-  v11 = v8;
+  v11 = contentCopy;
   v16 = v11;
-  v12 = v9;
+  v12 = atCopy;
   v17 = v12;
-  v13 = v10;
+  v13 = idCopy;
   v18 = v13;
   v14 = objc_retainBlock(v15);
   [(JSContext *)self->_jsContext setObject:v14 forKeyedSubscript:@"getClipboard"];
@@ -3441,53 +3441,53 @@ LABEL_11:
   objc_destroyWeak(&location);
 }
 
-- (void)mockMidnightAndGetHolidayEventsToday:(double)a3
+- (void)mockMidnightAndGetHolidayEventsToday:(double)today
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100016484;
   v5[3] = &unk_100025B60;
-  *&v5[4] = a3;
+  *&v5[4] = today;
   v4 = objc_retainBlock(v5);
   [(JSContext *)self->_jsContext setObject:v4 forKeyedSubscript:@"getHolidayEvents"];
 }
 
-- (void)mockMidnightAndGetHolidayEventsTomorrow:(double)a3
+- (void)mockMidnightAndGetHolidayEventsTomorrow:(double)tomorrow
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_1000165F8;
   v5[3] = &unk_100025B60;
-  *&v5[4] = a3;
+  *&v5[4] = tomorrow;
   v4 = objc_retainBlock(v5);
   [(JSContext *)self->_jsContext setObject:v4 forKeyedSubscript:@"getHolidayEvents"];
 }
 
-- (void)mockDataSource:(id)a3 returning:(id)a4
+- (void)mockDataSource:(id)source returning:(id)returning
 {
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1000167A4;
   v9[3] = &unk_100025B88;
-  v10 = a4;
-  v6 = v10;
-  v7 = a3;
+  returningCopy = returning;
+  v6 = returningCopy;
+  sourceCopy = source;
   v8 = objc_retainBlock(v9);
-  [(ATXHeuristicJSEnv *)self mockDataSource:v7 block:v8];
+  [(ATXHeuristicJSEnv *)self mockDataSource:sourceCopy block:v8];
 }
 
-- (void)mockEventTravelTimeWithDuration:(double)a3
+- (void)mockEventTravelTimeWithDuration:(double)duration
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100016854;
   v5[3] = &unk_100025BA8;
-  *&v5[4] = a3;
+  *&v5[4] = duration;
   v4 = objc_retainBlock(v5);
   [(JSContext *)self->_jsContext setObject:v4 forKeyedSubscript:@"getEventTravelTime"];
 }
 
-- (void)mockUsesTwelveHourClock:(BOOL)a3
+- (void)mockUsesTwelveHourClock:(BOOL)clock
 {
   objc_initWeak(&location, self);
   v6[0] = _NSConcreteStackBlock;
@@ -3495,7 +3495,7 @@ LABEL_11:
   v6[2] = sub_100016A14;
   v6[3] = &unk_100025BD0;
   objc_copyWeak(&v7, &location);
-  v8 = a3;
+  clockCopy = clock;
   v5 = objc_retainBlock(v6);
   [(JSContext *)self->_jsContext setObject:v5 forKeyedSubscript:@"isEventAtOne"];
 

@@ -1,32 +1,32 @@
 @interface SiriNLUTypesUsoGraphConverter
-+ (id)convertUsoEdge:(id)a3;
-+ (id)convertUsoEdges:(id)a3;
-+ (id)convertUsoEntityIdentifier:(id)a3;
-+ (id)convertUsoEntityIdentifiers:(id)a3;
-+ (id)convertUsoGraph:(id)a3;
-+ (id)convertUsoGraphs:(id)a3;
-+ (id)convertUsoNode:(id)a3;
-+ (id)convertUsoNodes:(id)a3;
-+ (id)convertUtteranceAlignment:(id)a3;
-+ (id)convertUtteranceAlignments:(id)a3;
-+ (id)convertUtteranceSpan:(id)a3;
-+ (id)convertUtteranceSpans:(id)a3;
++ (id)convertUsoEdge:(id)edge;
++ (id)convertUsoEdges:(id)edges;
++ (id)convertUsoEntityIdentifier:(id)identifier;
++ (id)convertUsoEntityIdentifiers:(id)identifiers;
++ (id)convertUsoGraph:(id)graph;
++ (id)convertUsoGraphs:(id)graphs;
++ (id)convertUsoNode:(id)node;
++ (id)convertUsoNodes:(id)nodes;
++ (id)convertUtteranceAlignment:(id)alignment;
++ (id)convertUtteranceAlignments:(id)alignments;
++ (id)convertUtteranceSpan:(id)span;
++ (id)convertUtteranceSpans:(id)spans;
 @end
 
 @implementation SiriNLUTypesUsoGraphConverter
 
-+ (id)convertUsoNodes:(id)a3
++ (id)convertUsoNodes:(id)nodes
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  nodesCopy = nodes;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if (v4)
+  if (nodesCopy)
   {
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v6 = v4;
+    v6 = nodesCopy;
     v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v7)
     {
@@ -40,7 +40,7 @@
             objc_enumerationMutation(v6);
           }
 
-          v10 = [a1 convertUsoNode:{*(*(&v13 + 1) + 8 * i), v13}];
+          v10 = [self convertUsoNode:{*(*(&v13 + 1) + 8 * i), v13}];
           [v5 addObject:v10];
         }
 
@@ -56,44 +56,44 @@
   return v5;
 }
 
-+ (id)convertUsoNode:(id)a3
++ (id)convertUsoNode:(id)node
 {
-  v3 = a3;
-  if (v3)
+  nodeCopy = node;
+  if (nodeCopy)
   {
-    v4 = [objc_alloc(MEMORY[0x1E69D25E8]) initWithUsoElementId:{objc_msgSend(v3, "usoElementId")}];
-    if ([v3 hasUsoVerbElementId])
+    v4 = [objc_alloc(MEMORY[0x1E69D25E8]) initWithUsoElementId:{objc_msgSend(nodeCopy, "usoElementId")}];
+    if ([nodeCopy hasUsoVerbElementId])
     {
       v5 = MEMORY[0x1E696AD98];
-      v6 = [v3 usoVerbElementId];
-      v7 = [v5 numberWithInteger:{objc_msgSend(v6, "value")}];
+      usoVerbElementId = [nodeCopy usoVerbElementId];
+      v7 = [v5 numberWithInteger:{objc_msgSend(usoVerbElementId, "value")}];
       [v4 setUsoVerbId:v7];
     }
 
-    if ([v3 hasIntegerPayload])
+    if ([nodeCopy hasIntegerPayload])
     {
       v8 = MEMORY[0x1E696AD98];
-      v9 = [v3 integerPayload];
-      v10 = [v8 numberWithInteger:{objc_msgSend(v9, "value")}];
+      integerPayload = [nodeCopy integerPayload];
+      v10 = [v8 numberWithInteger:{objc_msgSend(integerPayload, "value")}];
       [v4 setIntegerPayload:v10];
     }
 
-    if ([v3 hasStringPayload])
+    if ([nodeCopy hasStringPayload])
     {
-      v11 = [v3 stringPayload];
-      v12 = [v11 value];
-      [v4 setStringPayload:v12];
+      stringPayload = [nodeCopy stringPayload];
+      value = [stringPayload value];
+      [v4 setStringPayload:value];
     }
 
-    v13 = [v3 normalizedStringPayloads];
-    v14 = [v13 copy];
+    normalizedStringPayloads = [nodeCopy normalizedStringPayloads];
+    v14 = [normalizedStringPayloads copy];
     [v4 setNormalizedStringPayloads:v14];
 
-    v15 = [v3 entityLabel];
-    [v4 setEntityLabel:v15];
+    entityLabel = [nodeCopy entityLabel];
+    [v4 setEntityLabel:entityLabel];
 
-    v16 = [v3 verbLabel];
-    [v4 setVerbLabel:v16];
+    verbLabel = [nodeCopy verbLabel];
+    [v4 setVerbLabel:verbLabel];
   }
 
   else
@@ -104,18 +104,18 @@
   return v4;
 }
 
-+ (id)convertUsoEntityIdentifiers:(id)a3
++ (id)convertUsoEntityIdentifiers:(id)identifiers
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifiersCopy = identifiers;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if (v4)
+  if (identifiersCopy)
   {
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v6 = v4;
+    v6 = identifiersCopy;
     v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v7)
     {
@@ -129,7 +129,7 @@
             objc_enumerationMutation(v6);
           }
 
-          v10 = [a1 convertUsoEntityIdentifier:{*(*(&v13 + 1) + 8 * i), v13}];
+          v10 = [self convertUsoEntityIdentifier:{*(*(&v13 + 1) + 8 * i), v13}];
           [v5 addObject:v10];
         }
 
@@ -145,17 +145,17 @@
   return v5;
 }
 
-+ (id)convertUsoEntityIdentifier:(id)a3
++ (id)convertUsoEntityIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  identifierCopy = identifier;
+  v4 = identifierCopy;
+  if (identifierCopy)
   {
-    if ([v3 hasProbability])
+    if ([identifierCopy hasProbability])
     {
       v5 = objc_alloc(MEMORY[0x1E696AD98]);
-      v6 = [v4 probability];
-      [v6 value];
+      probability = [v4 probability];
+      [probability value];
       v18 = [v5 initWithDouble:?];
     }
 
@@ -195,12 +195,12 @@
     }
 
     v11 = objc_alloc(MEMORY[0x1E69D25F0]);
-    v12 = [v4 nodeIndex];
-    v13 = [v4 value];
-    v14 = [v4 backingAppBundleId];
-    v15 = [v4 namespaceA];
-    v16 = [v15 value];
-    v7 = [v11 initWithNodeIndex:v12 value:v13 appBundleId:v14 namespaceString:v16 probability:v18 sourceComponent:v8 groupIndex:v9 interpretationGroup:v10];
+    nodeIndex = [v4 nodeIndex];
+    value = [v4 value];
+    backingAppBundleId = [v4 backingAppBundleId];
+    namespaceA = [v4 namespaceA];
+    value2 = [namespaceA value];
+    v7 = [v11 initWithNodeIndex:nodeIndex value:value appBundleId:backingAppBundleId namespaceString:value2 probability:v18 sourceComponent:v8 groupIndex:v9 interpretationGroup:v10];
   }
 
   else
@@ -211,18 +211,18 @@
   return v7;
 }
 
-+ (id)convertUsoEdges:(id)a3
++ (id)convertUsoEdges:(id)edges
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  edgesCopy = edges;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if (v4)
+  if (edgesCopy)
   {
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v6 = v4;
+    v6 = edgesCopy;
     v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v7)
     {
@@ -236,7 +236,7 @@
             objc_enumerationMutation(v6);
           }
 
-          v10 = [a1 convertUsoEdge:{*(*(&v13 + 1) + 8 * i), v13}];
+          v10 = [self convertUsoEdge:{*(*(&v13 + 1) + 8 * i), v13}];
           [v5 addObject:v10];
         }
 
@@ -252,23 +252,23 @@
   return v5;
 }
 
-+ (id)convertUsoEdge:(id)a3
++ (id)convertUsoEdge:(id)edge
 {
-  v3 = a3;
-  if (v3)
+  edgeCopy = edge;
+  if (edgeCopy)
   {
     v4 = objc_alloc(MEMORY[0x1E69D25E0]);
-    v5 = [v3 label];
-    v6 = [v5 usoElementId];
-    v7 = [v3 fromIndex];
-    v8 = [v3 toIndex];
-    v9 = [v3 label];
-    v10 = [v4 initWithUsoElementId:v6 fromVertex:v7 toVertex:v8 enumeration:{objc_msgSend(v9, "enumeration")}];
+    label = [edgeCopy label];
+    usoElementId = [label usoElementId];
+    fromIndex = [edgeCopy fromIndex];
+    toIndex = [edgeCopy toIndex];
+    label2 = [edgeCopy label];
+    v10 = [v4 initWithUsoElementId:usoElementId fromVertex:fromIndex toVertex:toIndex enumeration:{objc_msgSend(label2, "enumeration")}];
 
-    v11 = [v3 label];
-    v12 = [v11 baseEdgeLabel];
-    v13 = [v12 value];
-    [v10 setEdgeLabel:v13];
+    label3 = [edgeCopy label];
+    baseEdgeLabel = [label3 baseEdgeLabel];
+    value = [baseEdgeLabel value];
+    [v10 setEdgeLabel:value];
   }
 
   else
@@ -279,18 +279,18 @@
   return v10;
 }
 
-+ (id)convertUtteranceSpans:(id)a3
++ (id)convertUtteranceSpans:(id)spans
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  spansCopy = spans;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if (v4)
+  if (spansCopy)
   {
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v6 = v4;
+    v6 = spansCopy;
     v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v7)
     {
@@ -304,7 +304,7 @@
             objc_enumerationMutation(v6);
           }
 
-          v10 = [a1 convertUtteranceSpan:{*(*(&v13 + 1) + 8 * i), v13}];
+          v10 = [self convertUtteranceSpan:{*(*(&v13 + 1) + 8 * i), v13}];
           [v5 addObject:v10];
         }
 
@@ -320,12 +320,12 @@
   return v5;
 }
 
-+ (id)convertUtteranceSpan:(id)a3
++ (id)convertUtteranceSpan:(id)span
 {
-  v3 = a3;
-  if (v3)
+  spanCopy = span;
+  if (spanCopy)
   {
-    v4 = [objc_alloc(MEMORY[0x1E69D2600]) initWithStartIndex:objc_msgSend(v3 endIndex:"startIndex") startUnicodeScalarIndex:objc_msgSend(v3 endUnicodeScalarIndex:"endIndex") startMilliSeconds:objc_msgSend(v3 endMilliSeconds:{"startUnicodeScalarIndex"), objc_msgSend(v3, "endUnicodeScalarIndex"), objc_msgSend(v3, "startMilliSeconds"), objc_msgSend(v3, "endMilliSeconds")}];
+    v4 = [objc_alloc(MEMORY[0x1E69D2600]) initWithStartIndex:objc_msgSend(spanCopy endIndex:"startIndex") startUnicodeScalarIndex:objc_msgSend(spanCopy endUnicodeScalarIndex:"endIndex") startMilliSeconds:objc_msgSend(spanCopy endMilliSeconds:{"startUnicodeScalarIndex"), objc_msgSend(spanCopy, "endUnicodeScalarIndex"), objc_msgSend(spanCopy, "startMilliSeconds"), objc_msgSend(spanCopy, "endMilliSeconds")}];
   }
 
   else
@@ -336,18 +336,18 @@
   return v4;
 }
 
-+ (id)convertUtteranceAlignments:(id)a3
++ (id)convertUtteranceAlignments:(id)alignments
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  alignmentsCopy = alignments;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if (v4)
+  if (alignmentsCopy)
   {
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v6 = v4;
+    v6 = alignmentsCopy;
     v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v7)
     {
@@ -361,7 +361,7 @@
             objc_enumerationMutation(v6);
           }
 
-          v10 = [a1 convertUtteranceAlignment:{*(*(&v13 + 1) + 8 * i), v13}];
+          v10 = [self convertUtteranceAlignment:{*(*(&v13 + 1) + 8 * i), v13}];
           [v5 addObject:v10];
         }
 
@@ -377,17 +377,17 @@
   return v5;
 }
 
-+ (id)convertUtteranceAlignment:(id)a3
++ (id)convertUtteranceAlignment:(id)alignment
 {
-  v4 = a3;
-  if (v4)
+  alignmentCopy = alignment;
+  if (alignmentCopy)
   {
     v5 = objc_alloc(MEMORY[0x1E69D25F8]);
-    v6 = [v4 nodeIndex];
-    v7 = [v4 asrHypothesisIndex];
-    v8 = [v4 spans];
-    v9 = [a1 convertUtteranceSpans:v8];
-    v10 = [v5 initWithNodeIndex:v6 asrHypothesisIndex:v7 spans:v9];
+    nodeIndex = [alignmentCopy nodeIndex];
+    asrHypothesisIndex = [alignmentCopy asrHypothesisIndex];
+    spans = [alignmentCopy spans];
+    v9 = [self convertUtteranceSpans:spans];
+    v10 = [v5 initWithNodeIndex:nodeIndex asrHypothesisIndex:asrHypothesisIndex spans:v9];
   }
 
   else
@@ -398,18 +398,18 @@
   return v10;
 }
 
-+ (id)convertUsoGraphs:(id)a3
++ (id)convertUsoGraphs:(id)graphs
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  graphsCopy = graphs;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if (v4)
+  if (graphsCopy)
   {
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v6 = v4;
+    v6 = graphsCopy;
     v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v7)
     {
@@ -423,7 +423,7 @@
             objc_enumerationMutation(v6);
           }
 
-          v10 = [a1 convertUsoGraph:{*(*(&v13 + 1) + 8 * i), v13}];
+          v10 = [self convertUsoGraph:{*(*(&v13 + 1) + 8 * i), v13}];
           [v5 addObject:v10];
         }
 
@@ -439,21 +439,21 @@
   return v5;
 }
 
-+ (id)convertUsoGraph:(id)a3
++ (id)convertUsoGraph:(id)graph
 {
   v47[20] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  graphCopy = graph;
+  if (graphCopy)
   {
     v5 = objc_alloc(MEMORY[0x1E69D25D8]);
-    v6 = [v4 nodes];
-    v7 = [a1 convertUsoNodes:v6];
-    v8 = [v4 edges];
-    v9 = [a1 convertUsoEdges:v8];
-    v10 = [v4 identifiers];
-    v11 = [a1 convertUsoEntityIdentifiers:v10];
-    v12 = [v4 alignments];
-    v13 = [a1 convertUtteranceAlignments:v12];
+    nodes = [graphCopy nodes];
+    v7 = [self convertUsoNodes:nodes];
+    edges = [graphCopy edges];
+    v9 = [self convertUsoEdges:edges];
+    identifiers = [graphCopy identifiers];
+    v11 = [self convertUsoEntityIdentifiers:identifiers];
+    alignments = [graphCopy alignments];
+    v13 = [self convertUtteranceAlignments:alignments];
     v33 = [v5 initWithNodes:v7 edges:v9 identifiers:v11 alignments:v13];
 
     SharedUsoVocabManager = siri::ontology::getSharedUsoVocabManager(v14);

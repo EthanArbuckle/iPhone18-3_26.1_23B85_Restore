@@ -9,15 +9,15 @@
 - (NSString)mimeType;
 - (id)attachmentURLs;
 - (id)attachments;
-- (id)partWithNumber:(id)a3;
+- (id)partWithNumber:(id)number;
 - (id)preferredBodyPart;
 - (id)textHtmlPart;
 - (int64_t)numberOfAlternatives;
 - (int64_t)preferredAlternative;
-- (unsigned)numberOfAttachmentsSigned:(BOOL *)a3 encrypted:(BOOL *)a4;
+- (unsigned)numberOfAttachmentsSigned:(BOOL *)signed encrypted:(BOOL *)encrypted;
 - (void)hasEncryptedDescendantPart;
-- (void)setPreferredAlternative:(int64_t)a3;
-- (void)setTopLevelPart:(id)a3;
+- (void)setPreferredAlternative:(int64_t)alternative;
+- (void)setTopLevelPart:(id)part;
 @end
 
 @implementation MFMimeBody
@@ -54,9 +54,9 @@ void __27__MFMimeBody_versionString__block_invoke()
 + (id)copyNewMimeBoundary
 {
   v2 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v3 = [MEMORY[0x1E696AFB0] UUID];
-  v4 = [v3 UUIDString];
-  v5 = [v2 initWithFormat:@"Apple-Mail-%@", v4];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
+  v5 = [v2 initWithFormat:@"Apple-Mail-%@", uUIDString];
 
   return v5;
 }
@@ -74,39 +74,39 @@ void __27__MFMimeBody_versionString__block_invoke()
   return result;
 }
 
-- (void)setTopLevelPart:(id)a3
+- (void)setTopLevelPart:(id)part
 {
-  v5 = a3;
-  if (self->_topLevelPart != v5)
+  partCopy = part;
+  if (self->_topLevelPart != partCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_topLevelPart, a3);
-    v5 = v6;
+    v6 = partCopy;
+    objc_storeStrong(&self->_topLevelPart, part);
+    partCopy = v6;
     *(self + 17) = -1;
   }
 }
 
 - (NSString)mimeType
 {
-  v2 = [(MFMimeBody *)self preferredBodyPart];
-  v3 = [v2 type];
+  preferredBodyPart = [(MFMimeBody *)self preferredBodyPart];
+  type = [preferredBodyPart type];
 
-  return v3;
+  return type;
 }
 
 - (NSString)mimeSubtype
 {
-  v2 = [(MFMimeBody *)self preferredBodyPart];
-  v3 = [v2 subtype];
+  preferredBodyPart = [(MFMimeBody *)self preferredBodyPart];
+  subtype = [preferredBodyPart subtype];
 
-  return v3;
+  return subtype;
 }
 
-- (id)partWithNumber:(id)a3
+- (id)partWithNumber:(id)number
 {
-  v4 = a3;
-  v5 = [(MFMimeBody *)self topLevelPart];
-  v6 = [v5 childPartWithNumber:v4];
+  numberCopy = number;
+  topLevelPart = [(MFMimeBody *)self topLevelPart];
+  v6 = [topLevelPart childPartWithNumber:numberCopy];
 
   return v6;
 }
@@ -117,19 +117,19 @@ void __27__MFMimeBody_versionString__block_invoke()
   encryptedDescendantState = self->_encryptedDescendantState;
   if (!encryptedDescendantState)
   {
-    v4 = self;
-    v33 = v4;
-    v5 = [(MFMimeBody *)v4 topLevelPart];
-    [v5 decodeIfNecessary];
-    if ([v5 isMultipartSigned])
+    selfCopy = self;
+    v33 = selfCopy;
+    topLevelPart = [(MFMimeBody *)selfCopy topLevelPart];
+    [topLevelPart decodeIfNecessary];
+    if ([topLevelPart isMultipartSigned])
     {
-      v6 = [v5 subparts];
-      if ([v6 count] != 2)
+      subparts = [topLevelPart subparts];
+      if ([subparts count] != 2)
       {
         v7 = _ef_log_MFMimeBody();
         if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
         {
-          -[MFMimeBody hasEncryptedDescendantPart].cold.1(buf, [v6 count], v7);
+          -[MFMimeBody hasEncryptedDescendantPart].cold.1(buf, [subparts count], v7);
         }
 
 LABEL_39:
@@ -140,7 +140,7 @@ LABEL_39:
       v41 = 0u;
       v38 = 0u;
       v39 = 0u;
-      v7 = v6;
+      v7 = subparts;
       v8 = [v7 countByEnumeratingWithState:&v38 objects:v49 count:16];
       if (v8)
       {
@@ -171,7 +171,7 @@ LABEL_39:
 
               else
               {
-                v14 = v5;
+                v14 = topLevelPart;
               }
 
               if (v9 >= 2)
@@ -182,11 +182,11 @@ LABEL_39:
                   [(MFMimeBody *)v30 hasEncryptedDescendantPart];
                 }
 
-                v5 = v14;
+                topLevelPart = v14;
                 goto LABEL_39;
               }
 
-              v5 = v14;
+              topLevelPart = v14;
             }
           }
 
@@ -203,7 +203,7 @@ LABEL_39:
 
     else
     {
-      v16 = [v5 decryptedMessageBodyIsEncrypted:0 isSigned:0];
+      v16 = [topLevelPart decryptedMessageBodyIsEncrypted:0 isSigned:0];
       v17 = v16;
       if (v16)
       {
@@ -212,14 +212,14 @@ LABEL_39:
 
       else
       {
-        v18 = v4;
+        v18 = selfCopy;
       }
 
       v19 = v18;
 
-      v20 = [v19 topLevelPart];
+      topLevelPart2 = [v19 topLevelPart];
 
-      v5 = v20;
+      topLevelPart = topLevelPart2;
     }
 
     v34 = 0;
@@ -230,7 +230,7 @@ LABEL_39:
     v44 = 3221225472;
     v45 = __computeHasEncryptedDescendant_block_invoke;
     v46 = &unk_1E84551E8;
-    v47 = v5;
+    v47 = topLevelPart;
     v48 = &v34;
     v21 = v47;
     v22 = buf;
@@ -248,21 +248,21 @@ LABEL_39:
           break;
         }
 
-        v26 = [v25 firstChildPart];
-        if (!v26)
+        firstChildPart = [v25 firstChildPart];
+        if (!firstChildPart)
         {
           while (1)
           {
-            v26 = [v25 nextSiblingPart];
-            if (v26)
+            firstChildPart = [v25 nextSiblingPart];
+            if (firstChildPart)
             {
               break;
             }
 
-            v27 = [v25 parentPart];
+            parentPart = [v25 parentPart];
 
-            v25 = v27;
-            if (!v27)
+            v25 = parentPart;
+            if (!parentPart)
             {
               goto LABEL_30;
             }
@@ -270,7 +270,7 @@ LABEL_39:
         }
 
         v28 = v25;
-        v25 = v26;
+        v25 = firstChildPart;
       }
 
 LABEL_30:
@@ -298,15 +298,15 @@ LABEL_42:
   return result;
 }
 
-- (unsigned)numberOfAttachmentsSigned:(BOOL *)a3 encrypted:(BOOL *)a4
+- (unsigned)numberOfAttachmentsSigned:(BOOL *)signed encrypted:(BOOL *)encrypted
 {
   v10 = 0;
-  v6 = [(MFMimeBody *)self topLevelPart];
-  v7 = v6;
-  if (v6)
+  topLevelPart = [(MFMimeBody *)self topLevelPart];
+  v7 = topLevelPart;
+  if (topLevelPart)
   {
-    [v6 decodeIfNecessary];
-    [v7 getNumberOfAttachments:&v10 isSigned:a3 isEncrypted:a4];
+    [topLevelPart decodeIfNecessary];
+    [v7 getNumberOfAttachments:&v10 isSigned:signed isEncrypted:encrypted];
     v8 = v10;
   }
 
@@ -320,20 +320,20 @@ LABEL_42:
 
 - (id)attachments
 {
-  v2 = [(MFMimeBody *)self topLevelPart];
-  [v2 decodeIfNecessary];
-  v3 = [v2 attachments];
+  topLevelPart = [(MFMimeBody *)self topLevelPart];
+  [topLevelPart decodeIfNecessary];
+  attachments = [topLevelPart attachments];
 
-  return v3;
+  return attachments;
 }
 
 - (id)attachmentURLs
 {
-  v2 = [(MFMimeBody *)self topLevelPart];
-  [v2 decodeIfNecessary];
-  v3 = [v2 attachmentURLs];
+  topLevelPart = [(MFMimeBody *)self topLevelPart];
+  [topLevelPart decodeIfNecessary];
+  attachmentURLs = [topLevelPart attachmentURLs];
 
-  return v3;
+  return attachmentURLs;
 }
 
 - (BOOL)isHTML
@@ -341,16 +341,16 @@ LABEL_42:
   v3 = [(MFMimePart *)self->_topLevelPart decryptedMessageBodyIsEncrypted:0 isSigned:0];
   if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v4 = [v3 isHTML];
+    isHTML = [v3 isHTML];
   }
 
   else
   {
-    v5 = [(MFMimeBody *)self preferredBodyPart];
-    v4 = [v5 isHTML];
+    preferredBodyPart = [(MFMimeBody *)self preferredBodyPart];
+    isHTML = [preferredBodyPart isHTML];
   }
 
-  return v4;
+  return isHTML;
 }
 
 - (BOOL)isRich
@@ -358,16 +358,16 @@ LABEL_42:
   v3 = [(MFMimePart *)self->_topLevelPart decryptedMessageBodyIsEncrypted:0 isSigned:0];
   if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v4 = [v3 isRich];
+    isRich = [v3 isRich];
   }
 
   else
   {
-    v5 = [(MFMimePart *)self->_topLevelPart startPart];
-    v4 = [v5 isRich];
+    startPart = [(MFMimePart *)self->_topLevelPart startPart];
+    isRich = [startPart isRich];
   }
 
-  return v4;
+  return isRich;
 }
 
 - (int64_t)numberOfAlternatives
@@ -375,7 +375,7 @@ LABEL_42:
   v3 = [(MFMimePart *)self->_topLevelPart decryptedMessageBodyIsEncrypted:0 isSigned:0];
   if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v4 = [v3 numberOfAlternatives];
+    numberOfAlternatives = [v3 numberOfAlternatives];
   }
 
   else
@@ -386,30 +386,30 @@ LABEL_42:
       topLevelPart = self->_topLevelPart;
       if (topLevelPart)
       {
-        v7 = [(MFMimePart *)topLevelPart startPart];
-        *(self + 17) = [v7 numberOfAlternatives];
+        startPart = [(MFMimePart *)topLevelPart startPart];
+        *(self + 17) = [startPart numberOfAlternatives];
 
         LOWORD(v5) = *(self + 17);
       }
     }
 
-    v4 = v5;
+    numberOfAlternatives = v5;
   }
 
-  return v4;
+  return numberOfAlternatives;
 }
 
-- (void)setPreferredAlternative:(int64_t)a3
+- (void)setPreferredAlternative:(int64_t)alternative
 {
   v5 = [(MFMimePart *)self->_topLevelPart decryptedMessageBodyIsEncrypted:0 isSigned:0];
   if (v5 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    [v5 setPreferredAlternative:a3];
+    [v5 setPreferredAlternative:alternative];
   }
 
   else if ([(MFMimeBody *)self numberOfAlternatives]>= 2)
   {
-    *(self + 16) = a3;
+    *(self + 16) = alternative;
   }
 }
 
@@ -418,36 +418,36 @@ LABEL_42:
   v3 = [(MFMimePart *)self->_topLevelPart decryptedMessageBodyIsEncrypted:0 isSigned:0];
   if (!v3 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v4 = *(self + 16);
-    if (v4 != -1)
+    preferredAlternative = *(self + 16);
+    if (preferredAlternative != -1)
     {
       goto LABEL_20;
     }
 
-    v5 = [(MFMessageBody *)self message];
-    v6 = [(MFMimeBody *)self topLevelPart];
-    v7 = [v5 defaultAlternativeInPart:v6];
+    message = [(MFMessageBody *)self message];
+    topLevelPart = [(MFMimeBody *)self topLevelPart];
+    v7 = [message defaultAlternativeInPart:topLevelPart];
 
     if (v7)
     {
-      v8 = [(MFMimePart *)self->_topLevelPart subparts];
-      v9 = [v8 count];
+      subparts = [(MFMimePart *)self->_topLevelPart subparts];
+      v9 = [subparts count];
       if (v9)
       {
         v10 = 1;
         do
         {
-          v4 = v10 - 1;
-          v11 = [v8 objectAtIndex:v10 - 1];
+          preferredAlternative = v10 - 1;
+          v11 = [subparts objectAtIndex:v10 - 1];
           if (v11 != v7)
           {
-            v4 = 0x7FFFFFFFFFFFFFFFLL;
+            preferredAlternative = 0x7FFFFFFFFFFFFFFFLL;
           }
         }
 
-        while (v4 == 0x7FFFFFFFFFFFFFFFLL && v10++ < v9);
+        while (preferredAlternative == 0x7FFFFFFFFFFFFFFFLL && v10++ < v9);
 
-        if (v4 != 0x7FFFFFFFFFFFFFFFLL)
+        if (preferredAlternative != 0x7FFFFFFFFFFFFFFFLL)
         {
           goto LABEL_19;
         }
@@ -458,16 +458,16 @@ LABEL_42:
       }
     }
 
-    v4 = -1;
+    preferredAlternative = -1;
 LABEL_19:
 
     goto LABEL_20;
   }
 
-  v4 = [v3 preferredAlternative];
+  preferredAlternative = [v3 preferredAlternative];
 LABEL_20:
 
-  return v4;
+  return preferredAlternative;
 }
 
 - (id)preferredBodyPart
@@ -475,16 +475,16 @@ LABEL_20:
   v3 = [(MFMimePart *)self->_topLevelPart decryptedMessageBodyIsEncrypted:0 isSigned:0];
   if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v4 = [v3 preferredBodyPart];
+    preferredBodyPart = [v3 preferredBodyPart];
   }
 
   else
   {
-    v5 = [(MFMimePart *)self->_topLevelPart startPart];
-    v4 = [v5 alternativeAtIndex:{-[MFMimeBody preferredAlternative](self, "preferredAlternative")}];
+    startPart = [(MFMimePart *)self->_topLevelPart startPart];
+    preferredBodyPart = [startPart alternativeAtIndex:{-[MFMimeBody preferredAlternative](self, "preferredAlternative")}];
   }
 
-  return v4;
+  return preferredBodyPart;
 }
 
 - (id)textHtmlPart
@@ -492,16 +492,16 @@ LABEL_20:
   v3 = [(MFMimePart *)self->_topLevelPart decryptedMessageBodyIsEncrypted:0 isSigned:0];
   if (v3 || ([(MFMimePart *)self->_topLevelPart decodeIfNecessary], [(MFMimePart *)self->_topLevelPart decryptedMessageBodyIsEncrypted:0 isSigned:0], (v3 = objc_claimAutoreleasedReturnValue()) != 0)) && (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    v4 = [v3 textHtmlPart];
+    textHtmlPart = [v3 textHtmlPart];
   }
 
   else
   {
-    v5 = [(MFMimeBody *)self preferredBodyPart];
-    v4 = [v5 textHtmlPart];
+    preferredBodyPart = [(MFMimeBody *)self preferredBodyPart];
+    textHtmlPart = [preferredBodyPart textHtmlPart];
   }
 
-  return v4;
+  return textHtmlPart;
 }
 
 - (void)hasEncryptedDescendantPart

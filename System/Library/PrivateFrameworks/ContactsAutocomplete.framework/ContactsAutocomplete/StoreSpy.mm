@@ -1,13 +1,13 @@
 @interface StoreSpy
 - (_TtC20ContactsAutocompleteP33_EBE34D4C21093596BE6E4DA9F1A7E5D28StoreSpy)init;
-- (void)autocompleteFetch:(id)a3 didFailWithError:(id)a4;
-- (void)autocompleteFetch:(id)a3 didReceiveResults:(id)a4;
-- (void)autocompleteFetchDidFinish:(id)a3;
+- (void)autocompleteFetch:(id)fetch didFailWithError:(id)error;
+- (void)autocompleteFetch:(id)fetch didReceiveResults:(id)results;
+- (void)autocompleteFetchDidFinish:(id)finish;
 @end
 
 @implementation StoreSpy
 
-- (void)autocompleteFetch:(id)a3 didReceiveResults:(id)a4
+- (void)autocompleteFetch:(id)fetch didReceiveResults:(id)results
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27CA68720, &qword_21565F4F0);
   v6 = *(*(v5 - 8) + 64);
@@ -33,7 +33,7 @@
   else
   {
     v19 = v14;
-    v18 = self;
+    selfCopy = self;
     sub_215656F1C();
 
     (*(v10 + 8))(v13, v9);
@@ -41,16 +41,16 @@
   }
 }
 
-- (void)autocompleteFetch:(id)a3 didFailWithError:(id)a4
+- (void)autocompleteFetch:(id)fetch didFailWithError:(id)error
 {
   swift_unknownObjectRetain();
-  v7 = a4;
-  v6 = self;
-  sub_2156545D4(v7);
+  errorCopy = error;
+  selfCopy = self;
+  sub_2156545D4(errorCopy);
   swift_unknownObjectRelease();
 }
 
-- (void)autocompleteFetchDidFinish:(id)a3
+- (void)autocompleteFetchDidFinish:(id)finish
 {
   v4 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27CA68720, &qword_21565F4F0);
   v5 = *(*(v4 - 8) + 64);
@@ -69,7 +69,7 @@
   else
   {
     v12 = 0;
-    v11 = self;
+    selfCopy = self;
     sub_215656F2C();
 
     (*(v10 + 8))(v7, v9);

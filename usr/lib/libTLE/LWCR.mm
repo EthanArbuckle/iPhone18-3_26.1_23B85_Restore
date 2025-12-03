@@ -1,6 +1,6 @@
 @interface LWCR
-+ (id)withData:(id)a3 withError:(id *)a4;
-+ (id)withVersion:(int64_t)a3 withConstraintCategory:(int64_t)a4 withRequirements:(id)a5 withError:(id *)a6;
++ (id)withData:(id)data withError:(id *)error;
++ (id)withVersion:(int64_t)version withConstraintCategory:(int64_t)category withRequirements:(id)requirements withError:(id *)error;
 - (BOOL)hasRequirements;
 - (LWCR)init;
 - (NSDictionary)dictionary;
@@ -65,38 +65,38 @@
   return v3;
 }
 
-+ (id)withVersion:(int64_t)a3 withConstraintCategory:(int64_t)a4 withRequirements:(id)a5 withError:(id *)a6
++ (id)withVersion:(int64_t)version withConstraintCategory:(int64_t)category withRequirements:(id)requirements withError:(id *)error
 {
   v22[3] = *MEMORY[0x29EDCA608];
-  v10 = a5;
+  requirementsCopy = requirements;
   v11 = MEMORY[0x29EDB8E00];
   v21[0] = @"vers";
-  v12 = [MEMORY[0x29EDBA070] numberWithLongLong:a3];
+  v12 = [MEMORY[0x29EDBA070] numberWithLongLong:version];
   v22[0] = v12;
   v21[1] = @"comp";
-  v13 = [MEMORY[0x29EDBA070] numberWithLongLong:a3 == 1];
+  v13 = [MEMORY[0x29EDBA070] numberWithLongLong:version == 1];
   v22[1] = v13;
   v21[2] = @"ccat";
-  v14 = [MEMORY[0x29EDBA070] numberWithLongLong:a4];
+  v14 = [MEMORY[0x29EDBA070] numberWithLongLong:category];
   v22[2] = v14;
   v15 = [MEMORY[0x29EDB8DC0] dictionaryWithObjects:v22 forKeys:v21 count:3];
   v16 = [v11 dictionaryWithDictionary:v15];
 
-  if (v10)
+  if (requirementsCopy)
   {
-    [v16 setObject:v10 forKeyedSubscript:@"reqs"];
+    [v16 setObject:requirementsCopy forKeyedSubscript:@"reqs"];
   }
 
   v17 = *MEMORY[0x29EDC9140];
   if (CESerializeCFDictionaryWithOptions() == *MEMORY[0x29EDC9178])
   {
-    v18 = [a1 withData:0 withError:a6];
+    v18 = [self withData:0 withError:error];
   }
 
-  else if (a6)
+  else if (error)
   {
     [MEMORY[0x29EDB9FA0] errorWithDomain:@"LWCRError" code:2 userInfo:0];
-    *a6 = v18 = 0;
+    *error = v18 = 0;
   }
 
   else
@@ -109,10 +109,10 @@
   return v18;
 }
 
-+ (id)withData:(id)a3 withError:(id *)a4
++ (id)withData:(id)data withError:(id *)error
 {
   v27[2] = *MEMORY[0x29EDCA608];
-  v6 = a3;
+  dataCopy = data;
   v25 = 0;
   v24 = 1;
   v7 = *MEMORY[0x29EDC9140];
@@ -121,7 +121,7 @@
   if (v8 == *MEMORY[0x29EDC9178])
   {
     v11 = objc_alloc_init(LWCR);
-    objc_storeStrong(v11 + 1, a3);
+    objc_storeStrong(v11 + 1, data);
     v12 = v25;
     *(v11 + 2) = v25;
     v21 = 0;
@@ -130,7 +130,7 @@
     TLE::LWCR::loadFromCE((v11 + 32), v12, &v21);
     if (v21)
     {
-      if (a4)
+      if (error)
       {
         v13 = MEMORY[0x29EDB9FA0];
         v26[0] = *MEMORY[0x29EDB9F18];
@@ -141,7 +141,7 @@
         v16 = [v15 initWithBytes:v22 length:v23 encoding:4];
         v27[1] = v16;
         v17 = [MEMORY[0x29EDB8DC0] dictionaryWithObjects:v27 forKeys:v26 count:2];
-        *a4 = [v13 errorWithDomain:@"LWCRError" code:1 userInfo:v17];
+        *error = [v13 errorWithDomain:@"LWCRError" code:1 userInfo:v17];
       }
     }
 
@@ -156,10 +156,10 @@
         goto LABEL_8;
       }
 
-      if (a4)
+      if (error)
       {
         [MEMORY[0x29EDB9FA0] errorWithDomain:@"LWCRError" code:2 userInfo:0];
-        *a4 = v10 = 0;
+        *error = v10 = 0;
         goto LABEL_8;
       }
     }
@@ -170,10 +170,10 @@ LABEL_8:
     goto LABEL_10;
   }
 
-  if (a4)
+  if (error)
   {
     [MEMORY[0x29EDB9FA0] errorWithDomain:@"LWCRError" code:2 userInfo:0];
-    *a4 = v10 = 0;
+    *error = v10 = 0;
   }
 
   else

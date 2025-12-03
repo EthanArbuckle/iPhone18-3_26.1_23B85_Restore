@@ -1,20 +1,20 @@
 @interface AKLoupeAnnotationEventHandler
-- (void)getInitialDraggedPoint:(CGPoint *)a3 otherPoint:(CGPoint *)a4 center:(CGPoint *)a5 forEvent:(id)a6 orRecognizer:(id)a7;
-- (void)updateModelWithCurrentPoint:(CGPoint)a3 options:(unint64_t)a4;
+- (void)getInitialDraggedPoint:(CGPoint *)point otherPoint:(CGPoint *)otherPoint center:(CGPoint *)center forEvent:(id)event orRecognizer:(id)recognizer;
+- (void)updateModelWithCurrentPoint:(CGPoint)point options:(unint64_t)options;
 @end
 
 @implementation AKLoupeAnnotationEventHandler
 
-- (void)getInitialDraggedPoint:(CGPoint *)a3 otherPoint:(CGPoint *)a4 center:(CGPoint *)a5 forEvent:(id)a6 orRecognizer:(id)a7
+- (void)getInitialDraggedPoint:(CGPoint *)point otherPoint:(CGPoint *)otherPoint center:(CGPoint *)center forEvent:(id)event orRecognizer:(id)recognizer
 {
-  v30 = [(AKAnnotationEventHandler *)self pageController:a3];
-  v11 = [(AKAnnotationEventHandler *)self annotation];
+  v30 = [(AKAnnotationEventHandler *)self pageController:point];
+  annotation = [(AKAnnotationEventHandler *)self annotation];
   if (([(AKAnnotationEventHandler *)self initiallyDraggedArea]& 0xFFFFFFFFFFFFFFFELL) == 0x12)
   {
-    [AKAnnotationPointOfInterestHelper pointForDraggableArea:[(AKAnnotationEventHandler *)self initiallyDraggedArea] onAnnotation:v11 pageControllerForPixelAlignment:v30];
+    [AKAnnotationPointOfInterestHelper pointForDraggableArea:[(AKAnnotationEventHandler *)self initiallyDraggedArea] onAnnotation:annotation pageControllerForPixelAlignment:v30];
     v13 = v12;
     v29 = v14;
-    [v11 rectangle];
+    [annotation rectangle];
     x = v32.origin.x;
     y = v32.origin.y;
     width = v32.size.width;
@@ -49,27 +49,27 @@
     v13 = *MEMORY[0x277CBF348];
   }
 
-  a3->x = v13;
-  a3->y = v28;
-  a4->x = v26;
-  a4->y = v27;
-  a5->x = MidX;
-  a5->y = MidY;
+  point->x = v13;
+  point->y = v28;
+  otherPoint->x = v26;
+  otherPoint->y = v27;
+  center->x = MidX;
+  center->y = MidY;
 }
 
-- (void)updateModelWithCurrentPoint:(CGPoint)a3 options:(unint64_t)a4
+- (void)updateModelWithCurrentPoint:(CGPoint)point options:(unint64_t)options
 {
-  y = a3.y;
-  x = a3.x;
-  v48 = [(AKAnnotationEventHandler *)self pageController];
-  v7 = [(AKAnnotationEventHandler *)self annotation];
+  y = point.y;
+  x = point.x;
+  pageController = [(AKAnnotationEventHandler *)self pageController];
+  annotation = [(AKAnnotationEventHandler *)self annotation];
   [(AKAnnotationEventHandler *)self initialCenter];
   v9 = v8;
   v11 = v10;
   [(AKAnnotationEventHandler *)self initialOtherPoint];
   v13 = v12;
   v15 = v14;
-  [v7 originalModelBaseScaleFactor];
+  [annotation originalModelBaseScaleFactor];
   v17 = v16;
   if ([(AKAnnotationEventHandler *)self initiallyDraggedArea]== 18)
   {
@@ -78,7 +78,7 @@
     v21 = v20 - v11;
     [AKGeometryHelper lengthOfVector:v18 - v9, v20 - v11];
     v23 = v22;
-    [AKGeometryHelper convertModelToScreenOrientationForPoint:v48 relativeToRect:v19 withPageController:v21, *MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
+    [AKGeometryHelper convertModelToScreenOrientationForPoint:pageController relativeToRect:v19 withPageController:v21, *MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
     v26 = v25 > 0.0 || v24 < 0.0;
     if (v26)
     {
@@ -101,22 +101,22 @@
       v28 = v17 * 25.0;
     }
 
-    [AKLoupeAnnotationImageUpdaterHelper magnifiedRectForUnmagnifiedRect:v7 ofLoupeAnnotation:v48 onPageController:v9 - v28, v11 - v28, v28 + v28, v28 + v28];
-    [AKLoupeAnnotationImageUpdaterHelper unmagnifiedRectForMagnifiedRect:v7 ofLoupeAnnotation:?];
+    [AKLoupeAnnotationImageUpdaterHelper magnifiedRectForUnmagnifiedRect:annotation ofLoupeAnnotation:pageController onPageController:v9 - v28, v11 - v28, v28 + v28, v28 + v28];
+    [AKLoupeAnnotationImageUpdaterHelper unmagnifiedRectForMagnifiedRect:annotation ofLoupeAnnotation:?];
     v30 = v29;
     v32 = v31;
     v34 = v33;
     v36 = v35;
     if (![AKGeometryHelper isUnpresentableRect:?])
     {
-      [v7 rectangle];
+      [annotation rectangle];
       v51.origin.x = v30;
       v51.origin.y = v32;
       v51.size.width = v34;
       v51.size.height = v36;
       if (!CGRectEqualToRect(v50, v51))
       {
-        [v7 setRectangle:{v30, v32, v34, v36}];
+        [annotation setRectangle:{v30, v32, v34, v36}];
       }
     }
   }
@@ -124,7 +124,7 @@
   else if ([(AKAnnotationEventHandler *)self initiallyDraggedArea]== 19)
   {
     [AKGeometryHelper normalizeVector:x - v9, y - v11];
-    [AKGeometryHelper convertModelToScreenOrientationForPoint:"convertModelToScreenOrientationForPoint:relativeToRect:withPageController:" relativeToRect:v48 withPageController:?];
+    [AKGeometryHelper convertModelToScreenOrientationForPoint:"convertModelToScreenOrientationForPoint:relativeToRect:withPageController:" relativeToRect:pageController withPageController:?];
     [AKGeometryHelper angleOfVector:v38, v37];
     v40 = v39 / 1.57079633;
     v41 = 1.0;
@@ -141,10 +141,10 @@
     }
 
     v43 = v42 * 3.5 + 1.5;
-    [v7 magnification];
+    [annotation magnification];
     if (v44 <= 4.125)
     {
-      [v7 magnification];
+      [annotation magnification];
       if (v45 < 2.375 && v43 > 3.25)
       {
         v43 = 1.5;
@@ -156,10 +156,10 @@
       v43 = 5.0;
     }
 
-    [v7 magnification];
+    [annotation magnification];
     if (v47 != v43)
     {
-      [v7 setMagnification:v43];
+      [annotation setMagnification:v43];
     }
   }
 }

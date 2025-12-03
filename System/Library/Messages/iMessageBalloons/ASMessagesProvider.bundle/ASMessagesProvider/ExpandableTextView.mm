@@ -1,20 +1,20 @@
 @interface ExpandableTextView
 - (CGRect)frame;
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4;
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in;
 - (UIColor)backgroundColor;
-- (_TtC18ASMessagesProvider18ExpandableTextView)initWithCoder:(id)a3;
-- (_TtC18ASMessagesProvider18ExpandableTextView)initWithFrame:(CGRect)a3;
+- (_TtC18ASMessagesProvider18ExpandableTextView)initWithCoder:(id)coder;
+- (_TtC18ASMessagesProvider18ExpandableTextView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)moreFrom:(id)a3;
-- (void)setBackgroundColor:(id)a3;
-- (void)setFrame:(CGRect)a3;
+- (void)moreFrom:(id)from;
+- (void)setBackgroundColor:(id)color;
+- (void)setFrame:(CGRect)frame;
 - (void)tintColorDidChange;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation ExpandableTextView
 
-- (_TtC18ASMessagesProvider18ExpandableTextView)initWithCoder:(id)a3
+- (_TtC18ASMessagesProvider18ExpandableTextView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC18ASMessagesProvider18ExpandableTextView_hasMoreButton) = 1;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC18ASMessagesProvider18ExpandableTextView_alwaysShowsMoreButtonWhenCollapsed) = 0;
@@ -41,23 +41,23 @@
   return result;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8 = type metadata accessor for ExpandableTextView();
   v18.receiver = self;
   v18.super_class = v8;
-  v9 = self;
+  selfCopy = self;
   [(ExpandableTextView *)&v18 frame];
   v11 = v10;
   v13 = v12;
-  v17.receiver = v9;
+  v17.receiver = selfCopy;
   v17.super_class = v8;
   [(ExpandableTextView *)&v17 setFrame:x, y, width, height];
-  [(ExpandableTextView *)v9 frame];
+  [(ExpandableTextView *)selfCopy frame];
   if (v11 != v15 || v13 != v14)
   {
     sub_1A5974();
@@ -68,30 +68,30 @@
 {
   v4.receiver = self;
   v4.super_class = type metadata accessor for ExpandableTextView();
-  v2 = [(ExpandableTextView *)&v4 backgroundColor];
+  backgroundColor = [(ExpandableTextView *)&v4 backgroundColor];
 
-  return v2;
+  return backgroundColor;
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   v10.receiver = self;
   v10.super_class = type metadata accessor for ExpandableTextView();
-  v4 = a3;
+  colorCopy = color;
   v5 = v10.receiver;
-  [(ExpandableTextView *)&v10 setBackgroundColor:v4];
+  [(ExpandableTextView *)&v10 setBackgroundColor:colorCopy];
   v6 = *&v5[OBJC_IVAR____TtC18ASMessagesProvider18ExpandableTextView_textLabel];
-  v7 = [v5 backgroundColor];
-  [v6 setBackgroundColor:v7];
+  backgroundColor = [v5 backgroundColor];
+  [v6 setBackgroundColor:backgroundColor];
 
   v8 = *&v5[OBJC_IVAR____TtC18ASMessagesProvider18ExpandableTextView_moreButton];
-  v9 = [v5 backgroundColor];
-  [v8 setBackgroundColor:v9];
+  backgroundColor2 = [v5 backgroundColor];
+  [v8 setBackgroundColor:backgroundColor2];
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1A561C();
 }
 
@@ -102,14 +102,14 @@
   v2 = v5.receiver;
   [(ExpandableTextView *)&v5 tintColorDidChange];
   v3 = *&v2[OBJC_IVAR____TtC18ASMessagesProvider18ExpandableTextView_moreButton];
-  v4 = [v2 tintColor];
-  [v3 setTitleColor:v4 forState:0];
+  tintColor = [v2 tintColor];
+  [v3 setTitleColor:tintColor forState:0];
 }
 
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in
 {
-  width = a3.width;
-  [*(&self->super.super.super.isa + OBJC_IVAR____TtC18ASMessagesProvider18ExpandableTextView_textLabel) measurementsWithFitting:a4 in:{a3.width, a3.height}];
+  width = fitting.width;
+  [*(&self->super.super.super.isa + OBJC_IVAR____TtC18ASMessagesProvider18ExpandableTextView_textLabel) measurementsWithFitting:in in:{fitting.width, fitting.height}];
   v8 = width;
   result.var3 = v7;
   result.var2 = v6;
@@ -118,22 +118,22 @@
   return result;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v6.receiver = self;
   v6.super_class = type metadata accessor for ExpandableTextView();
-  v4 = a3;
+  changeCopy = change;
   v5 = v6.receiver;
-  [(ExpandableTextView *)&v6 traitCollectionDidChange:v4];
+  [(ExpandableTextView *)&v6 traitCollectionDidChange:changeCopy];
   sub_1A5974();
 }
 
-- (void)moreFrom:(id)a3
+- (void)moreFrom:(id)from
 {
   v3 = *(&self->super.super.super.isa + OBJC_IVAR____TtC18ASMessagesProvider18ExpandableTextView_moreTapHandler);
   if (v3)
   {
-    v4 = self;
+    selfCopy = self;
     v5 = sub_F714(v3);
     v3(v5);
 
@@ -141,7 +141,7 @@
   }
 }
 
-- (_TtC18ASMessagesProvider18ExpandableTextView)initWithFrame:(CGRect)a3
+- (_TtC18ASMessagesProvider18ExpandableTextView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,23 +1,23 @@
 @interface RTVehicleStore
-- (RTVehicleStore)initWithPersistenceManager:(id)a3;
-- (id)fetchRequestFromOptions:(id)a3 offset:(unint64_t)a4 error:(id *)a5;
-- (void)_fetchVehiclesWithOptions:(id)a3 handler:(id)a4;
-- (void)_purgeVehiclesPredating:(id)a3 handler:(id)a4;
-- (void)_storeVehicle:(id)a3 handler:(id)a4;
-- (void)fetchVehiclesWithOptions:(id)a3 handler:(id)a4;
-- (void)performPurgeOfType:(int64_t)a3 referenceDate:(id)a4 completion:(id)a5;
-- (void)purgeVehiclesPredating:(id)a3 handler:(id)a4;
-- (void)storeVehicle:(id)a3 handler:(id)a4;
+- (RTVehicleStore)initWithPersistenceManager:(id)manager;
+- (id)fetchRequestFromOptions:(id)options offset:(unint64_t)offset error:(id *)error;
+- (void)_fetchVehiclesWithOptions:(id)options handler:(id)handler;
+- (void)_purgeVehiclesPredating:(id)predating handler:(id)handler;
+- (void)_storeVehicle:(id)vehicle handler:(id)handler;
+- (void)fetchVehiclesWithOptions:(id)options handler:(id)handler;
+- (void)performPurgeOfType:(int64_t)type referenceDate:(id)date completion:(id)completion;
+- (void)purgeVehiclesPredating:(id)predating handler:(id)handler;
+- (void)storeVehicle:(id)vehicle handler:(id)handler;
 @end
 
 @implementation RTVehicleStore
 
-- (RTVehicleStore)initWithPersistenceManager:(id)a3
+- (RTVehicleStore)initWithPersistenceManager:(id)manager
 {
   v15 = *MEMORY[0x277D85DE8];
   v10.receiver = self;
   v10.super_class = RTVehicleStore;
-  v4 = [(RTStore *)&v10 initWithPersistenceManager:a3];
+  v4 = [(RTStore *)&v10 initWithPersistenceManager:manager];
   if (v4 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilityTripSegment);
@@ -37,12 +37,12 @@
   return v4;
 }
 
-- (void)_fetchVehiclesWithOptions:(id)a3 handler:(id)a4
+- (void)_fetchVehiclesWithOptions:(id)options handler:(id)handler
 {
   v25 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (v8)
+  optionsCopy = options;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
     {
@@ -64,9 +64,9 @@
     aBlock[1] = 3221225472;
     aBlock[2] = __52__RTVehicleStore__fetchVehiclesWithOptions_handler___block_invoke;
     aBlock[3] = &unk_2788C4FB0;
-    v18 = v7;
+    v18 = optionsCopy;
     v20 = a2;
-    v10 = v8;
+    v10 = handlerCopy;
     v19 = v10;
     v11 = _Block_copy(aBlock);
     v15[0] = MEMORY[0x277D85DD0];
@@ -209,29 +209,29 @@ void __52__RTVehicleStore__fetchVehiclesWithOptions_handler___block_invoke(uint6
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)fetchVehiclesWithOptions:(id)a3 handler:(id)a4
+- (void)fetchVehiclesWithOptions:(id)options handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  optionsCopy = options;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __51__RTVehicleStore_fetchVehiclesWithOptions_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = optionsCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = optionsCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_storeVehicle:(id)a3 handler:(id)a4
+- (void)_storeVehicle:(id)vehicle handler:(id)handler
 {
   v24 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (v7)
+  vehicleCopy = vehicle;
+  handlerCopy = handler;
+  if (vehicleCopy)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
     {
@@ -241,7 +241,7 @@ void __52__RTVehicleStore__fetchVehiclesWithOptions_handler___block_invoke(uint6
         v13 = objc_opt_class();
         v14 = NSStringFromClass(v13);
         v15 = NSStringFromSelector(a2);
-        v16 = [v7 description];
+        v16 = [vehicleCopy description];
         *buf = 138412802;
         v19 = v14;
         v20 = 2112;
@@ -252,9 +252,9 @@ void __52__RTVehicleStore__fetchVehiclesWithOptions_handler___block_invoke(uint6
       }
     }
 
-    v17 = v7;
+    v17 = vehicleCopy;
     v10 = [MEMORY[0x277CBEA60] arrayWithObjects:&v17 count:1];
-    [(RTStore *)self storeWritableObjects:v10 handler:v8];
+    [(RTStore *)self storeWritableObjects:v10 handler:handlerCopy];
   }
 
   else
@@ -268,32 +268,32 @@ void __52__RTVehicleStore__fetchVehiclesWithOptions_handler___block_invoke(uint6
 
     v12 = objc_alloc(MEMORY[0x277CCA9B8]);
     v10 = [v12 initWithDomain:*MEMORY[0x277D01448] code:7 userInfo:0];
-    v8[2](v8, v10);
+    handlerCopy[2](handlerCopy, v10);
   }
 }
 
-- (void)storeVehicle:(id)a3 handler:(id)a4
+- (void)storeVehicle:(id)vehicle handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  vehicleCopy = vehicle;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __39__RTVehicleStore_storeVehicle_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = vehicleCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = vehicleCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_purgeVehiclesPredating:(id)a3 handler:(id)a4
+- (void)_purgeVehiclesPredating:(id)predating handler:(id)handler
 {
   v22 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  predatingCopy = predating;
+  handlerCopy = handler;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilityTripSegment);
@@ -316,43 +316,43 @@ void __52__RTVehicleStore__fetchVehiclesWithOptions_handler___block_invoke(uint6
   v17 = v10;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v17 forKeys:&v16 count:1];
 
-  [(RTStore *)self purgePredating:v7 predicateMappings:v11 handler:v8];
+  [(RTStore *)self purgePredating:predatingCopy predicateMappings:v11 handler:handlerCopy];
 }
 
-- (void)purgeVehiclesPredating:(id)a3 handler:(id)a4
+- (void)purgeVehiclesPredating:(id)predating handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  predatingCopy = predating;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __49__RTVehicleStore_purgeVehiclesPredating_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = predatingCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = predatingCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)performPurgeOfType:(int64_t)a3 referenceDate:(id)a4 completion:(id)a5
+- (void)performPurgeOfType:(int64_t)type referenceDate:(id)date completion:(id)completion
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = [(RTNotifier *)self queue];
+  dateCopy = date;
+  completionCopy = completion;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __62__RTVehicleStore_performPurgeOfType_referenceDate_completion___block_invoke;
   block[3] = &unk_2788C47A8;
-  v17 = v10;
-  v18 = a3;
-  v15 = v9;
-  v16 = self;
+  v17 = completionCopy;
+  typeCopy = type;
+  v15 = dateCopy;
+  selfCopy = self;
   v19 = a2;
-  v12 = v10;
-  v13 = v9;
-  dispatch_async(v11, block);
+  v12 = completionCopy;
+  v13 = dateCopy;
+  dispatch_async(queue, block);
 }
 
 void __62__RTVehicleStore_performPurgeOfType_referenceDate_completion___block_invoke(uint64_t a1)
@@ -399,7 +399,7 @@ void __62__RTVehicleStore_performPurgeOfType_referenceDate_completion___block_in
   (*(*(a1 + 32) + 16))();
 }
 
-- (id)fetchRequestFromOptions:(id)a3 offset:(unint64_t)a4 error:(id *)a5
+- (id)fetchRequestFromOptions:(id)options offset:(unint64_t)offset error:(id *)error
 {
   v13[1] = *MEMORY[0x277D85DE8];
   v6 = MEMORY[0x277CCA9B8];
@@ -409,10 +409,10 @@ void __62__RTVehicleStore_performPurgeOfType_referenceDate_completion___block_in
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:&v12 count:1];
   v9 = [v6 errorWithDomain:v7 code:7 userInfo:v8];
 
-  if (a5)
+  if (error)
   {
     v10 = v9;
-    *a5 = v9;
+    *error = v9;
   }
 
   return 0;

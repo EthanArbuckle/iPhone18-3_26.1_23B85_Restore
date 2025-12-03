@@ -12,30 +12,30 @@
 - (QSSRequestStatsResponse)contentAsQSSRequestStatsResponse;
 - (QSSServerEndpointFeatures)contentAsQSSServerEndpointFeatures;
 - (QSSUpdatedAcousticProfile)contentAsQSSUpdatedAcousticProfile;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (int64_t)content_type;
-- (void)setContentAsQSSAudioLimitExceeded:(id)a3;
-- (void)setContentAsQSSCheckForSpeechResponse:(id)a3;
-- (void)setContentAsQSSClientSetupInfo:(id)a3;
-- (void)setContentAsQSSEndPointCandidate:(id)a3;
-- (void)setContentAsQSSEndPointLikelihood:(id)a3;
-- (void)setContentAsQSSFinalSpeechRecognitionResponse:(id)a3;
-- (void)setContentAsQSSPartialSpeechRecognitionResponse:(id)a3;
-- (void)setContentAsQSSRecognitionCandidate:(id)a3;
-- (void)setContentAsQSSRecognitionProgress:(id)a3;
-- (void)setContentAsQSSRequestStatsResponse:(id)a3;
-- (void)setContentAsQSSServerEndpointFeatures:(id)a3;
-- (void)setContentAsQSSUpdatedAcousticProfile:(id)a3;
-- (void)setContent_type:(int64_t)a3;
+- (void)setContentAsQSSAudioLimitExceeded:(id)exceeded;
+- (void)setContentAsQSSCheckForSpeechResponse:(id)response;
+- (void)setContentAsQSSClientSetupInfo:(id)info;
+- (void)setContentAsQSSEndPointCandidate:(id)candidate;
+- (void)setContentAsQSSEndPointLikelihood:(id)likelihood;
+- (void)setContentAsQSSFinalSpeechRecognitionResponse:(id)response;
+- (void)setContentAsQSSPartialSpeechRecognitionResponse:(id)response;
+- (void)setContentAsQSSRecognitionCandidate:(id)candidate;
+- (void)setContentAsQSSRecognitionProgress:(id)progress;
+- (void)setContentAsQSSRequestStatsResponse:(id)response;
+- (void)setContentAsQSSServerEndpointFeatures:(id)features;
+- (void)setContentAsQSSUpdatedAcousticProfile:(id)profile;
+- (void)setContent_type:(int64_t)content_type;
 @end
 
 @implementation QSSMutableRecognitionStreamingResponse
 
-- (void)setContentAsQSSAudioLimitExceeded:(id)a3
+- (void)setContentAsQSSAudioLimitExceeded:(id)exceeded
 {
-  v5 = a3;
+  exceededCopy = exceeded;
   [(QSSMutableRecognitionStreamingResponse *)self setContent_type:12];
-  v4 = [v5 copy];
+  v4 = [exceededCopy copy];
   [(NSMutableDictionary *)self->super._storage setObject:v4 forKeyedSubscript:@"content"];
 }
 
@@ -54,11 +54,11 @@
   return v3;
 }
 
-- (void)setContentAsQSSClientSetupInfo:(id)a3
+- (void)setContentAsQSSClientSetupInfo:(id)info
 {
-  v5 = a3;
+  infoCopy = info;
   [(QSSMutableRecognitionStreamingResponse *)self setContent_type:11];
-  v4 = [v5 copy];
+  v4 = [infoCopy copy];
   [(NSMutableDictionary *)self->super._storage setObject:v4 forKeyedSubscript:@"content"];
 }
 
@@ -77,11 +77,11 @@
   return v3;
 }
 
-- (void)setContentAsQSSServerEndpointFeatures:(id)a3
+- (void)setContentAsQSSServerEndpointFeatures:(id)features
 {
-  v5 = a3;
+  featuresCopy = features;
   [(QSSMutableRecognitionStreamingResponse *)self setContent_type:10];
-  v4 = [v5 copy];
+  v4 = [featuresCopy copy];
   [(NSMutableDictionary *)self->super._storage setObject:v4 forKeyedSubscript:@"content"];
 }
 
@@ -100,11 +100,11 @@
   return v3;
 }
 
-- (void)setContentAsQSSRequestStatsResponse:(id)a3
+- (void)setContentAsQSSRequestStatsResponse:(id)response
 {
-  v5 = a3;
+  responseCopy = response;
   [(QSSMutableRecognitionStreamingResponse *)self setContent_type:9];
-  v4 = [v5 copy];
+  v4 = [responseCopy copy];
   [(NSMutableDictionary *)self->super._storage setObject:v4 forKeyedSubscript:@"content"];
 }
 
@@ -123,11 +123,11 @@
   return v3;
 }
 
-- (void)setContentAsQSSRecognitionCandidate:(id)a3
+- (void)setContentAsQSSRecognitionCandidate:(id)candidate
 {
-  v5 = a3;
+  candidateCopy = candidate;
   [(QSSMutableRecognitionStreamingResponse *)self setContent_type:8];
-  v4 = [v5 copy];
+  v4 = [candidateCopy copy];
   [(NSMutableDictionary *)self->super._storage setObject:v4 forKeyedSubscript:@"content"];
 }
 
@@ -146,11 +146,11 @@
   return v3;
 }
 
-- (void)setContentAsQSSCheckForSpeechResponse:(id)a3
+- (void)setContentAsQSSCheckForSpeechResponse:(id)response
 {
-  v5 = a3;
+  responseCopy = response;
   [(QSSMutableRecognitionStreamingResponse *)self setContent_type:7];
-  v4 = [v5 copy];
+  v4 = [responseCopy copy];
   [(NSMutableDictionary *)self->super._storage setObject:v4 forKeyedSubscript:@"content"];
 }
 
@@ -169,11 +169,11 @@
   return v3;
 }
 
-- (void)setContentAsQSSRecognitionProgress:(id)a3
+- (void)setContentAsQSSRecognitionProgress:(id)progress
 {
-  v5 = a3;
+  progressCopy = progress;
   [(QSSMutableRecognitionStreamingResponse *)self setContent_type:6];
-  v4 = [v5 copy];
+  v4 = [progressCopy copy];
   [(NSMutableDictionary *)self->super._storage setObject:v4 forKeyedSubscript:@"content"];
 }
 
@@ -192,11 +192,11 @@
   return v3;
 }
 
-- (void)setContentAsQSSEndPointCandidate:(id)a3
+- (void)setContentAsQSSEndPointCandidate:(id)candidate
 {
-  v5 = a3;
+  candidateCopy = candidate;
   [(QSSMutableRecognitionStreamingResponse *)self setContent_type:5];
-  v4 = [v5 copy];
+  v4 = [candidateCopy copy];
   [(NSMutableDictionary *)self->super._storage setObject:v4 forKeyedSubscript:@"content"];
 }
 
@@ -215,11 +215,11 @@
   return v3;
 }
 
-- (void)setContentAsQSSEndPointLikelihood:(id)a3
+- (void)setContentAsQSSEndPointLikelihood:(id)likelihood
 {
-  v5 = a3;
+  likelihoodCopy = likelihood;
   [(QSSMutableRecognitionStreamingResponse *)self setContent_type:4];
-  v4 = [v5 copy];
+  v4 = [likelihoodCopy copy];
   [(NSMutableDictionary *)self->super._storage setObject:v4 forKeyedSubscript:@"content"];
 }
 
@@ -238,11 +238,11 @@
   return v3;
 }
 
-- (void)setContentAsQSSUpdatedAcousticProfile:(id)a3
+- (void)setContentAsQSSUpdatedAcousticProfile:(id)profile
 {
-  v5 = a3;
+  profileCopy = profile;
   [(QSSMutableRecognitionStreamingResponse *)self setContent_type:3];
-  v4 = [v5 copy];
+  v4 = [profileCopy copy];
   [(NSMutableDictionary *)self->super._storage setObject:v4 forKeyedSubscript:@"content"];
 }
 
@@ -261,11 +261,11 @@
   return v3;
 }
 
-- (void)setContentAsQSSPartialSpeechRecognitionResponse:(id)a3
+- (void)setContentAsQSSPartialSpeechRecognitionResponse:(id)response
 {
-  v5 = a3;
+  responseCopy = response;
   [(QSSMutableRecognitionStreamingResponse *)self setContent_type:2];
-  v4 = [v5 copy];
+  v4 = [responseCopy copy];
   [(NSMutableDictionary *)self->super._storage setObject:v4 forKeyedSubscript:@"content"];
 }
 
@@ -284,11 +284,11 @@
   return v3;
 }
 
-- (void)setContentAsQSSFinalSpeechRecognitionResponse:(id)a3
+- (void)setContentAsQSSFinalSpeechRecognitionResponse:(id)response
 {
-  v5 = a3;
+  responseCopy = response;
   [(QSSMutableRecognitionStreamingResponse *)self setContent_type:1];
-  v4 = [v5 copy];
+  v4 = [responseCopy copy];
   [(NSMutableDictionary *)self->super._storage setObject:v4 forKeyedSubscript:@"content"];
 }
 
@@ -307,23 +307,23 @@
   return v3;
 }
 
-- (void)setContent_type:(int64_t)a3
+- (void)setContent_type:(int64_t)content_type
 {
-  v4 = [objc_alloc(MEMORY[0x277CCABB0]) initWithInteger:a3];
+  v4 = [objc_alloc(MEMORY[0x277CCABB0]) initWithInteger:content_type];
   [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
 }
 
 - (int64_t)content_type
 {
   v2 = [(NSMutableDictionary *)self->super._storage objectForKeyedSubscript:@"content_type"];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = [(NSMutableDictionary *)self->super._storage copy];
   v6 = v4[1];
   v4[1] = v5;
@@ -338,9 +338,9 @@
   v2 = [(QSSMutableRecognitionStreamingResponse *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     storage = v2->super._storage;
-    v2->super._storage = v3;
+    v2->super._storage = dictionary;
   }
 
   return v2;

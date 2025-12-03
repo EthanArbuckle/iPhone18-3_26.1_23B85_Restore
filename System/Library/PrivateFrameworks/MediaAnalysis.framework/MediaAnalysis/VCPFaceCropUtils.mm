@@ -1,23 +1,23 @@
 @interface VCPFaceCropUtils
-+ (BOOL)isValidFaceCrop:(id)a3;
-+ (CGImageMetadata)createOutputMetadataFromDictionary:(id)a3;
-+ (CGRect)cropBoundsInOriginalImageFromFaceCrop:(id)a3 error:(id *)a4;
-+ (CGRect)faceBoundsFromFaceCrop:(id)a3 error:(id *)a4;
-+ (CGSize)faceCropDimensionsFromFaceCrop:(id)a3 error:(id *)a4;
-+ (id)groupingIdentifierFromFaceCrop:(id)a3 error:(id *)a4;
++ (BOOL)isValidFaceCrop:(id)crop;
++ (CGImageMetadata)createOutputMetadataFromDictionary:(id)dictionary;
++ (CGRect)cropBoundsInOriginalImageFromFaceCrop:(id)crop error:(id *)error;
++ (CGRect)faceBoundsFromFaceCrop:(id)crop error:(id *)error;
++ (CGSize)faceCropDimensionsFromFaceCrop:(id)crop error:(id *)error;
++ (id)groupingIdentifierFromFaceCrop:(id)crop error:(id *)error;
 + (id)imageCreationOptions;
-+ (id)newDictionaryPopulatedWithFaceCropDataFromImageData:(id)a3;
-+ (id)newDictionaryRepresentationOfFaceCropDataFromFaceBox:(CGRect)a3 andCropRegion:(CGRect)a4 andGroupingIdentifier:(id)a5;
-+ (id)newFaceCropFromCGImageSource:(const CGImageSource *)a3 withFaceRect:(CGRect)a4 groupingIdentifier:(id)a5 error:(id *)a6;
-+ (id)newFaceCropFromImageData:(id)a3 withFaceRect:(CGRect)a4 groupingIdentifier:(id)a5 error:(id *)a6;
-+ (id)newFaceCropFromImageURL:(id)a3 withNormalizedFaceRect:(CGRect)a4 groupingIdentifier:(id)a5 error:(id *)a6;
++ (id)newDictionaryPopulatedWithFaceCropDataFromImageData:(id)data;
++ (id)newDictionaryRepresentationOfFaceCropDataFromFaceBox:(CGRect)box andCropRegion:(CGRect)region andGroupingIdentifier:(id)identifier;
++ (id)newFaceCropFromCGImageSource:(const CGImageSource *)source withFaceRect:(CGRect)rect groupingIdentifier:(id)identifier error:(id *)error;
++ (id)newFaceCropFromImageData:(id)data withFaceRect:(CGRect)rect groupingIdentifier:(id)identifier error:(id *)error;
++ (id)newFaceCropFromImageURL:(id)l withNormalizedFaceRect:(CGRect)rect groupingIdentifier:(id)identifier error:(id *)error;
 @end
 
 @implementation VCPFaceCropUtils
 
-+ (CGImageMetadata)createOutputMetadataFromDictionary:(id)a3
++ (CGImageMetadata)createOutputMetadataFromDictionary:(id)dictionary
 {
-  v3 = a3;
+  dictionaryCopy = dictionary;
   v4 = objc_autoreleasePoolPush();
   Mutable = CGImageMetadataCreateMutable();
   if (!CGImageMetadataSetValueWithPath(Mutable, 0, @"tiff:Orientation", @"1"))
@@ -34,7 +34,7 @@ LABEL_9:
     objc_exception_throw(v10);
   }
 
-  v6 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v3 options:1 error:0];
+  v6 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryCopy options:1 error:0];
   if (!v6)
   {
     v11 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D920] reason:@"Could not generate serialized metadata representation" userInfo:0];
@@ -60,13 +60,13 @@ LABEL_13:
   return Mutable;
 }
 
-+ (id)newDictionaryPopulatedWithFaceCropDataFromImageData:(id)a3
++ (id)newDictionaryPopulatedWithFaceCropDataFromImageData:(id)data
 {
-  v3 = a3;
-  if (v3)
+  dataCopy = data;
+  if (dataCopy)
   {
     v4 = objc_autoreleasePoolPush();
-    v5 = CGImageSourceCreateWithData(v3, 0);
+    v5 = CGImageSourceCreateWithData(dataCopy, 0);
     v6 = v5;
     if (!v5)
     {
@@ -114,40 +114,40 @@ LABEL_13:
   return v14;
 }
 
-+ (id)newDictionaryRepresentationOfFaceCropDataFromFaceBox:(CGRect)a3 andCropRegion:(CGRect)a4 andGroupingIdentifier:(id)a5
++ (id)newDictionaryRepresentationOfFaceCropDataFromFaceBox:(CGRect)box andCropRegion:(CGRect)region andGroupingIdentifier:(id)identifier
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3.size.height;
-  v10 = a3.size.width;
-  v11 = a3.origin.y;
-  v12 = a3.origin.x;
-  v13 = a5;
-  v14 = [MEMORY[0x1E695DF90] dictionary];
-  [v14 setObject:&unk_1F49BC1C0 forKey:@"PVFC_VER"];
+  height = region.size.height;
+  width = region.size.width;
+  y = region.origin.y;
+  x = region.origin.x;
+  v9 = box.size.height;
+  v10 = box.size.width;
+  v11 = box.origin.y;
+  v12 = box.origin.x;
+  identifierCopy = identifier;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setObject:&unk_1F49BC1C0 forKey:@"PVFC_VER"];
   v18.origin.x = v12;
   v18.origin.y = v11;
   v18.size.width = v10;
   v18.size.height = v9;
   DictionaryRepresentation = CGRectCreateDictionaryRepresentation(v18);
-  [v14 setObject:DictionaryRepresentation forKey:@"PVFC_FB"];
+  [dictionary setObject:DictionaryRepresentation forKey:@"PVFC_FB"];
 
   v19.origin.x = x;
   v19.origin.y = y;
   v19.size.width = width;
   v19.size.height = height;
   v16 = CGRectCreateDictionaryRepresentation(v19);
-  [v14 setObject:v16 forKey:@"PVFC_CB"];
+  [dictionary setObject:v16 forKey:@"PVFC_CB"];
 
-  [v14 setObject:&unk_1F49BC1C0 forKey:@"PVFC_VER"];
-  if (v13)
+  [dictionary setObject:&unk_1F49BC1C0 forKey:@"PVFC_VER"];
+  if (identifierCopy)
   {
-    [v14 setObject:v13 forKey:@"PVFC_GID"];
+    [dictionary setObject:identifierCopy forKey:@"PVFC_GID"];
   }
 
-  return v14;
+  return dictionary;
 }
 
 + (id)imageCreationOptions
@@ -180,16 +180,16 @@ void __40__VCPFaceCropUtils_imageCreationOptions__block_invoke()
   imageCreationOptions_kImageCreationOptions = v2;
 }
 
-+ (id)newFaceCropFromCGImageSource:(const CGImageSource *)a3 withFaceRect:(CGRect)a4 groupingIdentifier:(id)a5 error:(id *)a6
++ (id)newFaceCropFromCGImageSource:(const CGImageSource *)source withFaceRect:(CGRect)rect groupingIdentifier:(id)identifier error:(id *)error
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v63 = *MEMORY[0x1E69E9840];
-  v12 = a5;
+  identifierCopy = identifier;
   v13 = objc_autoreleasePoolPush();
-  if (!a3)
+  if (!source)
   {
     v43 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D920] reason:@"unexpected nil image source" userInfo:0];
     objc_exception_throw(v43);
@@ -198,7 +198,7 @@ void __40__VCPFaceCropUtils_imageCreationOptions__block_invoke()
   v54[0] = -1;
   v52 = 0;
   v53 = 0;
-  if ((getImagePropertiesFromCGImageSource(a3, v54, &v53, &v52) & 1) == 0)
+  if ((getImagePropertiesFromCGImageSource(source, v54, &v53, &v52) & 1) == 0)
   {
     v42 = @"invalid image source";
 LABEL_38:
@@ -314,23 +314,23 @@ LABEL_29:
   v30 = v29;
   v32 = v31;
   v34 = v33;
-  OrientedCroppedAndScaledImageFromCGImageSource = createOrientedCroppedAndScaledImageFromCGImageSource(a3, v51, v50, v22, v23, v26);
+  OrientedCroppedAndScaledImageFromCGImageSource = createOrientedCroppedAndScaledImageFromCGImageSource(source, v51, v50, v22, v23, v26);
   if (!OrientedCroppedAndScaledImageFromCGImageSource)
   {
     v45 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D920] reason:@"could not create cropped facecrop image" userInfo:0];
     objc_exception_throw(v45);
   }
 
-  v36 = [a1 newDictionaryRepresentationOfFaceCropDataFromFaceBox:v12 andCropRegion:v49 andGroupingIdentifier:{v30, v32, v34, v51, v50, v22, v23}];
-  v37 = [a1 createOutputMetadataFromDictionary:v36];
+  v36 = [self newDictionaryRepresentationOfFaceCropDataFromFaceBox:identifierCopy andCropRegion:v49 andGroupingIdentifier:{v30, v32, v34, v51, v50, v22, v23}];
+  v37 = [self createOutputMetadataFromDictionary:v36];
   if (!v37)
   {
     v46 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D920] reason:@"could not create facecrop metadata" userInfo:0];
     objc_exception_throw(v46);
   }
 
-  v38 = [MEMORY[0x1E695DF88] data];
-  v39 = CGImageDestinationCreateWithData(v38, @"public.jpeg", 1uLL, 0);
+  data = [MEMORY[0x1E695DF88] data];
+  v39 = CGImageDestinationCreateWithData(data, @"public.jpeg", 1uLL, 0);
   if (!v39)
   {
     v47 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D920] reason:@"could not create facecrop data" userInfo:0];
@@ -352,26 +352,26 @@ LABEL_29:
   CFRelease(v39);
   objc_autoreleasePoolPop(v13);
 
-  return v38;
+  return data;
 }
 
-+ (id)newFaceCropFromImageURL:(id)a3 withNormalizedFaceRect:(CGRect)a4 groupingIdentifier:(id)a5 error:(id *)a6
++ (id)newFaceCropFromImageURL:(id)l withNormalizedFaceRect:(CGRect)rect groupingIdentifier:(id)identifier error:(id *)error
 {
-  width = a4.size.width;
-  height = a4.size.height;
-  x = a4.origin.x;
-  y = a4.origin.y;
+  width = rect.size.width;
+  height = rect.size.height;
+  x = rect.origin.x;
+  y = rect.origin.y;
   v50 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a5;
+  lCopy = l;
+  identifierCopy = identifier;
   context = objc_autoreleasePoolPush();
-  if (!v9)
+  if (!lCopy)
   {
     v38 = @"image url is nil";
     goto LABEL_35;
   }
 
-  v11 = CGImageSourceCreateWithURL(v9, [a1 imageCreationOptions]);
+  v11 = CGImageSourceCreateWithURL(lCopy, [self imageCreationOptions]);
   if (!v11)
   {
     v38 = @"Could not create image source";
@@ -380,7 +380,7 @@ LABEL_35:
     objc_exception_throw(v39);
   }
 
-  ImageAtIndex = CGImageSourceCreateImageAtIndex(v11, 0, [a1 imageCreationOptions]);
+  ImageAtIndex = CGImageSourceCreateImageAtIndex(v11, 0, [self imageCreationOptions]);
   if (!ImageAtIndex)
   {
     v40 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D920] reason:@"Could not create image ref" userInfo:0];
@@ -488,37 +488,37 @@ LABEL_35:
   }
 
   v47[0] = 0;
-  v34 = [a1 newFaceCropFromCGImageSource:v11 withFaceRect:v10 groupingIdentifier:v47 error:{v27, v28, v29, v30}];
+  v34 = [self newFaceCropFromCGImageSource:v11 withFaceRect:identifierCopy groupingIdentifier:v47 error:{v27, v28, v29, v30}];
   v35 = v47[0];
   CFRelease(ImageAtIndex);
   CFRelease(v11);
   objc_autoreleasePoolPop(context);
-  if (a6 && v35)
+  if (error && v35)
   {
     v36 = v35;
-    *a6 = v35;
+    *error = v35;
   }
 
   return v34;
 }
 
-+ (id)newFaceCropFromImageData:(id)a3 withFaceRect:(CGRect)a4 groupingIdentifier:(id)a5 error:(id *)a6
++ (id)newFaceCropFromImageData:(id)data withFaceRect:(CGRect)rect groupingIdentifier:(id)identifier error:(id *)error
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v23[3] = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a5;
+  dataCopy = data;
+  identifierCopy = identifier;
   v15 = objc_autoreleasePoolPush();
-  if (!v13)
+  if (!dataCopy)
   {
     v21 = @"image data is nil";
     goto LABEL_9;
   }
 
-  v16 = CGImageSourceCreateWithData(v13, [a1 imageCreationOptions]);
+  v16 = CGImageSourceCreateWithData(dataCopy, [self imageCreationOptions]);
   if (!v16)
   {
     v21 = @"Could not create image source from data";
@@ -528,24 +528,24 @@ LABEL_9:
   }
 
   v23[0] = 0;
-  v17 = [a1 newFaceCropFromCGImageSource:v16 withFaceRect:v14 groupingIdentifier:v23 error:{x, y, width, height}];
+  v17 = [self newFaceCropFromCGImageSource:v16 withFaceRect:identifierCopy groupingIdentifier:v23 error:{x, y, width, height}];
   v18 = v23[0];
   CFRelease(v16);
   objc_autoreleasePoolPop(v15);
-  if (a6 && v18)
+  if (error && v18)
   {
     v19 = v18;
-    *a6 = v18;
+    *error = v18;
   }
 
   return v17;
 }
 
-+ (BOOL)isValidFaceCrop:(id)a3
++ (BOOL)isValidFaceCrop:(id)crop
 {
-  v5 = a3;
+  cropCopy = crop;
   v6 = objc_autoreleasePoolPush();
-  v7 = [a1 newDictionaryPopulatedWithFaceCropDataFromImageData:v5];
+  v7 = [self newDictionaryPopulatedWithFaceCropDataFromImageData:cropCopy];
   v8 = v7;
   if (v7)
   {
@@ -587,15 +587,15 @@ LABEL_13:
   return v13;
 }
 
-+ (CGRect)faceBoundsFromFaceCrop:(id)a3 error:(id *)a4
++ (CGRect)faceBoundsFromFaceCrop:(id)crop error:(id *)error
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  cropCopy = crop;
   v6 = *(MEMORY[0x1E695F050] + 16);
   rect.origin = *MEMORY[0x1E695F050];
   rect.size = v6;
   v7 = objc_autoreleasePoolPush();
-  v8 = [a1 newDictionaryPopulatedWithFaceCropDataFromImageData:v5];
+  v8 = [self newDictionaryPopulatedWithFaceCropDataFromImageData:cropCopy];
   v9 = v8;
   if (!v8)
   {
@@ -622,15 +622,15 @@ LABEL_13:
   return result;
 }
 
-+ (CGRect)cropBoundsInOriginalImageFromFaceCrop:(id)a3 error:(id *)a4
++ (CGRect)cropBoundsInOriginalImageFromFaceCrop:(id)crop error:(id *)error
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  cropCopy = crop;
   v6 = *(MEMORY[0x1E695F050] + 16);
   rect.origin = *MEMORY[0x1E695F050];
   rect.size = v6;
   v7 = objc_autoreleasePoolPush();
-  v8 = [a1 newDictionaryPopulatedWithFaceCropDataFromImageData:v5];
+  v8 = [self newDictionaryPopulatedWithFaceCropDataFromImageData:cropCopy];
   v9 = v8;
   if (!v8)
   {
@@ -657,11 +657,11 @@ LABEL_13:
   return result;
 }
 
-+ (id)groupingIdentifierFromFaceCrop:(id)a3 error:(id *)a4
++ (id)groupingIdentifierFromFaceCrop:(id)crop error:(id *)error
 {
-  v5 = a3;
+  cropCopy = crop;
   v6 = objc_autoreleasePoolPush();
-  v7 = [a1 newDictionaryPopulatedWithFaceCropDataFromImageData:v5];
+  v7 = [self newDictionaryPopulatedWithFaceCropDataFromImageData:cropCopy];
   v8 = v7;
   if (!v7)
   {
@@ -676,18 +676,18 @@ LABEL_13:
   return v9;
 }
 
-+ (CGSize)faceCropDimensionsFromFaceCrop:(id)a3 error:(id *)a4
++ (CGSize)faceCropDimensionsFromFaceCrop:(id)crop error:(id *)error
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  cropCopy = crop;
   v6 = objc_autoreleasePoolPush();
-  if (([a1 isValidFaceCrop:v5] & 1) == 0)
+  if (([self isValidFaceCrop:cropCopy] & 1) == 0)
   {
     v13 = @"the supplied data is not a facecrop";
     goto LABEL_7;
   }
 
-  v7 = CGImageSourceCreateWithData(v5, [a1 imageCreationOptions]);
+  v7 = CGImageSourceCreateWithData(cropCopy, [self imageCreationOptions]);
   v8 = v7;
   if (!v7)
   {

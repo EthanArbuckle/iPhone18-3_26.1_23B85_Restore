@@ -1,12 +1,12 @@
 @interface NUFullExtentRegionPolicy
-- (id)regionForGeometry:(id)a3;
+- (id)regionForGeometry:(id)geometry;
 @end
 
 @implementation NUFullExtentRegionPolicy
 
-- (id)regionForGeometry:(id)a3
+- (id)regionForGeometry:(id)geometry
 {
-  v6[2] = [a3 scaledSize];
+  v6[2] = [geometry scaledSize];
   v6[3] = v3;
   v4 = [NURegion regionWithRect:v6];
 

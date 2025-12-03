@@ -1,12 +1,12 @@
 @interface VUIMediaEntityKind
 - (VUIMediaEntityKind)init;
-- (VUIMediaEntityKind)initWithMediaEntityClassName:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (VUIMediaEntityKind)initWithMediaEntityClassName:(id)name;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)propertyDescriptorForName:(id)a3;
-- (id)sortingPropertyDescriptorForName:(id)a3;
+- (id)propertyDescriptorForName:(id)name;
+- (id)sortingPropertyDescriptorForName:(id)name;
 - (void)_updatePropertyDescriptorsByName;
-- (void)setPropertyDescriptors:(id)a3;
+- (void)setPropertyDescriptors:(id)descriptors;
 @end
 
 @implementation VUIMediaEntityKind
@@ -21,16 +21,16 @@
   return 0;
 }
 
-- (VUIMediaEntityKind)initWithMediaEntityClassName:(id)a3
+- (VUIMediaEntityKind)initWithMediaEntityClassName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   v10.receiver = self;
   v10.super_class = VUIMediaEntityKind;
   v6 = [(VUIMediaEntityKind *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_mediaEntityClassName, a3);
+    objc_storeStrong(&v6->_mediaEntityClassName, name);
     propertyDescriptors = v7->_propertyDescriptors;
     v7->_propertyDescriptors = MEMORY[0x1E695E0F0];
   }
@@ -38,39 +38,39 @@
   return v7;
 }
 
-- (void)setPropertyDescriptors:(id)a3
+- (void)setPropertyDescriptors:(id)descriptors
 {
-  v4 = [a3 copy];
+  v4 = [descriptors copy];
   propertyDescriptors = self->_propertyDescriptors;
   self->_propertyDescriptors = v4;
 
   [(VUIMediaEntityKind *)self _updatePropertyDescriptorsByName];
 }
 
-- (id)propertyDescriptorForName:(id)a3
+- (id)propertyDescriptorForName:(id)name
 {
-  v4 = a3;
-  v5 = [(VUIMediaEntityKind *)self propertyDescriptorsByName];
-  v6 = [v5 objectForKey:v4];
+  nameCopy = name;
+  propertyDescriptorsByName = [(VUIMediaEntityKind *)self propertyDescriptorsByName];
+  v6 = [propertyDescriptorsByName objectForKey:nameCopy];
 
   return v6;
 }
 
-- (id)sortingPropertyDescriptorForName:(id)a3
+- (id)sortingPropertyDescriptorForName:(id)name
 {
-  v4 = [(VUIMediaEntityKind *)self propertyDescriptorForName:a3];
+  v4 = [(VUIMediaEntityKind *)self propertyDescriptorForName:name];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 sortAsName];
-    if (v6)
+    sortAsName = [v4 sortAsName];
+    if (sortAsName)
     {
-      v7 = [(VUIMediaEntityKind *)self propertyDescriptorForName:v6];
+      v7 = [(VUIMediaEntityKind *)self propertyDescriptorForName:sortAsName];
 
       v5 = v7;
       if (!v7)
       {
-        [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"Unknown sortAs property %@", v6}];
+        [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"Unknown sortAs property %@", sortAsName}];
       }
     }
   }
@@ -78,7 +78,7 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[VUIMediaEntityKind alloc] initWithMediaEntityClassName:self->_mediaEntityClassName];
   v5 = [(NSArray *)self->_propertyDescriptors copy];
@@ -97,13 +97,13 @@
   [v3 addObject:v4];
 
   v5 = MEMORY[0x1E696AEC0];
-  v6 = [(VUIMediaEntityKind *)self mediaEntityClassName];
-  v7 = [v5 stringWithFormat:@"%@=%@", @"mediaEntityClassName", v6];
+  mediaEntityClassName = [(VUIMediaEntityKind *)self mediaEntityClassName];
+  v7 = [v5 stringWithFormat:@"%@=%@", @"mediaEntityClassName", mediaEntityClassName];
   [v3 addObject:v7];
 
   v8 = MEMORY[0x1E696AEC0];
-  v9 = [(VUIMediaEntityKind *)self propertyDescriptors];
-  v10 = [v8 stringWithFormat:@"%@=%@", @"propertyDescriptors", v9];
+  propertyDescriptors = [(VUIMediaEntityKind *)self propertyDescriptors];
+  v10 = [v8 stringWithFormat:@"%@=%@", @"propertyDescriptors", propertyDescriptors];
   [v3 addObject:v10];
 
   v11 = MEMORY[0x1E696AEC0];
@@ -116,10 +116,10 @@
 - (void)_updatePropertyDescriptorsByName
 {
   v17 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  [(VUIMediaEntityKind *)v2 propertyDescriptors];
+  [(VUIMediaEntityKind *)selfCopy propertyDescriptors];
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
@@ -138,8 +138,8 @@
         }
 
         v8 = *(*(&v12 + 1) + 8 * i);
-        v9 = [v8 name];
-        [v3 setObject:v8 forKey:v9];
+        name = [v8 name];
+        [v3 setObject:v8 forKey:name];
       }
 
       v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -149,10 +149,10 @@
   }
 
   v10 = [v3 copy];
-  propertyDescriptorsByName = v2->_propertyDescriptorsByName;
-  v2->_propertyDescriptorsByName = v10;
+  propertyDescriptorsByName = selfCopy->_propertyDescriptorsByName;
+  selfCopy->_propertyDescriptorsByName = v10;
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 @end

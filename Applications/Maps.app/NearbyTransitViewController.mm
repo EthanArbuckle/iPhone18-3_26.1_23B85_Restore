@@ -1,13 +1,13 @@
 @interface NearbyTransitViewController
-- (_TtC4Maps27NearbyTransitViewController)initWithMapView:(id)a3 viewMode:(int64_t)a4;
-- (_TtC4Maps27NearbyTransitViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC4Maps27NearbyTransitViewController)initWithMapView:(id)view viewMode:(int64_t)mode;
+- (_TtC4Maps27NearbyTransitViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (_TtP4Maps35NearbyTransitViewControllerDelegate_)nearbyTransitDelegate;
-- (void)mapView:(id)a3 didChangeUserTrackingMode:(int64_t)a4 animated:(BOOL)a5;
-- (void)mapView:(id)a3 regionDidChangeAnimated:(BOOL)a4;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)mapView:(id)view didChangeUserTrackingMode:(int64_t)mode animated:(BOOL)animated;
+- (void)mapView:(id)view regionDidChangeAnimated:(BOOL)animated;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation NearbyTransitViewController
@@ -19,57 +19,57 @@
   return Strong;
 }
 
-- (_TtC4Maps27NearbyTransitViewController)initWithMapView:(id)a3 viewMode:(int64_t)a4
+- (_TtC4Maps27NearbyTransitViewController)initWithMapView:(id)view viewMode:(int64_t)mode
 {
-  v5 = a3;
-  v6 = sub_1003CC3B0(v5, a4);
+  viewCopy = view;
+  v6 = sub_1003CC3B0(viewCopy, mode);
 
   return v6;
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1003CAFF8();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_1003CB4D0(a3);
+  selfCopy = self;
+  sub_1003CB4D0(appear);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_1003CB660(a3);
+  selfCopy = self;
+  sub_1003CB660(disappear);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_1003CB7F8(a3);
+  selfCopy = self;
+  sub_1003CB7F8(appear);
 }
 
-- (_TtC4Maps27NearbyTransitViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC4Maps27NearbyTransitViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)mapView:(id)a3 regionDidChangeAnimated:(BOOL)a4
+- (void)mapView:(id)view regionDidChangeAnimated:(BOOL)animated
 {
-  v5 = a3;
-  v6 = self;
-  sub_1003CC508(v5);
+  viewCopy = view;
+  selfCopy = self;
+  sub_1003CC508(viewCopy);
 }
 
-- (void)mapView:(id)a3 didChangeUserTrackingMode:(int64_t)a4 animated:(BOOL)a5
+- (void)mapView:(id)view didChangeUserTrackingMode:(int64_t)mode animated:(BOOL)animated
 {
-  v7 = a3;
-  v8 = self;
-  sub_1003CC874(a4);
+  viewCopy = view;
+  selfCopy = self;
+  sub_1003CC874(mode);
 }
 
 @end

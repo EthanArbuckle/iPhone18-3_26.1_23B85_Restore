@@ -1,25 +1,25 @@
 @interface ATXRSWidgetSuggestionProducer
-+ (id)replacementContainerBundleIdForDonationBundleId:(id)a3;
++ (id)replacementContainerBundleIdForDonationBundleId:(id)id;
 - (ATXRSWidgetSuggestionProducer)init;
-- (ATXRSWidgetSuggestionProducer)initWithDescriptorCache:(id)a3 relevanceMonitor:(id)a4 filter:(id)a5 abuseGuard:(id)a6 featurizer:(id)a7 featureWeights:(id)a8 ranker:(id)a9 confidenceMapper:(id)a10 suggestionReceiver:(id)a11 metadataProvider:(id)a12 widgetRelevanceService:(id)a13;
-- (BOOL)_areInfoSuggestions:(id)a3 equalToProactiveSuggestions:(id)a4;
-- (id)_candidatesFromBundleIdToRelevantIntentsDict:(id)a3;
-- (id)_candidatesFromRelevantShortcutsFromStartDate:(id)a3;
-- (id)_infoSuggestionFromCandidate:(id)a3 suggestionIdentifier:(id)a4;
-- (id)_proactiveSuggestionsFromScoredInfoSuggestions:(id)a3;
-- (id)relevantShortcutCandidateFromLNRelevantIntent:(id)a3 donationBundleId:(id)a4;
-- (void)_coalescedRefreshRelevantShortcuts:(id)a3;
-- (void)_pushSuggestionsToBlendingIfNecessary:(id)a3;
+- (ATXRSWidgetSuggestionProducer)initWithDescriptorCache:(id)cache relevanceMonitor:(id)monitor filter:(id)filter abuseGuard:(id)guard featurizer:(id)featurizer featureWeights:(id)weights ranker:(id)ranker confidenceMapper:(id)self0 suggestionReceiver:(id)self1 metadataProvider:(id)self2 widgetRelevanceService:(id)self3;
+- (BOOL)_areInfoSuggestions:(id)suggestions equalToProactiveSuggestions:(id)proactiveSuggestions;
+- (id)_candidatesFromBundleIdToRelevantIntentsDict:(id)dict;
+- (id)_candidatesFromRelevantShortcutsFromStartDate:(id)date;
+- (id)_infoSuggestionFromCandidate:(id)candidate suggestionIdentifier:(id)identifier;
+- (id)_proactiveSuggestionsFromScoredInfoSuggestions:(id)suggestions;
+- (id)relevantShortcutCandidateFromLNRelevantIntent:(id)intent donationBundleId:(id)id;
+- (void)_coalescedRefreshRelevantShortcuts:(id)shortcuts;
+- (void)_pushSuggestionsToBlendingIfNecessary:(id)necessary;
 - (void)_refreshRelevantShortcuts;
-- (void)relevanceMonitorDidUpdateCurrentlyRelevantCandidates:(id)a3 relevantContexts:(id)a4;
-- (void)widgetRelevancesDidChangeForRelevanceService:(id)a3;
+- (void)relevanceMonitorDidUpdateCurrentlyRelevantCandidates:(id)candidates relevantContexts:(id)contexts;
+- (void)widgetRelevancesDidChangeForRelevanceService:(id)service;
 @end
 
 @implementation ATXRSWidgetSuggestionProducer
 
 - (ATXRSWidgetSuggestionProducer)init
 {
-  v13 = [MEMORY[0x277CEB998] sharedInstance];
+  mEMORY[0x277CEB998] = [MEMORY[0x277CEB998] sharedInstance];
   v3 = objc_opt_new();
   v4 = objc_opt_new();
   v5 = +[ATXWidgetSuggestionAbuseGuard sharedInstance];
@@ -30,43 +30,43 @@
   v8 = +[ATXClientModelSuggestionReceiver sharedInstance];
   v9 = objc_opt_new();
   v10 = [objc_alloc(MEMORY[0x277CFA420]) initWithOptions:1];
-  v12 = [(ATXRSWidgetSuggestionProducer *)self initWithDescriptorCache:v13 relevanceMonitor:v3 filter:v4 abuseGuard:v5 featurizer:v15 featureWeights:v14 ranker:v6 confidenceMapper:v7 suggestionReceiver:v8 metadataProvider:v9 widgetRelevanceService:v10];
+  v12 = [(ATXRSWidgetSuggestionProducer *)self initWithDescriptorCache:mEMORY[0x277CEB998] relevanceMonitor:v3 filter:v4 abuseGuard:v5 featurizer:v15 featureWeights:v14 ranker:v6 confidenceMapper:v7 suggestionReceiver:v8 metadataProvider:v9 widgetRelevanceService:v10];
 
   return v12;
 }
 
-- (ATXRSWidgetSuggestionProducer)initWithDescriptorCache:(id)a3 relevanceMonitor:(id)a4 filter:(id)a5 abuseGuard:(id)a6 featurizer:(id)a7 featureWeights:(id)a8 ranker:(id)a9 confidenceMapper:(id)a10 suggestionReceiver:(id)a11 metadataProvider:(id)a12 widgetRelevanceService:(id)a13
+- (ATXRSWidgetSuggestionProducer)initWithDescriptorCache:(id)cache relevanceMonitor:(id)monitor filter:(id)filter abuseGuard:(id)guard featurizer:(id)featurizer featureWeights:(id)weights ranker:(id)ranker confidenceMapper:(id)self0 suggestionReceiver:(id)self1 metadataProvider:(id)self2 widgetRelevanceService:(id)self3
 {
-  v65 = a3;
-  v68 = a4;
-  v54 = a5;
-  v64 = a5;
-  v63 = a6;
-  v62 = a7;
-  v61 = a8;
-  v60 = a9;
-  v59 = a10;
-  v58 = a11;
-  v57 = a12;
-  v56 = a13;
+  cacheCopy = cache;
+  monitorCopy = monitor;
+  filterCopy = filter;
+  filterCopy2 = filter;
+  guardCopy = guard;
+  featurizerCopy = featurizer;
+  weightsCopy = weights;
+  rankerCopy = ranker;
+  mapperCopy = mapper;
+  receiverCopy = receiver;
+  providerCopy = provider;
+  serviceCopy = service;
   v79.receiver = self;
   v79.super_class = ATXRSWidgetSuggestionProducer;
   v18 = [(ATXRSWidgetSuggestionProducer *)&v79 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_descriptorCache, a3);
-    objc_storeStrong(&v19->_relevanceMonitor, a4);
-    [v68 setDelegate:v19];
-    objc_storeStrong(&v19->_filter, v54);
-    objc_storeStrong(&v19->_abuseGuard, a6);
-    objc_storeStrong(&v19->_featurizer, a7);
-    objc_storeStrong(&v19->_featureWeights, a8);
-    objc_storeStrong(&v19->_ranker, a9);
-    objc_storeStrong(&v19->_confidenceMapper, a10);
-    objc_storeStrong(&v19->_suggestionReceiver, a11);
-    objc_storeStrong(&v19->_metadataProvider, a12);
-    objc_storeStrong(&v19->_widgetRelevanceService, a13);
+    objc_storeStrong(&v18->_descriptorCache, cache);
+    objc_storeStrong(&v19->_relevanceMonitor, monitor);
+    [monitorCopy setDelegate:v19];
+    objc_storeStrong(&v19->_filter, filterCopy);
+    objc_storeStrong(&v19->_abuseGuard, guard);
+    objc_storeStrong(&v19->_featurizer, featurizer);
+    objc_storeStrong(&v19->_featureWeights, weights);
+    objc_storeStrong(&v19->_ranker, ranker);
+    objc_storeStrong(&v19->_confidenceMapper, mapper);
+    objc_storeStrong(&v19->_suggestionReceiver, receiver);
+    objc_storeStrong(&v19->_metadataProvider, provider);
+    objc_storeStrong(&v19->_widgetRelevanceService, service);
     [(CHSWidgetRelevanceService *)v19->_widgetRelevanceService registerObserver:v19];
     v20 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v21 = dispatch_queue_attr_make_with_qos_class(v20, QOS_CLASS_BACKGROUND, 0);
@@ -99,8 +99,8 @@
 
     v32 = BiomeLibrary();
     v33 = [v32 App];
-    v34 = [v33 RelevantShortcuts];
-    v35 = [v34 tombstoneDSLPublisherWithUseCase:*MEMORY[0x277CEBB48]];
+    relevantShortcuts = [v33 RelevantShortcuts];
+    v35 = [relevantShortcuts tombstoneDSLPublisherWithUseCase:*MEMORY[0x277CEBB48]];
     v36 = [v35 subscribeOn:v19->_relevantShortcutsTombstoneScheduler];
     v74[0] = MEMORY[0x277D85DD0];
     v74[1] = 3221225472;
@@ -117,9 +117,9 @@
 
     v41 = BiomeLibrary();
     v42 = [v41 App];
-    v43 = [v42 RelevantShortcuts];
-    v44 = [v43 atx_DSLPublisher];
-    v45 = [v44 subscribeOn:v19->_relevantShortcutsStreamScheduler];
+    relevantShortcuts2 = [v42 RelevantShortcuts];
+    atx_DSLPublisher = [relevantShortcuts2 atx_DSLPublisher];
+    v45 = [atx_DSLPublisher subscribeOn:v19->_relevantShortcutsStreamScheduler];
     v72[0] = MEMORY[0x277D85DD0];
     v72[1] = 3221225472;
     v72[2] = __201__ATXRSWidgetSuggestionProducer_initWithDescriptorCache_relevanceMonitor_filter_abuseGuard_featurizer_featureWeights_ranker_confidenceMapper_suggestionReceiver_metadataProvider_widgetRelevanceService___block_invoke_50;
@@ -129,9 +129,9 @@
     relevantShortcutsStreamSink = v19->_relevantShortcutsStreamSink;
     v19->_relevantShortcutsStreamSink = v46;
 
-    v48 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v48 addObserver:v19 selector:sel__coalescedRefreshRelevantShortcuts_ name:*MEMORY[0x277CEBAF0] object:v19->_descriptorCache];
-    [v48 addObserver:v19 selector:sel__coalescedRefreshRelevantShortcuts_ name:@"ATXWidgetSuggestionAbuseGuardRefresh" object:v19->_abuseGuard];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v19 selector:sel__coalescedRefreshRelevantShortcuts_ name:*MEMORY[0x277CEBAF0] object:v19->_descriptorCache];
+    [defaultCenter addObserver:v19 selector:sel__coalescedRefreshRelevantShortcuts_ name:@"ATXWidgetSuggestionAbuseGuardRefresh" object:v19->_abuseGuard];
 
     objc_destroyWeak(&v73);
     objc_destroyWeak(&v75);
@@ -279,7 +279,7 @@ uint64_t __201__ATXRSWidgetSuggestionProducer_initWithDescriptorCache_relevanceM
   return [*(a1 + 32) _coalescedRefreshRelevantShortcuts];
 }
 
-- (void)widgetRelevancesDidChangeForRelevanceService:(id)a3
+- (void)widgetRelevancesDidChangeForRelevanceService:(id)service
 {
   v4 = __atxlog_handle_relevant_shortcut();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -291,20 +291,20 @@ uint64_t __201__ATXRSWidgetSuggestionProducer_initWithDescriptorCache_relevanceM
   [(ATXRSWidgetSuggestionProducer *)self _coalescedRefreshRelevantShortcuts];
 }
 
-- (void)relevanceMonitorDidUpdateCurrentlyRelevantCandidates:(id)a3 relevantContexts:(id)a4
+- (void)relevanceMonitorDidUpdateCurrentlyRelevantCandidates:(id)candidates relevantContexts:(id)contexts
 {
-  v6 = a3;
-  v7 = a4;
+  candidatesCopy = candidates;
+  contextsCopy = contexts;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __103__ATXRSWidgetSuggestionProducer_relevanceMonitorDidUpdateCurrentlyRelevantCandidates_relevantContexts___block_invoke;
   block[3] = &unk_278597828;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = candidatesCopy;
+  selfCopy = self;
+  v14 = contextsCopy;
+  v9 = contextsCopy;
+  v10 = candidatesCopy;
   dispatch_async(queue, block);
 }
 
@@ -365,16 +365,16 @@ void __103__ATXRSWidgetSuggestionProducer_relevanceMonitorDidUpdateCurrentlyRele
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_coalescedRefreshRelevantShortcuts:(id)a3
+- (void)_coalescedRefreshRelevantShortcuts:(id)shortcuts
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  shortcutsCopy = shortcuts;
   v5 = __atxlog_handle_relevant_shortcut();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 name];
+    name = [shortcutsCopy name];
     v8 = 138543362;
-    v9 = v6;
+    v9 = name;
     _os_log_impl(&dword_2263AA000, v5, OS_LOG_TYPE_DEFAULT, "ATXRSWidgetSuggestionProducer: Triggering coalesced refresh by notification %{public}@", &v8, 0xCu);
   }
 
@@ -426,16 +426,16 @@ void __58__ATXRSWidgetSuggestionProducer__refreshRelevantShortcuts__block_invoke
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_candidatesFromBundleIdToRelevantIntentsDict:(id)a3
+- (id)_candidatesFromBundleIdToRelevantIntentsDict:(id)dict
 {
   v37 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dictCopy = dict;
   v24 = objc_opt_new();
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  obj = v4;
+  obj = dictCopy;
   v20 = [obj countByEnumeratingWithState:&v29 objects:v36 count:16];
   if (v20)
   {
@@ -513,16 +513,16 @@ void __58__ATXRSWidgetSuggestionProducer__refreshRelevantShortcuts__block_invoke
   return v24;
 }
 
-- (id)relevantShortcutCandidateFromLNRelevantIntent:(id)a3 donationBundleId:(id)a4
+- (id)relevantShortcutCandidateFromLNRelevantIntent:(id)intent donationBundleId:(id)id
 {
   v24[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  intentCopy = intent;
+  idCopy = id;
   metadataProvider = self->_metadataProvider;
-  v9 = [v6 action];
-  v10 = [v9 identifier];
+  action = [intentCopy action];
+  identifier = [action identifier];
   v23 = 0;
-  v11 = [(LNMetadataProvider *)metadataProvider actionForBundleIdentifier:v7 andActionIdentifier:v10 error:&v23];
+  v11 = [(LNMetadataProvider *)metadataProvider actionForBundleIdentifier:idCopy andActionIdentifier:identifier error:&v23];
   v12 = v23;
 
   if (v12 || !v11)
@@ -539,14 +539,14 @@ void __58__ATXRSWidgetSuggestionProducer__refreshRelevantShortcuts__block_invoke
   else
   {
     v13 = objc_alloc(MEMORY[0x277CD3A70]);
-    v14 = [v6 action];
-    v15 = [v13 initWithAppBundleIdentifier:v7 linkAction:v14 linkActionMetadata:v11];
+    action2 = [intentCopy action];
+    v15 = [v13 initWithAppBundleIdentifier:idCopy linkAction:action2 linkActionMetadata:v11];
 
     v16 = [(ATXWidgetDescriptorCache *)self->_descriptorCache homeScreenDescriptorForIntent:v15];
     if (v16)
     {
-      v17 = [v6 rkContext];
-      v18 = [ATXRelevantContextConverter contextFromRelevantContext:v17];
+      rkContext = [intentCopy rkContext];
+      v18 = [ATXRelevantContextConverter contextFromRelevantContext:rkContext];
 
       if (v18)
       {
@@ -559,7 +559,7 @@ void __58__ATXRSWidgetSuggestionProducer__refreshRelevantShortcuts__block_invoke
         v19 = MEMORY[0x277CBEBF8];
       }
 
-      v20 = [[ATXRelevantShortcutCandidate alloc] initWithWidgetDescriptor:v16 donationBundleIdentifier:v7 intent:v15 relevantContexts:v19];
+      v20 = [[ATXRelevantShortcutCandidate alloc] initWithWidgetDescriptor:v16 donationBundleIdentifier:idCopy intent:v15 relevantContexts:v19];
     }
 
     else
@@ -579,9 +579,9 @@ void __58__ATXRSWidgetSuggestionProducer__refreshRelevantShortcuts__block_invoke
   return v20;
 }
 
-- (id)_candidatesFromRelevantShortcutsFromStartDate:(id)a3
+- (id)_candidatesFromRelevantShortcutsFromStartDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v5 = objc_opt_new();
   v6 = objc_opt_new();
   v7 = [MEMORY[0x277CBEAA8] now];
@@ -592,7 +592,7 @@ void __58__ATXRSWidgetSuggestionProducer__refreshRelevantShortcuts__block_invoke
   v12[4] = self;
   v8 = v5;
   v13 = v8;
-  [v6 enumerateEventsFromStartDate:v4 endDate:v7 limit:1000 block:v12];
+  [v6 enumerateEventsFromStartDate:dateCopy endDate:v7 limit:1000 block:v12];
 
   v9 = v13;
   v10 = v8;
@@ -719,40 +719,40 @@ LABEL_25:
   return 1;
 }
 
-- (id)_infoSuggestionFromCandidate:(id)a3 suggestionIdentifier:(id)a4
+- (id)_infoSuggestionFromCandidate:(id)candidate suggestionIdentifier:(id)identifier
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 donationBundleIdentifier];
-  v8 = [ATXRSWidgetSuggestionProducer replacementContainerBundleIdForDonationBundleId:v7];
+  candidateCopy = candidate;
+  identifierCopy = identifier;
+  donationBundleIdentifier = [candidateCopy donationBundleIdentifier];
+  v8 = [ATXRSWidgetSuggestionProducer replacementContainerBundleIdForDonationBundleId:donationBundleIdentifier];
   v9 = v8;
   if (v8)
   {
-    v10 = v8;
+    donationBundleIdentifier2 = v8;
   }
 
   else
   {
-    v10 = [v5 donationBundleIdentifier];
+    donationBundleIdentifier2 = [candidateCopy donationBundleIdentifier];
   }
 
-  v27 = v10;
+  v27 = donationBundleIdentifier2;
 
   v11 = objc_alloc(MEMORY[0x277D42040]);
-  v12 = [v5 widgetDescriptor];
-  v13 = [v12 extensionBundleIdentifier];
-  v14 = [v5 widgetDescriptor];
-  v15 = [v14 kind];
-  v16 = [v5 widgetDescriptor];
-  v17 = [v16 atx_layoutOptions];
-  v18 = [v5 intent];
-  v19 = [v11 initWithAppBundleIdentifier:v27 widgetBundleIdentifier:v13 widgetKind:v15 criterion:&stru_2839A6058 applicableLayouts:v17 suggestionIdentifier:v6 startDate:0 endDate:0 intent:v18 metadata:0 relevanceScore:0];
+  widgetDescriptor = [candidateCopy widgetDescriptor];
+  extensionBundleIdentifier = [widgetDescriptor extensionBundleIdentifier];
+  widgetDescriptor2 = [candidateCopy widgetDescriptor];
+  kind = [widgetDescriptor2 kind];
+  widgetDescriptor3 = [candidateCopy widgetDescriptor];
+  atx_layoutOptions = [widgetDescriptor3 atx_layoutOptions];
+  intent = [candidateCopy intent];
+  v19 = [v11 initWithAppBundleIdentifier:v27 widgetBundleIdentifier:extensionBundleIdentifier widgetKind:kind criterion:&stru_2839A6058 applicableLayouts:atx_layoutOptions suggestionIdentifier:identifierCopy startDate:0 endDate:0 intent:intent metadata:0 relevanceScore:0];
 
   abuseGuard = self->_abuseGuard;
-  v21 = [v19 widgetBundleIdentifier];
-  v22 = [v19 widgetKind];
-  v23 = [v19 intent];
-  LODWORD(abuseGuard) = [(ATXWidgetSuggestionAbuseGuard *)abuseGuard shouldDemoteSuggestionsForWidget:v21 kind:v22 intent:v23];
+  widgetBundleIdentifier = [v19 widgetBundleIdentifier];
+  widgetKind = [v19 widgetKind];
+  intent2 = [v19 intent];
+  LODWORD(abuseGuard) = [(ATXWidgetSuggestionAbuseGuard *)abuseGuard shouldDemoteSuggestionsForWidget:widgetBundleIdentifier kind:widgetKind intent:intent2];
 
   if (abuseGuard)
   {
@@ -769,23 +769,23 @@ LABEL_25:
   return v19;
 }
 
-- (void)_pushSuggestionsToBlendingIfNecessary:(id)a3
+- (void)_pushSuggestionsToBlendingIfNecessary:(id)necessary
 {
-  v4 = a3;
+  necessaryCopy = necessary;
   v5 = objc_alloc(MEMORY[0x277D42070]);
-  v6 = [objc_opt_class() _clientModelIdentifier];
-  v7 = [(ATXClientModelSuggestionReceiver *)self->_suggestionReceiver blendingLayerServer];
-  v8 = [v5 initWithClientModelId:v6 blendingLayerServer:v7];
+  _clientModelIdentifier = [objc_opt_class() _clientModelIdentifier];
+  blendingLayerServer = [(ATXClientModelSuggestionReceiver *)self->_suggestionReceiver blendingLayerServer];
+  v8 = [v5 initWithClientModelId:_clientModelIdentifier blendingLayerServer:blendingLayerServer];
 
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __71__ATXRSWidgetSuggestionProducer__pushSuggestionsToBlendingIfNecessary___block_invoke;
   v11[3] = &unk_2785978E8;
   v11[4] = self;
-  v12 = v4;
+  v12 = necessaryCopy;
   v13 = v8;
   v9 = v8;
-  v10 = v4;
+  v10 = necessaryCopy;
   [v9 retrieveCurrentSuggestionsWithReply:v11];
 }
 
@@ -841,24 +841,24 @@ void __71__ATXRSWidgetSuggestionProducer__pushSuggestionsToBlendingIfNecessary__
   }
 }
 
-- (BOOL)_areInfoSuggestions:(id)a3 equalToProactiveSuggestions:(id)a4
+- (BOOL)_areInfoSuggestions:(id)suggestions equalToProactiveSuggestions:(id)proactiveSuggestions
 {
   v44 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count] || objc_msgSend(v7, "count"))
+  suggestionsCopy = suggestions;
+  proactiveSuggestionsCopy = proactiveSuggestions;
+  if ([suggestionsCopy count] || objc_msgSend(proactiveSuggestionsCopy, "count"))
   {
-    v8 = [v6 count];
-    if (v8 == [v7 count])
+    v8 = [suggestionsCopy count];
+    if (v8 == [proactiveSuggestionsCopy count])
     {
-      v33 = v7;
+      v33 = proactiveSuggestionsCopy;
       v9 = objc_opt_new();
       v38 = 0u;
       v39 = 0u;
       v40 = 0u;
       v41 = 0u;
-      v32 = v6;
-      v10 = v6;
+      v32 = suggestionsCopy;
+      v10 = suggestionsCopy;
       v11 = [v10 countByEnumeratingWithState:&v38 objects:v43 count:16];
       if (v11)
       {
@@ -874,8 +874,8 @@ void __71__ATXRSWidgetSuggestionProducer__pushSuggestionsToBlendingIfNecessary__
             }
 
             v15 = *(*(&v38 + 1) + 8 * i);
-            v16 = [v15 suggestionIdentifier];
-            [v9 setObject:v15 forKeyedSubscript:v16];
+            suggestionIdentifier = [v15 suggestionIdentifier];
+            [v9 setObject:v15 forKeyedSubscript:suggestionIdentifier];
           }
 
           v12 = [v10 countByEnumeratingWithState:&v38 objects:v43 count:16];
@@ -904,17 +904,17 @@ void __71__ATXRSWidgetSuggestionProducer__pushSuggestionsToBlendingIfNecessary__
             }
 
             v22 = *(*(&v34 + 1) + 8 * j);
-            v23 = [v22 executableSpecification];
-            v24 = [v23 executableIdentifier];
-            v25 = [v9 objectForKeyedSubscript:v24];
+            executableSpecification = [v22 executableSpecification];
+            executableIdentifier = [executableSpecification executableIdentifier];
+            v25 = [v9 objectForKeyedSubscript:executableIdentifier];
 
             if (v25)
             {
               v26 = -[ATXInfoToBlendingConfidenceMapper blendingConfidenceCategoryForInfoConfidenceLevel:](self->_confidenceMapper, "blendingConfidenceCategoryForInfoConfidenceLevel:", [v25 confidenceLevel]);
-              v27 = [v22 scoreSpecification];
-              v28 = [v27 suggestedConfidenceCategory];
+              scoreSpecification = [v22 scoreSpecification];
+              suggestedConfidenceCategory = [scoreSpecification suggestedConfidenceCategory];
 
-              if (v26 == v28)
+              if (v26 == suggestedConfidenceCategory)
               {
                 continue;
               }
@@ -942,8 +942,8 @@ void __71__ATXRSWidgetSuggestionProducer__pushSuggestionsToBlendingIfNecessary__
 
 LABEL_24:
 
-      v6 = v32;
-      v7 = v33;
+      suggestionsCopy = v32;
+      proactiveSuggestionsCopy = v33;
     }
 
     else
@@ -961,16 +961,16 @@ LABEL_24:
   return v29;
 }
 
-- (id)_proactiveSuggestionsFromScoredInfoSuggestions:(id)a3
+- (id)_proactiveSuggestionsFromScoredInfoSuggestions:(id)suggestions
 {
   v41 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  suggestionsCopy = suggestions;
   v29 = objc_opt_new();
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  obj = v4;
+  obj = suggestionsCopy;
   v30 = [obj countByEnumeratingWithState:&v31 objects:v40 count:16];
   if (v30)
   {
@@ -979,7 +979,7 @@ LABEL_24:
     v8 = @"0.1";
     *&v5 = 138412546;
     v26 = v5;
-    v27 = self;
+    selfCopy = self;
     do
     {
       for (i = 0; i != v30; ++i)
@@ -990,12 +990,12 @@ LABEL_24:
         }
 
         v10 = *(*(&v31 + 1) + 8 * i);
-        v11 = [v10 suggestion];
-        v12 = -[ATXInfoToBlendingConfidenceMapper blendingConfidenceCategoryForInfoConfidenceLevel:](self->_confidenceMapper, "blendingConfidenceCategoryForInfoConfidenceLevel:", [v11 confidenceLevel]);
+        suggestion = [v10 suggestion];
+        v12 = -[ATXInfoToBlendingConfidenceMapper blendingConfidenceCategoryForInfoConfidenceLevel:](self->_confidenceMapper, "blendingConfidenceCategoryForInfoConfidenceLevel:", [suggestion confidenceLevel]);
         v13 = *(v7 + 64);
-        v14 = [objc_opt_class() _clientModelIdentifier];
+        _clientModelIdentifier = [objc_opt_class() _clientModelIdentifier];
         [v10 score];
-        v15 = [v13 proactiveSuggestionForInfoSuggestion:v11 withClientModelId:v14 clientModelVersion:v8 rawScore:v12 confidenceCategory:?];
+        v15 = [v13 proactiveSuggestionForInfoSuggestion:suggestion withClientModelId:_clientModelIdentifier clientModelVersion:v8 rawScore:v12 confidenceCategory:?];
 
         v16 = __atxlog_handle_relevant_shortcut();
         v17 = v16;
@@ -1003,14 +1003,14 @@ LABEL_24:
         {
           if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
           {
-            v18 = [v11 suggestionIdentifier];
-            v19 = [v11 intent];
-            [v19 intentDescription];
+            suggestionIdentifier = [suggestion suggestionIdentifier];
+            intent = [suggestion intent];
+            [intent intentDescription];
             v20 = v8;
             v21 = v6;
             v23 = v22 = v7;
             *buf = v26;
-            v36 = v18;
+            v36 = suggestionIdentifier;
             v37 = 2112;
             v38 = v23;
             _os_log_impl(&dword_2263AA000, v17, OS_LOG_TYPE_DEFAULT, "ATXRSWidgetSuggestionProducer: Pushing suggestion to Blending: Suggestion ID = %@, intent description %@", buf, 0x16u);
@@ -1018,7 +1018,7 @@ LABEL_24:
             v7 = v22;
             v6 = v21;
             v8 = v20;
-            self = v27;
+            self = selfCopy;
           }
 
           [v29 addObject:v15];
@@ -1028,7 +1028,7 @@ LABEL_24:
         {
           if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
           {
-            [(ATXRSWidgetSuggestionProducer *)v39 _proactiveSuggestionsFromScoredInfoSuggestions:v11];
+            [(ATXRSWidgetSuggestionProducer *)v39 _proactiveSuggestionsFromScoredInfoSuggestions:suggestion];
           }
         }
       }
@@ -1044,16 +1044,16 @@ LABEL_24:
   return v29;
 }
 
-+ (id)replacementContainerBundleIdForDonationBundleId:(id)a3
++ (id)replacementContainerBundleIdForDonationBundleId:(id)id
 {
   v3 = replacementContainerBundleIdForDonationBundleId___pasOnceToken40;
-  v4 = a3;
+  idCopy = id;
   if (v3 != -1)
   {
     +[ATXRSWidgetSuggestionProducer replacementContainerBundleIdForDonationBundleId:];
   }
 
-  v5 = [replacementContainerBundleIdForDonationBundleId___pasExprOnceResult objectForKeyedSubscript:v4];
+  v5 = [replacementContainerBundleIdForDonationBundleId___pasExprOnceResult objectForKeyedSubscript:idCopy];
 
   return v5;
 }

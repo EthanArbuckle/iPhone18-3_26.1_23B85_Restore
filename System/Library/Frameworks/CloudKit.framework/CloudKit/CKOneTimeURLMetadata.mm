@@ -1,39 +1,39 @@
 @interface CKOneTimeURLMetadata
-- (CKOneTimeURLMetadata)initWithCoder:(id)a3;
-- (CKOneTimeURLMetadata)initWithEncryptedOneTimeFullToken:(id)a3 participantID:(id)a4;
-- (CKOneTimeURLMetadata)initWithSharingKeyBytes:(id)a3 sharingKeySeed:(id)a4 participantID:(id)a5;
+- (CKOneTimeURLMetadata)initWithCoder:(id)coder;
+- (CKOneTimeURLMetadata)initWithEncryptedOneTimeFullToken:(id)token participantID:(id)d;
+- (CKOneTimeURLMetadata)initWithSharingKeyBytes:(id)bytes sharingKeySeed:(id)seed participantID:(id)d;
 - (NSData)encryptedOneTimeFullTokenData;
 - (NSData)oneTimeShortSharingTokenHashData;
 - (NSString)oneTimeShortSharingToken;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)oneTimeFullToken;
 - (id)oneTimeFullTokenProtoMessageData;
 - (id)oneTimeShortSharingTokenData;
-- (id)oneTimeShortTokenWithRoutingKey:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)oneTimeShortTokenWithRoutingKey:(id)key;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CKOneTimeURLMetadata
 
-- (CKOneTimeURLMetadata)initWithSharingKeyBytes:(id)a3 sharingKeySeed:(id)a4 participantID:(id)a5
+- (CKOneTimeURLMetadata)initWithSharingKeyBytes:(id)bytes sharingKeySeed:(id)seed participantID:(id)d
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  bytesCopy = bytes;
+  seedCopy = seed;
+  dCopy = d;
   v32.receiver = self;
   v32.super_class = CKOneTimeURLMetadata;
   v13 = [(CKOneTimeURLMetadata *)&v32 init];
   if (v13)
   {
-    v14 = objc_msgSend_copy(v8, v11, v12);
+    v14 = objc_msgSend_copy(bytesCopy, v11, v12);
     sharingKeyBytes = v13->_sharingKeyBytes;
     v13->_sharingKeyBytes = v14;
 
-    v18 = objc_msgSend_copy(v9, v16, v17);
+    v18 = objc_msgSend_copy(seedCopy, v16, v17);
     sharingKeySeed = v13->_sharingKeySeed;
     v13->_sharingKeySeed = v18;
 
-    v22 = objc_msgSend_copy(v10, v20, v21);
+    v22 = objc_msgSend_copy(dCopy, v20, v21);
     participantID = v13->_participantID;
     v13->_participantID = v22;
 
@@ -47,16 +47,16 @@
   return v13;
 }
 
-- (CKOneTimeURLMetadata)initWithEncryptedOneTimeFullToken:(id)a3 participantID:(id)a4
+- (CKOneTimeURLMetadata)initWithEncryptedOneTimeFullToken:(id)token participantID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  tokenCopy = token;
+  dCopy = d;
   v44.receiver = self;
   v44.super_class = CKOneTimeURLMetadata;
   v10 = [(CKOneTimeURLMetadata *)&v44 init];
   if (v10)
   {
-    v11 = objc_msgSend_data(v6, v8, v9);
+    v11 = objc_msgSend_data(tokenCopy, v8, v9);
 
     if (v11)
     {
@@ -76,11 +76,11 @@
       v10->_sharingKeySeed = v35;
     }
 
-    v37 = objc_msgSend_copy(v7, v12, v13);
+    v37 = objc_msgSend_copy(dCopy, v12, v13);
     participantID = v10->_participantID;
     v10->_participantID = v37;
 
-    v41 = objc_msgSend_copy(v6, v39, v40);
+    v41 = objc_msgSend_copy(tokenCopy, v39, v40);
     encryptedOneTimeFullToken = v10->_encryptedOneTimeFullToken;
     v10->_encryptedOneTimeFullToken = v41;
   }
@@ -88,28 +88,28 @@
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v21 = a3;
+  coderCopy = coder;
   v4 = objc_autoreleasePoolPush();
   v7 = objc_msgSend_encryptedOneTimeFullToken(self, v5, v6);
-  objc_msgSend_encodeObject_forKey_(v21, v8, v7, @"encryptedOneTimeFullToken");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v8, v7, @"encryptedOneTimeFullToken");
 
   v11 = objc_msgSend_participantID(self, v9, v10);
-  objc_msgSend_encodeObject_forKey_(v21, v12, v11, @"participantID");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v12, v11, @"participantID");
 
   v15 = objc_msgSend_sharingKeySeed(self, v13, v14);
-  objc_msgSend_encodeObject_forKey_(v21, v16, v15, @"sharingKeySeed");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v16, v15, @"sharingKeySeed");
 
   v19 = objc_msgSend_sharingKeyBytes(self, v17, v18);
-  objc_msgSend_encodeObject_forKey_(v21, v20, v19, @"sharingKeyBytes");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v20, v19, @"sharingKeyBytes");
 
   objc_autoreleasePoolPop(v4);
 }
 
-- (CKOneTimeURLMetadata)initWithCoder:(id)a3
+- (CKOneTimeURLMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v24.receiver = self;
   v24.super_class = CKOneTimeURLMetadata;
   v5 = [(CKOneTimeURLMetadata *)&v24 init];
@@ -117,22 +117,22 @@
   {
     v6 = objc_autoreleasePoolPush();
     v7 = objc_opt_class();
-    v9 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v8, v7, @"encryptedOneTimeFullToken");
+    v9 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v8, v7, @"encryptedOneTimeFullToken");
     encryptedOneTimeFullToken = v5->_encryptedOneTimeFullToken;
     v5->_encryptedOneTimeFullToken = v9;
 
     v11 = objc_opt_class();
-    v13 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v12, v11, @"participantID");
+    v13 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v12, v11, @"participantID");
     participantID = v5->_participantID;
     v5->_participantID = v13;
 
     v15 = objc_opt_class();
-    v17 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v16, v15, @"sharingKeySeed");
+    v17 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v16, v15, @"sharingKeySeed");
     sharingKeySeed = v5->_sharingKeySeed;
     v5->_sharingKeySeed = v17;
 
     v19 = objc_opt_class();
-    v21 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v20, v19, @"sharingKeyBytes");
+    v21 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v20, v19, @"sharingKeyBytes");
     sharingKeyBytes = v5->_sharingKeyBytes;
     v5->_sharingKeyBytes = v21;
 
@@ -142,23 +142,23 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = objc_msgSend_allocWithZone_(CKOneTimeURLMetadata, a2, a3);
+  v5 = objc_msgSend_allocWithZone_(CKOneTimeURLMetadata, a2, zone);
   v8 = objc_msgSend_init(v5, v6, v7);
-  v10 = objc_msgSend_copyWithZone_(self->_encryptedOneTimeFullToken, v9, a3);
+  v10 = objc_msgSend_copyWithZone_(self->_encryptedOneTimeFullToken, v9, zone);
   v11 = v8[1];
   v8[1] = v10;
 
-  v13 = objc_msgSend_copyWithZone_(self->_participantID, v12, a3);
+  v13 = objc_msgSend_copyWithZone_(self->_participantID, v12, zone);
   v14 = v8[4];
   v8[4] = v13;
 
-  v16 = objc_msgSend_copyWithZone_(self->_sharingKeySeed, v15, a3);
+  v16 = objc_msgSend_copyWithZone_(self->_sharingKeySeed, v15, zone);
   v17 = v8[3];
   v8[3] = v16;
 
-  v19 = objc_msgSend_copyWithZone_(self->_sharingKeyBytes, v18, a3);
+  v19 = objc_msgSend_copyWithZone_(self->_sharingKeyBytes, v18, zone);
   v20 = v8[2];
   v8[2] = v19;
 
@@ -276,10 +276,10 @@ LABEL_8:
   return v6;
 }
 
-- (id)oneTimeShortTokenWithRoutingKey:(id)a3
+- (id)oneTimeShortTokenWithRoutingKey:(id)key
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  keyCopy = key;
   v9 = objc_msgSend_oneTimeShortSharingToken(self, v5, v6);
   if (!v9)
   {
@@ -301,9 +301,9 @@ LABEL_8:
     goto LABEL_16;
   }
 
-  if (objc_msgSend_length(v4, v7, v8) == 3)
+  if (objc_msgSend_length(keyCopy, v7, v8) == 3)
   {
-    v21[0] = v4;
+    v21[0] = keyCopy;
     v21[1] = v9;
     v11 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v10, v21, 2);
     v13 = objc_msgSend_componentsJoinedByString_(v11, v12, &stru_1EFA32970);
@@ -320,7 +320,7 @@ LABEL_8:
   if (os_log_type_enabled(ck_log_facility_ck, OS_LOG_TYPE_ERROR))
   {
     *buf = 138543362;
-    v23 = v4;
+    v23 = keyCopy;
     v15 = "Routing key is invalid: %{public}@";
     v16 = v18;
     v17 = 12;

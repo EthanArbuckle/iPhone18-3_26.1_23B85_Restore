@@ -2,8 +2,8 @@
 + (id)sharedInstance;
 - (BOOL)isMonitoring;
 - (BOOL)isNetworkUp;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)registerNetworkMonitorLaunchEvent:(BOOL)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)registerNetworkMonitorLaunchEvent:(BOOL)event;
 - (void)startMonitoring;
 - (void)stopMonitoring;
 @end
@@ -31,45 +31,45 @@ uint64_t __34__FMNetworkMonitor_sharedInstance__block_invoke()
 
 - (void)startMonitoring
 {
-  v3 = [MEMORY[0x277CD9200] sharedDefaultEvaluator];
-  [(FMNetworkMonitor *)self setEvaluator:v3];
+  mEMORY[0x277CD9200] = [MEMORY[0x277CD9200] sharedDefaultEvaluator];
+  [(FMNetworkMonitor *)self setEvaluator:mEMORY[0x277CD9200]];
 
-  v4 = [(FMNetworkMonitor *)self evaluator];
-  [v4 addObserver:self forKeyPath:@"path" options:5 context:0];
+  evaluator = [(FMNetworkMonitor *)self evaluator];
+  [evaluator addObserver:self forKeyPath:@"path" options:5 context:0];
 }
 
 - (void)stopMonitoring
 {
-  v3 = [(FMNetworkMonitor *)self evaluator];
-  [v3 removeObserver:self forKeyPath:@"path" context:0];
+  evaluator = [(FMNetworkMonitor *)self evaluator];
+  [evaluator removeObserver:self forKeyPath:@"path" context:0];
 
   [(FMNetworkMonitor *)self setEvaluator:0];
 }
 
 - (BOOL)isMonitoring
 {
-  v2 = [(FMNetworkMonitor *)self evaluator];
-  v3 = v2 != 0;
+  evaluator = [(FMNetworkMonitor *)self evaluator];
+  v3 = evaluator != 0;
 
   return v3;
 }
 
 - (BOOL)isNetworkUp
 {
-  v3 = [(FMNetworkMonitor *)self isMonitoring];
-  if (v3)
+  isMonitoring = [(FMNetworkMonitor *)self isMonitoring];
+  if (isMonitoring)
   {
-    v4 = [(FMNetworkMonitor *)self evaluator];
-    v5 = [v4 path];
-    v6 = [v5 status];
+    evaluator = [(FMNetworkMonitor *)self evaluator];
+    path = [evaluator path];
+    status = [path status];
 
-    LOBYTE(v3) = (v6 & 0xFFFFFFFFFFFFFFFDLL) == 1;
+    LOBYTE(isMonitoring) = (status & 0xFFFFFFFFFFFFFFFDLL) == 1;
   }
 
-  return v3;
+  return isMonitoring;
 }
 
-- (void)registerNetworkMonitorLaunchEvent:(BOOL)a3
+- (void)registerNetworkMonitorLaunchEvent:(BOOL)event
 {
   v3 = LogCategory_Unspecified();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -79,20 +79,20 @@ uint64_t __34__FMNetworkMonitor_sharedInstance__block_invoke()
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   v17 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  if ([a3 isEqualToString:@"path"])
+  objectCopy = object;
+  if ([path isEqualToString:@"path"])
   {
-    v8 = [v7 path];
-    v9 = [v8 status];
+    path = [objectCopy path];
+    status = [path status];
 
     v10 = LogCategory_Unspecified();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
       v11 = @"DOWN";
-      if (v9 == 1)
+      if (status == 1)
       {
         v11 = @"UP";
       }
@@ -106,7 +106,7 @@ uint64_t __34__FMNetworkMonitor_sharedInstance__block_invoke()
     activity_block[1] = 3221225472;
     activity_block[2] = __67__FMNetworkMonitor_observeValueForKeyPath_ofObject_change_context___block_invoke;
     activity_block[3] = &__block_descriptor_33_e5_v8__0l;
-    v14 = v9 == 1;
+    v14 = status == 1;
     _os_activity_initiate(&dword_24A2EE000, "Network state changed", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
   }
 

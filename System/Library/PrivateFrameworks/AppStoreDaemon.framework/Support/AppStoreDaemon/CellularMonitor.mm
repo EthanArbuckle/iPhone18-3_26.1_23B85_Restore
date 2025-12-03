@@ -2,8 +2,8 @@
 - (CellularMonitor)init;
 - (void)activeSubscriptionsDidChange;
 - (void)dealloc;
-- (void)internetDataStatus:(id)a3;
-- (void)servingNetworkChanged:(id)a3;
+- (void)internetDataStatus:(id)status;
+- (void)servingNetworkChanged:(id)changed;
 @end
 
 @implementation CellularMonitor
@@ -63,14 +63,14 @@
   [(CellularMonitor *)&v3 dealloc];
 }
 
-- (void)internetDataStatus:(id)a3
+- (void)internetDataStatus:(id)status
 {
-  v4 = -[ASDCellularIdentity copyWithRoaming:](self->_identity, "copyWithRoaming:", [a3 inHomeCountry] ^ 1);
+  v4 = -[ASDCellularIdentity copyWithRoaming:](self->_identity, "copyWithRoaming:", [status inHomeCountry] ^ 1);
   identity = self->_identity;
   self->_identity = v4;
 }
 
-- (void)servingNetworkChanged:(id)a3
+- (void)servingNetworkChanged:(id)changed
 {
   if (self)
   {
@@ -105,8 +105,8 @@
     identity = self->_identity;
     self->_identity = v9;
 
-    v12 = [(ASDCellularIdentity *)self->_identity simIdentity];
-    LOBYTE(v9) = [v12 isEqualToString:@"00000000000000000000"];
+    simIdentity = [(ASDCellularIdentity *)self->_identity simIdentity];
+    LOBYTE(v9) = [simIdentity isEqualToString:@"00000000000000000000"];
 
     if (v9)
     {
@@ -139,8 +139,8 @@
       v18 = ASDLogHandleForCategory();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
-        v19 = [(ASDCellularIdentity *)self->_identity simIdentity];
-        v20 = sub_1002C56F4(v19);
+        simIdentity2 = [(ASDCellularIdentity *)self->_identity simIdentity];
+        v20 = sub_1002C56F4(simIdentity2);
         *buf = 138543362;
         v27 = v20;
         _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "[Network] Cellular data subscription became: %{public}@", buf, 0xCu);
@@ -151,8 +151,8 @@
 
       if (v22 && (v22[18] & 1) != 0)
       {
-        v23 = [(ASDCellularIdentity *)self->_identity defaultsKey];
-        sub_1003D4024(AppDefaultsManager, v23, @"ActiveCompanionSim");
+        defaultsKey = [(ASDCellularIdentity *)self->_identity defaultsKey];
+        sub_1003D4024(AppDefaultsManager, defaultsKey, @"ActiveCompanionSim");
       }
     }
   }

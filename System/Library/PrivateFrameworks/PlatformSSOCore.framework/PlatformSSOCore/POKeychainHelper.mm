@@ -1,13 +1,13 @@
 @interface POKeychainHelper
-- (BOOL)_saveAttestationToKeychain:(id)a3 extensionIdentifier:(id)a4 keyHash:(id)a5 attestationDate:(id)a6 error:(id *)a7;
-- (BOOL)_saveAttestationToKeychain:(id)a3 extensionIdentifier:(id)a4 keyHash:(id)a5 error:(id *)a6;
-- (BOOL)retrieveIdentityForTokenId:(id)a3 context:(id)a4 forSigning:(BOOL)a5 hash:(id)a6 identity:(__SecIdentity *)a7;
-- (id)_checkForCachedAttestationForExtensionIdentifier:(id)a3 keyHash:(id)a4;
-- (int)removeTokensFromKeychainWithService:(id)a3 username:(id)a4 system:(BOOL)a5;
-- (int)retrieveTokensFromKeychainForService:(id)a3 username:(id)a4 system:(BOOL)a5 returningTokens:(id *)a6 metaData:(id *)a7;
+- (BOOL)_saveAttestationToKeychain:(id)keychain extensionIdentifier:(id)identifier keyHash:(id)hash attestationDate:(id)date error:(id *)error;
+- (BOOL)_saveAttestationToKeychain:(id)keychain extensionIdentifier:(id)identifier keyHash:(id)hash error:(id *)error;
+- (BOOL)retrieveIdentityForTokenId:(id)id context:(id)context forSigning:(BOOL)signing hash:(id)hash identity:(__SecIdentity *)identity;
+- (id)_checkForCachedAttestationForExtensionIdentifier:(id)identifier keyHash:(id)hash;
+- (int)removeTokensFromKeychainWithService:(id)service username:(id)username system:(BOOL)system;
+- (int)retrieveTokensFromKeychainForService:(id)service username:(id)username system:(BOOL)system returningTokens:(id *)tokens metaData:(id *)data;
 - (void)_deleteAllCachedAttestations;
-- (void)_deleteCachedAttestationForExtensionIdentifier:(id)a3 key:(__SecKey *)a4;
-- (void)_deleteCachedAttestationForExtensionIdentifier:(id)a3 keyHash:(id)a4;
+- (void)_deleteCachedAttestationForExtensionIdentifier:(id)identifier key:(__SecKey *)key;
+- (void)_deleteCachedAttestationForExtensionIdentifier:(id)identifier keyHash:(id)hash;
 @end
 
 @implementation POKeychainHelper
@@ -24,12 +24,12 @@ id __76__POKeychainHelper_addTokens_metaData_toKeychainForService_username_syste
   return v0;
 }
 
-- (int)retrieveTokensFromKeychainForService:(id)a3 username:(id)a4 system:(BOOL)a5 returningTokens:(id *)a6 metaData:(id *)a7
+- (int)retrieveTokensFromKeychainForService:(id)service username:(id)username system:(BOOL)system returningTokens:(id *)tokens metaData:(id *)data
 {
-  v9 = a5;
+  systemCopy = system;
   v62 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
+  serviceCopy = service;
+  usernameCopy = username;
   result = 0;
   v14 = PO_LOG_POKeychainHelper();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
@@ -37,16 +37,16 @@ id __76__POKeychainHelper_addTokens_metaData_toKeychainForService_username_syste
     [POKeychainHelper retrieveTokensFromKeychainForService:username:system:returningTokens:metaData:];
   }
 
-  if (v12 && v13)
+  if (serviceCopy && usernameCopy)
   {
-    if (a6)
+    if (tokens)
     {
-      *a6 = 0;
+      *tokens = 0;
     }
 
-    if (a7)
+    if (data)
     {
-      *a7 = 0;
+      *data = 0;
     }
 
     v15 = *MEMORY[0x277CBED28];
@@ -56,13 +56,13 @@ id __76__POKeychainHelper_addTokens_metaData_toKeychainForService_username_syste
     v57[0] = v15;
     v57[1] = v15;
     v17 = *MEMORY[0x277CDC120];
-    v57[2] = v12;
+    v57[2] = serviceCopy;
     v18 = *MEMORY[0x277CDBF20];
     v56[2] = v17;
     v56[3] = v18;
-    v19 = [v13 lowercaseString];
+    lowercaseString = [usernameCopy lowercaseString];
     v20 = *MEMORY[0x277CDBEC8];
-    v57[3] = v19;
+    v57[3] = lowercaseString;
     v57[4] = kPlatformSSOAccessGroup;
     v21 = *MEMORY[0x277CDC228];
     v56[4] = v20;
@@ -73,7 +73,7 @@ id __76__POKeychainHelper_addTokens_metaData_toKeychainForService_username_syste
     v22 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v57 forKeys:v56 count:7];
     v23 = [v22 mutableCopy];
 
-    if (v9)
+    if (systemCopy)
     {
       [v23 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277CDC5D8]];
     }
@@ -95,13 +95,13 @@ id __76__POKeychainHelper_addTokens_metaData_toKeychainForService_username_syste
       v27 = result;
       v28 = [v27 objectForKey:*MEMORY[0x277CDC5E8]];
       v29 = v28;
-      if (a6)
+      if (tokens)
       {
         v30 = v28;
-        *a6 = v29;
+        *tokens = v29;
       }
 
-      if (a7)
+      if (data)
       {
         v31 = [v27 objectForKey:*MEMORY[0x277CDBFB8]];
         if (v31)
@@ -127,7 +127,7 @@ id __76__POKeychainHelper_addTokens_metaData_toKeychainForService_username_syste
           v40 = [v38 unarchivedDictionaryWithKeysOfClasses:v34 objectsOfClasses:v37 fromData:v33 error:v51];
           v41 = v51[0];
           v42 = v40;
-          *a7 = v40;
+          *data = v40;
 
           if (v41)
           {
@@ -161,7 +161,7 @@ id __76__POKeychainHelper_addTokens_metaData_toKeychainForService_username_syste
       *buf = 136315394;
       v59 = "[POKeychainHelper retrieveTokensFromKeychainForService:username:system:returningTokens:metaData:]";
       v60 = 2112;
-      v61 = self;
+      selfCopy = self;
       _os_log_impl(&dword_25E8B1000, v23, OS_LOG_TYPE_DEFAULT, "%s Could not find credentials in keychain. Invalid parameters on %@", buf, 0x16u);
     }
   }
@@ -182,19 +182,19 @@ id __98__POKeychainHelper_retrieveTokensFromKeychainForService_username_system_r
   return v0;
 }
 
-- (int)removeTokensFromKeychainWithService:(id)a3 username:(id)a4 system:(BOOL)a5
+- (int)removeTokensFromKeychainWithService:(id)service username:(id)username system:(BOOL)system
 {
-  v5 = a5;
+  systemCopy = system;
   v26[7] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  serviceCopy = service;
+  usernameCopy = username;
   v9 = PO_LOG_POKeychainHelper();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
     [POKeychainHelper removeTokensFromKeychainWithService:username:system:];
   }
 
-  if (v7 && v8)
+  if (serviceCopy && usernameCopy)
   {
     v10 = *MEMORY[0x277CBED28];
     v11 = *MEMORY[0x277CDC558];
@@ -203,13 +203,13 @@ id __98__POKeychainHelper_retrieveTokensFromKeychainForService_username_system_r
     v26[0] = v10;
     v26[1] = v10;
     v12 = *MEMORY[0x277CDC120];
-    v26[2] = v7;
+    v26[2] = serviceCopy;
     v13 = *MEMORY[0x277CDBF20];
     v25[2] = v12;
     v25[3] = v13;
-    v14 = [v8 lowercaseString];
+    lowercaseString = [usernameCopy lowercaseString];
     v15 = *MEMORY[0x277CDBEC8];
-    v26[3] = v14;
+    v26[3] = lowercaseString;
     v26[4] = kPlatformSSOAccessGroup;
     v16 = *MEMORY[0x277CDC228];
     v25[4] = v15;
@@ -220,7 +220,7 @@ id __98__POKeychainHelper_retrieveTokensFromKeychainForService_username_system_r
     v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v26 forKeys:v25 count:7];
     v18 = [v17 mutableCopy];
 
-    if (v5)
+    if (systemCopy)
     {
       [v18 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277CDC5D8]];
     }
@@ -267,14 +267,14 @@ id __72__POKeychainHelper_removeTokensFromKeychainWithService_username_system___
   return v0;
 }
 
-- (BOOL)retrieveIdentityForTokenId:(id)a3 context:(id)a4 forSigning:(BOOL)a5 hash:(id)a6 identity:(__SecIdentity *)a7
+- (BOOL)retrieveIdentityForTokenId:(id)id context:(id)context forSigning:(BOOL)signing hash:(id)hash identity:(__SecIdentity *)identity
 {
-  v9 = a5;
+  signingCopy = signing;
   v39[6] = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  if (v11)
+  idCopy = id;
+  contextCopy = context;
+  hashCopy = hash;
+  if (idCopy)
   {
     result = 0;
     v14 = *MEMORY[0x277CDC228];
@@ -294,19 +294,19 @@ id __72__POKeychainHelper_removeTokensFromKeychainWithService_username_system___
     v20 = *MEMORY[0x277CDC158];
     v38[4] = *MEMORY[0x277CDC5A0];
     v38[5] = v20;
-    v39[4] = v12;
-    v39[5] = v11;
+    v39[4] = contextCopy;
+    v39[5] = idCopy;
     v21 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v39 forKeys:v38 count:6];
     v22 = [v21 mutableCopy];
 
-    if (v9)
+    if (signingCopy)
     {
       [v22 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277CDBF68]];
     }
 
-    if (v13)
+    if (hashCopy)
     {
-      [v22 setObject:v13 forKeyedSubscript:*MEMORY[0x277CDBF28]];
+      [v22 setObject:hashCopy forKeyedSubscript:*MEMORY[0x277CDBF28]];
     }
 
     if (SecItemCopyMatching(v22, &result))
@@ -323,7 +323,7 @@ id __72__POKeychainHelper_removeTokensFromKeychainWithService_username_system___
     else
     {
       v23 = result;
-      v26 = a7;
+      identityCopy = identity;
       v27 = *MEMORY[0x277CDC5F0];
       v28 = [result objectForKeyedSubscript:*MEMORY[0x277CDC5F0]];
       v36[0] = v14;
@@ -335,11 +335,11 @@ id __72__POKeychainHelper_removeTokensFromKeychainWithService_username_system___
       v36[2] = *MEMORY[0x277CDC428];
       v36[3] = v19;
       v37[2] = v30;
-      v37[3] = v12;
+      v37[3] = contextCopy;
       v36[4] = *MEMORY[0x277CDC568];
       v37[4] = *MEMORY[0x277CBED28];
       v31 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v37 forKeys:v36 count:5];
-      if (SecItemCopyMatching(v31, v26) || !*v26)
+      if (SecItemCopyMatching(v31, identityCopy) || !*identityCopy)
       {
         v32 = PO_LOG_POKeychainHelper();
         if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
@@ -372,25 +372,25 @@ id __72__POKeychainHelper_removeTokensFromKeychainWithService_username_system___
   return v24;
 }
 
-- (BOOL)_saveAttestationToKeychain:(id)a3 extensionIdentifier:(id)a4 keyHash:(id)a5 error:(id *)a6
+- (BOOL)_saveAttestationToKeychain:(id)keychain extensionIdentifier:(id)identifier keyHash:(id)hash error:(id *)error
 {
   v10 = MEMORY[0x277CBEAA8];
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [v10 date];
-  LOBYTE(a6) = [(POKeychainHelper *)self _saveAttestationToKeychain:v13 extensionIdentifier:v12 keyHash:v11 attestationDate:v14 error:a6];
+  hashCopy = hash;
+  identifierCopy = identifier;
+  keychainCopy = keychain;
+  date = [v10 date];
+  LOBYTE(error) = [(POKeychainHelper *)self _saveAttestationToKeychain:keychainCopy extensionIdentifier:identifierCopy keyHash:hashCopy attestationDate:date error:error];
 
-  return a6;
+  return error;
 }
 
-- (BOOL)_saveAttestationToKeychain:(id)a3 extensionIdentifier:(id)a4 keyHash:(id)a5 attestationDate:(id)a6 error:(id *)a7
+- (BOOL)_saveAttestationToKeychain:(id)keychain extensionIdentifier:(id)identifier keyHash:(id)hash attestationDate:(id)date error:(id *)error
 {
   v32[1] = *MEMORY[0x277D85DE8];
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a3;
+  identifierCopy = identifier;
+  hashCopy = hash;
+  dateCopy = date;
+  keychainCopy = keychain;
   v16 = PO_LOG_POKeychainHelper();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
   {
@@ -398,26 +398,26 @@ id __72__POKeychainHelper_removeTokensFromKeychainWithService_username_system___
   }
 
   v30 = 0;
-  v17 = [MEMORY[0x277CCAC58] dataWithPropertyList:v15 format:100 options:0 error:&v30];
+  v17 = [MEMORY[0x277CCAC58] dataWithPropertyList:keychainCopy format:100 options:0 error:&v30];
 
   v18 = v30;
   v19 = v18;
   if (v17)
   {
-    v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@:%@", v12, v13];
+    hashCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@:%@", identifierCopy, hashCopy];
     v31 = @"kAttestationDate";
-    v32[0] = v14;
+    v32[0] = dateCopy;
     v21 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v32 forKeys:&v31 count:1];
-    v22 = [(POKeychainHelper *)self addTokens:v17 metaData:v21 toKeychainForService:v20 username:@"com.apple.platformsso.attestation" system:1];
+    v22 = [(POKeychainHelper *)self addTokens:v17 metaData:v21 toKeychainForService:hashCopy username:@"com.apple.platformsso.attestation" system:1];
 
     v23 = v22 == 0;
     if (v22)
     {
       v24 = __97__POKeychainHelper__saveAttestationToKeychain_extensionIdentifier_keyHash_attestationDate_error___block_invoke_38();
-      if (a7)
+      if (error)
       {
         v24 = v24;
-        *a7 = v24;
+        *error = v24;
       }
 
       v23 = 0;
@@ -432,14 +432,14 @@ id __72__POKeychainHelper_removeTokensFromKeychainWithService_username_system___
     v28[3] = &unk_279A3DC48;
     v29 = v18;
     v25 = __97__POKeychainHelper__saveAttestationToKeychain_extensionIdentifier_keyHash_attestationDate_error___block_invoke(v28);
-    if (a7)
+    if (error)
     {
       v25 = v25;
-      *a7 = v25;
+      *error = v25;
     }
 
     v23 = 0;
-    v20 = v29;
+    hashCopy = v29;
   }
 
   v26 = *MEMORY[0x277D85DE8];
@@ -470,21 +470,21 @@ id __97__POKeychainHelper__saveAttestationToKeychain_extensionIdentifier_keyHash
   return v0;
 }
 
-- (id)_checkForCachedAttestationForExtensionIdentifier:(id)a3 keyHash:(id)a4
+- (id)_checkForCachedAttestationForExtensionIdentifier:(id)identifier keyHash:(id)hash
 {
-  v6 = a4;
-  v7 = a3;
+  hashCopy = hash;
+  identifierCopy = identifier;
   v8 = PO_LOG_POKeychainHelper();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     [POKeychainHelper _checkForCachedAttestationForExtensionIdentifier:keyHash:];
   }
 
-  v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@:%@", v7, v6];
+  hashCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@:%@", identifierCopy, hashCopy];
 
   v31 = 0;
   v32 = 0;
-  v10 = [(POKeychainHelper *)self retrieveTokensFromKeychainForService:v9 username:@"com.apple.platformsso.attestation" system:1 returningTokens:&v32 metaData:&v31];
+  v10 = [(POKeychainHelper *)self retrieveTokensFromKeychainForService:hashCopy username:@"com.apple.platformsso.attestation" system:1 returningTokens:&v32 metaData:&v31];
   v11 = v32;
   v12 = v31;
   v13 = v12;
@@ -567,13 +567,13 @@ id __77__POKeychainHelper__checkForCachedAttestationForExtensionIdentifier_keyHa
   return v1;
 }
 
-- (void)_deleteCachedAttestationForExtensionIdentifier:(id)a3 key:(__SecKey *)a4
+- (void)_deleteCachedAttestationForExtensionIdentifier:(id)identifier key:(__SecKey *)key
 {
-  v6 = a3;
-  if (a4)
+  identifierCopy = identifier;
+  if (key)
   {
-    v9 = v6;
-    v7 = [POSecKeyHelper publicKeyHashForKey:a4];
+    v9 = identifierCopy;
+    v7 = [POSecKeyHelper publicKeyHashForKey:key];
     if (v7)
     {
       [(POKeychainHelper *)self _deleteCachedAttestationForExtensionIdentifier:v9 keyHash:v7];
@@ -584,7 +584,7 @@ id __77__POKeychainHelper__checkForCachedAttestationForExtensionIdentifier_keyHa
       v8 = __71__POKeychainHelper__deleteCachedAttestationForExtensionIdentifier_key___block_invoke();
     }
 
-    v6 = v9;
+    identifierCopy = v9;
   }
 }
 
@@ -600,9 +600,9 @@ id __71__POKeychainHelper__deleteCachedAttestationForExtensionIdentifier_key___b
   return v0;
 }
 
-- (void)_deleteCachedAttestationForExtensionIdentifier:(id)a3 keyHash:(id)a4
+- (void)_deleteCachedAttestationForExtensionIdentifier:(id)identifier keyHash:(id)hash
 {
-  v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@:%@", a3, a4];
+  v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@:%@", identifier, hash];
   v6 = [(POKeychainHelper *)self removeTokensFromKeychainWithService:v5 username:@"com.apple.platformsso.attestation" system:1];
   if (v6 != -25300 && v6 != 0)
   {

@@ -1,8 +1,8 @@
 @interface AVHUDStringGenerator
-+ (id)descriptionStringForBitRate:(double)a3;
-+ (id)descriptionStringForFormatOfTrack:(id)a3;
-+ (id)descriptionStringForTracksOfPlayerItem:(id)a3;
-+ (id)descriptionStringForVideoRangeOfFormatDescription:(opaqueCMFormatDescription *)a3;
++ (id)descriptionStringForBitRate:(double)rate;
++ (id)descriptionStringForFormatOfTrack:(id)track;
++ (id)descriptionStringForTracksOfPlayerItem:(id)item;
++ (id)descriptionStringForVideoRangeOfFormatDescription:(opaqueCMFormatDescription *)description;
 - (NSString)formattedDisplayString;
 - (void)dealloc;
 - (void)update;
@@ -19,15 +19,15 @@
   [(AVHUDStringGenerator *)&v3 dealloc];
 }
 
-+ (id)descriptionStringForFormatOfTrack:(id)a3
++ (id)descriptionStringForFormatOfTrack:(id)track
 {
-  if ([a3 statusOfValueForKey:@"formatDescriptions" error:0] == 2)
+  if ([track statusOfValueForKey:@"formatDescriptions" error:0] == 2)
   {
-    v4 = [a3 formatDescriptions];
-    if (v4)
+    formatDescriptions = [track formatDescriptions];
+    if (formatDescriptions)
     {
-      v5 = v4;
-      v6 = [v4 count];
+      v5 = formatDescriptions;
+      v6 = [formatDescriptions count];
       if (v6)
       {
         v7 = v6;
@@ -38,10 +38,10 @@
           v9 = [v5 objectAtIndex:v8];
           MediaType = CMFormatDescriptionGetMediaType(v9);
           v22 = bswap32(CMFormatDescriptionGetMediaSubType(v9));
-          v11 = 0;
-          if ([a3 statusOfValueForKey:@"languageCode" error:0] == 2)
+          languageCode = 0;
+          if ([track statusOfValueForKey:@"languageCode" error:0] == 2)
           {
-            v11 = [a3 languageCode];
+            languageCode = [track languageCode];
           }
 
           v12 = @"video format desc ";
@@ -56,9 +56,9 @@
 
           v13 = [MEMORY[0x1E696AD60] stringWithString:v12];
           v14 = v13;
-          if (v11)
+          if (languageCode)
           {
-            [v13 appendFormat:@"(%@) ", v11];
+            [v13 appendFormat:@"(%@) ", languageCode];
           }
 
           if (v7 != 1)
@@ -114,21 +114,21 @@
   return 0;
 }
 
-+ (id)descriptionStringForBitRate:(double)a3
++ (id)descriptionStringForBitRate:(double)rate
 {
-  v5 = a3 / 1000.0;
-  if (a3 / 1000.0 <= 1.0)
+  v5 = rate / 1000.0;
+  if (rate / 1000.0 <= 1.0)
   {
     v6 = @"bps";
   }
 
   else
   {
-    a3 = v5 / 1000.0;
+    rate = v5 / 1000.0;
     if (v5 / 1000.0 <= 1.0)
     {
       v6 = @"kbps";
-      a3 = v5;
+      rate = v5;
     }
 
     else
@@ -137,10 +137,10 @@
     }
   }
 
-  return [MEMORY[0x1E696AEC0] stringWithFormat:@"%0.2f%@", *&a3, v6, v3, v4];
+  return [MEMORY[0x1E696AEC0] stringWithFormat:@"%0.2f%@", *&rate, v6, v3, v4];
 }
 
-+ (id)descriptionStringForVideoRangeOfFormatDescription:(opaqueCMFormatDescription *)a3
++ (id)descriptionStringForVideoRangeOfFormatDescription:(opaqueCMFormatDescription *)description
 {
   v3 = CMVideoFormatDescriptionGetVideoDynamicRange() - 1;
   if (v3 > 8)
@@ -154,17 +154,17 @@
   }
 }
 
-+ (id)descriptionStringForTracksOfPlayerItem:(id)a3
++ (id)descriptionStringForTracksOfPlayerItem:(id)item
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = [MEMORY[0x1E696AD60] string];
-  [v4 setString:@"average bitrate "];
+  string = [MEMORY[0x1E696AD60] string];
+  [string setString:@"average bitrate "];
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = [a3 tracks];
-  v6 = [v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  tracks = [item tracks];
+  v6 = [tracks countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v6)
   {
     v7 = v6;
@@ -175,47 +175,47 @@
       {
         if (*v20 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(tracks);
         }
 
         v10 = *(*(&v19 + 1) + 8 * i);
-        v11 = [v10 assetTrack];
+        assetTrack = [v10 assetTrack];
         if ([v10 isEnabled])
         {
-          if ([v11 statusOfValueForKey:@"mediaType" error:0] == 2 && objc_msgSend(v11, "statusOfValueForKey:error:", @"estimatedDataRate", 0) == 2)
+          if ([assetTrack statusOfValueForKey:@"mediaType" error:0] == 2 && objc_msgSend(assetTrack, "statusOfValueForKey:error:", @"estimatedDataRate", 0) == 2)
           {
-            v12 = [v11 mediaType];
-            v13 = [v12 isEqualToString:@"vide"];
+            mediaType = [assetTrack mediaType];
+            v13 = [mediaType isEqualToString:@"vide"];
             v14 = @"video:";
-            if ((v13 & 1) != 0 || (v15 = [v12 isEqualToString:@"soun"], v14 = @"audio:", v15))
+            if ((v13 & 1) != 0 || (v15 = [mediaType isEqualToString:@"soun"], v14 = @"audio:", v15))
             {
-              [v4 appendFormat:v14];
-              [v11 estimatedDataRate];
+              [string appendFormat:v14];
+              [assetTrack estimatedDataRate];
               v17 = @" -";
               if (v16 > 0.0)
               {
                 v17 = [AVHUDStringGenerator descriptionStringForBitRate:v16];
               }
 
-              [v4 appendFormat:@"%@  ", v17];
+              [string appendFormat:@"%@  ", v17];
             }
           }
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v7 = [tracks countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v7);
   }
 
-  return v4;
+  return string;
 }
 
 - (void)updateFromPlayer
 {
   v33 = *MEMORY[0x1E69E9840];
-  v3 = [objc_loadWeak(&self->_player) _copyPerformanceDataForCurrentItem];
+  _copyPerformanceDataForCurrentItem = [objc_loadWeak(&self->_player) _copyPerformanceDataForCurrentItem];
   if (!self->_spatialDiagnostics)
   {
     goto LABEL_8;
@@ -228,9 +228,9 @@
 
   if (runningAnInternalBuild_internalBuild == 1)
   {
-    if (v3)
+    if (_copyPerformanceDataForCurrentItem)
     {
-      v4 = [v3 objectForKey:*MEMORY[0x1E6972DE8]];
+      v4 = [_copyPerformanceDataForCurrentItem objectForKey:*MEMORY[0x1E6972DE8]];
       if (v4)
       {
         v5 = 16;
@@ -259,9 +259,9 @@ LABEL_8:
       self->_videoRange = [v31 copy];
     }
 
-    if (v3)
+    if (_copyPerformanceDataForCurrentItem)
     {
-      v8 = [v3 objectForKey:*MEMORY[0x1E6972DF0]];
+      v8 = [_copyPerformanceDataForCurrentItem objectForKey:*MEMORY[0x1E6972DF0]];
       if (v8)
       {
         size = v23;
@@ -281,7 +281,7 @@ LABEL_8:
 
       if (runningAnInternalBuild_internalBuild == 1)
       {
-        v11 = [objc_msgSend(v3 objectForKey:{*MEMORY[0x1E6972DF8]), "firstObject"}];
+        v11 = [objc_msgSend(_copyPerformanceDataForCurrentItem objectForKey:{*MEMORY[0x1E6972DF8]), "firstObject"}];
         if (v11)
         {
           v12 = v11;
@@ -357,16 +357,16 @@ LABEL_29:
 
 - (void)updateFromPlayerItem
 {
-  v2 = self;
+  selfCopy = self;
   v75 = *MEMORY[0x1E69E9840];
-  v3 = [objc_loadWeak(&self->_player) currentItem];
-  if (!v3)
+  currentItem = [objc_loadWeak(&self->_player) currentItem];
+  if (!currentItem)
   {
     return;
   }
 
-  v4 = v3;
-  v5 = [objc_msgSend(objc_msgSend(v3 "accessLog")];
+  v4 = currentItem;
+  v5 = [objc_msgSend(objc_msgSend(currentItem "accessLog")];
   if (runningAnInternalBuild_onceToken != -1)
   {
     [AVHUDStringGenerator updateFromPlayer];
@@ -376,7 +376,7 @@ LABEL_29:
   {
     if ([v5 URI])
     {
-      captureCompleteURI = v2->_captureCompleteURI;
+      captureCompleteURI = selfCopy->_captureCompleteURI;
       v7 = [v5 URI];
       if (!captureCompleteURI)
       {
@@ -389,7 +389,7 @@ LABEL_29:
       v7 = [objc_msgSend(objc_msgSend(v4 "asset")];
     }
 
-    v2->_playerItemURL = [v7 copy];
+    selfCopy->_playerItemURL = [v7 copy];
     if ([objc_msgSend(v4 "asset")] == 2)
     {
       if ([objc_msgSend(v4 "asset")])
@@ -400,10 +400,10 @@ LABEL_29:
       else
       {
         v9 = [objc_msgSend(v4 "asset")];
-        v10 = [v9 scheme];
+        scheme = [v9 scheme];
         if (v9)
         {
-          v11 = v10;
+          v11 = scheme;
           if ([v9 isFileURL])
           {
             v8 = @"local file";
@@ -425,18 +425,18 @@ LABEL_29:
         }
       }
 
-      v2->_assetType = &v8->isa;
+      selfCopy->_assetType = &v8->isa;
     }
 
     if ([v5 playbackSessionID])
     {
-      v2->_sessionID = [objc_msgSend(v5 "playbackSessionID")];
+      selfCopy->_sessionID = [objc_msgSend(v5 "playbackSessionID")];
     }
 
-    v2->_configurationGroup = [objc_msgSend(v4 "configurationGroup")];
+    selfCopy->_configurationGroup = [objc_msgSend(v4 "configurationGroup")];
     if (v5)
     {
-      v2->_totalFrameDrops = [objc_msgSend(MEMORY[0x1E696AD98] numberWithLong:{objc_msgSend(v5, "numberOfDroppedVideoFrames")), "copy"}];
+      selfCopy->_totalFrameDrops = [objc_msgSend(MEMORY[0x1E696AD98] numberWithLong:{objc_msgSend(v5, "numberOfDroppedVideoFrames")), "copy"}];
     }
 
     v12 = [objc_msgSend(v4 "loadedTimeRanges")];
@@ -450,8 +450,8 @@ LABEL_29:
       v14 = CMTimeGetSeconds(&time);
       time = v73[1];
       v15 = CMTimeGetSeconds(&time);
-      v2->_bufferedVideoPlayed = [objc_msgSend(MEMORY[0x1E696AD98] numberWithDouble:{Seconds - v14), "copy"}];
-      v2->_bufferedVideoRemaining = [objc_msgSend(MEMORY[0x1E696AD98] numberWithDouble:{v14 + v15 - Seconds), "copy"}];
+      selfCopy->_bufferedVideoPlayed = [objc_msgSend(MEMORY[0x1E696AD98] numberWithDouble:{Seconds - v14), "copy"}];
+      selfCopy->_bufferedVideoRemaining = [objc_msgSend(MEMORY[0x1E696AD98] numberWithDouble:{v14 + v15 - Seconds), "copy"}];
     }
   }
 
@@ -465,15 +465,15 @@ LABEL_29:
   if (v18 == 2)
   {
     v65 = v5;
-    v67 = v2;
-    v24 = [MEMORY[0x1E696AD60] string];
+    v67 = selfCopy;
+    string = [MEMORY[0x1E696AD60] string];
     v68 = 0u;
     v69 = 0u;
     v70 = 0u;
     v71 = 0u;
     v66 = v4;
-    v25 = [v4 tracks];
-    v26 = [v25 countByEnumeratingWithState:&v68 objects:v74 count:16];
+    tracks = [v4 tracks];
+    v26 = [tracks countByEnumeratingWithState:&v68 objects:v74 count:16];
     if (v26)
     {
       v27 = v26;
@@ -486,7 +486,7 @@ LABEL_29:
         {
           if (*v69 != v28)
           {
-            objc_enumerationMutation(v25);
+            objc_enumerationMutation(tracks);
           }
 
           v30 = *(*(&v68 + 1) + 8 * i);
@@ -495,24 +495,24 @@ LABEL_29:
             v31 = +[AVHUDStringGenerator descriptionStringForFormatOfTrack:](AVHUDStringGenerator, "descriptionStringForFormatOfTrack:", [v30 assetTrack]);
             if (v31)
             {
-              [v24 appendString:v31];
+              [string appendString:v31];
             }
 
-            v32 = [v30 assetTrack];
-            if ([v32 statusOfValueForKey:@"mediaType" error:0] == 2 && objc_msgSend(v32, "statusOfValueForKey:error:", @"nominalFrameRate", 0) == 2 && objc_msgSend(v32, "statusOfValueForKey:error:", @"naturalSize", 0) == 2 && objc_msgSend(objc_msgSend(v32, "mediaType"), "isEqualToString:", @"vide"))
+            assetTrack = [v30 assetTrack];
+            if ([assetTrack statusOfValueForKey:@"mediaType" error:0] == 2 && objc_msgSend(assetTrack, "statusOfValueForKey:error:", @"nominalFrameRate", 0) == 2 && objc_msgSend(assetTrack, "statusOfValueForKey:error:", @"naturalSize", 0) == 2 && objc_msgSend(objc_msgSend(assetTrack, "mediaType"), "isEqualToString:", @"vide"))
             {
               [v30 currentVideoFrameRate];
               v23 = v33;
-              [v32 nominalFrameRate];
+              [assetTrack nominalFrameRate];
               v20 = v34;
-              [v32 naturalSize];
+              [assetTrack naturalSize];
               v22 = v35;
               v21 = v36;
             }
           }
         }
 
-        v27 = [v25 countByEnumeratingWithState:&v68 objects:v74 count:16];
+        v27 = [tracks countByEnumeratingWithState:&v68 objects:v74 count:16];
       }
 
       while (v27);
@@ -525,10 +525,10 @@ LABEL_29:
     }
 
     v18 = 2;
-    v2 = v67;
-    if ([v24 length])
+    selfCopy = v67;
+    if ([string length])
     {
-      v67->_trackFormatDescriptions = [v24 copy];
+      v67->_trackFormatDescriptions = [string copy];
     }
 
     v5 = v65;
@@ -543,26 +543,26 @@ LABEL_29:
   }
 
   *&v19 = v21;
-  v2->_presentationSizeHeight = [objc_msgSend(MEMORY[0x1E696AD98] numberWithFloat:{v19), "copy"}];
+  selfCopy->_presentationSizeHeight = [objc_msgSend(MEMORY[0x1E696AD98] numberWithFloat:{v19), "copy"}];
   *&v38 = v22;
-  v2->_presentationSizeWidth = [objc_msgSend(MEMORY[0x1E696AD98] numberWithFloat:{v38), "copy"}];
+  selfCopy->_presentationSizeWidth = [objc_msgSend(MEMORY[0x1E696AD98] numberWithFloat:{v38), "copy"}];
   if (v23 >= 0.5)
   {
     *&v39 = v23;
-    v2->_currentFrameRate = [objc_msgSend(MEMORY[0x1E696AD98] numberWithFloat:{v39), "copy"}];
+    selfCopy->_currentFrameRate = [objc_msgSend(MEMORY[0x1E696AD98] numberWithFloat:{v39), "copy"}];
   }
 
   if (v20 >= 0.5)
   {
     *&v39 = v20;
-    v2->_nominalFrameRate = [objc_msgSend(MEMORY[0x1E696AD98] numberWithFloat:{v39), "copy"}];
+    selfCopy->_nominalFrameRate = [objc_msgSend(MEMORY[0x1E696AD98] numberWithFloat:{v39), "copy"}];
   }
 
   if (v5)
   {
     v40 = MEMORY[0x1E696AD98];
     [v5 observedBitrate];
-    v2->_networkBandiwdth = [objc_msgSend(v40 "numberWithDouble:"copy"")];
+    selfCopy->_networkBandiwdth = [objc_msgSend(v40 "numberWithDouble:"copy"")];
     [v5 averageVideoBitrate];
     if (v41 <= 0.0 || ([v5 averageAudioBitrate], v42 <= 0.0))
     {
@@ -579,14 +579,14 @@ LABEL_29:
     {
       v43 = MEMORY[0x1E696AD98];
       [v5 averageVideoBitrate];
-      v2->_averageVideoBitrate = [objc_msgSend(v43 "numberWithDouble:"copy"")];
+      selfCopy->_averageVideoBitrate = [objc_msgSend(v43 "numberWithDouble:"copy"")];
       v44 = MEMORY[0x1E696AD98];
       [v5 averageAudioBitrate];
       v45 = [v44 numberWithDouble:?];
       v46 = 160;
     }
 
-    *(&v2->super.isa + v46) = [v45 copy];
+    *(&selfCopy->super.isa + v46) = [v45 copy];
 LABEL_61:
     [v5 indicatedBitrate];
     if (v47 > 0.0 || ([v5 indicatedAverageBitrate], v48 > 0.0))
@@ -597,7 +597,7 @@ LABEL_61:
         v50 = MEMORY[0x1E696AD98];
         [v5 indicatedBitrate];
         *&v51 = v51;
-        v2->_peakIndicatedBitrate = [objc_msgSend(v50 numberWithFloat:{v51), "copy"}];
+        selfCopy->_peakIndicatedBitrate = [objc_msgSend(v50 numberWithFloat:{v51), "copy"}];
       }
 
       [v5 indicatedAverageBitrate];
@@ -606,33 +606,33 @@ LABEL_61:
         v53 = MEMORY[0x1E696AD98];
         [v5 indicatedAverageBitrate];
         *&v54 = v54;
-        v2->_averageIndicatedBitrate = [objc_msgSend(v53 numberWithFloat:{v54), "copy"}];
+        selfCopy->_averageIndicatedBitrate = [objc_msgSend(v53 numberWithFloat:{v54), "copy"}];
       }
     }
 
-    v55 = [v4 variantIndex];
-    v56 = v55;
-    if (v2->_prevVariantIdx != v55)
+    variantIndex = [v4 variantIndex];
+    v56 = variantIndex;
+    if (selfCopy->_prevVariantIdx != variantIndex)
     {
-      v2->_prevVariantIdx = v55;
-      v2->_prevStallCount = 0;
+      selfCopy->_prevVariantIdx = variantIndex;
+      selfCopy->_prevStallCount = 0;
     }
 
-    v2->_totalStallCount += [v5 numberOfStalls] - v2->_prevStallCount;
-    v2->_prevStallCount = [v5 numberOfStalls];
-    v2->_totalStalls = [objc_msgSend(MEMORY[0x1E696AD98] numberWithLong:{v2->_totalStallCount), "copy"}];
-    v2->_variantIndex = [objc_msgSend(MEMORY[0x1E696AD98] numberWithLong:{v56), "copy"}];
-    if (v2->_startupTime == 0.0)
+    selfCopy->_totalStallCount += [v5 numberOfStalls] - selfCopy->_prevStallCount;
+    selfCopy->_prevStallCount = [v5 numberOfStalls];
+    selfCopy->_totalStalls = [objc_msgSend(MEMORY[0x1E696AD98] numberWithLong:{selfCopy->_totalStallCount), "copy"}];
+    selfCopy->_variantIndex = [objc_msgSend(MEMORY[0x1E696AD98] numberWithLong:{v56), "copy"}];
+    if (selfCopy->_startupTime == 0.0)
     {
       [v5 startupTime];
-      v2->_startupTime = v57;
+      selfCopy->_startupTime = v57;
     }
   }
 
-  v58 = [objc_loadWeak(&v2->_player) _ancillaryPerformanceInformationForDisplay];
-  if (v58)
+  _ancillaryPerformanceInformationForDisplay = [objc_loadWeak(&selfCopy->_player) _ancillaryPerformanceInformationForDisplay];
+  if (_ancillaryPerformanceInformationForDisplay)
   {
-    v2->_customPerfInfo = [v58 copy];
+    selfCopy->_customPerfInfo = [_ancillaryPerformanceInformationForDisplay copy];
   }
 
   if ([objc_msgSend(v4 "asset")] == 2)
@@ -640,14 +640,14 @@ LABEL_61:
     v59 = [objc_msgSend(v4 "asset")];
     if (v59)
     {
-      v60 = [v59 dateValue];
-      if (v60)
+      dateValue = [v59 dateValue];
+      if (dateValue)
       {
-        v61 = v60;
-        v62 = [objc_loadWeak(&v2->_player) currentItem];
-        if (v62)
+        v61 = dateValue;
+        currentItem2 = [objc_loadWeak(&selfCopy->_player) currentItem];
+        if (currentItem2)
         {
-          [v62 currentTime];
+          [currentItem2 currentTime];
         }
 
         else
@@ -658,7 +658,7 @@ LABEL_61:
         v63 = [v61 dateByAddingTimeInterval:CMTimeGetSeconds(v73)];
         v64 = objc_alloc_init(MEMORY[0x1E696AB78]);
         [v64 setDateFormat:@"HH:mm:ss"];
-        v2->_playbackCreationOffset = [objc_msgSend(v64 stringFromDate:{v63), "copy"}];
+        selfCopy->_playbackCreationOffset = [objc_msgSend(v64 stringFromDate:{v63), "copy"}];
       }
     }
   }
@@ -673,7 +673,7 @@ LABEL_61:
 
 - (NSString)formattedDisplayString
 {
-  v3 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   if (self->_spatialDiagnostics)
   {
     if (runningAnInternalBuild_onceToken != -1)
@@ -686,28 +686,28 @@ LABEL_61:
       audioSpatializationMode = self->_audioSpatializationMode;
       if (audioSpatializationMode)
       {
-        v5 = [(NSNumber *)audioSpatializationMode integerValue];
-        if (v5 > 1)
+        integerValue = [(NSNumber *)audioSpatializationMode integerValue];
+        if (integerValue > 1)
         {
-          if (v5 == 2)
+          if (integerValue == 2)
           {
             v6 = @"[ 2-Ch ]";
             goto LABEL_73;
           }
 
-          if (v5 == 3)
+          if (integerValue == 3)
           {
             v6 = @"[ S-Ch ]";
             goto LABEL_73;
           }
         }
 
-        else if (v5 <= 1)
+        else if (integerValue <= 1)
         {
           v6 = @"[ M-Ch ]";
 LABEL_73:
-          [v3 appendString:v6];
-          return v3;
+          [string appendString:v6];
+          return string;
         }
       }
 
@@ -718,27 +718,27 @@ LABEL_73:
 
   if (self->_playerItemURL)
   {
-    [v3 appendFormat:@"%@\n", self->_playerItemURL];
+    [string appendFormat:@"%@\n", self->_playerItemURL];
   }
 
   if (self->_assetType)
   {
-    [v3 appendFormat:@"asset type:%@\n", self->_assetType];
+    [string appendFormat:@"asset type:%@\n", self->_assetType];
   }
 
   if (self->_sessionID)
   {
-    [v3 appendFormat:@"session-id:%@\n", self->_sessionID];
+    [string appendFormat:@"session-id:%@\n", self->_sessionID];
   }
 
   if (self->_configurationGroup)
   {
-    [v3 appendFormat:@"configurationGroup: %@\n", self->_configurationGroup];
+    [string appendFormat:@"configurationGroup: %@\n", self->_configurationGroup];
   }
 
   if (self->_trackFormatDescriptions)
   {
-    [v3 appendFormat:@"%@", self->_trackFormatDescriptions];
+    [string appendFormat:@"%@", self->_trackFormatDescriptions];
   }
 
   displayResolutionWidth = self->_displayResolutionWidth;
@@ -748,19 +748,19 @@ LABEL_73:
     [(NSNumber *)displayResolutionWidth floatValue];
     v10 = v9;
     [(NSNumber *)self->_displayResolutionHeight floatValue];
-    [v3 appendString:{objc_msgSend(v8, "stringWithFormat:", @"display resolution:%0.0f x %0.0f", *&v10, v11)}];
+    [string appendString:{objc_msgSend(v8, "stringWithFormat:", @"display resolution:%0.0f x %0.0f", *&v10, v11)}];
   }
 
   refreshRate = self->_refreshRate;
   if (refreshRate)
   {
     [(NSNumber *)refreshRate doubleValue];
-    [v3 appendFormat:@", refresh-rate:%0.2fHz", v13];
+    [string appendFormat:@", refresh-rate:%0.2fHz", v13];
   }
 
   if (self->_videoRange)
   {
-    [v3 appendFormat:@", video-range:%@\n", self->_videoRange];
+    [string appendFormat:@", video-range:%@\n", self->_videoRange];
   }
 
   videoApproximateDisplaySizeWidth = self->_videoApproximateDisplaySizeWidth;
@@ -769,12 +769,12 @@ LABEL_73:
     [(NSNumber *)videoApproximateDisplaySizeWidth floatValue];
     v16 = v15;
     [(NSNumber *)self->_videoApproximateDisplaySizeHeight floatValue];
-    [v3 appendFormat:@"video approximate-display-size:%0.0f x %0.0f  ", *&v16, v17];
+    [string appendFormat:@"video approximate-display-size:%0.0f x %0.0f  ", *&v16, v17];
   }
 
   else
   {
-    [v3 appendFormat:@"video approximate-display-size:-  ", v42, v43];
+    [string appendFormat:@"video approximate-display-size:-  ", v42, v43];
   }
 
   presentationSizeWidth = self->_presentationSizeWidth;
@@ -784,63 +784,63 @@ LABEL_73:
     [(NSNumber *)presentationSizeWidth floatValue];
     v21 = v20;
     [(NSNumber *)self->_presentationSizeHeight floatValue];
-    [v3 appendString:{objc_msgSend(v19, "stringWithFormat:", @"natural-size:%0.0f x %0.0f\n", *&v21, v22)}];
+    [string appendString:{objc_msgSend(v19, "stringWithFormat:", @"natural-size:%0.0f x %0.0f\n", *&v21, v22)}];
   }
 
   currentFrameRate = self->_currentFrameRate;
   if (currentFrameRate)
   {
     [(NSNumber *)currentFrameRate floatValue];
-    [v3 appendFormat:@"current frame rate:%0.2f\n", v24];
+    [string appendFormat:@"current frame rate:%0.2f\n", v24];
   }
 
   nominalFrameRate = self->_nominalFrameRate;
   if (nominalFrameRate)
   {
     [(NSNumber *)nominalFrameRate floatValue];
-    [v3 appendFormat:@"nominal frame rate:%0.2f\n", v26];
+    [string appendFormat:@"nominal frame rate:%0.2f\n", v26];
   }
 
   networkBandiwdth = self->_networkBandiwdth;
   if (networkBandiwdth)
   {
     [(NSNumber *)networkBandiwdth floatValue];
-    [v3 appendFormat:@"network bandwidth:%@\n", +[AVHUDStringGenerator descriptionStringForBitRate:](AVHUDStringGenerator, "descriptionStringForBitRate:", v28)];
+    [string appendFormat:@"network bandwidth:%@\n", +[AVHUDStringGenerator descriptionStringForBitRate:](AVHUDStringGenerator, "descriptionStringForBitRate:", v28)];
   }
 
   if (self->_averageAudioBitrate && self->_averageVideoBitrate)
   {
-    [v3 appendString:@"average bitrate "];
+    [string appendString:@"average bitrate "];
     [(NSNumber *)self->_averageVideoBitrate floatValue];
-    [v3 appendFormat:@"video:%@  ", +[AVHUDStringGenerator descriptionStringForBitRate:](AVHUDStringGenerator, "descriptionStringForBitRate:", v29)];
+    [string appendFormat:@"video:%@  ", +[AVHUDStringGenerator descriptionStringForBitRate:](AVHUDStringGenerator, "descriptionStringForBitRate:", v29)];
     [(NSNumber *)self->_averageAudioBitrate floatValue];
-    [v3 appendFormat:@"audio:%@\n", +[AVHUDStringGenerator descriptionStringForBitRate:](AVHUDStringGenerator, "descriptionStringForBitRate:", v30)];
+    [string appendFormat:@"audio:%@\n", +[AVHUDStringGenerator descriptionStringForBitRate:](AVHUDStringGenerator, "descriptionStringForBitRate:", v30)];
   }
 
   else if (self->_assetTrackInfo)
   {
-    [v3 appendString:?];
-    [v3 appendString:@"\n"];
+    [string appendString:?];
+    [string appendString:@"\n"];
   }
 
   if (self->_peakIndicatedBitrate || self->_averageIndicatedBitrate)
   {
-    [v3 appendString:@"indicated bitrate "];
+    [string appendString:@"indicated bitrate "];
     peakIndicatedBitrate = self->_peakIndicatedBitrate;
     if (peakIndicatedBitrate)
     {
       [(NSNumber *)peakIndicatedBitrate floatValue];
-      [v3 appendFormat:@"peak:%@  ", +[AVHUDStringGenerator descriptionStringForBitRate:](AVHUDStringGenerator, "descriptionStringForBitRate:", v32)];
+      [string appendFormat:@"peak:%@  ", +[AVHUDStringGenerator descriptionStringForBitRate:](AVHUDStringGenerator, "descriptionStringForBitRate:", v32)];
     }
 
     averageIndicatedBitrate = self->_averageIndicatedBitrate;
     if (averageIndicatedBitrate)
     {
       [(NSNumber *)averageIndicatedBitrate floatValue];
-      [v3 appendFormat:@"average:%@  ", +[AVHUDStringGenerator descriptionStringForBitRate:](AVHUDStringGenerator, "descriptionStringForBitRate:", v34)];
+      [string appendFormat:@"average:%@  ", +[AVHUDStringGenerator descriptionStringForBitRate:](AVHUDStringGenerator, "descriptionStringForBitRate:", v34)];
     }
 
-    [v3 appendString:@"\n"];
+    [string appendString:@"\n"];
   }
 
   if (self->_variantIndex)
@@ -848,54 +848,54 @@ LABEL_73:
     totalStalls = self->_totalStalls;
     if (totalStalls)
     {
-      [v3 appendFormat:@"stalls total:%ld  current-variant:%ld\n", -[NSNumber longValue](totalStalls, "longValue"), -[NSNumber longValue](self->_variantIndex, "longValue")];
+      [string appendFormat:@"stalls total:%ld  current-variant:%ld\n", -[NSNumber longValue](totalStalls, "longValue"), -[NSNumber longValue](self->_variantIndex, "longValue")];
     }
   }
 
   if (self->_totalFrameDrops)
   {
-    [v3 appendFormat:@"frame drops "];
-    [v3 appendFormat:@"total:%ld  ", -[NSNumber longValue](self->_totalFrameDrops, "longValue")];
+    [string appendFormat:@"frame drops "];
+    [string appendFormat:@"total:%ld  ", -[NSNumber longValue](self->_totalFrameDrops, "longValue")];
     decoderFrameDrops = self->_decoderFrameDrops;
     if (decoderFrameDrops)
     {
-      [v3 appendFormat:@"decode:%d  ", -[NSNumber intValue](decoderFrameDrops, "intValue")];
+      [string appendFormat:@"decode:%d  ", -[NSNumber intValue](decoderFrameDrops, "intValue")];
     }
 
     imageQueueFrameDrops = self->_imageQueueFrameDrops;
     if (imageQueueFrameDrops)
     {
-      [v3 appendFormat:@"imageQ:%d", -[NSNumber intValue](imageQueueFrameDrops, "intValue")];
+      [string appendFormat:@"imageQ:%d", -[NSNumber intValue](imageQueueFrameDrops, "intValue")];
     }
 
-    [v3 appendString:@"\n"];
+    [string appendString:@"\n"];
   }
 
   bufferedVideoPlayed = self->_bufferedVideoPlayed;
   if (bufferedVideoPlayed && self->_bufferedVideoRemaining)
   {
     [(NSNumber *)bufferedVideoPlayed doubleValue];
-    [v3 appendFormat:@"buffered video before:%0.1fs  ", v39];
+    [string appendFormat:@"buffered video before:%0.1fs  ", v39];
     [(NSNumber *)self->_bufferedVideoRemaining doubleValue];
-    [v3 appendFormat:@"after:%0.1fs\n", v40];
+    [string appendFormat:@"after:%0.1fs\n", v40];
   }
 
   if (self->_customPerfInfo)
   {
-    [v3 appendFormat:@"%@\n", self->_customPerfInfo];
+    [string appendFormat:@"%@\n", self->_customPerfInfo];
   }
 
   if (self->_playbackCreationOffset)
   {
-    [v3 appendFormat:@"Offset from creation date (assuming that creation date corresponds to asset start):%@\n", self->_playbackCreationOffset];
+    [string appendFormat:@"Offset from creation date (assuming that creation date corresponds to asset start):%@\n", self->_playbackCreationOffset];
   }
 
   if (self->_startupTime > 0.0)
   {
-    [v3 appendFormat:@"startupTime:%fs", *&self->_startupTime];
+    [string appendFormat:@"startupTime:%fs", *&self->_startupTime];
   }
 
-  return v3;
+  return string;
 }
 
 @end

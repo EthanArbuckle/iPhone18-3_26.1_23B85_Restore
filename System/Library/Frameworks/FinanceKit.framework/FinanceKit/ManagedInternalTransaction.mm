@@ -1,16 +1,16 @@
 @interface ManagedInternalTransaction
 - (NSString)foreignCurrency;
 - (NSUUID)id;
-- (_TtC10FinanceKit26ManagedInternalTransaction)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4;
+- (_TtC10FinanceKit26ManagedInternalTransaction)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context;
 @end
 
 @implementation ManagedInternalTransaction
 
-- (_TtC10FinanceKit26ManagedInternalTransaction)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4
+- (_TtC10FinanceKit26ManagedInternalTransaction)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context
 {
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
-  return [(ManagedInternalTransaction *)&v7 initWithEntity:a3 insertIntoManagedObjectContext:a4];
+  return [(ManagedInternalTransaction *)&v7 initWithEntity:entity insertIntoManagedObjectContext:context];
 }
 
 - (NSUUID)id
@@ -19,9 +19,9 @@
   v4 = *(v3 - 8);
   MEMORY[0x1EEE9AC00](v3);
   v6 = &v12 - ((v5 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v7 = self;
-  v8 = [(ManagedInternalTransaction *)v7 publicTransactionObject];
-  v9 = [v8 id];
+  selfCopy = self;
+  publicTransactionObject = [(ManagedInternalTransaction *)selfCopy publicTransactionObject];
+  v9 = [publicTransactionObject id];
 
   sub_1B77FF9E8();
   v10 = sub_1B77FF9B8();
@@ -32,11 +32,11 @@
 
 - (NSString)foreignCurrency
 {
-  v2 = self;
-  v3 = [(ManagedInternalTransaction *)v2 publicTransactionObject];
-  v4 = [v3 foreignCurrency];
+  selfCopy = self;
+  publicTransactionObject = [(ManagedInternalTransaction *)selfCopy publicTransactionObject];
+  foreignCurrency = [publicTransactionObject foreignCurrency];
 
-  if (v4)
+  if (foreignCurrency)
   {
     sub_1B7800868();
 

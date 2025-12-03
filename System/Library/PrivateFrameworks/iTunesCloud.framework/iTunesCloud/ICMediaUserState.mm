@@ -1,42 +1,42 @@
 @interface ICMediaUserState
-- (BOOL)isEqual:(id)a3;
-- (ICMediaUserState)initWithBlock:(id)a3;
-- (ICMediaUserState)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (ICMediaUserState)initWithBlock:(id)block;
+- (ICMediaUserState)initWithCoder:(id)coder;
 - (NSString)description;
 - (NSString)digest;
 - (NSString)shortDebugName;
-- (id)copyWithBlock:(id)a3;
+- (id)copyWithBlock:(id)block;
 - (id)redactedDescription;
-- (void)encodeWithCoder:(id)a3;
-- (void)setAlternateDSID:(id)a3;
-- (void)setCountryCode:(id)a3;
-- (void)setDefaultMediaUser:(BOOL)a3;
-- (void)setDsid:(id)a3;
-- (void)setFirstName:(id)a3;
-- (void)setHomeUserIDs:(id)a3;
-- (void)setICloudPersonID:(id)a3;
-- (void)setIdentifier:(id)a3;
-- (void)setIsActive:(BOOL)a3;
-- (void)setLastName:(id)a3;
-- (void)setMusic:(id)a3;
-- (void)setStorefrontIdentifier:(id)a3;
-- (void)setUsername:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setAlternateDSID:(id)d;
+- (void)setCountryCode:(id)code;
+- (void)setDefaultMediaUser:(BOOL)user;
+- (void)setDsid:(id)dsid;
+- (void)setFirstName:(id)name;
+- (void)setHomeUserIDs:(id)ds;
+- (void)setICloudPersonID:(id)d;
+- (void)setIdentifier:(id)identifier;
+- (void)setIsActive:(BOOL)active;
+- (void)setLastName:(id)name;
+- (void)setMusic:(id)music;
+- (void)setStorefrontIdentifier:(id)identifier;
+- (void)setUsername:(id)username;
 @end
 
 @implementation ICMediaUserState
 
 - (NSString)description
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(ICMediaUserState *)self dsid];
-  v5 = ICCreateLoggableValueForDSID(v4);
-  [v3 setObject:v5 forKeyedSubscript:@"dsid"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  dsid = [(ICMediaUserState *)self dsid];
+  v5 = ICCreateLoggableValueForDSID(dsid);
+  [dictionary setObject:v5 forKeyedSubscript:@"dsid"];
 
-  v6 = [(ICMediaUserState *)self homeUserIDs];
-  v7 = v6;
-  if (v6)
+  homeUserIDs = [(ICMediaUserState *)self homeUserIDs];
+  v7 = homeUserIDs;
+  if (homeUserIDs)
   {
-    v8 = v6;
+    v8 = homeUserIDs;
   }
 
   else
@@ -44,13 +44,13 @@
     v8 = @"nil";
   }
 
-  [v3 setObject:v8 forKeyedSubscript:@"homeUserIds"];
+  [dictionary setObject:v8 forKeyedSubscript:@"homeUserIds"];
 
-  v9 = [(ICMediaUserState *)self firstName];
-  v10 = v9;
-  if (v9)
+  firstName = [(ICMediaUserState *)self firstName];
+  v10 = firstName;
+  if (firstName)
   {
-    v11 = v9;
+    v11 = firstName;
   }
 
   else
@@ -58,13 +58,13 @@
     v11 = @"nil";
   }
 
-  [v3 setObject:v11 forKeyedSubscript:@"firstName"];
+  [dictionary setObject:v11 forKeyedSubscript:@"firstName"];
 
-  v12 = [(ICMediaUserState *)self lastName];
-  v13 = v12;
-  if (v12)
+  lastName = [(ICMediaUserState *)self lastName];
+  v13 = lastName;
+  if (lastName)
   {
-    v14 = v12;
+    v14 = lastName;
   }
 
   else
@@ -72,12 +72,12 @@
     v14 = @"nil";
   }
 
-  [v3 setObject:v14 forKeyedSubscript:@"lastName"];
+  [dictionary setObject:v14 forKeyedSubscript:@"lastName"];
 
-  v15 = [(ICMediaUserState *)self isActive];
+  isActive = [(ICMediaUserState *)self isActive];
   v16 = MEMORY[0x1E695E110];
   v17 = MEMORY[0x1E695E118];
-  if (v15)
+  if (isActive)
   {
     v18 = MEMORY[0x1E695E118];
   }
@@ -87,7 +87,7 @@
     v18 = MEMORY[0x1E695E110];
   }
 
-  [v3 setObject:v18 forKeyedSubscript:@"isActive"];
+  [dictionary setObject:v18 forKeyedSubscript:@"isActive"];
   if ([(ICMediaUserState *)self isDefaultMediaUser])
   {
     v19 = v17;
@@ -98,12 +98,12 @@
     v19 = v16;
   }
 
-  [v3 setObject:v19 forKeyedSubscript:@"defaultMediaUser"];
-  v20 = [(ICMediaUserState *)self music];
-  v21 = v20;
-  if (v20)
+  [dictionary setObject:v19 forKeyedSubscript:@"defaultMediaUser"];
+  music = [(ICMediaUserState *)self music];
+  v21 = music;
+  if (music)
   {
-    v22 = v20;
+    v22 = music;
   }
 
   else
@@ -111,7 +111,7 @@
     v22 = @"nil";
   }
 
-  [v3 setObject:v22 forKeyedSubscript:@"music"];
+  [dictionary setObject:v22 forKeyedSubscript:@"music"];
 
   v23 = [(ICMediaUserState *)self tv];
   v24 = v23;
@@ -125,281 +125,281 @@
     v25 = @"nil";
   }
 
-  [v3 setObject:v25 forKeyedSubscript:@"tv"];
+  [dictionary setObject:v25 forKeyedSubscript:@"tv"];
 
-  v26 = [MEMORY[0x1E696AEC0] stringWithFormat:@"<%@: %p [%@]>", objc_opt_class(), self, v3];
+  v26 = [MEMORY[0x1E696AEC0] stringWithFormat:@"<%@: %p [%@]>", objc_opt_class(), self, dictionary];
 
   return v26;
 }
 
-- (void)setCountryCode:(id)a3
+- (void)setCountryCode:(id)code
 {
-  v5 = a3;
+  codeCopy = code;
   if (self->_frozen)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"ICMediaUserState.m" lineNumber:284 description:@"Attempt to mutate after being initialized."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ICMediaUserState.m" lineNumber:284 description:@"Attempt to mutate after being initialized."];
   }
 
   countryCode = self->_countryCode;
-  self->_countryCode = v5;
+  self->_countryCode = codeCopy;
 }
 
-- (void)setMusic:(id)a3
+- (void)setMusic:(id)music
 {
-  v5 = a3;
-  v9 = v5;
+  musicCopy = music;
+  v9 = musicCopy;
   if (self->_frozen)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"ICMediaUserState.m" lineNumber:279 description:@"Attempt to mutate after being initialized."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ICMediaUserState.m" lineNumber:279 description:@"Attempt to mutate after being initialized."];
 
-    v5 = v9;
+    musicCopy = v9;
   }
 
-  v6 = [v5 copy];
+  v6 = [musicCopy copy];
   music = self->_music;
   self->_music = v6;
 }
 
-- (void)setUsername:(id)a3
+- (void)setUsername:(id)username
 {
-  v5 = a3;
-  v9 = v5;
+  usernameCopy = username;
+  v9 = usernameCopy;
   if (self->_frozen)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"ICMediaUserState.m" lineNumber:274 description:@"Attempt to mutate after being initialized."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ICMediaUserState.m" lineNumber:274 description:@"Attempt to mutate after being initialized."];
 
-    v5 = v9;
+    usernameCopy = v9;
   }
 
-  v6 = [v5 copy];
+  v6 = [usernameCopy copy];
   username = self->_username;
   self->_username = v6;
 }
 
-- (void)setLastName:(id)a3
+- (void)setLastName:(id)name
 {
-  v5 = a3;
-  v9 = v5;
+  nameCopy = name;
+  v9 = nameCopy;
   if (self->_frozen)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"ICMediaUserState.m" lineNumber:269 description:@"Attempt to mutate after being initialized."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ICMediaUserState.m" lineNumber:269 description:@"Attempt to mutate after being initialized."];
 
-    v5 = v9;
+    nameCopy = v9;
   }
 
-  v6 = [v5 copy];
+  v6 = [nameCopy copy];
   lastName = self->_lastName;
   self->_lastName = v6;
 }
 
-- (void)setFirstName:(id)a3
+- (void)setFirstName:(id)name
 {
-  v5 = a3;
-  v9 = v5;
+  nameCopy = name;
+  v9 = nameCopy;
   if (self->_frozen)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"ICMediaUserState.m" lineNumber:264 description:@"Attempt to mutate after being initialized."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ICMediaUserState.m" lineNumber:264 description:@"Attempt to mutate after being initialized."];
 
-    v5 = v9;
+    nameCopy = v9;
   }
 
-  v6 = [v5 copy];
+  v6 = [nameCopy copy];
   firstName = self->_firstName;
   self->_firstName = v6;
 }
 
-- (void)setStorefrontIdentifier:(id)a3
+- (void)setStorefrontIdentifier:(id)identifier
 {
-  v5 = a3;
-  v9 = v5;
+  identifierCopy = identifier;
+  v9 = identifierCopy;
   if (self->_frozen)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"ICMediaUserState.m" lineNumber:259 description:@"Attempt to mutate after being initialized."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ICMediaUserState.m" lineNumber:259 description:@"Attempt to mutate after being initialized."];
 
-    v5 = v9;
+    identifierCopy = v9;
   }
 
-  v6 = [v5 copy];
+  v6 = [identifierCopy copy];
   storefrontIdentifier = self->_storefrontIdentifier;
   self->_storefrontIdentifier = v6;
 }
 
-- (void)setHomeUserIDs:(id)a3
+- (void)setHomeUserIDs:(id)ds
 {
-  v5 = a3;
-  v9 = v5;
+  dsCopy = ds;
+  v9 = dsCopy;
   if (self->_frozen)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"ICMediaUserState.m" lineNumber:254 description:@"Attempt to mutate after being initialized."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ICMediaUserState.m" lineNumber:254 description:@"Attempt to mutate after being initialized."];
 
-    v5 = v9;
+    dsCopy = v9;
   }
 
-  v6 = [v5 copy];
+  v6 = [dsCopy copy];
   homeUserIDs = self->_homeUserIDs;
   self->_homeUserIDs = v6;
 }
 
-- (void)setICloudPersonID:(id)a3
+- (void)setICloudPersonID:(id)d
 {
-  v5 = a3;
-  v9 = v5;
+  dCopy = d;
+  v9 = dCopy;
   if (self->_frozen)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"ICMediaUserState.m" lineNumber:249 description:@"Attempt to mutate after being initialized."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ICMediaUserState.m" lineNumber:249 description:@"Attempt to mutate after being initialized."];
 
-    v5 = v9;
+    dCopy = v9;
   }
 
-  v6 = [v5 copy];
+  v6 = [dCopy copy];
   iCloudPersonID = self->_iCloudPersonID;
   self->_iCloudPersonID = v6;
 }
 
-- (void)setAlternateDSID:(id)a3
+- (void)setAlternateDSID:(id)d
 {
-  v5 = a3;
-  v9 = v5;
+  dCopy = d;
+  v9 = dCopy;
   if (self->_frozen)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"ICMediaUserState.m" lineNumber:244 description:@"Attempt to mutate after being initialized."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ICMediaUserState.m" lineNumber:244 description:@"Attempt to mutate after being initialized."];
 
-    v5 = v9;
+    dCopy = v9;
   }
 
-  v6 = [v5 copy];
+  v6 = [dCopy copy];
   alternateDSID = self->_alternateDSID;
   self->_alternateDSID = v6;
 }
 
-- (void)setDsid:(id)a3
+- (void)setDsid:(id)dsid
 {
-  v5 = a3;
-  v9 = v5;
+  dsidCopy = dsid;
+  v9 = dsidCopy;
   if (self->_frozen)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"ICMediaUserState.m" lineNumber:239 description:@"Attempt to mutate after being initialized."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ICMediaUserState.m" lineNumber:239 description:@"Attempt to mutate after being initialized."];
 
-    v5 = v9;
+    dsidCopy = v9;
   }
 
-  v6 = [v5 copy];
+  v6 = [dsidCopy copy];
   dsid = self->_dsid;
   self->_dsid = v6;
 }
 
-- (void)setDefaultMediaUser:(BOOL)a3
+- (void)setDefaultMediaUser:(BOOL)user
 {
   if (self->_frozen)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"ICMediaUserState.m" lineNumber:234 description:@"Attempt to mutate after being initialized."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ICMediaUserState.m" lineNumber:234 description:@"Attempt to mutate after being initialized."];
   }
 
-  self->_defaultMediaUser = a3;
+  self->_defaultMediaUser = user;
 }
 
-- (void)setIsActive:(BOOL)a3
+- (void)setIsActive:(BOOL)active
 {
   if (self->_frozen)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"ICMediaUserState.m" lineNumber:229 description:@"Attempt to mutate after being initialized."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ICMediaUserState.m" lineNumber:229 description:@"Attempt to mutate after being initialized."];
   }
 
-  self->_isActive = a3;
+  self->_isActive = active;
 }
 
-- (void)setIdentifier:(id)a3
+- (void)setIdentifier:(id)identifier
 {
-  v5 = a3;
-  v9 = v5;
+  identifierCopy = identifier;
+  v9 = identifierCopy;
   if (self->_frozen)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"ICMediaUserState.m" lineNumber:224 description:@"Attempt to mutate after being initialized."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ICMediaUserState.m" lineNumber:224 description:@"Attempt to mutate after being initialized."];
 
-    v5 = v9;
+    identifierCopy = v9;
   }
 
-  v6 = [v5 copy];
+  v6 = [identifierCopy copy];
   identifier = self->_identifier;
   self->_identifier = v6;
 }
 
-- (ICMediaUserState)initWithCoder:(id)a3
+- (ICMediaUserState)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v36.receiver = self;
   v36.super_class = ICMediaUserState;
   v5 = [(ICMediaUserState *)&v36 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"shortDebugName"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"shortDebugName"];
     shortDebugName = v5->_shortDebugName;
     v5->_shortDebugName = v8;
 
-    v5->_isActive = [v4 decodeBoolForKey:@"isActive"];
-    v5->_defaultMediaUser = [v4 decodeBoolForKey:@"defaultMediaUser"];
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dsid"];
+    v5->_isActive = [coderCopy decodeBoolForKey:@"isActive"];
+    v5->_defaultMediaUser = [coderCopy decodeBoolForKey:@"defaultMediaUser"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dsid"];
     dsid = v5->_dsid;
     v5->_dsid = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"alternateDSID"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"alternateDSID"];
     alternateDSID = v5->_alternateDSID;
     v5->_alternateDSID = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"iCloudPersonID"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"iCloudPersonID"];
     iCloudPersonID = v5->_iCloudPersonID;
     v5->_iCloudPersonID = v14;
 
     v16 = MEMORY[0x1E695DFD8];
     v17 = objc_opt_class();
     v18 = [v16 setWithObjects:{v17, objc_opt_class(), 0}];
-    v19 = [v4 decodeObjectOfClasses:v18 forKey:@"homeUserIDs"];
+    v19 = [coderCopy decodeObjectOfClasses:v18 forKey:@"homeUserIDs"];
     homeUserIDs = v5->_homeUserIDs;
     v5->_homeUserIDs = v19;
 
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"storefrontIdentifier"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"storefrontIdentifier"];
     storefrontIdentifier = v5->_storefrontIdentifier;
     v5->_storefrontIdentifier = v21;
 
-    v23 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"countryCode"];
+    v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"countryCode"];
     countryCode = v5->_countryCode;
     v5->_countryCode = v23;
 
-    v25 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"firstName"];
+    v25 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"firstName"];
     firstName = v5->_firstName;
     v5->_firstName = v25;
 
-    v27 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lastName"];
+    v27 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lastName"];
     lastName = v5->_lastName;
     v5->_lastName = v27;
 
-    v29 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"username"];
+    v29 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"username"];
     username = v5->_username;
     v5->_username = v29;
 
-    v5->_ageVerificationRequired = [v4 decodeBoolForKey:@"ageVerificationRequired"];
-    v31 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"music"];
+    v5->_ageVerificationRequired = [coderCopy decodeBoolForKey:@"ageVerificationRequired"];
+    v31 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"music"];
     music = v5->_music;
     v5->_music = v31;
 
-    v33 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"tv"];
+    v33 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"tv"];
     tv = v5->_tv;
     v5->_tv = v33;
   }
@@ -407,34 +407,34 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"identifier"];
-  [v5 encodeObject:self->_shortDebugName forKey:@"shortDebugName"];
-  [v5 encodeBool:self->_isActive forKey:@"isActive"];
-  [v5 encodeBool:self->_defaultMediaUser forKey:@"defaultMediaUser"];
-  [v5 encodeObject:self->_dsid forKey:@"dsid"];
-  [v5 encodeObject:self->_alternateDSID forKey:@"alternateDSID"];
-  [v5 encodeObject:self->_iCloudPersonID forKey:@"iCloudPersonID"];
-  [v5 encodeObject:self->_homeUserIDs forKey:@"homeUserIDs"];
-  [v5 encodeObject:self->_storefrontIdentifier forKey:@"storefrontIdentifier"];
-  [v5 encodeObject:self->_countryCode forKey:@"countryCode"];
-  [v5 encodeObject:self->_firstName forKey:@"firstName"];
-  [v5 encodeObject:self->_lastName forKey:@"lastName"];
-  [v5 encodeObject:self->_username forKey:@"username"];
-  [v5 encodeBool:self->_ageVerificationRequired forKey:@"ageVerificationRequired"];
-  [v5 encodeObject:self->_music forKey:@"music"];
-  [v5 encodeObject:self->_tv forKey:@"tv"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_shortDebugName forKey:@"shortDebugName"];
+  [coderCopy encodeBool:self->_isActive forKey:@"isActive"];
+  [coderCopy encodeBool:self->_defaultMediaUser forKey:@"defaultMediaUser"];
+  [coderCopy encodeObject:self->_dsid forKey:@"dsid"];
+  [coderCopy encodeObject:self->_alternateDSID forKey:@"alternateDSID"];
+  [coderCopy encodeObject:self->_iCloudPersonID forKey:@"iCloudPersonID"];
+  [coderCopy encodeObject:self->_homeUserIDs forKey:@"homeUserIDs"];
+  [coderCopy encodeObject:self->_storefrontIdentifier forKey:@"storefrontIdentifier"];
+  [coderCopy encodeObject:self->_countryCode forKey:@"countryCode"];
+  [coderCopy encodeObject:self->_firstName forKey:@"firstName"];
+  [coderCopy encodeObject:self->_lastName forKey:@"lastName"];
+  [coderCopy encodeObject:self->_username forKey:@"username"];
+  [coderCopy encodeBool:self->_ageVerificationRequired forKey:@"ageVerificationRequired"];
+  [coderCopy encodeObject:self->_music forKey:@"music"];
+  [coderCopy encodeObject:self->_tv forKey:@"tv"];
 }
 
 - (NSString)shortDebugName
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(ICMediaUserState *)self username];
-  v5 = [(ICMediaUserState *)self identifier];
-  v6 = [v3 stringWithFormat:@"%@ (%@)", v4, v5];
+  username = [(ICMediaUserState *)self username];
+  identifier = [(ICMediaUserState *)self identifier];
+  v6 = [v3 stringWithFormat:@"%@ (%@)", username, identifier];
 
   return v6;
 }
@@ -454,14 +454,14 @@
   v615.hash[1] = v5 ^ 0x7465646279746573;
   v9 = objc_opt_class();
   v10 = NSStringFromClass(v9);
-  v11 = [v10 UTF8String];
+  uTF8String = [v10 UTF8String];
   v12 = [v10 length];
   if (v12 >= 8)
   {
     v13 = v12 & 0xFFFFFFFFFFFFFFF8;
     do
     {
-      v14 = *v11++;
+      v14 = *uTF8String++;
       v15 = (v4 + v6) ^ __ROR8__(v6, 51);
       v16 = v7 + (v8 ^ v14);
       v17 = __ROR8__(v8 ^ v14, 48);
@@ -500,8 +500,8 @@ LABEL_5:
   v21 = v12;
   do
   {
-    v22 = *v11;
-    v11 = (v11 + 1);
+    v22 = *uTF8String;
+    uTF8String = (uTF8String + 1);
     v20 |= v22 << v19;
     v19 += 8;
     --v21;
@@ -513,7 +513,7 @@ LABEL_10:
   v615.hash[2] = v23;
 
   v24 = self->_identifier;
-  v25 = [(NSString *)v24 UTF8String];
+  uTF8String2 = [(NSString *)v24 UTF8String];
   v26 = [(NSString *)v24 length];
   v27 = HIBYTE(v23);
   v28 = HIBYTE(v23) & 7;
@@ -527,7 +527,7 @@ LABEL_10:
     }
 
     v31 = 8 * v28;
-    v32 = v25;
+    v32 = uTF8String2;
     v33 = v23 & 0xFFFFFFFFFFFFFFLL;
     do
     {
@@ -549,7 +549,7 @@ LABEL_10:
     v4 = v38 ^ v33;
     v615.count[0] = v38 ^ v33;
     v615.count[1] = v6;
-    v25 += v29;
+    uTF8String2 += v29;
     v615.hash[2] = (v29 + v27) << 56;
     v26 = v30;
   }
@@ -558,8 +558,8 @@ LABEL_10:
   {
     do
     {
-      v39 = *v25;
-      v25 += 8;
+      v39 = *uTF8String2;
+      uTF8String2 += 8;
       v40 = (v4 + v6) ^ __ROR8__(v6, 51);
       v41 = v7 + (v8 ^ v39);
       v42 = __ROR8__(v8 ^ v39, 48);
@@ -588,7 +588,7 @@ LABEL_18:
     v46 = v26;
     do
     {
-      v47 = *v25++;
+      v47 = *uTF8String2++;
       v45 |= v47 << v44;
       v44 += 8;
       --v46;
@@ -667,8 +667,8 @@ LABEL_27:
   }
 
   v615.hash[2] = v59;
-  v67 = [(NSNumber *)self->_dsid integerValue];
-  *&data[0] = v67;
+  integerValue = [(NSNumber *)self->_dsid integerValue];
+  *&data[0] = integerValue;
   if (v614 <= 3000)
   {
     if (v614 > 1999)
@@ -680,10 +680,10 @@ LABEL_27:
         {
           if (BYTE3(v615.count[1]) == 2)
           {
-            v92 = v67 >> 8;
+            v92 = integerValue >> 8;
             v90 = v615.count[1];
             LODWORD(v89) = HIBYTE(LOWORD(v615.count[1]));
-            LOBYTE(v91) = v67;
+            LOBYTE(v91) = integerValue;
           }
 
           else
@@ -696,7 +696,7 @@ LABEL_27:
               v90 = v615.count[1];
               LODWORD(v89) = HIBYTE(LOWORD(v615.count[1]));
               LOBYTE(v91) = BYTE2(v615.count[1]);
-              LODWORD(v92) = v67;
+              LODWORD(v92) = integerValue;
             }
           }
         }
@@ -708,19 +708,19 @@ LABEL_27:
           LODWORD(v92) = 0;
           if (BYTE3(v615.count[1]) == 1)
           {
-            v91 = v67 >> 8;
+            v91 = integerValue >> 8;
             v90 = v615.count[1];
-            v92 = v67 >> 16;
-            LOBYTE(v89) = v67;
+            v92 = integerValue >> 16;
+            LOBYTE(v89) = integerValue;
           }
         }
 
         else
         {
-          v89 = v67 >> 8;
-          v91 = v67 >> 16;
-          v90 = v67;
-          v92 = v67 >> 24;
+          v89 = integerValue >> 8;
+          v91 = integerValue >> 16;
+          v90 = integerValue;
+          v92 = integerValue >> 24;
         }
 
         v100 = (v91 << 16) | (v92 << 24) | v90 | (v89 << 8);
@@ -776,7 +776,7 @@ LABEL_27:
         v68 = v615.hash[2];
         if ((v615.hash[2] & 0x400000000000000) != 0)
         {
-          v93 = v615.hash[2] & 0xFFFFFFFFFFFFFFLL | (v67 << 32);
+          v93 = v615.hash[2] & 0xFFFFFFFFFFFFFFLL | (integerValue << 32);
           v94 = (v615.count[0] + v615.count[1]) ^ __ROR8__(v615.count[1], 51);
           v95 = v615.hash[0] + (v615.hash[1] ^ v93);
           v96 = __ROR8__(v615.hash[1] ^ v93, 48);
@@ -787,7 +787,7 @@ LABEL_27:
           v615.hash[1] = v98;
           v615.count[0] = v97 ^ v93;
           v615.count[1] = v99 ^ __ROR8__(v94, 47);
-          v86 = (v615.hash[2] & 0xFF00000000000000) + HIDWORD(v67) + 0x800000000000000;
+          v86 = (v615.hash[2] & 0xFF00000000000000) + HIDWORD(integerValue) + 0x800000000000000;
         }
 
         else
@@ -810,7 +810,7 @@ LABEL_27:
             v68 = v615.hash[2] & 0xFF00000000000000;
           }
 
-          v78 = v72 ^ v67;
+          v78 = v72 ^ integerValue;
           v79 = v69 + v70;
           v80 = (v69 + v70) ^ __ROR8__(v70, 51);
           v81 = v71 + v78;
@@ -820,7 +820,7 @@ LABEL_27:
           v85 = v81 + v80;
           v615.hash[0] = __ROR8__(v85, 32);
           v615.hash[1] = v84;
-          v615.count[0] = v83 ^ v67;
+          v615.count[0] = v83 ^ integerValue;
           v615.count[1] = v85 ^ __ROR8__(v80, 47);
           v86 = v68 + 0x800000000000000;
         }
@@ -831,9 +831,9 @@ LABEL_27:
 
     else
     {
-      v87 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v88 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"void _MSVHasherAppend64(MSVHasher * _Nonnull, uint64_t)"}];
-      [v87 handleFailureInFunction:v88 file:@"MSVHasher+Algorithms.h" lineNumber:227 description:@"Cannot append to unknown hasher algorithm"];
+      [currentHandler handleFailureInFunction:v88 file:@"MSVHasher+Algorithms.h" lineNumber:227 description:@"Cannot append to unknown hasher algorithm"];
     }
   }
 
@@ -867,7 +867,7 @@ LABEL_27:
   }
 
   v107 = self->_alternateDSID;
-  v108 = [(NSString *)v107 UTF8String];
+  uTF8String3 = [(NSString *)v107 UTF8String];
   v109 = [(NSString *)v107 length];
   v110 = v109;
   if (v614 > 3000)
@@ -876,12 +876,12 @@ LABEL_27:
     {
       if (v614 == 3001)
       {
-        _MSV_XXH_XXH64_update(&v615, v108, v109);
+        _MSV_XXH_XXH64_update(&v615, uTF8String3, v109);
       }
 
       else if (v614 == 4000)
       {
-        CC_MD5_Update(&v615, v108, v109);
+        CC_MD5_Update(&v615, uTF8String3, v109);
       }
     }
 
@@ -890,13 +890,13 @@ LABEL_27:
       switch(v614)
       {
         case 4001:
-          CC_SHA1_Update(&v615, v108, v109);
+          CC_SHA1_Update(&v615, uTF8String3, v109);
           break;
         case 4256:
-          CC_SHA256_Update(&v615, v108, v109);
+          CC_SHA256_Update(&v615, uTF8String3, v109);
           break;
         case 4512:
-          CC_SHA512_Update(&v615, v108, v109);
+          CC_SHA512_Update(&v615, uTF8String3, v109);
           break;
       }
     }
@@ -910,7 +910,7 @@ LABEL_27:
     {
       if (v614 == 3000)
       {
-        _MSV_XXH_XXH32_update_17739(&v615, v108, v109);
+        _MSV_XXH_XXH32_update_17739(&v615, uTF8String3, v109);
       }
 
       goto LABEL_144;
@@ -932,18 +932,18 @@ LABEL_143:
 
         if (v147 == 1)
         {
-          *v146 = *v108;
+          *v146 = *uTF8String3;
           goto LABEL_143;
         }
 
 LABEL_127:
-        memcpy(v146, v108, (v145 - BYTE3(v615.count[1])));
+        memcpy(v146, uTF8String3, (v145 - BYTE3(v615.count[1])));
         goto LABEL_143;
       }
 
       if (v147 == 2)
       {
-        v152 = *v108;
+        v152 = *uTF8String3;
       }
 
       else
@@ -953,8 +953,8 @@ LABEL_127:
           goto LABEL_127;
         }
 
-        v152 = *v108;
-        v146[2] = v108[2];
+        v152 = *uTF8String3;
+        v146[2] = uTF8String3[2];
       }
 
       *v146 = v152;
@@ -975,7 +975,7 @@ LABEL_127:
           LOBYTE(v150) = v615.count[1];
           v148 = HIBYTE(LOWORD(v615.count[1]));
           LOBYTE(v151) = BYTE2(v615.count[1]);
-          v153 = *v108;
+          v153 = *uTF8String3;
         }
 
         goto LABEL_133;
@@ -983,23 +983,23 @@ LABEL_127:
 
       LOBYTE(v150) = v615.count[1];
       v148 = HIBYTE(LOWORD(v615.count[1]));
-      v151 = *v108;
+      v151 = *uTF8String3;
     }
 
     else
     {
       if (!BYTE3(v615.count[1]))
       {
-        v150 = *v108;
-        v148 = *v108 >> 8;
-        v151 = HIWORD(*v108);
-        v153 = HIBYTE(*v108);
+        v150 = *uTF8String3;
+        v148 = *uTF8String3 >> 8;
+        v151 = HIWORD(*uTF8String3);
+        v153 = HIBYTE(*uTF8String3);
         goto LABEL_133;
       }
 
       LOBYTE(v150) = v615.count[1];
-      LOBYTE(v148) = *v108;
-      v151 = *(v108 + 1);
+      LOBYTE(v148) = *uTF8String3;
+      v151 = *(uTF8String3 + 1);
     }
 
     v153 = v151 >> 8;
@@ -1010,8 +1010,8 @@ LABEL_133:
     LODWORD(v156) = HIDWORD(v156);
     v157 = 5 * (v156 >> 19) - 430675100;
     LODWORD(v615.count[0]) = v157;
-    v158 = &v108[-BYTE3(v615.count[1]) + 4];
-    v159 = &v108[v149 - BYTE3(v615.count[1])];
+    v158 = &uTF8String3[-BYTE3(v615.count[1]) + 4];
+    v159 = &uTF8String3[v149 - BYTE3(v615.count[1])];
     while (v158 < v159)
     {
       v160 = *v158;
@@ -1048,9 +1048,9 @@ LABEL_133:
 
   if (!v614)
   {
-    v143 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
     v144 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"void _MSVHasherAppendBytes(MSVHasher * _Nonnull, const void * _Nonnull, size_t)"}];
-    [v143 handleFailureInFunction:v144 file:@"MSVHasher+Algorithms.h" lineNumber:262 description:@"Cannot append to unknown hasher algorithm"];
+    [currentHandler2 handleFailureInFunction:v144 file:@"MSVHasher+Algorithms.h" lineNumber:262 description:@"Cannot append to unknown hasher algorithm"];
 
     goto LABEL_144;
   }
@@ -1073,7 +1073,7 @@ LABEL_133:
   if (v109 >= 8 - v113)
   {
     v116 = 8 * v113;
-    v117 = v108;
+    v117 = uTF8String3;
     v118 = v615.hash[2] & 0xFFFFFFFFFFFFFFLL;
     do
     {
@@ -1093,7 +1093,7 @@ LABEL_133:
     v615.hash[1] = v124;
     v615.count[0] = v123 ^ v118;
     v615.count[1] = v125 ^ __ROR8__(v120, 47);
-    v108 += v114;
+    uTF8String3 += v114;
     v615.hash[2] = (v114 + v111) << 56;
     v110 = v115;
 LABEL_90:
@@ -1105,8 +1105,8 @@ LABEL_90:
       v128 = v615.hash[1];
       do
       {
-        v130 = *v108;
-        v108 += 8;
+        v130 = *uTF8String3;
+        uTF8String3 += 8;
         v131 = v128 ^ v130;
         v132 = v126 + v127;
         v133 = v132 ^ __ROR8__(v127, 51);
@@ -1139,7 +1139,7 @@ LABEL_90:
     v140 = v110;
     do
     {
-      v141 = *v108++;
+      v141 = *uTF8String3++;
       v139 |= v141 << v138;
       v138 += 8;
       --v140;
@@ -1171,7 +1171,7 @@ LABEL_90:
 LABEL_144:
 
   v163 = self->_iCloudPersonID;
-  v164 = [(NSString *)v163 UTF8String];
+  uTF8String4 = [(NSString *)v163 UTF8String];
   v165 = [(NSString *)v163 length];
   v166 = v165;
   if (v614 > 3000)
@@ -1180,12 +1180,12 @@ LABEL_144:
     {
       if (v614 == 3001)
       {
-        _MSV_XXH_XXH64_update(&v615, v164, v165);
+        _MSV_XXH_XXH64_update(&v615, uTF8String4, v165);
       }
 
       else if (v614 == 4000)
       {
-        CC_MD5_Update(&v615, v164, v165);
+        CC_MD5_Update(&v615, uTF8String4, v165);
       }
     }
 
@@ -1194,13 +1194,13 @@ LABEL_144:
       switch(v614)
       {
         case 4001:
-          CC_SHA1_Update(&v615, v164, v165);
+          CC_SHA1_Update(&v615, uTF8String4, v165);
           break;
         case 4256:
-          CC_SHA256_Update(&v615, v164, v165);
+          CC_SHA256_Update(&v615, uTF8String4, v165);
           break;
         case 4512:
-          CC_SHA512_Update(&v615, v164, v165);
+          CC_SHA512_Update(&v615, uTF8String4, v165);
           break;
       }
     }
@@ -1214,7 +1214,7 @@ LABEL_144:
     {
       if (v614 == 3000)
       {
-        _MSV_XXH_XXH32_update_17739(&v615, v164, v165);
+        _MSV_XXH_XXH32_update_17739(&v615, uTF8String4, v165);
       }
 
       goto LABEL_212;
@@ -1236,18 +1236,18 @@ LABEL_211:
 
         if (v203 == 1)
         {
-          *v202 = *v164;
+          *v202 = *uTF8String4;
           goto LABEL_211;
         }
 
 LABEL_195:
-        memcpy(v202, v164, (v201 - BYTE3(v615.count[1])));
+        memcpy(v202, uTF8String4, (v201 - BYTE3(v615.count[1])));
         goto LABEL_211;
       }
 
       if (v203 == 2)
       {
-        v208 = *v164;
+        v208 = *uTF8String4;
       }
 
       else
@@ -1257,8 +1257,8 @@ LABEL_195:
           goto LABEL_195;
         }
 
-        v208 = *v164;
-        v202[2] = v164[2];
+        v208 = *uTF8String4;
+        v202[2] = uTF8String4[2];
       }
 
       *v202 = v208;
@@ -1279,7 +1279,7 @@ LABEL_195:
           LOBYTE(v206) = v615.count[1];
           v204 = HIBYTE(LOWORD(v615.count[1]));
           LOBYTE(v207) = BYTE2(v615.count[1]);
-          v209 = *v164;
+          v209 = *uTF8String4;
         }
 
         goto LABEL_201;
@@ -1287,23 +1287,23 @@ LABEL_195:
 
       LOBYTE(v206) = v615.count[1];
       v204 = HIBYTE(LOWORD(v615.count[1]));
-      v207 = *v164;
+      v207 = *uTF8String4;
     }
 
     else
     {
       if (!BYTE3(v615.count[1]))
       {
-        v206 = *v164;
-        v204 = *v164 >> 8;
-        v207 = HIWORD(*v164);
-        v209 = HIBYTE(*v164);
+        v206 = *uTF8String4;
+        v204 = *uTF8String4 >> 8;
+        v207 = HIWORD(*uTF8String4);
+        v209 = HIBYTE(*uTF8String4);
         goto LABEL_201;
       }
 
       LOBYTE(v206) = v615.count[1];
-      LOBYTE(v204) = *v164;
-      v207 = *(v164 + 1);
+      LOBYTE(v204) = *uTF8String4;
+      v207 = *(uTF8String4 + 1);
     }
 
     v209 = v207 >> 8;
@@ -1314,8 +1314,8 @@ LABEL_201:
     LODWORD(v212) = HIDWORD(v212);
     v213 = 5 * (v212 >> 19) - 430675100;
     LODWORD(v615.count[0]) = v213;
-    v214 = &v164[-BYTE3(v615.count[1]) + 4];
-    v215 = &v164[v205 - BYTE3(v615.count[1])];
+    v214 = &uTF8String4[-BYTE3(v615.count[1]) + 4];
+    v215 = &uTF8String4[v205 - BYTE3(v615.count[1])];
     while (v214 < v215)
     {
       v216 = *v214;
@@ -1352,9 +1352,9 @@ LABEL_201:
 
   if (!v614)
   {
-    v199 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
     v200 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"void _MSVHasherAppendBytes(MSVHasher * _Nonnull, const void * _Nonnull, size_t)"}];
-    [v199 handleFailureInFunction:v200 file:@"MSVHasher+Algorithms.h" lineNumber:262 description:@"Cannot append to unknown hasher algorithm"];
+    [currentHandler3 handleFailureInFunction:v200 file:@"MSVHasher+Algorithms.h" lineNumber:262 description:@"Cannot append to unknown hasher algorithm"];
 
     goto LABEL_212;
   }
@@ -1377,7 +1377,7 @@ LABEL_201:
   if (v165 >= 8 - v169)
   {
     v172 = 8 * v169;
-    v173 = v164;
+    v173 = uTF8String4;
     v174 = v615.hash[2] & 0xFFFFFFFFFFFFFFLL;
     do
     {
@@ -1397,7 +1397,7 @@ LABEL_201:
     v615.hash[1] = v180;
     v615.count[0] = v179 ^ v174;
     v615.count[1] = v181 ^ __ROR8__(v176, 47);
-    v164 += v170;
+    uTF8String4 += v170;
     v615.hash[2] = (v170 + v167) << 56;
     v166 = v171;
 LABEL_158:
@@ -1409,8 +1409,8 @@ LABEL_158:
       v184 = v615.hash[1];
       do
       {
-        v186 = *v164;
-        v164 += 8;
+        v186 = *uTF8String4;
+        uTF8String4 += 8;
         v187 = v184 ^ v186;
         v188 = v182 + v183;
         v189 = v188 ^ __ROR8__(v183, 51);
@@ -1443,7 +1443,7 @@ LABEL_158:
     v196 = v166;
     do
     {
-      v197 = *v164++;
+      v197 = *uTF8String4++;
       v195 |= v197 << v194;
       v194 += 8;
       --v196;
@@ -1639,9 +1639,9 @@ LABEL_212:
 
     else
     {
-      v240 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
       v241 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"void _MSVHasherAppend64(MSVHasher * _Nonnull, uint64_t)"}];
-      [v240 handleFailureInFunction:v241 file:@"MSVHasher+Algorithms.h" lineNumber:227 description:@"Cannot append to unknown hasher algorithm"];
+      [currentHandler4 handleFailureInFunction:v241 file:@"MSVHasher+Algorithms.h" lineNumber:227 description:@"Cannot append to unknown hasher algorithm"];
     }
   }
 
@@ -1675,7 +1675,7 @@ LABEL_212:
   }
 
   v260 = self->_storefrontIdentifier;
-  v261 = [(NSString *)v260 UTF8String];
+  uTF8String5 = [(NSString *)v260 UTF8String];
   v262 = [(NSString *)v260 length];
   v263 = v262;
   if (v614 > 3000)
@@ -1684,12 +1684,12 @@ LABEL_212:
     {
       if (v614 == 3001)
       {
-        _MSV_XXH_XXH64_update(&v615, v261, v262);
+        _MSV_XXH_XXH64_update(&v615, uTF8String5, v262);
       }
 
       else if (v614 == 4000)
       {
-        CC_MD5_Update(&v615, v261, v262);
+        CC_MD5_Update(&v615, uTF8String5, v262);
       }
     }
 
@@ -1698,13 +1698,13 @@ LABEL_212:
       switch(v614)
       {
         case 4001:
-          CC_SHA1_Update(&v615, v261, v262);
+          CC_SHA1_Update(&v615, uTF8String5, v262);
           break;
         case 4256:
-          CC_SHA256_Update(&v615, v261, v262);
+          CC_SHA256_Update(&v615, uTF8String5, v262);
           break;
         case 4512:
-          CC_SHA512_Update(&v615, v261, v262);
+          CC_SHA512_Update(&v615, uTF8String5, v262);
           break;
       }
     }
@@ -1718,7 +1718,7 @@ LABEL_212:
     {
       if (v614 == 3000)
       {
-        _MSV_XXH_XXH32_update_17739(&v615, v261, v262);
+        _MSV_XXH_XXH32_update_17739(&v615, uTF8String5, v262);
       }
 
       goto LABEL_323;
@@ -1740,18 +1740,18 @@ LABEL_322:
 
         if (v300 == 1)
         {
-          *v299 = *v261;
+          *v299 = *uTF8String5;
           goto LABEL_322;
         }
 
 LABEL_306:
-        memcpy(v299, v261, (v298 - BYTE3(v615.count[1])));
+        memcpy(v299, uTF8String5, (v298 - BYTE3(v615.count[1])));
         goto LABEL_322;
       }
 
       if (v300 == 2)
       {
-        v305 = *v261;
+        v305 = *uTF8String5;
       }
 
       else
@@ -1761,8 +1761,8 @@ LABEL_306:
           goto LABEL_306;
         }
 
-        v305 = *v261;
-        v299[2] = v261[2];
+        v305 = *uTF8String5;
+        v299[2] = uTF8String5[2];
       }
 
       *v299 = v305;
@@ -1783,7 +1783,7 @@ LABEL_306:
           LOBYTE(v303) = v615.count[1];
           v301 = HIBYTE(LOWORD(v615.count[1]));
           LOBYTE(v304) = BYTE2(v615.count[1]);
-          v306 = *v261;
+          v306 = *uTF8String5;
         }
 
         goto LABEL_312;
@@ -1791,23 +1791,23 @@ LABEL_306:
 
       LOBYTE(v303) = v615.count[1];
       v301 = HIBYTE(LOWORD(v615.count[1]));
-      v304 = *v261;
+      v304 = *uTF8String5;
     }
 
     else
     {
       if (!BYTE3(v615.count[1]))
       {
-        v303 = *v261;
-        v301 = *v261 >> 8;
-        v304 = HIWORD(*v261);
-        v306 = HIBYTE(*v261);
+        v303 = *uTF8String5;
+        v301 = *uTF8String5 >> 8;
+        v304 = HIWORD(*uTF8String5);
+        v306 = HIBYTE(*uTF8String5);
         goto LABEL_312;
       }
 
       LOBYTE(v303) = v615.count[1];
-      LOBYTE(v301) = *v261;
-      v304 = *(v261 + 1);
+      LOBYTE(v301) = *uTF8String5;
+      v304 = *(uTF8String5 + 1);
     }
 
     v306 = v304 >> 8;
@@ -1818,8 +1818,8 @@ LABEL_312:
     LODWORD(v309) = HIDWORD(v309);
     v310 = 5 * (v309 >> 19) - 430675100;
     LODWORD(v615.count[0]) = v310;
-    v311 = &v261[-BYTE3(v615.count[1]) + 4];
-    v312 = &v261[v302 - BYTE3(v615.count[1])];
+    v311 = &uTF8String5[-BYTE3(v615.count[1]) + 4];
+    v312 = &uTF8String5[v302 - BYTE3(v615.count[1])];
     while (v311 < v312)
     {
       v313 = *v311;
@@ -1856,9 +1856,9 @@ LABEL_312:
 
   if (!v614)
   {
-    v296 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler5 = [MEMORY[0x1E696AAA8] currentHandler];
     v297 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"void _MSVHasherAppendBytes(MSVHasher * _Nonnull, const void * _Nonnull, size_t)"}];
-    [v296 handleFailureInFunction:v297 file:@"MSVHasher+Algorithms.h" lineNumber:262 description:@"Cannot append to unknown hasher algorithm"];
+    [currentHandler5 handleFailureInFunction:v297 file:@"MSVHasher+Algorithms.h" lineNumber:262 description:@"Cannot append to unknown hasher algorithm"];
 
     goto LABEL_323;
   }
@@ -1881,7 +1881,7 @@ LABEL_312:
   if (v262 >= 8 - v266)
   {
     v269 = 8 * v266;
-    v270 = v261;
+    v270 = uTF8String5;
     v271 = v615.hash[2] & 0xFFFFFFFFFFFFFFLL;
     do
     {
@@ -1901,7 +1901,7 @@ LABEL_312:
     v615.hash[1] = v277;
     v615.count[0] = v276 ^ v271;
     v615.count[1] = v278 ^ __ROR8__(v273, 47);
-    v261 += v267;
+    uTF8String5 += v267;
     v615.hash[2] = (v267 + v264) << 56;
     v263 = v268;
 LABEL_269:
@@ -1913,8 +1913,8 @@ LABEL_269:
       v281 = v615.hash[1];
       do
       {
-        v283 = *v261;
-        v261 += 8;
+        v283 = *uTF8String5;
+        uTF8String5 += 8;
         v284 = v281 ^ v283;
         v285 = v279 + v280;
         v286 = v285 ^ __ROR8__(v280, 51);
@@ -1947,7 +1947,7 @@ LABEL_269:
     v293 = v263;
     do
     {
-      v294 = *v261++;
+      v294 = *uTF8String5++;
       v292 |= v294 << v291;
       v291 += 8;
       --v293;
@@ -1979,7 +1979,7 @@ LABEL_269:
 LABEL_323:
 
   v316 = self->_firstName;
-  v317 = [(NSString *)v316 UTF8String];
+  uTF8String6 = [(NSString *)v316 UTF8String];
   v318 = [(NSString *)v316 length];
   v319 = v318;
   if (v614 > 3000)
@@ -1988,12 +1988,12 @@ LABEL_323:
     {
       if (v614 == 3001)
       {
-        _MSV_XXH_XXH64_update(&v615, v317, v318);
+        _MSV_XXH_XXH64_update(&v615, uTF8String6, v318);
       }
 
       else if (v614 == 4000)
       {
-        CC_MD5_Update(&v615, v317, v318);
+        CC_MD5_Update(&v615, uTF8String6, v318);
       }
     }
 
@@ -2002,13 +2002,13 @@ LABEL_323:
       switch(v614)
       {
         case 4001:
-          CC_SHA1_Update(&v615, v317, v318);
+          CC_SHA1_Update(&v615, uTF8String6, v318);
           break;
         case 4256:
-          CC_SHA256_Update(&v615, v317, v318);
+          CC_SHA256_Update(&v615, uTF8String6, v318);
           break;
         case 4512:
-          CC_SHA512_Update(&v615, v317, v318);
+          CC_SHA512_Update(&v615, uTF8String6, v318);
           break;
       }
     }
@@ -2022,7 +2022,7 @@ LABEL_323:
     {
       if (v614 == 3000)
       {
-        _MSV_XXH_XXH32_update_17739(&v615, v317, v318);
+        _MSV_XXH_XXH32_update_17739(&v615, uTF8String6, v318);
       }
 
       goto LABEL_391;
@@ -2044,18 +2044,18 @@ LABEL_390:
 
         if (v356 == 1)
         {
-          *v355 = *v317;
+          *v355 = *uTF8String6;
           goto LABEL_390;
         }
 
 LABEL_374:
-        memcpy(v355, v317, (v354 - BYTE3(v615.count[1])));
+        memcpy(v355, uTF8String6, (v354 - BYTE3(v615.count[1])));
         goto LABEL_390;
       }
 
       if (v356 == 2)
       {
-        v361 = *v317;
+        v361 = *uTF8String6;
       }
 
       else
@@ -2065,8 +2065,8 @@ LABEL_374:
           goto LABEL_374;
         }
 
-        v361 = *v317;
-        v355[2] = v317[2];
+        v361 = *uTF8String6;
+        v355[2] = uTF8String6[2];
       }
 
       *v355 = v361;
@@ -2087,7 +2087,7 @@ LABEL_374:
           LOBYTE(v359) = v615.count[1];
           v357 = HIBYTE(LOWORD(v615.count[1]));
           LOBYTE(v360) = BYTE2(v615.count[1]);
-          v362 = *v317;
+          v362 = *uTF8String6;
         }
 
         goto LABEL_380;
@@ -2095,23 +2095,23 @@ LABEL_374:
 
       LOBYTE(v359) = v615.count[1];
       v357 = HIBYTE(LOWORD(v615.count[1]));
-      v360 = *v317;
+      v360 = *uTF8String6;
     }
 
     else
     {
       if (!BYTE3(v615.count[1]))
       {
-        v359 = *v317;
-        v357 = *v317 >> 8;
-        v360 = HIWORD(*v317);
-        v362 = HIBYTE(*v317);
+        v359 = *uTF8String6;
+        v357 = *uTF8String6 >> 8;
+        v360 = HIWORD(*uTF8String6);
+        v362 = HIBYTE(*uTF8String6);
         goto LABEL_380;
       }
 
       LOBYTE(v359) = v615.count[1];
-      LOBYTE(v357) = *v317;
-      v360 = *(v317 + 1);
+      LOBYTE(v357) = *uTF8String6;
+      v360 = *(uTF8String6 + 1);
     }
 
     v362 = v360 >> 8;
@@ -2122,8 +2122,8 @@ LABEL_380:
     LODWORD(v365) = HIDWORD(v365);
     v366 = 5 * (v365 >> 19) - 430675100;
     LODWORD(v615.count[0]) = v366;
-    v367 = &v317[-BYTE3(v615.count[1]) + 4];
-    v368 = &v317[v358 - BYTE3(v615.count[1])];
+    v367 = &uTF8String6[-BYTE3(v615.count[1]) + 4];
+    v368 = &uTF8String6[v358 - BYTE3(v615.count[1])];
     while (v367 < v368)
     {
       v369 = *v367;
@@ -2160,9 +2160,9 @@ LABEL_380:
 
   if (!v614)
   {
-    v352 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler6 = [MEMORY[0x1E696AAA8] currentHandler];
     v353 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"void _MSVHasherAppendBytes(MSVHasher * _Nonnull, const void * _Nonnull, size_t)"}];
-    [v352 handleFailureInFunction:v353 file:@"MSVHasher+Algorithms.h" lineNumber:262 description:@"Cannot append to unknown hasher algorithm"];
+    [currentHandler6 handleFailureInFunction:v353 file:@"MSVHasher+Algorithms.h" lineNumber:262 description:@"Cannot append to unknown hasher algorithm"];
 
     goto LABEL_391;
   }
@@ -2185,7 +2185,7 @@ LABEL_380:
   if (v318 >= 8 - v322)
   {
     v325 = 8 * v322;
-    v326 = v317;
+    v326 = uTF8String6;
     v327 = v615.hash[2] & 0xFFFFFFFFFFFFFFLL;
     do
     {
@@ -2205,7 +2205,7 @@ LABEL_380:
     v615.hash[1] = v333;
     v615.count[0] = v332 ^ v327;
     v615.count[1] = v334 ^ __ROR8__(v329, 47);
-    v317 += v323;
+    uTF8String6 += v323;
     v615.hash[2] = (v323 + v320) << 56;
     v319 = v324;
 LABEL_337:
@@ -2217,8 +2217,8 @@ LABEL_337:
       v337 = v615.hash[1];
       do
       {
-        v339 = *v317;
-        v317 += 8;
+        v339 = *uTF8String6;
+        uTF8String6 += 8;
         v340 = v337 ^ v339;
         v341 = v335 + v336;
         v342 = v341 ^ __ROR8__(v336, 51);
@@ -2251,7 +2251,7 @@ LABEL_337:
     v349 = v319;
     do
     {
-      v350 = *v317++;
+      v350 = *uTF8String6++;
       v348 |= v350 << v347;
       v347 += 8;
       --v349;
@@ -2283,7 +2283,7 @@ LABEL_337:
 LABEL_391:
 
   v372 = self->_lastName;
-  v373 = [(NSString *)v372 UTF8String];
+  uTF8String7 = [(NSString *)v372 UTF8String];
   v374 = [(NSString *)v372 length];
   v375 = v374;
   if (v614 > 3000)
@@ -2292,12 +2292,12 @@ LABEL_391:
     {
       if (v614 == 3001)
       {
-        _MSV_XXH_XXH64_update(&v615, v373, v374);
+        _MSV_XXH_XXH64_update(&v615, uTF8String7, v374);
       }
 
       else if (v614 == 4000)
       {
-        CC_MD5_Update(&v615, v373, v374);
+        CC_MD5_Update(&v615, uTF8String7, v374);
       }
     }
 
@@ -2306,13 +2306,13 @@ LABEL_391:
       switch(v614)
       {
         case 4001:
-          CC_SHA1_Update(&v615, v373, v374);
+          CC_SHA1_Update(&v615, uTF8String7, v374);
           break;
         case 4256:
-          CC_SHA256_Update(&v615, v373, v374);
+          CC_SHA256_Update(&v615, uTF8String7, v374);
           break;
         case 4512:
-          CC_SHA512_Update(&v615, v373, v374);
+          CC_SHA512_Update(&v615, uTF8String7, v374);
           break;
       }
     }
@@ -2326,7 +2326,7 @@ LABEL_391:
     {
       if (v614 == 3000)
       {
-        _MSV_XXH_XXH32_update_17739(&v615, v373, v374);
+        _MSV_XXH_XXH32_update_17739(&v615, uTF8String7, v374);
       }
 
       goto LABEL_459;
@@ -2348,18 +2348,18 @@ LABEL_458:
 
         if (v412 == 1)
         {
-          *v411 = *v373;
+          *v411 = *uTF8String7;
           goto LABEL_458;
         }
 
 LABEL_442:
-        memcpy(v411, v373, (v410 - BYTE3(v615.count[1])));
+        memcpy(v411, uTF8String7, (v410 - BYTE3(v615.count[1])));
         goto LABEL_458;
       }
 
       if (v412 == 2)
       {
-        v417 = *v373;
+        v417 = *uTF8String7;
       }
 
       else
@@ -2369,8 +2369,8 @@ LABEL_442:
           goto LABEL_442;
         }
 
-        v417 = *v373;
-        v411[2] = v373[2];
+        v417 = *uTF8String7;
+        v411[2] = uTF8String7[2];
       }
 
       *v411 = v417;
@@ -2391,7 +2391,7 @@ LABEL_442:
           LOBYTE(v415) = v615.count[1];
           v413 = HIBYTE(LOWORD(v615.count[1]));
           LOBYTE(v416) = BYTE2(v615.count[1]);
-          v418 = *v373;
+          v418 = *uTF8String7;
         }
 
         goto LABEL_448;
@@ -2399,23 +2399,23 @@ LABEL_442:
 
       LOBYTE(v415) = v615.count[1];
       v413 = HIBYTE(LOWORD(v615.count[1]));
-      v416 = *v373;
+      v416 = *uTF8String7;
     }
 
     else
     {
       if (!BYTE3(v615.count[1]))
       {
-        v415 = *v373;
-        v413 = *v373 >> 8;
-        v416 = HIWORD(*v373);
-        v418 = HIBYTE(*v373);
+        v415 = *uTF8String7;
+        v413 = *uTF8String7 >> 8;
+        v416 = HIWORD(*uTF8String7);
+        v418 = HIBYTE(*uTF8String7);
         goto LABEL_448;
       }
 
       LOBYTE(v415) = v615.count[1];
-      LOBYTE(v413) = *v373;
-      v416 = *(v373 + 1);
+      LOBYTE(v413) = *uTF8String7;
+      v416 = *(uTF8String7 + 1);
     }
 
     v418 = v416 >> 8;
@@ -2426,8 +2426,8 @@ LABEL_448:
     LODWORD(v421) = HIDWORD(v421);
     v422 = 5 * (v421 >> 19) - 430675100;
     LODWORD(v615.count[0]) = v422;
-    v423 = &v373[-BYTE3(v615.count[1]) + 4];
-    v424 = &v373[v414 - BYTE3(v615.count[1])];
+    v423 = &uTF8String7[-BYTE3(v615.count[1]) + 4];
+    v424 = &uTF8String7[v414 - BYTE3(v615.count[1])];
     while (v423 < v424)
     {
       v425 = *v423;
@@ -2464,9 +2464,9 @@ LABEL_448:
 
   if (!v614)
   {
-    v408 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler7 = [MEMORY[0x1E696AAA8] currentHandler];
     v409 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"void _MSVHasherAppendBytes(MSVHasher * _Nonnull, const void * _Nonnull, size_t)"}];
-    [v408 handleFailureInFunction:v409 file:@"MSVHasher+Algorithms.h" lineNumber:262 description:@"Cannot append to unknown hasher algorithm"];
+    [currentHandler7 handleFailureInFunction:v409 file:@"MSVHasher+Algorithms.h" lineNumber:262 description:@"Cannot append to unknown hasher algorithm"];
 
     goto LABEL_459;
   }
@@ -2489,7 +2489,7 @@ LABEL_448:
   if (v374 >= 8 - v378)
   {
     v381 = 8 * v378;
-    v382 = v373;
+    v382 = uTF8String7;
     v383 = v615.hash[2] & 0xFFFFFFFFFFFFFFLL;
     do
     {
@@ -2509,7 +2509,7 @@ LABEL_448:
     v615.hash[1] = v389;
     v615.count[0] = v388 ^ v383;
     v615.count[1] = v390 ^ __ROR8__(v385, 47);
-    v373 += v379;
+    uTF8String7 += v379;
     v615.hash[2] = (v379 + v376) << 56;
     v375 = v380;
 LABEL_405:
@@ -2521,8 +2521,8 @@ LABEL_405:
       v393 = v615.hash[1];
       do
       {
-        v395 = *v373;
-        v373 += 8;
+        v395 = *uTF8String7;
+        uTF8String7 += 8;
         v396 = v393 ^ v395;
         v397 = v391 + v392;
         v398 = v397 ^ __ROR8__(v392, 51);
@@ -2555,7 +2555,7 @@ LABEL_405:
     v405 = v375;
     do
     {
-      v406 = *v373++;
+      v406 = *uTF8String7++;
       v404 |= v406 << v403;
       v403 += 8;
       --v405;
@@ -2587,7 +2587,7 @@ LABEL_405:
 LABEL_459:
 
   v428 = self->_username;
-  v429 = [(NSString *)v428 UTF8String];
+  uTF8String8 = [(NSString *)v428 UTF8String];
   v430 = [(NSString *)v428 length];
   v431 = v430;
   if (v614 > 3000)
@@ -2596,12 +2596,12 @@ LABEL_459:
     {
       if (v614 == 3001)
       {
-        _MSV_XXH_XXH64_update(&v615, v429, v430);
+        _MSV_XXH_XXH64_update(&v615, uTF8String8, v430);
       }
 
       else if (v614 == 4000)
       {
-        CC_MD5_Update(&v615, v429, v430);
+        CC_MD5_Update(&v615, uTF8String8, v430);
       }
     }
 
@@ -2610,13 +2610,13 @@ LABEL_459:
       switch(v614)
       {
         case 4001:
-          CC_SHA1_Update(&v615, v429, v430);
+          CC_SHA1_Update(&v615, uTF8String8, v430);
           break;
         case 4256:
-          CC_SHA256_Update(&v615, v429, v430);
+          CC_SHA256_Update(&v615, uTF8String8, v430);
           break;
         case 4512:
-          CC_SHA512_Update(&v615, v429, v430);
+          CC_SHA512_Update(&v615, uTF8String8, v430);
           break;
       }
     }
@@ -2630,7 +2630,7 @@ LABEL_459:
     {
       if (v614 == 3000)
       {
-        _MSV_XXH_XXH32_update_17739(&v615, v429, v430);
+        _MSV_XXH_XXH32_update_17739(&v615, uTF8String8, v430);
       }
 
       goto LABEL_527;
@@ -2652,18 +2652,18 @@ LABEL_526:
 
         if (v468 == 1)
         {
-          *v467 = *v429;
+          *v467 = *uTF8String8;
           goto LABEL_526;
         }
 
 LABEL_510:
-        memcpy(v467, v429, (v466 - BYTE3(v615.count[1])));
+        memcpy(v467, uTF8String8, (v466 - BYTE3(v615.count[1])));
         goto LABEL_526;
       }
 
       if (v468 == 2)
       {
-        v473 = *v429;
+        v473 = *uTF8String8;
       }
 
       else
@@ -2673,8 +2673,8 @@ LABEL_510:
           goto LABEL_510;
         }
 
-        v473 = *v429;
-        v467[2] = v429[2];
+        v473 = *uTF8String8;
+        v467[2] = uTF8String8[2];
       }
 
       *v467 = v473;
@@ -2695,7 +2695,7 @@ LABEL_510:
           LOBYTE(v471) = v615.count[1];
           v469 = HIBYTE(LOWORD(v615.count[1]));
           LOBYTE(v472) = BYTE2(v615.count[1]);
-          v474 = *v429;
+          v474 = *uTF8String8;
         }
 
         goto LABEL_516;
@@ -2703,23 +2703,23 @@ LABEL_510:
 
       LOBYTE(v471) = v615.count[1];
       v469 = HIBYTE(LOWORD(v615.count[1]));
-      v472 = *v429;
+      v472 = *uTF8String8;
     }
 
     else
     {
       if (!BYTE3(v615.count[1]))
       {
-        v471 = *v429;
-        v469 = *v429 >> 8;
-        v472 = HIWORD(*v429);
-        v474 = HIBYTE(*v429);
+        v471 = *uTF8String8;
+        v469 = *uTF8String8 >> 8;
+        v472 = HIWORD(*uTF8String8);
+        v474 = HIBYTE(*uTF8String8);
         goto LABEL_516;
       }
 
       LOBYTE(v471) = v615.count[1];
-      LOBYTE(v469) = *v429;
-      v472 = *(v429 + 1);
+      LOBYTE(v469) = *uTF8String8;
+      v472 = *(uTF8String8 + 1);
     }
 
     v474 = v472 >> 8;
@@ -2730,8 +2730,8 @@ LABEL_516:
     LODWORD(v477) = HIDWORD(v477);
     v478 = 5 * (v477 >> 19) - 430675100;
     LODWORD(v615.count[0]) = v478;
-    v479 = &v429[-BYTE3(v615.count[1]) + 4];
-    v480 = &v429[v470 - BYTE3(v615.count[1])];
+    v479 = &uTF8String8[-BYTE3(v615.count[1]) + 4];
+    v480 = &uTF8String8[v470 - BYTE3(v615.count[1])];
     while (v479 < v480)
     {
       v481 = *v479;
@@ -2768,9 +2768,9 @@ LABEL_516:
 
   if (!v614)
   {
-    v464 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler8 = [MEMORY[0x1E696AAA8] currentHandler];
     v465 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"void _MSVHasherAppendBytes(MSVHasher * _Nonnull, const void * _Nonnull, size_t)"}];
-    [v464 handleFailureInFunction:v465 file:@"MSVHasher+Algorithms.h" lineNumber:262 description:@"Cannot append to unknown hasher algorithm"];
+    [currentHandler8 handleFailureInFunction:v465 file:@"MSVHasher+Algorithms.h" lineNumber:262 description:@"Cannot append to unknown hasher algorithm"];
 
     goto LABEL_527;
   }
@@ -2793,7 +2793,7 @@ LABEL_516:
   if (v430 >= 8 - v434)
   {
     v437 = 8 * v434;
-    v438 = v429;
+    v438 = uTF8String8;
     v439 = v615.hash[2] & 0xFFFFFFFFFFFFFFLL;
     do
     {
@@ -2813,7 +2813,7 @@ LABEL_516:
     v615.hash[1] = v445;
     v615.count[0] = v444 ^ v439;
     v615.count[1] = v446 ^ __ROR8__(v441, 47);
-    v429 += v435;
+    uTF8String8 += v435;
     v615.hash[2] = (v435 + v432) << 56;
     v431 = v436;
 LABEL_473:
@@ -2825,8 +2825,8 @@ LABEL_473:
       v449 = v615.hash[1];
       do
       {
-        v451 = *v429;
-        v429 += 8;
+        v451 = *uTF8String8;
+        uTF8String8 += 8;
         v452 = v449 ^ v451;
         v453 = v447 + v448;
         v454 = v453 ^ __ROR8__(v448, 51);
@@ -2859,7 +2859,7 @@ LABEL_473:
     v461 = v431;
     do
     {
-      v462 = *v429++;
+      v462 = *uTF8String8++;
       v460 |= v462 << v459;
       v459 += 8;
       --v461;
@@ -3055,9 +3055,9 @@ LABEL_527:
 
     else
     {
-      v505 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler9 = [MEMORY[0x1E696AAA8] currentHandler];
       v506 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"void _MSVHasherAppend64(MSVHasher * _Nonnull, uint64_t)"}];
-      [v505 handleFailureInFunction:v506 file:@"MSVHasher+Algorithms.h" lineNumber:227 description:@"Cannot append to unknown hasher algorithm"];
+      [currentHandler9 handleFailureInFunction:v506 file:@"MSVHasher+Algorithms.h" lineNumber:227 description:@"Cannot append to unknown hasher algorithm"];
     }
   }
 
@@ -3099,9 +3099,9 @@ LABEL_527:
     {
       if (!v614)
       {
-        v559 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler10 = [MEMORY[0x1E696AAA8] currentHandler];
         v560 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"MSVHash _MSVHasherFinalize(MSVHasher * _Nonnull)"];
-        [v559 handleFailureInFunction:v560 file:@"MSVHasher+Algorithms.h" lineNumber:156 description:@"Cannot finalize unknown hasher algorithm"];
+        [currentHandler10 handleFailureInFunction:v560 file:@"MSVHasher+Algorithms.h" lineNumber:156 description:@"Cannot finalize unknown hasher algorithm"];
 
         goto LABEL_617;
       }
@@ -3425,22 +3425,22 @@ LABEL_630:
   }
 
 LABEL_647:
-  v612 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler11 = [MEMORY[0x1E696AAA8] currentHandler];
   v613 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSUInteger _MSVHashGetHash(MSVHash)"];
-  [v612 handleFailureInFunction:v613 file:@"MSVHasher+Algorithms.h" lineNumber:301 description:@"Cannot obtain hash from unknown hasher algorithm"];
+  [currentHandler11 handleFailureInFunction:v613 file:@"MSVHasher+Algorithms.h" lineNumber:301 description:@"Cannot obtain hash from unknown hasher algorithm"];
 
   v589 = 0;
 LABEL_644:
   v609 = [v525 numberWithUnsignedInteger:v589];
-  v610 = [v609 stringValue];
+  stringValue = [v609 stringValue];
 
-  return v610;
+  return stringValue;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -3450,62 +3450,62 @@ LABEL_644:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(ICMediaUserState *)self identifier];
-      v7 = [(ICMediaUserState *)v5 identifier];
-      if ((v6 == v7 || [v6 isEqual:v7]) && (v8 = -[ICMediaUserState isActive](self, "isActive"), v8 == -[ICMediaUserState isActive](v5, "isActive")) && (v9 = -[ICMediaUserState isDefaultMediaUser](self, "isDefaultMediaUser"), v9 == -[ICMediaUserState isDefaultMediaUser](v5, "isDefaultMediaUser")))
+      v5 = equalCopy;
+      identifier = [(ICMediaUserState *)self identifier];
+      identifier2 = [(ICMediaUserState *)v5 identifier];
+      if ((identifier == identifier2 || [identifier isEqual:identifier2]) && (v8 = -[ICMediaUserState isActive](self, "isActive"), v8 == -[ICMediaUserState isActive](v5, "isActive")) && (v9 = -[ICMediaUserState isDefaultMediaUser](self, "isDefaultMediaUser"), v9 == -[ICMediaUserState isDefaultMediaUser](v5, "isDefaultMediaUser")))
       {
-        v12 = [(ICMediaUserState *)self dsid];
-        v13 = [(ICMediaUserState *)v5 dsid];
-        if (v12 == v13 || [v12 isEqual:v13])
+        dsid = [(ICMediaUserState *)self dsid];
+        dsid2 = [(ICMediaUserState *)v5 dsid];
+        if (dsid == dsid2 || [dsid isEqual:dsid2])
         {
-          v14 = [(ICMediaUserState *)self alternateDSID];
-          v15 = [(ICMediaUserState *)v5 alternateDSID];
-          if (v14 == v15 || [v14 isEqual:v15])
+          alternateDSID = [(ICMediaUserState *)self alternateDSID];
+          alternateDSID2 = [(ICMediaUserState *)v5 alternateDSID];
+          if (alternateDSID == alternateDSID2 || [alternateDSID isEqual:alternateDSID2])
           {
-            v49 = v14;
-            v16 = [(ICMediaUserState *)self iCloudPersonID];
-            v17 = [(ICMediaUserState *)v5 iCloudPersonID];
-            if (v16 == v17 || [v16 isEqual:v17])
+            v49 = alternateDSID;
+            iCloudPersonID = [(ICMediaUserState *)self iCloudPersonID];
+            iCloudPersonID2 = [(ICMediaUserState *)v5 iCloudPersonID];
+            if (iCloudPersonID == iCloudPersonID2 || [iCloudPersonID isEqual:iCloudPersonID2])
             {
-              v47 = v15;
-              v48 = v17;
-              v18 = [(ICMediaUserState *)self homeUserIDs];
-              v19 = [(ICMediaUserState *)v5 homeUserIDs];
-              if (v18 == v19 || [v18 isEqual:v19])
+              v47 = alternateDSID2;
+              v48 = iCloudPersonID2;
+              homeUserIDs = [(ICMediaUserState *)self homeUserIDs];
+              homeUserIDs2 = [(ICMediaUserState *)v5 homeUserIDs];
+              if (homeUserIDs == homeUserIDs2 || [homeUserIDs isEqual:homeUserIDs2])
               {
-                v45 = v12;
-                v46 = v19;
-                v20 = [(ICMediaUserState *)self storefrontIdentifier];
-                v21 = [(ICMediaUserState *)v5 storefrontIdentifier];
-                if (v20 == v21 || [v20 isEqual:v21])
+                v45 = dsid;
+                v46 = homeUserIDs2;
+                storefrontIdentifier = [(ICMediaUserState *)self storefrontIdentifier];
+                storefrontIdentifier2 = [(ICMediaUserState *)v5 storefrontIdentifier];
+                if (storefrontIdentifier == storefrontIdentifier2 || [storefrontIdentifier isEqual:storefrontIdentifier2])
                 {
-                  v43 = v13;
-                  v44 = v21;
-                  v22 = [(ICMediaUserState *)self firstName];
-                  v23 = [(ICMediaUserState *)v5 firstName];
-                  v42 = v22;
-                  if (v22 == v23 || [v22 isEqual:v23])
+                  v43 = dsid2;
+                  v44 = storefrontIdentifier2;
+                  firstName = [(ICMediaUserState *)self firstName];
+                  firstName2 = [(ICMediaUserState *)v5 firstName];
+                  v42 = firstName;
+                  if (firstName == firstName2 || [firstName isEqual:firstName2])
                   {
-                    v41 = v23;
-                    v24 = [(ICMediaUserState *)self lastName];
-                    v25 = [(ICMediaUserState *)v5 lastName];
-                    v40 = v24;
-                    if (v24 == v25 || [v24 isEqual:v25])
+                    v41 = firstName2;
+                    lastName = [(ICMediaUserState *)self lastName];
+                    lastName2 = [(ICMediaUserState *)v5 lastName];
+                    v40 = lastName;
+                    if (lastName == lastName2 || [lastName isEqual:lastName2])
                     {
-                      v39 = v25;
-                      v26 = [(ICMediaUserState *)self username];
-                      v27 = [(ICMediaUserState *)v5 username];
-                      v38 = v26;
-                      if (v26 == v27 || [v26 isEqual:v27])
+                      v39 = lastName2;
+                      username = [(ICMediaUserState *)self username];
+                      username2 = [(ICMediaUserState *)v5 username];
+                      v38 = username;
+                      if (username == username2 || [username isEqual:username2])
                       {
-                        v37 = v27;
-                        v28 = [(ICMediaUserState *)self ageVerificationRequired];
-                        if (v28 == [(ICMediaUserState *)v5 ageVerificationRequired])
+                        v37 = username2;
+                        ageVerificationRequired = [(ICMediaUserState *)self ageVerificationRequired];
+                        if (ageVerificationRequired == [(ICMediaUserState *)v5 ageVerificationRequired])
                         {
-                          v29 = [(ICMediaUserState *)self music];
-                          v30 = [(ICMediaUserState *)v5 music];
-                          if (v29 == v30 || [v29 isEqual:v30])
+                          music = [(ICMediaUserState *)self music];
+                          music2 = [(ICMediaUserState *)v5 music];
+                          if (music == music2 || [music isEqual:music2])
                           {
                             v31 = [(ICMediaUserState *)self tv];
                             v32 = [(ICMediaUserState *)v5 tv];
@@ -3524,7 +3524,7 @@ LABEL_644:
                               v10 = v34;
                             }
 
-                            v30 = v36;
+                            music2 = v36;
                           }
 
                           else
@@ -3538,7 +3538,7 @@ LABEL_644:
                           v10 = 0;
                         }
 
-                        v27 = v37;
+                        username2 = v37;
                       }
 
                       else
@@ -3546,7 +3546,7 @@ LABEL_644:
                         v10 = 0;
                       }
 
-                      v25 = v39;
+                      lastName2 = v39;
                     }
 
                     else
@@ -3554,7 +3554,7 @@ LABEL_644:
                       v10 = 0;
                     }
 
-                    v23 = v41;
+                    firstName2 = v41;
                   }
 
                   else
@@ -3562,8 +3562,8 @@ LABEL_644:
                     v10 = 0;
                   }
 
-                  v13 = v43;
-                  v21 = v44;
+                  dsid2 = v43;
+                  storefrontIdentifier2 = v44;
                 }
 
                 else
@@ -3571,8 +3571,8 @@ LABEL_644:
                   v10 = 0;
                 }
 
-                v12 = v45;
-                v19 = v46;
+                dsid = v45;
+                homeUserIDs2 = v46;
               }
 
               else
@@ -3580,8 +3580,8 @@ LABEL_644:
                 v10 = 0;
               }
 
-              v15 = v47;
-              v17 = v48;
+              alternateDSID2 = v47;
+              iCloudPersonID2 = v48;
             }
 
             else
@@ -3589,7 +3589,7 @@ LABEL_644:
               v10 = 0;
             }
 
-            v14 = v49;
+            alternateDSID = v49;
           }
 
           else
@@ -3623,23 +3623,23 @@ LABEL_644:
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(ICMediaUserState *)self firstName];
-  v6 = [v3 stringWithFormat:@"<%@: %p> firstName=%@ isActive=%dl", v4, self, v5, -[ICMediaUserState isActive](self, "isActive")];
+  firstName = [(ICMediaUserState *)self firstName];
+  v6 = [v3 stringWithFormat:@"<%@: %p> firstName=%@ isActive=%dl", v4, self, firstName, -[ICMediaUserState isActive](self, "isActive")];
 
   return v6;
 }
 
-- (id)copyWithBlock:(id)a3
+- (id)copyWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = [ICMediaUserState alloc];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __34__ICMediaUserState_copyWithBlock___block_invoke;
   v9[3] = &unk_1E7BF5F08;
   v9[4] = self;
-  v10 = v4;
-  v6 = v4;
+  v10 = blockCopy;
+  v6 = blockCopy;
   v7 = [(ICMediaUserState *)v5 initWithBlock:v9];
 
   return v7;
@@ -3707,15 +3707,15 @@ void __34__ICMediaUserState_copyWithBlock___block_invoke(uint64_t a1, void *a2)
   (*(*(a1 + 40) + 16))();
 }
 
-- (ICMediaUserState)initWithBlock:(id)a3
+- (ICMediaUserState)initWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v7.receiver = self;
   v7.super_class = ICMediaUserState;
   v5 = [(ICMediaUserState *)&v7 init];
   if (v5)
   {
-    v4[2](v4, v5);
+    blockCopy[2](blockCopy, v5);
     v5->_frozen = 1;
   }
 

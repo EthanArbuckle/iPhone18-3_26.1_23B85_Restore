@@ -1,8 +1,8 @@
 @interface RBResourceViolationHandler
 + (id)sharedInstance;
-- (void)handleCPUViolationMessage:(uint64_t)a1 fromConnection:(void *)a2;
-- (void)handleMessage:(void *)a3 fromConnection:;
-- (void)startWithAssertionManager:(uint64_t)a1;
+- (void)handleCPUViolationMessage:(uint64_t)message fromConnection:(void *)connection;
+- (void)handleMessage:(void *)message fromConnection:;
+- (void)startWithAssertionManager:(uint64_t)manager;
 @end
 
 @implementation RBResourceViolationHandler
@@ -140,14 +140,14 @@ void __56__RBResourceViolationHandler_startWithAssertionManager___block_invoke_2
 LABEL_8:
 }
 
-- (void)handleCPUViolationMessage:(uint64_t)a1 fromConnection:(void *)a2
+- (void)handleCPUViolationMessage:(uint64_t)message fromConnection:(void *)connection
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = a2;
-  v4 = v3;
-  if (a1)
+  connectionCopy = connection;
+  v4 = connectionCopy;
+  if (message)
   {
-    uint64 = xpc_dictionary_get_uint64(v3, "pid");
+    uint64 = xpc_dictionary_get_uint64(connectionCopy, "pid");
     v6 = [MEMORY[0x277D46F50] identifierWithPid:uint64];
     v7 = rbs_process_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -157,7 +157,7 @@ LABEL_8:
       _os_log_impl(&dword_262485000, v7, OS_LOG_TYPE_DEFAULT, "handleCPUViolationMessage on pid:%d", v14, 8u);
     }
 
-    if ([*(a1 + 8) invalidateAssertionsDueToCPUUsageViolationForProcessIdentifier:v6])
+    if ([*(message + 8) invalidateAssertionsDueToCPUUsageViolationForProcessIdentifier:v6])
     {
       v8 = rbs_process_log();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -198,12 +198,12 @@ LABEL_15:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleMessage:(void *)a3 fromConnection:
+- (void)handleMessage:(void *)message fromConnection:
 {
   v19 = *MEMORY[0x277D85DE8];
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  messageCopy = message;
+  if (self)
   {
     uint64 = xpc_dictionary_get_uint64(v5, "cmd");
     if (uint64 == 1)
@@ -212,9 +212,9 @@ LABEL_15:
       v11 = 3221225472;
       v12 = __59__RBResourceViolationHandler_handleMessage_fromConnection___block_invoke;
       v13 = &unk_279B329D0;
-      v14 = a1;
+      selfCopy = self;
       v15 = v5;
-      v16 = v6;
+      v16 = messageCopy;
       _os_activity_initiate(&dword_262485000, "handleCPUViolationMessage", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
     }
 
@@ -233,30 +233,30 @@ LABEL_15:
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startWithAssertionManager:(uint64_t)a1
+- (void)startWithAssertionManager:(uint64_t)manager
 {
   v4 = a2;
-  if (a1)
+  if (manager)
   {
     v5 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v6 = dispatch_queue_create("com.apple.runningboard.resourceviolationhandler", v5);
-    v7 = *(a1 + 16);
-    *(a1 + 16) = v6;
+    v7 = *(manager + 16);
+    *(manager + 16) = v6;
 
-    objc_storeStrong((a1 + 8), a2);
-    mach_service = xpc_connection_create_mach_service(*MEMORY[0x277D47090], *(a1 + 16), 1uLL);
-    v9 = *(a1 + 24);
-    *(a1 + 24) = mach_service;
+    objc_storeStrong((manager + 8), a2);
+    mach_service = xpc_connection_create_mach_service(*MEMORY[0x277D47090], *(manager + 16), 1uLL);
+    v9 = *(manager + 24);
+    *(manager + 24) = mach_service;
 
-    if (*(a1 + 24))
+    if (*(manager + 24))
     {
       OUTLINED_FUNCTION_0_1();
       v14 = 3221225472;
       v15 = __56__RBResourceViolationHandler_startWithAssertionManager___block_invoke;
       v16 = &unk_279B32A20;
-      v17 = a1;
+      managerCopy = manager;
       xpc_connection_set_event_handler(v10, handler);
-      xpc_connection_resume(*(a1 + 24));
+      xpc_connection_resume(*(manager + 24));
       v11 = rbs_general_log();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {

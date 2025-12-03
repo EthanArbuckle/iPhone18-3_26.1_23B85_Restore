@@ -1,22 +1,22 @@
 @interface PIParallaxStyleRecipeRegistry
-+ (id)_recipesForIdentifiers:(id)a3 withURLProvider:(id)a4;
-+ (id)recipeForIdentifier:(id)a3;
++ (id)_recipesForIdentifiers:(id)identifiers withURLProvider:(id)provider;
++ (id)recipeForIdentifier:(id)identifier;
 @end
 
 @implementation PIParallaxStyleRecipeRegistry
 
-+ (id)_recipesForIdentifiers:(id)a3 withURLProvider:(id)a4
++ (id)_recipesForIdentifiers:(id)identifiers withURLProvider:(id)provider
 {
   v36 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  identifiersCopy = identifiers;
+  providerCopy = provider;
   v24 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v7 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  obj = v5;
+  obj = identifiersCopy;
   v8 = [obj countByEnumeratingWithState:&v27 objects:v35 count:16];
   if (v8)
   {
@@ -35,9 +35,9 @@
         }
 
         v13 = *(*(&v27 + 1) + 8 * v12);
-        v14 = [v6 urlForIdentifier:{v13, v23}];
-        v15 = [v14 path];
-        v16 = [v7 isReadableFileAtPath:v15];
+        v14 = [providerCopy urlForIdentifier:{v13, v23}];
+        path = [v14 path];
+        v16 = [defaultManager isReadableFileAtPath:path];
 
         if (v16)
         {
@@ -99,25 +99,25 @@
   return v21;
 }
 
-+ (id)recipeForIdentifier:(id)a3
++ (id)recipeForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __53__PIParallaxStyleRecipeRegistry_recipeForIdentifier___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (recipeForIdentifier__onceToken != -1)
   {
     dispatch_once(&recipeForIdentifier__onceToken, block);
   }
 
   v5 = +[PIGlobalSettings globalSettings];
-  v6 = [v5 useStyleRecipeConfigDirectory];
+  useStyleRecipeConfigDirectory = [v5 useStyleRecipeConfigDirectory];
 
-  if (!v6 || ([recipeForIdentifier__sUserRegistry objectForKeyedSubscript:v4], (v7 = objc_claimAutoreleasedReturnValue()) == 0))
+  if (!useStyleRecipeConfigDirectory || ([recipeForIdentifier__sUserRegistry objectForKeyedSubscript:identifierCopy], (v7 = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v7 = [recipeForIdentifier__sBundleRegistry objectForKeyedSubscript:v4];
+    v7 = [recipeForIdentifier__sBundleRegistry objectForKeyedSubscript:identifierCopy];
   }
 
   return v7;

@@ -1,35 +1,35 @@
 @interface EKUIClearButton
-- (EKUIClearButton)initWithColor:(id)a3;
+- (EKUIClearButton)initWithColor:(id)color;
 - (id)_clearImageSymbolConfig;
 @end
 
 @implementation EKUIClearButton
 
-- (EKUIClearButton)initWithColor:(id)a3
+- (EKUIClearButton)initWithColor:(id)color
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  colorCopy = color;
   v22.receiver = self;
   v22.super_class = EKUIClearButton;
   v5 = [(EKUIClearButton *)&v22 init];
   if (v5)
   {
     v6 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"xmark.circle.fill"];
-    v7 = [(EKUIClearButton *)v5 _clearImageSymbolConfig];
-    v8 = [MEMORY[0x1E69DC740] plainButtonConfiguration];
-    [v8 setImage:v6];
-    [v8 setPreferredSymbolConfigurationForImage:v7];
+    _clearImageSymbolConfig = [(EKUIClearButton *)v5 _clearImageSymbolConfig];
+    plainButtonConfiguration = [MEMORY[0x1E69DC740] plainButtonConfiguration];
+    [plainButtonConfiguration setImage:v6];
+    [plainButtonConfiguration setPreferredSymbolConfigurationForImage:_clearImageSymbolConfig];
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __33__EKUIClearButton_initWithColor___block_invoke;
     v20[3] = &unk_1E8441A40;
-    v21 = v4;
-    [v8 setImageColorTransformer:v20];
-    v9 = [v8 background];
-    [v9 setCornerRadius:0.0];
+    v21 = colorCopy;
+    [plainButtonConfiguration setImageColorTransformer:v20];
+    background = [plainButtonConfiguration background];
+    [background setCornerRadius:0.0];
 
-    [v8 setContentInsets:{*MEMORY[0x1E69DC5C0], *(MEMORY[0x1E69DC5C0] + 8), *(MEMORY[0x1E69DC5C0] + 16), *(MEMORY[0x1E69DC5C0] + 24)}];
-    [(EKUIClearButton *)v5 setConfiguration:v8];
+    [plainButtonConfiguration setContentInsets:{*MEMORY[0x1E69DC5C0], *(MEMORY[0x1E69DC5C0] + 8), *(MEMORY[0x1E69DC5C0] + 16), *(MEMORY[0x1E69DC5C0] + 24)}];
+    [(EKUIClearButton *)v5 setConfiguration:plainButtonConfiguration];
     [(EKUIClearButton *)v5 _setTouchInsets:-20.0, -20.0, -20.0, -20.0];
     LODWORD(v10) = 1148846080;
     [(EKUIClearButton *)v5 setContentCompressionResistancePriority:0 forAxis:v10];
@@ -73,8 +73,8 @@ void __33__EKUIClearButton_initWithColor___block_invoke_2(uint64_t a1)
 {
   v2 = MEMORY[0x1E69DCAD8];
   v3 = *MEMORY[0x1E69DDCF8];
-  v4 = [(EKUIClearButton *)self traitCollection];
-  v5 = [v2 configurationWithTextStyle:v3 scale:{+[EKUIConstrainedFontUtilities tableViewCellCappedSymbolImageScaleWithScale:traitCollection:](EKUIConstrainedFontUtilities, "tableViewCellCappedSymbolImageScaleWithScale:traitCollection:", 2, v4)}];
+  traitCollection = [(EKUIClearButton *)self traitCollection];
+  v5 = [v2 configurationWithTextStyle:v3 scale:{+[EKUIConstrainedFontUtilities tableViewCellCappedSymbolImageScaleWithScale:traitCollection:](EKUIConstrainedFontUtilities, "tableViewCellCappedSymbolImageScaleWithScale:traitCollection:", 2, traitCollection)}];
 
   return v5;
 }

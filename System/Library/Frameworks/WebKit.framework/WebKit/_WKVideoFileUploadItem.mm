@@ -7,9 +7,9 @@
 - (RetainPtr<UIImage>)displayImage
 {
   v3 = v2;
-  v4 = [(_WKFileUploadItem *)self fileURL];
+  fileURL = [(_WKFileUploadItem *)self fileURL];
 
-  WebKit::iconForVideoFile(v4, v5, v3);
+  WebKit::iconForVideoFile(fileURL, v5, v3);
   return v6;
 }
 

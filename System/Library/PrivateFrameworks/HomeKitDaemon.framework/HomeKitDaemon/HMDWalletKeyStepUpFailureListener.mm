@@ -1,16 +1,16 @@
 @interface HMDWalletKeyStepUpFailureListener
 + (id)logCategory;
-- (BOOL)shouldPerformAuditForAccessory:(id)a3 didError:(BOOL)a4;
+- (BOOL)shouldPerformAuditForAccessory:(id)accessory didError:(BOOL)error;
 - (HMDHomeManager)homeManager;
-- (HMDWalletKeyStepUpFailureListener)initWithHomeManager:(id)a3;
-- (HMDWalletKeyStepUpFailureListener)initWithHomeManager:(id)a3 libXPCServer:(id)a4 datasource:(id)a5;
-- (id)accessoryWithReaderGroupSubIdentifierACWG:(id)a3;
-- (id)reachablePrimaryResidentDeviceForHome:(id)a3;
+- (HMDWalletKeyStepUpFailureListener)initWithHomeManager:(id)manager;
+- (HMDWalletKeyStepUpFailureListener)initWithHomeManager:(id)manager libXPCServer:(id)server datasource:(id)datasource;
+- (id)accessoryWithReaderGroupSubIdentifierACWG:(id)g;
+- (id)reachablePrimaryResidentDeviceForHome:(id)home;
 - (void)configure;
-- (void)didReceiveEventDictionary:(id)a3;
-- (void)handleHomeManagerHomeDataLoaded:(id)a3;
+- (void)didReceiveEventDictionary:(id)dictionary;
+- (void)handleHomeManagerHomeDataLoaded:(id)loaded;
 - (void)handleWalletKeyStatusChange;
-- (void)handleWalletKeyUpdatedNotification:(id)a3;
+- (void)handleWalletKeyUpdatedNotification:(id)notification;
 @end
 
 @implementation HMDWalletKeyStepUpFailureListener
@@ -22,16 +22,16 @@
   return WeakRetained;
 }
 
-- (void)didReceiveEventDictionary:(id)a3
+- (void)didReceiveEventDictionary:(id)dictionary
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 hmf_stringForKey:@"readerIdentifier"];
-  v6 = [v4 hmf_BOOLForKey:@"isStepUp"];
-  v7 = [v4 hmf_BOOLForKey:@"didError"];
-  v8 = [v4 hmf_numberForKey:@"TxType"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy hmf_stringForKey:@"readerIdentifier"];
+  v6 = [dictionaryCopy hmf_BOOLForKey:@"isStepUp"];
+  v7 = [dictionaryCopy hmf_BOOLForKey:@"didError"];
+  v8 = [dictionaryCopy hmf_numberForKey:@"TxType"];
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy = self;
   v11 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
@@ -56,7 +56,7 @@
     {
       v17 = [v5 substringFromIndex:32];
       v18 = objc_autoreleasePoolPush();
-      v19 = v10;
+      v19 = selfCopy;
       v20 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
       {
@@ -75,7 +75,7 @@
     else
     {
       v13 = objc_autoreleasePoolPush();
-      v14 = v10;
+      v14 = selfCopy;
       v15 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
       {
@@ -94,12 +94,12 @@
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleWalletKeyUpdatedNotification:(id)a3
+- (void)handleWalletKeyUpdatedNotification:(id)notification
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  notificationCopy = notification;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -110,17 +110,17 @@
   }
 
   objc_autoreleasePoolPop(v5);
-  [(HMDWalletKeyStepUpFailureListener *)v6 handleWalletKeyStatusChange];
+  [(HMDWalletKeyStepUpFailureListener *)selfCopy handleWalletKeyStatusChange];
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleHomeManagerHomeDataLoaded:(id)a3
+- (void)handleHomeManagerHomeDataLoaded:(id)loaded
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  loadedCopy = loaded;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -131,7 +131,7 @@
   }
 
   objc_autoreleasePoolPop(v5);
-  [(HMDWalletKeyStepUpFailureListener *)v6 handleWalletKeyStatusChange];
+  [(HMDWalletKeyStepUpFailureListener *)selfCopy handleWalletKeyStatusChange];
 
   v9 = *MEMORY[0x277D85DE8];
 }
@@ -210,19 +210,19 @@ void __64__HMDWalletKeyStepUpFailureListener_handleWalletKeyStatusChange__block_
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (id)reachablePrimaryResidentDeviceForHome:(id)a3
+- (id)reachablePrimaryResidentDeviceForHome:(id)home
 {
-  v3 = [a3 residentDeviceManager];
-  v4 = [v3 primaryResidentDevice];
+  residentDeviceManager = [home residentDeviceManager];
+  primaryResidentDevice = [residentDeviceManager primaryResidentDevice];
 
-  v5 = [v4 capabilities];
-  if ([v5 supportsWalletKey])
+  capabilities = [primaryResidentDevice capabilities];
+  if ([capabilities supportsWalletKey])
   {
-    v6 = [v4 isReachable];
+    isReachable = [primaryResidentDevice isReachable];
 
-    if (v6)
+    if (isReachable)
     {
-      v7 = [v4 device];
+      device = [primaryResidentDevice device];
       goto LABEL_6;
     }
   }
@@ -231,10 +231,10 @@ void __64__HMDWalletKeyStepUpFailureListener_handleWalletKeyStatusChange__block_
   {
   }
 
-  v7 = 0;
+  device = 0;
 LABEL_6:
 
-  return v7;
+  return device;
 }
 
 void __86__HMDWalletKeyStepUpFailureListener_handleStepUpForReaderGroupSubIdentifier_didError___block_invoke(id *a1, void *a2, void *a3, uint64_t a4, void *a5)
@@ -299,56 +299,56 @@ void __86__HMDWalletKeyStepUpFailureListener_handleStepUpForReaderGroupSubIdenti
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)shouldPerformAuditForAccessory:(id)a3 didError:(BOOL)a4
+- (BOOL)shouldPerformAuditForAccessory:(id)accessory didError:(BOOL)error
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (([v6 supportsACWGProvisioning] & 1) == 0)
+  accessoryCopy = accessory;
+  if (([accessoryCopy supportsACWGProvisioning] & 1) == 0)
   {
-    v7 = [v6 supportsMatterWalletKey];
-    v8 = [v7 BOOLValue];
+    supportsMatterWalletKey = [accessoryCopy supportsMatterWalletKey];
+    bOOLValue = [supportsMatterWalletKey BOOLValue];
 
-    if (v8)
+    if (bOOLValue)
     {
-      v9 = [(HMDWalletKeyStepUpFailureListener *)self auditedAccessories];
-      v10 = [v6 uuid];
-      v11 = [v9 objectForKeyedSubscript:v10];
+      auditedAccessories = [(HMDWalletKeyStepUpFailureListener *)self auditedAccessories];
+      uuid = [accessoryCopy uuid];
+      v11 = [auditedAccessories objectForKeyedSubscript:uuid];
 
       if (v11 && ([MEMORY[0x277CBEAA8] date], v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v12, "timeIntervalSinceDate:", v11), v14 = v13, v12, v14 < 3600.0))
       {
         v15 = objc_autoreleasePoolPush();
-        v20 = self;
+        selfCopy = self;
         v17 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
         {
           v21 = HMFGetLogIdentifier();
-          v22 = [v6 uuid];
+          uuid2 = [accessoryCopy uuid];
           v25 = 138543874;
           v26 = v21;
           v27 = 2112;
-          v28 = v22;
+          v28 = uuid2;
           v29 = 2048;
           v30 = v14;
           _os_log_impl(&dword_229538000, v17, OS_LOG_TYPE_INFO, "%{public}@Skipping audit for accessory %@ - last audit was %0.1f seconds ago", &v25, 0x20u);
         }
 
-        a4 = 0;
+        error = 0;
       }
 
       else
       {
         v15 = objc_autoreleasePoolPush();
-        v16 = self;
+        selfCopy2 = self;
         v17 = HMFGetOSLogHandle();
-        a4 = 1;
+        error = 1;
         if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
         {
           v18 = HMFGetLogIdentifier();
-          v19 = [v6 uuid];
+          uuid3 = [accessoryCopy uuid];
           v25 = 138543618;
           v26 = v18;
           v27 = 2112;
-          v28 = v19;
+          v28 = uuid3;
           _os_log_impl(&dword_229538000, v17, OS_LOG_TYPE_INFO, "%{public}@Accessory %@ is unified access, performing audit", &v25, 0x16u);
         }
       }
@@ -358,26 +358,26 @@ void __86__HMDWalletKeyStepUpFailureListener_handleStepUpForReaderGroupSubIdenti
 
     else
     {
-      a4 = 0;
+      error = 0;
     }
   }
 
   v23 = *MEMORY[0x277D85DE8];
-  return a4;
+  return error;
 }
 
-- (id)accessoryWithReaderGroupSubIdentifierACWG:(id)a3
+- (id)accessoryWithReaderGroupSubIdentifierACWG:(id)g
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  gCopy = g;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = [(HMDWalletKeyStepUpFailureListener *)self homeManager];
-  v6 = [v5 homes];
+  homeManager = [(HMDWalletKeyStepUpFailureListener *)self homeManager];
+  homes = [homeManager homes];
 
-  v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v7 = [homes countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
     v8 = v7;
@@ -388,16 +388,16 @@ LABEL_3:
     {
       if (*v18 != v9)
       {
-        objc_enumerationMutation(v6);
+        objc_enumerationMutation(homes);
       }
 
-      v11 = [*(*(&v17 + 1) + 8 * v10) hapAccessories];
+      hapAccessories = [*(*(&v17 + 1) + 8 * v10) hapAccessories];
       v15[0] = MEMORY[0x277D85DD0];
       v15[1] = 3221225472;
       v15[2] = __79__HMDWalletKeyStepUpFailureListener_accessoryWithReaderGroupSubIdentifierACWG___block_invoke;
       v15[3] = &unk_2786830C8;
-      v16 = v4;
-      v12 = [v11 na_firstObjectPassingTest:v15];
+      v16 = gCopy;
+      v12 = [hapAccessories na_firstObjectPassingTest:v15];
 
       if (v12)
       {
@@ -406,7 +406,7 @@ LABEL_3:
 
       if (v8 == ++v10)
       {
-        v8 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v8 = [homes countByEnumeratingWithState:&v17 objects:v21 count:16];
         if (v8)
         {
           goto LABEL_3;
@@ -457,45 +457,45 @@ BOOL __79__HMDWalletKeyStepUpFailureListener_accessoryWithReaderGroupSubIdentifi
 
 - (void)configure
 {
-  v3 = [(HMDWalletKeyStepUpFailureListener *)self libXPCServer];
-  [v3 setDelegate:self];
+  libXPCServer = [(HMDWalletKeyStepUpFailureListener *)self libXPCServer];
+  [libXPCServer setDelegate:self];
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  v5 = [(HMDWalletKeyStepUpFailureListener *)self homeManager];
-  [v4 addObserver:self selector:sel_handleHomeManagerHomeDataLoaded_ name:@"HMDHomeManagerHomeDataLoadedNotification" object:v5];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  homeManager = [(HMDWalletKeyStepUpFailureListener *)self homeManager];
+  [defaultCenter addObserver:self selector:sel_handleHomeManagerHomeDataLoaded_ name:@"HMDHomeManagerHomeDataLoadedNotification" object:homeManager];
 
-  v6 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v6 addObserver:self selector:sel_handleWalletKeyUpdatedNotification_ name:@"HMDWalletKeyUpdatedNotification" object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel_handleWalletKeyUpdatedNotification_ name:@"HMDWalletKeyUpdatedNotification" object:0];
 }
 
-- (HMDWalletKeyStepUpFailureListener)initWithHomeManager:(id)a3 libXPCServer:(id)a4 datasource:(id)a5
+- (HMDWalletKeyStepUpFailureListener)initWithHomeManager:(id)manager libXPCServer:(id)server datasource:(id)datasource
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  managerCopy = manager;
+  serverCopy = server;
+  datasourceCopy = datasource;
   v16.receiver = self;
   v16.super_class = HMDWalletKeyStepUpFailureListener;
   v11 = [(HMDWalletKeyStepUpFailureListener *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_homeManager, v8);
-    objc_storeStrong(&v12->_libXPCServer, a4);
-    objc_storeStrong(&v12->_dataSource, a5);
-    v13 = [MEMORY[0x277CBEB38] dictionary];
+    objc_storeWeak(&v11->_homeManager, managerCopy);
+    objc_storeStrong(&v12->_libXPCServer, server);
+    objc_storeStrong(&v12->_dataSource, datasource);
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     auditedAccessories = v12->_auditedAccessories;
-    v12->_auditedAccessories = v13;
+    v12->_auditedAccessories = dictionary;
   }
 
   return v12;
 }
 
-- (HMDWalletKeyStepUpFailureListener)initWithHomeManager:(id)a3
+- (HMDWalletKeyStepUpFailureListener)initWithHomeManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v5 = [[HMDLibXPCServer alloc] initWithMachServiceName:@"com.apple.nfcd.xpc.homed.uaevents"];
   v6 = objc_alloc_init(HMDHomeWalletDataSource);
-  v7 = [(HMDWalletKeyStepUpFailureListener *)self initWithHomeManager:v4 libXPCServer:v5 datasource:v6];
+  v7 = [(HMDWalletKeyStepUpFailureListener *)self initWithHomeManager:managerCopy libXPCServer:v5 datasource:v6];
 
   return v7;
 }

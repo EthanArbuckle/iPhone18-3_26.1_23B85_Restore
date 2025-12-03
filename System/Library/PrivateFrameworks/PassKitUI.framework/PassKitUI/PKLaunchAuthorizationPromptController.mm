@@ -1,10 +1,10 @@
 @interface PKLaunchAuthorizationPromptController
 - (BOOL)_canPresentPrompt;
 - (BOOL)isPresentingNotificationAuthorizationPrompt;
-- (PKLaunchAuthorizationPromptController)initWithContext:(int64_t)a3 dataProvider:(id)a4 delegate:(id)a5;
+- (PKLaunchAuthorizationPromptController)initWithContext:(int64_t)context dataProvider:(id)provider delegate:(id)delegate;
 - (void)enableLaunchPromptsForSession;
-- (void)locationManagerDidChangeAuthorization:(id)a3;
-- (void)presentLaunchPromptsForPassesIfNeeded:(id)a3;
+- (void)locationManagerDidChangeAuthorization:(id)authorization;
+- (void)presentLaunchPromptsForPassesIfNeeded:(id)needed;
 - (void)resetLaunchPromptsForNextSession;
 @end
 
@@ -43,19 +43,19 @@
   return v5;
 }
 
-- (PKLaunchAuthorizationPromptController)initWithContext:(int64_t)a3 dataProvider:(id)a4 delegate:(id)a5
+- (PKLaunchAuthorizationPromptController)initWithContext:(int64_t)context dataProvider:(id)provider delegate:(id)delegate
 {
-  v9 = a4;
-  v10 = a5;
+  providerCopy = provider;
+  delegateCopy = delegate;
   v16.receiver = self;
   v16.super_class = PKLaunchAuthorizationPromptController;
   v11 = [(PKLaunchAuthorizationPromptController *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    v11->_context = a3;
-    objc_storeStrong(&v11->_dataProvider, a4);
-    objc_storeWeak(&v12->_delegate, v10);
+    v11->_context = context;
+    objc_storeStrong(&v11->_dataProvider, provider);
+    objc_storeWeak(&v12->_delegate, delegateCopy);
     v12->_shouldShowLaunchPrompts = 1;
     v13 = dispatch_queue_create("com.apple.passkit.authorization-prompt", 0);
     locationQueue = v12->_locationQueue;
@@ -65,9 +65,9 @@
   return v12;
 }
 
-- (void)presentLaunchPromptsForPassesIfNeeded:(id)a3
+- (void)presentLaunchPromptsForPassesIfNeeded:(id)needed
 {
-  v4 = a3;
+  neededCopy = needed;
   v5 = MEMORY[0x1E69E96A0];
   v6 = MEMORY[0x1E69E96A0];
   if (self->_shouldShowLaunchPrompts == 1 && !self->_evaluatingPresentment)
@@ -91,7 +91,7 @@
       v22[1] = 3221225472;
       v22[2] = __79__PKLaunchAuthorizationPromptController_presentLaunchPromptsForPassesIfNeeded___block_invoke;
       v22[3] = &unk_1E801F240;
-      v23 = v4;
+      v23 = neededCopy;
       v9 = v5;
       v24 = v5;
       objc_copyWeak(&v25, &location);
@@ -111,20 +111,20 @@
       v10 = v5;
       v18 = v5;
       objc_copyWeak(&v20, &location);
-      v19 = self;
+      selfCopy = self;
       [v7 addOperation:v17];
       objc_destroyWeak(&v20);
     }
 
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __79__PKLaunchAuthorizationPromptController_presentLaunchPromptsForPassesIfNeeded___block_invoke_4;
     v14[3] = &unk_1E801F2B8;
     v12 = v5;
     v15 = v5;
-    v16 = self;
-    v13 = [v7 evaluateWithInput:v11 completion:v14];
+    selfCopy2 = self;
+    v13 = [v7 evaluateWithInput:null completion:v14];
 
     objc_destroyWeak(&location);
   }
@@ -367,16 +367,16 @@ uint64_t __79__PKLaunchAuthorizationPromptController_presentLaunchPromptsForPass
   return userNotificationAuthorizationViewController;
 }
 
-- (void)locationManagerDidChangeAuthorization:(id)a3
+- (void)locationManagerDidChangeAuthorization:(id)authorization
 {
-  v4 = a3;
+  authorizationCopy = authorization;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __79__PKLaunchAuthorizationPromptController_locationManagerDidChangeAuthorization___block_invoke;
   v6[3] = &unk_1E8010A10;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = authorizationCopy;
+  v5 = authorizationCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 

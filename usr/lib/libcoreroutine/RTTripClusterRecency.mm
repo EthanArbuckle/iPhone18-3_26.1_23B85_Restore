@@ -1,64 +1,64 @@
 @interface RTTripClusterRecency
-+ (id)createWithManagedObject:(id)a3;
-+ (id)createWithTripClusterRecencyMO:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToRecency:(id)a3;
++ (id)createWithManagedObject:(id)object;
++ (id)createWithTripClusterRecencyMO:(id)o;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToRecency:(id)recency;
 - (NSString)description;
-- (RTTripClusterRecency)initWithClusterID:(id)a3 startTime:(id)a4 endTime:(id)a5;
-- (RTTripClusterRecency)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)managedObjectWithContext:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (RTTripClusterRecency)initWithClusterID:(id)d startTime:(id)time endTime:(id)endTime;
+- (RTTripClusterRecency)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)managedObjectWithContext:(id)context;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RTTripClusterRecency
 
-- (RTTripClusterRecency)initWithClusterID:(id)a3 startTime:(id)a4 endTime:(id)a5
+- (RTTripClusterRecency)initWithClusterID:(id)d startTime:(id)time endTime:(id)endTime
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  dCopy = d;
+  timeCopy = time;
+  endTimeCopy = endTime;
   v15.receiver = self;
   v15.super_class = RTTripClusterRecency;
   v12 = [(RTTripClusterRecency *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_clusterID, a3);
-    objc_storeStrong(&v13->_startTime, a4);
-    objc_storeStrong(&v13->_endTime, a5);
+    objc_storeStrong(&v12->_clusterID, d);
+    objc_storeStrong(&v13->_startTime, time);
+    objc_storeStrong(&v13->_endTime, endTime);
   }
 
   return v13;
 }
 
-- (RTTripClusterRecency)initWithCoder:(id)a3
+- (RTTripClusterRecency)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectForKey:@"clusterID"];
-  v6 = [v4 decodeObjectForKey:@"startTime"];
-  v7 = [v4 decodeObjectForKey:@"endTime"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectForKey:@"clusterID"];
+  v6 = [coderCopy decodeObjectForKey:@"startTime"];
+  v7 = [coderCopy decodeObjectForKey:@"endTime"];
 
   v8 = [(RTTripClusterRecency *)self initWithClusterID:v5 startTime:v6 endTime:v7];
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(RTTripClusterRecency *)self clusterID];
-  [v4 encodeObject:v5 forKey:@"clusterID"];
+  coderCopy = coder;
+  clusterID = [(RTTripClusterRecency *)self clusterID];
+  [coderCopy encodeObject:clusterID forKey:@"clusterID"];
 
-  v6 = [(RTTripClusterRecency *)self startTime];
-  [v4 encodeObject:v6 forKey:@"startTime"];
+  startTime = [(RTTripClusterRecency *)self startTime];
+  [coderCopy encodeObject:startTime forKey:@"startTime"];
 
-  v7 = [(RTTripClusterRecency *)self endTime];
-  [v4 encodeObject:v7 forKey:@"endTime"];
+  endTime = [(RTTripClusterRecency *)self endTime];
+  [coderCopy encodeObject:endTime forKey:@"endTime"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   clusterID = self->_clusterID;
   startTime = self->_startTime;
   endTime = self->_endTime;
@@ -66,20 +66,20 @@
   return [v4 initWithClusterID:clusterID startTime:startTime endTime:endTime];
 }
 
-- (BOOL)isEqualToRecency:(id)a3
+- (BOOL)isEqualToRecency:(id)recency
 {
-  v4 = a3;
-  v5 = [(RTTripClusterRecency *)self clusterID];
-  v6 = [v4 clusterID];
-  if ([v5 isEqual:v6])
+  recencyCopy = recency;
+  clusterID = [(RTTripClusterRecency *)self clusterID];
+  clusterID2 = [recencyCopy clusterID];
+  if ([clusterID isEqual:clusterID2])
   {
-    v7 = [(RTTripClusterRecency *)self startTime];
-    v8 = [v4 startTime];
-    if ([v7 isEqual:v8])
+    startTime = [(RTTripClusterRecency *)self startTime];
+    startTime2 = [recencyCopy startTime];
+    if ([startTime isEqual:startTime2])
     {
-      v9 = [(RTTripClusterRecency *)self endTime];
-      v10 = [v4 endTime];
-      v11 = [v9 isEqual:v10];
+      endTime = [(RTTripClusterRecency *)self endTime];
+      endTime2 = [recencyCopy endTime];
+      v11 = [endTime isEqual:endTime2];
     }
 
     else
@@ -96,18 +96,18 @@
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(RTTripClusterRecency *)self isEqualToRecency:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(RTTripClusterRecency *)self isEqualToRecency:v5];
   }
 
   return v6;
@@ -116,25 +116,25 @@
 - (NSString)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(RTTripClusterRecency *)self clusterID];
-  v5 = [v4 UUIDString];
-  v6 = [(RTTripClusterRecency *)self startTime];
-  v7 = [(RTTripClusterRecency *)self endTime];
-  v8 = [v3 stringWithFormat:@"clusterID, %@, startTime, %@, endTime, %@", v5, v6, v7];
+  clusterID = [(RTTripClusterRecency *)self clusterID];
+  uUIDString = [clusterID UUIDString];
+  startTime = [(RTTripClusterRecency *)self startTime];
+  endTime = [(RTTripClusterRecency *)self endTime];
+  v8 = [v3 stringWithFormat:@"clusterID, %@, startTime, %@, endTime, %@", uUIDString, startTime, endTime];
 
   return v8;
 }
 
-+ (id)createWithManagedObject:(id)a3
++ (id)createWithManagedObject:(id)object
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  objectCopy = object;
+  if (objectCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = objectCopy;
       v6 = [objc_opt_class() createWithTripClusterRecencyMO:v5];
 
       goto LABEL_8;
@@ -148,7 +148,7 @@
       v11 = v9;
       v12 = 2112;
       v14 = 2080;
-      v13 = v4;
+      v13 = objectCopy;
       v15 = "+[RTTripClusterRecency(RTCoreDataTransformable) createWithManagedObject:]";
       v16 = 1024;
       v17 = 32;
@@ -162,49 +162,49 @@ LABEL_8:
   return v6;
 }
 
-+ (id)createWithTripClusterRecencyMO:(id)a3
++ (id)createWithTripClusterRecencyMO:(id)o
 {
-  v3 = a3;
+  oCopy = o;
   v4 = objc_opt_new();
-  v5 = [v3 clusterID];
+  clusterID = [oCopy clusterID];
 
-  if (v5)
+  if (clusterID)
   {
-    v6 = [v3 clusterID];
+    clusterID2 = [oCopy clusterID];
 
-    v4 = v6;
+    v4 = clusterID2;
   }
 
-  v7 = [MEMORY[0x277CBEAA8] date];
-  v8 = [v3 startTime];
+  date = [MEMORY[0x277CBEAA8] date];
+  startTime = [oCopy startTime];
 
-  if (v8)
+  if (startTime)
   {
-    v9 = [v3 startTime];
+    startTime2 = [oCopy startTime];
 
-    v7 = v9;
+    date = startTime2;
   }
 
-  v10 = [MEMORY[0x277CBEAA8] date];
-  v11 = [v3 endTime];
+  date2 = [MEMORY[0x277CBEAA8] date];
+  endTime = [oCopy endTime];
 
-  if (v11)
+  if (endTime)
   {
-    v12 = [v3 endTime];
+    endTime2 = [oCopy endTime];
 
-    v10 = v12;
+    date2 = endTime2;
   }
 
-  v13 = [[RTTripClusterRecency alloc] initWithClusterID:v4 startTime:v7 endTime:v10];
+  v13 = [[RTTripClusterRecency alloc] initWithClusterID:v4 startTime:date endTime:date2];
 
   return v13;
 }
 
-- (id)managedObjectWithContext:(id)a3
+- (id)managedObjectWithContext:(id)context
 {
-  if (a3)
+  if (context)
   {
-    v3 = [RTTripClusterRecencyMO managedObjectWithTripClusterRecency:self inManagedObjectContext:a3];
+    v3 = [RTTripClusterRecencyMO managedObjectWithTripClusterRecency:self inManagedObjectContext:context];
   }
 
   else

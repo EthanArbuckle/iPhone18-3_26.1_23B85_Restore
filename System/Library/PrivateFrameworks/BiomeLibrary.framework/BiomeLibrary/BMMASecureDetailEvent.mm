@@ -1,38 +1,38 @@
 @interface BMMASecureDetailEvent
-+ (BMMASecureDetailEvent)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (BMMASecureDetailEvent)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)columns;
 + (id)protoFields;
-- (BMMASecureDetailEvent)initWithAssetMetaData:(id)a3 clientName:(id)a4 fromLocation:(id)a5 graftingFailureReason:(id)a6 graftingResult:(id)a7 mapExclaveFailureReason:(id)a8 mapExclaveFailureResult:(id)a9 mountingFailureReason:(id)a10 mountingFailureResult:(id)a11 maSecureOperationType:(int)a12 personalizeFailureReason:(id)a13 personalizeFailureResult:(id)a14 secureReason:(id)a15 result:(id)a16;
-- (BMMASecureDetailEvent)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
+- (BMMASecureDetailEvent)initWithAssetMetaData:(id)data clientName:(id)name fromLocation:(id)location graftingFailureReason:(id)reason graftingResult:(id)result mapExclaveFailureReason:(id)failureReason mapExclaveFailureResult:(id)failureResult mountingFailureReason:(id)self0 mountingFailureResult:(id)self1 maSecureOperationType:(int)self2 personalizeFailureReason:(id)self3 personalizeFailureResult:(id)self4 secureReason:(id)self5 result:(id)self6;
+- (BMMASecureDetailEvent)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMMASecureDetailEvent
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMMASecureDetailEvent *)self assetMetaData];
-    v7 = [v5 assetMetaData];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    assetMetaData = [(BMMASecureDetailEvent *)self assetMetaData];
+    assetMetaData2 = [v5 assetMetaData];
+    v8 = assetMetaData2;
+    if (assetMetaData == assetMetaData2)
     {
     }
 
     else
     {
-      v9 = [(BMMASecureDetailEvent *)self assetMetaData];
-      v10 = [v5 assetMetaData];
-      v11 = [v9 isEqual:v10];
+      assetMetaData3 = [(BMMASecureDetailEvent *)self assetMetaData];
+      assetMetaData4 = [v5 assetMetaData];
+      v11 = [assetMetaData3 isEqual:assetMetaData4];
 
       if (!v11)
       {
@@ -52,8 +52,8 @@
         goto LABEL_56;
       }
 
-      v13 = [(BMMASecureDetailEvent *)self clientName];
-      if (v13 != [v5 clientName])
+      clientName = [(BMMASecureDetailEvent *)self clientName];
+      if (clientName != [v5 clientName])
       {
         goto LABEL_56;
       }
@@ -71,25 +71,25 @@
         goto LABEL_56;
       }
 
-      v14 = [(BMMASecureDetailEvent *)self fromLocation];
-      if (v14 != [v5 fromLocation])
+      fromLocation = [(BMMASecureDetailEvent *)self fromLocation];
+      if (fromLocation != [v5 fromLocation])
       {
         goto LABEL_56;
       }
     }
 
-    v15 = [(BMMASecureDetailEvent *)self graftingFailureReason];
-    v16 = [v5 graftingFailureReason];
-    v17 = v16;
-    if (v15 == v16)
+    graftingFailureReason = [(BMMASecureDetailEvent *)self graftingFailureReason];
+    graftingFailureReason2 = [v5 graftingFailureReason];
+    v17 = graftingFailureReason2;
+    if (graftingFailureReason == graftingFailureReason2)
     {
     }
 
     else
     {
-      v18 = [(BMMASecureDetailEvent *)self graftingFailureReason];
-      v19 = [v5 graftingFailureReason];
-      v20 = [v18 isEqual:v19];
+      graftingFailureReason3 = [(BMMASecureDetailEvent *)self graftingFailureReason];
+      graftingFailureReason4 = [v5 graftingFailureReason];
+      v20 = [graftingFailureReason3 isEqual:graftingFailureReason4];
 
       if (!v20)
       {
@@ -109,25 +109,25 @@
         goto LABEL_56;
       }
 
-      v21 = [(BMMASecureDetailEvent *)self graftingResult];
-      if (v21 != [v5 graftingResult])
+      graftingResult = [(BMMASecureDetailEvent *)self graftingResult];
+      if (graftingResult != [v5 graftingResult])
       {
         goto LABEL_56;
       }
     }
 
-    v22 = [(BMMASecureDetailEvent *)self mapExclaveFailureReason];
-    v23 = [v5 mapExclaveFailureReason];
-    v24 = v23;
-    if (v22 == v23)
+    mapExclaveFailureReason = [(BMMASecureDetailEvent *)self mapExclaveFailureReason];
+    mapExclaveFailureReason2 = [v5 mapExclaveFailureReason];
+    v24 = mapExclaveFailureReason2;
+    if (mapExclaveFailureReason == mapExclaveFailureReason2)
     {
     }
 
     else
     {
-      v25 = [(BMMASecureDetailEvent *)self mapExclaveFailureReason];
-      v26 = [v5 mapExclaveFailureReason];
-      v27 = [v25 isEqual:v26];
+      mapExclaveFailureReason3 = [(BMMASecureDetailEvent *)self mapExclaveFailureReason];
+      mapExclaveFailureReason4 = [v5 mapExclaveFailureReason];
+      v27 = [mapExclaveFailureReason3 isEqual:mapExclaveFailureReason4];
 
       if (!v27)
       {
@@ -147,25 +147,25 @@
         goto LABEL_56;
       }
 
-      v28 = [(BMMASecureDetailEvent *)self mapExclaveFailureResult];
-      if (v28 != [v5 mapExclaveFailureResult])
+      mapExclaveFailureResult = [(BMMASecureDetailEvent *)self mapExclaveFailureResult];
+      if (mapExclaveFailureResult != [v5 mapExclaveFailureResult])
       {
         goto LABEL_56;
       }
     }
 
-    v29 = [(BMMASecureDetailEvent *)self mountingFailureReason];
-    v30 = [v5 mountingFailureReason];
-    v31 = v30;
-    if (v29 == v30)
+    mountingFailureReason = [(BMMASecureDetailEvent *)self mountingFailureReason];
+    mountingFailureReason2 = [v5 mountingFailureReason];
+    v31 = mountingFailureReason2;
+    if (mountingFailureReason == mountingFailureReason2)
     {
     }
 
     else
     {
-      v32 = [(BMMASecureDetailEvent *)self mountingFailureReason];
-      v33 = [v5 mountingFailureReason];
-      v34 = [v32 isEqual:v33];
+      mountingFailureReason3 = [(BMMASecureDetailEvent *)self mountingFailureReason];
+      mountingFailureReason4 = [v5 mountingFailureReason];
+      v34 = [mountingFailureReason3 isEqual:mountingFailureReason4];
 
       if (!v34)
       {
@@ -185,31 +185,31 @@
         goto LABEL_56;
       }
 
-      v35 = [(BMMASecureDetailEvent *)self mountingFailureResult];
-      if (v35 != [v5 mountingFailureResult])
+      mountingFailureResult = [(BMMASecureDetailEvent *)self mountingFailureResult];
+      if (mountingFailureResult != [v5 mountingFailureResult])
       {
         goto LABEL_56;
       }
     }
 
-    v36 = [(BMMASecureDetailEvent *)self maSecureOperationType];
-    if (v36 != [v5 maSecureOperationType])
+    maSecureOperationType = [(BMMASecureDetailEvent *)self maSecureOperationType];
+    if (maSecureOperationType != [v5 maSecureOperationType])
     {
       goto LABEL_56;
     }
 
-    v37 = [(BMMASecureDetailEvent *)self personalizeFailureReason];
-    v38 = [v5 personalizeFailureReason];
-    v39 = v38;
-    if (v37 == v38)
+    personalizeFailureReason = [(BMMASecureDetailEvent *)self personalizeFailureReason];
+    personalizeFailureReason2 = [v5 personalizeFailureReason];
+    v39 = personalizeFailureReason2;
+    if (personalizeFailureReason == personalizeFailureReason2)
     {
     }
 
     else
     {
-      v40 = [(BMMASecureDetailEvent *)self personalizeFailureReason];
-      v41 = [v5 personalizeFailureReason];
-      v42 = [v40 isEqual:v41];
+      personalizeFailureReason3 = [(BMMASecureDetailEvent *)self personalizeFailureReason];
+      personalizeFailureReason4 = [v5 personalizeFailureReason];
+      v42 = [personalizeFailureReason3 isEqual:personalizeFailureReason4];
 
       if (!v42)
       {
@@ -229,25 +229,25 @@
         goto LABEL_56;
       }
 
-      v43 = [(BMMASecureDetailEvent *)self personalizeFailureResult];
-      if (v43 != [v5 personalizeFailureResult])
+      personalizeFailureResult = [(BMMASecureDetailEvent *)self personalizeFailureResult];
+      if (personalizeFailureResult != [v5 personalizeFailureResult])
       {
         goto LABEL_56;
       }
     }
 
-    v44 = [(BMMASecureDetailEvent *)self secureReason];
-    v45 = [v5 secureReason];
-    v46 = v45;
-    if (v44 == v45)
+    secureReason = [(BMMASecureDetailEvent *)self secureReason];
+    secureReason2 = [v5 secureReason];
+    v46 = secureReason2;
+    if (secureReason == secureReason2)
     {
     }
 
     else
     {
-      v47 = [(BMMASecureDetailEvent *)self secureReason];
-      v48 = [v5 secureReason];
-      v49 = [v47 isEqual:v48];
+      secureReason3 = [(BMMASecureDetailEvent *)self secureReason];
+      secureReason4 = [v5 secureReason];
+      v49 = [secureReason3 isEqual:secureReason4];
 
       if (!v49)
       {
@@ -259,18 +259,18 @@ LABEL_57:
       }
     }
 
-    v51 = [(BMMASecureDetailEvent *)self result];
-    v52 = [v5 result];
-    if (v51 == v52)
+    result = [(BMMASecureDetailEvent *)self result];
+    result2 = [v5 result];
+    if (result == result2)
     {
       v12 = 1;
     }
 
     else
     {
-      v53 = [(BMMASecureDetailEvent *)self result];
-      v54 = [v5 result];
-      v12 = [v53 isEqual:v54];
+      result3 = [(BMMASecureDetailEvent *)self result];
+      result4 = [v5 result];
+      v12 = [result3 isEqual:result4];
     }
 
     goto LABEL_57;
@@ -285,8 +285,8 @@ LABEL_58:
 - (id)jsonDictionary
 {
   v48[14] = *MEMORY[0x1E69E9840];
-  v3 = [(BMMASecureDetailEvent *)self assetMetaData];
-  v4 = [v3 jsonDictionary];
+  assetMetaData = [(BMMASecureDetailEvent *)self assetMetaData];
+  jsonDictionary = [assetMetaData jsonDictionary];
 
   if ([(BMMASecureDetailEvent *)self hasClientName])
   {
@@ -308,7 +308,7 @@ LABEL_58:
     v6 = 0;
   }
 
-  v7 = [(BMMASecureDetailEvent *)self graftingFailureReason];
+  graftingFailureReason = [(BMMASecureDetailEvent *)self graftingFailureReason];
   if ([(BMMASecureDetailEvent *)self hasGraftingResult])
   {
     v8 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMMASecureDetailEvent graftingResult](self, "graftingResult")}];
@@ -319,7 +319,7 @@ LABEL_58:
     v8 = 0;
   }
 
-  v46 = [(BMMASecureDetailEvent *)self mapExclaveFailureReason];
+  mapExclaveFailureReason = [(BMMASecureDetailEvent *)self mapExclaveFailureReason];
   if ([(BMMASecureDetailEvent *)self hasMapExclaveFailureResult])
   {
     v45 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMMASecureDetailEvent mapExclaveFailureResult](self, "mapExclaveFailureResult")}];
@@ -330,7 +330,7 @@ LABEL_58:
     v45 = 0;
   }
 
-  v44 = [(BMMASecureDetailEvent *)self mountingFailureReason];
+  mountingFailureReason = [(BMMASecureDetailEvent *)self mountingFailureReason];
   if ([(BMMASecureDetailEvent *)self hasMountingFailureResult])
   {
     v43 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMMASecureDetailEvent mountingFailureResult](self, "mountingFailureResult")}];
@@ -342,7 +342,7 @@ LABEL_58:
   }
 
   v42 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMMASecureDetailEvent maSecureOperationType](self, "maSecureOperationType")}];
-  v41 = [(BMMASecureDetailEvent *)self personalizeFailureReason];
+  personalizeFailureReason = [(BMMASecureDetailEvent *)self personalizeFailureReason];
   if ([(BMMASecureDetailEvent *)self hasPersonalizeFailureResult])
   {
     v9 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMMASecureDetailEvent personalizeFailureResult](self, "personalizeFailureResult")}];
@@ -353,138 +353,138 @@ LABEL_58:
     v9 = 0;
   }
 
-  v40 = [(BMMASecureDetailEvent *)self secureReason];
-  v10 = [(BMMASecureDetailEvent *)self result];
+  secureReason = [(BMMASecureDetailEvent *)self secureReason];
+  result = [(BMMASecureDetailEvent *)self result];
   v47[0] = @"assetMetaData";
-  v11 = v4;
-  if (!v4)
+  null = jsonDictionary;
+  if (!jsonDictionary)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v34 = v11;
-  v48[0] = v11;
+  v34 = null;
+  v48[0] = null;
   v47[1] = @"clientName";
-  v12 = v5;
+  null2 = v5;
   if (!v5)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v33 = v12;
-  v48[1] = v12;
+  v33 = null2;
+  v48[1] = null2;
   v47[2] = @"fromLocation";
-  v13 = v6;
+  null3 = v6;
   if (!v6)
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v32 = v13;
-  v48[2] = v13;
+  v32 = null3;
+  v48[2] = null3;
   v47[3] = @"graftingFailureReason";
-  v14 = v7;
-  if (!v7)
+  null4 = graftingFailureReason;
+  if (!graftingFailureReason)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v31 = v14;
-  v48[3] = v14;
+  v31 = null4;
+  v48[3] = null4;
   v47[4] = @"graftingResult";
-  v15 = v8;
+  null5 = v8;
   if (!v8)
   {
-    v15 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v30 = v15;
-  v48[4] = v15;
+  v30 = null5;
+  v48[4] = null5;
   v47[5] = @"mapExclaveFailureReason";
-  v16 = v46;
-  if (!v46)
+  null6 = mapExclaveFailureReason;
+  if (!mapExclaveFailureReason)
   {
-    v16 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
   v38 = v6;
   v39 = v5;
-  v48[5] = v16;
+  v48[5] = null6;
   v47[6] = @"mapExclaveFailureResult";
-  v17 = v45;
+  null7 = v45;
   if (!v45)
   {
-    v17 = [MEMORY[0x1E695DFB0] null];
+    null7 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v37 = v7;
-  v48[6] = v17;
+  v37 = graftingFailureReason;
+  v48[6] = null7;
   v47[7] = @"mountingFailureReason";
-  v18 = v44;
-  if (!v44)
+  null8 = mountingFailureReason;
+  if (!mountingFailureReason)
   {
-    v18 = [MEMORY[0x1E695DFB0] null];
+    null8 = [MEMORY[0x1E695DFB0] null];
   }
 
   v36 = v8;
-  v48[7] = v18;
+  v48[7] = null8;
   v47[8] = @"mountingFailureResult";
-  v19 = v43;
+  null9 = v43;
   if (!v43)
   {
-    v19 = [MEMORY[0x1E695DFB0] null];
+    null9 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v29 = v16;
-  v48[8] = v19;
+  v29 = null6;
+  v48[8] = null9;
   v47[9] = @"maSecureOperationType";
-  v20 = v42;
+  null10 = v42;
   if (!v42)
   {
-    v20 = [MEMORY[0x1E695DFB0] null];
+    null10 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v21 = v4;
-  v48[9] = v20;
+  v21 = jsonDictionary;
+  v48[9] = null10;
   v47[10] = @"personalizeFailureReason";
-  v22 = v41;
-  if (!v41)
+  null11 = personalizeFailureReason;
+  if (!personalizeFailureReason)
   {
-    v22 = [MEMORY[0x1E695DFB0] null];
+    null11 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v48[10] = v22;
+  v48[10] = null11;
   v47[11] = @"personalizeFailureResult";
-  v23 = v9;
+  null12 = v9;
   if (!v9)
   {
-    v23 = [MEMORY[0x1E695DFB0] null];
+    null12 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v28 = v17;
-  v48[11] = v23;
+  v28 = null7;
+  v48[11] = null12;
   v47[12] = @"secureReason";
-  v24 = v40;
-  if (!v40)
+  null13 = secureReason;
+  if (!secureReason)
   {
-    v24 = [MEMORY[0x1E695DFB0] null];
+    null13 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v48[12] = v24;
+  v48[12] = null13;
   v47[13] = @"result";
-  v25 = v10;
-  if (!v10)
+  null14 = result;
+  if (!result)
   {
-    v25 = [MEMORY[0x1E695DFB0] null];
+    null14 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v48[13] = v25;
+  v48[13] = null14;
   v35 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v48 forKeys:v47 count:14];
-  if (!v10)
+  if (!result)
   {
   }
 
-  if (v40)
+  if (secureReason)
   {
     if (v9)
     {
@@ -502,7 +502,7 @@ LABEL_58:
   }
 
 LABEL_51:
-  if (!v41)
+  if (!personalizeFailureReason)
   {
   }
 
@@ -514,7 +514,7 @@ LABEL_51:
   {
   }
 
-  if (!v44)
+  if (!mountingFailureReason)
   {
   }
 
@@ -522,7 +522,7 @@ LABEL_51:
   {
   }
 
-  if (v46)
+  if (mapExclaveFailureReason)
   {
     if (v36)
     {
@@ -597,11 +597,11 @@ LABEL_67:
   return v35;
 }
 
-- (BMMASecureDetailEvent)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMMASecureDetailEvent)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v147[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:@"assetMetaData"];
+  dictionaryCopy = dictionary;
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"assetMetaData"];
   if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v7 = 0;
@@ -617,10 +617,10 @@ LABEL_67:
     v16 = v119;
     if (v16)
     {
-      if (a4)
+      if (error)
       {
         v16 = v16;
-        *a4 = v16;
+        *error = v16;
       }
 
       v17 = 0;
@@ -628,13 +628,13 @@ LABEL_67:
     }
 
 LABEL_4:
-    v8 = [v5 objectForKeyedSubscript:@"clientName"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"clientName"];
     if (v8 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v9 = 0;
           v17 = 0;
@@ -643,7 +643,7 @@ LABEL_127:
           goto LABEL_128;
         }
 
-        v37 = a4;
+        errorCopy = error;
         v38 = objc_alloc(MEMORY[0x1E696ABC0]);
         v39 = *MEMORY[0x1E698F240];
         v144 = *MEMORY[0x1E696A578];
@@ -653,7 +653,7 @@ LABEL_127:
         v41 = [v38 initWithDomain:v39 code:2 userInfo:?];
         v9 = 0;
         v17 = 0;
-        *v37 = v41;
+        *errorCopy = v41;
         goto LABEL_126;
       }
 
@@ -665,12 +665,12 @@ LABEL_127:
       v9 = 0;
     }
 
-    v10 = [v5 objectForKeyedSubscript:@"fromLocation"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"fromLocation"];
     v116 = v7;
     v117 = v10;
     if (!v10 || (v11 = v10, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v112 = a4;
+      errorCopy3 = error;
       v114 = 0;
       goto LABEL_10;
     }
@@ -678,16 +678,16 @@ LABEL_127:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v112 = a4;
+      errorCopy3 = error;
       v114 = v11;
 LABEL_10:
-      v12 = [v5 objectForKeyedSubscript:@"graftingFailureReason"];
+      v12 = [dictionaryCopy objectForKeyedSubscript:@"graftingFailureReason"];
       v115 = v12;
       if (!v12 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
         v13 = 0;
 LABEL_13:
-        v14 = [v5 objectForKeyedSubscript:@"graftingResult"];
+        v14 = [dictionaryCopy objectForKeyedSubscript:@"graftingResult"];
         v111 = v13;
         if (!v14)
         {
@@ -703,14 +703,14 @@ LABEL_13:
           v106 = v14;
           v14 = 0;
 LABEL_32:
-          v21 = [v5 objectForKeyedSubscript:@"mapExclaveFailureReason"];
+          v21 = [dictionaryCopy objectForKeyedSubscript:@"mapExclaveFailureReason"];
           v108 = v21;
           if (v21 && (v22 = v21, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
           {
             objc_opt_class();
             if ((objc_opt_isKindOfClass() & 1) == 0)
             {
-              if (!v112)
+              if (!errorCopy3)
               {
                 v109 = 0;
                 v17 = 0;
@@ -732,7 +732,7 @@ LABEL_123:
               v62 = [v110 initWithDomain:v61 code:2 userInfo:v113];
               v109 = 0;
               v17 = 0;
-              *v112 = v62;
+              *errorCopy3 = v62;
               v40 = v114;
               v52 = v106;
               v6 = v15;
@@ -747,14 +747,14 @@ LABEL_123:
             v109 = 0;
           }
 
-          [v5 objectForKeyedSubscript:@"mapExclaveFailureResult"];
+          [dictionaryCopy objectForKeyedSubscript:@"mapExclaveFailureResult"];
           v113 = v6 = v15;
           if (v113 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
           {
             objc_opt_class();
             if ((objc_opt_isKindOfClass() & 1) == 0)
             {
-              if (!v112)
+              if (!errorCopy3)
               {
                 v107 = 0;
                 v17 = 0;
@@ -777,7 +777,7 @@ LABEL_121:
               v67 = [v66 initWithDomain:v64 code:2 userInfo:?];
               v107 = 0;
               v17 = 0;
-              *v112 = v67;
+              *errorCopy3 = v67;
               v40 = v114;
               v52 = v106;
 LABEL_120:
@@ -793,14 +793,14 @@ LABEL_120:
             v107 = 0;
           }
 
-          v23 = [v5 objectForKeyedSubscript:@"mountingFailureReason"];
+          v23 = [dictionaryCopy objectForKeyedSubscript:@"mountingFailureReason"];
           v103 = v23;
           if (v23 && (v24 = v23, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
           {
             objc_opt_class();
             if ((objc_opt_isKindOfClass() & 1) == 0)
             {
-              if (!v112)
+              if (!errorCopy3)
               {
                 v104 = 0;
                 v17 = 0;
@@ -818,7 +818,7 @@ LABEL_120:
               v69 = [v105 initWithDomain:v68 code:2 userInfo:?];
               v104 = 0;
               v17 = 0;
-              *v112 = v69;
+              *errorCopy3 = v69;
               v40 = v114;
               v52 = v106;
               goto LABEL_119;
@@ -832,14 +832,14 @@ LABEL_120:
             v104 = 0;
           }
 
-          v25 = [v5 objectForKeyedSubscript:@"mountingFailureResult"];
+          v25 = [dictionaryCopy objectForKeyedSubscript:@"mountingFailureResult"];
           v101 = v25;
           if (v25 && (v26 = v25, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
           {
             objc_opt_class();
             if ((objc_opt_isKindOfClass() & 1) == 0)
             {
-              if (!v112)
+              if (!errorCopy3)
               {
                 v102 = 0;
                 v17 = 0;
@@ -860,7 +860,7 @@ LABEL_120:
               v74 = [v73 initWithDomain:v71 code:2 userInfo:?];
               v102 = 0;
               v17 = 0;
-              *v112 = v74;
+              *errorCopy3 = v74;
               v40 = v114;
               v52 = v106;
 LABEL_118:
@@ -877,7 +877,7 @@ LABEL_119:
             v102 = 0;
           }
 
-          v27 = [v5 objectForKeyedSubscript:@"maSecureOperationType"];
+          v27 = [dictionaryCopy objectForKeyedSubscript:@"maSecureOperationType"];
           v97 = v27;
           if (v27 && (v28 = v27, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
           {
@@ -892,7 +892,7 @@ LABEL_119:
               objc_opt_class();
               if ((objc_opt_isKindOfClass() & 1) == 0)
               {
-                if (!v112)
+                if (!errorCopy3)
                 {
                   v100 = 0;
                   v17 = 0;
@@ -910,7 +910,7 @@ LABEL_119:
                 v88 = [v86 initWithDomain:v87 code:2 userInfo:?];
                 v100 = 0;
                 v17 = 0;
-                *v112 = v88;
+                *errorCopy3 = v88;
                 goto LABEL_135;
               }
 
@@ -923,20 +923,20 @@ LABEL_119:
             v100 = 0;
           }
 
-          v29 = [v5 objectForKeyedSubscript:@"personalizeFailureReason"];
+          v29 = [dictionaryCopy objectForKeyedSubscript:@"personalizeFailureReason"];
           v94 = v29;
           if (!v29 || (v30 = v29, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
           {
             v98 = 0;
 LABEL_50:
-            v31 = [v5 objectForKeyedSubscript:@"personalizeFailureResult"];
+            v31 = [dictionaryCopy objectForKeyedSubscript:@"personalizeFailureResult"];
             v93 = v31;
             if (v31 && (v32 = v31, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
             {
               objc_opt_class();
               if ((objc_opt_isKindOfClass() & 1) == 0)
               {
-                if (!v112)
+                if (!errorCopy3)
                 {
                   v95 = 0;
                   v17 = 0;
@@ -953,7 +953,7 @@ LABEL_50:
                 v78 = [v96 initWithDomain:v77 code:2 userInfo:v33];
                 v95 = 0;
                 v17 = 0;
-                *v112 = v78;
+                *errorCopy3 = v78;
 LABEL_114:
 
                 v40 = v114;
@@ -971,13 +971,13 @@ LABEL_115:
               v95 = 0;
             }
 
-            v33 = [v5 objectForKeyedSubscript:@"secureReason"];
+            v33 = [dictionaryCopy objectForKeyedSubscript:@"secureReason"];
             if (v33 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
             {
               objc_opt_class();
               if ((objc_opt_isKindOfClass() & 1) == 0)
               {
-                if (!v112)
+                if (!errorCopy3)
                 {
                   v34 = 0;
                   v17 = 0;
@@ -993,7 +993,7 @@ LABEL_115:
                 v81 = [v79 initWithDomain:v80 code:2 userInfo:v35];
                 v34 = 0;
                 v17 = 0;
-                *v112 = v81;
+                *errorCopy3 = v81;
                 goto LABEL_113;
               }
 
@@ -1005,13 +1005,13 @@ LABEL_115:
               v34 = 0;
             }
 
-            v35 = [v5 objectForKeyedSubscript:@"result"];
+            v35 = [dictionaryCopy objectForKeyedSubscript:@"result"];
             if (v35 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
             {
               objc_opt_class();
               if ((objc_opt_isKindOfClass() & 1) == 0)
               {
-                if (v112)
+                if (errorCopy3)
                 {
                   v92 = objc_alloc(MEMORY[0x1E696ABC0]);
                   v91 = *MEMORY[0x1E698F240];
@@ -1019,7 +1019,7 @@ LABEL_115:
                   v82 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"result"];
                   v121 = v82;
                   v83 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v121 forKeys:&v120 count:1];
-                  *v112 = [v92 initWithDomain:v91 code:2 userInfo:v83];
+                  *errorCopy3 = [v92 initWithDomain:v91 code:2 userInfo:v83];
                 }
 
                 v36 = 0;
@@ -1050,7 +1050,7 @@ LABEL_113:
             goto LABEL_50;
           }
 
-          if (v112)
+          if (errorCopy3)
           {
             v99 = objc_alloc(MEMORY[0x1E696ABC0]);
             v75 = *MEMORY[0x1E698F240];
@@ -1061,7 +1061,7 @@ LABEL_113:
             v76 = [v99 initWithDomain:v75 code:2 userInfo:?];
             v98 = 0;
             v17 = 0;
-            *v112 = v76;
+            *errorCopy3 = v76;
             v40 = v114;
             v52 = v106;
 LABEL_116:
@@ -1088,7 +1088,7 @@ LABEL_135:
           goto LABEL_32;
         }
 
-        if (v112)
+        if (errorCopy3)
         {
           v54 = objc_alloc(MEMORY[0x1E696ABC0]);
           v55 = *MEMORY[0x1E698F240];
@@ -1106,7 +1106,7 @@ LABEL_135:
           v60 = [v59 initWithDomain:v55 code:2 userInfo:?];
           v14 = 0;
           v17 = 0;
-          *v112 = v60;
+          *errorCopy3 = v60;
           v40 = v114;
 LABEL_122:
           v13 = v111;
@@ -1129,7 +1129,7 @@ LABEL_124:
         goto LABEL_13;
       }
 
-      if (v112)
+      if (errorCopy3)
       {
         v49 = objc_alloc(MEMORY[0x1E696ABC0]);
         v50 = *MEMORY[0x1E698F240];
@@ -1139,7 +1139,7 @@ LABEL_124:
         v52 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v141 forKeys:&v140 count:1];
         v53 = [v49 initWithDomain:v50 code:2 userInfo:v52];
         v17 = 0;
-        *v112 = v53;
+        *errorCopy3 = v53;
         v14 = v51;
         v13 = 0;
         v40 = v114;
@@ -1155,9 +1155,9 @@ LABEL_125:
       goto LABEL_126;
     }
 
-    if (a4)
+    if (error)
     {
-      v42 = a4;
+      errorCopy4 = error;
       v43 = objc_alloc(MEMORY[0x1E696ABC0]);
       v44 = *MEMORY[0x1E698F240];
       v142 = *MEMORY[0x1E696A578];
@@ -1169,7 +1169,7 @@ LABEL_125:
       v48 = [v47 initWithDomain:v44 code:2 userInfo:v46];
       v40 = 0;
       v17 = 0;
-      *v42 = v48;
+      *errorCopy4 = v48;
       v13 = v45;
       goto LABEL_125;
     }
@@ -1181,9 +1181,9 @@ LABEL_126:
     goto LABEL_127;
   }
 
-  if (a4)
+  if (error)
   {
-    v18 = a4;
+    errorCopy5 = error;
     v19 = objc_alloc(MEMORY[0x1E696ABC0]);
     v20 = *MEMORY[0x1E698F240];
     v146 = *MEMORY[0x1E696A578];
@@ -1191,7 +1191,7 @@ LABEL_126:
     v147[0] = v7;
     v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v147 forKeys:&v146 count:1];
     v17 = 0;
-    *v18 = [v19 initWithDomain:v20 code:2 userInfo:v9];
+    *errorCopy5 = [v19 initWithDomain:v20 code:2 userInfo:v9];
 LABEL_128:
 
     goto LABEL_129;
@@ -1208,18 +1208,18 @@ LABEL_129:
 {
   v3 = objc_opt_new();
   [(BMMASecureDetailEvent *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_assetMetaData)
   {
     PBDataWriterPlaceMark();
-    [(BMMAAssetMetadata *)self->_assetMetaData writeTo:v4];
+    [(BMMAAssetMetadata *)self->_assetMetaData writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
@@ -1292,9 +1292,9 @@ LABEL_129:
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v68.receiver = self;
   v68.super_class = BMMASecureDetailEvent;
   v5 = [(BMEventBase *)&v68 init];
@@ -1303,12 +1303,12 @@ LABEL_129:
     goto LABEL_114;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -1319,18 +1319,18 @@ LABEL_129:
       while (1)
       {
         LOBYTE(v69[0]) = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:v69 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:v69 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v69[0] & 0x7F) << v7;
@@ -1348,9 +1348,9 @@ LABEL_129:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -1365,7 +1365,7 @@ LABEL_16:
             goto LABEL_113;
           }
 
-          v15 = [[BMMAAssetMetadata alloc] initByReadFrom:v4];
+          v15 = [[BMMAAssetMetadata alloc] initByReadFrom:fromCopy];
           if (!v15)
           {
             goto LABEL_113;
@@ -1384,18 +1384,18 @@ LABEL_16:
           while (1)
           {
             LOBYTE(v69[0]) = 0;
-            v48 = [v4 position] + 1;
-            if (v48 >= [v4 position] && (v49 = objc_msgSend(v4, "position") + 1, v49 <= objc_msgSend(v4, "length")))
+            v48 = [fromCopy position] + 1;
+            if (v48 >= [fromCopy position] && (v49 = objc_msgSend(fromCopy, "position") + 1, v49 <= objc_msgSend(fromCopy, "length")))
             {
-              v50 = [v4 data];
-              [v50 getBytes:v69 range:{objc_msgSend(v4, "position"), 1}];
+              data2 = [fromCopy data];
+              [data2 getBytes:v69 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v47 |= (v69[0] & 0x7F) << v45;
@@ -1415,7 +1415,7 @@ LABEL_105:
             }
           }
 
-          v23 = (v47 != 0) & ~[v4 hasError];
+          v23 = (v47 != 0) & ~[fromCopy hasError];
           goto LABEL_105;
         case 3u:
           v39 = 0;
@@ -1425,18 +1425,18 @@ LABEL_105:
           while (1)
           {
             LOBYTE(v69[0]) = 0;
-            v42 = [v4 position] + 1;
-            if (v42 >= [v4 position] && (v43 = objc_msgSend(v4, "position") + 1, v43 <= objc_msgSend(v4, "length")))
+            v42 = [fromCopy position] + 1;
+            if (v42 >= [fromCopy position] && (v43 = objc_msgSend(fromCopy, "position") + 1, v43 <= objc_msgSend(fromCopy, "length")))
             {
-              v44 = [v4 data];
-              [v44 getBytes:v69 range:{objc_msgSend(v4, "position"), 1}];
+              data3 = [fromCopy data];
+              [data3 getBytes:v69 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v41 |= (v69[0] & 0x7F) << v39;
@@ -1454,7 +1454,7 @@ LABEL_105:
             }
           }
 
-          v23 = (v41 != 0) & ~[v4 hasError];
+          v23 = (v41 != 0) & ~[fromCopy hasError];
 LABEL_103:
           v64 = 18;
           goto LABEL_110;
@@ -1470,18 +1470,18 @@ LABEL_103:
           while (1)
           {
             LOBYTE(v69[0]) = 0;
-            v27 = [v4 position] + 1;
-            if (v27 >= [v4 position] && (v28 = objc_msgSend(v4, "position") + 1, v28 <= objc_msgSend(v4, "length")))
+            v27 = [fromCopy position] + 1;
+            if (v27 >= [fromCopy position] && (v28 = objc_msgSend(fromCopy, "position") + 1, v28 <= objc_msgSend(fromCopy, "length")))
             {
-              v29 = [v4 data];
-              [v29 getBytes:v69 range:{objc_msgSend(v4, "position"), 1}];
+              data4 = [fromCopy data];
+              [data4 getBytes:v69 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v26 |= (v69[0] & 0x7F) << v24;
@@ -1499,7 +1499,7 @@ LABEL_103:
             }
           }
 
-          v23 = (v26 != 0) & ~[v4 hasError];
+          v23 = (v26 != 0) & ~[fromCopy hasError];
 LABEL_97:
           v64 = 20;
           goto LABEL_110;
@@ -1515,18 +1515,18 @@ LABEL_97:
           while (1)
           {
             LOBYTE(v69[0]) = 0;
-            v54 = [v4 position] + 1;
-            if (v54 >= [v4 position] && (v55 = objc_msgSend(v4, "position") + 1, v55 <= objc_msgSend(v4, "length")))
+            v54 = [fromCopy position] + 1;
+            if (v54 >= [fromCopy position] && (v55 = objc_msgSend(fromCopy, "position") + 1, v55 <= objc_msgSend(fromCopy, "length")))
             {
-              v56 = [v4 data];
-              [v56 getBytes:v69 range:{objc_msgSend(v4, "position"), 1}];
+              data5 = [fromCopy data];
+              [data5 getBytes:v69 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v53 |= (v69[0] & 0x7F) << v51;
@@ -1544,7 +1544,7 @@ LABEL_97:
             }
           }
 
-          v23 = (v53 != 0) & ~[v4 hasError];
+          v23 = (v53 != 0) & ~[fromCopy hasError];
 LABEL_107:
           v64 = 22;
           goto LABEL_110;
@@ -1560,18 +1560,18 @@ LABEL_107:
           while (1)
           {
             LOBYTE(v69[0]) = 0;
-            v61 = [v4 position] + 1;
-            if (v61 >= [v4 position] && (v62 = objc_msgSend(v4, "position") + 1, v62 <= objc_msgSend(v4, "length")))
+            v61 = [fromCopy position] + 1;
+            if (v61 >= [fromCopy position] && (v62 = objc_msgSend(fromCopy, "position") + 1, v62 <= objc_msgSend(fromCopy, "length")))
             {
-              v63 = [v4 data];
-              [v63 getBytes:v69 range:{objc_msgSend(v4, "position"), 1}];
+              data6 = [fromCopy data];
+              [data6 getBytes:v69 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v60 |= (v69[0] & 0x7F) << v58;
@@ -1589,7 +1589,7 @@ LABEL_107:
             }
           }
 
-          v23 = (v60 != 0) & ~[v4 hasError];
+          v23 = (v60 != 0) & ~[fromCopy hasError];
 LABEL_109:
           v64 = 24;
           goto LABEL_110;
@@ -1600,18 +1600,18 @@ LABEL_109:
           while (1)
           {
             LOBYTE(v69[0]) = 0;
-            v35 = [v4 position] + 1;
-            if (v35 >= [v4 position] && (v36 = objc_msgSend(v4, "position") + 1, v36 <= objc_msgSend(v4, "length")))
+            v35 = [fromCopy position] + 1;
+            if (v35 >= [fromCopy position] && (v36 = objc_msgSend(fromCopy, "position") + 1, v36 <= objc_msgSend(fromCopy, "length")))
             {
-              v37 = [v4 data];
-              [v37 getBytes:v69 range:{objc_msgSend(v4, "position"), 1}];
+              data7 = [fromCopy data];
+              [data7 getBytes:v69 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v34 |= (v69[0] & 0x7F) << v32;
@@ -1627,7 +1627,7 @@ LABEL_109:
             }
           }
 
-          if (([v4 hasError] & 1) != 0 || v34 > 7)
+          if (([fromCopy hasError] & 1) != 0 || v34 > 7)
           {
 LABEL_100:
             LODWORD(v34) = 0;
@@ -1669,18 +1669,18 @@ LABEL_82:
       while (1)
       {
         LOBYTE(v69[0]) = 0;
-        v20 = [v4 position] + 1;
-        if (v20 >= [v4 position] && (v21 = objc_msgSend(v4, "position") + 1, v21 <= objc_msgSend(v4, "length")))
+        v20 = [fromCopy position] + 1;
+        if (v20 >= [fromCopy position] && (v21 = objc_msgSend(fromCopy, "position") + 1, v21 <= objc_msgSend(fromCopy, "length")))
         {
-          v22 = [v4 data];
-          [v22 getBytes:v69 range:{objc_msgSend(v4, "position"), 1}];
+          data8 = [fromCopy data];
+          [data8 getBytes:v69 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v19 |= (v69[0] & 0x7F) << v17;
@@ -1698,19 +1698,19 @@ LABEL_82:
         }
       }
 
-      v23 = (v19 != 0) & ~[v4 hasError];
+      v23 = (v19 != 0) & ~[fromCopy hasError];
 LABEL_95:
       v64 = 26;
 LABEL_110:
       *(&v5->super.super.isa + v64) = v23;
 LABEL_111:
-      v65 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v65 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_113:
     v66 = 0;
@@ -1728,41 +1728,41 @@ LABEL_114:
 - (NSString)description
 {
   v15 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v19 = [(BMMASecureDetailEvent *)self assetMetaData];
+  assetMetaData = [(BMMASecureDetailEvent *)self assetMetaData];
   v18 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMMASecureDetailEvent clientName](self, "clientName")}];
   v17 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMMASecureDetailEvent fromLocation](self, "fromLocation")}];
-  v14 = [(BMMASecureDetailEvent *)self graftingFailureReason];
+  graftingFailureReason = [(BMMASecureDetailEvent *)self graftingFailureReason];
   v13 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMMASecureDetailEvent graftingResult](self, "graftingResult")}];
-  v3 = [(BMMASecureDetailEvent *)self mapExclaveFailureReason];
+  mapExclaveFailureReason = [(BMMASecureDetailEvent *)self mapExclaveFailureReason];
   v4 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMMASecureDetailEvent mapExclaveFailureResult](self, "mapExclaveFailureResult")}];
-  v5 = [(BMMASecureDetailEvent *)self mountingFailureReason];
+  mountingFailureReason = [(BMMASecureDetailEvent *)self mountingFailureReason];
   v6 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMMASecureDetailEvent mountingFailureResult](self, "mountingFailureResult")}];
   v7 = BMMASecureOperationTypeAsString([(BMMASecureDetailEvent *)self maSecureOperationType]);
-  v8 = [(BMMASecureDetailEvent *)self personalizeFailureReason];
+  personalizeFailureReason = [(BMMASecureDetailEvent *)self personalizeFailureReason];
   v9 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMMASecureDetailEvent personalizeFailureResult](self, "personalizeFailureResult")}];
-  v10 = [(BMMASecureDetailEvent *)self secureReason];
-  v11 = [(BMMASecureDetailEvent *)self result];
-  v16 = [v15 initWithFormat:@"BMMASecureDetailEvent with assetMetaData: %@, clientName: %@, fromLocation: %@, graftingFailureReason: %@, graftingResult: %@, mapExclaveFailureReason: %@, mapExclaveFailureResult: %@, mountingFailureReason: %@, mountingFailureResult: %@, maSecureOperationType: %@, personalizeFailureReason: %@, personalizeFailureResult: %@, secureReason: %@, result: %@", v19, v18, v17, v14, v13, v3, v4, v5, v6, v7, v8, v9, v10, v11];
+  secureReason = [(BMMASecureDetailEvent *)self secureReason];
+  result = [(BMMASecureDetailEvent *)self result];
+  v16 = [v15 initWithFormat:@"BMMASecureDetailEvent with assetMetaData: %@, clientName: %@, fromLocation: %@, graftingFailureReason: %@, graftingResult: %@, mapExclaveFailureReason: %@, mapExclaveFailureResult: %@, mountingFailureReason: %@, mountingFailureResult: %@, maSecureOperationType: %@, personalizeFailureReason: %@, personalizeFailureResult: %@, secureReason: %@, result: %@", assetMetaData, v18, v17, graftingFailureReason, v13, mapExclaveFailureReason, v4, mountingFailureReason, v6, v7, personalizeFailureReason, v9, secureReason, result];
 
   return v16;
 }
 
-- (BMMASecureDetailEvent)initWithAssetMetaData:(id)a3 clientName:(id)a4 fromLocation:(id)a5 graftingFailureReason:(id)a6 graftingResult:(id)a7 mapExclaveFailureReason:(id)a8 mapExclaveFailureResult:(id)a9 mountingFailureReason:(id)a10 mountingFailureResult:(id)a11 maSecureOperationType:(int)a12 personalizeFailureReason:(id)a13 personalizeFailureResult:(id)a14 secureReason:(id)a15 result:(id)a16
+- (BMMASecureDetailEvent)initWithAssetMetaData:(id)data clientName:(id)name fromLocation:(id)location graftingFailureReason:(id)reason graftingResult:(id)result mapExclaveFailureReason:(id)failureReason mapExclaveFailureResult:(id)failureResult mountingFailureReason:(id)self0 mountingFailureResult:(id)self1 maSecureOperationType:(int)self2 personalizeFailureReason:(id)self3 personalizeFailureResult:(id)self4 secureReason:(id)self5 result:(id)self6
 {
-  v39 = a3;
-  v21 = a4;
-  v22 = a5;
-  v38 = a6;
-  v23 = a7;
-  v33 = a8;
-  v37 = a8;
-  v24 = v22;
-  v25 = a9;
-  v36 = a10;
-  v26 = a11;
-  v27 = a13;
-  v28 = a14;
-  v29 = a15;
+  dataCopy = data;
+  nameCopy = name;
+  locationCopy = location;
+  reasonCopy = reason;
+  resultCopy = result;
+  failureReasonCopy = failureReason;
+  failureReasonCopy2 = failureReason;
+  v24 = locationCopy;
+  failureResultCopy = failureResult;
+  mountingFailureReasonCopy = mountingFailureReason;
+  mountingFailureResultCopy = mountingFailureResult;
+  personalizeFailureReasonCopy = personalizeFailureReason;
+  personalizeFailureResultCopy = personalizeFailureResult;
+  secureReasonCopy = secureReason;
   v35 = a16;
   v40.receiver = self;
   v40.super_class = BMMASecureDetailEvent;
@@ -1770,11 +1770,11 @@ LABEL_114:
   if (v30)
   {
     v30->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v30->_assetMetaData, a3);
-    if (v21)
+    objc_storeStrong(&v30->_assetMetaData, data);
+    if (nameCopy)
     {
       v30->_hasClientName = 1;
-      v30->_clientName = [v21 BOOLValue];
+      v30->_clientName = [nameCopy BOOLValue];
     }
 
     else
@@ -1795,11 +1795,11 @@ LABEL_114:
       v30->_fromLocation = 0;
     }
 
-    objc_storeStrong(&v30->_graftingFailureReason, a6);
-    if (v23)
+    objc_storeStrong(&v30->_graftingFailureReason, reason);
+    if (resultCopy)
     {
       v30->_hasGraftingResult = 1;
-      v30->_graftingResult = [v23 BOOLValue];
+      v30->_graftingResult = [resultCopy BOOLValue];
     }
 
     else
@@ -1808,11 +1808,11 @@ LABEL_114:
       v30->_graftingResult = 0;
     }
 
-    objc_storeStrong(&v30->_mapExclaveFailureReason, v33);
-    if (v25)
+    objc_storeStrong(&v30->_mapExclaveFailureReason, failureReasonCopy);
+    if (failureResultCopy)
     {
       v30->_hasMapExclaveFailureResult = 1;
-      v30->_mapExclaveFailureResult = [v25 BOOLValue];
+      v30->_mapExclaveFailureResult = [failureResultCopy BOOLValue];
     }
 
     else
@@ -1821,11 +1821,11 @@ LABEL_114:
       v30->_mapExclaveFailureResult = 0;
     }
 
-    objc_storeStrong(&v30->_mountingFailureReason, a10);
-    if (v26)
+    objc_storeStrong(&v30->_mountingFailureReason, mountingFailureReason);
+    if (mountingFailureResultCopy)
     {
       v30->_hasMountingFailureResult = 1;
-      v30->_mountingFailureResult = [v26 BOOLValue];
+      v30->_mountingFailureResult = [mountingFailureResultCopy BOOLValue];
     }
 
     else
@@ -1834,12 +1834,12 @@ LABEL_114:
       v30->_mountingFailureResult = 0;
     }
 
-    v30->_maSecureOperationType = a12;
-    objc_storeStrong(&v30->_personalizeFailureReason, a13);
-    if (v28)
+    v30->_maSecureOperationType = type;
+    objc_storeStrong(&v30->_personalizeFailureReason, personalizeFailureReason);
+    if (personalizeFailureResultCopy)
     {
       v30->_hasPersonalizeFailureResult = 1;
-      v30->_personalizeFailureResult = [v28 BOOLValue];
+      v30->_personalizeFailureResult = [personalizeFailureResultCopy BOOLValue];
     }
 
     else
@@ -1848,7 +1848,7 @@ LABEL_114:
       v30->_personalizeFailureResult = 0;
     }
 
-    objc_storeStrong(&v30->_secureReason, a15);
+    objc_storeStrong(&v30->_secureReason, secureReason);
     objc_storeStrong(&v30->_result, a16);
   }
 
@@ -1941,9 +1941,9 @@ id __32__BMMASecureDetailEvent_columns__block_invoke(uint64_t a1, void *a2)
   return v5;
 }
 
-+ (BMMASecureDetailEvent)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (BMMASecureDetailEvent)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -1951,8 +1951,8 @@ id __32__BMMASecureDetailEvent_columns__block_invoke(uint64_t a1, void *a2)
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMMASecureDetailEvent alloc] initByReadFrom:v7];
     v4 = v8;

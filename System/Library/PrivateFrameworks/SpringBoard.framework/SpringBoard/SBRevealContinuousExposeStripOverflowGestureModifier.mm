@@ -1,67 +1,67 @@
 @interface SBRevealContinuousExposeStripOverflowGestureModifier
 - (BOOL)_hideDock;
-- (BOOL)shouldPinLayoutRolesToSpace:(unint64_t)a3;
-- (BOOL)shouldUpdateAnimatableProperty:(id)a3;
-- (BOOL)shouldUseAnchorPointToPinLayoutRolesToSpace:(unint64_t)a3;
-- (CGPoint)adjustedSpaceAccessoryViewAnchorPoint:(CGPoint)a3 forAppLayout:(id)a4;
-- (CGPoint)anchorPointForIndex:(unint64_t)a3;
-- (CGPoint)perspectiveAngleForIndex:(unint64_t)a3;
-- (CGRect)adjustedSpaceAccessoryViewFrame:(CGRect)a3 forAppLayout:(id)a4;
-- (CGRect)frameForIndex:(unint64_t)a3;
-- (CGRect)frameForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 withBounds:(CGRect)a5;
-- (SBRevealContinuousExposeStripOverflowGestureModifier)initWithGestureID:(id)a3 initialAppLayout:(id)a4;
-- (SBSwitcherWallpaperGradientAttributes)wallpaperGradientAttributesForLayoutRole:(int64_t)a3 inAppLayout:(id)a4;
-- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)a3;
+- (BOOL)shouldPinLayoutRolesToSpace:(unint64_t)space;
+- (BOOL)shouldUpdateAnimatableProperty:(id)property;
+- (BOOL)shouldUseAnchorPointToPinLayoutRolesToSpace:(unint64_t)space;
+- (CGPoint)adjustedSpaceAccessoryViewAnchorPoint:(CGPoint)point forAppLayout:(id)layout;
+- (CGPoint)anchorPointForIndex:(unint64_t)index;
+- (CGPoint)perspectiveAngleForIndex:(unint64_t)index;
+- (CGRect)adjustedSpaceAccessoryViewFrame:(CGRect)frame forAppLayout:(id)layout;
+- (CGRect)frameForIndex:(unint64_t)index;
+- (CGRect)frameForLayoutRole:(int64_t)role inAppLayout:(id)layout withBounds:(CGRect)bounds;
+- (SBRevealContinuousExposeStripOverflowGestureModifier)initWithGestureID:(id)d initialAppLayout:(id)layout;
+- (SBSwitcherWallpaperGradientAttributes)wallpaperGradientAttributesForLayoutRole:(int64_t)role inAppLayout:(id)layout;
+- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)index;
 - (double)_finalScaleForFullScreenAppLayout;
-- (double)contentPageViewScaleForAppLayout:(id)a3 withScale:(double)a4;
-- (double)dimmingAlphaForLayoutRole:(int64_t)a3 inAppLayout:(id)a4;
-- (double)modelValueForAnimatableProperty:(id)a3 currentValue:(double)a4 creating:(BOOL)a5;
-- (double)opacityForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 atIndex:(unint64_t)a5;
-- (double)scaleForIndex:(unint64_t)a3;
-- (double)scaleForLayoutRole:(int64_t)a3 inAppLayout:(id)a4;
-- (double)shadowOpacityForLayoutRole:(int64_t)a3 atIndex:(unint64_t)a4;
-- (double)titleOpacityForIndex:(unint64_t)a3;
+- (double)contentPageViewScaleForAppLayout:(id)layout withScale:(double)scale;
+- (double)dimmingAlphaForLayoutRole:(int64_t)role inAppLayout:(id)layout;
+- (double)modelValueForAnimatableProperty:(id)property currentValue:(double)value creating:(BOOL)creating;
+- (double)opacityForLayoutRole:(int64_t)role inAppLayout:(id)layout atIndex:(unint64_t)index;
+- (double)scaleForIndex:(unint64_t)index;
+- (double)scaleForLayoutRole:(int64_t)role inAppLayout:(id)layout;
+- (double)shadowOpacityForLayoutRole:(int64_t)role atIndex:(unint64_t)index;
+- (double)titleOpacityForIndex:(unint64_t)index;
 - (id)_appSwitcherDefaults;
-- (id)_layoutSettingsForAppLayout:(id)a3;
+- (id)_layoutSettingsForAppLayout:(id)layout;
 - (id)animatablePropertyIdentifiers;
-- (id)animationAttributesForLayoutElement:(id)a3;
-- (id)handleGestureEvent:(id)a3;
-- (id)handleTransitionEvent:(id)a3;
+- (id)animationAttributesForLayoutElement:(id)element;
+- (id)handleGestureEvent:(id)event;
+- (id)handleTransitionEvent:(id)event;
 - (id)visibleAppLayouts;
-- (int64_t)updateModeForAnimatableProperty:(id)a3;
+- (int64_t)updateModeForAnimatableProperty:(id)property;
 @end
 
 @implementation SBRevealContinuousExposeStripOverflowGestureModifier
 
-- (SBRevealContinuousExposeStripOverflowGestureModifier)initWithGestureID:(id)a3 initialAppLayout:(id)a4
+- (SBRevealContinuousExposeStripOverflowGestureModifier)initWithGestureID:(id)d initialAppLayout:(id)layout
 {
-  v8 = a4;
+  layoutCopy = layout;
   v11.receiver = self;
   v11.super_class = SBRevealContinuousExposeStripOverflowGestureModifier;
-  v9 = [(SBGestureSwitcherModifier *)&v11 initWithGestureID:a3];
+  v9 = [(SBGestureSwitcherModifier *)&v11 initWithGestureID:d];
   if (v9)
   {
-    if (!v8)
+    if (!layoutCopy)
     {
       [SBRevealContinuousExposeStripOverflowGestureModifier initWithGestureID:a2 initialAppLayout:v9];
     }
 
-    objc_storeStrong(&v9->_initialAppLayout, a4);
+    objc_storeStrong(&v9->_initialAppLayout, layout);
   }
 
   return v9;
 }
 
-- (id)animationAttributesForLayoutElement:(id)a3
+- (id)animationAttributesForLayoutElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v9.receiver = self;
   v9.super_class = SBRevealContinuousExposeStripOverflowGestureModifier;
-  v5 = [(SBGestureSwitcherModifier *)&v9 animationAttributesForLayoutElement:v4];
-  if (![v4 switcherLayoutElementType])
+  v5 = [(SBGestureSwitcherModifier *)&v9 animationAttributesForLayoutElement:elementCopy];
+  if (![elementCopy switcherLayoutElementType])
   {
     v6 = [v5 mutableCopy];
-    v7 = [(SBRevealContinuousExposeStripOverflowGestureModifier *)self _layoutSettingsForAppLayout:v4];
+    v7 = [(SBRevealContinuousExposeStripOverflowGestureModifier *)self _layoutSettingsForAppLayout:elementCopy];
     [v6 setLayoutSettings:v7];
 
     v5 = v6;
@@ -70,7 +70,7 @@
   return v5;
 }
 
-- (id)_layoutSettingsForAppLayout:(id)a3
+- (id)_layoutSettingsForAppLayout:(id)layout
 {
   v4 = objc_alloc_init(MEMORY[0x277D65E60]);
   [v4 setDefaultValues];
@@ -102,47 +102,47 @@
   return v4;
 }
 
-- (id)handleGestureEvent:(id)a3
+- (id)handleGestureEvent:(id)event
 {
   v41 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  eventCopy = event;
   v39.receiver = self;
   v39.super_class = SBRevealContinuousExposeStripOverflowGestureModifier;
-  v5 = [(SBGestureSwitcherModifier *)&v39 handleGestureEvent:v4];
-  [v4 translationInContainerView];
+  v5 = [(SBGestureSwitcherModifier *)&v39 handleGestureEvent:eventCopy];
+  [eventCopy translationInContainerView];
   self->_translation = fabs(v6);
-  if ([v4 phase] == 1)
+  if ([eventCopy phase] == 1)
   {
     v7 = objc_alloc_init(SBAppSwitcherContinuousExposeSwitcherModifier);
     continuousExposeAppSwitcherModifier = self->_continuousExposeAppSwitcherModifier;
     self->_continuousExposeAppSwitcherModifier = &v7->super;
 
     v9 = [(SBAppLayout *)self->_initialAppLayout itemForLayoutRole:1];
-    v10 = [v9 bundleIdentifier];
-    v11 = [v10 copy];
+    bundleIdentifier = [v9 bundleIdentifier];
+    v11 = [bundleIdentifier copy];
     appExposeBundleIdentifier = self->_appExposeBundleIdentifier;
     self->_appExposeBundleIdentifier = v11;
 
-    v13 = [v4 selectedAppLayout];
+    selectedAppLayout = [eventCopy selectedAppLayout];
     initialAppLayout = self->_initialAppLayout;
-    self->_initialAppLayout = v13;
+    self->_initialAppLayout = selectedAppLayout;
 
     self->_showingAppSwitcherLayout = 0;
-    v15 = [(SBSwitcherModifier *)self windowingConfiguration];
-    [v15 stripWidth];
+    windowingConfiguration = [(SBSwitcherModifier *)self windowingConfiguration];
+    [windowingConfiguration stripWidth];
     self->_stripWidth = v16;
 
     goto LABEL_3;
   }
 
-  if ([v4 phase] != 2)
+  if ([eventCopy phase] != 2)
   {
-    if ([v4 phase] != 3)
+    if ([eventCopy phase] != 3)
     {
       goto LABEL_3;
     }
 
-    if (([v4 isCanceled] & 1) != 0 || self->_translation <= 0.0)
+    if (([eventCopy isCanceled] & 1) != 0 || self->_translation <= 0.0)
     {
       v33 = [SBSwitcherTransitionRequest requestForActivatingAppLayout:self->_initialAppLayout];
       v34 = [[SBPerformTransitionSwitcherEventResponse alloc] initWithTransitionRequest:v33 gestureInitiated:1];
@@ -163,8 +163,8 @@ LABEL_26:
     v38 = 0u;
     v35 = 0u;
     v36 = 0u;
-    v24 = [(SBRevealContinuousExposeStripOverflowGestureModifier *)self appLayouts];
-    v25 = [v24 countByEnumeratingWithState:&v35 objects:v40 count:16];
+    appLayouts = [(SBRevealContinuousExposeStripOverflowGestureModifier *)self appLayouts];
+    v25 = [appLayouts countByEnumeratingWithState:&v35 objects:v40 count:16];
     if (v25)
     {
       v26 = v25;
@@ -177,7 +177,7 @@ LABEL_14:
       {
         if (*v36 != v28)
         {
-          objc_enumerationMutation(v24);
+          objc_enumerationMutation(appLayouts);
         }
 
         v27 = *(*(&v35 + 1) + 8 * v29);
@@ -191,7 +191,7 @@ LABEL_14:
         v30 = v27;
         if (v26 == v29)
         {
-          v26 = [v24 countByEnumeratingWithState:&v35 objects:v40 count:16];
+          v26 = [appLayouts countByEnumeratingWithState:&v35 objects:v40 count:16];
           if (v26)
           {
             goto LABEL_14;
@@ -214,7 +214,7 @@ LABEL_14:
 
     else
     {
-      v27 = v24;
+      v27 = appLayouts;
     }
 
 LABEL_25:
@@ -234,15 +234,15 @@ LABEL_3:
   return v5;
 }
 
-- (id)handleTransitionEvent:(id)a3
+- (id)handleTransitionEvent:(id)event
 {
   v8.receiver = self;
   v8.super_class = SBRevealContinuousExposeStripOverflowGestureModifier;
-  v4 = a3;
-  v5 = [(SBGestureSwitcherModifier *)&v8 handleTransitionEvent:v4];
-  v6 = [v4 phase];
+  eventCopy = event;
+  v5 = [(SBGestureSwitcherModifier *)&v8 handleTransitionEvent:eventCopy];
+  phase = [eventCopy phase];
 
-  if (v6 >= 2)
+  if (phase >= 2)
   {
     [(SBChainableModifier *)self setState:1];
   }
@@ -250,7 +250,7 @@ LABEL_3:
   return v5;
 }
 
-- (double)scaleForIndex:(unint64_t)a3
+- (double)scaleForIndex:(unint64_t)index
 {
   v17 = 0;
   v18 = &v17;
@@ -268,12 +268,12 @@ LABEL_3:
     v15[3] = &unk_2783AA618;
     v15[4] = self;
     v15[5] = &v17;
-    v15[6] = a3;
+    v15[6] = index;
     [(SBChainableModifier *)self performTransactionWithTemporaryChildModifier:continuousExposeAppSwitcherModifier usingBlock:v15];
   }
 
-  v7 = [(SBRevealContinuousExposeStripOverflowGestureModifier *)self appLayouts];
-  v8 = [v7 objectAtIndex:a3];
+  appLayouts = [(SBRevealContinuousExposeStripOverflowGestureModifier *)self appLayouts];
+  v8 = [appLayouts objectAtIndex:index];
 
   if ([(SBAppLayout *)self->_initialAppLayout isOrContainsAppLayout:v8])
   {
@@ -301,7 +301,7 @@ uint64_t __70__SBRevealContinuousExposeStripOverflowGestureModifier_scaleForInde
   return result;
 }
 
-- (CGRect)frameForIndex:(unint64_t)a3
+- (CGRect)frameForIndex:(unint64_t)index
 {
   v58 = 0;
   v59 = &v58;
@@ -325,12 +325,12 @@ uint64_t __70__SBRevealContinuousExposeStripOverflowGestureModifier_scaleForInde
     v56[3] = &unk_2783AA618;
     v56[4] = self;
     v56[5] = &v58;
-    v56[6] = a3;
+    v56[6] = index;
     [(SBChainableModifier *)self performTransactionWithTemporaryChildModifier:continuousExposeAppSwitcherModifier usingBlock:v56];
   }
 
-  v10 = [(SBRevealContinuousExposeStripOverflowGestureModifier *)self appLayouts];
-  v11 = [v10 objectAtIndex:a3];
+  appLayouts = [(SBRevealContinuousExposeStripOverflowGestureModifier *)self appLayouts];
+  v11 = [appLayouts objectAtIndex:index];
 
   if ([(SBAppLayout *)self->_initialAppLayout isOrContainsAppLayout:v11])
   {
@@ -340,8 +340,8 @@ uint64_t __70__SBRevealContinuousExposeStripOverflowGestureModifier_scaleForInde
     [(SBRevealContinuousExposeStripOverflowGestureModifier *)self _finalScaleForFullScreenAppLayout];
     v16 = v15;
     v17 = [(SBSwitcherModifier *)self flexibleAutoLayoutSpaceForAppLayout:self->_initialAppLayout];
-    v18 = [v17 configuration];
-    [v18 containerBounds];
+    configuration = [v17 configuration];
+    [configuration containerBounds];
     v20 = v19;
     v22 = v21;
     v24 = v23;
@@ -364,11 +364,11 @@ uint64_t __70__SBRevealContinuousExposeStripOverflowGestureModifier_scaleForInde
     v65.size.height = v26;
     MidX = CGRectGetMidX(v65);
     v32 = MEMORY[0x277D76620];
-    v33 = [*MEMORY[0x277D76620] userInterfaceLayoutDirection];
+    userInterfaceLayoutDirection = [*MEMORY[0x277D76620] userInterfaceLayoutDirection];
     v34 = v28 * (v29 + v29) + 0.0;
     v35 = 1.0 - ((v55 + -1.0) * v34 + 1.0);
     v36 = -(v35 * (v30 - MidX));
-    if (v33 != 1)
+    if (userInterfaceLayoutDirection != 1)
     {
       v36 = v35 * (v30 - MidX);
     }
@@ -380,9 +380,9 @@ uint64_t __70__SBRevealContinuousExposeStripOverflowGestureModifier_scaleForInde
     v66.size.width = v24;
     v66.size.height = v26;
     v59[5] = v59[5] - v35 * (v37 - CGRectGetMidY(v66));
-    v38 = [*v32 userInterfaceLayoutDirection];
+    userInterfaceLayoutDirection2 = [*v32 userInterfaceLayoutDirection];
     v39 = v34 * ((1.0 - v55) * v24 * 0.5 + v54 - MaxX) + 0.0;
-    if (v38 == 1)
+    if (userInterfaceLayoutDirection2 == 1)
     {
       v39 = -v39;
     }
@@ -394,8 +394,8 @@ uint64_t __70__SBRevealContinuousExposeStripOverflowGestureModifier_scaleForInde
   {
     if ([*MEMORY[0x277D76620] userInterfaceLayoutDirection] == 1)
     {
-      v40 = [(SBSwitcherModifier *)self windowingConfiguration];
-      [v40 screenEdgePadding];
+      windowingConfiguration = [(SBSwitcherModifier *)self windowingConfiguration];
+      [windowingConfiguration screenEdgePadding];
       BSUIConstrainValueToIntervalWithRubberBand();
       v41 = v59;
       v43 = v59[4] - v42;
@@ -403,8 +403,8 @@ uint64_t __70__SBRevealContinuousExposeStripOverflowGestureModifier_scaleForInde
 
     else
     {
-      v40 = [(SBSwitcherModifier *)self windowingConfiguration];
-      [v40 screenEdgePadding];
+      windowingConfiguration = [(SBSwitcherModifier *)self windowingConfiguration];
+      [windowingConfiguration screenEdgePadding];
       BSUIConstrainValueToIntervalWithRubberBand();
       v41 = v59;
       v43 = v44 + v59[4];
@@ -441,7 +441,7 @@ uint64_t __70__SBRevealContinuousExposeStripOverflowGestureModifier_frameForInde
   return result;
 }
 
-- (CGPoint)anchorPointForIndex:(unint64_t)a3
+- (CGPoint)anchorPointForIndex:(unint64_t)index
 {
   v13 = 0;
   v14 = &v13;
@@ -458,7 +458,7 @@ uint64_t __70__SBRevealContinuousExposeStripOverflowGestureModifier_frameForInde
     v12[3] = &unk_2783AA618;
     v12[4] = self;
     v12[5] = &v13;
-    v12[6] = a3;
+    v12[6] = index;
     [(SBChainableModifier *)self performTransactionWithTemporaryChildModifier:continuousExposeAppSwitcherModifier usingBlock:v12];
     v4 = v14[4];
     v5 = v14[5];
@@ -468,7 +468,7 @@ uint64_t __70__SBRevealContinuousExposeStripOverflowGestureModifier_frameForInde
   {
     v11.receiver = self;
     v11.super_class = SBRevealContinuousExposeStripOverflowGestureModifier;
-    [(SBRevealContinuousExposeStripOverflowGestureModifier *)&v11 anchorPointForIndex:a3];
+    [(SBRevealContinuousExposeStripOverflowGestureModifier *)&v11 anchorPointForIndex:index];
     v4 = v6;
     v5 = v7;
     v8 = v14;
@@ -493,7 +493,7 @@ uint64_t __76__SBRevealContinuousExposeStripOverflowGestureModifier_anchorPointF
   return result;
 }
 
-- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)a3
+- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)index
 {
   v19 = 0;
   v20 = &v19;
@@ -510,7 +510,7 @@ uint64_t __76__SBRevealContinuousExposeStripOverflowGestureModifier_anchorPointF
     v18[3] = &unk_2783AA618;
     v18[4] = self;
     v18[5] = &v19;
-    v18[6] = a3;
+    v18[6] = index;
     [(SBChainableModifier *)self performTransactionWithTemporaryChildModifier:continuousExposeAppSwitcherModifier usingBlock:v18];
     v4 = v20[4];
     v5 = v20[5];
@@ -522,7 +522,7 @@ uint64_t __76__SBRevealContinuousExposeStripOverflowGestureModifier_anchorPointF
   {
     v17.receiver = self;
     v17.super_class = SBRevealContinuousExposeStripOverflowGestureModifier;
-    [(SBRevealContinuousExposeStripOverflowGestureModifier *)&v17 cornerRadiiForIndex:a3];
+    [(SBRevealContinuousExposeStripOverflowGestureModifier *)&v17 cornerRadiiForIndex:index];
     v4 = v8;
     v5 = v9;
     v6 = v10;
@@ -557,10 +557,10 @@ uint64_t __76__SBRevealContinuousExposeStripOverflowGestureModifier_cornerRadiiF
   return result;
 }
 
-- (CGPoint)perspectiveAngleForIndex:(unint64_t)a3
+- (CGPoint)perspectiveAngleForIndex:(unint64_t)index
 {
-  v5 = [(SBRevealContinuousExposeStripOverflowGestureModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
+  appLayouts = [(SBRevealContinuousExposeStripOverflowGestureModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:index];
 
   v20 = 0;
   v21 = &v20;
@@ -570,7 +570,7 @@ uint64_t __76__SBRevealContinuousExposeStripOverflowGestureModifier_cornerRadiiF
   v23 = &unk_21F9DA6A3;
   v19.receiver = self;
   v19.super_class = SBRevealContinuousExposeStripOverflowGestureModifier;
-  [(SBRevealContinuousExposeStripOverflowGestureModifier *)&v19 perspectiveAngleForIndex:a3];
+  [(SBRevealContinuousExposeStripOverflowGestureModifier *)&v19 perspectiveAngleForIndex:index];
   v24 = v7;
   v25 = v8;
   v9 = self->_translation / self->_stripWidth;
@@ -593,7 +593,7 @@ uint64_t __76__SBRevealContinuousExposeStripOverflowGestureModifier_cornerRadiiF
     v18[3] = &unk_2783AA618;
     v18[4] = self;
     v18[5] = &v20;
-    v18[6] = a3;
+    v18[6] = index;
     [(SBChainableModifier *)self performTransactionWithTemporaryChildModifier:continuousExposeAppSwitcherModifier usingBlock:v18];
   }
 
@@ -649,9 +649,9 @@ uint64_t __81__SBRevealContinuousExposeStripOverflowGestureModifier_perspectiveA
   {
     v7.receiver = self;
     v7.super_class = SBRevealContinuousExposeStripOverflowGestureModifier;
-    v3 = [(SBRevealContinuousExposeStripOverflowGestureModifier *)&v7 visibleAppLayouts];
+    visibleAppLayouts = [(SBRevealContinuousExposeStripOverflowGestureModifier *)&v7 visibleAppLayouts];
     v4 = v10[5];
-    v10[5] = v3;
+    v10[5] = visibleAppLayouts;
   }
 
   v5 = v10[5];
@@ -668,14 +668,14 @@ void __73__SBRevealContinuousExposeStripOverflowGestureModifier_visibleAppLayout
   *(v3 + 40) = v2;
 }
 
-- (CGRect)frameForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 withBounds:(CGRect)a5
+- (CGRect)frameForLayoutRole:(int64_t)role inAppLayout:(id)layout withBounds:(CGRect)bounds
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v11 = a4;
-  v12 = v11;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  layoutCopy = layout;
+  v12 = layoutCopy;
   v36 = 0;
   v37 = &v36;
   v38 = 0x4010000000;
@@ -690,9 +690,9 @@ void __73__SBRevealContinuousExposeStripOverflowGestureModifier_visibleAppLayout
     v28[2] = __98__SBRevealContinuousExposeStripOverflowGestureModifier_frameForLayoutRole_inAppLayout_withBounds___block_invoke;
     v28[3] = &unk_2783AA640;
     v30 = &v36;
-    v31 = a3;
+    roleCopy = role;
     v28[4] = self;
-    v29 = v11;
+    v29 = layoutCopy;
     v32 = x;
     v33 = y;
     v34 = width;
@@ -709,7 +709,7 @@ void __73__SBRevealContinuousExposeStripOverflowGestureModifier_visibleAppLayout
   {
     v27.receiver = self;
     v27.super_class = SBRevealContinuousExposeStripOverflowGestureModifier;
-    [(SBRevealContinuousExposeStripOverflowGestureModifier *)&v27 frameForLayoutRole:a3 inAppLayout:v11 withBounds:x, y, width, height];
+    [(SBRevealContinuousExposeStripOverflowGestureModifier *)&v27 frameForLayoutRole:role inAppLayout:layoutCopy withBounds:x, y, width, height];
     v14 = v18;
     v15 = v19;
     v16 = v20;
@@ -745,10 +745,10 @@ uint64_t __98__SBRevealContinuousExposeStripOverflowGestureModifier_frameForLayo
   return result;
 }
 
-- (double)scaleForLayoutRole:(int64_t)a3 inAppLayout:(id)a4
+- (double)scaleForLayoutRole:(int64_t)role inAppLayout:(id)layout
 {
-  v6 = a4;
-  v7 = v6;
+  layoutCopy = layout;
+  v7 = layoutCopy;
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
@@ -761,9 +761,9 @@ uint64_t __98__SBRevealContinuousExposeStripOverflowGestureModifier_frameForLayo
     v13[2] = __87__SBRevealContinuousExposeStripOverflowGestureModifier_scaleForLayoutRole_inAppLayout___block_invoke;
     v13[3] = &unk_2783AA668;
     v15 = &v17;
-    v16 = a3;
+    roleCopy = role;
     v13[4] = self;
-    v14 = v6;
+    v14 = layoutCopy;
     [(SBChainableModifier *)self performTransactionWithTemporaryChildModifier:continuousExposeAppSwitcherModifier usingBlock:v13];
 
     v9 = v18[3];
@@ -773,7 +773,7 @@ uint64_t __98__SBRevealContinuousExposeStripOverflowGestureModifier_frameForLayo
   {
     v12.receiver = self;
     v12.super_class = SBRevealContinuousExposeStripOverflowGestureModifier;
-    [(SBRevealContinuousExposeStripOverflowGestureModifier *)&v12 scaleForLayoutRole:a3 inAppLayout:v6];
+    [(SBRevealContinuousExposeStripOverflowGestureModifier *)&v12 scaleForLayoutRole:role inAppLayout:layoutCopy];
     v9 = v10;
     v18[3] = v10;
   }
@@ -790,7 +790,7 @@ uint64_t __87__SBRevealContinuousExposeStripOverflowGestureModifier_scaleForLayo
   return result;
 }
 
-- (BOOL)shouldPinLayoutRolesToSpace:(unint64_t)a3
+- (BOOL)shouldPinLayoutRolesToSpace:(unint64_t)space
 {
   v8 = 0;
   v9 = &v8;
@@ -805,7 +805,7 @@ uint64_t __87__SBRevealContinuousExposeStripOverflowGestureModifier_scaleForLayo
     v7[3] = &unk_2783AA618;
     v7[4] = self;
     v7[5] = &v8;
-    v7[6] = a3;
+    v7[6] = space;
     [(SBChainableModifier *)self performTransactionWithTemporaryChildModifier:continuousExposeAppSwitcherModifier usingBlock:v7];
     v4 = *(v9 + 24);
   }
@@ -814,7 +814,7 @@ uint64_t __87__SBRevealContinuousExposeStripOverflowGestureModifier_scaleForLayo
   {
     v6.receiver = self;
     v6.super_class = SBRevealContinuousExposeStripOverflowGestureModifier;
-    v4 = [(SBRevealContinuousExposeStripOverflowGestureModifier *)&v6 shouldPinLayoutRolesToSpace:a3];
+    v4 = [(SBRevealContinuousExposeStripOverflowGestureModifier *)&v6 shouldPinLayoutRolesToSpace:space];
     *(v9 + 24) = v4;
   }
 
@@ -829,10 +829,10 @@ uint64_t __84__SBRevealContinuousExposeStripOverflowGestureModifier_shouldPinLay
   return result;
 }
 
-- (double)opacityForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 atIndex:(unint64_t)a5
+- (double)opacityForLayoutRole:(int64_t)role inAppLayout:(id)layout atIndex:(unint64_t)index
 {
-  v8 = a4;
-  v9 = v8;
+  layoutCopy = layout;
+  v9 = layoutCopy;
   v20 = 0;
   v21 = &v20;
   v22 = 0x2020000000;
@@ -845,10 +845,10 @@ uint64_t __84__SBRevealContinuousExposeStripOverflowGestureModifier_shouldPinLay
     v15[2] = __97__SBRevealContinuousExposeStripOverflowGestureModifier_opacityForLayoutRole_inAppLayout_atIndex___block_invoke;
     v15[3] = &unk_2783AA690;
     v17 = &v20;
-    v18 = a3;
+    roleCopy = role;
     v15[4] = self;
-    v16 = v8;
-    v19 = a5;
+    v16 = layoutCopy;
+    indexCopy = index;
     [(SBChainableModifier *)self performTransactionWithTemporaryChildModifier:continuousExposeAppSwitcherModifier usingBlock:v15];
 
     v11 = v21[3];
@@ -858,7 +858,7 @@ uint64_t __84__SBRevealContinuousExposeStripOverflowGestureModifier_shouldPinLay
   {
     v14.receiver = self;
     v14.super_class = SBRevealContinuousExposeStripOverflowGestureModifier;
-    [(SBRevealContinuousExposeStripOverflowGestureModifier *)&v14 opacityForLayoutRole:a3 inAppLayout:v8 atIndex:a5];
+    [(SBRevealContinuousExposeStripOverflowGestureModifier *)&v14 opacityForLayoutRole:role inAppLayout:layoutCopy atIndex:index];
     v11 = v12;
     v21[3] = v12;
   }
@@ -875,7 +875,7 @@ uint64_t __97__SBRevealContinuousExposeStripOverflowGestureModifier_opacityForLa
   return result;
 }
 
-- (double)shadowOpacityForLayoutRole:(int64_t)a3 atIndex:(unint64_t)a4
+- (double)shadowOpacityForLayoutRole:(int64_t)role atIndex:(unint64_t)index
 {
   v10 = 0;
   v11 = &v10;
@@ -890,8 +890,8 @@ uint64_t __97__SBRevealContinuousExposeStripOverflowGestureModifier_opacityForLa
     v9[3] = &unk_2783AA6B8;
     v9[4] = self;
     v9[5] = &v10;
-    v9[6] = a3;
-    v9[7] = a4;
+    v9[6] = role;
+    v9[7] = index;
     [(SBChainableModifier *)self performTransactionWithTemporaryChildModifier:continuousExposeAppSwitcherModifier usingBlock:v9];
     v5 = v11[3];
   }
@@ -900,7 +900,7 @@ uint64_t __97__SBRevealContinuousExposeStripOverflowGestureModifier_opacityForLa
   {
     v8.receiver = self;
     v8.super_class = SBRevealContinuousExposeStripOverflowGestureModifier;
-    [(SBRevealContinuousExposeStripOverflowGestureModifier *)&v8 shadowOpacityForLayoutRole:a3 atIndex:a4];
+    [(SBRevealContinuousExposeStripOverflowGestureModifier *)&v8 shadowOpacityForLayoutRole:role atIndex:index];
     v5 = v6;
     v11[3] = v6;
   }
@@ -916,10 +916,10 @@ uint64_t __91__SBRevealContinuousExposeStripOverflowGestureModifier_shadowOpacit
   return result;
 }
 
-- (SBSwitcherWallpaperGradientAttributes)wallpaperGradientAttributesForLayoutRole:(int64_t)a3 inAppLayout:(id)a4
+- (SBSwitcherWallpaperGradientAttributes)wallpaperGradientAttributesForLayoutRole:(int64_t)role inAppLayout:(id)layout
 {
-  v6 = a4;
-  v7 = v6;
+  layoutCopy = layout;
+  v7 = layoutCopy;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3010000000;
@@ -934,9 +934,9 @@ uint64_t __91__SBRevealContinuousExposeStripOverflowGestureModifier_shadowOpacit
     v17[2] = __109__SBRevealContinuousExposeStripOverflowGestureModifier_wallpaperGradientAttributesForLayoutRole_inAppLayout___block_invoke;
     v17[3] = &unk_2783AA668;
     v19 = &v21;
-    v20 = a3;
+    roleCopy = role;
     v17[4] = self;
-    v18 = v6;
+    v18 = layoutCopy;
     [(SBChainableModifier *)self performTransactionWithTemporaryChildModifier:continuousExposeAppSwitcherModifier usingBlock:v17];
 
     v9 = v22[4];
@@ -947,7 +947,7 @@ uint64_t __91__SBRevealContinuousExposeStripOverflowGestureModifier_shadowOpacit
   {
     v16.receiver = self;
     v16.super_class = SBRevealContinuousExposeStripOverflowGestureModifier;
-    [(SBRevealContinuousExposeStripOverflowGestureModifier *)&v16 wallpaperGradientAttributesForLayoutRole:a3 inAppLayout:v6];
+    [(SBRevealContinuousExposeStripOverflowGestureModifier *)&v16 wallpaperGradientAttributesForLayoutRole:role inAppLayout:layoutCopy];
     v9 = v11;
     v10 = v12;
     v13 = v22;
@@ -973,10 +973,10 @@ uint64_t __109__SBRevealContinuousExposeStripOverflowGestureModifier_wallpaperGr
   return result;
 }
 
-- (double)contentPageViewScaleForAppLayout:(id)a3 withScale:(double)a4
+- (double)contentPageViewScaleForAppLayout:(id)layout withScale:(double)scale
 {
-  v6 = a3;
-  v7 = v6;
+  layoutCopy = layout;
+  v7 = layoutCopy;
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
@@ -990,8 +990,8 @@ uint64_t __109__SBRevealContinuousExposeStripOverflowGestureModifier_wallpaperGr
     v13[3] = &unk_2783AA668;
     v15 = &v17;
     v13[4] = self;
-    v14 = v6;
-    v16 = a4;
+    v14 = layoutCopy;
+    scaleCopy = scale;
     [(SBChainableModifier *)self performTransactionWithTemporaryChildModifier:continuousExposeAppSwitcherModifier usingBlock:v13];
 
     v9 = v18[3];
@@ -1001,7 +1001,7 @@ uint64_t __109__SBRevealContinuousExposeStripOverflowGestureModifier_wallpaperGr
   {
     v12.receiver = self;
     v12.super_class = SBRevealContinuousExposeStripOverflowGestureModifier;
-    [(SBRevealContinuousExposeStripOverflowGestureModifier *)&v12 contentPageViewScaleForAppLayout:v6 withScale:a4];
+    [(SBRevealContinuousExposeStripOverflowGestureModifier *)&v12 contentPageViewScaleForAppLayout:layoutCopy withScale:scale];
     v9 = v10;
     v18[3] = v10;
   }
@@ -1018,10 +1018,10 @@ uint64_t __99__SBRevealContinuousExposeStripOverflowGestureModifier_contentPageV
   return result;
 }
 
-- (double)dimmingAlphaForLayoutRole:(int64_t)a3 inAppLayout:(id)a4
+- (double)dimmingAlphaForLayoutRole:(int64_t)role inAppLayout:(id)layout
 {
-  v6 = a4;
-  v7 = v6;
+  layoutCopy = layout;
+  v7 = layoutCopy;
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
@@ -1034,9 +1034,9 @@ uint64_t __99__SBRevealContinuousExposeStripOverflowGestureModifier_contentPageV
     v13[2] = __94__SBRevealContinuousExposeStripOverflowGestureModifier_dimmingAlphaForLayoutRole_inAppLayout___block_invoke;
     v13[3] = &unk_2783AA668;
     v15 = &v17;
-    v16 = a3;
+    roleCopy = role;
     v13[4] = self;
-    v14 = v6;
+    v14 = layoutCopy;
     [(SBChainableModifier *)self performTransactionWithTemporaryChildModifier:continuousExposeAppSwitcherModifier usingBlock:v13];
 
     v9 = v18[3];
@@ -1046,7 +1046,7 @@ uint64_t __99__SBRevealContinuousExposeStripOverflowGestureModifier_contentPageV
   {
     v12.receiver = self;
     v12.super_class = SBRevealContinuousExposeStripOverflowGestureModifier;
-    [(SBRevealContinuousExposeStripOverflowGestureModifier *)&v12 dimmingAlphaForLayoutRole:a3 inAppLayout:v6];
+    [(SBRevealContinuousExposeStripOverflowGestureModifier *)&v12 dimmingAlphaForLayoutRole:role inAppLayout:layoutCopy];
     v9 = v10;
     v18[3] = v10;
   }
@@ -1063,7 +1063,7 @@ uint64_t __94__SBRevealContinuousExposeStripOverflowGestureModifier_dimmingAlpha
   return result;
 }
 
-- (double)titleOpacityForIndex:(unint64_t)a3
+- (double)titleOpacityForIndex:(unint64_t)index
 {
   v9 = 0;
   v10 = &v9;
@@ -1078,7 +1078,7 @@ uint64_t __94__SBRevealContinuousExposeStripOverflowGestureModifier_dimmingAlpha
     v8[3] = &unk_2783AA618;
     v8[4] = self;
     v8[5] = &v9;
-    v8[6] = a3;
+    v8[6] = index;
     [(SBChainableModifier *)self performTransactionWithTemporaryChildModifier:continuousExposeAppSwitcherModifier usingBlock:v8];
     v4 = v10[3];
   }
@@ -1087,7 +1087,7 @@ uint64_t __94__SBRevealContinuousExposeStripOverflowGestureModifier_dimmingAlpha
   {
     v7.receiver = self;
     v7.super_class = SBRevealContinuousExposeStripOverflowGestureModifier;
-    [(SBRevealContinuousExposeStripOverflowGestureModifier *)&v7 titleOpacityForIndex:a3];
+    [(SBRevealContinuousExposeStripOverflowGestureModifier *)&v7 titleOpacityForIndex:index];
     v4 = v5;
     v10[3] = v5;
   }
@@ -1103,7 +1103,7 @@ uint64_t __77__SBRevealContinuousExposeStripOverflowGestureModifier_titleOpacity
   return result;
 }
 
-- (BOOL)shouldUseAnchorPointToPinLayoutRolesToSpace:(unint64_t)a3
+- (BOOL)shouldUseAnchorPointToPinLayoutRolesToSpace:(unint64_t)space
 {
   v8 = 0;
   v9 = &v8;
@@ -1118,7 +1118,7 @@ uint64_t __77__SBRevealContinuousExposeStripOverflowGestureModifier_titleOpacity
     v7[3] = &unk_2783AA618;
     v7[4] = self;
     v7[5] = &v8;
-    v7[6] = a3;
+    v7[6] = space;
     [(SBChainableModifier *)self performTransactionWithTemporaryChildModifier:continuousExposeAppSwitcherModifier usingBlock:v7];
     v4 = *(v9 + 24);
   }
@@ -1127,7 +1127,7 @@ uint64_t __77__SBRevealContinuousExposeStripOverflowGestureModifier_titleOpacity
   {
     v6.receiver = self;
     v6.super_class = SBRevealContinuousExposeStripOverflowGestureModifier;
-    v4 = [(SBRevealContinuousExposeStripOverflowGestureModifier *)&v6 shouldUseAnchorPointToPinLayoutRolesToSpace:a3];
+    v4 = [(SBRevealContinuousExposeStripOverflowGestureModifier *)&v6 shouldUseAnchorPointToPinLayoutRolesToSpace:space];
     *(v9 + 24) = v4;
   }
 
@@ -1142,14 +1142,14 @@ uint64_t __100__SBRevealContinuousExposeStripOverflowGestureModifier_shouldUseAn
   return result;
 }
 
-- (CGRect)adjustedSpaceAccessoryViewFrame:(CGRect)a3 forAppLayout:(id)a4
+- (CGRect)adjustedSpaceAccessoryViewFrame:(CGRect)frame forAppLayout:(id)layout
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
-  v10 = v9;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  layoutCopy = layout;
+  v10 = layoutCopy;
   v33 = 0;
   v34 = &v33;
   v35 = 0x4010000000;
@@ -1169,7 +1169,7 @@ uint64_t __100__SBRevealContinuousExposeStripOverflowGestureModifier_shouldUseAn
     v30 = y;
     v31 = width;
     v32 = height;
-    v27 = v9;
+    v27 = layoutCopy;
     [(SBChainableModifier *)self performTransactionWithTemporaryChildModifier:continuousExposeAppSwitcherModifier usingBlock:v26];
 
     v12 = v34[4];
@@ -1182,7 +1182,7 @@ uint64_t __100__SBRevealContinuousExposeStripOverflowGestureModifier_shouldUseAn
   {
     v25.receiver = self;
     v25.super_class = SBRevealContinuousExposeStripOverflowGestureModifier;
-    [(SBRevealContinuousExposeStripOverflowGestureModifier *)&v25 adjustedSpaceAccessoryViewFrame:v9 forAppLayout:x, y, width, height];
+    [(SBRevealContinuousExposeStripOverflowGestureModifier *)&v25 adjustedSpaceAccessoryViewFrame:layoutCopy forAppLayout:x, y, width, height];
     v12 = v16;
     v13 = v17;
     v14 = v18;
@@ -1218,12 +1218,12 @@ uint64_t __101__SBRevealContinuousExposeStripOverflowGestureModifier_adjustedSpa
   return result;
 }
 
-- (CGPoint)adjustedSpaceAccessoryViewAnchorPoint:(CGPoint)a3 forAppLayout:(id)a4
+- (CGPoint)adjustedSpaceAccessoryViewAnchorPoint:(CGPoint)point forAppLayout:(id)layout
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = v7;
+  y = point.y;
+  x = point.x;
+  layoutCopy = layout;
+  v8 = layoutCopy;
   v23 = 0;
   v24 = &v23;
   v25 = 0x3010000000;
@@ -1241,7 +1241,7 @@ uint64_t __101__SBRevealContinuousExposeStripOverflowGestureModifier_adjustedSpa
     v18[4] = self;
     v21 = x;
     v22 = y;
-    v19 = v7;
+    v19 = layoutCopy;
     [(SBChainableModifier *)self performTransactionWithTemporaryChildModifier:continuousExposeAppSwitcherModifier usingBlock:v18];
 
     v10 = v24[4];
@@ -1252,7 +1252,7 @@ uint64_t __101__SBRevealContinuousExposeStripOverflowGestureModifier_adjustedSpa
   {
     v17.receiver = self;
     v17.super_class = SBRevealContinuousExposeStripOverflowGestureModifier;
-    [(SBRevealContinuousExposeStripOverflowGestureModifier *)&v17 adjustedSpaceAccessoryViewAnchorPoint:v7 forAppLayout:x, y];
+    [(SBRevealContinuousExposeStripOverflowGestureModifier *)&v17 adjustedSpaceAccessoryViewAnchorPoint:layoutCopy forAppLayout:x, y];
     v10 = v12;
     v11 = v13;
     v14 = v24;
@@ -1285,13 +1285,13 @@ uint64_t __107__SBRevealContinuousExposeStripOverflowGestureModifier_adjustedSpa
   return v2;
 }
 
-- (double)modelValueForAnimatableProperty:(id)a3 currentValue:(double)a4 creating:(BOOL)a5
+- (double)modelValueForAnimatableProperty:(id)property currentValue:(double)value creating:(BOOL)creating
 {
-  v5 = a5;
-  v8 = a3;
-  if ([v8 isEqualToString:@"SBRevealContinuousExposeStripOverflowGestureModifierAnimatablePropertyIdentifier"])
+  creatingCopy = creating;
+  propertyCopy = property;
+  if ([propertyCopy isEqualToString:@"SBRevealContinuousExposeStripOverflowGestureModifierAnimatablePropertyIdentifier"])
   {
-    if (v5)
+    if (creatingCopy)
     {
       v9 = 0.0;
     }
@@ -1306,17 +1306,17 @@ uint64_t __107__SBRevealContinuousExposeStripOverflowGestureModifier_adjustedSpa
   {
     v12.receiver = self;
     v12.super_class = SBRevealContinuousExposeStripOverflowGestureModifier;
-    [(SBRevealContinuousExposeStripOverflowGestureModifier *)&v12 modelValueForAnimatableProperty:v8 currentValue:v5 creating:a4];
+    [(SBRevealContinuousExposeStripOverflowGestureModifier *)&v12 modelValueForAnimatableProperty:propertyCopy currentValue:creatingCopy creating:value];
     v9 = v10;
   }
 
   return v9;
 }
 
-- (int64_t)updateModeForAnimatableProperty:(id)a3
+- (int64_t)updateModeForAnimatableProperty:(id)property
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"SBRevealContinuousExposeStripOverflowGestureModifierAnimatablePropertyIdentifier"])
+  propertyCopy = property;
+  if ([propertyCopy isEqualToString:@"SBRevealContinuousExposeStripOverflowGestureModifierAnimatablePropertyIdentifier"])
   {
     v5 = 3;
   }
@@ -1325,16 +1325,16 @@ uint64_t __107__SBRevealContinuousExposeStripOverflowGestureModifier_adjustedSpa
   {
     v7.receiver = self;
     v7.super_class = SBRevealContinuousExposeStripOverflowGestureModifier;
-    v5 = [(SBRevealContinuousExposeStripOverflowGestureModifier *)&v7 updateModeForAnimatableProperty:v4];
+    v5 = [(SBRevealContinuousExposeStripOverflowGestureModifier *)&v7 updateModeForAnimatableProperty:propertyCopy];
   }
 
   return v5;
 }
 
-- (BOOL)shouldUpdateAnimatableProperty:(id)a3
+- (BOOL)shouldUpdateAnimatableProperty:(id)property
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"SBRevealContinuousExposeStripOverflowGestureModifierAnimatablePropertyIdentifier"])
+  propertyCopy = property;
+  if ([propertyCopy isEqualToString:@"SBRevealContinuousExposeStripOverflowGestureModifierAnimatablePropertyIdentifier"])
   {
     v5 = self->_showingAppSwitcherLayout != self->_translation > self->_stripWidth;
   }
@@ -1343,7 +1343,7 @@ uint64_t __107__SBRevealContinuousExposeStripOverflowGestureModifier_adjustedSpa
   {
     v7.receiver = self;
     v7.super_class = SBRevealContinuousExposeStripOverflowGestureModifier;
-    v5 = [(SBRevealContinuousExposeStripOverflowGestureModifier *)&v7 shouldUpdateAnimatableProperty:v4];
+    v5 = [(SBRevealContinuousExposeStripOverflowGestureModifier *)&v7 shouldUpdateAnimatableProperty:propertyCopy];
   }
 
   return v5;
@@ -1352,8 +1352,8 @@ uint64_t __107__SBRevealContinuousExposeStripOverflowGestureModifier_adjustedSpa
 - (double)_finalScaleForFullScreenAppLayout
 {
   v3 = [(SBSwitcherModifier *)self flexibleAutoLayoutSpaceForAppLayout:self->_initialAppLayout];
-  v4 = [v3 configuration];
-  [v4 containerBounds];
+  configuration = [v3 configuration];
+  [configuration containerBounds];
   v6 = v5;
 
   [(SBRevealContinuousExposeStripOverflowGestureModifier *)self containerViewBounds];
@@ -1364,8 +1364,8 @@ uint64_t __107__SBRevealContinuousExposeStripOverflowGestureModifier_adjustedSpa
     v8 = v8 - v9;
   }
 
-  v10 = [(SBSwitcherModifier *)self windowingConfiguration];
-  [v10 stripVerticalEdgeSpacing];
+  windowingConfiguration = [(SBSwitcherModifier *)self windowingConfiguration];
+  [windowingConfiguration stripVerticalEdgeSpacing];
   v12 = v8 + v11 * -2.0;
 
   return v12 / v6;
@@ -1377,9 +1377,9 @@ uint64_t __107__SBRevealContinuousExposeStripOverflowGestureModifier_adjustedSpa
   if (!appSwitcherDefaults)
   {
     v4 = +[SBDefaults localDefaults];
-    v5 = [v4 appSwitcherDefaults];
+    appSwitcherDefaults = [v4 appSwitcherDefaults];
     v6 = self->_appSwitcherDefaults;
-    self->_appSwitcherDefaults = v5;
+    self->_appSwitcherDefaults = appSwitcherDefaults;
 
     appSwitcherDefaults = self->_appSwitcherDefaults;
   }
@@ -1389,20 +1389,20 @@ uint64_t __107__SBRevealContinuousExposeStripOverflowGestureModifier_adjustedSpa
 
 - (BOOL)_hideDock
 {
-  v3 = [(SBAppLayout *)self->_initialAppLayout preferredDisplayOrdinal];
-  v4 = [(SBRevealContinuousExposeStripOverflowGestureModifier *)self _appSwitcherDefaults];
-  v5 = v4;
-  if (v3)
+  preferredDisplayOrdinal = [(SBAppLayout *)self->_initialAppLayout preferredDisplayOrdinal];
+  _appSwitcherDefaults = [(SBRevealContinuousExposeStripOverflowGestureModifier *)self _appSwitcherDefaults];
+  v5 = _appSwitcherDefaults;
+  if (preferredDisplayOrdinal)
   {
-    v6 = [v4 chamoisHideDockExternal];
+    chamoisHideDockExternal = [_appSwitcherDefaults chamoisHideDockExternal];
   }
 
   else
   {
-    v6 = [v4 chamoisHideDock];
+    chamoisHideDockExternal = [_appSwitcherDefaults chamoisHideDock];
   }
 
-  v7 = v6;
+  v7 = chamoisHideDockExternal;
 
   return v7;
 }

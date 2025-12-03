@@ -1,12 +1,12 @@
 @interface HMNetworkRouterWANStatus
-+ (id)parsedFromData:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)parseFromData:(id)a3 error:(id *)a4;
++ (id)parsedFromData:(id)data error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)parseFromData:(id)data error:(id *)error;
 - (HMNetworkRouterWANStatus)init;
-- (HMNetworkRouterWANStatus)initWithIdentifier:(id)a3 status:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (HMNetworkRouterWANStatus)initWithIdentifier:(id)identifier status:(id)status;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)serializeWithError:(id *)a3;
+- (id)serializeWithError:(id *)error;
 @end
 
 @implementation HMNetworkRouterWANStatus
@@ -14,17 +14,17 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(HMNetworkRouterWANStatus *)self identifier];
-  v5 = [(HMNetworkRouterWANStatus *)self status];
-  v6 = [v3 stringWithFormat:@"<HMNetworkRouterWANStatus identifier=%@, status=%@>", v4, v5];
+  identifier = [(HMNetworkRouterWANStatus *)self identifier];
+  status = [(HMNetworkRouterWANStatus *)self status];
+  v6 = [v3 stringWithFormat:@"<HMNetworkRouterWANStatus identifier=%@, status=%@>", identifier, status];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -34,14 +34,14 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
-      v7 = [(HMNetworkRouterWANStatus *)self identifier];
-      v8 = [(HMNetworkRouterWANStatus *)v6 identifier];
-      if (v7 != v8)
+      v6 = equalCopy;
+      identifier = [(HMNetworkRouterWANStatus *)self identifier];
+      identifier2 = [(HMNetworkRouterWANStatus *)v6 identifier];
+      if (identifier != identifier2)
       {
-        v9 = [(HMNetworkRouterWANStatus *)self identifier];
-        v3 = [(HMNetworkRouterWANStatus *)v6 identifier];
-        if (![v9 isEqual:v3])
+        identifier3 = [(HMNetworkRouterWANStatus *)self identifier];
+        identifier4 = [(HMNetworkRouterWANStatus *)v6 identifier];
+        if (![identifier3 isEqual:identifier4])
         {
           v10 = 0;
 LABEL_13:
@@ -50,25 +50,25 @@ LABEL_14:
           goto LABEL_15;
         }
 
-        v16 = v9;
+        v16 = identifier3;
       }
 
-      v11 = [(HMNetworkRouterWANStatus *)self status];
-      v12 = [(HMNetworkRouterWANStatus *)v6 status];
-      if (v11 == v12)
+      status = [(HMNetworkRouterWANStatus *)self status];
+      status2 = [(HMNetworkRouterWANStatus *)v6 status];
+      if (status == status2)
       {
         v10 = 1;
       }
 
       else
       {
-        v13 = [(HMNetworkRouterWANStatus *)self status];
-        v14 = [(HMNetworkRouterWANStatus *)v6 status];
-        v10 = [v13 isEqual:v14];
+        status3 = [(HMNetworkRouterWANStatus *)self status];
+        status4 = [(HMNetworkRouterWANStatus *)v6 status];
+        v10 = [status3 isEqual:status4];
       }
 
-      v9 = v16;
-      if (v7 == v8)
+      identifier3 = v16;
+      if (identifier == identifier2)
       {
         goto LABEL_14;
       }
@@ -84,17 +84,17 @@ LABEL_15:
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [HMNetworkRouterWANStatus allocWithZone:a3];
-  v5 = [(HMNetworkRouterWANStatus *)self identifier];
-  v6 = [(HMNetworkRouterWANStatus *)self status];
-  v7 = [(HMNetworkRouterWANStatus *)v4 initWithIdentifier:v5 status:v6];
+  v4 = [HMNetworkRouterWANStatus allocWithZone:zone];
+  identifier = [(HMNetworkRouterWANStatus *)self identifier];
+  status = [(HMNetworkRouterWANStatus *)self status];
+  v7 = [(HMNetworkRouterWANStatus *)v4 initWithIdentifier:identifier status:status];
 
   return v7;
 }
 
-- (id)serializeWithError:(id *)a3
+- (id)serializeWithError:(id *)error
 {
   v39 = *MEMORY[0x1E69E9840];
   v37 = 0u;
@@ -119,13 +119,13 @@ LABEL_15:
   v20 = 0u;
   v18 = 0u;
   TLV8BufferInit();
-  v5 = [(HMNetworkRouterWANStatus *)self identifier];
+  identifier = [(HMNetworkRouterWANStatus *)self identifier];
 
-  if (v5)
+  if (identifier)
   {
-    v6 = [(HMNetworkRouterWANStatus *)self identifier];
+    identifier2 = [(HMNetworkRouterWANStatus *)self identifier];
     v17 = 0;
-    v7 = [v6 serializeWithError:&v17];
+    v7 = [identifier2 serializeWithError:&v17];
     v8 = v17;
 
     if (v8)
@@ -140,11 +140,11 @@ LABEL_15:
     if (v9)
     {
 LABEL_9:
-      if (a3)
+      if (error)
       {
         _HMErrorFromOSStatus(v9);
         v8 = 0;
-        *a3 = v13 = 0;
+        *error = v13 = 0;
         goto LABEL_14;
       }
 
@@ -153,9 +153,9 @@ LABEL_9:
     }
   }
 
-  v10 = [(HMNetworkRouterWANStatus *)self status];
+  status = [(HMNetworkRouterWANStatus *)self status];
 
-  if (!v10)
+  if (!status)
   {
 LABEL_11:
     v13 = [MEMORY[0x1E695DEF0] dataWithBytes:v18 length:?];
@@ -163,9 +163,9 @@ LABEL_11:
     goto LABEL_14;
   }
 
-  v11 = [(HMNetworkRouterWANStatus *)self status];
+  status2 = [(HMNetworkRouterWANStatus *)self status];
   v16 = 0;
-  v7 = [v11 serializeWithError:&v16];
+  v7 = [status2 serializeWithError:&v16];
   v8 = v16;
 
   if (!v8)
@@ -184,11 +184,11 @@ LABEL_11:
 
 LABEL_6:
 
-  if (a3)
+  if (error)
   {
     v12 = v8;
     v13 = 0;
-    *a3 = v8;
+    *error = v8;
     goto LABEL_14;
   }
 
@@ -202,16 +202,16 @@ LABEL_14:
   return v13;
 }
 
-- (BOOL)parseFromData:(id)a3 error:(id *)a4
+- (BOOL)parseFromData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = v6;
-  if (a4)
+  dataCopy = data;
+  v7 = dataCopy;
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
-  v8 = [v6 bytes];
+  bytes = [dataCopy bytes];
   v9 = [v7 length];
   if (!v9)
   {
@@ -220,11 +220,11 @@ LABEL_14:
     goto LABEL_25;
   }
 
-  v25 = self;
+  selfCopy = self;
   v10 = 0;
   v11 = 0;
   v12 = 0;
-  v13 = v8 + v9;
+  v13 = bytes + v9;
   do
   {
     v32 = 0;
@@ -235,10 +235,10 @@ LABEL_14:
     Next = TLV8GetNext();
     if (Next || (Next = TLV8GetOrCopyCoalesced(), Next))
     {
-      if (a4)
+      if (error)
       {
         _HMErrorFromOSStatus(Next);
-        *a4 = v22 = 0;
+        *error = v22 = 0;
         goto LABEL_26;
       }
 
@@ -297,11 +297,11 @@ LABEL_13:
   if (v12)
   {
 LABEL_17:
-    if (a4)
+    if (error)
     {
       v21 = v12;
       v22 = 0;
-      *a4 = v12;
+      *error = v12;
       goto LABEL_26;
     }
 
@@ -311,9 +311,9 @@ LABEL_22:
   }
 
 LABEL_24:
-  self = v25;
+  self = selfCopy;
 LABEL_25:
-  [(HMNetworkRouterWANStatus *)self setIdentifier:v11, v25];
+  [(HMNetworkRouterWANStatus *)self setIdentifier:v11, selfCopy];
   [(HMNetworkRouterWANStatus *)self setStatus:v10];
   v12 = 0;
   v22 = 1;
@@ -322,18 +322,18 @@ LABEL_26:
   return v22;
 }
 
-- (HMNetworkRouterWANStatus)initWithIdentifier:(id)a3 status:(id)a4
+- (HMNetworkRouterWANStatus)initWithIdentifier:(id)identifier status:(id)status
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  statusCopy = status;
   v12.receiver = self;
   v12.super_class = HMNetworkRouterWANStatus;
   v9 = [(HMNetworkRouterWANStatus *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_identifier, a3);
-    objc_storeStrong(&v10->_status, a4);
+    objc_storeStrong(&v9->_identifier, identifier);
+    objc_storeStrong(&v10->_status, status);
   }
 
   return v10;
@@ -346,24 +346,24 @@ LABEL_26:
   return [(HMNetworkRouterWANStatus *)&v3 init];
 }
 
-+ (id)parsedFromData:(id)a3 error:(id *)a4
++ (id)parsedFromData:(id)data error:(id *)error
 {
-  v5 = a3;
+  dataCopy = data;
   v6 = objc_alloc_init(HMNetworkRouterWANStatus);
   v7 = v6;
   if (v6)
   {
     v11 = 0;
-    [(HMNetworkRouterWANStatus *)v6 parseFromData:v5 error:&v11];
+    [(HMNetworkRouterWANStatus *)v6 parseFromData:dataCopy error:&v11];
     v8 = v11;
     if (v8)
     {
 
-      if (a4)
+      if (error)
       {
         v9 = v8;
         v7 = 0;
-        *a4 = v8;
+        *error = v8;
       }
 
       else

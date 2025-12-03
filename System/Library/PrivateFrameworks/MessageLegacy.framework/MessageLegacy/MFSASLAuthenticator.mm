@@ -1,22 +1,22 @@
 @interface MFSASLAuthenticator
 - (BOOL)isUsingSSL;
-- (MFSASLAuthenticator)initWithAuthScheme:(id)a3 account:(id)a4 connection:(id)a5;
+- (MFSASLAuthenticator)initWithAuthScheme:(id)scheme account:(id)account connection:(id)connection;
 - (void)dealloc;
 - (void)setMissingPasswordError;
 @end
 
 @implementation MFSASLAuthenticator
 
-- (MFSASLAuthenticator)initWithAuthScheme:(id)a3 account:(id)a4 connection:(id)a5
+- (MFSASLAuthenticator)initWithAuthScheme:(id)scheme account:(id)account connection:(id)connection
 {
   v10.receiver = self;
   v10.super_class = MFSASLAuthenticator;
   v8 = [(MFSASLAuthenticator *)&v10 init];
   if (v8)
   {
-    v8->_authScheme = a3;
-    v8->_account = a4;
-    v8->_connection = a5;
+    v8->_authScheme = scheme;
+    v8->_account = account;
+    v8->_connection = connection;
   }
 
   return v8;
@@ -31,13 +31,13 @@
 
 - (BOOL)isUsingSSL
 {
-  v2 = [(MFConnection *)self->_connection securityProtocol];
-  if (v2)
+  securityProtocol = [(MFConnection *)self->_connection securityProtocol];
+  if (securityProtocol)
   {
-    LOBYTE(v2) = [(NSString *)v2 caseInsensitiveCompare:*MEMORY[0x277CBF0A0]]!= NSOrderedSame;
+    LOBYTE(securityProtocol) = [(NSString *)securityProtocol caseInsensitiveCompare:*MEMORY[0x277CBF0A0]]!= NSOrderedSame;
   }
 
-  return v2;
+  return securityProtocol;
 }
 
 - (void)setMissingPasswordError

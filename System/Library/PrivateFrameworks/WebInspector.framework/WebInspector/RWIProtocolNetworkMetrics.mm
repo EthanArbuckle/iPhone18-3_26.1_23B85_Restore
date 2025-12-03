@@ -11,26 +11,26 @@
 - (double)responseBodyDecodedSize;
 - (double)responseHeaderBytesReceived;
 - (int64_t)priority;
-- (void)setConnectionIdentifier:(id)a3;
-- (void)setPriority:(int64_t)a3;
-- (void)setProtocol:(id)a3;
-- (void)setRemoteAddress:(id)a3;
-- (void)setRequestBodyBytesSent:(double)a3;
-- (void)setRequestHeaderBytesSent:(double)a3;
-- (void)setRequestHeaders:(id)a3;
-- (void)setResponseBodyBytesReceived:(double)a3;
-- (void)setResponseBodyDecodedSize:(double)a3;
-- (void)setResponseHeaderBytesReceived:(double)a3;
-- (void)setSecurityConnection:(id)a3;
+- (void)setConnectionIdentifier:(id)identifier;
+- (void)setPriority:(int64_t)priority;
+- (void)setProtocol:(id)protocol;
+- (void)setRemoteAddress:(id)address;
+- (void)setRequestBodyBytesSent:(double)sent;
+- (void)setRequestHeaderBytesSent:(double)sent;
+- (void)setRequestHeaders:(id)headers;
+- (void)setResponseBodyBytesReceived:(double)received;
+- (void)setResponseBodyDecodedSize:(double)size;
+- (void)setResponseHeaderBytesReceived:(double)received;
+- (void)setSecurityConnection:(id)connection;
 @end
 
 @implementation RWIProtocolNetworkMetrics
 
-- (void)setProtocol:(id)a3
+- (void)setProtocol:(id)protocol
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolNetworkMetrics;
-  [(RWIProtocolJSONObject *)&v3 setString:a3 forKey:@"protocol"];
+  [(RWIProtocolJSONObject *)&v3 setString:protocol forKey:@"protocol"];
 }
 
 - (NSString)protocol
@@ -42,7 +42,7 @@
   return v2;
 }
 
-- (void)setPriority:(int64_t)a3
+- (void)setPriority:(int64_t)priority
 {
   WTF::StringImpl::createWithoutCopyingNonEmpty();
   if (v6)
@@ -110,11 +110,11 @@ LABEL_8:
   return v10;
 }
 
-- (void)setConnectionIdentifier:(id)a3
+- (void)setConnectionIdentifier:(id)identifier
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolNetworkMetrics;
-  [(RWIProtocolJSONObject *)&v3 setString:a3 forKey:@"connectionIdentifier"];
+  [(RWIProtocolJSONObject *)&v3 setString:identifier forKey:@"connectionIdentifier"];
 }
 
 - (NSString)connectionIdentifier
@@ -126,11 +126,11 @@ LABEL_8:
   return v2;
 }
 
-- (void)setRemoteAddress:(id)a3
+- (void)setRemoteAddress:(id)address
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolNetworkMetrics;
-  [(RWIProtocolJSONObject *)&v3 setString:a3 forKey:@"remoteAddress"];
+  [(RWIProtocolJSONObject *)&v3 setString:address forKey:@"remoteAddress"];
 }
 
 - (NSString)remoteAddress
@@ -142,11 +142,11 @@ LABEL_8:
   return v2;
 }
 
-- (void)setRequestHeaders:(id)a3
+- (void)setRequestHeaders:(id)headers
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolNetworkMetrics;
-  [(RWIProtocolJSONObject *)&v3 setObject:a3 forKey:@"requestHeaders"];
+  [(RWIProtocolJSONObject *)&v3 setObject:headers forKey:@"requestHeaders"];
 }
 
 - (RWIProtocolNetworkHeaders)requestHeaders
@@ -204,11 +204,11 @@ LABEL_8:
   return v7;
 }
 
-- (void)setRequestHeaderBytesSent:(double)a3
+- (void)setRequestHeaderBytesSent:(double)sent
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolNetworkMetrics;
-  [(RWIProtocolJSONObject *)&v3 setDouble:@"requestHeaderBytesSent" forKey:a3];
+  [(RWIProtocolJSONObject *)&v3 setDouble:@"requestHeaderBytesSent" forKey:sent];
 }
 
 - (double)requestHeaderBytesSent
@@ -219,11 +219,11 @@ LABEL_8:
   return result;
 }
 
-- (void)setRequestBodyBytesSent:(double)a3
+- (void)setRequestBodyBytesSent:(double)sent
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolNetworkMetrics;
-  [(RWIProtocolJSONObject *)&v3 setDouble:@"requestBodyBytesSent" forKey:a3];
+  [(RWIProtocolJSONObject *)&v3 setDouble:@"requestBodyBytesSent" forKey:sent];
 }
 
 - (double)requestBodyBytesSent
@@ -234,11 +234,11 @@ LABEL_8:
   return result;
 }
 
-- (void)setResponseHeaderBytesReceived:(double)a3
+- (void)setResponseHeaderBytesReceived:(double)received
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolNetworkMetrics;
-  [(RWIProtocolJSONObject *)&v3 setDouble:@"responseHeaderBytesReceived" forKey:a3];
+  [(RWIProtocolJSONObject *)&v3 setDouble:@"responseHeaderBytesReceived" forKey:received];
 }
 
 - (double)responseHeaderBytesReceived
@@ -249,11 +249,11 @@ LABEL_8:
   return result;
 }
 
-- (void)setResponseBodyBytesReceived:(double)a3
+- (void)setResponseBodyBytesReceived:(double)received
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolNetworkMetrics;
-  [(RWIProtocolJSONObject *)&v3 setDouble:@"responseBodyBytesReceived" forKey:a3];
+  [(RWIProtocolJSONObject *)&v3 setDouble:@"responseBodyBytesReceived" forKey:received];
 }
 
 - (double)responseBodyBytesReceived
@@ -264,11 +264,11 @@ LABEL_8:
   return result;
 }
 
-- (void)setResponseBodyDecodedSize:(double)a3
+- (void)setResponseBodyDecodedSize:(double)size
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolNetworkMetrics;
-  [(RWIProtocolJSONObject *)&v3 setDouble:@"responseBodyDecodedSize" forKey:a3];
+  [(RWIProtocolJSONObject *)&v3 setDouble:@"responseBodyDecodedSize" forKey:size];
 }
 
 - (double)responseBodyDecodedSize
@@ -279,11 +279,11 @@ LABEL_8:
   return result;
 }
 
-- (void)setSecurityConnection:(id)a3
+- (void)setSecurityConnection:(id)connection
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolNetworkMetrics;
-  [(RWIProtocolJSONObject *)&v3 setObject:a3 forKey:@"securityConnection"];
+  [(RWIProtocolJSONObject *)&v3 setObject:connection forKey:@"securityConnection"];
 }
 
 - (RWIProtocolSecurityConnection)securityConnection

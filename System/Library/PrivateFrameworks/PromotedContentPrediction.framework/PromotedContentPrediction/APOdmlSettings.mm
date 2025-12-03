@@ -1,6 +1,6 @@
 @interface APOdmlSettings
-+ (void)prewarmModelWithPlacementType:(unint64_t)a3 assetManagerType:(unint64_t)a4;
-- (APOdmlSettings)initWithPlacementType:(unint64_t)a3 assetManagerType:(unint64_t)a4;
++ (void)prewarmModelWithPlacementType:(unint64_t)type assetManagerType:(unint64_t)managerType;
+- (APOdmlSettings)initWithPlacementType:(unint64_t)type assetManagerType:(unint64_t)managerType;
 - (NSString)experimentID;
 - (NSString)odmlNamespace;
 - (NSString)treatmentID;
@@ -11,21 +11,21 @@
 
 @implementation APOdmlSettings
 
-+ (void)prewarmModelWithPlacementType:(unint64_t)a3 assetManagerType:(unint64_t)a4
++ (void)prewarmModelWithPlacementType:(unint64_t)type assetManagerType:(unint64_t)managerType
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = sub_260EE6304;
   v4[3] = &unk_279AC6358;
-  v4[4] = a3;
-  v4[5] = a4;
+  v4[4] = type;
+  v4[5] = managerType;
   if (qword_280CCF610 != -1)
   {
     dispatch_once(&qword_280CCF610, v4);
   }
 }
 
-- (APOdmlSettings)initWithPlacementType:(unint64_t)a3 assetManagerType:(unint64_t)a4
+- (APOdmlSettings)initWithPlacementType:(unint64_t)type assetManagerType:(unint64_t)managerType
 {
   v15.receiver = self;
   v15.super_class = APOdmlSettings;
@@ -33,10 +33,10 @@
   if (v8)
   {
     v9 = objc_msgSend_sharedAssetManagerCoordinator(APOdmlAssetManagerCoordinator, v6, v7);
-    objc_msgSend_prewarmModelWithPlacementType_assetManagerType_(APOdmlSettings, v10, a3, a4);
+    objc_msgSend_prewarmModelWithPlacementType_assetManagerType_(APOdmlSettings, v10, type, managerType);
     v13 = objc_msgSend_sharedInstance(APOdmlAllowList, v11, v12);
-    v8->_assetManagerType = a4;
-    v8->_placementType = a3;
+    v8->_assetManagerType = managerType;
+    v8->_placementType = type;
   }
 
   return v8;

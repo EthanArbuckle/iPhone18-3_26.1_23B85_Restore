@@ -21,25 +21,25 @@
 - (NSMeasurement)rotationalSpeedMarkerRedline;
 - (NSMeasurement)rotationalSpeedMax;
 - (unsigned)rotationalSpeedState;
-- (void)registerObserver:(id)a3;
-- (void)unregisterObserver:(id)a3;
+- (void)registerObserver:(id)observer;
+- (void)unregisterObserver:(id)observer;
 @end
 
 @implementation CAFEngineRPM
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___CAFEngineRPM;
   objc_msgSendSuper2(&v2, sel_load);
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v4 = a3;
-  if ([v4 conformsToProtocol:&unk_28468B230])
+  observerCopy = observer;
+  if ([observerCopy conformsToProtocol:&unk_28468B230])
   {
-    v5 = v4;
+    v5 = observerCopy;
   }
 
   else
@@ -52,12 +52,12 @@
   [(CAFService *)&v6 registerObserver:v5];
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  v4 = a3;
-  if ([v4 conformsToProtocol:&unk_28468B230])
+  observerCopy = observer;
+  if ([observerCopy conformsToProtocol:&unk_28468B230])
   {
-    v5 = v4;
+    v5 = observerCopy;
   }
 
   else
@@ -73,13 +73,13 @@
 - (CAFMeasurementCharacteristic)rotationalSpeedCharacteristic
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  [v6 validateRegisteredForAccessory:v8 service:v9 characteristic:@"0x0000000030000024"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  [registrations validateRegisteredForAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000030000024"];
 
   objc_opt_class();
   v10 = [(CAFService *)self characteristicForType:@"0x0000000030000024"];
@@ -98,49 +98,49 @@
 
 - (NSMeasurement)rotationalSpeed
 {
-  v2 = [(CAFEngineRPM *)self rotationalSpeedCharacteristic];
-  v3 = [v2 measurementValue];
+  rotationalSpeedCharacteristic = [(CAFEngineRPM *)self rotationalSpeedCharacteristic];
+  measurementValue = [rotationalSpeedCharacteristic measurementValue];
 
-  return v3;
+  return measurementValue;
 }
 
 - (CAFUInt32Range)rotationalSpeedRange
 {
-  v2 = [(CAFEngineRPM *)self rotationalSpeedCharacteristic];
-  v3 = [v2 range];
-  v4 = [v3 uInt32Range];
+  rotationalSpeedCharacteristic = [(CAFEngineRPM *)self rotationalSpeedCharacteristic];
+  range = [rotationalSpeedCharacteristic range];
+  uInt32Range = [range uInt32Range];
 
-  return v4;
+  return uInt32Range;
 }
 
 - (CAFMeasurementRange)rotationalSpeedMeasurementRange
 {
-  v3 = [(CAFEngineRPM *)self rotationalSpeedRange];
-  v4 = [(CAFEngineRPM *)self rotationalSpeed];
-  v5 = [v4 unit];
-  v6 = [v3 measurementRangeWithUnit:v5];
+  rotationalSpeedRange = [(CAFEngineRPM *)self rotationalSpeedRange];
+  rotationalSpeed = [(CAFEngineRPM *)self rotationalSpeed];
+  unit = [rotationalSpeed unit];
+  v6 = [rotationalSpeedRange measurementRangeWithUnit:unit];
 
   return v6;
 }
 
 - (BOOL)rotationalSpeedInvalid
 {
-  v2 = [(CAFEngineRPM *)self rotationalSpeedCharacteristic];
-  v3 = [v2 isInvalid];
+  rotationalSpeedCharacteristic = [(CAFEngineRPM *)self rotationalSpeedCharacteristic];
+  isInvalid = [rotationalSpeedCharacteristic isInvalid];
 
-  return v3;
+  return isInvalid;
 }
 
 - (CAFRotationalSpeedStateCharacteristic)rotationalSpeedStateCharacteristic
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  [v6 validateRegisteredForAccessory:v8 service:v9 characteristic:@"0x0000000030000060"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  [registrations validateRegisteredForAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000030000060"];
 
   objc_opt_class();
   v10 = [(CAFService *)self characteristicForType:@"0x0000000030000060"];
@@ -159,16 +159,16 @@
 
 - (unsigned)rotationalSpeedState
 {
-  v2 = [(CAFEngineRPM *)self rotationalSpeedStateCharacteristic];
-  v3 = [v2 rotationalSpeedStateValue];
+  rotationalSpeedStateCharacteristic = [(CAFEngineRPM *)self rotationalSpeedStateCharacteristic];
+  rotationalSpeedStateValue = [rotationalSpeedStateCharacteristic rotationalSpeedStateValue];
 
-  return v3;
+  return rotationalSpeedStateValue;
 }
 
 - (BOOL)hasRotationalSpeedState
 {
-  v2 = [(CAFEngineRPM *)self rotationalSpeedStateCharacteristic];
-  v3 = v2 != 0;
+  rotationalSpeedStateCharacteristic = [(CAFEngineRPM *)self rotationalSpeedStateCharacteristic];
+  v3 = rotationalSpeedStateCharacteristic != 0;
 
   return v3;
 }
@@ -176,13 +176,13 @@
 - (CAFMeasurementCharacteristic)rotationalSpeedMarkerRedlineCharacteristic
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  [v6 validateRegisteredForAccessory:v8 service:v9 characteristic:@"0x000000003000004F"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  [registrations validateRegisteredForAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x000000003000004F"];
 
   objc_opt_class();
   v10 = [(CAFService *)self characteristicForType:@"0x000000003000004F"];
@@ -201,35 +201,35 @@
 
 - (NSMeasurement)rotationalSpeedMarkerRedline
 {
-  v2 = [(CAFEngineRPM *)self rotationalSpeedMarkerRedlineCharacteristic];
-  v3 = [v2 measurementValue];
+  rotationalSpeedMarkerRedlineCharacteristic = [(CAFEngineRPM *)self rotationalSpeedMarkerRedlineCharacteristic];
+  measurementValue = [rotationalSpeedMarkerRedlineCharacteristic measurementValue];
 
-  return v3;
+  return measurementValue;
 }
 
 - (CAFUInt32Range)rotationalSpeedMarkerRedlineRange
 {
-  v2 = [(CAFEngineRPM *)self rotationalSpeedMarkerRedlineCharacteristic];
-  v3 = [v2 range];
-  v4 = [v3 uInt32Range];
+  rotationalSpeedMarkerRedlineCharacteristic = [(CAFEngineRPM *)self rotationalSpeedMarkerRedlineCharacteristic];
+  range = [rotationalSpeedMarkerRedlineCharacteristic range];
+  uInt32Range = [range uInt32Range];
 
-  return v4;
+  return uInt32Range;
 }
 
 - (CAFMeasurementRange)rotationalSpeedMarkerRedlineMeasurementRange
 {
-  v3 = [(CAFEngineRPM *)self rotationalSpeedMarkerRedlineRange];
-  v4 = [(CAFEngineRPM *)self rotationalSpeedMarkerRedline];
-  v5 = [v4 unit];
-  v6 = [v3 measurementRangeWithUnit:v5];
+  rotationalSpeedMarkerRedlineRange = [(CAFEngineRPM *)self rotationalSpeedMarkerRedlineRange];
+  rotationalSpeedMarkerRedline = [(CAFEngineRPM *)self rotationalSpeedMarkerRedline];
+  unit = [rotationalSpeedMarkerRedline unit];
+  v6 = [rotationalSpeedMarkerRedlineRange measurementRangeWithUnit:unit];
 
   return v6;
 }
 
 - (BOOL)hasRotationalSpeedMarkerRedline
 {
-  v2 = [(CAFEngineRPM *)self rotationalSpeedMarkerRedlineCharacteristic];
-  v3 = v2 != 0;
+  rotationalSpeedMarkerRedlineCharacteristic = [(CAFEngineRPM *)self rotationalSpeedMarkerRedlineCharacteristic];
+  v3 = rotationalSpeedMarkerRedlineCharacteristic != 0;
 
   return v3;
 }
@@ -237,13 +237,13 @@
 - (CAFMeasurementCharacteristic)rotationalSpeedMaxCharacteristic
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  [v6 validateRegisteredForAccessory:v8 service:v9 characteristic:@"0x000000003000004E"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  [registrations validateRegisteredForAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x000000003000004E"];
 
   objc_opt_class();
   v10 = [(CAFService *)self characteristicForType:@"0x000000003000004E"];
@@ -262,27 +262,27 @@
 
 - (NSMeasurement)rotationalSpeedMax
 {
-  v2 = [(CAFEngineRPM *)self rotationalSpeedMaxCharacteristic];
-  v3 = [v2 measurementValue];
+  rotationalSpeedMaxCharacteristic = [(CAFEngineRPM *)self rotationalSpeedMaxCharacteristic];
+  measurementValue = [rotationalSpeedMaxCharacteristic measurementValue];
 
-  return v3;
+  return measurementValue;
 }
 
 - (CAFUInt32Range)rotationalSpeedMaxRange
 {
-  v2 = [(CAFEngineRPM *)self rotationalSpeedMaxCharacteristic];
-  v3 = [v2 range];
-  v4 = [v3 uInt32Range];
+  rotationalSpeedMaxCharacteristic = [(CAFEngineRPM *)self rotationalSpeedMaxCharacteristic];
+  range = [rotationalSpeedMaxCharacteristic range];
+  uInt32Range = [range uInt32Range];
 
-  return v4;
+  return uInt32Range;
 }
 
 - (CAFMeasurementRange)rotationalSpeedMaxMeasurementRange
 {
-  v3 = [(CAFEngineRPM *)self rotationalSpeedMaxRange];
-  v4 = [(CAFEngineRPM *)self rotationalSpeedMax];
-  v5 = [v4 unit];
-  v6 = [v3 measurementRangeWithUnit:v5];
+  rotationalSpeedMaxRange = [(CAFEngineRPM *)self rotationalSpeedMaxRange];
+  rotationalSpeedMax = [(CAFEngineRPM *)self rotationalSpeedMax];
+  unit = [rotationalSpeedMax unit];
+  v6 = [rotationalSpeedMaxRange measurementRangeWithUnit:unit];
 
   return v6;
 }
@@ -290,13 +290,13 @@
 - (BOOL)registeredForRotationalSpeed
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  v10 = [v6 hasAccessory:v8 service:v9 characteristic:@"0x0000000030000024"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  v10 = [registrations hasAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000030000024"];
 
   return v10;
 }
@@ -304,13 +304,13 @@
 - (BOOL)registeredForRotationalSpeedState
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  v10 = [v6 hasAccessory:v8 service:v9 characteristic:@"0x0000000030000060"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  v10 = [registrations hasAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000030000060"];
 
   return v10;
 }
@@ -318,13 +318,13 @@
 - (BOOL)registeredForRotationalSpeedMarkerRedline
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  v10 = [v6 hasAccessory:v8 service:v9 characteristic:@"0x000000003000004F"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  v10 = [registrations hasAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x000000003000004F"];
 
   return v10;
 }
@@ -332,13 +332,13 @@
 - (BOOL)registeredForRotationalSpeedMax
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  v10 = [v6 hasAccessory:v8 service:v9 characteristic:@"0x000000003000004E"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  v10 = [registrations hasAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x000000003000004E"];
 
   return v10;
 }

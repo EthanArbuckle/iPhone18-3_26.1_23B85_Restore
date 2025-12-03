@@ -1,28 +1,28 @@
 @interface VOCSInterface
 - (BOOL)_canRetryInvalidChangeCounter;
-- (BOOL)sendAudioOutputDescription:(id)a3;
-- (BOOL)sendVolumeOffset:(signed __int16)a3;
+- (BOOL)sendAudioOutputDescription:(id)description;
+- (BOOL)sendVolumeOffset:(signed __int16)offset;
 - (BOOL)sendVolumeOffsetControlPoint;
-- (VOCSInterface)initWithPeripheral:(id)a3 service:(id)a4;
+- (VOCSInterface)initWithPeripheral:(id)peripheral service:(id)service;
 - (void)_handleAudioLocationCharacteristicUpdate;
 - (void)_handleAudioOutputDescriptionCharacteristicUpdate;
 - (void)_handleVolumeOffsetStateCharacteristicUpdate;
 - (void)_updateComplete;
-- (void)peripheral:(id)a3 didDiscoverCharacteristicsForService:(id)a4 error:(id)a5;
-- (void)peripheral:(id)a3 didUpdateNotificationStateForCharacteristic:(id)a4 error:(id)a5;
-- (void)peripheral:(id)a3 didUpdateValueForCharacteristic:(id)a4 error:(id)a5;
-- (void)peripheral:(id)a3 didWriteValueForCharacteristic:(id)a4 error:(id)a5;
+- (void)peripheral:(id)peripheral didDiscoverCharacteristicsForService:(id)service error:(id)error;
+- (void)peripheral:(id)peripheral didUpdateNotificationStateForCharacteristic:(id)characteristic error:(id)error;
+- (void)peripheral:(id)peripheral didUpdateValueForCharacteristic:(id)characteristic error:(id)error;
+- (void)peripheral:(id)peripheral didWriteValueForCharacteristic:(id)characteristic error:(id)error;
 - (void)start;
 - (void)stop;
 @end
 
 @implementation VOCSInterface
 
-- (VOCSInterface)initWithPeripheral:(id)a3 service:(id)a4
+- (VOCSInterface)initWithPeripheral:(id)peripheral service:(id)service
 {
   v9.receiver = self;
   v9.super_class = VOCSInterface;
-  v4 = [(ServiceInterface *)&v9 initWithPeripheral:a3 service:a4];
+  v4 = [(ServiceInterface *)&v9 initWithPeripheral:peripheral service:service];
   v5 = v4;
   if (v4)
   {
@@ -64,9 +64,9 @@
   v12[4] = v7;
   v8 = [NSArray arrayWithObjects:v12 count:5];
 
-  v9 = [(ServiceInterface *)self peripheral];
-  v10 = [(ServiceInterface *)self service];
-  [v9 discoverCharacteristics:v8 forService:v10];
+  peripheral = [(ServiceInterface *)self peripheral];
+  service = [(ServiceInterface *)self service];
+  [peripheral discoverCharacteristics:v8 forService:service];
 }
 
 - (void)stop
@@ -76,20 +76,20 @@
   [(ServiceInterface *)&v2 stop];
 }
 
-- (void)peripheral:(id)a3 didDiscoverCharacteristicsForService:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didDiscoverCharacteristicsForService:(id)service error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v10)
+  peripheralCopy = peripheral;
+  serviceCopy = service;
+  errorCopy = error;
+  if (!errorCopy)
   {
-    v42 = self;
-    v37 = v9;
+    selfCopy = self;
+    v37 = serviceCopy;
     v45 = 0u;
     v46 = 0u;
     v43 = 0u;
     v44 = 0u;
-    obj = [v9 characteristics];
+    obj = [serviceCopy characteristics];
     v12 = [obj countByEnumeratingWithState:&v43 objects:v51 count:16];
     if (!v12)
     {
@@ -117,15 +117,15 @@
         if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT))
         {
           v19 = v18;
-          v20 = [v17 UUID];
+          uUID = [v17 UUID];
           *buf = 138412290;
-          v48 = v20;
+          v48 = uUID;
           _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "didDiscoverCharacteristicsForService Characteristic %@", buf, 0xCu);
         }
 
-        v21 = [v17 UUID];
+        uUID2 = [v17 UUID];
         v22 = [CBUUID UUIDWithString:v15];
-        v23 = [v21 isEqual:v22];
+        v23 = [uUID2 isEqual:v22];
 
         if (v23)
         {
@@ -141,44 +141,44 @@
             _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "VOCSClientService %s updated characteristic %@ ", buf, 0x16u);
           }
 
-          [(VOCSInterface *)v42 setVolumeOffsetStateCharacteristic:v17];
+          [(VOCSInterface *)selfCopy setVolumeOffsetStateCharacteristic:v17];
           goto LABEL_17;
         }
 
-        v27 = [v17 UUID];
+        uUID3 = [v17 UUID];
         v28 = [CBUUID UUIDWithString:v40];
-        v29 = [v27 isEqual:v28];
+        v29 = [uUID3 isEqual:v28];
 
         if (v29)
         {
-          [(VOCSInterface *)v42 setAudioLocationCharacteristic:v17];
+          [(VOCSInterface *)selfCopy setAudioLocationCharacteristic:v17];
 LABEL_17:
           if (([v17 properties] & 0x10) != 0)
           {
-            [v8 setNotifyValue:1 forCharacteristic:v17];
+            [peripheralCopy setNotifyValue:1 forCharacteristic:v17];
           }
 
-          [v8 readValueForCharacteristic:v17];
+          [peripheralCopy readValueForCharacteristic:v17];
           goto LABEL_20;
         }
 
-        v30 = [v17 UUID];
+        uUID4 = [v17 UUID];
         v31 = [CBUUID UUIDWithString:v39];
-        v32 = [v30 isEqual:v31];
+        v32 = [uUID4 isEqual:v31];
 
         if (v32)
         {
-          [(VOCSInterface *)v42 setVolumeOffsetControlPointCharacteristic:v17];
+          [(VOCSInterface *)selfCopy setVolumeOffsetControlPointCharacteristic:v17];
           goto LABEL_20;
         }
 
-        v33 = [v17 UUID];
+        uUID5 = [v17 UUID];
         v34 = [CBUUID UUIDWithString:v38];
-        v35 = [v33 isEqual:v34];
+        v35 = [uUID5 isEqual:v34];
 
         if (v35)
         {
-          [(VOCSInterface *)v42 setAudioOutputDescriptionCharacteristic:v17];
+          [(VOCSInterface *)selfCopy setAudioOutputDescriptionCharacteristic:v17];
           goto LABEL_17;
         }
 
@@ -193,9 +193,9 @@ LABEL_20:
       {
 LABEL_27:
 
-        [(ServiceInterface *)v42 notifyDidStart];
-        v10 = 0;
-        v9 = v37;
+        [(ServiceInterface *)selfCopy notifyDidStart];
+        errorCopy = 0;
+        serviceCopy = v37;
         goto LABEL_28;
       }
     }
@@ -204,23 +204,23 @@ LABEL_27:
   v11 = qword_1000A9FE0;
   if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_ERROR))
   {
-    sub_10005CF30(v11, v9);
+    sub_10005CF30(v11, serviceCopy);
   }
 
 LABEL_28:
 }
 
-- (void)peripheral:(id)a3 didUpdateValueForCharacteristic:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didUpdateValueForCharacteristic:(id)characteristic error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  peripheralCopy = peripheral;
+  characteristicCopy = characteristic;
+  errorCopy = error;
   v11 = qword_1000A9FE0;
-  if (v10)
+  if (errorCopy)
   {
     if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_ERROR))
     {
-      sub_10005CFD0(v11, v9);
+      sub_10005CFD0(v11, characteristicCopy);
     }
   }
 
@@ -229,7 +229,7 @@ LABEL_28:
     if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT))
     {
       v12 = v11;
-      v13 = [v9 description];
+      v13 = [characteristicCopy description];
       v17 = 136315394;
       v18 = "[VOCSInterface peripheral:didUpdateValueForCharacteristic:error:]";
       v19 = 2112;
@@ -237,27 +237,27 @@ LABEL_28:
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "VOCSClientService %s updated characteristic %@ ", &v17, 0x16u);
     }
 
-    v14 = [(VOCSInterface *)self volumeOffsetStateCharacteristic];
+    volumeOffsetStateCharacteristic = [(VOCSInterface *)self volumeOffsetStateCharacteristic];
 
-    if (v14 == v9)
+    if (volumeOffsetStateCharacteristic == characteristicCopy)
     {
       [(VOCSInterface *)self _handleVolumeOffsetStateCharacteristicUpdate];
     }
 
     else
     {
-      v15 = [(VOCSInterface *)self audioLocationCharacteristic];
+      audioLocationCharacteristic = [(VOCSInterface *)self audioLocationCharacteristic];
 
-      if (v15 == v9)
+      if (audioLocationCharacteristic == characteristicCopy)
       {
         [(VOCSInterface *)self _handleAudioLocationCharacteristicUpdate];
       }
 
       else
       {
-        v16 = [(VOCSInterface *)self audioOutputDescriptionCharacteristic];
+        audioOutputDescriptionCharacteristic = [(VOCSInterface *)self audioOutputDescriptionCharacteristic];
 
-        if (v16 == v9)
+        if (audioOutputDescriptionCharacteristic == characteristicCopy)
         {
           [(VOCSInterface *)self _handleAudioOutputDescriptionCharacteristicUpdate];
         }
@@ -266,17 +266,17 @@ LABEL_28:
   }
 }
 
-- (void)peripheral:(id)a3 didUpdateNotificationStateForCharacteristic:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didUpdateNotificationStateForCharacteristic:(id)characteristic error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  peripheralCopy = peripheral;
+  characteristicCopy = characteristic;
+  errorCopy = error;
   v11 = qword_1000A9FE0;
-  if (v10)
+  if (errorCopy)
   {
     if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_ERROR))
     {
-      sub_10005D070(v11, v9);
+      sub_10005D070(v11, characteristicCopy);
     }
   }
 
@@ -285,7 +285,7 @@ LABEL_28:
     if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT))
     {
       v12 = v11;
-      v13 = [v9 description];
+      v13 = [characteristicCopy description];
       v17 = 136315394;
       v18 = "[VOCSInterface peripheral:didUpdateNotificationStateForCharacteristic:error:]";
       v19 = 2112;
@@ -293,27 +293,27 @@ LABEL_28:
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "VOCSClientService %s notified updated characteristic %@ ", &v17, 0x16u);
     }
 
-    v14 = [(VOCSInterface *)self volumeOffsetStateCharacteristic];
+    volumeOffsetStateCharacteristic = [(VOCSInterface *)self volumeOffsetStateCharacteristic];
 
-    if (v14 == v9)
+    if (volumeOffsetStateCharacteristic == characteristicCopy)
     {
       [(VOCSInterface *)self _handleVolumeOffsetStateCharacteristicUpdate];
     }
 
     else
     {
-      v15 = [(VOCSInterface *)self audioLocationCharacteristic];
+      audioLocationCharacteristic = [(VOCSInterface *)self audioLocationCharacteristic];
 
-      if (v15 == v9)
+      if (audioLocationCharacteristic == characteristicCopy)
       {
         [(VOCSInterface *)self _handleAudioLocationCharacteristicUpdate];
       }
 
       else
       {
-        v16 = [(VOCSInterface *)self audioOutputDescriptionCharacteristic];
+        audioOutputDescriptionCharacteristic = [(VOCSInterface *)self audioOutputDescriptionCharacteristic];
 
-        if (v16 == v9)
+        if (audioOutputDescriptionCharacteristic == characteristicCopy)
         {
           [(VOCSInterface *)self _handleAudioOutputDescriptionCharacteristicUpdate];
         }
@@ -322,30 +322,30 @@ LABEL_28:
   }
 }
 
-- (void)peripheral:(id)a3 didWriteValueForCharacteristic:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didWriteValueForCharacteristic:(id)characteristic error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(VOCSInterface *)self volumeOffsetControlPointCharacteristic];
+  peripheralCopy = peripheral;
+  characteristicCopy = characteristic;
+  errorCopy = error;
+  volumeOffsetControlPointCharacteristic = [(VOCSInterface *)self volumeOffsetControlPointCharacteristic];
 
-  if (v11 == v9)
+  if (volumeOffsetControlPointCharacteristic == characteristicCopy)
   {
     v19 = qword_1000A9FE0;
     if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT))
     {
       v20 = v19;
-      v21 = [(ServiceInterface *)self peripheral];
-      v22 = [v21 name];
+      peripheral = [(ServiceInterface *)self peripheral];
+      name = [peripheral name];
       v27 = 138412546;
-      v28 = v22;
+      v28 = name;
       v29 = 2112;
-      v30 = v10;
+      v30 = errorCopy;
       _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "Volume Offset Control Point result for member %@: %@", &v27, 0x16u);
     }
 
-    v15 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v10 code]);
-    if ([v10 code] == 128)
+    v15 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [errorCopy code]);
+    if ([errorCopy code] == 128)
     {
       if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_ERROR))
       {
@@ -354,8 +354,8 @@ LABEL_28:
 
       if ([(VOCSInterface *)self _canRetryInvalidChangeCounter])
       {
-        v16 = [(VOCSInterface *)self volumeOffsetStateCharacteristic];
-        [v8 readValueForCharacteristic:v16];
+        volumeOffsetStateCharacteristic = [(VOCSInterface *)self volumeOffsetStateCharacteristic];
+        [peripheralCopy readValueForCharacteristic:volumeOffsetStateCharacteristic];
 LABEL_35:
 
         goto LABEL_36;
@@ -367,7 +367,7 @@ LABEL_35:
       v15 = v24;
     }
 
-    else if ([v10 code] == 129)
+    else if ([errorCopy code] == 129)
     {
       if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_ERROR))
       {
@@ -375,7 +375,7 @@ LABEL_35:
       }
     }
 
-    else if ([v10 code] == 130)
+    else if ([errorCopy code] == 130)
     {
       if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_ERROR))
       {
@@ -383,7 +383,7 @@ LABEL_35:
       }
     }
 
-    else if (![v10 code])
+    else if (![errorCopy code])
     {
       v25 = qword_1000A9FE0;
       if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT))
@@ -396,67 +396,67 @@ LABEL_35:
     }
 
     [(VOCSInterface *)self _updateComplete];
-    v26 = [(ServiceInterface *)self serviceEventHandler];
+    serviceEventHandler = [(ServiceInterface *)self serviceEventHandler];
 
-    if (!v26)
+    if (!serviceEventHandler)
     {
 LABEL_36:
 
       goto LABEL_37;
     }
 
-    v16 = objc_alloc_init(NSMutableDictionary);
-    [v16 setValue:v15 forKey:@"kVolumeOffsetControlPoint"];
-    v17 = [(ServiceInterface *)self serviceEventHandler];
-    v18 = v17[2];
+    volumeOffsetStateCharacteristic = objc_alloc_init(NSMutableDictionary);
+    [volumeOffsetStateCharacteristic setValue:v15 forKey:@"kVolumeOffsetControlPoint"];
+    serviceEventHandler2 = [(ServiceInterface *)self serviceEventHandler];
+    v18 = serviceEventHandler2[2];
 LABEL_34:
     v18();
 
     goto LABEL_35;
   }
 
-  v12 = [(VOCSInterface *)self audioLocationCharacteristic];
+  audioLocationCharacteristic = [(VOCSInterface *)self audioLocationCharacteristic];
 
-  if (v12 == v9)
+  if (audioLocationCharacteristic == characteristicCopy)
   {
-    if ([v10 code] && os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_ERROR))
+    if ([errorCopy code] && os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_ERROR))
     {
       sub_10005D180();
     }
 
-    v23 = [(ServiceInterface *)self serviceEventHandler];
+    serviceEventHandler3 = [(ServiceInterface *)self serviceEventHandler];
 
-    if (v23)
+    if (serviceEventHandler3)
     {
-      v15 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v10 code]);
-      v16 = objc_alloc_init(NSMutableDictionary);
-      [v16 setValue:v15 forKey:@"kAudioLocation"];
-      v17 = [(ServiceInterface *)self serviceEventHandler];
-      v18 = v17[2];
+      v15 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [errorCopy code]);
+      volumeOffsetStateCharacteristic = objc_alloc_init(NSMutableDictionary);
+      [volumeOffsetStateCharacteristic setValue:v15 forKey:@"kAudioLocation"];
+      serviceEventHandler2 = [(ServiceInterface *)self serviceEventHandler];
+      v18 = serviceEventHandler2[2];
       goto LABEL_34;
     }
   }
 
   else
   {
-    v13 = [(VOCSInterface *)self audioOutputDescriptionCharacteristic];
+    audioOutputDescriptionCharacteristic = [(VOCSInterface *)self audioOutputDescriptionCharacteristic];
 
-    if (v13 == v9)
+    if (audioOutputDescriptionCharacteristic == characteristicCopy)
     {
-      if ([v10 code] && os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_ERROR))
+      if ([errorCopy code] && os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_ERROR))
       {
         sub_10005D110();
       }
 
-      v14 = [(ServiceInterface *)self serviceEventHandler];
+      serviceEventHandler4 = [(ServiceInterface *)self serviceEventHandler];
 
-      if (v14)
+      if (serviceEventHandler4)
       {
-        v15 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v10 code]);
-        v16 = objc_alloc_init(NSMutableDictionary);
-        [v16 setValue:v15 forKey:@"kAudioOutputDescription"];
-        v17 = [(ServiceInterface *)self serviceEventHandler];
-        v18 = v17[2];
+        v15 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [errorCopy code]);
+        volumeOffsetStateCharacteristic = objc_alloc_init(NSMutableDictionary);
+        [volumeOffsetStateCharacteristic setValue:v15 forKey:@"kAudioOutputDescription"];
+        serviceEventHandler2 = [(ServiceInterface *)self serviceEventHandler];
+        v18 = serviceEventHandler2[2];
         goto LABEL_34;
       }
     }
@@ -480,9 +480,9 @@ LABEL_10:
 
   else
   {
-    v4 = [(VOCSInterface *)self volumeOffsetControlPointCharacteristic];
+    volumeOffsetControlPointCharacteristic = [(VOCSInterface *)self volumeOffsetControlPointCharacteristic];
 
-    if (v4)
+    if (volumeOffsetControlPointCharacteristic)
     {
       [(VOCSInterface *)self _updateStart];
       v5 = +[DataOutputStream outputStream];
@@ -496,10 +496,10 @@ LABEL_10:
         _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "volumeOffsetControlPointCharacteristic discovered", buf, 2u);
       }
 
-      v7 = [(ServiceInterface *)self peripheral];
-      v8 = [v5 data];
-      v9 = [(VOCSInterface *)self volumeOffsetControlPointCharacteristic];
-      [v7 writeValue:v8 forCharacteristic:v9 type:0];
+      peripheral = [(ServiceInterface *)self peripheral];
+      data = [v5 data];
+      volumeOffsetControlPointCharacteristic2 = [(VOCSInterface *)self volumeOffsetControlPointCharacteristic];
+      [peripheral writeValue:data forCharacteristic:volumeOffsetControlPointCharacteristic2 type:0];
 
       LOBYTE(v3) = 1;
     }
@@ -520,9 +520,9 @@ LABEL_10:
   return v3;
 }
 
-- (BOOL)sendVolumeOffset:(signed __int16)a3
+- (BOOL)sendVolumeOffset:(signed __int16)offset
 {
-  if (self->_volumeOffsetControlPoint.volumeOffset == a3)
+  if (self->_volumeOffsetControlPoint.volumeOffset == offset)
   {
     if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEBUG))
     {
@@ -535,15 +535,15 @@ LABEL_10:
   else
   {
     self->_volumeOffsetControlPoint.opcode = 1;
-    self->_volumeOffsetControlPoint.volumeOffset = a3;
+    self->_volumeOffsetControlPoint.volumeOffset = offset;
 
     return [(VOCSInterface *)self sendVolumeOffsetControlPoint];
   }
 }
 
-- (BOOL)sendAudioOutputDescription:(id)a3
+- (BOOL)sendAudioOutputDescription:(id)description
 {
-  v4 = a3;
+  descriptionCopy = description;
   if ([(VOCSInterface *)self _updateInProgress])
   {
     if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_ERROR))
@@ -556,9 +556,9 @@ LABEL_4:
     goto LABEL_9;
   }
 
-  v6 = [(VOCSInterface *)self audioOutputDescriptionCharacteristic];
+  audioOutputDescriptionCharacteristic = [(VOCSInterface *)self audioOutputDescriptionCharacteristic];
 
-  if (!v6)
+  if (!audioOutputDescriptionCharacteristic)
   {
     v13 = qword_1000A9FE0;
     if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT))
@@ -572,7 +572,7 @@ LABEL_4:
 
   [(VOCSInterface *)self _updateStart];
   v7 = +[DataOutputStream outputStream];
-  [v7 writeString:v4];
+  [v7 writeString:descriptionCopy];
   v8 = qword_1000A9FE0;
   if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT))
   {
@@ -580,11 +580,11 @@ LABEL_4:
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "audioOutputDescriptionCharacteristic discovered", buf, 2u);
   }
 
-  v9 = [(ServiceInterface *)self peripheral];
-  v10 = [v7 data];
-  v11 = [(VOCSInterface *)self audioOutputDescriptionCharacteristic];
+  peripheral = [(ServiceInterface *)self peripheral];
+  data = [v7 data];
+  audioOutputDescriptionCharacteristic2 = [(VOCSInterface *)self audioOutputDescriptionCharacteristic];
   v5 = 1;
-  [v9 writeValue:v10 forCharacteristic:v11 type:1];
+  [peripheral writeValue:data forCharacteristic:audioOutputDescriptionCharacteristic2 type:1];
 
 LABEL_9:
   return v5;
@@ -599,9 +599,9 @@ LABEL_9:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Volume Offset State Characteristic update", buf, 2u);
   }
 
-  v4 = [(VOCSInterface *)self volumeOffsetStateCharacteristic];
-  v5 = [v4 value];
-  v6 = [DataInputStream inputStreamWithData:v5 byteOrder:1];
+  volumeOffsetStateCharacteristic = [(VOCSInterface *)self volumeOffsetStateCharacteristic];
+  value = [volumeOffsetStateCharacteristic value];
+  v6 = [DataInputStream inputStreamWithData:value byteOrder:1];
 
   v7 = objc_alloc_init(NSMutableDictionary);
   v24 = 0;
@@ -612,10 +612,10 @@ LABEL_9:
     if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT))
     {
       v10 = v9;
-      v11 = [(ServiceInterface *)self peripheral];
-      v12 = [v11 name];
+      peripheral = [(ServiceInterface *)self peripheral];
+      name = [peripheral name];
       *buf = 138412546;
-      v26 = v12;
+      v26 = name;
       v27 = 1024;
       v28 = v8;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Volume offset for member %@: %d", buf, 0x12u);
@@ -637,10 +637,10 @@ LABEL_9:
     if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT))
     {
       v15 = v14;
-      v16 = [(ServiceInterface *)self peripheral];
-      v17 = [v16 name];
+      peripheral2 = [(ServiceInterface *)self peripheral];
+      name2 = [peripheral2 name];
       *buf = 138412546;
-      v26 = v17;
+      v26 = name2;
       v27 = 1024;
       v28 = v23;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Change counter for member %@: %u", buf, 0x12u);
@@ -661,16 +661,16 @@ LABEL_9:
     }
   }
 
-  v19 = [(ServiceInterface *)self serviceEventHandler];
-  if (v19)
+  serviceEventHandler = [(ServiceInterface *)self serviceEventHandler];
+  if (serviceEventHandler)
   {
-    v20 = v19;
+    v20 = serviceEventHandler;
     v21 = [v7 count];
 
     if (v21)
     {
-      v22 = [(ServiceInterface *)self serviceEventHandler];
-      (v22)[2](v22, 17, v7);
+      serviceEventHandler2 = [(ServiceInterface *)self serviceEventHandler];
+      (serviceEventHandler2)[2](serviceEventHandler2, 17, v7);
     }
   }
 }
@@ -684,9 +684,9 @@ LABEL_9:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Audio Location Characteristic update", buf, 2u);
   }
 
-  v4 = [(VOCSInterface *)self audioLocationCharacteristic];
-  v5 = [v4 value];
-  v6 = [DataInputStream inputStreamWithData:v5 byteOrder:1];
+  audioLocationCharacteristic = [(VOCSInterface *)self audioLocationCharacteristic];
+  value = [audioLocationCharacteristic value];
+  v6 = [DataInputStream inputStreamWithData:value byteOrder:1];
 
   v7 = objc_alloc_init(NSMutableDictionary);
   v17 = 0;
@@ -696,10 +696,10 @@ LABEL_9:
     if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT))
     {
       v9 = v8;
-      v10 = [(ServiceInterface *)self peripheral];
-      v11 = [v10 name];
+      peripheral = [(ServiceInterface *)self peripheral];
+      name = [peripheral name];
       *buf = 138412546;
-      v19 = v11;
+      v19 = name;
       v20 = 1024;
       v21 = v17;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Audio Location for member %@: %u", buf, 0x12u);
@@ -714,16 +714,16 @@ LABEL_9:
     }
   }
 
-  v13 = [(ServiceInterface *)self serviceEventHandler];
-  if (v13)
+  serviceEventHandler = [(ServiceInterface *)self serviceEventHandler];
+  if (serviceEventHandler)
   {
-    v14 = v13;
+    v14 = serviceEventHandler;
     v15 = [v7 count];
 
     if (v15)
     {
-      v16 = [(ServiceInterface *)self serviceEventHandler];
-      (v16)[2](v16, 18, v7);
+      serviceEventHandler2 = [(ServiceInterface *)self serviceEventHandler];
+      (serviceEventHandler2)[2](serviceEventHandler2, 18, v7);
     }
   }
 }
@@ -737,9 +737,9 @@ LABEL_9:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Audio Output Description Characteristic update", &v18, 2u);
   }
 
-  v4 = [(VOCSInterface *)self audioOutputDescriptionCharacteristic];
-  v5 = [v4 value];
-  v6 = [DataInputStream inputStreamWithData:v5 byteOrder:1];
+  audioOutputDescriptionCharacteristic = [(VOCSInterface *)self audioOutputDescriptionCharacteristic];
+  value = [audioOutputDescriptionCharacteristic value];
+  v6 = [DataInputStream inputStreamWithData:value byteOrder:1];
 
   v7 = objc_alloc_init(NSMutableDictionary);
   if ([v6 readString:0])
@@ -748,10 +748,10 @@ LABEL_9:
     if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT))
     {
       v9 = v8;
-      v10 = [(ServiceInterface *)self peripheral];
-      v11 = [v10 name];
+      peripheral = [(ServiceInterface *)self peripheral];
+      name = [peripheral name];
       v18 = 138412546;
-      v19 = v11;
+      v19 = name;
       v20 = 2112;
       v21 = 0;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Audio Output Description for member %@: %@", &v18, 0x16u);
@@ -767,16 +767,16 @@ LABEL_9:
     }
   }
 
-  v14 = [(ServiceInterface *)self serviceEventHandler];
-  if (v14)
+  serviceEventHandler = [(ServiceInterface *)self serviceEventHandler];
+  if (serviceEventHandler)
   {
-    v15 = v14;
+    v15 = serviceEventHandler;
     v16 = [v7 count];
 
     if (v16)
     {
-      v17 = [(ServiceInterface *)self serviceEventHandler];
-      (v17)[2](v17, 19, v7);
+      serviceEventHandler2 = [(ServiceInterface *)self serviceEventHandler];
+      (serviceEventHandler2)[2](serviceEventHandler2, 19, v7);
     }
   }
 }

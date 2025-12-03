@@ -1,17 +1,17 @@
 @interface PXAllPhotosFloatingHeaderSpec
-- (PXAllPhotosFloatingHeaderSpec)initWithExtendedTraitCollection:(id)a3 options:(unint64_t)a4 variant:(int64_t)a5;
+- (PXAllPhotosFloatingHeaderSpec)initWithExtendedTraitCollection:(id)collection options:(unint64_t)options variant:(int64_t)variant;
 @end
 
 @implementation PXAllPhotosFloatingHeaderSpec
 
-- (PXAllPhotosFloatingHeaderSpec)initWithExtendedTraitCollection:(id)a3 options:(unint64_t)a4 variant:(int64_t)a5
+- (PXAllPhotosFloatingHeaderSpec)initWithExtendedTraitCollection:(id)collection options:(unint64_t)options variant:(int64_t)variant
 {
-  v8 = a3;
+  collectionCopy = collection;
   v10.receiver = self;
   v10.super_class = PXAllPhotosFloatingHeaderSpec;
-  if ([(PXCuratedLibrarySectionHeaderLayoutSpec *)&v10 initWithExtendedTraitCollection:v8 options:a4 variant:a5])
+  if ([(PXCuratedLibrarySectionHeaderLayoutSpec *)&v10 initWithExtendedTraitCollection:collectionCopy options:options variant:variant])
   {
-    [v8 contentSizeCategory];
+    [collectionCopy contentSizeCategory];
     PXPreferredContentSizeCategoryIsAccessibility();
   }
 

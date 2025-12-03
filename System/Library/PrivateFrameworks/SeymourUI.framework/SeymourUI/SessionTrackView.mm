@@ -1,21 +1,21 @@
 @interface SessionTrackView
-- (_TtC9SeymourUI16SessionTrackView)initWithFrame:(CGRect)a3;
-- (void)presentWithDuration:(double)a3;
+- (_TtC9SeymourUI16SessionTrackView)initWithFrame:(CGRect)frame;
+- (void)presentWithDuration:(double)duration;
 @end
 
 @implementation SessionTrackView
 
-- (_TtC9SeymourUI16SessionTrackView)initWithFrame:(CGRect)a3
+- (_TtC9SeymourUI16SessionTrackView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)presentWithDuration:(double)a3
+- (void)presentWithDuration:(double)duration
 {
-  v4 = self;
-  sub_20B9B973C(a3);
+  selfCopy = self;
+  sub_20B9B973C(duration);
 }
 
 @end

@@ -6,45 +6,45 @@
 - (BOOL)middayNotificationsEnabled;
 - (BOOL)periodicPromptedAssessmentNotificationsEnabled;
 - (HKMHSettingsManager)init;
-- (HKMHSettingsManager)initWithUserDefaults:(id)a3;
+- (HKMHSettingsManager)initWithUserDefaults:(id)defaults;
 - (NSArray)customReminderSchedule;
 - (id)periodicPromptedAssessmentNotificationTimeOfDay;
 - (void)_notificationSettingsDidUpdate;
-- (void)_setTestDefaults:(id)a3;
+- (void)_setTestDefaults:(id)defaults;
 - (void)_startObservingDefaults;
 - (void)_stopObservingAllDefaults;
 - (void)customReminderSchedule;
 - (void)dealloc;
 - (void)endOfDayNotificationsEnabled;
 - (void)middayNotificationsEnabled;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)onboardToPregnancyRecommendedSettings;
 - (void)periodicPromptedAssessmentNotificationTimeOfDay;
 - (void)periodicPromptedAssessmentNotificationsEnabled;
-- (void)setCustomReminderSchedule:(id)a3;
-- (void)setPeriodicPromptedAssessmentNotificationTimeOfDay:(id)a3;
+- (void)setCustomReminderSchedule:(id)schedule;
+- (void)setPeriodicPromptedAssessmentNotificationTimeOfDay:(id)day;
 @end
 
 @implementation HKMHSettingsManager
 
 - (HKMHSettingsManager)init
 {
-  v3 = [MEMORY[0x277CBEBD0] hkmh_mentalHealthDefaults];
-  v4 = [(HKMHSettingsManager *)self initWithUserDefaults:v3];
+  hkmh_mentalHealthDefaults = [MEMORY[0x277CBEBD0] hkmh_mentalHealthDefaults];
+  v4 = [(HKMHSettingsManager *)self initWithUserDefaults:hkmh_mentalHealthDefaults];
 
   return v4;
 }
 
-- (HKMHSettingsManager)initWithUserDefaults:(id)a3
+- (HKMHSettingsManager)initWithUserDefaults:(id)defaults
 {
-  v5 = a3;
+  defaultsCopy = defaults;
   v14.receiver = self;
   v14.super_class = HKMHSettingsManager;
   v6 = [(HKMHSettingsManager *)&v14 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_userDefaults, a3);
+    objc_storeStrong(&v6->_userDefaults, defaults);
     v8 = objc_alloc(MEMORY[0x277CCD738]);
     v9 = [v8 initWithName:@"HKMHSettingsManagerObservers" loggingCategory:*MEMORY[0x277CCC2F0]];
     observers = v7->_observers;
@@ -119,10 +119,10 @@
   return v3;
 }
 
-- (void)setCustomReminderSchedule:(id)a3
+- (void)setCustomReminderSchedule:(id)schedule
 {
   v8 = 0;
-  v4 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:a3 requiringSecureCoding:1 error:&v8];
+  v4 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:schedule requiringSecureCoding:1 error:&v8];
   v5 = v8;
   if (v4)
   {
@@ -177,10 +177,10 @@
 
 - (id)periodicPromptedAssessmentNotificationTimeOfDay
 {
-  v3 = [MEMORY[0x277CCDD30] sharedBehavior];
-  v4 = [v3 isAppleInternalInstall];
+  mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+  isAppleInternalInstall = [mEMORY[0x277CCDD30] isAppleInternalInstall];
 
-  if (v4 && (v5 = MEMORY[0x277CCAAC8], v6 = objc_opt_class(), -[NSUserDefaults dataForKey:](self->_userDefaults, "dataForKey:", @"PeriodicPromptedAssessmentNotificationTimeOfDayOverride"), v7 = objc_claimAutoreleasedReturnValue(), [v5 unarchivedObjectOfClass:v6 fromData:v7 error:0], v8 = objc_claimAutoreleasedReturnValue(), v7, v8))
+  if (isAppleInternalInstall && (v5 = MEMORY[0x277CCAAC8], v6 = objc_opt_class(), -[NSUserDefaults dataForKey:](self->_userDefaults, "dataForKey:", @"PeriodicPromptedAssessmentNotificationTimeOfDayOverride"), v7 = objc_claimAutoreleasedReturnValue(), [v5 unarchivedObjectOfClass:v6 fromData:v7 error:0], v8 = objc_claimAutoreleasedReturnValue(), v7, v8))
   {
     _HKInitializeLogging();
     v9 = *MEMORY[0x277CCC2F0];
@@ -199,9 +199,9 @@
   return v8;
 }
 
-- (void)setPeriodicPromptedAssessmentNotificationTimeOfDay:(id)a3
+- (void)setPeriodicPromptedAssessmentNotificationTimeOfDay:(id)day
 {
-  v4 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:a3 requiringSecureCoding:1 error:0];
+  v4 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:day requiringSecureCoding:1 error:0];
   [(NSUserDefaults *)self->_userDefaults setObject:v4 forKey:@"PeriodicPromptedAssessmentNotificationTimeOfDayOverride"];
 }
 
@@ -277,12 +277,12 @@
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   v32 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
   _HKInitializeLogging();
   v13 = *MEMORY[0x277CCC2F0];
   if (os_log_type_enabled(*MEMORY[0x277CCC2F0], OS_LOG_TYPE_DEFAULT))
@@ -291,12 +291,12 @@
     v15 = objc_opt_class();
     v16 = *MEMORY[0x277CCA300];
     v17 = v15;
-    v18 = [v12 objectForKeyedSubscript:v16];
-    v19 = [v12 objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
+    v18 = [changeCopy objectForKeyedSubscript:v16];
+    v19 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
     *buf = 138544130;
     v25 = v15;
     v26 = 2114;
-    v27 = v10;
+    v27 = pathCopy;
     v28 = 2114;
     v29 = v18;
     v30 = 2114;
@@ -305,7 +305,7 @@
   }
 
   v20 = _NotificationSettingKeys();
-  v21 = [v20 containsObject:v10];
+  v21 = [v20 containsObject:pathCopy];
 
   if (v21)
   {
@@ -316,7 +316,7 @@
   {
     v23.receiver = self;
     v23.super_class = HKMHSettingsManager;
-    [(HKMHSettingsManager *)&v23 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(HKMHSettingsManager *)&v23 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 
   v22 = *MEMORY[0x277D85DE8];
@@ -339,8 +339,8 @@
     return 1;
   }
 
-  v4 = [(HKMHSettingsManager *)self customReminderSchedule];
-  v3 = [v4 count] != 0;
+  customReminderSchedule = [(HKMHSettingsManager *)self customReminderSchedule];
+  v3 = [customReminderSchedule count] != 0;
 
   return v3;
 }
@@ -377,12 +377,12 @@ void __53__HKMHSettingsManager__notificationSettingsDidUpdate__block_invoke(uint
   }
 }
 
-- (void)_setTestDefaults:(id)a3
+- (void)_setTestDefaults:(id)defaults
 {
-  v4 = a3;
+  defaultsCopy = defaults;
   [(HKMHSettingsManager *)self _stopObservingAllDefaults];
   userDefaults = self->_userDefaults;
-  self->_userDefaults = v4;
+  self->_userDefaults = defaultsCopy;
 
   [(HKMHSettingsManager *)self _startObservingDefaults];
 }
@@ -390,7 +390,7 @@ void __53__HKMHSettingsManager__notificationSettingsDidUpdate__block_invoke(uint
 - (void)middayNotificationsEnabled
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = a1;
+  selfCopy = self;
   v4 = objc_opt_class();
   v5 = *(a2 + 24);
   v6 = v4;
@@ -404,7 +404,7 @@ void __53__HKMHSettingsManager__notificationSettingsDidUpdate__block_invoke(uint
 - (void)endOfDayNotificationsEnabled
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = a1;
+  selfCopy = self;
   v4 = objc_opt_class();
   v5 = *(a2 + 24);
   v6 = v4;
@@ -418,7 +418,7 @@ void __53__HKMHSettingsManager__notificationSettingsDidUpdate__block_invoke(uint
 - (void)customReminderSchedule
 {
   v12 = *MEMORY[0x277D85DE8];
-  v1 = a1;
+  selfCopy = self;
   v2 = objc_opt_class();
   v3 = OUTLINED_FUNCTION_1(v2);
   OUTLINED_FUNCTION_3(&dword_25895E000, v4, v5, "[%{public}@] Failed to fetch custom schedule with error: %{public}@", v6, v7, v8, v9, v11);
@@ -440,7 +440,7 @@ void __53__HKMHSettingsManager__notificationSettingsDidUpdate__block_invoke(uint
 - (void)periodicPromptedAssessmentNotificationsEnabled
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = a1;
+  selfCopy = self;
   v4 = objc_opt_class();
   v5 = *(a2 + 24);
   v6 = v4;
@@ -454,10 +454,10 @@ void __53__HKMHSettingsManager__notificationSettingsDidUpdate__block_invoke(uint
 - (void)periodicPromptedAssessmentNotificationTimeOfDay
 {
   v6 = *MEMORY[0x277D85DE8];
-  v1 = a1;
+  selfCopy = self;
   v2 = objc_opt_class();
   v3 = OUTLINED_FUNCTION_1(v2);
-  _os_log_debug_impl(&dword_25895E000, v1, OS_LOG_TYPE_DEBUG, "[%{public}@] Using overridden mental health notification time: %{public}@", v5, 0x16u);
+  _os_log_debug_impl(&dword_25895E000, selfCopy, OS_LOG_TYPE_DEBUG, "[%{public}@] Using overridden mental health notification time: %{public}@", v5, 0x16u);
 
   v4 = *MEMORY[0x277D85DE8];
 }

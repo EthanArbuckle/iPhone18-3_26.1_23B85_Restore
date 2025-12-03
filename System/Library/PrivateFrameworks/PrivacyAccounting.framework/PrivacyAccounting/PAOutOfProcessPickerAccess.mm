@@ -1,76 +1,76 @@
 @interface PAOutOfProcessPickerAccess
-+ (id)accessWithAccessor:(id)a3 forType:(int64_t)a4;
-+ (id)accessWithAuditToken:(id *)a3 forType:(int64_t)a4;
-- (BOOL)isEqualToAccess:(id)a3 withOptions:(unint64_t)a4;
-- (PAOutOfProcessPickerAccess)initWithAccessor:(id)a3 forType:(int64_t)a4;
-- (PAOutOfProcessPickerAccess)initWithAccessor:(id)a3 identifier:(id)a4 kind:(int64_t)a5 forType:(int64_t)a6;
-- (PAOutOfProcessPickerAccess)initWithAuditToken:(id *)a3 forType:(int64_t)a4;
-- (PAOutOfProcessPickerAccess)initWithCoder:(id)a3;
-- (PAOutOfProcessPickerAccess)initWithProto:(id)a3;
-- (PAOutOfProcessPickerAccess)initWithProtoData:(id)a3;
++ (id)accessWithAccessor:(id)accessor forType:(int64_t)type;
++ (id)accessWithAuditToken:(id *)token forType:(int64_t)type;
+- (BOOL)isEqualToAccess:(id)access withOptions:(unint64_t)options;
+- (PAOutOfProcessPickerAccess)initWithAccessor:(id)accessor forType:(int64_t)type;
+- (PAOutOfProcessPickerAccess)initWithAccessor:(id)accessor identifier:(id)identifier kind:(int64_t)kind forType:(int64_t)type;
+- (PAOutOfProcessPickerAccess)initWithAuditToken:(id *)token forType:(int64_t)type;
+- (PAOutOfProcessPickerAccess)initWithCoder:(id)coder;
+- (PAOutOfProcessPickerAccess)initWithProto:(id)proto;
+- (PAOutOfProcessPickerAccess)initWithProtoData:(id)data;
 - (id)JSONObject;
 - (id)category;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)descriptionForCategory;
 - (id)proto;
-- (unint64_t)hashWithOptions:(unint64_t)a3;
-- (void)encodeWithCoder:(id)a3;
+- (unint64_t)hashWithOptions:(unint64_t)options;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PAOutOfProcessPickerAccess
 
-+ (id)accessWithAuditToken:(id *)a3 forType:(int64_t)a4
++ (id)accessWithAuditToken:(id *)token forType:(int64_t)type
 {
-  v6 = [a1 alloc];
-  v7 = *&a3->var0[4];
-  v10[0] = *a3->var0;
+  v6 = [self alloc];
+  v7 = *&token->var0[4];
+  v10[0] = *token->var0;
   v10[1] = v7;
-  v8 = [v6 initWithAuditToken:v10 forType:a4];
+  v8 = [v6 initWithAuditToken:v10 forType:type];
 
   return v8;
 }
 
-+ (id)accessWithAccessor:(id)a3 forType:(int64_t)a4
++ (id)accessWithAccessor:(id)accessor forType:(int64_t)type
 {
-  v6 = a3;
-  v7 = [[a1 alloc] initWithAccessor:v6 forType:a4];
+  accessorCopy = accessor;
+  v7 = [[self alloc] initWithAccessor:accessorCopy forType:type];
 
   return v7;
 }
 
-- (PAOutOfProcessPickerAccess)initWithAuditToken:(id *)a3 forType:(int64_t)a4
+- (PAOutOfProcessPickerAccess)initWithAuditToken:(id *)token forType:(int64_t)type
 {
-  v6 = *&a3->var0[4];
-  v10[0] = *a3->var0;
+  v6 = *&token->var0[4];
+  v10[0] = *token->var0;
   v10[1] = v6;
   v7 = [PAApplication applicationWithAuditToken:v10];
-  v8 = [(PAOutOfProcessPickerAccess *)self initWithAccessor:v7 forType:a4];
+  v8 = [(PAOutOfProcessPickerAccess *)self initWithAccessor:v7 forType:type];
 
   return v8;
 }
 
-- (PAOutOfProcessPickerAccess)initWithAccessor:(id)a3 forType:(int64_t)a4
+- (PAOutOfProcessPickerAccess)initWithAccessor:(id)accessor forType:(int64_t)type
 {
   v6.receiver = self;
   v6.super_class = PAOutOfProcessPickerAccess;
-  result = [(PAAccess *)&v6 initWithAccessor:a3];
+  result = [(PAAccess *)&v6 initWithAccessor:accessor];
   if (result)
   {
-    result->_pickerType = a4;
+    result->_pickerType = type;
   }
 
   return result;
 }
 
-- (PAOutOfProcessPickerAccess)initWithAccessor:(id)a3 identifier:(id)a4 kind:(int64_t)a5 forType:(int64_t)a6
+- (PAOutOfProcessPickerAccess)initWithAccessor:(id)accessor identifier:(id)identifier kind:(int64_t)kind forType:(int64_t)type
 {
   v8.receiver = self;
   v8.super_class = PAOutOfProcessPickerAccess;
-  result = [(PAAccess *)&v8 initWithAccessor:a3 identifier:a4 kind:a5];
+  result = [(PAAccess *)&v8 initWithAccessor:accessor identifier:identifier kind:kind];
   if (result)
   {
-    result->_pickerType = a6;
+    result->_pickerType = type;
   }
 
   return result;
@@ -80,8 +80,8 @@
 {
   v5.receiver = self;
   v5.super_class = PAOutOfProcessPickerAccess;
-  v2 = [(PAAccess *)&v5 JSONObject];
-  v3 = [v2 mutableCopy];
+  jSONObject = [(PAAccess *)&v5 JSONObject];
+  v3 = [jSONObject mutableCopy];
 
   [v3 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"outOfProcess"];
 
@@ -129,23 +129,23 @@
   }
 }
 
-- (unint64_t)hashWithOptions:(unint64_t)a3
+- (unint64_t)hashWithOptions:(unint64_t)options
 {
   v6.receiver = self;
   v6.super_class = PAOutOfProcessPickerAccess;
-  v4 = [(PAAccess *)&v6 hashWithOptions:a3];
+  v4 = [(PAAccess *)&v6 hashWithOptions:options];
   return self->_pickerType - v4 + 32 * v4;
 }
 
-- (BOOL)isEqualToAccess:(id)a3 withOptions:(unint64_t)a4
+- (BOOL)isEqualToAccess:(id)access withOptions:(unint64_t)options
 {
-  v6 = a3;
+  accessCopy = access;
   v10.receiver = self;
   v10.super_class = PAOutOfProcessPickerAccess;
-  if ([(PAAccess *)&v10 isEqualToAccess:v6 withOptions:a4])
+  if ([(PAAccess *)&v10 isEqualToAccess:accessCopy withOptions:options])
   {
     pickerType = self->_pickerType;
-    v8 = pickerType == [v6 pickerType];
+    v8 = pickerType == [accessCopy pickerType];
   }
 
   else
@@ -162,40 +162,40 @@
   v8.receiver = self;
   v8.super_class = PAOutOfProcessPickerAccess;
   v4 = [(PAAccess *)&v8 description];
-  v5 = [(PAOutOfProcessPickerAccess *)self descriptionForCategory];
-  v6 = [v3 stringWithFormat:@"%@ pickerType:<%@>", v4, v5];
+  descriptionForCategory = [(PAOutOfProcessPickerAccess *)self descriptionForCategory];
+  v6 = [v3 stringWithFormat:@"%@ pickerType:<%@>", v4, descriptionForCategory];
 
   return v6;
 }
 
-- (PAOutOfProcessPickerAccess)initWithCoder:(id)a3
+- (PAOutOfProcessPickerAccess)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = PAOutOfProcessPickerAccess;
-  v5 = [(PAAccess *)&v7 initWithCoder:v4];
+  v5 = [(PAAccess *)&v7 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_pickerType = [v4 decodeIntegerForKey:@"pickerType"];
+    v5->_pickerType = [coderCopy decodeIntegerForKey:@"pickerType"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = PAOutOfProcessPickerAccess;
-  v4 = a3;
-  [(PAAccess *)&v5 encodeWithCoder:v4];
-  [v4 encodeInteger:self->_pickerType forKey:{@"pickerType", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(PAAccess *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:self->_pickerType forKey:{@"pickerType", v5.receiver, v5.super_class}];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5.receiver = self;
   v5.super_class = PAOutOfProcessPickerAccess;
-  result = [(PAAccess *)&v5 copyWithZone:a3];
+  result = [(PAAccess *)&v5 copyWithZone:zone];
   if (result)
   {
     *(result + 9) = self->_pickerType;
@@ -204,55 +204,55 @@
   return result;
 }
 
-- (PAOutOfProcessPickerAccess)initWithProto:(id)a3
+- (PAOutOfProcessPickerAccess)initWithProto:(id)proto
 {
-  v4 = a3;
+  protoCopy = proto;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [v5 access];
+    v5 = protoCopy;
+    access = [v5 access];
     v11.receiver = self;
     v11.super_class = PAOutOfProcessPickerAccess;
-    self = [(PAAccess *)&v11 initWithProto:v6];
+    self = [(PAAccess *)&v11 initWithProto:access];
 
     if (self)
     {
-      v7 = [v5 pickerType];
-      if (v7 == 1)
+      pickerType = [v5 pickerType];
+      if (pickerType == 1)
       {
         v8 = 1;
         goto LABEL_9;
       }
 
-      if (v7 == 2)
+      if (pickerType == 2)
       {
         v8 = 2;
 LABEL_9:
         self->_pickerType = v8;
-        v9 = self;
+        selfCopy = self;
         goto LABEL_10;
       }
     }
 
-    v9 = 0;
+    selfCopy = 0;
 LABEL_10:
 
     goto LABEL_11;
   }
 
-  v9 = 0;
+  selfCopy = 0;
 LABEL_11:
 
-  return v9;
+  return selfCopy;
 }
 
-- (PAOutOfProcessPickerAccess)initWithProtoData:(id)a3
+- (PAOutOfProcessPickerAccess)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[PAPBOutOfProcessPickerAccess alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[PAPBOutOfProcessPickerAccess alloc] initWithData:dataCopy];
 
     v6 = [(PAOutOfProcessPickerAccess *)self initWithProto:v5];
     self = v6;
@@ -271,13 +271,13 @@ LABEL_11:
   v3 = objc_opt_new();
   v9.receiver = self;
   v9.super_class = PAOutOfProcessPickerAccess;
-  v4 = [(PAAccess *)&v9 proto];
-  if (!v4)
+  proto = [(PAAccess *)&v9 proto];
+  if (!proto)
   {
     goto LABEL_5;
   }
 
-  [v3 setAccess:v4];
+  [v3 setAccess:proto];
   pickerType = self->_pickerType;
   if (pickerType == 1)
   {

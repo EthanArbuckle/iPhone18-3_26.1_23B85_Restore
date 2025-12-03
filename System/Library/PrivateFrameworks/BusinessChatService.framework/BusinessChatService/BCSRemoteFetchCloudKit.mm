@@ -1,45 +1,45 @@
 @interface BCSRemoteFetchCloudKit
-- (BCSRemoteFetchCloudKit)initWithEnvironment:(id)a3 database:(id)a4 databaseContainer:(id)a5 queryOperationFactory:(id)a6 coalesceHelper:(id)a7 bloomFilterExtractor:(id)a8 operationGroupFactory:(id)a9 metricFactory:(id)a10;
-- (id)_queryOperationForQuery:(void *)a3 clientBundleID:(void *)a4 systemTask:(void *)a5 requestSpecificAdditionalHTTPHeaders:(uint64_t)a6 type:(void *)a7 singleFetchCompletion:;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)shardItemFromURL:(id)a3 type:(int64_t)a4;
+- (BCSRemoteFetchCloudKit)initWithEnvironment:(id)environment database:(id)database databaseContainer:(id)container queryOperationFactory:(id)factory coalesceHelper:(id)helper bloomFilterExtractor:(id)extractor operationGroupFactory:(id)groupFactory metricFactory:(id)self0;
+- (id)_queryOperationForQuery:(void *)query clientBundleID:(void *)d systemTask:(void *)task requestSpecificAdditionalHTTPHeaders:(uint64_t)headers type:(void *)type singleFetchCompletion:;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)shardItemFromURL:(id)l type:(int64_t)type;
 - (id)succinctDescription;
-- (void)_configureOperationForQuery:(void *)a3 clientBundleID:(void *)a4 systemTask:(void *)a5 requestSpecificAdditionalHTTPHeaders:(uint64_t)a6 type:;
-- (void)fetchConfigItemWithType:(int64_t)a3 clientBundleID:(id)a4 systemTask:(id)a5 completion:(id)a6;
-- (void)fetchItemsWithBucketStartIndex:(int64_t)a3 endIndex:(int64_t)a4 type:(int64_t)a5 forClientBundleID:(id)a6 completion:(id)a7;
-- (void)fetchMegashardItemWithType:(int64_t)a3 clientBundleID:(id)a4 systemTask:(id)a5 completion:(id)a6;
-- (void)fetchShardMatching:(id)a3 clientBundleID:(id)a4 completion:(id)a5;
+- (void)_configureOperationForQuery:(void *)query clientBundleID:(void *)d systemTask:(void *)task requestSpecificAdditionalHTTPHeaders:(uint64_t)headers type:;
+- (void)fetchConfigItemWithType:(int64_t)type clientBundleID:(id)d systemTask:(id)task completion:(id)completion;
+- (void)fetchItemsWithBucketStartIndex:(int64_t)index endIndex:(int64_t)endIndex type:(int64_t)type forClientBundleID:(id)d completion:(id)completion;
+- (void)fetchMegashardItemWithType:(int64_t)type clientBundleID:(id)d systemTask:(id)task completion:(id)completion;
+- (void)fetchShardMatching:(id)matching clientBundleID:(id)d completion:(id)completion;
 @end
 
 @implementation BCSRemoteFetchCloudKit
 
-- (BCSRemoteFetchCloudKit)initWithEnvironment:(id)a3 database:(id)a4 databaseContainer:(id)a5 queryOperationFactory:(id)a6 coalesceHelper:(id)a7 bloomFilterExtractor:(id)a8 operationGroupFactory:(id)a9 metricFactory:(id)a10
+- (BCSRemoteFetchCloudKit)initWithEnvironment:(id)environment database:(id)database databaseContainer:(id)container queryOperationFactory:(id)factory coalesceHelper:(id)helper bloomFilterExtractor:(id)extractor operationGroupFactory:(id)groupFactory metricFactory:(id)self0
 {
-  v42 = a10;
-  v17 = a9;
-  v41 = a8;
-  v18 = a8;
-  v40 = a7;
-  v19 = a7;
-  v39 = a6;
-  v20 = a6;
-  v38 = a5;
-  v21 = a5;
-  v37 = a4;
-  v22 = a4;
-  obj = a3;
-  v23 = a3;
+  metricFactoryCopy = metricFactory;
+  groupFactoryCopy = groupFactory;
+  extractorCopy = extractor;
+  extractorCopy2 = extractor;
+  helperCopy = helper;
+  helperCopy2 = helper;
+  factoryCopy = factory;
+  factoryCopy2 = factory;
+  containerCopy = container;
+  containerCopy2 = container;
+  databaseCopy = database;
+  databaseCopy2 = database;
+  obj = environment;
+  environmentCopy = environment;
   v24 = objc_alloc_init(BCSCloudKitQueryProvider);
-  v25 = v23;
-  v26 = v22;
-  v43 = v21;
+  v25 = environmentCopy;
+  v26 = databaseCopy2;
+  v43 = containerCopy2;
   v27 = v24;
-  v28 = v20;
-  v29 = v19;
-  v30 = v18;
-  v31 = v17;
-  v32 = v42;
+  v28 = factoryCopy2;
+  v29 = helperCopy2;
+  v30 = extractorCopy2;
+  v31 = groupFactoryCopy;
+  v32 = metricFactoryCopy;
   if (self)
   {
     v44.receiver = self;
@@ -49,27 +49,27 @@
     if (v33)
     {
       objc_storeStrong(&v33->_environment, obj);
-      objc_storeStrong(&self->_database, v37);
-      objc_storeStrong(&self->_databaseContainer, v38);
+      objc_storeStrong(&self->_database, databaseCopy);
+      objc_storeStrong(&self->_databaseContainer, containerCopy);
       objc_storeStrong(&self->_queryProvider, v24);
-      objc_storeStrong(&self->_queryOperationFactory, v39);
-      objc_storeStrong(&self->_coalesceHelper, v40);
-      objc_storeStrong(&self->_bloomFilterExtractor, v41);
-      objc_storeStrong(&self->_operationGroupFactory, a9);
-      objc_storeStrong(&self->_metricFactory, a10);
+      objc_storeStrong(&self->_queryOperationFactory, factoryCopy);
+      objc_storeStrong(&self->_coalesceHelper, helperCopy);
+      objc_storeStrong(&self->_bloomFilterExtractor, extractorCopy);
+      objc_storeStrong(&self->_operationGroupFactory, groupFactory);
+      objc_storeStrong(&self->_metricFactory, metricFactory);
     }
   }
 
-  v34 = self;
-  return v34;
+  selfCopy = self;
+  return selfCopy;
 }
 
-- (void)fetchConfigItemWithType:(int64_t)a3 clientBundleID:(id)a4 systemTask:(id)a5 completion:(id)a6
+- (void)fetchConfigItemWithType:(int64_t)type clientBundleID:(id)d systemTask:(id)task completion:(id)completion
 {
   v62[1] = *MEMORY[0x277D85DE8];
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  dCopy = d;
+  taskCopy = task;
+  completionCopy = completion;
   v13 = ABSLogCommon();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
@@ -78,12 +78,12 @@
     _os_log_debug_impl(&dword_242072000, v13, OS_LOG_TYPE_DEBUG, "%s", buf, 0xCu);
   }
 
-  if (v12)
+  if (completionCopy)
   {
     v58 = 0;
-    v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"cloudkit_config_fetch_type_%ld", a3];
-    v15 = [[BCSCoalesceObjectConfig alloc] initWithCompletionBlock:v12 coalesceKey:v14];
-    if (v11)
+    type = [MEMORY[0x277CCACA8] stringWithFormat:@"cloudkit_config_fetch_type_%ld", type];
+    v15 = [[BCSCoalesceObjectConfig alloc] initWithCompletionBlock:completionCopy coalesceKey:type];
+    if (taskCopy)
     {
       v16 = self ? self->_coalesceHelper : 0;
       if ([(BCSCoalesceHelperProtocol *)v16 isDuplicateRequest:v15])
@@ -100,7 +100,7 @@
         v60 = @"Request is a scheduled duplicate and already in progress";
         v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v60 forKeys:&v59 count:1];
         v19 = [BCSError errorWithDomain:@"com.apple.businessservices" code:42 userInfo:v18];
-        v12[2](v12, 0, v19);
+        completionCopy[2](completionCopy, 0, v19);
 
 LABEL_40:
         goto LABEL_41;
@@ -133,10 +133,10 @@ LABEL_40:
       goto LABEL_40;
     }
 
-    v49 = v10;
+    v49 = dCopy;
     v23 = os_signpost_id_generate(v22);
 
-    v48 = v14;
+    v48 = type;
     if (self)
     {
       metricFactory = self->_metricFactory;
@@ -148,9 +148,9 @@ LABEL_40:
     }
 
     v25 = metricFactory;
-    v26 = [(BCSMetricFactoryProtocol *)v25 measurementFactory];
-    v27 = [(BCSRemoteFetchCloudKit *)self environment];
-    v28 = [v26 configCloudKitFetchAndDecodeTimingMeasurementForType:objc_msgSend(v27 identifier:{"type"), v23}];
+    measurementFactory = [(BCSMetricFactoryProtocol *)v25 measurementFactory];
+    environment = [(BCSRemoteFetchCloudKit *)self environment];
+    v28 = [measurementFactory configCloudKitFetchAndDecodeTimingMeasurementForType:objc_msgSend(environment identifier:{"type"), v23}];
 
     [v28 begin];
     v54[0] = MEMORY[0x277D85DD0];
@@ -159,7 +159,7 @@ LABEL_40:
     v54[3] = &unk_278D39F58;
     v18 = v28;
     v55 = v18;
-    v56 = self;
+    selfCopy = self;
     v57 = v48;
     v46 = MEMORY[0x245D07100](v54);
     if (self)
@@ -173,9 +173,9 @@ LABEL_40:
     }
 
     v30 = v29;
-    v31 = [(BCSMetricFactoryProtocol *)v30 measurementFactory];
-    v32 = [(BCSRemoteFetchCloudKit *)self environment];
-    v33 = [v31 configCloudKitFetchTimingMeasurementForType:objc_msgSend(v32 identifier:{"type"), v23}];
+    measurementFactory2 = [(BCSMetricFactoryProtocol *)v30 measurementFactory];
+    environment2 = [(BCSRemoteFetchCloudKit *)self environment];
+    v33 = [measurementFactory2 configCloudKitFetchTimingMeasurementForType:objc_msgSend(environment2 identifier:{"type"), v23}];
 
     v34 = v33;
     [v33 begin];
@@ -189,21 +189,21 @@ LABEL_40:
       queryProvider = 0;
     }
 
-    v36 = [(BCSCloudKitQueryProviding *)queryProvider queryForFetchConfigItemWithType:a3];
+    v36 = [(BCSCloudKitQueryProviding *)queryProvider queryForFetchConfigItemWithType:type];
     v47 = v15;
     v37 = 0;
     if (self)
     {
-      if (a3 <= 2)
+      if (type <= 2)
       {
-        if (a3 == 1)
+        if (type == 1)
         {
           v62[0] = @"X-CloudKit-BusinessChat-QueryName";
           v38 = @"ChatSuggestConfig";
           goto LABEL_34;
         }
 
-        if (a3 == 2)
+        if (type == 2)
         {
           v62[0] = @"X-CloudKit-BusinessLink-QueryName";
           v38 = @"DomainLinkConfig";
@@ -213,7 +213,7 @@ LABEL_40:
 
       else
       {
-        switch(a3)
+        switch(type)
         {
           case 3:
             v62[0] = @"X-CloudKit-BusinessCaller-QueryName";
@@ -240,16 +240,16 @@ LABEL_34:
     v50[3] = &unk_278D39F80;
     v39 = v34;
     v51 = v39;
-    v53 = a3;
+    typeCopy = type;
     v40 = v46;
     v52 = v40;
     v41 = v36;
-    v42 = [(BCSRemoteFetchCloudKit *)&self->super.isa _queryOperationForQuery:v36 clientBundleID:v49 systemTask:v11 requestSpecificAdditionalHTTPHeaders:v37 type:a3 singleFetchCompletion:v50];
+    v42 = [(BCSRemoteFetchCloudKit *)&self->super.isa _queryOperationForQuery:v36 clientBundleID:v49 systemTask:taskCopy requestSpecificAdditionalHTTPHeaders:v37 type:type singleFetchCompletion:v50];
 
-    if ((a3 - 1) <= 4)
+    if ((type - 1) <= 4)
     {
-      v43 = [(__objc2_class *)*off_278D3A180[a3 - 1] keysRequestedForCloudKitFetch];
-      [v42 setDesiredKeys:v43];
+      keysRequestedForCloudKitFetch = [(__objc2_class *)*off_278D3A180[type - 1] keysRequestedForCloudKitFetch];
+      [v42 setDesiredKeys:keysRequestedForCloudKitFetch];
     }
 
     if (self)
@@ -262,11 +262,11 @@ LABEL_34:
       database = 0;
     }
 
-    v10 = v49;
+    dCopy = v49;
     [(BCSCloudKitDatabaseProtocol *)database addOperation:v42];
 
     v15 = v47;
-    v14 = v48;
+    type = v48;
     goto LABEL_40;
   }
 
@@ -424,31 +424,31 @@ LABEL_20:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_queryOperationForQuery:(void *)a3 clientBundleID:(void *)a4 systemTask:(void *)a5 requestSpecificAdditionalHTTPHeaders:(uint64_t)a6 type:(void *)a7 singleFetchCompletion:
+- (id)_queryOperationForQuery:(void *)query clientBundleID:(void *)d systemTask:(void *)task requestSpecificAdditionalHTTPHeaders:(uint64_t)headers type:(void *)type singleFetchCompletion:
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  if (a1)
+  queryCopy = query;
+  dCopy = d;
+  taskCopy = task;
+  if (self)
   {
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
     v25[2] = __140__BCSRemoteFetchCloudKit__queryOperationForQuery_clientBundleID_systemTask_requestSpecificAdditionalHTTPHeaders_type_singleFetchCompletion___block_invoke;
     v25[3] = &unk_278D3A0C0;
-    v25[4] = a1;
-    v26 = v13;
-    v27 = v14;
-    v28 = v15;
-    v29 = a6;
-    v16 = a7;
+    v25[4] = self;
+    v26 = queryCopy;
+    v27 = dCopy;
+    v28 = taskCopy;
+    headersCopy = headers;
+    typeCopy = type;
     v17 = a2;
     v18 = MEMORY[0x245D07100](v25);
     v19 = v17;
     v20 = v18;
-    v21 = v16;
-    a1 = [a1[5] makeQueryOperation];
-    [a1 setQuery:v19];
-    v20[2](v20, a1);
+    v21 = typeCopy;
+    self = [self[5] makeQueryOperation];
+    [self setQuery:v19];
+    v20[2](v20, self);
     v36[0] = 0;
     v36[1] = v36;
     v36[2] = 0x2020000000;
@@ -460,7 +460,7 @@ LABEL_20:
     v35 = v36;
     v22 = v21;
     v34 = v22;
-    [a1 setRecordFetchedBlock:v33];
+    [self setRecordFetchedBlock:v33];
     v30[0] = MEMORY[0x277D85DD0];
     v30[1] = 3221225472;
     v30[2] = __91__BCSRemoteFetchCloudKit__queryOperationForQuery_configurationBlock_singleFetchCompletion___block_invoke_2;
@@ -468,20 +468,20 @@ LABEL_20:
     v32 = v36;
     v23 = v22;
     v31 = v23;
-    [a1 setQueryCompletionBlock:v30];
+    [self setQueryCompletionBlock:v30];
 
     _Block_object_dispose(v36, 8);
   }
 
-  return a1;
+  return self;
 }
 
-- (void)fetchShardMatching:(id)a3 clientBundleID:(id)a4 completion:(id)a5
+- (void)fetchShardMatching:(id)matching clientBundleID:(id)d completion:(id)completion
 {
   v55[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  matchingCopy = matching;
+  dCopy = d;
+  completionCopy = completion;
   v11 = ABSLogCommon();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
@@ -490,12 +490,12 @@ LABEL_20:
     _os_log_debug_impl(&dword_242072000, v11, OS_LOG_TYPE_DEBUG, "%s@", buf, 0xCu);
   }
 
-  if (v10)
+  if (completionCopy)
   {
     v53 = 0;
-    v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"cloudkit_shard_fetch_type_%ld_start_%lld_count_%lld", objc_msgSend(v8, "type"), objc_msgSend(v8, "startIndex"), objc_msgSend(v8, "shardCount")];
-    v13 = [[BCSCoalesceObjectShard alloc] initWithCompletionBlock:v10 coalesceKey:v12];
-    v14 = v9;
+    v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"cloudkit_shard_fetch_type_%ld_start_%lld_count_%lld", objc_msgSend(matchingCopy, "type"), objc_msgSend(matchingCopy, "startIndex"), objc_msgSend(matchingCopy, "shardCount")];
+    v13 = [[BCSCoalesceObjectShard alloc] initWithCompletionBlock:completionCopy coalesceKey:v12];
+    v14 = dCopy;
     if (self)
     {
       coalesceHelper = self->_coalesceHelper;
@@ -512,7 +512,7 @@ LABEL_20:
     v18 = v17;
     if (v16 == 1)
     {
-      v9 = v14;
+      dCopy = v14;
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 136315138;
@@ -540,9 +540,9 @@ LABEL_36:
     }
 
     v21 = metricFactory;
-    v22 = [(BCSMetricFactoryProtocol *)v21 measurementFactory];
-    v23 = [(BCSRemoteFetchCloudKit *)self environment];
-    v24 = [v22 shardCloudKitFetchAndDecodeTimingMeasurementForType:objc_msgSend(v23 identifier:{"type"), v19}];
+    measurementFactory = [(BCSMetricFactoryProtocol *)v21 measurementFactory];
+    environment = [(BCSRemoteFetchCloudKit *)self environment];
+    v24 = [measurementFactory shardCloudKitFetchAndDecodeTimingMeasurementForType:objc_msgSend(environment identifier:{"type"), v19}];
 
     [v24 begin];
     v49[0] = MEMORY[0x277D85DD0];
@@ -551,7 +551,7 @@ LABEL_36:
     v49[3] = &unk_278D39FA8;
     v18 = v24;
     v50 = v18;
-    v51 = self;
+    selfCopy = self;
     v52 = v44;
     v42 = MEMORY[0x245D07100](v49);
     if (self)
@@ -565,9 +565,9 @@ LABEL_36:
     }
 
     v26 = v25;
-    v27 = [(BCSMetricFactoryProtocol *)v26 measurementFactory];
-    v28 = [(BCSRemoteFetchCloudKit *)self environment];
-    v29 = [v27 shardCloudKitFetchTimingMeasurementForType:objc_msgSend(v28 identifier:{"type"), v19}];
+    measurementFactory2 = [(BCSMetricFactoryProtocol *)v26 measurementFactory];
+    environment2 = [(BCSRemoteFetchCloudKit *)self environment];
+    v29 = [measurementFactory2 shardCloudKitFetchTimingMeasurementForType:objc_msgSend(environment2 identifier:{"type"), v19}];
 
     [v29 begin];
     if (self)
@@ -580,15 +580,15 @@ LABEL_36:
       queryProvider = 0;
     }
 
-    v9 = v14;
-    v31 = [(BCSCloudKitQueryProviding *)queryProvider queryForFetchShardIdentifier:v8];
-    v32 = [v8 type];
+    dCopy = v14;
+    v31 = [(BCSCloudKitQueryProviding *)queryProvider queryForFetchShardIdentifier:matchingCopy];
+    type = [matchingCopy type];
     v33 = 0;
     if (self)
     {
-      if (v32 > 3)
+      if (type > 3)
       {
-        switch(v32)
+        switch(type)
         {
           case 4:
             v55[0] = @"X-CloudKit-BusinessCaller-QueryName";
@@ -607,7 +607,7 @@ LABEL_36:
 
       else
       {
-        switch(v32)
+        switch(type)
         {
           case 1:
             v55[0] = @"X-CloudKit-BusinessChat-QueryName";
@@ -628,15 +628,15 @@ LABEL_29:
       }
     }
 
-    v35 = [v8 type];
-    if ((v35 - 2) > 4)
+    type2 = [matchingCopy type];
+    if ((type2 - 2) > 4)
     {
       v36 = 1;
     }
 
     else
     {
-      v36 = qword_2420E92C8[v35 - 2];
+      v36 = qword_2420E92C8[type2 - 2];
     }
 
     v45[0] = MEMORY[0x277D85DD0];
@@ -644,11 +644,11 @@ LABEL_29:
     v45[2] = __71__BCSRemoteFetchCloudKit_fetchShardMatching_clientBundleID_completion___block_invoke_105;
     v45[3] = &unk_278D39FD0;
     v46 = v29;
-    v47 = v8;
+    v47 = matchingCopy;
     v48 = v42;
     v37 = v42;
     v38 = v29;
-    v39 = [(BCSRemoteFetchCloudKit *)&self->super.isa _queryOperationForQuery:v31 clientBundleID:v9 systemTask:0 requestSpecificAdditionalHTTPHeaders:v33 type:v36 singleFetchCompletion:v45];
+    v39 = [(BCSRemoteFetchCloudKit *)&self->super.isa _queryOperationForQuery:v31 clientBundleID:dCopy systemTask:0 requestSpecificAdditionalHTTPHeaders:v33 type:v36 singleFetchCompletion:v45];
 
     if (self)
     {
@@ -816,12 +816,12 @@ LABEL_19:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fetchMegashardItemWithType:(int64_t)a3 clientBundleID:(id)a4 systemTask:(id)a5 completion:(id)a6
+- (void)fetchMegashardItemWithType:(int64_t)type clientBundleID:(id)d systemTask:(id)task completion:(id)completion
 {
   v59[1] = *MEMORY[0x277D85DE8];
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  dCopy = d;
+  taskCopy = task;
+  completionCopy = completion;
   v13 = ABSLogCommon();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
@@ -830,12 +830,12 @@ LABEL_19:
     _os_log_debug_impl(&dword_242072000, v13, OS_LOG_TYPE_DEBUG, "%s", buf, 0xCu);
   }
 
-  if (v12)
+  if (completionCopy)
   {
     v55 = 0;
-    v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"cloudkit_config_and_shard_fetch_type_%ld", a3];
-    v15 = [[BCSCoalesceObjectMegashard alloc] initWithCompletionBlock:v12 coalesceKey:v14];
-    if (v11)
+    type = [MEMORY[0x277CCACA8] stringWithFormat:@"cloudkit_config_and_shard_fetch_type_%ld", type];
+    v15 = [[BCSCoalesceObjectMegashard alloc] initWithCompletionBlock:completionCopy coalesceKey:type];
+    if (taskCopy)
     {
       v16 = self ? self->_coalesceHelper : 0;
       if ([(BCSCoalesceHelperProtocol *)v16 isDuplicateRequest:v15])
@@ -852,7 +852,7 @@ LABEL_19:
         v57 = @"Request is a scheduled duplicate and already in progress";
         v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v57 forKeys:&v56 count:1];
         v19 = [BCSError errorWithDomain:@"com.apple.businessservices" code:42 userInfo:v18];
-        (*(v12 + 2))(v12, 0, 0, 0, v19);
+        (*(completionCopy + 2))(completionCopy, 0, 0, 0, v19);
 
         goto LABEL_37;
       }
@@ -884,10 +884,10 @@ LABEL_19:
       goto LABEL_37;
     }
 
-    v45 = v10;
+    v45 = dCopy;
     v23 = os_signpost_id_generate(v22);
 
-    v44 = v14;
+    v44 = type;
     if (self)
     {
       metricFactory = self->_metricFactory;
@@ -899,9 +899,9 @@ LABEL_19:
     }
 
     v25 = metricFactory;
-    v26 = [(BCSMetricFactoryProtocol *)v25 measurementFactory];
-    v27 = [(BCSRemoteFetchCloudKit *)self environment];
-    v28 = [v26 megashardCloudKitFetchAndDecodeTimingMeasurementForType:objc_msgSend(v27 identifier:{"type"), v23}];
+    measurementFactory = [(BCSMetricFactoryProtocol *)v25 measurementFactory];
+    environment = [(BCSRemoteFetchCloudKit *)self environment];
+    v28 = [measurementFactory megashardCloudKitFetchAndDecodeTimingMeasurementForType:objc_msgSend(environment identifier:{"type"), v23}];
 
     [v28 begin];
     v51[0] = MEMORY[0x277D85DD0];
@@ -910,7 +910,7 @@ LABEL_19:
     v51[3] = &unk_278D39FF8;
     v18 = v28;
     v52 = v18;
-    v53 = self;
+    selfCopy = self;
     v54 = v44;
     v43 = MEMORY[0x245D07100](v51);
     if (self)
@@ -924,9 +924,9 @@ LABEL_19:
     }
 
     v30 = v29;
-    v31 = [(BCSMetricFactoryProtocol *)v30 measurementFactory];
-    v32 = [(BCSRemoteFetchCloudKit *)self environment];
-    v33 = [v31 megashardCloudKitFetchTimingMeasurementForType:objc_msgSend(v32 identifier:{"type"), v23}];
+    measurementFactory2 = [(BCSMetricFactoryProtocol *)v30 measurementFactory];
+    environment2 = [(BCSRemoteFetchCloudKit *)self environment];
+    v33 = [measurementFactory2 megashardCloudKitFetchTimingMeasurementForType:objc_msgSend(environment2 identifier:{"type"), v23}];
 
     [v33 begin];
     if (self)
@@ -939,20 +939,20 @@ LABEL_19:
       queryProvider = 0;
     }
 
-    v35 = [(BCSCloudKitQueryProviding *)queryProvider queryForFetchConfigItemWithType:a3];
+    v35 = [(BCSCloudKitQueryProviding *)queryProvider queryForFetchConfigItemWithType:type];
     v36 = 0;
     if (self)
     {
-      if (a3 <= 2)
+      if (type <= 2)
       {
-        if (a3 == 1)
+        if (type == 1)
         {
           v59[0] = @"X-CloudKit-BusinessChat-QueryName";
           v37 = @"ChatSuggestConfigMegashard";
           goto LABEL_33;
         }
 
-        if (a3 == 2)
+        if (type == 2)
         {
           v59[0] = @"X-CloudKit-BusinessLink-QueryName";
           v37 = @"DomainLinkConfigMegashards";
@@ -962,14 +962,14 @@ LABEL_19:
 
       else
       {
-        if (a3 == 3 || a3 == 4)
+        if (type == 3 || type == 4)
         {
           v59[0] = @"X-CloudKit-BusinessCaller-QueryName";
           v37 = @"BrandedEmailConfigMegashard";
           goto LABEL_33;
         }
 
-        if (a3 == 5)
+        if (type == 5)
         {
           v59[0] = @"X-CloudKit-WebPresentment-QueryName";
           v37 = @"WebPresentmentConfigMegashard";
@@ -985,12 +985,12 @@ LABEL_33:
     v46[2] = __90__BCSRemoteFetchCloudKit_fetchMegashardItemWithType_clientBundleID_systemTask_completion___block_invoke_119;
     v46[3] = &unk_278D3A048;
     v47 = v33;
-    v48 = self;
+    selfCopy2 = self;
     v49 = v43;
-    v50 = a3;
+    typeCopy = type;
     v38 = v43;
     v39 = v33;
-    v40 = [(BCSRemoteFetchCloudKit *)&self->super.isa _queryOperationForQuery:v35 clientBundleID:v45 systemTask:v11 requestSpecificAdditionalHTTPHeaders:v36 type:a3 singleFetchCompletion:v46];
+    v40 = [(BCSRemoteFetchCloudKit *)&self->super.isa _queryOperationForQuery:v35 clientBundleID:v45 systemTask:taskCopy requestSpecificAdditionalHTTPHeaders:v36 type:type singleFetchCompletion:v46];
 
     if (self)
     {
@@ -1002,10 +1002,10 @@ LABEL_33:
       database = 0;
     }
 
-    v14 = v44;
+    type = v44;
     [(BCSCloudKitDatabaseProtocol *)database addOperation:v40];
 
-    v10 = v45;
+    dCopy = v45;
 LABEL_37:
   }
 
@@ -1231,11 +1231,11 @@ uint64_t __90__BCSRemoteFetchCloudKit_fetchMegashardItemWithType_clientBundleID_
   }
 }
 
-- (void)fetchItemsWithBucketStartIndex:(int64_t)a3 endIndex:(int64_t)a4 type:(int64_t)a5 forClientBundleID:(id)a6 completion:(id)a7
+- (void)fetchItemsWithBucketStartIndex:(int64_t)index endIndex:(int64_t)endIndex type:(int64_t)type forClientBundleID:(id)d completion:(id)completion
 {
   v83 = *MEMORY[0x277D85DE8];
-  v12 = a6;
-  v13 = a7;
+  dCopy = d;
+  completionCopy = completion;
   v14 = ABSLogCommon();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
@@ -1244,11 +1244,11 @@ uint64_t __90__BCSRemoteFetchCloudKit_fetchMegashardItemWithType_clientBundleID_
     _os_log_debug_impl(&dword_242072000, v14, OS_LOG_TYPE_DEBUG, "%s", &buf, 0xCu);
   }
 
-  if (v13)
+  if (completionCopy)
   {
     v69 = 0;
-    v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"cloudkit_item_fetch_type_%ld_start_%lld_end_%lld", a5, a3, a4];
-    v16 = [[BCSCoalesceObjectItems alloc] initWithCompletionBlock:v13 coalesceKey:v15];
+    endIndex = [MEMORY[0x277CCACA8] stringWithFormat:@"cloudkit_item_fetch_type_%ld_start_%lld_end_%lld", type, index, endIndex];
+    v16 = [[BCSCoalesceObjectItems alloc] initWithCompletionBlock:completionCopy coalesceKey:endIndex];
     if (self)
     {
       coalesceHelper = self->_coalesceHelper;
@@ -1278,10 +1278,10 @@ LABEL_33:
       goto LABEL_34;
     }
 
-    v58 = v12;
+    v58 = dCopy;
     v21 = os_signpost_id_generate(v19);
 
-    v57 = v15;
+    v57 = endIndex;
     if (self)
     {
       metricFactory = self->_metricFactory;
@@ -1293,9 +1293,9 @@ LABEL_33:
     }
 
     v23 = metricFactory;
-    v24 = [(BCSMetricFactoryProtocol *)v23 measurementFactory];
-    v25 = [(BCSRemoteFetchCloudKit *)self environment];
-    v26 = [v24 itemCloudKitFetchAndDecodeTimingMeasurementForType:objc_msgSend(v25 identifier:{"type"), v21}];
+    measurementFactory = [(BCSMetricFactoryProtocol *)v23 measurementFactory];
+    environment = [(BCSRemoteFetchCloudKit *)self environment];
+    v26 = [measurementFactory itemCloudKitFetchAndDecodeTimingMeasurementForType:objc_msgSend(environment identifier:{"type"), v21}];
 
     [v26 begin];
     v65[0] = MEMORY[0x277D85DD0];
@@ -1304,7 +1304,7 @@ LABEL_33:
     v65[3] = &unk_278D3A070;
     v20 = v26;
     v66 = v20;
-    v67 = self;
+    selfCopy = self;
     v68 = v57;
     v54 = MEMORY[0x245D07100](v65);
     if (self)
@@ -1318,9 +1318,9 @@ LABEL_33:
     }
 
     v28 = v27;
-    v29 = [(BCSMetricFactoryProtocol *)v28 measurementFactory];
-    v30 = [(BCSRemoteFetchCloudKit *)self environment];
-    v31 = [v29 itemCloudKitFetchTimingMeasurementForType:objc_msgSend(v30 identifier:{"type"), v21}];
+    measurementFactory2 = [(BCSMetricFactoryProtocol *)v28 measurementFactory];
+    environment2 = [(BCSRemoteFetchCloudKit *)self environment];
+    v31 = [measurementFactory2 itemCloudKitFetchTimingMeasurementForType:objc_msgSend(environment2 identifier:{"type"), v21}];
 
     [v31 begin];
     if (self)
@@ -1333,20 +1333,20 @@ LABEL_33:
       queryProvider = 0;
     }
 
-    v33 = [(BCSCloudKitQueryProviding *)queryProvider queryForFetchItemsWithStartIndex:a3 endIndex:a4 type:a5];
+    v33 = [(BCSCloudKitQueryProviding *)queryProvider queryForFetchItemsWithStartIndex:index endIndex:endIndex type:type];
     v34 = 0;
     if (self)
     {
-      if (a5 <= 2)
+      if (type <= 2)
       {
-        if (a5 == 1)
+        if (type == 1)
         {
           v80[0] = @"X-CloudKit-BusinessChat-QueryName";
           v35 = @"ChatSuggest";
           goto LABEL_27;
         }
 
-        if (a5 == 2)
+        if (type == 2)
         {
           v80[0] = @"X-CloudKit-BusinessLink-QueryName";
           v35 = @"BusinessLinkV2";
@@ -1356,7 +1356,7 @@ LABEL_33:
 
       else
       {
-        switch(a5)
+        switch(type)
         {
           case 3:
             v80[0] = @"X-CloudKit-BusinessCaller-QueryName";
@@ -1382,9 +1382,9 @@ LABEL_27:
     v60[2] = __100__BCSRemoteFetchCloudKit_fetchItemsWithBucketStartIndex_endIndex_type_forClientBundleID_completion___block_invoke_134;
     v60[3] = &unk_278D3A098;
     v61 = v31;
-    v62 = self;
+    selfCopy2 = self;
     v63 = v54;
-    v64 = a5;
+    typeCopy = type;
     v55 = v54;
     v53 = v31;
     v36 = v58;
@@ -1397,11 +1397,11 @@ LABEL_27:
       *(&buf + 1) = 3221225472;
       v73 = __142__BCSRemoteFetchCloudKit__queryOperationForQuery_clientBundleID_systemTask_requestSpecificAdditionalHTTPHeaders_type_multipleFetchCompletion___block_invoke;
       v74 = &unk_278D3A0C0;
-      v75 = self;
+      selfCopy3 = self;
       v76 = v36;
       v77 = 0;
       v78 = v37;
-      v79 = a5;
+      typeCopy2 = type;
       v38 = v60;
       v39 = v33;
       v40 = MEMORY[0x245D07100](&buf);
@@ -1409,18 +1409,18 @@ LABEL_27:
       queryOperationFactory = self->_queryOperationFactory;
       v43 = v40;
       v44 = v39;
-      v45 = [(BCSQueryOperationFactoryProtocol *)queryOperationFactory makeQueryOperation];
-      [v45 setQuery:v44];
+      makeQueryOperation = [(BCSQueryOperationFactoryProtocol *)queryOperationFactory makeQueryOperation];
+      [makeQueryOperation setQuery:v44];
 
-      v43[2](v43, v45);
-      v46 = [MEMORY[0x277CBEB18] array];
+      v43[2](v43, makeQueryOperation);
+      array = [MEMORY[0x277CBEB18] array];
       v70[0] = MEMORY[0x277D85DD0];
       v70[1] = 3221225472;
       v70[2] = __93__BCSRemoteFetchCloudKit__queryOperationForQuery_configurationBlock_multipleFetchCompletion___block_invoke;
       v70[3] = &unk_278D3A138;
-      v47 = v46;
+      v47 = array;
       v71 = v47;
-      [v45 setRecordFetchedBlock:v70];
+      [makeQueryOperation setRecordFetchedBlock:v70];
       v80[0] = MEMORY[0x277D85DD0];
       v80[1] = 3221225472;
       v80[2] = __93__BCSRemoteFetchCloudKit__queryOperationForQuery_configurationBlock_multipleFetchCompletion___block_invoke_2;
@@ -1429,15 +1429,15 @@ LABEL_27:
       v81 = v47;
       v82 = v48;
       v49 = v47;
-      [v45 setQueryCompletionBlock:v80];
+      [makeQueryOperation setQueryCompletionBlock:v80];
     }
 
     else
     {
-      v45 = 0;
+      makeQueryOperation = 0;
     }
 
-    v15 = v57;
+    endIndex = v57;
     if (self)
     {
       database = self->_database;
@@ -1448,9 +1448,9 @@ LABEL_27:
       database = 0;
     }
 
-    [(BCSCloudKitDatabaseProtocol *)database addOperation:v45];
+    [(BCSCloudKitDatabaseProtocol *)database addOperation:makeQueryOperation];
 
-    v12 = v58;
+    dCopy = v58;
     goto LABEL_33;
   }
 
@@ -1617,29 +1617,29 @@ LABEL_24:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (id)shardItemFromURL:(id)a3 type:(int64_t)a4
+- (id)shardItemFromURL:(id)l type:(int64_t)type
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  lCopy = l;
   v6 = ABSLogCommon();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = NSStringFromBCSShardType(a4);
+    v7 = NSStringFromBCSShardType(type);
     v12 = 138412546;
-    v13 = v5;
+    v13 = lCopy;
     v14 = 2112;
     v15 = v7;
     _os_log_impl(&dword_242072000, v6, OS_LOG_TYPE_DEFAULT, "shardItemFromURL:%@ type:%@", &v12, 0x16u);
   }
 
-  if (a4 == 3)
+  if (type == 3)
   {
-    v8 = [[BCSDomainShardItem alloc] initWithURL:v5];
+    v8 = [[BCSDomainShardItem alloc] initWithURL:lCopy];
   }
 
   else
   {
-    v8 = [[BCSFilterShardItem alloc] initWithURL:v5 type:a4];
+    v8 = [[BCSFilterShardItem alloc] initWithURL:lCopy type:type];
   }
 
   v9 = v8;
@@ -1651,78 +1651,78 @@ LABEL_24:
 
 - (id)succinctDescription
 {
-  v2 = [(BCSRemoteFetchCloudKit *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(BCSRemoteFetchCloudKit *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(BCSRemoteFetchCloudKit *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(BCSRemoteFetchCloudKit *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(BCSRemoteFetchCloudKit *)self succinctDescriptionBuilder];
-  v5 = [v4 appendObject:self->_environment withName:@"iCloudEnvironment"];
+  succinctDescriptionBuilder = [(BCSRemoteFetchCloudKit *)self succinctDescriptionBuilder];
+  v5 = [succinctDescriptionBuilder appendObject:self->_environment withName:@"iCloudEnvironment"];
 
-  return v4;
+  return succinctDescriptionBuilder;
 }
 
-- (void)_configureOperationForQuery:(void *)a3 clientBundleID:(void *)a4 systemTask:(void *)a5 requestSpecificAdditionalHTTPHeaders:(uint64_t)a6 type:
+- (void)_configureOperationForQuery:(void *)query clientBundleID:(void *)d systemTask:(void *)task requestSpecificAdditionalHTTPHeaders:(uint64_t)headers type:
 {
   v32 = a2;
-  v11 = a5;
-  if (a1)
+  taskCopy = task;
+  if (self)
   {
     v12 = MEMORY[0x277CBC5F8];
-    v13 = a4;
-    v14 = a3;
+    dCopy = d;
+    queryCopy = query;
     v15 = [v12 alloc];
     v16 = [v15 initWithZoneName:@"_defaultZone" ownerName:*MEMORY[0x277CBBF28]];
     [v32 setZoneID:v16];
 
     v17 = objc_opt_new();
-    v18 = [a1 environment];
-    v19 = [v18 additionalRequestHTTPHeaders];
-    v20 = [v17 bs_dictionaryByAddingEntriesFromDictionary:v19];
+    environment = [self environment];
+    additionalRequestHTTPHeaders = [environment additionalRequestHTTPHeaders];
+    v20 = [v17 bs_dictionaryByAddingEntriesFromDictionary:additionalRequestHTTPHeaders];
 
-    v21 = [v20 bs_dictionaryByAddingEntriesFromDictionary:v11];
+    v21 = [v20 bs_dictionaryByAddingEntriesFromDictionary:taskCopy];
 
-    v22 = [v32 configuration];
-    [v22 setAdditionalRequestHTTPHeaders:v21];
+    configuration = [v32 configuration];
+    [configuration setAdditionalRequestHTTPHeaders:v21];
 
-    v23 = [v32 configuration];
-    [v23 setSourceApplicationBundleIdentifier:v14];
+    configuration2 = [v32 configuration];
+    [configuration2 setSourceApplicationBundleIdentifier:queryCopy];
 
-    v24 = [v32 configuration];
-    [v24 setSystemTask:v13];
+    configuration3 = [v32 configuration];
+    [configuration3 setSystemTask:dCopy];
 
-    if (!v13)
+    if (!dCopy)
     {
       [v32 setQualityOfService:25];
-      v25 = [v32 configuration];
-      [v25 setDiscretionaryNetworkBehavior:0];
+      configuration4 = [v32 configuration];
+      [configuration4 setDiscretionaryNetworkBehavior:0];
 
-      v26 = [v32 configuration];
-      [v26 setAutomaticallyRetryNetworkFailures:0];
+      configuration5 = [v32 configuration];
+      [configuration5 setAutomaticallyRetryNetworkFailures:0];
     }
 
-    v27 = [a1[9] makeOperationGroup];
-    if (a6 <= 2)
+    makeOperationGroup = [self[9] makeOperationGroup];
+    if (headers <= 2)
     {
       v28 = v32;
-      if (a6 == 1)
+      if (headers == 1)
       {
         v29 = @"X-CloudKit-BusinessChat-QueryName";
         goto LABEL_15;
       }
 
-      if (a6 == 2)
+      if (headers == 2)
       {
         v29 = @"X-CloudKit-BusinessLink-QueryName";
         goto LABEL_15;
@@ -1732,14 +1732,14 @@ LABEL_24:
     else
     {
       v28 = v32;
-      switch(a6)
+      switch(headers)
       {
         case 3:
-          v30 = [v11 objectForKeyedSubscript:@"X-CloudKit-BusinessCaller-QueryName"];
-          [v27 setName:v30];
+          v30 = [taskCopy objectForKeyedSubscript:@"X-CloudKit-BusinessCaller-QueryName"];
+          [makeOperationGroup setName:v30];
 
-          v31 = [v32 configuration];
-          [v31 set_sourceApplicationSecondaryIdentifier:@"com.apple.CommCenter.BrandedCalling"];
+          configuration6 = [v32 configuration];
+          [configuration6 set_sourceApplicationSecondaryIdentifier:@"com.apple.CommCenter.BrandedCalling"];
 LABEL_16:
 
           v28 = v32;
@@ -1750,13 +1750,13 @@ LABEL_16:
         case 5:
           v29 = @"X-CloudKit-WebPresentment-QueryName";
 LABEL_15:
-          v31 = [v11 objectForKeyedSubscript:v29];
-          [v27 setName:v31];
+          configuration6 = [taskCopy objectForKeyedSubscript:v29];
+          [makeOperationGroup setName:configuration6];
           goto LABEL_16;
       }
     }
 
-    [v28 setGroup:v27];
+    [v28 setGroup:makeOperationGroup];
   }
 }
 

@@ -9,10 +9,10 @@
   v31[1] = *MEMORY[0x1E69E9840];
   v4 = a3;
   v5 = MEMORY[0x1E696AAE8];
-  v6 = [a1 localizations];
+  localizations = [self localizations];
   v31[0] = v4;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v31 count:1];
-  v8 = [v5 preferredLocalizationsFromArray:v6 forPreferences:v7];
+  v8 = [v5 preferredLocalizationsFromArray:localizations forPreferences:v7];
 
   v24 = 0u;
   v25 = 0u;
@@ -34,7 +34,7 @@
         }
 
         v14 = *(*(&v22 + 1) + 8 * i);
-        v15 = [a1 URLForResource:@"nlu.appintents" withExtension:0 subdirectory:0 localization:{v14, v22}];
+        v15 = [self URLForResource:@"nlu.appintents" withExtension:0 subdirectory:0 localization:{v14, v22}];
         if (v15)
         {
           v18 = v15;
@@ -64,7 +64,7 @@
     }
   }
 
-  v16 = [a1 URLForResource:@"Metadata.appintents/nlu" withExtension:0];
+  v16 = [self URLForResource:@"Metadata.appintents/nlu" withExtension:0];
   if (v16)
   {
     v17 = CDMOSLoggerForCategory(0);

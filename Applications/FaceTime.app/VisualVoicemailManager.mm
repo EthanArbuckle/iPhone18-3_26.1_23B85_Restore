@@ -1,27 +1,27 @@
 @interface VisualVoicemailManager
 - (BOOL)isTranscriptionEnabled;
 - (_TtC8FaceTime22VisualVoicemailManager)init;
-- (_TtC8FaceTime22VisualVoicemailManager)initWithVisualVoicemailManager:(id)a3 onVoicemailsChanged:(id)a4;
+- (_TtC8FaceTime22VisualVoicemailManager)initWithVisualVoicemailManager:(id)manager onVoicemailsChanged:(id)changed;
 - (int64_t)estimatedCount;
 - (void)accountsDidChange;
 - (void)capabilitiesDidChange;
-- (void)deleteVoicemails:(NSArray *)a3 completion:(id)a4;
-- (void)fetchMessagesWithCompletion:(id)a3;
-- (void)handleVoiceMailsChangedNotificationWithNotification:(id)a3;
+- (void)deleteVoicemails:(NSArray *)voicemails completion:(id)completion;
+- (void)fetchMessagesWithCompletion:(id)completion;
+- (void)handleVoiceMailsChangedNotificationWithNotification:(id)notification;
 - (void)managerStorageUsageDidChange;
-- (void)markVoicemailsAsRead:(NSArray *)a3 completion:(id)a4;
-- (void)messagesPassingTest:(id)a3 completion:;
+- (void)markVoicemailsAsRead:(NSArray *)read completion:(id)completion;
+- (void)messagesPassingTest:(id)test completion:;
 - (void)onlineStatusDidChange;
-- (void)removeVoicemailsFromTrash:(NSArray *)a3 completion:(id)a4;
-- (void)reportTranscriptionProblemForVoicemail:(id)a3;
-- (void)reportTranscriptionRatedAccurate:(BOOL)a3 forVoicemail:(id)a4;
-- (void)requestInitialStateIfNecessaryAndSendNotifications:(BOOL)a3;
+- (void)removeVoicemailsFromTrash:(NSArray *)trash completion:(id)completion;
+- (void)reportTranscriptionProblemForVoicemail:(id)voicemail;
+- (void)reportTranscriptionRatedAccurate:(BOOL)accurate forVoicemail:(id)voicemail;
+- (void)requestInitialStateIfNecessaryAndSendNotifications:(BOOL)notifications;
 - (void)subscriptionStateStatusDidChange;
 - (void)syncInProgresDidChange;
 - (void)transcribingStatusDidChange;
-- (void)trashVoicemails:(NSArray *)a3 completion:(id)a4;
-- (void)voicemailWithIdentifier:(MPMessageID *)a3 completion:(id)a4;
-- (void)voicemailsDidChangeInitial:(BOOL)a3 added:(id)a4 deleted:(id)a5 updated:(id)a6;
+- (void)trashVoicemails:(NSArray *)voicemails completion:(id)completion;
+- (void)voicemailWithIdentifier:(MPMessageID *)identifier completion:(id)completion;
+- (void)voicemailsDidChangeInitial:(BOOL)initial added:(id)added deleted:(id)deleted updated:(id)updated;
 @end
 
 @implementation VisualVoicemailManager
@@ -36,25 +36,25 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = [*(&self->super.isa + OBJC_IVAR____TtC8FaceTime22VisualVoicemailManager_visualVoicemailManager) isTranscriptionEnabled];
+  isTranscriptionEnabled = [*(&self->super.isa + OBJC_IVAR____TtC8FaceTime22VisualVoicemailManager_visualVoicemailManager) isTranscriptionEnabled];
 
-  return v3;
+  return isTranscriptionEnabled;
 }
 
-- (_TtC8FaceTime22VisualVoicemailManager)initWithVisualVoicemailManager:(id)a3 onVoicemailsChanged:(id)a4
+- (_TtC8FaceTime22VisualVoicemailManager)initWithVisualVoicemailManager:(id)manager onVoicemailsChanged:(id)changed
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(changed);
   v6 = swift_allocObject();
   *(v6 + 16) = v5;
-  return sub_10007E940(a3, sub_100084BB8, v6);
+  return sub_10007E940(manager, sub_100084BB8, v6);
 }
 
-- (void)fetchMessagesWithCompletion:(id)a3
+- (void)fetchMessagesWithCompletion:(id)completion
 {
   v5 = sub_1000525C4(&qword_100124480);
   __chkstk_darwin(v5 - 8);
   v7 = &v14 - v6;
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(completion);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   *(v9 + 24) = self;
@@ -70,18 +70,18 @@
   v12[3] = 0;
   v12[4] = &unk_1000D8258;
   v12[5] = v11;
-  v13 = self;
+  selfCopy = self;
   sub_100083C24(0, 0, v7, &unk_1000D8260, v12);
 }
 
-- (void)deleteVoicemails:(NSArray *)a3 completion:(id)a4
+- (void)deleteVoicemails:(NSArray *)voicemails completion:(id)completion
 {
   v7 = sub_1000525C4(&qword_100124480);
   __chkstk_darwin(v7 - 8);
   v9 = &v17 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(completion);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = voicemails;
   v11[3] = v10;
   v11[4] = self;
   v12 = type metadata accessor for TaskPriority();
@@ -96,19 +96,19 @@
   v14[3] = 0;
   v14[4] = &unk_1000D8238;
   v14[5] = v13;
-  v15 = a3;
-  v16 = self;
+  voicemailsCopy = voicemails;
+  selfCopy = self;
   sub_100083C24(0, 0, v9, &unk_1000D8240, v14);
 }
 
-- (void)markVoicemailsAsRead:(NSArray *)a3 completion:(id)a4
+- (void)markVoicemailsAsRead:(NSArray *)read completion:(id)completion
 {
   v7 = sub_1000525C4(&qword_100124480);
   __chkstk_darwin(v7 - 8);
   v9 = &v17 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(completion);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = read;
   v11[3] = v10;
   v11[4] = self;
   v12 = type metadata accessor for TaskPriority();
@@ -123,19 +123,19 @@
   v14[3] = 0;
   v14[4] = &unk_1000D8218;
   v14[5] = v13;
-  v15 = a3;
-  v16 = self;
+  readCopy = read;
+  selfCopy = self;
   sub_100083C24(0, 0, v9, &unk_1000D8220, v14);
 }
 
-- (void)trashVoicemails:(NSArray *)a3 completion:(id)a4
+- (void)trashVoicemails:(NSArray *)voicemails completion:(id)completion
 {
   v7 = sub_1000525C4(&qword_100124480);
   __chkstk_darwin(v7 - 8);
   v9 = &v17 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(completion);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = voicemails;
   v11[3] = v10;
   v11[4] = self;
   v12 = type metadata accessor for TaskPriority();
@@ -150,19 +150,19 @@
   v14[3] = 0;
   v14[4] = &unk_1000D81F8;
   v14[5] = v13;
-  v15 = a3;
-  v16 = self;
+  voicemailsCopy = voicemails;
+  selfCopy = self;
   sub_100083C24(0, 0, v9, &unk_1000D8200, v14);
 }
 
-- (void)removeVoicemailsFromTrash:(NSArray *)a3 completion:(id)a4
+- (void)removeVoicemailsFromTrash:(NSArray *)trash completion:(id)completion
 {
   v7 = sub_1000525C4(&qword_100124480);
   __chkstk_darwin(v7 - 8);
   v9 = &v17 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(completion);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = trash;
   v11[3] = v10;
   v11[4] = self;
   v12 = type metadata accessor for TaskPriority();
@@ -177,19 +177,19 @@
   v14[3] = 0;
   v14[4] = &unk_1000D81D8;
   v14[5] = v13;
-  v15 = a3;
-  v16 = self;
+  trashCopy = trash;
+  selfCopy = self;
   sub_100083C24(0, 0, v9, &unk_1000D81E0, v14);
 }
 
-- (void)voicemailWithIdentifier:(MPMessageID *)a3 completion:(id)a4
+- (void)voicemailWithIdentifier:(MPMessageID *)identifier completion:(id)completion
 {
   v7 = sub_1000525C4(&qword_100124480);
   __chkstk_darwin(v7 - 8);
   v9 = &v17 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(completion);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = identifier;
   v11[3] = v10;
   v11[4] = self;
   v12 = type metadata accessor for TaskPriority();
@@ -204,18 +204,18 @@
   v14[3] = 0;
   v14[4] = &unk_1000D81B0;
   v14[5] = v13;
-  v15 = a3;
-  v16 = self;
+  identifierCopy = identifier;
+  selfCopy = self;
   sub_100083C24(0, 0, v9, &unk_1000D81B8, v14);
 }
 
-- (void)messagesPassingTest:(id)a3 completion:
+- (void)messagesPassingTest:(id)test completion:
 {
   v4 = v3;
   v7 = sub_1000525C4(&qword_100124480);
   __chkstk_darwin(v7 - 8);
   v9 = &v17 - v8;
-  v10 = _Block_copy(a3);
+  v10 = _Block_copy(test);
   v11 = _Block_copy(v4);
   v12 = swift_allocObject();
   v12[2] = v10;
@@ -233,11 +233,11 @@
   v15[3] = 0;
   v15[4] = &unk_1000D7B80;
   v15[5] = v14;
-  v16 = self;
+  selfCopy = self;
   sub_100083C24(0, 0, v9, &unk_1000D7B88, v15);
 }
 
-- (void)reportTranscriptionRatedAccurate:(BOOL)a3 forVoicemail:(id)a4
+- (void)reportTranscriptionRatedAccurate:(BOOL)accurate forVoicemail:(id)voicemail
 {
   type metadata accessor for VoicemailActor();
   swift_initStaticObject();
@@ -248,12 +248,12 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v7 = a4;
-  v8 = self;
-  sub_100081DA0(a3, v7);
+  voicemailCopy = voicemail;
+  selfCopy = self;
+  sub_100081DA0(accurate, voicemailCopy);
 }
 
-- (void)reportTranscriptionProblemForVoicemail:(id)a3
+- (void)reportTranscriptionProblemForVoicemail:(id)voicemail
 {
   type metadata accessor for VoicemailActor();
   swift_initStaticObject();
@@ -264,12 +264,12 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v5 = a3;
-  v6 = self;
-  sub_10008208C(v5);
+  voicemailCopy = voicemail;
+  selfCopy = self;
+  sub_10008208C(voicemailCopy);
 }
 
-- (void)requestInitialStateIfNecessaryAndSendNotifications:(BOOL)a3
+- (void)requestInitialStateIfNecessaryAndSendNotifications:(BOOL)notifications
 {
   v5 = sub_1000525C4(&qword_100124480);
   __chkstk_darwin(v5 - 8);
@@ -277,13 +277,13 @@
   v8 = type metadata accessor for TaskPriority();
   (*(*(v8 - 8) + 56))(v7, 1, 1, v8);
   type metadata accessor for MainActor();
-  v9 = self;
+  selfCopy = self;
   v10 = static MainActor.shared.getter();
   v11 = swift_allocObject();
   *(v11 + 16) = v10;
   *(v11 + 24) = &protocol witness table for MainActor;
-  *(v11 + 32) = v9;
-  *(v11 + 40) = a3;
+  *(v11 + 32) = selfCopy;
+  *(v11 + 40) = notifications;
   sub_10009A64C(0, 0, v7, &unk_1000D8140, v11);
 }
 
@@ -303,7 +303,7 @@
   return result;
 }
 
-- (void)handleVoiceMailsChangedNotificationWithNotification:(id)a3
+- (void)handleVoiceMailsChangedNotificationWithNotification:(id)notification
 {
   v4 = type metadata accessor for Notification();
   v5 = *(v4 - 8);
@@ -319,76 +319,76 @@
   }
 
   static Notification._unconditionallyBridgeFromObjectiveC(_:)();
-  v8 = self;
+  selfCopy = self;
   sub_1000826D0(v7);
 
   (*(v5 + 8))(v7, v4);
 }
 
-- (void)voicemailsDidChangeInitial:(BOOL)a3 added:(id)a4 deleted:(id)a5 updated:(id)a6
+- (void)voicemailsDidChangeInitial:(BOOL)initial added:(id)added deleted:(id)deleted updated:(id)updated
 {
-  v8 = a4;
-  if (a4)
+  addedCopy = added;
+  if (added)
   {
     sub_100084008();
-    v8 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
+    addedCopy = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
-  if (a5)
+  if (deleted)
   {
     sub_100084008();
-    a5 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
+    deleted = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
-  if (a6)
+  if (updated)
   {
     sub_100084008();
-    a6 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
+    updated = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
-  v11 = self;
-  sub_100082BC4(a3, v8, a5, a6);
+  selfCopy = self;
+  sub_100082BC4(initial, addedCopy, deleted, updated);
 }
 
 - (void)onlineStatusDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_100083264("%s observed voicemailsDidChange");
 }
 
 - (void)capabilitiesDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_100083264("%s observed capabilitiesDidChange");
 }
 
 - (void)subscriptionStateStatusDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_100083264("%s observed subscriptionStatusDidChange");
 }
 
 - (void)syncInProgresDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_100083264("%s observed syncInProgressDidChnage");
 }
 
 - (void)managerStorageUsageDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_100083264("%s observed manageStorageUsageDidChange");
 }
 
 - (void)transcribingStatusDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_100083264("%s observed transcribingStatusDidChange");
 }
 
 - (void)accountsDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_100083264("%s observed accountsDidChange");
 }
 
@@ -402,7 +402,7 @@
   v8[2] = sub_100081888;
   v8[3] = &unk_10010CF38;
   v4 = _Block_copy(v8);
-  v5 = self;
+  selfCopy = self;
   v6 = [v3 countOfVoicemailsPassingTest:v4];
   _Block_release(v4);
 

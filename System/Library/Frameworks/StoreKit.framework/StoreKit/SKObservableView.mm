@@ -1,47 +1,47 @@
 @interface SKObservableView
 - (SKObservableViewDelegate)delegate;
-- (void)setAlpha:(double)a3;
-- (void)setHidden:(BOOL)a3;
+- (void)setAlpha:(double)alpha;
+- (void)setHidden:(BOOL)hidden;
 @end
 
 @implementation SKObservableView
 
-- (void)setAlpha:(double)a3
+- (void)setAlpha:(double)alpha
 {
   v10.receiver = self;
   v10.super_class = SKObservableView;
   [(SKObservableView *)&v10 setAlpha:?];
-  v5 = [(SKObservableView *)self delegate];
-  if (v5)
+  delegate = [(SKObservableView *)self delegate];
+  if (delegate)
   {
-    v6 = v5;
-    v7 = [(SKObservableView *)self delegate];
+    v6 = delegate;
+    delegate2 = [(SKObservableView *)self delegate];
     v8 = objc_opt_respondsToSelector();
 
     if (v8)
     {
-      v9 = [(SKObservableView *)self delegate];
-      [v9 didChangeAlpha:a3];
+      delegate3 = [(SKObservableView *)self delegate];
+      [delegate3 didChangeAlpha:alpha];
     }
   }
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
   v9.receiver = self;
   v9.super_class = SKObservableView;
-  [(SKObservableView *)&v9 setHidden:a3];
-  v4 = [(SKObservableView *)self delegate];
-  if (v4)
+  [(SKObservableView *)&v9 setHidden:hidden];
+  delegate = [(SKObservableView *)self delegate];
+  if (delegate)
   {
-    v5 = v4;
-    v6 = [(SKObservableView *)self delegate];
+    v5 = delegate;
+    delegate2 = [(SKObservableView *)self delegate];
     v7 = objc_opt_respondsToSelector();
 
     if (v7)
     {
-      v8 = [(SKObservableView *)self delegate];
-      [v8 didChangeHidden];
+      delegate3 = [(SKObservableView *)self delegate];
+      [delegate3 didChangeHidden];
     }
   }
 }

@@ -1,21 +1,21 @@
 @interface FIDSNode_FPv2
-+ (id)makeWithCoder:(id)a3;
-+ (uint64_t)makeWithCoder:(uint64_t)a1;
++ (id)makeWithCoder:(id)coder;
++ (uint64_t)makeWithCoder:(uint64_t)coder;
 - (id)shortDescription;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FIDSNode_FPv2
 
 - (id)shortDescription
 {
-  v3 = [(FIDSNode *)self fpItem];
+  fpItem = [(FIDSNode *)self fpItem];
   v8.receiver = self;
   v8.super_class = FIDSNode_FPv2;
-  v4 = [(FIDSNode *)&v8 shortDescription];
-  v5 = [v4 stringByAppendingFormat:@" -- fpItem: %p", v3];
+  shortDescription = [(FIDSNode *)&v8 shortDescription];
+  v5 = [shortDescription stringByAppendingFormat:@" -- fpItem: %p", fpItem];
 
-  if ([v3 isPlaceholder])
+  if ([fpItem isPlaceholder])
   {
     v6 = [v5 stringByAppendingString:{@", placeholder"}];
 
@@ -25,13 +25,13 @@
   return v5;
 }
 
-+ (id)makeWithCoder:(id)a3
++ (id)makeWithCoder:(id)coder
 {
-  v3 = a3;
-  v4 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"FI FPv2 FPItem"];
+  coderCopy = coder;
+  v4 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"FI FPv2 FPItem"];
   v5 = static_objc_cast<NSString,objc_object * {__strong}>(v4);
 
-  v6 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"FI FPv2 Domain"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"FI FPv2 Domain"];
   v7 = static_objc_cast<NSString,objc_object * {__strong}>(v6);
 
   if (v5 && v7)
@@ -43,27 +43,27 @@
   return 0;
 }
 
-+ (uint64_t)makeWithCoder:(uint64_t)a1
++ (uint64_t)makeWithCoder:(uint64_t)coder
 {
-  v2 = *(a1 + 16);
+  v2 = *(coder + 16);
   if (v2)
   {
     std::__shared_weak_count::__release_shared[abi:ne200100](v2);
   }
 
-  return a1;
+  return coder;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = FIDSNode_FPv2;
-  [(FIDSNode *)&v7 encodeWithCoder:v4];
-  v5 = [(FIDSNode *)self fpItem];
-  [v4 encodeObject:v5 forKey:@"FI FPv2 FPItem"];
-  v6 = [(FIDSNode *)self fpDomain];
-  [v4 encodeObject:v6 forKey:@"FI FPv2 Domain"];
+  [(FIDSNode *)&v7 encodeWithCoder:coderCopy];
+  fpItem = [(FIDSNode *)self fpItem];
+  [coderCopy encodeObject:fpItem forKey:@"FI FPv2 FPItem"];
+  fpDomain = [(FIDSNode *)self fpDomain];
+  [coderCopy encodeObject:fpDomain forKey:@"FI FPv2 Domain"];
 }
 
 @end

@@ -1,5 +1,5 @@
 @interface WiFiUsageLQMWindowAnalysisDataTriggered
-- (id)addDimensionsTo:(id)a3;
+- (id)addDimensionsTo:(id)to;
 - (void)performAnalysis;
 @end
 
@@ -9,27 +9,27 @@
 {
   v9.receiver = self;
   v9.super_class = WiFiUsageLQMWindowAnalysisDataTriggered;
-  v3 = [(WiFiUsageLQMWindowAnalysis *)&v9 reason];
+  reason = [(WiFiUsageLQMWindowAnalysis *)&v9 reason];
   dataTriggerReason = self->_dataTriggerReason;
   triggerCriteriaList = self->_triggerCriteriaList;
   v6 = [MEMORY[0x277CCAC30] predicateWithFormat:@"matched == YES OR lastTriggered != NIL"];
   v7 = [(NSArray *)triggerCriteriaList filteredArrayUsingPredicate:v6];
-  NSLog(&cfstr_SPerformingLqm.isa, "[WiFiUsageLQMWindowAnalysisDataTriggered performAnalysis]", v3, dataTriggerReason, v7);
+  NSLog(&cfstr_SPerformingLqm.isa, "[WiFiUsageLQMWindowAnalysisDataTriggered performAnalysis]", reason, dataTriggerReason, v7);
 
   v8.receiver = self;
   v8.super_class = WiFiUsageLQMWindowAnalysisDataTriggered;
   [(WiFiUsageLQMWindowAnalysis *)&v8 performAnalysis];
 }
 
-- (id)addDimensionsTo:(id)a3
+- (id)addDimensionsTo:(id)to
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   v28.receiver = self;
   v28.super_class = WiFiUsageLQMWindowAnalysisDataTriggered;
-  v5 = [(WiFiUsageLQMWindowAnalysis *)&v28 addDimensionsTo:v4];
-  v22 = v4;
-  [v4 setObject:self->_dataTriggerReason forKeyedSubscript:@"datatriggeredReason"];
+  v5 = [(WiFiUsageLQMWindowAnalysis *)&v28 addDimensionsTo:toCopy];
+  v22 = toCopy;
+  [toCopy setObject:self->_dataTriggerReason forKeyedSubscript:@"datatriggeredReason"];
   v6 = objc_opt_new();
   v24 = 0u;
   v25 = 0u;
@@ -53,23 +53,23 @@
         v11 = *(*(&v24 + 1) + 8 * i);
         if (([v11 valid] & 1) != 0 || !-[NSString isEqualToString:](self->_dataTriggerReason, "isEqualToString:", @"Match Start"))
         {
-          v12 = [v11 shortPredicateNoSpaces];
-          v13 = [v11 matched];
+          shortPredicateNoSpaces = [v11 shortPredicateNoSpaces];
+          matched = [v11 matched];
           v14 = @"false";
-          if (v13)
+          if (matched)
           {
             v14 = @"true";
           }
 
-          [v6 appendFormat:@"%@:%@&", v12, v14];
+          [v6 appendFormat:@"%@:%@&", shortPredicateNoSpaces, v14];
 
-          v15 = [v11 lastTriggered];
+          lastTriggered = [v11 lastTriggered];
 
-          if (v15)
+          if (lastTriggered)
           {
-            v16 = [v11 lastTriggered];
-            v17 = [v11 firstTriggered];
-            [v16 timeIntervalSinceDate:v17];
+            lastTriggered2 = [v11 lastTriggered];
+            firstTriggered = [v11 firstTriggered];
+            [lastTriggered2 timeIntervalSinceDate:firstTriggered];
             v18 = [WiFiUsageLQMTransformations getBinTimeIntervalUpTo12h:1 As:?];
             v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"datatriggered_criteria%lu_duration", -[NSArray indexOfObject:](self->_triggerCriteriaList, "indexOfObject:", v11)];
             [v22 setObject:v18 forKeyedSubscript:v19];

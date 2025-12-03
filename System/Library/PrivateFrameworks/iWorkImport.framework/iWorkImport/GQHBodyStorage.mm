@@ -1,31 +1,31 @@
 @interface GQHBodyStorage
-+ (int)handleBodyStorage:(id)a3 state:(id)a4;
-+ (int)handleContainerHint:(id)a3 state:(id)a4;
-+ (int)handleFootnotes:(id)a3 state:(id)a4;
-+ (int)handleLayout:(id)a3 state:(id)a4;
-+ (int)handleSection:(id)a3 state:(id)a4;
-+ (int)handleTocContent:(id)a3 state:(id)a4;
-+ (int)handleTocEntry:(id)a3 state:(id)a4;
++ (int)handleBodyStorage:(id)storage state:(id)state;
++ (int)handleContainerHint:(id)hint state:(id)state;
++ (int)handleFootnotes:(id)footnotes state:(id)state;
++ (int)handleLayout:(id)layout state:(id)state;
++ (int)handleSection:(id)section state:(id)state;
++ (int)handleTocContent:(id)content state:(id)state;
++ (int)handleTocEntry:(id)entry state:(id)state;
 @end
 
 @implementation GQHBodyStorage
 
-+ (int)handleBodyStorage:(id)a3 state:(id)a4
++ (int)handleBodyStorage:(id)storage state:(id)state
 {
-  v6 = [a4 generatorState];
-  v7 = [a3 body];
-  Count = CFArrayGetCount(v7);
+  generatorState = [state generatorState];
+  body = [storage body];
+  Count = CFArrayGetCount(body);
   v9 = Count;
   if (Count)
   {
     v10 = 0;
     while (1)
     {
-      ValueAtIndex = CFArrayGetValueAtIndex(v7, v10);
+      ValueAtIndex = CFArrayGetValueAtIndex(body, v10);
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v12 = [a1 handleSection:ValueAtIndex state:v6];
+        v12 = [self handleSection:ValueAtIndex state:generatorState];
       }
 
       else
@@ -33,7 +33,7 @@
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v12 = [a1 handlePageStart:ValueAtIndex state:v6];
+          v12 = [self handlePageStart:ValueAtIndex state:generatorState];
         }
 
         else
@@ -45,7 +45,7 @@
             goto LABEL_14;
           }
 
-          v12 = [a1 handleContainerHint:ValueAtIndex state:v6];
+          v12 = [self handleContainerHint:ValueAtIndex state:generatorState];
         }
       }
 
@@ -59,20 +59,20 @@
 
   v13 = 1;
 LABEL_14:
-  if (![a3 footnotes] || (objc_msgSend(v6, "useOutline") & 1) != 0)
+  if (![storage footnotes] || (objc_msgSend(generatorState, "useOutline") & 1) != 0)
   {
     return v13;
   }
 
-  v15 = [a3 footnotes];
+  footnotes = [storage footnotes];
 
-  return [a1 handleFootnotes:v15 state:v6];
+  return [self handleFootnotes:footnotes state:generatorState];
 }
 
-+ (int)handleTocContent:(id)a3 state:(id)a4
++ (int)handleTocContent:(id)content state:(id)state
 {
-  v6 = [a3 children];
-  Count = CFArrayGetCount(v6);
+  children = [content children];
+  Count = CFArrayGetCount(children);
   if (Count < 1)
   {
     return 1;
@@ -82,11 +82,11 @@ LABEL_14:
   v9 = Count & 0x7FFFFFFF;
   do
   {
-    ValueAtIndex = CFArrayGetValueAtIndex(v6, v8);
+    ValueAtIndex = CFArrayGetValueAtIndex(children, v8);
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      result = [a1 handleTocEntry:ValueAtIndex state:a4];
+      result = [self handleTocEntry:ValueAtIndex state:state];
     }
 
     else
@@ -110,25 +110,25 @@ LABEL_14:
   return result;
 }
 
-+ (int)handleTocEntry:(id)a3 state:(id)a4
++ (int)handleTocEntry:(id)entry state:(id)state
 {
-  v7 = [a3 bookmark];
-  v8 = [a4 htmlDoc];
-  [v8 startElement:"a"];
-  v9 = CFStringCreateWithFormat(kCFAllocatorDefault, 0, @"#%@", v7);
-  v10 = [GQHUtils createHtmlHrefForLinkUri:v9 state:a4];
+  bookmark = [entry bookmark];
+  htmlDoc = [state htmlDoc];
+  [htmlDoc startElement:"a"];
+  v9 = CFStringCreateWithFormat(kCFAllocatorDefault, 0, @"#%@", bookmark);
+  v10 = [GQHUtils createHtmlHrefForLinkUri:v9 state:state];
   CFRelease(v9);
-  [v8 setAttribute:"href" cfStringValue:v10];
+  [htmlDoc setAttribute:"href" cfStringValue:v10];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [a4 pushTocHref:v10];
+    [state pushTocHref:v10];
   }
 
   CFRelease(v10);
-  [v8 setAttribute:"title" cfStringValue:v7];
-  v11 = [a3 children];
-  Count = CFArrayGetCount(v11);
+  [htmlDoc setAttribute:"title" cfStringValue:bookmark];
+  children = [entry children];
+  Count = CFArrayGetCount(children);
   Mutable = CFDictionaryCreateMutable(kCFAllocatorDefault, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
   if (Count < 1)
   {
@@ -140,14 +140,14 @@ LABEL_14:
   v15 = Count & 0x7FFFFFFF;
   while (1)
   {
-    ValueAtIndex = CFArrayGetValueAtIndex(v11, v14);
+    ValueAtIndex = CFArrayGetValueAtIndex(children, v14);
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        [a4 inContent];
+        [state inContent];
       }
     }
 
@@ -157,13 +157,13 @@ LABEL_14:
       break;
     }
 
-    if ([a4 useOutline] && (objc_msgSend(ValueAtIndex, "isHidden") & 1) != 0)
+    if ([state useOutline] && (objc_msgSend(ValueAtIndex, "isHidden") & 1) != 0)
     {
       v17 = 1;
       goto LABEL_22;
     }
 
-    v18 = [GQHParagraph handleParagraph:ValueAtIndex state:a4 bulletStates:Mutable isMultiColumn:0];
+    v18 = [GQHParagraph handleParagraph:ValueAtIndex state:state bulletStates:Mutable isMultiColumn:0];
 LABEL_21:
     v17 = v18;
 LABEL_22:
@@ -176,58 +176,58 @@ LABEL_22:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v18 = [a1 handleTocContent:ValueAtIndex state:a4];
+    v18 = [self handleTocContent:ValueAtIndex state:state];
     goto LABEL_21;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v18 = [a1 handleTocEntry:ValueAtIndex state:a4];
+    v18 = [self handleTocEntry:ValueAtIndex state:state];
     goto LABEL_21;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v18 = [a1 handlePageStart:ValueAtIndex state:a4];
+    v18 = [self handlePageStart:ValueAtIndex state:state];
     goto LABEL_21;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v18 = [a1 handleContainerHint:ValueAtIndex state:a4];
+    v18 = [self handleContainerHint:ValueAtIndex state:state];
     goto LABEL_21;
   }
 
   v17 = 3;
 LABEL_26:
-  [v8 endElement];
+  [htmlDoc endElement];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [a4 popTocHref];
+    [state popTocHref];
   }
 
   CFRelease(Mutable);
   return v17;
 }
 
-+ (int)handleSection:(id)a3 state:(id)a4
++ (int)handleSection:(id)section state:(id)state
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [a4 setDidInsertPageHeader:0];
-    if ([a3 style])
+    [state setDidInsertPageHeader:0];
+    if ([section style])
     {
-      [a4 overrideSectionStyle:{objc_msgSend(a3, "style")}];
+      [state overrideSectionStyle:{objc_msgSend(section, "style")}];
     }
   }
 
-  v7 = [a3 children];
-  Count = CFArrayGetCount(v7);
+  children = [section children];
+  Count = CFArrayGetCount(children);
   v9 = Count;
   if (!Count)
   {
@@ -237,28 +237,28 @@ LABEL_26:
   v10 = 0;
   while (1)
   {
-    ValueAtIndex = CFArrayGetValueAtIndex(v7, v10);
+    ValueAtIndex = CFArrayGetValueAtIndex(children, v10);
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        [a4 inContent];
+        [state inContent];
       }
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      result = [a1 handleLayout:ValueAtIndex state:a4];
+      result = [self handleLayout:ValueAtIndex state:state];
       goto LABEL_15;
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      result = [a1 handlePageStart:ValueAtIndex state:a4];
+      result = [self handlePageStart:ValueAtIndex state:state];
       goto LABEL_15;
     }
 
@@ -268,7 +268,7 @@ LABEL_26:
       return 3;
     }
 
-    result = [a1 handleContainerHint:ValueAtIndex state:a4];
+    result = [self handleContainerHint:ValueAtIndex state:state];
 LABEL_15:
     if (++v10 >= v9 || result != 1)
     {
@@ -277,24 +277,24 @@ LABEL_15:
   }
 }
 
-+ (int)handleLayout:(id)a3 state:(id)a4
++ (int)handleLayout:(id)layout state:(id)state
 {
   Mutable = CFDictionaryCreateMutable(kCFAllocatorDefault, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
-  v17 = [a4 htmlDoc];
-  [v17 startElement:"div"];
+  htmlDoc = [state htmlDoc];
+  [htmlDoc startElement:"div"];
   v8 = objc_alloc_init(GQHStyle);
   [(GQHStyle *)v8 addAttribute:off_9CE00 value:@"#FFFFFF"];
   [(GQHStyle *)v8 addAttribute:off_9CE60 value:off_9CFF8];
-  [(GQHStyle *)v8 setStyleOnCurrentNode:a4];
+  [(GQHStyle *)v8 setStyleOnCurrentNode:state];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [a4 setCurrentLayoutStyle:v8];
+    [state setCurrentLayoutStyle:v8];
   }
 
-  v9 = [a3 children];
-  Count = CFArrayGetCount(v9);
-  [a4 setParagraphCount:Count];
+  children = [layout children];
+  Count = CFArrayGetCount(children);
+  [state setParagraphCount:Count];
   if (!Count)
   {
     v14 = 1;
@@ -305,15 +305,15 @@ LABEL_15:
   v12 = Count;
   while (1)
   {
-    ValueAtIndex = CFArrayGetValueAtIndex(v9, v11);
-    [a4 setParagraphIndex:v11];
+    ValueAtIndex = CFArrayGetValueAtIndex(children, v11);
+    [state setParagraphIndex:v11];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        [a4 inContent];
+        [state inContent];
       }
     }
 
@@ -323,13 +323,13 @@ LABEL_15:
       break;
     }
 
-    if ([a4 useOutline] && (objc_msgSend(ValueAtIndex, "isHidden") & 1) != 0)
+    if ([state useOutline] && (objc_msgSend(ValueAtIndex, "isHidden") & 1) != 0)
     {
       v14 = 1;
       goto LABEL_21;
     }
 
-    v15 = [GQHParagraph handleParagraph:ValueAtIndex state:a4 bulletStates:Mutable isMultiColumn:0];
+    v15 = [GQHParagraph handleParagraph:ValueAtIndex state:state bulletStates:Mutable isMultiColumn:0];
 LABEL_20:
     v14 = v15;
 LABEL_21:
@@ -342,62 +342,62 @@ LABEL_21:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v15 = [a1 handlePageStart:ValueAtIndex state:a4];
+    v15 = [self handlePageStart:ValueAtIndex state:state];
     goto LABEL_20;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    v15 = [a1 handleTocContent:ValueAtIndex state:a4];
+    v15 = [self handleTocContent:ValueAtIndex state:state];
     goto LABEL_20;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v15 = [a1 handleContainerHint:ValueAtIndex state:a4];
+    v15 = [self handleContainerHint:ValueAtIndex state:state];
     goto LABEL_20;
   }
 
   v14 = 3;
 LABEL_25:
-  [a4 setParagraphCount:0];
-  [a4 setParagraphIndex:0];
+  [state setParagraphCount:0];
+  [state setParagraphIndex:0];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [a4 setCurrentLayoutStyle:0];
+    [state setCurrentLayoutStyle:0];
   }
 
-  [v17 endElement];
+  [htmlDoc endElement];
   CFRelease(Mutable);
   return v14;
 }
 
-+ (int)handleFootnotes:(id)a3 state:(id)a4
++ (int)handleFootnotes:(id)footnotes state:(id)state
 {
-  v6 = [a4 htmlDoc];
-  [v6 startElement:"div"];
+  htmlDoc = [state htmlDoc];
+  [htmlDoc startElement:"div"];
   v7 = objc_alloc_init(GQHStyle);
   [(GQHStyle *)v7 addAttribute:off_9CE00 value:@"#FFFFFF"];
   [(GQHStyle *)v7 addAttribute:off_9CE60 value:off_9CFF8];
-  [(GQHStyle *)v7 setStyleOnCurrentNode:a4];
+  [(GQHStyle *)v7 setStyleOnCurrentNode:state];
 
-  [v6 startElement:"hr"];
-  [v6 endElement];
-  [GQHTextBox handleLayoutStorage:a3 state:a4];
-  [v6 endElement];
+  [htmlDoc startElement:"hr"];
+  [htmlDoc endElement];
+  [GQHTextBox handleLayoutStorage:footnotes state:state];
+  [htmlDoc endElement];
   return 1;
 }
 
-+ (int)handleContainerHint:(id)a3 state:(id)a4
++ (int)handleContainerHint:(id)hint state:(id)state
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [a4 setDidFindContainerHint:1];
-    [a4 handleContainerHint:a3];
+    [state setDidFindContainerHint:1];
+    [state handleContainerHint:hint];
   }
 
   return 1;

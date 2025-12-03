@@ -1,31 +1,31 @@
 @interface SBControlCenterPresentationObservationToken
-- (BOOL)_controlCenterIsOnTheSameWindowScene:(_BOOL8)a1;
-- (SBControlCenterPresentationObservationToken)initWithControlCenterController:(id)a3 scene:(id)a4;
+- (BOOL)_controlCenterIsOnTheSameWindowScene:(_BOOL8)scene;
+- (SBControlCenterPresentationObservationToken)initWithControlCenterController:(id)controller scene:(id)scene;
 - (int64_t)state;
 - (void)dealloc;
-- (void)didDismiss:(id)a3;
-- (void)didPresent:(id)a3;
-- (void)willDismiss:(id)a3;
-- (void)willPresent:(id)a3;
+- (void)didDismiss:(id)dismiss;
+- (void)didPresent:(id)present;
+- (void)willDismiss:(id)dismiss;
+- (void)willPresent:(id)present;
 @end
 
 @implementation SBControlCenterPresentationObservationToken
 
-- (SBControlCenterPresentationObservationToken)initWithControlCenterController:(id)a3 scene:(id)a4
+- (SBControlCenterPresentationObservationToken)initWithControlCenterController:(id)controller scene:(id)scene
 {
-  v7 = a3;
+  controllerCopy = controller;
   v12.receiver = self;
   v12.super_class = SBControlCenterPresentationObservationToken;
-  v8 = [(SBPresentationObservationToken *)&v12 initWithScene:a4];
+  v8 = [(SBPresentationObservationToken *)&v12 initWithScene:scene];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_controlCenterController, a3);
-    v10 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v10 addObserver:v9 selector:sel_willPresent_ name:@"SBControlCenterWillPresentNotification" object:0];
-    [v10 addObserver:v9 selector:sel_didPresent_ name:@"SBControlCenterDidPresentNotification" object:0];
-    [v10 addObserver:v9 selector:sel_willDismiss_ name:@"SBControlCenterWillDismissNotification" object:0];
-    [v10 addObserver:v9 selector:sel_didDismiss_ name:@"SBControlCenterDidDismissNotification" object:0];
+    objc_storeStrong(&v8->_controlCenterController, controller);
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v9 selector:sel_willPresent_ name:@"SBControlCenterWillPresentNotification" object:0];
+    [defaultCenter addObserver:v9 selector:sel_didPresent_ name:@"SBControlCenterDidPresentNotification" object:0];
+    [defaultCenter addObserver:v9 selector:sel_willDismiss_ name:@"SBControlCenterWillDismissNotification" object:0];
+    [defaultCenter addObserver:v9 selector:sel_didDismiss_ name:@"SBControlCenterDidDismissNotification" object:0];
   }
 
   return v9;
@@ -33,20 +33,20 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:@"SBControlCenterWillPresentNotification" object:self->_controlCenterController];
-  [v3 removeObserver:self name:@"SBControlCenterDidPresentNotification" object:self->_controlCenterController];
-  [v3 removeObserver:self name:@"SBControlCenterWillDismissNotification" object:self->_controlCenterController];
-  [v3 removeObserver:self name:@"SBControlCenterDidDismissNotification" object:self->_controlCenterController];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:@"SBControlCenterWillPresentNotification" object:self->_controlCenterController];
+  [defaultCenter removeObserver:self name:@"SBControlCenterDidPresentNotification" object:self->_controlCenterController];
+  [defaultCenter removeObserver:self name:@"SBControlCenterWillDismissNotification" object:self->_controlCenterController];
+  [defaultCenter removeObserver:self name:@"SBControlCenterDidDismissNotification" object:self->_controlCenterController];
 
   v4.receiver = self;
   v4.super_class = SBControlCenterPresentationObservationToken;
   [(SBControlCenterPresentationObservationToken *)&v4 dealloc];
 }
 
-- (void)willPresent:(id)a3
+- (void)willPresent:(id)present
 {
-  if ([(SBControlCenterPresentationObservationToken *)self _controlCenterIsOnTheSameWindowScene:a3])
+  if ([(SBControlCenterPresentationObservationToken *)self _controlCenterIsOnTheSameWindowScene:present])
   {
     v4.receiver = self;
     v4.super_class = SBControlCenterPresentationObservationToken;
@@ -56,50 +56,50 @@
 
 - (int64_t)state
 {
-  v2 = [(SBControlCenterController *)self->_controlCenterController viewController];
-  v3 = [v2 presentationState];
+  viewController = [(SBControlCenterController *)self->_controlCenterController viewController];
+  presentationState = [viewController presentationState];
 
-  if (v3 > 3)
+  if (presentationState > 3)
   {
     return 2;
   }
 
   else
   {
-    return qword_21F8A8278[v3];
+    return qword_21F8A8278[presentationState];
   }
 }
 
-- (BOOL)_controlCenterIsOnTheSameWindowScene:(_BOOL8)a1
+- (BOOL)_controlCenterIsOnTheSameWindowScene:(_BOOL8)scene
 {
   v3 = a2;
-  if (a1)
+  if (scene)
   {
-    v4 = [a1 windowScene];
-    if (v4)
+    windowScene = [scene windowScene];
+    if (windowScene)
     {
-      v5 = [v3 object];
-      v6 = [v5 objectForKeyedSubscript:@"SBControlCenterNotificationWindowSceneKey"];
+      object = [v3 object];
+      v6 = [object objectForKeyedSubscript:@"SBControlCenterNotificationWindowSceneKey"];
 
-      v7 = *(a1 + 56);
-      v8 = [v3 object];
-      v9 = [v8 objectForKeyedSubscript:@"SBControlCenterNotificationControlCenterControllerKey"];
+      v7 = *(scene + 56);
+      object2 = [v3 object];
+      v9 = [object2 objectForKeyedSubscript:@"SBControlCenterNotificationControlCenterControllerKey"];
 
-      a1 = v4 == v6 && v7 == v9;
+      scene = windowScene == v6 && v7 == v9;
     }
 
     else
     {
-      a1 = 1;
+      scene = 1;
     }
   }
 
-  return a1;
+  return scene;
 }
 
-- (void)didPresent:(id)a3
+- (void)didPresent:(id)present
 {
-  if ([(SBControlCenterPresentationObservationToken *)self _controlCenterIsOnTheSameWindowScene:a3])
+  if ([(SBControlCenterPresentationObservationToken *)self _controlCenterIsOnTheSameWindowScene:present])
   {
     v4.receiver = self;
     v4.super_class = SBControlCenterPresentationObservationToken;
@@ -107,9 +107,9 @@
   }
 }
 
-- (void)willDismiss:(id)a3
+- (void)willDismiss:(id)dismiss
 {
-  if ([(SBControlCenterPresentationObservationToken *)self _controlCenterIsOnTheSameWindowScene:a3])
+  if ([(SBControlCenterPresentationObservationToken *)self _controlCenterIsOnTheSameWindowScene:dismiss])
   {
     v4.receiver = self;
     v4.super_class = SBControlCenterPresentationObservationToken;
@@ -117,9 +117,9 @@
   }
 }
 
-- (void)didDismiss:(id)a3
+- (void)didDismiss:(id)dismiss
 {
-  if ([(SBControlCenterPresentationObservationToken *)self _controlCenterIsOnTheSameWindowScene:a3])
+  if ([(SBControlCenterPresentationObservationToken *)self _controlCenterIsOnTheSameWindowScene:dismiss])
   {
     v4.receiver = self;
     v4.super_class = SBControlCenterPresentationObservationToken;

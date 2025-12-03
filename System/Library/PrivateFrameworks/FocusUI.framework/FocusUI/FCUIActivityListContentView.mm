@@ -1,31 +1,31 @@
 @interface FCUIActivityListContentView
 - (BOOL)adjustForContentSizeCategoryChange;
-- (CGSize)_sizeThatFits:(CGSize)a3 collapsedToPill:(BOOL)a4 includingFooter:(BOOL)a5 forceMeasurement:(BOOL)a6;
+- (CGSize)_sizeThatFits:(CGSize)fits collapsedToPill:(BOOL)pill includingFooter:(BOOL)footer forceMeasurement:(BOOL)measurement;
 - (CGSize)collapsedSize;
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CGSize)sizeThatFitsCollapsedToPill:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CGSize)sizeThatFitsCollapsedToPill:(CGSize)pill;
 - (id)_contentSizeCategoryAdjustingViews;
-- (id)subviewFramesInBounds:(CGRect)a3;
+- (id)subviewFramesInBounds:(CGRect)bounds;
 - (void)layoutSubviews;
-- (void)setActivityViews:(id)a3;
-- (void)setAdjustsFontForContentSizeCategory:(BOOL)a3;
-- (void)setCompactActivityView:(id)a3;
-- (void)setFooterView:(id)a3;
-- (void)setHeaderView:(id)a3;
+- (void)setActivityViews:(id)views;
+- (void)setAdjustsFontForContentSizeCategory:(BOOL)category;
+- (void)setCompactActivityView:(id)view;
+- (void)setFooterView:(id)view;
+- (void)setHeaderView:(id)view;
 @end
 
 @implementation FCUIActivityListContentView
 
-- (void)setHeaderView:(id)a3
+- (void)setHeaderView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   if ((BSEqualObjects() & 1) == 0)
   {
-    if (v5)
+    if (viewCopy)
     {
       [(UIView *)self->_headerView removeFromSuperview];
-      objc_storeStrong(&self->_headerView, a3);
+      objc_storeStrong(&self->_headerView, view);
       v6[0] = MEMORY[0x277D85DD0];
       v6[1] = 3221225472;
       v6[2] = __45__FCUIActivityListContentView_setHeaderView___block_invoke;
@@ -44,15 +44,15 @@
   }
 }
 
-- (void)setFooterView:(id)a3
+- (void)setFooterView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   if ((BSEqualObjects() & 1) == 0)
   {
-    if (v5)
+    if (viewCopy)
     {
       [(UIView *)self->_footerView removeFromSuperview];
-      objc_storeStrong(&self->_footerView, a3);
+      objc_storeStrong(&self->_footerView, view);
       v6[0] = MEMORY[0x277D85DD0];
       v6[1] = 3221225472;
       v6[2] = __45__FCUIActivityListContentView_setFooterView___block_invoke;
@@ -71,20 +71,20 @@
   }
 }
 
-- (void)setActivityViews:(id)a3
+- (void)setActivityViews:(id)views
 {
   v30 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  viewsCopy = views;
   if ((BSEqualArrays() & 1) == 0)
   {
-    v20 = a3;
+    viewsCopy2 = views;
     v6 = [(NSArray *)self->_activityViews mutableCopy];
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v21 = v5;
-    obj = v5;
+    v21 = viewsCopy;
+    obj = viewsCopy;
     v7 = [obj countByEnumeratingWithState:&v25 objects:v29 count:16];
     if (v7)
     {
@@ -94,7 +94,7 @@
       {
         for (i = 0; i != v8; ++i)
         {
-          v10 = self;
+          selfCopy = self;
           if (*v26 != v23)
           {
             objc_enumerationMutation(obj);
@@ -107,8 +107,8 @@
             while (1)
             {
               v13 = [v6 objectAtIndex:v12];
-              v14 = [v13 activityUniqueIdentifier];
-              v15 = [v11 activityUniqueIdentifier];
+              activityUniqueIdentifier = [v13 activityUniqueIdentifier];
+              activityUniqueIdentifier2 = [v11 activityUniqueIdentifier];
               v16 = BSEqualObjects();
 
               if (v16)
@@ -124,7 +124,7 @@
 
             [v6 removeObjectAtIndex:v12];
 
-            self = v10;
+            self = selfCopy;
           }
 
           else
@@ -136,11 +136,11 @@ LABEL_11:
             v24[3] = &unk_27901A470;
             v24[4] = v11;
             [MEMORY[0x277D75D18] performWithoutAnimation:v24];
-            self = v10;
-            [(FCUIActivityListContentView *)v10 addSubview:v11];
+            self = selfCopy;
+            [(FCUIActivityListContentView *)selfCopy addSubview:v11];
             if (objc_opt_respondsToSelector())
             {
-              [v11 setAdjustsFontForContentSizeCategory:v10->_adjustsFontForContentSizeCategory];
+              [v11 setAdjustsFontForContentSizeCategory:selfCopy->_adjustsFontForContentSizeCategory];
             }
           }
         }
@@ -151,7 +151,7 @@ LABEL_11:
       while (v8);
     }
 
-    objc_storeStrong(&self->_activityViews, v20);
+    objc_storeStrong(&self->_activityViews, viewsCopy2);
     outgoingActivityViews = self->_outgoingActivityViews;
     if (!outgoingActivityViews)
     {
@@ -165,35 +165,35 @@ LABEL_11:
     [(NSMutableArray *)outgoingActivityViews addObjectsFromArray:v6];
     [(FCUIActivityListContentView *)self setNeedsLayout];
 
-    v5 = v21;
+    viewsCopy = v21;
   }
 }
 
-- (void)setCompactActivityView:(id)a3
+- (void)setCompactActivityView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   if ([(NSArray *)self->_activityViews containsObject:?])
   {
-    [(FCUIActivityListContentView *)self bringSubviewToFront:v4];
+    [(FCUIActivityListContentView *)self bringSubviewToFront:viewCopy];
   }
 }
 
-- (CGSize)sizeThatFitsCollapsedToPill:(CGSize)a3
+- (CGSize)sizeThatFitsCollapsedToPill:(CGSize)pill
 {
-  [(FCUIActivityListContentView *)self _sizeThatFits:1 collapsedToPill:1 includingFooter:0 forceMeasurement:a3.width, a3.height];
+  [(FCUIActivityListContentView *)self _sizeThatFits:1 collapsedToPill:1 includingFooter:0 forceMeasurement:pill.width, pill.height];
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-- (id)subviewFramesInBounds:(CGRect)a3
+- (id)subviewFramesInBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v81 = *MEMORY[0x277D85DE8];
-  v8 = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
+  weakToStrongObjectsMapTable = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
   v9 = 1;
   [(FCUIActivityListContentView *)self _sizeThatFits:0 collapsedToPill:!self->_footerPinnedToBottom includingFooter:0 forceMeasurement:width, height];
   v83.origin.x = x;
@@ -317,7 +317,7 @@ LABEL_10:
     *&v79[2] = v40;
     *&v79[3] = v42;
     v45 = [MEMORY[0x277CCAE60] valueWithBytes:v79 objCType:{"{CGRect={CGPoint=dd}{CGSize=dd}}", 0}];
-    [v8 setObject:v45 forKey:self->_headerView];
+    [weakToStrongObjectsMapTable setObject:v45 forKey:self->_headerView];
   }
 
   else
@@ -368,7 +368,7 @@ LABEL_10:
         *&v74[2] = v53;
         *&v74[3] = v54;
         v56 = [MEMORY[0x277CCAE60] valueWithBytes:v74 objCType:{"{CGRect={CGPoint=dd}{CGSize=dd}}", 0}];
-        [v8 setObject:v56 forKey:v51];
+        [weakToStrongObjectsMapTable setObject:v56 forKey:v51];
       }
 
       v48 = [(NSArray *)v46 countByEnumeratingWithState:&v75 objects:v80 count:16];
@@ -400,15 +400,15 @@ LABEL_10:
     v73[2] = v59;
     v73[3] = v60;
     v61 = [MEMORY[0x277CCAE60] valueWithBytes:v73 objCType:{"{CGRect={CGPoint=dd}{CGSize=dd}}", 0}];
-    [v8 setObject:v61 forKey:self->_footerView];
+    [weakToStrongObjectsMapTable setObject:v61 forKey:self->_footerView];
   }
 
-  return v8;
+  return weakToStrongObjectsMapTable;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(FCUIActivityListContentView *)self _sizeThatFits:0 collapsedToPill:1 includingFooter:0 forceMeasurement:a3.width, a3.height];
+  [(FCUIActivityListContentView *)self _sizeThatFits:0 collapsedToPill:1 includingFooter:0 forceMeasurement:fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
@@ -462,7 +462,7 @@ LABEL_10:
     v74 = v9;
     v75 = v10;
     v70 = v16;
-    v71 = self;
+    selfCopy = self;
     v17 = _Block_copy(aBlock);
     v54 = v17;
     if (self->_headerViewValid)
@@ -472,9 +472,9 @@ LABEL_10:
 
     else
     {
-      v18 = [MEMORY[0x277D75D18] _isInAnimationBlockWithAnimationsEnabled];
+      _isInAnimationBlockWithAnimationsEnabled = [MEMORY[0x277D75D18] _isInAnimationBlockWithAnimationsEnabled];
       headerView = self->_headerView;
-      if (v18)
+      if (_isInAnimationBlockWithAnimationsEnabled)
       {
         [(UIView *)headerView setAlpha:0.0];
       }
@@ -491,7 +491,7 @@ LABEL_10:
     v68 = 0u;
     v65 = 0u;
     v66 = 0u;
-    v55 = self;
+    selfCopy2 = self;
     v21 = self->_activityViews;
     v22 = [(NSArray *)v21 countByEnumeratingWithState:&v65 objects:v79 count:16];
     if (v22)
@@ -583,7 +583,7 @@ LABEL_10:
     v59 = 0u;
     v56 = 0u;
     v57 = 0u;
-    v42 = v55->_purgeableActivityViews;
+    v42 = selfCopy2->_purgeableActivityViews;
     v43 = [(NSArray *)v42 countByEnumeratingWithState:&v56 objects:v77 count:16];
     if (v43)
     {
@@ -607,27 +607,27 @@ LABEL_10:
       while (v44);
     }
 
-    objc_storeStrong(&v55->_purgeableActivityViews, v55->_outgoingActivityViews);
-    outgoingActivityViews = v55->_outgoingActivityViews;
-    v55->_outgoingActivityViews = 0;
+    objc_storeStrong(&selfCopy2->_purgeableActivityViews, selfCopy2->_outgoingActivityViews);
+    outgoingActivityViews = selfCopy2->_outgoingActivityViews;
+    selfCopy2->_outgoingActivityViews = 0;
 
-    if (![(NSArray *)v55->_purgeableActivityViews count])
+    if (![(NSArray *)selfCopy2->_purgeableActivityViews count])
     {
-      purgeableActivityViews = v55->_purgeableActivityViews;
-      v55->_purgeableActivityViews = 0;
+      purgeableActivityViews = selfCopy2->_purgeableActivityViews;
+      selfCopy2->_purgeableActivityViews = 0;
     }
 
-    if (v55->_footerViewValid)
+    if (selfCopy2->_footerViewValid)
     {
       v49 = v54;
-      v54[2](v54, v55->_footerView);
+      v54[2](v54, selfCopy2->_footerView);
     }
 
     else
     {
-      v50 = [MEMORY[0x277D75D18] _isInAnimationBlockWithAnimationsEnabled];
-      footerView = v55->_footerView;
-      if (v50)
+      _isInAnimationBlockWithAnimationsEnabled2 = [MEMORY[0x277D75D18] _isInAnimationBlockWithAnimationsEnabled];
+      footerView = selfCopy2->_footerView;
+      if (_isInAnimationBlockWithAnimationsEnabled2)
       {
         [(UIView *)footerView setAlpha:0.0];
       }
@@ -635,8 +635,8 @@ LABEL_10:
       else
       {
         [(UIView *)footerView removeFromSuperview];
-        v52 = v55->_footerView;
-        v55->_footerView = 0;
+        v52 = selfCopy2->_footerView;
+        selfCopy2->_footerView = 0;
       }
 
       v49 = v54;
@@ -709,18 +709,18 @@ uint64_t __45__FCUIActivityListContentView_layoutSubviews__block_invoke_3(uint64
   return [v2 layoutIfNeeded];
 }
 
-- (void)setAdjustsFontForContentSizeCategory:(BOOL)a3
+- (void)setAdjustsFontForContentSizeCategory:(BOOL)category
 {
   v15 = *MEMORY[0x277D85DE8];
-  if (self->_adjustsFontForContentSizeCategory != a3)
+  if (self->_adjustsFontForContentSizeCategory != category)
   {
-    self->_adjustsFontForContentSizeCategory = a3;
+    self->_adjustsFontForContentSizeCategory = category;
     v10 = 0u;
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v4 = [(FCUIActivityListContentView *)self _contentSizeCategoryAdjustingViews];
-    v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    _contentSizeCategoryAdjustingViews = [(FCUIActivityListContentView *)self _contentSizeCategoryAdjustingViews];
+    v5 = [_contentSizeCategoryAdjustingViews countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v5)
     {
       v6 = v5;
@@ -732,7 +732,7 @@ uint64_t __45__FCUIActivityListContentView_layoutSubviews__block_invoke_3(uint64
         {
           if (*v11 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(_contentSizeCategoryAdjustingViews);
           }
 
           v9 = *(*(&v10 + 1) + 8 * v8);
@@ -745,7 +745,7 @@ uint64_t __45__FCUIActivityListContentView_layoutSubviews__block_invoke_3(uint64
         }
 
         while (v6 != v8);
-        v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v6 = [_contentSizeCategoryAdjustingViews countByEnumeratingWithState:&v10 objects:v14 count:16];
       }
 
       while (v6);
@@ -762,8 +762,8 @@ uint64_t __45__FCUIActivityListContentView_layoutSubviews__block_invoke_3(uint64
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v3 = [(FCUIActivityListContentView *)self _contentSizeCategoryAdjustingViews];
-    v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    _contentSizeCategoryAdjustingViews = [(FCUIActivityListContentView *)self _contentSizeCategoryAdjustingViews];
+    v4 = [_contentSizeCategoryAdjustingViews countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v4)
     {
       v5 = v4;
@@ -775,7 +775,7 @@ uint64_t __45__FCUIActivityListContentView_layoutSubviews__block_invoke_3(uint64
         {
           if (*v12 != v7)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(_contentSizeCategoryAdjustingViews);
           }
 
           v9 = *(*(&v11 + 1) + 8 * i);
@@ -785,7 +785,7 @@ uint64_t __45__FCUIActivityListContentView_layoutSubviews__block_invoke_3(uint64
           }
         }
 
-        v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v5 = [_contentSizeCategoryAdjustingViews countByEnumeratingWithState:&v11 objects:v15 count:16];
       }
 
       while (v5);
@@ -805,22 +805,22 @@ uint64_t __45__FCUIActivityListContentView_layoutSubviews__block_invoke_3(uint64
   return v6 & 1;
 }
 
-- (CGSize)_sizeThatFits:(CGSize)a3 collapsedToPill:(BOOL)a4 includingFooter:(BOOL)a5 forceMeasurement:(BOOL)a6
+- (CGSize)_sizeThatFits:(CGSize)fits collapsedToPill:(BOOL)pill includingFooter:(BOOL)footer forceMeasurement:(BOOL)measurement
 {
-  v6 = a5;
-  v7 = a4;
-  height = a3.height;
-  width = a3.width;
+  footerCopy = footer;
+  pillCopy = pill;
+  height = fits.height;
+  width = fits.width;
   v32 = *MEMORY[0x277D85DE8];
   v11 = *MEMORY[0x277CBF3A8];
   v12 = *(MEMORY[0x277CBF3A8] + 8);
-  if (a3.width != 0.0 || (a3.height == 0.0 ? (v13 = !a6) : (v13 = 0), !v13))
+  if (fits.width != 0.0 || (fits.height == 0.0 ? (v13 = !measurement) : (v13 = 0), !v13))
   {
-    if (!a4)
+    if (!pill)
     {
       if (self->_headerViewValid)
       {
-        [(UIView *)self->_headerView sizeThatFits:a3.width, a3.height];
+        [(UIView *)self->_headerView sizeThatFits:fits.width, fits.height];
         v12 = v12 + v14;
         if ([(NSArray *)self->_activityViews count])
         {
@@ -828,7 +828,7 @@ uint64_t __45__FCUIActivityListContentView_layoutSubviews__block_invoke_3(uint64
         }
       }
 
-      if (v6 && self->_footerViewValid)
+      if (footerCopy && self->_footerViewValid)
       {
         [(UIView *)self->_footerView sizeThatFits:width, height];
         v12 = v12 + v15 + 48.0;
@@ -861,7 +861,7 @@ uint64_t __45__FCUIActivityListContentView_layoutSubviews__block_invoke_3(uint64
             v11 = v22;
           }
 
-          if (v7)
+          if (pillCopy)
           {
             if (v12 < v23)
             {
@@ -872,9 +872,9 @@ uint64_t __45__FCUIActivityListContentView_layoutSubviews__block_invoke_3(uint64
           else
           {
             v12 = v12 + v23;
-            v24 = [(NSArray *)self->_activityViews lastObject];
+            lastObject = [(NSArray *)self->_activityViews lastObject];
 
-            if (v21 != v24)
+            if (v21 != lastObject)
             {
               v12 = v12 + 12.0;
             }

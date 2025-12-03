@@ -1,52 +1,52 @@
 @interface AVTPushNotificationsSupport
-- (AVTPushNotificationsSupport)initWithEnvironment:(id)a3 connectionFactory:(id)a4;
+- (AVTPushNotificationsSupport)initWithEnvironment:(id)environment connectionFactory:(id)factory;
 - (AVTPushNotificationsSupportDelegate)delegate;
-- (void)connection:(id)a3 didReceiveIncomingMessage:(id)a4;
-- (void)connection:(id)a3 didReceivePublicToken:(id)a4;
-- (void)connection:(id)a3 didReceiveToken:(id)a4 forTopic:(id)a5 identifier:(id)a6;
-- (void)setupConnectionWithCompletionHandler:(id)a3;
+- (void)connection:(id)connection didReceiveIncomingMessage:(id)message;
+- (void)connection:(id)connection didReceivePublicToken:(id)token;
+- (void)connection:(id)connection didReceiveToken:(id)token forTopic:(id)topic identifier:(id)identifier;
+- (void)setupConnectionWithCompletionHandler:(id)handler;
 - (void)startListeningToPushNotifications;
 - (void)stopListeningToPushNotifications;
 @end
 
 @implementation AVTPushNotificationsSupport
 
-- (AVTPushNotificationsSupport)initWithEnvironment:(id)a3 connectionFactory:(id)a4
+- (AVTPushNotificationsSupport)initWithEnvironment:(id)environment connectionFactory:(id)factory
 {
-  v7 = a3;
-  v8 = a4;
+  environmentCopy = environment;
+  factoryCopy = factory;
   v17.receiver = self;
   v17.super_class = AVTPushNotificationsSupport;
   v9 = [(AVTPushNotificationsSupport *)&v17 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_environment, a3);
-    v11 = [v7 serialQueueProvider];
-    v12 = (v11)[2](v11, "com.apple.AvatarUI.AVTPushNotificationSupport.connectionQueue");
+    objc_storeStrong(&v9->_environment, environment);
+    serialQueueProvider = [environmentCopy serialQueueProvider];
+    v12 = (serialQueueProvider)[2](serialQueueProvider, "com.apple.AvatarUI.AVTPushNotificationSupport.connectionQueue");
     connectionQueue = v10->_connectionQueue;
     v10->_connectionQueue = v12;
 
-    v14 = [v7 logger];
+    logger = [environmentCopy logger];
     logger = v10->_logger;
-    v10->_logger = v14;
+    v10->_logger = logger;
 
-    objc_storeStrong(&v10->_connectionFactory, a4);
+    objc_storeStrong(&v10->_connectionFactory, factory);
   }
 
   return v10;
 }
 
-- (void)setupConnectionWithCompletionHandler:(id)a3
+- (void)setupConnectionWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __68__AVTPushNotificationsSupport_setupConnectionWithCompletionHandler___block_invoke;
   v6[3] = &unk_278CFB270;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = handlerCopy;
+  v5 = handlerCopy;
   [(AVTPushNotificationsSupport *)self getAPSEnvironmentString:v6];
 }
 
@@ -89,39 +89,39 @@ void __68__AVTPushNotificationsSupport_setupConnectionWithCompletionHandler___bl
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)connection:(id)a3 didReceivePublicToken:(id)a4
+- (void)connection:(id)connection didReceivePublicToken:(id)token
 {
-  v5 = a4;
-  v7 = [(AVTPushNotificationsSupport *)self logger];
-  v6 = [v5 base64EncodedStringWithOptions:0];
+  tokenCopy = token;
+  logger = [(AVTPushNotificationsSupport *)self logger];
+  v6 = [tokenCopy base64EncodedStringWithOptions:0];
 
-  [v7 logPushConnectionReceivedPublicToken:v6];
+  [logger logPushConnectionReceivedPublicToken:v6];
 }
 
-- (void)connection:(id)a3 didReceiveToken:(id)a4 forTopic:(id)a5 identifier:(id)a6
+- (void)connection:(id)connection didReceiveToken:(id)token forTopic:(id)topic identifier:(id)identifier
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v13 = [(AVTPushNotificationsSupport *)self logger];
-  v12 = [v11 base64EncodedStringWithOptions:0];
+  identifierCopy = identifier;
+  topicCopy = topic;
+  tokenCopy = token;
+  logger = [(AVTPushNotificationsSupport *)self logger];
+  v12 = [tokenCopy base64EncodedStringWithOptions:0];
 
-  [v13 logPushConnectionReceivedToken:v12 topic:v10 identifier:v9];
+  [logger logPushConnectionReceivedToken:v12 topic:topicCopy identifier:identifierCopy];
 }
 
-- (void)connection:(id)a3 didReceiveIncomingMessage:(id)a4
+- (void)connection:(id)connection didReceiveIncomingMessage:(id)message
 {
-  v5 = a4;
-  v11 = [v5 userInfo];
-  v6 = [MEMORY[0x277CBC4C0] notificationFromRemoteNotificationDictionary:v11];
-  v7 = [(AVTPushNotificationsSupport *)self logger];
-  v8 = [v5 topic];
+  messageCopy = message;
+  userInfo = [messageCopy userInfo];
+  v6 = [MEMORY[0x277CBC4C0] notificationFromRemoteNotificationDictionary:userInfo];
+  logger = [(AVTPushNotificationsSupport *)self logger];
+  topic = [messageCopy topic];
 
   v9 = [v6 description];
-  [v7 logPushNotificationReceivedForTopic:v8 payload:v9];
+  [logger logPushNotificationReceivedForTopic:topic payload:v9];
 
-  v10 = [(AVTPushNotificationsSupport *)self delegate];
-  [v10 didReceivePushNotification:self];
+  delegate = [(AVTPushNotificationsSupport *)self delegate];
+  [delegate didReceivePushNotification:self];
 }
 
 - (void)startListeningToPushNotifications
@@ -163,8 +163,8 @@ void __64__AVTPushNotificationsSupport_startListeningToPushNotifications__block_
 
 - (void)stopListeningToPushNotifications
 {
-  v2 = [(AVTPushNotificationsSupport *)self pushConnection];
-  [v2 _setEnabledTopics:0];
+  pushConnection = [(AVTPushNotificationsSupport *)self pushConnection];
+  [pushConnection _setEnabledTopics:0];
 }
 
 - (AVTPushNotificationsSupportDelegate)delegate

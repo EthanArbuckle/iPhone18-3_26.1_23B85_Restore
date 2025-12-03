@@ -6,14 +6,14 @@
 - (NSString)mobileSubscriberNetworkCode;
 - (NSString)phoneNumber;
 - (id)_newDefaultRequestBodyDictionary;
-- (id)_newDefaultRequestBodyDictionaryWithResponseCode:(int64_t)a3 error:(id)a4;
-- (id)_sendPreflightRequest:(id *)a3;
-- (void)_finishEnrichmentWithSessionID:(id)a3 carrierResponse:(id)a4 URLResponse:(id)a5 URLError:(id)a6 outputBlock:(id)a7;
-- (void)_finishSilentSMSWithSessionID:(id)a3 responseCode:(int64_t)a4 smsSendingError:(id)a5 outputBlock:(id)a6;
-- (void)_sendEnrichmentRequestWithPreflightResponse:(id)a3 outputBlock:(id)a4;
-- (void)_sendSilentSMSRequestWithPreflightResponse:(id)a3 outputBlock:(id)a4;
+- (id)_newDefaultRequestBodyDictionaryWithResponseCode:(int64_t)code error:(id)error;
+- (id)_sendPreflightRequest:(id *)request;
+- (void)_finishEnrichmentWithSessionID:(id)d carrierResponse:(id)response URLResponse:(id)lResponse URLError:(id)error outputBlock:(id)block;
+- (void)_finishSilentSMSWithSessionID:(id)d responseCode:(int64_t)code smsSendingError:(id)error outputBlock:(id)block;
+- (void)_sendEnrichmentRequestWithPreflightResponse:(id)response outputBlock:(id)block;
+- (void)_sendSilentSMSRequestWithPreflightResponse:(id)response outputBlock:(id)block;
 - (void)run;
-- (void)setDeepLink:(BOOL)a3;
+- (void)setDeepLink:(BOOL)link;
 @end
 
 @implementation CarrierBundlingEligibilityOperation
@@ -71,10 +71,10 @@
   return v3;
 }
 
-- (void)setDeepLink:(BOOL)a3
+- (void)setDeepLink:(BOOL)link
 {
   [(CarrierBundlingEligibilityOperation *)self lock];
-  self->_deepLink = a3;
+  self->_deepLink = link;
 
   [(CarrierBundlingEligibilityOperation *)self unlock];
 }
@@ -82,9 +82,9 @@
 - (void)run
 {
   v4 = +[SSVTelephonyController sharedController];
-  v5 = [v4 isPhoneNumberAccessRestricted];
+  isPhoneNumberAccessRestricted = [v4 isPhoneNumberAccessRestricted];
 
-  if (v5)
+  if (isPhoneNumberAccessRestricted)
   {
     sub_1002723F0(a2, self);
   }
@@ -106,40 +106,40 @@
   v38 = 0x2020000000;
   v39 = 0;
   v6 = +[ISNetworkObserver sharedInstance];
-  v7 = [v6 mobileSubscriberCountryCode];
-  v8 = [v6 mobileSubscriberNetworkCode];
-  v9 = [v6 providerName];
+  mobileSubscriberCountryCode = [v6 mobileSubscriberCountryCode];
+  mobileSubscriberNetworkCode = [v6 mobileSubscriberNetworkCode];
+  providerName = [v6 providerName];
   v33 = v6;
-  v10 = [v6 phoneNumber];
+  phoneNumber = [v6 phoneNumber];
   v11 = +[SSVTelephonyController sharedController];
-  v12 = [v11 IMEI];
+  iMEI = [v11 IMEI];
 
   [(CarrierBundlingEligibilityOperation *)self lock];
-  v13 = [v9 copy];
+  v13 = [providerName copy];
   cellularProviderName = self->_cellularProviderName;
   self->_cellularProviderName = v13;
 
-  v15 = [v7 copy];
+  v15 = [mobileSubscriberCountryCode copy];
   mobileSubscriberCountryCode = self->_mobileSubscriberCountryCode;
   self->_mobileSubscriberCountryCode = v15;
 
-  v17 = [v8 copy];
+  v17 = [mobileSubscriberNetworkCode copy];
   mobileSubscriberNetworkCode = self->_mobileSubscriberNetworkCode;
   self->_mobileSubscriberNetworkCode = v17;
 
-  v19 = [v10 copy];
+  v19 = [phoneNumber copy];
   phoneNumber = self->_phoneNumber;
   self->_phoneNumber = v19;
 
-  v21 = [v12 copy];
+  v21 = [iMEI copy];
   IMEI = self->_IMEI;
   self->_IMEI = v21;
 
   [(CarrierBundlingEligibilityOperation *)self unlock];
-  v23 = v10;
-  v24 = v9;
-  v25 = v8;
-  v26 = v7;
+  v23 = phoneNumber;
+  v24 = providerName;
+  v25 = mobileSubscriberNetworkCode;
+  v26 = mobileSubscriberCountryCode;
   for (i = 0; ; i = v29)
   {
     v28 = (v41 + 5);
@@ -158,13 +158,13 @@
 
   if (v29)
   {
-    v30 = [v29 error];
+    error = [v29 error];
 
-    if (v30)
+    if (error)
     {
-      v31 = [v29 error];
+      error2 = [v29 error];
       v32 = v41[5];
-      v41[5] = v31;
+      v41[5] = error2;
     }
 
     else
@@ -207,31 +207,31 @@
   _Block_object_dispose(&v46, 8);
 }
 
-- (void)_finishEnrichmentWithSessionID:(id)a3 carrierResponse:(id)a4 URLResponse:(id)a5 URLError:(id)a6 outputBlock:(id)a7
+- (void)_finishEnrichmentWithSessionID:(id)d carrierResponse:(id)response URLResponse:(id)lResponse URLError:(id)error outputBlock:(id)block
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v29 = a7;
+  dCopy = d;
+  responseCopy = response;
+  lResponseCopy = lResponse;
+  errorCopy = error;
+  blockCopy = block;
   v16 = objc_alloc_init(SSMutableURLRequestProperties);
   [v16 setHTTPMethod:@"POST"];
   [v16 setURLBagKey:@"fuseHeaderEnrichmentResponse"];
   [v16 setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-  v30 = v15;
-  v17 = -[CarrierBundlingEligibilityOperation _newDefaultRequestBodyDictionaryWithResponseCode:error:](self, "_newDefaultRequestBodyDictionaryWithResponseCode:error:", [v14 statusCode], v15);
+  v30 = errorCopy;
+  v17 = -[CarrierBundlingEligibilityOperation _newDefaultRequestBodyDictionaryWithResponseCode:error:](self, "_newDefaultRequestBodyDictionaryWithResponseCode:error:", [lResponseCopy statusCode], errorCopy);
   v18 = v17;
-  if (v13)
+  if (responseCopy)
   {
-    [v17 setObject:v13 forKey:@"responseMessage"];
+    [v17 setObject:responseCopy forKey:@"responseMessage"];
   }
 
-  if (v12)
+  if (dCopy)
   {
-    [v18 setObject:v12 forKey:@"sessionId"];
+    [v18 setObject:dCopy forKey:@"sessionId"];
   }
 
-  v31 = v12;
+  v31 = dCopy;
   if ([(CarrierBundlingEligibilityOperation *)self isDeepLink])
   {
     [v18 setObject:@"true" forKey:@"deepLink"];
@@ -251,12 +251,12 @@
     v32 = 0;
     LODWORD(v21) = [(CarrierBundlingEligibilityOperation *)self runSubOperation:v20 returningError:&v32];
     v22 = v32;
-    v23 = [v20 dataProvider];
-    v24 = [v23 output];
+    dataProvider = [v20 dataProvider];
+    output = [dataProvider output];
 
     if (v21 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v25 = [[CarrierBundlingEligibilityResponse alloc] initWithEligibilityDictionary:v24];
+      v25 = [[CarrierBundlingEligibilityResponse alloc] initWithEligibilityDictionary:output];
     }
 
     else
@@ -273,34 +273,34 @@
     [NSThread sleepForTimeInterval:?];
   }
 
-  v26 = [(CarrierBundlingEligibilityResponse *)v25 error];
+  error = [(CarrierBundlingEligibilityResponse *)v25 error];
 
-  if (v26)
+  if (error)
   {
-    v27 = [(CarrierBundlingEligibilityResponse *)v25 error];
+    error2 = [(CarrierBundlingEligibilityResponse *)v25 error];
 
     v25 = 0;
-    v22 = v27;
+    v22 = error2;
   }
 
-  v29[2](v29, v25, v22);
+  blockCopy[2](blockCopy, v25, v22);
 }
 
-- (void)_finishSilentSMSWithSessionID:(id)a3 responseCode:(int64_t)a4 smsSendingError:(id)a5 outputBlock:(id)a6
+- (void)_finishSilentSMSWithSessionID:(id)d responseCode:(int64_t)code smsSendingError:(id)error outputBlock:(id)block
 {
-  v10 = a3;
-  v11 = a5;
-  v26 = a6;
+  dCopy = d;
+  errorCopy = error;
+  blockCopy = block;
   v12 = objc_alloc_init(SSMutableURLRequestProperties);
   [v12 setHTTPMethod:@"POST"];
   [v12 setURLBagKey:@"fuseHeaderEnrichmentResponse"];
   [v12 setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-  v27 = v11;
-  v13 = [(CarrierBundlingEligibilityOperation *)self _newDefaultRequestBodyDictionaryWithResponseCode:a4 error:v11];
+  v27 = errorCopy;
+  v13 = [(CarrierBundlingEligibilityOperation *)self _newDefaultRequestBodyDictionaryWithResponseCode:code error:errorCopy];
   v14 = v13;
-  if (v10)
+  if (dCopy)
   {
-    [v13 setObject:v10 forKey:@"sessionId"];
+    [v13 setObject:dCopy forKey:@"sessionId"];
   }
 
   if ([(CarrierBundlingEligibilityOperation *)self isDeepLink])
@@ -322,12 +322,12 @@
     v28 = 0;
     v18 = [(CarrierBundlingEligibilityOperation *)self runSubOperation:v16 returningError:&v28];
     v19 = v28;
-    v20 = [v16 dataProvider];
-    v21 = [v20 output];
+    dataProvider = [v16 dataProvider];
+    output = [dataProvider output];
 
     if (v18 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v22 = [[CarrierBundlingEligibilityResponse alloc] initWithEligibilityDictionary:v21];
+      v22 = [[CarrierBundlingEligibilityResponse alloc] initWithEligibilityDictionary:output];
     }
 
     else
@@ -344,48 +344,48 @@
     [NSThread sleepForTimeInterval:?];
   }
 
-  v23 = [(CarrierBundlingEligibilityResponse *)v22 error];
+  error = [(CarrierBundlingEligibilityResponse *)v22 error];
 
-  if (v23)
+  if (error)
   {
-    v24 = [(CarrierBundlingEligibilityResponse *)v22 error];
+    error2 = [(CarrierBundlingEligibilityResponse *)v22 error];
 
     v22 = 0;
-    v19 = v24;
+    v19 = error2;
   }
 
-  v26[2](v26, v22, v19);
+  blockCopy[2](blockCopy, v22, v19);
 }
 
 - (id)_newDefaultRequestBodyDictionary
 {
   v3 = objc_alloc_init(NSMutableDictionary);
-  v4 = [(CarrierBundlingEligibilityOperation *)self cellularProviderName];
-  if (v4)
+  cellularProviderName = [(CarrierBundlingEligibilityOperation *)self cellularProviderName];
+  if (cellularProviderName)
   {
-    [v3 setObject:v4 forKey:@"carrier"];
+    [v3 setObject:cellularProviderName forKey:@"carrier"];
   }
 
   v5 = +[ISDevice sharedInstance];
-  v6 = [v5 guid];
+  guid = [v5 guid];
 
-  if (v6)
+  if (guid)
   {
-    [v3 setObject:v6 forKey:@"guid"];
+    [v3 setObject:guid forKey:@"guid"];
   }
 
-  v7 = [(CarrierBundlingEligibilityOperation *)self mobileSubscriberCountryCode];
+  mobileSubscriberCountryCode = [(CarrierBundlingEligibilityOperation *)self mobileSubscriberCountryCode];
 
-  if (v7)
+  if (mobileSubscriberCountryCode)
   {
-    [v3 setObject:v7 forKey:@"MCC"];
+    [v3 setObject:mobileSubscriberCountryCode forKey:@"MCC"];
   }
 
-  v8 = [(CarrierBundlingEligibilityOperation *)self mobileSubscriberNetworkCode];
+  mobileSubscriberNetworkCode = [(CarrierBundlingEligibilityOperation *)self mobileSubscriberNetworkCode];
 
-  if (v8)
+  if (mobileSubscriberNetworkCode)
   {
-    [v3 setObject:v8 forKey:@"MNC"];
+    [v3 setObject:mobileSubscriberNetworkCode forKey:@"MNC"];
   }
 
   [(CarrierBundlingEligibilityOperation *)self lock];
@@ -400,59 +400,59 @@
   return v3;
 }
 
-- (id)_newDefaultRequestBodyDictionaryWithResponseCode:(int64_t)a3 error:(id)a4
+- (id)_newDefaultRequestBodyDictionaryWithResponseCode:(int64_t)code error:(id)error
 {
-  v6 = a4;
-  v7 = [(CarrierBundlingEligibilityOperation *)self _newDefaultRequestBodyDictionary];
-  v8 = [NSString stringWithFormat:@"%ld", a3];
-  [v7 setObject:v8 forKey:@"responseCode"];
+  errorCopy = error;
+  _newDefaultRequestBodyDictionary = [(CarrierBundlingEligibilityOperation *)self _newDefaultRequestBodyDictionary];
+  code = [NSString stringWithFormat:@"%ld", code];
+  [_newDefaultRequestBodyDictionary setObject:code forKey:@"responseCode"];
 
-  if (v6)
+  if (errorCopy)
   {
-    v9 = [v6 domain];
+    domain = [errorCopy domain];
 
-    if (v9)
+    if (domain)
     {
-      v10 = [v6 domain];
-      [v7 setObject:v10 forKey:@"error-domain"];
+      domain2 = [errorCopy domain];
+      [_newDefaultRequestBodyDictionary setObject:domain2 forKey:@"error-domain"];
     }
 
-    if ([v6 code])
+    if ([errorCopy code])
     {
-      v11 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v6 code]);
-      [v7 setObject:v11 forKey:@"error-code"];
+      v11 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [errorCopy code]);
+      [_newDefaultRequestBodyDictionary setObject:v11 forKey:@"error-code"];
     }
 
-    v12 = [v6 userInfo];
-    v13 = [v12 objectForKey:NSLocalizedDescriptionKey];
+    userInfo = [errorCopy userInfo];
+    v13 = [userInfo objectForKey:NSLocalizedDescriptionKey];
     if (v13)
     {
-      [v7 setObject:v13 forKey:@"error-title"];
+      [_newDefaultRequestBodyDictionary setObject:v13 forKey:@"error-title"];
     }
 
-    v14 = [v12 objectForKey:NSLocalizedFailureReasonErrorKey];
+    v14 = [userInfo objectForKey:NSLocalizedFailureReasonErrorKey];
 
     if (v14)
     {
-      [v7 setObject:v14 forKey:@"error-message"];
+      [_newDefaultRequestBodyDictionary setObject:v14 forKey:@"error-message"];
     }
 
-    v15 = [v12 objectForKey:NSUnderlyingErrorKey];
+    v15 = [userInfo objectForKey:NSUnderlyingErrorKey];
 
     if (v15)
     {
       v16 = [NSString stringWithFormat:@"%@", v15];
-      [v7 setObject:v16 forKey:@"error-underlying"];
+      [_newDefaultRequestBodyDictionary setObject:v16 forKey:@"error-underlying"];
     }
   }
 
-  return v7;
+  return _newDefaultRequestBodyDictionary;
 }
 
-- (void)_sendEnrichmentRequestWithPreflightResponse:(id)a3 outputBlock:(id)a4
+- (void)_sendEnrichmentRequestWithPreflightResponse:(id)response outputBlock:(id)block
 {
-  v6 = a3;
-  v47 = a4;
+  responseCopy = response;
+  blockCopy = block;
   v59 = 0;
   v60 = &v59;
   v61 = 0x3032000000;
@@ -465,11 +465,11 @@
   v56 = sub_10013621C;
   v57 = sub_10013622C;
   v58 = 0;
-  v50 = v6;
-  v49 = [v6 headerEnrichmentURL];
-  if (v49)
+  v50 = responseCopy;
+  headerEnrichmentURL = [responseCopy headerEnrichmentURL];
+  if (headerEnrichmentURL)
   {
-    [v6 delayInterval];
+    [responseCopy delayInterval];
     if (v7 > 2.22044605e-16)
     {
       [NSThread sleepForTimeInterval:?];
@@ -483,7 +483,7 @@
       [v8 setDataProvider:v9];
 
       [v8 _setLoadsHTTPFailures:1];
-      v10 = [[SSMutableURLRequestProperties alloc] initWithURL:v49];
+      v10 = [[SSMutableURLRequestProperties alloc] initWithURL:headerEnrichmentURL];
       [v10 setHTTPMethod:@"POST"];
       [v10 setITunesStoreRequest:0];
       [v10 setValue:@"ValidateMobile" forHTTPHeaderField:@"SOAPAction"];
@@ -498,11 +498,11 @@
       }
 
       [v10 setRequiresCellularDataNetwork:{v11, v44}];
-      v12 = [v50 headerEnrichmentMessage];
+      headerEnrichmentMessage = [v50 headerEnrichmentMessage];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v13 = [v12 dataUsingEncoding:4];
+        v13 = [headerEnrichmentMessage dataUsingEncoding:4];
         [v10 setHTTPBody:v13];
       }
 
@@ -514,21 +514,21 @@
         v14 = +[SSLogConfig sharedConfig];
       }
 
-      v15 = [v14 shouldLog];
-      v16 = [v14 shouldLogToDisk];
-      v17 = [v14 OSLogObject];
-      v18 = v17;
-      if (v16)
+      shouldLog = [v14 shouldLog];
+      shouldLogToDisk = [v14 shouldLogToDisk];
+      oSLogObject = [v14 OSLogObject];
+      v18 = oSLogObject;
+      if (shouldLogToDisk)
       {
-        v19 = v15 | 2;
+        v19 = shouldLog | 2;
       }
 
       else
       {
-        v19 = v15;
+        v19 = shouldLog;
       }
 
-      if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
       {
         v20 = v19;
       }
@@ -564,19 +564,19 @@ LABEL_22:
       obj = v54[5];
       [(CarrierBundlingEligibilityOperation *)self runSubOperation:v8 returningError:&obj];
       objc_storeStrong(v24, obj);
-      v25 = [v8 response];
-      if (v25)
+      response = [v8 response];
+      if (response)
       {
         v26 = 0;
 LABEL_24:
-        v27 = [v50 headerEnrichmentSessionIdentifier];
-        v28 = [v8 dataProvider];
-        v29 = [v28 output];
+        headerEnrichmentSessionIdentifier = [v50 headerEnrichmentSessionIdentifier];
+        dataProvider = [v8 dataProvider];
+        output = [dataProvider output];
 
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v30 = [[NSString alloc] initWithData:v29 encoding:4];
+          v30 = [[NSString alloc] initWithData:output encoding:4];
         }
 
         else
@@ -590,24 +590,24 @@ LABEL_24:
         v51[3] = &unk_1003297E8;
         v51[4] = &v53;
         v51[5] = &v59;
-        [(CarrierBundlingEligibilityOperation *)self _finishEnrichmentWithSessionID:v27 carrierResponse:v30 URLResponse:v25 URLError:v26 outputBlock:v51];
+        [(CarrierBundlingEligibilityOperation *)self _finishEnrichmentWithSessionID:headerEnrichmentSessionIdentifier carrierResponse:v30 URLResponse:response URLError:v26 outputBlock:v51];
 
         goto LABEL_32;
       }
 
-      v31 = [v54[5] domain];
-      v32 = [v31 isEqualToString:NSURLErrorDomain];
+      domain = [v54[5] domain];
+      v32 = [domain isEqualToString:NSURLErrorDomain];
 
       if (!v32)
       {
-        v25 = 0;
+        response = 0;
         v26 = 0;
         goto LABEL_32;
       }
 
-      v25 = [[NSHTTPURLResponse alloc] initWithURL:v49 statusCode:400 HTTPVersion:@"HTTP/1.1" headerFields:0];
+      response = [[NSHTTPURLResponse alloc] initWithURL:headerEnrichmentURL statusCode:400 HTTPVersion:@"HTTP/1.1" headerFields:0];
       v26 = [v54[5] copy];
-      if (v25)
+      if (response)
       {
         goto LABEL_24;
       }
@@ -625,21 +625,21 @@ LABEL_32:
         v33 = +[SSLogConfig sharedConfig];
       }
 
-      v34 = [v33 shouldLog];
-      v35 = [v33 shouldLogToDisk];
-      v36 = [v33 OSLogObject];
-      v37 = v36;
-      if (v35)
+      shouldLog2 = [v33 shouldLog];
+      shouldLogToDisk2 = [v33 shouldLogToDisk];
+      oSLogObject2 = [v33 OSLogObject];
+      v37 = oSLogObject2;
+      if (shouldLogToDisk2)
       {
-        v38 = v34 | 2;
+        v38 = shouldLog2 | 2;
       }
 
       else
       {
-        v38 = v34;
+        v38 = shouldLog2;
       }
 
-      if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
       {
         v39 = v38;
       }
@@ -681,23 +681,23 @@ LABEL_45:
   v54[5] = v43;
 LABEL_48:
 
-  if (v47)
+  if (blockCopy)
   {
-    v47[2](v47, v60[5], v54[5]);
+    blockCopy[2](blockCopy, v60[5], v54[5]);
   }
 
   _Block_object_dispose(&v53, 8);
   _Block_object_dispose(&v59, 8);
 }
 
-- (id)_sendPreflightRequest:(id *)a3
+- (id)_sendPreflightRequest:(id *)request
 {
   v5 = objc_alloc_init(ISLoadURLBagOperation);
   v45 = 0;
   [(CarrierBundlingEligibilityOperation *)self runSubOperation:v5 returningError:&v45];
   v6 = v45;
-  v7 = [v5 URLBag];
-  v8 = [v7 urlForKey:@"fuseHeaderEnrichment"];
+  uRLBag = [v5 URLBag];
+  v8 = [uRLBag urlForKey:@"fuseHeaderEnrichment"];
   v9 = v8;
   if (v6)
   {
@@ -706,7 +706,7 @@ LABEL_48:
 
   else
   {
-    v10 = v7 == 0;
+    v10 = uRLBag == 0;
   }
 
   if (!v10 && v8 == 0)
@@ -717,19 +717,19 @@ LABEL_48:
       v26 = +[SSLogConfig sharedConfig];
     }
 
-    v27 = [v26 shouldLog];
+    shouldLog = [v26 shouldLog];
     if ([v26 shouldLogToDisk])
     {
-      v27 |= 2u;
+      shouldLog |= 2u;
     }
 
-    v28 = [v26 OSLogObject];
-    if (!os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
+    oSLogObject = [v26 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
     {
-      v27 &= 2u;
+      shouldLog &= 2u;
     }
 
-    if (v27)
+    if (shouldLog)
     {
       v29 = objc_opt_class();
       v46 = 138412290;
@@ -748,7 +748,7 @@ LABEL_34:
         goto LABEL_44;
       }
 
-      v28 = [NSString stringWithCString:v31 encoding:4, &v46, v39];
+      oSLogObject = [NSString stringWithCString:v31 encoding:4, &v46, v39];
       free(v31);
       SSFileLog();
     }
@@ -771,23 +771,23 @@ LABEL_34:
   v14 = [[SSMutableURLRequestProperties alloc] initWithURL:v9];
   [v14 setHTTPMethod:@"POST"];
   [v14 setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-  v15 = [(CarrierBundlingEligibilityOperation *)self _newDefaultRequestBodyDictionary];
-  v16 = [(CarrierBundlingEligibilityOperation *)self phoneNumber];
-  if (v16)
+  _newDefaultRequestBodyDictionary = [(CarrierBundlingEligibilityOperation *)self _newDefaultRequestBodyDictionary];
+  phoneNumber = [(CarrierBundlingEligibilityOperation *)self phoneNumber];
+  if (phoneNumber)
   {
-    [v15 setObject:v16 forKey:@"phoneNumber"];
+    [_newDefaultRequestBodyDictionary setObject:phoneNumber forKey:@"phoneNumber"];
   }
 
-  v40 = v16;
+  v40 = phoneNumber;
   if ([(CarrierBundlingEligibilityOperation *)self isDeepLink])
   {
-    [v15 setObject:@"true" forKey:@"deepLink"];
+    [_newDefaultRequestBodyDictionary setObject:@"true" forKey:@"deepLink"];
   }
 
-  v42 = a3;
+  requestCopy = request;
   v43 = v6;
-  v41 = v15;
-  v17 = [NSJSONSerialization dataWithJSONObject:v15 options:0 error:0];
+  v41 = _newDefaultRequestBodyDictionary;
+  v17 = [NSJSONSerialization dataWithJSONObject:_newDefaultRequestBodyDictionary options:0 error:0];
   [v14 setHTTPBody:v17];
 
   [v12 setRequestProperties:v14];
@@ -797,19 +797,19 @@ LABEL_34:
     v18 = +[SSLogConfig sharedConfig];
   }
 
-  v19 = [v18 shouldLog];
+  shouldLog2 = [v18 shouldLog];
   if ([v18 shouldLogToDisk])
   {
-    v20 = v19 | 2;
+    v20 = shouldLog2 | 2;
   }
 
   else
   {
-    v20 = v19;
+    v20 = shouldLog2;
   }
 
-  v21 = [v18 OSLogObject];
-  if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
+  oSLogObject2 = [v18 OSLogObject];
+  if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_INFO))
   {
     v22 = v20;
   }
@@ -835,7 +835,7 @@ LABEL_34:
   v6 = v43;
   if (v25)
   {
-    v21 = [NSString stringWithCString:v25 encoding:4, &v46, v39];
+    oSLogObject2 = [NSString stringWithCString:v25 encoding:4, &v46, v39];
     free(v25);
     SSFileLog();
 LABEL_37:
@@ -845,16 +845,16 @@ LABEL_37:
   v34 = [(CarrierBundlingEligibilityOperation *)self runSubOperation:v12 returningError:&v44];
   v33 = v44;
   v32 = 0;
-  a3 = v42;
+  request = requestCopy;
   if (v34)
   {
-    v35 = [v12 dataProvider];
-    v36 = [v35 output];
+    dataProvider = [v12 dataProvider];
+    output = [dataProvider output];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v32 = [[CarrierBundlingEligibilityResponse alloc] initWithEligibilityDictionary:v36];
+      v32 = [[CarrierBundlingEligibilityResponse alloc] initWithEligibilityDictionary:output];
     }
 
     else
@@ -866,19 +866,19 @@ LABEL_37:
   }
 
 LABEL_44:
-  if (a3 && !v32)
+  if (request && !v32)
   {
     v37 = v33;
-    *a3 = v33;
+    *request = v33;
   }
 
   return v32;
 }
 
-- (void)_sendSilentSMSRequestWithPreflightResponse:(id)a3 outputBlock:(id)a4
+- (void)_sendSilentSMSRequestWithPreflightResponse:(id)response outputBlock:(id)block
 {
-  v6 = a3;
-  v47 = a4;
+  responseCopy = response;
+  blockCopy = block;
   v57 = 0;
   v58 = &v57;
   v59 = 0x3032000000;
@@ -891,10 +891,10 @@ LABEL_44:
   v54 = sub_10013621C;
   v55 = sub_10013622C;
   v56 = 0;
-  v48 = [v6 silentSMSMessage];
-  v7 = [v6 silentSMSNumber];
-  v8 = v7;
-  if (!v48 || !v7)
+  silentSMSMessage = [responseCopy silentSMSMessage];
+  silentSMSNumber = [responseCopy silentSMSNumber];
+  v8 = silentSMSNumber;
+  if (!silentSMSMessage || !silentSMSNumber)
   {
     v43 = SSError();
     v12 = v52[5];
@@ -902,7 +902,7 @@ LABEL_44:
     goto LABEL_49;
   }
 
-  [v6 delayInterval];
+  [responseCopy delayInterval];
   if (v9 > 2.22044605e-16)
   {
     [NSThread sleepForTimeInterval:?];
@@ -912,7 +912,7 @@ LABEL_44:
   {
     v10 = +[SSVTelephonyController sharedController];
     v50 = 0;
-    v11 = [v10 sendSMSWithText:v48 toPhoneNumber:v8 countryCode:0 error:&v50];
+    v11 = [v10 sendSMSWithText:silentSMSMessage toPhoneNumber:v8 countryCode:0 error:&v50];
     v12 = v50;
 
     if (v11)
@@ -923,21 +923,21 @@ LABEL_44:
         v13 = +[SSLogConfig sharedConfig];
       }
 
-      v14 = [v13 shouldLog];
-      v15 = [v13 shouldLogToDisk];
-      v16 = [v13 OSLogObject];
-      v17 = v16;
-      if (v15)
+      shouldLog = [v13 shouldLog];
+      shouldLogToDisk = [v13 shouldLogToDisk];
+      oSLogObject = [v13 OSLogObject];
+      v17 = oSLogObject;
+      if (shouldLogToDisk)
       {
-        v18 = v14 | 2;
+        v18 = shouldLog | 2;
       }
 
       else
       {
-        v18 = v14;
+        v18 = shouldLog;
       }
 
-      if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
       {
         v19 = v18;
       }
@@ -982,21 +982,21 @@ LABEL_17:
         v13 = +[SSLogConfig sharedConfig];
       }
 
-      v24 = [v13 shouldLog];
-      v25 = [v13 shouldLogToDisk];
-      v26 = [v13 OSLogObject];
-      v17 = v26;
-      if (v25)
+      shouldLog2 = [v13 shouldLog];
+      shouldLogToDisk2 = [v13 shouldLogToDisk];
+      oSLogObject2 = [v13 OSLogObject];
+      v17 = oSLogObject2;
+      if (shouldLogToDisk2)
       {
-        v27 = v24 | 2;
+        v27 = shouldLog2 | 2;
       }
 
       else
       {
-        v27 = v24;
+        v27 = shouldLog2;
       }
 
-      if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
+      if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
       {
         v28 = v27;
       }
@@ -1037,14 +1037,14 @@ LABEL_30:
 
 LABEL_31:
 
-    v32 = [v6 headerEnrichmentSessionIdentifier];
+    headerEnrichmentSessionIdentifier = [responseCopy headerEnrichmentSessionIdentifier];
     v49[0] = _NSConcreteStackBlock;
     v49[1] = 3221225472;
     v49[2] = sub_10013813C;
     v49[3] = &unk_1003297E8;
     v49[4] = &v51;
     v49[5] = &v57;
-    [(CarrierBundlingEligibilityOperation *)self _finishSilentSMSWithSessionID:v32 responseCode:v23 smsSendingError:v12 outputBlock:v49];
+    [(CarrierBundlingEligibilityOperation *)self _finishSilentSMSWithSessionID:headerEnrichmentSessionIdentifier responseCode:v23 smsSendingError:v12 outputBlock:v49];
     if (![v58[5] needsSilentSMS])
     {
       break;
@@ -1056,21 +1056,21 @@ LABEL_31:
       v33 = +[SSLogConfig sharedConfig];
     }
 
-    v34 = [v33 shouldLog];
-    v35 = [v33 shouldLogToDisk];
-    v36 = [v33 OSLogObject];
-    v37 = v36;
-    if (v35)
+    shouldLog3 = [v33 shouldLog];
+    shouldLogToDisk3 = [v33 shouldLogToDisk];
+    oSLogObject3 = [v33 OSLogObject];
+    v37 = oSLogObject3;
+    if (shouldLogToDisk3)
     {
-      v38 = v34 | 2;
+      v38 = shouldLog3 | 2;
     }
 
     else
     {
-      v38 = v34;
+      v38 = shouldLog3;
     }
 
-    if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_DEFAULT))
     {
       v39 = v38;
     }
@@ -1107,9 +1107,9 @@ LABEL_44:
   }
 
 LABEL_49:
-  if (v47)
+  if (blockCopy)
   {
-    v47[2](v47, v58[5], v52[5]);
+    blockCopy[2](blockCopy, v58[5], v52[5]);
   }
 
   _Block_object_dispose(&v51, 8);

@@ -1,11 +1,11 @@
 @interface PresentationLinkView
-- (_TtC8AppStore20PresentationLinkView)initWithCoder:(id)a3;
+- (_TtC8AppStore20PresentationLinkView)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 @end
 
 @implementation PresentationLinkView
 
-- (_TtC8AppStore20PresentationLinkView)initWithCoder:(id)a3
+- (_TtC8AppStore20PresentationLinkView)initWithCoder:(id)coder
 {
   result = _assertionFailure(_:_:file:line:flags:)();
   __break(1u);
@@ -17,7 +17,7 @@
   swift_getObjectType();
   v3 = OBJC_IVAR____TtC8AppStore20PresentationLinkView_linkView;
   v4 = *(&self->super.super.super.isa + OBJC_IVAR____TtC8AppStore20PresentationLinkView_linkView);
-  v14 = self;
+  selfCopy = self;
   LayoutMarginsAware<>.layoutFrame.getter();
   [v4 sizeThatFits:{v5, v6}];
   v8 = v7;

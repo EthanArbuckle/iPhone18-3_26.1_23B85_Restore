@@ -1,12 +1,12 @@
 @interface CIMetalWrapper
 - (CIMetalWrapper)init;
 - (id)attributes;
-- (id)dummyImagesForImages:(id)a3;
+- (id)dummyImagesForImages:(id)images;
 - (id)inputKeys;
 - (id)outputImage;
 - (void)dealloc;
 - (void)outputImage;
-- (void)setValue:(id)a3 forKey:(id)a4;
+- (void)setValue:(id)value forKey:(id)key;
 @end
 
 @implementation CIMetalWrapper
@@ -36,20 +36,20 @@
   [(CIFilter *)&v4 dealloc];
 }
 
-- (void)setValue:(id)a3 forKey:(id)a4
+- (void)setValue:(id)value forKey:(id)key
 {
-  if (a3 && a4)
+  if (value && key)
   {
-    if ([a4 isEqualToString:@"inputFilterName"])
+    if ([key isEqualToString:@"inputFilterName"])
     {
-      self->inputFilterName = a3;
+      self->inputFilterName = value;
     }
 
     else
     {
       dict = self->_dict;
 
-      [(NSMutableDictionary *)dict setValue:a3 forKey:a4];
+      [(NSMutableDictionary *)dict setValue:value forKey:key];
     }
   }
 }
@@ -78,18 +78,18 @@
   return [(CIFilter *)v2 attributes];
 }
 
-- (id)dummyImagesForImages:(id)a3
+- (id)dummyImagesForImages:(id)images
 {
   v36 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (images)
   {
-    v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(a3, "count")}];
+    v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(images, "count")}];
     v5 = +[CIColor whiteColor];
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v6 = [a3 countByEnumeratingWithState:&v31 objects:v35 count:16];
+    v6 = [images countByEnumeratingWithState:&v31 objects:v35 count:16];
     if (v6)
     {
       v7 = v6;
@@ -105,7 +105,7 @@
         {
           if (*v32 != v8)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(images);
           }
 
           v14 = *(*(&v31 + 1) + 8 * v13);
@@ -121,7 +121,7 @@
             v15 = [(CIImage *)v15 imageByCroppingToRect:?];
           }
 
-          v16 = [v14 properties];
+          properties = [v14 properties];
           [v14 extent];
           v42.origin.x = v9;
           v42.origin.y = v10;
@@ -150,9 +150,9 @@
             }
           }
 
-          if (v16)
+          if (properties)
           {
-            v15 = [(CIImage *)v15 imageBySettingPropertiesNoCopy:v16];
+            v15 = [(CIImage *)v15 imageBySettingPropertiesNoCopy:properties];
           }
 
           if ([v14 colorSpace])
@@ -168,7 +168,7 @@
         }
 
         while (v7 != v13);
-        v7 = [a3 countByEnumeratingWithState:&v31 objects:v35 count:16];
+        v7 = [images countByEnumeratingWithState:&v31 objects:v35 count:16];
       }
 
       while (v7);
@@ -194,18 +194,18 @@
     v4 = [CIFilter filterWithName:inputFilterName withInputParameters:self->_dict];
     if (v4)
     {
-      v5 = [(CIFilter *)v4 outputImage];
-      if (v5)
+      outputImage = [(CIFilter *)v4 outputImage];
+      if (outputImage)
       {
-        v33 = v5;
-        v6 = [MEMORY[0x1E695DF70] array];
-        v34 = [MEMORY[0x1E695DF70] array];
+        v33 = outputImage;
+        array = [MEMORY[0x1E695DF70] array];
+        array2 = [MEMORY[0x1E695DF70] array];
         v40 = 0u;
         v41 = 0u;
         v42 = 0u;
         v43 = 0u;
-        v7 = [(NSMutableDictionary *)self->_dict allKeys];
-        v8 = [v7 countByEnumeratingWithState:&v40 objects:v47 count:16];
+        allKeys = [(NSMutableDictionary *)self->_dict allKeys];
+        v8 = [allKeys countByEnumeratingWithState:&v40 objects:v47 count:16];
         if (v8)
         {
           v9 = v8;
@@ -216,7 +216,7 @@
             {
               if (*v41 != v10)
               {
-                objc_enumerationMutation(v7);
+                objc_enumerationMutation(allKeys);
               }
 
               v12 = *(*(&v40 + 1) + 8 * i);
@@ -224,25 +224,25 @@
               objc_opt_class();
               if (objc_opt_isKindOfClass())
               {
-                [v6 addObject:v13];
-                [v34 addObject:v12];
+                [array addObject:v13];
+                [array2 addObject:v12];
               }
             }
 
-            v9 = [v7 countByEnumeratingWithState:&v40 objects:v47 count:16];
+            v9 = [allKeys countByEnumeratingWithState:&v40 objects:v47 count:16];
           }
 
           while (v9);
         }
 
-        v32 = v6;
-        v14 = [MEMORY[0x1E695DF90] dictionary];
+        v32 = array;
+        dictionary = [MEMORY[0x1E695DF90] dictionary];
         v36 = 0u;
         v37 = 0u;
         v38 = 0u;
         v39 = 0u;
-        v15 = [(NSMutableDictionary *)self->_dict allKeys];
-        v16 = [v15 countByEnumeratingWithState:&v36 objects:v46 count:16];
+        allKeys2 = [(NSMutableDictionary *)self->_dict allKeys];
+        v16 = [allKeys2 countByEnumeratingWithState:&v36 objects:v46 count:16];
         if (v16)
         {
           v17 = v16;
@@ -253,7 +253,7 @@
             {
               if (*v37 != v18)
               {
-                objc_enumerationMutation(v15);
+                objc_enumerationMutation(allKeys2);
               }
 
               v20 = *(*(&v36 + 1) + 8 * j);
@@ -264,12 +264,12 @@
                 objc_opt_class();
                 if ((objc_opt_isKindOfClass() & 1) == 0)
                 {
-                  [v14 setObject:v22 forKeyedSubscript:v20];
+                  [dictionary setObject:v22 forKeyedSubscript:v20];
                 }
               }
             }
 
-            v17 = [v15 countByEnumeratingWithState:&v36 objects:v46 count:16];
+            v17 = [allKeys2 countByEnumeratingWithState:&v36 objects:v46 count:16];
           }
 
           while (v17);
@@ -279,12 +279,12 @@
         v44[0] = @"filterName";
         v44[1] = @"filterParameters";
         v45[0] = v23;
-        v45[1] = v14;
+        v45[1] = dictionary;
         v44[2] = @"inputImages";
         v24 = [(CIMetalWrapper *)self dummyImagesForImages:v32];
         v44[3] = @"inputImageKeys";
         v45[2] = v24;
-        v45[3] = v34;
+        v45[3] = array2;
         v25 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v45 forKeys:v44 count:4];
         v35 = 0;
         v26 = v33;
@@ -323,7 +323,7 @@
 - (void)outputImage
 {
   v5 = *MEMORY[0x1E69E9840];
-  v2 = *a1;
+  v2 = *self;
   v3 = 138543362;
   v4 = v2;
   _os_log_error_impl(&dword_19CC36000, a2, OS_LOG_TYPE_ERROR, "Unable to create filter wrapper image for filter %{public}@", &v3, 0xCu);

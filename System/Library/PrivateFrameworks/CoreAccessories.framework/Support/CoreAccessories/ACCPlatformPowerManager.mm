@@ -1,8 +1,8 @@
 @interface ACCPlatformPowerManager
 + (id)sharedManager;
 - (ACCPlatformPowerManager)init;
-- (void)addAccessoryForEndpointUID:(id)a3 andBitmask:(unint64_t)a4 andOldBitmask:(unint64_t)a5;
-- (void)removeAccessoryForEndpointUID:(id)a3;
+- (void)addAccessoryForEndpointUID:(id)d andBitmask:(unint64_t)bitmask andOldBitmask:(unint64_t)oldBitmask;
+- (void)removeAccessoryForEndpointUID:(id)d;
 @end
 
 @implementation ACCPlatformPowerManager
@@ -13,7 +13,7 @@
   block[1] = 3221225472;
   block[2] = __40__ACCPlatformPowerManager_sharedManager__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedManager_once_2 != -1)
   {
     dispatch_once(&sharedManager_once_2, block);
@@ -45,9 +45,9 @@ uint64_t __40__ACCPlatformPowerManager_sharedManager__block_invoke(uint64_t a1)
   return v2;
 }
 
-- (void)addAccessoryForEndpointUID:(id)a3 andBitmask:(unint64_t)a4 andOldBitmask:(unint64_t)a5
+- (void)addAccessoryForEndpointUID:(id)d andBitmask:(unint64_t)bitmask andOldBitmask:(unint64_t)oldBitmask
 {
-  v7 = a3;
+  dCopy = d;
   if (gLogObjects)
   {
     v8 = gNumLogObjects < 8;
@@ -77,28 +77,28 @@ uint64_t __40__ACCPlatformPowerManager_sharedManager__block_invoke(uint64_t a1)
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     v18 = 138412802;
-    v19 = v7;
+    v19 = dCopy;
     v20 = 2048;
-    v21 = a4;
+    bitmaskCopy = bitmask;
     v22 = 2048;
-    v23 = a5;
+    oldBitmaskCopy = oldBitmask;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "[#Power] addAccessoryForEndpointUID: endpointUID %@, updateTypesBitMask %llx, oldUpdateTypesBitmask %llx", &v18, 0x20u);
   }
 
-  if (v7)
+  if (dCopy)
   {
     v11 = +[ACCPlatformPowerManager sharedManager];
-    v12 = [v11 powerAccessories];
-    v13 = [v12 objectForKey:v7];
+    powerAccessories = [v11 powerAccessories];
+    v13 = [powerAccessories objectForKey:dCopy];
 
     if (v13)
     {
       [(ACCPlatformPowerInfo *)v13 stopPowerUpdates];
-      [(ACCPlatformPowerInfo *)v13 setUpdateTypesBitmask:a4];
-      [(ACCPlatformPowerInfo *)v13 setOldUpdateTypesBitmask:a5];
-      v14 = [(ACCPlatformPowerInfo *)v13 applePencilBatteryNotificationClientUUID];
+      [(ACCPlatformPowerInfo *)v13 setUpdateTypesBitmask:bitmask];
+      [(ACCPlatformPowerInfo *)v13 setOldUpdateTypesBitmask:oldBitmask];
+      applePencilBatteryNotificationClientUUID = [(ACCPlatformPowerInfo *)v13 applePencilBatteryNotificationClientUUID];
 
-      if (!v14)
+      if (!applePencilBatteryNotificationClientUUID)
       {
 LABEL_20:
         [(ACCPlatformPowerInfo *)v13 startPowerUpdates];
@@ -111,10 +111,10 @@ LABEL_20:
 
     else
     {
-      v13 = [[ACCPlatformPowerInfo alloc] initWithEndpointUID:v7 andBitmask:a4 andOldBitmask:a5];
+      v13 = [[ACCPlatformPowerInfo alloc] initWithEndpointUID:dCopy andBitmask:bitmask andOldBitmask:oldBitmask];
       v15 = +[ACCPlatformPowerManager sharedManager];
-      v16 = [v15 powerAccessories];
-      [v16 setObject:v13 forKey:v7];
+      powerAccessories2 = [v15 powerAccessories];
+      [powerAccessories2 setObject:v13 forKey:dCopy];
     }
 
     goto LABEL_20;
@@ -146,19 +146,19 @@ LABEL_20:
 LABEL_26:
 }
 
-- (void)removeAccessoryForEndpointUID:(id)a3
+- (void)removeAccessoryForEndpointUID:(id)d
 {
-  v8 = a3;
+  dCopy = d;
   v3 = +[ACCPlatformPowerManager sharedManager];
-  v4 = [v3 powerAccessories];
-  v5 = [v4 objectForKey:v8];
+  powerAccessories = [v3 powerAccessories];
+  v5 = [powerAccessories objectForKey:dCopy];
 
   if (v5)
   {
     [v5 stopPowerUpdates];
     v6 = +[ACCPlatformPowerManager sharedManager];
-    v7 = [v6 powerAccessories];
-    [v7 removeObjectForKey:v8];
+    powerAccessories2 = [v6 powerAccessories];
+    [powerAccessories2 removeObjectForKey:dCopy];
   }
 }
 

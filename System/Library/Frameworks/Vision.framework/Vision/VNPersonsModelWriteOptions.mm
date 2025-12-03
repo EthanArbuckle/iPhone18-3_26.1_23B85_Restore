@@ -1,36 +1,36 @@
 @interface VNPersonsModelWriteOptions
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (VNPersonsModelWriteOptions)init;
-- (VNPersonsModelWriteOptions)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (VNPersonsModelWriteOptions)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation VNPersonsModelWriteOptions
 
-- (VNPersonsModelWriteOptions)initWithCoder:(id)a3
+- (VNPersonsModelWriteOptions)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(VNPersonsModelWriteOptions *)self init];
   if (v5)
   {
-    v5->_version = [v4 decodeIntegerForKey:@"version"];
-    v5->_readOnly = [v4 decodeBoolForKey:@"readonly"];
+    v5->_version = [coderCopy decodeIntegerForKey:@"version"];
+    v5->_readOnly = [coderCopy decodeBoolForKey:@"readonly"];
     v6 = v5;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:self->_version forKey:@"version"];
-  [v4 encodeBool:self->_readOnly forKey:@"readonly"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:self->_version forKey:@"version"];
+  [coderCopy encodeBool:self->_readOnly forKey:@"readonly"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   v5 = v4;
@@ -43,10 +43,10 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     LOBYTE(v8) = 1;
   }
@@ -56,12 +56,12 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(VNPersonsModelWriteOptions *)self version];
-      if (v6 == [(VNPersonsModelWriteOptions *)v5 version])
+      v5 = equalCopy;
+      version = [(VNPersonsModelWriteOptions *)self version];
+      if (version == [(VNPersonsModelWriteOptions *)v5 version])
       {
-        v7 = [(VNPersonsModelWriteOptions *)self readOnly];
-        v8 = v7 ^ [(VNPersonsModelWriteOptions *)v5 readOnly]^ 1;
+        readOnly = [(VNPersonsModelWriteOptions *)self readOnly];
+        v8 = readOnly ^ [(VNPersonsModelWriteOptions *)v5 readOnly]^ 1;
       }
 
       else

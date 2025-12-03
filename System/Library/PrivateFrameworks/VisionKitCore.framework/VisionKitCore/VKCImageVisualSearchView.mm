@@ -1,34 +1,34 @@
 @interface VKCImageVisualSearchView
-- (BOOL)_shouldShowPulsingDot:(id)a3;
-- (BOOL)containsVisualSearchItemAtPoint:(CGPoint)a3;
-- (BOOL)visualSearchItemView:(id)a3 shouldBeginAtPoint:(CGPoint)a4;
+- (BOOL)_shouldShowPulsingDot:(id)dot;
+- (BOOL)containsVisualSearchItemAtPoint:(CGPoint)point;
+- (BOOL)visualSearchItemView:(id)view shouldBeginAtPoint:(CGPoint)point;
 - (VKCImageVisualSearchView)init;
 - (VKCImageVisualSearchViewDelegate)delegate;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (id)topResultView;
-- (id)visualSearchItemAtPoint:(CGPoint)a3;
+- (id)visualSearchItemAtPoint:(CGPoint)point;
 - (void)_layoutResultViews;
-- (void)addMetadataToVSFeedbackItem:(id)a3;
+- (void)addMetadataToVSFeedbackItem:(id)item;
 - (void)animateDotsIn;
 - (void)automaticallyShowVisualSearchResults;
-- (void)generateVisualSearchResultForItems:(id)a3 queryID:(unint64_t)a4 completionHandler:(id)a5;
+- (void)generateVisualSearchResultForItems:(id)items queryID:(unint64_t)d completionHandler:(id)handler;
 - (void)hideDots;
 - (void)layoutSubviews;
-- (void)presentVisualSearchForItem:(id)a3;
-- (void)sendDismissedAnalyticsEventEventWithItem:(id)a3;
-- (void)sendProcessingAnalyticsEventEventWithItem:(id)a3 duration:(double)a4;
-- (void)setFrame:(CGRect)a3;
-- (void)setHidden:(BOOL)a3;
-- (void)setNormalizedVisibleRect:(CGRect)a3;
-- (void)setVisualSearchResult:(id)a3;
+- (void)presentVisualSearchForItem:(id)item;
+- (void)sendDismissedAnalyticsEventEventWithItem:(id)item;
+- (void)sendProcessingAnalyticsEventEventWithItem:(id)item duration:(double)duration;
+- (void)setFrame:(CGRect)frame;
+- (void)setHidden:(BOOL)hidden;
+- (void)setNormalizedVisibleRect:(CGRect)rect;
+- (void)setVisualSearchResult:(id)result;
 - (void)showTopVisualSearchResult;
-- (void)submitVisualSearchUserFeedbackForReportIdentifier:(id)a3 userFeedbackPayload:(id)a4 sfReportData:(id)a5;
+- (void)submitVisualSearchUserFeedbackForReportIdentifier:(id)identifier userFeedbackPayload:(id)payload sfReportData:(id)data;
 - (void)triggerTapToRadar;
-- (void)updateUIForVisualSearchResultsClearExistingResults:(BOOL)a3 includeNotVisibleItems:(BOOL)a4;
-- (void)visualSearchItemView:(id)a3 didProcessResultsWithDuration:(double)a4;
-- (void)visualSearchItemView:(id)a3 didTapVisualSearchIndicatorWithNormalizedBoundingBox:(CGRect)a4;
-- (void)visualSearchItemViewDidActivateVSItem:(id)a3;
-- (void)visualSearchItemViewDidDismissController:(id)a3;
+- (void)updateUIForVisualSearchResultsClearExistingResults:(BOOL)results includeNotVisibleItems:(BOOL)items;
+- (void)visualSearchItemView:(id)view didProcessResultsWithDuration:(double)duration;
+- (void)visualSearchItemView:(id)view didTapVisualSearchIndicatorWithNormalizedBoundingBox:(CGRect)box;
+- (void)visualSearchItemViewDidActivateVSItem:(id)item;
+- (void)visualSearchItemViewDidDismissController:(id)controller;
 @end
 
 @implementation VKCImageVisualSearchView
@@ -55,12 +55,12 @@
   [(VKCImageVisualSearchView *)self _layoutResultViews];
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(VKCImageVisualSearchView *)self frame];
   if (!VKMNearlyEqualRects(v8, v9, v10, v11, x, y, width, height))
   {
@@ -79,8 +79,8 @@
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(VKCImageVisualSearchView *)self resultViews];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  resultViews = [(VKCImageVisualSearchView *)self resultViews];
+  v3 = [resultViews countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = v3;
@@ -92,25 +92,25 @@
       {
         if (*v8 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(resultViews);
         }
 
         [*(*(&v7 + 1) + 8 * v6++) setNeedsLayout];
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v4 = [resultViews countByEnumeratingWithState:&v7 objects:v11 count:16];
     }
 
     while (v4);
   }
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
   v10.receiver = self;
   v10.super_class = VKCImageVisualSearchView;
-  v5 = [(VKCImageVisualSearchView *)&v10 hitTest:a4 withEvent:a3.x, a3.y];
+  v5 = [(VKCImageVisualSearchView *)&v10 hitTest:event withEvent:test.x, test.y];
   v6 = v5;
   if (v5 == self)
   {
@@ -129,16 +129,16 @@
 
 - (void)triggerTapToRadar
 {
-  v2 = [(VKCImageVisualSearchView *)self delegate];
-  [v2 triggerTapToRadar];
+  delegate = [(VKCImageVisualSearchView *)self delegate];
+  [delegate triggerTapToRadar];
 }
 
-- (void)setVisualSearchResult:(id)a3
+- (void)setVisualSearchResult:(id)result
 {
-  v6 = a3;
-  if (self->_visualSearchResult != v6)
+  resultCopy = result;
+  if (self->_visualSearchResult != resultCopy)
   {
-    objc_storeStrong(&self->_visualSearchResult, a3);
+    objc_storeStrong(&self->_visualSearchResult, result);
     if (([(VKCImageVisualSearchView *)self isHidden]& 1) == 0)
     {
       [(VKPlatformView *)self vk_alpha];
@@ -151,19 +151,19 @@
   }
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
-  v3 = a3;
-  v5 = [(VKCImageVisualSearchView *)self isHidden];
+  hiddenCopy = hidden;
+  isHidden = [(VKCImageVisualSearchView *)self isHidden];
   v6.receiver = self;
   v6.super_class = VKCImageVisualSearchView;
-  [(VKCImageVisualSearchView *)&v6 setHidden:v3];
-  if (v3)
+  [(VKCImageVisualSearchView *)&v6 setHidden:hiddenCopy];
+  if (hiddenCopy)
   {
     [(VKCImageVisualSearchView *)self hideDots];
   }
 
-  else if (v5)
+  else if (isHidden)
   {
     [(VKCImageVisualSearchView *)self updateUIForVisualSearchResultsClearExistingResults:1 includeNotVisibleItems:0];
     [(VKCImageVisualSearchView *)self animateDotsIn];
@@ -183,8 +183,8 @@
     v3 = 0.6;
   }
 
-  v4 = [(VKCImageVisualSearchView *)self resultViews];
-  v5 = [v4 count];
+  resultViews = [(VKCImageVisualSearchView *)self resultViews];
+  v5 = [resultViews count];
 
   if (v5)
   {
@@ -192,14 +192,14 @@
     v7 = -1;
     do
     {
-      v8 = [(VKCImageVisualSearchView *)self resultViews];
-      v9 = [(VKCImageVisualSearchView *)self resultViews];
-      v10 = [v8 objectAtIndexedSubscript:{objc_msgSend(v9, "count") + v7}];
+      resultViews2 = [(VKCImageVisualSearchView *)self resultViews];
+      resultViews3 = [(VKCImageVisualSearchView *)self resultViews];
+      v10 = [resultViews2 objectAtIndexedSubscript:{objc_msgSend(resultViews3, "count") + v7}];
 
       [v10 beginAnimatingDotAfterDelay:v3 + v6 * 0.4];
       ++v6;
-      v11 = [(VKCImageVisualSearchView *)self resultViews];
-      v12 = [v11 count];
+      resultViews4 = [(VKCImageVisualSearchView *)self resultViews];
+      v12 = [resultViews4 count];
 
       --v7;
     }
@@ -211,8 +211,8 @@
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v13 = [(VKCImageVisualSearchView *)self resultViews];
-  v14 = [v13 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  resultViews5 = [(VKCImageVisualSearchView *)self resultViews];
+  v14 = [resultViews5 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v14)
   {
     v15 = v14;
@@ -223,15 +223,15 @@
       {
         if (*v21 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(resultViews5);
         }
 
         v18 = *(*(&v20 + 1) + 8 * i);
-        v19 = [(VKCImageVisualSearchView *)self resultViews];
-        [v18 performSelector:sel_didFinishAnimatingDots withObject:0 afterDelay:{v3 + objc_msgSend(v19, "count") * 0.4}];
+        resultViews6 = [(VKCImageVisualSearchView *)self resultViews];
+        [v18 performSelector:sel_didFinishAnimatingDots withObject:0 afterDelay:{v3 + objc_msgSend(resultViews6, "count") * 0.4}];
       }
 
-      v15 = [v13 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v15 = [resultViews5 countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v15);
@@ -245,8 +245,8 @@
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(VKCImageVisualSearchView *)self resultViews];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  resultViews = [(VKCImageVisualSearchView *)self resultViews];
+  v3 = [resultViews countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = v3;
@@ -258,26 +258,26 @@
       {
         if (*v8 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(resultViews);
         }
 
         [*(*(&v7 + 1) + 8 * v6++) hideDots];
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v4 = [resultViews countByEnumeratingWithState:&v7 objects:v11 count:16];
     }
 
     while (v4);
   }
 }
 
-- (void)setNormalizedVisibleRect:(CGRect)a3
+- (void)setNormalizedVisibleRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   [(VKCImageBaseOverlayView *)self normalizedVisibleRect];
   v9 = v8;
   v11 = v10;
@@ -293,11 +293,11 @@
   }
 }
 
-- (void)updateUIForVisualSearchResultsClearExistingResults:(BOOL)a3 includeNotVisibleItems:(BOOL)a4
+- (void)updateUIForVisualSearchResultsClearExistingResults:(BOOL)results includeNotVisibleItems:(BOOL)items
 {
-  v4 = a4;
+  itemsCopy = items;
   v55 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (results)
   {
     cachedResultItemsWithFocalDot = self->_cachedResultItemsWithFocalDot;
     self->_cachedResultItemsWithFocalDot = 0;
@@ -308,8 +308,8 @@
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
-  v8 = [(VKCVisualSearchResult *)self->_visualSearchResult resultItems];
-  v9 = [v8 countByEnumeratingWithState:&v47 objects:v54 count:16];
+  resultItems = [(VKCVisualSearchResult *)self->_visualSearchResult resultItems];
+  v9 = [resultItems countByEnumeratingWithState:&v47 objects:v54 count:16];
   if (v9)
   {
     v10 = v9;
@@ -320,17 +320,17 @@
       {
         if (*v48 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(resultItems);
         }
 
         v13 = *(*(&v47 + 1) + 8 * i);
-        if ([(VKCImageVisualSearchView *)self didAddVisualSearchCornerView]&& [(VKCImageVisualSearchView *)self _shouldShowPulsingDot:v13]|| ![(VKCImageVisualSearchView *)self didAddVisualSearchCornerView]|| v4)
+        if ([(VKCImageVisualSearchView *)self didAddVisualSearchCornerView]&& [(VKCImageVisualSearchView *)self _shouldShowPulsingDot:v13]|| ![(VKCImageVisualSearchView *)self didAddVisualSearchCornerView]|| itemsCopy)
         {
           [v7 addObject:v13];
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v47 objects:v54 count:16];
+      v10 = [resultItems countByEnumeratingWithState:&v47 objects:v54 count:16];
     }
 
     while (v10);
@@ -342,8 +342,8 @@
     v46 = 0u;
     v43 = 0u;
     v44 = 0u;
-    v14 = [(VKCImageVisualSearchView *)self resultViews];
-    v15 = [v14 countByEnumeratingWithState:&v43 objects:v53 count:16];
+    resultViews = [(VKCImageVisualSearchView *)self resultViews];
+    v15 = [resultViews countByEnumeratingWithState:&v43 objects:v53 count:16];
     if (v15)
     {
       v16 = v15;
@@ -354,13 +354,13 @@
         {
           if (*v44 != v17)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(resultViews);
           }
 
           [*(*(&v43 + 1) + 8 * j) vk_setNeedsLayout];
         }
 
-        v16 = [v14 countByEnumeratingWithState:&v43 objects:v53 count:16];
+        v16 = [resultViews countByEnumeratingWithState:&v43 objects:v53 count:16];
       }
 
       while (v16);
@@ -374,8 +374,8 @@
     v42 = 0u;
     v39 = 0u;
     v40 = 0u;
-    v19 = [(VKCImageVisualSearchView *)self resultViews];
-    v20 = [v19 countByEnumeratingWithState:&v39 objects:v52 count:16];
+    resultViews2 = [(VKCImageVisualSearchView *)self resultViews];
+    v20 = [resultViews2 countByEnumeratingWithState:&v39 objects:v52 count:16];
     if (v20)
     {
       v21 = v20;
@@ -386,22 +386,22 @@
         {
           if (*v40 != v22)
           {
-            objc_enumerationMutation(v19);
+            objc_enumerationMutation(resultViews2);
           }
 
           [*(*(&v39 + 1) + 8 * k) removeFromSuperview];
         }
 
-        v21 = [v19 countByEnumeratingWithState:&v39 objects:v52 count:16];
+        v21 = [resultViews2 countByEnumeratingWithState:&v39 objects:v52 count:16];
       }
 
       while (v21);
     }
 
-    v24 = [MEMORY[0x1E695DF70] array];
-    [(VKCImageVisualSearchView *)self setResultViews:v24];
+    array = [MEMORY[0x1E695DF70] array];
+    [(VKCImageVisualSearchView *)self setResultViews:array];
 
-    v14 = [v7 allObjects];
+    resultViews = [v7 allObjects];
     v35 = 0u;
     v36 = 0u;
     v37 = 0u;
@@ -430,12 +430,12 @@
             [(VKCVisualSearchResultItemView *)v31 hideDots];
           }
 
-          v32 = [(VKCImageVisualSearchView *)self delegate];
-          -[VKCVisualSearchResultItemView setHidden:](v31, "setHidden:", [v32 visualSearchView:self shouldShowDotForItem:v30 allItems:v14] ^ 1);
+          delegate = [(VKCImageVisualSearchView *)self delegate];
+          -[VKCVisualSearchResultItemView setHidden:](v31, "setHidden:", [delegate visualSearchView:self shouldShowDotForItem:v30 allItems:resultViews] ^ 1);
 
           [(VKCImageVisualSearchView *)self addSubview:v31];
-          v33 = [(VKCImageVisualSearchView *)self resultViews];
-          [v33 addObject:v31];
+          resultViews3 = [(VKCImageVisualSearchView *)self resultViews];
+          [resultViews3 addObject:v31];
         }
 
         v27 = [v25 countByEnumeratingWithState:&v35 objects:v51 count:16];
@@ -450,17 +450,17 @@
 
 - (id)topResultView
 {
-  v3 = [(VKCVisualSearchResult *)self->_visualSearchResult resultItems];
-  v4 = [v3 firstObject];
+  resultItems = [(VKCVisualSearchResult *)self->_visualSearchResult resultItems];
+  firstObject = [resultItems firstObject];
 
-  v5 = [(VKCImageVisualSearchView *)self resultViews];
+  resultViews = [(VKCImageVisualSearchView *)self resultViews];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __41__VKCImageVisualSearchView_topResultView__block_invoke;
   v9[3] = &unk_1E7BE5EF0;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 vk_objectPassingTest:v9];
+  v10 = firstObject;
+  v6 = firstObject;
+  v7 = [resultViews vk_objectPassingTest:v9];
 
   return v7;
 }
@@ -476,12 +476,12 @@ BOOL __41__VKCImageVisualSearchView_topResultView__block_invoke(uint64_t a1, voi
 - (void)automaticallyShowVisualSearchResults
 {
   [(VKCImageVisualSearchView *)self updateUIForVisualSearchResultsClearExistingResults:1 includeNotVisibleItems:0];
-  v4 = [(VKCImageVisualSearchView *)self topResultView];
-  [v4 setAutomaticallyShowVisualSearchResults:1];
-  v3 = [v4 visualSearchResultItem];
-  [v3 setCurrentInvocationType:4];
+  topResultView = [(VKCImageVisualSearchView *)self topResultView];
+  [topResultView setAutomaticallyShowVisualSearchResults:1];
+  visualSearchResultItem = [topResultView visualSearchResultItem];
+  [visualSearchResultItem setCurrentInvocationType:4];
 
-  self->_shouldAutomaticallyShowVisualSearchResult = v4 != 0;
+  self->_shouldAutomaticallyShowVisualSearchResult = topResultView != 0;
   if (([(VKCImageVisualSearchView *)self isHidden]& 1) == 0)
   {
     [(VKCImageVisualSearchView *)self animateDotsIn];
@@ -490,32 +490,32 @@ BOOL __41__VKCImageVisualSearchView_topResultView__block_invoke(uint64_t a1, voi
 
 - (void)showTopVisualSearchResult
 {
-  v2 = [(VKCImageVisualSearchView *)self topResultView];
-  [v2 showVisualResultsPane];
+  topResultView = [(VKCImageVisualSearchView *)self topResultView];
+  [topResultView showVisualResultsPane];
 }
 
-- (void)presentVisualSearchForItem:(id)a3
+- (void)presentVisualSearchForItem:(id)item
 {
-  v4 = a3;
-  v5 = [(VKCImageVisualSearchView *)self resultViews];
+  itemCopy = item;
+  resultViews = [(VKCImageVisualSearchView *)self resultViews];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __55__VKCImageVisualSearchView_presentVisualSearchForItem___block_invoke;
   v14[3] = &unk_1E7BE5EF0;
-  v6 = v4;
+  v6 = itemCopy;
   v15 = v6;
-  v7 = [v5 vk_objectPassingTest:v14];
+  v7 = [resultViews vk_objectPassingTest:v14];
 
   if (!v7)
   {
     [(VKCImageVisualSearchView *)self updateUIForVisualSearchResultsClearExistingResults:1 includeNotVisibleItems:1];
-    v8 = [(VKCImageVisualSearchView *)self resultViews];
+    resultViews2 = [(VKCImageVisualSearchView *)self resultViews];
     v9 = MEMORY[0x1E69E9820];
     v10 = 3221225472;
     v11 = __55__VKCImageVisualSearchView_presentVisualSearchForItem___block_invoke_2;
     v12 = &unk_1E7BE5EF0;
     v13 = v6;
-    v7 = [v8 vk_objectPassingTest:&v9];
+    v7 = [resultViews2 vk_objectPassingTest:&v9];
   }
 
   [v7 showVisualResultsPane];
@@ -537,17 +537,17 @@ BOOL __55__VKCImageVisualSearchView_presentVisualSearchForItem___block_invoke_2(
   return v4;
 }
 
-- (void)addMetadataToVSFeedbackItem:(id)a3
+- (void)addMetadataToVSFeedbackItem:(id)item
 {
-  v4 = a3;
-  v5 = [(VKCImageVisualSearchView *)self delegate];
-  [v5 addMetadataToVSFeedbackItem:v4];
+  itemCopy = item;
+  delegate = [(VKCImageVisualSearchView *)self delegate];
+  [delegate addMetadataToVSFeedbackItem:itemCopy];
 }
 
-- (BOOL)_shouldShowPulsingDot:(id)a3
+- (BOOL)_shouldShowPulsingDot:(id)dot
 {
-  v4 = a3;
-  if ([v4 shouldPlaceInCorner])
+  dotCopy = dot;
+  if ([dotCopy shouldPlaceInCorner])
   {
     v5 = 0;
   }
@@ -559,7 +559,7 @@ BOOL __55__VKCImageVisualSearchView_presentVisualSearchForItem___block_invoke_2(
     v9 = v8;
     v11 = v10;
     v13 = v12;
-    [v4 normalizedIconLocation];
+    [dotCopy normalizedIconLocation];
     v17.x = v14;
     v17.y = v15;
     v18.origin.x = v7;
@@ -572,17 +572,17 @@ BOOL __55__VKCImageVisualSearchView_presentVisualSearchForItem___block_invoke_2(
   return v5;
 }
 
-- (BOOL)containsVisualSearchItemAtPoint:(CGPoint)a3
+- (BOOL)containsVisualSearchItemAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v19 = *MEMORY[0x1E69E9840];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [(VKCImageVisualSearchView *)self resultViews];
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  resultViews = [(VKCImageVisualSearchView *)self resultViews];
+  v7 = [resultViews countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -593,7 +593,7 @@ BOOL __55__VKCImageVisualSearchView_presentVisualSearchForItem___block_invoke_2(
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(resultViews);
         }
 
         v11 = *(*(&v14 + 1) + 8 * i);
@@ -605,7 +605,7 @@ BOOL __55__VKCImageVisualSearchView_presentVisualSearchForItem___block_invoke_2(
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v8 = [resultViews countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v8)
       {
         continue;
@@ -621,7 +621,7 @@ LABEL_11:
   return v12;
 }
 
-- (id)visualSearchItemAtPoint:(CGPoint)a3
+- (id)visualSearchItemAtPoint:(CGPoint)point
 {
   v14 = 0;
   v15 = &v14;
@@ -629,15 +629,15 @@ LABEL_11:
   v17 = __Block_byref_object_copy__9;
   v18 = __Block_byref_object_dispose__9;
   v19 = 0;
-  [(VKCImageBaseOverlayView *)self normalizedPointFromViewPoint:a3.x, a3.y];
+  [(VKCImageBaseOverlayView *)self normalizedPointFromViewPoint:point.x, point.y];
   v5 = v4;
   v7 = v6;
   v13[0] = 0;
   v13[1] = v13;
   v13[2] = 0x2020000000;
   v13[3] = 0x7FF0000000000000;
-  v8 = [(VKCImageVisualSearchView *)self visualSearchResult];
-  v9 = [v8 resultItems];
+  visualSearchResult = [(VKCImageVisualSearchView *)self visualSearchResult];
+  resultItems = [visualSearchResult resultItems];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __52__VKCImageVisualSearchView_visualSearchItemAtPoint___block_invoke;
@@ -646,7 +646,7 @@ LABEL_11:
   v12[7] = v7;
   v12[4] = v13;
   v12[5] = &v14;
-  [v9 enumerateObjectsUsingBlock:v12];
+  [resultItems enumerateObjectsUsingBlock:v12];
 
   v10 = v15[5];
   _Block_object_dispose(v13, 8);
@@ -676,37 +676,37 @@ void __52__VKCImageVisualSearchView_visualSearchItemAtPoint___block_invoke(uint6
   }
 }
 
-- (BOOL)visualSearchItemView:(id)a3 shouldBeginAtPoint:(CGPoint)a4
+- (BOOL)visualSearchItemView:(id)view shouldBeginAtPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = a3;
-  [(VKCImageVisualSearchView *)self convertPoint:v7 fromView:x, y];
+  y = point.y;
+  x = point.x;
+  viewCopy = view;
+  [(VKCImageVisualSearchView *)self convertPoint:viewCopy fromView:x, y];
   v9 = v8;
   v11 = v10;
-  v12 = [(VKCImageVisualSearchView *)self delegate];
-  v13 = [v12 visualSearchItemView:v7 shouldBeginAtPoint:{v9, v11}];
+  delegate = [(VKCImageVisualSearchView *)self delegate];
+  v13 = [delegate visualSearchItemView:viewCopy shouldBeginAtPoint:{v9, v11}];
 
   return v13;
 }
 
-- (void)visualSearchItemView:(id)a3 didTapVisualSearchIndicatorWithNormalizedBoundingBox:(CGRect)a4
+- (void)visualSearchItemView:(id)view didTapVisualSearchIndicatorWithNormalizedBoundingBox:(CGRect)box
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = box.size.height;
+  width = box.size.width;
+  y = box.origin.y;
+  x = box.origin.x;
   v22 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = [(VKCImageVisualSearchView *)self delegate];
-  [v10 visualSearchItemView:v9 didTapVisualSearchIndicatorWithNormalizedBoundingBox:{x, y, width, height}];
+  viewCopy = view;
+  delegate = [(VKCImageVisualSearchView *)self delegate];
+  [delegate visualSearchItemView:viewCopy didTapVisualSearchIndicatorWithNormalizedBoundingBox:{x, y, width, height}];
 
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v11 = [(VKCImageVisualSearchView *)self resultViews];
-  v12 = [v11 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  resultViews = [(VKCImageVisualSearchView *)self resultViews];
+  v12 = [resultViews countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v12)
   {
     v13 = v12;
@@ -718,11 +718,11 @@ void __52__VKCImageVisualSearchView_visualSearchItemAtPoint___block_invoke(uint6
       {
         if (*v18 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(resultViews);
         }
 
         v16 = *(*(&v17 + 1) + 8 * v15);
-        if (v16 != v9)
+        if (v16 != viewCopy)
         {
           [v16 setPulsing:0];
         }
@@ -731,36 +731,36 @@ void __52__VKCImageVisualSearchView_visualSearchItemAtPoint___block_invoke(uint6
       }
 
       while (v13 != v15);
-      v13 = [v11 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v13 = [resultViews countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v13);
   }
 }
 
-- (void)visualSearchItemViewDidActivateVSItem:(id)a3
+- (void)visualSearchItemViewDidActivateVSItem:(id)item
 {
-  v4 = a3;
-  v5 = [(VKCImageVisualSearchView *)self delegate];
-  [v5 visualSearchItemViewDidActivateVSItem:v4];
+  itemCopy = item;
+  delegate = [(VKCImageVisualSearchView *)self delegate];
+  [delegate visualSearchItemViewDidActivateVSItem:itemCopy];
 }
 
-- (void)visualSearchItemViewDidDismissController:(id)a3
+- (void)visualSearchItemViewDidDismissController:(id)controller
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(VKCImageVisualSearchView *)self delegate];
-  [v5 visualSearchItemViewDidDismissController:v4];
+  controllerCopy = controller;
+  delegate = [(VKCImageVisualSearchView *)self delegate];
+  [delegate visualSearchItemViewDidDismissController:controllerCopy];
 
-  v6 = [v4 visualSearchResultItem];
-  [(VKCImageVisualSearchView *)self sendDismissedAnalyticsEventEventWithItem:v6];
+  visualSearchResultItem = [controllerCopy visualSearchResultItem];
+  [(VKCImageVisualSearchView *)self sendDismissedAnalyticsEventEventWithItem:visualSearchResultItem];
 
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v7 = [(VKCImageVisualSearchView *)self resultViews];
-  v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  resultViews = [(VKCImageVisualSearchView *)self resultViews];
+  v8 = [resultViews countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v8)
   {
     v9 = v8;
@@ -772,69 +772,69 @@ void __52__VKCImageVisualSearchView_visualSearchItemAtPoint___block_invoke(uint6
       {
         if (*v13 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(resultViews);
         }
 
         [*(*(&v12 + 1) + 8 * v11++) setPulsing:1];
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v9 = [resultViews countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v9);
   }
 }
 
-- (void)generateVisualSearchResultForItems:(id)a3 queryID:(unint64_t)a4 completionHandler:(id)a5
+- (void)generateVisualSearchResultForItems:(id)items queryID:(unint64_t)d completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [(VKCImageVisualSearchView *)self delegate];
-  [v10 generateVisualSearchResultForItems:v9 queryID:a4 completionHandler:v8];
+  handlerCopy = handler;
+  itemsCopy = items;
+  delegate = [(VKCImageVisualSearchView *)self delegate];
+  [delegate generateVisualSearchResultForItems:itemsCopy queryID:d completionHandler:handlerCopy];
 }
 
-- (void)submitVisualSearchUserFeedbackForReportIdentifier:(id)a3 userFeedbackPayload:(id)a4 sfReportData:(id)a5
+- (void)submitVisualSearchUserFeedbackForReportIdentifier:(id)identifier userFeedbackPayload:(id)payload sfReportData:(id)data
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(VKCImageVisualSearchView *)self delegate];
-  [v11 submitVisualSearchUserFeedbackForReportIdentifier:v10 userFeedbackPayload:v9 sfReportData:v8];
+  dataCopy = data;
+  payloadCopy = payload;
+  identifierCopy = identifier;
+  delegate = [(VKCImageVisualSearchView *)self delegate];
+  [delegate submitVisualSearchUserFeedbackForReportIdentifier:identifierCopy userFeedbackPayload:payloadCopy sfReportData:dataCopy];
 }
 
-- (void)visualSearchItemView:(id)a3 didProcessResultsWithDuration:(double)a4
+- (void)visualSearchItemView:(id)view didProcessResultsWithDuration:(double)duration
 {
-  v6 = [a3 visualSearchResultItem];
-  [(VKCImageVisualSearchView *)self sendProcessingAnalyticsEventEventWithItem:v6 duration:a4];
+  visualSearchResultItem = [view visualSearchResultItem];
+  [(VKCImageVisualSearchView *)self sendProcessingAnalyticsEventEventWithItem:visualSearchResultItem duration:duration];
 }
 
-- (void)sendProcessingAnalyticsEventEventWithItem:(id)a3 duration:(double)a4
+- (void)sendProcessingAnalyticsEventEventWithItem:(id)item duration:(double)duration
 {
-  v6 = a3;
-  v7 = [(VKCImageVisualSearchView *)self visualSearchResult];
-  v12 = [v7 resultItems];
+  itemCopy = item;
+  visualSearchResult = [(VKCImageVisualSearchView *)self visualSearchResult];
+  resultItems = [visualSearchResult resultItems];
 
   v8 = [VKAnalyticsVisualSearchEvent alloc];
-  v9 = [(VKCImageBaseOverlayView *)self customAnalyticsIdentifier];
-  v10 = [(VKAnalyticsVisualSearchEvent *)v8 initWithType:2 items:v12 interactedItem:v6 serverProcessingTime:v9 customIdentifier:a4];
+  customAnalyticsIdentifier = [(VKCImageBaseOverlayView *)self customAnalyticsIdentifier];
+  v10 = [(VKAnalyticsVisualSearchEvent *)v8 initWithType:2 items:resultItems interactedItem:itemCopy serverProcessingTime:customAnalyticsIdentifier customIdentifier:duration];
 
-  v11 = [(VKCImageVisualSearchView *)self delegate];
-  [v11 visualSearchView:self analyticsEventOccured:v10];
+  delegate = [(VKCImageVisualSearchView *)self delegate];
+  [delegate visualSearchView:self analyticsEventOccured:v10];
 }
 
-- (void)sendDismissedAnalyticsEventEventWithItem:(id)a3
+- (void)sendDismissedAnalyticsEventEventWithItem:(id)item
 {
-  v4 = a3;
-  v5 = [(VKCImageVisualSearchView *)self visualSearchResult];
-  v10 = [v5 resultItems];
+  itemCopy = item;
+  visualSearchResult = [(VKCImageVisualSearchView *)self visualSearchResult];
+  resultItems = [visualSearchResult resultItems];
 
   v6 = [VKAnalyticsVisualSearchEvent alloc];
-  v7 = [(VKCImageBaseOverlayView *)self customAnalyticsIdentifier];
-  v8 = [(VKAnalyticsVisualSearchEvent *)v6 initWithType:3 items:v10 interactedItem:v4 serverProcessingTime:v7 customIdentifier:0.0];
+  customAnalyticsIdentifier = [(VKCImageBaseOverlayView *)self customAnalyticsIdentifier];
+  v8 = [(VKAnalyticsVisualSearchEvent *)v6 initWithType:3 items:resultItems interactedItem:itemCopy serverProcessingTime:customAnalyticsIdentifier customIdentifier:0.0];
 
-  v9 = [(VKCImageVisualSearchView *)self delegate];
-  [v9 visualSearchView:self analyticsEventOccured:v8];
+  delegate = [(VKCImageVisualSearchView *)self delegate];
+  [delegate visualSearchView:self analyticsEventOccured:v8];
 }
 
 - (VKCImageVisualSearchViewDelegate)delegate

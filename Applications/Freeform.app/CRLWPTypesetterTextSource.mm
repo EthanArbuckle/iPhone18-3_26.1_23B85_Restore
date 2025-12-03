@@ -1,41 +1,41 @@
 @interface CRLWPTypesetterTextSource
-- (BOOL)adjustRangesByDelta:(int64_t)a3 startingAt:(unint64_t)a4;
-- (BOOL)hasColumnBreakAtCharIndex:(unint64_t)a3;
-- (CRLWPTypesetterTextSource)initWithSource:(id)a3 subRange:(_NSRange)a4;
+- (BOOL)adjustRangesByDelta:(int64_t)delta startingAt:(unint64_t)at;
+- (BOOL)hasColumnBreakAtCharIndex:(unint64_t)index;
+- (CRLWPTypesetterTextSource)initWithSource:(id)source subRange:(_NSRange)range;
 - (NSString)string;
-- (_NSRange)charRangeMappedFromStorage:(_NSRange)a3;
-- (_NSRange)charRangeMappedToStorage:(_NSRange)a3;
-- (_NSRange)charRangeRemappedFromStorage:(_NSRange)a3;
+- (_NSRange)charRangeMappedFromStorage:(_NSRange)storage;
+- (_NSRange)charRangeMappedToStorage:(_NSRange)storage;
+- (_NSRange)charRangeRemappedFromStorage:(_NSRange)storage;
 - (_NSRange)range;
-- (_NSRange)rangeByExpandingToIncludePartialWords:(_NSRange)a3;
-- (_NSRange)textRangeForParagraphAtCharIndex:(int64_t)a3;
-- (_NSRange)textRangeForParagraphAtIndex:(int64_t)a3;
-- (_NSRange)wordAtCharIndex:(unint64_t)a3 includePreviousWord:(BOOL)a4;
-- (_NSRange)wordAtCharIndex:(unint64_t)a3 includePreviousWord:(BOOL)a4 includeHyphenation:(BOOL)a5;
+- (_NSRange)rangeByExpandingToIncludePartialWords:(_NSRange)words;
+- (_NSRange)textRangeForParagraphAtCharIndex:(int64_t)index;
+- (_NSRange)textRangeForParagraphAtIndex:(int64_t)index;
+- (_NSRange)wordAtCharIndex:(unint64_t)index includePreviousWord:(BOOL)word;
+- (_NSRange)wordAtCharIndex:(unint64_t)index includePreviousWord:(BOOL)word includeHyphenation:(BOOL)hyphenation;
 - (id).cxx_construct;
-- (id)characterStyleAtCharIndex:(unint64_t)a3 before:(BOOL)a4 effectiveRange:(_NSRange *)a5;
-- (id)hyperlinkFieldAtCharIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4;
-- (id)paragraphStyleAtCharIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4;
-- (id)smartFieldAtCharIndex:(unint64_t)a3 attributeKind:(unint64_t)a4 effectiveRange:(_NSRange *)a5;
-- (id)smartFieldsWithAttributeKind:(unint64_t)a3 intersectingRange:(_NSRange)a4;
-- (int64_t)charIndexForParagraphAtIndex:(unint64_t)a3;
-- (int64_t)hyphenationLocationBeforeIndex:(int64_t)a3 inRange:(_NSRange)a4 locale:(id)a5 hyphenChar:(unsigned int *)a6;
-- (int64_t)paragraphIndexAtCharIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4;
-- (unint64_t)charIndexMappedFromStorage:(unint64_t)a3;
-- (unint64_t)charIndexMappedToStorage:(unint64_t)a3;
-- (unint64_t)charIndexRemappedFromStorage:(unint64_t)a3;
-- (unsigned)characterAtIndex:(unint64_t)a3;
-- (unsigned)composedCharacterAtCharIndex:(unint64_t)a3 isSurrogatePair:(BOOL *)a4;
-- (void)getCharacters:(unsigned __int16 *)a3 range:(_NSRange)a4;
+- (id)characterStyleAtCharIndex:(unint64_t)index before:(BOOL)before effectiveRange:(_NSRange *)range;
+- (id)hyperlinkFieldAtCharIndex:(unint64_t)index effectiveRange:(_NSRange *)range;
+- (id)paragraphStyleAtCharIndex:(unint64_t)index effectiveRange:(_NSRange *)range;
+- (id)smartFieldAtCharIndex:(unint64_t)index attributeKind:(unint64_t)kind effectiveRange:(_NSRange *)range;
+- (id)smartFieldsWithAttributeKind:(unint64_t)kind intersectingRange:(_NSRange)range;
+- (int64_t)charIndexForParagraphAtIndex:(unint64_t)index;
+- (int64_t)hyphenationLocationBeforeIndex:(int64_t)index inRange:(_NSRange)range locale:(id)locale hyphenChar:(unsigned int *)char;
+- (int64_t)paragraphIndexAtCharIndex:(unint64_t)index effectiveRange:(_NSRange *)range;
+- (unint64_t)charIndexMappedFromStorage:(unint64_t)storage;
+- (unint64_t)charIndexMappedToStorage:(unint64_t)storage;
+- (unint64_t)charIndexRemappedFromStorage:(unint64_t)storage;
+- (unsigned)characterAtIndex:(unint64_t)index;
+- (unsigned)composedCharacterAtCharIndex:(unint64_t)index isSurrogatePair:(BOOL *)pair;
+- (void)getCharacters:(unsigned __int16 *)characters range:(_NSRange)range;
 @end
 
 @implementation CRLWPTypesetterTextSource
 
-- (CRLWPTypesetterTextSource)initWithSource:(id)a3 subRange:(_NSRange)a4
+- (CRLWPTypesetterTextSource)initWithSource:(id)source subRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v108 = a3;
+  length = range.length;
+  location = range.location;
+  sourceCopy = source;
   v114.receiver = self;
   v114.super_class = CRLWPTypesetterTextSource;
   v7 = [(CRLWPTypesetterTextSource *)&v114 init];
@@ -44,7 +44,7 @@
     goto LABEL_63;
   }
 
-  if (!v108 || location > [v108 length] || (v8 = (location + length), location + length > objc_msgSend(v108, "length")))
+  if (!sourceCopy || location > [sourceCopy length] || (v8 = (location + length), location + length > objc_msgSend(sourceCopy, "length")))
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -79,7 +79,7 @@
     goto LABEL_82;
   }
 
-  objc_storeStrong(&v7->_source, a3);
+  objc_storeStrong(&v7->_source, source);
   p_spaceCharIndexes = &v7->_spaceCharIndexes;
   p_end = &v7->_spaceCharIndexes.__end_;
   v9 = v7->_spaceCharIndexes.__begin_ == v7->_spaceCharIndexes.__end_ && length >= 2;
@@ -396,43 +396,43 @@ LABEL_82:
 LABEL_59:
   if (v7->_bidiCharIndexes.__begin_ == v7->_bidiCharIndexes.__end_)
   {
-    v54 = [[CRLWPRangeMap alloc] initWithSubRange:location unmappedPairIndexes:length, p_spaceCharIndexes];
+    p_spaceCharIndexes = [[CRLWPRangeMap alloc] initWithSubRange:location unmappedPairIndexes:length, p_spaceCharIndexes];
   }
 
   else
   {
-    v54 = [[CRLWPRangeMap alloc] initWithSubRange:location unmappedIndexes:length isBackwardAffinities:&v7->_bidiCharIndexes, &v7->_bidiDirectionMarkIsRTLVector];
+    p_spaceCharIndexes = [[CRLWPRangeMap alloc] initWithSubRange:location unmappedIndexes:length isBackwardAffinities:&v7->_bidiCharIndexes, &v7->_bidiDirectionMarkIsRTLVector];
     p_end = &v7->_bidiCharIndexes.__end_;
     p_spaceCharIndexes = &v7->_bidiCharIndexes;
   }
 
   rangeMap = v7->_rangeMap;
-  v7->_rangeMap = v54;
+  v7->_rangeMap = p_spaceCharIndexes;
 
   v7->_length = length + *p_end - p_spaceCharIndexes->__begin_;
-  v7->_storageChangeCount = [v108 changeCount];
+  v7->_storageChangeCount = [sourceCopy changeCount];
 LABEL_63:
 
   return v7;
 }
 
-- (unsigned)composedCharacterAtCharIndex:(unint64_t)a3 isSurrogatePair:(BOOL *)a4
+- (unsigned)composedCharacterAtCharIndex:(unint64_t)index isSurrogatePair:(BOOL *)pair
 {
-  *a4 = 0;
+  *pair = 0;
   v7 = [(CRLWPTextSource *)self->_source length];
   v8 = 0;
-  if (v7 > a3)
+  if (v7 > index)
   {
     v9 = v7;
-    v8 = [(CRLWPTextSource *)self->_source characterAtIndex:a3];
-    v10 = a3 + 1;
-    if (a3 + 1 < v9)
+    v8 = [(CRLWPTextSource *)self->_source characterAtIndex:index];
+    v10 = index + 1;
+    if (index + 1 < v9)
     {
-      v11 = [(CRLWPTextSource *)self->_source characterAtIndex:a3];
+      v11 = [(CRLWPTextSource *)self->_source characterAtIndex:index];
       v12 = [(CRLWPTextSource *)self->_source characterAtIndex:v10];
       if ((v11 & 0xFC00) == 0xD800 && (v12 & 0xFC00) == 56320)
       {
-        *a4 = 1;
+        *pair = 1;
         return v12 + (v11 << 10) - 56613888;
       }
     }
@@ -441,10 +441,10 @@ LABEL_63:
   return v8;
 }
 
-- (BOOL)adjustRangesByDelta:(int64_t)a3 startingAt:(unint64_t)a4
+- (BOOL)adjustRangesByDelta:(int64_t)delta startingAt:(unint64_t)at
 {
   v7 = [CRLWPTextSource adjustRangesByDelta:"adjustRangesByDelta:startingAt:" startingAt:?];
-  if (a3)
+  if (delta)
   {
     storageChangeCount = self->_storageChangeCount;
     if (storageChangeCount != [(CRLWPTextSource *)self->_source changeCount])
@@ -452,7 +452,7 @@ LABEL_63:
       self->_storageChangeCount = [(CRLWPTextSource *)self->_source changeCount];
       if ((v7 & 1) == 0)
       {
-        [(CRLWPRangeMap *)self->_rangeMap adjustByDelta:a3 startingAt:a4];
+        [(CRLWPRangeMap *)self->_rangeMap adjustByDelta:delta startingAt:at];
       }
 
       return 1;
@@ -464,9 +464,9 @@ LABEL_63:
 
 - (_NSRange)range
 {
-  v2 = [(CRLWPTextSource *)self->_source range];
+  range = [(CRLWPTextSource *)self->_source range];
   result.length = v3;
-  result.location = v2;
+  result.location = range;
   return result;
 }
 
@@ -475,12 +475,12 @@ LABEL_63:
   v3 = [(CRLWPRangeMap *)self->_rangeMap unmappedCharRange:0, self->_length];
   length = v4;
   location = v3;
-  v72 = self;
-  v5 = [(CRLWPTextSource *)self->_source string];
-  v6 = [v5 length];
+  selfCopy = self;
+  string = [(CRLWPTextSource *)self->_source string];
+  v6 = [string length];
 
-  v7 = self;
-  if (v7->_spaceCharIndexes.__end_ != v7->_spaceCharIndexes.__begin_)
+  selfCopy4 = self;
+  if (selfCopy4->_spaceCharIndexes.__end_ != selfCopy4->_spaceCharIndexes.__begin_)
   {
     v8 = +[NSMutableString string];
     begin = self->_spaceCharIndexes.__begin_;
@@ -612,7 +612,7 @@ LABEL_63:
           v25 = v11;
         }
 
-        v26 = [(CRLWPTextSource *)v72->_source substringWithRange:v25, v24 - v25];
+        v26 = [(CRLWPTextSource *)selfCopy->_source substringWithRange:v25, v24 - v25];
         [v8 appendString:v26];
 
         [v8 appendFormat:@"%C", 8209];
@@ -687,11 +687,11 @@ LABEL_76:
         v56 = v23;
       }
 
-      v57 = [(CRLWPTextSource *)v72->_source substringWithRange:v56, v55 - v56];
+      v57 = [(CRLWPTextSource *)selfCopy->_source substringWithRange:v56, v55 - v56];
       [v8 appendString:v57];
 
-      v58 = v8;
-      v8 = v58;
+      string3 = v8;
+      v8 = string3;
       goto LABEL_96;
     }
 
@@ -833,7 +833,7 @@ LABEL_76:
           v46 = v32;
         }
 
-        v47 = [(CRLWPTextSource *)v72->_source substringWithRange:v46, v45 - v46];
+        v47 = [(CRLWPTextSource *)selfCopy->_source substringWithRange:v46, v45 - v46];
         [v71 appendString:v47];
 
         v48 = 8206;
@@ -875,17 +875,17 @@ LABEL_113:
   v60 = location;
   if (!location)
   {
-    v61 = [(CRLWPTextSource *)self->_source string];
-    v62 = [v61 length];
+    string2 = [(CRLWPTextSource *)self->_source string];
+    v62 = [string2 length];
 
     v60 = 0;
-    v7 = self;
+    selfCopy4 = self;
     if (length == v62)
     {
       v8 = 0;
-      v58 = [(CRLWPTextSource *)self->_source string];
+      string3 = [(CRLWPTextSource *)self->_source string];
 LABEL_96:
-      v59 = v58;
+      v59 = string3;
       goto LABEL_114;
     }
   }
@@ -927,19 +927,19 @@ LABEL_96:
     v66 = NSIntersectionRange(v82, v83);
     length = v66.length;
     location = v66.location;
-    v7 = self;
+    selfCopy4 = self;
   }
 
-  v59 = [(CRLWPTextSource *)v7->_source substringWithRange:location, length];
+  v59 = [(CRLWPTextSource *)selfCopy4->_source substringWithRange:location, length];
   v8 = 0;
 LABEL_114:
 
   return v59;
 }
 
-- (void)getCharacters:(unsigned __int16 *)a3 range:(_NSRange)a4
+- (void)getCharacters:(unsigned __int16 *)characters range:(_NSRange)range
 {
-  v6 = [(CRLWPRangeMap *)self->_rangeMap unmappedCharRange:a4.location, a4.length];
+  v6 = [(CRLWPRangeMap *)self->_rangeMap unmappedCharRange:range.location, range.length];
   v34 = v7;
   v35 = v6;
   begin = self->_spaceCharIndexes.__begin_;
@@ -985,7 +985,7 @@ LABEL_114:
         }
 
         v28 = v26 - v27;
-        [(CRLWPTextSource *)self->_source getCharacters:a3 range:v34, v35];
+        [(CRLWPTextSource *)self->_source getCharacters:characters range:v34, v35];
         if (v24)
         {
           v29 = 8207;
@@ -996,9 +996,9 @@ LABEL_114:
           v29 = 8206;
         }
 
-        v30 = &a3[v28];
+        v30 = &characters[v28];
         *v30 = v29;
-        a3 = v30 + 1;
+        characters = v30 + 1;
         v21 += v20 == 63;
         if (v20 == 63)
         {
@@ -1046,10 +1046,10 @@ LABEL_114:
       }
 
       v16 = v14 - v15;
-      [(CRLWPTextSource *)self->_source getCharacters:a3 range:v34, v35];
-      v17 = &a3[v16];
+      [(CRLWPTextSource *)self->_source getCharacters:characters range:v34, v35];
+      v17 = &characters[v16];
       *v17 = 8209;
-      a3 = v17 + 1;
+      characters = v17 + 1;
       v10 = v11;
     }
 
@@ -1077,79 +1077,79 @@ LABEL_114:
     v33 = v11;
   }
 
-  [(CRLWPTextSource *)source getCharacters:a3 range:v33, v32 - v33];
+  [(CRLWPTextSource *)source getCharacters:characters range:v33, v32 - v33];
 }
 
-- (BOOL)hasColumnBreakAtCharIndex:(unint64_t)a3
+- (BOOL)hasColumnBreakAtCharIndex:(unint64_t)index
 {
   source = self->_source;
-  v4 = [(CRLWPRangeMap *)self->_rangeMap unmappedCharIndex:a3];
+  v4 = [(CRLWPRangeMap *)self->_rangeMap unmappedCharIndex:index];
 
   return [(CRLWPTextSource *)source hasColumnBreakAtCharIndex:v4];
 }
 
-- (id)smartFieldAtCharIndex:(unint64_t)a3 attributeKind:(unint64_t)a4 effectiveRange:(_NSRange *)a5
+- (id)smartFieldAtCharIndex:(unint64_t)index attributeKind:(unint64_t)kind effectiveRange:(_NSRange *)range
 {
   v12 = xmmword_1014630E0;
-  v8 = [(CRLWPTextSource *)self->_source smartFieldAtCharIndex:[(CRLWPRangeMap *)self->_rangeMap unmappedCharIndex:?] attributeKind:a4 effectiveRange:&v12];
+  v8 = [(CRLWPTextSource *)self->_source smartFieldAtCharIndex:[(CRLWPRangeMap *)self->_rangeMap unmappedCharIndex:?] attributeKind:kind effectiveRange:&v12];
   v12.location = [(CRLWPRangeMap *)self->_rangeMap mappedCharRange:v12];
   v12.length = v9;
-  if (a3 < v12.location || a3 - v12.location >= v9)
+  if (index < v12.location || index - v12.location >= v9)
   {
 
     v8 = 0;
     v12 = xmmword_1014630E0;
   }
 
-  if (a5)
+  if (range)
   {
-    *a5 = v12;
+    *range = v12;
   }
 
   return v8;
 }
 
-- (id)smartFieldsWithAttributeKind:(unint64_t)a3 intersectingRange:(_NSRange)a4
+- (id)smartFieldsWithAttributeKind:(unint64_t)kind intersectingRange:(_NSRange)range
 {
   source = self->_source;
-  v7 = [(CRLWPRangeMap *)self->_rangeMap unmappedCharRange:a4.location, a4.length];
+  v7 = [(CRLWPRangeMap *)self->_rangeMap unmappedCharRange:range.location, range.length];
 
-  return [(CRLWPTextSource *)source smartFieldsWithAttributeKind:a3 intersectingRange:v7, v6];
+  return [(CRLWPTextSource *)source smartFieldsWithAttributeKind:kind intersectingRange:v7, v6];
 }
 
-- (int64_t)paragraphIndexAtCharIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4
+- (int64_t)paragraphIndexAtCharIndex:(unint64_t)index effectiveRange:(_NSRange *)range
 {
   v9 = xmmword_1014630E0;
-  v6 = [(CRLWPTextSource *)self->_source paragraphIndexAtCharIndex:[(CRLWPRangeMap *)self->_rangeMap unmappedCharIndex:a3] effectiveRange:&v9];
-  if (a4)
+  v6 = [(CRLWPTextSource *)self->_source paragraphIndexAtCharIndex:[(CRLWPRangeMap *)self->_rangeMap unmappedCharIndex:index] effectiveRange:&v9];
+  if (range)
   {
-    a4->location = [(CRLWPRangeMap *)self->_rangeMap mappedCharRange:v9];
-    a4->length = v7;
+    range->location = [(CRLWPRangeMap *)self->_rangeMap mappedCharRange:v9];
+    range->length = v7;
   }
 
   return v6;
 }
 
-- (id)paragraphStyleAtCharIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4
+- (id)paragraphStyleAtCharIndex:(unint64_t)index effectiveRange:(_NSRange *)range
 {
   v9 = xmmword_1014630E0;
-  v6 = [(CRLWPTextSource *)self->_source paragraphStyleAtCharIndex:[(CRLWPRangeMap *)self->_rangeMap unmappedCharIndex:a3] effectiveRange:&v9];
-  if (a4)
+  v6 = [(CRLWPTextSource *)self->_source paragraphStyleAtCharIndex:[(CRLWPRangeMap *)self->_rangeMap unmappedCharIndex:index] effectiveRange:&v9];
+  if (range)
   {
-    a4->location = [(CRLWPRangeMap *)self->_rangeMap mappedCharRange:v9];
-    a4->length = v7;
+    range->location = [(CRLWPRangeMap *)self->_rangeMap mappedCharRange:v9];
+    range->length = v7;
   }
 
   return v6;
 }
 
-- (id)characterStyleAtCharIndex:(unint64_t)a3 before:(BOOL)a4 effectiveRange:(_NSRange *)a5
+- (id)characterStyleAtCharIndex:(unint64_t)index before:(BOOL)before effectiveRange:(_NSRange *)range
 {
-  v6 = a4;
+  beforeCopy = before;
   v14 = xmmword_1014630E0;
   source = self->_source;
-  v9 = [(CRLWPRangeMap *)self->_rangeMap unmappedCharIndex:a3];
-  if (a5)
+  v9 = [(CRLWPRangeMap *)self->_rangeMap unmappedCharIndex:index];
+  if (range)
   {
     v10 = &v14;
   }
@@ -1159,22 +1159,22 @@ LABEL_114:
     v10 = 0;
   }
 
-  v11 = [(CRLWPTextSource *)source characterStyleAtCharIndex:v9 before:v6 effectiveRange:v10];
-  if (a5)
+  v11 = [(CRLWPTextSource *)source characterStyleAtCharIndex:v9 before:beforeCopy effectiveRange:v10];
+  if (range)
   {
-    a5->location = [(CRLWPRangeMap *)self->_rangeMap mappedCharRange:v14];
-    a5->length = v12;
+    range->location = [(CRLWPRangeMap *)self->_rangeMap mappedCharRange:v14];
+    range->length = v12;
   }
 
   return v11;
 }
 
-- (id)hyperlinkFieldAtCharIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4
+- (id)hyperlinkFieldAtCharIndex:(unint64_t)index effectiveRange:(_NSRange *)range
 {
   v12 = xmmword_1014630E0;
   source = self->_source;
-  v7 = [(CRLWPRangeMap *)self->_rangeMap unmappedCharIndex:a3];
-  if (a4)
+  v7 = [(CRLWPRangeMap *)self->_rangeMap unmappedCharIndex:index];
+  if (range)
   {
     v8 = &v12;
   }
@@ -1185,18 +1185,18 @@ LABEL_114:
   }
 
   v9 = [(CRLWPTextSource *)source hyperlinkFieldAtCharIndex:v7 effectiveRange:v8];
-  if (a4)
+  if (range)
   {
-    a4->location = [(CRLWPRangeMap *)self->_rangeMap mappedCharRange:v12];
-    a4->length = v10;
+    range->location = [(CRLWPRangeMap *)self->_rangeMap mappedCharRange:v12];
+    range->length = v10;
   }
 
   return v9;
 }
 
-- (_NSRange)wordAtCharIndex:(unint64_t)a3 includePreviousWord:(BOOL)a4
+- (_NSRange)wordAtCharIndex:(unint64_t)index includePreviousWord:(BOOL)word
 {
-  v6 = [(CRLWPTextSource *)self->_source wordAtCharIndex:[(CRLWPRangeMap *)self->_rangeMap unmappedCharIndex:a3] includePreviousWord:a4];
+  v6 = [(CRLWPTextSource *)self->_source wordAtCharIndex:[(CRLWPRangeMap *)self->_rangeMap unmappedCharIndex:index] includePreviousWord:word];
   rangeMap = self->_rangeMap;
 
   v8 = [(CRLWPRangeMap *)rangeMap mappedCharRange:v6, v5];
@@ -1205,9 +1205,9 @@ LABEL_114:
   return result;
 }
 
-- (_NSRange)wordAtCharIndex:(unint64_t)a3 includePreviousWord:(BOOL)a4 includeHyphenation:(BOOL)a5
+- (_NSRange)wordAtCharIndex:(unint64_t)index includePreviousWord:(BOOL)word includeHyphenation:(BOOL)hyphenation
 {
-  v7 = [(CRLWPTextSource *)self->_source wordAtCharIndex:[(CRLWPRangeMap *)self->_rangeMap unmappedCharIndex:a3] includePreviousWord:a4 includeHyphenation:a5];
+  v7 = [(CRLWPTextSource *)self->_source wordAtCharIndex:[(CRLWPRangeMap *)self->_rangeMap unmappedCharIndex:index] includePreviousWord:word includeHyphenation:hyphenation];
   rangeMap = self->_rangeMap;
 
   v9 = [(CRLWPRangeMap *)rangeMap mappedCharRange:v7, v6];
@@ -1216,26 +1216,26 @@ LABEL_114:
   return result;
 }
 
-- (unsigned)characterAtIndex:(unint64_t)a3
+- (unsigned)characterAtIndex:(unint64_t)index
 {
   source = self->_source;
-  v4 = [(CRLWPRangeMap *)self->_rangeMap unmappedCharIndex:a3];
+  v4 = [(CRLWPRangeMap *)self->_rangeMap unmappedCharIndex:index];
 
   return [(CRLWPTextSource *)source characterAtIndex:v4];
 }
 
-- (int64_t)hyphenationLocationBeforeIndex:(int64_t)a3 inRange:(_NSRange)a4 locale:(id)a5 hyphenChar:(unsigned int *)a6
+- (int64_t)hyphenationLocationBeforeIndex:(int64_t)index inRange:(_NSRange)range locale:(id)locale hyphenChar:(unsigned int *)char
 {
-  length = a4.length;
-  location = a4.location;
-  v11 = a5;
-  v12 = [(CRLWPRangeMap *)self->_rangeMap unmappedCharIndex:a3];
+  length = range.length;
+  location = range.location;
+  localeCopy = locale;
+  v12 = [(CRLWPRangeMap *)self->_rangeMap unmappedCharIndex:index];
   v13 = [(CRLWPRangeMap *)self->_rangeMap unmappedCharRange:location, length];
   v15 = v14;
-  v16 = [(CRLWPTextSource *)self->_source string];
+  string = [(CRLWPTextSource *)self->_source string];
   v20.location = v13;
   v20.length = v15;
-  HyphenationLocationBeforeIndex = CFStringGetHyphenationLocationBeforeIndex(v16, v12, v20, 0, v11, a6);
+  HyphenationLocationBeforeIndex = CFStringGetHyphenationLocationBeforeIndex(string, v12, v20, 0, localeCopy, char);
 
   if (HyphenationLocationBeforeIndex == -1)
   {
@@ -1244,11 +1244,11 @@ LABEL_114:
 
   else
   {
-    while (a3 > HyphenationLocationBeforeIndex)
+    while (index > HyphenationLocationBeforeIndex)
     {
-      if ([(CRLWPTypesetterTextSource *)self characterAtIndex:--a3]== 173)
+      if ([(CRLWPTypesetterTextSource *)self characterAtIndex:--index]== 173)
       {
-        HyphenationLocationBeforeIndex = a3 + 1;
+        HyphenationLocationBeforeIndex = index + 1;
         break;
       }
     }
@@ -1259,26 +1259,26 @@ LABEL_114:
   return v18;
 }
 
-- (unint64_t)charIndexMappedToStorage:(unint64_t)a3
+- (unint64_t)charIndexMappedToStorage:(unint64_t)storage
 {
   source = self->_source;
-  v4 = [(CRLWPRangeMap *)self->_rangeMap unmappedCharIndex:a3];
+  v4 = [(CRLWPRangeMap *)self->_rangeMap unmappedCharIndex:storage];
 
   return [(CRLWPTextSource *)source charIndexMappedToStorage:v4];
 }
 
-- (unint64_t)charIndexMappedFromStorage:(unint64_t)a3
+- (unint64_t)charIndexMappedFromStorage:(unint64_t)storage
 {
   rangeMap = self->_rangeMap;
-  v4 = [(CRLWPTextSource *)self->_source charIndexMappedFromStorage:a3];
+  v4 = [(CRLWPTextSource *)self->_source charIndexMappedFromStorage:storage];
 
   return [(CRLWPRangeMap *)rangeMap mappedCharIndex:v4];
 }
 
-- (_NSRange)charRangeMappedToStorage:(_NSRange)a3
+- (_NSRange)charRangeMappedToStorage:(_NSRange)storage
 {
   source = self->_source;
-  v5 = [(CRLWPRangeMap *)self->_rangeMap unmappedCharRange:a3.location, a3.length];
+  v5 = [(CRLWPRangeMap *)self->_rangeMap unmappedCharRange:storage.location, storage.length];
 
   v6 = [(CRLWPTextSource *)source charRangeMappedToStorage:v5, v4];
   result.length = v7;
@@ -1286,10 +1286,10 @@ LABEL_114:
   return result;
 }
 
-- (_NSRange)charRangeMappedFromStorage:(_NSRange)a3
+- (_NSRange)charRangeMappedFromStorage:(_NSRange)storage
 {
   rangeMap = self->_rangeMap;
-  v5 = [(CRLWPTextSource *)self->_source charRangeMappedFromStorage:a3.location, a3.length];
+  v5 = [(CRLWPTextSource *)self->_source charRangeMappedFromStorage:storage.location, storage.length];
 
   v6 = [(CRLWPRangeMap *)rangeMap mappedCharRange:v5, v4];
   result.length = v7;
@@ -1297,17 +1297,17 @@ LABEL_114:
   return result;
 }
 
-- (unint64_t)charIndexRemappedFromStorage:(unint64_t)a3
+- (unint64_t)charIndexRemappedFromStorage:(unint64_t)storage
 {
-  v4 = [(CRLWPTypesetterTextSource *)self charIndexMappedFromStorage:a3];
+  v4 = [(CRLWPTypesetterTextSource *)self charIndexMappedFromStorage:storage];
 
   return [(CRLWPTypesetterTextSource *)self charIndexMappedToStorage:v4];
 }
 
-- (_NSRange)charRangeRemappedFromStorage:(_NSRange)a3
+- (_NSRange)charRangeRemappedFromStorage:(_NSRange)storage
 {
-  length = a3.length;
-  location = a3.location;
+  length = storage.length;
+  location = storage.location;
   v6 = [(CRLWPTypesetterTextSource *)self charIndexRemappedFromStorage:?];
   v7 = [(CRLWPTypesetterTextSource *)self charIndexRemappedFromStorage:location + length]- v6;
   v8 = v6;
@@ -1316,25 +1316,25 @@ LABEL_114:
   return result;
 }
 
-- (int64_t)charIndexForParagraphAtIndex:(unint64_t)a3
+- (int64_t)charIndexForParagraphAtIndex:(unint64_t)index
 {
   v5 = xmmword_101464828;
-  v3 = [(CRLWPTypesetterTextSource *)self paragraphStyleAtParIndex:a3 effectiveRange:&v5];
+  v3 = [(CRLWPTypesetterTextSource *)self paragraphStyleAtParIndex:index effectiveRange:&v5];
   return v5;
 }
 
-- (_NSRange)textRangeForParagraphAtIndex:(int64_t)a3
+- (_NSRange)textRangeForParagraphAtIndex:(int64_t)index
 {
-  v3 = [(CRLWPTextSource *)self->_source textRangeForParagraphAtIndex:a3];
+  v3 = [(CRLWPTextSource *)self->_source textRangeForParagraphAtIndex:index];
   result.length = v4;
   result.location = v3;
   return result;
 }
 
-- (_NSRange)textRangeForParagraphAtCharIndex:(int64_t)a3
+- (_NSRange)textRangeForParagraphAtCharIndex:(int64_t)index
 {
   source = self->_source;
-  v4 = [(CRLWPTypesetterTextSource *)self paragraphIndexAtCharIndex:a3];
+  v4 = [(CRLWPTypesetterTextSource *)self paragraphIndexAtCharIndex:index];
 
   v5 = [(CRLWPTextSource *)source textRangeForParagraphAtIndex:v4];
   result.length = v6;
@@ -1342,9 +1342,9 @@ LABEL_114:
   return result;
 }
 
-- (_NSRange)rangeByExpandingToIncludePartialWords:(_NSRange)a3
+- (_NSRange)rangeByExpandingToIncludePartialWords:(_NSRange)words
 {
-  v3 = [(CRLWPTextSource *)self->_source rangeByExpandingToIncludePartialWords:a3.location, a3.length];
+  v3 = [(CRLWPTextSource *)self->_source rangeByExpandingToIncludePartialWords:words.location, words.length];
   result.length = v4;
   result.location = v3;
   return result;

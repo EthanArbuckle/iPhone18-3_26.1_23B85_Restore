@@ -1,19 +1,19 @@
 @interface PFCloudKitMetadataPurger
-- (uint64_t)_purgeBatchOfObjectIDs:(uint64_t)a3 fromStore:(void *)a4 inManagedObjectContext:(uint64_t)a5 error:;
-- (uint64_t)_purgeObjectsMatchingFetchRequest:(void *)a3 fromStore:usingContext:error:;
-- (uint64_t)_purgeZoneRelatedObjectsInZoneWithID:(uint64_t)a1 inDatabaseWithScope:(void *)a2 withOptions:(char)a3 inStore:(uint64_t)a4 usingContext:(void *)a5 error:(void *)a6;
-- (uint64_t)deleteZoneMetadataFromStore:(uint64_t)a3 inMonitor:(uint64_t)a4 forRecordZones:(uint64_t)a5 inDatabaseWithScope:(void *)a6 error:;
-- (uint64_t)purgeMetadataAfterAccountChangeFromStore:(uint64_t)a3 inMonitor:(uint64_t)a4 inDatabaseWithScope:(void *)a5 error:;
-- (uint64_t)purgeMetadataFromStore:(uint64_t)a3 inMonitor:(uint64_t)a4 withOptions:(uint64_t)a5 forRecordZones:(uint64_t)a6 inDatabaseWithScope:(__CFString *)a7 andTransactionAuthor:(void *)a8 error:;
-- (uint64_t)purgeMetadataMatchingObjectIDs:(uint64_t)a3 inRequest:(uint64_t)a4 inStore:(uint64_t)a5 withMonitor:(void *)a6 error:;
+- (uint64_t)_purgeBatchOfObjectIDs:(uint64_t)ds fromStore:(void *)store inManagedObjectContext:(uint64_t)context error:;
+- (uint64_t)_purgeObjectsMatchingFetchRequest:(void *)request fromStore:usingContext:error:;
+- (uint64_t)_purgeZoneRelatedObjectsInZoneWithID:(uint64_t)d inDatabaseWithScope:(void *)scope withOptions:(char)options inStore:(uint64_t)store usingContext:(void *)context error:(void *)error;
+- (uint64_t)deleteZoneMetadataFromStore:(uint64_t)store inMonitor:(uint64_t)monitor forRecordZones:(uint64_t)zones inDatabaseWithScope:(void *)scope error:;
+- (uint64_t)purgeMetadataAfterAccountChangeFromStore:(uint64_t)store inMonitor:(uint64_t)monitor inDatabaseWithScope:(void *)scope error:;
+- (uint64_t)purgeMetadataFromStore:(uint64_t)store inMonitor:(uint64_t)monitor withOptions:(uint64_t)options forRecordZones:(uint64_t)zones inDatabaseWithScope:(__CFString *)scope andTransactionAuthor:(void *)author error:;
+- (uint64_t)purgeMetadataMatchingObjectIDs:(uint64_t)ds inRequest:(uint64_t)request inStore:(uint64_t)store withMonitor:(void *)monitor error:;
 @end
 
 @implementation PFCloudKitMetadataPurger
 
-- (uint64_t)purgeMetadataFromStore:(uint64_t)a3 inMonitor:(uint64_t)a4 withOptions:(uint64_t)a5 forRecordZones:(uint64_t)a6 inDatabaseWithScope:(__CFString *)a7 andTransactionAuthor:(void *)a8 error:
+- (uint64_t)purgeMetadataFromStore:(uint64_t)store inMonitor:(uint64_t)monitor withOptions:(uint64_t)options forRecordZones:(uint64_t)zones inDatabaseWithScope:(__CFString *)scope andTransactionAuthor:(void *)author error:
 {
   v38 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     v30 = 0;
     v31 = &v30;
@@ -25,39 +25,39 @@
     v27 = __Block_byref_object_copy__32;
     v28 = __Block_byref_object_dispose__32;
     v29 = 0;
-    v15 = [(PFCloudKitStoreMonitor *)a3 newBackgroundContextForMonitoredCoordinator];
-    if ([(__CFString *)a7 length])
+    newBackgroundContextForMonitoredCoordinator = [(PFCloudKitStoreMonitor *)store newBackgroundContextForMonitoredCoordinator];
+    if ([(__CFString *)scope length])
     {
-      v16 = a7;
+      scopeCopy = scope;
     }
 
     else
     {
-      v16 = @"NSCloudKitMirroringDelegate.reset";
+      scopeCopy = @"NSCloudKitMirroringDelegate.reset";
     }
 
-    [(NSManagedObjectContext *)v15 setTransactionAuthor:v16];
+    [(NSManagedObjectContext *)newBackgroundContextForMonitoredCoordinator setTransactionAuthor:scopeCopy];
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
     v23[2] = __135__PFCloudKitMetadataPurger_purgeMetadataFromStore_inMonitor_withOptions_forRecordZones_inDatabaseWithScope_andTransactionAuthor_error___block_invoke;
     v23[3] = &unk_1E6EC4218;
     v23[4] = a2;
-    v23[5] = a5;
-    v23[10] = a4;
-    v23[11] = a6;
-    v23[6] = v15;
-    v23[7] = a1;
+    v23[5] = options;
+    v23[10] = monitor;
+    v23[11] = zones;
+    v23[6] = newBackgroundContextForMonitoredCoordinator;
+    v23[7] = self;
     v23[8] = &v30;
     v23[9] = &v24;
-    [(NSManagedObjectContext *)v15 performBlockAndWait:v23];
+    [(NSManagedObjectContext *)newBackgroundContextForMonitoredCoordinator performBlockAndWait:v23];
     if ((v31[3] & 1) == 0)
     {
       v20 = v25[5];
       if (v20)
       {
-        if (a8)
+        if (author)
         {
-          *a8 = v20;
+          *author = v20;
         }
       }
 
@@ -826,29 +826,29 @@ LABEL_145:
   v83 = *MEMORY[0x1E69E9840];
 }
 
-- (uint64_t)_purgeZoneRelatedObjectsInZoneWithID:(uint64_t)a1 inDatabaseWithScope:(void *)a2 withOptions:(char)a3 inStore:(uint64_t)a4 usingContext:(void *)a5 error:(void *)a6
+- (uint64_t)_purgeZoneRelatedObjectsInZoneWithID:(uint64_t)d inDatabaseWithScope:(void *)scope withOptions:(char)options inStore:(uint64_t)store usingContext:(void *)context error:(void *)error
 {
   v29[1] = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!d)
   {
     goto LABEL_15;
   }
 
   v21 = 0;
-  if ((a3 & 0x41) != 0)
+  if ((options & 0x41) != 0)
   {
     v11 = +[NSFetchRequest fetchRequestWithEntityName:](NSFetchRequest, "fetchRequestWithEntityName:", +[NSCKRecordMetadata entityPath]);
     [(NSFetchRequest *)v11 setFetchBatchSize:1000];
-    -[NSFetchRequest setPredicate:](v11, "setPredicate:", [MEMORY[0x1E696AE18] predicateWithFormat:@"recordZone.ckRecordZoneName = %@ AND recordZone.ckOwnerName = %@", objc_msgSend(a2, "zoneName"), objc_msgSend(a2, "ownerName")]);
-    v29[0] = a4;
+    -[NSFetchRequest setPredicate:](v11, "setPredicate:", [MEMORY[0x1E696AE18] predicateWithFormat:@"recordZone.ckRecordZoneName = %@ AND recordZone.ckOwnerName = %@", objc_msgSend(scope, "zoneName"), objc_msgSend(scope, "ownerName")]);
+    v29[0] = store;
     -[NSFetchRequest setAffectedStores:](v11, "setAffectedStores:", [MEMORY[0x1E695DEC8] arrayWithObjects:v29 count:1]);
-    if (![PFCloudKitMetadataPurger _purgeObjectsMatchingFetchRequest:v11 fromStore:a5 usingContext:&v21 error:?])
+    if (![PFCloudKitMetadataPurger _purgeObjectsMatchingFetchRequest:v11 fromStore:context usingContext:&v21 error:?])
     {
       goto LABEL_7;
     }
   }
 
-  if ((a3 & 0x81) == 0)
+  if ((options & 0x81) == 0)
   {
     v14 = 1;
     goto LABEL_16;
@@ -856,35 +856,35 @@ LABEL_145:
 
   v12 = +[NSFetchRequest fetchRequestWithEntityName:](NSFetchRequest, "fetchRequestWithEntityName:", +[NSCKMirroredRelationship entityPath]);
   [(NSFetchRequest *)v12 setFetchBatchSize:1000];
-  -[NSFetchRequest setPredicate:](v12, "setPredicate:", [MEMORY[0x1E696AE18] predicateWithFormat:@"recordZone.ckRecordZoneName = %@ AND recordZone.ckOwnerName = %@", objc_msgSend(a2, "zoneName"), objc_msgSend(a2, "ownerName")]);
-  v28 = a4;
-  -[NSFetchRequest setAffectedStores:](v12, "setAffectedStores:", [MEMORY[0x1E695DEC8] arrayWithObjects:&v28 count:1]);
-  if (![PFCloudKitMetadataPurger _purgeObjectsMatchingFetchRequest:v12 fromStore:a5 usingContext:&v21 error:?])
+  -[NSFetchRequest setPredicate:](v12, "setPredicate:", [MEMORY[0x1E696AE18] predicateWithFormat:@"recordZone.ckRecordZoneName = %@ AND recordZone.ckOwnerName = %@", objc_msgSend(scope, "zoneName"), objc_msgSend(scope, "ownerName")]);
+  storeCopy = store;
+  -[NSFetchRequest setAffectedStores:](v12, "setAffectedStores:", [MEMORY[0x1E695DEC8] arrayWithObjects:&storeCopy count:1]);
+  if (![PFCloudKitMetadataPurger _purgeObjectsMatchingFetchRequest:v12 fromStore:context usingContext:&v21 error:?])
   {
     goto LABEL_7;
   }
 
   v13 = +[NSFetchRequest fetchRequestWithEntityName:](NSFetchRequest, "fetchRequestWithEntityName:", +[NSCKImportPendingRelationship entityPath]);
-  -[NSFetchRequest setPredicate:](v13, "setPredicate:", [MEMORY[0x1E696AE18] predicateWithFormat:@"recordZoneName = %@ AND recordZoneOwnerName = %@", objc_msgSend(a2, "zoneName"), objc_msgSend(a2, "ownerName")]);
-  v27 = a4;
+  -[NSFetchRequest setPredicate:](v13, "setPredicate:", [MEMORY[0x1E696AE18] predicateWithFormat:@"recordZoneName = %@ AND recordZoneOwnerName = %@", objc_msgSend(scope, "zoneName"), objc_msgSend(scope, "ownerName")]);
+  storeCopy2 = store;
   v14 = 1;
-  -[NSFetchRequest setAffectedStores:](v13, "setAffectedStores:", [MEMORY[0x1E695DEC8] arrayWithObjects:&v27 count:1]);
+  -[NSFetchRequest setAffectedStores:](v13, "setAffectedStores:", [MEMORY[0x1E695DEC8] arrayWithObjects:&storeCopy2 count:1]);
   v15 = [[NSBatchDeleteRequest alloc] initWithFetchRequest:v13];
   [(NSBatchDeleteRequest *)v15 setResultType:0];
-  v26 = a4;
-  -[NSPersistentStoreRequest setAffectedStores:](v15, "setAffectedStores:", [MEMORY[0x1E695DEC8] arrayWithObjects:&v26 count:1]);
+  storeCopy3 = store;
+  -[NSPersistentStoreRequest setAffectedStores:](v15, "setAffectedStores:", [MEMORY[0x1E695DEC8] arrayWithObjects:&storeCopy3 count:1]);
   [(NSBatchDeleteRequest *)v15 setResultType:0];
-  v16 = [objc_msgSend(objc_msgSend(a5 executeRequest:v15 error:{&v21), "result"), "BOOLValue"}];
+  v16 = [objc_msgSend(objc_msgSend(context executeRequest:v15 error:{&v21), "result"), "BOOLValue"}];
 
   if ((v16 & 1) == 0)
   {
 LABEL_7:
     if (v21)
     {
-      if (a6)
+      if (error)
       {
         v14 = 0;
-        *a6 = v21;
+        *error = v21;
         goto LABEL_16;
       }
     }
@@ -921,10 +921,10 @@ LABEL_16:
   return v14;
 }
 
-- (uint64_t)purgeMetadataMatchingObjectIDs:(uint64_t)a3 inRequest:(uint64_t)a4 inStore:(uint64_t)a5 withMonitor:(void *)a6 error:
+- (uint64_t)purgeMetadataMatchingObjectIDs:(uint64_t)ds inRequest:(uint64_t)request inStore:(uint64_t)store withMonitor:(void *)monitor error:
 {
   v31 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     v23 = 0;
     v24 = &v23;
@@ -936,27 +936,27 @@ LABEL_16:
     v20 = __Block_byref_object_copy__32;
     v21 = __Block_byref_object_dispose__32;
     v22 = 0;
-    v9 = [(PFCloudKitStoreMonitor *)a5 newBackgroundContextForMonitoredCoordinator];
-    [(NSManagedObjectContext *)v9 setMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
+    newBackgroundContextForMonitoredCoordinator = [(PFCloudKitStoreMonitor *)store newBackgroundContextForMonitoredCoordinator];
+    [(NSManagedObjectContext *)newBackgroundContextForMonitoredCoordinator setMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __95__PFCloudKitMetadataPurger_purgeMetadataMatchingObjectIDs_inRequest_inStore_withMonitor_error___block_invoke;
     v16[3] = &unk_1E6EC3540;
     v16[4] = a2;
-    v16[5] = a4;
-    v16[6] = v9;
+    v16[5] = request;
+    v16[6] = newBackgroundContextForMonitoredCoordinator;
     v16[7] = &v23;
     v16[8] = &v17;
-    [(NSManagedObjectContext *)v9 performBlockAndWait:v16];
+    [(NSManagedObjectContext *)newBackgroundContextForMonitoredCoordinator performBlockAndWait:v16];
 
     if ((v24[3] & 1) == 0)
     {
       v13 = v18[5];
       if (v13)
       {
-        if (a6)
+        if (monitor)
         {
-          *a6 = v13;
+          *monitor = v13;
         }
       }
 
@@ -1369,18 +1369,18 @@ LABEL_4:
   v26 = *MEMORY[0x1E69E9840];
 }
 
-- (uint64_t)_purgeBatchOfObjectIDs:(uint64_t)a3 fromStore:(void *)a4 inManagedObjectContext:(uint64_t)a5 error:
+- (uint64_t)_purgeBatchOfObjectIDs:(uint64_t)ds fromStore:(void *)store inManagedObjectContext:(uint64_t)context error:
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     v9 = -[NSFetchRequest initWithEntityName:]([NSFetchRequest alloc], "initWithEntityName:", [objc_msgSend(objc_msgSend(a2 "anyObject")]);
     -[NSFetchRequest setPredicate:](v9, "setPredicate:", [MEMORY[0x1E696AE18] predicateWithFormat:@"SELF IN %@", a2]);
     v10 = [[NSBatchDeleteRequest alloc] initWithFetchRequest:v9];
     [(NSBatchDeleteRequest *)v10 setResultType:0];
-    v14[0] = a3;
+    v14[0] = ds;
     -[NSPersistentStoreRequest setAffectedStores:](v10, "setAffectedStores:", [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1]);
-    v11 = [objc_msgSend(objc_msgSend(a4 executeRequest:v10 error:{a5), "result"), "BOOLValue"}];
+    v11 = [objc_msgSend(objc_msgSend(store executeRequest:v10 error:{context), "result"), "BOOLValue"}];
   }
 
   else
@@ -1392,7 +1392,7 @@ LABEL_4:
   return v11;
 }
 
-- (uint64_t)_purgeObjectsMatchingFetchRequest:(void *)a3 fromStore:usingContext:error:
+- (uint64_t)_purgeObjectsMatchingFetchRequest:(void *)request fromStore:usingContext:error:
 {
   v25 = *MEMORY[0x1E69E9840];
   v17 = 0;
@@ -1412,15 +1412,15 @@ LABEL_4:
   v10[4] = a2;
   v10[5] = &v11;
   v10[6] = &v17;
-  [_PFRoutines efficientlyEnumerateManagedObjectsInFetchRequest:a1 usingManagedObjectContext:a2 andApplyBlock:v10];
+  [_PFRoutines efficientlyEnumerateManagedObjectsInFetchRequest:self usingManagedObjectContext:a2 andApplyBlock:v10];
   if ((v18[3] & 1) == 0)
   {
     v7 = v12[5];
     if (v7)
     {
-      if (a3)
+      if (request)
       {
-        *a3 = v7;
+        *request = v7;
       }
     }
 
@@ -1634,10 +1634,10 @@ uint64_t __135__PFCloudKitMetadataPurger__wipeSystemFieldsAndResetUploadStateFor
   return result;
 }
 
-- (uint64_t)purgeMetadataAfterAccountChangeFromStore:(uint64_t)a3 inMonitor:(uint64_t)a4 inDatabaseWithScope:(void *)a5 error:
+- (uint64_t)purgeMetadataAfterAccountChangeFromStore:(uint64_t)store inMonitor:(uint64_t)monitor inDatabaseWithScope:(void *)scope error:
 {
   v30 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     v22 = 0;
     v23 = &v22;
@@ -1649,26 +1649,26 @@ uint64_t __135__PFCloudKitMetadataPurger__wipeSystemFieldsAndResetUploadStateFor
     v19 = __Block_byref_object_copy__32;
     v20 = __Block_byref_object_dispose__32;
     v21 = 0;
-    v8 = [(PFCloudKitStoreMonitor *)a3 newBackgroundContextForMonitoredCoordinator];
-    [(NSManagedObjectContext *)v8 setTransactionAuthor:@"NSCloudKitMirroringDelegate.reset"];
+    newBackgroundContextForMonitoredCoordinator = [(PFCloudKitStoreMonitor *)store newBackgroundContextForMonitoredCoordinator];
+    [(NSManagedObjectContext *)newBackgroundContextForMonitoredCoordinator setTransactionAuthor:@"NSCloudKitMirroringDelegate.reset"];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __105__PFCloudKitMetadataPurger_purgeMetadataAfterAccountChangeFromStore_inMonitor_inDatabaseWithScope_error___block_invoke;
     v15[3] = &unk_1E6EC3C38;
     v15[4] = a2;
-    v15[5] = v8;
+    v15[5] = newBackgroundContextForMonitoredCoordinator;
     v15[6] = &v22;
     v15[7] = &v16;
-    v15[8] = a4;
-    [(NSManagedObjectContext *)v8 performBlockAndWait:v15];
+    v15[8] = monitor;
+    [(NSManagedObjectContext *)newBackgroundContextForMonitoredCoordinator performBlockAndWait:v15];
     if ((v23[3] & 1) == 0)
     {
       v12 = v17[5];
       if (v12)
       {
-        if (a5)
+        if (scope)
         {
-          *a5 = v12;
+          *scope = v12;
         }
       }
 
@@ -2053,10 +2053,10 @@ LABEL_40:
   v69 = *MEMORY[0x1E69E9840];
 }
 
-- (uint64_t)deleteZoneMetadataFromStore:(uint64_t)a3 inMonitor:(uint64_t)a4 forRecordZones:(uint64_t)a5 inDatabaseWithScope:(void *)a6 error:
+- (uint64_t)deleteZoneMetadataFromStore:(uint64_t)store inMonitor:(uint64_t)monitor forRecordZones:(uint64_t)zones inDatabaseWithScope:(void *)scope error:
 {
   v32 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     v24 = 0;
     v25 = &v24;
@@ -2068,27 +2068,27 @@ LABEL_40:
     v21 = __Block_byref_object_copy__32;
     v22 = __Block_byref_object_dispose__32;
     v23 = 0;
-    v10 = [(PFCloudKitStoreMonitor *)a3 newBackgroundContextForMonitoredCoordinator];
-    [(NSManagedObjectContext *)v10 setTransactionAuthor:@"NSCloudKitMirroringDelegate.reset"];
+    newBackgroundContextForMonitoredCoordinator = [(PFCloudKitStoreMonitor *)store newBackgroundContextForMonitoredCoordinator];
+    [(NSManagedObjectContext *)newBackgroundContextForMonitoredCoordinator setTransactionAuthor:@"NSCloudKitMirroringDelegate.reset"];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __107__PFCloudKitMetadataPurger_deleteZoneMetadataFromStore_inMonitor_forRecordZones_inDatabaseWithScope_error___block_invoke;
     v17[3] = &unk_1E6EC3978;
-    v17[4] = a4;
+    v17[4] = monitor;
     v17[5] = a2;
-    v17[6] = v10;
+    v17[6] = newBackgroundContextForMonitoredCoordinator;
     v17[7] = &v24;
     v17[8] = &v18;
-    v17[9] = a5;
-    [(NSManagedObjectContext *)v10 performBlockAndWait:v17];
+    v17[9] = zones;
+    [(NSManagedObjectContext *)newBackgroundContextForMonitoredCoordinator performBlockAndWait:v17];
     if ((v25[3] & 1) == 0)
     {
       v14 = v19[5];
       if (v14)
       {
-        if (a6)
+        if (scope)
         {
-          *a6 = v14;
+          *scope = v14;
         }
       }
 

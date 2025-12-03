@@ -1,24 +1,24 @@
 @interface VUIProductUberBackgroundView
 - (CGSize)imageSize;
-- (CGSize)vui_layoutSubviews:(CGSize)a3 computationOnly:(BOOL)a4;
-- (VUIProductUberBackgroundView)initWithFrame:(CGRect)a3;
-- (double)_gradientHeightForSizeClass:(int64_t)a3 mainRect:(CGRect)a4;
-- (void)_configureGradientLayer:(id)a3 currentSizeClass:(int64_t)a4 mainRect:(CGRect)a5;
-- (void)configureBlurEffectAndGradientWithInterfaceStyle:(unint64_t)a3 mainRect:(CGRect)a4;
-- (void)configureBlurWithInterfaceStyle:(unint64_t)a3;
-- (void)configureBlurWithInterfaceStyle:(unint64_t)a3 mainRect:(CGRect)a4;
+- (CGSize)vui_layoutSubviews:(CGSize)subviews computationOnly:(BOOL)only;
+- (VUIProductUberBackgroundView)initWithFrame:(CGRect)frame;
+- (double)_gradientHeightForSizeClass:(int64_t)class mainRect:(CGRect)rect;
+- (void)_configureGradientLayer:(id)layer currentSizeClass:(int64_t)class mainRect:(CGRect)rect;
+- (void)configureBlurEffectAndGradientWithInterfaceStyle:(unint64_t)style mainRect:(CGRect)rect;
+- (void)configureBlurWithInterfaceStyle:(unint64_t)style;
+- (void)configureBlurWithInterfaceStyle:(unint64_t)style mainRect:(CGRect)rect;
 - (void)resetBlurEffectAndGradient;
-- (void)setImageOffset:(double)a3;
-- (void)setImageView:(id)a3;
+- (void)setImageOffset:(double)offset;
+- (void)setImageView:(id)view;
 @end
 
 @implementation VUIProductUberBackgroundView
 
-- (VUIProductUberBackgroundView)initWithFrame:(CGRect)a3
+- (VUIProductUberBackgroundView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = VUIProductUberBackgroundView;
-  v3 = [(VUIProductUberBackgroundView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(VUIProductUberBackgroundView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -29,57 +29,57 @@
   return v4;
 }
 
-- (void)setImageView:(id)a3
+- (void)setImageView:(id)view
 {
-  v5 = a3;
-  if (self->_imageView != v5)
+  viewCopy = view;
+  if (self->_imageView != viewCopy)
   {
-    v7 = v5;
-    [(VUIProductUberBackgroundView *)self vui_addSubview:v5 oldView:?];
+    v7 = viewCopy;
+    [(VUIProductUberBackgroundView *)self vui_addSubview:viewCopy oldView:?];
     v6 = v7;
     if (self->_imageView != v7)
     {
-      objc_storeStrong(&self->_imageView, a3);
+      objc_storeStrong(&self->_imageView, view);
       v6 = v7;
     }
 
     [(UIView *)v6 setVuiContentMode:2];
     [(VUIProductUberBackgroundView *)self vui_setNeedsLayout];
-    v5 = v7;
+    viewCopy = v7;
   }
 }
 
-- (void)configureBlurWithInterfaceStyle:(unint64_t)a3
+- (void)configureBlurWithInterfaceStyle:(unint64_t)style
 {
   [(VUIProductUberBackgroundView *)self bounds];
 
-  [(VUIProductUberBackgroundView *)self configureBlurWithInterfaceStyle:a3 mainRect:?];
+  [(VUIProductUberBackgroundView *)self configureBlurWithInterfaceStyle:style mainRect:?];
 }
 
-- (void)configureBlurWithInterfaceStyle:(unint64_t)a3 mainRect:(CGRect)a4
+- (void)configureBlurWithInterfaceStyle:(unint64_t)style mainRect:(CGRect)rect
 {
-  if (a3)
+  if (style)
   {
-    if (!self->_blurEffectView || self->_configuredBlurInterfaceStyle != a3)
+    if (!self->_blurEffectView || self->_configuredBlurInterfaceStyle != style)
     {
-      [(VUIProductUberBackgroundView *)self configureBlurEffectAndGradientWithInterfaceStyle:a3 mainRect:a4.origin.x, a4.origin.y, a4.size.width, a4.size.height];
-      self->_configuredBlurInterfaceStyle = a3;
+      [(VUIProductUberBackgroundView *)self configureBlurEffectAndGradientWithInterfaceStyle:style mainRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
+      self->_configuredBlurInterfaceStyle = style;
     }
   }
 
   else
   {
 
-    [(VUIProductUberBackgroundView *)self resetBlurEffectAndGradient:a4.origin.x];
+    [(VUIProductUberBackgroundView *)self resetBlurEffectAndGradient:rect.origin.x];
   }
 }
 
-- (void)setImageOffset:(double)a3
+- (void)setImageOffset:(double)offset
 {
   VUIRoundValue();
   self->_contentOffset = v5;
   [(VUIProductUberBackgroundView *)self bounds];
-  if (a3 > 0.0)
+  if (offset > 0.0)
   {
     [(UIView *)self->_imageView _setContentRectInPixels:0.0 forContentSize:fmin(self->_contentOffset * -0.28, 0.0), v6, v7, v6, v7];
   }
@@ -89,18 +89,18 @@
   [(UIView *)imageView setFrame:0.0];
 }
 
-- (CGSize)vui_layoutSubviews:(CGSize)a3 computationOnly:(BOOL)a4
+- (CGSize)vui_layoutSubviews:(CGSize)subviews computationOnly:(BOOL)only
 {
-  height = a3.height;
-  width = a3.width;
-  if (!a4)
+  height = subviews.height;
+  width = subviews.width;
+  if (!only)
   {
     imageView = self->_imageView;
     if (imageView)
     {
       contentOffset = self->_contentOffset;
       v9 = height - contentOffset;
-      v10 = a3.width;
+      v10 = subviews.width;
     }
 
     else
@@ -138,30 +138,30 @@
   return result;
 }
 
-- (void)configureBlurEffectAndGradientWithInterfaceStyle:(unint64_t)a3 mainRect:(CGRect)a4
+- (void)configureBlurEffectAndGradientWithInterfaceStyle:(unint64_t)style mainRect:(CGRect)rect
 {
   if (!self->_gradientLayer)
   {
-    height = a4.size.height;
-    width = a4.size.width;
-    y = a4.origin.y;
-    x = a4.origin.x;
-    v10 = [MEMORY[0x1E6979380] layer];
-    [(CAGradientLayer *)v10 setShouldRasterize:0];
-    v11 = [MEMORY[0x1E69DCEB0] vui_main];
-    [v11 vui_scale];
-    [(CAGradientLayer *)v10 setRasterizationScale:?];
+    height = rect.size.height;
+    width = rect.size.width;
+    y = rect.origin.y;
+    x = rect.origin.x;
+    layer = [MEMORY[0x1E6979380] layer];
+    [(CAGradientLayer *)layer setShouldRasterize:0];
+    vui_main = [MEMORY[0x1E69DCEB0] vui_main];
+    [vui_main vui_scale];
+    [(CAGradientLayer *)layer setRasterizationScale:?];
 
     v23.origin.x = x;
     v23.origin.y = y;
     v23.size.width = width;
     v23.size.height = height;
-    -[VUIProductUberBackgroundView _configureGradientLayer:currentSizeClass:mainRect:](self, "_configureGradientLayer:currentSizeClass:mainRect:", v10, [MEMORY[0x1E69DD2E8] vui_currentSizeClassForWindowWidth:CGRectGetWidth(v23)], x, y, width, height);
+    -[VUIProductUberBackgroundView _configureGradientLayer:currentSizeClass:mainRect:](self, "_configureGradientLayer:currentSizeClass:mainRect:", layer, [MEMORY[0x1E69DD2E8] vui_currentSizeClassForWindowWidth:CGRectGetWidth(v23)], x, y, width, height);
     gradientLayer = self->_gradientLayer;
-    self->_gradientLayer = v10;
+    self->_gradientLayer = layer;
   }
 
-  if (a3 == 1)
+  if (style == 1)
   {
     v13 = 1;
   }
@@ -171,7 +171,7 @@
     v13 = 2;
   }
 
-  v14 = [MEMORY[0x1E69DC730] effectWithStyle:{v13, a4.origin.x, a4.origin.y, a4.size.width, a4.size.height}];
+  v14 = [MEMORY[0x1E69DC730] effectWithStyle:{v13, rect.origin.x, rect.origin.y, rect.size.width, rect.size.height}];
   blurEffectView = self->_blurEffectView;
   v21 = v14;
   if (blurEffectView)
@@ -189,11 +189,11 @@
     [(VUIProductUberBackgroundView *)self addSubview:self->_blurEffectView];
   }
 
-  v19 = [(UIVisualEffectView *)self->_blurEffectView layer];
-  [v19 addSublayer:self->_gradientLayer];
+  layer2 = [(UIVisualEffectView *)self->_blurEffectView layer];
+  [layer2 addSublayer:self->_gradientLayer];
 
-  v20 = [(UIVisualEffectView *)self->_blurEffectView layer];
-  [v20 setAllowsGroupBlending:1];
+  layer3 = [(UIVisualEffectView *)self->_blurEffectView layer];
+  [layer3 setAllowsGroupBlending:1];
 }
 
 - (void)resetBlurEffectAndGradient
@@ -207,11 +207,11 @@
   self->_gradientLayer = 0;
 }
 
-- (double)_gradientHeightForSizeClass:(int64_t)a3 mainRect:(CGRect)a4
+- (double)_gradientHeightForSizeClass:(int64_t)class mainRect:(CGRect)rect
 {
   if (self->_isChannelBanner)
   {
-    return dbl_1E4297820[(a3 - 3) < 3];
+    return dbl_1E4297820[(class - 3) < 3];
   }
 
   VUIRoundValue();
@@ -225,32 +225,32 @@
   return result;
 }
 
-- (void)_configureGradientLayer:(id)a3 currentSizeClass:(int64_t)a4 mainRect:(CGRect)a5
+- (void)_configureGradientLayer:(id)layer currentSizeClass:(int64_t)class mainRect:(CGRect)rect
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v31[5] = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = v11;
+  layerCopy = layer;
+  v12 = layerCopy;
   if (self->_isChannelBanner)
   {
-    [(VUIProductUberBackgroundView *)self _gradientHeightForSizeClass:a4 mainRect:x, y, width, height];
+    [(VUIProductUberBackgroundView *)self _gradientHeightForSizeClass:class mainRect:x, y, width, height];
     v14 = v13;
-    v15 = a4 - 3;
-    v16 = [MEMORY[0x1E69DC888] whiteColor];
-    v17 = [v16 CGColor];
+    v15 = class - 3;
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    cGColor = [whiteColor CGColor];
     if (v15 >= 3)
     {
-      v30 = v17;
+      v30 = cGColor;
       v18 = &unk_1F5E5EB38;
       v19 = &v30;
     }
 
     else
     {
-      v31[0] = v17;
+      v31[0] = cGColor;
       v18 = &unk_1F5E5EB20;
       v19 = v31;
     }
@@ -275,13 +275,13 @@
 
   else
   {
-    [v11 setStartPoint:{0.5, 0.0}];
+    [layerCopy setStartPoint:{0.5, 0.0}];
     [v12 setEndPoint:{0.5, 1.0}];
     [v12 setLocations:&unk_1F5E5EB50];
-    v20 = [MEMORY[0x1E69DC888] whiteColor];
-    v29[0] = [v20 CGColor];
-    v21 = [MEMORY[0x1E69DC888] clearColor];
-    v29[1] = [v21 CGColor];
+    whiteColor2 = [MEMORY[0x1E69DC888] whiteColor];
+    v29[0] = [whiteColor2 CGColor];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    v29[1] = [clearColor CGColor];
     v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:v29 count:2];
     [v12 setColors:v22];
   }

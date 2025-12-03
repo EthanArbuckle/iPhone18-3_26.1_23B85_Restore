@@ -1,76 +1,76 @@
 @interface AFInterstitialConfiguration
-+ (id)newWithBuilder:(id)a3;
-- (AFInterstitialConfiguration)initWithBuilder:(id)a3;
-- (AFInterstitialConfiguration)initWithCoder:(id)a3;
-- (AFInterstitialConfiguration)initWithStyle:(int64_t)a3 languageCode:(id)a4 gender:(int64_t)a5 recordRoute:(id)a6 isVoiceTrigger:(BOOL)a7 isDucking:(BOOL)a8 isTwoShot:(BOOL)a9 speechEndHostTime:(unint64_t)a10;
-- (BOOL)isEqual:(id)a3;
-- (id)_descriptionWithIndent:(unint64_t)a3;
-- (id)mutatedCopyWithMutator:(id)a3;
++ (id)newWithBuilder:(id)builder;
+- (AFInterstitialConfiguration)initWithBuilder:(id)builder;
+- (AFInterstitialConfiguration)initWithCoder:(id)coder;
+- (AFInterstitialConfiguration)initWithStyle:(int64_t)style languageCode:(id)code gender:(int64_t)gender recordRoute:(id)route isVoiceTrigger:(BOOL)trigger isDucking:(BOOL)ducking isTwoShot:(BOOL)shot speechEndHostTime:(unint64_t)self0;
+- (BOOL)isEqual:(id)equal;
+- (id)_descriptionWithIndent:(unint64_t)indent;
+- (id)mutatedCopyWithMutator:(id)mutator;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AFInterstitialConfiguration
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E696AD98];
   style = self->_style;
-  v6 = a3;
+  coderCopy = coder;
   v7 = [v4 numberWithInteger:style];
-  [v6 encodeObject:v7 forKey:@"AFInterstitialConfiguration::style"];
+  [coderCopy encodeObject:v7 forKey:@"AFInterstitialConfiguration::style"];
 
-  [v6 encodeObject:self->_languageCode forKey:@"AFInterstitialConfiguration::languageCode"];
+  [coderCopy encodeObject:self->_languageCode forKey:@"AFInterstitialConfiguration::languageCode"];
   v8 = [MEMORY[0x1E696AD98] numberWithInteger:self->_gender];
-  [v6 encodeObject:v8 forKey:@"AFInterstitialConfiguration::gender"];
+  [coderCopy encodeObject:v8 forKey:@"AFInterstitialConfiguration::gender"];
 
-  [v6 encodeObject:self->_recordRoute forKey:@"AFInterstitialConfiguration::recordRoute"];
+  [coderCopy encodeObject:self->_recordRoute forKey:@"AFInterstitialConfiguration::recordRoute"];
   v9 = [MEMORY[0x1E696AD98] numberWithBool:self->_isVoiceTrigger];
-  [v6 encodeObject:v9 forKey:@"AFInterstitialConfiguration::isVoiceTrigger"];
+  [coderCopy encodeObject:v9 forKey:@"AFInterstitialConfiguration::isVoiceTrigger"];
 
   v10 = [MEMORY[0x1E696AD98] numberWithBool:self->_isDucking];
-  [v6 encodeObject:v10 forKey:@"AFInterstitialConfiguration::isDucking"];
+  [coderCopy encodeObject:v10 forKey:@"AFInterstitialConfiguration::isDucking"];
 
   v11 = [MEMORY[0x1E696AD98] numberWithBool:self->_isTwoShot];
-  [v6 encodeObject:v11 forKey:@"AFInterstitialConfiguration::isTwoShot"];
+  [coderCopy encodeObject:v11 forKey:@"AFInterstitialConfiguration::isTwoShot"];
 
   v12 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_speechEndHostTime];
-  [v6 encodeObject:v12 forKey:@"AFInterstitialConfiguration::speechEndHostTime"];
+  [coderCopy encodeObject:v12 forKey:@"AFInterstitialConfiguration::speechEndHostTime"];
 }
 
-- (AFInterstitialConfiguration)initWithCoder:(id)a3
+- (AFInterstitialConfiguration)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v4 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFInterstitialConfiguration::style"];
-  v5 = [v4 integerValue];
+  coderCopy = coder;
+  v4 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFInterstitialConfiguration::style"];
+  integerValue = [v4 integerValue];
 
-  v6 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFInterstitialConfiguration::languageCode"];
-  v7 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFInterstitialConfiguration::gender"];
-  v8 = [v7 integerValue];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFInterstitialConfiguration::languageCode"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFInterstitialConfiguration::gender"];
+  integerValue2 = [v7 integerValue];
 
-  v9 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFInterstitialConfiguration::recordRoute"];
-  v10 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFInterstitialConfiguration::isVoiceTrigger"];
-  v11 = [v10 BOOLValue];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFInterstitialConfiguration::recordRoute"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFInterstitialConfiguration::isVoiceTrigger"];
+  bOOLValue = [v10 BOOLValue];
 
-  v12 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFInterstitialConfiguration::isDucking"];
-  v13 = [v12 BOOLValue];
+  v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFInterstitialConfiguration::isDucking"];
+  bOOLValue2 = [v12 BOOLValue];
 
-  v14 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFInterstitialConfiguration::isTwoShot"];
-  v15 = [v14 BOOLValue];
+  v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFInterstitialConfiguration::isTwoShot"];
+  bOOLValue3 = [v14 BOOLValue];
 
-  v16 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFInterstitialConfiguration::speechEndHostTime"];
+  v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFInterstitialConfiguration::speechEndHostTime"];
 
-  v17 = [v16 unsignedLongLongValue];
-  LOBYTE(v20) = v15;
-  v18 = [(AFInterstitialConfiguration *)self initWithStyle:v5 languageCode:v6 gender:v8 recordRoute:v9 isVoiceTrigger:v11 isDucking:v13 isTwoShot:v20 speechEndHostTime:v17];
+  unsignedLongLongValue = [v16 unsignedLongLongValue];
+  LOBYTE(v20) = bOOLValue3;
+  v18 = [(AFInterstitialConfiguration *)self initWithStyle:integerValue languageCode:v6 gender:integerValue2 recordRoute:v9 isVoiceTrigger:bOOLValue isDucking:bOOLValue2 isTwoShot:v20 speechEndHostTime:unsignedLongLongValue];
 
   return v18;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v16 = 1;
   }
@@ -80,17 +80,17 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       style = self->_style;
       if (style == [(AFInterstitialConfiguration *)v5 style]&& (gender = self->_gender, gender == [(AFInterstitialConfiguration *)v5 gender]) && (isVoiceTrigger = self->_isVoiceTrigger, isVoiceTrigger == [(AFInterstitialConfiguration *)v5 isVoiceTrigger]) && (isDucking = self->_isDucking, isDucking == [(AFInterstitialConfiguration *)v5 isDucking]) && (isTwoShot = self->_isTwoShot, isTwoShot == [(AFInterstitialConfiguration *)v5 isTwoShot]) && (speechEndHostTime = self->_speechEndHostTime, speechEndHostTime == [(AFInterstitialConfiguration *)v5 speechEndHostTime]))
       {
-        v12 = [(AFInterstitialConfiguration *)v5 languageCode];
+        languageCode = [(AFInterstitialConfiguration *)v5 languageCode];
         languageCode = self->_languageCode;
-        if (languageCode == v12 || [(NSString *)languageCode isEqual:v12])
+        if (languageCode == languageCode || [(NSString *)languageCode isEqual:languageCode])
         {
-          v14 = [(AFInterstitialConfiguration *)v5 recordRoute];
+          recordRoute = [(AFInterstitialConfiguration *)v5 recordRoute];
           recordRoute = self->_recordRoute;
-          v16 = recordRoute == v14 || [(NSString *)recordRoute isEqual:v14];
+          v16 = recordRoute == recordRoute || [(NSString *)recordRoute isEqual:recordRoute];
         }
 
         else
@@ -134,7 +134,7 @@
   return v14 ^ v16;
 }
 
-- (id)_descriptionWithIndent:(unint64_t)a3
+- (id)_descriptionWithIndent:(unint64_t)indent
 {
   v4 = objc_alloc(MEMORY[0x1E696AEC0]);
   v15.receiver = self;
@@ -184,24 +184,24 @@
   return v13;
 }
 
-- (AFInterstitialConfiguration)initWithStyle:(int64_t)a3 languageCode:(id)a4 gender:(int64_t)a5 recordRoute:(id)a6 isVoiceTrigger:(BOOL)a7 isDucking:(BOOL)a8 isTwoShot:(BOOL)a9 speechEndHostTime:(unint64_t)a10
+- (AFInterstitialConfiguration)initWithStyle:(int64_t)style languageCode:(id)code gender:(int64_t)gender recordRoute:(id)route isVoiceTrigger:(BOOL)trigger isDucking:(BOOL)ducking isTwoShot:(BOOL)shot speechEndHostTime:(unint64_t)self0
 {
-  v16 = a4;
-  v17 = a6;
+  codeCopy = code;
+  routeCopy = route;
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __130__AFInterstitialConfiguration_initWithStyle_languageCode_gender_recordRoute_isVoiceTrigger_isDucking_isTwoShot_speechEndHostTime___block_invoke;
   v22[3] = &unk_1E7348958;
-  v25 = a3;
-  v26 = a5;
-  v23 = v16;
-  v24 = v17;
-  v28 = a7;
-  v29 = a8;
-  v30 = a9;
-  v27 = a10;
-  v18 = v17;
-  v19 = v16;
+  styleCopy = style;
+  genderCopy = gender;
+  v23 = codeCopy;
+  v24 = routeCopy;
+  triggerCopy = trigger;
+  duckingCopy = ducking;
+  shotCopy = shot;
+  timeCopy = time;
+  v18 = routeCopy;
+  v19 = codeCopy;
   v20 = [(AFInterstitialConfiguration *)self initWithBuilder:v22];
 
   return v20;
@@ -221,28 +221,28 @@ void __130__AFInterstitialConfiguration_initWithStyle_languageCode_gender_record
   [v4 setSpeechEndHostTime:*(a1 + 64)];
 }
 
-- (AFInterstitialConfiguration)initWithBuilder:(id)a3
+- (AFInterstitialConfiguration)initWithBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v15.receiver = self;
   v15.super_class = AFInterstitialConfiguration;
   v5 = [(AFInterstitialConfiguration *)&v15 init];
   v6 = v5;
-  if (v4 && v5)
+  if (builderCopy && v5)
   {
     v7 = [[_AFInterstitialConfigurationMutation alloc] initWithBase:0];
-    v4[2](v4, v7);
+    builderCopy[2](builderCopy, v7);
     if ([(_AFInterstitialConfigurationMutation *)v7 isDirty])
     {
       v6->_style = [(_AFInterstitialConfigurationMutation *)v7 getStyle];
-      v8 = [(_AFInterstitialConfigurationMutation *)v7 getLanguageCode];
-      v9 = [v8 copy];
+      getLanguageCode = [(_AFInterstitialConfigurationMutation *)v7 getLanguageCode];
+      v9 = [getLanguageCode copy];
       languageCode = v6->_languageCode;
       v6->_languageCode = v9;
 
       v6->_gender = [(_AFInterstitialConfigurationMutation *)v7 getGender];
-      v11 = [(_AFInterstitialConfigurationMutation *)v7 getRecordRoute];
-      v12 = [v11 copy];
+      getRecordRoute = [(_AFInterstitialConfigurationMutation *)v7 getRecordRoute];
+      v12 = [getRecordRoute copy];
       recordRoute = v6->_recordRoute;
       v6->_recordRoute = v12;
 
@@ -256,33 +256,33 @@ void __130__AFInterstitialConfiguration_initWithStyle_languageCode_gender_record
   return v6;
 }
 
-+ (id)newWithBuilder:(id)a3
++ (id)newWithBuilder:(id)builder
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:v3];
+  builderCopy = builder;
+  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:builderCopy];
 
   return v4;
 }
 
-- (id)mutatedCopyWithMutator:(id)a3
+- (id)mutatedCopyWithMutator:(id)mutator
 {
-  v4 = a3;
-  if (v4)
+  mutatorCopy = mutator;
+  if (mutatorCopy)
   {
     v5 = [[_AFInterstitialConfigurationMutation alloc] initWithBase:self];
-    v4[2](v4, v5);
+    mutatorCopy[2](mutatorCopy, v5);
     if ([(_AFInterstitialConfigurationMutation *)v5 isDirty])
     {
       v6 = objc_alloc_init(AFInterstitialConfiguration);
       v6->_style = [(_AFInterstitialConfigurationMutation *)v5 getStyle];
-      v7 = [(_AFInterstitialConfigurationMutation *)v5 getLanguageCode];
-      v8 = [v7 copy];
+      getLanguageCode = [(_AFInterstitialConfigurationMutation *)v5 getLanguageCode];
+      v8 = [getLanguageCode copy];
       languageCode = v6->_languageCode;
       v6->_languageCode = v8;
 
       v6->_gender = [(_AFInterstitialConfigurationMutation *)v5 getGender];
-      v10 = [(_AFInterstitialConfigurationMutation *)v5 getRecordRoute];
-      v11 = [v10 copy];
+      getRecordRoute = [(_AFInterstitialConfigurationMutation *)v5 getRecordRoute];
+      v11 = [getRecordRoute copy];
       recordRoute = v6->_recordRoute;
       v6->_recordRoute = v11;
 

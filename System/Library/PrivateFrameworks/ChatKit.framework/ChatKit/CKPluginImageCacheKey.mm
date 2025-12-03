@@ -1,7 +1,7 @@
 @interface CKPluginImageCacheKey
-+ (id)keyWithStringIdentifier:(id)a3 integerIdentifier:(int64_t)a4;
-- (BOOL)isEqual:(id)a3;
-- (CKPluginImageCacheKey)initWithStringIdentifier:(id)a3 integerIdentifier:(int64_t)a4;
++ (id)keyWithStringIdentifier:(id)identifier integerIdentifier:(int64_t)integerIdentifier;
+- (BOOL)isEqual:(id)equal;
+- (CKPluginImageCacheKey)initWithStringIdentifier:(id)identifier integerIdentifier:(int64_t)integerIdentifier;
 - (id)description;
 - (unint64_t)hash;
 @end
@@ -10,45 +10,45 @@
 
 - (unint64_t)hash
 {
-  v3 = [(CKPluginImageCacheKey *)self integerIdentifier];
-  v4 = [(CKPluginImageCacheKey *)self stringIdentifier];
-  v5 = [v4 hash];
+  integerIdentifier = [(CKPluginImageCacheKey *)self integerIdentifier];
+  stringIdentifier = [(CKPluginImageCacheKey *)self stringIdentifier];
+  v5 = [stringIdentifier hash];
 
-  return v5 ^ v3;
+  return v5 ^ integerIdentifier;
 }
 
-+ (id)keyWithStringIdentifier:(id)a3 integerIdentifier:(int64_t)a4
++ (id)keyWithStringIdentifier:(id)identifier integerIdentifier:(int64_t)integerIdentifier
 {
-  v5 = a3;
-  v6 = [[CKPluginImageCacheKey alloc] initWithStringIdentifier:v5 integerIdentifier:a4];
+  identifierCopy = identifier;
+  v6 = [[CKPluginImageCacheKey alloc] initWithStringIdentifier:identifierCopy integerIdentifier:integerIdentifier];
 
   return v6;
 }
 
-- (CKPluginImageCacheKey)initWithStringIdentifier:(id)a3 integerIdentifier:(int64_t)a4
+- (CKPluginImageCacheKey)initWithStringIdentifier:(id)identifier integerIdentifier:(int64_t)integerIdentifier
 {
-  v7 = a3;
+  identifierCopy = identifier;
   v11.receiver = self;
   v11.super_class = CKPluginImageCacheKey;
   v8 = [(CKPluginImageCacheKey *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_stringIdentifier, a3);
-    v9->_integerIdentifier = a4;
+    objc_storeStrong(&v8->_stringIdentifier, identifier);
+    v9->_integerIdentifier = integerIdentifier;
   }
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && (v5 = objc_msgSend(v4, "integerIdentifier"), v5 == -[CKPluginImageCacheKey integerIdentifier](self, "integerIdentifier")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && (v5 = objc_msgSend(equalCopy, "integerIdentifier"), v5 == -[CKPluginImageCacheKey integerIdentifier](self, "integerIdentifier")))
   {
-    v6 = [v4 stringIdentifier];
-    v7 = [(CKPluginImageCacheKey *)self stringIdentifier];
-    v8 = [v6 isEqualToString:v7];
+    stringIdentifier = [equalCopy stringIdentifier];
+    stringIdentifier2 = [(CKPluginImageCacheKey *)self stringIdentifier];
+    v8 = [stringIdentifier isEqualToString:stringIdentifier2];
   }
 
   else
@@ -62,8 +62,8 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(CKPluginImageCacheKey *)self stringIdentifier];
-  v5 = [v3 stringWithFormat:@"%@ - %ld", v4, -[CKPluginImageCacheKey integerIdentifier](self, "integerIdentifier")];
+  stringIdentifier = [(CKPluginImageCacheKey *)self stringIdentifier];
+  v5 = [v3 stringWithFormat:@"%@ - %ld", stringIdentifier, -[CKPluginImageCacheKey integerIdentifier](self, "integerIdentifier")];
 
   return v5;
 }

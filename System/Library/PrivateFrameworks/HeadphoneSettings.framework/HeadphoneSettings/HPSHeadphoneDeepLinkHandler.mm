@@ -4,7 +4,7 @@
 - (id)hpsDevices;
 - (id)initPrivate;
 - (id)pairedDevices;
-- (id)specifierFor:(id)a3 btsDevice:(id)a4;
+- (id)specifierFor:(id)for btsDevice:(id)device;
 @end
 
 @implementation HPSHeadphoneDeepLinkHandler
@@ -60,17 +60,17 @@ uint64_t __37__HPSHeadphoneDeepLinkHandler_shared__block_invoke()
 - (id)pairedDevices
 {
   v2 = +[HPSConnectedHeadphonesController shared];
-  v3 = [v2 _BTMPairedDevices];
+  _BTMPairedDevices = [v2 _BTMPairedDevices];
 
-  return v3;
+  return _BTMPairedDevices;
 }
 
-- (id)specifierFor:(id)a3 btsDevice:(id)a4
+- (id)specifierFor:(id)for btsDevice:(id)device
 {
-  v5 = a4;
-  v6 = a3;
+  deviceCopy = device;
+  forCopy = for;
   v7 = +[HPSConnectedHeadphonesController shared];
-  v8 = [v7 specifierFor:v6 btsDevice:v5];
+  v8 = [v7 specifierFor:forCopy btsDevice:deviceCopy];
 
   return v8;
 }
@@ -78,9 +78,9 @@ uint64_t __37__HPSHeadphoneDeepLinkHandler_shared__block_invoke()
 - (id)hpsDevices
 {
   v2 = +[HPSConnectedHeadphonesController shared];
-  v3 = [v2 devices];
+  devices = [v2 devices];
 
-  return v3;
+  return devices;
 }
 
 @end

@@ -1,18 +1,18 @@
 @interface _SNTimeDurationConstraint
 - ($E36B78CDAC119E0352F6B513F3BB0FF8)durationRange;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSArray)enumeratedDurations;
-- (_SNTimeDurationConstraint)initWithDurationRange:(id *)a3;
-- (_SNTimeDurationConstraint)initWithEnumeratedDurations:(id)a3;
-- (id)copyWithZone:(void *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (_SNTimeDurationConstraint)initWithDurationRange:(id *)range;
+- (_SNTimeDurationConstraint)initWithEnumeratedDurations:(id)durations;
+- (id)copyWithZone:(void *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _SNTimeDurationConstraint
 
-- (_SNTimeDurationConstraint)initWithEnumeratedDurations:(id)a3
+- (_SNTimeDurationConstraint)initWithEnumeratedDurations:(id)durations
 {
-  if (a3)
+  if (durations)
   {
     sub_1C97C8930();
     sub_1C9A92798();
@@ -21,19 +21,19 @@
   return sub_1C97C614C();
 }
 
-- (_SNTimeDurationConstraint)initWithDurationRange:(id *)a3
+- (_SNTimeDurationConstraint)initWithDurationRange:(id *)range
 {
-  var3 = a3->var1.var3;
-  v5[0] = *&a3->var0.var0;
-  v5[1] = *&a3->var0.var3;
-  v6 = *&a3->var1.var1;
+  var3 = range->var1.var3;
+  v5[0] = *&range->var0.var0;
+  v5[1] = *&range->var0.var3;
+  v6 = *&range->var1.var1;
   v7 = var3;
   return sub_1C97C64A4(v5);
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
-  v3 = self;
+  selfCopy = self;
   _SNTimeDurationConstraint.copy(with:)(v6);
 
   sub_1C97A5A8C(v6, v6[3]);
@@ -42,11 +42,11 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_1C9A93318();
     swift_unknownObjectRelease();
@@ -55,7 +55,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = _SNTimeDurationConstraint.isEqual(_:)(v8);
@@ -64,11 +64,11 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  _SNTimeDurationConstraint.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  _SNTimeDurationConstraint.encode(with:)(coderCopy);
 }
 
 - ($E36B78CDAC119E0352F6B513F3BB0FF8)durationRange
@@ -88,7 +88,7 @@
 
 - (NSArray)enumeratedDurations
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C97C6CC4();
 
   sub_1C97C8930();

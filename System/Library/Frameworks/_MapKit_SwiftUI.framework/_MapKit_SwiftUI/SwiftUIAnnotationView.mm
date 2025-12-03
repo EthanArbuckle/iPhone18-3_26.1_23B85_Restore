@@ -1,7 +1,7 @@
 @interface SwiftUIAnnotationView
 - (UIEdgeInsets)safeAreaInsets;
-- (_TtC15_MapKit_SwiftUI21SwiftUIAnnotationView)initWithAnnotation:(id)a3 reuseIdentifier:(id)a4;
-- (_TtC15_MapKit_SwiftUI21SwiftUIAnnotationView)initWithCoder:(id)a3;
+- (_TtC15_MapKit_SwiftUI21SwiftUIAnnotationView)initWithAnnotation:(id)annotation reuseIdentifier:(id)identifier;
+- (_TtC15_MapKit_SwiftUI21SwiftUIAnnotationView)initWithCoder:(id)coder;
 - (void)didMoveToSuperview;
 - (void)prepareForReuse;
 @end
@@ -17,9 +17,9 @@
   sub_213D8C140();
 }
 
-- (_TtC15_MapKit_SwiftUI21SwiftUIAnnotationView)initWithAnnotation:(id)a3 reuseIdentifier:(id)a4
+- (_TtC15_MapKit_SwiftUI21SwiftUIAnnotationView)initWithAnnotation:(id)annotation reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
     v4 = sub_213D9193C();
     v6 = v5;
@@ -35,12 +35,12 @@
   return sub_213D8C2E8(v7, v4, v6);
 }
 
-- (_TtC15_MapKit_SwiftUI21SwiftUIAnnotationView)initWithCoder:(id)a3
+- (_TtC15_MapKit_SwiftUI21SwiftUIAnnotationView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC15_MapKit_SwiftUI21SwiftUIAnnotationView_wrappedView;
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC15_MapKit_SwiftUI21SwiftUIAnnotationView_wrappedView) = 0;
   v5 = (&self->super.super.super.super.isa + OBJC_IVAR____TtC15_MapKit_SwiftUI21SwiftUIAnnotationView_contentAnchorPoint);
-  v6 = a3;
+  coderCopy = coder;
   sub_213D917CC();
   *v5 = v7;
   v5[1] = v8;
@@ -62,11 +62,11 @@
 {
   v2 = *(&self->super.super.super.super.isa + OBJC_IVAR____TtC15_MapKit_SwiftUI21SwiftUIAnnotationView_wrappedView);
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC15_MapKit_SwiftUI21SwiftUIAnnotationView_wrappedView) = 0;
-  v3 = self;
+  selfCopy = self;
 
-  [*(&v3->super.super.super.super.isa + OBJC_IVAR____TtC15_MapKit_SwiftUI21SwiftUIAnnotationView_hostView) removeFromSuperview];
-  [(MKAnnotationView *)v3 setCenterOffset:0.0, 0.0];
-  v4.receiver = v3;
+  [*(&selfCopy->super.super.super.super.isa + OBJC_IVAR____TtC15_MapKit_SwiftUI21SwiftUIAnnotationView_hostView) removeFromSuperview];
+  [(MKAnnotationView *)selfCopy setCenterOffset:0.0, 0.0];
+  v4.receiver = selfCopy;
   v4.super_class = type metadata accessor for SwiftUIAnnotationView();
   [(MKAnnotationView *)&v4 prepareForReuse];
 }

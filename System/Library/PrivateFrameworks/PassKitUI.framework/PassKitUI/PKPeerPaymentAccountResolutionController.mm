@@ -1,57 +1,57 @@
 @interface PKPeerPaymentAccountResolutionController
-+ (BOOL)_canShowContactSupportForPass:(id)a3;
++ (BOOL)_canShowContactSupportForPass:(id)pass;
 - (PKPaymentSetupDelegate)setupDelegate;
-- (PKPeerPaymentAccountResolutionController)initWithAccount:(id)a3 webService:(id)a4 context:(int64_t)a5 delegate:(id)a6 passLibraryDataProvider:(id)a7;
+- (PKPeerPaymentAccountResolutionController)initWithAccount:(id)account webService:(id)service context:(int64_t)context delegate:(id)delegate passLibraryDataProvider:(id)provider;
 - (PKPeerPaymentAccountResolutionControllerDelegate)delegate;
-- (id)_contactAppleSupportAlertControllerForPass:(id)a3;
-- (id)_paymentSetupNavigationControllerForProvisioningController:(id)a3;
+- (id)_contactAppleSupportAlertControllerForPass:(id)pass;
+- (id)_paymentSetupNavigationControllerForProvisioningController:(id)controller;
 - (id)_paymentWebService;
 - (unint64_t)currentPeerPaymentAccountResolution;
-- (void)_callSupportWithPhoneNumber:(id)a3;
+- (void)_callSupportWithPhoneNumber:(id)number;
 - (void)_dismissViewController;
-- (void)_emailSupportWithEmailAddress:(id)a3;
-- (void)_openSupportWebsiteWithWebsiteURL:(id)a3;
-- (void)_peerPaymentAccountChanged:(id)a3;
-- (void)_presentActivationFlowWithConfiguration:(id)a3 completion:(id)a4;
-- (void)_presentContactAppleSupportAlertWithCompletion:(id)a3;
-- (void)_presentFlowForAccountResolution:(unint64_t)a3 configuration:(id)a4 completion:(id)a5;
-- (void)_presentIdentityVerificationWithConfiguration:(id)a3 completion:(id)a4;
-- (void)_presentPeerPaymentAction:(unint64_t)a3 withCompletion:(id)a4;
-- (void)_presentReOpenFlowWithCompletion:(id)a3;
-- (void)_presentViewController:(id)a3;
+- (void)_emailSupportWithEmailAddress:(id)address;
+- (void)_openSupportWebsiteWithWebsiteURL:(id)l;
+- (void)_peerPaymentAccountChanged:(id)changed;
+- (void)_presentActivationFlowWithConfiguration:(id)configuration completion:(id)completion;
+- (void)_presentContactAppleSupportAlertWithCompletion:(id)completion;
+- (void)_presentFlowForAccountResolution:(unint64_t)resolution configuration:(id)configuration completion:(id)completion;
+- (void)_presentIdentityVerificationWithConfiguration:(id)configuration completion:(id)completion;
+- (void)_presentPeerPaymentAction:(unint64_t)action withCompletion:(id)completion;
+- (void)_presentReOpenFlowWithCompletion:(id)completion;
+- (void)_presentViewController:(id)controller;
 - (void)dealloc;
-- (void)peerPaymentAccountResolutionController:(id)a3 requestsDismissCurrentViewControllerAnimated:(BOOL)a4;
-- (void)peerPaymentAccountResolutionController:(id)a3 requestsPresentViewController:(id)a4 animated:(BOOL)a5;
-- (void)peerPaymentActionViewControllerDidCancel:(id)a3;
-- (void)peerPaymentActionViewControllerDidPerformAction:(id)a3;
-- (void)presentResolutionForCurrentAccountStateWithCompletion:(id)a3;
+- (void)peerPaymentAccountResolutionController:(id)controller requestsDismissCurrentViewControllerAnimated:(BOOL)animated;
+- (void)peerPaymentAccountResolutionController:(id)controller requestsPresentViewController:(id)viewController animated:(BOOL)animated;
+- (void)peerPaymentActionViewControllerDidCancel:(id)cancel;
+- (void)peerPaymentActionViewControllerDidPerformAction:(id)action;
+- (void)presentResolutionForCurrentAccountStateWithCompletion:(id)completion;
 @end
 
 @implementation PKPeerPaymentAccountResolutionController
 
-- (PKPeerPaymentAccountResolutionController)initWithAccount:(id)a3 webService:(id)a4 context:(int64_t)a5 delegate:(id)a6 passLibraryDataProvider:(id)a7
+- (PKPeerPaymentAccountResolutionController)initWithAccount:(id)account webService:(id)service context:(int64_t)context delegate:(id)delegate passLibraryDataProvider:(id)provider
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a6;
-  v16 = a7;
+  accountCopy = account;
+  serviceCopy = service;
+  delegateCopy = delegate;
+  providerCopy = provider;
   v26.receiver = self;
   v26.super_class = PKPeerPaymentAccountResolutionController;
   v17 = [(PKPeerPaymentAccountResolutionController *)&v26 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_account, a3);
-    objc_storeStrong(&v18->_webService, a4);
-    v18->_context = a5;
-    v19 = objc_storeWeak(&v18->_delegate, v15);
+    objc_storeStrong(&v17->_account, account);
+    objc_storeStrong(&v18->_webService, service);
+    v18->_context = context;
+    v19 = objc_storeWeak(&v18->_delegate, delegateCopy);
 
-    if (!v15)
+    if (!delegateCopy)
     {
       objc_storeWeak(&v18->_delegate, v18);
     }
 
-    objc_storeStrong(&v18->_passLibraryDataProvider, a7);
+    objc_storeStrong(&v18->_passLibraryDataProvider, provider);
     if (!v18->_passLibraryDataProvider)
     {
       v20 = objc_alloc_init(MEMORY[0x1E69B8A60]);
@@ -59,10 +59,10 @@
       v18->_passLibraryDataProvider = v20;
     }
 
-    v22 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v23 = *MEMORY[0x1E69BC378];
-    v24 = [(PKPeerPaymentWebService *)v18->_webService targetDevice];
-    [v22 addObserver:v18 selector:sel__peerPaymentAccountChanged_ name:v23 object:v24];
+    targetDevice = [(PKPeerPaymentWebService *)v18->_webService targetDevice];
+    [defaultCenter addObserver:v18 selector:sel__peerPaymentAccountChanged_ name:v23 object:targetDevice];
   }
 
   return v18;
@@ -70,25 +70,25 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = PKPeerPaymentAccountResolutionController;
   [(PKPeerPaymentAccountResolutionController *)&v4 dealloc];
 }
 
-- (void)presentResolutionForCurrentAccountStateWithCompletion:(id)a3
+- (void)presentResolutionForCurrentAccountStateWithCompletion:(id)completion
 {
-  v4 = a3;
-  [(PKPeerPaymentAccountResolutionController *)self presentFlowForAccountResolution:[(PKPeerPaymentAccountResolutionController *)self currentPeerPaymentAccountResolution] configuration:0 completion:v4];
+  completionCopy = completion;
+  [(PKPeerPaymentAccountResolutionController *)self presentFlowForAccountResolution:[(PKPeerPaymentAccountResolutionController *)self currentPeerPaymentAccountResolution] configuration:0 completion:completionCopy];
 }
 
-- (void)_presentFlowForAccountResolution:(unint64_t)a3 configuration:(id)a4 completion:(id)a5
+- (void)_presentFlowForAccountResolution:(unint64_t)resolution configuration:(id)configuration completion:(id)completion
 {
   v16 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
+  configurationCopy = configuration;
+  completionCopy = completion;
   v10 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
@@ -96,44 +96,44 @@
     v12 = 138412546;
     v13 = v11;
     v14 = 2112;
-    v15 = v8;
+    v15 = configurationCopy;
     _os_log_impl(&dword_1BD026000, v10, OS_LOG_TYPE_DEFAULT, "Presenting flow for peer payment account resolution: %@ configuration: %@.", &v12, 0x16u);
   }
 
-  if (a3 <= 2)
+  if (resolution <= 2)
   {
-    if (a3 == 1)
+    if (resolution == 1)
     {
-      [(PKPeerPaymentAccountResolutionController *)self _presentActivationFlowWithConfiguration:v8 completion:v9];
+      [(PKPeerPaymentAccountResolutionController *)self _presentActivationFlowWithConfiguration:configurationCopy completion:completionCopy];
       goto LABEL_16;
     }
 
-    if (a3 == 2)
+    if (resolution == 2)
     {
-      [(PKPeerPaymentAccountResolutionController *)self _presentIdentityVerificationWithConfiguration:v8 completion:v9];
+      [(PKPeerPaymentAccountResolutionController *)self _presentIdentityVerificationWithConfiguration:configurationCopy completion:completionCopy];
       goto LABEL_16;
     }
   }
 
   else
   {
-    switch(a3)
+    switch(resolution)
     {
       case 3uLL:
-        [(PKPeerPaymentAccountResolutionController *)self _presentContactAppleSupportAlertWithCompletion:v9];
+        [(PKPeerPaymentAccountResolutionController *)self _presentContactAppleSupportAlertWithCompletion:completionCopy];
         goto LABEL_16;
       case 4uLL:
-        [(PKPeerPaymentAccountResolutionController *)self _presentReOpenFlowWithCompletion:v9];
+        [(PKPeerPaymentAccountResolutionController *)self _presentReOpenFlowWithCompletion:completionCopy];
         goto LABEL_16;
       case 5uLL:
-        [(PKPeerPaymentAccountResolutionController *)self _presentPeerPaymentAction:1 withCompletion:v9];
+        [(PKPeerPaymentAccountResolutionController *)self _presentPeerPaymentAction:1 withCompletion:completionCopy];
         goto LABEL_16;
     }
   }
 
-  if (v9)
+  if (completionCopy)
   {
-    v9[2](v9, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
 LABEL_16:
@@ -147,35 +147,35 @@ LABEL_16:
   return v3;
 }
 
-- (void)peerPaymentAccountResolutionController:(id)a3 requestsPresentViewController:(id)a4 animated:(BOOL)a5
+- (void)peerPaymentAccountResolutionController:(id)controller requestsPresentViewController:(id)viewController animated:(BOOL)animated
 {
-  v5 = a5;
+  animatedCopy = animated;
   v6 = MEMORY[0x1E69DC668];
-  v7 = a4;
-  v8 = [v6 sharedApplication];
-  v9 = [v8 keyWindow];
-  v10 = [v9 rootViewController];
+  viewControllerCopy = viewController;
+  sharedApplication = [v6 sharedApplication];
+  keyWindow = [sharedApplication keyWindow];
+  rootViewController = [keyWindow rootViewController];
 
-  [v10 presentViewController:v7 animated:v5 completion:0];
+  [rootViewController presentViewController:viewControllerCopy animated:animatedCopy completion:0];
 }
 
-- (void)peerPaymentAccountResolutionController:(id)a3 requestsDismissCurrentViewControllerAnimated:(BOOL)a4
+- (void)peerPaymentAccountResolutionController:(id)controller requestsDismissCurrentViewControllerAnimated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = [MEMORY[0x1E69DC668] sharedApplication];
-  v6 = [v5 keyWindow];
-  v7 = [v6 rootViewController];
+  animatedCopy = animated;
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  keyWindow = [mEMORY[0x1E69DC668] keyWindow];
+  rootViewController = [keyWindow rootViewController];
 
-  [v7 dismissViewControllerAnimated:v4 completion:0];
+  [rootViewController dismissViewControllerAnimated:animatedCopy completion:0];
 }
 
-+ (BOOL)_canShowContactSupportForPass:(id)a3
++ (BOOL)_canShowContactSupportForPass:(id)pass
 {
-  v3 = a3;
+  passCopy = pass;
   v4 = PKUserInterfaceIdiom();
-  v5 = [v3 localizedValueForFieldKey:*MEMORY[0x1E69BC0F0]];
-  v6 = [v3 localizedValueForFieldKey:*MEMORY[0x1E69BC100]];
-  v7 = [v3 localizedValueForFieldKey:*MEMORY[0x1E69BC108]];
+  v5 = [passCopy localizedValueForFieldKey:*MEMORY[0x1E69BC0F0]];
+  v6 = [passCopy localizedValueForFieldKey:*MEMORY[0x1E69BC100]];
+  v7 = [passCopy localizedValueForFieldKey:*MEMORY[0x1E69BC108]];
 
   v11 = (v4 & 0xFFFFFFFFFFFFFFFBLL) == 0 && v6 != 0 || v5 != 0 || v7 != 0;
   return v11;
@@ -197,22 +197,22 @@ LABEL_16:
   return v2;
 }
 
-- (void)_presentActivationFlowWithConfiguration:(id)a3 completion:(id)a4
+- (void)_presentActivationFlowWithConfiguration:(id)configuration completion:(id)completion
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PKPeerPaymentAccountResolutionController *)self _paymentWebService];
-  v9 = [objc_alloc(MEMORY[0x1E69B8D48]) initWithWebService:v8];
+  configurationCopy = configuration;
+  completionCopy = completion;
+  _paymentWebService = [(PKPeerPaymentAccountResolutionController *)self _paymentWebService];
+  v9 = [objc_alloc(MEMORY[0x1E69B8D48]) initWithWebService:_paymentWebService];
   v10 = [objc_alloc(MEMORY[0x1E69B8F38]) initWithPeerPaymentAccount:self->_account];
-  if (v6)
+  if (configurationCopy)
   {
-    v11 = [v6 currencyAmount];
-    [v10 setAmount:v11];
-    [v10 setFlowState:{objc_msgSend(v6, "registrationFlowState")}];
-    v12 = [v6 senderAddress];
-    [v10 setPendingPaymentSenderAddress:v12];
-    [v10 setPaymentMode:{objc_msgSend(v6, "paymentMode")}];
+    currencyAmount = [configurationCopy currencyAmount];
+    [v10 setAmount:currencyAmount];
+    [v10 setFlowState:{objc_msgSend(configurationCopy, "registrationFlowState")}];
+    senderAddress = [configurationCopy senderAddress];
+    [v10 setPendingPaymentSenderAddress:senderAddress];
+    [v10 setPaymentMode:{objc_msgSend(configurationCopy, "paymentMode")}];
   }
 
   if (v10)
@@ -226,10 +226,10 @@ LABEL_16:
     v15[3] = &unk_1E80179B0;
     objc_copyWeak(&v21, location);
     v16 = v9;
-    v17 = self;
+    selfCopy = self;
     v18 = v10;
-    v19 = v6;
-    v20 = v7;
+    v19 = configurationCopy;
+    v20 = completionCopy;
     [v16 associateCredentials:v13 withCompletionHandler:v15];
 
     objc_destroyWeak(&v21);
@@ -245,9 +245,9 @@ LABEL_16:
       _os_log_impl(&dword_1BD026000, v14, OS_LOG_TYPE_DEFAULT, "Cannot present setup flow with a nil peer payment credential", location, 2u);
     }
 
-    if (v7)
+    if (completionCopy)
     {
-      (*(v7 + 2))(v7, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
   }
 }
@@ -323,13 +323,13 @@ void __95__PKPeerPaymentAccountResolutionController__presentActivationFlowWithCo
   }
 }
 
-- (void)_presentIdentityVerificationWithConfiguration:(id)a3 completion:(id)a4
+- (void)_presentIdentityVerificationWithConfiguration:(id)configuration completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  completionCopy = completion;
   if (PKDeviceSupportsPeerPaymentIdentityVerification())
   {
-    if ([v6 isGraduation])
+    if ([configurationCopy isGraduation])
     {
       v8 = [[PKPeerPaymentGraduationExplanationViewController alloc] initWithPeerPaymentWebService:self->_webService peerPaymentAccount:self->_account passLibraryDataProvider:self->_passLibraryDataProvider setupDelegate:self context:self->_context];
       v9 = [[PKNavigationController alloc] initWithRootViewController:v8];
@@ -337,9 +337,9 @@ void __95__PKPeerPaymentAccountResolutionController__presentActivationFlowWithCo
       [(PKNavigationController *)v9 setSupportedInterfaceOrientations:2];
       PKPaymentSetupApplyContextAppearance(self->_context, v9);
       [(PKPeerPaymentAccountResolutionController *)self _presentViewController:v9];
-      if (v7)
+      if (completionCopy)
       {
-        v7[2](v7, 1);
+        completionCopy[2](completionCopy, 1);
       }
     }
 
@@ -354,10 +354,10 @@ void __95__PKPeerPaymentAccountResolutionController__presentActivationFlowWithCo
       PKPaymentSetupApplyContextAppearance(self->_context, v11);
       [(PKPeerPaymentAccountResolutionController *)self _presentViewController:v11];
       v12 = objc_alloc_init(MEMORY[0x1E69B8F88]);
-      v13 = [(PKPeerPaymentWebService *)self->_webService context];
-      [v12 setDevSigned:{objc_msgSend(v13, "devSigned")}];
+      context = [(PKPeerPaymentWebService *)self->_webService context];
+      [v12 setDevSigned:{objc_msgSend(context, "devSigned")}];
 
-      [v12 setVerificationContext:{objc_msgSend(v6, "verificationContext")}];
+      [v12 setVerificationContext:{objc_msgSend(configurationCopy, "verificationContext")}];
       objc_initWeak(&location, self);
       webService = self->_webService;
       v17[0] = MEMORY[0x1E69E9820];
@@ -367,13 +367,13 @@ void __95__PKPeerPaymentAccountResolutionController__presentActivationFlowWithCo
       objc_copyWeak(&v21, &location);
       v15 = v10;
       v18 = v15;
-      v19 = v6;
+      v19 = configurationCopy;
       v16 = v11;
       v20 = v16;
       [(PKPeerPaymentWebService *)webService peerPaymentIdentityVerificationRequest:v12 completion:v17];
-      if (v7)
+      if (completionCopy)
       {
-        v7[2](v7, 1);
+        completionCopy[2](completionCopy, 1);
       }
 
       objc_destroyWeak(&v21);
@@ -385,9 +385,9 @@ void __95__PKPeerPaymentAccountResolutionController__presentActivationFlowWithCo
   {
     v8 = PKCreateAlertControllerForPeerPaymentIdentityVerificationNotSupported(0);
     [(PKPeerPaymentAccountResolutionController *)self _presentViewController:v8];
-    if (v7)
+    if (completionCopy)
     {
-      v7[2](v7, 1);
+      completionCopy[2](completionCopy, 1);
     }
   }
 }
@@ -464,21 +464,21 @@ void __101__PKPeerPaymentAccountResolutionController__presentIdentityVerificatio
   [v1 dismissViewControllerAnimated:1 completion:0];
 }
 
-- (id)_contactAppleSupportAlertControllerForPass:(id)a3
+- (id)_contactAppleSupportAlertControllerForPass:(id)pass
 {
-  v4 = a3;
-  if ([objc_opt_class() _canShowContactSupportForPass:v4])
+  passCopy = pass;
+  if ([objc_opt_class() _canShowContactSupportForPass:passCopy])
   {
     v5 = PKUserInterfaceIdiom() & 0xFFFFFFFFFFFFFFFBLL;
-    v6 = [v4 localizedValueForFieldKey:*MEMORY[0x1E69BC0F0]];
-    v7 = [v4 localizedValueForFieldKey:*MEMORY[0x1E69BC100]];
-    v8 = [v4 localizedValueForFieldKey:*MEMORY[0x1E69BC108]];
-    v9 = [v4 organizationName];
-    v10 = PKLocalizedPaymentString(&cfstr_ContactIssuer.isa, &stru_1F3BD5BF0.isa, v9);
+    v6 = [passCopy localizedValueForFieldKey:*MEMORY[0x1E69BC0F0]];
+    v7 = [passCopy localizedValueForFieldKey:*MEMORY[0x1E69BC100]];
+    v8 = [passCopy localizedValueForFieldKey:*MEMORY[0x1E69BC108]];
+    organizationName = [passCopy organizationName];
+    v10 = PKLocalizedPaymentString(&cfstr_ContactIssuer.isa, &stru_1F3BD5BF0.isa, organizationName);
     v11 = 0;
     if (v5 && v7)
     {
-      v11 = PKLocalizedPaymentString(&cfstr_ContactIssuerB.isa, &cfstr_12.isa, v9, v7);
+      v11 = PKLocalizedPaymentString(&cfstr_ContactIssuerB.isa, &cfstr_12.isa, organizationName, v7);
     }
 
     v27 = v10;
@@ -549,26 +549,26 @@ void __101__PKPeerPaymentAccountResolutionController__presentIdentityVerificatio
   return v12;
 }
 
-- (void)_presentContactAppleSupportAlertWithCompletion:(id)a3
+- (void)_presentContactAppleSupportAlertWithCompletion:(id)completion
 {
-  v6 = a3;
-  v4 = [(PKPeerPaymentAccountResolutionController *)self _peerPaymentPass];
-  v5 = [(PKPeerPaymentAccountResolutionController *)self _contactAppleSupportAlertControllerForPass:v4];
+  completionCopy = completion;
+  _peerPaymentPass = [(PKPeerPaymentAccountResolutionController *)self _peerPaymentPass];
+  v5 = [(PKPeerPaymentAccountResolutionController *)self _contactAppleSupportAlertControllerForPass:_peerPaymentPass];
 
   if (v5)
   {
     [(PKPeerPaymentAccountResolutionController *)self _presentViewController:v5];
   }
 
-  if (v6)
+  if (completionCopy)
   {
-    v6[2](v6, v5 != 0);
+    completionCopy[2](completionCopy, v5 != 0);
   }
 }
 
-- (void)_presentReOpenFlowWithCompletion:(id)a3
+- (void)_presentReOpenFlowWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __77__PKPeerPaymentAccountResolutionController__presentReOpenFlowWithCompletion___block_invoke;
@@ -589,7 +589,7 @@ void __101__PKPeerPaymentAccountResolutionController__presentIdentityVerificatio
     v24[1] = 3221225472;
     v24[2] = __77__PKPeerPaymentAccountResolutionController__presentReOpenFlowWithCompletion___block_invoke_3;
     v24[3] = &unk_1E8011248;
-    v13 = v4;
+    v13 = completionCopy;
     v25 = v13;
     v14 = [v11 actionWithTitle:v12 style:1 handler:v24];
     [v10 addAction:v14];
@@ -610,7 +610,7 @@ void __101__PKPeerPaymentAccountResolutionController__presentIdentityVerificatio
 
   else
   {
-    (*(v5 + 2))(v5, v4);
+    (*(v5 + 2))(v5, completionCopy);
   }
 }
 
@@ -788,19 +788,19 @@ uint64_t __77__PKPeerPaymentAccountResolutionController__presentReOpenFlowWithCo
   return result;
 }
 
-- (void)_presentPeerPaymentAction:(unint64_t)a3 withCompletion:(id)a4
+- (void)_presentPeerPaymentAction:(unint64_t)action withCompletion:(id)completion
 {
-  v6 = a4;
-  v7 = [(PKPeerPaymentAccountResolutionController *)self _peerPaymentPass];
+  completionCopy = completion;
+  _peerPaymentPass = [(PKPeerPaymentAccountResolutionController *)self _peerPaymentPass];
   v22 = 0;
   objc_initWeak(&location, self);
   account = self->_account;
   v20 = 0;
-  v9 = [PKPeerPaymentActionController canPerformPeerPaymentAction:a3 account:account unableReason:&v22 displayableError:&v20];
+  v9 = [PKPeerPaymentActionController canPerformPeerPaymentAction:action account:account unableReason:&v22 displayableError:&v20];
   v10 = v20;
   if (v9)
   {
-    v11 = [PKPeerPaymentActionViewController peerPaymentActionViewControllerForAction:a3 paymentPass:v7 webService:self->_webService passLibraryDataProvider:self->_passLibraryDataProvider context:self->_context];
+    v11 = [PKPeerPaymentActionViewController peerPaymentActionViewControllerForAction:action paymentPass:_peerPaymentPass webService:self->_webService passLibraryDataProvider:self->_passLibraryDataProvider context:self->_context];
     [v11 setDelegate:self];
     objc_storeStrong(&self->_peerPaymentActionViewController, v11);
     v12 = [[PKNavigationController alloc] initWithRootViewController:v11];
@@ -811,9 +811,9 @@ uint64_t __77__PKPeerPaymentAccountResolutionController__presentReOpenFlowWithCo
     }
 
     [(PKPeerPaymentAccountResolutionController *)self _presentViewController:v12];
-    if (v6)
+    if (completionCopy)
     {
-      v6[2](v6, 1);
+      completionCopy[2](completionCopy, 1);
     }
   }
 
@@ -827,9 +827,9 @@ uint64_t __77__PKPeerPaymentAccountResolutionController__presentReOpenFlowWithCo
     objc_copyWeak(&v19, &location);
     v14 = [PKPeerPaymentActionController alertControllerForPeerPaymentActionUnableReason:v13 displayableError:v10 addCardActionHandler:&v15];
     [(PKPeerPaymentAccountResolutionController *)self _presentViewController:v14, v15, v16, v17, v18];
-    if (v6)
+    if (completionCopy)
     {
-      v6[2](v6, 0);
+      completionCopy[2](completionCopy, 0);
     }
 
     objc_destroyWeak(&v19);
@@ -845,24 +845,24 @@ void __85__PKPeerPaymentAccountResolutionController__presentPeerPaymentAction_wi
   [WeakRetained _presentViewController:v3];
 }
 
-- (void)peerPaymentActionViewControllerDidCancel:(id)a3
+- (void)peerPaymentActionViewControllerDidCancel:(id)cancel
 {
   [(PKPeerPaymentAccountResolutionController *)self _dismissViewController];
   peerPaymentActionViewController = self->_peerPaymentActionViewController;
   self->_peerPaymentActionViewController = 0;
 }
 
-- (void)peerPaymentActionViewControllerDidPerformAction:(id)a3
+- (void)peerPaymentActionViewControllerDidPerformAction:(id)action
 {
   [(PKPeerPaymentAccountResolutionController *)self _dismissViewController];
   peerPaymentActionViewController = self->_peerPaymentActionViewController;
   self->_peerPaymentActionViewController = 0;
 }
 
-- (id)_paymentSetupNavigationControllerForProvisioningController:(id)a3
+- (id)_paymentSetupNavigationControllerForProvisioningController:(id)controller
 {
-  v4 = a3;
-  v5 = [[PKPaymentSetupNavigationController alloc] initWithProvisioningController:v4 context:self->_context];
+  controllerCopy = controller;
+  v5 = [[PKPaymentSetupNavigationController alloc] initWithProvisioningController:controllerCopy context:self->_context];
 
   [(PKPaymentSetupNavigationController *)v5 setPaymentSetupMode:1];
   [(PKNavigationController *)v5 setCustomFormSheetPresentationStyleForiPad];
@@ -874,11 +874,11 @@ void __85__PKPeerPaymentAccountResolutionController__presentPeerPaymentAction_wi
   return v5;
 }
 
-- (void)_presentViewController:(id)a3
+- (void)_presentViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained peerPaymentAccountResolutionController:self requestsPresentViewController:v4 animated:1];
+  [WeakRetained peerPaymentAccountResolutionController:self requestsPresentViewController:controllerCopy animated:1];
 }
 
 - (void)_dismissViewController
@@ -887,7 +887,7 @@ void __85__PKPeerPaymentAccountResolutionController__presentPeerPaymentAction_wi
   [WeakRetained peerPaymentAccountResolutionController:self requestsDismissCurrentViewControllerAnimated:1];
 }
 
-- (void)_peerPaymentAccountChanged:(id)a3
+- (void)_peerPaymentAccountChanged:(id)changed
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -912,16 +912,16 @@ uint64_t __71__PKPeerPaymentAccountResolutionController__peerPaymentAccountChang
   return [v7 setAccount:v8];
 }
 
-- (void)_emailSupportWithEmailAddress:(id)a3
+- (void)_emailSupportWithEmailAddress:(id)address
 {
   v11[1] = *MEMORY[0x1E69E9840];
   v4 = getMFMailComposeViewControllerClass[0];
-  v5 = a3;
+  addressCopy = address;
   if ([(objc_class *)v4() canSendMail])
   {
     v6 = objc_alloc_init(getMFMailComposeViewControllerClass[0]());
     [v6 setMailComposeDelegate:self];
-    v11[0] = v5;
+    v11[0] = addressCopy;
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
 
     [v6 setToRecipients:v7];
@@ -931,22 +931,22 @@ uint64_t __71__PKPeerPaymentAccountResolutionController__peerPaymentAccountChang
   else
   {
     v8 = MEMORY[0x1E695DFF8];
-    v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"mailto:%@", v5];
+    addressCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"mailto:%@", addressCopy];
     v9 = [v8 URLWithString:?];
 
     PKOpenURL();
   }
 }
 
-- (void)_callSupportWithPhoneNumber:(id)a3
+- (void)_callSupportWithPhoneNumber:(id)number
 {
   v3 = PKTelephoneURLFromPhoneNumber();
   PKOpenURL();
 }
 
-- (void)_openSupportWebsiteWithWebsiteURL:(id)a3
+- (void)_openSupportWebsiteWithWebsiteURL:(id)l
 {
-  v3 = [MEMORY[0x1E695DFF8] URLWithString:a3];
+  v3 = [MEMORY[0x1E695DFF8] URLWithString:l];
   if (v3)
   {
     v4 = v3;

@@ -1,59 +1,59 @@
 @interface PTPFolder
-- (BOOL)fileExists:(id)a3;
-- (PTPFolder)initWithName:(id)a3 captureTimeSpec:(timespec *)a4 parent:(id)a5 storage:(id)a6;
-- (id)folderMatchingName:(id)a3;
-- (id)objectMatchingAssetHandle:(id)a3;
+- (BOOL)fileExists:(id)exists;
+- (PTPFolder)initWithName:(id)name captureTimeSpec:(timespec *)spec parent:(id)parent storage:(id)storage;
+- (id)folderMatchingName:(id)name;
+- (id)objectMatchingAssetHandle:(id)handle;
 - (id)parent;
 - (id)storage;
 - (timespec)captureTimeSpec;
-- (unint64_t)appendObjectData:(id)a3 forObjectFormatCode:(unsigned __int16)a4 inAssociation:(unsigned int)a5 withContentType:(unsigned int)a6;
+- (unint64_t)appendObjectData:(id)data forObjectFormatCode:(unsigned __int16)code inAssociation:(unsigned int)association withContentType:(unsigned int)type;
 - (unsigned)storageID;
-- (void)addFile:(id)a3;
-- (void)addFolder:(id)a3;
-- (void)deleteFile:(id)a3;
-- (void)deleteFolder:(id)a3;
+- (void)addFile:(id)file;
+- (void)addFolder:(id)folder;
+- (void)deleteFile:(id)file;
+- (void)deleteFolder:(id)folder;
 @end
 
 @implementation PTPFolder
 
-- (PTPFolder)initWithName:(id)a3 captureTimeSpec:(timespec *)a4 parent:(id)a5 storage:(id)a6
+- (PTPFolder)initWithName:(id)name captureTimeSpec:(timespec *)spec parent:(id)parent storage:(id)storage
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  nameCopy = name;
+  parentCopy = parent;
+  storageCopy = storage;
   v13 = [(PTPFolder *)self initWithObjectHandle:sub_100004214()];
   v14 = v13;
   if (v13)
   {
-    [(PTPFolder *)v13 setParent:v11];
-    [(PTPFolder *)v14 setStorage:v12];
-    if (a4)
+    [(PTPFolder *)v13 setParent:parentCopy];
+    [(PTPFolder *)v14 setStorage:storageCopy];
+    if (spec)
     {
-      v23 = [NSDate dateWithTimeIntervalSince1970:a4->tv_sec];
+      v23 = [NSDate dateWithTimeIntervalSince1970:spec->tv_sec];
       v22 = +[NSCalendar currentCalendar];
       v15 = [v22 components:252 fromDate:v23];
-      v24 = v12;
-      v16 = v10;
+      v24 = storageCopy;
+      v16 = nameCopy;
       snprintf(__str, 0x14uLL, "%04d%02d%02dT%02d%02d%02d.0", [v15 year], objc_msgSend(v15, "month"), objc_msgSend(v15, "day"), objc_msgSend(v15, "hour"), objc_msgSend(v15, "minute"), objc_msgSend(v15, "second"));
       v17 = *(&v14->_folders + 4);
-      v18 = [NSString stringWithFormat:@"%s", __str];
-      [v17 setCaptureDate:v18];
+      __str = [NSString stringWithFormat:@"%s", __str];
+      [v17 setCaptureDate:__str];
 
-      v10 = v16;
-      v12 = v24;
+      nameCopy = v16;
+      storageCopy = v24;
       v19 = *(&v14->_folders + 4);
-      v20 = [NSString stringWithFormat:@"%s", __str];
-      [v19 setModificationDate:v20];
+      __str2 = [NSString stringWithFormat:@"%s", __str];
+      [v19 setModificationDate:__str2];
 
-      *(&v14->_objectInfoDataset + 4) = *a4;
+      *(&v14->_objectInfoDataset + 4) = *spec;
     }
 
     [*(&v14->_folders + 4) setStorageID:{-[PTPFolder storageID](v14, "storageID")}];
     [*(&v14->_folders + 4) setObjectFormat:12289];
     [*(&v14->_folders + 4) setProtectionStatus:0];
-    [*(&v14->_folders + 4) setParentObject:{objc_msgSend(v11, "objectHandle")}];
+    [*(&v14->_folders + 4) setParentObject:{objc_msgSend(parentCopy, "objectHandle")}];
     [*(&v14->_folders + 4) setAssociationType:1];
-    [*(&v14->_folders + 4) setFilename:v10];
+    [*(&v14->_folders + 4) setFilename:nameCopy];
     [*(&v14->_folders + 4) setObjectHandle:{-[PTPItem objectHandle](v14, "objectHandle")}];
     ++dword_1000403AC;
   }
@@ -64,30 +64,30 @@
 - (unsigned)storageID
 {
   WeakRetained = objc_loadWeakRetained((&self->_parent + 4));
-  v3 = [WeakRetained storageID];
+  storageID = [WeakRetained storageID];
 
-  return v3;
+  return storageID;
 }
 
-- (id)objectMatchingAssetHandle:(id)a3
+- (id)objectMatchingAssetHandle:(id)handle
 {
-  v4 = a3;
-  v5 = [*(&self->_fileNames + 4) lastIndex];
-  if (v5 == 0x7FFFFFFFFFFFFFFFLL)
+  handleCopy = handle;
+  lastIndex = [*(&self->_fileNames + 4) lastIndex];
+  if (lastIndex == 0x7FFFFFFFFFFFFFFFLL)
   {
     goto LABEL_7;
   }
 
-  v6 = v5;
+  v6 = lastIndex;
   while (1)
   {
     v7 = objc_autoreleasePoolPush();
-    v8 = [(PTPFolder *)self storage];
-    v9 = [v8 cameraFileWithObjectID:v6];
+    storage = [(PTPFolder *)self storage];
+    v9 = [storage cameraFileWithObjectID:v6];
 
     v6 = [*(&self->_fileNames + 4) indexLessThanIndex:v6];
-    v10 = [v9 plAssetHandle];
-    v11 = [v10 isEqual:v4];
+    plAssetHandle = [v9 plAssetHandle];
+    v11 = [plAssetHandle isEqual:handleCopy];
 
     if (v11)
     {
@@ -109,8 +109,8 @@ LABEL_7:
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v12 = [*(&self->_fileIndices + 4) allValues];
-    v13 = [v12 countByEnumeratingWithState:&v21 objects:v25 count:16];
+    allValues = [*(&self->_fileIndices + 4) allValues];
+    v13 = [allValues countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v13)
     {
       v14 = v13;
@@ -121,14 +121,14 @@ LABEL_9:
       {
         if (*v22 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(allValues);
         }
 
-        v17 = [*(*(&v21 + 1) + 8 * v16) unsignedIntValue];
-        v18 = [(PTPFolder *)self storage];
-        v19 = [v18 cameraFolderWithObjectID:v17];
+        unsignedIntValue = [*(*(&v21 + 1) + 8 * v16) unsignedIntValue];
+        storage2 = [(PTPFolder *)self storage];
+        v19 = [storage2 cameraFolderWithObjectID:unsignedIntValue];
 
-        v9 = [v19 objectMatchingAssetHandle:v4];
+        v9 = [v19 objectMatchingAssetHandle:handleCopy];
 
         if (v9)
         {
@@ -137,7 +137,7 @@ LABEL_9:
 
         if (v14 == ++v16)
         {
-          v14 = [v12 countByEnumeratingWithState:&v21 objects:v25 count:16];
+          v14 = [allValues countByEnumeratingWithState:&v21 objects:v25 count:16];
           if (v14)
           {
             goto LABEL_9;
@@ -158,96 +158,96 @@ LABEL_15:
   return v9;
 }
 
-- (void)addFile:(id)a3
+- (void)addFile:(id)file
 {
-  v4 = a3;
-  v10 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [v4 objectHandle]);
-  v5 = [v4 objectInfoDataset];
-  v6 = [v5 filename];
-  v7 = [v4 objectInfoDataset];
-  v8 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@.%d", v6, [v7 sequenceNumber]);
+  fileCopy = file;
+  v10 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [fileCopy objectHandle]);
+  objectInfoDataset = [fileCopy objectInfoDataset];
+  filename = [objectInfoDataset filename];
+  objectInfoDataset2 = [fileCopy objectInfoDataset];
+  v8 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@.%d", filename, [objectInfoDataset2 sequenceNumber]);
 
   os_unfair_lock_lock(&self->super._objectHandle + 1);
   [*(&self->_size + 4) setObject:v10 forKeyedSubscript:v8];
   v9 = *(&self->_fileNames + 4);
-  LODWORD(v6) = [v4 objectHandle];
+  LODWORD(filename) = [fileCopy objectHandle];
 
-  [v9 addIndex:v6];
+  [v9 addIndex:filename];
   os_unfair_lock_unlock(&self->super._objectHandle + 1);
 }
 
-- (void)addFolder:(id)a3
+- (void)addFolder:(id)folder
 {
-  v4 = a3;
-  v8 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [v4 objectHandle]);
+  folderCopy = folder;
+  v8 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [folderCopy objectHandle]);
   os_unfair_lock_lock(&self->super._objectHandle + 1);
   v5 = *(&self->_fileIndices + 4);
-  v6 = [v4 objectInfoDataset];
+  objectInfoDataset = [folderCopy objectInfoDataset];
 
-  v7 = [v6 filename];
-  [v5 setObject:v8 forKeyedSubscript:v7];
+  filename = [objectInfoDataset filename];
+  [v5 setObject:v8 forKeyedSubscript:filename];
 
   os_unfair_lock_unlock(&self->super._objectHandle + 1);
 }
 
-- (void)deleteFile:(id)a3
+- (void)deleteFile:(id)file
 {
-  v4 = a3;
-  v5 = [v4 objectInfoDataset];
-  v6 = [v5 filename];
-  v7 = [v4 objectInfoDataset];
-  v9 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@.%d", v6, [v7 sequenceNumber]);
+  fileCopy = file;
+  objectInfoDataset = [fileCopy objectInfoDataset];
+  filename = [objectInfoDataset filename];
+  objectInfoDataset2 = [fileCopy objectInfoDataset];
+  v9 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@.%d", filename, [objectInfoDataset2 sequenceNumber]);
 
   os_unfair_lock_lock(&self->super._objectHandle + 1);
   [*(&self->_size + 4) removeObjectForKey:v9];
-  [*(&self->_fileNames + 4) removeIndex:{objc_msgSend(v4, "objectHandle")}];
-  v8 = [(PTPFolder *)self storage];
-  LODWORD(v5) = [v4 objectHandle];
+  [*(&self->_fileNames + 4) removeIndex:{objc_msgSend(fileCopy, "objectHandle")}];
+  storage = [(PTPFolder *)self storage];
+  LODWORD(objectInfoDataset) = [fileCopy objectHandle];
 
-  [v8 removeCameraFileFromIndex:v5];
+  [storage removeCameraFileFromIndex:objectInfoDataset];
   os_unfair_lock_unlock(&self->super._objectHandle + 1);
 }
 
-- (void)deleteFolder:(id)a3
+- (void)deleteFolder:(id)folder
 {
-  v4 = a3;
+  folderCopy = folder;
   os_unfair_lock_lock(&self->super._objectHandle + 1);
   v5 = *(&self->_fileIndices + 4);
-  v6 = [v4 objectInfoDataset];
-  v7 = [v6 filename];
-  [v5 removeObjectForKey:v7];
+  objectInfoDataset = [folderCopy objectInfoDataset];
+  filename = [objectInfoDataset filename];
+  [v5 removeObjectForKey:filename];
 
-  v8 = [(PTPFolder *)self storage];
-  LODWORD(v6) = [v4 objectHandle];
+  storage = [(PTPFolder *)self storage];
+  LODWORD(objectInfoDataset) = [folderCopy objectHandle];
 
-  [v8 removeCameraFolderFromIndex:v6];
+  [storage removeCameraFolderFromIndex:objectInfoDataset];
 
   os_unfair_lock_unlock(&self->super._objectHandle + 1);
 }
 
-- (BOOL)fileExists:(id)a3
+- (BOOL)fileExists:(id)exists
 {
-  v4 = a3;
+  existsCopy = exists;
   os_unfair_lock_lock(&self->super._objectHandle + 1);
-  v5 = [*(&self->_size + 4) objectForKeyedSubscript:v4];
+  v5 = [*(&self->_size + 4) objectForKeyedSubscript:existsCopy];
 
-  LODWORD(v4) = [v5 unsignedIntValue];
+  LODWORD(existsCopy) = [v5 unsignedIntValue];
   os_unfair_lock_unlock(&self->super._objectHandle + 1);
-  return v4 != 0;
+  return existsCopy != 0;
 }
 
-- (id)folderMatchingName:(id)a3
+- (id)folderMatchingName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   os_unfair_lock_lock(&self->super._objectHandle + 1);
-  v5 = [*(&self->_fileIndices + 4) objectForKeyedSubscript:v4];
+  v5 = [*(&self->_fileIndices + 4) objectForKeyedSubscript:nameCopy];
 
-  v6 = [v5 unsignedIntValue];
+  unsignedIntValue = [v5 unsignedIntValue];
   os_unfair_lock_unlock(&self->super._objectHandle + 1);
-  if (v6)
+  if (unsignedIntValue)
   {
-    v7 = [(PTPFolder *)self storage];
-    v8 = [v7 cameraFolderWithObjectID:v6];
+    storage = [(PTPFolder *)self storage];
+    v8 = [storage cameraFolderWithObjectID:unsignedIntValue];
   }
 
   else
@@ -258,15 +258,15 @@ LABEL_15:
   return v8;
 }
 
-- (unint64_t)appendObjectData:(id)a3 forObjectFormatCode:(unsigned __int16)a4 inAssociation:(unsigned int)a5 withContentType:(unsigned int)a6
+- (unint64_t)appendObjectData:(id)data forObjectFormatCode:(unsigned __int16)code inAssociation:(unsigned int)association withContentType:(unsigned int)type
 {
-  v6 = a4;
-  v76 = a3;
+  codeCopy = code;
+  dataCopy = data;
   objc_opt_class();
-  v74 = self;
+  selfCopy = self;
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v14 = self;
+    selfCopy2 = self;
     __ICOSLogCreate();
     v8 = &stru_100038B48;
     if ([&stru_100038B48 length] >= 0x15)
@@ -275,13 +275,13 @@ LABEL_15:
       v8 = [v15 stringByAppendingString:@".."];
     }
 
-    v16 = [(PTPFolder *)v14 objectInfoDataset];
-    v17 = [v16 filename];
-    v18 = [v17 UTF8String];
-    v19 = [*(&v14->_fileIndices + 4) count];
-    v20 = *(&v14->_fileNames + 4);
+    objectInfoDataset = [(PTPFolder *)selfCopy2 objectInfoDataset];
+    filename = [objectInfoDataset filename];
+    uTF8String = [filename UTF8String];
+    v19 = [*(&selfCopy2->_fileIndices + 4) count];
+    v20 = *(&selfCopy2->_fileNames + 4);
 
-    v10 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"  [Folder: %8s] folders:[%5lu] files:[%5lu] \n", v18, v19, [v20 count]);
+    v10 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"  [Folder: %8s] folders:[%5lu] files:[%5lu] \n", uTF8String, v19, [v20 count]);
 
     v21 = _gICOSLog;
     if (os_log_type_enabled(_gICOSLog, OS_LOG_TYPE_DEFAULT))
@@ -289,13 +289,13 @@ LABEL_15:
       v22 = v8;
       v23 = v21;
       *buf = 136446466;
-      v86 = [(__CFString *)v8 UTF8String];
+      uTF8String2 = [(__CFString *)v8 UTF8String];
       v87 = 2114;
       v88 = v10;
       _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
     }
 
-    self = v74;
+    self = selfCopy;
     goto LABEL_12;
   }
 
@@ -317,7 +317,7 @@ LABEL_15:
       v12 = v8;
       v13 = v11;
       *buf = 136446466;
-      v86 = [(__CFString *)v8 UTF8String];
+      uTF8String2 = [(__CFString *)v8 UTF8String];
       v87 = 2114;
       v88 = v10;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -327,7 +327,7 @@ LABEL_12:
   }
 
   v83 = 0;
-  if (a6 == 3 && ![v76 length])
+  if (type == 3 && ![dataCopy length])
   {
     __ICOSLogCreate();
     v24 = [NSString stringWithFormat:@"Append Initial PTP11 Array, Object Count [%d]\n", v83];
@@ -337,32 +337,32 @@ LABEL_12:
       if (os_log_type_enabled(_gICOSLog, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v86 = v24;
+        uTF8String2 = v24;
         _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "%{public}@", buf, 0xCu);
       }
     }
 
-    [v76 appendBytes:&v83 length:8];
+    [dataCopy appendBytes:&v83 length:8];
   }
 
   v26 = sub_1000041DC();
-  v77 = v6;
-  if (a5 + 1 < 2 || [(PTPItem *)self objectHandle]== a5)
+  v77 = codeCopy;
+  if (association + 1 < 2 || [(PTPItem *)self objectHandle]== association)
   {
     os_unfair_lock_lock(&self->super._objectHandle + 1);
-    v27 = [*(&self->_fileNames + 4) lastIndex];
-    if (v27 != 0x7FFFFFFFFFFFFFFFLL)
+    lastIndex = [*(&self->_fileNames + 4) lastIndex];
+    if (lastIndex != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v28 = v27;
+      v28 = lastIndex;
       while (1)
       {
         v29 = objc_autoreleasePoolPush();
-        v30 = [(PTPFolder *)self storage];
-        v31 = [v30 cameraFileWithObjectID:v28];
+        storage = [(PTPFolder *)self storage];
+        v31 = [storage cameraFileWithObjectID:v28];
 
         v28 = [*(&self->_fileNames + 4) indexLessThanIndex:v28];
-        v32 = [v31 objectInfoDataset];
-        v33 = ([v32 objectCompressedSize64] >> 32 == 0) | v26;
+        objectInfoDataset2 = [v31 objectInfoDataset];
+        v33 = ([objectInfoDataset2 objectCompressedSize64] >> 32 == 0) | v26;
 
         if ((v33 & 1) == 0)
         {
@@ -382,17 +382,17 @@ LABEL_12:
           if (os_log_type_enabled(_gICOSLog, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138543362;
-            v86 = v34;
+            uTF8String2 = v34;
             _os_log_impl(&_mh_execute_header, v35, OS_LOG_TYPE_DEFAULT, "%{public}@", buf, 0xCu);
           }
         }
 
-        v36 = [v31 objectInfoDataset];
-        v37 = [v36 objectFormat];
-        v38 = v37;
+        objectInfoDataset3 = [v31 objectInfoDataset];
+        objectFormat = [objectInfoDataset3 objectFormat];
+        v38 = objectFormat;
         if (v77 == 0xFFFF)
         {
-          v41 = ~v37 & 0x3800;
+          v41 = ~objectFormat & 0x3800;
 
           if (v41)
           {
@@ -401,10 +401,10 @@ LABEL_40:
             v43 = v28;
             v44 = v26;
             __ICOSLogCreate();
-            v45 = [v31 objectHandle];
-            v46 = [v31 objectInfoDataset];
-            v47 = [v46 filename];
-            v48 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @" +[0x%x]%s] ", v45, [v47 UTF8String]);
+            objectHandle = [v31 objectHandle];
+            objectInfoDataset4 = [v31 objectInfoDataset];
+            filename2 = [objectInfoDataset4 filename];
+            v48 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @" +[0x%x]%s] ", objectHandle, [filename2 UTF8String]);
 
             if (__ICLogTypeEnabled())
             {
@@ -412,15 +412,15 @@ LABEL_40:
               if (os_log_type_enabled(_gICOSLog, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 138543362;
-                v86 = v48;
+                uTF8String2 = v48;
                 _os_log_impl(&_mh_execute_header, v49, OS_LOG_TYPE_DEFAULT, "%{public}@", buf, 0xCu);
               }
             }
 
-            v50 = [v31 objectInfoDataset];
-            v39 = [v50 content:a6];
+            objectInfoDataset5 = [v31 objectInfoDataset];
+            v39 = [objectInfoDataset5 content:type];
 
-            [v76 appendData:v39];
+            [dataCopy appendData:v39];
             ++v83;
             v26 = v44;
             v28 = v43;
@@ -463,7 +463,7 @@ LABEL_40:
 LABEL_44:
 
         objc_autoreleasePoolPop(v29);
-        self = v74;
+        self = selfCopy;
         if (v28 == 0x7FFFFFFFFFFFFFFFLL)
         {
           goto LABEL_45;
@@ -485,14 +485,14 @@ LABEL_44:
 
 LABEL_35:
       *buf = 138543362;
-      v86 = v39;
+      uTF8String2 = v39;
       _os_log_impl(&_mh_execute_header, v40, OS_LOG_TYPE_DEFAULT, "%{public}@", buf, 0xCu);
       goto LABEL_44;
     }
 
 LABEL_45:
     os_unfair_lock_unlock(&self->super._objectHandle + 1);
-    v6 = v77;
+    codeCopy = v77;
   }
 
   os_unfair_lock_lock(&self->super._objectHandle + 1);
@@ -500,8 +500,8 @@ LABEL_45:
   v82 = 0u;
   v79 = 0u;
   v80 = 0u;
-  v51 = [*(&self->_fileIndices + 4) allValues];
-  v52 = [v51 countByEnumeratingWithState:&v79 objects:v84 count:16];
+  allValues = [*(&self->_fileIndices + 4) allValues];
+  v52 = [allValues countByEnumeratingWithState:&v79 objects:v84 count:16];
   if (v52)
   {
     v53 = v52;
@@ -512,25 +512,25 @@ LABEL_45:
       {
         if (*v80 != v54)
         {
-          objc_enumerationMutation(v51);
+          objc_enumerationMutation(allValues);
         }
 
         v56 = *(*(&v79 + 1) + 8 * i);
-        v57 = [(PTPFolder *)self storage];
-        v58 = [v57 cameraFolderWithObjectID:{objc_msgSend(v56, "unsignedIntValue")}];
+        storage2 = [(PTPFolder *)self storage];
+        v58 = [storage2 cameraFolderWithObjectID:{objc_msgSend(v56, "unsignedIntValue")}];
 
-        if (v6)
+        if (codeCopy)
         {
           goto LABEL_58;
         }
 
-        if (a5 + 1 < 2 || [(PTPItem *)self objectHandle]== a5)
+        if (association + 1 < 2 || [(PTPItem *)self objectHandle]== association)
         {
           __ICOSLogCreate();
-          v59 = [v58 objectHandle];
-          v60 = [v58 objectInfoDataset];
-          v61 = [v60 filename];
-          v62 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @" +[0x%x]%s] \n", v59, [v61 UTF8String]);
+          objectHandle2 = [v58 objectHandle];
+          objectInfoDataset6 = [v58 objectInfoDataset];
+          filename3 = [objectInfoDataset6 filename];
+          v62 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @" +[0x%x]%s] \n", objectHandle2, [filename3 UTF8String]);
 
           if (__ICLogTypeEnabled())
           {
@@ -538,30 +538,30 @@ LABEL_45:
             if (os_log_type_enabled(_gICOSLog, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138543362;
-              v86 = v62;
+              uTF8String2 = v62;
               _os_log_impl(&_mh_execute_header, v63, OS_LOG_TYPE_DEFAULT, "%{public}@", buf, 0xCu);
             }
           }
 
-          v64 = [v58 objectInfoDataset];
-          v65 = [v64 content:a6];
+          objectInfoDataset7 = [v58 objectInfoDataset];
+          v65 = [objectInfoDataset7 content:type];
 
-          [v76 appendData:v65];
+          [dataCopy appendData:v65];
           ++v83;
 
-          v6 = v77;
+          codeCopy = v77;
 LABEL_58:
-          if (a5 == -1)
+          if (association == -1)
           {
             goto LABEL_63;
           }
         }
 
         __ICOSLogCreate();
-        v66 = [v58 objectHandle];
-        v67 = [v58 objectInfoDataset];
-        v68 = [v67 filename];
-        v69 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"->[0x%x]%s] \n", v66, [v68 UTF8String]);
+        objectHandle3 = [v58 objectHandle];
+        objectInfoDataset8 = [v58 objectInfoDataset];
+        filename4 = [objectInfoDataset8 filename];
+        v69 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"->[0x%x]%s] \n", objectHandle3, [filename4 UTF8String]);
 
         if (__ICLogTypeEnabled())
         {
@@ -569,19 +569,19 @@ LABEL_58:
           if (os_log_type_enabled(_gICOSLog, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138543362;
-            v86 = v69;
+            uTF8String2 = v69;
             _os_log_impl(&_mh_execute_header, v70, OS_LOG_TYPE_DEFAULT, "%{public}@", buf, 0xCu);
           }
         }
 
-        v6 = v77;
-        v71 = [v58 appendObjectData:v76 forObjectFormatCode:v77 inAssociation:a5 withContentType:a6];
+        codeCopy = v77;
+        v71 = [v58 appendObjectData:dataCopy forObjectFormatCode:v77 inAssociation:association withContentType:type];
         v83 += v71;
-        self = v74;
+        self = selfCopy;
 LABEL_63:
       }
 
-      v53 = [v51 countByEnumeratingWithState:&v79 objects:v84 count:16];
+      v53 = [allValues countByEnumeratingWithState:&v79 objects:v84 count:16];
     }
 
     while (v53);

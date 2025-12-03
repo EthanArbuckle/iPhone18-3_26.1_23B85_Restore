@@ -1,14 +1,14 @@
 @interface CNLaunchServicesRemoteAdapter
-+ (id)createConnectionWithInterface:(id)a3;
++ (id)createConnectionWithInterface:(id)interface;
 + (id)launchServicesAdapterInterface;
 + (id)os_log;
-- (void)applicationForBundleIdentifier:(id)a3 withReply:(id)a4;
-- (void)applicationsAvailableForDefaultAppCategory:(id)a3 withReply:(id)a4;
-- (void)applicationsAvailableForHandlingURLScheme:(id)a3 withReply:(id)a4;
-- (void)applicationsForUserActivityType:(id)a3 withReply:(id)a4;
-- (void)defaultApplicationForDefaultAppCategory:(id)a3 withReply:(id)a4;
-- (void)openSensitiveURLInBackground:(id)a3 withOptions:(id)a4 withReply:(id)a5;
-- (void)openUserActivityData:(id)a3 inApplication:(id)a4 withReply:(id)a5;
+- (void)applicationForBundleIdentifier:(id)identifier withReply:(id)reply;
+- (void)applicationsAvailableForDefaultAppCategory:(id)category withReply:(id)reply;
+- (void)applicationsAvailableForHandlingURLScheme:(id)scheme withReply:(id)reply;
+- (void)applicationsForUserActivityType:(id)type withReply:(id)reply;
+- (void)defaultApplicationForDefaultAppCategory:(id)category withReply:(id)reply;
+- (void)openSensitiveURLInBackground:(id)background withOptions:(id)options withReply:(id)reply;
+- (void)openUserActivityData:(id)data inApplication:(id)application withReply:(id)reply;
 @end
 
 @implementation CNLaunchServicesRemoteAdapter
@@ -112,24 +112,24 @@ uint64_t __39__CNLaunchServicesRemoteAdapter_os_log__block_invoke()
   return v2;
 }
 
-+ (id)createConnectionWithInterface:(id)a3
++ (id)createConnectionWithInterface:(id)interface
 {
   v4 = MEMORY[0x1E696B0B8];
-  v5 = a3;
+  interfaceCopy = interface;
   v6 = [[v4 alloc] initWithMachServiceName:@"com.apple.contactsd.launch-services-proxy" options:0];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __63__CNLaunchServicesRemoteAdapter_createConnectionWithInterface___block_invoke;
   v9[3] = &__block_descriptor_40_e5_v8__0l;
-  v9[4] = a1;
+  v9[4] = self;
   [v6 setInterruptionHandler:v9];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __63__CNLaunchServicesRemoteAdapter_createConnectionWithInterface___block_invoke_34;
   v8[3] = &__block_descriptor_40_e5_v8__0l;
-  v8[4] = a1;
+  v8[4] = self;
   [v6 setInvalidationHandler:v8];
-  [v6 setRemoteObjectInterface:v5];
+  [v6 setRemoteObjectInterface:interfaceCopy];
 
   [v6 resume];
 
@@ -157,13 +157,13 @@ void __63__CNLaunchServicesRemoteAdapter_createConnectionWithInterface___block_i
   }
 }
 
-- (void)applicationsForUserActivityType:(id)a3 withReply:(id)a4
+- (void)applicationsForUserActivityType:(id)type withReply:(id)reply
 {
-  v6 = a4;
-  v7 = a3;
+  replyCopy = reply;
+  typeCopy = type;
   v8 = objc_opt_class();
-  v9 = [objc_opt_class() launchServicesAdapterInterface];
-  v10 = [v8 createConnectionWithInterface:v9];
+  launchServicesAdapterInterface = [objc_opt_class() launchServicesAdapterInterface];
+  v10 = [v8 createConnectionWithInterface:launchServicesAdapterInterface];
 
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
@@ -171,7 +171,7 @@ void __63__CNLaunchServicesRemoteAdapter_createConnectionWithInterface___block_i
   v12[3] = &unk_1E7412FA0;
   v12[4] = self;
   v11 = [v10 synchronousRemoteObjectProxyWithErrorHandler:v12];
-  [v11 applicationsForUserActivityType:v7 withReply:v6];
+  [v11 applicationsForUserActivityType:typeCopy withReply:replyCopy];
 
   [v10 invalidate];
 }
@@ -186,13 +186,13 @@ void __75__CNLaunchServicesRemoteAdapter_applicationsForUserActivityType_withRep
   }
 }
 
-- (void)applicationsAvailableForHandlingURLScheme:(id)a3 withReply:(id)a4
+- (void)applicationsAvailableForHandlingURLScheme:(id)scheme withReply:(id)reply
 {
-  v6 = a4;
-  v7 = a3;
+  replyCopy = reply;
+  schemeCopy = scheme;
   v8 = objc_opt_class();
-  v9 = [objc_opt_class() launchServicesAdapterInterface];
-  v10 = [v8 createConnectionWithInterface:v9];
+  launchServicesAdapterInterface = [objc_opt_class() launchServicesAdapterInterface];
+  v10 = [v8 createConnectionWithInterface:launchServicesAdapterInterface];
 
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
@@ -200,7 +200,7 @@ void __75__CNLaunchServicesRemoteAdapter_applicationsForUserActivityType_withRep
   v12[3] = &unk_1E7412FA0;
   v12[4] = self;
   v11 = [v10 synchronousRemoteObjectProxyWithErrorHandler:v12];
-  [v11 applicationsAvailableForHandlingURLScheme:v7 withReply:v6];
+  [v11 applicationsAvailableForHandlingURLScheme:schemeCopy withReply:replyCopy];
 
   [v10 invalidate];
 }
@@ -215,13 +215,13 @@ void __85__CNLaunchServicesRemoteAdapter_applicationsAvailableForHandlingURLSche
   }
 }
 
-- (void)applicationsAvailableForDefaultAppCategory:(id)a3 withReply:(id)a4
+- (void)applicationsAvailableForDefaultAppCategory:(id)category withReply:(id)reply
 {
-  v6 = a4;
-  v7 = a3;
+  replyCopy = reply;
+  categoryCopy = category;
   v8 = objc_opt_class();
-  v9 = [objc_opt_class() launchServicesAdapterInterface];
-  v10 = [v8 createConnectionWithInterface:v9];
+  launchServicesAdapterInterface = [objc_opt_class() launchServicesAdapterInterface];
+  v10 = [v8 createConnectionWithInterface:launchServicesAdapterInterface];
 
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
@@ -229,7 +229,7 @@ void __85__CNLaunchServicesRemoteAdapter_applicationsAvailableForHandlingURLSche
   v12[3] = &unk_1E7412FA0;
   v12[4] = self;
   v11 = [v10 synchronousRemoteObjectProxyWithErrorHandler:v12];
-  [v11 applicationsAvailableForDefaultAppCategory:v7 withReply:v6];
+  [v11 applicationsAvailableForDefaultAppCategory:categoryCopy withReply:replyCopy];
 
   [v10 invalidate];
 }
@@ -244,13 +244,13 @@ void __86__CNLaunchServicesRemoteAdapter_applicationsAvailableForDefaultAppCateg
   }
 }
 
-- (void)defaultApplicationForDefaultAppCategory:(id)a3 withReply:(id)a4
+- (void)defaultApplicationForDefaultAppCategory:(id)category withReply:(id)reply
 {
-  v6 = a4;
-  v7 = a3;
+  replyCopy = reply;
+  categoryCopy = category;
   v8 = objc_opt_class();
-  v9 = [objc_opt_class() launchServicesAdapterInterface];
-  v10 = [v8 createConnectionWithInterface:v9];
+  launchServicesAdapterInterface = [objc_opt_class() launchServicesAdapterInterface];
+  v10 = [v8 createConnectionWithInterface:launchServicesAdapterInterface];
 
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
@@ -258,7 +258,7 @@ void __86__CNLaunchServicesRemoteAdapter_applicationsAvailableForDefaultAppCateg
   v12[3] = &unk_1E7412FA0;
   v12[4] = self;
   v11 = [v10 synchronousRemoteObjectProxyWithErrorHandler:v12];
-  [v11 defaultApplicationForDefaultAppCategory:v7 withReply:v6];
+  [v11 defaultApplicationForDefaultAppCategory:categoryCopy withReply:replyCopy];
 
   [v10 invalidate];
 }
@@ -273,13 +273,13 @@ void __83__CNLaunchServicesRemoteAdapter_defaultApplicationForDefaultAppCategory
   }
 }
 
-- (void)applicationForBundleIdentifier:(id)a3 withReply:(id)a4
+- (void)applicationForBundleIdentifier:(id)identifier withReply:(id)reply
 {
-  v6 = a4;
-  v7 = a3;
+  replyCopy = reply;
+  identifierCopy = identifier;
   v8 = objc_opt_class();
-  v9 = [objc_opt_class() launchServicesAdapterInterface];
-  v10 = [v8 createConnectionWithInterface:v9];
+  launchServicesAdapterInterface = [objc_opt_class() launchServicesAdapterInterface];
+  v10 = [v8 createConnectionWithInterface:launchServicesAdapterInterface];
 
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
@@ -287,7 +287,7 @@ void __83__CNLaunchServicesRemoteAdapter_defaultApplicationForDefaultAppCategory
   v12[3] = &unk_1E7412FA0;
   v12[4] = self;
   v11 = [v10 synchronousRemoteObjectProxyWithErrorHandler:v12];
-  [v11 applicationForBundleIdentifier:v7 withReply:v6];
+  [v11 applicationForBundleIdentifier:identifierCopy withReply:replyCopy];
 
   [v10 invalidate];
 }
@@ -302,14 +302,14 @@ void __74__CNLaunchServicesRemoteAdapter_applicationForBundleIdentifier_withRepl
   }
 }
 
-- (void)openUserActivityData:(id)a3 inApplication:(id)a4 withReply:(id)a5
+- (void)openUserActivityData:(id)data inApplication:(id)application withReply:(id)reply
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  replyCopy = reply;
+  applicationCopy = application;
+  dataCopy = data;
   v11 = objc_opt_class();
-  v12 = [objc_opt_class() launchServicesAdapterInterface];
-  v13 = [v11 createConnectionWithInterface:v12];
+  launchServicesAdapterInterface = [objc_opt_class() launchServicesAdapterInterface];
+  v13 = [v11 createConnectionWithInterface:launchServicesAdapterInterface];
 
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
@@ -317,7 +317,7 @@ void __74__CNLaunchServicesRemoteAdapter_applicationForBundleIdentifier_withRepl
   v15[3] = &unk_1E7412FA0;
   v15[4] = self;
   v14 = [v13 synchronousRemoteObjectProxyWithErrorHandler:v15];
-  [v14 openUserActivityData:v10 inApplication:v9 withReply:v8];
+  [v14 openUserActivityData:dataCopy inApplication:applicationCopy withReply:replyCopy];
 
   [v13 invalidate];
 }
@@ -332,14 +332,14 @@ void __78__CNLaunchServicesRemoteAdapter_openUserActivityData_inApplication_with
   }
 }
 
-- (void)openSensitiveURLInBackground:(id)a3 withOptions:(id)a4 withReply:(id)a5
+- (void)openSensitiveURLInBackground:(id)background withOptions:(id)options withReply:(id)reply
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  replyCopy = reply;
+  optionsCopy = options;
+  backgroundCopy = background;
   v11 = objc_opt_class();
-  v12 = [objc_opt_class() launchServicesAdapterInterface];
-  v13 = [v11 createConnectionWithInterface:v12];
+  launchServicesAdapterInterface = [objc_opt_class() launchServicesAdapterInterface];
+  v13 = [v11 createConnectionWithInterface:launchServicesAdapterInterface];
 
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
@@ -347,7 +347,7 @@ void __78__CNLaunchServicesRemoteAdapter_openUserActivityData_inApplication_with
   v15[3] = &unk_1E7412FA0;
   v15[4] = self;
   v14 = [v13 synchronousRemoteObjectProxyWithErrorHandler:v15];
-  [v14 openSensitiveURLInBackground:v10 withOptions:v9 withReply:v8];
+  [v14 openSensitiveURLInBackground:backgroundCopy withOptions:optionsCopy withReply:replyCopy];
 
   [v13 invalidate];
 }

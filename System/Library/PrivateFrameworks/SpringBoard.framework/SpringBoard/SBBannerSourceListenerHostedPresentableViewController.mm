@@ -2,23 +2,23 @@
 - (BOOL)handleHomeButtonPress;
 - (BOOL)isDraggingDismissalEnabled;
 - (BOOL)isDraggingInteractionEnabled;
-- (BOOL)shouldDisableTouchCancellationForTouch:(id)a3 event:(id)a4;
-- (BOOL)shouldDismissForReason:(id)a3 outReason:(id *)a4;
+- (BOOL)shouldDisableTouchCancellationForTouch:(id)touch event:(id)event;
+- (BOOL)shouldDismissForReason:(id)reason outReason:(id *)outReason;
 - (SBPresentableSystemDragCancellationHandler)systemDragCancellationHandler;
 - (SBUIPresentableHomeGestureContext)homeGestureContext;
 - (UIEdgeInsets)bannerContentOutsets;
-- (id)scene:(id)a3 handleActions:(id)a4;
+- (id)scene:(id)scene handleActions:(id)actions;
 - (id)transitioningDelegate;
 - (void)_invalidateAllButtonEventActions;
 - (void)_updateAppStatusBarSettingsAssertion;
 - (void)dealloc;
-- (void)homeGestureOwnershipDidChange:(BOOL)a3;
-- (void)homeGesturePerformedForBarSwipeAffordanceView:(id)a3;
-- (void)presentableDidAppearAsBanner:(id)a3;
-- (void)presentableDidDisappearAsBanner:(id)a3 withReason:(id)a4;
-- (void)presentableWillAppearAsBanner:(id)a3;
-- (void)presentableWillDisappearAsBanner:(id)a3 withReason:(id)a4;
-- (void)scene:(id)a3 didUpdateClientSettings:(id)a4;
+- (void)homeGestureOwnershipDidChange:(BOOL)change;
+- (void)homeGesturePerformedForBarSwipeAffordanceView:(id)view;
+- (void)presentableDidAppearAsBanner:(id)banner;
+- (void)presentableDidDisappearAsBanner:(id)banner withReason:(id)reason;
+- (void)presentableWillAppearAsBanner:(id)banner;
+- (void)presentableWillDisappearAsBanner:(id)banner withReason:(id)reason;
+- (void)scene:(id)scene didUpdateClientSettings:(id)settings;
 @end
 
 @implementation SBBannerSourceListenerHostedPresentableViewController
@@ -27,18 +27,18 @@
 {
   v7.receiver = self;
   v7.super_class = SBBannerSourceListenerHostedPresentableViewController;
-  v3 = [(SBBannerSourceListenerHostedPresentableViewController *)&v7 transitioningDelegate];
-  if (!v3)
+  transitioningDelegate = [(SBBannerSourceListenerHostedPresentableViewController *)&v7 transitioningDelegate];
+  if (!transitioningDelegate)
   {
     v4 = objc_alloc_init(SBBannerCustomTransitioningDelegate);
     customTransitioningDelegate = self->_customTransitioningDelegate;
     self->_customTransitioningDelegate = v4;
 
     [(SBBannerSourceListenerHostedPresentableViewController *)self setTransitioningDelegate:self->_customTransitioningDelegate];
-    v3 = self->_customTransitioningDelegate;
+    transitioningDelegate = self->_customTransitioningDelegate;
   }
 
-  return v3;
+  return transitioningDelegate;
 }
 
 - (void)dealloc
@@ -58,17 +58,17 @@
   WeakRetained = objc_loadWeakRetained(&self->_homeGestureContext);
   if ([WeakRetained ownsHomeGesture])
   {
-    v4 = 0;
+    isDraggingDismissalEnabled = 0;
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = SBBannerSourceListenerHostedPresentableViewController;
-    v4 = [(BNBannerSourceListenerHostedPresentableViewController *)&v6 isDraggingDismissalEnabled];
+    isDraggingDismissalEnabled = [(BNBannerSourceListenerHostedPresentableViewController *)&v6 isDraggingDismissalEnabled];
   }
 
-  return v4;
+  return isDraggingDismissalEnabled;
 }
 
 - (BOOL)isDraggingInteractionEnabled
@@ -76,25 +76,25 @@
   WeakRetained = objc_loadWeakRetained(&self->_homeGestureContext);
   if ([WeakRetained ownsHomeGesture])
   {
-    v4 = 0;
+    isDraggingInteractionEnabled = 0;
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = SBBannerSourceListenerHostedPresentableViewController;
-    v4 = [(BNBannerSourceListenerHostedPresentableViewController *)&v6 isDraggingInteractionEnabled];
+    isDraggingInteractionEnabled = [(BNBannerSourceListenerHostedPresentableViewController *)&v6 isDraggingInteractionEnabled];
   }
 
-  return v4;
+  return isDraggingInteractionEnabled;
 }
 
-- (void)presentableWillAppearAsBanner:(id)a3
+- (void)presentableWillAppearAsBanner:(id)banner
 {
-  v4 = a3;
+  bannerCopy = banner;
   v14.receiver = self;
   v14.super_class = SBBannerSourceListenerHostedPresentableViewController;
-  [(BNBannerSourceListenerHostedPresentableViewController *)&v14 presentableWillAppearAsBanner:v4];
+  [(BNBannerSourceListenerHostedPresentableViewController *)&v14 presentableWillAppearAsBanner:bannerCopy];
   if ([(SBBannerSourceListenerHostedPresentableViewController *)self isViewLoaded])
   {
     WeakRetained = objc_loadWeakRetained(&self->_homeGestureContext);
@@ -105,46 +105,46 @@
       self->_barSwipeAffordanceView = v6;
 
       [(SBBarSwipeAffordanceView *)self->_barSwipeAffordanceView addObserver:self];
-      v8 = [(SBBannerSourceListenerHostedPresentableViewController *)self view];
-      [v8 addSubview:self->_barSwipeAffordanceView];
+      view = [(SBBannerSourceListenerHostedPresentableViewController *)self view];
+      [view addSubview:self->_barSwipeAffordanceView];
       v9 = self->_barSwipeAffordanceView;
-      [v8 bounds];
+      [view bounds];
       [(SBBarSwipeAffordanceView *)v9 setFrame:?];
       [(SBBarSwipeAffordanceView *)self->_barSwipeAffordanceView setAutoresizingMask:18];
       v10 = self->_barSwipeAffordanceView;
-      v11 = [(BNBannerSourceListenerPresentableViewController *)self contentView];
-      [(SBBarSwipeAffordanceView *)v10 addSubview:v11];
+      contentView = [(BNBannerSourceListenerPresentableViewController *)self contentView];
+      [(SBBarSwipeAffordanceView *)v10 addSubview:contentView];
 
-      v12 = self;
-      objc_sync_enter(v12);
-      v13 = [(NSMutableArray *)v12->_wantsHomeAffordanceActionsAwaitingResponse lastObject];
-      [WeakRetained setWantsHomeGesture:{objc_msgSend(v13, "wantsHomeGesture")}];
+      selfCopy = self;
+      objc_sync_enter(selfCopy);
+      lastObject = [(NSMutableArray *)selfCopy->_wantsHomeAffordanceActionsAwaitingResponse lastObject];
+      [WeakRetained setWantsHomeGesture:{objc_msgSend(lastObject, "wantsHomeGesture")}];
 
-      objc_sync_exit(v12);
+      objc_sync_exit(selfCopy);
     }
 
     [(SBBannerSourceListenerHostedPresentableViewController *)self _updateAppStatusBarSettingsAssertion];
   }
 }
 
-- (void)presentableDidAppearAsBanner:(id)a3
+- (void)presentableDidAppearAsBanner:(id)banner
 {
   v4.receiver = self;
   v4.super_class = SBBannerSourceListenerHostedPresentableViewController;
-  [(BNBannerSourceListenerHostedPresentableViewController *)&v4 presentableDidAppearAsBanner:a3];
+  [(BNBannerSourceListenerHostedPresentableViewController *)&v4 presentableDidAppearAsBanner:banner];
   [(SBBannerSourceListenerHostedPresentableViewController *)self _updateAppStatusBarSettingsAssertion];
 }
 
-- (void)presentableWillDisappearAsBanner:(id)a3 withReason:(id)a4
+- (void)presentableWillDisappearAsBanner:(id)banner withReason:(id)reason
 {
   v9.receiver = self;
   v9.super_class = SBBannerSourceListenerHostedPresentableViewController;
-  [(BNBannerSourceListenerHostedPresentableViewController *)&v9 presentableWillDisappearAsBanner:a3 withReason:a4];
+  [(BNBannerSourceListenerHostedPresentableViewController *)&v9 presentableWillDisappearAsBanner:banner withReason:reason];
   if ([(SBBannerSourceListenerHostedPresentableViewController *)self isViewLoaded])
   {
-    v5 = [(SBBannerSourceListenerHostedPresentableViewController *)self view];
-    v6 = [(BNBannerSourceListenerPresentableViewController *)self contentView];
-    [v5 addSubview:v6];
+    view = [(SBBannerSourceListenerHostedPresentableViewController *)self view];
+    contentView = [(BNBannerSourceListenerPresentableViewController *)self contentView];
+    [view addSubview:contentView];
 
     [(SBBarSwipeAffordanceView *)self->_barSwipeAffordanceView removeFromSuperview];
     barSwipeAffordanceView = self->_barSwipeAffordanceView;
@@ -159,24 +159,24 @@
   [(SBBannerSourceListenerHostedPresentableViewController *)self _updateAppStatusBarSettingsAssertion];
 }
 
-- (void)presentableDidDisappearAsBanner:(id)a3 withReason:(id)a4
+- (void)presentableDidDisappearAsBanner:(id)banner withReason:(id)reason
 {
   v5.receiver = self;
   v5.super_class = SBBannerSourceListenerHostedPresentableViewController;
-  [(BNBannerSourceListenerHostedPresentableViewController *)&v5 presentableDidDisappearAsBanner:a3 withReason:a4];
+  [(BNBannerSourceListenerHostedPresentableViewController *)&v5 presentableDidDisappearAsBanner:banner withReason:reason];
   [(SBBannerSourceListenerHostedPresentableViewController *)self _updateAppStatusBarSettingsAssertion];
 }
 
-- (id)scene:(id)a3 handleActions:(id)a4
+- (id)scene:(id)scene handleActions:(id)actions
 {
   v52 = *MEMORY[0x277D85DE8];
-  v40 = a3;
-  v41 = a4;
+  sceneCopy = scene;
+  actionsCopy = actions;
   v44 = [MEMORY[0x277CBEB58] set];
-  v6 = [v41 mutableCopy];
+  v6 = [actionsCopy mutableCopy];
   v50.receiver = self;
   v50.super_class = SBBannerSourceListenerHostedPresentableViewController;
-  v42 = [(BNBannerSourceListenerHostedPresentableViewController *)&v50 scene:v40 handleActions:v6];
+  v42 = [(BNBannerSourceListenerHostedPresentableViewController *)&v50 scene:sceneCopy handleActions:v6];
   [v44 unionSet:v42];
   [v6 minusSet:v42];
   v48 = 0u;
@@ -223,31 +223,31 @@
         v14 = v13 != 0;
         if (v13)
         {
-          v15 = [v13 wantsHomeGesture];
+          wantsHomeGesture = [v13 wantsHomeGesture];
           WeakRetained = objc_loadWeakRetained(&self->_homeGestureContext);
-          if (v15 == [WeakRetained ownsHomeGesture])
+          if (wantsHomeGesture == [WeakRetained ownsHomeGesture])
           {
             [v13 setSuccessful:1];
           }
 
           else
           {
-            v17 = self;
-            objc_sync_enter(v17);
-            wantsHomeAffordanceActionsAwaitingResponse = v17->_wantsHomeAffordanceActionsAwaitingResponse;
+            selfCopy = self;
+            objc_sync_enter(selfCopy);
+            wantsHomeAffordanceActionsAwaitingResponse = selfCopy->_wantsHomeAffordanceActionsAwaitingResponse;
             if (!wantsHomeAffordanceActionsAwaitingResponse)
             {
               v19 = objc_alloc_init(MEMORY[0x277CBEB18]);
-              v20 = v17->_wantsHomeAffordanceActionsAwaitingResponse;
-              v17->_wantsHomeAffordanceActionsAwaitingResponse = v19;
+              v20 = selfCopy->_wantsHomeAffordanceActionsAwaitingResponse;
+              selfCopy->_wantsHomeAffordanceActionsAwaitingResponse = v19;
 
-              wantsHomeAffordanceActionsAwaitingResponse = v17->_wantsHomeAffordanceActionsAwaitingResponse;
+              wantsHomeAffordanceActionsAwaitingResponse = selfCopy->_wantsHomeAffordanceActionsAwaitingResponse;
             }
 
-            [(NSMutableArray *)wantsHomeAffordanceActionsAwaitingResponse addObject:v13, v40];
-            objc_sync_exit(v17);
+            [(NSMutableArray *)wantsHomeAffordanceActionsAwaitingResponse addObject:v13, sceneCopy];
+            objc_sync_exit(selfCopy);
 
-            [WeakRetained setWantsHomeGesture:v15];
+            [WeakRetained setWantsHomeGesture:wantsHomeGesture];
           }
         }
 
@@ -290,7 +290,7 @@
             v28 = self->_buttonEventsToActions;
           }
 
-          v31 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v24, "presentableButtonEvent", v40)}];
+          v31 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v24, "presentableButtonEvent", sceneCopy)}];
           [(NSMutableDictionary *)v28 setObject:v24 forKey:v31];
 
           v14 = 1;
@@ -341,8 +341,8 @@
 
         if (v37)
         {
-          v38 = [(SBBannerSourceListenerHostedPresentableViewController *)self systemDragCancellationHandler];
-          [v38 cancelSystemDragForPresentable:self];
+          systemDragCancellationHandler = [(SBBannerSourceListenerHostedPresentableViewController *)self systemDragCancellationHandler];
+          [systemDragCancellationHandler cancelSystemDragForPresentable:self];
         }
 
         else if (!v14)
@@ -350,7 +350,7 @@
           goto LABEL_42;
         }
 
-        [v44 addObject:{v35, v40}];
+        [v44 addObject:{v35, sceneCopy}];
 LABEL_42:
       }
 
@@ -363,28 +363,28 @@ LABEL_42:
   return v44;
 }
 
-- (void)scene:(id)a3 didUpdateClientSettings:(id)a4
+- (void)scene:(id)scene didUpdateClientSettings:(id)settings
 {
-  v6 = a3;
+  sceneCopy = scene;
   v19.receiver = self;
   v19.super_class = SBBannerSourceListenerHostedPresentableViewController;
-  [(BNBannerSourceListenerHostedPresentableViewController *)&v19 scene:v6 didUpdateClientSettings:a4];
-  v7 = [(BNBannerSourceListenerHostedPresentableViewController *)self scene];
-  v8 = [v7 clientSettings];
+  [(BNBannerSourceListenerHostedPresentableViewController *)&v19 scene:sceneCopy didUpdateClientSettings:settings];
+  scene = [(BNBannerSourceListenerHostedPresentableViewController *)self scene];
+  clientSettings = [scene clientSettings];
 
-  if (![v8 conformsToExtension:objc_opt_class()])
+  if (![clientSettings conformsToExtension:objc_opt_class()])
   {
     goto LABEL_9;
   }
 
-  v9 = [v8 wantsDefaultGesturePriorityReason];
+  wantsDefaultGesturePriorityReason = [clientSettings wantsDefaultGesturePriorityReason];
   gestureRecognizerPriorityAssertion = self->_gestureRecognizerPriorityAssertion;
-  if (v9)
+  if (wantsDefaultGesturePriorityReason)
   {
     if (!gestureRecognizerPriorityAssertion)
     {
-      v11 = [SBApp bannerManager];
-      v12 = [v11 acquireGestureRecognizerPriorityAssertionForPresentable:self priority:1 reason:v9];
+      bannerManager = [SBApp bannerManager];
+      v12 = [bannerManager acquireGestureRecognizerPriorityAssertionForPresentable:self priority:1 reason:wantsDefaultGesturePriorityReason];
       v13 = self->_gestureRecognizerPriorityAssertion;
       self->_gestureRecognizerPriorityAssertion = v12;
 
@@ -395,15 +395,15 @@ LABEL_7:
   else if (gestureRecognizerPriorityAssertion)
   {
     [(SBBannerGestureRecognizerPriorityAssertion *)gestureRecognizerPriorityAssertion invalidate];
-    v11 = self->_gestureRecognizerPriorityAssertion;
+    bannerManager = self->_gestureRecognizerPriorityAssertion;
     self->_gestureRecognizerPriorityAssertion = 0;
     goto LABEL_7;
   }
 
 LABEL_9:
-  v14 = [v6 clientSettings];
+  clientSettings2 = [sceneCopy clientSettings];
   v15 = objc_opt_class();
-  v16 = v14;
+  v16 = clientSettings2;
   if (v15)
   {
     if (objc_opt_isKindOfClass())
@@ -430,55 +430,55 @@ LABEL_9:
   }
 }
 
-- (BOOL)shouldDismissForReason:(id)a3 outReason:(id *)a4
+- (BOOL)shouldDismissForReason:(id)reason outReason:(id *)outReason
 {
-  v6 = a3;
-  v7 = [(BNBannerSourceListenerHostedPresentableViewController *)self scene];
-  v8 = [v7 clientSettings];
+  reasonCopy = reason;
+  scene = [(BNBannerSourceListenerHostedPresentableViewController *)self scene];
+  clientSettings = [scene clientSettings];
 
-  if ([v8 conformsToExtension:objc_opt_class()])
+  if ([clientSettings conformsToExtension:objc_opt_class()])
   {
-    v9 = [v8 transitionDismissalPreventionReason];
-    if (v9 && (([v6 isEqualToString:@"dismissOverlays"] & 1) != 0 || objc_msgSend(v6, "isEqualToString:", @"mainScreenAnimationController")))
+    transitionDismissalPreventionReason = [clientSettings transitionDismissalPreventionReason];
+    if (transitionDismissalPreventionReason && (([reasonCopy isEqualToString:@"dismissOverlays"] & 1) != 0 || objc_msgSend(reasonCopy, "isEqualToString:", @"mainScreenAnimationController")))
     {
-      if (a4)
+      if (outReason)
       {
-        v10 = [(BNBannerSourceListenerHostedPresentableViewController *)self scene];
-        v11 = [v10 clientHandle];
-        v12 = [v11 bundleIdentifier];
-        *a4 = [v12 stringByAppendingFormat:@".%@", v9];
+        scene2 = [(BNBannerSourceListenerHostedPresentableViewController *)self scene];
+        clientHandle = [scene2 clientHandle];
+        bundleIdentifier = [clientHandle bundleIdentifier];
+        *outReason = [bundleIdentifier stringByAppendingFormat:@".%@", transitionDismissalPreventionReason];
 
-        LOBYTE(a4) = 0;
+        LOBYTE(outReason) = 0;
       }
     }
 
     else
     {
-      LOBYTE(a4) = 1;
+      LOBYTE(outReason) = 1;
     }
   }
 
   else
   {
-    LOBYTE(a4) = 1;
+    LOBYTE(outReason) = 1;
   }
 
-  return a4;
+  return outReason;
 }
 
-- (void)homeGestureOwnershipDidChange:(BOOL)a3
+- (void)homeGestureOwnershipDidChange:(BOOL)change
 {
   v16 = *MEMORY[0x277D85DE8];
   WeakRetained = objc_loadWeakRetained(&self->_homeGestureContext);
-  v5 = [WeakRetained ownsHomeGesture];
+  ownsHomeGesture = [WeakRetained ownsHomeGesture];
 
-  v6 = self;
-  objc_sync_enter(v6);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v7 = v6->_wantsHomeAffordanceActionsAwaitingResponse;
+  v7 = selfCopy->_wantsHomeAffordanceActionsAwaitingResponse;
   v8 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v8)
   {
@@ -493,7 +493,7 @@ LABEL_9:
           objc_enumerationMutation(v7);
         }
 
-        [*(*(&v11 + 1) + 8 * v10) setSuccessful:{v5 ^ objc_msgSend(*(*(&v11 + 1) + 8 * v10), "wantsHomeGesture", v11) ^ 1}];
+        [*(*(&v11 + 1) + 8 * v10) setSuccessful:{ownsHomeGesture ^ objc_msgSend(*(*(&v11 + 1) + 8 * v10), "wantsHomeGesture", v11) ^ 1}];
         ++v10;
       }
 
@@ -504,62 +504,62 @@ LABEL_9:
     while (v8);
   }
 
-  [(NSMutableArray *)v6->_wantsHomeAffordanceActionsAwaitingResponse removeAllObjects];
-  objc_sync_exit(v6);
+  [(NSMutableArray *)selfCopy->_wantsHomeAffordanceActionsAwaitingResponse removeAllObjects];
+  objc_sync_exit(selfCopy);
 }
 
-- (BOOL)shouldDisableTouchCancellationForTouch:(id)a3 event:(id)a4
+- (BOOL)shouldDisableTouchCancellationForTouch:(id)touch event:(id)event
 {
   if (!self->_supportsCancellingSystemDragGesture)
   {
     return 0;
   }
 
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 view];
-  [v7 locationInView:v8];
+  eventCopy = event;
+  touchCopy = touch;
+  view = [touchCopy view];
+  [touchCopy locationInView:view];
   v10 = v9;
   v12 = v11;
 
-  v13 = [v7 view];
-  v14 = [v13 window];
-  v15 = [v14 windowScene];
-  v16 = [v15 coordinateSpace];
-  v17 = [v7 view];
-  [v16 convertPoint:v17 fromCoordinateSpace:{v10, v12}];
+  view2 = [touchCopy view];
+  window = [view2 window];
+  windowScene = [window windowScene];
+  coordinateSpace = [windowScene coordinateSpace];
+  view3 = [touchCopy view];
+  [coordinateSpace convertPoint:view3 fromCoordinateSpace:{v10, v12}];
   v19 = v18;
   v21 = v20;
 
-  v22 = [(SBBannerSourceListenerHostedPresentableViewController *)self view];
-  v23 = [v22 window];
-  v24 = [v23 windowScene];
-  v25 = [v24 coordinateSpace];
-  v26 = [v7 view];
+  view4 = [(SBBannerSourceListenerHostedPresentableViewController *)self view];
+  window2 = [view4 window];
+  windowScene2 = [window2 windowScene];
+  coordinateSpace2 = [windowScene2 coordinateSpace];
+  view5 = [touchCopy view];
 
-  v27 = [v26 window];
-  v28 = [v27 windowScene];
-  v29 = [v28 coordinateSpace];
-  [v25 convertPoint:v29 fromCoordinateSpace:{v19, v21}];
+  window3 = [view5 window];
+  windowScene3 = [window3 windowScene];
+  coordinateSpace3 = [windowScene3 coordinateSpace];
+  [coordinateSpace2 convertPoint:coordinateSpace3 fromCoordinateSpace:{v19, v21}];
   v31 = v30;
   v33 = v32;
 
-  v34 = [(SBBannerSourceListenerHostedPresentableViewController *)self view];
-  v35 = [v34 window];
-  v36 = [v35 windowScene];
-  v37 = [v36 coordinateSpace];
-  v38 = [(SBBannerSourceListenerHostedPresentableViewController *)self view];
-  [v37 convertPoint:v38 toCoordinateSpace:{v31, v33}];
+  view6 = [(SBBannerSourceListenerHostedPresentableViewController *)self view];
+  window4 = [view6 window];
+  windowScene4 = [window4 windowScene];
+  coordinateSpace4 = [windowScene4 coordinateSpace];
+  view7 = [(SBBannerSourceListenerHostedPresentableViewController *)self view];
+  [coordinateSpace4 convertPoint:view7 toCoordinateSpace:{v31, v33}];
   v40 = v39;
   v42 = v41;
 
-  v43 = [(SBBannerSourceListenerHostedPresentableViewController *)self view];
-  LOBYTE(v34) = [v43 pointInside:v6 withEvent:{v40, v42}];
+  view8 = [(SBBannerSourceListenerHostedPresentableViewController *)self view];
+  LOBYTE(view6) = [view8 pointInside:eventCopy withEvent:{v40, v42}];
 
-  return v34;
+  return view6;
 }
 
-- (void)homeGesturePerformedForBarSwipeAffordanceView:(id)a3
+- (void)homeGesturePerformedForBarSwipeAffordanceView:(id)view
 {
   v4 = objc_alloc(MEMORY[0x277D67D68]);
   v8[0] = MEMORY[0x277D85DD0];
@@ -568,9 +568,9 @@ LABEL_9:
   v8[3] = &unk_2783A9398;
   v8[4] = self;
   v5 = [v4 initWithHandler:v8];
-  v6 = [(BNBannerSourceListenerHostedPresentableViewController *)self scene];
+  scene = [(BNBannerSourceListenerHostedPresentableViewController *)self scene];
   v7 = [objc_alloc(MEMORY[0x277CBEB98]) initWithObjects:{v5, 0}];
-  [v6 sendActions:v7];
+  [scene sendActions:v7];
 }
 
 void __103__SBBannerSourceListenerHostedPresentableViewController_homeGesturePerformedForBarSwipeAffordanceView___block_invoke(uint64_t a1, char a2)
@@ -596,22 +596,22 @@ void __103__SBBannerSourceListenerHostedPresentableViewController_homeGesturePer
 - (BOOL)handleHomeButtonPress
 {
   v3 = [(NSMutableDictionary *)self->_buttonEventsToActions objectForKey:&unk_283370D90];
-  v4 = [v3 isValid];
-  if (v4)
+  isValid = [v3 isValid];
+  if (isValid)
   {
     [v3 handleButtonEvent];
     [(NSMutableDictionary *)self->_buttonEventsToActions removeObjectForKey:&unk_283370D90];
   }
 
-  return v4;
+  return isValid;
 }
 
 - (UIEdgeInsets)bannerContentOutsets
 {
-  v2 = [(BNBannerSourceListenerHostedPresentableViewController *)self scene];
-  v3 = [v2 clientSettings];
+  scene = [(BNBannerSourceListenerHostedPresentableViewController *)self scene];
+  clientSettings = [scene clientSettings];
   v4 = objc_opt_class();
-  v5 = v3;
+  v5 = clientSettings;
   if (v4)
   {
     if (objc_opt_isKindOfClass())
@@ -659,8 +659,8 @@ void __103__SBBannerSourceListenerHostedPresentableViewController_homeGesturePer
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v4 = [(NSMutableDictionary *)buttonEventsToActions allValues];
-    v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    allValues = [(NSMutableDictionary *)buttonEventsToActions allValues];
+    v5 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v5)
     {
       v6 = v5;
@@ -671,7 +671,7 @@ void __103__SBBannerSourceListenerHostedPresentableViewController_homeGesturePer
         {
           if (*v12 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(allValues);
           }
 
           v9 = *(*(&v11 + 1) + 8 * i);
@@ -681,7 +681,7 @@ void __103__SBBannerSourceListenerHostedPresentableViewController_homeGesturePer
           }
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v6 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
       }
 
       while (v6);
@@ -700,24 +700,24 @@ void __103__SBBannerSourceListenerHostedPresentableViewController_homeGesturePer
     return;
   }
 
-  v15 = [(BNBannerSourceListenerHostedPresentableViewController *)self preferredBackgroundActivitiesToSuppress];
-  if ([v15 count] && -[SBBannerSourceListenerHostedPresentableViewController bs_isAppearingOrAppeared](self, "bs_isAppearingOrAppeared"))
+  preferredBackgroundActivitiesToSuppress = [(BNBannerSourceListenerHostedPresentableViewController *)self preferredBackgroundActivitiesToSuppress];
+  if ([preferredBackgroundActivitiesToSuppress count] && -[SBBannerSourceListenerHostedPresentableViewController bs_isAppearingOrAppeared](self, "bs_isAppearingOrAppeared"))
   {
-    v3 = [(UIViewController *)self _sbWindowScene];
-    v4 = [v3 statusBarManager];
-    v5 = [v4 assertionManager];
+    _sbWindowScene = [(UIViewController *)self _sbWindowScene];
+    statusBarManager = [_sbWindowScene statusBarManager];
+    assertionManager = [statusBarManager assertionManager];
 
     v6 = objc_alloc_init(SBMutableStatusBarSettings);
-    [(SBMutableStatusBarSettings *)v6 setBackgroundActivitiesToSuppress:v15];
+    [(SBMutableStatusBarSettings *)v6 setBackgroundActivitiesToSuppress:preferredBackgroundActivitiesToSuppress];
     v7 = objc_opt_class();
     v8 = NSStringFromClass(v7);
-    v9 = [v5 newSettingsAssertionWithSettings:v6 atLevel:8 reason:v8];
+    v9 = [assertionManager newSettingsAssertionWithSettings:v6 atLevel:8 reason:v8];
     appStatusBarSettingsAssertion = self->_appStatusBarSettingsAssertion;
     self->_appStatusBarSettingsAssertion = v9;
 
     v11 = self->_appStatusBarSettingsAssertion;
-    v12 = [objc_alloc(MEMORY[0x277D75AA0]) initWithDefaultParameters];
-    [(SBWindowSceneStatusBarSettingsAssertion *)v11 acquireWithAnimationParameters:v12];
+    initWithDefaultParameters = [objc_alloc(MEMORY[0x277D75AA0]) initWithDefaultParameters];
+    [(SBWindowSceneStatusBarSettingsAssertion *)v11 acquireWithAnimationParameters:initWithDefaultParameters];
 
 LABEL_8:
     goto LABEL_9;
@@ -726,10 +726,10 @@ LABEL_8:
   v13 = self->_appStatusBarSettingsAssertion;
   if (v13)
   {
-    v14 = [objc_alloc(MEMORY[0x277D75AA0]) initWithDefaultParameters];
-    [(SBWindowSceneStatusBarSettingsAssertion *)v13 invalidateWithAnimationParameters:v14];
+    initWithDefaultParameters2 = [objc_alloc(MEMORY[0x277D75AA0]) initWithDefaultParameters];
+    [(SBWindowSceneStatusBarSettingsAssertion *)v13 invalidateWithAnimationParameters:initWithDefaultParameters2];
 
-    v5 = self->_appStatusBarSettingsAssertion;
+    assertionManager = self->_appStatusBarSettingsAssertion;
     self->_appStatusBarSettingsAssertion = 0;
     goto LABEL_8;
   }

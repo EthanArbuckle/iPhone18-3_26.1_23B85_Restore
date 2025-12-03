@@ -1,11 +1,11 @@
 @interface HDSPEnvironment
-+ (id)_sleepTrackingManagerProviderForBehavior:(id)a3;
++ (id)_sleepTrackingManagerProviderForBehavior:(id)behavior;
 + (id)demoModeEnvironment;
 + (id)disabledEnvironment;
 + (id)standardEnvironment;
 - (BOOL)isDemoEnvironment;
 - (BOOL)isEnvironmentReady;
-- (HDSPEnvironment)initWithBehavior:(id)a3 sleepStorageProvider:(id)a4 sleepScheduleModelManagerProvider:(id)a5 sleepSchedulerProvider:(id)a6 sleepServerProvider:(id)a7 sleepCoordinatorProvider:(id)a8 sleepModeManagerProvider:(id)a9 sleepTrackingManagerProvider:(id)a10 goodMorningAlertManagerProvider:(id)a11 chargingReminderManagerProvider:(id)a12 wakeDetectionManagerProvider:(id)a13 wakeUpResultsNotificationManagerProvider:(id)a14 actionManagerProvider:(id)a15 sleepAlarmManagerProvider:(id)a16 healthStoreProvider:(id)a17 contextStoreManagerProvider:(id)a18 biomeManagerProvider:(id)a19 migrationManagerProvider:(id)a20 notificationManagerProvider:(id)a21 notificationListenerProvider:(id)a22 sleepLockScreenManagerProvider:(id)a23 sleepWidgetManagerProvider:(id)a24 idsServiceManagerProvider:(id)a25 diagnosticsProvider:(id)a26 systemMonitorProvider:(id)a27 assertionManager:(id)a28 timeChangeListenerProvider:(id)a29 sensitiveUIMonitorProvider:(id)a30 analyticsManagerProvider:(id)a31 userDefaults:(id)a32 fileManager:(id)a33 currentDateProvider:(id)a34 defaultCallbackScheduler:(id)a35 mutexGenerator:(id)a36;
+- (HDSPEnvironment)initWithBehavior:(id)behavior sleepStorageProvider:(id)provider sleepScheduleModelManagerProvider:(id)managerProvider sleepSchedulerProvider:(id)schedulerProvider sleepServerProvider:(id)serverProvider sleepCoordinatorProvider:(id)coordinatorProvider sleepModeManagerProvider:(id)modeManagerProvider sleepTrackingManagerProvider:(id)self0 goodMorningAlertManagerProvider:(id)self1 chargingReminderManagerProvider:(id)self2 wakeDetectionManagerProvider:(id)self3 wakeUpResultsNotificationManagerProvider:(id)self4 actionManagerProvider:(id)self5 sleepAlarmManagerProvider:(id)self6 healthStoreProvider:(id)self7 contextStoreManagerProvider:(id)self8 biomeManagerProvider:(id)self9 migrationManagerProvider:(id)migrationManagerProvider notificationManagerProvider:(id)a21 notificationListenerProvider:(id)listenerProvider sleepLockScreenManagerProvider:(id)screenManagerProvider sleepWidgetManagerProvider:(id)widgetManagerProvider idsServiceManagerProvider:(id)serviceManagerProvider diagnosticsProvider:(id)diagnosticsProvider systemMonitorProvider:(id)monitorProvider assertionManager:(id)manager timeChangeListenerProvider:(id)changeListenerProvider sensitiveUIMonitorProvider:(id)behavior0 analyticsManagerProvider:(id)behavior1 userDefaults:(id)behavior2 fileManager:(id)behavior3 currentDateProvider:(id)behavior4 defaultCallbackScheduler:(id)behavior5 mutexGenerator:(id)behavior6;
 - (id)_environmentAwareComponents;
 - (id)currentContext;
 - (id)currentSource;
@@ -15,9 +15,9 @@
 - (void)dealloc;
 - (void)environmentDidBecomeReady;
 - (void)environmentShouldMigrateData;
-- (void)perform:(id)a3 withContext:(id)a4;
-- (void)perform:(id)a3 withSource:(id)a4;
-- (void)performWhenEnvironmentIsReady:(id)a3 withContext:(id)a4;
+- (void)perform:(id)perform withContext:(id)context;
+- (void)perform:(id)perform withSource:(id)source;
+- (void)performWhenEnvironmentIsReady:(id)ready withContext:(id)context;
 - (void)prepare;
 - (void)shutdown;
 - (void)systemDidBecomeReady;
@@ -28,62 +28,62 @@
 
 + (id)standardEnvironment
 {
-  v3 = [MEMORY[0x277CCDD30] sharedBehavior];
+  mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
   v32 = [HDSPEnvironment alloc];
-  v4 = [a1 _sleepTrackingManagerProviderForBehavior:v3];
-  v5 = [v3 hksp_supportsGoodMorningAlerts];
+  v4 = [self _sleepTrackingManagerProviderForBehavior:mEMORY[0x277CCDD30]];
+  hksp_supportsGoodMorningAlerts = [mEMORY[0x277CCDD30] hksp_supportsGoodMorningAlerts];
   v6 = &__block_literal_global_323;
-  if (!v5)
+  if (!hksp_supportsGoodMorningAlerts)
   {
     v6 = 0;
   }
 
   v31 = v6;
-  v7 = [v3 hksp_supportsChargingReminders];
+  hksp_supportsChargingReminders = [mEMORY[0x277CCDD30] hksp_supportsChargingReminders];
   v8 = &__block_literal_global_327_0;
-  if (!v7)
+  if (!hksp_supportsChargingReminders)
   {
     v8 = 0;
   }
 
   v30 = v8;
-  v9 = [v3 hksp_supportsWakeDetection];
+  hksp_supportsWakeDetection = [mEMORY[0x277CCDD30] hksp_supportsWakeDetection];
   v10 = &__block_literal_global_331_0;
-  if (!v9)
+  if (!hksp_supportsWakeDetection)
   {
     v10 = 0;
   }
 
   v28 = v10;
-  v11 = [v3 hksp_supportsWakeUpResults];
+  hksp_supportsWakeUpResults = [mEMORY[0x277CCDD30] hksp_supportsWakeUpResults];
   v12 = &__block_literal_global_335_0;
-  if (!v11)
+  if (!hksp_supportsWakeUpResults)
   {
     v12 = 0;
   }
 
   v27 = v12;
-  v13 = [v3 hksp_supportsSleepAlarms];
+  hksp_supportsSleepAlarms = [mEMORY[0x277CCDD30] hksp_supportsSleepAlarms];
   v14 = &__block_literal_global_343_0;
-  if (!v13)
+  if (!hksp_supportsSleepAlarms)
   {
     v14 = 0;
   }
 
   v26 = v14;
-  v15 = [v3 hksp_supportsHealthData];
+  hksp_supportsHealthData = [mEMORY[0x277CCDD30] hksp_supportsHealthData];
   v33 = v4;
-  if (v15)
+  if (hksp_supportsHealthData)
   {
-    v29 = [objc_alloc(MEMORY[0x277D62468]) initWithLocalDeviceHealthStore];
+    initWithLocalDeviceHealthStore = [objc_alloc(MEMORY[0x277D62468]) initWithLocalDeviceHealthStore];
   }
 
   else
   {
-    v29 = 0;
+    initWithLocalDeviceHealthStore = 0;
   }
 
-  if ([v3 hksp_supportsSleepLockScreen])
+  if ([mEMORY[0x277CCDD30] hksp_supportsSleepLockScreen])
   {
     v16 = &__block_literal_global_368_0;
   }
@@ -93,7 +93,7 @@
     v16 = 0;
   }
 
-  if ([v3 hksp_supportsSleepWidget])
+  if ([mEMORY[0x277CCDD30] hksp_supportsSleepWidget])
   {
     v17 = &__block_literal_global_372;
   }
@@ -104,7 +104,7 @@
   }
 
   v18 = objc_alloc_init(HDSPAssertionManager);
-  if ([v3 hksp_supportsDailyAnalytics])
+  if ([mEMORY[0x277CCDD30] hksp_supportsDailyAnalytics])
   {
     v19 = &__block_literal_global_397;
   }
@@ -114,13 +114,13 @@
     v19 = 0;
   }
 
-  v20 = [MEMORY[0x277CBEBD0] hksp_sleepdUserDefaults];
-  v21 = [MEMORY[0x277CCAA00] defaultManager];
+  hksp_sleepdUserDefaults = [MEMORY[0x277CBEBD0] hksp_sleepdUserDefaults];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v22 = HKSPCurrentDateProvider();
   v23 = HKSPUnfairLockGenerator();
-  v24 = [(HDSPEnvironment *)v32 initWithBehavior:v3 sleepStorageProvider:&__block_literal_global_4 sleepScheduleModelManagerProvider:&__block_literal_global_303 sleepSchedulerProvider:&__block_literal_global_307_0 sleepServerProvider:&__block_literal_global_311 sleepCoordinatorProvider:&__block_literal_global_315 sleepModeManagerProvider:&__block_literal_global_319 sleepTrackingManagerProvider:v33 goodMorningAlertManagerProvider:v31 chargingReminderManagerProvider:v30 wakeDetectionManagerProvider:v28 wakeUpResultsNotificationManagerProvider:v27 actionManagerProvider:&__block_literal_global_339_0 sleepAlarmManagerProvider:v26 healthStoreProvider:v29 contextStoreManagerProvider:&__block_literal_global_348 biomeManagerProvider:&__block_literal_global_352 migrationManagerProvider:&__block_literal_global_356 notificationManagerProvider:&__block_literal_global_360 notificationListenerProvider:&__block_literal_global_364_0 sleepLockScreenManagerProvider:v16 sleepWidgetManagerProvider:v17 idsServiceManagerProvider:&__block_literal_global_376 diagnosticsProvider:&__block_literal_global_380 systemMonitorProvider:&__block_literal_global_384 assertionManager:v18 timeChangeListenerProvider:&__block_literal_global_389 sensitiveUIMonitorProvider:&__block_literal_global_393 analyticsManagerProvider:v19 userDefaults:v20 fileManager:v21 currentDateProvider:v22 defaultCallbackScheduler:0 mutexGenerator:v23];
+  v24 = [(HDSPEnvironment *)v32 initWithBehavior:mEMORY[0x277CCDD30] sleepStorageProvider:&__block_literal_global_4 sleepScheduleModelManagerProvider:&__block_literal_global_303 sleepSchedulerProvider:&__block_literal_global_307_0 sleepServerProvider:&__block_literal_global_311 sleepCoordinatorProvider:&__block_literal_global_315 sleepModeManagerProvider:&__block_literal_global_319 sleepTrackingManagerProvider:v33 goodMorningAlertManagerProvider:v31 chargingReminderManagerProvider:v30 wakeDetectionManagerProvider:v28 wakeUpResultsNotificationManagerProvider:v27 actionManagerProvider:&__block_literal_global_339_0 sleepAlarmManagerProvider:v26 healthStoreProvider:initWithLocalDeviceHealthStore contextStoreManagerProvider:&__block_literal_global_348 biomeManagerProvider:&__block_literal_global_352 migrationManagerProvider:&__block_literal_global_356 notificationManagerProvider:&__block_literal_global_360 notificationListenerProvider:&__block_literal_global_364_0 sleepLockScreenManagerProvider:v16 sleepWidgetManagerProvider:v17 idsServiceManagerProvider:&__block_literal_global_376 diagnosticsProvider:&__block_literal_global_380 systemMonitorProvider:&__block_literal_global_384 assertionManager:v18 timeChangeListenerProvider:&__block_literal_global_389 sensitiveUIMonitorProvider:&__block_literal_global_393 analyticsManagerProvider:v19 userDefaults:hksp_sleepdUserDefaults fileManager:defaultManager currentDateProvider:v22 defaultCallbackScheduler:0 mutexGenerator:v23];
 
-  if (v15)
+  if (hksp_supportsHealthData)
   {
   }
 
@@ -328,12 +328,12 @@ HDSPAnalyticsManager *__38__HDSPEnvironment_standardEnvironment__block_invoke_25
   return v3;
 }
 
-+ (id)_sleepTrackingManagerProviderForBehavior:(id)a3
++ (id)_sleepTrackingManagerProviderForBehavior:(id)behavior
 {
-  v3 = a3;
-  if ([v3 hksp_supportsSleepTracking])
+  behaviorCopy = behavior;
+  if ([behaviorCopy hksp_supportsSleepTracking])
   {
-    if ([v3 hksp_supportsAlwaysOnTracking])
+    if ([behaviorCopy hksp_supportsAlwaysOnTracking])
     {
       v4 = 0;
     }
@@ -360,51 +360,51 @@ HDSPSleepTrackingManager *__60__HDSPEnvironment__sleepTrackingManagerProviderFor
   return v3;
 }
 
-- (HDSPEnvironment)initWithBehavior:(id)a3 sleepStorageProvider:(id)a4 sleepScheduleModelManagerProvider:(id)a5 sleepSchedulerProvider:(id)a6 sleepServerProvider:(id)a7 sleepCoordinatorProvider:(id)a8 sleepModeManagerProvider:(id)a9 sleepTrackingManagerProvider:(id)a10 goodMorningAlertManagerProvider:(id)a11 chargingReminderManagerProvider:(id)a12 wakeDetectionManagerProvider:(id)a13 wakeUpResultsNotificationManagerProvider:(id)a14 actionManagerProvider:(id)a15 sleepAlarmManagerProvider:(id)a16 healthStoreProvider:(id)a17 contextStoreManagerProvider:(id)a18 biomeManagerProvider:(id)a19 migrationManagerProvider:(id)a20 notificationManagerProvider:(id)a21 notificationListenerProvider:(id)a22 sleepLockScreenManagerProvider:(id)a23 sleepWidgetManagerProvider:(id)a24 idsServiceManagerProvider:(id)a25 diagnosticsProvider:(id)a26 systemMonitorProvider:(id)a27 assertionManager:(id)a28 timeChangeListenerProvider:(id)a29 sensitiveUIMonitorProvider:(id)a30 analyticsManagerProvider:(id)a31 userDefaults:(id)a32 fileManager:(id)a33 currentDateProvider:(id)a34 defaultCallbackScheduler:(id)a35 mutexGenerator:(id)a36
+- (HDSPEnvironment)initWithBehavior:(id)behavior sleepStorageProvider:(id)provider sleepScheduleModelManagerProvider:(id)managerProvider sleepSchedulerProvider:(id)schedulerProvider sleepServerProvider:(id)serverProvider sleepCoordinatorProvider:(id)coordinatorProvider sleepModeManagerProvider:(id)modeManagerProvider sleepTrackingManagerProvider:(id)self0 goodMorningAlertManagerProvider:(id)self1 chargingReminderManagerProvider:(id)self2 wakeDetectionManagerProvider:(id)self3 wakeUpResultsNotificationManagerProvider:(id)self4 actionManagerProvider:(id)self5 sleepAlarmManagerProvider:(id)self6 healthStoreProvider:(id)self7 contextStoreManagerProvider:(id)self8 biomeManagerProvider:(id)self9 migrationManagerProvider:(id)migrationManagerProvider notificationManagerProvider:(id)a21 notificationListenerProvider:(id)listenerProvider sleepLockScreenManagerProvider:(id)screenManagerProvider sleepWidgetManagerProvider:(id)widgetManagerProvider idsServiceManagerProvider:(id)serviceManagerProvider diagnosticsProvider:(id)diagnosticsProvider systemMonitorProvider:(id)monitorProvider assertionManager:(id)manager timeChangeListenerProvider:(id)changeListenerProvider sensitiveUIMonitorProvider:(id)behavior0 analyticsManagerProvider:(id)behavior1 userDefaults:(id)behavior2 fileManager:(id)behavior3 currentDateProvider:(id)behavior4 defaultCallbackScheduler:(id)behavior5 mutexGenerator:(id)behavior6
 {
   v161 = *MEMORY[0x277D85DE8];
-  v133 = a3;
-  v154 = a4;
-  v155 = a5;
-  v153 = a6;
-  v152 = a7;
-  v151 = a8;
-  v40 = a9;
-  v41 = a10;
-  v42 = a11;
-  v43 = a12;
-  v44 = a13;
-  v45 = a14;
-  v46 = a15;
-  v47 = a16;
-  v132 = a17;
-  v149 = a18;
-  v148 = a19;
-  v147 = a20;
+  behaviorCopy = behavior;
+  providerCopy = provider;
+  managerProviderCopy = managerProvider;
+  schedulerProviderCopy = schedulerProvider;
+  serverProviderCopy = serverProvider;
+  coordinatorProviderCopy = coordinatorProvider;
+  modeManagerProviderCopy = modeManagerProvider;
+  trackingManagerProviderCopy = trackingManagerProvider;
+  alertManagerProviderCopy = alertManagerProvider;
+  reminderManagerProviderCopy = reminderManagerProvider;
+  detectionManagerProviderCopy = detectionManagerProvider;
+  notificationManagerProviderCopy = notificationManagerProvider;
+  actionManagerProviderCopy = actionManagerProvider;
+  alarmManagerProviderCopy = alarmManagerProvider;
+  storeProviderCopy = storeProvider;
+  storeManagerProviderCopy = storeManagerProvider;
+  biomeManagerProviderCopy = biomeManagerProvider;
+  migrationManagerProviderCopy = migrationManagerProvider;
   v146 = a21;
-  v145 = a22;
-  v144 = a23;
-  v143 = a24;
-  v142 = a25;
-  v141 = a26;
-  v140 = a27;
-  v139 = a29;
-  v138 = a30;
-  v137 = a31;
-  v131 = a32;
-  v130 = a33;
-  v136 = a34;
-  v135 = a35;
-  v134 = a36;
+  listenerProviderCopy = listenerProvider;
+  screenManagerProviderCopy = screenManagerProvider;
+  widgetManagerProviderCopy = widgetManagerProvider;
+  serviceManagerProviderCopy = serviceManagerProvider;
+  diagnosticsProviderCopy = diagnosticsProvider;
+  monitorProviderCopy = monitorProvider;
+  changeListenerProviderCopy = changeListenerProvider;
+  iMonitorProviderCopy = iMonitorProvider;
+  analyticsManagerProviderCopy = analyticsManagerProvider;
+  defaultsCopy = defaults;
+  fileManagerCopy = fileManager;
+  dateProviderCopy = dateProvider;
+  schedulerCopy = scheduler;
+  generatorCopy = generator;
   v156.receiver = self;
   v156.super_class = HDSPEnvironment;
   v48 = [(HDSPEnvironment *)&v156 init];
   if (v48)
   {
-    v126 = v44;
-    v129 = v45;
-    v49 = v41;
-    v50 = v40;
+    v126 = detectionManagerProviderCopy;
+    v129 = notificationManagerProviderCopy;
+    v49 = trackingManagerProviderCopy;
+    v50 = modeManagerProviderCopy;
     v51 = HKSPLogForCategory();
     if (os_log_type_enabled(v51, OS_LOG_TYPE_DEFAULT))
     {
@@ -417,10 +417,10 @@ HDSPSleepTrackingManager *__60__HDSPEnvironment__sleepTrackingManagerProviderFor
       _os_log_impl(&dword_269B11000, v51, OS_LOG_TYPE_DEFAULT, "[%{public}@.%p] initializing...", buf, 0x16u);
     }
 
-    objc_storeStrong(&v48->_behavior, a3);
-    if (v135)
+    objc_storeStrong(&v48->_behavior, behavior);
+    if (schedulerCopy)
     {
-      v54 = v135;
+      v54 = schedulerCopy;
       defaultCallbackScheduler = v48->_defaultCallbackScheduler;
       v48->_defaultCallbackScheduler = v54;
     }
@@ -433,17 +433,17 @@ HDSPSleepTrackingManager *__60__HDSPEnvironment__sleepTrackingManagerProviderFor
       v48->_defaultCallbackScheduler = v56;
     }
 
-    v58 = [v136 copy];
+    v58 = [dateProviderCopy copy];
     currentDateProvider = v48->_currentDateProvider;
     v48->_currentDateProvider = v58;
 
-    objc_storeStrong(&v48->_userDefaults, a32);
-    objc_storeStrong(&v48->_fileManager, a33);
+    objc_storeStrong(&v48->_userDefaults, defaults);
+    objc_storeStrong(&v48->_fileManager, fileManager);
     v60 = objc_alloc_init(MEMORY[0x277D2C900]);
     environmentIsReady = v48->_environmentIsReady;
     v48->_environmentIsReady = v60;
 
-    v62 = [v134 copy];
+    v62 = [generatorCopy copy];
     mutexGenerator = v48->_mutexGenerator;
     v48->_mutexGenerator = v62;
 
@@ -451,10 +451,10 @@ HDSPSleepTrackingManager *__60__HDSPEnvironment__sleepTrackingManagerProviderFor
     mutexProvider = v48->_mutexProvider;
     v48->_mutexProvider = v64;
 
-    v66 = v141;
-    if (v141)
+    v66 = diagnosticsProviderCopy;
+    if (diagnosticsProviderCopy)
     {
-      v66 = v141[2]();
+      v66 = diagnosticsProviderCopy[2]();
     }
 
     v67 = v50;
@@ -467,38 +467,38 @@ HDSPSleepTrackingManager *__60__HDSPEnvironment__sleepTrackingManagerProviderFor
     v48->_assertionManager = v69;
 
     [(HDSPDiagnostics *)v48->_diagnostics addProvider:v48->_assertionManager];
-    v71 = v149;
-    if (v149)
+    v71 = storeManagerProviderCopy;
+    if (storeManagerProviderCopy)
     {
-      v71 = v149[2](v149, v48);
+      v71 = storeManagerProviderCopy[2](storeManagerProviderCopy, v48);
     }
 
     contextStoreManager = v48->_contextStoreManager;
     v48->_contextStoreManager = v71;
 
-    v73 = v148;
-    if (v148)
+    v73 = biomeManagerProviderCopy;
+    if (biomeManagerProviderCopy)
     {
-      v73 = v148[2](v148, v48);
+      v73 = biomeManagerProviderCopy[2](biomeManagerProviderCopy, v48);
     }
 
     biomeManager = v48->_biomeManager;
     v48->_biomeManager = v73;
 
-    v75 = v140;
-    if (v140)
+    v75 = monitorProviderCopy;
+    if (monitorProviderCopy)
     {
-      v75 = v140[2]();
+      v75 = monitorProviderCopy[2]();
     }
 
     systemMonitor = v48->_systemMonitor;
     v48->_systemMonitor = v75;
 
     [(HDSPSystemMonitor *)v48->_systemMonitor setDelegate:v48];
-    objc_storeStrong(&v48->_healthStoreProvider, a17);
-    if (v154)
+    objc_storeStrong(&v48->_healthStoreProvider, storeProvider);
+    if (providerCopy)
     {
-      v77 = v154[2](v154, v48);
+      v77 = providerCopy[2](providerCopy, v48);
     }
 
     else
@@ -509,18 +509,18 @@ HDSPSleepTrackingManager *__60__HDSPEnvironment__sleepTrackingManagerProviderFor
     sleepStorage = v48->_sleepStorage;
     v48->_sleepStorage = v77;
 
-    v79 = v147;
-    if (v147)
+    v79 = migrationManagerProviderCopy;
+    if (migrationManagerProviderCopy)
     {
-      v79 = v147[2]();
+      v79 = migrationManagerProviderCopy[2]();
     }
 
     migrationManager = v48->_migrationManager;
     v48->_migrationManager = v79;
 
-    if (v155)
+    if (managerProviderCopy)
     {
-      v81 = v155[2](v155, v48);
+      v81 = managerProviderCopy[2](managerProviderCopy, v48);
     }
 
     else
@@ -531,9 +531,9 @@ HDSPSleepTrackingManager *__60__HDSPEnvironment__sleepTrackingManagerProviderFor
     sleepScheduleModelManager = v48->_sleepScheduleModelManager;
     v48->_sleepScheduleModelManager = v81;
 
-    if (v153)
+    if (schedulerProviderCopy)
     {
-      v83 = v153[2](v153, v48);
+      v83 = schedulerProviderCopy[2](schedulerProviderCopy, v48);
     }
 
     else
@@ -544,9 +544,9 @@ HDSPSleepTrackingManager *__60__HDSPEnvironment__sleepTrackingManagerProviderFor
     sleepScheduler = v48->_sleepScheduler;
     v48->_sleepScheduler = v83;
 
-    if (v151)
+    if (coordinatorProviderCopy)
     {
-      v85 = v151[2](v151, v48);
+      v85 = coordinatorProviderCopy[2](coordinatorProviderCopy, v48);
     }
 
     else
@@ -583,9 +583,9 @@ HDSPSleepTrackingManager *__60__HDSPEnvironment__sleepTrackingManagerProviderFor
     sleepTrackingManager = v48->_sleepTrackingManager;
     v48->_sleepTrackingManager = v89;
 
-    if (v42)
+    if (alertManagerProviderCopy)
     {
-      v91 = v42[2](v42, v48);
+      v91 = alertManagerProviderCopy[2](alertManagerProviderCopy, v48);
     }
 
     else
@@ -596,9 +596,9 @@ HDSPSleepTrackingManager *__60__HDSPEnvironment__sleepTrackingManagerProviderFor
     goodMorningAlertManager = v48->_goodMorningAlertManager;
     v48->_goodMorningAlertManager = v91;
 
-    if (v43)
+    if (reminderManagerProviderCopy)
     {
-      v93 = v43[2](v43, v48);
+      v93 = reminderManagerProviderCopy[2](reminderManagerProviderCopy, v48);
     }
 
     else
@@ -635,18 +635,18 @@ HDSPSleepTrackingManager *__60__HDSPEnvironment__sleepTrackingManagerProviderFor
     wakeDetectionManager = v48->_wakeDetectionManager;
     v48->_wakeDetectionManager = v97;
 
-    v99 = v46;
-    if (v46)
+    v99 = actionManagerProviderCopy;
+    if (actionManagerProviderCopy)
     {
-      v99 = v46[2]();
+      v99 = actionManagerProviderCopy[2]();
     }
 
     actionManager = v48->_actionManager;
     v48->_actionManager = v99;
 
-    if (v47)
+    if (alarmManagerProviderCopy)
     {
-      v101 = v47[2](v47, v48);
+      v101 = alarmManagerProviderCopy[2](alarmManagerProviderCopy, v48);
     }
 
     else
@@ -666,45 +666,45 @@ HDSPSleepTrackingManager *__60__HDSPEnvironment__sleepTrackingManagerProviderFor
     notificationManager = v48->_notificationManager;
     v48->_notificationManager = v103;
 
-    v105 = v145;
-    if (v145)
+    v105 = listenerProviderCopy;
+    if (listenerProviderCopy)
     {
-      v105 = v145[2]();
+      v105 = listenerProviderCopy[2]();
     }
 
     notificationListener = v48->_notificationListener;
     v48->_notificationListener = v105;
 
-    v107 = v144;
-    if (v144)
+    v107 = screenManagerProviderCopy;
+    if (screenManagerProviderCopy)
     {
-      v107 = v144[2]();
+      v107 = screenManagerProviderCopy[2]();
     }
 
     sleepLockScreenManager = v48->_sleepLockScreenManager;
     v48->_sleepLockScreenManager = v107;
 
-    v109 = v143;
-    if (v143)
+    v109 = widgetManagerProviderCopy;
+    if (widgetManagerProviderCopy)
     {
-      v109 = v143[2]();
+      v109 = widgetManagerProviderCopy[2]();
     }
 
     sleepWidgetManager = v48->_sleepWidgetManager;
     v48->_sleepWidgetManager = v109;
 
-    v111 = v142;
-    if (v142)
+    v111 = serviceManagerProviderCopy;
+    if (serviceManagerProviderCopy)
     {
-      v111 = v142[2]();
+      v111 = serviceManagerProviderCopy[2]();
     }
 
     idsServiceManager = v48->_idsServiceManager;
     v48->_idsServiceManager = v111;
 
-    if (v152)
+    if (serverProviderCopy)
     {
-      v113 = v152[2](v152, v48);
+      v113 = serverProviderCopy[2](serverProviderCopy, v48);
     }
 
     else
@@ -716,31 +716,31 @@ HDSPSleepTrackingManager *__60__HDSPEnvironment__sleepTrackingManagerProviderFor
     v48->_sleepServer = v113;
 
     [(HDSPSleepStoreServer *)v48->_sleepServer startListening];
-    v115 = v139;
-    if (v139)
+    v115 = changeListenerProviderCopy;
+    if (changeListenerProviderCopy)
     {
-      v115 = v139[2]();
+      v115 = changeListenerProviderCopy[2]();
     }
 
     timeChangeListener = v48->_timeChangeListener;
     v48->_timeChangeListener = v115;
 
-    v117 = v138;
-    if (v138)
+    v117 = iMonitorProviderCopy;
+    if (iMonitorProviderCopy)
     {
-      v117 = v138[2]();
+      v117 = iMonitorProviderCopy[2]();
     }
 
-    v44 = v126;
+    detectionManagerProviderCopy = v126;
     sensitiveUIMonitor = v48->_sensitiveUIMonitor;
     v48->_sensitiveUIMonitor = v117;
 
-    v119 = v137;
-    v40 = v67;
-    v41 = v49;
-    if (v137)
+    v119 = analyticsManagerProviderCopy;
+    modeManagerProviderCopy = v67;
+    trackingManagerProviderCopy = v49;
+    if (analyticsManagerProviderCopy)
     {
-      v119 = v137[2]();
+      v119 = analyticsManagerProviderCopy[2]();
     }
 
     analyticsManager = v48->_analyticsManager;
@@ -751,7 +751,7 @@ HDSPSleepTrackingManager *__60__HDSPEnvironment__sleepTrackingManagerProviderFor
     v48->_stateMachine = v121;
 
     v123 = v48;
-    v45 = v129;
+    notificationManagerProviderCopy = v129;
   }
 
   v124 = *MEMORY[0x277D85DE8];
@@ -792,13 +792,13 @@ HDSPSleepTrackingManager *__60__HDSPEnvironment__sleepTrackingManagerProviderFor
     _os_log_impl(&dword_269B11000, v3, OS_LOG_TYPE_DEFAULT, "[%{public}@] shutdown", buf, 0xCu);
   }
 
-  v5 = [(HDSPEnvironment *)self _environmentAwareComponents];
+  _environmentAwareComponents = [(HDSPEnvironment *)self _environmentAwareComponents];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __27__HDSPEnvironment_shutdown__block_invoke;
   v7[3] = &unk_279C7BC00;
   v7[4] = self;
-  [v5 na_each:v7];
+  [_environmentAwareComponents na_each:v7];
 
   v6 = *MEMORY[0x277D85DE8];
 }
@@ -812,11 +812,11 @@ void __27__HDSPEnvironment_shutdown__block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (void)performWhenEnvironmentIsReady:(id)a3 withContext:(id)a4
+- (void)performWhenEnvironmentIsReady:(id)ready withContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  readyCopy = ready;
+  contextCopy = context;
+  if (readyCopy)
   {
     objc_initWeak(&location, self);
     environmentIsReady = self->_environmentIsReady;
@@ -825,8 +825,8 @@ void __27__HDSPEnvironment_shutdown__block_invoke(uint64_t a1, void *a2)
     v10[2] = __61__HDSPEnvironment_performWhenEnvironmentIsReady_withContext___block_invoke;
     v10[3] = &unk_279C7BC28;
     objc_copyWeak(&v13, &location);
-    v11 = v7;
-    v12 = v6;
+    v11 = contextCopy;
+    v12 = readyCopy;
     v9 = [(NAFuture *)environmentIsReady addSuccessBlock:v10];
 
     objc_destroyWeak(&v13);
@@ -850,23 +850,23 @@ void __61__HDSPEnvironment_performWhenEnvironmentIsReady_withContext___block_inv
   }
 }
 
-- (void)perform:(id)a3 withSource:(id)a4
+- (void)perform:(id)perform withSource:(id)source
 {
-  v6 = a3;
-  v7 = [HDSPEnvironmentContext contextWithSource:a4];
-  [(HDSPEnvironment *)self perform:v6 withContext:v7];
+  performCopy = perform;
+  v7 = [HDSPEnvironmentContext contextWithSource:source];
+  [(HDSPEnvironment *)self perform:performCopy withContext:v7];
 }
 
-- (void)perform:(id)a3 withContext:(id)a4
+- (void)perform:(id)perform withContext:(id)context
 {
-  v13 = a3;
-  v5 = a4;
-  v6 = [MEMORY[0x277CCACC8] currentThread];
-  v7 = [v6 threadDictionary];
+  performCopy = perform;
+  contextCopy = context;
+  currentThread = [MEMORY[0x277CCACC8] currentThread];
+  threadDictionary = [currentThread threadDictionary];
 
-  if (v5)
+  if (contextCopy)
   {
-    v8 = [v7 objectForKeyedSubscript:@"HDSPEnvironmentContext"];
+    v8 = [threadDictionary objectForKeyedSubscript:@"HDSPEnvironmentContext"];
     v9 = v8;
     if (v8)
     {
@@ -880,37 +880,37 @@ void __61__HDSPEnvironment_performWhenEnvironmentIsReady_withContext___block_inv
 
     v11 = v10;
 
-    [v11 addObject:v5];
-    [v7 setObject:v11 forKeyedSubscript:@"HDSPEnvironmentContext"];
+    [v11 addObject:contextCopy];
+    [threadDictionary setObject:v11 forKeyedSubscript:@"HDSPEnvironmentContext"];
 
-    v13[2]();
-    v12 = [v7 objectForKeyedSubscript:@"HDSPEnvironmentContext"];
+    performCopy[2]();
+    v12 = [threadDictionary objectForKeyedSubscript:@"HDSPEnvironmentContext"];
     [v12 removeLastObject];
   }
 
   else
   {
-    v13[2]();
+    performCopy[2]();
   }
 }
 
 - (id)currentContext
 {
-  v2 = [MEMORY[0x277CCACC8] currentThread];
-  v3 = [v2 threadDictionary];
-  v4 = [v3 objectForKeyedSubscript:@"HDSPEnvironmentContext"];
+  currentThread = [MEMORY[0x277CCACC8] currentThread];
+  threadDictionary = [currentThread threadDictionary];
+  v4 = [threadDictionary objectForKeyedSubscript:@"HDSPEnvironmentContext"];
 
-  v5 = [v4 lastObject];
+  lastObject = [v4 lastObject];
 
-  return v5;
+  return lastObject;
 }
 
 - (id)currentSource
 {
-  v2 = [(HDSPEnvironment *)self currentContext];
-  v3 = [v2 source];
+  currentContext = [(HDSPEnvironment *)self currentContext];
+  source = [currentContext source];
 
-  return v3;
+  return source;
 }
 
 - (void)prepare
@@ -1008,13 +1008,13 @@ void __37__HDSPEnvironment_isEnvironmentReady__block_invoke(uint64_t a1)
     _os_log_impl(&dword_269B11000, v3, OS_LOG_TYPE_DEFAULT, "[%{public}@] environment needs migration", buf, 0xCu);
   }
 
-  v5 = [(HDSPSleepScheduleModelMigrationManager *)self->_migrationManager performDataMigration];
+  performDataMigration = [(HDSPSleepScheduleModelMigrationManager *)self->_migrationManager performDataMigration];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __47__HDSPEnvironment_environmentShouldMigrateData__block_invoke;
   v8[3] = &unk_279C7BC50;
   v8[4] = self;
-  v6 = [v5 addCompletionBlock:v8];
+  v6 = [performDataMigration addCompletionBlock:v8];
 
   v7 = *MEMORY[0x277D85DE8];
 }
@@ -1082,13 +1082,13 @@ void __47__HDSPEnvironment_environmentShouldMigrateData__block_invoke(uint64_t a
 - (void)environmentDidBecomeReady
 {
   v12 = *MEMORY[0x277D85DE8];
-  v3 = [(HDSPEnvironment *)self _environmentAwareComponents];
+  _environmentAwareComponents = [(HDSPEnvironment *)self _environmentAwareComponents];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __44__HDSPEnvironment_environmentDidBecomeReady__block_invoke;
   v9[3] = &unk_279C7BC00;
   v9[4] = self;
-  [v3 na_each:v9];
+  [_environmentAwareComponents na_each:v9];
   v4 = HKSPLogForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -1104,7 +1104,7 @@ void __47__HDSPEnvironment_environmentShouldMigrateData__block_invoke(uint64_t a
   v8[2] = __44__HDSPEnvironment_environmentDidBecomeReady__block_invoke_426;
   v8[3] = &unk_279C7BC00;
   v8[4] = self;
-  [v3 na_each:v8];
+  [_environmentAwareComponents na_each:v8];
   [(NAFuture *)self->_environmentIsReady finishWithNoResult];
 
   v7 = *MEMORY[0x277D85DE8];
@@ -1130,10 +1130,10 @@ void __44__HDSPEnvironment_environmentDidBecomeReady__block_invoke_426(uint64_t 
 
 - (BOOL)isDemoEnvironment
 {
-  v2 = [(HDSPEnvironment *)self behavior];
-  v3 = [v2 hksp_demoMode];
+  behavior = [(HDSPEnvironment *)self behavior];
+  hksp_demoMode = [behavior hksp_demoMode];
 
-  return v3;
+  return hksp_demoMode;
 }
 
 - (id)currentState
@@ -1172,8 +1172,8 @@ uint64_t __31__HDSPEnvironment_currentState__block_invoke(uint64_t a1)
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(HDSPEnvironment *)self currentState];
-  v7 = [v3 stringWithFormat:@"(%@) Current State: %@, System Ready: %d, Environment Ready: %d", v5, v6, -[HDSPEnvironment isSystemReady](self, "isSystemReady"), -[HDSPEnvironment isEnvironmentReady](self, "isEnvironmentReady")];
+  currentState = [(HDSPEnvironment *)self currentState];
+  v7 = [v3 stringWithFormat:@"(%@) Current State: %@, System Ready: %d, Environment Ready: %d", v5, currentState, -[HDSPEnvironment isSystemReady](self, "isSystemReady"), -[HDSPEnvironment isEnvironmentReady](self, "isEnvironmentReady")];
 
   return v7;
 }
@@ -1186,13 +1186,13 @@ uint64_t __31__HDSPEnvironment_currentState__block_invoke(uint64_t a1)
   v4 = NSStringFromClass(v3);
   v15[0] = v4;
   v14[1] = @"Current State";
-  v5 = [(HDSPEnvironment *)self currentState];
-  v6 = [v5 stateName];
-  v7 = v6;
+  currentState = [(HDSPEnvironment *)self currentState];
+  stateName = [currentState stateName];
+  v7 = stateName;
   v8 = @"none";
-  if (v6)
+  if (stateName)
   {
-    v8 = v6;
+    v8 = stateName;
   }
 
   v15[1] = v8;

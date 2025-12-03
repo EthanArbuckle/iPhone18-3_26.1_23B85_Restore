@@ -7,13 +7,13 @@
 - (CGRect)accessibilityFrame
 {
   v2 = *(&self->super.super.super.super.isa + OBJC_IVAR____TtC8StocksUI22StockSectionFooterView_moreLabel);
-  v3 = self;
+  selfCopy = self;
   [v2 accessibilityFrame];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  [*(&v3->super.super.super.super.isa + OBJC_IVAR____TtC8StocksUI22StockSectionFooterView_symbolLabel) accessibilityFrame];
+  [*(&selfCopy->super.super.super.super.isa + OBJC_IVAR____TtC8StocksUI22StockSectionFooterView_symbolLabel) accessibilityFrame];
   v37.origin.x = v12;
   v37.origin.y = v13;
   v37.size.width = v14;
@@ -27,7 +27,7 @@
   y = v33.origin.y;
   width = v33.size.width;
   height = v33.size.height;
-  [*(&v3->super.super.super.super.isa + OBJC_IVAR____TtC8StocksUI22StockSectionFooterView_arrowShapeView) accessibilityFrame];
+  [*(&selfCopy->super.super.super.super.isa + OBJC_IVAR____TtC8StocksUI22StockSectionFooterView_arrowShapeView) accessibilityFrame];
   v38.origin.x = v20;
   v38.origin.y = v21;
   v38.size.width = v22;

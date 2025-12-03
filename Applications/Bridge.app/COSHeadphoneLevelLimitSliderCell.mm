@@ -1,10 +1,10 @@
 @interface COSHeadphoneLevelLimitSliderCell
-- (void)setSeparatorStyle:(int64_t)a3;
+- (void)setSeparatorStyle:(int64_t)style;
 @end
 
 @implementation COSHeadphoneLevelLimitSliderCell
 
-- (void)setSeparatorStyle:(int64_t)a3
+- (void)setSeparatorStyle:(int64_t)style
 {
   v3.receiver = self;
   v3.super_class = COSHeadphoneLevelLimitSliderCell;

@@ -1,22 +1,22 @@
 @interface VCAggregatorAnsweringMachine
-- (VCAggregatorAnsweringMachine)initWithDelegate:(id)a3;
+- (VCAggregatorAnsweringMachine)initWithDelegate:(id)delegate;
 - (id)aggregatedCallReports;
 - (id)answeringMachineAggregatedReport;
 - (id)dispatchedAggregatedCallReport;
 - (void)dealloc;
-- (void)processAnsweringMachineDidStopWithCurrentTime:(double)a3;
-- (void)processAnsweringMachineInitWithPayload:(id)a3 currentTime:(double)a4;
-- (void)processAnsweringMachineRecordingStartWithCurrentTime:(double)a3;
-- (void)processEventWithCategory:(unsigned __int16)a3 type:(unsigned __int16)a4 payload:(id)a5;
+- (void)processAnsweringMachineDidStopWithCurrentTime:(double)time;
+- (void)processAnsweringMachineInitWithPayload:(id)payload currentTime:(double)time;
+- (void)processAnsweringMachineRecordingStartWithCurrentTime:(double)time;
+- (void)processEventWithCategory:(unsigned __int16)category type:(unsigned __int16)type payload:(id)payload;
 @end
 
 @implementation VCAggregatorAnsweringMachine
 
-- (VCAggregatorAnsweringMachine)initWithDelegate:(id)a3
+- (VCAggregatorAnsweringMachine)initWithDelegate:(id)delegate
 {
   v5.receiver = self;
   v5.super_class = VCAggregatorAnsweringMachine;
-  v3 = [(VCAggregatorRecordingAndTranscriptionService *)&v5 initWithDelegate:a3];
+  v3 = [(VCAggregatorRecordingAndTranscriptionService *)&v5 initWithDelegate:delegate];
   if (v3)
   {
     v3->_answeringMachineUsageHistogram = [[VCReportingHistogram alloc] initWithType:94 bucketValues:0];
@@ -37,13 +37,13 @@
   [(VCAggregatorRecordingAndTranscriptionService *)&v3 dealloc];
 }
 
-- (void)processAnsweringMachineInitWithPayload:(id)a3 currentTime:(double)a4
+- (void)processAnsweringMachineInitWithPayload:(id)payload currentTime:(double)time
 {
-  v7 = [objc_msgSend(a3 objectForKeyedSubscript:{@"AMCA", "BOOLValue"}];
-  v8 = [objc_msgSend(a3 objectForKeyedSubscript:{@"AMCMR", "BOOLValue"}];
-  v9 = [objc_msgSend(a3 objectForKeyedSubscript:{@"AMCMC", "BOOLValue"}];
-  self->_answeringMachineSource = [objc_msgSend(a3 objectForKeyedSubscript:{@"AMCS", "unsignedCharValue"}];
-  -[VCHistogram addValue:](self->_answeringMachineUsageHistogram, "addValue:", [objc_msgSend(a3 objectForKeyedSubscript:{@"AMCU", "integerValue"}]);
+  v7 = [objc_msgSend(payload objectForKeyedSubscript:{@"AMCA", "BOOLValue"}];
+  v8 = [objc_msgSend(payload objectForKeyedSubscript:{@"AMCMR", "BOOLValue"}];
+  v9 = [objc_msgSend(payload objectForKeyedSubscript:{@"AMCMC", "BOOLValue"}];
+  self->_answeringMachineSource = [objc_msgSend(payload objectForKeyedSubscript:{@"AMCS", "unsignedCharValue"}];
+  -[VCHistogram addValue:](self->_answeringMachineUsageHistogram, "addValue:", [objc_msgSend(payload objectForKeyedSubscript:{@"AMCU", "integerValue"}]);
   if (!v7)
   {
     if (!v8)
@@ -62,7 +62,7 @@ LABEL_7:
   }
 
   self->_answeringMachineCapabilities |= 1u;
-  self->_answeringMachineAssetDelayTime = [objc_msgSend(a3 objectForKeyedSubscript:{@"AMCAD", "unsignedLongValue"}] / 1000.0;
+  self->_answeringMachineAssetDelayTime = [objc_msgSend(payload objectForKeyedSubscript:{@"AMCAD", "unsignedLongValue"}] / 1000.0;
   if (v8)
   {
     goto LABEL_7;
@@ -76,38 +76,38 @@ LABEL_4:
   }
 
 LABEL_5:
-  self->_answeringMachineCreatedTime = a4;
+  self->_answeringMachineCreatedTime = time;
 }
 
-- (void)processAnsweringMachineRecordingStartWithCurrentTime:(double)a3
+- (void)processAnsweringMachineRecordingStartWithCurrentTime:(double)time
 {
   if ((self->_answeringMachineCapabilities & 1) == 0)
   {
-    self->_answeringMachineAudioBringUpTime = a3 - self->_answeringMachineCreatedTime - self->_answeringMachineEnteredScreeningTime;
+    self->_answeringMachineAudioBringUpTime = time - self->_answeringMachineCreatedTime - self->_answeringMachineEnteredScreeningTime;
   }
 }
 
-- (void)processAnsweringMachineDidStopWithCurrentTime:(double)a3
+- (void)processAnsweringMachineDidStopWithCurrentTime:(double)time
 {
   if ((self->_answeringMachineCapabilities & 2) != 0)
   {
-    self->_answeringMachineRecordingFinalizationTime = a3 - self->_answeringMachineRecordingCleanupStartTime;
+    self->_answeringMachineRecordingFinalizationTime = time - self->_answeringMachineRecordingCleanupStartTime;
   }
 
-  self->_answeringMachineTotalScreeningTime = a3 - self->_answeringMachineCreatedTime - self->_answeringMachineEnteredScreeningTime;
+  self->_answeringMachineTotalScreeningTime = time - self->_answeringMachineCreatedTime - self->_answeringMachineEnteredScreeningTime;
 }
 
-- (void)processEventWithCategory:(unsigned __int16)a3 type:(unsigned __int16)a4 payload:(id)a5
+- (void)processEventWithCategory:(unsigned __int16)category type:(unsigned __int16)type payload:(id)payload
 {
   stateQueue = self->super.super._stateQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __70__VCAggregatorAnsweringMachine_processEventWithCategory_type_payload___block_invoke;
   block[3] = &unk_278BD48B8;
-  v7 = a3;
-  v8 = a4;
+  categoryCopy = category;
+  typeCopy = type;
   block[4] = self;
-  block[5] = a5;
+  block[5] = payload;
   dispatch_sync(stateQueue, block);
 }
 
@@ -138,12 +138,12 @@ LABEL_5:
 - (id)dispatchedAggregatedCallReport
 {
   dispatch_assert_queue_V2(self->super.super._stateQueue);
-  v3 = [(VCAggregatorAnsweringMachine *)self answeringMachineAggregatedReport];
+  answeringMachineAggregatedReport = [(VCAggregatorAnsweringMachine *)self answeringMachineAggregatedReport];
   v5.receiver = self;
   v5.super_class = VCAggregatorAnsweringMachine;
-  [v3 addEntriesFromDictionary:{-[VCAggregatorRecordingAndTranscriptionService dispatchedAggregatedCallReport](&v5, sel_dispatchedAggregatedCallReport)}];
-  [(VCAggregator *)self addAggregateAudioInjectorMetricsToReport:v3];
-  return v3;
+  [answeringMachineAggregatedReport addEntriesFromDictionary:{-[VCAggregatorRecordingAndTranscriptionService dispatchedAggregatedCallReport](&v5, sel_dispatchedAggregatedCallReport)}];
+  [(VCAggregator *)self addAggregateAudioInjectorMetricsToReport:answeringMachineAggregatedReport];
+  return answeringMachineAggregatedReport;
 }
 
 - (id)aggregatedCallReports

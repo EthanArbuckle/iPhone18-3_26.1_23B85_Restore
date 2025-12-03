@@ -1,24 +1,24 @@
 @interface PUPXBarAppearanceImplementationDelegate
-- (BOOL)barAppearanceIsStatusBarVisible:(id)a3;
+- (BOOL)barAppearanceIsStatusBarVisible:(id)visible;
 @end
 
 @implementation PUPXBarAppearanceImplementationDelegate
 
-- (BOOL)barAppearanceIsStatusBarVisible:(id)a3
+- (BOOL)barAppearanceIsStatusBarVisible:(id)visible
 {
-  v3 = [a3 viewController];
-  v4 = [MEMORY[0x1E69DC668] sharedApplication];
-  v5 = [v4 isStatusBarHidden];
+  viewController = [visible viewController];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  isStatusBarHidden = [mEMORY[0x1E69DC668] isStatusBarHidden];
 
-  v6 = [v3 navigationController];
-  v7 = [v6 pu_currentNavigationTransition];
+  navigationController = [viewController navigationController];
+  pu_currentNavigationTransition = [navigationController pu_currentNavigationTransition];
 
-  if (v7)
+  if (pu_currentNavigationTransition)
   {
-    v5 = [v7 wasStatusBarHiddenBeforeTransition];
+    isStatusBarHidden = [pu_currentNavigationTransition wasStatusBarHiddenBeforeTransition];
   }
 
-  return v5 ^ 1;
+  return isStatusBarHidden ^ 1;
 }
 
 @end

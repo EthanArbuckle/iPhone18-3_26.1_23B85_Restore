@@ -1,67 +1,67 @@
 @interface PaymentTransactionAuthentication
-+ (id)_predicateForPaymentTransactionPID:(int64_t)a3;
-+ (id)anyInDatabase:(id)a3 withPaymentTransactionPID:(int64_t)a4;
-+ (id)createIfNotExistInDatabase:(id)a3 withPaymentTransactionPID:(int64_t)a4;
-- (BOOL)addDataCollectedAuthenticationMechanisms:(unint64_t)a3;
-- (BOOL)addProcessedAuthenticationMechanisms:(unint64_t)a3;
++ (id)_predicateForPaymentTransactionPID:(int64_t)d;
++ (id)anyInDatabase:(id)database withPaymentTransactionPID:(int64_t)d;
++ (id)createIfNotExistInDatabase:(id)database withPaymentTransactionPID:(int64_t)d;
+- (BOOL)addDataCollectedAuthenticationMechanisms:(unint64_t)mechanisms;
+- (BOOL)addProcessedAuthenticationMechanisms:(unint64_t)mechanisms;
 - (BOOL)reset;
-- (BOOL)updateAuthenticationComplete:(BOOL)a3;
+- (BOOL)updateAuthenticationComplete:(BOOL)complete;
 @end
 
 @implementation PaymentTransactionAuthentication
 
-+ (id)anyInDatabase:(id)a3 withPaymentTransactionPID:(int64_t)a4
++ (id)anyInDatabase:(id)database withPaymentTransactionPID:(int64_t)d
 {
-  v6 = a3;
-  v7 = [a1 _predicateForPaymentTransactionPID:a4];
-  v8 = [a1 anyInDatabase:v6 predicate:v7];
+  databaseCopy = database;
+  v7 = [self _predicateForPaymentTransactionPID:d];
+  v8 = [self anyInDatabase:databaseCopy predicate:v7];
 
   return v8;
 }
 
-+ (id)createIfNotExistInDatabase:(id)a3 withPaymentTransactionPID:(int64_t)a4
++ (id)createIfNotExistInDatabase:(id)database withPaymentTransactionPID:(int64_t)d
 {
-  v6 = a3;
-  v7 = [a1 anyInDatabase:v6 withPaymentTransactionPID:a4];
+  databaseCopy = database;
+  v7 = [self anyInDatabase:databaseCopy withPaymentTransactionPID:d];
   if (!v7)
   {
     v8 = objc_alloc_init(NSMutableDictionary);
-    [v8 setLongLong:a4 forKey:@"payment_transaction_pid"];
+    [v8 setLongLong:d forKey:@"payment_transaction_pid"];
     v9 = [PaymentTransactionAuthentication alloc];
     v10 = [v8 copy];
-    v7 = [(SQLiteEntity *)v9 initWithPropertyValues:v10 inDatabase:v6];
+    v7 = [(SQLiteEntity *)v9 initWithPropertyValues:v10 inDatabase:databaseCopy];
   }
 
   return v7;
 }
 
-- (BOOL)addProcessedAuthenticationMechanisms:(unint64_t)a3
+- (BOOL)addProcessedAuthenticationMechanisms:(unint64_t)mechanisms
 {
-  v4 = self;
+  selfCopy = self;
   v5 = [(SQLiteEntity *)self valueForProperty:@"processed_auth_mechanisms"];
-  v6 = [v5 integerValue];
+  integerValue = [v5 integerValue];
 
-  v7 = [NSNumber numberWithUnsignedInteger:v6 | a3];
-  LOBYTE(v4) = [(SQLiteEntity *)v4 setValue:v7 forProperty:@"processed_auth_mechanisms"];
+  mechanisms = [NSNumber numberWithUnsignedInteger:integerValue | mechanisms];
+  LOBYTE(selfCopy) = [(SQLiteEntity *)selfCopy setValue:mechanisms forProperty:@"processed_auth_mechanisms"];
 
-  return v4;
+  return selfCopy;
 }
 
-- (BOOL)addDataCollectedAuthenticationMechanisms:(unint64_t)a3
+- (BOOL)addDataCollectedAuthenticationMechanisms:(unint64_t)mechanisms
 {
-  v4 = self;
+  selfCopy = self;
   v5 = [(SQLiteEntity *)self valueForProperty:@"data_collected_auth_mechanisms"];
-  v6 = [v5 integerValue];
+  integerValue = [v5 integerValue];
 
-  v7 = [NSNumber numberWithUnsignedInteger:v6 | a3];
-  LOBYTE(v4) = [(SQLiteEntity *)v4 setValue:v7 forProperty:@"data_collected_auth_mechanisms"];
+  mechanisms = [NSNumber numberWithUnsignedInteger:integerValue | mechanisms];
+  LOBYTE(selfCopy) = [(SQLiteEntity *)selfCopy setValue:mechanisms forProperty:@"data_collected_auth_mechanisms"];
 
-  return v4;
+  return selfCopy;
 }
 
-- (BOOL)updateAuthenticationComplete:(BOOL)a3
+- (BOOL)updateAuthenticationComplete:(BOOL)complete
 {
-  v4 = [NSNumber numberWithBool:a3];
+  v4 = [NSNumber numberWithBool:complete];
   LOBYTE(self) = [(SQLiteEntity *)self setValue:v4 forProperty:@"complete"];
 
   return self;
@@ -86,9 +86,9 @@
   return v3;
 }
 
-+ (id)_predicateForPaymentTransactionPID:(int64_t)a3
++ (id)_predicateForPaymentTransactionPID:(int64_t)d
 {
-  v3 = [NSNumber numberWithLongLong:a3];
+  v3 = [NSNumber numberWithLongLong:d];
   v4 = [SQLiteComparisonPredicate predicateWithProperty:@"payment_transaction_pid" equalToValue:v3];
 
   return v4;

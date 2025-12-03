@@ -1,13 +1,13 @@
 @interface AXBuddySettingsTitleItem
-- (void)registerCellClassWithTableView:(id)a3;
+- (void)registerCellClassWithTableView:(id)view;
 @end
 
 @implementation AXBuddySettingsTitleItem
 
-- (void)registerCellClassWithTableView:(id)a3
+- (void)registerCellClassWithTableView:(id)view
 {
-  v3 = a3;
-  [v3 registerClass:objc_opt_class() forCellReuseIdentifier:@"TitleCellReuseIdentifier"];
+  viewCopy = view;
+  [viewCopy registerClass:objc_opt_class() forCellReuseIdentifier:@"TitleCellReuseIdentifier"];
 }
 
 @end

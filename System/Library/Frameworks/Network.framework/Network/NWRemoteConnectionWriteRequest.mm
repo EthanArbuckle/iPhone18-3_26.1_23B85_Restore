@@ -1,22 +1,22 @@
 @interface NWRemoteConnectionWriteRequest
-- (NWRemoteConnectionWriteRequest)initWithData:(id)a3 clientID:(id)a4;
+- (NWRemoteConnectionWriteRequest)initWithData:(id)data clientID:(id)d;
 @end
 
 @implementation NWRemoteConnectionWriteRequest
 
-- (NWRemoteConnectionWriteRequest)initWithData:(id)a3 clientID:(id)a4
+- (NWRemoteConnectionWriteRequest)initWithData:(id)data clientID:(id)d
 {
   v27 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  dataCopy = data;
+  dCopy = d;
   v22.receiver = self;
   v22.super_class = NWRemoteConnectionWriteRequest;
   v9 = [(NWRemoteConnectionWriteRequest *)&v22 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_data, a3);
-    objc_storeStrong(&v10->_clientID, a4);
+    objc_storeStrong(&v9->_data, data);
+    objc_storeStrong(&v10->_clientID, d);
     v11 = v10;
     goto LABEL_3;
   }

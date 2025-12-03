@@ -1,5 +1,5 @@
 @interface AVCaptureSystemZoomSlider
-- (id)_initWithDevice:(id)a3 action:(id)a4;
+- (id)_initWithDevice:(id)device action:(id)action;
 - (id)actionQueue;
 - (id)description;
 - (id)device;
@@ -8,35 +8,35 @@
 - (id)overlayUpdate;
 - (void)_rebuildOverlayControlIfNecessary;
 - (void)dealloc;
-- (void)enqueueActionWithUpdate:(id)a3;
+- (void)enqueueActionWithUpdate:(id)update;
 - (void)installObservers;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)removeObservers;
-- (void)setDisplayValuesByZoomFactorValue:(id)a3;
-- (void)setMaxVideoZoomFactor:(double)a3;
+- (void)setDisplayValuesByZoomFactorValue:(id)value;
+- (void)setMaxVideoZoomFactor:(double)factor;
 @end
 
 @implementation AVCaptureSystemZoomSlider
 
-- (id)_initWithDevice:(id)a3 action:(id)a4
+- (id)_initWithDevice:(id)device action:(id)action
 {
   v9.receiver = self;
   v9.super_class = AVCaptureSystemZoomSlider;
-  v6 = [(AVCaptureControl *)&v9 initSubclass];
-  if (v6)
+  initSubclass = [(AVCaptureControl *)&v9 initSubclass];
+  if (initSubclass)
   {
-    if ([a3 hasMediaType:*MEMORY[0x1E6987608]])
+    if ([device hasMediaType:*MEMORY[0x1E6987608]])
     {
-      *(v6 + 5) = a3;
-      *(v6 + 6) = [a4 copy];
-      *(v6 + 18) = 0;
-      *(v6 + 89) = 1;
-      [*(v6 + 5) addObserver:v6 forKeyPath:@"activeFormat" options:1 context:AVCaptureSystemZoomSliderDeviceActiveFormatChangedContext];
+      *(initSubclass + 5) = device;
+      *(initSubclass + 6) = [action copy];
+      *(initSubclass + 18) = 0;
+      *(initSubclass + 89) = 1;
+      [*(initSubclass + 5) addObserver:initSubclass forKeyPath:@"activeFormat" options:1 context:AVCaptureSystemZoomSliderDeviceActiveFormatChangedContext];
     }
 
     else
     {
-      v7 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector() userInfo:{0, objc_msgSend(a3, "localizedName")}];
+      v7 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector() userInfo:{0, objc_msgSend(device, "localizedName")}];
 
       if (AVCaptureShouldThrowForAPIViolations())
       {
@@ -48,7 +48,7 @@
     }
   }
 
-  return v6;
+  return initSubclass;
 }
 
 - (void)dealloc
@@ -74,18 +74,18 @@
   os_unfair_lock_lock(&self->_actionLock);
   if (!self->_overlayControl)
   {
-    v3 = [(AVCaptureDevice *)self->_device activeFormat];
-    if (v3)
+    activeFormat = [(AVCaptureDevice *)self->_device activeFormat];
+    if (activeFormat)
     {
-      v4 = v3;
+      v4 = activeFormat;
       maxVideoZoomFactor = self->_maxVideoZoomFactor;
-      v6 = [(AVCaptureDeviceFormat *)v3 systemRecommendedVideoZoomRange];
+      systemRecommendedVideoZoomRange = [(AVCaptureDeviceFormat *)activeFormat systemRecommendedVideoZoomRange];
       v7 = 1.0;
       if (maxVideoZoomFactor <= 1.0)
       {
-        if (v6)
+        if (systemRecommendedVideoZoomRange)
         {
-          [(AVZoomRange *)v6 maxZoomFactor];
+          [(AVZoomRange *)systemRecommendedVideoZoomRange maxZoomFactor];
           v7 = v9;
         }
       }
@@ -123,12 +123,12 @@
 
     self->_overlayControl = 0;
     os_unfair_lock_unlock(&self->_actionLock);
-    v4 = [(AVCaptureControl *)self session];
-    if (v4 && ![(AVCaptureSession *)v4 isBeingConfigured])
+    session = [(AVCaptureControl *)self session];
+    if (session && ![(AVCaptureSession *)session isBeingConfigured])
     {
-      v5 = [(AVCaptureControl *)self overlay];
+      overlay = [(AVCaptureControl *)self overlay];
 
-      [(AVCaptureControlsOverlay *)v5 rebuildControls];
+      [(AVCaptureControlsOverlay *)overlay rebuildControls];
     }
   }
 
@@ -141,11 +141,11 @@
 
 - (id)overlayUpdate
 {
-  v3 = [(AVCaptureSystemZoomSlider *)self overlayControl];
+  overlayControl = [(AVCaptureSystemZoomSlider *)self overlayControl];
   [(AVCaptureDevice *)self->_device videoZoomFactor];
   *&v4 = v4;
 
-  return [v3 updateWithFloatValue:v4];
+  return [overlayControl updateWithFloatValue:v4];
 }
 
 - (id)device
@@ -155,11 +155,11 @@
   return v2;
 }
 
-- (void)setMaxVideoZoomFactor:(double)a3
+- (void)setMaxVideoZoomFactor:(double)factor
 {
-  if (self->_maxVideoZoomFactor != a3)
+  if (self->_maxVideoZoomFactor != factor)
   {
-    self->_maxVideoZoomFactor = a3;
+    self->_maxVideoZoomFactor = factor;
     [(AVCaptureSystemZoomSlider *)self _rebuildOverlayControlIfNecessary];
   }
 }
@@ -171,12 +171,12 @@
   return v2;
 }
 
-- (void)setDisplayValuesByZoomFactorValue:(id)a3
+- (void)setDisplayValuesByZoomFactorValue:(id)value
 {
   if (([(NSDictionary *)self->_displayValuesByZoomFactorValue isEqual:?]& 1) == 0)
   {
 
-    self->_displayValuesByZoomFactorValue = [a3 copy];
+    self->_displayValuesByZoomFactorValue = [value copy];
 
     [(AVCaptureSystemZoomSlider *)self _rebuildOverlayControlIfNecessary];
   }
@@ -222,35 +222,35 @@
   os_unfair_lock_unlock(&self->_actionLock);
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   os_unfair_lock_lock(&self->_actionLock);
   observingDeviceVideoZoomFactor = self->_observingDeviceVideoZoomFactor;
   os_unfair_lock_unlock(&self->_actionLock);
-  if (AVCaptureSystemZoomSliderDeviceVideoZoomFactorChangedContext == a6 && self->_device == a4)
+  if (AVCaptureSystemZoomSliderDeviceVideoZoomFactorChangedContext == context && self->_device == object)
   {
-    v11 = [a5 objectForKeyedSubscript:*MEMORY[0x1E696A4F0]];
+    v11 = [change objectForKeyedSubscript:*MEMORY[0x1E696A4F0]];
     if (observingDeviceVideoZoomFactor && v11 != 0)
     {
       overlayControl = self->_overlayControl;
       [v11 floatValue];
       v14 = [(CAMOverlayServiceSlider *)overlayControl updateWithFloatValue:?];
-      v15 = [(AVCaptureControl *)self overlay];
+      overlay = [(AVCaptureControl *)self overlay];
 
-      [(AVCaptureControlsOverlay *)v15 updateControl:v14];
+      [(AVCaptureControlsOverlay *)overlay updateControl:v14];
     }
   }
 
-  else if (AVCaptureSystemZoomSliderDeviceActiveFormatChangedContext == a6 && self->_device == a4)
+  else if (AVCaptureSystemZoomSliderDeviceActiveFormatChangedContext == context && self->_device == object)
   {
 
     [(AVCaptureSystemZoomSlider *)self _rebuildOverlayControlIfNecessary];
   }
 }
 
-- (void)enqueueActionWithUpdate:(id)a3
+- (void)enqueueActionWithUpdate:(id)update
 {
-  [a3 floatValue];
+  [update floatValue];
   v5 = v4;
   if (v4 >= 1.0)
   {

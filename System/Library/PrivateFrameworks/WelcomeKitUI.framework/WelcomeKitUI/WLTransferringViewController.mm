@@ -1,26 +1,26 @@
 @interface WLTransferringViewController
-- (WLTransferringViewController)initWithSourceDevice:(id)a3 welcomeController:(id)a4 showsTips:(BOOL)a5;
+- (WLTransferringViewController)initWithSourceDevice:(id)device welcomeController:(id)controller showsTips:(BOOL)tips;
 - (void)_cancelRemainingDownloadTimeUpdateTimer;
 - (void)addProgressBar;
 - (void)cancel;
 - (void)dealloc;
 - (void)removeProgressBar;
-- (void)setIsImporting:(BOOL)a3;
-- (void)setProgress:(double)a3;
-- (void)setProgressText:(id)a3;
-- (void)setRemainingDownloadTime:(double)a3;
+- (void)setIsImporting:(BOOL)importing;
+- (void)setProgress:(double)progress;
+- (void)setProgressText:(id)text;
+- (void)setRemainingDownloadTime:(double)time;
 - (void)showActivityIndicatorView;
-- (void)tipsButtonPressed:(id)a3;
+- (void)tipsButtonPressed:(id)pressed;
 - (void)updateProgressText;
 - (void)viewDidLoad;
 @end
 
 @implementation WLTransferringViewController
 
-- (WLTransferringViewController)initWithSourceDevice:(id)a3 welcomeController:(id)a4 showsTips:(BOOL)a5
+- (WLTransferringViewController)initWithSourceDevice:(id)device welcomeController:(id)controller showsTips:(BOOL)tips
 {
-  v5 = a5;
-  v8 = a4;
+  tipsCopy = tips;
+  controllerCopy = controller;
   v9 = WLLocalizedString();
   v10 = MEMORY[0x277D755B8];
   v11 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -31,12 +31,12 @@
 
   if (v13)
   {
-    objc_storeStrong(&v13->_welcomeController, a4);
-    v14 = [(OBBaseWelcomeController *)v13 navigationItem];
-    [v14 setTitle:&stru_2882D7420];
+    objc_storeStrong(&v13->_welcomeController, controller);
+    navigationItem = [(OBBaseWelcomeController *)v13 navigationItem];
+    [navigationItem setTitle:&stru_2882D7420];
 
-    v15 = [(OBBaseWelcomeController *)v13 navigationItem];
-    [v15 setHidesBackButton:1 animated:0];
+    navigationItem2 = [(OBBaseWelcomeController *)v13 navigationItem];
+    [navigationItem2 setHidesBackButton:1 animated:0];
 
     v16 = [MEMORY[0x277D75418] modelSpecificLocalizedStringKeyForKey:@"PROGRESS_TRANSFERRING_TEXT"];
     v17 = WLLocalizedString();
@@ -48,25 +48,25 @@
     importProgressDescription = v13->_importProgressDescription;
     v13->_importProgressDescription = v20;
 
-    if (v5)
+    if (tipsCopy)
     {
-      v22 = [MEMORY[0x277D37650] linkButton];
+      linkButton = [MEMORY[0x277D37650] linkButton];
       v23 = [MEMORY[0x277D75418] modelSpecificLocalizedStringKeyForKey:@"PROGRESS_LEARN_HOW_TO_USE"];
       v24 = WLLocalizedString();
-      [v22 setTitle:v24 forState:0];
+      [linkButton setTitle:v24 forState:0];
 
-      [v22 addTarget:v13 action:sel_tipsButtonPressed_ forControlEvents:64];
+      [linkButton addTarget:v13 action:sel_tipsButtonPressed_ forControlEvents:64];
       v25 = MEMORY[0x277D755B8];
       v26 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v27 = [v25 imageNamed:@"tips" inBundle:v26];
 
-      v28 = [MEMORY[0x277D75230] plainButtonConfiguration];
-      [v28 setImage:v27];
-      [v28 setImagePlacement:1];
-      [v28 setImagePadding:20.0];
-      [v22 setConfiguration:v28];
-      v29 = [(WLTransferringViewController *)v13 buttonTray];
-      [v29 addButton:v22];
+      plainButtonConfiguration = [MEMORY[0x277D75230] plainButtonConfiguration];
+      [plainButtonConfiguration setImage:v27];
+      [plainButtonConfiguration setImagePlacement:1];
+      [plainButtonConfiguration setImagePadding:20.0];
+      [linkButton setConfiguration:plainButtonConfiguration];
+      buttonTray = [(WLTransferringViewController *)v13 buttonTray];
+      [buttonTray addButton:linkButton];
     }
 
     v30 = objc_alloc_init(MEMORY[0x277CCA958]);
@@ -98,8 +98,8 @@
   if (self->_showCancelButton)
   {
     v3 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:1 target:self action:sel_cancel];
-    v4 = [(OBBaseWelcomeController *)self navigationItem];
-    [v4 setLeftBarButtonItem:v3];
+    navigationItem = [(OBBaseWelcomeController *)self navigationItem];
+    [navigationItem setLeftBarButtonItem:v3];
   }
 
   v5 = WLLocalizedString();
@@ -125,8 +125,8 @@
 
   else
   {
-    v5 = [(WLTransferringViewController *)self navigationController];
-    v4 = [v5 popViewControllerAnimated:1];
+    navigationController = [(WLTransferringViewController *)self navigationController];
+    v4 = [navigationController popViewControllerAnimated:1];
   }
 }
 
@@ -141,35 +141,35 @@ void __38__WLTransferringViewController_cancel__block_invoke(uint64_t a1)
   v5 = [objc_alloc(MEMORY[0x277D750E8]) initWithActivityIndicatorStyle:100];
   [v5 startAnimating];
   v3 = [objc_alloc(MEMORY[0x277D751E0]) initWithCustomView:v5];
-  v4 = [(OBBaseWelcomeController *)self navigationItem];
-  [v4 setLeftBarButtonItem:v3];
+  navigationItem = [(OBBaseWelcomeController *)self navigationItem];
+  [navigationItem setLeftBarButtonItem:v3];
 }
 
-- (void)setProgress:(double)a3
+- (void)setProgress:(double)progress
 {
-  self->_progress = a3;
+  self->_progress = progress;
   [(WLProgressBar *)self->_progressBar setProgress:?];
   v5.receiver = self;
   v5.super_class = WLTransferringViewController;
-  [(OBSetupAssistantProgressController *)&v5 setProgress:a3];
+  [(OBSetupAssistantProgressController *)&v5 setProgress:progress];
 }
 
-- (void)setProgressText:(id)a3
+- (void)setProgressText:(id)text
 {
   v4.receiver = self;
   v4.super_class = WLTransferringViewController;
-  [(OBSetupAssistantProgressController *)&v4 setProgressText:a3];
+  [(OBSetupAssistantProgressController *)&v4 setProgressText:text];
   [(WLTransferringViewController *)self _cancelRemainingDownloadTimeUpdateTimer];
 }
 
-- (void)setRemainingDownloadTime:(double)a3
+- (void)setRemainingDownloadTime:(double)time
 {
-  if (a3 < 60.0)
+  if (time < 60.0)
   {
-    a3 = 60.0;
+    time = 60.0;
   }
 
-  self->_remainingDownloadTime = a3;
+  self->_remainingDownloadTime = time;
   if (!self->_remainingDownloadTimeUpdateTimer)
   {
     _WLLog();
@@ -243,10 +243,10 @@ void __57__WLTransferringViewController_setRemainingDownloadTime___block_invoke(
   }
 }
 
-- (void)setIsImporting:(BOOL)a3
+- (void)setIsImporting:(BOOL)importing
 {
-  self->_isImporting = a3;
-  if (a3)
+  self->_isImporting = importing;
+  if (importing)
   {
     v4 = WLLocalizedString();
     [(OBSetupAssistantProgressController *)self setTitle:v4];
@@ -261,11 +261,11 @@ void __57__WLTransferringViewController_setRemainingDownloadTime___block_invoke(
   }
 }
 
-- (void)tipsButtonPressed:(id)a3
+- (void)tipsButtonPressed:(id)pressed
 {
-  v5 = [[WLTipsListViewController alloc] initWithItems];
-  v4 = [(WLTransferringViewController *)self navigationController];
-  [v4 pushViewController:v5 animated:1];
+  initWithItems = [[WLTipsListViewController alloc] initWithItems];
+  navigationController = [(WLTransferringViewController *)self navigationController];
+  [navigationController pushViewController:initWithItems animated:1];
 
   [(WLTransferringViewController *)self addProgressBar];
 }
@@ -287,27 +287,27 @@ void __57__WLTransferringViewController_setRemainingDownloadTime___block_invoke(
   self->_progressBar = v4;
 
   [(WLProgressBar *)self->_progressBar setTranslatesAutoresizingMaskIntoConstraints:0];
-  v6 = [(WLTransferringViewController *)self navigationController];
-  v7 = [v6 view];
+  navigationController = [(WLTransferringViewController *)self navigationController];
+  view = [navigationController view];
 
-  [v7 addSubview:self->_progressBar];
+  [view addSubview:self->_progressBar];
   v19 = MEMORY[0x277CCAAD0];
-  v23 = [(WLProgressBar *)self->_progressBar topAnchor];
-  v22 = [v7 bottomAnchor];
+  topAnchor = [(WLProgressBar *)self->_progressBar topAnchor];
+  bottomAnchor = [view bottomAnchor];
   +[WLProgressBar height];
-  v21 = [v23 constraintEqualToAnchor:v22 constant:-v8];
+  v21 = [topAnchor constraintEqualToAnchor:bottomAnchor constant:-v8];
   v24[0] = v21;
-  v20 = [(WLProgressBar *)self->_progressBar leadingAnchor];
-  v18 = [v7 leadingAnchor];
-  v17 = [v20 constraintEqualToAnchor:v18];
+  leadingAnchor = [(WLProgressBar *)self->_progressBar leadingAnchor];
+  leadingAnchor2 = [view leadingAnchor];
+  v17 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v24[1] = v17;
-  v9 = [(WLProgressBar *)self->_progressBar trailingAnchor];
-  v10 = [v7 trailingAnchor];
-  v11 = [v9 constraintEqualToAnchor:v10];
+  trailingAnchor = [(WLProgressBar *)self->_progressBar trailingAnchor];
+  trailingAnchor2 = [view trailingAnchor];
+  v11 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v24[2] = v11;
-  v12 = [(WLProgressBar *)self->_progressBar bottomAnchor];
-  v13 = [v7 bottomAnchor];
-  v14 = [v12 constraintEqualToAnchor:v13];
+  bottomAnchor2 = [(WLProgressBar *)self->_progressBar bottomAnchor];
+  bottomAnchor3 = [view bottomAnchor];
+  v14 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
   v24[3] = v14;
   v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v24 count:4];
   [v19 activateConstraints:v15];

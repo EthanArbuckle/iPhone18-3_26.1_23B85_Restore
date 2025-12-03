@@ -1,13 +1,13 @@
 @interface PKEpisode
-+ (id)contentFrom:(id)a3;
-+ (id)itemFrom:(id)a3;
-+ (void)fetchEpisodeFrom:(id)a3 completion:(id)a4;
++ (id)contentFrom:(id)from;
++ (id)itemFrom:(id)from;
++ (void)fetchEpisodeFrom:(id)from completion:(id)completion;
 - (NSDate)releaseDate;
 - (NSString)title;
 - (PKEpisode)init;
-- (PKEpisode)initWithTitle:(id)a3 releaseDate:(id)a4 isExplicit:(BOOL)a5 duration:(double)a6 storeId:(id)a7 show:(id)a8 guid:(id)a9 uuid:(id)a10 streamUrl:(id)a11;
+- (PKEpisode)initWithTitle:(id)title releaseDate:(id)date isExplicit:(BOOL)explicit duration:(double)duration storeId:(id)id show:(id)show guid:(id)guid uuid:(id)self0 streamUrl:(id)self1;
 - (id)lookupEpisode;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)updateForDatabaseMatch;
 @end
 
@@ -15,7 +15,7 @@
 
 - (void)updateForDatabaseMatch
 {
-  v2 = self;
+  selfCopy = self;
   sub_25EA0BF20();
 }
 
@@ -35,17 +35,17 @@
   return result;
 }
 
-- (PKEpisode)initWithTitle:(id)a3 releaseDate:(id)a4 isExplicit:(BOOL)a5 duration:(double)a6 storeId:(id)a7 show:(id)a8 guid:(id)a9 uuid:(id)a10 streamUrl:(id)a11
+- (PKEpisode)initWithTitle:(id)title releaseDate:(id)date isExplicit:(BOOL)explicit duration:(double)duration storeId:(id)id show:(id)show guid:(id)guid uuid:(id)self0 streamUrl:(id)self1
 {
-  v39 = a5;
-  v40 = self;
+  explicitCopy = explicit;
+  selfCopy = self;
   v16 = (*(*(__swift_instantiateConcreteTypeFromMangledNameV2(&qword_27FD0FAE8, &qword_25EA22018) - 8) + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
   MEMORY[0x28223BE20]();
   v18 = &v37 - v17;
   v19 = sub_25EA1E648();
   v37 = v20;
   v38 = v19;
-  if (a4)
+  if (date)
   {
     sub_25EA1E4B8();
     v21 = sub_25EA1E4D8();
@@ -58,16 +58,16 @@
     (*(*(v22 - 8) + 56))(v18, 1, 1, v22);
   }
 
-  v23 = a10;
-  if (a9)
+  uuidCopy = uuid;
+  if (guid)
   {
-    a9 = sub_25EA1E648();
+    guid = sub_25EA1E648();
     v25 = v24;
-    if (a10)
+    if (uuid)
     {
 LABEL_6:
       v26 = sub_25EA1E648();
-      v23 = v27;
+      uuidCopy = v27;
       goto LABEL_9;
     }
   }
@@ -75,7 +75,7 @@ LABEL_6:
   else
   {
     v25 = 0;
-    if (a10)
+    if (uuid)
     {
       goto LABEL_6;
     }
@@ -83,12 +83,12 @@ LABEL_6:
 
   v26 = 0;
 LABEL_9:
-  v28 = a7;
-  v29 = a8;
-  v30 = a11;
-  if (v30)
+  idCopy = id;
+  showCopy = show;
+  urlCopy = url;
+  if (urlCopy)
   {
-    v31 = v30;
+    v31 = urlCopy;
     v32 = sub_25EA1E648();
     v34 = v33;
   }
@@ -99,16 +99,16 @@ LABEL_9:
     v34 = 0;
   }
 
-  v35 = sub_25EA0DF8C(v38, v37, v18, v39, v28, v29, a9, v25, a6, v26, v23, v32, v34);
+  v35 = sub_25EA0DF8C(v38, v37, v18, explicitCopy, idCopy, showCopy, guid, v25, duration, v26, uuidCopy, v32, v34);
 
   return v35;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  Episode.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  Episode.encode(with:)(coderCopy);
 }
 
 - (NSString)title
@@ -141,7 +141,7 @@ LABEL_9:
   return v9;
 }
 
-+ (id)contentFrom:(id)a3
++ (id)contentFrom:(id)from
 {
   swift_getObjCClassMetadata();
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27FD0FC80, &qword_25EA225E0);
@@ -153,7 +153,7 @@ LABEL_9:
   return v4;
 }
 
-+ (id)itemFrom:(id)a3
++ (id)itemFrom:(id)from
 {
   v3 = sub_25EA1E628();
   v4 = sub_25EA11454(v3);
@@ -163,18 +163,18 @@ LABEL_9:
 
 - (id)lookupEpisode
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_25EA12318();
 
   return v3;
 }
 
-+ (void)fetchEpisodeFrom:(id)a3 completion:(id)a4
++ (void)fetchEpisodeFrom:(id)from completion:(id)completion
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(completion);
   _Block_copy(v5);
-  v6 = a3;
-  sub_25EA1D098(a3, v5);
+  fromCopy = from;
+  sub_25EA1D098(from, v5);
   _Block_release(v5);
   _Block_release(v5);
 }

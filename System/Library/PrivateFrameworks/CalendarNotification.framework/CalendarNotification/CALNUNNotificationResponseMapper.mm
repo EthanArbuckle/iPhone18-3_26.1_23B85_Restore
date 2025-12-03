@@ -1,61 +1,61 @@
 @interface CALNUNNotificationResponseMapper
-+ (id)_calnNotificationActionIdentifierFromUNNotificationActionIdentifier:(id)a3;
-- (CALNUNNotificationResponseMapper)initWithNotificationMapper:(id)a3;
-- (id)calnNotificationResponseFromUNNotificationResponse:(id)a3;
++ (id)_calnNotificationActionIdentifierFromUNNotificationActionIdentifier:(id)identifier;
+- (CALNUNNotificationResponseMapper)initWithNotificationMapper:(id)mapper;
+- (id)calnNotificationResponseFromUNNotificationResponse:(id)response;
 @end
 
 @implementation CALNUNNotificationResponseMapper
 
-- (CALNUNNotificationResponseMapper)initWithNotificationMapper:(id)a3
+- (CALNUNNotificationResponseMapper)initWithNotificationMapper:(id)mapper
 {
-  v5 = a3;
+  mapperCopy = mapper;
   v9.receiver = self;
   v9.super_class = CALNUNNotificationResponseMapper;
   v6 = [(CALNUNNotificationResponseMapper *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_notificationMapper, a3);
+    objc_storeStrong(&v6->_notificationMapper, mapper);
   }
 
   return v7;
 }
 
-- (id)calnNotificationResponseFromUNNotificationResponse:(id)a3
+- (id)calnNotificationResponseFromUNNotificationResponse:(id)response
 {
-  v4 = a3;
-  v5 = [(CALNUNNotificationResponseMapper *)self notificationMapper];
-  v6 = [v4 notification];
-  v7 = [v5 calnNotificationFromUNNotification:v6];
+  responseCopy = response;
+  notificationMapper = [(CALNUNNotificationResponseMapper *)self notificationMapper];
+  notification = [responseCopy notification];
+  v7 = [notificationMapper calnNotificationFromUNNotification:notification];
 
   v8 = objc_opt_class();
-  v9 = [v4 actionIdentifier];
-  v10 = [v8 _calnNotificationActionIdentifierFromUNNotificationActionIdentifier:v9];
+  actionIdentifier = [responseCopy actionIdentifier];
+  v10 = [v8 _calnNotificationActionIdentifierFromUNNotificationActionIdentifier:actionIdentifier];
 
-  v11 = [v4 originIdentifier];
-  v12 = [v4 targetConnectionEndpoint];
+  originIdentifier = [responseCopy originIdentifier];
+  targetConnectionEndpoint = [responseCopy targetConnectionEndpoint];
 
-  v13 = [CALNNotificationResponse responseWithNotification:v7 actionIdentifier:v10 originIdentifier:v11 targetConnectionEndpoint:v12];
+  v13 = [CALNNotificationResponse responseWithNotification:v7 actionIdentifier:v10 originIdentifier:originIdentifier targetConnectionEndpoint:targetConnectionEndpoint];
 
   return v13;
 }
 
-+ (id)_calnNotificationActionIdentifierFromUNNotificationActionIdentifier:(id)a3
++ (id)_calnNotificationActionIdentifierFromUNNotificationActionIdentifier:(id)identifier
 {
-  v3 = a3;
-  if ([(__CFString *)v3 isEqualToString:*MEMORY[0x277CE20E8]])
+  identifierCopy = identifier;
+  if ([(__CFString *)identifierCopy isEqualToString:*MEMORY[0x277CE20E8]])
   {
     v4 = @"com.apple.CALNNotificationDefaultActionIdentifier";
   }
 
-  else if ([(__CFString *)v3 isEqualToString:*MEMORY[0x277CE20F0]])
+  else if ([(__CFString *)identifierCopy isEqualToString:*MEMORY[0x277CE20F0]])
   {
     v4 = @"com.apple.CALNNotificationDismissActionIdentifier";
   }
 
   else
   {
-    v4 = v3;
+    v4 = identifierCopy;
   }
 
   v5 = v4;

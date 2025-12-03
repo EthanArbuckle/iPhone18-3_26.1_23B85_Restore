@@ -1,11 +1,11 @@
 @interface CRLWPRuleOffset
 + (id)ruleOffset;
-+ (id)ruleOffsetWithDX:(double)a3 dY:(double)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)ruleOffsetWithDX:(double)x dY:(double)y;
+- (BOOL)isEqual:(id)equal;
 - (CGPoint)pointValue;
 - (CGSize)sizeValue;
-- (CRLWPRuleOffset)initWithDX:(double)a3 dY:(double)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CRLWPRuleOffset)initWithDX:(double)x dY:(double)y;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -18,28 +18,28 @@
   return v2;
 }
 
-+ (id)ruleOffsetWithDX:(double)a3 dY:(double)a4
++ (id)ruleOffsetWithDX:(double)x dY:(double)y
 {
-  v4 = [objc_alloc(objc_opt_class()) initWithDX:a3 dY:a4];
+  v4 = [objc_alloc(objc_opt_class()) initWithDX:x dY:y];
 
   return v4;
 }
 
-- (CRLWPRuleOffset)initWithDX:(double)a3 dY:(double)a4
+- (CRLWPRuleOffset)initWithDX:(double)x dY:(double)y
 {
   v7.receiver = self;
   v7.super_class = CRLWPRuleOffset;
   result = [(CRLWPRuleOffset *)&v7 init];
   if (result)
   {
-    result->_dX = a3;
-    result->_dY = a4;
+    result->_dX = x;
+    result->_dY = y;
   }
 
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   dX = self->_dX;
@@ -48,11 +48,11 @@
   return [v4 initWithDX:dX dY:dY];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  v6 = sub_100014370(v5, v4);
+  v6 = sub_100014370(v5, equalCopy);
   v7 = v6;
   if (v6 && (dX = self->_dX, [v6 dX], dX == v9))
   {

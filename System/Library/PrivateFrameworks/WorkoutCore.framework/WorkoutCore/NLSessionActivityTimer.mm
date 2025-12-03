@@ -1,18 +1,18 @@
 @interface NLSessionActivityTimer
-- (NLSessionActivityTimer)initWithFireInterval:(double)a3;
+- (NLSessionActivityTimer)initWithFireInterval:(double)interval;
 - (NLSessionActivityTimerDelegate)delegate;
 - (double)elapsedTime;
-- (void)_timerFired:(id)a3;
+- (void)_timerFired:(id)fired;
 - (void)start;
 - (void)stop;
 @end
 
 @implementation NLSessionActivityTimer
 
-- (NLSessionActivityTimer)initWithFireInterval:(double)a3
+- (NLSessionActivityTimer)initWithFireInterval:(double)interval
 {
   v8 = a2;
-  v7 = a3;
+  intervalCopy = interval;
   v9 = 0;
   v6.receiver = self;
   v6.super_class = NLSessionActivityTimer;
@@ -21,7 +21,7 @@
   objc_storeStrong(&v9, v5);
   if (v5)
   {
-    v9->_fireInterval = v7;
+    v9->_fireInterval = intervalCopy;
   }
 
   v4 = MEMORY[0x277D82BE0](v9);
@@ -31,20 +31,20 @@
 
 - (void)start
 {
-  v17 = self;
+  selfCopy = self;
   v16[1] = a2;
-  if (!self->_startDate && !v17->_endDate)
+  if (!self->_startDate && !selfCopy->_endDate)
   {
-    v2 = [MEMORY[0x277CBEAA8] date];
-    startDate = v17->_startDate;
-    v17->_startDate = v2;
+    date = [MEMORY[0x277CBEAA8] date];
+    startDate = selfCopy->_startDate;
+    selfCopy->_startDate = date;
     MEMORY[0x277D82BD8](startDate);
     v4 = [objc_alloc(MEMORY[0x277CF0B50]) initWithIdentifier:@"NLSessionActivityTimer"];
-    timer = v17->_timer;
-    v17->_timer = v4;
+    timer = selfCopy->_timer;
+    selfCopy->_timer = v4;
     MEMORY[0x277D82BD8](timer);
-    v9 = v17->_timer;
-    fireInterval = v17->_fireInterval;
+    v9 = selfCopy->_timer;
+    fireInterval = selfCopy->_fireInterval;
     v7 = MEMORY[0x277D85CD0];
     v6 = MEMORY[0x277D85CD0];
     v10 = v7;
@@ -53,7 +53,7 @@
     v13 = 0;
     v14 = __31__NLSessionActivityTimer_start__block_invoke;
     v15 = &unk_277D88E30;
-    v16[0] = MEMORY[0x277D82BE0](v17);
+    v16[0] = MEMORY[0x277D82BE0](selfCopy);
     [(BSAbsoluteMachTimer *)v9 scheduleRepeatingWithFireInterval:v10 repeatInterval:&v11 leewayInterval:0.0 queue:fireInterval handler:0.03];
     MEMORY[0x277D82BD8](v10);
     objc_storeStrong(v16, 0);
@@ -73,9 +73,9 @@ void __31__NLSessionActivityTimer_start__block_invoke(id *a1, void *a2)
 {
   if (self->_startDate && !self->_endDate)
   {
-    v2 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     endDate = self->_endDate;
-    self->_endDate = v2;
+    self->_endDate = date;
     MEMORY[0x277D82BD8](endDate);
     if (self->_timer)
     {
@@ -98,30 +98,30 @@ void __31__NLSessionActivityTimer_start__block_invoke(id *a1, void *a2)
 
     else
     {
-      v5 = [MEMORY[0x277CBEAA8] date];
-      [v5 timeIntervalSinceDate:self->_startDate];
+      date = [MEMORY[0x277CBEAA8] date];
+      [date timeIntervalSinceDate:self->_startDate];
       v6 = v3;
-      MEMORY[0x277D82BD8](v5);
+      MEMORY[0x277D82BD8](date);
     }
   }
 
   return v6;
 }
 
-- (void)_timerFired:(id)a3
+- (void)_timerFired:(id)fired
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v4 = [(NLSessionActivityTimer *)v7 delegate];
+  objc_storeStrong(location, fired);
+  delegate = [(NLSessionActivityTimer *)selfCopy delegate];
   v5 = objc_opt_respondsToSelector();
-  MEMORY[0x277D82BD8](v4);
+  MEMORY[0x277D82BD8](delegate);
   if (v5)
   {
-    v3 = [(NLSessionActivityTimer *)v7 delegate];
-    [(NLSessionActivityTimerDelegate *)v3 activityTimerFired:v7];
-    MEMORY[0x277D82BD8](v3);
+    delegate2 = [(NLSessionActivityTimer *)selfCopy delegate];
+    [(NLSessionActivityTimerDelegate *)delegate2 activityTimerFired:selfCopy];
+    MEMORY[0x277D82BD8](delegate2);
   }
 
   objc_storeStrong(location, 0);

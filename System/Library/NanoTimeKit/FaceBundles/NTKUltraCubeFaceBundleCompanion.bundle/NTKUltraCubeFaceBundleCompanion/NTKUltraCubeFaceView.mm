@@ -1,50 +1,50 @@
 @interface NTKUltraCubeFaceView
-+ (id)_swatchForEditModeDependsOnOptions:(int64_t)a3 forDevice:(id)a4;
-- (BOOL)_tryLoadPhoto:(id)a3 animated:(BOOL)a4;
-- (BOOL)_validateEditOption:(id)a3 forMode:(int64_t)a4;
-- (CGAffineTransform)ctmForDrawingImage:(SEL)a3 uprightInRect:(id)a4;
-- (CGRect)dateComplicationFrameForUnitBaseline:(double)a3;
-- (NTKUltraCubeFaceView)initWithFaceStyle:(int64_t)a3 forDevice:(id)a4 clientIdentifier:(id)a5;
++ (id)_swatchForEditModeDependsOnOptions:(int64_t)options forDevice:(id)device;
+- (BOOL)_tryLoadPhoto:(id)photo animated:(BOOL)animated;
+- (BOOL)_validateEditOption:(id)option forMode:(int64_t)mode;
+- (CGAffineTransform)ctmForDrawingImage:(SEL)image uprightInRect:(id)rect;
+- (CGRect)dateComplicationFrameForUnitBaseline:(double)baseline;
+- (NTKUltraCubeFaceView)initWithFaceStyle:(int64_t)style forDevice:(id)device clientIdentifier:(id)identifier;
 - (id)_cloneActiveContentView;
 - (id)_currentOverrideDate;
-- (id)_newContentViewWithRole:(unint64_t)a3;
+- (id)_newContentViewWithRole:(unint64_t)role;
 - (id)_snapshotDateComplicationLabel;
-- (id)_swatchImageForEditOption:(id)a3 mode:(int64_t)a4 withSelectedOptions:(id)a5 refreshHandler:(id)a6;
-- (id)_swatchKeyForTypeface:(unint64_t)a3 pigmentName:(id)a4 colorEffect:(unint64_t)a5;
+- (id)_swatchImageForEditOption:(id)option mode:(int64_t)mode withSelectedOptions:(id)options refreshHandler:(id)handler;
+- (id)_swatchKeyForTypeface:(unint64_t)typeface pigmentName:(id)name colorEffect:(unint64_t)effect;
 - (id)createFaceColorPalette;
 - (id)dateComplicationFont;
 - (unint64_t)colorEffect;
 - (void)_applyColorEffect;
 - (void)_applyFrozen;
-- (void)_applyOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
+- (void)_applyOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot;
 - (void)_applyPause;
 - (void)_clearDeprecationWarning;
 - (void)_hideNoPhotoUI;
 - (void)_loadActiveViewIfNeeded;
-- (void)_loadNextPhotoAnimated:(BOOL)a3;
-- (void)_loadPhoto:(id)a3 animated:(BOOL)a4;
+- (void)_loadNextPhotoAnimated:(BOOL)animated;
+- (void)_loadPhoto:(id)photo animated:(BOOL)animated;
 - (void)_loadSnapshotContentViews;
-- (void)_newGradientViewsWithColor:(id)a3 timeElementUnitBaseline:(double)a4 topGradientView:(id *)a5 bottomGradientView:(id *)a6;
-- (void)_prepareSwatchImagesForSelectedOptions:(id)a3;
-- (void)_reloadSwatches:(id)a3;
+- (void)_newGradientViewsWithColor:(id)color timeElementUnitBaseline:(double)baseline topGradientView:(id *)view bottomGradientView:(id *)gradientView;
+- (void)_prepareSwatchImagesForSelectedOptions:(id)options;
+- (void)_reloadSwatches:(id)swatches;
 - (void)_setDeprecationWarning;
 - (void)_showNoPhotoUI;
 - (void)_unloadActiveViews;
 - (void)_unloadSnapshotContentViews;
 - (void)_updateContents;
-- (void)_updateForResourceDirectoryChange:(id)a3;
-- (void)setOverrideDate:(id)a3 duration:(double)a4;
-- (void)setTimeOffset:(double)a3;
+- (void)_updateForResourceDirectoryChange:(id)change;
+- (void)setOverrideDate:(id)date duration:(double)duration;
+- (void)setTimeOffset:(double)offset;
 @end
 
 @implementation NTKUltraCubeFaceView
 
-- (NTKUltraCubeFaceView)initWithFaceStyle:(int64_t)a3 forDevice:(id)a4 clientIdentifier:(id)a5
+- (NTKUltraCubeFaceView)initWithFaceStyle:(int64_t)style forDevice:(id)device clientIdentifier:(id)identifier
 {
-  v8 = a4;
+  deviceCopy = device;
   v19.receiver = self;
   v19.super_class = NTKUltraCubeFaceView;
-  v9 = [(NTKUltraCubeFaceView *)&v19 initWithFaceStyle:a3 forDevice:v8 clientIdentifier:a5];
+  v9 = [(NTKUltraCubeFaceView *)&v19 initWithFaceStyle:style forDevice:deviceCopy clientIdentifier:identifier];
   if (v9)
   {
     v10 = +[NSMapTable strongToStrongObjectsMapTable];
@@ -60,7 +60,7 @@
     v9->_isTimeLabelFront = 1;
     v9->_isPaused = 1;
     v9->_isNoPhotosViewVisible = 0;
-    v14 = [[NTKUltraCubeFaceViewComplicationFactory alloc] initForDevice:v8];
+    v14 = [[NTKUltraCubeFaceViewComplicationFactory alloc] initForDevice:deviceCopy];
     v20[0] = NTKComplicationSlotBottom;
     v20[1] = NTKComplicationSlotDate;
     v15 = [NSArray arrayWithObjects:v20 count:2];
@@ -105,12 +105,12 @@
   [(NTKUltraCubeFaceView *)self _applyPause];
 }
 
-- (void)setOverrideDate:(id)a3 duration:(double)a4
+- (void)setOverrideDate:(id)date duration:(double)duration
 {
-  v7 = a3;
-  if (self->_overrideDate != v7)
+  dateCopy = date;
+  if (self->_overrideDate != dateCopy)
   {
-    objc_storeStrong(&self->_overrideDate, a3);
+    objc_storeStrong(&self->_overrideDate, date);
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
@@ -132,8 +132,8 @@
           }
 
           v13 = *(*(&v15 + 1) + 8 * v12);
-          v14 = [(NTKUltraCubeFaceView *)self _currentOverrideDate];
-          [v13 setOverrideDate:v14 duration:a4];
+          _currentOverrideDate = [(NTKUltraCubeFaceView *)self _currentOverrideDate];
+          [v13 setOverrideDate:_currentOverrideDate duration:duration];
 
           v12 = v12 + 1;
         }
@@ -147,11 +147,11 @@
   }
 }
 
-- (void)setTimeOffset:(double)a3
+- (void)setTimeOffset:(double)offset
 {
-  if (self->_timeOffset != a3)
+  if (self->_timeOffset != offset)
   {
-    self->_timeOffset = a3;
+    self->_timeOffset = offset;
     v9 = 0u;
     v10 = 0u;
     v11 = 0u;
@@ -185,13 +185,13 @@
   }
 }
 
-- (void)_updateForResourceDirectoryChange:(id)a3
+- (void)_updateForResourceDirectoryChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v9.receiver = self;
   v9.super_class = NTKUltraCubeFaceView;
-  [(NTKUltraCubeFaceView *)&v9 _updateForResourceDirectoryChange:v4];
-  v5 = [(NTKUltraCubeFaceView *)self resourceDirectory];
+  [(NTKUltraCubeFaceView *)&v9 _updateForResourceDirectoryChange:changeCopy];
+  resourceDirectory = [(NTKUltraCubeFaceView *)self resourceDirectory];
   v6 = NTKEqualStrings();
 
   if ((v6 & 1) == 0)
@@ -199,11 +199,11 @@
     v7 = _NTKLoggingObjectForDomain();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [(NTKUltraCubeFaceView *)self resourceDirectory];
+      resourceDirectory2 = [(NTKUltraCubeFaceView *)self resourceDirectory];
       *buf = 138412546;
-      v11 = v4;
+      v11 = changeCopy;
       v12 = 2112;
-      v13 = v8;
+      v13 = resourceDirectory2;
       _os_log_impl(&dword_0, v7, OS_LOG_TYPE_DEFAULT, "_updateForResourceDirectoryChange: change resource directory from %@ to %@", buf, 0x16u);
     }
 
@@ -211,24 +211,24 @@
   }
 }
 
-- (void)_applyOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v8 = a3;
+  optionCopy = option;
   v19.receiver = self;
   v19.super_class = NTKUltraCubeFaceView;
-  [(NTKUltraCubeFaceView *)&v19 _applyOption:v8 forCustomEditMode:a4 slot:a5];
-  switch(a4)
+  [(NTKUltraCubeFaceView *)&v19 _applyOption:optionCopy forCustomEditMode:mode slot:slot];
+  switch(mode)
   {
     case 10:
       goto LABEL_13;
     case 15:
-      self->_colorEffect = [v8 colorEffect];
+      self->_colorEffect = [optionCopy colorEffect];
 LABEL_13:
       [(NTKUltraCubeFaceView *)self _applyColorEffect];
       break;
     case 13:
-      v9 = [v8 typeface];
-      self->_typeface = v9;
+      typeface = [optionCopy typeface];
+      self->_typeface = typeface;
       v15 = 0u;
       v16 = 0u;
       v17 = 0u;
@@ -248,7 +248,7 @@ LABEL_13:
               objc_enumerationMutation(v10);
             }
 
-            [*(*(&v15 + 1) + 8 * i) setTypeface:{v9, v15}];
+            [*(*(&v15 + 1) + 8 * i) setTypeface:{typeface, v15}];
           }
 
           v12 = [(NSMutableArray *)v10 countByEnumeratingWithState:&v15 objects:v20 count:16];
@@ -261,23 +261,23 @@ LABEL_13:
   }
 }
 
-+ (id)_swatchForEditModeDependsOnOptions:(int64_t)a3 forDevice:(id)a4
++ (id)_swatchForEditModeDependsOnOptions:(int64_t)options forDevice:(id)device
 {
-  if ((a3 - 12) > 3)
+  if ((options - 12) > 3)
   {
     return 0;
   }
 
   else
   {
-    return off_48FE0[a3 - 12];
+    return off_48FE0[options - 12];
   }
 }
 
-- (BOOL)_validateEditOption:(id)a3 forMode:(int64_t)a4
+- (BOOL)_validateEditOption:(id)option forMode:(int64_t)mode
 {
-  v5 = a3;
-  if (a4 == 15 || a4 == 13 || a4 == 10)
+  optionCopy = option;
+  if (mode == 15 || mode == 13 || mode == 10)
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
@@ -291,95 +291,95 @@ LABEL_13:
   return isKindOfClass & 1;
 }
 
-- (id)_swatchKeyForTypeface:(unint64_t)a3 pigmentName:(id)a4 colorEffect:(unint64_t)a5
+- (id)_swatchKeyForTypeface:(unint64_t)typeface pigmentName:(id)name colorEffect:(unint64_t)effect
 {
   photoSnapshotIdentifier = self->_photoSnapshotIdentifier;
-  v8 = a4;
-  v9 = [NSNumber numberWithUnsignedInteger:a3];
-  v10 = [NSNumber numberWithUnsignedInteger:a5];
-  v11 = [NSString stringWithFormat:@"%@-%@-%@-%@", photoSnapshotIdentifier, v9, v8, v10];
+  nameCopy = name;
+  v9 = [NSNumber numberWithUnsignedInteger:typeface];
+  v10 = [NSNumber numberWithUnsignedInteger:effect];
+  v11 = [NSString stringWithFormat:@"%@-%@-%@-%@", photoSnapshotIdentifier, v9, nameCopy, v10];
 
   return v11;
 }
 
-- (id)_swatchImageForEditOption:(id)a3 mode:(int64_t)a4 withSelectedOptions:(id)a5 refreshHandler:(id)a6
+- (id)_swatchImageForEditOption:(id)option mode:(int64_t)mode withSelectedOptions:(id)options refreshHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  if (![(NTKUltraCubeFaceView *)self _needCustomSwatchImageForEditMode:a4])
+  optionCopy = option;
+  optionsCopy = options;
+  handlerCopy = handler;
+  if (![(NTKUltraCubeFaceView *)self _needCustomSwatchImageForEditMode:mode])
   {
     v46.receiver = self;
     v46.super_class = NTKUltraCubeFaceView;
-    [(NTKUltraCubeFaceView *)&v46 _swatchImageForEditOption:v10 mode:a4 withSelectedOptions:v11 refreshHandler:v12];
+    [(NTKUltraCubeFaceView *)&v46 _swatchImageForEditOption:optionCopy mode:mode withSelectedOptions:optionsCopy refreshHandler:handlerCopy];
     v15 = LABEL_9:;
     goto LABEL_10;
   }
 
-  if (![(NTKUltraCubeFaceView *)self _validateEditOption:v10 forMode:a4])
+  if (![(NTKUltraCubeFaceView *)self _validateEditOption:optionCopy forMode:mode])
   {
     v45.receiver = self;
     v45.super_class = NTKUltraCubeFaceView;
-    [(NTKUltraCubeFaceView *)&v45 _swatchImageForEditOption:v10 mode:a4 withSelectedOptions:v11 refreshHandler:v12];
+    [(NTKUltraCubeFaceView *)&v45 _swatchImageForEditOption:optionCopy mode:mode withSelectedOptions:optionsCopy refreshHandler:handlerCopy];
     goto LABEL_9;
   }
 
-  v13 = [(NTKUltraCubeFaceView *)self resourceDirectory];
+  resourceDirectory = [(NTKUltraCubeFaceView *)self resourceDirectory];
 
-  if (!v13)
+  if (!resourceDirectory)
   {
     v44.receiver = self;
     v44.super_class = NTKUltraCubeFaceView;
-    [(NTKUltraCubeFaceView *)&v44 _swatchImageForEditOption:v10 mode:a4 withSelectedOptions:v11 refreshHandler:v12];
+    [(NTKUltraCubeFaceView *)&v44 _swatchImageForEditOption:optionCopy mode:mode withSelectedOptions:optionsCopy refreshHandler:handlerCopy];
     goto LABEL_9;
   }
 
-  if (a4 == 13)
+  if (mode == 13)
   {
-    typeface = [v10 typeface];
+    typeface = [optionCopy typeface];
 LABEL_15:
     colorEffect = self->_colorEffect;
     goto LABEL_16;
   }
 
   typeface = self->_typeface;
-  if (a4 != 15)
+  if (mode != 15)
   {
     goto LABEL_15;
   }
 
-  colorEffect = [v10 colorEffect];
+  colorEffect = [optionCopy colorEffect];
 LABEL_16:
-  v18 = [(NTKUltraCubeFaceView *)self colorPalette];
-  v19 = [v18 pigmentEditOption];
-  v20 = [v19 optionName];
+  colorPalette = [(NTKUltraCubeFaceView *)self colorPalette];
+  pigmentEditOption = [colorPalette pigmentEditOption];
+  optionName = [pigmentEditOption optionName];
 
-  v21 = [(NTKUltraCubeFaceView *)self colorPalette];
-  if (a4 == 10)
+  colorPalette2 = [(NTKUltraCubeFaceView *)self colorPalette];
+  if (mode == 10)
   {
-    v22 = [v10 pigmentEditOption];
-    v23 = [v22 optionName];
+    pigmentEditOption2 = [optionCopy pigmentEditOption];
+    optionName2 = [pigmentEditOption2 optionName];
 
-    v24 = [v21 copyWithOption:v22];
-    v21 = v24;
-    v20 = v23;
+    v24 = [colorPalette2 copyWithOption:pigmentEditOption2];
+    colorPalette2 = v24;
+    optionName = optionName2;
   }
 
   v41 = typeface;
-  v25 = [(NTKUltraCubeFaceView *)self _swatchKeyForTypeface:typeface pigmentName:v20 colorEffect:colorEffect];
-  if (v12)
+  v25 = [(NTKUltraCubeFaceView *)self _swatchKeyForTypeface:typeface pigmentName:optionName colorEffect:colorEffect];
+  if (handlerCopy)
   {
     swatchRefreshHandlers = self->_swatchRefreshHandlers;
-    v26 = [v12 copy];
-    v27 = v20;
-    v28 = v21;
+    v26 = [handlerCopy copy];
+    v27 = optionName;
+    v28 = colorPalette2;
     v29 = colorEffect;
     v30 = objc_retainBlock(v26);
     [(NSMapTable *)swatchRefreshHandlers setObject:v30 forKey:v25];
 
     colorEffect = v29;
-    v21 = v28;
-    v20 = v27;
+    colorPalette2 = v28;
+    optionName = v27;
   }
 
   v31 = [NTKSwatchRenderer cachedSwatchForKey:v25];
@@ -391,23 +391,23 @@ LABEL_16:
 
   else
   {
-    v40 = [NTKUltraCubeContentEffect contentEffectWithColorEffect:colorEffect colorPalette:v21];
-    v33 = [(NTKUltraCubeFaceView *)self _cloneActiveContentView];
-    [v33 setTypeface:v41];
-    [v33 setContentEffect:v40];
-    [v33 invalidateDigitalTimeLabelStyle];
-    [v33 layoutIfNeeded];
-    [v33 setNeedsDisplay];
+    v40 = [NTKUltraCubeContentEffect contentEffectWithColorEffect:colorEffect colorPalette:colorPalette2];
+    _cloneActiveContentView = [(NTKUltraCubeFaceView *)self _cloneActiveContentView];
+    [_cloneActiveContentView setTypeface:v41];
+    [_cloneActiveContentView setContentEffect:v40];
+    [_cloneActiveContentView invalidateDigitalTimeLabelStyle];
+    [_cloneActiveContentView layoutIfNeeded];
+    [_cloneActiveContentView setNeedsDisplay];
     [NTKEditOption sizeForSwatchStyle:3];
     v35 = v34;
     v37 = v36;
-    v38 = [(NTKUltraCubeFaceView *)self device];
+    device = [(NTKUltraCubeFaceView *)self device];
     v42[0] = _NSConcreteStackBlock;
     v42[1] = 3221225472;
     v42[2] = sub_D440;
     v42[3] = &unk_48F80;
-    v43 = v12;
-    [NTKSwatchRenderer renderSwatchForView:v33 size:v38 device:v25 key:0 method:v42 completion:v35, v37];
+    v43 = handlerCopy;
+    [NTKSwatchRenderer renderSwatchForView:_cloneActiveContentView size:device device:v25 key:0 method:v42 completion:v35, v37];
   }
 
 LABEL_10:
@@ -415,22 +415,22 @@ LABEL_10:
   return v15;
 }
 
-- (void)_prepareSwatchImagesForSelectedOptions:(id)a3
+- (void)_prepareSwatchImagesForSelectedOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   context = self->_typeface;
   colorEffect = self->_colorEffect;
-  v59 = [(NTKUltraCubeFaceView *)self colorPalette];
-  v62 = self;
-  v6 = [(NTKUltraCubeFaceView *)self colorPalette];
-  v7 = [v6 pigmentEditOption];
-  v63 = [v7 optionName];
+  colorPalette = [(NTKUltraCubeFaceView *)self colorPalette];
+  selfCopy = self;
+  colorPalette2 = [(NTKUltraCubeFaceView *)self colorPalette];
+  pigmentEditOption = [colorPalette2 pigmentEditOption];
+  optionName = [pigmentEditOption optionName];
 
   v78 = 0u;
   v79 = 0u;
   v76 = 0u;
   v77 = 0u;
-  v8 = v4;
+  v8 = optionsCopy;
   v9 = [v8 countByEnumeratingWithState:&v76 objects:v85 count:16];
   v58 = v8;
   if (v9)
@@ -447,27 +447,27 @@ LABEL_10:
         }
 
         v13 = *(*(&v76 + 1) + 8 * i);
-        v14 = [v13 integerValue];
+        integerValue = [v13 integerValue];
         v15 = [v8 objectForKeyedSubscript:v13];
         v16 = v15;
-        if (v14 == &dword_8 + 2)
+        if (integerValue == &dword_8 + 2)
         {
-          v17 = [v15 pigmentEditOption];
-          v18 = [v17 optionName];
+          pigmentEditOption2 = [v15 pigmentEditOption];
+          optionName2 = [pigmentEditOption2 optionName];
 
-          v19 = [v59 copyWithOption:v17];
+          v19 = [colorPalette copyWithOption:pigmentEditOption2];
           v8 = v58;
 
-          v63 = v18;
-          v59 = v19;
+          optionName = optionName2;
+          colorPalette = v19;
         }
 
-        else if (v14 == &dword_C + 3)
+        else if (integerValue == &dword_C + 3)
         {
           colorEffect = [v15 colorEffect];
         }
 
-        else if (v14 == &dword_C + 1)
+        else if (integerValue == &dword_C + 1)
         {
           context = [v15 typeface];
         }
@@ -498,9 +498,9 @@ LABEL_10:
           objc_enumerationMutation(&off_4B558);
         }
 
-        v25 = [*(*(&v72 + 1) + 8 * j) unsignedIntegerValue];
-        v26 = [(NTKUltraCubeFaceView *)v62 _swatchKeyForTypeface:v25 pigmentName:v63 colorEffect:colorEffect];
-        v27 = [NSNumber numberWithUnsignedInteger:v25];
+        unsignedIntegerValue = [*(*(&v72 + 1) + 8 * j) unsignedIntegerValue];
+        v26 = [(NTKUltraCubeFaceView *)selfCopy _swatchKeyForTypeface:unsignedIntegerValue pigmentName:optionName colorEffect:colorEffect];
+        v27 = [NSNumber numberWithUnsignedInteger:unsignedIntegerValue];
         v83[0] = v27;
         v28 = [NSNumber numberWithUnsignedInteger:colorEffect];
         v83[1] = v28;
@@ -532,11 +532,11 @@ LABEL_10:
           objc_enumerationMutation(&off_4B570);
         }
 
-        v34 = [*(*(&v68 + 1) + 8 * k) unsignedIntegerValue];
-        v35 = [(NTKUltraCubeFaceView *)v62 _swatchKeyForTypeface:context pigmentName:v63 colorEffect:v34];
+        unsignedIntegerValue2 = [*(*(&v68 + 1) + 8 * k) unsignedIntegerValue];
+        v35 = [(NTKUltraCubeFaceView *)selfCopy _swatchKeyForTypeface:context pigmentName:optionName colorEffect:unsignedIntegerValue2];
         v36 = [NSNumber numberWithUnsignedInteger:context];
         v81[0] = v36;
-        v37 = [NSNumber numberWithUnsignedInteger:v34];
+        v37 = [NSNumber numberWithUnsignedInteger:unsignedIntegerValue2];
         v81[1] = v37;
         v38 = [NSArray arrayWithObjects:v81 count:2];
         [v20 setObject:v38 forKeyedSubscript:v35];
@@ -575,21 +575,21 @@ LABEL_10:
         if (([NTKSwatchRenderer containsSwatchForKey:v48]& 1) == 0)
         {
           v49 = [v43 objectForKeyedSubscript:v48];
-          v50 = [v49 firstObject];
-          v51 = [v50 unsignedIntegerValue];
+          firstObject = [v49 firstObject];
+          unsignedIntegerValue3 = [firstObject unsignedIntegerValue];
 
-          v52 = [v49 lastObject];
-          v53 = [v52 unsignedIntegerValue];
+          lastObject = [v49 lastObject];
+          unsignedIntegerValue4 = [lastObject unsignedIntegerValue];
 
-          v54 = [NTKUltraCubeContentEffect contentEffectWithColorEffect:v53 colorPalette:v59];
-          v55 = [(NTKUltraCubeFaceView *)v62 _cloneActiveContentView];
-          [v55 setTypeface:v51];
-          [v55 setContentEffect:v54];
-          [v55 invalidateDigitalTimeLabelStyle];
-          [v55 layoutIfNeeded];
-          [v55 setNeedsDisplay];
-          v56 = [(NTKUltraCubeFaceView *)v62 device];
-          v57 = [NTKSwatchRenderer renderSwatchForView:v55 size:v56 device:v48 key:0 method:v40, v42];
+          v54 = [NTKUltraCubeContentEffect contentEffectWithColorEffect:unsignedIntegerValue4 colorPalette:colorPalette];
+          _cloneActiveContentView = [(NTKUltraCubeFaceView *)selfCopy _cloneActiveContentView];
+          [_cloneActiveContentView setTypeface:unsignedIntegerValue3];
+          [_cloneActiveContentView setContentEffect:v54];
+          [_cloneActiveContentView invalidateDigitalTimeLabelStyle];
+          [_cloneActiveContentView layoutIfNeeded];
+          [_cloneActiveContentView setNeedsDisplay];
+          device = [(NTKUltraCubeFaceView *)selfCopy device];
+          v57 = [NTKSwatchRenderer renderSwatchForView:_cloneActiveContentView size:device device:v48 key:0 method:v40, v42];
         }
       }
 
@@ -604,9 +604,9 @@ LABEL_10:
 
 - (void)_applyColorEffect
 {
-  v3 = [(NTKUltraCubeFaceView *)self colorEffect];
-  v4 = [(NTKUltraCubeFaceView *)self colorPalette];
-  v5 = [NTKUltraCubeContentEffect contentEffectWithColorEffect:v3 colorPalette:v4];
+  colorEffect = [(NTKUltraCubeFaceView *)self colorEffect];
+  colorPalette = [(NTKUltraCubeFaceView *)self colorPalette];
+  v5 = [NTKUltraCubeContentEffect contentEffectWithColorEffect:colorEffect colorPalette:colorPalette];
 
   v13 = 0u;
   v14 = 0u;
@@ -649,8 +649,8 @@ LABEL_10:
 
 - (unint64_t)colorEffect
 {
-  v3 = [(NTKUltraCubeFaceView *)self device];
-  v4 = [NTKUltraCubeFace isColorEffectFeatureEnabledForDevice:v3];
+  device = [(NTKUltraCubeFaceView *)self device];
+  v4 = [NTKUltraCubeFace isColorEffectFeatureEnabledForDevice:device];
 
   if (v4)
   {
@@ -663,24 +663,24 @@ LABEL_10:
   }
 }
 
-- (void)_newGradientViewsWithColor:(id)a3 timeElementUnitBaseline:(double)a4 topGradientView:(id *)a5 bottomGradientView:(id *)a6
+- (void)_newGradientViewsWithColor:(id)color timeElementUnitBaseline:(double)baseline topGradientView:(id *)view bottomGradientView:(id *)gradientView
 {
-  v10 = a3;
-  if (v10)
+  colorCopy = color;
+  if (colorCopy)
   {
-    v30 = v10;
+    v30 = colorCopy;
     v11 = NTKImageNamed();
     [(NTKUltraCubeFaceView *)self bounds];
     v13 = v12;
     v15 = v14;
-    [(NTKUltraCubeFaceView *)self dateComplicationFrameForUnitBaseline:a4];
+    [(NTKUltraCubeFaceView *)self dateComplicationFrameForUnitBaseline:baseline];
     v18 = v16;
     v19 = round(v15 * 0.0307692308);
-    if (a4 >= 0.5)
+    if (baseline >= 0.5)
     {
-      v25 = [v11 CGImage];
+      cGImage = [v11 CGImage];
       [v11 scale];
-      v23 = [UIImage imageWithCGImage:v25 scale:5 orientation:?];
+      v23 = [UIImage imageWithCGImage:cGImage scale:5 orientation:?];
 
       v20 = 0;
       v24 = v15 - v18 + v19;
@@ -693,9 +693,9 @@ LABEL_10:
       [v20 setImage:v21];
 
       [v20 setTintColor:v30];
-      v22 = [v11 CGImage];
+      cGImage2 = [v11 CGImage];
       [v11 scale];
-      v23 = [UIImage imageWithCGImage:v22 scale:5 orientation:?];
+      v23 = [UIImage imageWithCGImage:cGImage2 scale:5 orientation:?];
 
       v24 = v15 - (round(v15 * 0.91025641) - round(v15 * 0.0461538462) - v19);
     }
@@ -706,25 +706,25 @@ LABEL_10:
 
     [v26 setTintColor:v30];
     v28 = v20;
-    *a5 = v20;
+    *view = v20;
     v29 = v26;
-    *a6 = v26;
+    *gradientView = v26;
 
-    v10 = v30;
+    colorCopy = v30;
   }
 }
 
-- (id)_newContentViewWithRole:(unint64_t)a3
+- (id)_newContentViewWithRole:(unint64_t)role
 {
   [(NTKUltraCubeFaceView *)self bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [(NTKUltraCubeFaceView *)self device];
-  v14 = [[NTKUltraCubeContentView alloc] initWithFrame:a3 role:self->_typeface typeface:v13 device:v6, v8, v10, v12];
-  v15 = [(NTKUltraCubeFaceView *)self _currentOverrideDate];
-  [(NTKUltraCubeContentView *)v14 setOverrideDate:v15 duration:0.0];
+  device = [(NTKUltraCubeFaceView *)self device];
+  v14 = [[NTKUltraCubeContentView alloc] initWithFrame:role role:self->_typeface typeface:device device:v6, v8, v10, v12];
+  _currentOverrideDate = [(NTKUltraCubeFaceView *)self _currentOverrideDate];
+  [(NTKUltraCubeContentView *)v14 setOverrideDate:_currentOverrideDate duration:0.0];
 
   [(NTKUltraCubeContentView *)v14 setTimeOffset:self->_timeOffset];
   return v14;
@@ -747,15 +747,15 @@ LABEL_10:
   [v4 setTimeElementUnitBaseline:?];
   [v4 setForegroundContentScale:self->_foregroundImageScale];
   [v4 setBackgroundContentScale:self->_backgroundImageScale];
-  v8 = [(NTKUltraCubeContentView *)v3 foregroundImage];
-  v9 = [(NTKUltraCubeContentView *)v3 backgroundImage];
-  v10 = [(NTKUltraCubeContentView *)v3 timeElementShadowColor];
-  [v4 updateForegroundImage:v8 backgroundImage:v9 timeElementShadowColor:v10 topGradientView:v6 bottomGradientView:v7 isTimeElementFront:{-[NTKUltraCubeContentView isTimeElementFront](v3, "isTimeElementFront")}];
+  foregroundImage = [(NTKUltraCubeContentView *)v3 foregroundImage];
+  backgroundImage = [(NTKUltraCubeContentView *)v3 backgroundImage];
+  timeElementShadowColor = [(NTKUltraCubeContentView *)v3 timeElementShadowColor];
+  [v4 updateForegroundImage:foregroundImage backgroundImage:backgroundImage timeElementShadowColor:timeElementShadowColor topGradientView:v6 bottomGradientView:v7 isTimeElementFront:{-[NTKUltraCubeContentView isTimeElementFront](v3, "isTimeElementFront")}];
 
   [v4 copyFiltersFromContentView:v3];
-  v11 = [(NTKUltraCubeContentView *)v3 contentEffect];
+  contentEffect = [(NTKUltraCubeContentView *)v3 contentEffect];
 
-  [v4 setContentEffect:v11];
+  [v4 setContentEffect:contentEffect];
   [v4 invalidateDigitalTimeLabelStyle];
 
   return v4;
@@ -777,16 +777,16 @@ LABEL_10:
   return v4;
 }
 
-- (BOOL)_tryLoadPhoto:(id)a3 animated:(BOOL)a4
+- (BOOL)_tryLoadPhoto:(id)photo animated:(BOOL)animated
 {
-  v6 = a3;
-  if (v6)
+  photoCopy = photo;
+  if (photoCopy)
   {
     [(NTKUltraCubeFaceView *)self bounds];
     v8 = v7;
     v10 = v9;
-    v11 = [v6 baseImageURL];
-    v12 = +[NSString stringWithCString:encoding:](NSString, "stringWithCString:encoding:", [v11 fileSystemRepresentation], 4);
+    baseImageURL = [photoCopy baseImageURL];
+    v12 = +[NSString stringWithCString:encoding:](NSString, "stringWithCString:encoding:", [baseImageURL fileSystemRepresentation], 4);
 
     v13 = [UIImage imageWithContentsOfFile:v12];
     if (!v13)
@@ -797,12 +797,12 @@ LABEL_47:
       goto LABEL_48;
     }
 
-    v14 = [v6 maskImageURL];
+    maskImageURL = [photoCopy maskImageURL];
 
-    if (v14)
+    if (maskImageURL)
     {
-      v15 = [v6 maskImageURL];
-      v16 = +[NSString stringWithCString:encoding:](NSString, "stringWithCString:encoding:", [v15 fileSystemRepresentation], 4);
+      maskImageURL2 = [photoCopy maskImageURL];
+      v16 = +[NSString stringWithCString:encoding:](NSString, "stringWithCString:encoding:", [maskImageURL2 fileSystemRepresentation], 4);
 
       v17 = [UIImage imageWithContentsOfFile:v16];
     }
@@ -812,12 +812,12 @@ LABEL_47:
       v17 = 0;
     }
 
-    v19 = [v6 backgroundImageURL];
+    backgroundImageURL = [photoCopy backgroundImageURL];
 
-    if (v19)
+    if (backgroundImageURL)
     {
-      v20 = [v6 backgroundImageURL];
-      v21 = +[NSString stringWithCString:encoding:](NSString, "stringWithCString:encoding:", [v20 fileSystemRepresentation], 4);
+      backgroundImageURL2 = [photoCopy backgroundImageURL];
+      v21 = +[NSString stringWithCString:encoding:](NSString, "stringWithCString:encoding:", [backgroundImageURL2 fileSystemRepresentation], 4);
 
       v22 = [UIImage imageWithContentsOfFile:v21];
 
@@ -827,25 +827,25 @@ LABEL_47:
         v109 = v12;
         if (v17)
         {
-          v118 = [(NTKUltraCubeFaceView *)self device];
-          [v118 screenScale];
+          device = [(NTKUltraCubeFaceView *)self device];
+          [device screenScale];
           v24 = v23;
           v25 = v13;
           v26 = (v8 * v23);
-          v27 = a4;
+          animatedCopy = animated;
           v28 = (v10 * v23);
           imagea = [v25 CGImage];
           v110 = v17;
-          v29 = [v17 CGImage];
+          cGImage = [v17 CGImage];
           v30 = CGColorSpaceCreateWithName(kCGColorSpaceSRGB);
           v31 = 1;
-          v112 = v6;
+          v112 = photoCopy;
           v32 = CGBitmapContextCreate(0, v26, v28, 8uLL, 4 * v26, v30, 1u);
           CGColorSpaceRelease(v30);
           v33 = v26;
           v13 = v25;
           v34 = v28;
-          a4 = v27;
+          animated = animatedCopy;
           memset(&keyExistsAndHasValidFormat, 0, sizeof(keyExistsAndHasValidFormat));
           [(NTKUltraCubeFaceView *)self ctmForDrawingImage:v25 uprightInRect:0.0, 0.0, v33, v34];
           transform = keyExistsAndHasValidFormat;
@@ -862,7 +862,7 @@ LABEL_47:
           width = v138.size.width;
           v38 = v10;
           height = v138.size.height;
-          v40 = v29;
+          v40 = cGImage;
           v17 = v110;
           CGContextClipToMask(v32, v138, v40);
           CGContextSetInterpolationQuality(v32, kCGInterpolationHigh);
@@ -874,7 +874,7 @@ LABEL_47:
           CGContextDrawImage(v32, v139, imagea);
           v41 = CGBitmapContextCreateImage(v32);
           v42 = v32;
-          v6 = v112;
+          photoCopy = v112;
           CGContextRelease(v42);
           image = [UIImage imageWithCGImage:v41 scale:0 orientation:v24];
           CGImageRelease(v41);
@@ -886,15 +886,15 @@ LABEL_15:
         image = v13;
         v31 = 0;
 LABEL_16:
-        v43 = [v6 isParallaxFlat];
-        self->_isParallaxFlat = v43;
+        isParallaxFlat = [photoCopy isParallaxFlat];
+        self->_isParallaxFlat = isParallaxFlat;
         self->_isParallax3Layer = v31;
         v111 = v17;
         if (v31)
         {
-          [v6 maskedImageZorder];
+          [photoCopy maskedImageZorder];
           v45 = v44;
-          [v6 timeElementZorder];
+          [photoCopy timeElementZorder];
           v47 = v45 < v46;
         }
 
@@ -926,7 +926,7 @@ LABEL_16:
           while (v48 != 8);
         }
 
-        if (v43)
+        if (isParallaxFlat)
         {
           self->_foregroundMotionScale = 1.0;
           v51 = 1.075;
@@ -945,9 +945,9 @@ LABEL_16:
             v51 = 1.0;
 LABEL_32:
             self->_backgroundImageScale = v51;
-            [v6 timeElementUnitHeight];
+            [photoCopy timeElementUnitHeight];
             v59 = v58;
-            [v6 timeElementUnitBaseline];
+            [photoCopy timeElementUnitBaseline];
             v61 = v60;
             [(NTKUltraCubeFaceView *)self dateComplicationFrameForUnitBaseline:?];
             obj = v63;
@@ -960,9 +960,9 @@ LABEL_32:
             v70 = v65 / v10;
             v71 = v13;
             v72 = v13;
-            v73 = [v72 CGImage];
-            v74 = CGImageGetWidth(v73);
-            v75 = CGImageGetHeight(v73);
+            cGImage2 = [v72 CGImage];
+            v74 = CGImageGetWidth(cGImage2);
+            v75 = CGImageGetHeight(cGImage2);
             v76.i64[0] = v74;
             v76.i64[1] = v75;
             v119 = vcvtq_f64_u64(v76);
@@ -1001,13 +1001,13 @@ LABEL_32:
             if (!CGRectEqualToRect(v140, v141))
             {
               [(NTKUltraCubeFaceViewComplicationFactory *)self->_complicationFactory setDateComplicationFrame:v116, v106, obj, v66];
-              if (!a4)
+              if (!animated)
               {
                 [(NTKUltraCubeFaceView *)self invalidateComplicationLayout];
               }
             }
 
-            v113 = v6;
+            v113 = photoCopy;
             v108 = v13;
             v107 = v81;
             if ([v81 isComplexBackground])
@@ -1059,9 +1059,9 @@ LABEL_32:
                   [v98 setTimeElementUnitHeight:v59];
                   [v98 setTimeElementUnitBaseline:v61];
                   [v98 updateForegroundImage:image backgroundImage:v123 timeElementShadowColor:v120 topGradientView:v100 bottomGradientView:v101 isTimeElementFront:v117];
-                  v102 = [(NTKUltraCubeFaceView *)self colorEffect];
-                  v103 = [(NTKUltraCubeFaceView *)self colorPalette];
-                  v104 = [NTKUltraCubeContentEffect contentEffectWithColorEffect:v102 colorPalette:v103];
+                  colorEffect = [(NTKUltraCubeFaceView *)self colorEffect];
+                  colorPalette = [(NTKUltraCubeFaceView *)self colorPalette];
+                  v104 = [NTKUltraCubeContentEffect contentEffectWithColorEffect:colorEffect colorPalette:colorPalette];
 
                   [v98 setContentEffect:v104];
                 }
@@ -1074,7 +1074,7 @@ LABEL_32:
 
             v18 = 1;
             v17 = v111;
-            v6 = v113;
+            photoCopy = v113;
             v13 = v108;
             v12 = v109;
             goto LABEL_46;
@@ -1128,16 +1128,16 @@ LABEL_48:
   return v18;
 }
 
-- (void)_loadPhoto:(id)a3 animated:(BOOL)a4
+- (void)_loadPhoto:(id)photo animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [v6 uniqueIdentifier];
+  animatedCopy = animated;
+  photoCopy = photo;
+  uniqueIdentifier = [photoCopy uniqueIdentifier];
   v8 = NTKEqualObjects();
-  if (![(NTKUltraCubeFaceView *)self _tryLoadPhoto:v6 animated:v4])
+  if (![(NTKUltraCubeFaceView *)self _tryLoadPhoto:photoCopy animated:animatedCopy])
   {
     v29 = v8;
-    v30 = v7;
+    v30 = uniqueIdentifier;
     self->_isTimeLabelFront = 1;
     self->_isParallaxFlat = 0;
     self->_foregroundMotionScale = 1.0;
@@ -1190,7 +1190,7 @@ LABEL_48:
       while (v19);
     }
 
-    v7 = v30;
+    uniqueIdentifier = v30;
     v8 = v29;
   }
 
@@ -1224,22 +1224,22 @@ LABEL_48:
 
   if ((v8 & 1) == 0)
   {
-    [(NTKUltraCubeFaceView *)self _reloadSwatches:v7];
+    [(NTKUltraCubeFaceView *)self _reloadSwatches:uniqueIdentifier];
   }
 }
 
-- (void)_loadNextPhotoAnimated:(BOOL)a3
+- (void)_loadNextPhotoAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v5 = (self->_readerIndex + 1) % [(NTKUltraCubePhotosReader *)self->_reader count];
   self->_readerIndex = v5;
   v6 = [(NTKUltraCubePhotosReader *)self->_reader objectAtIndexedSubscript:v5];
-  [(NTKUltraCubeFaceView *)self _loadPhoto:v6 animated:v3];
+  [(NTKUltraCubeFaceView *)self _loadPhoto:v6 animated:animatedCopy];
 }
 
-- (void)_reloadSwatches:(id)a3
+- (void)_reloadSwatches:(id)swatches
 {
-  v4 = [a3 copy];
+  v4 = [swatches copy];
   photoSnapshotIdentifier = self->_photoSnapshotIdentifier;
   self->_photoSnapshotIdentifier = v4;
 
@@ -1247,8 +1247,8 @@ LABEL_48:
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v6 = [(NSMapTable *)self->_swatchRefreshHandlers objectEnumerator];
-  v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  objectEnumerator = [(NSMapTable *)self->_swatchRefreshHandlers objectEnumerator];
+  v7 = [objectEnumerator countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1260,7 +1260,7 @@ LABEL_48:
       {
         if (*v12 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         (*(*(*(&v11 + 1) + 8 * v10) + 16))();
@@ -1268,7 +1268,7 @@ LABEL_48:
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v8 = [objectEnumerator countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v8);
@@ -1282,8 +1282,8 @@ LABEL_48:
     return;
   }
 
-  v3 = [(NTKUltraCubeFaceView *)self resourceDirectory];
-  v4 = [NTKUltraCubePhotosReader readerForResourceDirectory:v3];
+  resourceDirectory = [(NTKUltraCubeFaceView *)self resourceDirectory];
+  v4 = [NTKUltraCubePhotosReader readerForResourceDirectory:resourceDirectory];
   reader = self->_reader;
   self->_reader = v4;
 
@@ -1291,11 +1291,11 @@ LABEL_48:
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = [(NTKUltraCubePhotosReader *)self->_reader count];
-    v8 = [(NTKUltraCubeFaceView *)self resourceDirectory];
+    resourceDirectory2 = [(NTKUltraCubeFaceView *)self resourceDirectory];
     v15 = 134218242;
     v16 = v7;
     v17 = 2112;
-    v18 = v8;
+    v18 = resourceDirectory2;
     _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "_updateContents: created NTKUltraCubePhotosReader with %ld photos for %@", &v15, 0x16u);
   }
 
@@ -1310,22 +1310,22 @@ LABEL_48:
     v9 = 0;
   }
 
-  v10 = [(NTKUltraCubePhotosReader *)self->_reader resourceDirectory];
-  if (v10 && ![(NTKUltraCubePhotosReader *)self->_reader count])
+  resourceDirectory3 = [(NTKUltraCubePhotosReader *)self->_reader resourceDirectory];
+  if (resourceDirectory3 && ![(NTKUltraCubePhotosReader *)self->_reader count])
   {
-    v11 = [(NTKUltraCubePhotosReader *)self->_reader version];
+    version = [(NTKUltraCubePhotosReader *)self->_reader version];
 
-    if (v11 < 2)
+    if (version < 2)
     {
       v12 = _NTKLoggingObjectForDomain();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
-        v13 = [(NTKUltraCubePhotosReader *)self->_reader resourceDirectory];
-        v14 = [(NTKUltraCubePhotosReader *)self->_reader version];
+        resourceDirectory4 = [(NTKUltraCubePhotosReader *)self->_reader resourceDirectory];
+        version2 = [(NTKUltraCubePhotosReader *)self->_reader version];
         v15 = 138412546;
-        v16 = v13;
+        v16 = resourceDirectory4;
         v17 = 2048;
-        v18 = v14;
+        v18 = version2;
         _os_log_impl(&dword_0, v12, OS_LOG_TYPE_DEFAULT, "resource directory %@ is outdated, version == %ld", &v15, 0x16u);
       }
 
@@ -1355,9 +1355,9 @@ LABEL_11:
 - (void)_applyPause
 {
   isPaused = self->_isPaused;
-  v4 = [(NTKUltraCubeFaceView *)self isFrozen];
-  self->_isPaused = v4;
-  if (isPaused != v4)
+  isFrozen = [(NTKUltraCubeFaceView *)self isFrozen];
+  self->_isPaused = isFrozen;
+  if (isPaused != isFrozen)
   {
     v12 = 0u;
     v13 = 0u;
@@ -1408,9 +1408,9 @@ LABEL_11:
       v8 = +[UIColor redColor];
       [(UILabel *)v7 setTextColor:v8];
 
-      v9 = [(NTKUltraCubeFaceView *)self contentView];
-      [v9 addSubview:self->_deprecationWarningLabel];
-      [v9 bringSubviewToFront:self->_deprecationWarningLabel];
+      contentView = [(NTKUltraCubeFaceView *)self contentView];
+      [contentView addSubview:self->_deprecationWarningLabel];
+      [contentView bringSubviewToFront:self->_deprecationWarningLabel];
     }
 
     v10 = [NSString stringWithFormat:@"Data is v%ld and expected is v%ld. Delete this face.", [(NTKUltraCubePhotosReader *)self->_reader version], 2];
@@ -1434,8 +1434,8 @@ LABEL_11:
   if (!self->_isNoPhotosViewVisible && (!NTKInternalBuild() || !self->_deprecationWarningLabel))
   {
     v3 = [NTKAlbumEmptyView alloc];
-    v4 = [(NTKUltraCubeFaceView *)self device];
-    v5 = [v3 initForDevice:v4];
+    device = [(NTKUltraCubeFaceView *)self device];
+    v5 = [v3 initForDevice:device];
     noPhotosView = self->_noPhotosView;
     self->_noPhotosView = v5;
 
@@ -1446,11 +1446,11 @@ LABEL_11:
     v9 = [NTKUltraCubeFaceBundle localizedStringForKey:@"NO_PORTRAIT_PHOTOS" comment:&stru_49630];
     [(NTKAlbumEmptyView *)v8 setBodyLabelText:v9];
 
-    v10 = [(NTKUltraCubeFaceView *)self contentView];
-    [v10 addSubview:self->_noPhotosView];
+    contentView = [(NTKUltraCubeFaceView *)self contentView];
+    [contentView addSubview:self->_noPhotosView];
 
-    v11 = [(NTKUltraCubeFaceView *)self complicationContainerView];
-    [v11 setHidden:1];
+    complicationContainerView = [(NTKUltraCubeFaceView *)self complicationContainerView];
+    [complicationContainerView setHidden:1];
 
     self->_isNoPhotosViewVisible = 1;
   }
@@ -1460,8 +1460,8 @@ LABEL_11:
 {
   if (self->_isNoPhotosViewVisible)
   {
-    v3 = [(NTKUltraCubeFaceView *)self complicationContainerView];
-    [v3 setHidden:0];
+    complicationContainerView = [(NTKUltraCubeFaceView *)self complicationContainerView];
+    [complicationContainerView setHidden:0];
 
     [(NTKAlbumEmptyView *)self->_noPhotosView removeFromSuperview];
     noPhotosView = self->_noPhotosView;
@@ -1473,19 +1473,19 @@ LABEL_11:
 
 - (id)dateComplicationFont
 {
-  v2 = [(NTKUltraCubeFaceView *)self device];
-  v3 = sub_F9DC(v2);
+  device = [(NTKUltraCubeFaceView *)self device];
+  v3 = sub_F9DC(device);
 
   return [CLKFont systemFontOfSize:v3 weight:UIFontWeightMedium];
 }
 
-- (CGRect)dateComplicationFrameForUnitBaseline:(double)a3
+- (CGRect)dateComplicationFrameForUnitBaseline:(double)baseline
 {
   [(NTKUltraCubeFaceView *)self bounds];
-  v4 = [(NTKUltraCubeFaceView *)self device];
-  v5 = [(NTKUltraCubeFaceView *)self dateComplicationFont];
-  [v5 ascender];
-  [v5 descender];
+  device = [(NTKUltraCubeFaceView *)self device];
+  dateComplicationFont = [(NTKUltraCubeFaceView *)self dateComplicationFont];
+  [dateComplicationFont ascender];
+  [dateComplicationFont descender];
   CLKRoundForDevice();
   v7 = v6;
   CLKRoundForDevice();
@@ -1529,9 +1529,9 @@ LABEL_11:
     self->_contentActiveView = v3;
 
     [(NSMutableArray *)self->_contentViews addObject:self->_contentActiveView];
-    v5 = [(NTKUltraCubeFaceView *)self contentView];
-    [v5 addSubview:self->_contentActiveView];
-    [v5 bringSubviewToFront:self->_contentActiveView];
+    contentView = [(NTKUltraCubeFaceView *)self contentView];
+    [contentView addSubview:self->_contentActiveView];
+    [contentView bringSubviewToFront:self->_contentActiveView];
   }
 }
 
@@ -1543,10 +1543,10 @@ LABEL_11:
   self->_contentActiveView = 0;
 }
 
-- (CGAffineTransform)ctmForDrawingImage:(SEL)a3 uprightInRect:(id)a4
+- (CGAffineTransform)ctmForDrawingImage:(SEL)image uprightInRect:(id)rect
 {
   height = a5.size.height;
-  [a4 imageOrientation];
+  [rect imageOrientation];
   sub_1939C();
   memset(&v18, 0, sizeof(v18));
   NTKImagePresentationTransform();

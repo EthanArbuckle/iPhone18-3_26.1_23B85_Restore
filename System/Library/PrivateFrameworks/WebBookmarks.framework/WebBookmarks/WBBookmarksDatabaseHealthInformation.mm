@@ -1,10 +1,10 @@
 @interface WBBookmarksDatabaseHealthInformation
-- (WBBookmarksDatabaseHealthInformation)initWithTopLevelDuplicateBookmarksCount:(unint64_t)a3 allDuplicateBookmarksCount:(unint64_t)a4;
+- (WBBookmarksDatabaseHealthInformation)initWithTopLevelDuplicateBookmarksCount:(unint64_t)count allDuplicateBookmarksCount:(unint64_t)bookmarksCount;
 @end
 
 @implementation WBBookmarksDatabaseHealthInformation
 
-- (WBBookmarksDatabaseHealthInformation)initWithTopLevelDuplicateBookmarksCount:(unint64_t)a3 allDuplicateBookmarksCount:(unint64_t)a4
+- (WBBookmarksDatabaseHealthInformation)initWithTopLevelDuplicateBookmarksCount:(unint64_t)count allDuplicateBookmarksCount:(unint64_t)bookmarksCount
 {
   v10.receiver = self;
   v10.super_class = WBBookmarksDatabaseHealthInformation;
@@ -12,8 +12,8 @@
   v7 = v6;
   if (v6)
   {
-    v6->_topLevelDuplicateBookmarksCount = a3;
-    v6->_allDuplicateBookmarksCount = a4;
+    v6->_topLevelDuplicateBookmarksCount = count;
+    v6->_allDuplicateBookmarksCount = bookmarksCount;
     v8 = v6;
   }
 

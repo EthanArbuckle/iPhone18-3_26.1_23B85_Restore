@@ -1,35 +1,35 @@
 @interface PRBTProximityMeasurement
-+ (id)btProximityWithTime:(double)a3 proximityLevel:(unint64_t)a4 rssi:(double)a5 continuousProximityLevel:(id)a6 uuid:(id)a7 proximityTrend:(unint64_t)a8;
-- (PRBTProximityMeasurement)initWithTime:(double)a3 proximityLevel:(unint64_t)a4 rssi:(double)a5 continuousProximityLevel:(id)a6 uuid:(id)a7 proximityTrend:(unint64_t)a8;
++ (id)btProximityWithTime:(double)time proximityLevel:(unint64_t)level rssi:(double)rssi continuousProximityLevel:(id)proximityLevel uuid:(id)uuid proximityTrend:(unint64_t)trend;
+- (PRBTProximityMeasurement)initWithTime:(double)time proximityLevel:(unint64_t)level rssi:(double)rssi continuousProximityLevel:(id)proximityLevel uuid:(id)uuid proximityTrend:(unint64_t)trend;
 @end
 
 @implementation PRBTProximityMeasurement
 
-+ (id)btProximityWithTime:(double)a3 proximityLevel:(unint64_t)a4 rssi:(double)a5 continuousProximityLevel:(id)a6 uuid:(id)a7 proximityTrend:(unint64_t)a8
++ (id)btProximityWithTime:(double)time proximityLevel:(unint64_t)level rssi:(double)rssi continuousProximityLevel:(id)proximityLevel uuid:(id)uuid proximityTrend:(unint64_t)trend
 {
-  v13 = a7;
-  v14 = a6;
-  v15 = [[PRBTProximityMeasurement alloc] initWithTime:a4 proximityLevel:v14 rssi:v13 continuousProximityLevel:a8 uuid:a3 proximityTrend:a5];
+  uuidCopy = uuid;
+  proximityLevelCopy = proximityLevel;
+  v15 = [[PRBTProximityMeasurement alloc] initWithTime:level proximityLevel:proximityLevelCopy rssi:uuidCopy continuousProximityLevel:trend uuid:time proximityTrend:rssi];
 
   return v15;
 }
 
-- (PRBTProximityMeasurement)initWithTime:(double)a3 proximityLevel:(unint64_t)a4 rssi:(double)a5 continuousProximityLevel:(id)a6 uuid:(id)a7 proximityTrend:(unint64_t)a8
+- (PRBTProximityMeasurement)initWithTime:(double)time proximityLevel:(unint64_t)level rssi:(double)rssi continuousProximityLevel:(id)proximityLevel uuid:(id)uuid proximityTrend:(unint64_t)trend
 {
-  v15 = a6;
-  v16 = a7;
+  proximityLevelCopy = proximityLevel;
+  uuidCopy = uuid;
   v20.receiver = self;
   v20.super_class = PRBTProximityMeasurement;
   v17 = [(PRBTProximityMeasurement *)&v20 init];
   v18 = v17;
   if (v17)
   {
-    v17->_timestamp = a3;
-    v17->_proximityLevel = a4;
-    v17->_rssi = a5;
-    objc_storeStrong(&v17->_continuousProximityLevel, a6);
-    objc_storeStrong(&v18->_uuid, a7);
-    v18->_proximityTrend = a8;
+    v17->_timestamp = time;
+    v17->_proximityLevel = level;
+    v17->_rssi = rssi;
+    objc_storeStrong(&v17->_continuousProximityLevel, proximityLevel);
+    objc_storeStrong(&v18->_uuid, uuid);
+    v18->_proximityTrend = trend;
   }
 
   return v18;

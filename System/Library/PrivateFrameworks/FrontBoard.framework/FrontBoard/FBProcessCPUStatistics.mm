@@ -1,11 +1,11 @@
 @interface FBProcessCPUStatistics
-- (FBProcessCPUStatistics)initWithProcessHandle:(id)a3;
+- (FBProcessCPUStatistics)initWithProcessHandle:(id)handle;
 - (double)totalElapsedIdleTime;
 - (double)totalElapsedSystemTime;
 - (double)totalElapsedUserTime;
 - (id)descriptionForCrashReport;
-- (void)_hostwideUserElapsedCPUTime:(double *)a3 systemElapsedCPUTime:(double *)a4 idleElapsedCPUTime:(double *)a5;
-- (void)_lock_getApplicationCPUTimesForUser:(double *)a3 system:(double *)a4 idle:(double *)a5;
+- (void)_hostwideUserElapsedCPUTime:(double *)time systemElapsedCPUTime:(double *)uTime idleElapsedCPUTime:(double *)pUTime;
+- (void)_lock_getApplicationCPUTimesForUser:(double *)user system:(double *)system idle:(double *)idle;
 - (void)reset;
 @end
 
@@ -21,11 +21,11 @@
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (FBProcessCPUStatistics)initWithProcessHandle:(id)a3
+- (FBProcessCPUStatistics)initWithProcessHandle:(id)handle
 {
-  v6 = a3;
+  handleCopy = handle;
   NSClassFromString(&cfstr_Rbsprocesshand_1.isa);
-  if (!v6)
+  if (!handleCopy)
   {
     [FBProcessCPUStatistics initWithProcessHandle:a2];
   }
@@ -35,7 +35,7 @@
     [FBProcessCPUStatistics initWithProcessHandle:a2];
   }
 
-  v7 = [v6 pid];
+  v7 = [handleCopy pid];
   if (v7 == getpid())
   {
     goto LABEL_7;
@@ -56,20 +56,20 @@ LABEL_7:
     if (v8)
     {
       v8->_lock._os_unfair_lock_opaque = 0;
-      objc_storeStrong(&v8->_handle, a3);
+      objc_storeStrong(&v8->_handle, handle);
       [(FBProcessCPUStatistics *)v9 reset];
     }
 
     self = v9;
-    v10 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
 uint64_t __48__FBProcessCPUStatistics_initWithProcessHandle___block_invoke()
@@ -130,7 +130,7 @@ uint64_t __48__FBProcessCPUStatistics_initWithProcessHandle___block_invoke()
   return v9;
 }
 
-- (void)_lock_getApplicationCPUTimesForUser:(double *)a3 system:(double *)a4 idle:(double *)a5
+- (void)_lock_getApplicationCPUTimesForUser:(double *)user system:(double *)system idle:(double *)idle
 {
   os_unfair_lock_assert_owner(&self->_lock);
   v12 = 0.0;
@@ -139,23 +139,23 @@ uint64_t __48__FBProcessCPUStatistics_initWithProcessHandle___block_invoke()
   [(FBProcessCPUStatistics *)self _hostwideUserElapsedCPUTime:&v13 systemElapsedCPUTime:&v12 idleElapsedCPUTime:&v11];
   beginSystemCPUElapsedTime = self->_times.beginSystemCPUElapsedTime;
   beginIdleCPUElapsedTime = self->_times.beginIdleCPUElapsedTime;
-  if (a3)
+  if (user)
   {
-    *a3 = v13 - self->_times.beginUserCPUElapsedTime;
+    *user = v13 - self->_times.beginUserCPUElapsedTime;
   }
 
-  if (a4)
+  if (system)
   {
-    *a4 = v12 - beginSystemCPUElapsedTime;
+    *system = v12 - beginSystemCPUElapsedTime;
   }
 
-  if (a5)
+  if (idle)
   {
-    *a5 = v11 - beginIdleCPUElapsedTime;
+    *idle = v11 - beginIdleCPUElapsedTime;
   }
 }
 
-- (void)_hostwideUserElapsedCPUTime:(double *)a3 systemElapsedCPUTime:(double *)a4 idleElapsedCPUTime:(double *)a5
+- (void)_hostwideUserElapsedCPUTime:(double *)time systemElapsedCPUTime:(double *)uTime idleElapsedCPUTime:(double *)pUTime
 {
   v28 = *MEMORY[0x1E69E9840];
   *host_info_out = 0;
@@ -250,19 +250,19 @@ LABEL_9:
     v12 = (v14 * v17) / 1000000.0;
   }
 
-  if (a3)
+  if (time)
   {
-    *a3 = v10;
+    *time = v10;
   }
 
-  if (a4)
+  if (uTime)
   {
-    *a4 = v11;
+    *uTime = v11;
   }
 
-  if (a5)
+  if (pUTime)
   {
-    *a5 = v12;
+    *pUTime = v12;
   }
 
   v18 = *MEMORY[0x1E69E9840];

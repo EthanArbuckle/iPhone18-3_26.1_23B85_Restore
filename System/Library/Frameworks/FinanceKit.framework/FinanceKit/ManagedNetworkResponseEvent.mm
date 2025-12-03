@@ -1,14 +1,14 @@
 @interface ManagedNetworkResponseEvent
-- (_TtC10FinanceKit27ManagedNetworkResponseEvent)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4;
+- (_TtC10FinanceKit27ManagedNetworkResponseEvent)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context;
 @end
 
 @implementation ManagedNetworkResponseEvent
 
-- (_TtC10FinanceKit27ManagedNetworkResponseEvent)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4
+- (_TtC10FinanceKit27ManagedNetworkResponseEvent)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context
 {
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
-  return [(ManagedNetworkResponseEvent *)&v7 initWithEntity:a3 insertIntoManagedObjectContext:a4];
+  return [(ManagedNetworkResponseEvent *)&v7 initWithEntity:entity insertIntoManagedObjectContext:context];
 }
 
 @end

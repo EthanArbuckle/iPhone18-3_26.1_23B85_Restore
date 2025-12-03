@@ -1,11 +1,11 @@
 @interface PKTileContextDetailsTableView
-+ (id)createWithEntries:(id)a3;
++ (id)createWithEntries:(id)entries;
 - (PKTileContextDetailsTableView)init;
 @end
 
 @implementation PKTileContextDetailsTableView
 
-+ (id)createWithEntries:(id)a3
++ (id)createWithEntries:(id)entries
 {
   type metadata accessor for TileContextDetailsTableViewEntry(0);
   sub_1BE052744();

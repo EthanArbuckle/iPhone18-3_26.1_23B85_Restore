@@ -1,30 +1,30 @@
 @interface SBHIconTableViewCell
-+ (UIEdgeInsets)defaultTableViewCellSeparatorInsetsForIconImageInfo:(SBIconImageInfo *)a3;
-- (BOOL)_setLabelAccessoryType:(int64_t)a3;
-- (BOOL)_updateIconNameLabelForDisplayName:(id)a3 labelAccessoryType:(int64_t)a4;
++ (UIEdgeInsets)defaultTableViewCellSeparatorInsetsForIconImageInfo:(SBIconImageInfo *)info;
+- (BOOL)_setLabelAccessoryType:(int64_t)type;
+- (BOOL)_updateIconNameLabelForDisplayName:(id)name labelAccessoryType:(int64_t)type;
 - (CGSize)intrinsicContentSize;
-- (SBHIconTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (SBHIconTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)_resetContent;
 - (void)_resetIconView;
 - (void)_teardownIconLabelAccessoryView;
 - (void)_updateHighlightBackgroundView;
 - (void)_updateTitleLabelFont;
-- (void)configureCellForIcon:(id)a3;
+- (void)configureCellForIcon:(id)icon;
 - (void)prepareForReuse;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setHighlighted:(BOOL)a3 animated:(BOOL)a4;
-- (void)setIconView:(id)a3;
-- (void)setLegibilitySettings:(id)a3;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated;
+- (void)setIconView:(id)view;
+- (void)setLegibilitySettings:(id)settings;
 @end
 
 @implementation SBHIconTableViewCell
 
-- (SBHIconTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (SBHIconTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v85[3] = *MEMORY[0x1E69E9840];
   v81.receiver = self;
   v81.super_class = SBHIconTableViewCell;
-  v4 = [(SBHIconTableViewCell *)&v81 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(SBHIconTableViewCell *)&v81 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = objc_alloc_init(MEMORY[0x1E69DCC10]);
@@ -33,8 +33,8 @@
 
     [(UILabel *)v4->_iconNameLabel setNumberOfLines:1];
     v7 = v4->_iconNameLabel;
-    v8 = [MEMORY[0x1E69DC888] whiteColor];
-    [(UILabel *)v7 setTextColor:v8];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [(UILabel *)v7 setTextColor:whiteColor];
 
     LODWORD(v9) = 1148846080;
     [(UILabel *)v4->_iconNameLabel setContentCompressionResistancePriority:1 forAxis:v9];
@@ -54,9 +54,9 @@
     v18 = *(MEMORY[0x1E69DDCE0] + 24);
     [(SBHIconTableViewCell *)v4 setLayoutMargins:*MEMORY[0x1E69DDCE0], v16, v17, v18];
     [(SBHIconTableViewCell *)v4 setPreservesSuperviewLayoutMargins:1];
-    v19 = [(SBHIconTableViewCell *)v4 contentView];
-    [v19 setLayoutMargins:{v15, v16, v17, v18}];
-    [v19 setPreservesSuperviewLayoutMargins:1];
+    contentView = [(SBHIconTableViewCell *)v4 contentView];
+    [contentView setLayoutMargins:{v15, v16, v17, v18}];
+    [contentView setPreservesSuperviewLayoutMargins:1];
     v85[0] = v4->_iconNameLabel;
     v85[1] = v4->_iconViewContainerView;
     v85[2] = v4->_labelContainerView;
@@ -89,76 +89,76 @@
     }
 
     [(UIView *)v4->_labelContainerView addSubview:v4->_iconNameLabel];
-    [v19 addSubview:v4->_labelContainerView];
-    [v19 addSubview:v4->_iconViewContainerView];
-    v25 = [MEMORY[0x1E69DC888] clearColor];
-    [v19 setBackgroundColor:v25];
+    [contentView addSubview:v4->_labelContainerView];
+    [contentView addSubview:v4->_iconViewContainerView];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [contentView setBackgroundColor:clearColor];
 
-    v26 = [MEMORY[0x1E69DC888] clearColor];
-    [(SBHIconTableViewCell *)v4 setBackgroundColor:v26];
+    clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+    [(SBHIconTableViewCell *)v4 setBackgroundColor:clearColor2];
 
     v27 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v28 = [(UIView *)v4->_iconViewContainerView leadingAnchor];
-    v29 = [v19 layoutMarginsGuide];
-    v30 = [v29 leadingAnchor];
-    [v28 constraintEqualToAnchor:v30];
-    v32 = v31 = v19;
+    leadingAnchor = [(UIView *)v4->_iconViewContainerView leadingAnchor];
+    layoutMarginsGuide = [contentView layoutMarginsGuide];
+    leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+    [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
+    v32 = v31 = contentView;
     [v27 addObject:v32];
 
-    v33 = [(UIView *)v4->_iconViewContainerView topAnchor];
-    v34 = [v31 topAnchor];
-    v35 = [v33 constraintGreaterThanOrEqualToAnchor:v34 constant:12.0];
+    topAnchor = [(UIView *)v4->_iconViewContainerView topAnchor];
+    topAnchor2 = [v31 topAnchor];
+    v35 = [topAnchor constraintGreaterThanOrEqualToAnchor:topAnchor2 constant:12.0];
     [v27 addObject:v35];
 
-    v36 = [(UIView *)v4->_iconViewContainerView bottomAnchor];
-    v37 = [v31 bottomAnchor];
-    v38 = [v36 constraintLessThanOrEqualToAnchor:v37 constant:12.0];
+    bottomAnchor = [(UIView *)v4->_iconViewContainerView bottomAnchor];
+    bottomAnchor2 = [v31 bottomAnchor];
+    v38 = [bottomAnchor constraintLessThanOrEqualToAnchor:bottomAnchor2 constant:12.0];
     [v27 addObject:v38];
 
-    v39 = [(UIView *)v4->_iconViewContainerView centerYAnchor];
-    v40 = [v31 centerYAnchor];
-    v41 = [v39 constraintEqualToAnchor:v40];
+    centerYAnchor = [(UIView *)v4->_iconViewContainerView centerYAnchor];
+    centerYAnchor2 = [v31 centerYAnchor];
+    v41 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     [v27 addObject:v41];
 
-    v42 = [(UIView *)v4->_labelContainerView leadingAnchor];
-    v43 = [(UIView *)v4->_iconViewContainerView trailingAnchor];
-    v44 = [v42 constraintEqualToAnchor:v43 constant:16.0];
+    leadingAnchor3 = [(UIView *)v4->_labelContainerView leadingAnchor];
+    trailingAnchor = [(UIView *)v4->_iconViewContainerView trailingAnchor];
+    v44 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor constant:16.0];
     [v27 addObject:v44];
 
-    v45 = [(UIView *)v4->_labelContainerView trailingAnchor];
-    v46 = [v31 layoutMarginsGuide];
-    v47 = [v46 trailingAnchor];
-    v48 = [v45 constraintLessThanOrEqualToAnchor:v47 constant:-16.0];
+    trailingAnchor2 = [(UIView *)v4->_labelContainerView trailingAnchor];
+    layoutMarginsGuide2 = [v31 layoutMarginsGuide];
+    trailingAnchor3 = [layoutMarginsGuide2 trailingAnchor];
+    v48 = [trailingAnchor2 constraintLessThanOrEqualToAnchor:trailingAnchor3 constant:-16.0];
     [v27 addObject:v48];
 
-    v49 = [(UIView *)v4->_labelContainerView centerYAnchor];
-    v50 = [(UIView *)v4->_iconViewContainerView centerYAnchor];
-    v51 = [v49 constraintEqualToAnchor:v50];
+    centerYAnchor3 = [(UIView *)v4->_labelContainerView centerYAnchor];
+    centerYAnchor4 = [(UIView *)v4->_iconViewContainerView centerYAnchor];
+    v51 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
     [v27 addObject:v51];
 
-    v52 = [(UIView *)v4->_labelContainerView heightAnchor];
-    v53 = [(UIView *)v4->_iconViewContainerView heightAnchor];
-    v54 = [v52 constraintLessThanOrEqualToAnchor:v53 multiplier:1.0];
+    heightAnchor = [(UIView *)v4->_labelContainerView heightAnchor];
+    heightAnchor2 = [(UIView *)v4->_iconViewContainerView heightAnchor];
+    v54 = [heightAnchor constraintLessThanOrEqualToAnchor:heightAnchor2 multiplier:1.0];
     [v27 addObject:v54];
 
-    v55 = [(UIView *)v4->_labelContainerView heightAnchor];
-    v56 = [(UILabel *)v4->_iconNameLabel heightAnchor];
-    v57 = [v55 constraintEqualToAnchor:v56 multiplier:1.0];
+    heightAnchor3 = [(UIView *)v4->_labelContainerView heightAnchor];
+    heightAnchor4 = [(UILabel *)v4->_iconNameLabel heightAnchor];
+    v57 = [heightAnchor3 constraintEqualToAnchor:heightAnchor4 multiplier:1.0];
     [v27 addObject:v57];
 
-    v58 = [(UILabel *)v4->_iconNameLabel leadingAnchor];
-    v59 = [(UIView *)v4->_labelContainerView leadingAnchor];
-    v60 = [v58 constraintEqualToAnchor:v59];
+    leadingAnchor4 = [(UILabel *)v4->_iconNameLabel leadingAnchor];
+    leadingAnchor5 = [(UIView *)v4->_labelContainerView leadingAnchor];
+    v60 = [leadingAnchor4 constraintEqualToAnchor:leadingAnchor5];
     [v27 addObject:v60];
 
-    v61 = [(UILabel *)v4->_iconNameLabel trailingAnchor];
-    v62 = [(UIView *)v4->_labelContainerView trailingAnchor];
-    v63 = [v61 constraintEqualToAnchor:v62];
+    trailingAnchor4 = [(UILabel *)v4->_iconNameLabel trailingAnchor];
+    trailingAnchor5 = [(UIView *)v4->_labelContainerView trailingAnchor];
+    v63 = [trailingAnchor4 constraintEqualToAnchor:trailingAnchor5];
     [v27 addObject:v63];
 
-    v64 = [(UILabel *)v4->_iconNameLabel topAnchor];
-    v65 = [(UIView *)v4->_labelContainerView topAnchor];
-    v66 = [v64 constraintEqualToAnchor:v65];
+    topAnchor3 = [(UILabel *)v4->_iconNameLabel topAnchor];
+    topAnchor4 = [(UIView *)v4->_labelContainerView topAnchor];
+    v66 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
     [v27 addObject:v66];
 
     v67 = objc_opt_new();
@@ -169,8 +169,8 @@
     [(SBHIconTableViewCell *)v4 setSelectedBackgroundView:v4->_customSelectedBackgroundView];
     [(SBHIconTableViewCell *)v4 _updateHighlightBackgroundView];
     [(SBHIconTableViewCell *)v4 _updateTitleLabelFont];
-    v69 = [(SBHIconTableViewCell *)v4 layer];
-    [v69 setAllowsGroupBlending:0];
+    layer = [(SBHIconTableViewCell *)v4 layer];
+    [layer setAllowsGroupBlending:0];
 
     [MEMORY[0x1E696ACD8] activateConstraints:v27];
     v70 = objc_opt_self();
@@ -207,10 +207,10 @@
 
 - (void)_updateTitleLabelFont
 {
-  v3 = [(SBHIconTableViewCell *)self traitCollection];
+  traitCollection = [(SBHIconTableViewCell *)self traitCollection];
   v4 = MEMORY[0x1E69DD1B8];
-  v5 = [v3 preferredContentSizeCategory];
-  v6 = SBHContentSizeCategoryClip(v5, *MEMORY[0x1E69DDC88], *MEMORY[0x1E69DDC28]);
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  v6 = SBHContentSizeCategoryClip(preferredContentSizeCategory, *MEMORY[0x1E69DDC88], *MEMORY[0x1E69DDC28]);
   v12 = [v4 traitCollectionWithPreferredContentSizeCategory:v6];
 
   iconNameLabel = self->_iconNameLabel;
@@ -219,16 +219,16 @@
 
   iconLabelAccessoryView = self->_iconLabelAccessoryView;
   legibilitySettings = self->_legibilitySettings;
-  v11 = [(UILabel *)self->_iconNameLabel font];
-  [(SBIconLabelAccessoryView *)iconLabelAccessoryView updateWithLegibilitySettings:legibilitySettings labelFont:v11];
+  font = [(UILabel *)self->_iconNameLabel font];
+  [(SBIconLabelAccessoryView *)iconLabelAccessoryView updateWithLegibilitySettings:legibilitySettings labelFont:font];
 }
 
 - (void)_updateHighlightBackgroundView
 {
-  v3 = [(SBHIconTableViewCell *)self traitCollection];
-  v4 = [v3 userInterfaceStyle];
+  traitCollection = [(SBHIconTableViewCell *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  if (v4 == 1)
+  if (userInterfaceStyle == 1)
   {
     p_customSelectedBackgroundView = &self->_customSelectedBackgroundView;
     customSelectedBackgroundView = self->_customSelectedBackgroundView;
@@ -239,7 +239,7 @@
 
   else
   {
-    if (v4 != 2)
+    if (userInterfaceStyle != 2)
     {
       return;
     }
@@ -251,32 +251,32 @@
     v8 = MEMORY[0x1E6979CE8];
   }
 
-  v11 = [(UIView *)*p_customSelectedBackgroundView layer];
+  layer = [(UIView *)*p_customSelectedBackgroundView layer];
   v10 = [MEMORY[0x1E6979378] filterWithType:*v8];
-  [v11 setCompositingFilter:v10];
+  [layer setCompositingFilter:v10];
 }
 
-- (void)setHighlighted:(BOOL)a3 animated:(BOOL)a4
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated
 {
-  v4 = a3;
+  highlightedCopy = highlighted;
   v10.receiver = self;
   v10.super_class = SBHIconTableViewCell;
-  [(SBHIconTableViewCell *)&v10 setHighlighted:a3 animated:a4];
+  [(SBHIconTableViewCell *)&v10 setHighlighted:highlighted animated:animated];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __48__SBHIconTableViewCell_setHighlighted_animated___block_invoke;
   v9[3] = &unk_1E8088C90;
   v9[4] = self;
   [MEMORY[0x1E69DD250] performWithoutAnimation:v9];
-  v6 = [(SBHIconTableViewCell *)self selectedBackgroundView];
-  v7 = [v6 superview];
-  v8 = [v7 layer];
-  [v8 setAllowsGroupBlending:!v4];
+  selectedBackgroundView = [(SBHIconTableViewCell *)self selectedBackgroundView];
+  superview = [selectedBackgroundView superview];
+  layer = [superview layer];
+  [layer setAllowsGroupBlending:!highlightedCopy];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v9.receiver = self;
   v9.super_class = SBHIconTableViewCell;
   [(SBHIconTableViewCell *)&v9 setHighlighted:?];
@@ -286,26 +286,26 @@
   v8[3] = &unk_1E8088C90;
   v8[4] = self;
   [MEMORY[0x1E69DD250] performWithoutAnimation:v8];
-  v5 = [(SBHIconTableViewCell *)self selectedBackgroundView];
-  v6 = [v5 superview];
-  v7 = [v6 layer];
-  [v7 setAllowsGroupBlending:!v3];
+  selectedBackgroundView = [(SBHIconTableViewCell *)self selectedBackgroundView];
+  superview = [selectedBackgroundView superview];
+  layer = [superview layer];
+  [layer setAllowsGroupBlending:!highlightedCopy];
 }
 
-- (void)setLegibilitySettings:(id)a3
+- (void)setLegibilitySettings:(id)settings
 {
-  v7 = a3;
+  settingsCopy = settings;
   if (![(SBHLegibilitySettings *)self->_legibilitySettings isEqual:?])
   {
-    objc_storeStrong(&self->_legibilitySettings, a3);
-    [(SBIconView *)self->_iconView setLegibilitySettings:v7];
+    objc_storeStrong(&self->_legibilitySettings, settings);
+    [(SBIconView *)self->_iconView setLegibilitySettings:settingsCopy];
     iconLabelAccessoryView = self->_iconLabelAccessoryView;
-    v6 = [(UILabel *)self->_iconNameLabel font];
-    [(SBIconLabelAccessoryView *)iconLabelAccessoryView updateWithLegibilitySettings:v7 labelFont:v6];
+    font = [(UILabel *)self->_iconNameLabel font];
+    [(SBIconLabelAccessoryView *)iconLabelAccessoryView updateWithLegibilitySettings:settingsCopy labelFont:font];
   }
 }
 
-+ (UIEdgeInsets)defaultTableViewCellSeparatorInsetsForIconImageInfo:(SBIconImageInfo *)a3
++ (UIEdgeInsets)defaultTableViewCellSeparatorInsetsForIconImageInfo:(SBIconImageInfo *)info
 {
   v4 = v3 + 16.0;
   v5 = 0.0;
@@ -318,64 +318,64 @@
   return result;
 }
 
-- (void)setIconView:(id)a3
+- (void)setIconView:(id)view
 {
   v26[5] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (([(SBIconView *)self->_iconView isEqual:v5]& 1) == 0)
+  viewCopy = view;
+  if (([(SBIconView *)self->_iconView isEqual:viewCopy]& 1) == 0)
   {
     [(SBHIconTableViewCell *)self _resetIconView];
-    objc_storeStrong(&self->_iconView, a3);
+    objc_storeStrong(&self->_iconView, view);
     iconView = self->_iconView;
-    v7 = [(SBHIconTableViewCell *)self legibilitySettings];
-    [(SBIconView *)iconView setLegibilitySettings:v7];
+    legibilitySettings = [(SBHIconTableViewCell *)self legibilitySettings];
+    [(SBIconView *)iconView setLegibilitySettings:legibilitySettings];
 
     [(SBIconView *)self->_iconView setTranslatesAutoresizingMaskIntoConstraints:0];
     if (self->_iconView)
     {
-      v8 = [(SBHIconTableViewCell *)self iconViewContainerView];
-      [v5 sizeToFit];
-      [v8 addSubview:v5];
-      v25 = [v5 topAnchor];
-      v24 = [v8 topAnchor];
-      v23 = [v25 constraintEqualToAnchor:v24];
+      iconViewContainerView = [(SBHIconTableViewCell *)self iconViewContainerView];
+      [viewCopy sizeToFit];
+      [iconViewContainerView addSubview:viewCopy];
+      topAnchor = [viewCopy topAnchor];
+      topAnchor2 = [iconViewContainerView topAnchor];
+      v23 = [topAnchor constraintEqualToAnchor:topAnchor2];
       v26[0] = v23;
-      v22 = [v5 bottomAnchor];
-      v21 = [v8 bottomAnchor];
-      v20 = [v22 constraintEqualToAnchor:v21];
+      bottomAnchor = [viewCopy bottomAnchor];
+      bottomAnchor2 = [iconViewContainerView bottomAnchor];
+      v20 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
       v26[1] = v20;
-      v19 = [v5 leadingAnchor];
-      v18 = [v8 leadingAnchor];
-      v9 = [v19 constraintEqualToAnchor:v18];
+      leadingAnchor = [viewCopy leadingAnchor];
+      leadingAnchor2 = [iconViewContainerView leadingAnchor];
+      v9 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
       v26[2] = v9;
-      v10 = [v5 trailingAnchor];
-      v11 = [v8 trailingAnchor];
-      v12 = [v10 constraintEqualToAnchor:v11];
+      trailingAnchor = [viewCopy trailingAnchor];
+      trailingAnchor2 = [iconViewContainerView trailingAnchor];
+      v12 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
       v26[3] = v12;
-      v13 = [v8 widthAnchor];
-      [v5 iconImageSize];
-      v14 = [v13 constraintEqualToConstant:?];
+      widthAnchor = [iconViewContainerView widthAnchor];
+      [viewCopy iconImageSize];
+      v14 = [widthAnchor constraintEqualToConstant:?];
       v26[4] = v14;
       v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:5];
       [(SBHIconTableViewCell *)self setIconViewContainerViewConstraints:v15];
 
       v16 = MEMORY[0x1E696ACD8];
-      v17 = [(SBHIconTableViewCell *)self iconViewContainerViewConstraints];
-      [v16 activateConstraints:v17];
+      iconViewContainerViewConstraints = [(SBHIconTableViewCell *)self iconViewContainerViewConstraints];
+      [v16 activateConstraints:iconViewContainerViewConstraints];
     }
 
     [(SBHIconTableViewCell *)self invalidateIntrinsicContentSize];
   }
 }
 
-- (void)configureCellForIcon:(id)a3
+- (void)configureCellForIcon:(id)icon
 {
-  v7 = a3;
-  objc_storeStrong(&self->_icon, a3);
-  if (v7)
+  iconCopy = icon;
+  objc_storeStrong(&self->_icon, icon);
+  if (iconCopy)
   {
-    v5 = [v7 displayName];
-    v6 = -[SBHIconTableViewCell _updateIconNameLabelForDisplayName:labelAccessoryType:](self, "_updateIconNameLabelForDisplayName:labelAccessoryType:", v5, [v7 labelAccessoryType]);
+    displayName = [iconCopy displayName];
+    v6 = -[SBHIconTableViewCell _updateIconNameLabelForDisplayName:labelAccessoryType:](self, "_updateIconNameLabelForDisplayName:labelAccessoryType:", displayName, [iconCopy labelAccessoryType]);
 
     if (!v6)
     {
@@ -400,10 +400,10 @@ LABEL_4:
   [(SBHIconTableViewCell *)self _teardownIconLabelAccessoryView];
   self->_labelAccessoryType = 0;
   [(SBIconView *)self->_iconView setTranslatesAutoresizingMaskIntoConstraints:1];
-  v3 = [(SBIconView *)self->_iconView superview];
-  v4 = [(SBHIconTableViewCell *)self iconViewContainerView];
+  superview = [(SBIconView *)self->_iconView superview];
+  iconViewContainerView = [(SBHIconTableViewCell *)self iconViewContainerView];
 
-  if (v3 == v4)
+  if (superview == iconViewContainerView)
   {
     [(SBIconView *)self->_iconView removeFromSuperview];
   }
@@ -414,24 +414,24 @@ LABEL_4:
   icon = self->_icon;
   self->_icon = 0;
 
-  v10 = [(SBHIconTableViewCell *)self iconViewContainerView];
-  v7 = [v10 subviews];
-  [v7 makeObjectsPerformSelector:sel_removeFromSuperview];
+  iconViewContainerView2 = [(SBHIconTableViewCell *)self iconViewContainerView];
+  subviews = [iconViewContainerView2 subviews];
+  [subviews makeObjectsPerformSelector:sel_removeFromSuperview];
 
   v8 = MEMORY[0x1E696ACD8];
-  v9 = [(SBHIconTableViewCell *)self iconViewContainerViewConstraints];
-  [v8 deactivateConstraints:v9];
+  iconViewContainerViewConstraints = [(SBHIconTableViewCell *)self iconViewContainerViewConstraints];
+  [v8 deactivateConstraints:iconViewContainerViewConstraints];
 
   [(SBHIconTableViewCell *)self setIconViewContainerViewConstraints:0];
 }
 
 - (void)_resetContent
 {
-  v3 = [(SBHIconTableViewCell *)self iconView];
-  [v3 prepareForReuse];
+  iconView = [(SBHIconTableViewCell *)self iconView];
+  [iconView prepareForReuse];
 
-  v4 = [(SBHIconTableViewCell *)self iconNameLabel];
-  [v4 setText:0];
+  iconNameLabel = [(SBHIconTableViewCell *)self iconNameLabel];
+  [iconNameLabel setText:0];
 
   [(SBHIconTableViewCell *)self _teardownIconLabelAccessoryView];
   self->_labelAccessoryType = 0;
@@ -439,26 +439,26 @@ LABEL_4:
   self->_icon = 0;
 }
 
-- (BOOL)_updateIconNameLabelForDisplayName:(id)a3 labelAccessoryType:(int64_t)a4
+- (BOOL)_updateIconNameLabelForDisplayName:(id)name labelAccessoryType:(int64_t)type
 {
-  v6 = a3;
-  v7 = [(UILabel *)self->_iconNameLabel text];
+  nameCopy = name;
+  text = [(UILabel *)self->_iconNameLabel text];
   v8 = BSEqualObjects();
 
   if ((v8 & 1) == 0)
   {
-    [(UILabel *)self->_iconNameLabel setText:v6];
+    [(UILabel *)self->_iconNameLabel setText:nameCopy];
     [(UILabel *)self->_iconNameLabel invalidateIntrinsicContentSize];
   }
 
-  v9 = [(SBHIconTableViewCell *)self _setLabelAccessoryType:a4]| ~v8;
+  v9 = [(SBHIconTableViewCell *)self _setLabelAccessoryType:type]| ~v8;
 
   return v9 & 1;
 }
 
-- (BOOL)_setLabelAccessoryType:(int64_t)a3
+- (BOOL)_setLabelAccessoryType:(int64_t)type
 {
-  if (a3 == 3)
+  if (type == 3)
   {
     v3 = 3;
   }
@@ -473,7 +473,7 @@ LABEL_4:
   {
     self->_labelAccessoryType = v3;
     [(SBHIconTableViewCell *)self _teardownIconLabelAccessoryView];
-    if (a3 == 3)
+    if (type == 3)
     {
       [SBIconView defaultViewClassForLabelAccessoryType:3];
       v7 = objc_opt_new();
@@ -482,43 +482,43 @@ LABEL_4:
 
       v9 = self->_iconLabelAccessoryView;
       legibilitySettings = self->_legibilitySettings;
-      v11 = [(SBHIconTableViewCell *)self iconNameLabel];
-      v12 = [v11 font];
-      [(SBIconLabelAccessoryView *)v9 updateWithLegibilitySettings:legibilitySettings labelFont:v12];
+      iconNameLabel = [(SBHIconTableViewCell *)self iconNameLabel];
+      font = [iconNameLabel font];
+      [(SBIconLabelAccessoryView *)v9 updateWithLegibilitySettings:legibilitySettings labelFont:font];
 
       [(SBIconLabelAccessoryView *)self->_iconLabelAccessoryView setTranslatesAutoresizingMaskIntoConstraints:0];
-      v13 = [(SBHIconTableViewCell *)self contentView];
-      [v13 addSubview:self->_iconLabelAccessoryView];
+      contentView = [(SBHIconTableViewCell *)self contentView];
+      [contentView addSubview:self->_iconLabelAccessoryView];
 
       v14 = objc_alloc_init(MEMORY[0x1E695DF70]);
-      v15 = [(SBIconLabelAccessoryView *)self->_iconLabelAccessoryView hasBaseline];
+      hasBaseline = [(SBIconLabelAccessoryView *)self->_iconLabelAccessoryView hasBaseline];
       v16 = self->_iconLabelAccessoryView;
-      if (v15)
+      if (hasBaseline)
       {
-        v17 = [(SBIconLabelAccessoryView *)v16 firstBaselineAnchor];
+        firstBaselineAnchor = [(SBIconLabelAccessoryView *)v16 firstBaselineAnchor];
         [(UILabel *)self->_iconNameLabel firstBaselineAnchor];
       }
 
       else
       {
-        v17 = [(SBIconLabelAccessoryView *)v16 centerYAnchor];
+        firstBaselineAnchor = [(SBIconLabelAccessoryView *)v16 centerYAnchor];
         [(UILabel *)self->_iconNameLabel centerYAnchor];
       }
       v18 = ;
-      v19 = [v17 constraintEqualToAnchor:v18];
+      v19 = [firstBaselineAnchor constraintEqualToAnchor:v18];
       [(NSArray *)v14 addObject:v19];
 
-      v20 = [(SBHIconTableViewCell *)self contentView];
-      v21 = [v20 layoutMarginsGuide];
+      contentView2 = [(SBHIconTableViewCell *)self contentView];
+      layoutMarginsGuide = [contentView2 layoutMarginsGuide];
 
-      v22 = [(SBIconLabelAccessoryView *)self->_iconLabelAccessoryView trailingAnchor];
-      v23 = [v21 trailingAnchor];
-      v24 = [v22 constraintEqualToAnchor:v23 constant:-16.0];
+      trailingAnchor = [(SBIconLabelAccessoryView *)self->_iconLabelAccessoryView trailingAnchor];
+      trailingAnchor2 = [layoutMarginsGuide trailingAnchor];
+      v24 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-16.0];
       [(NSArray *)v14 addObject:v24];
 
-      v25 = [(SBIconLabelAccessoryView *)self->_iconLabelAccessoryView leadingAnchor];
-      v26 = [(UIView *)self->_labelContainerView trailingAnchor];
-      v27 = [v25 constraintGreaterThanOrEqualToSystemSpacingAfterAnchor:v26 multiplier:1.0];
+      leadingAnchor = [(SBIconLabelAccessoryView *)self->_iconLabelAccessoryView leadingAnchor];
+      trailingAnchor3 = [(UIView *)self->_labelContainerView trailingAnchor];
+      v27 = [leadingAnchor constraintGreaterThanOrEqualToSystemSpacingAfterAnchor:trailingAnchor3 multiplier:1.0];
       [(NSArray *)v14 addObject:v27];
 
       iconLabelAccessoryViewConstraints = self->_iconLabelAccessoryViewConstraints;

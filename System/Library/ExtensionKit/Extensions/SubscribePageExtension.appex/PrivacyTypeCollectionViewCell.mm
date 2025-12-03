@@ -1,7 +1,7 @@
 @interface PrivacyTypeCollectionViewCell
 - (NSArray)accessibilityCategoryViews;
 - (void)layoutSubviews;
-- (void)lowMemoryWarning:(id)a3;
+- (void)lowMemoryWarning:(id)warning;
 - (void)prepareForReuse;
 @end
 
@@ -9,7 +9,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1002A20C0();
 }
 
@@ -30,7 +30,7 @@
   sub_1002A1184();
 }
 
-- (void)lowMemoryWarning:(id)a3
+- (void)lowMemoryWarning:(id)warning
 {
   v4 = sub_100740EA4();
   v5 = *(v4 - 8);
@@ -38,7 +38,7 @@
   v7 = &v9 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_100740E84();
   swift_beginAccess();
-  v8 = self;
+  selfCopy = self;
   sub_10000C518(&qword_100930370);
   sub_100751294();
   swift_endAccess();

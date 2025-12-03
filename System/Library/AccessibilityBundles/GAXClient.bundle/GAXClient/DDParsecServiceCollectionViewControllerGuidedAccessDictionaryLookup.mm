@@ -1,20 +1,20 @@
 @interface DDParsecServiceCollectionViewControllerGuidedAccessDictionaryLookup
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (void)setSections:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (void)setSections:(id)sections;
 @end
 
 @implementation DDParsecServiceCollectionViewControllerGuidedAccessDictionaryLookup
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"DDParsecServiceCollectionViewController" hasInstanceMethod:@"setSections:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"SFResultSection" hasInstanceMethod:@"bundleIdentifier" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"DDParsecServiceCollectionViewController" hasInstanceMethod:@"setSections:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"SFResultSection" hasInstanceMethod:@"bundleIdentifier" withFullSignature:{"@", 0}];
 }
 
-- (void)setSections:(id)a3
+- (void)setSections:(id)sections
 {
-  v4 = a3;
+  sectionsCopy = sections;
   if (UIAccessibilityIsGuidedAccessEnabled())
   {
     v5 = +[NSMutableArray array];
@@ -22,7 +22,7 @@
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v6 = v4;
+    v6 = sectionsCopy;
     v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v7)
     {
@@ -54,7 +54,7 @@
 
   else
   {
-    v5 = v4;
+    v5 = sectionsCopy;
   }
 
   v13.receiver = self;

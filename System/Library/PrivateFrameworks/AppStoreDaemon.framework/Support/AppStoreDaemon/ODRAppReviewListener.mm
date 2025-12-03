@@ -1,13 +1,13 @@
 @interface ODRAppReviewListener
-- (void)configureClientWithConnection:(id)a3;
+- (void)configureClientWithConnection:(id)connection;
 @end
 
 @implementation ODRAppReviewListener
 
-- (void)configureClientWithConnection:(id)a3
+- (void)configureClientWithConnection:(id)connection
 {
-  v3 = a3;
-  v4 = sub_1002818B4([ODRAppReviewClient alloc], v3);
+  connectionCopy = connection;
+  v4 = sub_1002818B4([ODRAppReviewClient alloc], connectionCopy);
 }
 
 @end

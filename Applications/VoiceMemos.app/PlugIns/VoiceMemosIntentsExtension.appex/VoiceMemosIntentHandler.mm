@@ -1,67 +1,67 @@
 @interface VoiceMemosIntentHandler
-- (id)handlerForIntent:(id)a3;
-- (void)confirmPlaybackVoiceMemo:(id)a3 completion:(id)a4;
-- (void)confirmRecordVoiceMemo:(id)a3 completion:(id)a4;
-- (void)handlePlaybackVoiceMemo:(id)a3 completion:(id)a4;
-- (void)handleRecordVoiceMemo:(id)a3 completion:(id)a4;
+- (id)handlerForIntent:(id)intent;
+- (void)confirmPlaybackVoiceMemo:(id)memo completion:(id)completion;
+- (void)confirmRecordVoiceMemo:(id)memo completion:(id)completion;
+- (void)handlePlaybackVoiceMemo:(id)memo completion:(id)completion;
+- (void)handleRecordVoiceMemo:(id)memo completion:(id)completion;
 @end
 
 @implementation VoiceMemosIntentHandler
 
-- (id)handlerForIntent:(id)a3
+- (id)handlerForIntent:(id)intent
 {
-  v4 = a3;
+  intentCopy = intent;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    v5 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
-  return v5;
+  return selfCopy;
 }
 
-- (void)handleRecordVoiceMemo:(id)a3 completion:(id)a4
+- (void)handleRecordVoiceMemo:(id)memo completion:(id)completion
 {
-  v4 = a4;
+  completionCopy = completion;
   v5 = [[RecordVoiceMemoIntentResponse alloc] _initWithCode:2 userActivity:0];
-  v4[2](v4, v5);
+  completionCopy[2](completionCopy, v5);
 }
 
-- (void)confirmRecordVoiceMemo:(id)a3 completion:(id)a4
+- (void)confirmRecordVoiceMemo:(id)memo completion:(id)completion
 {
-  v4 = a4;
+  completionCopy = completion;
   v5 = +[RCSSavedRecordingService sharedService];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100000CE4;
   v7[3] = &unk_1000040E8;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   [v5 checkRecordingAvailability:v7];
 }
 
-- (void)handlePlaybackVoiceMemo:(id)a3 completion:(id)a4
+- (void)handlePlaybackVoiceMemo:(id)memo completion:(id)completion
 {
-  v4 = a4;
+  completionCopy = completion;
   v5 = [[PlaybackVoiceMemoIntentResponse alloc] _initWithCode:2 userActivity:0];
-  v4[2](v4, v5);
+  completionCopy[2](completionCopy, v5);
 }
 
-- (void)confirmPlaybackVoiceMemo:(id)a3 completion:(id)a4
+- (void)confirmPlaybackVoiceMemo:(id)memo completion:(id)completion
 {
-  v4 = a4;
+  completionCopy = completion;
   v5 = +[RCSSavedRecordingService sharedService];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100000EE0;
   v7[3] = &unk_1000040E8;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   [v5 checkRecordingAvailability:v7];
 }
 

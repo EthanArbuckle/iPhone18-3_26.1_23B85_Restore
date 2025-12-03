@@ -1,17 +1,17 @@
 @interface HMWeekDayScheduleRule
 + (id)shortDescription;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isValidSchedule;
-- (BOOL)validTimes:(id)a3 endTime:(id)a4;
-- (HMWeekDayScheduleRule)initWithCoder:(id)a3;
-- (HMWeekDayScheduleRule)initWithDictionary:(id)a3;
-- (HMWeekDayScheduleRule)initWithStartTime:(id)a3 endTime:(id)a4 daysOfTheWeek:(unint64_t)a5;
+- (BOOL)validTimes:(id)times endTime:(id)time;
+- (HMWeekDayScheduleRule)initWithCoder:(id)coder;
+- (HMWeekDayScheduleRule)initWithDictionary:(id)dictionary;
+- (HMWeekDayScheduleRule)initWithStartTime:(id)time endTime:(id)endTime daysOfTheWeek:(unint64_t)week;
 - (NSArray)attributeDescriptions;
 - (NSString)shortDescription;
 - (id)dictionaryRepresentation;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMWeekDayScheduleRule
@@ -20,11 +20,11 @@
 {
   v15[3] = *MEMORY[0x1E69E9840];
   v3 = objc_alloc(MEMORY[0x1E69A29C8]);
-  v4 = [(HMWeekDayScheduleRule *)self startTime];
-  v5 = [v3 initWithName:@"startTime" value:v4];
+  startTime = [(HMWeekDayScheduleRule *)self startTime];
+  v5 = [v3 initWithName:@"startTime" value:startTime];
   v6 = objc_alloc(MEMORY[0x1E69A29C8]);
-  v7 = [(HMWeekDayScheduleRule *)self endTime];
-  v8 = [v6 initWithName:@"endTime" value:v7];
+  endTime = [(HMWeekDayScheduleRule *)self endTime];
+  v8 = [v6 initWithName:@"endTime" value:endTime];
   v15[1] = v8;
   v9 = objc_alloc(MEMORY[0x1E69A29C8]);
   v10 = HMDaysOfTheWeekToConciseString([(HMWeekDayScheduleRule *)self daysOfTheWeek]);
@@ -44,36 +44,36 @@
   return [v2 shortDescription];
 }
 
-- (HMWeekDayScheduleRule)initWithCoder:(id)a3
+- (HMWeekDayScheduleRule)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMWeekDayScheduleRuleCodingKeyStartTime"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMWeekDayScheduleRuleCodingKeyEndTime"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMWeekDayScheduleRuleCodingKeyDaysOfTheWeek"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMWeekDayScheduleRuleCodingKeyStartTime"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMWeekDayScheduleRuleCodingKeyEndTime"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMWeekDayScheduleRuleCodingKeyDaysOfTheWeek"];
 
   v8 = -[HMWeekDayScheduleRule initWithStartTime:endTime:daysOfTheWeek:](self, "initWithStartTime:endTime:daysOfTheWeek:", v5, v6, [v7 unsignedIntegerValue]);
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HMWeekDayScheduleRule *)self startTime];
-  [v4 encodeObject:v5 forKey:@"HMWeekDayScheduleRuleCodingKeyStartTime"];
+  coderCopy = coder;
+  startTime = [(HMWeekDayScheduleRule *)self startTime];
+  [coderCopy encodeObject:startTime forKey:@"HMWeekDayScheduleRuleCodingKeyStartTime"];
 
-  v6 = [(HMWeekDayScheduleRule *)self endTime];
-  [v4 encodeObject:v6 forKey:@"HMWeekDayScheduleRuleCodingKeyEndTime"];
+  endTime = [(HMWeekDayScheduleRule *)self endTime];
+  [coderCopy encodeObject:endTime forKey:@"HMWeekDayScheduleRuleCodingKeyEndTime"];
 
   v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[HMWeekDayScheduleRule daysOfTheWeek](self, "daysOfTheWeek")}];
-  [v4 encodeObject:v7 forKey:@"HMWeekDayScheduleRuleCodingKeyDaysOfTheWeek"];
+  [coderCopy encodeObject:v7 forKey:@"HMWeekDayScheduleRuleCodingKeyDaysOfTheWeek"];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [HMMutableWeekDayScheduleRule allocWithZone:a3];
-  v5 = [(HMWeekDayScheduleRule *)self startTime];
-  v6 = [(HMWeekDayScheduleRule *)self endTime];
-  v7 = [(HMWeekDayScheduleRule *)v4 initWithStartTime:v5 endTime:v6 daysOfTheWeek:[(HMWeekDayScheduleRule *)self daysOfTheWeek]];
+  v4 = [HMMutableWeekDayScheduleRule allocWithZone:zone];
+  startTime = [(HMWeekDayScheduleRule *)self startTime];
+  endTime = [(HMWeekDayScheduleRule *)self endTime];
+  v7 = [(HMWeekDayScheduleRule *)v4 initWithStartTime:startTime endTime:endTime daysOfTheWeek:[(HMWeekDayScheduleRule *)self daysOfTheWeek]];
 
   return v7;
 }
@@ -85,12 +85,12 @@
   return NSStringFromClass(v2);
 }
 
-- (HMWeekDayScheduleRule)initWithDictionary:(id)a3
+- (HMWeekDayScheduleRule)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 hmf_numberForKey:@"HMWeekDayScheduleRuleCodingKeyStartTime"];
-  v6 = [v4 hmf_numberForKey:@"HMWeekDayScheduleRuleCodingKeyEndTime"];
-  v7 = [v4 hmf_numberForKey:@"HMWeekDayScheduleRuleCodingKeyDaysOfTheWeek"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy hmf_numberForKey:@"HMWeekDayScheduleRuleCodingKeyStartTime"];
+  v6 = [dictionaryCopy hmf_numberForKey:@"HMWeekDayScheduleRuleCodingKeyEndTime"];
+  v7 = [dictionaryCopy hmf_numberForKey:@"HMWeekDayScheduleRuleCodingKeyDaysOfTheWeek"];
 
   v8 = HMDateComponentFromSecondsOfDay(v5);
   v9 = HMDateComponentFromSecondsOfDay(v6);
@@ -102,16 +102,16 @@
 - (id)dictionaryRepresentation
 {
   v15[3] = *MEMORY[0x1E69E9840];
-  v3 = [(HMWeekDayScheduleRule *)self startTime];
-  if (v3 && (v4 = v3, [(HMWeekDayScheduleRule *)self endTime], v5 = objc_claimAutoreleasedReturnValue(), v5, v4, v5))
+  startTime = [(HMWeekDayScheduleRule *)self startTime];
+  if (startTime && (v4 = startTime, [(HMWeekDayScheduleRule *)self endTime], v5 = objc_claimAutoreleasedReturnValue(), v5, v4, v5))
   {
     v14[0] = @"HMWeekDayScheduleRuleCodingKeyStartTime";
-    v6 = [(HMWeekDayScheduleRule *)self startTime];
-    v7 = HMSecondsFromDateComponent(v6);
+    startTime2 = [(HMWeekDayScheduleRule *)self startTime];
+    v7 = HMSecondsFromDateComponent(startTime2);
     v15[0] = v7;
     v14[1] = @"HMWeekDayScheduleRuleCodingKeyEndTime";
-    v8 = [(HMWeekDayScheduleRule *)self endTime];
-    v9 = HMSecondsFromDateComponent(v8);
+    endTime = [(HMWeekDayScheduleRule *)self endTime];
+    v9 = HMSecondsFromDateComponent(endTime);
     v15[1] = v9;
     v14[2] = @"HMWeekDayScheduleRuleCodingKeyDaysOfTheWeek";
     v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[HMWeekDayScheduleRule daysOfTheWeek](self, "daysOfTheWeek")}];
@@ -131,22 +131,22 @@
 
 - (unint64_t)hash
 {
-  v3 = [(HMWeekDayScheduleRule *)self startTime];
-  v4 = [v3 hash];
-  v5 = [(HMWeekDayScheduleRule *)self endTime];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(HMWeekDayScheduleRule *)self daysOfTheWeek];
+  startTime = [(HMWeekDayScheduleRule *)self startTime];
+  v4 = [startTime hash];
+  endTime = [(HMWeekDayScheduleRule *)self endTime];
+  v6 = [endTime hash] ^ v4;
+  daysOfTheWeek = [(HMWeekDayScheduleRule *)self daysOfTheWeek];
 
-  return v6 ^ v7;
+  return v6 ^ daysOfTheWeek;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -157,28 +157,28 @@
   v6 = v5;
   if (v6)
   {
-    v7 = [(HMWeekDayScheduleRule *)self startTime];
-    v8 = [v7 hour];
-    v9 = [v6 startTime];
-    if (v8 == [v9 hour])
+    startTime = [(HMWeekDayScheduleRule *)self startTime];
+    hour = [startTime hour];
+    startTime2 = [v6 startTime];
+    if (hour == [startTime2 hour])
     {
-      v10 = [(HMWeekDayScheduleRule *)self startTime];
-      v11 = [v10 minute];
-      v12 = [v6 startTime];
-      if (v11 == [v12 minute])
+      startTime3 = [(HMWeekDayScheduleRule *)self startTime];
+      minute = [startTime3 minute];
+      startTime4 = [v6 startTime];
+      if (minute == [startTime4 minute])
       {
-        v13 = [(HMWeekDayScheduleRule *)self endTime];
-        v14 = [v13 hour];
-        v15 = [v6 endTime];
-        if (v14 == [v15 hour])
+        endTime = [(HMWeekDayScheduleRule *)self endTime];
+        hour2 = [endTime hour];
+        endTime2 = [v6 endTime];
+        if (hour2 == [endTime2 hour])
         {
-          v21 = [(HMWeekDayScheduleRule *)self endTime];
-          v16 = [v21 minute];
-          v20 = [v6 endTime];
-          if (v16 == [v20 minute])
+          endTime3 = [(HMWeekDayScheduleRule *)self endTime];
+          minute2 = [endTime3 minute];
+          endTime4 = [v6 endTime];
+          if (minute2 == [endTime4 minute])
           {
-            v17 = [(HMWeekDayScheduleRule *)self daysOfTheWeek];
-            v18 = v17 == [v6 daysOfTheWeek];
+            daysOfTheWeek = [(HMWeekDayScheduleRule *)self daysOfTheWeek];
+            v18 = daysOfTheWeek == [v6 daysOfTheWeek];
           }
 
           else
@@ -213,10 +213,10 @@
   return v18;
 }
 
-- (HMWeekDayScheduleRule)initWithStartTime:(id)a3 endTime:(id)a4 daysOfTheWeek:(unint64_t)a5
+- (HMWeekDayScheduleRule)initWithStartTime:(id)time endTime:(id)endTime daysOfTheWeek:(unint64_t)week
 {
-  v8 = a3;
-  v9 = a4;
+  timeCopy = time;
+  endTimeCopy = endTime;
   v18.receiver = self;
   v18.super_class = HMWeekDayScheduleRule;
   v10 = [(HMWeekDayScheduleRule *)&v18 init];
@@ -229,9 +229,9 @@ LABEL_7:
   }
 
   v12 = 0;
-  if (v8 && v9 && a5)
+  if (timeCopy && endTimeCopy && week)
   {
-    if (![(HMWeekDayScheduleRule *)v10 validTimes:v8 endTime:v9])
+    if (![(HMWeekDayScheduleRule *)v10 validTimes:timeCopy endTime:endTimeCopy])
     {
       v12 = 0;
       goto LABEL_9;
@@ -241,15 +241,15 @@ LABEL_7:
     startTime = v11->_startTime;
     v11->_startTime = v13;
 
-    -[NSDateComponents setHour:](v11->_startTime, "setHour:", [v8 hour]);
-    -[NSDateComponents setMinute:](v11->_startTime, "setMinute:", [v8 minute]);
+    -[NSDateComponents setHour:](v11->_startTime, "setHour:", [timeCopy hour]);
+    -[NSDateComponents setMinute:](v11->_startTime, "setMinute:", [timeCopy minute]);
     v15 = objc_alloc_init(MEMORY[0x1E695DF10]);
     endTime = v11->_endTime;
     v11->_endTime = v15;
 
-    -[NSDateComponents setHour:](v11->_endTime, "setHour:", [v9 hour]);
-    -[NSDateComponents setMinute:](v11->_endTime, "setMinute:", [v9 minute]);
-    v11->_daysOfTheWeek = a5;
+    -[NSDateComponents setHour:](v11->_endTime, "setHour:", [endTimeCopy hour]);
+    -[NSDateComponents setMinute:](v11->_endTime, "setMinute:", [endTimeCopy minute]);
+    v11->_daysOfTheWeek = week;
     goto LABEL_7;
   }
 
@@ -258,15 +258,15 @@ LABEL_9:
   return v12;
 }
 
-- (BOOL)validTimes:(id)a3 endTime:(id)a4
+- (BOOL)validTimes:(id)times endTime:(id)time
 {
-  v5 = a3;
-  v6 = a4;
+  timesCopy = times;
+  timeCopy = time;
   v7 = 0;
-  if (([v5 hour] & 0x8000000000000000) == 0 && objc_msgSend(v5, "hour") <= 23 && (objc_msgSend(v5, "minute") & 0x8000000000000000) == 0 && objc_msgSend(v5, "minute") <= 59 && (objc_msgSend(v6, "hour") & 0x8000000000000000) == 0 && objc_msgSend(v6, "hour") <= 23 && (objc_msgSend(v6, "minute") & 0x8000000000000000) == 0 && objc_msgSend(v6, "minute") <= 59)
+  if (([timesCopy hour] & 0x8000000000000000) == 0 && objc_msgSend(timesCopy, "hour") <= 23 && (objc_msgSend(timesCopy, "minute") & 0x8000000000000000) == 0 && objc_msgSend(timesCopy, "minute") <= 59 && (objc_msgSend(timeCopy, "hour") & 0x8000000000000000) == 0 && objc_msgSend(timeCopy, "hour") <= 23 && (objc_msgSend(timeCopy, "minute") & 0x8000000000000000) == 0 && objc_msgSend(timeCopy, "minute") <= 59)
   {
-    v9 = [v6 hour];
-    if (v9 != [v5 hour] || (v10 = objc_msgSend(v6, "minute"), v10 != objc_msgSend(v5, "minute")))
+    hour = [timeCopy hour];
+    if (hour != [timesCopy hour] || (v10 = objc_msgSend(timeCopy, "minute"), v10 != objc_msgSend(timesCopy, "minute")))
     {
       v7 = 1;
     }
@@ -277,20 +277,20 @@ LABEL_9:
 
 - (BOOL)isValidSchedule
 {
-  v3 = [(HMWeekDayScheduleRule *)self endTime];
-  v4 = [v3 hour];
-  v5 = [(HMWeekDayScheduleRule *)self startTime];
-  if (v4 >= [v5 hour])
+  endTime = [(HMWeekDayScheduleRule *)self endTime];
+  hour = [endTime hour];
+  startTime = [(HMWeekDayScheduleRule *)self startTime];
+  if (hour >= [startTime hour])
   {
-    v7 = [(HMWeekDayScheduleRule *)self endTime];
-    v8 = [v7 hour];
-    v9 = [(HMWeekDayScheduleRule *)self startTime];
-    if (v8 == [v9 hour])
+    endTime2 = [(HMWeekDayScheduleRule *)self endTime];
+    hour2 = [endTime2 hour];
+    startTime2 = [(HMWeekDayScheduleRule *)self startTime];
+    if (hour2 == [startTime2 hour])
     {
-      v10 = [(HMWeekDayScheduleRule *)self endTime];
-      v11 = [v10 minute];
-      v12 = [(HMWeekDayScheduleRule *)self startTime];
-      v6 = v11 > [v12 minute];
+      endTime3 = [(HMWeekDayScheduleRule *)self endTime];
+      minute = [endTime3 minute];
+      startTime3 = [(HMWeekDayScheduleRule *)self startTime];
+      v6 = minute > [startTime3 minute];
     }
 
     else

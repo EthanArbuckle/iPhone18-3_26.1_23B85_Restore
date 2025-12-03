@@ -1,28 +1,28 @@
 @interface BWRedEyeReducerNode
-- (BWRedEyeReducerNode)initWithVersion:(int)a3 sensorConfigurationsByPortType:(id)a4;
-- (void)configurationWithID:(int64_t)a3 updatedFormat:(id)a4 didBecomeLiveForInput:(id)a5;
+- (BWRedEyeReducerNode)initWithVersion:(int)version sensorConfigurationsByPortType:(id)type;
+- (void)configurationWithID:(int64_t)d updatedFormat:(id)format didBecomeLiveForInput:(id)input;
 - (void)dealloc;
-- (void)didReachEndOfDataForInput:(id)a3;
-- (void)handleNodeError:(id)a3 forInput:(id)a4;
+- (void)didReachEndOfDataForInput:(id)input;
+- (void)handleNodeError:(id)error forInput:(id)input;
 - (void)prepareForCurrentConfigurationToBecomeLive;
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4;
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input;
 @end
 
 @implementation BWRedEyeReducerNode
 
-- (BWRedEyeReducerNode)initWithVersion:(int)a3 sensorConfigurationsByPortType:(id)a4
+- (BWRedEyeReducerNode)initWithVersion:(int)version sensorConfigurationsByPortType:(id)type
 {
   v22.receiver = self;
   v22.super_class = BWRedEyeReducerNode;
   v6 = [(BWNode *)&v22 init];
   if (v6)
   {
-    v7 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(a4, "count")}];
+    v7 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(type, "count")}];
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v8 = [a4 countByEnumeratingWithState:&v18 objects:v17 count:16];
+    v8 = [type countByEnumeratingWithState:&v18 objects:v17 count:16];
     if (v8)
     {
       v9 = v8;
@@ -34,15 +34,15 @@
         {
           if (*v19 != v10)
           {
-            objc_enumerationMutation(a4);
+            objc_enumerationMutation(type);
           }
 
-          -[NSDictionary setObject:forKeyedSubscript:](v7, "setObject:forKeyedSubscript:", [objc_msgSend(objc_msgSend(a4 objectForKeyedSubscript:{*(*(&v18 + 1) + 8 * v11)), "sensorIDDictionary"), "objectForKeyedSubscript:", @"RedEyeReductionParameters"}], *(*(&v18 + 1) + 8 * v11));
+          -[NSDictionary setObject:forKeyedSubscript:](v7, "setObject:forKeyedSubscript:", [objc_msgSend(objc_msgSend(type objectForKeyedSubscript:{*(*(&v18 + 1) + 8 * v11)), "sensorIDDictionary"), "objectForKeyedSubscript:", @"RedEyeReductionParameters"}], *(*(&v18 + 1) + 8 * v11));
           ++v11;
         }
 
         while (v9 != v11);
-        v9 = [a4 countByEnumeratingWithState:&v18 objects:v17 count:16];
+        v9 = [type countByEnumeratingWithState:&v18 objects:v17 count:16];
       }
 
       while (v9);
@@ -66,7 +66,7 @@
     v6->_ciContext = objc_alloc_init(MEMORY[0x1E695F620]);
     v6->_primaryImageSampleBuffer = 0;
     v6->_skipRepair = 0;
-    v6->_redEyeReductionVersion = a3;
+    v6->_redEyeReductionVersion = version;
   }
 
   return v6;
@@ -105,9 +105,9 @@
   }
 }
 
-- (void)configurationWithID:(int64_t)a3 updatedFormat:(id)a4 didBecomeLiveForInput:(id)a5
+- (void)configurationWithID:(int64_t)d updatedFormat:(id)format didBecomeLiveForInput:(id)input
 {
-  if (a4)
+  if (format)
   {
     outputFormatDescription = self->_outputFormatDescription;
     if (outputFormatDescription)
@@ -119,10 +119,10 @@
 
   v10.receiver = self;
   v10.super_class = BWRedEyeReducerNode;
-  [(BWNode *)&v10 configurationWithID:a3 updatedFormat:a4 didBecomeLiveForInput:a5];
+  [(BWNode *)&v10 configurationWithID:d updatedFormat:format didBecomeLiveForInput:input];
 }
 
-- (void)didReachEndOfDataForInput:(id)a3
+- (void)didReachEndOfDataForInput:(id)input
 {
   outputFormatDescription = self->_outputFormatDescription;
   if (outputFormatDescription)
@@ -133,52 +133,52 @@
 
   v6.receiver = self;
   v6.super_class = BWRedEyeReducerNode;
-  [(BWNode *)&v6 didReachEndOfDataForInput:a3];
+  [(BWNode *)&v6 didReachEndOfDataForInput:input];
 }
 
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input
 {
-  v6 = CMGetAttachment(a3, *off_1E798A3C8, 0);
+  v6 = CMGetAttachment(buffer, *off_1E798A3C8, 0);
   v7 = [objc_msgSend(v6 objectForKeyedSubscript:{*off_1E798B5C8), "BOOLValue"}];
-  v8 = CMGetAttachment(a3, @"BWStillImageCaptureSettings", 0);
+  v8 = CMGetAttachment(buffer, @"BWStillImageCaptureSettings", 0);
   v9 = [v6 objectForKeyedSubscript:*off_1E798B540];
   v10 = [objc_msgSend(v8 captureStreamSettingsForPortType:{v9), "captureFlags"}];
   if ([v8 captureType] != 2 || (*&v10 & 0x10000) == 0)
   {
     [BWRedEyeReducerNode renderSampleBuffer:? forInput:?];
 LABEL_17:
-    [(BWNodeOutput *)self->super._output emitSampleBuffer:a3];
+    [(BWNodeOutput *)self->super._output emitSampleBuffer:buffer];
     return;
   }
 
-  ImageBuffer = CMSampleBufferGetImageBuffer(a3);
+  ImageBuffer = CMSampleBufferGetImageBuffer(buffer);
   if ((v7 & 1) == 0)
   {
     if (!self->_primaryImageSampleBuffer && self->_inferenceType && self->_inferenceAttachmentKey)
     {
-      AttachedInference = BWInferenceGetAttachedInference(a3, [(BWRedEyeReducerNode *)self inferenceType], [(BWRedEyeReducerNode *)self inferenceAttachmentKey]);
-      v15 = [MEMORY[0x1E695DF90] dictionary];
-      v16 = [v8 sceneFlags];
-      v17 = [MEMORY[0x1E696AD98] numberWithBool:(v16 >> 5) & 1];
-      [v15 setObject:v17 forKeyedSubscript:*MEMORY[0x1E695F5F0]];
+      AttachedInference = BWInferenceGetAttachedInference(buffer, [(BWRedEyeReducerNode *)self inferenceType], [(BWRedEyeReducerNode *)self inferenceAttachmentKey]);
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
+      sceneFlags = [v8 sceneFlags];
+      v17 = [MEMORY[0x1E696AD98] numberWithBool:(sceneFlags >> 5) & 1];
+      [dictionary setObject:v17 forKeyedSubscript:*MEMORY[0x1E695F5F0]];
       v18 = [v6 objectForKeyedSubscript:*off_1E798A5B0];
-      [v15 setObject:v18 forKeyedSubscript:*MEMORY[0x1E695F5D0]];
-      [v15 setObject:v9 forKeyedSubscript:*MEMORY[0x1E695F5E0]];
+      [dictionary setObject:v18 forKeyedSubscript:*MEMORY[0x1E695F5D0]];
+      [dictionary setObject:v9 forKeyedSubscript:*MEMORY[0x1E695F5E0]];
       v19 = [v6 objectForKeyedSubscript:*off_1E798B510];
-      [v15 setObject:v19 forKeyedSubscript:*MEMORY[0x1E695F5D8]];
-      [v15 setObject:FigCaptureGetModelSpecificName() forKeyedSubscript:*MEMORY[0x1E695F5C8]];
+      [dictionary setObject:v19 forKeyedSubscript:*MEMORY[0x1E695F5D8]];
+      [dictionary setObject:FigCaptureGetModelSpecificName() forKeyedSubscript:*MEMORY[0x1E695F5C8]];
       if ([(NSDictionary *)self->_redEyeReductionParametersByPortType objectForKeyedSubscript:v9])
       {
         v23 = [(NSDictionary *)self->_redEyeReductionParametersByPortType objectForKeyedSubscript:v9, v9];
         v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v23 forKeys:&v22 count:1];
-        [v15 setObject:v20 forKeyedSubscript:*MEMORY[0x1E695F5E8]];
+        [dictionary setObject:v20 forKeyedSubscript:*MEMORY[0x1E695F5E8]];
       }
 
-      v21 = [(CIDualRedEyeRepairSession *)self->_redEyeRepairSession setPrimary:ImageBuffer observations:AttachedInference metadata:v15];
+      v21 = [(CIDualRedEyeRepairSession *)self->_redEyeRepairSession setPrimary:ImageBuffer observations:AttachedInference metadata:dictionary];
       self->_skipRepair = v21 ^ 1;
       if (((v21 ^ 1) & 1) == 0)
       {
-        self->_primaryImageSampleBuffer = CFRetain(a3);
+        self->_primaryImageSampleBuffer = CFRetain(buffer);
         return;
       }
     }
@@ -199,7 +199,7 @@ LABEL_17:
   }
 }
 
-- (void)handleNodeError:(id)a3 forInput:(id)a4
+- (void)handleNodeError:(id)error forInput:(id)input
 {
   if (self->_primaryImageSampleBuffer)
   {
@@ -217,7 +217,7 @@ LABEL_17:
   {
     output = self->super._output;
 
-    [(BWNodeOutput *)output emitNodeError:a3, a4];
+    [(BWNodeOutput *)output emitNodeError:error, input];
   }
 }
 

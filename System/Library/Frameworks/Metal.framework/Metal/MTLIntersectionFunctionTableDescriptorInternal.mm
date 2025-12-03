@@ -1,32 +1,32 @@
 @interface MTLIntersectionFunctionTableDescriptorInternal
-+ (id)allocWithZone:(_NSZone *)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)formattedDescription:(unint64_t)a3;
++ (id)allocWithZone:(_NSZone *)zone;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)formattedDescription:(unint64_t)description;
 - (unint64_t)hash;
 @end
 
 @implementation MTLIntersectionFunctionTableDescriptorInternal
 
-+ (id)allocWithZone:(_NSZone *)a3
++ (id)allocWithZone:(_NSZone *)zone
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
-    return [MTLIntersectionFunctionTableDescriptorInternal allocWithZone:a3];
+    return [MTLIntersectionFunctionTableDescriptorInternal allocWithZone:zone];
   }
 
   else
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___MTLIntersectionFunctionTableDescriptorInternal;
-    return objc_msgSendSuper2(&v6, sel_allocWithZone_, a3);
+    return objc_msgSendSuper2(&v6, sel_allocWithZone_, zone);
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if (result)
   {
     *(result + 1) = self->_private.functionCount;
@@ -46,21 +46,21 @@
   return _MTLHashState(v4, 0x18uLL);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
 
   Class = object_getClass(self);
-  return Class == object_getClass(a3) && self->_private.functionCount == *(a3 + 1) && self->_private.forceResourceIndex == *(a3 + 16) && self->_private.resourceIndex == *(a3 + 3);
+  return Class == object_getClass(equal) && self->_private.functionCount == *(equal + 1) && self->_private.forceResourceIndex == *(equal + 16) && self->_private.resourceIndex == *(equal + 3);
 }
 
-- (id)formattedDescription:(unint64_t)a3
+- (id)formattedDescription:(unint64_t)description
 {
   v12[9] = *MEMORY[0x1E69E9840];
-  v4 = [@"\n" stringByPaddingToLength:a3 + 4 withString:@" " startingAtIndex:0];
+  v4 = [@"\n" stringByPaddingToLength:description + 4 withString:@" " startingAtIndex:0];
   v5 = MEMORY[0x1E696AEC0];
   v11.receiver = self;
   v11.super_class = MTLIntersectionFunctionTableDescriptorInternal;

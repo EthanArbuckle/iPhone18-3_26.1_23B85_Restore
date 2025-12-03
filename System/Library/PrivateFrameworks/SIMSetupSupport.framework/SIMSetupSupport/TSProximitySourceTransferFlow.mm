@@ -1,35 +1,35 @@
 @interface TSProximitySourceTransferFlow
-- (TSProximitySourceTransferFlow)initWithPeerDevice:(id)a3;
+- (TSProximitySourceTransferFlow)initWithPeerDevice:(id)device;
 - (id)firstViewController;
-- (id)initForResumptionWithSelectedTransferPlans:(int)a3 targetUICapability:(BOOL)a4 isPreSharedKeyPresent:(BOOL)a5;
-- (id)nextViewControllerFrom:(id)a3;
-- (unint64_t)_decodeTransferStatus:(id)a3;
+- (id)initForResumptionWithSelectedTransferPlans:(int)plans targetUICapability:(BOOL)capability isPreSharedKeyPresent:(BOOL)present;
+- (id)nextViewControllerFrom:(id)from;
+- (unint64_t)_decodeTransferStatus:(id)status;
 - (void)_assertNFC;
 - (void)_bootstrapTransfer;
 - (void)_deassertNFC;
-- (void)_handleSKEvent:(id)a3;
-- (void)_handleTransferResults:(id)a3;
-- (void)_handleTransferUICapability:(id)a3;
+- (void)_handleSKEvent:(id)event;
+- (void)_handleTransferResults:(id)results;
+- (void)_handleTransferUICapability:(id)capability;
 - (void)_proxCardFlowDidDismiss;
-- (void)_resetExtension:(id)a3;
-- (void)_setupClient:(id)a3;
+- (void)_resetExtension:(id)extension;
+- (void)_setupClient:(id)client;
 - (void)_timerFired;
-- (void)_updateTransferStatus:(id)a3;
+- (void)_updateTransferStatus:(id)status;
 - (void)dealloc;
 - (void)didComplete;
-- (void)didRequestPresentationForProxCard:(id)a3;
+- (void)didRequestPresentationForProxCard:(id)card;
 - (void)firstViewController;
-- (void)firstViewController:(id)a3;
-- (void)transferEventUpdate:(id)a3;
-- (void)viewControllerDidComplete:(id)a3;
+- (void)firstViewController:(id)controller;
+- (void)transferEventUpdate:(id)update;
+- (void)viewControllerDidComplete:(id)complete;
 @end
 
 @implementation TSProximitySourceTransferFlow
 
-- (TSProximitySourceTransferFlow)initWithPeerDevice:(id)a3
+- (TSProximitySourceTransferFlow)initWithPeerDevice:(id)device
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  deviceCopy = device;
   v22.receiver = self;
   v22.super_class = TSProximitySourceTransferFlow;
   v6 = [(TSSIMSetupFlow *)&v22 init];
@@ -46,9 +46,9 @@
     v7->_ctClient = v9;
 
     [(CoreTelephonyClient *)v7->_ctClient setDelegate:v7];
-    objc_storeStrong(&v7->_peerDeviceInfo, a3);
+    objc_storeStrong(&v7->_peerDeviceInfo, device);
     v21 = 0;
-    v11 = [objc_alloc(MEMORY[0x277CBE020]) initWithDictionary:v5 error:&v21];
+    v11 = [objc_alloc(MEMORY[0x277CBE020]) initWithDictionary:deviceCopy error:&v21];
     v12 = v21;
     if (v12)
     {
@@ -65,7 +65,7 @@
     {
       if ([v11 nearbyActionDeviceClass])
       {
-        v14 = [v11 nearbyActionDeviceClass];
+        nearbyActionDeviceClass = [v11 nearbyActionDeviceClass];
       }
 
       else
@@ -78,12 +78,12 @@
           _os_log_impl(&dword_262AA8000, v15, OS_LOG_TYPE_DEFAULT, "no device class from bluetooth, set as iPhone @%s", buf, 0xCu);
         }
 
-        v14 = 1;
+        nearbyActionDeviceClass = 1;
       }
 
-      v7->_remoteDeviceClass = v14;
-      v16 = [v11 nearbyActionExtraData];
-      v7->_isDeviceIdentifierPresent = v16 != 0;
+      v7->_remoteDeviceClass = nearbyActionDeviceClass;
+      nearbyActionExtraData = [v11 nearbyActionExtraData];
+      v7->_isDeviceIdentifierPresent = nearbyActionExtraData != 0;
     }
 
     if (!v7->_proxTransferController)
@@ -93,7 +93,7 @@
       v7->_proxTransferController = v17;
     }
 
-    [(TSProximitySourceTransferFlow *)v7 _setupClient:v5];
+    [(TSProximitySourceTransferFlow *)v7 _setupClient:deviceCopy];
     [(TSProximitySourceTransferFlow *)v7 _assertNFC];
   }
 
@@ -101,7 +101,7 @@
   return v7;
 }
 
-- (id)initForResumptionWithSelectedTransferPlans:(int)a3 targetUICapability:(BOOL)a4 isPreSharedKeyPresent:(BOOL)a5
+- (id)initForResumptionWithSelectedTransferPlans:(int)plans targetUICapability:(BOOL)capability isPreSharedKeyPresent:(BOOL)present
 {
   v16.receiver = self;
   v16.super_class = TSProximitySourceTransferFlow;
@@ -119,9 +119,9 @@
 
     [(CoreTelephonyClient *)v9->_ctClient setDelegate:v9];
     v9->_isResumingAfterPause = 1;
-    v9->_selectedTransferPlansCount = a3;
-    v9->_supportsSyncTransferResults = a4;
-    v9->_isPreSharedKeyPresent = a5;
+    v9->_selectedTransferPlansCount = plans;
+    v9->_supportsSyncTransferResults = capability;
+    v9->_isPreSharedKeyPresent = present;
     if (!v9->_proxTransferController)
     {
       v13 = [[TSCellularPlanProximityTransferController alloc] initWithESIMDelegate:v9];
@@ -333,29 +333,29 @@ LABEL_42:
   return v4;
 }
 
-- (void)firstViewController:(id)a3
+- (void)firstViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [(TSSIMSetupFlow *)self delegate];
-  v6 = [v5 conformsToProtocol:&unk_2875CC048];
+  controllerCopy = controller;
+  delegate = [(TSSIMSetupFlow *)self delegate];
+  v6 = [delegate conformsToProtocol:&unk_2875CC048];
 
   if (v6)
   {
-    v7 = [(TSSIMSetupFlow *)self delegate];
+    delegate2 = [(TSSIMSetupFlow *)self delegate];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __53__TSProximitySourceTransferFlow_firstViewController___block_invoke;
     v15[3] = &unk_279B44578;
     v15[4] = self;
-    [v7 setViewDisappearHandler:v15];
+    [delegate2 setViewDisappearHandler:v15];
   }
 
   else
   {
-    v7 = _TSLogDomain();
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_FAULT))
+    delegate2 = _TSLogDomain();
+    if (os_log_type_enabled(delegate2, OS_LOG_TYPE_FAULT))
     {
-      [TSProximitySourceTransferFlow firstViewController:v7];
+      [TSProximitySourceTransferFlow firstViewController:delegate2];
     }
   }
 
@@ -369,7 +369,7 @@ LABEL_42:
     v11[2] = __53__TSProximitySourceTransferFlow_firstViewController___block_invoke_112;
     v11[3] = &unk_279B442E8;
     objc_copyWeak(&v13, &location);
-    v12 = v4;
+    v12 = controllerCopy;
     [(CoreTelephonyClient *)ctClient isPreSharedKeyForReconnectionPresent:peerDeviceInfo completion:v11];
 
     objc_destroyWeak(&v13);
@@ -378,8 +378,8 @@ LABEL_42:
 
   else
   {
-    v10 = [(TSProximitySourceTransferFlow *)self firstViewController];
-    (*(v4 + 2))(v4, v10);
+    firstViewController = [(TSProximitySourceTransferFlow *)self firstViewController];
+    (*(controllerCopy + 2))(controllerCopy, firstViewController);
   }
 }
 
@@ -485,10 +485,10 @@ LABEL_9:
   v6();
 }
 
-- (id)nextViewControllerFrom:(id)a3
+- (id)nextViewControllerFrom:(id)from
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fromCopy = from;
   if (self->_isRemotePeerClosed)
   {
     objc_opt_class();
@@ -603,17 +603,17 @@ LABEL_25:
   return v6;
 }
 
-- (void)didRequestPresentationForProxCard:(id)a3
+- (void)didRequestPresentationForProxCard:(id)card
 {
-  v4 = a3;
+  cardCopy = card;
   objc_initWeak(&location, self);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __67__TSProximitySourceTransferFlow_didRequestPresentationForProxCard___block_invoke;
   block[3] = &unk_279B443D8;
   objc_copyWeak(&v8, &location);
-  v7 = v4;
-  v5 = v4;
+  v7 = cardCopy;
+  v5 = cardCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 
   objc_destroyWeak(&v8);
@@ -783,21 +783,21 @@ LABEL_22:
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)transferEventUpdate:(id)a3
+- (void)transferEventUpdate:(id)update
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  updateCopy = update;
   v5 = _TSLogDomain();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v19 = v4;
+    v19 = updateCopy;
     v20 = 2080;
     v21 = "[TSProximitySourceTransferFlow transferEventUpdate:]";
     _os_log_impl(&dword_262AA8000, v5, OS_LOG_TYPE_DEFAULT, "transfer event : %@ @%s", buf, 0x16u);
   }
 
-  v6 = [v4 objectForKey:@"kSelectedTransferPlansCount"];
+  v6 = [updateCopy objectForKey:@"kSelectedTransferPlansCount"];
   if (v6)
   {
     objc_opt_class();
@@ -807,11 +807,11 @@ LABEL_22:
     }
   }
 
-  v7 = [v4 objectForKey:@"kTransferConfirmation"];
+  v7 = [updateCopy objectForKey:@"kTransferConfirmation"];
 
   if (v7)
   {
-    v8 = [(TSSIMSetupFlow *)self topViewController];
+    topViewController = [(TSSIMSetupFlow *)self topViewController];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -834,7 +834,7 @@ LABEL_22:
     }
   }
 
-  v12 = [v4 objectForKey:@"UpdateProxCardVisibility"];
+  v12 = [updateCopy objectForKey:@"UpdateProxCardVisibility"];
   if (v12)
   {
     objc_opt_class();
@@ -862,7 +862,7 @@ LABEL_22:
     }
   }
 
-  v14 = [v4 objectForKey:@"TransferUICapability"];
+  v14 = [updateCopy objectForKey:@"TransferUICapability"];
   if (v14)
   {
     objc_opt_class();
@@ -872,7 +872,7 @@ LABEL_22:
     }
   }
 
-  v15 = [v4 objectForKey:@"TransferResults"];
+  v15 = [updateCopy objectForKey:@"TransferResults"];
   if (v15)
   {
     objc_opt_class();
@@ -885,10 +885,10 @@ LABEL_22:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)viewControllerDidComplete:(id)a3
+- (void)viewControllerDidComplete:(id)complete
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completeCopy = complete;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -897,13 +897,13 @@ LABEL_22:
 
   else
   {
-    v5 = [(TSProximitySourceTransferFlow *)self nextViewControllerFrom:v4];
+    v5 = [(TSProximitySourceTransferFlow *)self nextViewControllerFrom:completeCopy];
 
     if (v5)
     {
       v8.receiver = self;
       v8.super_class = TSProximitySourceTransferFlow;
-      [(TSSIMSetupFlow *)&v8 viewControllerDidComplete:v4];
+      [(TSSIMSetupFlow *)&v8 viewControllerDidComplete:completeCopy];
     }
 
     else
@@ -920,8 +920,8 @@ LABEL_22:
       v9[1] = 3221225472;
       v9[2] = __59__TSProximitySourceTransferFlow_viewControllerDidComplete___block_invoke;
       v9[3] = &unk_279B44490;
-      v10 = v4;
-      v11 = self;
+      v10 = completeCopy;
+      selfCopy = self;
       [(TSProximitySourceTransferFlow *)self _resetExtension:v9];
     }
   }
@@ -937,9 +937,9 @@ id __59__TSProximitySourceTransferFlow_viewControllerDidComplete___block_invoke(
   return objc_msgSendSuper2(&v3, sel_viewControllerDidComplete_, v1);
 }
 
-- (void)_setupClient:(id)a3
+- (void)_setupClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   if (self->_btClient)
   {
     v5 = _TSLogDomain();
@@ -952,7 +952,7 @@ id __59__TSProximitySourceTransferFlow_viewControllerDidComplete___block_invoke(
   else
   {
     v6 = [SSProximityDevice alloc];
-    v7 = [(SSProximityDevice *)v6 initWithQueue:MEMORY[0x277D85CD0] endpoint:1 remoteInfo:v4];
+    v7 = [(SSProximityDevice *)v6 initWithQueue:MEMORY[0x277D85CD0] endpoint:1 remoteInfo:clientCopy];
     btClient = self->_btClient;
     self->_btClient = v7;
 
@@ -975,26 +975,26 @@ void __46__TSProximitySourceTransferFlow__setupClient___block_invoke(uint64_t a1
   [WeakRetained _handleSKEvent:v3];
 }
 
-- (void)_handleSKEvent:(id)a3
+- (void)_handleSKEvent:(id)event
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  eventCopy = event;
   v5 = _TSLogDomain();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v23 = 138412546;
-    *v24 = v4;
+    *v24 = eventCopy;
     *&v24[8] = 2080;
     v25 = "[TSProximitySourceTransferFlow _handleSKEvent:]";
     _os_log_impl(&dword_262AA8000, v5, OS_LOG_TYPE_DEFAULT, "receive SKEvent: %@ @%s", &v23, 0x16u);
   }
 
-  v6 = [v4 eventType];
-  if (v6 <= 40)
+  eventType = [eventCopy eventType];
+  if (eventType <= 40)
   {
-    if (v6 != 20)
+    if (eventType != 20)
     {
-      if (v6 == 40)
+      if (eventType == 40)
       {
         [(TSSIMSetupFlow *)self setIdleTimerDisabled:1];
         [(TSProximitySourceTransferFlow *)self _bootstrapTransfer];
@@ -1003,23 +1003,23 @@ void __46__TSProximitySourceTransferFlow__setupClient___block_invoke(uint64_t a1
       goto LABEL_30;
     }
 
-    v15 = [v4 error];
+    error = [eventCopy error];
 
-    if (v15)
+    if (error)
     {
       goto LABEL_30;
     }
 
     self->_isAuthenticationCompleted = 1;
 LABEL_20:
-    v7 = [(TSSIMSetupFlow *)self topViewController];
-    [(TSProximitySourceTransferFlow *)self viewControllerDidComplete:v7];
+    topViewController = [(TSSIMSetupFlow *)self topViewController];
+    [(TSProximitySourceTransferFlow *)self viewControllerDidComplete:topViewController];
 LABEL_29:
 
     goto LABEL_30;
   }
 
-  if (v6 == 41)
+  if (eventType == 41)
   {
     [(TSProximitySourceTransferFlow *)self _deassertNFC];
     [(TSSIMSetupFlow *)self setIdleTimerDisabled:0];
@@ -1032,14 +1032,14 @@ LABEL_29:
     }
 
     self->_isRemotePeerClosed = 1;
-    v7 = [(TSSIMSetupFlow *)self topViewController];
+    topViewController = [(TSSIMSetupFlow *)self topViewController];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       goto LABEL_29;
     }
 
-    v17 = [(TSSIMSetupFlow *)self topViewController];
+    topViewController2 = [(TSSIMSetupFlow *)self topViewController];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -1051,7 +1051,7 @@ LABEL_29:
     goto LABEL_20;
   }
 
-  if (v6 != 120)
+  if (eventType != 120)
   {
     goto LABEL_30;
   }
@@ -1059,33 +1059,33 @@ LABEL_29:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v4;
+    topViewController = eventCopy;
     v8 = _TSLogDomain();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [v7 pairingFlags];
-      v10 = [v7 passwordType];
-      v11 = [v7 throttleSeconds];
+      pairingFlags = [topViewController pairingFlags];
+      passwordType = [topViewController passwordType];
+      throttleSeconds = [topViewController throttleSeconds];
       v23 = 67109890;
-      *v24 = v9;
+      *v24 = pairingFlags;
       *&v24[4] = 1024;
-      *&v24[6] = v10;
+      *&v24[6] = passwordType;
       LOWORD(v25) = 1024;
-      *(&v25 + 2) = v11;
+      *(&v25 + 2) = throttleSeconds;
       HIWORD(v25) = 2080;
       v26 = "[TSProximitySourceTransferFlow _handleSKEvent:]";
       _os_log_impl(&dword_262AA8000, v8, OS_LOG_TYPE_DEFAULT, "flag:%d, type:%d, throttle:%d @%s", &v23, 0x1Eu);
     }
 
-    self->_passcodeType = [v7 passwordType];
-    v12 = [(TSSIMSetupFlow *)self topViewController];
+    self->_passcodeType = [topViewController passwordType];
+    topViewController3 = [(TSSIMSetupFlow *)self topViewController];
     objc_opt_class();
     v13 = objc_opt_isKindOfClass();
 
-    v14 = [(TSSIMSetupFlow *)self topViewController];
+    topViewController4 = [(TSSIMSetupFlow *)self topViewController];
     if (v13)
     {
-      [(TSProximitySourceTransferFlow *)self viewControllerDidComplete:v14];
+      [(TSProximitySourceTransferFlow *)self viewControllerDidComplete:topViewController4];
     }
 
     else
@@ -1106,8 +1106,8 @@ LABEL_29:
         _os_log_impl(&dword_262AA8000, v21, OS_LOG_TYPE_DEFAULT, "the PIN code is wrong, retry @%s", &v23, 0xCu);
       }
 
-      v14 = [(TSSIMSetupFlow *)self topViewController];
-      [v14 retry];
+      topViewController4 = [(TSSIMSetupFlow *)self topViewController];
+      [topViewController4 retry];
     }
 
     goto LABEL_29;
@@ -1116,7 +1116,7 @@ LABEL_29:
   v19 = _TSLogDomain();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
   {
-    [TSProximitySourceTransferFlow _handleSKEvent:v4];
+    [TSProximitySourceTransferFlow _handleSKEvent:eventCopy];
   }
 
 LABEL_30:
@@ -1125,7 +1125,7 @@ LABEL_30:
 
 - (void)_bootstrapTransfer
 {
-  v3 = [(SSProximityDevice *)self->_btClient templateSession];
+  templateSession = [(SSProximityDevice *)self->_btClient templateSession];
   objc_initWeak(&location, self);
   if ([(TSProximitySourceTransferFlow *)self isPreSharedKeyPresent])
   {
@@ -1144,7 +1144,7 @@ LABEL_30:
   v6[3] = &unk_279B45A60;
   v6[4] = self;
   objc_copyWeak(&v7, &location);
-  [(CoreTelephonyClient *)ctClient bootstrapPlanTransferForEndpoint:1 flowType:v4 usingMessageSession:v3 completion:v6];
+  [(CoreTelephonyClient *)ctClient bootstrapPlanTransferForEndpoint:1 flowType:v4 usingMessageSession:templateSession completion:v6];
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
 }
@@ -1215,49 +1215,49 @@ void __51__TSProximitySourceTransferFlow__bootstrapTransfer__block_invoke_2(uint
   [v2 presentViewController:*(a1 + 32) animated:1 completion:0];
 }
 
-- (void)_handleTransferUICapability:(id)a3
+- (void)_handleTransferUICapability:(id)capability
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  capabilityCopy = capability;
   v5 = _TSLogDomain();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412546;
-    v11 = v4;
+    v11 = capabilityCopy;
     v12 = 2080;
     v13 = "[TSProximitySourceTransferFlow _handleTransferUICapability:]";
     _os_log_impl(&dword_262AA8000, v5, OS_LOG_TYPE_DEFAULT, "target supported UI capability:%@ @%s", &v10, 0x16u);
   }
 
-  v6 = [v4 objectForKeyedSubscript:@"SupportsSyncTransferResults"];
+  v6 = [capabilityCopy objectForKeyedSubscript:@"SupportsSyncTransferResults"];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v8 = [v4 objectForKeyedSubscript:@"SupportsSyncTransferResults"];
+    v8 = [capabilityCopy objectForKeyedSubscript:@"SupportsSyncTransferResults"];
     self->_supportsSyncTransferResults = [v8 BOOLValue];
   }
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleTransferResults:(id)a3
+- (void)_handleTransferResults:(id)results
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  resultsCopy = results;
   v5 = _TSLogDomain();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138412546;
-    v13 = v4;
+    v13 = resultsCopy;
     v14 = 2080;
     v15 = "[TSProximitySourceTransferFlow _handleTransferResults:]";
     _os_log_impl(&dword_262AA8000, v5, OS_LOG_TYPE_DEFAULT, "results:%@ @%s", &v12, 0x16u);
   }
 
-  v6 = [v4 objectForKeyedSubscript:@"Results"];
-  v7 = [(TSSIMSetupFlow *)self topViewController];
+  v6 = [resultsCopy objectForKeyedSubscript:@"Results"];
+  topViewController = [(TSSIMSetupFlow *)self topViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -1269,22 +1269,22 @@ void __51__TSProximitySourceTransferFlow__bootstrapTransfer__block_invoke_2(uint
 
     self->_isTransferCompleted = 1;
     [(TSProximitySourceTransferFlow *)self _updateTransferStatus:v6];
-    v10 = [(TSSIMSetupFlow *)self topViewController];
-    [(TSProximitySourceTransferFlow *)self viewControllerDidComplete:v10];
+    topViewController2 = [(TSSIMSetupFlow *)self topViewController];
+    [(TSProximitySourceTransferFlow *)self viewControllerDidComplete:topViewController2];
   }
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (unint64_t)_decodeTransferStatus:(id)a3
+- (unint64_t)_decodeTransferStatus:(id)status
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  statusCopy = status;
+  v4 = statusCopy;
+  if (statusCopy)
   {
-    v5 = [v3 unsignedIntegerValue];
-    v6 = v5;
-    if (v5 >= 0xF && v5 != 10004 && v5 != 10003 && v5 != 10002 && v5 != 10001)
+    unsignedIntegerValue = [statusCopy unsignedIntegerValue];
+    v6 = unsignedIntegerValue;
+    if (unsignedIntegerValue >= 0xF && unsignedIntegerValue != 10004 && unsignedIntegerValue != 10003 && unsignedIntegerValue != 10002 && unsignedIntegerValue != 10001)
     {
       v6 = 0;
     }
@@ -1298,22 +1298,22 @@ void __51__TSProximitySourceTransferFlow__bootstrapTransfer__block_invoke_2(uint
   return v6;
 }
 
-- (void)_updateTransferStatus:(id)a3
+- (void)_updateTransferStatus:(id)status
 {
   v45 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  statusCopy = status;
   v5 = +[TSCellularPlanManagerCache sharedInstance];
-  v6 = [v5 planItems];
+  planItems = [v5 planItems];
 
-  v28 = v6;
+  v28 = planItems;
   v27 = 106;
-  self->_areAllPlansTransferedOut = [v6 count] == 0;
+  self->_areAllPlansTransferedOut = [planItems count] == 0;
   self->_numSelectedPlansNotTransferredOut = 0;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v7 = v4;
+  v7 = statusCopy;
   v8 = [v7 countByEnumeratingWithState:&v33 objects:v44 count:16];
   if (v8)
   {
@@ -1361,14 +1361,14 @@ void __51__TSProximitySourceTransferFlow__bootstrapTransfer__block_invoke_2(uint
   if ((*(&self->super.super.isa + v27) & 1) == 0 && !self->_numSelectedPlansNotTransferredOut)
   {
     *(&self->super.super.isa + v27) = 1;
-    v18 = [v6 count];
+    v18 = [planItems count];
     if (v18 <= [v7 count])
     {
       v31 = 0u;
       v32 = 0u;
       v29 = 0u;
       v30 = 0u;
-      v19 = v6;
+      v19 = planItems;
       v20 = [v19 countByEnumeratingWithState:&v29 objects:v37 count:16];
       if (v20)
       {
@@ -1383,8 +1383,8 @@ void __51__TSProximitySourceTransferFlow__bootstrapTransfer__block_invoke_2(uint
               objc_enumerationMutation(v19);
             }
 
-            v24 = [*(*(&v29 + 1) + 8 * j) iccid];
-            v25 = [v7 objectForKeyedSubscript:v24];
+            iccid = [*(*(&v29 + 1) + 8 * j) iccid];
+            v25 = [v7 objectForKeyedSubscript:iccid];
 
             if (!v25)
             {
@@ -1415,9 +1415,9 @@ LABEL_27:
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_resetExtension:(id)a3
+- (void)_resetExtension:(id)extension
 {
-  v4 = a3;
+  extensionCopy = extension;
   ctClient = self->_ctClient;
   if (objc_opt_respondsToSelector())
   {
@@ -1426,7 +1426,7 @@ LABEL_27:
     v8[1] = 3221225472;
     v8[2] = __49__TSProximitySourceTransferFlow__resetExtension___block_invoke;
     v8[3] = &unk_279B44DB8;
-    v9 = v4;
+    v9 = extensionCopy;
     [(CoreTelephonyClient *)v6 resetProximityTransportExtension:v8];
   }
 
@@ -1438,7 +1438,7 @@ LABEL_27:
       [TSProximitySourceTransferFlow _resetExtension:];
     }
 
-    v4[2](v4);
+    extensionCopy[2](extensionCopy);
   }
 }
 
@@ -1460,7 +1460,7 @@ void __49__TSProximitySourceTransferFlow__resetExtension___block_invoke(uint64_t
 - (void)_proxCardFlowDidDismiss
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = [(TSSIMSetupFlow *)self topViewController];
+  topViewController = [(TSSIMSetupFlow *)self topViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -1520,7 +1520,7 @@ void __49__TSProximitySourceTransferFlow__resetExtension___block_invoke(uint64_t
 - (void)_timerFired
 {
   v7 = *MEMORY[0x277D85DE8];
-  v3 = [a1 topViewController];
+  topViewController = [self topViewController];
   OUTLINED_FUNCTION_0();
   v6 = "[TSProximitySourceTransferFlow _timerFired]";
   _os_log_debug_impl(&dword_262AA8000, a2, OS_LOG_TYPE_DEBUG, "[Db] something weird happend. unexpected top vc:%@ @%s", v5, 0x16u);

@@ -1,6 +1,6 @@
 @interface OKNavigatorScrollViewControllerProxy
 + (id)supportedSettings;
-+ (void)setupJavascriptContext:(id)a3;
++ (void)setupJavascriptContext:(id)context;
 - (BOOL)prepareForDisplay;
 - (BOOL)prepareForUnload;
 - (BOOL)prepareForWarmup;
@@ -9,29 +9,29 @@
 - (CGRect)visiblePageRect;
 - (CGSize)contentSize;
 - (CGSize)layoutFactor;
-- (_OKEventElement)createElementWithObject:(id)a3 atOffset:(CGPoint)a4 withProbability:(unint64_t)a5 withLimit:(unint64_t)a6;
+- (_OKEventElement)createElementWithObject:(id)object atOffset:(CGPoint)offset withProbability:(unint64_t)probability withLimit:(unint64_t)limit;
 - (_OKEventList)createList;
-- (id)keyForOffset:(CGPoint)a3;
-- (id)sectorKeysForRect:(CGRect)a3;
+- (id)keyForOffset:(CGPoint)offset;
+- (id)sectorKeysForRect:(CGRect)rect;
 - (void)applySettings;
 - (void)cancelCouchPotatoPlayback;
 - (void)cleanupScrollEvents;
 - (void)dealloc;
-- (void)deleteElement:(_OKEventElement *)a3 inList:(_OKEventList *)a4;
-- (void)doApplyMotion:(id)a3;
-- (void)doMotionAction:(id)a3;
-- (void)doPanAction:(id)a3;
-- (void)doSwipeAction:(id)a3;
-- (void)insertElement:(_OKEventElement *)a3 inList:(_OKEventList *)a4;
-- (void)navigateToItemAtKeyPath:(id)a3 animated:(BOOL)a4 completionHandler:(id)a5;
-- (void)navigateToOffset:(CGPoint)a3 animated:(BOOL)a4 duration:(double)a5 timingFunctionName:(id)a6 completion:(id)a7;
-- (void)navigateToWidgetWithName:(id)a3 animated:(BOOL)a4 duration:(double)a5 completion:(id)a6;
-- (void)registerObject:(id)a3 forActionAtOffset:(CGPoint)a4 probability:(unint64_t)a5 andLimit:(unint64_t)a6;
-- (void)registerObjectOnScrollingEvent:(id)a3;
-- (void)removeRegisteredObject:(id)a3 forActionAtOffset:(CGPoint)a4 continuous:(BOOL)a5;
+- (void)deleteElement:(_OKEventElement *)element inList:(_OKEventList *)list;
+- (void)doApplyMotion:(id)motion;
+- (void)doMotionAction:(id)action;
+- (void)doPanAction:(id)action;
+- (void)doSwipeAction:(id)action;
+- (void)insertElement:(_OKEventElement *)element inList:(_OKEventList *)list;
+- (void)navigateToItemAtKeyPath:(id)path animated:(BOOL)animated completionHandler:(id)handler;
+- (void)navigateToOffset:(CGPoint)offset animated:(BOOL)animated duration:(double)duration timingFunctionName:(id)name completion:(id)completion;
+- (void)navigateToWidgetWithName:(id)name animated:(BOOL)animated duration:(double)duration completion:(id)completion;
+- (void)registerObject:(id)object forActionAtOffset:(CGPoint)offset probability:(unint64_t)probability andLimit:(unint64_t)limit;
+- (void)registerObjectOnScrollingEvent:(id)event;
+- (void)removeRegisteredObject:(id)object forActionAtOffset:(CGPoint)offset continuous:(BOOL)continuous;
 - (void)scrollViewDidScrollProxy;
-- (void)setSettingViewDidScrollActionScript:(id)a3;
-- (void)setTilt:(double)a3;
+- (void)setSettingViewDidScrollActionScript:(id)script;
+- (void)setTilt:(double)tilt;
 - (void)triggerAction;
 - (void)updatePageViewController;
 - (void)updateParallax;
@@ -90,10 +90,10 @@
   v5.super_class = OKNavigatorScrollViewControllerProxy;
   [(OKNavigatorViewController *)&v5 viewDidLoad];
   self->_lastOffset = *MEMORY[0x277CBF348];
-  v3 = [(NSMutableArray *)[(OKPresentationNavigator *)[(OKNavigatorViewControllerProxy *)self navigator] pagesNames] firstObject];
+  firstObject = [(NSMutableArray *)[(OKPresentationNavigator *)[(OKNavigatorViewControllerProxy *)self navigator] pagesNames] firstObject];
   self->_registeredObjects = objc_alloc_init(MEMORY[0x277CBEB18]);
   self->_registeredActions = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v4 = [(OKNavigatorViewControllerProxy *)self pageViewControllerForPageWithName:v3 createIfNeeded:1];
+  v4 = [(OKNavigatorViewControllerProxy *)self pageViewControllerForPageWithName:firstObject createIfNeeded:1];
   self->_pageViewController = v4;
   [(OKPageViewController *)v4 setNavigatorViewController:self];
   [(OKPageViewController *)self->_pageViewController setPrepareWidgetsManually:1];
@@ -102,18 +102,18 @@
   [(OKNavigatorViewControllerProxy *)self setCurrentPageViewController:self->_pageViewController];
 }
 
-- (void)navigateToItemAtKeyPath:(id)a3 animated:(BOOL)a4 completionHandler:(id)a5
+- (void)navigateToItemAtKeyPath:(id)path animated:(BOOL)animated completionHandler:(id)handler
 {
-  v6 = a4;
-  v8 = [a3 lastPathComponent];
+  animatedCopy = animated;
+  lastPathComponent = [path lastPathComponent];
 
-  [(OKNavigatorScrollViewControllerProxy *)self navigateToWidgetWithName:v8 animated:v6 duration:a5 completion:1.0];
+  [(OKNavigatorScrollViewControllerProxy *)self navigateToWidgetWithName:lastPathComponent animated:animatedCopy duration:handler completion:1.0];
 }
 
-- (void)navigateToWidgetWithName:(id)a3 animated:(BOOL)a4 duration:(double)a5 completion:(id)a6
+- (void)navigateToWidgetWithName:(id)name animated:(BOOL)animated duration:(double)duration completion:(id)completion
 {
-  v8 = a4;
-  v11 = [(OKPageViewController *)[(OKNavigatorViewControllerProxy *)self currentPageViewController] widgetViewForName:a3 recursively:1];
+  animatedCopy = animated;
+  v11 = [(OKPageViewController *)[(OKNavigatorViewControllerProxy *)self currentPageViewController] widgetViewForName:name recursively:1];
   if (v11)
   {
     v12 = v11;
@@ -124,11 +124,11 @@
     height = v19;
     v21 = *(MEMORY[0x277CBF348] + 8);
     v46 = *MEMORY[0x277CBF348];
-    v22 = [v12 parentWidgetView];
-    if (v22)
+    parentWidgetView = [v12 parentWidgetView];
+    if (parentWidgetView)
     {
-      v23 = v22;
-      [v22 originalFrame];
+      v23 = parentWidgetView;
+      [parentWidgetView originalFrame];
       x = x + v24;
       [v23 originalFrame];
       y = y + v25;
@@ -191,23 +191,23 @@
       v45 = v43;
     }
 
-    [(OKNavigatorScrollViewControllerProxy *)self navigateToOffset:v8 animated:@"easeInEaseOut" duration:a6 timingFunctionName:v45 completion:v44, a5];
+    [(OKNavigatorScrollViewControllerProxy *)self navigateToOffset:animatedCopy animated:@"easeInEaseOut" duration:completion timingFunctionName:v45 completion:v44, duration];
   }
 
   else if (*MEMORY[0x277D62808] >= 4)
   {
-    [MEMORY[0x277D627B8] logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Navigators/OKNavigatorScrollViewController.m" line:237 andFormat:@"%s can't find widget named %@", "-[OKNavigatorScrollViewControllerProxy navigateToWidgetWithName:animated:duration:completion:]", a3];
+    [MEMORY[0x277D627B8] logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Navigators/OKNavigatorScrollViewController.m" line:237 andFormat:@"%s can't find widget named %@", "-[OKNavigatorScrollViewControllerProxy navigateToWidgetWithName:animated:duration:completion:]", name];
   }
 }
 
-- (void)navigateToOffset:(CGPoint)a3 animated:(BOOL)a4 duration:(double)a5 timingFunctionName:(id)a6 completion:(id)a7
+- (void)navigateToOffset:(CGPoint)offset animated:(BOOL)animated duration:(double)duration timingFunctionName:(id)name completion:(id)completion
 {
-  v9 = a4;
-  y = a3.y;
+  animatedCopy = animated;
+  y = offset.y;
   v38[2] = *MEMORY[0x277D85DE8];
-  if (a3.x >= 0.0)
+  if (offset.x >= 0.0)
   {
-    x = a3.x;
+    x = offset.x;
   }
 
   else
@@ -215,7 +215,7 @@
     x = 0.0;
   }
 
-  [(UIScrollView *)self->_scrollView frame:a4];
+  [(UIScrollView *)self->_scrollView frame:animated];
   v14 = x + v13;
   [(OKNavigatorScrollViewControllerProxy *)self contentSize];
   if (v14 > v15)
@@ -242,7 +242,7 @@
     y = v23 - v24;
   }
 
-  if (v9)
+  if (animatedCopy)
   {
     scrollingAnimation = self->_scrollingAnimation;
     if (scrollingAnimation)
@@ -277,8 +277,8 @@
     v33[1] = 3221225472;
     v33[2] = __105__OKNavigatorScrollViewControllerProxy_navigateToOffset_animated_duration_timingFunctionName_completion___block_invoke_2;
     v33[3] = &unk_279C90700;
-    v33[4] = a7;
-    v31 = [OKTimerAnimation animationFromValues:v29 toValues:v30 withDuration:v34 progressBlock:v33 completionBlock:a5];
+    v33[4] = completion;
+    v31 = [OKTimerAnimation animationFromValues:v29 toValues:v30 withDuration:v34 progressBlock:v33 completionBlock:duration];
     self->_scrollingAnimation = v31;
     [(OKTimerAnimation *)v31 start];
   }
@@ -335,29 +335,29 @@ uint64_t __105__OKNavigatorScrollViewControllerProxy_navigateToOffset_animated_d
   }
 }
 
-- (void)insertElement:(_OKEventElement *)a3 inList:(_OKEventList *)a4
+- (void)insertElement:(_OKEventElement *)element inList:(_OKEventList *)list
 {
-  var1 = a4->var1;
-  ++a4->var0;
+  var1 = list->var1;
+  ++list->var0;
   if (var1)
   {
-    while (a3->var3 >= var1->var3)
+    while (element->var3 >= var1->var3)
     {
       var1 = var1->var5;
       if (!var1)
       {
-        var2 = a4->var2;
-        p_var2 = &a4->var2;
-        var2->var5 = a3;
-        a3->var6 = var2;
+        var2 = list->var2;
+        p_var2 = &list->var2;
+        var2->var5 = element;
+        element->var6 = var2;
         goto LABEL_9;
       }
     }
 
-    a3->var6 = var1->var6;
-    var1->var6 = a3;
-    a3->var5 = var1;
-    var6 = a3->var6;
+    element->var6 = var1->var6;
+    var1->var6 = element;
+    element->var5 = var1;
+    var6 = element->var6;
     if (var6)
     {
       p_var2 = &var6->var5;
@@ -365,28 +365,28 @@ uint64_t __105__OKNavigatorScrollViewControllerProxy_navigateToOffset_animated_d
 
     else
     {
-      p_var2 = &a4->var1;
+      p_var2 = &list->var1;
     }
   }
 
   else
   {
-    a4->var1 = a3;
-    p_var2 = &a4->var2;
+    list->var1 = element;
+    p_var2 = &list->var2;
   }
 
 LABEL_9:
-  *p_var2 = a3;
+  *p_var2 = element;
 }
 
-- (void)deleteElement:(_OKEventElement *)a3 inList:(_OKEventList *)a4
+- (void)deleteElement:(_OKEventElement *)element inList:(_OKEventList *)list
 {
-  p_var1 = &a4->var1;
-  var1 = a4->var1;
+  p_var1 = &list->var1;
+  var1 = list->var1;
   if (var1)
   {
-    v6 = a4->var1;
-    while (v6 != a3)
+    v6 = list->var1;
+    while (v6 != element)
     {
       v6 = v6->var5;
       if (!v6)
@@ -395,14 +395,14 @@ LABEL_9:
       }
     }
 
-    --a4->var0;
-    if (var1 == a3)
+    --list->var0;
+    if (var1 == element)
     {
-      var2 = a4->var2;
-      if (var2 == a3)
+      var2 = list->var2;
+      if (var2 == element)
       {
         *p_var1 = 0;
-        a4->var2 = 0;
+        list->var2 = 0;
 LABEL_12:
         free(v6);
         return;
@@ -416,12 +416,12 @@ LABEL_12:
     {
       var5 = v6->var5;
       v6->var6->var5 = var5;
-      var2 = a4->var2;
+      var2 = list->var2;
     }
 
-    if (var2 == a3)
+    if (var2 == element)
     {
-      a4->var2 = v6->var6;
+      list->var2 = v6->var6;
     }
 
     else
@@ -433,19 +433,19 @@ LABEL_12:
   }
 }
 
-- (_OKEventElement)createElementWithObject:(id)a3 atOffset:(CGPoint)a4 withProbability:(unint64_t)a5 withLimit:(unint64_t)a6
+- (_OKEventElement)createElementWithObject:(id)object atOffset:(CGPoint)offset withProbability:(unint64_t)probability withLimit:(unint64_t)limit
 {
-  y = a4.y;
-  x = a4.x;
+  y = offset.y;
+  x = offset.x;
   result = malloc_type_malloc(0x40uLL, 0x10A004079968BB1uLL);
   result->var0.x = x;
   result->var0.y = y;
-  result->var1 = a5;
-  result->var2 = a6;
+  result->var1 = probability;
+  result->var2 = limit;
   result->var5 = 0;
   result->var6 = 0;
   result->var3 = (x + y);
-  result->var4 = a3;
+  result->var4 = object;
   return result;
 }
 
@@ -675,13 +675,13 @@ uint64_t __64__OKNavigatorScrollViewControllerProxy_scrollViewDidScrollProxy__bl
   self->_lastOffset.y = v10;
 }
 
-- (id)sectorKeysForRect:(CGRect)a3
+- (id)sectorKeysForRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [MEMORY[0x277CBEB18] array];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  array = [MEMORY[0x277CBEB18] array];
   v9 = vcvtpd_s64_f64((fabs(width) + (x & 0x1FF)) * 0.001953125);
   if (v9 >= 1)
   {
@@ -695,7 +695,7 @@ uint64_t __64__OKNavigatorScrollViewControllerProxy_scrollViewDidScrollProxy__bl
         v13 = y;
         do
         {
-          [v8 addObject:{-[OKNavigatorScrollViewControllerProxy keyForOffset:](self, "keyForOffset:", v10, v13)}];
+          [array addObject:{-[OKNavigatorScrollViewControllerProxy keyForOffset:](self, "keyForOffset:", v10, v13)}];
           v13 += 512;
           --v12;
         }
@@ -709,73 +709,73 @@ uint64_t __64__OKNavigatorScrollViewControllerProxy_scrollViewDidScrollProxy__bl
     while (v9-- > 1);
   }
 
-  return v8;
+  return array;
 }
 
-- (id)keyForOffset:(CGPoint)a3
+- (id)keyForOffset:(CGPoint)offset
 {
-  if (a3.x < 0.0)
+  if (offset.x < 0.0)
   {
-    a3.x = 0.0;
+    offset.x = 0.0;
   }
 
-  if (a3.y < 0.0)
+  if (offset.y < 0.0)
   {
-    a3.y = 0.0;
+    offset.y = 0.0;
   }
 
-  return [MEMORY[0x277CCACA8] stringWithFormat:@"%d-%d", (a3.x * 0.001953125), (a3.y * 0.001953125)];
+  return [MEMORY[0x277CCACA8] stringWithFormat:@"%d-%d", (offset.x * 0.001953125), (offset.y * 0.001953125)];
 }
 
-- (void)registerObjectOnScrollingEvent:(id)a3
+- (void)registerObjectOnScrollingEvent:(id)event
 {
   if (([(NSMutableArray *)self->_registeredObjects containsObject:?]& 1) == 0)
   {
     registeredObjects = self->_registeredObjects;
 
-    [(NSMutableArray *)registeredObjects addObject:a3];
+    [(NSMutableArray *)registeredObjects addObject:event];
   }
 }
 
-- (void)registerObject:(id)a3 forActionAtOffset:(CGPoint)a4 probability:(unint64_t)a5 andLimit:(unint64_t)a6
+- (void)registerObject:(id)object forActionAtOffset:(CGPoint)offset probability:(unint64_t)probability andLimit:(unint64_t)limit
 {
-  y = a4.y;
-  x = a4.x;
+  y = offset.y;
+  x = offset.x;
   v12 = [(OKNavigatorScrollViewControllerProxy *)self keyForOffset:?];
   v13 = [(NSMutableDictionary *)self->_registeredActions objectForKey:v12];
-  v14 = [(OKNavigatorScrollViewControllerProxy *)self createElementWithObject:a3 atOffset:a5 withProbability:a6 withLimit:x, y];
+  v14 = [(OKNavigatorScrollViewControllerProxy *)self createElementWithObject:object atOffset:probability withProbability:limit withLimit:x, y];
   if (v13)
   {
-    v15 = [v13 pointerValue];
+    pointerValue = [v13 pointerValue];
   }
 
   else
   {
-    v15 = [(OKNavigatorScrollViewControllerProxy *)self createList];
-    -[NSMutableDictionary setObject:forKey:](self->_registeredActions, "setObject:forKey:", [MEMORY[0x277CCAE60] valueWithPointer:v15], v12);
+    pointerValue = [(OKNavigatorScrollViewControllerProxy *)self createList];
+    -[NSMutableDictionary setObject:forKey:](self->_registeredActions, "setObject:forKey:", [MEMORY[0x277CCAE60] valueWithPointer:pointerValue], v12);
   }
 
-  [(OKNavigatorScrollViewControllerProxy *)self insertElement:v14 inList:v15];
+  [(OKNavigatorScrollViewControllerProxy *)self insertElement:v14 inList:pointerValue];
 }
 
-- (void)removeRegisteredObject:(id)a3 forActionAtOffset:(CGPoint)a4 continuous:(BOOL)a5
+- (void)removeRegisteredObject:(id)object forActionAtOffset:(CGPoint)offset continuous:(BOOL)continuous
 {
-  if (a5)
+  if (continuous)
   {
     registeredObjects = self->_registeredObjects;
 
-    [(NSMutableArray *)registeredObjects removeObject:a4.x, a4.y];
+    [(NSMutableArray *)registeredObjects removeObject:offset.x, offset.y];
   }
 
   else
   {
-    v8 = [-[NSMutableDictionary objectForKey:](self->_registeredActions objectForKey:{-[OKNavigatorScrollViewControllerProxy keyForOffset:](self, "keyForOffset:", a4.x, a4.y)), "pointerValue"}];
+    v8 = [-[NSMutableDictionary objectForKey:](self->_registeredActions objectForKey:{-[OKNavigatorScrollViewControllerProxy keyForOffset:](self, "keyForOffset:", offset.x, offset.y)), "pointerValue"}];
     if (v8)
     {
       v9 = *(v8 + 8);
       if (v9)
       {
-        while (*(v9 + 40) != a3)
+        while (*(v9 + 40) != object)
         {
           v9 = *(v9 + 48);
           if (!v9)
@@ -809,7 +809,7 @@ uint64_t __64__OKNavigatorScrollViewControllerProxy_scrollViewDidScrollProxy__bl
 + (id)supportedSettings
 {
   v20[6] = *MEMORY[0x277D85DE8];
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___OKNavigatorScrollViewControllerProxy;
   v2 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:{objc_msgSendSuper2(&v6, sel_supportedSettings)}];
   v19[0] = @"showsVerticalScrollIndicator";
@@ -914,9 +914,9 @@ LABEL_5:
     return;
   }
 
-  v3 = [(OKNavigatorViewControllerProxy *)self prepareMode];
+  prepareMode = [(OKNavigatorViewControllerProxy *)self prepareMode];
   v4 = self->_pageViewController;
-  if (v3 == 2)
+  if (prepareMode == 2)
   {
     [(OKPageViewController *)v4 prepareForWarmup];
     goto LABEL_5;
@@ -948,39 +948,39 @@ LABEL_5:
 {
   v5.receiver = self;
   v5.super_class = OKNavigatorScrollViewControllerProxy;
-  v3 = [(OKNavigatorViewControllerProxy *)&v5 prepareForDisplay];
-  if (v3)
+  prepareForDisplay = [(OKNavigatorViewControllerProxy *)&v5 prepareForDisplay];
+  if (prepareForDisplay)
   {
     [(OKNavigatorScrollViewControllerProxy *)self updatePageViewController];
   }
 
-  return v3;
+  return prepareForDisplay;
 }
 
 - (BOOL)prepareForWarmup
 {
   v5.receiver = self;
   v5.super_class = OKNavigatorScrollViewControllerProxy;
-  v3 = [(OKNavigatorViewControllerProxy *)&v5 prepareForWarmup];
-  if (v3)
+  prepareForWarmup = [(OKNavigatorViewControllerProxy *)&v5 prepareForWarmup];
+  if (prepareForWarmup)
   {
     [(OKNavigatorScrollViewControllerProxy *)self updatePageViewController];
   }
 
-  return v3;
+  return prepareForWarmup;
 }
 
 - (BOOL)prepareForUnload
 {
   v5.receiver = self;
   v5.super_class = OKNavigatorScrollViewControllerProxy;
-  v3 = [(OKNavigatorViewControllerProxy *)&v5 prepareForUnload];
-  if (v3)
+  prepareForUnload = [(OKNavigatorViewControllerProxy *)&v5 prepareForUnload];
+  if (prepareForUnload)
   {
     [(OKNavigatorScrollViewControllerProxy *)self updatePageViewController];
   }
 
-  return v3;
+  return prepareForUnload;
 }
 
 - (CGPoint)contentOffset
@@ -1014,7 +1014,7 @@ LABEL_5:
   return result;
 }
 
-- (void)setSettingViewDidScrollActionScript:(id)a3
+- (void)setSettingViewDidScrollActionScript:(id)script
 {
   viewDidScrollActionScript = self->_viewDidScrollActionScript;
   if (viewDidScrollActionScript)
@@ -1023,15 +1023,15 @@ LABEL_5:
     self->_viewDidScrollActionScript = 0;
   }
 
-  self->_viewDidScrollActionScript = [a3 copy];
+  self->_viewDidScrollActionScript = [script copy];
 }
 
-+ (void)setupJavascriptContext:(id)a3
++ (void)setupJavascriptContext:(id)context
 {
   v26[3] = *MEMORY[0x277D85DE8];
-  [a3 setObject:objc_opt_class() forKeyedSubscript:@"OKNavigatorScrollViewController"];
-  [OKSettings exportClassSettings:objc_opt_class() toJavaScriptContext:a3];
-  v4 = [objc_msgSend(a3 objectForKeyedSubscript:{@"OKNavigatorScrollViewController", "objectForKeyedSubscript:", @"prototype"}];
+  [context setObject:objc_opt_class() forKeyedSubscript:@"OKNavigatorScrollViewController"];
+  [OKSettings exportClassSettings:objc_opt_class() toJavaScriptContext:context];
+  v4 = [objc_msgSend(context objectForKeyedSubscript:{@"OKNavigatorScrollViewController", "objectForKeyedSubscript:", @"prototype"}];
   v6 = *MEMORY[0x277CD4618];
   v24[0] = *MEMORY[0x277CD4620];
   v5 = v24[0];
@@ -1044,7 +1044,7 @@ LABEL_5:
   v9 = MEMORY[0x277CBEC38];
   v26[2] = MEMORY[0x277CBEC38];
   [v4 defineProperty:@"contentOffset" descriptor:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v26, v24, 3)}];
-  v10 = [objc_msgSend(a3 objectForKeyedSubscript:{@"OKNavigatorScrollViewController", "objectForKeyedSubscript:", @"prototype"}];
+  v10 = [objc_msgSend(context objectForKeyedSubscript:{@"OKNavigatorScrollViewController", "objectForKeyedSubscript:", @"prototype"}];
   v22[0] = v5;
   v22[1] = v6;
   v23[0] = &__block_literal_global_158;
@@ -1052,7 +1052,7 @@ LABEL_5:
   v22[2] = v8;
   v23[2] = v9;
   [v10 defineProperty:@"contentBounds" descriptor:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v23, v22, 3)}];
-  v11 = [objc_msgSend(a3 objectForKeyedSubscript:{@"OKNavigatorScrollViewController", "objectForKeyedSubscript:", @"prototype"}];
+  v11 = [objc_msgSend(context objectForKeyedSubscript:{@"OKNavigatorScrollViewController", "objectForKeyedSubscript:", @"prototype"}];
   v20[0] = v5;
   v20[1] = v6;
   v21[0] = &__block_literal_global_161;
@@ -1060,7 +1060,7 @@ LABEL_5:
   v20[2] = v8;
   v21[2] = v9;
   [v11 defineProperty:@"contentSize" descriptor:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v21, v20, 3)}];
-  v12 = [objc_msgSend(a3 objectForKeyedSubscript:{@"OKNavigatorScrollViewController", "objectForKeyedSubscript:", @"prototype"}];
+  v12 = [objc_msgSend(context objectForKeyedSubscript:{@"OKNavigatorScrollViewController", "objectForKeyedSubscript:", @"prototype"}];
   v14 = *MEMORY[0x277CD4638];
   v18[0] = *MEMORY[0x277CD4630];
   v13 = v18[0];
@@ -1072,7 +1072,7 @@ LABEL_5:
   v19[2] = MEMORY[0x277CBEC28];
   v19[3] = v9;
   [v12 defineProperty:@"navigateToWidget" descriptor:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v19, v18, 4)}];
-  v15 = [objc_msgSend(a3 objectForKeyedSubscript:{@"OKNavigatorScrollViewController", "objectForKeyedSubscript:", @"prototype"}];
+  v15 = [objc_msgSend(context objectForKeyedSubscript:{@"OKNavigatorScrollViewController", "objectForKeyedSubscript:", @"prototype"}];
   v16[0] = v13;
   v16[1] = v14;
   v17[0] = &__block_literal_global_175_0;
@@ -1143,11 +1143,11 @@ uint64_t __63__OKNavigatorScrollViewControllerProxy_setupJavascriptContext___blo
   return [v2 callWithArguments:{objc_msgSend(MEMORY[0x277CBEA60], "arrayWithObjects:count:", v4, 1)}];
 }
 
-- (void)setTilt:(double)a3
+- (void)setTilt:(double)tilt
 {
-  v3 = fmin(a3, 1.0);
-  v4 = fmax(a3, -1.0);
-  if (a3 >= 0.0)
+  v3 = fmin(tilt, 1.0);
+  v4 = fmax(tilt, -1.0);
+  if (tilt >= 0.0)
   {
     v5 = v3;
   }
@@ -1160,7 +1160,7 @@ uint64_t __63__OKNavigatorScrollViewControllerProxy_setupJavascriptContext___blo
   self->_tilt = (((v5 + 1.0) * 0.5 * ((v5 + 1.0) * 0.5 * ((v5 + 1.0) * 0.5 * -2.0)) + (v5 + 1.0) * 0.5 * 3.0 * ((v5 + 1.0) * 0.5)) * 2.0 + -1.0) * 0.3;
 }
 
-- (void)doApplyMotion:(id)a3
+- (void)doApplyMotion:(id)motion
 {
   [(UIScrollView *)self->_scrollView contentOffset];
   v5 = v4;
@@ -1194,14 +1194,14 @@ uint64_t __63__OKNavigatorScrollViewControllerProxy_setupJavascriptContext___blo
   [(OKNavigatorScrollViewControllerProxy *)self performBlockWithoutAnimations:v16];
 }
 
-- (void)doMotionAction:(id)a3
+- (void)doMotionAction:(id)action
 {
-  if ([a3 state] == 1)
+  if ([action state] == 1)
   {
     self->_autopanningTimer = [MEMORY[0x277CBEBB8] scheduledTimerWithTimeInterval:self target:sel_doApplyMotion_ selector:0 userInfo:1 repeats:0.0333333333];
   }
 
-  else if ([a3 state] == 3)
+  else if ([action state] == 3)
   {
     [(OKNavigatorScrollViewControllerProxy *)self setVelocity:0.0];
     [(OKNavigatorScrollViewControllerProxy *)self setTilt:0.0];
@@ -1219,11 +1219,11 @@ uint64_t __63__OKNavigatorScrollViewControllerProxy_setupJavascriptContext___blo
 
   else
   {
-    [a3 rotationZ];
+    [action rotationZ];
     v8 = v7;
-    [a3 rotationZ];
+    [action rotationZ];
     v10 = v8 * v9;
-    [a3 rotationZ];
+    [action rotationZ];
     if (v11 >= 0.0)
     {
       v12 = v10 * 300.0;
@@ -1235,21 +1235,21 @@ uint64_t __63__OKNavigatorScrollViewControllerProxy_setupJavascriptContext___blo
     }
 
     [(OKNavigatorScrollViewControllerProxy *)self setVelocity:v12];
-    [a3 rotationY];
+    [action rotationY];
     [(OKNavigatorScrollViewControllerProxy *)self setTilt:?];
-    [a3 rotationZ];
+    [action rotationZ];
     v14 = v13 * 0.05;
 
     [(OKNavigatorScrollViewControllerProxy *)self setRotationZ:v14];
   }
 }
 
-- (void)doSwipeAction:(id)a3
+- (void)doSwipeAction:(id)action
 {
   [(OKNavigatorScrollViewControllerProxy *)self contentOffset];
   v6 = v5;
   v8 = v7;
-  v9 = __ROR8__([a3 direction] - 2, 1);
+  v9 = __ROR8__([action direction] - 2, 1);
   if (v9 > 2)
   {
     if (v9 == 3)
@@ -1285,14 +1285,14 @@ uint64_t __63__OKNavigatorScrollViewControllerProxy_setupJavascriptContext___blo
   [(OKNavigatorScrollViewControllerProxy *)self navigateToOffset:1 animated:v14 duration:0 timingFunctionName:v6 completion:v8, 0.25];
 }
 
-- (void)doPanAction:(id)a3
+- (void)doPanAction:(id)action
 {
   [(OKNavigatorScrollViewControllerProxy *)self contentOffset];
   v6 = v5;
   v8 = v7;
-  [a3 translation];
+  [action translation];
   v10 = v6 + v9;
-  [a3 translation];
+  [action translation];
   v12 = v8 + v11;
   v13 = *MEMORY[0x277CDA7C8];
 

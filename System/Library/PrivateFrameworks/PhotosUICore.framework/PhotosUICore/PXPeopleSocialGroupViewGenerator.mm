@@ -1,22 +1,22 @@
 @interface PXPeopleSocialGroupViewGenerator
-+ (id)_faceCropFetchOptionsForSocialGroup:(id)a3 withSize:(CGSize)a4 displayScale:(double)a5;
-+ (id)generateViewForSocialGroup:(id)a3 withSize:(CGSize)a4 displayScale:(double)a5;
-+ (id)indexesThatNeedPortraitCropsForNumberOfFaces:(unint64_t)a3;
-+ (unint64_t)_numberOfFacesToShowForSocialGroup:(id)a3;
-+ (void)_layoutAvatarViews:(id)a3 inFrame:(CGRect)a4;
-+ (void)prefetchForSocialGroup:(id)a3 withSize:(CGSize)a4 displayScale:(double)a5;
-+ (void)resizeThumbnailSizeForSocialGroupView:(id)a3 withSize:(CGSize)a4;
++ (id)_faceCropFetchOptionsForSocialGroup:(id)group withSize:(CGSize)size displayScale:(double)scale;
++ (id)generateViewForSocialGroup:(id)group withSize:(CGSize)size displayScale:(double)scale;
++ (id)indexesThatNeedPortraitCropsForNumberOfFaces:(unint64_t)faces;
++ (unint64_t)_numberOfFacesToShowForSocialGroup:(id)group;
++ (void)_layoutAvatarViews:(id)views inFrame:(CGRect)frame;
++ (void)prefetchForSocialGroup:(id)group withSize:(CGSize)size displayScale:(double)scale;
++ (void)resizeThumbnailSizeForSocialGroupView:(id)view withSize:(CGSize)size;
 @end
 
 @implementation PXPeopleSocialGroupViewGenerator
 
-+ (void)_layoutAvatarViews:(id)a3 inFrame:(CGRect)a4
++ (void)_layoutAvatarViews:(id)views inFrame:(CGRect)frame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  a3;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  views;
   v8.origin.x = x;
   v8.origin.y = y;
   v8.size.width = width;
@@ -27,9 +27,9 @@
   PXFloatFloorToPixel();
 }
 
-+ (unint64_t)_numberOfFacesToShowForSocialGroup:(id)a3
++ (unint64_t)_numberOfFacesToShowForSocialGroup:(id)group
 {
-  result = [a3 count];
+  result = [group count];
   if (result >= 9)
   {
     return 9;
@@ -38,13 +38,13 @@
   return result;
 }
 
-+ (id)_faceCropFetchOptionsForSocialGroup:(id)a3 withSize:(CGSize)a4 displayScale:(double)a5
++ (id)_faceCropFetchOptionsForSocialGroup:(id)group withSize:(CGSize)size displayScale:(double)scale
 {
-  height = a4.height;
-  width = a4.width;
-  v8 = a3;
-  v9 = [MEMORY[0x1E695DF70] array];
-  v10 = [PXPeopleSocialGroupViewGenerator _numberOfFacesToShowForSocialGroup:v8];
+  height = size.height;
+  width = size.width;
+  groupCopy = group;
+  array = [MEMORY[0x1E695DF70] array];
+  v10 = [PXPeopleSocialGroupViewGenerator _numberOfFacesToShowForSocialGroup:groupCopy];
   v11 = [PXPeopleSocialGroupViewGenerator indexesThatNeedPortraitCropsForNumberOfFaces:v10];
   if (v10)
   {
@@ -57,20 +57,20 @@
       v16 = width * *&v15[8 * v12];
       v17 = height * *&v14[8 * v12];
       v18 = [PXPeopleFaceCropFetchOptions alloc];
-      v19 = [v8 objectAtIndexedSubscript:v12];
-      v20 = [(PXPeopleFaceCropFetchOptions *)v18 initWithPerson:v19 targetSize:v16 displayScale:v17, a5];
+      v19 = [groupCopy objectAtIndexedSubscript:v12];
+      scale = [(PXPeopleFaceCropFetchOptions *)v18 initWithPerson:v19 targetSize:v16 displayScale:v17, scale];
 
       if ([v11 containsIndex:v12])
       {
-        [(PXPeopleFaceCropFetchOptions *)v20 setCropFactor:3];
+        [(PXPeopleFaceCropFetchOptions *)scale setCropFactor:3];
       }
 
       if (v10 != 1)
       {
-        [(PXPeopleFaceCropFetchOptions *)v20 setCornerStyle:0];
+        [(PXPeopleFaceCropFetchOptions *)scale setCornerStyle:0];
       }
 
-      [v9 addObject:v20];
+      [array addObject:scale];
 
       ++v12;
     }
@@ -78,34 +78,34 @@
     while (v10 != v12);
   }
 
-  return v9;
+  return array;
 }
 
-+ (id)indexesThatNeedPortraitCropsForNumberOfFaces:(unint64_t)a3
++ (id)indexesThatNeedPortraitCropsForNumberOfFaces:(unint64_t)faces
 {
   v6 = objc_alloc_init(MEMORY[0x1E696AD50]);
-  if (a3 > 9)
+  if (faces > 9)
   {
     goto LABEL_11;
   }
 
   v7 = v6;
-  if (((1 << a3) & 0x252) != 0)
+  if (((1 << faces) & 0x252) != 0)
   {
     goto LABEL_8;
   }
 
-  if (((1 << a3) & 0xA4) == 0)
+  if (((1 << faces) & 0xA4) == 0)
   {
-    if (((1 << a3) & 0x108) != 0)
+    if (((1 << faces) & 0x108) != 0)
     {
       v8 = 0;
       goto LABEL_7;
     }
 
 LABEL_11:
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:a1 file:@"PXPeopleSocialGroupViewGenerator.m" lineNumber:110 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPeopleSocialGroupViewGenerator.m" lineNumber:110 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
@@ -120,29 +120,29 @@ LABEL_8:
   return v9;
 }
 
-+ (void)resizeThumbnailSizeForSocialGroupView:(id)a3 withSize:(CGSize)a4
++ (void)resizeThumbnailSizeForSocialGroupView:(id)view withSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a3;
-  [v7 frame];
+  height = size.height;
+  width = size.width;
+  viewCopy = view;
+  [viewCopy frame];
   v9 = v8;
-  [v7 frame];
-  [v7 setFrame:v9];
-  v10 = [v7 subviews];
+  [viewCopy frame];
+  [viewCopy setFrame:v9];
+  subviews = [viewCopy subviews];
 
-  [a1 _layoutAvatarViews:v10 inFrame:{0.0, 0.0, width, height}];
+  [self _layoutAvatarViews:subviews inFrame:{0.0, 0.0, width, height}];
 }
 
-+ (void)prefetchForSocialGroup:(id)a3 withSize:(CGSize)a4 displayScale:(double)a5
++ (void)prefetchForSocialGroup:(id)group withSize:(CGSize)size displayScale:(double)scale
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = [PXPeopleSocialGroupViewGenerator _faceCropFetchOptionsForSocialGroup:a3 withSize:a4.width displayScale:a4.height, a5];
+  scale = [PXPeopleSocialGroupViewGenerator _faceCropFetchOptionsForSocialGroup:group withSize:size.width displayScale:size.height, scale];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v6 = [scale countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -154,7 +154,7 @@ LABEL_8:
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(scale);
         }
 
         v10 = *(*(&v13 + 1) + 8 * v9);
@@ -170,7 +170,7 @@ LABEL_8:
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [scale countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);
@@ -196,16 +196,16 @@ void __81__PXPeopleSocialGroupViewGenerator_prefetchForSocialGroup_withSize_disp
   }
 }
 
-+ (id)generateViewForSocialGroup:(id)a3 withSize:(CGSize)a4 displayScale:(double)a5
++ (id)generateViewForSocialGroup:(id)group withSize:(CGSize)size displayScale:(double)scale
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v35 = *MEMORY[0x1E69E9840];
-  v10 = a3;
+  groupCopy = group;
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
-    v24 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v24 handleFailureInMethod:a2 object:a1 file:@"PXPeopleSocialGroupViewGenerator.m" lineNumber:34 description:{@"%s must be called on the main thread", "+[PXPeopleSocialGroupViewGenerator generateViewForSocialGroup:withSize:displayScale:]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPeopleSocialGroupViewGenerator.m" lineNumber:34 description:{@"%s must be called on the main thread", "+[PXPeopleSocialGroupViewGenerator generateViewForSocialGroup:withSize:displayScale:]"}];
   }
 
   if (height != width)
@@ -214,12 +214,12 @@ void __81__PXPeopleSocialGroupViewGenerator_prefetchForSocialGroup_withSize_disp
   }
 
   v11 = [objc_alloc(MEMORY[0x1E69DD250]) initWithFrame:{0.0, 0.0, width, height}];
-  v12 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  [v11 setBackgroundColor:v12];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  [v11 setBackgroundColor:systemBackgroundColor];
 
-  v13 = [MEMORY[0x1E69DC888] quaternarySystemFillColor];
-  v25 = v10;
-  [PXPeopleSocialGroupViewGenerator _faceCropFetchOptionsForSocialGroup:v10 withSize:width displayScale:height, a5];
+  quaternarySystemFillColor = [MEMORY[0x1E69DC888] quaternarySystemFillColor];
+  v25 = groupCopy;
+  [PXPeopleSocialGroupViewGenerator _faceCropFetchOptionsForSocialGroup:groupCopy withSize:width displayScale:height, scale];
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
@@ -241,7 +241,7 @@ void __81__PXPeopleSocialGroupViewGenerator_prefetchForSocialGroup_withSize_disp
         v18 = *(*(&v30 + 1) + 8 * i);
         v19 = objc_alloc_init(MEMORY[0x1E69DCAE0]);
         [v11 addSubview:v19];
-        [v19 setBackgroundColor:v13];
+        [v19 setBackgroundColor:quaternarySystemFillColor];
         [v19 setAccessibilityIgnoresInvertColors:1];
         v20 = +[PXPeopleFaceCropManager sharedManager];
         v27[0] = MEMORY[0x1E69E9820];
@@ -260,8 +260,8 @@ void __81__PXPeopleSocialGroupViewGenerator_prefetchForSocialGroup_withSize_disp
     while (v15);
   }
 
-  v22 = [v11 subviews];
-  [PXPeopleSocialGroupViewGenerator _layoutAvatarViews:v22 inFrame:0.0, 0.0, width, height];
+  subviews = [v11 subviews];
+  [PXPeopleSocialGroupViewGenerator _layoutAvatarViews:subviews inFrame:0.0, 0.0, width, height];
 
   return v11;
 }

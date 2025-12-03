@@ -1,16 +1,16 @@
 @interface AXSCATProfile
 + (id)defaultProfile;
 - (AXSCATProfile)init;
-- (AXSCATProfile)initWithCoder:(id)a3;
-- (AXSCATProfile)initWithName:(id)a3;
-- (AXSCATProfile)initWithUUID:(id)a3 andName:(id)a4;
+- (AXSCATProfile)initWithCoder:(id)coder;
+- (AXSCATProfile)initWithName:(id)name;
+- (AXSCATProfile)initWithUUID:(id)d andName:(id)name;
 - (BOOL)isDefault;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 - (int64_t)recipeCount;
 - (int64_t)switchCount;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)updatePreferences;
 @end
 
@@ -24,31 +24,31 @@
   return v4;
 }
 
-- (AXSCATProfile)initWithName:(id)a3
+- (AXSCATProfile)initWithName:(id)name
 {
   v4 = MEMORY[0x1E696AFB0];
-  v5 = a3;
-  v6 = [v4 UUID];
-  v7 = [(AXSCATProfile *)self initWithUUID:v6 andName:v5];
+  nameCopy = name;
+  uUID = [v4 UUID];
+  v7 = [(AXSCATProfile *)self initWithUUID:uUID andName:nameCopy];
 
   return v7;
 }
 
-- (AXSCATProfile)initWithUUID:(id)a3 andName:(id)a4
+- (AXSCATProfile)initWithUUID:(id)d andName:(id)name
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  nameCopy = name;
   v14.receiver = self;
   v14.super_class = AXSCATProfile;
   v9 = [(AXSCATProfile *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_uuid, a3);
-    objc_storeStrong(&v10->_name, a4);
-    v11 = [MEMORY[0x1E695DF90] dictionary];
+    objc_storeStrong(&v9->_uuid, d);
+    objc_storeStrong(&v10->_name, name);
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     preferences = v10->_preferences;
-    v10->_preferences = v11;
+    v10->_preferences = dictionary;
 
     [(AXSCATProfile *)v10 updatePreferences];
   }
@@ -60,16 +60,16 @@
 {
   v3 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"00000000-0000-0000-0000-000000000000"];
   v10 = AXParameterizedLocalizedString(2, @"SWITCH_CONTROL_DEFAULT_PROFILE_NAME", v4, v5, v6, v7, v8, v9, v13);
-  v11 = [[a1 alloc] initWithUUID:v3 andName:v10];
+  v11 = [[self alloc] initWithUUID:v3 andName:v10];
 
   return v11;
 }
 
 - (BOOL)isDefault
 {
-  v2 = [(AXSCATProfile *)self uuid];
-  v3 = [v2 UUIDString];
-  v4 = [v3 isEqualToString:@"00000000-0000-0000-0000-000000000000"];
+  uuid = [(AXSCATProfile *)self uuid];
+  uUIDString = [uuid UUIDString];
+  v4 = [uUIDString isEqualToString:@"00000000-0000-0000-0000-000000000000"];
 
   return v4;
 }
@@ -80,26 +80,26 @@
   v3 = SWCHLogSettings();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
-    v4 = [(AXSCATProfile *)self uuid];
+    uuid = [(AXSCATProfile *)self uuid];
     *buf = 138412290;
-    v29 = v4;
+    v29 = uuid;
     _os_log_impl(&dword_18B15E000, v3, OS_LOG_TYPE_INFO, "updating profile with uuid: %@", buf, 0xCu);
   }
 
-  v5 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v6 = [v5 persistentDomainForName:*MEMORY[0x1E69E4F10]];
-  v7 = [v5 persistentDomainForName:*MEMORY[0x1E69E4C70]];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v6 = [standardUserDefaults persistentDomainForName:*MEMORY[0x1E69E4F10]];
+  v7 = [standardUserDefaults persistentDomainForName:*MEMORY[0x1E69E4C70]];
   v21 = [v6 mutableCopy];
   v22 = v7;
   [v21 addEntriesFromDictionary:v7];
   v8 = +[AXSettings sharedInstance];
-  v9 = [v8 switchControlProfileWhitelistedKeys];
+  switchControlProfileWhitelistedKeys = [v8 switchControlProfileWhitelistedKeys];
 
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v10 = v9;
+  v10 = switchControlProfileWhitelistedKeys;
   v11 = [v10 countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v11)
   {
@@ -118,8 +118,8 @@
         v16 = +[AXSettings sharedInstance];
         v17 = [v16 valueForPreferenceKey:v15];
 
-        v18 = [(AXSCATProfile *)self preferences];
-        [v18 setObject:v17 forKeyedSubscript:v15];
+        preferences = [(AXSCATProfile *)self preferences];
+        [preferences setObject:v17 forKeyedSubscript:v15];
       }
 
       v12 = [v10 countByEnumeratingWithState:&v23 objects:v27 count:16];
@@ -131,17 +131,17 @@
   v19 = SWCHLogSettings();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
   {
-    v20 = [(AXSCATProfile *)self preferences];
+    preferences2 = [(AXSCATProfile *)self preferences];
     *buf = 138412290;
-    v29 = v20;
+    v29 = preferences2;
     _os_log_impl(&dword_18B15E000, v19, OS_LOG_TYPE_INFO, "updated preferences to: %@", buf, 0xCu);
   }
 }
 
 - (int64_t)switchCount
 {
-  v2 = [(AXSCATProfile *)self preferences];
-  v3 = [v2 objectForKeyedSubscript:@"AssistiveTouchSwitchesPreference"];
+  preferences = [(AXSCATProfile *)self preferences];
+  v3 = [preferences objectForKeyedSubscript:@"AssistiveTouchSwitchesPreference"];
 
   v4 = MEMORY[0x1E696ACD0];
   v5 = objc_opt_class();
@@ -154,8 +154,8 @@
 
 - (int64_t)recipeCount
 {
-  v2 = [(AXSCATProfile *)self preferences];
-  v3 = [v2 objectForKeyedSubscript:@"SCRecipes"];
+  preferences = [(AXSCATProfile *)self preferences];
+  v3 = [preferences objectForKeyedSubscript:@"SCRecipes"];
 
   v4 = [v3 count];
   return v4;
@@ -163,16 +163,16 @@
 
 - (unint64_t)hash
 {
-  v2 = [(AXSCATProfile *)self uuid];
-  v3 = [v2 hash];
+  uuid = [(AXSCATProfile *)self uuid];
+  v3 = [uuid hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -182,9 +182,9 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(AXSCATProfile *)self uuid];
-      v6 = [(AXSCATProfile *)v4 uuid];
-      v7 = [v5 isEqual:v6];
+      uuid = [(AXSCATProfile *)self uuid];
+      uuid2 = [(AXSCATProfile *)equalCopy uuid];
+      v7 = [uuid isEqual:uuid2];
     }
 
     else
@@ -196,32 +196,32 @@
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(AXSCATProfile *)self uuid];
-  [v4 encodeObject:v5 forKey:@"uuid"];
+  coderCopy = coder;
+  uuid = [(AXSCATProfile *)self uuid];
+  [coderCopy encodeObject:uuid forKey:@"uuid"];
 
-  v6 = [(AXSCATProfile *)self name];
-  [v4 encodeObject:v6 forKey:@"name"];
+  name = [(AXSCATProfile *)self name];
+  [coderCopy encodeObject:name forKey:@"name"];
 
-  v7 = [(AXSCATProfile *)self preferences];
-  [v4 encodeObject:v7 forKey:@"preferences"];
+  preferences = [(AXSCATProfile *)self preferences];
+  [coderCopy encodeObject:preferences forKey:@"preferences"];
 }
 
-- (AXSCATProfile)initWithCoder:(id)a3
+- (AXSCATProfile)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v22.receiver = self;
   v22.super_class = AXSCATProfile;
   v5 = [(AXSCATProfile *)&v22 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"uuid"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"uuid"];
     uuid = v5->_uuid;
     v5->_uuid = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
     name = v5->_name;
     v5->_name = v8;
 
@@ -234,7 +234,7 @@
     v16 = objc_opt_class();
     v17 = objc_opt_class();
     v18 = [v10 setWithObjects:{v11, v12, v13, v14, v15, v16, v17, objc_opt_class(), 0}];
-    v19 = [v4 decodeObjectOfClasses:v18 forKey:@"preferences"];
+    v19 = [coderCopy decodeObjectOfClasses:v18 forKey:@"preferences"];
     preferences = v5->_preferences;
     v5->_preferences = v19;
   }
@@ -245,9 +245,9 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(AXSCATProfile *)self uuid];
-  v5 = [(AXSCATProfile *)self name];
-  v6 = [v3 stringWithFormat:@"%@: name: %@", v4, v5];
+  uuid = [(AXSCATProfile *)self uuid];
+  name = [(AXSCATProfile *)self name];
+  v6 = [v3 stringWithFormat:@"%@: name: %@", uuid, name];
 
   if ([(AXSCATProfile *)self isDefault])
   {

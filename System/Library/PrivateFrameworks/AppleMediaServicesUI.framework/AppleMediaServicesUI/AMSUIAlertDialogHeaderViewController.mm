@@ -1,21 +1,21 @@
 @interface AMSUIAlertDialogHeaderViewController
-- (AMSUIAlertDialogHeaderViewController)initWithURL:(id)a3;
+- (AMSUIAlertDialogHeaderViewController)initWithURL:(id)l;
 - (void)loadImage;
 - (void)viewDidLoad;
 @end
 
 @implementation AMSUIAlertDialogHeaderViewController
 
-- (AMSUIAlertDialogHeaderViewController)initWithURL:(id)a3
+- (AMSUIAlertDialogHeaderViewController)initWithURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   v12.receiver = self;
   v12.super_class = AMSUIAlertDialogHeaderViewController;
   v6 = [(AMSUIAlertDialogHeaderViewController *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_url, a3);
+    objc_storeStrong(&v6->_url, l);
     v8 = objc_alloc(MEMORY[0x1E69DCAE0]);
     v9 = [v8 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
     imageView = v7->_imageView;
@@ -33,44 +33,44 @@
   v33.receiver = self;
   v33.super_class = AMSUIAlertDialogHeaderViewController;
   [(AMSUIAlertDialogHeaderViewController *)&v33 viewDidLoad];
-  v3 = [(AMSUIAlertDialogHeaderViewController *)self imageView];
-  [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
+  imageView = [(AMSUIAlertDialogHeaderViewController *)self imageView];
+  [imageView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v4 = [(AMSUIAlertDialogHeaderViewController *)self imageView];
-  [v4 setContentMode:1];
+  imageView2 = [(AMSUIAlertDialogHeaderViewController *)self imageView];
+  [imageView2 setContentMode:1];
 
-  v5 = [(AMSUIAlertDialogHeaderViewController *)self view];
-  v6 = [(AMSUIAlertDialogHeaderViewController *)self imageView];
-  [v5 addSubview:v6];
+  view = [(AMSUIAlertDialogHeaderViewController *)self view];
+  imageView3 = [(AMSUIAlertDialogHeaderViewController *)self imageView];
+  [view addSubview:imageView3];
 
   v22 = MEMORY[0x1E696ACD8];
-  v32 = [(AMSUIAlertDialogHeaderViewController *)self imageView];
-  v30 = [v32 topAnchor];
-  v31 = [(AMSUIAlertDialogHeaderViewController *)self view];
-  v29 = [v31 topAnchor];
-  v28 = [v30 constraintEqualToAnchor:v29 constant:20.0];
+  imageView4 = [(AMSUIAlertDialogHeaderViewController *)self imageView];
+  topAnchor = [imageView4 topAnchor];
+  view2 = [(AMSUIAlertDialogHeaderViewController *)self view];
+  topAnchor2 = [view2 topAnchor];
+  v28 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:20.0];
   v34[0] = v28;
-  v27 = [(AMSUIAlertDialogHeaderViewController *)self imageView];
-  v25 = [v27 bottomAnchor];
-  v26 = [(AMSUIAlertDialogHeaderViewController *)self view];
-  v24 = [v26 bottomAnchor];
-  v23 = [v25 constraintEqualToAnchor:v24];
+  imageView5 = [(AMSUIAlertDialogHeaderViewController *)self imageView];
+  bottomAnchor = [imageView5 bottomAnchor];
+  view3 = [(AMSUIAlertDialogHeaderViewController *)self view];
+  bottomAnchor2 = [view3 bottomAnchor];
+  v23 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v34[1] = v23;
-  v21 = [(AMSUIAlertDialogHeaderViewController *)self imageView];
-  v19 = [v21 leadingAnchor];
-  v20 = [(AMSUIAlertDialogHeaderViewController *)self view];
-  v18 = [v20 leadingAnchor];
-  v7 = [v19 constraintEqualToAnchor:v18];
+  imageView6 = [(AMSUIAlertDialogHeaderViewController *)self imageView];
+  leadingAnchor = [imageView6 leadingAnchor];
+  view4 = [(AMSUIAlertDialogHeaderViewController *)self view];
+  leadingAnchor2 = [view4 leadingAnchor];
+  v7 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v34[2] = v7;
-  v8 = [(AMSUIAlertDialogHeaderViewController *)self imageView];
-  v9 = [v8 trailingAnchor];
-  v10 = [(AMSUIAlertDialogHeaderViewController *)self view];
-  v11 = [v10 trailingAnchor];
-  v12 = [v9 constraintEqualToAnchor:v11];
+  imageView7 = [(AMSUIAlertDialogHeaderViewController *)self imageView];
+  trailingAnchor = [imageView7 trailingAnchor];
+  view5 = [(AMSUIAlertDialogHeaderViewController *)self view];
+  trailingAnchor2 = [view5 trailingAnchor];
+  v12 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v34[3] = v12;
-  v13 = [(AMSUIAlertDialogHeaderViewController *)self imageView];
-  v14 = [v13 heightAnchor];
-  v15 = [v14 constraintEqualToConstant:44.0];
+  imageView8 = [(AMSUIAlertDialogHeaderViewController *)self imageView];
+  heightAnchor = [imageView8 heightAnchor];
+  v15 = [heightAnchor constraintEqualToConstant:44.0];
   v34[4] = v15;
   v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v34 count:5];
   [v22 activateConstraints:v16];

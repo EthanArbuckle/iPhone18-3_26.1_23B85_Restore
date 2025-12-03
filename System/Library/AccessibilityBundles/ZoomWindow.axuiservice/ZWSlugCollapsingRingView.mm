@@ -1,29 +1,29 @@
 @interface ZWSlugCollapsingRingView
-- (ZWSlugCollapsingRingView)initWithFrame:(CGRect)a3;
+- (ZWSlugCollapsingRingView)initWithFrame:(CGRect)frame;
 - (double)_cornerRadiusForExpandedRing;
 - (void)layoutSubviews;
 @end
 
 @implementation ZWSlugCollapsingRingView
 
-- (ZWSlugCollapsingRingView)initWithFrame:(CGRect)a3
+- (ZWSlugCollapsingRingView)initWithFrame:(CGRect)frame
 {
   v27.receiver = self;
   v27.super_class = ZWSlugCollapsingRingView;
-  v3 = [(ZWSlugCollapsingRingView *)&v27 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(ZWSlugCollapsingRingView *)&v27 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(ZWSlugCollapsingRingView *)v3 layer];
-    [v5 setBorderWidth:2.0];
+    layer = [(ZWSlugCollapsingRingView *)v3 layer];
+    [layer setBorderWidth:2.0];
 
-    v6 = [(ZWSlugCollapsingRingView *)v4 layer];
-    [v6 setCornerCurve:kCACornerCurveContinuous];
+    layer2 = [(ZWSlugCollapsingRingView *)v4 layer];
+    [layer2 setCornerCurve:kCACornerCurveContinuous];
 
     v7 = +[UIColor whiteColor];
-    v8 = [v7 CGColor];
-    v9 = [(ZWSlugCollapsingRingView *)v4 layer];
-    [v9 setBorderColor:v8];
+    cGColor = [v7 CGColor];
+    layer3 = [(ZWSlugCollapsingRingView *)v4 layer];
+    [layer3 setBorderColor:cGColor];
 
     v10 = [UIBlurEffect effectWithStyle:19];
     [(ZWSlugCollapsingRingView *)v4 setEffect:v10];
@@ -31,11 +31,11 @@
     if (_UISolariumEnabled())
     {
       [(ZWSlugCollapsingRingView *)v4 setEffect:0];
-      v11 = [(ZWSlugCollapsingRingView *)v4 layer];
-      [v11 setHitTestsAsOpaque:1];
+      layer4 = [(ZWSlugCollapsingRingView *)v4 layer];
+      [layer4 setHitTestsAsOpaque:1];
 
-      v12 = [(ZWSlugCollapsingRingView *)v4 traitOverrides];
-      [v12 setUserInterfaceStyle:2];
+      traitOverrides = [(ZWSlugCollapsingRingView *)v4 traitOverrides];
+      [traitOverrides setUserInterfaceStyle:2];
 
       [(ZWSlugCollapsingRingView *)v4 ax_setWantsGlassAppearance:1];
     }
@@ -44,23 +44,23 @@
     [v13 setTranslatesAutoresizingMaskIntoConstraints:0];
     [v13 setHidden:1];
     [(ZWSlugCollapsingRingView *)v4 setSpeakFingerImageView:v13];
-    v14 = [(ZWSlugCollapsingRingView *)v4 contentView];
-    v15 = [(ZWSlugCollapsingRingView *)v4 speakFingerImageView];
-    [v14 addSubview:v15];
+    contentView = [(ZWSlugCollapsingRingView *)v4 contentView];
+    speakFingerImageView = [(ZWSlugCollapsingRingView *)v4 speakFingerImageView];
+    [contentView addSubview:speakFingerImageView];
 
-    v16 = [(ZWSlugCollapsingRingView *)v4 layer];
-    [v16 cornerRadius];
+    layer5 = [(ZWSlugCollapsingRingView *)v4 layer];
+    [layer5 cornerRadius];
     [(ZWSlugCollapsingRingView *)v4 _setContinuousCornerRadius:?];
 
-    v26 = [(ZWSlugCollapsingRingView *)v4 centerXAnchor];
-    v17 = [(ZWSlugCollapsingRingView *)v4 speakFingerImageView];
-    v18 = [v17 centerXAnchor];
-    v19 = [v26 constraintEqualToAnchor:v18];
+    centerXAnchor = [(ZWSlugCollapsingRingView *)v4 centerXAnchor];
+    speakFingerImageView2 = [(ZWSlugCollapsingRingView *)v4 speakFingerImageView];
+    centerXAnchor2 = [speakFingerImageView2 centerXAnchor];
+    v19 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v28[0] = v19;
-    v20 = [(ZWSlugCollapsingRingView *)v4 centerYAnchor];
-    v21 = [(ZWSlugCollapsingRingView *)v4 speakFingerImageView];
-    v22 = [v21 centerYAnchor];
-    v23 = [v20 constraintEqualToAnchor:v22];
+    centerYAnchor = [(ZWSlugCollapsingRingView *)v4 centerYAnchor];
+    speakFingerImageView3 = [(ZWSlugCollapsingRingView *)v4 speakFingerImageView];
+    centerYAnchor2 = [speakFingerImageView3 centerYAnchor];
+    v23 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v28[1] = v23;
     v24 = [NSArray arrayWithObjects:v28 count:2];
     [NSLayoutConstraint activateConstraints:v24];
@@ -73,8 +73,8 @@
 
 - (double)_cornerRadiusForExpandedRing
 {
-  v3 = [(ZWSlugCollapsingRingView *)self traitCollection];
-  [v3 displayCornerRadius];
+  traitCollection = [(ZWSlugCollapsingRingView *)self traitCollection];
+  [traitCollection displayCornerRadius];
   if (v4 <= 0.0)
   {
     v7 = 7.8;
@@ -82,8 +82,8 @@
 
   else
   {
-    v5 = [(ZWSlugCollapsingRingView *)self traitCollection];
-    [v5 displayCornerRadius];
+    traitCollection2 = [(ZWSlugCollapsingRingView *)self traitCollection];
+    [traitCollection2 displayCornerRadius];
     v7 = v6 / 5.0;
   }
 
@@ -95,8 +95,8 @@
   v22.receiver = self;
   v22.super_class = ZWSlugCollapsingRingView;
   [(ZWSlugCollapsingRingView *)&v22 layoutSubviews];
-  v3 = [(ZWSlugCollapsingRingView *)self layer];
-  [v3 cornerRadius];
+  layer = [(ZWSlugCollapsingRingView *)self layer];
+  [layer cornerRadius];
   v5 = v4;
 
   if (v5 <= 0.0)
@@ -113,21 +113,21 @@
       v12 = v17;
     }
 
-    v18 = [(ZWSlugCollapsingRingView *)self layer];
-    [v18 setCornerRadius:v12];
+    layer2 = [(ZWSlugCollapsingRingView *)self layer];
+    [layer2 setCornerRadius:v12];
 
-    v6 = [(ZWSlugCollapsingRingView *)self layer];
-    [v6 cornerRadius];
+    layer3 = [(ZWSlugCollapsingRingView *)self layer];
+    [layer3 cornerRadius];
     [(ZWSlugCollapsingRingView *)self _setContinuousCornerRadius:?];
   }
 
   else
   {
-    v6 = [CABasicAnimation animationWithKeyPath:@"cornerRadius"];
-    v7 = [(ZWSlugCollapsingRingView *)self layer];
-    [v7 cornerRadius];
+    layer3 = [CABasicAnimation animationWithKeyPath:@"cornerRadius"];
+    layer4 = [(ZWSlugCollapsingRingView *)self layer];
+    [layer4 cornerRadius];
     v8 = [NSNumber numberWithDouble:?];
-    [v6 setFromValue:v8];
+    [layer3 setFromValue:v8];
 
     if ([(ZWSlugCollapsingRingView *)self shouldUseContinuousCornerRadius])
     {
@@ -141,11 +141,11 @@
     }
 
     v13 = [NSNumber numberWithDouble:v10];
-    [v6 setToValue:v13];
+    [layer3 setToValue:v13];
 
-    [v6 setDuration:ZWDefaultZoomAnimationDuration()];
-    v14 = [(ZWSlugCollapsingRingView *)self layer];
-    [v14 addAnimation:v6 forKey:@"ZWCornerRadius"];
+    [layer3 setDuration:ZWDefaultZoomAnimationDuration()];
+    layer5 = [(ZWSlugCollapsingRingView *)self layer];
+    [layer5 addAnimation:layer3 forKey:@"ZWCornerRadius"];
 
     if ([(ZWSlugCollapsingRingView *)self shouldUseContinuousCornerRadius])
     {
@@ -159,11 +159,11 @@
       v16 = v19;
     }
 
-    v20 = [(ZWSlugCollapsingRingView *)self layer];
-    [v20 setCornerRadius:v16];
+    layer6 = [(ZWSlugCollapsingRingView *)self layer];
+    [layer6 setCornerRadius:v16];
 
-    v21 = [(ZWSlugCollapsingRingView *)self layer];
-    [v21 cornerRadius];
+    layer7 = [(ZWSlugCollapsingRingView *)self layer];
+    [layer7 cornerRadius];
     [(ZWSlugCollapsingRingView *)self _setContinuousCornerRadius:?];
   }
 }

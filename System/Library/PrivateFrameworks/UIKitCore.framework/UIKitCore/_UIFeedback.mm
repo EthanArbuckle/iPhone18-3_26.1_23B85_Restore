@@ -1,7 +1,7 @@
 @interface _UIFeedback
-+ (Class)classForType:(id)a3;
-+ (_UIFeedback)feedbackWithDictionaryRepresentation:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (Class)classForType:(id)type;
++ (_UIFeedback)feedbackWithDictionaryRepresentation:(id)representation;
+- (BOOL)isEqual:(id)equal;
 - (CGPoint)_location;
 - (NSArray)_effectiveFeedbackData;
 - (NSArray)_individualFeedbacks;
@@ -12,17 +12,17 @@
 - (NSMutableArray)visualizerSources;
 - (UIView)_view;
 - (_UIFeedback)init;
-- (_UIFeedback)initWithCoder:(id)a3;
-- (_UIFeedback)initWithDictionaryRepresentation:(id)a3;
+- (_UIFeedback)initWithCoder:(id)coder;
+- (_UIFeedback)initWithDictionaryRepresentation:(id)representation;
 - (_UIFeedbackPattern)_parentPattern;
 - (double)_effectiveDelay;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)_effectiveEnabledFeedbackTypes;
 - (unint64_t)_effectivePlayableFeedbackTypes;
-- (void)_playedAtTime:(double)a3 engine:(id)a4;
+- (void)_playedAtTime:(double)time engine:(id)engine;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)play;
 - (void)stop;
 @end
@@ -41,19 +41,19 @@
 - (unint64_t)_effectivePlayableFeedbackTypes
 {
   v3 = +[UIDevice currentDevice];
-  v4 = [v3 _feedbackSupportLevel];
+  _feedbackSupportLevel = [v3 _feedbackSupportLevel];
 
-  v5 = [(_UIFeedback *)self _effectiveEventType];
-  if (v4 < 2 || v5 == 0)
+  _effectiveEventType = [(_UIFeedback *)self _effectiveEventType];
+  if (_feedbackSupportLevel < 2 || _effectiveEventType == 0)
   {
-    v7 = [(_UIFeedback *)self _effectiveSystemSoundID];
+    _effectiveSystemSoundID = [(_UIFeedback *)self _effectiveSystemSoundID];
     v8 = 3;
-    if (v4 < 1)
+    if (_feedbackSupportLevel < 1)
     {
       v8 = 1;
     }
 
-    if (v7 == _UISystemSoundIDNone)
+    if (_effectiveSystemSoundID == _UISystemSoundIDNone)
     {
       return 0;
     }
@@ -67,12 +67,12 @@
   else
   {
     v10 = 2;
-    if (v5 < 0x55uLL)
+    if (_effectiveEventType < 0x55uLL)
     {
       v10 = 3;
     }
 
-    if (v5 < 0x2DuLL)
+    if (_effectiveEventType < 0x2DuLL)
     {
       v11 = 1;
     }
@@ -82,7 +82,7 @@
       v11 = v10;
     }
 
-    if (v5 == 32556)
+    if (_effectiveEventType == 32556)
     {
       return 3;
     }
@@ -171,15 +171,15 @@
 
 - (NSIndexSet)_allSystemSoundIDs
 {
-  v2 = [(_UIFeedback *)self _effectiveSystemSoundID];
-  if (v2 == _UISystemSoundIDNone)
+  _effectiveSystemSoundID = [(_UIFeedback *)self _effectiveSystemSoundID];
+  if (_effectiveSystemSoundID == _UISystemSoundIDNone)
   {
     [MEMORY[0x1E696AC90] indexSet];
   }
 
   else
   {
-    [MEMORY[0x1E696AC90] indexSetWithIndex:v2];
+    [MEMORY[0x1E696AC90] indexSetWithIndex:_effectiveSystemSoundID];
   }
   v3 = ;
 
@@ -193,10 +193,10 @@
   [(_UIFeedback *)&v2 dealloc];
 }
 
-+ (Class)classForType:(id)a3
++ (Class)classForType:(id)type
 {
-  v3 = a3;
-  if (([v3 isEqualToString:@"discrete"] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"continuous") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"pattern") & 1) != 0 || objc_msgSend(v3, "isEqualToString:", @"custom"))
+  typeCopy = type;
+  if (([typeCopy isEqualToString:@"discrete"] & 1) != 0 || (objc_msgSend(typeCopy, "isEqualToString:", @"continuous") & 1) != 0 || (objc_msgSend(typeCopy, "isEqualToString:", @"pattern") & 1) != 0 || objc_msgSend(typeCopy, "isEqualToString:", @"custom"))
   {
     v4 = objc_opt_class();
   }
@@ -209,27 +209,27 @@
   return v4;
 }
 
-- (_UIFeedback)initWithCoder:(id)a3
+- (_UIFeedback)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E695DFD8];
-  v5 = a3;
+  coderCopy = coder;
   v6 = objc_opt_class();
   v7 = [v4 setWithObjects:{v6, objc_opt_class(), 0}];
-  v8 = [v5 decodeObjectOfClasses:v7 forKey:@"dictionaryRepresentation"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"dictionaryRepresentation"];
 
   v9 = [_UIFeedback feedbackWithDictionaryRepresentation:v8];
 
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(_UIFeedback *)self dictionaryRepresentation];
-  [v4 encodeObject:v5 forKey:@"dictionaryRepresentation"];
+  coderCopy = coder;
+  dictionaryRepresentation = [(_UIFeedback *)self dictionaryRepresentation];
+  [coderCopy encodeObject:dictionaryRepresentation forKey:@"dictionaryRepresentation"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   v5 = [(_UIFeedbackParameters *)self->_audioParameters copy];
@@ -262,13 +262,13 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
   if (v5 == objc_opt_class())
   {
-    v7 = v4;
+    v7 = equalCopy;
     v6 = [(_UIFeedbackParameters *)self->_audioParameters isEqual:*(v7 + 2)]&& [(_UIFeedbackParameters *)self->_hapticParameters isEqual:*(v7 + 3)]&& self->_position == v7[3] && self->_delay == *(v7 + 12);
   }
 
@@ -280,35 +280,35 @@
   return v6;
 }
 
-+ (_UIFeedback)feedbackWithDictionaryRepresentation:(id)a3
++ (_UIFeedback)feedbackWithDictionaryRepresentation:(id)representation
 {
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:@"type"];
+  representationCopy = representation;
+  v6 = [representationCopy objectForKeyedSubscript:@"type"];
   if (!v6)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:a1 file:@"_UIFeedback.m" lineNumber:462 description:{@"No type found in %@", v5}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIFeedback.m" lineNumber:462 description:{@"No type found in %@", representationCopy}];
   }
 
   v7 = [objc_opt_class() classForType:v6];
   if (!v7)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:a1 file:@"_UIFeedback.m" lineNumber:464 description:{@"No class found for type %@", v6}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"_UIFeedback.m" lineNumber:464 description:{@"No class found for type %@", v6}];
   }
 
-  v8 = [[v7 alloc] initWithDictionaryRepresentation:v5];
+  v8 = [[v7 alloc] initWithDictionaryRepresentation:representationCopy];
 
   return v8;
 }
 
-- (_UIFeedback)initWithDictionaryRepresentation:(id)a3
+- (_UIFeedback)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v5 = [(_UIFeedback *)self init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"audioParameters"];
+    v6 = [representationCopy objectForKeyedSubscript:@"audioParameters"];
     if (v6)
     {
       v7 = [objc_alloc(objc_msgSend(objc_opt_class() "_parametersClass"))];
@@ -316,7 +316,7 @@
       v5->_audioParameters = v7;
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"hapticParameters"];
+    v9 = [representationCopy objectForKeyedSubscript:@"hapticParameters"];
     if (v9)
     {
       v10 = [objc_alloc(objc_msgSend(objc_opt_class() "_parametersClass"))];
@@ -324,11 +324,11 @@
       v5->_hapticParameters = v10;
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"delay"];
+    v12 = [representationCopy objectForKeyedSubscript:@"delay"];
     [v12 doubleValue];
     v5->_delay = v13;
 
-    v14 = [v4 objectForKeyedSubscript:@"name"];
+    v14 = [representationCopy objectForKeyedSubscript:@"name"];
     v15 = [v14 copy];
     name = v5->_name;
     v5->_name = v15;
@@ -343,14 +343,14 @@
 {
   v12[4] = *MEMORY[0x1E69E9840];
   v11[0] = @"type";
-  v3 = [objc_opt_class() type];
-  v12[0] = v3;
+  type = [objc_opt_class() type];
+  v12[0] = type;
   v11[1] = @"audioParameters";
-  v4 = [(_UIFeedbackParameters *)self->_audioParameters dictionaryRepresentation];
-  v12[1] = v4;
+  dictionaryRepresentation = [(_UIFeedbackParameters *)self->_audioParameters dictionaryRepresentation];
+  v12[1] = dictionaryRepresentation;
   v11[2] = @"hapticParameters";
-  v5 = [(_UIFeedbackParameters *)self->_hapticParameters dictionaryRepresentation];
-  v12[2] = v5;
+  dictionaryRepresentation2 = [(_UIFeedbackParameters *)self->_hapticParameters dictionaryRepresentation];
+  v12[2] = dictionaryRepresentation2;
   v11[3] = @"delay";
   v6 = [MEMORY[0x1E696AD98] numberWithDouble:self->_delay];
   v12[3] = v6;
@@ -397,31 +397,31 @@
   return delay;
 }
 
-- (void)_playedAtTime:(double)a3 engine:(id)a4
+- (void)_playedAtTime:(double)time engine:(id)engine
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  engineCopy = engine;
   if ((_UIFeedbackLoggingDisabled & 1) == 0)
   {
     v7 = *(__UILogGetCategoryCachedImpl("Feedback", &_playedAtTime_engine____s_category) + 8);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v8 = MEMORY[0x1E696AEC0];
-      v9 = self;
+      selfCopy = self;
       v10 = v7;
-      v11 = [v8 stringWithFormat:@"<%s: %p>", object_getClassName(v9), v9];
+      selfCopy = [v8 stringWithFormat:@"<%s: %p>", object_getClassName(selfCopy), selfCopy];
 
       v12 = MEMORY[0x1E696AEC0];
-      v13 = v6;
-      v14 = v11;
+      v13 = engineCopy;
+      v14 = selfCopy;
       v15 = [v12 stringWithFormat:@"<%s: %p>", object_getClassName(v13), v13];
 
       *buf = 138412802;
-      v17 = v11;
+      v17 = selfCopy;
       v18 = 2112;
       v19 = v15;
       v20 = 2048;
-      v21 = a3;
+      timeCopy = time;
       _os_log_impl(&dword_188A29000, v10, OS_LOG_TYPE_DEFAULT, "played feedback %@ with engine %@ at time %f", buf, 0x20u);
     }
   }
@@ -453,12 +453,12 @@
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v9 = MEMORY[0x1E696AEC0];
-      v10 = self;
+      selfCopy = self;
       v11 = v8;
-      v12 = [v9 stringWithFormat:@"<%s: %p>", object_getClassName(v10), v10];
+      selfCopy = [v9 stringWithFormat:@"<%s: %p>", object_getClassName(selfCopy), selfCopy];
 
       *buf = 138412290;
-      v17 = v12;
+      v17 = selfCopy;
       _os_log_impl(&dword_188A29000, v11, OS_LOG_TYPE_DEFAULT, "no engine for feedback %@, dropping it", buf, 0xCu);
     }
   }
@@ -476,29 +476,29 @@
       if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v9 = self;
+        selfCopy = self;
         _os_log_impl(&dword_188A29000, v6, OS_LOG_TYPE_ERROR, "stop feedback %@", buf, 0xCu);
       }
     }
   }
 
-  v4 = [(_UIFeedback *)self _player];
+  _player = [(_UIFeedback *)self _player];
 
-  if (v4)
+  if (_player)
   {
-    v5 = [(_UIFeedback *)self _player];
-    [v5 _stopFeedback:self];
+    _player2 = [(_UIFeedback *)self _player];
+    [_player2 _stopFeedback:self];
   }
 
   else
   {
-    v5 = [_UIFeedbackEngine engineForFeedback:self];
+    _player2 = [_UIFeedbackEngine engineForFeedback:self];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __19___UIFeedback_stop__block_invoke;
     v7[3] = &unk_1E7107698;
     v7[4] = self;
-    [v5 _dequeueReusableFeedbackPlayerWithCompletionBlock:v7];
+    [_player2 _dequeueReusableFeedbackPlayerWithCompletionBlock:v7];
   }
 }
 
@@ -507,22 +507,22 @@
   v3 = MEMORY[0x1E696AD60];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(_UIFeedback *)self _player];
-  v7 = [v3 stringWithFormat:@"<%@ %p player: %p; delay: %.3f", v5, self, v6, *&self->_delay];;
+  _player = [(_UIFeedback *)self _player];
+  v7 = [v3 stringWithFormat:@"<%@ %p player: %p; delay: %.3f", v5, self, _player, *&self->_delay];;
 
   if (self->_name)
   {
     [v7 appendFormat:@"; name: %@", self->_name];
   }
 
-  v8 = [(_UIFeedback *)self _debugDictionary];
+  _debugDictionary = [(_UIFeedback *)self _debugDictionary];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __26___UIFeedback_description__block_invoke;
   v11[3] = &unk_1E70F6948;
   v9 = v7;
   v12 = v9;
-  [v8 enumerateKeysAndObjectsUsingBlock:v11];
+  [_debugDictionary enumerateKeysAndObjectsUsingBlock:v11];
 
   [v9 appendString:@">"];
 
@@ -532,8 +532,8 @@
 - (NSArray)_effectiveFeedbackData
 {
   v25 = *MEMORY[0x1E69E9840];
-  v16 = [(_UIFeedback *)self _individualFeedbacks];
-  v19 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v16, "count")}];
+  _individualFeedbacks = [(_UIFeedback *)self _individualFeedbacks];
+  v19 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(_individualFeedbacks, "count")}];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
@@ -560,30 +560,30 @@
         [v7 _setEffectiveDuration:?];
         [v6 _effectiveDelay];
         [v7 _setEffectiveDelay:?];
-        v8 = [v6 hapticParameters];
-        [v7 _setHapticParameters:v8];
+        hapticParameters = [v6 hapticParameters];
+        [v7 _setHapticParameters:hapticParameters];
 
-        v9 = [v6 audioParameters];
-        [v7 _setAudioParameters:v9];
+        audioParameters = [v6 audioParameters];
+        [v7 _setAudioParameters:audioParameters];
 
         [v7 _setEffectiveEnabledFeedbackTypes:{objc_msgSend(v6, "_effectiveEnabledFeedbackTypes")}];
         [v7 _setEffectiveSystemSoundID:{objc_msgSend(v6, "_effectiveSystemSoundID")}];
         if (objc_opt_respondsToSelector())
         {
-          v10 = [v6 pattern];
-          [v7 _setPattern:v10];
+          pattern = [v6 pattern];
+          [v7 _setPattern:pattern];
         }
 
         if (objc_opt_respondsToSelector())
         {
-          v11 = [v6 hidRequest];
-          [v7 _setHIDRequest:v11];
+          hidRequest = [v6 hidRequest];
+          [v7 _setHIDRequest:hidRequest];
         }
 
         if (objc_opt_respondsToSelector())
         {
-          v12 = [v6 fileURL];
-          [v7 _setFileURL:v12];
+          fileURL = [v6 fileURL];
+          [v7 _setFileURL:fileURL];
 
           [v7 _setFileFeedbackType:{objc_msgSend(v6, "_effectivePlayableFeedbackTypes")}];
         }
@@ -599,26 +599,26 @@
 
         if (objc_opt_respondsToSelector())
         {
-          v13 = [v6 canReuseCoreHapticsPlayer];
+          canReuseCoreHapticsPlayer = [v6 canReuseCoreHapticsPlayer];
         }
 
         else
         {
-          v13 = 0;
+          canReuseCoreHapticsPlayer = 0;
         }
 
-        [v7 _setCanReuseCoreHapticsPlayer:v13];
+        [v7 _setCanReuseCoreHapticsPlayer:canReuseCoreHapticsPlayer];
         if (objc_opt_respondsToSelector())
         {
-          v14 = [v6 disableEventUseVolumeEnvelope];
+          disableEventUseVolumeEnvelope = [v6 disableEventUseVolumeEnvelope];
         }
 
         else
         {
-          v14 = 0;
+          disableEventUseVolumeEnvelope = 0;
         }
 
-        [v7 _setDisableEventUseVolumeEnvelope:v14];
+        [v7 _setDisableEventUseVolumeEnvelope:disableEventUseVolumeEnvelope];
         [v19 addObject:v7];
       }
 
@@ -656,26 +656,26 @@
 
 - (NSMutableArray)systemSoundSources
 {
-  v3 = objc_getAssociatedObject(self, &_UIFeedbackSystemSoundEngineSourcesKey);
-  if (!v3)
+  array = objc_getAssociatedObject(self, &_UIFeedbackSystemSoundEngineSourcesKey);
+  if (!array)
   {
-    v3 = [MEMORY[0x1E695DF70] array];
-    objc_setAssociatedObject(self, &_UIFeedbackSystemSoundEngineSourcesKey, v3, 1);
+    array = [MEMORY[0x1E695DF70] array];
+    objc_setAssociatedObject(self, &_UIFeedbackSystemSoundEngineSourcesKey, array, 1);
   }
 
-  return v3;
+  return array;
 }
 
 - (NSMutableArray)visualizerSources
 {
-  v3 = objc_getAssociatedObject(self, &_UIFeedbackVisualizerSourcesKey);
-  if (!v3)
+  array = objc_getAssociatedObject(self, &_UIFeedbackVisualizerSourcesKey);
+  if (!array)
   {
-    v3 = [MEMORY[0x1E695DF70] array];
-    objc_setAssociatedObject(self, &_UIFeedbackVisualizerSourcesKey, v3, 1);
+    array = [MEMORY[0x1E695DF70] array];
+    objc_setAssociatedObject(self, &_UIFeedbackVisualizerSourcesKey, array, 1);
   }
 
-  return v3;
+  return array;
 }
 
 @end

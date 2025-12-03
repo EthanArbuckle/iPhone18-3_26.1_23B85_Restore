@@ -1,17 +1,17 @@
 @interface PHLivePhotoRequestOptions
 - (PHLivePhotoRequestOptions)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation PHLivePhotoRequestOptions
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setDeliveryMode:{-[PHLivePhotoRequestOptions deliveryMode](self, "deliveryMode")}];
   [v4 setNetworkAccessAllowed:{-[PHLivePhotoRequestOptions isNetworkAccessAllowed](self, "isNetworkAccessAllowed")}];
-  v5 = [(PHLivePhotoRequestOptions *)self progressHandler];
-  [v4 setProgressHandler:v5];
+  progressHandler = [(PHLivePhotoRequestOptions *)self progressHandler];
+  [v4 setProgressHandler:progressHandler];
 
   [v4 setDownloadIntent:{-[PHLivePhotoRequestOptions downloadIntent](self, "downloadIntent")}];
   [v4 setDownloadPriority:{-[PHLivePhotoRequestOptions downloadPriority](self, "downloadPriority")}];

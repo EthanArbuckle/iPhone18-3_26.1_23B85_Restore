@@ -1,14 +1,14 @@
 @interface ADMagnificationForRadiusLensDistortionModel
-- (ADMagnificationForRadiusLensDistortionModel)initWithDictionary:(id)a3;
-- (ADMagnificationForRadiusLensDistortionModel)initWithDistortionCenter:(CGPoint)a3 lensDistortionLookupTable:(id)a4 inverseLensDistortionLookupTable:(id)a5;
-- (BOOL)isEqual:(id)a3;
+- (ADMagnificationForRadiusLensDistortionModel)initWithDictionary:(id)dictionary;
+- (ADMagnificationForRadiusLensDistortionModel)initWithDistortionCenter:(CGPoint)center lensDistortionLookupTable:(id)table inverseLensDistortionLookupTable:(id)lookupTable;
+- (BOOL)isEqual:(id)equal;
 - (CGPoint)distortionCenter;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)dictionaryRepresentation:(BOOL)a3;
-- (uint64_t)applyDistortionModelToPixels:(double)a3 inPixels:(double)a4 intrinsicsMatrix:(double)a5 referenceDimensions:(double)a6 magnificationLookupTable:(uint64_t)a7 outPixels:(uint64_t)a8;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)dictionaryRepresentation:(BOOL)representation;
+- (uint64_t)applyDistortionModelToPixels:(double)pixels inPixels:(double)inPixels intrinsicsMatrix:(double)matrix referenceDimensions:(double)dimensions magnificationLookupTable:(uint64_t)table outPixels:(uint64_t)outPixels;
 - (unint64_t)hash;
-- (void)distortPixels:(unint64_t)a3 undistortedPixels:(const CGPoint *)a4 withCameraCalibration:(id)a5 outDistortedPixels:(CGPoint *)a6;
-- (void)undistortPixels:(unint64_t)a3 distortedPixels:(const CGPoint *)a4 withCameraCalibration:(id)a5 outUndistortedPixels:(CGPoint *)a6;
+- (void)distortPixels:(unint64_t)pixels undistortedPixels:(const CGPoint *)undistortedPixels withCameraCalibration:(id)calibration outDistortedPixels:(CGPoint *)distortedPixels;
+- (void)undistortPixels:(unint64_t)pixels distortedPixels:(const CGPoint *)distortedPixels withCameraCalibration:(id)calibration outUndistortedPixels:(CGPoint *)undistortedPixels;
 @end
 
 @implementation ADMagnificationForRadiusLensDistortionModel
@@ -22,14 +22,14 @@
   return result;
 }
 
-- (id)dictionaryRepresentation:(BOOL)a3
+- (id)dictionaryRepresentation:(BOOL)representation
 {
-  v3 = a3;
+  representationCopy = representation;
   v5 = objc_opt_new();
   DictionaryRepresentation = CGPointCreateDictionaryRepresentation(self->_distortionCenter);
   [v5 setObject:DictionaryRepresentation forKeyedSubscript:@"lensDistortionCenter"];
 
-  if (v3)
+  if (representationCopy)
   {
     v7 = dataToFloatsArray(self->_lensDistortionLookupTable);
     [v5 setObject:v7 forKeyedSubscript:@"distortedRadii"];
@@ -47,99 +47,99 @@
   return v5;
 }
 
-- (ADMagnificationForRadiusLensDistortionModel)initWithDictionary:(id)a3
+- (ADMagnificationForRadiusLensDistortionModel)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  if (getDistortionCenterFromDictionary(v4, &self->_distortionCenter))
+  dictionaryCopy = dictionary;
+  if (getDistortionCenterFromDictionary(dictionaryCopy, &self->_distortionCenter))
   {
-    v5 = [(NSDictionary *)v4 objectForKeyedSubscript:@"distortedRadii"];
+    v5 = [(NSDictionary *)dictionaryCopy objectForKeyedSubscript:@"distortedRadii"];
     v6 = getTableAsNSData(v5);
 
-    if ((v6 || (-[NSDictionary objectForKeyedSubscript:](v4, "objectForKeyedSubscript:", @"lensDistortionLookupTable"), v7 = objc_claimAutoreleasedReturnValue(), getTableAsNSData(v7), v6 = objc_claimAutoreleasedReturnValue(), v7, v6)) && ([v6 length] & 3) == 0)
+    if ((v6 || (-[NSDictionary objectForKeyedSubscript:](dictionaryCopy, "objectForKeyedSubscript:", @"lensDistortionLookupTable"), v7 = objc_claimAutoreleasedReturnValue(), getTableAsNSData(v7), v6 = objc_claimAutoreleasedReturnValue(), v7, v6)) && ([v6 length] & 3) == 0)
     {
-      v9 = [(NSDictionary *)v4 objectForKeyedSubscript:@"undistortedRadii"];
+      v9 = [(NSDictionary *)dictionaryCopy objectForKeyedSubscript:@"undistortedRadii"];
       v10 = getTableAsNSData(v9);
 
-      if ((v10 || (-[NSDictionary objectForKeyedSubscript:](v4, "objectForKeyedSubscript:", @"inverseLensDistortionLookupTable"), v11 = objc_claimAutoreleasedReturnValue(), getTableAsNSData(v11), v10 = objc_claimAutoreleasedReturnValue(), v11, v10)) && ([v10 length] & 3) == 0)
+      if ((v10 || (-[NSDictionary objectForKeyedSubscript:](dictionaryCopy, "objectForKeyedSubscript:", @"inverseLensDistortionLookupTable"), v11 = objc_claimAutoreleasedReturnValue(), getTableAsNSData(v11), v10 = objc_claimAutoreleasedReturnValue(), v11, v10)) && ([v10 length] & 3) == 0)
       {
         self = [(ADMagnificationForRadiusLensDistortionModel *)self initWithDistortionCenter:v6 lensDistortionLookupTable:v10 inverseLensDistortionLookupTable:self->_distortionCenter.x, self->_distortionCenter.y];
-        v8 = self;
+        selfCopy = self;
       }
 
       else
       {
-        v8 = 0;
+        selfCopy = 0;
       }
     }
 
     else
     {
-      v8 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (void)undistortPixels:(unint64_t)a3 distortedPixels:(const CGPoint *)a4 withCameraCalibration:(id)a5 outUndistortedPixels:(CGPoint *)a6
+- (void)undistortPixels:(unint64_t)pixels distortedPixels:(const CGPoint *)distortedPixels withCameraCalibration:(id)calibration outUndistortedPixels:(CGPoint *)undistortedPixels
 {
-  v18 = a5;
-  [v18 intrinsicMatrix];
+  calibrationCopy = calibration;
+  [calibrationCopy intrinsicMatrix];
   v16 = v11;
   v17 = v10;
   v15 = v12;
-  [v18 referenceDimensions];
-  [(ADMagnificationForRadiusLensDistortionModel *)self applyDistortionModelToPixels:a3 inPixels:a4 intrinsicsMatrix:self->_lensDistortionLookupTable referenceDimensions:a6 magnificationLookupTable:v17 outPixels:v16, v15, v13, v14];
+  [calibrationCopy referenceDimensions];
+  [(ADMagnificationForRadiusLensDistortionModel *)self applyDistortionModelToPixels:pixels inPixels:distortedPixels intrinsicsMatrix:self->_lensDistortionLookupTable referenceDimensions:undistortedPixels magnificationLookupTable:v17 outPixels:v16, v15, v13, v14];
 }
 
-- (void)distortPixels:(unint64_t)a3 undistortedPixels:(const CGPoint *)a4 withCameraCalibration:(id)a5 outDistortedPixels:(CGPoint *)a6
+- (void)distortPixels:(unint64_t)pixels undistortedPixels:(const CGPoint *)undistortedPixels withCameraCalibration:(id)calibration outDistortedPixels:(CGPoint *)distortedPixels
 {
-  v18 = a5;
-  [v18 intrinsicMatrix];
+  calibrationCopy = calibration;
+  [calibrationCopy intrinsicMatrix];
   v16 = v11;
   v17 = v10;
   v15 = v12;
-  [v18 referenceDimensions];
-  [(ADMagnificationForRadiusLensDistortionModel *)self applyDistortionModelToPixels:a3 inPixels:a4 intrinsicsMatrix:self->_inverseLensDistortionLookupTable referenceDimensions:a6 magnificationLookupTable:v17 outPixels:v16, v15, v13, v14];
+  [calibrationCopy referenceDimensions];
+  [(ADMagnificationForRadiusLensDistortionModel *)self applyDistortionModelToPixels:pixels inPixels:undistortedPixels intrinsicsMatrix:self->_inverseLensDistortionLookupTable referenceDimensions:distortedPixels magnificationLookupTable:v17 outPixels:v16, v15, v13, v14];
 }
 
-- (uint64_t)applyDistortionModelToPixels:(double)a3 inPixels:(double)a4 intrinsicsMatrix:(double)a5 referenceDimensions:(double)a6 magnificationLookupTable:(uint64_t)a7 outPixels:(uint64_t)a8
+- (uint64_t)applyDistortionModelToPixels:(double)pixels inPixels:(double)inPixels intrinsicsMatrix:(double)matrix referenceDimensions:(double)dimensions magnificationLookupTable:(uint64_t)table outPixels:(uint64_t)outPixels
 {
   v17 = a10;
-  v18 = *(a1 + 24);
-  v19 = *(a1 + 32);
-  if (v18 <= a5 - v18)
+  v18 = *(self + 24);
+  v19 = *(self + 32);
+  if (v18 <= matrix - v18)
   {
-    v20 = a5 - v18;
+    v20 = matrix - v18;
   }
 
   else
   {
-    v20 = *(a1 + 24);
+    v20 = *(self + 24);
   }
 
-  if (v19 <= a6 - v19)
+  if (v19 <= dimensions - v19)
   {
-    v21 = a6 - v19;
+    v21 = dimensions - v19;
   }
 
   else
   {
-    v21 = *(a1 + 32);
+    v21 = *(self + 32);
   }
 
   v35 = v17;
-  v22 = [v35 bytes];
+  bytes = [v35 bytes];
   v23 = [v35 length];
   if (v23 > 3)
   {
     v24 = v35;
-    if (a8)
+    if (outPixels)
     {
       v25 = v20;
       v26 = v21;
@@ -147,52 +147,52 @@
       v28 = (v23 >> 2) - 1;
       do
       {
-        v29 = *(a1 + 24);
+        v29 = *(self + 24);
         v30 = vcvt_f32_f64(vsubq_f64(*a9, v29));
         v31 = sqrtf(COERCE_FLOAT(vmul_f32(v30, v30).i32[1]) + (v30.f32[0] * v30.f32[0]));
         if (v31 >= v27)
         {
-          v33 = *(v22 + 4 * v28);
+          v33 = *(bytes + 4 * v28);
         }
 
         else
         {
           v32 = (v28 / v27) * v31;
-          v33 = ((v32 - v32) * *(v22 + 4 * v32 + 4)) + ((1.0 - (v32 - v32)) * *(v22 + 4 * v32));
+          v33 = ((v32 - v32) * *(bytes + 4 * v32 + 4)) + ((1.0 - (v32 - v32)) * *(bytes + 4 * v32));
         }
 
         *a11++ = vaddq_f64(v29, vcvtq_f64_f32(vmla_n_f32(v30, v30, v33)));
         ++a9;
-        --a8;
+        --outPixels;
       }
 
-      while (a8);
+      while (outPixels);
     }
   }
 
   else
   {
-    v23 = memcpy(a11, a9, 16 * a8);
+    v23 = memcpy(a11, a9, 16 * outPixels);
     v24 = v35;
   }
 
   return MEMORY[0x2821F96F8](v23, v24);
 }
 
-- (ADMagnificationForRadiusLensDistortionModel)initWithDistortionCenter:(CGPoint)a3 lensDistortionLookupTable:(id)a4 inverseLensDistortionLookupTable:(id)a5
+- (ADMagnificationForRadiusLensDistortionModel)initWithDistortionCenter:(CGPoint)center lensDistortionLookupTable:(id)table inverseLensDistortionLookupTable:(id)lookupTable
 {
-  y = a3.y;
-  x = a3.x;
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
-  if (!v10)
+  y = center.y;
+  x = center.x;
+  tableCopy = table;
+  lookupTableCopy = lookupTable;
+  v12 = lookupTableCopy;
+  if (!tableCopy)
   {
     v16 = @"lensDistortionLookupTable cannot be nil";
     goto LABEL_8;
   }
 
-  if (!v11)
+  if (!lookupTableCopy)
   {
     v16 = @"inverseLensDistortionLookupTable cannot be nil";
 LABEL_8:
@@ -208,14 +208,14 @@ LABEL_8:
   {
     v13->_distortionCenter.x = x;
     v13->_distortionCenter.y = y;
-    objc_storeStrong(&v13->_lensDistortionLookupTable, a4);
-    objc_storeStrong(&v14->_inverseLensDistortionLookupTable, a5);
+    objc_storeStrong(&v13->_lensDistortionLookupTable, table);
+    objc_storeStrong(&v14->_inverseLensDistortionLookupTable, lookupTable);
   }
 
   return v14;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [ADMagnificationForRadiusLensDistortionModel alloc];
   x = self->_distortionCenter.x;
@@ -239,22 +239,22 @@ LABEL_8:
   return v7 ^ (4 * [(NSData *)self->_inverseLensDistortionLookupTable hash]);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (!equalCopy)
   {
     goto LABEL_8;
   }
 
-  if (self == v4)
+  if (self == equalCopy)
   {
     v10 = 1;
     goto LABEL_13;
   }
 
-  if (([(ADMagnificationForRadiusLensDistortionModel *)v4 isMemberOfClass:objc_opt_class()]& 1) != 0)
+  if (([(ADMagnificationForRadiusLensDistortionModel *)equalCopy isMemberOfClass:objc_opt_class()]& 1) != 0)
   {
     v6 = v5;
     x = self->_distortionCenter.x;
@@ -264,12 +264,12 @@ LABEL_8:
     if (x == v11 && y == v9)
     {
       lensDistortionLookupTable = self->_lensDistortionLookupTable;
-      v13 = [(ADMagnificationForRadiusLensDistortionModel *)v6 lensDistortionLookupTable];
-      if ([(NSData *)lensDistortionLookupTable isEqualToData:v13])
+      lensDistortionLookupTable = [(ADMagnificationForRadiusLensDistortionModel *)v6 lensDistortionLookupTable];
+      if ([(NSData *)lensDistortionLookupTable isEqualToData:lensDistortionLookupTable])
       {
         inverseLensDistortionLookupTable = self->_inverseLensDistortionLookupTable;
-        v15 = [(ADMagnificationForRadiusLensDistortionModel *)v6 inverseLensDistortionLookupTable];
-        v10 = [(NSData *)inverseLensDistortionLookupTable isEqualToData:v15];
+        inverseLensDistortionLookupTable = [(ADMagnificationForRadiusLensDistortionModel *)v6 inverseLensDistortionLookupTable];
+        v10 = [(NSData *)inverseLensDistortionLookupTable isEqualToData:inverseLensDistortionLookupTable];
       }
 
       else

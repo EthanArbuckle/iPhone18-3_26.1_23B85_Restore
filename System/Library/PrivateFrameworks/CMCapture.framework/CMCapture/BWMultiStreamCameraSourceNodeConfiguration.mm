@@ -8,8 +8,8 @@
 - (CGSize)sensorOverscan;
 - (CGSize)visOverscan;
 - (void)dealloc;
-- (void)setMaxExposureDurationClientOverride:(id *)a3;
-- (void)setMaxExposureDurationFrameworkOverride:(id *)a3;
+- (void)setMaxExposureDurationClientOverride:(id *)override;
+- (void)setMaxExposureDurationFrameworkOverride:(id *)override;
 @end
 
 @implementation BWMultiStreamCameraSourceNodeConfiguration
@@ -98,17 +98,17 @@
   [(BWMultiStreamCameraSourceNodeConfiguration *)&v3 dealloc];
 }
 
-- (void)setMaxExposureDurationClientOverride:(id *)a3
+- (void)setMaxExposureDurationClientOverride:(id *)override
 {
-  v3 = *&a3->var0;
-  self->_maxExposureDurationClientOverride.epoch = a3->var3;
+  v3 = *&override->var0;
+  self->_maxExposureDurationClientOverride.epoch = override->var3;
   *&self->_maxExposureDurationClientOverride.value = v3;
 }
 
-- (void)setMaxExposureDurationFrameworkOverride:(id *)a3
+- (void)setMaxExposureDurationFrameworkOverride:(id *)override
 {
-  v3 = *&a3->var0;
-  self->_maxExposureDurationFrameworkOverride.epoch = a3->var3;
+  v3 = *&override->var0;
+  self->_maxExposureDurationFrameworkOverride.epoch = override->var3;
   *&self->_maxExposureDurationFrameworkOverride.value = v3;
 }
 

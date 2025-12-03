@@ -1,35 +1,35 @@
 @interface _UIStickerUsageEvent
-+ (BOOL)isPreferredRepresentationAnimated:(id)a3;
-+ (int64_t)effectTypeForSticker:(id)a3;
-+ (int64_t)effectTypeFromVKCStickerEffectType:(unint64_t)a3;
-- (_UIStickerUsageEvent)initWithSuggestedSticker:(id)a3;
++ (BOOL)isPreferredRepresentationAnimated:(id)animated;
++ (int64_t)effectTypeForSticker:(id)sticker;
++ (int64_t)effectTypeFromVKCStickerEffectType:(unint64_t)type;
+- (_UIStickerUsageEvent)initWithSuggestedSticker:(id)sticker;
 - (id)initForEmojiKeyboardUsage;
 - (void)send;
 @end
 
 @implementation _UIStickerUsageEvent
 
-+ (int64_t)effectTypeFromVKCStickerEffectType:(unint64_t)a3
++ (int64_t)effectTypeFromVKCStickerEffectType:(unint64_t)type
 {
-  if (a3 - 1 > 3)
+  if (type - 1 > 3)
   {
     return 0;
   }
 
   else
   {
-    return qword_18A682BC8[a3 - 1];
+    return qword_18A682BC8[type - 1];
   }
 }
 
-+ (BOOL)isPreferredRepresentationAnimated:(id)a3
++ (BOOL)isPreferredRepresentationAnimated:(id)animated
 {
-  v3 = a3;
-  if ([v3 count])
+  animatedCopy = animated;
+  if ([animatedCopy count])
   {
-    v4 = [v3 firstObject];
-    v5 = [v4 role];
-    v6 = [v5 isEqualToString:@"com.apple.stickers.role.animated"];
+    firstObject = [animatedCopy firstObject];
+    role = [firstObject role];
+    v6 = [role isEqualToString:@"com.apple.stickers.role.animated"];
   }
 
   else
@@ -40,11 +40,11 @@
   return v6;
 }
 
-+ (int64_t)effectTypeForSticker:(id)a3
++ (int64_t)effectTypeForSticker:(id)sticker
 {
-  v3 = a3;
-  v4 = [v3 representations];
-  v5 = [_UIStickerUsageEvent isPreferredRepresentationAnimated:v4];
+  stickerCopy = sticker;
+  representations = [stickerCopy representations];
+  v5 = [_UIStickerUsageEvent isPreferredRepresentationAnimated:representations];
 
   if (v5)
   {
@@ -53,15 +53,15 @@
 
   else
   {
-    v6 = +[_UIStickerUsageEvent effectTypeFromVKCStickerEffectType:](_UIStickerUsageEvent, "effectTypeFromVKCStickerEffectType:", [v3 effectType]);
+    v6 = +[_UIStickerUsageEvent effectTypeFromVKCStickerEffectType:](_UIStickerUsageEvent, "effectTypeFromVKCStickerEffectType:", [stickerCopy effectType]);
   }
 
   return v6;
 }
 
-- (_UIStickerUsageEvent)initWithSuggestedSticker:(id)a3
+- (_UIStickerUsageEvent)initWithSuggestedSticker:(id)sticker
 {
-  v4 = a3;
+  stickerCopy = sticker;
   v8.receiver = self;
   v8.super_class = _UIStickerUsageEvent;
   v5 = [(_UIStickerUsageEvent *)&v8 init];
@@ -70,7 +70,7 @@
   {
     [(_UIStickerUsageEvent *)v5 setStickerType:0];
     [(_UIStickerUsageEvent *)v6 setSourceType:2];
-    [(_UIStickerUsageEvent *)v6 setEffectType:[_UIStickerUsageEvent effectTypeForSticker:v4]];
+    [(_UIStickerUsageEvent *)v6 setEffectType:[_UIStickerUsageEvent effectTypeForSticker:stickerCopy]];
   }
 
   return v6;

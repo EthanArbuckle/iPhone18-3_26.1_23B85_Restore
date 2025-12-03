@@ -1,41 +1,41 @@
 @interface WFLinkContentItemFilterAction
 - (BOOL)isApprovedForPublicShortcutsDrawer;
 - (BOOL)outputsMultipleItems;
-- (BOOL)visibleForUse:(int64_t)a3;
+- (BOOL)visibleForUse:(int64_t)use;
 - (LNPropertyQuery)propertyQuery;
 - (NSString)spotlightQuery;
-- (WFLinkContentItemFilterAction)initWithIdentifier:(id)a3 queryMetadata:(id)a4 entityMetadata:(id)a5 definition:(id)a6 serializedParameters:(id)a7 appIntentDescriptor:(id)a8 fullyQualifiedActionIdentifier:(id)a9;
+- (WFLinkContentItemFilterAction)initWithIdentifier:(id)identifier queryMetadata:(id)metadata entityMetadata:(id)entityMetadata definition:(id)definition serializedParameters:(id)parameters appIntentDescriptor:(id)descriptor fullyQualifiedActionIdentifier:(id)actionIdentifier;
 - (id)backingActionIdentifiers;
-- (id)copyWithSerializedParameters:(id)a3;
+- (id)copyWithSerializedParameters:(id)parameters;
 - (id)displayableAppDescriptor;
-- (id)entityMetadataForIdentifier:(id)a3;
+- (id)entityMetadataForIdentifier:(id)identifier;
 - (id)linkValueTypes;
-- (id)localizedCategoryWithContext:(id)a3;
-- (id)localizedDefaultOutputNameWithContext:(id)a3;
-- (id)localizedDescriptionResultWithContext:(id)a3;
-- (id)localizedDescriptionSummaryWithContext:(id)a3;
-- (id)localizedKeywordsWithContext:(id)a3;
-- (id)localizedNameWithContext:(id)a3;
+- (id)localizedCategoryWithContext:(id)context;
+- (id)localizedDefaultOutputNameWithContext:(id)context;
+- (id)localizedDescriptionResultWithContext:(id)context;
+- (id)localizedDescriptionSummaryWithContext:(id)context;
+- (id)localizedKeywordsWithContext:(id)context;
+- (id)localizedNameWithContext:(id)context;
 - (id)metadataProvider;
 - (id)outputDictionary;
 - (id)parameterDefinitions;
 - (id)parameterSummary;
 - (id)propertiesByPropertyIdentifier;
-- (id)sortingOptionsWithRandomSortOrder:(BOOL *)a3;
-- (void)configureParameter:(id)a3;
-- (void)finishRunningWithError:(id)a3;
-- (void)finishRunningWithOutput:(id)a3 randomSortOrder:(BOOL)a4 error:(id)a5;
+- (id)sortingOptionsWithRandomSortOrder:(BOOL *)order;
+- (void)configureParameter:(id)parameter;
+- (void)finishRunningWithError:(id)error;
+- (void)finishRunningWithOutput:(id)output randomSortOrder:(BOOL)order error:(id)error;
 - (void)initializeParameters;
-- (void)runAsynchronouslyWithInput:(id)a3;
+- (void)runAsynchronouslyWithInput:(id)input;
 - (void)serializeAppIntentDescriptorIfNecessary;
-- (void)showChronoControlIfPossibleWithCompletionHandler:(id)a3;
+- (void)showChronoControlIfPossibleWithCompletionHandler:(id)handler;
 @end
 
 @implementation WFLinkContentItemFilterAction
 
 - (LNPropertyQuery)propertyQuery
 {
-  v2 = self;
+  selfCopy = self;
   v3 = WFLinkContentItemFilterAction.propertyQuery.getter();
 
   return v3;
@@ -43,7 +43,7 @@
 
 - (NSString)spotlightQuery
 {
-  v2 = self;
+  selfCopy = self;
   WFLinkContentItemFilterAction.spotlightQuery.getter();
 
   v3 = sub_1CA94C368();
@@ -61,19 +61,19 @@
 
   else
   {
-    v4 = [(WFLinkContentItemFilterAction *)self outputDictionary];
-    v5 = [v4 objectForKey:@"Multiple"];
-    v6 = [v5 BOOLValue];
+    outputDictionary = [(WFLinkContentItemFilterAction *)self outputDictionary];
+    v5 = [outputDictionary objectForKey:@"Multiple"];
+    bOOLValue = [v5 BOOLValue];
 
-    return v6;
+    return bOOLValue;
   }
 }
 
 - (id)backingActionIdentifiers
 {
   v6[1] = *MEMORY[0x1E69E9840];
-  v2 = [(WFAction *)self identifier];
-  v6[0] = v2;
+  identifier = [(WFAction *)self identifier];
+  v6[0] = identifier;
   v3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:1];
 
   v4 = *MEMORY[0x1E69E9840];
@@ -81,75 +81,75 @@
   return v3;
 }
 
-- (id)entityMetadataForIdentifier:(id)a3
+- (id)entityMetadataForIdentifier:(id)identifier
 {
   v4 = MEMORY[0x1E69E0970];
-  v5 = a3;
-  v6 = [v4 sharedProvider];
-  v7 = [(WFLinkContentItemFilterAction *)self fullyQualifiedLinkActionIdentifier];
-  v8 = [v7 bundleIdentifier];
-  v9 = [v6 entityWithIdentifier:v5 fromBundleIdentifier:v8];
+  identifierCopy = identifier;
+  sharedProvider = [v4 sharedProvider];
+  fullyQualifiedLinkActionIdentifier = [(WFLinkContentItemFilterAction *)self fullyQualifiedLinkActionIdentifier];
+  bundleIdentifier = [fullyQualifiedLinkActionIdentifier bundleIdentifier];
+  v9 = [sharedProvider entityWithIdentifier:identifierCopy fromBundleIdentifier:bundleIdentifier];
 
   return v9;
 }
 
-- (void)showChronoControlIfPossibleWithCompletionHandler:(id)a3
+- (void)showChronoControlIfPossibleWithCompletionHandler:(id)handler
 {
-  v7 = a3;
-  v4 = [(WFLinkContentItemFilterAction *)self entityMetadata];
-  v5 = [v4 associatedControl];
+  handlerCopy = handler;
+  entityMetadata = [(WFLinkContentItemFilterAction *)self entityMetadata];
+  associatedControl = [entityMetadata associatedControl];
 
-  if (v5)
+  if (associatedControl)
   {
-    v6 = [(WFAction *)self userInterface];
-    [v5 presentIfPossibleInUserInterface:v6 completionBlock:v7];
+    userInterface = [(WFAction *)self userInterface];
+    [associatedControl presentIfPossibleInUserInterface:userInterface completionBlock:handlerCopy];
   }
 
   else
   {
-    v7[2](v7, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 }
 
-- (id)localizedCategoryWithContext:(id)a3
+- (id)localizedCategoryWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [(WFLinkContentItemFilterAction *)self queryMetadata];
-  v6 = [v5 descriptionMetadata];
-  v7 = [v6 categoryName];
-  v8 = [v7 title];
+  contextCopy = context;
+  queryMetadata = [(WFLinkContentItemFilterAction *)self queryMetadata];
+  descriptionMetadata = [queryMetadata descriptionMetadata];
+  categoryName = [descriptionMetadata categoryName];
+  title = [categoryName title];
 
-  if (v8)
+  if (title)
   {
-    v9 = [v4 locale];
+    locale = [contextCopy locale];
 
-    v10 = [v9 localeIdentifier];
-    v11 = [v8 localizedStringForLocaleIdentifier:v10];
+    localeIdentifier = [locale localeIdentifier];
+    v11 = [title localizedStringForLocaleIdentifier:localeIdentifier];
   }
 
   else
   {
     v13.receiver = self;
     v13.super_class = WFLinkContentItemFilterAction;
-    v11 = [(WFAction *)&v13 localizedCategoryWithContext:v4];
+    v11 = [(WFAction *)&v13 localizedCategoryWithContext:contextCopy];
   }
 
   return v11;
 }
 
-- (id)localizedKeywordsWithContext:(id)a3
+- (id)localizedKeywordsWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [(WFLinkContentItemFilterAction *)self queryMetadata];
-  v6 = [v5 descriptionMetadata];
-  v7 = [v6 searchKeywords];
+  contextCopy = context;
+  queryMetadata = [(WFLinkContentItemFilterAction *)self queryMetadata];
+  descriptionMetadata = [queryMetadata descriptionMetadata];
+  searchKeywords = [descriptionMetadata searchKeywords];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __62__WFLinkContentItemFilterAction_localizedKeywordsWithContext___block_invoke;
   v11[3] = &unk_1E837D6B8;
-  v12 = v4;
-  v8 = v4;
-  v9 = [v7 if_map:v11];
+  v12 = contextCopy;
+  v8 = contextCopy;
+  v9 = [searchKeywords if_map:v11];
 
   return v9;
 }
@@ -165,19 +165,19 @@ id __62__WFLinkContentItemFilterAction_localizedKeywordsWithContext___block_invo
   return v6;
 }
 
-- (id)localizedDescriptionSummaryWithContext:(id)a3
+- (id)localizedDescriptionSummaryWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [(WFLinkContentItemFilterAction *)self queryMetadata];
-  v6 = [v5 descriptionMetadata];
-  v7 = [v6 descriptionText];
+  contextCopy = context;
+  queryMetadata = [(WFLinkContentItemFilterAction *)self queryMetadata];
+  descriptionMetadata = [queryMetadata descriptionMetadata];
+  descriptionText = [descriptionMetadata descriptionText];
 
-  if (v7)
+  if (descriptionText)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = v7;
+      v8 = descriptionText;
     }
 
     else
@@ -193,43 +193,43 @@ id __62__WFLinkContentItemFilterAction_localizedKeywordsWithContext___block_invo
 
   v9 = v8;
 
-  v10 = [v4 locale];
+  locale = [contextCopy locale];
 
-  v11 = [v10 localeIdentifier];
-  v12 = [v9 localizedStringForLocaleIdentifier:v11];
+  localeIdentifier = [locale localeIdentifier];
+  v12 = [v9 localizedStringForLocaleIdentifier:localeIdentifier];
 
   return v12;
 }
 
-- (id)localizedDefaultOutputNameWithContext:(id)a3
+- (id)localizedDefaultOutputNameWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [(WFLinkContentItemFilterAction *)self queryMetadata];
-  v6 = [v5 descriptionMetadata];
+  contextCopy = context;
+  queryMetadata = [(WFLinkContentItemFilterAction *)self queryMetadata];
+  descriptionMetadata = [queryMetadata descriptionMetadata];
 
-  v7 = [v6 resultValueName];
+  resultValueName = [descriptionMetadata resultValueName];
 
-  if (v7)
+  if (resultValueName)
   {
-    v8 = [v6 resultValueName];
-    v9 = [v4 locale];
-    v10 = [v9 localeIdentifier];
-    v11 = [v8 localizedStringForLocaleIdentifier:v10];
+    resultValueName2 = [descriptionMetadata resultValueName];
+    locale = [contextCopy locale];
+    localeIdentifier = [locale localeIdentifier];
+    v11 = [resultValueName2 localizedStringForLocaleIdentifier:localeIdentifier];
   }
 
   else
   {
     v13.receiver = self;
     v13.super_class = WFLinkContentItemFilterAction;
-    v11 = [(WFContentItemFilterAction *)&v13 localizedDefaultOutputNameWithContext:v4];
+    v11 = [(WFContentItemFilterAction *)&v13 localizedDefaultOutputNameWithContext:contextCopy];
   }
 
   return v11;
 }
 
-- (id)localizedDescriptionResultWithContext:(id)a3
+- (id)localizedDescriptionResultWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   if ([(WFLinkContentItemFilterAction *)self isFetchingUniqueEntity])
   {
     v5 = 0;
@@ -239,7 +239,7 @@ id __62__WFLinkContentItemFilterAction_localizedKeywordsWithContext___block_invo
   {
     v7.receiver = self;
     v7.super_class = WFLinkContentItemFilterAction;
-    v5 = [(WFContentItemFilterAction *)&v7 localizedDescriptionResultWithContext:v4];
+    v5 = [(WFContentItemFilterAction *)&v7 localizedDescriptionResultWithContext:contextCopy];
   }
 
   return v5;
@@ -249,48 +249,48 @@ id __62__WFLinkContentItemFilterAction_localizedKeywordsWithContext___block_invo
 {
   v31[2] = *MEMORY[0x1E69E9840];
   outputDictionary = self->_outputDictionary;
-  v4 = [MEMORY[0x1E695DFB0] null];
+  null = [MEMORY[0x1E695DFB0] null];
 
-  if (outputDictionary == v4)
+  if (outputDictionary == null)
   {
-    v5 = 0;
+    outputDictionary = 0;
   }
 
   else if (outputDictionary)
   {
     outputDictionary = outputDictionary;
-    v5 = outputDictionary;
+    outputDictionary = outputDictionary;
   }
 
   else
   {
     v28.receiver = self;
     v28.super_class = WFLinkContentItemFilterAction;
-    v5 = [(WFAction *)&v28 outputDictionary];
+    outputDictionary = [(WFAction *)&v28 outputDictionary];
     v6 = objc_alloc(MEMORY[0x1E69AC818]);
-    v7 = [(WFLinkContentItemFilterAction *)self entityMetadata];
-    v8 = [v7 identifier];
-    v9 = [v6 initWithIdentifier:v8];
+    entityMetadata = [(WFLinkContentItemFilterAction *)self entityMetadata];
+    identifier = [entityMetadata identifier];
+    v9 = [v6 initWithIdentifier:identifier];
 
     if (!v9)
     {
       goto LABEL_7;
     }
 
-    v10 = [v5 objectForKeyedSubscript:@"Types"];
+    v10 = [outputDictionary objectForKeyedSubscript:@"Types"];
 
     if (v10)
     {
       goto LABEL_7;
     }
 
-    v13 = [(WFLinkContentItemFilterAction *)self fullyQualifiedLinkActionIdentifier];
-    v14 = [v13 bundleIdentifier];
-    v15 = [v9 wf_contentItemClassWithAppBundleIdentifier:v14];
+    fullyQualifiedLinkActionIdentifier = [(WFLinkContentItemFilterAction *)self fullyQualifiedLinkActionIdentifier];
+    bundleIdentifier = [fullyQualifiedLinkActionIdentifier bundleIdentifier];
+    v15 = [v9 wf_contentItemClassWithAppBundleIdentifier:bundleIdentifier];
 
     if (v15)
     {
-      v16 = [v5 mutableCopy];
+      v16 = [outputDictionary mutableCopy];
       v17 = v16;
       if (v16)
       {
@@ -330,17 +330,17 @@ id __62__WFLinkContentItemFilterAction_localizedKeywordsWithContext___block_invo
       v26 = [v19 copy];
       if (v26)
       {
-        v27 = v26;
+        null2 = v26;
       }
 
       else
       {
-        v27 = [MEMORY[0x1E695DFB0] null];
+        null2 = [MEMORY[0x1E695DFB0] null];
       }
 
       outputDictionary = self->_outputDictionary;
-      self->_outputDictionary = v27;
-      v5 = v26;
+      self->_outputDictionary = null2;
+      outputDictionary = v26;
     }
 
     else
@@ -353,14 +353,14 @@ LABEL_7:
 
   v11 = *MEMORY[0x1E69E9840];
 
-  return v5;
+  return outputDictionary;
 }
 
 - (id)displayableAppDescriptor
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [(WFAction *)self definition];
-  v4 = [v3 objectForKey:@"LinkActionDisableDisplayedAppDescriptor"];
+  definition = [(WFAction *)self definition];
+  v4 = [definition objectForKey:@"LinkActionDisableDisplayedAppDescriptor"];
 
   if (v4)
   {
@@ -383,21 +383,21 @@ LABEL_7:
 
   v6 = v5;
 
-  v7 = [v6 BOOLValue];
-  if (v7)
+  bOOLValue = [v6 BOOLValue];
+  if (bOOLValue)
   {
-    v8 = 0;
+    displayableAppDescriptor = 0;
   }
 
   else
   {
-    v9 = [(WFAction *)self definition];
-    v10 = [v9 objectForKey:@"LinkActionDisplayedAppDescriptor"];
+    definition2 = [(WFAction *)self definition];
+    v10 = [definition2 objectForKey:@"LinkActionDisplayedAppDescriptor"];
 
     if (v10)
     {
       v11 = [objc_alloc(MEMORY[0x1E696E720]) initWithSerializedRepresentation:v10];
-      v8 = v11;
+      displayableAppDescriptor = v11;
       if (v11)
       {
         v12 = v11;
@@ -419,35 +419,35 @@ LABEL_7:
     {
       v16.receiver = self;
       v16.super_class = WFLinkContentItemFilterAction;
-      v8 = [(WFAction *)&v16 displayableAppDescriptor];
+      displayableAppDescriptor = [(WFAction *)&v16 displayableAppDescriptor];
     }
   }
 
   v14 = *MEMORY[0x1E69E9840];
 
-  return v8;
+  return displayableAppDescriptor;
 }
 
 - (id)parameterSummary
 {
   if ([(WFLinkContentItemFilterAction *)self isFetchingUniqueEntity])
   {
-    v3 = 0;
+    parameterSummary = 0;
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = WFLinkContentItemFilterAction;
-    v3 = [(WFContentItemFilterAction *)&v5 parameterSummary];
+    parameterSummary = [(WFContentItemFilterAction *)&v5 parameterSummary];
   }
 
-  return v3;
+  return parameterSummary;
 }
 
-- (id)localizedNameWithContext:(id)a3
+- (id)localizedNameWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   if ([(WFLinkContentItemFilterAction *)self isFetchingUniqueEntity])
   {
     v5 = @"Get %@";
@@ -459,15 +459,15 @@ LABEL_7:
   }
 
   v6 = WFLocalizedStringResourceWithKey(v5, v5);
-  v7 = [(WFLinkContentItemFilterAction *)self entityMetadata];
-  v8 = [v7 displayRepresentation];
-  v9 = [v8 name];
-  v10 = [v4 locale];
-  v11 = [v10 localeIdentifier];
-  v12 = [v9 localizedStringWithPluralizationNumber:&unk_1F4A9ADB0 forLocaleIdentifier:v11];
+  entityMetadata = [(WFLinkContentItemFilterAction *)self entityMetadata];
+  displayRepresentation = [entityMetadata displayRepresentation];
+  name = [displayRepresentation name];
+  locale = [contextCopy locale];
+  localeIdentifier = [locale localeIdentifier];
+  v12 = [name localizedStringWithPluralizationNumber:&unk_1F4A9ADB0 forLocaleIdentifier:localeIdentifier];
 
   v13 = MEMORY[0x1E696AEC0];
-  v14 = [v4 localize:v6];
+  v14 = [contextCopy localize:v6];
 
   v15 = [v13 localizedStringWithFormat:v14, v12];
 
@@ -476,36 +476,36 @@ LABEL_7:
 
 - (BOOL)isApprovedForPublicShortcutsDrawer
 {
-  v3 = [(WFLinkContentItemFilterAction *)self entityMetadata];
-  v4 = [(WFLinkContentItemFilterAction *)self fullyQualifiedLinkActionIdentifier];
-  v5 = [v4 bundleIdentifier];
-  v6 = WFISEligibleForSettingsUpdaterAction(v3, v5);
+  entityMetadata = [(WFLinkContentItemFilterAction *)self entityMetadata];
+  fullyQualifiedLinkActionIdentifier = [(WFLinkContentItemFilterAction *)self fullyQualifiedLinkActionIdentifier];
+  bundleIdentifier = [fullyQualifiedLinkActionIdentifier bundleIdentifier];
+  v6 = WFISEligibleForSettingsUpdaterAction(entityMetadata, bundleIdentifier);
 
   if (v6)
   {
     return 0;
   }
 
-  v8 = [(WFLinkContentItemFilterAction *)self fullyQualifiedLinkActionIdentifier];
-  v9 = [WFLinkActionProvider approvedForPublicDrawerToDisplayActionIdentifier:v8];
+  fullyQualifiedLinkActionIdentifier2 = [(WFLinkContentItemFilterAction *)self fullyQualifiedLinkActionIdentifier];
+  v9 = [WFLinkActionProvider approvedForPublicDrawerToDisplayActionIdentifier:fullyQualifiedLinkActionIdentifier2];
 
   return v9;
 }
 
-- (BOOL)visibleForUse:(int64_t)a3
+- (BOOL)visibleForUse:(int64_t)use
 {
   v11.receiver = self;
   v11.super_class = WFLinkContentItemFilterAction;
   v5 = [(WFAction *)&v11 visibleForUse:?];
   if (v5)
   {
-    if (a3 || (VCIsInternalBuild() & 1) != 0 || (v5 = [(WFLinkContentItemFilterAction *)self isApprovedForPublicShortcutsDrawer]) != 0)
+    if (use || (VCIsInternalBuild() & 1) != 0 || (v5 = [(WFLinkContentItemFilterAction *)self isApprovedForPublicShortcutsDrawer]) != 0)
     {
-      v6 = [(WFLinkContentItemFilterAction *)self queryMetadata];
-      v7 = [v6 visibleForUse:a3];
+      queryMetadata = [(WFLinkContentItemFilterAction *)self queryMetadata];
+      v7 = [queryMetadata visibleForUse:use];
 
-      v8 = [(WFLinkContentItemFilterAction *)self entityMetadata];
-      v9 = [v8 visibleForUse:a3];
+      entityMetadata = [(WFLinkContentItemFilterAction *)self entityMetadata];
+      v9 = [entityMetadata visibleForUse:use];
 
       LOBYTE(v5) = v7 & v9;
     }
@@ -516,31 +516,31 @@ LABEL_7:
 
 - (id)linkValueTypes
 {
-  v3 = [(WFLinkContentItemFilterAction *)self entityMetadata];
+  entityMetadata = [(WFLinkContentItemFilterAction *)self entityMetadata];
   v4 = objc_opt_new();
-  v5 = [(WFAction *)self identifier];
-  if (v5 == @"is.workflow.actions.filter.notes")
+  identifier = [(WFAction *)self identifier];
+  if (identifier == @"is.workflow.actions.filter.notes")
   {
 
 LABEL_6:
-    v8 = [v3 properties];
+    properties = [entityMetadata properties];
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v21[2] = __47__WFLinkContentItemFilterAction_linkValueTypes__block_invoke;
     v21[3] = &unk_1E837D678;
     v9 = &v22;
-    v22 = v3;
+    v22 = entityMetadata;
     v10 = &v23;
     v23 = v4;
-    v11 = v3;
+    v11 = entityMetadata;
     v12 = v21;
     goto LABEL_8;
   }
 
-  v6 = v5;
-  if (v5)
+  v6 = identifier;
+  if (identifier)
   {
-    v7 = [(__CFString *)v5 isEqualToString:@"is.workflow.actions.filter.notes"];
+    v7 = [(__CFString *)identifier isEqualToString:@"is.workflow.actions.filter.notes"];
 
     if (v7)
     {
@@ -548,19 +548,19 @@ LABEL_6:
     }
   }
 
-  v8 = [v3 properties];
+  properties = [entityMetadata properties];
   v15 = MEMORY[0x1E69E9820];
   v16 = 3221225472;
   v17 = __47__WFLinkContentItemFilterAction_linkValueTypes__block_invoke_216;
   v18 = &unk_1E837D678;
   v9 = &v19;
-  v19 = v3;
+  v19 = entityMetadata;
   v10 = &v20;
   v20 = v4;
-  v13 = v3;
+  v13 = entityMetadata;
   v12 = &v15;
 LABEL_8:
-  [v8 enumerateObjectsUsingBlock:{v12, v15, v16, v17, v18}];
+  [properties enumerateObjectsUsingBlock:{v12, v15, v16, v17, v18}];
 
   return v4;
 }
@@ -639,25 +639,25 @@ void __47__WFLinkContentItemFilterAction_linkValueTypes__block_invoke_216(uint64
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)configureParameter:(id)a3
+- (void)configureParameter:(id)parameter
 {
-  v4 = a3;
+  parameterCopy = parameter;
   v7.receiver = self;
   v7.super_class = WFLinkContentItemFilterAction;
-  [(WFAction *)&v7 configureParameter:v4];
+  [(WFAction *)&v7 configureParameter:parameterCopy];
   if ([(WFLinkContentItemFilterAction *)self isFetchingUniqueEntity])
   {
-    [v4 setHidden:1];
+    [parameterCopy setHidden:1];
   }
 
-  v5 = v4;
+  v5 = parameterCopy;
   if (v5)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [(WFLinkContentItemFilterAction *)self linkValueTypes];
-      [v5 setLinkValueTypes:v6];
+      linkValueTypes = [(WFLinkContentItemFilterAction *)self linkValueTypes];
+      [v5 setLinkValueTypes:linkValueTypes];
     }
   }
 }
@@ -667,7 +667,7 @@ void __47__WFLinkContentItemFilterAction_linkValueTypes__block_invoke_216(uint64
   v19 = *MEMORY[0x1E69E9840];
   v17.receiver = self;
   v17.super_class = WFLinkContentItemFilterAction;
-  v3 = [(WFContentItemFilterAction *)&v17 parameterDefinitions];
+  parameterDefinitions = [(WFContentItemFilterAction *)&v17 parameterDefinitions];
   if ([(WFLinkContentItemFilterAction *)self isFetchingUniqueEntity])
   {
     v4 = objc_opt_new();
@@ -675,7 +675,7 @@ void __47__WFLinkContentItemFilterAction_linkValueTypes__block_invoke_216(uint64
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v5 = v3;
+    v5 = parameterDefinitions;
     v6 = [v5 countByEnumeratingWithState:&v13 objects:v18 count:16];
     if (v6)
     {
@@ -703,7 +703,7 @@ void __47__WFLinkContentItemFilterAction_linkValueTypes__block_invoke_216(uint64
 
   else
   {
-    v4 = v3;
+    v4 = parameterDefinitions;
   }
 
   v11 = *MEMORY[0x1E69E9840];
@@ -711,16 +711,16 @@ void __47__WFLinkContentItemFilterAction_linkValueTypes__block_invoke_216(uint64
   return v4;
 }
 
-- (id)sortingOptionsWithRandomSortOrder:(BOOL *)a3
+- (id)sortingOptionsWithRandomSortOrder:(BOOL *)order
 {
   v45[5] = *MEMORY[0x1E69E9840];
   v5 = [(WFContentItemFilterAction *)self parameterStateForKey:@"WFContentItemSortProperty"];
-  v6 = [v5 value];
+  value = [v5 value];
 
-  if (v6)
+  if (value)
   {
     v7 = WFLocalizedContentPropertyPossibleValueMarker(@"Random");
-    v8 = v6;
+    v8 = value;
     v9 = v7;
     v10 = v9;
     if (v8 == v9)
@@ -748,16 +748,16 @@ LABEL_10:
         v19 = [(WFAction *)self parameterValueForKey:@"WFContentItemSortOrder" ofClass:objc_opt_class()];
         v20 = [v18 containsObject:v19];
 
-        v21 = [(objc_class *)[(WFAction *)self contentItemClass] allProperties];
-        v22 = [v21 objectMatchingKey:@"name" value:v8];
+        allProperties = [(objc_class *)[(WFAction *)self contentItemClass] allProperties];
+        v22 = [allProperties objectMatchingKey:@"name" value:v8];
 
-        v23 = [v22 userInfo];
-        if (v23)
+        userInfo = [v22 userInfo];
+        if (userInfo)
         {
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v24 = v23;
+            v24 = userInfo;
           }
 
           else
@@ -799,8 +799,8 @@ LABEL_10:
         v41 = &v40;
         v42 = 0x2020000000;
         v43 = 0;
-        v29 = [(WFLinkContentItemFilterAction *)self queryMetadata];
-        v30 = [v29 sortingOptions];
+        queryMetadata = [(WFLinkContentItemFilterAction *)self queryMetadata];
+        sortingOptions = [queryMetadata sortingOptions];
         v37[0] = MEMORY[0x1E69E9820];
         v37[1] = 3221225472;
         v37[2] = __67__WFLinkContentItemFilterAction_sortingOptionsWithRandomSortOrder___block_invoke;
@@ -808,7 +808,7 @@ LABEL_10:
         v31 = v28;
         v38 = v31;
         v39 = &v40;
-        [v30 enumerateObjectsUsingBlock:v37];
+        [sortingOptions enumerateObjectsUsingBlock:v37];
 
         v32 = objc_alloc(MEMORY[0x1E69ACFA0]);
         v33 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v41[3]];
@@ -828,7 +828,7 @@ LABEL_10:
       }
     }
 
-    *a3 = 1;
+    *order = 1;
   }
 
   v12 = MEMORY[0x1E695E0F0];
@@ -867,45 +867,45 @@ LABEL_7:
   }
 }
 
-- (void)finishRunningWithOutput:(id)a3 randomSortOrder:(BOOL)a4 error:(id)a5
+- (void)finishRunningWithOutput:(id)output randomSortOrder:(BOOL)order error:(id)error
 {
-  v6 = a4;
+  orderCopy = order;
   v31[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  v10 = v9;
-  if (!v8)
+  outputCopy = output;
+  errorCopy = error;
+  v10 = errorCopy;
+  if (!outputCopy)
   {
-    v23 = self;
+    selfCopy2 = self;
 LABEL_6:
-    [(WFLinkContentItemFilterAction *)v23 finishRunningWithError:v10];
+    [(WFLinkContentItemFilterAction *)selfCopy2 finishRunningWithError:v10];
     goto LABEL_7;
   }
 
-  v25 = v6;
-  v26 = v9;
-  v11 = [v8 value];
-  v12 = [v11 valueType];
-  v13 = [v8 value];
-  v14 = [(WFLinkContentItemFilterAction *)self fullyQualifiedLinkActionIdentifier];
-  v15 = [v14 bundleIdentifier];
-  v16 = [(WFLinkContentItemFilterAction *)self displayableAppDescriptor];
-  v17 = [v16 bundleIdentifier];
-  v18 = [v12 wf_contentCollectionFromLinkValue:v13 appBundleIdentifier:v15 displayedBundleIdentifier:v17 disclosureLevel:{-[WFAction outputDisclosureLevel](self, "outputDisclosureLevel")}];
+  v25 = orderCopy;
+  v26 = errorCopy;
+  value = [outputCopy value];
+  valueType = [value valueType];
+  value2 = [outputCopy value];
+  fullyQualifiedLinkActionIdentifier = [(WFLinkContentItemFilterAction *)self fullyQualifiedLinkActionIdentifier];
+  bundleIdentifier = [fullyQualifiedLinkActionIdentifier bundleIdentifier];
+  displayableAppDescriptor = [(WFLinkContentItemFilterAction *)self displayableAppDescriptor];
+  bundleIdentifier2 = [displayableAppDescriptor bundleIdentifier];
+  v18 = [valueType wf_contentCollectionFromLinkValue:value2 appBundleIdentifier:bundleIdentifier displayedBundleIdentifier:bundleIdentifier2 disclosureLevel:{-[WFAction outputDisclosureLevel](self, "outputDisclosureLevel")}];
   [(WFAction *)self setOutput:v18];
 
   if (!v25)
   {
-    v23 = self;
+    selfCopy2 = self;
     v10 = v26;
     goto LABEL_6;
   }
 
   objc_initWeak(&location, self);
-  v19 = [(WFAction *)self output];
-  v20 = [v19 items];
-  v21 = [MEMORY[0x1E6996DA0] randomSortDescriptor];
-  v31[0] = v21;
+  output = [(WFAction *)self output];
+  items = [output items];
+  randomSortDescriptor = [MEMORY[0x1E6996DA0] randomSortDescriptor];
+  v31[0] = randomSortDescriptor;
   v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:v31 count:1];
   v27[0] = MEMORY[0x1E69E9820];
   v27[1] = 3221225472;
@@ -913,7 +913,7 @@ LABEL_6:
   v27[3] = &unk_1E837D620;
   objc_copyWeak(&v29, &location);
   v28 = v26;
-  [v20 sortedArrayUsingContentSortDescriptors:v22 completionHandler:v27];
+  [items sortedArrayUsingContentSortDescriptors:v22 completionHandler:v27];
 
   objc_destroyWeak(&v29);
   objc_destroyWeak(&location);
@@ -936,9 +936,9 @@ void __79__WFLinkContentItemFilterAction_finishRunningWithOutput_randomSortOrder
 - (id)metadataProvider
 {
   metadataProvider = self->_metadataProvider;
-  v4 = [MEMORY[0x1E695DFB0] null];
+  null = [MEMORY[0x1E695DFB0] null];
 
-  if (metadataProvider == v4)
+  if (metadataProvider == null)
   {
     v5 = 0;
   }
@@ -955,25 +955,25 @@ void __79__WFLinkContentItemFilterAction_finishRunningWithOutput_randomSortOrder
     v5 = v6;
     if (v6)
     {
-      v7 = v6;
+      null2 = v6;
     }
 
     else
     {
-      v7 = [MEMORY[0x1E695DFB0] null];
+      null2 = [MEMORY[0x1E695DFB0] null];
     }
 
     metadataProvider = self->_metadataProvider;
-    self->_metadataProvider = v7;
+    self->_metadataProvider = null2;
   }
 
   return v5;
 }
 
-- (void)finishRunningWithError:(id)a3
+- (void)finishRunningWithError:(id)error
 {
   v5 = [(WFAction *)self localizedErrorWithLinkError:?];
-  if (a3)
+  if (error)
   {
     v6.receiver = self;
     v6.super_class = WFLinkContentItemFilterAction;
@@ -998,22 +998,22 @@ id __56__WFLinkContentItemFilterAction_finishRunningWithError___block_invoke(uin
   return objc_msgSendSuper2(&v3, sel_finishRunningWithError_, a2);
 }
 
-- (void)runAsynchronouslyWithInput:(id)a3
+- (void)runAsynchronouslyWithInput:(id)input
 {
   v96 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  inputCopy = input;
   if ([(WFContentItemFilterAction *)self mode]== 1)
   {
     v89.receiver = self;
     v89.super_class = WFLinkContentItemFilterAction;
-    [(WFContentItemFilterAction *)&v89 runAsynchronouslyWithInput:v4];
+    [(WFContentItemFilterAction *)&v89 runAsynchronouslyWithInput:inputCopy];
     goto LABEL_51;
   }
 
-  v5 = [(WFLinkContentItemFilterAction *)self queryMetadata];
-  v6 = [(WFLinkContentItemFilterAction *)self entityMetadata];
-  v7 = [(WFAction *)self appBundleIdentifier];
-  TypeForQueryMetadata = WFEntityQueryTypeForQueryMetadata(v5, v6, v7);
+  queryMetadata = [(WFLinkContentItemFilterAction *)self queryMetadata];
+  entityMetadata = [(WFLinkContentItemFilterAction *)self entityMetadata];
+  appBundleIdentifier = [(WFAction *)self appBundleIdentifier];
+  TypeForQueryMetadata = WFEntityQueryTypeForQueryMetadata(queryMetadata, entityMetadata, appBundleIdentifier);
 
   if (TypeForQueryMetadata > 1)
   {
@@ -1043,8 +1043,8 @@ id __56__WFLinkContentItemFilterAction_finishRunningWithError___block_invoke(uin
       }
 
       v37 = MEMORY[0x1E69ACE60];
-      v38 = [(WFLinkContentItemFilterAction *)self queryMetadata];
-      v39 = [v37 policyWithEntityQueryMetadata:v38];
+      queryMetadata2 = [(WFLinkContentItemFilterAction *)self queryMetadata];
+      v39 = [v37 policyWithEntityQueryMetadata:queryMetadata2];
 
       v86 = 0;
       v40 = [v39 connectionWithError:&v86];
@@ -1054,9 +1054,9 @@ id __56__WFLinkContentItemFilterAction_finishRunningWithError___block_invoke(uin
         buf[0] = 0;
         v42 = [(WFLinkContentItemFilterAction *)self sortingOptionsWithRandomSortOrder:buf];
         v43 = objc_alloc(MEMORY[0x1E69ACFB0]);
-        v44 = [(WFLinkContentItemFilterAction *)self propertyQuery];
-        v45 = [v39 entityQueryMangledTypeName];
-        v46 = [v43 initWithPropertyQuery:v44 maximumResultCount:v11 queryMangledTypeName:v45 sortingOptions:v42];
+        propertyQuery = [(WFLinkContentItemFilterAction *)self propertyQuery];
+        entityQueryMangledTypeName = [v39 entityQueryMangledTypeName];
+        v46 = [v43 initWithPropertyQuery:propertyQuery maximumResultCount:v11 queryMangledTypeName:entityQueryMangledTypeName sortingOptions:v42];
 
         v84[0] = MEMORY[0x1E69E9820];
         v84[1] = 3221225472;
@@ -1086,8 +1086,8 @@ id __56__WFLinkContentItemFilterAction_finishRunningWithError___block_invoke(uin
     }
 
     v20 = MEMORY[0x1E69ACE60];
-    v21 = [(WFLinkContentItemFilterAction *)self entityMetadata];
-    v22 = [v20 policyWithEntityMetadata:v21];
+    entityMetadata2 = [(WFLinkContentItemFilterAction *)self entityMetadata];
+    v22 = [v20 policyWithEntityMetadata:entityMetadata2];
 
     v83 = 0;
     v23 = [v22 connectionWithError:&v83];
@@ -1111,10 +1111,10 @@ id __56__WFLinkContentItemFilterAction_finishRunningWithError___block_invoke(uin
 
     v74 = v24;
     v26 = [(WFContentItemFilterAction *)self parameterStateForKey:@"WFContentItemSortProperty"];
-    v27 = [v26 value];
+    value = [v26 value];
 
     v28 = WFLocalizedContentPropertyPossibleValueMarker(@"Random");
-    v29 = v27;
+    v29 = value;
     v30 = v28;
     v31 = v30;
     v32 = 0x1E695D000uLL;
@@ -1128,8 +1128,8 @@ id __56__WFLinkContentItemFilterAction_finishRunningWithError___block_invoke(uin
       {
 
 LABEL_43:
-        v51 = [(objc_class *)[(WFAction *)self contentItemClass] allProperties];
-        v52 = [v51 objectMatchingKey:@"name" value:v29];
+        allProperties = [(objc_class *)[(WFAction *)self contentItemClass] allProperties];
+        v52 = [allProperties objectMatchingKey:@"name" value:v29];
 
         if (v52)
         {
@@ -1152,12 +1152,12 @@ LABEL_43:
 
           v59 = v55 ^ 1;
           v32 = 0x1E695D000;
-          v50 = [MEMORY[0x1E6996DA0] sortDescriptorWithProperty:v52 ascending:v59 comparator:0];
+          randomSortDescriptor = [MEMORY[0x1E6996DA0] sortDescriptorWithProperty:v52 ascending:v59 comparator:0];
         }
 
         else
         {
-          v50 = 0;
+          randomSortDescriptor = 0;
         }
 
         goto LABEL_47;
@@ -1171,25 +1171,25 @@ LABEL_43:
       }
     }
 
-    v50 = [MEMORY[0x1E6996DA0] randomSortDescriptor];
+    randomSortDescriptor = [MEMORY[0x1E6996DA0] randomSortDescriptor];
 LABEL_47:
     v60 = objc_alloc_init(MEMORY[0x1E6964E70]);
-    if (!v50)
+    if (!randomSortDescriptor)
     {
       [(WFContentItemFilterAction *)self slice];
       [v60 setMaxCount:v61];
     }
 
     [v60 setDisableSemanticSearch:1];
-    v62 = [v23 bundleIdentifier];
-    v90 = v62;
+    bundleIdentifier = [v23 bundleIdentifier];
+    v90 = bundleIdentifier;
     v63 = [*(v32 + 3784) arrayWithObjects:&v90 count:1];
     [v60 setBundleIDs:v63];
 
     [v60 setFetchAttributes:&unk_1F4A9B758];
     v64 = objc_alloc(MEMORY[0x1E6964E68]);
-    v65 = [(WFLinkContentItemFilterAction *)self spotlightQuery];
-    v66 = [v64 initWithQueryString:v65 queryContext:v60];
+    spotlightQuery = [(WFLinkContentItemFilterAction *)self spotlightQuery];
+    v66 = [v64 initWithQueryString:spotlightQuery queryContext:v60];
 
     v67 = objc_opt_new();
     v80[0] = MEMORY[0x1E69E9820];
@@ -1198,17 +1198,17 @@ LABEL_47:
     v80[3] = &unk_1E837D580;
     v68 = v67;
     v81 = v68;
-    v82 = self;
+    selfCopy = self;
     [v66 setFoundItemsHandler:v80];
     v75[0] = MEMORY[0x1E69E9820];
     v75[1] = 3221225472;
     v75[2] = __60__WFLinkContentItemFilterAction_runAsynchronouslyWithInput___block_invoke_2;
     v75[3] = &unk_1E837D5F8;
     v76 = v68;
-    v77 = self;
+    selfCopy2 = self;
     v78 = v23;
-    v79 = v50;
-    v69 = v50;
+    v79 = randomSortDescriptor;
+    v69 = randomSortDescriptor;
     v70 = v68;
     [v66 setCompletionHandler:v75];
     [v66 start];
@@ -1222,8 +1222,8 @@ LABEL_50:
   if (TypeForQueryMetadata)
   {
     v12 = MEMORY[0x1E69ACE60];
-    v13 = [(WFLinkContentItemFilterAction *)self entityMetadata];
-    v11 = [v12 policyWithEntityMetadata:v13];
+    entityMetadata3 = [(WFLinkContentItemFilterAction *)self entityMetadata];
+    v11 = [v12 policyWithEntityMetadata:entityMetadata3];
 
     v88 = 0;
     v14 = [v11 connectionWithError:&v88];
@@ -1236,18 +1236,18 @@ LABEL_50:
       aBlock[3] = &unk_1E837D530;
       aBlock[4] = self;
       v16 = _Block_copy(aBlock);
-      v17 = [(WFLinkContentItemFilterAction *)self queryMetadata];
-      v18 = [v17 capabilities];
+      queryMetadata3 = [(WFLinkContentItemFilterAction *)self queryMetadata];
+      capabilities = [queryMetadata3 capabilities];
 
-      v19 = [v11 appEntityMangledTypeName];
-      if (v18)
+      appEntityMangledTypeName = [v11 appEntityMangledTypeName];
+      if (capabilities)
       {
-        [v14 performAllEntitiesQueryWithEntityMangledTypeName:v19 completionHandler:v16];
+        [v14 performAllEntitiesQueryWithEntityMangledTypeName:appEntityMangledTypeName completionHandler:v16];
       }
 
       else
       {
-        [v14 performSuggestedEntitiesQueryWithEntityMangledTypeName:v19 completionHandler:v16];
+        [v14 performSuggestedEntitiesQueryWithEntityMangledTypeName:appEntityMangledTypeName completionHandler:v16];
       }
     }
 
@@ -1506,9 +1506,9 @@ uint64_t __60__WFLinkContentItemFilterAction_runAsynchronouslyWithInput___block_
 - (id)propertiesByPropertyIdentifier
 {
   v3 = self->_propertiesByPropertyIdentifier;
-  v4 = [MEMORY[0x1E695DFB0] null];
+  null = [MEMORY[0x1E695DFB0] null];
 
-  if (v3 == v4)
+  if (v3 == null)
   {
     v5 = 0;
   }
@@ -1518,29 +1518,29 @@ uint64_t __60__WFLinkContentItemFilterAction_runAsynchronouslyWithInput___block_
     if (!v3)
     {
       v6 = objc_opt_new();
-      v7 = [(WFLinkContentItemFilterAction *)self entityMetadata];
-      v8 = [v7 properties];
+      entityMetadata = [(WFLinkContentItemFilterAction *)self entityMetadata];
+      properties = [entityMetadata properties];
       v13[0] = MEMORY[0x1E69E9820];
       v13[1] = 3221225472;
       v13[2] = __63__WFLinkContentItemFilterAction_propertiesByPropertyIdentifier__block_invoke;
       v13[3] = &unk_1E837D508;
       v14 = v6;
       v9 = v6;
-      [v8 enumerateObjectsUsingBlock:v13];
+      [properties enumerateObjectsUsingBlock:v13];
 
       v5 = [v9 copy];
       if (v5)
       {
-        v10 = v5;
+        null2 = v5;
       }
 
       else
       {
-        v10 = [MEMORY[0x1E695DFB0] null];
+        null2 = [MEMORY[0x1E695DFB0] null];
       }
 
       propertiesByPropertyIdentifier = self->_propertiesByPropertyIdentifier;
-      self->_propertiesByPropertyIdentifier = v10;
+      self->_propertiesByPropertyIdentifier = null2;
 
       goto LABEL_10;
     }
@@ -1586,12 +1586,12 @@ void __63__WFLinkContentItemFilterAction_propertiesByPropertyIdentifier__block_i
 
 - (void)serializeAppIntentDescriptorIfNecessary
 {
-  v3 = [(WFAction *)self appDefinition];
-  if (v3)
+  appDefinition = [(WFAction *)self appDefinition];
+  if (appDefinition)
   {
-    v4 = v3;
-    [(WFAction *)self setSupplementalParameterValue:v3 forKey:@"AppIntentDescriptor"];
-    v3 = v4;
+    v4 = appDefinition;
+    [(WFAction *)self setSupplementalParameterValue:appDefinition forKey:@"AppIntentDescriptor"];
+    appDefinition = v4;
   }
 }
 
@@ -1603,40 +1603,40 @@ void __63__WFLinkContentItemFilterAction_propertiesByPropertyIdentifier__block_i
   [(WFLinkContentItemFilterAction *)self serializeAppIntentDescriptorIfNecessary];
 }
 
-- (id)copyWithSerializedParameters:(id)a3
+- (id)copyWithSerializedParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   v5 = objc_alloc(objc_opt_class());
-  v6 = [(WFAction *)self identifier];
-  v7 = [(WFLinkContentItemFilterAction *)self queryMetadata];
-  v8 = [(WFLinkContentItemFilterAction *)self entityMetadata];
-  v9 = [(WFAction *)self definition];
-  v10 = [(WFLinkContentItemFilterAction *)self appIntentDescriptor];
-  v11 = [(WFLinkContentItemFilterAction *)self fullyQualifiedLinkActionIdentifier];
-  v12 = [v5 initWithIdentifier:v6 queryMetadata:v7 entityMetadata:v8 definition:v9 serializedParameters:v4 appIntentDescriptor:v10 fullyQualifiedActionIdentifier:v11];
+  identifier = [(WFAction *)self identifier];
+  queryMetadata = [(WFLinkContentItemFilterAction *)self queryMetadata];
+  entityMetadata = [(WFLinkContentItemFilterAction *)self entityMetadata];
+  definition = [(WFAction *)self definition];
+  appIntentDescriptor = [(WFLinkContentItemFilterAction *)self appIntentDescriptor];
+  fullyQualifiedLinkActionIdentifier = [(WFLinkContentItemFilterAction *)self fullyQualifiedLinkActionIdentifier];
+  v12 = [v5 initWithIdentifier:identifier queryMetadata:queryMetadata entityMetadata:entityMetadata definition:definition serializedParameters:parametersCopy appIntentDescriptor:appIntentDescriptor fullyQualifiedActionIdentifier:fullyQualifiedLinkActionIdentifier];
 
   return v12;
 }
 
-- (WFLinkContentItemFilterAction)initWithIdentifier:(id)a3 queryMetadata:(id)a4 entityMetadata:(id)a5 definition:(id)a6 serializedParameters:(id)a7 appIntentDescriptor:(id)a8 fullyQualifiedActionIdentifier:(id)a9
+- (WFLinkContentItemFilterAction)initWithIdentifier:(id)identifier queryMetadata:(id)metadata entityMetadata:(id)entityMetadata definition:(id)definition serializedParameters:(id)parameters appIntentDescriptor:(id)descriptor fullyQualifiedActionIdentifier:(id)actionIdentifier
 {
-  v26 = a4;
-  v25 = a5;
-  v16 = a8;
-  v17 = a9;
+  metadataCopy = metadata;
+  entityMetadataCopy = entityMetadata;
+  descriptorCopy = descriptor;
+  actionIdentifierCopy = actionIdentifier;
   v27.receiver = self;
   v27.super_class = WFLinkContentItemFilterAction;
-  v18 = [(WFContentItemAction *)&v27 initWithIdentifier:a3 definition:a6 serializedParameters:a7];
+  v18 = [(WFContentItemAction *)&v27 initWithIdentifier:identifier definition:definition serializedParameters:parameters];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_queryMetadata, a4);
-    objc_storeStrong(&v19->_entityMetadata, a5);
-    objc_storeStrong(&v19->_appIntentDescriptor, a8);
-    objc_storeStrong(&v19->_fullyQualifiedLinkActionIdentifier, a9);
-    v20 = [(WFLinkContentItemFilterAction *)v19 entityMetadata:v25];
-    v21 = [v20 systemProtocolMetadata];
-    v22 = [v21 objectForKeyedSubscript:*MEMORY[0x1E69AC2D8]];
+    objc_storeStrong(&v18->_queryMetadata, metadata);
+    objc_storeStrong(&v19->_entityMetadata, entityMetadata);
+    objc_storeStrong(&v19->_appIntentDescriptor, descriptor);
+    objc_storeStrong(&v19->_fullyQualifiedLinkActionIdentifier, actionIdentifier);
+    v20 = [(WFLinkContentItemFilterAction *)v19 entityMetadata:entityMetadataCopy];
+    systemProtocolMetadata = [v20 systemProtocolMetadata];
+    v22 = [systemProtocolMetadata objectForKeyedSubscript:*MEMORY[0x1E69AC2D8]];
     v19->_fetchingUniqueEntity = v22 != 0;
 
     v23 = v19;

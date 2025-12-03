@@ -1,45 +1,45 @@
 @interface STAppRatingChangedUserNotificationContext
-- (STAppRatingChangedUserNotificationContext)initWithCoder:(id)a3;
-- (STAppRatingChangedUserNotificationContext)initWithRatingLimit:(id)a3 bundleIdentifiers:(id)a4;
-- (void)customizeNotificationContent:(id)a3 withCompletionBlock:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (STAppRatingChangedUserNotificationContext)initWithCoder:(id)coder;
+- (STAppRatingChangedUserNotificationContext)initWithRatingLimit:(id)limit bundleIdentifiers:(id)identifiers;
+- (void)customizeNotificationContent:(id)content withCompletionBlock:(id)block;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation STAppRatingChangedUserNotificationContext
 
-- (STAppRatingChangedUserNotificationContext)initWithRatingLimit:(id)a3 bundleIdentifiers:(id)a4
+- (STAppRatingChangedUserNotificationContext)initWithRatingLimit:(id)limit bundleIdentifiers:(id)identifiers
 {
-  v7 = a3;
-  v8 = a4;
+  limitCopy = limit;
+  identifiersCopy = identifiers;
   v12.receiver = self;
   v12.super_class = STAppRatingChangedUserNotificationContext;
   v9 = [(STUserNotificationContext *)&v12 initWithIdentifier:@"app-rating-changed"];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_regionRatingLimit, a3);
-    objc_storeStrong(&v10->_bundleIdentifiers, a4);
+    objc_storeStrong(&v9->_regionRatingLimit, limit);
+    objc_storeStrong(&v10->_bundleIdentifiers, identifiers);
   }
 
   return v10;
 }
 
-- (STAppRatingChangedUserNotificationContext)initWithCoder:(id)a3
+- (STAppRatingChangedUserNotificationContext)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = STAppRatingChangedUserNotificationContext;
-  v5 = [(STUserNotificationContext *)&v14 initWithCoder:v4];
+  v5 = [(STUserNotificationContext *)&v14 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"regionRatingLimit"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"regionRatingLimit"];
     regionRatingLimit = v5->_regionRatingLimit;
     v5->_regionRatingLimit = v6;
 
     v8 = MEMORY[0x1E695DFD8];
     v9 = objc_opt_class();
     v10 = [v8 setWithObjects:{v9, objc_opt_class(), 0}];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"bundleIdentifiers"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"bundleIdentifiers"];
     bundleIdentifiers = v5->_bundleIdentifiers;
     v5->_bundleIdentifiers = v11;
   }
@@ -47,31 +47,31 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = STAppRatingChangedUserNotificationContext;
-  v4 = a3;
-  [(STUserNotificationContext *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_regionRatingLimit forKey:{@"regionRatingLimit", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_bundleIdentifiers forKey:@"bundleIdentifiers"];
+  coderCopy = coder;
+  [(STUserNotificationContext *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_regionRatingLimit forKey:{@"regionRatingLimit", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_bundleIdentifiers forKey:@"bundleIdentifiers"];
 }
 
-- (void)customizeNotificationContent:(id)a3 withCompletionBlock:(id)a4
+- (void)customizeNotificationContent:(id)content withCompletionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  contentCopy = content;
+  blockCopy = block;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __94__STAppRatingChangedUserNotificationContext_customizeNotificationContent_withCompletionBlock___block_invoke;
   v11[3] = &unk_1E7CE6B80;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
+  v12 = contentCopy;
+  selfCopy = self;
+  v14 = blockCopy;
   v10.receiver = self;
   v10.super_class = STAppRatingChangedUserNotificationContext;
-  v8 = v7;
-  v9 = v6;
+  v8 = blockCopy;
+  v9 = contentCopy;
   [(STUserNotificationContext *)&v10 customizeNotificationContent:v9 withCompletionBlock:v11];
 }
 

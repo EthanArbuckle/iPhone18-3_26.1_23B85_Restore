@@ -1,33 +1,33 @@
 @interface HPIntegerSettingValue
-- (BOOL)isEqual:(id)a3;
-- (HPIntegerSettingValue)initWithCoder:(id)a3;
-- (HPIntegerSettingValue)initWithKeyPath:(id)a3 numberValue:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (HPIntegerSettingValue)initWithCoder:(id)coder;
+- (HPIntegerSettingValue)initWithKeyPath:(id)path numberValue:(id)value;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HPIntegerSettingValue
 
-- (HPIntegerSettingValue)initWithKeyPath:(id)a3 numberValue:(id)a4
+- (HPIntegerSettingValue)initWithKeyPath:(id)path numberValue:(id)value
 {
-  v7 = a4;
+  valueCopy = value;
   v11.receiver = self;
   v11.super_class = HPIntegerSettingValue;
-  v8 = [(HPSettingValue *)&v11 initWithKeyPath:a3];
+  v8 = [(HPSettingValue *)&v11 initWithKeyPath:path];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_numberValue, a4);
+    objc_storeStrong(&v8->_numberValue, value);
   }
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -37,10 +37,10 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(HPIntegerSettingValue *)v5 integerValue];
-      v7 = [(HPIntegerSettingValue *)self numberValue];
-      if (v6 == [v7 integerValue])
+      v5 = equalCopy;
+      integerValue = [(HPIntegerSettingValue *)v5 integerValue];
+      numberValue = [(HPIntegerSettingValue *)self numberValue];
+      if (integerValue == [numberValue integerValue])
       {
         v8 = 1;
       }
@@ -49,8 +49,8 @@
       {
         [(HPIntegerSettingValue *)v5 floatValue];
         v10 = v9;
-        v11 = [(HPIntegerSettingValue *)self numberValue];
-        [v11 floatValue];
+        numberValue2 = [(HPIntegerSettingValue *)self numberValue];
+        [numberValue2 floatValue];
         if (v10 == v12)
         {
           v8 = 1;
@@ -60,8 +60,8 @@
         {
           [(HPIntegerSettingValue *)v5 doubleValue];
           v14 = v13;
-          v15 = [(HPIntegerSettingValue *)self numberValue];
-          [v15 doubleValue];
+          numberValue3 = [(HPIntegerSettingValue *)self numberValue];
+          [numberValue3 doubleValue];
           v8 = v14 == v16;
         }
       }
@@ -84,28 +84,28 @@
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HPIntegerSettingValue *)self numberValue];
-  [v4 encodeObject:v5 forKey:@"setting.integerkey"];
+  coderCopy = coder;
+  numberValue = [(HPIntegerSettingValue *)self numberValue];
+  [coderCopy encodeObject:numberValue forKey:@"setting.integerkey"];
 
-  v6 = [(HPSettingValue *)self keyPath];
-  [v4 encodeObject:v6 forKey:@"setting.keypath"];
+  keyPath = [(HPSettingValue *)self keyPath];
+  [coderCopy encodeObject:keyPath forKey:@"setting.keypath"];
 }
 
-- (HPIntegerSettingValue)initWithCoder:(id)a3
+- (HPIntegerSettingValue)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HPSettingValue *)self keyPath];
+  coderCopy = coder;
+  keyPath = [(HPSettingValue *)self keyPath];
   v12.receiver = self;
   v12.super_class = HPIntegerSettingValue;
-  v6 = [(HPSettingValue *)&v12 initWithKeyPath:v5];
+  v6 = [(HPSettingValue *)&v12 initWithKeyPath:keyPath];
 
   if (v6)
   {
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"setting.integerkey"];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"setting.keypath"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"setting.integerkey"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"setting.keypath"];
     [(HPSettingValue *)v6 setKeyPath:v8];
 
     v6->_integerValue = [v7 integerValue];
@@ -121,12 +121,12 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HPSettingValue *)self keyPath];
-  v5 = [(HPIntegerSettingValue *)self integerValue];
+  keyPath = [(HPSettingValue *)self keyPath];
+  integerValue = [(HPIntegerSettingValue *)self integerValue];
   [(HPIntegerSettingValue *)self floatValue];
   v7 = v6;
   [(HPIntegerSettingValue *)self doubleValue];
-  v9 = [v3 stringWithFormat:@"\n KeyPath %@ \n IntegerValue %ld Float Value %f Double Value %f", v4, v5, *&v7, v8];
+  v9 = [v3 stringWithFormat:@"\n KeyPath %@ \n IntegerValue %ld Float Value %f Double Value %f", keyPath, integerValue, *&v7, v8];
 
   return v9;
 }

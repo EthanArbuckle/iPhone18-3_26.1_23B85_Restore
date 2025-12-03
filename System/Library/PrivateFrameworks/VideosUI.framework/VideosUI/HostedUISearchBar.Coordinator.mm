@@ -1,57 +1,57 @@
 @interface HostedUISearchBar.Coordinator
-- (BOOL)textFieldShouldClear:(id)a3;
-- (void)searchBar:(id)a3 textDidChange:(id)a4;
-- (void)searchBarCancelButtonClicked:(id)a3;
-- (void)searchBarSearchButtonClicked:(id)a3;
-- (void)searchBarTextDidBeginEditing:(id)a3;
-- (void)searchBarTextDidEndEditing:(id)a3;
+- (BOOL)textFieldShouldClear:(id)clear;
+- (void)searchBar:(id)bar textDidChange:(id)change;
+- (void)searchBarCancelButtonClicked:(id)clicked;
+- (void)searchBarSearchButtonClicked:(id)clicked;
+- (void)searchBarTextDidBeginEditing:(id)editing;
+- (void)searchBarTextDidEndEditing:(id)editing;
 @end
 
 @implementation HostedUISearchBar.Coordinator
 
-- (void)searchBar:(id)a3 textDidChange:(id)a4
+- (void)searchBar:(id)bar textDidChange:(id)change
 {
   v6 = sub_1E4205F14();
   v8 = v7;
-  v9 = a3;
-  v10 = self;
-  sub_1E3E3E7F4(v9, v6, v8);
+  barCopy = bar;
+  selfCopy = self;
+  sub_1E3E3E7F4(barCopy, v6, v8);
 }
 
-- (void)searchBarTextDidBeginEditing:(id)a3
+- (void)searchBarTextDidBeginEditing:(id)editing
 {
-  v4 = a3;
-  v5 = self;
+  editingCopy = editing;
+  selfCopy = self;
   sub_1E3E3EAF4();
 }
 
-- (void)searchBarTextDidEndEditing:(id)a3
+- (void)searchBarTextDidEndEditing:(id)editing
 {
-  v4 = a3;
-  v5 = self;
+  editingCopy = editing;
+  selfCopy = self;
   sub_1E3E3EBE4();
 }
 
-- (void)searchBarSearchButtonClicked:(id)a3
+- (void)searchBarSearchButtonClicked:(id)clicked
 {
-  v4 = a3;
-  v5 = self;
+  clickedCopy = clicked;
+  selfCopy = self;
   v6 = OUTLINED_FUNCTION_1_26();
   sub_1E3E3EFFC(v6);
 }
 
-- (void)searchBarCancelButtonClicked:(id)a3
+- (void)searchBarCancelButtonClicked:(id)clicked
 {
-  v4 = a3;
-  v5 = self;
+  clickedCopy = clicked;
+  selfCopy = self;
   v6 = OUTLINED_FUNCTION_1_26();
   sub_1E3E3F1C0(v6);
 }
 
-- (BOOL)textFieldShouldClear:(id)a3
+- (BOOL)textFieldShouldClear:(id)clear
 {
-  v4 = a3;
-  v5 = self;
+  clearCopy = clear;
+  selfCopy = self;
   sub_1E3E3F390();
 
   return 1;

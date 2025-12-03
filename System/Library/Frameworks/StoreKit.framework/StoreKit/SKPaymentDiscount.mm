@@ -50,16 +50,16 @@
     }
 
     self = v18;
-    v36 = self;
+    selfCopy = self;
   }
 
   else
   {
     NSLog(&cfstr_FoundNilParame.isa);
-    v36 = 0;
+    selfCopy = 0;
   }
 
-  return v36;
+  return selfCopy;
 }
 
 @end

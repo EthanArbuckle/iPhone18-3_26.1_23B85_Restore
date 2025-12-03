@@ -1,37 +1,37 @@
 @interface CDMNLServiceUtils
-+ (id)buildLVCResponse:(id)a3 lvcRequest:(id)a4;
-+ (id)buildPSCResponse:(id)a3 pscRequest:(id)a4;
-+ (id)buildPSCUserParseForExternalParserId:(id)a3 probability:(float)a4 rewriteMsg:(id)a5;
-+ (id)buildSNLCProtoResponse:(id)a3 snlcRequest:(id)a4 parserToSet:(id)a5;
-+ (id)buildSetupITFMRequest:(id)a3;
-+ (id)buildSetupNLv4ProtoRequest:(id)a3;
-+ (id)buildSetupSNLCProtoRequest:(id)a3;
++ (id)buildLVCResponse:(id)response lvcRequest:(id)request;
++ (id)buildPSCResponse:(id)response pscRequest:(id)request;
++ (id)buildPSCUserParseForExternalParserId:(id)id probability:(float)probability rewriteMsg:(id)msg;
++ (id)buildSNLCProtoResponse:(id)response snlcRequest:(id)request parserToSet:(id)set;
++ (id)buildSetupITFMRequest:(id)request;
++ (id)buildSetupNLv4ProtoRequest:(id)request;
++ (id)buildSetupSNLCProtoRequest:(id)request;
 + (id)get_psc_index_to_parser;
-+ (unique_ptr<sirinluinternalnlv4_parser::NLv4ParserRequest,)buildNLv4ProtoRequest:(id)a3;
-+ (void)_setWarmupRequestId:(id)a3;
-+ (void)populateParser:(id)a3 parserToSet:(id)a4;
++ (unique_ptr<sirinluinternalnlv4_parser::NLv4ParserRequest,)buildNLv4ProtoRequest:(id)request;
++ (void)_setWarmupRequestId:(id)id;
++ (void)populateParser:(id)parser parserToSet:(id)set;
 @end
 
 @implementation CDMNLServiceUtils
 
-+ (void)_setWarmupRequestId:(id)a3
++ (void)_setWarmupRequestId:(id)id
 {
-  v5 = a3;
+  idCopy = id;
   v3 = objc_alloc_init(MEMORY[0x1E69D1230]);
   [v3 setHighInt:0];
   [v3 setLowInt:11];
   v4 = objc_alloc_init(MEMORY[0x1E69D11C0]);
   [v4 setIdA:@"00000000-0000-0000-0000-00000000000B:0"];
   [v4 setConnectionId:@"4-8-15-16-23-42"];
-  v5[2](v5, v3, v4);
+  idCopy[2](idCopy, v3, v4);
 }
 
-+ (void)populateParser:(id)a3 parserToSet:(id)a4
++ (void)populateParser:(id)parser parserToSet:(id)set
 {
   v28 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if ([v5 count])
+  parserCopy = parser;
+  setCopy = set;
+  if ([parserCopy count])
   {
     v7 = CDMOSLoggerForCategory(0);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -39,7 +39,7 @@
       *buf = 136315394;
       v25 = "+[CDMNLServiceUtils populateParser:parserToSet:]";
       v26 = 2112;
-      v27 = v6;
+      v27 = setCopy;
       _os_log_debug_impl(&dword_1DC287000, v7, OS_LOG_TYPE_DEBUG, "%s Doing a sweep on userParses and if there isn't one, set it to parserToSet=%@", buf, 0x16u);
     }
 
@@ -47,7 +47,7 @@
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v8 = v5;
+    v8 = parserCopy;
     v9 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v9)
     {
@@ -62,8 +62,8 @@
           }
 
           v12 = *(*(&v19 + 1) + 8 * i);
-          v13 = [v12 parser];
-          v14 = v13 == 0;
+          parser = [v12 parser];
+          v14 = parser == 0;
 
           if (v14)
           {
@@ -73,11 +73,11 @@
               *buf = 136315394;
               v25 = "+[CDMNLServiceUtils populateParser:parserToSet:]";
               v26 = 2112;
-              v27 = v6;
+              v27 = setCopy;
               _os_log_debug_impl(&dword_1DC287000, v16, OS_LOG_TYPE_DEBUG, "%s No parser set yet, set it to parserToSet=%@", buf, 0x16u);
             }
 
-            [v12 setParser:v6];
+            [v12 setParser:setCopy];
           }
 
           else
@@ -85,11 +85,11 @@
             v15 = CDMOSLoggerForCategory(0);
             if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
             {
-              v17 = [v12 parser];
+              parser2 = [v12 parser];
               *buf = 136315394;
               v25 = "+[CDMNLServiceUtils populateParser:parserToSet:]";
               v26 = 2112;
-              v27 = v17;
+              v27 = parser2;
               _os_log_debug_impl(&dword_1DC287000, v15, OS_LOG_TYPE_DEBUG, "%s A parser is set already, moving on. parser=%@", buf, 0x16u);
             }
           }
@@ -116,11 +116,11 @@
   v18 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)buildLVCResponse:(id)a3 lvcRequest:(id)a4
++ (id)buildLVCResponse:(id)response lvcRequest:(id)request
 {
   v37 = *MEMORY[0x1E69E9840];
-  v24 = a3;
-  v27 = [MEMORY[0x1E695DF70] array];
+  responseCopy = response;
+  array = [MEMORY[0x1E695DF70] array];
   v25 = +[CDMUserDefaultsUtils readUserDefaultLVCOverride];
   v4 = CDMOSLoggerForCategory(0);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -132,34 +132,34 @@
 
   if ([v25 length])
   {
-    v5 = objc_alloc_init(MEMORY[0x1E69D1190]);
-    [v5 setLanguageVariantName:v25];
-    [v5 setLanguageVariantScore:1.0];
+    string = objc_alloc_init(MEMORY[0x1E69D1190]);
+    [string setLanguageVariantName:v25];
+    [string setLanguageVariantScore:1.0];
     v6 = CDMLogContext;
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
-      v7 = [v5 dictionaryRepresentation];
+      dictionaryRepresentation = [string dictionaryRepresentation];
       *buf = 136315650;
       v34 = "+[CDMNLServiceUtils buildLVCResponse:lvcRequest:]";
       v35 = 2112;
       *v36 = @"lvc";
       *&v36[8] = 2112;
-      *&v36[10] = v7;
+      *&v36[10] = dictionaryRepresentation;
       _os_log_impl(&dword_1DC287000, v6, OS_LOG_TYPE_INFO, "%s [insights-cdm-%@]:\nWARNING: LVC override found. After override, LVC output %@", buf, 0x20u);
     }
 
-    [v27 addObject:v5];
+    [array addObject:string];
   }
 
   else
   {
-    v5 = [MEMORY[0x1E696AD60] string];
-    [v5 appendString:@"LVC classification results: "];
+    string = [MEMORY[0x1E696AD60] string];
+    [string appendString:@"LVC classification results: "];
     v30 = 0u;
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    obj = [v24 hypotheses];
+    obj = [responseCopy hypotheses];
     v8 = [obj countByEnumeratingWithState:&v28 objects:v32 count:16];
     if (v8)
     {
@@ -174,36 +174,36 @@
           }
 
           v11 = *(*(&v28 + 1) + 8 * i);
-          v12 = [v11 label];
+          label = [v11 label];
           [v11 probability];
-          [v5 appendFormat:@"[symbol=%d, prob=%.2f], ", v12, v13];
+          [string appendFormat:@"[symbol=%d, prob=%.2f], ", label, v13];
           v14 = objc_alloc_init(MEMORY[0x1E69D1190]);
           if ([v11 hasStringLabel])
           {
-            v15 = [v11 stringLabel];
-            [v14 setLanguageVariantName:v15];
+            stringLabel = [v11 stringLabel];
+            [v14 setLanguageVariantName:stringLabel];
           }
 
           else
           {
-            v15 = CDMOSLoggerForCategory(0);
-            if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+            stringLabel = CDMOSLoggerForCategory(0);
+            if (os_log_type_enabled(stringLabel, OS_LOG_TYPE_ERROR))
             {
-              v17 = [v11 label];
+              label2 = [v11 label];
               [v11 probability];
               *buf = 136315650;
               v34 = "+[CDMNLServiceUtils buildLVCResponse:lvcRequest:]";
               v35 = 1024;
-              *v36 = v17;
+              *v36 = label2;
               *&v36[4] = 2048;
               *&v36[6] = v18;
-              _os_log_error_impl(&dword_1DC287000, v15, OS_LOG_TYPE_ERROR, "%s [ERR]: Language variant string representation is not set for label=%i prob=%.2f", buf, 0x1Cu);
+              _os_log_error_impl(&dword_1DC287000, stringLabel, OS_LOG_TYPE_ERROR, "%s [ERR]: Language variant string representation is not set for label=%i prob=%.2f", buf, 0x1Cu);
             }
           }
 
           [v11 probability];
           [v14 setLanguageVariantScore:v16];
-          [v27 addObject:v14];
+          [array addObject:v14];
         }
 
         v8 = [obj countByEnumeratingWithState:&v28 objects:v32 count:16];
@@ -212,12 +212,12 @@
       while (v8);
     }
 
-    [objc_opt_class() _sortMultilingualVariantsByScoreDescending:v27];
+    [objc_opt_class() _sortMultilingualVariantsByScoreDescending:array];
   }
 
   v19 = objc_alloc_init(MEMORY[0x1E69D1180]);
-  [v19 setMultilingualVariants:v27];
-  v20 = [[CDMLVCResponseCommand alloc] initWithITFMResponse:v24 languageVariantResult:v19];
+  [v19 setMultilingualVariants:array];
+  v20 = [[CDMLVCResponseCommand alloc] initWithITFMResponse:responseCopy languageVariantResult:v19];
   v21 = CDMOSLoggerForCategory(0);
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
   {
@@ -264,9 +264,9 @@ uint64_t __64__CDMNLServiceUtils__sortMultilingualVariantsByScoreDescending___bl
   return v9;
 }
 
-+ (id)buildSetupITFMRequest:(id)a3
++ (id)buildSetupITFMRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = objc_alloc_init(MEMORY[0x1E69D1320]);
   [v5 setOriginalUtterance:@"hello world"];
   [v5 setNormalisedUtterance:@"hello world"];
@@ -286,12 +286,12 @@ uint64_t __64__CDMNLServiceUtils__sortMultilingualVariantsByScoreDescending___bl
 
   [v5 setTokenChain:v8];
   v10 = objc_alloc_init(MEMORY[0x1E69D1328]);
-  v11 = malloc_type_calloc([v8 tokensCount] * objc_msgSend(v4, "integerValue"), 4uLL, 0x100004052888210uLL);
-  [v10 setValues:v11 count:{objc_msgSend(v8, "tokensCount") * objc_msgSend(v4, "integerValue")}];
+  v11 = malloc_type_calloc([v8 tokensCount] * objc_msgSend(requestCopy, "integerValue"), 4uLL, 0x100004052888210uLL);
+  [v10 setValues:v11 count:{objc_msgSend(v8, "tokensCount") * objc_msgSend(requestCopy, "integerValue")}];
   free(v11);
   [v10 setNumToken:{objc_msgSend(v8, "tokensCount")}];
   [v10 setNumLayer:1];
-  [v10 setEmbeddingDim:{objc_msgSend(v4, "integerValue")}];
+  [v10 setEmbeddingDim:{objc_msgSend(requestCopy, "integerValue")}];
   [v10 setEmbedderId:@"embed_id"];
   v12 = objc_alloc_init(MEMORY[0x1E69D12D0]);
   v16[0] = MEMORY[0x1E69E9820];
@@ -300,11 +300,11 @@ uint64_t __64__CDMNLServiceUtils__sortMultilingualVariantsByScoreDescending___bl
   v16[3] = &unk_1E862F618;
   v13 = v12;
   v17 = v13;
-  [a1 _setWarmupRequestId:v16];
+  [self _setWarmupRequestId:v16];
   [v13 setTokenisedUtterance:v5];
   [v13 setEmbeddings:v10];
-  v14 = [MEMORY[0x1E695DF70] array];
-  [v13 setMatchingSpans:v14];
+  array = [MEMORY[0x1E695DF70] array];
+  [v13 setMatchingSpans:array];
 
   return v13;
 }
@@ -317,24 +317,24 @@ void __43__CDMNLServiceUtils_buildSetupITFMRequest___block_invoke(uint64_t a1, v
   [*(a1 + 32) setNluRequestId:v5];
 }
 
-+ (id)buildPSCUserParseForExternalParserId:(id)a3 probability:(float)a4 rewriteMsg:(id)a5
++ (id)buildPSCUserParseForExternalParserId:(id)id probability:(float)probability rewriteMsg:(id)msg
 {
-  v7 = a3;
-  v8 = a5;
+  idCopy = id;
+  msgCopy = msg;
   v9 = objc_alloc_init(MEMORY[0x1E69D1178]);
   [v9 setAsrHypothesisIndex:0];
-  [v9 setExternalParserId:v7];
-  [v9 setRewrite:v8];
-  if (v8)
+  [v9 setExternalParserId:idCopy];
+  [v9 setRewrite:msgCopy];
+  if (msgCopy)
   {
-    v10 = [v8 rewrittenUtterance];
-    v11 = [v10 length];
+    rewrittenUtterance = [msgCopy rewrittenUtterance];
+    v11 = [rewrittenUtterance length];
 
     if (v11)
     {
       v12 = objc_alloc_init(MEMORY[0x1E69D1128]);
-      v13 = [v8 rewrittenUtterance];
-      [v12 setValue:v13];
+      rewrittenUtterance2 = [msgCopy rewrittenUtterance];
+      [v12 setValue:rewrittenUtterance2];
 
       [v9 setRewrittenUtterance:v12];
     }
@@ -342,11 +342,11 @@ void __43__CDMNLServiceUtils_buildSetupITFMRequest___block_invoke(uint64_t a1, v
 
   v14 = objc_alloc_init(MEMORY[0x1E69D1238]);
   [v14 setDelegated:v9];
-  v15 = [MEMORY[0x1E695DF70] array];
-  [v15 addObject:v14];
+  array = [MEMORY[0x1E695DF70] array];
+  [array addObject:v14];
   v16 = objc_alloc_init(MEMORY[0x1E69D1240]);
-  [v16 setUserDialogActs:v15];
-  [v16 setProbability:a4];
+  [v16 setUserDialogActs:array];
+  [v16 setProbability:probability];
   [v16 setParserId:@"POMMESClassifier"];
   v17 = MEMORY[0x1E69D13F8];
   v18 = objc_alloc_init(MEMORY[0x1E696AFB0]);
@@ -361,36 +361,36 @@ void __43__CDMNLServiceUtils_buildSetupITFMRequest___block_invoke(uint64_t a1, v
   return v16;
 }
 
-+ (id)buildPSCResponse:(id)a3 pscRequest:(id)a4
++ (id)buildPSCResponse:(id)response pscRequest:(id)request
 {
   v77 = *MEMORY[0x1E69E9840];
-  v51 = a3;
-  v50 = a4;
-  v56 = [v50 rewriteMsg];
-  if (v56)
+  responseCopy = response;
+  requestCopy = request;
+  rewriteMsg = [requestCopy rewriteMsg];
+  if (rewriteMsg)
   {
     v6 = CDMOSLoggerForCategory(0);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
     {
-      v49 = [v56 rewrittenUtterance];
+      rewrittenUtterance = [rewriteMsg rewrittenUtterance];
       *buf = 136315394;
       v67 = "+[CDMNLServiceUtils buildPSCResponse:pscRequest:]";
       v68 = 2112;
-      *v69 = v49;
+      *v69 = rewrittenUtterance;
       _os_log_debug_impl(&dword_1DC287000, v6, OS_LOG_TYPE_DEBUG, "%s PSC rewrittenUtterance being set to CCQR top hypothesis:%@", buf, 0x16u);
     }
   }
 
   v57 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v7 = objc_alloc(MEMORY[0x1E695DF70]);
-  v8 = [v51 hypotheses];
-  v55 = [v7 initWithCapacity:{objc_msgSend(v8, "count")}];
+  hypotheses = [responseCopy hypotheses];
+  v55 = [v7 initWithCapacity:{objc_msgSend(hypotheses, "count")}];
 
   v64 = 0u;
   v65 = 0u;
   v62 = 0u;
   v63 = 0u;
-  obj = [v51 hypotheses];
+  obj = [responseCopy hypotheses];
   v9 = [obj countByEnumeratingWithState:&v62 objects:v76 count:16];
   if (v9)
   {
@@ -410,12 +410,12 @@ void __43__CDMNLServiceUtils_buildSetupITFMRequest___block_invoke(uint64_t a1, v
           v13 = CDMOSLoggerForCategory(0);
           if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
           {
-            v31 = [v12 label];
+            label = [v12 label];
             [v12 probability];
             *buf = 136315650;
             v67 = "+[CDMNLServiceUtils buildPSCResponse:pscRequest:]";
             v68 = 1024;
-            *v69 = v31;
+            *v69 = label;
             *&v69[4] = 2048;
             *&v69[6] = v32;
           }
@@ -424,9 +424,9 @@ void __43__CDMNLServiceUtils_buildSetupITFMRequest___block_invoke(uint64_t a1, v
           [v12 setStringLabel:v14];
         }
 
-        v15 = [a1 get_psc_index_to_parser];
+        get_psc_index_to_parser = [self get_psc_index_to_parser];
         v16 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v12, "label")}];
-        v17 = [v15 objectForKeyedSubscript:v16];
+        v17 = [get_psc_index_to_parser objectForKeyedSubscript:v16];
 
         if ([v17 length])
         {
@@ -441,14 +441,14 @@ void __43__CDMNLServiceUtils_buildSetupITFMRequest___block_invoke(uint64_t a1, v
             v23 = CDMLogContext;
             if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
             {
-              v24 = [v12 stringLabel];
+              stringLabel = [v12 stringLabel];
               [v21 floatValue];
               *buf = 136315906;
               v67 = "+[CDMNLServiceUtils buildPSCResponse:pscRequest:]";
               v68 = 2112;
               *v69 = @"psc";
               *&v69[8] = 2112;
-              *&v69[10] = v24;
+              *&v69[10] = stringLabel;
               v70 = 2048;
               v71 = v25;
               _os_log_impl(&dword_1DC287000, v23, OS_LOG_TYPE_INFO, "%s [insights-cdm-%@]:\nWARNING: PSC override found - setting '%@' parse to probability=%.2f", buf, 0x2Au);
@@ -459,7 +459,7 @@ void __43__CDMNLServiceUtils_buildSetupITFMRequest___block_invoke(uint64_t a1, v
           }
 
           *&v22 = v19;
-          v26 = [CDMNLServiceUtils buildPSCUserParseForExternalParserId:v17 probability:v56 rewriteMsg:v22];
+          v26 = [CDMNLServiceUtils buildPSCUserParseForExternalParserId:v17 probability:rewriteMsg rewriteMsg:v22];
           if (v19 < 0.6)
           {
             if (+[CDMFeatureFlags isAmbiguityRefactorEnabled])
@@ -505,12 +505,12 @@ LABEL_30:
         v21 = CDMOSLoggerForCategory(0);
         if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
         {
-          v28 = [v12 stringLabel];
+          stringLabel2 = [v12 stringLabel];
           [v12 probability];
           *buf = 136315650;
           v67 = "+[CDMNLServiceUtils buildPSCResponse:pscRequest:]";
           v68 = 2112;
-          *v69 = v28;
+          *v69 = stringLabel2;
           *&v69[8] = 2048;
           *&v69[10] = v29;
           _os_log_debug_impl(&dword_1DC287000, v21, OS_LOG_TYPE_DEBUG, "%s Not emitting PSC parse for label=%@ prob=%.2f, no externalParserId found", buf, 0x20u);
@@ -562,7 +562,7 @@ LABEL_31:
                 v41 = [v57 objectForKeyedSubscript:v40];
                 [v41 floatValue];
                 v43 = v42;
-                v44 = [CDMNLServiceUtils buildPSCUserParseForExternalParserId:v40 probability:v56 rewriteMsg:?];
+                v44 = [CDMNLServiceUtils buildPSCUserParseForExternalParserId:v40 probability:rewriteMsg rewriteMsg:?];
                 v45 = CDMOSLoggerForCategory(0);
                 if (os_log_type_enabled(v45, OS_LOG_TYPE_DEBUG))
                 {
@@ -592,28 +592,28 @@ LABEL_31:
     }
   }
 
-  v46 = [[CDMPSCResponseCommand alloc] initWithPscParses:v55 pscResponse:v51];
+  v46 = [[CDMPSCResponseCommand alloc] initWithPscParses:v55 pscResponse:responseCopy];
 
   v47 = *MEMORY[0x1E69E9840];
 
   return v46;
 }
 
-+ (id)buildSNLCProtoResponse:(id)a3 snlcRequest:(id)a4 parserToSet:(id)a5
++ (id)buildSNLCProtoResponse:(id)response snlcRequest:(id)request parserToSet:(id)set
 {
   v79 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v60 = a4;
-  v58 = a5;
+  responseCopy = response;
+  requestCopy = request;
+  setCopy = set;
   v8 = CDMOSLoggerForCategory(0);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    v54 = [v7 hypotheses];
-    v55 = [v54 firstObject];
+    hypotheses = [responseCopy hypotheses];
+    firstObject = [hypotheses firstObject];
     *buf = 136315394;
     v72 = "+[CDMNLServiceUtils buildSNLCProtoResponse:snlcRequest:parserToSet:]";
     v73 = 1024;
-    LODWORD(v74) = [v55 label];
+    LODWORD(v74) = [firstObject label];
     _os_log_debug_impl(&dword_1DC287000, v8, OS_LOG_TYPE_DEBUG, "%s SNLC classification result=%i", buf, 0x12u);
   }
 
@@ -682,8 +682,8 @@ LABEL_16:
     v68 = 0u;
     v65 = 0u;
     v66 = 0u;
-    v14 = [v7 hypotheses];
-    v15 = [v14 countByEnumeratingWithState:&v65 objects:v70 count:16];
+    hypotheses2 = [responseCopy hypotheses];
+    v15 = [hypotheses2 countByEnumeratingWithState:&v65 objects:v70 count:16];
     if (v15)
     {
       v16 = *v66;
@@ -693,7 +693,7 @@ LABEL_16:
         {
           if (*v66 != v16)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(hypotheses2);
           }
 
           v18 = *(*(&v65 + 1) + 8 * i);
@@ -705,13 +705,13 @@ LABEL_16:
 
           else
           {
-            v20 = [v7 hypotheses];
-            *&v21 = 0.0 / ([v20 count] - 1);
+            hypotheses3 = [responseCopy hypotheses];
+            *&v21 = 0.0 / ([hypotheses3 count] - 1);
             [v18 setProbability:v21];
           }
         }
 
-        v15 = [v14 countByEnumeratingWithState:&v65 objects:v70 count:16];
+        v15 = [hypotheses2 countByEnumeratingWithState:&v65 objects:v70 count:16];
       }
 
       while (v15);
@@ -720,26 +720,26 @@ LABEL_16:
     v22 = CDMLogContext;
     if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
     {
-      v23 = [v7 hypotheses];
-      v24 = [v23 firstObject];
-      v25 = [v24 label];
+      hypotheses4 = [responseCopy hypotheses];
+      firstObject2 = [hypotheses4 firstObject];
+      label = [firstObject2 label];
       *buf = 136315650;
       v72 = "+[CDMNLServiceUtils buildSNLCProtoResponse:snlcRequest:parserToSet:]";
       v73 = 2112;
       v74 = @"snlc";
       v75 = 1024;
-      LODWORD(v76) = v25;
+      LODWORD(v76) = label;
       _os_log_impl(&dword_1DC287000, v22, OS_LOG_TYPE_INFO, "%s [insights-cdm-%@]:\nCorrected SNLC classification result=%i (after override).", buf, 0x1Cu);
     }
   }
 
-  v26 = [v60 rewriteMsg];
-  v57 = v26;
+  rewriteMsg = [requestCopy rewriteMsg];
+  v57 = rewriteMsg;
   v27 = objc_alloc_init(MEMORY[0x1E69D1178]);
   [v27 setAsrHypothesisIndex:0];
   [v27 setExternalParserId:@"com.apple.siri.nlv3"];
-  v28 = [v60 rewriteMsg];
-  [v27 setRewrite:v28];
+  rewriteMsg2 = [requestCopy rewriteMsg];
+  [v27 setRewrite:rewriteMsg2];
 
   v29 = CDMOSLoggerForCategory(0);
   if (os_log_type_enabled(v29, OS_LOG_TYPE_DEBUG))
@@ -747,31 +747,31 @@ LABEL_16:
     *buf = 136315394;
     v72 = "+[CDMNLServiceUtils buildSNLCProtoResponse:snlcRequest:parserToSet:]";
     v73 = 1024;
-    LODWORD(v74) = v26 != 0;
+    LODWORD(v74) = rewriteMsg != 0;
     _os_log_debug_impl(&dword_1DC287000, v29, OS_LOG_TYPE_DEBUG, "%s SNLC rewrittenUtterances size=%d", buf, 0x12u);
   }
 
-  if (v26)
+  if (rewriteMsg)
   {
-    v30 = [v26 rewrittenUtterance];
-    v31 = [v30 length] == 0;
+    rewrittenUtterance = [rewriteMsg rewrittenUtterance];
+    v31 = [rewrittenUtterance length] == 0;
 
     if (!v31)
     {
       v32 = CDMOSLoggerForCategory(0);
       if (os_log_type_enabled(v32, OS_LOG_TYPE_DEBUG))
       {
-        v56 = [v26 rewrittenUtterance];
+        rewrittenUtterance2 = [rewriteMsg rewrittenUtterance];
         *buf = 136315394;
         v72 = "+[CDMNLServiceUtils buildSNLCProtoResponse:snlcRequest:parserToSet:]";
         v73 = 2112;
-        v74 = v56;
+        v74 = rewrittenUtterance2;
         _os_log_debug_impl(&dword_1DC287000, v32, OS_LOG_TYPE_DEBUG, "%s SNLC rewrittenUtterance being set to CCQR top hypothesis:%@", buf, 0x16u);
       }
 
       v33 = objc_alloc_init(MEMORY[0x1E69D1128]);
-      v34 = [v26 rewrittenUtterance];
-      [v33 setValue:v34];
+      rewrittenUtterance3 = [rewriteMsg rewrittenUtterance];
+      [v33 setValue:rewrittenUtterance3];
 
       [v27 setRewrittenUtterance:v33];
     }
@@ -779,22 +779,22 @@ LABEL_16:
 
   v35 = objc_alloc_init(MEMORY[0x1E69D1238]);
   [v35 setDelegated:v27];
-  v36 = [MEMORY[0x1E695DF70] array];
-  [v36 addObject:v35];
+  array = [MEMORY[0x1E695DF70] array];
+  [array addObject:v35];
   v37 = objc_alloc_init(MEMORY[0x1E69D1240]);
-  [v37 setUserDialogActs:v36];
+  [v37 setUserDialogActs:array];
   [v37 setParserId:@"ServerNLClassifier"];
-  [v37 setParser:v58];
-  v38 = [v60 parserRequest];
-  v39 = [v38 requestId];
-  [v37 setIdA:v39];
+  [v37 setParser:setCopy];
+  parserRequest = [requestCopy parserRequest];
+  requestId = [parserRequest requestId];
+  [v37 setIdA:requestId];
 
   v63 = 0u;
   v64 = 0u;
   v61 = 0u;
   v62 = 0u;
-  v40 = [v7 hypotheses];
-  v41 = [v40 countByEnumeratingWithState:&v61 objects:v69 count:16];
+  hypotheses5 = [responseCopy hypotheses];
+  v41 = [hypotheses5 countByEnumeratingWithState:&v61 objects:v69 count:16];
   if (v41)
   {
     v42 = *v62;
@@ -804,7 +804,7 @@ LABEL_16:
       {
         if (*v62 != v42)
         {
-          objc_enumerationMutation(v40);
+          objc_enumerationMutation(hypotheses5);
         }
 
         v44 = *(*(&v61 + 1) + 8 * j);
@@ -816,7 +816,7 @@ LABEL_16:
         }
       }
 
-      v41 = [v40 countByEnumeratingWithState:&v61 objects:v69 count:16];
+      v41 = [hypotheses5 countByEnumeratingWithState:&v61 objects:v69 count:16];
       if (v41)
       {
         continue;
@@ -829,13 +829,13 @@ LABEL_16:
 LABEL_46:
 
   v46 = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{v37, 0}];
-  v47 = [v7 hypotheses];
-  [v47 sortUsingComparator:&__block_literal_global_466];
+  hypotheses6 = [responseCopy hypotheses];
+  [hypotheses6 sortUsingComparator:&__block_literal_global_466];
 
   v48 = [CDMSNLCProtoResponseCommand alloc];
-  v49 = [v7 hypotheses];
-  v50 = [v49 firstObject];
-  v51 = -[CDMSNLCProtoResponseCommand initWithClassLabel:snlcParses:snlcResponse:](v48, "initWithClassLabel:snlcParses:snlcResponse:", [v50 label], v46, v7);
+  hypotheses7 = [responseCopy hypotheses];
+  firstObject3 = [hypotheses7 firstObject];
+  v51 = -[CDMSNLCProtoResponseCommand initWithClassLabel:snlcParses:snlcResponse:](v48, "initWithClassLabel:snlcParses:snlcResponse:", [firstObject3 label], v46, responseCopy);
 
   v52 = *MEMORY[0x1E69E9840];
 
@@ -873,9 +873,9 @@ uint64_t __68__CDMNLServiceUtils_buildSNLCProtoResponse_snlcRequest_parserToSet_
   return v9;
 }
 
-+ (id)buildSetupSNLCProtoRequest:(id)a3
++ (id)buildSetupSNLCProtoRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = objc_alloc_init(MEMORY[0x1E69D1320]);
   [v5 setOriginalUtterance:@"hello world"];
   [v5 setNormalisedUtterance:@"hello world"];
@@ -895,12 +895,12 @@ uint64_t __68__CDMNLServiceUtils_buildSNLCProtoResponse_snlcRequest_parserToSet_
 
   [v5 setTokenChain:v8];
   v10 = objc_alloc_init(MEMORY[0x1E69D1328]);
-  v11 = malloc_type_calloc([v8 tokensCount] * objc_msgSend(v4, "integerValue"), 4uLL, 0x100004052888210uLL);
-  [v10 setValues:v11 count:{objc_msgSend(v8, "tokensCount") * objc_msgSend(v4, "integerValue")}];
+  v11 = malloc_type_calloc([v8 tokensCount] * objc_msgSend(requestCopy, "integerValue"), 4uLL, 0x100004052888210uLL);
+  [v10 setValues:v11 count:{objc_msgSend(v8, "tokensCount") * objc_msgSend(requestCopy, "integerValue")}];
   free(v11);
   [v10 setNumToken:{objc_msgSend(v8, "tokensCount")}];
   [v10 setNumLayer:1];
-  [v10 setEmbeddingDim:{objc_msgSend(v4, "integerValue")}];
+  [v10 setEmbeddingDim:{objc_msgSend(requestCopy, "integerValue")}];
   [v10 setEmbedderId:@"embed_id"];
   v12 = objc_alloc_init(MEMORY[0x1E69D12D0]);
   v16[0] = MEMORY[0x1E69E9820];
@@ -909,11 +909,11 @@ uint64_t __68__CDMNLServiceUtils_buildSNLCProtoResponse_snlcRequest_parserToSet_
   v16[3] = &unk_1E862F618;
   v13 = v12;
   v17 = v13;
-  [a1 _setWarmupRequestId:v16];
+  [self _setWarmupRequestId:v16];
   [v13 setTokenisedUtterance:v5];
   [v13 setEmbeddings:v10];
-  v14 = [MEMORY[0x1E695DF70] array];
-  [v13 setMatchingSpans:v14];
+  array = [MEMORY[0x1E695DF70] array];
+  [v13 setMatchingSpans:array];
 
   return v13;
 }
@@ -926,9 +926,9 @@ void __48__CDMNLServiceUtils_buildSetupSNLCProtoRequest___block_invoke(uint64_t 
   [*(a1 + 32) setNluRequestId:v5];
 }
 
-+ (id)buildSetupNLv4ProtoRequest:(id)a3
++ (id)buildSetupNLv4ProtoRequest:(id)request
 {
-  v36 = a3;
+  requestCopy = request;
   v4 = objc_alloc_init(MEMORY[0x1E69D1310]);
   v37[0] = MEMORY[0x1E69E9820];
   v37[1] = 3221225472;
@@ -936,7 +936,7 @@ void __48__CDMNLServiceUtils_buildSetupSNLCProtoRequest___block_invoke(uint64_t 
   v37[3] = &unk_1E862F618;
   v5 = v4;
   v38 = v5;
-  [a1 _setWarmupRequestId:v37];
+  [self _setWarmupRequestId:v37];
   v35 = objc_alloc_init(MEMORY[0x1E69D1320]);
   [v35 setNormalisedUtterance:@"hello world"];
   [v35 setOriginalUtterance:@"hello world"];
@@ -963,12 +963,12 @@ void __48__CDMNLServiceUtils_buildSetupSNLCProtoRequest___block_invoke(uint64_t 
   [v35 setTokenChain:v6];
   [v5 setTokenisedUtterance:v35];
   v10 = objc_alloc_init(MEMORY[0x1E69D1328]);
-  v11 = malloc_type_calloc([v6 tokensCount] * objc_msgSend(v36, "integerValue"), 4uLL, 0x100004052888210uLL);
-  [v10 setValues:v11 count:{objc_msgSend(v6, "tokensCount") * objc_msgSend(v36, "integerValue")}];
+  v11 = malloc_type_calloc([v6 tokensCount] * objc_msgSend(requestCopy, "integerValue"), 4uLL, 0x100004052888210uLL);
+  [v10 setValues:v11 count:{objc_msgSend(v6, "tokensCount") * objc_msgSend(requestCopy, "integerValue")}];
   free(v11);
   [v10 setNumToken:{objc_msgSend(v6, "tokensCount")}];
   [v10 setNumLayer:1];
-  [v10 setEmbeddingDim:{objc_msgSend(v36, "integerValue")}];
+  [v10 setEmbeddingDim:{objc_msgSend(requestCopy, "integerValue")}];
   [v10 setEmbedderId:@"embed_id"];
   [v5 setEmbeddings:v10];
   v12 = objc_alloc_init(MEMORY[0x1E69D1228]);
@@ -979,37 +979,37 @@ void __48__CDMNLServiceUtils_buildSetupSNLCProtoRequest___block_invoke(uint64_t 
   [v12 setTurnContext:v14];
 
   v15 = objc_alloc_init(MEMORY[0x1E69D1198]);
-  v16 = [v12 turnContext];
-  [v16 setNlContext:v15];
+  turnContext = [v12 turnContext];
+  [turnContext setNlContext:v15];
 
-  v17 = [MEMORY[0x1E695DF70] array];
-  v18 = [v12 turnContext];
-  v19 = [v18 nlContext];
-  [v19 setActiveTasks:v17];
+  array = [MEMORY[0x1E695DF70] array];
+  turnContext2 = [v12 turnContext];
+  nlContext = [turnContext2 nlContext];
+  [nlContext setActiveTasks:array];
 
-  v20 = [MEMORY[0x1E695DF70] array];
-  v21 = [v12 turnContext];
-  v22 = [v21 nlContext];
-  [v22 setExecutedTasks:v20];
+  array2 = [MEMORY[0x1E695DF70] array];
+  turnContext3 = [v12 turnContext];
+  nlContext2 = [turnContext3 nlContext];
+  [nlContext2 setExecutedTasks:array2];
 
-  v23 = [MEMORY[0x1E695DF70] array];
-  v24 = [v12 turnContext];
-  v25 = [v24 nlContext];
-  [v25 setSalientEntities:v23];
+  array3 = [MEMORY[0x1E695DF70] array];
+  turnContext4 = [v12 turnContext];
+  nlContext3 = [turnContext4 nlContext];
+  [nlContext3 setSalientEntities:array3];
 
-  v26 = [MEMORY[0x1E695DF70] array];
-  v27 = [v12 turnContext];
-  v28 = [v27 nlContext];
-  [v28 setSystemDialogActs:v26];
+  array4 = [MEMORY[0x1E695DF70] array];
+  turnContext5 = [v12 turnContext];
+  nlContext4 = [turnContext5 nlContext];
+  [nlContext4 setSystemDialogActs:array4];
 
   v29 = objc_alloc_init(MEMORY[0x1E69D1210]);
-  v30 = [v12 turnContext];
-  v31 = [v30 nlContext];
-  [v31 setSystemDialogActGroup:v29];
+  turnContext6 = [v12 turnContext];
+  nlContext5 = [turnContext6 nlContext];
+  [nlContext5 setSystemDialogActGroup:v29];
 
   [v5 setTurnInput:v12];
-  v32 = [MEMORY[0x1E695DF70] array];
-  [v5 setMatchingSpans:v32];
+  array5 = [MEMORY[0x1E695DF70] array];
+  [v5 setMatchingSpans:array5];
 
   [v5 setMaxNumParses:1];
   v33 = v5;
@@ -1025,10 +1025,10 @@ void __48__CDMNLServiceUtils_buildSetupNLv4ProtoRequest___block_invoke(uint64_t 
   [*(a1 + 32) setNluRequestId:v5];
 }
 
-+ (unique_ptr<sirinluinternalnlv4_parser::NLv4ParserRequest,)buildNLv4ProtoRequest:(id)a3
++ (unique_ptr<sirinluinternalnlv4_parser::NLv4ParserRequest,)buildNLv4ProtoRequest:(id)request
 {
   v11 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  requestCopy = request;
   v4 = CDMOSLoggerForCategory(0);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
@@ -1038,8 +1038,8 @@ void __48__CDMNLServiceUtils_buildSetupNLv4ProtoRequest___block_invoke(uint64_t 
   }
 
   v5 = MEMORY[0x1E69D1430];
-  v6 = [v3 parserRequest];
-  [v5 convertNLv4ParserRequestToCpp:v6];
+  parserRequest = [requestCopy parserRequest];
+  [v5 convertNLv4ParserRequestToCpp:parserRequest];
 
   v8 = *MEMORY[0x1E69E9840];
   return v7;

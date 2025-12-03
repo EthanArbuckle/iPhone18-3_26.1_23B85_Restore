@@ -1,14 +1,14 @@
 @interface MRDRapportRemoteControlService
 + (NSUserDefaults)userDefaults;
 + (id)_readConnectionRecordsFromDisk;
-+ (void)_writeConnectionRecordsToDisk:(id)a3;
++ (void)_writeConnectionRecordsToDisk:(id)disk;
 - (MRDRapportRemoteControlService)init;
 - (MRDRapportRemoteControlServiceDelegate)delegate;
-- (id)_connectionForSource:(id)a3 destination:(id)a4 session:(id)a5;
-- (void)_onWorkerQueue_connectRemoteControlChannelForSource:(id)a3 destination:(id)a4 destinationGroupUID:(id)a5 session:(id)a6 name:(id)a7;
+- (id)_connectionForSource:(id)source destination:(id)destination session:(id)session;
+- (void)_onWorkerQueue_connectRemoteControlChannelForSource:(id)source destination:(id)destination destinationGroupUID:(id)d session:(id)session name:(id)name;
 - (void)_onWorkerQueue_disconnectAllRemoteControlChannels;
-- (void)_onWorkerQueue_disconnectRemoteControlChannelForSource:(id)a3 destination:(id)a4 session:(id)a5;
-- (void)_onWorkerQueue_disconnectRemoteControlChannelsWithError:(id)a3 predicate:(id)a4;
+- (void)_onWorkerQueue_disconnectRemoteControlChannelForSource:(id)source destination:(id)destination session:(id)session;
+- (void)_onWorkerQueue_disconnectRemoteControlChannelsWithError:(id)error predicate:(id)predicate;
 - (void)_persistConnectionRecordsToDisk;
 - (void)_resetPersistedConnections;
 @end
@@ -79,93 +79,93 @@
   return v3;
 }
 
-- (id)_connectionForSource:(id)a3 destination:(id)a4 session:(id)a5
+- (id)_connectionForSource:(id)source destination:(id)destination session:(id)session
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  sourceCopy = source;
+  destinationCopy = destination;
+  sessionCopy = session;
   dispatch_assert_queue_V2(self->_workerQueue);
   connections = self->_connections;
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_1000882E8;
   v17[3] = &unk_1004B9038;
-  v18 = v10;
-  v19 = v9;
-  v20 = v8;
-  v12 = v8;
-  v13 = v9;
-  v14 = v10;
+  v18 = sessionCopy;
+  v19 = destinationCopy;
+  v20 = sourceCopy;
+  v12 = sourceCopy;
+  v13 = destinationCopy;
+  v14 = sessionCopy;
   v15 = [(NSMutableArray *)connections mr_first:v17];
 
   return v15;
 }
 
-- (void)_onWorkerQueue_connectRemoteControlChannelForSource:(id)a3 destination:(id)a4 destinationGroupUID:(id)a5 session:(id)a6 name:(id)a7
+- (void)_onWorkerQueue_connectRemoteControlChannelForSource:(id)source destination:(id)destination destinationGroupUID:(id)d session:(id)session name:(id)name
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v36 = a7;
+  sourceCopy = source;
+  destinationCopy = destination;
+  dCopy = d;
+  sessionCopy = session;
+  nameCopy = name;
   dispatch_assert_queue_V2(self->_workerQueue);
-  v16 = [(MRDRapportRemoteControlService *)self _connectionForSource:v12 destination:v13 session:v15];
+  v16 = [(MRDRapportRemoteControlService *)self _connectionForSource:sourceCopy destination:destinationCopy session:sessionCopy];
   v17 = MRLogCategoryConnections();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v44 = v12;
+    v44 = sourceCopy;
     v45 = 2112;
-    v46 = v13;
+    v46 = destinationCopy;
     v47 = 2112;
-    v48 = v15;
+    v48 = sessionCopy;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "[MRDRapportRemoteControlServiceConnection] Connecting remoteControlChannel to <%@->%@/%@>...", buf, 0x20u);
   }
 
   v18 = objc_alloc_init(MRDRapportRemoteControlServiceConnection);
-  [(MRDRapportRemoteControlServiceConnection *)v18 setSourceUID:v12];
-  [(MRDRapportRemoteControlServiceConnection *)v18 setDestinationOutputDeviceUID:v13];
-  [(MRDRapportRemoteControlServiceConnection *)v18 setDestinationGroupUID:v14];
-  [(MRDRapportRemoteControlServiceConnection *)v18 setSessionUID:v15];
-  [(MRDRapportRemoteControlServiceConnection *)v18 setName:v36];
+  [(MRDRapportRemoteControlServiceConnection *)v18 setSourceUID:sourceCopy];
+  [(MRDRapportRemoteControlServiceConnection *)v18 setDestinationOutputDeviceUID:destinationCopy];
+  [(MRDRapportRemoteControlServiceConnection *)v18 setDestinationGroupUID:dCopy];
+  [(MRDRapportRemoteControlServiceConnection *)v18 setSessionUID:sessionCopy];
+  [(MRDRapportRemoteControlServiceConnection *)v18 setName:nameCopy];
   v19 = +[NSDate now];
   [(MRDRapportRemoteControlServiceConnection *)v18 setConnectionAttemptDate:v19];
 
-  v20 = [[MRRapportTransportConnection alloc] initWithDeviceUID:v12 sessionUID:v15 targetDevice:0 error:0];
+  v20 = [[MRRapportTransportConnection alloc] initWithDeviceUID:sourceCopy sessionUID:sessionCopy targetDevice:0 error:0];
   v21 = [NSString alloc];
-  if (v14)
+  if (dCopy)
   {
-    v22 = v14;
+    v22 = dCopy;
   }
 
   else
   {
-    v22 = v13;
+    v22 = destinationCopy;
   }
 
-  v23 = [v21 initWithFormat:@"RapportRemoteControlChannel-<%@->%@/%@>", v12, v22, v15];
-  [v20 setLabel:v23];
+  sessionCopy = [v21 initWithFormat:@"RapportRemoteControlChannel-<%@->%@/%@>", sourceCopy, v22, sessionCopy];
+  [v20 setLabel:sessionCopy];
 
-  [v20 setDestinationOutputDeviceUID:v13];
-  [v20 setDestinationGroupUID:v14];
+  [v20 setDestinationOutputDeviceUID:destinationCopy];
+  [v20 setDestinationGroupUID:dCopy];
   [(MRDRapportRemoteControlServiceConnection *)v18 setConnection:v20];
   objc_initWeak(buf, self);
   v24 = +[NSNotificationCenter defaultCenter];
-  v25 = [(MRDRapportRemoteControlServiceConnection *)v18 connection];
+  connection = [(MRDRapportRemoteControlServiceConnection *)v18 connection];
   v37[0] = _NSConcreteStackBlock;
   v37[1] = 3221225472;
   v37[2] = sub_1000887E0;
   v37[3] = &unk_1004B9060;
   objc_copyWeak(&v42, buf);
-  v26 = v12;
+  v26 = sourceCopy;
   v38 = v26;
-  v27 = v13;
+  v27 = destinationCopy;
   v39 = v27;
-  v28 = v15;
+  v28 = sessionCopy;
   v40 = v28;
-  v29 = v14;
+  v29 = dCopy;
   v41 = v29;
-  v30 = [v24 addObserverForName:@"MRDMediaRemoteExternalDeviceServerClientInvalidatedNotification" object:v25 queue:0 usingBlock:v37];
+  v30 = [v24 addObserverForName:@"MRDMediaRemoteExternalDeviceServerClientInvalidatedNotification" object:connection queue:0 usingBlock:v37];
   [(MRDRapportRemoteControlServiceConnection *)v18 setNotificationToken:v30];
 
   connections = self->_connections;
@@ -179,9 +179,9 @@
   }
 
   [(NSMutableArray *)connections addObject:v18];
-  v34 = [(MRDRapportRemoteControlService *)self delegate];
-  v35 = [(MRDRapportRemoteControlServiceConnection *)v18 connection];
-  [v34 rapportRemoteControlService:self didAcceptConnection:v35];
+  delegate = [(MRDRapportRemoteControlService *)self delegate];
+  connection2 = [(MRDRapportRemoteControlServiceConnection *)v18 connection];
+  [delegate rapportRemoteControlService:self didAcceptConnection:connection2];
 
   [(MRDRapportRemoteControlService *)self _persistConnectionRecordsToDisk];
   objc_destroyWeak(&v42);
@@ -195,29 +195,29 @@
   [(MRDRapportRemoteControlService *)self _onWorkerQueue_disconnectRemoteControlChannelsWithError:0 predicate:&stru_1004B90A0];
 }
 
-- (void)_onWorkerQueue_disconnectRemoteControlChannelForSource:(id)a3 destination:(id)a4 session:(id)a5
+- (void)_onWorkerQueue_disconnectRemoteControlChannelForSource:(id)source destination:(id)destination session:(id)session
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  sourceCopy = source;
+  destinationCopy = destination;
+  sessionCopy = session;
   dispatch_assert_queue_V2(self->_workerQueue);
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_100088AFC;
   v14[3] = &unk_1004B9038;
-  v15 = v8;
-  v16 = v9;
-  v17 = v10;
-  v11 = v10;
-  v12 = v9;
-  v13 = v8;
+  v15 = sourceCopy;
+  v16 = destinationCopy;
+  v17 = sessionCopy;
+  v11 = sessionCopy;
+  v12 = destinationCopy;
+  v13 = sourceCopy;
   [(MRDRapportRemoteControlService *)self _onWorkerQueue_disconnectRemoteControlChannelsWithError:0 predicate:v14];
 }
 
-- (void)_onWorkerQueue_disconnectRemoteControlChannelsWithError:(id)a3 predicate:(id)a4
+- (void)_onWorkerQueue_disconnectRemoteControlChannelsWithError:(id)error predicate:(id)predicate
 {
-  v6 = a3;
-  v7 = a4;
+  errorCopy = error;
+  predicateCopy = predicate;
   dispatch_assert_queue_V2(self->_workerQueue);
   v8 = [(NSMutableArray *)self->_connections mutableCopy];
   v26 = 0u;
@@ -230,7 +230,7 @@
   {
     v11 = v10;
     v12 = *v27;
-    v24 = v7;
+    v24 = predicateCopy;
     do
     {
       v13 = 0;
@@ -243,35 +243,35 @@
         }
 
         v14 = *(*(&v26 + 1) + 8 * v13);
-        if (v7[2](v7, v14))
+        if (predicateCopy[2](predicateCopy, v14))
         {
           v15 = MRLogCategoryConnections();
           if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
           {
-            v16 = [v14 sourceUID];
-            v17 = [v14 destinationOutputDeviceUID];
+            sourceUID = [v14 sourceUID];
+            destinationOutputDeviceUID = [v14 destinationOutputDeviceUID];
             [v14 sessionUID];
             v18 = v12;
             v19 = v9;
-            v20 = self;
-            v22 = v21 = v6;
+            selfCopy = self;
+            v22 = v21 = errorCopy;
             *buf = 138412802;
-            v31 = v16;
+            v31 = sourceUID;
             v32 = 2112;
-            v33 = v17;
+            v33 = destinationOutputDeviceUID;
             v34 = 2112;
             v35 = v22;
             _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "[MRDRapportRemoteControlServiceConnection] Disconnecting remoteControlChannel from <%@->%@/%@>...", buf, 0x20u);
 
-            v6 = v21;
-            self = v20;
+            errorCopy = v21;
+            self = selfCopy;
             v9 = v19;
             v12 = v18;
-            v7 = v24;
+            predicateCopy = v24;
           }
 
-          v23 = [v14 connection];
-          [v23 closeWithError:v6];
+          connection = [v14 connection];
+          [connection closeWithError:errorCopy];
 
           [(NSMutableArray *)self->_connections removeObject:v14];
           [(MRDRapportRemoteControlService *)self _persistConnectionRecordsToDisk];
@@ -299,15 +299,15 @@
 
 - (void)_resetPersistedConnections
 {
-  v3 = [objc_opt_class() userDefaults];
-  objc_sync_enter(v3);
-  v4 = [objc_opt_class() _readConnectionRecordsFromDisk];
+  userDefaults = [objc_opt_class() userDefaults];
+  objc_sync_enter(userDefaults);
+  _readConnectionRecordsFromDisk = [objc_opt_class() _readConnectionRecordsFromDisk];
   v5 = objc_alloc_init(NSMutableSet);
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = v4;
+  v6 = _readConnectionRecordsFromDisk;
   v7 = [v6 countByEnumeratingWithState:&v19 objects:v24 count:16];
   if (v7)
   {
@@ -322,8 +322,8 @@
           objc_enumerationMutation(v6);
         }
 
-        v10 = [*(*(&v19 + 1) + 8 * v9) sourceUID];
-        [v5 addObject:v10];
+        sourceUID = [*(*(&v19 + 1) + 8 * v9) sourceUID];
+        [v5 addObject:sourceUID];
 
         v9 = v9 + 1;
       }
@@ -366,13 +366,13 @@
   }
 
   [objc_opt_class() _writeConnectionRecordsToDisk:0];
-  objc_sync_exit(v3);
+  objc_sync_exit(userDefaults);
 }
 
 + (id)_readConnectionRecordsFromDisk
 {
-  v2 = [objc_opt_class() userDefaults];
-  v3 = [v2 objectForKey:@"incomingRapportConnections"];
+  userDefaults = [objc_opt_class() userDefaults];
+  v3 = [userDefaults objectForKey:@"incomingRapportConnections"];
   v4 = [NSSet alloc];
   v9[0] = objc_opt_class();
   v9[1] = objc_opt_class();
@@ -383,12 +383,12 @@
   return v7;
 }
 
-+ (void)_writeConnectionRecordsToDisk:(id)a3
++ (void)_writeConnectionRecordsToDisk:(id)disk
 {
-  v10 = a3;
-  v3 = [v10 count];
-  v4 = [objc_opt_class() userDefaults];
-  v5 = v4;
+  diskCopy = disk;
+  v3 = [diskCopy count];
+  userDefaults = [objc_opt_class() userDefaults];
+  v5 = userDefaults;
   if (v3)
   {
     v6 = MRCreateDataFromObject();
@@ -399,27 +399,27 @@
       goto LABEL_7;
     }
 
-    v7 = [objc_opt_class() userDefaults];
-    v8 = [v10 description];
-    [v7 setObject:v8 forKey:@"incomingRapportConnectionsDescription"];
+    userDefaults2 = [objc_opt_class() userDefaults];
+    v8 = [diskCopy description];
+    [userDefaults2 setObject:v8 forKey:@"incomingRapportConnectionsDescription"];
   }
 
   else
   {
-    [v4 removeObjectForKey:@"incomingRapportConnections"];
+    [userDefaults removeObjectForKey:@"incomingRapportConnections"];
 
     if (!MSVDeviceOSIsInternalInstall())
     {
       goto LABEL_7;
     }
 
-    v7 = [objc_opt_class() userDefaults];
-    [v7 removeObjectForKey:@"incomingRapportConnectionsDescription"];
+    userDefaults2 = [objc_opt_class() userDefaults];
+    [userDefaults2 removeObjectForKey:@"incomingRapportConnectionsDescription"];
   }
 
 LABEL_7:
-  v9 = [objc_opt_class() userDefaults];
-  [v9 synchronize];
+  userDefaults3 = [objc_opt_class() userDefaults];
+  [userDefaults3 synchronize];
 }
 
 - (MRDRapportRemoteControlServiceDelegate)delegate

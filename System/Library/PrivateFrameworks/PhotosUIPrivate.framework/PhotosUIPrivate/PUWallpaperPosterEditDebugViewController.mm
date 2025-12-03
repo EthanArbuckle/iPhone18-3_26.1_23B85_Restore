@@ -1,32 +1,32 @@
 @interface PUWallpaperPosterEditDebugViewController
 - (BOOL)pu_idleTimerDisabled;
 - (PUPosterEditingLook)pu_currentLook;
-- (PUWallpaperPosterEditDebugViewController)initWithAsset:(id)a3;
-- (PUWallpaperPosterEditDebugViewController)initWithAsset:(id)a3 posterType:(int64_t)a4;
-- (PUWallpaperPosterEditDebugViewController)initWithAssets:(id)a3 posterType:(int64_t)a4 photoLibrary:(id)a5;
-- (PUWallpaperPosterEditDebugViewController)initWithExistingConfiguration:(id)a3 assetDirectory:(id)a4 overrideConfiguration:(id)a5 photoLibrary:(id)a6;
-- (PUWallpaperPosterEditDebugViewController)initWithMigratorOfLegacyConfigurationType:(unint64_t)a3 photoLibrary:(id)a4;
+- (PUWallpaperPosterEditDebugViewController)initWithAsset:(id)asset;
+- (PUWallpaperPosterEditDebugViewController)initWithAsset:(id)asset posterType:(int64_t)type;
+- (PUWallpaperPosterEditDebugViewController)initWithAssets:(id)assets posterType:(int64_t)type photoLibrary:(id)library;
+- (PUWallpaperPosterEditDebugViewController)initWithExistingConfiguration:(id)configuration assetDirectory:(id)directory overrideConfiguration:(id)overrideConfiguration photoLibrary:(id)library;
+- (PUWallpaperPosterEditDebugViewController)initWithMigratorOfLegacyConfigurationType:(unint64_t)type photoLibrary:(id)library;
 - (UIAction)pu_placeholderAction;
 - (UIEdgeInsets)pu_editingChromeDodgingInsets;
 - (id)pu_disableIdleTimer;
-- (id)pu_viewForMenuElementIdentifier:(id)a3;
-- (void)_dismissAndCancel:(id)a3;
-- (void)_dismissAndSave:(id)a3;
-- (void)_handlePageControlSelectedPage:(id)a3;
+- (id)pu_viewForMenuElementIdentifier:(id)identifier;
+- (void)_dismissAndCancel:(id)cancel;
+- (void)_dismissAndSave:(id)save;
+- (void)_handlePageControlSelectedPage:(id)page;
 - (void)_setupEditorViews;
 - (void)_setupPosterEditorController;
 - (void)_setupSimulatedControls;
 - (void)_updateLookControls;
 - (void)_updateLookProperties;
 - (void)_updateLooks;
-- (void)colorPickerViewController:(id)a3 didSelectColor:(id)a4 continuously:(BOOL)a5;
-- (void)presentColorPickerWithConfiguration:(id)a3 changeHandler:(id)a4;
-- (void)pu_requestDismissalWithAction:(int64_t)a3;
-- (void)pu_updatePreferences:(id)a3;
-- (void)px_updatePreferences:(id)a3;
-- (void)scrollViewDidScroll:(id)a3;
+- (void)colorPickerViewController:(id)controller didSelectColor:(id)color continuously:(BOOL)continuously;
+- (void)presentColorPickerWithConfiguration:(id)configuration changeHandler:(id)handler;
+- (void)pu_requestDismissalWithAction:(int64_t)action;
+- (void)pu_updatePreferences:(id)preferences;
+- (void)px_updatePreferences:(id)preferences;
+- (void)scrollViewDidScroll:(id)scroll;
 - (void)updateActions;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
@@ -46,11 +46,11 @@
   return result;
 }
 
-- (id)pu_viewForMenuElementIdentifier:(id)a3
+- (id)pu_viewForMenuElementIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(PUWallpaperPosterEditDebugViewController *)self editToolBar];
-  v6 = [v5 viewForMenuElementIdentifier:v4];
+  identifierCopy = identifier;
+  editToolBar = [(PUWallpaperPosterEditDebugViewController *)self editToolBar];
+  v6 = [editToolBar viewForMenuElementIdentifier:identifierCopy];
 
   return v6;
 }
@@ -66,8 +66,8 @@
 
 - (id)pu_disableIdleTimer
 {
-  v2 = [MEMORY[0x1E69DC668] sharedApplication];
-  [v2 setIdleTimerDisabled:1];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  [mEMORY[0x1E69DC668] setIdleTimerDisabled:1];
 
   v3 = objc_alloc_init(_PUWallpaperPosterDebugIdleTimerAssertion);
 
@@ -76,17 +76,17 @@
 
 - (BOOL)pu_idleTimerDisabled
 {
-  v2 = [MEMORY[0x1E69DC668] sharedApplication];
-  v3 = [v2 isIdleTimerDisabled];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  isIdleTimerDisabled = [mEMORY[0x1E69DC668] isIdleTimerDisabled];
 
-  return v3;
+  return isIdleTimerDisabled;
 }
 
-- (void)pu_requestDismissalWithAction:(int64_t)a3
+- (void)pu_requestDismissalWithAction:(int64_t)action
 {
-  if (a3)
+  if (action)
   {
-    if (a3 == 1)
+    if (action == 1)
     {
       [(PUWallpaperPosterEditDebugViewController *)self _dismissAndSave:self];
     }
@@ -100,79 +100,79 @@
 
 - (void)updateActions
 {
-  v6 = [(PUWallpaperPosterEditDebugViewController *)self posterEditorController];
-  v3 = [v6 leadingMenuElementsForEditor:self];
-  v4 = [v6 trailingMenuElementsForEditor:self];
-  v5 = [(PUWallpaperPosterEditDebugViewController *)self editToolBar];
-  [v5 setLeadingMenuElements:v3];
-  [v5 setTrailingMenuElements:v4];
+  posterEditorController = [(PUWallpaperPosterEditDebugViewController *)self posterEditorController];
+  v3 = [posterEditorController leadingMenuElementsForEditor:self];
+  v4 = [posterEditorController trailingMenuElementsForEditor:self];
+  editToolBar = [(PUWallpaperPosterEditDebugViewController *)self editToolBar];
+  [editToolBar setLeadingMenuElements:v3];
+  [editToolBar setTrailingMenuElements:v4];
 }
 
 - (PUPosterEditingLook)pu_currentLook
 {
-  v3 = [(PUWallpaperPosterEditDebugViewController *)self availableLooks];
-  v4 = [v3 objectAtIndexedSubscript:{-[PUWallpaperPosterEditDebugViewController currentLookIndex](self, "currentLookIndex")}];
+  availableLooks = [(PUWallpaperPosterEditDebugViewController *)self availableLooks];
+  v4 = [availableLooks objectAtIndexedSubscript:{-[PUWallpaperPosterEditDebugViewController currentLookIndex](self, "currentLookIndex")}];
 
   return v4;
 }
 
-- (void)px_updatePreferences:(id)a3
+- (void)px_updatePreferences:(id)preferences
 {
-  v4 = a3;
+  preferencesCopy = preferences;
   v6 = objc_alloc_init(_PUWallpaperDebugTransition);
-  v5 = [(PUWallpaperPosterEditDebugViewController *)self editPreferences];
-  v4[2](v4, v5, v6);
+  editPreferences = [(PUWallpaperPosterEditDebugViewController *)self editPreferences];
+  preferencesCopy[2](preferencesCopy, editPreferences, v6);
 }
 
-- (void)pu_updatePreferences:(id)a3
+- (void)pu_updatePreferences:(id)preferences
 {
-  v4 = a3;
+  preferencesCopy = preferences;
   v6 = objc_alloc_init(_PUWallpaperDebugTransition);
-  v5 = [(PUWallpaperPosterEditDebugViewController *)self editPreferences];
-  v4[2](v4, v5, v6);
+  editPreferences = [(PUWallpaperPosterEditDebugViewController *)self editPreferences];
+  preferencesCopy[2](preferencesCopy, editPreferences, v6);
 }
 
-- (void)presentColorPickerWithConfiguration:(id)a3 changeHandler:(id)a4
+- (void)presentColorPickerWithConfiguration:(id)configuration changeHandler:(id)handler
 {
   v14[1] = *MEMORY[0x1E69E9840];
   v6 = MEMORY[0x1E69DC8A0];
-  v7 = a4;
-  v8 = a3;
+  handlerCopy = handler;
+  configurationCopy = configuration;
   v9 = objc_alloc_init(v6);
-  v10 = [v8 prompt];
+  prompt = [configurationCopy prompt];
 
-  [v9 setTitle:v10];
+  [v9 setTitle:prompt];
   [v9 setDelegate:self];
   [v9 setModalPresentationStyle:1];
-  v11 = [v9 sheetPresentationController];
-  v12 = [MEMORY[0x1E69DCF58] mediumDetent];
-  v14[0] = v12;
+  sheetPresentationController = [v9 sheetPresentationController];
+  mediumDetent = [MEMORY[0x1E69DCF58] mediumDetent];
+  v14[0] = mediumDetent;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
-  [v11 setDetents:v13];
+  [sheetPresentationController setDetents:v13];
 
-  [(PUWallpaperPosterEditDebugViewController *)self setColorPickerChangeHandler:v7];
+  [(PUWallpaperPosterEditDebugViewController *)self setColorPickerChangeHandler:handlerCopy];
   [(PUWallpaperPosterEditDebugViewController *)self presentViewController:v9 animated:1 completion:0];
 }
 
-- (void)colorPickerViewController:(id)a3 didSelectColor:(id)a4 continuously:(BOOL)a5
+- (void)colorPickerViewController:(id)controller didSelectColor:(id)color continuously:(BOOL)continuously
 {
-  v8 = a4;
-  v6 = [(PUWallpaperPosterEditDebugViewController *)self colorPickerChangeHandler];
+  colorCopy = color;
+  colorPickerChangeHandler = [(PUWallpaperPosterEditDebugViewController *)self colorPickerChangeHandler];
 
-  if (v6)
+  if (colorPickerChangeHandler)
   {
-    v7 = [(PUWallpaperPosterEditDebugViewController *)self colorPickerChangeHandler];
-    (v7)[2](v7, v8);
+    colorPickerChangeHandler2 = [(PUWallpaperPosterEditDebugViewController *)self colorPickerChangeHandler];
+    (colorPickerChangeHandler2)[2](colorPickerChangeHandler2, colorCopy);
   }
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = a3;
-  [v4 contentOffset];
+  scrollCopy = scroll;
+  [scrollCopy contentOffset];
   v6 = v5;
   v8 = v7;
-  [v4 frame];
+  [scrollCopy frame];
   v10 = v9;
   v12 = v11;
   v14 = v13;
@@ -187,18 +187,18 @@
   v18 = modf(v17, &__y);
   v19 = __y;
   v20 = __y;
-  v21 = [(PUWallpaperPosterEditDebugViewController *)self pageControl];
-  [v21 setCurrentPage:v20];
+  pageControl = [(PUWallpaperPosterEditDebugViewController *)self pageControl];
+  [pageControl setCurrentPage:v20];
 
-  v32 = [(PUWallpaperPosterEditDebugViewController *)self pu_currentLook];
-  v22 = [(PUWallpaperPosterEditDebugViewController *)self availableLooks];
-  v23 = [(PUWallpaperPosterEditDebugViewController *)self contentOverlayView];
-  [v23 frame];
-  [v23 setFrame:{v6, v8}];
-  if ([v22 count] > v19)
+  pu_currentLook = [(PUWallpaperPosterEditDebugViewController *)self pu_currentLook];
+  availableLooks = [(PUWallpaperPosterEditDebugViewController *)self availableLooks];
+  contentOverlayView = [(PUWallpaperPosterEditDebugViewController *)self contentOverlayView];
+  [contentOverlayView frame];
+  [contentOverlayView setFrame:{v6, v8}];
+  if ([availableLooks count] > v19)
   {
-    v24 = [v22 objectAtIndex:vcvtmd_u64_f64(v17)];
-    v25 = [v22 count];
+    v24 = [availableLooks objectAtIndex:vcvtmd_u64_f64(v17)];
+    v25 = [availableLooks count];
     v26 = vcvtpd_u64_f64(v17);
     if (v25 - 1 >= v26)
     {
@@ -210,10 +210,10 @@
       v27 = v25 - 1;
     }
 
-    v28 = [v22 objectAtIndex:v27];
+    v28 = [availableLooks objectAtIndex:v27];
     if (v24 != v28)
     {
-      if (v24 == v32)
+      if (v24 == pu_currentLook)
       {
         v29 = v28;
       }
@@ -223,14 +223,14 @@
         v29 = v24;
       }
 
-      if (v24 != v32)
+      if (v24 != pu_currentLook)
       {
         v18 = 1.0 - v18;
       }
 
       v30 = v29;
-      v31 = [(PUWallpaperPosterEditDebugViewController *)self posterEditorController];
-      [v31 editor:self didTransitionToLook:v30 progress:v18];
+      posterEditorController = [(PUWallpaperPosterEditDebugViewController *)self posterEditorController];
+      [posterEditorController editor:self didTransitionToLook:v30 progress:v18];
     }
 
     [(PUWallpaperPosterEditDebugViewController *)self setCurrentLookIndex:v20];
@@ -238,33 +238,33 @@
   }
 }
 
-- (void)_handlePageControlSelectedPage:(id)a3
+- (void)_handlePageControlSelectedPage:(id)page
 {
-  v4 = a3;
-  v8 = [(PUWallpaperPosterEditDebugViewController *)self looksScrollView];
-  v5 = [v4 interactionState] == 1;
-  [v8 frame];
+  pageCopy = page;
+  looksScrollView = [(PUWallpaperPosterEditDebugViewController *)self looksScrollView];
+  v5 = [pageCopy interactionState] == 1;
+  [looksScrollView frame];
   Width = CGRectGetWidth(v10);
-  v7 = [v4 currentPage];
+  currentPage = [pageCopy currentPage];
 
-  [v8 setContentOffset:v5 animated:{Width * v7, 0.0}];
+  [looksScrollView setContentOffset:v5 animated:{Width * currentPage, 0.0}];
 }
 
-- (void)_dismissAndCancel:(id)a3
+- (void)_dismissAndCancel:(id)cancel
 {
-  v3 = [(PUWallpaperPosterEditDebugViewController *)self presentingViewController];
-  [v3 dismissViewControllerAnimated:1 completion:0];
+  presentingViewController = [(PUWallpaperPosterEditDebugViewController *)self presentingViewController];
+  [presentingViewController dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)_dismissAndSave:(id)a3
+- (void)_dismissAndSave:(id)save
 {
-  v4 = [(PUWallpaperPosterEditDebugViewController *)self posterEditorController];
+  posterEditorController = [(PUWallpaperPosterEditDebugViewController *)self posterEditorController];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __60__PUWallpaperPosterEditDebugViewController__dismissAndSave___block_invoke;
   v5[3] = &unk_1E7B80DD0;
   v5[4] = self;
-  [v4 editor:self finalizeWithCompletion:v5];
+  [posterEditorController editor:self finalizeWithCompletion:v5];
 }
 
 void __60__PUWallpaperPosterEditDebugViewController__dismissAndSave___block_invoke(uint64_t a1)
@@ -288,21 +288,21 @@ void __60__PUWallpaperPosterEditDebugViewController__dismissAndSave___block_invo
   v18.receiver = self;
   v18.super_class = PUWallpaperPosterEditDebugViewController;
   [(PUWallpaperPosterEditDebugViewController *)&v18 viewDidLayoutSubviews];
-  v3 = [(PUWallpaperPosterEditDebugViewController *)self posterEditorController];
-  v4 = [v3 editViewModel];
+  posterEditorController = [(PUWallpaperPosterEditDebugViewController *)self posterEditorController];
+  editViewModel = [posterEditorController editViewModel];
 
-  v5 = [v4 currentLayerStackViewModel];
-  v6 = [v5 currentLayerStack];
+  currentLayerStackViewModel = [editViewModel currentLayerStackViewModel];
+  currentLayerStack = [currentLayerStackViewModel currentLayerStack];
 
-  v7 = [v6 layout];
-  v8 = [v4 currentLayerStackViewModel];
-  [v8 containerFrame];
+  layout = [currentLayerStack layout];
+  currentLayerStackViewModel2 = [editViewModel currentLayerStackViewModel];
+  [currentLayerStackViewModel2 containerFrame];
   v10 = v9;
   v12 = v11;
   v14 = v13;
   v16 = v15;
 
-  if (v7)
+  if (layout)
   {
     v19.origin.x = v10;
     v19.origin.y = v12;
@@ -310,8 +310,8 @@ void __60__PUWallpaperPosterEditDebugViewController__dismissAndSave___block_invo
     v19.size.height = v16;
     if (!CGRectIsEmpty(v19))
     {
-      v17 = [(PUWallpaperPosterEditDebugViewController *)self dateView];
-      [v17 layoutWithLayout:v7 inContainerFrame:{v10, v12, v14, v16}];
+      dateView = [(PUWallpaperPosterEditDebugViewController *)self dateView];
+      [dateView layoutWithLayout:layout inContainerFrame:{v10, v12, v14, v16}];
     }
   }
 }
@@ -320,97 +320,97 @@ void __60__PUWallpaperPosterEditDebugViewController__dismissAndSave___block_invo
 {
   v96[4] = *MEMORY[0x1E69E9840];
   [(PUWallpaperPosterEditDebugViewController *)self setModalPresentationCapturesStatusBarAppearance:1];
-  v3 = [MEMORY[0x1E69DC740] filledButtonConfiguration];
-  [v3 setButtonSize:1];
-  v89 = v3;
-  [v3 setCornerStyle:4];
-  v4 = [MEMORY[0x1E69DC888] systemBlueColor];
-  [v3 setBaseBackgroundColor:v4];
+  filledButtonConfiguration = [MEMORY[0x1E69DC740] filledButtonConfiguration];
+  [filledButtonConfiguration setButtonSize:1];
+  v89 = filledButtonConfiguration;
+  [filledButtonConfiguration setCornerStyle:4];
+  systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
+  [filledButtonConfiguration setBaseBackgroundColor:systemBlueColor];
 
-  v5 = [MEMORY[0x1E69DC888] whiteColor];
-  [v3 setBaseForegroundColor:v5];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  [filledButtonConfiguration setBaseForegroundColor:whiteColor];
 
-  [v3 setTitle:@"Done"];
+  [filledButtonConfiguration setTitle:@"Done"];
   v6 = [MEMORY[0x1E69DC738] buttonWithType:1];
-  [v6 setConfiguration:v3];
+  [v6 setConfiguration:filledButtonConfiguration];
   [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
   v7 = v6;
   [v6 addTarget:self action:sel__dismissAndSave_ forControlEvents:0x2000];
-  v8 = self;
-  v9 = [(PUWallpaperPosterEditDebugViewController *)self view];
-  [v9 addSubview:v7];
+  selfCopy = self;
+  view = [(PUWallpaperPosterEditDebugViewController *)self view];
+  [view addSubview:v7];
 
-  v10 = [MEMORY[0x1E69DC740] grayButtonConfiguration];
-  [v10 setButtonSize:1];
-  [v10 setCornerStyle:4];
-  v11 = [MEMORY[0x1E69DC888] whiteColor];
-  [v10 setBaseForegroundColor:v11];
+  grayButtonConfiguration = [MEMORY[0x1E69DC740] grayButtonConfiguration];
+  [grayButtonConfiguration setButtonSize:1];
+  [grayButtonConfiguration setCornerStyle:4];
+  whiteColor2 = [MEMORY[0x1E69DC888] whiteColor];
+  [grayButtonConfiguration setBaseForegroundColor:whiteColor2];
 
-  v88 = v10;
-  [v10 setTitle:@"Cancel"];
+  v88 = grayButtonConfiguration;
+  [grayButtonConfiguration setTitle:@"Cancel"];
   v12 = [MEMORY[0x1E69DC738] buttonWithType:1];
-  [v12 setConfiguration:v10];
+  [v12 setConfiguration:grayButtonConfiguration];
   [v12 setTranslatesAutoresizingMaskIntoConstraints:0];
   v13 = v12;
-  [v12 addTarget:v8 action:sel__dismissAndCancel_ forControlEvents:0x2000];
-  v14 = [(PUWallpaperPosterEditDebugViewController *)v8 view];
-  [v14 addSubview:v13];
+  [v12 addTarget:selfCopy action:sel__dismissAndCancel_ forControlEvents:0x2000];
+  view2 = [(PUWallpaperPosterEditDebugViewController *)selfCopy view];
+  [view2 addSubview:v13];
 
   v68 = MEMORY[0x1E696ACD8];
   v87 = v7;
-  v83 = [v7 topAnchor];
-  v91 = [(PUWallpaperPosterEditDebugViewController *)v8 view];
-  v79 = [v91 topAnchor];
-  v75 = [v83 constraintEqualToAnchor:v79 constant:20.0];
+  topAnchor = [v7 topAnchor];
+  view3 = [(PUWallpaperPosterEditDebugViewController *)selfCopy view];
+  topAnchor2 = [view3 topAnchor];
+  v75 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:20.0];
   v96[0] = v75;
-  v70 = [v7 trailingAnchor];
-  v15 = v8;
-  v72 = [(PUWallpaperPosterEditDebugViewController *)v8 view];
-  v66 = [v72 trailingAnchor];
-  v64 = [v70 constraintEqualToAnchor:v66 constant:-20.0];
+  trailingAnchor = [v7 trailingAnchor];
+  v15 = selfCopy;
+  view4 = [(PUWallpaperPosterEditDebugViewController *)selfCopy view];
+  trailingAnchor2 = [view4 trailingAnchor];
+  v64 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-20.0];
   v96[1] = v64;
   v16 = v13;
   v86 = v13;
-  v17 = [v13 topAnchor];
-  v18 = [(PUWallpaperPosterEditDebugViewController *)v8 view];
-  v19 = [v18 topAnchor];
-  v20 = [v17 constraintEqualToAnchor:v19 constant:20.0];
+  topAnchor3 = [v13 topAnchor];
+  view5 = [(PUWallpaperPosterEditDebugViewController *)selfCopy view];
+  topAnchor4 = [view5 topAnchor];
+  v20 = [topAnchor3 constraintEqualToAnchor:topAnchor4 constant:20.0];
   v96[2] = v20;
-  v21 = [v16 leadingAnchor];
-  v22 = [(PUWallpaperPosterEditDebugViewController *)v8 view];
-  v23 = [v22 leadingAnchor];
-  v24 = [v21 constraintEqualToAnchor:v23 constant:20.0];
+  leadingAnchor = [v16 leadingAnchor];
+  view6 = [(PUWallpaperPosterEditDebugViewController *)selfCopy view];
+  leadingAnchor2 = [view6 leadingAnchor];
+  v24 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:20.0];
   v96[3] = v24;
   v25 = [MEMORY[0x1E695DEC8] arrayWithObjects:v96 count:4];
   [v68 activateConstraints:v25];
 
   v26 = objc_alloc_init(PUWallpaperPosterEditToolBar);
   [(PUWallpaperPosterEditToolBar *)v26 setAutoresizingMask:18];
-  v27 = [(PUWallpaperPosterEditDebugViewController *)v15 view];
-  [v27 addSubview:v26];
+  view7 = [(PUWallpaperPosterEditDebugViewController *)v15 view];
+  [view7 addSubview:v26];
 
   [(PUWallpaperPosterEditToolBar *)v26 setDelegate:v15];
   [(PUWallpaperPosterEditToolBar *)v26 setTranslatesAutoresizingMaskIntoConstraints:0];
   v65 = MEMORY[0x1E696ACD8];
-  v80 = [(PUWallpaperPosterEditToolBar *)v26 bottomAnchor];
-  v84 = [(PUWallpaperPosterEditDebugViewController *)v15 view];
-  v76 = [v84 layoutMarginsGuide];
-  v73 = [v76 bottomAnchor];
-  v71 = [v80 constraintEqualToAnchor:v73];
+  bottomAnchor = [(PUWallpaperPosterEditToolBar *)v26 bottomAnchor];
+  view8 = [(PUWallpaperPosterEditDebugViewController *)v15 view];
+  layoutMarginsGuide = [view8 layoutMarginsGuide];
+  bottomAnchor2 = [layoutMarginsGuide bottomAnchor];
+  v71 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v95[0] = v71;
-  v67 = [(PUWallpaperPosterEditToolBar *)v26 leadingAnchor];
-  v69 = [(PUWallpaperPosterEditDebugViewController *)v15 view];
-  v28 = [v69 leadingAnchor];
-  v29 = [v67 constraintEqualToAnchor:v28];
+  leadingAnchor3 = [(PUWallpaperPosterEditToolBar *)v26 leadingAnchor];
+  view9 = [(PUWallpaperPosterEditDebugViewController *)v15 view];
+  leadingAnchor4 = [view9 leadingAnchor];
+  v29 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v95[1] = v29;
   v92 = v26;
-  v30 = [(PUWallpaperPosterEditToolBar *)v26 trailingAnchor];
-  v31 = [(PUWallpaperPosterEditDebugViewController *)v15 view];
-  v32 = [v31 trailingAnchor];
-  v33 = [v30 constraintEqualToAnchor:v32];
+  trailingAnchor3 = [(PUWallpaperPosterEditToolBar *)v26 trailingAnchor];
+  view10 = [(PUWallpaperPosterEditDebugViewController *)v15 view];
+  trailingAnchor4 = [view10 trailingAnchor];
+  v33 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v95[2] = v33;
-  v34 = [(PUWallpaperPosterEditToolBar *)v26 heightAnchor];
-  v35 = [v34 constraintEqualToConstant:44.0];
+  heightAnchor = [(PUWallpaperPosterEditToolBar *)v26 heightAnchor];
+  v35 = [heightAnchor constraintEqualToConstant:44.0];
   v95[3] = v35;
   v36 = [MEMORY[0x1E695DEC8] arrayWithObjects:v95 count:4];
   [v65 activateConstraints:v36];
@@ -420,58 +420,58 @@ void __60__PUWallpaperPosterEditDebugViewController__dismissAndSave___block_invo
   v38 = [v37 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
   [v38 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v38 addTarget:v15 action:sel__handlePageControlSelectedPage_ forControlEvents:0x2000];
-  v39 = [(PUWallpaperPosterEditDebugViewController *)v15 view];
-  [v39 addSubview:v38];
+  view11 = [(PUWallpaperPosterEditDebugViewController *)v15 view];
+  [view11 addSubview:v38];
 
   v74 = MEMORY[0x1E696ACD8];
-  v77 = [v38 centerXAnchor];
+  centerXAnchor = [v38 centerXAnchor];
   v90 = v15;
-  v81 = [(PUWallpaperPosterEditDebugViewController *)v15 view];
-  v40 = [v81 centerXAnchor];
-  v41 = [v77 constraintEqualToAnchor:v40];
+  view12 = [(PUWallpaperPosterEditDebugViewController *)v15 view];
+  centerXAnchor2 = [view12 centerXAnchor];
+  v41 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v94[0] = v41;
-  v42 = [v38 bottomAnchor];
-  v43 = [(PUWallpaperPosterEditDebugViewController *)v15 editToolBar];
-  v44 = [v43 topAnchor];
-  v45 = [v42 constraintEqualToAnchor:v44 constant:10.0];
+  bottomAnchor3 = [v38 bottomAnchor];
+  editToolBar = [(PUWallpaperPosterEditDebugViewController *)v15 editToolBar];
+  topAnchor5 = [editToolBar topAnchor];
+  v45 = [bottomAnchor3 constraintEqualToAnchor:topAnchor5 constant:10.0];
   v94[1] = v45;
   v46 = v38;
   v85 = v38;
-  v47 = [v38 heightAnchor];
-  v48 = [v47 constraintEqualToConstant:50.0];
+  heightAnchor2 = [v38 heightAnchor];
+  v48 = [heightAnchor2 constraintEqualToConstant:50.0];
   v94[2] = v48;
   v49 = [MEMORY[0x1E695DEC8] arrayWithObjects:v94 count:3];
   [v74 activateConstraints:v49];
 
   [(PUWallpaperPosterEditDebugViewController *)v90 setPageControl:v46];
-  v50 = [MEMORY[0x1E69DC740] grayButtonConfiguration];
-  [v50 setButtonSize:1];
-  [v50 setCornerStyle:1];
-  v51 = [MEMORY[0x1E69DC888] whiteColor];
-  [v50 setBaseForegroundColor:v51];
+  grayButtonConfiguration2 = [MEMORY[0x1E69DC740] grayButtonConfiguration];
+  [grayButtonConfiguration2 setButtonSize:1];
+  [grayButtonConfiguration2 setCornerStyle:1];
+  whiteColor3 = [MEMORY[0x1E69DC888] whiteColor];
+  [grayButtonConfiguration2 setBaseForegroundColor:whiteColor3];
 
-  v52 = [MEMORY[0x1E69DC888] darkGrayColor];
-  v53 = [v52 colorWithAlphaComponent:0.7];
-  [v50 setBaseBackgroundColor:v53];
+  darkGrayColor = [MEMORY[0x1E69DC888] darkGrayColor];
+  v53 = [darkGrayColor colorWithAlphaComponent:0.7];
+  [grayButtonConfiguration2 setBaseBackgroundColor:v53];
 
-  [v50 setTitle:&stru_1F2AC6818];
+  [grayButtonConfiguration2 setTitle:&stru_1F2AC6818];
   v54 = [MEMORY[0x1E69DC738] buttonWithType:1];
-  [v54 setConfiguration:v50];
+  [v54 setConfiguration:grayButtonConfiguration2];
   [v54 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v54 setUserInteractionEnabled:0];
-  v55 = [(PUWallpaperPosterEditDebugViewController *)v90 view];
-  [v55 addSubview:v54];
+  view13 = [(PUWallpaperPosterEditDebugViewController *)v90 view];
+  [view13 addSubview:v54];
 
   v78 = MEMORY[0x1E696ACD8];
-  v82 = [v54 centerXAnchor];
-  v56 = [(PUWallpaperPosterEditDebugViewController *)v90 view];
-  v57 = [v56 centerXAnchor];
-  v58 = [v82 constraintEqualToAnchor:v57];
+  centerXAnchor3 = [v54 centerXAnchor];
+  view14 = [(PUWallpaperPosterEditDebugViewController *)v90 view];
+  centerXAnchor4 = [view14 centerXAnchor];
+  v58 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
   v93[0] = v58;
-  v59 = [v54 bottomAnchor];
-  v60 = [(PUWallpaperPosterEditDebugViewController *)v90 pageControl];
-  v61 = [v60 topAnchor];
-  v62 = [v59 constraintEqualToAnchor:v61 constant:10.0];
+  bottomAnchor4 = [v54 bottomAnchor];
+  pageControl = [(PUWallpaperPosterEditDebugViewController *)v90 pageControl];
+  topAnchor6 = [pageControl topAnchor];
+  v62 = [bottomAnchor4 constraintEqualToAnchor:topAnchor6 constant:10.0];
   v93[1] = v62;
   v63 = [MEMORY[0x1E695DEC8] arrayWithObjects:v93 count:2];
   [v78 activateConstraints:v63];
@@ -481,22 +481,22 @@ void __60__PUWallpaperPosterEditDebugViewController__dismissAndSave___block_invo
 
 - (void)_setupEditorViews
 {
-  v26 = [(PUWallpaperPosterEditDebugViewController *)self view];
-  [v26 bounds];
+  view = [(PUWallpaperPosterEditDebugViewController *)self view];
+  [view bounds];
   v4 = v3;
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v11 = [objc_alloc(MEMORY[0x1E69DD250]) initWithFrame:{v3, v5, v7, v9}];
   [(UIView *)v11 setAutoresizingMask:18];
-  [v26 addSubview:v11];
+  [view addSubview:v11];
   backgroundView = self->_backgroundView;
   self->_backgroundView = v11;
   v13 = v11;
 
   v14 = [objc_alloc(MEMORY[0x1E69DD250]) initWithFrame:{v4, v6, v8, v10}];
   [(UIView *)v14 setAutoresizingMask:18];
-  [v26 addSubview:v14];
+  [view addSubview:v14];
   foregroundView = self->_foregroundView;
   self->_foregroundView = v14;
   v16 = v14;
@@ -507,11 +507,11 @@ void __60__PUWallpaperPosterEditDebugViewController__dismissAndSave___block_invo
   v28.size.height = v10;
   v29 = CGRectOffset(v28, 0.0, 100.0);
   v17 = [[PUWallpaperPosterDateView alloc] initWithFrame:v29.origin.x, v29.origin.y, v29.size.width, v29.size.height];
-  [v26 addSubview:v17];
+  [view addSubview:v17];
   [(PUWallpaperPosterEditDebugViewController *)self setDateView:v17];
   v18 = [objc_alloc(MEMORY[0x1E69DD250]) initWithFrame:{v4, v6, v8, v10}];
   [(UIView *)v18 setAutoresizingMask:18];
-  [v26 addSubview:v18];
+  [view addSubview:v18];
   floatingView = self->_floatingView;
   self->_floatingView = v18;
   v20 = v18;
@@ -522,7 +522,7 @@ void __60__PUWallpaperPosterEditDebugViewController__dismissAndSave___block_invo
   [(UIScrollView *)v21 setScrollsToTop:0];
   [(UIScrollView *)v21 setShowsHorizontalScrollIndicator:0];
   [(UIScrollView *)v21 setDelegate:self];
-  [v26 addSubview:v21];
+  [view addSubview:v21];
   looksScrollView = self->_looksScrollView;
   self->_looksScrollView = v21;
   v23 = v21;
@@ -536,56 +536,56 @@ void __60__PUWallpaperPosterEditDebugViewController__dismissAndSave___block_invo
 
 - (void)_updateLookControls
 {
-  v13 = [(PUWallpaperPosterEditDebugViewController *)self availableLooks];
-  v3 = [(PUWallpaperPosterEditDebugViewController *)self currentLookIndex];
-  v4 = [v13 objectAtIndexedSubscript:v3];
-  v5 = [(PUWallpaperPosterEditDebugViewController *)self pageControl];
-  [v5 setNumberOfPages:{objc_msgSend(v13, "count")}];
-  [v5 setCurrentPage:v3];
-  v6 = [(PUWallpaperPosterEditDebugViewController *)self lookLabelButton];
-  v7 = [v4 displayName];
-  [v6 setTitle:v7 forState:0];
+  availableLooks = [(PUWallpaperPosterEditDebugViewController *)self availableLooks];
+  currentLookIndex = [(PUWallpaperPosterEditDebugViewController *)self currentLookIndex];
+  v4 = [availableLooks objectAtIndexedSubscript:currentLookIndex];
+  pageControl = [(PUWallpaperPosterEditDebugViewController *)self pageControl];
+  [pageControl setNumberOfPages:{objc_msgSend(availableLooks, "count")}];
+  [pageControl setCurrentPage:currentLookIndex];
+  lookLabelButton = [(PUWallpaperPosterEditDebugViewController *)self lookLabelButton];
+  displayName = [v4 displayName];
+  [lookLabelButton setTitle:displayName forState:0];
 
-  v8 = [(PUWallpaperPosterEditDebugViewController *)self dateView];
-  v9 = [v4 pu_timeFontIdentifier];
-  v10 = PUPosterSimulatedTimeFontForIdentifier(v9);
-  [v8 setTimeFont:v10];
+  dateView = [(PUWallpaperPosterEditDebugViewController *)self dateView];
+  pu_timeFontIdentifier = [v4 pu_timeFontIdentifier];
+  v10 = PUPosterSimulatedTimeFontForIdentifier(pu_timeFontIdentifier);
+  [dateView setTimeFont:v10];
 
-  v11 = [v4 pu_timeFontColor];
-  v12 = [v11 color];
-  [v8 setTimeColor:v12];
+  pu_timeFontColor = [v4 pu_timeFontColor];
+  color = [pu_timeFontColor color];
+  [dateView setTimeColor:color];
 
-  [v8 setUseVibrantAppearance:{objc_msgSend(v4, "pu_timeAppearance") == 1}];
+  [dateView setUseVibrantAppearance:{objc_msgSend(v4, "pu_timeAppearance") == 1}];
 }
 
 - (void)_updateLooks
 {
   [(PUWallpaperPosterEditDebugViewController *)self _updateLookProperties];
-  v3 = [(PUWallpaperPosterEditDebugViewController *)self posterEditorController];
-  v4 = [(PUWallpaperPosterEditDebugViewController *)self availableLooks];
-  v5 = [v4 firstObject];
-  [v3 editor:self populateViews:self forLook:v5];
+  posterEditorController = [(PUWallpaperPosterEditDebugViewController *)self posterEditorController];
+  availableLooks = [(PUWallpaperPosterEditDebugViewController *)self availableLooks];
+  firstObject = [availableLooks firstObject];
+  [posterEditorController editor:self populateViews:self forLook:firstObject];
 
-  v6 = [(PUWallpaperPosterEditDebugViewController *)self availableLooks];
-  v7 = [v6 count];
+  availableLooks2 = [(PUWallpaperPosterEditDebugViewController *)self availableLooks];
+  v7 = [availableLooks2 count];
 
-  v13 = [(PUWallpaperPosterEditDebugViewController *)self looksScrollView];
-  [v13 bounds];
+  looksScrollView = [(PUWallpaperPosterEditDebugViewController *)self looksScrollView];
+  [looksScrollView bounds];
   PXRectWithOriginAndSize();
   v9 = v8;
   v11 = v10 * v7;
-  v12 = [(PUWallpaperPosterEditDebugViewController *)self looksScrollView];
-  [v12 setContentSize:{v11, v9}];
+  looksScrollView2 = [(PUWallpaperPosterEditDebugViewController *)self looksScrollView];
+  [looksScrollView2 setContentSize:{v11, v9}];
 }
 
 - (void)_updateLookProperties
 {
-  v4 = [(PUWallpaperPosterEditDebugViewController *)self posterEditorController];
-  v5 = [v4 looksForEditor:self];
+  posterEditorController = [(PUWallpaperPosterEditDebugViewController *)self posterEditorController];
+  v5 = [posterEditorController looksForEditor:self];
   [(PUWallpaperPosterEditDebugViewController *)self setAvailableLooks:v5];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v4 initialLookIdentifierForEditor:self];
+    v6 = [posterEditorController initialLookIdentifierForEditor:self];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __65__PUWallpaperPosterEditDebugViewController__updateLookProperties__block_invoke;
@@ -595,8 +595,8 @@ void __60__PUWallpaperPosterEditDebugViewController__dismissAndSave___block_invo
     v8 = [v5 indexOfObjectPassingTest:v10];
     if (v8 == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v9 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v9 handleFailureInMethod:a2 object:self file:@"PUWallpaperPosterEditDebugViewController.m" lineNumber:338 description:@"Initial look is not found among available looks."];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PUWallpaperPosterEditDebugViewController.m" lineNumber:338 description:@"Initial look is not found among available looks."];
     }
 
     [(PUWallpaperPosterEditDebugViewController *)self setCurrentLookIndex:v8];
@@ -616,20 +616,20 @@ uint64_t __65__PUWallpaperPosterEditDebugViewController__updateLookProperties__b
 
 - (void)_setupPosterEditorController
 {
-  v4 = [(PUWallpaperPosterEditDebugViewController *)self posterEditorController];
-  v3 = [(PUWallpaperPosterEditDebugViewController *)self editEnvironment];
-  [v4 editor:self didInitializeWithEnvironment:v3];
+  posterEditorController = [(PUWallpaperPosterEditDebugViewController *)self posterEditorController];
+  editEnvironment = [(PUWallpaperPosterEditDebugViewController *)self editEnvironment];
+  [posterEditorController editor:self didInitializeWithEnvironment:editEnvironment];
 
   [(PUWallpaperPosterEditDebugViewController *)self _updateLooks];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = PUWallpaperPosterEditDebugViewController;
-  [(PUWallpaperPosterEditDebugViewController *)&v5 viewDidDisappear:a3];
-  v4 = [(PUWallpaperPosterEditDebugViewController *)self posterEditorController];
-  [v4 editorDidInvalidate:self];
+  [(PUWallpaperPosterEditDebugViewController *)&v5 viewDidDisappear:disappear];
+  posterEditorController = [(PUWallpaperPosterEditDebugViewController *)self posterEditorController];
+  [posterEditorController editorDidInvalidate:self];
   [(PUWallpaperPosterEditDebugViewController *)self setPosterEditorController:0];
 }
 
@@ -638,9 +638,9 @@ uint64_t __65__PUWallpaperPosterEditDebugViewController__updateLookProperties__b
   v6.receiver = self;
   v6.super_class = PUWallpaperPosterEditDebugViewController;
   [(PUWallpaperPosterEditDebugViewController *)&v6 viewDidLoad];
-  v3 = [MEMORY[0x1E69DC888] grayColor];
-  v4 = [(PUWallpaperPosterEditDebugViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  grayColor = [MEMORY[0x1E69DC888] grayColor];
+  view = [(PUWallpaperPosterEditDebugViewController *)self view];
+  [view setBackgroundColor:grayColor];
 
   [(PUWallpaperPosterEditDebugViewController *)self _setupEditorViews];
   [(PUWallpaperPosterEditDebugViewController *)self _setupSimulatedControls];
@@ -652,22 +652,22 @@ uint64_t __65__PUWallpaperPosterEditDebugViewController__updateLookProperties__b
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-- (PUWallpaperPosterEditDebugViewController)initWithAssets:(id)a3 posterType:(int64_t)a4 photoLibrary:(id)a5
+- (PUWallpaperPosterEditDebugViewController)initWithAssets:(id)assets posterType:(int64_t)type photoLibrary:(id)library
 {
-  v8 = a3;
-  v9 = a5;
+  assetsCopy = assets;
+  libraryCopy = library;
   v18.receiver = self;
   v18.super_class = PUWallpaperPosterEditDebugViewController;
   v10 = [(PUWallpaperPosterEditDebugViewController *)&v18 initWithNibName:0 bundle:0];
   if (v10)
   {
     v11 = PXMap();
-    v12 = [objc_alloc(MEMORY[0x1E69C07F0]) initWithDescriptorType:a4 media:v11];
+    v12 = [objc_alloc(MEMORY[0x1E69C07F0]) initWithDescriptorType:type media:v11];
     v13 = [[_PUWallpaperPosterEditorDebugEnvironment alloc] initWithPosterDescriptor:v12];
     editEnvironment = v10->_editEnvironment;
     v10->_editEnvironment = v13;
 
-    v15 = [[PUWallpaperPosterEditorController alloc] initWithWallpaperEditor:v10 photoLibrary:v9];
+    v15 = [[PUWallpaperPosterEditorController alloc] initWithWallpaperEditor:v10 photoLibrary:libraryCopy];
     posterEditorController = v10->_posterEditorController;
     v10->_posterEditorController = v15;
   }
@@ -687,22 +687,22 @@ id __83__PUWallpaperPosterEditDebugViewController_initWithAssets_posterType_phot
   return v6;
 }
 
-- (PUWallpaperPosterEditDebugViewController)initWithExistingConfiguration:(id)a3 assetDirectory:(id)a4 overrideConfiguration:(id)a5 photoLibrary:(id)a6
+- (PUWallpaperPosterEditDebugViewController)initWithExistingConfiguration:(id)configuration assetDirectory:(id)directory overrideConfiguration:(id)overrideConfiguration photoLibrary:(id)library
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
+  configurationCopy = configuration;
+  overrideConfigurationCopy = overrideConfiguration;
+  libraryCopy = library;
   v18.receiver = self;
   v18.super_class = PUWallpaperPosterEditDebugViewController;
   v12 = [(PUWallpaperPosterEditDebugViewController *)&v18 initWithNibName:0 bundle:0];
   if (v12)
   {
-    v13 = [[_PUWallpaperPosterEditorDebugEnvironment alloc] initWithSourcePosterConfiguration:v9];
+    v13 = [[_PUWallpaperPosterEditorDebugEnvironment alloc] initWithSourcePosterConfiguration:configurationCopy];
     editEnvironment = v12->_editEnvironment;
     v12->_editEnvironment = v13;
 
-    [(_PUWallpaperPosterEditorDebugEnvironment *)v12->_editEnvironment setOverrideConfiguration:v10];
-    v15 = [[PUWallpaperPosterEditorController alloc] initWithWallpaperEditor:v12 photoLibrary:v11];
+    [(_PUWallpaperPosterEditorDebugEnvironment *)v12->_editEnvironment setOverrideConfiguration:overrideConfigurationCopy];
+    v15 = [[PUWallpaperPosterEditorController alloc] initWithWallpaperEditor:v12 photoLibrary:libraryCopy];
     posterEditorController = v12->_posterEditorController;
     v12->_posterEditorController = v15;
   }
@@ -710,10 +710,10 @@ id __83__PUWallpaperPosterEditDebugViewController_initWithAssets_posterType_phot
   return v12;
 }
 
-- (PUWallpaperPosterEditDebugViewController)initWithMigratorOfLegacyConfigurationType:(unint64_t)a3 photoLibrary:(id)a4
+- (PUWallpaperPosterEditDebugViewController)initWithMigratorOfLegacyConfigurationType:(unint64_t)type photoLibrary:(id)library
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  libraryCopy = library;
   v17.receiver = self;
   v17.super_class = PUWallpaperPosterEditDebugViewController;
   v7 = [(PUWallpaperPosterEditDebugViewController *)&v17 initWithNibName:0 bundle:0];
@@ -733,8 +733,8 @@ id __83__PUWallpaperPosterEditDebugViewController_initWithAssets_posterType_phot
     v13 = [MEMORY[0x1E695DFF8] fileURLWithPath:@"/var/tmp/PhotosPosterMigration/"];
     [(_PUWallpaperPosterEditorDebugEnvironment *)v7->_editEnvironment setSourceAssetDirectory:v13];
 
-    [(_PUWallpaperPosterEditorDebugEnvironment *)v7->_editEnvironment setLegacyConfigurationType:a3];
-    v14 = [[PUWallpaperPosterEditorController alloc] initWithWallpaperEditor:v7 photoLibrary:v6];
+    [(_PUWallpaperPosterEditorDebugEnvironment *)v7->_editEnvironment setLegacyConfigurationType:type];
+    v14 = [[PUWallpaperPosterEditorController alloc] initWithWallpaperEditor:v7 photoLibrary:libraryCopy];
     posterEditorController = v7->_posterEditorController;
     v7->_posterEditorController = v14;
   }
@@ -742,29 +742,29 @@ id __83__PUWallpaperPosterEditDebugViewController_initWithAssets_posterType_phot
   return v7;
 }
 
-- (PUWallpaperPosterEditDebugViewController)initWithAsset:(id)a3 posterType:(int64_t)a4
+- (PUWallpaperPosterEditDebugViewController)initWithAsset:(id)asset posterType:(int64_t)type
 {
   v13 = *MEMORY[0x1E69E9840];
-  v12 = a3;
+  assetCopy = asset;
   v6 = MEMORY[0x1E695DEC8];
-  v7 = a3;
-  v8 = [v6 arrayWithObjects:&v12 count:1];
-  v9 = [v7 photoLibrary];
+  assetCopy2 = asset;
+  v8 = [v6 arrayWithObjects:&assetCopy count:1];
+  photoLibrary = [assetCopy2 photoLibrary];
 
-  v10 = [(PUWallpaperPosterEditDebugViewController *)self initWithAssets:v8 posterType:a4 photoLibrary:v9];
+  v10 = [(PUWallpaperPosterEditDebugViewController *)self initWithAssets:v8 posterType:type photoLibrary:photoLibrary];
   return v10;
 }
 
-- (PUWallpaperPosterEditDebugViewController)initWithAsset:(id)a3
+- (PUWallpaperPosterEditDebugViewController)initWithAsset:(id)asset
 {
   v11 = *MEMORY[0x1E69E9840];
-  v10 = a3;
+  assetCopy = asset;
   v4 = MEMORY[0x1E695DEC8];
-  v5 = a3;
-  v6 = [v4 arrayWithObjects:&v10 count:1];
-  v7 = [v5 photoLibrary];
+  assetCopy2 = asset;
+  v6 = [v4 arrayWithObjects:&assetCopy count:1];
+  photoLibrary = [assetCopy2 photoLibrary];
 
-  v8 = [(PUWallpaperPosterEditDebugViewController *)self initWithAssets:v6 posterType:1 photoLibrary:v7];
+  v8 = [(PUWallpaperPosterEditDebugViewController *)self initWithAssets:v6 posterType:1 photoLibrary:photoLibrary];
   return v8;
 }
 

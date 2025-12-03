@@ -3,9 +3,9 @@
 - (BOOL)hasInitialData;
 - (_TtC4Maps31HomeRecentsCellSnapshotProvider)init;
 - (id)observers;
-- (void)homeDataProvidingObjectDidUpdate:(id)a3;
-- (void)setActive:(BOOL)a3;
-- (void)setObservers:(id)a3;
+- (void)homeDataProvidingObjectDidUpdate:(id)update;
+- (void)setActive:(BOOL)active;
+- (void)setObservers:(id)observers;
 @end
 
 @implementation HomeRecentsCellSnapshotProvider
@@ -14,60 +14,60 @@
 {
   swift_getKeyPath();
   sub_1000D6850(&qword_101923EE0, type metadata accessor for HomeRecentsCellSnapshotProvider);
-  v3 = self;
+  selfCopy = self;
   ObservationRegistrar.access<A, B>(_:keyPath:)();
 
-  v4 = *(&v3->super.isa + OBJC_IVAR____TtC4Maps31HomeRecentsCellSnapshotProvider__observers);
+  v4 = *(&selfCopy->super.isa + OBJC_IVAR____TtC4Maps31HomeRecentsCellSnapshotProvider__observers);
   v5 = v4;
 
   return v4;
 }
 
-- (void)setObservers:(id)a3
+- (void)setObservers:(id)observers
 {
-  v4 = a3;
-  v5 = self;
-  sub_1000D4828(v4);
+  observersCopy = observers;
+  selfCopy = self;
+  sub_1000D4828(observersCopy);
 }
 
 - (BOOL)active
 {
   swift_getKeyPath();
   sub_1000D6850(&qword_101923EE0, type metadata accessor for HomeRecentsCellSnapshotProvider);
-  v3 = self;
+  selfCopy = self;
   ObservationRegistrar.access<A, B>(_:keyPath:)();
 
-  LOBYTE(self) = *(&v3->super.isa + OBJC_IVAR____TtC4Maps31HomeRecentsCellSnapshotProvider__active);
+  LOBYTE(self) = *(&selfCopy->super.isa + OBJC_IVAR____TtC4Maps31HomeRecentsCellSnapshotProvider__active);
 
   return self;
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
-  v4 = self;
-  sub_1000D50F0(a3);
+  selfCopy = self;
+  sub_1000D50F0(active);
 }
 
 - (BOOL)hasInitialData
 {
   v2 = *(&self->super.isa + OBJC_IVAR____TtC4Maps31HomeRecentsCellSnapshotProvider_recentsDataProvider);
-  v3 = self;
+  selfCopy = self;
   if ([v2 hasInitialData])
   {
-    v4 = 1;
+    hasInitialData = 1;
   }
 
   else
   {
-    v4 = [*(&v3->super.isa + OBJC_IVAR____TtC4Maps31HomeRecentsCellSnapshotProvider_markedLocationDataProvider) hasInitialData];
+    hasInitialData = [*(&selfCopy->super.isa + OBJC_IVAR____TtC4Maps31HomeRecentsCellSnapshotProvider_markedLocationDataProvider) hasInitialData];
   }
 
-  return v4;
+  return hasInitialData;
 }
 
-- (void)homeDataProvidingObjectDidUpdate:(id)a3
+- (void)homeDataProvidingObjectDidUpdate:(id)update
 {
-  v3 = self;
+  selfCopy = self;
   sub_1000D4C6C();
 }
 

@@ -1,15 +1,15 @@
 @interface BiomeEventGraphsPublisher
 - (NSArray)bookmarkableUpstreams;
 - (_TtC26AIMLInstrumentationStreams25BiomeEventGraphsPublisher)init;
-- (void)subscribe:(id)a3;
+- (void)subscribe:(id)subscribe;
 @end
 
 @implementation BiomeEventGraphsPublisher
 
-- (void)subscribe:(id)a3
+- (void)subscribe:(id)subscribe
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_23C5A4C10();
   swift_unknownObjectRelease();
 }

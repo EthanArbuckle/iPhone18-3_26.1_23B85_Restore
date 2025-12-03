@@ -1,12 +1,12 @@
 @interface SearchResultsContextCardCollectionViewCell
-- (_TtC8AppStore42SearchResultsContextCardCollectionViewCell)initWithCoder:(id)a3;
+- (_TtC8AppStore42SearchResultsContextCardCollectionViewCell)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 @end
 
 @implementation SearchResultsContextCardCollectionViewCell
 
-- (_TtC8AppStore42SearchResultsContextCardCollectionViewCell)initWithCoder:(id)a3
+- (_TtC8AppStore42SearchResultsContextCardCollectionViewCell)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC8AppStore42SearchResultsContextCardCollectionViewCell_itemLayoutContext;
   v5 = type metadata accessor for ItemLayoutContext();

@@ -2,23 +2,23 @@
 - (const)top;
 - (id).cxx_construct;
 - (void)pop;
-- (void)push:(const TSTExprNodeInsertWork *)a3;
+- (void)push:(const TSTExprNodeInsertWork *)push;
 @end
 
 @implementation TSTDeferredInsertStack
 
-- (void)push:(const TSTExprNodeInsertWork *)a3
+- (void)push:(const TSTExprNodeInsertWork *)push
 {
   end = self->_deferredWorkStack.__end_;
   if (end >= self->_deferredWorkStack.__cap_)
   {
-    v8 = sub_22124BEDC(&self->_deferredWorkStack, a3);
+    v8 = sub_22124BEDC(&self->_deferredWorkStack, push);
   }
 
   else
   {
-    v6 = a3->var0;
-    var1 = a3->var1;
+    v6 = push->var0;
+    var1 = push->var1;
     end->var0 = v6;
     end->var1 = var1;
     v8 = end + 1;

@@ -7,7 +7,7 @@
 
 - (uint64_t)arrayMaxCountForWidgetFamily:()CHSWidgetFamily
 {
-  v1 = [a1 arraySizeRangeForCHSWidgetFamily:?];
+  v1 = [self arraySizeRangeForCHSWidgetFamily:?];
   if (v2 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v3 = 0x7FFFFFFFFFFFFFFFLL;
@@ -41,7 +41,7 @@
 
   v8 = v7;
 
-  v9 = [a1 arraySizeRangeForWidgetFamily:v8];
+  v9 = [self arraySizeRangeForWidgetFamily:v8];
   if (v9 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v10 = INCodableAttributeArraySizeClassFromCHSWidgetFamily(a3);
@@ -54,7 +54,7 @@
 
     v13 = v12;
 
-    v9 = [a1 arraySizeForWidgetSizeClass:v13];
+    v9 = [self arraySizeForWidgetSizeClass:v13];
   }
 
   return v9;

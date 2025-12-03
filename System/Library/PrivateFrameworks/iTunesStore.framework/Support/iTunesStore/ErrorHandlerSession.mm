@@ -1,9 +1,9 @@
 @interface ErrorHandlerSession
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (ErrorHandlerSession)init;
-- (id)valueForSessionProperty:(id)a3;
+- (id)valueForSessionProperty:(id)property;
 - (void)dealloc;
-- (void)setValue:(id)a3 forSessionProperty:(id)a4;
+- (void)setValue:(id)value forSessionProperty:(id)property;
 @end
 
 @implementation ErrorHandlerSession
@@ -30,10 +30,10 @@
   [(ErrorHandlerSession *)&v3 dealloc];
 }
 
-- (void)setValue:(id)a3 forSessionProperty:(id)a4
+- (void)setValue:(id)value forSessionProperty:(id)property
 {
   sessionProperties = self->_sessionProperties;
-  if (a3)
+  if (value)
   {
     if (!sessionProperties)
     {
@@ -41,24 +41,24 @@
       self->_sessionProperties = sessionProperties;
     }
 
-    [(NSMutableDictionary *)sessionProperties setObject:a3 forKey:a4];
+    [(NSMutableDictionary *)sessionProperties setObject:value forKey:property];
   }
 
   else
   {
 
-    [(NSMutableDictionary *)sessionProperties removeObjectForKey:a4];
+    [(NSMutableDictionary *)sessionProperties removeObjectForKey:property];
   }
 }
 
-- (id)valueForSessionProperty:(id)a3
+- (id)valueForSessionProperty:(id)property
 {
-  v3 = [(NSMutableDictionary *)self->_sessionProperties objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->_sessionProperties objectForKey:property];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v5 = objc_opt_class();
   if (v5 != objc_opt_class())
@@ -66,8 +66,8 @@
     return 0;
   }
 
-  v7 = [(ErrorHandlerSession *)self sessionIdentifier];
-  return v7 == [a3 sessionIdentifier];
+  sessionIdentifier = [(ErrorHandlerSession *)self sessionIdentifier];
+  return sessionIdentifier == [equal sessionIdentifier];
 }
 
 @end

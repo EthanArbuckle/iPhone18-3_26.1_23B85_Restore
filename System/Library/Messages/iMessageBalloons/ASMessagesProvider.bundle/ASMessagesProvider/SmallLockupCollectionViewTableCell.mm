@@ -1,11 +1,11 @@
 @interface SmallLockupCollectionViewTableCell
-- (_TtC18ASMessagesProvider34SmallLockupCollectionViewTableCell)initWithCoder:(id)a3;
+- (_TtC18ASMessagesProvider34SmallLockupCollectionViewTableCell)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 @end
 
 @implementation SmallLockupCollectionViewTableCell
 
-- (_TtC18ASMessagesProvider34SmallLockupCollectionViewTableCell)initWithCoder:(id)a3
+- (_TtC18ASMessagesProvider34SmallLockupCollectionViewTableCell)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC18ASMessagesProvider34SmallLockupCollectionViewTableCell_lockupView;
   type metadata accessor for SmallLockupView();
@@ -17,7 +17,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_43AF2C();
 }
 

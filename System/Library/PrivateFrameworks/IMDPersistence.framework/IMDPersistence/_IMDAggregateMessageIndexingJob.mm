@@ -1,17 +1,17 @@
 @interface _IMDAggregateMessageIndexingJob
-+ (id)_classNamesOfObjects:(id)a3;
-- (_IMDAggregateMessageIndexingJob)initWithIntegrations:(id)a3 size:(int64_t)a4 context:(id)a5;
-- (void)finishWithCompletion:(id)a3;
-- (void)processMessageDictionary:(id)a3 chatDictionary:(id)a4;
++ (id)_classNamesOfObjects:(id)objects;
+- (_IMDAggregateMessageIndexingJob)initWithIntegrations:(id)integrations size:(int64_t)size context:(id)context;
+- (void)finishWithCompletion:(id)completion;
+- (void)processMessageDictionary:(id)dictionary chatDictionary:(id)chatDictionary;
 @end
 
 @implementation _IMDAggregateMessageIndexingJob
 
-- (_IMDAggregateMessageIndexingJob)initWithIntegrations:(id)a3 size:(int64_t)a4 context:(id)a5
+- (_IMDAggregateMessageIndexingJob)initWithIntegrations:(id)integrations size:(int64_t)size context:(id)context
 {
   v42 = *MEMORY[0x1E69E9840];
-  v34 = a3;
-  v8 = a5;
+  integrationsCopy = integrations;
+  contextCopy = context;
   v40.receiver = self;
   v40.super_class = _IMDAggregateMessageIndexingJob;
   v9 = [(_IMDAggregateMessageIndexingJob *)&v40 init];
@@ -33,7 +33,7 @@
   v39 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v15 = v34;
+  v15 = integrationsCopy;
   v17 = objc_msgSend_countByEnumeratingWithState_objects_count_(v15, v16, &v36, v41, 16);
   if (v17)
   {
@@ -51,7 +51,7 @@
         v20 = *(*(&v36 + 1) + 8 * v19);
         if (objc_opt_respondsToSelector())
         {
-          v23 = objc_msgSend_messageIndexingJobWithSize_context_timingCollection_(v20, v21, a4, v8, v9->_timing);
+          v23 = objc_msgSend_messageIndexingJobWithSize_context_timingCollection_(v20, v21, size, contextCopy, v9->_timing);
           if (v23)
           {
             objc_msgSend_addObject_(v14, v22, v23);
@@ -96,20 +96,20 @@ LABEL_21:
   return v30;
 }
 
-+ (id)_classNamesOfObjects:(id)a3
++ (id)_classNamesOfObjects:(id)objects
 {
   v35 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (objc_msgSend_count(v3, v4, v5))
+  objectsCopy = objects;
+  if (objc_msgSend_count(objectsCopy, v4, v5))
   {
     v8 = MEMORY[0x1E695DF70];
-    v9 = objc_msgSend_count(v3, v6, v7);
+    v9 = objc_msgSend_count(objectsCopy, v6, v7);
     v11 = objc_msgSend_arrayWithCapacity_(v8, v10, v9);
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v12 = v3;
+    v12 = objectsCopy;
     v14 = objc_msgSend_countByEnumeratingWithState_objects_count_(v12, v13, &v30, v34, 16);
     if (v14)
     {
@@ -155,10 +155,10 @@ LABEL_21:
   return v27;
 }
 
-- (void)finishWithCompletion:(id)a3
+- (void)finishWithCompletion:(id)completion
 {
   v42 = *MEMORY[0x1E69E9840];
-  v27 = a3;
+  completionCopy = completion;
   v39[0] = 0;
   v39[1] = v39;
   v39[2] = 0x3032000000;
@@ -198,7 +198,7 @@ LABEL_21:
         v34 = v39;
         v31 = v9;
         v32 = v19;
-        v33 = self;
+        selfCopy = self;
         objc_msgSend_finishWithCompletion_(v19, v21, v30);
       }
 
@@ -212,18 +212,18 @@ LABEL_21:
   v25 = IMDIndexingClientRequestQueue();
   dispatch_time(0, 120000000000);
   v28 = v9;
-  v29 = v27;
+  v29 = completionCopy;
   IMDispatchGroupNotifyWithTimeout();
 
   _Block_object_dispose(v39, 8);
   v26 = *MEMORY[0x1E69E9840];
 }
 
-- (void)processMessageDictionary:(id)a3 chatDictionary:(id)a4
+- (void)processMessageDictionary:(id)dictionary chatDictionary:(id)chatDictionary
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  chatDictionaryCopy = chatDictionary;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
@@ -244,7 +244,7 @@ LABEL_21:
           objc_enumerationMutation(v10);
         }
 
-        objc_msgSend_processMessageDictionary_chatDictionary_(*(*(&v18 + 1) + 8 * v16++), v13, v6, v7);
+        objc_msgSend_processMessageDictionary_chatDictionary_(*(*(&v18 + 1) + 8 * v16++), v13, dictionaryCopy, chatDictionaryCopy);
       }
 
       while (v14 != v16);

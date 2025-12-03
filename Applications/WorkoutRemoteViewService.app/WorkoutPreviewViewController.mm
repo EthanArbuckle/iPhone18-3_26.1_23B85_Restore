@@ -1,16 +1,16 @@
 @interface WorkoutPreviewViewController
-- (WorkoutPreviewViewController)initWithCoder:(id)a3;
-- (WorkoutPreviewViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (WorkoutPreviewViewController)initWithCoder:(id)coder;
+- (WorkoutPreviewViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)dismissView;
-- (void)presentWorkoutDataRepresentation:(id)a3;
+- (void)presentWorkoutDataRepresentation:(id)representation;
 @end
 
 @implementation WorkoutPreviewViewController
 
 - (void)dismissView
 {
-  v3 = self;
-  v2 = WorkoutRemoteViewServiceExportedInterfaceFunc([(WorkoutPreviewViewController *)v3 _remoteViewControllerProxy]);
+  selfCopy = self;
+  v2 = WorkoutRemoteViewServiceExportedInterfaceFunc([(WorkoutPreviewViewController *)selfCopy _remoteViewControllerProxy]);
   swift_unknownObjectRelease();
   if (v2)
   {
@@ -19,37 +19,37 @@
   }
 }
 
-- (WorkoutPreviewViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (WorkoutPreviewViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
     *(&self->super.super.super.isa + OBJC_IVAR___WorkoutPreviewViewController____lazy_storage___formattingManager) = 0;
-    v6 = a4;
+    bundleCopy = bundle;
     v7 = String._bridgeToObjectiveC()();
   }
 
   else
   {
     *(&self->super.super.super.isa + OBJC_IVAR___WorkoutPreviewViewController____lazy_storage___formattingManager) = 0;
-    v8 = a4;
+    bundleCopy2 = bundle;
     v7 = 0;
   }
 
   v11.receiver = self;
   v11.super_class = type metadata accessor for WorkoutPreviewViewController();
-  v9 = [(WorkoutPreviewViewController *)&v11 initWithNibName:v7 bundle:a4];
+  v9 = [(WorkoutPreviewViewController *)&v11 initWithNibName:v7 bundle:bundle];
 
   return v9;
 }
 
-- (WorkoutPreviewViewController)initWithCoder:(id)a3
+- (WorkoutPreviewViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR___WorkoutPreviewViewController____lazy_storage___formattingManager) = 0;
   v7.receiver = self;
   v7.super_class = type metadata accessor for WorkoutPreviewViewController();
-  v4 = a3;
-  v5 = [(WorkoutPreviewViewController *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(WorkoutPreviewViewController *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {
@@ -58,10 +58,10 @@
   return v5;
 }
 
-- (void)presentWorkoutDataRepresentation:(id)a3
+- (void)presentWorkoutDataRepresentation:(id)representation
 {
-  v4 = a3;
-  v5 = self;
+  representationCopy = representation;
+  selfCopy = self;
   v6 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v8 = v7;
 

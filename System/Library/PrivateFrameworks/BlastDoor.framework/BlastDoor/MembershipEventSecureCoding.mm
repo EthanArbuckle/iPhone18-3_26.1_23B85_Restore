@@ -1,15 +1,15 @@
 @interface MembershipEventSecureCoding
 - (_TtC9BlastDoor27MembershipEventSecureCoding)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MembershipEventSecureCoding
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_214677B98(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_214677B98(coderCopy);
 }
 
 - (_TtC9BlastDoor27MembershipEventSecureCoding)init

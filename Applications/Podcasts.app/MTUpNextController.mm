@@ -2,40 +2,40 @@
 + (id)_encodedUpNextClasses;
 + (id)_filePath;
 + (id)unarchivedIdentifiers;
-- (BOOL)containsEpisodeUuid:(id)a3;
+- (BOOL)containsEpisodeUuid:(id)uuid;
 - (BOOL)isPlayingFromUpNext;
-- (BOOL)moveEpisodeFrom:(unint64_t)a3 to:(unint64_t)a4;
+- (BOOL)moveEpisodeFrom:(unint64_t)from to:(unint64_t)to;
 - (MTPlayerController)playerController;
-- (MTUpNextController)initWithPlayerController:(id)a3;
+- (MTUpNextController)initWithPlayerController:(id)controller;
 - (NSArray)items;
 - (id)_encodedUpNext;
 - (unint64_t)_currentUpNextIndex;
 - (unint64_t)count;
-- (void)_reportUpNextChangeType:(id)a3 forPlayerItem:(id)a4 withData:(id)a5;
-- (void)_reportUpNextChangeType:(id)a3 forPlayerItems:(id)a4 withData:(id)a5;
+- (void)_reportUpNextChangeType:(id)type forPlayerItem:(id)item withData:(id)data;
+- (void)_reportUpNextChangeType:(id)type forPlayerItems:(id)items withData:(id)data;
 - (void)_restoreUpNext;
 - (void)_upNextDidChange;
-- (void)addEpisodeUuidToPlayNext:(id)a3;
-- (void)addEpisodeUuidToUpNext:(id)a3;
-- (void)addEpisodeUuidsToPlayNext:(id)a3;
-- (void)addEpisodeUuidsToUpNext:(id)a3;
-- (void)addPlayerItemToPlayNext:(id)a3;
-- (void)addPlayerItemToUpNext:(id)a3;
-- (void)addPlayerItemsToPlayNext:(id)a3;
-- (void)addPlayerItemsToUpNext:(id)a3;
+- (void)addEpisodeUuidToPlayNext:(id)next;
+- (void)addEpisodeUuidToUpNext:(id)next;
+- (void)addEpisodeUuidsToPlayNext:(id)next;
+- (void)addEpisodeUuidsToUpNext:(id)next;
+- (void)addPlayerItemToPlayNext:(id)next;
+- (void)addPlayerItemToUpNext:(id)next;
+- (void)addPlayerItemsToPlayNext:(id)next;
+- (void)addPlayerItemsToUpNext:(id)next;
 - (void)beginUpdates;
 - (void)clear;
 - (void)clearQueueItems;
 - (void)endUpdates;
-- (void)removeEpisodeAtIndex:(unint64_t)a3;
-- (void)removeEpisodesForUuid:(id)a3;
+- (void)removeEpisodeAtIndex:(unint64_t)index;
+- (void)removeEpisodesForUuid:(id)uuid;
 @end
 
 @implementation MTUpNextController
 
-- (MTUpNextController)initWithPlayerController:(id)a3
+- (MTUpNextController)initWithPlayerController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v11.receiver = self;
   v11.super_class = MTUpNextController;
   v5 = [(MTUpNextController *)&v11 init];
@@ -49,31 +49,31 @@
     saveController = v5->_saveController;
     v5->_saveController = v8;
 
-    objc_storeWeak(&v5->_playerController, v4);
+    objc_storeWeak(&v5->_playerController, controllerCopy);
     [(MTUpNextController *)v5 _restoreUpNext];
   }
 
   return v5;
 }
 
-- (void)addEpisodeUuidToUpNext:(id)a3
+- (void)addEpisodeUuidToUpNext:(id)next
 {
-  v4 = [MTBaseEpisodeListManifest mediaItemForEpisodeWithUUID:a3];
+  v4 = [MTBaseEpisodeListManifest mediaItemForEpisodeWithUUID:next];
   [(MTUpNextController *)self addPlayerItemToUpNext:v4];
 }
 
-- (void)addEpisodeUuidsToUpNext:(id)a3
+- (void)addEpisodeUuidsToUpNext:(id)next
 {
-  v4 = a3;
-  if ([v4 count])
+  nextCopy = next;
+  if ([nextCopy count])
   {
-    v14 = self;
-    v5 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v4 count]);
+    selfCopy = self;
+    v5 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [nextCopy count]);
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v6 = v4;
+    v6 = nextCopy;
     v7 = [v6 countByEnumeratingWithState:&v15 objects:v21 count:16];
     if (v7)
     {
@@ -93,9 +93,9 @@
           v12 = _MTLogCategoryPlayback();
           if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
           {
-            v13 = [v11 title];
+            title = [v11 title];
             *buf = 138412290;
-            v20 = v13;
+            v20 = title;
             _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEBUG, "Added episode to array to add to Up Next Queue: %@", buf, 0xCu);
           }
         }
@@ -106,27 +106,27 @@
       while (v8);
     }
 
-    [(MTUpNextController *)v14 addPlayerItemsToUpNext:v5];
+    [(MTUpNextController *)selfCopy addPlayerItemsToUpNext:v5];
   }
 }
 
-- (void)addPlayerItemToUpNext:(id)a3
+- (void)addPlayerItemToUpNext:(id)next
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  nextCopy = next;
+  v5 = nextCopy;
+  if (nextCopy)
   {
-    [v4 setEditingStyleFlags:3];
-    v6 = [(MTUpNextController *)self playerItems];
-    [v6 addObject:v5];
+    [nextCopy setEditingStyleFlags:3];
+    playerItems = [(MTUpNextController *)self playerItems];
+    [playerItems addObject:v5];
 
     [(MTUpNextController *)self _upNextDidChange];
     v7 = _MTLogCategoryPlayback();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
-      v8 = [v5 title];
+      title = [v5 title];
       v9 = 138412290;
-      v10 = v8;
+      v10 = title;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "Added episode to Up Next Queue: %@", &v9, 0xCu);
     }
 
@@ -134,16 +134,16 @@
   }
 }
 
-- (void)addPlayerItemsToUpNext:(id)a3
+- (void)addPlayerItemsToUpNext:(id)next
 {
-  v4 = a3;
-  if ([v4 count])
+  nextCopy = next;
+  if ([nextCopy count])
   {
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v5 = v4;
+    v5 = nextCopy;
     v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v6)
     {
@@ -170,8 +170,8 @@
       while (v7);
     }
 
-    v10 = [(MTUpNextController *)self playerItems];
-    [v10 addObjectsFromArray:v5];
+    playerItems = [(MTUpNextController *)self playerItems];
+    [playerItems addObjectsFromArray:v5];
 
     [(MTUpNextController *)self _upNextDidChange];
     v11 = _MTLogCategoryPlayback();
@@ -185,24 +185,24 @@
   }
 }
 
-- (void)addEpisodeUuidToPlayNext:(id)a3
+- (void)addEpisodeUuidToPlayNext:(id)next
 {
-  v4 = [MTBaseEpisodeListManifest mediaItemForEpisodeWithUUID:a3];
+  v4 = [MTBaseEpisodeListManifest mediaItemForEpisodeWithUUID:next];
   [(MTUpNextController *)self addPlayerItemToUpNext:v4];
 }
 
-- (void)addEpisodeUuidsToPlayNext:(id)a3
+- (void)addEpisodeUuidsToPlayNext:(id)next
 {
-  v4 = a3;
-  if ([v4 count])
+  nextCopy = next;
+  if ([nextCopy count])
   {
-    v14 = self;
-    v5 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v4 count]);
+    selfCopy = self;
+    v5 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [nextCopy count]);
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v6 = v4;
+    v6 = nextCopy;
     v7 = [v6 countByEnumeratingWithState:&v15 objects:v21 count:16];
     if (v7)
     {
@@ -222,9 +222,9 @@
           v12 = _MTLogCategoryPlayback();
           if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
           {
-            v13 = [v11 title];
+            title = [v11 title];
             *buf = 138412290;
-            v20 = v13;
+            v20 = title;
             _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEBUG, "Added episode to array to add to Up Next Queue: %@", buf, 0xCu);
           }
         }
@@ -235,17 +235,17 @@
       while (v8);
     }
 
-    [(MTUpNextController *)v14 addPlayerItemsToPlayNext:v5];
+    [(MTUpNextController *)selfCopy addPlayerItemsToPlayNext:v5];
   }
 }
 
-- (void)addPlayerItemToPlayNext:(id)a3
+- (void)addPlayerItemToPlayNext:(id)next
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  nextCopy = next;
+  v5 = nextCopy;
+  if (nextCopy)
   {
-    [v4 setEditingStyleFlags:3];
+    [nextCopy setEditingStyleFlags:3];
     if ([(MTUpNextController *)self isPlayingFromUpNext])
     {
       v6 = [(MTUpNextController *)self _currentUpNextIndex]+ 1;
@@ -256,16 +256,16 @@
       v6 = 0;
     }
 
-    v7 = [(MTUpNextController *)self playerItems];
-    [v7 insertObject:v5 atIndex:v6];
+    playerItems = [(MTUpNextController *)self playerItems];
+    [playerItems insertObject:v5 atIndex:v6];
 
     [(MTUpNextController *)self _upNextDidChange];
     v8 = _MTLogCategoryPlayback();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
-      v9 = [v5 title];
+      title = [v5 title];
       *buf = 138412546;
-      v15 = v9;
+      v15 = title;
       v16 = 2048;
       v17 = v6;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "Added episode to Play Next \bQueue: %@ at index: %lu", buf, 0x16u);
@@ -278,16 +278,16 @@
   }
 }
 
-- (void)addPlayerItemsToPlayNext:(id)a3
+- (void)addPlayerItemsToPlayNext:(id)next
 {
-  v4 = a3;
-  if ([v4 count])
+  nextCopy = next;
+  if ([nextCopy count])
   {
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v5 = v4;
+    v5 = nextCopy;
     v6 = [v5 countByEnumeratingWithState:&v16 objects:v24 count:16];
     if (v6)
     {
@@ -325,8 +325,8 @@
     }
 
     v11 = +[NSIndexSet indexSetWithIndexesInRange:](NSIndexSet, "indexSetWithIndexesInRange:", v10, [v5 count]);
-    v12 = [(MTUpNextController *)self playerItems];
-    [v12 insertObjects:v5 atIndexes:v11];
+    playerItems = [(MTUpNextController *)self playerItems];
+    [playerItems insertObjects:v5 atIndexes:v11];
 
     [(MTUpNextController *)self _upNextDidChange];
     v13 = _MTLogCategoryPlayback();
@@ -345,11 +345,11 @@
   }
 }
 
-- (BOOL)containsEpisodeUuid:(id)a3
+- (BOOL)containsEpisodeUuid:(id)uuid
 {
-  v4 = a3;
-  v5 = [(MTUpNextController *)self playerItems];
-  v6 = [v5 copy];
+  uuidCopy = uuid;
+  playerItems = [(MTUpNextController *)self playerItems];
+  v6 = [playerItems copy];
 
   v16 = 0u;
   v17 = 0u;
@@ -369,8 +369,8 @@
           objc_enumerationMutation(v7);
         }
 
-        v11 = [*(*(&v14 + 1) + 8 * i) episodeUuid];
-        v12 = [v11 isEqualToString:v4];
+        episodeUuid = [*(*(&v14 + 1) + 8 * i) episodeUuid];
+        v12 = [episodeUuid isEqualToString:uuidCopy];
 
         if (v12)
         {
@@ -394,63 +394,63 @@ LABEL_11:
   return v8;
 }
 
-- (void)removeEpisodeAtIndex:(unint64_t)a3
+- (void)removeEpisodeAtIndex:(unint64_t)index
 {
-  if ([(MTUpNextController *)self count]> a3)
+  if ([(MTUpNextController *)self count]> index)
   {
-    v5 = [(MTUpNextController *)self playerItems];
-    v6 = [v5 objectAtIndex:a3];
+    playerItems = [(MTUpNextController *)self playerItems];
+    v6 = [playerItems objectAtIndex:index];
 
-    v7 = [(MTUpNextController *)self playerItems];
-    [v7 removeObjectAtIndex:a3];
+    playerItems2 = [(MTUpNextController *)self playerItems];
+    [playerItems2 removeObjectAtIndex:index];
 
     [(MTUpNextController *)self _upNextDidChange];
     v8 = _MTLogCategoryPlayback();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
-      v9 = [v6 title];
+      title = [v6 title];
       *buf = 138412546;
-      v15 = v9;
+      v15 = title;
       v16 = 2048;
-      v17 = a3;
+      indexCopy = index;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "Removed item from Up Next Controller items: %@ from index: %lu", buf, 0x16u);
     }
 
-    v10 = [NSNumber numberWithUnsignedInteger:a3, @"index"];
+    v10 = [NSNumber numberWithUnsignedInteger:index, @"index"];
     v13 = v10;
     v11 = [NSDictionary dictionaryWithObjects:&v13 forKeys:&v12 count:1];
     [(MTUpNextController *)self _reportUpNextChangeType:@"remove_index" forPlayerItem:v6 withData:v11];
   }
 }
 
-- (void)removeEpisodesForUuid:(id)a3
+- (void)removeEpisodesForUuid:(id)uuid
 {
-  v4 = a3;
-  v5 = [(MTUpNextController *)self playerItems];
+  uuidCopy = uuid;
+  playerItems = [(MTUpNextController *)self playerItems];
   v13 = _NSConcreteStackBlock;
   v14 = 3221225472;
   v15 = sub_1001195D8;
   v16 = &unk_1004DCE10;
-  v17 = v4;
-  v18 = self;
-  v6 = v4;
-  v7 = [v5 indexesOfObjectsPassingTest:&v13];
+  v17 = uuidCopy;
+  selfCopy = self;
+  v6 = uuidCopy;
+  v7 = [playerItems indexesOfObjectsPassingTest:&v13];
 
   if ([v7 firstIndex] != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v8 = [(MTUpNextController *)self playerItems];
-    v9 = [v8 objectAtIndex:{objc_msgSend(v7, "firstIndex")}];
+    playerItems2 = [(MTUpNextController *)self playerItems];
+    v9 = [playerItems2 objectAtIndex:{objc_msgSend(v7, "firstIndex")}];
 
-    v10 = [(MTUpNextController *)self playerItems];
-    [v10 removeObjectsAtIndexes:v7];
+    playerItems3 = [(MTUpNextController *)self playerItems];
+    [playerItems3 removeObjectsAtIndexes:v7];
 
     [(MTUpNextController *)self _upNextDidChange];
     v11 = _MTLogCategoryPlayback();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
-      v12 = [v9 title];
+      title = [v9 title];
       *buf = 138412290;
-      v20 = v12;
+      v20 = title;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEBUG, "Removed item from Up Next Controller items: %@", buf, 0xCu);
     }
 
@@ -458,44 +458,44 @@ LABEL_11:
   }
 }
 
-- (BOOL)moveEpisodeFrom:(unint64_t)a3 to:(unint64_t)a4
+- (BOOL)moveEpisodeFrom:(unint64_t)from to:(unint64_t)to
 {
-  if ([(MTUpNextController *)self count]<= a3)
+  if ([(MTUpNextController *)self count]<= from)
   {
     return 0;
   }
 
   v7 = [(MTUpNextController *)self count];
   result = 0;
-  if (a3 != a4 && v7 > a4)
+  if (from != to && v7 > to)
   {
-    v9 = [(MTUpNextController *)self playerItems];
-    v10 = [v9 objectAtIndex:a3];
+    playerItems = [(MTUpNextController *)self playerItems];
+    v10 = [playerItems objectAtIndex:from];
 
-    v11 = [(MTUpNextController *)self playerItems];
-    [v11 removeObjectAtIndex:a3];
+    playerItems2 = [(MTUpNextController *)self playerItems];
+    [playerItems2 removeObjectAtIndex:from];
 
-    v12 = [(MTUpNextController *)self playerItems];
-    [v12 insertObject:v10 atIndex:a4];
+    playerItems3 = [(MTUpNextController *)self playerItems];
+    [playerItems3 insertObject:v10 atIndex:to];
 
     [(MTUpNextController *)self _upNextDidChange];
     v13 = _MTLogCategoryPlayback();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
     {
-      v14 = [v10 title];
+      title = [v10 title];
       *buf = 138412802;
-      v21 = v14;
+      v21 = title;
       v22 = 2048;
-      v23 = a3;
+      fromCopy = from;
       v24 = 2048;
-      v25 = a4;
+      toCopy = to;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEBUG, "Moved episode %@ in Up Next Controller items from index %lu to index %lu", buf, 0x20u);
     }
 
-    v15 = [NSNumber numberWithUnsignedInteger:a3, @"from"];
+    v15 = [NSNumber numberWithUnsignedInteger:from, @"from"];
     v18[1] = @"to";
     v19[0] = v15;
-    v16 = [NSNumber numberWithUnsignedInteger:a4];
+    v16 = [NSNumber numberWithUnsignedInteger:to];
     v19[1] = v16;
     v17 = [NSDictionary dictionaryWithObjects:v19 forKeys:v18 count:2];
     [(MTUpNextController *)self _reportUpNextChangeType:@"move" forPlayerItem:v10 withData:v17];
@@ -511,8 +511,8 @@ LABEL_11:
   [(MTUpNextController *)self _reportUpNextChangeType:@"clear" forPlayerItem:0 withData:0];
   if ([(MTUpNextController *)self count])
   {
-    v3 = [(MTUpNextController *)self playerItems];
-    [v3 removeAllObjects];
+    playerItems = [(MTUpNextController *)self playerItems];
+    [playerItems removeAllObjects];
 
     [(MTUpNextController *)self _upNextDidChange];
   }
@@ -530,25 +530,25 @@ LABEL_11:
   [(MTUpNextController *)self _reportUpNextChangeType:@"clearQueueItems" forPlayerItem:0 withData:0];
   if ([(MTUpNextController *)self count])
   {
-    v3 = [(MTUpNextController *)self isPlayingFromUpNext];
-    v4 = [(MTUpNextController *)self playerItems];
-    v5 = v4;
-    if (v3)
+    isPlayingFromUpNext = [(MTUpNextController *)self isPlayingFromUpNext];
+    playerItems = [(MTUpNextController *)self playerItems];
+    v5 = playerItems;
+    if (isPlayingFromUpNext)
     {
       v10[0] = _NSConcreteStackBlock;
       v10[1] = 3221225472;
       v10[2] = sub_100119A4C;
       v10[3] = &unk_1004DCE38;
       v10[4] = self;
-      v6 = [v4 indexesOfObjectsPassingTest:v10];
+      v6 = [playerItems indexesOfObjectsPassingTest:v10];
 
-      v7 = [(MTUpNextController *)self playerItems];
-      [v7 removeObjectsAtIndexes:v6];
+      playerItems2 = [(MTUpNextController *)self playerItems];
+      [playerItems2 removeObjectsAtIndexes:v6];
     }
 
     else
     {
-      [v4 removeAllObjects];
+      [playerItems removeAllObjects];
     }
 
     [(MTUpNextController *)self _upNextDidChange];
@@ -564,10 +564,10 @@ LABEL_11:
 
 - (BOOL)isPlayingFromUpNext
 {
-  v2 = [(MTUpNextController *)self playerController];
-  v3 = [v2 compositeManifest];
-  v4 = [v2 upNextManifest];
-  v5 = [v3 isPlayingFromManifest:v4];
+  playerController = [(MTUpNextController *)self playerController];
+  compositeManifest = [playerController compositeManifest];
+  upNextManifest = [playerController upNextManifest];
+  v5 = [compositeManifest isPlayingFromManifest:upNextManifest];
 
   return v5;
 }
@@ -591,74 +591,74 @@ LABEL_11:
 
 - (NSArray)items
 {
-  v2 = [(MTUpNextController *)self playerItems];
-  v3 = [v2 copy];
+  playerItems = [(MTUpNextController *)self playerItems];
+  v3 = [playerItems copy];
 
   return v3;
 }
 
 - (unint64_t)count
 {
-  v2 = [(MTUpNextController *)self playerItems];
-  v3 = [v2 count];
+  playerItems = [(MTUpNextController *)self playerItems];
+  v3 = [playerItems count];
 
   return v3;
 }
 
 - (unint64_t)_currentUpNextIndex
 {
-  v2 = [(MTUpNextController *)self playerController];
-  v3 = [v2 upNextManifest];
-  v4 = [v3 currentIndex];
+  playerController = [(MTUpNextController *)self playerController];
+  upNextManifest = [playerController upNextManifest];
+  currentIndex = [upNextManifest currentIndex];
 
-  return v4;
+  return currentIndex;
 }
 
-- (void)_reportUpNextChangeType:(id)a3 forPlayerItem:(id)a4 withData:(id)a5
+- (void)_reportUpNextChangeType:(id)type forPlayerItem:(id)item withData:(id)data
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(MTUpNextController *)self workQueue];
+  typeCopy = type;
+  itemCopy = item;
+  dataCopy = data;
+  workQueue = [(MTUpNextController *)self workQueue];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100119DC0;
   v15[3] = &unk_1004D8DA8;
-  v16 = v8;
-  v17 = v10;
-  v18 = self;
-  v19 = v9;
-  v12 = v9;
-  v13 = v10;
-  v14 = v8;
-  dispatch_async(v11, v15);
+  v16 = typeCopy;
+  v17 = dataCopy;
+  selfCopy = self;
+  v19 = itemCopy;
+  v12 = itemCopy;
+  v13 = dataCopy;
+  v14 = typeCopy;
+  dispatch_async(workQueue, v15);
 }
 
-- (void)_reportUpNextChangeType:(id)a3 forPlayerItems:(id)a4 withData:(id)a5
+- (void)_reportUpNextChangeType:(id)type forPlayerItems:(id)items withData:(id)data
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(MTUpNextController *)self workQueue];
+  typeCopy = type;
+  itemsCopy = items;
+  dataCopy = data;
+  workQueue = [(MTUpNextController *)self workQueue];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100119F98;
   v15[3] = &unk_1004D8DA8;
-  v16 = v8;
-  v17 = v10;
-  v18 = self;
-  v19 = v9;
-  v12 = v9;
-  v13 = v10;
-  v14 = v8;
-  dispatch_async(v11, v15);
+  v16 = typeCopy;
+  v17 = dataCopy;
+  selfCopy = self;
+  v19 = itemsCopy;
+  v12 = itemsCopy;
+  v13 = dataCopy;
+  v14 = typeCopy;
+  dispatch_async(workQueue, v15);
 }
 
 - (id)_encodedUpNext
 {
   v3 = +[NSMutableArray array];
-  v4 = [(MTUpNextController *)self playerItems];
-  v5 = [v4 copy];
+  playerItems = [(MTUpNextController *)self playerItems];
+  v5 = [playerItems copy];
 
   v17 = 0u;
   v18 = 0u;
@@ -714,23 +714,23 @@ LABEL_11:
     v3 = +[NSNotificationCenter defaultCenter];
     [v3 postNotificationName:@"MTUpNextControllerItemsDidChange" object:self];
 
-    v4 = [(MTUpNextController *)self saveController];
+    saveController = [(MTUpNextController *)self saveController];
     v5[0] = _NSConcreteStackBlock;
     v5[1] = 3221225472;
     v5[2] = sub_10011A3B8;
     v5[3] = &unk_1004D8358;
     v5[4] = self;
-    [v4 schedule:v5];
+    [saveController schedule:v5];
   }
 }
 
 + (id)unarchivedIdentifiers
 {
-  v2 = [objc_opt_class() _encodedUpNextClasses];
-  v3 = [objc_opt_class() _filePath];
-  v4 = [NSData dataWithContentsOfFile:v3];
+  _encodedUpNextClasses = [objc_opt_class() _encodedUpNextClasses];
+  _filePath = [objc_opt_class() _filePath];
+  v4 = [NSData dataWithContentsOfFile:_filePath];
   v10 = 0;
-  v5 = [NSKeyedUnarchiver unarchivedObjectOfClasses:v2 fromData:v4 error:&v10];
+  v5 = [NSKeyedUnarchiver unarchivedObjectOfClasses:_encodedUpNextClasses fromData:v4 error:&v10];
   v6 = v10;
 
   if (v5)
@@ -768,7 +768,7 @@ LABEL_11:
   v4 = +[NSMutableArray array];
   [(MTUpNextController *)self setPlayerItems:v4];
 
-  v5 = [objc_opt_class() unarchivedIdentifiers];
+  unarchivedIdentifiers = [objc_opt_class() unarchivedIdentifiers];
   v6 = _MTLogCategoryPlayback();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
@@ -787,7 +787,7 @@ LABEL_11:
   v8[3] = &unk_1004DCE80;
   v8[4] = self;
   v8[5] = buf;
-  [v7 fetchPlayerItemsForPlaybackQueueRequestIdentifiers:v5 completion:v8];
+  [v7 fetchPlayerItemsForPlaybackQueueRequestIdentifiers:unarchivedIdentifiers completion:v8];
 
   v10[24] = 1;
   _Block_object_dispose(buf, 8);
@@ -798,9 +798,9 @@ LABEL_11:
   v2 = +[MTConstants sharedDocumentsDirectory];
   v3 = [v2 URLByAppendingPathComponent:@"upnext_items.data"];
 
-  v4 = [v3 path];
+  path = [v3 path];
 
-  return v4;
+  return path;
 }
 
 - (MTPlayerController)playerController

@@ -6,12 +6,12 @@
 
 - (id)description
 {
-  v8 = self;
+  selfCopy = self;
   v7 = a2;
   v6 = MEMORY[0x1E696AEC0];
   [(CBALSHotspotLocation *)self x];
   v5 = v2;
-  [(CBALSHotspotLocation *)v8 y];
+  [(CBALSHotspotLocation *)selfCopy y];
   return [v6 stringWithFormat:@"x:%f y:%f", *&v5, v3];
 }
 

@@ -1,18 +1,18 @@
 @interface AVRoutingConfiguration
-+ (AVRoutingConfiguration)configurationWithOutputContextID:(id)a3 sharingPolicy:(unint64_t)a4;
++ (AVRoutingConfiguration)configurationWithOutputContextID:(id)d sharingPolicy:(unint64_t)policy;
 + (id)defaultConfiguration;
 @end
 
 @implementation AVRoutingConfiguration
 
-+ (AVRoutingConfiguration)configurationWithOutputContextID:(id)a3 sharingPolicy:(unint64_t)a4
++ (AVRoutingConfiguration)configurationWithOutputContextID:(id)d sharingPolicy:(unint64_t)policy
 {
-  v5 = a3;
+  dCopy = d;
   v6 = objc_alloc_init(AVRoutingConfiguration);
   outputContextID = v6->_outputContextID;
-  v6->_outputContextID = v5;
+  v6->_outputContextID = dCopy;
 
-  v6->_sharingPolicy = a4;
+  v6->_sharingPolicy = policy;
 
   return v6;
 }

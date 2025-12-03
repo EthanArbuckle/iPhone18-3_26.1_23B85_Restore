@@ -1,30 +1,30 @@
 @interface VCPTransforms
-- (__CVBuffer)cropAndScale:(__CVBuffer *)a3 regionCrop:(CGRect)a4;
+- (__CVBuffer)cropAndScale:(__CVBuffer *)scale regionCrop:(CGRect)crop;
 - (id).cxx_construct;
-- (id)initImageTransform:(int)a3 transformedImageWidth:(int)a4 transformedImageHeight:(int)a5;
+- (id)initImageTransform:(int)transform transformedImageWidth:(int)width transformedImageHeight:(int)height;
 @end
 
 @implementation VCPTransforms
 
-- (id)initImageTransform:(int)a3 transformedImageWidth:(int)a4 transformedImageHeight:(int)a5
+- (id)initImageTransform:(int)transform transformedImageWidth:(int)width transformedImageHeight:(int)height
 {
-  *(self + 2) = a3;
-  *(self + 3) = a4;
-  *(self + 4) = a5;
+  *(self + 2) = transform;
+  *(self + 3) = width;
+  *(self + 4) = height;
   return self;
 }
 
-- (__CVBuffer)cropAndScale:(__CVBuffer *)a3 regionCrop:(CGRect)a4
+- (__CVBuffer)cropAndScale:(__CVBuffer *)scale regionCrop:(CGRect)crop
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = crop.size.height;
+  width = crop.size.width;
+  y = crop.origin.y;
+  x = crop.origin.x;
   v24 = *MEMORY[0x1E69E9840];
   cf = 0;
-  v10 = CVPixelBufferGetWidth(a3);
-  v11 = CVPixelBufferGetHeight(a3);
-  PixelFormatType = CVPixelBufferGetPixelFormatType(a3);
+  v10 = CVPixelBufferGetWidth(scale);
+  v11 = CVPixelBufferGetHeight(scale);
+  PixelFormatType = CVPixelBufferGetPixelFormatType(scale);
   if (v11 >= v10)
   {
     v13 = v10;
@@ -55,7 +55,7 @@
   if (PixelFormatType == 1111970369 && self->_transformedImageWidth == v10 && self->_transformedImageHeight == v11 && (v26.origin.x = x, v26.origin.y = y, v26.size.width = width, v26.size.height = height, CGRectIsEmpty(v26)))
   {
 
-    return CFRetain(a3);
+    return CFRetain(scale);
   }
 
   else
@@ -64,7 +64,7 @@
     v27.origin.y = y;
     v27.size.width = width;
     v27.size.height = height;
-    v16 = Scaler::ScaleCropped(&self->_scaler, v27, a3, &cf, self->_transformedImageWidth, self->_transformedImageHeight, 1111970369);
+    v16 = Scaler::ScaleCropped(&self->_scaler, v27, scale, &cf, self->_transformedImageWidth, self->_transformedImageHeight, 1111970369);
     result = cf;
     if (v16 && cf)
     {

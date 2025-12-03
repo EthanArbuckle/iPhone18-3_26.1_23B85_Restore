@@ -1,19 +1,19 @@
 @interface PRXFeatureListViewController
 - (NSArray)features;
-- (PRXFeatureListViewController)initWithContentView:(id)a3;
-- (PRXFeatureListViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)addFeature:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (PRXFeatureListViewController)initWithContentView:(id)view;
+- (PRXFeatureListViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)addFeature:(id)feature;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)_updateHeaderView;
-- (void)setFeatureImage:(id)a3;
+- (void)setFeatureImage:(id)image;
 - (void)viewDidLoad;
 - (void)viewLayoutMarginsDidChange;
 @end
 
 @implementation PRXFeatureListViewController
 
-- (PRXFeatureListViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (PRXFeatureListViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v5 = [PRXScrollableContentView alloc];
   v6 = objc_alloc_init(MEMORY[0x277D75B40]);
@@ -23,16 +23,16 @@
   return v8;
 }
 
-- (PRXFeatureListViewController)initWithContentView:(id)a3
+- (PRXFeatureListViewController)initWithContentView:(id)view
 {
   v8.receiver = self;
   v8.super_class = PRXFeatureListViewController;
-  v3 = [(PRXCardContentViewController *)&v8 initWithContentView:a3];
+  v3 = [(PRXCardContentViewController *)&v8 initWithContentView:view];
   if (v3)
   {
-    v4 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     mutableFeatures = v3->_mutableFeatures;
-    v3->_mutableFeatures = v4;
+    v3->_mutableFeatures = array;
 
     v6 = v3;
   }
@@ -45,9 +45,9 @@
   v17.receiver = self;
   v17.super_class = PRXFeatureListViewController;
   [(PRXCardContentViewController *)&v17 viewDidLoad];
-  v3 = [(PRXCardContentViewController *)self contentView];
+  contentView = [(PRXCardContentViewController *)self contentView];
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 || ([v3 scrollView], v4 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v4, (isKindOfClass & 1) == 0))
+  if ((objc_opt_isKindOfClass() & 1) == 0 || ([contentView scrollView], v4 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v4, (isKindOfClass & 1) == 0))
   {
     v9 = MEMORY[0x277CBEAD8];
     v10 = *MEMORY[0x277CBE660];
@@ -61,9 +61,9 @@
     objc_exception_throw(v15);
   }
 
-  v6 = [v3 scrollView];
+  scrollView = [contentView scrollView];
   tableView = self->_tableView;
-  self->_tableView = v6;
+  self->_tableView = scrollView;
 
   [(UITableView *)self->_tableView setDelegate:self];
   [(UITableView *)self->_tableView setDataSource:self];
@@ -79,14 +79,14 @@
   v10.receiver = self;
   v10.super_class = PRXFeatureListViewController;
   [(PRXFeatureListViewController *)&v10 viewLayoutMarginsDidChange];
-  v3 = [(PRXCardContentViewController *)self contentView];
-  [v3 directionalLayoutMargins];
+  contentView = [(PRXCardContentViewController *)self contentView];
+  [contentView directionalLayoutMargins];
   v5 = v4 + 10.0;
-  v6 = [(PRXCardContentViewController *)self contentView];
-  [v6 directionalLayoutMargins];
+  contentView2 = [(PRXCardContentViewController *)self contentView];
+  [contentView2 directionalLayoutMargins];
   v8 = v7 + 10.0;
-  v9 = [(PRXFeatureListViewController *)self tableView];
-  [v9 setDirectionalLayoutMargins:{0.0, v5, 0.0, v8}];
+  tableView = [(PRXFeatureListViewController *)self tableView];
+  [tableView setDirectionalLayoutMargins:{0.0, v5, 0.0, v8}];
 }
 
 - (void)_updateHeaderView
@@ -95,89 +95,89 @@
   {
     if (self->_featureImage)
     {
-      v8 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:self->_featureImage];
+      tableView2 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:self->_featureImage];
       v3 = objc_alloc(MEMORY[0x277D75D18]);
-      [v8 bounds];
+      [tableView2 bounds];
       Width = CGRectGetWidth(v10);
-      [v8 bounds];
+      [tableView2 bounds];
       v5 = [v3 initWithFrame:{0.0, 0.0, Width, CGRectGetHeight(v11) + 20.0}];
-      [v8 setAutoresizingMask:5];
+      [tableView2 setAutoresizingMask:5];
       [v5 bounds];
       MidX = CGRectGetMidX(v12);
-      [v8 bounds];
-      [v8 setCenter:{MidX, CGRectGetMidY(v13)}];
-      [v5 addSubview:v8];
-      v7 = [(PRXFeatureListViewController *)self tableView];
-      [v7 setTableHeaderView:v5];
+      [tableView2 bounds];
+      [tableView2 setCenter:{MidX, CGRectGetMidY(v13)}];
+      [v5 addSubview:tableView2];
+      tableView = [(PRXFeatureListViewController *)self tableView];
+      [tableView setTableHeaderView:v5];
     }
 
     else
     {
-      v8 = [(PRXFeatureListViewController *)self tableView];
-      [v8 setTableHeaderView:0];
+      tableView2 = [(PRXFeatureListViewController *)self tableView];
+      [tableView2 setTableHeaderView:0];
     }
   }
 }
 
-- (void)setFeatureImage:(id)a3
+- (void)setFeatureImage:(id)image
 {
-  v5 = a3;
-  if (self->_featureImage != v5)
+  imageCopy = image;
+  if (self->_featureImage != imageCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_featureImage, a3);
+    v6 = imageCopy;
+    objc_storeStrong(&self->_featureImage, image);
     [(PRXFeatureListViewController *)self _updateHeaderView];
-    v5 = v6;
+    imageCopy = v6;
   }
 }
 
 - (NSArray)features
 {
-  v2 = [(PRXFeatureListViewController *)self mutableFeatures];
-  v3 = [v2 copy];
+  mutableFeatures = [(PRXFeatureListViewController *)self mutableFeatures];
+  v3 = [mutableFeatures copy];
 
   return v3;
 }
 
-- (id)addFeature:(id)a3
+- (id)addFeature:(id)feature
 {
-  v4 = a3;
-  v5 = [(PRXFeatureListViewController *)self mutableFeatures];
-  [v5 addObject:v4];
+  featureCopy = feature;
+  mutableFeatures = [(PRXFeatureListViewController *)self mutableFeatures];
+  [mutableFeatures addObject:featureCopy];
 
-  v6 = [(PRXFeatureListViewController *)self tableView];
-  v7 = [v6 hasUncommittedUpdates];
+  tableView = [(PRXFeatureListViewController *)self tableView];
+  hasUncommittedUpdates = [tableView hasUncommittedUpdates];
 
-  if ((v7 & 1) == 0)
+  if ((hasUncommittedUpdates & 1) == 0)
   {
-    v8 = [(PRXFeatureListViewController *)self tableView];
-    [v8 reloadData];
+    tableView2 = [(PRXFeatureListViewController *)self tableView];
+    [tableView2 reloadData];
   }
 
-  return v4;
+  return featureCopy;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PRXFeatureListViewController *)self mutableFeatures];
-  v9 = [v6 row];
+  pathCopy = path;
+  viewCopy = view;
+  mutableFeatures = [(PRXFeatureListViewController *)self mutableFeatures];
+  v9 = [pathCopy row];
 
-  v10 = [v8 objectAtIndexedSubscript:v9];
+  v10 = [mutableFeatures objectAtIndexedSubscript:v9];
 
-  v11 = [v7 dequeueReusableCellWithIdentifier:@"PRXFeatureCell"];
-  v12 = [v10 title];
-  [v11 setTitle:v12];
+  v11 = [viewCopy dequeueReusableCellWithIdentifier:@"PRXFeatureCell"];
+  title = [v10 title];
+  [v11 setTitle:title];
 
-  v13 = [v10 detailText];
-  [v11 setSubtitle:v13];
+  detailText = [v10 detailText];
+  [v11 setSubtitle:detailText];
 
-  v14 = [v10 imageView];
-  [v11 setFeatureImageView:v14];
+  imageView = [v10 imageView];
+  [v11 setFeatureImageView:imageView];
 
-  v15 = [v7 separatorStyle];
-  [v11 setHidingSeparator:v15 == 0];
+  separatorStyle = [viewCopy separatorStyle];
+  [v11 setHidingSeparator:separatorStyle == 0];
   [v10 imageViewSize];
   if (v16 > 0.0)
   {
@@ -185,15 +185,15 @@
     [v11 setFeatureImageSize:?];
   }
 
-  v17 = [v10 handler];
+  handler = [v10 handler];
 
-  if (v17)
+  if (handler)
   {
-    v18 = [v11 switchControl];
-    v19 = v18;
-    if (v18)
+    switchControl = [v11 switchControl];
+    v19 = switchControl;
+    if (switchControl)
     {
-      v20 = v18;
+      v20 = switchControl;
     }
 
     else
@@ -205,9 +205,9 @@
 
     [v11 setSwitchControl:v21];
     [v10 setSwitchControl:v21];
-    v22 = [v10 isOn];
-    v23 = [v11 switchControl];
-    [v23 setOn:v22];
+    isOn = [v10 isOn];
+    switchControl2 = [v11 switchControl];
+    [switchControl2 setOn:isOn];
   }
 
   else
@@ -218,9 +218,9 @@
   return v11;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v4 = [(PRXFeatureListViewController *)self mutableFeatures:a3];
+  v4 = [(PRXFeatureListViewController *)self mutableFeatures:view];
   v5 = [v4 count];
 
   return v5;

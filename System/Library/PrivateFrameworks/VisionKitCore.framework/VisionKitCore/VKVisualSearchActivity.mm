@@ -1,14 +1,14 @@
 @interface VKVisualSearchActivity
 - (UIViewController)presentingViewController;
-- (VKVisualSearchActivity)initWithImage:(CGImage *)a3 presentingViewController:(id)a4;
+- (VKVisualSearchActivity)initWithImage:(CGImage *)image presentingViewController:(id)controller;
 - (void)performActivity;
 @end
 
 @implementation VKVisualSearchActivity
 
-- (VKVisualSearchActivity)initWithImage:(CGImage *)a3 presentingViewController:(id)a4
+- (VKVisualSearchActivity)initWithImage:(CGImage *)image presentingViewController:(id)controller
 {
-  v6 = a4;
+  controllerCopy = controller;
   v16.receiver = self;
   v16.super_class = VKVisualSearchActivity;
   v7 = [(UIActivity *)&v16 init];
@@ -25,8 +25,8 @@
     image = v7->_image;
     v7->_image = v13;
 
-    objc_storeWeak(&v7->_presentingViewController, v6);
-    v7->_imageToProcess = a3;
+    objc_storeWeak(&v7->_presentingViewController, controllerCopy);
+    v7->_imageToProcess = image;
   }
 
   return v7;
@@ -36,8 +36,8 @@
 {
   v4 = [[VKVisualSearchViewController alloc] initWithImage:[(VKVisualSearchActivity *)self imageToProcess]];
   [(VKVisualSearchViewController *)v4 setModalPresentationStyle:2];
-  v3 = [(VKVisualSearchActivity *)self presentingViewController];
-  [v3 presentViewController:v4 animated:1 completion:0];
+  presentingViewController = [(VKVisualSearchActivity *)self presentingViewController];
+  [presentingViewController presentViewController:v4 animated:1 completion:0];
 }
 
 - (UIViewController)presentingViewController

@@ -16,15 +16,15 @@
     goto LABEL_9;
   }
 
-  v5 = [v4 attributedText];
-  v6 = [v5 copy];
+  attributedText = [v4 attributedText];
+  v6 = [attributedText copy];
 
   if (![v6 length])
   {
 LABEL_8:
 
 LABEL_9:
-    v11 = [v4 accessibilityLabel];
+    accessibilityLabel = [v4 accessibilityLabel];
     goto LABEL_10;
   }
 
@@ -55,15 +55,15 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v13 = [v6 string];
-  v14 = [v13 copy];
+  string = [v6 string];
+  v14 = [string copy];
 
-  v11 = [v14 stringByReplacingCharactersInRange:v17[4] withString:{v17[5], v7}];
+  accessibilityLabel = [v14 stringByReplacingCharactersInRange:v17[4] withString:{v17[5], v7}];
 
   _Block_object_dispose(&v16, 8);
 LABEL_10:
 
-  return v11;
+  return accessibilityLabel;
 }
 
 void __57__MKPlaceAttributionCellAccessibility_accessibilityLabel__block_invoke(uint64_t a1, void *a2, uint64_t a3, uint64_t a4, _BYTE *a5)

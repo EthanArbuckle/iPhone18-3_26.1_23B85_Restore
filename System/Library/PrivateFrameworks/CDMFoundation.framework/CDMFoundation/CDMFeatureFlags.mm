@@ -13,7 +13,7 @@
   v3 = _os_feature_enabled_impl();
   if (v3)
   {
-    if ([a1 isCDMClientXPCEnabled])
+    if ([self isCDMClientXPCEnabled])
     {
       LOBYTE(v3) = 1;
     }
@@ -38,26 +38,26 @@
 
 + (BOOL)isSSUCacheUpdateOnEveryRequestEnabled
 {
-  v2 = [a1 isSSUEnabled];
-  if (v2)
+  isSSUEnabled = [self isSSUEnabled];
+  if (isSSUEnabled)
   {
 
-    LOBYTE(v2) = _os_feature_enabled_impl();
+    LOBYTE(isSSUEnabled) = _os_feature_enabled_impl();
   }
 
-  return v2;
+  return isSSUEnabled;
 }
 
 + (BOOL)isSSUEnableIndexingEnabled
 {
-  v2 = [a1 isSSUEnabled];
-  if (v2)
+  isSSUEnabled = [self isSSUEnabled];
+  if (isSSUEnabled)
   {
 
-    LOBYTE(v2) = _os_feature_enabled_impl();
+    LOBYTE(isSSUEnabled) = _os_feature_enabled_impl();
   }
 
-  return v2;
+  return isSSUEnabled;
 }
 
 + (BOOL)isLogNluEnabled

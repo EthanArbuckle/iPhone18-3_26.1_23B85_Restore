@@ -1,16 +1,16 @@
 @interface PLUrsaUtilities
-+ (id)createMetadataFile:(id)a3 buildVersion:(id)a4;
-+ (id)generateTTRURLWithRadarParams:(id)a3 procName:(id)a4 violationTime:(id)a5 metadataPath:(id)a6;
++ (id)createMetadataFile:(id)file buildVersion:(id)version;
++ (id)generateTTRURLWithRadarParams:(id)params procName:(id)name violationTime:(id)time metadataPath:(id)path;
 @end
 
 @implementation PLUrsaUtilities
 
-+ (id)createMetadataFile:(id)a3 buildVersion:(id)a4
++ (id)createMetadataFile:(id)file buildVersion:(id)version
 {
   v40[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  if (![v5 length])
+  fileCopy = file;
+  versionCopy = version;
+  if (![fileCopy length])
   {
     v7 = PLLogUrsaUtilities();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -21,7 +21,7 @@
     goto LABEL_20;
   }
 
-  if (![v6 length])
+  if (![versionCopy length])
   {
     v7 = PLLogUrsaUtilities();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -30,7 +30,7 @@
     }
 
 LABEL_20:
-    v28 = 0;
+    path3 = 0;
     goto LABEL_37;
   }
 
@@ -40,14 +40,14 @@ LABEL_20:
   v40[0] = v8;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v40 forKeys:&v39 count:1];
 
-  v10 = [MEMORY[0x277CCAA00] defaultManager];
-  v11 = [v10 fileExistsAtPath:@"/var/mobile/Library/Ursa"];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v11 = [defaultManager fileExistsAtPath:@"/var/mobile/Library/Ursa"];
 
   if ((v11 & 1) == 0)
   {
-    v12 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
     v34 = 0;
-    v13 = [v12 createDirectoryAtURL:v7 withIntermediateDirectories:1 attributes:v9 error:&v34];
+    v13 = [defaultManager2 createDirectoryAtURL:v7 withIntermediateDirectories:1 attributes:v9 error:&v34];
     v14 = v34;
 
     v15 = PLLogUrsaUtilities();
@@ -59,7 +59,7 @@ LABEL_20:
         [PLUrsaUtilities createMetadataFile:v14 buildVersion:v16];
       }
 
-      v28 = 0;
+      path3 = 0;
       goto LABEL_36;
     }
 
@@ -72,13 +72,13 @@ LABEL_20:
   v16 = [v7 URLByAppendingPathComponent:@"power_exceptions.json" isDirectory:0];
   if (v16)
   {
-    v17 = [MEMORY[0x277CCAA00] defaultManager];
-    [v17 removeItemAtURL:v16 error:0];
+    defaultManager3 = [MEMORY[0x277CCAA00] defaultManager];
+    [defaultManager3 removeItemAtURL:v16 error:0];
 
     v37[0] = @"process";
     v37[1] = @"build";
-    v38[0] = v5;
-    v38[1] = v6;
+    v38[0] = fileCopy;
+    v38[1] = versionCopy;
     v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v38 forKeys:v37 count:2];
     v33 = 0;
     v19 = [MEMORY[0x277CCAAA0] dataWithJSONObject:v18 options:0 error:&v33];
@@ -91,17 +91,17 @@ LABEL_20:
         [PLUrsaUtilities createMetadataFile:v14 buildVersion:v29];
       }
 
-      v28 = 0;
+      path3 = 0;
     }
 
     else
     {
-      v20 = [MEMORY[0x277CCAA00] defaultManager];
-      v21 = [v16 path];
+      defaultManager4 = [MEMORY[0x277CCAA00] defaultManager];
+      path = [v16 path];
       v22 = v9;
-      v23 = v21;
+      v23 = path;
       v32 = v22;
-      v24 = [v20 createFileAtPath:v21 contents:v19 attributes:?];
+      v24 = [defaultManager4 createFileAtPath:path contents:v19 attributes:?];
 
       v25 = PLLogUrsaUtilities();
       v26 = v25;
@@ -109,13 +109,13 @@ LABEL_20:
       {
         if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
         {
-          v27 = [v16 path];
+          path2 = [v16 path];
           *buf = 138543362;
-          v36 = v27;
+          v36 = path2;
           _os_log_impl(&dword_25EE51000, v26, OS_LOG_TYPE_DEFAULT, "PLUrsaUtilities: wrote metadata to: %{public}@", buf, 0xCu);
         }
 
-        v28 = [v16 path];
+        path3 = [v16 path];
       }
 
       else
@@ -125,7 +125,7 @@ LABEL_20:
           +[PLUrsaUtilities createMetadataFile:buildVersion:];
         }
 
-        v28 = 0;
+        path3 = 0;
       }
 
       v9 = v32;
@@ -141,7 +141,7 @@ LABEL_20:
     }
 
     v14 = 0;
-    v28 = 0;
+    path3 = 0;
   }
 
 LABEL_36:
@@ -149,17 +149,17 @@ LABEL_37:
 
   v30 = *MEMORY[0x277D85DE8];
 
-  return v28;
+  return path3;
 }
 
-+ (id)generateTTRURLWithRadarParams:(id)a3 procName:(id)a4 violationTime:(id)a5 metadataPath:(id)a6
++ (id)generateTTRURLWithRadarParams:(id)params procName:(id)name violationTime:(id)time metadataPath:(id)path
 {
   v50 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v44 = a5;
-  v11 = a6;
-  if (!v9 || ![v9 count])
+  paramsCopy = params;
+  nameCopy = name;
+  timeCopy = time;
+  pathCopy = path;
+  if (!paramsCopy || ![paramsCopy count])
   {
     v14 = PLLogUrsaUtilities();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -170,7 +170,7 @@ LABEL_37:
     goto LABEL_31;
   }
 
-  if (!v10 || ![v10 length])
+  if (!nameCopy || ![nameCopy length])
   {
     v14 = PLLogUrsaUtilities();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -183,7 +183,7 @@ LABEL_31:
     goto LABEL_32;
   }
 
-  if (!v44)
+  if (!timeCopy)
   {
     v12 = PLLogUrsaUtilities();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -191,7 +191,7 @@ LABEL_31:
       +[PLUrsaUtilities generateTTRURLWithRadarParams:procName:violationTime:metadataPath:];
     }
 
-    v44 = [MEMORY[0x277CBEAA8] date];
+    timeCopy = [MEMORY[0x277CBEAA8] date];
   }
 
   v13 = [MEMORY[0x277CCACE0] componentsWithString:@"tap-to-radar://new?"];
@@ -199,23 +199,23 @@ LABEL_31:
   if (v13)
   {
     v38 = v13;
-    v43 = v10;
-    v40 = v9;
-    v15 = [v9 mutableCopy];
+    v43 = nameCopy;
+    v40 = paramsCopy;
+    v15 = [paramsCopy mutableCopy];
     v16 = v15;
-    if (v11)
+    if (pathCopy)
     {
-      [v15 setObject:v11 forKeyedSubscript:@"Attachments"];
+      [v15 setObject:pathCopy forKeyedSubscript:@"Attachments"];
       [v16 setObject:@"1" forKeyedSubscript:@"DeleteOnAttach"];
     }
 
-    v39 = v11;
+    v39 = pathCopy;
     v17 = objc_alloc_init(MEMORY[0x277CCA968]);
     [v17 setDateFormat:@"yyyy.MM.dd_HH-mm-ss"];
     v37 = v17;
-    v36 = [v17 stringFromDate:v44];
+    v36 = [v17 stringFromDate:timeCopy];
     [v16 setObject:? forKeyedSubscript:?];
-    v18 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v41 = objc_alloc_init(MEMORY[0x277CCA968]);
     [v41 setDateFormat:@"MM/dd HH:mm"];
     v47 = 0u;
@@ -224,7 +224,7 @@ LABEL_31:
     v46 = 0u;
     v19 = v16;
     v20 = [v19 countByEnumeratingWithState:&v45 objects:v49 count:16];
-    v42 = v18;
+    v42 = array;
     if (v20)
     {
       v21 = v20;
@@ -249,15 +249,15 @@ LABEL_31:
 
           if ([v25 containsString:@"$time"])
           {
-            v27 = [v41 stringFromDate:v44];
+            v27 = [v41 stringFromDate:timeCopy];
             v28 = [v25 stringByReplacingOccurrencesOfString:@"$time" withString:v27];
 
             v25 = v28;
-            v18 = v42;
+            array = v42;
           }
 
           v29 = [MEMORY[0x277CCAD18] queryItemWithName:v24 value:v25];
-          [v18 addObject:v29];
+          [array addObject:v29];
         }
 
         v21 = [v19 countByEnumeratingWithState:&v45 objects:v49 count:16];
@@ -267,15 +267,15 @@ LABEL_31:
     }
 
     v14 = v38;
-    [v38 setQueryItems:v18];
+    [v38 setQueryItems:array];
     v30 = [v38 URL];
     v31 = PLLogUrsaUtilities();
     v32 = v31;
     if (v30)
     {
-      v11 = v39;
-      v9 = v40;
-      v10 = v43;
+      pathCopy = v39;
+      paramsCopy = v40;
+      nameCopy = v43;
       if (os_log_type_enabled(v31, OS_LOG_TYPE_DEBUG))
       {
         [PLUrsaUtilities generateTTRURLWithRadarParams:v30 procName:v32 violationTime:? metadataPath:?];
@@ -286,9 +286,9 @@ LABEL_31:
 
     else
     {
-      v11 = v39;
-      v9 = v40;
-      v10 = v43;
+      pathCopy = v39;
+      paramsCopy = v40;
+      nameCopy = v43;
       if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
       {
         +[PLUrsaUtilities generateTTRURLWithRadarParams:procName:violationTime:metadataPath:];

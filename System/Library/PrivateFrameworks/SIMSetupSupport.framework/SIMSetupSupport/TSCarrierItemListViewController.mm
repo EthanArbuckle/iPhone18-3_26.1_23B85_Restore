@@ -1,13 +1,13 @@
 @interface TSCarrierItemListViewController
 - (TSCarrierItemListViewController)init;
 - (TSSIMSetupFlowDelegate)delegate;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
-- (id)getCellTextAt:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
+- (id)getCellTextAt:(id)at;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (void)_cancelButtonTapped;
-- (void)_fetchCarrierListWithCompletion:(id)a3;
-- (void)prepare:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)_fetchCarrierListWithCompletion:(id)completion;
+- (void)prepare:(id)prepare;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)updateFooterView;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
@@ -39,48 +39,48 @@
   v17.super_class = TSCarrierItemListViewController;
   [(TSOBTableWelcomeController *)&v17 viewDidLoad];
   v3 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:1 target:self action:sel__cancelButtonTapped];
-  v4 = [(OBBaseWelcomeController *)self navigationItem];
-  [v4 setRightBarButtonItem:v3];
+  navigationItem = [(OBBaseWelcomeController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:v3];
 
   v5 = objc_alloc(MEMORY[0x277D75B40]);
   v6 = [v5 initWithFrame:2 style:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
   [(OBTableWelcomeController *)self setTableView:v6];
 
-  v7 = [(OBTableWelcomeController *)self tableView];
-  [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
+  tableView = [(OBTableWelcomeController *)self tableView];
+  [tableView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v8 = [(OBTableWelcomeController *)self tableView];
-  [v8 setDirectionalLayoutMargins:{1.0, 1.0, 1.0, 1.0}];
+  tableView2 = [(OBTableWelcomeController *)self tableView];
+  [tableView2 setDirectionalLayoutMargins:{1.0, 1.0, 1.0, 1.0}];
 
-  v9 = [(OBTableWelcomeController *)self tableView];
-  v10 = [MEMORY[0x277D75348] clearColor];
-  [v9 setBackgroundColor:v10];
+  tableView3 = [(OBTableWelcomeController *)self tableView];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [tableView3 setBackgroundColor:clearColor];
 
-  v11 = [(OBTableWelcomeController *)self tableView];
-  [v11 setDataSource:self];
+  tableView4 = [(OBTableWelcomeController *)self tableView];
+  [tableView4 setDataSource:self];
 
-  v12 = [(OBTableWelcomeController *)self tableView];
-  [v12 setDelegate:self];
+  tableView5 = [(OBTableWelcomeController *)self tableView];
+  [tableView5 setDelegate:self];
 
-  v13 = [(OBTableWelcomeController *)self tableView];
-  [v13 setScrollEnabled:1];
+  tableView6 = [(OBTableWelcomeController *)self tableView];
+  [tableView6 setScrollEnabled:1];
 
-  v14 = [(OBTableWelcomeController *)self tableView];
-  [v14 setAllowsMultipleSelection:0];
+  tableView7 = [(OBTableWelcomeController *)self tableView];
+  [tableView7 setAllowsMultipleSelection:0];
 
-  v15 = [(OBTableWelcomeController *)self tableView];
-  [v15 reloadData];
+  tableView8 = [(OBTableWelcomeController *)self tableView];
+  [tableView8 reloadData];
 
-  v16 = [(OBTableWelcomeController *)self tableView];
-  [v16 layoutIfNeeded];
+  tableView9 = [(OBTableWelcomeController *)self tableView];
+  [tableView9 layoutIfNeeded];
 
   [(TSCarrierItemListViewController *)self updateFooterView];
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v3 = [(TSCarrierItemListViewController *)self view];
-  [v3 layoutIfNeeded];
+  view = [(TSCarrierItemListViewController *)self view];
+  [view layoutIfNeeded];
 
   v5.receiver = self;
   v5.super_class = TSCarrierItemListViewController;
@@ -98,56 +98,56 @@
     footer = self->_footer;
     self->_footer = v3;
 
-    v5 = [(UITableViewHeaderFooterView *)self->_footer textLabel];
+    textLabel = [(UITableViewHeaderFooterView *)self->_footer textLabel];
     v6 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76938]];
-    [v5 setFont:v6];
+    [textLabel setFont:v6];
 
-    v7 = [(UITableViewHeaderFooterView *)self->_footer textLabel];
-    [v7 setLineBreakMode:0];
+    textLabel2 = [(UITableViewHeaderFooterView *)self->_footer textLabel];
+    [textLabel2 setLineBreakMode:0];
 
-    v8 = [(UITableViewHeaderFooterView *)self->_footer textLabel];
-    [v8 setNumberOfLines:0];
+    textLabel3 = [(UITableViewHeaderFooterView *)self->_footer textLabel];
+    [textLabel3 setNumberOfLines:0];
 
-    v9 = [(UITableViewHeaderFooterView *)self->_footer textLabel];
+    textLabel4 = [(UITableViewHeaderFooterView *)self->_footer textLabel];
     v10 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v11 = [v10 localizedStringForKey:@"PRIVACY_FOOTER" value:&stru_28753DF48 table:@"Localizable"];
-    [v9 setText:v11];
+    [textLabel4 setText:v11];
 
-    v13 = [(UITableViewHeaderFooterView *)self->_footer textLabel];
-    v12 = [MEMORY[0x277D75348] systemGrayColor];
-    [v13 setTextColor:v12];
+    textLabel5 = [(UITableViewHeaderFooterView *)self->_footer textLabel];
+    systemGrayColor = [MEMORY[0x277D75348] systemGrayColor];
+    [textLabel5 setTextColor:systemGrayColor];
   }
 }
 
-- (id)getCellTextAt:(id)a3
+- (id)getCellTextAt:(id)at
 {
-  v4 = a3;
-  v5 = [v4 row];
+  atCopy = at;
+  v5 = [atCopy row];
   if (v5 >= [(NSArray *)self->_carrierItems count])
   {
-    v7 = &stru_28753DF48;
+    name = &stru_28753DF48;
   }
 
   else
   {
-    v6 = -[NSArray objectAtIndexedSubscript:](self->_carrierItems, "objectAtIndexedSubscript:", [v4 row]);
-    v7 = [v6 name];
+    v6 = -[NSArray objectAtIndexedSubscript:](self->_carrierItems, "objectAtIndexedSubscript:", [atCopy row]);
+    name = [v6 name];
   }
 
-  return v7;
+  return name;
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(TSCarrierItemListViewController *)self getCellTextAt:v6];
+  pathCopy = path;
+  viewCopy = view;
+  v8 = [(TSCarrierItemListViewController *)self getCellTextAt:pathCopy];
   v9 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76988]];
   v10 = MEMORY[0x277CCACA8];
-  v11 = [v6 section];
+  section = [pathCopy section];
 
-  v12 = [v10 stringWithFormat:@"options%ld", v11];
-  v13 = [v7 dequeueReusableCellWithIdentifier:v12];
+  v12 = [v10 stringWithFormat:@"options%ld", section];
+  v13 = [viewCopy dequeueReusableCellWithIdentifier:v12];
 
   [v8 sizeWithFont:v9 constrainedToSize:0 lineBreakMode:{235.0, 3.40282347e38}];
   v15 = fmax(v14, 60.0);
@@ -155,52 +155,52 @@
   return v15;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v6 = MEMORY[0x277CCACA8];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 stringWithFormat:@"options%ld", objc_msgSend(v7, "section")];
-  v10 = [v8 dequeueReusableCellWithIdentifier:v9];
+  pathCopy = path;
+  viewCopy = view;
+  v9 = [v6 stringWithFormat:@"options%ld", objc_msgSend(pathCopy, "section")];
+  v10 = [viewCopy dequeueReusableCellWithIdentifier:v9];
 
   if (!v10)
   {
     v10 = [objc_alloc(MEMORY[0x277D75B48]) initWithStyle:0 reuseIdentifier:v9];
   }
 
-  v11 = [v10 contentView];
-  [v11 setLayoutMargins:{10.0, 0.0, 0.0, 0.0}];
+  contentView = [v10 contentView];
+  [contentView setLayoutMargins:{10.0, 0.0, 0.0, 0.0}];
 
   [v10 setAccessoryType:1];
-  v12 = [MEMORY[0x277D75348] secondarySystemBackgroundColor];
-  [v10 setBackgroundColor:v12];
+  secondarySystemBackgroundColor = [MEMORY[0x277D75348] secondarySystemBackgroundColor];
+  [v10 setBackgroundColor:secondarySystemBackgroundColor];
 
-  v13 = [v10 textLabel];
-  [v13 setLineBreakMode:0];
+  textLabel = [v10 textLabel];
+  [textLabel setLineBreakMode:0];
 
-  v14 = [v10 textLabel];
-  [v14 setNumberOfLines:0];
+  textLabel2 = [v10 textLabel];
+  [textLabel2 setNumberOfLines:0];
 
-  v15 = [v10 textLabel];
-  [v15 setTranslatesAutoresizingMaskIntoConstraints:0];
+  textLabel3 = [v10 textLabel];
+  [textLabel3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
   v16 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76988]];
-  v17 = [v10 textLabel];
-  [v17 setFont:v16];
+  textLabel4 = [v10 textLabel];
+  [textLabel4 setFont:v16];
 
-  v18 = [(TSCarrierItemListViewController *)self getCellTextAt:v7];
+  v18 = [(TSCarrierItemListViewController *)self getCellTextAt:pathCopy];
 
-  v19 = [v10 textLabel];
-  [v19 setText:v18];
+  textLabel5 = [v10 textLabel];
+  [textLabel5 setText:v18];
 
   return v10;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v26 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [v5 row];
+  pathCopy = path;
+  v6 = [pathCopy row];
   if (v6 >= [(NSArray *)self->_carrierItems count])
   {
     v11 = _TSLogDomain();
@@ -212,7 +212,7 @@
 
   else
   {
-    v7 = -[NSArray objectAtIndexedSubscript:](self->_carrierItems, "objectAtIndexedSubscript:", [v5 row]);
+    v7 = -[NSArray objectAtIndexedSubscript:](self->_carrierItems, "objectAtIndexedSubscript:", [pathCopy row]);
     selectedCarrierItem = self->_selectedCarrierItem;
     self->_selectedCarrierItem = v7;
 
@@ -221,7 +221,7 @@
     {
       v10 = self->_selectedCarrierItem;
       *buf = 138412802;
-      v21 = v5;
+      v21 = pathCopy;
       v22 = 2112;
       v23 = v10;
       v24 = 2080;
@@ -234,28 +234,28 @@
   if (v12)
   {
     client = self->_client;
-    v14 = [(CTCellularPlanCarrierItem *)v12 name];
+    name = [(CTCellularPlanCarrierItem *)v12 name];
     v19 = 0;
-    [(CoreTelephonyClient *)client sendTravelBuddyCAEvent:@"purchase local plan" carrierName:v14 error:&v19];
+    [(CoreTelephonyClient *)client sendTravelBuddyCAEvent:@"purchase local plan" carrierName:name error:&v19];
     v15 = v19;
 
-    v16 = [(TSCarrierItemListViewController *)self delegate];
-    [v16 viewControllerDidComplete:self];
+    delegate = [(TSCarrierItemListViewController *)self delegate];
+    [delegate viewControllerDidComplete:self];
   }
 
-  v17 = [(OBTableWelcomeController *)self tableView];
-  [v17 deselectRowAtIndexPath:v5 animated:1];
+  tableView = [(OBTableWelcomeController *)self tableView];
+  [tableView deselectRowAtIndexPath:pathCopy animated:1];
 
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)prepare:(id)a3
+- (void)prepare:(id)prepare
 {
-  v4 = a3;
-  v5 = v4;
+  prepareCopy = prepare;
+  v5 = prepareCopy;
   if (self->_carrierItems)
   {
-    (*(v4 + 2))(v4, 1);
+    (*(prepareCopy + 2))(prepareCopy, 1);
   }
 
   else
@@ -308,23 +308,23 @@ void __43__TSCarrierItemListViewController_prepare___block_invoke(uint64_t a1, v
   client = self->_client;
   v5 = 0;
   [(CoreTelephonyClient *)client sendTravelBuddyCAEvent:@"purchase local plan_Cancel" carrierName:&stru_28753DF48 error:&v5];
-  v4 = [(TSCarrierItemListViewController *)self delegate];
-  [v4 userDidTapCancel];
+  delegate = [(TSCarrierItemListViewController *)self delegate];
+  [delegate userDidTapCancel];
 }
 
-- (void)_fetchCarrierListWithCompletion:(id)a3
+- (void)_fetchCarrierListWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v5 = [MEMORY[0x277CF96D8] sharedManager];
+  mEMORY[0x277CF96D8] = [MEMORY[0x277CF96D8] sharedManager];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __67__TSCarrierItemListViewController__fetchCarrierListWithCompletion___block_invoke;
   v7[3] = &unk_279B450D0;
   objc_copyWeak(&v9, &location);
-  v6 = v4;
+  v6 = completionCopy;
   v8 = v6;
-  [v5 getSupportedFlowTypes:v7];
+  [mEMORY[0x277CF96D8] getSupportedFlowTypes:v7];
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);

@@ -1,13 +1,13 @@
 @interface UIKeyboardCandidateViewState
-+ (BOOL)resolveInstanceMethod:(SEL)a3;
-- (BOOL)isEqual:(id)a3;
++ (BOOL)resolveInstanceMethod:(SEL)method;
+- (BOOL)isEqual:(id)equal;
 - (CGPoint)arrowButtonOffset;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation UIKeyboardCandidateViewState
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   v5 = [(UIKeyboardCandidateViewStyle *)self->_style copy];
@@ -34,16 +34,16 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v20 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     style = self->_style;
     v7 = v5->_style;
@@ -89,14 +89,14 @@
   return v20;
 }
 
-+ (BOOL)resolveInstanceMethod:(SEL)a3
++ (BOOL)resolveInstanceMethod:(SEL)method
 {
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___UIKeyboardCandidateViewState;
   if ((objc_msgSendSuper2(&v6, sel_resolveInstanceMethod_) & 1) == 0)
   {
     v4 = objc_opt_class();
-    class_addMethod(v4, a3, nullMethodIMP, "v@:");
+    class_addMethod(v4, method, nullMethodIMP, "v@:");
   }
 
   return 1;

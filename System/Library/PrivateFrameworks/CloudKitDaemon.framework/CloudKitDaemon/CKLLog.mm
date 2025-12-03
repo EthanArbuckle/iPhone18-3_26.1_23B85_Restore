@@ -1,18 +1,18 @@
 @interface CKLLog
-+ (id)preparedLiveStreamFromLiveStore:(id)a3;
-+ (id)preparedStreamFromStore:(id)a3;
-- (CKLLog)initWithArchiveAtURL:(id)a3;
++ (id)preparedLiveStreamFromLiveStore:(id)store;
++ (id)preparedStreamFromStore:(id)store;
+- (CKLLog)initWithArchiveAtURL:(id)l;
 - (id)initForHostStream;
 - (id)initInternal;
-- (void)addStreamObserver:(id)a3;
-- (void)streamLogsWithCompletion:(id)a3;
+- (void)addStreamObserver:(id)observer;
+- (void)streamLogsWithCompletion:(id)completion;
 @end
 
 @implementation CKLLog
 
-+ (id)preparedStreamFromStore:(id)a3
++ (id)preparedStreamFromStore:(id)store
 {
-  v3 = a3;
+  storeCopy = store;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -20,7 +20,7 @@
   v17 = sub_225073564;
   v18 = 0;
   v4 = dispatch_semaphore_create(0);
-  objc_msgSend_setUpgradeConfirmationHandler_(v3, v5, &unk_28385CF40);
+  objc_msgSend_setUpgradeConfirmationHandler_(storeCopy, v5, &unk_28385CF40);
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = sub_225197CF8;
@@ -28,7 +28,7 @@
   v12 = &v13;
   v6 = v4;
   v11 = v6;
-  objc_msgSend_prepareWithCompletionHandler_(v3, v7, v10);
+  objc_msgSend_prepareWithCompletionHandler_(storeCopy, v7, v10);
   dispatch_semaphore_wait(v6, 0xFFFFFFFFFFFFFFFFLL);
   v8 = v14[5];
 
@@ -37,9 +37,9 @@
   return v8;
 }
 
-+ (id)preparedLiveStreamFromLiveStore:(id)a3
++ (id)preparedLiveStreamFromLiveStore:(id)store
 {
-  v3 = a3;
+  storeCopy = store;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -54,7 +54,7 @@
   v11 = &v12;
   v5 = v4;
   v10 = v5;
-  objc_msgSend_prepareWithCompletionHandler_(v3, v6, v9);
+  objc_msgSend_prepareWithCompletionHandler_(storeCopy, v6, v9);
   dispatch_semaphore_wait(v5, 0xFFFFFFFFFFFFFFFFLL);
   v7 = v13[5];
 
@@ -99,15 +99,15 @@
   return v6;
 }
 
-- (CKLLog)initWithArchiveAtURL:(id)a3
+- (CKLLog)initWithArchiveAtURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   inited = objc_msgSend_initInternal(self, v5, v6);
   v9 = inited;
   if (inited)
   {
     *(inited + 40) = 1;
-    v10 = objc_msgSend_storeWithArchiveURL_(MEMORY[0x277D24438], v8, v4);
+    v10 = objc_msgSend_storeWithArchiveURL_(MEMORY[0x277D24438], v8, lCopy);
     v12 = objc_msgSend_preparedStreamFromStore_(CKLLog, v11, v10);
     logEventStream = v9->_logEventStream;
     v9->_logEventStream = v12;
@@ -116,19 +116,19 @@
   return v9;
 }
 
-- (void)addStreamObserver:(id)a3
+- (void)addStreamObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   v8 = objc_msgSend_streamObservers(self, v5, v6);
-  objc_msgSend_addObject_(v8, v7, v4);
+  objc_msgSend_addObject_(v8, v7, observerCopy);
 }
 
-- (void)streamLogsWithCompletion:(id)a3
+- (void)streamLogsWithCompletion:(id)completion
 {
   v98 = *MEMORY[0x277D85DE8];
-  v79 = a3;
+  completionCopy = completion;
   context = objc_autoreleasePoolPush();
-  v6 = objc_msgSend_copy(v79, v4, v5);
+  v6 = objc_msgSend_copy(completionCopy, v4, v5);
   completionHandler = self->_completionHandler;
   self->_completionHandler = v6;
 

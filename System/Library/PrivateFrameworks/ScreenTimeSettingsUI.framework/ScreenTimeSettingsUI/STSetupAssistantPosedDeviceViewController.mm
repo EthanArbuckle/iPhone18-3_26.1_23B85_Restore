@@ -1,7 +1,7 @@
 @interface STSetupAssistantPosedDeviceViewController
 - (BOOL)_isRTL;
-- (STSetupAssistantPosedDeviceViewController)initWithCoder:(id)a3;
-- (STSetupAssistantPosedDeviceViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (STSetupAssistantPosedDeviceViewController)initWithCoder:(id)coder;
+- (STSetupAssistantPosedDeviceViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (id)_deviceWithScreenImage;
 - (id)_setupGenericImage;
 - (void)_stSetupAssistantPosedDeviceViewControllerCommonInit;
@@ -10,20 +10,20 @@
 
 @implementation STSetupAssistantPosedDeviceViewController
 
-- (STSetupAssistantPosedDeviceViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (STSetupAssistantPosedDeviceViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v6.receiver = self;
   v6.super_class = STSetupAssistantPosedDeviceViewController;
-  v4 = [(STSetupAssistantPosedDeviceViewController *)&v6 initWithNibName:a3 bundle:a4];
+  v4 = [(STSetupAssistantPosedDeviceViewController *)&v6 initWithNibName:name bundle:bundle];
   [(STSetupAssistantPosedDeviceViewController *)v4 _stSetupAssistantPosedDeviceViewControllerCommonInit];
   return v4;
 }
 
-- (STSetupAssistantPosedDeviceViewController)initWithCoder:(id)a3
+- (STSetupAssistantPosedDeviceViewController)initWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = STSetupAssistantPosedDeviceViewController;
-  v3 = [(STSetupAssistantPosedDeviceViewController *)&v5 initWithCoder:a3];
+  v3 = [(STSetupAssistantPosedDeviceViewController *)&v5 initWithCoder:coder];
   [(STSetupAssistantPosedDeviceViewController *)v3 _stSetupAssistantPosedDeviceViewControllerCommonInit];
   return v3;
 }
@@ -139,9 +139,9 @@ LABEL_27:
   v6.receiver = self;
   v6.super_class = STSetupAssistantPosedDeviceViewController;
   [(STSetupAssistantPosedDeviceViewController *)&v6 viewDidLoad];
-  v3 = [(STSetupAssistantPosedDeviceViewController *)self _deviceWithScreenImage];
-  v4 = [(STSetupAssistantPosedDeviceViewController *)self deviceWithScreenImageView];
-  [v4 setImage:v3];
+  _deviceWithScreenImage = [(STSetupAssistantPosedDeviceViewController *)self _deviceWithScreenImage];
+  deviceWithScreenImageView = [(STSetupAssistantPosedDeviceViewController *)self deviceWithScreenImageView];
+  [deviceWithScreenImageView setImage:_deviceWithScreenImage];
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
@@ -153,20 +153,20 @@ LABEL_27:
 - (id)_deviceWithScreenImage
 {
   v2 = MEMORY[0x277D755B8];
-  v3 = [(STSetupAssistantPosedDeviceViewController *)self _setupGenericImage];
+  _setupGenericImage = [(STSetupAssistantPosedDeviceViewController *)self _setupGenericImage];
   v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-  v5 = [v2 imageNamed:v3 inBundle:v4];
+  v5 = [v2 imageNamed:_setupGenericImage inBundle:v4];
 
   return v5;
 }
 
 - (id)_setupGenericImage
 {
-  v3 = [(STSetupAssistantPosedDeviceViewController *)self isiPad];
-  v4 = [(STSetupAssistantPosedDeviceViewController *)self deviceSize];
-  if (v3)
+  isiPad = [(STSetupAssistantPosedDeviceViewController *)self isiPad];
+  deviceSize = [(STSetupAssistantPosedDeviceViewController *)self deviceSize];
+  if (isiPad)
   {
-    if (v4 == 6)
+    if (deviceSize == 6)
     {
       return @"Setup Image Ipad Pro";
     }
@@ -177,22 +177,22 @@ LABEL_27:
     }
   }
 
-  else if ((v4 - 1) > 7)
+  else if ((deviceSize - 1) > 7)
   {
     return @"Setup Image Iphone 7";
   }
 
   else
   {
-    return off_279B7E178[v4 - 1];
+    return off_279B7E178[deviceSize - 1];
   }
 }
 
 - (BOOL)_isRTL
 {
   v2 = MEMORY[0x277D75D18];
-  v3 = [(STSetupAssistantPosedDeviceViewController *)self view];
-  LOBYTE(v2) = [v2 userInterfaceLayoutDirectionForSemanticContentAttribute:{objc_msgSend(v3, "semanticContentAttribute")}] == 1;
+  view = [(STSetupAssistantPosedDeviceViewController *)self view];
+  LOBYTE(v2) = [v2 userInterfaceLayoutDirectionForSemanticContentAttribute:{objc_msgSend(view, "semanticContentAttribute")}] == 1;
 
   return v2;
 }

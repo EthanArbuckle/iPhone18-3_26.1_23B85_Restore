@@ -1,8 +1,8 @@
 @interface ICNoteEditorUserTitleView
-+ (BOOL)shouldShowUserTitleViewForNote:(id)a3;
++ (BOOL)shouldShowUserTitleViewForNote:(id)note;
 + (id)newUserTitleView;
-- (ICNoteEditorUserTitleView)initWithCoder:(id)a3;
-- (ICNoteEditorUserTitleView)initWithFrame:(CGRect)a3;
+- (ICNoteEditorUserTitleView)initWithCoder:(id)coder;
+- (ICNoteEditorUserTitleView)initWithFrame:(CGRect)frame;
 - (ICNoteEditorUserTitleViewDelegate)delegate;
 - (UIAlertController)alertController;
 - (UIButton)editButton;
@@ -15,12 +15,12 @@
 - (void)accessibilityElementDidBecomeFocused;
 - (void)awakeFromNib;
 - (void)dealloc;
-- (void)editButtonPressed:(id)a3;
-- (void)noteWillBeDeleted:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)editButtonPressed:(id)pressed;
+- (void)noteWillBeDeleted:(id)deleted;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)registerForTraitChanges;
-- (void)setHidden:(BOOL)a3;
-- (void)setNote:(id)a3;
+- (void)setHidden:(BOOL)hidden;
+- (void)setNote:(id)note;
 - (void)updateConstraints;
 - (void)updateContentToCurrentNote;
 - (void)updateFonts;
@@ -28,11 +28,11 @@
 
 @implementation ICNoteEditorUserTitleView
 
-- (ICNoteEditorUserTitleView)initWithCoder:(id)a3
+- (ICNoteEditorUserTitleView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = ICNoteEditorUserTitleView;
-  v3 = [(ICNoteEditorUserTitleView *)&v6 initWithCoder:a3];
+  v3 = [(ICNoteEditorUserTitleView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -42,11 +42,11 @@
   return v4;
 }
 
-- (ICNoteEditorUserTitleView)initWithFrame:(CGRect)a3
+- (ICNoteEditorUserTitleView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = ICNoteEditorUserTitleView;
-  v3 = [(ICNoteEditorUserTitleView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(ICNoteEditorUserTitleView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -61,8 +61,8 @@
   [(ICNote *)self->_note ic_removeObserver:self forKeyPath:@"title" context:&compoundliteral_3];
   [(ICNote *)self->_note ic_removeObserver:self forKeyPath:@"titleSourceAttachment" context:&compoundliteral_3];
   [(ICNote *)self->_note ic_removeObserver:self forKeyPath:@"folder" context:&compoundliteral_3];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = ICNoteEditorUserTitleView;
@@ -75,39 +75,39 @@
   v16.super_class = ICNoteEditorUserTitleView;
   [(ICNoteEditorUserTitleView *)&v16 awakeFromNib];
   v3 = ICAccessibilityAccessibilityLargerTextSizesEnabled() ^ 1;
-  v4 = [(ICNoteEditorUserTitleView *)self label];
-  [v4 setNumberOfLines:v3];
+  label = [(ICNoteEditorUserTitleView *)self label];
+  [label setNumberOfLines:v3];
 
   [(ICNoteEditorUserTitleView *)self updateFonts];
-  v5 = [(ICNoteEditorUserTitleView *)self label];
-  v6 = [v5 font];
-  v7 = [v6 ic_fontHasSingleLineA];
+  label2 = [(ICNoteEditorUserTitleView *)self label];
+  font = [label2 font];
+  ic_fontHasSingleLineA = [font ic_fontHasSingleLineA];
 
-  if ((v7 & 1) == 0)
+  if ((ic_fontHasSingleLineA & 1) == 0)
   {
     [MEMORY[0x277D36198] handleFailedAssertWithCondition:"[self.label.font ic_fontHasSingleLineA]" functionName:"-[ICNoteEditorUserTitleView awakeFromNib]" simulateCrash:1 showAlert:0 format:@"font should have a single-line a attribute"];
   }
 
-  v8 = [MEMORY[0x277D75348] ic_noteEditorSecondaryLabelColor];
-  v9 = [(ICNoteEditorUserTitleView *)self label];
-  [v9 setTextColor:v8];
+  ic_noteEditorSecondaryLabelColor = [MEMORY[0x277D75348] ic_noteEditorSecondaryLabelColor];
+  label3 = [(ICNoteEditorUserTitleView *)self label];
+  [label3 setTextColor:ic_noteEditorSecondaryLabelColor];
 
-  v10 = [(ICNoteEditorUserTitleView *)self label];
-  [v10 setTextAlignment:1];
+  label4 = [(ICNoteEditorUserTitleView *)self label];
+  [label4 setTextAlignment:1];
 
-  v11 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v11 addObserver:self selector:sel_noteWillBeDeleted_ name:*MEMORY[0x277D35D18] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_noteWillBeDeleted_ name:*MEMORY[0x277D35D18] object:0];
 
-  v12 = [(ICNoteEditorUserTitleView *)self note];
-  LOBYTE(v9) = [v12 isSharedAndEmpty];
+  note = [(ICNoteEditorUserTitleView *)self note];
+  LOBYTE(label3) = [note isSharedAndEmpty];
 
-  if ((v9 & 1) == 0)
+  if ((label3 & 1) == 0)
   {
     [(ICNoteEditorUserTitleView *)self updateContentToCurrentNote];
-    v13 = [(ICNoteEditorUserTitleView *)self editButton];
-    v14 = [MEMORY[0x277CCA8D8] mainBundle];
-    v15 = [v14 localizedStringForKey:@"Edit" value:&stru_282757698 table:0];
-    [v13 setTitle:v15 forState:0];
+    editButton = [(ICNoteEditorUserTitleView *)self editButton];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v15 = [mainBundle localizedStringForKey:@"Edit" value:&stru_282757698 table:0];
+    [editButton setTitle:v15 forState:0];
   }
 }
 
@@ -120,8 +120,8 @@
   v4 = MEMORY[0x277CCAAD0];
   if (v3)
   {
-    v5 = [(ICNoteEditorUserTitleView *)self defaultConstraints];
-    [v4 deactivateConstraints:v5];
+    defaultConstraints = [(ICNoteEditorUserTitleView *)self defaultConstraints];
+    [v4 deactivateConstraints:defaultConstraints];
 
     v6 = MEMORY[0x277CCAAD0];
     [(ICNoteEditorUserTitleView *)self alternateConstraintsForAXLargerTextSizes];
@@ -129,8 +129,8 @@
 
   else
   {
-    v7 = [(ICNoteEditorUserTitleView *)self alternateConstraintsForAXLargerTextSizes];
-    [v4 deactivateConstraints:v7];
+    alternateConstraintsForAXLargerTextSizes = [(ICNoteEditorUserTitleView *)self alternateConstraintsForAXLargerTextSizes];
+    [v4 deactivateConstraints:alternateConstraintsForAXLargerTextSizes];
 
     v6 = MEMORY[0x277CCAAD0];
     [(ICNoteEditorUserTitleView *)self defaultConstraints];
@@ -144,29 +144,29 @@
   v3 = 0.0;
   if (([(ICNoteEditorUserTitleView *)self isHidden]& 1) == 0)
   {
-    v4 = [(ICNoteEditorUserTitleView *)self label];
-    v5 = [v4 numberOfLines];
-    v6 = [(ICNoteEditorUserTitleView *)self label];
-    v7 = v6;
-    if (v5 == 1)
+    label = [(ICNoteEditorUserTitleView *)self label];
+    numberOfLines = [label numberOfLines];
+    label2 = [(ICNoteEditorUserTitleView *)self label];
+    v7 = label2;
+    if (numberOfLines == 1)
     {
-      v8 = [v6 font];
-      [v8 lineHeight];
+      font = [label2 font];
+      [font lineHeight];
       *&v9 = v9;
       v10 = ceilf(*&v9);
     }
 
     else
     {
-      [v6 intrinsicContentSize];
+      [label2 intrinsicContentSize];
       v10 = v11;
     }
 
     v3 = v10 + 12.0;
     if (ICAccessibilityAccessibilityLargerTextSizesEnabled())
     {
-      v12 = [(ICNoteEditorUserTitleView *)self editButton];
-      [v12 intrinsicContentSize];
+      editButton = [(ICNoteEditorUserTitleView *)self editButton];
+      [editButton intrinsicContentSize];
       v3 = v3 + v13;
     }
   }
@@ -174,18 +174,18 @@
   return v3;
 }
 
-- (void)setNote:(id)a3
+- (void)setNote:(id)note
 {
   v26 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (self->_note != v5)
+  noteCopy = note;
+  if (self->_note != noteCopy)
   {
     v22 = 0u;
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v6 = [objc_opt_class() noteKeyPathsAffectingUserTitleView];
-    v7 = [v6 countByEnumeratingWithState:&v20 objects:v25 count:16];
+    noteKeyPathsAffectingUserTitleView = [objc_opt_class() noteKeyPathsAffectingUserTitleView];
+    v7 = [noteKeyPathsAffectingUserTitleView countByEnumeratingWithState:&v20 objects:v25 count:16];
     if (v7)
     {
       v8 = v7;
@@ -197,26 +197,26 @@
         {
           if (*v21 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(noteKeyPathsAffectingUserTitleView);
           }
 
           [(ICNote *)self->_note ic_removeObserver:self forKeyPath:*(*(&v20 + 1) + 8 * v10++) context:&compoundliteral_3];
         }
 
         while (v8 != v10);
-        v8 = [v6 countByEnumeratingWithState:&v20 objects:v25 count:16];
+        v8 = [noteKeyPathsAffectingUserTitleView countByEnumeratingWithState:&v20 objects:v25 count:16];
       }
 
       while (v8);
     }
 
-    objc_storeStrong(&self->_note, a3);
+    objc_storeStrong(&self->_note, note);
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v11 = [objc_opt_class() noteKeyPathsAffectingUserTitleView];
-    v12 = [v11 countByEnumeratingWithState:&v16 objects:v24 count:16];
+    noteKeyPathsAffectingUserTitleView2 = [objc_opt_class() noteKeyPathsAffectingUserTitleView];
+    v12 = [noteKeyPathsAffectingUserTitleView2 countByEnumeratingWithState:&v16 objects:v24 count:16];
     if (v12)
     {
       v13 = v12;
@@ -228,14 +228,14 @@
         {
           if (*v17 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(noteKeyPathsAffectingUserTitleView2);
           }
 
           [(ICNote *)self->_note ic_addObserver:self forKeyPath:*(*(&v16 + 1) + 8 * v15++) context:&compoundliteral_3];
         }
 
         while (v13 != v15);
-        v13 = [v11 countByEnumeratingWithState:&v16 objects:v24 count:16];
+        v13 = [noteKeyPathsAffectingUserTitleView2 countByEnumeratingWithState:&v16 objects:v24 count:16];
       }
 
       while (v13);
@@ -245,16 +245,16 @@
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  if (([(ICNoteEditorUserTitleView *)self ic_didAddObserverForContext:a6 inScope:"/Library/Caches/com.apple.xbs/Sources/MobileNotes/Ironcade/iOS/Editor/ICNoteEditorUserTitleView.m"]& 1) != 0)
+  changeCopy = change;
+  objectCopy = object;
+  pathCopy = path;
+  if (([(ICNoteEditorUserTitleView *)self ic_didAddObserverForContext:context inScope:"/Library/Caches/com.apple.xbs/Sources/MobileNotes/Ironcade/iOS/Editor/ICNoteEditorUserTitleView.m"]& 1) != 0)
   {
-    v13 = [(ICNoteEditorUserTitleView *)self ic_shouldIgnoreObserveValue:v10 ofObject:v11 forKeyPath:v12];
+    v13 = [(ICNoteEditorUserTitleView *)self ic_shouldIgnoreObserveValue:changeCopy ofObject:objectCopy forKeyPath:pathCopy];
 
-    if (a6 == &compoundliteral_3 && (v13 & 1) == 0)
+    if (context == &compoundliteral_3 && (v13 & 1) == 0)
     {
 
       [(ICNoteEditorUserTitleView *)self updateContentToCurrentNote];
@@ -265,183 +265,183 @@
   {
     v14.receiver = self;
     v14.super_class = ICNoteEditorUserTitleView;
-    [(ICNoteEditorUserTitleView *)&v14 observeValueForKeyPath:v12 ofObject:v11 change:v10 context:a6];
+    [(ICNoteEditorUserTitleView *)&v14 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 
-- (void)noteWillBeDeleted:(id)a3
+- (void)noteWillBeDeleted:(id)deleted
 {
-  v4 = [a3 object];
-  v5 = [(ICNoteEditorUserTitleView *)self note];
+  object = [deleted object];
+  note = [(ICNoteEditorUserTitleView *)self note];
 
-  if (v4 == v5)
+  if (object == note)
   {
-    v6 = [(ICNoteEditorUserTitleView *)self alertController];
-    [v6 dismissViewControllerAnimated:1 completion:0];
+    alertController = [(ICNoteEditorUserTitleView *)self alertController];
+    [alertController dismissViewControllerAnimated:1 completion:0];
   }
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
-  v3 = a3;
-  if ([(ICNoteEditorUserTitleView *)self isHidden]!= a3)
+  hiddenCopy = hidden;
+  if ([(ICNoteEditorUserTitleView *)self isHidden]!= hidden)
   {
     v6.receiver = self;
     v6.super_class = ICNoteEditorUserTitleView;
-    [(ICNoteEditorUserTitleView *)&v6 setHidden:v3];
-    v5 = [(ICNoteEditorUserTitleView *)self delegate];
-    [v5 userTitleHiddenStateDidChange:self];
+    [(ICNoteEditorUserTitleView *)&v6 setHidden:hiddenCopy];
+    delegate = [(ICNoteEditorUserTitleView *)self delegate];
+    [delegate userTitleHiddenStateDidChange:self];
   }
 }
 
-+ (BOOL)shouldShowUserTitleViewForNote:(id)a3
++ (BOOL)shouldShowUserTitleViewForNote:(id)note
 {
-  v3 = a3;
-  v4 = [v3 isSharedAndEmpty];
-  if (v3)
+  noteCopy = note;
+  isSharedAndEmpty = [noteCopy isSharedAndEmpty];
+  if (noteCopy)
   {
-    v5 = [v3 titleSourceAttachment];
-    if ([v5 attachmentType] == 10)
+    titleSourceAttachment = [noteCopy titleSourceAttachment];
+    if ([titleSourceAttachment attachmentType] == 10)
     {
       v6 = 0;
     }
 
     else
     {
-      v8 = [v3 titleSourceAttachment];
-      v6 = [v8 attachmentType] != 13;
+      titleSourceAttachment2 = [noteCopy titleSourceAttachment];
+      v6 = [titleSourceAttachment2 attachmentType] != 13;
     }
 
-    v9 = [v3 titleSourceAttachment];
-    v7 = 0;
-    if (v9 && !v6)
+    titleSourceAttachment3 = [noteCopy titleSourceAttachment];
+    isEditable = 0;
+    if (titleSourceAttachment3 && !v6)
     {
-      v7 = [v3 isEditable];
+      isEditable = [noteCopy isEditable];
     }
   }
 
   else
   {
-    v7 = 0;
+    isEditable = 0;
   }
 
-  return (v4 | v7) & 1;
+  return (isSharedAndEmpty | isEditable) & 1;
 }
 
 - (void)updateContentToCurrentNote
 {
-  v3 = [(ICNoteEditorUserTitleView *)self note];
-  v4 = [v3 isSharedAndEmpty];
+  note = [(ICNoteEditorUserTitleView *)self note];
+  isSharedAndEmpty = [note isSharedAndEmpty];
 
-  if (v4)
+  if (isSharedAndEmpty)
   {
     return;
   }
 
   v5 = objc_opt_class();
-  v6 = [(ICNoteEditorUserTitleView *)self note];
-  -[ICNoteEditorUserTitleView setHidden:](self, "setHidden:", [v5 shouldShowUserTitleViewForNote:v6] ^ 1);
+  note2 = [(ICNoteEditorUserTitleView *)self note];
+  -[ICNoteEditorUserTitleView setHidden:](self, "setHidden:", [v5 shouldShowUserTitleViewForNote:note2] ^ 1);
 
   if (([(ICNoteEditorUserTitleView *)self isHidden]& 1) != 0)
   {
     return;
   }
 
-  v7 = [(ICNoteEditorUserTitleView *)self note];
-  v8 = [v7 titleSourceAttachment];
-  v9 = [v8 userTitle];
+  note3 = [(ICNoteEditorUserTitleView *)self note];
+  titleSourceAttachment = [note3 titleSourceAttachment];
+  userTitle = [titleSourceAttachment userTitle];
 
-  if (v9)
+  if (userTitle)
   {
     v10 = MEMORY[0x277CCACA8];
-    v11 = [MEMORY[0x277CCA8D8] mainBundle];
-    v12 = [v11 localizedStringForKey:@"Note Title: %@" value:&stru_282757698 table:0];
-    v26 = [v10 localizedStringWithFormat:v12, v9];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v12 = [mainBundle localizedStringForKey:@"Note Title: %@" value:&stru_282757698 table:0];
+    v26 = [v10 localizedStringWithFormat:v12, userTitle];
   }
 
   else
   {
-    v14 = [(ICNoteEditorUserTitleView *)self note];
-    v15 = [v14 attributedTitle];
+    note4 = [(ICNoteEditorUserTitleView *)self note];
+    attributedTitle = [note4 attributedTitle];
 
-    if (v15)
+    if (attributedTitle)
     {
-      v16 = [MEMORY[0x277CCA8D8] mainBundle];
-      v17 = [v16 localizedStringForKey:@"Suggested Title: " value:&stru_282757698 table:0];
-      v18 = [(ICNoteEditorUserTitleView *)self note];
-      v19 = [v18 attributedTitle];
-      v13 = [v17 ic_attributedStringByAppendingAttributedString:v19];
+      mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+      v17 = [mainBundle2 localizedStringForKey:@"Suggested Title: " value:&stru_282757698 table:0];
+      note5 = [(ICNoteEditorUserTitleView *)self note];
+      attributedTitle2 = [note5 attributedTitle];
+      label2 = [v17 ic_attributedStringByAppendingAttributedString:attributedTitle2];
     }
 
     else
     {
-      v13 = 0;
+      label2 = 0;
     }
 
     v20 = MEMORY[0x277CCACA8];
-    v21 = [MEMORY[0x277CCA8D8] mainBundle];
-    v22 = [v21 localizedStringForKey:@"Suggested Title: %@" value:&stru_282757698 table:0];
-    v23 = [(ICNoteEditorUserTitleView *)self note];
-    v24 = [v23 title];
-    v26 = [v20 localizedStringWithFormat:v22, v24];
+    mainBundle3 = [MEMORY[0x277CCA8D8] mainBundle];
+    v22 = [mainBundle3 localizedStringForKey:@"Suggested Title: %@" value:&stru_282757698 table:0];
+    note6 = [(ICNoteEditorUserTitleView *)self note];
+    title = [note6 title];
+    v26 = [v20 localizedStringWithFormat:v22, title];
 
-    if (v13)
+    if (label2)
     {
-      v25 = [(ICNoteEditorUserTitleView *)self label];
-      [v25 setAttributedText:v13];
+      label = [(ICNoteEditorUserTitleView *)self label];
+      [label setAttributedText:label2];
 
       goto LABEL_12;
     }
   }
 
-  v13 = [(ICNoteEditorUserTitleView *)self label];
-  [v13 setText:v26];
+  label2 = [(ICNoteEditorUserTitleView *)self label];
+  [label2 setText:v26];
 LABEL_12:
 }
 
-- (void)editButtonPressed:(id)a3
+- (void)editButtonPressed:(id)pressed
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CCA8D8] mainBundle];
-  v6 = [v5 localizedStringForKey:@"Note Title" value:&stru_282757698 table:0];
+  pressedCopy = pressed;
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v6 = [mainBundle localizedStringForKey:@"Note Title" value:&stru_282757698 table:0];
 
-  v7 = [(ICNoteEditorUserTitleView *)self note];
-  v8 = [v7 titleSourceAttachment];
+  note = [(ICNoteEditorUserTitleView *)self note];
+  titleSourceAttachment = [note titleSourceAttachment];
 
-  if (v8)
+  if (titleSourceAttachment)
   {
     objc_initWeak(location, self);
     v35 = v6;
     v9 = [MEMORY[0x277D75110] alertControllerWithTitle:v6 message:&stru_282757698 preferredStyle:1];
-    v10 = [v8 note];
-    v11 = [v10 attributedTitle];
+    note2 = [titleSourceAttachment note];
+    attributedTitle = [note2 attributedTitle];
 
-    v12 = [v8 note];
-    v13 = [v12 title];
+    note3 = [titleSourceAttachment note];
+    title = [note3 title];
 
     v43[0] = MEMORY[0x277D85DD0];
     v43[1] = 3221225472;
     v43[2] = __47__ICNoteEditorUserTitleView_editButtonPressed___block_invoke;
     v43[3] = &unk_2781ADEA0;
-    v14 = v8;
+    v14 = titleSourceAttachment;
     v44 = v14;
-    v36 = v11 != 0;
-    v48 = v11 != 0;
-    v15 = v11;
+    v36 = attributedTitle != 0;
+    v48 = attributedTitle != 0;
+    v15 = attributedTitle;
     v45 = v15;
-    v16 = v13;
+    v16 = title;
     v46 = v16;
     objc_copyWeak(&v47, location);
     [v9 addTextFieldWithConfigurationHandler:v43];
     v17 = MEMORY[0x277D750F8];
-    v18 = [MEMORY[0x277CCA8D8] mainBundle];
-    v19 = [v18 localizedStringForKey:@"Cancel" value:&stru_282757698 table:0];
+    mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+    v19 = [mainBundle2 localizedStringForKey:@"Cancel" value:&stru_282757698 table:0];
     v20 = [v17 actionWithTitle:v19 style:1 handler:&__block_literal_global_13];
     [v9 addAction:v20];
 
     v21 = MEMORY[0x277D750F8];
-    v22 = [MEMORY[0x277CCA8D8] mainBundle];
-    v23 = [v22 localizedStringForKey:@"Done" value:&stru_282757698 table:0];
+    mainBundle3 = [MEMORY[0x277CCA8D8] mainBundle];
+    v23 = [mainBundle3 localizedStringForKey:@"Done" value:&stru_282757698 table:0];
     v37[0] = MEMORY[0x277D85DD0];
     v37[1] = 3221225472;
     v37[2] = __47__ICNoteEditorUserTitleView_editButtonPressed___block_invoke_3;
@@ -458,26 +458,26 @@ LABEL_12:
     [v24 addAction:v27];
 
     [(ICNoteEditorUserTitleView *)self setAlertController:v24];
-    v28 = [(ICNoteEditorUserTitleView *)self window];
-    v29 = [v28 rootViewController];
+    window = [(ICNoteEditorUserTitleView *)self window];
+    rootViewController = [window rootViewController];
 
-    v30 = [v29 presentedViewController];
-    v31 = v30;
-    if (v30)
+    presentedViewController = [rootViewController presentedViewController];
+    v31 = presentedViewController;
+    if (presentedViewController)
     {
-      v32 = v30;
+      v32 = presentedViewController;
     }
 
     else
     {
-      v32 = v29;
+      v32 = rootViewController;
     }
 
     v33 = v32;
 
     [v33 presentViewController:v24 animated:1 completion:0];
-    v34 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v34 postNotificationName:@"ICNoteEditorTitleEditingViewDidShowNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"ICNoteEditorTitleEditingViewDidShowNotification" object:0];
 
     objc_destroyWeak(&v47);
     objc_destroyWeak(location);
@@ -579,9 +579,9 @@ LABEL_12:
 + (id)newUserTitleView
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCA8D8] bundleForClass:a1];
-  v4 = NSStringFromClass(a1);
-  v5 = [v3 loadNibNamed:v4 owner:a1 options:0];
+  v3 = [MEMORY[0x277CCA8D8] bundleForClass:self];
+  v4 = NSStringFromClass(self);
+  v5 = [v3 loadNibNamed:v4 owner:self options:0];
 
   v16 = 0u;
   v17 = 0u;
@@ -644,15 +644,15 @@ LABEL_12:
 
 - (void)updateFonts
 {
-  v3 = [MEMORY[0x277D74300] ic_preferredFontForDateText];
-  v4 = [(ICNoteEditorUserTitleView *)self label];
-  [v4 setFont:v3];
+  ic_preferredFontForDateText = [MEMORY[0x277D74300] ic_preferredFontForDateText];
+  label = [(ICNoteEditorUserTitleView *)self label];
+  [label setFont:ic_preferredFontForDateText];
 
-  v8 = [(ICNoteEditorUserTitleView *)self label];
-  v5 = [v8 font];
-  v6 = [(ICNoteEditorUserTitleView *)self editButton];
-  v7 = [v6 titleLabel];
-  [v7 setFont:v5];
+  label2 = [(ICNoteEditorUserTitleView *)self label];
+  font = [label2 font];
+  editButton = [(ICNoteEditorUserTitleView *)self editButton];
+  titleLabel = [editButton titleLabel];
+  [titleLabel setFont:font];
 }
 
 - (void)registerForTraitChanges
@@ -690,16 +690,16 @@ void __52__ICNoteEditorUserTitleView_registerForTraitChanges__block_invoke(uint6
 
 - (id)accessibilityValue
 {
-  v2 = [(ICNoteEditorUserTitleView *)self label];
-  v3 = [v2 text];
+  label = [(ICNoteEditorUserTitleView *)self label];
+  text = [label text];
 
-  return v3;
+  return text;
 }
 
 - (id)accessibilityHint
 {
-  v2 = [MEMORY[0x277CCA8D8] mainBundle];
-  v3 = [v2 localizedStringForKey:@"Double tap to edit the title of this note." value:&stru_282757698 table:0];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v3 = [mainBundle localizedStringForKey:@"Double tap to edit the title of this note." value:&stru_282757698 table:0];
 
   return v3;
 }
@@ -708,17 +708,17 @@ void __52__ICNoteEditorUserTitleView_registerForTraitChanges__block_invoke(uint6
 {
   v7.receiver = self;
   v7.super_class = ICNoteEditorUserTitleView;
-  v2 = [(ICNoteEditorUserTitleView *)&v7 accessibilityContainer];
-  v3 = v2;
-  if (v2)
+  accessibilityContainer = [(ICNoteEditorUserTitleView *)&v7 accessibilityContainer];
+  v3 = accessibilityContainer;
+  if (accessibilityContainer)
   {
-    v4 = v2;
+    v4 = accessibilityContainer;
     while (![v4 conformsToProtocol:&unk_28282EDC0])
     {
-      v5 = [v4 accessibilityContainer];
+      accessibilityContainer2 = [v4 accessibilityContainer];
 
-      v4 = v5;
-      if (!v5)
+      v4 = accessibilityContainer2;
+      if (!accessibilityContainer2)
       {
         goto LABEL_8;
       }
@@ -746,8 +746,8 @@ LABEL_8:
   [(ICNoteEditorUserTitleView *)&v5 accessibilityElementDidBecomeFocused];
   if (UIAccessibilityIsVoiceOverRunning())
   {
-    v3 = [(ICNoteEditorUserTitleView *)self nextResponder];
-    if (v3)
+    nextResponder = [(ICNoteEditorUserTitleView *)self nextResponder];
+    if (nextResponder)
     {
       while (1)
       {
@@ -757,20 +757,20 @@ LABEL_8:
           break;
         }
 
-        v4 = [v3 nextResponder];
+        v3NextResponder = [nextResponder nextResponder];
 
-        v3 = v4;
-        if (!v4)
+        nextResponder = v3NextResponder;
+        if (!v3NextResponder)
         {
           goto LABEL_7;
         }
       }
 
-      v3 = v3;
+      nextResponder = nextResponder;
     }
 
 LABEL_7:
-    [v3 showOverscrollContentAndScrollToTop];
+    [nextResponder showOverscrollContentAndScrollToTop];
   }
 }
 

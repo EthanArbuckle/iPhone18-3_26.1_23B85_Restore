@@ -1,54 +1,54 @@
 @interface BNBannerHostMonitorListener
 + (void)initialize;
-- (BNBannerHostMonitorListener)initWithServiceDomain:(id)a3 authorizedBundleIDs:(id)a4;
-- (BOOL)_isConnectingProcessAuthorized:(id)a3 error:(id *)a4;
+- (BNBannerHostMonitorListener)initWithServiceDomain:(id)domain authorizedBundleIDs:(id)ds;
+- (BOOL)_isConnectingProcessAuthorized:(id)authorized error:(id *)error;
 - (BOOL)isBannerHostAvailable;
 - (NSString)description;
-- (void)_addConnection:(id)a3;
-- (void)_notifyObserversWithBlock:(id)a3;
-- (void)_removeConnection:(id)a3;
-- (void)addObserver:(id)a3;
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5;
-- (void)removeObserver:(id)a3;
+- (void)_addConnection:(id)connection;
+- (void)_notifyObserversWithBlock:(id)block;
+- (void)_removeConnection:(id)connection;
+- (void)addObserver:(id)observer;
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation BNBannerHostMonitorListener
 
 - (BOOL)isBannerHostAvailable
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSMutableArray *)v2->_connections count]!= 0;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [(NSMutableArray *)selfCopy->_connections count]!= 0;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
     BNRegisterBannerKitLogging();
   }
 }
 
-- (BNBannerHostMonitorListener)initWithServiceDomain:(id)a3 authorizedBundleIDs:(id)a4
+- (BNBannerHostMonitorListener)initWithServiceDomain:(id)domain authorizedBundleIDs:(id)ds
 {
   v33 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  domainCopy = domain;
+  dsCopy = ds;
   v28.receiver = self;
   v28.super_class = BNBannerHostMonitorListener;
   v9 = [(BNBannerHostMonitorListener *)&v28 init];
   if (v9)
   {
-    if (!v7)
+    if (!domainCopy)
     {
       [BNBannerHostMonitorListener initWithServiceDomain:a2 authorizedBundleIDs:v9];
     }
 
-    objc_storeStrong(&v9->_authorizedBundleIDs, a4);
+    objc_storeStrong(&v9->_authorizedBundleIDs, ds);
     Serial = BSDispatchQueueCreateSerial();
     queue = v9->_queue;
     v9->_queue = Serial;
@@ -58,7 +58,7 @@
     v23 = 3221225472;
     v24 = __73__BNBannerHostMonitorListener_initWithServiceDomain_authorizedBundleIDs___block_invoke;
     v25 = &unk_1E81E4648;
-    v26 = v7;
+    v26 = domainCopy;
     v13 = v9;
     v27 = v13;
     v14 = [v12 listenerWithConfigurator:&v22];
@@ -100,68 +100,68 @@ void __73__BNBannerHostMonitorListener_initWithServiceDomain_authorizedBundleIDs
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(BSServiceConnectionListener *)self->_connectionListener domain];
-  v6 = [v3 stringWithFormat:@"<%@: %p serviceDomain: %@; authorizedBundleIDs: %@>", v4, self, v5, self->_authorizedBundleIDs];;
+  domain = [(BSServiceConnectionListener *)self->_connectionListener domain];
+  v6 = [v3 stringWithFormat:@"<%@: %p serviceDomain: %@; authorizedBundleIDs: %@>", v4, self, domain, self->_authorizedBundleIDs];;
 
   return v6;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  if (v4)
+  observerCopy = observer;
+  if (observerCopy)
   {
-    v9 = v4;
-    v5 = self;
-    objc_sync_enter(v5);
-    observers = v5->_observers;
+    v9 = observerCopy;
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    observers = selfCopy->_observers;
     if (!observers)
     {
       v7 = [MEMORY[0x1E696AC70] hashTableWithOptions:517];
-      v8 = v5->_observers;
-      v5->_observers = v7;
+      v8 = selfCopy->_observers;
+      selfCopy->_observers = v7;
 
-      observers = v5->_observers;
+      observers = selfCopy->_observers;
     }
 
     [(NSHashTable *)observers addObject:v9];
-    objc_sync_exit(v5);
+    objc_sync_exit(selfCopy);
 
-    v4 = v9;
+    observerCopy = v9;
   }
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  if (v4)
+  observerCopy = observer;
+  if (observerCopy)
   {
-    v7 = v4;
-    v5 = self;
-    objc_sync_enter(v5);
-    observers = v5->_observers;
+    v7 = observerCopy;
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    observers = selfCopy->_observers;
     if (observers)
     {
       [(NSHashTable *)observers removeObject:v7];
     }
 
-    objc_sync_exit(v5);
+    objc_sync_exit(selfCopy);
 
-    v4 = v7;
+    observerCopy = v7;
   }
 }
 
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context
 {
   v22 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  objc_sync_enter(v11);
-  v12 = [v9 remoteProcess];
+  listenerCopy = listener;
+  connectionCopy = connection;
+  contextCopy = context;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  remoteProcess = [connectionCopy remoteProcess];
   v20 = 0;
-  v13 = [(BNBannerHostMonitorListener *)v11 _isConnectingProcessAuthorized:v12 error:&v20];
+  v13 = [(BNBannerHostMonitorListener *)selfCopy _isConnectingProcessAuthorized:remoteProcess error:&v20];
   v14 = v20;
 
   if (v13)
@@ -170,9 +170,9 @@ void __73__BNBannerHostMonitorListener_initWithServiceDomain_authorizedBundleIDs
     v19[1] = 3221225472;
     v19[2] = __73__BNBannerHostMonitorListener_listener_didReceiveConnection_withContext___block_invoke;
     v19[3] = &unk_1E81E44F0;
-    v19[4] = v11;
-    [v9 configureConnection:v19];
-    [(BNBannerHostMonitorListener *)v11 _addConnection:v9];
+    v19[4] = selfCopy;
+    [connectionCopy configureConnection:v19];
+    [(BNBannerHostMonitorListener *)selfCopy _addConnection:connectionCopy];
   }
 
   else
@@ -182,14 +182,14 @@ void __73__BNBannerHostMonitorListener_initWithServiceDomain_authorizedBundleIDs
     {
       v16 = objc_opt_class();
       v17 = NSStringFromClass(v16);
-      v18 = [v14 localizedDescription];
-      [(BNBannerHostMonitorListener *)v17 listener:v18 didReceiveConnection:buf withContext:v15];
+      localizedDescription = [v14 localizedDescription];
+      [(BNBannerHostMonitorListener *)v17 listener:localizedDescription didReceiveConnection:buf withContext:v15];
     }
 
-    [v9 invalidate];
+    [connectionCopy invalidate];
   }
 
-  objc_sync_exit(v11);
+  objc_sync_exit(selfCopy);
 }
 
 void __73__BNBannerHostMonitorListener_listener_didReceiveConnection_withContext___block_invoke(uint64_t a1, void *a2)
@@ -256,17 +256,17 @@ void __73__BNBannerHostMonitorListener_listener_didReceiveConnection_withContext
   [WeakRetained _removeConnection:v3];
 }
 
-- (BOOL)_isConnectingProcessAuthorized:(id)a3 error:(id *)a4
+- (BOOL)_isConnectingProcessAuthorized:(id)authorized error:(id *)error
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 hasEntitlement:@"com.apple.bannerkit.hostmonitor"];
+  authorizedCopy = authorized;
+  v7 = [authorizedCopy hasEntitlement:@"com.apple.bannerkit.hostmonitor"];
   authorizedBundleIDs = self->_authorizedBundleIDs;
-  v9 = [v6 bundleIdentifier];
+  bundleIdentifier = [authorizedCopy bundleIdentifier];
 
-  v10 = [(NSSet *)authorizedBundleIDs containsObject:v9];
+  v10 = [(NSSet *)authorizedBundleIDs containsObject:bundleIdentifier];
   v11 = v7 & v10;
-  if (a4 && (v7 & v10 & 1) == 0)
+  if (error && (v7 & v10 & 1) == 0)
   {
     v12 = objc_alloc_init(MEMORY[0x1E696AD60]);
     v13 = v12;
@@ -294,40 +294,40 @@ void __73__BNBannerHostMonitorListener_listener_didReceiveConnection_withContext
     v18 = *MEMORY[0x1E696A578];
     v19[0] = v13;
     v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v19 forKeys:&v18 count:1];
-    *a4 = [v15 errorWithDomain:@"BNBannerSourceErrorDomain" code:0 userInfo:v16];
+    *error = [v15 errorWithDomain:@"BNBannerSourceErrorDomain" code:0 userInfo:v16];
   }
 
   return v11;
 }
 
-- (void)_addConnection:(id)a3
+- (void)_addConnection:(id)connection
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  connections = v5->_connections;
+  connectionCopy = connection;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  connections = selfCopy->_connections;
   if (!connections)
   {
     v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v8 = v5->_connections;
-    v5->_connections = v7;
+    v8 = selfCopy->_connections;
+    selfCopy->_connections = v7;
 
-    connections = v5->_connections;
+    connections = selfCopy->_connections;
   }
 
-  [(NSMutableArray *)connections addObject:v4];
-  [v4 activate];
-  if ([(NSMutableArray *)v5->_connections count]== 1)
+  [(NSMutableArray *)connections addObject:connectionCopy];
+  [connectionCopy activate];
+  if ([(NSMutableArray *)selfCopy->_connections count]== 1)
   {
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __46__BNBannerHostMonitorListener__addConnection___block_invoke;
     block[3] = &unk_1E81E4BC8;
-    block[4] = v5;
+    block[4] = selfCopy;
     dispatch_async(MEMORY[0x1E69E96A0], block);
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 uint64_t __46__BNBannerHostMonitorListener__addConnection___block_invoke(uint64_t a1)
@@ -350,29 +350,29 @@ void __46__BNBannerHostMonitorListener__addConnection___block_invoke_2(uint64_t 
   }
 }
 
-- (void)_removeConnection:(id)a3
+- (void)_removeConnection:(id)connection
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  [(NSMutableArray *)v5->_connections removeObject:v4];
-  if (![(NSMutableArray *)v5->_connections count])
+  connectionCopy = connection;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSMutableArray *)selfCopy->_connections removeObject:connectionCopy];
+  if (![(NSMutableArray *)selfCopy->_connections count])
   {
-    connections = v5->_connections;
-    v5->_connections = 0;
+    connections = selfCopy->_connections;
+    selfCopy->_connections = 0;
   }
 
-  if (!v5->_connections)
+  if (!selfCopy->_connections)
   {
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __49__BNBannerHostMonitorListener__removeConnection___block_invoke;
     block[3] = &unk_1E81E4BC8;
-    block[4] = v5;
+    block[4] = selfCopy;
     dispatch_async(MEMORY[0x1E69E96A0], block);
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 uint64_t __49__BNBannerHostMonitorListener__removeConnection___block_invoke(uint64_t a1)
@@ -395,11 +395,11 @@ void __49__BNBannerHostMonitorListener__removeConnection___block_invoke_2(uint64
   }
 }
 
-- (void)_notifyObserversWithBlock:(id)a3
+- (void)_notifyObserversWithBlock:(id)block
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  blockCopy = block;
+  if (blockCopy)
   {
     observers = self->_observers;
     if (observers)
@@ -424,7 +424,7 @@ void __49__BNBannerHostMonitorListener__removeConnection___block_invoke_2(uint64
               objc_enumerationMutation(v6);
             }
 
-            v4[2](v4, *(*(&v11 + 1) + 8 * v10++));
+            blockCopy[2](blockCopy, *(*(&v11 + 1) + 8 * v10++));
           }
 
           while (v8 != v10);

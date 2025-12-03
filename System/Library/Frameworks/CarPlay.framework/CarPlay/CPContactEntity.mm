@@ -1,84 +1,84 @@
 @interface CPContactEntity
-- (BOOL)isEqual:(id)a3;
-- (CPContactEntity)initWithCoder:(id)a3;
-- (CPContactEntity)initWithName:(id)a3 imageSet:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (CPContactEntity)initWithCoder:(id)coder;
+- (CPContactEntity)initWithName:(id)name imageSet:(id)set;
 - (NSString)description;
-- (id)objectForIdentifier:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)objectForIdentifier:(id)identifier;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CPContactEntity
 
-- (CPContactEntity)initWithName:(id)a3 imageSet:(id)a4
+- (CPContactEntity)initWithName:(id)name imageSet:(id)set
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  setCopy = set;
   v12.receiver = self;
   v12.super_class = CPContactEntity;
-  v8 = [(CPEntity *)&v12 _init];
-  if (v8)
+  _init = [(CPEntity *)&v12 _init];
+  if (_init)
   {
-    v9 = [v6 copy];
-    name = v8->_name;
-    v8->_name = v9;
+    v9 = [nameCopy copy];
+    name = _init->_name;
+    _init->_name = v9;
 
-    objc_storeStrong(&v8->_imageSet, a4);
+    objc_storeStrong(&_init->_imageSet, set);
   }
 
-  return v8;
+  return _init;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(CPContactEntity *)self name];
-    v7 = [v5 name];
-    v8 = [v6 isEqual:v7];
+    v5 = equalCopy;
+    name = [(CPContactEntity *)self name];
+    name2 = [v5 name];
+    v8 = [name isEqual:name2];
 
     if (!v8)
     {
       goto LABEL_7;
     }
 
-    v9 = [(CPContactEntity *)self name];
-    v10 = [v5 name];
-    v11 = [v9 isEqual:v10];
+    name3 = [(CPContactEntity *)self name];
+    name4 = [v5 name];
+    v11 = [name3 isEqual:name4];
 
     if (!v11)
     {
       goto LABEL_7;
     }
 
-    v12 = [(CPContactEntity *)self subtitle];
-    v13 = [v5 subtitle];
-    v14 = [v12 isEqual:v13];
+    subtitle = [(CPContactEntity *)self subtitle];
+    subtitle2 = [v5 subtitle];
+    v14 = [subtitle isEqual:subtitle2];
 
     if (!v14)
     {
       goto LABEL_7;
     }
 
-    v15 = [(CPContactEntity *)self informativeText];
-    v16 = [v5 informativeText];
-    v17 = [v15 isEqual:v16];
+    informativeText = [(CPContactEntity *)self informativeText];
+    informativeText2 = [v5 informativeText];
+    v17 = [informativeText isEqual:informativeText2];
 
     if (!v17)
     {
       goto LABEL_7;
     }
 
-    v18 = [(CPContactEntity *)self imageSet];
-    v19 = [v5 imageSet];
+    imageSet = [(CPContactEntity *)self imageSet];
+    imageSet2 = [v5 imageSet];
 
-    if (v18 == v19)
+    if (imageSet == imageSet2)
     {
-      v22 = [(CPContactEntity *)self actionButtons];
-      v23 = [v5 actionButtons];
-      v20 = [v22 isEqualToArray:v23];
+      actionButtons = [(CPContactEntity *)self actionButtons];
+      actionButtons2 = [v5 actionButtons];
+      v20 = [actionButtons isEqualToArray:actionButtons2];
     }
 
     else
@@ -96,29 +96,29 @@ LABEL_7:
   return v20;
 }
 
-- (CPContactEntity)initWithCoder:(id)a3
+- (CPContactEntity)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v23.receiver = self;
   v23.super_class = CPContactEntity;
-  v5 = [(CPEntity *)&v23 _init];
-  if (v5)
+  _init = [(CPEntity *)&v23 _init];
+  if (_init)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CPContactEntityName"];
-    name = v5->_name;
-    v5->_name = v6;
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CPContactEntityName"];
+    name = _init->_name;
+    _init->_name = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CPContactEntitySubtitle"];
-    subtitle = v5->_subtitle;
-    v5->_subtitle = v8;
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CPContactEntitySubtitle"];
+    subtitle = _init->_subtitle;
+    _init->_subtitle = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CPContactEntityInformative"];
-    informativeText = v5->_informativeText;
-    v5->_informativeText = v10;
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CPContactEntityInformative"];
+    informativeText = _init->_informativeText;
+    _init->_informativeText = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CPContactEntityImageSet"];
-    imageSet = v5->_imageSet;
-    v5->_imageSet = v12;
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CPContactEntityImageSet"];
+    imageSet = _init->_imageSet;
+    _init->_imageSet = v12;
 
     v14 = MEMORY[0x277CBEB98];
     v15 = objc_opt_class();
@@ -126,34 +126,34 @@ LABEL_7:
     v17 = objc_opt_class();
     v18 = objc_opt_class();
     v19 = [v14 setWithObjects:{v15, v16, v17, v18, objc_opt_class(), 0}];
-    v20 = [v4 decodeObjectOfClasses:v19 forKey:@"CPContactEntityActionButtons"];
-    actionButtons = v5->_actionButtons;
-    v5->_actionButtons = v20;
+    v20 = [coderCopy decodeObjectOfClasses:v19 forKey:@"CPContactEntityActionButtons"];
+    actionButtons = _init->_actionButtons;
+    _init->_actionButtons = v20;
   }
 
-  return v5;
+  return _init;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v10.receiver = self;
   v10.super_class = CPContactEntity;
-  v4 = a3;
-  [(CPEntity *)&v10 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(CPEntity *)&v10 encodeWithCoder:coderCopy];
   v5 = [(CPContactEntity *)self name:v10.receiver];
-  [v4 encodeObject:v5 forKey:@"CPContactEntityName"];
+  [coderCopy encodeObject:v5 forKey:@"CPContactEntityName"];
 
-  v6 = [(CPContactEntity *)self subtitle];
-  [v4 encodeObject:v6 forKey:@"CPContactEntitySubtitle"];
+  subtitle = [(CPContactEntity *)self subtitle];
+  [coderCopy encodeObject:subtitle forKey:@"CPContactEntitySubtitle"];
 
-  v7 = [(CPContactEntity *)self informativeText];
-  [v4 encodeObject:v7 forKey:@"CPContactEntityInformative"];
+  informativeText = [(CPContactEntity *)self informativeText];
+  [coderCopy encodeObject:informativeText forKey:@"CPContactEntityInformative"];
 
-  v8 = [(CPContactEntity *)self imageSet];
-  [v4 encodeObject:v8 forKey:@"CPContactEntityImageSet"];
+  imageSet = [(CPContactEntity *)self imageSet];
+  [coderCopy encodeObject:imageSet forKey:@"CPContactEntityImageSet"];
 
-  v9 = [(CPContactEntity *)self actionButtons];
-  [v4 encodeObject:v9 forKey:@"CPContactEntityActionButtons"];
+  actionButtons = [(CPContactEntity *)self actionButtons];
+  [coderCopy encodeObject:actionButtons forKey:@"CPContactEntityActionButtons"];
 }
 
 - (NSString)description
@@ -162,22 +162,22 @@ LABEL_7:
   v8.receiver = self;
   v8.super_class = CPContactEntity;
   v4 = [(CPEntity *)&v8 description];
-  v5 = [(CPContactEntity *)self name];
-  v6 = [v3 stringWithFormat:@"%@: name: %@", v4, v5];
+  name = [(CPContactEntity *)self name];
+  v6 = [v3 stringWithFormat:@"%@: name: %@", v4, name];
 
   return v6;
 }
 
-- (id)objectForIdentifier:(id)a3
+- (id)objectForIdentifier:(id)identifier
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(CPContactEntity *)self actionButtons];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  actionButtons = [(CPContactEntity *)self actionButtons];
+  v6 = [actionButtons countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = *v15;
@@ -187,12 +187,12 @@ LABEL_7:
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(actionButtons);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 identifier];
-        v11 = [v10 isEqual:v4];
+        identifier = [v9 identifier];
+        v11 = [identifier isEqual:identifierCopy];
 
         if (v11)
         {
@@ -201,7 +201,7 @@ LABEL_7:
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [actionButtons countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v6)
       {
         continue;

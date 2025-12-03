@@ -1,15 +1,15 @@
 @interface JSBiographyViewController
-- (_TtC16MusicApplication25JSBiographyViewController)initWithCoder:(id)a3;
-- (_TtC16MusicApplication25JSBiographyViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC16MusicApplication25JSBiographyViewController)initWithCoder:(id)coder;
+- (_TtC16MusicApplication25JSBiographyViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)music_viewInheritedLayoutInsetsDidChange;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
 
 @implementation JSBiographyViewController
 
-- (_TtC16MusicApplication25JSBiographyViewController)initWithCoder:(id)a3
+- (_TtC16MusicApplication25JSBiographyViewController)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC16MusicApplication25JSBiographyViewController_textDrawingCache;
   type metadata accessor for TextDrawing.Cache();
@@ -28,11 +28,11 @@
   v2 = v6.receiver;
   [(JSBiographyViewController *)&v6 viewDidLayoutSubviews];
   v3 = sub_3132E4();
-  v4 = [v2 view];
-  if (v4)
+  view = [v2 view];
+  if (view)
   {
-    v5 = v4;
-    [v4 bounds];
+    v5 = view;
+    [view bounds];
     [v3 setFrame:?];
   }
 
@@ -44,7 +44,7 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_312C24();
 }
 
@@ -57,14 +57,14 @@
   sub_3135E8();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_312E90(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_312E90(change);
 }
 
-- (_TtC16MusicApplication25JSBiographyViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC16MusicApplication25JSBiographyViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

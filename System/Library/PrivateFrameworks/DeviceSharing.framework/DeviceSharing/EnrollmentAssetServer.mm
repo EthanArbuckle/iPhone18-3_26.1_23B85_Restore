@@ -1,10 +1,10 @@
 @interface EnrollmentAssetServer
-- (void)handleKVSUpdate:(id)a3;
+- (void)handleKVSUpdate:(id)update;
 @end
 
 @implementation EnrollmentAssetServer
 
-- (void)handleKVSUpdate:(id)a3
+- (void)handleKVSUpdate:(id)update
 {
   swift_unknownObjectRetain();
 

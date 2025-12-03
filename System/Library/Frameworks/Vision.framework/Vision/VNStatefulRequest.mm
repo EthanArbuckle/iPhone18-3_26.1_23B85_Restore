@@ -10,20 +10,20 @@
 
 - (NSUUID)requestUUID
 {
-  v2 = [(VNRequest *)self configuration];
-  v3 = [v2 requestUUID];
+  configuration = [(VNRequest *)self configuration];
+  requestUUID = [configuration requestUUID];
 
-  return v3;
+  return requestUUID;
 }
 
 - (CMTime)frameAnalysisSpacing
 {
-  v4 = [(VNRequest *)self configuration];
-  if (v4)
+  configuration = [(VNRequest *)self configuration];
+  if (configuration)
   {
-    v6 = v4;
-    [v4 frameAnalysisSpacing];
-    v4 = v6;
+    v6 = configuration;
+    [configuration frameAnalysisSpacing];
+    configuration = v6;
   }
 
   else
@@ -44,10 +44,10 @@
   v6 = v5;
   if (v5)
   {
-    v7 = [(VNRequest *)v5 configuration];
+    configuration = [(VNRequest *)v5 configuration];
     v9 = *&frameAnalysisSpacing->value;
     epoch = frameAnalysisSpacing->epoch;
-    [v7 setFrameAnalysisSpacing:&v9];
+    [configuration setFrameAnalysisSpacing:&v9];
   }
 
   return v6;
@@ -71,8 +71,8 @@
 {
   v3 = objc_alloc(objc_opt_class());
   [(VNStatefulRequest *)self frameAnalysisSpacing];
-  v4 = [(VNRequest *)self completionHandler];
-  v5 = [v3 initWithFrameAnalysisSpacing:v7 completionHandler:v4];
+  completionHandler = [(VNRequest *)self completionHandler];
+  v5 = [v3 initWithFrameAnalysisSpacing:v7 completionHandler:completionHandler];
 
   return v5;
 }

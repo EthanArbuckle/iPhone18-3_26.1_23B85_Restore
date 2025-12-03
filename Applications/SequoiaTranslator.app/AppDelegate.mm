@@ -1,23 +1,23 @@
 @interface AppDelegate
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4;
-- (BOOL)application:(id)a3 runTest:(id)a4 options:(id)a5;
-- (id)application:(id)a3 configurationForConnectingSceneSession:(id)a4 options:(id)a5;
-- (unint64_t)application:(id)a3 supportedInterfaceOrientationsForWindow:(id)a4;
-- (void)applicationWillTerminate:(id)a3;
-- (void)buildMenuWithBuilder:(id)a3;
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options;
+- (BOOL)application:(id)application runTest:(id)test options:(id)options;
+- (id)application:(id)application configurationForConnectingSceneSession:(id)session options:(id)options;
+- (unint64_t)application:(id)application supportedInterfaceOrientationsForWindow:(id)window;
+- (void)applicationWillTerminate:(id)terminate;
+- (void)buildMenuWithBuilder:(id)builder;
 - (void)newSpeechTranslation:;
 - (void)newTranslation:;
-- (void)openDownloadSheet:(id)a3;
-- (void)setWindow:(id)a3;
-- (void)switchToTranslateTab:(id)a3;
-- (void)validateCommand:(id)a3;
+- (void)openDownloadSheet:(id)sheet;
+- (void)setWindow:(id)window;
+- (void)switchToTranslateTab:(id)tab;
+- (void)validateCommand:(id)command;
 @end
 
 @implementation AppDelegate
 
-- (void)openDownloadSheet:(id)a3
+- (void)openDownloadSheet:(id)sheet
 {
-  v5 = self;
+  selfCopy = self;
   sub_10000B744();
   if (v3)
   {
@@ -33,9 +33,9 @@
   }
 }
 
-- (void)switchToTranslateTab:(id)a3
+- (void)switchToTranslateTab:(id)tab
 {
-  v5 = self;
+  selfCopy = self;
   sub_10000B744();
   if (v3)
   {
@@ -164,59 +164,59 @@ LABEL_10:
   }
 }
 
-- (void)setWindow:(id)a3
+- (void)setWindow:(id)window
 {
   v4 = *(&self->super.super.isa + OBJC_IVAR____TtC17SequoiaTranslator11AppDelegate_window);
-  *(&self->super.super.isa + OBJC_IVAR____TtC17SequoiaTranslator11AppDelegate_window) = a3;
-  v3 = a3;
+  *(&self->super.super.isa + OBJC_IVAR____TtC17SequoiaTranslator11AppDelegate_window) = window;
+  windowCopy = window;
 }
 
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options
 {
-  if (a4)
+  if (options)
   {
     type metadata accessor for LaunchOptionsKey(0);
     sub_10000C1D8();
     static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
-  v6 = a3;
-  v7 = self;
+  applicationCopy = application;
+  selfCopy = self;
   v8 = sub_10000BAFC();
 
   return v8 & 1;
 }
 
-- (id)application:(id)a3 configurationForConnectingSceneSession:(id)a4 options:(id)a5
+- (id)application:(id)application configurationForConnectingSceneSession:(id)session options:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  v12 = sub_10000BBE8(v9);
+  applicationCopy = application;
+  sessionCopy = session;
+  optionsCopy = options;
+  selfCopy = self;
+  v12 = sub_10000BBE8(sessionCopy);
 
   return v12;
 }
 
-- (unint64_t)application:(id)a3 supportedInterfaceOrientationsForWindow:(id)a4
+- (unint64_t)application:(id)application supportedInterfaceOrientationsForWindow:(id)window
 {
-  v5 = self;
-  if (!a4)
+  selfCopy = self;
+  if (!window)
   {
     goto LABEL_9;
   }
 
-  v6 = a4;
-  v7 = [v6 rootViewController];
-  if (!v7)
+  windowCopy = window;
+  rootViewController = [windowCopy rootViewController];
+  if (!rootViewController)
   {
-    v8 = v6;
+    v8 = windowCopy;
 LABEL_8:
 
     goto LABEL_9;
   }
 
-  v8 = v7;
+  v8 = rootViewController;
   objc_opt_self();
   v9 = swift_dynamicCastObjCClass();
   if (!v9)
@@ -225,12 +225,12 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  v10 = [v9 selectedIndex];
+  selectedIndex = [v9 selectedIndex];
 
-  if (v10 != 1)
+  if (selectedIndex != 1)
   {
 LABEL_9:
-    v11 = *(&v5->super.super.isa + OBJC_IVAR____TtC17SequoiaTranslator11AppDelegate_orientationLock);
+    v11 = *(&selfCopy->super.super.isa + OBJC_IVAR____TtC17SequoiaTranslator11AppDelegate_orientationLock);
     goto LABEL_10;
   }
 
@@ -240,7 +240,7 @@ LABEL_10:
   return v11;
 }
 
-- (void)applicationWillTerminate:(id)a3
+- (void)applicationWillTerminate:(id)terminate
 {
   if (qword_1003A92D8 != -1)
   {
@@ -250,29 +250,29 @@ LABEL_10:
   sub_1001A2440(0);
 }
 
-- (void)buildMenuWithBuilder:(id)a3
+- (void)buildMenuWithBuilder:(id)builder
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_10000BF10(a3);
+  selfCopy = self;
+  sub_10000BF10(builder);
   swift_unknownObjectRelease();
 }
 
-- (void)validateCommand:(id)a3
+- (void)validateCommand:(id)command
 {
-  v4 = a3;
-  v5 = self;
-  sub_10000C084(v4);
+  commandCopy = command;
+  selfCopy = self;
+  sub_10000C084(commandCopy);
 }
 
-- (BOOL)application:(id)a3 runTest:(id)a4 options:(id)a5
+- (BOOL)application:(id)application runTest:(id)test options:(id)options
 {
   v7 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v9 = v8;
   static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = a3;
-  v11 = self;
-  LOBYTE(v7) = sub_1000110E0(v10, v7, v9);
+  applicationCopy = application;
+  selfCopy = self;
+  LOBYTE(v7) = sub_1000110E0(applicationCopy, v7, v9);
 
   return v7 & 1;
 }

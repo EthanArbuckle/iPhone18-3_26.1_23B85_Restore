@@ -1,14 +1,14 @@
 @interface MTRErrorHolder
 - (ChipError)error;
-- (MTRErrorHolder)initWithError:(ChipError)a3;
+- (MTRErrorHolder)initWithError:(ChipError)error;
 @end
 
 @implementation MTRErrorHolder
 
-- (MTRErrorHolder)initWithError:(ChipError)a3
+- (MTRErrorHolder)initWithError:(ChipError)error
 {
-  mFile = a3.mFile;
-  v4 = *&a3.mError;
+  mFile = error.mFile;
+  v4 = *&error.mError;
   v9.receiver = self;
   v9.super_class = MTRErrorHolder;
   v5 = [(MTRErrorHolder *)&v9 init];

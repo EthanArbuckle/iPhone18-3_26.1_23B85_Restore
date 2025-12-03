@@ -1,14 +1,14 @@
 @interface HMDLogEventCountingAnalyzer
 - (HMDEventCounterGroup)currentDayCountersGroup;
-- (HMDLogEventCountingAnalyzer)initWithEventCountersManager:(id)a3 dailyScheduler:(id)a4 dateProvider:(id)a5 systemInfo:(id)a6 queue:(id)a7;
-- (HMDLogEventCountingAnalyzer)initWithEventCountersManager:(id)a3 dailyScheduler:(id)a4 dateProvider:(id)a5 systemInfo:(id)a6 queue:(id)a7 loggingPeriodicitySeconds:(unint64_t)a8 tickSecondsProviderBlock:(id)a9 periodicCountersLoggingBlock:(id)a10;
-- (id)periodicSnapshotAtCurrentTickSeconds:(unint64_t)a3;
-- (void)deleteCountersAfterDate:(id)a3;
-- (void)deleteCountersBeforeDate:(id)a3;
-- (void)incrementDailyCountersForEventName:(id)a3;
-- (void)incrementPeriodicCountersForEventName:(id)a3;
-- (void)observeEvent:(id)a3;
-- (void)observeEvent:(id)a3 withCurrentTickSeconds:(unint64_t)a4;
+- (HMDLogEventCountingAnalyzer)initWithEventCountersManager:(id)manager dailyScheduler:(id)scheduler dateProvider:(id)provider systemInfo:(id)info queue:(id)queue;
+- (HMDLogEventCountingAnalyzer)initWithEventCountersManager:(id)manager dailyScheduler:(id)scheduler dateProvider:(id)provider systemInfo:(id)info queue:(id)queue loggingPeriodicitySeconds:(unint64_t)seconds tickSecondsProviderBlock:(id)block periodicCountersLoggingBlock:(id)self0;
+- (id)periodicSnapshotAtCurrentTickSeconds:(unint64_t)seconds;
+- (void)deleteCountersAfterDate:(id)date;
+- (void)deleteCountersBeforeDate:(id)date;
+- (void)incrementDailyCountersForEventName:(id)name;
+- (void)incrementPeriodicCountersForEventName:(id)name;
+- (void)observeEvent:(id)event;
+- (void)observeEvent:(id)event withCurrentTickSeconds:(unint64_t)seconds;
 - (void)runDailyTask;
 @end
 
@@ -17,27 +17,27 @@
 - (HMDEventCounterGroup)currentDayCountersGroup
 {
   v3 = [HMDDateCounterGroupSpecifier alloc];
-  v4 = [(HMDLogEventCountingAnalyzer *)self dateProvider];
-  v5 = [v4 startOfCurrentDay];
-  v6 = [(HMDDateCounterGroupSpecifier *)v3 initWithGroupName:@"HMDLogEventCountingAnalyzerDailyGroupName" date:v5];
+  dateProvider = [(HMDLogEventCountingAnalyzer *)self dateProvider];
+  startOfCurrentDay = [dateProvider startOfCurrentDay];
+  v6 = [(HMDDateCounterGroupSpecifier *)v3 initWithGroupName:@"HMDLogEventCountingAnalyzerDailyGroupName" date:startOfCurrentDay];
 
-  v7 = [(HMDLogEventCountingAnalyzer *)self countersManager];
-  v8 = [v7 counterGroupForSpecifier:v6];
+  countersManager = [(HMDLogEventCountingAnalyzer *)self countersManager];
+  v8 = [countersManager counterGroupForSpecifier:v6];
 
   return v8;
 }
 
-- (void)deleteCountersAfterDate:(id)a3
+- (void)deleteCountersAfterDate:(id)date
 {
-  v4 = a3;
-  v5 = [(HMDLogEventCountingAnalyzer *)self countersManager];
+  dateCopy = date;
+  countersManager = [(HMDLogEventCountingAnalyzer *)self countersManager];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __55__HMDLogEventCountingAnalyzer_deleteCountersAfterDate___block_invoke;
   v7[3] = &unk_278681218;
-  v8 = v4;
-  v6 = v4;
-  [v5 removeCounterGroupsBasedOnPredicate:v7];
+  v8 = dateCopy;
+  v6 = dateCopy;
+  [countersManager removeCounterGroupsBasedOnPredicate:v7];
 }
 
 BOOL __55__HMDLogEventCountingAnalyzer_deleteCountersAfterDate___block_invoke(uint64_t a1, void *a2)
@@ -79,17 +79,17 @@ BOOL __55__HMDLogEventCountingAnalyzer_deleteCountersAfterDate___block_invoke(ui
   return v9;
 }
 
-- (void)deleteCountersBeforeDate:(id)a3
+- (void)deleteCountersBeforeDate:(id)date
 {
-  v4 = a3;
-  v5 = [(HMDLogEventCountingAnalyzer *)self countersManager];
+  dateCopy = date;
+  countersManager = [(HMDLogEventCountingAnalyzer *)self countersManager];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __56__HMDLogEventCountingAnalyzer_deleteCountersBeforeDate___block_invoke;
   v7[3] = &unk_278681218;
-  v8 = v4;
-  v6 = v4;
-  [v5 removeCounterGroupsBasedOnPredicate:v7];
+  v8 = dateCopy;
+  v6 = dateCopy;
+  [countersManager removeCounterGroupsBasedOnPredicate:v7];
 }
 
 BOOL __56__HMDLogEventCountingAnalyzer_deleteCountersBeforeDate___block_invoke(uint64_t a1, void *a2)
@@ -133,13 +133,13 @@ BOOL __56__HMDLogEventCountingAnalyzer_deleteCountersBeforeDate___block_invoke(u
 
 - (void)runDailyTask
 {
-  v3 = [(HMDLogEventCountingAnalyzer *)self queue];
+  queue = [(HMDLogEventCountingAnalyzer *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __43__HMDLogEventCountingAnalyzer_runDailyTask__block_invoke;
   block[3] = &unk_27868A728;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 void __43__HMDLogEventCountingAnalyzer_runDailyTask__block_invoke(uint64_t a1)
@@ -154,43 +154,43 @@ void __43__HMDLogEventCountingAnalyzer_runDailyTask__block_invoke(uint64_t a1)
   [*(a1 + 32) deleteCountersAfterDate:v4];
 }
 
-- (void)incrementDailyCountersForEventName:(id)a3
+- (void)incrementDailyCountersForEventName:(id)name
 {
-  v4 = a3;
-  v5 = [(HMDLogEventCountingAnalyzer *)self currentDayCountersGroup];
-  [v5 incrementEventCounterForEventName:v4];
+  nameCopy = name;
+  currentDayCountersGroup = [(HMDLogEventCountingAnalyzer *)self currentDayCountersGroup];
+  [currentDayCountersGroup incrementEventCounterForEventName:nameCopy];
 }
 
-- (void)incrementPeriodicCountersForEventName:(id)a3
+- (void)incrementPeriodicCountersForEventName:(id)name
 {
-  v8 = a3;
+  nameCopy = name;
   os_unfair_lock_lock_with_options();
-  v4 = [(NSMutableDictionary *)self->_currentPeriodCounters objectForKeyedSubscript:v8];
+  v4 = [(NSMutableDictionary *)self->_currentPeriodCounters objectForKeyedSubscript:nameCopy];
 
   if (v4)
   {
     v5 = MEMORY[0x277CCABB0];
-    v6 = [(NSMutableDictionary *)self->_currentPeriodCounters objectForKeyedSubscript:v8];
+    v6 = [(NSMutableDictionary *)self->_currentPeriodCounters objectForKeyedSubscript:nameCopy];
     v7 = [v5 numberWithInteger:{objc_msgSend(v6, "integerValue") + 1}];
-    [(NSMutableDictionary *)self->_currentPeriodCounters setObject:v7 forKeyedSubscript:v8];
+    [(NSMutableDictionary *)self->_currentPeriodCounters setObject:v7 forKeyedSubscript:nameCopy];
   }
 
   else
   {
-    [(NSMutableDictionary *)self->_currentPeriodCounters setObject:&unk_283E74048 forKeyedSubscript:v8];
+    [(NSMutableDictionary *)self->_currentPeriodCounters setObject:&unk_283E74048 forKeyedSubscript:nameCopy];
   }
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (id)periodicSnapshotAtCurrentTickSeconds:(unint64_t)a3
+- (id)periodicSnapshotAtCurrentTickSeconds:(unint64_t)seconds
 {
   os_unfair_lock_lock_with_options();
-  if (a3 - self->_tickSecondsLastLogged >= self->_loggingPeriodicitySeconds)
+  if (seconds - self->_tickSecondsLastLogged >= self->_loggingPeriodicitySeconds)
   {
     v5 = [(NSMutableDictionary *)self->_currentPeriodCounters copy];
     [(NSMutableDictionary *)self->_currentPeriodCounters removeAllObjects];
-    self->_tickSecondsLastLogged = a3;
+    self->_tickSecondsLastLogged = seconds;
   }
 
   else
@@ -203,36 +203,36 @@ void __43__HMDLogEventCountingAnalyzer_runDailyTask__block_invoke(uint64_t a1)
   return v5;
 }
 
-- (void)observeEvent:(id)a3 withCurrentTickSeconds:(unint64_t)a4
+- (void)observeEvent:(id)event withCurrentTickSeconds:(unint64_t)seconds
 {
-  v6 = a3;
-  v7 = [(HMDLogEventCountingAnalyzer *)self queue];
-  dispatch_assert_queue_V2(v7);
+  eventCopy = event;
+  queue = [(HMDLogEventCountingAnalyzer *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v8 = objc_opt_class();
   v12 = NSStringFromClass(v8);
   [(HMDLogEventCountingAnalyzer *)self incrementPeriodicCountersForEventName:v12];
   [(HMDLogEventCountingAnalyzer *)self incrementDailyCountersForEventName:v12];
-  v9 = [(HMDLogEventCountingAnalyzer *)self periodicSnapshotAtCurrentTickSeconds:a4];
+  v9 = [(HMDLogEventCountingAnalyzer *)self periodicSnapshotAtCurrentTickSeconds:seconds];
   if (v9)
   {
-    v10 = [(HMDLogEventCountingAnalyzer *)self periodicCountersSnapshotBlock];
-    v11 = [(HMDLogEventCountingAnalyzer *)self serialNumber];
-    (v10)[2](v10, v9, v11);
+    periodicCountersSnapshotBlock = [(HMDLogEventCountingAnalyzer *)self periodicCountersSnapshotBlock];
+    serialNumber = [(HMDLogEventCountingAnalyzer *)self serialNumber];
+    (periodicCountersSnapshotBlock)[2](periodicCountersSnapshotBlock, v9, serialNumber);
   }
 }
 
-- (void)observeEvent:(id)a3
+- (void)observeEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __44__HMDLogEventCountingAnalyzer_observeEvent___block_invoke;
   v7[3] = &unk_27868A750;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = eventCopy;
+  v6 = eventCopy;
   dispatch_async(queue, v7);
 }
 
@@ -244,68 +244,68 @@ void __44__HMDLogEventCountingAnalyzer_observeEvent___block_invoke(uint64_t a1)
   [v1 observeEvent:v2 withCurrentTickSeconds:v3[2]()];
 }
 
-- (HMDLogEventCountingAnalyzer)initWithEventCountersManager:(id)a3 dailyScheduler:(id)a4 dateProvider:(id)a5 systemInfo:(id)a6 queue:(id)a7 loggingPeriodicitySeconds:(unint64_t)a8 tickSecondsProviderBlock:(id)a9 periodicCountersLoggingBlock:(id)a10
+- (HMDLogEventCountingAnalyzer)initWithEventCountersManager:(id)manager dailyScheduler:(id)scheduler dateProvider:(id)provider systemInfo:(id)info queue:(id)queue loggingPeriodicitySeconds:(unint64_t)seconds tickSecondsProviderBlock:(id)block periodicCountersLoggingBlock:(id)self0
 {
-  v34 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a9;
-  v21 = a10;
+  managerCopy = manager;
+  schedulerCopy = scheduler;
+  providerCopy = provider;
+  infoCopy = info;
+  queueCopy = queue;
+  blockCopy = block;
+  loggingBlockCopy = loggingBlock;
   v35.receiver = self;
   v35.super_class = HMDLogEventCountingAnalyzer;
   v22 = [(HMDLogEventCountingAnalyzer *)&v35 init];
   v23 = v22;
   if (v22)
   {
-    objc_storeStrong(&v22->_countersManager, a3);
-    v24 = [MEMORY[0x277CBEB38] dictionary];
+    objc_storeStrong(&v22->_countersManager, manager);
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     currentPeriodCounters = v23->_currentPeriodCounters;
-    v23->_currentPeriodCounters = v24;
+    v23->_currentPeriodCounters = dictionary;
 
-    objc_storeStrong(&v23->_dateProvider, a5);
+    objc_storeStrong(&v23->_dateProvider, provider);
     v26 = isInternalBuild();
     if (v26)
     {
-      v27 = [v18 serialNumber];
+      serialNumber = [infoCopy serialNumber];
     }
 
     else
     {
-      v27 = 0;
+      serialNumber = 0;
     }
 
-    objc_storeStrong(&v23->_serialNumber, v27);
+    objc_storeStrong(&v23->_serialNumber, serialNumber);
     if (v26)
     {
     }
 
-    objc_storeStrong(&v23->_queue, a7);
-    v23->_loggingPeriodicitySeconds = a8;
-    v28 = _Block_copy(v20);
+    objc_storeStrong(&v23->_queue, queue);
+    v23->_loggingPeriodicitySeconds = seconds;
+    v28 = _Block_copy(blockCopy);
     tickSecondsProviderBlock = v23->_tickSecondsProviderBlock;
     v23->_tickSecondsProviderBlock = v28;
 
     v23->_tickSecondsLastLogged = (*(v23->_tickSecondsProviderBlock + 2))();
-    v30 = _Block_copy(v21);
+    v30 = _Block_copy(loggingBlockCopy);
     periodicCountersSnapshotBlock = v23->_periodicCountersSnapshotBlock;
     v23->_periodicCountersSnapshotBlock = v30;
 
-    [v16 registerDailyTaskRunner:v23];
+    [schedulerCopy registerDailyTaskRunner:v23];
   }
 
   return v23;
 }
 
-- (HMDLogEventCountingAnalyzer)initWithEventCountersManager:(id)a3 dailyScheduler:(id)a4 dateProvider:(id)a5 systemInfo:(id)a6 queue:(id)a7
+- (HMDLogEventCountingAnalyzer)initWithEventCountersManager:(id)manager dailyScheduler:(id)scheduler dateProvider:(id)provider systemInfo:(id)info queue:(id)queue
 {
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __105__HMDLogEventCountingAnalyzer_initWithEventCountersManager_dailyScheduler_dateProvider_systemInfo_queue___block_invoke_2;
   v14[3] = &unk_2786804B8;
-  v15 = self;
-  v12 = [(HMDLogEventCountingAnalyzer *)v15 initWithEventCountersManager:a3 dailyScheduler:a4 dateProvider:a5 systemInfo:a6 queue:a7 loggingPeriodicitySeconds:900 tickSecondsProviderBlock:&__block_literal_global_207585 periodicCountersLoggingBlock:v14];
+  selfCopy = self;
+  v12 = [(HMDLogEventCountingAnalyzer *)selfCopy initWithEventCountersManager:manager dailyScheduler:scheduler dateProvider:provider systemInfo:info queue:queue loggingPeriodicitySeconds:900 tickSecondsProviderBlock:&__block_literal_global_207585 periodicCountersLoggingBlock:v14];
 
   return v12;
 }

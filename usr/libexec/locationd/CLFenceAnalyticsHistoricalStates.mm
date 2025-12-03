@@ -6,10 +6,10 @@
 - (id).cxx_construct;
 - (void)dealloc;
 - (void)resetHistoricalStates;
-- (void)setCurrentLocation:(CLDaemonLocation *)a3;
-- (void)setNMinusOneStateChangeLocation:(CLDaemonLocation *)a3;
-- (void)setNMinusTwoStateChangeLocation:(CLDaemonLocation *)a3;
-- (void)updateCurrentState:(int)a3 previousState:(int)a4 location:(CLDaemonLocation *)a5 locationReceivedTime:(double)a6;
+- (void)setCurrentLocation:(CLDaemonLocation *)location;
+- (void)setNMinusOneStateChangeLocation:(CLDaemonLocation *)location;
+- (void)setNMinusTwoStateChangeLocation:(CLDaemonLocation *)location;
+- (void)updateCurrentState:(int)state previousState:(int)previousState location:(CLDaemonLocation *)location locationReceivedTime:(double)time;
 @end
 
 @implementation CLFenceAnalyticsHistoricalStates
@@ -35,10 +35,10 @@
   [(CLFenceAnalyticsHistoricalStates *)&v3 dealloc];
 }
 
-- (void)updateCurrentState:(int)a3 previousState:(int)a4 location:(CLDaemonLocation *)a5 locationReceivedTime:(double)a6
+- (void)updateCurrentState:(int)state previousState:(int)previousState location:(CLDaemonLocation *)location locationReceivedTime:(double)time
 {
-  v9 = *&a3;
-  if ([(CLFenceAnalyticsHistoricalStates *)self currentState]!= a4)
+  v9 = *&state;
+  if ([(CLFenceAnalyticsHistoricalStates *)self currentState]!= previousState)
   {
     if (qword_1025D4640 != -1)
     {
@@ -58,14 +58,14 @@
         v12 = off_10247C450[(v9 + 1)];
       }
 
-      if ((a4 + 1) > 4)
+      if ((previousState + 1) > 4)
       {
         v13 = "---";
       }
 
       else
       {
-        v13 = off_10247C450[a4 + 1];
+        v13 = off_10247C450[previousState + 1];
       }
 
       *buf = 136315394;
@@ -77,7 +77,7 @@
 
     if (sub_10000A100(121, 2))
     {
-      sub_101960BAC(v9, a4);
+      sub_101960BAC(v9, previousState);
     }
 
     [(CLFenceAnalyticsHistoricalStates *)self resetHistoricalStates];
@@ -101,18 +101,18 @@
       v15 = off_10247C450[(v9 + 1)];
     }
 
-    if ((a4 + 1) > 4)
+    if ((previousState + 1) > 4)
     {
       v16 = "---";
     }
 
     else
     {
-      v16 = off_10247C450[a4 + 1];
+      v16 = off_10247C450[previousState + 1];
     }
 
-    lifespan_low = LODWORD(a5->lifespan);
-    v18 = *(&a5->coordinate.longitude + 4);
+    lifespan_low = LODWORD(location->lifespan);
+    v18 = *(&location->coordinate.longitude + 4);
     *buf = 136315906;
     *&buf[4] = v15;
     *&buf[12] = 2080;
@@ -170,20 +170,20 @@
   *&buf[16] = v25;
   [(CLFenceAnalyticsHistoricalStates *)self setNMinusOneStateChangeLocation:buf];
   [(CLFenceAnalyticsHistoricalStates *)self setCurrentState:v9];
-  [(CLFenceAnalyticsHistoricalStates *)self setTimeOfCurrentStateChange:[NSDate dateWithTimeIntervalSinceReferenceDate:a6]];
-  rawCoordinate = a5->rawCoordinate;
-  v46 = *&a5->lifespan;
+  [(CLFenceAnalyticsHistoricalStates *)self setTimeOfCurrentStateChange:[NSDate dateWithTimeIntervalSinceReferenceDate:time]];
+  rawCoordinate = location->rawCoordinate;
+  v46 = *&location->lifespan;
   v47 = rawCoordinate;
-  v48[0] = *&a5->rawCourse;
-  *(v48 + 12) = *&a5->integrity;
-  v20 = *&a5->speed;
-  *&buf[32] = *&a5->altitude;
+  v48[0] = *&location->rawCourse;
+  *(v48 + 12) = *&location->integrity;
+  v20 = *&location->speed;
+  *&buf[32] = *&location->altitude;
   v43 = v20;
-  v21 = *&a5->timestamp;
-  v44 = *&a5->course;
+  v21 = *&location->timestamp;
+  v44 = *&location->course;
   v45 = v21;
-  v22 = *&a5->coordinate.longitude;
-  *buf = *&a5->suitability;
+  v22 = *&location->coordinate.longitude;
+  *buf = *&location->suitability;
   *&buf[16] = v22;
   [(CLFenceAnalyticsHistoricalStates *)self setCurrentLocation:buf];
 }
@@ -248,22 +248,22 @@
   return self;
 }
 
-- (void)setCurrentLocation:(CLDaemonLocation *)a3
+- (void)setCurrentLocation:(CLDaemonLocation *)location
 {
-  v3 = *&a3->suitability;
-  *&self->_currentLocation.coordinate.longitude = *&a3->coordinate.longitude;
+  v3 = *&location->suitability;
+  *&self->_currentLocation.coordinate.longitude = *&location->coordinate.longitude;
   *&self->_currentLocation.suitability = v3;
-  v4 = *&a3->altitude;
-  v5 = *&a3->speed;
-  v6 = *&a3->course;
-  *&self->_currentLocation.timestamp = *&a3->timestamp;
+  v4 = *&location->altitude;
+  v5 = *&location->speed;
+  v6 = *&location->course;
+  *&self->_currentLocation.timestamp = *&location->timestamp;
   *&self->_currentLocation.course = v6;
   *&self->_currentLocation.speed = v5;
   *&self->_currentLocation.altitude = v4;
-  v7 = *&a3->lifespan;
-  rawCoordinate = a3->rawCoordinate;
-  v9 = *&a3->rawCourse;
-  *&self->_currentLocation.integrity = *&a3->integrity;
+  v7 = *&location->lifespan;
+  rawCoordinate = location->rawCoordinate;
+  v9 = *&location->rawCourse;
+  *&self->_currentLocation.integrity = *&location->integrity;
   *&self->_currentLocation.rawCourse = v9;
   self->_currentLocation.rawCoordinate = rawCoordinate;
   *&self->_currentLocation.lifespan = v7;
@@ -291,22 +291,22 @@
   return self;
 }
 
-- (void)setNMinusOneStateChangeLocation:(CLDaemonLocation *)a3
+- (void)setNMinusOneStateChangeLocation:(CLDaemonLocation *)location
 {
-  v3 = *&a3->suitability;
-  *(&self->_currentLocation.fromSimulationController + 4) = *&a3->coordinate.longitude;
+  v3 = *&location->suitability;
+  *(&self->_currentLocation.fromSimulationController + 4) = *&location->coordinate.longitude;
   *(&self->_currentLocation.signalEnvironmentType + 1) = v3;
-  v4 = *&a3->altitude;
-  v5 = *&a3->speed;
-  v6 = *&a3->timestamp;
-  *(&self->_nMinusOneStateChangeLocation.verticalAccuracy + 4) = *&a3->course;
+  v4 = *&location->altitude;
+  v5 = *&location->speed;
+  v6 = *&location->timestamp;
+  *(&self->_nMinusOneStateChangeLocation.verticalAccuracy + 4) = *&location->course;
   *(&self->_nMinusOneStateChangeLocation.speedAccuracy + 4) = v6;
   *(&self->_nMinusOneStateChangeLocation.horizontalAccuracy + 4) = v5;
   *(&self->_nMinusOneStateChangeLocation.coordinate + 4) = v4;
-  v7 = *&a3->lifespan;
-  rawCoordinate = a3->rawCoordinate;
-  v9 = *&a3->rawCourse;
-  *&self->_nMinusOneStateChangeLocation.rawCoordinate.longitude = *&a3->integrity;
+  v7 = *&location->lifespan;
+  rawCoordinate = location->rawCoordinate;
+  v9 = *&location->rawCourse;
+  *&self->_nMinusOneStateChangeLocation.rawCoordinate.longitude = *&location->integrity;
   *(&self->_nMinusOneStateChangeLocation.confidence + 1) = rawCoordinate;
   *(&self->_nMinusOneStateChangeLocation.type + 1) = v9;
   *(&self->_nMinusOneStateChangeLocation.courseAccuracy + 4) = v7;
@@ -331,22 +331,22 @@
   return self;
 }
 
-- (void)setNMinusTwoStateChangeLocation:(CLDaemonLocation *)a3
+- (void)setNMinusTwoStateChangeLocation:(CLDaemonLocation *)location
 {
-  v3 = *&a3->coordinate.longitude;
-  *&self->_nMinusOneStateChangeLocation.floor = *&a3->suitability;
+  v3 = *&location->coordinate.longitude;
+  *&self->_nMinusOneStateChangeLocation.floor = *&location->suitability;
   *&self->_nMinusOneStateChangeLocation.signalEnvironmentType = v3;
-  v4 = *&a3->altitude;
-  v5 = *&a3->speed;
-  v6 = *&a3->timestamp;
-  *&self->_nMinusTwoStateChangeLocation.horizontalAccuracy = *&a3->course;
+  v4 = *&location->altitude;
+  v5 = *&location->speed;
+  v6 = *&location->timestamp;
+  *&self->_nMinusTwoStateChangeLocation.horizontalAccuracy = *&location->course;
   *&self->_nMinusTwoStateChangeLocation.verticalAccuracy = v6;
   *&self->_nMinusOneStateChangeLocation.fromSimulationController = v4;
   self->_nMinusTwoStateChangeLocation.coordinate = v5;
-  v7 = *&a3->lifespan;
-  rawCoordinate = a3->rawCoordinate;
-  v9 = *&a3->rawCourse;
-  *(&self->_nMinusTwoStateChangeLocation.lifespan + 4) = *&a3->integrity;
+  v7 = *&location->lifespan;
+  rawCoordinate = location->rawCoordinate;
+  v9 = *&location->rawCourse;
+  *(&self->_nMinusTwoStateChangeLocation.lifespan + 4) = *&location->integrity;
   *&self->_nMinusTwoStateChangeLocation.courseAccuracy = rawCoordinate;
   *&self->_nMinusTwoStateChangeLocation.confidence = v9;
   *&self->_nMinusTwoStateChangeLocation.speedAccuracy = v7;

@@ -1,47 +1,47 @@
 @interface HUColorPickerView
 - ($01BB1521EC52D44A8E7628F5261DCEC8)selectedColor;
 - ($F24F406B2B787EFB06265DBA3D28CBD5)selectedColorCoordinate;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
 - (CGPoint)magnifierLocation;
-- (HUColorPickerView)initWithProfile:(id)a3;
+- (HUColorPickerView)initWithProfile:(id)profile;
 - (HUColorWheelSpace)colorWheelSpace;
 - (HUQuickControlColorPickerViewInteractionDelegate)interactionDelegate;
 - (double)wheelHoleRadius;
-- (id)_colorWheelSpaceForMode:(unint64_t)a3;
+- (id)_colorWheelSpaceForMode:(unint64_t)mode;
 - (id)value;
 - (void)_applyMirroringAxisBiasToColorWheelSpaceIfNecessary;
-- (void)_handleGesture:(id)a3;
+- (void)_handleGesture:(id)gesture;
 - (void)_updateDerivedSelectedColorCoordinate;
 - (void)_updateMagnifierPosition;
-- (void)_updateMagnifierTransformForTouchLocation:(CGPoint)a3;
+- (void)_updateMagnifierTransformForTouchLocation:(CGPoint)location;
 - (void)_updateMagnifierView;
 - (void)_updateMirroringAxisBiasIfNecessary;
-- (void)_updateUIForReachabilityState:(unint64_t)a3;
+- (void)_updateUIForReachabilityState:(unint64_t)state;
 - (void)layoutSubviews;
-- (void)setColorPickerMode:(unint64_t)a3;
-- (void)setMagnifierLocation:(CGPoint)a3;
-- (void)setReachabilityState:(unint64_t)a3;
-- (void)setSelectedColor:(id)a3;
-- (void)setSelectedColorCoordinate:(id)a3;
-- (void)setUserInteractionActive:(BOOL)a3;
-- (void)setValue:(id)a3;
-- (void)setWheelHoleRadius:(double)a3;
+- (void)setColorPickerMode:(unint64_t)mode;
+- (void)setMagnifierLocation:(CGPoint)location;
+- (void)setReachabilityState:(unint64_t)state;
+- (void)setSelectedColor:(id)color;
+- (void)setSelectedColorCoordinate:(id)coordinate;
+- (void)setUserInteractionActive:(BOOL)active;
+- (void)setValue:(id)value;
+- (void)setWheelHoleRadius:(double)radius;
 @end
 
 @implementation HUColorPickerView
 
-- (HUColorPickerView)initWithProfile:(id)a3
+- (HUColorPickerView)initWithProfile:(id)profile
 {
-  v5 = a3;
+  profileCopy = profile;
   v20.receiver = self;
   v20.super_class = HUColorPickerView;
   v6 = [(HUColorPickerView *)&v20 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_profile, a3);
+    objc_storeStrong(&v6->_profile, profile);
     v7->_reachabilityState = 0;
-    v7->_colorPickerMode = [v5 supportsRGBColor] ^ 1;
+    v7->_colorPickerMode = [profileCopy supportsRGBColor] ^ 1;
     v7->_mirroringAxisBias = 0;
     *&v7->_selectedColor.r = HUWheelColorInvalid;
     *&v7->_selectedColor.b = *&qword_20D5CAFE0;
@@ -50,33 +50,33 @@
     v9 = [[HUColorWheelView alloc] initWithColorWheelSpace:v8];
     [(HUColorPickerView *)v7 setColorWheelView:v9];
 
-    v10 = [(HUColorPickerView *)v7 colorWheelView];
-    [v10 setTranslatesAutoresizingMaskIntoConstraints:0];
+    colorWheelView = [(HUColorPickerView *)v7 colorWheelView];
+    [colorWheelView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v11 = [(HUColorPickerView *)v7 colorWheelView];
-    [(HUColorPickerView *)v7 addSubview:v11];
+    colorWheelView2 = [(HUColorPickerView *)v7 colorWheelView];
+    [(HUColorPickerView *)v7 addSubview:colorWheelView2];
 
     v12 = objc_alloc_init(HUQuickControlMagnifierView);
     [(HUColorPickerView *)v7 setMagnifierView:v12];
 
-    v13 = [(HUColorPickerView *)v7 magnifierView];
-    [v13 sizeToFit];
+    magnifierView = [(HUColorPickerView *)v7 magnifierView];
+    [magnifierView sizeToFit];
 
-    v14 = [(HUColorPickerView *)v7 magnifierView];
-    [(HUColorPickerView *)v7 addSubview:v14];
+    magnifierView2 = [(HUColorPickerView *)v7 magnifierView];
+    [(HUColorPickerView *)v7 addSubview:magnifierView2];
 
     [(HUColorPickerView *)v7 _updateMagnifierPosition];
     v15 = [objc_alloc(MEMORY[0x277D75708]) initWithTarget:v7 action:sel__handleGesture_];
     [(HUColorPickerView *)v7 setGestureRecognizer:v15];
 
-    v16 = [(HUColorPickerView *)v7 gestureRecognizer];
-    [v16 setDelegate:v7];
+    gestureRecognizer = [(HUColorPickerView *)v7 gestureRecognizer];
+    [gestureRecognizer setDelegate:v7];
 
-    v17 = [(HUColorPickerView *)v7 gestureRecognizer];
-    [v17 setMinimumPressDuration:0.0];
+    gestureRecognizer2 = [(HUColorPickerView *)v7 gestureRecognizer];
+    [gestureRecognizer2 setMinimumPressDuration:0.0];
 
-    v18 = [(HUColorPickerView *)v7 gestureRecognizer];
-    [(HUColorPickerView *)v7 addGestureRecognizer:v18];
+    gestureRecognizer3 = [(HUColorPickerView *)v7 gestureRecognizer];
+    [(HUColorPickerView *)v7 addGestureRecognizer:gestureRecognizer3];
   }
 
   return v7;
@@ -84,47 +84,47 @@
 
 - (HUColorWheelSpace)colorWheelSpace
 {
-  v2 = [(HUColorPickerView *)self colorWheelView];
-  v3 = [v2 colorWheelSpace];
+  colorWheelView = [(HUColorPickerView *)self colorWheelView];
+  colorWheelSpace = [colorWheelView colorWheelSpace];
 
-  return v3;
+  return colorWheelSpace;
 }
 
 - (double)wheelHoleRadius
 {
-  v2 = [(HUColorPickerView *)self colorWheelView];
-  [v2 wheelHoleRadius];
+  colorWheelView = [(HUColorPickerView *)self colorWheelView];
+  [colorWheelView wheelHoleRadius];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setWheelHoleRadius:(double)a3
+- (void)setWheelHoleRadius:(double)radius
 {
-  v5 = [(HUColorPickerView *)self colorWheelView];
-  [v5 setWheelHoleRadius:a3];
+  colorWheelView = [(HUColorPickerView *)self colorWheelView];
+  [colorWheelView setWheelHoleRadius:radius];
 
   [(HUColorPickerView *)self _updateMagnifierView];
 }
 
-- (void)setSelectedColor:(id)a3
+- (void)setSelectedColor:(id)color
 {
-  var3 = a3.var3;
-  var2 = a3.var2;
-  var1 = a3.var1;
-  var0 = a3.var0;
-  self->_selectedColor = a3;
+  var3 = color.var3;
+  var2 = color.var2;
+  var1 = color.var1;
+  var0 = color.var0;
+  self->_selectedColor = color;
   [(HUColorPickerView *)self _updateMagnifierView];
   v9 = UIColorForHUWheelColor(var0, var1, var2, var3);
-  v8 = [(HUColorPickerView *)self magnifierView];
-  [v8 setSelectedColor:v9];
+  magnifierView = [(HUColorPickerView *)self magnifierView];
+  [magnifierView setSelectedColor:v9];
 }
 
-- (void)_updateUIForReachabilityState:(unint64_t)a3
+- (void)_updateUIForReachabilityState:(unint64_t)state
 {
-  if (a3 >= 2)
+  if (state >= 2)
   {
-    if (a3 != 2)
+    if (state != 2)
     {
       return;
     }
@@ -143,8 +143,8 @@
 
   [(HUColorPickerView *)self setAlpha:v6];
   [(HUColorPickerView *)self setUserInteractionEnabled:v4];
-  v7 = [(HUColorPickerView *)self magnifierView];
-  [v7 setHidden:v5];
+  magnifierView = [(HUColorPickerView *)self magnifierView];
+  [magnifierView setHidden:v5];
 }
 
 - (void)_updateMagnifierView
@@ -152,8 +152,8 @@
   [(HUColorPickerView *)self magnifierLength];
   if (v3 <= 0.0)
   {
-    v7 = [(HUColorPickerView *)self colorWheelView];
-    [v7 wheelHoleRadius];
+    colorWheelView = [(HUColorPickerView *)self colorWheelView];
+    [colorWheelView wheelHoleRadius];
     v9 = v8;
 
     if (v9 <= 0.0)
@@ -161,29 +161,29 @@
       goto LABEL_6;
     }
 
-    v6 = [(HUColorPickerView *)self colorWheelView];
-    [v6 wheelHoleRadius];
+    colorWheelView2 = [(HUColorPickerView *)self colorWheelView];
+    [colorWheelView2 wheelHoleRadius];
     v11 = HURoundToScreenScale(v10 * 0.44);
-    v12 = [(HUColorPickerView *)self magnifierView];
-    [v12 setInnerRadius:v11];
+    magnifierView = [(HUColorPickerView *)self magnifierView];
+    [magnifierView setInnerRadius:v11];
   }
 
   else
   {
     [(HUColorPickerView *)self magnifierLength];
     v5 = v4 * 0.5;
-    v6 = [(HUColorPickerView *)self magnifierView];
-    [v6 setInnerRadius:v5];
+    colorWheelView2 = [(HUColorPickerView *)self magnifierView];
+    [colorWheelView2 setInnerRadius:v5];
   }
 
 LABEL_6:
-  v13 = [(HUColorPickerView *)self magnifierView];
-  [v13 sizeToFit];
+  magnifierView2 = [(HUColorPickerView *)self magnifierView];
+  [magnifierView2 sizeToFit];
 }
 
-- (void)setSelectedColorCoordinate:(id)a3
+- (void)setSelectedColorCoordinate:(id)coordinate
 {
-  self->_selectedColorCoordinate = a3;
+  self->_selectedColorCoordinate = coordinate;
   [(HUColorPickerView *)self _updateMagnifierPosition];
 
   [(HUColorPickerView *)self _updateMirroringAxisBiasIfNecessary];
@@ -191,8 +191,8 @@ LABEL_6:
 
 - (CGPoint)magnifierLocation
 {
-  v2 = [(HUColorPickerView *)self magnifierView];
-  [v2 center];
+  magnifierView = [(HUColorPickerView *)self magnifierView];
+  [magnifierView center];
   v4 = v3;
   v6 = v5;
 
@@ -203,38 +203,38 @@ LABEL_6:
   return result;
 }
 
-- (void)setMagnifierLocation:(CGPoint)a3
+- (void)setMagnifierLocation:(CGPoint)location
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [(HUColorPickerView *)self magnifierView];
-  [v5 setCenter:{x, y}];
+  y = location.y;
+  x = location.x;
+  magnifierView = [(HUColorPickerView *)self magnifierView];
+  [magnifierView setCenter:{x, y}];
 }
 
-- (void)setUserInteractionActive:(BOOL)a3
+- (void)setUserInteractionActive:(BOOL)active
 {
-  if (self->_userInteractionActive != a3)
+  if (self->_userInteractionActive != active)
   {
-    v4 = a3;
-    self->_userInteractionActive = a3;
-    if (!a3)
+    activeCopy = active;
+    self->_userInteractionActive = active;
+    if (!active)
     {
       [(HUColorPickerView *)self _updateMagnifierTransformForTouchLocation:*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)];
     }
 
-    v6 = [(HUColorPickerView *)self interactionDelegate];
-    [v6 controlView:self interactionStateDidChange:v4 forFirstTouch:0];
+    interactionDelegate = [(HUColorPickerView *)self interactionDelegate];
+    [interactionDelegate controlView:self interactionStateDidChange:activeCopy forFirstTouch:0];
   }
 }
 
-- (void)setColorPickerMode:(unint64_t)a3
+- (void)setColorPickerMode:(unint64_t)mode
 {
-  if (self->_colorPickerMode != a3)
+  if (self->_colorPickerMode != mode)
   {
-    self->_colorPickerMode = a3;
+    self->_colorPickerMode = mode;
     v5 = [(HUColorPickerView *)self _colorWheelSpaceForMode:?];
-    v6 = [(HUColorPickerView *)self colorWheelView];
-    [v6 setColorWheelSpace:v5];
+    colorWheelView = [(HUColorPickerView *)self colorWheelView];
+    [colorWheelView setColorWheelSpace:v5];
 
     [(HUColorPickerView *)self _applyMirroringAxisBiasToColorWheelSpaceIfNecessary];
 
@@ -242,19 +242,19 @@ LABEL_6:
   }
 }
 
-- (id)_colorWheelSpaceForMode:(unint64_t)a3
+- (id)_colorWheelSpaceForMode:(unint64_t)mode
 {
-  if (a3 == 1)
+  if (mode == 1)
   {
     +[HUTemperatureColorWheelSpace defaultTemperatureRange];
     v6 = v5;
     v8 = v7;
     objc_opt_class();
-    v9 = [(HUColorPickerView *)self profile];
-    v10 = [v9 colorProfile];
+    profile = [(HUColorPickerView *)self profile];
+    colorProfile = [profile colorProfile];
     if (objc_opt_isKindOfClass())
     {
-      v11 = v10;
+      v11 = colorProfile;
     }
 
     else
@@ -275,7 +275,7 @@ LABEL_6:
     v3 = [[HUTemperatureColorWheelSpace alloc] initWithSupportedRange:v6, v8];
   }
 
-  else if (a3)
+  else if (mode)
   {
     v3 = 0;
   }
@@ -307,9 +307,9 @@ LABEL_6:
     v16 = 1;
   }
 
-  v10 = [(HUColorPickerView *)self colorWheelSpace];
+  colorWheelSpace = [(HUColorPickerView *)self colorWheelSpace];
   [(HUColorPickerView *)self selectedColor];
-  [v10 coordinateForColor:&v16 isValid:?];
+  [colorWheelSpace coordinateForColor:&v16 isValid:?];
   v12 = v11;
   v14 = v13;
 
@@ -339,39 +339,39 @@ LABEL_15:
   v5 = v4 == 1.79769313e308 && v3 == 1.79769313e308;
   if (!v5)
   {
-    v6 = [(HUColorPickerView *)self colorWheelView];
+    colorWheelView = [(HUColorPickerView *)self colorWheelView];
     [(HUColorPickerView *)self selectedColorCoordinate];
-    [v6 pointForColorWheelCoordinate:?];
+    [colorWheelView pointForColorWheelCoordinate:?];
     v8 = v7;
     v10 = v9;
 
-    v11 = [(HUColorPickerView *)self colorWheelView];
-    [(HUColorPickerView *)self convertPoint:v11 fromView:v8, v10];
+    colorWheelView2 = [(HUColorPickerView *)self colorWheelView];
+    [(HUColorPickerView *)self convertPoint:colorWheelView2 fromView:v8, v10];
     [(HUColorPickerView *)self setMagnifierLocation:?];
   }
 
-  v12 = [(HUColorPickerView *)self magnifierView];
-  [v12 setHidden:v5];
+  magnifierView = [(HUColorPickerView *)self magnifierView];
+  [magnifierView setHidden:v5];
 }
 
 - (void)_applyMirroringAxisBiasToColorWheelSpaceIfNecessary
 {
-  v3 = [(HUColorPickerView *)self colorWheelSpace];
+  colorWheelSpace = [(HUColorPickerView *)self colorWheelSpace];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(HUColorPickerView *)self colorWheelSpace];
-    [v5 setMirroringBiasAxis:{-[HUColorPickerView mirroringAxisBias](self, "mirroringAxisBias")}];
+    colorWheelSpace2 = [(HUColorPickerView *)self colorWheelSpace];
+    [colorWheelSpace2 setMirroringBiasAxis:{-[HUColorPickerView mirroringAxisBias](self, "mirroringAxisBias")}];
   }
 }
 
 - (void)_updateMirroringAxisBiasIfNecessary
 {
-  v3 = [(HUColorPickerView *)self colorWheelSpace];
-  v4 = [v3 type];
+  colorWheelSpace = [(HUColorPickerView *)self colorWheelSpace];
+  type = [colorWheelSpace type];
 
-  if (v4 == 1)
+  if (type == 1)
   {
     [(HUColorPickerView *)self selectedColorCoordinate];
     v7 = v6 == 1.79769313e308 && v5 == 1.79769313e308;
@@ -396,11 +396,11 @@ LABEL_15:
   return HUPaletteColorForWheelColor(v2, v3, v4, v5);
 }
 
-- (void)setValue:(id)a3
+- (void)setValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   v5 = objc_opt_class();
-  v6 = v4;
+  v6 = valueCopy;
   v18 = v6;
   if (!v6)
   {
@@ -422,9 +422,9 @@ LABEL_15:
   v9 = v18;
   if (!v8)
   {
-    v10 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"id  _Nullable NAAssertCast(Class  _Nonnull __unsafe_unretained, id  _Nonnull __strong)"}];
-    [v10 handleFailureInFunction:v11 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v5, objc_opt_class()}];
+    [currentHandler handleFailureInFunction:v11 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v5, objc_opt_class()}];
 
     v6 = v18;
 LABEL_7:
@@ -441,52 +441,52 @@ LABEL_7:
   }
 }
 
-- (void)setReachabilityState:(unint64_t)a3
+- (void)setReachabilityState:(unint64_t)state
 {
-  self->_reachabilityState = a3;
-  v4 = [(HUColorPickerView *)self reachabilityState];
+  self->_reachabilityState = state;
+  reachabilityState = [(HUColorPickerView *)self reachabilityState];
 
-  [(HUColorPickerView *)self _updateUIForReachabilityState:v4];
+  [(HUColorPickerView *)self _updateUIForReachabilityState:reachabilityState];
 }
 
-- (void)_handleGesture:(id)a3
+- (void)_handleGesture:(id)gesture
 {
-  v26 = a3;
-  v4 = [v26 state];
-  if (v4 == 2)
+  gestureCopy = gesture;
+  state = [gestureCopy state];
+  if (state == 2)
   {
     goto LABEL_4;
   }
 
-  if (v4 == 1)
+  if (state == 1)
   {
     [(HUColorPickerView *)self setTouchDownTimestamp:CFAbsoluteTimeGetCurrent()];
 LABEL_4:
     [(HUColorPickerView *)self setUserInteractionActive:1];
-    v5 = [(HUColorPickerView *)self colorWheelView];
-    [v26 locationInView:v5];
+    colorWheelView = [(HUColorPickerView *)self colorWheelView];
+    [gestureCopy locationInView:colorWheelView];
     v7 = v6;
     v9 = v8;
 
-    v10 = [(HUColorPickerView *)self colorWheelView];
-    [v10 colorWheelCoordinateForPoint:1 boundedToWheel:{v7, v9}];
+    colorWheelView2 = [(HUColorPickerView *)self colorWheelView];
+    [colorWheelView2 colorWheelCoordinateForPoint:1 boundedToWheel:{v7, v9}];
     v12 = v11;
     v14 = v13;
 
     [(HUColorPickerView *)self setSelectedColorCoordinate:v12, v14];
-    v15 = [(HUColorPickerView *)self colorWheelSpace];
-    [v15 colorForCoordinate:{v12, v14}];
+    colorWheelSpace = [(HUColorPickerView *)self colorWheelSpace];
+    [colorWheelSpace colorForCoordinate:{v12, v14}];
     v17 = v16;
     v19 = v18;
     v21 = v20;
     v23 = v22;
 
     [(HUColorPickerView *)self setSelectedColor:v17, v19, v21, v23];
-    v24 = [(HUColorPickerView *)self interactionDelegate];
-    v25 = [(HUColorPickerView *)self value];
-    [v24 controlView:self valueDidChange:v25];
+    interactionDelegate = [(HUColorPickerView *)self interactionDelegate];
+    value = [(HUColorPickerView *)self value];
+    [interactionDelegate controlView:self valueDidChange:value];
 
-    [v26 locationInView:self];
+    [gestureCopy locationInView:self];
     [(HUColorPickerView *)self _updateMagnifierTransformForTouchLocation:?];
     goto LABEL_6;
   }
@@ -496,23 +496,23 @@ LABEL_4:
 LABEL_6:
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v5 = a4;
-  v6 = [(HUColorPickerView *)self colorWheelView];
-  v7 = [v6 wheelBezierPath];
-  v8 = [(HUColorPickerView *)self colorWheelView];
-  [v5 locationInView:v8];
+  touchCopy = touch;
+  colorWheelView = [(HUColorPickerView *)self colorWheelView];
+  wheelBezierPath = [colorWheelView wheelBezierPath];
+  colorWheelView2 = [(HUColorPickerView *)self colorWheelView];
+  [touchCopy locationInView:colorWheelView2];
   v10 = v9;
   v12 = v11;
 
-  LOBYTE(v5) = [v7 containsPoint:{v10, v12}];
-  return v5;
+  LOBYTE(touchCopy) = [wheelBezierPath containsPoint:{v10, v12}];
+  return touchCopy;
 }
 
-- (void)_updateMagnifierTransformForTouchLocation:(CGPoint)a3
+- (void)_updateMagnifierTransformForTouchLocation:(CGPoint)location
 {
-  y = a3.y;
+  y = location.y;
   v23 = *(MEMORY[0x277CBF2C0] + 16);
   v24 = *MEMORY[0x277CBF2C0];
   *&v29.a = *MEMORY[0x277CBF2C0];
@@ -537,13 +537,13 @@ LABEL_6:
         [(HUColorPickerView *)self magnifierLocation];
         v11 = v10;
         v13 = v12 - v9;
-        v14 = [(HUColorPickerView *)self colorWheelView];
-        [v14 colorWheelCoordinateForPoint:1 boundedToWheel:{v11, v13}];
+        colorWheelView = [(HUColorPickerView *)self colorWheelView];
+        [colorWheelView colorWheelCoordinateForPoint:1 boundedToWheel:{v11, v13}];
         v16 = v15;
         v18 = v17;
 
-        v19 = [(HUColorPickerView *)self colorWheelView];
-        [v19 pointForColorWheelCoordinate:{v16, v18}];
+        colorWheelView2 = [(HUColorPickerView *)self colorWheelView];
+        [colorWheelView2 pointForColorWheelCoordinate:{v16, v18}];
         v21 = v20;
 
         v27 = v29;
@@ -577,8 +577,8 @@ void __63__HUColorPickerView__updateMagnifierTransformForTouchLocation___block_i
   v4 = v3;
   [(HUColorPickerView *)self frame];
   v6 = v5;
-  v7 = [(HUColorPickerView *)self colorWheelView];
-  [v7 setFrame:{0.0, 0.0, v4, v6}];
+  colorWheelView = [(HUColorPickerView *)self colorWheelView];
+  [colorWheelView setFrame:{0.0, 0.0, v4, v6}];
 
   [(HUColorPickerView *)self _updateMagnifierPosition];
   [(HUColorPickerView *)self _updateUIForReachabilityState:[(HUColorPickerView *)self reachabilityState]];

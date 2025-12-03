@@ -2,11 +2,11 @@
 + (id)policyInstance;
 - (_DASCustomSystemConstraintsPolicy)init;
 - (id)initializeTriggers;
-- (id)responseForActivity:(id)a3 withState:(id)a4;
+- (id)responseForActivity:(id)activity withState:(id)state;
 - (void)armResetTimer;
 - (void)cancelResetTimer;
-- (void)reevaluateAllActivitiesWithDaemon:(id)a3;
-- (void)updateHeavyDiskUsage:(BOOL)a3;
+- (void)reevaluateAllActivitiesWithDaemon:(id)daemon;
+- (void)updateHeavyDiskUsage:(BOOL)usage;
 @end
 
 @implementation _DASCustomSystemConstraintsPolicy
@@ -42,9 +42,9 @@
     v3->_gpWorkloadCounts = 0;
     v3->_resetTimer = 0;
 
-    v8 = [(_DASCustomSystemConstraintsPolicy *)v3 initializeTriggers];
+    initializeTriggers = [(_DASCustomSystemConstraintsPolicy *)v3 initializeTriggers];
     triggers = v3->_triggers;
-    v3->_triggers = v8;
+    v3->_triggers = initializeTriggers;
 
     v10 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v11 = dispatch_queue_create("com.apple.dasd.sysConstraint", v10);
@@ -61,7 +61,7 @@
   block[1] = 3221225472;
   block[2] = sub_1000FEDB8;
   block[3] = &unk_1001B54A0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10020B848 != -1)
   {
     dispatch_once(&qword_10020B848, block);
@@ -72,7 +72,7 @@
   return v2;
 }
 
-- (void)reevaluateAllActivitiesWithDaemon:(id)a3
+- (void)reevaluateAllActivitiesWithDaemon:(id)daemon
 {
   v5 = [(NSMutableDictionary *)self->_workloadDates objectForKeyedSubscript:kDASSystemContextMCWorkloadRunningState];
   if (v5)
@@ -127,7 +127,7 @@ LABEL_5:
   }
 
 LABEL_11:
-  if (a3)
+  if (daemon)
   {
     daemon = self->_daemon;
     v15 = @"com.apple.duetactivityscheduler.customsystemconstraint";
@@ -198,19 +198,19 @@ LABEL_11:
   }
 }
 
-- (void)updateHeavyDiskUsage:(BOOL)a3
+- (void)updateHeavyDiskUsage:(BOOL)usage
 {
-  v3 = a3;
+  usageCopy = usage;
   v5 = [_DASDaemonLogger logForCategory:@"customsysconstraints"];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    v10 = v3;
+    v10 = usageCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Setting _heavyDiskUsage = %d", buf, 8u);
   }
 
-  self->_heavyDiskUsage = v3;
-  if (v3)
+  self->_heavyDiskUsage = usageCopy;
+  if (usageCopy)
   {
     v6 = dispatch_time(0, 15000000000);
     v7 = dispatch_get_global_queue(9, 0);
@@ -223,14 +223,14 @@ LABEL_11:
   }
 }
 
-- (id)responseForActivity:(id)a3 withState:(id)a4
+- (id)responseForActivity:(id)activity withState:(id)state
 {
-  v6 = a3;
-  v7 = a4;
+  activityCopy = activity;
+  stateCopy = state;
   v8 = [[_DASPolicyResponseRationale alloc] initWithPolicyName:@"Custom System Constraints Policy"];
-  v9 = self;
-  objc_sync_enter(v9);
-  if (v9->_heavyDiskUsage)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_heavyDiskUsage)
   {
     [(_DASPolicyResponseRationale *)v8 addRationaleForCondition:@"heavyDiskUsage" withRequiredValue:0.0 withCurrentValue:1.0];
     v10 = 100;
@@ -241,13 +241,13 @@ LABEL_11:
     v10 = 0;
   }
 
-  if (![_DASPhotosPolicy isiCPLActivity:v6])
+  if (![_DASPhotosPolicy isiCPLActivity:activityCopy])
   {
-    v11 = [(NSMutableDictionary *)v9->_workloadDates objectForKeyedSubscript:kDASSystemContextGPWorkloadRunningState];
+    v11 = [(NSMutableDictionary *)selfCopy->_workloadDates objectForKeyedSubscript:kDASSystemContextGPWorkloadRunningState];
     if (v11)
     {
-      v12 = [v6 relatedApplications];
-      v13 = [v12 containsObject:@"com.apple.GenerativePlaygroundApp"];
+      relatedApplications = [activityCopy relatedApplications];
+      v13 = [relatedApplications containsObject:@"com.apple.GenerativePlaygroundApp"];
 
       if ((v13 & 1) == 0)
       {
@@ -256,7 +256,7 @@ LABEL_11:
       }
     }
 
-    v14 = [(NSMutableDictionary *)v9->_workloadDates objectForKeyedSubscript:kDASSystemContextMCWorkloadRunningState];
+    v14 = [(NSMutableDictionary *)selfCopy->_workloadDates objectForKeyedSubscript:kDASSystemContextMCWorkloadRunningState];
 
     if (v14)
     {
@@ -266,7 +266,7 @@ LABEL_11:
   }
 
   v15 = [_DASPolicyResponse policyResponseWithDecision:v10 validityDuration:v8 rationale:15.0];
-  objc_sync_exit(v9);
+  objc_sync_exit(selfCopy);
 
   return v15;
 }

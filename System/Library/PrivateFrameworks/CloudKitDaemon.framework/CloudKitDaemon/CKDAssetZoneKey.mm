@@ -1,30 +1,30 @@
 @interface CKDAssetZoneKey
 - (BOOL)isCrossOwner;
-- (BOOL)isEqual:(id)a3;
-- (CKDAssetZoneKey)initWithDestinationZoneID:(id)a3 destinationDatabaseScope:(int64_t)a4 usesMMCSEncryptionV2:(id)a5 sourceZoneID:(id)a6 sourceDatabaseScope:(int64_t)a7 isPackageRereference:(BOOL)a8;
+- (BOOL)isEqual:(id)equal;
+- (CKDAssetZoneKey)initWithDestinationZoneID:(id)d destinationDatabaseScope:(int64_t)scope usesMMCSEncryptionV2:(id)v2 sourceZoneID:(id)iD sourceDatabaseScope:(int64_t)databaseScope isPackageRereference:(BOOL)rereference;
 - (id)CKPropertiesDescription;
 - (int)authPutType;
 @end
 
 @implementation CKDAssetZoneKey
 
-- (CKDAssetZoneKey)initWithDestinationZoneID:(id)a3 destinationDatabaseScope:(int64_t)a4 usesMMCSEncryptionV2:(id)a5 sourceZoneID:(id)a6 sourceDatabaseScope:(int64_t)a7 isPackageRereference:(BOOL)a8
+- (CKDAssetZoneKey)initWithDestinationZoneID:(id)d destinationDatabaseScope:(int64_t)scope usesMMCSEncryptionV2:(id)v2 sourceZoneID:(id)iD sourceDatabaseScope:(int64_t)databaseScope isPackageRereference:(BOOL)rereference
 {
-  v15 = a3;
-  v16 = a5;
-  v17 = a6;
+  dCopy = d;
+  v2Copy = v2;
+  iDCopy = iD;
   v21.receiver = self;
   v21.super_class = CKDAssetZoneKey;
   v18 = [(CKDAssetZoneKey *)&v21 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_destinationZoneID, a3);
-    v19->_destinationDatabaseScope = a4;
-    v19->_useMMCSEncryptionV2 = v16;
-    objc_storeStrong(&v19->_sourceZoneID, a6);
-    v19->_sourceDatabaseScope = a7;
-    v19->_isPackageRereference = a8;
+    objc_storeStrong(&v18->_destinationZoneID, d);
+    v19->_destinationDatabaseScope = scope;
+    v19->_useMMCSEncryptionV2 = v2Copy;
+    objc_storeStrong(&v19->_sourceZoneID, iD);
+    v19->_sourceDatabaseScope = databaseScope;
+    v19->_isPackageRereference = rereference;
   }
 
   return v19;
@@ -95,10 +95,10 @@
   return v33;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v23 = 1;
   }
@@ -108,7 +108,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       destinationDatabaseScope = self->_destinationDatabaseScope;
       if (destinationDatabaseScope != objc_msgSend_destinationDatabaseScope(v5, v7, v8))
       {

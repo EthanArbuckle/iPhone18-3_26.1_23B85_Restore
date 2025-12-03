@@ -1,20 +1,20 @@
 @interface AMSHardwareOffersConfig
-- (AMSHardwareOffersConfig)initWithIsGroupingEnabled:(BOOL)a3 sheetURL:(id)a4;
+- (AMSHardwareOffersConfig)initWithIsGroupingEnabled:(BOOL)enabled sheetURL:(id)l;
 @end
 
 @implementation AMSHardwareOffersConfig
 
-- (AMSHardwareOffersConfig)initWithIsGroupingEnabled:(BOOL)a3 sheetURL:(id)a4
+- (AMSHardwareOffersConfig)initWithIsGroupingEnabled:(BOOL)enabled sheetURL:(id)l
 {
-  v6 = a4;
+  lCopy = l;
   v12.receiver = self;
   v12.super_class = AMSHardwareOffersConfig;
   v7 = [(AMSHardwareOffersConfig *)&v12 init];
   v8 = v7;
   if (v7)
   {
-    v7->_isGroupingEnabled = a3;
-    v9 = [v6 copy];
+    v7->_isGroupingEnabled = enabled;
+    v9 = [lCopy copy];
     sheetURL = v8->_sheetURL;
     v8->_sheetURL = v9;
   }

@@ -23,11 +23,11 @@
 
 - (double)toolbarLongSideWideMargin
 {
-  v2 = [(PUViewControllerSpec *)self currentLayoutStyle];
+  currentLayoutStyle = [(PUViewControllerSpec *)self currentLayoutStyle];
   result = 0.0;
-  if (v2 <= 4)
+  if (currentLayoutStyle <= 4)
   {
-    return dbl_1B3D0D408[v2];
+    return dbl_1B3D0D408[currentLayoutStyle];
   }
 
   return result;
@@ -35,11 +35,11 @@
 
 - (double)toolbarLongSideMargin
 {
-  v2 = [(PUViewControllerSpec *)self currentLayoutStyle];
+  currentLayoutStyle = [(PUViewControllerSpec *)self currentLayoutStyle];
   result = 0.0;
-  if (v2 <= 4)
+  if (currentLayoutStyle <= 4)
   {
-    return dbl_1B3D0D3E0[v2];
+    return dbl_1B3D0D3E0[currentLayoutStyle];
   }
 
   return result;
@@ -81,10 +81,10 @@
 
 - (UIEdgeInsets)previewViewInsetsPortrait
 {
-  v2 = [(PUViewControllerSpec *)self currentLayoutStyle];
-  if ((v2 - 1) >= 3)
+  currentLayoutStyle = [(PUViewControllerSpec *)self currentLayoutStyle];
+  if ((currentLayoutStyle - 1) >= 3)
   {
-    if (v2 != 4)
+    if (currentLayoutStyle != 4)
     {
       v6 = *MEMORY[0x1E69DDCE0];
       v5 = *(MEMORY[0x1E69DDCE0] + 8);

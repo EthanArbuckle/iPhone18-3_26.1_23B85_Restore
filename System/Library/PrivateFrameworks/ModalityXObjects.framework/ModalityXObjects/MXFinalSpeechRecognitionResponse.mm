@@ -1,27 +1,27 @@
 @interface MXFinalSpeechRecognitionResponse
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsLangProfileRecreateCodes:(id)a3;
-- (int)StringAsWatermarkDetection:(id)a3;
+- (int)StringAsLangProfileRecreateCodes:(id)codes;
+- (int)StringAsWatermarkDetection:(id)detection;
 - (int)langProfileRecreateCodes;
 - (int)watermarkDetection;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasHasResult:(BOOL)a3;
-- (void)setHasLangProfileRecreateCodes:(BOOL)a3;
-- (void)setHasReturnCode:(BOOL)a3;
-- (void)setHasWatermarkDetection:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasHasResult:(BOOL)result;
+- (void)setHasLangProfileRecreateCodes:(BOOL)codes;
+- (void)setHasReturnCode:(BOOL)code;
+- (void)setHasWatermarkDetection:(BOOL)detection;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MXFinalSpeechRecognitionResponse
 
-- (void)setHasReturnCode:(BOOL)a3
+- (void)setHasReturnCode:(BOOL)code
 {
-  if (a3)
+  if (code)
   {
     v3 = 4;
   }
@@ -47,9 +47,9 @@
   }
 }
 
-- (void)setHasLangProfileRecreateCodes:(BOOL)a3
+- (void)setHasLangProfileRecreateCodes:(BOOL)codes
 {
-  if (a3)
+  if (codes)
   {
     v3 = 2;
   }
@@ -62,30 +62,30 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (int)StringAsLangProfileRecreateCodes:(id)a3
+- (int)StringAsLangProfileRecreateCodes:(id)codes
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"LANGUAGE_PROFILE_RECREATE_CODES_UNDEF"])
+  codesCopy = codes;
+  if ([codesCopy isEqualToString:@"LANGUAGE_PROFILE_RECREATE_CODES_UNDEF"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"LANGUAGE_PROFILE_OK"])
+  else if ([codesCopy isEqualToString:@"LANGUAGE_PROFILE_OK"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"LANGUAGE_PROFILE_REFRESH"])
+  else if ([codesCopy isEqualToString:@"LANGUAGE_PROFILE_REFRESH"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"LANGUAGE_PROFILE_INCOMPATIBLE"])
+  else if ([codesCopy isEqualToString:@"LANGUAGE_PROFILE_INCOMPATIBLE"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"LANGUAGE_PROFILE_CORRUPT"])
+  else if ([codesCopy isEqualToString:@"LANGUAGE_PROFILE_CORRUPT"])
   {
     v4 = 4;
   }
@@ -111,9 +111,9 @@
   }
 }
 
-- (void)setHasWatermarkDetection:(BOOL)a3
+- (void)setHasWatermarkDetection:(BOOL)detection
 {
-  if (a3)
+  if (detection)
   {
     v3 = 8;
   }
@@ -126,25 +126,25 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (int)StringAsWatermarkDetection:(id)a3
+- (int)StringAsWatermarkDetection:(id)detection
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"WM_UNKNOWN_ENUM_VALUE"])
+  detectionCopy = detection;
+  if ([detectionCopy isEqualToString:@"WM_UNKNOWN_ENUM_VALUE"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"WM_NOT_CHECKED"])
+  else if ([detectionCopy isEqualToString:@"WM_NOT_CHECKED"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"WM_NOT_DETECTED"])
+  else if ([detectionCopy isEqualToString:@"WM_NOT_DETECTED"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"WM_DETECTED"])
+  else if ([detectionCopy isEqualToString:@"WM_DETECTED"])
   {
     v4 = 3;
   }
@@ -157,9 +157,9 @@
   return v4;
 }
 
-- (void)setHasHasResult:(BOOL)a3
+- (void)setHasHasResult:(BOOL)result
 {
-  if (a3)
+  if (result)
   {
     v3 = 16;
   }
@@ -178,20 +178,20 @@
   v8.receiver = self;
   v8.super_class = MXFinalSpeechRecognitionResponse;
   v4 = [(MXFinalSpeechRecognitionResponse *)&v8 description];
-  v5 = [(MXFinalSpeechRecognitionResponse *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(MXFinalSpeechRecognitionResponse *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   speechId = self->_speechId;
   if (speechId)
   {
-    [v3 setObject:speechId forKey:@"speech_id"];
+    [dictionary setObject:speechId forKey:@"speech_id"];
   }
 
   sessionId = self->_sessionId;
@@ -215,8 +215,8 @@
   recognitionResult = self->_recognitionResult;
   if (recognitionResult)
   {
-    v10 = [(MXRecognitionResult *)recognitionResult dictionaryRepresentation];
-    [v4 setObject:v10 forKey:@"recognition_result"];
+    dictionaryRepresentation = [(MXRecognitionResult *)recognitionResult dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"recognition_result"];
   }
 
   if ((*&self->_has & 2) != 0)
@@ -238,8 +238,8 @@
   audioAnalytics = self->_audioAnalytics;
   if (audioAnalytics)
   {
-    v14 = [(MXAudioAnalytics *)audioAnalytics dictionaryRepresentation];
-    [v4 setObject:v14 forKey:@"audio_analytics"];
+    dictionaryRepresentation2 = [(MXAudioAnalytics *)audioAnalytics dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation2 forKey:@"audio_analytics"];
   }
 
   has = self->_has;
@@ -276,8 +276,8 @@
   latnnMitigatorResult = self->_latnnMitigatorResult;
   if (latnnMitigatorResult)
   {
-    v21 = [(MXLatnnMitigatorResult *)latnnMitigatorResult dictionaryRepresentation];
-    [v4 setObject:v21 forKey:@"latnn_mitigator_result"];
+    dictionaryRepresentation3 = [(MXLatnnMitigatorResult *)latnnMitigatorResult dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation3 forKey:@"latnn_mitigator_result"];
   }
 
   requestLocale = self->_requestLocale;
@@ -295,52 +295,52 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v11 = v4;
+  toCopy = to;
+  v11 = toCopy;
   if (self->_speechId)
   {
     PBDataWriterWriteStringField();
-    v4 = v11;
+    toCopy = v11;
   }
 
   if (self->_sessionId)
   {
     PBDataWriterWriteStringField();
-    v4 = v11;
+    toCopy = v11;
   }
 
   if ((*&self->_has & 4) != 0)
   {
     returnCode = self->_returnCode;
     PBDataWriterWriteInt32Field();
-    v4 = v11;
+    toCopy = v11;
   }
 
   if (self->_returnStr)
   {
     PBDataWriterWriteStringField();
-    v4 = v11;
+    toCopy = v11;
   }
 
   if (self->_recognitionResult)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v11;
+    toCopy = v11;
   }
 
   if ((*&self->_has & 2) != 0)
   {
     langProfileRecreateCodes = self->_langProfileRecreateCodes;
     PBDataWriterWriteInt32Field();
-    v4 = v11;
+    toCopy = v11;
   }
 
   if (self->_audioAnalytics)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v11;
+    toCopy = v11;
   }
 
   has = self->_has;
@@ -348,7 +348,7 @@
   {
     watermarkDetection = self->_watermarkDetection;
     PBDataWriterWriteInt32Field();
-    v4 = v11;
+    toCopy = v11;
     has = self->_has;
   }
 
@@ -356,128 +356,128 @@
   {
     watermarkPeakAverage = self->_watermarkPeakAverage;
     PBDataWriterWriteDoubleField();
-    v4 = v11;
+    toCopy = v11;
   }
 
   if (self->_language)
   {
     PBDataWriterWriteStringField();
-    v4 = v11;
+    toCopy = v11;
   }
 
   if (self->_latnnMitigatorResult)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v11;
+    toCopy = v11;
   }
 
   if (self->_requestLocale)
   {
     PBDataWriterWriteStringField();
-    v4 = v11;
+    toCopy = v11;
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
     hasResult = self->_hasResult;
     PBDataWriterWriteBOOLField();
-    v4 = v11;
+    toCopy = v11;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_speechId)
   {
-    [v4 setSpeechId:?];
-    v4 = v6;
+    [toCopy setSpeechId:?];
+    toCopy = v6;
   }
 
   if (self->_sessionId)
   {
     [v6 setSessionId:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    *(v4 + 16) = self->_returnCode;
-    *(v4 + 104) |= 4u;
+    *(toCopy + 16) = self->_returnCode;
+    *(toCopy + 104) |= 4u;
   }
 
   if (self->_returnStr)
   {
     [v6 setReturnStr:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_recognitionResult)
   {
     [v6 setRecognitionResult:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    *(v4 + 6) = self->_langProfileRecreateCodes;
-    *(v4 + 104) |= 2u;
+    *(toCopy + 6) = self->_langProfileRecreateCodes;
+    *(toCopy + 104) |= 2u;
   }
 
   if (self->_audioAnalytics)
   {
     [v6 setAudioAnalytics:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 8) != 0)
   {
-    *(v4 + 24) = self->_watermarkDetection;
-    *(v4 + 104) |= 8u;
+    *(toCopy + 24) = self->_watermarkDetection;
+    *(toCopy + 104) |= 8u;
     has = self->_has;
   }
 
   if (has)
   {
-    *(v4 + 1) = *&self->_watermarkPeakAverage;
-    *(v4 + 104) |= 1u;
+    *(toCopy + 1) = *&self->_watermarkPeakAverage;
+    *(toCopy + 104) |= 1u;
   }
 
   if (self->_language)
   {
     [v6 setLanguage:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_latnnMitigatorResult)
   {
     [v6 setLatnnMitigatorResult:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_requestLocale)
   {
     [v6 setRequestLocale:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
-    *(v4 + 100) = self->_hasResult;
-    *(v4 + 104) |= 0x10u;
+    *(toCopy + 100) = self->_hasResult;
+    *(toCopy + 104) |= 0x10u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_speechId copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_speechId copyWithZone:zone];
   v7 = *(v5 + 88);
   *(v5 + 88) = v6;
 
-  v8 = [(NSString *)self->_sessionId copyWithZone:a3];
+  v8 = [(NSString *)self->_sessionId copyWithZone:zone];
   v9 = *(v5 + 80);
   *(v5 + 80) = v8;
 
@@ -487,11 +487,11 @@
     *(v5 + 104) |= 4u;
   }
 
-  v10 = [(NSString *)self->_returnStr copyWithZone:a3];
+  v10 = [(NSString *)self->_returnStr copyWithZone:zone];
   v11 = *(v5 + 72);
   *(v5 + 72) = v10;
 
-  v12 = [(MXRecognitionResult *)self->_recognitionResult copyWithZone:a3];
+  v12 = [(MXRecognitionResult *)self->_recognitionResult copyWithZone:zone];
   v13 = *(v5 + 48);
   *(v5 + 48) = v12;
 
@@ -501,7 +501,7 @@
     *(v5 + 104) |= 2u;
   }
 
-  v14 = [(MXAudioAnalytics *)self->_audioAnalytics copyWithZone:a3];
+  v14 = [(MXAudioAnalytics *)self->_audioAnalytics copyWithZone:zone];
   v15 = *(v5 + 16);
   *(v5 + 16) = v14;
 
@@ -519,15 +519,15 @@
     *(v5 + 104) |= 1u;
   }
 
-  v17 = [(NSString *)self->_language copyWithZone:a3];
+  v17 = [(NSString *)self->_language copyWithZone:zone];
   v18 = *(v5 + 32);
   *(v5 + 32) = v17;
 
-  v19 = [(MXLatnnMitigatorResult *)self->_latnnMitigatorResult copyWithZone:a3];
+  v19 = [(MXLatnnMitigatorResult *)self->_latnnMitigatorResult copyWithZone:zone];
   v20 = *(v5 + 40);
   *(v5 + 40) = v19;
 
-  v21 = [(NSString *)self->_requestLocale copyWithZone:a3];
+  v21 = [(NSString *)self->_requestLocale copyWithZone:zone];
   v22 = *(v5 + 56);
   *(v5 + 56) = v21;
 
@@ -540,16 +540,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_41;
   }
 
   speechId = self->_speechId;
-  if (speechId | *(v4 + 11))
+  if (speechId | *(equalCopy + 11))
   {
     if (![(NSString *)speechId isEqual:?])
     {
@@ -558,7 +558,7 @@
   }
 
   sessionId = self->_sessionId;
-  if (sessionId | *(v4 + 10))
+  if (sessionId | *(equalCopy + 10))
   {
     if (![(NSString *)sessionId isEqual:?])
     {
@@ -566,28 +566,28 @@
     }
   }
 
-  v7 = *(v4 + 104);
+  v7 = *(equalCopy + 104);
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 104) & 4) == 0 || self->_returnCode != *(v4 + 16))
+    if ((*(equalCopy + 104) & 4) == 0 || self->_returnCode != *(equalCopy + 16))
     {
       goto LABEL_41;
     }
   }
 
-  else if ((*(v4 + 104) & 4) != 0)
+  else if ((*(equalCopy + 104) & 4) != 0)
   {
     goto LABEL_41;
   }
 
   returnStr = self->_returnStr;
-  if (returnStr | *(v4 + 9) && ![(NSString *)returnStr isEqual:?])
+  if (returnStr | *(equalCopy + 9) && ![(NSString *)returnStr isEqual:?])
   {
     goto LABEL_41;
   }
 
   recognitionResult = self->_recognitionResult;
-  if (recognitionResult | *(v4 + 6))
+  if (recognitionResult | *(equalCopy + 6))
   {
     if (![(MXRecognitionResult *)recognitionResult isEqual:?])
     {
@@ -596,22 +596,22 @@
   }
 
   has = self->_has;
-  v11 = *(v4 + 104);
+  v11 = *(equalCopy + 104);
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 104) & 2) == 0 || self->_langProfileRecreateCodes != *(v4 + 6))
+    if ((*(equalCopy + 104) & 2) == 0 || self->_langProfileRecreateCodes != *(equalCopy + 6))
     {
       goto LABEL_41;
     }
   }
 
-  else if ((*(v4 + 104) & 2) != 0)
+  else if ((*(equalCopy + 104) & 2) != 0)
   {
     goto LABEL_41;
   }
 
   audioAnalytics = self->_audioAnalytics;
-  if (audioAnalytics | *(v4 + 2))
+  if (audioAnalytics | *(equalCopy + 2))
   {
     if (![(MXAudioAnalytics *)audioAnalytics isEqual:?])
     {
@@ -621,41 +621,41 @@
     has = self->_has;
   }
 
-  v13 = *(v4 + 104);
+  v13 = *(equalCopy + 104);
   if ((has & 8) != 0)
   {
-    if ((*(v4 + 104) & 8) == 0 || self->_watermarkDetection != *(v4 + 24))
+    if ((*(equalCopy + 104) & 8) == 0 || self->_watermarkDetection != *(equalCopy + 24))
     {
       goto LABEL_41;
     }
   }
 
-  else if ((*(v4 + 104) & 8) != 0)
+  else if ((*(equalCopy + 104) & 8) != 0)
   {
     goto LABEL_41;
   }
 
   if (has)
   {
-    if ((*(v4 + 104) & 1) == 0 || self->_watermarkPeakAverage != *(v4 + 1))
+    if ((*(equalCopy + 104) & 1) == 0 || self->_watermarkPeakAverage != *(equalCopy + 1))
     {
       goto LABEL_41;
     }
   }
 
-  else if (*(v4 + 104))
+  else if (*(equalCopy + 104))
   {
     goto LABEL_41;
   }
 
   language = self->_language;
-  if (language | *(v4 + 4) && ![(NSString *)language isEqual:?])
+  if (language | *(equalCopy + 4) && ![(NSString *)language isEqual:?])
   {
     goto LABEL_41;
   }
 
   latnnMitigatorResult = self->_latnnMitigatorResult;
-  if (latnnMitigatorResult | *(v4 + 5))
+  if (latnnMitigatorResult | *(equalCopy + 5))
   {
     if (![(MXLatnnMitigatorResult *)latnnMitigatorResult isEqual:?])
     {
@@ -664,7 +664,7 @@
   }
 
   requestLocale = self->_requestLocale;
-  if (requestLocale | *(v4 + 7))
+  if (requestLocale | *(equalCopy + 7))
   {
     if (![(NSString *)requestLocale isEqual:?])
     {
@@ -672,20 +672,20 @@
     }
   }
 
-  v17 = (*(v4 + 104) & 0x10) == 0;
+  v17 = (*(equalCopy + 104) & 0x10) == 0;
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(v4 + 104) & 0x10) != 0)
+    if ((*(equalCopy + 104) & 0x10) != 0)
     {
       if (self->_hasResult)
       {
-        if ((*(v4 + 100) & 1) == 0)
+        if ((*(equalCopy + 100) & 1) == 0)
         {
           goto LABEL_41;
         }
       }
 
-      else if (*(v4 + 100))
+      else if (*(equalCopy + 100))
       {
         goto LABEL_41;
       }
@@ -792,36 +792,36 @@ LABEL_15:
   return v20 ^ v21 ^ v19 ^ v18 ^ v3 ^ v4 ^ v5 ^ v8 ^ v12 ^ v13 ^ v14 ^ v15 ^ v16;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v12 = v4;
-  if (*(v4 + 11))
+  fromCopy = from;
+  v12 = fromCopy;
+  if (*(fromCopy + 11))
   {
     [(MXFinalSpeechRecognitionResponse *)self setSpeechId:?];
-    v4 = v12;
+    fromCopy = v12;
   }
 
-  if (*(v4 + 10))
+  if (*(fromCopy + 10))
   {
     [(MXFinalSpeechRecognitionResponse *)self setSessionId:?];
-    v4 = v12;
+    fromCopy = v12;
   }
 
-  if ((*(v4 + 104) & 4) != 0)
+  if ((*(fromCopy + 104) & 4) != 0)
   {
-    self->_returnCode = *(v4 + 16);
+    self->_returnCode = *(fromCopy + 16);
     *&self->_has |= 4u;
   }
 
-  if (*(v4 + 9))
+  if (*(fromCopy + 9))
   {
     [(MXFinalSpeechRecognitionResponse *)self setReturnStr:?];
-    v4 = v12;
+    fromCopy = v12;
   }
 
   recognitionResult = self->_recognitionResult;
-  v6 = *(v4 + 6);
+  v6 = *(fromCopy + 6);
   if (recognitionResult)
   {
     if (!v6)
@@ -842,16 +842,16 @@ LABEL_15:
     [(MXFinalSpeechRecognitionResponse *)self setRecognitionResult:?];
   }
 
-  v4 = v12;
+  fromCopy = v12;
 LABEL_15:
-  if ((*(v4 + 104) & 2) != 0)
+  if ((*(fromCopy + 104) & 2) != 0)
   {
-    self->_langProfileRecreateCodes = *(v4 + 6);
+    self->_langProfileRecreateCodes = *(fromCopy + 6);
     *&self->_has |= 2u;
   }
 
   audioAnalytics = self->_audioAnalytics;
-  v8 = *(v4 + 2);
+  v8 = *(fromCopy + 2);
   if (audioAnalytics)
   {
     if (!v8)
@@ -872,30 +872,30 @@ LABEL_15:
     [(MXFinalSpeechRecognitionResponse *)self setAudioAnalytics:?];
   }
 
-  v4 = v12;
+  fromCopy = v12;
 LABEL_23:
-  v9 = *(v4 + 104);
+  v9 = *(fromCopy + 104);
   if ((v9 & 8) != 0)
   {
-    self->_watermarkDetection = *(v4 + 24);
+    self->_watermarkDetection = *(fromCopy + 24);
     *&self->_has |= 8u;
-    v9 = *(v4 + 104);
+    v9 = *(fromCopy + 104);
   }
 
   if (v9)
   {
-    self->_watermarkPeakAverage = *(v4 + 1);
+    self->_watermarkPeakAverage = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(MXFinalSpeechRecognitionResponse *)self setLanguage:?];
-    v4 = v12;
+    fromCopy = v12;
   }
 
   latnnMitigatorResult = self->_latnnMitigatorResult;
-  v11 = *(v4 + 5);
+  v11 = *(fromCopy + 5);
   if (latnnMitigatorResult)
   {
     if (!v11)
@@ -916,17 +916,17 @@ LABEL_23:
     [(MXFinalSpeechRecognitionResponse *)self setLatnnMitigatorResult:?];
   }
 
-  v4 = v12;
+  fromCopy = v12;
 LABEL_35:
-  if (*(v4 + 7))
+  if (*(fromCopy + 7))
   {
     [(MXFinalSpeechRecognitionResponse *)self setRequestLocale:?];
-    v4 = v12;
+    fromCopy = v12;
   }
 
-  if ((*(v4 + 104) & 0x10) != 0)
+  if ((*(fromCopy + 104) & 0x10) != 0)
   {
-    self->_hasResult = *(v4 + 100);
+    self->_hasResult = *(fromCopy + 100);
     *&self->_has |= 0x10u;
   }
 

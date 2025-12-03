@@ -1,16 +1,16 @@
 @interface IDSOffGridMessenger
-- (void)__im_sendRelayDeliveryReceiptForMessageID:(id)a3 senderURI:(id)a4 options:(id)a5 topLevelFields:(id)a6 completion:(id)a7;
-- (void)__im_sendServiceUpdateMessageWithPreferredService:(int64_t)a3 recipientURI:(id)a4 fromURI:(id)a5 options:(id)a6 completion:(id)a7;
+- (void)__im_sendRelayDeliveryReceiptForMessageID:(id)d senderURI:(id)i options:(id)options topLevelFields:(id)fields completion:(id)completion;
+- (void)__im_sendServiceUpdateMessageWithPreferredService:(int64_t)service recipientURI:(id)i fromURI:(id)rI options:(id)options completion:(id)completion;
 @end
 
 @implementation IDSOffGridMessenger
 
-- (void)__im_sendServiceUpdateMessageWithPreferredService:(int64_t)a3 recipientURI:(id)a4 fromURI:(id)a5 options:(id)a6 completion:(id)a7
+- (void)__im_sendServiceUpdateMessageWithPreferredService:(int64_t)service recipientURI:(id)i fromURI:(id)rI options:(id)options completion:(id)completion
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  iCopy = i;
+  rICopy = rI;
+  optionsCopy = options;
+  completionCopy = completion;
   if (objc_opt_respondsToSelector())
   {
     v22 = 0;
@@ -31,28 +31,28 @@
 
     v17 = v16;
     _Block_object_dispose(&v22, 8);
-    v18 = [[v16 alloc] initWithPreferredServiceType:a3 senderURI:v13 recipientURI:v12];
+    v18 = [[v16 alloc] initWithPreferredServiceType:service senderURI:rICopy recipientURI:iCopy];
     v19[0] = _NSConcreteStackBlock;
     v19[1] = 3221225472;
     v19[2] = __149__IDSOffGridMessenger_ForwardDeclareSubstitute_127513240____im_sendServiceUpdateMessageWithPreferredService_recipientURI_fromURI_options_completion___block_invoke;
     v19[3] = &unk_65740;
-    v20 = v15;
+    v20 = completionCopy;
     [(IDSOffGridMessenger *)self sendServiceUpdateMessage:v18 options:0 completion:v19];
   }
 
   else
   {
-    (*(v15 + 2))(v15, 0, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0, 0);
   }
 }
 
-- (void)__im_sendRelayDeliveryReceiptForMessageID:(id)a3 senderURI:(id)a4 options:(id)a5 topLevelFields:(id)a6 completion:(id)a7
+- (void)__im_sendRelayDeliveryReceiptForMessageID:(id)d senderURI:(id)i options:(id)options topLevelFields:(id)fields completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  dCopy = d;
+  iCopy = i;
+  optionsCopy = options;
+  fieldsCopy = fields;
+  completionCopy = completion;
   if (objc_opt_respondsToSelector())
   {
     v23 = 0;
@@ -73,18 +73,18 @@
 
     v18 = v17;
     _Block_object_dispose(&v23, 8);
-    v19 = [[v17 alloc] initWithSenderURI:v13 recipientURI:v13 topLevelFields:v15];
+    v19 = [[v17 alloc] initWithSenderURI:iCopy recipientURI:iCopy topLevelFields:fieldsCopy];
     v20[0] = _NSConcreteStackBlock;
     v20[1] = 3221225472;
     v20[2] = __145__IDSOffGridMessenger_ForwardDeclareSubstitute_137971787____im_sendRelayDeliveryReceiptForMessageID_senderURI_options_topLevelFields_completion___block_invoke;
     v20[3] = &unk_65768;
-    v21 = v16;
-    [(IDSOffGridMessenger *)self sendServerMessage:v19 options:v14 completion:v20];
+    v21 = completionCopy;
+    [(IDSOffGridMessenger *)self sendServerMessage:v19 options:optionsCopy completion:v20];
   }
 
   else
   {
-    (*(v16 + 2))(v16, 0, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0, 0);
   }
 }
 

@@ -1,28 +1,28 @@
 @interface WBSProtectionSpaceMatch
-- (WBSProtectionSpaceMatch)initWithProtectionSpace:(id)a3 credentials:(id)a4 defaultCredential:(id)a5 matchLevel:(int64_t)a6;
+- (WBSProtectionSpaceMatch)initWithProtectionSpace:(id)space credentials:(id)credentials defaultCredential:(id)credential matchLevel:(int64_t)level;
 - (id)debugDescription;
 @end
 
 @implementation WBSProtectionSpaceMatch
 
-- (WBSProtectionSpaceMatch)initWithProtectionSpace:(id)a3 credentials:(id)a4 defaultCredential:(id)a5 matchLevel:(int64_t)a6
+- (WBSProtectionSpaceMatch)initWithProtectionSpace:(id)space credentials:(id)credentials defaultCredential:(id)credential matchLevel:(int64_t)level
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  spaceCopy = space;
+  credentialsCopy = credentials;
+  credentialCopy = credential;
   v20.receiver = self;
   v20.super_class = WBSProtectionSpaceMatch;
   v14 = [(WBSProtectionSpaceMatch *)&v20 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_protectionSpace, a3);
-    v16 = [v12 copy];
+    objc_storeStrong(&v14->_protectionSpace, space);
+    v16 = [credentialsCopy copy];
     credentials = v15->_credentials;
     v15->_credentials = v16;
 
-    objc_storeStrong(&v15->_defaultCredential, a5);
-    v15->_matchLevel = a6;
+    objc_storeStrong(&v15->_defaultCredential, credential);
+    v15->_matchLevel = level;
     v18 = v15;
   }
 

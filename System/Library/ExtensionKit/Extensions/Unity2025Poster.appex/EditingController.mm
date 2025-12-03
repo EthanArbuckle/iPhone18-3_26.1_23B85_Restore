@@ -1,92 +1,92 @@
 @interface EditingController
-- (BOOL)editor:(id)a3 shouldAllowUserToSelectTimeFontConfiguration:(id)a4;
+- (BOOL)editor:(id)editor shouldAllowUserToSelectTimeFontConfiguration:(id)configuration;
 - (_TtC15Unity2025Poster17EditingController)init;
-- (id)initialLookIdentifierForEditor:(id)a3;
-- (id)looksForEditor:(id)a3;
-- (id)timeColorPickerConfigurationForEditor:(id)a3;
-- (void)editor:(id)a3 didFinishTransitionToLook:(id)a4;
-- (void)editor:(id)a3 didInitializeWithEnvironment:(id)a4;
-- (void)editor:(id)a3 didUpdateEnvironment:(id)a4 withTransition:(id)a5;
-- (void)editor:(id)a3 finalizeWithCompletion:(id)a4;
-- (void)editor:(id)a3 populateViews:(id)a4 forLook:(id)a5;
-- (void)editorDidInvalidate:(id)a3;
+- (id)initialLookIdentifierForEditor:(id)editor;
+- (id)looksForEditor:(id)editor;
+- (id)timeColorPickerConfigurationForEditor:(id)editor;
+- (void)editor:(id)editor didFinishTransitionToLook:(id)look;
+- (void)editor:(id)editor didInitializeWithEnvironment:(id)environment;
+- (void)editor:(id)editor didUpdateEnvironment:(id)environment withTransition:(id)transition;
+- (void)editor:(id)editor finalizeWithCompletion:(id)completion;
+- (void)editor:(id)editor populateViews:(id)views forLook:(id)look;
+- (void)editorDidInvalidate:(id)invalidate;
 @end
 
 @implementation EditingController
 
-- (void)editor:(id)a3 didInitializeWithEnvironment:(id)a4
+- (void)editor:(id)editor didInitializeWithEnvironment:(id)environment
 {
-  v6 = a3;
+  editorCopy = editor;
   swift_unknownObjectRetain();
-  v7 = self;
-  sub_10000BD1C(v6, a4);
+  selfCopy = self;
+  sub_10000BD1C(editorCopy, environment);
 
   swift_unknownObjectRelease();
 }
 
-- (id)initialLookIdentifierForEditor:(id)a3
+- (id)initialLookIdentifierForEditor:(id)editor
 {
-  v4 = a3;
-  v5 = self;
-  sub_10000C318(v4);
+  editorCopy = editor;
+  selfCopy = self;
+  sub_10000C318(editorCopy);
 
   v6 = sub_100012FE4();
 
   return v6;
 }
 
-- (BOOL)editor:(id)a3 shouldAllowUserToSelectTimeFontConfiguration:(id)a4
+- (BOOL)editor:(id)editor shouldAllowUserToSelectTimeFontConfiguration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_10000D35C(v7);
+  editorCopy = editor;
+  configurationCopy = configuration;
+  selfCopy = self;
+  v9 = sub_10000D35C(configurationCopy);
 
   return v9;
 }
 
-- (void)editor:(id)a3 didUpdateEnvironment:(id)a4 withTransition:(id)a5
+- (void)editor:(id)editor didUpdateEnvironment:(id)environment withTransition:(id)transition
 {
   v8 = OBJC_IVAR____TtC15Unity2025Poster17EditingController_coordinators;
   swift_beginAccess();
   v9 = *(&self->super.isa + v8);
-  v10 = a3;
+  editorCopy = editor;
   swift_unknownObjectRetain();
-  v11 = self;
+  selfCopy = self;
 
-  v12 = a5;
-  v13 = sub_10000DEFC(v10, v9);
+  transitionCopy = transition;
+  v13 = sub_10000DEFC(editorCopy, v9);
 
   if (v13)
   {
-    v14 = [v12 animationSettings];
+    animationSettings = [transitionCopy animationSettings];
     sub_100012CD4();
   }
 
   swift_unknownObjectRelease();
 }
 
-- (void)editor:(id)a3 didFinishTransitionToLook:(id)a4
+- (void)editor:(id)editor didFinishTransitionToLook:(id)look
 {
   v7 = OBJC_IVAR____TtC15Unity2025Poster17EditingController_coordinators;
   swift_beginAccess();
   v8 = *(&self->super.isa + v7);
-  v9 = a3;
-  v10 = a4;
-  v11 = self;
+  editorCopy = editor;
+  lookCopy = look;
+  selfCopy = self;
 
-  v12 = sub_10000DEFC(v9, v8);
+  v12 = sub_10000DEFC(editorCopy, v8);
 
   if (v12)
   {
-    v13 = [v10 identifier];
+    identifier = [lookCopy identifier];
     sub_100012FF4();
 
     sub_100012D14();
   }
 }
 
-- (id)timeColorPickerConfigurationForEditor:(id)a3
+- (id)timeColorPickerConfigurationForEditor:(id)editor
 {
   v3 = [objc_allocWithZone(PREditorColorPickerConfiguration) init];
   v4 = objc_allocWithZone(PREditorColorPalette);
@@ -98,7 +98,7 @@
   return v3;
 }
 
-- (id)looksForEditor:(id)a3
+- (id)looksForEditor:(id)editor
 {
   sub_10000CF58();
   sub_10000D948();
@@ -107,39 +107,39 @@
   return v3.super.isa;
 }
 
-- (void)editor:(id)a3 populateViews:(id)a4 forLook:(id)a5
+- (void)editor:(id)editor populateViews:(id)views forLook:(id)look
 {
-  v8 = a3;
+  editorCopy = editor;
   swift_unknownObjectRetain();
-  v9 = a5;
-  v10 = self;
-  sub_10000C9F4(v8, a4, v9);
+  lookCopy = look;
+  selfCopy = self;
+  sub_10000C9F4(editorCopy, views, lookCopy);
 
   swift_unknownObjectRelease();
 }
 
-- (void)editor:(id)a3 finalizeWithCompletion:(id)a4
+- (void)editor:(id)editor finalizeWithCompletion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   _Block_copy(v6);
-  v7 = a3;
-  v8 = self;
-  sub_10000D5CC(v7, v8, v6);
+  editorCopy = editor;
+  selfCopy = self;
+  sub_10000D5CC(editorCopy, selfCopy, v6);
   _Block_release(v6);
   _Block_release(v6);
 }
 
-- (void)editorDidInvalidate:(id)a3
+- (void)editorDidInvalidate:(id)invalidate
 {
   swift_beginAccess();
-  v5 = a3;
-  v6 = self;
-  sub_1000100A4(v5);
+  invalidateCopy = invalidate;
+  selfCopy = self;
+  sub_1000100A4(invalidateCopy);
   swift_endAccess();
 
   memset(v8, 0, sizeof(v8));
   swift_beginAccess();
-  v7 = v5;
+  v7 = invalidateCopy;
   sub_10000BBD4(v8, v7);
   swift_endAccess();
 }

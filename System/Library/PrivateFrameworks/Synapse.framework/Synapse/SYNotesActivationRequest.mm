@@ -3,12 +3,12 @@
 - (NSArray)imagesData;
 - (NSArray)urls;
 - (SYNotesActivationRequest)init;
-- (void)addImageData:(id)a3;
-- (void)addImageFileURL:(id)a3;
-- (void)addImageFileURLs:(id)a3;
-- (void)addImagesData:(id)a3;
-- (void)addURL:(id)a3;
-- (void)addURLs:(id)a3;
+- (void)addImageData:(id)data;
+- (void)addImageFileURL:(id)l;
+- (void)addImageFileURLs:(id)ls;
+- (void)addImagesData:(id)data;
+- (void)addURL:(id)l;
+- (void)addURLs:(id)ls;
 @end
 
 @implementation SYNotesActivationRequest
@@ -20,17 +20,17 @@
   v2 = [(SYNotesActivationRequest *)&v10 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     urls = v2->__urls;
-    v2->__urls = v3;
+    v2->__urls = array;
 
-    v5 = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
     imagesData = v2->__imagesData;
-    v2->__imagesData = v5;
+    v2->__imagesData = array2;
 
-    v7 = [MEMORY[0x277CBEB18] array];
+    array3 = [MEMORY[0x277CBEB18] array];
     imageFileURLs = v2->__imageFileURLs;
-    v2->__imageFileURLs = v7;
+    v2->__imageFileURLs = array3;
   }
 
   return v2;
@@ -38,68 +38,68 @@
 
 - (NSArray)urls
 {
-  v2 = [(SYNotesActivationRequest *)self _urls];
-  v3 = [v2 copy];
+  _urls = [(SYNotesActivationRequest *)self _urls];
+  v3 = [_urls copy];
 
   return v3;
 }
 
-- (void)addURL:(id)a3
+- (void)addURL:(id)l
 {
-  v4 = a3;
-  v5 = [(SYNotesActivationRequest *)self _urls];
-  [v5 addObject:v4];
+  lCopy = l;
+  _urls = [(SYNotesActivationRequest *)self _urls];
+  [_urls addObject:lCopy];
 }
 
-- (void)addURLs:(id)a3
+- (void)addURLs:(id)ls
 {
-  v4 = a3;
-  v5 = [(SYNotesActivationRequest *)self _urls];
-  [v5 addObjectsFromArray:v4];
+  lsCopy = ls;
+  _urls = [(SYNotesActivationRequest *)self _urls];
+  [_urls addObjectsFromArray:lsCopy];
 }
 
 - (NSArray)imagesData
 {
-  v2 = [(SYNotesActivationRequest *)self _imagesData];
-  v3 = [v2 copy];
+  _imagesData = [(SYNotesActivationRequest *)self _imagesData];
+  v3 = [_imagesData copy];
 
   return v3;
 }
 
-- (void)addImageData:(id)a3
+- (void)addImageData:(id)data
 {
-  v4 = a3;
-  v5 = [(SYNotesActivationRequest *)self _imagesData];
-  [v5 addObject:v4];
+  dataCopy = data;
+  _imagesData = [(SYNotesActivationRequest *)self _imagesData];
+  [_imagesData addObject:dataCopy];
 }
 
-- (void)addImagesData:(id)a3
+- (void)addImagesData:(id)data
 {
-  v4 = a3;
-  v5 = [(SYNotesActivationRequest *)self _imagesData];
-  [v5 addObjectsFromArray:v4];
+  dataCopy = data;
+  _imagesData = [(SYNotesActivationRequest *)self _imagesData];
+  [_imagesData addObjectsFromArray:dataCopy];
 }
 
 - (NSArray)imageFileURLs
 {
-  v2 = [(SYNotesActivationRequest *)self _imageFileURLs];
-  v3 = [v2 copy];
+  _imageFileURLs = [(SYNotesActivationRequest *)self _imageFileURLs];
+  v3 = [_imageFileURLs copy];
 
   return v3;
 }
 
-- (void)addImageFileURL:(id)a3
+- (void)addImageFileURL:(id)l
 {
-  v4 = a3;
-  v5 = [(SYNotesActivationRequest *)self _imageFileURLs];
-  [v5 addObject:v4];
+  lCopy = l;
+  _imageFileURLs = [(SYNotesActivationRequest *)self _imageFileURLs];
+  [_imageFileURLs addObject:lCopy];
 }
 
-- (void)addImageFileURLs:(id)a3
+- (void)addImageFileURLs:(id)ls
 {
-  v4 = a3;
-  v5 = [(SYNotesActivationRequest *)self _imageFileURLs];
-  [v5 addObjectsFromArray:v4];
+  lsCopy = ls;
+  _imageFileURLs = [(SYNotesActivationRequest *)self _imageFileURLs];
+  [_imageFileURLs addObjectsFromArray:lsCopy];
 }
 
 @end

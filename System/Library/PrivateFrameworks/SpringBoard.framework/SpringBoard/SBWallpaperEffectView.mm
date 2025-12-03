@@ -1,25 +1,25 @@
 @interface SBWallpaperEffectView
 - (PBUIWallpaperController)wallpaperController;
-- (SBWallpaperEffectView)initWithWallpaperVariant:(int64_t)a3 transformOptions:(unint64_t)a4;
+- (SBWallpaperEffectView)initWithWallpaperVariant:(int64_t)variant transformOptions:(unint64_t)options;
 @end
 
 @implementation SBWallpaperEffectView
 
-- (SBWallpaperEffectView)initWithWallpaperVariant:(int64_t)a3 transformOptions:(unint64_t)a4
+- (SBWallpaperEffectView)initWithWallpaperVariant:(int64_t)variant transformOptions:(unint64_t)options
 {
   v7 = +[SBWallpaperController sharedInstance];
-  v8 = [(PBUIWallpaperEffectViewBase *)self initWithWallpaperPresenter:v7 variant:a3 transformOptions:a4];
+  v8 = [(PBUIWallpaperEffectViewBase *)self initWithWallpaperPresenter:v7 variant:variant transformOptions:options];
 
   return v8;
 }
 
 - (PBUIWallpaperController)wallpaperController
 {
-  v2 = [(PBUIWallpaperEffectViewBase *)self wallpaperPresenter];
+  wallpaperPresenter = [(PBUIWallpaperEffectViewBase *)self wallpaperPresenter];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = wallpaperPresenter;
   }
 
   else

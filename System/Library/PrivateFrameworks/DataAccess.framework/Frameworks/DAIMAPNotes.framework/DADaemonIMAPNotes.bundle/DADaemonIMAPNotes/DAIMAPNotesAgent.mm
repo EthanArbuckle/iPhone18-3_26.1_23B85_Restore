@@ -1,48 +1,48 @@
 @interface DAIMAPNotesAgent
-- (BOOL)_clearChangeHistoriesInContext:(id)a3 changeSet:(id)a4;
-- (DAIMAPNotesAgent)initWithAccount:(id)a3;
-- (id)_copyDAActionsFromNoteChanges:(id)a3 inStore:(id)a4 mutableNotesToDeleteAfterSync:(id)a5;
+- (BOOL)_clearChangeHistoriesInContext:(id)context changeSet:(id)set;
+- (DAIMAPNotesAgent)initWithAccount:(id)account;
+- (id)_copyDAActionsFromNoteChanges:(id)changes inStore:(id)store mutableNotesToDeleteAfterSync:(id)sync;
 - (id)waiterID;
-- (void)_appendSyncRequest:(id)a3;
+- (void)_appendSyncRequest:(id)request;
 - (void)_callShutdownBlockIfAppropriate;
-- (void)_finishSyncResultOnMainThreadForFolderWithDictionary:(id)a3;
+- (void)_finishSyncResultOnMainThreadForFolderWithDictionary:(id)dictionary;
 - (void)_fireWaitingFolderItemSyncRequests;
-- (void)_handlePushNotificationWithName:(id)a3;
+- (void)_handlePushNotificationWithName:(id)name;
 - (void)_notifyContentSyncComplete;
 - (void)_notifyContentSyncFailed;
 - (void)_notifyFolderSyncComplete;
 - (void)_notifyFolderSyncFailed;
-- (void)_reallySyncRequest:(id)a3;
-- (void)_serverUpdatedNoteFolder:(id)a3;
-- (void)_setLastFolderSetRegisteredForPush:(id)a3;
+- (void)_reallySyncRequest:(id)request;
+- (void)_serverUpdatedNoteFolder:(id)folder;
+- (void)_setLastFolderSetRegisteredForPush:(id)push;
 - (void)_setUpNotesNotifications;
-- (void)_syncInLockRequest:(id)a3;
-- (void)_syncRequest:(id)a3;
+- (void)_syncInLockRequest:(id)request;
+- (void)_syncRequest:(id)request;
 - (void)_tearDownNotesNotifications;
-- (void)connectionManager:(id)a3 handleEvent:(int)a4;
+- (void)connectionManager:(id)manager handleEvent:(int)event;
 - (void)dealloc;
-- (void)failedToRetrieveFolderListWithStatus:(int64_t)a3 andError:(id)a4;
-- (void)notesFolderWithId:(id)a3 failedToSyncWithStatus:(int64_t)a4 error:(id)a5;
-- (void)requestAgentStopMonitoringWithCompletionBlock:(id)a3;
+- (void)failedToRetrieveFolderListWithStatus:(int64_t)status andError:(id)error;
+- (void)notesFolderWithId:(id)id failedToSyncWithStatus:(int64_t)status error:(id)error;
+- (void)requestAgentStopMonitoringWithCompletionBlock:(id)block;
 - (void)startMonitoring;
 - (void)successfullyRetrievedFolderList;
-- (void)syncFolderIDs:(id)a3 forDataclasses:(int64_t)a4 isUserRequested:(BOOL)a5;
-- (void)syncResultForNotesFolder:(id)a3 noteContext:(id)a4 newTag:(id)a5 previousTag:(id)a6 actions:(id)a7 results:(id)a8 changeSet:(id)a9 notesToDeleteAfterSync:(id)a10 isInitialSync:(BOOL)a11 moreAvailable:(BOOL)a12 moreLocalChangesAvailable:(BOOL)a13;
+- (void)syncFolderIDs:(id)ds forDataclasses:(int64_t)dataclasses isUserRequested:(BOOL)requested;
+- (void)syncResultForNotesFolder:(id)folder noteContext:(id)context newTag:(id)tag previousTag:(id)previousTag actions:(id)actions results:(id)results changeSet:(id)set notesToDeleteAfterSync:(id)self0 isInitialSync:(BOOL)self1 moreAvailable:(BOOL)self2 moreLocalChangesAvailable:(BOOL)self3;
 @end
 
 @implementation DAIMAPNotesAgent
 
-- (id)_copyDAActionsFromNoteChanges:(id)a3 inStore:(id)a4 mutableNotesToDeleteAfterSync:(id)a5
+- (id)_copyDAActionsFromNoteChanges:(id)changes inStore:(id)store mutableNotesToDeleteAfterSync:(id)sync
 {
-  v7 = a3;
-  v47 = a4;
-  v55 = a5;
+  changesCopy = changes;
+  storeCopy = store;
+  syncCopy = sync;
   v54 = objc_opt_new();
   v65 = 0u;
   v66 = 0u;
   v67 = 0u;
   v68 = 0u;
-  obj = v7;
+  obj = changesCopy;
   v49 = [obj countByEnumeratingWithState:&v65 objects:v75 count:16];
   if (v49)
   {
@@ -63,12 +63,12 @@
         }
 
         v11 = *(*(&v65 + 1) + 8 * v10);
-        v12 = [v11 changeType];
-        v13 = [v12 intValue];
+        changeType = [v11 changeType];
+        intValue = [changeType intValue];
 
-        if (v13)
+        if (intValue)
         {
-          if (v13 == 2)
+          if (intValue == 2)
           {
             v50 = v10;
             v53 = 0;
@@ -78,14 +78,14 @@
 
           else
           {
-            if (v13 != 1)
+            if (intValue != 1)
             {
               v19 = DALoggingwithCategory();
               if (os_log_type_enabled(v19, v9))
               {
-                v42 = [v11 changeType];
+                changeType2 = [v11 changeType];
                 *buf = v45;
-                v72 = v42;
+                v72 = changeType2;
                 v73 = 2112;
                 v74 = v11;
                 _os_log_impl(&dword_0, v19, v9, "Unknown change type %@ from change object %@", buf, 0x16u);
@@ -111,8 +111,8 @@
           v53 = 1;
         }
 
-        v16 = [v11 noteIntegerIds];
-        v17 = [v47 notesForIntegerIds:v16];
+        noteIntegerIds = [v11 noteIntegerIds];
+        v17 = [storeCopy notesForIntegerIds:noteIntegerIds];
 
         v18 = objc_opt_new();
         v61 = 0u;
@@ -135,8 +135,8 @@
               }
 
               v24 = *(*(&v61 + 1) + 8 * i);
-              v25 = [v24 integerId];
-              [v18 setObject:v24 forKeyedSubscript:v25];
+              integerId = [v24 integerId];
+              [v18 setObject:v24 forKeyedSubscript:integerId];
             }
 
             v21 = [v19 countByEnumeratingWithState:&v61 objects:v70 count:16];
@@ -149,8 +149,8 @@
         v60 = 0u;
         v57 = 0u;
         v58 = 0u;
-        v26 = [v11 noteIntegerIds];
-        v27 = [v26 countByEnumeratingWithState:&v57 objects:v69 count:16];
+        noteIntegerIds2 = [v11 noteIntegerIds];
+        v27 = [noteIntegerIds2 countByEnumeratingWithState:&v57 objects:v69 count:16];
         if (v27)
         {
           v28 = v27;
@@ -162,7 +162,7 @@
             {
               if (*v58 != v29)
               {
-                objc_enumerationMutation(v26);
+                objc_enumerationMutation(noteIntegerIds2);
               }
 
               v31 = *(*(&v57 + 1) + 8 * v30);
@@ -192,7 +192,7 @@
                   [v54 addObject:v36];
                 }
 
-                [v55 addObject:v33];
+                [syncCopy addObject:v33];
               }
 
               else
@@ -203,7 +203,7 @@
                   goto LABEL_38;
                 }
 
-                [v55 addObject:v33];
+                [syncCopy addObject:v33];
                 if (v53)
                 {
                   v38 = DALoggingwithCategory();
@@ -231,7 +231,7 @@ LABEL_39:
             }
 
             while (v28 != v30);
-            v41 = [v26 countByEnumeratingWithState:&v57 objects:v69 count:16];
+            v41 = [noteIntegerIds2 countByEnumeratingWithState:&v57 objects:v69 count:16];
             v28 = v41;
           }
 
@@ -256,12 +256,12 @@ LABEL_46:
   return v54;
 }
 
-- (DAIMAPNotesAgent)initWithAccount:(id)a3
+- (DAIMAPNotesAgent)initWithAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   v18.receiver = self;
   v18.super_class = DAIMAPNotesAgent;
-  v5 = [(DAIMAPNotesAgent *)&v18 initWithAccount:v4];
+  v5 = [(DAIMAPNotesAgent *)&v18 initWithAccount:accountCopy];
   if (v5)
   {
     v6 = objc_opt_new();
@@ -270,21 +270,21 @@ LABEL_46:
 
     v8 = [PCConnectionManager alloc];
     v9 = dataaccess_get_global_queue();
-    v10 = [v4 scheduleIdentifier];
-    v11 = [v8 initWithConnectionClass:1 delegate:v5 delegateQueue:v9 serviceIdentifier:v10];
+    scheduleIdentifier = [accountCopy scheduleIdentifier];
+    v11 = [v8 initWithConnectionClass:1 delegate:v5 delegateQueue:v9 serviceIdentifier:scheduleIdentifier];
     pcManager = v5->_pcManager;
     v5->_pcManager = v11;
 
     [(PCConnectionManager *)v5->_pcManager setOnlyAllowedStyle:1];
-    v13 = [v4 imapMailAccount];
-    [v13 setSourceApplicationBundleIdentifier:@"com.apple.mobilenotes"];
+    imapMailAccount = [accountCopy imapMailAccount];
+    [imapMailAccount setSourceApplicationBundleIdentifier:@"com.apple.mobilenotes"];
     objc_initWeak(&location, v5);
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = sub_969C;
     v15[3] = &unk_1C640;
     objc_copyWeak(&v16, &location);
-    [v13 setHandlerForOfflineCacheFlush:v15];
+    [imapMailAccount setHandlerForOfflineCacheFlush:v15];
     objc_destroyWeak(&v16);
     objc_destroyWeak(&location);
   }
@@ -338,8 +338,8 @@ LABEL_46:
 
 - (void)startMonitoring
 {
-  v3 = [(DAIMAPNotesAgent *)self account];
-  v4 = [v3 enabledForDADataclass:32];
+  account = [(DAIMAPNotesAgent *)self account];
+  v4 = [account enabledForDADataclass:32];
 
   if (v4)
   {
@@ -352,15 +352,15 @@ LABEL_46:
   }
 }
 
-- (void)_serverUpdatedNoteFolder:(id)a3
+- (void)_serverUpdatedNoteFolder:(id)folder
 {
-  v4 = a3;
+  folderCopy = folder;
   v5 = DALoggingwithCategory();
   v6 = _CPLog_to_os_log_type[6];
   if (os_log_type_enabled(v5, v6))
   {
     *buf = 138412290;
-    v12 = v4;
+    v12 = folderCopy;
     _os_log_impl(&dword_0, v5, v6, "Received push notification for name %@", buf, 0xCu);
   }
 
@@ -370,40 +370,40 @@ LABEL_46:
   v9[2] = sub_9AE8;
   v9[3] = &unk_1C668;
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
+  v10 = folderCopy;
+  v8 = folderCopy;
   dispatch_async(v7, v9);
 }
 
-- (void)_setLastFolderSetRegisteredForPush:(id)a3
+- (void)_setLastFolderSetRegisteredForPush:(id)push
 {
-  v5 = a3;
+  pushCopy = push;
   v6 = DALoggingwithCategory();
   v7 = _CPLog_to_os_log_type[6];
   if (os_log_type_enabled(v6, v7))
   {
     *buf = 138412290;
-    v62 = v5;
+    v62 = pushCopy;
     _os_log_impl(&dword_0, v6, v7, "Want the following mailbox uids registered for push: %@", buf, 0xCu);
   }
 
-  if (self->_lastFolderSetRegisteredForPush != v5)
+  if (self->_lastFolderSetRegisteredForPush != pushCopy)
   {
-    v42 = a3;
+    pushCopy2 = push;
     v8 = objc_opt_new();
     daFoldersByPushNotificationName = self->_daFoldersByPushNotificationName;
     self->_daFoldersByPushNotificationName = v8;
 
-    v10 = [(DAIMAPNotesAgent *)self account];
-    v11 = [v10 imapMailAccount];
+    account = [(DAIMAPNotesAgent *)self account];
+    imapMailAccount = [account imapMailAccount];
 
-    v12 = [(NSSet *)self->_lastFolderSetRegisteredForPush allObjects];
-    v13 = [v11 notificationNamesForPrefix:@"com.apple.dataaccessd" mailboxUids:v12];
+    allObjects = [(NSSet *)self->_lastFolderSetRegisteredForPush allObjects];
+    v13 = [imapMailAccount notificationNamesForPrefix:@"com.apple.dataaccessd" mailboxUids:allObjects];
 
-    v43 = v5;
-    v14 = [(NSSet *)v5 allObjects];
-    v44 = v11;
-    v49 = [v11 registerPushNotificationPrefix:@"com.apple.dataaccessd" forMailboxUids:v14];
+    v43 = pushCopy;
+    allObjects2 = [(NSSet *)pushCopy allObjects];
+    v44 = imapMailAccount;
+    v49 = [imapMailAccount registerPushNotificationPrefix:@"com.apple.dataaccessd" forMailboxUids:allObjects2];
 
     v57 = 0u;
     v58 = 0u;
@@ -411,7 +411,7 @@ LABEL_46:
     v56 = 0u;
     obj = v13;
     v15 = [obj countByEnumeratingWithState:&v55 objects:v60 count:16];
-    v48 = self;
+    selfCopy = self;
     if (v15)
     {
       v16 = v15;
@@ -437,8 +437,8 @@ LABEL_46:
               _os_log_impl(&dword_0, v21, v18, "unregistering notification for push: %@", buf, 0xCu);
             }
 
-            self = v48;
-            [CalDistributedNotificationCenter removeObserver:v48 name:v20];
+            self = selfCopy;
+            [CalDistributedNotificationCenter removeObserver:selfCopy name:v20];
           }
         }
 
@@ -483,19 +483,19 @@ LABEL_46:
             v33 = v26;
             v34 = v25;
             v35 = [v31 objectAtIndex:0];
-            v36 = [v29 URLString];
+            uRLString = [v29 URLString];
 
-            if (v36)
+            if (uRLString)
             {
-              v37 = [(DAIMAPNotesAgent *)self account];
-              v38 = [v37 notesFoldersByFolderId];
-              v39 = [v29 URLString];
-              v40 = [v38 objectForKey:v39];
+              account2 = [(DAIMAPNotesAgent *)self account];
+              notesFoldersByFolderId = [account2 notesFoldersByFolderId];
+              uRLString2 = [v29 URLString];
+              v40 = [notesFoldersByFolderId objectForKey:uRLString2];
 
-              self = v48;
+              self = selfCopy;
               if (v40)
               {
-                [(NSMutableDictionary *)v48->_daFoldersByPushNotificationName setObject:v40 forKey:v35];
+                [(NSMutableDictionary *)selfCopy->_daFoldersByPushNotificationName setObject:v40 forKey:v35];
               }
 
               v28 = v44;
@@ -529,8 +529,8 @@ LABEL_46:
       while (v23);
     }
 
-    objc_storeStrong(&self->_lastFolderSetRegisteredForPush, v42);
-    v5 = v43;
+    objc_storeStrong(&self->_lastFolderSetRegisteredForPush, pushCopy2);
+    pushCopy = v43;
   }
 }
 
@@ -549,11 +549,11 @@ LABEL_46:
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v4 = [(DAIMAPNotesAgent *)self account];
-    v5 = [v4 notesFoldersByFolderId];
-    v6 = [v5 allValues];
+    account = [(DAIMAPNotesAgent *)self account];
+    notesFoldersByFolderId = [account notesFoldersByFolderId];
+    allValues = [notesFoldersByFolderId allValues];
 
-    v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    v7 = [allValues countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v7)
     {
       v8 = v7;
@@ -564,17 +564,17 @@ LABEL_46:
         {
           if (*v16 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(allValues);
           }
 
-          v11 = [*(*(&v15 + 1) + 8 * i) mailboxUid];
-          if (v11)
+          mailboxUid = [*(*(&v15 + 1) + 8 * i) mailboxUid];
+          if (mailboxUid)
           {
-            [v3 addObject:v11];
+            [v3 addObject:mailboxUid];
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v8 = [allValues countByEnumeratingWithState:&v15 objects:v19 count:16];
       }
 
       while (v8);
@@ -598,13 +598,13 @@ LABEL_46:
   }
 }
 
-- (void)failedToRetrieveFolderListWithStatus:(int64_t)a3 andError:(id)a4
+- (void)failedToRetrieveFolderListWithStatus:(int64_t)status andError:(id)error
 {
-  v7 = a4;
-  v8 = [v7 domain];
-  if ([v8 isEqualToString:MFMessageErrorDomain])
+  errorCopy = error;
+  domain = [errorCopy domain];
+  if ([domain isEqualToString:MFMessageErrorDomain])
   {
-    if ([v7 code] == &stru_3D8.offset)
+    if ([errorCopy code] == &stru_3D8.offset)
     {
 
 LABEL_11:
@@ -613,26 +613,26 @@ LABEL_11:
       if (os_log_type_enabled(v13, v14))
       {
         *buf = 67109120;
-        LODWORD(Name) = [v7 code];
+        LODWORD(Name) = [errorCopy code];
         _os_log_impl(&dword_0, v13, v14, "Got an auth error (%d) for IMAPNotes. Attempting to renew credentials.", buf, 8u);
       }
 
       [(DAIMAPNotesAgent *)self setIsWaitingForPassword:1];
-      v15 = [(DAIMAPNotesAgent *)self account];
+      account = [(DAIMAPNotesAgent *)self account];
       v16 = dataaccess_get_global_queue();
       v17[0] = _NSConcreteStackBlock;
       v17[1] = 3221225472;
       v17[2] = sub_A4E8;
       v17[3] = &unk_1C690;
       v17[4] = self;
-      [v15 dropAssertionsAndRenewCredentialsInQueue:v16 withHandler:v17];
+      [account dropAssertionsAndRenewCredentialsInQueue:v16 withHandler:v17];
 
       goto LABEL_14;
     }
 
-    v12 = [v7 code];
+    code = [errorCopy code];
 
-    if (v12 == &stru_3D8.reserved1 + 3)
+    if (code == &stru_3D8.reserved1 + 3)
     {
       goto LABEL_11;
     }
@@ -642,27 +642,27 @@ LABEL_11:
   {
   }
 
-  v9 = [v7 domain];
-  if (([v9 isEqualToString:DAErrorDomain]& 1) == 0)
+  domain2 = [errorCopy domain];
+  if (([domain2 isEqualToString:DAErrorDomain]& 1) == 0)
   {
-    v10 = [v7 code];
+    code2 = [errorCopy code];
 
-    if (v10 != &dword_4 + 2)
+    if (code2 != &dword_4 + 2)
     {
       goto LABEL_14;
     }
 
-    v9 = DALoggingwithCategory();
+    domain2 = DALoggingwithCategory();
     v11 = _CPLog_to_os_log_type[3];
-    if (os_log_type_enabled(v9, v11))
+    if (os_log_type_enabled(domain2, v11))
     {
       *buf = 136315650;
       Name = sel_getName(a2);
       v20 = 2048;
-      v21 = a3;
+      statusCopy = status;
       v22 = 2112;
-      v23 = v7;
-      _os_log_impl(&dword_0, v9, v11, "Yikes: %s %ld %@", buf, 0x20u);
+      v23 = errorCopy;
+      _os_log_impl(&dword_0, domain2, v11, "Yikes: %s %ld %@", buf, 0x20u);
     }
   }
 
@@ -670,23 +670,23 @@ LABEL_14:
   [(DAIMAPNotesAgent *)self _notifyFolderSyncFailed];
 }
 
-- (void)syncFolderIDs:(id)a3 forDataclasses:(int64_t)a4 isUserRequested:(BOOL)a5
+- (void)syncFolderIDs:(id)ds forDataclasses:(int64_t)dataclasses isUserRequested:(BOOL)requested
 {
-  v6 = a3;
-  v7 = v6;
+  dsCopy = ds;
+  v7 = dsCopy;
   if (self->_isShuttingDown)
   {
     [(DAIMAPNotesAgent *)self _notifyContentSyncFailed];
   }
 
-  else if (v6)
+  else if (dsCopy)
   {
-    v8 = [(DAIMAPNotesAgent *)self account];
-    v9 = [v8 notesFoldersByFolderId];
+    account = [(DAIMAPNotesAgent *)self account];
+    notesFoldersByFolderId = [account notesFoldersByFolderId];
 
-    if ([v9 count])
+    if ([notesFoldersByFolderId count])
     {
-      v20 = self;
+      selfCopy = self;
       v10 = objc_opt_new();
       v22 = 0u;
       v23 = 0u;
@@ -710,7 +710,7 @@ LABEL_14:
             }
 
             v17 = *(*(&v22 + 1) + 8 * i);
-            v18 = [v9 objectForKeyedSubscript:{v17, v20}];
+            v18 = [notesFoldersByFolderId objectForKeyedSubscript:{v17, selfCopy}];
             if (v18)
             {
               [v10 addObject:v18];
@@ -724,7 +724,7 @@ LABEL_14:
                 *buf = 138412546;
                 v27 = v17;
                 v28 = 2112;
-                v29 = v9;
+                v29 = notesFoldersByFolderId;
                 _os_log_impl(&dword_0, v19, v15, "Asked to sync folder with id %@, but I only know of these folders %@", buf, 0x16u);
               }
             }
@@ -736,7 +736,7 @@ LABEL_14:
         while (v13);
       }
 
-      [(DAIMAPNotesAgent *)v20 _appendSyncRequestsForFolders:v10 remoteChanges:1];
+      [(DAIMAPNotesAgent *)selfCopy _appendSyncRequestsForFolders:v10 remoteChanges:1];
       v7 = v21;
     }
 
@@ -752,29 +752,29 @@ LABEL_14:
   }
 }
 
-- (BOOL)_clearChangeHistoriesInContext:(id)a3 changeSet:(id)a4
+- (BOOL)_clearChangeHistoriesInContext:(id)context changeSet:(id)set
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (self->_isShuttingDown || ![v7 count])
+  contextCopy = context;
+  setCopy = set;
+  v8 = setCopy;
+  if (self->_isShuttingDown || ![setCopy count])
   {
     v9 = 0;
   }
 
   else
   {
-    [v6 deleteChanges:v8];
+    [contextCopy deleteChanges:v8];
     v9 = 1;
   }
 
   return v9;
 }
 
-- (void)_finishSyncResultOnMainThreadForFolderWithDictionary:(id)a3
+- (void)_finishSyncResultOnMainThreadForFolderWithDictionary:(id)dictionary
 {
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:@"folderID"];
+  dictionaryCopy = dictionary;
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"folderID"];
   [(NSMutableSet *)self->_currentlySyncingFolderIds removeObject:v6];
   if (!self->_isShuttingDown)
   {
@@ -797,7 +797,7 @@ LABEL_14:
   {
     v11 = self->_outstandingInvocationCount;
     v13 = 138412546;
-    v14 = self;
+    selfCopy = self;
     v15 = 1024;
     v16 = v11;
     _os_log_impl(&dword_0, v9, v10, "IMAP agent %@ finished sync, decremented _outstandingInvocationCount to %d", &v13, 0x12u);
@@ -805,7 +805,7 @@ LABEL_14:
 
   if (!self->_outstandingInvocationCount && ![(NSMutableArray *)self->_outstandingFolderRequests count]&& ![(NSMutableSet *)self->_currentlySyncingFolderIds count])
   {
-    v12 = [v5 objectForKeyedSubscript:@"error"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"error"];
 
     if (v12)
     {
@@ -821,14 +821,14 @@ LABEL_14:
   [(DAIMAPNotesAgent *)self _callShutdownBlockIfAppropriate];
 }
 
-- (void)syncResultForNotesFolder:(id)a3 noteContext:(id)a4 newTag:(id)a5 previousTag:(id)a6 actions:(id)a7 results:(id)a8 changeSet:(id)a9 notesToDeleteAfterSync:(id)a10 isInitialSync:(BOOL)a11 moreAvailable:(BOOL)a12 moreLocalChangesAvailable:(BOOL)a13
+- (void)syncResultForNotesFolder:(id)folder noteContext:(id)context newTag:(id)tag previousTag:(id)previousTag actions:(id)actions results:(id)results changeSet:(id)set notesToDeleteAfterSync:(id)self0 isInitialSync:(BOOL)self1 moreAvailable:(BOOL)self2 moreLocalChangesAvailable:(BOOL)self3
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a9;
-  v19 = a10;
+  folderCopy = folder;
+  contextCopy = context;
+  setCopy = set;
+  syncCopy = sync;
   v52 = @"folderID";
-  v53 = v16;
+  v53 = folderCopy;
   v20 = [NSDictionary dictionaryWithObjects:&v53 forKeys:&v52 count:1];
   v21 = [v20 mutableCopy];
 
@@ -839,7 +839,7 @@ LABEL_14:
     v48 = 0u;
     v45 = 0u;
     v46 = 0u;
-    v22 = v19;
+    v22 = syncCopy;
     v23 = [v22 countByEnumeratingWithState:&v45 objects:v51 count:16];
     if (v23)
     {
@@ -854,7 +854,7 @@ LABEL_14:
             objc_enumerationMutation(v22);
           }
 
-          [v17 deleteNoteRegardlessOfConstraints:*(*(&v45 + 1) + 8 * i)];
+          [contextCopy deleteNoteRegardlessOfConstraints:*(*(&v45 + 1) + 8 * i)];
         }
 
         v24 = [v22 countByEnumeratingWithState:&v45 objects:v51 count:16];
@@ -863,9 +863,9 @@ LABEL_14:
       while (v24);
     }
 
-    [(DAIMAPNotesAgent *)self _clearChangeHistoriesInContext:v17 changeSet:v18];
+    [(DAIMAPNotesAgent *)self _clearChangeHistoriesInContext:contextCopy changeSet:setCopy];
     v44 = 0;
-    v27 = [v17 save:&v44];
+    v27 = [contextCopy save:&v44];
     v28 = v44;
     if ((v27 & 1) == 0)
     {
@@ -873,9 +873,9 @@ LABEL_14:
       v30 = _CPLog_to_os_log_type[3];
       if (os_log_type_enabled(v29, v30))
       {
-        v31 = [v28 DAExtendedDescription];
+        dAExtendedDescription = [v28 DAExtendedDescription];
         *buf = 138412290;
-        v50 = v31;
+        v50 = dAExtendedDescription;
         _os_log_impl(&dword_0, v29, v30, "Failed to save: %@", buf, 0xCu);
       }
 
@@ -903,16 +903,16 @@ LABEL_14:
     if (os_log_type_enabled(v34, v35))
     {
       *buf = 138412290;
-      v50 = v16;
+      v50 = folderCopy;
       _os_log_impl(&dword_0, v34, v35, "Finished syncing folder %@", buf, 0xCu);
     }
   }
 
-  v36 = [(DAIMAPNotesAgent *)self account];
-  v37 = [v36 imapMailAccount];
-  v38 = [v37 isOffline];
+  account = [(DAIMAPNotesAgent *)self account];
+  imapMailAccount = [account imapMailAccount];
+  isOffline = [imapMailAccount isOffline];
 
-  if (v38)
+  if (isOffline)
   {
     v39 = [NSError errorWithDomain:DAErrorDomain code:0 userInfo:0];
     [v21 setObject:v39 forKeyedSubscript:@"error"];
@@ -928,18 +928,18 @@ LABEL_14:
   [DAIMAPNotesUtils drainWorkerThreadAndInvokeBlock:v42];
 }
 
-- (void)notesFolderWithId:(id)a3 failedToSyncWithStatus:(int64_t)a4 error:(id)a5
+- (void)notesFolderWithId:(id)id failedToSyncWithStatus:(int64_t)status error:(id)error
 {
-  v7 = a3;
-  v8 = a5;
+  idCopy = id;
+  errorCopy = error;
   v14 = @"folderID";
-  v15 = v7;
+  v15 = idCopy;
   v9 = [NSDictionary dictionaryWithObjects:&v15 forKeys:&v14 count:1];
   v10 = [v9 mutableCopy];
 
-  if (v8)
+  if (errorCopy)
   {
-    [v10 setObject:v8 forKeyedSubscript:@"error"];
+    [v10 setObject:errorCopy forKeyedSubscript:@"error"];
   }
 
   v12[0] = _NSConcreteStackBlock;
@@ -952,20 +952,20 @@ LABEL_14:
   [DAIMAPNotesUtils drainWorkerThreadAndInvokeBlock:v12];
 }
 
-- (void)_reallySyncRequest:(id)a3
+- (void)_reallySyncRequest:(id)request
 {
-  v4 = a3;
-  v5 = [v4 folder];
-  v6 = [v5 folderID];
+  requestCopy = request;
+  folder = [requestCopy folder];
+  folderID = [folder folderID];
   v27 = @"folderID";
-  v28 = v6;
+  v28 = folderID;
   v7 = [NSDictionary dictionaryWithObjects:&v28 forKeys:&v27 count:1];
   v22 = [v7 mutableCopy];
 
-  v8 = [(DAIMAPNotesAgent *)self account];
-  v9 = [v4 noteContext];
-  v10 = [v8 localNotesAccountInContext:v9];
-  v11 = [v10 storeForExternalId:v6];
+  account = [(DAIMAPNotesAgent *)self account];
+  noteContext = [requestCopy noteContext];
+  v10 = [account localNotesAccountInContext:noteContext];
+  v11 = [v10 storeForExternalId:folderID];
 
   if (!v11)
   {
@@ -974,7 +974,7 @@ LABEL_14:
     if (os_log_type_enabled(v17, v18))
     {
       *buf = 138412290;
-      v26 = v6;
+      v26 = folderID;
       _os_log_impl(&dword_0, v17, v18, "Asked to sync folder with id %@, but I have no matching container", buf, 0xCu);
     }
 
@@ -983,8 +983,8 @@ LABEL_14:
     goto LABEL_11;
   }
 
-  v12 = [v11 changes];
-  if (([v4 hasRemoteChanges] & 1) == 0 && !objc_msgSend(v12, "count"))
+  changes = [v11 changes];
+  if (([requestCopy hasRemoteChanges] & 1) == 0 && !objc_msgSend(changes, "count"))
   {
     v19 = DALoggingwithCategory();
     v20 = _CPLog_to_os_log_type[6];
@@ -1007,19 +1007,19 @@ LABEL_11:
   }
 
   v13 = +[NSMutableSet set];
-  v14 = [(DAIMAPNotesAgent *)self _copyDAActionsFromNoteChanges:v12 inStore:v11 mutableNotesToDeleteAfterSync:v13];
-  v15 = [(DAIMAPNotesAgent *)self account];
-  v16 = [v4 noteContext];
+  v14 = [(DAIMAPNotesAgent *)self _copyDAActionsFromNoteChanges:changes inStore:v11 mutableNotesToDeleteAfterSync:v13];
+  account2 = [(DAIMAPNotesAgent *)self account];
+  noteContext2 = [requestCopy noteContext];
   BYTE2(v21) = 0;
   LOWORD(v21) = 0;
-  [v15 synchronizeNotesFolder:v6 noteContext:v16 previousTag:0 actions:v14 changeSet:v12 notesToDeleteAfterSync:v13 isInitialUberSync:v21 isResyncAfterConnectionFailed:self moreLocalChangesAvailable:? consumer:?];
+  [account2 synchronizeNotesFolder:folderID noteContext:noteContext2 previousTag:0 actions:v14 changeSet:changes notesToDeleteAfterSync:v13 isInitialUberSync:v21 isResyncAfterConnectionFailed:self moreLocalChangesAvailable:? consumer:?];
 
 LABEL_12:
 }
 
-- (void)_syncInLockRequest:(id)a3
+- (void)_syncInLockRequest:(id)request
 {
-  v4 = [MFMonitoredInvocation mf_invocationWithSelector:"_reallySyncRequest:" target:self object:a3];
+  v4 = [MFMonitoredInvocation mf_invocationWithSelector:"_reallySyncRequest:" target:self object:request];
   ++self->_outstandingInvocationCount;
   v5 = DALoggingwithCategory();
   v6 = _CPLog_to_os_log_type[6];
@@ -1027,7 +1027,7 @@ LABEL_12:
   {
     outstandingInvocationCount = self->_outstandingInvocationCount;
     v9 = 138412546;
-    v10 = self;
+    selfCopy = self;
     v11 = 1024;
     v12 = outstandingInvocationCount;
     _os_log_impl(&dword_0, v5, v6, "IMAP agent %@ starting sync, incremented _outstandingInvocationCount to %d", &v9, 0x12u);
@@ -1037,17 +1037,17 @@ LABEL_12:
   [v8 addInvocation:v4];
 }
 
-- (void)_syncRequest:(id)a3
+- (void)_syncRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = +[DALocalDBGateKeeper sharedGateKeeper];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_BAA4;
   v7[3] = &unk_1C6B8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = requestCopy;
+  v6 = requestCopy;
   [v5 registerWaiter:self forDataclassLocks:32 completionHandler:v7];
 }
 
@@ -1088,17 +1088,17 @@ LABEL_12:
 
         v8 = *(*(&v29 + 1) + 8 * v11);
 
-        v13 = [v8 folder];
-        v14 = [v13 folderID];
+        folder = [v8 folder];
+        folderID = [folder folderID];
 
-        if (v14)
+        if (folderID)
         {
-          if (([(NSMutableSet *)self->_currentlySyncingFolderIds containsObject:v14]& 1) != 0)
+          if (([(NSMutableSet *)self->_currentlySyncingFolderIds containsObject:folderID]& 1) != 0)
           {
             goto LABEL_15;
           }
 
-          [(NSMutableSet *)self->_currentlySyncingFolderIds addObject:v14];
+          [(NSMutableSet *)self->_currentlySyncingFolderIds addObject:folderID];
           [v23 addObject:v8];
         }
 
@@ -1170,9 +1170,9 @@ LABEL_15:
   }
 }
 
-- (void)_appendSyncRequest:(id)a3
+- (void)_appendSyncRequest:(id)request
 {
-  v5 = a3;
+  requestCopy = request;
   [(NSLock *)self->_folderItemSyncRequestLock lock];
   outstandingFolderRequests = self->_outstandingFolderRequests;
   if (!outstandingFolderRequests)
@@ -1209,22 +1209,22 @@ LABEL_15:
 
         v12 = *(*(&v21 + 1) + 8 * v14);
 
-        v16 = [v12 folder];
-        v17 = [v5 folder];
-        v18 = [v16 isEqual:v17];
+        folder = [v12 folder];
+        folder2 = [requestCopy folder];
+        v18 = [folder isEqual:folder2];
 
         if (v18)
         {
-          if ([v5 hasRemoteChanges])
+          if ([requestCopy hasRemoteChanges])
           {
             [v12 setHasRemoteChanges:1];
           }
 
-          v19 = [v5 actions];
+          actions = [requestCopy actions];
 
-          if (v19)
+          if (actions)
           {
-            sub_FC54(v20, self, v5);
+            sub_FC54(v20, self, requestCopy);
           }
 
           goto LABEL_17;
@@ -1245,17 +1245,17 @@ LABEL_15:
     }
   }
 
-  [(NSMutableArray *)self->_outstandingFolderRequests addObject:v5];
+  [(NSMutableArray *)self->_outstandingFolderRequests addObject:requestCopy];
   v12 = 0;
 LABEL_17:
   [(NSLock *)self->_folderItemSyncRequestLock unlock];
   [(DAIMAPNotesAgent *)self _fireWaitingFolderItemSyncRequests];
 }
 
-- (void)_handlePushNotificationWithName:(id)a3
+- (void)_handlePushNotificationWithName:(id)name
 {
-  v4 = a3;
-  if (v4 && ([(NSMutableDictionary *)self->_daFoldersByPushNotificationName objectForKey:v4], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
+  nameCopy = name;
+  if (nameCopy && ([(NSMutableDictionary *)self->_daFoldersByPushNotificationName objectForKey:nameCopy], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v6 = v5;
     v7 = [NSSet setWithObject:v5];
@@ -1269,7 +1269,7 @@ LABEL_17:
     if (os_log_type_enabled(v8, v9))
     {
       v14 = 138412290;
-      v15 = v4;
+      v15 = nameCopy;
       _os_log_impl(&dword_0, v8, v9, "Couldn't find folder corresponding to notification name %@. Going to sync all folders", &v14, 0xCu);
     }
 
@@ -1292,14 +1292,14 @@ LABEL_17:
 
 - (void)_notifyFolderSyncComplete
 {
-  v3 = [(DAIMAPNotesAgent *)self account];
-  v4 = [v3 accountID];
+  account = [(DAIMAPNotesAgent *)self account];
+  accountID = [account accountID];
 
-  if (v4)
+  if (accountID)
   {
-    v5 = [(DAIMAPNotesAgent *)self account];
-    v6 = [v5 accountID];
-    name = [@"IMAPNotesAccountFolderHierarchySyncCompleteNotification-" stringByAppendingString:v6];
+    account2 = [(DAIMAPNotesAgent *)self account];
+    accountID2 = [account2 accountID];
+    name = [@"IMAPNotesAccountFolderHierarchySyncCompleteNotification-" stringByAppendingString:accountID2];
 
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
     CFNotificationCenterPostNotification(DarwinNotifyCenter, name, 0, 0, 1u);
@@ -1308,14 +1308,14 @@ LABEL_17:
 
 - (void)_notifyFolderSyncFailed
 {
-  v3 = [(DAIMAPNotesAgent *)self account];
-  v4 = [v3 accountID];
+  account = [(DAIMAPNotesAgent *)self account];
+  accountID = [account accountID];
 
-  if (v4)
+  if (accountID)
   {
-    v5 = [(DAIMAPNotesAgent *)self account];
-    v6 = [v5 accountID];
-    name = [@"IMAPNotesAccountFolderHierarchySyncFailedNotification-" stringByAppendingString:v6];
+    account2 = [(DAIMAPNotesAgent *)self account];
+    accountID2 = [account2 accountID];
+    name = [@"IMAPNotesAccountFolderHierarchySyncFailedNotification-" stringByAppendingString:accountID2];
 
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
     CFNotificationCenterPostNotification(DarwinNotifyCenter, name, 0, 0, 1u);
@@ -1324,14 +1324,14 @@ LABEL_17:
 
 - (void)_notifyContentSyncComplete
 {
-  v3 = [(DAIMAPNotesAgent *)self account];
-  v4 = [v3 accountID];
+  account = [(DAIMAPNotesAgent *)self account];
+  accountID = [account accountID];
 
-  if (v4)
+  if (accountID)
   {
-    v5 = [(DAIMAPNotesAgent *)self account];
-    v6 = [v5 accountID];
-    name = [@"IMAPNotesAccountContentSyncCompleteNotification-" stringByAppendingString:v6];
+    account2 = [(DAIMAPNotesAgent *)self account];
+    accountID2 = [account2 accountID];
+    name = [@"IMAPNotesAccountContentSyncCompleteNotification-" stringByAppendingString:accountID2];
 
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
     CFNotificationCenterPostNotification(DarwinNotifyCenter, name, 0, 0, 1u);
@@ -1340,23 +1340,23 @@ LABEL_17:
 
 - (void)_notifyContentSyncFailed
 {
-  v3 = [(DAIMAPNotesAgent *)self account];
-  v4 = [v3 accountID];
+  account = [(DAIMAPNotesAgent *)self account];
+  accountID = [account accountID];
 
-  if (v4)
+  if (accountID)
   {
-    v5 = [(DAIMAPNotesAgent *)self account];
-    v6 = [v5 accountID];
-    name = [@"IMAPNotesAccountContentSyncFailedNotification-" stringByAppendingString:v6];
+    account2 = [(DAIMAPNotesAgent *)self account];
+    accountID2 = [account2 accountID];
+    name = [@"IMAPNotesAccountContentSyncFailedNotification-" stringByAppendingString:accountID2];
 
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
     CFNotificationCenterPostNotification(DarwinNotifyCenter, name, 0, 0, 1u);
   }
 }
 
-- (void)connectionManager:(id)a3 handleEvent:(int)a4
+- (void)connectionManager:(id)manager handleEvent:(int)event
 {
-  v6 = a3;
+  managerCopy = manager;
   v7 = DALoggingwithCategory();
   v8 = _CPLog_to_os_log_type[6];
   if (os_log_type_enabled(v7, v8))
@@ -1364,29 +1364,29 @@ LABEL_17:
     v19 = 136315650;
     v20 = "[DAIMAPNotesAgent connectionManager:handleEvent:]";
     v21 = 2112;
-    v22 = v6;
+    v22 = managerCopy;
     v23 = 1024;
-    v24 = a4;
+    eventCopy = event;
     _os_log_impl(&dword_0, v7, v8, "%s invoked: mgr %@, event %d", &v19, 0x1Cu);
   }
 
-  if (a4 > 8)
+  if (event > 8)
   {
     goto LABEL_7;
   }
 
-  if (((1 << a4) & 0x194) != 0)
+  if (((1 << event) & 0x194) != 0)
   {
     goto LABEL_23;
   }
 
-  if (a4 == 3)
+  if (event == 3)
   {
-    v11 = [v6 currentStyle];
-    if (v11 == 1)
+    currentStyle = [managerCopy currentStyle];
+    if (currentStyle == 1)
     {
-      v14 = [(DAIMAPNotesAgent *)self account];
-      [v14 scheduleIdentifier];
+      account = [(DAIMAPNotesAgent *)self account];
+      [account scheduleIdentifier];
       PollInterval = PCSettingsGetPollInterval();
 
       v16 = DALoggingwithCategory();
@@ -1419,7 +1419,7 @@ LABEL_17:
 
     else
     {
-      if (v11 != 2)
+      if (currentStyle != 2)
       {
         goto LABEL_23;
       }
@@ -1434,11 +1434,11 @@ LABEL_17:
     }
 
 LABEL_22:
-    [v6 resumeManagerWithAction:4];
+    [managerCopy resumeManagerWithAction:4];
     goto LABEL_23;
   }
 
-  if (a4 == 5)
+  if (event == 5)
   {
     goto LABEL_22;
   }
@@ -1451,7 +1451,7 @@ LABEL_7:
     v19 = 136315394;
     v20 = "[DAIMAPNotesAgent connectionManager:handleEvent:]";
     v21 = 1024;
-    LODWORD(v22) = a4;
+    LODWORD(v22) = event;
     _os_log_impl(&dword_0, v9, v10, "%s pcManager callback out to lunch, reason is: %d", &v19, 0x12u);
   }
 
@@ -1460,9 +1460,9 @@ LABEL_23:
 
 - (id)waiterID
 {
-  v2 = [(DAIMAPNotesAgent *)self account];
-  v3 = [v2 accountID];
-  v4 = [NSString stringWithFormat:@"IMAPNotesAgent-%@", v3];
+  account = [(DAIMAPNotesAgent *)self account];
+  accountID = [account accountID];
+  v4 = [NSString stringWithFormat:@"IMAPNotesAgent-%@", accountID];
 
   return v4;
 }
@@ -1476,42 +1476,42 @@ LABEL_23:
     if (os_log_type_enabled(v3, v4))
     {
       v9 = 138412802;
-      v10 = self;
+      selfCopy = self;
       v11 = 1024;
-      v12 = [(DAIMAPNotesAgent *)self accountHasShutDown];
+      accountHasShutDown = [(DAIMAPNotesAgent *)self accountHasShutDown];
       v13 = 1024;
-      v14 = [(DAIMAPNotesAgent *)self outstandingInvocationCount];
+      outstandingInvocationCount = [(DAIMAPNotesAgent *)self outstandingInvocationCount];
       _os_log_impl(&dword_0, v3, v4, "IMAP Agent %@ seeing if it should shut down.  Account has shut down = %d, outstanding invocation count = %d", &v9, 0x18u);
     }
 
     if ([(DAIMAPNotesAgent *)self accountHasShutDown]&& ![(DAIMAPNotesAgent *)self outstandingInvocationCount])
     {
-      v5 = self;
-      objc_sync_enter(v5);
+      selfCopy2 = self;
+      objc_sync_enter(selfCopy2);
       v6 = objc_retainBlock(self->_fullyShutDownCallback);
       fullyShutDownCallback = self->_fullyShutDownCallback;
       self->_fullyShutDownCallback = 0;
 
-      objc_sync_exit(v5);
+      objc_sync_exit(selfCopy2);
       if (v6)
       {
         v8 = DALoggingwithCategory();
         if (os_log_type_enabled(v8, v4))
         {
           v9 = 138412290;
-          v10 = v5;
+          selfCopy = selfCopy2;
           _os_log_impl(&dword_0, v8, v4, "IMAP Agent %@ invoking fully shutdown callback", &v9, 0xCu);
         }
 
-        v6[2](v6, v5);
+        v6[2](v6, selfCopy2);
       }
     }
   }
 }
 
-- (void)requestAgentStopMonitoringWithCompletionBlock:(id)a3
+- (void)requestAgentStopMonitoringWithCompletionBlock:(id)block
 {
-  v5 = a3;
+  blockCopy = block;
   [(DAIMAPNotesAgent *)self setIsMonitoring:0];
   if (self->_fullyShutDownCallback)
   {
@@ -1529,27 +1529,27 @@ LABEL_23:
 
   [(DAIMAPNotesAgent *)self _tearDownNotesNotifications];
   [(PCConnectionManager *)self->_pcManager stopManager];
-  v8 = [(DAIMAPNotesAgent *)self account];
-  [v8 setIsShuttingDown:1];
+  account = [(DAIMAPNotesAgent *)self account];
+  [account setIsShuttingDown:1];
 
   v9 = +[DALocalDBGateKeeper sharedGateKeeper];
-  v10 = [(DAIMAPNotesAgent *)self account];
-  [v9 unregisterWaiterForDataclassLocks:v10];
+  account2 = [(DAIMAPNotesAgent *)self account];
+  [v9 unregisterWaiterForDataclassLocks:account2];
 
   v11 = +[DALocalDBGateKeeper sharedGateKeeper];
   [v11 unregisterWaiterForDataclassLocks:self];
 
-  v12 = [v5 copy];
+  v12 = [blockCopy copy];
   fullyShutDownCallback = self->_fullyShutDownCallback;
   self->_fullyShutDownCallback = v12;
 
-  v14 = [(DAIMAPNotesAgent *)self account];
+  account3 = [(DAIMAPNotesAgent *)self account];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_CFD0;
   v15[3] = &unk_1C588;
   v15[4] = self;
-  [v14 shutDownAndCallCallback:v15];
+  [account3 shutDownAndCallCallback:v15];
 
   if (!self->_outstandingInvocationCount)
   {

@@ -1,16 +1,16 @@
 @interface VCPPetsRegion
 - (CGRect)bound;
-- (VCPPetsRegion)initWith:(CGRect)a3 confidence:(float)a4;
+- (VCPPetsRegion)initWith:(CGRect)with confidence:(float)confidence;
 @end
 
 @implementation VCPPetsRegion
 
-- (VCPPetsRegion)initWith:(CGRect)a3 confidence:(float)a4
+- (VCPPetsRegion)initWith:(CGRect)with confidence:(float)confidence
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = with.size.height;
+  width = with.size.width;
+  y = with.origin.y;
+  x = with.origin.x;
   v10.receiver = self;
   v10.super_class = VCPPetsRegion;
   result = [(VCPPetsRegion *)&v10 init];
@@ -20,7 +20,7 @@
     result->_bound.origin.y = y;
     result->_bound.size.width = width;
     result->_bound.size.height = height;
-    result->_confidence = a4;
+    result->_confidence = confidence;
   }
 
   return result;

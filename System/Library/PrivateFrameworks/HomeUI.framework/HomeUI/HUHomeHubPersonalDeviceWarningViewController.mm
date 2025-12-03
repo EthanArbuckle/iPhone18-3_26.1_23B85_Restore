@@ -1,58 +1,58 @@
 @interface HUHomeHubPersonalDeviceWarningViewController
 - (HUConfigurationViewControllerDelegate)delegate;
-- (HUHomeHubPersonalDeviceWarningViewController)initWithDevices:(id)a3 homes:(id)a4;
+- (HUHomeHubPersonalDeviceWarningViewController)initWithDevices:(id)devices homes:(id)homes;
 - (id)_commitOrContinueButtonTitle;
-- (void)_cancelFlow:(id)a3;
+- (void)_cancelFlow:(id)flow;
 - (void)_commitOrContinue;
-- (void)_continueTapped:(id)a3;
+- (void)_continueTapped:(id)tapped;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation HUHomeHubPersonalDeviceWarningViewController
 
-- (HUHomeHubPersonalDeviceWarningViewController)initWithDevices:(id)a3 homes:(id)a4
+- (HUHomeHubPersonalDeviceWarningViewController)initWithDevices:(id)devices homes:(id)homes
 {
   v36 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  devicesCopy = devices;
+  homesCopy = homes;
   v8 = HFLogForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138413058;
-    v29 = v6;
+    v29 = devicesCopy;
     v30 = 2048;
-    v31 = [v6 count];
+    v31 = [devicesCopy count];
     v32 = 2112;
-    v33 = v7;
+    v33 = homesCopy;
     v34 = 2048;
-    v35 = [v7 count];
+    v35 = [homesCopy count];
     _os_log_impl(&dword_20CEB6000, v8, OS_LOG_TYPE_DEFAULT, "[HUHomeHubPersonalDeviceWarningViewController:initWithDevices:homes:] devices = %@ (%lu) | homes = %@ (%lu)", buf, 0x2Au);
   }
 
-  v9 = [v7 count];
-  v10 = [v6 count];
+  v9 = [homesCopy count];
+  v10 = [devicesCopy count];
   if (v9 > 1)
   {
-    v26 = &stru_2823E0EE8;
+    hf_displayName = &stru_2823E0EE8;
     v12 = @"HUSoftwareUpdatePersonalDeviceWarningDescriptionPluralHomes";
   }
 
   else
   {
-    v11 = [v7 firstObject];
-    v26 = [v11 hf_displayName];
+    firstObject = [homesCopy firstObject];
+    hf_displayName = [firstObject hf_displayName];
 
     v12 = @"HUSoftwareUpdatePersonalDeviceWarningDescription";
   }
 
-  v13 = [[HUHomeHubPersonalDeviceWarningItemManager alloc] initWithDelegate:self devices:v6];
+  v13 = [[HUHomeHubPersonalDeviceWarningItemManager alloc] initWithDelegate:self devices:devicesCopy];
   v14 = [(HUItemTableViewController *)[HUHomeHubSimpleTableViewController alloc] initWithItemManager:v13 tableViewStyle:1];
   v15 = _HULocalizedStringWithDefaultValue(@"HUSoftwareUpdatePersonalDeviceWarningTitle", @"HUSoftwareUpdatePersonalDeviceWarningTitle", 1);
   if (v10 >= 2)
   {
-    v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@_PluralDevices", v12, v26];
+    v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@_PluralDevices", v12, hf_displayName];
   }
 
   v16 = _HULocalizedStringWithDefaultValue(v12, v12, 1);
@@ -110,45 +110,45 @@
     _os_log_impl(&dword_20CEB6000, v4, OS_LOG_TYPE_DEFAULT, "[HUHomeHubPersonalDeviceWarningViewController:viewDidLoad]", buf, 2u);
   }
 
-  v5 = [(HUHomeHubPersonalDeviceWarningViewController *)self headerView];
-  v6 = [v5 subviews];
-  [HUAccessibilityIdentifierUtilities setAccessibilityIDForViews:v6 withIDDictionary:&unk_282492E50];
+  headerView = [(HUHomeHubPersonalDeviceWarningViewController *)self headerView];
+  subviews = [headerView subviews];
+  [HUAccessibilityIdentifierUtilities setAccessibilityIDForViews:subviews withIDDictionary:&unk_282492E50];
 
-  v7 = [(HUHomeHubPersonalDeviceWarningViewController *)self buttonTray];
-  v8 = [(HUHomeHubPersonalDeviceWarningViewController *)self captionString];
-  [v7 addCaptionText:v8];
+  buttonTray = [(HUHomeHubPersonalDeviceWarningViewController *)self buttonTray];
+  captionString = [(HUHomeHubPersonalDeviceWarningViewController *)self captionString];
+  [buttonTray addCaptionText:captionString];
 
-  v9 = [MEMORY[0x277D37618] boldButton];
-  [(HUHomeHubPersonalDeviceWarningViewController *)self setCommitButton:v9];
+  boldButton = [MEMORY[0x277D37618] boldButton];
+  [(HUHomeHubPersonalDeviceWarningViewController *)self setCommitButton:boldButton];
 
-  v10 = [(HUHomeHubPersonalDeviceWarningViewController *)self commitButton];
-  [v10 setTranslatesAutoresizingMaskIntoConstraints:0];
+  commitButton = [(HUHomeHubPersonalDeviceWarningViewController *)self commitButton];
+  [commitButton setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v11 = [(HUHomeHubPersonalDeviceWarningViewController *)self commitButton];
-  v12 = [(HUHomeHubPersonalDeviceWarningViewController *)self _commitOrContinueButtonTitle];
-  [v11 setTitle:v12 forState:0];
+  commitButton2 = [(HUHomeHubPersonalDeviceWarningViewController *)self commitButton];
+  _commitOrContinueButtonTitle = [(HUHomeHubPersonalDeviceWarningViewController *)self _commitOrContinueButtonTitle];
+  [commitButton2 setTitle:_commitOrContinueButtonTitle forState:0];
 
-  v13 = [(HUHomeHubPersonalDeviceWarningViewController *)self commitButton];
-  [v13 setAccessibilityIdentifier:@"Home.OnboardingView.HomeHubMigration.HUHomeHubPersonalDeviceWarning.CommitOrContinueButton"];
+  commitButton3 = [(HUHomeHubPersonalDeviceWarningViewController *)self commitButton];
+  [commitButton3 setAccessibilityIdentifier:@"Home.OnboardingView.HomeHubMigration.HUHomeHubPersonalDeviceWarning.CommitOrContinueButton"];
 
-  v14 = [(HUHomeHubPersonalDeviceWarningViewController *)self commitButton];
-  [v14 addTarget:self action:sel__continueTapped_ forControlEvents:64];
+  commitButton4 = [(HUHomeHubPersonalDeviceWarningViewController *)self commitButton];
+  [commitButton4 addTarget:self action:sel__continueTapped_ forControlEvents:64];
 
-  v15 = [(HUHomeHubPersonalDeviceWarningViewController *)self buttonTray];
-  v16 = [(HUHomeHubPersonalDeviceWarningViewController *)self commitButton];
-  [v15 addButton:v16];
+  buttonTray2 = [(HUHomeHubPersonalDeviceWarningViewController *)self buttonTray];
+  commitButton5 = [(HUHomeHubPersonalDeviceWarningViewController *)self commitButton];
+  [buttonTray2 addButton:commitButton5];
 
   v17 = objc_alloc(MEMORY[0x277D751E0]);
   v18 = _HULocalizedStringWithDefaultValue(@"HUCancelTitle", @"HUCancelTitle", 1);
   v19 = [v17 initWithTitle:v18 style:0 target:self action:sel__cancelFlow_];
   [(HUHomeHubPersonalDeviceWarningViewController *)self setCancelButton:v19];
 
-  v20 = [(HUHomeHubPersonalDeviceWarningViewController *)self cancelButton];
-  [v20 setAccessibilityIdentifier:@"Home.OnboardingView.HomeHubMigration.HUHomeHubPersonalDeviceWarning.CancelButton"];
+  cancelButton = [(HUHomeHubPersonalDeviceWarningViewController *)self cancelButton];
+  [cancelButton setAccessibilityIdentifier:@"Home.OnboardingView.HomeHubMigration.HUHomeHubPersonalDeviceWarning.CancelButton"];
 
-  v21 = [(OBBaseWelcomeController *)self navigationItem];
-  v22 = [(HUHomeHubPersonalDeviceWarningViewController *)self cancelButton];
-  [v21 setRightBarButtonItem:v22];
+  navigationItem = [(OBBaseWelcomeController *)self navigationItem];
+  cancelButton2 = [(HUHomeHubPersonalDeviceWarningViewController *)self cancelButton];
+  [navigationItem setRightBarButtonItem:cancelButton2];
 
   [(HUHomeHubPersonalDeviceWarningViewController *)self setModalInPresentation:1];
   v23 = HFLogForCategory();
@@ -156,18 +156,18 @@
   {
     v24 = NSStringFromSelector(a2);
     *buf = 138412546;
-    v27 = self;
+    selfCopy = self;
     v28 = 2112;
     v29 = v24;
     _os_log_impl(&dword_20CEB6000, v23, OS_LOG_TYPE_DEFAULT, "%@:%@: presented: HUHomeHubPersonalDeviceWarningViewController", buf, 0x16u);
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = HUHomeHubPersonalDeviceWarningViewController;
-  [(HUHomeHubPersonalDeviceWarningViewController *)&v5 viewWillAppear:a3];
+  [(HUHomeHubPersonalDeviceWarningViewController *)&v5 viewWillAppear:appear];
   v3 = HFLogForCategory();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
@@ -176,11 +176,11 @@
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = HUHomeHubPersonalDeviceWarningViewController;
-  [(OBBaseWelcomeController *)&v5 viewWillDisappear:a3];
+  [(OBBaseWelcomeController *)&v5 viewWillDisappear:disappear];
   v3 = HFLogForCategory();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
@@ -207,7 +207,7 @@
   return v5;
 }
 
-- (void)_continueTapped:(id)a3
+- (void)_continueTapped:(id)tapped
 {
   v4 = HFLogForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -219,7 +219,7 @@
   [(HUHomeHubPersonalDeviceWarningViewController *)self _commitOrContinue];
 }
 
-- (void)_cancelFlow:(id)a3
+- (void)_cancelFlow:(id)flow
 {
   v9[1] = *MEMORY[0x277D85DE8];
   v4 = HFLogForCategory();
@@ -229,11 +229,11 @@
     _os_log_impl(&dword_20CEB6000, v4, OS_LOG_TYPE_DEFAULT, "[HUHomeHubPersonalDeviceWarningViewController:_cancelFlow] User tapped cancel button", v7, 2u);
   }
 
-  v5 = [(HUHomeHubPersonalDeviceWarningViewController *)self delegate];
+  delegate = [(HUHomeHubPersonalDeviceWarningViewController *)self delegate];
   v8 = @"HUHomeHub2OnboardingKey_UserInput";
   v9[0] = &unk_282491100;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v9 forKeys:&v8 count:1];
-  [v5 viewController:self didFinishWithConfigurationResults:v6];
+  [delegate viewController:self didFinishWithConfigurationResults:v6];
 }
 
 - (void)_commitOrContinue
@@ -249,12 +249,12 @@
     v3 = 1;
   }
 
-  v4 = [(HUHomeHubPersonalDeviceWarningViewController *)self delegate];
+  delegate = [(HUHomeHubPersonalDeviceWarningViewController *)self delegate];
   v7 = @"HUHomeHub2OnboardingKey_UserInput";
   v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v3];
   v8[0] = v5;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v8 forKeys:&v7 count:1];
-  [v4 viewController:self didFinishWithConfigurationResults:v6];
+  [delegate viewController:self didFinishWithConfigurationResults:v6];
 }
 
 - (HUConfigurationViewControllerDelegate)delegate

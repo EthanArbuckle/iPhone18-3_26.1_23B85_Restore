@@ -1,41 +1,41 @@
 @interface SBRemovalSwitcherModifier
-- (BOOL)isLayoutRoleBlurred:(int64_t)a3 inAppLayout:(id)a4;
-- (BOOL)shouldAccessoryDrawShadowForAppLayout:(id)a3;
-- (BOOL)shouldScaleContentToFillBoundsAtIndex:(unint64_t)a3;
-- (BOOL)shouldUseAnchorPointToPinLayoutRolesToSpace:(unint64_t)a3;
-- (SBRemovalSwitcherModifier)initWithLayoutRole:(int64_t)a3 inAppLayout:(id)a4 reason:(int64_t)a5;
-- (SBSwitcherAsyncRenderingAttributes)asyncRenderingAttributesForAppLayout:(id)a3;
-- (double)blurViewIconScaleForIndex:(unint64_t)a3;
-- (id)_remainingAppLayoutForRemovingLayoutRole:(int64_t)a3 inAppLayout:(id)a4;
-- (id)animationAttributesForLayoutElement:(id)a3;
-- (id)handleInsertionEvent:(id)a3;
-- (id)handleRemovalEvent:(id)a3;
-- (id)handleResizeProgressEvent:(id)a3;
-- (id)handleSceneReadyEvent:(id)a3;
-- (id)resizeProgressNotificationsForLayoutRole:(int64_t)a3 inAppLayout:(id)a4;
+- (BOOL)isLayoutRoleBlurred:(int64_t)blurred inAppLayout:(id)layout;
+- (BOOL)shouldAccessoryDrawShadowForAppLayout:(id)layout;
+- (BOOL)shouldScaleContentToFillBoundsAtIndex:(unint64_t)index;
+- (BOOL)shouldUseAnchorPointToPinLayoutRolesToSpace:(unint64_t)space;
+- (SBRemovalSwitcherModifier)initWithLayoutRole:(int64_t)role inAppLayout:(id)layout reason:(int64_t)reason;
+- (SBSwitcherAsyncRenderingAttributes)asyncRenderingAttributesForAppLayout:(id)layout;
+- (double)blurViewIconScaleForIndex:(unint64_t)index;
+- (id)_remainingAppLayoutForRemovingLayoutRole:(int64_t)role inAppLayout:(id)layout;
+- (id)animationAttributesForLayoutElement:(id)element;
+- (id)handleInsertionEvent:(id)event;
+- (id)handleRemovalEvent:(id)event;
+- (id)handleResizeProgressEvent:(id)event;
+- (id)handleSceneReadyEvent:(id)event;
+- (id)resizeProgressNotificationsForLayoutRole:(int64_t)role inAppLayout:(id)layout;
 - (id)topMostLayoutElements;
 - (id)visibleAppLayouts;
-- (void)_performBlockWhileSimulatingPostRemovalAppLayoutState:(id)a3;
+- (void)_performBlockWhileSimulatingPostRemovalAppLayoutState:(id)state;
 @end
 
 @implementation SBRemovalSwitcherModifier
 
-- (SBRemovalSwitcherModifier)initWithLayoutRole:(int64_t)a3 inAppLayout:(id)a4 reason:(int64_t)a5
+- (SBRemovalSwitcherModifier)initWithLayoutRole:(int64_t)role inAppLayout:(id)layout reason:(int64_t)reason
 {
-  v10 = a4;
+  layoutCopy = layout;
   v13.receiver = self;
   v13.super_class = SBRemovalSwitcherModifier;
   v11 = [(SBSwitcherModifier *)&v13 init];
   if (v11)
   {
-    if (!v10)
+    if (!layoutCopy)
     {
       [SBRemovalSwitcherModifier initWithLayoutRole:a2 inAppLayout:v11 reason:?];
     }
 
-    v11->_layoutRole = a3;
-    objc_storeStrong(&v11->_appLayout, a4);
-    v11->_reason = a5;
+    v11->_layoutRole = role;
+    objc_storeStrong(&v11->_appLayout, layout);
+    v11->_reason = reason;
     v11->_phase = 0;
     v11->_indexToScrollToAfterRemoval = 0x7FFFFFFFFFFFFFFFLL;
   }
@@ -43,44 +43,44 @@
   return v11;
 }
 
-- (id)_remainingAppLayoutForRemovingLayoutRole:(int64_t)a3 inAppLayout:(id)a4
+- (id)_remainingAppLayoutForRemovingLayoutRole:(int64_t)role inAppLayout:(id)layout
 {
-  v5 = a4;
-  if ([v5 isCenterOverFull])
+  layoutCopy = layout;
+  if ([layoutCopy isCenterOverFull])
   {
     v6 = 0;
   }
 
   else
   {
-    v7 = [v5 itemForLayoutRole:a3];
+    v7 = [layoutCopy itemForLayoutRole:role];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __82__SBRemovalSwitcherModifier__remainingAppLayoutForRemovingLayoutRole_inAppLayout___block_invoke;
     v10[3] = &unk_2783A8C90;
     v11 = v7;
     v8 = v7;
-    v6 = [v5 appLayoutWithItemsPassingTest:v10];
+    v6 = [layoutCopy appLayoutWithItemsPassingTest:v10];
   }
 
   return v6;
 }
 
-- (id)handleRemovalEvent:(id)a3
+- (id)handleRemovalEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v29.receiver = self;
   v29.super_class = SBRemovalSwitcherModifier;
-  v5 = [(SBSwitcherModifier *)&v29 handleRemovalEvent:v4];
+  v5 = [(SBSwitcherModifier *)&v29 handleRemovalEvent:eventCopy];
   appLayout = self->_appLayout;
-  v7 = [v4 appLayout];
-  LODWORD(appLayout) = [(SBAppLayout *)appLayout isEqual:v7];
+  appLayout = [eventCopy appLayout];
+  LODWORD(appLayout) = [(SBAppLayout *)appLayout isEqual:appLayout];
 
   if (appLayout)
   {
-    v8 = [v4 phase];
-    self->_phase = v8;
-    if (v8 == 3)
+    phase = [eventCopy phase];
+    self->_phase = phase;
+    if (phase == 3)
     {
       if (self->_reason != 1)
       {
@@ -99,13 +99,13 @@
 
     else
     {
-      if (v8 == 2)
+      if (phase == 2)
       {
         v15 = objc_alloc_init(SBSwitcherModifierEventResponse);
-        v17 = [(SBRemovalSwitcherModifier *)self appLayouts];
-        if (self->_indexToScrollToAfterRemoval < [v17 count])
+        appLayouts = [(SBRemovalSwitcherModifier *)self appLayouts];
+        if (self->_indexToScrollToAfterRemoval < [appLayouts count])
         {
-          v18 = [v17 objectAtIndex:?];
+          v18 = [appLayouts objectAtIndex:?];
           v19 = [[SBScrollToAppLayoutSwitcherEventResponse alloc] initWithAppLayout:v18 alignment:0 animated:0];
           [(SBChainableModifierEventResponse *)v15 addChildResponse:v19];
         }
@@ -117,8 +117,8 @@
           if (self->_resultingAppLayoutIfAny)
           {
             v21 = [SBInvalidateSnapshotCacheSwitcherEventResponse alloc];
-            v22 = [(SBAppLayout *)self->_resultingAppLayoutIfAny allItems];
-            v23 = [(SBInvalidateSnapshotCacheSwitcherEventResponse *)v21 initWithDisplayItems:v22];
+            allItems = [(SBAppLayout *)self->_resultingAppLayoutIfAny allItems];
+            v23 = [(SBInvalidateSnapshotCacheSwitcherEventResponse *)v21 initWithDisplayItems:allItems];
 
             [(SBChainableModifierEventResponse *)v15 addChildResponse:v23];
           }
@@ -129,21 +129,21 @@
 
       else
       {
-        if (v8 != 1)
+        if (phase != 1)
         {
           goto LABEL_18;
         }
 
-        v9 = [(SBRemovalSwitcherModifier *)self appLayouts];
-        v10 = [v9 indexOfObject:self->_appLayout];
+        appLayouts2 = [(SBRemovalSwitcherModifier *)self appLayouts];
+        v10 = [appLayouts2 indexOfObject:self->_appLayout];
 
         self->_indexToScrollToAfterRemoval = [(SBRemovalSwitcherModifier *)self indexToScrollToAfterRemovingIndex:v10];
         self->_indexOfAppLayoutPriorToRemoval = v10;
         v28.receiver = self;
         v28.super_class = SBRemovalSwitcherModifier;
-        v11 = [(SBRemovalSwitcherModifier *)&v28 visibleAppLayouts];
+        visibleAppLayouts = [(SBRemovalSwitcherModifier *)&v28 visibleAppLayouts];
         visibleAppLayoutsPriorToRemoval = self->_visibleAppLayoutsPriorToRemoval;
-        self->_visibleAppLayoutsPriorToRemoval = v11;
+        self->_visibleAppLayoutsPriorToRemoval = visibleAppLayouts;
 
         v13 = [(SBRemovalSwitcherModifier *)self _remainingAppLayoutForRemovingLayoutRole:self->_layoutRole inAppLayout:self->_appLayout];
         resultingAppLayoutIfAny = self->_resultingAppLayoutIfAny;
@@ -162,16 +162,16 @@ LABEL_18:
   return v5;
 }
 
-- (id)handleInsertionEvent:(id)a3
+- (id)handleInsertionEvent:(id)event
 {
   v8.receiver = self;
   v8.super_class = SBRemovalSwitcherModifier;
-  v4 = a3;
-  v5 = [(SBSwitcherModifier *)&v8 handleInsertionEvent:v4];
-  v6 = [v4 appLayout];
+  eventCopy = event;
+  v5 = [(SBSwitcherModifier *)&v8 handleInsertionEvent:eventCopy];
+  appLayout = [eventCopy appLayout];
 
-  LODWORD(v4) = BSEqualObjects();
-  if (v4)
+  LODWORD(eventCopy) = BSEqualObjects();
+  if (eventCopy)
   {
     [(SBChainableModifier *)self setState:1];
   }
@@ -179,41 +179,41 @@ LABEL_18:
   return v5;
 }
 
-- (id)handleResizeProgressEvent:(id)a3
+- (id)handleResizeProgressEvent:(id)event
 {
-  v4 = a3;
-  [v4 progress];
-  v5 = [(SBRemovalSwitcherModifier *)self medusaSettings];
-  [v5 resizeAnimationUnblurThresholdPercentage];
+  eventCopy = event;
+  [eventCopy progress];
+  medusaSettings = [(SBRemovalSwitcherModifier *)self medusaSettings];
+  [medusaSettings resizeAnimationUnblurThresholdPercentage];
   self->_hasResizedEnoughToUnblur = BSFloatGreaterThanOrEqualToFloat();
 
   v6 = [[SBUpdateLayoutSwitcherEventResponse alloc] initWithOptions:64 updateMode:2];
   v10.receiver = self;
   v10.super_class = SBRemovalSwitcherModifier;
-  v7 = [(SBSwitcherModifier *)&v10 handleResizeProgressEvent:v4];
+  v7 = [(SBSwitcherModifier *)&v10 handleResizeProgressEvent:eventCopy];
 
   v8 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:v6 toResponse:v7];
 
   return v8;
 }
 
-- (id)handleSceneReadyEvent:(id)a3
+- (id)handleSceneReadyEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v5 = [[SBUpdateLayoutSwitcherEventResponse alloc] initWithOptions:64 updateMode:2];
   v9.receiver = self;
   v9.super_class = SBRemovalSwitcherModifier;
-  v6 = [(SBSwitcherModifier *)&v9 handleSceneReadyEvent:v4];
+  v6 = [(SBSwitcherModifier *)&v9 handleSceneReadyEvent:eventCopy];
 
   v7 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:v5 toResponse:v6];
 
   return v7;
 }
 
-- (SBSwitcherAsyncRenderingAttributes)asyncRenderingAttributesForAppLayout:(id)a3
+- (SBSwitcherAsyncRenderingAttributes)asyncRenderingAttributesForAppLayout:(id)layout
 {
-  v4 = a3;
-  if (([v4 isOrContainsAppLayout:self->_appLayout] & 1) != 0 || objc_msgSend(v4, "isOrContainsAppLayout:", self->_resultingAppLayoutIfAny))
+  layoutCopy = layout;
+  if (([layoutCopy isOrContainsAppLayout:self->_appLayout] & 1) != 0 || objc_msgSend(layoutCopy, "isOrContainsAppLayout:", self->_resultingAppLayoutIfAny))
   {
     v5 = SBSwitcherAsyncRenderingAttributesMake(0, 0);
   }
@@ -222,7 +222,7 @@ LABEL_18:
   {
     v8.receiver = self;
     v8.super_class = SBRemovalSwitcherModifier;
-    v5 = [(SBRemovalSwitcherModifier *)&v8 asyncRenderingAttributesForAppLayout:v4];
+    v5 = [(SBRemovalSwitcherModifier *)&v8 asyncRenderingAttributesForAppLayout:layoutCopy];
   }
 
   v6 = v5;
@@ -230,23 +230,23 @@ LABEL_18:
   return v6;
 }
 
-- (BOOL)isLayoutRoleBlurred:(int64_t)a3 inAppLayout:(id)a4
+- (BOOL)isLayoutRoleBlurred:(int64_t)blurred inAppLayout:(id)layout
 {
-  v6 = a4;
-  v7 = [(SBRemovalSwitcherModifier *)self windowManagementContext];
-  v8 = [v7 isFlexibleWindowingEnabled];
+  layoutCopy = layout;
+  windowManagementContext = [(SBRemovalSwitcherModifier *)self windowManagementContext];
+  isFlexibleWindowingEnabled = [windowManagementContext isFlexibleWindowingEnabled];
 
-  if (!v8)
+  if (!isFlexibleWindowingEnabled)
   {
     p_appLayout = &self->_appLayout;
-    if ((([v6 isOrContainsAppLayout:self->_appLayout] & 1) != 0 || objc_msgSend(v6, "isOrContainsAppLayout:", self->_resultingAppLayoutIfAny)) && self->_layoutRole == 4)
+    if ((([layoutCopy isOrContainsAppLayout:self->_appLayout] & 1) != 0 || objc_msgSend(layoutCopy, "isOrContainsAppLayout:", self->_resultingAppLayoutIfAny)) && self->_layoutRole == 4)
     {
       goto LABEL_15;
     }
 
     if (self->_phase == 1)
     {
-      if (self->_layoutRole == a3)
+      if (self->_layoutRole == blurred)
       {
 LABEL_15:
         v9 = 0;
@@ -261,7 +261,7 @@ LABEL_15:
 
     v11 = *p_appLayout;
     v12 = v11;
-    if (v11 && [(SBAppLayout *)v11 isEqual:v6]&& (![(SBRemovalSwitcherModifier *)self isLayoutRoleContentReady:a3 inAppLayout:v12]|| !self->_hasResizedEnoughToUnblur))
+    if (v11 && [(SBAppLayout *)v11 isEqual:layoutCopy]&& (![(SBRemovalSwitcherModifier *)self isLayoutRoleContentReady:blurred inAppLayout:v12]|| !self->_hasResizedEnoughToUnblur))
     {
 
       v9 = 1;
@@ -273,7 +273,7 @@ LABEL_15:
 
   v14.receiver = self;
   v14.super_class = SBRemovalSwitcherModifier;
-  v9 = [(SBRemovalSwitcherModifier *)&v14 isLayoutRoleBlurred:a3 inAppLayout:v6];
+  v9 = [(SBRemovalSwitcherModifier *)&v14 isLayoutRoleBlurred:blurred inAppLayout:layoutCopy];
 LABEL_16:
 
   return v9;
@@ -284,11 +284,11 @@ LABEL_16:
   v3 = objc_alloc(MEMORY[0x277CBEB58]);
   v18.receiver = self;
   v18.super_class = SBRemovalSwitcherModifier;
-  v4 = [(SBRemovalSwitcherModifier *)&v18 visibleAppLayouts];
-  v5 = [v3 initWithSet:v4];
+  visibleAppLayouts = [(SBRemovalSwitcherModifier *)&v18 visibleAppLayouts];
+  v5 = [v3 initWithSet:visibleAppLayouts];
 
-  v6 = [(NSSet *)self->_visibleAppLayoutsPriorToRemoval allObjects];
-  [v5 addObjectsFromArray:v6];
+  allObjects = [(NSSet *)self->_visibleAppLayoutsPriorToRemoval allObjects];
+  [v5 addObjectsFromArray:allObjects];
 
   [v5 addObject:self->_appLayout];
   phase = self->_phase;
@@ -312,8 +312,8 @@ LABEL_16:
       v8 = v13[5];
       if (v8)
       {
-        v9 = [v8 allObjects];
-        [v5 addObjectsFromArray:v9];
+        allObjects2 = [v8 allObjects];
+        [v5 addObjectsFromArray:allObjects2];
       }
 
       _Block_object_dispose(&v12, 8);
@@ -338,12 +338,12 @@ void __46__SBRemovalSwitcherModifier_visibleAppLayouts__block_invoke(uint64_t a1
   *(v3 + 40) = v2;
 }
 
-- (id)animationAttributesForLayoutElement:(id)a3
+- (id)animationAttributesForLayoutElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v17.receiver = self;
   v17.super_class = SBRemovalSwitcherModifier;
-  v5 = [(SBRemovalSwitcherModifier *)&v17 animationAttributesForLayoutElement:v4];
+  v5 = [(SBRemovalSwitcherModifier *)&v17 animationAttributesForLayoutElement:elementCopy];
   v6 = [v5 mutableCopy];
 
   if (self->_phase == 2)
@@ -361,31 +361,31 @@ LABEL_5:
   }
 
 LABEL_6:
-  if (![v4 switcherLayoutElementType] && objc_msgSend(v4, "isOrContainsAppLayout:", self->_appLayout))
+  if (![elementCopy switcherLayoutElementType] && objc_msgSend(elementCopy, "isOrContainsAppLayout:", self->_appLayout))
   {
-    v8 = [(SBRemovalSwitcherModifier *)self medusaSettings];
-    v9 = [v8 resizeAnimationSettings];
+    medusaSettings = [(SBRemovalSwitcherModifier *)self medusaSettings];
+    resizeAnimationSettings = [medusaSettings resizeAnimationSettings];
 
-    [v6 setLayoutSettings:v9];
-    [v6 setPositionSettings:v9];
-    v10 = [objc_alloc(MEMORY[0x277D65E60]) initWithDefaultValues];
-    v11 = [(SBRemovalSwitcherModifier *)self switcherSettings];
-    v12 = [v11 animationSettings];
-    [v12 appSwitcherTitleAndIconFadeInSlowDownFactor];
+    [v6 setLayoutSettings:resizeAnimationSettings];
+    [v6 setPositionSettings:resizeAnimationSettings];
+    initWithDefaultValues = [objc_alloc(MEMORY[0x277D65E60]) initWithDefaultValues];
+    switcherSettings = [(SBRemovalSwitcherModifier *)self switcherSettings];
+    animationSettings = [switcherSettings animationSettings];
+    [animationSettings appSwitcherTitleAndIconFadeInSlowDownFactor];
     v14 = v13;
 
-    [v9 response];
-    [v10 setResponse:v14 * v15];
-    [v6 setOpacitySettings:v10];
+    [resizeAnimationSettings response];
+    [initWithDefaultValues setResponse:v14 * v15];
+    [v6 setOpacitySettings:initWithDefaultValues];
   }
 
   return v6;
 }
 
-- (BOOL)shouldUseAnchorPointToPinLayoutRolesToSpace:(unint64_t)a3
+- (BOOL)shouldUseAnchorPointToPinLayoutRolesToSpace:(unint64_t)space
 {
-  v5 = [(SBRemovalSwitcherModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
+  appLayouts = [(SBRemovalSwitcherModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:space];
 
   if (v6 == self->_appLayout)
   {
@@ -396,24 +396,24 @@ LABEL_6:
   {
     v9.receiver = self;
     v9.super_class = SBRemovalSwitcherModifier;
-    v7 = [(SBRemovalSwitcherModifier *)&v9 shouldUseAnchorPointToPinLayoutRolesToSpace:a3];
+    v7 = [(SBRemovalSwitcherModifier *)&v9 shouldUseAnchorPointToPinLayoutRolesToSpace:space];
   }
 
   return v7;
 }
 
-- (id)resizeProgressNotificationsForLayoutRole:(int64_t)a3 inAppLayout:(id)a4
+- (id)resizeProgressNotificationsForLayoutRole:(int64_t)role inAppLayout:(id)layout
 {
   v17[2] = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  layoutCopy = layout;
   v16.receiver = self;
   v16.super_class = SBRemovalSwitcherModifier;
-  v7 = [(SBRemovalSwitcherModifier *)&v16 resizeProgressNotificationsForLayoutRole:a3 inAppLayout:v6];
+  v7 = [(SBRemovalSwitcherModifier *)&v16 resizeProgressNotificationsForLayoutRole:role inAppLayout:layoutCopy];
   resultingAppLayoutIfAny = self->_resultingAppLayoutIfAny;
-  if (resultingAppLayoutIfAny && [(SBAppLayout *)resultingAppLayoutIfAny isEqual:v6])
+  if (resultingAppLayoutIfAny && [(SBAppLayout *)resultingAppLayoutIfAny isEqual:layoutCopy])
   {
-    v9 = [(SBRemovalSwitcherModifier *)self medusaSettings];
-    [v9 resizeAnimationUnblurThresholdPercentage];
+    medusaSettings = [(SBRemovalSwitcherModifier *)self medusaSettings];
+    [medusaSettings resizeAnimationUnblurThresholdPercentage];
     v11 = v10;
 
     v17[0] = &unk_28336F730;
@@ -428,24 +428,24 @@ LABEL_6:
   return v7;
 }
 
-- (BOOL)shouldScaleContentToFillBoundsAtIndex:(unint64_t)a3
+- (BOOL)shouldScaleContentToFillBoundsAtIndex:(unint64_t)index
 {
   if (!self->_resultingAppLayoutIfAny || self->_phase < 2)
   {
     return 0;
   }
 
-  v5 = [(SBRemovalSwitcherModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
+  appLayouts = [(SBRemovalSwitcherModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:index];
 
   v7 = [(SBAppLayout *)self->_resultingAppLayoutIfAny isEqual:v6];
   return v7;
 }
 
-- (BOOL)shouldAccessoryDrawShadowForAppLayout:(id)a3
+- (BOOL)shouldAccessoryDrawShadowForAppLayout:(id)layout
 {
-  v4 = a3;
-  if ([(SBAppLayout *)self->_appLayout isOrContainsAppLayout:v4])
+  layoutCopy = layout;
+  if ([(SBAppLayout *)self->_appLayout isOrContainsAppLayout:layoutCopy])
   {
     v5 = 0;
   }
@@ -454,18 +454,18 @@ LABEL_6:
   {
     v7.receiver = self;
     v7.super_class = SBRemovalSwitcherModifier;
-    v5 = [(SBRemovalSwitcherModifier *)&v7 shouldAccessoryDrawShadowForAppLayout:v4];
+    v5 = [(SBRemovalSwitcherModifier *)&v7 shouldAccessoryDrawShadowForAppLayout:layoutCopy];
   }
 
   return v5;
 }
 
-- (void)_performBlockWhileSimulatingPostRemovalAppLayoutState:(id)a3
+- (void)_performBlockWhileSimulatingPostRemovalAppLayoutState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v5 = objc_alloc(MEMORY[0x277CBEB18]);
-  v6 = [(SBRemovalSwitcherModifier *)self appLayouts];
-  v7 = [v5 initWithArray:v6];
+  appLayouts = [(SBRemovalSwitcherModifier *)self appLayouts];
+  v7 = [v5 initWithArray:appLayouts];
 
   appLayout = self->_appLayout;
   if (self->_resultingAppLayoutIfAny)
@@ -489,8 +489,8 @@ LABEL_6:
   v13[3] = &unk_2783AA1E8;
   v13[4] = self;
   v14 = v7;
-  v15 = v4;
-  v11 = v4;
+  v15 = stateCopy;
+  v11 = stateCopy;
   v12 = v7;
   [(SBChainableModifier *)self performTransactionWithTemporaryChildModifier:v10 usingBlock:v13];
 }
@@ -522,10 +522,10 @@ void __83__SBRemovalSwitcherModifier__performBlockWhileSimulatingPostRemovalAppL
   }
 }
 
-- (double)blurViewIconScaleForIndex:(unint64_t)a3
+- (double)blurViewIconScaleForIndex:(unint64_t)index
 {
-  v5 = [(SBRemovalSwitcherModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
+  appLayouts = [(SBRemovalSwitcherModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:index];
 
   if (self->_phase == 1)
   {
@@ -546,7 +546,7 @@ void __83__SBRemovalSwitcherModifier__performBlockWhileSimulatingPostRemovalAppL
   {
     v11.receiver = self;
     v11.super_class = SBRemovalSwitcherModifier;
-    [(SBRemovalSwitcherModifier *)&v11 blurViewIconScaleForIndex:a3];
+    [(SBRemovalSwitcherModifier *)&v11 blurViewIconScaleForIndex:index];
     v9 = v8;
   }
 
@@ -558,8 +558,8 @@ void __83__SBRemovalSwitcherModifier__performBlockWhileSimulatingPostRemovalAppL
   v25 = *MEMORY[0x277D85DE8];
   v23.receiver = self;
   v23.super_class = SBRemovalSwitcherModifier;
-  v3 = [(SBRemovalSwitcherModifier *)&v23 topMostLayoutElements];
-  v4 = v3;
+  topMostLayoutElements = [(SBRemovalSwitcherModifier *)&v23 topMostLayoutElements];
+  v4 = topMostLayoutElements;
   if (self->_phase == 2)
   {
     v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -619,7 +619,7 @@ void __83__SBRemovalSwitcherModifier__performBlockWhileSimulatingPostRemovalAppL
 
   else
   {
-    v5 = v3;
+    v5 = topMostLayoutElements;
   }
 
   return v5;

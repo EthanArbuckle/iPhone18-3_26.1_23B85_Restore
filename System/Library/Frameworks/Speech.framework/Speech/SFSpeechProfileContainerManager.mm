@@ -2,54 +2,54 @@
 + (id)sharedInstance;
 - (SFSpeechProfileContainerManager)init;
 - (id)containerForCurrentPersona;
-- (id)containerForPersona:(id)a3;
-- (id)personaForContainerRelativeURL:(id)a3;
-- (void)releaseContainerForPersona:(id)a3;
-- (void)resourceAvailableForPersona:(id)a3;
+- (id)containerForPersona:(id)persona;
+- (id)personaForContainerRelativeURL:(id)l;
+- (void)releaseContainerForPersona:(id)persona;
+- (void)resourceAvailableForPersona:(id)persona;
 @end
 
 @implementation SFSpeechProfileContainerManager
 
-- (void)resourceAvailableForPersona:(id)a3
+- (void)resourceAvailableForPersona:(id)persona
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  personaCopy = persona;
   v5 = SFLogFramework;
   if (os_log_type_enabled(SFLogFramework, OS_LOG_TYPE_INFO))
   {
     v8 = 136315394;
     v9 = "[SFSpeechProfileContainerManager resourceAvailableForPersona:]";
     v10 = 2112;
-    v11 = v4;
+    v11 = personaCopy;
     _os_log_impl(&dword_1AC5BC000, v5, OS_LOG_TYPE_INFO, "%s Refreshing container for persona: %@", &v8, 0x16u);
   }
 
-  [(SFSpeechProfileContainerManager *)self releaseContainerForPersona:v4];
-  v6 = [(SFSpeechProfileContainerManager *)self containerForPersona:v4];
+  [(SFSpeechProfileContainerManager *)self releaseContainerForPersona:personaCopy];
+  v6 = [(SFSpeechProfileContainerManager *)self containerForPersona:personaCopy];
 
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)releaseContainerForPersona:(id)a3
+- (void)releaseContainerForPersona:(id)persona
 {
-  v4 = a3;
+  personaCopy = persona;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __62__SFSpeechProfileContainerManager_releaseContainerForPersona___block_invoke;
   v7[3] = &unk_1E797CB08;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = personaCopy;
+  v6 = personaCopy;
   dispatch_sync(queue, v7);
 }
 
-- (id)personaForContainerRelativeURL:(id)a3
+- (id)personaForContainerRelativeURL:(id)l
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = [a3 absoluteString];
-  v5 = v4;
-  if (v4 && [v4 length])
+  absoluteString = [l absoluteString];
+  v5 = absoluteString;
+  if (absoluteString && [absoluteString length])
   {
     *buf = 0;
     *&buf[8] = buf;
@@ -144,9 +144,9 @@ void __66__SFSpeechProfileContainerManager_personaForContainerRelativeURL___bloc
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (id)containerForPersona:(id)a3
+- (id)containerForPersona:(id)persona
 {
-  v4 = a3;
+  personaCopy = persona;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -158,10 +158,10 @@ void __66__SFSpeechProfileContainerManager_personaForContainerRelativeURL___bloc
   block[1] = 3221225472;
   block[2] = __55__SFSpeechProfileContainerManager_containerForPersona___block_invoke;
   block[3] = &unk_1E797C5A0;
-  v10 = v4;
+  v10 = personaCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = personaCopy;
   dispatch_sync(queue, block);
   v7 = v13[5];
 

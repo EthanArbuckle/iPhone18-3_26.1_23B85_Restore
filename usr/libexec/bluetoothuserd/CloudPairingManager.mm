@@ -1,14 +1,14 @@
 @interface CloudPairingManager
 - (NSString)description;
 - (_TtC14bluetoothuserd19CloudPairingManager)init;
-- (void)service:(id)a3 devicesChanged:(id)a4;
+- (void)service:(id)service devicesChanged:(id)changed;
 @end
 
 @implementation CloudPairingManager
 
-- (void)service:(id)a3 devicesChanged:(id)a4
+- (void)service:(id)service devicesChanged:(id)changed
 {
-  if (a4)
+  if (changed)
   {
     v6 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   }
@@ -18,15 +18,15 @@
     v6 = 0;
   }
 
-  v7 = a3;
-  v8 = self;
+  serviceCopy = service;
+  selfCopy = self;
   sub_100003F18(v6);
 }
 
 - (NSString)description
 {
   v2 = *((swift_isaMask & self->super.isa) + 0xA0);
-  v3 = self;
+  selfCopy = self;
   v2(50);
 
   v4 = String._bridgeToObjectiveC()();

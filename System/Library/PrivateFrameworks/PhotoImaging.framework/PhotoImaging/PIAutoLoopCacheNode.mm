@@ -1,18 +1,18 @@
 @interface PIAutoLoopCacheNode
-+ (id)nodeWithInput:(id)a3 settings:(id)a4 pipelineState:(id)a5 error:(id *)a6;
++ (id)nodeWithInput:(id)input settings:(id)settings pipelineState:(id)state error:(id *)error;
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)frameDuration;
-- (PIAutoLoopCacheNode)initWithInput:(id)a3 frameDuration:(id *)a4;
-- (id)newRenderRequestWithOriginalRequest:(id)a3 error:(id *)a4;
-- (id)outputSettings:(id *)a3;
+- (PIAutoLoopCacheNode)initWithInput:(id)input frameDuration:(id *)duration;
+- (id)newRenderRequestWithOriginalRequest:(id)request error:(id *)error;
+- (id)outputSettings:(id *)settings;
 - (id)persistentLongExposureURL;
 - (id)persistentMaskURL;
 - (id)persistentURL;
-- (id)resolvedNodeWithCachedInputs:(id)a3 settings:(id)a4 pipelineState:(id)a5 error:(id *)a6;
+- (id)resolvedNodeWithCachedInputs:(id)inputs settings:(id)settings pipelineState:(id)state error:(id *)error;
 @end
 
 @implementation PIAutoLoopCacheNode
 
-- (id)outputSettings:(id *)a3
+- (id)outputSettings:(id *)settings
 {
   v29[4] = *MEMORY[0x1E69E9840];
   v27.receiver = self;
@@ -20,18 +20,18 @@
   v5 = [(NUVideoCacheNode *)&v27 outputSettings:?];
   if (v5)
   {
-    v6 = [(NUCacheNode *)self inputNode];
-    v7 = [v6 outputImageGeometry:a3];
+    inputNode = [(NUCacheNode *)self inputNode];
+    v7 = [inputNode outputImageGeometry:settings];
 
     if (v7)
     {
-      v8 = [(NUCacheNode *)self inputNode];
-      v9 = [v8 videoProperties:a3];
+      inputNode2 = [(NUCacheNode *)self inputNode];
+      v9 = [inputNode2 videoProperties:settings];
 
       if (v9)
       {
-        v10 = [v9 colorProperties];
-        v11 = [v10 mutableCopy];
+        colorProperties = [v9 colorProperties];
+        v11 = [colorProperties mutableCopy];
 
         v12 = *MEMORY[0x1E6987DE8];
         v13 = [v11 objectForKeyedSubscript:*MEMORY[0x1E6987DE8]];
@@ -43,8 +43,8 @@
         }
 
         [v5 setObject:v11 forKeyedSubscript:*MEMORY[0x1E6987D20]];
-        v15 = [v7 scaledSize];
-        v17 = (v15 * v16) * 1.5;
+        scaledSize = [v7 scaledSize];
+        v17 = (scaledSize * v16) * 1.5;
         [(PIAutoLoopCacheNode *)self frameDuration];
         v18 = 1.0 / CMTimeGetSeconds(&v26);
         v28[0] = *MEMORY[0x1E6987C60];
@@ -85,11 +85,11 @@
   return v24;
 }
 
-- (id)newRenderRequestWithOriginalRequest:(id)a3 error:(id *)a4
+- (id)newRenderRequestWithOriginalRequest:(id)request error:(id *)error
 {
   v45 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (!v6)
+  requestCopy = request;
+  if (!requestCopy)
   {
     v25 = NUAssertLogger_8835();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -111,8 +111,8 @@
         v33 = dispatch_get_specific(*v27);
         v34 = MEMORY[0x1E696AF00];
         v35 = v33;
-        v36 = [v34 callStackSymbols];
-        v37 = [v36 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v34 callStackSymbols];
+        v37 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v42 = v33;
         v43 = 2114;
@@ -123,8 +123,8 @@
 
     else if (v30)
     {
-      v31 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v32 = [v31 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v32 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v42 = v32;
       _os_log_error_impl(&dword_1C7694000, v29, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -133,34 +133,34 @@
     _NUAssertFailHandler();
   }
 
-  v7 = v6;
-  v8 = [(NUCacheNode *)self temporaryURLPrefix];
-  v9 = [v8 URLByAppendingPathExtension:@"stab"];
+  v7 = requestCopy;
+  temporaryURLPrefix = [(NUCacheNode *)self temporaryURLPrefix];
+  v9 = [temporaryURLPrefix URLByAppendingPathExtension:@"stab"];
   v10 = [v9 URLByAppendingPathExtension:@"mov"];
 
-  v11 = [v8 URLByAppendingPathExtension:@"lexp"];
+  v11 = [temporaryURLPrefix URLByAppendingPathExtension:@"lexp"];
   v12 = [v11 URLByAppendingPathExtension:@"jpg"];
 
-  v13 = [v8 URLByAppendingPathExtension:@"mask"];
+  v13 = [temporaryURLPrefix URLByAppendingPathExtension:@"mask"];
   v14 = [v13 URLByAppendingPathExtension:@"jpg"];
 
   v15 = [PIAutoLoopExportRequest alloc];
-  v16 = [v7 composition];
-  v17 = [*MEMORY[0x1E6982E58] identifier];
-  v18 = [(PIAutoLoopExportRequest *)v15 initWithComposition:v16 stabilizedVideoURL:v10 longExposureDestinationURL:v12 maskDestinationURL:v14 destinationUTI:v17];
+  composition = [v7 composition];
+  identifier = [*MEMORY[0x1E6982E58] identifier];
+  v18 = [(PIAutoLoopExportRequest *)v15 initWithComposition:composition stabilizedVideoURL:v10 longExposureDestinationURL:v12 maskDestinationURL:v14 destinationUTI:identifier];
 
-  v19 = [(PIAutoLoopCacheNode *)self outputSettings:a4];
+  v19 = [(PIAutoLoopCacheNode *)self outputSettings:error];
   if (v19)
   {
     [(NUVideoExportRequest *)v18 setOutputSettings:v19];
     v20 = dispatch_queue_create("PIAutoLoopCacheNode", 0);
     [(NURenderRequest *)v18 setResponseQueue:v20];
 
-    v21 = [v7 name];
-    if ([v21 length])
+    name = [v7 name];
+    if ([name length])
     {
-      v22 = [v7 name];
-      [(NURenderRequest *)v18 setName:v22];
+      name2 = [v7 name];
+      [(NURenderRequest *)v18 setName:name2];
     }
 
     else
@@ -234,8 +234,8 @@ LABEL_8:
 
 - (id)persistentMaskURL
 {
-  v2 = [(NUCacheNode *)self persistentURLPrefix];
-  v3 = [v2 URLByAppendingPathExtension:@"mask"];
+  persistentURLPrefix = [(NUCacheNode *)self persistentURLPrefix];
+  v3 = [persistentURLPrefix URLByAppendingPathExtension:@"mask"];
   v4 = [v3 URLByAppendingPathExtension:@"jpg"];
 
   return v4;
@@ -243,8 +243,8 @@ LABEL_8:
 
 - (id)persistentLongExposureURL
 {
-  v2 = [(NUCacheNode *)self persistentURLPrefix];
-  v3 = [v2 URLByAppendingPathExtension:@"lexp"];
+  persistentURLPrefix = [(NUCacheNode *)self persistentURLPrefix];
+  v3 = [persistentURLPrefix URLByAppendingPathExtension:@"lexp"];
   v4 = [v3 URLByAppendingPathExtension:@"jpg"];
 
   return v4;
@@ -252,37 +252,37 @@ LABEL_8:
 
 - (id)persistentURL
 {
-  v2 = [(NUCacheNode *)self persistentURLPrefix];
-  v3 = [v2 URLByAppendingPathExtension:@"stab"];
+  persistentURLPrefix = [(NUCacheNode *)self persistentURLPrefix];
+  v3 = [persistentURLPrefix URLByAppendingPathExtension:@"stab"];
   v4 = [v3 URLByAppendingPathExtension:@"mov"];
 
   return v4;
 }
 
-- (id)resolvedNodeWithCachedInputs:(id)a3 settings:(id)a4 pipelineState:(id)a5 error:(id *)a6
+- (id)resolvedNodeWithCachedInputs:(id)inputs settings:(id)settings pipelineState:(id)state error:(id *)error
 {
   v8.receiver = self;
   v8.super_class = PIAutoLoopCacheNode;
-  v6 = [(NURenderNode *)&v8 resolvedNodeWithCachedInputs:a3 settings:a4 pipelineState:a5 error:a6];
+  v6 = [(NURenderNode *)&v8 resolvedNodeWithCachedInputs:inputs settings:settings pipelineState:state error:error];
 
   return v6;
 }
 
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)frameDuration
 {
-  v4 = [(NURenderNode *)self settings];
-  dictionaryRepresentation = [v4 objectForKeyedSubscript:@"frameDuration"];
+  settings = [(NURenderNode *)self settings];
+  dictionaryRepresentation = [settings objectForKeyedSubscript:@"frameDuration"];
 
   CMTimeMakeFromDictionary(retstr, dictionaryRepresentation);
 
   return result;
 }
 
-- (PIAutoLoopCacheNode)initWithInput:(id)a3 frameDuration:(id *)a4
+- (PIAutoLoopCacheNode)initWithInput:(id)input frameDuration:(id *)duration
 {
   v39 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (!v6)
+  inputCopy = input;
+  if (!inputCopy)
   {
     v13 = NUAssertLogger_8835();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -293,7 +293,7 @@ LABEL_8:
       _os_log_error_impl(&dword_1C7694000, v13, OS_LOG_TYPE_ERROR, "Fail: %{public}@", &time, 0xCu);
     }
 
-    v15 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     specific = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v17 = NUAssertLogger_8835();
     v18 = os_log_type_enabled(v17, OS_LOG_TYPE_ERROR);
@@ -301,11 +301,11 @@ LABEL_8:
     {
       if (v18)
       {
-        v26 = dispatch_get_specific(*v15);
+        v26 = dispatch_get_specific(*callStackSymbols);
         v27 = MEMORY[0x1E696AF00];
         v28 = v26;
-        v15 = [v27 callStackSymbols];
-        v29 = [v15 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v27 callStackSymbols];
+        v29 = [callStackSymbols componentsJoinedByString:@"\n"];
         LODWORD(time.value) = 138543618;
         *(&time.value + 4) = v26;
         LOWORD(time.flags) = 2114;
@@ -316,10 +316,10 @@ LABEL_8:
 
     else if (v18)
     {
-      v19 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v15 = [v19 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      callStackSymbols = [callStackSymbols2 componentsJoinedByString:@"\n"];
       LODWORD(time.value) = 138543362;
-      *(&time.value + 4) = v15;
+      *(&time.value + 4) = callStackSymbols;
       _os_log_error_impl(&dword_1C7694000, v17, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", &time, 0xCu);
     }
 
@@ -327,7 +327,7 @@ LABEL_8:
     goto LABEL_17;
   }
 
-  if ((a4->var2 & 1) == 0)
+  if ((duration->var2 & 1) == 0)
   {
     v20 = NUAssertLogger_8835();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -338,7 +338,7 @@ LABEL_8:
       _os_log_error_impl(&dword_1C7694000, v20, OS_LOG_TYPE_ERROR, "Fail: %{public}@", &time, 0xCu);
     }
 
-    v15 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     v22 = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v17 = NUAssertLogger_8835();
     v23 = os_log_type_enabled(v17, OS_LOG_TYPE_ERROR);
@@ -346,8 +346,8 @@ LABEL_8:
     {
       if (v23)
       {
-        v24 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v25 = [v24 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v25 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         LODWORD(time.value) = 138543362;
         *(&time.value + 4) = v25;
         _os_log_error_impl(&dword_1C7694000, v17, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", &time, 0xCu);
@@ -359,11 +359,11 @@ LABEL_8:
 LABEL_17:
     if (v23)
     {
-      v30 = dispatch_get_specific(*v15);
+      v30 = dispatch_get_specific(*callStackSymbols);
       v31 = MEMORY[0x1E696AF00];
       v32 = v30;
-      v33 = [v31 callStackSymbols];
-      v34 = [v33 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [v31 callStackSymbols];
+      v34 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       LODWORD(time.value) = 138543618;
       *(&time.value + 4) = v30;
       LOWORD(time.flags) = 2114;
@@ -376,9 +376,9 @@ LABEL_19:
     _NUAssertFailHandler();
   }
 
-  v7 = v6;
+  v7 = inputCopy;
   v8 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  time = *a4;
+  time = *duration;
   v9 = CMTimeCopyAsDictionary(&time, 0);
   [v8 setObject:v9 forKeyedSubscript:@"frameDuration"];
 
@@ -392,13 +392,13 @@ LABEL_19:
   return v11;
 }
 
-+ (id)nodeWithInput:(id)a3 settings:(id)a4 pipelineState:(id)a5 error:(id *)a6
++ (id)nodeWithInput:(id)input settings:(id)settings pipelineState:(id)state error:(id *)error
 {
   v72 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (!a6)
+  inputCopy = input;
+  settingsCopy = settings;
+  stateCopy = state;
+  if (!error)
   {
     v43 = NUAssertLogger_8835();
     if (os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
@@ -420,8 +420,8 @@ LABEL_19:
         v51 = dispatch_get_specific(*v45);
         v52 = MEMORY[0x1E696AF00];
         v53 = v51;
-        v54 = [v52 callStackSymbols];
-        v55 = [v54 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v52 callStackSymbols];
+        v55 = [callStackSymbols componentsJoinedByString:@"\n"];
         LODWORD(v71.start.value) = 138543618;
         *(&v71.start.value + 4) = v51;
         LOWORD(v71.start.flags) = 2114;
@@ -432,8 +432,8 @@ LABEL_19:
 
     else if (v48)
     {
-      v49 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v50 = [v49 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v50 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       LODWORD(v71.start.value) = 138543362;
       *(&v71.start.value + 4) = v50;
       _os_log_error_impl(&dword_1C7694000, v47, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", &v71, 0xCu);
@@ -442,19 +442,19 @@ LABEL_19:
     _NUAssertFailHandler();
   }
 
-  v13 = v12;
-  v14 = [v11 objectForKeyedSubscript:@"recipe"];
+  v13 = stateCopy;
+  v14 = [settingsCopy objectForKeyedSubscript:@"recipe"];
   if (MEMORY[0x1CCA61C40]())
   {
     [MEMORY[0x1E69B3A48] invalidError:@"invalid autoloop recipe" object:v14];
-    *a6 = v15 = 0;
+    *error = v15 = 0;
     goto LABEL_38;
   }
 
-  v16 = [v13 beginGroupWithName:@"AutoLoop" error:a6];
+  v16 = [v13 beginGroupWithName:@"AutoLoop" error:error];
   if (v16)
   {
-    v17 = [v10 videoProperties:a6];
+    v17 = [inputCopy videoProperties:error];
     v18 = v17;
     if (!v17)
     {
@@ -465,7 +465,7 @@ LABEL_36:
     }
 
     [v17 orientation];
-    v19 = [v10 outputImageGeometry:a6];
+    v19 = [inputCopy outputImageGeometry:error];
     if (!v19)
     {
       v15 = 0;
@@ -480,8 +480,8 @@ LABEL_35:
     NUOrientationInverse();
     v20 = NUOrientationConcat();
     v21 = NUOrientationInverse();
-    v22 = [objc_alloc(MEMORY[0x1E69B3BC8]) initWithOrientation:v20 input:v10];
-    v23 = [PIAutoLoopStabVideoNode nodeWithInput:v22 recipe:v14 error:a6];
+    v22 = [objc_alloc(MEMORY[0x1E69B3BC8]) initWithOrientation:v20 input:inputCopy];
+    v23 = [PIAutoLoopStabVideoNode nodeWithInput:v22 recipe:v14 error:error];
 
     if (!v23)
     {
@@ -496,17 +496,17 @@ LABEL_34:
     PIAutoLoopRecipeGetFrameDuration(v14, &v70);
     v24 = [objc_alloc(MEMORY[0x1E69B3BC8]) initWithOrientation:v21 input:v23];
 
-    v25 = [a1 alloc];
+    v25 = [self alloc];
     v71.start = v70;
     v61 = [v25 initWithInput:v24 frameDuration:&v71];
     v26 = [v16 addTag:@"StabilizedVideo" forNode:?];
-    v27 = [v11 objectForKeyedSubscript:@"flavor"];
+    v27 = [settingsCopy objectForKeyedSubscript:@"flavor"];
     v28 = PIAutoLoopFlavorFromString(v27);
     v62 = PIAutoLoopRecipeGetFlavorParameters(v14, v28);
     if (!v62)
     {
       [MEMORY[0x1E69B3A48] invalidError:@"Malformed AutoLoop recipe : missing flavor parameters" object:v27];
-      *a6 = v15 = 0;
+      *error = v15 = 0;
       v34 = v27;
       v18 = v63;
       v33 = v61;
@@ -519,7 +519,7 @@ LABEL_33:
     *&v71.start.value = *MEMORY[0x1E6960C98];
     *&v71.start.epoch = v29;
     *&v71.duration.timescale = *(MEMORY[0x1E6960C98] + 32);
-    v59 = [v11 objectForKeyedSubscript:@"trim"];
+    v59 = [settingsCopy objectForKeyedSubscript:@"trim"];
     v60 = v27;
     if (v59)
     {
@@ -577,7 +577,7 @@ LABEL_29:
 
           v24 = [v16 addTag:@"Output" forNode:v38];
 
-          if ([v13 endGroupWithName:@"AutoLoop" error:a6])
+          if ([v13 endGroupWithName:@"AutoLoop" error:error])
           {
             v24 = v24;
             v15 = v24;
@@ -606,7 +606,7 @@ LABEL_28:
       if (!v28)
       {
         [MEMORY[0x1E69B3A48] invalidError:@"Invalid recipe flavor" object:v27];
-        *a6 = v15 = 0;
+        *error = v15 = 0;
         v18 = v63;
         v33 = v61;
 LABEL_32:

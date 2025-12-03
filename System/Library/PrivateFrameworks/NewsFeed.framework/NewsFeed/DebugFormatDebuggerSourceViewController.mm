@@ -1,8 +1,8 @@
 @interface DebugFormatDebuggerSourceViewController
-- (_TtC8NewsFeed39DebugFormatDebuggerSourceViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)scrollViewDidScroll:(id)a3;
+- (_TtC8NewsFeed39DebugFormatDebuggerSourceViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)scrollViewDidScroll:(id)scroll;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)viewWillLayoutSubviews;
 @end
 
@@ -10,48 +10,48 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D691A074();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v8.receiver = self;
   v8.super_class = swift_getObjectType();
   v4 = v8.receiver;
-  [(DebugFormatDebuggerSourceViewController *)&v8 viewWillAppear:v3];
+  [(DebugFormatDebuggerSourceViewController *)&v8 viewWillAppear:appearCopy];
   v5 = sub_1D7262FBC();
   if (v5)
   {
 
-    v6 = [v4 navigationController];
-    if (v6)
+    navigationController = [v4 navigationController];
+    if (navigationController)
     {
-      v7 = v6;
-      [v6 setToolbarHidden:0 animated:0];
+      v7 = navigationController;
+      [navigationController setToolbarHidden:0 animated:0];
     }
   }
 }
 
 - (void)viewWillLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D691A914();
 }
 
-- (_TtC8NewsFeed39DebugFormatDebuggerSourceViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC8NewsFeed39DebugFormatDebuggerSourceViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = a3;
-  v5 = self;
-  sub_1D691ADF0(v4);
+  scrollCopy = scroll;
+  selfCopy = self;
+  sub_1D691ADF0(scrollCopy);
 }
 
 @end

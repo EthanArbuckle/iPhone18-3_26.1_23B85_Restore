@@ -1,30 +1,30 @@
 @interface CRLSixChannelTilingRenderable
 + (id)renderable;
-+ (id)renderableFromSixChannelTilingLayer:(id)a3;
-- (CRLSixChannelTilingRenderable)initWithSixChannelTilingLayer:(id)a3;
++ (id)renderableFromSixChannelTilingLayer:(id)layer;
+- (CRLSixChannelTilingRenderable)initWithSixChannelTilingLayer:(id)layer;
 - (id)p_sixChannelTilingLayer;
 @end
 
 @implementation CRLSixChannelTilingRenderable
 
-- (CRLSixChannelTilingRenderable)initWithSixChannelTilingLayer:(id)a3
+- (CRLSixChannelTilingRenderable)initWithSixChannelTilingLayer:(id)layer
 {
   v4.receiver = self;
   v4.super_class = CRLSixChannelTilingRenderable;
-  return [(CRLCanvasRenderable *)&v4 initWithCALayer:a3];
+  return [(CRLCanvasRenderable *)&v4 initWithCALayer:layer];
 }
 
-+ (id)renderableFromSixChannelTilingLayer:(id)a3
++ (id)renderableFromSixChannelTilingLayer:(id)layer
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithSixChannelTilingLayer:v4];
+  layerCopy = layer;
+  v5 = [[self alloc] initWithSixChannelTilingLayer:layerCopy];
 
   return v5;
 }
 
 + (id)renderable
 {
-  v2 = [a1 alloc];
+  v2 = [self alloc];
   v3 = +[CRLSixChannelTilingLayer layer];
   v4 = [v2 initWithSixChannelTilingLayer:v3];
 
@@ -34,8 +34,8 @@
 - (id)p_sixChannelTilingLayer
 {
   v3 = objc_opt_class();
-  v4 = [(CRLCanvasRenderable *)self layer];
-  v5 = sub_100014370(v3, v4);
+  layer = [(CRLCanvasRenderable *)self layer];
+  v5 = sub_100014370(v3, layer);
 
   return v5;
 }

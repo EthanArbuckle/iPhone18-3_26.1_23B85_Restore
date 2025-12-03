@@ -4,8 +4,8 @@
 - (CGRect)bounds;
 - (NSArray)items;
 - (UIDynamicItemGroup)initWithItems:(NSArray *)items;
-- (void)setCenter:(CGPoint)a3;
-- (void)setTransform:(CGAffineTransform *)a3;
+- (void)setCenter:(CGPoint)center;
+- (void)setTransform:(CGAffineTransform *)transform;
 @end
 
 @implementation UIDynamicItemGroup
@@ -19,9 +19,9 @@
   v5 = [(UIDynamicItemGroup *)&v31 init];
   if (v5)
   {
-    v6 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
     itemsToOffsets = v5->_itemsToOffsets;
-    v5->_itemsToOffsets = v6;
+    v5->_itemsToOffsets = strongToStrongObjectsMapTable;
 
     if ([(NSArray *)v4 count])
     {
@@ -77,26 +77,26 @@
 
 - (NSArray)items
 {
-  v2 = [(NSMapTable *)self->_itemsToOffsets keyEnumerator];
-  v3 = [v2 allObjects];
+  keyEnumerator = [(NSMapTable *)self->_itemsToOffsets keyEnumerator];
+  allObjects = [keyEnumerator allObjects];
 
-  return v3;
+  return allObjects;
 }
 
-- (void)setCenter:(CGPoint)a3
+- (void)setCenter:(CGPoint)center
 {
-  y = a3.y;
-  x = a3.x;
+  y = center.y;
+  x = center.x;
   v22 = *MEMORY[0x1E69E9840];
   v5 = self->_center.x;
   v6 = self->_center.y;
-  self->_center = a3;
+  self->_center = center;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v7 = [(UIDynamicItemGroup *)self items];
-  v8 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  items = [(UIDynamicItemGroup *)self items];
+  v8 = [items countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v8)
   {
     v9 = v8;
@@ -109,7 +109,7 @@
       {
         if (*v18 != v12)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(items);
         }
 
         v14 = *(*(&v17 + 1) + 8 * i);
@@ -117,7 +117,7 @@
         [v14 setCenter:{v10 + v15, v11 + v16}];
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v9 = [items countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v9);
@@ -133,30 +133,30 @@
   return result;
 }
 
-- (void)setTransform:(CGAffineTransform *)a3
+- (void)setTransform:(CGAffineTransform *)transform
 {
   v28 = *MEMORY[0x1E69E9840];
   v5 = *&self->_transform.c;
   *&t1.a = *&self->_transform.a;
   *&t1.c = v5;
   *&t1.tx = *&self->_transform.tx;
-  v6 = *&a3->c;
-  *&t2.a = *&a3->a;
+  v6 = *&transform->c;
+  *&t2.a = *&transform->a;
   *&t2.c = v6;
-  *&t2.tx = *&a3->tx;
+  *&t2.tx = *&transform->tx;
   if (!CGAffineTransformEqualToTransform(&t1, &t2))
   {
-    v7 = *&a3->a;
-    v8 = *&a3->tx;
-    *&self->_transform.c = *&a3->c;
+    v7 = *&transform->a;
+    v8 = *&transform->tx;
+    *&self->_transform.c = *&transform->c;
     *&self->_transform.tx = v8;
     *&self->_transform.a = v7;
-    v9 = [(UIDynamicItemGroup *)self items];
+    items = [(UIDynamicItemGroup *)self items];
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v10 = [v9 countByEnumeratingWithState:&v21 objects:v27 count:16];
+    v10 = [items countByEnumeratingWithState:&v21 objects:v27 count:16];
     if (v10)
     {
       v11 = v10;
@@ -167,7 +167,7 @@
         {
           if (*v22 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(items);
           }
 
           v14 = *(*(&v21 + 1) + 8 * i);
@@ -177,15 +177,15 @@
           v19 = v16;
           v20 = v17;
 
-          [v14 setCenter:{vaddq_f64(vaddq_f64(*&a3->tx, vaddq_f64(vmulq_n_f64(*&a3->a, *&v19), vmulq_n_f64(*&a3->c, *&v20))), self->_center)}];
-          v18 = *&a3->c;
-          *&t1.a = *&a3->a;
+          [v14 setCenter:{vaddq_f64(vaddq_f64(*&transform->tx, vaddq_f64(vmulq_n_f64(*&transform->a, *&v19), vmulq_n_f64(*&transform->c, *&v20))), self->_center)}];
+          v18 = *&transform->c;
+          *&t1.a = *&transform->a;
           *&t1.c = v18;
-          *&t1.tx = *&a3->tx;
+          *&t1.tx = *&transform->tx;
           [v14 setTransform:&t1];
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v21 objects:v27 count:16];
+        v11 = [items countByEnumeratingWithState:&v21 objects:v27 count:16];
       }
 
       while (v11);
@@ -195,8 +195,8 @@
 
 - (CGRect)bounds
 {
-  v2 = [(UIDynamicItemGroup *)self items];
-  unionRectOfItems(v2);
+  items = [(UIDynamicItemGroup *)self items];
+  unionRectOfItems(items);
   v4 = v3;
   v6 = v5;
 

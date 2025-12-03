@@ -126,10 +126,10 @@ LABEL_22:
 {
   v7 = a3;
   v8 = [MEMORY[0x1E696AB78] ef_formatterForStyle:a4];
-  v9 = [v8 formattingContext];
+  formattingContext = [v8 formattingContext];
   [v8 setFormattingContext:a5];
   v10 = [v8 stringFromDate:v7];
-  [v8 setFormattingContext:v9];
+  [v8 setFormattingContext:formattingContext];
 
   return v10;
 }

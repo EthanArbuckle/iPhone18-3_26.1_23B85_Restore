@@ -15,7 +15,7 @@
 
 - (void)hk_demoResultKeys
 {
-  v1 = [a1 arrayForKey:@"DemoResultKeys"];
+  v1 = [self arrayForKey:@"DemoResultKeys"];
   v2 = v1;
   if (v1)
   {
@@ -34,9 +34,9 @@
 
 - (void)hk_setElectrocardiogramFirstRecordingCompleted:()HKHeartRhythm
 {
-  if ([a1 BOOLForKey:@"HKElectrocardiogramFirstRecordingCompleted"] != a3)
+  if ([self BOOLForKey:@"HKElectrocardiogramFirstRecordingCompleted"] != a3)
   {
-    [a1 setBool:a3 forKey:@"HKElectrocardiogramFirstRecordingCompleted"];
+    [self setBool:a3 forKey:@"HKElectrocardiogramFirstRecordingCompleted"];
     v5 = [MEMORY[0x1E695DFD8] setWithObject:@"HKElectrocardiogramFirstRecordingCompleted"];
     HKSynchronizeNanoPreferencesUserDefaults(@"com.apple.private.health.heart-rhythm", v5);
   }

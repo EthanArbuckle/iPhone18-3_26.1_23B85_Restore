@@ -7,19 +7,19 @@
 - (UIEdgeInsets)contentInsets;
 - (UIEdgeInsets)marginInsets;
 - (id)contentView;
-- (void)_animateVisibility:(BOOL)a3 completion:(id)a4;
-- (void)_ck_setEditing:(BOOL)a3 animated:(BOOL)a4;
+- (void)_animateVisibility:(BOOL)visibility completion:(id)completion;
+- (void)_ck_setEditing:(BOOL)editing animated:(BOOL)animated;
 - (void)layoutSubviews;
-- (void)performInsertion:(id)a3;
-- (void)performReload:(id)a3 completion:(id)a4;
-- (void)performRemoval:(id)a3;
-- (void)performRevealAnimated:(BOOL)a3 completion:(id)a4;
-- (void)setContentInsets:(UIEdgeInsets)a3;
-- (void)setEditingStyle:(int64_t)a3;
-- (void)setEffect:(id)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setMarginInsets:(UIEdgeInsets)a3;
-- (void)setSelected:(BOOL)a3;
+- (void)performInsertion:(id)insertion;
+- (void)performReload:(id)reload completion:(id)completion;
+- (void)performRemoval:(id)removal;
+- (void)performRevealAnimated:(BOOL)animated completion:(id)completion;
+- (void)setContentInsets:(UIEdgeInsets)insets;
+- (void)setEditingStyle:(int64_t)style;
+- (void)setEffect:(id)effect;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setMarginInsets:(UIEdgeInsets)insets;
+- (void)setSelected:(BOOL)selected;
 - (void)updateCheckmarkImage;
 @end
 
@@ -28,16 +28,16 @@
 + (Class)_contentViewClass
 {
   v3 = +[CKUIBehavior sharedBehaviors];
-  v4 = [v3 transcriptCellsNeedVibrancy];
+  transcriptCellsNeedVibrancy = [v3 transcriptCellsNeedVibrancy];
 
-  if (v4)
+  if (transcriptCellsNeedVibrancy)
   {
     v5 = objc_opt_class();
   }
 
   else
   {
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___CKEditableCollectionViewCell;
     v5 = objc_msgSendSuper2(&v7, sel__contentViewClass);
   }
@@ -45,18 +45,18 @@
   return v5;
 }
 
-- (void)setEffect:(id)a3
+- (void)setEffect:(id)effect
 {
-  v7 = a3;
+  effectCopy = effect;
   self->_shouldReturnActualVEV = 1;
-  v4 = [(CKEditableCollectionViewCell *)self contentView];
+  contentView = [(CKEditableCollectionViewCell *)self contentView];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v6 = [(CKEditableCollectionViewCell *)self contentView];
-    [v6 setEffect:v7];
+    contentView2 = [(CKEditableCollectionViewCell *)self contentView];
+    [contentView2 setEffect:effectCopy];
   }
 
   self->_shouldReturnActualVEV = 0;
@@ -66,7 +66,7 @@
 {
   v7.receiver = self;
   v7.super_class = CKEditableCollectionViewCell;
-  v3 = [(CKEditableCollectionViewCell *)&v7 contentView];
+  contentView = [(CKEditableCollectionViewCell *)&v7 contentView];
   v4 = +[CKUIBehavior sharedBehaviors];
   if (![v4 transcriptCellsNeedVibrancy])
   {
@@ -80,13 +80,13 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [v3 contentView];
-      v3 = v4 = v3;
+      [contentView contentView];
+      contentView = v4 = contentView;
 LABEL_5:
     }
   }
 
-  return v3;
+  return contentView;
 }
 
 - (NSString)description
@@ -107,33 +107,33 @@ LABEL_5:
   v61.receiver = self;
   v61.super_class = CKEditableCollectionViewCell;
   [(CKEditableCollectionViewCell *)&v61 layoutSubviews];
-  v3 = [(CKEditableCollectionViewCell *)self contentView];
-  [v3 bounds];
+  contentView = [(CKEditableCollectionViewCell *)self contentView];
+  [contentView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
 
   v12 = [MEMORY[0x1E69DD250] userInterfaceLayoutDirectionForSemanticContentAttribute:{-[CKEditableCollectionViewCell semanticContentAttribute](self, "semanticContentAttribute")}];
-  v13 = [(CKEditableCollectionViewCell *)self checkmark];
-  v14 = v13;
-  if (!v13)
+  checkmark = [(CKEditableCollectionViewCell *)self checkmark];
+  v14 = checkmark;
+  if (!checkmark)
   {
     goto LABEL_19;
   }
 
   v59 = v9;
   v57 = v5;
-  [v13 sizeToFit];
+  [checkmark sizeToFit];
   [v14 bounds];
   v16 = v15;
   rect = v17;
   v18 = v7 + v11 * 0.5 - v17 * 0.5;
-  v19 = [(CKEditableCollectionViewCell *)self traitCollection];
-  [v19 displayScale];
+  traitCollection = [(CKEditableCollectionViewCell *)self traitCollection];
+  [traitCollection displayScale];
   v21 = round(v20 * v18) / v20;
-  v22 = [(CKEditableCollectionViewCell *)self traitCollection];
-  [v22 displayScale];
+  traitCollection2 = [(CKEditableCollectionViewCell *)self traitCollection];
+  [traitCollection2 displayScale];
   v24 = round(v16 * v23) / v23;
 
   v58 = v21;
@@ -237,37 +237,37 @@ LABEL_19:
   [(CKEditableCollectionViewCell *)self setContentAlignmentRect:v5 + v56, v7 + v53, v9 - (v56 + v54), v11 - (v53 + v55)];
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
   v4.receiver = self;
   v4.super_class = CKEditableCollectionViewCell;
-  [(CKEditableCollectionViewCell *)&v4 setSelected:a3];
+  [(CKEditableCollectionViewCell *)&v4 setSelected:selected];
   if ([(CKEditableCollectionViewCell *)self _ck_isEditing])
   {
     [(CKEditableCollectionViewCell *)self updateCheckmarkImage];
   }
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
   v4.receiver = self;
   v4.super_class = CKEditableCollectionViewCell;
-  [(CKEditableCollectionViewCell *)&v4 setHighlighted:a3];
+  [(CKEditableCollectionViewCell *)&v4 setHighlighted:highlighted];
   if ([(CKEditableCollectionViewCell *)self _ck_isEditing])
   {
     [(CKEditableCollectionViewCell *)self updateCheckmarkImage];
   }
 }
 
-- (void)_ck_setEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)_ck_setEditing:(BOOL)editing animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  v7 = [(CKEditableCollectionViewCell *)self checkmark];
-  if (v7 || ![(CKEditableCollectionViewCell *)self editingStyle])
+  animatedCopy = animated;
+  editingCopy = editing;
+  checkmark = [(CKEditableCollectionViewCell *)self checkmark];
+  if (checkmark || ![(CKEditableCollectionViewCell *)self editingStyle])
   {
-    v8 = [(CKEditableCollectionViewCell *)self checkmark];
-    if (v8)
+    checkmark2 = [(CKEditableCollectionViewCell *)self checkmark];
+    if (checkmark2)
     {
       v9 = [(CKEditableCollectionViewCell *)self editingStyle]!= 0;
     }
@@ -283,9 +283,9 @@ LABEL_19:
     v9 = 0;
   }
 
-  if (self->__ck_editing != v5 || !v9 && v5)
+  if (self->__ck_editing != editingCopy || !v9 && editingCopy)
   {
-    if (v5 && [(CKEditableCollectionViewCell *)self editingStyle])
+    if (editingCopy && [(CKEditableCollectionViewCell *)self editingStyle])
     {
       v10 = objc_alloc(MEMORY[0x1E69DCAE0]);
       v11 = [v10 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
@@ -295,13 +295,13 @@ LABEL_19:
       [(CKEditableCollectionViewCell *)self updateCheckmarkImage];
     }
 
-    if (v4)
+    if (animatedCopy)
     {
       [(CKEditableCollectionViewCell *)self setNeedsLayout];
       [(CKEditableCollectionViewCell *)self layoutIfNeeded];
     }
 
-    self->__ck_editing = v5;
+    self->__ck_editing = editingCopy;
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __56__CKEditableCollectionViewCell__ck_setEditing_animated___block_invoke;
@@ -312,10 +312,10 @@ LABEL_19:
     v14[1] = 3221225472;
     v14[2] = __56__CKEditableCollectionViewCell__ck_setEditing_animated___block_invoke_2;
     v14[3] = &unk_1E72F3BE8;
-    v15 = v5;
+    v15 = editingCopy;
     v14[4] = self;
     v13 = _Block_copy(v14);
-    if (v4)
+    if (animatedCopy)
     {
       [MEMORY[0x1E69DD250] animateWithDuration:4 delay:v12 options:v13 animations:0.300000012 completion:0.0];
     }
@@ -346,12 +346,12 @@ void __56__CKEditableCollectionViewCell__ck_setEditing_animated___block_invoke_2
   }
 }
 
-- (void)setEditingStyle:(int64_t)a3
+- (void)setEditingStyle:(int64_t)style
 {
-  self->_editingStyle = a3;
-  v4 = [(CKEditableCollectionViewCell *)self _ck_isEditing];
+  self->_editingStyle = style;
+  _ck_isEditing = [(CKEditableCollectionViewCell *)self _ck_isEditing];
 
-  [(CKEditableCollectionViewCell *)self _ck_setEditing:v4];
+  [(CKEditableCollectionViewCell *)self _ck_setEditing:_ck_isEditing];
 }
 
 - (UIEdgeInsets)contentAlignmentInsets
@@ -372,104 +372,104 @@ void __56__CKEditableCollectionViewCell__ck_setEditing_animated___block_invoke_2
   return result;
 }
 
-- (void)setContentInsets:(UIEdgeInsets)a3
+- (void)setContentInsets:(UIEdgeInsets)insets
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = insets.top;
+  v3.f64[1] = insets.left;
+  v4.f64[0] = insets.bottom;
+  v4.f64[1] = insets.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_contentInsets.top, v3), vceqq_f64(*&self->_contentInsets.bottom, v4)))) & 1) == 0)
   {
-    self->_contentInsets = a3;
+    self->_contentInsets = insets;
     [(CKEditableCollectionViewCell *)self setNeedsLayout];
   }
 }
 
-- (void)setMarginInsets:(UIEdgeInsets)a3
+- (void)setMarginInsets:(UIEdgeInsets)insets
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = insets.top;
+  v3.f64[1] = insets.left;
+  v4.f64[0] = insets.bottom;
+  v4.f64[1] = insets.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_marginInsets.top, v3), vceqq_f64(*&self->_marginInsets.bottom, v4)))) & 1) == 0)
   {
-    self->_marginInsets = a3;
+    self->_marginInsets = insets;
     [(CKEditableCollectionViewCell *)self setNeedsLayout];
   }
 }
 
-- (void)performInsertion:(id)a3
+- (void)performInsertion:(id)insertion
 {
-  if (a3)
+  if (insertion)
   {
-    (*(a3 + 2))(a3, 1);
+    (*(insertion + 2))(insertion, 1);
   }
 }
 
-- (void)performRemoval:(id)a3
+- (void)performRemoval:(id)removal
 {
-  if (a3)
+  if (removal)
   {
-    (*(a3 + 2))(a3, 1);
+    (*(removal + 2))(removal, 1);
   }
 }
 
-- (void)performReload:(id)a3 completion:(id)a4
+- (void)performReload:(id)reload completion:(id)completion
 {
-  v6 = a3;
-  v5 = a4;
-  if (v6)
+  reloadCopy = reload;
+  completionCopy = completion;
+  if (reloadCopy)
   {
-    v6[2](v6);
+    reloadCopy[2](reloadCopy);
   }
 
-  if (v5)
+  if (completionCopy)
   {
-    v5[2](v5, 1);
+    completionCopy[2](completionCopy, 1);
   }
 }
 
-- (void)performRevealAnimated:(BOOL)a3 completion:(id)a4
+- (void)performRevealAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
-  v7 = a4;
-  if (v4)
+  animatedCopy = animated;
+  completionCopy = completion;
+  if (animatedCopy)
   {
-    [(CKEditableCollectionViewCell *)self performReveal:v7];
+    [(CKEditableCollectionViewCell *)self performReveal:completionCopy];
   }
 
   else
   {
     [(CKEditableCollectionViewCell *)self _updateVisibility:1];
-    v6 = v7;
-    if (!v7)
+    v6 = completionCopy;
+    if (!completionCopy)
     {
       goto LABEL_6;
     }
 
-    (*(v7 + 2))();
+    (*(completionCopy + 2))();
   }
 
-  v6 = v7;
+  v6 = completionCopy;
 LABEL_6:
 }
 
-- (void)_animateVisibility:(BOOL)a3 completion:(id)a4
+- (void)_animateVisibility:(BOOL)visibility completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = MEMORY[0x1E69DD250];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __62__CKEditableCollectionViewCell__animateVisibility_completion___block_invoke;
   v11[3] = &unk_1E72ED8D8;
   v11[4] = self;
-  v12 = a3;
+  visibilityCopy = visibility;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __62__CKEditableCollectionViewCell__animateVisibility_completion___block_invoke_2;
   v9[3] = &unk_1E72ED1F0;
-  v10 = v6;
-  v8 = v6;
+  v10 = completionCopy;
+  v8 = completionCopy;
   [v7 transitionWithView:self duration:5242880 options:v11 animations:v9 completion:0.3];
 }
 
@@ -498,10 +498,10 @@ uint64_t __62__CKEditableCollectionViewCell__animateVisibility_completion___bloc
 
 - (void)updateCheckmarkImage
 {
-  v3 = [(CKEditableCollectionViewCell *)self isSelected];
+  isSelected = [(CKEditableCollectionViewCell *)self isSelected];
   v4 = +[CKUIBehavior sharedBehaviors];
   v5 = v4;
-  if (v3)
+  if (isSelected)
   {
     [v4 transcriptEditingSelectedImage];
   }
@@ -512,8 +512,8 @@ uint64_t __62__CKEditableCollectionViewCell__animateVisibility_completion___bloc
   }
   v7 = ;
 
-  v6 = [(CKEditableCollectionViewCell *)self checkmark];
-  [v6 setImage:v7];
+  checkmark = [(CKEditableCollectionViewCell *)self checkmark];
+  [checkmark setImage:v7];
 }
 
 - (CGRect)contentAlignmentRect

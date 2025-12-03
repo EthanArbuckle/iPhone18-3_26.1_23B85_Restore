@@ -1,53 +1,53 @@
 @interface REMGrocerySuggestedSection
-- (BOOL)isEqual:(id)a3;
-- (REMGrocerySuggestedSection)initWithCoder:(id)a3;
-- (REMGrocerySuggestedSection)initWithLabelIndex:(int64_t)a3 sectionCanonicalName:(id)a4 confidenceScore:(float)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (REMGrocerySuggestedSection)initWithCoder:(id)coder;
+- (REMGrocerySuggestedSection)initWithLabelIndex:(int64_t)index sectionCanonicalName:(id)name confidenceScore:(float)score;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation REMGrocerySuggestedSection
 
-- (REMGrocerySuggestedSection)initWithLabelIndex:(int64_t)a3 sectionCanonicalName:(id)a4 confidenceScore:(float)a5
+- (REMGrocerySuggestedSection)initWithLabelIndex:(int64_t)index sectionCanonicalName:(id)name confidenceScore:(float)score
 {
-  v9 = a4;
+  nameCopy = name;
   v13.receiver = self;
   v13.super_class = REMGrocerySuggestedSection;
   v10 = [(REMGrocerySuggestedSection *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    v10->_labelIndex = a3;
-    objc_storeStrong(&v10->_sectionCanonicalName, a4);
-    v11->_confidenceScore = a5;
+    v10->_labelIndex = index;
+    objc_storeStrong(&v10->_sectionCanonicalName, name);
+    v11->_confidenceScore = score;
   }
 
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 != self)
+  if (equal != self)
   {
-    v4 = a3;
+    equalCopy = equal;
     v5 = objc_opt_class();
-    v6 = REMDynamicCast(v5, v4);
+    v6 = REMDynamicCast(v5, equalCopy);
 
-    v7 = [(REMGrocerySuggestedSection *)self labelIndex];
-    if (v7 == [v6 labelIndex])
+    labelIndex = [(REMGrocerySuggestedSection *)self labelIndex];
+    if (labelIndex == [v6 labelIndex])
     {
-      v8 = [(REMGrocerySuggestedSection *)self sectionCanonicalName];
-      v9 = [v6 sectionCanonicalName];
-      v10 = v9;
-      if (v8 == v9)
+      sectionCanonicalName = [(REMGrocerySuggestedSection *)self sectionCanonicalName];
+      sectionCanonicalName2 = [v6 sectionCanonicalName];
+      v10 = sectionCanonicalName2;
+      if (sectionCanonicalName == sectionCanonicalName2)
       {
       }
 
       else
       {
-        v11 = [(REMGrocerySuggestedSection *)self sectionCanonicalName];
-        v12 = [v6 sectionCanonicalName];
-        v13 = [v11 isEqual:v12];
+        sectionCanonicalName3 = [(REMGrocerySuggestedSection *)self sectionCanonicalName];
+        sectionCanonicalName4 = [v6 sectionCanonicalName];
+        v13 = [sectionCanonicalName3 isEqual:sectionCanonicalName4];
 
         if (!v13)
         {
@@ -72,42 +72,42 @@ LABEL_9:
   return 1;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(REMGrocerySuggestedSection *)self labelIndex];
-  v6 = [(REMGrocerySuggestedSection *)self sectionCanonicalName];
+  labelIndex = [(REMGrocerySuggestedSection *)self labelIndex];
+  sectionCanonicalName = [(REMGrocerySuggestedSection *)self sectionCanonicalName];
   [(REMGrocerySuggestedSection *)self confidenceScore];
-  v7 = [v4 initWithLabelIndex:v5 sectionCanonicalName:v6 confidenceScore:?];
+  v7 = [v4 initWithLabelIndex:labelIndex sectionCanonicalName:sectionCanonicalName confidenceScore:?];
 
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  [v5 encodeInteger:-[REMGrocerySuggestedSection labelIndex](self forKey:{"labelIndex"), @"labelIndex"}];
-  v4 = [(REMGrocerySuggestedSection *)self sectionCanonicalName];
-  [v5 encodeObject:v4 forKey:@"sectionCanonicalName"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[REMGrocerySuggestedSection labelIndex](self forKey:{"labelIndex"), @"labelIndex"}];
+  sectionCanonicalName = [(REMGrocerySuggestedSection *)self sectionCanonicalName];
+  [coderCopy encodeObject:sectionCanonicalName forKey:@"sectionCanonicalName"];
 
   [(REMGrocerySuggestedSection *)self confidenceScore];
-  [v5 encodeFloat:@"confidenceScore" forKey:?];
+  [coderCopy encodeFloat:@"confidenceScore" forKey:?];
 }
 
-- (REMGrocerySuggestedSection)initWithCoder:(id)a3
+- (REMGrocerySuggestedSection)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = REMGrocerySuggestedSection;
   v5 = [(REMGrocerySuggestedSection *)&v10 init];
   if (v5)
   {
-    v5->_labelIndex = [v4 decodeIntForKey:@"labelIndex"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sectionCanonicalName"];
+    v5->_labelIndex = [coderCopy decodeIntForKey:@"labelIndex"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sectionCanonicalName"];
     sectionCanonicalName = v5->_sectionCanonicalName;
     v5->_sectionCanonicalName = v6;
 
-    [v4 decodeFloatForKey:@"confidenceScore"];
+    [coderCopy decodeFloatForKey:@"confidenceScore"];
     v5->_confidenceScore = v8;
   }
 

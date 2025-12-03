@@ -2,8 +2,8 @@
 - (void)cancelRetitling;
 - (void)contentDidChange;
 - (void)layoutSubviews;
-- (void)textFieldDidBeginEditing:(id)a3;
-- (void)textFieldDidEndEditing:(id)a3;
+- (void)textFieldDidBeginEditing:(id)editing;
+- (void)textFieldDidEndEditing:(id)editing;
 @end
 
 @implementation SFTabOverviewNavigationBarTitleView
@@ -29,11 +29,11 @@
 
 - (void)cancelRetitling
 {
-  v2 = self;
+  selfCopy = self;
   sub_18BAEE994();
 }
 
-- (void)textFieldDidBeginEditing:(id)a3
+- (void)textFieldDidBeginEditing:(id)editing
 {
   v3 = *(&self->super.super._constraintsExceptingSubviewAutoresizingConstraints + OBJC_IVAR___SFTabOverviewNavigationBarTitleView_configuration);
   v18[0] = *(&self->super.super.super + OBJC_IVAR___SFTabOverviewNavigationBarTitleView_configuration);
@@ -52,20 +52,20 @@
   *v17 = v7;
   v16 = v6;
   v15 = v5;
-  v8 = self;
+  selfCopy = self;
   sub_18B9EA6E8(v18, &v11);
   sub_18BAEF2DC(&v12);
   sub_18B9EA744(&v12);
-  v9 = *(&v8->super.super.super.super.isa + OBJC_IVAR___SFTabOverviewNavigationBarTitleView_didBeginRetitling);
+  v9 = *(&selfCopy->super.super.super.super.isa + OBJC_IVAR___SFTabOverviewNavigationBarTitleView_didBeginRetitling);
   v10 = sub_18BC1E1A8();
   v9(v10);
 }
 
-- (void)textFieldDidEndEditing:(id)a3
+- (void)textFieldDidEndEditing:(id)editing
 {
-  v4 = a3;
-  v5 = self;
-  sub_18BAEEC2C(v4);
+  editingCopy = editing;
+  selfCopy = self;
+  sub_18BAEEC2C(editingCopy);
 }
 
 @end

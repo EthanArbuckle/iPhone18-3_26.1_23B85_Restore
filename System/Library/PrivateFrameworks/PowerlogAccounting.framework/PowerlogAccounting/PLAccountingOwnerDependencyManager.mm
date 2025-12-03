@@ -1,22 +1,22 @@
 @interface PLAccountingOwnerDependencyManager
 - (PLAccountingOwnerDependencyManager)init;
-- (id)_lastDependencyForDependencyID:(id)a3;
-- (id)dependenciesWithDependencyID:(id)a3 withRange:(id)a4;
-- (id)lastDependencyForDependencyID:(id)a3;
-- (id)lastOwnerForOwnerID:(id)a3;
-- (void)addDependency:(id)a3;
-- (void)addOwner:(id)a3;
-- (void)canFreeDependency:(id)a3;
-- (void)canFreeOwner:(id)a3;
-- (void)freeExpiredDependenciesAtNow:(id)a3;
-- (void)freeExpiredOwnersAtNow:(id)a3;
-- (void)notifyDependenciesWithOwner:(id)a3;
-- (void)notifyOwnersWithDependency:(id)a3;
-- (void)startObservingDependencyID:(id)a3 forOwner:(id)a4;
-- (void)startObservingOwnerID:(id)a3 forDependency:(id)a4;
-- (void)stopObservingDependencyID:(id)a3 forOwner:(id)a4;
-- (void)stopObservingOwnerID:(id)a3 forDependency:(id)a4;
-- (void)updateLastDependencyID:(id)a3 withEndDate:(id)a4;
+- (id)_lastDependencyForDependencyID:(id)d;
+- (id)dependenciesWithDependencyID:(id)d withRange:(id)range;
+- (id)lastDependencyForDependencyID:(id)d;
+- (id)lastOwnerForOwnerID:(id)d;
+- (void)addDependency:(id)dependency;
+- (void)addOwner:(id)owner;
+- (void)canFreeDependency:(id)dependency;
+- (void)canFreeOwner:(id)owner;
+- (void)freeExpiredDependenciesAtNow:(id)now;
+- (void)freeExpiredOwnersAtNow:(id)now;
+- (void)notifyDependenciesWithOwner:(id)owner;
+- (void)notifyOwnersWithDependency:(id)dependency;
+- (void)startObservingDependencyID:(id)d forOwner:(id)owner;
+- (void)startObservingOwnerID:(id)d forDependency:(id)dependency;
+- (void)stopObservingDependencyID:(id)d forOwner:(id)owner;
+- (void)stopObservingOwnerID:(id)d forDependency:(id)dependency;
+- (void)updateLastDependencyID:(id)d withEndDate:(id)date;
 @end
 
 @implementation PLAccountingOwnerDependencyManager
@@ -39,22 +39,22 @@ void __42__PLAccountingOwnerDependencyManager_init__block_invoke(uint64_t a1)
     workQueue = v2->_workQueue;
     v2->_workQueue = v3;
 
-    v5 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     dependencyIDToObservingOwners = v2->_dependencyIDToObservingOwners;
-    v2->_dependencyIDToObservingOwners = v5;
+    v2->_dependencyIDToObservingOwners = dictionary;
 
-    v7 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     dependencyIDToDependencies = v2->_dependencyIDToDependencies;
-    v2->_dependencyIDToDependencies = v7;
+    v2->_dependencyIDToDependencies = dictionary2;
 
     v2->_numDependencies = 0;
-    v9 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary3 = [MEMORY[0x277CBEB38] dictionary];
     ownerIDToObservingDependencies = v2->_ownerIDToObservingDependencies;
-    v2->_ownerIDToObservingDependencies = v9;
+    v2->_ownerIDToObservingDependencies = dictionary3;
 
-    v11 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary4 = [MEMORY[0x277CBEB38] dictionary];
     ownerIDToLastOwner = v2->_ownerIDToLastOwner;
-    v2->_ownerIDToLastOwner = v11;
+    v2->_ownerIDToLastOwner = dictionary4;
 
     v13 = [MEMORY[0x277CBEB58] set];
     ownersRepository = v2->_ownersRepository;
@@ -66,14 +66,14 @@ void __42__PLAccountingOwnerDependencyManager_init__block_invoke(uint64_t a1)
     v18 = [v16 dateWithTimeIntervalSinceNow:v17 * 0.25];
     [objc_opt_class() freeTimerInterval];
     v20 = v19 * 0.25;
-    v21 = [(PLAccountingOwnerDependencyManager *)v2 workQueue];
+    workQueue = [(PLAccountingOwnerDependencyManager *)v2 workQueue];
     v39[0] = MEMORY[0x277D85DD0];
     v39[1] = 3221225472;
     v39[2] = __42__PLAccountingOwnerDependencyManager_init__block_invoke;
     v39[3] = &unk_279A56068;
     v22 = v2;
     v40 = v22;
-    v23 = [v15 initWithFireDate:v18 withInterval:1 withTolerance:0 repeats:v21 withUserInfo:v39 withQueue:v20 withBlock:0.0];
+    v23 = [v15 initWithFireDate:v18 withInterval:1 withTolerance:0 repeats:workQueue withUserInfo:v39 withQueue:v20 withBlock:0.0];
     freeTimer = v22->_freeTimer;
     v22->_freeTimer = v23;
 
@@ -113,18 +113,18 @@ uint64_t __42__PLAccountingOwnerDependencyManager_init__block_invoke_2(uint64_t 
   return result;
 }
 
-- (void)addOwner:(id)a3
+- (void)addOwner:(id)owner
 {
-  v4 = a3;
-  v5 = [(PLAccountingOwnerDependencyManager *)self workQueue];
+  ownerCopy = owner;
+  workQueue = [(PLAccountingOwnerDependencyManager *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __47__PLAccountingOwnerDependencyManager_addOwner___block_invoke;
   v7[3] = &unk_279A55DC0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async_and_wait(v5, v7);
+  v8 = ownerCopy;
+  v6 = ownerCopy;
+  dispatch_async_and_wait(workQueue, v7);
 }
 
 void __47__PLAccountingOwnerDependencyManager_addOwner___block_invoke(uint64_t a1)
@@ -409,18 +409,18 @@ uint64_t __47__PLAccountingOwnerDependencyManager_addOwner___block_invoke_48(uin
   return result;
 }
 
-- (void)notifyDependenciesWithOwner:(id)a3
+- (void)notifyDependenciesWithOwner:(id)owner
 {
-  v4 = a3;
-  v5 = [(PLAccountingOwnerDependencyManager *)self workQueue];
+  ownerCopy = owner;
+  workQueue = [(PLAccountingOwnerDependencyManager *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __66__PLAccountingOwnerDependencyManager_notifyDependenciesWithOwner___block_invoke;
   v7[3] = &unk_279A55DC0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async_and_wait(v5, v7);
+  v8 = ownerCopy;
+  v6 = ownerCopy;
+  dispatch_async_and_wait(workQueue, v7);
 }
 
 void __66__PLAccountingOwnerDependencyManager_notifyDependenciesWithOwner___block_invoke(uint64_t a1)
@@ -543,18 +543,18 @@ uint64_t __66__PLAccountingOwnerDependencyManager_notifyDependenciesWithOwner___
   return result;
 }
 
-- (void)addDependency:(id)a3
+- (void)addDependency:(id)dependency
 {
-  v4 = a3;
-  v5 = [(PLAccountingOwnerDependencyManager *)self workQueue];
+  dependencyCopy = dependency;
+  workQueue = [(PLAccountingOwnerDependencyManager *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __52__PLAccountingOwnerDependencyManager_addDependency___block_invoke;
   v7[3] = &unk_279A55DC0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async_and_wait(v5, v7);
+  v8 = dependencyCopy;
+  v6 = dependencyCopy;
+  dispatch_async_and_wait(workQueue, v7);
 }
 
 void __52__PLAccountingOwnerDependencyManager_addDependency___block_invoke(uint64_t a1)
@@ -902,18 +902,18 @@ uint64_t __52__PLAccountingOwnerDependencyManager_addDependency___block_invoke_8
   return result;
 }
 
-- (void)notifyOwnersWithDependency:(id)a3
+- (void)notifyOwnersWithDependency:(id)dependency
 {
-  v4 = a3;
-  v5 = [(PLAccountingOwnerDependencyManager *)self workQueue];
+  dependencyCopy = dependency;
+  workQueue = [(PLAccountingOwnerDependencyManager *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __65__PLAccountingOwnerDependencyManager_notifyOwnersWithDependency___block_invoke;
   v7[3] = &unk_279A55DC0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async_and_wait(v5, v7);
+  v8 = dependencyCopy;
+  v6 = dependencyCopy;
+  dispatch_async_and_wait(workQueue, v7);
 }
 
 void __65__PLAccountingOwnerDependencyManager_notifyOwnersWithDependency___block_invoke(uint64_t a1)
@@ -1036,21 +1036,21 @@ uint64_t __65__PLAccountingOwnerDependencyManager_notifyOwnersWithDependency___b
   return result;
 }
 
-- (void)updateLastDependencyID:(id)a3 withEndDate:(id)a4
+- (void)updateLastDependencyID:(id)d withEndDate:(id)date
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PLAccountingOwnerDependencyManager *)self workQueue];
+  dCopy = d;
+  dateCopy = date;
+  workQueue = [(PLAccountingOwnerDependencyManager *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __73__PLAccountingOwnerDependencyManager_updateLastDependencyID_withEndDate___block_invoke;
   block[3] = &unk_279A55D98;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async_and_wait(v8, block);
+  v12 = dCopy;
+  v13 = dateCopy;
+  v9 = dateCopy;
+  v10 = dCopy;
+  dispatch_async_and_wait(workQueue, block);
 }
 
 void __73__PLAccountingOwnerDependencyManager_updateLastDependencyID_withEndDate___block_invoke(uint64_t a1)
@@ -1228,25 +1228,25 @@ uint64_t __73__PLAccountingOwnerDependencyManager_updateLastDependencyID_withEnd
   return result;
 }
 
-- (id)lastDependencyForDependencyID:(id)a3
+- (id)lastDependencyForDependencyID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__0;
   v16 = __Block_byref_object_dispose__0;
   v17 = 0;
-  v5 = [(PLAccountingOwnerDependencyManager *)self workQueue];
+  workQueue = [(PLAccountingOwnerDependencyManager *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __68__PLAccountingOwnerDependencyManager_lastDependencyForDependencyID___block_invoke;
   block[3] = &unk_279A56090;
-  v10 = v4;
+  v10 = dCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
-  dispatch_async_and_wait(v5, block);
+  v6 = dCopy;
+  dispatch_async_and_wait(workQueue, block);
 
   v7 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -1264,21 +1264,21 @@ uint64_t __68__PLAccountingOwnerDependencyManager_lastDependencyForDependencyID_
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)_lastDependencyForDependencyID:(id)a3
+- (id)_lastDependencyForDependencyID:(id)d
 {
-  v4 = a3;
-  v5 = [(PLAccountingOwnerDependencyManager *)self dependencyIDToDependencies];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  dCopy = d;
+  dependencyIDToDependencies = [(PLAccountingOwnerDependencyManager *)self dependencyIDToDependencies];
+  v6 = [dependencyIDToDependencies objectForKeyedSubscript:dCopy];
 
-  v7 = [v6 lastObject];
+  lastObject = [v6 lastObject];
 
-  return v7;
+  return lastObject;
 }
 
-- (id)dependenciesWithDependencyID:(id)a3 withRange:(id)a4
+- (id)dependenciesWithDependencyID:(id)d withRange:(id)range
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  rangeCopy = range;
   v8 = 0x277D3F000uLL;
   v9 = &off_25EE04000;
   if ([MEMORY[0x277D3F180] debugEnabled])
@@ -1296,12 +1296,12 @@ uint64_t __68__PLAccountingOwnerDependencyManager_lastDependencyForDependencyID_
 
     if (dependenciesWithDependencyID_withRange__classDebugEnabled == 1)
     {
-      v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"dependencyID=%@, range=%@", v6, v7];
+      rangeCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"dependencyID=%@, range=%@", dCopy, rangeCopy];
       v12 = MEMORY[0x277D3F178];
       v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/General Owner Dependency/PLAccountingOwnerDependencyManager.m"];
-      v14 = [v13 lastPathComponent];
+      lastPathComponent = [v13 lastPathComponent];
       v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAccountingOwnerDependencyManager dependenciesWithDependencyID:withRange:]"];
-      [v12 logMessage:v11 fromFile:v14 fromFunction:v15 fromLineNumber:217];
+      [v12 logMessage:rangeCopy fromFile:lastPathComponent fromFunction:v15 fromLineNumber:217];
 
       v16 = PLLogCommon();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
@@ -1314,8 +1314,8 @@ uint64_t __68__PLAccountingOwnerDependencyManager_lastDependencyForDependencyID_
     }
   }
 
-  v17 = [(PLAccountingOwnerDependencyManager *)self dependencyIDToDependencies];
-  v18 = [v17 objectForKeyedSubscript:v6];
+  dependencyIDToDependencies = [(PLAccountingOwnerDependencyManager *)self dependencyIDToDependencies];
+  v18 = [dependencyIDToDependencies objectForKeyedSubscript:dCopy];
 
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
@@ -1332,13 +1332,13 @@ uint64_t __68__PLAccountingOwnerDependencyManager_lastDependencyForDependencyID_
 
     if (dependenciesWithDependencyID_withRange__classDebugEnabled_121 == 1)
     {
-      v20 = v7;
+      v20 = rangeCopy;
       v21 = [MEMORY[0x277CCACA8] stringWithFormat:@"dependencies=%@", v18];
       v22 = MEMORY[0x277D3F178];
       v23 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/General Owner Dependency/PLAccountingOwnerDependencyManager.m"];
-      v24 = [v23 lastPathComponent];
+      lastPathComponent2 = [v23 lastPathComponent];
       v25 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAccountingOwnerDependencyManager dependenciesWithDependencyID:withRange:]"];
-      [v22 logMessage:v21 fromFile:v24 fromFunction:v25 fromLineNumber:220];
+      [v22 logMessage:v21 fromFile:lastPathComponent2 fromFunction:v25 fromLineNumber:220];
 
       v26 = PLLogCommon();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
@@ -1346,7 +1346,7 @@ uint64_t __68__PLAccountingOwnerDependencyManager_lastDependencyForDependencyID_
         [PLAccountingDependency activate];
       }
 
-      v7 = v20;
+      rangeCopy = v20;
       v9 = &off_25EE04000;
       v8 = 0x277D3F000uLL;
     }
@@ -1354,17 +1354,17 @@ uint64_t __68__PLAccountingOwnerDependencyManager_lastDependencyForDependencyID_
 
   if (v18)
   {
-    v27 = [v7 startDate];
-    if (v27 && [v18 count])
+    startDate = [rangeCopy startDate];
+    if (startDate && [v18 count])
     {
-      v28 = v7;
+      v28 = rangeCopy;
       v29 = 0;
       do
       {
         v30 = [v18 objectAtIndexedSubscript:v29];
-        v31 = [v30 range];
-        v32 = [v31 endDate];
-        [v32 timeIntervalSinceDate:v27];
+        range = [v30 range];
+        endDate = [range endDate];
+        [endDate timeIntervalSinceDate:startDate];
         v34 = v33;
 
         if (v34 >= 1.0)
@@ -1376,7 +1376,7 @@ uint64_t __68__PLAccountingOwnerDependencyManager_lastDependencyForDependencyID_
       }
 
       while ([v18 count] > v29);
-      v7 = v28;
+      rangeCopy = v28;
       v9 = &off_25EE04000;
       v8 = 0x277D3F000;
     }
@@ -1401,14 +1401,14 @@ uint64_t __68__PLAccountingOwnerDependencyManager_lastDependencyForDependencyID_
 
       if (dependenciesWithDependencyID_withRange__classDebugEnabled_124 == 1)
       {
-        v36 = v7;
-        v37 = v6;
+        v36 = rangeCopy;
+        v37 = dCopy;
         v38 = [MEMORY[0x277CCACA8] stringWithFormat:@"startIndex=%i", v29];
         v39 = MEMORY[0x277D3F178];
         v40 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/General Owner Dependency/PLAccountingOwnerDependencyManager.m"];
-        v41 = [v40 lastPathComponent];
+        lastPathComponent3 = [v40 lastPathComponent];
         v42 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAccountingOwnerDependencyManager dependenciesWithDependencyID:withRange:]"];
-        [v39 logMessage:v38 fromFile:v41 fromFunction:v42 fromLineNumber:237];
+        [v39 logMessage:v38 fromFile:lastPathComponent3 fromFunction:v42 fromLineNumber:237];
 
         v43 = PLLogCommon();
         if (os_log_type_enabled(v43, OS_LOG_TYPE_DEBUG))
@@ -1416,26 +1416,26 @@ uint64_t __68__PLAccountingOwnerDependencyManager_lastDependencyForDependencyID_
           [PLAccountingDependency activate];
         }
 
-        v6 = v37;
-        v7 = v36;
+        dCopy = v37;
+        rangeCopy = v36;
         v9 = &off_25EE04000;
       }
     }
 
     LODWORD(v44) = [v18 count];
     v45 = (v44 - 1);
-    v46 = [v7 endDate];
-    if (v46 && v29 < v44)
+    endDate2 = [rangeCopy endDate];
+    if (endDate2 && v29 < v44)
     {
-      v61 = v7;
-      v63 = v6;
+      v61 = rangeCopy;
+      v63 = dCopy;
       v44 = v44;
       while (1)
       {
         v47 = [v18 objectAtIndexedSubscript:--v44];
-        v48 = [v47 range];
-        v49 = [v48 startDate];
-        [v46 timeIntervalSinceDate:v49];
+        range2 = [v47 range];
+        startDate2 = [range2 startDate];
+        [endDate2 timeIntervalSinceDate:startDate2];
         v51 = v50;
 
         if (v51 >= 1.0)
@@ -1451,8 +1451,8 @@ uint64_t __68__PLAccountingOwnerDependencyManager_lastDependencyForDependencyID_
         }
       }
 
-      v7 = v61;
-      v6 = v63;
+      rangeCopy = v61;
+      dCopy = v63;
       v9 = &off_25EE04000;
     }
 
@@ -1471,14 +1471,14 @@ uint64_t __68__PLAccountingOwnerDependencyManager_lastDependencyForDependencyID_
 
       if (dependenciesWithDependencyID_withRange__classDebugEnabled_130 == 1)
       {
-        v62 = v7;
-        v64 = v6;
+        v62 = rangeCopy;
+        v64 = dCopy;
         v53 = [MEMORY[0x277CCACA8] stringWithFormat:@"endIndex=%i", v45];
         v54 = MEMORY[0x277D3F178];
         v55 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/General Owner Dependency/PLAccountingOwnerDependencyManager.m"];
-        v56 = [v55 lastPathComponent];
+        lastPathComponent4 = [v55 lastPathComponent];
         v57 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAccountingOwnerDependencyManager dependenciesWithDependencyID:withRange:]"];
-        [v54 logMessage:v53 fromFile:v56 fromFunction:v57 fromLineNumber:251];
+        [v54 logMessage:v53 fromFile:lastPathComponent4 fromFunction:v57 fromLineNumber:251];
 
         v58 = PLLogCommon();
         if (os_log_type_enabled(v58, OS_LOG_TYPE_DEBUG))
@@ -1486,8 +1486,8 @@ uint64_t __68__PLAccountingOwnerDependencyManager_lastDependencyForDependencyID_
           [PLAccountingDependency activate];
         }
 
-        v7 = v62;
-        v6 = v64;
+        rangeCopy = v62;
+        dCopy = v64;
       }
     }
 
@@ -1538,10 +1538,10 @@ uint64_t __77__PLAccountingOwnerDependencyManager_dependenciesWithDependencyID_w
   return result;
 }
 
-- (void)startObservingDependencyID:(id)a3 forOwner:(id)a4
+- (void)startObservingDependencyID:(id)d forOwner:(id)owner
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  ownerCopy = owner;
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
     v8 = objc_opt_class();
@@ -1557,12 +1557,12 @@ uint64_t __77__PLAccountingOwnerDependencyManager_dependenciesWithDependencyID_w
 
     if (startObservingDependencyID_forOwner__classDebugEnabled == 1)
     {
-      v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"dependencyID=%@, owner=%@", v6, v7];
+      ownerCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"dependencyID=%@, owner=%@", dCopy, ownerCopy];
       v10 = MEMORY[0x277D3F178];
       v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/General Owner Dependency/PLAccountingOwnerDependencyManager.m"];
-      v12 = [v11 lastPathComponent];
+      lastPathComponent = [v11 lastPathComponent];
       v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAccountingOwnerDependencyManager startObservingDependencyID:forOwner:]"];
-      [v10 logMessage:v9 fromFile:v12 fromFunction:v13 fromLineNumber:259];
+      [v10 logMessage:ownerCopy fromFile:lastPathComponent fromFunction:v13 fromLineNumber:259];
 
       v14 = PLLogCommon();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
@@ -1572,17 +1572,17 @@ uint64_t __77__PLAccountingOwnerDependencyManager_dependenciesWithDependencyID_w
     }
   }
 
-  v15 = [(PLAccountingOwnerDependencyManager *)self dependencyIDToObservingOwners];
-  v16 = [v15 objectForKeyedSubscript:v6];
+  dependencyIDToObservingOwners = [(PLAccountingOwnerDependencyManager *)self dependencyIDToObservingOwners];
+  v16 = [dependencyIDToObservingOwners objectForKeyedSubscript:dCopy];
 
   if (!v16)
   {
     v16 = [MEMORY[0x277CBEB58] set];
-    v17 = [(PLAccountingOwnerDependencyManager *)self dependencyIDToObservingOwners];
-    [v17 setObject:v16 forKeyedSubscript:v6];
+    dependencyIDToObservingOwners2 = [(PLAccountingOwnerDependencyManager *)self dependencyIDToObservingOwners];
+    [dependencyIDToObservingOwners2 setObject:v16 forKeyedSubscript:dCopy];
   }
 
-  [v16 addObject:v7];
+  [v16 addObject:ownerCopy];
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
     v18 = objc_opt_class();
@@ -1599,14 +1599,14 @@ uint64_t __77__PLAccountingOwnerDependencyManager_dependenciesWithDependencyID_w
     if (startObservingDependencyID_forOwner__classDebugEnabled_139 == 1)
     {
       v19 = MEMORY[0x277CCACA8];
-      v20 = [(PLAccountingOwnerDependencyManager *)self dependencyIDToObservingOwners];
-      v21 = [v19 stringWithFormat:@"dependencyIDToObservingOwners=%@", v20];
+      dependencyIDToObservingOwners3 = [(PLAccountingOwnerDependencyManager *)self dependencyIDToObservingOwners];
+      v21 = [v19 stringWithFormat:@"dependencyIDToObservingOwners=%@", dependencyIDToObservingOwners3];
 
       v22 = MEMORY[0x277D3F178];
       v23 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/General Owner Dependency/PLAccountingOwnerDependencyManager.m"];
-      v24 = [v23 lastPathComponent];
+      lastPathComponent2 = [v23 lastPathComponent];
       v25 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAccountingOwnerDependencyManager startObservingDependencyID:forOwner:]"];
-      [v22 logMessage:v21 fromFile:v24 fromFunction:v25 fromLineNumber:267];
+      [v22 logMessage:v21 fromFile:lastPathComponent2 fromFunction:v25 fromLineNumber:267];
 
       v26 = PLLogCommon();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
@@ -1631,10 +1631,10 @@ uint64_t __74__PLAccountingOwnerDependencyManager_startObservingDependencyID_for
   return result;
 }
 
-- (void)stopObservingDependencyID:(id)a3 forOwner:(id)a4
+- (void)stopObservingDependencyID:(id)d forOwner:(id)owner
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  ownerCopy = owner;
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
     v8 = objc_opt_class();
@@ -1650,12 +1650,12 @@ uint64_t __74__PLAccountingOwnerDependencyManager_startObservingDependencyID_for
 
     if (stopObservingDependencyID_forOwner__classDebugEnabled == 1)
     {
-      v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"dependencyID=%@, owner=%@", v6, v7];
+      ownerCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"dependencyID=%@, owner=%@", dCopy, ownerCopy];
       v10 = MEMORY[0x277D3F178];
       v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/General Owner Dependency/PLAccountingOwnerDependencyManager.m"];
-      v12 = [v11 lastPathComponent];
+      lastPathComponent = [v11 lastPathComponent];
       v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAccountingOwnerDependencyManager stopObservingDependencyID:forOwner:]"];
-      [v10 logMessage:v9 fromFile:v12 fromFunction:v13 fromLineNumber:273];
+      [v10 logMessage:ownerCopy fromFile:lastPathComponent fromFunction:v13 fromLineNumber:273];
 
       v14 = PLLogCommon();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
@@ -1665,10 +1665,10 @@ uint64_t __74__PLAccountingOwnerDependencyManager_startObservingDependencyID_for
     }
   }
 
-  v15 = [(PLAccountingOwnerDependencyManager *)self dependencyIDToObservingOwners];
-  v16 = [v15 objectForKeyedSubscript:v6];
+  dependencyIDToObservingOwners = [(PLAccountingOwnerDependencyManager *)self dependencyIDToObservingOwners];
+  v16 = [dependencyIDToObservingOwners objectForKeyedSubscript:dCopy];
 
-  [v16 removeObject:v7];
+  [v16 removeObject:ownerCopy];
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
     v17 = objc_opt_class();
@@ -1685,14 +1685,14 @@ uint64_t __74__PLAccountingOwnerDependencyManager_startObservingDependencyID_for
     if (stopObservingDependencyID_forOwner__classDebugEnabled_142 == 1)
     {
       v18 = MEMORY[0x277CCACA8];
-      v19 = [(PLAccountingOwnerDependencyManager *)self dependencyIDToObservingOwners];
-      v20 = [v18 stringWithFormat:@"dependencyIDToObservingOwners=%@", v19];
+      dependencyIDToObservingOwners2 = [(PLAccountingOwnerDependencyManager *)self dependencyIDToObservingOwners];
+      v20 = [v18 stringWithFormat:@"dependencyIDToObservingOwners=%@", dependencyIDToObservingOwners2];
 
       v21 = MEMORY[0x277D3F178];
       v22 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/General Owner Dependency/PLAccountingOwnerDependencyManager.m"];
-      v23 = [v22 lastPathComponent];
+      lastPathComponent2 = [v22 lastPathComponent];
       v24 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAccountingOwnerDependencyManager stopObservingDependencyID:forOwner:]"];
-      [v21 logMessage:v20 fromFile:v23 fromFunction:v24 fromLineNumber:277];
+      [v21 logMessage:v20 fromFile:lastPathComponent2 fromFunction:v24 fromLineNumber:277];
 
       v25 = PLLogCommon();
       if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
@@ -1717,9 +1717,9 @@ uint64_t __73__PLAccountingOwnerDependencyManager_stopObservingDependencyID_forO
   return result;
 }
 
-- (void)canFreeOwner:(id)a3
+- (void)canFreeOwner:(id)owner
 {
-  v4 = a3;
+  ownerCopy = owner;
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
     v5 = objc_opt_class();
@@ -1735,12 +1735,12 @@ uint64_t __73__PLAccountingOwnerDependencyManager_stopObservingDependencyID_forO
 
     if (canFreeOwner__classDebugEnabled == 1)
     {
-      v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"owner=%@", v4];
+      ownerCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"owner=%@", ownerCopy];
       v7 = MEMORY[0x277D3F178];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/General Owner Dependency/PLAccountingOwnerDependencyManager.m"];
-      v9 = [v8 lastPathComponent];
+      lastPathComponent = [v8 lastPathComponent];
       v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAccountingOwnerDependencyManager canFreeOwner:]"];
-      [v7 logMessage:v6 fromFile:v9 fromFunction:v10 fromLineNumber:282];
+      [v7 logMessage:ownerCopy fromFile:lastPathComponent fromFunction:v10 fromLineNumber:282];
 
       v11 = PLLogCommon();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -1750,8 +1750,8 @@ uint64_t __73__PLAccountingOwnerDependencyManager_stopObservingDependencyID_forO
     }
   }
 
-  v12 = [(PLAccountingOwnerDependencyManager *)self ownersRepository];
-  [v12 removeObject:v4];
+  ownersRepository = [(PLAccountingOwnerDependencyManager *)self ownersRepository];
+  [ownersRepository removeObject:ownerCopy];
 
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
@@ -1769,14 +1769,14 @@ uint64_t __73__PLAccountingOwnerDependencyManager_stopObservingDependencyID_forO
     if (canFreeOwner__classDebugEnabled_145 == 1)
     {
       v14 = MEMORY[0x277CCACA8];
-      v15 = [(PLAccountingOwnerDependencyManager *)self ownersRepository];
-      v16 = [v14 stringWithFormat:@"ownersRepository=%@", v15];
+      ownersRepository2 = [(PLAccountingOwnerDependencyManager *)self ownersRepository];
+      v16 = [v14 stringWithFormat:@"ownersRepository=%@", ownersRepository2];
 
       v17 = MEMORY[0x277D3F178];
       v18 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/General Owner Dependency/PLAccountingOwnerDependencyManager.m"];
-      v19 = [v18 lastPathComponent];
+      lastPathComponent2 = [v18 lastPathComponent];
       v20 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAccountingOwnerDependencyManager canFreeOwner:]"];
-      [v17 logMessage:v16 fromFile:v19 fromFunction:v20 fromLineNumber:285];
+      [v17 logMessage:v16 fromFile:lastPathComponent2 fromFunction:v20 fromLineNumber:285];
 
       v21 = PLLogCommon();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
@@ -1801,19 +1801,19 @@ uint64_t __51__PLAccountingOwnerDependencyManager_canFreeOwner___block_invoke_14
   return result;
 }
 
-- (id)lastOwnerForOwnerID:(id)a3
+- (id)lastOwnerForOwnerID:(id)d
 {
-  v4 = a3;
-  v5 = [(PLAccountingOwnerDependencyManager *)self ownerIDToLastOwner];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  dCopy = d;
+  ownerIDToLastOwner = [(PLAccountingOwnerDependencyManager *)self ownerIDToLastOwner];
+  v6 = [ownerIDToLastOwner objectForKeyedSubscript:dCopy];
 
   return v6;
 }
 
-- (void)startObservingOwnerID:(id)a3 forDependency:(id)a4
+- (void)startObservingOwnerID:(id)d forDependency:(id)dependency
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  dependencyCopy = dependency;
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
     v8 = objc_opt_class();
@@ -1829,12 +1829,12 @@ uint64_t __51__PLAccountingOwnerDependencyManager_canFreeOwner___block_invoke_14
 
     if (startObservingOwnerID_forDependency__classDebugEnabled == 1)
     {
-      v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"ownerID=%@, dependency=%@", v6, v7];
+      dependencyCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"ownerID=%@, dependency=%@", dCopy, dependencyCopy];
       v10 = MEMORY[0x277D3F178];
       v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/General Owner Dependency/PLAccountingOwnerDependencyManager.m"];
-      v12 = [v11 lastPathComponent];
+      lastPathComponent = [v11 lastPathComponent];
       v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAccountingOwnerDependencyManager startObservingOwnerID:forDependency:]"];
-      [v10 logMessage:v9 fromFile:v12 fromFunction:v13 fromLineNumber:303];
+      [v10 logMessage:dependencyCopy fromFile:lastPathComponent fromFunction:v13 fromLineNumber:303];
 
       v14 = PLLogCommon();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
@@ -1844,17 +1844,17 @@ uint64_t __51__PLAccountingOwnerDependencyManager_canFreeOwner___block_invoke_14
     }
   }
 
-  v15 = [(PLAccountingOwnerDependencyManager *)self ownerIDToObservingDependencies];
-  v16 = [v15 objectForKeyedSubscript:v6];
+  ownerIDToObservingDependencies = [(PLAccountingOwnerDependencyManager *)self ownerIDToObservingDependencies];
+  v16 = [ownerIDToObservingDependencies objectForKeyedSubscript:dCopy];
 
   if (!v16)
   {
     v16 = [MEMORY[0x277CBEB58] set];
-    v17 = [(PLAccountingOwnerDependencyManager *)self ownerIDToObservingDependencies];
-    [v17 setObject:v16 forKeyedSubscript:v6];
+    ownerIDToObservingDependencies2 = [(PLAccountingOwnerDependencyManager *)self ownerIDToObservingDependencies];
+    [ownerIDToObservingDependencies2 setObject:v16 forKeyedSubscript:dCopy];
   }
 
-  [v16 addObject:v7];
+  [v16 addObject:dependencyCopy];
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
     v18 = objc_opt_class();
@@ -1871,14 +1871,14 @@ uint64_t __51__PLAccountingOwnerDependencyManager_canFreeOwner___block_invoke_14
     if (startObservingOwnerID_forDependency__classDebugEnabled_151 == 1)
     {
       v19 = MEMORY[0x277CCACA8];
-      v20 = [(PLAccountingOwnerDependencyManager *)self ownerIDToObservingDependencies];
-      v21 = [v19 stringWithFormat:@"ownerIDToObservingDependencies=%@", v20];
+      ownerIDToObservingDependencies3 = [(PLAccountingOwnerDependencyManager *)self ownerIDToObservingDependencies];
+      v21 = [v19 stringWithFormat:@"ownerIDToObservingDependencies=%@", ownerIDToObservingDependencies3];
 
       v22 = MEMORY[0x277D3F178];
       v23 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/General Owner Dependency/PLAccountingOwnerDependencyManager.m"];
-      v24 = [v23 lastPathComponent];
+      lastPathComponent2 = [v23 lastPathComponent];
       v25 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAccountingOwnerDependencyManager startObservingOwnerID:forDependency:]"];
-      [v22 logMessage:v21 fromFile:v24 fromFunction:v25 fromLineNumber:311];
+      [v22 logMessage:v21 fromFile:lastPathComponent2 fromFunction:v25 fromLineNumber:311];
 
       v26 = PLLogCommon();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
@@ -1903,10 +1903,10 @@ uint64_t __74__PLAccountingOwnerDependencyManager_startObservingOwnerID_forDepen
   return result;
 }
 
-- (void)stopObservingOwnerID:(id)a3 forDependency:(id)a4
+- (void)stopObservingOwnerID:(id)d forDependency:(id)dependency
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  dependencyCopy = dependency;
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
     v8 = objc_opt_class();
@@ -1922,12 +1922,12 @@ uint64_t __74__PLAccountingOwnerDependencyManager_startObservingOwnerID_forDepen
 
     if (stopObservingOwnerID_forDependency__classDebugEnabled == 1)
     {
-      v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"ownerID=%@, dependency=%@", v6, v7];
+      dependencyCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"ownerID=%@, dependency=%@", dCopy, dependencyCopy];
       v10 = MEMORY[0x277D3F178];
       v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/General Owner Dependency/PLAccountingOwnerDependencyManager.m"];
-      v12 = [v11 lastPathComponent];
+      lastPathComponent = [v11 lastPathComponent];
       v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAccountingOwnerDependencyManager stopObservingOwnerID:forDependency:]"];
-      [v10 logMessage:v9 fromFile:v12 fromFunction:v13 fromLineNumber:317];
+      [v10 logMessage:dependencyCopy fromFile:lastPathComponent fromFunction:v13 fromLineNumber:317];
 
       v14 = PLLogCommon();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
@@ -1937,9 +1937,9 @@ uint64_t __74__PLAccountingOwnerDependencyManager_startObservingOwnerID_forDepen
     }
   }
 
-  v15 = [(PLAccountingOwnerDependencyManager *)self ownerIDToObservingDependencies];
-  v16 = [v15 objectForKeyedSubscript:v6];
-  [v16 removeObject:v7];
+  ownerIDToObservingDependencies = [(PLAccountingOwnerDependencyManager *)self ownerIDToObservingDependencies];
+  v16 = [ownerIDToObservingDependencies objectForKeyedSubscript:dCopy];
+  [v16 removeObject:dependencyCopy];
 
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
@@ -1957,14 +1957,14 @@ uint64_t __74__PLAccountingOwnerDependencyManager_startObservingOwnerID_forDepen
     if (stopObservingOwnerID_forDependency__classDebugEnabled_154 == 1)
     {
       v18 = MEMORY[0x277CCACA8];
-      v19 = [(PLAccountingOwnerDependencyManager *)self ownerIDToObservingDependencies];
-      v20 = [v18 stringWithFormat:@"ownerIDToObservingDependencies=%@", v19];
+      ownerIDToObservingDependencies2 = [(PLAccountingOwnerDependencyManager *)self ownerIDToObservingDependencies];
+      v20 = [v18 stringWithFormat:@"ownerIDToObservingDependencies=%@", ownerIDToObservingDependencies2];
 
       v21 = MEMORY[0x277D3F178];
       v22 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/General Owner Dependency/PLAccountingOwnerDependencyManager.m"];
-      v23 = [v22 lastPathComponent];
+      lastPathComponent2 = [v22 lastPathComponent];
       v24 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAccountingOwnerDependencyManager stopObservingOwnerID:forDependency:]"];
-      [v21 logMessage:v20 fromFile:v23 fromFunction:v24 fromLineNumber:320];
+      [v21 logMessage:v20 fromFile:lastPathComponent2 fromFunction:v24 fromLineNumber:320];
 
       v25 = PLLogCommon();
       if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
@@ -1989,9 +1989,9 @@ uint64_t __73__PLAccountingOwnerDependencyManager_stopObservingOwnerID_forDepend
   return result;
 }
 
-- (void)canFreeDependency:(id)a3
+- (void)canFreeDependency:(id)dependency
 {
-  v4 = a3;
+  dependencyCopy = dependency;
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
     v5 = objc_opt_class();
@@ -2007,12 +2007,12 @@ uint64_t __73__PLAccountingOwnerDependencyManager_stopObservingOwnerID_forDepend
 
     if (canFreeDependency__classDebugEnabled == 1)
     {
-      v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"dependency=%@", v4];
+      dependencyCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"dependency=%@", dependencyCopy];
       v7 = MEMORY[0x277D3F178];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/General Owner Dependency/PLAccountingOwnerDependencyManager.m"];
-      v9 = [v8 lastPathComponent];
+      lastPathComponent = [v8 lastPathComponent];
       v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAccountingOwnerDependencyManager canFreeDependency:]"];
-      [v7 logMessage:v6 fromFile:v9 fromFunction:v10 fromLineNumber:325];
+      [v7 logMessage:dependencyCopy fromFile:lastPathComponent fromFunction:v10 fromLineNumber:325];
 
       v11 = PLLogCommon();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -2022,10 +2022,10 @@ uint64_t __73__PLAccountingOwnerDependencyManager_stopObservingOwnerID_forDepend
     }
   }
 
-  v12 = [(PLAccountingOwnerDependencyManager *)self dependencyIDToDependencies];
-  v13 = [v4 ID];
-  v14 = [v12 objectForKeyedSubscript:v13];
-  [v14 removeObject:v4];
+  dependencyIDToDependencies = [(PLAccountingOwnerDependencyManager *)self dependencyIDToDependencies];
+  v13 = [dependencyCopy ID];
+  v14 = [dependencyIDToDependencies objectForKeyedSubscript:v13];
+  [v14 removeObject:dependencyCopy];
 
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
@@ -2043,14 +2043,14 @@ uint64_t __73__PLAccountingOwnerDependencyManager_stopObservingOwnerID_forDepend
     if (canFreeDependency__classDebugEnabled_157 == 1)
     {
       v16 = MEMORY[0x277CCACA8];
-      v17 = [(PLAccountingOwnerDependencyManager *)self dependencyIDToDependencies];
-      v18 = [v16 stringWithFormat:@"dependencyIDToDependencies=%@", v17];
+      dependencyIDToDependencies2 = [(PLAccountingOwnerDependencyManager *)self dependencyIDToDependencies];
+      v18 = [v16 stringWithFormat:@"dependencyIDToDependencies=%@", dependencyIDToDependencies2];
 
       v19 = MEMORY[0x277D3F178];
       v20 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/General Owner Dependency/PLAccountingOwnerDependencyManager.m"];
-      v21 = [v20 lastPathComponent];
+      lastPathComponent2 = [v20 lastPathComponent];
       v22 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAccountingOwnerDependencyManager canFreeDependency:]"];
-      [v19 logMessage:v18 fromFile:v21 fromFunction:v22 fromLineNumber:328];
+      [v19 logMessage:v18 fromFile:lastPathComponent2 fromFunction:v22 fromLineNumber:328];
 
       v23 = PLLogCommon();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
@@ -2077,12 +2077,12 @@ uint64_t __56__PLAccountingOwnerDependencyManager_canFreeDependency___block_invo
   return result;
 }
 
-- (void)freeExpiredOwnersAtNow:(id)a3
+- (void)freeExpiredOwnersAtNow:(id)now
 {
   v80 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  nowCopy = now;
   v5 = 0x277D3F000uLL;
-  v57 = v4;
+  v57 = nowCopy;
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
     v6 = objc_opt_class();
@@ -2101,12 +2101,12 @@ uint64_t __56__PLAccountingOwnerDependencyManager_canFreeDependency___block_invo
 
     if (v7 == 1)
     {
-      v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"now=%@, class=%@", v4, objc_opt_class()];
+      v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"now=%@, class=%@", nowCopy, objc_opt_class()];
       v9 = MEMORY[0x277D3F178];
       v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/General Owner Dependency/PLAccountingOwnerDependencyManager.m"];
-      v11 = [v10 lastPathComponent];
+      lastPathComponent = [v10 lastPathComponent];
       v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAccountingOwnerDependencyManager freeExpiredOwnersAtNow:]"];
-      [v9 logMessage:v8 fromFile:v11 fromFunction:v12 fromLineNumber:350];
+      [v9 logMessage:v8 fromFile:lastPathComponent fromFunction:v12 fromLineNumber:350];
 
       v13 = PLLogCommon();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
@@ -2114,7 +2114,7 @@ uint64_t __56__PLAccountingOwnerDependencyManager_canFreeDependency___block_invo
         [PLAccountingDependency activate];
       }
 
-      v4 = v57;
+      nowCopy = v57;
       v5 = 0x277D3F000uLL;
     }
   }
@@ -2138,15 +2138,15 @@ uint64_t __56__PLAccountingOwnerDependencyManager_canFreeDependency___block_invo
     if (v15 == 1)
     {
       v16 = MEMORY[0x277CCACA8];
-      v17 = [(PLAccountingOwnerDependencyManager *)self ownersRepository];
-      v18 = [v17 copy];
+      ownersRepository = [(PLAccountingOwnerDependencyManager *)self ownersRepository];
+      v18 = [ownersRepository copy];
       v19 = [v16 stringWithFormat:@"ownersRepositoryCopy=%@, class=%@", v18, objc_opt_class()];
 
       v20 = MEMORY[0x277D3F178];
       v21 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/General Owner Dependency/PLAccountingOwnerDependencyManager.m"];
-      v22 = [v21 lastPathComponent];
+      lastPathComponent2 = [v21 lastPathComponent];
       v23 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAccountingOwnerDependencyManager freeExpiredOwnersAtNow:]"];
-      [v20 logMessage:v19 fromFile:v22 fromFunction:v23 fromLineNumber:352];
+      [v20 logMessage:v19 fromFile:lastPathComponent2 fromFunction:v23 fromLineNumber:352];
 
       v24 = PLLogCommon();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
@@ -2154,7 +2154,7 @@ uint64_t __56__PLAccountingOwnerDependencyManager_canFreeDependency___block_invo
         [PLAccountingDependency activate];
       }
 
-      v4 = v57;
+      nowCopy = v57;
       v5 = 0x277D3F000uLL;
     }
   }
@@ -2163,8 +2163,8 @@ uint64_t __56__PLAccountingOwnerDependencyManager_canFreeDependency___block_invo
   v70 = 0u;
   v67 = 0u;
   v68 = 0u;
-  v25 = [(PLAccountingOwnerDependencyManager *)self ownersRepository];
-  v26 = [v25 copy];
+  ownersRepository2 = [(PLAccountingOwnerDependencyManager *)self ownersRepository];
+  v26 = [ownersRepository2 copy];
 
   obj = v26;
   v27 = [v26 countByEnumeratingWithState:&v67 objects:v79 count:16];
@@ -2184,15 +2184,15 @@ uint64_t __56__PLAccountingOwnerDependencyManager_canFreeDependency___block_invo
         }
 
         v30 = *(*(&v67 + 1) + 8 * v29);
-        v31 = [v30 range];
-        v32 = [v31 endDate];
+        range = [v30 range];
+        endDate = [range endDate];
 
-        v33 = [v30 activationDate];
-        if (v32)
+        activationDate = [v30 activationDate];
+        if (endDate)
         {
-          v34 = [v32 laterDate:v33];
+          v34 = [endDate laterDate:activationDate];
 
-          v33 = v34;
+          activationDate = v34;
         }
 
         if ([*(v5 + 384) debugEnabled])
@@ -2214,14 +2214,14 @@ uint64_t __56__PLAccountingOwnerDependencyManager_canFreeDependency___block_invo
           if (v36 == 1)
           {
             v37 = MEMORY[0x277CCACA8];
-            v38 = [v30 activationDate];
-            v39 = [v37 stringWithFormat:@"lastValidDate=%@, endDate=%@, activationDate=%@, class=%@", v33, v32, v38, objc_opt_class()];
+            activationDate2 = [v30 activationDate];
+            v39 = [v37 stringWithFormat:@"lastValidDate=%@, endDate=%@, activationDate=%@, class=%@", activationDate, endDate, activationDate2, objc_opt_class()];
 
             v40 = MEMORY[0x277D3F178];
             v41 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/General Owner Dependency/PLAccountingOwnerDependencyManager.m"];
-            v42 = [v41 lastPathComponent];
+            lastPathComponent3 = [v41 lastPathComponent];
             v43 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAccountingOwnerDependencyManager freeExpiredOwnersAtNow:]"];
-            [v40 logMessage:v39 fromFile:v42 fromFunction:v43 fromLineNumber:356];
+            [v40 logMessage:v39 fromFile:lastPathComponent3 fromFunction:v43 fromLineNumber:356];
 
             v44 = PLLogCommon();
             if (os_log_type_enabled(v44, OS_LOG_TYPE_DEBUG))
@@ -2231,13 +2231,13 @@ uint64_t __56__PLAccountingOwnerDependencyManager_canFreeDependency___block_invo
               _os_log_debug_impl(&dword_25EDCD000, v44, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
             }
 
-            v4 = v57;
+            nowCopy = v57;
             v28 = v58;
             v5 = 0x277D3F000uLL;
           }
         }
 
-        [v4 timeIntervalSinceDate:v33];
+        [nowCopy timeIntervalSinceDate:activationDate];
         v46 = v45;
         [objc_opt_class() freeTimerInterval];
         if (v46 > v47)
@@ -2263,9 +2263,9 @@ uint64_t __56__PLAccountingOwnerDependencyManager_canFreeDependency___block_invo
               v50 = [MEMORY[0x277CCACA8] stringWithFormat:@"freeing owner=%@, class=%@", v30, objc_opt_class()];
               v51 = MEMORY[0x277D3F178];
               v52 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/General Owner Dependency/PLAccountingOwnerDependencyManager.m"];
-              v53 = [v52 lastPathComponent];
+              lastPathComponent4 = [v52 lastPathComponent];
               v54 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAccountingOwnerDependencyManager freeExpiredOwnersAtNow:]"];
-              [v51 logMessage:v50 fromFile:v53 fromFunction:v54 fromLineNumber:360];
+              [v51 logMessage:v50 fromFile:lastPathComponent4 fromFunction:v54 fromLineNumber:360];
 
               v55 = PLLogCommon();
               if (os_log_type_enabled(v55, OS_LOG_TYPE_DEBUG))
@@ -2275,7 +2275,7 @@ uint64_t __56__PLAccountingOwnerDependencyManager_canFreeDependency___block_invo
                 _os_log_debug_impl(&dword_25EDCD000, v55, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
               }
 
-              v4 = v57;
+              nowCopy = v57;
               v28 = v58;
               v5 = 0x277D3F000;
             }
@@ -2325,12 +2325,12 @@ uint64_t __61__PLAccountingOwnerDependencyManager_freeExpiredOwnersAtNow___block
   return result;
 }
 
-- (void)freeExpiredDependenciesAtNow:(id)a3
+- (void)freeExpiredDependenciesAtNow:(id)now
 {
   v67 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  nowCopy = now;
   v5 = 0x277D3F000uLL;
-  v46 = self;
+  selfCopy = self;
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
     v6 = objc_opt_class();
@@ -2349,12 +2349,12 @@ uint64_t __61__PLAccountingOwnerDependencyManager_freeExpiredOwnersAtNow___block
 
     if (v7 == 1)
     {
-      v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"now=%@", v4];
+      nowCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"now=%@", nowCopy];
       v9 = MEMORY[0x277D3F178];
       v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/General Owner Dependency/PLAccountingOwnerDependencyManager.m"];
-      v11 = [v10 lastPathComponent];
+      lastPathComponent = [v10 lastPathComponent];
       v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAccountingOwnerDependencyManager freeExpiredDependenciesAtNow:]"];
-      [v9 logMessage:v8 fromFile:v11 fromFunction:v12 fromLineNumber:368];
+      [v9 logMessage:nowCopy fromFile:lastPathComponent fromFunction:v12 fromLineNumber:368];
 
       v13 = PLLogCommon();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
@@ -2362,7 +2362,7 @@ uint64_t __61__PLAccountingOwnerDependencyManager_freeExpiredOwnersAtNow___block
         [PLAccountingDependency activate];
       }
 
-      self = v46;
+      self = selfCopy;
       v5 = 0x277D3F000uLL;
     }
   }
@@ -2377,7 +2377,7 @@ uint64_t __61__PLAccountingOwnerDependencyManager_freeExpiredOwnersAtNow___block
   if (v43)
   {
     v41 = *v57;
-    v45 = v4;
+    v45 = nowCopy;
     do
     {
       v14 = 0;
@@ -2415,18 +2415,18 @@ uint64_t __61__PLAccountingOwnerDependencyManager_freeExpiredOwnersAtNow___block
               }
 
               v22 = *(*(&v52 + 1) + 8 * v21);
-              v23 = [v22 range];
-              v24 = [v23 endDate];
+              range = [v22 range];
+              endDate = [range endDate];
 
-              v25 = [v22 activationDate];
-              if (v24)
+              activationDate = [v22 activationDate];
+              if (endDate)
               {
-                v26 = [v24 laterDate:v25];
+                v26 = [endDate laterDate:activationDate];
 
-                v25 = v26;
+                activationDate = v26;
               }
 
-              [v4 timeIntervalSinceDate:v25];
+              [nowCopy timeIntervalSinceDate:activationDate];
               v28 = v27;
               [objc_opt_class() freeTimerInterval];
               if (v28 > v29)
@@ -2454,9 +2454,9 @@ uint64_t __61__PLAccountingOwnerDependencyManager_freeExpiredOwnersAtNow___block
                     v33 = [MEMORY[0x277CCACA8] stringWithFormat:@"freeing dependency=%@", v22];
                     v34 = MEMORY[0x277D3F178];
                     v35 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/General Owner Dependency/PLAccountingOwnerDependencyManager.m"];
-                    v36 = [v35 lastPathComponent];
+                    lastPathComponent2 = [v35 lastPathComponent];
                     v37 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAccountingOwnerDependencyManager freeExpiredDependenciesAtNow:]"];
-                    [v34 logMessage:v33 fromFile:v36 fromFunction:v37 fromLineNumber:378];
+                    [v34 logMessage:v33 fromFile:lastPathComponent2 fromFunction:v37 fromLineNumber:378];
 
                     v38 = PLLogCommon();
                     if (os_log_type_enabled(v38, OS_LOG_TYPE_DEBUG))
@@ -2466,7 +2466,7 @@ uint64_t __61__PLAccountingOwnerDependencyManager_freeExpiredOwnersAtNow___block
                       _os_log_debug_impl(&dword_25EDCD000, v38, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
                     }
 
-                    v4 = v45;
+                    nowCopy = v45;
                     v5 = 0x277D3F000;
                     v20 = v47;
                   }

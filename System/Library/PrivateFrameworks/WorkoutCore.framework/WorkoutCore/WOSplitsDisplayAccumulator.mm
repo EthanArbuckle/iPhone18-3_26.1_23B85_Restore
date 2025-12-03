@@ -2,7 +2,7 @@
 - (NLSessionActivitySplitsAccumulator)splitsAccumulator;
 - (NSDate)splitStartDate;
 - (WOSplitsDisplayAccumulator)init;
-- (WOSplitsDisplayAccumulator)initWithBuilder:(id)a3 splitsAccumulator:(id)a4 activityType:(id)a5 powerAccumulator:(id)a6;
+- (WOSplitsDisplayAccumulator)initWithBuilder:(id)builder splitsAccumulator:(id)accumulator activityType:(id)type powerAccumulator:(id)powerAccumulator;
 - (double)definedSplitDistance;
 - (double)splitAveragePower;
 - (double)splitDistance;
@@ -10,9 +10,9 @@
 - (double)splitPace;
 - (int64_t)splitIndex;
 - (void)assignStartValues;
-- (void)dataProvider:(id)a3 didUpdate:(unint64_t)a4;
-- (void)setSplitsAccumulator:(id)a3;
-- (void)splitComplete:(id)a3 currentSplitEvents:(id)a4;
+- (void)dataProvider:(id)provider didUpdate:(unint64_t)update;
+- (void)setSplitsAccumulator:(id)accumulator;
+- (void)splitComplete:(id)complete currentSplitEvents:(id)events;
 @end
 
 @implementation WOSplitsDisplayAccumulator
@@ -24,25 +24,25 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setSplitsAccumulator:(id)a3
+- (void)setSplitsAccumulator:(id)accumulator
 {
-  v5 = a3;
-  v4 = self;
-  specialized SplitsDisplayAccumulator.splitsAccumulator.setter(v5);
+  accumulatorCopy = accumulator;
+  selfCopy = self;
+  specialized SplitsDisplayAccumulator.splitsAccumulator.setter(accumulatorCopy);
 }
 
-- (WOSplitsDisplayAccumulator)initWithBuilder:(id)a3 splitsAccumulator:(id)a4 activityType:(id)a5 powerAccumulator:(id)a6
+- (WOSplitsDisplayAccumulator)initWithBuilder:(id)builder splitsAccumulator:(id)accumulator activityType:(id)type powerAccumulator:(id)powerAccumulator
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  return SplitsDisplayAccumulator.init(builder:splitsAccumulator:activityType:powerAccumulator:)(v9, v10, v11, a6);
+  builderCopy = builder;
+  accumulatorCopy = accumulator;
+  typeCopy = type;
+  powerAccumulatorCopy = powerAccumulator;
+  return SplitsDisplayAccumulator.init(builder:splitsAccumulator:activityType:powerAccumulator:)(builderCopy, accumulatorCopy, typeCopy, powerAccumulator);
 }
 
 - (void)assignStartValues
 {
-  v2 = self;
+  selfCopy = self;
   SplitsDisplayAccumulator.assignStartValues()();
 }
 
@@ -68,9 +68,9 @@
   swift_beginAccess();
   v5 = *(v3 + v4);
   v6 = objc_opt_self();
-  v7 = self;
+  selfCopy = self;
   v8 = v5;
-  v9 = [v6 meterUnit];
+  meterUnit = [v6 meterUnit];
   [v8 doubleValueForUnit_];
   v11 = v10;
 
@@ -87,7 +87,7 @@
 
 - (double)splitPace
 {
-  v2 = self;
+  selfCopy = self;
   v3 = SplitsDisplayAccumulator.splitPace.getter();
 
   return v3;
@@ -98,9 +98,9 @@
   v3 = OBJC_IVAR___WOSplitsDisplayAccumulator_splitsAccumulator;
   swift_beginAccess();
   v4 = *(&self->super.isa + v3);
-  v5 = self;
-  v6 = [v4 completedSplits];
-  v7 = [v6 count];
+  selfCopy = self;
+  completedSplits = [v4 completedSplits];
+  v7 = [completedSplits count];
 
   result = v7 + 1;
   if (__OFADD__(v7, 1))
@@ -118,7 +118,7 @@
   v5 = *(v4 + 64);
   MEMORY[0x28223BE20](v3);
   v7 = &v11 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v8 = self;
+  selfCopy = self;
   SplitsDisplayAccumulator.splitStartDate.getter(v7);
 
   v9.super.isa = Date._bridgeToObjectiveC()().super.isa;
@@ -129,24 +129,24 @@
 
 - (double)splitAveragePower
 {
-  v2 = self;
+  selfCopy = self;
   SplitsDisplayAccumulator.splitAveragePower.getter();
   v4 = v3;
 
   return v4;
 }
 
-- (void)dataProvider:(id)a3 didUpdate:(unint64_t)a4
+- (void)dataProvider:(id)provider didUpdate:(unint64_t)update
 {
   swift_unknownObjectRetain();
-  v7 = self;
-  SplitsDisplayAccumulator.dataProvider(_:didUpdate:)(a3, a4);
+  selfCopy = self;
+  SplitsDisplayAccumulator.dataProvider(_:didUpdate:)(provider, update);
   swift_unknownObjectRelease();
 }
 
-- (void)splitComplete:(id)a3 currentSplitEvents:(id)a4
+- (void)splitComplete:(id)complete currentSplitEvents:(id)events
 {
-  v4 = self;
+  selfCopy = self;
   SplitsDisplayAccumulator.assignStartValues()();
 }
 

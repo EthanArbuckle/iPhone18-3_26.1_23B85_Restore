@@ -1,10 +1,10 @@
 @interface SmartStackSuggestionSettingsWidgetProvider
-- (void)extensionsDidChangeForExtensionProvider:(id)a3;
+- (void)extensionsDidChangeForExtensionProvider:(id)provider;
 @end
 
 @implementation SmartStackSuggestionSettingsWidgetProvider
 
-- (void)extensionsDidChangeForExtensionProvider:(id)a3
+- (void)extensionsDidChangeForExtensionProvider:(id)provider
 {
   v4 = (*(*(__swift_instantiateConcreteTypeFromMangledNameV2(&qword_28036BCE8, &qword_26A0AF0C0) - 8) + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
   MEMORY[0x28223BE20]();

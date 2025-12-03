@@ -1,35 +1,35 @@
 @interface FSProbeResult
 + (FSContainerIdentifier)cantReadContainerID;
 + (FSProbeResult)notRecognizedProbeResult;
-+ (FSProbeResult)resultWithResult:(int64_t)a3 name:(id)a4 containerID:(id)a5;
++ (FSProbeResult)resultWithResult:(int64_t)result name:(id)name containerID:(id)d;
 + (FSProbeResult)usableButLimitedProbeResult;
-+ (id)recognizedProbeResultWithName:(id)a3 containerID:(id)a4;
-+ (id)usableButLimitedProbeResultWithName:(id)a3 containerID:(id)a4;
-+ (id)usableProbeResultWithName:(id)a3 containerID:(id)a4;
-- (FSProbeResult)initWithCoder:(id)a3;
-- (FSProbeResult)initWithResult:(int64_t)a3 name:(id)a4 containerID:(id)a5;
++ (id)recognizedProbeResultWithName:(id)name containerID:(id)d;
++ (id)usableButLimitedProbeResultWithName:(id)name containerID:(id)d;
++ (id)usableProbeResultWithName:(id)name containerID:(id)d;
+- (FSProbeResult)initWithCoder:(id)coder;
+- (FSProbeResult)initWithResult:(int64_t)result name:(id)name containerID:(id)d;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FSProbeResult
 
-- (FSProbeResult)initWithResult:(int64_t)a3 name:(id)a4 containerID:(id)a5
+- (FSProbeResult)initWithResult:(int64_t)result name:(id)name containerID:(id)d
 {
-  v8 = a4;
-  v9 = a5;
+  nameCopy = name;
+  dCopy = d;
   v17.receiver = self;
   v17.super_class = FSProbeResult;
   v10 = [(FSProbeResult *)&v17 init];
   v11 = v10;
   if (v10)
   {
-    v10->_result = a3;
-    v12 = [v8 copy];
+    v10->_result = result;
+    v12 = [nameCopy copy];
     name = v11->_name;
     v11->_name = v12;
 
-    v14 = [v9 copy];
+    v14 = [dCopy copy];
     containerID = v11->_containerID;
     v11->_containerID = v14;
   }
@@ -37,9 +37,9 @@
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v8 = a3;
+  coderCopy = coder;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -48,24 +48,24 @@
   }
 
   v4 = [MEMORY[0x277CCABB0] numberWithInteger:self->_result];
-  [v8 encodeObject:v4 forKey:@"FSProbeResult.Result"];
+  [coderCopy encodeObject:v4 forKey:@"FSProbeResult.Result"];
 
   name = self->_name;
   if (name)
   {
-    [v8 encodeObject:name forKey:@"FSProbeResult.Name"];
+    [coderCopy encodeObject:name forKey:@"FSProbeResult.Name"];
   }
 
   containerID = self->_containerID;
   if (containerID)
   {
-    [v8 encodeObject:containerID forKey:@"FSProbeResult.UUID"];
+    [coderCopy encodeObject:containerID forKey:@"FSProbeResult.UUID"];
   }
 }
 
-- (FSProbeResult)initWithCoder:(id)a3
+- (FSProbeResult)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -73,12 +73,12 @@
     objc_exception_throw(v10);
   }
 
-  self->_result = [v4 decodeIntForKey:@"FSProbeResult.Result"];
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"FSProbeResult.Name"];
+  self->_result = [coderCopy decodeIntForKey:@"FSProbeResult.Result"];
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"FSProbeResult.Name"];
   name = self->_name;
   self->_name = v5;
 
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"FSProbeResult.UUID"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"FSProbeResult.UUID"];
   containerID = self->_containerID;
   self->_containerID = v7;
 
@@ -125,52 +125,52 @@
 
 + (FSProbeResult)notRecognizedProbeResult
 {
-  v2 = [[a1 alloc] initWithResult:0 name:0 containerID:0];
+  v2 = [[self alloc] initWithResult:0 name:0 containerID:0];
 
   return v2;
 }
 
-+ (id)recognizedProbeResultWithName:(id)a3 containerID:(id)a4
++ (id)recognizedProbeResultWithName:(id)name containerID:(id)d
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithResult:1 name:v7 containerID:v6];
+  dCopy = d;
+  nameCopy = name;
+  v8 = [[self alloc] initWithResult:1 name:nameCopy containerID:dCopy];
 
   return v8;
 }
 
 + (FSProbeResult)usableButLimitedProbeResult
 {
-  v2 = [a1 alloc];
+  v2 = [self alloc];
   v3 = +[FSProbeResult cantReadContainerID];
   v4 = [v2 initWithResult:2 name:&stru_285DEFA28 containerID:v3];
 
   return v4;
 }
 
-+ (id)usableButLimitedProbeResultWithName:(id)a3 containerID:(id)a4
++ (id)usableButLimitedProbeResultWithName:(id)name containerID:(id)d
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithResult:2 name:v7 containerID:v6];
+  dCopy = d;
+  nameCopy = name;
+  v8 = [[self alloc] initWithResult:2 name:nameCopy containerID:dCopy];
 
   return v8;
 }
 
-+ (id)usableProbeResultWithName:(id)a3 containerID:(id)a4
++ (id)usableProbeResultWithName:(id)name containerID:(id)d
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithResult:3 name:v7 containerID:v6];
+  dCopy = d;
+  nameCopy = name;
+  v8 = [[self alloc] initWithResult:3 name:nameCopy containerID:dCopy];
 
   return v8;
 }
 
-+ (FSProbeResult)resultWithResult:(int64_t)a3 name:(id)a4 containerID:(id)a5
++ (FSProbeResult)resultWithResult:(int64_t)result name:(id)name containerID:(id)d
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [[a1 alloc] initWithResult:a3 name:v9 containerID:v8];
+  dCopy = d;
+  nameCopy = name;
+  v10 = [[self alloc] initWithResult:result name:nameCopy containerID:dCopy];
 
   return v10;
 }

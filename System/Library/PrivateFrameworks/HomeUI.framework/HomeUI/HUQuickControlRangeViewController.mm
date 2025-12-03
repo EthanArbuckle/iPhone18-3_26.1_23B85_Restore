@@ -9,8 +9,8 @@
 - (id)createInteractionCoordinator
 {
   v3 = [HUQuickControlSliderView alloc];
-  v4 = [(HUQuickControlSingleControlViewController *)self viewProfile];
-  v5 = [(HUQuickControlSliderView *)v3 initWithProfile:v4];
+  viewProfile = [(HUQuickControlSingleControlViewController *)self viewProfile];
+  v5 = [(HUQuickControlSliderView *)v3 initWithProfile:viewProfile];
 
   v6 = [[HUQuickControlElasticSliderInteractionCoordinator alloc] initWithControlView:v5 delegate:self];
 
@@ -21,9 +21,9 @@
 {
   v3 = objc_alloc_init(HUQuickControlSliderViewProfile);
   [(HUQuickControlSliderViewProfile *)v3 setHasOffState:0];
-  v4 = [(HUQuickControlSingleControlViewController *)self controlItem];
-  v5 = [v4 latestResults];
-  v6 = [v5 objectForKeyedSubscript:*MEMORY[0x277D13B18]];
+  controlItem = [(HUQuickControlSingleControlViewController *)self controlItem];
+  latestResults = [controlItem latestResults];
+  v6 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13B18]];
   v7 = v6;
   if (!v6)
   {
@@ -32,27 +32,27 @@
 
   -[HUQuickControlSliderViewProfile setInteractionFidelity:](v3, "setInteractionFidelity:", [v6 unsignedIntegerValue]);
 
-  v8 = [(HUQuickControlSingleControlViewController *)self controlItem];
-  v9 = [v8 latestResults];
-  v10 = [v9 objectForKeyedSubscript:*MEMORY[0x277D13818]];
+  controlItem2 = [(HUQuickControlSingleControlViewController *)self controlItem];
+  latestResults2 = [controlItem2 latestResults];
+  v10 = [latestResults2 objectForKeyedSubscript:*MEMORY[0x277D13818]];
 
-  v11 = [v10 mode];
-  if (v11 == 2)
+  mode = [v10 mode];
+  if (mode == 2)
   {
-    v16 = [(HUQuickControlSingleControlViewController *)self controlItem];
-    v13 = [v16 minimumValueConstraints];
+    controlItem3 = [(HUQuickControlSingleControlViewController *)self controlItem];
+    minimumValueConstraints = [controlItem3 minimumValueConstraints];
 
-    v17 = [(HUQuickControlSingleControlViewController *)self controlItem];
-    v14 = [v17 maximumValueConstraints];
+    controlItem4 = [(HUQuickControlSingleControlViewController *)self controlItem];
+    maximumValueConstraints = [controlItem4 maximumValueConstraints];
 
-    v18 = [v13 validRange];
-    v19 = [v14 validRange];
-    v15 = [v18 unionRange:v19];
+    validRange = [minimumValueConstraints validRange];
+    validRange2 = [maximumValueConstraints validRange];
+    v15 = [validRange unionRange:validRange2];
 
-    v20 = [v14 percentageConstraintsWithinRange:v15];
+    v20 = [maximumValueConstraints percentageConstraintsWithinRange:v15];
     [(HUQuickControlSliderViewProfile *)v3 setPrimaryValueConstraints:v20];
 
-    v21 = [v13 percentageConstraintsWithinRange:v15];
+    v21 = [minimumValueConstraints percentageConstraintsWithinRange:v15];
     [(HUQuickControlSliderViewProfile *)v3 setSecondaryValueConstraints:v21];
 
     [(HUQuickControlSliderViewProfile *)v3 setHasSecondaryValue:1];
@@ -60,16 +60,16 @@
 
   else
   {
-    if (v11 != 1)
+    if (mode != 1)
     {
       goto LABEL_8;
     }
 
-    v12 = [(HUQuickControlSingleControlViewController *)self controlItem];
-    v13 = [v12 targetValueConstraints];
+    controlItem5 = [(HUQuickControlSingleControlViewController *)self controlItem];
+    minimumValueConstraints = [controlItem5 targetValueConstraints];
 
-    v14 = [v13 validRange];
-    v15 = [v13 percentageConstraintsWithinRange:v14];
+    maximumValueConstraints = [minimumValueConstraints validRange];
+    v15 = [minimumValueConstraints percentageConstraintsWithinRange:maximumValueConstraints];
     [(HUQuickControlSliderViewProfile *)v3 setPrimaryValueConstraints:v15];
   }
 
@@ -80,25 +80,25 @@ LABEL_8:
 
 - (id)controlToViewValueTransformer
 {
-  v3 = [(HUQuickControlSingleControlViewController *)self viewProfile];
-  v4 = [(HUQuickControlSingleControlViewController *)self controlItem];
-  v5 = [v4 latestResults];
-  v6 = [v5 objectForKeyedSubscript:*MEMORY[0x277D13818]];
+  viewProfile = [(HUQuickControlSingleControlViewController *)self viewProfile];
+  controlItem = [(HUQuickControlSingleControlViewController *)self controlItem];
+  latestResults = [controlItem latestResults];
+  v6 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13818]];
 
-  v7 = [v6 mode];
+  mode = [v6 mode];
   v8 = MEMORY[0x277D14CF0];
   v9 = objc_opt_class();
-  if (v7 == 2)
+  if (mode == 2)
   {
     v29[0] = MEMORY[0x277D85DD0];
     v29[1] = 3221225472;
     v29[2] = __66__HUQuickControlRangeViewController_controlToViewValueTransformer__block_invoke;
     v29[3] = &unk_277DC01C8;
     v10 = &v30;
-    v11 = v3;
+    v11 = viewProfile;
     v30 = v11;
     v12 = &v31;
-    v31 = v4;
+    v31 = controlItem;
     v26[0] = MEMORY[0x277D85DD0];
     v26[1] = 3221225472;
     v26[2] = __66__HUQuickControlRangeViewController_controlToViewValueTransformer__block_invoke_2;
@@ -118,10 +118,10 @@ LABEL_8:
     v23[2] = __66__HUQuickControlRangeViewController_controlToViewValueTransformer__block_invoke_3;
     v23[3] = &unk_277DBE620;
     v10 = &v24;
-    v17 = v3;
+    v17 = viewProfile;
     v24 = v17;
     v12 = &v25;
-    v25 = v4;
+    v25 = controlItem;
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __66__HUQuickControlRangeViewController_controlToViewValueTransformer__block_invoke_4;

@@ -2,7 +2,7 @@
 - (WFPencilActionConfigurationViewController)init;
 - (void)configureSheetPresentationStyle;
 - (void)viewDidLayoutSubviews;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation WFPencilActionConfigurationViewController
@@ -21,10 +21,10 @@
   v16 = 0u;
   v17 = 0u;
   v15 = 0u;
-  v4 = [(WFPencilActionConfigurationViewController *)self interfaceOrientation];
+  interfaceOrientation = [(WFPencilActionConfigurationViewController *)self interfaceOrientation];
   if (v3)
   {
-    [v3 metricsWithInterfaceOrientation:v4];
+    [v3 metricsWithInterfaceOrientation:interfaceOrientation];
   }
 
   else
@@ -43,26 +43,26 @@
   }
 
   [(WFPencilActionConfigurationViewController *)self setModalPresentationStyle:2];
-  v5 = [(WFPencilActionConfigurationViewController *)self sheetPresentationController];
-  [v5 setPrefersGrabberVisible:_UISolariumEnabled() ^ 1];
+  sheetPresentationController = [(WFPencilActionConfigurationViewController *)self sheetPresentationController];
+  [sheetPresentationController setPrefersGrabberVisible:_UISolariumEnabled() ^ 1];
 
-  v6 = [(WFPencilActionConfigurationViewController *)self sheetPresentationController];
-  [v6 setWidthFollowsPreferredContentSizeWhenEdgeAttached:1];
+  sheetPresentationController2 = [(WFPencilActionConfigurationViewController *)self sheetPresentationController];
+  [sheetPresentationController2 setWidthFollowsPreferredContentSizeWhenEdgeAttached:1];
 
-  v7 = [(WFPencilActionConfigurationViewController *)self sheetPresentationController];
-  [v7 _setWantsBottomAttached:1];
+  sheetPresentationController3 = [(WFPencilActionConfigurationViewController *)self sheetPresentationController];
+  [sheetPresentationController3 _setWantsBottomAttached:1];
 
-  v8 = [(WFPencilActionConfigurationViewController *)self sheetPresentationController];
-  [v8 _setGrabberTopSpacing:*&v20];
+  sheetPresentationController4 = [(WFPencilActionConfigurationViewController *)self sheetPresentationController];
+  [sheetPresentationController4 _setGrabberTopSpacing:*&v20];
 
-  v9 = [(WFPencilActionConfigurationViewController *)self sheetPresentationController];
+  sheetPresentationController5 = [(WFPencilActionConfigurationViewController *)self sheetPresentationController];
   v10 = *&v21;
-  v11 = [(WFPencilActionConfigurationViewController *)self view];
+  view = [(WFPencilActionConfigurationViewController *)self view];
   _UISheetMinimumTopInset();
-  [v9 _setAdditionalMinimumTopInset:v10 - v12];
+  [sheetPresentationController5 _setAdditionalMinimumTopInset:v10 - v12];
 
-  v13 = [(WFPencilActionConfigurationViewController *)self sheetPresentationController];
-  [v13 setPreferredCornerRadius:*(&v20 + 1)];
+  sheetPresentationController6 = [(WFPencilActionConfigurationViewController *)self sheetPresentationController];
+  [sheetPresentationController6 setPreferredCornerRadius:*(&v20 + 1)];
 
   v14[8] = v23;
   v14[9] = v24;
@@ -87,11 +87,11 @@
   [(WFPencilActionConfigurationViewController *)self configureSheetPresentationStyle];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = WFPencilActionConfigurationViewController;
-  [(WFPencilActionConfigurationViewController *)&v4 viewWillAppear:a3];
+  [(WFPencilActionConfigurationViewController *)&v4 viewWillAppear:appear];
   [(WFPencilActionConfigurationViewController *)self configureSheetPresentationStyle];
 }
 

@@ -2,24 +2,24 @@
 - (NSUInteger)getDouble2Array:(vector_double2 *)valuesArray maxCount:(NSUInteger)maxCount;
 - (NSUInteger)getFloat2Array:(vector_float2 *)valuesArray maxCount:(NSUInteger)maxCount;
 - (VtValue)defaultVtValue;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)precision;
 - (vector_double2)double2AtTime:(NSTimeInterval)time;
 - (vector_float2)float2AtTime:(NSTimeInterval)time;
 - (void)resetWithDouble2Array:(const vector_double2 *)valuesArray atTimes:(const NSTimeInterval *)timesArray count:(NSUInteger)count;
 - (void)resetWithFloat2Array:(const vector_float2 *)valuesArray atTimes:(const NSTimeInterval *)timesArray count:(NSUInteger)count;
-- (void)resetWithUsdAttribute:(const void *)a3 timeScale:(double)a4;
-- (void)resetWithUsdAttribute:(const void *)a3 timeScale:(double)a4 time:(double)a5;
+- (void)resetWithUsdAttribute:(const void *)attribute timeScale:(double)scale;
+- (void)resetWithUsdAttribute:(const void *)attribute timeScale:(double)scale time:(double)time;
 - (void)setFloat2:(vector_float2)value atTime:(NSTimeInterval)time;
 @end
 
 @implementation MDLAnimatedVector2
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4.receiver = self;
   v4.super_class = MDLAnimatedVector2;
-  return [(MDLAnimatedValue *)&v4 copyWithZone:a3];
+  return [(MDLAnimatedValue *)&v4 copyWithZone:zone];
 }
 
 - (unint64_t)precision
@@ -101,7 +101,7 @@ LABEL_11:
   return result;
 }
 
-- (void)resetWithUsdAttribute:(const void *)a3 timeScale:(double)a4
+- (void)resetWithUsdAttribute:(const void *)attribute timeScale:(double)scale
 {
   v11[2] = *MEMORY[0x277D85DE8];
   pxrInternal__aapl__pxrReserved__::UsdAttribute::GetTimeSamples();
@@ -136,7 +136,7 @@ LABEL_11:
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)resetWithUsdAttribute:(const void *)a3 timeScale:(double)a4 time:(double)a5
+- (void)resetWithUsdAttribute:(const void *)attribute timeScale:(double)scale time:(double)time
 {
   v11[2] = *MEMORY[0x277D85DE8];
   v11[0] = 0;
@@ -144,7 +144,7 @@ LABEL_11:
   pxrInternal__aapl__pxrReserved__::UsdAttribute::Get();
   if ((sub_239F2A58C(v11) & 1) != 0 || (sub_239F2A554(v11) & 1) != 0 || sub_239F2A5C4(v11))
   {
-    v9 = a5 * a4;
+    v9 = time * scale;
     sub_239E5F7D4(v10, v11);
     sub_239F237C8(&self->super._timeSampledData, &v9);
     sub_239E5B240(v10);

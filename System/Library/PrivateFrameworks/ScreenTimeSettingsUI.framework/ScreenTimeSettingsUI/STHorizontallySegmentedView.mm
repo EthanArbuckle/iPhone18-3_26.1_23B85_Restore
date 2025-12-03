@@ -1,31 +1,31 @@
 @interface STHorizontallySegmentedView
-- (STHorizontallySegmentedView)initWithCoder:(id)a3;
-- (STHorizontallySegmentedView)initWithVibrancy:(BOOL)a3 maximumNumberOfLines:(unint64_t)a4 truncateLabels:(BOOL)a5;
+- (STHorizontallySegmentedView)initWithCoder:(id)coder;
+- (STHorizontallySegmentedView)initWithVibrancy:(BOOL)vibrancy maximumNumberOfLines:(unint64_t)lines truncateLabels:(BOOL)labels;
 - (void)_setUpConstraints;
 - (void)_stHorizontallySegmentedViewCommonInit;
 - (void)layoutSubviews;
-- (void)setSegmentItems:(id)a3;
+- (void)setSegmentItems:(id)items;
 @end
 
 @implementation STHorizontallySegmentedView
 
-- (STHorizontallySegmentedView)initWithVibrancy:(BOOL)a3 maximumNumberOfLines:(unint64_t)a4 truncateLabels:(BOOL)a5
+- (STHorizontallySegmentedView)initWithVibrancy:(BOOL)vibrancy maximumNumberOfLines:(unint64_t)lines truncateLabels:(BOOL)labels
 {
   v10.receiver = self;
   v10.super_class = STHorizontallySegmentedView;
   v8 = [(STHorizontallySegmentedView *)&v10 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
-  v8->_useVibrancy = a3;
-  v8->_maximumNumberOfLines = a4;
-  v8->_truncateLabels = a5;
+  v8->_useVibrancy = vibrancy;
+  v8->_maximumNumberOfLines = lines;
+  v8->_truncateLabels = labels;
   [(STHorizontallySegmentedView *)v8 _stHorizontallySegmentedViewCommonInit];
   return v8;
 }
 
-- (STHorizontallySegmentedView)initWithCoder:(id)a3
+- (STHorizontallySegmentedView)initWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = STHorizontallySegmentedView;
-  v3 = [(STHorizontallySegmentedView *)&v5 initWithCoder:a3];
+  v3 = [(STHorizontallySegmentedView *)&v5 initWithCoder:coder];
   [(STHorizontallySegmentedView *)v3 _stHorizontallySegmentedViewCommonInit];
   return v3;
 }
@@ -48,32 +48,32 @@
   self->_segmentConstraints = v5;
 }
 
-- (void)setSegmentItems:(id)a3
+- (void)setSegmentItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   segmentItems = self->_segmentItems;
-  if (segmentItems != v4 && ![(NSArray *)segmentItems isEqualToArray:v4])
+  if (segmentItems != itemsCopy && ![(NSArray *)segmentItems isEqualToArray:itemsCopy])
   {
-    v6 = [(NSArray *)v4 copy];
+    v6 = [(NSArray *)itemsCopy copy];
     v7 = self->_segmentItems;
     self->_segmentItems = v6;
 
-    v8 = [(STHorizontallySegmentedView *)self useVibrancy];
-    v9 = [(STHorizontallySegmentedView *)self truncateLabels];
-    v10 = [(STHorizontallySegmentedView *)self segmentViews];
-    v11 = [v10 count];
+    useVibrancy = [(STHorizontallySegmentedView *)self useVibrancy];
+    truncateLabels = [(STHorizontallySegmentedView *)self truncateLabels];
+    segmentViews = [(STHorizontallySegmentedView *)self segmentViews];
+    v11 = [segmentViews count];
     v15 = MEMORY[0x277D85DD0];
     v16 = 3221225472;
     v17 = __47__STHorizontallySegmentedView_setSegmentItems___block_invoke;
     v18 = &unk_279B7D8F8;
     v21 = v11;
-    v12 = v10;
-    v22 = v8;
-    v23 = v9;
+    v12 = segmentViews;
+    v22 = useVibrancy;
+    v23 = truncateLabels;
     v19 = v12;
-    v20 = self;
-    [(NSArray *)v4 enumerateObjectsUsingBlock:&v15];
-    v13 = [(NSArray *)v4 count:v15];
+    selfCopy = self;
+    [(NSArray *)itemsCopy enumerateObjectsUsingBlock:&v15];
+    v13 = [(NSArray *)itemsCopy count:v15];
     if (v11 > v13)
     {
       v14 = [objc_alloc(MEMORY[0x277CCAA78]) initWithIndexesInRange:{v13, v11 - v13}];
@@ -127,29 +127,29 @@ void __47__STHorizontallySegmentedView_setSegmentItems___block_invoke(uint64_t a
 - (void)_setUpConstraints
 {
   v91 = *MEMORY[0x277D85DE8];
-  v69 = [(STHorizontallySegmentedView *)self segmentViews];
-  v68 = [v69 firstObject];
-  v2 = v68;
-  if (v68)
+  segmentViews = [(STHorizontallySegmentedView *)self segmentViews];
+  firstObject = [segmentViews firstObject];
+  v2 = firstObject;
+  if (firstObject)
   {
     [(STHorizontallySegmentedView *)self frame];
     Width = CGRectGetWidth(v92);
     [(STHorizontallySegmentedView *)self setPreviousWidth:?];
-    v4 = [(STHorizontallySegmentedView *)self maximumNumberOfLines];
-    if (v4 == 1 || Width <= 0.0)
+    maximumNumberOfLines = [(STHorizontallySegmentedView *)self maximumNumberOfLines];
+    if (maximumNumberOfLines == 1 || Width <= 0.0)
     {
       Width = 1.79769313e308;
     }
 
     v6 = objc_opt_new();
-    v7 = [v68 topAnchor];
-    v8 = [(STHorizontallySegmentedView *)self topAnchor];
-    v9 = [v7 constraintEqualToAnchor:v8];
+    topAnchor = [firstObject topAnchor];
+    topAnchor2 = [(STHorizontallySegmentedView *)self topAnchor];
+    v9 = [topAnchor constraintEqualToAnchor:topAnchor2];
     [v6 addObject:v9];
 
-    v10 = [v68 leadingAnchor];
-    v11 = [(STHorizontallySegmentedView *)self leadingAnchor];
-    v12 = [v10 constraintEqualToAnchor:v11];
+    leadingAnchor = [firstObject leadingAnchor];
+    leadingAnchor2 = [(STHorizontallySegmentedView *)self leadingAnchor];
+    v12 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     [v6 addObject:v12];
 
     v82 = 0;
@@ -161,87 +161,87 @@ void __47__STHorizontallySegmentedView_setSegmentItems___block_invoke(uint64_t a
     v81[2] = 0x2020000000;
     *&v81[3] = Width;
     v13 = objc_opt_new();
-    v14 = [v69 count];
+    v14 = [segmentViews count];
     v15 = [objc_alloc(MEMORY[0x277CCAA78]) initWithIndexesInRange:{1, v14 - 1}];
     v71[0] = MEMORY[0x277D85DD0];
     v71[1] = 3221225472;
     v71[2] = __48__STHorizontallySegmentedView__setUpConstraints__block_invoke;
     v71[3] = &unk_279B7D940;
-    v16 = v69;
+    v16 = segmentViews;
     v78 = vdupq_n_s64(0x7FEFFFFFFFFFFFFFuLL);
     v72 = v16;
     v76 = v81;
     v77 = &v82;
     v17 = v6;
     v73 = v17;
-    v74 = self;
+    selfCopy = self;
     v18 = v13;
     v75 = v18;
-    v79 = v4;
+    v79 = maximumNumberOfLines;
     v80 = Width;
     [v16 enumerateObjectsAtIndexes:v15 options:0 usingBlock:v71];
     v66 = v15;
-    v67 = [v16 lastObject];
+    lastObject = [v16 lastObject];
     if (v83[3] == 1 && v14 == 2)
     {
-      v19 = objc_opt_new();
-      [(STHorizontallySegmentedView *)self addLayoutGuide:v19];
-      [v18 addObject:v19];
-      v20 = [v19 topAnchor];
-      v21 = [v67 topAnchor];
-      v22 = [v20 constraintEqualToAnchor:v21];
+      trailingAnchor5 = objc_opt_new();
+      [(STHorizontallySegmentedView *)self addLayoutGuide:trailingAnchor5];
+      [v18 addObject:trailingAnchor5];
+      topAnchor3 = [trailingAnchor5 topAnchor];
+      topAnchor4 = [lastObject topAnchor];
+      v22 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
       [v17 addObject:v22];
 
-      v23 = [v19 leadingAnchor];
-      v24 = [v67 trailingAnchor];
-      v25 = [v23 constraintEqualToAnchor:v24];
+      leadingAnchor3 = [trailingAnchor5 leadingAnchor];
+      trailingAnchor = [lastObject trailingAnchor];
+      v25 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor];
       [v17 addObject:v25];
 
-      v26 = [v19 bottomAnchor];
-      v27 = [v67 bottomAnchor];
-      v28 = [v26 constraintEqualToAnchor:v27];
+      bottomAnchor = [trailingAnchor5 bottomAnchor];
+      bottomAnchor2 = [lastObject bottomAnchor];
+      v28 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
       [v17 addObject:v28];
 
-      v29 = objc_opt_new();
-      [(STHorizontallySegmentedView *)self addLayoutGuide:v29];
-      [v18 addObject:v29];
-      v30 = [v29 topAnchor];
-      v31 = [v19 topAnchor];
-      v32 = [v30 constraintEqualToAnchor:v31];
+      trailingAnchor6 = objc_opt_new();
+      [(STHorizontallySegmentedView *)self addLayoutGuide:trailingAnchor6];
+      [v18 addObject:trailingAnchor6];
+      topAnchor5 = [trailingAnchor6 topAnchor];
+      topAnchor6 = [trailingAnchor5 topAnchor];
+      v32 = [topAnchor5 constraintEqualToAnchor:topAnchor6];
       [v17 addObject:v32];
 
-      v33 = [v29 leadingAnchor];
-      v34 = [v19 trailingAnchor];
-      v35 = [v33 constraintEqualToAnchor:v34];
+      leadingAnchor4 = [trailingAnchor6 leadingAnchor];
+      trailingAnchor2 = [trailingAnchor5 trailingAnchor];
+      v35 = [leadingAnchor4 constraintEqualToAnchor:trailingAnchor2];
       [v17 addObject:v35];
 
-      v36 = [v29 bottomAnchor];
-      v37 = [v19 bottomAnchor];
-      v38 = [v36 constraintEqualToAnchor:v37];
+      bottomAnchor3 = [trailingAnchor6 bottomAnchor];
+      bottomAnchor4 = [trailingAnchor5 bottomAnchor];
+      v38 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
       [v17 addObject:v38];
 
-      v39 = [v29 bottomAnchor];
-      v40 = [(STHorizontallySegmentedView *)self bottomAnchor];
-      v41 = [v39 constraintEqualToAnchor:v40];
+      bottomAnchor5 = [trailingAnchor6 bottomAnchor];
+      bottomAnchor6 = [(STHorizontallySegmentedView *)self bottomAnchor];
+      v41 = [bottomAnchor5 constraintEqualToAnchor:bottomAnchor6];
       [v17 addObject:v41];
 
-      v42 = [v29 trailingAnchor];
-      v43 = [(STHorizontallySegmentedView *)self trailingAnchor];
-      v44 = [v42 constraintEqualToAnchor:v43];
+      trailingAnchor3 = [trailingAnchor6 trailingAnchor];
+      trailingAnchor4 = [(STHorizontallySegmentedView *)self trailingAnchor];
+      v44 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
       [v17 addObject:v44];
     }
 
     else
     {
-      v45 = [v67 bottomAnchor];
-      v46 = [(STHorizontallySegmentedView *)self bottomAnchor];
-      v47 = [v45 constraintEqualToAnchor:v46];
+      bottomAnchor7 = [lastObject bottomAnchor];
+      bottomAnchor8 = [(STHorizontallySegmentedView *)self bottomAnchor];
+      v47 = [bottomAnchor7 constraintEqualToAnchor:bottomAnchor8];
       [v17 addObject:v47];
 
-      v19 = [v67 trailingAnchor];
-      v29 = [(STHorizontallySegmentedView *)self trailingAnchor];
-      v42 = [v19 constraintEqualToAnchor:v29];
-      [v17 addObject:v42];
+      trailingAnchor5 = [lastObject trailingAnchor];
+      trailingAnchor6 = [(STHorizontallySegmentedView *)self trailingAnchor];
+      trailingAnchor3 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
+      [v17 addObject:trailingAnchor3];
     }
 
     v48 = v18;
@@ -268,15 +268,15 @@ void __47__STHorizontallySegmentedView_setSegmentItems___block_invoke(uint64_t a
           }
 
           v51 = *(*(&v86 + 1) + 8 * v54);
-          v56 = [v51 widthAnchor];
-          v57 = [v56 constraintGreaterThanOrEqualToConstant:8.0];
+          widthAnchor = [v51 widthAnchor];
+          v57 = [widthAnchor constraintGreaterThanOrEqualToConstant:8.0];
           [v49 addObject:v57];
 
           if (v55)
           {
-            v58 = [v55 widthAnchor];
-            v59 = [v51 widthAnchor];
-            v60 = [v58 constraintEqualToAnchor:v59];
+            widthAnchor2 = [v55 widthAnchor];
+            widthAnchor3 = [v51 widthAnchor];
+            v60 = [widthAnchor2 constraintEqualToAnchor:widthAnchor3];
             [v49 addObject:v60];
 
             v61 = v51;
@@ -299,8 +299,8 @@ void __47__STHorizontallySegmentedView_setSegmentItems___block_invoke(uint64_t a
     }
 
     v63 = MEMORY[0x277CCAAD0];
-    v64 = [(STHorizontallySegmentedView *)self segmentConstraints];
-    [v63 deactivateConstraints:v64];
+    segmentConstraints = [(STHorizontallySegmentedView *)self segmentConstraints];
+    [v63 deactivateConstraints:segmentConstraints];
 
     [MEMORY[0x277CCAAD0] activateConstraints:v49];
     [(STHorizontallySegmentedView *)self setSegmentConstraints:v49];
@@ -310,7 +310,7 @@ void __47__STHorizontallySegmentedView_setSegmentItems___block_invoke(uint64_t a
     _Block_object_dispose(v81, 8);
     _Block_object_dispose(&v82, 8);
 
-    v2 = v68;
+    v2 = firstObject;
   }
 }
 

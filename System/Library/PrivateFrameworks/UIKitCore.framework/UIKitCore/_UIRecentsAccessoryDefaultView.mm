@@ -2,8 +2,8 @@
 - (CGSize)intrinsicContentSize;
 - (_UIRecentsAccessoryDefaultView)init;
 - (void)_updateLabelTextColors;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)willMoveToWindow:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
+- (void)willMoveToWindow:(id)window;
 @end
 
 @implementation _UIRecentsAccessoryDefaultView
@@ -85,30 +85,30 @@
   return result;
 }
 
-- (void)willMoveToWindow:(id)a3
+- (void)willMoveToWindow:(id)window
 {
-  v4 = a3;
+  windowCopy = window;
   [(_UIRecentsAccessoryDefaultView *)self _updateLabelTextColors];
   v5.receiver = self;
   v5.super_class = _UIRecentsAccessoryDefaultView;
-  [(UIView *)&v5 willMoveToWindow:v4];
+  [(UIView *)&v5 willMoveToWindow:windowCopy];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v6.receiver = self;
   v6.super_class = _UIRecentsAccessoryDefaultView;
-  v4 = a3;
-  [(UIView *)&v6 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(UIView *)&v6 traitCollectionDidChange:changeCopy];
   v5 = [(UIView *)self traitCollection:v6.receiver];
 }
 
 - (void)_updateLabelTextColors
 {
-  v3 = [(UIView *)self traitCollection];
-  v4 = [v3 userInterfaceStyle];
+  traitCollection = [(UIView *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  if (v4 == 1000 || v4 == 2)
+  if (userInterfaceStyle == 1000 || userInterfaceStyle == 2)
   {
     v5 = +[UIColor whiteColor];
   }
@@ -119,11 +119,11 @@
   }
 
   v8 = v5;
-  v6 = [(_UIRecentsAccessoryDefaultView *)self titleLabel];
-  [v6 setTextColor:v8];
+  titleLabel = [(_UIRecentsAccessoryDefaultView *)self titleLabel];
+  [titleLabel setTextColor:v8];
 
-  v7 = [(_UIRecentsAccessoryDefaultView *)self subheadLabel];
-  [v7 setTextColor:v8];
+  subheadLabel = [(_UIRecentsAccessoryDefaultView *)self subheadLabel];
+  [subheadLabel setTextColor:v8];
 }
 
 @end

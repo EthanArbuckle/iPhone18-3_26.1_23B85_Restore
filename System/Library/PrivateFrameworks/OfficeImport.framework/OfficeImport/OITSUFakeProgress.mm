@@ -1,6 +1,6 @@
 @interface OITSUFakeProgress
-- (OITSUFakeProgress)initWithMaxValue:(double)a3 numberOfStages:(unint64_t)a4;
-- (void)advanceToStage:(unint64_t)a3;
+- (OITSUFakeProgress)initWithMaxValue:(double)value numberOfStages:(unint64_t)stages;
+- (void)advanceToStage:(unint64_t)stage;
 - (void)dealloc;
 - (void)p_slowlyAdvanceToNextStage;
 - (void)start;
@@ -9,9 +9,9 @@
 
 @implementation OITSUFakeProgress
 
-- (OITSUFakeProgress)initWithMaxValue:(double)a3 numberOfStages:(unint64_t)a4
+- (OITSUFakeProgress)initWithMaxValue:(double)value numberOfStages:(unint64_t)stages
 {
-  if (!a4)
+  if (!stages)
   {
     v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[OITSUFakeProgress initWithMaxValue:numberOfStages:]"];
     +[OITSUAssertionHandler handleFailureInFunction:file:lineNumber:isFatal:description:](OITSUAssertionHandler, "handleFailureInFunction:file:lineNumber:isFatal:description:", v7, [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/OfficeImport/OfficeParser/shared/utility/TSUProgress.m"], 651, 0, "Invalid parameter not satisfying: %{public}s", "numberOfStages > 0");
@@ -20,11 +20,11 @@
 
   v10.receiver = self;
   v10.super_class = OITSUFakeProgress;
-  v8 = [(OITSUBasicProgress *)&v10 initWithMaxValue:a3];
+  v8 = [(OITSUBasicProgress *)&v10 initWithMaxValue:value];
   if (v8)
   {
     v8->_accessQueue = dispatch_queue_create("TSUFakeProgress", 0);
-    v8->_numberOfStages = a4;
+    v8->_numberOfStages = stages;
     v8->_stopped = 1;
   }
 
@@ -72,7 +72,7 @@ uint64_t __26__OITSUFakeProgress_start__block_invoke(uint64_t result)
   dispatch_async(accessQueue, block);
 }
 
-- (void)advanceToStage:(unint64_t)a3
+- (void)advanceToStage:(unint64_t)stage
 {
   accessQueue = self->_accessQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -80,7 +80,7 @@ uint64_t __26__OITSUFakeProgress_start__block_invoke(uint64_t result)
   v4[2] = __36__OITSUFakeProgress_advanceToStage___block_invoke;
   v4[3] = &unk_2799C66D8;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = stage;
   dispatch_async(accessQueue, v4);
 }
 

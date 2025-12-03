@@ -1,49 +1,49 @@
 @interface IKScriptsEvaluator
 - (IKAppContext)appContext;
-- (IKScriptsEvaluator)initWithScripts:(id)a3 withContext:(id)a4 callback:(id)a5 jingleRequest:(BOOL)a6;
-- (void)_operation:(id)a3 finishedWithResult:(id)a4 error:(id)a5;
+- (IKScriptsEvaluator)initWithScripts:(id)scripts withContext:(id)context callback:(id)callback jingleRequest:(BOOL)request;
+- (void)_operation:(id)_operation finishedWithResult:(id)result error:(id)error;
 - (void)evaluate;
 - (void)evaluateScripts;
 - (void)handleScirptLoadFailure;
-- (void)operation:(id)a3 finishedWithOutput:(id)a4;
-- (void)parseScriptData:(id)a3 successPredicate:(id)a4 completion:(id)a5;
-- (void)scriptDidLoadWithID:(id)a3 data:(id)a4 error:(id)a5;
+- (void)operation:(id)operation finishedWithOutput:(id)output;
+- (void)parseScriptData:(id)data successPredicate:(id)predicate completion:(id)completion;
+- (void)scriptDidLoadWithID:(id)d data:(id)data error:(id)error;
 @end
 
 @implementation IKScriptsEvaluator
 
-- (IKScriptsEvaluator)initWithScripts:(id)a3 withContext:(id)a4 callback:(id)a5 jingleRequest:(BOOL)a6
+- (IKScriptsEvaluator)initWithScripts:(id)scripts withContext:(id)context callback:(id)callback jingleRequest:(BOOL)request
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  scriptsCopy = scripts;
+  contextCopy = context;
+  callbackCopy = callback;
   v27.receiver = self;
   v27.super_class = IKScriptsEvaluator;
   v14 = [(IKScriptsEvaluator *)&v27 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_scripts, a3);
-    objc_storeWeak(&v15->_appContext, v12);
+    objc_storeStrong(&v14->_scripts, scripts);
+    objc_storeWeak(&v15->_appContext, contextCopy);
     v16 = objc_alloc_init(MEMORY[0x277CBEB18]);
     records = v15->_records;
     v15->_records = v16;
 
-    v15->_isJingleRequest = a6;
-    v18 = [MEMORY[0x277CCAD78] UUID];
-    v19 = [v18 UUIDString];
+    v15->_isJingleRequest = request;
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
     identifier = v15->_identifier;
-    v15->_identifier = v19;
+    v15->_identifier = uUIDString;
 
-    objc_setAssociatedObject(v12, v15->_identifier, v15, 0x301);
-    if (v13)
+    objc_setAssociatedObject(contextCopy, v15->_identifier, v15, 0x301);
+    if (callbackCopy)
     {
-      v21 = [MEMORY[0x277CD4650] managedValueWithValue:v13];
-      v22 = [v12 jsContext];
-      v23 = [v22 virtualMachine];
-      v24 = [v12 jsContext];
-      v25 = [v24 objectForKeyedSubscript:@"Device"];
-      [v23 addManagedReference:v21 withOwner:v25];
+      v21 = [MEMORY[0x277CD4650] managedValueWithValue:callbackCopy];
+      jsContext = [contextCopy jsContext];
+      virtualMachine = [jsContext virtualMachine];
+      jsContext2 = [contextCopy jsContext];
+      v25 = [jsContext2 objectForKeyedSubscript:@"Device"];
+      [virtualMachine addManagedReference:v21 withOwner:v25];
 
       [(IKScriptsEvaluator *)v15 setCallback:v21];
     }
@@ -59,8 +59,8 @@
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
-  v3 = [(IKScriptsEvaluator *)self scripts];
-  v4 = [v3 countByEnumeratingWithState:&v51 objects:v56 count:16];
+  scripts = [(IKScriptsEvaluator *)self scripts];
+  v4 = [scripts countByEnumeratingWithState:&v51 objects:v56 count:16];
   if (v4)
   {
     v5 = *v52;
@@ -70,7 +70,7 @@
       {
         if (*v52 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(scripts);
         }
 
         v7 = *(*(&v51 + 1) + 8 * i);
@@ -81,22 +81,22 @@
           {
             v9 = objc_alloc_init(IKLoadRecord);
             [(IKLoadRecord *)v9 setURL:v8];
-            v10 = [(IKScriptsEvaluator *)self records];
-            [v10 addObject:v9];
+            records = [(IKScriptsEvaluator *)self records];
+            [records addObject:v9];
           }
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v51 objects:v56 count:16];
+      v4 = [scripts countByEnumeratingWithState:&v51 objects:v56 count:16];
     }
 
     while (v4);
   }
 
-  v11 = [(IKScriptsEvaluator *)self scripts];
-  v12 = [v11 count];
-  v13 = [(IKScriptsEvaluator *)self records];
-  LOBYTE(v12) = v12 == [v13 count];
+  scripts2 = [(IKScriptsEvaluator *)self scripts];
+  v12 = [scripts2 count];
+  records2 = [(IKScriptsEvaluator *)self records];
+  LOBYTE(v12) = v12 == [records2 count];
 
   if (v12)
   {
@@ -137,63 +137,63 @@
 
         [v18 setAllowedRetryCount:0];
         [v18 setTimeoutInterval:30.0];
-        v20 = [(IKScriptsEvaluator *)self appContext];
-        v21 = [v20 delegate];
+        appContext = [(IKScriptsEvaluator *)self appContext];
+        delegate = [appContext delegate];
         if (objc_opt_respondsToSelector())
         {
-          v22 = [v21 sourceApplicationBundleIdentifierForContext:v20];
+          v22 = [delegate sourceApplicationBundleIdentifierForContext:appContext];
           [v18 setClientAuditBundleIdentifier:v22];
         }
 
         if (objc_opt_respondsToSelector())
         {
-          v23 = [v21 sourceApplicationAuditTokenDataForContext:v20];
+          v23 = [delegate sourceApplicationAuditTokenDataForContext:appContext];
           [v18 setClientAuditTokenData:v23];
         }
 
         if (self->_isJingleRequest)
         {
           [IKJSITunesStore setITunesStoreHeaders:v18];
-          v24 = objc_alloc_init(MEMORY[0x277D7FD48]);
-          [v24 setNeedsURLBag:0];
-          [v24 setUrlKnownToBeTrusted:1];
+          mEMORY[0x277CCAD30] = objc_alloc_init(MEMORY[0x277D7FD48]);
+          [mEMORY[0x277CCAD30] setNeedsURLBag:0];
+          [mEMORY[0x277CCAD30] setUrlKnownToBeTrusted:1];
 LABEL_27:
-          [v24 setDelegate:self];
+          [mEMORY[0x277CCAD30] setDelegate:self];
           v27 = objc_opt_new();
-          [v24 setDataProvider:v27];
+          [mEMORY[0x277CCAD30] setDataProvider:v27];
 
-          [v24 setRequestProperties:v18];
-          objc_initWeak(&location, v24);
+          [mEMORY[0x277CCAD30] setRequestProperties:v18];
+          objc_initWeak(&location, mEMORY[0x277CCAD30]);
           v40[0] = MEMORY[0x277D85DD0];
           v40[1] = 3221225472;
           v40[2] = __30__IKScriptsEvaluator_evaluate__block_invoke_3;
           v40[3] = &unk_279799920;
           v40[4] = self;
           objc_copyWeak(&v41, &location);
-          [v24 setCompletionBlock:v40];
-          [v16 setOpertaion:v24];
-          v28 = [MEMORY[0x277D7FD20] mainQueue];
-          [v28 addOperation:v24];
+          [mEMORY[0x277CCAD30] setCompletionBlock:v40];
+          [v16 setOpertaion:mEMORY[0x277CCAD30]];
+          mainQueue = [MEMORY[0x277D7FD20] mainQueue];
+          [mainQueue addOperation:mEMORY[0x277CCAD30]];
 
           objc_destroyWeak(&v41);
           objc_destroyWeak(&location);
           goto LABEL_29;
         }
 
-        v25 = [v20 app];
-        v26 = [v25 appIsTrusted];
+        v25 = [appContext app];
+        appIsTrusted = [v25 appIsTrusted];
 
-        if (v26)
+        if (appIsTrusted)
         {
-          v24 = objc_alloc_init(MEMORY[0x277D7FD60]);
-          [v24 _setUsesPrivateCookieStore:0];
+          mEMORY[0x277CCAD30] = objc_alloc_init(MEMORY[0x277D7FD60]);
+          [mEMORY[0x277CCAD30] _setUsesPrivateCookieStore:0];
           goto LABEL_27;
         }
 
-        v29 = [MEMORY[0x277CCAD78] UUID];
-        [v16 setRequestID:v29];
+        uUID = [MEMORY[0x277CCAD78] UUID];
+        [v16 setRequestID:uUID];
 
-        v24 = [MEMORY[0x277CCAD30] sharedSession];
+        mEMORY[0x277CCAD30] = [MEMORY[0x277CCAD30] sharedSession];
         objc_initWeak(&location, self);
         v30 = [v18 URL];
         v42[0] = MEMORY[0x277D85DD0];
@@ -202,7 +202,7 @@ LABEL_27:
         v43[1] = &unk_2797998F8;
         objc_copyWeak(&v44, &location);
         v43[2] = v16;
-        v31 = [v24 dataTaskWithURL:v30 completionHandler:v42];
+        v31 = [mEMORY[0x277CCAD30] dataTaskWithURL:v30 completionHandler:v42];
 
         [v16 setDataTask:v31];
         [v31 resume];
@@ -222,17 +222,17 @@ LABEL_31:
     }
   }
 
-  v32 = [(IKScriptsEvaluator *)self callback];
+  callback = [(IKScriptsEvaluator *)self callback];
 
-  if (v32)
+  if (callback)
   {
-    v33 = [(IKScriptsEvaluator *)self appContext];
+    appContext2 = [(IKScriptsEvaluator *)self appContext];
     v50[0] = MEMORY[0x277D85DD0];
     v50[1] = 3221225472;
     v50[2] = __30__IKScriptsEvaluator_evaluate__block_invoke;
     v50[3] = &unk_2797998D0;
     v50[4] = self;
-    [v33 addPostEvaluateBlock:v50];
+    [appContext2 addPostEvaluateBlock:v50];
   }
 
 LABEL_34:
@@ -264,17 +264,17 @@ void __30__IKScriptsEvaluator_evaluate__block_invoke_3(uint64_t a1)
   [v2 _operation:WeakRetained finishedWithResult:0 error:v4];
 }
 
-- (void)parseScriptData:(id)a3 successPredicate:(id)a4 completion:(id)a5
+- (void)parseScriptData:(id)data successPredicate:(id)predicate completion:(id)completion
 {
   v27 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dataCopy = data;
+  predicateCopy = predicate;
+  completionCopy = completion;
   obj = self;
   objc_sync_enter(obj);
-  if ([v8 length])
+  if ([dataCopy length])
   {
-    v11 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v8 encoding:4];
+    v11 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:dataCopy encoding:4];
   }
 
   else
@@ -288,8 +288,8 @@ void __30__IKScriptsEvaluator_evaluate__block_invoke_3(uint64_t a1)
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v12 = [(IKScriptsEvaluator *)obj records];
-    v13 = [v12 countByEnumeratingWithState:&v22 objects:v26 count:16];
+    records = [(IKScriptsEvaluator *)obj records];
+    v13 = [records countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v13)
     {
       v14 = *v23;
@@ -300,14 +300,14 @@ void __30__IKScriptsEvaluator_evaluate__block_invoke_3(uint64_t a1)
         {
           if (*v23 != v14)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(records);
           }
 
           v17 = *(*(&v22 + 1) + 8 * i);
-          v18 = [v17 loadCompleted];
-          if (v9)
+          loadCompleted = [v17 loadCompleted];
+          if (predicateCopy)
           {
-            v19 = v18;
+            v19 = loadCompleted;
           }
 
           else
@@ -317,16 +317,16 @@ void __30__IKScriptsEvaluator_evaluate__block_invoke_3(uint64_t a1)
 
           if (v19)
           {
-            v15 &= v18;
+            v15 &= loadCompleted;
           }
 
-          else if (v9[2](v9, v17))
+          else if (predicateCopy[2](predicateCopy, v17))
           {
             [v17 setLoadCompleted:1];
             [v17 setScriptStr:v11];
-            if (v10)
+            if (completionCopy)
             {
-              v10[2](v10, 1, v17);
+              completionCopy[2](completionCopy, 1, v17);
             }
           }
 
@@ -336,7 +336,7 @@ void __30__IKScriptsEvaluator_evaluate__block_invoke_3(uint64_t a1)
           }
         }
 
-        v13 = [v12 countByEnumeratingWithState:&v22 objects:v26 count:16];
+        v13 = [records countByEnumeratingWithState:&v22 objects:v26 count:16];
       }
 
       while (v13);
@@ -356,9 +356,9 @@ void __30__IKScriptsEvaluator_evaluate__block_invoke_3(uint64_t a1)
   }
 
   [(IKScriptsEvaluator *)obj handleScirptLoadFailure];
-  if (v10)
+  if (completionCopy)
   {
-    v10[2](v10, 0, 0);
+    completionCopy[2](completionCopy, 0, 0);
   }
 
 LABEL_27:
@@ -367,21 +367,21 @@ LABEL_27:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)scriptDidLoadWithID:(id)a3 data:(id)a4 error:(id)a5
+- (void)scriptDidLoadWithID:(id)d data:(id)data error:(id)error
 {
-  v7 = a3;
+  dCopy = d;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __53__IKScriptsEvaluator_scriptDidLoadWithID_data_error___block_invoke;
   v10[3] = &unk_279799948;
-  v11 = v7;
+  v11 = dCopy;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __53__IKScriptsEvaluator_scriptDidLoadWithID_data_error___block_invoke_2;
   v9[3] = &unk_279799970;
   v9[4] = self;
-  v8 = v7;
-  [(IKScriptsEvaluator *)self parseScriptData:a4 successPredicate:v10 completion:v9];
+  v8 = dCopy;
+  [(IKScriptsEvaluator *)self parseScriptData:data successPredicate:v10 completion:v9];
 }
 
 uint64_t __53__IKScriptsEvaluator_scriptDidLoadWithID_data_error___block_invoke(uint64_t a1, void *a2)
@@ -442,13 +442,13 @@ void __53__IKScriptsEvaluator_scriptDidLoadWithID_data_error___block_invoke_2(ui
   if (self->_callback)
   {
     objc_initWeak(&location, self);
-    v3 = [(IKScriptsEvaluator *)self appContext];
+    appContext = [(IKScriptsEvaluator *)self appContext];
     v4[0] = MEMORY[0x277D85DD0];
     v4[1] = 3221225472;
     v4[2] = __45__IKScriptsEvaluator_handleScirptLoadFailure__block_invoke;
     v4[3] = &unk_2797995A8;
     objc_copyWeak(&v5, &location);
-    [v3 evaluate:v4 completionBlock:0];
+    [appContext evaluate:v4 completionBlock:0];
 
     objc_destroyWeak(&v5);
     objc_destroyWeak(&location);
@@ -473,11 +473,11 @@ void __45__IKScriptsEvaluator_handleScirptLoadFailure__block_invoke(uint64_t a1,
 - (void)evaluateScripts
 {
   v3 = MEMORY[0x277CBEB18];
-  v4 = [(IKScriptsEvaluator *)self records];
-  v5 = [v3 arrayWithArray:v4];
+  records = [(IKScriptsEvaluator *)self records];
+  v5 = [v3 arrayWithArray:records];
 
   objc_initWeak(&location, self);
-  v6 = [(IKScriptsEvaluator *)self appContext];
+  appContext = [(IKScriptsEvaluator *)self appContext];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __37__IKScriptsEvaluator_evaluateScripts__block_invoke;
@@ -485,7 +485,7 @@ void __45__IKScriptsEvaluator_handleScirptLoadFailure__block_invoke(uint64_t a1,
   v7 = v5;
   v9 = v7;
   objc_copyWeak(&v10, &location);
-  [v6 evaluate:v8 completionBlock:0];
+  [appContext evaluate:v8 completionBlock:0];
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(&location);
@@ -573,47 +573,47 @@ void __37__IKScriptsEvaluator_evaluateScripts__block_invoke(uint64_t a1, void *a
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)operation:(id)a3 finishedWithOutput:(id)a4
+- (void)operation:(id)operation finishedWithOutput:(id)output
 {
-  v7 = a3;
-  v6 = a4;
-  if (!v6)
+  operationCopy = operation;
+  outputCopy = output;
+  if (!outputCopy)
   {
-    v6 = [MEMORY[0x277CBEA90] data];
+    outputCopy = [MEMORY[0x277CBEA90] data];
   }
 
-  [(IKScriptsEvaluator *)self _operation:v7 finishedWithResult:v6 error:0];
+  [(IKScriptsEvaluator *)self _operation:operationCopy finishedWithResult:outputCopy error:0];
 }
 
-- (void)_operation:(id)a3 finishedWithResult:(id)a4 error:(id)a5
+- (void)_operation:(id)_operation finishedWithResult:(id)result error:(id)error
 {
-  v7 = a3;
-  v8 = a4;
+  _operationCopy = _operation;
+  resultCopy = result;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = v8;
+    data = resultCopy;
   }
 
   else
   {
-    v9 = [MEMORY[0x277CBEA90] data];
+    data = [MEMORY[0x277CBEA90] data];
   }
 
-  v10 = v9;
+  v10 = data;
   v17 = MEMORY[0x277D85DD0];
   v18 = 3221225472;
   v19 = __58__IKScriptsEvaluator__operation_finishedWithResult_error___block_invoke;
   v20 = &unk_279799948;
-  v21 = v7;
+  v21 = _operationCopy;
   v12 = MEMORY[0x277D85DD0];
   v13 = 3221225472;
   v14 = __58__IKScriptsEvaluator__operation_finishedWithResult_error___block_invoke_2;
   v15 = &unk_279799970;
-  v16 = self;
-  v11 = v7;
+  selfCopy = self;
+  v11 = _operationCopy;
   [(IKScriptsEvaluator *)self parseScriptData:v10 successPredicate:&v17 completion:&v12];
-  [v11 setDelegate:{0, v12, v13, v14, v15, v16, v17, v18, v19, v20}];
+  [v11 setDelegate:{0, v12, v13, v14, v15, selfCopy, v17, v18, v19, v20}];
   [v11 setCompletionBlock:0];
 }
 

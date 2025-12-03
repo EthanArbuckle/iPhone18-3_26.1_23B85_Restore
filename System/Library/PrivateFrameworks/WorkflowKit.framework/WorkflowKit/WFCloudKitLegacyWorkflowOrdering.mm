@@ -1,21 +1,21 @@
 @interface WFCloudKitLegacyWorkflowOrdering
-- (WFCloudKitLegacyWorkflowOrdering)initWithZoneID:(id)a3 orderedWorkflowIDs:(id)a4;
+- (WFCloudKitLegacyWorkflowOrdering)initWithZoneID:(id)d orderedWorkflowIDs:(id)ds;
 @end
 
 @implementation WFCloudKitLegacyWorkflowOrdering
 
-- (WFCloudKitLegacyWorkflowOrdering)initWithZoneID:(id)a3 orderedWorkflowIDs:(id)a4
+- (WFCloudKitLegacyWorkflowOrdering)initWithZoneID:(id)d orderedWorkflowIDs:(id)ds
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  dCopy = d;
+  dsCopy = ds;
+  if (!dCopy)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"WFCloudKitLegacyWorkflowOrdering.m" lineNumber:33 description:{@"Invalid parameter not satisfying: %@", @"zoneID"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFCloudKitLegacyWorkflowOrdering.m" lineNumber:33 description:{@"Invalid parameter not satisfying: %@", @"zoneID"}];
   }
 
-  v9 = [objc_alloc(MEMORY[0x1E695BA70]) initWithRecordName:@"WFOrdering" zoneID:v7];
-  v10 = [(WFCloudKitBaseOrdering *)self initWithIdentifier:v9 orderedWorkflowIDs:v8 orderedFolderIDs:0];
+  v9 = [objc_alloc(MEMORY[0x1E695BA70]) initWithRecordName:@"WFOrdering" zoneID:dCopy];
+  v10 = [(WFCloudKitBaseOrdering *)self initWithIdentifier:v9 orderedWorkflowIDs:dsCopy orderedFolderIDs:0];
 
   return v10;
 }

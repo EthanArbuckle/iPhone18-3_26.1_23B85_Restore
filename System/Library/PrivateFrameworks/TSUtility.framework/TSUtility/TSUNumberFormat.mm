@@ -1,111 +1,111 @@
 @interface TSUNumberFormat
-+ (id)numberFormatWithValueType:(int)a3 formatString:(id)a4 decimalPlaces:(unsigned __int16)a5 currencyCode:(id)a6 useAccountingStyle:(BOOL)a7 negativeStyle:(int)a8 showThousandsSeparator:(BOOL)a9 fractionAccuracy:(int)a10;
-+ (id)numberFormatWithValueType:(int)a3 formatString:(id)a4 decimalPlaces:(unsigned __int16)a5 currencyCode:(id)a6 useAccountingStyle:(BOOL)a7 negativeStyle:(int)a8 showThousandsSeparator:(BOOL)a9 fractionAccuracy:(int)a10 base:(unsigned __int8)a11 basePlaces:(unsigned __int16)a12 baseUseMinusSign:(BOOL)a13;
-+ (id)numberFormatWithValueType:(int)a3 formatString:(id)a4 decimalPlaces:(unsigned __int16)a5 currencyCode:(id)a6 useAccountingStyle:(BOOL)a7 negativeStyle:(int)a8 showThousandsSeparator:(BOOL)a9 fractionAccuracy:(int)a10 prefixString:(id)a11 suffixString:(id)a12 scaleFactor:(double)a13 base:(unsigned __int8)a14 basePlaces:(unsigned __int16)a15 baseUseMinusSign:(BOOL)a16 isCustom:(BOOL)a17 formatName:(id)a18;
-+ (id)numberFormatWithValueType:(int)a3 formatString:(id)a4 decimalPlaces:(unsigned __int16)a5 currencyCode:(id)a6 useAccountingStyle:(BOOL)a7 negativeStyle:(int)a8 showThousandsSeparator:(BOOL)a9 fractionAccuracy:(int)a10 scaleFactor:(double)a11 isCustom:(BOOL)a12 formatName:(id)a13;
-+ (id)numberFormatWithValueType:(int)a3 formatString:(id)a4 decimalPlaces:(unsigned __int16)a5 currencyCode:(id)a6 useAccountingStyle:(BOOL)a7 negativeStyle:(int)a8 showThousandsSeparator:(BOOL)a9 fractionAccuracy:(int)a10 suffixString:(id)a11;
++ (id)numberFormatWithValueType:(int)type formatString:(id)string decimalPlaces:(unsigned __int16)places currencyCode:(id)code useAccountingStyle:(BOOL)style negativeStyle:(int)negativeStyle showThousandsSeparator:(BOOL)separator fractionAccuracy:(int)self0;
++ (id)numberFormatWithValueType:(int)type formatString:(id)string decimalPlaces:(unsigned __int16)places currencyCode:(id)code useAccountingStyle:(BOOL)style negativeStyle:(int)negativeStyle showThousandsSeparator:(BOOL)separator fractionAccuracy:(int)self0 base:(unsigned __int8)self1 basePlaces:(unsigned __int16)self2 baseUseMinusSign:(BOOL)self3;
++ (id)numberFormatWithValueType:(int)type formatString:(id)string decimalPlaces:(unsigned __int16)places currencyCode:(id)code useAccountingStyle:(BOOL)style negativeStyle:(int)negativeStyle showThousandsSeparator:(BOOL)separator fractionAccuracy:(int)self0 prefixString:(id)self1 suffixString:(id)self2 scaleFactor:(double)self3 base:(unsigned __int8)self4 basePlaces:(unsigned __int16)self5 baseUseMinusSign:(BOOL)self6 isCustom:(BOOL)self7 formatName:(id)self8;
++ (id)numberFormatWithValueType:(int)type formatString:(id)string decimalPlaces:(unsigned __int16)places currencyCode:(id)code useAccountingStyle:(BOOL)style negativeStyle:(int)negativeStyle showThousandsSeparator:(BOOL)separator fractionAccuracy:(int)self0 scaleFactor:(double)self1 isCustom:(BOOL)self2 formatName:(id)self3;
++ (id)numberFormatWithValueType:(int)type formatString:(id)string decimalPlaces:(unsigned __int16)places currencyCode:(id)code useAccountingStyle:(BOOL)style negativeStyle:(int)negativeStyle showThousandsSeparator:(BOOL)separator fractionAccuracy:(int)self0 suffixString:(id)self1;
 - (BOOL)customFormatShouldAutoInsertPercentSymbol;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEquivalent:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEquivalent:(id)equivalent;
 - (BOOL)usesTabs;
 - (NSString)description;
 - (TSUNumberFormat)init;
-- (TSUNumberFormat)initWithValueType:(int)a3 formatString:(id)a4 decimalPlaces:(unsigned __int16)a5 currencyCode:(id)a6 useAccountingStyle:(BOOL)a7 negativeStyle:(int)a8 showThousandsSeparator:(BOOL)a9 fractionAccuracy:(int)a10;
-- (TSUNumberFormat)initWithValueType:(int)a3 formatString:(id)a4 decimalPlaces:(unsigned __int16)a5 currencyCode:(id)a6 useAccountingStyle:(BOOL)a7 negativeStyle:(int)a8 showThousandsSeparator:(BOOL)a9 fractionAccuracy:(int)a10 base:(unsigned __int8)a11 basePlaces:(unsigned __int16)a12 baseUseMinusSign:(BOOL)a13;
-- (TSUNumberFormat)initWithValueType:(int)a3 formatString:(id)a4 decimalPlaces:(unsigned __int16)a5 currencyCode:(id)a6 useAccountingStyle:(BOOL)a7 negativeStyle:(int)a8 showThousandsSeparator:(BOOL)a9 fractionAccuracy:(int)a10 prefixString:(id)a11 suffixString:(id)a12 scaleFactor:(double)a13 base:(unsigned __int8)a14 basePlaces:(unsigned __int16)a15 baseUseMinusSign:(BOOL)a16 isCustom:(BOOL)a17 interstitialStrings:(id)a18 interstitialStringInsertionIndexes:(id)a19 indexFromRightOfLastDigitPlaceholder:(unsigned __int16)a20 minimumIntegerWidth:(unsigned __int8)a21 decimalWidth:(unsigned __int8)a22 numberOfNonSpaceIntegerPlaceholderDigits:(unsigned __int8)a23 numberOfNonSpaceDecimalPlaceholderDigits:(unsigned __int8)a24 isTextFormat:(BOOL)a25 formatName:(id)a26;
-- (TSUNumberFormat)initWithValueType:(int)a3 formatString:(id)a4 decimalPlaces:(unsigned __int16)a5 currencyCode:(id)a6 useAccountingStyle:(BOOL)a7 negativeStyle:(int)a8 showThousandsSeparator:(BOOL)a9 fractionAccuracy:(int)a10 suffixString:(id)a11;
-- (id)chartLabelStringFromDouble:(double)a3;
-- (id)chartLabelStringFromDouble:(double)a3 forceSuppressMinusSign:(BOOL)a4;
-- (id)chartLabelStringNofixFromDouble:(double)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)initCustomFormatWithFormatString:(id)a3 currencyCode:(id)a4 showThousandsSeparator:(BOOL)a5 fractionAccuracy:(int)a6 scaleFactor:(double)a7 interstitialStrings:(id)a8 interstitialStringInsertionIndexes:(id)a9 indexFromRightOfLastDigitPlaceholder:(unsigned __int16)a10 minimumIntegerWidth:(unsigned __int8)a11 decimalWidth:(unsigned __int8)a12 numberOfNonSpaceIntegerPlaceholderDigits:(unsigned __int8)a13 numberOfNonSpaceDecimalPlaceholderDigits:(unsigned __int8)a14 isTextFormat:(BOOL)a15 formatName:(id)a16;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (id)numberFormatByIncrementingDecimalPlaces:(signed __int16)a3;
-- (id)numberFormatBySettingBase:(unsigned __int8)a3;
-- (id)numberFormatBySettingBasePlaces:(unsigned __int16)a3;
-- (id)numberFormatBySettingBaseRepresentNegativeWithMinus:(BOOL)a3;
-- (id)numberFormatBySettingCurrencyCode:(id)a3;
-- (id)numberFormatBySettingDecimalPlaces:(unsigned __int16)a3;
-- (id)numberFormatBySettingDecimalPlaces:(unsigned __int16)a3 andNegativeStyle:(int)a4;
-- (id)numberFormatBySettingFractionAccuracy:(int)a3;
-- (id)numberFormatBySettingNegativeStyle:(int)a3;
-- (id)numberFormatBySettingPrefixString:(id)a3;
-- (id)numberFormatBySettingShowThousandsSeparator:(BOOL)a3;
-- (id)numberFormatBySettingSuffixString:(id)a3;
-- (id)numberFormatBySettingUseAccountingStyle:(BOOL)a3;
-- (id)numberFormatBySettingValueType:(int)a3;
-- (id)stringFromDouble:(double)a3;
-- (id)stringFromDouble:(double)a3 decimalPlaces:(unsigned __int16)a4 minimumDecimalPlaces:(unsigned __int16)a5 forceSuppressMinusSign:(BOOL)a6;
-- (id)stringFromDouble:(double)a3 forceSuppressMinusSign:(BOOL)a4;
-- (id)stringFromDouble:(double)a3 minimumDecimalPlaces:(unsigned __int16)a4;
-- (id)stringFromDouble:(double)a3 minimumDecimalPlaces:(unsigned __int16)a4 forceSuppressMinusSign:(BOOL)a5;
-- (id)stringFromString:(id)a3;
+- (TSUNumberFormat)initWithValueType:(int)type formatString:(id)string decimalPlaces:(unsigned __int16)places currencyCode:(id)code useAccountingStyle:(BOOL)style negativeStyle:(int)negativeStyle showThousandsSeparator:(BOOL)separator fractionAccuracy:(int)self0;
+- (TSUNumberFormat)initWithValueType:(int)type formatString:(id)string decimalPlaces:(unsigned __int16)places currencyCode:(id)code useAccountingStyle:(BOOL)style negativeStyle:(int)negativeStyle showThousandsSeparator:(BOOL)separator fractionAccuracy:(int)self0 base:(unsigned __int8)self1 basePlaces:(unsigned __int16)self2 baseUseMinusSign:(BOOL)self3;
+- (TSUNumberFormat)initWithValueType:(int)type formatString:(id)string decimalPlaces:(unsigned __int16)places currencyCode:(id)code useAccountingStyle:(BOOL)style negativeStyle:(int)negativeStyle showThousandsSeparator:(BOOL)separator fractionAccuracy:(int)self0 prefixString:(id)self1 suffixString:(id)self2 scaleFactor:(double)self3 base:(unsigned __int8)self4 basePlaces:(unsigned __int16)self5 baseUseMinusSign:(BOOL)self6 isCustom:(BOOL)self7 interstitialStrings:(id)self8 interstitialStringInsertionIndexes:(id)self9 indexFromRightOfLastDigitPlaceholder:(unsigned __int16)placeholder minimumIntegerWidth:(unsigned __int8)width decimalWidth:(unsigned __int8)decimalWidth numberOfNonSpaceIntegerPlaceholderDigits:(unsigned __int8)digits numberOfNonSpaceDecimalPlaceholderDigits:(unsigned __int8)placeholderDigits isTextFormat:(BOOL)format formatName:(id)name;
+- (TSUNumberFormat)initWithValueType:(int)type formatString:(id)string decimalPlaces:(unsigned __int16)places currencyCode:(id)code useAccountingStyle:(BOOL)style negativeStyle:(int)negativeStyle showThousandsSeparator:(BOOL)separator fractionAccuracy:(int)self0 suffixString:(id)self1;
+- (id)chartLabelStringFromDouble:(double)double;
+- (id)chartLabelStringFromDouble:(double)double forceSuppressMinusSign:(BOOL)sign;
+- (id)chartLabelStringNofixFromDouble:(double)double;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)initCustomFormatWithFormatString:(id)string currencyCode:(id)code showThousandsSeparator:(BOOL)separator fractionAccuracy:(int)accuracy scaleFactor:(double)factor interstitialStrings:(id)strings interstitialStringInsertionIndexes:(id)indexes indexFromRightOfLastDigitPlaceholder:(unsigned __int16)self0 minimumIntegerWidth:(unsigned __int8)self1 decimalWidth:(unsigned __int8)self2 numberOfNonSpaceIntegerPlaceholderDigits:(unsigned __int8)self3 numberOfNonSpaceDecimalPlaceholderDigits:(unsigned __int8)self4 isTextFormat:(BOOL)self5 formatName:(id)self6;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (id)numberFormatByIncrementingDecimalPlaces:(signed __int16)places;
+- (id)numberFormatBySettingBase:(unsigned __int8)base;
+- (id)numberFormatBySettingBasePlaces:(unsigned __int16)places;
+- (id)numberFormatBySettingBaseRepresentNegativeWithMinus:(BOOL)minus;
+- (id)numberFormatBySettingCurrencyCode:(id)code;
+- (id)numberFormatBySettingDecimalPlaces:(unsigned __int16)places;
+- (id)numberFormatBySettingDecimalPlaces:(unsigned __int16)places andNegativeStyle:(int)style;
+- (id)numberFormatBySettingFractionAccuracy:(int)accuracy;
+- (id)numberFormatBySettingNegativeStyle:(int)style;
+- (id)numberFormatBySettingPrefixString:(id)string;
+- (id)numberFormatBySettingShowThousandsSeparator:(BOOL)separator;
+- (id)numberFormatBySettingSuffixString:(id)string;
+- (id)numberFormatBySettingUseAccountingStyle:(BOOL)style;
+- (id)numberFormatBySettingValueType:(int)type;
+- (id)stringFromDouble:(double)double;
+- (id)stringFromDouble:(double)double decimalPlaces:(unsigned __int16)places minimumDecimalPlaces:(unsigned __int16)decimalPlaces forceSuppressMinusSign:(BOOL)sign;
+- (id)stringFromDouble:(double)double forceSuppressMinusSign:(BOOL)sign;
+- (id)stringFromDouble:(double)double minimumDecimalPlaces:(unsigned __int16)places;
+- (id)stringFromDouble:(double)double minimumDecimalPlaces:(unsigned __int16)places forceSuppressMinusSign:(BOOL)sign;
+- (id)stringFromString:(id)string;
 - (unint64_t)hash;
 - (unsigned)decimalPlaces;
 - (void)dealloc;
-- (void)setFormatName:(id)a3;
+- (void)setFormatName:(id)name;
 @end
 
 @implementation TSUNumberFormat
 
-+ (id)numberFormatWithValueType:(int)a3 formatString:(id)a4 decimalPlaces:(unsigned __int16)a5 currencyCode:(id)a6 useAccountingStyle:(BOOL)a7 negativeStyle:(int)a8 showThousandsSeparator:(BOOL)a9 fractionAccuracy:(int)a10
++ (id)numberFormatWithValueType:(int)type formatString:(id)string decimalPlaces:(unsigned __int16)places currencyCode:(id)code useAccountingStyle:(BOOL)style negativeStyle:(int)negativeStyle showThousandsSeparator:(BOOL)separator fractionAccuracy:(int)self0
 {
-  HIDWORD(v12) = a10;
-  LOBYTE(v12) = a9;
-  v10 = [[a1 alloc] initWithValueType:*&a3 formatString:a4 decimalPlaces:a5 currencyCode:a6 useAccountingStyle:a7 negativeStyle:*&a8 showThousandsSeparator:v12 fractionAccuracy:?];
+  HIDWORD(v12) = accuracy;
+  LOBYTE(v12) = separator;
+  v10 = [[self alloc] initWithValueType:*&type formatString:string decimalPlaces:places currencyCode:code useAccountingStyle:style negativeStyle:*&negativeStyle showThousandsSeparator:v12 fractionAccuracy:?];
 
   return v10;
 }
 
-+ (id)numberFormatWithValueType:(int)a3 formatString:(id)a4 decimalPlaces:(unsigned __int16)a5 currencyCode:(id)a6 useAccountingStyle:(BOOL)a7 negativeStyle:(int)a8 showThousandsSeparator:(BOOL)a9 fractionAccuracy:(int)a10 suffixString:(id)a11
++ (id)numberFormatWithValueType:(int)type formatString:(id)string decimalPlaces:(unsigned __int16)places currencyCode:(id)code useAccountingStyle:(BOOL)style negativeStyle:(int)negativeStyle showThousandsSeparator:(BOOL)separator fractionAccuracy:(int)self0 suffixString:(id)self1
 {
-  HIDWORD(v13) = a10;
-  LOBYTE(v13) = a9;
-  v11 = [[a1 alloc] initWithValueType:*&a3 formatString:a4 decimalPlaces:a5 currencyCode:a6 useAccountingStyle:a7 negativeStyle:*&a8 showThousandsSeparator:v13 fractionAccuracy:a11 suffixString:?];
+  HIDWORD(v13) = accuracy;
+  LOBYTE(v13) = separator;
+  v11 = [[self alloc] initWithValueType:*&type formatString:string decimalPlaces:places currencyCode:code useAccountingStyle:style negativeStyle:*&negativeStyle showThousandsSeparator:v13 fractionAccuracy:suffixString suffixString:?];
 
   return v11;
 }
 
-+ (id)numberFormatWithValueType:(int)a3 formatString:(id)a4 decimalPlaces:(unsigned __int16)a5 currencyCode:(id)a6 useAccountingStyle:(BOOL)a7 negativeStyle:(int)a8 showThousandsSeparator:(BOOL)a9 fractionAccuracy:(int)a10 base:(unsigned __int8)a11 basePlaces:(unsigned __int16)a12 baseUseMinusSign:(BOOL)a13
++ (id)numberFormatWithValueType:(int)type formatString:(id)string decimalPlaces:(unsigned __int16)places currencyCode:(id)code useAccountingStyle:(BOOL)style negativeStyle:(int)negativeStyle showThousandsSeparator:(BOOL)separator fractionAccuracy:(int)self0 base:(unsigned __int8)self1 basePlaces:(unsigned __int16)self2 baseUseMinusSign:(BOOL)self3
 {
-  BYTE4(v16) = a13;
-  WORD1(v16) = a12;
-  LOBYTE(v16) = a11;
-  HIDWORD(v15) = a10;
-  LOBYTE(v15) = a9;
-  v13 = [[a1 alloc] initWithValueType:*&a3 formatString:a4 decimalPlaces:a5 currencyCode:a6 useAccountingStyle:a7 negativeStyle:a8 showThousandsSeparator:v15 fractionAccuracy:v16 base:? basePlaces:? baseUseMinusSign:?];
+  BYTE4(v16) = sign;
+  WORD1(v16) = basePlaces;
+  LOBYTE(v16) = base;
+  HIDWORD(v15) = accuracy;
+  LOBYTE(v15) = separator;
+  v13 = [[self alloc] initWithValueType:*&type formatString:string decimalPlaces:places currencyCode:code useAccountingStyle:style negativeStyle:negativeStyle showThousandsSeparator:v15 fractionAccuracy:v16 base:? basePlaces:? baseUseMinusSign:?];
 
   return v13;
 }
 
-+ (id)numberFormatWithValueType:(int)a3 formatString:(id)a4 decimalPlaces:(unsigned __int16)a5 currencyCode:(id)a6 useAccountingStyle:(BOOL)a7 negativeStyle:(int)a8 showThousandsSeparator:(BOOL)a9 fractionAccuracy:(int)a10 scaleFactor:(double)a11 isCustom:(BOOL)a12 formatName:(id)a13
++ (id)numberFormatWithValueType:(int)type formatString:(id)string decimalPlaces:(unsigned __int16)places currencyCode:(id)code useAccountingStyle:(BOOL)style negativeStyle:(int)negativeStyle showThousandsSeparator:(BOOL)separator fractionAccuracy:(int)self0 scaleFactor:(double)self1 isCustom:(BOOL)self2 formatName:(id)self3
 {
   BYTE6(v17) = 0;
   *(&v17 + 2) = 0;
   LOWORD(v17) = 0;
-  BYTE5(v16) = a12;
+  BYTE5(v16) = custom;
   BYTE4(v16) = 1;
   WORD1(v16) = 0;
   LOBYTE(v16) = 10;
-  HIDWORD(v15) = a10;
-  LOBYTE(v15) = a9;
-  v13 = [[a1 alloc] initWithValueType:*&a3 formatString:a4 decimalPlaces:a5 currencyCode:a6 useAccountingStyle:a7 negativeStyle:*&a8 showThousandsSeparator:a11 fractionAccuracy:v15 prefixString:0 suffixString:0 scaleFactor:v16 base:0 basePlaces:0 baseUseMinusSign:v17 isCustom:a13 interstitialStrings:? interstitialStringInsertionIndexes:? indexFromRightOfLastDigitPlaceholder:? minimumIntegerWidth:? decimalWidth:? numberOfNonSpaceIntegerPlaceholderDigits:? numberOfNonSpaceDecimalPlaceholderDigits:? isTextFormat:? formatName:?];
+  HIDWORD(v15) = accuracy;
+  LOBYTE(v15) = separator;
+  v13 = [[self alloc] initWithValueType:*&type formatString:string decimalPlaces:places currencyCode:code useAccountingStyle:style negativeStyle:*&negativeStyle showThousandsSeparator:factor fractionAccuracy:v15 prefixString:0 suffixString:0 scaleFactor:v16 base:0 basePlaces:0 baseUseMinusSign:v17 isCustom:name interstitialStrings:? interstitialStringInsertionIndexes:? indexFromRightOfLastDigitPlaceholder:? minimumIntegerWidth:? decimalWidth:? numberOfNonSpaceIntegerPlaceholderDigits:? numberOfNonSpaceDecimalPlaceholderDigits:? isTextFormat:? formatName:?];
 
   return v13;
 }
 
-+ (id)numberFormatWithValueType:(int)a3 formatString:(id)a4 decimalPlaces:(unsigned __int16)a5 currencyCode:(id)a6 useAccountingStyle:(BOOL)a7 negativeStyle:(int)a8 showThousandsSeparator:(BOOL)a9 fractionAccuracy:(int)a10 prefixString:(id)a11 suffixString:(id)a12 scaleFactor:(double)a13 base:(unsigned __int8)a14 basePlaces:(unsigned __int16)a15 baseUseMinusSign:(BOOL)a16 isCustom:(BOOL)a17 formatName:(id)a18
++ (id)numberFormatWithValueType:(int)type formatString:(id)string decimalPlaces:(unsigned __int16)places currencyCode:(id)code useAccountingStyle:(BOOL)style negativeStyle:(int)negativeStyle showThousandsSeparator:(BOOL)separator fractionAccuracy:(int)self0 prefixString:(id)self1 suffixString:(id)self2 scaleFactor:(double)self3 base:(unsigned __int8)self4 basePlaces:(unsigned __int16)self5 baseUseMinusSign:(BOOL)self6 isCustom:(BOOL)self7 formatName:(id)self8
 {
   BYTE6(v22) = 0;
   *(&v22 + 2) = 0;
   LOWORD(v22) = 0;
-  BYTE5(v21) = a17;
-  BYTE4(v21) = a16;
-  WORD1(v21) = a15;
-  LOBYTE(v21) = a14;
-  HIDWORD(v20) = a10;
-  LOBYTE(v20) = a9;
-  v18 = [[a1 alloc] initWithValueType:*&a3 formatString:a4 decimalPlaces:a5 currencyCode:a6 useAccountingStyle:a7 negativeStyle:a8 showThousandsSeparator:a13 fractionAccuracy:v20 prefixString:a11 suffixString:a12 scaleFactor:v21 base:0 basePlaces:0 baseUseMinusSign:v22 isCustom:a18 interstitialStrings:? interstitialStringInsertionIndexes:? indexFromRightOfLastDigitPlaceholder:? minimumIntegerWidth:? decimalWidth:? numberOfNonSpaceIntegerPlaceholderDigits:? numberOfNonSpaceDecimalPlaceholderDigits:? isTextFormat:? formatName:?];
+  BYTE5(v21) = custom;
+  BYTE4(v21) = sign;
+  WORD1(v21) = basePlaces;
+  LOBYTE(v21) = base;
+  HIDWORD(v20) = accuracy;
+  LOBYTE(v20) = separator;
+  v18 = [[self alloc] initWithValueType:*&type formatString:string decimalPlaces:places currencyCode:code useAccountingStyle:style negativeStyle:negativeStyle showThousandsSeparator:factor fractionAccuracy:v20 prefixString:prefixString suffixString:suffixString scaleFactor:v21 base:0 basePlaces:0 baseUseMinusSign:v22 isCustom:name interstitialStrings:? interstitialStringInsertionIndexes:? indexFromRightOfLastDigitPlaceholder:? minimumIntegerWidth:? decimalWidth:? numberOfNonSpaceIntegerPlaceholderDigits:? numberOfNonSpaceDecimalPlaceholderDigits:? isTextFormat:? formatName:?];
 
   return v18;
 }
@@ -117,85 +117,85 @@
   return [(TSUNumberFormat *)self initWithValueType:0 formatString:0 decimalPlaces:2 currencyCode:0 useAccountingStyle:0 negativeStyle:0 showThousandsSeparator:v3 fractionAccuracy:?];
 }
 
-- (id)initCustomFormatWithFormatString:(id)a3 currencyCode:(id)a4 showThousandsSeparator:(BOOL)a5 fractionAccuracy:(int)a6 scaleFactor:(double)a7 interstitialStrings:(id)a8 interstitialStringInsertionIndexes:(id)a9 indexFromRightOfLastDigitPlaceholder:(unsigned __int16)a10 minimumIntegerWidth:(unsigned __int8)a11 decimalWidth:(unsigned __int8)a12 numberOfNonSpaceIntegerPlaceholderDigits:(unsigned __int8)a13 numberOfNonSpaceDecimalPlaceholderDigits:(unsigned __int8)a14 isTextFormat:(BOOL)a15 formatName:(id)a16
+- (id)initCustomFormatWithFormatString:(id)string currencyCode:(id)code showThousandsSeparator:(BOOL)separator fractionAccuracy:(int)accuracy scaleFactor:(double)factor interstitialStrings:(id)strings interstitialStringInsertionIndexes:(id)indexes indexFromRightOfLastDigitPlaceholder:(unsigned __int16)self0 minimumIntegerWidth:(unsigned __int8)self1 decimalWidth:(unsigned __int8)self2 numberOfNonSpaceIntegerPlaceholderDigits:(unsigned __int8)self3 numberOfNonSpaceDecimalPlaceholderDigits:(unsigned __int8)self4 isTextFormat:(BOOL)self5 formatName:(id)self6
 {
-  *(&v19 + 5) = __PAIR16__(a15, a14);
-  *(&v19 + 3) = __PAIR16__(a13, a12);
-  BYTE2(v19) = a11;
-  LOWORD(v19) = a10;
+  *(&v19 + 5) = __PAIR16__(format, placeholderDigits);
+  *(&v19 + 3) = __PAIR16__(digits, decimalWidth);
+  BYTE2(v19) = width;
+  LOWORD(v19) = placeholder;
   *(&v18 + 2) = 16842752;
   LOBYTE(v18) = 10;
-  HIDWORD(v17) = a6;
-  LOBYTE(v17) = a5;
-  return [TSUNumberFormat initWithValueType:"initWithValueType:formatString:decimalPlaces:currencyCode:useAccountingStyle:negativeStyle:showThousandsSeparator:fractionAccuracy:prefixString:suffixString:scaleFactor:base:basePlaces:baseUseMinusSign:isCustom:interstitialStrings:interstitialStringInsertionIndexes:indexFromRightOfLastDigitPlaceholder:minimumIntegerWidth:decimalWidth:numberOfNonSpaceIntegerPlaceholderDigits:numberOfNonSpaceDecimalPlaceholderDigits:isTextFormat:formatName:" formatString:0 decimalPlaces:a3 currencyCode:0 useAccountingStyle:a4 negativeStyle:0 showThousandsSeparator:0 fractionAccuracy:a7 prefixString:v17 suffixString:0 scaleFactor:0 base:v18 basePlaces:a8 baseUseMinusSign:a9 isCustom:v19 interstitialStrings:a16 interstitialStringInsertionIndexes:? indexFromRightOfLastDigitPlaceholder:? minimumIntegerWidth:? decimalWidth:? numberOfNonSpaceIntegerPlaceholderDigits:? numberOfNonSpaceDecimalPlaceholderDigits:? isTextFormat:? formatName:?];
+  HIDWORD(v17) = accuracy;
+  LOBYTE(v17) = separator;
+  return [TSUNumberFormat initWithValueType:"initWithValueType:formatString:decimalPlaces:currencyCode:useAccountingStyle:negativeStyle:showThousandsSeparator:fractionAccuracy:prefixString:suffixString:scaleFactor:base:basePlaces:baseUseMinusSign:isCustom:interstitialStrings:interstitialStringInsertionIndexes:indexFromRightOfLastDigitPlaceholder:minimumIntegerWidth:decimalWidth:numberOfNonSpaceIntegerPlaceholderDigits:numberOfNonSpaceDecimalPlaceholderDigits:isTextFormat:formatName:" formatString:0 decimalPlaces:string currencyCode:0 useAccountingStyle:code negativeStyle:0 showThousandsSeparator:0 fractionAccuracy:factor prefixString:v17 suffixString:0 scaleFactor:0 base:v18 basePlaces:strings baseUseMinusSign:indexes isCustom:v19 interstitialStrings:name interstitialStringInsertionIndexes:? indexFromRightOfLastDigitPlaceholder:? minimumIntegerWidth:? decimalWidth:? numberOfNonSpaceIntegerPlaceholderDigits:? numberOfNonSpaceDecimalPlaceholderDigits:? isTextFormat:? formatName:?];
 }
 
-- (TSUNumberFormat)initWithValueType:(int)a3 formatString:(id)a4 decimalPlaces:(unsigned __int16)a5 currencyCode:(id)a6 useAccountingStyle:(BOOL)a7 negativeStyle:(int)a8 showThousandsSeparator:(BOOL)a9 fractionAccuracy:(int)a10
+- (TSUNumberFormat)initWithValueType:(int)type formatString:(id)string decimalPlaces:(unsigned __int16)places currencyCode:(id)code useAccountingStyle:(BOOL)style negativeStyle:(int)negativeStyle showThousandsSeparator:(BOOL)separator fractionAccuracy:(int)self0
 {
   BYTE4(v12) = 1;
   WORD1(v12) = 0;
   LOBYTE(v12) = 10;
-  HIDWORD(v11) = a10;
-  LOBYTE(v11) = a9;
-  return [TSUNumberFormat initWithValueType:"initWithValueType:formatString:decimalPlaces:currencyCode:useAccountingStyle:negativeStyle:showThousandsSeparator:fractionAccuracy:base:basePlaces:baseUseMinusSign:" formatString:*&a3 decimalPlaces:a4 currencyCode:a5 useAccountingStyle:a6 negativeStyle:a7 showThousandsSeparator:*&a8 fractionAccuracy:v11 base:v12 basePlaces:? baseUseMinusSign:?];
+  HIDWORD(v11) = accuracy;
+  LOBYTE(v11) = separator;
+  return [TSUNumberFormat initWithValueType:"initWithValueType:formatString:decimalPlaces:currencyCode:useAccountingStyle:negativeStyle:showThousandsSeparator:fractionAccuracy:base:basePlaces:baseUseMinusSign:" formatString:*&type decimalPlaces:string currencyCode:places useAccountingStyle:code negativeStyle:style showThousandsSeparator:*&negativeStyle fractionAccuracy:v11 base:v12 basePlaces:? baseUseMinusSign:?];
 }
 
-- (TSUNumberFormat)initWithValueType:(int)a3 formatString:(id)a4 decimalPlaces:(unsigned __int16)a5 currencyCode:(id)a6 useAccountingStyle:(BOOL)a7 negativeStyle:(int)a8 showThousandsSeparator:(BOOL)a9 fractionAccuracy:(int)a10 base:(unsigned __int8)a11 basePlaces:(unsigned __int16)a12 baseUseMinusSign:(BOOL)a13
+- (TSUNumberFormat)initWithValueType:(int)type formatString:(id)string decimalPlaces:(unsigned __int16)places currencyCode:(id)code useAccountingStyle:(BOOL)style negativeStyle:(int)negativeStyle showThousandsSeparator:(BOOL)separator fractionAccuracy:(int)self0 base:(unsigned __int8)self1 basePlaces:(unsigned __int16)self2 baseUseMinusSign:(BOOL)self3
 {
   BYTE6(v16) = 0;
   *(&v16 + 2) = 0;
   LOWORD(v16) = 0;
   BYTE5(v15) = 0;
-  BYTE4(v15) = a13;
-  WORD1(v15) = a12;
-  LOBYTE(v15) = a11;
-  HIDWORD(v14) = a10;
-  LOBYTE(v14) = a9;
-  return [TSUNumberFormat initWithValueType:"initWithValueType:formatString:decimalPlaces:currencyCode:useAccountingStyle:negativeStyle:showThousandsSeparator:fractionAccuracy:prefixString:suffixString:scaleFactor:base:basePlaces:baseUseMinusSign:isCustom:interstitialStrings:interstitialStringInsertionIndexes:indexFromRightOfLastDigitPlaceholder:minimumIntegerWidth:decimalWidth:numberOfNonSpaceIntegerPlaceholderDigits:numberOfNonSpaceDecimalPlaceholderDigits:isTextFormat:formatName:" formatString:*&a3 decimalPlaces:a4 currencyCode:a5 useAccountingStyle:a6 negativeStyle:a7 showThousandsSeparator:*&a8 fractionAccuracy:1.0 prefixString:v14 suffixString:0 scaleFactor:0 base:v15 basePlaces:0 baseUseMinusSign:0 isCustom:v16 interstitialStrings:0 interstitialStringInsertionIndexes:? indexFromRightOfLastDigitPlaceholder:? minimumIntegerWidth:? decimalWidth:? numberOfNonSpaceIntegerPlaceholderDigits:? numberOfNonSpaceDecimalPlaceholderDigits:? isTextFormat:? formatName:?];
+  BYTE4(v15) = sign;
+  WORD1(v15) = basePlaces;
+  LOBYTE(v15) = base;
+  HIDWORD(v14) = accuracy;
+  LOBYTE(v14) = separator;
+  return [TSUNumberFormat initWithValueType:"initWithValueType:formatString:decimalPlaces:currencyCode:useAccountingStyle:negativeStyle:showThousandsSeparator:fractionAccuracy:prefixString:suffixString:scaleFactor:base:basePlaces:baseUseMinusSign:isCustom:interstitialStrings:interstitialStringInsertionIndexes:indexFromRightOfLastDigitPlaceholder:minimumIntegerWidth:decimalWidth:numberOfNonSpaceIntegerPlaceholderDigits:numberOfNonSpaceDecimalPlaceholderDigits:isTextFormat:formatName:" formatString:*&type decimalPlaces:string currencyCode:places useAccountingStyle:code negativeStyle:style showThousandsSeparator:*&negativeStyle fractionAccuracy:1.0 prefixString:v14 suffixString:0 scaleFactor:0 base:v15 basePlaces:0 baseUseMinusSign:0 isCustom:v16 interstitialStrings:0 interstitialStringInsertionIndexes:? indexFromRightOfLastDigitPlaceholder:? minimumIntegerWidth:? decimalWidth:? numberOfNonSpaceIntegerPlaceholderDigits:? numberOfNonSpaceDecimalPlaceholderDigits:? isTextFormat:? formatName:?];
 }
 
-- (TSUNumberFormat)initWithValueType:(int)a3 formatString:(id)a4 decimalPlaces:(unsigned __int16)a5 currencyCode:(id)a6 useAccountingStyle:(BOOL)a7 negativeStyle:(int)a8 showThousandsSeparator:(BOOL)a9 fractionAccuracy:(int)a10 suffixString:(id)a11
+- (TSUNumberFormat)initWithValueType:(int)type formatString:(id)string decimalPlaces:(unsigned __int16)places currencyCode:(id)code useAccountingStyle:(BOOL)style negativeStyle:(int)negativeStyle showThousandsSeparator:(BOOL)separator fractionAccuracy:(int)self0 suffixString:(id)self1
 {
   BYTE6(v14) = 0;
   *(&v14 + 2) = 0;
   LOWORD(v14) = 0;
   *(&v13 + 2) = 0x10000;
   LOBYTE(v13) = 10;
-  HIDWORD(v12) = a10;
-  LOBYTE(v12) = a9;
-  return [TSUNumberFormat initWithValueType:"initWithValueType:formatString:decimalPlaces:currencyCode:useAccountingStyle:negativeStyle:showThousandsSeparator:fractionAccuracy:prefixString:suffixString:scaleFactor:base:basePlaces:baseUseMinusSign:isCustom:interstitialStrings:interstitialStringInsertionIndexes:indexFromRightOfLastDigitPlaceholder:minimumIntegerWidth:decimalWidth:numberOfNonSpaceIntegerPlaceholderDigits:numberOfNonSpaceDecimalPlaceholderDigits:isTextFormat:formatName:" formatString:*&a3 decimalPlaces:a4 currencyCode:a5 useAccountingStyle:a6 negativeStyle:a7 showThousandsSeparator:*&a8 fractionAccuracy:1.0 prefixString:v12 suffixString:0 scaleFactor:a11 base:v13 basePlaces:0 baseUseMinusSign:0 isCustom:v14 interstitialStrings:0 interstitialStringInsertionIndexes:? indexFromRightOfLastDigitPlaceholder:? minimumIntegerWidth:? decimalWidth:? numberOfNonSpaceIntegerPlaceholderDigits:? numberOfNonSpaceDecimalPlaceholderDigits:? isTextFormat:? formatName:?];
+  HIDWORD(v12) = accuracy;
+  LOBYTE(v12) = separator;
+  return [TSUNumberFormat initWithValueType:"initWithValueType:formatString:decimalPlaces:currencyCode:useAccountingStyle:negativeStyle:showThousandsSeparator:fractionAccuracy:prefixString:suffixString:scaleFactor:base:basePlaces:baseUseMinusSign:isCustom:interstitialStrings:interstitialStringInsertionIndexes:indexFromRightOfLastDigitPlaceholder:minimumIntegerWidth:decimalWidth:numberOfNonSpaceIntegerPlaceholderDigits:numberOfNonSpaceDecimalPlaceholderDigits:isTextFormat:formatName:" formatString:*&type decimalPlaces:string currencyCode:places useAccountingStyle:code negativeStyle:style showThousandsSeparator:*&negativeStyle fractionAccuracy:1.0 prefixString:v12 suffixString:0 scaleFactor:suffixString base:v13 basePlaces:0 baseUseMinusSign:0 isCustom:v14 interstitialStrings:0 interstitialStringInsertionIndexes:? indexFromRightOfLastDigitPlaceholder:? minimumIntegerWidth:? decimalWidth:? numberOfNonSpaceIntegerPlaceholderDigits:? numberOfNonSpaceDecimalPlaceholderDigits:? isTextFormat:? formatName:?];
 }
 
-- (TSUNumberFormat)initWithValueType:(int)a3 formatString:(id)a4 decimalPlaces:(unsigned __int16)a5 currencyCode:(id)a6 useAccountingStyle:(BOOL)a7 negativeStyle:(int)a8 showThousandsSeparator:(BOOL)a9 fractionAccuracy:(int)a10 prefixString:(id)a11 suffixString:(id)a12 scaleFactor:(double)a13 base:(unsigned __int8)a14 basePlaces:(unsigned __int16)a15 baseUseMinusSign:(BOOL)a16 isCustom:(BOOL)a17 interstitialStrings:(id)a18 interstitialStringInsertionIndexes:(id)a19 indexFromRightOfLastDigitPlaceholder:(unsigned __int16)a20 minimumIntegerWidth:(unsigned __int8)a21 decimalWidth:(unsigned __int8)a22 numberOfNonSpaceIntegerPlaceholderDigits:(unsigned __int8)a23 numberOfNonSpaceDecimalPlaceholderDigits:(unsigned __int8)a24 isTextFormat:(BOOL)a25 formatName:(id)a26
+- (TSUNumberFormat)initWithValueType:(int)type formatString:(id)string decimalPlaces:(unsigned __int16)places currencyCode:(id)code useAccountingStyle:(BOOL)style negativeStyle:(int)negativeStyle showThousandsSeparator:(BOOL)separator fractionAccuracy:(int)self0 prefixString:(id)self1 suffixString:(id)self2 scaleFactor:(double)self3 base:(unsigned __int8)self4 basePlaces:(unsigned __int16)self5 baseUseMinusSign:(BOOL)self6 isCustom:(BOOL)self7 interstitialStrings:(id)self8 interstitialStringInsertionIndexes:(id)self9 indexFromRightOfLastDigitPlaceholder:(unsigned __int16)placeholder minimumIntegerWidth:(unsigned __int8)width decimalWidth:(unsigned __int8)decimalWidth numberOfNonSpaceIntegerPlaceholderDigits:(unsigned __int8)digits numberOfNonSpaceDecimalPlaceholderDigits:(unsigned __int8)placeholderDigits isTextFormat:(BOOL)format formatName:(id)name
 {
-  v28 = a7;
+  styleCopy = style;
   v48.receiver = self;
-  v31 = *&a3;
+  v31 = *&type;
   v48.super_class = TSUNumberFormat;
   v32 = [(TSUNumberFormat *)&v48 init];
   v33 = v32;
   if (v32)
   {
     v32->mFormatStringContainsTabCharacter = 0;
-    v46 = v28;
-    if (a17)
+    v46 = styleCopy;
+    if (custom)
     {
-      if (!a4)
+      if (!string)
       {
         v34 = +[TSUAssertionHandler currentHandler];
         v35 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSUNumberFormat initWithValueType:formatString:decimalPlaces:currencyCode:useAccountingStyle:negativeStyle:showThousandsSeparator:fractionAccuracy:prefixString:suffixString:scaleFactor:base:basePlaces:baseUseMinusSign:isCustom:interstitialStrings:interstitialStringInsertionIndexes:indexFromRightOfLastDigitPlaceholder:minimumIntegerWidth:decimalWidth:numberOfNonSpaceIntegerPlaceholderDigits:numberOfNonSpaceDecimalPlaceholderDigits:isTextFormat:formatName:]"];
         [v34 handleFailureInFunction:v35 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/utility/TSUNumberFormat.m"), 376, @"Passed a nil format string while creating a custom format!"}];
       }
 
-      v33->mFormatString = a4;
+      v33->mFormatString = string;
       v33->mFormatStringRequiresSuppressionOfMinusSign = 0;
-      v36 = [a4 length];
+      v36 = [string length];
       if (v36)
       {
         v37 = v36;
         for (i = 0; i != v37; ++i)
         {
-          v39 = [a4 characterAtIndex:i];
+          v39 = [string characterAtIndex:i];
           p_mFormatStringContainsTabCharacter = &v33->mFormatStringContainsTabCharacter;
           if (v39 != 9)
           {
@@ -213,19 +213,19 @@
 
     else
     {
-      if (v28)
+      if (styleCopy)
       {
-        v41 = 2;
+        negativeStyleCopy2 = 2;
       }
 
       else
       {
-        v41 = a8;
+        negativeStyleCopy2 = negativeStyle;
       }
 
       if (v31 != 1)
       {
-        v41 = a8;
+        negativeStyleCopy2 = negativeStyle;
       }
 
       if (v31 == 3)
@@ -235,12 +235,12 @@
 
       else
       {
-        v42 = v41;
+        v42 = negativeStyleCopy2;
       }
 
-      if (a4)
+      if (string)
       {
-        v43 = [TSUNumberFormatter formatString:a4 transformedForNegativeStyle:v42];
+        v43 = [TSUNumberFormatter formatString:string transformedForNegativeStyle:v42];
       }
 
       else
@@ -249,43 +249,43 @@
       }
 
       v33->mFormatString = v43;
-      v33->mFormatStringRequiresSuppressionOfMinusSign = a8 == 1;
+      v33->mFormatStringRequiresSuppressionOfMinusSign = negativeStyle == 1;
     }
 
-    if (a6)
+    if (code)
     {
-      v44 = a6;
+      codeCopy = code;
     }
 
     else
     {
-      v44 = +[TSUNumberFormatter currentLocaleCurrencyCode];
+      codeCopy = +[TSUNumberFormatter currentLocaleCurrencyCode];
     }
 
-    v33->mCurrencyCode = v44;
+    v33->mCurrencyCode = codeCopy;
     v33->mValueType = v31;
-    v33->mDecimalPlaces = a5;
-    v33->mNegativeStyle = a8;
-    v33->mShowThousandsSeparator = a9;
+    v33->mDecimalPlaces = places;
+    v33->mNegativeStyle = negativeStyle;
+    v33->mShowThousandsSeparator = separator;
     v33->mUseAccountingStyle = v46;
-    v33->mFractionAccuracy = a10;
-    v33->mScaleFactor = a13;
-    v33->mIsCustom = a17;
-    v33->mInterstitialStrings = a18;
-    v33->mInterstitialStringInsertionIndexes = a19;
-    v33->mIsTextFormat = a25;
-    v33->mIndexFromRightOfLastDigitPlaceholder = a20;
-    v33->mMinimumIntegerWidth = a21;
-    v33->mDecimalWidth = a22;
-    v33->mNumberOfNonSpaceIntegerPlaceholderDigits = a23;
-    v33->mNumberOfNonSpaceDecimalPlaceholderDigits = a24;
-    v33->mFormatName = a26;
-    v33->mBase = a14;
-    v33->mBasePlaces = a15;
-    v33->mBaseUseMinusSign = a16;
-    v33->mSuffixString = [a12 copy];
-    v33->mPrefixString = [a11 copy];
-    if (a17)
+    v33->mFractionAccuracy = accuracy;
+    v33->mScaleFactor = factor;
+    v33->mIsCustom = custom;
+    v33->mInterstitialStrings = strings;
+    v33->mInterstitialStringInsertionIndexes = indexes;
+    v33->mIsTextFormat = format;
+    v33->mIndexFromRightOfLastDigitPlaceholder = placeholder;
+    v33->mMinimumIntegerWidth = width;
+    v33->mDecimalWidth = decimalWidth;
+    v33->mNumberOfNonSpaceIntegerPlaceholderDigits = digits;
+    v33->mNumberOfNonSpaceDecimalPlaceholderDigits = placeholderDigits;
+    v33->mFormatName = name;
+    v33->mBase = base;
+    v33->mBasePlaces = basePlaces;
+    v33->mBaseUseMinusSign = sign;
+    v33->mSuffixString = [suffixString copy];
+    v33->mPrefixString = [prefixString copy];
+    if (custom)
     {
       v33->mFormatContainsSpecialTokens = 0;
     }
@@ -294,11 +294,11 @@
   return v33;
 }
 
-- (id)numberFormatBySettingValueType:(int)a3
+- (id)numberFormatBySettingValueType:(int)type
 {
-  v3 = *&a3;
-  v5 = [(TSUNumberFormat *)self valueType];
-  if ((v3 - 1) <= 1 && v5 == v3)
+  v3 = *&type;
+  valueType = [(TSUNumberFormat *)self valueType];
+  if ((v3 - 1) <= 1 && valueType == v3)
   {
     v6 = [(TSUNumberFormat *)self copy];
 
@@ -307,95 +307,95 @@
 
   else
   {
-    v8 = [(TSUNumberFormat *)self decimalPlaces];
-    v9 = [(TSUNumberFormat *)self currencyCode];
+    decimalPlaces = [(TSUNumberFormat *)self decimalPlaces];
+    currencyCode = [(TSUNumberFormat *)self currencyCode];
     if (v3 == 1)
     {
-      v8 = +[TSUNumberFormatter defaultDecimalPlacesForCurrencyCode:](TSUNumberFormatter, "defaultDecimalPlacesForCurrencyCode:", +[TSUNumberFormatter currentLocaleCurrencyCode]);
+      decimalPlaces = +[TSUNumberFormatter defaultDecimalPlacesForCurrencyCode:](TSUNumberFormatter, "defaultDecimalPlacesForCurrencyCode:", +[TSUNumberFormatter currentLocaleCurrencyCode]);
       v10 = 0;
     }
 
     else
     {
-      v10 = v9;
+      v10 = currencyCode;
     }
 
     v11 = ((v3 - 1) < 2) | [(TSUNumberFormat *)self showThousandsSeparator];
     v12 = objc_opt_class();
-    v13 = [(TSUNumberFormat *)self usesAccountingStyle];
-    v14 = [(TSUNumberFormat *)self negativeStyle];
-    v15 = [(TSUNumberFormat *)self fractionAccuracy];
+    usesAccountingStyle = [(TSUNumberFormat *)self usesAccountingStyle];
+    negativeStyle = [(TSUNumberFormat *)self negativeStyle];
+    fractionAccuracy = [(TSUNumberFormat *)self fractionAccuracy];
     BYTE5(v17) = 0;
     BYTE4(v17) = self->mBaseUseMinusSign;
     WORD1(v17) = self->mBasePlaces;
     LOBYTE(v17) = self->mBase;
-    HIDWORD(v16) = v15;
+    HIDWORD(v16) = fractionAccuracy;
     LOBYTE(v16) = v11 & 1;
-    return [v12 numberFormatWithValueType:v3 formatString:0 decimalPlaces:v8 currencyCode:v10 useAccountingStyle:v13 negativeStyle:v14 showThousandsSeparator:1.0 fractionAccuracy:v16 prefixString:self->mPrefixString suffixString:self->mSuffixString scaleFactor:v17 base:0 basePlaces:? baseUseMinusSign:? isCustom:? formatName:?];
+    return [v12 numberFormatWithValueType:v3 formatString:0 decimalPlaces:decimalPlaces currencyCode:v10 useAccountingStyle:usesAccountingStyle negativeStyle:negativeStyle showThousandsSeparator:1.0 fractionAccuracy:v16 prefixString:self->mPrefixString suffixString:self->mSuffixString scaleFactor:v17 base:0 basePlaces:? baseUseMinusSign:? isCustom:? formatName:?];
   }
 }
 
-- (id)numberFormatBySettingDecimalPlaces:(unsigned __int16)a3
+- (id)numberFormatBySettingDecimalPlaces:(unsigned __int16)places
 {
-  v3 = a3;
+  placesCopy = places;
   v5 = objc_opt_class();
-  v6 = [(TSUNumberFormat *)self valueType];
-  v7 = [(TSUNumberFormat *)self formatString];
-  v8 = [(TSUNumberFormat *)self currencyCode];
-  v9 = [(TSUNumberFormat *)self usesAccountingStyle];
-  v10 = [(TSUNumberFormat *)self negativeStyle];
-  v11 = [(TSUNumberFormat *)self showThousandsSeparator];
-  v12 = [(TSUNumberFormat *)self fractionAccuracy];
+  valueType = [(TSUNumberFormat *)self valueType];
+  formatString = [(TSUNumberFormat *)self formatString];
+  currencyCode = [(TSUNumberFormat *)self currencyCode];
+  usesAccountingStyle = [(TSUNumberFormat *)self usesAccountingStyle];
+  negativeStyle = [(TSUNumberFormat *)self negativeStyle];
+  showThousandsSeparator = [(TSUNumberFormat *)self showThousandsSeparator];
+  fractionAccuracy = [(TSUNumberFormat *)self fractionAccuracy];
   *(&v15 + 2) = *&self->mBasePlaces;
   LOBYTE(v15) = self->mBase;
-  HIDWORD(v14) = v12;
-  LOBYTE(v14) = v11;
-  return [v5 numberFormatWithValueType:v6 formatString:v7 decimalPlaces:v3 currencyCode:v8 useAccountingStyle:v9 negativeStyle:v10 showThousandsSeparator:self->mScaleFactor fractionAccuracy:v14 prefixString:self->mPrefixString suffixString:self->mSuffixString scaleFactor:v15 base:self->mFormatName basePlaces:? baseUseMinusSign:? isCustom:? formatName:?];
+  HIDWORD(v14) = fractionAccuracy;
+  LOBYTE(v14) = showThousandsSeparator;
+  return [v5 numberFormatWithValueType:valueType formatString:formatString decimalPlaces:placesCopy currencyCode:currencyCode useAccountingStyle:usesAccountingStyle negativeStyle:negativeStyle showThousandsSeparator:self->mScaleFactor fractionAccuracy:v14 prefixString:self->mPrefixString suffixString:self->mSuffixString scaleFactor:v15 base:self->mFormatName basePlaces:? baseUseMinusSign:? isCustom:? formatName:?];
 }
 
-- (id)numberFormatBySettingPrefixString:(id)a3
+- (id)numberFormatBySettingPrefixString:(id)string
 {
   v5 = objc_opt_class();
-  v6 = [(TSUNumberFormat *)self valueType];
-  v7 = [(TSUNumberFormat *)self formatString];
-  v8 = [(TSUNumberFormat *)self decimalPlaces];
-  v9 = [(TSUNumberFormat *)self currencyCode];
-  v10 = [(TSUNumberFormat *)self usesAccountingStyle];
-  v11 = [(TSUNumberFormat *)self negativeStyle];
-  v12 = [(TSUNumberFormat *)self showThousandsSeparator];
-  v13 = [(TSUNumberFormat *)self fractionAccuracy];
+  valueType = [(TSUNumberFormat *)self valueType];
+  formatString = [(TSUNumberFormat *)self formatString];
+  decimalPlaces = [(TSUNumberFormat *)self decimalPlaces];
+  currencyCode = [(TSUNumberFormat *)self currencyCode];
+  usesAccountingStyle = [(TSUNumberFormat *)self usesAccountingStyle];
+  negativeStyle = [(TSUNumberFormat *)self negativeStyle];
+  showThousandsSeparator = [(TSUNumberFormat *)self showThousandsSeparator];
+  fractionAccuracy = [(TSUNumberFormat *)self fractionAccuracy];
   *(&v16 + 2) = *&self->mBasePlaces;
   LOBYTE(v16) = self->mBase;
-  HIDWORD(v15) = v13;
-  LOBYTE(v15) = v12;
-  return [v5 numberFormatWithValueType:v6 formatString:v7 decimalPlaces:v8 currencyCode:v9 useAccountingStyle:v10 negativeStyle:v11 showThousandsSeparator:self->mScaleFactor fractionAccuracy:v15 prefixString:a3 suffixString:self->mSuffixString scaleFactor:v16 base:self->mFormatName basePlaces:? baseUseMinusSign:? isCustom:? formatName:?];
+  HIDWORD(v15) = fractionAccuracy;
+  LOBYTE(v15) = showThousandsSeparator;
+  return [v5 numberFormatWithValueType:valueType formatString:formatString decimalPlaces:decimalPlaces currencyCode:currencyCode useAccountingStyle:usesAccountingStyle negativeStyle:negativeStyle showThousandsSeparator:self->mScaleFactor fractionAccuracy:v15 prefixString:string suffixString:self->mSuffixString scaleFactor:v16 base:self->mFormatName basePlaces:? baseUseMinusSign:? isCustom:? formatName:?];
 }
 
-- (id)numberFormatBySettingSuffixString:(id)a3
+- (id)numberFormatBySettingSuffixString:(id)string
 {
   v5 = objc_opt_class();
-  v6 = [(TSUNumberFormat *)self valueType];
-  v7 = [(TSUNumberFormat *)self formatString];
-  v8 = [(TSUNumberFormat *)self decimalPlaces];
-  v9 = [(TSUNumberFormat *)self currencyCode];
-  v10 = [(TSUNumberFormat *)self usesAccountingStyle];
-  v11 = [(TSUNumberFormat *)self negativeStyle];
-  v12 = [(TSUNumberFormat *)self showThousandsSeparator];
-  v13 = [(TSUNumberFormat *)self fractionAccuracy];
+  valueType = [(TSUNumberFormat *)self valueType];
+  formatString = [(TSUNumberFormat *)self formatString];
+  decimalPlaces = [(TSUNumberFormat *)self decimalPlaces];
+  currencyCode = [(TSUNumberFormat *)self currencyCode];
+  usesAccountingStyle = [(TSUNumberFormat *)self usesAccountingStyle];
+  negativeStyle = [(TSUNumberFormat *)self negativeStyle];
+  showThousandsSeparator = [(TSUNumberFormat *)self showThousandsSeparator];
+  fractionAccuracy = [(TSUNumberFormat *)self fractionAccuracy];
   *(&v16 + 2) = *&self->mBasePlaces;
   LOBYTE(v16) = self->mBase;
-  HIDWORD(v15) = v13;
-  LOBYTE(v15) = v12;
-  return [v5 numberFormatWithValueType:v6 formatString:v7 decimalPlaces:v8 currencyCode:v9 useAccountingStyle:v10 negativeStyle:v11 showThousandsSeparator:self->mScaleFactor fractionAccuracy:v15 prefixString:self->mPrefixString suffixString:a3 scaleFactor:v16 base:self->mFormatName basePlaces:? baseUseMinusSign:? isCustom:? formatName:?];
+  HIDWORD(v15) = fractionAccuracy;
+  LOBYTE(v15) = showThousandsSeparator;
+  return [v5 numberFormatWithValueType:valueType formatString:formatString decimalPlaces:decimalPlaces currencyCode:currencyCode useAccountingStyle:usesAccountingStyle negativeStyle:negativeStyle showThousandsSeparator:self->mScaleFactor fractionAccuracy:v15 prefixString:self->mPrefixString suffixString:string scaleFactor:v16 base:self->mFormatName basePlaces:? baseUseMinusSign:? isCustom:? formatName:?];
 }
 
-- (id)numberFormatByIncrementingDecimalPlaces:(signed __int16)a3
+- (id)numberFormatByIncrementingDecimalPlaces:(signed __int16)places
 {
-  v3 = a3;
-  v5 = [(TSUNumberFormat *)self decimalPlaces];
-  if ((v3 & 0x80000000) == 0 || (v6 = 0, -v3 <= v5))
+  placesCopy = places;
+  decimalPlaces = [(TSUNumberFormat *)self decimalPlaces];
+  if ((placesCopy & 0x80000000) == 0 || (v6 = 0, -placesCopy <= decimalPlaces))
   {
-    v6 = v5 + v3;
+    v6 = decimalPlaces + placesCopy;
   }
 
   if (v6 >= kTSUNumberFormatUserMaxNumberOfDecimalPlaces)
@@ -409,181 +409,181 @@
   }
 
   v8 = objc_opt_class();
-  v9 = [(TSUNumberFormat *)self valueType];
-  v10 = [(TSUNumberFormat *)self formatString];
-  v11 = [(TSUNumberFormat *)self currencyCode];
-  v12 = [(TSUNumberFormat *)self usesAccountingStyle];
-  v13 = [(TSUNumberFormat *)self negativeStyle];
-  v14 = [(TSUNumberFormat *)self showThousandsSeparator];
-  v15 = [(TSUNumberFormat *)self fractionAccuracy];
+  valueType = [(TSUNumberFormat *)self valueType];
+  formatString = [(TSUNumberFormat *)self formatString];
+  currencyCode = [(TSUNumberFormat *)self currencyCode];
+  usesAccountingStyle = [(TSUNumberFormat *)self usesAccountingStyle];
+  negativeStyle = [(TSUNumberFormat *)self negativeStyle];
+  showThousandsSeparator = [(TSUNumberFormat *)self showThousandsSeparator];
+  fractionAccuracy = [(TSUNumberFormat *)self fractionAccuracy];
   BYTE4(v18) = self->mBaseUseMinusSign;
   WORD1(v18) = self->mBasePlaces;
   LOBYTE(v18) = self->mBase;
-  HIDWORD(v17) = v15;
-  LOBYTE(v17) = v14;
-  return [v8 numberFormatWithValueType:v9 formatString:v10 decimalPlaces:v7 currencyCode:v11 useAccountingStyle:v12 negativeStyle:v13 showThousandsSeparator:v17 fractionAccuracy:v18 base:? basePlaces:? baseUseMinusSign:?];
+  HIDWORD(v17) = fractionAccuracy;
+  LOBYTE(v17) = showThousandsSeparator;
+  return [v8 numberFormatWithValueType:valueType formatString:formatString decimalPlaces:v7 currencyCode:currencyCode useAccountingStyle:usesAccountingStyle negativeStyle:negativeStyle showThousandsSeparator:v17 fractionAccuracy:v18 base:? basePlaces:? baseUseMinusSign:?];
 }
 
-- (id)numberFormatBySettingCurrencyCode:(id)a3
+- (id)numberFormatBySettingCurrencyCode:(id)code
 {
   v5 = objc_opt_class();
-  v6 = [(TSUNumberFormat *)self valueType];
-  v7 = [(TSUNumberFormat *)self formatString];
-  v8 = [(TSUNumberFormat *)self decimalPlaces];
-  v9 = [(TSUNumberFormat *)self usesAccountingStyle];
-  v10 = [(TSUNumberFormat *)self negativeStyle];
-  v11 = [(TSUNumberFormat *)self showThousandsSeparator];
-  v12 = [(TSUNumberFormat *)self fractionAccuracy];
+  valueType = [(TSUNumberFormat *)self valueType];
+  formatString = [(TSUNumberFormat *)self formatString];
+  decimalPlaces = [(TSUNumberFormat *)self decimalPlaces];
+  usesAccountingStyle = [(TSUNumberFormat *)self usesAccountingStyle];
+  negativeStyle = [(TSUNumberFormat *)self negativeStyle];
+  showThousandsSeparator = [(TSUNumberFormat *)self showThousandsSeparator];
+  fractionAccuracy = [(TSUNumberFormat *)self fractionAccuracy];
   *(&v15 + 2) = *&self->mBasePlaces;
   LOBYTE(v15) = self->mBase;
-  HIDWORD(v14) = v12;
-  LOBYTE(v14) = v11;
-  return [v5 numberFormatWithValueType:v6 formatString:v7 decimalPlaces:v8 currencyCode:a3 useAccountingStyle:v9 negativeStyle:v10 showThousandsSeparator:self->mScaleFactor fractionAccuracy:v14 prefixString:self->mPrefixString suffixString:self->mSuffixString scaleFactor:v15 base:self->mFormatName basePlaces:? baseUseMinusSign:? isCustom:? formatName:?];
+  HIDWORD(v14) = fractionAccuracy;
+  LOBYTE(v14) = showThousandsSeparator;
+  return [v5 numberFormatWithValueType:valueType formatString:formatString decimalPlaces:decimalPlaces currencyCode:code useAccountingStyle:usesAccountingStyle negativeStyle:negativeStyle showThousandsSeparator:self->mScaleFactor fractionAccuracy:v14 prefixString:self->mPrefixString suffixString:self->mSuffixString scaleFactor:v15 base:self->mFormatName basePlaces:? baseUseMinusSign:? isCustom:? formatName:?];
 }
 
-- (id)numberFormatBySettingNegativeStyle:(int)a3
+- (id)numberFormatBySettingNegativeStyle:(int)style
 {
-  v3 = *&a3;
+  v3 = *&style;
   v5 = objc_opt_class();
-  v6 = [(TSUNumberFormat *)self valueType];
-  v7 = [(TSUNumberFormat *)self formatString];
-  v8 = [(TSUNumberFormat *)self decimalPlaces];
-  v9 = [(TSUNumberFormat *)self currencyCode];
-  v10 = [(TSUNumberFormat *)self usesAccountingStyle];
-  v11 = [(TSUNumberFormat *)self showThousandsSeparator];
-  v12 = [(TSUNumberFormat *)self fractionAccuracy];
+  valueType = [(TSUNumberFormat *)self valueType];
+  formatString = [(TSUNumberFormat *)self formatString];
+  decimalPlaces = [(TSUNumberFormat *)self decimalPlaces];
+  currencyCode = [(TSUNumberFormat *)self currencyCode];
+  usesAccountingStyle = [(TSUNumberFormat *)self usesAccountingStyle];
+  showThousandsSeparator = [(TSUNumberFormat *)self showThousandsSeparator];
+  fractionAccuracy = [(TSUNumberFormat *)self fractionAccuracy];
   *(&v15 + 2) = *&self->mBasePlaces;
   LOBYTE(v15) = self->mBase;
-  HIDWORD(v14) = v12;
-  LOBYTE(v14) = v11;
-  return [v5 numberFormatWithValueType:v6 formatString:v7 decimalPlaces:v8 currencyCode:v9 useAccountingStyle:v10 negativeStyle:v3 showThousandsSeparator:self->mScaleFactor fractionAccuracy:v14 prefixString:self->mPrefixString suffixString:self->mSuffixString scaleFactor:v15 base:self->mFormatName basePlaces:? baseUseMinusSign:? isCustom:? formatName:?];
+  HIDWORD(v14) = fractionAccuracy;
+  LOBYTE(v14) = showThousandsSeparator;
+  return [v5 numberFormatWithValueType:valueType formatString:formatString decimalPlaces:decimalPlaces currencyCode:currencyCode useAccountingStyle:usesAccountingStyle negativeStyle:v3 showThousandsSeparator:self->mScaleFactor fractionAccuracy:v14 prefixString:self->mPrefixString suffixString:self->mSuffixString scaleFactor:v15 base:self->mFormatName basePlaces:? baseUseMinusSign:? isCustom:? formatName:?];
 }
 
-- (id)numberFormatBySettingDecimalPlaces:(unsigned __int16)a3 andNegativeStyle:(int)a4
+- (id)numberFormatBySettingDecimalPlaces:(unsigned __int16)places andNegativeStyle:(int)style
 {
-  v4 = *&a4;
-  v5 = a3;
+  v4 = *&style;
+  placesCopy = places;
   v7 = objc_opt_class();
-  v8 = [(TSUNumberFormat *)self valueType];
-  v9 = [(TSUNumberFormat *)self formatString];
-  v10 = [(TSUNumberFormat *)self currencyCode];
-  v11 = [(TSUNumberFormat *)self usesAccountingStyle];
-  v12 = [(TSUNumberFormat *)self showThousandsSeparator];
-  v13 = [(TSUNumberFormat *)self fractionAccuracy];
+  valueType = [(TSUNumberFormat *)self valueType];
+  formatString = [(TSUNumberFormat *)self formatString];
+  currencyCode = [(TSUNumberFormat *)self currencyCode];
+  usesAccountingStyle = [(TSUNumberFormat *)self usesAccountingStyle];
+  showThousandsSeparator = [(TSUNumberFormat *)self showThousandsSeparator];
+  fractionAccuracy = [(TSUNumberFormat *)self fractionAccuracy];
   *(&v16 + 2) = *&self->mBasePlaces;
   LOBYTE(v16) = self->mBase;
-  HIDWORD(v15) = v13;
-  LOBYTE(v15) = v12;
-  return [v7 numberFormatWithValueType:v8 formatString:v9 decimalPlaces:v5 currencyCode:v10 useAccountingStyle:v11 negativeStyle:v4 showThousandsSeparator:self->mScaleFactor fractionAccuracy:v15 prefixString:self->mPrefixString suffixString:self->mSuffixString scaleFactor:v16 base:self->mFormatName basePlaces:? baseUseMinusSign:? isCustom:? formatName:?];
+  HIDWORD(v15) = fractionAccuracy;
+  LOBYTE(v15) = showThousandsSeparator;
+  return [v7 numberFormatWithValueType:valueType formatString:formatString decimalPlaces:placesCopy currencyCode:currencyCode useAccountingStyle:usesAccountingStyle negativeStyle:v4 showThousandsSeparator:self->mScaleFactor fractionAccuracy:v15 prefixString:self->mPrefixString suffixString:self->mSuffixString scaleFactor:v16 base:self->mFormatName basePlaces:? baseUseMinusSign:? isCustom:? formatName:?];
 }
 
-- (id)numberFormatBySettingShowThousandsSeparator:(BOOL)a3
+- (id)numberFormatBySettingShowThousandsSeparator:(BOOL)separator
 {
   v5 = objc_opt_class();
-  v6 = [(TSUNumberFormat *)self valueType];
-  v7 = [(TSUNumberFormat *)self formatString];
-  v8 = [(TSUNumberFormat *)self decimalPlaces];
-  v9 = [(TSUNumberFormat *)self currencyCode];
-  v10 = [(TSUNumberFormat *)self usesAccountingStyle];
-  v11 = [(TSUNumberFormat *)self negativeStyle];
-  v12 = [(TSUNumberFormat *)self fractionAccuracy];
+  valueType = [(TSUNumberFormat *)self valueType];
+  formatString = [(TSUNumberFormat *)self formatString];
+  decimalPlaces = [(TSUNumberFormat *)self decimalPlaces];
+  currencyCode = [(TSUNumberFormat *)self currencyCode];
+  usesAccountingStyle = [(TSUNumberFormat *)self usesAccountingStyle];
+  negativeStyle = [(TSUNumberFormat *)self negativeStyle];
+  fractionAccuracy = [(TSUNumberFormat *)self fractionAccuracy];
   *(&v15 + 2) = *&self->mBasePlaces;
   LOBYTE(v15) = self->mBase;
-  HIDWORD(v14) = v12;
-  LOBYTE(v14) = a3;
-  return [v5 numberFormatWithValueType:v6 formatString:v7 decimalPlaces:v8 currencyCode:v9 useAccountingStyle:v10 negativeStyle:v11 showThousandsSeparator:self->mScaleFactor fractionAccuracy:v14 prefixString:self->mPrefixString suffixString:self->mSuffixString scaleFactor:v15 base:self->mFormatName basePlaces:? baseUseMinusSign:? isCustom:? formatName:?];
+  HIDWORD(v14) = fractionAccuracy;
+  LOBYTE(v14) = separator;
+  return [v5 numberFormatWithValueType:valueType formatString:formatString decimalPlaces:decimalPlaces currencyCode:currencyCode useAccountingStyle:usesAccountingStyle negativeStyle:negativeStyle showThousandsSeparator:self->mScaleFactor fractionAccuracy:v14 prefixString:self->mPrefixString suffixString:self->mSuffixString scaleFactor:v15 base:self->mFormatName basePlaces:? baseUseMinusSign:? isCustom:? formatName:?];
 }
 
-- (id)numberFormatBySettingFractionAccuracy:(int)a3
+- (id)numberFormatBySettingFractionAccuracy:(int)accuracy
 {
   v5 = objc_opt_class();
-  v6 = [(TSUNumberFormat *)self valueType];
-  v7 = [(TSUNumberFormat *)self formatString];
-  v8 = [(TSUNumberFormat *)self decimalPlaces];
-  v9 = [(TSUNumberFormat *)self currencyCode];
-  v10 = [(TSUNumberFormat *)self usesAccountingStyle];
-  v11 = [(TSUNumberFormat *)self negativeStyle];
-  v12 = [(TSUNumberFormat *)self showThousandsSeparator];
+  valueType = [(TSUNumberFormat *)self valueType];
+  formatString = [(TSUNumberFormat *)self formatString];
+  decimalPlaces = [(TSUNumberFormat *)self decimalPlaces];
+  currencyCode = [(TSUNumberFormat *)self currencyCode];
+  usesAccountingStyle = [(TSUNumberFormat *)self usesAccountingStyle];
+  negativeStyle = [(TSUNumberFormat *)self negativeStyle];
+  showThousandsSeparator = [(TSUNumberFormat *)self showThousandsSeparator];
   *(&v15 + 2) = *&self->mBasePlaces;
   LOBYTE(v15) = self->mBase;
-  HIDWORD(v14) = a3;
-  LOBYTE(v14) = v12;
-  return [v5 numberFormatWithValueType:v6 formatString:v7 decimalPlaces:v8 currencyCode:v9 useAccountingStyle:v10 negativeStyle:v11 showThousandsSeparator:self->mScaleFactor fractionAccuracy:v14 prefixString:self->mPrefixString suffixString:self->mSuffixString scaleFactor:v15 base:self->mFormatName basePlaces:? baseUseMinusSign:? isCustom:? formatName:?];
+  HIDWORD(v14) = accuracy;
+  LOBYTE(v14) = showThousandsSeparator;
+  return [v5 numberFormatWithValueType:valueType formatString:formatString decimalPlaces:decimalPlaces currencyCode:currencyCode useAccountingStyle:usesAccountingStyle negativeStyle:negativeStyle showThousandsSeparator:self->mScaleFactor fractionAccuracy:v14 prefixString:self->mPrefixString suffixString:self->mSuffixString scaleFactor:v15 base:self->mFormatName basePlaces:? baseUseMinusSign:? isCustom:? formatName:?];
 }
 
-- (id)numberFormatBySettingUseAccountingStyle:(BOOL)a3
+- (id)numberFormatBySettingUseAccountingStyle:(BOOL)style
 {
-  v3 = a3;
+  styleCopy = style;
   v5 = objc_opt_class();
-  v6 = [(TSUNumberFormat *)self valueType];
-  v7 = [(TSUNumberFormat *)self formatString];
-  v8 = [(TSUNumberFormat *)self decimalPlaces];
-  v9 = [(TSUNumberFormat *)self currencyCode];
-  v10 = [(TSUNumberFormat *)self negativeStyle];
-  v11 = [(TSUNumberFormat *)self showThousandsSeparator];
-  v12 = [(TSUNumberFormat *)self fractionAccuracy];
+  valueType = [(TSUNumberFormat *)self valueType];
+  formatString = [(TSUNumberFormat *)self formatString];
+  decimalPlaces = [(TSUNumberFormat *)self decimalPlaces];
+  currencyCode = [(TSUNumberFormat *)self currencyCode];
+  negativeStyle = [(TSUNumberFormat *)self negativeStyle];
+  showThousandsSeparator = [(TSUNumberFormat *)self showThousandsSeparator];
+  fractionAccuracy = [(TSUNumberFormat *)self fractionAccuracy];
   *(&v15 + 2) = *&self->mBasePlaces;
   LOBYTE(v15) = self->mBase;
-  HIDWORD(v14) = v12;
-  LOBYTE(v14) = v11;
-  return [v5 numberFormatWithValueType:v6 formatString:v7 decimalPlaces:v8 currencyCode:v9 useAccountingStyle:v3 negativeStyle:v10 showThousandsSeparator:self->mScaleFactor fractionAccuracy:v14 prefixString:self->mPrefixString suffixString:self->mSuffixString scaleFactor:v15 base:self->mFormatName basePlaces:? baseUseMinusSign:? isCustom:? formatName:?];
+  HIDWORD(v14) = fractionAccuracy;
+  LOBYTE(v14) = showThousandsSeparator;
+  return [v5 numberFormatWithValueType:valueType formatString:formatString decimalPlaces:decimalPlaces currencyCode:currencyCode useAccountingStyle:styleCopy negativeStyle:negativeStyle showThousandsSeparator:self->mScaleFactor fractionAccuracy:v14 prefixString:self->mPrefixString suffixString:self->mSuffixString scaleFactor:v15 base:self->mFormatName basePlaces:? baseUseMinusSign:? isCustom:? formatName:?];
 }
 
-- (id)numberFormatBySettingBase:(unsigned __int8)a3
+- (id)numberFormatBySettingBase:(unsigned __int8)base
 {
   v5 = objc_opt_class();
-  v6 = [(TSUNumberFormat *)self valueType];
-  v7 = [(TSUNumberFormat *)self formatString];
-  v8 = [(TSUNumberFormat *)self decimalPlaces];
-  v9 = [(TSUNumberFormat *)self currencyCode];
-  v10 = [(TSUNumberFormat *)self usesAccountingStyle];
-  v11 = [(TSUNumberFormat *)self negativeStyle];
-  v12 = [(TSUNumberFormat *)self showThousandsSeparator];
-  v13 = [(TSUNumberFormat *)self fractionAccuracy];
+  valueType = [(TSUNumberFormat *)self valueType];
+  formatString = [(TSUNumberFormat *)self formatString];
+  decimalPlaces = [(TSUNumberFormat *)self decimalPlaces];
+  currencyCode = [(TSUNumberFormat *)self currencyCode];
+  usesAccountingStyle = [(TSUNumberFormat *)self usesAccountingStyle];
+  negativeStyle = [(TSUNumberFormat *)self negativeStyle];
+  showThousandsSeparator = [(TSUNumberFormat *)self showThousandsSeparator];
+  fractionAccuracy = [(TSUNumberFormat *)self fractionAccuracy];
   *(&v16 + 2) = *&self->mBasePlaces;
-  LOBYTE(v16) = a3;
-  HIDWORD(v15) = v13;
-  LOBYTE(v15) = v12;
-  return [v5 numberFormatWithValueType:v6 formatString:v7 decimalPlaces:v8 currencyCode:v9 useAccountingStyle:v10 negativeStyle:v11 showThousandsSeparator:self->mScaleFactor fractionAccuracy:v15 prefixString:self->mPrefixString suffixString:self->mSuffixString scaleFactor:v16 base:self->mFormatName basePlaces:? baseUseMinusSign:? isCustom:? formatName:?];
+  LOBYTE(v16) = base;
+  HIDWORD(v15) = fractionAccuracy;
+  LOBYTE(v15) = showThousandsSeparator;
+  return [v5 numberFormatWithValueType:valueType formatString:formatString decimalPlaces:decimalPlaces currencyCode:currencyCode useAccountingStyle:usesAccountingStyle negativeStyle:negativeStyle showThousandsSeparator:self->mScaleFactor fractionAccuracy:v15 prefixString:self->mPrefixString suffixString:self->mSuffixString scaleFactor:v16 base:self->mFormatName basePlaces:? baseUseMinusSign:? isCustom:? formatName:?];
 }
 
-- (id)numberFormatBySettingBasePlaces:(unsigned __int16)a3
+- (id)numberFormatBySettingBasePlaces:(unsigned __int16)places
 {
   v5 = objc_opt_class();
-  v6 = [(TSUNumberFormat *)self valueType];
-  v7 = [(TSUNumberFormat *)self formatString];
-  v8 = [(TSUNumberFormat *)self decimalPlaces];
-  v9 = [(TSUNumberFormat *)self currencyCode];
-  v10 = [(TSUNumberFormat *)self usesAccountingStyle];
-  v11 = [(TSUNumberFormat *)self negativeStyle];
-  v12 = [(TSUNumberFormat *)self showThousandsSeparator];
-  v13 = [(TSUNumberFormat *)self fractionAccuracy];
+  valueType = [(TSUNumberFormat *)self valueType];
+  formatString = [(TSUNumberFormat *)self formatString];
+  decimalPlaces = [(TSUNumberFormat *)self decimalPlaces];
+  currencyCode = [(TSUNumberFormat *)self currencyCode];
+  usesAccountingStyle = [(TSUNumberFormat *)self usesAccountingStyle];
+  negativeStyle = [(TSUNumberFormat *)self negativeStyle];
+  showThousandsSeparator = [(TSUNumberFormat *)self showThousandsSeparator];
+  fractionAccuracy = [(TSUNumberFormat *)self fractionAccuracy];
   WORD2(v16) = *&self->mBaseUseMinusSign;
-  WORD1(v16) = a3;
+  WORD1(v16) = places;
   LOBYTE(v16) = self->mBase;
-  HIDWORD(v15) = v13;
-  LOBYTE(v15) = v12;
-  return [v5 numberFormatWithValueType:v6 formatString:v7 decimalPlaces:v8 currencyCode:v9 useAccountingStyle:v10 negativeStyle:v11 showThousandsSeparator:self->mScaleFactor fractionAccuracy:v15 prefixString:self->mPrefixString suffixString:self->mSuffixString scaleFactor:v16 base:self->mFormatName basePlaces:? baseUseMinusSign:? isCustom:? formatName:?];
+  HIDWORD(v15) = fractionAccuracy;
+  LOBYTE(v15) = showThousandsSeparator;
+  return [v5 numberFormatWithValueType:valueType formatString:formatString decimalPlaces:decimalPlaces currencyCode:currencyCode useAccountingStyle:usesAccountingStyle negativeStyle:negativeStyle showThousandsSeparator:self->mScaleFactor fractionAccuracy:v15 prefixString:self->mPrefixString suffixString:self->mSuffixString scaleFactor:v16 base:self->mFormatName basePlaces:? baseUseMinusSign:? isCustom:? formatName:?];
 }
 
-- (id)numberFormatBySettingBaseRepresentNegativeWithMinus:(BOOL)a3
+- (id)numberFormatBySettingBaseRepresentNegativeWithMinus:(BOOL)minus
 {
   v5 = objc_opt_class();
-  v6 = [(TSUNumberFormat *)self valueType];
-  v7 = [(TSUNumberFormat *)self formatString];
-  v8 = [(TSUNumberFormat *)self decimalPlaces];
-  v9 = [(TSUNumberFormat *)self currencyCode];
-  v10 = [(TSUNumberFormat *)self usesAccountingStyle];
-  v11 = [(TSUNumberFormat *)self negativeStyle];
-  v12 = [(TSUNumberFormat *)self showThousandsSeparator];
-  v13 = [(TSUNumberFormat *)self fractionAccuracy];
+  valueType = [(TSUNumberFormat *)self valueType];
+  formatString = [(TSUNumberFormat *)self formatString];
+  decimalPlaces = [(TSUNumberFormat *)self decimalPlaces];
+  currencyCode = [(TSUNumberFormat *)self currencyCode];
+  usesAccountingStyle = [(TSUNumberFormat *)self usesAccountingStyle];
+  negativeStyle = [(TSUNumberFormat *)self negativeStyle];
+  showThousandsSeparator = [(TSUNumberFormat *)self showThousandsSeparator];
+  fractionAccuracy = [(TSUNumberFormat *)self fractionAccuracy];
   BYTE5(v16) = self->mIsCustom;
-  BYTE4(v16) = a3;
+  BYTE4(v16) = minus;
   WORD1(v16) = self->mBasePlaces;
   LOBYTE(v16) = self->mBase;
-  HIDWORD(v15) = v13;
-  LOBYTE(v15) = v12;
-  return [v5 numberFormatWithValueType:v6 formatString:v7 decimalPlaces:v8 currencyCode:v9 useAccountingStyle:v10 negativeStyle:v11 showThousandsSeparator:self->mScaleFactor fractionAccuracy:v15 prefixString:self->mPrefixString suffixString:self->mSuffixString scaleFactor:v16 base:self->mFormatName basePlaces:? baseUseMinusSign:? isCustom:? formatName:?];
+  HIDWORD(v15) = fractionAccuracy;
+  LOBYTE(v15) = showThousandsSeparator;
+  return [v5 numberFormatWithValueType:valueType formatString:formatString decimalPlaces:decimalPlaces currencyCode:currencyCode useAccountingStyle:usesAccountingStyle negativeStyle:negativeStyle showThousandsSeparator:self->mScaleFactor fractionAccuracy:v15 prefixString:self->mPrefixString suffixString:self->mSuffixString scaleFactor:v16 base:self->mFormatName basePlaces:? baseUseMinusSign:? isCustom:? formatName:?];
 }
 
 - (void)dealloc
@@ -603,11 +603,11 @@
   [(TSUNumberFormat *)&v3 dealloc];
 }
 
-- (void)setFormatName:(id)a3
+- (void)setFormatName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
 
-  self->mFormatName = a3;
+  self->mFormatName = name;
 }
 
 - (unsigned)decimalPlaces
@@ -649,33 +649,33 @@
   }
 }
 
-- (id)chartLabelStringNofixFromDouble:(double)a3
+- (id)chartLabelStringNofixFromDouble:(double)double
 {
-  v5 = [(TSUNumberFormat *)self decimalPlaces];
-  if (v5 == kTSUNumberFormatterDecimalPlacesAsManyAsNecessary)
+  decimalPlaces = [(TSUNumberFormat *)self decimalPlaces];
+  if (decimalPlaces == kTSUNumberFormatterDecimalPlacesAsManyAsNecessary)
   {
 
-    return [(TSUNumberFormat *)self stringFromDouble:3 decimalPlaces:0 minimumDecimalPlaces:0 forceSuppressMinusSign:a3];
+    return [(TSUNumberFormat *)self stringFromDouble:3 decimalPlaces:0 minimumDecimalPlaces:0 forceSuppressMinusSign:double];
   }
 
   else
   {
 
-    return [(TSUNumberFormat *)self stringFromDouble:0 forceSuppressMinusSign:a3];
+    return [(TSUNumberFormat *)self stringFromDouble:0 forceSuppressMinusSign:double];
   }
 }
 
-- (id)chartLabelStringFromDouble:(double)a3
+- (id)chartLabelStringFromDouble:(double)double
 {
-  v5 = [(TSUNumberFormat *)self decimalPlaces];
-  if (v5 == kTSUNumberFormatterDecimalPlacesAsManyAsNecessary)
+  decimalPlaces = [(TSUNumberFormat *)self decimalPlaces];
+  if (decimalPlaces == kTSUNumberFormatterDecimalPlacesAsManyAsNecessary)
   {
-    v6 = [(TSUNumberFormat *)self stringFromDouble:3 decimalPlaces:0 minimumDecimalPlaces:0 forceSuppressMinusSign:a3];
+    v6 = [(TSUNumberFormat *)self stringFromDouble:3 decimalPlaces:0 minimumDecimalPlaces:0 forceSuppressMinusSign:double];
   }
 
   else
   {
-    v6 = [(TSUNumberFormat *)self stringFromDouble:0 forceSuppressMinusSign:a3];
+    v6 = [(TSUNumberFormat *)self stringFromDouble:0 forceSuppressMinusSign:double];
   }
 
   v7 = v6;
@@ -698,18 +698,18 @@
   return result;
 }
 
-- (id)chartLabelStringFromDouble:(double)a3 forceSuppressMinusSign:(BOOL)a4
+- (id)chartLabelStringFromDouble:(double)double forceSuppressMinusSign:(BOOL)sign
 {
-  v4 = a4;
-  v7 = [(TSUNumberFormat *)self decimalPlaces];
-  if (v7 == kTSUNumberFormatterDecimalPlacesAsManyAsNecessary)
+  signCopy = sign;
+  decimalPlaces = [(TSUNumberFormat *)self decimalPlaces];
+  if (decimalPlaces == kTSUNumberFormatterDecimalPlacesAsManyAsNecessary)
   {
-    v8 = [(TSUNumberFormat *)self stringFromDouble:3 decimalPlaces:0 minimumDecimalPlaces:v4 forceSuppressMinusSign:a3];
+    v8 = [(TSUNumberFormat *)self stringFromDouble:3 decimalPlaces:0 minimumDecimalPlaces:signCopy forceSuppressMinusSign:double];
   }
 
   else
   {
-    v8 = [(TSUNumberFormat *)self stringFromDouble:v4 forceSuppressMinusSign:a3];
+    v8 = [(TSUNumberFormat *)self stringFromDouble:signCopy forceSuppressMinusSign:double];
   }
 
   v9 = v8;
@@ -732,44 +732,44 @@
   return result;
 }
 
-- (id)stringFromDouble:(double)a3 forceSuppressMinusSign:(BOOL)a4
+- (id)stringFromDouble:(double)double forceSuppressMinusSign:(BOOL)sign
 {
   [(TSUNumberFormat *)self decimalPlaces];
 
-  return [TSUNumberFormat stringFromDouble:"stringFromDouble:decimalPlaces:minimumDecimalPlaces:forceSuppressMinusSign:" decimalPlaces:a3 minimumDecimalPlaces:? forceSuppressMinusSign:?];
+  return [TSUNumberFormat stringFromDouble:"stringFromDouble:decimalPlaces:minimumDecimalPlaces:forceSuppressMinusSign:" decimalPlaces:double minimumDecimalPlaces:? forceSuppressMinusSign:?];
 }
 
-- (id)stringFromDouble:(double)a3
+- (id)stringFromDouble:(double)double
 {
   [(TSUNumberFormat *)self decimalPlaces];
 
-  return [TSUNumberFormat stringFromDouble:"stringFromDouble:decimalPlaces:minimumDecimalPlaces:forceSuppressMinusSign:" decimalPlaces:a3 minimumDecimalPlaces:? forceSuppressMinusSign:?];
+  return [TSUNumberFormat stringFromDouble:"stringFromDouble:decimalPlaces:minimumDecimalPlaces:forceSuppressMinusSign:" decimalPlaces:double minimumDecimalPlaces:? forceSuppressMinusSign:?];
 }
 
-- (id)stringFromDouble:(double)a3 minimumDecimalPlaces:(unsigned __int16)a4 forceSuppressMinusSign:(BOOL)a5
+- (id)stringFromDouble:(double)double minimumDecimalPlaces:(unsigned __int16)places forceSuppressMinusSign:(BOOL)sign
 {
-  v5 = a5;
-  v6 = a4;
-  v9 = [(TSUNumberFormat *)self decimalPlaces];
+  signCopy = sign;
+  placesCopy = places;
+  decimalPlaces = [(TSUNumberFormat *)self decimalPlaces];
 
-  return [(TSUNumberFormat *)self stringFromDouble:v9 decimalPlaces:v6 minimumDecimalPlaces:v5 forceSuppressMinusSign:a3];
+  return [(TSUNumberFormat *)self stringFromDouble:decimalPlaces decimalPlaces:placesCopy minimumDecimalPlaces:signCopy forceSuppressMinusSign:double];
 }
 
-- (id)stringFromDouble:(double)a3 minimumDecimalPlaces:(unsigned __int16)a4
+- (id)stringFromDouble:(double)double minimumDecimalPlaces:(unsigned __int16)places
 {
-  v4 = a4;
-  v7 = [(TSUNumberFormat *)self decimalPlaces];
+  placesCopy = places;
+  decimalPlaces = [(TSUNumberFormat *)self decimalPlaces];
 
-  return [(TSUNumberFormat *)self stringFromDouble:v7 decimalPlaces:v4 minimumDecimalPlaces:0 forceSuppressMinusSign:a3];
+  return [(TSUNumberFormat *)self stringFromDouble:decimalPlaces decimalPlaces:placesCopy minimumDecimalPlaces:0 forceSuppressMinusSign:double];
 }
 
-- (id)stringFromDouble:(double)a3 decimalPlaces:(unsigned __int16)a4 minimumDecimalPlaces:(unsigned __int16)a5 forceSuppressMinusSign:(BOOL)a6
+- (id)stringFromDouble:(double)double decimalPlaces:(unsigned __int16)places minimumDecimalPlaces:(unsigned __int16)decimalPlaces forceSuppressMinusSign:(BOOL)sign
 {
-  v18 = a6;
+  signCopy = sign;
   mValueType = self->mValueType;
-  v16 = [(TSUNumberFormat *)self formatString];
-  v14 = [(TSUNumberFormat *)self currencyCode];
-  v12 = [(TSUNumberFormat *)self hasValidDecimalPlaces];
+  formatString = [(TSUNumberFormat *)self formatString];
+  currencyCode = [(TSUNumberFormat *)self currencyCode];
+  hasValidDecimalPlaces = [(TSUNumberFormat *)self hasValidDecimalPlaces];
   HIBYTE(v11) = self->mRequiresFractionReplacement;
   LOBYTE(v11) = self->mFormatContainsIntegerToken;
   HIBYTE(v10) = self->mFormatContainsSpecialTokens;
@@ -777,10 +777,10 @@
   HIWORD(v9) = self->mIndexFromRightOfLastDigitPlaceholder;
   WORD2(v9) = *&self->mNumberOfHashDecimalPlaceholders;
   LODWORD(v9) = *&self->mMinimumIntegerWidth;
-  return TSUNumberFormatStringFromDouble(mValueType, a4, a5, v18, v16, v14, v12, self->mInterstitialStrings, a3, self->mScaleFactor, self->mInterstitialStringInsertionIndexes, v9, self->mFormatStringRequiresSuppressionOfMinusSign, self->mIsTextFormat, v10, v11, [(TSUNumberFormat *)self showThousandsSeparator], self->mUseAccountingStyle, *&self->mUseScientificFormattingAutomatically, self->mBase, self->mBasePlaces, self->mBaseUseMinusSign, self->mFractionAccuracy);
+  return TSUNumberFormatStringFromDouble(mValueType, places, decimalPlaces, signCopy, formatString, currencyCode, hasValidDecimalPlaces, self->mInterstitialStrings, double, self->mScaleFactor, self->mInterstitialStringInsertionIndexes, v9, self->mFormatStringRequiresSuppressionOfMinusSign, self->mIsTextFormat, v10, v11, [(TSUNumberFormat *)self showThousandsSeparator], self->mUseAccountingStyle, *&self->mUseScientificFormattingAutomatically, self->mBase, self->mBasePlaces, self->mBaseUseMinusSign, self->mFractionAccuracy);
 }
 
-- (id)stringFromString:(id)a3
+- (id)stringFromString:(id)string
 {
   if (!self->mIsTextFormat)
   {
@@ -790,11 +790,11 @@
   }
 
   v7 = [MEMORY[0x277CCAB68] stringWithString:self->mFormatString];
-  [v7 replaceOccurrencesOfString:objc_msgSend(MEMORY[0x277CCACA8] withString:"stringWithFormat:" options:@"%C" range:{TSUCustomNumberFormatTextReplacementCharacter), a3, 0, 0, objc_msgSend(v7, "length")}];
+  [v7 replaceOccurrencesOfString:objc_msgSend(MEMORY[0x277CCACA8] withString:"stringWithFormat:" options:@"%C" range:{TSUCustomNumberFormatTextReplacementCharacter), string, 0, 0, objc_msgSend(v7, "length")}];
   return v7;
 }
 
-- (BOOL)isEquivalent:(id)a3
+- (BOOL)isEquivalent:(id)equivalent
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -803,7 +803,7 @@
   }
 
   mValueType = self->mValueType;
-  if (mValueType != *(a3 + 2))
+  if (mValueType != *(equivalent + 2))
   {
     goto LABEL_26;
   }
@@ -814,17 +814,17 @@
     {
       case 3:
         mDecimalPlaces = self->mDecimalPlaces;
-        v7 = *(a3 + 12);
+        v7 = *(equivalent + 12);
         goto LABEL_29;
       case 4:
         mDecimalPlaces = self->mFractionAccuracy;
-        v7 = *(a3 + 13);
+        v7 = *(equivalent + 13);
         goto LABEL_29;
       case 5:
-        if (self->mBase == *(a3 + 80) && self->mBasePlaces == *(a3 + 41))
+        if (self->mBase == *(equivalent + 80) && self->mBasePlaces == *(equivalent + 41))
         {
           mDecimalPlaces = self->mBaseUseMinusSign;
-          v7 = *(a3 + 84);
+          v7 = *(equivalent + 84);
           goto LABEL_29;
         }
 
@@ -835,17 +835,17 @@ LABEL_26:
 
 LABEL_17:
 
-    LOBYTE(v8) = [(TSUNumberFormat *)self isEqual:a3];
+    LOBYTE(v8) = [(TSUNumberFormat *)self isEqual:equivalent];
     return v8;
   }
 
   if (!mValueType)
   {
 LABEL_7:
-    if (self->mDecimalPlaces == *(a3 + 12) && self->mNegativeStyle == *(a3 + 11))
+    if (self->mDecimalPlaces == *(equivalent + 12) && self->mNegativeStyle == *(equivalent + 11))
     {
       mDecimalPlaces = self->mShowThousandsSeparator;
-      v7 = *(a3 + 48);
+      v7 = *(equivalent + 48);
 LABEL_29:
       LOBYTE(v8) = mDecimalPlaces == v7;
       return v8;
@@ -864,18 +864,18 @@ LABEL_29:
     goto LABEL_17;
   }
 
-  if (self->mDecimalPlaces != *(a3 + 12))
+  if (self->mDecimalPlaces != *(equivalent + 12))
   {
     goto LABEL_26;
   }
 
   mCurrencyCode = self->mCurrencyCode;
-  if (!(mCurrencyCode | *(a3 + 4)) || (v8 = [(NSString *)mCurrencyCode isEqualToString:?]))
+  if (!(mCurrencyCode | *(equivalent + 4)) || (v8 = [(NSString *)mCurrencyCode isEqualToString:?]))
   {
-    if (self->mNegativeStyle == *(a3 + 11) && self->mShowThousandsSeparator == *(a3 + 48))
+    if (self->mNegativeStyle == *(equivalent + 11) && self->mShowThousandsSeparator == *(equivalent + 48))
     {
       mDecimalPlaces = self->mUseAccountingStyle;
-      v7 = *(a3 + 40);
+      v7 = *(equivalent + 40);
       goto LABEL_29;
     }
 
@@ -913,16 +913,16 @@ LABEL_29:
   return v26 + v23 + v25 + mUseAccountingStyle + mNegativeStyle + mShowThousandsSeparator + mFractionAccuracy + mFormatStringRequiresSuppressionOfMinusSign + mIsCustom + mScaleFactor + mFormatStringContainsTabCharacter + mRequiresFractionReplacement + v14 + v4 + mIndexFromRightOfLastDigitPlaceholder + mIsTextFormat + mMinimumIntegerWidth + mDecimalWidth + mNumberOfNonSpaceIntegerPlaceholderDigits + mNumberOfNonSpaceDecimalPlaceholderDigits + v11 + v12 + [(NSString *)self->mPrefixString hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 || self->mValueType != *(a3 + 2))
+  if ((objc_opt_isKindOfClass() & 1) == 0 || self->mValueType != *(equal + 2))
   {
     goto LABEL_36;
   }
 
   mFormatString = self->mFormatString;
-  if (mFormatString | *(a3 + 2))
+  if (mFormatString | *(equal + 2))
   {
     v6 = [(NSString *)mFormatString isEqualToString:?];
     if (!v6)
@@ -931,13 +931,13 @@ LABEL_29:
     }
   }
 
-  if (self->mDecimalPlaces != *(a3 + 12))
+  if (self->mDecimalPlaces != *(equal + 12))
   {
     goto LABEL_36;
   }
 
   mCurrencyCode = self->mCurrencyCode;
-  if (mCurrencyCode | *(a3 + 4))
+  if (mCurrencyCode | *(equal + 4))
   {
     v6 = [(NSString *)mCurrencyCode isEqualToString:?];
     if (!v6)
@@ -946,13 +946,13 @@ LABEL_29:
     }
   }
 
-  if (self->mUseAccountingStyle != *(a3 + 40) || self->mNegativeStyle != *(a3 + 11) || self->mShowThousandsSeparator != *(a3 + 48) || self->mFractionAccuracy != *(a3 + 13) || self->mFormatStringRequiresSuppressionOfMinusSign != *(a3 + 56) || self->mIsCustom != *(a3 + 85) || self->mScaleFactor != *(a3 + 11) || self->mFormatStringContainsTabCharacter != *(a3 + 96) || self->mRequiresFractionReplacement != *(a3 + 101))
+  if (self->mUseAccountingStyle != *(equal + 40) || self->mNegativeStyle != *(equal + 11) || self->mShowThousandsSeparator != *(equal + 48) || self->mFractionAccuracy != *(equal + 13) || self->mFormatStringRequiresSuppressionOfMinusSign != *(equal + 56) || self->mIsCustom != *(equal + 85) || self->mScaleFactor != *(equal + 11) || self->mFormatStringContainsTabCharacter != *(equal + 96) || self->mRequiresFractionReplacement != *(equal + 101))
   {
     goto LABEL_36;
   }
 
   mInterstitialStrings = self->mInterstitialStrings;
-  if (mInterstitialStrings | *(a3 + 13))
+  if (mInterstitialStrings | *(equal + 13))
   {
     v6 = [(NSArray *)mInterstitialStrings isEqual:?];
     if (!v6)
@@ -962,7 +962,7 @@ LABEL_29:
   }
 
   mInterstitialStringInsertionIndexes = self->mInterstitialStringInsertionIndexes;
-  if (mInterstitialStringInsertionIndexes | *(a3 + 14))
+  if (mInterstitialStringInsertionIndexes | *(equal + 14))
   {
     v6 = [(NSIndexSet *)mInterstitialStringInsertionIndexes isEqual:?];
     if (!v6)
@@ -971,13 +971,13 @@ LABEL_29:
     }
   }
 
-  if (self->mIndexFromRightOfLastDigitPlaceholder != *(a3 + 60) || self->mIsTextFormat != *(a3 + 122) || self->mMinimumIntegerWidth != *(a3 + 123) || self->mDecimalWidth != *(a3 + 124) || self->mNumberOfNonSpaceIntegerPlaceholderDigits != *(a3 + 125) || self->mNumberOfNonSpaceDecimalPlaceholderDigits != *(a3 + 126))
+  if (self->mIndexFromRightOfLastDigitPlaceholder != *(equal + 60) || self->mIsTextFormat != *(equal + 122) || self->mMinimumIntegerWidth != *(equal + 123) || self->mDecimalWidth != *(equal + 124) || self->mNumberOfNonSpaceIntegerPlaceholderDigits != *(equal + 125) || self->mNumberOfNonSpaceDecimalPlaceholderDigits != *(equal + 126))
   {
     goto LABEL_36;
   }
 
   mFormatName = self->mFormatName;
-  if (mFormatName | *(a3 + 16))
+  if (mFormatName | *(equal + 16))
   {
     v6 = [(NSString *)mFormatName isEqual:?];
     if (!v6)
@@ -986,7 +986,7 @@ LABEL_29:
     }
   }
 
-  if (self->mBase != *(a3 + 80) || self->mBasePlaces != *(a3 + 41) || self->mBaseUseMinusSign != *(a3 + 84))
+  if (self->mBase != *(equal + 80) || self->mBasePlaces != *(equal + 41) || self->mBaseUseMinusSign != *(equal + 84))
   {
 LABEL_36:
     LOBYTE(v6) = 0;
@@ -994,10 +994,10 @@ LABEL_36:
   }
 
   mSuffixString = self->mSuffixString;
-  if (!(mSuffixString | *(a3 + 9)) || (v6 = [(NSString *)mSuffixString isEqual:?]) != 0)
+  if (!(mSuffixString | *(equal + 9)) || (v6 = [(NSString *)mSuffixString isEqual:?]) != 0)
   {
     mPrefixString = self->mPrefixString;
-    if (mPrefixString | *(a3 + 8))
+    if (mPrefixString | *(equal + 8))
     {
 
       LOBYTE(v6) = [(NSString *)mPrefixString isEqual:?];
@@ -1059,9 +1059,9 @@ LABEL_36:
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   BYTE6(v8) = self->mIsTextFormat;
   *(&v8 + 2) = *&self->mMinimumIntegerWidth;
   LOWORD(v8) = self->mIndexFromRightOfLastDigitPlaceholder;
@@ -1072,9 +1072,9 @@ LABEL_36:
   return [v4 initWithValueType:self->mValueType formatString:self->mFormatString decimalPlaces:self->mDecimalPlaces currencyCode:self->mCurrencyCode useAccountingStyle:self->mUseAccountingStyle negativeStyle:self->mNegativeStyle showThousandsSeparator:self->mScaleFactor fractionAccuracy:v6 prefixString:self->mPrefixString suffixString:self->mSuffixString scaleFactor:v7 base:self->mInterstitialStrings basePlaces:self->mInterstitialStringInsertionIndexes baseUseMinusSign:v8 isCustom:self->mFormatName interstitialStrings:? interstitialStringInsertionIndexes:? indexFromRightOfLastDigitPlaceholder:? minimumIntegerWidth:? decimalWidth:? numberOfNonSpaceIntegerPlaceholderDigits:? numberOfNonSpaceDecimalPlaceholderDigits:? isTextFormat:? formatName:?];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [TSUMutableNumberFormat allocWithZone:a3];
+  v4 = [TSUMutableNumberFormat allocWithZone:zone];
   BYTE6(v8) = self->mIsTextFormat;
   *(&v8 + 2) = *&self->mMinimumIntegerWidth;
   LOWORD(v8) = self->mIndexFromRightOfLastDigitPlaceholder;

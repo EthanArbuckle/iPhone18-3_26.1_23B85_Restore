@@ -1,28 +1,28 @@
 @interface WFUnconfiguredJoinOperation
-- (WFUnconfiguredJoinOperation)initWithParameters:(id)a3 rootViewController:(id)a4;
-- (void)airPortAssistantComplete:(id)a3 result:(int)a4 context:(id)a5 animated:(BOOL)a6;
+- (WFUnconfiguredJoinOperation)initWithParameters:(id)parameters rootViewController:(id)controller;
+- (void)airPortAssistantComplete:(id)complete result:(int)result context:(id)context animated:(BOOL)animated;
 - (void)finish;
 - (void)start;
 @end
 
 @implementation WFUnconfiguredJoinOperation
 
-- (WFUnconfiguredJoinOperation)initWithParameters:(id)a3 rootViewController:(id)a4
+- (WFUnconfiguredJoinOperation)initWithParameters:(id)parameters rootViewController:(id)controller
 {
-  v7 = a3;
-  v8 = a4;
+  parametersCopy = parameters;
+  controllerCopy = controller;
   v15.receiver = self;
   v15.super_class = WFUnconfiguredJoinOperation;
   v9 = [(WFUnconfiguredJoinOperation *)&v15 init];
   v10 = v9;
-  if (!v8 || !v7 || !v9)
+  if (!controllerCopy || !parametersCopy || !v9)
   {
     goto LABEL_8;
   }
 
-  objc_storeStrong(&v9->_parameters, a3);
-  objc_storeStrong(&v10->_rootViewController, a4);
-  v11 = [MEMORY[0x277CEA3A8] assistantUIViewControllerWithParameters:v7];
+  objc_storeStrong(&v9->_parameters, parameters);
+  objc_storeStrong(&v10->_rootViewController, controller);
+  v11 = [MEMORY[0x277CEA3A8] assistantUIViewControllerWithParameters:parametersCopy];
   airportController = v10->_airportController;
   v10->_airportController = v11;
 
@@ -48,19 +48,19 @@ LABEL_6:
   v12.super_class = WFUnconfiguredJoinOperation;
   [(WFOperation *)&v12 start];
   v3 = objc_alloc(MEMORY[0x277D757A0]);
-  v4 = [(WFUnconfiguredJoinOperation *)self airportController];
-  v5 = [v4 viewController];
-  v6 = [v3 initWithRootViewController:v5];
+  airportController = [(WFUnconfiguredJoinOperation *)self airportController];
+  viewController = [airportController viewController];
+  v6 = [v3 initWithRootViewController:viewController];
   [(WFUnconfiguredJoinOperation *)self setNavigationController:v6];
 
-  v7 = [MEMORY[0x277D75418] currentDevice];
-  v8 = 2 * ([v7 userInterfaceIdiom] == 1);
-  v9 = [(WFUnconfiguredJoinOperation *)self navigationController];
-  [v9 setModalPresentationStyle:v8];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  v8 = 2 * ([currentDevice userInterfaceIdiom] == 1);
+  navigationController = [(WFUnconfiguredJoinOperation *)self navigationController];
+  [navigationController setModalPresentationStyle:v8];
 
-  v10 = [(WFUnconfiguredJoinOperation *)self rootViewController];
-  v11 = [(WFUnconfiguredJoinOperation *)self navigationController];
-  [v10 presentViewController:v11 animated:1 completion:0];
+  rootViewController = [(WFUnconfiguredJoinOperation *)self rootViewController];
+  navigationController2 = [(WFUnconfiguredJoinOperation *)self navigationController];
+  [rootViewController presentViewController:navigationController2 animated:1 completion:0];
 }
 
 - (void)finish
@@ -68,16 +68,16 @@ LABEL_6:
   v4.receiver = self;
   v4.super_class = WFUnconfiguredJoinOperation;
   [(WFOperation *)&v4 finish];
-  v3 = [(WFUnconfiguredJoinOperation *)self navigationController];
-  [v3 dismissViewControllerAnimated:1 completion:0];
+  navigationController = [(WFUnconfiguredJoinOperation *)self navigationController];
+  [navigationController dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)airPortAssistantComplete:(id)a3 result:(int)a4 context:(id)a5 animated:(BOOL)a6
+- (void)airPortAssistantComplete:(id)complete result:(int)result context:(id)context animated:(BOOL)animated
 {
   v20 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a5;
-  if (a4 == -6723)
+  completeCopy = complete;
+  contextCopy = context;
+  if (result == -6723)
   {
     v13 = [MEMORY[0x277CCA9B8] associationErrorWithReason:6];
     [(WFOperation *)self setError:v13];
@@ -86,10 +86,10 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if (!a4)
+  if (!result)
   {
-    v11 = [v9 configuredSSID];
-    v12 = [v11 length];
+    configuredSSID = [completeCopy configuredSSID];
+    v12 = [configuredSSID length];
 
     if (v12)
     {
@@ -100,9 +100,9 @@ LABEL_10:
         v15 = v13;
         if (os_log_type_enabled(v15, v14))
         {
-          v16 = [v9 configuredSSID];
+          configuredSSID2 = [completeCopy configuredSSID];
           v18 = 138412290;
-          v19 = v16;
+          v19 = configuredSSID2;
           _os_log_impl(&dword_273ECD000, v15, v14, "Successfully configured SSID %@", &v18, 0xCu);
         }
       }

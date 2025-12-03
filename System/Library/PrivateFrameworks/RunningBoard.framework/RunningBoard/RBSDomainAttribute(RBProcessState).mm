@@ -15,17 +15,17 @@
   v8 = a3;
   v9 = a5;
   v22 = 0;
-  if ([(RBSDomainAttribute *)a1 _contextContainsRequiredEndowment:v9 requiresEndowment:&v22])
+  if ([(RBSDomainAttribute *)self _contextContainsRequiredEndowment:v9 requiresEndowment:&v22])
   {
     if (v22)
     {
       [v9 pushActiveDueToInheritedEndowment];
     }
 
-    v10 = [v9 domainAttributeManager];
-    v11 = [a1 domain];
-    v12 = [a1 name];
-    v13 = [v10 attributesForDomain:v11 andName:v12 context:v9 withError:0];
+    domainAttributeManager = [v9 domainAttributeManager];
+    domain = [self domain];
+    name = [self name];
+    v13 = [domainAttributeManager attributesForDomain:domain andName:name context:v9 withError:0];
 
     v15 = MEMORY[0x277D85DD0];
     v16 = 3221225472;
@@ -46,11 +46,11 @@
 - (void)applyToAcquisitionContext:()RBProcessState
 {
   v4 = a3;
-  v5 = [v4 daemonContext];
-  v6 = [v5 domainAttributeManager];
-  v7 = [a1 domain];
-  v8 = [a1 name];
-  v9 = [v6 attributesForDomain:v7 andName:v8 context:0 withError:0];
+  daemonContext = [v4 daemonContext];
+  domainAttributeManager = [daemonContext domainAttributeManager];
+  domain = [self domain];
+  name = [self name];
+  v9 = [domainAttributeManager attributesForDomain:domain andName:name context:0 withError:0];
 
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
@@ -69,11 +69,11 @@
   {
 LABEL_2:
     [v6 pushIgnoreRestrictions];
-    v7 = [v6 domainAttributeManager];
-    v8 = [a1 domain];
-    v9 = [a1 name];
+    domainAttributeManager = [v6 domainAttributeManager];
+    domain = [self domain];
+    name = [self name];
     v32 = 0;
-    v10 = [v7 attributesForDomain:v8 andName:v9 context:v6 withError:&v32];
+    v10 = [domainAttributeManager attributesForDomain:domain andName:name context:v6 withError:&v32];
     v11 = v32;
 
     if (v11)
@@ -141,14 +141,14 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  v14 = [v6 domainAttributeManager];
-  v15 = [a1 domain];
-  v16 = [a1 name];
-  v17 = [v14 areTargetPropertiesValidForContext:v6 forAttributeWithDomain:v15 andName:v16];
+  domainAttributeManager2 = [v6 domainAttributeManager];
+  domain2 = [self domain];
+  name2 = [self name];
+  v17 = [domainAttributeManager2 areTargetPropertiesValidForContext:v6 forAttributeWithDomain:domain2 andName:name2];
 
   if (v17)
   {
-    if ([(RBSDomainAttribute *)a1 _areOriginatorEntitlementsValidForContext:v6 withError:a4]&& [(RBSDomainAttribute *)a1 _areTargetEntitlementsValidForContext:v6 withError:a4]&& [(RBSDomainAttribute *)a1 _areAdditionalRestrictionsValidForContext:v6 withError:a4]&& [(RBSDomainAttribute *)a1 _doesRestrictionAllowForContext:v6 withError:a4])
+    if ([(RBSDomainAttribute *)self _areOriginatorEntitlementsValidForContext:v6 withError:a4]&& [(RBSDomainAttribute *)self _areTargetEntitlementsValidForContext:v6 withError:a4]&& [(RBSDomainAttribute *)self _areAdditionalRestrictionsValidForContext:v6 withError:a4]&& [(RBSDomainAttribute *)self _doesRestrictionAllowForContext:v6 withError:a4])
     {
       goto LABEL_2;
     }
@@ -170,7 +170,7 @@ LABEL_21:
   v21 = *MEMORY[0x277D47048];
   v34[0] = v20;
   v34[1] = v21;
-  v11 = [a1 description];
+  v11 = [self description];
   v35[1] = v11;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v35 forKeys:v34 count:2];
   [v18 errorWithDomain:v19 code:2 userInfo:v10];
@@ -187,15 +187,15 @@ LABEL_22:
   v10 = a3;
   v11 = a5;
   v20 = 0;
-  if ([(RBSDomainAttribute *)a1 _contextContainsRequiredEndowment:v11 requiresEndowment:&v20])
+  if ([(RBSDomainAttribute *)self _contextContainsRequiredEndowment:v11 requiresEndowment:&v20])
   {
     if (v20)
     {
       [v11 pushActiveDueToInheritedEndowment];
     }
 
-    v12 = [v11 domainAttributeManager];
-    [a1 domain];
+    domainAttributeManager = [v11 domainAttributeManager];
+    [self domain];
     objc_claimAutoreleasedReturnValue();
     [OUTLINED_FUNCTION_7_1() name];
     objc_claimAutoreleasedReturnValue();
@@ -224,25 +224,25 @@ LABEL_22:
   v8 = a3;
   v9 = a5;
   [v8 setHasDomainAttribute:1];
-  v10 = [a1 sourceEnvironment];
-  if (v10)
+  sourceEnvironment = [self sourceEnvironment];
+  if (sourceEnvironment)
   {
-    v11 = [v8 sourceEnvironments];
-    [v11 addObject:v10];
+    sourceEnvironments = [v8 sourceEnvironments];
+    [sourceEnvironments addObject:sourceEnvironment];
   }
 
   v12 = objc_alloc(MEMORY[0x277CCACA8]);
-  v13 = [a1 domain];
-  v14 = [a1 name];
-  v15 = [v12 initWithFormat:@"%@:%@", v13, v14];
+  domain = [self domain];
+  name = [self name];
+  v15 = [v12 initWithFormat:@"%@:%@", domain, name];
 
-  v16 = [v8 domainAttributes];
+  domainAttributes = [v8 domainAttributes];
 
-  if (v16)
+  if (domainAttributes)
   {
     v17 = objc_alloc(MEMORY[0x277CCACA8]);
-    v18 = [v8 domainAttributes];
-    v19 = [v17 initWithFormat:@"%@, %@", v18, v15];
+    domainAttributes2 = [v8 domainAttributes];
+    v19 = [v17 initWithFormat:@"%@, %@", domainAttributes2, v15];
     [v8 setDomainAttributes:v19];
   }
 
@@ -252,7 +252,7 @@ LABEL_22:
   }
 
   v31 = 0;
-  if ([(RBSDomainAttribute *)a1 _contextContainsRequiredEndowment:v9 requiresEndowment:&v31])
+  if ([(RBSDomainAttribute *)self _contextContainsRequiredEndowment:v9 requiresEndowment:&v31])
   {
     OUTLINED_FUNCTION_3_6();
     if (v20)
@@ -260,9 +260,9 @@ LABEL_22:
       [v9 pushActiveDueToInheritedEndowment];
     }
 
-    v21 = [v9 domainAttributeManager];
-    v22 = [a1 domain];
-    v23 = [a1 name];
+    domainAttributeManager = [v9 domainAttributeManager];
+    domain2 = [self domain];
+    name2 = [self name];
     OUTLINED_FUNCTION_2_12();
     v25 = [v24 attributesForDomain:? andName:? context:? withError:?];
 
@@ -289,7 +289,7 @@ LABEL_22:
   v9 = a3;
   v10 = a5;
   v28 = 0;
-  if ([(RBSDomainAttribute *)a1 _contextContainsRequiredEndowment:v10 requiresEndowment:&v28])
+  if ([(RBSDomainAttribute *)self _contextContainsRequiredEndowment:v10 requiresEndowment:&v28])
   {
     OUTLINED_FUNCTION_3_6();
     if (v11)
@@ -297,10 +297,10 @@ LABEL_22:
       [v10 pushActiveDueToInheritedEndowment];
     }
 
-    v12 = [v10 domainAttributeManager];
-    [a1 domain];
+    domainAttributeManager = [v10 domainAttributeManager];
+    [self domain];
     objc_claimAutoreleasedReturnValue();
-    v13 = [OUTLINED_FUNCTION_7_1() name];
+    name = [OUTLINED_FUNCTION_7_1() name];
     OUTLINED_FUNCTION_2_12();
     v15 = [v14 attributesForDomain:? andName:? context:? withError:?];
 
@@ -351,11 +351,11 @@ LABEL_22:
 {
   v5 = a3;
   v6 = [MEMORY[0x277CBEB58] set];
-  if ([(RBSDomainAttribute *)a1 _contextContainsRequiredEndowment:v5 requiresEndowment:0])
+  if ([(RBSDomainAttribute *)self _contextContainsRequiredEndowment:v5 requiresEndowment:0])
   {
-    v7 = [v5 domainAttributeManager];
-    v8 = [a1 domain];
-    [a1 name];
+    domainAttributeManager = [v5 domainAttributeManager];
+    domain = [self domain];
+    [self name];
     objc_claimAutoreleasedReturnValue();
     OUTLINED_FUNCTION_1_22();
     OUTLINED_FUNCTION_2_12();
@@ -370,7 +370,7 @@ LABEL_22:
     [v10 enumerateObjectsUsingBlock:v12];
   }
 
-  [v6 addObject:a1];
+  [v6 addObject:self];
 
   return v6;
 }

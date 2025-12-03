@@ -1,16 +1,16 @@
 @interface IdentityProofingViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)viewDidLoad;
 @end
 
 @implementation IdentityProofingViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CoreIDVUI.IdentityProofingViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"CoreIDVUI.IdentityProofingViewController" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CoreIDVUI.IdentityProofingViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"CoreIDVUI.IdentityProofingViewController" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

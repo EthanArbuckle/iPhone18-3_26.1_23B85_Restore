@@ -1,5 +1,5 @@
 @interface IXSPowerAssertion
-- (IXSPowerAssertion)initWithAssertionName:(id)a3 details:(id)a4;
+- (IXSPowerAssertion)initWithAssertionName:(id)name details:(id)details;
 - (id)description;
 - (void)dealloc;
 - (void)invalidate;
@@ -7,28 +7,28 @@
 
 @implementation IXSPowerAssertion
 
-- (IXSPowerAssertion)initWithAssertionName:(id)a3 details:(id)a4
+- (IXSPowerAssertion)initWithAssertionName:(id)name details:(id)details
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  detailsCopy = details;
   v17.receiver = self;
   v17.super_class = IXSPowerAssertion;
   v8 = [(IXSPowerAssertion *)&v17 init];
   if (v8)
   {
-    v9 = [(__CFString *)v6 copy];
+    v9 = [(__CFString *)nameCopy copy];
     assertionName = v8->_assertionName;
     v8->_assertionName = v9;
 
     AssertionID = 0;
-    v11 = IOPMAssertionCreateWithDescription(@"PreventUserIdleSystemSleep", v6, v7, 0, 0, 0.0, 0, &AssertionID);
+    v11 = IOPMAssertionCreateWithDescription(@"PreventUserIdleSystemSleep", nameCopy, detailsCopy, 0, 0, 0.0, 0, &AssertionID);
     v12 = sub_1000031B0(off_100121958);
     v13 = v12;
     if (v11)
     {
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
-        sub_1000979CC(v6, v11, v13);
+        sub_1000979CC(nameCopy, v11, v13);
       }
 
       v14 = 0;
@@ -41,7 +41,7 @@
         *buf = 136315394;
         v19 = "[IXSPowerAssertion initWithAssertionName:details:]";
         v20 = 2112;
-        v21 = v6;
+        v21 = nameCopy;
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "%s: Acquired power assertion %@", buf, 0x16u);
       }
 

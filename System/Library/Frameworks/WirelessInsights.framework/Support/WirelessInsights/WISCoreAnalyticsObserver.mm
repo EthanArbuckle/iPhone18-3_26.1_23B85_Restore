@@ -2,8 +2,8 @@
 + (id)shared;
 - (WISCoreAnalyticsObserver)init;
 - (void)dealloc;
-- (void)handleCAEventHandlerWrapper:(id)a3 data:(id)a4;
-- (void)observer:(id)a3 didEmitMessage:(id)a4;
+- (void)handleCAEventHandlerWrapper:(id)wrapper data:(id)data;
+- (void)observer:(id)observer didEmitMessage:(id)message;
 - (void)stopObserving;
 @end
 
@@ -193,20 +193,20 @@ LABEL_17:
 
 - (void)stopObserving
 {
-  v2 = [(WISCoreAnalyticsObserver *)self eventObserver];
-  [v2 stopObserving];
+  eventObserver = [(WISCoreAnalyticsObserver *)self eventObserver];
+  [eventObserver stopObserving];
 }
 
-- (void)handleCAEventHandlerWrapper:(id)a3 data:(id)a4
+- (void)handleCAEventHandlerWrapper:(id)wrapper data:(id)data
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [NSJSONSerialization dataWithJSONObject:v6 options:1 error:0];
+  wrapperCopy = wrapper;
+  dataCopy = data;
+  v7 = [NSJSONSerialization dataWithJSONObject:dataCopy options:1 error:0];
   v8 = [[NSString alloc] initWithData:v7 encoding:4];
   XPCEventPublisher.Token.rawValue.getter(v9, v10);
-  if (v5)
+  if (wrapperCopy)
   {
-    CFRetain(v5);
+    CFRetain(wrapperCopy);
   }
 
   if (v8)
@@ -214,10 +214,10 @@ LABEL_17:
     CFRetain(v8);
   }
 
-  v14 = v5;
-  if (v5)
+  v14 = wrapperCopy;
+  if (wrapperCopy)
   {
-    CFRetain(v5);
+    CFRetain(wrapperCopy);
   }
 
   cf = v8;
@@ -242,21 +242,21 @@ LABEL_17:
     CFRelease(v8);
   }
 
-  if (v5)
+  if (wrapperCopy)
   {
-    CFRelease(v5);
+    CFRelease(wrapperCopy);
   }
 
   XPCEventPublisher.Token.rawValue.getter(v11, v12);
 }
 
-- (void)observer:(id)a3 didEmitMessage:(id)a4
+- (void)observer:(id)observer didEmitMessage:(id)message
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  observerCopy = observer;
+  messageCopy = message;
+  if (messageCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v8 = [v7 dataUsingEncoding:4];
+    v8 = [messageCopy dataUsingEncoding:4];
     v19 = 0;
     v9 = [NSJSONSerialization JSONObjectWithData:v8 options:0 error:&v19];
     v10 = v19;
@@ -289,8 +289,8 @@ LABEL_17:
       v17 = *(qword_1002DBE98 + 112);
       if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
       {
-        v18 = [v10 localizedDescription];
-        sub_1001FF9F0(v18, buf, v17);
+        localizedDescription = [v10 localizedDescription];
+        sub_1001FF9F0(localizedDescription, buf, v17);
       }
     }
   }
@@ -301,7 +301,7 @@ LABEL_17:
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
       v16 = objc_opt_class();
-      sub_1001FFA48(v16, v7, buf, v15);
+      sub_1001FFA48(v16, messageCopy, buf, v15);
     }
   }
 }
@@ -312,7 +312,7 @@ LABEL_17:
   block[1] = 3221225472;
   block[2] = sub_100069FFC;
   block[3] = &unk_1002AB480;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1002D8318 != -1)
   {
     dispatch_once(&qword_1002D8318, block);

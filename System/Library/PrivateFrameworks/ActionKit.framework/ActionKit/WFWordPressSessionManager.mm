@@ -1,33 +1,33 @@
 @interface WFWordPressSessionManager
-- (WFWordPressSessionManager)initWithSessionConfiguration:(id)a3;
-- (void)createPostWithContent:(id)a3 completionHandler:(id)a4;
-- (void)createPostWithTitle:(id)a3 content:(id)a4 type:(id)a5 date:(id)a6 format:(id)a7 status:(id)a8 allowingComments:(BOOL)a9 name:(id)a10 excerpt:(id)a11 template:(id)a12 tags:(id)a13 categories:(id)a14 thumbnailId:(id)a15 customFields:(id)a16 completionHandler:(id)a17;
-- (void)getBlogsWithCompletionHandler:(id)a3;
-- (void)getPageTemplatesWithCompletionHandler:(id)a3;
-- (void)getPost:(id)a3 completionHandler:(id)a4;
-- (void)getPostFormatsWithCompletionHandler:(id)a3;
-- (void)getPostStatusesWithCompletionHandler:(id)a3;
-- (void)getPostTypesWithCompletionHandler:(id)a3;
-- (void)getTermsForTaxonomy:(id)a3 completionHandler:(id)a4;
-- (void)sendRequest:(id)a3 completionHandler:(id)a4;
-- (void)sendRequestWithMethod:(id)a3 parameters:(id)a4 completionHandler:(id)a5;
-- (void)uploadFile:(id)a3 completionHandler:(id)a4;
+- (WFWordPressSessionManager)initWithSessionConfiguration:(id)configuration;
+- (void)createPostWithContent:(id)content completionHandler:(id)handler;
+- (void)createPostWithTitle:(id)title content:(id)content type:(id)type date:(id)date format:(id)format status:(id)status allowingComments:(BOOL)comments name:(id)self0 excerpt:(id)self1 template:(id)self2 tags:(id)self3 categories:(id)self4 thumbnailId:(id)self5 customFields:(id)self6 completionHandler:(id)self7;
+- (void)getBlogsWithCompletionHandler:(id)handler;
+- (void)getPageTemplatesWithCompletionHandler:(id)handler;
+- (void)getPost:(id)post completionHandler:(id)handler;
+- (void)getPostFormatsWithCompletionHandler:(id)handler;
+- (void)getPostStatusesWithCompletionHandler:(id)handler;
+- (void)getPostTypesWithCompletionHandler:(id)handler;
+- (void)getTermsForTaxonomy:(id)taxonomy completionHandler:(id)handler;
+- (void)sendRequest:(id)request completionHandler:(id)handler;
+- (void)sendRequestWithMethod:(id)method parameters:(id)parameters completionHandler:(id)handler;
+- (void)uploadFile:(id)file completionHandler:(id)handler;
 @end
 
 @implementation WFWordPressSessionManager
 
-- (void)sendRequest:(id)a3 completionHandler:(id)a4
+- (void)sendRequest:(id)request completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(WFWordPressSessionManager *)self session];
+  handlerCopy = handler;
+  requestCopy = request;
+  session = [(WFWordPressSessionManager *)self session];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __59__WFWordPressSessionManager_sendRequest_completionHandler___block_invoke;
   v11[3] = &unk_278C22268;
-  v12 = v6;
-  v9 = v6;
-  v10 = [v8 dataTaskWithRequest:v7 completionHandler:v11];
+  v12 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = [session dataTaskWithRequest:requestCopy completionHandler:v11];
 
   [v10 resume];
 }
@@ -123,70 +123,70 @@ void __59__WFWordPressSessionManager_sendRequest_completionHandler___block_invok
   v32 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sendRequestWithMethod:(id)a3 parameters:(id)a4 completionHandler:(id)a5
+- (void)sendRequestWithMethod:(id)method parameters:(id)parameters completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[WPXMLRPCEncoder alloc] initWithMethod:v10 andParameters:v9];
+  handlerCopy = handler;
+  parametersCopy = parameters;
+  methodCopy = method;
+  v11 = [[WPXMLRPCEncoder alloc] initWithMethod:methodCopy andParameters:parametersCopy];
 
   v17 = 0;
   v12 = [(WPXMLRPCEncoder *)v11 dataEncodedWithError:&v17];
   v13 = v17;
   if (v13)
   {
-    if (v8)
+    if (handlerCopy)
     {
-      v8[2](v8, 0, v13);
+      handlerCopy[2](handlerCopy, 0, v13);
     }
   }
 
   else
   {
     v14 = MEMORY[0x277CBAB50];
-    v15 = [(WFWordPressSessionManager *)self endpointURL];
-    v16 = [v14 requestWithURL:v15];
+    endpointURL = [(WFWordPressSessionManager *)self endpointURL];
+    v16 = [v14 requestWithURL:endpointURL];
 
     [v16 _setNonAppInitiated:1];
     [v16 setHTTPMethod:@"POST"];
     [v16 setHTTPBody:v12];
     [v16 setValue:@"text/xml" forHTTPHeaderField:@"Content-Type"];
-    [(WFWordPressSessionManager *)self sendRequest:v16 completionHandler:v8];
+    [(WFWordPressSessionManager *)self sendRequest:v16 completionHandler:handlerCopy];
   }
 }
 
-- (void)uploadFile:(id)a3 completionHandler:(id)a4
+- (void)uploadFile:(id)file completionHandler:(id)handler
 {
   v51[3] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 inputStream];
+  handlerCopy = handler;
+  fileCopy = file;
+  inputStream = [fileCopy inputStream];
   v50[0] = @"name";
-  v9 = [v7 filename];
-  v51[0] = v9;
+  filename = [fileCopy filename];
+  v51[0] = filename;
   v50[1] = @"type";
-  v10 = [v7 wfType];
+  wfType = [fileCopy wfType];
 
-  v11 = [v10 MIMEType];
+  mIMEType = [wfType MIMEType];
   v50[2] = @"bits";
-  v51[1] = v11;
-  v51[2] = v8;
+  v51[1] = mIMEType;
+  v51[2] = inputStream;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v51 forKeys:v50 count:3];
 
-  v13 = [(WFWordPressSessionManager *)self blogId];
-  v14 = v13;
+  blogId = [(WFWordPressSessionManager *)self blogId];
+  v14 = blogId;
   v15 = &unk_28509B078;
-  if (v13)
+  if (blogId)
   {
-    v15 = v13;
+    v15 = blogId;
   }
 
   v49[0] = v15;
-  v16 = [(WFWordPressSessionManager *)self username];
-  v17 = v16;
-  if (v16)
+  username = [(WFWordPressSessionManager *)self username];
+  v17 = username;
+  if (username)
   {
-    v18 = v16;
+    v18 = username;
   }
 
   else
@@ -195,11 +195,11 @@ void __59__WFWordPressSessionManager_sendRequest_completionHandler___block_invok
   }
 
   v49[1] = v18;
-  v19 = [(WFWordPressSessionManager *)self password];
-  v20 = v19;
-  if (v19)
+  password = [(WFWordPressSessionManager *)self password];
+  v20 = password;
+  if (password)
   {
-    v21 = v19;
+    v21 = password;
   }
 
   else
@@ -213,27 +213,27 @@ void __59__WFWordPressSessionManager_sendRequest_completionHandler___block_invok
 
   v23 = [[WPXMLRPCEncoder alloc] initWithMethod:@"wp.uploadFile" andParameters:v22];
   v24 = MEMORY[0x277CFC538];
-  v25 = [MEMORY[0x277CCAD78] UUID];
-  v26 = [v25 UUIDString];
-  v27 = [v24 createTemporaryFileWithFilename:v26];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
+  v27 = [v24 createTemporaryFileWithFilename:uUIDString];
 
-  v28 = [v27 path];
+  path = [v27 path];
   v48 = 0;
-  [(WPXMLRPCEncoder *)v23 encodeToFile:v28 error:&v48];
+  [(WPXMLRPCEncoder *)v23 encodeToFile:path error:&v48];
   v29 = v48;
 
   if (v29)
   {
-    v6[2](v6, 0, v29);
+    handlerCopy[2](handlerCopy, 0, v29);
   }
 
   else
   {
-    v30 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     [v27 path];
-    v31 = v44 = v8;
+    v31 = v44 = inputStream;
     v47 = 0;
-    [v30 attributesOfItemAtPath:v31 error:&v47];
+    [defaultManager attributesOfItemAtPath:v31 error:&v47];
     v32 = v43 = v22;
     v29 = v47;
     [v32 objectForKey:*MEMORY[0x277CCA1C0]];
@@ -242,12 +242,12 @@ void __59__WFWordPressSessionManager_sendRequest_completionHandler___block_invok
     v34 = [MEMORY[0x277CBEAE0] inputStreamWithURL:v27];
     v35 = MEMORY[0x277CBAB50];
     [(WFWordPressSessionManager *)self endpointURL];
-    v36 = v6;
+    v36 = handlerCopy;
     v38 = v37 = v12;
     v39 = [v35 requestWithURL:v38];
 
     v12 = v37;
-    v6 = v36;
+    handlerCopy = v36;
     [v39 _setNonAppInitiated:1];
     [v39 setHTTPMethod:@"POST"];
     [v39 setHTTPBodyStream:v34];
@@ -263,7 +263,7 @@ void __59__WFWordPressSessionManager_sendRequest_completionHandler___block_invok
     v46 = v36;
     [(WFWordPressSessionManager *)self sendRequest:v39 completionHandler:v45];
 
-    v8 = v44;
+    inputStream = v44;
     v23 = v42;
   }
 
@@ -289,16 +289,16 @@ void __58__WFWordPressSessionManager_uploadFile_completionHandler___block_invoke
   }
 }
 
-- (void)getPost:(id)a3 completionHandler:(id)a4
+- (void)getPost:(id)post completionHandler:(id)handler
 {
   v23[4] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
-  v8 = [(WFWordPressSessionManager *)self blogId];
-  v9 = v8;
-  if (v8)
+  handlerCopy = handler;
+  postCopy = post;
+  blogId = [(WFWordPressSessionManager *)self blogId];
+  v9 = blogId;
+  if (blogId)
   {
-    v10 = v8;
+    v10 = blogId;
   }
 
   else
@@ -307,11 +307,11 @@ void __58__WFWordPressSessionManager_uploadFile_completionHandler___block_invoke
   }
 
   v23[0] = v10;
-  v11 = [(WFWordPressSessionManager *)self username];
-  v12 = v11;
-  if (v11)
+  username = [(WFWordPressSessionManager *)self username];
+  v12 = username;
+  if (username)
   {
-    v13 = v11;
+    v13 = username;
   }
 
   else
@@ -320,11 +320,11 @@ void __58__WFWordPressSessionManager_uploadFile_completionHandler___block_invoke
   }
 
   v23[1] = v13;
-  v14 = [(WFWordPressSessionManager *)self password];
-  v15 = v14;
-  if (v14)
+  password = [(WFWordPressSessionManager *)self password];
+  v15 = password;
+  if (password)
   {
-    v16 = v14;
+    v16 = password;
   }
 
   else
@@ -332,9 +332,9 @@ void __58__WFWordPressSessionManager_uploadFile_completionHandler___block_invoke
     v16 = &stru_2850323E8;
   }
 
-  if (v7)
+  if (postCopy)
   {
-    v17 = v7;
+    v17 = postCopy;
   }
 
   else
@@ -350,8 +350,8 @@ void __58__WFWordPressSessionManager_uploadFile_completionHandler___block_invoke
   v21[1] = 3221225472;
   v21[2] = __55__WFWordPressSessionManager_getPost_completionHandler___block_invoke;
   v21[3] = &unk_278C1DA38;
-  v22 = v6;
-  v19 = v6;
+  v22 = handlerCopy;
+  v19 = handlerCopy;
   [(WFWordPressSessionManager *)self sendRequestWithMethod:@"wp.getPost" parameters:v18 completionHandler:v21];
 
   v20 = *MEMORY[0x277D85DE8];
@@ -376,25 +376,25 @@ void __55__WFWordPressSessionManager_getPost_completionHandler___block_invoke(ui
   }
 }
 
-- (void)createPostWithContent:(id)a3 completionHandler:(id)a4
+- (void)createPostWithContent:(id)content completionHandler:(id)handler
 {
   v23[4] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
-  v8 = [(WFWordPressSessionManager *)self blogId];
-  v9 = v8;
+  handlerCopy = handler;
+  contentCopy = content;
+  blogId = [(WFWordPressSessionManager *)self blogId];
+  v9 = blogId;
   v10 = &unk_28509B078;
-  if (v8)
+  if (blogId)
   {
-    v10 = v8;
+    v10 = blogId;
   }
 
   v23[0] = v10;
-  v11 = [(WFWordPressSessionManager *)self username];
-  v12 = v11;
-  if (v11)
+  username = [(WFWordPressSessionManager *)self username];
+  v12 = username;
+  if (username)
   {
-    v13 = v11;
+    v13 = username;
   }
 
   else
@@ -403,11 +403,11 @@ void __55__WFWordPressSessionManager_getPost_completionHandler___block_invoke(ui
   }
 
   v23[1] = v13;
-  v14 = [(WFWordPressSessionManager *)self password];
-  v15 = v14;
-  if (v14)
+  password = [(WFWordPressSessionManager *)self password];
+  v15 = password;
+  if (password)
   {
-    v16 = v14;
+    v16 = password;
   }
 
   else
@@ -416,9 +416,9 @@ void __55__WFWordPressSessionManager_getPost_completionHandler___block_invoke(ui
   }
 
   v17 = MEMORY[0x277CBEC10];
-  if (v7)
+  if (contentCopy)
   {
-    v17 = v7;
+    v17 = contentCopy;
   }
 
   v23[2] = v16;
@@ -429,8 +429,8 @@ void __55__WFWordPressSessionManager_getPost_completionHandler___block_invoke(ui
   v21[1] = 3221225472;
   v21[2] = __69__WFWordPressSessionManager_createPostWithContent_completionHandler___block_invoke;
   v21[3] = &unk_278C1DA38;
-  v22 = v6;
-  v19 = v6;
+  v22 = handlerCopy;
+  v19 = handlerCopy;
   [(WFWordPressSessionManager *)self sendRequestWithMethod:@"wp.newPost" parameters:v18 completionHandler:v21];
 
   v20 = *MEMORY[0x277D85DE8];
@@ -457,23 +457,23 @@ void __69__WFWordPressSessionManager_createPostWithContent_completionHandler___b
   }
 }
 
-- (void)createPostWithTitle:(id)a3 content:(id)a4 type:(id)a5 date:(id)a6 format:(id)a7 status:(id)a8 allowingComments:(BOOL)a9 name:(id)a10 excerpt:(id)a11 template:(id)a12 tags:(id)a13 categories:(id)a14 thumbnailId:(id)a15 customFields:(id)a16 completionHandler:(id)a17
+- (void)createPostWithTitle:(id)title content:(id)content type:(id)type date:(id)date format:(id)format status:(id)status allowingComments:(BOOL)comments name:(id)self0 excerpt:(id)self1 template:(id)self2 tags:(id)self3 categories:(id)self4 thumbnailId:(id)self5 customFields:(id)self6 completionHandler:(id)self7
 {
-  v45 = a17;
-  v38 = a16;
-  v44 = a15;
-  v21 = a14;
-  v43 = a12;
-  v42 = a11;
-  v41 = a10;
-  v40 = a8;
-  v39 = a7;
-  v22 = a6;
-  v23 = a5;
-  v24 = a4;
-  v25 = a3;
-  v26 = [a13 if_compactMap:&__block_literal_global_7757];
-  v27 = [v21 if_compactMap:&__block_literal_global_208];
+  handlerCopy = handler;
+  fieldsCopy = fields;
+  idCopy = id;
+  categoriesCopy = categories;
+  templateCopy = template;
+  excerptCopy = excerpt;
+  nameCopy = name;
+  statusCopy = status;
+  formatCopy = format;
+  dateCopy = date;
+  typeCopy = type;
+  contentCopy = content;
+  titleCopy = title;
+  v26 = [tags if_compactMap:&__block_literal_global_7757];
+  v27 = [categoriesCopy if_compactMap:&__block_literal_global_208];
 
   v28 = objc_opt_new();
   if ([v26 count])
@@ -505,29 +505,29 @@ void __69__WFWordPressSessionManager_createPostWithContent_completionHandler___b
   v47[3] = &unk_278C1ADC0;
   v48 = v31;
   v32 = v31;
-  [v38 enumerateKeysAndObjectsUsingBlock:v47];
+  [fieldsCopy enumerateKeysAndObjectsUsingBlock:v47];
 
   v33 = objc_opt_new();
-  [v33 setValue:v25 forKey:@"post_title"];
+  [v33 setValue:titleCopy forKey:@"post_title"];
 
-  [v33 setValue:v24 forKey:@"post_content"];
-  v34 = [v23 name];
+  [v33 setValue:contentCopy forKey:@"post_content"];
+  name = [typeCopy name];
 
-  [v33 setValue:v34 forKey:@"post_type"];
-  [v33 setValue:v22 forKey:@"post_date_gmt"];
+  [v33 setValue:name forKey:@"post_type"];
+  [v33 setValue:dateCopy forKey:@"post_date_gmt"];
 
-  [v33 setValue:v39 forKey:@"post_format"];
-  [v33 setValue:v40 forKey:@"post_status"];
+  [v33 setValue:formatCopy forKey:@"post_format"];
+  [v33 setValue:statusCopy forKey:@"post_status"];
 
-  [v33 setValue:v41 forKey:@"post_name"];
-  [v33 setValue:v42 forKey:@"post_excerpt"];
+  [v33 setValue:nameCopy forKey:@"post_name"];
+  [v33 setValue:excerptCopy forKey:@"post_excerpt"];
 
-  [v33 setValue:v43 forKey:@"post_template"];
+  [v33 setValue:templateCopy forKey:@"post_template"];
   [v33 setValue:v28 forKey:@"terms_names"];
-  [v33 setValue:v44 forKey:@"post_thumbnail"];
+  [v33 setValue:idCopy forKey:@"post_thumbnail"];
 
   [v33 setValue:v32 forKey:@"custom_fields"];
-  if (a9)
+  if (comments)
   {
     v35 = @"open";
   }
@@ -538,7 +538,7 @@ void __69__WFWordPressSessionManager_createPostWithContent_completionHandler___b
   }
 
   [v33 setValue:v35 forKey:@"comment_status"];
-  [(WFWordPressSessionManager *)self createPostWithContent:v33 completionHandler:v45];
+  [(WFWordPressSessionManager *)self createPostWithContent:v33 completionHandler:handlerCopy];
 }
 
 void __179__WFWordPressSessionManager_createPostWithTitle_content_type_date_format_status_allowingComments_name_excerpt_template_tags_categories_thumbnailId_customFields_completionHandler___block_invoke_3(uint64_t a1, void *a2, void *a3)
@@ -590,23 +590,23 @@ id __179__WFWordPressSessionManager_createPostWithTitle_content_type_date_format
   return v3;
 }
 
-- (void)getPageTemplatesWithCompletionHandler:(id)a3
+- (void)getPageTemplatesWithCompletionHandler:(id)handler
 {
   v16[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(WFWordPressSessionManager *)self blogId];
-  v6 = v5;
+  handlerCopy = handler;
+  blogId = [(WFWordPressSessionManager *)self blogId];
+  v6 = blogId;
   v7 = &unk_28509B078;
-  if (v5)
+  if (blogId)
   {
-    v7 = v5;
+    v7 = blogId;
   }
 
-  v8 = [(WFWordPressSessionManager *)self username];
-  v9 = v8;
-  if (v8)
+  username = [(WFWordPressSessionManager *)self username];
+  v9 = username;
+  if (username)
   {
-    v10 = v8;
+    v10 = username;
   }
 
   else
@@ -615,11 +615,11 @@ id __179__WFWordPressSessionManager_createPostWithTitle_content_type_date_format
   }
 
   v16[1] = v10;
-  v11 = [(WFWordPressSessionManager *)self password];
-  v12 = v11;
-  if (v11)
+  password = [(WFWordPressSessionManager *)self password];
+  v12 = password;
+  if (password)
   {
-    v13 = v11;
+    v13 = password;
   }
 
   else
@@ -630,27 +630,27 @@ id __179__WFWordPressSessionManager_createPostWithTitle_content_type_date_format
   v16[2] = v13;
   v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:3];
 
-  [(WFWordPressSessionManager *)self sendRequestWithMethod:@"wp.getPageTemplates" parameters:v14 completionHandler:v4];
+  [(WFWordPressSessionManager *)self sendRequestWithMethod:@"wp.getPageTemplates" parameters:v14 completionHandler:handlerCopy];
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getPostStatusesWithCompletionHandler:(id)a3
+- (void)getPostStatusesWithCompletionHandler:(id)handler
 {
   v16[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(WFWordPressSessionManager *)self blogId];
-  v6 = v5;
+  handlerCopy = handler;
+  blogId = [(WFWordPressSessionManager *)self blogId];
+  v6 = blogId;
   v7 = &unk_28509B078;
-  if (v5)
+  if (blogId)
   {
-    v7 = v5;
+    v7 = blogId;
   }
 
-  v8 = [(WFWordPressSessionManager *)self username];
-  v9 = v8;
-  if (v8)
+  username = [(WFWordPressSessionManager *)self username];
+  v9 = username;
+  if (username)
   {
-    v10 = v8;
+    v10 = username;
   }
 
   else
@@ -659,11 +659,11 @@ id __179__WFWordPressSessionManager_createPostWithTitle_content_type_date_format
   }
 
   v16[1] = v10;
-  v11 = [(WFWordPressSessionManager *)self password];
-  v12 = v11;
-  if (v11)
+  password = [(WFWordPressSessionManager *)self password];
+  v12 = password;
+  if (password)
   {
-    v13 = v11;
+    v13 = password;
   }
 
   else
@@ -674,27 +674,27 @@ id __179__WFWordPressSessionManager_createPostWithTitle_content_type_date_format
   v16[2] = v13;
   v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:3];
 
-  [(WFWordPressSessionManager *)self sendRequestWithMethod:@"wp.getPostStatusList" parameters:v14 completionHandler:v4];
+  [(WFWordPressSessionManager *)self sendRequestWithMethod:@"wp.getPostStatusList" parameters:v14 completionHandler:handlerCopy];
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getPostFormatsWithCompletionHandler:(id)a3
+- (void)getPostFormatsWithCompletionHandler:(id)handler
 {
   v16[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(WFWordPressSessionManager *)self blogId];
-  v6 = v5;
+  handlerCopy = handler;
+  blogId = [(WFWordPressSessionManager *)self blogId];
+  v6 = blogId;
   v7 = &unk_28509B078;
-  if (v5)
+  if (blogId)
   {
-    v7 = v5;
+    v7 = blogId;
   }
 
-  v8 = [(WFWordPressSessionManager *)self username];
-  v9 = v8;
-  if (v8)
+  username = [(WFWordPressSessionManager *)self username];
+  v9 = username;
+  if (username)
   {
-    v10 = v8;
+    v10 = username;
   }
 
   else
@@ -703,11 +703,11 @@ id __179__WFWordPressSessionManager_createPostWithTitle_content_type_date_format
   }
 
   v16[1] = v10;
-  v11 = [(WFWordPressSessionManager *)self password];
-  v12 = v11;
-  if (v11)
+  password = [(WFWordPressSessionManager *)self password];
+  v12 = password;
+  if (password)
   {
-    v13 = v11;
+    v13 = password;
   }
 
   else
@@ -718,28 +718,28 @@ id __179__WFWordPressSessionManager_createPostWithTitle_content_type_date_format
   v16[2] = v13;
   v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:3];
 
-  [(WFWordPressSessionManager *)self sendRequestWithMethod:@"wp.getPostFormats" parameters:v14 completionHandler:v4];
+  [(WFWordPressSessionManager *)self sendRequestWithMethod:@"wp.getPostFormats" parameters:v14 completionHandler:handlerCopy];
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getPostTypesWithCompletionHandler:(id)a3
+- (void)getPostTypesWithCompletionHandler:(id)handler
 {
   v19[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(WFWordPressSessionManager *)self blogId];
-  v6 = v5;
+  handlerCopy = handler;
+  blogId = [(WFWordPressSessionManager *)self blogId];
+  v6 = blogId;
   v7 = &unk_28509B078;
-  if (v5)
+  if (blogId)
   {
-    v7 = v5;
+    v7 = blogId;
   }
 
   v19[0] = v7;
-  v8 = [(WFWordPressSessionManager *)self username];
-  v9 = v8;
-  if (v8)
+  username = [(WFWordPressSessionManager *)self username];
+  v9 = username;
+  if (username)
   {
-    v10 = v8;
+    v10 = username;
   }
 
   else
@@ -748,11 +748,11 @@ id __179__WFWordPressSessionManager_createPostWithTitle_content_type_date_format
   }
 
   v19[1] = v10;
-  v11 = [(WFWordPressSessionManager *)self password];
-  v12 = v11;
-  if (v11)
+  password = [(WFWordPressSessionManager *)self password];
+  v12 = password;
+  if (password)
   {
-    v13 = v11;
+    v13 = password;
   }
 
   else
@@ -767,8 +767,8 @@ id __179__WFWordPressSessionManager_createPostWithTitle_content_type_date_format
   v17[1] = 3221225472;
   v17[2] = __63__WFWordPressSessionManager_getPostTypesWithCompletionHandler___block_invoke;
   v17[3] = &unk_278C1DA38;
-  v18 = v4;
-  v15 = v4;
+  v18 = handlerCopy;
+  v15 = handlerCopy;
   [(WFWordPressSessionManager *)self sendRequestWithMethod:@"wp.getPostTypes" parameters:v14 completionHandler:v17];
 
   v16 = *MEMORY[0x277D85DE8];
@@ -845,25 +845,25 @@ void __63__WFWordPressSessionManager_getPostTypesWithCompletionHandler___block_i
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getTermsForTaxonomy:(id)a3 completionHandler:(id)a4
+- (void)getTermsForTaxonomy:(id)taxonomy completionHandler:(id)handler
 {
   v22[4] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
-  v8 = [(WFWordPressSessionManager *)self blogId];
-  v9 = v8;
+  handlerCopy = handler;
+  taxonomyCopy = taxonomy;
+  blogId = [(WFWordPressSessionManager *)self blogId];
+  v9 = blogId;
   v10 = &unk_28509B078;
-  if (v8)
+  if (blogId)
   {
-    v10 = v8;
+    v10 = blogId;
   }
 
   v22[0] = v10;
-  v11 = [(WFWordPressSessionManager *)self username];
-  v12 = v11;
-  if (v11)
+  username = [(WFWordPressSessionManager *)self username];
+  v12 = username;
+  if (username)
   {
-    v13 = v11;
+    v13 = username;
   }
 
   else
@@ -872,11 +872,11 @@ void __63__WFWordPressSessionManager_getPostTypesWithCompletionHandler___block_i
   }
 
   v22[1] = v13;
-  v14 = [(WFWordPressSessionManager *)self password];
-  v15 = v14;
-  if (v14)
+  password = [(WFWordPressSessionManager *)self password];
+  v15 = password;
+  if (password)
   {
-    v16 = v14;
+    v16 = password;
   }
 
   else
@@ -885,15 +885,15 @@ void __63__WFWordPressSessionManager_getPostTypesWithCompletionHandler___block_i
   }
 
   v22[2] = v16;
-  v22[3] = v7;
+  v22[3] = taxonomyCopy;
   v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v22 count:4];
 
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __67__WFWordPressSessionManager_getTermsForTaxonomy_completionHandler___block_invoke;
   v20[3] = &unk_278C1DA38;
-  v21 = v6;
-  v18 = v6;
+  v21 = handlerCopy;
+  v18 = handlerCopy;
   [(WFWordPressSessionManager *)self sendRequestWithMethod:@"wp.getTerms" parameters:v17 completionHandler:v20];
 
   v19 = *MEMORY[0x277D85DE8];
@@ -918,15 +918,15 @@ void __67__WFWordPressSessionManager_getTermsForTaxonomy_completionHandler___blo
   }
 }
 
-- (void)getBlogsWithCompletionHandler:(id)a3
+- (void)getBlogsWithCompletionHandler:(id)handler
 {
   v16[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(WFWordPressSessionManager *)self username];
-  v6 = v5;
-  if (v5)
+  handlerCopy = handler;
+  username = [(WFWordPressSessionManager *)self username];
+  v6 = username;
+  if (username)
   {
-    v7 = v5;
+    v7 = username;
   }
 
   else
@@ -935,11 +935,11 @@ void __67__WFWordPressSessionManager_getTermsForTaxonomy_completionHandler___blo
   }
 
   v16[0] = v7;
-  v8 = [(WFWordPressSessionManager *)self password];
-  v9 = v8;
-  if (v8)
+  password = [(WFWordPressSessionManager *)self password];
+  v9 = password;
+  if (password)
   {
-    v10 = v8;
+    v10 = password;
   }
 
   else
@@ -954,8 +954,8 @@ void __67__WFWordPressSessionManager_getTermsForTaxonomy_completionHandler___blo
   v14[1] = 3221225472;
   v14[2] = __59__WFWordPressSessionManager_getBlogsWithCompletionHandler___block_invoke;
   v14[3] = &unk_278C1DA38;
-  v15 = v4;
-  v12 = v4;
+  v15 = handlerCopy;
+  v12 = handlerCopy;
   [(WFWordPressSessionManager *)self sendRequestWithMethod:@"wp.getUsersBlogs" parameters:v11 completionHandler:v14];
 
   v13 = *MEMORY[0x277D85DE8];
@@ -980,26 +980,26 @@ void __59__WFWordPressSessionManager_getBlogsWithCompletionHandler___block_invok
   }
 }
 
-- (WFWordPressSessionManager)initWithSessionConfiguration:(id)a3
+- (WFWordPressSessionManager)initWithSessionConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v12.receiver = self;
   v12.super_class = WFWordPressSessionManager;
   v5 = [(WFWordPressSessionManager *)&v12 init];
   if (v5)
   {
     v6 = MEMORY[0x277CBABB8];
-    v7 = v4;
-    if (!v4)
+    wf_defaultSessionConfiguration = configurationCopy;
+    if (!configurationCopy)
     {
-      v7 = [MEMORY[0x277CBABC8] wf_defaultSessionConfiguration];
+      wf_defaultSessionConfiguration = [MEMORY[0x277CBABC8] wf_defaultSessionConfiguration];
     }
 
-    v8 = [v6 sessionWithConfiguration:v7];
+    v8 = [v6 sessionWithConfiguration:wf_defaultSessionConfiguration];
     session = v5->_session;
     v5->_session = v8;
 
-    if (!v4)
+    if (!configurationCopy)
     {
     }
 

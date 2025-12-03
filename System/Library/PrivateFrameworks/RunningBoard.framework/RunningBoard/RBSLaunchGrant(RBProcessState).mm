@@ -14,11 +14,11 @@
     goto LABEL_6;
   }
 
-  v7 = [v6 target];
-  v8 = [v7 identity];
-  v9 = [v8 hasConsistentLaunchdJob];
+  target = [v6 target];
+  identity = [target identity];
+  hasConsistentLaunchdJob = [identity hasConsistentLaunchdJob];
 
-  if ((v9 & 1) == 0)
+  if ((hasConsistentLaunchdJob & 1) == 0)
   {
     if (!a4)
     {
@@ -32,7 +32,7 @@
     v13 = *MEMORY[0x277D47048];
     v18[0] = v12;
     v18[1] = v13;
-    v14 = [a1 description];
+    v14 = [self description];
     v19[1] = v14;
     v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v19 forKeys:v18 count:2];
     *a4 = [v10 errorWithDomain:v11 code:2 userInfo:v15];

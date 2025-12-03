@@ -1,14 +1,14 @@
 @interface POWSchemaProvisionalPOWClientEvent
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (POWSchemaProvisionalPOWClientEvent)initWithDictionary:(id)a3;
-- (POWSchemaProvisionalPOWClientEvent)initWithJSON:(id)a3;
+- (POWSchemaProvisionalPOWClientEvent)initWithDictionary:(id)dictionary;
+- (POWSchemaProvisionalPOWClientEvent)initWithJSON:(id)n;
 - (POWSchemaProvisionalPOWUsage)usage;
 - (id)dictionaryRepresentation;
 - (id)qualifiedMessageName;
 - (void)deleteUsage;
-- (void)setUsage:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setUsage:(id)usage;
+- (void)writeTo:(id)to;
 @end
 
 @implementation POWSchemaProvisionalPOWClientEvent
@@ -26,16 +26,16 @@
   }
 }
 
-- (void)setUsage:(id)a3
+- (void)setUsage:(id)usage
 {
   v3 = 101;
-  if (!a3)
+  if (!usage)
   {
     v3 = 0;
   }
 
   self->_whichEvent_Type = v3;
-  objc_storeStrong(&self->_usage, a3);
+  objc_storeStrong(&self->_usage, usage);
 }
 
 - (POWSchemaProvisionalPOWUsage)usage
@@ -64,54 +64,54 @@
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
-  v4 = [(POWSchemaProvisionalPOWClientEvent *)self link];
+  toCopy = to;
+  link = [(POWSchemaProvisionalPOWClientEvent *)self link];
 
-  if (v4)
+  if (link)
   {
-    v5 = [(POWSchemaProvisionalPOWClientEvent *)self link];
+    link2 = [(POWSchemaProvisionalPOWClientEvent *)self link];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(POWSchemaProvisionalPOWClientEvent *)self usage];
+  usage = [(POWSchemaProvisionalPOWClientEvent *)self usage];
 
-  if (v6)
+  if (usage)
   {
-    v7 = [(POWSchemaProvisionalPOWClientEvent *)self usage];
+    usage2 = [(POWSchemaProvisionalPOWClientEvent *)self usage];
     PBDataWriterWriteSubmessage();
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_13;
   }
 
   whichEvent_Type = self->_whichEvent_Type;
-  if (whichEvent_Type != [v4 whichEvent_Type])
+  if (whichEvent_Type != [equalCopy whichEvent_Type])
   {
     goto LABEL_13;
   }
 
-  v6 = [(POWSchemaProvisionalPOWClientEvent *)self link];
-  v7 = [v4 link];
-  if ((v6 != 0) == (v7 == 0))
+  link = [(POWSchemaProvisionalPOWClientEvent *)self link];
+  link2 = [equalCopy link];
+  if ((link != 0) == (link2 == 0))
   {
     goto LABEL_12;
   }
 
-  v8 = [(POWSchemaProvisionalPOWClientEvent *)self link];
-  if (v8)
+  link3 = [(POWSchemaProvisionalPOWClientEvent *)self link];
+  if (link3)
   {
-    v9 = v8;
-    v10 = [(POWSchemaProvisionalPOWClientEvent *)self link];
-    v11 = [v4 link];
-    v12 = [v10 isEqual:v11];
+    v9 = link3;
+    link4 = [(POWSchemaProvisionalPOWClientEvent *)self link];
+    link5 = [equalCopy link];
+    v12 = [link4 isEqual:link5];
 
     if (!v12)
     {
@@ -123,12 +123,12 @@
   {
   }
 
-  v6 = [(POWSchemaProvisionalPOWClientEvent *)self usage];
-  v7 = [v4 usage];
-  if ((v6 != 0) != (v7 == 0))
+  link = [(POWSchemaProvisionalPOWClientEvent *)self usage];
+  link2 = [equalCopy usage];
+  if ((link != 0) != (link2 == 0))
   {
-    v13 = [(POWSchemaProvisionalPOWClientEvent *)self usage];
-    if (!v13)
+    usage = [(POWSchemaProvisionalPOWClientEvent *)self usage];
+    if (!usage)
     {
 
 LABEL_16:
@@ -136,10 +136,10 @@ LABEL_16:
       goto LABEL_14;
     }
 
-    v14 = v13;
-    v15 = [(POWSchemaProvisionalPOWClientEvent *)self usage];
-    v16 = [v4 usage];
-    v17 = [v15 isEqual:v16];
+    v14 = usage;
+    usage2 = [(POWSchemaProvisionalPOWClientEvent *)self usage];
+    usage3 = [equalCopy usage];
+    v17 = [usage2 isEqual:usage3];
 
     if (v17)
     {
@@ -161,50 +161,50 @@ LABEL_14:
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if (self->_link)
   {
-    v4 = [(POWSchemaProvisionalPOWClientEvent *)self link];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    link = [(POWSchemaProvisionalPOWClientEvent *)self link];
+    dictionaryRepresentation = [link dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"link"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"link"];
     }
 
     else
     {
-      v6 = [MEMORY[0x277CBEB68] null];
-      [v3 setObject:v6 forKeyedSubscript:@"link"];
+      null = [MEMORY[0x277CBEB68] null];
+      [dictionary setObject:null forKeyedSubscript:@"link"];
     }
   }
 
   if (self->_usage)
   {
-    v7 = [(POWSchemaProvisionalPOWClientEvent *)self usage];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    usage = [(POWSchemaProvisionalPOWClientEvent *)self usage];
+    dictionaryRepresentation2 = [usage dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"usage"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"usage"];
     }
 
     else
     {
-      v9 = [MEMORY[0x277CBEB68] null];
-      [v3 setObject:v9 forKeyedSubscript:@"usage"];
+      null2 = [MEMORY[0x277CBEB68] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"usage"];
     }
   }
 
-  [(POWSchemaProvisionalPOWClientEvent *)self willProduceDictionaryRepresentation:v3];
+  [(POWSchemaProvisionalPOWClientEvent *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(POWSchemaProvisionalPOWClientEvent *)self dictionaryRepresentation];
-  if ([MEMORY[0x277CCAAA0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(POWSchemaProvisionalPOWClientEvent *)self dictionaryRepresentation];
+  if ([MEMORY[0x277CCAAA0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x277CCAAA0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x277CCAAA0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -215,33 +215,33 @@ LABEL_14:
   return v3;
 }
 
-- (POWSchemaProvisionalPOWClientEvent)initWithJSON:(id)a3
+- (POWSchemaProvisionalPOWClientEvent)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x277CCAAA0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x277CCAAA0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(POWSchemaProvisionalPOWClientEvent *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
-- (POWSchemaProvisionalPOWClientEvent)initWithDictionary:(id)a3
+- (POWSchemaProvisionalPOWClientEvent)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = POWSchemaProvisionalPOWClientEvent;
   v5 = [(POWSchemaProvisionalPOWClientEvent *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"link"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"link"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -249,7 +249,7 @@ LABEL_14:
       [(POWSchemaProvisionalPOWClientEvent *)v5 setLink:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"usage"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"usage"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {

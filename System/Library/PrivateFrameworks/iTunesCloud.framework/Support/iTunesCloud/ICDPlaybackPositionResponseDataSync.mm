@@ -1,22 +1,22 @@
 @interface ICDPlaybackPositionResponseDataSync
-- (ICDPlaybackPositionResponseDataSync)initWithResponseDictionary:(id)a3 forDomain:(id)a4;
-- (id)payloadDataForUpdateResponseKey:(id)a3;
-- (void)_deserializeResponseDictionary:(id)a3;
+- (ICDPlaybackPositionResponseDataSync)initWithResponseDictionary:(id)dictionary forDomain:(id)domain;
+- (id)payloadDataForUpdateResponseKey:(id)key;
+- (void)_deserializeResponseDictionary:(id)dictionary;
 @end
 
 @implementation ICDPlaybackPositionResponseDataSync
 
-- (void)_deserializeResponseDictionary:(id)a3
+- (void)_deserializeResponseDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  dictionaryCopy = dictionary;
+  v5 = dictionaryCopy;
+  if (dictionaryCopy)
   {
     v21[0] = _NSConcreteStackBlock;
     v21[1] = 3221225472;
     v21[2] = sub_100055D44;
     v21[3] = &unk_1001DB3B8;
-    v6 = v4;
+    v6 = dictionaryCopy;
     v22 = v6;
     v7 = objc_retainBlock(v21);
     (v7[2])(v7, self->_deletedKeys, @"peer-ops", @"deletes", &stru_1001DB3F8);
@@ -54,24 +54,24 @@
       v16 = self->_syncAnchor;
       if (v15)
       {
-        v17 = [(NSString *)v16 stringValue];
+        stringValue = [(NSString *)v16 stringValue];
         v16 = self->_syncAnchor;
       }
 
       else
       {
-        v17 = 0;
+        stringValue = 0;
       }
 
-      self->_syncAnchor = v17;
+      self->_syncAnchor = stringValue;
     }
   }
 }
 
-- (id)payloadDataForUpdateResponseKey:(id)a3
+- (id)payloadDataForUpdateResponseKey:(id)key
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_responseOpEntiesByKey objectForKey:v4];
+  keyCopy = key;
+  v5 = [(NSMutableDictionary *)self->_responseOpEntiesByKey objectForKey:keyCopy];
   v6 = [v5 objectForKey:@"value"];
 
   v7 = [(ICDPlaybackPositionResponseDataBase *)self dataByInflatingWithNoZipHeader:v6];
@@ -82,9 +82,9 @@
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
       v11 = 138543618;
-      v12 = self;
+      selfCopy = self;
       v13 = 2114;
-      v14 = v4;
+      v14 = keyCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEBUG, "%{public}@ successfully unzipped data for key %{public}@", &v11, 0x16u);
     }
   }
@@ -97,12 +97,12 @@
   return v8;
 }
 
-- (ICDPlaybackPositionResponseDataSync)initWithResponseDictionary:(id)a3 forDomain:(id)a4
+- (ICDPlaybackPositionResponseDataSync)initWithResponseDictionary:(id)dictionary forDomain:(id)domain
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   v21.receiver = self;
   v21.super_class = ICDPlaybackPositionResponseDataSync;
-  v7 = [(ICDPlaybackPositionResponseDataBase *)&v21 initWithDomain:a4];
+  v7 = [(ICDPlaybackPositionResponseDataBase *)&v21 initWithDomain:domain];
   if (v7)
   {
     v8 = +[NSMutableDictionary dictionary];
@@ -129,7 +129,7 @@
     successfullyDeletedKeys = v7->_successfullyDeletedKeys;
     v7->_successfullyDeletedKeys = v18;
 
-    [(ICDPlaybackPositionResponseDataSync *)v7 _deserializeResponseDictionary:v6];
+    [(ICDPlaybackPositionResponseDataSync *)v7 _deserializeResponseDictionary:dictionaryCopy];
   }
 
   return v7;

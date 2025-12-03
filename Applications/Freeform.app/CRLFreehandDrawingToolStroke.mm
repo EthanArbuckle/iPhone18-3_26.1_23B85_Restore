@@ -1,35 +1,35 @@
 @interface CRLFreehandDrawingToolStroke
-- (BOOL)finalizeAndResetWithSuccess:(BOOL)a3;
+- (BOOL)finalizeAndResetWithSuccess:(BOOL)success;
 - (BOOL)shouldCommandsEnqueueInRealTime;
-- (CRLFreehandDrawingToolStroke)initWithInteractiveCanvasController:(id)a3 pencilKitCanvasViewController:(id)a4 strokeToolType:(unint64_t)a5 opacity:(double)a6 unscaledWidth:(double)a7 azimuth:(double)a8;
+- (CRLFreehandDrawingToolStroke)initWithInteractiveCanvasController:(id)controller pencilKitCanvasViewController:(id)viewController strokeToolType:(unint64_t)type opacity:(double)opacity unscaledWidth:(double)width azimuth:(double)azimuth;
 - (double)azimuth;
-- (id)p_commandForSnappingShapeItem:(id)a3 toStrokesInUnscaledSpace:(id)a4;
+- (id)p_commandForSnappingShapeItem:(id)item toStrokesInUnscaledSpace:(id)space;
 - (id)p_currentColorWithOpacity;
 - (id)p_currentPKInkType;
-- (void)convertToScratchOutOfStrokes:(id)a3;
-- (void)estimatedPropertiesUpdatedOnInputPoint:(id)a3;
+- (void)convertToScratchOutOfStrokes:(id)strokes;
+- (void)estimatedPropertiesUpdatedOnInputPoint:(id)point;
 - (void)p_beginSuppressingLayerUpdates;
-- (void)p_endDrawingAndCaptureFinalStroke:(BOOL)a3;
+- (void)p_endDrawingAndCaptureFinalStroke:(BOOL)stroke;
 - (void)p_endSuppressingLayerUpdatesIfNeeded;
 - (void)p_enqueueRealTimeCommandsForPathUpdateIfNeeded;
-- (void)performActionWithInputPoint:(id)a3 isInitialPoint:(BOOL)a4 isFinalPoint:(BOOL)a5;
-- (void)setAzimuth:(double)a3;
-- (void)setOpacity:(double)a3;
-- (void)setUnscaledWidth:(double)a3;
-- (void)updatePencilKitToolIfAppropriateFor:(id)a3;
+- (void)performActionWithInputPoint:(id)point isInitialPoint:(BOOL)initialPoint isFinalPoint:(BOOL)finalPoint;
+- (void)setAzimuth:(double)azimuth;
+- (void)setOpacity:(double)opacity;
+- (void)setUnscaledWidth:(double)width;
+- (void)updatePencilKitToolIfAppropriateFor:(id)for;
 @end
 
 @implementation CRLFreehandDrawingToolStroke
 
-- (CRLFreehandDrawingToolStroke)initWithInteractiveCanvasController:(id)a3 pencilKitCanvasViewController:(id)a4 strokeToolType:(unint64_t)a5 opacity:(double)a6 unscaledWidth:(double)a7 azimuth:(double)a8
+- (CRLFreehandDrawingToolStroke)initWithInteractiveCanvasController:(id)controller pencilKitCanvasViewController:(id)viewController strokeToolType:(unint64_t)type opacity:(double)opacity unscaledWidth:(double)width azimuth:(double)azimuth
 {
-  v14 = a4;
+  viewControllerCopy = viewController;
   v20.receiver = self;
   v20.super_class = CRLFreehandDrawingToolStroke;
-  v15 = [(CRLFreehandDrawingTool *)&v20 initWithInteractiveCanvasController:a3];
+  v15 = [(CRLFreehandDrawingTool *)&v20 initWithInteractiveCanvasController:controller];
   if (v15)
   {
-    if (![CRLFreehandDrawingToolStroke p_isStrokeToolType:a5])
+    if (![CRLFreehandDrawingToolStroke p_isStrokeToolType:type])
     {
       +[CRLAssertionHandler _atomicIncrementAssertCount];
       if (qword_101AD5A10 != -1)
@@ -55,55 +55,55 @@
 
       v17 = [NSString stringWithUTF8String:"[CRLFreehandDrawingToolStroke initWithInteractiveCanvasController:pencilKitCanvasViewController:strokeToolType:opacity:unscaledWidth:azimuth:]"];
       v18 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/BoardItems/CRLFreehandDrawingToolStroke.m"];
-      [CRLAssertionHandler handleFailureInFunction:v17 file:v18 lineNumber:85 isFatal:0 description:"Stroke tool should only be initialized with a stroke tool type (got %zu).", a5];
+      [CRLAssertionHandler handleFailureInFunction:v17 file:v18 lineNumber:85 isFatal:0 description:"Stroke tool should only be initialized with a stroke tool type (got %zu).", type];
     }
 
-    objc_storeWeak(&v15->_pencilKitCanvasViewController, v14);
-    v15->_toolType = a5;
-    v15->_opacity = a6;
-    v15->_unscaledWidth = a7;
-    v15->_azimuth = a8;
+    objc_storeWeak(&v15->_pencilKitCanvasViewController, viewControllerCopy);
+    v15->_toolType = type;
+    v15->_opacity = opacity;
+    v15->_unscaledWidth = width;
+    v15->_azimuth = azimuth;
   }
 
   return v15;
 }
 
-- (void)setUnscaledWidth:(double)a3
+- (void)setUnscaledWidth:(double)width
 {
-  self->_unscaledWidth = a3;
+  self->_unscaledWidth = width;
   v5 = [(CRLFreehandDrawingTool *)self icc];
-  v9 = [v5 freehandDrawingToolkit];
+  freehandDrawingToolkit = [v5 freehandDrawingToolkit];
 
-  v6 = [v9 toolkitUIState];
-  [v6 setCurrentToolWidth:a3];
+  toolkitUIState = [freehandDrawingToolkit toolkitUIState];
+  [toolkitUIState setCurrentToolWidth:width];
 
   WeakRetained = objc_loadWeakRetained(&self->_pencilKitCanvasViewController);
-  v8 = [WeakRetained pencilKitCanvasView];
-  [(CRLFreehandDrawingToolStroke *)self updatePencilKitToolIfAppropriateFor:v8];
+  pencilKitCanvasView = [WeakRetained pencilKitCanvasView];
+  [(CRLFreehandDrawingToolStroke *)self updatePencilKitToolIfAppropriateFor:pencilKitCanvasView];
 
-  [v9 containedToolDidSetWidth:self];
+  [freehandDrawingToolkit containedToolDidSetWidth:self];
 }
 
-- (void)setOpacity:(double)a3
+- (void)setOpacity:(double)opacity
 {
-  self->_opacity = a3;
+  self->_opacity = opacity;
   v5 = [(CRLFreehandDrawingTool *)self icc];
-  v6 = [v5 freehandDrawingToolkit];
-  v7 = [v6 toolkitUIState];
-  [v7 setCurrentToolOpacity:a3];
+  freehandDrawingToolkit = [v5 freehandDrawingToolkit];
+  toolkitUIState = [freehandDrawingToolkit toolkitUIState];
+  [toolkitUIState setCurrentToolOpacity:opacity];
 
   WeakRetained = objc_loadWeakRetained(&self->_pencilKitCanvasViewController);
-  v8 = [WeakRetained pencilKitCanvasView];
-  [(CRLFreehandDrawingToolStroke *)self updatePencilKitToolIfAppropriateFor:v8];
+  pencilKitCanvasView = [WeakRetained pencilKitCanvasView];
+  [(CRLFreehandDrawingToolStroke *)self updatePencilKitToolIfAppropriateFor:pencilKitCanvasView];
 }
 
 - (id)p_currentColorWithOpacity
 {
   v3 = [(CRLFreehandDrawingTool *)self icc];
-  v4 = [v3 freehandDrawingToolkit];
-  v5 = [v4 colorForCurrentTool];
+  freehandDrawingToolkit = [v3 freehandDrawingToolkit];
+  colorForCurrentTool = [freehandDrawingToolkit colorForCurrentTool];
   [(CRLFreehandDrawingToolStroke *)self opacity];
-  v6 = [v5 colorWithAlphaComponent:?];
+  v6 = [colorForCurrentTool colorWithAlphaComponent:?];
 
   return v6;
 }
@@ -144,19 +144,19 @@
   return 0.0;
 }
 
-- (void)setAzimuth:(double)a3
+- (void)setAzimuth:(double)azimuth
 {
   if (self->_toolType == 6)
   {
-    self->_azimuth = a3;
+    self->_azimuth = azimuth;
     v5 = [(CRLFreehandDrawingTool *)self icc];
-    v6 = [v5 freehandDrawingToolkit];
-    v7 = [v6 toolkitUIState];
-    [v7 setCurrentToolAzimuth:a3];
+    freehandDrawingToolkit = [v5 freehandDrawingToolkit];
+    toolkitUIState = [freehandDrawingToolkit toolkitUIState];
+    [toolkitUIState setCurrentToolAzimuth:azimuth];
 
     WeakRetained = objc_loadWeakRetained(&self->_pencilKitCanvasViewController);
-    v8 = [WeakRetained pencilKitCanvasView];
-    [(CRLFreehandDrawingToolStroke *)self updatePencilKitToolIfAppropriateFor:v8];
+    pencilKitCanvasView = [WeakRetained pencilKitCanvasView];
+    [(CRLFreehandDrawingToolStroke *)self updatePencilKitToolIfAppropriateFor:pencilKitCanvasView];
   }
 
   else
@@ -197,33 +197,33 @@
   return self->_isEnqueueingCommandsInRealTime;
 }
 
-- (void)performActionWithInputPoint:(id)a3 isInitialPoint:(BOOL)a4 isFinalPoint:(BOOL)a5
+- (void)performActionWithInputPoint:(id)point isInitialPoint:(BOOL)initialPoint isFinalPoint:(BOOL)finalPoint
 {
-  v5 = a5;
-  v6 = a4;
-  v8 = a3;
+  finalPointCopy = finalPoint;
+  initialPointCopy = initialPoint;
+  pointCopy = point;
   v34.receiver = self;
   v34.super_class = CRLFreehandDrawingToolStroke;
-  [(CRLFreehandDrawingToolAbstractPathInsertion *)&v34 performActionWithInputPoint:v8 isInitialPoint:v6 isFinalPoint:v5];
+  [(CRLFreehandDrawingToolAbstractPathInsertion *)&v34 performActionWithInputPoint:pointCopy isInitialPoint:initialPointCopy isFinalPoint:finalPointCopy];
   v9 = [(CRLFreehandDrawingTool *)self icc];
-  v10 = [v9 canvasView];
+  canvasView = [v9 canvasView];
   WeakRetained = objc_loadWeakRetained(&self->_pencilKitCanvasViewController);
-  v12 = [WeakRetained pencilKitCanvasView];
+  pencilKitCanvasView = [WeakRetained pencilKitCanvasView];
 
-  v13 = [v12 _tiledView];
-  v14 = [v13 canvasView];
+  _tiledView = [pencilKitCanvasView _tiledView];
+  canvasView2 = [_tiledView canvasView];
 
-  v15 = [v10 unscaledCoordinateSpace];
-  if (v6)
+  unscaledCoordinateSpace = [canvasView unscaledCoordinateSpace];
+  if (initialPointCopy)
   {
     v16 = objc_alloc_init(PKDrawing);
-    [v12 setDrawing:v16];
+    [pencilKitCanvasView setDrawing:v16];
 
     self->_isSendingPoints = 1;
     v24 = v9;
-    if (v8)
+    if (pointCopy)
     {
-      [v8 PKInputPoint];
+      [pointCopy PKInputPoint];
     }
 
     else
@@ -239,30 +239,30 @@
       v26 = 0u;
     }
 
-    [v14 _replayDrawingBegan:&v25 coordinateSpace:v15 activeInputProperties:objc_msgSend(v8 inputType:{"activeInputProperties"), objc_msgSend(v8, "PKInputType")}];
+    [canvasView2 _replayDrawingBegan:&v25 coordinateSpace:unscaledCoordinateSpace activeInputProperties:objc_msgSend(pointCopy inputType:{"activeInputProperties"), objc_msgSend(pointCopy, "PKInputType")}];
     v17 = +[CRLBezierPath bezierPath];
-    [v8 unscaledPoint];
+    [pointCopy unscaledPoint];
     [v17 moveToPoint:?];
-    [v8 unscaledPoint];
+    [pointCopy unscaledPoint];
     v19 = v18 + 0.1;
-    [v8 unscaledPoint];
+    [pointCopy unscaledPoint];
     [v17 lineToPoint:v19];
     [(CRLFreehandDrawingToolStroke *)self p_beginSuppressingLayerUpdates];
     v20 = [CRLPencilKitInkStroke alloc];
-    v21 = [(CRLFreehandDrawingToolStroke *)self p_currentPKInkType];
-    v22 = [(CRLFreehandDrawingToolStroke *)self p_currentColorWithOpacity];
+    p_currentPKInkType = [(CRLFreehandDrawingToolStroke *)self p_currentPKInkType];
+    p_currentColorWithOpacity = [(CRLFreehandDrawingToolStroke *)self p_currentColorWithOpacity];
     [(CRLFreehandDrawingToolStroke *)self unscaledWidth];
-    v23 = [(CRLPencilKitInkStroke *)v20 initWithInkType:v21 color:v22 unadjustedPencilKitWidth:?];
+    v23 = [(CRLPencilKitInkStroke *)v20 initWithInkType:p_currentPKInkType color:p_currentColorWithOpacity unadjustedPencilKitWidth:?];
 
     [(CRLFreehandDrawingToolAbstractPathInsertion *)self openCommandGroupAndInsertInitialFreehandDrawingWithUnscaledPath:v17 stroke:v23 fill:0];
     v9 = v24;
   }
 
-  else if (([v8 wasAddedByTouchesEnded] & 1) == 0)
+  else if (([pointCopy wasAddedByTouchesEnded] & 1) == 0)
   {
-    if (v8)
+    if (pointCopy)
     {
-      [v8 PKInputPoint];
+      [pointCopy PKInputPoint];
     }
 
     else
@@ -278,7 +278,7 @@
       v26 = 0u;
     }
 
-    [v14 _replayDrawingMoved:&v25 coordinateSpace:v15];
+    [canvasView2 _replayDrawingMoved:&v25 coordinateSpace:unscaledCoordinateSpace];
     [(CRLFreehandDrawingToolStroke *)self p_enqueueRealTimeCommandsForPathUpdateIfNeeded];
   }
 }
@@ -288,15 +288,15 @@
   if (self->_isEnqueueingCommandsInRealTime && !self->_isScratchingOut)
   {
     WeakRetained = objc_loadWeakRetained(&self->_pencilKitCanvasViewController);
-    v4 = [WeakRetained pencilKitCanvasView];
-    v5 = [v4 _tiledView];
-    v6 = [v5 canvasView];
+    pencilKitCanvasView = [WeakRetained pencilKitCanvasView];
+    _tiledView = [pencilKitCanvasView _tiledView];
+    canvasView = [_tiledView canvasView];
 
-    v7 = [v6 currentStroke];
-    v8 = [v7 path];
-    v9 = [v8 _immutablePointsCount];
+    currentStroke = [canvasView currentStroke];
+    path = [currentStroke path];
+    _immutablePointsCount = [path _immutablePointsCount];
 
-    if (!v7)
+    if (!currentStroke)
     {
       +[CRLAssertionHandler _atomicIncrementAssertCount];
       if (qword_101AD5A10 != -1)
@@ -321,15 +321,15 @@
       }
 
       v14 = [NSString stringWithUTF8String:"[CRLFreehandDrawingToolStroke p_enqueueRealTimeCommandsForPathUpdateIfNeeded]"];
-      v15 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/BoardItems/CRLFreehandDrawingToolStroke.m"];
-      [CRLAssertionHandler handleFailureInFunction:v14 file:v15 lineNumber:245 isFatal:0 description:"invalid nil value for '%{public}s'", "currentPKStroke"];
+      commandController = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/BoardItems/CRLFreehandDrawingToolStroke.m"];
+      [CRLAssertionHandler handleFailureInFunction:v14 file:commandController lineNumber:245 isFatal:0 description:"invalid nil value for '%{public}s'", "currentPKStroke"];
       goto LABEL_79;
     }
 
-    v10 = [v7 path];
-    v11 = [v10 count];
+    path2 = [currentStroke path];
+    v11 = [path2 count];
 
-    if (v11 < 2 || v9 == 0)
+    if (v11 < 2 || _immutablePointsCount == 0)
     {
       goto LABEL_80;
     }
@@ -337,15 +337,15 @@
     lastPKStrokeSetInRealTime = self->_lastPKStrokeSetInRealTime;
     if (lastPKStrokeSetInRealTime)
     {
-      if (([lastPKStrokeSetInRealTime isEqual:v7]& 1) != 0)
+      if (([lastPKStrokeSetInRealTime isEqual:currentStroke]& 1) != 0)
       {
         goto LABEL_80;
       }
     }
 
     v14 = [(CRLFreehandDrawingTool *)self icc];
-    v15 = [v14 commandController];
-    if (!v15)
+    commandController = [v14 commandController];
+    if (!commandController)
     {
       +[CRLAssertionHandler _atomicIncrementAssertCount];
       if (qword_101AD5A10 != -1)
@@ -376,8 +376,8 @@
     }
 
     v16 = objc_opt_class();
-    v17 = [(CRLFreehandDrawingToolAbstractPathInsertion *)self shapeItem];
-    v18 = sub_100013F00(v16, v17);
+    shapeItem = [(CRLFreehandDrawingToolAbstractPathInsertion *)self shapeItem];
+    v18 = sub_100013F00(v16, shapeItem);
 
     v19 = [v14 layoutForInfo:v18];
     if (!v19)
@@ -412,7 +412,7 @@
     }
 
     v66 = v18;
-    v20 = [CRLPKStrokeConverter pathFromPKStroke:v7 startingAtPointIndex:0 endingAtPointIndex:v9 - 1 pencilKitStrokePathData:0];
+    v20 = [CRLPKStrokeConverter pathFromPKStroke:currentStroke startingAtPointIndex:0 endingAtPointIndex:_immutablePointsCount - 1 pencilKitStrokePathData:0];
     v65 = v19;
     if ([v20 isEmpty])
     {
@@ -440,7 +440,7 @@
 
       v22 = [NSString stringWithUTF8String:"[CRLFreehandDrawingToolStroke p_enqueueRealTimeCommandsForPathUpdateIfNeeded]"];
       v23 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/BoardItems/CRLFreehandDrawingToolStroke.m"];
-      [CRLAssertionHandler handleFailureInFunction:v22 file:v23 lineNumber:278 isFatal:0 description:"CRLPKStrokeConverter returned an empty path ending at pointIndex: %lu.", v9 - 1];
+      [CRLAssertionHandler handleFailureInFunction:v22 file:v23 lineNumber:278 isFatal:0 description:"CRLPKStrokeConverter returned an empty path ending at pointIndex: %lu.", _immutablePointsCount - 1];
 LABEL_76:
 
       v18 = v66;
@@ -462,12 +462,12 @@ LABEL_80:
     v35 = [[_TtC8Freeform23CRLCommandSetPathSource alloc] initWithShapeItem:v18 pathSource:v62];
     [(CRLCommand *)v35 setShouldSendChangeNotificationsWhenEnqueuedInProgressiveGroup:0];
     v61 = v35;
-    [v15 enqueueCommand:v35];
-    v36 = [v7 mask];
-    v60 = v36;
-    if (v36)
+    [commandController enqueueCommand:v35];
+    mask = [currentStroke mask];
+    v60 = mask;
+    if (mask)
     {
-      v37 = +[CRLBezierPath bezierPathWithCGPath:](CRLBezierPath, "bezierPathWithCGPath:", [v36 CGPath]);
+      v37 = +[CRLBezierPath bezierPathWithCGPath:](CRLBezierPath, "bezierPathWithCGPath:", [mask CGPath]);
       [v19 transformInRoot];
       CGAffineTransformInvert(&v68, &v67);
       [v37 transformUsingAffineTransform:&v68];
@@ -481,19 +481,19 @@ LABEL_80:
     currentStrokePathData = self->_currentStrokePathData;
     if (currentStrokePathData)
     {
-      v39 = [(CRLPKStrokePathCompactData *)currentStrokePathData pointCount];
+      pointCount = [(CRLPKStrokePathCompactData *)currentStrokePathData pointCount];
     }
 
     else
     {
-      v39 = 0;
+      pointCount = 0;
     }
 
     v63 = v20;
     v64 = v37;
-    if (v39 >= v9)
+    if (pointCount >= _immutablePointsCount)
     {
-      if (v39 != v9)
+      if (pointCount != _immutablePointsCount)
       {
         +[CRLAssertionHandler _atomicIncrementAssertCount];
         if (qword_101AD5A10 != -1)
@@ -528,7 +528,7 @@ LABEL_80:
 
     else
     {
-      v40 = [CRLPKStrokePathConverter strokePathDataFromPKStroke:"strokePathDataFromPKStroke:startingAtIndex:endingAtIndex:" startingAtIndex:v7 endingAtIndex:?];
+      v40 = [CRLPKStrokePathConverter strokePathDataFromPKStroke:"strokePathDataFromPKStroke:startingAtIndex:endingAtIndex:" startingAtIndex:currentStroke endingAtIndex:?];
       v41 = v40;
       if (self->_currentStrokePathData)
       {
@@ -550,27 +550,27 @@ LABEL_80:
 LABEL_71:
 
 LABEL_73:
-        [v7 _anchorPointForTexture];
+        [currentStroke _anchorPointForTexture];
         [(CRLPKStrokePathCompactData *)self->_currentStrokePathData setAnchorPointForTexture:sub_10011F31C(v47, v48, v28)];
         v49 = [[_TtC8Freeform43CRLCommandSetFreehandDrawingShapeItemPKData alloc] initWithFreehandDrawingShapeItem:v66 strokePathCompactData:self->_currentStrokePathData maskPath:v37];
         [(CRLCommand *)v49 setShouldSendChangeNotificationsWhenEnqueuedInProgressiveGroup:0];
         v58 = v49;
-        [v15 enqueueCommand:v49];
+        [commandController enqueueCommand:v49];
         v50 = [[CRLCanvasInfoGeometry alloc] initWithPosition:v28 size:v30, v32, v34];
         v51 = [CRLCanvasInfoGeometry alloc];
-        v52 = [v65 parent];
-        v53 = [v52 geometryInRoot];
-        v54 = [(CRLCanvasInfoGeometry *)v51 initWithLayoutGeometry:v53];
+        parent = [v65 parent];
+        geometryInRoot = [parent geometryInRoot];
+        v54 = [(CRLCanvasInfoGeometry *)v51 initWithLayoutGeometry:geometryInRoot];
         v55 = [(CRLCanvasInfoGeometry *)v50 geometryRelativeToGeometry:v54];
 
-        v56 = [v66 geometry];
-        LOBYTE(v53) = [v56 isEqual:v55];
+        geometry = [v66 geometry];
+        LOBYTE(geometryInRoot) = [geometry isEqual:v55];
 
-        if ((v53 & 1) == 0)
+        if ((geometryInRoot & 1) == 0)
         {
           v57 = [[_TtC8Freeform25CRLCommandSetInfoGeometry alloc] initWithBoardItem:v66 geometry:v55];
           [(CRLCommand *)v57 setShouldSendChangeNotificationsWhenEnqueuedInProgressiveGroup:0];
-          [v15 enqueueCommand:v57];
+          [commandController enqueueCommand:v57];
         }
 
         v19 = v65;
@@ -586,19 +586,19 @@ LABEL_73:
   }
 }
 
-- (void)estimatedPropertiesUpdatedOnInputPoint:(id)a3
+- (void)estimatedPropertiesUpdatedOnInputPoint:(id)point
 {
-  v4 = a3;
+  pointCopy = point;
   v11.receiver = self;
   v11.super_class = CRLFreehandDrawingToolStroke;
-  [(CRLFreehandDrawingTool *)&v11 estimatedPropertiesUpdatedOnInputPoint:v4];
+  [(CRLFreehandDrawingTool *)&v11 estimatedPropertiesUpdatedOnInputPoint:pointCopy];
   WeakRetained = objc_loadWeakRetained(&self->_pencilKitCanvasViewController);
-  v6 = [WeakRetained pencilKitCanvasView];
-  v7 = [v6 _tiledView];
-  v8 = [v7 canvasView];
-  if (v4)
+  pencilKitCanvasView = [WeakRetained pencilKitCanvasView];
+  _tiledView = [pencilKitCanvasView _tiledView];
+  canvasView = [_tiledView canvasView];
+  if (pointCopy)
   {
-    [v4 PKInputPoint];
+    [pointCopy PKInputPoint];
   }
 
   else
@@ -607,19 +607,19 @@ LABEL_73:
     memset(v9, 0, sizeof(v9));
   }
 
-  [v8 _replayEstimatedPropertiesUpdated:v9];
+  [canvasView _replayEstimatedPropertiesUpdated:v9];
 }
 
-- (void)p_endDrawingAndCaptureFinalStroke:(BOOL)a3
+- (void)p_endDrawingAndCaptureFinalStroke:(BOOL)stroke
 {
-  v3 = a3;
+  strokeCopy = stroke;
   WeakRetained = objc_loadWeakRetained(&self->_pencilKitCanvasViewController);
-  v6 = [WeakRetained pencilKitCanvasView];
+  pencilKitCanvasView = [WeakRetained pencilKitCanvasView];
 
-  v7 = [v6 _tiledView];
-  v8 = [v7 canvasView];
+  _tiledView = [pencilKitCanvasView _tiledView];
+  canvasView = [_tiledView canvasView];
 
-  if (v3)
+  if (strokeCopy)
   {
     v35 = 0;
     v36 = &v35;
@@ -641,7 +641,7 @@ LABEL_73:
     v28 = &v29;
     v9 = dispatch_semaphore_create(0);
     v26 = v9;
-    [v8 _replayDrawingEndedEstimatesTimeout:&v22 withBackgroundQueueCompletion:0.0];
+    [canvasView _replayDrawingEndedEstimatesTimeout:&v22 withBackgroundQueueCompletion:0.0];
     dispatch_semaphore_wait(v9, 0xFFFFFFFFFFFFFFFFLL);
     self->_isSendingPoints = 0;
     objc_storeStrong(&self->_finalPKStroke, v36[5]);
@@ -721,18 +721,18 @@ LABEL_73:
 
   else
   {
-    [v8 _replayDrawingCancelled];
+    [canvasView _replayDrawingCancelled];
     self->_isSendingPoints = 0;
   }
 }
 
-- (BOOL)finalizeAndResetWithSuccess:(BOOL)a3
+- (BOOL)finalizeAndResetWithSuccess:(BOOL)success
 {
   v102.receiver = self;
   v102.super_class = CRLFreehandDrawingToolStroke;
-  v4 = [(CRLFreehandDrawingTool *)&v102 finalizeAndResetWithSuccess:a3];
+  v4 = [(CRLFreehandDrawingTool *)&v102 finalizeAndResetWithSuccess:success];
   v5 = [(CRLFreehandDrawingTool *)self icc];
-  v6 = [v5 commandController];
+  commandController = [v5 commandController];
   [(CRLFreehandDrawingToolStroke *)self p_endDrawingAndCaptureFinalStroke:v4];
   LODWORD(v4) = (self->_finalPKStroke != 0) & v4;
   [(CRLFreehandDrawingToolStroke *)self p_endSuppressingLayerUpdatesIfNeeded];
@@ -743,7 +743,7 @@ LABEL_73:
   v88 = v4;
   if (v4 != 1)
   {
-    v93 = 0;
+    firstObject2 = 0;
     p_isScratchingOut = &self->_isScratchingOut;
     if (!self->_isScratchingOut)
     {
@@ -751,16 +751,16 @@ LABEL_73:
       goto LABEL_50;
     }
 
-    v87 = v6;
+    v87 = commandController;
     goto LABEL_48;
   }
 
   v9 = v7;
-  v87 = v6;
+  v87 = commandController;
   v10 = objc_opt_class();
-  v11 = [(CRLFreehandDrawingToolAbstractPathInsertion *)self shapeItem];
-  v12 = [v11 parentInfo];
-  v13 = sub_100013F00(v10, v12);
+  shapeItem = [(CRLFreehandDrawingToolAbstractPathInsertion *)self shapeItem];
+  parentInfo = [shapeItem parentInfo];
+  v13 = sub_100013F00(v10, parentInfo);
 
   v89 = v13;
   if (!v13)
@@ -797,12 +797,12 @@ LABEL_73:
   v17 = [v5 layoutForInfo:v13];
   v18 = [CRLCanvasInfoGeometry alloc];
   v86 = v17;
-  v19 = [v17 geometryInRoot];
-  v20 = [(CRLCanvasInfoGeometry *)v18 initWithLayoutGeometry:v19];
+  geometryInRoot = [v17 geometryInRoot];
+  v20 = [(CRLCanvasInfoGeometry *)v18 initWithLayoutGeometry:geometryInRoot];
 
   v21 = [(CRLFreehandDrawingTool *)self icc];
-  v22 = [v21 editingCoordinator];
-  v23 = [v22 boardItemFactory];
+  editingCoordinator = [v21 editingCoordinator];
+  boardItemFactory = [editingCoordinator boardItemFactory];
 
   if ([self->_finalPKStroke _isMaskedStroke])
   {
@@ -816,8 +816,8 @@ LABEL_73:
     v101 = 0u;
     v98 = 0u;
     v99 = 0u;
-    v27 = [v26 strokes];
-    v28 = [v27 countByEnumeratingWithState:&v98 objects:v104 count:16];
+    strokes = [v26 strokes];
+    v28 = [strokes countByEnumeratingWithState:&v98 objects:v104 count:16];
     if (v28)
     {
       v29 = v28;
@@ -828,16 +828,16 @@ LABEL_73:
         {
           if (*v99 != v30)
           {
-            objc_enumerationMutation(v27);
+            objc_enumerationMutation(strokes);
           }
 
           v32 = *(*(&v98 + 1) + 8 * i);
           [(CRLFreehandDrawingToolStroke *)self unscaledWidth];
-          v33 = [v23 makeShapeItemsForFreehandDrawingWithPKStroke:v32 unadjustedPencilKitBaseWidth:?];
+          v33 = [boardItemFactory makeShapeItemsForFreehandDrawingWithPKStroke:v32 unadjustedPencilKitBaseWidth:?];
           [v9 addObjectsFromArray:v33];
         }
 
-        v29 = [v27 countByEnumeratingWithState:&v98 objects:v104 count:16];
+        v29 = [strokes countByEnumeratingWithState:&v98 objects:v104 count:16];
       }
 
       while (v29);
@@ -848,7 +848,7 @@ LABEL_73:
   {
     v34 = self->_finalPKStroke;
     [(CRLFreehandDrawingToolStroke *)self unscaledWidth];
-    v26 = [v23 makeShapeItemsForFreehandDrawingWithPKStroke:v34 unadjustedPencilKitBaseWidth:?];
+    v26 = [boardItemFactory makeShapeItemsForFreehandDrawingWithPKStroke:v34 unadjustedPencilKitBaseWidth:?];
     [v9 addObjectsFromArray:v26];
   }
 
@@ -872,8 +872,8 @@ LABEL_73:
         }
 
         v40 = *(*(&v94 + 1) + 8 * j);
-        v41 = [v40 geometry];
-        v42 = [v41 geometryRelativeToGeometry:v20];
+        geometry = [v40 geometry];
+        v42 = [geometry geometryRelativeToGeometry:v20];
         [v40 setGeometry:v42];
       }
 
@@ -883,17 +883,17 @@ LABEL_73:
     while (v37);
   }
 
-  v6 = v87;
+  commandController = v87;
   [v87 openGroup];
   if ([v35 count] == 1)
   {
     v43 = objc_opt_class();
-    v44 = [(CRLFreehandDrawingToolAbstractPathInsertion *)self shapeItem];
-    v45 = sub_100013F00(v43, v44);
+    shapeItem2 = [(CRLFreehandDrawingToolAbstractPathInsertion *)self shapeItem];
+    v45 = sub_100013F00(v43, shapeItem2);
 
-    v46 = [v35 firstObject];
-    v93 = v45;
-    v47 = [v45 commandsToUpdateModelToMatch:v46];
+    firstObject = [v35 firstObject];
+    firstObject2 = v45;
+    v47 = [v45 commandsToUpdateModelToMatch:firstObject];
     [v87 enqueueCommand:v47];
 
     p_info = (CRLiOSMultiSelectGestureRecognizer + 32);
@@ -905,7 +905,7 @@ LABEL_73:
     v48 = v86;
     if ([v35 count] < 2)
     {
-      v93 = 0;
+      firstObject2 = 0;
     }
 
     else
@@ -914,12 +914,12 @@ LABEL_73:
       [v87 enqueueCommand:v50];
 
       v51 = [_TtC8Freeform26CRLCommandDeleteBoardItems alloc];
-      v52 = [(CRLFreehandDrawingToolAbstractPathInsertion *)self shapeItem];
-      v53 = [NSSet setWithObject:v52];
+      shapeItem3 = [(CRLFreehandDrawingToolAbstractPathInsertion *)self shapeItem];
+      v53 = [NSSet setWithObject:shapeItem3];
       v54 = [(CRLCommandDeleteBoardItems *)v51 initWithBoardItemsToDelete:v53 canDeleteNewlyCreatedItems:1];
       [v87 enqueueCommand:v54];
 
-      v93 = [v35 firstObject];
+      firstObject2 = [v35 firstObject];
     }
 
     p_info = CRLiOSMultiSelectGestureRecognizer.info;
@@ -958,18 +958,18 @@ LABEL_73:
     [p_info + 206 handleFailureInFunction:v56 file:v57 lineNumber:510 isFatal:0 description:"didSucceed should not be true when scratching out."];
 
 LABEL_48:
-    v58 = [v5 canvasEditor];
-    v59 = [v58 canvasEditorHelper];
+    canvasEditor = [v5 canvasEditor];
+    canvasEditorHelper = [canvasEditor canvasEditorHelper];
 
-    v60 = [(CRLFreehandDrawingToolAbstractPathInsertion *)self shapeItem];
-    v61 = [NSSet setWithObject:v60];
-    v62 = [v59 infosToDeleteToDeleteInfos:v61];
+    shapeItem4 = [(CRLFreehandDrawingToolAbstractPathInsertion *)self shapeItem];
+    v61 = [NSSet setWithObject:shapeItem4];
+    v62 = [canvasEditorHelper infosToDeleteToDeleteInfos:v61];
 
     v49 = 1;
     v63 = [[_TtC8Freeform26CRLCommandDeleteBoardItems alloc] initWithBoardItemsToDelete:v62 canDeleteNewlyCreatedItems:1];
     [v87 enqueueCommand:v63];
 
-    v6 = v87;
+    commandController = v87;
     goto LABEL_50;
   }
 
@@ -978,7 +978,7 @@ LABEL_50:
   [(CRLFreehandDrawingToolAbstractPathInsertion *)self finalizeAndResetAbstractPathInsertionToolWithSuccess:v49];
   if (self->_finalPKShapeStrokes)
   {
-    v64 = v93 == 0;
+    v64 = firstObject2 == 0;
   }
 
   else
@@ -988,28 +988,28 @@ LABEL_50:
 
   if (!v64)
   {
-    [v6 openGroup];
-    v65 = [(CRLFreehandDrawingToolStroke *)self p_commandForSnappingShapeItem:v93 toStrokesInUnscaledSpace:self->_finalPKShapeStrokes];
-    [v6 enqueueCommand:v65];
+    [commandController openGroup];
+    v65 = [(CRLFreehandDrawingToolStroke *)self p_commandForSnappingShapeItem:firstObject2 toStrokesInUnscaledSpace:self->_finalPKShapeStrokes];
+    [commandController enqueueCommand:v65];
     if ([v92 count] >= 2)
     {
       v66 = [v92 subarrayWithRange:{1, objc_msgSend(v92, "count") - 1}];
       v67 = [_TtC8Freeform26CRLCommandDeleteBoardItems alloc];
       [NSSet setWithArray:v66];
-      v69 = v68 = v6;
+      v69 = v68 = commandController;
       v70 = [(CRLCommandDeleteBoardItems *)v67 initWithBoardItemsToDelete:v69];
       [v68 enqueueCommand:v70];
 
-      v6 = v68;
+      commandController = v68;
     }
 
-    [v6 closeGroup];
+    [commandController closeGroup];
   }
 
   v71 = objc_alloc_init(PKDrawing);
   WeakRetained = objc_loadWeakRetained(&self->_pencilKitCanvasViewController);
-  v73 = [WeakRetained pencilKitCanvasView];
-  [v73 setDrawing:v71];
+  pencilKitCanvasView = [WeakRetained pencilKitCanvasView];
+  [pencilKitCanvasView setDrawing:v71];
 
   if (self->_isSendingPoints)
   {
@@ -1089,22 +1089,22 @@ LABEL_50:
   return v88;
 }
 
-- (void)updatePencilKitToolIfAppropriateFor:(id)a3
+- (void)updatePencilKitToolIfAppropriateFor:(id)for
 {
-  v4 = a3;
-  v9 = [(CRLFreehandDrawingToolStroke *)self p_currentPKInkType];
+  forCopy = for;
+  p_currentPKInkType = [(CRLFreehandDrawingToolStroke *)self p_currentPKInkType];
   if (self->_toolType == 6)
   {
     [(CRLFreehandDrawingToolStroke *)self azimuth];
   }
 
   v5 = [PKInkingTool alloc];
-  v6 = [(CRLFreehandDrawingToolStroke *)self p_currentColorWithOpacity];
-  v7 = [v6 UIColor];
+  p_currentColorWithOpacity = [(CRLFreehandDrawingToolStroke *)self p_currentColorWithOpacity];
+  uIColor = [p_currentColorWithOpacity UIColor];
   [(CRLFreehandDrawingToolStroke *)self unscaledWidth];
-  v8 = [v5 initWithInkType:v9 color:v7 width:? azimuth:?];
+  v8 = [v5 initWithInkType:p_currentPKInkType color:uIColor width:? azimuth:?];
 
-  [v4 setTool:v8];
+  [forCopy setTool:v8];
 }
 
 - (id)p_currentPKInkType
@@ -1209,9 +1209,9 @@ LABEL_19:
   return v3;
 }
 
-- (void)convertToScratchOutOfStrokes:(id)a3
+- (void)convertToScratchOutOfStrokes:(id)strokes
 {
-  v4 = a3;
+  strokesCopy = strokes;
   if (!self->_isSendingPoints)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -1236,11 +1236,11 @@ LABEL_19:
       sub_10130DA10(v12);
     }
 
-    v6 = [NSString stringWithUTF8String:"[CRLFreehandDrawingToolStroke convertToScratchOutOfStrokes:]"];
-    v7 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/BoardItems/CRLFreehandDrawingToolStroke.m"];
+    commandController = [NSString stringWithUTF8String:"[CRLFreehandDrawingToolStroke convertToScratchOutOfStrokes:]"];
+    drawingIntelligenceProvider = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/BoardItems/CRLFreehandDrawingToolStroke.m"];
     v8 = "Should not scratch-out while not drawing a stroke.";
-    v9 = v6;
-    v10 = v7;
+    v9 = commandController;
+    v10 = drawingIntelligenceProvider;
     v11 = 605;
     goto LABEL_21;
   }
@@ -1269,11 +1269,11 @@ LABEL_19:
       sub_10130DA10(v5);
     }
 
-    v6 = [NSString stringWithUTF8String:"[CRLFreehandDrawingToolStroke convertToScratchOutOfStrokes:]"];
-    v7 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/BoardItems/CRLFreehandDrawingToolStroke.m"];
+    commandController = [NSString stringWithUTF8String:"[CRLFreehandDrawingToolStroke convertToScratchOutOfStrokes:]"];
+    drawingIntelligenceProvider = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/BoardItems/CRLFreehandDrawingToolStroke.m"];
     v8 = "Should not scratch-out more than once in one stroke.";
-    v9 = v6;
-    v10 = v7;
+    v9 = commandController;
+    v10 = drawingIntelligenceProvider;
     v11 = 610;
 LABEL_21:
     [CRLAssertionHandler handleFailureInFunction:v9 file:v10 lineNumber:v11 isFatal:0 description:v8];
@@ -1282,9 +1282,9 @@ LABEL_21:
 
   self->_isScratchingOut = 1;
   v13 = [(CRLFreehandDrawingTool *)self icc];
-  v6 = [v13 commandController];
+  commandController = [v13 commandController];
 
-  if (!v6)
+  if (!commandController)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -1314,12 +1314,12 @@ LABEL_21:
   }
 
   v17 = +[_TtC8Freeform38CRLFreehandDrawingIntelligenceProvider deleteStrokesActionString];
-  [v6 setCurrentGroupActionString:v17];
+  [commandController setCurrentGroupActionString:v17];
 
   v18 = [(CRLFreehandDrawingTool *)self icc];
-  v7 = [v18 drawingIntelligenceProvider];
+  drawingIntelligenceProvider = [v18 drawingIntelligenceProvider];
 
-  if (!v7)
+  if (!drawingIntelligenceProvider)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -1348,11 +1348,11 @@ LABEL_21:
     [CRLAssertionHandler handleFailureInFunction:v20 file:v21 lineNumber:622 isFatal:0 description:"invalid nil value for '%{public}s'", "intelligenceProvider"];
   }
 
-  [v7 deleteStrokes:v4 selectDeletedStrokesOnUndo:0];
+  [drawingIntelligenceProvider deleteStrokes:strokesCopy selectDeletedStrokesOnUndo:0];
   v22 = objc_opt_class();
   v23 = [(CRLFreehandDrawingTool *)self icc];
-  v24 = [(CRLFreehandDrawingToolAbstractPathInsertion *)self shapeItem];
-  v25 = [v23 layoutForInfo:v24];
+  shapeItem = [(CRLFreehandDrawingToolAbstractPathInsertion *)self shapeItem];
+  v25 = [v23 layoutForInfo:shapeItem];
   v26 = sub_100013F00(v22, v25);
 
   if (!v26)
@@ -1441,10 +1441,10 @@ LABEL_53:
   }
 }
 
-- (id)p_commandForSnappingShapeItem:(id)a3 toStrokesInUnscaledSpace:(id)a4
+- (id)p_commandForSnappingShapeItem:(id)item toStrokesInUnscaledSpace:(id)space
 {
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  spaceCopy = space;
   v8 = [[_TtC8Freeform15CRLCommandGroup alloc] initWithCommands:&__NSArray0__struct];
   v9 = [_TtC8Freeform38CRLFreehandDrawingIntelligenceProvider snapToShapeActionStringWithPlural:0];
   v49 = v8;
@@ -1452,13 +1452,13 @@ LABEL_53:
 
   v10 = +[NSMutableArray array];
   v11 = [(CRLFreehandDrawingTool *)self icc];
-  v12 = [v11 editingCoordinator];
-  v46 = [v12 boardItemFactory];
+  editingCoordinator = [v11 editingCoordinator];
+  boardItemFactory = [editingCoordinator boardItemFactory];
 
   v13 = objc_opt_class();
-  v50 = v6;
-  v14 = [v6 parentInfo];
-  v15 = sub_100013F00(v13, v14);
+  v50 = itemCopy;
+  parentInfo = [itemCopy parentInfo];
+  v15 = sub_100013F00(v13, parentInfo);
 
   v16 = [(CRLFreehandDrawingTool *)self icc];
   v43 = v15;
@@ -1466,14 +1466,14 @@ LABEL_53:
 
   v18 = [CRLCanvasInfoGeometry alloc];
   v42 = v17;
-  v19 = [v17 geometryInRoot];
-  v20 = [(CRLCanvasInfoGeometry *)v18 initWithLayoutGeometry:v19];
+  geometryInRoot = [v17 geometryInRoot];
+  v20 = [(CRLCanvasInfoGeometry *)v18 initWithLayoutGeometry:geometryInRoot];
 
   v57 = 0u;
   v58 = 0u;
   v55 = 0u;
   v56 = 0u;
-  obj = v7;
+  obj = spaceCopy;
   v47 = [obj countByEnumeratingWithState:&v55 objects:v60 count:16];
   if (v47)
   {
@@ -1491,9 +1491,9 @@ LABEL_53:
 
         v48 = v22;
         v23 = *(*(&v55 + 1) + 8 * v22);
-        v24 = [v50 stroke];
-        [v24 width];
-        v25 = [v46 makeShapeItemsForFreehandDrawingWithPKStroke:v23 adjustedBaseWidth:?];
+        stroke = [v50 stroke];
+        [stroke width];
+        v25 = [boardItemFactory makeShapeItemsForFreehandDrawingWithPKStroke:v23 adjustedBaseWidth:?];
 
         v53 = 0u;
         v54 = 0u;
@@ -1516,8 +1516,8 @@ LABEL_53:
               }
 
               v32 = *(*(&v51 + 1) + 8 * i);
-              v33 = [v32 geometry];
-              v34 = [v33 geometryRelativeToGeometry:v20];
+              geometry = [v32 geometry];
+              v34 = [geometry geometryRelativeToGeometry:v20];
               [v32 setGeometry:v34];
 
               if (v30)
@@ -1554,13 +1554,13 @@ LABEL_53:
 
   if ([v10 count])
   {
-    v36 = [v43 childInfos];
-    v37 = [v36 indexOfObject:v50];
+    childInfos = [v43 childInfos];
+    v37 = [childInfos indexOfObject:v50];
 
     if (v37 == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v38 = [v43 childInfos];
-      v39 = [v38 count];
+      childInfos2 = [v43 childInfos];
+      v39 = [childInfos2 count];
     }
 
     else

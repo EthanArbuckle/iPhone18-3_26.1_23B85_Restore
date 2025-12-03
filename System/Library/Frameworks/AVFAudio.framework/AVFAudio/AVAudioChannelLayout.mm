@@ -1,16 +1,16 @@
 @interface AVAudioChannelLayout
-+ (AVAudioChannelLayout)layoutWithLayout:(const AudioChannelLayout *)a3 size:(unint64_t)a4;
 + (AVAudioChannelLayout)layoutWithLayout:(const AudioChannelLayout *)layout;
++ (AVAudioChannelLayout)layoutWithLayout:(const AudioChannelLayout *)layout size:(unint64_t)size;
 - (AVAudioChannelCount)channelCount;
-- (AVAudioChannelLayout)initWithCoder:(id)a3;
-- (AVAudioChannelLayout)initWithLayout:(const AudioChannelLayout *)a3 size:(unint64_t)a4;
+- (AVAudioChannelLayout)initWithCoder:(id)coder;
 - (AVAudioChannelLayout)initWithLayout:(const AudioChannelLayout *)layout;
+- (AVAudioChannelLayout)initWithLayout:(const AudioChannelLayout *)layout size:(unint64_t)size;
 - (AVAudioChannelLayout)initWithLayoutTag:(AudioChannelLayoutTag)layoutTag;
 - (BOOL)isEqual:(id)object;
 - (unint64_t)hash;
 - (unint64_t)layoutSize;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AVAudioChannelLayout
@@ -55,26 +55,26 @@
   }
 }
 
-- (AVAudioChannelLayout)initWithCoder:(id)a3
+- (AVAudioChannelLayout)initWithCoder:(id)coder
 {
   v8 = 0;
   v9 = 0;
-  v5 = [a3 decodeBytesWithReturnedLength:&v9];
-  v6 = [a3 decodeBytesWithReturnedLength:&v8];
+  v5 = [coder decodeBytesWithReturnedLength:&v9];
+  v6 = [coder decodeBytesWithReturnedLength:&v8];
   if (v5 && v6 && v9 == 4 && v8 == *v5)
   {
     return [(AVAudioChannelLayout *)self initWithLayout:v6 size:?];
   }
 
-  [a3 failWithError:{objc_msgSend(MEMORY[0x1E696ABC0], "errorWithDomain:code:userInfo:", *MEMORY[0x1E696A250], 4864, 0)}];
+  [coder failWithError:{objc_msgSend(MEMORY[0x1E696ABC0], "errorWithDomain:code:userInfo:", *MEMORY[0x1E696A250], 4864, 0)}];
   return 0;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = [(AVAudioChannelLayout *)self layoutSize];
-  [a3 encodeBytes:&v5 length:4];
-  [a3 encodeBytes:self->_layout length:v5];
+  layoutSize = [(AVAudioChannelLayout *)self layoutSize];
+  [coder encodeBytes:&layoutSize length:4];
+  [coder encodeBytes:self->_layout length:layoutSize];
 }
 
 - (unint64_t)hash
@@ -119,8 +119,8 @@
 
       else
       {
-        v8 = [object layoutTag];
-        result = v8 == [(AVAudioChannelLayout *)self layoutTag];
+        layoutTag = [object layoutTag];
+        result = layoutTag == [(AVAudioChannelLayout *)self layoutTag];
       }
     }
 
@@ -142,10 +142,10 @@
   [(AVAudioChannelLayout *)&v3 dealloc];
 }
 
-- (AVAudioChannelLayout)initWithLayout:(const AudioChannelLayout *)a3 size:(unint64_t)a4
+- (AVAudioChannelLayout)initWithLayout:(const AudioChannelLayout *)layout size:(unint64_t)size
 {
   v19 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!layout)
   {
 LABEL_10:
 
@@ -160,10 +160,10 @@ LABEL_10:
 
   else
   {
-    v6 = 20 * a3->mNumberChannelDescriptions + 12;
+    v6 = 20 * layout->mNumberChannelDescriptions + 12;
   }
 
-  if (v6 > a4)
+  if (v6 > size)
   {
     if (AVAudioChannelLogCategory(void)::once != -1)
     {
@@ -180,7 +180,7 @@ LABEL_10:
       v15 = 2048;
       v16 = v6;
       v17 = 2048;
-      v18 = a4;
+      sizeCopy = size;
       _os_log_impl(&dword_1BA5AC000, v7, OS_LOG_TYPE_ERROR, "%25s:%-5d AudioChannelLayout has a mismatched size. Expected: %zu, got %lu", &v11, 0x26u);
     }
 
@@ -250,9 +250,9 @@ LABEL_10:
   }
 }
 
-+ (AVAudioChannelLayout)layoutWithLayout:(const AudioChannelLayout *)a3 size:(unint64_t)a4
++ (AVAudioChannelLayout)layoutWithLayout:(const AudioChannelLayout *)layout size:(unint64_t)size
 {
-  v4 = [[AVAudioChannelLayout alloc] initWithLayout:a3 size:a4];
+  v4 = [[AVAudioChannelLayout alloc] initWithLayout:layout size:size];
 
   return v4;
 }

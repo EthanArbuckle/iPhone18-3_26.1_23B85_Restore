@@ -1,43 +1,43 @@
 @interface STUIStatusBarSensorActivityView
-- (BOOL)configurePortalViewIfNeededForTargetScreen:(id)a3;
+- (BOOL)configurePortalViewIfNeededForTargetScreen:(id)screen;
 - (CGSize)intrinsicContentSize;
-- (void)applyStyleAttributes:(id)a3;
-- (void)configureSensorViewWithoutPortalIfNeededForTargetScreen:(id)a3;
+- (void)applyStyleAttributes:(id)attributes;
+- (void)configureSensorViewWithoutPortalIfNeededForTargetScreen:(id)screen;
 - (void)layoutSubviews;
 @end
 
 @implementation STUIStatusBarSensorActivityView
 
-- (void)configureSensorViewWithoutPortalIfNeededForTargetScreen:(id)a3
+- (void)configureSensorViewWithoutPortalIfNeededForTargetScreen:(id)screen
 {
   v20[2] = *MEMORY[0x277D85DE8];
-  v4 = [STUIStatusBar sensorActivityIndicatorForScreen:a3];
-  v5 = [(STUIStatusBarSensorActivityView *)self sensorActivityView];
-  v6 = v5;
+  v4 = [STUIStatusBar sensorActivityIndicatorForScreen:screen];
+  sensorActivityView = [(STUIStatusBarSensorActivityView *)self sensorActivityView];
+  v6 = sensorActivityView;
   if (v4)
   {
 
     if (v6 != v4)
     {
-      v7 = [(STUIStatusBarSensorActivityView *)self sensorActivityView];
-      [v7 removeFromSuperview];
+      sensorActivityView2 = [(STUIStatusBarSensorActivityView *)self sensorActivityView];
+      [sensorActivityView2 removeFromSuperview];
     }
 
     [(STUIStatusBarSensorActivityView *)self setSensorActivityView:v4];
-    v8 = [(STUIStatusBarSensorActivityView *)self sensorActivityView];
-    [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
+    sensorActivityView3 = [(STUIStatusBarSensorActivityView *)self sensorActivityView];
+    [sensorActivityView3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
     [(STUIStatusBarSensorActivityView *)self addSubview:v4];
     v18 = MEMORY[0x277CCAAD0];
-    v19 = [(STUIStatusBarSensorActivityView *)self sensorActivityView];
-    v9 = [v19 centerXAnchor];
-    v10 = [(STUIStatusBarSensorActivityView *)self centerXAnchor];
-    v11 = [v9 constraintEqualToAnchor:v10];
+    sensorActivityView4 = [(STUIStatusBarSensorActivityView *)self sensorActivityView];
+    centerXAnchor = [sensorActivityView4 centerXAnchor];
+    centerXAnchor2 = [(STUIStatusBarSensorActivityView *)self centerXAnchor];
+    v11 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v20[0] = v11;
-    v12 = [(STUIStatusBarSensorActivityView *)self sensorActivityView];
-    v13 = [v12 centerYAnchor];
-    v14 = [(STUIStatusBarSensorActivityView *)self centerYAnchor];
-    v15 = [v13 constraintEqualToAnchor:v14];
+    sensorActivityView5 = [(STUIStatusBarSensorActivityView *)self sensorActivityView];
+    centerYAnchor = [sensorActivityView5 centerYAnchor];
+    centerYAnchor2 = [(STUIStatusBarSensorActivityView *)self centerYAnchor];
+    v15 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v20[1] = v15;
     v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v20 count:2];
     [v18 activateConstraints:v16];
@@ -50,8 +50,8 @@
 
     if (v6)
     {
-      v17 = [(STUIStatusBarSensorActivityView *)self sensorActivityView];
-      [v17 removeFromSuperview];
+      sensorActivityView6 = [(STUIStatusBarSensorActivityView *)self sensorActivityView];
+      [sensorActivityView6 removeFromSuperview];
 
       [(STUIStatusBarSensorActivityView *)self setSensorActivityView:0];
     }
@@ -60,11 +60,11 @@
 
 - (void)layoutSubviews
 {
-  v3 = [(STUIStatusBarSensorActivityView *)self _screen];
-  v4 = v3;
+  _screen = [(STUIStatusBarSensorActivityView *)self _screen];
+  v4 = _screen;
   if (self->_portalView)
   {
-    v5 = v3 == 0;
+    v5 = _screen == 0;
   }
 
   else
@@ -74,8 +74,8 @@
 
   if (!v5)
   {
-    v15 = v3;
-    v6 = [STUIStatusBar sensorActivityIndicatorForScreen:v3];
+    v15 = _screen;
+    v6 = [STUIStatusBar sensorActivityIndicatorForScreen:_screen];
     v7 = v6;
     if (v6)
     {
@@ -96,12 +96,12 @@
     v4 = v15;
   }
 
-  MEMORY[0x2821F96F8](v3, v4);
+  MEMORY[0x2821F96F8](_screen, v4);
 }
 
-- (BOOL)configurePortalViewIfNeededForTargetScreen:(id)a3
+- (BOOL)configurePortalViewIfNeededForTargetScreen:(id)screen
 {
-  v4 = [STUIStatusBar sensorActivityIndicatorForScreen:a3];
+  v4 = [STUIStatusBar sensorActivityIndicatorForScreen:screen];
   portalView = self->_portalView;
   if (v4)
   {
@@ -136,14 +136,14 @@
   return v4 != 0;
 }
 
-- (void)applyStyleAttributes:(id)a3
+- (void)applyStyleAttributes:(id)attributes
 {
-  v4 = [a3 iconSize];
+  iconSize = [attributes iconSize];
   iconSize = self->_iconSize;
-  [(STUIStatusBarSensorActivityView *)self setIconSize:v4];
+  [(STUIStatusBarSensorActivityView *)self setIconSize:iconSize];
   if (self->_portalView)
   {
-    v6 = iconSize == v4;
+    v6 = iconSize == iconSize;
   }
 
   else

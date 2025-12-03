@@ -1,33 +1,33 @@
 @interface FullScreenPreferenceTipController
-- (void)hideTipAnimated:(BOOL)a3 completion:(id)a4;
-- (void)showTipFrom:(id)a3 sourceItem:(id)a4 passthroughViews:(id)a5 permittedArrowDirections:(unint64_t)a6 shouldHideArrow:(BOOL)a7 tintColor:(id)a8 animated:(BOOL)a9;
+- (void)hideTipAnimated:(BOOL)animated completion:(id)completion;
+- (void)showTipFrom:(id)from sourceItem:(id)item passthroughViews:(id)views permittedArrowDirections:(unint64_t)directions shouldHideArrow:(BOOL)arrow tintColor:(id)color animated:(BOOL)animated;
 @end
 
 @implementation FullScreenPreferenceTipController
 
-- (void)showTipFrom:(id)a3 sourceItem:(id)a4 passthroughViews:(id)a5 permittedArrowDirections:(unint64_t)a6 shouldHideArrow:(BOOL)a7 tintColor:(id)a8 animated:(BOOL)a9
+- (void)showTipFrom:(id)from sourceItem:(id)item passthroughViews:(id)views permittedArrowDirections:(unint64_t)directions shouldHideArrow:(BOOL)arrow tintColor:(id)color animated:(BOOL)animated
 {
-  v10 = a7;
-  v12 = a5;
-  if (a5)
+  arrowCopy = arrow;
+  viewsCopy = views;
+  if (views)
   {
     sub_100068320();
-    v12 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
+    viewsCopy = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
-  v16 = a3;
+  fromCopy = from;
   swift_unknownObjectRetain();
-  v17 = a8;
-  v18 = self;
-  sub_1000668FC(v16, a4, v12, a6, v10, a8, a9);
+  colorCopy = color;
+  selfCopy = self;
+  sub_1000668FC(fromCopy, item, viewsCopy, directions, arrowCopy, color, animated);
 
   swift_unknownObjectRelease();
 }
 
-- (void)hideTipAnimated:(BOOL)a3 completion:(id)a4
+- (void)hideTipAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
-  v6 = _Block_copy(a4);
+  animatedCopy = animated;
+  v6 = _Block_copy(completion);
   if (v6)
   {
     v7 = swift_allocObject();
@@ -40,8 +40,8 @@
     v7 = 0;
   }
 
-  v8 = self;
-  sub_100065428(v4, v6, v7);
+  selfCopy = self;
+  sub_100065428(animatedCopy, v6, v7);
   sub_1000682C8(v6);
 }
 

@@ -1,25 +1,25 @@
 @interface CNScriptChanges
-+ (id)_changesFromInternal:(id)a3;
++ (id)_changesFromInternal:(id)internal;
 - (CNScriptChanges)initWithDataRepresentation:(NSData *)dataRepresentation;
 - (NSArray)addedDetectionTracks;
 - (NSArray)userDecisions;
 - (NSData)dataRepresentation;
 - (float)fNumber;
-- (id)_initWithInternalChanges:(id)a3;
+- (id)_initWithInternalChanges:(id)changes;
 - (void)dataRepresentation;
 @end
 
 @implementation CNScriptChanges
 
-- (id)_initWithInternalChanges:(id)a3
+- (id)_initWithInternalChanges:(id)changes
 {
-  v4 = a3;
+  changesCopy = changes;
   v9.receiver = self;
   v9.super_class = CNScriptChanges;
   v5 = [(CNScriptChanges *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [changesCopy copy];
     internalChanges = v5->_internalChanges;
     v5->_internalChanges = v6;
   }
@@ -27,10 +27,10 @@
   return v5;
 }
 
-+ (id)_changesFromInternal:(id)a3
++ (id)_changesFromInternal:(id)internal
 {
-  v4 = a3;
-  v5 = [[a1 alloc] _initWithInternalChanges:v4];
+  internalCopy = internal;
+  v5 = [[self alloc] _initWithInternalChanges:internalCopy];
 
   return v5;
 }
@@ -58,7 +58,7 @@
       [CNScriptChanges initWithDataRepresentation:];
     }
 
-    v11 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -98,7 +98,7 @@
       }
 
       self = [(CNScriptChanges *)self _initWithInternalChanges:v14];
-      v11 = self;
+      selfCopy = self;
     }
 
     else
@@ -109,12 +109,12 @@
         [CNScriptChanges initWithDataRepresentation:];
       }
 
-      v11 = 0;
+      selfCopy = 0;
     }
   }
 
   v16 = *MEMORY[0x277D85DE8];
-  return v11;
+  return selfCopy;
 }
 
 - (NSData)dataRepresentation
@@ -123,8 +123,8 @@
   v11[0] = @"version";
   v11[1] = @"scriptChanges";
   v12[0] = &unk_284A07070;
-  v2 = [(CNScriptChanges *)self internalChanges];
-  v12[1] = v2;
+  internalChanges = [(CNScriptChanges *)self internalChanges];
+  v12[1] = internalChanges;
   v3 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:v11 count:2];
 
   v10 = 0;
@@ -153,8 +153,8 @@
 
 - (float)fNumber
 {
-  v2 = [(CNScriptChanges *)self internalChanges];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x277D3E910]];
+  internalChanges = [(CNScriptChanges *)self internalChanges];
+  v3 = [internalChanges objectForKeyedSubscript:*MEMORY[0x277D3E910]];
   [v3 floatValue];
   v5 = v4;
 
@@ -163,8 +163,8 @@
 
 - (NSArray)userDecisions
 {
-  v2 = [(CNScriptChanges *)self internalChanges];
-  v3 = [v2 objectForKeyedSubscript:@"user_decisions"];
+  internalChanges = [(CNScriptChanges *)self internalChanges];
+  v3 = [internalChanges objectForKeyedSubscript:@"user_decisions"];
 
   v4 = [MEMORY[0x277D3E838] _mutableDecisionsWithCinematographyDictionaries:v3];
   v5 = [CNDecision _takeDecisionsFromInternal:v4];
@@ -175,9 +175,9 @@
 - (NSArray)addedDetectionTracks
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = [(CNScriptChanges *)self internalChanges];
-  v5 = [v4 objectForKeyedSubscript:@"user_tracks"];
+  array = [MEMORY[0x277CBEB18] array];
+  internalChanges = [(CNScriptChanges *)self internalChanges];
+  v5 = [internalChanges objectForKeyedSubscript:@"user_tracks"];
 
   v20 = 0u;
   v21 = 0u;
@@ -202,7 +202,7 @@
         v12 = objc_alloc(MEMORY[0x277D3E860]);
         v13 = [v12 _initWithCinematographyDictionary:{v11, v18}];
         v14 = [CNDetectionTrack _trackFromInternal:v13];
-        [v3 addObject:v14];
+        [array addObject:v14];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
@@ -211,7 +211,7 @@
     while (v8);
   }
 
-  v15 = [v3 copy];
+  v15 = [array copy];
   v16 = *MEMORY[0x277D85DE8];
 
   return v15;

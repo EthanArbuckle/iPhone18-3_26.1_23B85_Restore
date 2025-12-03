@@ -1,14 +1,14 @@
 @interface MOApprovedApplicationsManager
 + (id)sharedInstance;
-- (BOOL)isApplicationUsingDataAccess:(id)a3;
-- (BOOL)isClientUsingDataAccess:(id)a3;
-- (BOOL)isJournalingSuggestionsAvailableForBundleIdentifier:(id)a3;
+- (BOOL)isApplicationUsingDataAccess:(id)access;
+- (BOOL)isClientUsingDataAccess:(id)access;
+- (BOOL)isJournalingSuggestionsAvailableForBundleIdentifier:(id)identifier;
 - (MOApprovedApplicationsManager)init;
 - (id)_getApprovedApplicationsArray;
-- (id)_getApprovedApplicationsArrayAndRequireAccess:(BOOL)a3;
+- (id)_getApprovedApplicationsArrayAndRequireAccess:(BOOL)access;
 - (id)_getApprovedApplicationsWithAccessArray;
-- (id)getJournalingSuggestionsApprovedApplicationRecordForBundleIdentifier:(id)a3;
-- (void)registerClientsForDataAccess:(id)a3;
+- (id)getJournalingSuggestionsApprovedApplicationRecordForBundleIdentifier:(id)identifier;
+- (void)registerClientsForDataAccess:(id)access;
 @end
 
 @implementation MOApprovedApplicationsManager
@@ -47,12 +47,12 @@
   return v6;
 }
 
-- (id)_getApprovedApplicationsArrayAndRequireAccess:(BOOL)a3
+- (id)_getApprovedApplicationsArrayAndRequireAccess:(BOOL)access
 {
   v5 = +[MOOnboardingAndSettingsManager sharedInstance];
-  v6 = [v5 defaultManager];
+  defaultManager = [v5 defaultManager];
 
-  v7 = [v6 objectForKey:@"ApprovedJournalingApplicationsOverrideForcedList"];
+  v7 = [defaultManager objectForKey:@"ApprovedJournalingApplicationsOverrideForcedList"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -73,23 +73,23 @@
   v11 = v9;
   v21 = v11;
   v22 = @"Approved applications lookup";
-  v24 = a3;
-  v23 = self;
+  accessCopy = access;
+  selfCopy = self;
   [v10 setFilter:&v17];
   v12 = objc_opt_new();
-  v13 = [v10 nextObject];
-  if (v13)
+  nextObject = [v10 nextObject];
+  if (nextObject)
   {
-    v14 = v13;
+    v14 = nextObject;
     do
     {
       [v12 addObject:v14];
-      v15 = [v10 nextObject];
+      nextObject2 = [v10 nextObject];
 
-      v14 = v15;
+      v14 = nextObject2;
     }
 
-    while (v15);
+    while (nextObject2);
   }
 
   return v12;
@@ -572,7 +572,7 @@ LABEL_97:
   block[1] = 3221225472;
   block[2] = __47__MOApprovedApplicationsManager_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken_0 != -1)
   {
     dispatch_once(&sharedInstance_onceToken_0, block);
@@ -590,12 +590,12 @@ uint64_t __47__MOApprovedApplicationsManager_sharedInstance__block_invoke(uint64
   return MEMORY[0x2821F96F8]();
 }
 
-- (BOOL)isJournalingSuggestionsAvailableForBundleIdentifier:(id)a3
+- (BOOL)isJournalingSuggestionsAvailableForBundleIdentifier:(id)identifier
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4 && ([v4 isEqualToString:&stru_286BDDEB8] & 1) == 0)
+  identifierCopy = identifier;
+  v5 = identifierCopy;
+  if (identifierCopy && ([identifierCopy isEqualToString:&stru_286BDDEB8] & 1) == 0)
   {
     [(MOApprovedApplicationsManager *)self _getApprovedApplicationsArray];
     v14 = 0u;
@@ -615,8 +615,8 @@ uint64_t __47__MOApprovedApplicationsManager_sharedInstance__block_invoke(uint64
             objc_enumerationMutation(v7);
           }
 
-          v10 = [*(*(&v14 + 1) + 8 * i) bundleIdentifier];
-          v11 = [v5 isEqualToString:v10];
+          bundleIdentifier = [*(*(&v14 + 1) + 8 * i) bundleIdentifier];
+          v11 = [v5 isEqualToString:bundleIdentifier];
 
           if (v11)
           {
@@ -647,12 +647,12 @@ LABEL_14:
   return v6;
 }
 
-- (id)getJournalingSuggestionsApprovedApplicationRecordForBundleIdentifier:(id)a3
+- (id)getJournalingSuggestionsApprovedApplicationRecordForBundleIdentifier:(id)identifier
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4 && ([v4 isEqualToString:&stru_286BDDEB8] & 1) == 0)
+  identifierCopy = identifier;
+  v5 = identifierCopy;
+  if (identifierCopy && ([identifierCopy isEqualToString:&stru_286BDDEB8] & 1) == 0)
   {
     [(MOApprovedApplicationsManager *)self _getApprovedApplicationsWithAccessArray];
     v15 = 0u;
@@ -673,8 +673,8 @@ LABEL_14:
           }
 
           v10 = *(*(&v15 + 1) + 8 * i);
-          v11 = [v10 bundleIdentifier];
-          v12 = [v5 isEqualToString:v11];
+          bundleIdentifier = [v10 bundleIdentifier];
+          v12 = [v5 isEqualToString:bundleIdentifier];
 
           if (v12)
           {
@@ -706,29 +706,29 @@ LABEL_14:
   return v6;
 }
 
-- (BOOL)isApplicationUsingDataAccess:(id)a3
+- (BOOL)isApplicationUsingDataAccess:(id)access
 {
-  v3 = a3;
+  accessCopy = access;
   v4 = +[MOOnboardingAndSettingsManager sharedInstance];
-  v5 = [v4 isApplicationUsingDataAccess:v3];
+  v5 = [v4 isApplicationUsingDataAccess:accessCopy];
 
   return v5;
 }
 
-- (BOOL)isClientUsingDataAccess:(id)a3
+- (BOOL)isClientUsingDataAccess:(id)access
 {
-  v3 = a3;
+  accessCopy = access;
   v4 = +[MOOnboardingAndSettingsManager sharedInstance];
-  v5 = [v4 isClientUsingDataAccess:v3];
+  v5 = [v4 isClientUsingDataAccess:accessCopy];
 
   return v5;
 }
 
-- (void)registerClientsForDataAccess:(id)a3
+- (void)registerClientsForDataAccess:(id)access
 {
-  v3 = a3;
+  accessCopy = access;
   v4 = +[MOOnboardingAndSettingsManager sharedInstance];
-  [v4 registerClientsForDataAccess:v3];
+  [v4 registerClientsForDataAccess:accessCopy];
 }
 
 @end

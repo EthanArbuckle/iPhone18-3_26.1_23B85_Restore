@@ -1,32 +1,32 @@
 @interface UWBSignalFeatures
-- (BOOL)isEqual:(id)a3;
-- (UWBSignalFeatures)initWithCoder:(id)a3;
-- (UWBSignalFeatures)initWithUWBSignalFeatures:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (UWBSignalFeatures)initWithCoder:(id)coder;
+- (UWBSignalFeatures)initWithUWBSignalFeatures:(id)features;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)orderedBiasEstimatorFeatutes;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation UWBSignalFeatures
 
-- (UWBSignalFeatures)initWithUWBSignalFeatures:(id)a3
+- (UWBSignalFeatures)initWithUWBSignalFeatures:(id)features
 {
-  v4 = a3;
+  featuresCopy = features;
   v15.receiver = self;
   v15.super_class = UWBSignalFeatures;
   v5 = [(UWBSignalFeatures *)&v15 init];
   if (v5)
   {
     v6 = [BiasEstimatorFeatures alloc];
-    v7 = [v4 inputFeatures];
-    v8 = [(BiasEstimatorFeatures *)v6 initWithBiasEstimatorFeatures:v7];
+    inputFeatures = [featuresCopy inputFeatures];
+    v8 = [(BiasEstimatorFeatures *)v6 initWithBiasEstimatorFeatures:inputFeatures];
     inputFeatures = v5->_inputFeatures;
     v5->_inputFeatures = v8;
 
     v10 = [BiasEstimatorOutputs alloc];
-    v11 = [v4 outputs];
-    v12 = [(BiasEstimatorOutputs *)v10 initWithBiasEstimatorOutputs:v11];
+    outputs = [featuresCopy outputs];
+    v12 = [(BiasEstimatorOutputs *)v10 initWithBiasEstimatorOutputs:outputs];
     outputs = v5->_outputs;
     v5->_outputs = v12;
   }
@@ -34,25 +34,25 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
 
   return [v4 initWithUWBSignalFeatures:self];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeObject:self->_inputFeatures forKey:@"inputFeatures"];
-  [v4 encodeObject:self->_outputs forKey:@"outputProbabilities"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_inputFeatures forKey:@"inputFeatures"];
+  [coderCopy encodeObject:self->_outputs forKey:@"outputProbabilities"];
 }
 
-- (UWBSignalFeatures)initWithCoder:(id)a3
+- (UWBSignalFeatures)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"inputFeatures"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"outputProbabilities"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"inputFeatures"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"outputProbabilities"];
   v10.receiver = self;
   v10.super_class = UWBSignalFeatures;
   v7 = [(UWBSignalFeatures *)&v10 init];
@@ -66,9 +66,9 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -76,7 +76,7 @@
     goto LABEL_12;
   }
 
-  v5 = v4;
+  v5 = equalCopy;
   v6 = v5;
   inputFeatures = self->_inputFeatures;
   if (inputFeatures)
@@ -84,14 +84,14 @@
     goto LABEL_5;
   }
 
-  v8 = [v5 inputFeatures];
+  inputFeatures = [v5 inputFeatures];
 
-  if (v8)
+  if (inputFeatures)
   {
     inputFeatures = self->_inputFeatures;
 LABEL_5:
-    v9 = [v6 inputFeatures];
-    v10 = inputFeatures == v9;
+    inputFeatures2 = [v6 inputFeatures];
+    v10 = inputFeatures == inputFeatures2;
 
     goto LABEL_6;
   }
@@ -101,9 +101,9 @@ LABEL_6:
   outputs = self->_outputs;
   if (!outputs)
   {
-    v12 = [v6 outputs];
+    outputs = [v6 outputs];
 
-    if (!v12)
+    if (!outputs)
     {
       v14 = 1;
       goto LABEL_10;
@@ -112,8 +112,8 @@ LABEL_6:
     outputs = self->_outputs;
   }
 
-  v13 = [v6 outputs];
-  v14 = outputs == v13;
+  outputs2 = [v6 outputs];
+  v14 = outputs == outputs2;
 
 LABEL_10:
   v15 = v10 && v14;
@@ -135,9 +135,9 @@ LABEL_12:
 - (id)orderedBiasEstimatorFeatutes
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(BiasEstimatorFeatures *)self->_inputFeatures populateOrderedInputFeature];
-  v5 = [(BiasEstimatorOutputs *)self->_outputs populateOrderedBiasEstimatorOutputs];
-  v6 = [v3 stringWithFormat:@"%@, %@", v4, v5];
+  populateOrderedInputFeature = [(BiasEstimatorFeatures *)self->_inputFeatures populateOrderedInputFeature];
+  populateOrderedBiasEstimatorOutputs = [(BiasEstimatorOutputs *)self->_outputs populateOrderedBiasEstimatorOutputs];
+  v6 = [v3 stringWithFormat:@"%@, %@", populateOrderedInputFeature, populateOrderedBiasEstimatorOutputs];
 
   return v6;
 }

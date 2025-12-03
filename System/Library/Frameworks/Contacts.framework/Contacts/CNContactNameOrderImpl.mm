@@ -4,7 +4,7 @@
 + (id)defaultSortOrder;
 + (id)familyNameFirstOrder;
 + (id)givenNameFirstOrder;
-+ (id)orderForSortOrder:(int64_t)a3;
++ (id)orderForSortOrder:(int64_t)order;
 - (id)nameProperties;
 - (id)phoneticNameProperties;
 - (id)sortingNameProperties;
@@ -54,16 +54,16 @@ uint64_t __46__CNContactNameOrderImpl_familyNameFirstOrder__block_invoke()
 + (id)defaultOrder
 {
   v3 = +[CNContactsUserDefaults sharedDefaults];
-  v4 = [v3 displayNameOrder];
+  displayNameOrder = [v3 displayNameOrder];
 
-  if (v4 == 2)
+  if (displayNameOrder == 2)
   {
-    [a1 familyNameFirstOrder];
+    [self familyNameFirstOrder];
   }
 
   else
   {
-    [a1 givenNameFirstOrder];
+    [self givenNameFirstOrder];
   }
   v5 = ;
 
@@ -73,16 +73,16 @@ uint64_t __46__CNContactNameOrderImpl_familyNameFirstOrder__block_invoke()
 + (id)defaultSortOrder
 {
   v3 = +[CNContactsUserDefaults sharedDefaults];
-  v4 = [v3 sortOrder];
+  sortOrder = [v3 sortOrder];
 
-  if (v4 == 3)
+  if (sortOrder == 3)
   {
-    [a1 familyNameFirstOrder];
+    [self familyNameFirstOrder];
   }
 
   else
   {
-    [a1 givenNameFirstOrder];
+    [self givenNameFirstOrder];
   }
   v5 = ;
 
@@ -92,16 +92,16 @@ uint64_t __46__CNContactNameOrderImpl_familyNameFirstOrder__block_invoke()
 + (id)defaultNewContactOrder
 {
   v3 = +[CNContactsUserDefaults sharedDefaults];
-  v4 = [v3 newContactDisplayNameOrder];
+  newContactDisplayNameOrder = [v3 newContactDisplayNameOrder];
 
-  if (v4 == 2)
+  if (newContactDisplayNameOrder == 2)
   {
-    [a1 familyNameFirstOrder];
+    [self familyNameFirstOrder];
   }
 
   else
   {
-    [a1 givenNameFirstOrder];
+    [self givenNameFirstOrder];
   }
   v5 = ;
 
@@ -114,16 +114,16 @@ uint64_t __46__CNContactNameOrderImpl_familyNameFirstOrder__block_invoke()
   objc_exception_throw(v2);
 }
 
-+ (id)orderForSortOrder:(int64_t)a3
++ (id)orderForSortOrder:(int64_t)order
 {
-  if (a3 == 2)
+  if (order == 2)
   {
     v3 = +[CNContactNameOrderImpl givenNameFirstOrder];
   }
 
   else
   {
-    if (a3 == 3)
+    if (order == 3)
     {
       +[CNContactNameOrderImpl familyNameFirstOrder];
     }

@@ -5,9 +5,9 @@
 - (NSSet)deletedRecordZoneIDsInPrivateDatabase;
 - (NSSet)updatedRecordsInPrivateDatabase;
 - (NSSet)updatedRecordsInSharedDatabase;
-- (unint64_t)_sizeOfRecordUpdateBatch:(id)a3;
+- (unint64_t)_sizeOfRecordUpdateBatch:(id)batch;
 - (void)_filterUpdatedRecordsIfNeeded;
-- (void)addItem:(id)a3;
+- (void)addItem:(id)item;
 @end
 
 @implementation CloudTabGroupBatch
@@ -58,14 +58,14 @@
   return v2;
 }
 
-- (unint64_t)_sizeOfRecordUpdateBatch:(id)a3
+- (unint64_t)_sizeOfRecordUpdateBatch:(id)batch
 {
-  v3 = a3;
+  batchCopy = batch;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v4 = [batchCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -77,13 +77,13 @@
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(batchCopy);
         }
 
         v6 += [*(*(&v10 + 1) + 8 * i) size];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [batchCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
@@ -192,20 +192,20 @@
   return v5;
 }
 
-- (void)addItem:(id)a3
+- (void)addItem:(id)item
 {
-  v4 = a3;
-  [(NSMutableSet *)self->_items addObject:v4];
+  itemCopy = item;
+  [(NSMutableSet *)self->_items addObject:itemCopy];
   deletedRecordZoneIDsInPrivateDatabase = self->_deletedRecordZoneIDsInPrivateDatabase;
-  v6 = [v4 deletedRecordZoneIDs];
-  [(NSMutableSet *)deletedRecordZoneIDsInPrivateDatabase unionSet:v6];
+  deletedRecordZoneIDs = [itemCopy deletedRecordZoneIDs];
+  [(NSMutableSet *)deletedRecordZoneIDsInPrivateDatabase unionSet:deletedRecordZoneIDs];
 
   v31 = 0u;
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v7 = [v4 updatedRecords];
-  v8 = [v7 countByEnumeratingWithState:&v29 objects:v34 count:16];
+  updatedRecords = [itemCopy updatedRecords];
+  v8 = [updatedRecords countByEnumeratingWithState:&v29 objects:v34 count:16];
   if (v8)
   {
     v9 = v8;
@@ -216,7 +216,7 @@
       {
         if (*v30 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(updatedRecords);
         }
 
         v12 = *(*(&v29 + 1) + 8 * i);
@@ -233,7 +233,7 @@
         [*(&self->super.isa + v13) safari_setObject:v12];
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v29 objects:v34 count:16];
+      v9 = [updatedRecords countByEnumeratingWithState:&v29 objects:v34 count:16];
     }
 
     while (v9);
@@ -243,8 +243,8 @@
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v23 = v4;
-  obj = [v4 deletedRecordIDs];
+  v23 = itemCopy;
+  obj = [itemCopy deletedRecordIDs];
   v14 = [obj countByEnumeratingWithState:&v25 objects:v33 count:16];
   if (v14)
   {
@@ -260,8 +260,8 @@
         }
 
         v18 = *(*(&v25 + 1) + 8 * j);
-        v19 = [v18 zoneID];
-        if ([v19 safari_isInPrivateDatabase])
+        zoneID = [v18 zoneID];
+        if ([zoneID safari_isInPrivateDatabase])
         {
           p_deletedRecordIDsInPrivateDatabase = &self->_deletedRecordIDsInPrivateDatabase;
         }
@@ -269,11 +269,11 @@
         else
         {
           [(NSMutableSet *)self->_deletedRecordIDsInSharedDatabase addObject:v18];
-          v21 = [v18 recordName];
-          v22 = [v21 isEqual:CKRecordNameZoneWideShare];
+          recordName = [v18 recordName];
+          v22 = [recordName isEqual:CKRecordNameZoneWideShare];
 
           p_deletedRecordIDsInPrivateDatabase = &self->_deletedRecordZoneIDsInSharedDatabase;
-          v18 = v19;
+          v18 = zoneID;
           if (!v22)
           {
             goto LABEL_20;
@@ -317,8 +317,8 @@ LABEL_20:
 
         v9 = *(*(&v34 + 1) + 8 * i);
         deletedRecordIDsInPrivateDatabase = self->_deletedRecordIDsInPrivateDatabase;
-        v11 = [v9 recordID];
-        LODWORD(deletedRecordIDsInPrivateDatabase) = [(NSMutableSet *)deletedRecordIDsInPrivateDatabase containsObject:v11];
+        recordID = [v9 recordID];
+        LODWORD(deletedRecordIDsInPrivateDatabase) = [(NSMutableSet *)deletedRecordIDsInPrivateDatabase containsObject:recordID];
 
         if (deletedRecordIDsInPrivateDatabase)
         {
@@ -353,8 +353,8 @@ LABEL_20:
 
         v17 = *(*(&v30 + 1) + 8 * j);
         deletedRecordIDsInSharedDatabase = self->_deletedRecordIDsInSharedDatabase;
-        v19 = [v17 recordID];
-        LODWORD(deletedRecordIDsInSharedDatabase) = [(NSMutableSet *)deletedRecordIDsInSharedDatabase containsObject:v19];
+        recordID2 = [v17 recordID];
+        LODWORD(deletedRecordIDsInSharedDatabase) = [(NSMutableSet *)deletedRecordIDsInSharedDatabase containsObject:recordID2];
 
         if (deletedRecordIDsInSharedDatabase)
         {

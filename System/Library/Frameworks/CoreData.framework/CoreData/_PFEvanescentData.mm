@@ -1,24 +1,24 @@
 @interface _PFEvanescentData
-- (BOOL)isEqual:(id)a3;
-- (_PFEvanescentData)initWithPath:(id)a3;
-- (_PFEvanescentData)initWithURL:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (_PFEvanescentData)initWithPath:(id)path;
+- (_PFEvanescentData)initWithURL:(id)l;
 - (const)bytes;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)subdataWithRange:(_NSRange)a3;
+- (id)subdataWithRange:(_NSRange)range;
 - (id)url;
 - (uint64_t)_destroyMapping;
 - (uint64_t)_openMapping;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)enumerateByteRangesUsingBlock:(id)a3;
-- (void)getBytes:(void *)a3;
-- (void)getBytes:(void *)a3 range:(_NSRange)a4;
+- (void)enumerateByteRangesUsingBlock:(id)block;
+- (void)getBytes:(void *)bytes;
+- (void)getBytes:(void *)bytes range:(_NSRange)range;
 @end
 
 @implementation _PFEvanescentData
 
-- (_PFEvanescentData)initWithURL:(id)a3
+- (_PFEvanescentData)initWithURL:(id)l
 {
   v28 = *MEMORY[0x1E69E9840];
   v21.receiver = self;
@@ -29,13 +29,13 @@
     v5 = objc_alloc_init(MEMORY[0x1E696AAC8]);
     v4->_openfd = -1;
     memset(&v20, 0, sizeof(v20));
-    v6 = [objc_msgSend(a3 "path")];
+    v6 = [objc_msgSend(l "path")];
     v7 = stat(v6, &v20);
     v8 = __error();
     if (!v7)
     {
       v4->_length = v20.st_size;
-      v4->_fileURL = a3;
+      v4->_fileURL = l;
 LABEL_10:
       [v5 drain];
       goto LABEL_11;
@@ -118,9 +118,9 @@ LABEL_11:
   return result;
 }
 
-- (_PFEvanescentData)initWithPath:(id)a3
+- (_PFEvanescentData)initWithPath:(id)path
 {
-  v4 = [MEMORY[0x1E695DFF8] fileURLWithPath:a3 isDirectory:0];
+  v4 = [MEMORY[0x1E695DFF8] fileURLWithPath:path isDirectory:0];
 
   return [(_PFEvanescentData *)self initWithURL:v4];
 }
@@ -173,8 +173,8 @@ LABEL_8:
         v19 = MEMORY[0x1E696ABC0];
         v9 = *MEMORY[0x1E696A798];
         v20 = MEMORY[0x1E695DF20];
-        v21 = [*(v1 + 16) path];
-        v22 = [v19 errorWithDomain:v9 code:v18 userInfo:{objc_msgSend(v20, "dictionaryWithObjectsAndKeys:", v21, *MEMORY[0x1E696A368], 0)}];
+        path = [*(v1 + 16) path];
+        v22 = [v19 errorWithDomain:v9 code:v18 userInfo:{objc_msgSend(v20, "dictionaryWithObjectsAndKeys:", path, *MEMORY[0x1E696A368], 0)}];
         v23 = *MEMORY[0x1E695D930];
         v14 = [MEMORY[0x1E695DF20] dictionaryWithObject:v22 forKey:@"NSCoreDataPrimaryError"];
         v15 = @"Could not open file.";
@@ -205,8 +205,8 @@ LABEL_8:
     v8 = MEMORY[0x1E696ABC0];
     v9 = *MEMORY[0x1E696A798];
     v10 = MEMORY[0x1E695DF20];
-    v11 = [*(v1 + 16) path];
-    v12 = [v8 errorWithDomain:v9 code:v7 userInfo:{objc_msgSend(v10, "dictionaryWithObjectsAndKeys:", v11, *MEMORY[0x1E696A368], 0)}];
+    path2 = [*(v1 + 16) path];
+    v12 = [v8 errorWithDomain:v9 code:v7 userInfo:{objc_msgSend(v10, "dictionaryWithObjectsAndKeys:", path2, *MEMORY[0x1E696A368], 0)}];
     v13 = *MEMORY[0x1E695D930];
     v14 = [MEMORY[0x1E695DF20] dictionaryWithObject:v12 forKey:@"NSCoreDataPrimaryError"];
     v15 = @"Could not map file.";
@@ -221,14 +221,14 @@ LABEL_13:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
 
-  if (!a3)
+  if (!equal)
   {
     return 0;
   }
@@ -240,7 +240,7 @@ LABEL_13:
   }
 
   v7 = [(_PFEvanescentData *)&self->super.super.isa url];
-  v8 = *(a3 + 2);
+  v8 = *(equal + 2);
 
   return [v7 isEqual:v8];
 }
@@ -252,13 +252,13 @@ LABEL_13:
   return [v2 hash];
 }
 
-- (void)enumerateByteRangesUsingBlock:(id)a3
+- (void)enumerateByteRangesUsingBlock:(id)block
 {
   v6 = 0;
-  v5 = [(_PFEvanescentData *)self _openMapping];
-  if (v5)
+  _openMapping = [(_PFEvanescentData *)self _openMapping];
+  if (_openMapping)
   {
-    (*(a3 + 2))(a3, v5, 0, [(_PFEvanescentData *)self length], &v6);
+    (*(block + 2))(block, _openMapping, 0, [(_PFEvanescentData *)self length], &v6);
   }
 
   if (self)
@@ -270,12 +270,12 @@ LABEL_13:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [(_PFEvanescentData *)self _openMapping];
-  if (v4)
+  _openMapping = [(_PFEvanescentData *)self _openMapping];
+  if (_openMapping)
   {
-    v4 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytes:v4 length:{-[_PFEvanescentData length](self, "length")}];
+    _openMapping = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytes:_openMapping length:{-[_PFEvanescentData length](self, "length")}];
   }
 
   if (self && atomic_fetch_add_explicit(&self->_mapRefCount, 0xFFFFFFFF, memory_order_relaxed) <= 1)
@@ -283,34 +283,34 @@ LABEL_13:
     [(_PFEvanescentData *)self _destroyMapping];
   }
 
-  return v4;
+  return _openMapping;
 }
 
 - (const)bytes
 {
   v2 = [(_PFEvanescentData *)self copyWithZone:0];
-  v3 = [v2 bytes];
+  bytes = [v2 bytes];
   v4 = v2;
-  return v3;
+  return bytes;
 }
 
-- (void)getBytes:(void *)a3
+- (void)getBytes:(void *)bytes
 {
   v5 = [(_PFEvanescentData *)self length];
 
-  [(_PFEvanescentData *)self getBytes:a3 length:v5];
+  [(_PFEvanescentData *)self getBytes:bytes length:v5];
 }
 
-- (void)getBytes:(void *)a3 range:(_NSRange)a4
+- (void)getBytes:(void *)bytes range:(_NSRange)range
 {
-  if (a4.length)
+  if (range.length)
   {
-    length = a4.length;
-    location = a4.location;
-    v8 = [(_PFEvanescentData *)self _openMapping];
-    if (v8)
+    length = range.length;
+    location = range.location;
+    _openMapping = [(_PFEvanescentData *)self _openMapping];
+    if (_openMapping)
     {
-      memmove(a3, (v8 + location), length);
+      memmove(bytes, (_openMapping + location), length);
     }
 
     if (self && atomic_fetch_add_explicit(&self->_mapRefCount, 0xFFFFFFFF, memory_order_relaxed) <= 1)
@@ -321,13 +321,13 @@ LABEL_13:
   }
 }
 
-- (id)subdataWithRange:(_NSRange)a3
+- (id)subdataWithRange:(_NSRange)range
 {
-  if (a3.length)
+  if (range.length)
   {
-    length = a3.length;
-    location = a3.location;
-    v7 = malloc_type_malloc(a3.length, 0xA4157E12uLL);
+    length = range.length;
+    location = range.location;
+    v7 = malloc_type_malloc(range.length, 0xA4157E12uLL);
     [(_PFEvanescentData *)self getBytes:v7 range:location, length];
     v8 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytesNoCopy:v7 length:length freeWhenDone:1];
 

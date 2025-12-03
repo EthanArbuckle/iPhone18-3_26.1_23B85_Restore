@@ -1,47 +1,47 @@
 @interface _KSUserWordsSynchroniser
-+ (id)generateKeyWithSize:(unint64_t)a3;
-+ (id)generateRecordNameForFilename:(id)a3 withKey:(id)a4;
++ (id)generateKeyWithSize:(unint64_t)size;
++ (id)generateRecordNameForFilename:(id)filename withKey:(id)key;
 + (id)sharedInstance;
-- (BOOL)checkErrors:(id)a3;
+- (BOOL)checkErrors:(id)errors;
 - (NSArray)requiredLanguages;
-- (id)filenameForLanguage:(id)a3;
-- (id)generateRecordListForLanguages:(id)a3;
+- (id)filenameForLanguage:(id)language;
+- (id)generateRecordListForLanguages:(id)languages;
 - (id)information;
-- (id)initForTestingWithManager:(id)a3 enablePushing:(BOOL)a4;
-- (id)recordIDForLanguage:(id)a3 withKey:(id)a4;
-- (void)accountDidChange:(id)a3;
+- (id)initForTestingWithManager:(id)manager enablePushing:(BOOL)pushing;
+- (id)recordIDForLanguage:(id)language withKey:(id)key;
+- (void)accountDidChange:(id)change;
 - (void)checkConfiguration;
-- (void)checkForDownload:(id)a3 uploads:(id)a4 allLanguages:(id)a5;
-- (void)checkProgress:(int)a3 withInfo:(id)a4;
+- (void)checkForDownload:(id)download uploads:(id)uploads allLanguages:(id)languages;
+- (void)checkProgress:(int)progress withInfo:(id)info;
 - (void)dealloc;
-- (void)deltaDownloadForLanguages:(id)a3;
+- (void)deltaDownloadForLanguages:(id)languages;
 - (void)disable;
-- (void)dumpAllRecordsWithCompletionHandler:(id)a3;
-- (void)firstTimeDownloadWithKey:(id)a3;
-- (void)generateKeyWithCompletionHandler:(id)a3;
-- (void)identitiesDidChange:(id)a3;
+- (void)dumpAllRecordsWithCompletionHandler:(id)handler;
+- (void)firstTimeDownloadWithKey:(id)key;
+- (void)generateKeyWithCompletionHandler:(id)handler;
+- (void)identitiesDidChange:(id)change;
 - (void)information;
 - (void)keyboardUsed;
-- (void)loadKeyWithCompletion:(id)a3;
-- (void)modifyInformationWithOperations:(id)a3;
-- (void)overwriteFilesWithRecords:(id)a3 withCompletionHandler:(id)a4;
-- (void)readFilesWithRecordIDs:(id)a3 forColumns:(id)a4 priority:(unint64_t)a5 withCompletionHandler:(id)a6;
-- (void)saveKey:(id)a3 withCompletion:(id)a4;
+- (void)loadKeyWithCompletion:(id)completion;
+- (void)modifyInformationWithOperations:(id)operations;
+- (void)overwriteFilesWithRecords:(id)records withCompletionHandler:(id)handler;
+- (void)readFilesWithRecordIDs:(id)ds forColumns:(id)columns priority:(unint64_t)priority withCompletionHandler:(id)handler;
+- (void)saveKey:(id)key withCompletion:(id)completion;
 @end
 
 @implementation _KSUserWordsSynchroniser
 
-+ (id)generateKeyWithSize:(unint64_t)a3
++ (id)generateKeyWithSize:(unint64_t)size
 {
-  v4 = malloc_type_malloc(a3, 0x40E8223uLL);
-  if (SecRandomCopyBytes(*MEMORY[0x277CDC540], a3, v4))
+  v4 = malloc_type_malloc(size, 0x40E8223uLL);
+  if (SecRandomCopyBytes(*MEMORY[0x277CDC540], size, v4))
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [MEMORY[0x277CBEA90] dataWithBytes:v4 length:a3];
+    v5 = [MEMORY[0x277CBEA90] dataWithBytes:v4 length:size];
   }
 
   free(v4);
@@ -49,12 +49,12 @@
   return v5;
 }
 
-+ (id)generateRecordNameForFilename:(id)a3 withKey:(id)a4
++ (id)generateRecordNameForFilename:(id)filename withKey:(id)key
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [a3 dataUsingEncoding:4];
-  CCHmac(2u, [v5 bytes], objc_msgSend(v5, "length"), objc_msgSend(v6, "bytes"), objc_msgSend(v6, "length"), macOut);
+  keyCopy = key;
+  v6 = [filename dataUsingEncoding:4];
+  CCHmac(2u, [keyCopy bytes], objc_msgSend(keyCopy, "length"), objc_msgSend(v6, "bytes"), objc_msgSend(v6, "length"), macOut);
   v7 = 0;
   v8 = v14;
   do
@@ -80,7 +80,7 @@
   block[1] = 3221225472;
   block[2] = __42___KSUserWordsSynchroniser_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken_0 != -1)
   {
     dispatch_once(&sharedInstance_onceToken_0, block);
@@ -91,10 +91,10 @@
   return v2;
 }
 
-- (id)initForTestingWithManager:(id)a3 enablePushing:(BOOL)a4
+- (id)initForTestingWithManager:(id)manager enablePushing:(BOOL)pushing
 {
-  v4 = a4;
-  v6 = a3;
+  pushingCopy = pushing;
+  managerCopy = manager;
   v30.receiver = self;
   v30.super_class = _KSUserWordsSynchroniser;
   v7 = [(_KSUserWordsSynchroniser *)&v30 init];
@@ -115,7 +115,7 @@
     controlFile = v8->_controlFile;
     v8->_controlFile = v15;
 
-    if (v4)
+    if (pushingCopy)
     {
       v8->_taskRun = 1;
       v17 = v8->_workQueue;
@@ -127,9 +127,9 @@
       dispatch_async(v17, block);
     }
 
-    if (v6)
+    if (managerCopy)
     {
-      v18 = v6;
+      v18 = managerCopy;
       cloudKitManager = v8->_cloudKitManager;
       v8->_cloudKitManager = v18;
     }
@@ -137,13 +137,13 @@
     else
     {
       v20 = [_KSUserWordsSynchroniserCloudKitManager alloc];
-      v21 = [(_KSUserWordsSynchroniser *)v8 containerID];
-      v22 = [(_KSCloudKitManager *)v20 initWithContainer:v21 recordZoneName:@"UserWords"];
+      containerID = [(_KSUserWordsSynchroniser *)v8 containerID];
+      v22 = [(_KSCloudKitManager *)v20 initWithContainer:containerID recordZoneName:@"UserWords"];
       v23 = v8->_cloudKitManager;
       v8->_cloudKitManager = v22;
 
-      v24 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v24 addObserver:v8 selector:sel_accountDidChange_ name:@"KSCloudKitAccountDidChange" object:v8->_cloudKitManager];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter addObserver:v8 selector:sel_accountDidChange_ name:@"KSCloudKitAccountDidChange" object:v8->_cloudKitManager];
 
       cloudKitManager = [MEMORY[0x277CCAB98] defaultCenter];
       [cloudKitManager addObserver:v8 selector:sel_identitiesDidChange_ name:@"KSCloudKitIdentitiesDidChange" object:v8->_cloudKitManager];
@@ -162,8 +162,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = _KSUserWordsSynchroniser;
@@ -192,8 +192,8 @@
     v8 = objc_opt_class();
     v9 = objc_opt_class();
     v10 = [v4 setWithObjects:{v5, v6, v7, v8, v9, objc_opt_class(), 0}];
-    v11 = [(_KSControlFileController *)self->_controlFile contents];
-    v12 = [v3 unarchivedObjectOfClasses:v10 fromData:v11 error:0];
+    contents = [(_KSControlFileController *)self->_controlFile contents];
+    v12 = [v3 unarchivedObjectOfClasses:v10 fromData:contents error:0];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -222,23 +222,23 @@
   return v13;
 }
 
-- (void)modifyInformationWithOperations:(id)a3
+- (void)modifyInformationWithOperations:(id)operations
 {
-  v4 = a3;
-  v5 = [(_KSUserWordsSynchroniser *)self information];
-  v11 = v5;
-  if (v5)
+  operationsCopy = operations;
+  information = [(_KSUserWordsSynchroniser *)self information];
+  v11 = information;
+  if (information)
   {
-    v6 = [v5 mutableCopy];
+    dictionary = [information mutableCopy];
   }
 
   else
   {
-    v6 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
   }
 
-  v7 = v6;
-  v8 = v4[2](v4, v11 != 0, v6);
+  v7 = dictionary;
+  v8 = operationsCopy[2](operationsCopy, v11 != 0, dictionary);
 
   if (v8)
   {
@@ -250,8 +250,8 @@
 
 - (NSArray)requiredLanguages
 {
-  v3 = [(_KSUserWordsSynchroniser *)self information];
-  v4 = [v3 objectForKey:@"Languages"];
+  information = [(_KSUserWordsSynchroniser *)self information];
+  v4 = [information objectForKey:@"Languages"];
   languagesIfOffline = v4;
   if (!v4)
   {
@@ -263,24 +263,24 @@
   return languagesIfOffline;
 }
 
-- (void)accountDidChange:(id)a3
+- (void)accountDidChange:(id)change
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKeyedSubscript:@"KSCloudKitAccountDidChangeStatusKey"];
-  v7 = [v6 integerValue];
+  changeCopy = change;
+  userInfo = [changeCopy userInfo];
+  v6 = [userInfo objectForKeyedSubscript:@"KSCloudKitAccountDidChangeStatusKey"];
+  integerValue = [v6 integerValue];
 
-  v8 = [v4 userInfo];
-  v9 = [v8 objectForKeyedSubscript:@"KSCloudKitAccountDidChangeUserChangedKey"];
-  LOBYTE(v5) = [v9 BOOLValue];
+  userInfo2 = [changeCopy userInfo];
+  v9 = [userInfo2 objectForKeyedSubscript:@"KSCloudKitAccountDidChangeUserChangedKey"];
+  LOBYTE(userInfo) = [v9 BOOLValue];
 
-  v10 = [v4 userInfo];
-  v11 = [v10 objectForKeyedSubscript:@"KSCloudKitAccountDidChangeDeviceToDeviceKey"];
-  LOBYTE(v8) = [v11 BOOLValue];
+  userInfo3 = [changeCopy userInfo];
+  v11 = [userInfo3 objectForKeyedSubscript:@"KSCloudKitAccountDidChangeDeviceToDeviceKey"];
+  LOBYTE(userInfo2) = [v11 BOOLValue];
 
-  v12 = [v4 userInfo];
+  userInfo4 = [changeCopy userInfo];
 
-  v13 = [v12 objectForKeyedSubscript:@"KSCloudKitAccountDidSuccessfullyCreateZone"];
+  v13 = [userInfo4 objectForKeyedSubscript:@"KSCloudKitAccountDidSuccessfullyCreateZone"];
   LOBYTE(v11) = [v13 BOOLValue];
 
   workQueue = self->_workQueue;
@@ -288,15 +288,15 @@
   block[1] = 3221225472;
   block[2] = __45___KSUserWordsSynchroniser_accountDidChange___block_invoke;
   block[3] = &unk_2797F7638;
-  v16 = v5;
+  v16 = userInfo;
   block[4] = self;
-  block[5] = v7;
-  v17 = v8;
+  block[5] = integerValue;
+  v17 = userInfo2;
   v18 = v11;
   dispatch_async(workQueue, block);
 }
 
-- (void)identitiesDidChange:(id)a3
+- (void)identitiesDidChange:(id)change
 {
   identityThrottle = self->_identityThrottle;
   v4[0] = MEMORY[0x277D85DD0];
@@ -307,34 +307,34 @@
   [(_KSRequestThrottle *)identityThrottle postRequest:v4];
 }
 
-- (void)checkProgress:(int)a3 withInfo:(id)a4
+- (void)checkProgress:(int)progress withInfo:(id)info
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  infoCopy = info;
   v6 = KSCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
-    v7 = checkProgress_withInfo__meanings[a3];
+    v7 = checkProgress_withInfo__meanings[progress];
     v9 = 136315650;
     v10 = "[_KSUserWordsSynchroniser checkProgress:withInfo:]";
     v11 = 2080;
     v12 = v7;
     v13 = 2112;
-    v14 = v5;
+    v14 = infoCopy;
     _os_log_impl(&dword_2557E2000, v6, OS_LOG_TYPE_INFO, "%s  State: %s: %@", &v9, 0x20u);
   }
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)checkForDownload:(id)a3 uploads:(id)a4 allLanguages:(id)a5
+- (void)checkForDownload:(id)download uploads:(id)uploads allLanguages:(id)languages
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  downloadCopy = download;
+  uploadsCopy = uploads;
+  languagesCopy = languages;
   if (_IsEnabled())
   {
-    if (v8)
+    if (downloadCopy)
     {
       v20[0] = MEMORY[0x277D85DD0];
       v20[1] = 3221225472;
@@ -354,10 +354,10 @@
     v14[1] = 3221225472;
     v14[2] = __66___KSUserWordsSynchroniser_checkForDownload_uploads_allLanguages___block_invoke_4;
     v14[3] = &unk_2797F77C8;
-    v15 = v9;
-    v16 = v10;
-    v17 = self;
-    v18 = v8;
+    v15 = uploadsCopy;
+    v16 = languagesCopy;
+    selfCopy = self;
+    v18 = downloadCopy;
     v19 = v11;
     v13 = v11;
     dispatch_async(workQueue, v14);
@@ -380,9 +380,9 @@
   dispatch_async(workQueue, block);
 }
 
-- (void)generateKeyWithCompletionHandler:(id)a3
+- (void)generateKeyWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (!self->_retryPending && !self->_attemptingConnection)
   {
     self->_attemptingConnection = 1;
@@ -393,7 +393,7 @@
     v19[2] = __61___KSUserWordsSynchroniser_generateKeyWithCompletionHandler___block_invoke;
     v19[3] = &unk_2797F7818;
     v19[4] = self;
-    v6 = v4;
+    v6 = handlerCopy;
     v20 = v6;
     v7 = MEMORY[0x259C41CB0](v19);
     v17[0] = MEMORY[0x277D85DD0];
@@ -408,7 +408,7 @@
     v12[2] = __61___KSUserWordsSynchroniser_generateKeyWithCompletionHandler___block_invoke_3_161;
     v12[3] = &unk_2797F7890;
     v13 = v5;
-    v14 = self;
+    selfCopy = self;
     v15 = v7;
     v16 = v8;
     v9 = v8;
@@ -440,8 +440,8 @@
       goto LABEL_8;
     }
 
-    v3 = [(_KSUserWordsSynchroniser *)self information];
-    v4 = [v3 objectForKey:@"Key"];
+    information = [(_KSUserWordsSynchroniser *)self information];
+    v4 = [information objectForKey:@"Key"];
 
     if (!v4)
     {
@@ -460,43 +460,43 @@ LABEL_8:
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)firstTimeDownloadWithKey:(id)a3
+- (void)firstTimeDownloadWithKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   workQueue = self->_workQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __53___KSUserWordsSynchroniser_firstTimeDownloadWithKey___block_invoke;
   v7[3] = &unk_2797F71B8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = keyCopy;
+  v6 = keyCopy;
   dispatch_async(workQueue, v7);
 }
 
-- (void)deltaDownloadForLanguages:(id)a3
+- (void)deltaDownloadForLanguages:(id)languages
 {
-  v4 = a3;
+  languagesCopy = languages;
   workQueue = self->_workQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __54___KSUserWordsSynchroniser_deltaDownloadForLanguages___block_invoke;
   v7[3] = &unk_2797F71B8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = languagesCopy;
+  v6 = languagesCopy;
   dispatch_async(workQueue, v7);
 }
 
-- (id)generateRecordListForLanguages:(id)a3
+- (id)generateRecordListForLanguages:(id)languages
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(_KSUserWordsSynchroniser *)self information];
-  v6 = v5;
-  if (!v4)
+  languagesCopy = languages;
+  information = [(_KSUserWordsSynchroniser *)self information];
+  v6 = information;
+  if (!languagesCopy)
   {
-    v4 = [v5 objectForKey:@"Languages"];
+    languagesCopy = [information objectForKey:@"Languages"];
   }
 
   v7 = [v6 objectForKey:@"Key"];
@@ -506,14 +506,14 @@ LABEL_8:
   v23[3] = &unk_2797F78E0;
   v8 = v7;
   v24 = v8;
-  v25 = self;
+  selfCopy = self;
   [(_KSUserWordsSynchroniser *)self loadKeyWithCompletion:v23];
-  v9 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v10 = v4;
+  v10 = languagesCopy;
   v11 = [v10 countByEnumeratingWithState:&v19 objects:v26 count:16];
   if (v11)
   {
@@ -530,7 +530,7 @@ LABEL_8:
 
         v15 = *(*(&v19 + 1) + 8 * i);
         v16 = [(_KSUserWordsSynchroniser *)self recordIDForLanguage:v15 withKey:v8, v19];
-        [v9 setObject:v15 forKey:v16];
+        [dictionary setObject:v15 forKey:v16];
       }
 
       v12 = [v10 countByEnumeratingWithState:&v19 objects:v26 count:16];
@@ -541,54 +541,54 @@ LABEL_8:
 
   v17 = *MEMORY[0x277D85DE8];
 
-  return v9;
+  return dictionary;
 }
 
-- (id)filenameForLanguage:(id)a3
+- (id)filenameForLanguage:(id)language
 {
   v3 = softLinkMGCopyAnswer_0;
-  v4 = a3;
+  languageCopy = language;
   v5 = v3(@"DeviceName", 0);
-  v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%@", v5, v4];
+  languageCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%@", v5, languageCopy];
 
-  return v6;
+  return languageCopy;
 }
 
-- (id)recordIDForLanguage:(id)a3 withKey:(id)a4
+- (id)recordIDForLanguage:(id)language withKey:(id)key
 {
   cloudKitManager = self->_cloudKitManager;
-  v7 = a4;
-  v8 = a3;
+  keyCopy = key;
+  languageCopy = language;
   v9 = objc_opt_class();
-  v10 = [(_KSUserWordsSynchroniser *)self filenameForLanguage:v8];
+  v10 = [(_KSUserWordsSynchroniser *)self filenameForLanguage:languageCopy];
 
-  v11 = [v9 generateRecordNameForFilename:v10 withKey:v7];
+  v11 = [v9 generateRecordNameForFilename:v10 withKey:keyCopy];
 
   v12 = [(_KSCloudKitManager *)cloudKitManager recordIDForName:v11];
 
   return v12;
 }
 
-- (BOOL)checkErrors:(id)a3
+- (BOOL)checkErrors:(id)errors
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 domain];
-  v6 = [v5 isEqualToString:*MEMORY[0x277CBBF50]];
+  errorsCopy = errors;
+  domain = [errorsCopy domain];
+  v6 = [domain isEqualToString:*MEMORY[0x277CBBF50]];
 
   if (!v6)
   {
     goto LABEL_28;
   }
 
-  v7 = [v4 code];
+  code = [errorsCopy code];
   v8 = 0;
   v9 = 1;
-  if (v7 <= 27)
+  if (code <= 27)
   {
-    if (v7 != 2)
+    if (code != 2)
     {
-      if (v7 != 26)
+      if (code != 26)
       {
         goto LABEL_29;
       }
@@ -600,11 +600,11 @@ LABEL_8:
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v14 = [v4 userInfo];
-    v15 = [v14 objectForKey:*MEMORY[0x277CBBFB0]];
-    v16 = [v15 allValues];
+    userInfo = [errorsCopy userInfo];
+    v15 = [userInfo objectForKey:*MEMORY[0x277CBBFB0]];
+    allValues = [v15 allValues];
 
-    v17 = [v16 countByEnumeratingWithState:&v24 objects:v28 count:16];
+    v17 = [allValues countByEnumeratingWithState:&v24 objects:v28 count:16];
     if (v17)
     {
       v18 = v17;
@@ -615,7 +615,7 @@ LABEL_8:
         {
           if (*v25 != v19)
           {
-            objc_enumerationMutation(v16);
+            objc_enumerationMutation(allValues);
           }
 
           if (![(_KSUserWordsSynchroniser *)self checkErrors:*(*(&v24 + 1) + 8 * i)])
@@ -625,7 +625,7 @@ LABEL_8:
           }
         }
 
-        v18 = [v16 countByEnumeratingWithState:&v24 objects:v28 count:16];
+        v18 = [allValues countByEnumeratingWithState:&v24 objects:v28 count:16];
         if (v18)
         {
           continue;
@@ -640,14 +640,14 @@ LABEL_28:
     goto LABEL_29;
   }
 
-  switch(v7)
+  switch(code)
   {
     case 28:
 LABEL_15:
       v12 = KSCategory();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
-        [_KSUserWordsSynchroniser checkErrors:v4];
+        [_KSUserWordsSynchroniser checkErrors:errorsCopy];
       }
 
       cloudKitManager = self->_cloudKitManager;
@@ -687,49 +687,49 @@ LABEL_29:
   return v9;
 }
 
-- (void)readFilesWithRecordIDs:(id)a3 forColumns:(id)a4 priority:(unint64_t)a5 withCompletionHandler:(id)a6
+- (void)readFilesWithRecordIDs:(id)ds forColumns:(id)columns priority:(unint64_t)priority withCompletionHandler:(id)handler
 {
-  v10 = a6;
+  handlerCopy = handler;
   v11 = MEMORY[0x277CBC3E0];
-  v12 = a4;
-  v13 = a3;
-  v14 = [[v11 alloc] initWithRecordIDs:v13];
+  columnsCopy = columns;
+  dsCopy = ds;
+  v14 = [[v11 alloc] initWithRecordIDs:dsCopy];
 
-  [v14 setDesiredKeys:v12];
+  [v14 setDesiredKeys:columnsCopy];
   v16 = MEMORY[0x277D85DD0];
   v17 = 3221225472;
   v18 = __93___KSUserWordsSynchroniser_readFilesWithRecordIDs_forColumns_priority_withCompletionHandler___block_invoke;
   v19 = &unk_2797F6C00;
-  v20 = self;
-  v21 = v10;
-  v15 = v10;
+  selfCopy = self;
+  v21 = handlerCopy;
+  v15 = handlerCopy;
   [v14 setFetchRecordsCompletionBlock:&v16];
-  [(_KSCloudKitManager *)self->_cloudKitManager addOperation:v14 priority:a5, v16, v17, v18, v19, v20];
+  [(_KSCloudKitManager *)self->_cloudKitManager addOperation:v14 priority:priority, v16, v17, v18, v19, selfCopy];
 }
 
-- (void)overwriteFilesWithRecords:(id)a3 withCompletionHandler:(id)a4
+- (void)overwriteFilesWithRecords:(id)records withCompletionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v7 = MEMORY[0x277CBC4A0];
-  v8 = a3;
-  v9 = [[v7 alloc] initWithRecordsToSave:v8 recordIDsToDelete:0];
+  recordsCopy = records;
+  v9 = [[v7 alloc] initWithRecordsToSave:recordsCopy recordIDsToDelete:0];
 
   [v9 setSavePolicy:2];
   v11 = MEMORY[0x277D85DD0];
   v12 = 3221225472;
   v13 = __76___KSUserWordsSynchroniser_overwriteFilesWithRecords_withCompletionHandler___block_invoke;
   v14 = &unk_2797F7950;
-  v15 = self;
-  v16 = v6;
-  v10 = v6;
+  selfCopy = self;
+  v16 = handlerCopy;
+  v10 = handlerCopy;
   [v9 setModifyRecordsCompletionBlock:&v11];
-  [(_KSCloudKitManager *)self->_cloudKitManager addOperation:v9, v11, v12, v13, v14, v15];
+  [(_KSCloudKitManager *)self->_cloudKitManager addOperation:v9, v11, v12, v13, v14, selfCopy];
 }
 
-- (void)loadKeyWithCompletion:(id)a3
+- (void)loadKeyWithCompletion:(id)completion
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = [(_KSCloudKitManager *)self->_cloudKitManager recordIDForName:@"key"];
   v6 = objc_alloc(MEMORY[0x277CBC3E0]);
   v15[0] = v5;
@@ -741,28 +741,28 @@ LABEL_29:
   v12[2] = __50___KSUserWordsSynchroniser_loadKeyWithCompletion___block_invoke;
   v12[3] = &unk_2797F7978;
   v13 = v5;
-  v14 = v4;
+  v14 = completionCopy;
   v12[4] = self;
   v9 = v5;
-  v10 = v4;
+  v10 = completionCopy;
   [v8 setFetchRecordsCompletionBlock:v12];
   [(_KSCloudKitManager *)self->_cloudKitManager addOperation:v8];
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)saveKey:(id)a3 withCompletion:(id)a4
+- (void)saveKey:(id)key withCompletion:(id)completion
 {
   v24[1] = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  completionCopy = completion;
   v7 = MEMORY[0x277CBC5A0];
-  v8 = a3;
+  keyCopy = key;
   v9 = [v7 alloc];
   v10 = [(_KSCloudKitManager *)self->_cloudKitManager recordIDForName:@"key"];
   v11 = [v9 initWithRecordType:@"UserWordData" recordID:v10];
 
-  v12 = [v11 encryptedValueStore];
-  [v12 setObject:v8 forKey:@"keybytes"];
+  encryptedValueStore = [v11 encryptedValueStore];
+  [encryptedValueStore setObject:keyCopy forKey:@"keybytes"];
 
   v13 = objc_alloc(MEMORY[0x277CBC4A0]);
   v24[0] = v11;
@@ -774,24 +774,24 @@ LABEL_29:
   v19 = 3221225472;
   v20 = __51___KSUserWordsSynchroniser_saveKey_withCompletion___block_invoke;
   v21 = &unk_2797F7950;
-  v22 = self;
-  v23 = v6;
-  v16 = v6;
+  selfCopy = self;
+  v23 = completionCopy;
+  v16 = completionCopy;
   [v15 setModifyRecordsCompletionBlock:&v18];
-  [(_KSCloudKitManager *)self->_cloudKitManager addOperation:v15, v18, v19, v20, v21, v22];
+  [(_KSCloudKitManager *)self->_cloudKitManager addOperation:v15, v18, v19, v20, v21, selfCopy];
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)dumpAllRecordsWithCompletionHandler:(id)a3
+- (void)dumpAllRecordsWithCompletionHandler:(id)handler
 {
   v20[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB38] dictionary];
+  handlerCopy = handler;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v6 = objc_alloc(MEMORY[0x277CBC3B8]);
-  v7 = [(_KSCloudKitManager *)self->_cloudKitManager recordZone];
-  v8 = [v7 zoneID];
-  v20[0] = v8;
+  recordZone = [(_KSCloudKitManager *)self->_cloudKitManager recordZone];
+  zoneID = [recordZone zoneID];
+  v20[0] = zoneID;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v20 count:1];
   v10 = [v6 initWithRecordZoneIDs:v9 optionsByRecordZoneID:0];
 
@@ -799,7 +799,7 @@ LABEL_29:
   v18[1] = 3221225472;
   v18[2] = __64___KSUserWordsSynchroniser_dumpAllRecordsWithCompletionHandler___block_invoke;
   v18[3] = &unk_2797F6A48;
-  v11 = v5;
+  v11 = dictionary;
   v19 = v11;
   [v10 setRecordChangedBlock:v18];
   v15[0] = MEMORY[0x277D85DD0];
@@ -807,8 +807,8 @@ LABEL_29:
   v15[2] = __64___KSUserWordsSynchroniser_dumpAllRecordsWithCompletionHandler___block_invoke_2;
   v15[3] = &unk_2797F6598;
   v16 = v11;
-  v17 = v4;
-  v12 = v4;
+  v17 = handlerCopy;
+  v12 = handlerCopy;
   v13 = v11;
   [v10 setFetchRecordZoneChangesCompletionBlock:v15];
   [(_KSCloudKitManager *)self->_cloudKitManager addOperation:v10];

@@ -1,23 +1,23 @@
 @interface BKTextRangeRotorInfo
 - (id)description;
-- (int64_t)compare:(id)a3;
+- (int64_t)compare:(id)compare;
 @end
 
 @implementation BKTextRangeRotorInfo
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  v5 = [(BKTextRangeRotorInfo *)self textRange];
-  v6 = [v5 range];
+  compareCopy = compare;
+  textRange = [(BKTextRangeRotorInfo *)self textRange];
+  range = [textRange range];
   v8 = v7;
 
-  v9 = [v4 textRange];
+  textRange2 = [compareCopy textRange];
 
-  v10 = [v9 range];
+  range2 = [textRange2 range];
   v12 = v11;
 
-  if (v6 < v10)
+  if (range < range2)
   {
     return -1;
   }
@@ -28,7 +28,7 @@
     v14 = v8 > v12;
   }
 
-  if (v6 <= v10)
+  if (range <= range2)
   {
     return v14;
   }
@@ -42,11 +42,11 @@
 - (id)description
 {
   v3 = objc_opt_class();
-  v4 = [(BKTextRangeRotorInfo *)self type];
-  v5 = [(BKTextRangeRotorInfo *)self textRange];
-  v10.location = [v5 range];
+  type = [(BKTextRangeRotorInfo *)self type];
+  textRange = [(BKTextRangeRotorInfo *)self textRange];
+  v10.location = [textRange range];
   v6 = NSStringFromRange(v10);
-  v7 = [NSString stringWithFormat:@"<%@ %p type=%@ range=%@>", v3, self, v4, v6];
+  v7 = [NSString stringWithFormat:@"<%@ %p type=%@ range=%@>", v3, self, type, v6];
 
   return v7;
 }

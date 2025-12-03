@@ -4,20 +4,20 @@
 - (BOOL)isPermittedToUseBluetoothAccessories;
 - (BOOL)isPermittedToUsePrivateAPI;
 - (BOOL)isPermittedToUsePublicAPI;
-- (CXXPCCallSource)initWithConnection:(id)a3;
+- (CXXPCCallSource)initWithConnection:(id)connection;
 - (NSXPCConnection)connection;
 - (id)vendorProtocolDelegate;
 - (int)processIdentifier;
 - (void)dealloc;
-- (void)setConnection:(id)a3;
+- (void)setConnection:(id)connection;
 @end
 
 @implementation CXXPCCallSource
 
 - (BOOL)isConnected
 {
-  v2 = [(CXXPCCallSource *)self connection];
-  v3 = v2 != 0;
+  connection = [(CXXPCCallSource *)self connection];
+  v3 = connection != 0;
 
   return v3;
 }
@@ -33,24 +33,24 @@
 
 - (int)processIdentifier
 {
-  v2 = [(CXXPCCallSource *)self connection];
-  v3 = [v2 processIdentifier];
+  connection = [(CXXPCCallSource *)self connection];
+  processIdentifier = [connection processIdentifier];
 
-  return v3;
+  return processIdentifier;
 }
 
 - (id)vendorProtocolDelegate
 {
-  v2 = [(CXXPCCallSource *)self connection];
-  v3 = [v2 remoteObjectProxy];
+  connection = [(CXXPCCallSource *)self connection];
+  remoteObjectProxy = [connection remoteObjectProxy];
 
-  return v3;
+  return remoteObjectProxy;
 }
 
 - (BOOL)isPermittedToUsePrivateAPI
 {
-  v2 = [(CXXPCCallSource *)self capabilities];
-  v3 = [v2 containsObject:@"private-provider-api"];
+  capabilities = [(CXXPCCallSource *)self capabilities];
+  v3 = [capabilities containsObject:@"private-provider-api"];
 
   return v3;
 }
@@ -65,46 +65,46 @@
   return [(CXXPCCallSource *)self hasVoIPBackgroundMode];
 }
 
-- (CXXPCCallSource)initWithConnection:(id)a3
+- (CXXPCCallSource)initWithConnection:(id)connection
 {
   v57 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 cx_applicationIdentifier];
+  connectionCopy = connection;
+  cx_applicationIdentifier = [connectionCopy cx_applicationIdentifier];
   v42.receiver = self;
   v42.super_class = CXXPCCallSource;
-  v7 = [(CXCallSource *)&v42 initWithIdentifier:v6];
+  v7 = [(CXCallSource *)&v42 initWithIdentifier:cx_applicationIdentifier];
 
   if (v7)
   {
     v7->_accessorLock._os_unfair_lock_opaque = 0;
-    v8 = [v5 cx_capabilities];
+    cx_capabilities = [connectionCopy cx_capabilities];
     capabilities = v7->_capabilities;
-    v7->_capabilities = v8;
+    v7->_capabilities = cx_capabilities;
 
-    v10 = [MEMORY[0x1E69635F8] cx_applicationRecordForConnection:v5];
-    v11 = [v10 bundleIdentifier];
+    v10 = [MEMORY[0x1E69635F8] cx_applicationRecordForConnection:connectionCopy];
+    bundleIdentifier = [v10 bundleIdentifier];
     bundleIdentifier = v7->_bundleIdentifier;
-    v7->_bundleIdentifier = v11;
+    v7->_bundleIdentifier = bundleIdentifier;
 
     v13 = [v10 URL];
     bundleURL = v7->_bundleURL;
     v7->_bundleURL = v13;
 
     v7->_hasVoIPBackgroundMode = [v10 containsBackgroundModeOptions:1];
-    v15 = [v10 localizedName];
-    v16 = [v15 copy];
+    localizedName = [v10 localizedName];
+    v16 = [localizedName copy];
     localizedName = v7->_localizedName;
     v7->_localizedName = v16;
 
     if (v7->_hasVoIPBackgroundMode || [(CXXPCCallSource *)v7 isPermittedToUsePrivateAPI])
     {
-      objc_storeStrong(&v7->_connection, a3);
+      objc_storeStrong(&v7->_connection, connection);
       [(NSXPCConnection *)v7->_connection setExportedObject:v7];
-      v18 = [MEMORY[0x1E696B0D0] cx_providerHostInterface];
-      [(NSXPCConnection *)v7->_connection setExportedInterface:v18];
+      cx_providerHostInterface = [MEMORY[0x1E696B0D0] cx_providerHostInterface];
+      [(NSXPCConnection *)v7->_connection setExportedInterface:cx_providerHostInterface];
 
-      v19 = [MEMORY[0x1E696B0D0] cx_providerVendorInterface];
-      [(NSXPCConnection *)v7->_connection setRemoteObjectInterface:v19];
+      cx_providerVendorInterface = [MEMORY[0x1E696B0D0] cx_providerVendorInterface];
+      [(NSXPCConnection *)v7->_connection setRemoteObjectInterface:cx_providerVendorInterface];
 
       objc_initWeak(&location, v7);
       v39[0] = MEMORY[0x1E69E9820];
@@ -124,7 +124,7 @@
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
       {
         v21 = objc_opt_class();
-        v22 = [(CXCallSource *)v7 identifier];
+        identifier = [(CXCallSource *)v7 identifier];
         v23 = v7->_bundleIdentifier;
         v24 = v7->_bundleURL;
         hasVoIPBackgroundMode = v7->_hasVoIPBackgroundMode;
@@ -132,7 +132,7 @@
         *buf = 138413826;
         v44 = v21;
         v45 = 2112;
-        v46 = v22;
+        v46 = identifier;
         v47 = 2112;
         v48 = v23;
         v49 = 2112;
@@ -142,7 +142,7 @@
         v53 = 2112;
         v54 = v26;
         v55 = 2112;
-        v56 = v5;
+        v56 = connectionCopy;
         _os_log_impl(&dword_1B47F3000, v20, OS_LOG_TYPE_DEFAULT, "Created %@ with identifier: %@ bundleIdentifier: %@ bundleURL: %@ hasVoIPBackgroundMode: %d capabilities: %@ connection: %@", buf, 0x44u);
       }
 
@@ -158,7 +158,7 @@
       {
         v30 = objc_opt_class();
         v31 = v30;
-        v32 = [(CXCallSource *)v7 identifier];
+        identifier2 = [(CXCallSource *)v7 identifier];
         v33 = v7->_bundleIdentifier;
         v34 = v7->_bundleURL;
         v35 = v7->_hasVoIPBackgroundMode;
@@ -166,7 +166,7 @@
         *buf = 138413826;
         v44 = v30;
         v45 = 2112;
-        v46 = v32;
+        v46 = identifier2;
         v47 = 2112;
         v48 = v33;
         v49 = 2112;
@@ -176,7 +176,7 @@
         v53 = 2112;
         v54 = v36;
         v55 = 2112;
-        v56 = v5;
+        v56 = connectionCopy;
         _os_log_error_impl(&dword_1B47F3000, v27, OS_LOG_TYPE_ERROR, "Denying creation of %@ with identifier: %@ bundleIdentifier: %@ bundleURL: %@ hasVoIPBackgroundMode: %d capabilities: %@ connection: %@", buf, 0x44u);
       }
 
@@ -250,13 +250,13 @@ void __38__CXXPCCallSource_initWithConnection___block_invoke_4(uint64_t a1)
   [(CXXPCCallSource *)&v3 dealloc];
 }
 
-- (void)setConnection:(id)a3
+- (void)setConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   os_unfair_lock_lock_with_options();
-  if (self->_connection != v5)
+  if (self->_connection != connectionCopy)
   {
-    objc_storeStrong(&self->_connection, a3);
+    objc_storeStrong(&self->_connection, connection);
   }
 
   os_unfair_lock_unlock(&self->_accessorLock);
@@ -264,12 +264,12 @@ void __38__CXXPCCallSource_initWithConnection___block_invoke_4(uint64_t a1)
 
 - ($115C4C562B26FF47E01F9F4EA65B5887)auditToken
 {
-  v4 = [(CXXPCCallSource *)self connection];
-  if (v4)
+  connection = [(CXXPCCallSource *)self connection];
+  if (connection)
   {
-    v6 = v4;
-    [v4 auditToken];
-    v4 = v6;
+    v6 = connection;
+    [connection auditToken];
+    connection = v6;
   }
 
   else
@@ -286,11 +286,11 @@ void __38__CXXPCCallSource_initWithConnection___block_invoke_4(uint64_t a1)
   Mutable = CFDictionaryCreateMutable(0, 1, MEMORY[0x1E695E9D8], MEMORY[0x1E695E9E8]);
   CFDictionaryAddValue(Mutable, *MEMORY[0x1E69D54D0], *MEMORY[0x1E695E4C0]);
   v4 = *MEMORY[0x1E69D5508];
-  v5 = [(CXXPCCallSource *)self connection];
-  v6 = v5;
-  if (v5)
+  connection = [(CXXPCCallSource *)self connection];
+  v6 = connection;
+  if (connection)
   {
-    [v5 auditToken];
+    [connection auditToken];
   }
 
   v7 = TCCAccessCheckAuditToken() != 0;

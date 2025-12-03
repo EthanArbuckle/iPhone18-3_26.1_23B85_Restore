@@ -1,71 +1,71 @@
 @interface FPDExtension
-+ (id)allocForIdentifier:(id)a3;
-+ (id)instanceWithExtensionRecord:(id)a3 queue:(id)a4 server:(id)a5;
-+ (id)instanceWithExtensionRecord:(id)a3 queue:(id)a4 volumeManager:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (FPDExtension)initWithExtensionRecord:(id)a3 queue:(id)a4 server:(id)a5 volumeManager:(id)a6;
++ (id)allocForIdentifier:(id)identifier;
++ (id)instanceWithExtensionRecord:(id)record queue:(id)queue server:(id)server;
++ (id)instanceWithExtensionRecord:(id)record queue:(id)queue volumeManager:(id)manager;
+- (BOOL)isEqual:(id)equal;
+- (FPDExtension)initWithExtensionRecord:(id)record queue:(id)queue server:(id)server volumeManager:(id)manager;
 - (id)customPushTopics;
-- (void)_test_callFileProviderManagerAPIs:(id)a3;
-- (void)didReceiveMessage:(id)a3 completionHandler:(id)a4;
-- (void)removeTrashedItemsOlderThanDate:(id)a3 request:(id)a4 completionHandler:(id)a5;
+- (void)_test_callFileProviderManagerAPIs:(id)is;
+- (void)didReceiveMessage:(id)message completionHandler:(id)handler;
+- (void)removeTrashedItemsOlderThanDate:(id)date request:(id)request completionHandler:(id)handler;
 @end
 
 @implementation FPDExtension
 
-+ (id)allocForIdentifier:(id)a3
++ (id)allocForIdentifier:(id)identifier
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"com.apple.FileProvider.LocalStorage"])
+  identifierCopy = identifier;
+  if ([identifierCopy isEqualToString:@"com.apple.FileProvider.LocalStorage"])
   {
-    v5 = FPDLocalStorageExtension;
+    selfCopy = FPDLocalStorageExtension;
   }
 
-  else if ([v4 fp_isiCloudDriveIdentifier])
+  else if ([identifierCopy fp_isiCloudDriveIdentifier])
   {
-    v5 = FPDCloudDocsExtension;
+    selfCopy = FPDCloudDocsExtension;
   }
 
   else
   {
-    v5 = a1;
+    selfCopy = self;
   }
 
-  v6 = [v5 alloc];
+  v6 = [selfCopy alloc];
 
   return v6;
 }
 
-+ (id)instanceWithExtensionRecord:(id)a3 queue:(id)a4 server:(id)a5
++ (id)instanceWithExtensionRecord:(id)record queue:(id)queue server:(id)server
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v10 bundleIdentifier];
-  v12 = [objc_msgSend(a1 allocForIdentifier:{v11), "initWithExtensionRecord:queue:server:volumeManager:", v10, v9, v8, 0}];
+  serverCopy = server;
+  queueCopy = queue;
+  recordCopy = record;
+  bundleIdentifier = [recordCopy bundleIdentifier];
+  v12 = [objc_msgSend(self allocForIdentifier:{bundleIdentifier), "initWithExtensionRecord:queue:server:volumeManager:", recordCopy, queueCopy, serverCopy, 0}];
 
   return v12;
 }
 
-+ (id)instanceWithExtensionRecord:(id)a3 queue:(id)a4 volumeManager:(id)a5
++ (id)instanceWithExtensionRecord:(id)record queue:(id)queue volumeManager:(id)manager
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v10 bundleIdentifier];
-  v12 = [objc_msgSend(a1 allocForIdentifier:{v11), "initWithExtensionRecord:queue:server:volumeManager:", v10, v9, 0, v8}];
+  managerCopy = manager;
+  queueCopy = queue;
+  recordCopy = record;
+  bundleIdentifier = [recordCopy bundleIdentifier];
+  v12 = [objc_msgSend(self allocForIdentifier:{bundleIdentifier), "initWithExtensionRecord:queue:server:volumeManager:", recordCopy, queueCopy, 0, managerCopy}];
 
   return v12;
 }
 
-- (FPDExtension)initWithExtensionRecord:(id)a3 queue:(id)a4 server:(id)a5 volumeManager:(id)a6
+- (FPDExtension)initWithExtensionRecord:(id)record queue:(id)queue server:(id)server volumeManager:(id)manager
 {
   v40 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = v14;
-  if (v13 && v14)
+  recordCopy = record;
+  queueCopy = queue;
+  serverCopy = server;
+  managerCopy = manager;
+  v15 = managerCopy;
+  if (serverCopy && managerCopy)
   {
     v16 = fp_current_or_default_log();
     if (os_log_type_enabled(&v16->super, OS_LOG_TYPE_ERROR))
@@ -74,18 +74,18 @@
     }
 
 LABEL_20:
-    v29 = 0;
+    selfCopy2 = 0;
     goto LABEL_21;
   }
 
-  v16 = [[FPDProviderDescriptor alloc] initWithExtensionRecord:v11];
+  v16 = [[FPDProviderDescriptor alloc] initWithExtensionRecord:recordCopy];
   if (!v16)
   {
     v30 = fp_current_or_default_log();
     if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v37 = v11;
+      v37 = recordCopy;
       _os_log_impl(&dword_1CEFC7000, v30, OS_LOG_TYPE_DEFAULT, "[WARNING] Failed to create descriptor for extension %@", buf, 0xCu);
     }
 
@@ -94,23 +94,23 @@ LABEL_20:
 
   v35.receiver = self;
   v35.super_class = FPDExtension;
-  v17 = [(FPDProvider *)&v35 initWithDescriptor:v16 server:v13];
+  v17 = [(FPDProvider *)&v35 initWithDescriptor:v16 server:serverCopy];
   self = v17;
   if (v17)
   {
-    v18 = [(FPDProvider *)v17 extensionStorageURLs];
-    v19 = [v18 count];
+    extensionStorageURLs = [(FPDProvider *)v17 extensionStorageURLs];
+    v19 = [extensionStorageURLs count];
 
     if (!v19)
     {
-      v20 = [(FPDProvider *)self supportsFPFS];
+      supportsFPFS = [(FPDProvider *)self supportsFPFS];
       v21 = fp_current_or_default_log();
       v22 = v21;
-      if (!v20)
+      if (!supportsFPFS)
       {
         if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
         {
-          [FPDExtension initWithExtensionRecord:v11 queue:? server:? volumeManager:?];
+          [FPDExtension initWithExtensionRecord:recordCopy queue:? server:? volumeManager:?];
         }
 
         goto LABEL_20;
@@ -118,22 +118,22 @@ LABEL_20:
 
       if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
       {
-        v23 = [v11 bundleIdentifier];
+        bundleIdentifier = [recordCopy bundleIdentifier];
         *buf = 138412546;
-        v37 = v23;
+        v37 = bundleIdentifier;
         v38 = 2112;
         v39 = @"NSExtensionFileProviderDocumentGroup";
         _os_log_impl(&dword_1CEFC7000, v22, OS_LOG_TYPE_INFO, "[INFO] %@ key not found in Info.plist of %@. The documentStorageURL property on NSFileProviderManager will not be available.", buf, 0x16u);
       }
     }
 
-    objc_storeStrong(&self->_sharedSessionQueue, a4);
-    objc_storeStrong(&self->_extensionRecord, a3);
-    v24 = [v13 volumeManager];
-    v25 = v24;
-    if (v24)
+    objc_storeStrong(&self->_sharedSessionQueue, queue);
+    objc_storeStrong(&self->_extensionRecord, record);
+    volumeManager = [serverCopy volumeManager];
+    v25 = volumeManager;
+    if (volumeManager)
     {
-      v26 = v24;
+      v26 = volumeManager;
     }
 
     else
@@ -143,27 +143,27 @@ LABEL_20:
 
     v27 = v26;
 
-    v28 = [(FPDProviderDescriptor *)v16 personaIdentifier];
+    personaIdentifier = [(FPDProviderDescriptor *)v16 personaIdentifier];
     v33[0] = MEMORY[0x1E69E9820];
     v33[1] = 3221225472;
     v33[2] = __67__FPDExtension_initWithExtensionRecord_queue_server_volumeManager___block_invoke;
     v33[3] = &unk_1E83BDF50;
-    v34 = self;
-    [v27 enumerateLibrariesForPersona:v28 withBlock:v33];
+    selfCopy = self;
+    [v27 enumerateLibrariesForPersona:personaIdentifier withBlock:v33];
   }
 
   self = self;
-  v29 = self;
+  selfCopy2 = self;
 LABEL_21:
 
   v31 = *MEMORY[0x1E69E9840];
-  return v29;
+  return selfCopy2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -173,9 +173,9 @@ LABEL_21:
     v5 = objc_opt_class();
     if (v5 == objc_opt_class())
     {
-      v7 = [(FPDProvider *)self descriptor];
-      v8 = [(FPDProvider *)v4 descriptor];
-      v6 = [v7 isEqual:v8];
+      descriptor = [(FPDProvider *)self descriptor];
+      descriptor2 = [(FPDProvider *)equalCopy descriptor];
+      v6 = [descriptor isEqual:descriptor2];
     }
 
     else
@@ -187,11 +187,11 @@ LABEL_21:
   return v6;
 }
 
-- (void)removeTrashedItemsOlderThanDate:(id)a3 request:(id)a4 completionHandler:(id)a5
+- (void)removeTrashedItemsOlderThanDate:(id)date request:(id)request completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dateCopy = date;
+  requestCopy = request;
+  handlerCopy = handler;
   v11 = fp_current_or_default_log();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
@@ -199,22 +199,22 @@ LABEL_21:
   }
 
   v12 = dispatch_group_create();
-  v13 = [(FPDProvider *)self relevantDomainsByID];
+  relevantDomainsByID = [(FPDProvider *)self relevantDomainsByID];
   v18 = MEMORY[0x1E69E9820];
   v19 = 3221225472;
   v20 = __74__FPDExtension_removeTrashedItemsOlderThanDate_request_completionHandler___block_invoke;
   v21 = &unk_1E83BDFA0;
   v22 = v12;
-  v23 = v9;
-  v24 = v8;
-  v25 = self;
-  v14 = v8;
-  v15 = v9;
+  v23 = requestCopy;
+  v24 = dateCopy;
+  selfCopy = self;
+  v14 = dateCopy;
+  v15 = requestCopy;
   v16 = v12;
-  [v13 enumerateKeysAndObjectsUsingBlock:&v18];
+  [relevantDomainsByID enumerateKeysAndObjectsUsingBlock:&v18];
 
   v17 = [(FPDProvider *)self queue:v18];
-  dispatch_group_notify(v16, v17, v10);
+  dispatch_group_notify(v16, v17, handlerCopy);
 }
 
 void __74__FPDExtension_removeTrashedItemsOlderThanDate_request_completionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -251,15 +251,15 @@ void __74__FPDExtension_removeTrashedItemsOlderThanDate_request_completionHandle
   dispatch_group_leave(*(a1 + 48));
 }
 
-- (void)didReceiveMessage:(id)a3 completionHandler:(id)a4
+- (void)didReceiveMessage:(id)message completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 userInfo];
-  v9 = [v8 objectForKey:@"container-identifier"];
+  messageCopy = message;
+  handlerCopy = handler;
+  userInfo = [messageCopy userInfo];
+  v9 = [userInfo objectForKey:@"container-identifier"];
 
-  v10 = [v6 userInfo];
-  v11 = [v10 objectForKey:@"domain"];
+  userInfo2 = [messageCopy userInfo];
+  v11 = [userInfo2 objectForKey:@"domain"];
   v12 = v11;
   v13 = *MEMORY[0x1E6967178];
   if (v11)
@@ -274,7 +274,7 @@ void __74__FPDExtension_removeTrashedItemsOlderThanDate_request_completionHandle
     v18 = fp_current_or_default_log();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
-      [FPDExtension didReceiveMessage:v6 completionHandler:?];
+      [FPDExtension didReceiveMessage:messageCopy completionHandler:?];
     }
 
     goto LABEL_11;
@@ -286,12 +286,12 @@ void __74__FPDExtension_removeTrashedItemsOlderThanDate_request_completionHandle
     v18 = fp_current_or_default_log();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
-      [FPDExtension didReceiveMessage:v6 completionHandler:?];
+      [FPDExtension didReceiveMessage:messageCopy completionHandler:?];
     }
 
 LABEL_11:
 
-    v7[2](v7);
+    handlerCopy[2](handlerCopy);
     goto LABEL_16;
   }
 
@@ -299,18 +299,18 @@ LABEL_11:
   v16 = v15;
   if (v15)
   {
-    v17 = [v15 defaultBackend];
+    defaultBackend = [v15 defaultBackend];
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __52__FPDExtension_didReceiveMessage_completionHandler___block_invoke;
     v20[3] = &unk_1E83BDFF0;
     v21 = v9;
-    v26 = v7;
-    v22 = v6;
-    v23 = self;
+    v26 = handlerCopy;
+    v22 = messageCopy;
+    selfCopy = self;
     v24 = v14;
     v25 = v16;
-    [v17 wakeForPushWithCompletionHandler:v20];
+    [defaultBackend wakeForPushWithCompletionHandler:v20];
   }
 
   else
@@ -321,7 +321,7 @@ LABEL_11:
       [FPDExtension didReceiveMessage:completionHandler:];
     }
 
-    v7[2](v7);
+    handlerCopy[2](handlerCopy);
   }
 
 LABEL_16:
@@ -398,13 +398,13 @@ void __52__FPDExtension_didReceiveMessage_completionHandler___block_invoke_22(ui
 - (id)customPushTopics
 {
   v25 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(FPDProvider *)v2 domainsByID];
-  v4 = [v3 allValues];
-  v5 = [v4 mutableCopy];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  domainsByID = [(FPDProvider *)selfCopy domainsByID];
+  allValues = [domainsByID allValues];
+  v5 = [allValues mutableCopy];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
   v6 = [MEMORY[0x1E695DFA8] set];
   v22 = 0u;
   v23 = 0u;
@@ -425,9 +425,9 @@ void __52__FPDExtension_didReceiveMessage_completionHandler___block_invoke_22(ui
         }
 
         v10 = *(*(&v20 + 1) + 8 * i);
-        v11 = [v10 session];
-        v12 = [v11 newFileProviderProxyWithTimeout:0 pid:180.0];
-        v13 = [v12 synchronousRemoteObjectProxy];
+        session = [v10 session];
+        v12 = [session newFileProviderProxyWithTimeout:0 pid:180.0];
+        synchronousRemoteObjectProxy = [v12 synchronousRemoteObjectProxy];
 
         v18[0] = MEMORY[0x1E69E9820];
         v18[1] = 3221225472;
@@ -435,7 +435,7 @@ void __52__FPDExtension_didReceiveMessage_completionHandler___block_invoke_22(ui
         v18[3] = &unk_1E83BE018;
         v18[4] = v10;
         v19 = v6;
-        [v13 fetchCustomPushTopicsWithCompletionHandler:v18];
+        [synchronousRemoteObjectProxy fetchCustomPushTopicsWithCompletionHandler:v18];
       }
 
       v7 = [obj countByEnumeratingWithState:&v20 objects:v24 count:16];
@@ -444,11 +444,11 @@ void __52__FPDExtension_didReceiveMessage_completionHandler___block_invoke_22(ui
     while (v7);
   }
 
-  v14 = [v6 allObjects];
+  allObjects = [v6 allObjects];
 
   v15 = *MEMORY[0x1E69E9840];
 
-  return v14;
+  return allObjects;
 }
 
 void __32__FPDExtension_customPushTopics__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -482,9 +482,9 @@ void __32__FPDExtension_customPushTopics__block_invoke(uint64_t a1, void *a2, vo
 LABEL_7:
 }
 
-- (void)_test_callFileProviderManagerAPIs:(id)a3
+- (void)_test_callFileProviderManagerAPIs:(id)is
 {
-  v4 = a3;
+  isCopy = is;
   v5 = fp_current_or_default_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -492,15 +492,15 @@ LABEL_7:
   }
 
   v6 = [(FPDProvider *)self domainForIdentifier:*MEMORY[0x1E6967178] reason:0];
-  v7 = [v6 session];
+  session = [v6 session];
 
-  v8 = [v7 newFileProviderProxyWithTimeout:0 pid:180.0];
+  v8 = [session newFileProviderProxyWithTimeout:0 pid:180.0];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __50__FPDExtension__test_callFileProviderManagerAPIs___block_invoke;
   v10[3] = &unk_1E83BE040;
-  v11 = v4;
-  v9 = v4;
+  v11 = isCopy;
+  v9 = isCopy;
   [v8 _test_callFileProviderManagerAPIs:v10];
 }
 

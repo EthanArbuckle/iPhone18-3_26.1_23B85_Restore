@@ -6,7 +6,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     AvailableIDs = JavaUtilTimeZone_getAvailableIDs();
     JreStrongAssign(&qword_100554C90, AvailableIDs);

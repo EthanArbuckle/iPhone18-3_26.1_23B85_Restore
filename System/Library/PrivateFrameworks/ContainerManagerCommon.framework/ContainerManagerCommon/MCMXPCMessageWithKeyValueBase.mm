@@ -1,5 +1,5 @@
 @interface MCMXPCMessageWithKeyValueBase
-- (MCMXPCMessageWithKeyValueBase)initWithXPCObject:(id)a3 context:(id)a4 error:(unint64_t *)a5;
+- (MCMXPCMessageWithKeyValueBase)initWithXPCObject:(id)object context:(id)context error:(unint64_t *)error;
 - (id)value;
 @end
 
@@ -13,24 +13,24 @@
   return result;
 }
 
-- (MCMXPCMessageWithKeyValueBase)initWithXPCObject:(id)a3 context:(id)a4 error:(unint64_t *)a5
+- (MCMXPCMessageWithKeyValueBase)initWithXPCObject:(id)object context:(id)context error:(unint64_t *)error
 {
   v19 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  objectCopy = object;
   v18.receiver = self;
   v18.super_class = MCMXPCMessageWithKeyValueBase;
-  v9 = [(MCMXPCMessageWithKeyBase *)&v18 initWithXPCObject:v8 context:a4 error:a5];
+  v9 = [(MCMXPCMessageWithKeyBase *)&v18 initWithXPCObject:objectCopy context:context error:error];
   v10 = v9;
-  if (!v9 || ((v17 = 1, [(MCMXPCMessageBase *)v9 nsObjectFromXPCObject:v8 key:"Value" error:&v17], v11 = objc_claimAutoreleasedReturnValue(), value = v10->_value, v10->_value = v11, value, !v10->_value) ? (v13 = v17 == 1) : (v13 = 1), v13))
+  if (!v9 || ((v17 = 1, [(MCMXPCMessageBase *)v9 nsObjectFromXPCObject:objectCopy key:"Value" error:&v17], v11 = objc_claimAutoreleasedReturnValue(), value = v10->_value, v10->_value = v11, value, !v10->_value) ? (v13 = v17 == 1) : (v13 = 1), v13))
   {
     v14 = v10;
   }
 
   else
   {
-    if (a5)
+    if (error)
     {
-      *a5 = v17;
+      *error = v17;
     }
 
     v14 = 0;

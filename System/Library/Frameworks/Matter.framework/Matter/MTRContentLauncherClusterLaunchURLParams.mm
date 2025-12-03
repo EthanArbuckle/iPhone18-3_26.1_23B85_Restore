@@ -1,8 +1,8 @@
 @interface MTRContentLauncherClusterLaunchURLParams
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3;
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader;
 - (MTRContentLauncherClusterLaunchURLParams)init;
-- (id)_encodeAsDataValue:(id *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_encodeAsDataValue:(id *)value;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -35,23 +35,23 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRContentLauncherClusterLaunchURLParams);
-  v5 = [(MTRContentLauncherClusterLaunchURLParams *)self contentURL];
-  [(MTRContentLauncherClusterLaunchURLParams *)v4 setContentURL:v5];
+  contentURL = [(MTRContentLauncherClusterLaunchURLParams *)self contentURL];
+  [(MTRContentLauncherClusterLaunchURLParams *)v4 setContentURL:contentURL];
 
-  v6 = [(MTRContentLauncherClusterLaunchURLParams *)self displayString];
-  [(MTRContentLauncherClusterLaunchURLParams *)v4 setDisplayString:v6];
+  displayString = [(MTRContentLauncherClusterLaunchURLParams *)self displayString];
+  [(MTRContentLauncherClusterLaunchURLParams *)v4 setDisplayString:displayString];
 
-  v7 = [(MTRContentLauncherClusterLaunchURLParams *)self brandingInformation];
-  [(MTRContentLauncherClusterLaunchURLParams *)v4 setBrandingInformation:v7];
+  brandingInformation = [(MTRContentLauncherClusterLaunchURLParams *)self brandingInformation];
+  [(MTRContentLauncherClusterLaunchURLParams *)v4 setBrandingInformation:brandingInformation];
 
-  v8 = [(MTRContentLauncherClusterLaunchURLParams *)self timedInvokeTimeoutMs];
-  [(MTRContentLauncherClusterLaunchURLParams *)v4 setTimedInvokeTimeoutMs:v8];
+  timedInvokeTimeoutMs = [(MTRContentLauncherClusterLaunchURLParams *)self timedInvokeTimeoutMs];
+  [(MTRContentLauncherClusterLaunchURLParams *)v4 setTimedInvokeTimeoutMs:timedInvokeTimeoutMs];
 
-  v9 = [(MTRContentLauncherClusterLaunchURLParams *)self serverSideProcessingTimeout];
-  [(MTRContentLauncherClusterLaunchURLParams *)v4 setServerSideProcessingTimeout:v9];
+  serverSideProcessingTimeout = [(MTRContentLauncherClusterLaunchURLParams *)self serverSideProcessingTimeout];
+  [(MTRContentLauncherClusterLaunchURLParams *)v4 setServerSideProcessingTimeout:serverSideProcessingTimeout];
 
   return v4;
 }
@@ -66,7 +66,7 @@
   return v6;
 }
 
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader
 {
   v185 = 0;
   v182 = 0uLL;
@@ -74,25 +74,25 @@
   v181[0] = 0;
   v181[1] = 0;
   v180 = v181;
-  v5 = [(MTRContentLauncherClusterLaunchURLParams *)self contentURL];
-  sub_238DB9BD8(v174, [v5 UTF8String], objc_msgSend(v5, "lengthOfBytesUsingEncoding:", 4));
+  contentURL = [(MTRContentLauncherClusterLaunchURLParams *)self contentURL];
+  sub_238DB9BD8(v174, [contentURL UTF8String], objc_msgSend(contentURL, "lengthOfBytesUsingEncoding:", 4));
 
   v182 = v174[0];
-  v6 = [(MTRContentLauncherClusterLaunchURLParams *)self displayString];
+  displayString = [(MTRContentLauncherClusterLaunchURLParams *)self displayString];
 
-  if (v6)
+  if (displayString)
   {
     v183 = 1;
     v184 = 0uLL;
-    v7 = [(MTRContentLauncherClusterLaunchURLParams *)self displayString];
-    sub_238DB9BD8(v174, [v7 UTF8String], objc_msgSend(v7, "lengthOfBytesUsingEncoding:", 4));
+    displayString2 = [(MTRContentLauncherClusterLaunchURLParams *)self displayString];
+    sub_238DB9BD8(v174, [displayString2 UTF8String], objc_msgSend(displayString2, "lengthOfBytesUsingEncoding:", 4));
 
     v184 = v174[0];
   }
 
-  v8 = [(MTRContentLauncherClusterLaunchURLParams *)self brandingInformation];
+  brandingInformation = [(MTRContentLauncherClusterLaunchURLParams *)self brandingInformation];
 
-  if (v8)
+  if (brandingInformation)
   {
     v185 = 1;
     v186 = 0u;
@@ -107,366 +107,366 @@
     v195 = 0u;
     v196 = 0u;
     memset(v197, 0, 88);
-    v9 = [(MTRContentLauncherClusterLaunchURLParams *)self brandingInformation];
-    v10 = [v9 providerName];
-    sub_238DB9BD8(v174, [v10 UTF8String], objc_msgSend(v10, "lengthOfBytesUsingEncoding:", 4));
+    brandingInformation2 = [(MTRContentLauncherClusterLaunchURLParams *)self brandingInformation];
+    providerName = [brandingInformation2 providerName];
+    sub_238DB9BD8(v174, [providerName UTF8String], objc_msgSend(providerName, "lengthOfBytesUsingEncoding:", 4));
 
     v186 = v174[0];
-    v11 = [(MTRContentLauncherClusterLaunchURLParams *)self brandingInformation];
-    v12 = [v11 background];
+    brandingInformation3 = [(MTRContentLauncherClusterLaunchURLParams *)self brandingInformation];
+    background = [brandingInformation3 background];
 
-    if (v12)
+    if (background)
     {
       LOBYTE(v187[0]) = 1;
       memset(v187 + 8, 0, 80);
-      v13 = [(MTRContentLauncherClusterLaunchURLParams *)self brandingInformation];
-      v14 = [v13 background];
-      v15 = [v14 imageURL];
+      brandingInformation4 = [(MTRContentLauncherClusterLaunchURLParams *)self brandingInformation];
+      background2 = [brandingInformation4 background];
+      imageURL = [background2 imageURL];
 
-      if (v15)
+      if (imageURL)
       {
         BYTE8(v187[0]) = 1;
         v187[1] = 0uLL;
-        v16 = [(MTRContentLauncherClusterLaunchURLParams *)self brandingInformation];
-        v17 = [v16 background];
-        v18 = [v17 imageURL];
-        sub_238DB9BD8(v174, [v18 UTF8String], objc_msgSend(v18, "lengthOfBytesUsingEncoding:", 4));
+        brandingInformation5 = [(MTRContentLauncherClusterLaunchURLParams *)self brandingInformation];
+        background3 = [brandingInformation5 background];
+        imageURL2 = [background3 imageURL];
+        sub_238DB9BD8(v174, [imageURL2 UTF8String], objc_msgSend(imageURL2, "lengthOfBytesUsingEncoding:", 4));
 
         v187[1] = v174[0];
       }
 
-      v19 = [(MTRContentLauncherClusterLaunchURLParams *)self brandingInformation];
-      v20 = [v19 background];
-      v21 = [v20 color];
+      brandingInformation6 = [(MTRContentLauncherClusterLaunchURLParams *)self brandingInformation];
+      background4 = [brandingInformation6 background];
+      color = [background4 color];
 
-      if (v21)
+      if (color)
       {
         LOBYTE(v187[2]) = 1;
         *(&v187[2] + 1) = 0;
         *&v187[3] = 0;
-        v22 = [(MTRContentLauncherClusterLaunchURLParams *)self brandingInformation];
-        v23 = [v22 background];
-        v24 = [v23 color];
-        sub_238DB9BD8(v174, [v24 UTF8String], objc_msgSend(v24, "lengthOfBytesUsingEncoding:", 4));
+        brandingInformation7 = [(MTRContentLauncherClusterLaunchURLParams *)self brandingInformation];
+        background5 = [brandingInformation7 background];
+        color2 = [background5 color];
+        sub_238DB9BD8(v174, [color2 UTF8String], objc_msgSend(color2, "lengthOfBytesUsingEncoding:", 4));
 
         *(&v187[2] + 8) = v174[0];
       }
 
-      v25 = [(MTRContentLauncherClusterLaunchURLParams *)self brandingInformation];
-      v26 = [v25 background];
-      v27 = [v26 size];
+      brandingInformation8 = [(MTRContentLauncherClusterLaunchURLParams *)self brandingInformation];
+      background6 = [brandingInformation8 background];
+      v27 = [background6 size];
 
       if (v27)
       {
         BYTE8(v187[3]) = 1;
         memset(&v187[4], 0, 24);
-        v28 = [(MTRContentLauncherClusterLaunchURLParams *)self brandingInformation];
-        v29 = [v28 background];
-        v30 = [v29 size];
-        v31 = [v30 width];
-        [v31 doubleValue];
+        brandingInformation9 = [(MTRContentLauncherClusterLaunchURLParams *)self brandingInformation];
+        background7 = [brandingInformation9 background];
+        v30 = [background7 size];
+        width = [v30 width];
+        [width doubleValue];
         *&v187[4] = v32;
 
-        v33 = [(MTRContentLauncherClusterLaunchURLParams *)self brandingInformation];
-        v34 = [v33 background];
-        v35 = [v34 size];
-        v36 = [v35 height];
-        [v36 doubleValue];
+        brandingInformation10 = [(MTRContentLauncherClusterLaunchURLParams *)self brandingInformation];
+        background8 = [brandingInformation10 background];
+        v35 = [background8 size];
+        height = [v35 height];
+        [height doubleValue];
         *(&v187[4] + 1) = v37;
 
-        v38 = [(MTRContentLauncherClusterLaunchURLParams *)self brandingInformation];
-        v39 = [v38 background];
-        v40 = [v39 size];
-        v41 = [v40 metric];
-        LOBYTE(v187[5]) = [v41 unsignedCharValue];
+        brandingInformation11 = [(MTRContentLauncherClusterLaunchURLParams *)self brandingInformation];
+        background9 = [brandingInformation11 background];
+        v40 = [background9 size];
+        metric = [v40 metric];
+        LOBYTE(v187[5]) = [metric unsignedCharValue];
       }
     }
 
-    v42 = [(MTRContentLauncherClusterLaunchURLParams *)self brandingInformation];
-    v43 = [v42 logo];
+    brandingInformation12 = [(MTRContentLauncherClusterLaunchURLParams *)self brandingInformation];
+    logo = [brandingInformation12 logo];
 
-    if (v43)
+    if (logo)
     {
       BYTE8(v187[5]) = 1;
       memset(v188, 0, sizeof(v188));
       v189 = 0u;
       v190 = 0u;
       v191 = 0u;
-      v44 = [(MTRContentLauncherClusterLaunchURLParams *)self brandingInformation];
-      v45 = [v44 logo];
-      v46 = [v45 imageURL];
+      brandingInformation13 = [(MTRContentLauncherClusterLaunchURLParams *)self brandingInformation];
+      logo2 = [brandingInformation13 logo];
+      imageURL3 = [logo2 imageURL];
 
-      if (v46)
+      if (imageURL3)
       {
         LOBYTE(v188[0]) = 1;
         *(&v188[0] + 1) = 0;
         *&v188[1] = 0;
-        v47 = [(MTRContentLauncherClusterLaunchURLParams *)self brandingInformation];
-        v48 = [v47 logo];
-        v49 = [v48 imageURL];
-        sub_238DB9BD8(v174, [v49 UTF8String], objc_msgSend(v49, "lengthOfBytesUsingEncoding:", 4));
+        brandingInformation14 = [(MTRContentLauncherClusterLaunchURLParams *)self brandingInformation];
+        logo3 = [brandingInformation14 logo];
+        imageURL4 = [logo3 imageURL];
+        sub_238DB9BD8(v174, [imageURL4 UTF8String], objc_msgSend(imageURL4, "lengthOfBytesUsingEncoding:", 4));
 
         *(v188 + 8) = v174[0];
       }
 
-      v50 = [(MTRContentLauncherClusterLaunchURLParams *)self brandingInformation];
-      v51 = [v50 logo];
-      v52 = [v51 color];
+      brandingInformation15 = [(MTRContentLauncherClusterLaunchURLParams *)self brandingInformation];
+      logo4 = [brandingInformation15 logo];
+      color3 = [logo4 color];
 
-      if (v52)
+      if (color3)
       {
         BYTE8(v188[1]) = 1;
         v189 = 0uLL;
-        v53 = [(MTRContentLauncherClusterLaunchURLParams *)self brandingInformation];
-        v54 = [v53 logo];
-        v55 = [v54 color];
-        sub_238DB9BD8(v174, [v55 UTF8String], objc_msgSend(v55, "lengthOfBytesUsingEncoding:", 4));
+        brandingInformation16 = [(MTRContentLauncherClusterLaunchURLParams *)self brandingInformation];
+        logo5 = [brandingInformation16 logo];
+        color4 = [logo5 color];
+        sub_238DB9BD8(v174, [color4 UTF8String], objc_msgSend(color4, "lengthOfBytesUsingEncoding:", 4));
 
         v189 = v174[0];
       }
 
-      v56 = [(MTRContentLauncherClusterLaunchURLParams *)self brandingInformation];
-      v57 = [v56 logo];
-      v58 = [v57 size];
+      brandingInformation17 = [(MTRContentLauncherClusterLaunchURLParams *)self brandingInformation];
+      logo6 = [brandingInformation17 logo];
+      v58 = [logo6 size];
 
       if (v58)
       {
         LOBYTE(v190) = 1;
         v191 = 0uLL;
         *(&v190 + 1) = 0;
-        v59 = [(MTRContentLauncherClusterLaunchURLParams *)self brandingInformation];
-        v60 = [v59 logo];
-        v61 = [v60 size];
-        v62 = [v61 width];
-        [v62 doubleValue];
+        brandingInformation18 = [(MTRContentLauncherClusterLaunchURLParams *)self brandingInformation];
+        logo7 = [brandingInformation18 logo];
+        v61 = [logo7 size];
+        width2 = [v61 width];
+        [width2 doubleValue];
         *(&v190 + 1) = v63;
 
-        v64 = [(MTRContentLauncherClusterLaunchURLParams *)self brandingInformation];
-        v65 = [v64 logo];
-        v66 = [v65 size];
-        v67 = [v66 height];
-        [v67 doubleValue];
+        brandingInformation19 = [(MTRContentLauncherClusterLaunchURLParams *)self brandingInformation];
+        logo8 = [brandingInformation19 logo];
+        v66 = [logo8 size];
+        height2 = [v66 height];
+        [height2 doubleValue];
         *&v191 = v68;
 
-        v69 = [(MTRContentLauncherClusterLaunchURLParams *)self brandingInformation];
-        v70 = [v69 logo];
-        v71 = [v70 size];
-        v72 = [v71 metric];
-        BYTE8(v191) = [v72 unsignedCharValue];
+        brandingInformation20 = [(MTRContentLauncherClusterLaunchURLParams *)self brandingInformation];
+        logo9 = [brandingInformation20 logo];
+        v71 = [logo9 size];
+        metric2 = [v71 metric];
+        BYTE8(v191) = [metric2 unsignedCharValue];
       }
     }
 
-    v73 = [(MTRContentLauncherClusterLaunchURLParams *)self brandingInformation];
-    v74 = [v73 progressBar];
+    brandingInformation21 = [(MTRContentLauncherClusterLaunchURLParams *)self brandingInformation];
+    progressBar = [brandingInformation21 progressBar];
 
-    if (v74)
+    if (progressBar)
     {
       LOBYTE(v192[0]) = 1;
       memset(v192 + 8, 0, 80);
-      v75 = [(MTRContentLauncherClusterLaunchURLParams *)self brandingInformation];
-      v76 = [v75 progressBar];
-      v77 = [v76 imageURL];
+      brandingInformation22 = [(MTRContentLauncherClusterLaunchURLParams *)self brandingInformation];
+      progressBar2 = [brandingInformation22 progressBar];
+      imageURL5 = [progressBar2 imageURL];
 
-      if (v77)
+      if (imageURL5)
       {
         BYTE8(v192[0]) = 1;
         v192[1] = 0uLL;
-        v78 = [(MTRContentLauncherClusterLaunchURLParams *)self brandingInformation];
-        v79 = [v78 progressBar];
-        v80 = [v79 imageURL];
-        sub_238DB9BD8(v174, [v80 UTF8String], objc_msgSend(v80, "lengthOfBytesUsingEncoding:", 4));
+        brandingInformation23 = [(MTRContentLauncherClusterLaunchURLParams *)self brandingInformation];
+        progressBar3 = [brandingInformation23 progressBar];
+        imageURL6 = [progressBar3 imageURL];
+        sub_238DB9BD8(v174, [imageURL6 UTF8String], objc_msgSend(imageURL6, "lengthOfBytesUsingEncoding:", 4));
 
         v192[1] = v174[0];
       }
 
-      v81 = [(MTRContentLauncherClusterLaunchURLParams *)self brandingInformation];
-      v82 = [v81 progressBar];
-      v83 = [v82 color];
+      brandingInformation24 = [(MTRContentLauncherClusterLaunchURLParams *)self brandingInformation];
+      progressBar4 = [brandingInformation24 progressBar];
+      color5 = [progressBar4 color];
 
-      if (v83)
+      if (color5)
       {
         LOBYTE(v192[2]) = 1;
         *(&v192[2] + 1) = 0;
         *&v192[3] = 0;
-        v84 = [(MTRContentLauncherClusterLaunchURLParams *)self brandingInformation];
-        v85 = [v84 progressBar];
-        v86 = [v85 color];
-        sub_238DB9BD8(v174, [v86 UTF8String], objc_msgSend(v86, "lengthOfBytesUsingEncoding:", 4));
+        brandingInformation25 = [(MTRContentLauncherClusterLaunchURLParams *)self brandingInformation];
+        progressBar5 = [brandingInformation25 progressBar];
+        color6 = [progressBar5 color];
+        sub_238DB9BD8(v174, [color6 UTF8String], objc_msgSend(color6, "lengthOfBytesUsingEncoding:", 4));
 
         *(&v192[2] + 8) = v174[0];
       }
 
-      v87 = [(MTRContentLauncherClusterLaunchURLParams *)self brandingInformation];
-      v88 = [v87 progressBar];
-      v89 = [v88 size];
+      brandingInformation26 = [(MTRContentLauncherClusterLaunchURLParams *)self brandingInformation];
+      progressBar6 = [brandingInformation26 progressBar];
+      v89 = [progressBar6 size];
 
       if (v89)
       {
         BYTE8(v192[3]) = 1;
         memset(&v192[4], 0, 24);
-        v90 = [(MTRContentLauncherClusterLaunchURLParams *)self brandingInformation];
-        v91 = [v90 progressBar];
-        v92 = [v91 size];
-        v93 = [v92 width];
-        [v93 doubleValue];
+        brandingInformation27 = [(MTRContentLauncherClusterLaunchURLParams *)self brandingInformation];
+        progressBar7 = [brandingInformation27 progressBar];
+        v92 = [progressBar7 size];
+        width3 = [v92 width];
+        [width3 doubleValue];
         *&v192[4] = v94;
 
-        v95 = [(MTRContentLauncherClusterLaunchURLParams *)self brandingInformation];
-        v96 = [v95 progressBar];
-        v97 = [v96 size];
-        v98 = [v97 height];
-        [v98 doubleValue];
+        brandingInformation28 = [(MTRContentLauncherClusterLaunchURLParams *)self brandingInformation];
+        progressBar8 = [brandingInformation28 progressBar];
+        v97 = [progressBar8 size];
+        height3 = [v97 height];
+        [height3 doubleValue];
         *(&v192[4] + 1) = v99;
 
-        v100 = [(MTRContentLauncherClusterLaunchURLParams *)self brandingInformation];
-        v101 = [v100 progressBar];
-        v102 = [v101 size];
-        v103 = [v102 metric];
-        LOBYTE(v192[5]) = [v103 unsignedCharValue];
+        brandingInformation29 = [(MTRContentLauncherClusterLaunchURLParams *)self brandingInformation];
+        progressBar9 = [brandingInformation29 progressBar];
+        v102 = [progressBar9 size];
+        metric3 = [v102 metric];
+        LOBYTE(v192[5]) = [metric3 unsignedCharValue];
       }
     }
 
-    v104 = [(MTRContentLauncherClusterLaunchURLParams *)self brandingInformation];
-    v105 = [v104 splash];
+    brandingInformation30 = [(MTRContentLauncherClusterLaunchURLParams *)self brandingInformation];
+    splash = [brandingInformation30 splash];
 
-    if (v105)
+    if (splash)
     {
       BYTE8(v192[5]) = 1;
       memset(v193, 0, sizeof(v193));
       v194 = 0u;
       v195 = 0u;
       v196 = 0u;
-      v106 = [(MTRContentLauncherClusterLaunchURLParams *)self brandingInformation];
-      v107 = [v106 splash];
-      v108 = [v107 imageURL];
+      brandingInformation31 = [(MTRContentLauncherClusterLaunchURLParams *)self brandingInformation];
+      splash2 = [brandingInformation31 splash];
+      imageURL7 = [splash2 imageURL];
 
-      if (v108)
+      if (imageURL7)
       {
         LOBYTE(v193[0]) = 1;
         *(&v193[0] + 1) = 0;
         *&v193[1] = 0;
-        v109 = [(MTRContentLauncherClusterLaunchURLParams *)self brandingInformation];
-        v110 = [v109 splash];
-        v111 = [v110 imageURL];
-        sub_238DB9BD8(v174, [v111 UTF8String], objc_msgSend(v111, "lengthOfBytesUsingEncoding:", 4));
+        brandingInformation32 = [(MTRContentLauncherClusterLaunchURLParams *)self brandingInformation];
+        splash3 = [brandingInformation32 splash];
+        imageURL8 = [splash3 imageURL];
+        sub_238DB9BD8(v174, [imageURL8 UTF8String], objc_msgSend(imageURL8, "lengthOfBytesUsingEncoding:", 4));
 
         *(v193 + 8) = v174[0];
       }
 
-      v112 = [(MTRContentLauncherClusterLaunchURLParams *)self brandingInformation];
-      v113 = [v112 splash];
-      v114 = [v113 color];
+      brandingInformation33 = [(MTRContentLauncherClusterLaunchURLParams *)self brandingInformation];
+      splash4 = [brandingInformation33 splash];
+      color7 = [splash4 color];
 
-      if (v114)
+      if (color7)
       {
         BYTE8(v193[1]) = 1;
         v194 = 0uLL;
-        v115 = [(MTRContentLauncherClusterLaunchURLParams *)self brandingInformation];
-        v116 = [v115 splash];
-        v117 = [v116 color];
-        sub_238DB9BD8(v174, [v117 UTF8String], objc_msgSend(v117, "lengthOfBytesUsingEncoding:", 4));
+        brandingInformation34 = [(MTRContentLauncherClusterLaunchURLParams *)self brandingInformation];
+        splash5 = [brandingInformation34 splash];
+        color8 = [splash5 color];
+        sub_238DB9BD8(v174, [color8 UTF8String], objc_msgSend(color8, "lengthOfBytesUsingEncoding:", 4));
 
         v194 = v174[0];
       }
 
-      v118 = [(MTRContentLauncherClusterLaunchURLParams *)self brandingInformation];
-      v119 = [v118 splash];
-      v120 = [v119 size];
+      brandingInformation35 = [(MTRContentLauncherClusterLaunchURLParams *)self brandingInformation];
+      splash6 = [brandingInformation35 splash];
+      v120 = [splash6 size];
 
       if (v120)
       {
         LOBYTE(v195) = 1;
         *(&v195 + 1) = 0;
         v196 = 0uLL;
-        v121 = [(MTRContentLauncherClusterLaunchURLParams *)self brandingInformation];
-        v122 = [v121 splash];
-        v123 = [v122 size];
-        v124 = [v123 width];
-        [v124 doubleValue];
+        brandingInformation36 = [(MTRContentLauncherClusterLaunchURLParams *)self brandingInformation];
+        splash7 = [brandingInformation36 splash];
+        v123 = [splash7 size];
+        width4 = [v123 width];
+        [width4 doubleValue];
         *(&v195 + 1) = v125;
 
-        v126 = [(MTRContentLauncherClusterLaunchURLParams *)self brandingInformation];
-        v127 = [v126 splash];
-        v128 = [v127 size];
-        v129 = [v128 height];
-        [v129 doubleValue];
+        brandingInformation37 = [(MTRContentLauncherClusterLaunchURLParams *)self brandingInformation];
+        splash8 = [brandingInformation37 splash];
+        v128 = [splash8 size];
+        height4 = [v128 height];
+        [height4 doubleValue];
         *&v196 = v130;
 
-        v131 = [(MTRContentLauncherClusterLaunchURLParams *)self brandingInformation];
-        v132 = [v131 splash];
-        v133 = [v132 size];
-        v134 = [v133 metric];
-        BYTE8(v196) = [v134 unsignedCharValue];
+        brandingInformation38 = [(MTRContentLauncherClusterLaunchURLParams *)self brandingInformation];
+        splash9 = [brandingInformation38 splash];
+        v133 = [splash9 size];
+        metric4 = [v133 metric];
+        BYTE8(v196) = [metric4 unsignedCharValue];
       }
     }
 
-    v135 = [(MTRContentLauncherClusterLaunchURLParams *)self brandingInformation];
-    v136 = [v135 waterMark];
+    brandingInformation39 = [(MTRContentLauncherClusterLaunchURLParams *)self brandingInformation];
+    waterMark = [brandingInformation39 waterMark];
 
-    if (v136)
+    if (waterMark)
     {
       LOBYTE(v197[0]) = 1;
       memset(v197 + 8, 0, 80);
-      v137 = [(MTRContentLauncherClusterLaunchURLParams *)self brandingInformation];
-      v138 = [v137 waterMark];
-      v139 = [v138 imageURL];
+      brandingInformation40 = [(MTRContentLauncherClusterLaunchURLParams *)self brandingInformation];
+      waterMark2 = [brandingInformation40 waterMark];
+      imageURL9 = [waterMark2 imageURL];
 
-      if (v139)
+      if (imageURL9)
       {
         BYTE8(v197[0]) = 1;
         v197[1] = 0uLL;
-        v140 = [(MTRContentLauncherClusterLaunchURLParams *)self brandingInformation];
-        v141 = [v140 waterMark];
-        v142 = [v141 imageURL];
-        sub_238DB9BD8(v174, [v142 UTF8String], objc_msgSend(v142, "lengthOfBytesUsingEncoding:", 4));
+        brandingInformation41 = [(MTRContentLauncherClusterLaunchURLParams *)self brandingInformation];
+        waterMark3 = [brandingInformation41 waterMark];
+        imageURL10 = [waterMark3 imageURL];
+        sub_238DB9BD8(v174, [imageURL10 UTF8String], objc_msgSend(imageURL10, "lengthOfBytesUsingEncoding:", 4));
 
         v197[1] = v174[0];
       }
 
-      v143 = [(MTRContentLauncherClusterLaunchURLParams *)self brandingInformation];
-      v144 = [v143 waterMark];
-      v145 = [v144 color];
+      brandingInformation42 = [(MTRContentLauncherClusterLaunchURLParams *)self brandingInformation];
+      waterMark4 = [brandingInformation42 waterMark];
+      color9 = [waterMark4 color];
 
-      if (v145)
+      if (color9)
       {
         LOBYTE(v197[2]) = 1;
         *(&v197[2] + 1) = 0;
         *&v197[3] = 0;
-        v146 = [(MTRContentLauncherClusterLaunchURLParams *)self brandingInformation];
-        v147 = [v146 waterMark];
-        v148 = [v147 color];
-        sub_238DB9BD8(v174, [v148 UTF8String], objc_msgSend(v148, "lengthOfBytesUsingEncoding:", 4));
+        brandingInformation43 = [(MTRContentLauncherClusterLaunchURLParams *)self brandingInformation];
+        waterMark5 = [brandingInformation43 waterMark];
+        color10 = [waterMark5 color];
+        sub_238DB9BD8(v174, [color10 UTF8String], objc_msgSend(color10, "lengthOfBytesUsingEncoding:", 4));
 
         *(&v197[2] + 8) = v174[0];
       }
 
-      v149 = [(MTRContentLauncherClusterLaunchURLParams *)self brandingInformation];
-      v150 = [v149 waterMark];
-      v151 = [v150 size];
+      brandingInformation44 = [(MTRContentLauncherClusterLaunchURLParams *)self brandingInformation];
+      waterMark6 = [brandingInformation44 waterMark];
+      v151 = [waterMark6 size];
 
       if (v151)
       {
         BYTE8(v197[3]) = 1;
         memset(&v197[4], 0, 24);
-        v152 = [(MTRContentLauncherClusterLaunchURLParams *)self brandingInformation];
-        v153 = [v152 waterMark];
-        v154 = [v153 size];
-        v155 = [v154 width];
-        [v155 doubleValue];
+        brandingInformation45 = [(MTRContentLauncherClusterLaunchURLParams *)self brandingInformation];
+        waterMark7 = [brandingInformation45 waterMark];
+        v154 = [waterMark7 size];
+        width5 = [v154 width];
+        [width5 doubleValue];
         *&v197[4] = v156;
 
-        v157 = [(MTRContentLauncherClusterLaunchURLParams *)self brandingInformation];
-        v158 = [v157 waterMark];
-        v159 = [v158 size];
-        v160 = [v159 height];
-        [v160 doubleValue];
+        brandingInformation46 = [(MTRContentLauncherClusterLaunchURLParams *)self brandingInformation];
+        waterMark8 = [brandingInformation46 waterMark];
+        v159 = [waterMark8 size];
+        height5 = [v159 height];
+        [height5 doubleValue];
         *(&v197[4] + 1) = v161;
 
-        v162 = [(MTRContentLauncherClusterLaunchURLParams *)self brandingInformation];
-        v163 = [v162 waterMark];
-        v164 = [v163 size];
-        v165 = [v164 metric];
-        LOBYTE(v197[5]) = [v165 unsignedCharValue];
+        brandingInformation47 = [(MTRContentLauncherClusterLaunchURLParams *)self brandingInformation];
+        waterMark9 = [brandingInformation47 waterMark];
+        v164 = [waterMark9 size];
+        metric5 = [v164 metric];
+        LOBYTE(v197[5]) = [metric5 unsignedCharValue];
       }
     }
   }
@@ -490,8 +490,8 @@
 
     else
     {
-      sub_238DD2F90(a3, &v179);
-      v166 = sub_2393C7114(a3, 21, 256);
+      sub_238DD2F90(reader, &v179);
+      v166 = sub_2393C7114(reader, 21, 256);
       v169 = v173;
       v168 = v166;
     }
@@ -519,19 +519,19 @@
   return result;
 }
 
-- (id)_encodeAsDataValue:(id *)a3
+- (id)_encodeAsDataValue:(id *)value
 {
   v5 = sub_2393C5AAC(v12);
   v13 = 0;
   v7 = [(MTRContentLauncherClusterLaunchURLParams *)self _encodeToTLVReader:v12, v5];
   if (v7)
   {
-    if (a3)
+    if (value)
     {
       v8 = sub_23921C1E4(MTRError, v7, v6);
       v9 = 0;
 LABEL_7:
-      *a3 = v8;
+      *value = v8;
       goto LABEL_9;
     }
 
@@ -542,7 +542,7 @@ LABEL_7:
   {
     v10 = sub_238EE60DC(v12, 0);
     v9 = v10;
-    if (a3 && !v10)
+    if (value && !v10)
     {
       v8 = sub_23921C1E4(MTRError, 0x7A1200000003, "/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/zap-generated/MTRCommandPayloadsObjc.mm");
       goto LABEL_7;

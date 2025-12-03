@@ -1,24 +1,24 @@
 @interface IRNodeDO
-+ (id)nodeDOFromNode:(id)a3;
-+ (id)nodeFromNodeDO:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToNodeDO:(id)a3;
-- (IRNodeDO)initWithAvOutpuDeviceIdentifier:(id)a3 rapportIdentifier:(id)a4 idsIdentifier:(id)a5 avOutputDevice:(id)a6 rapportDevice:(id)a7 isLocal:(BOOL)a8;
-- (IRNodeDO)initWithCoder:(id)a3;
++ (id)nodeDOFromNode:(id)node;
++ (id)nodeFromNodeDO:(id)o;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToNodeDO:(id)o;
+- (IRNodeDO)initWithAvOutpuDeviceIdentifier:(id)identifier rapportIdentifier:(id)rapportIdentifier idsIdentifier:(id)idsIdentifier avOutputDevice:(id)device rapportDevice:(id)rapportDevice isLocal:(BOOL)local;
+- (IRNodeDO)initWithCoder:(id)coder;
 - (id)computeName;
 - (id)computedIdsIdentifier;
 - (id)computedMediaRemoteIdenfifier;
 - (id)computedMediaRouteIdentifier;
-- (id)copyWithReplacementAvOutpuDeviceIdentifier:(id)a3;
-- (id)copyWithReplacementAvOutputDevice:(id)a3;
-- (id)copyWithReplacementIdsIdentifier:(id)a3;
-- (id)copyWithReplacementRapportDevice:(id)a3;
-- (id)copyWithReplacementRapportIdentifier:(id)a3;
+- (id)copyWithReplacementAvOutpuDeviceIdentifier:(id)identifier;
+- (id)copyWithReplacementAvOutputDevice:(id)device;
+- (id)copyWithReplacementIdsIdentifier:(id)identifier;
+- (id)copyWithReplacementRapportDevice:(id)device;
+- (id)copyWithReplacementRapportIdentifier:(id)identifier;
 - (id)description;
 - (id)deviceTypeAndSubType;
 - (id)exportAsDictionary;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IRNodeDO
@@ -42,17 +42,17 @@
 
   else
   {
-    v4 = [(IRNodeDO *)self avOutputDevice];
-    v5 = [v4 deviceID];
+    avOutputDevice = [(IRNodeDO *)self avOutputDevice];
+    deviceID = [avOutputDevice deviceID];
 
-    if (v5)
+    if (deviceID)
     {
       v6 = MEMORY[0x277CCABB0];
-      v7 = [(IRNodeDO *)self avOutputDevice];
-      v8 = [v6 numberWithUnsignedInteger:{objc_msgSend(v7, "deviceType")}];
+      avOutputDevice2 = [(IRNodeDO *)self avOutputDevice];
+      v8 = [v6 numberWithUnsignedInteger:{objc_msgSend(avOutputDevice2, "deviceType")}];
       v9 = MEMORY[0x277CCABB0];
-      v10 = [(IRNodeDO *)self avOutputDevice];
-      v11 = [v9 numberWithUnsignedInteger:{objc_msgSend(v10, "deviceSubType")}];
+      avOutputDevice3 = [(IRNodeDO *)self avOutputDevice];
+      v11 = [v9 numberWithUnsignedInteger:{objc_msgSend(avOutputDevice3, "deviceSubType")}];
       v3 = [IRPair pairWithFirst:v8 second:v11];
     }
 
@@ -67,26 +67,26 @@
 
 - (id)computeName
 {
-  v3 = [(IRNodeDO *)self avOutputDevice];
-  v4 = [v3 deviceName];
+  avOutputDevice = [(IRNodeDO *)self avOutputDevice];
+  deviceName = [avOutputDevice deviceName];
 
-  if (v4)
+  if (deviceName)
   {
-    v5 = [(IRNodeDO *)self avOutputDevice];
-    v6 = [v5 deviceName];
+    avOutputDevice2 = [(IRNodeDO *)self avOutputDevice];
+    deviceName2 = [avOutputDevice2 deviceName];
 LABEL_5:
-    v9 = v6;
+    v9 = deviceName2;
 
     goto LABEL_6;
   }
 
-  v7 = [(IRNodeDO *)self rapportDevice];
-  v8 = [v7 name];
+  rapportDevice = [(IRNodeDO *)self rapportDevice];
+  name = [rapportDevice name];
 
-  if (v8)
+  if (name)
   {
-    v5 = [(IRNodeDO *)self rapportDevice];
-    v6 = [v5 name];
+    avOutputDevice2 = [(IRNodeDO *)self rapportDevice];
+    deviceName2 = [avOutputDevice2 name];
     goto LABEL_5;
   }
 
@@ -96,200 +96,200 @@ LABEL_6:
   return v9;
 }
 
-+ (id)nodeDOFromNode:(id)a3
++ (id)nodeDOFromNode:(id)node
 {
-  v3 = a3;
+  nodeCopy = node;
   v4 = [IRNodeDO alloc];
-  v5 = [v3 avOutpuDeviceIdentifier];
-  v6 = [v3 rapportIdentifier];
-  v7 = [v3 idsIdentifier];
-  v8 = [v3 isLocal];
+  avOutpuDeviceIdentifier = [nodeCopy avOutpuDeviceIdentifier];
+  rapportIdentifier = [nodeCopy rapportIdentifier];
+  idsIdentifier = [nodeCopy idsIdentifier];
+  isLocal = [nodeCopy isLocal];
 
-  v9 = [(IRNodeDO *)v4 initWithAvOutpuDeviceIdentifier:v5 rapportIdentifier:v6 idsIdentifier:v7 avOutputDevice:0 rapportDevice:0 isLocal:v8];
+  v9 = [(IRNodeDO *)v4 initWithAvOutpuDeviceIdentifier:avOutpuDeviceIdentifier rapportIdentifier:rapportIdentifier idsIdentifier:idsIdentifier avOutputDevice:0 rapportDevice:0 isLocal:isLocal];
 
   return v9;
 }
 
-+ (id)nodeFromNodeDO:(id)a3
++ (id)nodeFromNodeDO:(id)o
 {
   v3 = MEMORY[0x277D212D0];
-  v4 = a3;
+  oCopy = o;
   v5 = objc_alloc_init(v3);
-  v6 = [v4 avOutpuDeviceIdentifier];
-  [v5 setAvOutpuDeviceIdentifier:v6];
+  avOutpuDeviceIdentifier = [oCopy avOutpuDeviceIdentifier];
+  [v5 setAvOutpuDeviceIdentifier:avOutpuDeviceIdentifier];
 
-  v7 = [v4 rapportIdentifier];
-  [v5 setRapportIdentifier:v7];
+  rapportIdentifier = [oCopy rapportIdentifier];
+  [v5 setRapportIdentifier:rapportIdentifier];
 
-  v8 = [v4 idsIdentifier];
-  [v5 setIdsIdentifier:v8];
+  idsIdentifier = [oCopy idsIdentifier];
+  [v5 setIdsIdentifier:idsIdentifier];
 
-  v9 = [v4 computeName];
-  [v5 setName:v9];
+  computeName = [oCopy computeName];
+  [v5 setName:computeName];
 
-  v10 = [v4 isLocal];
-  [v5 setIsLocal:v10];
+  isLocal = [oCopy isLocal];
+  [v5 setIsLocal:isLocal];
 
   return v5;
 }
 
 - (id)computedIdsIdentifier
 {
-  v3 = [(IRNodeDO *)self idsIdentifier];
-  if (!v3)
+  idsIdentifier = [(IRNodeDO *)self idsIdentifier];
+  if (!idsIdentifier)
   {
-    v4 = [(IRNodeDO *)self rapportDevice];
-    v3 = [v4 idsID];
+    rapportDevice = [(IRNodeDO *)self rapportDevice];
+    idsIdentifier = [rapportDevice idsID];
   }
 
-  return v3;
+  return idsIdentifier;
 }
 
 - (id)computedMediaRemoteIdenfifier
 {
-  v3 = [(IRNodeDO *)self avOutpuDeviceIdentifier];
-  if (v3)
+  avOutpuDeviceIdentifier = [(IRNodeDO *)self avOutpuDeviceIdentifier];
+  if (avOutpuDeviceIdentifier)
   {
-    v4 = v3;
+    deviceID = avOutpuDeviceIdentifier;
   }
 
   else
   {
-    v5 = [(IRNodeDO *)self avOutputDevice];
-    v4 = [v5 deviceID];
+    avOutputDevice = [(IRNodeDO *)self avOutputDevice];
+    deviceID = [avOutputDevice deviceID];
 
-    if (!v4)
+    if (!deviceID)
     {
-      v6 = [(IRNodeDO *)self rapportDevice];
-      v4 = [v6 mediaRemoteIdentifier];
+      rapportDevice = [(IRNodeDO *)self rapportDevice];
+      deviceID = [rapportDevice mediaRemoteIdentifier];
     }
   }
 
-  return v4;
+  return deviceID;
 }
 
 - (id)computedMediaRouteIdentifier
 {
-  v3 = [(IRNodeDO *)self avOutpuDeviceIdentifier];
-  if (v3)
+  avOutpuDeviceIdentifier = [(IRNodeDO *)self avOutpuDeviceIdentifier];
+  if (avOutpuDeviceIdentifier)
   {
-    v4 = v3;
+    deviceID = avOutpuDeviceIdentifier;
   }
 
   else
   {
-    v5 = [(IRNodeDO *)self avOutputDevice];
-    v4 = [v5 deviceID];
+    avOutputDevice = [(IRNodeDO *)self avOutputDevice];
+    deviceID = [avOutputDevice deviceID];
 
-    if (!v4)
+    if (!deviceID)
     {
-      v6 = [(IRNodeDO *)self rapportDevice];
-      v4 = [v6 mediaRouteIdentifier];
+      rapportDevice = [(IRNodeDO *)self rapportDevice];
+      deviceID = [rapportDevice mediaRouteIdentifier];
     }
   }
 
-  return v4;
+  return deviceID;
 }
 
 - (id)exportAsDictionary
 {
   v3 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v4 = [(IRNodeDO *)self avOutpuDeviceIdentifier];
-  [v3 setObject:v4 forKeyedSubscript:@"avOutpuDeviceIdentifier"];
+  avOutpuDeviceIdentifier = [(IRNodeDO *)self avOutpuDeviceIdentifier];
+  [v3 setObject:avOutpuDeviceIdentifier forKeyedSubscript:@"avOutpuDeviceIdentifier"];
 
-  v5 = [(IRNodeDO *)self rapportIdentifier];
-  [v3 setObject:v5 forKeyedSubscript:@"rapportIdentifier"];
+  rapportIdentifier = [(IRNodeDO *)self rapportIdentifier];
+  [v3 setObject:rapportIdentifier forKeyedSubscript:@"rapportIdentifier"];
 
-  v6 = [(IRNodeDO *)self idsIdentifier];
-  [v3 setObject:v6 forKeyedSubscript:@"idsIdentifier"];
+  idsIdentifier = [(IRNodeDO *)self idsIdentifier];
+  [v3 setObject:idsIdentifier forKeyedSubscript:@"idsIdentifier"];
 
-  v7 = [(IRNodeDO *)self avOutputDevice];
-  v8 = [v7 exportAsDictionary];
-  [v3 setObject:v8 forKeyedSubscript:@"avOutputDevice"];
+  avOutputDevice = [(IRNodeDO *)self avOutputDevice];
+  exportAsDictionary = [avOutputDevice exportAsDictionary];
+  [v3 setObject:exportAsDictionary forKeyedSubscript:@"avOutputDevice"];
 
-  v9 = [(IRNodeDO *)self rapportDevice];
-  v10 = [v9 exportAsDictionary];
-  [v3 setObject:v10 forKeyedSubscript:@"rapportDevice"];
+  rapportDevice = [(IRNodeDO *)self rapportDevice];
+  exportAsDictionary2 = [rapportDevice exportAsDictionary];
+  [v3 setObject:exportAsDictionary2 forKeyedSubscript:@"rapportDevice"];
 
   return v3;
 }
 
-- (IRNodeDO)initWithAvOutpuDeviceIdentifier:(id)a3 rapportIdentifier:(id)a4 idsIdentifier:(id)a5 avOutputDevice:(id)a6 rapportDevice:(id)a7 isLocal:(BOOL)a8
+- (IRNodeDO)initWithAvOutpuDeviceIdentifier:(id)identifier rapportIdentifier:(id)rapportIdentifier idsIdentifier:(id)idsIdentifier avOutputDevice:(id)device rapportDevice:(id)rapportDevice isLocal:(BOOL)local
 {
-  v22 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  identifierCopy = identifier;
+  rapportIdentifierCopy = rapportIdentifier;
+  idsIdentifierCopy = idsIdentifier;
+  deviceCopy = device;
+  rapportDeviceCopy = rapportDevice;
   v23.receiver = self;
   v23.super_class = IRNodeDO;
   v18 = [(IRNodeDO *)&v23 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_avOutpuDeviceIdentifier, a3);
-    objc_storeStrong(&v19->_rapportIdentifier, a4);
-    objc_storeStrong(&v19->_idsIdentifier, a5);
-    objc_storeStrong(&v19->_avOutputDevice, a6);
-    objc_storeStrong(&v19->_rapportDevice, a7);
-    v19->_isLocal = a8;
+    objc_storeStrong(&v18->_avOutpuDeviceIdentifier, identifier);
+    objc_storeStrong(&v19->_rapportIdentifier, rapportIdentifier);
+    objc_storeStrong(&v19->_idsIdentifier, idsIdentifier);
+    objc_storeStrong(&v19->_avOutputDevice, device);
+    objc_storeStrong(&v19->_rapportDevice, rapportDevice);
+    v19->_isLocal = local;
   }
 
   return v19;
 }
 
-- (id)copyWithReplacementAvOutpuDeviceIdentifier:(id)a3
+- (id)copyWithReplacementAvOutpuDeviceIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [objc_alloc(objc_opt_class()) initWithAvOutpuDeviceIdentifier:v4 rapportIdentifier:self->_rapportIdentifier idsIdentifier:self->_idsIdentifier avOutputDevice:self->_avOutputDevice rapportDevice:self->_rapportDevice isLocal:self->_isLocal];
+  identifierCopy = identifier;
+  v5 = [objc_alloc(objc_opt_class()) initWithAvOutpuDeviceIdentifier:identifierCopy rapportIdentifier:self->_rapportIdentifier idsIdentifier:self->_idsIdentifier avOutputDevice:self->_avOutputDevice rapportDevice:self->_rapportDevice isLocal:self->_isLocal];
 
   return v5;
 }
 
-- (id)copyWithReplacementRapportIdentifier:(id)a3
+- (id)copyWithReplacementRapportIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [objc_alloc(objc_opt_class()) initWithAvOutpuDeviceIdentifier:self->_avOutpuDeviceIdentifier rapportIdentifier:v4 idsIdentifier:self->_idsIdentifier avOutputDevice:self->_avOutputDevice rapportDevice:self->_rapportDevice isLocal:self->_isLocal];
+  identifierCopy = identifier;
+  v5 = [objc_alloc(objc_opt_class()) initWithAvOutpuDeviceIdentifier:self->_avOutpuDeviceIdentifier rapportIdentifier:identifierCopy idsIdentifier:self->_idsIdentifier avOutputDevice:self->_avOutputDevice rapportDevice:self->_rapportDevice isLocal:self->_isLocal];
 
   return v5;
 }
 
-- (id)copyWithReplacementIdsIdentifier:(id)a3
+- (id)copyWithReplacementIdsIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [objc_alloc(objc_opt_class()) initWithAvOutpuDeviceIdentifier:self->_avOutpuDeviceIdentifier rapportIdentifier:self->_rapportIdentifier idsIdentifier:v4 avOutputDevice:self->_avOutputDevice rapportDevice:self->_rapportDevice isLocal:self->_isLocal];
+  identifierCopy = identifier;
+  v5 = [objc_alloc(objc_opt_class()) initWithAvOutpuDeviceIdentifier:self->_avOutpuDeviceIdentifier rapportIdentifier:self->_rapportIdentifier idsIdentifier:identifierCopy avOutputDevice:self->_avOutputDevice rapportDevice:self->_rapportDevice isLocal:self->_isLocal];
 
   return v5;
 }
 
-- (id)copyWithReplacementAvOutputDevice:(id)a3
+- (id)copyWithReplacementAvOutputDevice:(id)device
 {
-  v4 = a3;
-  v5 = [objc_alloc(objc_opt_class()) initWithAvOutpuDeviceIdentifier:self->_avOutpuDeviceIdentifier rapportIdentifier:self->_rapportIdentifier idsIdentifier:self->_idsIdentifier avOutputDevice:v4 rapportDevice:self->_rapportDevice isLocal:self->_isLocal];
+  deviceCopy = device;
+  v5 = [objc_alloc(objc_opt_class()) initWithAvOutpuDeviceIdentifier:self->_avOutpuDeviceIdentifier rapportIdentifier:self->_rapportIdentifier idsIdentifier:self->_idsIdentifier avOutputDevice:deviceCopy rapportDevice:self->_rapportDevice isLocal:self->_isLocal];
 
   return v5;
 }
 
-- (id)copyWithReplacementRapportDevice:(id)a3
+- (id)copyWithReplacementRapportDevice:(id)device
 {
-  v4 = a3;
-  v5 = [objc_alloc(objc_opt_class()) initWithAvOutpuDeviceIdentifier:self->_avOutpuDeviceIdentifier rapportIdentifier:self->_rapportIdentifier idsIdentifier:self->_idsIdentifier avOutputDevice:self->_avOutputDevice rapportDevice:v4 isLocal:self->_isLocal];
+  deviceCopy = device;
+  v5 = [objc_alloc(objc_opt_class()) initWithAvOutpuDeviceIdentifier:self->_avOutpuDeviceIdentifier rapportIdentifier:self->_rapportIdentifier idsIdentifier:self->_idsIdentifier avOutputDevice:self->_avOutputDevice rapportDevice:deviceCopy isLocal:self->_isLocal];
 
   return v5;
 }
 
-- (BOOL)isEqualToNodeDO:(id)a3
+- (BOOL)isEqualToNodeDO:(id)o
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  oCopy = o;
+  v5 = oCopy;
+  if (!oCopy)
   {
     goto LABEL_18;
   }
 
   v6 = self->_avOutpuDeviceIdentifier == 0;
-  v7 = [v4 avOutpuDeviceIdentifier];
-  v8 = v7 != 0;
+  avOutpuDeviceIdentifier = [oCopy avOutpuDeviceIdentifier];
+  v8 = avOutpuDeviceIdentifier != 0;
 
   if (v6 == v8)
   {
@@ -299,8 +299,8 @@ LABEL_6:
   avOutpuDeviceIdentifier = self->_avOutpuDeviceIdentifier;
   if (avOutpuDeviceIdentifier)
   {
-    v10 = [v5 avOutpuDeviceIdentifier];
-    v11 = [(NSString *)avOutpuDeviceIdentifier isEqual:v10];
+    avOutpuDeviceIdentifier2 = [v5 avOutpuDeviceIdentifier];
+    v11 = [(NSString *)avOutpuDeviceIdentifier isEqual:avOutpuDeviceIdentifier2];
 
     if (!v11)
     {
@@ -309,8 +309,8 @@ LABEL_6:
   }
 
   v12 = self->_rapportIdentifier == 0;
-  v13 = [v5 rapportIdentifier];
-  v14 = v13 != 0;
+  rapportIdentifier = [v5 rapportIdentifier];
+  v14 = rapportIdentifier != 0;
 
   if (v12 == v14)
   {
@@ -320,8 +320,8 @@ LABEL_6:
   rapportIdentifier = self->_rapportIdentifier;
   if (rapportIdentifier)
   {
-    v16 = [v5 rapportIdentifier];
-    v17 = [(NSString *)rapportIdentifier isEqual:v16];
+    rapportIdentifier2 = [v5 rapportIdentifier];
+    v17 = [(NSString *)rapportIdentifier isEqual:rapportIdentifier2];
 
     if (!v17)
     {
@@ -330,8 +330,8 @@ LABEL_6:
   }
 
   v18 = self->_idsIdentifier == 0;
-  v19 = [v5 idsIdentifier];
-  v20 = v19 != 0;
+  idsIdentifier = [v5 idsIdentifier];
+  v20 = idsIdentifier != 0;
 
   if (v18 == v20)
   {
@@ -341,8 +341,8 @@ LABEL_6:
   idsIdentifier = self->_idsIdentifier;
   if (idsIdentifier)
   {
-    v22 = [v5 idsIdentifier];
-    v23 = [(NSString *)idsIdentifier isEqual:v22];
+    idsIdentifier2 = [v5 idsIdentifier];
+    v23 = [(NSString *)idsIdentifier isEqual:idsIdentifier2];
 
     if (!v23)
     {
@@ -351,8 +351,8 @@ LABEL_6:
   }
 
   v24 = self->_avOutputDevice == 0;
-  v25 = [v5 avOutputDevice];
-  v26 = v25 != 0;
+  avOutputDevice = [v5 avOutputDevice];
+  v26 = avOutputDevice != 0;
 
   if (v24 == v26)
   {
@@ -362,8 +362,8 @@ LABEL_6:
   avOutputDevice = self->_avOutputDevice;
   if (avOutputDevice)
   {
-    v28 = [v5 avOutputDevice];
-    v29 = [(IRAVOutputDeviceDO *)avOutputDevice isEqual:v28];
+    avOutputDevice2 = [v5 avOutputDevice];
+    v29 = [(IRAVOutputDeviceDO *)avOutputDevice isEqual:avOutputDevice2];
 
     if (!v29)
     {
@@ -372,8 +372,8 @@ LABEL_6:
   }
 
   v30 = self->_rapportDevice == 0;
-  v31 = [v5 rapportDevice];
-  v32 = v31 != 0;
+  rapportDevice = [v5 rapportDevice];
+  v32 = rapportDevice != 0;
 
   if (v30 == v32 || (rapportDevice = self->_rapportDevice) != 0 && ([v5 rapportDevice], v34 = objc_claimAutoreleasedReturnValue(), v35 = -[IRRapportDeviceDO isEqual:](rapportDevice, "isEqual:", v34), v34, !v35))
   {
@@ -390,28 +390,28 @@ LABEL_18:
   return v37;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(IRNodeDO *)self isEqualToNodeDO:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(IRNodeDO *)self isEqualToNodeDO:v5];
   }
 
   return v6;
 }
 
-- (IRNodeDO)initWithCoder:(id)a3
+- (IRNodeDO)initWithCoder:(id)coder
 {
   v38[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"avOutpuDeviceIdentifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"avOutpuDeviceIdentifier"];
   if (v5)
   {
     objc_opt_class();
@@ -426,11 +426,11 @@ LABEL_18:
       v38[0] = v10;
       v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v38 forKeys:&v37 count:1];
       v12 = [objc_alloc(MEMORY[0x277CCA9B8]) initWithDomain:@"IRNodeDOOCNTErrorDomain" code:3 userInfo:v11];
-      [v4 failWithError:v12];
+      [coderCopy failWithError:v12];
 LABEL_16:
 
 LABEL_17:
-      v14 = 0;
+      selfCopy = 0;
 LABEL_18:
 
 LABEL_19:
@@ -440,7 +440,7 @@ LABEL_20:
     }
 
 LABEL_6:
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"rapportIdentifier"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"rapportIdentifier"];
     if (v7)
     {
       objc_opt_class();
@@ -462,18 +462,18 @@ LABEL_6:
 
     else
     {
-      v20 = [v4 error];
+      error = [coderCopy error];
 
-      if (v20)
+      if (error)
       {
-        v14 = 0;
+        selfCopy = 0;
 LABEL_21:
 
         goto LABEL_22;
       }
     }
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"idsIdentifier"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"idsIdentifier"];
     if (v9)
     {
       objc_opt_class();
@@ -488,7 +488,7 @@ LABEL_21:
         v34 = v12;
         v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v34 forKeys:&v33 count:1];
         v23 = [objc_alloc(MEMORY[0x277CCA9B8]) initWithDomain:@"IRNodeDOOCNTErrorDomain" code:3 userInfo:v19];
-        [v4 failWithError:v23];
+        [coderCopy failWithError:v23];
 
         goto LABEL_15;
       }
@@ -496,56 +496,56 @@ LABEL_21:
 
     else
     {
-      v26 = [v4 error];
+      error2 = [coderCopy error];
 
-      if (v26)
+      if (error2)
       {
-        v14 = 0;
+        selfCopy = 0;
         goto LABEL_20;
       }
     }
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"avOutputDevice"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"avOutputDevice"];
     if (!v10)
     {
-      v28 = [v4 error];
+      error3 = [coderCopy error];
 
-      if (v28)
+      if (error3)
       {
-        v14 = 0;
+        selfCopy = 0;
         goto LABEL_19;
       }
     }
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"rapportDevice"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"rapportDevice"];
     if (!v11)
     {
-      v29 = [v4 error];
+      error4 = [coderCopy error];
 
-      if (v29)
+      if (error4)
       {
         goto LABEL_17;
       }
     }
 
-    v27 = [v4 decodeInt64ForKey:@"isLocal"];
+    v27 = [coderCopy decodeInt64ForKey:@"isLocal"];
     if (v27)
     {
       goto LABEL_28;
     }
 
-    v30 = [v4 error];
+    error5 = [coderCopy error];
 
-    if (v30)
+    if (error5)
     {
       goto LABEL_17;
     }
 
-    if ([v4 containsValueForKey:@"isLocal"])
+    if ([coderCopy containsValueForKey:@"isLocal"])
     {
 LABEL_28:
       self = [(IRNodeDO *)self initWithAvOutpuDeviceIdentifier:v5 rapportIdentifier:v7 idsIdentifier:v9 avOutputDevice:v10 rapportDevice:v11 isLocal:v27 != 0];
-      v14 = self;
+      selfCopy = self;
       goto LABEL_18;
     }
 
@@ -556,66 +556,66 @@ LABEL_28:
     v18 = 1;
 LABEL_9:
     v19 = [v17 initWithDomain:@"IRNodeDOOCNTErrorDomain" code:v18 userInfo:v12];
-    [v4 failWithError:v19];
+    [coderCopy failWithError:v19];
 LABEL_15:
 
     goto LABEL_16;
   }
 
-  v13 = [v4 error];
+  error6 = [coderCopy error];
 
-  if (!v13)
+  if (!error6)
   {
     goto LABEL_6;
   }
 
-  v14 = 0;
+  selfCopy = 0;
 LABEL_22:
 
   v24 = *MEMORY[0x277D85DE8];
-  return v14;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   avOutpuDeviceIdentifier = self->_avOutpuDeviceIdentifier;
-  v10 = v4;
+  v10 = coderCopy;
   if (avOutpuDeviceIdentifier)
   {
-    [v4 encodeObject:avOutpuDeviceIdentifier forKey:@"avOutpuDeviceIdentifier"];
-    v4 = v10;
+    [coderCopy encodeObject:avOutpuDeviceIdentifier forKey:@"avOutpuDeviceIdentifier"];
+    coderCopy = v10;
   }
 
   rapportIdentifier = self->_rapportIdentifier;
   if (rapportIdentifier)
   {
     [v10 encodeObject:rapportIdentifier forKey:@"rapportIdentifier"];
-    v4 = v10;
+    coderCopy = v10;
   }
 
   idsIdentifier = self->_idsIdentifier;
   if (idsIdentifier)
   {
     [v10 encodeObject:idsIdentifier forKey:@"idsIdentifier"];
-    v4 = v10;
+    coderCopy = v10;
   }
 
   avOutputDevice = self->_avOutputDevice;
   if (avOutputDevice)
   {
     [v10 encodeObject:avOutputDevice forKey:@"avOutputDevice"];
-    v4 = v10;
+    coderCopy = v10;
   }
 
   rapportDevice = self->_rapportDevice;
   if (rapportDevice)
   {
     [v10 encodeObject:rapportDevice forKey:@"rapportDevice"];
-    v4 = v10;
+    coderCopy = v10;
   }
 
-  [v4 encodeInt64:self->_isLocal forKey:@"isLocal"];
+  [coderCopy encodeInt64:self->_isLocal forKey:@"isLocal"];
 }
 
 - (id)description

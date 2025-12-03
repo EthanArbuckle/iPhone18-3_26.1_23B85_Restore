@@ -1,9 +1,9 @@
 @interface _UISceneHostingActivationHandle
 - (BOOL)isActive;
 - (BOOL)isHandleValid;
-- (id)initWithActivationTarget:(id *)a1;
-- (void)activate:(id)a3;
-- (void)deactivate:(id)a3;
+- (id)initWithActivationTarget:(id *)target;
+- (void)activate:(id)activate;
+- (void)deactivate:(id)deactivate;
 - (void)dealloc;
 @end
 
@@ -13,8 +13,8 @@
 {
   if ([(_UISceneHostingActivationHandle *)self isHandleValid])
   {
-    v4 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v4 handleFailureInMethod:a2 object:self file:@"_UISceneHostingActivationHandle.m" lineNumber:25 description:@"Scene activation handle deallocated before being invalidated"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UISceneHostingActivationHandle.m" lineNumber:25 description:@"Scene activation handle deallocated before being invalidated"];
   }
 
   v5.receiver = self;
@@ -34,70 +34,70 @@
 {
   if (![(_UISceneHostingActivationHandle *)self isHandleValid])
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"_UISceneHostingActivationHandle.m" lineNumber:35 description:@"This activation handle has invalidated!"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UISceneHostingActivationHandle.m" lineNumber:35 description:@"This activation handle has invalidated!"];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_activationTarget);
-  v5 = [WeakRetained isActive];
+  isActive = [WeakRetained isActive];
 
-  return v5;
+  return isActive;
 }
 
-- (id)initWithActivationTarget:(id *)a1
+- (id)initWithActivationTarget:(id *)target
 {
   v3 = a2;
-  if (a1)
+  if (target)
   {
-    v6.receiver = a1;
+    v6.receiver = target;
     v6.super_class = _UISceneHostingActivationHandle;
     v4 = objc_msgSendSuper2(&v6, sel_init);
-    a1 = v4;
+    target = v4;
     if (v4)
     {
       objc_storeWeak(v4 + 1, v3);
     }
   }
 
-  return a1;
+  return target;
 }
 
-- (void)activate:(id)a3
+- (void)activate:(id)activate
 {
-  v5 = a3;
+  activateCopy = activate;
   if (![(_UISceneHostingActivationHandle *)self isHandleValid])
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"_UISceneHostingActivationHandle.m" lineNumber:40 description:@"This activation handle has invalidated!"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UISceneHostingActivationHandle.m" lineNumber:40 description:@"This activation handle has invalidated!"];
   }
 
   if ([(_UISceneHostingActivationHandle *)self isActive])
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"_UISceneHostingActivationHandle.m" lineNumber:41 description:@"The scene is already active"];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"_UISceneHostingActivationHandle.m" lineNumber:41 description:@"The scene is already active"];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_activationTarget);
-  [WeakRetained activate:v5];
+  [WeakRetained activate:activateCopy];
 }
 
-- (void)deactivate:(id)a3
+- (void)deactivate:(id)deactivate
 {
-  v5 = a3;
+  deactivateCopy = deactivate;
   if (![(_UISceneHostingActivationHandle *)self isHandleValid])
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"_UISceneHostingActivationHandle.m" lineNumber:46 description:@"This activation handle has invalidated!"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UISceneHostingActivationHandle.m" lineNumber:46 description:@"This activation handle has invalidated!"];
   }
 
   if (![(_UISceneHostingActivationHandle *)self isActive])
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"_UISceneHostingActivationHandle.m" lineNumber:47 description:@"The scene is already inactive"];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"_UISceneHostingActivationHandle.m" lineNumber:47 description:@"The scene is already inactive"];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_activationTarget);
-  [WeakRetained deactivate:v5];
+  [WeakRetained deactivate:deactivateCopy];
 }
 
 @end

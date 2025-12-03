@@ -1,17 +1,17 @@
 @interface ASVControlsView
-- (ASVControlsView)initWithArrangedSubviews:(id)a3;
-- (id)_accessibilityHUDGestureManager:(id)a3 HUDItemForPoint:(CGPoint)a4;
-- (id)_buttonAtPoint:(CGPoint)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (void)_accessibilityHUDGestureManager:(id)a3 gestureLiftedAtPoint:(CGPoint)a4;
+- (ASVControlsView)initWithArrangedSubviews:(id)subviews;
+- (id)_accessibilityHUDGestureManager:(id)manager HUDItemForPoint:(CGPoint)point;
+- (id)_buttonAtPoint:(CGPoint)point;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (void)_accessibilityHUDGestureManager:(id)manager gestureLiftedAtPoint:(CGPoint)point;
 @end
 
 @implementation ASVControlsView
 
-- (ASVControlsView)initWithArrangedSubviews:(id)a3
+- (ASVControlsView)initWithArrangedSubviews:(id)subviews
 {
   v35[4] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  subviewsCopy = subviews;
   v34.receiver = self;
   v34.super_class = ASVControlsView;
   v5 = [(ASVControlsView *)&v34 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
@@ -19,8 +19,8 @@
   if (v5)
   {
     [(ASVControlsView *)v5 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v7 = [objc_alloc(MEMORY[0x277D75A68]) initWithArrangedSubviews:v4];
-    v33 = v4;
+    v7 = [objc_alloc(MEMORY[0x277D75A68]) initWithArrangedSubviews:subviewsCopy];
+    v33 = subviewsCopy;
     stackView = v6->_stackView;
     v6->_stackView = v7;
 
@@ -29,40 +29,40 @@
     [(UIStackView *)v6->_stackView setSpacing:10.0];
     [(ASVControlsView *)v6 addSubview:v6->_stackView];
     v28 = MEMORY[0x277CCAAD0];
-    v32 = [(UIStackView *)v6->_stackView leadingAnchor];
-    v31 = [(ASVControlsView *)v6 leadingAnchor];
-    v30 = [v32 constraintEqualToAnchor:v31];
+    leadingAnchor = [(UIStackView *)v6->_stackView leadingAnchor];
+    leadingAnchor2 = [(ASVControlsView *)v6 leadingAnchor];
+    v30 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v35[0] = v30;
-    v29 = [(UIStackView *)v6->_stackView trailingAnchor];
-    v9 = [(ASVControlsView *)v6 trailingAnchor];
-    v10 = [v29 constraintEqualToAnchor:v9];
+    trailingAnchor = [(UIStackView *)v6->_stackView trailingAnchor];
+    trailingAnchor2 = [(ASVControlsView *)v6 trailingAnchor];
+    v10 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v35[1] = v10;
-    v11 = [(UIStackView *)v6->_stackView topAnchor];
-    v12 = [(ASVControlsView *)v6 topAnchor];
-    v13 = [v11 constraintEqualToAnchor:v12];
+    topAnchor = [(UIStackView *)v6->_stackView topAnchor];
+    topAnchor2 = [(ASVControlsView *)v6 topAnchor];
+    v13 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v35[2] = v13;
-    v14 = [(UIStackView *)v6->_stackView bottomAnchor];
-    v15 = [(ASVControlsView *)v6 bottomAnchor];
-    v16 = [v14 constraintEqualToAnchor:v15];
+    bottomAnchor = [(UIStackView *)v6->_stackView bottomAnchor];
+    bottomAnchor2 = [(ASVControlsView *)v6 bottomAnchor];
+    v16 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v35[3] = v16;
     v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v35 count:4];
     [v28 activateConstraints:v17];
 
-    v4 = v33;
-    v18 = [(ASVControlsView *)v6 layer];
-    [v18 setMasksToBounds:0];
+    subviewsCopy = v33;
+    layer = [(ASVControlsView *)v6 layer];
+    [layer setMasksToBounds:0];
 
-    v19 = [(ASVControlsView *)v6 layer];
+    layer2 = [(ASVControlsView *)v6 layer];
     LODWORD(v20) = *"\nף=";
-    [v19 setShadowOpacity:v20];
+    [layer2 setShadowOpacity:v20];
 
     v21 = *MEMORY[0x277CBF3A8];
     v22 = *(MEMORY[0x277CBF3A8] + 8);
-    v23 = [(ASVControlsView *)v6 layer];
-    [v23 setShadowOffset:{v21, v22}];
+    layer3 = [(ASVControlsView *)v6 layer];
+    [layer3 setShadowOffset:{v21, v22}];
 
-    v24 = [(ASVControlsView *)v6 layer];
-    [v24 setShadowRadius:20.0];
+    layer4 = [(ASVControlsView *)v6 layer];
+    [layer4 setShadowRadius:20.0];
 
     v25 = [objc_alloc(MEMORY[0x277D750A8]) initWithView:v6 delegate:v6];
     largeTextHUDGestureManager = v6->_largeTextHUDGestureManager;
@@ -72,11 +72,11 @@
   return v6;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
   v10.receiver = self;
   v10.super_class = ASVControlsView;
-  v5 = [(ASVControlsView *)&v10 hitTest:a4 withEvent:a3.x, a3.y];
+  v5 = [(ASVControlsView *)&v10 hitTest:event withEvent:test.x, test.y];
   if (v5 == self)
   {
     v8 = 0;
@@ -84,8 +84,8 @@
 
   else
   {
-    v6 = [(ASVControlsView *)self stackView];
-    if (v5 == v6)
+    stackView = [(ASVControlsView *)self stackView];
+    if (v5 == stackView)
     {
       v7 = 0;
     }
@@ -101,9 +101,9 @@
   return v8;
 }
 
-- (id)_buttonAtPoint:(CGPoint)a3
+- (id)_buttonAtPoint:(CGPoint)point
 {
-  v3 = [(ASVControlsView *)self hitTest:0 withEvent:a3.x, a3.y];
+  v3 = [(ASVControlsView *)self hitTest:0 withEvent:point.x, point.y];
   objc_opt_class();
   v4 = 0;
   if (objc_opt_isKindOfClass())
@@ -114,20 +114,20 @@
   return v4;
 }
 
-- (id)_accessibilityHUDGestureManager:(id)a3 HUDItemForPoint:(CGPoint)a4
+- (id)_accessibilityHUDGestureManager:(id)manager HUDItemForPoint:(CGPoint)point
 {
-  v4 = [(ASVControlsView *)self _buttonAtPoint:a3, a4.x, a4.y];
+  v4 = [(ASVControlsView *)self _buttonAtPoint:manager, point.x, point.y];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 superview];
+    superview = [v4 superview];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v8 = [v5 superview];
-      [v8 largeImageInsets];
+      superview2 = [v5 superview];
+      [superview2 largeImageInsets];
       v10 = v9;
       v12 = v11;
       v14 = v13;
@@ -156,9 +156,9 @@
   return v17;
 }
 
-- (void)_accessibilityHUDGestureManager:(id)a3 gestureLiftedAtPoint:(CGPoint)a4
+- (void)_accessibilityHUDGestureManager:(id)manager gestureLiftedAtPoint:(CGPoint)point
 {
-  v4 = [(ASVControlsView *)self _buttonAtPoint:a3, a4.x, a4.y];
+  v4 = [(ASVControlsView *)self _buttonAtPoint:manager, point.x, point.y];
   v5 = v4;
   if (v4)
   {

@@ -1,12 +1,12 @@
 @interface TPSTip
-+ (id)correlationIdForDictionary:(id)a3;
++ (id)correlationIdForDictionary:(id)dictionary;
 + (id)na_identity;
-+ (int64_t)contentTypeForContentDictionary:(id)a3;
-+ (int64_t)contentTypeForDictionary:(id)a3;
++ (int64_t)contentTypeForContentDictionary:(id)dictionary;
++ (int64_t)contentTypeForDictionary:(id)dictionary;
 - (BOOL)containsLinks;
 - (BOOL)hasImage;
 - (BOOL)hasVideo;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isHardwareWelcome;
 - (BOOL)isSiriSuggestion;
 - (BOOL)isSoftwareWelcome;
@@ -14,13 +14,13 @@
 - (BOOL)isTip;
 - (NSString)linkedDocumentId;
 - (TPSAssets)fullContentAssets;
-- (TPSTip)initWithCoder:(id)a3;
-- (TPSTip)initWithDictionary:(id)a3 metadata:(id)a4;
-- (id)URLWithReferrer:(id)a3;
+- (TPSTip)initWithCoder:(id)coder;
+- (TPSTip)initWithDictionary:(id)dictionary metadata:(id)metadata;
+- (id)URLWithReferrer:(id)referrer;
 - (id)actions;
 - (id)bodyContent;
 - (id)bodyText;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
 - (id)footnoteContent;
 - (id)shortTitle;
@@ -29,98 +29,98 @@
 - (id)textContent;
 - (id)title;
 - (unint64_t)hash;
-- (void)addCollectionIdentifier:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)removeCollectionIdentifier:(id)a3;
-- (void)setSiriSuggestion:(BOOL)a3;
-- (void)updateWithContentDictionary:(id)a3 metadata:(id)a4 clientConditionIdentifier:(id)a5 fileIdMap:(id)a6 clientConditions:(id)a7;
+- (void)addCollectionIdentifier:(id)identifier;
+- (void)encodeWithCoder:(id)coder;
+- (void)removeCollectionIdentifier:(id)identifier;
+- (void)setSiriSuggestion:(BOOL)suggestion;
+- (void)updateWithContentDictionary:(id)dictionary metadata:(id)metadata clientConditionIdentifier:(id)identifier fileIdMap:(id)map clientConditions:(id)conditions;
 @end
 
 @implementation TPSTip
 
 - (BOOL)containsLinks
 {
-  v2 = [(TPSTip *)self fullContent];
-  v3 = [v2 bodyContainsLink];
+  fullContent = [(TPSTip *)self fullContent];
+  bodyContainsLink = [fullContent bodyContainsLink];
 
-  return v3;
+  return bodyContainsLink;
 }
 
 - (id)shortTitle
 {
-  v2 = [(TPSTip *)self fullContent];
-  v3 = [v2 title];
+  fullContent = [(TPSTip *)self fullContent];
+  title = [fullContent title];
 
-  return v3;
+  return title;
 }
 
 - (BOOL)hasImage
 {
-  v2 = [(TPSTip *)self fullContentAssets];
-  v3 = [v2 hasImage];
+  fullContentAssets = [(TPSTip *)self fullContentAssets];
+  hasImage = [fullContentAssets hasImage];
 
-  return v3;
+  return hasImage;
 }
 
 - (BOOL)hasVideo
 {
-  v2 = [(TPSTip *)self fullContentAssets];
-  v3 = [v2 hasVideo];
+  fullContentAssets = [(TPSTip *)self fullContentAssets];
+  hasVideo = [fullContentAssets hasVideo];
 
-  return v3;
+  return hasVideo;
 }
 
 - (id)actions
 {
-  v2 = [(TPSTip *)self fullContent];
-  v3 = [v2 actions];
+  fullContent = [(TPSTip *)self fullContent];
+  actions = [fullContent actions];
 
-  return v3;
+  return actions;
 }
 
 - (id)summary
 {
-  v2 = [(TPSTip *)self fullContent];
-  v3 = [v2 title];
+  fullContent = [(TPSTip *)self fullContent];
+  title = [fullContent title];
 
-  return v3;
+  return title;
 }
 
 - (id)bodyText
 {
-  v2 = [(TPSTip *)self fullContent];
-  v3 = [v2 bodyText];
+  fullContent = [(TPSTip *)self fullContent];
+  bodyText = [fullContent bodyText];
 
-  return v3;
+  return bodyText;
 }
 
 - (id)bodyContent
 {
-  v2 = [(TPSTip *)self fullContent];
-  v3 = [v2 bodyContent];
+  fullContent = [(TPSTip *)self fullContent];
+  bodyContent = [fullContent bodyContent];
 
-  return v3;
+  return bodyContent;
 }
 
 - (id)footnoteContent
 {
-  v2 = [(TPSTip *)self fullContent];
-  v3 = [v2 footnoteContent];
+  fullContent = [(TPSTip *)self fullContent];
+  footnoteContent = [fullContent footnoteContent];
 
-  return v3;
+  return footnoteContent;
 }
 
-+ (int64_t)contentTypeForDictionary:(id)a3
++ (int64_t)contentTypeForDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
   v13 = 1;
-  v5 = [v4 TPSSafeDictionaryForKey:@"content"];
+  v5 = [dictionaryCopy TPSSafeDictionaryForKey:@"content"];
   if (v5)
   {
-    v6 = [a1 contentTypeForContentDictionary:v5];
+    v6 = [self contentTypeForContentDictionary:v5];
     v11[3] = v6;
   }
 
@@ -131,13 +131,13 @@
 
   if (v6 == 1)
   {
-    v7 = [v4 TPSSafeArrayForKey:@"conditions"];
+    v7 = [dictionaryCopy TPSSafeArrayForKey:@"conditions"];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __35__TPSTip_contentTypeForDictionary___block_invoke;
     v9[3] = &unk_1E8101B70;
     v9[4] = &v10;
-    v9[5] = a1;
+    v9[5] = self;
     [v7 enumerateObjectsUsingBlock:v9];
 
     v6 = v11[3];
@@ -154,18 +154,18 @@ void __35__TPSTip_contentTypeForDictionary___block_invoke(uint64_t a1, void *a2,
   *a4 = *(*(*(a1 + 32) + 8) + 24) != 1;
 }
 
-+ (id)correlationIdForDictionary:(id)a3
++ (id)correlationIdForDictionary:(id)dictionary
 {
-  v3 = [a3 TPSSafeDictionaryForKey:@"relationships"];
+  v3 = [dictionary TPSSafeDictionaryForKey:@"relationships"];
   v4 = [v3 TPSSafeStringForKey:@"correlationId"];
 
   return v4;
 }
 
-+ (int64_t)contentTypeForContentDictionary:(id)a3
++ (int64_t)contentTypeForContentDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [v3 TPSSafeDictionaryForKey:@"full"];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy TPSSafeDictionaryForKey:@"full"];
 
   if (v4)
   {
@@ -177,14 +177,14 @@ void __35__TPSTip_contentTypeForDictionary___block_invoke(uint64_t a1, void *a2,
     v5 = 1;
   }
 
-  v6 = [v3 TPSSafeDictionaryForKey:@"mini"];
+  v6 = [dictionaryCopy TPSSafeDictionaryForKey:@"mini"];
 
   if (v6)
   {
     v5 |= 4uLL;
   }
 
-  v7 = [v3 TPSSafeDictionaryForKey:@"checklist"];
+  v7 = [dictionaryCopy TPSSafeDictionaryForKey:@"checklist"];
 
   v8 = v5 | 8;
   if (!v7)
@@ -203,17 +203,17 @@ void __35__TPSTip_contentTypeForDictionary___block_invoke(uint64_t a1, void *a2,
   }
 }
 
-- (TPSTip)initWithDictionary:(id)a3 metadata:(id)a4
+- (TPSTip)initWithDictionary:(id)dictionary metadata:(id)metadata
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = TPSTip;
-  v7 = [(TPSDocument *)&v11 initWithDictionary:v6 metadata:a4 identifierKey:@"documentId"];
+  v7 = [(TPSDocument *)&v11 initWithDictionary:dictionaryCopy metadata:metadata identifierKey:@"documentId"];
   if (v7)
   {
-    v7->_type = [objc_opt_class() contentTypeForDictionary:v6];
+    v7->_type = [objc_opt_class() contentTypeForDictionary:dictionaryCopy];
     v7->_subContentType = 0;
-    v8 = [v6 TPSSafeStringForKey:@"subContentType"];
+    v8 = [dictionaryCopy TPSSafeStringForKey:@"subContentType"];
     if ([v8 isEqualToString:@"intro"])
     {
       v9 = 1;
@@ -250,61 +250,61 @@ LABEL_12:
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v10.receiver = self;
   v10.super_class = TPSTip;
-  v4 = [(TPSDocument *)&v10 copyWithZone:a3];
+  v4 = [(TPSDocument *)&v10 copyWithZone:zone];
   [v4 setSiriSuggestion:{-[TPSTip isSiriSuggestion](self, "isSiriSuggestion")}];
   [v4 setType:{-[TPSTip type](self, "type")}];
   [v4 setSubContentType:{-[TPSTip subContentType](self, "subContentType")}];
-  v5 = [(TPSTip *)self eyebrow];
-  [v4 setEyebrow:v5];
+  eyebrow = [(TPSTip *)self eyebrow];
+  [v4 setEyebrow:eyebrow];
 
-  v6 = [(TPSTip *)self fullContent];
-  [v4 setFullContent:v6];
+  fullContent = [(TPSTip *)self fullContent];
+  [v4 setFullContent:fullContent];
 
-  v7 = [(TPSTip *)self miniContent];
-  [v4 setMiniContent:v7];
+  miniContent = [(TPSTip *)self miniContent];
+  [v4 setMiniContent:miniContent];
 
-  v8 = [(TPSTip *)self collectionIdentifiers];
-  [v4 setCollectionIdentifiers:v8];
+  collectionIdentifiers = [(TPSTip *)self collectionIdentifiers];
+  [v4 setCollectionIdentifiers:collectionIdentifiers];
 
   [v4 setContentStatus:{-[TPSTip contentStatus](self, "contentStatus")}];
   return v4;
 }
 
-- (TPSTip)initWithCoder:(id)a3
+- (TPSTip)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v20.receiver = self;
   v20.super_class = TPSTip;
-  v5 = [(TPSDocument *)&v20 initWithCoder:v4];
+  v5 = [(TPSDocument *)&v20 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_siriSuggestion = [v4 decodeBoolForKey:@"SiriSuggestion"];
-    v5->_contentStatus = [v4 decodeIntegerForKey:@"contentStatus"];
-    v5->_subContentType = [v4 decodeIntegerForKey:@"subContentType"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"eyebrow"];
+    v5->_siriSuggestion = [coderCopy decodeBoolForKey:@"SiriSuggestion"];
+    v5->_contentStatus = [coderCopy decodeIntegerForKey:@"contentStatus"];
+    v5->_subContentType = [coderCopy decodeIntegerForKey:@"subContentType"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"eyebrow"];
     eyebrow = v5->_eyebrow;
     v5->_eyebrow = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"full"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"full"];
     fullContent = v5->_fullContent;
     v5->_fullContent = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"mini"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"mini"];
     miniContent = v5->_miniContent;
     v5->_miniContent = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"checklist"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"checklist"];
     checklistContent = v5->_checklistContent;
     v5->_checklistContent = v12;
 
     v14 = MEMORY[0x1E695DFD8];
     v15 = objc_opt_class();
     v16 = [v14 setWithObjects:{v15, objc_opt_class(), 0}];
-    v17 = [v4 decodeObjectOfClasses:v16 forKey:@"collectionIdentifiers"];
+    v17 = [coderCopy decodeObjectOfClasses:v16 forKey:@"collectionIdentifiers"];
     collectionIdentifiers = v5->_collectionIdentifiers;
     v5->_collectionIdentifiers = v17;
   }
@@ -312,29 +312,29 @@ LABEL_12:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v10.receiver = self;
   v10.super_class = TPSTip;
-  v4 = a3;
-  [(TPSDocument *)&v10 encodeWithCoder:v4];
-  [v4 encodeBool:-[TPSTip isSiriSuggestion](self forKey:{"isSiriSuggestion", v10.receiver, v10.super_class), @"SiriSuggestion"}];
-  [v4 encodeInteger:-[TPSTip contentStatus](self forKey:{"contentStatus"), @"contentStatus"}];
-  [v4 encodeInteger:-[TPSTip subContentType](self forKey:{"subContentType"), @"subContentType"}];
-  v5 = [(TPSTip *)self eyebrow];
-  [v4 encodeObject:v5 forKey:@"eyebrow"];
+  coderCopy = coder;
+  [(TPSDocument *)&v10 encodeWithCoder:coderCopy];
+  [coderCopy encodeBool:-[TPSTip isSiriSuggestion](self forKey:{"isSiriSuggestion", v10.receiver, v10.super_class), @"SiriSuggestion"}];
+  [coderCopy encodeInteger:-[TPSTip contentStatus](self forKey:{"contentStatus"), @"contentStatus"}];
+  [coderCopy encodeInteger:-[TPSTip subContentType](self forKey:{"subContentType"), @"subContentType"}];
+  eyebrow = [(TPSTip *)self eyebrow];
+  [coderCopy encodeObject:eyebrow forKey:@"eyebrow"];
 
-  v6 = [(TPSTip *)self fullContent];
-  [v4 encodeObject:v6 forKey:@"full"];
+  fullContent = [(TPSTip *)self fullContent];
+  [coderCopy encodeObject:fullContent forKey:@"full"];
 
-  v7 = [(TPSTip *)self miniContent];
-  [v4 encodeObject:v7 forKey:@"mini"];
+  miniContent = [(TPSTip *)self miniContent];
+  [coderCopy encodeObject:miniContent forKey:@"mini"];
 
-  v8 = [(TPSTip *)self checklistContent];
-  [v4 encodeObject:v8 forKey:@"checklist"];
+  checklistContent = [(TPSTip *)self checklistContent];
+  [coderCopy encodeObject:checklistContent forKey:@"checklist"];
 
-  v9 = [(TPSTip *)self collectionIdentifiers];
-  [v4 encodeObject:v9 forKey:@"collectionIdentifiers"];
+  collectionIdentifiers = [(TPSTip *)self collectionIdentifiers];
+  [coderCopy encodeObject:collectionIdentifiers forKey:@"collectionIdentifiers"];
 }
 
 - (BOOL)isTip
@@ -349,118 +349,118 @@ LABEL_12:
 
 - (BOOL)isHardwareWelcome
 {
-  v3 = [(TPSTip *)self isIntro];
-  if (v3)
+  isIntro = [(TPSTip *)self isIntro];
+  if (isIntro)
   {
-    v4 = [(TPSTip *)self collectionIdentifiers];
+    collectionIdentifiers = [(TPSTip *)self collectionIdentifiers];
     v5 = +[TPSCommonDefines hardwareWelcomeCollectionIdentifier];
-    v6 = [v4 containsObject:v5];
+    v6 = [collectionIdentifiers containsObject:v5];
 
-    LOBYTE(v3) = v6;
+    LOBYTE(isIntro) = v6;
   }
 
-  return v3;
+  return isIntro;
 }
 
 - (BOOL)isSoftwareWelcome
 {
-  v3 = [(TPSTip *)self isIntro];
-  if (v3)
+  isIntro = [(TPSTip *)self isIntro];
+  if (isIntro)
   {
-    v4 = [(TPSTip *)self collectionIdentifiers];
+    collectionIdentifiers = [(TPSTip *)self collectionIdentifiers];
     v5 = +[TPSCommonDefines softwareWelcomeCollectionIdentifier];
-    v6 = [v4 containsObject:v5];
+    v6 = [collectionIdentifiers containsObject:v5];
 
-    LOBYTE(v3) = v6;
+    LOBYTE(isIntro) = v6;
   }
 
-  return v3;
+  return isIntro;
 }
 
 - (BOOL)isSwitcherWelcome
 {
-  v3 = [(TPSTip *)self isIntro];
-  if (v3)
+  isIntro = [(TPSTip *)self isIntro];
+  if (isIntro)
   {
-    v4 = [(TPSTip *)self collectionIdentifiers];
+    collectionIdentifiers = [(TPSTip *)self collectionIdentifiers];
     v5 = +[TPSCommonDefines switcherWelcomeCollectionIdentifier];
-    v6 = [v4 containsObject:v5];
+    v6 = [collectionIdentifiers containsObject:v5];
 
-    LOBYTE(v3) = v6;
+    LOBYTE(isIntro) = v6;
   }
 
-  return v3;
+  return isIntro;
 }
 
 - (NSString)linkedDocumentId
 {
-  v2 = [(TPSDocument *)self linkedDocument];
-  v3 = [v2 documentId];
+  linkedDocument = [(TPSDocument *)self linkedDocument];
+  documentId = [linkedDocument documentId];
 
-  return v3;
+  return documentId;
 }
 
 - (id)title
 {
-  v2 = [(TPSTip *)self fullContent];
-  v3 = [v2 title];
+  fullContent = [(TPSTip *)self fullContent];
+  title = [fullContent title];
 
-  return v3;
+  return title;
 }
 
 - (id)text
 {
-  v2 = [(TPSTip *)self fullContent];
-  v3 = [v2 bodyText];
+  fullContent = [(TPSTip *)self fullContent];
+  bodyText = [fullContent bodyText];
 
-  return v3;
+  return bodyText;
 }
 
 - (id)textContent
 {
-  v2 = [(TPSTip *)self fullContent];
-  v3 = [v2 bodyContent];
+  fullContent = [(TPSTip *)self fullContent];
+  bodyContent = [fullContent bodyContent];
 
-  return v3;
+  return bodyContent;
 }
 
 - (TPSAssets)fullContentAssets
 {
-  v2 = [(TPSTip *)self fullContent];
-  v3 = [v2 assets];
+  fullContent = [(TPSTip *)self fullContent];
+  assets = [fullContent assets];
 
-  return v3;
+  return assets;
 }
 
-- (void)updateWithContentDictionary:(id)a3 metadata:(id)a4 clientConditionIdentifier:(id)a5 fileIdMap:(id)a6 clientConditions:(id)a7
+- (void)updateWithContentDictionary:(id)dictionary metadata:(id)metadata clientConditionIdentifier:(id)identifier fileIdMap:(id)map clientConditions:(id)conditions
 {
   v22.receiver = self;
   v22.super_class = TPSTip;
-  v12 = a4;
-  v13 = a3;
-  [(TPSDocument *)&v22 updateWithContentDictionary:v13 metadata:v12 clientConditionIdentifier:a5 fileIdMap:a6 clientConditions:a7];
-  v14 = [v13 TPSSafeStringForKey:{@"eyebrow", v22.receiver, v22.super_class}];
+  metadataCopy = metadata;
+  dictionaryCopy = dictionary;
+  [(TPSDocument *)&v22 updateWithContentDictionary:dictionaryCopy metadata:metadataCopy clientConditionIdentifier:identifier fileIdMap:map clientConditions:conditions];
+  v14 = [dictionaryCopy TPSSafeStringForKey:{@"eyebrow", v22.receiver, v22.super_class}];
   eyebrow = self->_eyebrow;
   self->_eyebrow = v14;
 
-  v16 = [v13 TPSSafeDictionaryForKey:@"full"];
-  v17 = [[TPSFullTipContent alloc] initWithDictionary:v16 metadata:v12];
+  v16 = [dictionaryCopy TPSSafeDictionaryForKey:@"full"];
+  v17 = [[TPSFullTipContent alloc] initWithDictionary:v16 metadata:metadataCopy];
   [(TPSTip *)self setFullContent:v17];
 
-  v18 = [v13 TPSSafeDictionaryForKey:@"mini"];
-  v19 = [[TPSActionableContent alloc] initWithDictionary:v18 metadata:v12];
+  v18 = [dictionaryCopy TPSSafeDictionaryForKey:@"mini"];
+  v19 = [[TPSActionableContent alloc] initWithDictionary:v18 metadata:metadataCopy];
   [(TPSTip *)self setMiniContent:v19];
 
-  v20 = [v13 TPSSafeDictionaryForKey:@"checklist"];
+  v20 = [dictionaryCopy TPSSafeDictionaryForKey:@"checklist"];
 
-  v21 = [[TPSChecklistContent alloc] initWithDictionary:v20 metadata:v12];
+  v21 = [[TPSChecklistContent alloc] initWithDictionary:v20 metadata:metadataCopy];
   [(TPSTip *)self setChecklistContent:v21];
 }
 
-- (void)setSiriSuggestion:(BOOL)a3
+- (void)setSiriSuggestion:(BOOL)suggestion
 {
   os_unfair_lock_lock(&_sharedLock);
-  self->_siriSuggestion = a3;
+  self->_siriSuggestion = suggestion;
 
   os_unfair_lock_unlock(&_sharedLock);
 }
@@ -473,42 +473,42 @@ LABEL_12:
   return self;
 }
 
-- (void)addCollectionIdentifier:(id)a3
+- (void)addCollectionIdentifier:(id)identifier
 {
-  v8 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_lock(&_sharedLock);
   v4 = MEMORY[0x1E695DFA0];
-  v5 = [(TPSTip *)self collectionIdentifiers];
-  v6 = [v4 orderedSetWithArray:v5];
+  collectionIdentifiers = [(TPSTip *)self collectionIdentifiers];
+  v6 = [v4 orderedSetWithArray:collectionIdentifiers];
 
-  [v6 addObject:v8];
-  v7 = [v6 array];
-  [(TPSTip *)self setCollectionIdentifiers:v7];
+  [v6 addObject:identifierCopy];
+  array = [v6 array];
+  [(TPSTip *)self setCollectionIdentifiers:array];
 
   os_unfair_lock_unlock(&_sharedLock);
 }
 
-- (void)removeCollectionIdentifier:(id)a3
+- (void)removeCollectionIdentifier:(id)identifier
 {
-  v7 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_lock(&_sharedLock);
-  v4 = [(TPSTip *)self collectionIdentifiers];
-  v5 = [v4 mutableCopy];
+  collectionIdentifiers = [(TPSTip *)self collectionIdentifiers];
+  v5 = [collectionIdentifiers mutableCopy];
 
-  [v5 removeObject:v7];
+  [v5 removeObject:identifierCopy];
   v6 = [v5 copy];
   [(TPSTip *)self setCollectionIdentifiers:v6];
 
   os_unfair_lock_unlock(&_sharedLock);
 }
 
-- (id)URLWithReferrer:(id)a3
+- (id)URLWithReferrer:(id)referrer
 {
-  v4 = a3;
-  v5 = [(TPSDocument *)self identifier];
-  v6 = [(TPSTip *)self collectionIdentifiers];
-  v7 = [v6 firstObject];
-  v8 = [TPSDocument URLWithTipIdentifier:v5 collectionIdentifier:v7 referrer:v4];
+  referrerCopy = referrer;
+  identifier = [(TPSDocument *)self identifier];
+  collectionIdentifiers = [(TPSTip *)self collectionIdentifiers];
+  firstObject = [collectionIdentifiers firstObject];
+  v8 = [TPSDocument URLWithTipIdentifier:identifier collectionIdentifier:firstObject referrer:referrerCopy];
 
   return v8;
 }
@@ -524,41 +524,41 @@ LABEL_12:
   [v5 appendFormat:@"%@ = %d\n", @"SiriSuggestion", -[TPSTip isSiriSuggestion](self, "isSiriSuggestion")];
   [v5 appendFormat:@"%@ = %ld\n", @"contentStatus", -[TPSTip contentStatus](self, "contentStatus")];
   [v5 appendFormat:@"%@ = %ld\n", @"subContentType", -[TPSTip subContentType](self, "subContentType")];
-  v6 = [(TPSTip *)self collectionIdentifiers];
-  [v5 appendFormat:@"%@ = %@\n", @"collectionIdentifiers", v6];
+  collectionIdentifiers = [(TPSTip *)self collectionIdentifiers];
+  [v5 appendFormat:@"%@ = %@\n", @"collectionIdentifiers", collectionIdentifiers];
 
-  v7 = [(TPSTip *)self eyebrow];
+  eyebrow = [(TPSTip *)self eyebrow];
 
-  if (v7)
+  if (eyebrow)
   {
-    v8 = [(TPSTip *)self eyebrow];
-    [v5 appendFormat:@"\n  %@ = %@\n", @"eyebrow", v8];
+    eyebrow2 = [(TPSTip *)self eyebrow];
+    [v5 appendFormat:@"\n  %@ = %@\n", @"eyebrow", eyebrow2];
   }
 
-  v9 = [(TPSTip *)self fullContent];
+  fullContent = [(TPSTip *)self fullContent];
 
-  if (v9)
+  if (fullContent)
   {
-    v10 = [(TPSTip *)self fullContent];
-    v11 = [v10 debugDescription];
+    fullContent2 = [(TPSTip *)self fullContent];
+    v11 = [fullContent2 debugDescription];
     [v5 appendFormat:@"%@ = %@\n", @"full", v11];
   }
 
-  v12 = [(TPSTip *)self miniContent];
+  miniContent = [(TPSTip *)self miniContent];
 
-  if (v12)
+  if (miniContent)
   {
-    v13 = [(TPSTip *)self miniContent];
-    v14 = [v13 debugDescription];
+    miniContent2 = [(TPSTip *)self miniContent];
+    v14 = [miniContent2 debugDescription];
     [v5 appendFormat:@"%@ = %@\n", @"mini", v14];
   }
 
-  v15 = [(TPSTip *)self checklistContent];
+  checklistContent = [(TPSTip *)self checklistContent];
 
-  if (v15)
+  if (checklistContent)
   {
-    v16 = [(TPSTip *)self checklistContent];
-    v17 = [v16 debugDescription];
+    checklistContent2 = [(TPSTip *)self checklistContent];
+    v17 = [checklistContent2 debugDescription];
     [v5 appendFormat:@"%@ = %@\n", @"checklist", v17];
   }
 
@@ -571,7 +571,7 @@ LABEL_12:
   v4[1] = 3221225472;
   v4[2] = __21__TPSTip_na_identity__block_invoke;
   v4[3] = &__block_descriptor_40_e5__8__0l;
-  v4[4] = a1;
+  v4[4] = self;
   v2 = __21__TPSTip_na_identity__block_invoke(v4);
 
   return v2;
@@ -650,19 +650,19 @@ uint64_t __21__TPSTip_na_identity__block_invoke_6(uint64_t a1, void *a2)
   return [v2 numberWithInteger:v3];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [objc_opt_class() na_identity];
-  LOBYTE(self) = [v5 isObject:self equalToObject:v4];
+  equalCopy = equal;
+  na_identity = [objc_opt_class() na_identity];
+  LOBYTE(self) = [na_identity isObject:self equalToObject:equalCopy];
 
   return self;
 }
 
 - (unint64_t)hash
 {
-  v3 = [objc_opt_class() na_identity];
-  v4 = [v3 hashOfObject:self];
+  na_identity = [objc_opt_class() na_identity];
+  v4 = [na_identity hashOfObject:self];
 
   return v4;
 }

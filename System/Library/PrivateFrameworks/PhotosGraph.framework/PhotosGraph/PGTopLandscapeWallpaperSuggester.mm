@@ -6,9 +6,9 @@
 
 - (void)setupFilteringContexts
 {
-  v2 = self;
+  selfCopy = self;
   v3 = objc_opt_class();
-  if (!v2)
+  if (!selfCopy)
   {
     NSStringFromClass(v3);
     objc_claimAutoreleasedReturnValue();
@@ -18,7 +18,7 @@ LABEL_12:
     return;
   }
 
-  if (([(PGTopLandscapeWallpaperSuggester *)v2 isMemberOfClass:v3]& 1) == 0)
+  if (([(PGTopLandscapeWallpaperSuggester *)selfCopy isMemberOfClass:v3]& 1) == 0)
   {
     v8 = objc_opt_class();
     NSStringFromClass(v8);
@@ -34,18 +34,18 @@ LABEL_12:
   if (IsIPad)
   {
     v6 = [(PGLandscapeWallpaperSuggesterFilteringContext *)v5 initForTopLandscapesInOrientation:2];
-    [(PGLandscapeWallpaperSuggester *)v2 setPrimaryFilteringContext:v6];
+    [(PGLandscapeWallpaperSuggester *)selfCopy setPrimaryFilteringContext:v6];
 
     v12 = [[PGLandscapeWallpaperSuggesterFilteringContext alloc] initForTopLandscapesInOrientation:1];
-    [(PGLandscapeWallpaperSuggester *)v2 setSecondaryFilteringContext:v12];
+    [(PGLandscapeWallpaperSuggester *)selfCopy setSecondaryFilteringContext:v12];
   }
 
   else
   {
     v7 = [(PGLandscapeWallpaperSuggesterFilteringContext *)v5 initForTopLandscapesInOrientation:1];
-    [(PGLandscapeWallpaperSuggester *)v2 setPrimaryFilteringContext:v7];
+    [(PGLandscapeWallpaperSuggester *)selfCopy setPrimaryFilteringContext:v7];
 
-    [(PGLandscapeWallpaperSuggester *)v2 setSecondaryFilteringContext:0];
+    [(PGLandscapeWallpaperSuggester *)selfCopy setSecondaryFilteringContext:0];
   }
 }
 

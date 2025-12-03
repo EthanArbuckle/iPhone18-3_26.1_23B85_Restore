@@ -2,9 +2,9 @@
 - (CGSize)interItemSpacing;
 - (CGSize)itemInternalMargin;
 - (CGSize)itemInternalSquareMargin;
-- (PXPhotosGridMessagesLayoutSpec)initWithExtendedTraitCollection:(id)a3 options:(unint64_t)a4;
+- (PXPhotosGridMessagesLayoutSpec)initWithExtendedTraitCollection:(id)collection options:(unint64_t)options;
 - (UIEdgeInsets)padding;
-- (int64_t)numberOfColumnsForNumberOfItems:(int64_t)a3;
+- (int64_t)numberOfColumnsForNumberOfItems:(int64_t)items;
 @end
 
 @implementation PXPhotosGridMessagesLayoutSpec
@@ -49,31 +49,31 @@
   return result;
 }
 
-- (int64_t)numberOfColumnsForNumberOfItems:(int64_t)a3
+- (int64_t)numberOfColumnsForNumberOfItems:(int64_t)items
 {
   if (self->_numberOfColumns == 0x7FFFFFFFFFFFFFFFLL)
   {
     v5 = +[PXMessagesUISettings sharedInstance];
     [v5 minItemSize];
     v7 = v6;
-    v8 = [v5 minColumns];
+    minColumns = [v5 minColumns];
     [v5 maxColumns];
     [v5 comfortableFitPercentage];
     width = self->_referenceSize.width;
     v11 = llround(width / v7);
-    if (width > 0.0 && a3 >= 1)
+    if (width > 0.0 && items >= 1)
     {
       height = self->_referenceSize.height;
       if (height > 0.0)
       {
         v14 = height - self->_padding.top - self->_padding.bottom;
-        if (v14 > 0.0 && v8 < v11)
+        if (v14 > 0.0 && minColumns < v11)
         {
           v16 = v9 * v14;
-          v17 = v8;
+          v17 = minColumns;
           do
           {
-            if (width / v17 * ceil(a3 / v17) < v16)
+            if (width / v17 * ceil(items / v17) < v16)
             {
               break;
             }
@@ -92,12 +92,12 @@
   return self->_numberOfColumns;
 }
 
-- (PXPhotosGridMessagesLayoutSpec)initWithExtendedTraitCollection:(id)a3 options:(unint64_t)a4
+- (PXPhotosGridMessagesLayoutSpec)initWithExtendedTraitCollection:(id)collection options:(unint64_t)options
 {
-  v6 = a3;
+  collectionCopy = collection;
   v32.receiver = self;
   v32.super_class = PXPhotosGridMessagesLayoutSpec;
-  v7 = [(PXPhotosGridMessagesLayoutSpec *)&v32 initWithExtendedTraitCollection:v6 options:a4];
+  v7 = [(PXPhotosGridMessagesLayoutSpec *)&v32 initWithExtendedTraitCollection:collectionCopy options:options];
   v8 = v7;
   if (v7)
   {
@@ -105,7 +105,7 @@
     [(PXPhotosGridMessagesLayoutSpec *)v7 layoutReferenceSize];
     *&p_referenceSize->width = v10;
     v8->_referenceSize.height = v11;
-    v12 = [(PXPhotosGridMessagesLayoutSpec *)v8 layoutOrientation];
+    layoutOrientation = [(PXPhotosGridMessagesLayoutSpec *)v8 layoutOrientation];
     if ([(PXPhotosGridMessagesLayoutSpec *)v8 sizeClass]== 2)
     {
       if ([(PXPhotosGridMessagesLayoutSpec *)v8 userInterfaceIdiom]== 4)
@@ -126,12 +126,12 @@ LABEL_26:
       }
 
       v8->_numberOfColumns = 4;
-      v21 = vdup_n_s32(v12 == 2);
+      v21 = vdup_n_s32(layoutOrientation == 2);
       v22.i64[0] = v21.u32[0];
       v22.i64[1] = v21.u32[1];
       v23 = vbslq_s8(vcltzq_s64(vshlq_n_s64(v22, 0x3FuLL)), xmmword_1A5381040, xmmword_1A5381030);
       v14 = 38.0;
-      if (v12 == 2)
+      if (layoutOrientation == 2)
       {
         v14 = 34.0;
       }
@@ -141,12 +141,12 @@ LABEL_26:
 
     else
     {
-      v15 = [(PXPhotosGridMessagesLayoutSpec *)v8 sizeSubclass];
-      switch(v15)
+      sizeSubclass = [(PXPhotosGridMessagesLayoutSpec *)v8 sizeSubclass];
+      switch(sizeSubclass)
       {
         case 1:
           v30 = 2;
-          if (v12 == 2)
+          if (layoutOrientation == 2)
           {
             v30 = 4;
           }
@@ -154,13 +154,13 @@ LABEL_26:
           v8->_numberOfColumns = v30;
           v8->_interItemSpacing.width = 2.0;
           v31 = 6.0;
-          if (v12 != 2)
+          if (layoutOrientation != 2)
           {
             v31 = 4.0;
           }
 
           v14 = 33.0;
-          if (v12 == 2)
+          if (layoutOrientation == 2)
           {
             v14 = 26.0;
           }
@@ -169,9 +169,9 @@ LABEL_26:
           v13 = 15.0;
           goto LABEL_25;
         case 2:
-          _ZF = v12 == 2;
+          _ZF = layoutOrientation == 2;
           v24 = 2;
-          if (v12 == 2)
+          if (layoutOrientation == 2)
           {
             v24 = 4;
           }
@@ -179,7 +179,7 @@ LABEL_26:
           v8->_numberOfColumns = v24;
           p_interItemSpacing = &v8->_interItemSpacing;
           v19 = 6.0;
-          if (v12 != 2)
+          if (layoutOrientation != 2)
           {
             v19 = 2.0;
           }
@@ -188,9 +188,9 @@ LABEL_26:
           v20 = 32.0;
           break;
         case 3:
-          _ZF = v12 == 2;
+          _ZF = layoutOrientation == 2;
           v17 = 2;
-          if (v12 == 2)
+          if (layoutOrientation == 2)
           {
             v17 = 3;
           }
@@ -198,7 +198,7 @@ LABEL_26:
           v8->_numberOfColumns = v17;
           p_interItemSpacing = &v8->_interItemSpacing;
           v19 = 6.0;
-          if (v12 != 2)
+          if (layoutOrientation != 2)
           {
             v19 = 2.0;
           }

@@ -1,43 +1,43 @@
 @interface HKFHIRServerAuthenticationInformation
-- (BOOL)isEqual:(id)a3;
-- (HKFHIRServerAuthenticationInformation)initWithClientID:(id)a3 clientSecret:(id)a4 PKCEAlgorithm:(int64_t)a5;
-- (HKFHIRServerAuthenticationInformation)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (HKFHIRServerAuthenticationInformation)initWithClientID:(id)d clientSecret:(id)secret PKCEAlgorithm:(int64_t)algorithm;
+- (HKFHIRServerAuthenticationInformation)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKFHIRServerAuthenticationInformation
 
-- (HKFHIRServerAuthenticationInformation)initWithClientID:(id)a3 clientSecret:(id)a4 PKCEAlgorithm:(int64_t)a5
+- (HKFHIRServerAuthenticationInformation)initWithClientID:(id)d clientSecret:(id)secret PKCEAlgorithm:(int64_t)algorithm
 {
-  v8 = a3;
-  v9 = a4;
+  dCopy = d;
+  secretCopy = secret;
   v16.receiver = self;
   v16.super_class = HKFHIRServerAuthenticationInformation;
   v10 = [(HKFHIRServerAuthenticationInformation *)&v16 init];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [dCopy copy];
     clientID = v10->_clientID;
     v10->_clientID = v11;
 
-    v13 = [v9 copy];
+    v13 = [secretCopy copy];
     clientSecret = v10->_clientSecret;
     v10->_clientSecret = v13;
 
-    v10->_PKCEAlgorithm = a5;
+    v10->_PKCEAlgorithm = algorithm;
   }
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  v6 = v5;
-  if (self != v5)
+  equalCopy = equal;
+  v6 = equalCopy;
+  if (self != equalCopy)
   {
-    v7 = v5;
+    v7 = equalCopy;
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
@@ -48,20 +48,20 @@ LABEL_22:
     }
 
     clientID = self->_clientID;
-    v9 = [(HKFHIRServerAuthenticationInformation *)v7 clientID];
-    if (clientID != v9)
+    clientID = [(HKFHIRServerAuthenticationInformation *)v7 clientID];
+    if (clientID != clientID)
     {
-      v10 = [(HKFHIRServerAuthenticationInformation *)v7 clientID];
-      if (!v10)
+      clientID2 = [(HKFHIRServerAuthenticationInformation *)v7 clientID];
+      if (!clientID2)
       {
         v13 = 0;
         goto LABEL_21;
       }
 
-      v3 = v10;
+      v3 = clientID2;
       v11 = self->_clientID;
-      v12 = [(HKFHIRServerAuthenticationInformation *)v7 clientID];
-      if (![(NSString *)v11 isEqualToString:v12])
+      clientID3 = [(HKFHIRServerAuthenticationInformation *)v7 clientID];
+      if (![(NSString *)v11 isEqualToString:clientID3])
       {
         v13 = 0;
 LABEL_20:
@@ -69,20 +69,20 @@ LABEL_20:
         goto LABEL_21;
       }
 
-      v23 = v12;
+      v23 = clientID3;
     }
 
     clientSecret = self->_clientSecret;
-    v15 = [(HKFHIRServerAuthenticationInformation *)v7 clientSecret];
-    if (clientSecret != v15)
+    clientSecret = [(HKFHIRServerAuthenticationInformation *)v7 clientSecret];
+    if (clientSecret != clientSecret)
     {
-      v16 = [(HKFHIRServerAuthenticationInformation *)v7 clientSecret];
-      if (v16)
+      clientSecret2 = [(HKFHIRServerAuthenticationInformation *)v7 clientSecret];
+      if (clientSecret2)
       {
-        v17 = v16;
+        v17 = clientSecret2;
         v18 = self->_clientSecret;
-        v19 = [(HKFHIRServerAuthenticationInformation *)v7 clientSecret];
-        if ([(NSString *)v18 isEqualToString:v19])
+        clientSecret3 = [(HKFHIRServerAuthenticationInformation *)v7 clientSecret];
+        if ([(NSString *)v18 isEqualToString:clientSecret3])
         {
           PKCEAlgorithm = self->_PKCEAlgorithm;
           v13 = PKCEAlgorithm == [(HKFHIRServerAuthenticationInformation *)v7 PKCEAlgorithm];
@@ -94,8 +94,8 @@ LABEL_15:
 
       v13 = 0;
 LABEL_19:
-      v12 = v23;
-      if (clientID != v9)
+      clientID3 = v23;
+      if (clientID != clientID)
       {
         goto LABEL_20;
       }
@@ -141,21 +141,21 @@ LABEL_23:
   return v12;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   clientID = self->_clientID;
-  v5 = a3;
-  [v5 encodeObject:clientID forKey:@"clientID"];
-  [v5 encodeObject:self->_clientSecret forKey:@"clientSecret"];
-  [v5 encodeInteger:self->_PKCEAlgorithm forKey:@"PKCEAlgorithm"];
+  coderCopy = coder;
+  [coderCopy encodeObject:clientID forKey:@"clientID"];
+  [coderCopy encodeObject:self->_clientSecret forKey:@"clientSecret"];
+  [coderCopy encodeInteger:self->_PKCEAlgorithm forKey:@"PKCEAlgorithm"];
 }
 
-- (HKFHIRServerAuthenticationInformation)initWithCoder:(id)a3
+- (HKFHIRServerAuthenticationInformation)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"clientID"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"clientSecret"];
-  v7 = [v4 decodeIntegerForKey:@"PKCEAlgorithm"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"clientID"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"clientSecret"];
+  v7 = [coderCopy decodeIntegerForKey:@"PKCEAlgorithm"];
 
   v8 = [(HKFHIRServerAuthenticationInformation *)self initWithClientID:v5 clientSecret:v6 PKCEAlgorithm:v7];
   return v8;

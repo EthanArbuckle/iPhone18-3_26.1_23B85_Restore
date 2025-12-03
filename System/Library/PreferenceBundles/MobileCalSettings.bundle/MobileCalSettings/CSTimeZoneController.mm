@@ -1,33 +1,33 @@
 @interface CSTimeZoneController
 - (BOOL)_timeZoneSupportEnabled;
-- (id)calendarTimeZone:(id)a3;
+- (id)calendarTimeZone:(id)zone;
 - (id)specifiers;
-- (id)timeZoneSupportEnabled:(id)a3;
-- (void)loadTimeZoneController:(id)a3;
-- (void)setCalendarTimeZone:(id)a3 specifier:(id)a4;
-- (void)setTimeZoneSupportEnabled:(id)a3 specifier:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
+- (id)timeZoneSupportEnabled:(id)enabled;
+- (void)loadTimeZoneController:(id)controller;
+- (void)setCalendarTimeZone:(id)zone specifier:(id)specifier;
+- (void)setTimeZoneSupportEnabled:(id)enabled specifier:(id)specifier;
+- (void)viewDidAppear:(BOOL)appear;
 @end
 
 @implementation CSTimeZoneController
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v16.receiver = self;
   v16.super_class = CSTimeZoneController;
-  [(CSTimeZoneController *)&v16 viewDidAppear:a3];
+  [(CSTimeZoneController *)&v16 viewDidAppear:appear];
   v4 = [NSURL URLWithString:@"settings-navigation://com.apple.Settings.Apps/com.apple.mobilecal/timeZoneOverride"];
   v5 = [_NSLocalizedStringResource alloc];
   v6 = +[NSLocale currentLocale];
   v7 = [NSBundle bundleForClass:objc_opt_class()];
-  v8 = [v7 bundleURL];
-  v9 = [v5 initWithKey:@"Time Zone Override" table:@"MobileCalSettings" locale:v6 bundleURL:v8];
+  bundleURL = [v7 bundleURL];
+  v9 = [v5 initWithKey:@"Time Zone Override" table:@"MobileCalSettings" locale:v6 bundleURL:bundleURL];
 
   v10 = [_NSLocalizedStringResource alloc];
   v11 = +[NSLocale currentLocale];
   v12 = [NSBundle bundleForClass:objc_opt_class()];
-  v13 = [v12 bundleURL];
-  v14 = [v10 initWithKey:@"Calendar" table:@"MobileCalSettings" locale:v11 bundleURL:v13];
+  bundleURL2 = [v12 bundleURL];
+  v14 = [v10 initWithKey:@"Calendar" table:@"MobileCalSettings" locale:v11 bundleURL:bundleURL2];
 
   v17 = v14;
   v15 = [NSArray arrayWithObjects:&v17 count:1];
@@ -46,11 +46,11 @@
   return v3 != 0;
 }
 
-- (void)setTimeZoneSupportEnabled:(id)a3 specifier:(id)a4
+- (void)setTimeZoneSupportEnabled:(id)enabled specifier:(id)specifier
 {
-  v5 = [a3 BOOLValue];
-  self->_timeZoneSupportEnabled = v5;
-  if (v5)
+  bOOLValue = [enabled BOOLValue];
+  self->_timeZoneSupportEnabled = bOOLValue;
+  if (bOOLValue)
   {
     v6 = PSCityForSpecifier();
     if (v6)
@@ -82,17 +82,17 @@
   [WeakRetained reloadSpecifier:*&self->PSListController_opaque[OBJC_IVAR___PSViewController__specifier]];
 }
 
-- (id)timeZoneSupportEnabled:(id)a3
+- (id)timeZoneSupportEnabled:(id)enabled
 {
-  v4 = [(CSTimeZoneController *)self _timeZoneSupportEnabled];
-  self->_timeZoneSupportEnabled = v4;
+  _timeZoneSupportEnabled = [(CSTimeZoneController *)self _timeZoneSupportEnabled];
+  self->_timeZoneSupportEnabled = _timeZoneSupportEnabled;
 
-  return [NSNumber numberWithBool:v4];
+  return [NSNumber numberWithBool:_timeZoneSupportEnabled];
 }
 
-- (id)calendarTimeZone:(id)a3
+- (id)calendarTimeZone:(id)zone
 {
-  v3 = a3;
+  zoneCopy = zone;
   v4 = CalCopyDefaultTimeZoneSetting();
   if (v4)
   {
@@ -101,12 +101,12 @@
     if (v6 || (PSCityForTimeZone(), (v6 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v7 = v6;
-      v8 = [v6 name];
+      name = [v6 name];
     }
 
     else
     {
-      v8 = CFTimeZoneGetName(v5);
+      name = CFTimeZoneGetName(v5);
     }
 
     CFRelease(v5);
@@ -115,12 +115,12 @@
   else
   {
     v9 = [NSBundle bundleForClass:objc_opt_class()];
-    v8 = [v9 localizedStringForKey:@"Time Zone Region Off" value:@"Off" table:@"MobileCalSettings"];
+    name = [v9 localizedStringForKey:@"Time Zone Region Off" value:@"Off" table:@"MobileCalSettings"];
   }
 
-  if (v8)
+  if (name)
   {
-    v10 = v8;
+    v10 = name;
   }
 
   else
@@ -133,15 +133,15 @@
   return v10;
 }
 
-- (void)setCalendarTimeZone:(id)a3 specifier:(id)a4
+- (void)setCalendarTimeZone:(id)zone specifier:(id)specifier
 {
-  v5 = a3;
-  if (!v5)
+  zoneCopy = zone;
+  if (!zoneCopy)
   {
     goto LABEL_14;
   }
 
-  v12 = v5;
+  v12 = zoneCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -162,12 +162,12 @@
 
   v7 = v6;
 LABEL_8:
-  v8 = [v7 timeZone];
+  timeZone = [v7 timeZone];
 
-  if (v8)
+  if (timeZone)
   {
-    v9 = [v7 timeZone];
-    v10 = CFTimeZoneCreateWithName(0, v9, 0);
+    timeZone2 = [v7 timeZone];
+    v10 = CFTimeZoneCreateWithName(0, timeZone2, 0);
 
     if (v10)
     {
@@ -188,15 +188,15 @@ LABEL_8:
   WeakRetained = objc_loadWeakRetained(&self->PSListController_opaque[OBJC_IVAR___PSViewController__parentController]);
   [WeakRetained reloadSpecifier:*&self->PSListController_opaque[OBJC_IVAR___PSViewController__specifier]];
 
-  v5 = v12;
+  zoneCopy = v12;
 LABEL_14:
 }
 
-- (void)loadTimeZoneController:(id)a3
+- (void)loadTimeZoneController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v5 = objc_opt_new();
-  [v5 setSpecifier:v4];
+  [v5 setSpecifier:controllerCopy];
 
   [v5 setParentController:self];
   [(CSTimeZoneController *)self showController:v5 animate:1];
@@ -211,9 +211,9 @@ LABEL_14:
     v30 = objc_alloc_init(NSMutableArray);
     v5 = [NSBundle bundleForClass:objc_opt_class()];
     v6 = +[UIDevice currentDevice];
-    v7 = [v6 userInterfaceIdiom];
+    userInterfaceIdiom = [v6 userInterfaceIdiom];
 
-    if ((v7 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+    if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
     {
       v8 = @"Time Zone Override Cell Title (iPad)";
     }
@@ -241,9 +241,9 @@ LABEL_14:
     v14 = +[PSSpecifier emptyGroupSpecifier];
     [v30 addObject:v14];
     v15 = +[UIDevice currentDevice];
-    v16 = [v15 userInterfaceIdiom];
+    userInterfaceIdiom2 = [v15 userInterfaceIdiom];
 
-    if ((v16 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+    if ((userInterfaceIdiom2 & 0xFFFFFFFFFFFFFFFBLL) == 1)
     {
       v17 = @"Calendar Time Zone (iPad)";
     }

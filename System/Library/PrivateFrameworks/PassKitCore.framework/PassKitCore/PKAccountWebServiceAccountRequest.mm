@@ -1,13 +1,13 @@
 @interface PKAccountWebServiceAccountRequest
-- (id)_urlRequestWithAppleAccountInformation:(id)a3;
+- (id)_urlRequestWithAppleAccountInformation:(id)information;
 @end
 
 @implementation PKAccountWebServiceAccountRequest
 
-- (id)_urlRequestWithAppleAccountInformation:(id)a3
+- (id)_urlRequestWithAppleAccountInformation:(id)information
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  informationCopy = information;
   if (!PKRunningInPassd())
   {
     v9 = 0;
@@ -34,7 +34,7 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  if (!v4)
+  if (!informationCopy)
   {
     v10 = PKLogFacilityTypeGetObject(0xFuLL);
     if (!os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -74,7 +74,7 @@ LABEL_14:
     }
 
     v10 = [v6 arrayWithObjects:v7 count:v8];
-    v15 = [(PKAccountWebServiceRequest *)self _murlRequestWithServiceURL:self->_baseURL endpointComponents:v10 queryParameters:0 appleAccountInformation:v4];
+    v15 = [(PKAccountWebServiceRequest *)self _murlRequestWithServiceURL:self->_baseURL endpointComponents:v10 queryParameters:0 appleAccountInformation:informationCopy];
     [v15 setHTTPMethod:@"GET"];
     [v15 setCachePolicy:1];
     v9 = [v15 copy];

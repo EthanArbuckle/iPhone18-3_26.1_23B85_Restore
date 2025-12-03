@@ -1,6 +1,6 @@
 @interface UIKitTabBarItem
 - (_TtC7SwiftUI15UIKitTabBarItem)init;
-- (_TtC7SwiftUI15UIKitTabBarItem)initWithCoder:(id)a3;
+- (_TtC7SwiftUI15UIKitTabBarItem)initWithCoder:(id)coder;
 - (void)updateAccessibility;
 @end
 
@@ -8,7 +8,7 @@
 
 - (void)updateAccessibility
 {
-  v2 = self;
+  selfCopy = self;
   UIKitTabBarItem.updateAccessibility()();
 }
 
@@ -41,7 +41,7 @@
   return [(UIKitTabBarItem *)&v6 init];
 }
 
-- (_TtC7SwiftUI15UIKitTabBarItem)initWithCoder:(id)a3
+- (_TtC7SwiftUI15UIKitTabBarItem)initWithCoder:(id)coder
 {
   ObjectType = swift_getObjectType();
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC7SwiftUI15UIKitTabBarItem_resolvedAccessibilityLabel) = 0;
@@ -67,8 +67,8 @@
   *(v6 + 281) = 0u;
   v10.receiver = self;
   v10.super_class = ObjectType;
-  v7 = a3;
-  v8 = [(UIKitTabBarItem *)&v10 initWithCoder:v7];
+  coderCopy = coder;
+  v8 = [(UIKitTabBarItem *)&v10 initWithCoder:coderCopy];
 
   if (v8)
   {

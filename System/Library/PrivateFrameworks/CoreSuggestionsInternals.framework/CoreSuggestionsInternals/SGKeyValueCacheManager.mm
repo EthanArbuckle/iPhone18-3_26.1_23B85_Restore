@@ -1,78 +1,78 @@
 @interface SGKeyValueCacheManager
 - (SGKeyValueCacheManager)init;
-- (SGKeyValueCacheManager)initWithBasePath:(id)a3;
-- (id)cacheOfType:(unint64_t)a3;
-- (void)deleteValueByRecordId:(id)a3;
-- (void)deleteValueByRecordIdSet:(id)a3;
-- (void)replaceCacheOfType:(unint64_t)a3 block:(id)a4;
+- (SGKeyValueCacheManager)initWithBasePath:(id)path;
+- (id)cacheOfType:(unint64_t)type;
+- (void)deleteValueByRecordId:(id)id;
+- (void)deleteValueByRecordIdSet:(id)set;
+- (void)replaceCacheOfType:(unint64_t)type block:(id)block;
 @end
 
 @implementation SGKeyValueCacheManager
 
-- (void)deleteValueByRecordId:(id)a3
+- (void)deleteValueByRecordId:(id)id
 {
-  v8 = a3;
+  idCopy = id;
   v4 = objc_autoreleasePoolPush();
   v5 = [(SGKeyValueCacheManager *)self cacheOfType:0];
-  [v5 deleteValueByRecordId:v8];
+  [v5 deleteValueByRecordId:idCopy];
 
   objc_autoreleasePoolPop(v4);
   v6 = objc_autoreleasePoolPush();
   v7 = [(SGKeyValueCacheManager *)self cacheOfType:1];
-  [v7 deleteValueByRecordId:v8];
+  [v7 deleteValueByRecordId:idCopy];
 
   objc_autoreleasePoolPop(v6);
 }
 
-- (void)deleteValueByRecordIdSet:(id)a3
+- (void)deleteValueByRecordIdSet:(id)set
 {
-  v8 = a3;
+  setCopy = set;
   v4 = objc_autoreleasePoolPush();
   v5 = [(SGKeyValueCacheManager *)self cacheOfType:0];
-  [v5 deleteValueByRecordIdSet:v8];
+  [v5 deleteValueByRecordIdSet:setCopy];
 
   objc_autoreleasePoolPop(v4);
   v6 = objc_autoreleasePoolPush();
   v7 = [(SGKeyValueCacheManager *)self cacheOfType:1];
-  [v7 deleteValueByRecordIdSet:v8];
+  [v7 deleteValueByRecordIdSet:setCopy];
 
   objc_autoreleasePoolPop(v6);
 }
 
-- (void)replaceCacheOfType:(unint64_t)a3 block:(id)a4
+- (void)replaceCacheOfType:(unint64_t)type block:(id)block
 {
-  v10 = a4;
-  if (a3 >= 2)
+  blockCopy = block;
+  if (type >= 2)
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"SGKeyValueCacheManager.m" lineNumber:78 description:{@"Invalid parameter not satisfying: %@", @"cacheType < SGKeyValueCacheTypeCount"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGKeyValueCacheManager.m" lineNumber:78 description:{@"Invalid parameter not satisfying: %@", @"cacheType < SGKeyValueCacheTypeCount"}];
   }
 
-  v7 = [(SGKeyValueCacheManager *)self cacheOfType:a3];
+  v7 = [(SGKeyValueCacheManager *)self cacheOfType:type];
   if (v7)
   {
     v8 = [objc_alloc(MEMORY[0x277D01FF8]) initTemporaryForOverwritingCache:v7];
-    if (v8 && v10[2](v10, v8))
+    if (v8 && blockCopy[2](blockCopy, v8))
     {
       [v8 commitTemporaryFile];
     }
   }
 }
 
-- (id)cacheOfType:(unint64_t)a3
+- (id)cacheOfType:(unint64_t)type
 {
   v26 = *MEMORY[0x277D85DE8];
-  if (a3 >= 2)
+  if (type >= 2)
   {
-    v21 = [MEMORY[0x277CCA890] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"SGKeyValueCacheManager.m" lineNumber:56 description:{@"Invalid parameter not satisfying: %@", @"cacheType < SGKeyValueCacheTypeCount"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGKeyValueCacheManager.m" lineNumber:56 description:{@"Invalid parameter not satisfying: %@", @"cacheType < SGKeyValueCacheTypeCount"}];
   }
 
   pthread_mutex_lock(&self->_lock);
-  v5 = [(NSMutableArray *)self->_cacheFiles objectAtIndexedSubscript:a3];
-  v6 = [MEMORY[0x277CBEB68] null];
+  v5 = [(NSMutableArray *)self->_cacheFiles objectAtIndexedSubscript:type];
+  null = [MEMORY[0x277CBEB68] null];
 
-  if (v5 == v6)
+  if (v5 == null)
   {
     v8 = objc_autoreleasePoolPush();
     basePath = self->_basePath;
@@ -80,26 +80,26 @@
     if (basePath)
     {
       v11 = @"email-to-name.kvcache";
-      if (!a3)
+      if (!type)
       {
         v11 = @"phone-to-name.kvcache";
       }
 
       v12 = v11;
       v13 = [(NSString *)basePath stringByAppendingPathComponent:v12];
-      v7 = [v10 keyValueCacheForPath:v13];
+      initInMemory = [v10 keyValueCacheForPath:v13];
 
       v5 = v13;
     }
 
     else
     {
-      v7 = [objc_alloc(MEMORY[0x277D01FF8]) initInMemory];
+      initInMemory = [objc_alloc(MEMORY[0x277D01FF8]) initInMemory];
     }
 
-    if (v7)
+    if (initInMemory)
     {
-      [(NSMutableArray *)self->_cacheFiles setObject:v7 atIndexedSubscript:a3];
+      [(NSMutableArray *)self->_cacheFiles setObject:initInMemory atIndexedSubscript:type];
     }
 
     else
@@ -108,7 +108,7 @@
       if (os_log_type_enabled(v14, OS_LOG_TYPE_FAULT))
       {
         v17 = @"email-to-name.kvcache";
-        if (!a3)
+        if (!type)
         {
           v17 = @"phone-to-name.kvcache";
         }
@@ -133,13 +133,13 @@
 
   else
   {
-    v7 = v5;
+    initInMemory = v5;
   }
 
   pthread_mutex_unlock(&self->_lock);
   v15 = *MEMORY[0x277D85DE8];
 
-  return v7;
+  return initInMemory;
 }
 
 - (SGKeyValueCacheManager)init
@@ -150,27 +150,27 @@
   return v4;
 }
 
-- (SGKeyValueCacheManager)initWithBasePath:(id)a3
+- (SGKeyValueCacheManager)initWithBasePath:(id)path
 {
-  v5 = a3;
+  pathCopy = path;
   v15.receiver = self;
   v15.super_class = SGKeyValueCacheManager;
   v6 = [(SGKeyValueCacheManager *)&v15 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_basePath, a3);
+    objc_storeStrong(&v6->_basePath, path);
     v8 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:2];
     cacheFiles = v7->_cacheFiles;
     v7->_cacheFiles = v8;
 
     v10 = v7->_cacheFiles;
-    v11 = [MEMORY[0x277CBEB68] null];
-    [(NSMutableArray *)v10 addObject:v11];
+    null = [MEMORY[0x277CBEB68] null];
+    [(NSMutableArray *)v10 addObject:null];
 
     v12 = v7->_cacheFiles;
-    v13 = [MEMORY[0x277CBEB68] null];
-    [(NSMutableArray *)v12 addObject:v13];
+    null2 = [MEMORY[0x277CBEB68] null];
+    [(NSMutableArray *)v12 addObject:null2];
 
     pthread_mutex_init(&v7->_lock, 0);
   }

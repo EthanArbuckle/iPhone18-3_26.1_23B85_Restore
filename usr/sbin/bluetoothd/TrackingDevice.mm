@@ -1,50 +1,50 @@
 @interface TrackingDevice
-- (TrackingDevice)initWithDevice:(id)a3 type:(unsigned __int8)a4 timeoutValue:(unsigned __int8)a5 targetCore:(unsigned __int8)a6 rssiThreshold:(unsigned __int8)a7 rssiThresholdGone:(unsigned __int8)a8 invalidRssiHandling:(unsigned __int8)a9 rssiPrecision:(unsigned __int8)a10 rssiPrecisionGone:(unsigned __int8)a11 eventConfiguration:(unsigned __int8)a12 vseBuffering:(unsigned __int8)a13 rssiIncreaseScanThreshold:(unsigned __int8)a14 rssiIncreaseScanWindowThreshold:(unsigned __int16)a15 rssiIncreaseScanIntervalThreshold:(unsigned __int16)a16 rssiIncreaseScanTimeoutThreshold:(unsigned __int16)a17 sensorTimeoutBetweenIncreaseScan:(unsigned __int16)a18;
+- (TrackingDevice)initWithDevice:(id)device type:(unsigned __int8)type timeoutValue:(unsigned __int8)value targetCore:(unsigned __int8)core rssiThreshold:(unsigned __int8)threshold rssiThresholdGone:(unsigned __int8)gone invalidRssiHandling:(unsigned __int8)handling rssiPrecision:(unsigned __int8)self0 rssiPrecisionGone:(unsigned __int8)self1 eventConfiguration:(unsigned __int8)self2 vseBuffering:(unsigned __int8)self3 rssiIncreaseScanThreshold:(unsigned __int8)self4 rssiIncreaseScanWindowThreshold:(unsigned __int16)self5 rssiIncreaseScanIntervalThreshold:(unsigned __int16)self6 rssiIncreaseScanTimeoutThreshold:(unsigned __int16)self7 sensorTimeoutBetweenIncreaseScan:(unsigned __int16)self8;
 - (id)description;
 @end
 
 @implementation TrackingDevice
 
-- (TrackingDevice)initWithDevice:(id)a3 type:(unsigned __int8)a4 timeoutValue:(unsigned __int8)a5 targetCore:(unsigned __int8)a6 rssiThreshold:(unsigned __int8)a7 rssiThresholdGone:(unsigned __int8)a8 invalidRssiHandling:(unsigned __int8)a9 rssiPrecision:(unsigned __int8)a10 rssiPrecisionGone:(unsigned __int8)a11 eventConfiguration:(unsigned __int8)a12 vseBuffering:(unsigned __int8)a13 rssiIncreaseScanThreshold:(unsigned __int8)a14 rssiIncreaseScanWindowThreshold:(unsigned __int16)a15 rssiIncreaseScanIntervalThreshold:(unsigned __int16)a16 rssiIncreaseScanTimeoutThreshold:(unsigned __int16)a17 sensorTimeoutBetweenIncreaseScan:(unsigned __int16)a18
+- (TrackingDevice)initWithDevice:(id)device type:(unsigned __int8)type timeoutValue:(unsigned __int8)value targetCore:(unsigned __int8)core rssiThreshold:(unsigned __int8)threshold rssiThresholdGone:(unsigned __int8)gone invalidRssiHandling:(unsigned __int8)handling rssiPrecision:(unsigned __int8)self0 rssiPrecisionGone:(unsigned __int8)self1 eventConfiguration:(unsigned __int8)self2 vseBuffering:(unsigned __int8)self3 rssiIncreaseScanThreshold:(unsigned __int8)self4 rssiIncreaseScanWindowThreshold:(unsigned __int16)self5 rssiIncreaseScanIntervalThreshold:(unsigned __int16)self6 rssiIncreaseScanTimeoutThreshold:(unsigned __int16)self7 sensorTimeoutBetweenIncreaseScan:(unsigned __int16)self8
 {
-  v22 = a4;
-  v25 = a3;
+  typeCopy = type;
+  deviceCopy = device;
   v33.receiver = self;
   v33.super_class = TrackingDevice;
   v26 = [(TrackingDevice *)&v33 init];
   v27 = v26;
   if (v26)
   {
-    objc_storeStrong(&v26->_deviceUUID, a3);
-    v28 = [NSNumber numberWithUnsignedChar:v22];
+    objc_storeStrong(&v26->_deviceUUID, device);
+    v28 = [NSNumber numberWithUnsignedChar:typeCopy];
     v29 = [NSMutableSet setWithObject:v28];
     appleTypes = v27->_appleTypes;
     v27->_appleTypes = v29;
 
-    if (a5 <= 0)
+    if (value <= 0)
     {
-      v31 = 7;
+      valueCopy = 7;
     }
 
     else
     {
-      v31 = a5;
+      valueCopy = value;
     }
 
-    v27->_timeoutValue = v31;
-    v27->_targetCore = a6;
-    v27->_rssiThreshold = a7;
-    v27->_rssiThresholdGone = a8;
-    v27->_invalidRssiHandling = a9;
-    v27->_rssiPrecision = a10;
-    v27->_rssiPrecisionGone = a11;
-    v27->_eventConfiguration = a12;
-    v27->_vseBuffering = a13;
-    v27->_rssiIncreaseScanThreshold = a14;
-    v27->_rssiIncreaseScanWindowThreshold = a15;
-    v27->_rssiIncreaseScanIntervalThreshold = a16;
-    v27->_rssiIncreaseScanTimeoutThreshold = a17;
-    v27->_sensorTimeoutBetweenIncreaseScan = a18;
+    v27->_timeoutValue = valueCopy;
+    v27->_targetCore = core;
+    v27->_rssiThreshold = threshold;
+    v27->_rssiThresholdGone = gone;
+    v27->_invalidRssiHandling = handling;
+    v27->_rssiPrecision = precision;
+    v27->_rssiPrecisionGone = precisionGone;
+    v27->_eventConfiguration = configuration;
+    v27->_vseBuffering = buffering;
+    v27->_rssiIncreaseScanThreshold = scanThreshold;
+    v27->_rssiIncreaseScanWindowThreshold = windowThreshold;
+    v27->_rssiIncreaseScanIntervalThreshold = intervalThreshold;
+    v27->_rssiIncreaseScanTimeoutThreshold = timeoutThreshold;
+    v27->_sensorTimeoutBetweenIncreaseScan = scan;
     v27->_currentState = 2;
   }
 

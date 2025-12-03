@@ -1,18 +1,18 @@
 @interface NPDBulletinManager
 - (NPDBulletinManager)init;
 - (id)_archivedDelayedNotifications;
-- (id)_defaultNotficationIdentifierWithTitle:(id)a3 message:(id)a4 actionURL:(id)a5 forPass:(id)a6;
-- (id)_delayedUserNotificationWithIdentifier:(id)a3;
-- (id)_userNotificationWithTitle:(id)a3 message:(id)a4 actionURL:(id)a5 forPass:(id)a6 playSound:(BOOL)a7 notificationIdentifier:(id)a8 expirationDate:(id)a9;
-- (void)_persistDelayedNotificationRequest:(id)a3;
-- (void)_removeDelayedNotificationRequestWithIdentifier:(id)a3;
+- (id)_defaultNotficationIdentifierWithTitle:(id)title message:(id)message actionURL:(id)l forPass:(id)pass;
+- (id)_delayedUserNotificationWithIdentifier:(id)identifier;
+- (id)_userNotificationWithTitle:(id)title message:(id)message actionURL:(id)l forPass:(id)pass playSound:(BOOL)sound notificationIdentifier:(id)identifier expirationDate:(id)date;
+- (void)_persistDelayedNotificationRequest:(id)request;
+- (void)_removeDelayedNotificationRequestWithIdentifier:(id)identifier;
 - (void)dealloc;
-- (void)insertBridgeBulletinWithTitle:(id)a3 message:(id)a4 actionURL:(id)a5 delay:(double)a6;
-- (void)insertBridgeBulletinWithTitle:(id)a3 message:(id)a4 actionURL:(id)a5 forPass:(id)a6;
-- (void)performScheduledActivityWithIdentifier:(id)a3 activityCriteria:(id)a4;
-- (void)removeBridgeBulletinsForPassWithUniqueID:(id)a3;
-- (void)removeBridgeBulletinsWithTitle:(id)a3 message:(id)a4 actionURL:(id)a5;
-- (void)removeDeliveredBridgeBulletinsWithNotificationIdentifier:(id)a3;
+- (void)insertBridgeBulletinWithTitle:(id)title message:(id)message actionURL:(id)l delay:(double)delay;
+- (void)insertBridgeBulletinWithTitle:(id)title message:(id)message actionURL:(id)l forPass:(id)pass;
+- (void)performScheduledActivityWithIdentifier:(id)identifier activityCriteria:(id)criteria;
+- (void)removeBridgeBulletinsForPassWithUniqueID:(id)d;
+- (void)removeBridgeBulletinsWithTitle:(id)title message:(id)message actionURL:(id)l;
+- (void)removeDeliveredBridgeBulletinsWithNotificationIdentifier:(id)identifier;
 @end
 
 @implementation NPDBulletinManager
@@ -42,17 +42,17 @@
   [(NPDBulletinManager *)&v3 dealloc];
 }
 
-- (void)insertBridgeBulletinWithTitle:(id)a3 message:(id)a4 actionURL:(id)a5 forPass:(id)a6
+- (void)insertBridgeBulletinWithTitle:(id)title message:(id)message actionURL:(id)l forPass:(id)pass
 {
-  v7 = [(NPDBulletinManager *)self _userNotificationWithTitle:a3 message:a4 actionURL:a5 forPass:a6 playSound:0 notificationIdentifier:0 expirationDate:0];
+  v7 = [(NPDBulletinManager *)self _userNotificationWithTitle:title message:message actionURL:l forPass:pass playSound:0 notificationIdentifier:0 expirationDate:0];
   [(UNUserNotificationCenter *)self->_notificationCenter addNotificationRequest:v7 withCompletionHandler:0];
 }
 
-- (void)insertBridgeBulletinWithTitle:(id)a3 message:(id)a4 actionURL:(id)a5 delay:(double)a6
+- (void)insertBridgeBulletinWithTitle:(id)title message:(id)message actionURL:(id)l delay:(double)delay
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  titleCopy = title;
+  messageCopy = message;
+  lCopy = l;
   v13 = pk_General_log();
   v14 = os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT);
 
@@ -64,51 +64,51 @@
       *buf = 138413058;
       v22 = objc_opt_class();
       v23 = 2112;
-      v24 = v10;
+      v24 = titleCopy;
       v25 = 2112;
-      v26 = v11;
+      v26 = messageCopy;
       v27 = 2048;
-      v28 = a6;
+      delayCopy = delay;
       v16 = v22;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Notice: %@: requested insert notification with title:%@ message:%@ delay:%f", buf, 0x2Au);
     }
   }
 
-  if (a6 <= 0.0)
+  if (delay <= 0.0)
   {
-    [(NPDBulletinManager *)self insertBridgeBulletinWithTitle:v10 message:v11 actionURL:v12 forPass:0];
+    [(NPDBulletinManager *)self insertBridgeBulletinWithTitle:titleCopy message:messageCopy actionURL:lCopy forPass:0];
   }
 
   else
   {
-    v17 = [(NPDBulletinManager *)self _defaultNotficationIdentifierWithTitle:v10 message:v11 actionURL:v12 forPass:0];
-    v18 = [(NPDBulletinManager *)self _userNotificationWithTitle:v10 message:v11 actionURL:v12 forPass:0 playSound:0 notificationIdentifier:v17 expirationDate:0];
-    v19 = [NSDate dateWithTimeIntervalSinceNow:a6];
+    v17 = [(NPDBulletinManager *)self _defaultNotficationIdentifierWithTitle:titleCopy message:messageCopy actionURL:lCopy forPass:0];
+    v18 = [(NPDBulletinManager *)self _userNotificationWithTitle:titleCopy message:messageCopy actionURL:lCopy forPass:0 playSound:0 notificationIdentifier:v17 expirationDate:0];
+    v19 = [NSDate dateWithTimeIntervalSinceNow:delay];
     v20 = [PDScheduledActivityCriteria priorityActivityCriteriaWithStartDate:v19];
     PDScheduledActivityRegister();
     [(NPDBulletinManager *)self _persistDelayedNotificationRequest:v18];
   }
 }
 
-- (void)removeBridgeBulletinsForPassWithUniqueID:(id)a3
+- (void)removeBridgeBulletinsForPassWithUniqueID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   notificationCenter = self->_notificationCenter;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100043674;
   v7[3] = &unk_100072B88;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = dCopy;
+  selfCopy = self;
+  v6 = dCopy;
   [(UNUserNotificationCenter *)notificationCenter getDeliveredNotificationsWithCompletionHandler:v7];
 }
 
-- (void)removeBridgeBulletinsWithTitle:(id)a3 message:(id)a4 actionURL:(id)a5
+- (void)removeBridgeBulletinsWithTitle:(id)title message:(id)message actionURL:(id)l
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  titleCopy = title;
+  messageCopy = message;
+  lCopy = l;
   v11 = pk_General_log();
   v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
 
@@ -120,15 +120,15 @@
       *buf = 138412802;
       v21 = objc_opt_class();
       v22 = 2112;
-      v23 = v8;
+      v23 = titleCopy;
       v24 = 2112;
-      v25 = v9;
+      v25 = messageCopy;
       v14 = v21;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Notice: %@: requested remove notification with title:%@ message:%@", buf, 0x20u);
     }
   }
 
-  v15 = [(NPDBulletinManager *)self _defaultNotficationIdentifierWithTitle:v8 message:v9 actionURL:v10 forPass:0];
+  v15 = [(NPDBulletinManager *)self _defaultNotficationIdentifierWithTitle:titleCopy message:messageCopy actionURL:lCopy forPass:0];
   v16 = v15;
   if (v15)
   {
@@ -142,9 +142,9 @@
   }
 }
 
-- (void)removeDeliveredBridgeBulletinsWithNotificationIdentifier:(id)a3
+- (void)removeDeliveredBridgeBulletinsWithNotificationIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = pk_General_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -156,35 +156,35 @@
       *buf = 138412546;
       v13 = objc_opt_class();
       v14 = 2112;
-      v15 = v4;
+      v15 = identifierCopy;
       v8 = v13;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Notice: %@: requested remove notification with identifier:%@", buf, 0x16u);
     }
   }
 
-  if (v4)
+  if (identifierCopy)
   {
     notificationCenter = self->_notificationCenter;
-    v11 = v4;
+    v11 = identifierCopy;
     v10 = [NSArray arrayWithObjects:&v11 count:1];
     [(UNUserNotificationCenter *)notificationCenter removeDeliveredNotificationsWithIdentifiers:v10];
   }
 }
 
-- (void)performScheduledActivityWithIdentifier:(id)a3 activityCriteria:(id)a4
+- (void)performScheduledActivityWithIdentifier:(id)identifier activityCriteria:(id)criteria
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v5 = [(NPDBulletinManager *)self _delayedUserNotificationWithIdentifier:?];
   if (v5)
   {
-    [(NPDBulletinManager *)self _removeDelayedNotificationRequestWithIdentifier:v6];
+    [(NPDBulletinManager *)self _removeDelayedNotificationRequestWithIdentifier:identifierCopy];
     [(UNUserNotificationCenter *)self->_notificationCenter addNotificationRequest:v5 withCompletionHandler:0];
   }
 }
 
-- (void)_persistDelayedNotificationRequest:(id)a3
+- (void)_persistDelayedNotificationRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = pk_General_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -195,35 +195,35 @@
     {
       v8 = objc_opt_class();
       v9 = v8;
-      v10 = [v4 identifier];
+      identifier = [requestCopy identifier];
       v16 = 138412546;
       v17 = v8;
       v18 = 2112;
-      v19 = v10;
+      v19 = identifier;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Notice: %@: persisted notification with ID:%@", &v16, 0x16u);
     }
   }
 
-  v11 = [v4 identifier];
+  identifier2 = [requestCopy identifier];
 
-  if (v11)
+  if (identifier2)
   {
     v12 = NPKSecureArchiveObject();
-    v13 = [(NPDBulletinManager *)self _archivedDelayedNotifications];
-    v14 = [v13 mutableCopy];
+    _archivedDelayedNotifications = [(NPDBulletinManager *)self _archivedDelayedNotifications];
+    v14 = [_archivedDelayedNotifications mutableCopy];
 
-    v15 = [v4 identifier];
-    [v14 setObject:v12 forKeyedSubscript:v15];
+    identifier3 = [requestCopy identifier];
+    [v14 setObject:v12 forKeyedSubscript:identifier3];
 
     [(NPDBulletinManager *)self _persistArchivedNotifications:v14];
   }
 }
 
-- (id)_delayedUserNotificationWithIdentifier:(id)a3
+- (id)_delayedUserNotificationWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(NPDBulletinManager *)self _archivedDelayedNotifications];
-  v6 = [v5 objectForKey:v4];
+  identifierCopy = identifier;
+  _archivedDelayedNotifications = [(NPDBulletinManager *)self _archivedDelayedNotifications];
+  v6 = [_archivedDelayedNotifications objectForKey:identifierCopy];
 
   objc_opt_class();
   v7 = NPKSecureUnarchiveObject();
@@ -243,7 +243,7 @@
       v15 = 138412546;
       v16 = objc_opt_class();
       v17 = 2112;
-      v18 = v4;
+      v18 = identifierCopy;
       v11 = v16;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Notice: %@: found persisted notification with ID:%@", &v15, 0x16u);
     }
@@ -264,7 +264,7 @@
       v15 = 138412802;
       v16 = v12;
       v17 = 2112;
-      v18 = v4;
+      v18 = identifierCopy;
       v19 = 2048;
       v20 = [0 length];
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Notice: %@: could not find persisted notification with ID:%@ dataLength:%lu", &v15, 0x20u);
@@ -276,13 +276,13 @@ LABEL_9:
   return v7;
 }
 
-- (void)_removeDelayedNotificationRequestWithIdentifier:(id)a3
+- (void)_removeDelayedNotificationRequestWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(NPDBulletinManager *)self _archivedDelayedNotifications];
-  v6 = [v5 mutableCopy];
+  identifierCopy = identifier;
+  _archivedDelayedNotifications = [(NPDBulletinManager *)self _archivedDelayedNotifications];
+  v6 = [_archivedDelayedNotifications mutableCopy];
 
-  [v6 removeObjectForKey:v4];
+  [v6 removeObjectForKey:identifierCopy];
   if (![v6 count])
   {
 
@@ -301,7 +301,7 @@ LABEL_9:
       v11 = 138412546;
       v12 = objc_opt_class();
       v13 = 2112;
-      v14 = v4;
+      v14 = identifierCopy;
       v10 = v12;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Notice: %@: removed persisted notification with ID:%@", &v11, 0x16u);
     }
@@ -319,25 +319,25 @@ LABEL_9:
   return v2;
 }
 
-- (id)_userNotificationWithTitle:(id)a3 message:(id)a4 actionURL:(id)a5 forPass:(id)a6 playSound:(BOOL)a7 notificationIdentifier:(id)a8 expirationDate:(id)a9
+- (id)_userNotificationWithTitle:(id)title message:(id)message actionURL:(id)l forPass:(id)pass playSound:(BOOL)sound notificationIdentifier:(id)identifier expirationDate:(id)date
 {
-  v10 = a7;
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a8;
-  v20 = a9;
-  v21 = [v18 uniqueID];
-  v22 = v21;
-  if (v19)
+  soundCopy = sound;
+  titleCopy = title;
+  messageCopy = message;
+  lCopy = l;
+  passCopy = pass;
+  identifierCopy = identifier;
+  dateCopy = date;
+  uniqueID = [passCopy uniqueID];
+  v22 = uniqueID;
+  if (identifierCopy)
   {
-    if (!v21)
+    if (!uniqueID)
     {
 LABEL_8:
-      if (!v17)
+      if (!lCopy)
       {
-        v17 = +[NPKCompanionAgentConnection watchProvisioningURL];
+        lCopy = +[NPKCompanionAgentConnection watchProvisioningURL];
       }
 
       goto LABEL_10;
@@ -346,31 +346,31 @@ LABEL_8:
 
   else
   {
-    v19 = [(NPDBulletinManager *)self _defaultNotficationIdentifierWithTitle:v15 message:v16 actionURL:v17 forPass:v18];
+    identifierCopy = [(NPDBulletinManager *)self _defaultNotficationIdentifierWithTitle:titleCopy message:messageCopy actionURL:lCopy forPass:passCopy];
     if (!v22)
     {
       goto LABEL_8;
     }
   }
 
-  if ([v18 passType] != 1)
+  if ([passCopy passType] != 1)
   {
     goto LABEL_8;
   }
 
-  if (!v17)
+  if (!lCopy)
   {
-    v23 = [v18 paymentPass];
-    v32 = v23;
+    paymentPass = [passCopy paymentPass];
+    v32 = paymentPass;
     v24 = [NSArray arrayWithObjects:&v32 count:1];
-    v17 = [NPKCompanionAgentConnection watchProvisioningURLForPaymentPasses:v24];
+    lCopy = [NPKCompanionAgentConnection watchProvisioningURLForPaymentPasses:v24];
   }
 
 LABEL_10:
   v25 = objc_alloc_init(UNMutableNotificationContent);
-  [v25 setTitle:v15];
-  [v25 setBody:v16];
-  [v25 setDefaultActionURL:v17];
+  [v25 setTitle:titleCopy];
+  [v25 setBody:messageCopy];
+  [v25 setDefaultActionURL:lCopy];
   if (v22)
   {
     v30 = PKPassbookBulletinPassUniqueIdentifierKey;
@@ -379,34 +379,34 @@ LABEL_10:
     [v25 setUserInfo:v26];
   }
 
-  if (v20)
+  if (dateCopy)
   {
-    [v25 setExpirationDate:v20];
+    [v25 setExpirationDate:dateCopy];
   }
 
-  if (v10)
+  if (soundCopy)
   {
     v27 = +[UNNotificationSound defaultSound];
     [v25 setSound:v27];
   }
 
-  v28 = [UNNotificationRequest requestWithIdentifier:v19 content:v25 trigger:0];
+  v28 = [UNNotificationRequest requestWithIdentifier:identifierCopy content:v25 trigger:0];
 
   return v28;
 }
 
-- (id)_defaultNotficationIdentifierWithTitle:(id)a3 message:(id)a4 actionURL:(id)a5 forPass:(id)a6
+- (id)_defaultNotficationIdentifierWithTitle:(id)title message:(id)message actionURL:(id)l forPass:(id)pass
 {
-  v8 = a6;
-  v9 = a4;
-  v10 = a3;
+  passCopy = pass;
+  messageCopy = message;
+  titleCopy = title;
   v11 = +[NSMutableArray array];
-  [v11 npkSafelyAddObject:v10];
+  [v11 npkSafelyAddObject:titleCopy];
 
-  [v11 npkSafelyAddObject:v9];
-  v12 = [v8 uniqueID];
+  [v11 npkSafelyAddObject:messageCopy];
+  uniqueID = [passCopy uniqueID];
 
-  [v11 npkSafelyAddObject:v12];
+  [v11 npkSafelyAddObject:uniqueID];
   v13 = [NSString stringWithFormat:@"wallet-%ld", PKCombinedHash()];
 
   return v13;

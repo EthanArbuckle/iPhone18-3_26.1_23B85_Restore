@@ -1,68 +1,68 @@
 @interface SYFileTransferSyncEngine
 - (BOOL)_sessionDeviceCanUseSingleMessages;
-- (BOOL)_shouldTreatAsSessionEnd:(id)a3;
-- (BOOL)resume:(id *)a3;
+- (BOOL)_shouldTreatAsSessionEnd:(id)end;
+- (BOOL)resume:(id *)resume;
 - (BOOL)targetIsNearby;
-- (SYFileTransferSyncEngine)initWithService:(id)a3 queue:(id)a4;
-- (id)_assumeOwnershipOfURL:(id)a3 error:(id *)a4;
+- (SYFileTransferSyncEngine)initWithService:(id)service queue:(id)queue;
+- (id)_assumeOwnershipOfURL:(id)l error:(id *)error;
 - (id)_fileTransferHeader;
-- (id)_wrapResponse:(id)a3 toRequest:(id)a4 ofType:(unsigned __int16)a5;
-- (id)cancelMessagesReturningFailures:(id)a3;
-- (id)idsOptions:(id)a3 forFileTransfer:(BOOL)a4;
-- (id)outputStreamWithMetadata:(id)a3 priority:(int64_t)a4 options:(id)a5 context:(id)a6 error:(id *)a7;
+- (id)_wrapResponse:(id)response toRequest:(id)request ofType:(unsigned __int16)type;
+- (id)cancelMessagesReturningFailures:(id)failures;
+- (id)idsOptions:(id)options forFileTransfer:(BOOL)transfer;
+- (id)outputStreamWithMetadata:(id)metadata priority:(int64_t)priority options:(id)options context:(id)context error:(id *)error;
 - (id)stateForLogging;
-- (unint64_t)_crcChecksum:(id)a3;
+- (unint64_t)_crcChecksum:(id)checksum;
 - (void)_cancelResponses;
 - (void)_cancelSession;
-- (void)_consumeRemainingStreamDataWithIdentifier:(id)a3 completion:(id)a4;
-- (void)_enqueueSingleMessage:(id)a3 withMessageID:(unsigned __int16)a4 priority:(int64_t)a5 options:(id)a6 userContext:(id)a7 callback:(id)a8;
-- (void)_handleError:(id)a3 messageID:(id)a4 streamer:(id)a5;
-- (void)_handleIncomingSessionFileAtOwnedURL:(id)a3 metadata:(id)a4 identifier:(id)a5 idsContext:(id)a6;
-- (void)_handleIncomingSessionFileAtURL:(id)a3 metadata:(id)a4 identifier:(id)a5 idsContext:(id)a6;
-- (void)_handleIncomingStreamDataWithIdentifier:(id)a3 completion:(id)a4;
-- (void)_handleSessionRestart:(id)a3 priority:(int64_t)a4 options:(id)a5 userContext:(id)a6 callback:(id)a7;
-- (void)_processNMSMessageData:(id)a3 context:(id)a4;
-- (void)_readNextProtobuf:(id)a3;
-- (void)_reallyHandleSessionRestart:(id)a3 priority:(int64_t)a4 options:(id)a5 userContext:(id)a6 callback:(id)a7;
-- (void)_recordLastSeqNo:(id)a3;
+- (void)_consumeRemainingStreamDataWithIdentifier:(id)identifier completion:(id)completion;
+- (void)_enqueueSingleMessage:(id)message withMessageID:(unsigned __int16)d priority:(int64_t)priority options:(id)options userContext:(id)context callback:(id)callback;
+- (void)_handleError:(id)error messageID:(id)d streamer:(id)streamer;
+- (void)_handleIncomingSessionFileAtOwnedURL:(id)l metadata:(id)metadata identifier:(id)identifier idsContext:(id)context;
+- (void)_handleIncomingSessionFileAtURL:(id)l metadata:(id)metadata identifier:(id)identifier idsContext:(id)context;
+- (void)_handleIncomingStreamDataWithIdentifier:(id)identifier completion:(id)completion;
+- (void)_handleSessionRestart:(id)restart priority:(int64_t)priority options:(id)options userContext:(id)context callback:(id)callback;
+- (void)_processNMSMessageData:(id)data context:(id)context;
+- (void)_readNextProtobuf:(id)protobuf;
+- (void)_reallyHandleSessionRestart:(id)restart priority:(int64_t)priority options:(id)options userContext:(id)context callback:(id)callback;
+- (void)_recordLastSeqNo:(id)no;
 - (void)_resumeIdsQueue;
 - (void)_suspendIdsQueue;
 - (void)beginResponseSession;
 - (void)beginSession;
 - (void)dealloc;
-- (void)endFileTransferForStream:(id)a3 atURL:(id)a4 target:(id)a5 wasCancelled:(BOOL)a6 messageRows:(id)a7;
+- (void)endFileTransferForStream:(id)stream atURL:(id)l target:(id)target wasCancelled:(BOOL)cancelled messageRows:(id)rows;
 - (void)endResponseSession;
 - (void)endSession;
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 hasBeenDeliveredWithContext:(id)a6;
-- (void)service:(id)a3 account:(id)a4 incomingData:(id)a5 fromID:(id)a6 context:(id)a7;
-- (void)service:(id)a3 account:(id)a4 incomingResourceAtURL:(id)a5 metadata:(id)a6 fromID:(id)a7 context:(id)a8;
-- (void)service:(id)a3 connectedDevicesChanged:(id)a4;
-- (void)service:(id)a3 didSwitchActivePairedDevice:(id)a4 acknowledgementBlock:(id)a5;
-- (void)service:(id)a3 nearbyDevicesChanged:(id)a4;
+- (void)service:(id)service account:(id)account identifier:(id)identifier hasBeenDeliveredWithContext:(id)context;
+- (void)service:(id)service account:(id)account incomingData:(id)data fromID:(id)d context:(id)context;
+- (void)service:(id)service account:(id)account incomingResourceAtURL:(id)l metadata:(id)metadata fromID:(id)d context:(id)context;
+- (void)service:(id)service connectedDevicesChanged:(id)changed;
+- (void)service:(id)service didSwitchActivePairedDevice:(id)device acknowledgementBlock:(id)block;
+- (void)service:(id)service nearbyDevicesChanged:(id)changed;
 - (void)suspend;
 @end
 
 @implementation SYFileTransferSyncEngine
 
-- (SYFileTransferSyncEngine)initWithService:(id)a3 queue:(id)a4
+- (SYFileTransferSyncEngine)initWithService:(id)service queue:(id)queue
 {
-  v6 = a3;
+  serviceCopy = service;
   v30.receiver = self;
   v30.super_class = SYFileTransferSyncEngine;
-  v7 = [(SYSyncEngine *)&v30 initWithService:v6 queue:a4];
+  v7 = [(SYSyncEngine *)&v30 initWithService:serviceCopy queue:queue];
   if (v7)
   {
     v8 = objc_alloc(MEMORY[0x1E696AEC0]);
-    v9 = [v6 name];
-    v10 = [v9 lastPathComponent];
-    v11 = [v8 initWithFormat:@"%@ SYFileTransferSyncEngine IDS Queue", v10];
+    name = [serviceCopy name];
+    lastPathComponent = [name lastPathComponent];
+    v11 = [v8 initWithFormat:@"%@ SYFileTransferSyncEngine IDS Queue", lastPathComponent];
 
     relative_priority_ptr = 0;
-    v12 = [(SYSyncEngine *)v7 queue];
-    LODWORD(v10) = dispatch_queue_get_qos_class(v12, &relative_priority_ptr);
+    queue = [(SYSyncEngine *)v7 queue];
+    LODWORD(lastPathComponent) = dispatch_queue_get_qos_class(queue, &relative_priority_ptr);
 
     v13 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v14 = dispatch_queue_attr_make_with_qos_class(v13, v10, relative_priority_ptr);
+    v14 = dispatch_queue_attr_make_with_qos_class(v13, lastPathComponent, relative_priority_ptr);
 
     v15 = dispatch_queue_create([v11 UTF8String], v14);
     idsQueue = v7->_idsQueue;
@@ -138,12 +138,12 @@
   [(SYSyncEngine *)&v4 dealloc];
 }
 
-- (BOOL)resume:(id *)a3
+- (BOOL)resume:(id *)resume
 {
-  v4 = [(SYSyncEngine *)self service];
+  service = [(SYSyncEngine *)self service];
   v5 = objc_alloc(MEMORY[0x1E69A48A8]);
-  v6 = [v4 name];
-  v7 = [v5 initWithService:v6];
+  name = [service name];
+  v7 = [v5 initWithService:name];
   idsService = self->_idsService;
   self->_idsService = v7;
 
@@ -162,15 +162,15 @@
   self->_idsService = 0;
 }
 
-- (void)endFileTransferForStream:(id)a3 atURL:(id)a4 target:(id)a5 wasCancelled:(BOOL)a6 messageRows:(id)a7
+- (void)endFileTransferForStream:(id)stream atURL:(id)l target:(id)target wasCancelled:(BOOL)cancelled messageRows:(id)rows
 {
-  v11 = a3;
-  v30 = a4;
-  v12 = a5;
-  v32 = a7;
-  v13 = [(IDSService *)self->_idsService devices];
-  v29 = v12;
-  v14 = [v12 findMatchingIDSDeviceFromList:v13];
+  streamCopy = stream;
+  lCopy = l;
+  targetCopy = target;
+  rowsCopy = rows;
+  devices = [(IDSService *)self->_idsService devices];
+  v29 = targetCopy;
+  v14 = [targetCopy findMatchingIDSDeviceFromList:devices];
 
   v15 = IDSCopyIDForDevice();
   if (!v15)
@@ -178,11 +178,11 @@
     v15 = *MEMORY[0x1E69A4B50];
   }
 
-  v16 = [(SYSyncEngine *)self service];
-  v17 = [v16 peerID];
-  v18 = [(SYSyncEngine *)self responder];
-  v19 = [v18 extraTransportOptions];
-  v20 = IDSOptionsFromSYServiceOptions(v19);
+  service = [(SYSyncEngine *)self service];
+  peerID = [service peerID];
+  responder = [(SYSyncEngine *)self responder];
+  extraTransportOptions = [responder extraTransportOptions];
+  v20 = IDSOptionsFromSYServiceOptions(extraTransportOptions);
   v21 = [(SYFileTransferSyncEngine *)self idsOptions:v20];
 
   v44[0] = 0;
@@ -195,21 +195,21 @@
   v33[1] = 3221225472;
   v33[2] = __91__SYFileTransferSyncEngine_endFileTransferForStream_atURL_target_wasCancelled_messageRows___block_invoke;
   v33[3] = &unk_1E86CB528;
-  v22 = v11;
+  v22 = streamCopy;
   v34 = v22;
-  v35 = self;
-  v43 = a6;
-  v23 = v16;
+  selfCopy = self;
+  cancelledCopy = cancelled;
+  v23 = service;
   v36 = v23;
-  v24 = v30;
+  v24 = lCopy;
   v37 = v24;
-  v25 = v17;
+  v25 = peerID;
   v38 = v25;
   v26 = v15;
   v39 = v26;
   v27 = v21;
   v40 = v27;
-  v28 = v32;
+  v28 = rowsCopy;
   v41 = v28;
   v42 = v44;
   [v22 whenComplete:v33];
@@ -512,7 +512,7 @@ void __91__SYFileTransferSyncEngine_endFileTransferForStream_atURL_target_wasCan
   if (os_log_type_enabled(qword_1EDE73428, OS_LOG_TYPE_INFO))
   {
     v14 = 134217984;
-    v15 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1DF835000, v7, OS_LOG_TYPE_INFO, "Ending file-transfer response session for engine %p", &v14, 0xCu);
   }
 
@@ -563,7 +563,7 @@ void __91__SYFileTransferSyncEngine_endFileTransferForStream_atURL_target_wasCan
     if (os_log_type_enabled(qword_1EDE73428, OS_LOG_TYPE_INFO))
     {
       *buf = 134217984;
-      v16 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1DF835000, v7, OS_LOG_TYPE_INFO, "Ending file-transfer outgoing session for engine %p", buf, 0xCu);
     }
 
@@ -595,9 +595,9 @@ void __91__SYFileTransferSyncEngine_endFileTransferForStream_atURL_target_wasCan
 - (BOOL)targetIsNearby
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [(SYDevice *)self->_activeDevice hasCachedNearby];
+  hasCachedNearby = [(SYDevice *)self->_activeDevice hasCachedNearby];
   activeDevice = self->_activeDevice;
-  if (v3)
+  if (hasCachedNearby)
   {
     v5 = *MEMORY[0x1E69E9840];
     v6 = self->_activeDevice;
@@ -607,8 +607,8 @@ void __91__SYFileTransferSyncEngine_endFileTransferForStream_atURL_target_wasCan
 
   else
   {
-    v8 = [(IDSService *)self->_idsService devices];
-    v9 = [(SYDevice *)activeDevice findMatchingIDSDeviceFromList:v8];
+    devices = [(IDSService *)self->_idsService devices];
+    v9 = [(SYDevice *)activeDevice findMatchingIDSDeviceFromList:devices];
 
     if (v9)
     {
@@ -621,9 +621,9 @@ void __91__SYFileTransferSyncEngine_endFileTransferForStream_atURL_target_wasCan
       if (os_log_type_enabled(qword_1EDE73428, OS_LOG_TYPE_DEFAULT))
       {
         v11 = v10;
-        v12 = [v9 isNearby];
+        isNearby = [v9 isNearby];
         v13 = "not ";
-        if (v12)
+        if (isNearby)
         {
           v13 = "";
         }
@@ -635,16 +635,16 @@ void __91__SYFileTransferSyncEngine_endFileTransferForStream_atURL_target_wasCan
 
       -[SYDevice setCachedIsNearby:](self->_activeDevice, "setCachedIsNearby:", [v9 isNearby]);
       [(SYDevice *)self->_activeDevice setHasCachedNearby:1];
-      v14 = [v9 isNearby];
+      isNearby2 = [v9 isNearby];
     }
 
     else
     {
-      v14 = 0;
+      isNearby2 = 0;
     }
 
     v15 = *MEMORY[0x1E69E9840];
-    return v14;
+    return isNearby2;
   }
 }
 
@@ -656,10 +656,10 @@ void __91__SYFileTransferSyncEngine_endFileTransferForStream_atURL_target_wasCan
     v3 = self->_activeDevice;
   }
 
-  v4 = [(SYDevice *)v3 deviceCode];
-  v5 = [(SYDevice *)v3 systemBuildVersion];
-  v6 = v5;
-  if (v4 == 5)
+  deviceCode = [(SYDevice *)v3 deviceCode];
+  systemBuildVersion = [(SYDevice *)v3 systemBuildVersion];
+  v6 = systemBuildVersion;
+  if (deviceCode == 5)
   {
     v7 = @"14S184";
   }
@@ -669,17 +669,17 @@ void __91__SYFileTransferSyncEngine_endFileTransferForStream_atURL_target_wasCan
     v7 = @"14A187";
   }
 
-  v8 = [v5 compare:v7];
+  v8 = [systemBuildVersion compare:v7];
 
   return v8 != -1;
 }
 
-- (void)_enqueueSingleMessage:(id)a3 withMessageID:(unsigned __int16)a4 priority:(int64_t)a5 options:(id)a6 userContext:(id)a7 callback:(id)a8
+- (void)_enqueueSingleMessage:(id)message withMessageID:(unsigned __int16)d priority:(int64_t)priority options:(id)options userContext:(id)context callback:(id)callback
 {
-  v14 = a3;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  messageCopy = message;
+  optionsCopy = options;
+  contextCopy = context;
+  callbackCopy = callback;
   if (self->_inSession)
   {
     objc_opt_class();
@@ -690,34 +690,34 @@ void __91__SYFileTransferSyncEngine_endFileTransferForStream_atURL_target_wasCan
     }
   }
 
-  v19 = [v17 copy];
+  v19 = [callbackCopy copy];
 
-  v20 = [(SYSyncEngine *)self responder];
-  v21 = [v20 extraTransportOptions];
-  v22 = CoalesceOptionDictionaries(v21, v15);
+  responder = [(SYSyncEngine *)self responder];
+  extraTransportOptions = [responder extraTransportOptions];
+  v22 = CoalesceOptionDictionaries(extraTransportOptions, optionsCopy);
 
-  v23 = [(SYSyncEngine *)self service];
-  [v23 name];
-  v24 = v31 = v15;
-  v25 = [(SYSyncEngine *)self queue];
+  service = [(SYSyncEngine *)self service];
+  [service name];
+  v24 = v31 = optionsCopy;
+  queue = [(SYSyncEngine *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __102__SYFileTransferSyncEngine__enqueueSingleMessage_withMessageID_priority_options_userContext_callback___block_invoke;
   block[3] = &unk_1E86CB550;
-  v39 = a4;
+  dCopy = d;
   block[4] = self;
-  v33 = v14;
-  v34 = v16;
+  v33 = messageCopy;
+  v34 = contextCopy;
   v35 = v24;
   v36 = v22;
   v37 = v19;
-  v38 = a5;
+  priorityCopy = priority;
   v26 = v22;
   v27 = v24;
-  v28 = v16;
-  v29 = v14;
+  v28 = contextCopy;
+  v29 = messageCopy;
   v30 = v19;
-  dispatch_async(v25, block);
+  dispatch_async(queue, block);
 }
 
 void __102__SYFileTransferSyncEngine__enqueueSingleMessage_withMessageID_priority_options_userContext_callback___block_invoke(uint64_t a1)
@@ -1030,23 +1030,23 @@ void __99__SYFileTransferSyncEngine_enqueueSyncRequest_withMessageID_priority_op
 LABEL_23:
 }
 
-- (id)outputStreamWithMetadata:(id)a3 priority:(int64_t)a4 options:(id)a5 context:(id)a6 error:(id *)a7
+- (id)outputStreamWithMetadata:(id)metadata priority:(int64_t)priority options:(id)options context:(id)context error:(id *)error
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
+  metadataCopy = metadata;
+  optionsCopy = options;
+  contextCopy = context;
   if (!self->_idsService)
   {
     _os_assumes_log();
   }
 
-  v15 = [MEMORY[0x1E695DFF8] _SYURLForNewTemporaryFile:a7];
+  v15 = [MEMORY[0x1E695DFF8] _SYURLForNewTemporaryFile:error];
   if (v15)
   {
-    v28 = a4;
+    priorityCopy = priority;
     activeDevice = self->_activeDevice;
-    v17 = [(IDSService *)self->_idsService devices];
-    v18 = [(SYDevice *)activeDevice findMatchingIDSDeviceFromList:v17];
+    devices = [(IDSService *)self->_idsService devices];
+    v18 = [(SYDevice *)activeDevice findMatchingIDSDeviceFromList:devices];
 
     v19 = IDSCopyIDForDevice();
     if (!v19)
@@ -1055,9 +1055,9 @@ LABEL_23:
     }
 
     v20 = [[SYCompressedFileOutputStream alloc] initToCompressedFileAtURL:v15 shouldAppend:0];
-    v21 = [(SYSyncEngine *)self service];
-    v22 = [v21 name];
-    [v21 defaultMessageTimeout];
+    service = [(SYSyncEngine *)self service];
+    name = [service name];
+    [service defaultMessageTimeout];
     v24 = v23;
     objc_initWeak(&location, self);
     v29[0] = MEMORY[0x1E69E9820];
@@ -1066,14 +1066,14 @@ LABEL_23:
     v29[3] = &unk_1E86CB5C8;
     objc_copyWeak(v36, &location);
     v30 = v15;
-    v31 = self;
+    selfCopy = self;
     v36[1] = v24;
-    v32 = v12;
-    v33 = v13;
+    v32 = metadataCopy;
+    v33 = optionsCopy;
     v25 = v19;
     v34 = v25;
-    v36[2] = v28;
-    v26 = v22;
+    v36[2] = priorityCopy;
+    v26 = name;
     v35 = v26;
     [v20 setOnClose:v29];
 
@@ -1262,12 +1262,12 @@ void __84__SYFileTransferSyncEngine_outputStreamWithMetadata_priority_options_co
   v44 = *MEMORY[0x1E69E9840];
 }
 
-- (id)cancelMessagesReturningFailures:(id)a3
+- (id)cancelMessagesReturningFailures:(id)failures
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (self->_idsService && [v4 count])
+  failuresCopy = failures;
+  v5 = failuresCopy;
+  if (self->_idsService && [failuresCopy count])
   {
     v6 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(v5, "count")}];
     v21 = 0u;
@@ -1384,12 +1384,12 @@ void __84__SYFileTransferSyncEngine_outputStreamWithMetadata_priority_options_co
   self->_responsesCanceled = 1;
 }
 
-- (void)_handleSessionRestart:(id)a3 priority:(int64_t)a4 options:(id)a5 userContext:(id)a6 callback:(id)a7
+- (void)_handleSessionRestart:(id)restart priority:(int64_t)priority options:(id)options userContext:(id)context callback:(id)callback
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = [a7 copy];
+  restartCopy = restart;
+  optionsCopy = options;
+  contextCopy = context;
+  v15 = [callback copy];
   objc_initWeak(&location, self);
   outputStream = self->_outputStream;
   v21[0] = MEMORY[0x1E69E9820];
@@ -1397,12 +1397,12 @@ void __84__SYFileTransferSyncEngine_outputStreamWithMetadata_priority_options_co
   v21[2] = __88__SYFileTransferSyncEngine__handleSessionRestart_priority_options_userContext_callback___block_invoke;
   v21[3] = &unk_1E86CB5F0;
   objc_copyWeak(v26, &location);
-  v17 = v12;
+  v17 = restartCopy;
   v22 = v17;
-  v26[1] = a4;
-  v18 = v13;
+  v26[1] = priority;
+  v18 = optionsCopy;
   v23 = v18;
-  v19 = v14;
+  v19 = contextCopy;
   v24 = v19;
   v20 = v15;
   v25 = v20;
@@ -1423,12 +1423,12 @@ void __88__SYFileTransferSyncEngine__handleSessionRestart_priority_options_userC
   }
 }
 
-- (void)_reallyHandleSessionRestart:(id)a3 priority:(int64_t)a4 options:(id)a5 userContext:(id)a6 callback:(id)a7
+- (void)_reallyHandleSessionRestart:(id)restart priority:(int64_t)priority options:(id)options userContext:(id)context callback:(id)callback
 {
-  v27 = a5;
-  v11 = a6;
+  optionsCopy = options;
+  contextCopy = context;
   outputStream = self->_outputStream;
-  v13 = a7;
+  callbackCopy = callback;
   [(_SYOutputStreamer *)outputStream close];
   v14 = self->_outputStream;
   self->_outputStream = 0;
@@ -1438,72 +1438,72 @@ void __88__SYFileTransferSyncEngine__handleSessionRestart_priority_options_userC
 
   v16 = [_SYOutputStreamer alloc];
   outputFileURL = self->_outputFileURL;
-  v18 = [(SYSyncEngine *)self queue];
-  v19 = [(_SYOutputStreamer *)v16 initWithCompressedFileURL:outputFileURL callbackQueue:v18];
+  queue = [(SYSyncEngine *)self queue];
+  v19 = [(_SYOutputStreamer *)v16 initWithCompressedFileURL:outputFileURL callbackQueue:queue];
   v20 = self->_outputStream;
   self->_outputStream = v19;
 
   if (self->_outputStream)
   {
-    v21 = [(SYSyncEngine *)self service];
-    v22 = [v21 name];
-    v23 = [SYPersistentStore sharedPersistentStoreForService:v22];
-    v24 = [(SYStartSyncSession *)self->_sessionStartMessage header];
-    [v23 resetSequenceNumber:{objc_msgSend(v24, "sequenceNumber")}];
+    service = [(SYSyncEngine *)self service];
+    name = [service name];
+    v23 = [SYPersistentStore sharedPersistentStoreForService:name];
+    header = [(SYStartSyncSession *)self->_sessionStartMessage header];
+    [v23 resetSequenceNumber:{objc_msgSend(header, "sequenceNumber")}];
 
     v25 = objc_opt_new();
     [(SYStartSyncSession *)self->_sessionStartMessage copyTo:v25];
-    v26 = [v21 _newMessageHeader];
-    [v25 setHeader:v26];
+    _newMessageHeader = [service _newMessageHeader];
+    [v25 setHeader:_newMessageHeader];
 
-    [(SYFileTransferSyncEngine *)self enqueueSyncRequest:v25 withMessageID:102 priority:a4 options:v27 userContext:v11 callback:v13];
-    v13 = v25;
+    [(SYFileTransferSyncEngine *)self enqueueSyncRequest:v25 withMessageID:102 priority:priority options:optionsCopy userContext:contextCopy callback:callbackCopy];
+    callbackCopy = v25;
   }
 
   else
   {
-    v21 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithSYError:2001 userInfo:0];
-    (*(v13 + 2))(v13, 0, 0, v21);
+    service = [objc_alloc(MEMORY[0x1E696ABC0]) initWithSYError:2001 userInfo:0];
+    (*(callbackCopy + 2))(callbackCopy, 0, 0, service);
   }
 }
 
-- (id)idsOptions:(id)a3 forFileTransfer:(BOOL)a4
+- (id)idsOptions:(id)options forFileTransfer:(BOOL)transfer
 {
-  v4 = a4;
-  v6 = a3;
+  transferCopy = transfer;
+  optionsCopy = options;
   v7 = objc_opt_new();
   [v7 setObject:MEMORY[0x1E695E118] forKeyedSubscript:*MEMORY[0x1E69A47E0]];
-  v8 = [(SYSyncEngine *)self service];
-  v9 = [v8 currentSession];
-  [v8 defaultMessageTimeout];
-  if (!v9)
+  service = [(SYSyncEngine *)self service];
+  currentSession = [service currentSession];
+  [service defaultMessageTimeout];
+  if (!currentSession)
   {
     goto LABEL_6;
   }
 
-  if (!v4)
+  if (!transferCopy)
   {
-    [v9 perMessageTimeout];
+    [currentSession perMessageTimeout];
 LABEL_6:
     v13 = v10;
     goto LABEL_7;
   }
 
-  [v9 fullSessionTimeout];
+  [currentSession fullSessionTimeout];
   if (v11 == 0.0)
   {
     goto LABEL_13;
   }
 
-  [v9 remainingSessionTime];
+  [currentSession remainingSessionTime];
   v13 = v12 * 0.5;
 LABEL_7:
   if (v13 != 0.0)
   {
     if (MGGetBoolAnswer())
     {
-      v14 = [MEMORY[0x1E695E000] standardUserDefaults];
-      v15 = [v14 objectForKey:@"FileTransferOverrideTimeout" inDomain:@"com.apple.companionsync"];
+      standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+      v15 = [standardUserDefaults objectForKey:@"FileTransferOverrideTimeout" inDomain:@"com.apple.companionsync"];
 
       if (v15)
       {
@@ -1519,17 +1519,17 @@ LABEL_7:
   }
 
 LABEL_13:
-  v18 = [(SYFileTransferSyncEngine *)self customIDSOptions];
+  customIDSOptions = [(SYFileTransferSyncEngine *)self customIDSOptions];
 
-  if (v18)
+  if (customIDSOptions)
   {
-    v19 = [(SYFileTransferSyncEngine *)self customIDSOptions];
-    [v7 addEntriesFromDictionary:v19];
+    customIDSOptions2 = [(SYFileTransferSyncEngine *)self customIDSOptions];
+    [v7 addEntriesFromDictionary:customIDSOptions2];
   }
 
-  if (v6)
+  if (optionsCopy)
   {
-    [v7 addEntriesFromDictionary:v6];
+    [v7 addEntriesFromDictionary:optionsCopy];
   }
 
   [v7 setObject:MEMORY[0x1E695E110] forKeyedSubscript:*MEMORY[0x1E69A4780]];
@@ -1539,21 +1539,21 @@ LABEL_13:
 
 - (id)_fileTransferHeader
 {
-  v2 = [(SYSyncEngine *)self service];
-  v3 = [v2 name];
-  v4 = [SYPersistentStore sharedPersistentStoreForService:v3];
+  service = [(SYSyncEngine *)self service];
+  name = [service name];
+  v4 = [SYPersistentStore sharedPersistentStoreForService:name];
 
   v5 = objc_opt_new();
   [v5 setTimestamp:CFAbsoluteTimeGetCurrent()];
   v6 = [SYPeer alloc];
-  v7 = [v2 peerID];
-  v8 = [v2 generationID];
-  v9 = [(SYPeer *)v6 initWithPeerID:v7 generation:v8];
+  peerID = [service peerID];
+  generationID = [service generationID];
+  v9 = [(SYPeer *)v6 initWithPeerID:peerID generation:generationID];
   [v5 setSender:v9];
 
   v10 = [SYVectorClock alloc];
-  v11 = [v4 vectorClockJSON];
-  v12 = [(SYVectorClock *)v10 initWithJSONRepresentation:v11];
+  vectorClockJSON = [v4 vectorClockJSON];
+  v12 = [(SYVectorClock *)v10 initWithJSONRepresentation:vectorClockJSON];
   [v5 setState:v12];
 
   [v5 setVersion:2];
@@ -1562,24 +1562,24 @@ LABEL_13:
   return v5;
 }
 
-- (id)_wrapResponse:(id)a3 toRequest:(id)a4 ofType:(unsigned __int16)a5
+- (id)_wrapResponse:(id)response toRequest:(id)request ofType:(unsigned __int16)type
 {
-  v6 = a4;
-  v7 = a3;
-  [v6 configureResponse];
-  v8 = [v6 response];
+  requestCopy = request;
+  responseCopy = response;
+  [requestCopy configureResponse];
+  response = [requestCopy response];
 
-  [v8 setPbResponse:v7];
+  [response setPbResponse:responseCopy];
 
-  return v8;
+  return response;
 }
 
-- (id)_assumeOwnershipOfURL:(id)a3 error:(id *)a4
+- (id)_assumeOwnershipOfURL:(id)l error:(id *)error
 {
-  v5 = a3;
-  v6 = [v5 URLByDeletingLastPathComponent];
-  v7 = [v6 path];
-  v8 = [v7 stringByAppendingPathComponent:@"SYFileTransfer-XXXXX"];
+  lCopy = l;
+  uRLByDeletingLastPathComponent = [lCopy URLByDeletingLastPathComponent];
+  path = [uRLByDeletingLastPathComponent path];
+  v8 = [path stringByAppendingPathComponent:@"SYFileTransfer-XXXXX"];
 
   v9 = strdup([v8 UTF8String]);
   v10 = mkdtemp(v9);
@@ -1587,19 +1587,19 @@ LABEL_13:
   {
     v11 = [objc_alloc(MEMORY[0x1E695DFF8]) initFileURLWithFileSystemRepresentation:v10 isDirectory:1 relativeToURL:0];
     free(v9);
-    v12 = [v5 lastPathComponent];
-    v13 = [v11 URLByAppendingPathComponent:v12];
+    lastPathComponent = [lCopy lastPathComponent];
+    v13 = [v11 URLByAppendingPathComponent:lastPathComponent];
 
-    if (link([v5 fileSystemRepresentation], objc_msgSend(v13, "fileSystemRepresentation")))
+    if (link([lCopy fileSystemRepresentation], objc_msgSend(v13, "fileSystemRepresentation")))
     {
       v14 = __error();
-      if (a4)
+      if (error)
       {
         v15 = *v14;
         v16 = objc_alloc(MEMORY[0x1E696ABC0]);
         v17 = [v16 initWithDomain:*MEMORY[0x1E696A798] code:v15 userInfo:0];
         v18 = 0;
-        *a4 = v17;
+        *error = v17;
       }
 
       else
@@ -1617,12 +1617,12 @@ LABEL_13:
   else
   {
     v19 = __error();
-    if (a4)
+    if (error)
     {
       v20 = *v19;
       v21 = objc_alloc(MEMORY[0x1E696ABC0]);
       v18 = 0;
-      *a4 = [v21 initWithDomain:*MEMORY[0x1E696A798] code:v20 userInfo:0];
+      *error = [v21 initWithDomain:*MEMORY[0x1E696A798] code:v20 userInfo:0];
     }
 
     else
@@ -1634,9 +1634,9 @@ LABEL_13:
   return v18;
 }
 
-- (void)_readNextProtobuf:(id)a3
+- (void)_readNextProtobuf:(id)protobuf
 {
-  v4 = [a3 copy];
+  v4 = [protobuf copy];
   objc_initWeak(&location, self);
   inputStream = self->_inputStream;
   v7[0] = MEMORY[0x1E69E9820];
@@ -1825,21 +1825,21 @@ void __46__SYFileTransferSyncEngine__readNextProtobuf___block_invoke_123(uint64_
   v35 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_recordLastSeqNo:(id)a3
+- (void)_recordLastSeqNo:(id)no
 {
-  v4 = a3;
-  v5 = [(SYSyncEngine *)self service];
-  v6 = [v5 name];
-  v7 = [SYPersistentStore sharedPersistentStoreForService:v6];
-  v8 = [v4 sequenceNumber];
-  v9 = [v4 sender];
+  noCopy = no;
+  service = [(SYSyncEngine *)self service];
+  name = [service name];
+  v7 = [SYPersistentStore sharedPersistentStoreForService:name];
+  sequenceNumber = [noCopy sequenceNumber];
+  sender = [noCopy sender];
 
-  v10 = [v9 peerID];
+  peerID = [sender peerID];
   v12 = 0;
-  LOBYTE(v8) = [v7 setLastSequenceNumber:v8 fromPeer:v10 error:&v12];
+  LOBYTE(sequenceNumber) = [v7 setLastSequenceNumber:sequenceNumber fromPeer:peerID error:&v12];
   v11 = v12;
 
-  if ((v8 & 1) == 0)
+  if ((sequenceNumber & 1) == 0)
   {
     if (_sync_log_facilities_pred != -1)
     {
@@ -1853,22 +1853,22 @@ void __46__SYFileTransferSyncEngine__readNextProtobuf___block_invoke_123(uint64_
   }
 }
 
-- (BOOL)_shouldTreatAsSessionEnd:(id)a3
+- (BOOL)_shouldTreatAsSessionEnd:(id)end
 {
-  v3 = a3;
-  if ([v3 isMemberOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(v3, "isMemberOfClass:", objc_opt_class()))
+  endCopy = end;
+  if ([endCopy isMemberOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(endCopy, "isMemberOfClass:", objc_opt_class()))
   {
     LOBYTE(v4) = 1;
   }
 
   else if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 accepted] ^ 1;
+    v4 = [endCopy accepted] ^ 1;
   }
 
   else if (objc_opt_respondsToSelector())
   {
-    LOBYTE(v4) = [v3 hasError];
+    LOBYTE(v4) = [endCopy hasError];
   }
 
   else
@@ -1879,19 +1879,19 @@ void __46__SYFileTransferSyncEngine__readNextProtobuf___block_invoke_123(uint64_
   return v4;
 }
 
-- (void)_consumeRemainingStreamDataWithIdentifier:(id)a3 completion:(id)a4
+- (void)_consumeRemainingStreamDataWithIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __81__SYFileTransferSyncEngine__consumeRemainingStreamDataWithIdentifier_completion___block_invoke;
   v10[3] = &unk_1E86CB668;
   objc_copyWeak(&v13, &location);
-  v8 = v7;
+  v8 = completionCopy;
   v12 = v8;
-  v9 = v6;
+  v9 = identifierCopy;
   v11 = v9;
   [(SYFileTransferSyncEngine *)self _readNextProtobuf:v10];
 
@@ -2128,21 +2128,21 @@ void __88__SYFileTransferSyncEngine__handleProtobuf_ofType_identifier_isResponse
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_handleIncomingStreamDataWithIdentifier:(id)a3 completion:(id)a4
+- (void)_handleIncomingStreamDataWithIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __79__SYFileTransferSyncEngine__handleIncomingStreamDataWithIdentifier_completion___block_invoke;
   v10[3] = &unk_1E86CB758;
   objc_copyWeak(&v14, &location);
-  v8 = v7;
+  v8 = completionCopy;
   v13 = v8;
-  v9 = v6;
+  v9 = identifierCopy;
   v11 = v9;
-  v12 = self;
+  selfCopy = self;
   [(SYFileTransferSyncEngine *)self _readNextProtobuf:v10];
 
   objc_destroyWeak(&v14);
@@ -2212,13 +2212,13 @@ void __79__SYFileTransferSyncEngine__handleIncomingStreamDataWithIdentifier_comp
   }
 }
 
-- (void)_handleIncomingSessionFileAtOwnedURL:(id)a3 metadata:(id)a4 identifier:(id)a5 idsContext:(id)a6
+- (void)_handleIncomingSessionFileAtOwnedURL:(id)l metadata:(id)metadata identifier:(id)identifier idsContext:(id)context
 {
   v34 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v27 = a6;
+  lCopy = l;
+  metadataCopy = metadata;
+  identifierCopy = identifier;
+  contextCopy = context;
   if (self->_inputStream)
   {
     if (_sync_log_facilities_pred != -1)
@@ -2230,37 +2230,37 @@ void __79__SYFileTransferSyncEngine__handleIncomingStreamDataWithIdentifier_comp
     if (os_log_type_enabled(qword_1EDE73428, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v31 = v13;
+      v31 = identifierCopy;
       _os_log_impl(&dword_1DF835000, v14, OS_LOG_TYPE_DEFAULT, "Deferring incoming file-transfer with identifier %{public}@ because I'm already within a file-transfer session", buf, 0xCu);
     }
 
-    v15 = objc_opt_new();
-    [v15 setResourceURL:v11];
-    [v15 setIdentifier:v13];
-    [v15 setMetadata:v12];
-    [v15 setIdsContext:v27];
-    [(NSMutableArray *)self->_deferredIncomingSessions addObject:v15];
+    service = objc_opt_new();
+    [service setResourceURL:lCopy];
+    [service setIdentifier:identifierCopy];
+    [service setMetadata:metadataCopy];
+    [service setIdsContext:contextCopy];
+    [(NSMutableArray *)self->_deferredIncomingSessions addObject:service];
   }
 
   else
   {
-    v15 = [(SYSyncEngine *)self service];
-    v26 = [v12 objectForKeyedSubscript:@"SessionID"];
+    service = [(SYSyncEngine *)self service];
+    v26 = [metadataCopy objectForKeyedSubscript:@"SessionID"];
     v16 = +[SYStatisticStore sharedInstance];
-    v17 = [v15 name];
-    [v16 recordIncomingFileTransferAtURL:v11 metadata:v12 identifier:v13 forService:v17];
+    name = [service name];
+    [v16 recordIncomingFileTransferAtURL:lCopy metadata:metadataCopy identifier:identifierCopy forService:name];
 
     [(SYFileTransferSyncEngine *)self beginResponseSession];
     [(_SYOutputStreamer *)self->_outputStream setStreamProperty:v26 forKey:SYAssociatedSessionIdentifierPropertyKey];
-    objc_storeStrong(&self->_inputFileURL, a3);
+    objc_storeStrong(&self->_inputFileURL, l);
     v18 = [_SYInputStreamer alloc];
     inputFileURL = self->_inputFileURL;
-    v20 = [(SYSyncEngine *)self queue];
-    v21 = [(_SYInputStreamer *)v18 initWithCompressedFileURL:inputFileURL callbackQueue:v20];
+    queue = [(SYSyncEngine *)self queue];
+    v21 = [(_SYInputStreamer *)v18 initWithCompressedFileURL:inputFileURL callbackQueue:queue];
     inputStream = self->_inputStream;
     self->_inputStream = v21;
 
-    objc_storeStrong(&self->_inputPriorityBoostContext, a6);
+    objc_storeStrong(&self->_inputPriorityBoostContext, context);
     if (_sync_log_facilities_pred != -1)
     {
       [SYIncomingSyncAllObjectsSession _continueProcessing];
@@ -2285,7 +2285,7 @@ void __79__SYFileTransferSyncEngine__handleIncomingStreamDataWithIdentifier_comp
     v28[3] = &unk_1E86CB780;
     v28[4] = self;
     objc_copyWeak(&v29, buf);
-    [(SYFileTransferSyncEngine *)self _handleIncomingStreamDataWithIdentifier:v13 completion:v28];
+    [(SYFileTransferSyncEngine *)self _handleIncomingStreamDataWithIdentifier:identifierCopy completion:v28];
     objc_destroyWeak(&v29);
     objc_destroyWeak(buf);
   }
@@ -2338,15 +2338,15 @@ void __96__SYFileTransferSyncEngine__handleIncomingSessionFileAtOwnedURL_metadat
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_handleIncomingSessionFileAtURL:(id)a3 metadata:(id)a4 identifier:(id)a5 idsContext:(id)a6
+- (void)_handleIncomingSessionFileAtURL:(id)l metadata:(id)metadata identifier:(id)identifier idsContext:(id)context
 {
   v32 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  lCopy = l;
+  metadataCopy = metadata;
+  identifierCopy = identifier;
+  contextCopy = context;
   v29 = 0;
-  v14 = [(SYFileTransferSyncEngine *)self _assumeOwnershipOfURL:v10 error:&v29];
+  v14 = [(SYFileTransferSyncEngine *)self _assumeOwnershipOfURL:lCopy error:&v29];
   v15 = v29;
   if (v14)
   {
@@ -2370,7 +2370,7 @@ void __96__SYFileTransferSyncEngine__handleIncomingSessionFileAtOwnedURL_metadat
 
     if (os_log_type_enabled(qword_1EDE73458, OS_LOG_TYPE_DEBUG))
     {
-      v17 = [v11 objectForKeyedSubscript:@"EnqueuedAt"];
+      v17 = [metadataCopy objectForKeyedSubscript:@"EnqueuedAt"];
       [v17 timeIntervalSinceNow];
       v19 = v18;
       if (_sync_log_facilities_pred != -1)
@@ -2381,22 +2381,22 @@ void __96__SYFileTransferSyncEngine__handleIncomingSessionFileAtOwnedURL_metadat
       v20 = qword_1EDE73458;
       if (os_log_type_enabled(qword_1EDE73458, OS_LOG_TYPE_DEBUG))
       {
-        [SYFileTransferSyncEngine _handleIncomingSessionFileAtURL:v12 metadata:v20 identifier:v19 idsContext:?];
+        [SYFileTransferSyncEngine _handleIncomingSessionFileAtURL:identifierCopy metadata:v20 identifier:v19 idsContext:?];
       }
     }
 
     objc_initWeak(buf, self);
-    v21 = [(SYSyncEngine *)self responder];
+    responder = [(SYSyncEngine *)self responder];
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
     v23[2] = __91__SYFileTransferSyncEngine__handleIncomingSessionFileAtURL_metadata_identifier_idsContext___block_invoke;
     v23[3] = &unk_1E86CB7A8;
     objc_copyWeak(&v28, buf);
     v24 = v14;
-    v25 = v11;
-    v26 = v12;
-    v27 = v13;
-    [v21 serializeForIncomingSession:v23];
+    v25 = metadataCopy;
+    v26 = identifierCopy;
+    v27 = contextCopy;
+    [responder serializeForIncomingSession:v23];
 
     objc_destroyWeak(&v28);
     objc_destroyWeak(buf);
@@ -2463,31 +2463,31 @@ void __91__SYFileTransferSyncEngine__handleIncomingSessionFileAtURL_metadata_ide
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_processNMSMessageData:(id)a3 context:(id)a4
+- (void)_processNMSMessageData:(id)data context:(id)context
 {
   v33 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
-  v8 = a3;
-  v9 = *[v8 bytes];
-  v10 = [v6 storageGuid];
-  v11 = [v6 incomingResponseIdentifier];
+  contextCopy = context;
+  dataCopy = data;
+  dataCopy2 = data;
+  v9 = *[dataCopy2 bytes];
+  storageGuid = [contextCopy storageGuid];
+  incomingResponseIdentifier = [contextCopy incomingResponseIdentifier];
 
-  v12 = [v8 length];
-  if (v11)
+  v12 = [dataCopy2 length];
+  if (incomingResponseIdentifier)
   {
-    v13 = [v8 subdataWithRange:{2, v12 - 2}];
+    v13 = [dataCopy2 subdataWithRange:{2, v12 - 2}];
 
-    [v6 incomingResponseIdentifier];
-    v10 = v8 = v10;
+    [contextCopy incomingResponseIdentifier];
+    storageGuid = dataCopy2 = storageGuid;
   }
 
   else
   {
-    v13 = [v8 subdataWithRange:{3, v12 - 3}];
+    v13 = [dataCopy2 subdataWithRange:{3, v12 - 3}];
   }
 
-  v14 = SYMessageClassForID(v9, v11 != 0);
+  v14 = SYMessageClassForID(v9, incomingResponseIdentifier != 0);
   if (v14)
   {
     v15 = v14;
@@ -2495,9 +2495,9 @@ void __91__SYFileTransferSyncEngine__handleIncomingSessionFileAtURL_metadata_ide
     v17 = v16;
     if (v9 == 106)
     {
-      v18 = [v16 payload];
+      payload = [v16 payload];
 
-      if (!v18)
+      if (!payload)
       {
         v19 = [v13 length];
         if (v19 >= 0x14)
@@ -2547,7 +2547,7 @@ void __91__SYFileTransferSyncEngine__handleIncomingSessionFileAtURL_metadata_ide
       v30[2] = __59__SYFileTransferSyncEngine__processNMSMessageData_context___block_invoke;
       v30[3] = &unk_1E86CB7D0;
       v30[4] = self;
-      [(SYFileTransferSyncEngine *)self _handleProtobuf:v17 ofType:v9 identifier:v10 isResponse:v11 != 0 withCompletion:v30];
+      [(SYFileTransferSyncEngine *)self _handleProtobuf:v17 ofType:v9 identifier:storageGuid isResponse:incomingResponseIdentifier != 0 withCompletion:v30];
     }
 
     else
@@ -2564,7 +2564,7 @@ void __91__SYFileTransferSyncEngine__handleIncomingSessionFileAtURL_metadata_ide
       }
 
       v27 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithSYError:2016 userInfo:0];
-      [(SYFileTransferSyncEngine *)self _handleError:v27 messageID:v10 streamer:0];
+      [(SYFileTransferSyncEngine *)self _handleError:v27 messageID:storageGuid streamer:0];
     }
   }
 
@@ -2585,24 +2585,24 @@ void __91__SYFileTransferSyncEngine__handleIncomingSessionFileAtURL_metadata_ide
   v28 = *MEMORY[0x1E69E9840];
 }
 
-- (void)service:(id)a3 account:(id)a4 incomingResourceAtURL:(id)a5 metadata:(id)a6 fromID:(id)a7 context:(id)a8
+- (void)service:(id)service account:(id)account incomingResourceAtURL:(id)l metadata:(id)metadata fromID:(id)d context:(id)context
 {
   v46 = *MEMORY[0x1E69E9840];
-  v40 = a3;
-  v41 = a4;
-  v14 = a5;
-  v15 = a6;
-  v42 = a7;
-  v16 = a8;
+  serviceCopy = service;
+  accountCopy = account;
+  lCopy = l;
+  metadataCopy = metadata;
+  dCopy = d;
+  contextCopy = context;
   state.opaque[0] = 0;
   state.opaque[1] = 0;
-  v17 = [(SYSyncEngine *)self transportActivity];
-  os_activity_scope_enter(v17, &state);
+  transportActivity = [(SYSyncEngine *)self transportActivity];
+  os_activity_scope_enter(transportActivity, &state);
 
-  v18 = [v15 objectForKeyedSubscript:@"CRC"];
-  v19 = [(SYSyncEngine *)self service];
-  v20 = [v19 options];
-  v21 = [v20 objectForKeyedSubscript:@"SYServiceOptionEnableCRC"];
+  v18 = [metadataCopy objectForKeyedSubscript:@"CRC"];
+  service = [(SYSyncEngine *)self service];
+  options = [service options];
+  v21 = [options objectForKeyedSubscript:@"SYServiceOptionEnableCRC"];
   if ([v21 integerValue])
   {
     v22 = v18 == 0;
@@ -2617,7 +2617,7 @@ void __91__SYFileTransferSyncEngine__handleIncomingSessionFileAtURL_metadata_ide
 
   if (v23)
   {
-    v24 = [(SYFileTransferSyncEngine *)self _crcChecksum:v14];
+    v24 = [(SYFileTransferSyncEngine *)self _crcChecksum:lCopy];
     v25 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:v24];
     v26 = [v18 isEqual:v25];
 
@@ -2659,38 +2659,38 @@ void __91__SYFileTransferSyncEngine__handleIncomingSessionFileAtURL_metadata_ide
   v29 = qword_1EDE73458;
   if (os_log_type_enabled(v29, OS_LOG_TYPE_DEBUG))
   {
-    v30 = [v16 outgoingResponseIdentifier];
-    v31 = [v16 incomingResponseIdentifier];
-    [SYFileTransferSyncEngine service:v30 account:v31 incomingResourceAtURL:buf metadata:v29 fromID:? context:?];
+    outgoingResponseIdentifier = [contextCopy outgoingResponseIdentifier];
+    incomingResponseIdentifier = [contextCopy incomingResponseIdentifier];
+    [SYFileTransferSyncEngine service:outgoingResponseIdentifier account:incomingResponseIdentifier incomingResourceAtURL:buf metadata:v29 fromID:? context:?];
   }
 
-  v32 = [v15 objectForKeyedSubscript:@"ContainsSession"];
-  v33 = [v32 BOOLValue];
+  v32 = [metadataCopy objectForKeyedSubscript:@"ContainsSession"];
+  bOOLValue = [v32 BOOLValue];
 
-  if (v33)
+  if (bOOLValue)
   {
-    v34 = [v16 incomingResponseIdentifier];
-    v35 = v34;
-    if (v34)
+    incomingResponseIdentifier2 = [contextCopy incomingResponseIdentifier];
+    v35 = incomingResponseIdentifier2;
+    if (incomingResponseIdentifier2)
     {
-      v36 = v34;
+      outgoingResponseIdentifier2 = incomingResponseIdentifier2;
     }
 
     else
     {
-      v36 = [v16 outgoingResponseIdentifier];
+      outgoingResponseIdentifier2 = [contextCopy outgoingResponseIdentifier];
     }
 
-    v37 = v36;
+    v37 = outgoingResponseIdentifier2;
 
-    [(SYFileTransferSyncEngine *)self _handleIncomingSessionFileAtURL:v14 metadata:v15 identifier:v37 idsContext:v16];
+    [(SYFileTransferSyncEngine *)self _handleIncomingSessionFileAtURL:lCopy metadata:metadataCopy identifier:v37 idsContext:contextCopy];
   }
 
   else
   {
-    v37 = [v15 objectForKeyedSubscript:@"UserMetadata"];
-    v38 = [(SYSyncEngine *)self responder];
-    [v38 handleFileTransfer:v14 metadata:v37 completion:&__block_literal_global_14];
+    v37 = [metadataCopy objectForKeyedSubscript:@"UserMetadata"];
+    responder = [(SYSyncEngine *)self responder];
+    [responder handleFileTransfer:lCopy metadata:v37 completion:&__block_literal_global_14];
   }
 
   os_activity_scope_leave(&state);
@@ -2714,18 +2714,18 @@ void __90__SYFileTransferSyncEngine_service_account_incomingResourceAtURL_metada
   }
 }
 
-- (void)service:(id)a3 account:(id)a4 incomingData:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)service:(id)service account:(id)account incomingData:(id)data fromID:(id)d context:(id)context
 {
   v89 = *MEMORY[0x1E69E9840];
-  v63 = a3;
-  v64 = a4;
-  v12 = a5;
-  v65 = a6;
-  v13 = a7;
+  serviceCopy = service;
+  accountCopy = account;
+  dataCopy = data;
+  dCopy = d;
+  contextCopy = context;
   state.opaque[0] = 0;
   state.opaque[1] = 0;
-  v14 = [(SYSyncEngine *)self transportActivity];
-  os_activity_scope_enter(v14, &state);
+  transportActivity = [(SYSyncEngine *)self transportActivity];
+  os_activity_scope_enter(transportActivity, &state);
 
   if (_sync_log_facilities_pred != -1)
   {
@@ -2735,22 +2735,22 @@ void __90__SYFileTransferSyncEngine_service_account_incomingResourceAtURL_metada
   v15 = qword_1EDE73458;
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
   {
-    v46 = [v12 length];
-    v47 = [v13 outgoingResponseIdentifier];
-    v48 = [v13 incomingResponseIdentifier];
+    v46 = [dataCopy length];
+    outgoingResponseIdentifier = [contextCopy outgoingResponseIdentifier];
+    incomingResponseIdentifier = [contextCopy incomingResponseIdentifier];
     *buf = 134218498;
     v80 = v46;
     v81 = 2114;
-    *v82 = v47;
+    *v82 = outgoingResponseIdentifier;
     *&v82[8] = 2114;
-    v83 = v48;
+    v83 = incomingResponseIdentifier;
     _os_log_debug_impl(&dword_1DF835000, v15, OS_LOG_TYPE_DEBUG, "Receiving: %zu bytes, %{public}@, replying to %{public}@", buf, 0x20u);
   }
 
-  v16 = [v13 storageGuid];
-  if (!v16)
+  storageGuid = [contextCopy storageGuid];
+  if (!storageGuid)
   {
-    v16 = [v13 outgoingResponseIdentifier];
+    storageGuid = [contextCopy outgoingResponseIdentifier];
   }
 
   if (_sync_log_facilities_pred != -1)
@@ -2761,27 +2761,27 @@ void __90__SYFileTransferSyncEngine_service_account_incomingResourceAtURL_metada
   v17 = qword_1EDE73428;
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
-    v18 = [v12 length];
+    v18 = [dataCopy length];
     *buf = 138543618;
-    v80 = v16;
+    v80 = storageGuid;
     v81 = 2048;
     *v82 = v18;
     _os_log_impl(&dword_1DF835000, v17, OS_LOG_TYPE_DEFAULT, "File-transfer engine receiving single message with GUID %{public}@, %ld bytes", buf, 0x16u);
   }
 
-  if ([v12 length] > 7)
+  if ([dataCopy length] > 7)
   {
-    v20 = v12;
-    v62 = *[v12 bytes];
-    v21 = v12;
-    v61 = *([v12 bytes] + 2);
-    v22 = v12;
-    v23 = *([v12 bytes] + 4);
-    if ([v12 length] - 8 >= v23)
+    v20 = dataCopy;
+    v62 = *[dataCopy bytes];
+    v21 = dataCopy;
+    v61 = *([dataCopy bytes] + 2);
+    v22 = dataCopy;
+    v23 = *([dataCopy bytes] + 4);
+    if ([dataCopy length] - 8 >= v23)
     {
       v58 = v23;
-      v59 = [v12 subdataWithRange:8];
-      v60 = [(SYSyncEngine *)self responder];
+      v59 = [dataCopy subdataWithRange:8];
+      responder = [(SYSyncEngine *)self responder];
       v31 = SYMessageClassForID(v62, v61 != 0);
       v32 = v31;
       if (v31)
@@ -2812,32 +2812,32 @@ void __90__SYFileTransferSyncEngine_service_account_incomingResourceAtURL_metada
           if (os_log_type_enabled(v36, OS_LOG_TYPE_DEBUG))
           {
             Current = CFAbsoluteTimeGetCurrent();
-            v56 = [v33 header];
-            [v56 timestamp];
+            header = [v33 header];
+            [header timestamp];
             *buf = 138543618;
-            v80 = v16;
+            v80 = storageGuid;
             v81 = 2048;
             *v82 = Current - v57;
             _os_log_debug_impl(&dword_1DF835000, v36, OS_LOG_TYPE_DEBUG, "Transit time for %{public}@: %.04f seconds", buf, 0x16u);
           }
 
-          v37 = [v33 header];
-          v38 = [v60 willAcceptMessageWithHeader:v37 messageID:v16];
+          header2 = [v33 header];
+          v38 = [responder willAcceptMessageWithHeader:header2 messageID:storageGuid];
 
           if (v38)
           {
-            v39 = [v33 header];
-            [(SYFileTransferSyncEngine *)self _recordLastSeqNo:v39];
+            header3 = [v33 header];
+            [(SYFileTransferSyncEngine *)self _recordLastSeqNo:header3];
 
             [(SYFileTransferSyncEngine *)self _suspendIdsQueue];
-            v40 = [(SYSyncEngine *)self service];
+            service = [(SYSyncEngine *)self service];
             if (v61)
             {
-              v41 = [(SYFileTransferSyncEngine *)self _wrapIncomingResponse:v33 ofType:v62 identifier:v16];
-              [v41 setIdsContext:v13];
+              v41 = [(SYFileTransferSyncEngine *)self _wrapIncomingResponse:v33 ofType:v62 identifier:storageGuid];
+              [v41 setIdsContext:contextCopy];
               v42 = +[SYStatisticStore sharedInstance];
-              v43 = [v40 name];
-              [v42 recordIncomingMessage:v41 forService:v43];
+              name = [service name];
+              [v42 recordIncomingMessage:v41 forService:name];
 
               v75[0] = MEMORY[0x1E69E9820];
               v75[1] = 3221225472;
@@ -2845,17 +2845,17 @@ void __90__SYFileTransferSyncEngine_service_account_incomingResourceAtURL_metada
               v75[3] = &unk_1E86CB7F8;
               v44 = v41;
               v76 = v44;
-              v77 = self;
-              [v60 handleSyncResponse:v33 ofType:v62 completion:v75];
+              selfCopy = self;
+              [responder handleSyncResponse:v33 ofType:v62 completion:v75];
             }
 
             else
             {
-              v51 = [(SYFileTransferSyncEngine *)self _wrapIncomingMessage:v33 ofType:v62 identifier:v16];
-              [v51 setIdsContext:v13];
+              v51 = [(SYFileTransferSyncEngine *)self _wrapIncomingMessage:v33 ofType:v62 identifier:storageGuid];
+              [v51 setIdsContext:contextCopy];
               v52 = +[SYStatisticStore sharedInstance];
-              v53 = [v40 name];
-              [v52 recordIncomingMessage:v51 forService:v53];
+              name2 = [service name];
+              [v52 recordIncomingMessage:v51 forService:name2];
 
               [v51 setExpectsResponse:0];
               objc_initWeak(buf, self);
@@ -2869,9 +2869,9 @@ void __90__SYFileTransferSyncEngine_service_account_incomingResourceAtURL_metada
               v73 = 0;
               v74 = v58;
               v67 = v44;
-              v68 = self;
-              v69 = v13;
-              v70 = v60;
+              selfCopy2 = self;
+              v69 = contextCopy;
+              v70 = responder;
               [v70 handleSyncRequest:v33 ofType:v62 response:v66];
 
               objc_destroyWeak(&v71);
@@ -2881,8 +2881,8 @@ void __90__SYFileTransferSyncEngine_service_account_incomingResourceAtURL_metada
 
           else
           {
-            v40 = [v33 header];
-            [(SYFileTransferSyncEngine *)self _recordLastSeqNo:v40];
+            service = [v33 header];
+            [(SYFileTransferSyncEngine *)self _recordLastSeqNo:service];
           }
         }
 
@@ -2900,8 +2900,8 @@ void __90__SYFileTransferSyncEngine_service_account_incomingResourceAtURL_metada
             __46__SYFileTransferSyncEngine__readNextProtobuf___block_invoke_123_cold_5(v50, buf, v49);
           }
 
-          v40 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithSYError:2016 userInfo:0];
-          [v60 handleSyncError:v40 forMessageWithIdentifier:v16];
+          service = [objc_alloc(MEMORY[0x1E696ABC0]) initWithSYError:2016 userInfo:0];
+          [responder handleSyncError:service forMessageWithIdentifier:storageGuid];
         }
       }
 
@@ -2919,7 +2919,7 @@ void __90__SYFileTransferSyncEngine_service_account_incomingResourceAtURL_metada
         }
 
         v33 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithSYError:2015 userInfo:0];
-        [v60 handleSyncError:v33 forMessageWithIdentifier:v16];
+        [responder handleSyncError:v33 forMessageWithIdentifier:storageGuid];
       }
     }
 
@@ -2934,11 +2934,11 @@ void __90__SYFileTransferSyncEngine_service_account_incomingResourceAtURL_metada
       v25 = qword_1EDE73428;
       if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
       {
-        v26 = [v12 length];
-        v27 = v12;
-        v28 = [v12 bytes];
-        v29 = v12;
-        v30 = [v12 bytes];
+        v26 = [dataCopy length];
+        v27 = dataCopy;
+        bytes = [dataCopy bytes];
+        v29 = dataCopy;
+        bytes2 = [dataCopy bytes];
         *buf = 134219522;
         v80 = v26;
         v81 = 1024;
@@ -2948,15 +2948,15 @@ void __90__SYFileTransferSyncEngine_service_account_incomingResourceAtURL_metada
         LOWORD(v83) = 1024;
         *(&v83 + 2) = v24;
         HIWORD(v83) = 2048;
-        v84 = v28;
+        v84 = bytes;
         v85 = 1040;
         v86 = 8;
         v87 = 2096;
-        v88 = v30;
+        v88 = bytes2;
         _os_log_impl(&dword_1DF835000, v25, OS_LOG_TYPE_DEFAULT, "Received a protobuf encoded by NMSMessageCenter? I have %lu bytes of data, and a header saying { msgID %hu, isResponse %hu, msgLen %u }. Header bytes (%p) = %.*P", buf, 0x38u);
       }
 
-      [(SYFileTransferSyncEngine *)self _processNMSMessageData:v12 context:v13];
+      [(SYFileTransferSyncEngine *)self _processNMSMessageData:dataCopy context:contextCopy];
     }
   }
 
@@ -3118,16 +3118,16 @@ void __72__SYFileTransferSyncEngine_service_account_incomingData_fromID_context_
   v34 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_handleError:(id)a3 messageID:(id)a4 streamer:(id)a5
+- (void)_handleError:(id)error messageID:(id)d streamer:(id)streamer
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v10)
+  errorCopy = error;
+  dCopy = d;
+  streamerCopy = streamer;
+  v11 = streamerCopy;
+  if (streamerCopy)
   {
-    v12 = [v10 streamPropertyForKey:SYAssociatedSessionIdentifierPropertyKey];
+    v12 = [streamerCopy streamPropertyForKey:SYAssociatedSessionIdentifierPropertyKey];
     if (!v12)
     {
       goto LABEL_9;
@@ -3137,7 +3137,7 @@ void __72__SYFileTransferSyncEngine_service_account_incomingData_fromID_context_
   else
   {
     os_unfair_lock_lock(&self->_messageMapLock);
-    v12 = [(NSMutableDictionary *)self->_messageIDsToSessionIDs objectForKeyedSubscript:v9];
+    v12 = [(NSMutableDictionary *)self->_messageIDsToSessionIDs objectForKeyedSubscript:dCopy];
     os_unfair_lock_unlock(&self->_messageMapLock);
     if (!v12)
     {
@@ -3145,11 +3145,11 @@ void __72__SYFileTransferSyncEngine_service_account_incomingData_fromID_context_
     }
   }
 
-  v13 = [v8 userInfo];
-  if (v13)
+  userInfo = [errorCopy userInfo];
+  if (userInfo)
   {
-    v14 = v13;
-    v15 = [v13 mutableCopy];
+    v14 = userInfo;
+    v15 = [userInfo mutableCopy];
     [v15 setObject:v12 forKeyedSubscript:0x1F5ACCE40];
   }
 
@@ -3161,24 +3161,24 @@ void __72__SYFileTransferSyncEngine_service_account_incomingData_fromID_context_
   }
 
   v16 = objc_alloc(MEMORY[0x1E696ABC0]);
-  v17 = [v8 domain];
-  v18 = [v16 initWithDomain:v17 code:objc_msgSend(v8 userInfo:{"code"), v15}];
+  domain = [errorCopy domain];
+  v18 = [v16 initWithDomain:domain code:objc_msgSend(errorCopy userInfo:{"code"), v15}];
 
-  v8 = v18;
+  errorCopy = v18;
 LABEL_9:
-  v19 = [(SYSyncEngine *)self responder];
-  [v19 handleSyncError:v8 forMessageWithIdentifier:v9];
+  responder = [(SYSyncEngine *)self responder];
+  [responder handleSyncError:errorCopy forMessageWithIdentifier:dCopy];
 
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 hasBeenDeliveredWithContext:(id)a6
+- (void)service:(id)service account:(id)account identifier:(id)identifier hasBeenDeliveredWithContext:(id)context
 {
   v26 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  serviceCopy = service;
+  accountCopy = account;
+  identifierCopy = identifier;
+  contextCopy = context;
   v14 = [(SYSyncEngine *)self transportActivity:0];
   os_activity_scope_enter(v14, &v21);
 
@@ -3191,7 +3191,7 @@ LABEL_9:
   if (os_log_type_enabled(qword_1EDE73428, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v25 = v12;
+    v25 = identifierCopy;
     _os_log_impl(&dword_1DF835000, v15, OS_LOG_TYPE_DEFAULT, "Delivery confirmation for message %{public}@", buf, 0xCu);
   }
 
@@ -3205,15 +3205,15 @@ LABEL_9:
     [SYFileTransferSyncEngine service:account:identifier:hasBeenDeliveredWithContext:];
   }
 
-  if ([(NSMutableSet *)self->_singleMessageUUIDs containsObject:v12])
+  if ([(NSMutableSet *)self->_singleMessageUUIDs containsObject:identifierCopy])
   {
     v16 = +[SYStatisticStore sharedInstance];
-    [v16 confirmDeliveryOfOutgoingMessage:v12];
+    [v16 confirmDeliveryOfOutgoingMessage:identifierCopy];
   }
 
   os_unfair_lock_lock(&self->_messageMapLock);
-  v17 = [(NSMutableDictionary *)self->_messageIDsToSessionIDs objectForKeyedSubscript:v12];
-  [(NSMutableDictionary *)self->_messageIDsToSessionIDs setObject:0 forKeyedSubscript:v12];
+  v17 = [(NSMutableDictionary *)self->_messageIDsToSessionIDs objectForKeyedSubscript:identifierCopy];
+  [(NSMutableDictionary *)self->_messageIDsToSessionIDs setObject:0 forKeyedSubscript:identifierCopy];
   os_unfair_lock_unlock(&self->_messageMapLock);
   if (v17)
   {
@@ -3227,34 +3227,34 @@ LABEL_9:
     v18 = 0;
   }
 
-  v19 = [(SYSyncEngine *)self responder];
-  [v19 sentMessageWithID:v12 context:v18];
+  responder = [(SYSyncEngine *)self responder];
+  [responder sentMessageWithID:identifierCopy context:v18];
 
   os_activity_scope_leave(&v21);
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)service:(id)a3 didSwitchActivePairedDevice:(id)a4 acknowledgementBlock:(id)a5
+- (void)service:(id)service didSwitchActivePairedDevice:(id)device acknowledgementBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  serviceCopy = service;
+  deviceCopy = device;
+  blockCopy = block;
   state.opaque[0] = 0;
   state.opaque[1] = 0;
-  v11 = [(SYSyncEngine *)self transportActivity];
-  os_activity_scope_enter(v11, &state);
+  transportActivity = [(SYSyncEngine *)self transportActivity];
+  os_activity_scope_enter(transportActivity, &state);
 
-  if (self->_idsService == v8)
+  if (self->_idsService == serviceCopy)
   {
-    v12 = [(SYSyncEngine *)self queue];
+    queue = [(SYSyncEngine *)self queue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __85__SYFileTransferSyncEngine_service_didSwitchActivePairedDevice_acknowledgementBlock___block_invoke;
     block[3] = &unk_1E86CB1D0;
-    v14 = v9;
-    v15 = self;
-    v16 = v10;
-    dispatch_async(v12, block);
+    v14 = deviceCopy;
+    selfCopy = self;
+    v16 = blockCopy;
+    dispatch_async(queue, block);
   }
 
   os_activity_scope_leave(&state);
@@ -3287,15 +3287,15 @@ uint64_t __85__SYFileTransferSyncEngine_service_didSwitchActivePairedDevice_ackn
   return result;
 }
 
-- (void)service:(id)a3 nearbyDevicesChanged:(id)a4
+- (void)service:(id)service nearbyDevicesChanged:(id)changed
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  serviceCopy = service;
+  changedCopy = changed;
   v8 = [(SYSyncEngine *)self transportActivity:0];
   os_activity_scope_enter(v8, &v14);
 
-  v9 = [(SYDevice *)self->_activeDevice findMatchingIDSDeviceFromList:v7];
+  v9 = [(SYDevice *)self->_activeDevice findMatchingIDSDeviceFromList:changedCopy];
 
   if (![(SYDevice *)self->_activeDevice hasCachedNearby]|| (((v9 != 0) ^ [(SYDevice *)self->_activeDevice cachedIsNearby]) & 1) != 0)
   {
@@ -3320,8 +3320,8 @@ uint64_t __85__SYFileTransferSyncEngine_service_didSwitchActivePairedDevice_ackn
       _os_log_impl(&dword_1DF835000, v10, OS_LOG_TYPE_DEFAULT, "Target device %s proximity", buf, 0xCu);
     }
 
-    v12 = [(SYSyncEngine *)self responder];
-    [v12 currentDeviceProximityChanged:v9 != 0];
+    responder = [(SYSyncEngine *)self responder];
+    [responder currentDeviceProximityChanged:v9 != 0];
   }
 
   os_activity_scope_leave(&v14);
@@ -3329,16 +3329,16 @@ uint64_t __85__SYFileTransferSyncEngine_service_didSwitchActivePairedDevice_ackn
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)service:(id)a3 connectedDevicesChanged:(id)a4
+- (void)service:(id)service connectedDevicesChanged:(id)changed
 {
-  v6 = a3;
-  v7 = a4;
+  serviceCopy = service;
+  changedCopy = changed;
   state.opaque[0] = 0;
   state.opaque[1] = 0;
-  v8 = [(SYSyncEngine *)self transportActivity];
-  os_activity_scope_enter(v8, &state);
+  transportActivity = [(SYSyncEngine *)self transportActivity];
+  os_activity_scope_enter(transportActivity, &state);
 
-  v9 = [(SYDevice *)self->_activeDevice findMatchingIDSDeviceFromList:v7];
+  v9 = [(SYDevice *)self->_activeDevice findMatchingIDSDeviceFromList:changedCopy];
 
   if (![(SYDevice *)self->_activeDevice hasCachedConnected]|| (((v9 != 0) ^ [(SYDevice *)self->_activeDevice cachedConnected]) & 1) != 0)
   {
@@ -3380,17 +3380,17 @@ uint64_t __85__SYFileTransferSyncEngine_service_didSwitchActivePairedDevice_ackn
 
     _os_log_impl(&dword_1DF835000, v10, OS_LOG_TYPE_DEFAULT, v11, v13, 2u);
 LABEL_13:
-    v12 = [(SYSyncEngine *)self responder];
-    [v12 currentDeviceConnectionChanged:v9 != 0];
+    responder = [(SYSyncEngine *)self responder];
+    [responder currentDeviceConnectionChanged:v9 != 0];
   }
 
   os_activity_scope_leave(&state);
 }
 
-- (unint64_t)_crcChecksum:(id)a3
+- (unint64_t)_crcChecksum:(id)checksum
 {
   v11 = *MEMORY[0x1E69E9840];
-  v3 = open([a3 fileSystemRepresentation], 0);
+  v3 = open([checksum fileSystemRepresentation], 0);
   v4 = crc32(0, 0, 0);
   v5 = read(v3, buf, 0x1000uLL);
   if (v5 >= 1)

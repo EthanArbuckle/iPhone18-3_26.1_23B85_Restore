@@ -1,18 +1,18 @@
 @interface UtsSearchParam
-- (UtsSearchParam)initWithIdentifier:(id)a3 displayString:(id)a4 pronunciationHint:(id)a5;
+- (UtsSearchParam)initWithIdentifier:(id)identifier displayString:(id)string pronunciationHint:(id)hint;
 @end
 
 @implementation UtsSearchParam
 
-- (UtsSearchParam)initWithIdentifier:(id)a3 displayString:(id)a4 pronunciationHint:(id)a5
+- (UtsSearchParam)initWithIdentifier:(id)identifier displayString:(id)string pronunciationHint:(id)hint
 {
-  if (a3)
+  if (identifier)
   {
     sub_269854A94();
   }
 
   sub_269854A94();
-  if (a5)
+  if (hint)
   {
     sub_269854A94();
   }

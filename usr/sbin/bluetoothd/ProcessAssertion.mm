@@ -6,8 +6,8 @@
 
 - (id)description
 {
-  v3 = [(ProcessAssertion *)self name];
-  v4 = [NSString stringWithFormat:@"%@ - %lus", v3, [(ProcessAssertion *)self secondsLeft]];
+  name = [(ProcessAssertion *)self name];
+  v4 = [NSString stringWithFormat:@"%@ - %lus", name, [(ProcessAssertion *)self secondsLeft]];
 
   return v4;
 }

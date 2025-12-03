@@ -1,15 +1,15 @@
 @interface RequestQueue
 - (ISOperationQueue)operationQueue;
 - (RequestQueue)init;
-- (id)operationForConnection:(id)a3;
-- (void)addOperation:(id)a3;
-- (void)addOperation:(id)a3 forClient:(id)a4 withMessageBlock:(id)a5;
-- (void)addOperation:(id)a3 forMessage:(id)a4 connection:(id)a5 replyBlock:(id)a6;
-- (void)cancelOperationForConnection:(id)a3;
+- (id)operationForConnection:(id)connection;
+- (void)addOperation:(id)operation;
+- (void)addOperation:(id)operation forClient:(id)client withMessageBlock:(id)block;
+- (void)addOperation:(id)operation forMessage:(id)message connection:(id)connection replyBlock:(id)block;
+- (void)cancelOperationForConnection:(id)connection;
 - (void)dealloc;
-- (void)disconnectOperationForConnection:(id)a3;
-- (void)observeXPCServer:(id)a3;
-- (void)setOperationQueue:(id)a3;
+- (void)disconnectOperationForConnection:(id)connection;
+- (void)observeXPCServer:(id)server;
+- (void)setOperationQueue:(id)queue;
 @end
 
 @implementation RequestQueue
@@ -41,7 +41,7 @@
   [(RequestQueue *)&v4 dealloc];
 }
 
-- (void)addOperation:(id)a3
+- (void)addOperation:(id)operation
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -49,44 +49,44 @@
   v4[2] = sub_1000E7470;
   v4[3] = &unk_100327350;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = operation;
   dispatch_async(dispatchQueue, v4);
 }
 
-- (void)addOperation:(id)a3 forClient:(id)a4 withMessageBlock:(id)a5
+- (void)addOperation:(id)operation forClient:(id)client withMessageBlock:(id)block
 {
-  objc_setAssociatedObject(a3, "com.apple.itunesstored.RequestQueue.client", a4, 0x301);
+  objc_setAssociatedObject(operation, "com.apple.itunesstored.RequestQueue.client", client, 0x301);
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1000E756C;
   v8[3] = &unk_1003289F0;
-  v8[4] = a3;
-  v8[5] = a5;
-  [a3 setCompletionBlock:v8];
-  [(RequestQueue *)self addOperation:a3];
+  v8[4] = operation;
+  v8[5] = block;
+  [operation setCompletionBlock:v8];
+  [(RequestQueue *)self addOperation:operation];
 }
 
-- (void)addOperation:(id)a3 forMessage:(id)a4 connection:(id)a5 replyBlock:(id)a6
+- (void)addOperation:(id)operation forMessage:(id)message connection:(id)connection replyBlock:(id)block
 {
-  xpc_retain(a5);
-  xpc_retain(a4);
+  xpc_retain(connection);
+  xpc_retain(message);
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_1000E7704;
   v12[3] = &unk_100328A18;
-  v12[4] = a3;
-  v12[5] = a4;
-  v12[6] = a5;
-  v12[7] = a6;
-  [a3 setCompletionBlock:v12];
-  v11 = [[XPCClient alloc] initWithInputConnection:a5];
-  objc_setAssociatedObject(a3, "com.apple.itunesstored.RequestQueue.client", v11, 0x301);
-  [(RequestQueue *)self addOperation:a3];
+  v12[4] = operation;
+  v12[5] = message;
+  v12[6] = connection;
+  v12[7] = block;
+  [operation setCompletionBlock:v12];
+  v11 = [[XPCClient alloc] initWithInputConnection:connection];
+  objc_setAssociatedObject(operation, "com.apple.itunesstored.RequestQueue.client", v11, 0x301);
+  [(RequestQueue *)self addOperation:operation];
 }
 
-- (void)cancelOperationForConnection:(id)a3
+- (void)cancelOperationForConnection:(id)connection
 {
-  v3 = [(RequestQueue *)self operationForConnection:a3];
+  v3 = [(RequestQueue *)self operationForConnection:connection];
   if (v3)
   {
     v4 = v3;
@@ -96,15 +96,15 @@
       v5 = +[SSLogConfig sharedConfig];
     }
 
-    v6 = [v5 shouldLog];
+    shouldLog = [v5 shouldLog];
     if ([v5 shouldLogToDisk])
     {
-      v7 = v6 | 2;
+      v7 = shouldLog | 2;
     }
 
     else
     {
-      v7 = v6;
+      v7 = shouldLog;
     }
 
     if (!os_log_type_enabled([v5 OSLogObject], OS_LOG_TYPE_INFO))
@@ -134,9 +134,9 @@
   }
 }
 
-- (void)disconnectOperationForConnection:(id)a3
+- (void)disconnectOperationForConnection:(id)connection
 {
-  v3 = [(RequestQueue *)self operationForConnection:a3];
+  v3 = [(RequestQueue *)self operationForConnection:connection];
   if (v3)
   {
     v4 = v3;
@@ -146,15 +146,15 @@
       v5 = +[SSLogConfig sharedConfig];
     }
 
-    v6 = [v5 shouldLog];
+    shouldLog = [v5 shouldLog];
     if ([v5 shouldLogToDisk])
     {
-      v7 = v6 | 2;
+      v7 = shouldLog | 2;
     }
 
     else
     {
-      v7 = v6;
+      v7 = shouldLog;
     }
 
     if (!os_log_type_enabled([v5 OSLogObject], OS_LOG_TYPE_INFO))
@@ -183,27 +183,27 @@
   }
 }
 
-- (void)observeXPCServer:(id)a3
+- (void)observeXPCServer:(id)server
 {
-  [a3 addObserver:self selector:"_cancelRequest:connection:" forMessage:63];
+  [server addObserver:self selector:"_cancelRequest:connection:" forMessage:63];
 
-  [a3 addObserver:self selector:"_disconnectRequest:connection:" forMessage:64];
+  [server addObserver:self selector:"_disconnectRequest:connection:" forMessage:64];
 }
 
-- (id)operationForConnection:(id)a3
+- (id)operationForConnection:(id)connection
 {
-  v4 = [(RequestQueue *)self operationQueue];
-  if (!v4)
+  operationQueue = [(RequestQueue *)self operationQueue];
+  if (!operationQueue)
   {
-    v4 = +[ISOperationQueue mainQueue];
+    operationQueue = +[ISOperationQueue mainQueue];
   }
 
-  v5 = [(ISOperationQueue *)v4 operations];
+  operations = [(ISOperationQueue *)operationQueue operations];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v6 = [operations countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (!v6)
   {
     return 0;
@@ -217,16 +217,16 @@ LABEL_5:
   {
     if (*v15 != v8)
     {
-      objc_enumerationMutation(v5);
+      objc_enumerationMutation(operations);
     }
 
     v10 = *(*(&v14 + 1) + 8 * v9);
     AssociatedObject = objc_getAssociatedObject(v10, "com.apple.itunesstored.RequestQueue.client");
     if (AssociatedObject)
     {
-      v12 = [AssociatedObject copyInputConnection];
-      xpc_release(v12);
-      if (v12 == a3)
+      copyInputConnection = [AssociatedObject copyInputConnection];
+      xpc_release(copyInputConnection);
+      if (copyInputConnection == connection)
       {
         return v10;
       }
@@ -234,7 +234,7 @@ LABEL_5:
 
     if (v7 == ++v9)
     {
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [operations countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v7)
       {
         goto LABEL_5;
@@ -266,7 +266,7 @@ LABEL_5:
   return v3;
 }
 
-- (void)setOperationQueue:(id)a3
+- (void)setOperationQueue:(id)queue
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -274,7 +274,7 @@ LABEL_5:
   v4[2] = sub_1000E7E28;
   v4[3] = &unk_100327350;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = queue;
   dispatch_sync(dispatchQueue, v4);
 }
 

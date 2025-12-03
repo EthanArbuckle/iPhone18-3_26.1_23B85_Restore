@@ -1,54 +1,54 @@
 @interface PKMentionParticipant
-+ (id)mentionWithDisplayName:(id)a3 identifier:(id)a4 color:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (PKMentionParticipant)initWithDisplayName:(id)a3 identifier:(id)a4 color:(id)a5;
++ (id)mentionWithDisplayName:(id)name identifier:(id)identifier color:(id)color;
+- (BOOL)isEqual:(id)equal;
+- (PKMentionParticipant)initWithDisplayName:(id)name identifier:(id)identifier color:(id)color;
 - (id)description;
 @end
 
 @implementation PKMentionParticipant
 
-+ (id)mentionWithDisplayName:(id)a3 identifier:(id)a4 color:(id)a5
++ (id)mentionWithDisplayName:(id)name identifier:(id)identifier color:(id)color
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[PKMentionParticipant alloc] initWithDisplayName:v9 identifier:v8 color:v7];
+  colorCopy = color;
+  identifierCopy = identifier;
+  nameCopy = name;
+  v10 = [[PKMentionParticipant alloc] initWithDisplayName:nameCopy identifier:identifierCopy color:colorCopy];
 
   return v10;
 }
 
-- (PKMentionParticipant)initWithDisplayName:(id)a3 identifier:(id)a4 color:(id)a5
+- (PKMentionParticipant)initWithDisplayName:(id)name identifier:(id)identifier color:(id)color
 {
-  v8 = a5;
+  colorCopy = color;
   v18.receiver = self;
   v18.super_class = PKMentionParticipant;
-  v9 = a4;
-  v10 = a3;
+  identifierCopy = identifier;
+  nameCopy = name;
   v11 = [(PKMentionParticipant *)&v18 init];
-  v12 = [v10 copy];
+  v12 = [nameCopy copy];
 
   displayName = v11->_displayName;
   v11->_displayName = v12;
 
-  v14 = [v9 copy];
+  v14 = [identifierCopy copy];
   identifier = v11->_identifier;
   v11->_identifier = v14;
 
   color = v11->_color;
-  v11->_color = v8;
+  v11->_color = colorCopy;
 
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 identifier];
-    v6 = [(PKMentionParticipant *)self identifier];
-    v7 = [v5 isEqualToString:v6];
+    identifier = [equalCopy identifier];
+    identifier2 = [(PKMentionParticipant *)self identifier];
+    v7 = [identifier isEqualToString:identifier2];
   }
 
   else
@@ -63,10 +63,10 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(PKMentionParticipant *)self displayName];
-  v6 = [(PKMentionParticipant *)self identifier];
-  v7 = [(PKMentionParticipant *)self color];
-  v8 = [v3 stringWithFormat:@"%@:%p, %@, %@, %@", v4, self, v5, v6, v7];
+  displayName = [(PKMentionParticipant *)self displayName];
+  identifier = [(PKMentionParticipant *)self identifier];
+  color = [(PKMentionParticipant *)self color];
+  v8 = [v3 stringWithFormat:@"%@:%p, %@, %@, %@", v4, self, displayName, identifier, color];
 
   return v8;
 }

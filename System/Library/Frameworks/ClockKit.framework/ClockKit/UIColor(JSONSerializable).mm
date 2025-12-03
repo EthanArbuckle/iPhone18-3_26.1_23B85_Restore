@@ -49,7 +49,7 @@
   [v6 floatValue];
   v13 = v12;
   [v7 floatValue];
-  v15 = [a1 initWithRed:v9 green:v11 blue:v13 alpha:v14];
+  v15 = [self initWithRed:v9 green:v11 blue:v13 alpha:v14];
 
   return v15;
 }
@@ -61,7 +61,7 @@
   v10 = 0.0;
   v7 = 0.0;
   v8 = 0.0;
-  [a1 getRed:&v10 green:&v9 blue:&v8 alpha:&v7];
+  [self getRed:&v10 green:&v9 blue:&v8 alpha:&v7];
   v11[0] = @"red";
   v1 = [MEMORY[0x277CCABB0] numberWithDouble:v10];
   v12[0] = v1;

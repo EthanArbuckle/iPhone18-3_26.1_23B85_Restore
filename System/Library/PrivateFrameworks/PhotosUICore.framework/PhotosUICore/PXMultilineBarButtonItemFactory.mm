@@ -1,52 +1,52 @@
 @interface PXMultilineBarButtonItemFactory
-+ (id)px_toolbarMultilineBarButtonItemWithTitle:(id)a3 titleColor:(id)a4 target:(id)a5 action:(SEL)a6;
++ (id)px_toolbarMultilineBarButtonItemWithTitle:(id)title titleColor:(id)color target:(id)target action:(SEL)action;
 @end
 
 @implementation PXMultilineBarButtonItemFactory
 
-+ (id)px_toolbarMultilineBarButtonItemWithTitle:(id)a3 titleColor:(id)a4 target:(id)a5 action:(SEL)a6
++ (id)px_toolbarMultilineBarButtonItemWithTitle:(id)title titleColor:(id)color target:(id)target action:(SEL)action
 {
-  v9 = a4;
+  colorCopy = color;
   v10 = MEMORY[0x1E69DC738];
-  v11 = a5;
-  v12 = a3;
+  targetCopy = target;
+  titleCopy = title;
   v13 = [v10 buttonWithType:0];
-  [v13 addTarget:v11 action:a6 forControlEvents:64];
+  [v13 addTarget:targetCopy action:action forControlEvents:64];
 
-  [v13 setTitle:v12 forState:0];
-  if (v9)
+  [v13 setTitle:titleCopy forState:0];
+  if (colorCopy)
   {
-    [v13 setTitleColor:v9 forState:0];
+    [v13 setTitleColor:colorCopy forState:0];
   }
 
   else
   {
-    v14 = [MEMORY[0x1E69DC888] labelColor];
-    [v13 setTitleColor:v14 forState:0];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    [v13 setTitleColor:labelColor forState:0];
   }
 
   [v13 setTranslatesAutoresizingMaskIntoConstraints:0];
   v15 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDCF8]];
-  v16 = [v13 titleLabel];
-  [v16 setFont:v15];
+  titleLabel = [v13 titleLabel];
+  [titleLabel setFont:v15];
 
-  v17 = [v13 titleLabel];
-  [v17 setLineBreakMode:4];
+  titleLabel2 = [v13 titleLabel];
+  [titleLabel2 setLineBreakMode:4];
 
-  v18 = [v13 titleLabel];
-  [v18 setTextAlignment:1];
+  titleLabel3 = [v13 titleLabel];
+  [titleLabel3 setTextAlignment:1];
 
-  v19 = [v13 titleLabel];
-  [v19 setAdjustsFontForContentSizeCategory:1];
+  titleLabel4 = [v13 titleLabel];
+  [titleLabel4 setAdjustsFontForContentSizeCategory:1];
 
-  v20 = [v13 titleLabel];
-  [v20 setNumberOfLines:2];
+  titleLabel5 = [v13 titleLabel];
+  [titleLabel5 setNumberOfLines:2];
 
-  v21 = [v13 titleLabel];
-  [v21 setAdjustsFontSizeToFitWidth:1];
+  titleLabel6 = [v13 titleLabel];
+  [titleLabel6 setAdjustsFontSizeToFitWidth:1];
 
-  v22 = [v13 titleLabel];
-  [v22 setMinimumScaleFactor:0.7];
+  titleLabel7 = [v13 titleLabel];
+  [titleLabel7 setMinimumScaleFactor:0.7];
 
   [v13 setContentEdgeInsets:{0.0, 12.0, 0.0, 12.0}];
   v23 = [objc_alloc(MEMORY[0x1E69DC708]) initWithCustomView:v13];

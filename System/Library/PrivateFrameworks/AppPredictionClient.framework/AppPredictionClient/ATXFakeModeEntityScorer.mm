@@ -1,28 +1,28 @@
 @interface ATXFakeModeEntityScorer
 - (ATXFakeModeEntityScorer)init;
-- (void)rankedAppsForDenyListForMode:(unint64_t)a3 reply:(id)a4;
-- (void)rankedAppsForMode:(unint64_t)a3 options:(unint64_t)a4 reply:(id)a5;
-- (void)rankedAppsForMode:(unint64_t)a3 reply:(id)a4;
-- (void)rankedAppsForNotificationsForMode:(unint64_t)a3 reply:(id)a4;
-- (void)rankedContactsForDenyListForMode:(unint64_t)a3 options:(unint64_t)a4 reply:(id)a5;
-- (void)rankedContactsForDenyListForMode:(unint64_t)a3 reply:(id)a4;
-- (void)rankedContactsForNotificationsForMode:(unint64_t)a3 reply:(id)a4;
-- (void)rankedNotificationsForMode:(unint64_t)a3 options:(unint64_t)a4 reply:(id)a5;
-- (void)rankedNotificationsForMode:(unint64_t)a3 reply:(id)a4;
-- (void)scoreApps:(id)a3 mode:(unint64_t)a4;
-- (void)scoreApps:(id)a3 mode:(unint64_t)a4 reply:(id)a5;
-- (void)scoreAppsForDenyList:(id)a3 mode:(unint64_t)a4;
-- (void)scoreAppsForDenyList:(id)a3 mode:(unint64_t)a4 reply:(id)a5;
-- (void)scoreContacts:(id)a3 mode:(unint64_t)a4 reply:(id)a5;
-- (void)scoreContactsForDenyList:(id)a3 mode:(unint64_t)a4;
-- (void)scoreContactsForDenyList:(id)a3 mode:(unint64_t)a4 reply:(id)a5;
-- (void)scoreNotifications:(id)a3 mode:(unint64_t)a4;
-- (void)scoreNotifications:(id)a3 mode:(unint64_t)a4 reply:(id)a5;
-- (void)scoreUserNotifications:(id)a3 mode:(unint64_t)a4;
-- (void)scoreUserNotifications:(id)a3 mode:(unint64_t)a4 reply:(id)a5;
-- (void)setScoreForBundleId:(id)a3 score:(double)a4;
-- (void)setScoreForContactId:(id)a3 score:(double)a4;
-- (void)setScoreForEntity:(id)a3 score:(double)a4;
+- (void)rankedAppsForDenyListForMode:(unint64_t)mode reply:(id)reply;
+- (void)rankedAppsForMode:(unint64_t)mode options:(unint64_t)options reply:(id)reply;
+- (void)rankedAppsForMode:(unint64_t)mode reply:(id)reply;
+- (void)rankedAppsForNotificationsForMode:(unint64_t)mode reply:(id)reply;
+- (void)rankedContactsForDenyListForMode:(unint64_t)mode options:(unint64_t)options reply:(id)reply;
+- (void)rankedContactsForDenyListForMode:(unint64_t)mode reply:(id)reply;
+- (void)rankedContactsForNotificationsForMode:(unint64_t)mode reply:(id)reply;
+- (void)rankedNotificationsForMode:(unint64_t)mode options:(unint64_t)options reply:(id)reply;
+- (void)rankedNotificationsForMode:(unint64_t)mode reply:(id)reply;
+- (void)scoreApps:(id)apps mode:(unint64_t)mode;
+- (void)scoreApps:(id)apps mode:(unint64_t)mode reply:(id)reply;
+- (void)scoreAppsForDenyList:(id)list mode:(unint64_t)mode;
+- (void)scoreAppsForDenyList:(id)list mode:(unint64_t)mode reply:(id)reply;
+- (void)scoreContacts:(id)contacts mode:(unint64_t)mode reply:(id)reply;
+- (void)scoreContactsForDenyList:(id)list mode:(unint64_t)mode;
+- (void)scoreContactsForDenyList:(id)list mode:(unint64_t)mode reply:(id)reply;
+- (void)scoreNotifications:(id)notifications mode:(unint64_t)mode;
+- (void)scoreNotifications:(id)notifications mode:(unint64_t)mode reply:(id)reply;
+- (void)scoreUserNotifications:(id)notifications mode:(unint64_t)mode;
+- (void)scoreUserNotifications:(id)notifications mode:(unint64_t)mode reply:(id)reply;
+- (void)setScoreForBundleId:(id)id score:(double)score;
+- (void)setScoreForContactId:(id)id score:(double)score;
+- (void)setScoreForEntity:(id)entity score:(double)score;
 @end
 
 @implementation ATXFakeModeEntityScorer
@@ -46,40 +46,40 @@
   return v2;
 }
 
-- (void)setScoreForEntity:(id)a3 score:(double)a4
+- (void)setScoreForEntity:(id)entity score:(double)score
 {
   v6 = MEMORY[0x1E696AD98];
-  v7 = a3;
-  v8 = [v6 numberWithDouble:a4];
-  [(NSMutableDictionary *)self->_entityToScoreMapping setObject:v8 forKeyedSubscript:v7];
+  entityCopy = entity;
+  v8 = [v6 numberWithDouble:score];
+  [(NSMutableDictionary *)self->_entityToScoreMapping setObject:v8 forKeyedSubscript:entityCopy];
 }
 
-- (void)setScoreForBundleId:(id)a3 score:(double)a4
+- (void)setScoreForBundleId:(id)id score:(double)score
 {
-  v6 = a3;
-  v8 = [[ATXAppModeEntity alloc] initWithBundleId:v6];
+  idCopy = id;
+  v8 = [[ATXAppModeEntity alloc] initWithBundleId:idCopy];
 
-  v7 = [(ATXAppModeEntity *)v8 identifier];
-  [(ATXFakeModeEntityScorer *)self setScoreForEntity:v7 score:a4];
+  identifier = [(ATXAppModeEntity *)v8 identifier];
+  [(ATXFakeModeEntityScorer *)self setScoreForEntity:identifier score:score];
 }
 
-- (void)setScoreForContactId:(id)a3 score:(double)a4
+- (void)setScoreForContactId:(id)id score:(double)score
 {
-  v6 = a3;
-  v8 = [[ATXContactModeEntity alloc] initWithDisplayName:0 rawIdentifier:0 cnContactId:v6];
+  idCopy = id;
+  v8 = [[ATXContactModeEntity alloc] initWithDisplayName:0 rawIdentifier:0 cnContactId:idCopy];
 
-  v7 = [(ATXContactModeEntity *)v8 cnContactId];
-  [(ATXFakeModeEntityScorer *)self setScoreForEntity:v7 score:a4];
+  cnContactId = [(ATXContactModeEntity *)v8 cnContactId];
+  [(ATXFakeModeEntityScorer *)self setScoreForEntity:cnContactId score:score];
 }
 
-- (void)scoreApps:(id)a3 mode:(unint64_t)a4
+- (void)scoreApps:(id)apps mode:(unint64_t)mode
 {
   v27 = *MEMORY[0x1E69E9840];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  obj = a3;
+  obj = apps;
   v5 = [obj countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v5)
   {
@@ -96,8 +96,8 @@
 
         v9 = *(*(&v22 + 1) + 8 * i);
         entityToScoreMapping = self->_entityToScoreMapping;
-        v11 = [v9 identifier];
-        v12 = [(NSMutableDictionary *)entityToScoreMapping objectForKeyedSubscript:v11];
+        identifier = [v9 identifier];
+        v12 = [(NSMutableDictionary *)entityToScoreMapping objectForKeyedSubscript:identifier];
         v13 = v12;
         if (v12)
         {
@@ -127,19 +127,19 @@
   }
 }
 
-- (void)scoreNotifications:(id)a3 mode:(unint64_t)a4
+- (void)scoreNotifications:(id)notifications mode:(unint64_t)mode
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 _pas_mappedArrayWithTransform:&__block_literal_global_75];
-  [(ATXFakeModeEntityScorer *)self scoreApps:v7 mode:a4];
-  v8 = [v6 _pas_mappedArrayWithTransform:&__block_literal_global_18_1];
-  [(ATXFakeModeEntityScorer *)self scoreContacts:v8 mode:a4 reply:&__block_literal_global_21_0];
+  notificationsCopy = notifications;
+  v7 = [notificationsCopy _pas_mappedArrayWithTransform:&__block_literal_global_75];
+  [(ATXFakeModeEntityScorer *)self scoreApps:v7 mode:mode];
+  v8 = [notificationsCopy _pas_mappedArrayWithTransform:&__block_literal_global_18_1];
+  [(ATXFakeModeEntityScorer *)self scoreContacts:v8 mode:mode reply:&__block_literal_global_21_0];
   v26 = 0u;
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v9 = v6;
+  v9 = notificationsCopy;
   v10 = [v9 countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v10)
   {
@@ -155,15 +155,15 @@
         }
 
         v14 = *(*(&v24 + 1) + 8 * i);
-        v15 = [v14 appEntity];
-        v16 = [v15 scoreMetadata];
+        appEntity = [v14 appEntity];
+        scoreMetadata = [appEntity scoreMetadata];
 
-        v17 = [v14 contactEntity];
-        v18 = [v17 scoreMetadata];
+        contactEntity = [v14 contactEntity];
+        scoreMetadata2 = [contactEntity scoreMetadata];
 
-        if (v16)
+        if (scoreMetadata)
         {
-          v19 = v18 == 0;
+          v19 = scoreMetadata2 == 0;
         }
 
         else
@@ -173,30 +173,30 @@
 
         if (v19)
         {
-          if (v16)
+          if (scoreMetadata)
           {
-            v20 = v16;
+            v20 = scoreMetadata;
           }
 
           else
           {
-            v20 = v18;
+            v20 = scoreMetadata2;
           }
         }
 
         else
         {
-          [v16 score];
+          [scoreMetadata score];
           v22 = v21;
-          [v18 score];
+          [scoreMetadata2 score];
           if (v22 <= v23)
           {
-            v20 = v18;
+            v20 = scoreMetadata2;
           }
 
           else
           {
-            v20 = v16;
+            v20 = scoreMetadata;
           }
         }
 
@@ -210,34 +210,34 @@
   }
 }
 
-- (void)scoreUserNotifications:(id)a3 mode:(unint64_t)a4
+- (void)scoreUserNotifications:(id)notifications mode:(unint64_t)mode
 {
-  v19 = a3;
-  v6 = [v19 _pas_mappedArrayWithTransform:&__block_literal_global_24_1];
-  [(ATXFakeModeEntityScorer *)self scoreNotifications:v6 mode:a4];
-  if ([v19 count])
+  notificationsCopy = notifications;
+  v6 = [notificationsCopy _pas_mappedArrayWithTransform:&__block_literal_global_24_1];
+  [(ATXFakeModeEntityScorer *)self scoreNotifications:v6 mode:mode];
+  if ([notificationsCopy count])
   {
     v7 = 0;
     do
     {
       v8 = [ATXUserNotificationModelScore alloc];
       v9 = [v6 objectAtIndexedSubscript:v7];
-      v10 = [v9 scoreMetadata];
-      [v10 score];
+      scoreMetadata = [v9 scoreMetadata];
+      [scoreMetadata score];
       v12 = v11;
       [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
       v14 = v13;
       v15 = objc_opt_new();
       v16 = [(ATXUserNotificationModelScore *)v8 initFromModelScoreData:@"ATXModeEntityScorer" modelVersion:0 score:v15 scoreTimestamp:0 scoreUUID:v12 scoreInfo:v14];
 
-      v17 = [v19 objectAtIndexedSubscript:v7];
-      v18 = [v17 derivedData];
-      [v18 addScore:v16];
+      v17 = [notificationsCopy objectAtIndexedSubscript:v7];
+      derivedData = [v17 derivedData];
+      [derivedData addScore:v16];
 
       ++v7;
     }
 
-    while (v7 < [v19 count]);
+    while (v7 < [notificationsCopy count]);
   }
 }
 
@@ -249,14 +249,14 @@ ATXNotificationModeEntity *__55__ATXFakeModeEntityScorer_scoreUserNotifications_
   return v3;
 }
 
-- (void)scoreAppsForDenyList:(id)a3 mode:(unint64_t)a4
+- (void)scoreAppsForDenyList:(id)list mode:(unint64_t)mode
 {
   v27 = *MEMORY[0x1E69E9840];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  obj = a3;
+  obj = list;
   v5 = [obj countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v5)
   {
@@ -273,8 +273,8 @@ ATXNotificationModeEntity *__55__ATXFakeModeEntityScorer_scoreUserNotifications_
 
         v9 = *(*(&v22 + 1) + 8 * i);
         entityToScoreMappingForDenyList = self->_entityToScoreMappingForDenyList;
-        v11 = [v9 identifier];
-        v12 = [(NSMutableDictionary *)entityToScoreMappingForDenyList objectForKeyedSubscript:v11];
+        identifier = [v9 identifier];
+        v12 = [(NSMutableDictionary *)entityToScoreMappingForDenyList objectForKeyedSubscript:identifier];
         v13 = v12;
         if (v12)
         {
@@ -304,14 +304,14 @@ ATXNotificationModeEntity *__55__ATXFakeModeEntityScorer_scoreUserNotifications_
   }
 }
 
-- (void)scoreContactsForDenyList:(id)a3 mode:(unint64_t)a4
+- (void)scoreContactsForDenyList:(id)list mode:(unint64_t)mode
 {
   v27 = *MEMORY[0x1E69E9840];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  obj = a3;
+  obj = list;
   v5 = [obj countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v5)
   {
@@ -328,8 +328,8 @@ ATXNotificationModeEntity *__55__ATXFakeModeEntityScorer_scoreUserNotifications_
 
         v9 = *(*(&v22 + 1) + 8 * i);
         entityToScoreMappingForDenyList = self->_entityToScoreMappingForDenyList;
-        v11 = [v9 identifier];
-        v12 = [(NSMutableDictionary *)entityToScoreMappingForDenyList objectForKeyedSubscript:v11];
+        identifier = [v9 identifier];
+        v12 = [(NSMutableDictionary *)entityToScoreMappingForDenyList objectForKeyedSubscript:identifier];
         v13 = v12;
         if (v12)
         {
@@ -359,87 +359,87 @@ ATXNotificationModeEntity *__55__ATXFakeModeEntityScorer_scoreUserNotifications_
   }
 }
 
-- (void)rankedAppsForMode:(unint64_t)a3 reply:(id)a4
+- (void)rankedAppsForMode:(unint64_t)mode reply:(id)reply
 {
-  v7 = a4;
-  v8 = [(ATXFakeModeEntityScorer *)self rankedAppsForMode:a3];
-  (*(a4 + 2))(v7, v8, 0);
+  replyCopy = reply;
+  v8 = [(ATXFakeModeEntityScorer *)self rankedAppsForMode:mode];
+  (*(reply + 2))(replyCopy, v8, 0);
 }
 
-- (void)rankedAppsForMode:(unint64_t)a3 options:(unint64_t)a4 reply:(id)a5
+- (void)rankedAppsForMode:(unint64_t)mode options:(unint64_t)options reply:(id)reply
 {
-  v8 = a5;
-  v9 = [(ATXFakeModeEntityScorer *)self rankedAppsForMode:a3];
-  (*(a5 + 2))(v8, v9, 0);
+  replyCopy = reply;
+  v9 = [(ATXFakeModeEntityScorer *)self rankedAppsForMode:mode];
+  (*(reply + 2))(replyCopy, v9, 0);
 }
 
-- (void)rankedAppsForNotificationsForMode:(unint64_t)a3 reply:(id)a4
+- (void)rankedAppsForNotificationsForMode:(unint64_t)mode reply:(id)reply
 {
-  v7 = a4;
-  v8 = [(ATXFakeModeEntityScorer *)self rankedAppsForNotificationsForMode:a3];
-  (*(a4 + 2))(v7, v8, 0);
+  replyCopy = reply;
+  v8 = [(ATXFakeModeEntityScorer *)self rankedAppsForNotificationsForMode:mode];
+  (*(reply + 2))(replyCopy, v8, 0);
 }
 
-- (void)rankedContactsForNotificationsForMode:(unint64_t)a3 reply:(id)a4
+- (void)rankedContactsForNotificationsForMode:(unint64_t)mode reply:(id)reply
 {
-  v7 = a4;
-  v8 = [(ATXFakeModeEntityScorer *)self rankedContactsForNotificationsForMode:a3];
-  (*(a4 + 2))(v7, v8, 0);
+  replyCopy = reply;
+  v8 = [(ATXFakeModeEntityScorer *)self rankedContactsForNotificationsForMode:mode];
+  (*(reply + 2))(replyCopy, v8, 0);
 }
 
-- (void)rankedNotificationsForMode:(unint64_t)a3 reply:(id)a4
+- (void)rankedNotificationsForMode:(unint64_t)mode reply:(id)reply
 {
-  v7 = a4;
-  v8 = [(ATXFakeModeEntityScorer *)self rankedNotificationsForMode:a3];
-  (*(a4 + 2))(v7, v8, 0);
+  replyCopy = reply;
+  v8 = [(ATXFakeModeEntityScorer *)self rankedNotificationsForMode:mode];
+  (*(reply + 2))(replyCopy, v8, 0);
 }
 
-- (void)rankedNotificationsForMode:(unint64_t)a3 options:(unint64_t)a4 reply:(id)a5
+- (void)rankedNotificationsForMode:(unint64_t)mode options:(unint64_t)options reply:(id)reply
 {
-  v8 = a5;
-  v9 = [(ATXFakeModeEntityScorer *)self rankedNotificationsForMode:a3];
-  (*(a5 + 2))(v8, v9, 0);
+  replyCopy = reply;
+  v9 = [(ATXFakeModeEntityScorer *)self rankedNotificationsForMode:mode];
+  (*(reply + 2))(replyCopy, v9, 0);
 }
 
-- (void)rankedAppsForDenyListForMode:(unint64_t)a3 reply:(id)a4
+- (void)rankedAppsForDenyListForMode:(unint64_t)mode reply:(id)reply
 {
-  v7 = a4;
-  v8 = [(ATXFakeModeEntityScorer *)self rankedAppsForDenyListForMode:a3];
-  (*(a4 + 2))(v7, v8, 0);
+  replyCopy = reply;
+  v8 = [(ATXFakeModeEntityScorer *)self rankedAppsForDenyListForMode:mode];
+  (*(reply + 2))(replyCopy, v8, 0);
 }
 
-- (void)rankedContactsForDenyListForMode:(unint64_t)a3 reply:(id)a4
+- (void)rankedContactsForDenyListForMode:(unint64_t)mode reply:(id)reply
 {
-  v7 = a4;
-  v8 = [(ATXFakeModeEntityScorer *)self rankedContactsForDenyListForMode:a3];
-  (*(a4 + 2))(v7, v8, 0);
+  replyCopy = reply;
+  v8 = [(ATXFakeModeEntityScorer *)self rankedContactsForDenyListForMode:mode];
+  (*(reply + 2))(replyCopy, v8, 0);
 }
 
-- (void)rankedContactsForDenyListForMode:(unint64_t)a3 options:(unint64_t)a4 reply:(id)a5
+- (void)rankedContactsForDenyListForMode:(unint64_t)mode options:(unint64_t)options reply:(id)reply
 {
-  v9 = a5;
-  v10 = [(ATXFakeModeEntityScorer *)self rankedContactsForDenyListForMode:a3 options:a4];
-  (*(a5 + 2))(v9, v10, 0);
+  replyCopy = reply;
+  v10 = [(ATXFakeModeEntityScorer *)self rankedContactsForDenyListForMode:mode options:options];
+  (*(reply + 2))(replyCopy, v10, 0);
 }
 
-- (void)scoreApps:(id)a3 mode:(unint64_t)a4 reply:(id)a5
+- (void)scoreApps:(id)apps mode:(unint64_t)mode reply:(id)reply
 {
-  v8 = a5;
-  [(ATXFakeModeEntityScorer *)self scoreApps:a3 mode:a4];
-  v8[2](v8, 0);
+  replyCopy = reply;
+  [(ATXFakeModeEntityScorer *)self scoreApps:apps mode:mode];
+  replyCopy[2](replyCopy, 0);
 }
 
-- (void)scoreContacts:(id)a3 mode:(unint64_t)a4 reply:(id)a5
+- (void)scoreContacts:(id)contacts mode:(unint64_t)mode reply:(id)reply
 {
   v31 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v24 = a5;
-  obj = v7;
+  contactsCopy = contacts;
+  replyCopy = reply;
+  obj = contactsCopy;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v8 = [v7 countByEnumeratingWithState:&v26 objects:v30 count:16];
+  v8 = [contactsCopy countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v8)
   {
     v9 = v8;
@@ -455,8 +455,8 @@ ATXNotificationModeEntity *__55__ATXFakeModeEntityScorer_scoreUserNotifications_
 
         v12 = *(*(&v26 + 1) + 8 * i);
         entityToScoreMapping = self->_entityToScoreMapping;
-        v14 = [v12 identifier];
-        v15 = [(NSMutableDictionary *)entityToScoreMapping objectForKeyedSubscript:v14];
+        identifier = [v12 identifier];
+        v15 = [(NSMutableDictionary *)entityToScoreMapping objectForKeyedSubscript:identifier];
         v16 = v15;
         if (v15)
         {
@@ -485,35 +485,35 @@ ATXNotificationModeEntity *__55__ATXFakeModeEntityScorer_scoreUserNotifications_
     while (v9);
   }
 
-  v24[2](v24, 0);
+  replyCopy[2](replyCopy, 0);
 }
 
-- (void)scoreNotifications:(id)a3 mode:(unint64_t)a4 reply:(id)a5
+- (void)scoreNotifications:(id)notifications mode:(unint64_t)mode reply:(id)reply
 {
-  v8 = a5;
-  [(ATXFakeModeEntityScorer *)self scoreNotifications:a3 mode:a4];
-  v8[2](v8, 0);
+  replyCopy = reply;
+  [(ATXFakeModeEntityScorer *)self scoreNotifications:notifications mode:mode];
+  replyCopy[2](replyCopy, 0);
 }
 
-- (void)scoreUserNotifications:(id)a3 mode:(unint64_t)a4 reply:(id)a5
+- (void)scoreUserNotifications:(id)notifications mode:(unint64_t)mode reply:(id)reply
 {
-  v8 = a5;
-  [(ATXFakeModeEntityScorer *)self scoreUserNotifications:a3 mode:a4];
-  v8[2](v8, 0);
+  replyCopy = reply;
+  [(ATXFakeModeEntityScorer *)self scoreUserNotifications:notifications mode:mode];
+  replyCopy[2](replyCopy, 0);
 }
 
-- (void)scoreAppsForDenyList:(id)a3 mode:(unint64_t)a4 reply:(id)a5
+- (void)scoreAppsForDenyList:(id)list mode:(unint64_t)mode reply:(id)reply
 {
-  v8 = a5;
-  [(ATXFakeModeEntityScorer *)self scoreAppsForDenyList:a3 mode:a4];
-  v8[2](v8, 0);
+  replyCopy = reply;
+  [(ATXFakeModeEntityScorer *)self scoreAppsForDenyList:list mode:mode];
+  replyCopy[2](replyCopy, 0);
 }
 
-- (void)scoreContactsForDenyList:(id)a3 mode:(unint64_t)a4 reply:(id)a5
+- (void)scoreContactsForDenyList:(id)list mode:(unint64_t)mode reply:(id)reply
 {
-  v8 = a5;
-  [(ATXFakeModeEntityScorer *)self scoreContactsForDenyList:a3 mode:a4];
-  v8[2](v8, 0);
+  replyCopy = reply;
+  [(ATXFakeModeEntityScorer *)self scoreContactsForDenyList:list mode:mode];
+  replyCopy[2](replyCopy, 0);
 }
 
 @end

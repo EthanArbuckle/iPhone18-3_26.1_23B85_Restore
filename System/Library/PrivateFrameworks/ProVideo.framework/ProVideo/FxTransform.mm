@@ -1,15 +1,15 @@
 @interface FxTransform
 + (id)identity;
-+ (id)transformWithCGAffineTransform:(CGAffineTransform *)a3;
-+ (id)transformWithScale:(CGPoint)a3 rotate:(float)a4 translate:(CGPoint)a5 shear:(CGPoint)a6;
++ (id)transformWithCGAffineTransform:(CGAffineTransform *)transform;
++ (id)transformWithScale:(CGPoint)scale rotate:(float)rotate translate:(CGPoint)translate shear:(CGPoint)shear;
 - (CGAffineTransform)cgAffineTransform;
 - (CGPoint)scale;
 - (CGPoint)shear;
 - (CGPoint)translation;
-- (FxTransform)initWithCGAffineTransform:(CGAffineTransform *)a3;
-- (FxTransform)initWithScale:(CGPoint)a3 rotate:(float)a4 translate:(CGPoint)a5 shear:(CGPoint)a6;
+- (FxTransform)initWithCGAffineTransform:(CGAffineTransform *)transform;
+- (FxTransform)initWithScale:(CGPoint)scale rotate:(float)rotate translate:(CGPoint)translate shear:(CGPoint)shear;
 - (void)dealloc;
-- (void)setCGAffineTransform:(CGAffineTransform *)a3;
+- (void)setCGAffineTransform:(CGAffineTransform *)transform;
 @end
 
 @implementation FxTransform
@@ -23,7 +23,7 @@
   [(FxTransform *)&v9 dealloc];
 }
 
-- (FxTransform)initWithCGAffineTransform:(CGAffineTransform *)a3
+- (FxTransform)initWithCGAffineTransform:(CGAffineTransform *)transform
 {
   v9.receiver = self;
   v9.super_class = FxTransform;
@@ -34,10 +34,10 @@
     v4->_priv = v5;
     if (v5)
     {
-      v6 = *&a3->c;
-      v8[0] = *&a3->a;
+      v6 = *&transform->c;
+      v8[0] = *&transform->a;
       v8[1] = v6;
-      v8[2] = *&a3->tx;
+      v8[2] = *&transform->tx;
       [(FxTransform *)v4 setCGAffineTransform:v8];
     }
   }
@@ -55,24 +55,24 @@
   return [v2 initWithCGAffineTransform:v5];
 }
 
-+ (id)transformWithCGAffineTransform:(CGAffineTransform *)a3
++ (id)transformWithCGAffineTransform:(CGAffineTransform *)transform
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = *&a3->c;
-  v7[0] = *&a3->a;
+  v5 = *&transform->c;
+  v7[0] = *&transform->a;
   v7[1] = v5;
-  v7[2] = *&a3->tx;
+  v7[2] = *&transform->tx;
   return [v4 initWithCGAffineTransform:v7];
 }
 
-- (FxTransform)initWithScale:(CGPoint)a3 rotate:(float)a4 translate:(CGPoint)a5 shear:(CGPoint)a6
+- (FxTransform)initWithScale:(CGPoint)scale rotate:(float)rotate translate:(CGPoint)translate shear:(CGPoint)shear
 {
-  y = a6.y;
-  x = a6.x;
-  v8 = a5.y;
-  v9 = a5.x;
-  v11 = a3.y;
-  v12 = a3.x;
+  y = shear.y;
+  x = shear.x;
+  v8 = translate.y;
+  v9 = translate.x;
+  v11 = scale.y;
+  v12 = scale.x;
   v16.receiver = self;
   v16.super_class = FxTransform;
   v13 = [(FxTransform *)&v16 init];
@@ -84,7 +84,7 @@
     {
       v14->var0.x = v12;
       v14->var0.y = v11;
-      v14->var1 = a4;
+      v14->var1 = rotate;
       v14->var2.x = v9;
       v14->var2.y = v8;
       v14->var3.x = x;
@@ -95,16 +95,16 @@
   return v13;
 }
 
-+ (id)transformWithScale:(CGPoint)a3 rotate:(float)a4 translate:(CGPoint)a5 shear:(CGPoint)a6
++ (id)transformWithScale:(CGPoint)scale rotate:(float)rotate translate:(CGPoint)translate shear:(CGPoint)shear
 {
-  y = a6.y;
-  x = a6.x;
-  v8 = a5.y;
-  v9 = a5.x;
-  v11 = a3.y;
-  v12 = a3.x;
+  y = shear.y;
+  x = shear.x;
+  v8 = translate.y;
+  v9 = translate.x;
+  v11 = scale.y;
+  v12 = scale.x;
   v13 = objc_alloc(objc_opt_class());
-  *&v14 = a4;
+  *&v14 = rotate;
   v15 = [v13 initWithScale:v12 rotate:v11 translate:v14 shear:{v9, v8, x, y}];
 
   return v15;
@@ -140,14 +140,14 @@
   return result;
 }
 
-- (void)setCGAffineTransform:(CGAffineTransform *)a3
+- (void)setCGAffineTransform:(CGAffineTransform *)transform
 {
   priv = self->_priv;
-  priv->var2 = vbicq_s8(*&a3->tx, vcgtq_f64(vdupq_n_s64(0x3E45798EE0000000uLL), vabsq_f64(*&a3->tx)));
-  d = a3->d;
-  a = a3->a;
-  b = a3->b;
-  v7 = a3->a * d - d * b;
+  priv->var2 = vbicq_s8(*&transform->tx, vcgtq_f64(vdupq_n_s64(0x3E45798EE0000000uLL), vabsq_f64(*&transform->tx)));
+  d = transform->d;
+  a = transform->a;
+  b = transform->b;
+  v7 = transform->a * d - d * b;
   if (fabsf(v7) >= 0.00000001)
   {
     v8 = sqrt(a * a + b * b);
@@ -164,9 +164,9 @@
 
     v11 = a / v9;
     v12 = b / v9;
-    a3->a = v11;
-    a3->b = b / v9;
-    c = a3->c;
+    transform->a = v11;
+    transform->b = b / v9;
+    c = transform->c;
     v14 = d * v12 + v11 * c;
     v15 = c - v11 * v14;
     v16 = d - v12 * v14;
@@ -184,8 +184,8 @@
 
     v20 = v15 / v18;
     v21 = v16 / v18;
-    a3->c = v20;
-    a3->d = v21;
+    transform->c = v20;
+    transform->d = v21;
     v22 = v14 / v17;
     if (fabsf(v22) >= 0.00000001)
     {

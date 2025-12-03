@@ -6,8 +6,8 @@
 
 - (NSString)lib_certificate
 {
-  v2 = self;
-  result = [(AMSFinalizedBlind *)v2 certificate];
+  selfCopy = self;
+  result = [(AMSFinalizedBlind *)selfCopy certificate];
   if (result)
   {
     v4 = result;

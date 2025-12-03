@@ -3,10 +3,10 @@
 - (void)cancel;
 - (void)dealloc;
 - (void)downloadAssetFromCloudKit;
-- (void)handleDownloadResponse:(id)a3 error:(id)a4;
-- (void)handleResponse:(id)a3 data:(id)a4 responseError:(id)a5;
+- (void)handleDownloadResponse:(id)response error:(id)error;
+- (void)handleResponse:(id)response data:(id)data responseError:(id)error;
 - (void)send;
-- (void)setResponse:(id)a3;
+- (void)setResponse:(id)response;
 - (void)tmlDispose;
 @end
 
@@ -27,48 +27,48 @@
 
 - (void)dealloc
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   [(TKCloudKitFetch *)self cancel];
-  v2.receiver = v4;
+  v2.receiver = selfCopy;
   v2.super_class = TKCloudKitFetch;
   [(TKCloudKitFetch *)&v2 dealloc];
 }
 
 - (void)tmlDispose
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   [(TKCloudKitFetch *)self cancel];
-  v2.receiver = v4;
+  v2.receiver = selfCopy;
   v2.super_class = TKCloudKitFetch;
   [(TKCloudKitFetch *)&v2 tmlDispose];
 }
 
-- (void)setResponse:(id)a3
+- (void)setResponse:(id)response
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  objc_storeStrong(&v4->_response, location[0]);
+  objc_storeStrong(location, response);
+  objc_storeStrong(&selfCopy->_response, location[0]);
   objc_storeStrong(location, 0);
 }
 
 - (void)send
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   if (!self->_active)
   {
-    if (v13->_urlRequest)
+    if (selfCopy->_urlRequest)
     {
-      v13->_active = 1;
-      objc_storeStrong(&v13->_response, 0);
-      v13->_cancelled = 0;
-      objc_initWeak(location, v13);
+      selfCopy->_active = 1;
+      objc_storeStrong(&selfCopy->_response, 0);
+      selfCopy->_cancelled = 0;
+      objc_initWeak(location, selfCopy);
       v4 = +[TKNetwork shared];
-      urlRequest = v13->_urlRequest;
+      urlRequest = selfCopy->_urlRequest;
       v6 = MEMORY[0x277D85DD0];
       v7 = -1073741824;
       v8 = 0;
@@ -76,8 +76,8 @@
       v10 = &unk_2797EE478;
       objc_copyWeak(v11, location);
       v2 = [v4 loadRequest:urlRequest priority:1 completion:&v6];
-      queryTask = v13->_queryTask;
-      v13->_queryTask = v2;
+      queryTask = selfCopy->_queryTask;
+      selfCopy->_queryTask = v2;
       MEMORY[0x277D82BD8](queryTask);
       MEMORY[0x277D82BD8](v4);
       objc_destroyWeak(v11);
@@ -117,17 +117,17 @@ void __23__TKCloudKitFetch_send__block_invoke(id *a1, void *a2, void *a3, void *
   objc_storeStrong(&self->_downloadURL, 0);
 }
 
-- (void)handleResponse:(id)a3 data:(id)a4 responseError:(id)a5
+- (void)handleResponse:(id)response data:(id)data responseError:(id)error
 {
-  v27 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, response);
   v25 = 0;
-  objc_storeStrong(&v25, a4);
+  objc_storeStrong(&v25, data);
   v24 = 0;
-  objc_storeStrong(&v24, a5);
-  if (v27->_cancelled)
+  objc_storeStrong(&v24, error);
+  if (selfCopy->_cancelled)
   {
     v23 = 1;
     goto LABEL_14;
@@ -135,7 +135,7 @@ void __23__TKCloudKitFetch_send__block_invoke(id *a1, void *a2, void *a3, void *
 
   if (!v25)
   {
-    objc_initWeak(&v19, v27);
+    objc_initWeak(&v19, selfCopy);
     v8 = MEMORY[0x277D85CD0];
     v7 = MEMORY[0x277D85CD0];
     queue = v8;
@@ -150,14 +150,14 @@ void __23__TKCloudKitFetch_send__block_invoke(id *a1, void *a2, void *a3, void *
     objc_destroyWeak(&v18);
     objc_destroyWeak(&v19);
 LABEL_10:
-    if (v27->_downloadURL)
+    if (selfCopy->_downloadURL)
     {
-      [(TKCloudKitFetch *)v27 downloadAssetFromCloudKit];
+      [(TKCloudKitFetch *)selfCopy downloadAssetFromCloudKit];
     }
 
     else
     {
-      v27->_active = 0;
+      selfCopy->_active = 0;
     }
 
     v23 = 0;
@@ -172,15 +172,15 @@ LABEL_10:
   if (v10)
   {
     v5 = [TKCloudKitWSRecord downloadURLFromCloudKitRecordResponse:v21];
-    downloadURL = v27->_downloadURL;
-    v27->_downloadURL = v5;
+    downloadURL = selfCopy->_downloadURL;
+    selfCopy->_downloadURL = v5;
     MEMORY[0x277D82BD8](downloadURL);
     v23 = 0;
   }
 
   else
   {
-    [(TKCloudKitFetch *)v27 emitTMLSignal:@"error" withArguments:&unk_286780F10];
+    [(TKCloudKitFetch *)selfCopy emitTMLSignal:@"error" withArguments:&unk_286780F10];
     v23 = 1;
   }
 
@@ -206,13 +206,13 @@ uint64_t __53__TKCloudKitFetch_handleResponse_data_responseError___block_invoke(
 
 - (void)downloadAssetFromCloudKit
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   if (self->_downloadURL)
   {
-    objc_initWeak(location, v18);
+    objc_initWeak(location, selfCopy);
     v9 = objc_alloc(MEMORY[0x277CCAD20]);
-    downloadURL = v18->_downloadURL;
+    downloadURL = selfCopy->_downloadURL;
     v7 = +[TKNetwork shared];
     [v7 timeoutInterval];
     v16 = [v9 initWithURL:downloadURL cachePolicy:0 timeoutInterval:v2];
@@ -226,8 +226,8 @@ uint64_t __53__TKCloudKitFetch_handleResponse_data_responseError___block_invoke(
     v14 = &unk_2797EE688;
     objc_copyWeak(v15, location);
     v3 = [v5 downloadRequest:v6 priority:1 completion:&v10];
-    queryTask = v18->_queryTask;
-    v18->_queryTask = v3;
+    queryTask = selfCopy->_queryTask;
+    selfCopy->_queryTask = v3;
     MEMORY[0x277D82BD8](queryTask);
     MEMORY[0x277D82BD8](v5);
     objc_destroyWeak(v15);
@@ -250,15 +250,15 @@ void __44__TKCloudKitFetch_downloadAssetFromCloudKit__block_invoke(id *a1, void 
   objc_storeStrong(location, 0);
 }
 
-- (void)handleDownloadResponse:(id)a3 error:(id)a4
+- (void)handleDownloadResponse:(id)response error:(id)error
 {
-  v23 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, response);
   v21 = 0;
-  objc_storeStrong(&v21, a4);
-  v23->_active = 0;
+  objc_storeStrong(&v21, error);
+  selfCopy->_active = 0;
   if (location[0] && [location[0] length])
   {
     v20 = [MEMORY[0x277CBEA90] dataWithContentsOfFile:location[0]];
@@ -270,11 +270,11 @@ void __44__TKCloudKitFetch_downloadAssetFromCloudKit__block_invoke(id *a1, void 
     if (v8 && !v19)
     {
       v4 = objc_alloc_init(MEMORY[0x277D73408]);
-      response = v23->_response;
-      v23->_response = v4;
+      response = selfCopy->_response;
+      selfCopy->_response = v4;
       MEMORY[0x277D82BD8](response);
-      objc_initWeak(&v16, v23);
-      v6 = v23->_response;
+      objc_initWeak(&v16, selfCopy);
+      v6 = selfCopy->_response;
       v7 = v18;
       v10 = MEMORY[0x277D85DD0];
       v11 = -1073741824;

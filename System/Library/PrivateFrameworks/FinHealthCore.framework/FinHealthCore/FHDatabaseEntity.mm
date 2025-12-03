@@ -1,19 +1,19 @@
 @interface FHDatabaseEntity
 - (BOOL)clearData;
-- (BOOL)clearDataWithClauseBuilder:(id)a3;
-- (BOOL)clearDataWithEntity:(id)a3;
-- (FHDatabaseEntity)initWithEntity:(id)a3;
-- (FHDatabaseEntity)initWithEntity:(id)a3 databaseManager:(id)a4;
-- (FHDatabaseEntity)initWithEntity:(id)a3 joinClause:(id)a4 databaseManager:(id)a5;
+- (BOOL)clearDataWithClauseBuilder:(id)builder;
+- (BOOL)clearDataWithEntity:(id)entity;
+- (FHDatabaseEntity)initWithEntity:(id)entity;
+- (FHDatabaseEntity)initWithEntity:(id)entity databaseManager:(id)manager;
+- (FHDatabaseEntity)initWithEntity:(id)entity joinClause:(id)clause databaseManager:(id)manager;
 - (FHDatabaseManager)databaseManagerWeak;
-- (id)_availableFunctions:(int64_t)a3 functionTypeFilter:(id)a4;
+- (id)_availableFunctions:(int64_t)functions functionTypeFilter:(id)filter;
 - (id)_getDatabaseManager;
-- (id)_initWithJoinClauseExpression:(id)a3 databaseManager:(id)a4 entities:(id)a5;
-- (void)insertOrUpdateWithEntity:(id)a3 fieldValuePairsFromBuilder:(id)a4 upsert:(BOOL)a5;
-- (void)queryDataWithBlock:(id)a3 logicalOperator:(id)a4 limit:(unint64_t)a5 selectFields:(id)a6 orderby:(id)a7 usingBlock:(id)a8;
-- (void)queryDataWithBlock:(id)a3 logicalOperator:(id)a4 selectFields:(id)a5 usingBlock:(id)a6;
-- (void)queryDataWithBlock:(id)a3 logicalOperator:(id)a4 usingBlock:(id)a5;
-- (void)streamDataWithEntity:(id)a3 recordStreamHandler:(id)a4;
+- (id)_initWithJoinClauseExpression:(id)expression databaseManager:(id)manager entities:(id)entities;
+- (void)insertOrUpdateWithEntity:(id)entity fieldValuePairsFromBuilder:(id)builder upsert:(BOOL)upsert;
+- (void)queryDataWithBlock:(id)block logicalOperator:(id)operator limit:(unint64_t)limit selectFields:(id)fields orderby:(id)orderby usingBlock:(id)usingBlock;
+- (void)queryDataWithBlock:(id)block logicalOperator:(id)operator selectFields:(id)fields usingBlock:(id)usingBlock;
+- (void)queryDataWithBlock:(id)block logicalOperator:(id)operator usingBlock:(id)usingBlock;
+- (void)streamDataWithEntity:(id)entity recordStreamHandler:(id)handler;
 @end
 
 @implementation FHDatabaseEntity
@@ -32,71 +32,71 @@
   return databaseManagerStrong;
 }
 
-- (FHDatabaseEntity)initWithEntity:(id)a3
+- (FHDatabaseEntity)initWithEntity:(id)entity
 {
   v11 = *MEMORY[0x277D85DE8];
-  v10 = a3;
+  entityCopy = entity;
   v4 = MEMORY[0x277CBEA60];
-  v5 = a3;
-  v6 = [v4 arrayWithObjects:&v10 count:1];
+  entityCopy2 = entity;
+  v6 = [v4 arrayWithObjects:&entityCopy count:1];
 
-  v7 = [(FHDatabaseEntity *)self _initWithJoinClauseExpression:0 databaseManager:0 entities:v6, v10, v11];
+  v7 = [(FHDatabaseEntity *)self _initWithJoinClauseExpression:0 databaseManager:0 entities:v6, entityCopy, v11];
   v8 = *MEMORY[0x277D85DE8];
   return v7;
 }
 
-- (FHDatabaseEntity)initWithEntity:(id)a3 databaseManager:(id)a4
+- (FHDatabaseEntity)initWithEntity:(id)entity databaseManager:(id)manager
 {
   v14 = *MEMORY[0x277D85DE8];
-  v13 = a3;
+  entityCopy = entity;
   v6 = MEMORY[0x277CBEA60];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 arrayWithObjects:&v13 count:1];
+  managerCopy = manager;
+  entityCopy2 = entity;
+  v9 = [v6 arrayWithObjects:&entityCopy count:1];
 
-  v10 = [(FHDatabaseEntity *)self _initWithJoinClauseExpression:0 databaseManager:v7 entities:v9, v13, v14];
+  v10 = [(FHDatabaseEntity *)self _initWithJoinClauseExpression:0 databaseManager:managerCopy entities:v9, entityCopy, v14];
   v11 = *MEMORY[0x277D85DE8];
   return v10;
 }
 
-- (FHDatabaseEntity)initWithEntity:(id)a3 joinClause:(id)a4 databaseManager:(id)a5
+- (FHDatabaseEntity)initWithEntity:(id)entity joinClause:(id)clause databaseManager:(id)manager
 {
   v8 = MEMORY[0x277CBEB40];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
+  managerCopy = manager;
+  clauseCopy = clause;
+  entityCopy = entity;
   v12 = objc_alloc_init(v8);
-  v13 = [v11 lowercaseString];
+  lowercaseString = [entityCopy lowercaseString];
 
-  [v12 addObject:v13];
-  v14 = [v10 entities];
-  v15 = [v14 copy];
+  [v12 addObject:lowercaseString];
+  entities = [clauseCopy entities];
+  v15 = [entities copy];
   [v12 addObjectsFromArray:v15];
 
-  v16 = [v10 clauses];
+  clauses = [clauseCopy clauses];
 
-  v17 = [v16 componentsJoinedByString:@" "];
+  v17 = [clauses componentsJoinedByString:@" "];
 
-  v18 = [v12 array];
-  v19 = [(FHDatabaseEntity *)self _initWithJoinClauseExpression:v17 databaseManager:v9 entities:v18];
+  array = [v12 array];
+  v19 = [(FHDatabaseEntity *)self _initWithJoinClauseExpression:v17 databaseManager:managerCopy entities:array];
 
   return v19;
 }
 
-- (id)_initWithJoinClauseExpression:(id)a3 databaseManager:(id)a4 entities:(id)a5
+- (id)_initWithJoinClauseExpression:(id)expression databaseManager:(id)manager entities:(id)entities
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  expressionCopy = expression;
+  managerCopy = manager;
+  entitiesCopy = entities;
   v50.receiver = self;
   v50.super_class = FHDatabaseEntity;
   v11 = [(FHDatabaseEntity *)&v50 init];
   v12 = v11;
   if (v11)
   {
-    if (v9)
+    if (managerCopy)
     {
-      objc_storeWeak(&v11->_databaseManagerWeak, v9);
+      objc_storeWeak(&v11->_databaseManagerWeak, managerCopy);
     }
 
     else
@@ -114,7 +114,7 @@
     windowFunctions = v12->_windowFunctions;
     v12->_windowFunctions = v17;
 
-    objc_storeStrong(&v12->_entities, a5);
+    objc_storeStrong(&v12->_entities, entities);
     v44 = 0;
     v45 = &v44;
     v46 = 0x3032000000;
@@ -129,20 +129,20 @@
     v43 = objc_opt_new();
     v19 = objc_alloc_init(MEMORY[0x277CCAB68]);
     [v19 appendString:@"select * from"];
-    v30 = v10;
-    v31 = [(NSArray *)v12->_entities firstObject];
+    v30 = entitiesCopy;
+    firstObject = [(NSArray *)v12->_entities firstObject];
     for (i = 0; i < [(NSArray *)v12->_entities count]; ++i)
     {
       v21 = [(NSArray *)v12->_entities objectAtIndex:i];
       if (!i)
       {
         [v19 appendString:@" "];
-        [v19 appendString:v31];
+        [v19 appendString:firstObject];
       }
 
       v22 = [MEMORY[0x277CCACA8] stringWithFormat:@"PRAGMA TABLE_XINFO(%@)", v21];;
       objc_initWeak(&location, v12);
-      v23 = [(FHDatabaseEntity *)v12 _getDatabaseManager];
+      _getDatabaseManager = [(FHDatabaseEntity *)v12 _getDatabaseManager];
       v32[0] = MEMORY[0x277D85DD0];
       v32[1] = 3221225472;
       v32[2] = __75__FHDatabaseEntity__initWithJoinClauseExpression_databaseManager_entities___block_invoke;
@@ -152,16 +152,16 @@
       objc_copyWeak(&v36, &location);
       v34 = &v44;
       v35 = &v38;
-      [v23 streamQueryResults:v22 usingFetchHandler:v32];
+      [_getDatabaseManager streamQueryResults:v22 usingFetchHandler:v32];
 
       objc_destroyWeak(&v36);
       objc_destroyWeak(&location);
     }
 
     objc_storeStrong(&v12->_virtualEntities, v39[5]);
-    if (v8)
+    if (expressionCopy)
     {
-      [v19 appendString:v8];
+      [v19 appendString:expressionCopy];
     }
 
     v25 = [v19 copy];
@@ -175,7 +175,7 @@
     _Block_object_dispose(&v38, 8);
     _Block_object_dispose(&v44, 8);
 
-    v10 = v30;
+    entitiesCopy = v30;
   }
 
   return v12;
@@ -230,14 +230,14 @@ void __75__FHDatabaseEntity__initWithJoinClauseExpression_databaseManager_entiti
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)streamDataWithEntity:(id)a3 recordStreamHandler:(id)a4
+- (void)streamDataWithEntity:(id)entity recordStreamHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ %@", @"select * from", v6];;
+  entityCopy = entity;
+  handlerCopy = handler;
+  entityCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ %@", @"select * from", entityCopy];;
   objc_initWeak(&location, self);
   v9 = objc_opt_new();
-  v10 = [(FHDatabaseEntity *)self _getDatabaseManager];
+  _getDatabaseManager = [(FHDatabaseEntity *)self _getDatabaseManager];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __61__FHDatabaseEntity_streamDataWithEntity_recordStreamHandler___block_invoke;
@@ -245,9 +245,9 @@ void __75__FHDatabaseEntity__initWithJoinClauseExpression_databaseManager_entiti
   objc_copyWeak(&v16, &location);
   v11 = v9;
   v14 = v11;
-  v12 = v7;
+  v12 = handlerCopy;
   v15 = v12;
-  [v10 streamQueryResults:v8 usingFetchHandler:v13];
+  [_getDatabaseManager streamQueryResults:entityCopy usingFetchHandler:v13];
 
   objc_destroyWeak(&v16);
   objc_destroyWeak(&location);
@@ -283,23 +283,23 @@ void __61__FHDatabaseEntity_streamDataWithEntity_recordStreamHandler___block_inv
   }
 }
 
-- (void)queryDataWithBlock:(id)a3 logicalOperator:(id)a4 limit:(unint64_t)a5 selectFields:(id)a6 orderby:(id)a7 usingBlock:(id)a8
+- (void)queryDataWithBlock:(id)block logicalOperator:(id)operator limit:(unint64_t)limit selectFields:(id)fields orderby:(id)orderby usingBlock:(id)usingBlock
 {
   v114[1] = *MEMORY[0x277D85DE8];
-  v80 = a3;
-  v76 = a4;
-  v78 = a6;
-  v81 = a7;
-  v77 = a8;
-  v85 = [MEMORY[0x277CBEB18] array];
-  if (v78)
+  blockCopy = block;
+  operatorCopy = operator;
+  fieldsCopy = fields;
+  orderbyCopy = orderby;
+  usingBlockCopy = usingBlock;
+  array = [MEMORY[0x277CBEB18] array];
+  if (fieldsCopy)
   {
     fieldsIndex = self->_fieldsIndex;
     v101[0] = MEMORY[0x277D85DD0];
     v101[1] = 3221225472;
     v101[2] = __93__FHDatabaseEntity_queryDataWithBlock_logicalOperator_limit_selectFields_orderby_usingBlock___block_invoke;
     v101[3] = &unk_2785CB830;
-    v13 = v78;
+    v13 = fieldsCopy;
     v102 = v13;
     v79 = [(NSArray *)fieldsIndex indexesOfObjectsPassingTest:v101];
     v14 = [v79 count];
@@ -310,7 +310,7 @@ void __61__FHDatabaseEntity_streamDataWithEntity_recordStreamHandler___block_inv
       v114[0] = v13;
       v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v114 forKeys:&v113 count:1];
       v17 = [v15 errorWithDomain:@"com.apple.FinHealth.Framework" code:10016 userInfo:v16];
-      [v85 addObject:v17];
+      [array addObject:v17];
 
       v18 = FinHealthLogObject(@"FinHealthCore");
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -332,13 +332,13 @@ void __61__FHDatabaseEntity_streamDataWithEntity_recordStreamHandler___block_inv
     v79 = 0;
   }
 
-  if (v81)
+  if (orderbyCopy)
   {
     v99 = 0u;
     v100 = 0u;
     v97 = 0u;
     v98 = 0u;
-    v20 = v81;
+    v20 = orderbyCopy;
     v21 = [v20 countByEnumeratingWithState:&v97 objects:v110 count:16];
     if (v21)
     {
@@ -353,28 +353,28 @@ void __61__FHDatabaseEntity_streamDataWithEntity_recordStreamHandler___block_inv
           }
 
           v24 = *(*(&v97 + 1) + 8 * i);
-          v25 = [v24 featureLabel];
-          if (![(NSArray *)self->_fieldsIndex containsObject:v25])
+          featureLabel = [v24 featureLabel];
+          if (![(NSArray *)self->_fieldsIndex containsObject:featureLabel])
           {
             v26 = MEMORY[0x277CCA9B8];
             v108 = @"One or more invalid order by fields";
             v109 = v20;
             v27 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v109 forKeys:&v108 count:1];
             v28 = [v26 errorWithDomain:@"com.apple.FinHealth.Framework" code:10016 userInfo:v27];
-            [v85 addObject:v28];
+            [array addObject:v28];
           }
 
-          v29 = [v24 featureRank];
-          v30 = [v29 integerValue];
+          featureRank = [v24 featureRank];
+          integerValue = [featureRank integerValue];
 
-          if (!v30)
+          if (!integerValue)
           {
             v31 = MEMORY[0x277CCA9B8];
             v106 = @"One or more invalid orderings (NSOrderedSame)";
             v107 = v20;
             v32 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v107 forKeys:&v106 count:1];
             v33 = [v31 errorWithDomain:@"com.apple.FinHealth.Framework" code:10016 userInfo:v32];
-            [v85 addObject:v33];
+            [array addObject:v33];
           }
         }
 
@@ -386,34 +386,34 @@ void __61__FHDatabaseEntity_streamDataWithEntity_recordStreamHandler___block_inv
   }
 
   v82 = objc_alloc_init(MEMORY[0x277CCAB68]);
-  if (v80)
+  if (blockCopy)
   {
-    v34 = [v80 clausesAndOperatorsInOrder];
-    if ([v34 count])
+    clausesAndOperatorsInOrder = [blockCopy clausesAndOperatorsInOrder];
+    if ([clausesAndOperatorsInOrder count])
     {
-      for (j = 0; j < [v34 count]; ++j)
+      for (j = 0; j < [clausesAndOperatorsInOrder count]; ++j)
       {
-        v36 = [v34 objectAtIndex:j];
+        v36 = [clausesAndOperatorsInOrder objectAtIndex:j];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v37 = [v36 comparisonOperator];
-          v38 = v37 == @"MATCH";
+          comparisonOperator = [v36 comparisonOperator];
+          v38 = comparisonOperator == @"MATCH";
 
           if (v38)
           {
-            v42 = [v36 fieldName];
-            v41 = [v42 componentsSeparatedByString:@"."];
+            fieldName = [v36 fieldName];
+            shortDescription = [fieldName componentsSeparatedByString:@"."];
 
-            v43 = [v41 stringAtIndex:0];
+            v43 = [shortDescription stringAtIndex:0];
             if (![(NSArray *)self->_virtualEntities containsObject:v43])
             {
               goto LABEL_31;
             }
 
             v44 = self->_fieldsIndex;
-            v45 = [v36 fieldName];
-            if ([(NSArray *)v44 containsObject:v45])
+            fieldName2 = [v36 fieldName];
+            if ([(NSArray *)v44 containsObject:fieldName2])
             {
 LABEL_32:
             }
@@ -421,14 +421,14 @@ LABEL_32:
             else
             {
               entities = self->_entities;
-              v47 = [v36 fieldName];
-              LOBYTE(entities) = [(NSArray *)entities containsObject:v47];
+              fieldName3 = [v36 fieldName];
+              LOBYTE(entities) = [(NSArray *)entities containsObject:fieldName3];
 
               if ((entities & 1) == 0)
               {
 LABEL_31:
-                v45 = [v36 shortDescription];
-                [v82 appendFormat:@"clause: %@, ", v45];
+                fieldName2 = [v36 shortDescription];
+                [v82 appendFormat:@"clause: %@, ", fieldName2];
                 goto LABEL_32;
               }
             }
@@ -437,13 +437,13 @@ LABEL_31:
           }
 
           v39 = self->_fieldsIndex;
-          v40 = [v36 fieldName];
-          LOBYTE(v39) = [(NSArray *)v39 containsObject:v40];
+          fieldName4 = [v36 fieldName];
+          LOBYTE(v39) = [(NSArray *)v39 containsObject:fieldName4];
 
           if ((v39 & 1) == 0)
           {
-            v41 = [v36 shortDescription];
-            [v82 appendFormat:@"clause: %@, ", v41];
+            shortDescription = [v36 shortDescription];
+            [v82 appendFormat:@"clause: %@, ", shortDescription];
 LABEL_34:
           }
         }
@@ -457,7 +457,7 @@ LABEL_34:
       v105 = v82;
       v49 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v105 forKeys:&v104 count:1];
       v50 = [v48 errorWithDomain:@"com.apple.FinHealth.Framework" code:10016 userInfo:v49];
-      [v85 addObject:v50];
+      [array addObject:v50];
 
       v51 = FinHealthLogObject(@"FinHealthCore");
       if (os_log_type_enabled(v51, OS_LOG_TYPE_ERROR))
@@ -469,15 +469,15 @@ LABEL_34:
     }
   }
 
-  if ([v85 count])
+  if ([array count])
   {
-    v77[2](v77, 0, v85, 1);
+    usingBlockCopy[2](usingBlockCopy, 0, array, 1);
   }
 
   else
   {
-    v75 = [v80 expressionFromClausesAndOperators];
-    if (v81)
+    expressionFromClausesAndOperators = [blockCopy expressionFromClausesAndOperators];
+    if (orderbyCopy)
     {
       v52 = objc_alloc_init(MEMORY[0x277CBEB18]);
       [v52 addObject:@" ORDER BY "];
@@ -485,7 +485,7 @@ LABEL_34:
       v96 = 0u;
       v93 = 0u;
       v94 = 0u;
-      obj = v81;
+      obj = orderbyCopy;
       v53 = [obj countByEnumeratingWithState:&v93 objects:v103 count:16];
       if (v53)
       {
@@ -504,17 +504,17 @@ LABEL_34:
             }
 
             v58 = *(*(&v93 + 1) + 8 * v56);
-            v59 = [v58 featureLabel];
-            v60 = [v58 featureRank];
-            v61 = [v60 integerValue];
+            featureLabel2 = [v58 featureLabel];
+            featureRank2 = [v58 featureRank];
+            integerValue2 = [featureRank2 integerValue];
 
             if (v57 != v56)
             {
               [v52 addObject:{@", "}];
             }
 
-            [v52 addObject:v59];
-            if (v61 == -1)
+            [v52 addObject:featureLabel2];
+            if (integerValue2 == -1)
             {
               v62 = @" ASC";
             }
@@ -542,17 +542,17 @@ LABEL_34:
       v65 = [v52 componentsJoinedByString:&stru_283A7B918];
       v66 = [v64 stringWithFormat:@"%@", v65];
 
-      v67 = [v75 stringByAppendingString:v66];
+      v67 = [expressionFromClausesAndOperators stringByAppendingString:v66];
 
-      v75 = v67;
+      expressionFromClausesAndOperators = v67;
     }
 
-    if (v80)
+    if (blockCopy)
     {
-      v68 = [v80 clausesAndOperatorsInOrder];
-      if ([v68 count])
+      clausesAndOperatorsInOrder2 = [blockCopy clausesAndOperatorsInOrder];
+      if ([clausesAndOperatorsInOrder2 count])
       {
-        v69 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ WHERE %@", self->_multiEntityJoinQuery, v75];;
+        v69 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ WHERE %@", self->_multiEntityJoinQuery, expressionFromClausesAndOperators];;
       }
 
       else
@@ -581,17 +581,17 @@ LABEL_34:
     *&buf[8] = buf;
     *&buf[16] = 0x2020000000;
     v112 = 0;
-    v72 = [(FHDatabaseEntity *)self _getDatabaseManager];
+    _getDatabaseManager = [(FHDatabaseEntity *)self _getDatabaseManager];
     v87[0] = MEMORY[0x277D85DD0];
     v87[1] = 3221225472;
     v87[2] = __93__FHDatabaseEntity_queryDataWithBlock_logicalOperator_limit_selectFields_orderby_usingBlock___block_invoke_171;
     v87[3] = &unk_2785CB858;
     v90 = buf;
-    v91[1] = a5;
+    v91[1] = limit;
     objc_copyWeak(v91, &location);
     v88 = v79;
-    v89 = v77;
-    [v72 streamQueryResults:v70 usingFetchHandler:v87];
+    v89 = usingBlockCopy;
+    [_getDatabaseManager streamQueryResults:v70 usingFetchHandler:v87];
 
     objc_destroyWeak(v91);
     _Block_object_dispose(buf, 8);
@@ -631,41 +631,41 @@ void __93__FHDatabaseEntity_queryDataWithBlock_logicalOperator_limit_selectField
   }
 }
 
-- (BOOL)clearDataWithClauseBuilder:(id)a3
+- (BOOL)clearDataWithClauseBuilder:(id)builder
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  builderCopy = builder;
   v5 = objc_alloc_init(MEMORY[0x277CCAB68]);
-  if (!v4)
+  if (!builderCopy)
   {
     goto LABEL_18;
   }
 
-  v6 = [v4 clausesAndOperatorsInOrder];
-  if ([v6 count])
+  clausesAndOperatorsInOrder = [builderCopy clausesAndOperatorsInOrder];
+  if ([clausesAndOperatorsInOrder count])
   {
     v7 = 0;
     do
     {
-      v8 = [v6 objectAtIndex:v7];
+      v8 = [clausesAndOperatorsInOrder objectAtIndex:v7];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
         fieldsIndex = self->_fieldsIndex;
-        v10 = [v8 fieldName];
-        LOBYTE(fieldsIndex) = [(NSArray *)fieldsIndex containsObject:v10];
+        fieldName = [v8 fieldName];
+        LOBYTE(fieldsIndex) = [(NSArray *)fieldsIndex containsObject:fieldName];
 
         if ((fieldsIndex & 1) == 0)
         {
-          v11 = [v8 shortDescription];
-          [v5 appendFormat:@"clause: %@, ", v11];
+          shortDescription = [v8 shortDescription];
+          [v5 appendFormat:@"clause: %@, ", shortDescription];
         }
       }
 
       ++v7;
     }
 
-    while (v7 < [v6 count]);
+    while (v7 < [clausesAndOperatorsInOrder count]);
   }
 
   if (![v5 length])
@@ -673,9 +673,9 @@ void __93__FHDatabaseEntity_queryDataWithBlock_logicalOperator_limit_selectField
     if ([(NSArray *)self->_entities count]== 1)
     {
       v14 = MEMORY[0x277CCACA8];
-      v15 = [(NSArray *)self->_entities firstObject];
-      v16 = [v4 expressionFromClausesAndOperators];
-      v12 = [v14 stringWithFormat:@"%@ %@ WHERE (%@)", @"delete from", v15, v16];;
+      firstObject = [(NSArray *)self->_entities firstObject];
+      expressionFromClausesAndOperators = [builderCopy expressionFromClausesAndOperators];
+      v12 = [v14 stringWithFormat:@"%@ %@ WHERE (%@)", @"delete from", firstObject, expressionFromClausesAndOperators];;
 
       v17 = FinHealthLogObject(@"FinHealthCore");
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
@@ -685,8 +685,8 @@ void __93__FHDatabaseEntity_queryDataWithBlock_logicalOperator_limit_selectField
         _os_log_impl(&dword_226DD4000, v17, OS_LOG_TYPE_DEBUG, "clausesFromBuilder - sql: %@", buf, 0xCu);
       }
 
-      v18 = [(FHDatabaseEntity *)self _getDatabaseManager];
-      v13 = [v18 deleteWithSQL:v12];
+      _getDatabaseManager = [(FHDatabaseEntity *)self _getDatabaseManager];
+      v13 = [_getDatabaseManager deleteWithSQL:v12];
 
       goto LABEL_16;
     }
@@ -712,28 +712,28 @@ LABEL_19:
   return v13;
 }
 
-- (void)queryDataWithBlock:(id)a3 logicalOperator:(id)a4 selectFields:(id)a5 usingBlock:(id)a6
+- (void)queryDataWithBlock:(id)block logicalOperator:(id)operator selectFields:(id)fields usingBlock:(id)usingBlock
 {
-  v10 = a6;
+  usingBlockCopy = usingBlock;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __79__FHDatabaseEntity_queryDataWithBlock_logicalOperator_selectFields_usingBlock___block_invoke;
   v12[3] = &unk_2785CB880;
-  v13 = v10;
-  v11 = v10;
-  [(FHDatabaseEntity *)self queryDataWithBlock:a3 logicalOperator:a4 limit:-1 selectFields:a5 orderby:0 usingBlock:v12];
+  v13 = usingBlockCopy;
+  v11 = usingBlockCopy;
+  [(FHDatabaseEntity *)self queryDataWithBlock:block logicalOperator:operator limit:-1 selectFields:fields orderby:0 usingBlock:v12];
 }
 
-- (void)queryDataWithBlock:(id)a3 logicalOperator:(id)a4 usingBlock:(id)a5
+- (void)queryDataWithBlock:(id)block logicalOperator:(id)operator usingBlock:(id)usingBlock
 {
-  v8 = a5;
+  usingBlockCopy = usingBlock;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __66__FHDatabaseEntity_queryDataWithBlock_logicalOperator_usingBlock___block_invoke;
   v10[3] = &unk_2785CB880;
-  v11 = v8;
-  v9 = v8;
-  [(FHDatabaseEntity *)self queryDataWithBlock:a3 logicalOperator:a4 limit:-1 selectFields:0 orderby:0 usingBlock:v10];
+  v11 = usingBlockCopy;
+  v9 = usingBlockCopy;
+  [(FHDatabaseEntity *)self queryDataWithBlock:block logicalOperator:operator limit:-1 selectFields:0 orderby:0 usingBlock:v10];
 }
 
 - (BOOL)clearData
@@ -741,8 +741,8 @@ LABEL_19:
   v12 = *MEMORY[0x277D85DE8];
   if ([(NSArray *)self->_entities count]== 1)
   {
-    v3 = [(NSArray *)self->_entities firstObject];
-    v4 = [(FHDatabaseEntity *)self clearDataWithEntity:v3];
+    firstObject = [(NSArray *)self->_entities firstObject];
+    v4 = [(FHDatabaseEntity *)self clearDataWithEntity:firstObject];
 
     v5 = *MEMORY[0x277D85DE8];
     return v4;
@@ -764,43 +764,43 @@ LABEL_19:
   }
 }
 
-- (void)insertOrUpdateWithEntity:(id)a3 fieldValuePairsFromBuilder:(id)a4 upsert:(BOOL)a5
+- (void)insertOrUpdateWithEntity:(id)entity fieldValuePairsFromBuilder:(id)builder upsert:(BOOL)upsert
 {
-  v5 = a5;
+  upsertCopy = upsert;
   v42 = *MEMORY[0x277D85DE8];
-  v39 = a3;
-  v8 = a4;
+  entityCopy = entity;
+  builderCopy = builder;
   v9 = objc_opt_new();
   v10 = objc_opt_new();
   v11 = objc_opt_new();
-  if (v8)
+  if (builderCopy)
   {
-    v12 = [v8 fieldValuePairList];
+    fieldValuePairList = [builderCopy fieldValuePairList];
 
-    if (v12)
+    if (fieldValuePairList)
     {
-      v37 = v5;
-      v38 = v8;
-      v13 = [v8 fieldValuePairList];
-      if ([v13 count] == 1)
+      v37 = upsertCopy;
+      v38 = builderCopy;
+      fieldValuePairList2 = [builderCopy fieldValuePairList];
+      if ([fieldValuePairList2 count] == 1)
       {
 LABEL_7:
-        v15 = [v13 lastObject];
+        lastObject = [fieldValuePairList2 lastObject];
         fieldsIndex = self->_fieldsIndex;
-        v23 = [v15 fieldName];
-        LODWORD(fieldsIndex) = [(NSArray *)fieldsIndex containsObject:v23];
+        fieldName = [lastObject fieldName];
+        LODWORD(fieldsIndex) = [(NSArray *)fieldsIndex containsObject:fieldName];
 
         if (fieldsIndex)
         {
-          v24 = [v15 fieldName];
-          v25 = [v24 substringFromIndex:{objc_msgSend(v39, "length") + 1}];
+          fieldName2 = [lastObject fieldName];
+          v25 = [fieldName2 substringFromIndex:{objc_msgSend(entityCopy, "length") + 1}];
 
-          v26 = [v25 lowercaseString];
-          [v9 appendString:v26];
+          lowercaseString = [v25 lowercaseString];
+          [v9 appendString:lowercaseString];
 
           [v10 appendString:@"?"];
-          v27 = [v15 fieldValue];
-          [v11 addObject:v27];
+          fieldValue = [lastObject fieldValue];
+          [v11 addObject:fieldValue];
 
           v28 = MEMORY[0x277CCACA8];
           if (v37)
@@ -815,11 +815,11 @@ LABEL_7:
 
           v30 = [v9 copy];
           v31 = [v10 copy];
-          v32 = [v28 stringWithFormat:@"%@ %@ (%@) values (%@)", v29, v39, v30, v31];
+          v32 = [v28 stringWithFormat:@"%@ %@ (%@) values (%@)", v29, entityCopy, v30, v31];
 
-          v33 = [(FHDatabaseEntity *)self _getDatabaseManager];
+          _getDatabaseManager = [(FHDatabaseEntity *)self _getDatabaseManager];
           v34 = [v11 copy];
-          [v33 executeAsPreparedStatement:v32 values:v34];
+          [_getDatabaseManager executeAsPreparedStatement:v32 values:v34];
 
           goto LABEL_18;
         }
@@ -830,12 +830,12 @@ LABEL_7:
 LABEL_17:
 
 LABEL_18:
-          v8 = v38;
+          builderCopy = v38;
           goto LABEL_19;
         }
 
         *buf = 138412290;
-        v41 = v15;
+        v41 = lastObject;
       }
 
       else
@@ -843,29 +843,29 @@ LABEL_18:
         v14 = 0;
         while (1)
         {
-          v15 = [v13 objectAtIndex:v14];
+          lastObject = [fieldValuePairList2 objectAtIndex:v14];
           v16 = self->_fieldsIndex;
-          v17 = [v15 fieldName];
-          LOBYTE(v16) = [(NSArray *)v16 containsObject:v17];
+          fieldName3 = [lastObject fieldName];
+          LOBYTE(v16) = [(NSArray *)v16 containsObject:fieldName3];
 
           if ((v16 & 1) == 0)
           {
             break;
           }
 
-          v18 = [v15 fieldName];
-          v19 = [v18 substringFromIndex:{objc_msgSend(v39, "length") + 1}];
+          fieldName4 = [lastObject fieldName];
+          v19 = [fieldName4 substringFromIndex:{objc_msgSend(entityCopy, "length") + 1}];
 
-          v20 = [v19 lowercaseString];
-          [v9 appendString:v20];
+          lowercaseString2 = [v19 lowercaseString];
+          [v9 appendString:lowercaseString2];
 
           [v10 appendString:@"?"];
           [v9 appendString:{@", "}];
           [v10 appendString:{@", "}];
-          v21 = [v15 fieldValue];
-          [v11 addObject:v21];
+          fieldValue2 = [lastObject fieldValue];
+          [v11 addObject:fieldValue2];
 
-          if (++v14 >= ([v13 count] - 1))
+          if (++v14 >= ([fieldValuePairList2 count] - 1))
           {
             goto LABEL_7;
           }
@@ -878,7 +878,7 @@ LABEL_18:
         }
 
         *buf = 138412290;
-        v41 = v15;
+        v41 = lastObject;
       }
 
       _os_log_impl(&dword_226DD4000, v35, OS_LOG_TYPE_ERROR, "Invalid fieldValuePair: %@", buf, 0xCu);
@@ -891,32 +891,32 @@ LABEL_19:
   v36 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)clearDataWithEntity:(id)a3
+- (BOOL)clearDataWithEntity:(id)entity
 {
-  v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ %@", @"delete from", a3];
-  v5 = [(FHDatabaseEntity *)self _getDatabaseManager];
-  v6 = [v5 deleteWithSQL:v4];
+  entity = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ %@", @"delete from", entity];
+  _getDatabaseManager = [(FHDatabaseEntity *)self _getDatabaseManager];
+  v6 = [_getDatabaseManager deleteWithSQL:entity];
 
   return v6;
 }
 
-- (id)_availableFunctions:(int64_t)a3 functionTypeFilter:(id)a4
+- (id)_availableFunctions:(int64_t)functions functionTypeFilter:(id)filter
 {
-  v5 = a4;
+  filterCopy = filter;
   v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"PRAGMA function_list"];;
   v7 = objc_opt_new();
   objc_initWeak(&location, self);
-  v8 = [(FHDatabaseEntity *)self _getDatabaseManager];
+  _getDatabaseManager = [(FHDatabaseEntity *)self _getDatabaseManager];
   v13 = MEMORY[0x277D85DD0];
   v14 = 3221225472;
   v15 = __59__FHDatabaseEntity__availableFunctions_functionTypeFilter___block_invoke;
   v16 = &unk_2785CB8A8;
   objc_copyWeak(&v19, &location);
-  v9 = v5;
+  v9 = filterCopy;
   v17 = v9;
   v10 = v7;
   v18 = v10;
-  [v8 streamQueryResults:v6 usingFetchHandler:&v13];
+  [_getDatabaseManager streamQueryResults:v6 usingFetchHandler:&v13];
 
   v11 = [v10 copy];
   objc_destroyWeak(&v19);

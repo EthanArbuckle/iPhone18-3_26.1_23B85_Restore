@@ -7,28 +7,28 @@
 - (id)localizedWaitScreenDescription;
 - (id)offlineLicenseController;
 - (id)offlineWarrantyController;
-- (id)termsEventWithDocumentationID:(id)a3 data:(id)a4;
+- (id)termsEventWithDocumentationID:(id)d data:(id)data;
 - (void)_cleanupLoader;
-- (void)_popObjectModelAnimated:(BOOL)a3;
+- (void)_popObjectModelAnimated:(BOOL)animated;
 - (void)_presentDisagreeConfirmationAlert;
-- (void)_showTermsFromRequest:(id)a3;
-- (void)buddyTCSubController:(id)a3 didFinishWithAgree:(BOOL)a4;
+- (void)_showTermsFromRequest:(id)request;
+- (void)buddyTCSubController:(id)controller didFinishWithAgree:(BOOL)agree;
 - (void)dealloc;
 - (void)endPerformancePhases;
-- (void)enteredCompatibilityState:(id)a3;
-- (void)handleOnlineTermsAndConditionsResponse:(id)a3 forRequest:(id)a4 error:(id)a5;
-- (void)loader:(id)a3 didFinishLoadWithError:(id)a4 forRequest:(id)a5;
-- (void)loader:(id)a3 receivedObjectModel:(id)a4 actionSignal:(unint64_t)a5;
-- (void)markTermsAsAcceptedWithTermsEvent:(id)a3;
-- (void)objectModel:(id)a3 pressedButton:(id)a4 attributes:(id)a5;
-- (void)objectModel:(id)a3 pressedLink:(id)a4 httpMethod:(id)a5 completion:(id)a6;
-- (void)offlineTermsResponse:(id)a3;
-- (void)presentConfirmationAlertWithTitle:(id)a3 message:(id)a4 okButtonTitle:(id)a5 cancelButtonTitle:(id)a6 termsEvent:(id)a7;
+- (void)enteredCompatibilityState:(id)state;
+- (void)handleOnlineTermsAndConditionsResponse:(id)response forRequest:(id)request error:(id)error;
+- (void)loader:(id)loader didFinishLoadWithError:(id)error forRequest:(id)request;
+- (void)loader:(id)loader receivedObjectModel:(id)model actionSignal:(unint64_t)signal;
+- (void)markTermsAsAcceptedWithTermsEvent:(id)event;
+- (void)objectModel:(id)model pressedButton:(id)button attributes:(id)attributes;
+- (void)objectModel:(id)model pressedLink:(id)link httpMethod:(id)method completion:(id)completion;
+- (void)offlineTermsResponse:(id)response;
+- (void)presentConfirmationAlertWithTitle:(id)title message:(id)message okButtonTitle:(id)buttonTitle cancelButtonTitle:(id)cancelButtonTitle termsEvent:(id)event;
 - (void)queryGizmoForShowWarrantySentinel;
 - (void)requestOnlineTermsAndConditions;
 - (void)retrieveOfflineTerms;
-- (void)setDelegate:(id)a3;
-- (void)warrantySentinelResponse:(id)a3;
+- (void)setDelegate:(id)delegate;
+- (void)warrantySentinelResponse:(id)response;
 @end
 
 @implementation COSTermsConditionsController
@@ -50,31 +50,31 @@
   [(COSTermsConditionsController *)&v4 dealloc];
 }
 
-- (void)warrantySentinelResponse:(id)a3
+- (void)warrantySentinelResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   v5 = +[NSNotificationCenter defaultCenter];
   [v5 removeObserver:self];
 
-  v6 = [(COSTermsConditionsController *)self delegate];
-  v7 = [v6 nextControllerAfterHold];
+  delegate = [(COSTermsConditionsController *)self delegate];
+  nextControllerAfterHold = [delegate nextControllerAfterHold];
 
-  if (v7 == self)
+  if (nextControllerAfterHold == self)
   {
-    v9 = [v4 userInfo];
-    v10 = [v9 objectForKey:PBBridgeWarrantySentinelExistsKey];
+    userInfo = [responseCopy userInfo];
+    v10 = [userInfo objectForKey:PBBridgeWarrantySentinelExistsKey];
     self->_warrantySentinelExists = [v10 BOOLValue];
 
     v11 = +[UIApplication sharedApplication];
-    v8 = [v11 activeWatch];
+    activeWatch = [v11 activeWatch];
 
-    v12 = [v8 valueForProperty:NRDevicePropertyPairingID];
-    v13 = [v8 valueForProperty:NRDevicePropertyLocalPairingDataStorePath];
-    v14 = [v4 userInfo];
-    v15 = [v14 objectForKey:PBBridgeGizmoAppleLanguagesKey];
+    v12 = [activeWatch valueForProperty:NRDevicePropertyPairingID];
+    v13 = [activeWatch valueForProperty:NRDevicePropertyLocalPairingDataStorePath];
+    userInfo2 = [responseCopy userInfo];
+    v15 = [userInfo2 objectForKey:PBBridgeGizmoAppleLanguagesKey];
 
-    v16 = [v4 userInfo];
-    v17 = [v16 objectForKey:PBBridgeGizmoAppleLocaleKey];
+    userInfo3 = [responseCopy userInfo];
+    v17 = [userInfo3 objectForKey:PBBridgeGizmoAppleLocaleKey];
 
     if (!v17)
     {
@@ -89,8 +89,8 @@
     [v18 setObject:v17 forKey:@"AppleLocale"];
     v19 = [NSLocale componentsFromLocaleIdentifier:v17];
     v20 = +[NSLocale currentLocale];
-    v21 = [v20 localeIdentifier];
-    v22 = [NSLocale componentsFromLocaleIdentifier:v21];
+    localeIdentifier = [v20 localeIdentifier];
+    v22 = [NSLocale componentsFromLocaleIdentifier:localeIdentifier];
 
     v33[0] = _NSConcreteStackBlock;
     v33[1] = 3221225472;
@@ -114,56 +114,56 @@
       (v26[2])(v26, @"AppleICUForce24HourTime");
     }
 
-    v27 = [v18 synchronize];
+    synchronize = [v18 synchronize];
     [(COSTermsConditionsController *)self requestOnlineTermsAndConditions];
   }
 
   else
   {
-    v8 = pbb_setupflow_log();
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    activeWatch = pbb_setupflow_log();
+    if (os_log_type_enabled(activeWatch, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109378;
       v37 = 84;
       v38 = 2080;
       v39 = "[COSTermsConditionsController warrantySentinelResponse:]";
-      _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%d %s: Ignoring callback because no longer top controller", buf, 0x12u);
+      _os_log_impl(&_mh_execute_header, activeWatch, OS_LOG_TYPE_DEFAULT, "%d %s: Ignoring callback because no longer top controller", buf, 0x12u);
     }
   }
 }
 
-- (void)offlineTermsResponse:(id)a3
+- (void)offlineTermsResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   v5 = +[NSNotificationCenter defaultCenter];
   [v5 removeObserver:self];
 
-  v6 = [(COSTermsConditionsController *)self delegate];
-  v7 = [v6 nextControllerAfterHold];
+  delegate = [(COSTermsConditionsController *)self delegate];
+  nextControllerAfterHold = [delegate nextControllerAfterHold];
 
-  v8 = pbb_setupflow_log();
-  v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
-  if (v7 == self)
+  userInfo = pbb_setupflow_log();
+  v9 = os_log_type_enabled(userInfo, OS_LOG_TYPE_DEFAULT);
+  if (nextControllerAfterHold == self)
   {
     if (v9)
     {
       LOWORD(v30[0]) = 0;
-      _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Handling offline terms response", v30, 2u);
+      _os_log_impl(&_mh_execute_header, userInfo, OS_LOG_TYPE_DEFAULT, "Handling offline terms response", v30, 2u);
     }
 
-    v8 = [v4 userInfo];
+    userInfo = [responseCopy userInfo];
     v10 = PBBridgeOfflineTermsLicenseKey;
-    v11 = [v8 objectForKeyedSubscript:PBBridgeOfflineTermsLicenseKey];
+    v11 = [userInfo objectForKeyedSubscript:PBBridgeOfflineTermsLicenseKey];
     v12 = [(COSTermsConditionsController *)self termsEventWithDocumentationID:v10 data:v11];
     offlineLicense = self->_offlineLicense;
     self->_offlineLicense = v12;
 
-    v14 = [v8 objectForKeyedSubscript:PBBridgeOfflineTermsMultitermsKey];
+    v14 = [userInfo objectForKeyedSubscript:PBBridgeOfflineTermsMultitermsKey];
     v15 = [(COSTermsConditionsController *)self termsEventWithDocumentationID:v10 data:v14];
     offlineMultiterms = self->_offlineMultiterms;
     self->_offlineMultiterms = v15;
 
-    v17 = [v8 objectForKeyedSubscript:PBBridgeOfflineTermsWarrantyKey];
+    v17 = [userInfo objectForKeyedSubscript:PBBridgeOfflineTermsWarrantyKey];
     v18 = [(COSTermsConditionsController *)self termsEventWithDocumentationID:v10 data:v17];
     offlineWarranty = self->_offlineWarranty;
     self->_offlineWarranty = v18;
@@ -182,15 +182,15 @@
       v24 = self->_loader;
       WeakRetained = [(NRTermsEvent *)self->_offlineMultiterms termsText];
       v26 = +[NSBundle mainBundle];
-      v27 = [v26 resourceURL];
-      [(RUILoader *)v24 loadXMLUIWithData:WeakRetained baseURL:v27];
+      resourceURL = [v26 resourceURL];
+      [(RUILoader *)v24 loadXMLUIWithData:WeakRetained baseURL:resourceURL];
     }
 
     else
     {
-      v28 = [(COSTermsConditionsController *)self offlineLicenseController];
+      offlineLicenseController = [(COSTermsConditionsController *)self offlineLicenseController];
       viewController = self->_viewController;
-      self->_viewController = v28;
+      self->_viewController = offlineLicenseController;
 
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
       [WeakRetained buddyControllerReleaseHold:self];
@@ -205,24 +205,24 @@
     v30[1] = 143;
     v31 = 2080;
     v32 = "[COSTermsConditionsController offlineTermsResponse:]";
-    _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%d %s: Ignoring callback because no longer top controller", v30, 0x12u);
+    _os_log_impl(&_mh_execute_header, userInfo, OS_LOG_TYPE_DEFAULT, "%d %s: Ignoring callback because no longer top controller", v30, 0x12u);
   }
 }
 
-- (id)termsEventWithDocumentationID:(id)a3 data:(id)a4
+- (id)termsEventWithDocumentationID:(id)d data:(id)data
 {
-  if (a4)
+  if (data)
   {
-    v5 = a4;
-    v6 = a3;
+    dataCopy = data;
+    dCopy = d;
     v7 = +[UIApplication sharedApplication];
-    v8 = [v7 activeWatch];
+    activeWatch = [v7 activeWatch];
 
-    v9 = [v8 valueForProperty:NRDevicePropertyPairingID];
+    v9 = [activeWatch valueForProperty:NRDevicePropertyPairingID];
     v10 = [[NRTermsEvent alloc] initWithDeviceID:v9];
-    [v10 setTermsText:v5];
+    [v10 setTermsText:dataCopy];
 
-    [v10 setDocumentationID:v6];
+    [v10 setDocumentationID:dCopy];
   }
 
   else
@@ -274,15 +274,15 @@
 - (void)requestOnlineTermsAndConditions
 {
   v3 = +[UIApplication sharedApplication];
-  v4 = [v3 activeWatch];
+  activeWatch = [v3 activeWatch];
 
-  v5 = [[COSAAGenericTermsUIRequest alloc] initWithGizmoDevice:v4 showWarranty:self->_warrantySentinelExists];
+  v5 = [[COSAAGenericTermsUIRequest alloc] initWithGizmoDevice:activeWatch showWarranty:self->_warrantySentinelExists];
   v6 = pbb_setupflow_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v4 _bridgeConciseDebugDescription];
+    _bridgeConciseDebugDescription = [activeWatch _bridgeConciseDebugDescription];
     *buf = 138412290;
-    v11 = v7;
+    v11 = _bridgeConciseDebugDescription;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Requesting online T&Cs for device: (%@)", buf, 0xCu);
   }
 
@@ -297,46 +297,46 @@
   objc_destroyWeak(buf);
 }
 
-- (void)handleOnlineTermsAndConditionsResponse:(id)a3 forRequest:(id)a4 error:(id)a5
+- (void)handleOnlineTermsAndConditionsResponse:(id)response forRequest:(id)request error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  responseCopy = response;
+  requestCopy = request;
+  errorCopy = error;
   v11 = pbb_setupflow_log();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v25 = v8;
+    v25 = responseCopy;
     v26 = 2112;
-    v27 = v10;
+    v27 = errorCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Online T&Cs request callback called with response (%@); error: (%@)", buf, 0x16u);
   }
 
-  v12 = v8;
-  v13 = [v12 responseData];
+  v12 = responseCopy;
+  responseData = [v12 responseData];
   objc_initWeak(buf, self);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100107784;
   block[3] = &unk_10026A9A0;
   objc_copyWeak(&v23, buf);
-  v19 = v10;
+  v19 = errorCopy;
   v20 = v12;
-  v21 = v13;
-  v22 = v9;
-  v14 = v9;
-  v15 = v13;
+  v21 = responseData;
+  v22 = requestCopy;
+  v14 = requestCopy;
+  v15 = responseData;
   v16 = v12;
-  v17 = v10;
+  v17 = errorCopy;
   dispatch_async(&_dispatch_main_q, block);
 
   objc_destroyWeak(&v23);
   objc_destroyWeak(buf);
 }
 
-- (void)_showTermsFromRequest:(id)a3
+- (void)_showTermsFromRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = objc_alloc_init(RUILoader);
   loader = self->_loader;
   self->_loader = v5;
@@ -347,11 +347,11 @@
 
   [(RUILoader *)self->_loader setDelegate:self];
   v9 = self->_loader;
-  v12 = [(NRTermsEvent *)self->_onlineTerms termsText];
-  v10 = [v4 urlRequest];
+  termsText = [(NRTermsEvent *)self->_onlineTerms termsText];
+  urlRequest = [requestCopy urlRequest];
 
-  v11 = [v10 URL];
-  [(RUILoader *)v9 loadXMLUIWithData:v12 baseURL:v11];
+  v11 = [urlRequest URL];
+  [(RUILoader *)v9 loadXMLUIWithData:termsText baseURL:v11];
 }
 
 - (void)retrieveOfflineTerms
@@ -367,25 +367,25 @@
   }
 
   v5 = +[UIApplication sharedApplication];
-  v6 = [v5 bridgeController];
-  [v6 queryGizmoForOfflineTerms];
+  bridgeController = [v5 bridgeController];
+  [bridgeController queryGizmoForOfflineTerms];
 }
 
-- (void)enteredCompatibilityState:(id)a3
+- (void)enteredCompatibilityState:(id)state
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:NRPairedDeviceRegistryCompatibilityStateKey];
-  v6 = [v5 unsignedIntValue];
+  userInfo = [state userInfo];
+  v5 = [userInfo objectForKeyedSubscript:NRPairedDeviceRegistryCompatibilityStateKey];
+  unsignedIntValue = [v5 unsignedIntValue];
 
   v7 = pbb_setupflow_log();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v9[0] = 67109120;
-    v9[1] = v6;
+    v9[1] = unsignedIntValue;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Terms Controller: Entered Compatibility State: %d", v9, 8u);
   }
 
-  if (v6 >= 3u)
+  if (unsignedIntValue >= 3u)
   {
     [(COSTermsConditionsController *)self queryGizmoForShowWarrantySentinel];
     v8 = +[NSNotificationCenter defaultCenter];
@@ -396,26 +396,26 @@
 - (void)queryGizmoForShowWarrantySentinel
 {
   v3 = +[COSBackupManager sharedBackupManager];
-  v7 = [v3 deviceNameToRestore];
+  deviceNameToRestore = [v3 deviceNameToRestore];
 
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 addObserver:self selector:"warrantySentinelResponse:" name:PBBridgeWarrantySentinelNotification object:0];
 
   v5 = +[UIApplication sharedApplication];
-  v6 = [v5 bridgeController];
-  [v6 queryGizmoForShowWarrantySentinelAndRestoreDeviceName:v7];
+  bridgeController = [v5 bridgeController];
+  [bridgeController queryGizmoForShowWarrantySentinelAndRestoreDeviceName:deviceNameToRestore];
 }
 
 - (void)endPerformancePhases
 {
   if (PBLogPerformanceMetrics())
   {
-    v9 = [(COSTermsConditionsController *)self holdActivityIdentifier];
+    holdActivityIdentifier = [(COSTermsConditionsController *)self holdActivityIdentifier];
     v3 = +[PBBridgeResponsePerformanceMonitor shareMonitor];
-    [v3 endMacroActivity:v9 beginTime:CFAbsoluteTimeGetCurrent()];
+    [v3 endMacroActivity:holdActivityIdentifier beginTime:CFAbsoluteTimeGetCurrent()];
     v5 = v4;
 
-    [PBBridgeCAReporter pushTimingForTypeNamed:v9 withValue:v5];
+    [PBBridgeCAReporter pushTimingForTypeNamed:holdActivityIdentifier withValue:v5];
     v6 = +[PBBridgeResponsePerformanceMonitor shareMonitor];
     [v6 endMacroActivity:@"COSPostWristChoiceUserWaitPhase" beginTime:CFAbsoluteTimeGetCurrent()];
     v8 = v7;
@@ -429,8 +429,8 @@
   if (PBLogPerformanceMetrics())
   {
     v3 = +[PBBridgeResponsePerformanceMonitor shareMonitor];
-    v4 = [(COSTermsConditionsController *)self holdActivityIdentifier];
-    [v3 beginMacroActivity:v4 beginTime:CFAbsoluteTimeGetCurrent()];
+    holdActivityIdentifier = [(COSTermsConditionsController *)self holdActivityIdentifier];
+    [v3 beginMacroActivity:holdActivityIdentifier beginTime:CFAbsoluteTimeGetCurrent()];
   }
 
   return 1;
@@ -454,17 +454,17 @@
   return viewController;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  objc_storeWeak(&self->_delegate, a3);
+  objc_storeWeak(&self->_delegate, delegate);
   v4 = +[NSNotificationCenter defaultCenter];
   v5 = NRPairedDeviceRegistryDeviceDidEnterCompatibilityStateNotification;
   [v4 addObserver:self selector:"enteredCompatibilityState:" name:NRPairedDeviceRegistryDeviceDidEnterCompatibilityStateNotification object:0];
 
   v6 = +[NRPairedDeviceRegistry sharedInstance];
-  v7 = [v6 compatibilityState];
+  compatibilityState = [v6 compatibilityState];
 
-  if (v7 < 3)
+  if (compatibilityState < 3)
   {
     v9 = pbb_setupflow_log();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -483,31 +483,31 @@
   }
 }
 
-- (void)markTermsAsAcceptedWithTermsEvent:(id)a3
+- (void)markTermsAsAcceptedWithTermsEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   if (self->_warrantySentinelExists)
   {
     v5 = +[UIApplication sharedApplication];
-    v6 = [v5 bridgeController];
-    [v6 tellGizmoToDeleteWarrantySentinel];
+    bridgeController = [v5 bridgeController];
+    [bridgeController tellGizmoToDeleteWarrantySentinel];
   }
 
-  if (v4)
+  if (eventCopy)
   {
     v7 = +[UIApplication sharedApplication];
     WeakRetained = [v7 activeWatch];
 
     v9 = [WeakRetained valueForProperty:NRDevicePropertyPairingID];
     v10 = objc_alloc_init(NRTermsAcknowledgementRegistry);
-    [v4 updateEventDate];
-    [v4 setEventType:4];
+    [eventCopy updateEventDate];
+    [eventCopy setEventType:4];
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_1001084D8;
     v11[3] = &unk_1002684A8;
     v11[4] = self;
-    [v10 add:v4 forDeviceID:v9 withCompletion:v11];
+    [v10 add:eventCopy forDeviceID:v9 withCompletion:v11];
   }
 
   else
@@ -517,13 +517,13 @@
   }
 }
 
-- (void)presentConfirmationAlertWithTitle:(id)a3 message:(id)a4 okButtonTitle:(id)a5 cancelButtonTitle:(id)a6 termsEvent:(id)a7
+- (void)presentConfirmationAlertWithTitle:(id)title message:(id)message okButtonTitle:(id)buttonTitle cancelButtonTitle:(id)cancelButtonTitle termsEvent:(id)event
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = [UIAlertController alertControllerWithTitle:a3 message:a4 preferredStyle:1];
-  v16 = [UIAlertAction actionWithTitle:v13 style:1 handler:0];
+  eventCopy = event;
+  cancelButtonTitleCopy = cancelButtonTitle;
+  buttonTitleCopy = buttonTitle;
+  v15 = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:1];
+  v16 = [UIAlertAction actionWithTitle:cancelButtonTitleCopy style:1 handler:0];
 
   [v15 addAction:v16];
   v22[0] = _NSConcreteStackBlock;
@@ -531,9 +531,9 @@
   v22[2] = sub_100108764;
   v22[3] = &unk_10026BF58;
   v22[4] = self;
-  v23 = v12;
-  v17 = v12;
-  v18 = [UIAlertAction actionWithTitle:v14 style:0 handler:v22];
+  v23 = eventCopy;
+  v17 = eventCopy;
+  v18 = [UIAlertAction actionWithTitle:buttonTitleCopy style:0 handler:v22];
 
   [v15 addAction:v18];
   v19 = pbb_setupflow_log();
@@ -543,24 +543,24 @@
     _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "Presenting 'confirmation' alert", v21, 2u);
   }
 
-  v20 = [(COSTermsConditionsController *)self viewController];
-  [v20 presentViewController:v15 animated:1 completion:&stru_10026BF78];
+  viewController = [(COSTermsConditionsController *)self viewController];
+  [viewController presentViewController:v15 animated:1 completion:&stru_10026BF78];
 }
 
-- (void)loader:(id)a3 receivedObjectModel:(id)a4 actionSignal:(unint64_t)a5
+- (void)loader:(id)loader receivedObjectModel:(id)model actionSignal:(unint64_t)signal
 {
-  v8 = a4;
-  v9 = [v8 defaultPages];
-  v10 = [v9 count];
+  modelCopy = model;
+  defaultPages = [modelCopy defaultPages];
+  v10 = [defaultPages count];
 
-  if (v10 && ([v8 setDelegate:self], !self->_viewController))
+  if (v10 && ([modelCopy setDelegate:self], !self->_viewController))
   {
-    v14 = [v8 defaultPages];
-    v15 = [v14 objectAtIndex:0];
+    defaultPages2 = [modelCopy defaultPages];
+    v15 = [defaultPages2 objectAtIndex:0];
     viewController = self->_viewController;
     self->_viewController = v15;
 
-    objc_storeStrong(&self->_rootObjectModel, a4);
+    objc_storeStrong(&self->_rootObjectModel, model);
     v17 = pbb_setupflow_log();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
@@ -583,17 +583,17 @@
       self->_objectModels = v11;
     }
 
-    if (a5 == 4)
+    if (signal == 4)
     {
       [(COSTermsConditionsController *)self _popObjectModelAnimated:1];
     }
 
-    else if (a5 == 2)
+    else if (signal == 2)
     {
-      v13 = [(COSTermsConditionsController *)self _navigationController];
-      [v8 presentInParentViewController:v13 animated:1 completion:&stru_10026BF98];
+      _navigationController = [(COSTermsConditionsController *)self _navigationController];
+      [modelCopy presentInParentViewController:_navigationController animated:1 completion:&stru_10026BF98];
 
-      [(NSMutableArray *)self->_objectModels addObject:v8];
+      [(NSMutableArray *)self->_objectModels addObject:modelCopy];
     }
   }
 
@@ -603,25 +603,25 @@
   self->_loadingPage = 0;
 }
 
-- (void)loader:(id)a3 didFinishLoadWithError:(id)a4 forRequest:(id)a5
+- (void)loader:(id)loader didFinishLoadWithError:(id)error forRequest:(id)request
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  loaderCopy = loader;
+  errorCopy = error;
+  requestCopy = request;
   linkPressLoadCompletion = self->_linkPressLoadCompletion;
   if (linkPressLoadCompletion)
   {
-    linkPressLoadCompletion[2](linkPressLoadCompletion, v9 == 0, v9);
+    linkPressLoadCompletion[2](linkPressLoadCompletion, errorCopy == 0, errorCopy);
     v12 = self->_linkPressLoadCompletion;
     self->_linkPressLoadCompletion = 0;
   }
 
-  if (v9)
+  if (errorCopy)
   {
     v13 = pbb_setupflow_log();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
-      sub_10018AB50(v9, v13);
+      sub_10018AB50(errorCopy, v13);
     }
 
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -655,24 +655,24 @@
   self->_loader = 0;
 }
 
-- (void)_popObjectModelAnimated:(BOOL)a3
+- (void)_popObjectModelAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   if ([(NSMutableArray *)self->_objectModels count])
   {
-    v14 = [(NSMutableArray *)self->_objectModels lastObject];
-    v5 = [v14 displayedPages];
-    v6 = [v5 count];
-    v7 = [(COSTermsConditionsController *)self _navigationController];
+    lastObject = [(NSMutableArray *)self->_objectModels lastObject];
+    displayedPages = [lastObject displayedPages];
+    v6 = [displayedPages count];
+    _navigationController = [(COSTermsConditionsController *)self _navigationController];
     v8 = v6 - 1;
     if (v8 >= 0)
     {
       do
       {
-        v9 = [v5 objectAtIndexedSubscript:v8];
-        v10 = [v7 topViewController];
+        v9 = [displayedPages objectAtIndexedSubscript:v8];
+        topViewController = [_navigationController topViewController];
 
-        if (v10 == v9)
+        if (topViewController == v9)
         {
           if (v8)
           {
@@ -681,10 +681,10 @@
 
           else
           {
-            v11 = v3;
+            v11 = animatedCopy;
           }
 
-          v12 = [v7 popViewControllerAnimated:v11];
+          v12 = [_navigationController popViewControllerAnimated:v11];
         }
       }
 
@@ -695,11 +695,11 @@
   }
 }
 
-- (void)objectModel:(id)a3 pressedButton:(id)a4 attributes:(id)a5
+- (void)objectModel:(id)model pressedButton:(id)button attributes:(id)attributes
 {
-  v7 = a3;
-  v8 = a4;
-  if ([v8 isEqualToString:@"agree"])
+  modelCopy = model;
+  buttonCopy = button;
+  if ([buttonCopy isEqualToString:@"agree"])
   {
     if (self->_didAgree)
     {
@@ -724,15 +724,15 @@
     self->_didAgree = 1;
     if (self->_onlineTerms)
     {
-      v11 = [v7 clientInfo];
-      v12 = [v11 objectForKey:@"agreeDialogTitle"];
-      v13 = [v11 objectForKey:@"agreeDialogText"];
-      v14 = [v11 objectForKey:@"agreeDialogOK"];
-      v15 = [v11 objectForKey:@"agreeDialogCancel"];
+      clientInfo = [modelCopy clientInfo];
+      navigationController = [clientInfo objectForKey:@"agreeDialogTitle"];
+      v13 = [clientInfo objectForKey:@"agreeDialogText"];
+      v14 = [clientInfo objectForKey:@"agreeDialogOK"];
+      v15 = [clientInfo objectForKey:@"agreeDialogCancel"];
       v16 = v15;
       if (v13 && v14 && v15)
       {
-        [(COSTermsConditionsController *)self presentConfirmationAlertWithTitle:v12 message:v13 okButtonTitle:v14 cancelButtonTitle:v15 termsEvent:self->_onlineTerms];
+        [(COSTermsConditionsController *)self presentConfirmationAlertWithTitle:navigationController message:v13 okButtonTitle:v14 cancelButtonTitle:v15 termsEvent:self->_onlineTerms];
       }
 
       else
@@ -756,83 +756,83 @@ LABEL_25:
     goto LABEL_26;
   }
 
-  if ([v8 isEqualToString:@"disagree"])
+  if ([buttonCopy isEqualToString:@"disagree"])
   {
     [(COSTermsConditionsController *)self _presentDisagreeConfirmationAlert];
     goto LABEL_25;
   }
 
-  if ([v8 isEqualToString:@"iOSTerms"])
+  if ([buttonCopy isEqualToString:@"iOSTerms"])
   {
-    v17 = [(COSTermsConditionsController *)self offlineLicenseController];
+    offlineLicenseController = [(COSTermsConditionsController *)self offlineLicenseController];
 LABEL_18:
-    v11 = v17;
-    v12 = [(UIViewController *)self->_viewController navigationController];
-    [v12 pushViewController:v11 animated:1];
+    clientInfo = offlineLicenseController;
+    navigationController = [(UIViewController *)self->_viewController navigationController];
+    [navigationController pushViewController:clientInfo animated:1];
 LABEL_24:
 
     goto LABEL_25;
   }
 
-  if ([v8 isEqualToString:@"iOSWarranty"])
+  if ([buttonCopy isEqualToString:@"iOSWarranty"])
   {
-    v17 = [(COSTermsConditionsController *)self offlineWarrantyController];
+    offlineLicenseController = [(COSTermsConditionsController *)self offlineWarrantyController];
     goto LABEL_18;
   }
 
 LABEL_26:
 }
 
-- (void)objectModel:(id)a3 pressedLink:(id)a4 httpMethod:(id)a5 completion:(id)a6
+- (void)objectModel:(id)model pressedLink:(id)link httpMethod:(id)method completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  modelCopy = model;
+  linkCopy = link;
+  methodCopy = method;
+  completionCopy = completion;
   v14 = pbb_setupflow_log();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
-    v15 = [v11 absoluteString];
+    absoluteString = [linkCopy absoluteString];
     *buf = 138412290;
-    v49 = v15;
+    v49 = absoluteString;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Tapped URl: %@", buf, 0xCu);
   }
 
-  v16 = objc_retainBlock(v13);
+  v16 = objc_retainBlock(completionCopy);
   linkPressLoadCompletion = self->_linkPressLoadCompletion;
   self->_linkPressLoadCompletion = v16;
 
-  if (!v11 || (-[RUILoader URL](self->_loader, "URL"), v18 = objc_claimAutoreleasedReturnValue(), [v18 absoluteURL], v19 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v11, "absoluteURL"), v20 = objc_claimAutoreleasedReturnValue(), v21 = objc_msgSend(v19, "isEqual:", v20), v20, v19, v18, (v21 & 1) == 0))
+  if (!linkCopy || (-[RUILoader URL](self->_loader, "URL"), v18 = objc_claimAutoreleasedReturnValue(), [v18 absoluteURL], v19 = objc_claimAutoreleasedReturnValue(), objc_msgSend(linkCopy, "absoluteURL"), v20 = objc_claimAutoreleasedReturnValue(), v21 = objc_msgSend(v19, "isEqual:", v20), v20, v19, v18, (v21 & 1) == 0))
   {
-    v22 = [v10 visiblePage];
+    visiblePage = [modelCopy visiblePage];
     loadingPage = self->_loadingPage;
-    self->_loadingPage = v22;
+    self->_loadingPage = visiblePage;
 
     [(RUIPage *)self->_loadingPage setLoading:1];
     [(COSTermsConditionsController *)self _cleanupLoader];
-    v24 = [v12 lowercaseString];
-    v25 = [v24 isEqualToString:@"post"];
+    lowercaseString = [methodCopy lowercaseString];
+    v25 = [lowercaseString isEqualToString:@"post"];
 
     if (v25)
     {
-      v26 = [v10 postbackData];
+      postbackData = [modelCopy postbackData];
     }
 
     else
     {
-      v26 = 0;
+      postbackData = 0;
     }
 
-    v27 = [[NSMutableURLRequest alloc] initWithURL:v11 cachePolicy:1 timeoutInterval:30.0];
+    v27 = [[NSMutableURLRequest alloc] initWithURL:linkCopy cachePolicy:1 timeoutInterval:30.0];
     v28 = v27;
-    if (v26)
+    if (postbackData)
     {
-      [v27 setHTTPBody:v26];
+      [v27 setHTTPBody:postbackData];
       [v28 setHTTPMethod:@"POST"];
       [v28 setValue:@"application/x-plist" forHTTPHeaderField:@"Content-Type"];
     }
 
-    v47 = v12;
+    v47 = methodCopy;
     if (self->_warrantySentinelExists)
     {
       [v28 setValue:@"true" forHTTPHeaderField:@"X-MMe-Show-Warranty"];
@@ -843,8 +843,8 @@ LABEL_26:
 
     v30 = +[NSLocale currentLocale];
     v31 = [v30 objectForKey:NSLocaleCountryCode];
-    v32 = [v31 uppercaseString];
-    [v28 setValue:v32 forHTTPHeaderField:@"X-MMe-Country"];
+    uppercaseString = [v31 uppercaseString];
+    [v28 setValue:uppercaseString forHTTPHeaderField:@"X-MMe-Country"];
 
     v33 = +[NSLocale preferredLanguages];
     v34 = [v33 componentsJoinedByString:{@", "}];
@@ -862,13 +862,13 @@ LABEL_26:
     [v28 addValue:v36 forHTTPHeaderField:@"X-MMe-Language"];
 
     v37 = +[UIApplication sharedApplication];
-    v38 = [v37 activeWatch];
+    activeWatch = [v37 activeWatch];
 
-    v39 = [COSAAGenericTermsUIRequest clientInfoHeaderForDevice:v38];
+    v39 = [COSAAGenericTermsUIRequest clientInfoHeaderForDevice:activeWatch];
     v40 = +[COSAAGenericTermsUIRequest pairedClientInfoHeaderName];
     [v28 setValue:v39 forHTTPHeaderField:v40];
 
-    v41 = [v38 valueForProperty:NRDevicePropertyModelNumber];
+    v41 = [activeWatch valueForProperty:NRDevicePropertyModelNumber];
     v42 = +[COSAAGenericTermsUIRequest deviceModelHeaderName];
     [v28 setValue:v41 forHTTPHeaderField:v42];
 
@@ -883,15 +883,15 @@ LABEL_26:
     [(RUILoader *)self->_loader setDelegate:self];
     [(RUILoader *)self->_loader loadXMLUIWithRequest:v28];
 
-    v12 = v47;
+    methodCopy = v47;
   }
 }
 
-- (void)buddyTCSubController:(id)a3 didFinishWithAgree:(BOOL)a4
+- (void)buddyTCSubController:(id)controller didFinishWithAgree:(BOOL)agree
 {
-  v4 = a4;
-  v15 = a3;
-  if (v4)
+  agreeCopy = agree;
+  controllerCopy = controller;
+  if (agreeCopy)
   {
     v6 = +[NSBundle mainBundle];
     v7 = [v6 localizedStringForKey:@"AGREE_DIALOG_TITLE" value:&stru_10026E598 table:@"Localizable"];
@@ -908,15 +908,15 @@ LABEL_26:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v14 = [v15 content];
+      content = [controllerCopy content];
     }
 
     else
     {
-      v14 = 0;
+      content = 0;
     }
 
-    [(COSTermsConditionsController *)self presentConfirmationAlertWithTitle:v7 message:v9 okButtonTitle:v13 cancelButtonTitle:v11 termsEvent:v14];
+    [(COSTermsConditionsController *)self presentConfirmationAlertWithTitle:v7 message:v9 okButtonTitle:v13 cancelButtonTitle:v11 termsEvent:content];
   }
 
   else
@@ -950,8 +950,8 @@ LABEL_26:
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Presenting disagree confirmation alert", v16, 2u);
   }
 
-  v15 = [(COSTermsConditionsController *)self viewController];
-  [v15 presentViewController:v7 animated:1 completion:&stru_10026BFD8];
+  viewController = [(COSTermsConditionsController *)self viewController];
+  [viewController presentViewController:v7 animated:1 completion:&stru_10026BFD8];
 }
 
 - (double)waitScreenPushGracePeriod

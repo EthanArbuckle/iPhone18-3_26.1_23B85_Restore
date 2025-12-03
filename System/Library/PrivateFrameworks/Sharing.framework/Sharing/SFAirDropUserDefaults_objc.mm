@@ -13,57 +13,57 @@
 + (BOOL)privateContactDiscoveryEnabled
 {
   v2 = +[SFAirDropUserDefaults shared];
-  v3 = [v2 objcPrivateContactDiscoveryEnabled];
+  objcPrivateContactDiscoveryEnabled = [v2 objcPrivateContactDiscoveryEnabled];
 
-  return v3;
+  return objcPrivateContactDiscoveryEnabled;
 }
 
 + (BOOL)solariumEnabled
 {
   v2 = +[SFAirDropUserDefaults shared];
-  v3 = [v2 objcSolariumEnabled];
+  objcSolariumEnabled = [v2 objcSolariumEnabled];
 
-  return v3;
+  return objcSolariumEnabled;
 }
 
 + (BOOL)moveToAppEnabled
 {
   v2 = +[SFAirDropUserDefaults shared];
-  v3 = [v2 objcMoveToAppEnabled];
+  objcMoveToAppEnabled = [v2 objcMoveToAppEnabled];
 
-  return v3;
+  return objcMoveToAppEnabled;
 }
 
 + (BOOL)systemLevelProgressEnabled
 {
   v2 = +[SFAirDropUserDefaults shared];
-  v3 = [v2 objcSystemLevelProgressEnabled];
+  objcSystemLevelProgressEnabled = [v2 objcSystemLevelProgressEnabled];
 
-  return v3;
+  return objcSystemLevelProgressEnabled;
 }
 
 + (BOOL)askToAirdropEnabled
 {
   v2 = +[SFAirDropUserDefaults shared];
-  v3 = [v2 objcAskToAirDropEnabled];
+  objcAskToAirDropEnabled = [v2 objcAskToAirDropEnabled];
 
-  return v3;
+  return objcAskToAirDropEnabled;
 }
 
 + (BOOL)nearFieldSharingEnabled
 {
   v2 = +[SFAirDropUserDefaults shared];
-  v3 = [v2 objcNearFieldSharingEnabled];
+  objcNearFieldSharingEnabled = [v2 objcNearFieldSharingEnabled];
 
-  return v3;
+  return objcNearFieldSharingEnabled;
 }
 
 + (BOOL)cellularUsageEnabled
 {
   v2 = +[SFAirDropUserDefaults shared];
-  v3 = [v2 objcCellularUsageEnabled];
+  objcCellularUsageEnabled = [v2 objcCellularUsageEnabled];
 
-  return v3;
+  return objcCellularUsageEnabled;
 }
 
 @end

@@ -1,11 +1,11 @@
 @interface UIAlertController
 + (UIAlertController)alertControllerWithTitle:(NSString *)title message:(NSString *)message preferredStyle:(UIAlertControllerStyle)preferredStyle;
-+ (id)_alertControllerContainedInViewController:(id)a3;
-+ (id)_alertControllerWithTitle:(id)a3 message:(id)a4;
-+ (id)_createTransitioningDelegateForIdiom:(int64_t)a3;
-+ (void)registerPlatformStyleProvider:(id)a3 forIdiom:(int64_t)a4;
++ (id)_alertControllerContainedInViewController:(id)controller;
++ (id)_alertControllerWithTitle:(id)title message:(id)message;
++ (id)_createTransitioningDelegateForIdiom:(int64_t)idiom;
++ (void)registerPlatformStyleProvider:(id)provider forIdiom:(int64_t)idiom;
 - (BOOL)_alignsToKeyboard;
-- (BOOL)_canBePresentedAtLocation:(CGPoint)a3;
+- (BOOL)_canBePresentedAtLocation:(CGPoint)location;
 - (BOOL)_hasAttributedMessage;
 - (BOOL)_hasAttributedTitle;
 - (BOOL)_hasContentToDisplay;
@@ -14,7 +14,7 @@
 - (BOOL)_hasTitle;
 - (BOOL)_isPresented;
 - (BOOL)_isPresentedAsPopover;
-- (BOOL)_isSupportedInterfaceOrientation:(int64_t)a3;
+- (BOOL)_isSupportedInterfaceOrientation:(int64_t)orientation;
 - (BOOL)_needsPreferredSizeCalculated;
 - (BOOL)_shouldBecomeFirstResponder;
 - (BOOL)_shouldFitWidthToContentViewControllerWidth;
@@ -23,12 +23,12 @@
 - (BOOL)_shouldSizeToFillSuperview;
 - (BOOL)_shouldSupportReturnKeyPresses;
 - (BOOL)_shouldTreatEmptyStringsAsNil;
-- (BOOL)_viewControllerIsPresentedInModalPresentationContext:(id)a3;
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
+- (BOOL)_viewControllerIsPresentedInModalPresentationContext:(id)context;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
 - (NSArray)actions;
 - (NSString)description;
 - (UIAlertAction)_focusedAction;
-- (UIAlertController)initWithNibName:(id)a3 bundle:(id)a4;
+- (UIAlertController)initWithNibName:(id)name bundle:(id)bundle;
 - (UIAlertControllerCoordinatedActionPerforming)coordinatedActionPerformingDelegate;
 - (UIAlertControllerVisualStyleProviding)_styleProvider;
 - (UIEdgeInsets)_contentInsets;
@@ -44,69 +44,69 @@
 - (id)_appIconHeaderViewController;
 - (id)_currentDescriptor;
 - (id)_dismissGestureRecognizer;
-- (id)_keyCommandForAction:(id)a3 input:(id)a4 modifierFlags:(int64_t)a5;
-- (id)_presentationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5;
-- (id)_setView:(id)a3 forSystemProvidedPresentationWithDelegate:(id)a4;
-- (id)_textFieldContainingViewWithTextField:(id)a3 position:(int64_t)a4;
-- (id)platformStyleViewForAlertController:(id)a3 inIdiom:(int64_t)a4;
-- (id)previewInteractionController:(id)a3 viewControllerForPreviewingAtPosition:(CGPoint)a4 inView:(id)a5 presentingViewController:(id *)a6;
-- (id)visualStyleForAlertControllerStyle:(int64_t)a3 traitCollection:(id)a4 descriptor:(id)a5;
-- (int64_t)_buttonTypeForBackGestureForIdiom:(int64_t)a3;
+- (id)_keyCommandForAction:(id)action input:(id)input modifierFlags:(int64_t)flags;
+- (id)_presentationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController;
+- (id)_setView:(id)view forSystemProvidedPresentationWithDelegate:(id)delegate;
+- (id)_textFieldContainingViewWithTextField:(id)field position:(int64_t)position;
+- (id)platformStyleViewForAlertController:(id)controller inIdiom:(int64_t)idiom;
+- (id)previewInteractionController:(id)controller viewControllerForPreviewingAtPosition:(CGPoint)position inView:(id)view presentingViewController:(id *)viewController;
+- (id)visualStyleForAlertControllerStyle:(int64_t)style traitCollection:(id)collection descriptor:(id)descriptor;
+- (int64_t)_buttonTypeForBackGestureForIdiom:(int64_t)idiom;
 - (int64_t)_modalPresentationStyleForResolvedStyle;
-- (void)_action:(id)a3 changedToKeyCommandWithInput:(id)a4 modifierFlags:(int64_t)a5;
-- (void)_addActionWithTitle:(id)a3 image:(id)a4 style:(int64_t)a5 handler:(id)a6;
-- (void)_addActionWithTitle:(id)a3 style:(int64_t)a4 handler:(id)a5;
-- (void)_addActionWithTitle:(id)a3 style:(int64_t)a4 handler:(id)a5 shouldDismissHandler:(id)a6;
-- (void)_addKeyCommandForAction:(id)a3 withInput:(id)a4 modifierFlags:(int64_t)a5;
+- (void)_action:(id)_action changedToKeyCommandWithInput:(id)input modifierFlags:(int64_t)flags;
+- (void)_addActionWithTitle:(id)title image:(id)image style:(int64_t)style handler:(id)handler;
+- (void)_addActionWithTitle:(id)title style:(int64_t)style handler:(id)handler;
+- (void)_addActionWithTitle:(id)title style:(int64_t)style handler:(id)handler shouldDismissHandler:(id)dismissHandler;
+- (void)_addKeyCommandForAction:(id)action withInput:(id)input modifierFlags:(int64_t)flags;
 - (void)_addReturnKeyCommandIfAppropriate;
 - (void)_addSectionDelimiter;
-- (void)_attemptAnimatedDismissWithGestureRecognizer:(id)a3;
+- (void)_attemptAnimatedDismissWithGestureRecognizer:(id)recognizer;
 - (void)_becomeFirstResponderIfAppropriate;
-- (void)_beginNoPresentingViewControllerPresentation:(id)a3;
-- (void)_childViewController:(id)a3 willTransitionToSize:(CGSize)a4 withAnimations:(id)a5;
+- (void)_beginNoPresentingViewControllerPresentation:(id)presentation;
+- (void)_childViewController:(id)controller willTransitionToSize:(CGSize)size withAnimations:(id)animations;
 - (void)_clearActionHandlers;
-- (void)_contentViewControllerWillTransitionToSize:(CGSize)a3 withAnimations:(id)a4;
+- (void)_contentViewControllerWillTransitionToSize:(CGSize)size withAnimations:(id)animations;
 - (void)_didParentTextFieldViewController;
-- (void)_dismissAnimated:(BOOL)a3 triggeringAction:(id)a4 triggeredByPopoverDimmingView:(BOOL)a5 dismissCompletion:(id)a6;
-- (void)_dismissFromBackButton:(id)a3;
+- (void)_dismissAnimated:(BOOL)animated triggeringAction:(id)action triggeredByPopoverDimmingView:(BOOL)view dismissCompletion:(id)completion;
+- (void)_dismissFromBackButton:(id)button;
 - (void)_dismissFromPopoverDimmingView;
 - (void)_dismissWithCancelOrEmptyAction;
 - (void)_flipFrameForShimDismissalIfNecessary;
-- (void)_getRotationContentSettings:(id *)a3;
-- (void)_handleKeyCommand:(id)a3;
+- (void)_getRotationContentSettings:(id *)settings;
+- (void)_handleKeyCommand:(id)command;
 - (void)_handleReturn;
-- (void)_headerContentViewControllerWillTransitionToSize:(CGSize)a3 withAnimations:(id)a4;
+- (void)_headerContentViewControllerWillTransitionToSize:(CGSize)size withAnimations:(id)animations;
 - (void)_installBackGestureRecognizer;
-- (void)_invokeHandlersForAction:(id)a3;
+- (void)_invokeHandlersForAction:(id)action;
 - (void)_logBeingDismissed;
 - (void)_logBeingPresented;
-- (void)_performAction:(id)a3 invokeActionBlock:(id)a4 dismissAndPerformActionIfNotAlreadyPerformed:(id)a5;
-- (void)_performBatchActionChangesWithBlock:(id)a3;
+- (void)_performAction:(id)action invokeActionBlock:(id)block dismissAndPerformActionIfNotAlreadyPerformed:(id)performed;
+- (void)_performBatchActionChangesWithBlock:(id)block;
 - (void)_postDidBeginSystemProvidedDismissalOfAlertController;
 - (void)_postWillBeginSystemProvidedDismissalOfAlertController;
-- (void)_preserveInputViewsAnimated:(BOOL)a3;
+- (void)_preserveInputViewsAnimated:(BOOL)animated;
 - (void)_recomputePreferredContentSize;
 - (void)_reevaluateResolvedStyle;
 - (void)_removeAllActions;
-- (void)_removeKeyCommandForAction:(id)a3;
+- (void)_removeKeyCommandForAction:(id)action;
 - (void)_resolvedStyleChanged;
-- (void)_restoreInputViewsAnimated:(BOOL)a3;
-- (void)_setActions:(id)a3;
-- (void)_setAttributedDetailMessage:(id)a3;
-- (void)_setAttributedMessage:(id)a3;
-- (void)_setAttributedTitle:(id)a3;
-- (void)_setEffectAlpha:(double)a3;
-- (void)_setHeaderContentViewController:(id)a3;
-- (void)_setHidden:(BOOL)a3;
-- (void)_setIndexesOfActionSectionSeparators:(id)a3;
-- (void)_setSeparatedHeaderContentViewController:(id)a3;
-- (void)_setShouldReverseActions:(BOOL)a3;
-- (void)_setTitleLineBreakMode:(int64_t)a3;
-- (void)_setTitleMaximumLineCount:(int64_t)a3;
+- (void)_restoreInputViewsAnimated:(BOOL)animated;
+- (void)_setActions:(id)actions;
+- (void)_setAttributedDetailMessage:(id)message;
+- (void)_setAttributedMessage:(id)message;
+- (void)_setAttributedTitle:(id)title;
+- (void)_setEffectAlpha:(double)alpha;
+- (void)_setHeaderContentViewController:(id)controller;
+- (void)_setHidden:(BOOL)hidden;
+- (void)_setIndexesOfActionSectionSeparators:(id)separators;
+- (void)_setSeparatedHeaderContentViewController:(id)controller;
+- (void)_setShouldReverseActions:(BOOL)actions;
+- (void)_setTitleLineBreakMode:(int64_t)mode;
+- (void)_setTitleMaximumLineCount:(int64_t)count;
 - (void)_uninstallBackGestureRecognizer;
 - (void)_updateModalPresentationStyle;
 - (void)_updateProvidedStyle;
-- (void)_updateProvidedStyleWithTraitCollection:(id)a3;
+- (void)_updateProvidedStyleWithTraitCollection:(id)collection;
 - (void)_updateShouldAlignToKeyboard;
 - (void)_updateViewFrameForLandscapePresentationInShimIfNecessary;
 - (void)_userInterfaceIdiomChanged;
@@ -114,34 +114,34 @@
 - (void)addTextFieldWithConfigurationHandler:(void *)configurationHandler;
 - (void)dealloc;
 - (void)loadView;
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3;
-- (void)previewInteractionController:(id)a3 willPresentViewController:(id)a4 forPosition:(CGPoint)a5 inSourceView:(id)a6;
-- (void)setContentViewController:(id)a3;
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container;
+- (void)previewInteractionController:(id)controller willPresentViewController:(id)viewController forPosition:(CGPoint)position inSourceView:(id)view;
+- (void)setContentViewController:(id)controller;
 - (void)setMessage:(NSString *)message;
-- (void)setModalPresentationStyle:(int64_t)a3;
+- (void)setModalPresentationStyle:(int64_t)style;
 - (void)setPreferredAction:(UIAlertAction *)preferredAction;
-- (void)setSpringLoaded:(BOOL)a3;
-- (void)setTextFieldsCanBecomeFirstResponder:(BOOL)a3;
+- (void)setSpringLoaded:(BOOL)loaded;
+- (void)setTextFieldsCanBecomeFirstResponder:(BOOL)responder;
 - (void)setTitle:(NSString *)title;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
-- (void)willTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
+- (void)willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation UIAlertController
 
-- (UIAlertController)initWithNibName:(id)a3 bundle:(id)a4
+- (UIAlertController)initWithNibName:(id)name bundle:(id)bundle
 {
   v28[1] = *MEMORY[0x1E69E9840];
   v27.receiver = self;
   v27.super_class = UIAlertController;
-  v4 = [(UIViewController *)&v27 initWithNibName:a3 bundle:a4];
+  v4 = [(UIViewController *)&v27 initWithNibName:name bundle:bundle];
   v5 = v4;
   if (v4)
   {
@@ -151,9 +151,9 @@
     actions = v6->_actions;
     v6->_actions = v7;
 
-    v9 = [MEMORY[0x1E696AC90] indexSet];
+    indexSet = [MEMORY[0x1E696AC90] indexSet];
     indexesOfActionSectionSeparators = v6->_indexesOfActionSectionSeparators;
-    v6->_indexesOfActionSectionSeparators = v9;
+    v6->_indexesOfActionSectionSeparators = indexSet;
 
     v11 = objc_alloc_init(MEMORY[0x1E695DF90]);
     actionToKeyCommandsDictionary = v6->_actionToKeyCommandsDictionary;
@@ -171,9 +171,9 @@
     textFieldViewController = v6->_textFieldViewController;
     v6->_textFieldViewController = v17;
 
-    v19 = [MEMORY[0x1E696AE08] weakObjectsPointerArray];
+    weakObjectsPointerArray = [MEMORY[0x1E696AE08] weakObjectsPointerArray];
     actionsWithInvokedHandlers = v6->_actionsWithInvokedHandlers;
-    v6->_actionsWithInvokedHandlers = v19;
+    v6->_actionsWithInvokedHandlers = weakObjectsPointerArray;
 
     v21 = +[UIDevice currentDevice];
     v22 = +[UIAlertController _createTransitioningDelegateForIdiom:](UIAlertController, "_createTransitioningDelegateForIdiom:", [v21 userInterfaceIdiom]);
@@ -228,77 +228,77 @@
   {
     if (self->_cancelAction)
     {
-      v9 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v9 handleFailureInMethod:a2 object:self file:@"UIAlertController.m" lineNumber:331 description:@"UIAlertController can only have one action with a style of UIAlertActionStyleCancel"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"UIAlertController.m" lineNumber:331 description:@"UIAlertController can only have one action with a style of UIAlertActionStyleCancel"];
     }
 
-    v5 = [(UIAlertController *)self _visualStyle];
-    v6 = [v5 _keyCommandInputForCancelAction];
-    [(UIAlertAction *)v10 _setKeyCommandInput:v6 modifierFlags:0];
+    _visualStyle = [(UIAlertController *)self _visualStyle];
+    _keyCommandInputForCancelAction = [_visualStyle _keyCommandInputForCancelAction];
+    [(UIAlertAction *)v10 _setKeyCommandInput:_keyCommandInputForCancelAction modifierFlags:0];
 
     [(UIAlertController *)self setCancelAction:v10];
   }
 
   [(NSMutableArray *)self->_actions addObject:v10];
   [(UIAlertAction *)v10 _setAlertController:self];
-  v7 = [(UIAlertAction *)v10 _keyCommandInput];
-  [(UIAlertController *)self _action:v10 changedToKeyCommandWithInput:v7 modifierFlags:[(UIAlertAction *)v10 _keyCommandModifierFlags]];
+  _keyCommandInput = [(UIAlertAction *)v10 _keyCommandInput];
+  [(UIAlertController *)self _action:v10 changedToKeyCommandWithInput:_keyCommandInput modifierFlags:[(UIAlertAction *)v10 _keyCommandModifierFlags]];
 
-  v8 = [(UIAlertController *)self _alertControllerView];
-  [v8 _actionsChanged];
+  _alertControllerView = [(UIAlertController *)self _alertControllerView];
+  [_alertControllerView _actionsChanged];
 
   [(UIAlertController *)self _updateProvidedStyle];
 }
 
-+ (id)_alertControllerWithTitle:(id)a3 message:(id)a4
++ (id)_alertControllerWithTitle:(id)title message:(id)message
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [objc_opt_class() alertControllerWithTitle:v6 message:v5 preferredStyle:0];
+  messageCopy = message;
+  titleCopy = title;
+  v7 = [objc_opt_class() alertControllerWithTitle:titleCopy message:messageCopy preferredStyle:0];
 
   return v7;
 }
 
-- (void)_addActionWithTitle:(id)a3 style:(int64_t)a4 handler:(id)a5
+- (void)_addActionWithTitle:(id)title style:(int64_t)style handler:(id)handler
 {
-  v8 = a5;
-  v9 = [UIAlertAction actionWithTitle:a3 style:a4 handler:0];
-  [v9 setSimpleHandler:v8];
+  handlerCopy = handler;
+  v9 = [UIAlertAction actionWithTitle:title style:style handler:0];
+  [v9 setSimpleHandler:handlerCopy];
 
   [(UIAlertController *)self addAction:v9];
 }
 
-- (void)_addActionWithTitle:(id)a3 style:(int64_t)a4 handler:(id)a5 shouldDismissHandler:(id)a6
+- (void)_addActionWithTitle:(id)title style:(int64_t)style handler:(id)handler shouldDismissHandler:(id)dismissHandler
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = [UIAlertAction actionWithTitle:a3 style:a4 handler:0];
-  [v12 setSimpleHandler:v11];
+  dismissHandlerCopy = dismissHandler;
+  handlerCopy = handler;
+  v12 = [UIAlertAction actionWithTitle:title style:style handler:0];
+  [v12 setSimpleHandler:handlerCopy];
 
-  [v12 setShouldDismissHandler:v10];
+  [v12 setShouldDismissHandler:dismissHandlerCopy];
   [(UIAlertController *)self addAction:v12];
 }
 
-- (void)_addActionWithTitle:(id)a3 image:(id)a4 style:(int64_t)a5 handler:(id)a6
+- (void)_addActionWithTitle:(id)title image:(id)image style:(int64_t)style handler:(id)handler
 {
-  v10 = a6;
-  v11 = a4;
-  v12 = [UIAlertAction actionWithTitle:a3 style:a5 handler:0];
-  [v12 setSimpleHandler:v10];
+  handlerCopy = handler;
+  imageCopy = image;
+  v12 = [UIAlertAction actionWithTitle:title style:style handler:0];
+  [v12 setSimpleHandler:handlerCopy];
 
-  [v12 setImage:v11];
+  [v12 setImage:imageCopy];
   [(UIAlertController *)self addAction:v12];
 }
 
-- (void)_setActions:(id)a3
+- (void)_setActions:(id)actions
 {
-  v4 = MEMORY[0x1E695E0F0];
-  if (a3)
+  actionsCopy = MEMORY[0x1E695E0F0];
+  if (actions)
   {
-    v4 = a3;
+    actionsCopy = actions;
   }
 
-  v5 = v4;
+  v5 = actionsCopy;
   if (([(NSMutableArray *)self->_actions isEqual:v5]& 1) == 0)
   {
     v6[0] = MEMORY[0x1E69E9820];
@@ -346,26 +346,26 @@ void __33__UIAlertController__setActions___block_invoke(uint64_t a1)
   }
 }
 
-- (void)_performBatchActionChangesWithBlock:(id)a3
+- (void)_performBatchActionChangesWithBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(UIAlertController *)self _alertControllerView];
-  if (v5)
+  blockCopy = block;
+  _alertControllerView = [(UIAlertController *)self _alertControllerView];
+  if (_alertControllerView)
   {
     ++self->_batchActionChangesInProgressCount;
     v6 = MEMORY[0x1E69E9820];
     v7 = 3221225472;
     v8 = __57__UIAlertController__performBatchActionChangesWithBlock___block_invoke;
     v9 = &unk_1E70F4A50;
-    v10 = self;
-    v11 = v4;
-    [v5 _performBatchActionChangesWithBlock:&v6];
+    selfCopy = self;
+    v11 = blockCopy;
+    [_alertControllerView _performBatchActionChangesWithBlock:&v6];
     [(UIAlertController *)self _updateProvidedStyle:v6];
   }
 
   else
   {
-    v4[2](v4);
+    blockCopy[2](blockCopy);
   }
 }
 
@@ -386,21 +386,21 @@ uint64_t __57__UIAlertController__performBatchActionChangesWithBlock___block_inv
 - (void)setPreferredAction:(UIAlertAction *)preferredAction
 {
   v11 = preferredAction;
-  v6 = [(UIAlertController *)self preferredAction];
+  preferredAction = [(UIAlertController *)self preferredAction];
 
   v7 = v11;
-  if (v6 != v11)
+  if (preferredAction != v11)
   {
     v8 = [(NSMutableArray *)self->_actions containsObject:v11];
     if (v11 && (v8 & 1) == 0)
     {
-      v10 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v10 handleFailureInMethod:a2 object:self file:@"UIAlertController.m" lineNumber:436 description:@"The -preferredAction of an alert controller must be contained in the -actions array or be nil."];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"UIAlertController.m" lineNumber:436 description:@"The -preferredAction of an alert controller must be contained in the -actions array or be nil."];
     }
 
     objc_storeStrong(&self->_preferredAction, preferredAction);
-    v9 = [(UIAlertController *)self _alertControllerView];
-    [v9 _updatePreferredAction];
+    _alertControllerView = [(UIAlertController *)self _alertControllerView];
+    [_alertControllerView _updatePreferredAction];
 
     v7 = v11;
   }
@@ -409,53 +409,53 @@ uint64_t __57__UIAlertController__performBatchActionChangesWithBlock___block_inv
 - (void)_addSectionDelimiter
 {
   v4 = [(NSIndexSet *)self->_indexesOfActionSectionSeparators mutableCopy];
-  v3 = [(UIAlertController *)self actions];
-  [v4 addIndex:{objc_msgSend(v3, "count")}];
+  actions = [(UIAlertController *)self actions];
+  [v4 addIndex:{objc_msgSend(actions, "count")}];
 
   [(UIAlertController *)self _setIndexesOfActionSectionSeparators:v4];
 }
 
-- (void)_setIndexesOfActionSectionSeparators:(id)a3
+- (void)_setIndexesOfActionSectionSeparators:(id)separators
 {
-  v6 = a3;
+  separatorsCopy = separators;
   if (![(NSIndexSet *)self->_indexesOfActionSectionSeparators isEqualToIndexSet:?])
   {
-    objc_storeStrong(&self->_indexesOfActionSectionSeparators, a3);
-    v5 = [(UIAlertController *)self _alertControllerView];
-    [v5 _actionsChanged];
+    objc_storeStrong(&self->_indexesOfActionSectionSeparators, separators);
+    _alertControllerView = [(UIAlertController *)self _alertControllerView];
+    [_alertControllerView _actionsChanged];
   }
 }
 
 - (UILayoutGuide)contentViewControllerLayoutGuide
 {
-  v2 = [(UIAlertController *)self _alertControllerView];
-  v3 = [v2 contentViewControllerLayoutGuide];
+  _alertControllerView = [(UIAlertController *)self _alertControllerView];
+  contentViewControllerLayoutGuide = [_alertControllerView contentViewControllerLayoutGuide];
 
-  return v3;
+  return contentViewControllerLayoutGuide;
 }
 
-- (void)_action:(id)a3 changedToKeyCommandWithInput:(id)a4 modifierFlags:(int64_t)a5
+- (void)_action:(id)_action changedToKeyCommandWithInput:(id)input modifierFlags:(int64_t)flags
 {
-  v8 = a4;
-  v9 = a3;
-  [(UIAlertController *)self _removeKeyCommandForAction:v9];
-  [(UIAlertController *)self _addKeyCommandForAction:v9 withInput:v8 modifierFlags:a5];
+  inputCopy = input;
+  _actionCopy = _action;
+  [(UIAlertController *)self _removeKeyCommandForAction:_actionCopy];
+  [(UIAlertController *)self _addKeyCommandForAction:_actionCopy withInput:inputCopy modifierFlags:flags];
 }
 
-- (void)_addKeyCommandForAction:(id)a3 withInput:(id)a4 modifierFlags:(int64_t)a5
+- (void)_addKeyCommandForAction:(id)action withInput:(id)input modifierFlags:(int64_t)flags
 {
-  v10 = a3;
-  v8 = a4;
-  if ([v8 length])
+  actionCopy = action;
+  inputCopy = input;
+  if ([inputCopy length])
   {
-    v9 = [(UIAlertController *)self _keyCommandForAction:v10 input:v8 modifierFlags:a5];
+    v9 = [(UIAlertController *)self _keyCommandForAction:actionCopy input:inputCopy modifierFlags:flags];
     [(UIViewController *)self addKeyCommand:v9];
   }
 }
 
-- (void)_removeKeyCommandForAction:(id)a3
+- (void)_removeKeyCommandForAction:(id)action
 {
-  v5 = a3;
+  actionCopy = action;
   v4 = [(NSMutableDictionary *)self->_actionToKeyCommandsDictionary objectForKey:?];
   if (v4)
   {
@@ -463,45 +463,45 @@ uint64_t __57__UIAlertController__performBatchActionChangesWithBlock___block_inv
     [(UIViewController *)self removeKeyCommand:v4];
   }
 
-  [(NSMutableDictionary *)self->_actionToKeyCommandsDictionary removeObjectForKey:v5];
+  [(NSMutableDictionary *)self->_actionToKeyCommandsDictionary removeObjectForKey:actionCopy];
 }
 
-- (id)_keyCommandForAction:(id)a3 input:(id)a4 modifierFlags:(int64_t)a5
+- (id)_keyCommandForAction:(id)action input:(id)input modifierFlags:(int64_t)flags
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [UIKeyCommand keyCommandWithInput:v9 modifierFlags:a5 action:sel__handleKeyCommand_];
-  if ([v8 style] == 1 && objc_msgSend(v9, "isEqualToString:", @"UIKeyInputEscape"))
+  actionCopy = action;
+  inputCopy = input;
+  v10 = [UIKeyCommand keyCommandWithInput:inputCopy modifierFlags:flags action:sel__handleKeyCommand_];
+  if ([actionCopy style] == 1 && objc_msgSend(inputCopy, "isEqualToString:", @"UIKeyInputEscape"))
   {
     [v10 setDiscoverabilityTitle:&stru_1EFB14550];
   }
 
   else
   {
-    v11 = [v8 title];
-    [v10 setDiscoverabilityTitle:v11];
+    title = [actionCopy title];
+    [v10 setDiscoverabilityTitle:title];
   }
 
-  [(NSMapTable *)self->_keyCommandToActionMapTable setObject:v8 forKey:v10];
+  [(NSMapTable *)self->_keyCommandToActionMapTable setObject:actionCopy forKey:v10];
 
   return v10;
 }
 
-- (void)_handleKeyCommand:(id)a3
+- (void)_handleKeyCommand:(id)command
 {
-  v4 = [(NSMapTable *)self->_keyCommandToActionMapTable objectForKey:a3];
+  v4 = [(NSMapTable *)self->_keyCommandToActionMapTable objectForKey:command];
   if ([v4 isEnabled])
   {
     [(UIAlertController *)self _dismissAnimated:1 triggeringAction:v4];
   }
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  if (sel__handleReturn == a3)
+  if (sel__handleReturn == action)
   {
-    v5 = [(UIAlertController *)self textFields];
-    v4 = [v5 count] == 0;
+    textFields = [(UIAlertController *)self textFields];
+    v4 = [textFields count] == 0;
   }
 
   else
@@ -516,12 +516,12 @@ uint64_t __57__UIAlertController__performBatchActionChangesWithBlock___block_inv
 
 - (void)_handleReturn
 {
-  v3 = [(UIAlertController *)self _actionForReturnKey];
-  if (v3)
+  _actionForReturnKey = [(UIAlertController *)self _actionForReturnKey];
+  if (_actionForReturnKey)
   {
-    v4 = v3;
-    [(UIAlertController *)self _dismissAnimated:1 triggeringAction:v3];
-    v3 = v4;
+    v4 = _actionForReturnKey;
+    [(UIAlertController *)self _dismissAnimated:1 triggeringAction:_actionForReturnKey];
+    _actionForReturnKey = v4;
   }
 }
 
@@ -529,70 +529,70 @@ uint64_t __57__UIAlertController__performBatchActionChangesWithBlock___block_inv
 {
   if ([(UIAlertController *)self _resolvedStyle]== 1)
   {
-    v3 = [(UIViewController *)self _focusSystem];
+    _focusSystem = [(UIViewController *)self _focusSystem];
 
-    if (!v3)
+    if (!_focusSystem)
     {
-      v4 = [(UIAlertController *)self _returnKeyCommand];
-      [(UIViewController *)self addKeyCommand:v4];
+      _returnKeyCommand = [(UIAlertController *)self _returnKeyCommand];
+      [(UIViewController *)self addKeyCommand:_returnKeyCommand];
     }
   }
 }
 
 - (NSArray)actions
 {
-  v2 = [(UIAlertController *)self _actions];
-  v3 = [v2 copy];
+  _actions = [(UIAlertController *)self _actions];
+  v3 = [_actions copy];
 
   return v3;
 }
 
 - (id)_actionForReturnKey
 {
-  v3 = [(UIAlertController *)self preferredAction];
+  preferredAction = [(UIAlertController *)self preferredAction];
 
-  if (v3)
+  if (preferredAction)
   {
-    v4 = [(UIAlertController *)self preferredAction];
+    preferredAction2 = [(UIAlertController *)self preferredAction];
     goto LABEL_11;
   }
 
-  v5 = [(UIAlertController *)self actions];
-  v6 = [MEMORY[0x1E695DF70] array];
+  actions = [(UIAlertController *)self actions];
+  array = [MEMORY[0x1E695DF70] array];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __40__UIAlertController__actionForReturnKey__block_invoke;
   v11[3] = &unk_1E70F48F8;
-  v7 = v6;
+  v7 = array;
   v12 = v7;
-  [v5 enumerateObjectsUsingBlock:v11];
+  [actions enumerateObjectsUsingBlock:v11];
   v8 = [v7 count];
   if (v8 != 2)
   {
     if (v8 != 1)
     {
-      v4 = 0;
+      preferredAction2 = 0;
       goto LABEL_10;
     }
 
-    v9 = [v7 firstObject];
+    firstObject = [v7 firstObject];
     goto LABEL_8;
   }
 
-  v4 = [(UIAlertController *)self _cancelAction];
+  preferredAction2 = [(UIAlertController *)self _cancelAction];
 
-  if (v4)
+  if (preferredAction2)
   {
-    v9 = [v7 objectAtIndex:{objc_msgSend(v7, "indexOfObjectPassingTest:", &__block_literal_global_20)}];
+    firstObject = [v7 objectAtIndex:{objc_msgSend(v7, "indexOfObjectPassingTest:", &__block_literal_global_20)}];
 LABEL_8:
-    v4 = v9;
+    preferredAction2 = firstObject;
   }
 
 LABEL_10:
 
 LABEL_11:
 
-  return v4;
+  return preferredAction2;
 }
 
 void __40__UIAlertController__actionForReturnKey__block_invoke(uint64_t a1, void *a2)
@@ -609,8 +609,8 @@ void __40__UIAlertController__actionForReturnKey__block_invoke(uint64_t a1, void
   v8 = configurationHandler;
   if ([(UIAlertController *)self preferredStyle]!= UIAlertControllerStyleAlert)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"UIAlertController.m" lineNumber:632 description:@"Text fields can only be added to an alert controller of style UIAlertControllerStyleAlert"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIAlertController.m" lineNumber:632 description:@"Text fields can only be added to an alert controller of style UIAlertControllerStyleAlert"];
   }
 
   [(_UIAlertControllerTextFieldViewController *)self->_textFieldViewController setContainer:self];
@@ -621,32 +621,32 @@ void __40__UIAlertController__actionForReturnKey__block_invoke(uint64_t a1, void
   }
 
   [(UIAlertController *)self _updateShouldAlignToKeyboard];
-  v6 = [(UIAlertController *)self _alertControllerView];
-  [v6 _textFieldsChanged];
+  _alertControllerView = [(UIAlertController *)self _alertControllerView];
+  [_alertControllerView _textFieldsChanged];
 }
 
 - (BOOL)_shouldSupportReturnKeyPresses
 {
-  v3 = [(UIViewController *)self traitCollection];
-  if ([v3 userInterfaceIdiom] == 2)
+  traitCollection = [(UIViewController *)self traitCollection];
+  if ([traitCollection userInterfaceIdiom] == 2)
   {
     v4 = 0;
   }
 
   else
   {
-    v5 = [(UIViewController *)self traitCollection];
-    v4 = [v5 userInterfaceIdiom] != 8;
+    traitCollection2 = [(UIViewController *)self traitCollection];
+    v4 = [traitCollection2 userInterfaceIdiom] != 8;
   }
 
   return v4;
 }
 
-- (id)_textFieldContainingViewWithTextField:(id)a3 position:(int64_t)a4
+- (id)_textFieldContainingViewWithTextField:(id)field position:(int64_t)position
 {
-  v6 = a3;
-  v7 = [(UIAlertController *)self _visualStyle];
-  v8 = [v7 textFieldContainingViewWithTextField:v6 position:a4];
+  fieldCopy = field;
+  _visualStyle = [(UIAlertController *)self _visualStyle];
+  v8 = [_visualStyle textFieldContainingViewWithTextField:fieldCopy position:position];
 
   return v8;
 }
@@ -659,12 +659,12 @@ void __40__UIAlertController__actionForReturnKey__block_invoke(uint64_t a1, void
   [(UIViewController *)textFieldViewController didMoveToParentViewController:self];
 }
 
-- (void)setTextFieldsCanBecomeFirstResponder:(BOOL)a3
+- (void)setTextFieldsCanBecomeFirstResponder:(BOOL)responder
 {
   textFieldViewController = self->_textFieldViewController;
   if (textFieldViewController)
   {
-    [(_UIAlertControllerTextFieldViewController *)textFieldViewController setTextFieldsCanBecomeFirstResponder:a3];
+    [(_UIAlertControllerTextFieldViewController *)textFieldViewController setTextFieldsCanBecomeFirstResponder:responder];
   }
 }
 
@@ -675,9 +675,9 @@ void __40__UIAlertController__actionForReturnKey__block_invoke(uint64_t a1, void
   v3 = [(UIAlertController *)&v8 description];
   if (os_variant_has_internal_diagnostics())
   {
-    v6 = [(UIViewController *)self title];
-    v7 = [(UIAlertController *)self message];
-    v4 = [v3 stringByAppendingFormat:@" title=%@ message=%@", v6, v7];
+    title = [(UIViewController *)self title];
+    message = [(UIAlertController *)self message];
+    v4 = [v3 stringByAppendingFormat:@" title=%@ message=%@", title, message];
   }
 
   else
@@ -729,8 +729,8 @@ void __40__UIAlertController__actionForReturnKey__block_invoke(uint64_t a1, void
   }
 
   [(UIAlertController *)self _uninstallBackGestureRecognizer];
-  v10 = [(UIAlertController *)self _alertControllerView];
-  [v10 setAlertController:0];
+  _alertControllerView = [(UIAlertController *)self _alertControllerView];
+  [_alertControllerView setAlertController:0];
 
   [(UIAlertController *)self _clearActionHandlers];
   [(_UIAlertControllerTextFieldViewController *)self->_textFieldViewController setContainer:0];
@@ -742,20 +742,20 @@ void __40__UIAlertController__actionForReturnKey__block_invoke(uint64_t a1, void
   [(UIViewController *)&v12 dealloc];
 }
 
-- (BOOL)_isSupportedInterfaceOrientation:(int64_t)a3
+- (BOOL)_isSupportedInterfaceOrientation:(int64_t)orientation
 {
-  v5 = [(UIViewController *)self presentingViewController];
-  v6 = v5;
-  if (v5)
+  presentingViewController = [(UIViewController *)self presentingViewController];
+  v6 = presentingViewController;
+  if (presentingViewController)
   {
-    v7 = [v5 _isSupportedInterfaceOrientation:a3];
+    v7 = [presentingViewController _isSupportedInterfaceOrientation:orientation];
   }
 
   else
   {
     v10.receiver = self;
     v10.super_class = UIAlertController;
-    v7 = [(UIViewController *)&v10 _isSupportedInterfaceOrientation:a3];
+    v7 = [(UIViewController *)&v10 _isSupportedInterfaceOrientation:orientation];
   }
 
   v8 = v7;
@@ -763,47 +763,47 @@ void __40__UIAlertController__actionForReturnKey__block_invoke(uint64_t a1, void
   return v8;
 }
 
-- (void)_getRotationContentSettings:(id *)a3
+- (void)_getRotationContentSettings:(id *)settings
 {
   v23 = *MEMORY[0x1E69E9840];
   if (!_UIAppUseModernRotationAndPresentationBehaviors())
   {
     has_internal_diagnostics = os_variant_has_internal_diagnostics();
-    v6 = [(UIViewController *)self view];
-    v7 = [v6 window];
-    v8 = v7;
+    view = [(UIViewController *)self view];
+    window = [view window];
+    v8 = window;
     if (has_internal_diagnostics)
     {
-      if (v7)
+      if (window)
       {
-        v16 = [(UIViewController *)self view];
-        v17 = [v16 window];
+        view2 = [(UIViewController *)self view];
+        window2 = [view2 window];
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
 
         if (isKindOfClass)
         {
 LABEL_12:
-          a3->var6 = 0;
+          settings->var6 = 0;
           return;
         }
 
-        v6 = __UIFaultDebugAssertLog();
-        if (os_log_type_enabled(v6, OS_LOG_TYPE_FAULT))
+        view = __UIFaultDebugAssertLog();
+        if (os_log_type_enabled(view, OS_LOG_TYPE_FAULT))
         {
-          v19 = [(UIViewController *)self view];
-          v20 = [v19 window];
+          view3 = [(UIViewController *)self view];
+          window3 = [view3 window];
           v21 = 138412290;
-          v22 = v20;
-          _os_log_fault_impl(&dword_188A29000, v6, OS_LOG_TYPE_FAULT, "Surprising window for legacy alert presentation: %@", &v21, 0xCu);
+          v22 = window3;
+          _os_log_fault_impl(&dword_188A29000, view, OS_LOG_TYPE_FAULT, "Surprising window for legacy alert presentation: %@", &v21, 0xCu);
         }
       }
     }
 
-    else if (v7)
+    else if (window)
     {
-      v9 = [(UIViewController *)self view];
-      v10 = [v9 window];
+      view4 = [(UIViewController *)self view];
+      window4 = [view4 window];
       objc_opt_class();
       v11 = objc_opt_isKindOfClass();
 
@@ -813,10 +813,10 @@ LABEL_12:
         if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
         {
           v13 = v12;
-          v14 = [(UIViewController *)self view];
-          v15 = [v14 window];
+          view5 = [(UIViewController *)self view];
+          window5 = [view5 window];
           v21 = 138412290;
-          v22 = v15;
+          v22 = window5;
           _os_log_impl(&dword_188A29000, v13, OS_LOG_TYPE_ERROR, "Surprising window for legacy alert presentation: %@", &v21, 0xCu);
         }
       }
@@ -832,11 +832,11 @@ LABEL_12:
 {
   [(UIAlertController *)self _updateProvidedStyle];
   has_internal_diagnostics = os_variant_has_internal_diagnostics();
-  v4 = [(UIAlertController *)self _visualStyle];
+  _visualStyle = [(UIAlertController *)self _visualStyle];
 
   if (has_internal_diagnostics)
   {
-    if (!v4)
+    if (!_visualStyle)
     {
       v11 = __UIFaultDebugAssertLog();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_FAULT))
@@ -847,7 +847,7 @@ LABEL_12:
     }
   }
 
-  else if (!v4)
+  else if (!_visualStyle)
   {
     v12 = *(__UILogGetCategoryCachedImpl("Assert", &loadView___s_category) + 8);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -857,8 +857,8 @@ LABEL_12:
     }
   }
 
-  v5 = [(UIViewController *)self traitCollection];
-  v6 = -[UIAlertController platformStyleViewForAlertController:inIdiom:](self, "platformStyleViewForAlertController:inIdiom:", self, [v5 userInterfaceIdiom]);
+  traitCollection = [(UIViewController *)self traitCollection];
+  v6 = -[UIAlertController platformStyleViewForAlertController:inIdiom:](self, "platformStyleViewForAlertController:inIdiom:", self, [traitCollection userInterfaceIdiom]);
 
   if (objc_opt_respondsToSelector())
   {
@@ -868,8 +868,8 @@ LABEL_12:
 
   [v6 setAlertController:self];
   [(UIViewController *)self setView:v6];
-  v8 = [(UIViewController *)self _screen];
-  [v8 bounds];
+  _screen = [(UIViewController *)self _screen];
+  [_screen bounds];
   [v6 setFrame:?];
 
   v13[0] = MEMORY[0x1E69E9820];
@@ -882,8 +882,8 @@ LABEL_12:
   [(UIAlertController *)self _updateShouldAlignToKeyboard];
   [v9 _actionsChanged];
   [v9 _textFieldsChanged];
-  v10 = [(UIAlertController *)self _visualStyle];
-  [v9 _setVisualStyle:v10];
+  _visualStyle2 = [(UIAlertController *)self _visualStyle];
+  [v9 _setVisualStyle:_visualStyle2];
 }
 
 uint64_t __29__UIAlertController_loadView__block_invoke(uint64_t a1)
@@ -912,25 +912,25 @@ void __49__UIAlertController__updateShouldAlignToKeyboard__block_invoke(uint64_t
 
 - (BOOL)_alignsToKeyboard
 {
-  v3 = [(UIViewController *)self _window];
-  if ([v3 _isHostedInAnotherProcess])
+  _window = [(UIViewController *)self _window];
+  if ([_window _isHostedInAnotherProcess])
   {
     LOBYTE(v4) = 1;
   }
 
   else
   {
-    v4 = [v3 _windowOwnsInterfaceOrientation] ^ 1;
+    v4 = [_window _windowOwnsInterfaceOrientation] ^ 1;
   }
 
   if ([(UIAlertController *)self _shouldAlignToKeyboard])
   {
-    v5 = [(UIAlertController *)self contentViewController];
-    v6 = [(UIAlertController *)self textFields];
-    v7 = [v6 count];
-    v8 = [(UIAlertController *)self _visualStyle];
-    v9 = [v8 placementAvoidsKeyboard];
-    if (v5)
+    contentViewController = [(UIAlertController *)self contentViewController];
+    textFields = [(UIAlertController *)self textFields];
+    v7 = [textFields count];
+    _visualStyle = [(UIAlertController *)self _visualStyle];
+    placementAvoidsKeyboard = [_visualStyle placementAvoidsKeyboard];
+    if (contentViewController)
     {
       v10 = 1;
     }
@@ -945,7 +945,7 @@ void __49__UIAlertController__updateShouldAlignToKeyboard__block_invoke(uint64_t
       v10 = 1;
     }
 
-    v11 = v10 & v9;
+    v11 = v10 & placementAvoidsKeyboard;
   }
 
   else
@@ -956,19 +956,19 @@ void __49__UIAlertController__updateShouldAlignToKeyboard__block_invoke(uint64_t
   return v11;
 }
 
-- (void)_setShouldReverseActions:(BOOL)a3
+- (void)_setShouldReverseActions:(BOOL)actions
 {
-  v3 = a3;
-  v4 = [(UIAlertController *)self _alertControllerView];
-  [v4 _setActionsReversed:v3];
+  actionsCopy = actions;
+  _alertControllerView = [(UIAlertController *)self _alertControllerView];
+  [_alertControllerView _setActionsReversed:actionsCopy];
 }
 
 - (BOOL)_shouldReverseActions
 {
-  v2 = [(UIAlertController *)self _alertControllerView];
-  v3 = [v2 _actionsReversed];
+  _alertControllerView = [(UIAlertController *)self _alertControllerView];
+  _actionsReversed = [_alertControllerView _actionsReversed];
 
-  return v3;
+  return _actionsReversed;
 }
 
 - (void)viewDidLoad
@@ -976,53 +976,53 @@ void __49__UIAlertController__updateShouldAlignToKeyboard__block_invoke(uint64_t
   v16.receiver = self;
   v16.super_class = UIAlertController;
   [(UIViewController *)&v16 viewDidLoad];
-  v3 = [(UIAlertController *)self _alertControllerView];
-  v4 = [(UIViewController *)self traitCollection];
-  v5 = -[UIAlertController _idiomSupportsBackGesture:](self, "_idiomSupportsBackGesture:", [v4 userInterfaceIdiom]);
+  _alertControllerView = [(UIAlertController *)self _alertControllerView];
+  traitCollection = [(UIViewController *)self traitCollection];
+  v5 = -[UIAlertController _idiomSupportsBackGesture:](self, "_idiomSupportsBackGesture:", [traitCollection userInterfaceIdiom]);
 
   if (v5)
   {
     [(UIAlertController *)self _installBackGestureRecognizer];
   }
 
-  v6 = [(UIViewController *)self title];
+  title = [(UIViewController *)self title];
 
-  if (v6)
+  if (title)
   {
-    v7 = [(UIViewController *)self title];
-    [v3 _setTitle:v7];
+    title2 = [(UIViewController *)self title];
+    [_alertControllerView _setTitle:title2];
   }
 
-  v8 = [(UIAlertController *)self message];
+  message = [(UIAlertController *)self message];
 
-  if (v8)
+  if (message)
   {
-    v9 = [(UIAlertController *)self message];
-    [v3 _setMessage:v9];
+    message2 = [(UIAlertController *)self message];
+    [_alertControllerView _setMessage:message2];
   }
 
-  v10 = [(UIAlertController *)self _attributedTitle];
+  _attributedTitle = [(UIAlertController *)self _attributedTitle];
 
-  if (v10)
+  if (_attributedTitle)
   {
-    v11 = [(UIAlertController *)self _attributedTitle];
-    [v3 _setAttributedTitle:v11];
+    _attributedTitle2 = [(UIAlertController *)self _attributedTitle];
+    [_alertControllerView _setAttributedTitle:_attributedTitle2];
   }
 
-  v12 = [(UIAlertController *)self _attributedMessage];
+  _attributedMessage = [(UIAlertController *)self _attributedMessage];
 
-  if (v12)
+  if (_attributedMessage)
   {
-    v13 = [(UIAlertController *)self _attributedMessage];
-    [v3 _setAttributedMessage:v13];
+    _attributedMessage2 = [(UIAlertController *)self _attributedMessage];
+    [_alertControllerView _setAttributedMessage:_attributedMessage2];
   }
 
-  v14 = [(UIAlertController *)self _attributedDetailMessage];
+  _attributedDetailMessage = [(UIAlertController *)self _attributedDetailMessage];
 
-  if (v14)
+  if (_attributedDetailMessage)
   {
-    v15 = [(UIAlertController *)self _attributedDetailMessage];
-    [v3 _setAttributedDetailMessage:v15];
+    _attributedDetailMessage2 = [(UIAlertController *)self _attributedDetailMessage];
+    [_alertControllerView _setAttributedDetailMessage:_attributedDetailMessage2];
   }
 }
 
@@ -1030,15 +1030,15 @@ void __49__UIAlertController__updateShouldAlignToKeyboard__block_invoke(uint64_t
 {
   if ([(UIViewController *)self isViewLoaded])
   {
-    v3 = [(UIViewController *)self view];
+    view = [(UIViewController *)self view];
   }
 
   else
   {
-    v3 = 0;
+    view = 0;
   }
 
-  return v3;
+  return view;
 }
 
 - (BOOL)_needsPreferredSizeCalculated
@@ -1056,8 +1056,8 @@ void __49__UIAlertController__updateShouldAlignToKeyboard__block_invoke(uint64_t
   self->_isInRecomputePreferredContentSize = 1;
   if ([(UIAlertController *)self _needsPreferredSizeCalculated])
   {
-    v3 = [(UIAlertController *)self _alertControllerView];
-    [v3 systemLayoutSizeFittingSize:{*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)}];
+    _alertControllerView = [(UIAlertController *)self _alertControllerView];
+    [_alertControllerView systemLayoutSizeFittingSize:{*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)}];
     v5 = v4;
     v7 = v6;
 
@@ -1073,12 +1073,12 @@ void __49__UIAlertController__updateShouldAlignToKeyboard__block_invoke(uint64_t
   v6.receiver = self;
   v6.super_class = UIAlertController;
   [(UIViewController *)&v6 viewWillLayoutSubviews];
-  v3 = [(UIAlertController *)self _alertControllerView];
+  _alertControllerView = [(UIAlertController *)self _alertControllerView];
   [(UIAlertController *)self _resolvedStyleChanged];
   [(UIAlertController *)self _reevaluateResolvedStyle];
-  if ([v3 conformsToProtocol:&unk_1EFF9DFA0])
+  if ([_alertControllerView conformsToProtocol:&unk_1EFF9DFA0])
   {
-    v4 = v3;
+    v4 = _alertControllerView;
     v5 = v4;
     if (self->_separatedHeaderContentViewController)
     {
@@ -1091,9 +1091,9 @@ void __49__UIAlertController__updateShouldAlignToKeyboard__block_invoke(uint64_t
     }
   }
 
-  if ([v3 conformsToProtocol:&unk_1EFF9E0A8] && self->_contentViewController)
+  if ([_alertControllerView conformsToProtocol:&unk_1EFF9E0A8] && self->_contentViewController)
   {
-    [v3 _addContentViewControllerToViewHierarchyIfNecessary];
+    [_alertControllerView _addContentViewControllerToViewHierarchyIfNecessary];
   }
 }
 
@@ -1102,14 +1102,14 @@ void __49__UIAlertController__updateShouldAlignToKeyboard__block_invoke(uint64_t
   v6.receiver = self;
   v6.super_class = UIAlertController;
   [(UIViewController *)&v6 viewDidLayoutSubviews];
-  v3 = [(UIAlertController *)self _alertControllerView];
-  if ([v3 conformsToProtocol:&unk_1EFF9DFA0])
+  _alertControllerView = [(UIAlertController *)self _alertControllerView];
+  if ([_alertControllerView conformsToProtocol:&unk_1EFF9DFA0])
   {
-    [v3 _recomputeActionMetrics];
+    [_alertControllerView _recomputeActionMetrics];
   }
 
-  v4 = [v3 window];
-  if (v4)
+  window = [_alertControllerView window];
+  if (window)
   {
     isInRecomputePreferredContentSize = self->_isInRecomputePreferredContentSize;
 
@@ -1121,18 +1121,18 @@ void __49__UIAlertController__updateShouldAlignToKeyboard__block_invoke(uint64_t
 
   if (_UISolariumEnabled())
   {
-    [v3 _updateTextAlignmentAfterLayout];
+    [_alertControllerView _updateTextAlignmentAfterLayout];
   }
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
   v9.receiver = self;
   v9.super_class = UIAlertController;
-  [(UIViewController *)&v9 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  [(UIViewController *)&v9 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   if ([(UIAlertController *)self _shouldDismissOnSizeChange])
   {
     [(UIAlertController *)self _dismissWithCancelOrEmptyAction];
@@ -1143,7 +1143,7 @@ void __49__UIAlertController__updateShouldAlignToKeyboard__block_invoke(uint64_t
   v8[2] = __72__UIAlertController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke;
   v8[3] = &unk_1E70F3B98;
   v8[4] = self;
-  [v7 animateAlongsideTransition:v8 completion:0];
+  [coordinatorCopy animateAlongsideTransition:v8 completion:0];
 }
 
 void __72__UIAlertController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke(uint64_t a1)
@@ -1154,41 +1154,41 @@ void __72__UIAlertController_viewWillTransitionToSize_withTransitionCoordinator_
 
 - (void)_reevaluateResolvedStyle
 {
-  v3 = [(UIAlertController *)self preferredStyle];
+  preferredStyle = [(UIAlertController *)self preferredStyle];
   resolvedStyle = self->_resolvedStyle;
-  self->_resolvedStyle = v3;
+  self->_resolvedStyle = preferredStyle;
   if (_UIAppUseModernRotationAndPresentationBehaviors() || [(UIViewController *)self isViewLoaded])
   {
     [(UIAlertController *)self _updateModalPresentationStyle];
   }
 
-  if (resolvedStyle != v3)
+  if (resolvedStyle != preferredStyle)
   {
 
     [(UIAlertController *)self _resolvedStyleChanged];
   }
 }
 
-- (void)_updateProvidedStyleWithTraitCollection:(id)a3
+- (void)_updateProvidedStyleWithTraitCollection:(id)collection
 {
-  v4 = a3;
+  collectionCopy = collection;
   if (self->_batchActionChangesInProgressCount <= 0)
   {
-    v20 = v4;
-    v5 = [(UIAlertController *)self _resolvedStyle];
-    v6 = [(UIAlertController *)self _currentDescriptor];
-    v7 = [(UIAlertController *)self _styleProvider];
-    v8 = [v7 visualStyleForAlertControllerStyle:v5 traitCollection:v20 descriptor:v6];
+    v20 = collectionCopy;
+    _resolvedStyle = [(UIAlertController *)self _resolvedStyle];
+    _currentDescriptor = [(UIAlertController *)self _currentDescriptor];
+    _styleProvider = [(UIAlertController *)self _styleProvider];
+    v8 = [_styleProvider visualStyleForAlertControllerStyle:_resolvedStyle traitCollection:v20 descriptor:_currentDescriptor];
     v9 = [v8 copy];
 
     if (!v9)
     {
-      v10 = [(UIAlertController *)self visualStyleForAlertControllerStyle:v5 traitCollection:v20 descriptor:v6];
+      v10 = [(UIAlertController *)self visualStyleForAlertControllerStyle:_resolvedStyle traitCollection:v20 descriptor:_currentDescriptor];
       if (!v10)
       {
 LABEL_12:
 
-        v4 = v20;
+        collectionCopy = v20;
         goto LABEL_13;
       }
 
@@ -1196,9 +1196,9 @@ LABEL_12:
     }
 
     [v9 setTraitCollection:v20];
-    [v9 setDescriptor:v6];
-    v11 = [(UIAlertController *)self _visualStyle];
-    v12 = [v11 isEqual:v9];
+    [v9 setDescriptor:_currentDescriptor];
+    _visualStyle = [(UIAlertController *)self _visualStyle];
+    v12 = [_visualStyle isEqual:v9];
 
     if ((v12 & 1) == 0)
     {
@@ -1206,28 +1206,28 @@ LABEL_12:
       [(UIAlertController *)self _updateShouldAlignToKeyboard];
     }
 
-    v13 = [(UIAlertController *)self _alertControllerView];
-    v14 = [v13 _visualStyle];
-    v15 = [v14 isEqual:v9];
+    _alertControllerView = [(UIAlertController *)self _alertControllerView];
+    _visualStyle2 = [_alertControllerView _visualStyle];
+    v15 = [_visualStyle2 isEqual:v9];
 
     if ((v15 & 1) == 0)
     {
-      [v13 _setVisualStyle:v9];
+      [_alertControllerView _setVisualStyle:v9];
     }
 
-    v16 = [(_UIAlertControllerTextFieldViewController *)self->_textFieldViewController visualStyle];
-    v17 = [v16 isEqual:v9];
+    visualStyle = [(_UIAlertControllerTextFieldViewController *)self->_textFieldViewController visualStyle];
+    v17 = [visualStyle isEqual:v9];
 
     if ((v17 & 1) == 0)
     {
       [(UIAlertController *)self _updateTextFieldViewControllerWithVisualStyle:v9];
     }
 
-    v18 = [(UIAlertController *)self _headerContentViewController];
-    [v18 _containingAlertControllerDidChangeVisualStyle:v9];
+    _headerContentViewController = [(UIAlertController *)self _headerContentViewController];
+    [_headerContentViewController _containingAlertControllerDidChangeVisualStyle:v9];
 
-    v19 = [(UIAlertController *)self contentViewController];
-    [v19 _containingAlertControllerDidChangeVisualStyle:v9];
+    contentViewController = [(UIAlertController *)self contentViewController];
+    [contentViewController _containingAlertControllerDidChangeVisualStyle:v9];
 
     goto LABEL_12;
   }
@@ -1237,31 +1237,31 @@ LABEL_13:
 
 - (void)_updateProvidedStyle
 {
-  v3 = [(UIViewController *)self traitCollection];
-  [(UIAlertController *)self _updateProvidedStyleWithTraitCollection:v3];
+  traitCollection = [(UIViewController *)self traitCollection];
+  [(UIAlertController *)self _updateProvidedStyleWithTraitCollection:traitCollection];
 }
 
 - (id)_currentDescriptor
 {
   v28 = *MEMORY[0x1E69E9840];
   v3 = objc_alloc_init(UIAlertControllerDescriptor);
-  v4 = [(UIAlertController *)self _headerContentViewController];
-  [(UIAlertControllerDescriptor *)v3 setHasHeaderContentViewController:v4 != 0];
+  _headerContentViewController = [(UIAlertController *)self _headerContentViewController];
+  [(UIAlertControllerDescriptor *)v3 setHasHeaderContentViewController:_headerContentViewController != 0];
 
   [(UIAlertControllerDescriptor *)v3 setHasTitle:[(UIAlertController *)self _hasTitle]];
   [(UIAlertControllerDescriptor *)v3 setHasMessage:[(UIAlertController *)self _hasMessage]];
-  v5 = [(UIAlertController *)self contentViewController];
-  [(UIAlertControllerDescriptor *)v3 setHasContentViewController:v5 != 0];
+  contentViewController = [(UIAlertController *)self contentViewController];
+  [(UIAlertControllerDescriptor *)v3 setHasContentViewController:contentViewController != 0];
 
-  v6 = [(UIAlertController *)self actions];
-  -[UIAlertControllerDescriptor setNumberOfActions:](v3, "setNumberOfActions:", [v6 count]);
+  actions = [(UIAlertController *)self actions];
+  -[UIAlertControllerDescriptor setNumberOfActions:](v3, "setNumberOfActions:", [actions count]);
 
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v7 = [(UIAlertController *)self actions];
-  v8 = [v7 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  actions2 = [(UIAlertController *)self actions];
+  v8 = [actions2 countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v8)
   {
     v9 = v8;
@@ -1273,14 +1273,14 @@ LABEL_13:
       {
         if (*v24 != v11)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(actions2);
         }
 
         v13 = *(*(&v23 + 1) + 8 * i);
         if ([v13 style] == 1)
         {
-          v14 = [(UIAlertController *)self _visualStyle];
-          v15 = [v14 hideCancelAction:v13 inAlertController:self];
+          _visualStyle = [(UIAlertController *)self _visualStyle];
+          v15 = [_visualStyle hideCancelAction:v13 inAlertController:self];
 
           if (v15)
           {
@@ -1291,7 +1291,7 @@ LABEL_13:
         ++v10;
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v9 = [actions2 countByEnumeratingWithState:&v23 objects:v27 count:16];
     }
 
     while (v9);
@@ -1303,20 +1303,20 @@ LABEL_13:
   }
 
   [(UIAlertControllerDescriptor *)v3 setNumberOfVisibleActions:v10];
-  v16 = [(UIViewController *)self _existingView];
-  v17 = [v16 superview];
-  [v17 safeAreaInsets];
+  _existingView = [(UIViewController *)self _existingView];
+  superview = [_existingView superview];
+  [superview safeAreaInsets];
   [(UIAlertControllerDescriptor *)v3 setContainerViewSafeAreaInsets:?];
 
-  v18 = [(UIViewController *)self _window];
-  -[UIAlertControllerDescriptor setApplicationIsFullscreen:](v3, "setApplicationIsFullscreen:", [v18 _windowOwnsInterfaceOrientation]);
+  _window = [(UIViewController *)self _window];
+  -[UIAlertControllerDescriptor setApplicationIsFullscreen:](v3, "setApplicationIsFullscreen:", [_window _windowOwnsInterfaceOrientation]);
 
-  v19 = [(UIViewController *)self _existingView];
-  v20 = [v19 traitCollection];
-  -[UIAlertControllerDescriptor setIsPad:](v3, "setIsPad:", [v20 userInterfaceIdiom] == 1);
+  _existingView2 = [(UIViewController *)self _existingView];
+  traitCollection = [_existingView2 traitCollection];
+  -[UIAlertControllerDescriptor setIsPad:](v3, "setIsPad:", [traitCollection userInterfaceIdiom] == 1);
 
-  v21 = [(UIAlertController *)self textFields];
-  -[UIAlertControllerDescriptor setHasTextfields:](v3, "setHasTextfields:", [v21 count] != 0);
+  textFields = [(UIAlertController *)self textFields];
+  -[UIAlertControllerDescriptor setHasTextfields:](v3, "setHasTextfields:", [textFields count] != 0);
 
   -[UIAlertControllerDescriptor setIsSystemAlert:](v3, "setIsSystemAlert:", [UIApp _isSpringBoard]);
 
@@ -1333,8 +1333,8 @@ LABEL_13:
 - (void)_userInterfaceIdiomChanged
 {
   [(UIAlertController *)self _updateProvidedStyle];
-  v3 = [(UIViewController *)self traitCollection];
-  v4 = -[UIAlertController _idiomSupportsBackGesture:](self, "_idiomSupportsBackGesture:", [v3 userInterfaceIdiom]);
+  traitCollection = [(UIViewController *)self traitCollection];
+  v4 = -[UIAlertController _idiomSupportsBackGesture:](self, "_idiomSupportsBackGesture:", [traitCollection userInterfaceIdiom]);
 
   if (v4)
   {
@@ -1349,9 +1349,9 @@ LABEL_13:
   }
 }
 
-- (int64_t)_buttonTypeForBackGestureForIdiom:(int64_t)a3
+- (int64_t)_buttonTypeForBackGestureForIdiom:(int64_t)idiom
 {
-  if (a3 == 8 || a3 == 2)
+  if (idiom == 8 || idiom == 2)
   {
     return 5;
   }
@@ -1373,47 +1373,47 @@ LABEL_13:
 
     v5 = self->_backButtonDismissGestureRecognizer;
     v6 = MEMORY[0x1E696AD98];
-    v7 = [(UIViewController *)self traitCollection];
-    v8 = [v6 numberWithInteger:{-[UIAlertController _buttonTypeForBackGestureForIdiom:](self, "_buttonTypeForBackGestureForIdiom:", objc_msgSend(v7, "userInterfaceIdiom"))}];
+    traitCollection = [(UIViewController *)self traitCollection];
+    v8 = [v6 numberWithInteger:{-[UIAlertController _buttonTypeForBackGestureForIdiom:](self, "_buttonTypeForBackGestureForIdiom:", objc_msgSend(traitCollection, "userInterfaceIdiom"))}];
     v11[0] = v8;
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
     [(UITapGestureRecognizer *)v5 setAllowedPressTypes:v9];
   }
 
-  v10 = [(UIAlertController *)self _alertControllerView];
-  [v10 addGestureRecognizer:self->_backButtonDismissGestureRecognizer];
+  _alertControllerView = [(UIAlertController *)self _alertControllerView];
+  [_alertControllerView addGestureRecognizer:self->_backButtonDismissGestureRecognizer];
 }
 
 - (void)_uninstallBackGestureRecognizer
 {
-  v3 = [(UIAlertController *)self _alertControllerView];
-  [v3 removeGestureRecognizer:self->_backButtonDismissGestureRecognizer];
+  _alertControllerView = [(UIAlertController *)self _alertControllerView];
+  [_alertControllerView removeGestureRecognizer:self->_backButtonDismissGestureRecognizer];
 
   backButtonDismissGestureRecognizer = self->_backButtonDismissGestureRecognizer;
   self->_backButtonDismissGestureRecognizer = 0;
 }
 
-+ (void)registerPlatformStyleProvider:(id)a3 forIdiom:(int64_t)a4
++ (void)registerPlatformStyleProvider:(id)provider forIdiom:(int64_t)idiom
 {
-  v9 = a3;
+  providerCopy = provider;
   v5 = qword_1ED499BC8;
   if (!qword_1ED499BC8)
   {
-    v6 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v7 = qword_1ED499BC8;
-    qword_1ED499BC8 = v6;
+    qword_1ED499BC8 = dictionary;
 
     v5 = qword_1ED499BC8;
   }
 
-  v8 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
-  [v5 setObject:v9 forKey:v8];
+  v8 = [MEMORY[0x1E696AD98] numberWithInteger:idiom];
+  [v5 setObject:providerCopy forKey:v8];
 }
 
-+ (id)_createTransitioningDelegateForIdiom:(int64_t)a3
++ (id)_createTransitioningDelegateForIdiom:(int64_t)idiom
 {
   v3 = qword_1ED499BC8;
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:idiom];
   v5 = [v3 objectForKey:v4];
 
   if (!v5 || (objc_opt_respondsToSelector() & 1) == 0 || ([v5 preferredTransitioningDelegate], (v6 = objc_claimAutoreleasedReturnValue()) == 0))
@@ -1424,53 +1424,53 @@ LABEL_13:
   return v6;
 }
 
-- (id)visualStyleForAlertControllerStyle:(int64_t)a3 traitCollection:(id)a4 descriptor:(id)a5
+- (id)visualStyleForAlertControllerStyle:(int64_t)style traitCollection:(id)collection descriptor:(id)descriptor
 {
   v22 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
-  v10 = [v8 userInterfaceIdiom];
-  if (v10 == -1)
+  collectionCopy = collection;
+  descriptorCopy = descriptor;
+  userInterfaceIdiom = [collectionCopy userInterfaceIdiom];
+  if (userInterfaceIdiom == -1)
   {
     v11 = +[UITraitCollection _fallbackTraitCollection];
-    v10 = [v11 userInterfaceIdiom];
+    userInterfaceIdiom = [v11 userInterfaceIdiom];
   }
 
   v12 = qword_1ED499BC8;
-  v13 = [MEMORY[0x1E696AD98] numberWithInteger:v10];
+  v13 = [MEMORY[0x1E696AD98] numberWithInteger:userInterfaceIdiom];
   v14 = [v12 objectForKey:v13];
 
   if (v14)
   {
-    v15 = [v14 visualStyleForAlertControllerStyle:a3 traitCollection:v8 descriptor:v9];
+    v15 = [v14 visualStyleForAlertControllerStyle:style traitCollection:collectionCopy descriptor:descriptorCopy];
     if (v15)
     {
       goto LABEL_34;
     }
   }
 
-  if (v10 == -1)
+  if (userInterfaceIdiom == -1)
   {
     goto LABEL_20;
   }
 
-  if (((a3 - 1000) < 2 || !a3) && ![(UIAlertController *)self _forceAlertStyle])
+  if (((style - 1000) < 2 || !style) && ![(UIAlertController *)self _forceAlertStyle])
   {
-    if (v10 < 2)
+    if (userInterfaceIdiom < 2)
     {
       goto LABEL_17;
     }
 
-    if (v10 == 3)
+    if (userInterfaceIdiom == 3)
     {
       v16 = off_1E70E93C8;
       goto LABEL_31;
     }
 
-    if (v10 == 5)
+    if (userInterfaceIdiom == 5)
     {
 LABEL_17:
-      if ((a3 & 0xFFFFFFFFFFFFFFFELL) == 0x3E8)
+      if ((style & 0xFFFFFFFFFFFFFFFELL) == 0x3E8)
       {
         v16 = off_1E70E93D0;
       }
@@ -1490,16 +1490,16 @@ LABEL_20:
 
   v15 = 0;
   v16 = off_1E70E93D8;
-  if (v10 > 2)
+  if (userInterfaceIdiom > 2)
   {
-    if (v10 == 8)
+    if (userInterfaceIdiom == 8)
     {
       v16 = off_1E70E93E0;
     }
 
-    else if (v10 != 5)
+    else if (userInterfaceIdiom != 5)
     {
-      if (v10 != 3)
+      if (userInterfaceIdiom != 3)
       {
         goto LABEL_32;
       }
@@ -1512,12 +1512,12 @@ LABEL_31:
     goto LABEL_32;
   }
 
-  if (v10 < 2)
+  if (userInterfaceIdiom < 2)
   {
     goto LABEL_31;
   }
 
-  if (v10 == 2)
+  if (userInterfaceIdiom == 2)
   {
     if (_UISolariumEnabled())
     {
@@ -1549,7 +1549,7 @@ LABEL_32:
     if (os_log_type_enabled(v18, OS_LOG_TYPE_FAULT))
     {
       v20 = 134217984;
-      v21 = v10;
+      v21 = userInterfaceIdiom;
       _os_log_fault_impl(&dword_188A29000, v18, OS_LOG_TYPE_FAULT, "No visual style provided for idiom %ld", &v20, 0xCu);
     }
   }
@@ -1565,7 +1565,7 @@ LABEL_32:
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
       v20 = 134217984;
-      v21 = v10;
+      v21 = userInterfaceIdiom;
       _os_log_impl(&dword_188A29000, v19, OS_LOG_TYPE_ERROR, "No visual style provided for idiom %ld", &v20, 0xCu);
     }
   }
@@ -1576,14 +1576,14 @@ LABEL_34:
   return v15;
 }
 
-- (id)platformStyleViewForAlertController:(id)a3 inIdiom:(int64_t)a4
+- (id)platformStyleViewForAlertController:(id)controller inIdiom:(int64_t)idiom
 {
-  v5 = a3;
+  controllerCopy = controller;
   v6 = qword_1ED499BC8;
-  v7 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+  v7 = [MEMORY[0x1E696AD98] numberWithInteger:idiom];
   v8 = [v6 objectForKey:v7];
 
-  if (!v8 || ([v8 platformStyleViewForAlertController:v5 inIdiom:a4], (v9 = objc_claimAutoreleasedReturnValue()) == 0))
+  if (!v8 || ([v8 platformStyleViewForAlertController:controllerCopy inIdiom:idiom], (v9 = objc_claimAutoreleasedReturnValue()) == 0))
   {
     v9 = objc_alloc_init(_UIAlertControllerPhoneTVMacView);
   }
@@ -1591,31 +1591,31 @@ LABEL_34:
   return v9;
 }
 
-- (void)_invokeHandlersForAction:(id)a3
+- (void)_invokeHandlersForAction:(id)action
 {
-  v8 = a3;
-  v4 = [v8 handler];
+  actionCopy = action;
+  handler = [actionCopy handler];
 
-  if (v4)
+  if (handler)
   {
-    v5 = [v8 handler];
-    (v5)[2](v5, v8);
+    handler2 = [actionCopy handler];
+    (handler2)[2](handler2, actionCopy);
   }
 
-  v6 = [v8 simpleHandler];
+  simpleHandler = [actionCopy simpleHandler];
 
-  if (v6)
+  if (simpleHandler)
   {
-    v7 = [v8 simpleHandler];
-    v7[2]();
+    simpleHandler2 = [actionCopy simpleHandler];
+    simpleHandler2[2]();
   }
 
-  else if (!v4)
+  else if (!handler)
   {
     goto LABEL_7;
   }
 
-  [(NSPointerArray *)self->_actionsWithInvokedHandlers addPointer:v8];
+  [(NSPointerArray *)self->_actionsWithInvokedHandlers addPointer:actionCopy];
 LABEL_7:
 }
 
@@ -1661,18 +1661,18 @@ LABEL_7:
   return v2;
 }
 
-- (void)_attemptAnimatedDismissWithGestureRecognizer:(id)a3
+- (void)_attemptAnimatedDismissWithGestureRecognizer:(id)recognizer
 {
-  if ([a3 state] == 3 && -[UIAlertController _canDismissWithGestureRecognizer](self, "_canDismissWithGestureRecognizer"))
+  if ([recognizer state] == 3 && -[UIAlertController _canDismissWithGestureRecognizer](self, "_canDismissWithGestureRecognizer"))
   {
 
     [(UIAlertController *)self _dismissWithCancelOrEmptyAction];
   }
 }
 
-- (void)_dismissFromBackButton:(id)a3
+- (void)_dismissFromBackButton:(id)button
 {
-  if ([a3 state] == 3)
+  if ([button state] == 3)
   {
 
     [(UIAlertController *)self _dismissWithCancelOrEmptyAction];
@@ -1696,15 +1696,15 @@ LABEL_7:
 
 - (void)_dismissFromPopoverDimmingView
 {
-  v3 = [(UIAlertController *)self cancelAction];
-  [(UIAlertController *)self _dismissAnimated:1 triggeringAction:v3 triggeredByPopoverDimmingView:1 dismissCompletion:0];
+  cancelAction = [(UIAlertController *)self cancelAction];
+  [(UIAlertController *)self _dismissAnimated:1 triggeringAction:cancelAction triggeredByPopoverDimmingView:1 dismissCompletion:0];
 }
 
-- (void)_beginNoPresentingViewControllerPresentation:(id)a3
+- (void)_beginNoPresentingViewControllerPresentation:(id)presentation
 {
-  v4 = a3;
+  presentationCopy = presentation;
   presenter = self->_presenter;
-  v8 = v4;
+  v8 = presentationCopy;
   if (!presenter)
   {
     v6 = objc_alloc_init(_UIAlertControllerShimPresenter);
@@ -1712,46 +1712,46 @@ LABEL_7:
     self->_presenter = v6;
 
     [(_UIAlertControllerShimPresenter *)self->_presenter setAlertController:self];
-    v4 = v8;
+    presentationCopy = v8;
     presenter = self->_presenter;
   }
 
-  [(_UIAlertControllerShimPresenter *)presenter _presentAlertControllerAnimated:1 hostingScene:v4 completion:0];
+  [(_UIAlertControllerShimPresenter *)presenter _presentAlertControllerAnimated:1 hostingScene:presentationCopy completion:0];
 }
 
-- (void)_dismissAnimated:(BOOL)a3 triggeringAction:(id)a4 triggeredByPopoverDimmingView:(BOOL)a5 dismissCompletion:(id)a6
+- (void)_dismissAnimated:(BOOL)animated triggeringAction:(id)action triggeredByPopoverDimmingView:(BOOL)view dismissCompletion:(id)completion
 {
-  v7 = a5;
-  v10 = a4;
-  v11 = a6;
+  viewCopy = view;
+  actionCopy = action;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __103__UIAlertController__dismissAnimated_triggeringAction_triggeredByPopoverDimmingView_dismissCompletion___block_invoke;
   aBlock[3] = &unk_1E70F35B8;
   aBlock[4] = self;
-  v12 = v10;
+  v12 = actionCopy;
   v41 = v12;
   v13 = _Block_copy(aBlock);
-  if (v7)
+  if (viewCopy)
   {
-    v14 = self;
+    selfCopy = self;
     goto LABEL_3;
   }
 
   if (v12)
   {
-    v21 = [v12 shouldDismissHandler];
-    if (!v21 || (v22 = v21, [v12 shouldDismissHandler], v23 = objc_claimAutoreleasedReturnValue(), v24 = v23[2](), v23, v22, (v24 & 1) != 0))
+    shouldDismissHandler = [v12 shouldDismissHandler];
+    if (!shouldDismissHandler || (v22 = shouldDismissHandler, [v12 shouldDismissHandler], v23 = objc_claimAutoreleasedReturnValue(), v24 = v23[2](), v23, v22, (v24 & 1) != 0))
     {
-      v25 = self;
-      v26 = [(UIViewController *)v25 _parentModalViewController];
+      selfCopy2 = self;
+      _parentModalViewController = [(UIViewController *)selfCopy2 _parentModalViewController];
 
-      if (v26)
+      if (_parentModalViewController)
       {
-        v27 = [(UIViewController *)v25 popoverPresentationController];
-        v28 = [v27 delegate];
+        popoverPresentationController = [(UIViewController *)selfCopy2 popoverPresentationController];
+        delegate = [popoverPresentationController delegate];
         objc_opt_class();
-        if (objc_opt_isKindOfClass() & 1) != 0 && ([v28 delegate], v29 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v29, (isKindOfClass))
+        if (objc_opt_isKindOfClass() & 1) != 0 && ([delegate delegate], v29 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v29, (isKindOfClass))
         {
           v15 = &__block_literal_global_681;
         }
@@ -1762,7 +1762,7 @@ LABEL_7:
           v42[1] = 3221225472;
           v42[2] = __manualPopoverPresentationControllerDidDismissPopoverInvocationForDismiss_block_invoke_2;
           v42[3] = &unk_1E70F3590;
-          v43 = v27;
+          v43 = popoverPresentationController;
           v15 = _Block_copy(v42);
         }
 
@@ -1781,15 +1781,15 @@ LABEL_4:
       v17 = v13;
       v37 = v17;
       v38 = v16;
-      v39 = v11;
+      v39 = completionCopy;
       v18 = v16;
       v19 = _Block_copy(v36);
       v31[0] = MEMORY[0x1E69E9820];
       v31[1] = 3221225472;
       v31[2] = __103__UIAlertController__dismissAnimated_triggeringAction_triggeredByPopoverDimmingView_dismissCompletion___block_invoke_3;
       v31[3] = &unk_1E70F4968;
-      v34 = v7;
-      v35 = a3;
+      v34 = viewCopy;
+      animatedCopy = animated;
       v31[4] = self;
       v33 = v19;
       v32 = v12;
@@ -1802,9 +1802,9 @@ LABEL_4:
     [(UIAlertController *)self _performAction:v12 invokeActionBlock:v13 dismissAndPerformActionIfNotAlreadyPerformed:0];
   }
 
-  if (v11)
+  if (completionCopy)
   {
-    (*(v11 + 2))(v11, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 
   self->_actionInvokedOnDismiss = 0;
@@ -1908,64 +1908,64 @@ LABEL_8:
   }
 }
 
-- (void)_performAction:(id)a3 invokeActionBlock:(id)a4 dismissAndPerformActionIfNotAlreadyPerformed:(id)a5
+- (void)_performAction:(id)action invokeActionBlock:(id)block dismissAndPerformActionIfNotAlreadyPerformed:(id)performed
 {
-  v10 = a4;
-  v7 = a5;
+  blockCopy = block;
+  performedCopy = performed;
   WeakRetained = objc_loadWeakRetained(&self->_coordinatedActionPerformingDelegate);
   v9 = WeakRetained;
   if (WeakRetained)
   {
-    [WeakRetained _performActionForAlertController:self invokeActionBlock:v10 dismissControllerBlock:v7];
+    [WeakRetained _performActionForAlertController:self invokeActionBlock:blockCopy dismissControllerBlock:performedCopy];
   }
 
-  else if (v7)
+  else if (performedCopy)
   {
-    v7[2](v7, 0);
+    performedCopy[2](performedCopy, 0);
   }
 
-  else if (v10)
+  else if (blockCopy)
   {
-    v10[2]();
+    blockCopy[2]();
   }
 }
 
 - (void)_postWillBeginSystemProvidedDismissalOfAlertController
 {
-  v3 = [(UIAlertController *)self _systemProvidedPresentationDelegate];
+  _systemProvidedPresentationDelegate = [(UIAlertController *)self _systemProvidedPresentationDelegate];
   if (objc_opt_respondsToSelector())
   {
-    [v3 _willBeginSystemProvidedDismissalOfAlertController:self];
+    [_systemProvidedPresentationDelegate _willBeginSystemProvidedDismissalOfAlertController:self];
   }
 }
 
 - (void)_postDidBeginSystemProvidedDismissalOfAlertController
 {
-  v3 = [(UIAlertController *)self _systemProvidedPresentationDelegate];
+  _systemProvidedPresentationDelegate = [(UIAlertController *)self _systemProvidedPresentationDelegate];
   if (objc_opt_respondsToSelector())
   {
-    [v3 _didBeginSystemProvidedDismissalOfAlertController:self];
+    [_systemProvidedPresentationDelegate _didBeginSystemProvidedDismissalOfAlertController:self];
   }
 }
 
-- (id)_presentationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5
+- (id)_presentationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  controllerCopy = controller;
+  presentingControllerCopy = presentingController;
+  sourceControllerCopy = sourceController;
   if (+[UIAlertController _shouldUsePresentationController])
   {
-    v11 = [(UIAlertController *)self _viewControllerIsPresentedInModalPresentationContext:v10];
-    v12 = [(UIAlertController *)self _resolvedStyle];
+    v11 = [(UIAlertController *)self _viewControllerIsPresentedInModalPresentationContext:sourceControllerCopy];
+    _resolvedStyle = [(UIAlertController *)self _resolvedStyle];
     v13 = qword_1ED499BC8;
     v14 = MEMORY[0x1E696AD98];
-    v15 = [v10 traitCollection];
-    v16 = [v14 numberWithInteger:{objc_msgSend(v15, "userInterfaceIdiom")}];
+    traitCollection = [sourceControllerCopy traitCollection];
+    v16 = [v14 numberWithInteger:{objc_msgSend(traitCollection, "userInterfaceIdiom")}];
     v17 = [v13 objectForKey:v16];
 
     if (objc_opt_respondsToSelector())
     {
-      v18 = [v17 platformStylePresentationControllerForPresentedController:v8 presentingController:v9 sourceController:v10 style:v12];
+      v18 = [v17 platformStylePresentationControllerForPresentedController:controllerCopy presentingController:presentingControllerCopy sourceController:sourceControllerCopy style:_resolvedStyle];
       if (v18)
       {
         v19 = v18;
@@ -1975,31 +1975,31 @@ LABEL_8:
     }
 
     v21 = +[UIDevice currentDevice];
-    v22 = [v21 userInterfaceIdiom];
+    userInterfaceIdiom = [v21 userInterfaceIdiom];
 
-    if ((v22 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+    if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
     {
       v23 = 1;
     }
 
     else
     {
-      v24 = [v10 traitCollection];
-      if ([v24 userInterfaceIdiom] == 1)
+      traitCollection2 = [sourceControllerCopy traitCollection];
+      if ([traitCollection2 userInterfaceIdiom] == 1)
       {
         v23 = 1;
       }
 
       else
       {
-        v25 = [v9 traitCollection];
-        v23 = [v25 userInterfaceIdiom] == 1;
+        traitCollection3 = [presentingControllerCopy traitCollection];
+        v23 = [traitCollection3 userInterfaceIdiom] == 1;
       }
     }
 
-    if ((v12 - 1000) >= 2 && v12 || [(UIAlertController *)self _forceAlertStyle])
+    if ((_resolvedStyle - 1000) >= 2 && _resolvedStyle || [(UIAlertController *)self _forceAlertStyle])
     {
-      v20 = [(_UIAlertControllerPresentationController *)[_UIAlertControllerAlertPresentationController alloc] initWithPresentedViewController:v8 presentingViewController:v9];
+      v20 = [(_UIAlertControllerPresentationController *)[_UIAlertControllerAlertPresentationController alloc] initWithPresentedViewController:controllerCopy presentingViewController:presentingControllerCopy];
 LABEL_16:
 
       goto LABEL_17;
@@ -2010,7 +2010,7 @@ LABEL_16:
       if (!v11)
       {
 LABEL_23:
-        v20 = [(UIPopoverPresentationController *)[_UIAlertControllerActionSheetRegularPresentationController alloc] initWithPresentedViewController:v8 presentingViewController:v9];
+        v20 = [(UIPopoverPresentationController *)[_UIAlertControllerActionSheetRegularPresentationController alloc] initWithPresentedViewController:controllerCopy presentingViewController:presentingControllerCopy];
         if (dyld_program_sdk_at_least() && _UIIsPrivateMainBundle())
         {
           if (v23 | ((_UISolariumEnabled() & 1) == 0))
@@ -2035,14 +2035,14 @@ LABEL_23:
       goto LABEL_23;
     }
 
-    v27 = [(_UIAlertControllerPresentationController *)[_UIAlertControllerActionSheetCompactPresentationController alloc] initWithPresentedViewController:v8 presentingViewController:v10];
+    v27 = [(_UIAlertControllerPresentationController *)[_UIAlertControllerActionSheetCompactPresentationController alloc] initWithPresentedViewController:controllerCopy presentingViewController:sourceControllerCopy];
     v20 = v27;
     if (v11)
     {
       [(_UIAlertControllerPresentationController *)v27 _setIsCurrentContext:1];
     }
 
-    if ([v10 _ancestorViewControllerIsInPopover])
+    if ([sourceControllerCopy _ancestorViewControllerIsInPopover])
     {
       [(_UIAlertControllerPresentationController *)v20 _setShouldRespectNearestCurrentContextPresenter:1];
     }
@@ -2060,12 +2060,12 @@ LABEL_18:
 
 - (void)_updateModalPresentationStyle
 {
-  v3 = [(UIAlertController *)self _modalPresentationStyleForResolvedStyle];
+  _modalPresentationStyleForResolvedStyle = [(UIAlertController *)self _modalPresentationStyleForResolvedStyle];
 
-  [(UIAlertController *)self setModalPresentationStyle:v3];
+  [(UIAlertController *)self setModalPresentationStyle:_modalPresentationStyleForResolvedStyle];
 }
 
-- (void)setModalPresentationStyle:(int64_t)a3
+- (void)setModalPresentationStyle:(int64_t)style
 {
   v3.receiver = self;
   v3.super_class = UIAlertController;
@@ -2080,9 +2080,9 @@ LABEL_18:
   }
 
   v3 = +[UIDevice currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  userInterfaceIdiom = [v3 userInterfaceIdiom];
 
-  if ((v4 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v5 = !_UIAppUseModernRotationAndPresentationBehaviors();
     v6 = 18;
@@ -2108,11 +2108,11 @@ LABEL_18:
 - (void)_updateViewFrameForLandscapePresentationInShimIfNecessary
 {
   memset(&v17, 0, sizeof(v17));
-  v3 = [(UIViewController *)self view];
-  v4 = v3;
-  if (v3)
+  view = [(UIViewController *)self view];
+  v4 = view;
+  if (view)
   {
-    [v3 transform];
+    [view transform];
   }
 
   else
@@ -2120,8 +2120,8 @@ LABEL_18:
     memset(&v17, 0, sizeof(v17));
   }
 
-  v5 = [(UIViewController *)self view];
-  [v5 frame];
+  view2 = [(UIViewController *)self view];
+  [view2 frame];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -2136,8 +2136,8 @@ LABEL_18:
   {
     if (v11 > v13)
     {
-      v14 = [(UIViewController *)self view];
-      [v14 setFrame:{v7, v9, v13, v11}];
+      view3 = [(UIViewController *)self view];
+      [view3 setFrame:{v7, v9, v13, v11}];
 
       [(UIAlertController *)self set_shouldFlipFrameForShimDismissal:1];
     }
@@ -2148,62 +2148,62 @@ LABEL_18:
 {
   if ([(UIAlertController *)self _shouldFlipFrameForShimDismissal])
   {
-    v3 = [(UIViewController *)self view];
-    [v3 frame];
+    view = [(UIViewController *)self view];
+    [view frame];
     v5 = v4;
     v7 = v6;
     v9 = v8;
     v11 = v10;
 
-    v12 = [(UIViewController *)self view];
-    [v12 setFrame:{v5, v7, v11, v9}];
+    view2 = [(UIViewController *)self view];
+    [view2 setFrame:{v5, v7, v11, v9}];
 
     [(UIAlertController *)self set_shouldFlipFrameForShimDismissal:0];
   }
 }
 
-- (void)willTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4
+- (void)willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator
 {
-  v6 = a3;
-  v7 = a4;
+  collectionCopy = collection;
+  coordinatorCopy = coordinator;
   v10.receiver = self;
   v10.super_class = UIAlertController;
-  [(UIViewController *)&v10 willTransitionToTraitCollection:v6 withTransitionCoordinator:v7];
-  if (v7)
+  [(UIViewController *)&v10 willTransitionToTraitCollection:collectionCopy withTransitionCoordinator:coordinatorCopy];
+  if (coordinatorCopy)
   {
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __79__UIAlertController_willTransitionToTraitCollection_withTransitionCoordinator___block_invoke;
     v8[3] = &unk_1E70F4990;
     v8[4] = self;
-    v9 = v6;
-    [v7 animateAlongsideTransition:v8 completion:0];
+    v9 = collectionCopy;
+    [coordinatorCopy animateAlongsideTransition:v8 completion:0];
   }
 
   else
   {
-    [(UIAlertController *)self _updateProvidedStyleWithTraitCollection:v6];
+    [(UIAlertController *)self _updateProvidedStyleWithTraitCollection:collectionCopy];
   }
 }
 
 - (BOOL)_isPresentedAsPopover
 {
-  v3 = [(UIAlertController *)self _alertControllerContainer];
+  _alertControllerContainer = [(UIAlertController *)self _alertControllerContainer];
   if (+[UIAlertController _shouldUsePresentationController])
   {
-    v4 = [v3 _existingPresentationControllerImmediate:1 effective:1];
+    v4 = [_alertControllerContainer _existingPresentationControllerImmediate:1 effective:1];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
   }
 
   else
   {
-    v6 = [(UIViewController *)self _popoverController];
-    v4 = v6;
-    if (v6)
+    _popoverController = [(UIViewController *)self _popoverController];
+    v4 = _popoverController;
+    if (_popoverController)
     {
-      v7 = [v6 contentViewController];
-      isKindOfClass = v7 == v3;
+      contentViewController = [_popoverController contentViewController];
+      isKindOfClass = contentViewController == _alertControllerContainer;
     }
 
     else
@@ -2215,55 +2215,55 @@ LABEL_18:
   return isKindOfClass & 1;
 }
 
-- (BOOL)_viewControllerIsPresentedInModalPresentationContext:(id)a3
+- (BOOL)_viewControllerIsPresentedInModalPresentationContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   if (dyld_program_sdk_at_least())
   {
-    v4 = 0;
+    _ancestorViewControllerIsInPopover = 0;
   }
 
-  else if ([v3 _isInPopoverPresentation])
+  else if ([contextCopy _isInPopoverPresentation])
   {
-    v4 = 1;
+    _ancestorViewControllerIsInPopover = 1;
   }
 
   else
   {
     v5 = +[UIDevice currentDevice];
-    v6 = [v5 userInterfaceIdiom];
+    userInterfaceIdiom = [v5 userInterfaceIdiom];
 
-    if ((v6 & 0xFFFFFFFFFFFFFFFBLL) != 1 || !dyld_program_sdk_at_least() || (v4 = 1, ([v3 _isInContextOfPresentationControllerOfClass:objc_opt_class() effective:1] & 1) == 0))
+    if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) != 1 || !dyld_program_sdk_at_least() || (_ancestorViewControllerIsInPopover = 1, ([contextCopy _isInContextOfPresentationControllerOfClass:objc_opt_class() effective:1] & 1) == 0))
     {
-      v4 = [v3 _ancestorViewControllerIsInPopover];
+      _ancestorViewControllerIsInPopover = [contextCopy _ancestorViewControllerIsInPopover];
     }
   }
 
-  return v4;
+  return _ancestorViewControllerIsInPopover;
 }
 
 - (id)_alertControllerContainer
 {
-  v2 = self;
-  v3 = [(UIViewController *)self parentViewController];
-  if ([(UIAlertController *)v3 conformsToProtocol:&unk_1EFEC3198])
+  selfCopy = self;
+  parentViewController = [(UIViewController *)self parentViewController];
+  if ([(UIAlertController *)parentViewController conformsToProtocol:&unk_1EFEC3198])
   {
-    v2 = v3;
+    selfCopy = parentViewController;
   }
 
-  v4 = v2;
+  v4 = selfCopy;
 
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)_shouldSizeToFillSuperview
 {
   if (!+[UIAlertController _shouldUsePresentationController])
   {
-    v3 = [(UIAlertController *)self _alertControllerView];
-    v4 = [v3 presentedAsPopover];
+    _alertControllerView = [(UIAlertController *)self _alertControllerView];
+    presentedAsPopover = [_alertControllerView presentedAsPopover];
 
-    if (!v4)
+    if (!presentedAsPopover)
     {
       return 1;
     }
@@ -2279,8 +2279,8 @@ LABEL_18:
     return 0;
   }
 
-  v3 = [(UIAlertController *)self contentViewController];
-  [v3 preferredContentSize];
+  contentViewController = [(UIAlertController *)self contentViewController];
+  [contentViewController preferredContentSize];
   v5 = v4 > 0.0;
 
   return v5;
@@ -2305,80 +2305,80 @@ LABEL_18:
     v5 = self->_message;
     self->_message = v4;
 
-    v6 = [(UIAlertController *)self _alertControllerView];
-    [v6 _setMessage:v7];
+    _alertControllerView = [(UIAlertController *)self _alertControllerView];
+    [_alertControllerView _setMessage:v7];
   }
 }
 
-- (void)_setAttributedTitle:(id)a3
+- (void)_setAttributedTitle:(id)title
 {
-  v7 = a3;
-  if (([v7 isEqual:self->_attributedTitle] & 1) == 0)
+  titleCopy = title;
+  if (([titleCopy isEqual:self->_attributedTitle] & 1) == 0)
   {
-    v4 = [v7 copy];
+    v4 = [titleCopy copy];
     attributedTitle = self->_attributedTitle;
     self->_attributedTitle = v4;
 
-    v6 = [(UIAlertController *)self _alertControllerView];
-    [v6 _setAttributedTitle:v7];
+    _alertControllerView = [(UIAlertController *)self _alertControllerView];
+    [_alertControllerView _setAttributedTitle:titleCopy];
   }
 }
 
-- (void)_setTitleMaximumLineCount:(int64_t)a3
+- (void)_setTitleMaximumLineCount:(int64_t)count
 {
-  if (self->_titleMaximumLineCount != a3)
+  if (self->_titleMaximumLineCount != count)
   {
-    self->_titleMaximumLineCount = a3;
-    v4 = [(UIAlertController *)self _alertControllerView];
-    [v4 _updateLabelProperties];
+    self->_titleMaximumLineCount = count;
+    _alertControllerView = [(UIAlertController *)self _alertControllerView];
+    [_alertControllerView _updateLabelProperties];
   }
 }
 
-- (void)_setTitleLineBreakMode:(int64_t)a3
+- (void)_setTitleLineBreakMode:(int64_t)mode
 {
-  if (self->_titleLineBreakMode != a3)
+  if (self->_titleLineBreakMode != mode)
   {
-    self->_titleLineBreakMode = a3;
-    v4 = [(UIAlertController *)self _alertControllerView];
-    [v4 _updateLabelProperties];
+    self->_titleLineBreakMode = mode;
+    _alertControllerView = [(UIAlertController *)self _alertControllerView];
+    [_alertControllerView _updateLabelProperties];
   }
 }
 
-- (void)_setAttributedMessage:(id)a3
+- (void)_setAttributedMessage:(id)message
 {
-  v7 = a3;
-  if (([v7 isEqual:self->_attributedMessage] & 1) == 0)
+  messageCopy = message;
+  if (([messageCopy isEqual:self->_attributedMessage] & 1) == 0)
   {
-    v4 = [v7 copy];
+    v4 = [messageCopy copy];
     attributedMessage = self->_attributedMessage;
     self->_attributedMessage = v4;
 
-    v6 = [(UIAlertController *)self _alertControllerView];
-    [v6 _setAttributedMessage:v7];
+    _alertControllerView = [(UIAlertController *)self _alertControllerView];
+    [_alertControllerView _setAttributedMessage:messageCopy];
   }
 }
 
-- (void)_setAttributedDetailMessage:(id)a3
+- (void)_setAttributedDetailMessage:(id)message
 {
-  v7 = a3;
-  if (([v7 isEqual:self->_attributedDetailMessage] & 1) == 0)
+  messageCopy = message;
+  if (([messageCopy isEqual:self->_attributedDetailMessage] & 1) == 0)
   {
-    v4 = [v7 copy];
+    v4 = [messageCopy copy];
     attributedDetailMessage = self->_attributedDetailMessage;
     self->_attributedDetailMessage = v4;
 
-    v6 = [(UIAlertController *)self _alertControllerView];
-    [v6 _setAttributedDetailMessage:v7];
+    _alertControllerView = [(UIAlertController *)self _alertControllerView];
+    [_alertControllerView _setAttributedDetailMessage:messageCopy];
   }
 }
 
 - (BOOL)_hasTitle
 {
-  v3 = [(UIViewController *)self title];
+  title = [(UIViewController *)self title];
 
   if (![(UIAlertController *)self _shouldTreatEmptyStringsAsNil])
   {
-    if (!v3)
+    if (!title)
     {
       goto LABEL_4;
     }
@@ -2386,10 +2386,10 @@ LABEL_18:
     return 1;
   }
 
-  if (v3)
+  if (title)
   {
-    v4 = [(UIViewController *)self title];
-    v5 = [v4 length];
+    title2 = [(UIViewController *)self title];
+    v5 = [title2 length];
 
     if (v5)
     {
@@ -2404,10 +2404,10 @@ LABEL_4:
 
 - (BOOL)_hasAttributedTitle
 {
-  v3 = [(UIAlertController *)self _attributedTitle];
+  _attributedTitle = [(UIAlertController *)self _attributedTitle];
 
   v4 = ![(UIAlertController *)self _shouldTreatEmptyStringsAsNil];
-  if (v3)
+  if (_attributedTitle)
   {
     v5 = v4;
   }
@@ -2417,10 +2417,10 @@ LABEL_4:
     v5 = 0;
   }
 
-  if ((v4 & 1) == 0 && v3)
+  if ((v4 & 1) == 0 && _attributedTitle)
   {
-    v6 = [(UIAlertController *)self _attributedTitle];
-    v5 = [v6 length] != 0;
+    _attributedTitle2 = [(UIAlertController *)self _attributedTitle];
+    v5 = [_attributedTitle2 length] != 0;
   }
 
   return v5;
@@ -2428,11 +2428,11 @@ LABEL_4:
 
 - (BOOL)_hasMessage
 {
-  v3 = [(UIAlertController *)self message];
+  message = [(UIAlertController *)self message];
 
   if (![(UIAlertController *)self _shouldTreatEmptyStringsAsNil])
   {
-    if (!v3)
+    if (!message)
     {
       goto LABEL_4;
     }
@@ -2440,10 +2440,10 @@ LABEL_4:
     return 1;
   }
 
-  if (v3)
+  if (message)
   {
-    v4 = [(UIAlertController *)self message];
-    v5 = [v4 length];
+    message2 = [(UIAlertController *)self message];
+    v5 = [message2 length];
 
     if (v5)
     {
@@ -2458,10 +2458,10 @@ LABEL_4:
 
 - (BOOL)_hasAttributedMessage
 {
-  v3 = [(UIAlertController *)self _attributedMessage];
+  _attributedMessage = [(UIAlertController *)self _attributedMessage];
 
   v4 = ![(UIAlertController *)self _shouldTreatEmptyStringsAsNil];
-  if (v3)
+  if (_attributedMessage)
   {
     v5 = v4;
   }
@@ -2471,10 +2471,10 @@ LABEL_4:
     v5 = 0;
   }
 
-  if ((v4 & 1) == 0 && v3)
+  if ((v4 & 1) == 0 && _attributedMessage)
   {
-    v6 = [(UIAlertController *)self _attributedMessage];
-    v5 = [v6 length] != 0;
+    _attributedMessage2 = [(UIAlertController *)self _attributedMessage];
+    v5 = [_attributedMessage2 length] != 0;
   }
 
   return v5;
@@ -2482,10 +2482,10 @@ LABEL_4:
 
 - (BOOL)_hasDetailMessage
 {
-  v3 = [(UIAlertController *)self _attributedDetailMessage];
+  _attributedDetailMessage = [(UIAlertController *)self _attributedDetailMessage];
 
   v4 = ![(UIAlertController *)self _shouldTreatEmptyStringsAsNil];
-  if (v3)
+  if (_attributedDetailMessage)
   {
     v5 = v4;
   }
@@ -2495,10 +2495,10 @@ LABEL_4:
     v5 = 0;
   }
 
-  if ((v4 & 1) == 0 && v3)
+  if ((v4 & 1) == 0 && _attributedDetailMessage)
   {
-    v6 = [(UIAlertController *)self _attributedDetailMessage];
-    v5 = [v6 length] != 0;
+    _attributedDetailMessage2 = [(UIAlertController *)self _attributedDetailMessage];
+    v5 = [_attributedDetailMessage2 length] != 0;
   }
 
   return v5;
@@ -2534,50 +2534,50 @@ LABEL_4:
 
 - (UIAlertAction)_focusedAction
 {
-  v2 = [(UIAlertController *)self _alertControllerView];
-  v3 = [v2 _focusedAction];
+  _alertControllerView = [(UIAlertController *)self _alertControllerView];
+  _focusedAction = [_alertControllerView _focusedAction];
 
-  return v3;
+  return _focusedAction;
 }
 
 - (UIView)_foregroundView
 {
-  v2 = [(UIAlertController *)self _alertControllerView];
-  v3 = [v2 _contentView];
+  _alertControllerView = [(UIAlertController *)self _alertControllerView];
+  _contentView = [_alertControllerView _contentView];
 
-  return v3;
+  return _contentView;
 }
 
 - (UIView)_dimmingView
 {
   if ([(UIAlertController *)self _shouldProvideDimmingView])
   {
-    v3 = [(UIAlertController *)self _alertControllerView];
+    _alertControllerView = [(UIAlertController *)self _alertControllerView];
 LABEL_4:
-    v4 = [v3 _dimmingView];
+    _dimmingView = [_alertControllerView _dimmingView];
     goto LABEL_6;
   }
 
-  v3 = [(UIViewController *)self _existingPresentationControllerImmediate:1 effective:1];
+  _alertControllerView = [(UIViewController *)self _existingPresentationControllerImmediate:1 effective:1];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     goto LABEL_4;
   }
 
-  v4 = 0;
+  _dimmingView = 0;
 LABEL_6:
 
-  return v4;
+  return _dimmingView;
 }
 
 - (UIEdgeInsets)_contentInsets
 {
-  v3 = [(UIAlertController *)self _alertControllerView];
-  v4 = [v3 _visualStyle];
-  v5 = [(UIViewController *)self _existingView];
-  v6 = [v5 superview];
-  [v4 contentInsetsForContainerView:v6];
+  _alertControllerView = [(UIAlertController *)self _alertControllerView];
+  _visualStyle = [_alertControllerView _visualStyle];
+  _existingView = [(UIViewController *)self _existingView];
+  superview = [_existingView superview];
+  [_visualStyle contentInsetsForContainerView:superview];
   v8 = v7;
   v10 = v9;
   v12 = v11;
@@ -2594,261 +2594,261 @@ LABEL_6:
   return result;
 }
 
-- (void)_setSeparatedHeaderContentViewController:(id)a3
+- (void)_setSeparatedHeaderContentViewController:(id)controller
 {
-  v5 = a3;
-  if (self->_separatedHeaderContentViewController != v5)
+  controllerCopy = controller;
+  if (self->_separatedHeaderContentViewController != controllerCopy)
   {
-    v11 = v5;
-    v6 = [(UIAlertController *)self _separatedHeaderContentViewController];
-    [v6 removeFromParentViewController];
-    v7 = [(UIAlertController *)self _alertControllerView];
-    if ([v7 conformsToProtocol:&unk_1EFF9DFA0])
+    v11 = controllerCopy;
+    _separatedHeaderContentViewController = [(UIAlertController *)self _separatedHeaderContentViewController];
+    [_separatedHeaderContentViewController removeFromParentViewController];
+    _alertControllerView = [(UIAlertController *)self _alertControllerView];
+    if ([_alertControllerView conformsToProtocol:&unk_1EFF9DFA0])
     {
-      [v7 _removeSeparatedHeaderContentViewControllerFromHierarchy];
+      [_alertControllerView _removeSeparatedHeaderContentViewControllerFromHierarchy];
     }
 
-    objc_storeStrong(&self->_separatedHeaderContentViewController, a3);
+    objc_storeStrong(&self->_separatedHeaderContentViewController, controller);
     v8 = v11;
     if (v11)
     {
-      v9 = [(UIViewController *)v11 view];
-      [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
+      view = [(UIViewController *)v11 view];
+      [view setTranslatesAutoresizingMaskIntoConstraints:0];
 
       [(UIViewController *)self addChildViewController:v11];
       [(UIViewController *)v11 didMoveToParentViewController:self];
       v8 = v11;
-      if (v7)
+      if (_alertControllerView)
       {
-        v10 = [v7 conformsToProtocol:&unk_1EFF9DFA0];
+        v10 = [_alertControllerView conformsToProtocol:&unk_1EFF9DFA0];
         v8 = v11;
         if (v10)
         {
-          [v7 _addSeparatedHeaderContentViewControllerToViewHierarchyIfNecessary];
+          [_alertControllerView _addSeparatedHeaderContentViewControllerToViewHierarchyIfNecessary];
           v8 = v11;
         }
       }
     }
 
-    if ((v8 != 0) == (v6 == 0))
+    if ((v8 != 0) == (_separatedHeaderContentViewController == 0))
     {
-      [v7 _propertiesChanged];
+      [_alertControllerView _propertiesChanged];
       [(UIAlertController *)self _updateProvidedStyle];
     }
 
-    v5 = v11;
+    controllerCopy = v11;
   }
 }
 
-- (void)_setHeaderContentViewController:(id)a3
+- (void)_setHeaderContentViewController:(id)controller
 {
-  v5 = a3;
-  if (self->_headerContentViewController != v5)
+  controllerCopy = controller;
+  if (self->_headerContentViewController != controllerCopy)
   {
-    v11 = v5;
-    v6 = [(UIAlertController *)self _headerContentViewController];
-    [v6 removeFromParentViewController];
-    v7 = [(UIAlertController *)self _alertControllerView];
-    if ([v7 conformsToProtocol:&unk_1EFF9DFA0])
+    v11 = controllerCopy;
+    _headerContentViewController = [(UIAlertController *)self _headerContentViewController];
+    [_headerContentViewController removeFromParentViewController];
+    _alertControllerView = [(UIAlertController *)self _alertControllerView];
+    if ([_alertControllerView conformsToProtocol:&unk_1EFF9DFA0])
     {
-      [v7 _removeHeaderContentViewControllerViewFromHierarchy];
+      [_alertControllerView _removeHeaderContentViewControllerViewFromHierarchy];
     }
 
-    objc_storeStrong(&self->_headerContentViewController, a3);
+    objc_storeStrong(&self->_headerContentViewController, controller);
     v8 = v11;
     if (v11)
     {
-      v9 = [(UIViewController *)v11 view];
-      [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
+      view = [(UIViewController *)v11 view];
+      [view setTranslatesAutoresizingMaskIntoConstraints:0];
 
       [(UIViewController *)self addChildViewController:v11];
       [(UIViewController *)v11 didMoveToParentViewController:self];
       v8 = v11;
-      if (v7)
+      if (_alertControllerView)
       {
-        v10 = [v7 conformsToProtocol:&unk_1EFF9DFA0];
+        v10 = [_alertControllerView conformsToProtocol:&unk_1EFF9DFA0];
         v8 = v11;
         if (v10)
         {
-          [v7 _addHeaderContentViewControllerToViewHierarchyIfNecessary];
+          [_alertControllerView _addHeaderContentViewControllerToViewHierarchyIfNecessary];
           v8 = v11;
         }
       }
     }
 
-    if ((v8 != 0) == (v6 == 0))
+    if ((v8 != 0) == (_headerContentViewController == 0))
     {
-      [v7 _propertiesChanged];
+      [_alertControllerView _propertiesChanged];
       [(UIAlertController *)self _updateProvidedStyle];
     }
 
-    v5 = v11;
+    controllerCopy = v11;
   }
 }
 
-- (void)setContentViewController:(id)a3
+- (void)setContentViewController:(id)controller
 {
-  v5 = a3;
-  if (self->_contentViewController != v5)
+  controllerCopy = controller;
+  if (self->_contentViewController != controllerCopy)
   {
-    v11 = v5;
-    v6 = [(UIAlertController *)self contentViewController];
-    [v6 removeFromParentViewController];
-    v7 = [(UIAlertController *)self _alertControllerView];
-    if ([v7 conformsToProtocol:&unk_1EFF9E0A8])
+    v11 = controllerCopy;
+    contentViewController = [(UIAlertController *)self contentViewController];
+    [contentViewController removeFromParentViewController];
+    _alertControllerView = [(UIAlertController *)self _alertControllerView];
+    if ([_alertControllerView conformsToProtocol:&unk_1EFF9E0A8])
     {
-      [v7 _removeContentViewControllerViewFromHierarchy];
+      [_alertControllerView _removeContentViewControllerViewFromHierarchy];
     }
 
-    objc_storeStrong(&self->_contentViewController, a3);
+    objc_storeStrong(&self->_contentViewController, controller);
     v8 = v11;
     if (v11)
     {
-      v9 = [(UIViewController *)v11 view];
-      [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
+      view = [(UIViewController *)v11 view];
+      [view setTranslatesAutoresizingMaskIntoConstraints:0];
 
       [(UIViewController *)self addChildViewController:v11];
       [(UIViewController *)v11 didMoveToParentViewController:self];
       v8 = v11;
-      if (v7)
+      if (_alertControllerView)
       {
-        v10 = [v7 conformsToProtocol:&unk_1EFF9E0A8];
+        v10 = [_alertControllerView conformsToProtocol:&unk_1EFF9E0A8];
         v8 = v11;
         if (v10)
         {
-          [v7 _addContentViewControllerToViewHierarchyIfNecessary];
+          [_alertControllerView _addContentViewControllerToViewHierarchyIfNecessary];
           v8 = v11;
         }
       }
     }
 
-    if ((v8 != 0) == (v6 == 0))
+    if ((v8 != 0) == (contentViewController == 0))
     {
-      [v7 _propertiesChanged];
+      [_alertControllerView _propertiesChanged];
       [(UIAlertController *)self _updateProvidedStyle];
     }
 
-    v5 = v11;
+    controllerCopy = v11;
   }
 }
 
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container
 {
-  v12 = a3;
-  v4 = [(UIAlertController *)self _alertControllerView];
-  v5 = [v4 conformsToProtocol:&unk_1EFF9E0A8];
+  containerCopy = container;
+  _alertControllerView = [(UIAlertController *)self _alertControllerView];
+  v5 = [_alertControllerView conformsToProtocol:&unk_1EFF9E0A8];
 
   if (v5)
   {
-    v6 = [(UIAlertController *)self _alertControllerView];
-    v7 = [(UIAlertController *)self contentViewController];
+    _alertControllerView2 = [(UIAlertController *)self _alertControllerView];
+    contentViewController = [(UIAlertController *)self contentViewController];
 
-    if (v7 == v12)
+    if (contentViewController == containerCopy)
     {
-      [v6 _sizeOfContentViewControllerChanged];
+      [_alertControllerView2 _sizeOfContentViewControllerChanged];
     }
   }
 
-  v8 = [(UIAlertController *)self _alertControllerView];
-  v9 = [v8 conformsToProtocol:&unk_1EFF9DFA0];
+  _alertControllerView3 = [(UIAlertController *)self _alertControllerView];
+  v9 = [_alertControllerView3 conformsToProtocol:&unk_1EFF9DFA0];
 
   if (v9)
   {
-    v10 = [(UIAlertController *)self _alertControllerView];
-    v11 = [(UIAlertController *)self _headerContentViewController];
+    _alertControllerView4 = [(UIAlertController *)self _alertControllerView];
+    _headerContentViewController = [(UIAlertController *)self _headerContentViewController];
 
-    if (v11 == v12)
+    if (_headerContentViewController == containerCopy)
     {
-      [v10 _sizeOfHeaderContentViewControllerChanged];
+      [_alertControllerView4 _sizeOfHeaderContentViewControllerChanged];
     }
 
     else
     {
-      [v10 _sizeOfTextFieldViewControllerChanged];
+      [_alertControllerView4 _sizeOfTextFieldViewControllerChanged];
     }
 
     [(UIAlertController *)self _recomputePreferredContentSize];
   }
 }
 
-- (void)_headerContentViewControllerWillTransitionToSize:(CGSize)a3 withAnimations:(id)a4
+- (void)_headerContentViewControllerWillTransitionToSize:(CGSize)size withAnimations:(id)animations
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
-  v8 = [(UIAlertController *)self _headerContentViewController];
-  [(UIAlertController *)self _childViewController:v8 willTransitionToSize:v7 withAnimations:width, height];
+  height = size.height;
+  width = size.width;
+  animationsCopy = animations;
+  _headerContentViewController = [(UIAlertController *)self _headerContentViewController];
+  [(UIAlertController *)self _childViewController:_headerContentViewController willTransitionToSize:animationsCopy withAnimations:width, height];
 }
 
-- (void)_contentViewControllerWillTransitionToSize:(CGSize)a3 withAnimations:(id)a4
+- (void)_contentViewControllerWillTransitionToSize:(CGSize)size withAnimations:(id)animations
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
-  v8 = [(UIAlertController *)self contentViewController];
-  [(UIAlertController *)self _childViewController:v8 willTransitionToSize:v7 withAnimations:width, height];
+  height = size.height;
+  width = size.width;
+  animationsCopy = animations;
+  contentViewController = [(UIAlertController *)self contentViewController];
+  [(UIAlertController *)self _childViewController:contentViewController willTransitionToSize:animationsCopy withAnimations:width, height];
 }
 
-- (void)_childViewController:(id)a3 willTransitionToSize:(CGSize)a4 withAnimations:(id)a5
+- (void)_childViewController:(id)controller willTransitionToSize:(CGSize)size withAnimations:(id)animations
 {
-  height = a4.height;
-  width = a4.width;
-  v9 = a3;
-  v10 = a5;
+  height = size.height;
+  width = size.width;
+  controllerCopy = controller;
+  animationsCopy = animations;
   if (![(UIViewController *)self isBeingPresented]&& ![(UIViewController *)self isBeingDismissed])
   {
-    v14 = objc_alloc_init(_UIAnimationCoordinator);
-    v15 = [(UIAlertController *)self _alertControllerView];
-    v16 = v9;
-    [(_UIAnimationCoordinator *)v14 setDuration:0.35];
+    _alertControllerView2 = objc_alloc_init(_UIAnimationCoordinator);
+    _alertControllerView = [(UIAlertController *)self _alertControllerView];
+    v16 = controllerCopy;
+    [(_UIAnimationCoordinator *)_alertControllerView2 setDuration:0.35];
     v33[0] = MEMORY[0x1E69E9820];
     v33[1] = 3221225472;
     v33[2] = __78__UIAlertController__childViewController_willTransitionToSize_withAnimations___block_invoke_2;
     v33[3] = &__block_descriptor_48_e33_v16__0___UIAnimationCoordinator_8l;
     *&v33[4] = width;
     *&v33[5] = height;
-    [(_UIAnimationCoordinator *)v14 setPreperation:v33];
+    [(_UIAnimationCoordinator *)_alertControllerView2 setPreperation:v33];
     v30[0] = MEMORY[0x1E69E9820];
     v30[1] = 3221225472;
     v30[2] = __78__UIAlertController__childViewController_willTransitionToSize_withAnimations___block_invoke_3;
     v30[3] = &unk_1E70F4A00;
-    v32 = v10;
-    v17 = v15;
+    v32 = animationsCopy;
+    v17 = _alertControllerView;
     v31 = v17;
-    [(_UIAnimationCoordinator *)v14 setAnimator:v30];
+    [(_UIAnimationCoordinator *)_alertControllerView2 setAnimator:v30];
     objc_initWeak(&location, self);
     v27[0] = MEMORY[0x1E69E9820];
     v27[1] = 3221225472;
     v27[2] = __78__UIAlertController__childViewController_willTransitionToSize_withAnimations___block_invoke_4;
     v27[3] = &unk_1E70F4A28;
     objc_copyWeak(&v28, &location);
-    [(_UIAnimationCoordinator *)v14 setCompletion:v27];
-    [(_UIAnimationCoordinator *)v14 setContainerView:v17];
-    [(_UIAnimationCoordinator *)v14 setViewController:v16];
-    v18 = [v16 view];
-    [v18 frame];
+    [(_UIAnimationCoordinator *)_alertControllerView2 setCompletion:v27];
+    [(_UIAnimationCoordinator *)_alertControllerView2 setContainerView:v17];
+    [(_UIAnimationCoordinator *)_alertControllerView2 setViewController:v16];
+    view = [v16 view];
+    [view frame];
     v20 = v19;
     v22 = v21;
     v24 = v23;
     v26 = v25;
 
-    [(_UIAnimationCoordinator *)v14 setStartFrame:v20, v22, v24, v26];
-    [(_UIAnimationCoordinator *)v14 setEndFrame:v20, v22, v24, v26];
-    [(UIAlertController *)self setTemporaryAnimationCoordinator:v14];
-    [(_UIAnimationCoordinator *)v14 animate];
+    [(_UIAnimationCoordinator *)_alertControllerView2 setStartFrame:v20, v22, v24, v26];
+    [(_UIAnimationCoordinator *)_alertControllerView2 setEndFrame:v20, v22, v24, v26];
+    [(UIAlertController *)self setTemporaryAnimationCoordinator:_alertControllerView2];
+    [(_UIAnimationCoordinator *)_alertControllerView2 animate];
     objc_destroyWeak(&v28);
     objc_destroyWeak(&location);
 
     goto LABEL_7;
   }
 
-  v11 = [(UIViewController *)self transitionCoordinator];
+  transitionCoordinator = [(UIViewController *)self transitionCoordinator];
 
-  if (!v11 || (-[UIViewController transitionCoordinator](self, "transitionCoordinator"), v12 = objc_claimAutoreleasedReturnValue(), v34[0] = MEMORY[0x1E69E9820], v34[1] = 3221225472, v34[2] = __78__UIAlertController__childViewController_willTransitionToSize_withAnimations___block_invoke, v34[3] = &unk_1E70F49B8, v35 = v10, v13 = [v12 animateAlongsideTransition:v34 completion:0], v12, v35, (v13 & 1) == 0))
+  if (!transitionCoordinator || (-[UIViewController transitionCoordinator](self, "transitionCoordinator"), v12 = objc_claimAutoreleasedReturnValue(), v34[0] = MEMORY[0x1E69E9820], v34[1] = 3221225472, v34[2] = __78__UIAlertController__childViewController_willTransitionToSize_withAnimations___block_invoke, v34[3] = &unk_1E70F49B8, v35 = animationsCopy, v13 = [v12 animateAlongsideTransition:v34 completion:0], v12, v35, (v13 & 1) == 0))
   {
-    v10[2](v10);
-    v14 = [(UIAlertController *)self _alertControllerView];
-    [(_UIAnimationCoordinator *)v14 layoutIfNeeded];
+    animationsCopy[2](animationsCopy);
+    _alertControllerView2 = [(UIAlertController *)self _alertControllerView];
+    [(_UIAnimationCoordinator *)_alertControllerView2 layoutIfNeeded];
 LABEL_7:
   }
 }
@@ -2883,66 +2883,66 @@ void __78__UIAlertController__childViewController_willTransitionToSize_withAnima
   [WeakRetained setTemporaryAnimationCoordinator:0];
 }
 
-+ (id)_alertControllerContainedInViewController:(id)a3
++ (id)_alertControllerContainedInViewController:(id)controller
 {
-  v5 = a3;
-  if (([v5 conformsToProtocol:&unk_1EFEC3198] & 1) == 0)
+  controllerCopy = controller;
+  if (([controllerCopy conformsToProtocol:&unk_1EFEC3198] & 1) == 0)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:a1 file:@"UIAlertController.m" lineNumber:2275 description:@"A view controller not containing an alert controller was asked for its contained alert controller."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIAlertController.m" lineNumber:2275 description:@"A view controller not containing an alert controller was asked for its contained alert controller."];
   }
 
-  v6 = [v5 _containedAlertController];
+  _containedAlertController = [controllerCopy _containedAlertController];
 
-  return v6;
+  return _containedAlertController;
 }
 
 - (BOOL)_hasContentToDisplay
 {
-  v2 = self;
-  v3 = [(UIViewController *)v2 title];
-  if (v3)
+  selfCopy = self;
+  title = [(UIViewController *)selfCopy title];
+  if (title)
   {
     goto LABEL_2;
   }
 
-  v6 = [(UIAlertController *)v2 _attributedTitle];
+  _attributedTitle = [(UIAlertController *)selfCopy _attributedTitle];
 
-  if (v6)
+  if (_attributedTitle)
   {
     return 1;
   }
 
-  v8 = v2;
-  v3 = [(UIAlertController *)v8 message];
-  if (v3)
+  v8 = selfCopy;
+  title = [(UIAlertController *)v8 message];
+  if (title)
   {
 LABEL_2:
-    v4 = v3;
+    _headerContentViewController = title;
     goto LABEL_3;
   }
 
-  v9 = [(UIAlertController *)v8 _attributedMessage];
+  _attributedMessage = [(UIAlertController *)v8 _attributedMessage];
 
-  if (v9)
+  if (_attributedMessage)
   {
     return 1;
   }
 
   v10 = v8;
-  v4 = [(UIAlertController *)v10 _headerContentViewController];
-  if (!v4)
+  _headerContentViewController = [(UIAlertController *)v10 _headerContentViewController];
+  if (!_headerContentViewController)
   {
-    v11 = [(UIAlertController *)v10 contentViewController];
-    if (v11)
+    contentViewController = [(UIAlertController *)v10 contentViewController];
+    if (contentViewController)
     {
       v5 = 1;
     }
 
     else
     {
-      v12 = [(UIAlertController *)v10 _actions];
-      v5 = [v12 count] != 0;
+      _actions = [(UIAlertController *)v10 _actions];
+      v5 = [_actions count] != 0;
     }
 
     goto LABEL_4;
@@ -2955,56 +2955,56 @@ LABEL_4:
   return v5;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
-  v6 = [(UIViewController *)self _window];
-  v7 = [v6 windowScene];
-  v8 = [v7 _alertControllerStackManager];
-  objc_storeWeak(&self->_alertControllerStackManager, v8);
+  appearCopy = appear;
+  _window = [(UIViewController *)self _window];
+  windowScene = [_window windowScene];
+  _alertControllerStackManager = [windowScene _alertControllerStackManager];
+  objc_storeWeak(&self->_alertControllerStackManager, _alertControllerStackManager);
 
   WeakRetained = objc_loadWeakRetained(&self->_alertControllerStackManager);
   [WeakRetained _alertControllerWillAppear:self];
 
-  [(UIAlertController *)self _preserveInputViewsAnimated:v3];
+  [(UIAlertController *)self _preserveInputViewsAnimated:appearCopy];
   [(UIAlertController *)self _becomeFirstResponderIfAppropriate];
   [(UIAlertController *)self _addReturnKeyCommandIfAppropriate];
-  v10 = [(UIViewController *)self transitionCoordinator];
-  v11 = v10;
-  if (v10)
+  transitionCoordinator = [(UIViewController *)self transitionCoordinator];
+  v11 = transitionCoordinator;
+  if (transitionCoordinator)
   {
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __36__UIAlertController_viewWillAppear___block_invoke;
     v17[3] = &unk_1E70F4990;
     v17[4] = self;
-    v18 = v10;
+    v18 = transitionCoordinator;
     [v18 animateAlongsideTransition:v17 completion:0];
   }
 
   else
   {
-    v12 = [(UIAlertController *)self _alertControllerView];
-    [v12 configureForPresentAlongsideTransitionCoordinator:0];
+    _alertControllerView = [(UIAlertController *)self _alertControllerView];
+    [_alertControllerView configureForPresentAlongsideTransitionCoordinator:0];
   }
 
   v16.receiver = self;
   v16.super_class = UIAlertController;
-  [(UIViewController *)&v16 viewWillAppear:v3];
+  [(UIViewController *)&v16 viewWillAppear:appearCopy];
   if (![(UIAlertController *)self _shouldAllowNilParameters]&& ![(UIAlertController *)self _hasContentToDisplay])
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"UIAlertController.m" lineNumber:2346 description:{@"UIAlertController must have a title, a message or an action to display"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIAlertController.m" lineNumber:2346 description:{@"UIAlertController must have a title, a message or an action to display"}];
   }
 
   self->_actionInvokedOnDismiss = 0;
   if (!+[UIAlertController _shouldUsePresentationController]&& ![(UIAlertController *)self _isPresentedAsPopover])
   {
-    v13 = [(UIAlertController *)self _alertControllerView];
-    [v13 setShouldHaveBackdropView:1];
+    _alertControllerView2 = [(UIAlertController *)self _alertControllerView];
+    [_alertControllerView2 setShouldHaveBackdropView:1];
 
-    v14 = [(UIAlertController *)self _alertControllerView];
-    [v14 setHasDimmingView:1];
+    _alertControllerView3 = [(UIAlertController *)self _alertControllerView];
+    [_alertControllerView3 setHasDimmingView:1];
   }
 
   if ([(UIViewController *)self isBeingPresented])
@@ -3019,63 +3019,63 @@ void __36__UIAlertController_viewWillAppear___block_invoke(uint64_t a1)
   [v2 configureForPresentAlongsideTransitionCoordinator:*(a1 + 40)];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   WeakRetained = objc_loadWeakRetained(&self->_alertControllerStackManager);
   [WeakRetained _alertControllerDidAppear:self];
 
-  v6 = [(UIAlertController *)self _alertControllerView];
-  v7 = [(UIAlertController *)self _systemProvidedGestureRecognizer];
-  [v6 beginTrackingSessionByTakingOverForSystemProvidedGestureRecognizer:v7];
+  _alertControllerView = [(UIAlertController *)self _alertControllerView];
+  _systemProvidedGestureRecognizer = [(UIAlertController *)self _systemProvidedGestureRecognizer];
+  [_alertControllerView beginTrackingSessionByTakingOverForSystemProvidedGestureRecognizer:_systemProvidedGestureRecognizer];
 
   v8.receiver = self;
   v8.super_class = UIAlertController;
-  [(UIViewController *)&v8 viewDidAppear:v3];
+  [(UIViewController *)&v8 viewDidAppear:appearCopy];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   WeakRetained = objc_loadWeakRetained(&self->_alertControllerStackManager);
   [WeakRetained _alertControllerWillDisappear:self];
 
   [(_UIAlertControllerTextFieldViewController *)self->_textFieldViewController resignFirstResponder];
-  if (v3)
+  if (disappearCopy)
   {
     [(UIAlertController *)self _restoreInputViewsAnimated:1];
   }
 
-  v6 = [(UIAlertController *)self _alertControllerView];
-  v7 = [(UIViewController *)self transitionCoordinator];
-  [v6 configureForDismissAlongsideTransitionCoordinator:v7];
+  _alertControllerView = [(UIAlertController *)self _alertControllerView];
+  transitionCoordinator = [(UIViewController *)self transitionCoordinator];
+  [_alertControllerView configureForDismissAlongsideTransitionCoordinator:transitionCoordinator];
 
   v8.receiver = self;
   v8.super_class = UIAlertController;
-  [(UIViewController *)&v8 viewWillDisappear:v3];
+  [(UIViewController *)&v8 viewWillDisappear:disappearCopy];
   if ([(UIViewController *)self isBeingDismissed])
   {
     [(UIAlertController *)self _logBeingDismissed];
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   WeakRetained = objc_loadWeakRetained(&self->_alertControllerStackManager);
   [WeakRetained _alertControllerDidDisappear:self];
 
-  if (!v3)
+  if (!disappearCopy)
   {
     [(UIAlertController *)self _restoreInputViewsAnimated:0];
   }
 
-  v6 = [(UIAlertController *)self _alertControllerView];
-  [v6 deselectAllActions];
+  _alertControllerView = [(UIAlertController *)self _alertControllerView];
+  [_alertControllerView deselectAllActions];
 
   v7.receiver = self;
   v7.super_class = UIAlertController;
-  [(UIViewController *)&v7 viewDidDisappear:v3];
+  [(UIViewController *)&v7 viewDidDisappear:disappearCopy];
 }
 
 - (BOOL)_shouldPreserveInputViews
@@ -3084,12 +3084,12 @@ void __36__UIAlertController_viewWillAppear___block_invoke(uint64_t a1)
   {
     if (+[UIAlertController _shouldUsePresentationController])
     {
-      v3 = [(UIViewController *)self _window];
+      _window = [(UIViewController *)self _window];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v4 = [(UIViewController *)self presentationController];
-        v5 = [v4 _preserveResponderAcrossWindows] ^ 1;
+        presentationController = [(UIViewController *)self presentationController];
+        v5 = [presentationController _preserveResponderAcrossWindows] ^ 1;
       }
 
       else
@@ -3112,30 +3112,30 @@ void __36__UIAlertController_viewWillAppear___block_invoke(uint64_t a1)
   return v5;
 }
 
-- (void)_preserveInputViewsAnimated:(BOOL)a3
+- (void)_preserveInputViewsAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   if (![(UIAlertController *)self _hasPreservedInputViews]&& [(UIAlertController *)self _shouldPreserveInputViews])
   {
     [(UIAlertController *)self _setHasPreservedInputViews:1];
-    v8 = [(UIViewController *)self _window];
-    v5 = [v8 windowScene];
-    v6 = [v5 keyboardSceneDelegate];
+    _window = [(UIViewController *)self _window];
+    windowScene = [_window windowScene];
+    keyboardSceneDelegate = [windowScene keyboardSceneDelegate];
     v7 = [MEMORY[0x1E696B098] valueWithPointer:self];
-    [v6 _preserveInputViewsWithId:v7 animated:v3];
+    [keyboardSceneDelegate _preserveInputViewsWithId:v7 animated:animatedCopy];
   }
 }
 
-- (void)_restoreInputViewsAnimated:(BOOL)a3
+- (void)_restoreInputViewsAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   if ([(UIAlertController *)self _hasPreservedInputViews])
   {
-    v5 = [(UIViewController *)self _window];
-    v6 = [v5 windowScene];
-    v7 = [v6 keyboardSceneDelegate];
+    _window = [(UIViewController *)self _window];
+    windowScene = [_window windowScene];
+    keyboardSceneDelegate = [windowScene keyboardSceneDelegate];
     v8 = [MEMORY[0x1E696B098] valueWithPointer:self];
-    [v7 _restoreInputViewsWithId:v8 animated:v3];
+    [keyboardSceneDelegate _restoreInputViewsWithId:v8 animated:animatedCopy];
 
     [(UIAlertController *)self _setHasPreservedInputViews:0];
   }
@@ -3143,12 +3143,12 @@ void __36__UIAlertController_viewWillAppear___block_invoke(uint64_t a1)
 
 - (BOOL)_shouldBecomeFirstResponder
 {
-  v3 = [(UIAlertController *)self _resolvedStyle];
-  v4 = v3;
-  if (v3 == 1000 || v3 == 1)
+  _resolvedStyle = [(UIAlertController *)self _resolvedStyle];
+  v4 = _resolvedStyle;
+  if (_resolvedStyle == 1000 || _resolvedStyle == 1)
   {
-    v3 = [(UIViewController *)self _focusSystem];
-    v5 = v3 == 0;
+    _resolvedStyle = [(UIViewController *)self _focusSystem];
+    v5 = _resolvedStyle == 0;
   }
 
   else
@@ -3172,74 +3172,74 @@ void __36__UIAlertController_viewWillAppear___block_invoke(uint64_t a1)
   }
 }
 
-- (void)_setHidden:(BOOL)a3
+- (void)_setHidden:(BOOL)hidden
 {
-  if (self->_hidden != a3)
+  if (self->_hidden != hidden)
   {
-    v3 = a3;
-    self->_hidden = a3;
-    v5 = [(UIViewController *)self view];
-    [v5 setHidden:self->_hidden];
+    hiddenCopy = hidden;
+    self->_hidden = hidden;
+    view = [(UIViewController *)self view];
+    [view setHidden:self->_hidden];
 
     if (+[UIAlertController _shouldUsePresentationController])
     {
-      v6 = [(UIViewController *)self presentationController];
+      presentationController = [(UIViewController *)self presentationController];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [v6 _setChromeHidden:v3];
+        [presentationController _setChromeHidden:hiddenCopy];
       }
     }
   }
 }
 
-- (void)_setEffectAlpha:(double)a3
+- (void)_setEffectAlpha:(double)alpha
 {
-  v4 = [(UIAlertController *)self _alertControllerView];
-  [v4 setEffectAlpha:a3];
+  _alertControllerView = [(UIAlertController *)self _alertControllerView];
+  [_alertControllerView setEffectAlpha:alpha];
 }
 
 - (double)_effectAlpha
 {
-  v2 = [(UIAlertController *)self _alertControllerView];
-  [v2 effectAlpha];
+  _alertControllerView = [(UIAlertController *)self _alertControllerView];
+  [_alertControllerView effectAlpha];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setSpringLoaded:(BOOL)a3
+- (void)setSpringLoaded:(BOOL)loaded
 {
-  if (self->_springLoaded != a3)
+  if (self->_springLoaded != loaded)
   {
-    self->_springLoaded = a3;
-    v4 = [(UIAlertController *)self _alertControllerView];
-    if ([v4 conformsToProtocol:&unk_1EFE9F560])
+    self->_springLoaded = loaded;
+    _alertControllerView = [(UIAlertController *)self _alertControllerView];
+    if ([_alertControllerView conformsToProtocol:&unk_1EFE9F560])
     {
-      [v4 setSpringLoaded:self->_springLoaded];
+      [_alertControllerView setSpringLoaded:self->_springLoaded];
     }
   }
 }
 
-- (id)_setView:(id)a3 forSystemProvidedPresentationWithDelegate:(id)a4
+- (id)_setView:(id)view forSystemProvidedPresentationWithDelegate:(id)delegate
 {
   v38 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(UIAlertController *)self _systemProvidedPresentationView];
-  v9 = v8;
-  if (v8 != v6)
+  viewCopy = view;
+  delegateCopy = delegate;
+  _systemProvidedPresentationView = [(UIAlertController *)self _systemProvidedPresentationView];
+  v9 = _systemProvidedPresentationView;
+  if (_systemProvidedPresentationView != viewCopy)
   {
-    if (v8)
+    if (_systemProvidedPresentationView)
     {
-      v10 = [(UIAlertController *)self _previewInteractionController];
-      v11 = [v10 gestureRecognizers];
+      _previewInteractionController = [(UIAlertController *)self _previewInteractionController];
+      gestureRecognizers = [_previewInteractionController gestureRecognizers];
 
       v34 = 0u;
       v35 = 0u;
       v32 = 0u;
       v33 = 0u;
-      v12 = v11;
+      v12 = gestureRecognizers;
       v13 = [v12 countByEnumeratingWithState:&v32 objects:v37 count:16];
       if (v13)
       {
@@ -3268,21 +3268,21 @@ void __36__UIAlertController_viewWillAppear___block_invoke(uint64_t a1)
       [(UIAlertController *)self _setPreviewInteractionController:0];
     }
 
-    if (v6)
+    if (viewCopy)
     {
       v17 = objc_alloc_init(UIPreviewInteractionController);
-      v18 = [[UIPreviewForceInteractionProgress alloc] initWithView:v6 targetState:2];
+      v18 = [[UIPreviewForceInteractionProgress alloc] initWithView:viewCopy targetState:2];
       [(UIPreviewInteractionController *)v17 setInteractionProgressForPresentation:v18];
-      v19 = [(UIPreviewInteractionController *)v17 beginPreviewGestureRecognizer];
-      [(UIPreviewForceInteractionProgress *)v18 _setGestureBeginObservable:v19];
+      beginPreviewGestureRecognizer = [(UIPreviewInteractionController *)v17 beginPreviewGestureRecognizer];
+      [(UIPreviewForceInteractionProgress *)v18 _setGestureBeginObservable:beginPreviewGestureRecognizer];
 
       [(UIPreviewInteractionController *)v17 setDelegate:self];
-      v20 = [(UIPreviewInteractionController *)v17 gestureRecognizers];
+      gestureRecognizers2 = [(UIPreviewInteractionController *)v17 gestureRecognizers];
       v28 = 0u;
       v29 = 0u;
       v30 = 0u;
       v31 = 0u;
-      v21 = [v20 countByEnumeratingWithState:&v28 objects:v36 count:16];
+      v21 = [gestureRecognizers2 countByEnumeratingWithState:&v28 objects:v36 count:16];
       if (v21)
       {
         v22 = v21;
@@ -3293,51 +3293,51 @@ void __36__UIAlertController_viewWillAppear___block_invoke(uint64_t a1)
           {
             if (*v29 != v23)
             {
-              objc_enumerationMutation(v20);
+              objc_enumerationMutation(gestureRecognizers2);
             }
 
-            [v6 addGestureRecognizer:*(*(&v28 + 1) + 8 * j)];
+            [viewCopy addGestureRecognizer:*(*(&v28 + 1) + 8 * j)];
           }
 
-          v22 = [v20 countByEnumeratingWithState:&v28 objects:v36 count:16];
+          v22 = [gestureRecognizers2 countByEnumeratingWithState:&v28 objects:v36 count:16];
         }
 
         while (v22);
       }
 
-      [(UIAlertController *)self _setSystemProvidedPresentationDelegate:v7];
-      [(UIAlertController *)self _setSystemProvidedPresentationView:v6];
+      [(UIAlertController *)self _setSystemProvidedPresentationDelegate:delegateCopy];
+      [(UIAlertController *)self _setSystemProvidedPresentationView:viewCopy];
       [(UIAlertController *)self _setPreviewInteractionController:v17];
     }
   }
 
-  v25 = [(UIAlertController *)self _previewInteractionController];
-  v26 = [v25 presentationGestureRecognizer];
+  _previewInteractionController2 = [(UIAlertController *)self _previewInteractionController];
+  presentationGestureRecognizer = [_previewInteractionController2 presentationGestureRecognizer];
 
-  return v26;
+  return presentationGestureRecognizer;
 }
 
-- (id)previewInteractionController:(id)a3 viewControllerForPreviewingAtPosition:(CGPoint)a4 inView:(id)a5 presentingViewController:(id *)a6
+- (id)previewInteractionController:(id)controller viewControllerForPreviewingAtPosition:(CGPoint)position inView:(id)view presentingViewController:(id *)viewController
 {
-  if ([(UIAlertController *)self _canBePresentedAtLocation:a3, a5, a4.x, a4.y])
+  if ([(UIAlertController *)self _canBePresentedAtLocation:controller, view, position.x, position.y])
   {
-    v8 = [(UIAlertController *)self _systemProvidedPresentationDelegate];
-    *a6 = [v8 _presentingViewControllerForSystemProvidedPresentationOfAlertController:self];
+    _systemProvidedPresentationDelegate = [(UIAlertController *)self _systemProvidedPresentationDelegate];
+    *viewController = [_systemProvidedPresentationDelegate _presentingViewControllerForSystemProvidedPresentationOfAlertController:self];
 
-    v9 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
-- (void)previewInteractionController:(id)a3 willPresentViewController:(id)a4 forPosition:(CGPoint)a5 inSourceView:(id)a6
+- (void)previewInteractionController:(id)controller willPresentViewController:(id)viewController forPosition:(CGPoint)position inSourceView:(id)view
 {
-  v7 = [(UIAlertController *)self _systemProvidedPresentationDelegate:a3];
+  v7 = [(UIAlertController *)self _systemProvidedPresentationDelegate:controller];
   if (objc_opt_respondsToSelector())
   {
     [v7 _willBeginSystemProvidedPresentationOfAlertController:self];
@@ -3351,8 +3351,8 @@ void __36__UIAlertController_viewWillAppear___block_invoke(uint64_t a1)
 
 - (BOOL)_isPresented
 {
-  v3 = [(UIViewController *)self presentingViewController];
-  if (v3)
+  presentingViewController = [(UIViewController *)self presentingViewController];
+  if (presentingViewController)
   {
     v4 = ![(UIViewController *)self isBeingPresented];
   }
@@ -3365,10 +3365,10 @@ void __36__UIAlertController_viewWillAppear___block_invoke(uint64_t a1)
   return v4;
 }
 
-- (BOOL)_canBePresentedAtLocation:(CGPoint)a3
+- (BOOL)_canBePresentedAtLocation:(CGPoint)location
 {
-  y = a3.y;
-  x = a3.x;
+  y = location.y;
+  x = location.x;
   if ([(UIAlertController *)self _isPresented]|| [(UIViewController *)self isBeingPresented])
   {
     v6 = 0;
@@ -3379,12 +3379,12 @@ void __36__UIAlertController_viewWillAppear___block_invoke(uint64_t a1)
     v6 = ![(UIViewController *)self isBeingDismissed];
   }
 
-  v7 = [(UIAlertController *)self _systemProvidedPresentationDelegate];
+  _systemProvidedPresentationDelegate = [(UIAlertController *)self _systemProvidedPresentationDelegate];
   v8 = objc_opt_respondsToSelector();
   v9 = (v8 ^ 1) & v6;
   if (((v8 ^ 1) & 1) == 0 && v6)
   {
-    v9 = [v7 _shouldPerformSystemProvidedPresentationOfAlertController:self atSystemProvidedPresentationRegisteredViewLocation:{x, y}];
+    v9 = [_systemProvidedPresentationDelegate _shouldPerformSystemProvidedPresentationOfAlertController:self atSystemProvidedPresentationRegisteredViewLocation:{x, y}];
   }
 
   return v9 & 1;
@@ -3459,19 +3459,19 @@ void __49__UIAlertController__appIconHeaderViewController__block_invoke(uint64_t
 
 - (__CFString)_powerLoggingEventName
 {
-  v4 = [(UIAlertController *)self _resolvedStyle];
-  if ((v4 - 1000) < 2 || v4 == 0)
+  _resolvedStyle = [(UIAlertController *)self _resolvedStyle];
+  if ((_resolvedStyle - 1000) < 2 || _resolvedStyle == 0)
   {
     return @"UIKit-ActionSheet";
   }
 
-  if (v4 == 1)
+  if (_resolvedStyle == 1)
   {
     return @"UIKit-Alert";
   }
 
-  v7 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v7 handleFailureInMethod:a2 object:self file:@"UIAlertController.m" lineNumber:2720 description:@"Unknown resolved alert controller style while trying to log."];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"UIAlertController.m" lineNumber:2720 description:@"Unknown resolved alert controller style while trying to log."];
 
   return 0;
 }
@@ -3485,8 +3485,8 @@ void __49__UIAlertController__appIconHeaderViewController__block_invoke(uint64_t
   v7[1] = &unk_1EFE2F380;
   v6[1] = @"Status";
   v6[2] = @"Timestamp";
-  v4 = [MEMORY[0x1E695DF00] date];
-  v7[2] = v4;
+  date = [MEMORY[0x1E695DF00] date];
+  v7[2] = date;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v7 forKeys:v6 count:3];
 
   [(UIAlertController *)self _powerLoggingEventName];
@@ -3502,8 +3502,8 @@ void __49__UIAlertController__appIconHeaderViewController__block_invoke(uint64_t
   v7[1] = &unk_1EFE2F398;
   v6[1] = @"Status";
   v6[2] = @"Timestamp";
-  v4 = [MEMORY[0x1E695DF00] date];
-  v7[2] = v4;
+  date = [MEMORY[0x1E695DF00] date];
+  v7[2] = date;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v7 forKeys:v6 count:3];
 
   [(UIAlertController *)self _powerLoggingEventName];

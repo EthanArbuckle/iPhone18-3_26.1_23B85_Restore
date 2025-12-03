@@ -1,40 +1,40 @@
 @interface CKModifyRecordAccessOperation
-+ (void)applyDaemonCallbackInterfaceTweaks:(id)a3;
-- (BOOL)CKOperationShouldRun:(id *)a3;
++ (void)applyDaemonCallbackInterfaceTweaks:(id)tweaks;
+- (BOOL)CKOperationShouldRun:(id *)run;
 - (BOOL)hasCKOperationCallbacksSet;
-- (CKModifyRecordAccessOperation)initWithRecordIDsToGrantAccess:(id)a3 recordIDsToRevokeAccess:(id)a4;
+- (CKModifyRecordAccessOperation)initWithRecordIDsToGrantAccess:(id)access recordIDsToRevokeAccess:(id)revokeAccess;
 - (id)activityCreate;
 - (id)recordAccessCompletionBlock;
 - (id)recordAccessGrantedBlock;
 - (id)recordAccessRevokedBlock;
-- (void)_finishOnCallbackQueueWithError:(id)a3;
+- (void)_finishOnCallbackQueueWithError:(id)error;
 - (void)ckSignpostBegin;
-- (void)ckSignpostEndWithError:(id)a3;
-- (void)fillFromOperationInfo:(id)a3;
-- (void)fillOutOperationInfo:(id)a3;
-- (void)handleRecordAccessInitiationForRecordID:(id)a3 accessToken:(id)a4 referenceIdentifier:(id)a5 error:(id)a6;
-- (void)handleRecordAccessRevocationForRecordID:(id)a3 error:(id)a4;
-- (void)setRecordAccessCompletionBlock:(id)a3;
-- (void)setRecordAccessGrantedBlock:(id)a3;
-- (void)setRecordAccessRevokedBlock:(id)a3;
+- (void)ckSignpostEndWithError:(id)error;
+- (void)fillFromOperationInfo:(id)info;
+- (void)fillOutOperationInfo:(id)info;
+- (void)handleRecordAccessInitiationForRecordID:(id)d accessToken:(id)token referenceIdentifier:(id)identifier error:(id)error;
+- (void)handleRecordAccessRevocationForRecordID:(id)d error:(id)error;
+- (void)setRecordAccessCompletionBlock:(id)block;
+- (void)setRecordAccessGrantedBlock:(id)block;
+- (void)setRecordAccessRevokedBlock:(id)block;
 @end
 
 @implementation CKModifyRecordAccessOperation
 
-- (CKModifyRecordAccessOperation)initWithRecordIDsToGrantAccess:(id)a3 recordIDsToRevokeAccess:(id)a4
+- (CKModifyRecordAccessOperation)initWithRecordIDsToGrantAccess:(id)access recordIDsToRevokeAccess:(id)revokeAccess
 {
-  v6 = a3;
-  v7 = a4;
+  accessCopy = access;
+  revokeAccessCopy = revokeAccess;
   v24.receiver = self;
   v24.super_class = CKModifyRecordAccessOperation;
   v10 = [(CKOperation *)&v24 init];
   if (v10)
   {
-    v11 = objc_msgSend_copy(v6, v8, v9);
+    v11 = objc_msgSend_copy(accessCopy, v8, v9);
     recordIDsToGrant = v10->_recordIDsToGrant;
     v10->_recordIDsToGrant = v11;
 
-    v15 = objc_msgSend_copy(v7, v13, v14);
+    v15 = objc_msgSend_copy(revokeAccessCopy, v13, v14);
     recordIDsToRevoke = v10->_recordIDsToRevoke;
     v10->_recordIDsToRevoke = v15;
 
@@ -54,9 +54,9 @@
   return v10;
 }
 
-- (void)setRecordAccessGrantedBlock:(id)a3
+- (void)setRecordAccessGrantedBlock:(id)block
 {
-  v6 = a3;
+  blockCopy = block;
   if (__sTestOverridesAvailable[0] == 1 && objc_msgSend__ckRaiseInGeneratedCallbackImplementation(self, v4, v5))
   {
     objc_msgSend_raise_format_(MEMORY[0x1E695DF30], v4, *MEMORY[0x1E695D920], @"Callback check triggered");
@@ -70,16 +70,16 @@
     v12[2] = sub_1885D417C;
     v12[3] = &unk_1E70BC940;
     v12[4] = self;
-    v13 = v6;
+    v13 = blockCopy;
     dispatch_sync(v11, v12);
 
     recordAccessGrantedBlock = v13;
     goto LABEL_9;
   }
 
-  if (self->_recordAccessGrantedBlock != v6)
+  if (self->_recordAccessGrantedBlock != blockCopy)
   {
-    v9 = objc_msgSend_copy(v6, v7, v8);
+    v9 = objc_msgSend_copy(blockCopy, v7, v8);
     recordAccessGrantedBlock = self->_recordAccessGrantedBlock;
     self->_recordAccessGrantedBlock = v9;
 LABEL_9:
@@ -122,9 +122,9 @@ LABEL_9:
   return v6;
 }
 
-- (void)setRecordAccessRevokedBlock:(id)a3
+- (void)setRecordAccessRevokedBlock:(id)block
 {
-  v6 = a3;
+  blockCopy = block;
   if (__sTestOverridesAvailable[0] == 1 && objc_msgSend__ckRaiseInGeneratedCallbackImplementation(self, v4, v5))
   {
     objc_msgSend_raise_format_(MEMORY[0x1E695DF30], v4, *MEMORY[0x1E695D920], @"Callback check triggered");
@@ -138,16 +138,16 @@ LABEL_9:
     v12[2] = sub_1885D4508;
     v12[3] = &unk_1E70BC940;
     v12[4] = self;
-    v13 = v6;
+    v13 = blockCopy;
     dispatch_sync(v11, v12);
 
     recordAccessRevokedBlock = v13;
     goto LABEL_9;
   }
 
-  if (self->_recordAccessRevokedBlock != v6)
+  if (self->_recordAccessRevokedBlock != blockCopy)
   {
-    v9 = objc_msgSend_copy(v6, v7, v8);
+    v9 = objc_msgSend_copy(blockCopy, v7, v8);
     recordAccessRevokedBlock = self->_recordAccessRevokedBlock;
     self->_recordAccessRevokedBlock = v9;
 LABEL_9:
@@ -190,9 +190,9 @@ LABEL_9:
   return v6;
 }
 
-- (void)setRecordAccessCompletionBlock:(id)a3
+- (void)setRecordAccessCompletionBlock:(id)block
 {
-  v6 = a3;
+  blockCopy = block;
   if (__sTestOverridesAvailable[0] == 1 && objc_msgSend__ckRaiseInGeneratedCallbackImplementation(self, v4, v5))
   {
     objc_msgSend_raise_format_(MEMORY[0x1E695DF30], v4, *MEMORY[0x1E695D920], @"Callback check triggered");
@@ -206,16 +206,16 @@ LABEL_9:
     v12[2] = sub_1885D4894;
     v12[3] = &unk_1E70BC940;
     v12[4] = self;
-    v13 = v6;
+    v13 = blockCopy;
     dispatch_sync(v11, v12);
 
     recordAccessCompletionBlock = v13;
     goto LABEL_9;
   }
 
-  if (self->_recordAccessCompletionBlock != v6)
+  if (self->_recordAccessCompletionBlock != blockCopy)
   {
-    v9 = objc_msgSend_copy(v6, v7, v8);
+    v9 = objc_msgSend_copy(blockCopy, v7, v8);
     recordAccessCompletionBlock = self->_recordAccessCompletionBlock;
     self->_recordAccessCompletionBlock = v9;
 LABEL_9:
@@ -258,30 +258,30 @@ LABEL_9:
   return v6;
 }
 
-- (void)fillOutOperationInfo:(id)a3
+- (void)fillOutOperationInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v7 = objc_msgSend_recordIDsToGrant(self, v5, v6);
-  objc_msgSend_setRecordIDsToGrant_(v4, v8, v7);
+  objc_msgSend_setRecordIDsToGrant_(infoCopy, v8, v7);
 
   v11 = objc_msgSend_recordIDsToRevoke(self, v9, v10);
-  objc_msgSend_setRecordIDsToRevoke_(v4, v12, v11);
+  objc_msgSend_setRecordIDsToRevoke_(infoCopy, v12, v11);
 
   v13.receiver = self;
   v13.super_class = CKModifyRecordAccessOperation;
-  [(CKDatabaseOperation *)&v13 fillOutOperationInfo:v4];
+  [(CKDatabaseOperation *)&v13 fillOutOperationInfo:infoCopy];
 }
 
-- (void)fillFromOperationInfo:(id)a3
+- (void)fillFromOperationInfo:(id)info
 {
   v13.receiver = self;
   v13.super_class = CKModifyRecordAccessOperation;
-  v4 = a3;
-  [(CKDatabaseOperation *)&v13 fillFromOperationInfo:v4];
-  v7 = objc_msgSend_recordIDsToGrant(v4, v5, v6, v13.receiver, v13.super_class);
+  infoCopy = info;
+  [(CKDatabaseOperation *)&v13 fillFromOperationInfo:infoCopy];
+  v7 = objc_msgSend_recordIDsToGrant(infoCopy, v5, v6, v13.receiver, v13.super_class);
   objc_msgSend_setRecordIDsToGrant_(self, v8, v7);
 
-  v11 = objc_msgSend_recordIDsToRevoke(v4, v9, v10);
+  v11 = objc_msgSend_recordIDsToRevoke(infoCopy, v9, v10);
 
   objc_msgSend_setRecordIDsToRevoke_(self, v12, v11);
 }
@@ -319,11 +319,11 @@ LABEL_9:
   return v5;
 }
 
-- (BOOL)CKOperationShouldRun:(id *)a3
+- (BOOL)CKOperationShouldRun:(id *)run
 {
-  v3 = a3;
+  runCopy = run;
   v77 = *MEMORY[0x1E69E9840];
-  v5 = objc_msgSend_recordIDsToGrant(self, a2, a3);
+  v5 = objc_msgSend_recordIDsToGrant(self, a2, run);
   if (objc_msgSend_count(v5, v6, v7))
   {
   }
@@ -354,7 +354,7 @@ LABEL_9:
     obj = v19;
     do
     {
-      v24 = v3;
+      v24 = runCopy;
       for (i = 0; i != v22; ++i)
       {
         if (*v72 != v23)
@@ -404,7 +404,7 @@ LABEL_30:
       }
 
       v22 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v34, &v71, v76, 16);
-      v3 = v24;
+      runCopy = v24;
       v19 = obj;
     }
 
@@ -438,18 +438,18 @@ LABEL_30:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (v3)
+        if (runCopy)
         {
           v59 = objc_opt_class();
           v60 = NSStringFromClass(v59);
-          *v3 = objc_msgSend_errorWithDomain_code_format_(CKPrettyError, v61, @"CKErrorDomain", 12, @"Unexpected recordID to revoke access passed to %@: %@", v60, v45);
+          *runCopy = objc_msgSend_errorWithDomain_code_format_(CKPrettyError, v61, @"CKErrorDomain", 12, @"Unexpected recordID to revoke access passed to %@: %@", v60, v45);
         }
 
         goto LABEL_40;
       }
 
       v48 = objc_msgSend_zoneID(v45, v46, v47);
-      v50 = objc_msgSend_zoneIDHasCorrectDatabaseScope_error_(self, v49, v48, v3);
+      v50 = objc_msgSend_zoneIDHasCorrectDatabaseScope_error_(self, v49, v48, runCopy);
 
       if (!v50)
       {
@@ -458,7 +458,7 @@ LABEL_30:
 
       if (objc_msgSend_containsObject_(v16, v51, v45))
       {
-        if (v3)
+        if (runCopy)
         {
           objc_msgSend_errorWithDomain_code_format_(CKPrettyError, v52, @"CKErrorDomain", 12, @"You can't grant and revoke access to the same record ID in a single operation: %@", v45);
           goto LABEL_39;
@@ -472,10 +472,10 @@ LABEL_40:
 
       if (objc_msgSend_containsObject_(v37, v52, v45))
       {
-        if (v3)
+        if (runCopy)
         {
           objc_msgSend_errorWithDomain_code_format_(CKPrettyError, v53, @"CKErrorDomain", 12, @"You can't revoke access to the same record ID twice in a single operation: %@", v45);
-          *v3 = LABEL_39:;
+          *runCopy = LABEL_39:;
         }
 
         goto LABEL_40;
@@ -497,7 +497,7 @@ LABEL_25:
 
   v66.receiver = self;
   v66.super_class = CKModifyRecordAccessOperation;
-  v55 = [(CKDatabaseOperation *)&v66 CKOperationShouldRun:v3];
+  v55 = [(CKDatabaseOperation *)&v66 CKOperationShouldRun:runCopy];
 LABEL_41:
 
 LABEL_42:
@@ -505,13 +505,13 @@ LABEL_42:
   return v55;
 }
 
-- (void)handleRecordAccessInitiationForRecordID:(id)a3 accessToken:(id)a4 referenceIdentifier:(id)a5 error:(id)a6
+- (void)handleRecordAccessInitiationForRecordID:(id)d accessToken:(id)token referenceIdentifier:(id)identifier error:(id)error
 {
   v54 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v15 = objc_msgSend_CKClientSuitableError(a6, v13, v14);
+  dCopy = d;
+  tokenCopy = token;
+  identifierCopy = identifier;
+  v15 = objc_msgSend_CKClientSuitableError(error, v13, v14);
   if (self)
   {
     signpost = self->super.super._signpost;
@@ -557,7 +557,7 @@ LABEL_42:
       if (v29 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v24))
       {
         v50 = 138412546;
-        v51 = v10;
+        v51 = dCopy;
         v52 = 2112;
         v53 = v15;
         _os_signpost_emit_with_name_impl(&dword_1883EA000, v24, OS_SIGNPOST_EVENT, v29, "CKModifyRecordAccessOperation", "Record %@ access granted with error: %@", &v50, 0x16u);
@@ -565,7 +565,7 @@ LABEL_42:
     }
 
     v30 = objc_msgSend_recordErrors(self, v18, v19);
-    objc_msgSend_setObject_forKeyedSubscript_(v30, v31, v15, v10);
+    objc_msgSend_setObject_forKeyedSubscript_(v30, v31, v15, dCopy);
   }
 
   else
@@ -601,13 +601,13 @@ LABEL_42:
       if (v41 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v36))
       {
         v50 = 138412290;
-        v51 = v10;
+        v51 = dCopy;
         _os_signpost_emit_with_name_impl(&dword_1883EA000, v36, OS_SIGNPOST_EVENT, v41, "CKModifyRecordAccessOperation", "Record %@ access granted", &v50, 0xCu);
       }
     }
 
     v30 = objc_msgSend_grantedRecordIDs(self, v18, v19);
-    objc_msgSend_addObject_(v30, v42, v10);
+    objc_msgSend_addObject_(v30, v42, dCopy);
   }
 
   v45 = objc_msgSend_recordAccessGrantedBlock(self, v43, v44);
@@ -615,17 +615,17 @@ LABEL_42:
   if (v45)
   {
     v48 = objc_msgSend_recordAccessGrantedBlock(self, v46, v47);
-    (v48)[2](v48, v10, v11, v12, v15);
+    (v48)[2](v48, dCopy, tokenCopy, identifierCopy, v15);
   }
 
   v49 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleRecordAccessRevocationForRecordID:(id)a3 error:(id)a4
+- (void)handleRecordAccessRevocationForRecordID:(id)d error:(id)error
 {
   v48 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v9 = objc_msgSend_CKClientSuitableError(a4, v7, v8);
+  dCopy = d;
+  v9 = objc_msgSend_CKClientSuitableError(error, v7, v8);
   if (self)
   {
     signpost = self->super.super._signpost;
@@ -671,7 +671,7 @@ LABEL_42:
       if (v23 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v18))
       {
         v44 = 138412546;
-        v45 = v6;
+        v45 = dCopy;
         v46 = 2112;
         v47 = v9;
         _os_signpost_emit_with_name_impl(&dword_1883EA000, v18, OS_SIGNPOST_EVENT, v23, "CKModifyRecordAccessOperation", "Record %@ access revoked with error: %@", &v44, 0x16u);
@@ -679,7 +679,7 @@ LABEL_42:
     }
 
     v24 = objc_msgSend_recordErrors(self, v12, v13);
-    objc_msgSend_setObject_forKeyedSubscript_(v24, v25, v9, v6);
+    objc_msgSend_setObject_forKeyedSubscript_(v24, v25, v9, dCopy);
   }
 
   else
@@ -715,13 +715,13 @@ LABEL_42:
       if (v35 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v30))
       {
         v44 = 138412290;
-        v45 = v6;
+        v45 = dCopy;
         _os_signpost_emit_with_name_impl(&dword_1883EA000, v30, OS_SIGNPOST_EVENT, v35, "CKModifyRecordAccessOperation", "Record %@ access revoked", &v44, 0xCu);
       }
     }
 
     v24 = objc_msgSend_revokedRecordIDs(self, v12, v13);
-    objc_msgSend_addObject_(v24, v36, v6);
+    objc_msgSend_addObject_(v24, v36, dCopy);
   }
 
   v39 = objc_msgSend_recordAccessRevokedBlock(self, v37, v38);
@@ -729,15 +729,15 @@ LABEL_42:
   if (v39)
   {
     v42 = objc_msgSend_recordAccessRevokedBlock(self, v40, v41);
-    (v42)[2](v42, v6, v9);
+    (v42)[2](v42, dCopy, v9);
   }
 
   v43 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_finishOnCallbackQueueWithError:(id)a3
+- (void)_finishOnCallbackQueueWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   if (self)
   {
     signpost = self->super.super._signpost;
@@ -785,7 +785,7 @@ LABEL_42:
     }
   }
 
-  if (!v4)
+  if (!errorCopy)
   {
     v19 = objc_msgSend_recordErrors(self, v7, v8);
     v22 = objc_msgSend_count(v19, v20, v21);
@@ -796,12 +796,12 @@ LABEL_42:
       v26 = objc_msgSend_recordErrors(self, v24, v25);
       objc_msgSend_setObject_forKeyedSubscript_(v23, v27, v26, @"CKPartialErrors");
 
-      v4 = objc_msgSend_errorWithDomain_code_userInfo_format_(CKPrettyError, v28, @"CKInternalErrorDomain", 1011, v23, @"Failed to grant/revoke access to some records");
+      errorCopy = objc_msgSend_errorWithDomain_code_userInfo_format_(CKPrettyError, v28, @"CKInternalErrorDomain", 1011, v23, @"Failed to grant/revoke access to some records");
     }
 
     else
     {
-      v4 = 0;
+      errorCopy = 0;
     }
   }
 
@@ -812,7 +812,7 @@ LABEL_42:
     v32 = objc_msgSend_recordAccessCompletionBlock(self, v30, v31);
     v35 = objc_msgSend_grantedRecordIDs(self, v33, v34);
     v38 = objc_msgSend_revokedRecordIDs(self, v36, v37);
-    v41 = objc_msgSend_CKClientSuitableError(v4, v39, v40);
+    v41 = objc_msgSend_CKClientSuitableError(errorCopy, v39, v40);
     (v32)[2](v32, v35, v38, v41);
 
     objc_msgSend_setRecordAccessCompletionBlock_(self, v42, 0);
@@ -822,7 +822,7 @@ LABEL_42:
   objc_msgSend_setRecordAccessRevokedBlock_(self, v43, 0);
   v44.receiver = self;
   v44.super_class = CKModifyRecordAccessOperation;
-  [(CKOperation *)&v44 _finishOnCallbackQueueWithError:v4];
+  [(CKOperation *)&v44 _finishOnCallbackQueueWithError:errorCopy];
 }
 
 - (void)ckSignpostBegin
@@ -899,10 +899,10 @@ LABEL_42:
   v42 = *MEMORY[0x1E69E9840];
 }
 
-- (void)ckSignpostEndWithError:(id)a3
+- (void)ckSignpostEndWithError:(id)error
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   if (self)
   {
     signpost = self->super.super._signpost;
@@ -946,7 +946,7 @@ LABEL_42:
     if (v16 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v11))
     {
       v18 = 138412290;
-      v19 = v4;
+      v19 = errorCopy;
       _os_signpost_emit_with_name_impl(&dword_1883EA000, v11, OS_SIGNPOST_INTERVAL_END, v16, "CKModifyRecordAccessOperation", "Error=%{signpost.description:attribute}@ ", &v18, 0xCu);
     }
   }
@@ -961,18 +961,18 @@ LABEL_42:
   return v2;
 }
 
-+ (void)applyDaemonCallbackInterfaceTweaks:(id)a3
++ (void)applyDaemonCallbackInterfaceTweaks:(id)tweaks
 {
-  v4 = a3;
+  tweaksCopy = tweaks;
   v5 = CKErrorUserInfoClasses();
-  objc_msgSend_setClasses_forSelector_argumentIndex_ofReply_(v4, v6, v5, sel_handleRecordAccessInitiationForRecordID_accessToken_referenceIdentifier_error_, 3, 0);
+  objc_msgSend_setClasses_forSelector_argumentIndex_ofReply_(tweaksCopy, v6, v5, sel_handleRecordAccessInitiationForRecordID_accessToken_referenceIdentifier_error_, 3, 0);
 
   v7 = CKErrorUserInfoClasses();
-  objc_msgSend_setClasses_forSelector_argumentIndex_ofReply_(v4, v8, v7, sel_handleRecordAccessRevocationForRecordID_error_, 1, 0);
+  objc_msgSend_setClasses_forSelector_argumentIndex_ofReply_(tweaksCopy, v8, v7, sel_handleRecordAccessRevocationForRecordID_error_, 1, 0);
 
-  v9.receiver = a1;
+  v9.receiver = self;
   v9.super_class = &OBJC_METACLASS___CKModifyRecordAccessOperation;
-  objc_msgSendSuper2(&v9, sel_applyDaemonCallbackInterfaceTweaks_, v4);
+  objc_msgSendSuper2(&v9, sel_applyDaemonCallbackInterfaceTweaks_, tweaksCopy);
 }
 
 @end

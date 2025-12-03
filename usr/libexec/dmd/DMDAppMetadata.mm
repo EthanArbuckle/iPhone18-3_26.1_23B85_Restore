@@ -6,8 +6,8 @@
 
 - (DMDAppLifeCycle)lifeCycle
 {
-  v2 = [(DMDAppMetadata *)self bundleIdentifier];
-  v3 = [DMDAppLifeCycle lifeCycleForBundleIdentifier:v2];
+  bundleIdentifier = [(DMDAppMetadata *)self bundleIdentifier];
+  v3 = [DMDAppLifeCycle lifeCycleForBundleIdentifier:bundleIdentifier];
 
   return v3;
 }

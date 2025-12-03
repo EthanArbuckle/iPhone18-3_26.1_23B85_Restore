@@ -1,36 +1,36 @@
 @interface TSDMutableTransformGradient
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setEndPoint:(CGPoint)a3 inShapeWithNaturalSize:(CGSize)a4;
-- (void)setGradientAngleInDegrees:(double)a3;
-- (void)setLastColor:(id)a3;
-- (void)setStartPoint:(CGPoint)a3 inShapeWithNaturalSize:(CGSize)a4;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setEndPoint:(CGPoint)point inShapeWithNaturalSize:(CGSize)size;
+- (void)setGradientAngleInDegrees:(double)degrees;
+- (void)setLastColor:(id)color;
+- (void)setStartPoint:(CGPoint)point inShapeWithNaturalSize:(CGSize)size;
 @end
 
 @implementation TSDMutableTransformGradient
 
-- (void)setLastColor:(id)a3
+- (void)setLastColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   v11 = objc_msgSend_gradientStops(self, v5, v6);
   v9 = objc_msgSend_count(v11, v7, v8);
-  objc_msgSend_setColorOfStopAtIndex_toColor_(self, v10, v9 - 1, v4);
+  objc_msgSend_setColorOfStopAtIndex_toColor_(self, v10, v9 - 1, colorCopy);
 }
 
-- (void)setStartPoint:(CGPoint)a3 inShapeWithNaturalSize:(CGSize)a4
+- (void)setStartPoint:(CGPoint)point inShapeWithNaturalSize:(CGSize)size
 {
-  objc_msgSend_p_scalePoint_fromShapeWithNaturalSize_(self, a2, v4, a3.x, a3.y, a4.width, a4.height);
+  objc_msgSend_p_scalePoint_fromShapeWithNaturalSize_(self, a2, v4, point.x, point.y, size.width, size.height);
 
   objc_msgSend_p_setStartPoint_(self, v6, v7);
 }
 
-- (void)setEndPoint:(CGPoint)a3 inShapeWithNaturalSize:(CGSize)a4
+- (void)setEndPoint:(CGPoint)point inShapeWithNaturalSize:(CGSize)size
 {
-  objc_msgSend_p_scalePoint_fromShapeWithNaturalSize_(self, a2, v4, a3.x, a3.y, a4.width, a4.height);
+  objc_msgSend_p_scalePoint_fromShapeWithNaturalSize_(self, a2, v4, point.x, point.y, size.width, size.height);
 
   objc_msgSend_p_setEndPoint_(self, v6, v7);
 }
 
-- (void)setGradientAngleInDegrees:(double)a3
+- (void)setGradientAngleInDegrees:(double)degrees
 {
   p_startPoint = &self->super._startPoint;
   p_endPoint = &self->super._endPoint;
@@ -47,9 +47,9 @@
   p_endPoint->y = v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = objc_msgSend_allocWithZone_(TSDTransformGradient, a2, a3);
+  v4 = objc_msgSend_allocWithZone_(TSDTransformGradient, a2, zone);
   v7 = objc_msgSend_gradientStops(self, v5, v6);
   v10 = objc_msgSend_gradientType(self, v8, v9);
   objc_msgSend_opacity(self, v11, v12);

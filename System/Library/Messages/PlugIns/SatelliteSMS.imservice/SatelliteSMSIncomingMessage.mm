@@ -1,55 +1,55 @@
 @interface SatelliteSMSIncomingMessage
-- (SatelliteSMSIncomingMessage)initWithIncomingCTMessage:(id)a3 error:(id *)p_isa;
-- (SatelliteSMSIncomingMessage)initWithTimestamp:(id)a3 pendingTotalCount:(int64_t)a4 pendingCount:(int64_t)a5 sourcePhoneNumber:(id)a6 codecID:(int64_t)a7 textPayload:(id)a8 uniqueID:(id)a9;
+- (SatelliteSMSIncomingMessage)initWithIncomingCTMessage:(id)message error:(id *)p_isa;
+- (SatelliteSMSIncomingMessage)initWithTimestamp:(id)timestamp pendingTotalCount:(int64_t)count pendingCount:(int64_t)pendingCount sourcePhoneNumber:(id)number codecID:(int64_t)d textPayload:(id)payload uniqueID:(id)iD;
 @end
 
 @implementation SatelliteSMSIncomingMessage
 
-- (SatelliteSMSIncomingMessage)initWithTimestamp:(id)a3 pendingTotalCount:(int64_t)a4 pendingCount:(int64_t)a5 sourcePhoneNumber:(id)a6 codecID:(int64_t)a7 textPayload:(id)a8 uniqueID:(id)a9
+- (SatelliteSMSIncomingMessage)initWithTimestamp:(id)timestamp pendingTotalCount:(int64_t)count pendingCount:(int64_t)pendingCount sourcePhoneNumber:(id)number codecID:(int64_t)d textPayload:(id)payload uniqueID:(id)iD
 {
-  v22 = a3;
-  v15 = a6;
-  v16 = a8;
-  v17 = a9;
+  timestampCopy = timestamp;
+  numberCopy = number;
+  payloadCopy = payload;
+  iDCopy = iD;
   v23.receiver = self;
   v23.super_class = SatelliteSMSIncomingMessage;
   v18 = [(SatelliteSMSIncomingMessage *)&v23 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_timestamp, a3);
-    v19->_pendingTotalCount = a4;
-    v19->_pendingCount = a5;
-    objc_storeStrong(&v19->_sourcePhoneNumber, a6);
-    v19->_codecID = a7;
-    objc_storeStrong(&v19->_textPayload, a8);
-    objc_storeStrong(&v19->_uniqueID, a9);
+    objc_storeStrong(&v18->_timestamp, timestamp);
+    v19->_pendingTotalCount = count;
+    v19->_pendingCount = pendingCount;
+    objc_storeStrong(&v19->_sourcePhoneNumber, number);
+    v19->_codecID = d;
+    objc_storeStrong(&v19->_textPayload, payload);
+    objc_storeStrong(&v19->_uniqueID, iD);
   }
 
   return v19;
 }
 
-- (SatelliteSMSIncomingMessage)initWithIncomingCTMessage:(id)a3 error:(id *)p_isa
+- (SatelliteSMSIncomingMessage)initWithIncomingCTMessage:(id)message error:(id *)p_isa
 {
-  v6 = a3;
+  messageCopy = message;
   if (sub_B8DC())
   {
     if (objc_opt_isKindOfClass())
     {
-      v7 = v6;
-      v8 = [v7 timestamp];
-      v9 = [v7 pendingTotalCount];
-      v10 = [v7 pendingCount];
-      v11 = [v7 sourcePhoneNumber];
-      v12 = [v7 codecID];
-      v13 = [v7 textPayload];
-      v14 = [v7 uniqueID];
-      v15 = [(SatelliteSMSIncomingMessage *)self initWithTimestamp:v8 pendingTotalCount:v9 pendingCount:v10 sourcePhoneNumber:v11 codecID:v12 textPayload:v13 uniqueID:v14];
+      v7 = messageCopy;
+      timestamp = [v7 timestamp];
+      pendingTotalCount = [v7 pendingTotalCount];
+      pendingCount = [v7 pendingCount];
+      sourcePhoneNumber = [v7 sourcePhoneNumber];
+      codecID = [v7 codecID];
+      textPayload = [v7 textPayload];
+      uniqueID = [v7 uniqueID];
+      v15 = [(SatelliteSMSIncomingMessage *)self initWithTimestamp:timestamp pendingTotalCount:pendingTotalCount pendingCount:pendingCount sourcePhoneNumber:sourcePhoneNumber codecID:codecID textPayload:textPayload uniqueID:uniqueID];
 
-      v16 = [v7 context];
+      context = [v7 context];
 
       context = v15->_context;
-      v15->_context = v16;
+      v15->_context = context;
 
       self = v15;
       p_isa = &self->super.isa;

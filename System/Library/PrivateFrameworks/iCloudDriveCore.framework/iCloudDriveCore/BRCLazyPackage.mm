@@ -1,42 +1,42 @@
 @interface BRCLazyPackage
-- (BOOL)addItem:(id)a3 error:(id *)a4;
-- (BRCLazyPackage)initWithRegistry:(id)a3 stageID:(id)a4 name:(id)a5 boundaryKey:(id)a6;
+- (BOOL)addItem:(id)item error:(id *)error;
+- (BRCLazyPackage)initWithRegistry:(id)registry stageID:(id)d name:(id)name boundaryKey:(id)key;
 - (unint64_t)itemCount;
 @end
 
 @implementation BRCLazyPackage
 
-- (BRCLazyPackage)initWithRegistry:(id)a3 stageID:(id)a4 name:(id)a5 boundaryKey:(id)a6
+- (BRCLazyPackage)initWithRegistry:(id)registry stageID:(id)d name:(id)name boundaryKey:(id)key
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  registryCopy = registry;
+  dCopy = d;
+  nameCopy = name;
+  keyCopy = key;
   v23.receiver = self;
   v23.super_class = BRCLazyPackage;
   v14 = [(BRCLazyPackage *)&v23 init];
   registry = v14->_registry;
-  v14->_registry = v10;
-  v16 = v10;
+  v14->_registry = registryCopy;
+  v16 = registryCopy;
 
   stageID = v14->_stageID;
-  v14->_stageID = v11;
-  v18 = v11;
+  v14->_stageID = dCopy;
+  v18 = dCopy;
 
   name = v14->_name;
-  v14->_name = v12;
-  v20 = v12;
+  v14->_name = nameCopy;
+  v20 = nameCopy;
 
   boundaryKey = v14->_boundaryKey;
-  v14->_boundaryKey = v13;
+  v14->_boundaryKey = keyCopy;
 
   return v14;
 }
 
-- (BOOL)addItem:(id)a3 error:(id *)a4
+- (BOOL)addItem:(id)item error:(id *)error
 {
   v39 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  itemCopy = item;
   package = self->_package;
   if (!package)
   {
@@ -67,11 +67,11 @@
       if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
       {
         v27 = self->_package;
-        v28 = [v8 path];
+        path = [v8 path];
         *buf = 138413058;
         v32 = v27;
         v33 = 2112;
-        v34 = v28;
+        v34 = path;
         v35 = 2112;
         v36 = v19;
         v37 = 2112;
@@ -80,7 +80,7 @@
       }
 
       v15 = v19;
-      if (!a4)
+      if (!error)
       {
 LABEL_14:
 
@@ -97,19 +97,19 @@ LABEL_14:
         [BRCLazyPackage addItem:error:];
       }
 
-      if (!a4)
+      if (!error)
       {
         goto LABEL_14;
       }
     }
 
     v22 = v15;
-    *a4 = v15;
+    *error = v15;
     goto LABEL_14;
   }
 
 LABEL_2:
-  v8 = [(CKPackage *)package addItem:v6];
+  v8 = [(CKPackage *)package addItem:itemCopy];
   v9 = v8 == 0;
   if (v8)
   {
@@ -120,11 +120,11 @@ LABEL_2:
       [BRCLazyPackage addItem:error:];
     }
 
-    if (a4)
+    if (error)
     {
       v12 = v8;
       v9 = 0;
-      *a4 = v8;
+      *error = v8;
       goto LABEL_16;
     }
 

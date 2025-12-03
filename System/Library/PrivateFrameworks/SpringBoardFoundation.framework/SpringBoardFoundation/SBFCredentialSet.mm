@@ -1,16 +1,16 @@
 @interface SBFCredentialSet
-- (SBFCredentialSet)initWithCoder:(id)a3;
-- (SBFCredentialSet)initWithSerializedCredentialSet:(id)a3;
+- (SBFCredentialSet)initWithCoder:(id)coder;
+- (SBFCredentialSet)initWithSerializedCredentialSet:(id)set;
 - (id)serializedCredentialSet;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SBFCredentialSet
 
-- (SBFCredentialSet)initWithSerializedCredentialSet:(id)a3
+- (SBFCredentialSet)initWithSerializedCredentialSet:(id)set
 {
-  v5 = a3;
+  setCopy = set;
   v15.receiver = self;
   v15.super_class = SBFCredentialSet;
   v6 = [(SBFCredentialSet *)&v15 init];
@@ -20,11 +20,11 @@
     goto LABEL_11;
   }
 
-  if (v5)
+  if (setCopy)
   {
     *(v6 + 16) = 0;
-    objc_storeStrong(v6 + 3, a3);
-    v8 = ACMContextCreateWithExternalForm([v5 bytes], objc_msgSend(v5, "length"));
+    objc_storeStrong(v6 + 3, set);
+    v8 = ACMContextCreateWithExternalForm([setCopy bytes], objc_msgSend(setCopy, "length"));
     v7[1] = v8;
     if (!v8)
     {
@@ -108,28 +108,28 @@ uint64_t __43__SBFCredentialSet_serializedCredentialSet__block_invoke(uint64_t a
   return MEMORY[0x1EEE66BB8](v4, v6);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(SBFCredentialSet *)self serializedCredentialSet];
-  [v4 encodeDataObject:v5];
+  coderCopy = coder;
+  serializedCredentialSet = [(SBFCredentialSet *)self serializedCredentialSet];
+  [coderCopy encodeDataObject:serializedCredentialSet];
 }
 
-- (SBFCredentialSet)initWithCoder:(id)a3
+- (SBFCredentialSet)initWithCoder:(id)coder
 {
-  v4 = [a3 decodeDataObject];
-  if (v4)
+  decodeDataObject = [coder decodeDataObject];
+  if (decodeDataObject)
   {
-    self = [(SBFCredentialSet *)self initWithSerializedCredentialSet:v4];
-    v5 = self;
+    self = [(SBFCredentialSet *)self initWithSerializedCredentialSet:decodeDataObject];
+    selfCopy = self;
   }
 
   else
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (void)initWithSerializedCredentialSet:(int)a1 .cold.2(int a1, NSObject *a2)

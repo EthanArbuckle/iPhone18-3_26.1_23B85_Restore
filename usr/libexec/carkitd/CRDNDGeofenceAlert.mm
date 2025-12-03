@@ -1,13 +1,13 @@
 @interface CRDNDGeofenceAlert
-+ (id)alertForEnteringGeofence:(BOOL)a3;
++ (id)alertForEnteringGeofence:(BOOL)geofence;
 @end
 
 @implementation CRDNDGeofenceAlert
 
-+ (id)alertForEnteringGeofence:(BOOL)a3
++ (id)alertForEnteringGeofence:(BOOL)geofence
 {
   v3 = off_1000DCA80;
-  if (!a3)
+  if (!geofence)
   {
     v3 = &off_1000DCA88;
   }

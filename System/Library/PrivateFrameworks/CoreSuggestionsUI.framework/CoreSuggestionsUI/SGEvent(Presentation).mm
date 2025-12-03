@@ -11,14 +11,14 @@
 - (id)formattedStartDate
 {
   v2 = +[SGUIDateFormatting mediumDateFormatter];
-  v3 = [v2 timeZone];
-  v4 = [a1 timeZoneOrGMT];
-  [v2 setTimeZone:v4];
+  timeZone = [v2 timeZone];
+  timeZoneOrGMT = [self timeZoneOrGMT];
+  [v2 setTimeZone:timeZoneOrGMT];
 
-  v5 = [a1 start];
-  v6 = [v2 stringFromDate:v5];
+  start = [self start];
+  v6 = [v2 stringFromDate:start];
 
-  [v2 setTimeZone:v3];
+  [v2 setTimeZone:timeZone];
 
   return v6;
 }
@@ -26,25 +26,25 @@
 - (id)formattedStartTime
 {
   v2 = +[SGUIDateFormatting singleDayTimeFormatter];
-  v3 = [v2 timeZone];
-  v4 = [a1 timeZoneOrGMT];
-  [v2 setTimeZone:v4];
+  timeZone = [v2 timeZone];
+  timeZoneOrGMT = [self timeZoneOrGMT];
+  [v2 setTimeZone:timeZoneOrGMT];
 
-  v5 = [a1 start];
-  v6 = [v2 stringFromDate:v5];
+  start = [self start];
+  v6 = [v2 stringFromDate:start];
 
-  [v2 setTimeZone:v3];
+  [v2 setTimeZone:timeZone];
 
   return v6;
 }
 
 - (id)timeZoneOrGMT
 {
-  v1 = [a1 startTimeZone];
-  v2 = v1;
-  if (v1)
+  startTimeZone = [self startTimeZone];
+  v2 = startTimeZone;
+  if (startTimeZone)
   {
-    v3 = v1;
+    v3 = startTimeZone;
   }
 
   else
@@ -69,13 +69,13 @@
 
   if (v5 == 2)
   {
-    if ([a1 sameDayEvents:v4])
+    if ([self sameDayEvents:v4])
     {
       v11 = [v4 objectAtIndexedSubscript:0];
-      v12 = [v11 start];
+      start = [v11 start];
       v13 = [v4 objectAtIndexedSubscript:1];
-      v14 = [v13 start];
-      v15 = [v12 isEqual:v14];
+      start2 = [v13 start];
+      v15 = [start isEqual:start2];
 
       if (v15)
       {
@@ -86,13 +86,13 @@
       v24 = MEMORY[0x1E696AEC0];
       v7 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.CoreSuggestionsUI"];
       v8 = [v7 localizedStringForKey:@"SuggestionsBannerTwoEventsSameDayFormat" value:&stru_1F3012140 table:0];
-      v9 = [v4 objectAtIndexedSubscript:0];
-      v21 = [v9 formattedStartDate];
+      start3 = [v4 objectAtIndexedSubscript:0];
+      formattedStartDate = [start3 formattedStartDate];
       v22 = [v4 objectAtIndexedSubscript:0];
-      v23 = [v22 formattedStartTime];
+      formattedStartTime = [v22 formattedStartTime];
       v25 = [v4 objectAtIndexedSubscript:1];
-      v26 = [v25 formattedStartTime];
-      v10 = [v24 localizedStringWithFormat:v8, v21, v23, v26];
+      formattedStartTime2 = [v25 formattedStartTime];
+      v10 = [v24 localizedStringWithFormat:v8, formattedStartDate, formattedStartTime, formattedStartTime2];
     }
 
     else
@@ -100,11 +100,11 @@
       v20 = MEMORY[0x1E696AEC0];
       v7 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.CoreSuggestionsUI"];
       v8 = [v7 localizedStringForKey:@"SuggestionsBannerTwoEventsDifferentDayFormat" value:&stru_1F3012140 table:0];
-      v9 = [v4 objectAtIndexedSubscript:0];
-      v21 = [v9 formattedStartDate];
+      start3 = [v4 objectAtIndexedSubscript:0];
+      formattedStartDate = [start3 formattedStartDate];
       v22 = [v4 objectAtIndexedSubscript:1];
-      v23 = [v22 formattedStartDate];
-      v10 = [v20 localizedStringWithFormat:v8, v21, v23];
+      formattedStartTime = [v22 formattedStartDate];
+      v10 = [v20 localizedStringWithFormat:v8, formattedStartDate, formattedStartTime];
     }
 
 LABEL_17:
@@ -113,7 +113,7 @@ LABEL_17:
 
   if (v5 != 1)
   {
-    v16 = [a1 sameDayEvents:v4];
+    v16 = [self sameDayEvents:v4];
     v17 = MEMORY[0x1E696AEC0];
     v18 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.CoreSuggestionsUI"];
     v7 = v18;
@@ -128,9 +128,9 @@ LABEL_17:
     }
 
     v8 = [v18 localizedStringForKey:v19 value:&stru_1F3012140 table:0];
-    v9 = [v4 objectAtIndexedSubscript:0];
-    v21 = [v9 formattedStartDate];
-    v10 = [v17 localizedStringWithFormat:v8, v21];
+    start3 = [v4 objectAtIndexedSubscript:0];
+    formattedStartDate = [start3 formattedStartDate];
+    v10 = [v17 localizedStringWithFormat:v8, formattedStartDate];
     goto LABEL_17;
   }
 
@@ -138,8 +138,8 @@ LABEL_17:
 LABEL_5:
   v7 = v6;
   v8 = [v4 objectAtIndexedSubscript:0];
-  v9 = [v8 start];
-  v10 = [v7 stringFromDate:v9];
+  start3 = [v8 start];
+  v10 = [v7 stringFromDate:start3];
 LABEL_18:
 
 LABEL_19:
@@ -153,10 +153,10 @@ LABEL_19:
   v3 = a3;
   if ([v3 count] >= 2)
   {
-    v5 = [v3 firstObject];
-    v6 = [MEMORY[0x1E695DEE8] currentCalendar];
-    v7 = [v5 timeZoneOrGMT];
-    [v6 setTimeZone:v7];
+    firstObject = [v3 firstObject];
+    currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+    timeZoneOrGMT = [firstObject timeZoneOrGMT];
+    [currentCalendar setTimeZone:timeZoneOrGMT];
 
     v24 = 0u;
     v25 = 0u;
@@ -180,11 +180,11 @@ LABEL_19:
           }
 
           v13 = *(*(&v22 + 1) + 8 * v12);
-          if (v13 != v5)
+          if (v13 != firstObject)
           {
-            v14 = [*(*(&v22 + 1) + 8 * v12) timeZoneOrGMT];
-            v15 = [v6 timeZone];
-            v16 = [v15 isEqual:v14];
+            timeZoneOrGMT2 = [*(*(&v22 + 1) + 8 * v12) timeZoneOrGMT];
+            timeZone = [currentCalendar timeZone];
+            v16 = [timeZone isEqual:timeZoneOrGMT2];
 
             if (!v16)
             {
@@ -194,9 +194,9 @@ LABEL_16:
               goto LABEL_17;
             }
 
-            v17 = [v5 start];
-            v18 = [v13 start];
-            v19 = [v6 isDate:v17 inSameDayAsDate:v18];
+            start = [firstObject start];
+            start2 = [v13 start];
+            v19 = [currentCalendar isDate:start inSameDayAsDate:start2];
 
             if (!v19)
             {

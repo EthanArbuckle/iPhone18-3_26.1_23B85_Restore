@@ -1,18 +1,18 @@
 @interface PHCarPlayNoContentBannerView
 - (NSString)subtitleString;
 - (NSString)titleString;
-- (PHCarPlayNoContentBannerView)initWithFrame:(CGRect)a3;
-- (void)setSubtitleString:(id)a3;
-- (void)setTitleString:(id)a3;
+- (PHCarPlayNoContentBannerView)initWithFrame:(CGRect)frame;
+- (void)setSubtitleString:(id)string;
+- (void)setTitleString:(id)string;
 @end
 
 @implementation PHCarPlayNoContentBannerView
 
-- (PHCarPlayNoContentBannerView)initWithFrame:(CGRect)a3
+- (PHCarPlayNoContentBannerView)initWithFrame:(CGRect)frame
 {
   v26.receiver = self;
   v26.super_class = PHCarPlayNoContentBannerView;
-  v3 = [(PHCarPlayNoContentBannerView *)&v26 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PHCarPlayNoContentBannerView *)&v26 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(UILabel);
@@ -49,61 +49,61 @@
     v28[0] = v12;
     v28[1] = v3->_subtitleLabel;
     v13 = [NSDictionary dictionaryWithObjects:v28 forKeys:v27 count:2];
-    v14 = [(PHCarPlayNoContentBannerView *)v3 titleLabel];
-    v15 = [NSLayoutConstraint constraintWithItem:v14 attribute:11 relatedBy:0 toItem:v3 attribute:10 multiplier:1.0 constant:0.0];
+    titleLabel = [(PHCarPlayNoContentBannerView *)v3 titleLabel];
+    v15 = [NSLayoutConstraint constraintWithItem:titleLabel attribute:11 relatedBy:0 toItem:v3 attribute:10 multiplier:1.0 constant:0.0];
     [(PHCarPlayNoContentBannerView *)v3 addConstraint:v15];
 
     v16 = +[NSLayoutConstraint constraintsWithVisualFormat:options:metrics:views:](NSLayoutConstraint, "constraintsWithVisualFormat:options:metrics:views:", @"V:[titleLabel]-[subtitleLabel]", 0, 0, v13);
     [(PHCarPlayNoContentBannerView *)v3 addConstraints:v16];
 
-    v17 = [(PHCarPlayNoContentBannerView *)v3 titleLabel];
-    v18 = [NSLayoutConstraint constraintWithItem:v17 attribute:7 relatedBy:0 toItem:v3 attribute:7 multiplier:1.0 constant:0.0];
+    titleLabel2 = [(PHCarPlayNoContentBannerView *)v3 titleLabel];
+    v18 = [NSLayoutConstraint constraintWithItem:titleLabel2 attribute:7 relatedBy:0 toItem:v3 attribute:7 multiplier:1.0 constant:0.0];
     [(PHCarPlayNoContentBannerView *)v3 addConstraint:v18];
 
-    v19 = [(PHCarPlayNoContentBannerView *)v3 titleLabel];
-    v20 = [NSLayoutConstraint constraintWithItem:v19 attribute:9 relatedBy:0 toItem:v3 attribute:9 multiplier:1.0 constant:0.0];
+    titleLabel3 = [(PHCarPlayNoContentBannerView *)v3 titleLabel];
+    v20 = [NSLayoutConstraint constraintWithItem:titleLabel3 attribute:9 relatedBy:0 toItem:v3 attribute:9 multiplier:1.0 constant:0.0];
     [(PHCarPlayNoContentBannerView *)v3 addConstraint:v20];
 
-    v21 = [(PHCarPlayNoContentBannerView *)v3 subtitleLabel];
-    v22 = [NSLayoutConstraint constraintWithItem:v21 attribute:7 relatedBy:0 toItem:v3 attribute:7 multiplier:1.0 constant:0.0];
+    subtitleLabel = [(PHCarPlayNoContentBannerView *)v3 subtitleLabel];
+    v22 = [NSLayoutConstraint constraintWithItem:subtitleLabel attribute:7 relatedBy:0 toItem:v3 attribute:7 multiplier:1.0 constant:0.0];
     [(PHCarPlayNoContentBannerView *)v3 addConstraint:v22];
 
-    v23 = [(PHCarPlayNoContentBannerView *)v3 subtitleLabel];
-    v24 = [NSLayoutConstraint constraintWithItem:v23 attribute:9 relatedBy:0 toItem:v3 attribute:9 multiplier:1.0 constant:0.0];
+    subtitleLabel2 = [(PHCarPlayNoContentBannerView *)v3 subtitleLabel];
+    v24 = [NSLayoutConstraint constraintWithItem:subtitleLabel2 attribute:9 relatedBy:0 toItem:v3 attribute:9 multiplier:1.0 constant:0.0];
     [(PHCarPlayNoContentBannerView *)v3 addConstraint:v24];
   }
 
   return v3;
 }
 
-- (void)setTitleString:(id)a3
+- (void)setTitleString:(id)string
 {
-  v4 = a3;
-  v5 = [(PHCarPlayNoContentBannerView *)self titleLabel];
-  [v5 setText:v4];
+  stringCopy = string;
+  titleLabel = [(PHCarPlayNoContentBannerView *)self titleLabel];
+  [titleLabel setText:stringCopy];
 }
 
-- (void)setSubtitleString:(id)a3
+- (void)setSubtitleString:(id)string
 {
-  v4 = a3;
-  v5 = [(PHCarPlayNoContentBannerView *)self subtitleLabel];
-  [v5 setText:v4];
+  stringCopy = string;
+  subtitleLabel = [(PHCarPlayNoContentBannerView *)self subtitleLabel];
+  [subtitleLabel setText:stringCopy];
 }
 
 - (NSString)titleString
 {
-  v2 = [(PHCarPlayNoContentBannerView *)self titleLabel];
-  v3 = [v2 text];
+  titleLabel = [(PHCarPlayNoContentBannerView *)self titleLabel];
+  text = [titleLabel text];
 
-  return v3;
+  return text;
 }
 
 - (NSString)subtitleString
 {
-  v2 = [(PHCarPlayNoContentBannerView *)self subtitleLabel];
-  v3 = [v2 text];
+  subtitleLabel = [(PHCarPlayNoContentBannerView *)self subtitleLabel];
+  text = [subtitleLabel text];
 
-  return v3;
+  return text;
 }
 
 @end

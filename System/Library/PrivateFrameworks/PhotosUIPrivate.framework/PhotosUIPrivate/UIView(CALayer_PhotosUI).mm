@@ -7,13 +7,13 @@
 - (id)_pu_referenceBasicAnimationForCurrentAnimation
 {
   v15 = *MEMORY[0x1E69E9840];
-  v1 = [a1 layer];
+  layer = [self layer];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [v1 animationKeys];
-  v3 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  animationKeys = [layer animationKeys];
+  v3 = [animationKeys countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v3)
   {
     v4 = v3;
@@ -24,10 +24,10 @@ LABEL_3:
     {
       if (*v11 != v5)
       {
-        objc_enumerationMutation(v2);
+        objc_enumerationMutation(animationKeys);
       }
 
-      v7 = [v1 animationForKey:*(*(&v10 + 1) + 8 * v6)];
+      v7 = [layer animationForKey:*(*(&v10 + 1) + 8 * v6)];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -40,7 +40,7 @@ LABEL_3:
 
       if (v4 == ++v6)
       {
-        v4 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v4 = [animationKeys countByEnumeratingWithState:&v10 objects:v14 count:16];
         if (v4)
         {
           goto LABEL_3;

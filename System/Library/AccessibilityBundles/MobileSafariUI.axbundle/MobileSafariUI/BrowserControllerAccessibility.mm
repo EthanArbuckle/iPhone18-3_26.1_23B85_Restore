@@ -1,57 +1,57 @@
 @interface BrowserControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (BOOL)scrollViewShouldScrollToTop:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (BOOL)scrollViewShouldScrollToTop:(id)top;
 - (id)_accessibilitySpeakThisViews;
 - (id)accessibilityActiveTabDocument;
 - (id)accessibilityCurrentWebView;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_axUpdateVisibleContentInset;
-- (void)_axUpdateVisibleContentInsetForScrollView:(id)a3;
+- (void)_axUpdateVisibleContentInsetForScrollView:(id)view;
 - (void)_initSubviews;
-- (void)browserViewController:(id)a3 didCreateUnifiedBar:(id)a4;
+- (void)browserViewController:(id)controller didCreateUnifiedBar:(id)bar;
 - (void)dealloc;
-- (void)scrollViewDidScrollToTop:(id)a3;
-- (void)tabDocumentDidCompleteCheckForAppBanner:(id)a3;
-- (void)updateInsetsForBackgroundWebView:(id)a3;
+- (void)scrollViewDidScrollToTop:(id)top;
+- (void)tabDocumentDidCompleteCheckForAppBanner:(id)banner;
+- (void)updateInsetsForBackgroundWebView:(id)view;
 @end
 
 @implementation BrowserControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"BrowserController" hasInstanceVariable:@"_rootViewController" withType:"BrowserRootViewController"];
-  [v3 validateClass:@"BrowserController" hasInstanceMethod:@"tabDocumentDidCompleteCheckForAppBanner:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"TabDocument" hasInstanceMethod:@"appBanner" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"BrowserController" hasInstanceMethod:@"browserViewController:didCreateUnifiedBar:" withFullSignature:{"v", "@", "@", 0}];
-  [v3 validateClass:@"BrowserController" hasInstanceMethod:@"setShowingReader: animated:" withFullSignature:{"v", "B", "B", 0}];
-  [v3 validateClass:@"BrowserController" hasInstanceMethod:@"isShowingReader" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"BrowserController" hasInstanceMethod:@"tabController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"BrowserController" hasInstanceMethod:@"_initSubviews" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"BrowserController" hasInstanceVariable:@"_tabController" withType:"TabController"];
-  [v3 validateClass:@"BrowserController" hasInstanceMethod:@"scrollViewDidScrollToTop:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"BrowserController" hasInstanceMethod:@"scrollViewShouldScrollToTop:" withFullSignature:{"B", "@", 0}];
-  [v3 validateClass:@"TabController" hasInstanceMethod:@"activeTabDocument" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"TabDocument" hasInstanceMethod:@"frontWebView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"BrowserController" hasInstanceMethod:@"updateInsetsForBackgroundWebView:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"BrowserController" hasInstanceMethod:@"isPrivateBrowsingEnabled" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"BrowserController" hasInstanceVariable:@"_scrollView" withType:"UIScrollView"];
-  [v3 validateClass:@"BrowserRootViewController" hasInstanceMethod:@"documentAndTopBarsContainerView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"TabController" hasInstanceVariable:@"_tabCollectionViewManager" withType:"TabCollectionViewManager"];
-  [v3 validateClass:@"BrowserController" hasInstanceMethod:@"webView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"BrowserController" hasInstanceMethod:@"rootViewController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"BrowserRootViewController" hasInstanceMethod:@"navigationBar" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"BrowserRootViewController" hasInstanceMethod:@"unifiedBar" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SFBarRegistration" hasInstanceVariable:@"_bookmarksItem" withType:"UIBarButtonItem"];
-  [v3 validateClass:@"BrowserController" hasInstanceVariable:@"_barManager" withType:"_SFBarManager"];
-  [v3 validateClass:@"_SFBarManager" hasInstanceVariable:@"_barToRegistrationMap" withType:"NSMapTable"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"BrowserController" hasInstanceVariable:@"_rootViewController" withType:"BrowserRootViewController"];
+  [validationsCopy validateClass:@"BrowserController" hasInstanceMethod:@"tabDocumentDidCompleteCheckForAppBanner:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"TabDocument" hasInstanceMethod:@"appBanner" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"BrowserController" hasInstanceMethod:@"browserViewController:didCreateUnifiedBar:" withFullSignature:{"v", "@", "@", 0}];
+  [validationsCopy validateClass:@"BrowserController" hasInstanceMethod:@"setShowingReader: animated:" withFullSignature:{"v", "B", "B", 0}];
+  [validationsCopy validateClass:@"BrowserController" hasInstanceMethod:@"isShowingReader" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"BrowserController" hasInstanceMethod:@"tabController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"BrowserController" hasInstanceMethod:@"_initSubviews" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"BrowserController" hasInstanceVariable:@"_tabController" withType:"TabController"];
+  [validationsCopy validateClass:@"BrowserController" hasInstanceMethod:@"scrollViewDidScrollToTop:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"BrowserController" hasInstanceMethod:@"scrollViewShouldScrollToTop:" withFullSignature:{"B", "@", 0}];
+  [validationsCopy validateClass:@"TabController" hasInstanceMethod:@"activeTabDocument" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"TabDocument" hasInstanceMethod:@"frontWebView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"BrowserController" hasInstanceMethod:@"updateInsetsForBackgroundWebView:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"BrowserController" hasInstanceMethod:@"isPrivateBrowsingEnabled" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"BrowserController" hasInstanceVariable:@"_scrollView" withType:"UIScrollView"];
+  [validationsCopy validateClass:@"BrowserRootViewController" hasInstanceMethod:@"documentAndTopBarsContainerView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"TabController" hasInstanceVariable:@"_tabCollectionViewManager" withType:"TabCollectionViewManager"];
+  [validationsCopy validateClass:@"BrowserController" hasInstanceMethod:@"webView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"BrowserController" hasInstanceMethod:@"rootViewController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"BrowserRootViewController" hasInstanceMethod:@"navigationBar" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"BrowserRootViewController" hasInstanceMethod:@"unifiedBar" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SFBarRegistration" hasInstanceVariable:@"_bookmarksItem" withType:"UIBarButtonItem"];
+  [validationsCopy validateClass:@"BrowserController" hasInstanceVariable:@"_barManager" withType:"_SFBarManager"];
+  [validationsCopy validateClass:@"_SFBarManager" hasInstanceVariable:@"_barToRegistrationMap" withType:"NSMapTable"];
 }
 
-- (void)browserViewController:(id)a3 didCreateUnifiedBar:(id)a4
+- (void)browserViewController:(id)controller didCreateUnifiedBar:(id)bar
 {
   v5.receiver = self;
   v5.super_class = BrowserControllerAccessibility;
-  [(BrowserControllerAccessibility *)&v5 browserViewController:a3 didCreateUnifiedBar:a4];
+  [(BrowserControllerAccessibility *)&v5 browserViewController:controller didCreateUnifiedBar:bar];
   [(BrowserControllerAccessibility *)self _accessibilityLoadAccessibilityInformation];
 }
 
@@ -67,19 +67,19 @@
 
 - (id)_accessibilitySpeakThisViews
 {
-  v3 = [MEMORY[0x29EDB8DE8] array];
-  v4 = [(BrowserControllerAccessibility *)self accessibilityCurrentWebView];
-  if (v4)
+  array = [MEMORY[0x29EDB8DE8] array];
+  accessibilityCurrentWebView = [(BrowserControllerAccessibility *)self accessibilityCurrentWebView];
+  if (accessibilityCurrentWebView)
   {
-    [v3 addObject:v4];
+    [array addObject:accessibilityCurrentWebView];
   }
 
-  return v3;
+  return array;
 }
 
 - (id)accessibilityCurrentWebView
 {
-  v2 = [(BrowserControllerAccessibility *)self accessibilityActiveTabDocument];
+  accessibilityActiveTabDocument = [(BrowserControllerAccessibility *)self accessibilityActiveTabDocument];
   v3 = __UIAccessibilitySafeClass();
 
   v4 = [v3 safeValueForKey:@"frontWebView"];
@@ -87,12 +87,12 @@
   return v4;
 }
 
-- (BOOL)scrollViewShouldScrollToTop:(id)a3
+- (BOOL)scrollViewShouldScrollToTop:(id)top
 {
-  v4 = a3;
+  topCopy = top;
   v8.receiver = self;
   v8.super_class = BrowserControllerAccessibility;
-  v5 = [(BrowserControllerAccessibility *)&v8 scrollViewShouldScrollToTop:v4];
+  v5 = [(BrowserControllerAccessibility *)&v8 scrollViewShouldScrollToTop:topCopy];
   if (!UIAccessibilityIsVoiceOverRunning())
   {
     if (v5 | !UIAccessibilityIsSwitchControlRunning())
@@ -103,7 +103,7 @@
 LABEL_5:
     v7.receiver = self;
     v7.super_class = BrowserControllerAccessibility;
-    v5 = [(BrowserControllerAccessibility *)&v7 scrollViewShouldScrollToTop:v4];
+    v5 = [(BrowserControllerAccessibility *)&v7 scrollViewShouldScrollToTop:topCopy];
     goto LABEL_6;
   }
 
@@ -118,13 +118,13 @@ LABEL_6:
   return v5;
 }
 
-- (void)scrollViewDidScrollToTop:(id)a3
+- (void)scrollViewDidScrollToTop:(id)top
 {
-  v4 = a3;
+  topCopy = top;
   v6.receiver = self;
   v6.super_class = BrowserControllerAccessibility;
-  [(BrowserControllerAccessibility *)&v6 scrollViewDidScrollToTop:v4];
-  v5 = v4;
+  [(BrowserControllerAccessibility *)&v6 scrollViewDidScrollToTop:topCopy];
+  v5 = topCopy;
   AXPerformBlockOnMainThreadAfterDelay();
 }
 
@@ -143,10 +143,10 @@ void __59__BrowserControllerAccessibility_scrollViewDidScrollToTop___block_invok
   [(BrowserControllerAccessibility *)self _axUpdateVisibleContentInsetForScrollView:v4];
 }
 
-- (void)_axUpdateVisibleContentInsetForScrollView:(id)a3
+- (void)_axUpdateVisibleContentInsetForScrollView:(id)view
 {
-  v4 = a3;
-  [v4 contentInset];
+  viewCopy = view;
+  [viewCopy contentInset];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -171,18 +171,18 @@ void __59__BrowserControllerAccessibility_scrollViewDidScrollToTop___block_invok
   v26.origin.y = v16;
   v26.size.width = v18;
   v26.size.height = v20;
-  [v4 _accessibilitySetVisibleContentInset:{fmax(MaxY - CGRectGetMinY(v26), 0.0), v6, v8, v10}];
+  [viewCopy _accessibilitySetVisibleContentInset:{fmax(MaxY - CGRectGetMinY(v26), 0.0), v6, v8, v10}];
 }
 
-- (void)updateInsetsForBackgroundWebView:(id)a3
+- (void)updateInsetsForBackgroundWebView:(id)view
 {
   v6.receiver = self;
   v6.super_class = BrowserControllerAccessibility;
-  v4 = a3;
-  [(BrowserControllerAccessibility *)&v6 updateInsetsForBackgroundWebView:v4];
-  v5 = [v4 scrollView];
+  viewCopy = view;
+  [(BrowserControllerAccessibility *)&v6 updateInsetsForBackgroundWebView:viewCopy];
+  scrollView = [viewCopy scrollView];
 
-  [(BrowserControllerAccessibility *)self _axUpdateVisibleContentInsetForScrollView:v5];
+  [(BrowserControllerAccessibility *)self _axUpdateVisibleContentInsetForScrollView:scrollView];
 }
 
 - (void)_initSubviews
@@ -193,13 +193,13 @@ void __59__BrowserControllerAccessibility_scrollViewDidScrollToTop___block_invok
   [(BrowserControllerAccessibility *)self _accessibilityLoadAccessibilityInformation];
 }
 
-- (void)tabDocumentDidCompleteCheckForAppBanner:(id)a3
+- (void)tabDocumentDidCompleteCheckForAppBanner:(id)banner
 {
   v5.receiver = self;
   v5.super_class = BrowserControllerAccessibility;
-  v3 = a3;
-  [(BrowserControllerAccessibility *)&v5 tabDocumentDidCompleteCheckForAppBanner:v3];
-  v4 = [v3 safeUIViewForKey:{@"appBanner", v5.receiver, v5.super_class}];
+  bannerCopy = banner;
+  [(BrowserControllerAccessibility *)&v5 tabDocumentDidCompleteCheckForAppBanner:bannerCopy];
+  v4 = [bannerCopy safeUIViewForKey:{@"appBanner", v5.receiver, v5.super_class}];
 
   [v4 _accessibilitySetSortPriority:51];
 }
@@ -226,8 +226,8 @@ void __59__BrowserControllerAccessibility_scrollViewDidScrollToTop___block_invok
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v8 = [v7 objectEnumerator];
-  v9 = [v8 countByEnumeratingWithState:&v16 objects:v22 count:16];
+  objectEnumerator = [v7 objectEnumerator];
+  v9 = [objectEnumerator countByEnumeratingWithState:&v16 objects:v22 count:16];
   if (v9)
   {
     v10 = v9;
@@ -238,20 +238,20 @@ void __59__BrowserControllerAccessibility_scrollViewDidScrollToTop___block_invok
       {
         if (*v17 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         [*(*(&v16 + 1) + 8 * i) _accessibilityLoadAccessibilityInformation];
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v16 objects:v22 count:16];
+      v10 = [objectEnumerator countByEnumeratingWithState:&v16 objects:v22 count:16];
     }
 
     while (v10);
   }
 
-  v13 = [MEMORY[0x29EDBA068] defaultCenter];
-  [v13 addObserver:self selector:sel__accessibilityKeyboardDidHide_ name:*MEMORY[0x29EDC8198] object:0];
+  defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__accessibilityKeyboardDidHide_ name:*MEMORY[0x29EDC8198] object:0];
 
   v14 = [v3 safeValueForKey:@"unifiedBar"];
   [v14 _accessibilitySetSortPriority:50];
@@ -261,8 +261,8 @@ void __59__BrowserControllerAccessibility_scrollViewDidScrollToTop___block_invok
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x29EDBA068] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x29EDC8198] object:0];
+  defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x29EDC8198] object:0];
 
   v4.receiver = self;
   v4.super_class = BrowserControllerAccessibility;

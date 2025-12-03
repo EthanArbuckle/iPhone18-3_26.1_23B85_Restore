@@ -1,66 +1,66 @@
 @interface AKSignInWithAppleController
 - (AKSignInWithAppleController)init;
-- (AKSignInWithAppleController)initWithXPCSession:(id)a3;
-- (void)cancelAppIconRequestForClientID:(id)a3 completion:(id)a4;
-- (void)configureRemoteInterface:(id)a3;
-- (void)deleteAllItemsFromDepartedGroupWithContext:(id)a3 completion:(id)a4;
-- (void)fetchAccountsWithContext:(id)a3 completion:(id)a4;
-- (void)fetchAppIconForClientID:(id)a3 iconSize:(CGSize)a4 completion:(id)a5;
-- (void)fetchEULAForClientID:(id)a3 completion:(id)a4;
-- (void)fetchSharedGroupsWithContext:(id)a3 completion:(id)a4;
-- (void)fetchSignInWithApplePrivateEmailCountWithCompletion:(id)a3;
-- (void)leaveGroupWithContext:(id)a3 completion:(id)a4;
-- (void)participantRemovedWithContext:(id)a3 participantID:(id)a4 completion:(id)a5;
-- (void)performHealthCheckWithContext:(id)a3 completion:(id)a4;
-- (void)performTokenRotationWithContext:(id)a3 completion:(id)a4;
+- (AKSignInWithAppleController)initWithXPCSession:(id)session;
+- (void)cancelAppIconRequestForClientID:(id)d completion:(id)completion;
+- (void)configureRemoteInterface:(id)interface;
+- (void)deleteAllItemsFromDepartedGroupWithContext:(id)context completion:(id)completion;
+- (void)fetchAccountsWithContext:(id)context completion:(id)completion;
+- (void)fetchAppIconForClientID:(id)d iconSize:(CGSize)size completion:(id)completion;
+- (void)fetchEULAForClientID:(id)d completion:(id)completion;
+- (void)fetchSharedGroupsWithContext:(id)context completion:(id)completion;
+- (void)fetchSignInWithApplePrivateEmailCountWithCompletion:(id)completion;
+- (void)leaveGroupWithContext:(id)context completion:(id)completion;
+- (void)participantRemovedWithContext:(id)context participantID:(id)d completion:(id)completion;
+- (void)performHealthCheckWithContext:(id)context completion:(id)completion;
+- (void)performTokenRotationWithContext:(id)context completion:(id)completion;
 - (void)remoteServiceDidInterrupt;
 - (void)remoteServiceDidInvalidate;
-- (void)revokeAcccountWithContext:(id)a3 completion:(id)a4;
-- (void)shareAccountWithContext:(id)a3 withGroup:(id)a4 completion:(id)a5;
-- (void)unshareAccountWithContext:(id)a3 completion:(id)a4;
+- (void)revokeAcccountWithContext:(id)context completion:(id)completion;
+- (void)shareAccountWithContext:(id)context withGroup:(id)group completion:(id)completion;
+- (void)unshareAccountWithContext:(id)context completion:(id)completion;
 @end
 
 @implementation AKSignInWithAppleController
 
 - (AKSignInWithAppleController)init
 {
-  v8 = self;
+  selfCopy = self;
   v7[1] = a2;
   v7[0] = [objc_alloc(MEMORY[0x1E6985E18]) initWithServiceName:@"com.apple.ak.signinwithapple.xpc" remoteProtocol:&unk_1F07DD0A8 options:0];
   v2 = objc_alloc(MEMORY[0x1E6985E10]);
-  v6 = [v2 initWithRemoteServiceConfig:v7[0] delegate:v8];
-  v3 = v8;
-  v8 = 0;
-  v8 = [(AKSignInWithAppleController *)v3 initWithXPCSession:v6];
-  objc_storeStrong(&v8, v8);
-  v5 = MEMORY[0x1E69E5928](v8);
+  v6 = [v2 initWithRemoteServiceConfig:v7[0] delegate:selfCopy];
+  v3 = selfCopy;
+  selfCopy = 0;
+  selfCopy = [(AKSignInWithAppleController *)v3 initWithXPCSession:v6];
+  objc_storeStrong(&selfCopy, selfCopy);
+  v5 = MEMORY[0x1E69E5928](selfCopy);
   objc_storeStrong(&v6, 0);
   objc_storeStrong(v7, 0);
-  objc_storeStrong(&v8, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v5;
 }
 
-- (AKSignInWithAppleController)initWithXPCSession:(id)a3
+- (AKSignInWithAppleController)initWithXPCSession:(id)session
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v8;
-  v8 = 0;
+  objc_storeStrong(location, session);
+  v3 = selfCopy;
+  selfCopy = 0;
   v6.receiver = v3;
   v6.super_class = AKSignInWithAppleController;
-  v8 = [(AKSignInWithAppleController *)&v6 init];
-  objc_storeStrong(&v8, v8);
-  if (v8)
+  selfCopy = [(AKSignInWithAppleController *)&v6 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
-    objc_storeStrong(&v8->_remoteService, location[0]);
-    [(AAFXPCSession *)v8->_remoteService resume];
+    objc_storeStrong(&selfCopy->_remoteService, location[0]);
+    [(AAFXPCSession *)selfCopy->_remoteService resume];
   }
 
-  v5 = MEMORY[0x1E69E5928](v8);
+  v5 = MEMORY[0x1E69E5928](selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v8, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v5;
 }
 
@@ -98,14 +98,14 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)configureRemoteInterface:(id)a3
+- (void)configureRemoteInterface:(id)interface
 {
   location[2] = self;
   location[1] = a2;
   v13 = location;
   v14 = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, interface);
   v9 = MEMORY[0x1E695DFD8];
   v8 = objc_opt_class();
   v4 = objc_opt_class();
@@ -124,15 +124,15 @@
   objc_storeStrong(v13, v14);
 }
 
-- (void)fetchAccountsWithContext:(id)a3 completion:(id)a4
+- (void)fetchAccountsWithContext:(id)context completion:(id)completion
 {
   v42 = *MEMORY[0x1E69E9840];
-  v40 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v38 = 0;
-  objc_storeStrong(&v38, a4);
+  objc_storeStrong(&v38, completion);
   v36 = _os_activity_create(&dword_193225000, "SignInWithApple/fetchAccounts", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v37 = v36;
   state.opaque[0] = 0;
@@ -171,11 +171,11 @@
   v20 = 0;
   v21 = __67__AKSignInWithAppleController_fetchAccountsWithContext_completion___block_invoke;
   v22 = &unk_1E73D95E8;
-  v23 = MEMORY[0x1E69E5928](v40);
+  v23 = MEMORY[0x1E69E5928](selfCopy);
   v25 = v34;
   v24 = MEMORY[0x1E69E5928](v38);
   v26 = MEMORY[0x193B165F0](&v18);
-  remoteService = v40->_remoteService;
+  remoteService = selfCopy->_remoteService;
   v11 = MEMORY[0x1E69E9820];
   v12 = -1073741824;
   v13 = 0;
@@ -271,15 +271,15 @@ void __67__AKSignInWithAppleController_fetchAccountsWithContext_completion___blo
   objc_storeStrong(location, 0);
 }
 
-- (void)revokeAcccountWithContext:(id)a3 completion:(id)a4
+- (void)revokeAcccountWithContext:(id)context completion:(id)completion
 {
   v42 = *MEMORY[0x1E69E9840];
-  v40 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v38 = 0;
-  objc_storeStrong(&v38, a4);
+  objc_storeStrong(&v38, completion);
   v36 = _os_activity_create(&dword_193225000, "SignInWithApple/revokeAccount", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v37 = v36;
   state.opaque[0] = 0;
@@ -322,7 +322,7 @@ void __67__AKSignInWithAppleController_fetchAccountsWithContext_completion___blo
   v25 = v33;
   v24 = MEMORY[0x1E69E5928](v38);
   v26 = MEMORY[0x193B165F0](&v19);
-  remoteService = v40->_remoteService;
+  remoteService = selfCopy->_remoteService;
   v12 = MEMORY[0x1E69E9820];
   v13 = -1073741824;
   v14 = 0;
@@ -415,15 +415,15 @@ void __68__AKSignInWithAppleController_revokeAcccountWithContext_completion___bl
   objc_storeStrong(location, 0);
 }
 
-- (void)fetchEULAForClientID:(id)a3 completion:(id)a4
+- (void)fetchEULAForClientID:(id)d completion:(id)completion
 {
   v42 = *MEMORY[0x1E69E9840];
-  v40 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v38 = 0;
-  objc_storeStrong(&v38, a4);
+  objc_storeStrong(&v38, completion);
   v36 = _os_activity_create(&dword_193225000, "SignInWithApple/appEULAFetch", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v37 = v36;
   state.opaque[0] = 0;
@@ -462,11 +462,11 @@ void __68__AKSignInWithAppleController_revokeAcccountWithContext_completion___bl
   v20 = 0;
   v21 = __63__AKSignInWithAppleController_fetchEULAForClientID_completion___block_invoke;
   v22 = &unk_1E73D9610;
-  v23 = MEMORY[0x1E69E5928](v40);
+  v23 = MEMORY[0x1E69E5928](selfCopy);
   v25 = v34;
   v24 = MEMORY[0x1E69E5928](v38);
   v26 = MEMORY[0x193B165F0](&v18);
-  remoteService = v40->_remoteService;
+  remoteService = selfCopy->_remoteService;
   v11 = MEMORY[0x1E69E9820];
   v12 = -1073741824;
   v13 = 0;
@@ -562,16 +562,16 @@ void __63__AKSignInWithAppleController_fetchEULAForClientID_completion___block_i
   objc_storeStrong(location, 0);
 }
 
-- (void)fetchAppIconForClientID:(id)a3 iconSize:(CGSize)a4 completion:(id)a5
+- (void)fetchAppIconForClientID:(id)d iconSize:(CGSize)size completion:(id)completion
 {
   v44 = *MEMORY[0x1E69E9840];
-  v42 = a4;
-  v41 = self;
+  sizeCopy = size;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v39 = 0;
-  objc_storeStrong(&v39, a5);
+  objc_storeStrong(&v39, completion);
   v37 = _os_activity_create(&dword_193225000, "SignInWithApple/appIconFetch", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v38 = v37;
   state.opaque[0] = 0;
@@ -614,7 +614,7 @@ void __63__AKSignInWithAppleController_fetchEULAForClientID_completion___block_i
   v26 = v34;
   v25 = MEMORY[0x1E69E5928](v39);
   v27 = MEMORY[0x193B165F0](&v20);
-  remoteService = v41->_remoteService;
+  remoteService = selfCopy->_remoteService;
   v13 = MEMORY[0x1E69E9820];
   v14 = -1073741824;
   v15 = 0;
@@ -622,7 +622,7 @@ void __63__AKSignInWithAppleController_fetchEULAForClientID_completion___block_i
   v17 = &unk_1E73D3510;
   v18 = MEMORY[0x1E69E5928](v27);
   v19 = [(AAFXPCSession *)remoteService remoteServiceProxyWithErrorHandler:&v13];
-  [v19 fetchAppIconForClientID:location[0] iconSize:v39 completion:{v42.width, v42.height}];
+  [v19 fetchAppIconForClientID:location[0] iconSize:v39 completion:{sizeCopy.width, sizeCopy.height}];
   objc_storeStrong(&v19, 0);
   objc_storeStrong(&v18, 0);
   objc_storeStrong(&v27, 0);
@@ -711,15 +711,15 @@ void __75__AKSignInWithAppleController_fetchAppIconForClientID_iconSize_completi
   objc_storeStrong(location, 0);
 }
 
-- (void)cancelAppIconRequestForClientID:(id)a3 completion:(id)a4
+- (void)cancelAppIconRequestForClientID:(id)d completion:(id)completion
 {
   v42 = *MEMORY[0x1E69E9840];
-  v40 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v38 = 0;
-  objc_storeStrong(&v38, a4);
+  objc_storeStrong(&v38, completion);
   v36 = _os_activity_create(&dword_193225000, "SignInWithApple/cancelAppIconFetch", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v37 = v36;
   state.opaque[0] = 0;
@@ -762,7 +762,7 @@ void __75__AKSignInWithAppleController_fetchAppIconForClientID_iconSize_completi
   v25 = v33;
   v24 = MEMORY[0x1E69E5928](v38);
   v26 = MEMORY[0x193B165F0](&v19);
-  remoteService = v40->_remoteService;
+  remoteService = selfCopy->_remoteService;
   v12 = MEMORY[0x1E69E9820];
   v13 = -1073741824;
   v14 = 0;
@@ -855,17 +855,17 @@ void __74__AKSignInWithAppleController_cancelAppIconRequestForClientID_completio
   objc_storeStrong(location, 0);
 }
 
-- (void)shareAccountWithContext:(id)a3 withGroup:(id)a4 completion:(id)a5
+- (void)shareAccountWithContext:(id)context withGroup:(id)group completion:(id)completion
 {
   v45 = *MEMORY[0x1E69E9840];
-  v43 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v41 = 0;
-  objc_storeStrong(&v41, a4);
+  objc_storeStrong(&v41, group);
   v40 = 0;
-  objc_storeStrong(&v40, a5);
+  objc_storeStrong(&v40, completion);
   v38 = _os_activity_create(&dword_193225000, "SignInWithApple/shareCredential", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v39 = v38;
   state.opaque[0] = 0;
@@ -904,11 +904,11 @@ void __74__AKSignInWithAppleController_cancelAppIconRequestForClientID_completio
   v22 = 0;
   v23 = __76__AKSignInWithAppleController_shareAccountWithContext_withGroup_completion___block_invoke;
   v24 = &unk_1E73D9660;
-  v25 = MEMORY[0x1E69E5928](v43);
+  v25 = MEMORY[0x1E69E5928](selfCopy);
   v27 = v36;
   v26 = MEMORY[0x1E69E5928](v40);
   v28 = MEMORY[0x193B165F0](&v20);
-  remoteService = v43->_remoteService;
+  remoteService = selfCopy->_remoteService;
   v13 = MEMORY[0x1E69E9820];
   v14 = -1073741824;
   v15 = 0;
@@ -1005,15 +1005,15 @@ void __76__AKSignInWithAppleController_shareAccountWithContext_withGroup_complet
   objc_storeStrong(location, 0);
 }
 
-- (void)unshareAccountWithContext:(id)a3 completion:(id)a4
+- (void)unshareAccountWithContext:(id)context completion:(id)completion
 {
   v42 = *MEMORY[0x1E69E9840];
-  v40 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v38 = 0;
-  objc_storeStrong(&v38, a4);
+  objc_storeStrong(&v38, completion);
   v36 = _os_activity_create(&dword_193225000, "SignInWithApple/unshareCredential", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v37 = v36;
   state.opaque[0] = 0;
@@ -1056,7 +1056,7 @@ void __76__AKSignInWithAppleController_shareAccountWithContext_withGroup_complet
   v25 = v33;
   v24 = MEMORY[0x1E69E5928](v38);
   v26 = MEMORY[0x193B165F0](&v19);
-  remoteService = v40->_remoteService;
+  remoteService = selfCopy->_remoteService;
   v12 = MEMORY[0x1E69E9820];
   v13 = -1073741824;
   v14 = 0;
@@ -1149,15 +1149,15 @@ void __68__AKSignInWithAppleController_unshareAccountWithContext_completion___bl
   objc_storeStrong(location, 0);
 }
 
-- (void)leaveGroupWithContext:(id)a3 completion:(id)a4
+- (void)leaveGroupWithContext:(id)context completion:(id)completion
 {
   v42 = *MEMORY[0x1E69E9840];
-  v40 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v38 = 0;
-  objc_storeStrong(&v38, a4);
+  objc_storeStrong(&v38, completion);
   v36 = _os_activity_create(&dword_193225000, "SignInWithApple/leaveGroup", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v37 = v36;
   state.opaque[0] = 0;
@@ -1200,7 +1200,7 @@ void __68__AKSignInWithAppleController_unshareAccountWithContext_completion___bl
   v25 = v33;
   v24 = MEMORY[0x1E69E5928](v38);
   v26 = MEMORY[0x193B165F0](&v19);
-  remoteService = v40->_remoteService;
+  remoteService = selfCopy->_remoteService;
   v12 = MEMORY[0x1E69E9820];
   v13 = -1073741824;
   v14 = 0;
@@ -1293,15 +1293,15 @@ void __64__AKSignInWithAppleController_leaveGroupWithContext_completion___block_
   objc_storeStrong(location, 0);
 }
 
-- (void)deleteAllItemsFromDepartedGroupWithContext:(id)a3 completion:(id)a4
+- (void)deleteAllItemsFromDepartedGroupWithContext:(id)context completion:(id)completion
 {
   v42 = *MEMORY[0x1E69E9840];
-  v40 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v38 = 0;
-  objc_storeStrong(&v38, a4);
+  objc_storeStrong(&v38, completion);
   v36 = _os_activity_create(&dword_193225000, "SignInWithApple/deleteGroupItems", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v37 = v36;
   state.opaque[0] = 0;
@@ -1344,7 +1344,7 @@ void __64__AKSignInWithAppleController_leaveGroupWithContext_completion___block_
   v25 = v33;
   v24 = MEMORY[0x1E69E5928](v38);
   v26 = MEMORY[0x193B165F0](&v19);
-  remoteService = v40->_remoteService;
+  remoteService = selfCopy->_remoteService;
   v12 = MEMORY[0x1E69E9820];
   v13 = -1073741824;
   v14 = 0;
@@ -1437,17 +1437,17 @@ void __85__AKSignInWithAppleController_deleteAllItemsFromDepartedGroupWithContex
   objc_storeStrong(location, 0);
 }
 
-- (void)participantRemovedWithContext:(id)a3 participantID:(id)a4 completion:(id)a5
+- (void)participantRemovedWithContext:(id)context participantID:(id)d completion:(id)completion
 {
   v45 = *MEMORY[0x1E69E9840];
-  v43 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v41 = 0;
-  objc_storeStrong(&v41, a4);
+  objc_storeStrong(&v41, d);
   v40 = 0;
-  objc_storeStrong(&v40, a5);
+  objc_storeStrong(&v40, completion);
   v38 = _os_activity_create(&dword_193225000, "SignInWithApple/participantRemoved", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v39 = v38;
   state.opaque[0] = 0;
@@ -1490,7 +1490,7 @@ void __85__AKSignInWithAppleController_deleteAllItemsFromDepartedGroupWithContex
   v27 = v35;
   v26 = MEMORY[0x1E69E5928](v40);
   v28 = MEMORY[0x193B165F0](&v21);
-  remoteService = v43->_remoteService;
+  remoteService = selfCopy->_remoteService;
   v14 = MEMORY[0x1E69E9820];
   v15 = -1073741824;
   v16 = 0;
@@ -1584,15 +1584,15 @@ void __86__AKSignInWithAppleController_participantRemovedWithContext_participant
   objc_storeStrong(location, 0);
 }
 
-- (void)fetchSharedGroupsWithContext:(id)a3 completion:(id)a4
+- (void)fetchSharedGroupsWithContext:(id)context completion:(id)completion
 {
   v42 = *MEMORY[0x1E69E9840];
-  v40 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v38 = 0;
-  objc_storeStrong(&v38, a4);
+  objc_storeStrong(&v38, completion);
   v36 = _os_activity_create(&dword_193225000, "SignInWithApple/fetchSharedGroups", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v37 = v36;
   state.opaque[0] = 0;
@@ -1635,7 +1635,7 @@ void __86__AKSignInWithAppleController_participantRemovedWithContext_participant
   v25 = v33;
   v24 = MEMORY[0x1E69E5928](v38);
   v26 = MEMORY[0x193B165F0](&v19);
-  remoteService = v40->_remoteService;
+  remoteService = selfCopy->_remoteService;
   v12 = MEMORY[0x1E69E9820];
   v13 = -1073741824;
   v14 = 0;
@@ -1728,15 +1728,15 @@ void __71__AKSignInWithAppleController_fetchSharedGroupsWithContext_completion__
   objc_storeStrong(location, 0);
 }
 
-- (void)performTokenRotationWithContext:(id)a3 completion:(id)a4
+- (void)performTokenRotationWithContext:(id)context completion:(id)completion
 {
   v42 = *MEMORY[0x1E69E9840];
-  v40 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v38 = 0;
-  objc_storeStrong(&v38, a4);
+  objc_storeStrong(&v38, completion);
   v36 = _os_activity_create(&dword_193225000, "SignInWithApple/performTokenRotation", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v37 = v36;
   state.opaque[0] = 0;
@@ -1779,7 +1779,7 @@ void __71__AKSignInWithAppleController_fetchSharedGroupsWithContext_completion__
   v25 = v33;
   v24 = MEMORY[0x1E69E5928](v38);
   v26 = MEMORY[0x193B165F0](&v19);
-  remoteService = v40->_remoteService;
+  remoteService = selfCopy->_remoteService;
   v12 = MEMORY[0x1E69E9820];
   v13 = -1073741824;
   v14 = 0;
@@ -1872,15 +1872,15 @@ void __74__AKSignInWithAppleController_performTokenRotationWithContext_completio
   objc_storeStrong(location, 0);
 }
 
-- (void)performHealthCheckWithContext:(id)a3 completion:(id)a4
+- (void)performHealthCheckWithContext:(id)context completion:(id)completion
 {
   v42 = *MEMORY[0x1E69E9840];
-  v40 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v38 = 0;
-  objc_storeStrong(&v38, a4);
+  objc_storeStrong(&v38, completion);
   v36 = _os_activity_create(&dword_193225000, "SignInWithApple/performHealthCheck", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v37 = v36;
   state.opaque[0] = 0;
@@ -1923,7 +1923,7 @@ void __74__AKSignInWithAppleController_performTokenRotationWithContext_completio
   v25 = v33;
   v24 = MEMORY[0x1E69E5928](v38);
   v26 = MEMORY[0x193B165F0](&v19);
-  remoteService = v40->_remoteService;
+  remoteService = selfCopy->_remoteService;
   v12 = MEMORY[0x1E69E9820];
   v13 = -1073741824;
   v14 = 0;
@@ -2016,13 +2016,13 @@ void __72__AKSignInWithAppleController_performHealthCheckWithContext_completion_
   objc_storeStrong(location, 0);
 }
 
-- (void)fetchSignInWithApplePrivateEmailCountWithCompletion:(id)a3
+- (void)fetchSignInWithApplePrivateEmailCountWithCompletion:(id)completion
 {
   v39 = *MEMORY[0x1E69E9840];
-  v37 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, completion);
   v34 = _os_activity_create(&dword_193225000, "SignInWithApple/fetchSIWAHMECount", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v35 = v34;
   state.opaque[0] = 0;
@@ -2065,7 +2065,7 @@ void __72__AKSignInWithAppleController_performHealthCheckWithContext_completion_
   v23 = v31;
   v22 = MEMORY[0x1E69E5928](location[0]);
   v24 = MEMORY[0x193B165F0](&v17);
-  remoteService = v37->_remoteService;
+  remoteService = selfCopy->_remoteService;
   v10 = MEMORY[0x1E69E9820];
   v11 = -1073741824;
   v12 = 0;

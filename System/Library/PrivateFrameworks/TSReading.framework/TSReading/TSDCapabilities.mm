@@ -1,7 +1,7 @@
 @interface TSDCapabilities
 + (id)currentCapabilities;
 - (CGSize)maximumHardcodedTextureSize;
-- (CGSize)maximumMetalTextureSizeForDevice:(id)a3;
+- (CGSize)maximumMetalTextureSizeForDevice:(id)device;
 - (CGSize)maximumTextureSize;
 - (TSDCapabilities)init;
 - (void)p_setupDevice;
@@ -11,8 +11,8 @@
 
 - (void)p_setupDevice
 {
-  v3 = [MEMORY[0x277D75418] platformString];
-  if ([v3 hasPrefix:{@"iPod3, "}])
+  platformString = [MEMORY[0x277D75418] platformString];
+  if ([platformString hasPrefix:{@"iPod3, "}])
   {
     v4 = 1;
 LABEL_5:
@@ -20,51 +20,51 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  if ([v3 hasPrefix:{@"iPod4, "}])
+  if ([platformString hasPrefix:{@"iPod4, "}])
   {
     v4 = 2;
     goto LABEL_5;
   }
 
-  if ([v3 hasPrefix:{@"iPod5, "}])
+  if ([platformString hasPrefix:{@"iPod5, "}])
   {
     v5 = xmmword_26CA666F0;
     goto LABEL_6;
   }
 
-  if ([v3 hasPrefix:{@"iPhone2, "}])
+  if ([platformString hasPrefix:{@"iPhone2, "}])
   {
     v5 = xmmword_26CA66700;
     goto LABEL_6;
   }
 
-  if ([v3 hasPrefix:{@"iPhone3, "}])
+  if ([platformString hasPrefix:{@"iPhone3, "}])
   {
     v5 = xmmword_26CA66710;
     goto LABEL_6;
   }
 
-  if ([v3 hasPrefix:{@"iPhone4, "}])
+  if ([platformString hasPrefix:{@"iPhone4, "}])
   {
     v5 = xmmword_26CA66720;
     goto LABEL_6;
   }
 
-  if ([v3 hasPrefix:{@"iPhone5, "}])
+  if ([platformString hasPrefix:{@"iPhone5, "}])
   {
     v5 = xmmword_26CA66730;
     goto LABEL_6;
   }
 
-  if ([v3 hasPrefix:{@"iPad1, "}])
+  if ([platformString hasPrefix:{@"iPad1, "}])
   {
     v5 = xmmword_26CA66740;
     goto LABEL_6;
   }
 
-  if ([v3 hasPrefix:{@"iPad2, "}])
+  if ([platformString hasPrefix:{@"iPad2, "}])
   {
-    v6 = [v3 hasPrefix:{@"iPad2, 1"}];
+    v6 = [platformString hasPrefix:{@"iPad2, 1"}];
     v5 = xmmword_26CA66770;
     if (v6)
     {
@@ -72,22 +72,22 @@ LABEL_5:
     }
 
     v14 = xmmword_26CA66770;
-    if (([v3 hasPrefix:{@"iPad2, 2"}] & 1) == 0)
+    if (([platformString hasPrefix:{@"iPad2, 2"}] & 1) == 0)
     {
-      v7 = [v3 hasPrefix:{@"iPad2, 3"}];
+      v7 = [platformString hasPrefix:{@"iPad2, 3"}];
       v5 = xmmword_26CA66770;
       if (v7)
       {
         goto LABEL_6;
       }
 
-      if ([v3 hasPrefix:{@"iPad2, 4", COERCE_DOUBLE(9)}])
+      if ([platformString hasPrefix:{@"iPad2, 4", COERCE_DOUBLE(9)}])
       {
         v5 = xmmword_26CA66780;
         goto LABEL_6;
       }
 
-      v12 = [v3 hasPrefix:{@"iPad2, 5"}];
+      v12 = [platformString hasPrefix:{@"iPad2, 5"}];
       v5 = xmmword_26CA66790;
       if (v12)
       {
@@ -95,9 +95,9 @@ LABEL_5:
       }
 
       v14 = xmmword_26CA66790;
-      if (([v3 hasPrefix:{@"iPad2, 6"}] & 1) == 0)
+      if (([platformString hasPrefix:{@"iPad2, 6"}] & 1) == 0)
       {
-        v13 = [v3 hasPrefix:{@"iPad2, 7"}];
+        v13 = [platformString hasPrefix:{@"iPad2, 7"}];
         v5 = xmmword_26CA66790;
         if ((v13 & 1) == 0)
         {
@@ -113,26 +113,26 @@ LABEL_29:
     goto LABEL_6;
   }
 
-  if (![v3 hasPrefix:{@"iPad3, "}])
+  if (![platformString hasPrefix:{@"iPad3, "}])
   {
     goto LABEL_7;
   }
 
-  v8 = [v3 hasPrefix:{@"iPad3, 1"}];
+  v8 = [platformString hasPrefix:{@"iPad3, 1"}];
   v5 = xmmword_26CA66750;
   if ((v8 & 1) == 0)
   {
     v14 = xmmword_26CA66750;
-    if (([v3 hasPrefix:{@"iPad3, 2"}] & 1) == 0)
+    if (([platformString hasPrefix:{@"iPad3, 2"}] & 1) == 0)
     {
-      v9 = [v3 hasPrefix:{@"iPad3, 3"}];
+      v9 = [platformString hasPrefix:{@"iPad3, 3"}];
       v5 = xmmword_26CA66750;
       if (v9)
       {
         goto LABEL_6;
       }
 
-      v10 = [v3 hasPrefix:{@"iPad3, 4", COERCE_DOUBLE(10)}];
+      v10 = [platformString hasPrefix:{@"iPad3, 4", COERCE_DOUBLE(10)}];
       v5 = xmmword_26CA66760;
       if (v10)
       {
@@ -140,9 +140,9 @@ LABEL_29:
       }
 
       v14 = xmmword_26CA66760;
-      if (([v3 hasPrefix:{@"iPad3, 5"}] & 1) == 0)
+      if (([platformString hasPrefix:{@"iPad3, 5"}] & 1) == 0)
       {
-        v11 = [v3 hasPrefix:{@"iPad3, 6"}];
+        v11 = [platformString hasPrefix:{@"iPad3, 6"}];
         v5 = xmmword_26CA66760;
         if (!v11)
         {
@@ -159,7 +159,7 @@ LABEL_29:
 LABEL_6:
   *&self->_device = v5;
 LABEL_7:
-  self->_deviceType = TSDCapabilitiesDeviceTypeFromHWModelString(v3);
+  self->_deviceType = TSDCapabilitiesDeviceTypeFromHWModelString(platformString);
 }
 
 - (TSDCapabilities)init
@@ -239,9 +239,9 @@ TSDCapabilities *__38__TSDCapabilities_currentCapabilities__block_invoke()
   v3 = *(MEMORY[0x277CBF3A8] + 8);
   if (!platform)
   {
-    v6 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDCapabilities maximumHardcodedTextureSize]"];
-    [v6 handleFailureInFunction:v7 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDCapabilities.m"), 328, @"Unknown platform!"}];
+    [currentHandler handleFailureInFunction:v7 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDCapabilities.m"), 328, @"Unknown platform!"}];
     goto LABEL_8;
   }
 
@@ -261,23 +261,23 @@ LABEL_8:
   return result;
 }
 
-- (CGSize)maximumMetalTextureSizeForDevice:(id)a3
+- (CGSize)maximumMetalTextureSizeForDevice:(id)device
 {
   [(TSDCapabilities *)self maximumHardcodedTextureSize];
   v6 = v5;
   v8 = v7;
   if ([(TSDCapabilities *)self isMetalCapable])
   {
-    if ([a3 supportsFeatureSet:0] & 1) != 0 || (objc_msgSend(a3, "supportsFeatureSet:", 1))
+    if ([device supportsFeatureSet:0] & 1) != 0 || (objc_msgSend(device, "supportsFeatureSet:", 1))
     {
       *&v9 = 4096.0;
     }
 
     else
     {
-      if (([a3 supportsFeatureSet:2] & 1) == 0 && (objc_msgSend(a3, "supportsFeatureSet:", 3) & 1) == 0 && (objc_msgSend(a3, "supportsFeatureSet:", 5) & 1) == 0 && (objc_msgSend(a3, "supportsFeatureSet:", 6) & 1) == 0 && (objc_msgSend(a3, "supportsFeatureSet:", 8) & 1) == 0)
+      if (([device supportsFeatureSet:2] & 1) == 0 && (objc_msgSend(device, "supportsFeatureSet:", 3) & 1) == 0 && (objc_msgSend(device, "supportsFeatureSet:", 5) & 1) == 0 && (objc_msgSend(device, "supportsFeatureSet:", 6) & 1) == 0 && (objc_msgSend(device, "supportsFeatureSet:", 8) & 1) == 0)
       {
-        if ([a3 supportsFeatureSet:9])
+        if ([device supportsFeatureSet:9])
         {
           v6 = 8192.0;
         }

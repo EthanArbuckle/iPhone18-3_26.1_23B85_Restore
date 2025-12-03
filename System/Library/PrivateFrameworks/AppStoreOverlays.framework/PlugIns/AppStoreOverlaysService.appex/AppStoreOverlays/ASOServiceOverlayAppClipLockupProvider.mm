@@ -1,10 +1,10 @@
 @interface ASOServiceOverlayAppClipLockupProvider
-+ (id)configureLockupView:(id)a3 forAppClipWithConfiguration:(id)a4 serviceContext:(id)a5 metricsReporter:(id)a6;
++ (id)configureLockupView:(id)view forAppClipWithConfiguration:(id)configuration serviceContext:(id)context metricsReporter:(id)reporter;
 + (id)log;
-- (id)loadOverlayForConfiguration:(id)a3 delegate:(id)a4 serviceContext:(id)a5 metricsReporter:(id)a6;
-- (id)loadOverlayFromDefinition:(id)a3 configuration:(id)a4 serviceContext:(id)a5 metricsReporter:(id)a6;
-- (id)lockupDefinitionForConfiguration:(id)a3 serviceContext:(id)a4;
-- (id)parentAppLockupRequestForConfiguration:(id)a3 serviceContext:(id)a4;
+- (id)loadOverlayForConfiguration:(id)configuration delegate:(id)delegate serviceContext:(id)context metricsReporter:(id)reporter;
+- (id)loadOverlayFromDefinition:(id)definition configuration:(id)configuration serviceContext:(id)context metricsReporter:(id)reporter;
+- (id)lockupDefinitionForConfiguration:(id)configuration serviceContext:(id)context;
+- (id)parentAppLockupRequestForConfiguration:(id)configuration serviceContext:(id)context;
 @end
 
 @implementation ASOServiceOverlayAppClipLockupProvider
@@ -21,11 +21,11 @@
   return v3;
 }
 
-- (id)loadOverlayForConfiguration:(id)a3 delegate:(id)a4 serviceContext:(id)a5 metricsReporter:(id)a6
+- (id)loadOverlayForConfiguration:(id)configuration delegate:(id)delegate serviceContext:(id)context metricsReporter:(id)reporter
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
+  configurationCopy = configuration;
+  contextCopy = context;
+  reporterCopy = reporter;
   v12 = +[ASOServiceOverlayAppClipLockupProvider log];
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
@@ -35,28 +35,28 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v13 = v9;
-    v14 = [v13 additionalValueForKey:ASOOverlayConfigurationPrivateParameterOverrideIsAppClip serviceContext:v10];
-    v15 = [v10 isAppClip];
+    v13 = configurationCopy;
+    v14 = [v13 additionalValueForKey:ASOOverlayConfigurationPrivateParameterOverrideIsAppClip serviceContext:contextCopy];
+    isAppClip = [contextCopy isAppClip];
     if (v14)
     {
-      v15 = [v14 BOOLValue];
+      isAppClip = [v14 BOOLValue];
     }
 
-    if (v15)
+    if (isAppClip)
     {
-      v16 = [(ASOServiceOverlayAppClipLockupProvider *)self lockupDefinitionForConfiguration:v13 serviceContext:v10];
+      v16 = [(ASOServiceOverlayAppClipLockupProvider *)self lockupDefinitionForConfiguration:v13 serviceContext:contextCopy];
       if (v16)
       {
-        v17 = [(ASOServiceOverlayAppClipLockupProvider *)self loadOverlayFromDefinition:v16 configuration:v13 serviceContext:v10 metricsReporter:v11];
+        v17 = [(ASOServiceOverlayAppClipLockupProvider *)self loadOverlayFromDefinition:v16 configuration:v13 serviceContext:contextCopy metricsReporter:reporterCopy];
         v23[0] = _NSConcreteStackBlock;
         v23[1] = 3221225472;
         v23[2] = sub_100002FC8;
         v23[3] = &unk_100024D60;
         v24 = v13;
-        v25 = v10;
-        v26 = self;
-        v27 = v11;
+        v25 = contextCopy;
+        selfCopy = self;
+        v27 = reporterCopy;
         v28 = v17;
         v18 = v17;
         v19 = [v18 catchWithBlock:v23];
@@ -97,12 +97,12 @@
   return v19;
 }
 
-- (id)loadOverlayFromDefinition:(id)a3 configuration:(id)a4 serviceContext:(id)a5 metricsReporter:(id)a6
+- (id)loadOverlayFromDefinition:(id)definition configuration:(id)configuration serviceContext:(id)context metricsReporter:(id)reporter
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  definitionCopy = definition;
+  configurationCopy = configuration;
+  contextCopy = context;
+  reporterCopy = reporter;
   v13 = objc_alloc_init(AMSMutablePromise);
   v14 = +[ASOServiceOverlayAppClipLockupProvider log];
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
@@ -114,16 +114,16 @@
   block[1] = 3221225472;
   block[2] = sub_100003214;
   block[3] = &unk_100024D88;
-  v24 = v10;
-  v25 = v9;
-  v26 = v12;
+  v24 = configurationCopy;
+  v25 = definitionCopy;
+  v26 = reporterCopy;
   v15 = v13;
   v27 = v15;
-  v28 = v11;
-  v16 = v11;
-  v17 = v12;
-  v18 = v9;
-  v19 = v10;
+  v28 = contextCopy;
+  v16 = contextCopy;
+  v17 = reporterCopy;
+  v18 = definitionCopy;
+  v19 = configurationCopy;
   dispatch_async(&_dispatch_main_q, block);
   v20 = v28;
   v21 = v15;
@@ -131,57 +131,57 @@
   return v15;
 }
 
-+ (id)configureLockupView:(id)a3 forAppClipWithConfiguration:(id)a4 serviceContext:(id)a5 metricsReporter:(id)a6
++ (id)configureLockupView:(id)view forAppClipWithConfiguration:(id)configuration serviceContext:(id)context metricsReporter:(id)reporter
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [v10 additionalValueForKey:ASOOverlayConfigurationPrivateParameterOverrideIsArcadeApp serviceContext:v11];
-  v14 = [v9 loadLockupPromise];
-  v15 = [v14 promiseAdapter];
+  viewCopy = view;
+  configurationCopy = configuration;
+  contextCopy = context;
+  reporterCopy = reporter;
+  v13 = [configurationCopy additionalValueForKey:ASOOverlayConfigurationPrivateParameterOverrideIsArcadeApp serviceContext:contextCopy];
+  loadLockupPromise = [viewCopy loadLockupPromise];
+  promiseAdapter = [loadLockupPromise promiseAdapter];
   v23[0] = _NSConcreteStackBlock;
   v23[1] = 3221225472;
   v23[2] = sub_100003620;
   v23[3] = &unk_100024DB0;
-  v24 = v10;
-  v25 = v12;
-  v26 = v9;
-  v27 = v11;
+  v24 = configurationCopy;
+  v25 = reporterCopy;
+  v26 = viewCopy;
+  v27 = contextCopy;
   v28 = v13;
   v16 = v13;
-  v17 = v11;
-  v18 = v9;
-  v19 = v12;
-  v20 = v10;
-  v21 = [v15 thenWithBlock:v23];
+  v17 = contextCopy;
+  v18 = viewCopy;
+  v19 = reporterCopy;
+  v20 = configurationCopy;
+  v21 = [promiseAdapter thenWithBlock:v23];
 
   return v21;
 }
 
-- (id)lockupDefinitionForConfiguration:(id)a3 serviceContext:(id)a4
+- (id)lockupDefinitionForConfiguration:(id)configuration serviceContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ASOServiceOverlayAppClipLockupProvider *)self parentAppLockupRequestForConfiguration:v6 serviceContext:v7];
+  configurationCopy = configuration;
+  contextCopy = context;
+  v8 = [(ASOServiceOverlayAppClipLockupProvider *)self parentAppLockupRequestForConfiguration:configurationCopy serviceContext:contextCopy];
   if (!v8)
   {
-    v11 = [v6 additionalValueForKey:ASOOverlayConfigurationPrivateParameterOverrideIsDevelopment serviceContext:v7];
-    v12 = [v7 isDevelopmentApp];
+    v11 = [configurationCopy additionalValueForKey:ASOOverlayConfigurationPrivateParameterOverrideIsDevelopment serviceContext:contextCopy];
+    isDevelopmentApp = [contextCopy isDevelopmentApp];
     if (v11)
     {
-      v12 = [v11 BOOLValue];
+      isDevelopmentApp = [v11 BOOLValue];
     }
 
-    v13 = v12;
-    v14 = [v6 additionalValueForKey:ASOOverlayConfigurationPrivateParameterOverrideIsBetaApp serviceContext:v7];
-    v15 = [v7 isBetaApp];
+    v13 = isDevelopmentApp;
+    v14 = [configurationCopy additionalValueForKey:ASOOverlayConfigurationPrivateParameterOverrideIsBetaApp serviceContext:contextCopy];
+    isBetaApp = [contextCopy isBetaApp];
     if (v14)
     {
-      v15 = [v14 BOOLValue];
+      isBetaApp = [v14 BOOLValue];
     }
 
-    if (((v13 | v15) & 1) == 0)
+    if (((v13 | isBetaApp) & 1) == 0)
     {
       v17 = +[ASOServiceOverlayAppClipLockupProvider log];
       if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
@@ -194,7 +194,7 @@
       goto LABEL_24;
     }
 
-    v16 = [ASOServiceOverlayDevelopmentLockupProvider parentAppDevelopmentLockupForConfiguration:v6 serviceContext:v7];
+    v16 = [ASOServiceOverlayDevelopmentLockupProvider parentAppDevelopmentLockupForConfiguration:configurationCopy serviceContext:contextCopy];
     if (v16)
     {
       v17 = v16;
@@ -202,7 +202,7 @@
       if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
       {
         v23 = 138412290;
-        v24 = v6;
+        v24 = configurationCopy;
         v19 = "Using parent app development lockup: %@";
 LABEL_22:
         _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_INFO, v19, &v23, 0xCu);
@@ -211,10 +211,10 @@ LABEL_22:
 
     else
     {
-      v20 = [ASOServiceOverlayDevelopmentLockupProvider appDevelopmentLockupForConfiguration:v6 serviceContext:v7];
+      v20 = [ASOServiceOverlayDevelopmentLockupProvider appDevelopmentLockupForConfiguration:configurationCopy serviceContext:contextCopy];
       if (!v20)
       {
-        v21 = [ASOServiceOverlayDevelopmentLockupProvider placeholderAppDevelopmentLockupForConfiguration:v6 serviceContext:v7];
+        v21 = [ASOServiceOverlayDevelopmentLockupProvider placeholderAppDevelopmentLockupForConfiguration:configurationCopy serviceContext:contextCopy];
         if (!v21)
         {
           v10 = 0;
@@ -229,7 +229,7 @@ LABEL_22:
         }
 
         v23 = 138412290;
-        v24 = v6;
+        v24 = configurationCopy;
         v19 = "Using placeholder app development lockup: %@";
         goto LABEL_22;
       }
@@ -239,7 +239,7 @@ LABEL_22:
       if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
       {
         v23 = 138412290;
-        v24 = v6;
+        v24 = configurationCopy;
         v19 = "Using app development lockup: %@";
         goto LABEL_22;
       }
@@ -258,7 +258,7 @@ LABEL_25:
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     v23 = 138412290;
-    v24 = v6;
+    v24 = configurationCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "Using parent app production lockup: %@", &v23, 0xCu);
   }
 
@@ -268,50 +268,50 @@ LABEL_26:
   return v10;
 }
 
-- (id)parentAppLockupRequestForConfiguration:(id)a3 serviceContext:(id)a4
+- (id)parentAppLockupRequestForConfiguration:(id)configuration serviceContext:(id)context
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 additionalValueForKey:ASOOverlayConfigurationPrivateParameterIgnoreAdamID serviceContext:v6];
-  v8 = [v7 BOOLValue];
+  configurationCopy = configuration;
+  contextCopy = context;
+  v7 = [configurationCopy additionalValueForKey:ASOOverlayConfigurationPrivateParameterIgnoreAdamID serviceContext:contextCopy];
+  bOOLValue = [v7 BOOLValue];
 
-  if (v8)
+  if (bOOLValue)
   {
     v9 = 0;
   }
 
   else
   {
-    v10 = [v5 additionalValueForKey:ASOOverlayConfigurationPrivateParameterOverrideParentAppAdamID serviceContext:v6];
-    if (!v10)
+    hostAdamID = [configurationCopy additionalValueForKey:ASOOverlayConfigurationPrivateParameterOverrideParentAppAdamID serviceContext:contextCopy];
+    if (!hostAdamID)
     {
-      v10 = [v6 hostAdamID];
+      hostAdamID = [contextCopy hostAdamID];
     }
 
     v11 = +[ASOServiceOverlayAppClipLockupProvider log];
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
       *buf = 138543362;
-      v25 = v10;
+      v25 = hostAdamID;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "Parent app adam ID is: %{public}@", buf, 0xCu);
     }
 
-    if (v10)
+    if (hostAdamID)
     {
-      v23 = [v6 applicationRecord];
-      v22 = [[ASCAdamID alloc] initWithStringValue:v10];
-      v12 = [v23 iTunesMetadata];
-      v13 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v12 versionIdentifier]);
-      v14 = [v13 stringValue];
+      applicationRecord = [contextCopy applicationRecord];
+      v22 = [[ASCAdamID alloc] initWithStringValue:hostAdamID];
+      iTunesMetadata = [applicationRecord iTunesMetadata];
+      v13 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [iTunesMetadata versionIdentifier]);
+      stringValue = [v13 stringValue];
 
       v15 = [ASCLockupRequest alloc];
       v16 = ASCLockupKindApp;
       v17 = ASCLockupContextOverlayClip;
-      v18 = [v5 latestReleaseID];
-      v19 = [v5 productVariantID];
-      v9 = [v15 _initWithID:v22 kind:v16 context:v17 minExternalVersionID:v14 latestReleaseID:v18 productVariantID:v19];
+      latestReleaseID = [configurationCopy latestReleaseID];
+      productVariantID = [configurationCopy productVariantID];
+      v9 = [v15 _initWithID:v22 kind:v16 context:v17 minExternalVersionID:stringValue latestReleaseID:latestReleaseID productVariantID:productVariantID];
 
-      v20 = v23;
+      v20 = applicationRecord;
     }
 
     else
@@ -320,7 +320,7 @@ LABEL_26:
       if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v25 = v5;
+        v25 = configurationCopy;
         _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_INFO, "Unable to build lockup request for parent app: %@", buf, 0xCu);
       }
 

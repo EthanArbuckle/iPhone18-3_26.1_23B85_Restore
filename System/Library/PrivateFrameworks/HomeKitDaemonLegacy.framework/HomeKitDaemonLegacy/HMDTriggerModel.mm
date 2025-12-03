@@ -10,23 +10,23 @@
 {
   v21 = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CBEB58];
-  v4 = [(HMDTriggerModel *)self currentActionSets];
-  v5 = [v3 setWithCapacity:{objc_msgSend(v4, "count") + 1}];
+  currentActionSets = [(HMDTriggerModel *)self currentActionSets];
+  v5 = [v3 setWithCapacity:{objc_msgSend(currentActionSets, "count") + 1}];
 
-  v6 = [(HMDBackingStoreModelObject *)self parentUUID];
+  parentUUID = [(HMDBackingStoreModelObject *)self parentUUID];
 
-  if (v6)
+  if (parentUUID)
   {
-    v7 = [(HMDBackingStoreModelObject *)self parentUUID];
-    [v5 addObject:v7];
+    parentUUID2 = [(HMDBackingStoreModelObject *)self parentUUID];
+    [v5 addObject:parentUUID2];
   }
 
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v8 = [(HMDTriggerModel *)self currentActionSets];
-  v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  currentActionSets2 = [(HMDTriggerModel *)self currentActionSets];
+  v9 = [currentActionSets2 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v9)
   {
     v10 = v9;
@@ -37,14 +37,14 @@
       {
         if (*v17 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(currentActionSets2);
         }
 
         v13 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:*(*(&v16 + 1) + 8 * i)];
         [v5 addObject:v13];
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v10 = [currentActionSets2 countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v10);
@@ -57,27 +57,27 @@
 
 - (id)createPayload
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = [(HMDBackingStoreModelObject *)self uuid];
-  v5 = [v4 UUIDString];
-  [v3 setObject:v5 forKeyedSubscript:*MEMORY[0x277CD2768]];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  uuid = [(HMDBackingStoreModelObject *)self uuid];
+  uUIDString = [uuid UUIDString];
+  [dictionary setObject:uUIDString forKeyedSubscript:*MEMORY[0x277CD2768]];
 
-  v6 = [(HMDTriggerModel *)self name];
-  [v3 setObject:v6 forKeyedSubscript:*MEMORY[0x277CD2758]];
+  name = [(HMDTriggerModel *)self name];
+  [dictionary setObject:name forKeyedSubscript:*MEMORY[0x277CD2758]];
 
-  v7 = [(HMDTriggerModel *)self configuredName];
-  [v3 setObject:v7 forKeyedSubscript:*MEMORY[0x277CD1250]];
+  configuredName = [(HMDTriggerModel *)self configuredName];
+  [dictionary setObject:configuredName forKeyedSubscript:*MEMORY[0x277CD1250]];
 
-  v8 = [(HMDTriggerModel *)self active];
-  [v3 setObject:v8 forKeyedSubscript:*MEMORY[0x277CD2730]];
+  active = [(HMDTriggerModel *)self active];
+  [dictionary setObject:active forKeyedSubscript:*MEMORY[0x277CD2730]];
 
-  v9 = [(HMDTriggerModel *)self autoDelete];
-  [v3 setObject:v9 forKeyedSubscript:*MEMORY[0x277CD1260]];
+  autoDelete = [(HMDTriggerModel *)self autoDelete];
+  [dictionary setObject:autoDelete forKeyedSubscript:*MEMORY[0x277CD1260]];
 
-  v10 = [(HMDTriggerModel *)self currentActionSets];
-  [v3 setObject:v10 forKeyedSubscript:*MEMORY[0x277CD2728]];
+  currentActionSets = [(HMDTriggerModel *)self currentActionSets];
+  [dictionary setObject:currentActionSets forKeyedSubscript:*MEMORY[0x277CD2728]];
 
-  v11 = [v3 copy];
+  v11 = [dictionary copy];
 
   return v11;
 }

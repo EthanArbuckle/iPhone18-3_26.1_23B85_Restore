@@ -1,36 +1,36 @@
 @interface TiledFusionStage
-- (TiledFusionStage)initWithContext:(id)a3 preEspressoStage:(id)a4 networkVersion:(int)a5;
+- (TiledFusionStage)initWithContext:(id)context preEspressoStage:(id)stage networkVersion:(int)version;
 - (id)availableImagingNetworksWithNetExtension;
-- (id)getFilePathForNetworkIdentifier:(id)a3;
+- (id)getFilePathForNetworkIdentifier:(id)identifier;
 - (id)platformIdentifier;
 - (int)allocateEspressoBuffers;
 - (int)compileShaders;
-- (int)computeAMBNRDenoiseBoostMap:(id)a3 longFusionMap:(id)a4 ev0FusionMap:(id)a5 ev0Metadata:(frameMetadata *)a6 longMetadata:(frameMetadata *)a7 numEV0:(int)a8 deferredProcessingPlist:(id)a9 espressoModel:(int)a10 isSyntheticLongWithRealLong:(BOOL)a11 totalGain:(float)a12;
+- (int)computeAMBNRDenoiseBoostMap:(id)map longFusionMap:(id)fusionMap ev0FusionMap:(id)ev0FusionMap ev0Metadata:(frameMetadata *)metadata longMetadata:(frameMetadata *)longMetadata numEV0:(int)v0 deferredProcessingPlist:(id)plist espressoModel:(int)self0 isSyntheticLongWithRealLong:(BOOL)self1 totalGain:(float)self2;
 - (int)initializePyramids;
-- (int)loadEspressoNetworkFromPath:(const char *)a3 andStoreNetwork:(id *)a4 andPlan:(void *)a5;
-- (int)stage1GPUonTile:(TileBounds *)a3 refLuma:(id)a4 referenceChroma:(id)a5 longLuma:(id)a6 longChroma:(id)a7 lscGains:(id)a8 slFusionMap:(id)a9 longFusionMap:(id)a10 eitRatio:(float)a11 hasSIFR:(BOOL)a12 noiseEstimationParams:(NoiseEstimationParameters *)a13 intermediateEncodingParams:(const IntermediateEncodingParameters *)a14;
-- (int)stage2ANEonTile:(TileBounds *)a3;
-- (int)stage3GPUonTile:(TileBounds *)a3 preFusionMap:(id)a4 slFusionMap:(id)a5 longFusionMap:(id)a6 skinMask:(id)a7 skyMask:(id)a8 lscGains:(id)a9 outLuma:(id)a10 outChroma:(id)a11 espressoModelForTuning:(int)a12;
-- (uint64_t)runWithReferenceLuma:(float)a3 referenceChroma:(float)a4 longLuma:(float)a5 longChroma:(float)a6 preFusionMap:(float32x4_t)a7 slFusionMap:(float32x4_t)a8 slQuantBounds:(float32x4_t)a9 longFusionMap:(uint64_t)a10 skinMask:(void *)a11 skyMask:(void *)a12 lscGains:(void *)a13 totalGain:(void *)a14 outLuma:(void *)a15 outChroma:(void *)a16 deferredProcessingPlist:(NoiseDivisorQuantizationBoundaries *)a17 lscGainGreenMax:(id)a18 EVM_EV0_motionScore:(id)a19 eitRatio:(id)a20 aeShutterTimeRatio:(id)a21 hasSIFR:(id)a22 isStationary:(id)a23 isSyntheticLongWithRealLong:(id)a24 colorCorrection:(BOOL)a25 espressoModel:(BOOL)a26 noiseEstimationParams:(BOOL)a27 espressoModelForTuning:(unsigned int)a28 sideCar:(uint64_t)a29 intermediateEncodingParams:(unsigned __int32)a30;
-- (unint64_t)computeTileSizeForPixelFormat:(unint64_t)a3;
+- (int)loadEspressoNetworkFromPath:(const char *)path andStoreNetwork:(id *)network andPlan:(void *)plan;
+- (int)stage1GPUonTile:(TileBounds *)tile refLuma:(id)luma referenceChroma:(id)chroma longLuma:(id)longLuma longChroma:(id)longChroma lscGains:(id)gains slFusionMap:(id)map longFusionMap:(id)self0 eitRatio:(float)self1 hasSIFR:(BOOL)self2 noiseEstimationParams:(NoiseEstimationParameters *)self3 intermediateEncodingParams:(const IntermediateEncodingParameters *)self4;
+- (int)stage2ANEonTile:(TileBounds *)tile;
+- (int)stage3GPUonTile:(TileBounds *)tile preFusionMap:(id)map slFusionMap:(id)fusionMap longFusionMap:(id)longFusionMap skinMask:(id)mask skyMask:(id)skyMask lscGains:(id)gains outLuma:(id)self0 outChroma:(id)self1 espressoModelForTuning:(int)self2;
+- (uint64_t)runWithReferenceLuma:(float)luma referenceChroma:(float)chroma longLuma:(float)longLuma longChroma:(float)longChroma preFusionMap:(float32x4_t)map slFusionMap:(float32x4_t)fusionMap slQuantBounds:(float32x4_t)bounds longFusionMap:(uint64_t)self0 skinMask:(void *)self1 skyMask:(void *)self2 lscGains:(void *)self3 totalGain:(void *)self4 outLuma:(void *)self5 outChroma:(void *)self6 deferredProcessingPlist:(NoiseDivisorQuantizationBoundaries *)self7 lscGainGreenMax:(id)self8 EVM_EV0_motionScore:(id)self9 eitRatio:(id)ratio aeShutterTimeRatio:(id)timeRatio hasSIFR:(id)r isStationary:(id)stationary isSyntheticLongWithRealLong:(id)long colorCorrection:(BOOL)correction espressoModel:(BOOL)model noiseEstimationParams:(BOOL)params espressoModelForTuning:(unsigned int)tuning sideCar:(uint64_t)car intermediateEncodingParams:(unsigned __int32)luma0;
+- (unint64_t)computeTileSizeForPixelFormat:(unint64_t)format;
 - (void)dealloc;
-- (void)freeEspressoBuffers:(BOOL)a3;
+- (void)freeEspressoBuffers:(BOOL)buffers;
 - (void)unloadEspressoNetwork;
 @end
 
 @implementation TiledFusionStage
 
-- (int)loadEspressoNetworkFromPath:(const char *)a3 andStoreNetwork:(id *)a4 andPlan:(void *)a5
+- (int)loadEspressoNetworkFromPath:(const char *)path andStoreNetwork:(id *)network andPlan:(void *)plan
 {
   espresso_ctx = self->_espresso_ctx;
   plan = espresso_create_plan();
-  *a5 = plan;
+  *plan = plan;
   if (plan)
   {
     v8 = espresso_plan_add_network();
     if (v8)
     {
-      sub_2958A81F0(a5);
+      sub_2958A81F0(plan);
     }
   }
 
@@ -43,12 +43,12 @@
   return v8;
 }
 
-- (TiledFusionStage)initWithContext:(id)a3 preEspressoStage:(id)a4 networkVersion:(int)a5
+- (TiledFusionStage)initWithContext:(id)context preEspressoStage:(id)stage networkVersion:(int)version
 {
-  v9 = a3;
-  v10 = a4;
+  contextCopy = context;
+  stageCopy = stage;
   v11 = 1550;
-  if (a5 == 2)
+  if (version == 2)
   {
     v11 = 248;
   }
@@ -66,19 +66,19 @@ LABEL_11:
     goto LABEL_7;
   }
 
-  v12->_networkVersion = a5;
+  v12->_networkVersion = version;
   v14 = dispatch_queue_create("deepfusion-sync", 0);
   espressoCallbackQueue = v13->_espressoCallbackQueue;
   v13->_espressoCallbackQueue = v14;
 
-  objc_storeStrong(&v13->_metal, a3);
+  objc_storeStrong(&v13->_metal, context);
   if (!v13->_metal)
   {
     sub_2958A8394();
     goto LABEL_11;
   }
 
-  objc_storeStrong(&v13->_preEspressoStage, a4);
+  objc_storeStrong(&v13->_preEspressoStage, stage);
   if (!v13->_preEspressoStage)
   {
     sub_2958A8308();
@@ -301,9 +301,9 @@ LABEL_7:
   return v2;
 }
 
-- (id)getFilePathForNetworkIdentifier:(id)a3
+- (id)getFilePathForNetworkIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v8 = objc_msgSend_platformIdentifier(self, v5, v6, v7);
   if (!v8)
   {
@@ -356,7 +356,7 @@ LABEL_5:
     }
 
     v28 = *(*(&v46 + 1) + 8 * v27);
-    if (objc_msgSend_hasPrefix_(v28, v23, v4, v24))
+    if (objc_msgSend_hasPrefix_(v28, v23, identifierCopy, v24))
     {
       v30 = objc_msgSend_length(v28, v23, v29, v24);
       if (objc_msgSend_numberOfMatchesInString_options_range_(v16, v31, v28, 0, 0, v30))
@@ -394,7 +394,7 @@ LABEL_17:
   return v42;
 }
 
-- (void)freeEspressoBuffers:(BOOL)a3
+- (void)freeEspressoBuffers:(BOOL)buffers
 {
   v4 = 0;
   v5 = 0;
@@ -429,7 +429,7 @@ LABEL_17:
     }
 
     while (v13);
-    v15 = v4 | a3;
+    v15 = v4 | buffers;
     v4 = 1;
     v5 = 1;
   }
@@ -594,7 +594,7 @@ LABEL_16:
   synthRefNoisePretuning = self->_synthRefNoisePretuning;
   YUVGaussian = self->_YUVGaussian;
   YUVLaplacian = self->_YUVLaplacian;
-  v27 = self;
+  selfCopy = self;
   YUVNoisePyramid = self->_YUVNoisePyramid;
   v13 = 1;
   do
@@ -630,21 +630,21 @@ LABEL_16:
   }
 
   while ((v14 & 1) != 0);
-  postEspresso = v27->_postEspresso;
-  v27->_postEspresso = 0;
+  postEspresso = selfCopy->_postEspresso;
+  selfCopy->_postEspresso = 0;
 
-  espressoCallbackQueue = v27->_espressoCallbackQueue;
-  v27->_espressoCallbackQueue = 0;
+  espressoCallbackQueue = selfCopy->_espressoCallbackQueue;
+  selfCopy->_espressoCallbackQueue = 0;
 
-  v28.receiver = v27;
+  v28.receiver = selfCopy;
   v28.super_class = TiledFusionStage;
   [(TiledFusionStage *)&v28 dealloc];
 }
 
-- (unint64_t)computeTileSizeForPixelFormat:(unint64_t)a3
+- (unint64_t)computeTileSizeForPixelFormat:(unint64_t)format
 {
-  v6 = objc_msgSend_device(self->_metal, a2, a3, v3);
-  v9 = objc_msgSend_minimumLinearTextureAlignmentForPixelFormat_(v6, v7, a3, v8);
+  v6 = objc_msgSend_device(self->_metal, a2, format, v3);
+  v9 = objc_msgSend_minimumLinearTextureAlignmentForPixelFormat_(v6, v7, format, v8);
 
   v13 = objc_msgSend_device(self->_metal, v10, v11, v12, 0, 0, 0);
   MTLPixelFormatGetInfoForDevice();
@@ -718,7 +718,7 @@ LABEL_16:
   return 0;
 }
 
-- (int)stage2ANEonTile:(TileBounds *)a3
+- (int)stage2ANEonTile:(TileBounds *)tile
 {
   if (self->_loadedEspressoModel > 2u)
   {
@@ -730,14 +730,14 @@ LABEL_16:
   else
   {
     v4 = 0;
-    if (a3->var0 >= 0)
+    if (tile->var0 >= 0)
     {
-      v5 = a3->var0 & 1;
+      v5 = tile->var0 & 1;
     }
 
     else
     {
-      v5 = -(a3->var0 & 1);
+      v5 = -(tile->var0 & 1);
     }
 
     v6 = self + 32 * v5;
@@ -811,48 +811,48 @@ LABEL_14:
   }
 }
 
-- (int)stage1GPUonTile:(TileBounds *)a3 refLuma:(id)a4 referenceChroma:(id)a5 longLuma:(id)a6 longChroma:(id)a7 lscGains:(id)a8 slFusionMap:(id)a9 longFusionMap:(id)a10 eitRatio:(float)a11 hasSIFR:(BOOL)a12 noiseEstimationParams:(NoiseEstimationParameters *)a13 intermediateEncodingParams:(const IntermediateEncodingParameters *)a14
+- (int)stage1GPUonTile:(TileBounds *)tile refLuma:(id)luma referenceChroma:(id)chroma longLuma:(id)longLuma longChroma:(id)longChroma lscGains:(id)gains slFusionMap:(id)map longFusionMap:(id)self0 eitRatio:(float)self1 hasSIFR:(BOOL)self2 noiseEstimationParams:(NoiseEstimationParameters *)self3 intermediateEncodingParams:(const IntermediateEncodingParameters *)self4
 {
-  v21 = a4;
-  v22 = a5;
-  v23 = a6;
-  v24 = a7;
-  v221 = a8;
-  v219 = a9;
-  v217 = a10;
+  lumaCopy = luma;
+  chromaCopy = chroma;
+  longLumaCopy = longLuma;
+  longChromaCopy = longChroma;
+  gainsCopy = gains;
+  mapCopy = map;
+  fusionMapCopy = fusionMap;
   v244 = 0;
-  if (a3->var0 >= 0)
+  if (tile->var0 >= 0)
   {
-    v25 = a3->var0 & 1;
+    v25 = tile->var0 & 1;
   }
 
   else
   {
-    v25 = -(a3->var0 & 1);
+    v25 = -(tile->var0 & 1);
   }
 
-  v220 = v21;
+  v220 = lumaCopy;
   v236 = v220;
-  v218 = v22;
+  v218 = chromaCopy;
   v237 = v218;
   v26 = v25;
   v27 = (&self->super.isa + 4 * v25);
   v238 = v27[227];
-  v222 = self;
+  selfCopy = self;
   YUVGaussian = self->_YUVGaussian;
   v29 = YUVGaussian[v25];
   v33 = objc_msgSend_outputTextureArray(*v29, v30, v31, v32);
   objc_msgSend_objectAtIndexedSubscript_(v33, v34, 0, v35);
   v239 = v36 = (v27 + 227);
-  v216 = v23;
+  v216 = longLumaCopy;
   v240 = v216;
-  v215 = v24;
+  v215 = longChromaCopy;
   v241 = v215;
   v242 = *(v36 + 1);
   v40 = objc_msgSend_outputTextureArray(v29[1], v37, v38, v39);
   v243 = objc_msgSend_objectAtIndexedSubscript_(v40, v41, 0, v42);
 
-  if (!a13)
+  if (!params)
   {
     sub_2958A9D04(&v229);
 LABEL_51:
@@ -861,7 +861,7 @@ LABEL_51:
   }
 
   v223 = YUVGaussian;
-  v46 = objc_msgSend_allocator(v222->_metal, v43, v44, v45);
+  v46 = objc_msgSend_allocator(selfCopy->_metal, v43, v44, v45);
   v50 = objc_msgSend_newTextureDescriptor(v46, v47, v48, v49);
 
   if (!v50)
@@ -876,11 +876,11 @@ LABEL_51:
   v60 = objc_msgSend_desc(v50, v57, v58, v59);
   objc_msgSend_setCompressionFootprint_(v60, v61, 0, v62);
 
-  tileWidth = v222->_tileWidth;
+  tileWidth = selfCopy->_tileWidth;
   v67 = objc_msgSend_desc(v50, v64, v65, v66);
   objc_msgSend_setWidth_(v67, v68, tileWidth, v69);
 
-  tileHeight = v222->_tileHeight;
+  tileHeight = selfCopy->_tileHeight;
   v74 = objc_msgSend_desc(v50, v71, v72, v73);
   objc_msgSend_setHeight_(v74, v75, tileHeight, v76);
 
@@ -891,7 +891,7 @@ LABEL_51:
   objc_msgSend_setPixelFormat_(v86, v87, 115, v88);
 
   objc_msgSend_setLabel_(v50, v89, 0, v90);
-  v94 = objc_msgSend_allocator(v222->_metal, v91, v92, v93);
+  v94 = objc_msgSend_allocator(selfCopy->_metal, v91, v92, v93);
   v97 = objc_msgSend_newTextureWithDescriptor_(v94, v95, v50, v96);
   v244 = v97;
 
@@ -902,22 +902,22 @@ LABEL_51:
     goto LABEL_58;
   }
 
-  v100 = *&a3->var3;
-  v101 = *&a3->var1;
-  if (v222->_networkVersion != 2)
+  v100 = *&tile->var3;
+  v101 = *&tile->var1;
+  if (selfCopy->_networkVersion != 2)
   {
-    preEspressoStage = v222->_preEspressoStage;
+    preEspressoStage = selfCopy->_preEspressoStage;
     v110 = *(v36 + 2);
     v109 = *(v36 + 3);
-    v111 = v222->_synthRefNoisePretuning[v26];
+    v111 = selfCopy->_synthRefNoisePretuning[v26];
     goto LABEL_16;
   }
 
-  v210 = *&a3->var3;
-  v225 = *&a3->var1;
+  v210 = *&tile->var3;
+  v225 = *&tile->var1;
   v102 = 0;
   v103 = 1;
-  v104 = v222->_YUVNoisePyramid[v26];
+  v104 = selfCopy->_YUVNoisePyramid[v26];
   while (1)
   {
     v105 = v103;
@@ -931,17 +931,17 @@ LABEL_51:
     v102 = 1;
     if ((v105 & 1) == 0)
     {
-      preEspressoStage = v222->_preEspressoStage;
+      preEspressoStage = selfCopy->_preEspressoStage;
       v110 = *(v36 + 2);
       v109 = *(v36 + 3);
-      v111 = v222->_synthRefNoisePretuning[v26];
-      if (v222->_networkVersion == 2)
+      v111 = selfCopy->_synthRefNoisePretuning[v26];
+      if (selfCopy->_networkVersion == 2)
       {
         v211 = v26;
-        v209 = objc_msgSend_outputTextureArray(v222->_YUVNoisePyramid[v26][0], v98, v107, v99);
+        v209 = objc_msgSend_outputTextureArray(selfCopy->_YUVNoisePyramid[v26][0], v98, v107, v99);
         v114 = objc_msgSend_objectAtIndexedSubscript_(v209, v112, 0, v113);
         v118 = v114;
-        if (v222->_networkVersion == 2)
+        if (selfCopy->_networkVersion == 2)
         {
           v119 = objc_msgSend_outputTextureArray(*(v104 + 8), v115, v116, v117);
           v122 = objc_msgSend_objectAtIndexedSubscript_(v119, v120, 0, v121);
@@ -950,7 +950,7 @@ LABEL_51:
           WORD1(v206) = WORD2(v225);
           LOWORD(v206) = v225;
           v123 = v118;
-          v125 = objc_msgSend_estimateNoiseRefNoise_synthLongNoise_synthRefNoisePretuning_synthLongNoisePretuning_synthRefLuma_synthRefChroma_synthLongLuma_synthLongChroma_lscGains_slFusionMap_longFusionMap_outRefNoisePyramid_outSLNoisePyramid_noiseEstimationParams_offset_tileDimension_(preEspressoStage, v124, v110, v109, v111, v97, v220, v218, v216, v215, v221, v219, v217, v118, v122, a13, v206);
+          v125 = objc_msgSend_estimateNoiseRefNoise_synthLongNoise_synthRefNoisePretuning_synthLongNoisePretuning_synthRefLuma_synthRefChroma_synthLongLuma_synthLongChroma_lscGains_slFusionMap_longFusionMap_outRefNoisePyramid_outSLNoisePyramid_noiseEstimationParams_offset_tileDimension_(preEspressoStage, v124, v110, v109, v111, v97, v220, v218, v216, v215, gainsCopy, mapCopy, fusionMapCopy, v118, v122, params, v206);
         }
 
         else
@@ -960,10 +960,10 @@ LABEL_51:
           WORD2(v208) = v210;
           WORD1(v208) = WORD2(v225);
           LOWORD(v208) = v225;
-          v125 = objc_msgSend_estimateNoiseRefNoise_synthLongNoise_synthRefNoisePretuning_synthLongNoisePretuning_synthRefLuma_synthRefChroma_synthLongLuma_synthLongChroma_lscGains_slFusionMap_longFusionMap_outRefNoisePyramid_outSLNoisePyramid_noiseEstimationParams_offset_tileDimension_(preEspressoStage, v115, v110, v109, v111, v97, v220, v218, v216, v215, v221, v219, v217, v114, 0, a13, v208);
+          v125 = objc_msgSend_estimateNoiseRefNoise_synthLongNoise_synthRefNoisePretuning_synthLongNoisePretuning_synthRefLuma_synthRefChroma_synthLongLuma_synthLongChroma_lscGains_slFusionMap_longFusionMap_outRefNoisePyramid_outSLNoisePyramid_noiseEstimationParams_offset_tileDimension_(preEspressoStage, v115, v110, v109, v111, v97, v220, v218, v216, v215, gainsCopy, mapCopy, fusionMapCopy, v114, 0, params, v208);
         }
 
-        v129 = v222;
+        v129 = selfCopy;
         v26 = v211;
         if (v125)
         {
@@ -973,16 +973,16 @@ LABEL_44:
         }
 
 LABEL_17:
-        v130 = *&a3->var4;
-        v232[0] = *&a3->var0;
+        v130 = *&tile->var4;
+        v232[0] = *&tile->var0;
         v232[1] = v130;
-        v233 = *&a3->var8;
+        v233 = *&tile->var8;
         v234 = 1.0;
-        v235 = *a14;
+        v235 = *encodingParams;
         v131 = objc_msgSend_commandQueue(v129->_metal, v126, v127, v128);
         v135 = objc_msgSend_commandBuffer(v131, v132, v133, v134);
 
-        if (a12)
+        if (r)
         {
           if (!v135)
           {
@@ -999,7 +999,7 @@ LABEL_17:
 
           v142 = v139;
           objc_msgSend_setComputePipelineState_(v139, v140, v129->_kernelSyntheticLongHighlightFixYUV420ToTile, v141);
-          v234 = sqrtf(a11);
+          v234 = sqrtf(ratio);
           objc_msgSend_setBytes_length_atIndex_(v142, v143, v232, 52, 0);
           objc_msgSend_setTexture_atIndex_(v142, v144, v240, 0);
           objc_msgSend_setTexture_atIndex_(v142, v145, v241, 1);
@@ -1010,7 +1010,7 @@ LABEL_17:
           objc_msgSend_setTexture_atIndex_(v142, v150, v243, 6);
           objc_msgSend_setTexture_atIndex_(v142, v151, v238, 7);
           objc_msgSend_setTexture_atIndex_(v142, v152, v239, 8);
-          v153 = *&a3->var3;
+          v153 = *&tile->var3;
           *&v154 = v153;
           *(&v154 + 1) = HIDWORD(v153);
           v229 = v154;
@@ -1041,7 +1041,7 @@ LABEL_17:
           v163 = &v236;
           v164 = 1.0;
           v165 = 1;
-          v166 = sqrtf(a11);
+          v166 = sqrtf(ratio);
           do
           {
             v234 = v164;
@@ -1057,10 +1057,10 @@ LABEL_17:
               v169 = 4;
             }
 
-            v231 = *(&a14->syntheticReferenceLumaPedestal + v169);
+            v231 = *(&encodingParams->syntheticReferenceLumaPedestal + v169);
             objc_msgSend_setBytes_length_atIndex_(v162, v167, &v231, 4, 1);
             objc_msgSend_setTextures_withRange_(v162, v170, v163, 0, 4);
-            v171 = *&a3->var3;
+            v171 = *&tile->var3;
             *&v172 = v171;
             *(&v172 + 1) = HIDWORD(v171);
             v229 = v172;
@@ -1074,7 +1074,7 @@ LABEL_17:
           }
 
           while (v168);
-          v129 = v222;
+          v129 = selfCopy;
           v142 = v162;
           v26 = v212;
         }
@@ -1127,8 +1127,8 @@ LABEL_17:
                 goto LABEL_39;
               }
 
-              v129 = v222;
-              if (v222->_networkVersion == 2)
+              v129 = selfCopy;
+              if (selfCopy->_networkVersion == 2)
               {
                 objc_msgSend_makeTexturesAliasableWithRange_(*(v224 + 8 * v186), v185, 0, 3);
               }
@@ -1160,8 +1160,8 @@ LABEL_16:
       WORD2(v207) = v100;
       WORD1(v207) = WORD2(v101);
       LOWORD(v207) = v101;
-      v125 = objc_msgSend_estimateNoiseRefNoise_synthLongNoise_synthRefNoisePretuning_synthLongNoisePretuning_synthRefLuma_synthRefChroma_synthLongLuma_synthLongChroma_lscGains_slFusionMap_longFusionMap_outRefNoisePyramid_outSLNoisePyramid_noiseEstimationParams_offset_tileDimension_(preEspressoStage, v98, v110, v109, v111, v97, v220, v218, v216, v215, v221, v219, v217, 0, 0, a13, v207);
-      v129 = v222;
+      v125 = objc_msgSend_estimateNoiseRefNoise_synthLongNoise_synthRefNoisePretuning_synthLongNoisePretuning_synthRefLuma_synthRefChroma_synthLongLuma_synthLongChroma_lscGains_slFusionMap_longFusionMap_outRefNoisePyramid_outSLNoisePyramid_noiseEstimationParams_offset_tileDimension_(preEspressoStage, v98, v110, v109, v111, v97, v220, v218, v216, v215, gainsCopy, mapCopy, fusionMapCopy, 0, 0, params, v207);
+      v129 = selfCopy;
       if (v125)
       {
         goto LABEL_44;
@@ -1181,31 +1181,31 @@ LABEL_39:
   return v203;
 }
 
-- (int)stage3GPUonTile:(TileBounds *)a3 preFusionMap:(id)a4 slFusionMap:(id)a5 longFusionMap:(id)a6 skinMask:(id)a7 skyMask:(id)a8 lscGains:(id)a9 outLuma:(id)a10 outChroma:(id)a11 espressoModelForTuning:(int)a12
+- (int)stage3GPUonTile:(TileBounds *)tile preFusionMap:(id)map slFusionMap:(id)fusionMap longFusionMap:(id)longFusionMap skinMask:(id)mask skyMask:(id)skyMask lscGains:(id)gains outLuma:(id)self0 outChroma:(id)self1 espressoModelForTuning:(int)self2
 {
-  v154 = a4;
-  v153 = a5;
-  v152 = a6;
-  v151 = a7;
-  v150 = a8;
-  v149 = a9;
-  v18 = a10;
-  v22 = a11;
+  mapCopy = map;
+  fusionMapCopy = fusionMap;
+  longFusionMapCopy = longFusionMap;
+  maskCopy = mask;
+  skyMaskCopy = skyMask;
+  gainsCopy = gains;
+  lumaCopy = luma;
+  chromaCopy = chroma;
   v158 = 0;
-  if (a3->var0 >= 0)
+  if (tile->var0 >= 0)
   {
-    v23 = a3->var0 & 1;
+    v23 = tile->var0 & 1;
   }
 
   else
   {
-    v23 = -(a3->var0 & 1);
+    v23 = -(tile->var0 & 1);
   }
 
-  v24 = *&a3->var5;
-  a3->var5 = 0;
-  a3->var6 = 0;
-  v147 = a3;
+  v24 = *&tile->var5;
+  tile->var5 = 0;
+  tile->var6 = 0;
+  tileCopy = tile;
   v25 = v23;
   v26 = (&self->super.isa + 2 * v23);
   v27 = objc_msgSend_outputTextureArray(v26[215], v19, v20, v21);
@@ -1257,8 +1257,8 @@ LABEL_39:
 
     if (v103)
     {
-      v144 = v22;
-      v145 = v18;
+      v144 = chromaCopy;
+      v145 = lumaCopy;
       postEspresso = self->_postEspresso;
       v140 = objc_msgSend_commandQueue(self->_metal, v104, v105, v106);
       v107 = *&self->_dfTexOut[v25][0];
@@ -1275,21 +1275,21 @@ LABEL_39:
       v143 = v115;
       v124 = v115;
       v125 = v31;
-      v127 = objc_msgSend_applyWeightsOnTile_uniforms_espressoOutputTextureArray_inRefGaussianArray_inSLGaussianArray_inRefLaplacianArray_inSLLaplacianArray_inRefNoisePyramidLevel3_inSLNoisePyramidLevel3_slFusionMap_longFusionMap_prefusionWeightsTexture_skinMaskTexture_skyMaskTexture_lscGains_refNoisePretuning_tile_finalOutputTexture_lowLightMode_(v123, v126, v140, self->_uniforms, v109, v124, v31, v116, v122, v156, v155, v153, v152, v154, v151, v150, v149, self->_synthRefNoisePretuning[v25], v147, v103, a12 == 1);
+      v127 = objc_msgSend_applyWeightsOnTile_uniforms_espressoOutputTextureArray_inRefGaussianArray_inSLGaussianArray_inRefLaplacianArray_inSLLaplacianArray_inRefNoisePyramidLevel3_inSLNoisePyramidLevel3_slFusionMap_longFusionMap_prefusionWeightsTexture_skinMaskTexture_skyMaskTexture_lscGains_refNoisePretuning_tile_finalOutputTexture_lowLightMode_(v123, v126, v140, self->_uniforms, v109, v124, v31, v116, v122, v156, v155, fusionMapCopy, longFusionMapCopy, mapCopy, maskCopy, skyMaskCopy, gainsCopy, self->_synthRefNoisePretuning[v25], tileCopy, v103, tuning == 1);
 
       if (v127)
       {
         sub_2958A9DA0(v127, v103, v159);
         LODWORD(v138) = v159[0];
-        v22 = v144;
-        v18 = v145;
+        chromaCopy = v144;
+        lumaCopy = v145;
         v27 = v143;
         v31 = v125;
       }
 
       else
       {
-        v22 = v144;
+        chromaCopy = v144;
         if (self->_networkVersion == 2)
         {
           v131 = (&self->super.isa + 2 * v25);
@@ -1297,11 +1297,11 @@ LABEL_39:
           objc_msgSend_makeTexturesAliasable(v131[224], v132, v133, v134);
         }
 
-        *&v147->var5 = v24;
+        *&tileCopy->var5 = v24;
         v135 = self->_postEspresso;
         v136 = objc_msgSend_commandQueue(self->_metal, v128, v129, v130);
-        v18 = v145;
-        v138 = objc_msgSend_convert444to420_input444_outputLuma_outputChroma_outputOffset_(v135, v137, v136, v103, v145, v144, v147);
+        lumaCopy = v145;
+        v138 = objc_msgSend_convert444to420_input444_outputLuma_outputChroma_outputOffset_(v135, v137, v136, v103, v145, v144, tileCopy);
 
         v27 = v143;
         v31 = v125;
@@ -1337,22 +1337,22 @@ LABEL_39:
   return v138;
 }
 
-- (uint64_t)runWithReferenceLuma:(float)a3 referenceChroma:(float)a4 longLuma:(float)a5 longChroma:(float)a6 preFusionMap:(float32x4_t)a7 slFusionMap:(float32x4_t)a8 slQuantBounds:(float32x4_t)a9 longFusionMap:(uint64_t)a10 skinMask:(void *)a11 skyMask:(void *)a12 lscGains:(void *)a13 totalGain:(void *)a14 outLuma:(void *)a15 outChroma:(void *)a16 deferredProcessingPlist:(NoiseDivisorQuantizationBoundaries *)a17 lscGainGreenMax:(id)a18 EVM_EV0_motionScore:(id)a19 eitRatio:(id)a20 aeShutterTimeRatio:(id)a21 hasSIFR:(id)a22 isStationary:(id)a23 isSyntheticLongWithRealLong:(id)a24 colorCorrection:(BOOL)a25 espressoModel:(BOOL)a26 noiseEstimationParams:(BOOL)a27 espressoModelForTuning:(unsigned int)a28 sideCar:(uint64_t)a29 intermediateEncodingParams:(unsigned __int32)a30
+- (uint64_t)runWithReferenceLuma:(float)luma referenceChroma:(float)chroma longLuma:(float)longLuma longChroma:(float)longChroma preFusionMap:(float32x4_t)map slFusionMap:(float32x4_t)fusionMap slQuantBounds:(float32x4_t)bounds longFusionMap:(uint64_t)self0 skinMask:(void *)self1 skyMask:(void *)self2 lscGains:(void *)self3 totalGain:(void *)self4 outLuma:(void *)self5 outChroma:(void *)self6 deferredProcessingPlist:(NoiseDivisorQuantizationBoundaries *)self7 lscGainGreenMax:(id)self8 EVM_EV0_motionScore:(id)self9 eitRatio:(id)ratio aeShutterTimeRatio:(id)timeRatio hasSIFR:(id)r isStationary:(id)stationary isSyntheticLongWithRealLong:(id)long colorCorrection:(BOOL)correction espressoModel:(BOOL)model noiseEstimationParams:(BOOL)params espressoModelForTuning:(unsigned int)tuning sideCar:(uint64_t)car intermediateEncodingParams:(unsigned __int32)luma0
 {
-  v218 = a11;
-  v216 = a12;
-  v217 = a13;
-  v215 = a14;
-  v208 = a15;
-  v223 = a16;
-  v222 = a18;
-  v207 = a19;
-  v206 = a20;
-  v221 = a21;
-  v210 = a22;
-  v209 = a23;
-  v43 = a24;
-  EspressoNetwork = objc_msgSend_maybeLoadEspressoNetwork_(a1, v44, a28, v45);
+  maskCopy = mask;
+  skyMaskCopy = skyMask;
+  gainsCopy = gains;
+  gainCopy = gain;
+  outLumaCopy = outLuma;
+  outChromaCopy = outChroma;
+  maxCopy = max;
+  scoreCopy = score;
+  ratioCopy = ratio;
+  timeRatioCopy = timeRatio;
+  rCopy = r;
+  stationaryCopy = stationary;
+  longCopy = long;
+  EspressoNetwork = objc_msgSend_maybeLoadEspressoNetwork_(self, v44, tuning, v45);
   if (EspressoNetwork)
   {
     v166 = EspressoNetwork;
@@ -1367,7 +1367,7 @@ LABEL_39:
   memset(&v230, 0, sizeof(v230));
   do
   {
-    v230.columns[v47] = vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(a7, COERCE_FLOAT(v229[v47])), a8, *&v229[v47], 1), a9, v229[v47], 2);
+    v230.columns[v47] = vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(map, COERCE_FLOAT(v229[v47])), fusionMap, *&v229[v47], 1), bounds, v229[v47], 2);
     ++v47;
   }
 
@@ -1375,90 +1375,90 @@ LABEL_39:
   v219 = v230.columns[0];
   v214 = v230.columns[1].i32[1];
   __invert_f3(v230);
-  if (!v218)
+  if (!maskCopy)
   {
     sub_2958AAC70(&v230);
     goto LABEL_57;
   }
 
-  if (!v216)
+  if (!skyMaskCopy)
   {
     sub_2958AABD4(&v230);
     goto LABEL_57;
   }
 
-  if (!v217)
+  if (!gainsCopy)
   {
     sub_2958AAB38(&v230);
     goto LABEL_57;
   }
 
-  if (!v215)
+  if (!gainCopy)
   {
     sub_2958AAA9C(&v230);
     goto LABEL_57;
   }
 
-  if (!v210)
+  if (!rCopy)
   {
     sub_2958AAA00(&v230);
     goto LABEL_57;
   }
 
-  if (!v209)
+  if (!stationaryCopy)
   {
     sub_2958AA964(&v230);
     goto LABEL_57;
   }
 
-  if (!v208)
+  if (!outLumaCopy)
   {
     sub_2958AA8C8(&v230);
     goto LABEL_57;
   }
 
-  if (!v223)
+  if (!outChromaCopy)
   {
     sub_2958AA82C(&v230);
     goto LABEL_57;
   }
 
-  if (!a17)
+  if (!plist)
   {
     sub_2958AA790(&v230);
     goto LABEL_57;
   }
 
-  v51 = *(a1 + 72);
-  v52 = objc_msgSend_width(v218, v48, v49, v50);
-  objc_msgSend_height(v218, v53, v54, v55);
-  *&v56 = a17->var0;
-  *&v57 = a17->var1;
+  v51 = *(self + 72);
+  v52 = objc_msgSend_width(maskCopy, v48, v49, v50);
+  objc_msgSend_height(maskCopy, v53, v54, v55);
+  *&v56 = plist->var0;
+  *&v57 = plist->var1;
   v195 = v219;
-  *&v58 = a3;
-  *&v59 = a6;
-  if (objc_msgSend_createShaderUniforms_totalGain_EVM_EV0_motionScore_lscGainGreenMax_slQuantBounds_espressoModel_fullSize_uniforms_hasLong_hasSIFR_isStationary_isSyntheticLongWithRealLong_aeShutterTimeRatio_colorCorrection_inverseColorCorrection_(v51, v60, v43, a30, a1 + 80, v222 != 0, a25, a26, COERCE_DOUBLE(__PAIR64__(v219.u32[1], LODWORD(a2))), COERCE_DOUBLE(__PAIR64__(v214, LODWORD(a4))), v58, v56, v57, *&v52, v59, a27))
+  *&v58 = luma;
+  *&v59 = longChroma;
+  if (objc_msgSend_createShaderUniforms_totalGain_EVM_EV0_motionScore_lscGainGreenMax_slQuantBounds_espressoModel_fullSize_uniforms_hasLong_hasSIFR_isStationary_isSyntheticLongWithRealLong_aeShutterTimeRatio_colorCorrection_inverseColorCorrection_(v51, v60, longCopy, encodingParams, self + 80, maxCopy != 0, correction, model, COERCE_DOUBLE(__PAIR64__(v219.u32[1], LODWORD(a2))), COERCE_DOUBLE(__PAIR64__(v214, LODWORD(chroma))), v58, v56, v57, *&v52, v59, params))
   {
     sub_2958AA058(&v230);
     goto LABEL_57;
   }
 
-  v220 = objc_msgSend_width(v210, v61, v62, v63);
-  v201 = objc_msgSend_height(v210, v64, v65, v66);
-  v67 = *(a1 + 1684);
-  v68 = *(a1 + 1680);
-  v69 = *(a1 + 1688);
-  LOWORD(v224) = objc_msgSend_width(v217, v70, v71, v72);
-  HIWORD(v224) = objc_msgSend_height(v217, v73, v74, v75);
-  objc_msgSend_setEstimateNoiseParams_fullDimension_intermediateEncodingParams_(*(a1 + 32), v76, a29, v224, a32);
+  v220 = objc_msgSend_width(rCopy, v61, v62, v63);
+  v201 = objc_msgSend_height(rCopy, v64, v65, v66);
+  v67 = *(self + 1684);
+  v68 = *(self + 1680);
+  v69 = *(self + 1688);
+  LOWORD(v224) = objc_msgSend_width(gainsCopy, v70, v71, v72);
+  HIWORD(v224) = objc_msgSend_height(gainsCopy, v73, v74, v75);
+  objc_msgSend_setEstimateNoiseParams_fullDimension_intermediateEncodingParams_(*(self + 32), v76, car, v224, a32);
   memset(&v228[4], 0, 32);
   v225 = 0u;
   v226 = 0u;
   v227 = 0;
   *v228 = -1;
-  *&v228[36] = *(a1 + 1680);
-  *&v228[12] = *(a1 + 1684);
-  v80 = objc_msgSend_allocator(*(a1 + 8), v77, v78, v79);
+  *&v228[36] = *(self + 1680);
+  *&v228[12] = *(self + 1684);
+  v80 = objc_msgSend_allocator(*(self + 8), v77, v78, v79);
   v84 = objc_msgSend_newTextureDescriptor(v80, v81, v82, v83);
 
   if (!v84)
@@ -1476,11 +1476,11 @@ LABEL_39:
   v96 = objc_msgSend_desc(v84, v93, v94, v95);
   objc_msgSend_setCompressionFootprint_(v96, v97, 0, v98);
 
-  v99 = *(a1 + 1684);
+  v99 = *(self + 1684);
   v103 = objc_msgSend_desc(v84, v100, v101, v102);
   objc_msgSend_setWidth_(v103, v104, v99, v105);
 
-  v106 = *(a1 + 1688);
+  v106 = *(self + 1688);
   v110 = objc_msgSend_desc(v84, v107, v108, v109);
   objc_msgSend_setHeight_(v110, v111, v106, v112);
 
@@ -1491,13 +1491,13 @@ LABEL_39:
   objc_msgSend_setPixelFormat_(v122, v123, 115, v124);
 
   v127 = 0;
-  v128 = a1 + 1944;
+  v128 = self + 1944;
   v129 = 1;
   do
   {
     v130 = v129;
     objc_msgSend_setLabel_(v84, v125, 0, v126);
-    v134 = objc_msgSend_allocator(*(a1 + 8), v131, v132, v133);
+    v134 = objc_msgSend_allocator(*(self + 8), v131, v132, v133);
     v137 = objc_msgSend_newTextureWithDescriptor_(v134, v135, v84, v136);
     v138 = *(v128 + 8 * v127);
     *(v128 + 8 * v127) = v137;
@@ -1515,11 +1515,11 @@ LABEL_39:
   while ((v130 & 1) != 0);
   v198 = v88;
   v212 = v67;
-  v199 = a1 + 1944;
-  objc_msgSend_allocateTextures(*(a1 + 72), v125, v139, v126);
+  v199 = self + 1944;
+  objc_msgSend_allocateTextures(*(self + 72), v125, v139, v126);
   v142 = 0;
-  v205 = a1 + 1720;
-  v203 = a1 + 1752;
+  v205 = self + 1720;
+  v203 = self + 1752;
   v143 = 1;
   while (2)
   {
@@ -1565,19 +1565,19 @@ LABEL_54:
   }
 
   v196 = v84;
-  v197 = v43;
-  v155 = a1;
+  v197 = longCopy;
+  selfCopy = self;
   if (v201 >= 1)
   {
     v156 = 0;
-    v157 = -*(a1 + 1680);
+    v157 = -*(self + 1680);
     v213 = v198 - v212;
     do
     {
       if (v220 >= 1)
       {
         v158 = 0;
-        v159 = -*(v155 + 1680);
+        v159 = -*(selfCopy + 1680);
         if (v201 - v156 >= v200)
         {
           v160 = v200;
@@ -1608,9 +1608,9 @@ LABEL_54:
           *&v228[24] = v156;
           *&v228[28] = v163;
           *&v228[32] = v160;
-          v195.i8[0] = a25;
-          *&v154 = a5;
-          hasSIFR_noiseEstimationParams_intermediateEncodingParams = objc_msgSend_stage1GPUonTile_refLuma_referenceChroma_longLuma_longChroma_lscGains_slFusionMap_longFusionMap_eitRatio_hasSIFR_noiseEstimationParams_intermediateEncodingParams_(v155, v140, v228, v218, v216, v217, v215, v221, v154, v223, v222, v195.i64[0], a29, a32);
+          v195.i8[0] = correction;
+          *&v154 = longLuma;
+          hasSIFR_noiseEstimationParams_intermediateEncodingParams = objc_msgSend_stage1GPUonTile_refLuma_referenceChroma_longLuma_longChroma_lscGains_slFusionMap_longFusionMap_eitRatio_hasSIFR_noiseEstimationParams_intermediateEncodingParams_(selfCopy, v140, v228, maskCopy, skyMaskCopy, gainsCopy, gainCopy, timeRatioCopy, v154, outChromaCopy, maxCopy, v195.i64[0], car, a32);
           v166 = hasSIFR_noiseEstimationParams_intermediateEncodingParams;
           if (v162 == -1)
           {
@@ -1629,8 +1629,8 @@ LABEL_54:
               goto LABEL_61;
             }
 
-            objc_msgSend_waitForSchedule(*(v155 + 8), v140, v165, v141);
-            v169 = objc_msgSend_stage2ANEonTile_(v155, v167, &v225, v168);
+            objc_msgSend_waitForSchedule(*(selfCopy + 8), v140, v165, v141);
+            v169 = objc_msgSend_stage2ANEonTile_(selfCopy, v167, &v225, v168);
             if (v169)
             {
               v166 = v169;
@@ -1638,8 +1638,8 @@ LABEL_54:
               goto LABEL_61;
             }
 
-            v195.i32[2] = a30;
-            v171 = objc_msgSend_stage3GPUonTile_preFusionMap_slFusionMap_longFusionMap_skinMask_skyMask_lscGains_outLuma_outChroma_espressoModelForTuning_(v155, v170, &v225, v208, v223, v222, v207, v206, v221, v210, v209, v195.i64[1]);
+            v195.i32[2] = encodingParams;
+            v171 = objc_msgSend_stage3GPUonTile_preFusionMap_slFusionMap_longFusionMap_skinMask_skyMask_lscGains_outLuma_outChroma_espressoModelForTuning_(selfCopy, v170, &v225, outLumaCopy, outChromaCopy, maxCopy, scoreCopy, ratioCopy, timeRatioCopy, rCopy, stationaryCopy, v195.i64[1]);
             if (v171)
             {
               v166 = v171;
@@ -1666,12 +1666,12 @@ LABEL_54:
     while (v156 < v201);
   }
 
-  v172 = objc_msgSend_stage2ANEonTile_(v155, v140, v228, v141);
+  v172 = objc_msgSend_stage2ANEonTile_(selfCopy, v140, v228, v141);
   if (!v172)
   {
-    v195.i32[2] = a30;
-    v174 = objc_msgSend_stage3GPUonTile_preFusionMap_slFusionMap_longFusionMap_skinMask_skyMask_lscGains_outLuma_outChroma_espressoModelForTuning_(v155, v173, v228, v208, v223, v222, v207, v206, v221, v210, v209, v195.i64[1]);
-    v43 = v197;
+    v195.i32[2] = encodingParams;
+    v174 = objc_msgSend_stage3GPUonTile_preFusionMap_slFusionMap_longFusionMap_skinMask_skyMask_lscGains_outLuma_outChroma_espressoModelForTuning_(selfCopy, v173, v228, outLumaCopy, outChromaCopy, maxCopy, scoreCopy, ratioCopy, timeRatioCopy, rCopy, stationaryCopy, v195.i64[1]);
+    longCopy = v197;
     if (v174)
     {
       v166 = v174;
@@ -1679,7 +1679,7 @@ LABEL_54:
       goto LABEL_62;
     }
 
-    objc_msgSend_makeTextureAliasable(*(v155 + 72), v175, v176, v177);
+    objc_msgSend_makeTextureAliasable(*(selfCopy + 72), v175, v176, v177);
     v178 = 0;
     v179 = 1;
     while (2)
@@ -1739,20 +1739,20 @@ LABEL_57:
   v166 = v172;
   sub_2958AA374(v172, v196);
 LABEL_61:
-  v43 = v197;
+  longCopy = v197;
 LABEL_62:
 
   return v166;
 }
 
-- (int)computeAMBNRDenoiseBoostMap:(id)a3 longFusionMap:(id)a4 ev0FusionMap:(id)a5 ev0Metadata:(frameMetadata *)a6 longMetadata:(frameMetadata *)a7 numEV0:(int)a8 deferredProcessingPlist:(id)a9 espressoModel:(int)a10 isSyntheticLongWithRealLong:(BOOL)a11 totalGain:(float)a12
+- (int)computeAMBNRDenoiseBoostMap:(id)map longFusionMap:(id)fusionMap ev0FusionMap:(id)ev0FusionMap ev0Metadata:(frameMetadata *)metadata longMetadata:(frameMetadata *)longMetadata numEV0:(int)v0 deferredProcessingPlist:(id)plist espressoModel:(int)self0 isSyntheticLongWithRealLong:(BOOL)self1 totalGain:(float)self2
 {
-  v18 = a5;
-  v19 = a4;
-  v20 = a3;
-  v23 = objc_msgSend_noiseTuningForModel_(a9, v21, a10, v22);
+  ev0FusionMapCopy = ev0FusionMap;
+  fusionMapCopy = fusionMap;
+  mapCopy = map;
+  v23 = objc_msgSend_noiseTuningForModel_(plist, v21, model, v22);
   v24 = v23;
-  if (a11)
+  if (long)
   {
     v25 = &OBJC_IVAR___DeepFusionNoiseTuningPlist_slEV0Long;
   }
@@ -1764,13 +1764,13 @@ LABEL_62:
 
   v26 = *(*(v23 + *v25) + 16);
   v27 = *(*&v24[*v25] + 24);
-  v28 = sub_29584472C(v26, a12);
-  v29 = sub_29584472C(v27, a12);
+  v28 = sub_29584472C(v26, gain);
+  v29 = sub_29584472C(v27, gain);
   postEspresso = self->_postEspresso;
   v34 = objc_msgSend_commandQueue(self->_metal, v31, v32, v33);
   *&v35 = v28;
   *&v36 = v29;
-  LODWORD(postEspresso) = objc_msgSend_computeAMBNRDenoiseBoostMap_boostMap_longFusionMap_ev0FusionMap_ev0Metadata_longMetadata_numEV0_ev0FusionTarget_longFusionTarget_(postEspresso, v37, v34, v20, v19, v18, a6, a7, v35, v36, a8);
+  LODWORD(postEspresso) = objc_msgSend_computeAMBNRDenoiseBoostMap_boostMap_longFusionMap_ev0FusionMap_ev0Metadata_longMetadata_numEV0_ev0FusionTarget_longFusionTarget_(postEspresso, v37, v34, mapCopy, fusionMapCopy, ev0FusionMapCopy, metadata, longMetadata, v35, v36, v0);
 
   return postEspresso;
 }

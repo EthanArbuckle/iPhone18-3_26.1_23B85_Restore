@@ -1,7 +1,7 @@
 @interface AFBulletinAction
-- (AFBulletinAction)initWithBulletinAction:(id)a3;
+- (AFBulletinAction)initWithBulletinAction:(id)action;
 - (id)getTitleVariants;
-- (void)addTitleVariant:(id)a3;
+- (void)addTitleVariant:(id)variant;
 @end
 
 @implementation AFBulletinAction
@@ -13,17 +13,17 @@
   return v2;
 }
 
-- (void)addTitleVariant:(id)a3
+- (void)addTitleVariant:(id)variant
 {
-  if (a3)
+  if (variant)
   {
     [(NSMutableSet *)self->_titleVariants addObject:?];
   }
 }
 
-- (AFBulletinAction)initWithBulletinAction:(id)a3
+- (AFBulletinAction)initWithBulletinAction:(id)action
 {
-  v5 = a3;
+  actionCopy = action;
   v14.receiver = self;
   v14.super_class = AFBulletinAction;
   v6 = [(AFBulletinAction *)&v14 init];
@@ -33,14 +33,14 @@
     titleVariants = v6->_titleVariants;
     v6->_titleVariants = v7;
 
-    objc_storeStrong(&v6->_bbAction, a3);
-    v9 = [(BBAction *)v6->_bbAction identifier];
+    objc_storeStrong(&v6->_bbAction, action);
+    identifier = [(BBAction *)v6->_bbAction identifier];
     bbActionID = v6->_bbActionID;
-    v6->_bbActionID = v9;
+    v6->_bbActionID = identifier;
 
-    v11 = [(BBAction *)v6->_bbAction appearance];
-    v12 = [v11 title];
-    [(AFBulletinAction *)v6 addTitleVariant:v12];
+    appearance = [(BBAction *)v6->_bbAction appearance];
+    title = [appearance title];
+    [(AFBulletinAction *)v6 addTitleVariant:title];
   }
 
   return v6;

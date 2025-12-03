@@ -37,29 +37,29 @@
   {
     [MEMORY[0x277CBEAD8] raise:@"API Misuse" format:@"Cannot create a PHASESwitchNodeDefinition with a nil switchMetaParameterDefinition"];
 LABEL_6:
-    v9 = 0;
+    selfCopy = 0;
     goto LABEL_7;
   }
 
   v11.receiver = self;
   v11.super_class = PHASESwitchNodeDefinition;
-  v6 = [(PHASEDefinition *)&v11 initInternal];
-  if (!v6)
+  initInternal = [(PHASEDefinition *)&v11 initInternal];
+  if (!initInternal)
   {
     self = 0;
     goto LABEL_6;
   }
 
   v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v8 = *(v6 + 3);
-  *(v6 + 3) = v7;
+  v8 = *(initInternal + 3);
+  *(initInternal + 3) = v7;
 
-  objc_storeStrong(v6 + 2, switchMetaParameterDefinition);
-  self = v6;
-  v9 = self;
+  objc_storeStrong(initInternal + 2, switchMetaParameterDefinition);
+  self = initInternal;
+  selfCopy = self;
 LABEL_7:
 
-  return v9;
+  return selfCopy;
 }
 
 - (void)addSubtree:(PHASESoundEventNodeDefinition *)subtree switchValue:(NSString *)switchValue
@@ -94,8 +94,8 @@ LABEL_7:
           objc_enumerationMutation(v4);
         }
 
-        v8 = [*(*(&v10 + 1) + 8 * i) subtree];
-        [v3 addObject:v8];
+        subtree = [*(*(&v10 + 1) + 8 * i) subtree];
+        [v3 addObject:subtree];
       }
 
       v5 = [(NSMutableArray *)v4 countByEnumeratingWithState:&v10 objects:v14 count:16];

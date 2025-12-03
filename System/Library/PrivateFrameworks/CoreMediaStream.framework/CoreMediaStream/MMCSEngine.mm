@@ -1,34 +1,34 @@
 @interface MMCSEngine
-+ (id)logStringForGetItemState:(int)a3;
-+ (id)logStringForPutItemState:(int)a3;
-- (BOOL)_getFileDescriptorAndContentTypeFromItemID:(unint64_t)a3 outFD:(int *)a4 outItemType:(id *)a5 outError:(id *)a6;
++ (id)logStringForGetItemState:(int)state;
++ (id)logStringForPutItemState:(int)state;
+- (BOOL)_getFileDescriptorAndContentTypeFromItemID:(unint64_t)d outFD:(int *)fD outItemType:(id *)type outError:(id *)error;
 - (BOOL)isActive;
-- (MMCSEngine)initWithWorkPath:(id)a3 appIDHeader:(id)a4 dataClass:(id)a5 options:(id)a6;
-- (MMCSEngine)initWithWorkPath:(id)a3 appIDHeader:(id)a4 dataClass:(id)a5 options:(id)a6 modes:(id)a7;
+- (MMCSEngine)initWithWorkPath:(id)path appIDHeader:(id)header dataClass:(id)class options:(id)options;
+- (MMCSEngine)initWithWorkPath:(id)path appIDHeader:(id)header dataClass:(id)class options:(id)options modes:(id)modes;
 - (MMCSEngineDelegate)delegate;
-- (id)_assetWithItemID:(unint64_t)a3;
+- (id)_assetWithItemID:(unint64_t)d;
 - (unint64_t)_nextItemID;
-- (void)_getItemDoneItemID:(unint64_t)a3 path:(id)a4 requestorContext:(id)a5 error:(id)a6;
+- (void)_getItemDoneItemID:(unint64_t)d path:(id)path requestorContext:(id)context error:(id)error;
 - (void)_initItemIDPersistence;
-- (void)_putItemDoneItemID:(unint64_t)a3 requestorContext:(id)a4 putReceipt:(id)a5 error:(id)a6;
-- (void)_registerAsset:(id)a3;
-- (void)_registerRequestorContext:(id)a3;
-- (void)_removeAssetForItemID:(unint64_t)a3;
-- (void)_removeRequestorContext:(id)a3;
-- (void)_requestCompletedRequestorContext:(id)a3;
+- (void)_putItemDoneItemID:(unint64_t)d requestorContext:(id)context putReceipt:(id)receipt error:(id)error;
+- (void)_registerAsset:(id)asset;
+- (void)_registerRequestorContext:(id)context;
+- (void)_removeAssetForItemID:(unint64_t)d;
+- (void)_removeRequestorContext:(id)context;
+- (void)_requestCompletedRequestorContext:(id)context;
 - (void)cancelAllOperations;
-- (void)cancelOperationsWithContext:(id)a3;
-- (void)getAssets:(id)a3 requestURL:(id)a4 DSID:(id)a5 options:(id)a6;
-- (void)putAssets:(id)a3 requestURL:(id)a4 DSID:(id)a5 options:(id)a6;
-- (void)registerAssetForUpload:(id)a3 completionBlock:(id)a4;
-- (void)registerAssets:(id)a3 forDownloadCompletionBlock:(id)a4;
-- (void)reregisterAssetForDownload:(id)a3;
-- (void)reregisterAssetForUpload:(id)a3;
-- (void)setIsMetricsGatheringEnabled:(BOOL)a3;
-- (void)shutDownCompletionBlock:(id)a3;
-- (void)threadMain:(id)a3;
-- (void)unregisterAsset:(id)a3;
-- (void)unregisterAssets:(id)a3;
+- (void)cancelOperationsWithContext:(id)context;
+- (void)getAssets:(id)assets requestURL:(id)l DSID:(id)d options:(id)options;
+- (void)putAssets:(id)assets requestURL:(id)l DSID:(id)d options:(id)options;
+- (void)registerAssetForUpload:(id)upload completionBlock:(id)block;
+- (void)registerAssets:(id)assets forDownloadCompletionBlock:(id)block;
+- (void)reregisterAssetForDownload:(id)download;
+- (void)reregisterAssetForUpload:(id)upload;
+- (void)setIsMetricsGatheringEnabled:(BOOL)enabled;
+- (void)shutDownCompletionBlock:(id)block;
+- (void)threadMain:(id)main;
+- (void)unregisterAsset:(id)asset;
+- (void)unregisterAssets:(id)assets;
 @end
 
 @implementation MMCSEngine
@@ -92,35 +92,35 @@ uint64_t __25__MMCSEngine__nextItemID__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_removeRequestorContext:(id)a3
+- (void)_removeRequestorContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   reqestorContextQueue = self->_reqestorContextQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __38__MMCSEngine__removeRequestorContext___block_invoke;
   v7[3] = &unk_278E927C8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = contextCopy;
+  v6 = contextCopy;
   dispatch_sync(reqestorContextQueue, v7);
 }
 
-- (void)_registerRequestorContext:(id)a3
+- (void)_registerRequestorContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   reqestorContextQueue = self->_reqestorContextQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __40__MMCSEngine__registerRequestorContext___block_invoke;
   v7[3] = &unk_278E927C8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = contextCopy;
+  v6 = contextCopy;
   dispatch_sync(reqestorContextQueue, v7);
 }
 
-- (void)_removeAssetForItemID:(unint64_t)a3
+- (void)_removeAssetForItemID:(unint64_t)d
 {
   itemIDToAssetMapQueue = self->_itemIDToAssetMapQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -128,7 +128,7 @@ uint64_t __25__MMCSEngine__nextItemID__block_invoke(uint64_t a1)
   v4[2] = __36__MMCSEngine__removeAssetForItemID___block_invoke;
   v4[3] = &unk_278E92750;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = d;
   dispatch_sync(itemIDToAssetMapQueue, v4);
 }
 
@@ -139,7 +139,7 @@ void __36__MMCSEngine__removeAssetForItemID___block_invoke(uint64_t a1)
   [v1 removeObjectForKey:v2];
 }
 
-- (id)_assetWithItemID:(unint64_t)a3
+- (id)_assetWithItemID:(unint64_t)d
 {
   v7 = 0;
   v8 = &v7;
@@ -154,7 +154,7 @@ void __36__MMCSEngine__removeAssetForItemID___block_invoke(uint64_t a1)
   block[3] = &unk_278E91908;
   block[4] = self;
   block[5] = &v7;
-  block[6] = a3;
+  block[6] = d;
   dispatch_sync(itemIDToAssetMapQueue, block);
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -172,17 +172,17 @@ void __31__MMCSEngine__assetWithItemID___block_invoke(void *a1)
   *(v4 + 40) = v3;
 }
 
-- (void)_registerAsset:(id)a3
+- (void)_registerAsset:(id)asset
 {
-  v4 = a3;
+  assetCopy = asset;
   itemIDToAssetMapQueue = self->_itemIDToAssetMapQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __29__MMCSEngine__registerAsset___block_invoke;
   v7[3] = &unk_278E927C8;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = assetCopy;
+  selfCopy = self;
+  v6 = assetCopy;
   dispatch_sync(itemIDToAssetMapQueue, v7);
 }
 
@@ -217,25 +217,25 @@ void __29__MMCSEngine__registerAsset___block_invoke(uint64_t a1)
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)putAssets:(id)a3 requestURL:(id)a4 DSID:(id)a5 options:(id)a6
+- (void)putAssets:(id)assets requestURL:(id)l DSID:(id)d options:(id)options
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  assetsCopy = assets;
+  lCopy = l;
+  dCopy = d;
+  optionsCopy = options;
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __48__MMCSEngine_putAssets_requestURL_DSID_options___block_invoke;
   v18[3] = &unk_278E92688;
-  v19 = v10;
-  v20 = self;
-  v21 = v11;
-  v22 = v12;
-  v23 = v13;
-  v14 = v13;
-  v15 = v12;
-  v16 = v11;
-  v17 = v10;
+  v19 = assetsCopy;
+  selfCopy = self;
+  v21 = lCopy;
+  v22 = dCopy;
+  v23 = optionsCopy;
+  v14 = optionsCopy;
+  v15 = dCopy;
+  v16 = lCopy;
+  v17 = assetsCopy;
   [(MMCSEngine *)self performBlockOnWorkThread:v18];
 }
 
@@ -379,25 +379,25 @@ void __48__MMCSEngine_putAssets_requestURL_DSID_options___block_invoke(uint64_t 
   v31 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getAssets:(id)a3 requestURL:(id)a4 DSID:(id)a5 options:(id)a6
+- (void)getAssets:(id)assets requestURL:(id)l DSID:(id)d options:(id)options
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  assetsCopy = assets;
+  lCopy = l;
+  dCopy = d;
+  optionsCopy = options;
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __48__MMCSEngine_getAssets_requestURL_DSID_options___block_invoke;
   v18[3] = &unk_278E92688;
-  v19 = v10;
-  v20 = self;
-  v21 = v11;
-  v22 = v12;
-  v23 = v13;
-  v14 = v13;
-  v15 = v12;
-  v16 = v11;
-  v17 = v10;
+  v19 = assetsCopy;
+  selfCopy = self;
+  v21 = lCopy;
+  v22 = dCopy;
+  v23 = optionsCopy;
+  v14 = optionsCopy;
+  v15 = dCopy;
+  v16 = lCopy;
+  v17 = assetsCopy;
   [(MMCSEngine *)self performBlockOnWorkThread:v18];
 }
 
@@ -536,16 +536,16 @@ void __48__MMCSEngine_getAssets_requestURL_DSID_options___block_invoke(uint64_t 
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (void)unregisterAssets:(id)a3
+- (void)unregisterAssets:(id)assets
 {
-  v4 = a3;
+  assetsCopy = assets;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __31__MMCSEngine_unregisterAssets___block_invoke;
   v6[3] = &unk_278E927C8;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = assetsCopy;
+  selfCopy = self;
+  v5 = assetsCopy;
   [(MMCSEngine *)self performBlockOnWorkThread:v6];
 }
 
@@ -619,16 +619,16 @@ void __31__MMCSEngine_unregisterAssets___block_invoke(uint64_t a1)
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)unregisterAsset:(id)a3
+- (void)unregisterAsset:(id)asset
 {
-  v4 = a3;
+  assetCopy = asset;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __30__MMCSEngine_unregisterAsset___block_invoke;
   v6[3] = &unk_278E927C8;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = assetCopy;
+  selfCopy = self;
+  v5 = assetCopy;
   [(MMCSEngine *)self performBlockOnWorkThread:v6];
 }
 
@@ -651,19 +651,19 @@ uint64_t __30__MMCSEngine_unregisterAsset___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)registerAssets:(id)a3 forDownloadCompletionBlock:(id)a4
+- (void)registerAssets:(id)assets forDownloadCompletionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  assetsCopy = assets;
+  blockCopy = block;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __56__MMCSEngine_registerAssets_forDownloadCompletionBlock___block_invoke;
   v10[3] = &unk_278E91E38;
-  v11 = v6;
-  v12 = self;
-  v13 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = assetsCopy;
+  selfCopy = self;
+  v13 = blockCopy;
+  v8 = blockCopy;
+  v9 = assetsCopy;
   [(MMCSEngine *)self performBlockOnWorkThread:v10];
 }
 
@@ -724,45 +724,45 @@ uint64_t __56__MMCSEngine_registerAssets_forDownloadCompletionBlock___block_invo
   return result;
 }
 
-- (void)reregisterAssetForDownload:(id)a3
+- (void)reregisterAssetForDownload:(id)download
 {
-  v4 = a3;
+  downloadCopy = download;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __41__MMCSEngine_reregisterAssetForDownload___block_invoke;
   v6[3] = &unk_278E927C8;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = downloadCopy;
+  v5 = downloadCopy;
   [(MMCSEngine *)self performBlockOnWorkThread:v6];
 }
 
-- (void)reregisterAssetForUpload:(id)a3
+- (void)reregisterAssetForUpload:(id)upload
 {
-  v4 = a3;
+  uploadCopy = upload;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __39__MMCSEngine_reregisterAssetForUpload___block_invoke;
   v6[3] = &unk_278E927C8;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = uploadCopy;
+  v5 = uploadCopy;
   [(MMCSEngine *)self performBlockOnWorkThread:v6];
 }
 
-- (void)registerAssetForUpload:(id)a3 completionBlock:(id)a4
+- (void)registerAssetForUpload:(id)upload completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  uploadCopy = upload;
+  blockCopy = block;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __53__MMCSEngine_registerAssetForUpload_completionBlock___block_invoke;
   v10[3] = &unk_278E91E38;
   v10[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = uploadCopy;
+  v12 = blockCopy;
+  v8 = blockCopy;
+  v9 = uploadCopy;
   [(MMCSEngine *)self performBlockOnWorkThread:v10];
 }
 
@@ -839,16 +839,16 @@ uint64_t __22__MMCSEngine_isActive__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)shutDownCompletionBlock:(id)a3
+- (void)shutDownCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __38__MMCSEngine_shutDownCompletionBlock___block_invoke;
   v6[3] = &unk_278E927A0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = blockCopy;
+  v5 = blockCopy;
   [(MMCSEngine *)self performBlockOnWorkThread:v6];
 }
 
@@ -900,16 +900,16 @@ void __38__MMCSEngine_shutDownCompletionBlock___block_invoke_2(uint64_t a1)
   [(MMCSEngine *)self performBlockOnWorkThread:v2 waitUntilDone:1];
 }
 
-- (void)cancelOperationsWithContext:(id)a3
+- (void)cancelOperationsWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __42__MMCSEngine_cancelOperationsWithContext___block_invoke;
   v6[3] = &unk_278E927C8;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = contextCopy;
+  selfCopy = self;
+  v5 = contextCopy;
   [(MMCSEngine *)self performBlockOnWorkThread:v6 waitUntilDone:1];
 }
 
@@ -934,10 +934,10 @@ void __42__MMCSEngine_cancelOperationsWithContext___block_invoke(uint64_t a1)
   }
 }
 
-- (void)_requestCompletedRequestorContext:(id)a3
+- (void)_requestCompletedRequestorContext:(id)context
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  contextCopy = context;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     LOWORD(v14[0]) = 0;
@@ -959,14 +959,14 @@ void __42__MMCSEngine_cancelOperationsWithContext___block_invoke(uint64_t a1)
     }
   }
 
-  if (![v4 type])
+  if (![contextCopy type])
   {
     v11 = objc_loadWeakRetained(&self->_delegate);
     [v11 didFinishGettingAllAssets];
     goto LABEL_10;
   }
 
-  if ([v4 type] == 1)
+  if ([contextCopy type] == 1)
   {
     v11 = objc_loadWeakRetained(&self->_delegate);
     [v11 didFinishPuttingAllAssets];
@@ -977,32 +977,32 @@ LABEL_10:
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
-    v13 = [v4 type];
+    type = [contextCopy type];
     v14[0] = 67109120;
-    v14[1] = v13;
+    v14[1] = type;
     _os_log_error_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "Unknown requestor context type %d found at request completion. Ignoring.", v14, 8u);
   }
 
 LABEL_13:
-  [(MMCSEngine *)self _removeRequestorContext:v4];
+  [(MMCSEngine *)self _removeRequestorContext:contextCopy];
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_putItemDoneItemID:(unint64_t)a3 requestorContext:(id)a4 putReceipt:(id)a5 error:(id)a6
+- (void)_putItemDoneItemID:(unint64_t)d requestorContext:(id)context putReceipt:(id)receipt error:(id)error
 {
   v18 = *MEMORY[0x277D85DE8];
-  v9 = a5;
-  v10 = a6;
-  v11 = [(MMCSEngine *)self _assetWithItemID:a3];
+  receiptCopy = receipt;
+  errorCopy = error;
+  v11 = [(MMCSEngine *)self _assetWithItemID:d];
   if (v11)
   {
-    if (v10)
+    if (errorCopy)
     {
-      if (([v10 MMCSIsAuthorizationError] & 1) == 0 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+      if (([errorCopy MMCSIsAuthorizationError] & 1) == 0 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
       {
         v14 = 138543618;
-        v15 = v10;
+        dCopy = errorCopy;
         v16 = 2114;
         v17 = v11;
         _os_log_error_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "Put item failed. Error: %{public}@\nAsset: %{public}@", &v14, 0x16u);
@@ -1012,38 +1012,38 @@ LABEL_13:
     else if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       v14 = 138543362;
-      v15 = v11;
+      dCopy = v11;
       _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "Put item completed. Asset: %{public}@", &v14, 0xCu);
     }
 
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained MMCSEngine:self didFinishPuttingAsset:v11 putReceipt:v9 error:v10];
+    [WeakRetained MMCSEngine:self didFinishPuttingAsset:v11 putReceipt:receiptCopy error:errorCopy];
   }
 
   else if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     v14 = 134217984;
-    v15 = a3;
+    dCopy = d;
     _os_log_error_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "Put item done: Could not get asset for item ID %lld.", &v14, 0xCu);
   }
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_getItemDoneItemID:(unint64_t)a3 path:(id)a4 requestorContext:(id)a5 error:(id)a6
+- (void)_getItemDoneItemID:(unint64_t)d path:(id)path requestorContext:(id)context error:(id)error
 {
   v18 = *MEMORY[0x277D85DE8];
-  v9 = a4;
-  v10 = a6;
-  v11 = [(MMCSEngine *)self _assetWithItemID:a3];
+  pathCopy = path;
+  errorCopy = error;
+  v11 = [(MMCSEngine *)self _assetWithItemID:d];
   if (v11)
   {
-    if (v10)
+    if (errorCopy)
     {
-      if (([v10 MMCSIsAuthorizationError] & 1) == 0 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+      if (([errorCopy MMCSIsAuthorizationError] & 1) == 0 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
       {
         v14 = 138543618;
-        v15 = v10;
+        dCopy = errorCopy;
         v16 = 2114;
         v17 = v11;
         _os_log_error_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "Get item failed. Error: %{public}@\nAsset: %{public}@", &v14, 0x16u);
@@ -1053,45 +1053,45 @@ LABEL_13:
     else if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       v14 = 138543618;
-      v15 = v11;
+      dCopy = v11;
       v16 = 2112;
-      v17 = v9;
+      v17 = pathCopy;
       _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "Get item completed. Asset: %{public}@. Path: %@", &v14, 0x16u);
     }
 
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained MMCSEngine:self didFinishGettingAsset:v11 path:v9 error:v10];
+    [WeakRetained MMCSEngine:self didFinishGettingAsset:v11 path:pathCopy error:errorCopy];
   }
 
   else if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     v14 = 134217984;
-    v15 = a3;
+    dCopy = d;
     _os_log_error_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "Get item done: Could not get asset for item ID %lld.", &v14, 0xCu);
   }
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_getFileDescriptorAndContentTypeFromItemID:(unint64_t)a3 outFD:(int *)a4 outItemType:(id *)a5 outError:(id *)a6
+- (BOOL)_getFileDescriptorAndContentTypeFromItemID:(unint64_t)d outFD:(int *)fD outItemType:(id *)type outError:(id *)error
 {
   v23 = *MEMORY[0x277D85DE8];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     *buf = 134217984;
-    *v22 = a3;
+    *v22 = d;
     _os_log_debug_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG, "Getting file descriptor for itemID %lld", buf, 0xCu);
   }
 
-  v11 = [(MMCSEngine *)self _assetWithItemID:a3];
+  v11 = [(MMCSEngine *)self _assetWithItemID:d];
   v12 = v11;
   if (v11)
   {
-    v13 = [v11 MMCSOpenNewFileDescriptor];
-    if (v13 != -1)
+    mMCSOpenNewFileDescriptor = [v11 MMCSOpenNewFileDescriptor];
+    if (mMCSOpenNewFileDescriptor != -1)
     {
-      v14 = v13;
-      v15 = [v12 MMCSItemType];
+      v14 = mMCSOpenNewFileDescriptor;
+      mMCSItemType = [v12 MMCSItemType];
       goto LABEL_13;
     }
 
@@ -1100,7 +1100,7 @@ LABEL_13:
 
   else
   {
-    [MEMORY[0x277CCA9B8] MMCSErrorWithDomain:@"kMMCSKitErrorDomain" code:0 description:{@"ERROR_CANNOT_FIND_ASSET_P_ITEMID", a3}];
+    [MEMORY[0x277CCA9B8] MMCSErrorWithDomain:@"kMMCSKitErrorDomain" code:0 description:{@"ERROR_CANNOT_FIND_ASSET_P_ITEMID", d}];
   }
   v16 = ;
   if (v16)
@@ -1108,29 +1108,29 @@ LABEL_13:
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
       *buf = 134218242;
-      *v22 = a3;
+      *v22 = d;
       *&v22[8] = 2114;
       *&v22[10] = v16;
       _os_log_error_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "Could not get file descriptor for itemID %lld. Error: %{public}@", buf, 0x16u);
-      if (a6)
+      if (error)
       {
         goto LABEL_11;
       }
     }
 
-    else if (a6)
+    else if (error)
     {
 LABEL_11:
       v17 = v16;
-      v15 = 0;
-      *a6 = v16;
+      mMCSItemType = 0;
+      *error = v16;
       goto LABEL_23;
     }
 
-    v15 = 0;
+    mMCSItemType = 0;
 LABEL_23:
     v14 = -1;
-    if (!a4)
+    if (!fD)
     {
       goto LABEL_20;
     }
@@ -1138,7 +1138,7 @@ LABEL_23:
     goto LABEL_19;
   }
 
-  v15 = 0;
+  mMCSItemType = 0;
   v14 = -1;
 LABEL_13:
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
@@ -1146,24 +1146,24 @@ LABEL_13:
     *buf = 67109634;
     *v22 = v14;
     *&v22[4] = 2048;
-    *&v22[6] = a3;
+    *&v22[6] = d;
     *&v22[14] = 2114;
-    *&v22[16] = v15;
+    *&v22[16] = mMCSItemType;
     _os_log_debug_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG, "Got file descriptor %d for itemID %lld. UTI: %{public}@", buf, 0x1Cu);
   }
 
   v16 = 0;
-  if (a5 && v15)
+  if (type && mMCSItemType)
   {
-    v18 = v15;
+    v18 = mMCSItemType;
     v16 = 0;
-    *a5 = v15;
+    *type = mMCSItemType;
   }
 
-  if (a4)
+  if (fD)
   {
 LABEL_19:
-    *a4 = v14;
+    *fD = v14;
   }
 
 LABEL_20:
@@ -1172,13 +1172,13 @@ LABEL_20:
   return v14 != -1;
 }
 
-- (void)setIsMetricsGatheringEnabled:(BOOL)a3
+- (void)setIsMetricsGatheringEnabled:(BOOL)enabled
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __43__MMCSEngine_setIsMetricsGatheringEnabled___block_invoke;
   v3[3] = &unk_278E918E0;
-  v4 = a3;
+  enabledCopy = enabled;
   v3[4] = self;
   [(MMCSEngine *)self performBlockOnWorkThread:v3];
 }
@@ -1213,17 +1213,17 @@ void __43__MMCSEngine_setIsMetricsGatheringEnabled___block_invoke(uint64_t a1)
   }
 }
 
-- (void)threadMain:(id)a3
+- (void)threadMain:(id)main
 {
-  v4 = a3;
+  mainCopy = main;
   v5 = objc_autoreleasePoolPush();
-  v6 = [MEMORY[0x277CBEB88] currentRunLoop];
-  [v6 getCFRunLoop];
-  [v4 objectForKey:@"modes"];
-  [v4 objectForKey:@"workPathURL"];
-  [v4 objectForKey:@"appIDHeader"];
-  [v4 objectForKey:@"dataClass"];
-  [v4 objectForKey:@"options"];
+  currentRunLoop = [MEMORY[0x277CBEB88] currentRunLoop];
+  [currentRunLoop getCFRunLoop];
+  [mainCopy objectForKey:@"modes"];
+  [mainCopy objectForKey:@"workPathURL"];
+  [mainCopy objectForKey:@"appIDHeader"];
+  [mainCopy objectForKey:@"dataClass"];
+  [mainCopy objectForKey:@"options"];
   self->_engine = MMCSEngineCreate();
 
   if (self->_engine)
@@ -1252,17 +1252,17 @@ void __43__MMCSEngine_setIsMetricsGatheringEnabled___block_invoke(uint64_t a1)
     threadKeepAliveTimer = self->_threadKeepAliveTimer;
     self->_threadKeepAliveTimer = v17;
 
-    v19 = [MEMORY[0x277CBEB88] currentRunLoop];
-    [v19 addTimer:self->_threadKeepAliveTimer forMode:*MEMORY[0x277CBE738]];
+    currentRunLoop2 = [MEMORY[0x277CBEB88] currentRunLoop];
+    [currentRunLoop2 addTimer:self->_threadKeepAliveTimer forMode:*MEMORY[0x277CBE738]];
 
     if (![(MMCSEngine *)self isDone])
     {
       v20 = *MEMORY[0x277CBE640];
       do
       {
-        v21 = [MEMORY[0x277CBEB88] currentRunLoop];
-        v22 = [MEMORY[0x277CBEAA8] distantFuture];
-        v23 = [v21 runMode:v20 beforeDate:v22];
+        currentRunLoop3 = [MEMORY[0x277CBEB88] currentRunLoop];
+        distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
+        v23 = [currentRunLoop3 runMode:v20 beforeDate:distantFuture];
 
         if ((v23 & 1) == 0)
         {
@@ -1283,34 +1283,34 @@ void __43__MMCSEngine_setIsMetricsGatheringEnabled___block_invoke(uint64_t a1)
   objc_autoreleasePoolPop(v5);
 }
 
-- (MMCSEngine)initWithWorkPath:(id)a3 appIDHeader:(id)a4 dataClass:(id)a5 options:(id)a6
+- (MMCSEngine)initWithWorkPath:(id)path appIDHeader:(id)header dataClass:(id)class options:(id)options
 {
   v10 = MEMORY[0x277CBEA60];
   v11 = *MEMORY[0x277CBE640];
-  v12 = a6;
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
+  optionsCopy = options;
+  classCopy = class;
+  headerCopy = header;
+  pathCopy = path;
   v16 = [v10 arrayWithObject:v11];
-  v17 = [(MMCSEngine *)self initWithWorkPath:v15 appIDHeader:v14 dataClass:v13 options:v12 modes:v16];
+  v17 = [(MMCSEngine *)self initWithWorkPath:pathCopy appIDHeader:headerCopy dataClass:classCopy options:optionsCopy modes:v16];
 
   return v17;
 }
 
-- (MMCSEngine)initWithWorkPath:(id)a3 appIDHeader:(id)a4 dataClass:(id)a5 options:(id)a6 modes:(id)a7
+- (MMCSEngine)initWithWorkPath:(id)path appIDHeader:(id)header dataClass:(id)class options:(id)options modes:(id)modes
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  pathCopy = path;
+  headerCopy = header;
+  classCopy = class;
+  optionsCopy = options;
+  modesCopy = modes;
   v25.receiver = self;
   v25.super_class = MMCSEngine;
   v18 = [(MMCSEngine *)&v25 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_workPathURL, a3);
+    objc_storeStrong(&v18->_workPathURL, path);
     v19->_engineClientContext.version = 2;
     v19->_engineClientContext.context = v19;
     v19->_engineClientContext.getFileDescriptorAndContentTypeFromItemCallback = _getFileDescriptorAndContentTypeFromItemCallback;
@@ -1319,31 +1319,31 @@ void __43__MMCSEngine_setIsMetricsGatheringEnabled___block_invoke(uint64_t a1)
     v19->_engineClientContext.putItemProgressCallback = _putItemProgressCallback_5612;
     v19->_engineClientContext.putItemDoneCallback = _putItemDoneCallback_5611;
     v19->_engineClientContext.requestCompletedCallback = _requestCompletedCallback_5610;
-    v20 = [MEMORY[0x277CBEB38] dictionary];
-    v21 = v20;
-    if (v13)
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    v21 = dictionary;
+    if (pathCopy)
     {
-      [v20 setObject:v13 forKey:@"workPathURL"];
+      [dictionary setObject:pathCopy forKey:@"workPathURL"];
     }
 
-    if (v14)
+    if (headerCopy)
     {
-      [v21 setObject:v14 forKey:@"appIDHeader"];
+      [v21 setObject:headerCopy forKey:@"appIDHeader"];
     }
 
-    if (v15)
+    if (classCopy)
     {
-      [v21 setObject:v15 forKey:@"dataClass"];
+      [v21 setObject:classCopy forKey:@"dataClass"];
     }
 
-    if (v16)
+    if (optionsCopy)
     {
-      [v21 setObject:v16 forKey:@"options"];
+      [v21 setObject:optionsCopy forKey:@"options"];
     }
 
-    if (v17)
+    if (modesCopy)
     {
-      [v21 setObject:v17 forKey:@"modes"];
+      [v21 setObject:modesCopy forKey:@"modes"];
     }
 
     v22 = [objc_alloc(MEMORY[0x277CCACC8]) initWithTarget:v19 selector:sel_threadMain_ object:v21];
@@ -1356,29 +1356,29 @@ void __43__MMCSEngine_setIsMetricsGatheringEnabled___block_invoke(uint64_t a1)
   return v19;
 }
 
-+ (id)logStringForPutItemState:(int)a3
++ (id)logStringForPutItemState:(int)state
 {
-  if (a3 > 7)
+  if (state > 7)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_278E91958[a3];
+    return off_278E91958[state];
   }
 }
 
-+ (id)logStringForGetItemState:(int)a3
++ (id)logStringForGetItemState:(int)state
 {
-  if (a3 > 5)
+  if (state > 5)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_278E91928[a3];
+    return off_278E91928[state];
   }
 }
 

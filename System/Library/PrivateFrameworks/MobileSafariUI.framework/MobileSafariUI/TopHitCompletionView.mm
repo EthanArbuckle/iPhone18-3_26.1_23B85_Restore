@@ -1,18 +1,18 @@
 @interface TopHitCompletionView
-- (void)drawRect:(CGRect)a3;
-- (void)setAttributedText:(id)a3 highlightStartIndex:(unint64_t)a4 layoutIsRTL:(BOOL)a5;
+- (void)drawRect:(CGRect)rect;
+- (void)setAttributedText:(id)text highlightStartIndex:(unint64_t)index layoutIsRTL:(BOOL)l;
 @end
 
 @implementation TopHitCompletionView
 
-- (void)setAttributedText:(id)a3 highlightStartIndex:(unint64_t)a4 layoutIsRTL:(BOOL)a5
+- (void)setAttributedText:(id)text highlightStartIndex:(unint64_t)index layoutIsRTL:(BOOL)l
 {
-  v8 = a3;
-  v9 = v8;
-  if (self->_highlightStartIndex != a4 || v8 | self->_attributedText && (v13 = v8, v10 = [v8 isEqualToAttributedString:?], v9 = v13, (v10 & 1) == 0))
+  textCopy = text;
+  v9 = textCopy;
+  if (self->_highlightStartIndex != index || textCopy | self->_attributedText && (v13 = textCopy, v10 = [textCopy isEqualToAttributedString:?], v9 = v13, (v10 & 1) == 0))
   {
     v14 = v9;
-    self->_highlightStartIndex = a4;
+    self->_highlightStartIndex = index;
     if (self->_attributedText != v9)
     {
       v11 = [(NSAttributedString *)v9 copy];
@@ -20,15 +20,15 @@
       self->_attributedText = v11;
     }
 
-    self->_layoutIsRTL = a5;
+    self->_layoutIsRTL = l;
     [(TopHitCompletionView *)self setNeedsDisplay];
     v9 = v14;
   }
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  if (![(NSAttributedString *)self->_attributedText length:a3.origin.x])
+  if (![(NSAttributedString *)self->_attributedText length:rect.origin.x])
   {
     return;
   }

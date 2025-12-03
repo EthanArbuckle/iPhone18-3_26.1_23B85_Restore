@@ -1,47 +1,47 @@
 @interface PDFPageEvaluator
-+ (BOOL)isPageCandidateForOCR:(id)a3;
++ (BOOL)isPageCandidateForOCR:(id)r;
 + (CGPDFOperatorTable)createOperatorTable;
 + (OS_dispatch_queue)asyncWorkQueue;
-+ (void)isPageCandidateForOCR:(id)a3 completion:(id)a4;
-- (PDFPageEvaluator)initWithPage:(id)a3;
-- (PDFPageEvaluator)initWithParent:(id)a3;
-- (PDFPageEvaluator)initWithParent:(id)a3 stream:(CGPDFStream *)a4 resources:(CGPDFDictionary *)a5;
++ (void)isPageCandidateForOCR:(id)r completion:(id)completion;
+- (PDFPageEvaluator)initWithPage:(id)page;
+- (PDFPageEvaluator)initWithParent:(id)parent;
+- (PDFPageEvaluator)initWithParent:(id)parent stream:(CGPDFStream *)stream resources:(CGPDFDictionary *)resources;
 - (uint64_t)scan;
 - (void)dealloc;
-- (void)op_Do:(CGPDFScanner *)a3;
-- (void)op_TJ:(CGPDFScanner *)a3;
-- (void)op_Tj:(CGPDFScanner *)a3;
-- (void)op_cm:(CGPDFScanner *)a3;
-- (void)op_doublequote:(CGPDFScanner *)a3;
-- (void)op_singlequote:(CGPDFScanner *)a3;
+- (void)op_Do:(CGPDFScanner *)do;
+- (void)op_TJ:(CGPDFScanner *)j;
+- (void)op_Tj:(CGPDFScanner *)tj;
+- (void)op_cm:(CGPDFScanner *)op_cm;
+- (void)op_doublequote:(CGPDFScanner *)op_doublequote;
+- (void)op_singlequote:(CGPDFScanner *)op_singlequote;
 - (void)scan;
 @end
 
 @implementation PDFPageEvaluator
 
-+ (void)isPageCandidateForOCR:(id)a3 completion:(id)a4
++ (void)isPageCandidateForOCR:(id)r completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 isCandidateForOCR];
-  if (v8 != 2)
+  rCopy = r;
+  completionCopy = completion;
+  isCandidateForOCR = [rCopy isCandidateForOCR];
+  if (isCandidateForOCR != 2)
   {
-    v7[2](v7, v6, v8 == 1);
+    completionCopy[2](completionCopy, rCopy, isCandidateForOCR == 1);
   }
 
-  v9 = [[PDFPageEvaluator alloc] initWithPage:v6];
-  v10 = [a1 asyncWorkQueue];
+  v9 = [[PDFPageEvaluator alloc] initWithPage:rCopy];
+  asyncWorkQueue = [self asyncWorkQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __53__PDFPageEvaluator_isPageCandidateForOCR_completion___block_invoke;
   block[3] = &unk_1E8150F10;
   v15 = v9;
-  v16 = v6;
-  v17 = v7;
-  v11 = v7;
-  v12 = v6;
+  v16 = rCopy;
+  v17 = completionCopy;
+  v11 = completionCopy;
+  v12 = rCopy;
   v13 = v9;
-  dispatch_async(v10, block);
+  dispatch_async(asyncWorkQueue, block);
 }
 
 uint64_t __53__PDFPageEvaluator_isPageCandidateForOCR_completion___block_invoke(uint64_t a1)
@@ -53,24 +53,24 @@ uint64_t __53__PDFPageEvaluator_isPageCandidateForOCR_completion___block_invoke(
   return v2();
 }
 
-+ (BOOL)isPageCandidateForOCR:(id)a3
++ (BOOL)isPageCandidateForOCR:(id)r
 {
-  v3 = a3;
-  v4 = [v3 isCandidateForOCR];
-  if (v4 == 2)
+  rCopy = r;
+  isCandidateForOCR = [rCopy isCandidateForOCR];
+  if (isCandidateForOCR == 2)
   {
-    v5 = [[PDFPageEvaluator alloc] initWithPage:v3];
+    v5 = [[PDFPageEvaluator alloc] initWithPage:rCopy];
     [(PDFPageEvaluator *)v5 scan];
-    v6 = [(PDFPageEvaluator *)v5 isPageCandidateForOCR];
-    [v3 setCandidateForOCR:v6];
+    isPageCandidateForOCR = [(PDFPageEvaluator *)v5 isPageCandidateForOCR];
+    [rCopy setCandidateForOCR:isPageCandidateForOCR];
   }
 
   else
   {
-    LOBYTE(v6) = v4 == 1;
+    LOBYTE(isPageCandidateForOCR) = isCandidateForOCR == 1;
   }
 
-  return v6;
+  return isPageCandidateForOCR;
 }
 
 + (CGPDFOperatorTable)createOperatorTable
@@ -115,13 +115,13 @@ void __34__PDFPageEvaluator_asyncWorkQueue__block_invoke()
   +[PDFPageEvaluator asyncWorkQueue]::asyncWorkQueue = v1;
 }
 
-- (PDFPageEvaluator)initWithPage:(id)a3
+- (PDFPageEvaluator)initWithPage:(id)page
 {
-  v4 = a3;
+  pageCopy = page;
   v5 = [(PDFPageEvaluator *)self initWithParent:0];
   if (v5)
   {
-    v6 = CGPDFPageRetain([v4 pageRef]);
+    v6 = CGPDFPageRetain([pageCopy pageRef]);
     v5->_page = v6;
     if (!v6)
     {
@@ -141,7 +141,7 @@ LABEL_7:
       goto LABEL_7;
     }
 
-    v14 = CGPDFContentStreamCreateWithPage([v4 pageRef]);
+    v14 = CGPDFContentStreamCreateWithPage([pageCopy pageRef]);
     v5->_cs = v14;
     if (!v14)
     {
@@ -155,13 +155,13 @@ LABEL_8:
   return v15;
 }
 
-- (PDFPageEvaluator)initWithParent:(id)a3
+- (PDFPageEvaluator)initWithParent:(id)parent
 {
-  v4 = a3;
+  parentCopy = parent;
   v10.receiver = self;
   v10.super_class = PDFPageEvaluator;
   v5 = [(PDFPageEvaluator *)&v10 init];
-  if (!v5 || (!v4 ? (Copy = CGPDFRStateCreate()) : ([v4 rstate], Copy = CGPDFRStateCreateCopy()), (v5->_rstate = Copy) != 0 && (v5->_gstate = CGPDFRStateGetGState(), v7 = objc_msgSend(objc_opt_class(), "createOperatorTable"), (v5->_table = v7) != 0)))
+  if (!v5 || (!parentCopy ? (Copy = CGPDFRStateCreate()) : ([parentCopy rstate], Copy = CGPDFRStateCreateCopy()), (v5->_rstate = Copy) != 0 && (v5->_gstate = CGPDFRStateGetGState(), v7 = objc_msgSend(objc_opt_class(), "createOperatorTable"), (v5->_table = v7) != 0)))
   {
     v8 = v5;
   }
@@ -174,13 +174,13 @@ LABEL_8:
   return v8;
 }
 
-- (PDFPageEvaluator)initWithParent:(id)a3 stream:(CGPDFStream *)a4 resources:(CGPDFDictionary *)a5
+- (PDFPageEvaluator)initWithParent:(id)parent stream:(CGPDFStream *)stream resources:(CGPDFDictionary *)resources
 {
-  v8 = a3;
-  v9 = [(PDFPageEvaluator *)self initWithParent:v8];
+  parentCopy = parent;
+  v9 = [(PDFPageEvaluator *)self initWithParent:parentCopy];
   if (v9)
   {
-    v9->_cs = CGPDFContentStreamCreateWithStream(a4, a5, [v8 contentStream]);
+    v9->_cs = CGPDFContentStreamCreateWithStream(stream, resources, [parentCopy contentStream]);
   }
 
   return v9;
@@ -221,7 +221,7 @@ LABEL_8:
   }
 }
 
-- (void)op_cm:(CGPDFScanner *)a3
+- (void)op_cm:(CGPDFScanner *)op_cm
 {
   v8 = 0.0;
   v9 = 0.0;
@@ -229,29 +229,29 @@ LABEL_8:
   v7 = 0.0;
   value = 0.0;
   v5 = 0.0;
-  if (CGPDFScannerPopNumber(a3, &value) && CGPDFScannerPopNumber(a3, &v5) && CGPDFScannerPopNumber(a3, &v6) && CGPDFScannerPopNumber(a3, &v7) && CGPDFScannerPopNumber(a3, &v8) && CGPDFScannerPopNumber(a3, &v9))
+  if (CGPDFScannerPopNumber(op_cm, &value) && CGPDFScannerPopNumber(op_cm, &v5) && CGPDFScannerPopNumber(op_cm, &v6) && CGPDFScannerPopNumber(op_cm, &v7) && CGPDFScannerPopNumber(op_cm, &v8) && CGPDFScannerPopNumber(op_cm, &v9))
   {
     CGPDFGStateConcatCTM();
   }
 }
 
-- (void)op_Tj:(CGPDFScanner *)a3
+- (void)op_Tj:(CGPDFScanner *)tj
 {
   value = 0;
-  if (CGPDFScannerPopString(a3, &value))
+  if (CGPDFScannerPopString(tj, &value))
   {
     if (CGPDFStringGetLength(value))
     {
       self->_containsText = 1;
-      [(PDFPageEvaluator *)self stopScan:a3];
+      [(PDFPageEvaluator *)self stopScan:tj];
     }
   }
 }
 
-- (void)op_TJ:(CGPDFScanner *)a3
+- (void)op_TJ:(CGPDFScanner *)j
 {
   value = 0;
-  if (CGPDFScannerPopArray(a3, &value))
+  if (CGPDFScannerPopArray(j, &value))
   {
     v6 = 0;
     v7 = &v6;
@@ -266,7 +266,7 @@ LABEL_8:
     if (v7[3])
     {
       self->_containsText = 1;
-      [(PDFPageEvaluator *)self stopScan:a3];
+      [(PDFPageEvaluator *)self stopScan:j];
     }
 
     _Block_object_dispose(&v6, 8);
@@ -287,40 +287,40 @@ BOOL __26__PDFPageEvaluator_op_TJ___block_invoke(uint64_t a1, int a2, CGPDFObjec
   return *(*(*(a1 + 32) + 8) + 24) == 0;
 }
 
-- (void)op_singlequote:(CGPDFScanner *)a3
+- (void)op_singlequote:(CGPDFScanner *)op_singlequote
 {
   value = 0;
-  if (CGPDFScannerPopString(a3, &value))
+  if (CGPDFScannerPopString(op_singlequote, &value))
   {
     if (CGPDFStringGetLength(value))
     {
       self->_containsText = 1;
-      [(PDFPageEvaluator *)self stopScan:a3];
+      [(PDFPageEvaluator *)self stopScan:op_singlequote];
     }
   }
 }
 
-- (void)op_doublequote:(CGPDFScanner *)a3
+- (void)op_doublequote:(CGPDFScanner *)op_doublequote
 {
   v6 = 0.0;
   value = 0;
   v5 = 0.0;
-  if (CGPDFScannerPopString(a3, &value) && CGPDFScannerPopNumber(a3, &v6) && CGPDFScannerPopNumber(a3, &v5))
+  if (CGPDFScannerPopString(op_doublequote, &value) && CGPDFScannerPopNumber(op_doublequote, &v6) && CGPDFScannerPopNumber(op_doublequote, &v5))
   {
     if (CGPDFStringGetLength(value))
     {
       self->_containsText = 1;
-      [(PDFPageEvaluator *)self stopScan:a3];
+      [(PDFPageEvaluator *)self stopScan:op_doublequote];
     }
   }
 }
 
-- (void)op_Do:(CGPDFScanner *)a3
+- (void)op_Do:(CGPDFScanner *)do
 {
   value = 0;
-  if (CGPDFScannerPopName(a3, &value))
+  if (CGPDFScannerPopName(do, &value))
   {
-    ContentStream = CGPDFScannerGetContentStream(a3);
+    ContentStream = CGPDFScannerGetContentStream(do);
     if (ContentStream)
     {
       Resource = CGPDFContentStreamGetResource(ContentStream, "XObject", value);
@@ -381,7 +381,7 @@ BOOL __26__PDFPageEvaluator_op_TJ___block_invoke(uint64_t a1, int a2, CGPDFObjec
                   if (v11->_containsText)
                   {
                     self->_containsText = 1;
-                    [(PDFPageEvaluator *)self stopScan:a3];
+                    [(PDFPageEvaluator *)self stopScan:do];
                   }
                 }
               }
@@ -396,7 +396,7 @@ BOOL __26__PDFPageEvaluator_op_TJ___block_invoke(uint64_t a1, int a2, CGPDFObjec
 - (uint64_t)scan
 {
   {
-    return a1 + 8;
+    return self + 8;
   }
 
   else

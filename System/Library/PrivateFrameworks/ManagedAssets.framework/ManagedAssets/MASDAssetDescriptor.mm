@@ -1,70 +1,70 @@
 @interface MASDAssetDescriptor
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualForAllFields:(id)a3;
-- (MASDAssetDescriptor)initWithCoder:(id)a3;
-- (id)initDescriptorWithOptions:(id)a3 withData:(id)a4 error:(id *)a5;
-- (id)initDescriptorWithType:(unint64_t)a3 withLabel:(id)a4 withData:(id)a5 withVersion:(id)a6;
-- (id)initDescriptorWithType:(unint64_t)a3 withLabel:(id)a4 withData:(id)a5 withVersion:(id)a6 withSyncOption:(unint64_t)a7;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualForAllFields:(id)fields;
+- (MASDAssetDescriptor)initWithCoder:(id)coder;
+- (id)initDescriptorWithOptions:(id)options withData:(id)data error:(id *)error;
+- (id)initDescriptorWithType:(unint64_t)type withLabel:(id)label withData:(id)data withVersion:(id)version;
+- (id)initDescriptorWithType:(unint64_t)type withLabel:(id)label withData:(id)data withVersion:(id)version withSyncOption:(unint64_t)option;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MASDAssetDescriptor
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   type = self->_type;
-  v5 = a3;
-  [v5 encodeInteger:type forKey:@"_type"];
-  [v5 encodeObject:self->_data forKey:@"_data"];
-  [v5 encodeObject:self->_label forKey:@"_label"];
-  [v5 encodeObject:self->_algorithmVersion forKey:@"_algorithmVersion"];
-  [v5 encodeInteger:self->_syncOption forKey:@"_syncOption"];
-  [v5 encodeObject:self->_enrollmentIdentifier forKey:@"_enrollmentIdentifier"];
-  [v5 encodeObject:self->_creatorAttest forKey:@"_creatorAttest"];
-  [v5 encodeObject:self->_serverAttest forKey:@"_serverAttest"];
-  [v5 encodeObject:self->_deviceIdentifier forKey:@"_deviceIdentifier"];
-  [v5 encodeObject:self->_deviceName forKey:@"_deviceName"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:type forKey:@"_type"];
+  [coderCopy encodeObject:self->_data forKey:@"_data"];
+  [coderCopy encodeObject:self->_label forKey:@"_label"];
+  [coderCopy encodeObject:self->_algorithmVersion forKey:@"_algorithmVersion"];
+  [coderCopy encodeInteger:self->_syncOption forKey:@"_syncOption"];
+  [coderCopy encodeObject:self->_enrollmentIdentifier forKey:@"_enrollmentIdentifier"];
+  [coderCopy encodeObject:self->_creatorAttest forKey:@"_creatorAttest"];
+  [coderCopy encodeObject:self->_serverAttest forKey:@"_serverAttest"];
+  [coderCopy encodeObject:self->_deviceIdentifier forKey:@"_deviceIdentifier"];
+  [coderCopy encodeObject:self->_deviceName forKey:@"_deviceName"];
 }
 
-- (MASDAssetDescriptor)initWithCoder:(id)a3
+- (MASDAssetDescriptor)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v23.receiver = self;
   v23.super_class = MASDAssetDescriptor;
   v5 = [(MASDAssetDescriptor *)&v23 init];
   if (v5)
   {
-    v5->_type = [v4 decodeIntegerForKey:@"_type"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_data"];
+    v5->_type = [coderCopy decodeIntegerForKey:@"_type"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_data"];
     data = v5->_data;
     v5->_data = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_label"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_label"];
     label = v5->_label;
     v5->_label = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_algorithmVersion"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_algorithmVersion"];
     algorithmVersion = v5->_algorithmVersion;
     v5->_algorithmVersion = v10;
 
-    v5->_syncOption = [v4 decodeIntegerForKey:@"_syncOption"];
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_enrollmentIdentifier"];
+    v5->_syncOption = [coderCopy decodeIntegerForKey:@"_syncOption"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_enrollmentIdentifier"];
     enrollmentIdentifier = v5->_enrollmentIdentifier;
     v5->_enrollmentIdentifier = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_creatorAttest"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_creatorAttest"];
     creatorAttest = v5->_creatorAttest;
     v5->_creatorAttest = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_serverAttest"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_serverAttest"];
     serverAttest = v5->_serverAttest;
     v5->_serverAttest = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_deviceIdentifier"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_deviceIdentifier"];
     deviceIdentifier = v5->_deviceIdentifier;
     v5->_deviceIdentifier = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_deviceName"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_deviceName"];
     deviceName = v5->_deviceName;
     v5->_deviceName = v20;
   }
@@ -72,24 +72,24 @@
   return v5;
 }
 
-- (id)initDescriptorWithType:(unint64_t)a3 withLabel:(id)a4 withData:(id)a5 withVersion:(id)a6
+- (id)initDescriptorWithType:(unint64_t)type withLabel:(id)label withData:(id)data withVersion:(id)version
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  labelCopy = label;
+  dataCopy = data;
+  versionCopy = version;
   v24.receiver = self;
   v24.super_class = MASDAssetDescriptor;
   v14 = [(MASDAssetDescriptor *)&v24 init];
   v15 = v14;
   if (v14)
   {
-    v14->_type = a3;
-    v16 = [v12 copy];
+    v14->_type = type;
+    v16 = [dataCopy copy];
     data = v15->_data;
     v15->_data = v16;
 
-    objc_storeStrong(&v15->_label, a4);
-    objc_storeStrong(&v15->_algorithmVersion, a6);
+    objc_storeStrong(&v15->_label, label);
+    objc_storeStrong(&v15->_algorithmVersion, version);
     enrollmentIdentifier = v15->_enrollmentIdentifier;
     v15->_syncOption = 0;
     v15->_enrollmentIdentifier = 0;
@@ -110,26 +110,26 @@
   return v15;
 }
 
-- (id)initDescriptorWithType:(unint64_t)a3 withLabel:(id)a4 withData:(id)a5 withVersion:(id)a6 withSyncOption:(unint64_t)a7
+- (id)initDescriptorWithType:(unint64_t)type withLabel:(id)label withData:(id)data withVersion:(id)version withSyncOption:(unint64_t)option
 {
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  labelCopy = label;
+  dataCopy = data;
+  versionCopy = version;
   v26.receiver = self;
   v26.super_class = MASDAssetDescriptor;
   v16 = [(MASDAssetDescriptor *)&v26 init];
   v17 = v16;
   if (v16)
   {
-    v16->_type = a3;
-    v18 = [v14 copy];
+    v16->_type = type;
+    v18 = [dataCopy copy];
     data = v17->_data;
     v17->_data = v18;
 
-    objc_storeStrong(&v17->_label, a4);
-    objc_storeStrong(&v17->_algorithmVersion, a6);
+    objc_storeStrong(&v17->_label, label);
+    objc_storeStrong(&v17->_algorithmVersion, version);
     enrollmentIdentifier = v17->_enrollmentIdentifier;
-    v17->_syncOption = a7;
+    v17->_syncOption = option;
     v17->_enrollmentIdentifier = 0;
 
     creatorAttest = v17->_creatorAttest;
@@ -148,16 +148,16 @@
   return v17;
 }
 
-- (id)initDescriptorWithOptions:(id)a3 withData:(id)a4 error:(id *)a5
+- (id)initDescriptorWithOptions:(id)options withData:(id)data error:(id *)error
 {
   v70 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v63 = a4;
+  optionsCopy = options;
+  dataCopy = data;
   v65 = 0u;
   v66 = 0u;
   v67 = 0u;
   v68 = 0u;
-  v7 = v6;
+  v7 = optionsCopy;
   v8 = [v7 countByEnumeratingWithState:&v65 objects:v69 count:16];
   if (v8)
   {
@@ -180,7 +180,7 @@
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
             v43 = createManagedAssetError("validateDescriptorOptions", 128, -20001, 0, 0, @"invalid data class in descriptor options for %@", v14, v15, v12);
-            *a5 = v43;
+            *error = v43;
             if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
             {
 LABEL_26:
@@ -190,8 +190,8 @@ LABEL_26:
 LABEL_27:
 
             v42 = 0;
-            v41 = self;
-            v20 = v63;
+            selfCopy2 = self;
+            v20 = dataCopy;
             goto LABEL_28;
           }
         }
@@ -202,7 +202,7 @@ LABEL_27:
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
             v43 = createManagedAssetError("validateDescriptorOptions", 135, -20001, 0, 0, @"invalid data class in descriptor options for %@", v16, v17, v12);
-            *a5 = v43;
+            *error = v43;
             if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
             {
               goto LABEL_26;
@@ -230,13 +230,13 @@ LABEL_27:
     v64.receiver = self;
     v64.super_class = MASDAssetDescriptor;
     v19 = [(MASDAssetDescriptor *)&v64 init];
-    v20 = v63;
+    v20 = dataCopy;
     if (v19)
     {
       v21 = [v7 objectForKeyedSubscript:@"com.apple.managedassets.assettype"];
       v19->_type = [v21 unsignedIntegerValue];
 
-      v22 = [v63 copy];
+      v22 = [dataCopy copy];
       data = v19->_data;
       v19->_data = v22;
 
@@ -274,21 +274,21 @@ LABEL_27:
       v19->_syncOption = [v40 unsignedIntegerValue];
     }
 
-    v41 = v19;
-    v42 = v41;
+    selfCopy2 = v19;
+    v42 = selfCopy2;
   }
 
   else
   {
-    v41 = self;
-    v20 = v63;
+    selfCopy2 = self;
+    v20 = dataCopy;
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
       [(MASDAssetDescriptor *)@"com.apple.managedassets.assettype" initDescriptorWithOptions:v52 withData:v53 error:v54, v55, v56, v57, v58];
     }
 
     createManagedAssetError("[MASDAssetDescriptor initDescriptorWithOptions:withData:error:]", 98, -20001, 0, 0, @"option %@ is empty.", v57, v58, @"com.apple.managedassets.assettype");
-    *a5 = v42 = 0;
+    *error = v42 = 0;
   }
 
 LABEL_28:
@@ -297,85 +297,85 @@ LABEL_28:
   return v42;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(MASDAssetDescriptor *)self isEqualForAllFields:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(MASDAssetDescriptor *)self isEqualForAllFields:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualForAllFields:(id)a3
+- (BOOL)isEqualForAllFields:(id)fields
 {
-  v4 = a3;
-  v5 = [(MASDAssetDescriptor *)self type];
-  if (v5 != [v4 type])
+  fieldsCopy = fields;
+  type = [(MASDAssetDescriptor *)self type];
+  if (type != [fieldsCopy type])
   {
     goto LABEL_70;
   }
 
-  v6 = [(MASDAssetDescriptor *)self data];
-  v7 = [v4 data];
-  v8 = [v6 isEqualToData:v7];
+  data = [(MASDAssetDescriptor *)self data];
+  data2 = [fieldsCopy data];
+  v8 = [data isEqualToData:data2];
 
   if (!v8)
   {
     goto LABEL_70;
   }
 
-  v9 = [(MASDAssetDescriptor *)self label];
-  if (v9)
+  label = [(MASDAssetDescriptor *)self label];
+  if (label)
   {
-    v7 = [v4 label];
-    if (!v7)
+    data2 = [fieldsCopy label];
+    if (!data2)
     {
       goto LABEL_18;
     }
   }
 
-  v10 = [(MASDAssetDescriptor *)self label];
-  if (v10)
+  label2 = [(MASDAssetDescriptor *)self label];
+  if (label2)
   {
 
-    if (v9)
+    if (label)
     {
     }
   }
 
   else
   {
-    v11 = [v4 label];
+    label3 = [fieldsCopy label];
 
-    if (v9)
+    if (label)
     {
     }
 
-    if (v11)
+    if (label3)
     {
       goto LABEL_70;
     }
   }
 
-  v12 = [(MASDAssetDescriptor *)self label];
-  if (v12)
+  label4 = [(MASDAssetDescriptor *)self label];
+  if (label4)
   {
-    v13 = v12;
-    v14 = [v4 label];
-    if (v14)
+    v13 = label4;
+    label5 = [fieldsCopy label];
+    if (label5)
     {
-      v7 = v14;
-      v15 = [(MASDAssetDescriptor *)self label];
-      v16 = [v4 label];
-      v17 = [v15 isEqualToString:v16];
+      data2 = label5;
+      label6 = [(MASDAssetDescriptor *)self label];
+      label7 = [fieldsCopy label];
+      v17 = [label6 isEqualToString:label7];
 
       if (!v17)
       {
@@ -388,50 +388,50 @@ LABEL_28:
     }
   }
 
-  v9 = [(MASDAssetDescriptor *)self algorithmVersion];
-  if (v9)
+  label = [(MASDAssetDescriptor *)self algorithmVersion];
+  if (label)
   {
-    v7 = [v4 algorithmVersion];
-    if (!v7)
+    data2 = [fieldsCopy algorithmVersion];
+    if (!data2)
     {
       goto LABEL_18;
     }
   }
 
-  v19 = [(MASDAssetDescriptor *)self algorithmVersion];
-  if (v19)
+  algorithmVersion = [(MASDAssetDescriptor *)self algorithmVersion];
+  if (algorithmVersion)
   {
 
-    if (v9)
+    if (label)
     {
     }
   }
 
   else
   {
-    v20 = [v4 algorithmVersion];
+    algorithmVersion2 = [fieldsCopy algorithmVersion];
 
-    if (v9)
+    if (label)
     {
     }
 
-    if (v20)
+    if (algorithmVersion2)
     {
       goto LABEL_70;
     }
   }
 
-  v21 = [(MASDAssetDescriptor *)self algorithmVersion];
-  if (v21)
+  algorithmVersion3 = [(MASDAssetDescriptor *)self algorithmVersion];
+  if (algorithmVersion3)
   {
-    v22 = v21;
-    v23 = [v4 algorithmVersion];
-    if (v23)
+    v22 = algorithmVersion3;
+    algorithmVersion4 = [fieldsCopy algorithmVersion];
+    if (algorithmVersion4)
     {
-      v7 = v23;
-      v24 = [(MASDAssetDescriptor *)self algorithmVersion];
-      v25 = [v4 algorithmVersion];
-      v26 = [v24 isEqualToString:v25];
+      data2 = algorithmVersion4;
+      algorithmVersion5 = [(MASDAssetDescriptor *)self algorithmVersion];
+      algorithmVersion6 = [fieldsCopy algorithmVersion];
+      v26 = [algorithmVersion5 isEqualToString:algorithmVersion6];
 
       if (!v26)
       {
@@ -444,58 +444,58 @@ LABEL_28:
     }
   }
 
-  v27 = [(MASDAssetDescriptor *)self syncOption];
-  if (v27 != [v4 syncOption])
+  syncOption = [(MASDAssetDescriptor *)self syncOption];
+  if (syncOption != [fieldsCopy syncOption])
   {
 LABEL_70:
     v18 = 0;
     goto LABEL_71;
   }
 
-  v9 = [(MASDAssetDescriptor *)self enrollmentIdentifier];
-  if (v9)
+  label = [(MASDAssetDescriptor *)self enrollmentIdentifier];
+  if (label)
   {
-    v7 = [v4 enrollmentIdentifier];
-    if (!v7)
+    data2 = [fieldsCopy enrollmentIdentifier];
+    if (!data2)
     {
       goto LABEL_18;
     }
   }
 
-  v28 = [(MASDAssetDescriptor *)self enrollmentIdentifier];
-  if (v28)
+  enrollmentIdentifier = [(MASDAssetDescriptor *)self enrollmentIdentifier];
+  if (enrollmentIdentifier)
   {
 
-    if (v9)
+    if (label)
     {
     }
   }
 
   else
   {
-    v29 = [v4 enrollmentIdentifier];
+    enrollmentIdentifier2 = [fieldsCopy enrollmentIdentifier];
 
-    if (v9)
+    if (label)
     {
     }
 
-    if (v29)
+    if (enrollmentIdentifier2)
     {
       goto LABEL_70;
     }
   }
 
-  v30 = [(MASDAssetDescriptor *)self enrollmentIdentifier];
-  if (v30)
+  enrollmentIdentifier3 = [(MASDAssetDescriptor *)self enrollmentIdentifier];
+  if (enrollmentIdentifier3)
   {
-    v31 = v30;
-    v32 = [v4 enrollmentIdentifier];
-    if (v32)
+    v31 = enrollmentIdentifier3;
+    enrollmentIdentifier4 = [fieldsCopy enrollmentIdentifier];
+    if (enrollmentIdentifier4)
     {
-      v7 = v32;
-      v33 = [(MASDAssetDescriptor *)self enrollmentIdentifier];
-      v34 = [v4 enrollmentIdentifier];
-      v35 = [v33 isEqualToString:v34];
+      data2 = enrollmentIdentifier4;
+      enrollmentIdentifier5 = [(MASDAssetDescriptor *)self enrollmentIdentifier];
+      enrollmentIdentifier6 = [fieldsCopy enrollmentIdentifier];
+      v35 = [enrollmentIdentifier5 isEqualToString:enrollmentIdentifier6];
 
       if (!v35)
       {
@@ -508,13 +508,13 @@ LABEL_70:
     }
   }
 
-  v36 = [(MASDAssetDescriptor *)self creatorAttest];
-  if (v36)
+  creatorAttest = [(MASDAssetDescriptor *)self creatorAttest];
+  if (creatorAttest)
   {
-    v37 = v36;
-    v7 = [(MASDAssetDescriptor *)self creatorAttest];
-    v38 = [v4 creatorAttest];
-    v39 = [v7 isEqualToData:v38];
+    v37 = creatorAttest;
+    data2 = [(MASDAssetDescriptor *)self creatorAttest];
+    creatorAttest2 = [fieldsCopy creatorAttest];
+    v39 = [data2 isEqualToData:creatorAttest2];
 
     if (!v39)
     {
@@ -522,13 +522,13 @@ LABEL_70:
     }
   }
 
-  v40 = [(MASDAssetDescriptor *)self serverAttest];
-  if (v40)
+  serverAttest = [(MASDAssetDescriptor *)self serverAttest];
+  if (serverAttest)
   {
-    v41 = v40;
-    v7 = [(MASDAssetDescriptor *)self serverAttest];
-    v42 = [v4 serverAttest];
-    v43 = [v7 isEqualToData:v42];
+    v41 = serverAttest;
+    data2 = [(MASDAssetDescriptor *)self serverAttest];
+    serverAttest2 = [fieldsCopy serverAttest];
+    v43 = [data2 isEqualToData:serverAttest2];
 
     if (!v43)
     {
@@ -536,50 +536,50 @@ LABEL_70:
     }
   }
 
-  v9 = [(MASDAssetDescriptor *)self deviceIdentifier];
-  if (v9)
+  label = [(MASDAssetDescriptor *)self deviceIdentifier];
+  if (label)
   {
-    v7 = [v4 deviceIdentifier];
-    if (!v7)
+    data2 = [fieldsCopy deviceIdentifier];
+    if (!data2)
     {
       goto LABEL_18;
     }
   }
 
-  v44 = [(MASDAssetDescriptor *)self deviceIdentifier];
-  if (v44)
+  deviceIdentifier = [(MASDAssetDescriptor *)self deviceIdentifier];
+  if (deviceIdentifier)
   {
 
-    if (v9)
+    if (label)
     {
     }
   }
 
   else
   {
-    v45 = [v4 deviceIdentifier];
+    deviceIdentifier2 = [fieldsCopy deviceIdentifier];
 
-    if (v9)
+    if (label)
     {
     }
 
-    if (v45)
+    if (deviceIdentifier2)
     {
       goto LABEL_70;
     }
   }
 
-  v46 = [(MASDAssetDescriptor *)self deviceIdentifier];
-  if (v46)
+  deviceIdentifier3 = [(MASDAssetDescriptor *)self deviceIdentifier];
+  if (deviceIdentifier3)
   {
-    v47 = v46;
-    v48 = [v4 deviceIdentifier];
-    if (v48)
+    v47 = deviceIdentifier3;
+    deviceIdentifier4 = [fieldsCopy deviceIdentifier];
+    if (deviceIdentifier4)
     {
-      v7 = v48;
-      v49 = [(MASDAssetDescriptor *)self deviceIdentifier];
-      v50 = [v4 deviceIdentifier];
-      v51 = [v49 isEqualToString:v50];
+      data2 = deviceIdentifier4;
+      deviceIdentifier5 = [(MASDAssetDescriptor *)self deviceIdentifier];
+      deviceIdentifier6 = [fieldsCopy deviceIdentifier];
+      v51 = [deviceIdentifier5 isEqualToString:deviceIdentifier6];
 
       if (!v51)
       {
@@ -592,8 +592,8 @@ LABEL_70:
     }
   }
 
-  v9 = [(MASDAssetDescriptor *)self deviceName];
-  if (v9 && ([v4 deviceName], (v7 = objc_claimAutoreleasedReturnValue()) == 0))
+  label = [(MASDAssetDescriptor *)self deviceName];
+  if (label && ([fieldsCopy deviceName], (data2 = objc_claimAutoreleasedReturnValue()) == 0))
   {
 LABEL_18:
     v18 = 0;
@@ -601,44 +601,44 @@ LABEL_18:
 
   else
   {
-    v52 = [(MASDAssetDescriptor *)self deviceName];
-    if (v52)
+    deviceName = [(MASDAssetDescriptor *)self deviceName];
+    if (deviceName)
     {
 
-      if (v9)
+      if (label)
       {
       }
     }
 
     else
     {
-      v53 = [v4 deviceName];
+      deviceName2 = [fieldsCopy deviceName];
 
-      if (v9)
+      if (label)
       {
       }
 
-      if (v53)
+      if (deviceName2)
       {
         goto LABEL_70;
       }
     }
 
-    v55 = [(MASDAssetDescriptor *)self deviceName];
-    if (!v55)
+    deviceName3 = [(MASDAssetDescriptor *)self deviceName];
+    if (!deviceName3)
     {
       v18 = 1;
       goto LABEL_71;
     }
 
-    v9 = v55;
-    v56 = [v4 deviceName];
-    if (v56)
+    label = deviceName3;
+    deviceName4 = [fieldsCopy deviceName];
+    if (deviceName4)
     {
-      v57 = v56;
-      v58 = [(MASDAssetDescriptor *)self deviceName];
-      v59 = [v4 deviceName];
-      v18 = [v58 isEqualToString:v59];
+      v57 = deviceName4;
+      deviceName5 = [(MASDAssetDescriptor *)self deviceName];
+      deviceName6 = [fieldsCopy deviceName];
+      v18 = [deviceName5 isEqualToString:deviceName6];
     }
 
     else

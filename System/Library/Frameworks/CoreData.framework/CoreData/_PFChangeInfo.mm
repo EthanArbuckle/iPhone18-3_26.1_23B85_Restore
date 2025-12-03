@@ -1,6 +1,6 @@
 @interface _PFChangeInfo
-- (BOOL)isEqual:(id)a3;
-- (_PFChangeInfo)initWithObject:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (_PFChangeInfo)initWithObject:(id)object;
 - (id)description;
 - (unint64_t)hash;
 - (void)dealloc;
@@ -10,9 +10,9 @@
 
 - (unint64_t)hash
 {
-  v2 = [(NSManagedObject *)[(_PFChangeInfo *)self object] objectID];
+  objectID = [(NSManagedObject *)[(_PFChangeInfo *)self object] objectID];
 
-  return [(NSManagedObjectID *)v2 hash];
+  return [(NSManagedObjectID *)objectID hash];
 }
 
 - (void)dealloc
@@ -29,21 +29,21 @@
   [(_PFChangeInfo *)&v3 dealloc];
 }
 
-- (_PFChangeInfo)initWithObject:(id)a3
+- (_PFChangeInfo)initWithObject:(id)object
 {
   v6.receiver = self;
   v6.super_class = _PFChangeInfo;
   v4 = [(_PFChangeInfo *)&v6 init];
   if (v4)
   {
-    v4->_object = a3;
+    v4->_object = object;
     v4->_changeType = 0x7FFFFFFFFFFFFFFFLL;
   }
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -51,10 +51,10 @@
     return 0;
   }
 
-  v5 = [(NSManagedObject *)[(_PFChangeInfo *)self object] objectID];
-  v6 = [objc_msgSend(a3 "object")];
+  objectID = [(NSManagedObject *)[(_PFChangeInfo *)self object] objectID];
+  v6 = [objc_msgSend(equal "object")];
 
-  return [(NSManagedObjectID *)v5 isEqual:v6];
+  return [(NSManagedObjectID *)objectID isEqual:v6];
 }
 
 - (id)description

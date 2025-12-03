@@ -1,65 +1,65 @@
 @interface MKFCKSharedUserDataRoot
-+ (BOOL)_importInsertOrUpdateWithObjectID:(id)a3 context:(id)a4;
-+ (id)createWithHomeModelID:(id)a3 persistentStore:(id)a4 context:(id)a5;
-+ (id)entityDescriptionFromContext:(id)a3;
-- (BOOL)_importSharedUserProfileMetadataIntoLocalModel:(id)a3 context:(id)a4;
-- (BOOL)_importSharedUserSettingsIntoLocalModel:(id)a3 context:(id)a4;
-- (BOOL)importAccessorySettingsIntoLocalModel:(id)a3 context:(id)a4;
-- (BOOL)importIntoLocalModel:(id)a3 context:(id)a4;
-- (BOOL)importIntoLocalModelWithContext:(id)a3;
-- (BOOL)importPersonsIntoLocalModel:(id)a3 context:(id)a4;
-- (id)fetchEquivalentModels:(id *)a3;
++ (BOOL)_importInsertOrUpdateWithObjectID:(id)d context:(id)context;
++ (id)createWithHomeModelID:(id)d persistentStore:(id)store context:(id)context;
++ (id)entityDescriptionFromContext:(id)context;
+- (BOOL)_importSharedUserProfileMetadataIntoLocalModel:(id)model context:(id)context;
+- (BOOL)_importSharedUserSettingsIntoLocalModel:(id)model context:(id)context;
+- (BOOL)importAccessorySettingsIntoLocalModel:(id)model context:(id)context;
+- (BOOL)importIntoLocalModel:(id)model context:(id)context;
+- (BOOL)importIntoLocalModelWithContext:(id)context;
+- (BOOL)importPersonsIntoLocalModel:(id)model context:(id)context;
+- (id)fetchEquivalentModels:(id *)models;
 @end
 
 @implementation MKFCKSharedUserDataRoot
 
-- (BOOL)_importSharedUserProfileMetadataIntoLocalModel:(id)a3 context:(id)a4
+- (BOOL)_importSharedUserProfileMetadataIntoLocalModel:(id)model context:(id)context
 {
-  v5 = a3;
+  modelCopy = model;
   if (_os_feature_enabled_impl())
   {
-    v6 = [(MKFCKSharedUserDataRoot *)self iCloudAltDSID];
-    if (v6)
+    iCloudAltDSID = [(MKFCKSharedUserDataRoot *)self iCloudAltDSID];
+    if (iCloudAltDSID)
     {
-      v7 = v6;
-      v8 = [(MKFCKSharedUserDataRoot *)self iCloudAltDSID];
-      v9 = [v5 iCloudAltDSID];
-      v10 = [v8 isEqual:v9];
+      v7 = iCloudAltDSID;
+      iCloudAltDSID2 = [(MKFCKSharedUserDataRoot *)self iCloudAltDSID];
+      iCloudAltDSID3 = [modelCopy iCloudAltDSID];
+      v10 = [iCloudAltDSID2 isEqual:iCloudAltDSID3];
 
       if ((v10 & 1) == 0)
       {
-        v11 = [(MKFCKSharedUserDataRoot *)self iCloudAltDSID];
-        [v5 setICloudAltDSID:v11];
+        iCloudAltDSID4 = [(MKFCKSharedUserDataRoot *)self iCloudAltDSID];
+        [modelCopy setICloudAltDSID:iCloudAltDSID4];
       }
     }
 
-    v12 = [(MKFCKSharedUserDataRoot *)self firstName];
-    if (v12)
+    firstName = [(MKFCKSharedUserDataRoot *)self firstName];
+    if (firstName)
     {
-      v13 = v12;
-      v14 = [(MKFCKSharedUserDataRoot *)self firstName];
-      v15 = [v5 firstName];
-      v16 = [v14 isEqual:v15];
+      v13 = firstName;
+      firstName2 = [(MKFCKSharedUserDataRoot *)self firstName];
+      firstName3 = [modelCopy firstName];
+      v16 = [firstName2 isEqual:firstName3];
 
       if ((v16 & 1) == 0)
       {
-        v17 = [(MKFCKSharedUserDataRoot *)self firstName];
-        [v5 setFirstName:v17];
+        firstName4 = [(MKFCKSharedUserDataRoot *)self firstName];
+        [modelCopy setFirstName:firstName4];
       }
     }
 
-    v18 = [(MKFCKSharedUserDataRoot *)self lastName];
-    if (v18)
+    lastName = [(MKFCKSharedUserDataRoot *)self lastName];
+    if (lastName)
     {
-      v19 = v18;
-      v20 = [(MKFCKSharedUserDataRoot *)self lastName];
-      v21 = [v5 lastName];
-      v22 = [v20 isEqual:v21];
+      v19 = lastName;
+      lastName2 = [(MKFCKSharedUserDataRoot *)self lastName];
+      lastName3 = [modelCopy lastName];
+      v22 = [lastName2 isEqual:lastName3];
 
       if ((v22 & 1) == 0)
       {
-        v23 = [(MKFCKSharedUserDataRoot *)self lastName];
-        [v5 setLastName:v23];
+        lastName4 = [(MKFCKSharedUserDataRoot *)self lastName];
+        [modelCopy setLastName:lastName4];
       }
     }
   }
@@ -67,92 +67,92 @@
   return 1;
 }
 
-- (BOOL)_importSharedUserSettingsIntoLocalModel:(id)a3 context:(id)a4
+- (BOOL)_importSharedUserSettingsIntoLocalModel:(id)model context:(id)context
 {
   v5 = MEMORY[0x277CCABB0];
-  v6 = a3;
+  modelCopy = model;
   v7 = [v5 numberWithBool:{-[MKFCKSharedUserDataRoot allowExplicitContent](self, "allowExplicitContent")}];
-  [v6 setAllowExplicitContent:v7];
+  [modelCopy setAllowExplicitContent:v7];
 
   v8 = [MEMORY[0x277CCABB0] numberWithBool:{-[MKFCKSharedUserDataRoot allowiTunesAccount](self, "allowiTunesAccount")}];
-  [v6 setAllowiTunesAccount:v8];
+  [modelCopy setAllowiTunesAccount:v8];
 
   v9 = [MEMORY[0x277CCABB0] numberWithBool:{-[MKFCKSharedUserDataRoot dolbyAtmosEnabled](self, "dolbyAtmosEnabled")}];
-  [v6 setDolbyAtmosEnabled:v9];
+  [modelCopy setDolbyAtmosEnabled:v9];
 
   v10 = [MEMORY[0x277CCABB0] numberWithBool:{-[MKFCKSharedUserDataRoot losslessMusicEnabled](self, "losslessMusicEnabled")}];
-  [v6 setLosslessMusicEnabled:v10];
+  [modelCopy setLosslessMusicEnabled:v10];
 
   v11 = [MEMORY[0x277CCABB0] numberWithBool:{-[MKFCKSharedUserDataRoot playbackInfluencesEnabled](self, "playbackInfluencesEnabled")}];
-  [v6 setPlaybackInfluencesEnabled:v11];
+  [modelCopy setPlaybackInfluencesEnabled:v11];
 
   v12 = [MEMORY[0x277CCABB0] numberWithBool:{-[MKFCKSharedUserDataRoot siriIdentifyVoiceEnabled](self, "siriIdentifyVoiceEnabled")}];
-  [v6 setSiriIdentifyVoiceEnabled:v12];
+  [modelCopy setSiriIdentifyVoiceEnabled:v12];
 
   v13 = [MEMORY[0x277CCABB0] numberWithBool:{-[MKFCKSharedUserDataRoot activityNotificationsEnabledForPersonalRequests](self, "activityNotificationsEnabledForPersonalRequests")}];
-  [v6 setActivityNotificationsEnabledForPersonalRequests:v13];
+  [modelCopy setActivityNotificationsEnabledForPersonalRequests:v13];
 
   v14 = [MEMORY[0x277CCABB0] numberWithBool:{-[MKFCKSharedUserDataRoot sharePhotosFaceClassifications](self, "sharePhotosFaceClassifications")}];
-  [v6 setSharePhotosFaceClassifications:v14];
+  [modelCopy setSharePhotosFaceClassifications:v14];
 
-  v15 = [(MKFCKSharedUserDataRoot *)self photosPersonDataZoneUUID];
-  [v6 setPhotosPersonDataZoneUUID:v15];
+  photosPersonDataZoneUUID = [(MKFCKSharedUserDataRoot *)self photosPersonDataZoneUUID];
+  [modelCopy setPhotosPersonDataZoneUUID:photosPersonDataZoneUUID];
 
-  v16 = [(MKFCKSharedUserDataRoot *)self matCredIPKExternalRepresentation];
-  [v6 setMatCredIPKExternalRepresentation:v16];
+  matCredIPKExternalRepresentation = [(MKFCKSharedUserDataRoot *)self matCredIPKExternalRepresentation];
+  [modelCopy setMatCredIPKExternalRepresentation:matCredIPKExternalRepresentation];
 
   return 1;
 }
 
-- (BOOL)importIntoLocalModel:(id)a3 context:(id)a4
+- (BOOL)importIntoLocalModel:(id)model context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MKFCKSharedUserDataRoot *)self _importSharedUserSettingsIntoLocalModel:v6 context:v7]&& [(MKFCKSharedUserDataRoot *)self _importSharedUserProfileMetadataIntoLocalModel:v6 context:v7]&& [(MKFCKSharedUserDataRoot *)self importPersonsIntoLocalModel:v6 context:v7]&& [(MKFCKSharedUserDataRoot *)self importAccessorySettingsIntoLocalModel:v6 context:v7];
+  modelCopy = model;
+  contextCopy = context;
+  v8 = [(MKFCKSharedUserDataRoot *)self _importSharedUserSettingsIntoLocalModel:modelCopy context:contextCopy]&& [(MKFCKSharedUserDataRoot *)self _importSharedUserProfileMetadataIntoLocalModel:modelCopy context:contextCopy]&& [(MKFCKSharedUserDataRoot *)self importPersonsIntoLocalModel:modelCopy context:contextCopy]&& [(MKFCKSharedUserDataRoot *)self importAccessorySettingsIntoLocalModel:modelCopy context:contextCopy];
 
   return v8;
 }
 
-- (BOOL)importIntoLocalModelWithContext:(id)a3
+- (BOOL)importIntoLocalModelWithContext:(id)context
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(MKFCKSharedUserData *)self workingStoreHomeMember];
-  v6 = v5;
-  if (v5)
+  contextCopy = context;
+  workingStoreHomeMember = [(MKFCKSharedUserData *)self workingStoreHomeMember];
+  v6 = workingStoreHomeMember;
+  if (workingStoreHomeMember)
   {
-    v7 = [v5 castIfMemberIsGuest];
+    castIfMemberIsGuest = [workingStoreHomeMember castIfMemberIsGuest];
 
-    if (!v7)
+    if (!castIfMemberIsGuest)
     {
-      v17 = [v6 castIfMemberIsUser];
-      v16 = [(MKFCKSharedUserDataRoot *)self importIntoLocalModel:v17 context:v4];
+      castIfMemberIsUser = [v6 castIfMemberIsUser];
+      v16 = [(MKFCKSharedUserDataRoot *)self importIntoLocalModel:castIfMemberIsUser context:contextCopy];
 
       goto LABEL_11;
     }
 
-    v8 = [v6 castIfMemberIsGuest];
-    if (v8)
+    castIfMemberIsGuest2 = [v6 castIfMemberIsGuest];
+    if (castIfMemberIsGuest2)
     {
-      v9 = [(MKFCKSharedUserDataRoot *)self matCredIPKExternalRepresentation];
-      [v8 setMatCredIPKExternalRepresentation:v9];
+      matCredIPKExternalRepresentation = [(MKFCKSharedUserDataRoot *)self matCredIPKExternalRepresentation];
+      [castIfMemberIsGuest2 setMatCredIPKExternalRepresentation:matCredIPKExternalRepresentation];
     }
   }
 
   else
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       v13 = HMFGetLogIdentifier();
-      v14 = [(MKFCKSharedUserDataRoot *)v11 objectID];
-      v15 = [v14 hmd_debugIdentifier];
+      objectID = [(MKFCKSharedUserDataRoot *)selfCopy objectID];
+      hmd_debugIdentifier = [objectID hmd_debugIdentifier];
       v20 = 138543618;
       v21 = v13;
       v22 = 2112;
-      v23 = v15;
+      v23 = hmd_debugIdentifier;
       _os_log_impl(&dword_229538000, v12, OS_LOG_TYPE_ERROR, "%{public}@Unable to resolve working store user for shared settings import of %@, skipping import", &v20, 0x16u);
     }
 
@@ -166,23 +166,23 @@ LABEL_11:
   return v16;
 }
 
-- (id)fetchEquivalentModels:(id *)a3
+- (id)fetchEquivalentModels:(id *)models
 {
   v18.receiver = self;
   v18.super_class = MKFCKSharedUserDataRoot;
   v5 = [(MKFCKModel *)&v18 fetchEquivalentModels:?];
   if (v5)
   {
-    v6 = [(MKFCKSharedUserDataRoot *)self managedObjectContext];
-    v7 = [v6 hmd_coreData];
-    v8 = [v7 container];
+    managedObjectContext = [(MKFCKSharedUserDataRoot *)self managedObjectContext];
+    hmd_coreData = [managedObjectContext hmd_coreData];
+    container = [hmd_coreData container];
 
     v9 = [v5 valueForKey:@"objectID"];
-    v10 = [v8 fetchSharesMatchingObjectIDs:v9 error:a3];
+    v10 = [container fetchSharesMatchingObjectIDs:v9 error:models];
     if (v10)
     {
-      v11 = [(MKFCKSharedUserDataRoot *)self objectID];
-      v12 = [v10 objectForKeyedSubscript:v11];
+      objectID = [(MKFCKSharedUserDataRoot *)self objectID];
+      v12 = [v10 objectForKeyedSubscript:objectID];
 
       v16[0] = MEMORY[0x277D85DD0];
       v16[1] = 3221225472;
@@ -219,25 +219,25 @@ uint64_t __49__MKFCKSharedUserDataRoot_fetchEquivalentModels___block_invoke(uint
   return v7;
 }
 
-+ (id)entityDescriptionFromContext:(id)a3
++ (id)entityDescriptionFromContext:(id)context
 {
   v3 = MEMORY[0x277CBE408];
-  v4 = a3;
+  contextCopy = context;
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  v7 = [v3 entityForName:v6 inManagedObjectContext:v4];
+  v7 = [v3 entityForName:v6 inManagedObjectContext:contextCopy];
 
   return v7;
 }
 
-+ (BOOL)_importInsertOrUpdateWithObjectID:(id)a3 context:(id)a4
++ (BOOL)_importInsertOrUpdateWithObjectID:(id)d context:(id)context
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 hmd_cloudPrivateStoreIdentifier];
-  v8 = [v5 persistentStore];
-  v9 = [v8 identifier];
-  v10 = [v7 isEqualToString:v9];
+  dCopy = d;
+  contextCopy = context;
+  hmd_cloudPrivateStoreIdentifier = [contextCopy hmd_cloudPrivateStoreIdentifier];
+  persistentStore = [dCopy persistentStore];
+  identifier = [persistentStore identifier];
+  v10 = [hmd_cloudPrivateStoreIdentifier isEqualToString:identifier];
 
   if (v10)
   {
@@ -246,35 +246,35 @@ uint64_t __49__MKFCKSharedUserDataRoot_fetchEquivalentModels___block_invoke(uint
 
   else
   {
-    v12 = [(MKFCKModel *)MKFCKSharedUserDataRoot modelWithObjectID:v5 context:v6 error:0];
-    v11 = [v12 importIntoLocalModelWithContext:v6];
+    v12 = [(MKFCKModel *)MKFCKSharedUserDataRoot modelWithObjectID:dCopy context:contextCopy error:0];
+    v11 = [v12 importIntoLocalModelWithContext:contextCopy];
   }
 
   return v11;
 }
 
-+ (id)createWithHomeModelID:(id)a3 persistentStore:(id)a4 context:(id)a5
++ (id)createWithHomeModelID:(id)d persistentStore:(id)store context:(id)context
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[a1 alloc] initWithContext:v8];
-  [v8 assignObject:v11 toPersistentStore:v9];
+  contextCopy = context;
+  storeCopy = store;
+  dCopy = d;
+  v11 = [[self alloc] initWithContext:contextCopy];
+  [contextCopy assignObject:v11 toPersistentStore:storeCopy];
 
-  [v11 setModelID:v10];
-  [v11 setHomeModelID:v10];
+  [v11 setModelID:dCopy];
+  [v11 setHomeModelID:dCopy];
 
   return v11;
 }
 
-- (BOOL)importPersonsIntoLocalModel:(id)a3 context:(id)a4
+- (BOOL)importPersonsIntoLocalModel:(id)model context:(id)context
 {
   v45 = *MEMORY[0x277D85DE8];
-  v35 = a3;
-  v6 = a4;
+  modelCopy = model;
+  contextCopy = context;
   v7 = MEMORY[0x277CBEB58];
-  v8 = [(MKFCKSharedUserDataRoot *)self personsFromPhotos];
-  v9 = [v7 setWithCapacity:{objc_msgSend(v8, "count")}];
+  personsFromPhotos = [(MKFCKSharedUserDataRoot *)self personsFromPhotos];
+  v9 = [v7 setWithCapacity:{objc_msgSend(personsFromPhotos, "count")}];
 
   v42 = 0u;
   v43 = 0u;
@@ -297,39 +297,39 @@ uint64_t __49__MKFCKSharedUserDataRoot_fetchEquivalentModels___block_invoke(uint
         }
 
         v15 = *(*(&v40 + 1) + 8 * i);
-        v16 = [v15 modelID];
-        v17 = [(_MKFModel *)_MKFPhotosPerson modelWithModelID:v16 context:v6];
+        modelID = [v15 modelID];
+        v17 = [(_MKFModel *)_MKFPhotosPerson modelWithModelID:modelID context:contextCopy];
 
         if (!v17)
         {
-          v17 = [[_MKFPhotosPerson alloc] initWithContext:v6];
-          v18 = [v15 modelID];
-          [(_MKFPhotosPerson *)v17 setModelID:v18];
+          v17 = [[_MKFPhotosPerson alloc] initWithContext:contextCopy];
+          modelID2 = [v15 modelID];
+          [(_MKFPhotosPerson *)v17 setModelID:modelID2];
 
-          v19 = [v15 writerTimestamp];
-          [(_MKFPhotosPerson *)v17 setWriterTimestamp:v19];
+          writerTimestamp = [v15 writerTimestamp];
+          [(_MKFPhotosPerson *)v17 setWriterTimestamp:writerTimestamp];
 
-          [(_MKFPhotosPerson *)v17 setUser:v35];
+          [(_MKFPhotosPerson *)v17 setUser:modelCopy];
         }
 
-        v20 = [(_MKFPhotosPerson *)v17 name];
-        v21 = [v15 name];
+        name = [(_MKFPhotosPerson *)v17 name];
+        name2 = [v15 name];
         v22 = HMFEqualObjects();
 
         if ((v22 & 1) == 0)
         {
-          v23 = [v15 name];
-          [(_MKFPhotosPerson *)v17 setName:v23];
+          name3 = [v15 name];
+          [(_MKFPhotosPerson *)v17 setName:name3];
         }
 
-        v24 = [(_MKFPhotosPerson *)v17 photoLibraryPersonUUID];
-        v25 = [v15 photoLibraryPersonUUID];
+        photoLibraryPersonUUID = [(_MKFPhotosPerson *)v17 photoLibraryPersonUUID];
+        photoLibraryPersonUUID2 = [v15 photoLibraryPersonUUID];
         v26 = HMFEqualObjects();
 
         if ((v26 & 1) == 0)
         {
-          v27 = [v15 photoLibraryPersonUUID];
-          [(_MKFPhotosPerson *)v17 setPhotoLibraryPersonUUID:v27];
+          photoLibraryPersonUUID3 = [v15 photoLibraryPersonUUID];
+          [(_MKFPhotosPerson *)v17 setPhotoLibraryPersonUUID:photoLibraryPersonUUID3];
         }
 
         v9 = v14;
@@ -342,23 +342,23 @@ uint64_t __49__MKFCKSharedUserDataRoot_fetchEquivalentModels___block_invoke(uint
     while (v11);
   }
 
-  v28 = [v35 personsFromPhotos];
-  v29 = [v28 isEqualToSet:v9];
+  personsFromPhotos2 = [modelCopy personsFromPhotos];
+  v29 = [personsFromPhotos2 isEqualToSet:v9];
 
   if ((v29 & 1) == 0)
   {
-    v30 = [v35 personsFromPhotos];
+    personsFromPhotos3 = [modelCopy personsFromPhotos];
     v37[0] = MEMORY[0x277D85DD0];
     v37[1] = 3221225472;
     v37[2] = __72__MKFCKSharedUserDataRoot_Persons__importPersonsIntoLocalModel_context___block_invoke;
     v37[3] = &unk_27867D180;
     v31 = v9;
     v38 = v31;
-    v39 = v6;
-    [v30 hmf_enumerateWithAutoreleasePoolUsingBlock:v37];
+    v39 = contextCopy;
+    [personsFromPhotos3 hmf_enumerateWithAutoreleasePoolUsingBlock:v37];
 
     v32 = [v31 copy];
-    [v35 setPersonsFromPhotos_:v32];
+    [modelCopy setPersonsFromPhotos_:v32];
   }
 
   v33 = *MEMORY[0x277D85DE8];
@@ -374,17 +374,17 @@ void __72__MKFCKSharedUserDataRoot_Persons__importPersonsIntoLocalModel_context_
   }
 }
 
-- (BOOL)importAccessorySettingsIntoLocalModel:(id)a3 context:(id)a4
+- (BOOL)importAccessorySettingsIntoLocalModel:(id)model context:(id)context
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  modelCopy = model;
+  contextCopy = context;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v8 = [(MKFCKSharedUserDataRoot *)self accessorySettings];
-  v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  accessorySettings = [(MKFCKSharedUserDataRoot *)self accessorySettings];
+  v9 = [accessorySettings countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v9)
   {
     v10 = v9;
@@ -395,17 +395,17 @@ void __72__MKFCKSharedUserDataRoot_Persons__importPersonsIntoLocalModel_context_
       {
         if (*v17 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(accessorySettings);
         }
 
-        if (![*(*(&v16 + 1) + 8 * i) importIntoLocalUserModel:v6 context:v7])
+        if (![*(*(&v16 + 1) + 8 * i) importIntoLocalUserModel:modelCopy context:contextCopy])
         {
           v13 = 0;
           goto LABEL_11;
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v10 = [accessorySettings countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v10)
       {
         continue;

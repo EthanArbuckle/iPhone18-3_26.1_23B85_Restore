@@ -2,34 +2,34 @@
 - (AAController)init;
 - (id)_ensureXPCStarted;
 - (id)description;
-- (void)_accessoryUsageSummaryMessageReceived:(id)a3 fromDevice:(id)a4;
+- (void)_accessoryUsageSummaryMessageReceived:(id)received fromDevice:(id)device;
 - (void)_activate;
-- (void)_activateXPC:(BOOL)a3;
-- (void)_activateXPCCompleted:(id)a3;
-- (void)_batteryInfoMessageReceived:(id)a3 fromDevice:(id)a4;
-- (void)_conversationDetectMessageReceived:(id)a3 fromDevice:(id)a4;
+- (void)_activateXPC:(BOOL)c;
+- (void)_activateXPCCompleted:(id)completed;
+- (void)_batteryInfoMessageReceived:(id)received fromDevice:(id)device;
+- (void)_conversationDetectMessageReceived:(id)received fromDevice:(id)device;
 - (void)_interrupted;
 - (void)_invalidated;
-- (void)_multimodalContextMessageReceived:(id)a3 fromDevice:(id)a4;
-- (void)_personalTranslationMessageReceived:(id)a3 fromDevice:(id)a4;
-- (void)_pmeConfigDataReceived:(id)a3 fromDevice:(id)a4;
-- (void)_rawGestureMessageReceived:(id)a3 fromDevice:(id)a4;
-- (void)_sendAccessoryEventMessage:(id)a3 eventType:(unsigned __int8)a4 destinationIdentifier:(id)a5 completionHandler:(id)a6;
-- (void)_sendDeviceConfig:(id)a3 destinationIdentifier:(id)a4 completionHandler:(id)a5;
-- (void)_sleepDetectionMessageReceived:(id)a3 fromDevice:(id)a4;
-- (void)_xpcReceivedAccessoryEvent:(id)a3;
-- (void)_xpcReceivedAudioAccessoryDeviceInfoChange:(id)a3;
-- (void)_xpcReceivedMessage:(id)a3;
-- (void)activateWithCompletion:(id)a3;
+- (void)_multimodalContextMessageReceived:(id)received fromDevice:(id)device;
+- (void)_personalTranslationMessageReceived:(id)received fromDevice:(id)device;
+- (void)_pmeConfigDataReceived:(id)received fromDevice:(id)device;
+- (void)_rawGestureMessageReceived:(id)received fromDevice:(id)device;
+- (void)_sendAccessoryEventMessage:(id)message eventType:(unsigned __int8)type destinationIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)_sendDeviceConfig:(id)config destinationIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)_sleepDetectionMessageReceived:(id)received fromDevice:(id)device;
+- (void)_xpcReceivedAccessoryEvent:(id)event;
+- (void)_xpcReceivedAudioAccessoryDeviceInfoChange:(id)change;
+- (void)_xpcReceivedMessage:(id)message;
+- (void)activateWithCompletion:(id)completion;
 - (void)invalidate;
-- (void)sendConversationDetectMessage:(id)a3 destinationIdentifier:(id)a4 completionHandler:(id)a5;
-- (void)sendDEOCTempDisableIntervalMessage:(id)a3 destinationIdentifier:(id)a4 completionHandler:(id)a5;
-- (void)sendDeviceConfig:(id)a3 destinationIdentifier:(id)a4 completionHandler:(id)a5;
-- (void)sendGetTipiTableMessageToDestinationIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)sendMultimodalContextMessage:(id)a3 destinationIdentifier:(id)a4 completionHandler:(id)a5;
-- (void)sendPMEConfigData:(id)a3 destinationIdentifier:(id)a4 completionHandler:(id)a5;
-- (void)sendSleepDetectionMessage:(id)a3 destinationIdentifier:(id)a4 completionHandler:(id)a5;
-- (void)xpcReceivedMessage:(id)a3;
+- (void)sendConversationDetectMessage:(id)message destinationIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)sendDEOCTempDisableIntervalMessage:(id)message destinationIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)sendDeviceConfig:(id)config destinationIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)sendGetTipiTableMessageToDestinationIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)sendMultimodalContextMessage:(id)message destinationIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)sendPMEConfigData:(id)data destinationIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)sendSleepDetectionMessage:(id)message destinationIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)xpcReceivedMessage:(id)message;
 @end
 
 @implementation AAController
@@ -58,28 +58,28 @@
   return 0;
 }
 
-- (void)activateWithCompletion:(id)a3
+- (void)activateWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (!v5->_activateCalled)
+  completionCopy = completion;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_activateCalled)
   {
-    v5->_activateCalled = 1;
-    v6 = MEMORY[0x245CE9060](v4);
-    activateCompletion = v5->_activateCompletion;
-    v5->_activateCompletion = v6;
+    selfCopy->_activateCalled = 1;
+    v6 = MEMORY[0x245CE9060](completionCopy);
+    activateCompletion = selfCopy->_activateCompletion;
+    selfCopy->_activateCompletion = v6;
 
-    dispatchQueue = v5->_dispatchQueue;
+    dispatchQueue = selfCopy->_dispatchQueue;
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __39__AAController_activateWithCompletion___block_invoke;
     block[3] = &unk_278CDD728;
-    block[4] = v5;
+    block[4] = selfCopy;
     dispatch_async(dispatchQueue, block);
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)_activate
@@ -110,9 +110,9 @@
   }
 }
 
-- (void)_activateXPC:(BOOL)a3
+- (void)_activateXPC:(BOOL)c
 {
-  if (a3)
+  if (c)
   {
     if (gLogCategory_AAController <= 30 && (gLogCategory_AAController != -1 || _LogCategory_Initialize()))
     {
@@ -135,19 +135,19 @@ LABEL_12:
   }
 
   xpc_dictionary_set_string(v5, "mTyp", "CtrA");
-  v7 = [(AAController *)self _ensureXPCStarted];
+  _ensureXPCStarted = [(AAController *)self _ensureXPCStarted];
   dispatchQueue = self->_dispatchQueue;
   handler[0] = MEMORY[0x277D85DD0];
   handler[1] = 3221225472;
   handler[2] = __29__AAController__activateXPC___block_invoke;
   handler[3] = &unk_278CDD908;
   handler[4] = self;
-  xpc_connection_send_message_with_reply(v7, v5, dispatchQueue, handler);
+  xpc_connection_send_message_with_reply(_ensureXPCStarted, v5, dispatchQueue, handler);
 }
 
-- (void)_activateXPCCompleted:(id)a3
+- (void)_activateXPCCompleted:(id)completed
 {
-  v4 = a3;
+  completedCopy = completed;
   v5 = CUXPCDecodeNSErrorIfNeeded();
   if (v5)
   {
@@ -168,7 +168,7 @@ LABEL_12:
 
   else
   {
-    v8 = xpc_dictionary_get_array(v4, "aaDD");
+    v8 = xpc_dictionary_get_array(completedCopy, "aaDD");
     v6 = v8;
     if (v8)
     {
@@ -198,26 +198,26 @@ LABEL_12:
 
 - (id)_ensureXPCStarted
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_xpcCnx;
-  if (!v2->_xpcCnx)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_xpcCnx;
+  if (!selfCopy->_xpcCnx)
   {
-    mach_service = xpc_connection_create_mach_service("com.apple.bluetooth.xpc", v2->_dispatchQueue, 0);
+    mach_service = xpc_connection_create_mach_service("com.apple.bluetooth.xpc", selfCopy->_dispatchQueue, 0);
 
-    objc_storeStrong(&v2->_xpcCnx, mach_service);
+    objc_storeStrong(&selfCopy->_xpcCnx, mach_service);
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __33__AAController__ensureXPCStarted__block_invoke;
     v6[3] = &unk_278CDD958;
     v3 = mach_service;
     v7 = v3;
-    v8 = v2;
+    v8 = selfCopy;
     xpc_connection_set_event_handler(v3, v6);
     xpc_connection_activate(v3);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -303,71 +303,71 @@ uint64_t __26__AAController_invalidate__block_invoke(uint64_t result)
 {
   if (self->_invalidateCalled && !self->_invalidateDone)
   {
-    v3 = self;
-    objc_sync_enter(v3);
-    xpcCnx = v3->_xpcCnx;
-    objc_sync_exit(v3);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    xpcCnx = selfCopy->_xpcCnx;
+    objc_sync_exit(selfCopy);
 
     if (!xpcCnx)
     {
-      conversationDetectMessageHandler = v3->_conversationDetectMessageHandler;
-      v3->_conversationDetectMessageHandler = 0;
+      conversationDetectMessageHandler = selfCopy->_conversationDetectMessageHandler;
+      selfCopy->_conversationDetectMessageHandler = 0;
 
-      deviceInfoChangeHandler = v3->_deviceInfoChangeHandler;
-      v3->_deviceInfoChangeHandler = 0;
+      deviceInfoChangeHandler = selfCopy->_deviceInfoChangeHandler;
+      selfCopy->_deviceInfoChangeHandler = 0;
 
-      multimodalContextMessageHandler = v3->_multimodalContextMessageHandler;
-      v3->_multimodalContextMessageHandler = 0;
+      multimodalContextMessageHandler = selfCopy->_multimodalContextMessageHandler;
+      selfCopy->_multimodalContextMessageHandler = 0;
 
-      pmeConfigMessageHandler = v3->_pmeConfigMessageHandler;
-      v3->_pmeConfigMessageHandler = 0;
+      pmeConfigMessageHandler = selfCopy->_pmeConfigMessageHandler;
+      selfCopy->_pmeConfigMessageHandler = 0;
 
-      interruptionHandler = v3->_interruptionHandler;
-      v3->_interruptionHandler = 0;
+      interruptionHandler = selfCopy->_interruptionHandler;
+      selfCopy->_interruptionHandler = 0;
 
-      v13 = MEMORY[0x245CE9060](v3->_invalidationHandler);
-      invalidationHandler = v3->_invalidationHandler;
-      v3->_invalidationHandler = 0;
+      v13 = MEMORY[0x245CE9060](selfCopy->_invalidationHandler);
+      invalidationHandler = selfCopy->_invalidationHandler;
+      selfCopy->_invalidationHandler = 0;
 
       v12 = v13;
       if (v13)
       {
-        v11 = (*(v13 + 16))(v13);
+        _invalidated = (*(v13 + 16))(v13);
         v12 = v13;
       }
 
       self->_invalidateDone = 1;
       if (gLogCategory_AAController <= 30)
       {
-        if (gLogCategory_AAController != -1 || (v11 = _LogCategory_Initialize(), v12 = v13, v11))
+        if (gLogCategory_AAController != -1 || (_invalidated = _LogCategory_Initialize(), v12 = v13, _invalidated))
         {
-          v11 = [AAController _invalidated];
+          _invalidated = [AAController _invalidated];
           v12 = v13;
         }
       }
 
-      MEMORY[0x2821F96F8](v11, v12);
+      MEMORY[0x2821F96F8](_invalidated, v12);
     }
   }
 }
 
-- (void)sendConversationDetectMessage:(id)a3 destinationIdentifier:(id)a4 completionHandler:(id)a5
+- (void)sendConversationDetectMessage:(id)message destinationIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  messageCopy = message;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   dispatchQueue = self->_dispatchQueue;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __86__AAController_sendConversationDetectMessage_destinationIdentifier_completionHandler___block_invoke;
   v15[3] = &unk_278CDD980;
-  v16 = v9;
-  v17 = self;
-  v18 = v8;
-  v19 = v10;
-  v12 = v10;
-  v13 = v8;
-  v14 = v9;
+  v16 = identifierCopy;
+  selfCopy = self;
+  v18 = messageCopy;
+  v19 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = messageCopy;
+  v14 = identifierCopy;
   dispatch_async(dispatchQueue, v15);
 }
 
@@ -386,23 +386,23 @@ uint64_t __86__AAController_sendConversationDetectMessage_destinationIdentifier_
   return [v2 _sendAccessoryEventMessage:v4 eventType:2 destinationIdentifier:v3 completionHandler:v5];
 }
 
-- (void)sendDEOCTempDisableIntervalMessage:(id)a3 destinationIdentifier:(id)a4 completionHandler:(id)a5
+- (void)sendDEOCTempDisableIntervalMessage:(id)message destinationIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  messageCopy = message;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   dispatchQueue = self->_dispatchQueue;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __91__AAController_sendDEOCTempDisableIntervalMessage_destinationIdentifier_completionHandler___block_invoke;
   v15[3] = &unk_278CDD980;
-  v16 = v9;
-  v17 = self;
-  v18 = v8;
-  v19 = v10;
-  v12 = v10;
-  v13 = v8;
-  v14 = v9;
+  v16 = identifierCopy;
+  selfCopy = self;
+  v18 = messageCopy;
+  v19 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = messageCopy;
+  v14 = identifierCopy;
   dispatch_async(dispatchQueue, v15);
 }
 
@@ -421,23 +421,23 @@ uint64_t __91__AAController_sendDEOCTempDisableIntervalMessage_destinationIdenti
   return [v2 _sendAccessoryEventMessage:v4 eventType:12 destinationIdentifier:v3 completionHandler:v5];
 }
 
-- (void)sendMultimodalContextMessage:(id)a3 destinationIdentifier:(id)a4 completionHandler:(id)a5
+- (void)sendMultimodalContextMessage:(id)message destinationIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  messageCopy = message;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   dispatchQueue = self->_dispatchQueue;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __85__AAController_sendMultimodalContextMessage_destinationIdentifier_completionHandler___block_invoke;
   v15[3] = &unk_278CDD980;
-  v16 = v9;
-  v17 = self;
-  v18 = v8;
-  v19 = v10;
-  v12 = v10;
-  v13 = v8;
-  v14 = v9;
+  v16 = identifierCopy;
+  selfCopy = self;
+  v18 = messageCopy;
+  v19 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = messageCopy;
+  v14 = identifierCopy;
   dispatch_async(dispatchQueue, v15);
 }
 
@@ -456,23 +456,23 @@ uint64_t __85__AAController_sendMultimodalContextMessage_destinationIdentifier_c
   return [v2 _sendAccessoryEventMessage:v4 eventType:4 destinationIdentifier:v3 completionHandler:v5];
 }
 
-- (void)sendPMEConfigData:(id)a3 destinationIdentifier:(id)a4 completionHandler:(id)a5
+- (void)sendPMEConfigData:(id)data destinationIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dataCopy = data;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   dispatchQueue = self->_dispatchQueue;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __74__AAController_sendPMEConfigData_destinationIdentifier_completionHandler___block_invoke;
   v15[3] = &unk_278CDD980;
-  v16 = v9;
-  v17 = self;
-  v18 = v8;
-  v19 = v10;
-  v12 = v10;
-  v13 = v8;
-  v14 = v9;
+  v16 = identifierCopy;
+  selfCopy = self;
+  v18 = dataCopy;
+  v19 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = dataCopy;
+  v14 = identifierCopy;
   dispatch_async(dispatchQueue, v15);
 }
 
@@ -491,23 +491,23 @@ uint64_t __74__AAController_sendPMEConfigData_destinationIdentifier_completionHa
   return [v2 _sendAccessoryEventMessage:v4 eventType:5 destinationIdentifier:v3 completionHandler:v5];
 }
 
-- (void)sendDeviceConfig:(id)a3 destinationIdentifier:(id)a4 completionHandler:(id)a5
+- (void)sendDeviceConfig:(id)config destinationIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  configCopy = config;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   dispatchQueue = self->_dispatchQueue;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __73__AAController_sendDeviceConfig_destinationIdentifier_completionHandler___block_invoke;
   v15[3] = &unk_278CDD980;
-  v16 = v9;
-  v17 = self;
-  v18 = v8;
-  v19 = v10;
-  v12 = v10;
-  v13 = v8;
-  v14 = v9;
+  v16 = identifierCopy;
+  selfCopy = self;
+  v18 = configCopy;
+  v19 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = configCopy;
+  v14 = identifierCopy;
   dispatch_async(dispatchQueue, v15);
 }
 
@@ -526,20 +526,20 @@ uint64_t __73__AAController_sendDeviceConfig_destinationIdentifier_completionHan
   return [v2 _sendDeviceConfig:v4 destinationIdentifier:v3 completionHandler:v5];
 }
 
-- (void)sendGetTipiTableMessageToDestinationIdentifier:(id)a3 completionHandler:(id)a4
+- (void)sendGetTipiTableMessageToDestinationIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __81__AAController_sendGetTipiTableMessageToDestinationIdentifier_completionHandler___block_invoke;
   block[3] = &unk_278CDD9A8;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = identifierCopy;
+  selfCopy = self;
+  v14 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = identifierCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -554,23 +554,23 @@ void __81__AAController_sendGetTipiTableMessageToDestinationIdentifier_completio
   [*(a1 + 40) _sendAccessoryEventMessage:v2 eventType:6 destinationIdentifier:*(a1 + 32) completionHandler:*(a1 + 48)];
 }
 
-- (void)sendSleepDetectionMessage:(id)a3 destinationIdentifier:(id)a4 completionHandler:(id)a5
+- (void)sendSleepDetectionMessage:(id)message destinationIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  messageCopy = message;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   dispatchQueue = self->_dispatchQueue;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __82__AAController_sendSleepDetectionMessage_destinationIdentifier_completionHandler___block_invoke;
   v15[3] = &unk_278CDD980;
-  v16 = v9;
-  v17 = self;
-  v18 = v8;
-  v19 = v10;
-  v12 = v10;
-  v13 = v8;
-  v14 = v9;
+  v16 = identifierCopy;
+  selfCopy = self;
+  v18 = messageCopy;
+  v19 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = messageCopy;
+  v14 = identifierCopy;
   dispatch_async(dispatchQueue, v15);
 }
 
@@ -589,58 +589,58 @@ uint64_t __82__AAController_sendSleepDetectionMessage_destinationIdentifier_comp
   return [v2 _sendAccessoryEventMessage:v4 eventType:8 destinationIdentifier:v3 completionHandler:v5];
 }
 
-- (void)_sendAccessoryEventMessage:(id)a3 eventType:(unsigned __int8)a4 destinationIdentifier:(id)a5 completionHandler:(id)a6
+- (void)_sendAccessoryEventMessage:(id)message eventType:(unsigned __int8)type destinationIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v8 = a4;
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  typeCopy = type;
+  messageCopy = message;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   if (self->_invalidateCalled)
   {
     v13 = *MEMORY[0x277CCA590];
     v14 = NSErrorF();
     if (gLogCategory_AAController <= 90 && (gLogCategory_AAController != -1 || _LogCategory_Initialize()))
     {
-      [AAController _sendAccessoryEventMessage:v8 eventType:? destinationIdentifier:? completionHandler:?];
+      [AAController _sendAccessoryEventMessage:typeCopy eventType:? destinationIdentifier:? completionHandler:?];
     }
 
 LABEL_15:
-    v12[2](v12, v14);
+    handlerCopy[2](handlerCopy, v14);
     goto LABEL_16;
   }
 
-  if (!v11)
+  if (!identifierCopy)
   {
     v29 = *MEMORY[0x277CCA590];
     v14 = NSErrorF();
     if (gLogCategory_AAController <= 90 && (gLogCategory_AAController != -1 || _LogCategory_Initialize()))
     {
-      [AAController _sendAccessoryEventMessage:v8 eventType:? destinationIdentifier:? completionHandler:?];
+      [AAController _sendAccessoryEventMessage:typeCopy eventType:? destinationIdentifier:? completionHandler:?];
     }
 
     goto LABEL_15;
   }
 
   v14 = objc_alloc_init(MEMORY[0x277CBE020]);
-  [v14 setIdentifier:v11];
+  [v14 setIdentifier:identifierCopy];
   [v14 dictionaryRepresentation];
   v15 = _CFXPCCreateXPCObjectFromCFObject();
   v16 = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_string(v16, "mTyp", "SnAE");
-  xpc_dictionary_set_uint64(v16, "acET", v8);
-  if (v10)
+  xpc_dictionary_set_uint64(v16, "acET", typeCopy);
+  if (messageCopy)
   {
-    v17 = v10;
+    v17 = messageCopy;
     v18 = v16;
-    v19 = v10;
-    v20 = [v19 bytes];
+    v19 = messageCopy;
+    bytes = [v19 bytes];
     v21 = "";
-    if (v20)
+    if (bytes)
     {
-      v21 = v20;
+      v21 = bytes;
     }
 
-    v22 = v10;
+    v22 = messageCopy;
     v23 = v14;
     v24 = v15;
     v25 = [v19 length];
@@ -648,19 +648,19 @@ LABEL_15:
     v26 = v25;
     v15 = v24;
     v14 = v23;
-    v10 = v22;
+    messageCopy = v22;
     xpc_dictionary_set_data(v18, "acMd", bytes, v26);
   }
 
   xpc_dictionary_set_value(v16, "dstD", v15);
-  v27 = [(AAController *)self _ensureXPCStarted];
+  _ensureXPCStarted = [(AAController *)self _ensureXPCStarted];
   dispatchQueue = self->_dispatchQueue;
   handler[0] = MEMORY[0x277D85DD0];
   handler[1] = 3221225472;
   handler[2] = __93__AAController__sendAccessoryEventMessage_eventType_destinationIdentifier_completionHandler___block_invoke;
   handler[3] = &unk_278CDD9D0;
-  v32 = v12;
-  xpc_connection_send_message_with_reply(v27, v16, dispatchQueue, handler);
+  v32 = handlerCopy;
+  xpc_connection_send_message_with_reply(_ensureXPCStarted, v16, dispatchQueue, handler);
 
 LABEL_16:
 }
@@ -672,11 +672,11 @@ void __93__AAController__sendAccessoryEventMessage_eventType_destinationIdentifi
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)_sendDeviceConfig:(id)a3 destinationIdentifier:(id)a4 completionHandler:(id)a5
+- (void)_sendDeviceConfig:(id)config destinationIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  configCopy = config;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   if (self->_invalidateCalled)
   {
     v11 = *MEMORY[0x277CCA590];
@@ -687,11 +687,11 @@ void __93__AAController__sendAccessoryEventMessage_eventType_destinationIdentifi
     }
 
 LABEL_11:
-    v10[2](v10, v12);
+    handlerCopy[2](handlerCopy, v12);
     goto LABEL_12;
   }
 
-  if (!v9)
+  if (!identifierCopy)
   {
     v17 = *MEMORY[0x277CCA590];
     v12 = NSErrorF();
@@ -704,21 +704,21 @@ LABEL_11:
   }
 
   v12 = objc_alloc_init(MEMORY[0x277CBE020]);
-  [v12 setIdentifier:v9];
+  [v12 setIdentifier:identifierCopy];
   [v12 dictionaryRepresentation];
   v13 = _CFXPCCreateXPCObjectFromCFObject();
   v14 = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_string(v14, "mTyp", "SnAC");
-  xpc_dictionary_set_value(v14, "acMd", v8);
+  xpc_dictionary_set_value(v14, "acMd", configCopy);
   xpc_dictionary_set_value(v14, "dstD", v13);
-  v15 = [(AAController *)self _ensureXPCStarted];
+  _ensureXPCStarted = [(AAController *)self _ensureXPCStarted];
   dispatchQueue = self->_dispatchQueue;
   handler[0] = MEMORY[0x277D85DD0];
   handler[1] = 3221225472;
   handler[2] = __74__AAController__sendDeviceConfig_destinationIdentifier_completionHandler___block_invoke;
   handler[3] = &unk_278CDD9D0;
-  v19 = v10;
-  xpc_connection_send_message_with_reply(v15, v14, dispatchQueue, handler);
+  v19 = handlerCopy;
+  xpc_connection_send_message_with_reply(_ensureXPCStarted, v14, dispatchQueue, handler);
 
 LABEL_12:
 }
@@ -730,20 +730,20 @@ void __74__AAController__sendDeviceConfig_destinationIdentifier_completionHandle
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)xpcReceivedMessage:(id)a3
+- (void)xpcReceivedMessage:(id)message
 {
-  v4 = a3;
-  v13 = v4;
+  messageCopy = message;
+  v13 = messageCopy;
   if (gLogCategory_AAController <= 10)
   {
-    if (gLogCategory_AAController != -1 || (v5 = _LogCategory_Initialize(), v4 = v13, v5))
+    if (gLogCategory_AAController != -1 || (v5 = _LogCategory_Initialize(), messageCopy = v13, v5))
     {
       [AAController xpcReceivedMessage:];
-      v4 = v13;
+      messageCopy = v13;
     }
   }
 
-  if (MEMORY[0x245CE9330](v4) == MEMORY[0x277D86468])
+  if (MEMORY[0x245CE9330](messageCopy) == MEMORY[0x277D86468])
   {
     [(AAController *)self _xpcReceivedMessage:v13];
   }
@@ -760,13 +760,13 @@ void __74__AAController__sendDeviceConfig_destinationIdentifier_completionHandle
       [AAController xpcReceivedMessage:?];
     }
 
-    v9 = self;
-    objc_sync_enter(v9);
-    xpcCnx = v9->_xpcCnx;
-    v9->_xpcCnx = 0;
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    xpcCnx = selfCopy->_xpcCnx;
+    selfCopy->_xpcCnx = 0;
 
-    objc_sync_exit(v9);
-    [(AAController *)v9 _invalidated];
+    objc_sync_exit(selfCopy);
+    [(AAController *)selfCopy _invalidated];
   }
 
   else
@@ -793,21 +793,21 @@ void __74__AAController__sendDeviceConfig_destinationIdentifier_completionHandle
   }
 }
 
-- (void)_xpcReceivedMessage:(id)a3
+- (void)_xpcReceivedMessage:(id)message
 {
-  v6 = a3;
-  string = xpc_dictionary_get_string(v6, "mTyp");
+  messageCopy = message;
+  string = xpc_dictionary_get_string(messageCopy, "mTyp");
   if (string)
   {
     v5 = string;
     if (!strcmp(string, "AcRc"))
     {
-      [(AAController *)self _xpcReceivedAccessoryEvent:v6];
+      [(AAController *)self _xpcReceivedAccessoryEvent:messageCopy];
     }
 
     else if (!strcmp(v5, "AcIC"))
     {
-      [(AAController *)self _xpcReceivedAudioAccessoryDeviceInfoChange:v6];
+      [(AAController *)self _xpcReceivedAudioAccessoryDeviceInfoChange:messageCopy];
     }
 
     else if (gLogCategory_AAController <= 10 && (gLogCategory_AAController != -1 || _LogCategory_Initialize()))
@@ -822,9 +822,9 @@ void __74__AAController__sendDeviceConfig_destinationIdentifier_completionHandle
   }
 }
 
-- (void)_xpcReceivedAccessoryEvent:(id)a3
+- (void)_xpcReceivedAccessoryEvent:(id)event
 {
-  v3 = a3;
+  eventCopy = event;
   v10 = 0;
   v11 = &v10;
   v12 = 0x3032000000;
@@ -837,7 +837,7 @@ void __74__AAController__sendDeviceConfig_destinationIdentifier_completionHandle
   v9[3] = &unk_278CDD9F8;
   v9[4] = &v10;
   v4 = MEMORY[0x245CE9060](v9);
-  if (MEMORY[0x245CE9330](v3) == MEMORY[0x277D86468])
+  if (MEMORY[0x245CE9330](eventCopy) == MEMORY[0x277D86468])
   {
     objc_opt_class();
     CUXPCDecodeObject();
@@ -879,9 +879,9 @@ uint64_t __43__AAController__xpcReceivedAccessoryEvent___block_invoke(uint64_t r
   return result;
 }
 
-- (void)_xpcReceivedAudioAccessoryDeviceInfoChange:(id)a3
+- (void)_xpcReceivedAudioAccessoryDeviceInfoChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -894,11 +894,11 @@ uint64_t __43__AAController__xpcReceivedAccessoryEvent___block_invoke(uint64_t r
   v11[3] = &unk_278CDD9F8;
   v11[4] = &v12;
   v5 = MEMORY[0x245CE9060](v11);
-  v6 = MEMORY[0x245CE9330](v4);
+  v6 = MEMORY[0x245CE9330](changeCopy);
   v7 = MEMORY[0x277D86468];
   if (v6 == MEMORY[0x277D86468])
   {
-    v8 = xpc_dictionary_get_value(v4, "aaID");
+    v8 = xpc_dictionary_get_value(changeCopy, "aaID");
     if (MEMORY[0x245CE9330]() == v7)
     {
       v9 = MEMORY[0x245CE9060](self->_deviceInfoChangeHandler);
@@ -947,10 +947,10 @@ uint64_t __59__AAController__xpcReceivedAudioAccessoryDeviceInfoChange___block_i
   return result;
 }
 
-- (void)_batteryInfoMessageReceived:(id)a3 fromDevice:(id)a4
+- (void)_batteryInfoMessageReceived:(id)received fromDevice:(id)device
 {
-  v6 = a3;
-  v7 = a4;
+  receivedCopy = received;
+  deviceCopy = device;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
@@ -972,10 +972,10 @@ uint64_t __59__AAController__xpcReceivedAudioAccessoryDeviceInfoChange___block_i
   v9 = MEMORY[0x245CE9060](self->_batteryInfoMessageHandler);
   if (v9)
   {
-    v10 = [v7 identifier];
-    if (v10)
+    identifier = [deviceCopy identifier];
+    if (identifier)
     {
-      (v9)[2](v9, v10, v6);
+      (v9)[2](v9, identifier, receivedCopy);
     }
 
     else
@@ -1012,10 +1012,10 @@ uint64_t __55__AAController__batteryInfoMessageReceived_fromDevice___block_invok
   return result;
 }
 
-- (void)_conversationDetectMessageReceived:(id)a3 fromDevice:(id)a4
+- (void)_conversationDetectMessageReceived:(id)received fromDevice:(id)device
 {
-  v6 = a3;
-  v7 = a4;
+  receivedCopy = received;
+  deviceCopy = device;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
@@ -1037,10 +1037,10 @@ uint64_t __55__AAController__batteryInfoMessageReceived_fromDevice___block_invok
   v9 = MEMORY[0x245CE9060](self->_conversationDetectMessageHandler);
   if (v9)
   {
-    v10 = [v7 identifier];
-    if (v10)
+    identifier = [deviceCopy identifier];
+    if (identifier)
     {
-      (v9)[2](v9, v10, v6);
+      (v9)[2](v9, identifier, receivedCopy);
     }
 
     else
@@ -1077,10 +1077,10 @@ uint64_t __62__AAController__conversationDetectMessageReceived_fromDevice___bloc
   return result;
 }
 
-- (void)_accessoryUsageSummaryMessageReceived:(id)a3 fromDevice:(id)a4
+- (void)_accessoryUsageSummaryMessageReceived:(id)received fromDevice:(id)device
 {
-  v6 = a3;
-  v7 = a4;
+  receivedCopy = received;
+  deviceCopy = device;
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
@@ -1102,8 +1102,8 @@ uint64_t __62__AAController__conversationDetectMessageReceived_fromDevice___bloc
   v9 = MEMORY[0x245CE9060](self->_accessoryUsageSummaryMessageHandler);
   if (v9)
   {
-    v10 = [v7 identifier];
-    if (!v10)
+    identifier = [deviceCopy identifier];
+    if (!identifier)
     {
       v14 = CUPrintNSError();
       v20 = NSPrintF_safe();
@@ -1112,7 +1112,7 @@ uint64_t __62__AAController__conversationDetectMessageReceived_fromDevice___bloc
       goto LABEL_19;
     }
 
-    v11 = [v7 btAddressData];
+    btAddressData = [deviceCopy btAddressData];
     v12 = CUPrintNSDataAddress();
 
     v13 = v12;
@@ -1128,7 +1128,7 @@ uint64_t __62__AAController__conversationDetectMessageReceived_fromDevice___bloc
 
         if (v16)
         {
-          (v9)[2](v9, v14, v6);
+          (v9)[2](v9, v14, receivedCopy);
 LABEL_13:
 
           goto LABEL_14;
@@ -1175,10 +1175,10 @@ uint64_t __65__AAController__accessoryUsageSummaryMessageReceived_fromDevice___b
   return result;
 }
 
-- (void)_multimodalContextMessageReceived:(id)a3 fromDevice:(id)a4
+- (void)_multimodalContextMessageReceived:(id)received fromDevice:(id)device
 {
-  v6 = a3;
-  v7 = a4;
+  receivedCopy = received;
+  deviceCopy = device;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
@@ -1200,10 +1200,10 @@ uint64_t __65__AAController__accessoryUsageSummaryMessageReceived_fromDevice___b
   v9 = MEMORY[0x245CE9060](self->_multimodalContextMessageHandler);
   if (v9)
   {
-    v10 = [v7 identifier];
-    if (v10)
+    identifier = [deviceCopy identifier];
+    if (identifier)
     {
-      (v9)[2](v9, v10, v6);
+      (v9)[2](v9, identifier, receivedCopy);
     }
 
     else
@@ -1240,10 +1240,10 @@ uint64_t __61__AAController__multimodalContextMessageReceived_fromDevice___block
   return result;
 }
 
-- (void)_personalTranslationMessageReceived:(id)a3 fromDevice:(id)a4
+- (void)_personalTranslationMessageReceived:(id)received fromDevice:(id)device
 {
-  v6 = a3;
-  v7 = a4;
+  receivedCopy = received;
+  deviceCopy = device;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -1258,7 +1258,7 @@ uint64_t __61__AAController__multimodalContextMessageReceived_fromDevice___block
   v8 = MEMORY[0x245CE9060](v16);
   if (gLogCategory_AAController <= 10 && (gLogCategory_AAController != -1 || _LogCategory_Initialize()))
   {
-    [v6 length];
+    [receivedCopy length];
     v15 = CUPrintNSDataHex();
     LogPrintF();
   }
@@ -1266,12 +1266,12 @@ uint64_t __61__AAController__multimodalContextMessageReceived_fromDevice___block
   v9 = MEMORY[0x245CE9060](self->_personalTranslationMessageHandler);
   if (v9)
   {
-    v10 = [v7 btAddressData];
+    btAddressData = [deviceCopy btAddressData];
     v11 = CUPrintNSDataAddress();
 
     if (v11)
     {
-      (v9)[2](v9, v11, v6);
+      (v9)[2](v9, v11, receivedCopy);
     }
 
     else
@@ -1308,10 +1308,10 @@ uint64_t __63__AAController__personalTranslationMessageReceived_fromDevice___blo
   return result;
 }
 
-- (void)_pmeConfigDataReceived:(id)a3 fromDevice:(id)a4
+- (void)_pmeConfigDataReceived:(id)received fromDevice:(id)device
 {
-  v6 = a3;
-  v7 = a4;
+  receivedCopy = received;
+  deviceCopy = device;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
@@ -1333,10 +1333,10 @@ uint64_t __63__AAController__personalTranslationMessageReceived_fromDevice___blo
   v9 = MEMORY[0x245CE9060](self->_pmeConfigMessageHandler);
   if (v9)
   {
-    v10 = [v7 identifier];
-    if (v10)
+    identifier = [deviceCopy identifier];
+    if (identifier)
     {
-      (v9)[2](v9, v10, v6);
+      (v9)[2](v9, identifier, receivedCopy);
     }
 
     else
@@ -1373,10 +1373,10 @@ uint64_t __50__AAController__pmeConfigDataReceived_fromDevice___block_invoke(uin
   return result;
 }
 
-- (void)_rawGestureMessageReceived:(id)a3 fromDevice:(id)a4
+- (void)_rawGestureMessageReceived:(id)received fromDevice:(id)device
 {
-  v6 = a3;
-  v7 = a4;
+  receivedCopy = received;
+  deviceCopy = device;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
@@ -1391,7 +1391,7 @@ uint64_t __50__AAController__pmeConfigDataReceived_fromDevice___block_invoke(uin
   v8 = MEMORY[0x245CE9060](v15);
   if (gLogCategory_AAController <= 10 && (gLogCategory_AAController != -1 || _LogCategory_Initialize()))
   {
-    [v6 length];
+    [receivedCopy length];
     v14 = CUPrintNSDataHex();
     LogPrintF();
   }
@@ -1399,10 +1399,10 @@ uint64_t __50__AAController__pmeConfigDataReceived_fromDevice___block_invoke(uin
   v9 = MEMORY[0x245CE9060](self->_rawGestureMessageHandler);
   if (v9)
   {
-    v10 = [v7 identifier];
-    if (v10)
+    identifier = [deviceCopy identifier];
+    if (identifier)
     {
-      (v9)[2](v9, v10, v6);
+      (v9)[2](v9, identifier, receivedCopy);
     }
 
     else
@@ -1439,10 +1439,10 @@ uint64_t __54__AAController__rawGestureMessageReceived_fromDevice___block_invoke
   return result;
 }
 
-- (void)_sleepDetectionMessageReceived:(id)a3 fromDevice:(id)a4
+- (void)_sleepDetectionMessageReceived:(id)received fromDevice:(id)device
 {
-  v6 = a3;
-  v7 = a4;
+  receivedCopy = received;
+  deviceCopy = device;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
@@ -1464,10 +1464,10 @@ uint64_t __54__AAController__rawGestureMessageReceived_fromDevice___block_invoke
   v9 = MEMORY[0x245CE9060](self->_sleepDetectionMessageHandler);
   if (v9)
   {
-    v10 = [v7 identifier];
-    if (v10)
+    identifier = [deviceCopy identifier];
+    if (identifier)
     {
-      (v9)[2](v9, v10, v6);
+      (v9)[2](v9, identifier, receivedCopy);
     }
 
     else

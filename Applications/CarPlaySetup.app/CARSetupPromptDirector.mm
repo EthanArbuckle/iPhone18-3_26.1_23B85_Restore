@@ -1,11 +1,11 @@
 @interface CARSetupPromptDirector
-- (CARSetupPromptDirector)initWithPresenter:(id)a3;
+- (CARSetupPromptDirector)initWithPresenter:(id)presenter;
 - (CARSetupPromptPresenting)presenter;
 - (id)_remoteAssetProgress;
 - (void)_presenterIsReady;
-- (void)_servicePerform:(id)a3;
+- (void)_servicePerform:(id)perform;
 - (void)_setupConnection;
-- (void)_synchronous_servicePerform:(id)a3;
+- (void)_synchronous_servicePerform:(id)perform;
 - (void)dealloc;
 - (void)invalidate;
 - (void)presenterDidDismiss;
@@ -13,16 +13,16 @@
 
 @implementation CARSetupPromptDirector
 
-- (CARSetupPromptDirector)initWithPresenter:(id)a3
+- (CARSetupPromptDirector)initWithPresenter:(id)presenter
 {
-  v4 = a3;
+  presenterCopy = presenter;
   v8.receiver = self;
   v8.super_class = CARSetupPromptDirector;
   v5 = [(CARSetupPromptDirector *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_presenter, v4);
+    objc_storeWeak(&v5->_presenter, presenterCopy);
     [(CARSetupPromptDirector *)v6 _setupConnection];
     [(CARSetupPromptDirector *)v6 _presenterIsReady];
   }
@@ -40,8 +40,8 @@
 
 - (void)invalidate
 {
-  v3 = [(CARSetupPromptDirector *)self connection];
-  [v3 invalidate];
+  connection = [(CARSetupPromptDirector *)self connection];
+  [connection invalidate];
 
   [(CARSetupPromptDirector *)self setConnection:0];
 }
@@ -136,22 +136,22 @@
   objc_destroyWeak(&location);
 }
 
-- (void)_servicePerform:(id)a3
+- (void)_servicePerform:(id)perform
 {
-  v4 = a3;
-  v5 = [(CARSetupPromptDirector *)self connection];
-  v6 = [v5 remoteObjectProxyWithErrorHandler:&stru_1000106B8];
+  performCopy = perform;
+  connection = [(CARSetupPromptDirector *)self connection];
+  v6 = [connection remoteObjectProxyWithErrorHandler:&stru_1000106B8];
 
-  v4[2](v4, v6);
+  performCopy[2](performCopy, v6);
 }
 
-- (void)_synchronous_servicePerform:(id)a3
+- (void)_synchronous_servicePerform:(id)perform
 {
-  v4 = a3;
-  v5 = [(CARSetupPromptDirector *)self connection];
-  v6 = [v5 synchronousRemoteObjectProxyWithErrorHandler:&stru_1000106D8];
+  performCopy = perform;
+  connection = [(CARSetupPromptDirector *)self connection];
+  v6 = [connection synchronousRemoteObjectProxyWithErrorHandler:&stru_1000106D8];
 
-  v4[2](v4, v6);
+  performCopy[2](performCopy, v6);
 }
 
 - (CARSetupPromptPresenting)presenter

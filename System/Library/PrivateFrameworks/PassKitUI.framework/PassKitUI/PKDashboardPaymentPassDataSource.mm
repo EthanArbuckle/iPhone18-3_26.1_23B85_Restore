@@ -1,59 +1,59 @@
 @interface PKDashboardPaymentPassDataSource
 - ($65C3FA8A572F9D8A414E710B16373297)_peerPaymentDashboardCondition;
-- ($F99D9A4FB75BC57F3386B8DC8EE08D7A)_dataSourceIndicesForIndexPath:(SEL)a3;
-- ($F99D9A4FB75BC57F3386B8DC8EE08D7A)_dataSourceIndicesForIndexSection:(SEL)a3;
-- (BOOL)_accountItemTypeEnabled:(unint64_t)a3;
+- ($F99D9A4FB75BC57F3386B8DC8EE08D7A)_dataSourceIndicesForIndexPath:(SEL)path;
+- ($F99D9A4FB75BC57F3386B8DC8EE08D7A)_dataSourceIndicesForIndexSection:(SEL)section;
+- (BOOL)_accountItemTypeEnabled:(unint64_t)enabled;
 - (BOOL)_balanceSectionHasFooter;
 - (BOOL)_canDisplayBalance;
 - (BOOL)_canShowTransactions;
-- (BOOL)_creditAccountItemTypeEnabled:(unint64_t)a3;
+- (BOOL)_creditAccountItemTypeEnabled:(unint64_t)enabled;
 - (BOOL)_hasPassPersonalized;
 - (BOOL)_hasPassWithSupportedCardType;
 - (BOOL)_isBankConnectPassReady;
-- (BOOL)_isDisclosureSectionChangedWithPreviousAccount:(id)a3 previousPass:(id)a4;
-- (BOOL)_isExistingRecurringPeerPayment:(id)a3;
+- (BOOL)_isDisclosureSectionChangedWithPreviousAccount:(id)account previousPass:(id)pass;
+- (BOOL)_isExistingRecurringPeerPayment:(id)payment;
 - (BOOL)_isShowingSetUpMessage;
 - (BOOL)_passAvailableForAMPEnrollment;
-- (BOOL)_shouldPaymentMessageAppear:(id)a3;
-- (BOOL)_shouldShowGroupRequestTrackingForPendingRequest:(id)a3;
+- (BOOL)_shouldPaymentMessageAppear:(id)appear;
+- (BOOL)_shouldShowGroupRequestTrackingForPendingRequest:(id)request;
 - (BOOL)_topUpEnabled;
-- (BOOL)canDeleteItem:(id)a3;
+- (BOOL)canDeleteItem:(id)item;
 - (BOOL)canDisplayPeerPaymentBalanceModule;
 - (BOOL)hasAssociatedPaymentRewardsBalance;
 - (BOOL)hasBankConnectAccountBalance;
 - (BOOL)isBankConnectLinked;
 - (BOOL)isBankConnectSupported;
 - (BOOL)isEligibleForPersonalizedInsights;
-- (BOOL)isGroupInTheCurrentYear:(id)a3;
+- (BOOL)isGroupInTheCurrentYear:(id)year;
 - (BOOL)performPrecursorPassAction;
 - (BOOL)shouldShowRewardsBalanceSection;
 - (BOOL)supportsBankConnectTransactions;
 - (PKDashboardDataSourceDelegate)delegate;
 - (PKDashboardPassGroupViewController)viewController;
-- (PKDashboardPaymentPassDataSource)initWithGroupView:(id)a3 context:(id)a4;
+- (PKDashboardPaymentPassDataSource)initWithGroupView:(id)view context:(id)context;
 - (PKDashboardPaymentPassDataSourceDelegate)customDelegate;
 - (id)_cardSharingEducationMessages;
 - (id)_contactResolver;
-- (id)_createConnectedMessageWithInstitution:(id)a3;
-- (id)_createMismatchedAccountMessageWithInstitution:(id)a3 withPreviousConsentUUID:(id)a4;
-- (id)_createReconsentMessageWithInstitution:(id)a3 withPreviousConsentUUID:(id)a4;
-- (id)_createSetupMessageWithInstitution:(id)a3;
-- (id)_createTermsAndConditionsUpdateMessageWithTermsAndConditions:(id)a3;
-- (id)_deletablePaymentTransactionForItem:(id)a3;
-- (id)_downloadMessageIconURLAndReloadIfNecessary:(id)a3;
+- (id)_createConnectedMessageWithInstitution:(id)institution;
+- (id)_createMismatchedAccountMessageWithInstitution:(id)institution withPreviousConsentUUID:(id)d;
+- (id)_createReconsentMessageWithInstitution:(id)institution withPreviousConsentUUID:(id)d;
+- (id)_createSetupMessageWithInstitution:(id)institution;
+- (id)_createTermsAndConditionsUpdateMessageWithTermsAndConditions:(id)conditions;
+- (id)_deletablePaymentTransactionForItem:(id)item;
+- (id)_downloadMessageIconURLAndReloadIfNecessary:(id)necessary;
 - (id)_enabledBankConnectAccountItemTypes;
 - (id)_fetchOpenSavingsAccount;
-- (id)_formattedDateStringForDate:(id)a3;
-- (id)_lastPhysicalCardMessageDateKeyForPhysicalCardIdentifier:(id)a3;
-- (id)_messageCachedIconForPass:(id)a3 useNotificationIcon:(BOOL)a4;
-- (id)_messageCachedImageWithIdentifier:(id)a3 imageProvider:(id)a4;
-- (id)_messageCachedRawImageForPass:(id)a3;
+- (id)_formattedDateStringForDate:(id)date;
+- (id)_lastPhysicalCardMessageDateKeyForPhysicalCardIdentifier:(id)identifier;
+- (id)_messageCachedIconForPass:(id)pass useNotificationIcon:(BOOL)icon;
+- (id)_messageCachedImageWithIdentifier:(id)identifier imageProvider:(id)provider;
+- (id)_messageCachedRawImageForPass:(id)pass;
 - (id)_messageForAMPEnrollment;
 - (id)_messageForAccountPendingFamilyMembers;
 - (id)_messageForAutoReload;
 - (id)_messageForBroadwayDiscoverability;
 - (id)_messageForDeviceAssessmentEducation;
-- (id)_messageForErrorCode:(unint64_t)a3;
+- (id)_messageForErrorCode:(unint64_t)code;
 - (id)_messageForExpressEducation;
 - (id)_messageForFirstMonthCoOwners;
 - (id)_messageForHomeAccessRestricted;
@@ -63,13 +63,13 @@
 - (id)_messageForPeerPaymentAssociatedAccountPending;
 - (id)_messageForPeerPaymentAssociatedAccountStateChangedForSecurityReasons;
 - (id)_messageForPeerPaymentLockedAccountByAssociatedAccount;
-- (id)_messageForPersonWithAmount:(id)a3 withHeuristicIds:(id)a4 andCurrencyCode:(id)a5;
+- (id)_messageForPersonWithAmount:(id)amount withHeuristicIds:(id)ids andCurrencyCode:(id)code;
 - (id)_messageForRangingSuspendedPass;
 - (id)_messageForSessionActive;
-- (id)_messageForSetUpVirtualCardWithFeatureIdentifier:(unint64_t)a3;
-- (id)_messageForVirtualCardEnabledWithFeatureIdentifier:(unint64_t)a3;
-- (id)_messageIdentifierForRecurringPayment:(id)a3;
-- (id)_messageImageWithName:(id)a3 extension:(id)a4;
+- (id)_messageForSetUpVirtualCardWithFeatureIdentifier:(unint64_t)identifier;
+- (id)_messageForVirtualCardEnabledWithFeatureIdentifier:(unint64_t)identifier;
+- (id)_messageIdentifierForRecurringPayment:(id)payment;
+- (id)_messageImageWithName:(id)name extension:(id)extension;
 - (id)_messagesForAccountUserInvitations;
 - (id)_messagesForAccountUserSetupCashForFamily;
 - (id)_messagesForInstallmentPlans;
@@ -78,190 +78,190 @@
 - (id)_messagesForPhysicalCard;
 - (id)_messagesForPhysicalCardExpiration;
 - (id)_messagesToOrderPhysicalCardForUnderageParticipants;
-- (id)_mismatchedAccountImageWithInstitutionImage:(id)a3 institutionIdentifier:(id)a4;
+- (id)_mismatchedAccountImageWithInstitutionImage:(id)image institutionIdentifier:(id)identifier;
 - (id)_peerPaymentAccountStatusMessage;
-- (id)_physicalCardMessageIdentifierFromIdentifier:(id)a3 physicalCard:(id)a4;
-- (id)_recipientNameForAddress:(id)a3;
-- (id)_replaceDashboardMessage:(id)a3 placeholder:(id)a4 replacement:(id)a5;
-- (id)_replaceDashboardMessagePlaceholders:(id)a3;
+- (id)_physicalCardMessageIdentifierFromIdentifier:(id)identifier physicalCard:(id)card;
+- (id)_recipientNameForAddress:(id)address;
+- (id)_replaceDashboardMessage:(id)message placeholder:(id)placeholder replacement:(id)replacement;
+- (id)_replaceDashboardMessagePlaceholders:(id)placeholders;
 - (id)_userLegalAgreementDashboardMessage;
-- (id)accountItemAtIndex:(unint64_t)a3;
+- (id)accountItemAtIndex:(unint64_t)index;
 - (id)appleBalanceAccountItem;
 - (id)dashboardRewardsBalanceItem;
-- (id)deviceTapAmountEntryViewControllerWithInitialAmount:(id)a3 initialMemo:(id)a4 dismissAction:(id)a5;
+- (id)deviceTapAmountEntryViewControllerWithInitialAmount:(id)amount initialMemo:(id)memo dismissAction:(id)action;
 - (id)externalActionContent;
-- (id)footerTextItemForSection:(unint64_t)a3;
+- (id)footerTextItemForSection:(unint64_t)section;
 - (id)getPassProductType;
-- (id)groupItemForTransactionGroup:(id)a3;
-- (id)itemAtIndexPath:(id)a3;
+- (id)groupItemForTransactionGroup:(id)group;
+- (id)itemAtIndexPath:(id)path;
 - (id)messageForSavingsAccountFDIC;
 - (id)messagesForSavingsAccountStatus;
-- (id)paymentTransactionItemForPayment:(id)a3;
-- (id)paymentTransactionItemForPendingRequest:(id)a3;
-- (id)paymentTransactionItemForTransaction:(id)a3;
+- (id)paymentTransactionItemForPayment:(id)payment;
+- (id)paymentTransactionItemForPendingRequest:(id)request;
+- (id)paymentTransactionItemForTransaction:(id)transaction;
 - (id)peerPaymentBalanceItem;
 - (id)recurringPaymentDashboardMessages;
 - (id)revokingAccessMessage;
-- (id)titleForSection:(unint64_t)a3;
-- (id)upcomingRecurringPeerPaymentItemAtIndex:(unint64_t)a3;
+- (id)titleForSection:(unint64_t)section;
+- (id)upcomingRecurringPeerPaymentItemAtIndex:(unint64_t)index;
 - (int64_t)_numberOfBalanceDashboardItems;
 - (int64_t)numberOfAppleBalanceBalanceDashboardItems;
-- (unint64_t)_creditAccountItemTypeForItemIndex:(unint64_t)a3;
+- (unint64_t)_creditAccountItemTypeForItemIndex:(unint64_t)index;
 - (unint64_t)_passFeature;
-- (unint64_t)bankConnectAccountItemForItemIndex:(unint64_t)a3;
-- (unint64_t)firstSectionIndexForSectionIdentifier:(unint64_t)a3;
+- (unint64_t)bankConnectAccountItemForItemIndex:(unint64_t)index;
+- (unint64_t)firstSectionIndexForSectionIdentifier:(unint64_t)identifier;
 - (unint64_t)numberOfAccounts;
 - (unint64_t)numberOfBankConnectDashboardItems;
-- (unint64_t)numberOfItemsInSection:(unint64_t)a3;
+- (unint64_t)numberOfItemsInSection:(unint64_t)section;
 - (unint64_t)numberOfSections;
 - (unint64_t)numberOfUpcomingRecurringPeerPayments;
-- (void)_addToAMPButtonTappedForPass:(id)a3;
-- (void)_applyMovesFromDiff:(id)a3;
-- (void)_applyReloadsFromDiff:(id)a3;
-- (void)_authorizeInstitution:(id)a3;
+- (void)_addToAMPButtonTappedForPass:(id)pass;
+- (void)_applyMovesFromDiff:(id)diff;
+- (void)_applyReloadsFromDiff:(id)diff;
+- (void)_authorizeInstitution:(id)institution;
 - (void)_beginReportingIfNecessary;
-- (void)_calculateDiffAndUpdateWithTransactionGroups:(id)a3;
-- (void)_calculateDiffAndUpdateWithTransactions:(id)a3;
+- (void)_calculateDiffAndUpdateWithTransactionGroups:(id)groups;
+- (void)_calculateDiffAndUpdateWithTransactions:(id)transactions;
 - (void)_cancelExpirationTimerIfNeeded;
 - (void)_disagreeTerms;
-- (void)_dismissMessageForRecurringPayment:(id)a3;
-- (void)_dismissRecurringPeerPaymentSuggestionsWithIdentifiers:(id)a3 dismissalType:(unint64_t)a4;
+- (void)_dismissMessageForRecurringPayment:(id)payment;
+- (void)_dismissRecurringPeerPaymentSuggestionsWithIdentifiers:(id)identifiers dismissalType:(unint64_t)type;
 - (void)_fetchAMPEnrollmentEligibility;
-- (void)_fetchAMPEnrollmentIconIfNeeded:(id)a3;
+- (void)_fetchAMPEnrollmentIconIfNeeded:(id)needed;
 - (void)_fetchBankConnectTransactions;
-- (void)_fetchMerchantForAuxiliarySections:(id)a3 pass:(id)a4 completion:(id)a5;
+- (void)_fetchMerchantForAuxiliarySections:(id)sections pass:(id)pass completion:(id)completion;
 - (void)_hideBankConnectMessageAndReloadIfNeeded;
 - (void)_hideTransactionGroups;
 - (void)_loadMessages;
-- (void)_localeDidChangeNotification:(id)a3;
+- (void)_localeDidChangeNotification:(id)notification;
 - (void)_lostModeButtonTapped;
-- (void)_messageForEnableNotificationsWithCompletion:(id)a3;
-- (void)_messageForInterestChargeWithCompletion:(id)a3;
-- (void)_messageForPassInconsistencyWithCompletion:(id)a3;
-- (void)_messageForPaymentFailedWithCompletion:(id)a3;
-- (void)_messageForPeerPaymentIdentityVerificationForRewardsWithCompletion:(id)a3;
-- (void)_messageForPeerPaymentRewardsRedemptionWithCompletion:(id)a3;
-- (void)_messageForPrecursorPassUpgradeWithController:(id)a3 completion:(id)a4;
-- (void)_messageForUnusableIdentityPassWithCompletion:(id)a3;
-- (void)_messageFromPaymentServiceSuppressingPassStateChanges:(BOOL)a3 completion:(id)a4;
-- (void)_messageIfUnderlyingCredentialIsLockedOutWithCompletion:(id)a3;
-- (void)_messagesForAccountStatusWithCompletion:(id)a3;
-- (void)_monthlyTransactionGroupsWithCompletion:(id)a3;
-- (void)_peerPaymentAccountChanged:(id)a3;
-- (void)_peerPaymentResolutionTappedWithResolution:(unint64_t)a3;
-- (void)_pendingRequestActionButtonPressedWithRequest:(id)a3;
+- (void)_messageForEnableNotificationsWithCompletion:(id)completion;
+- (void)_messageForInterestChargeWithCompletion:(id)completion;
+- (void)_messageForPassInconsistencyWithCompletion:(id)completion;
+- (void)_messageForPaymentFailedWithCompletion:(id)completion;
+- (void)_messageForPeerPaymentIdentityVerificationForRewardsWithCompletion:(id)completion;
+- (void)_messageForPeerPaymentRewardsRedemptionWithCompletion:(id)completion;
+- (void)_messageForPrecursorPassUpgradeWithController:(id)controller completion:(id)completion;
+- (void)_messageForUnusableIdentityPassWithCompletion:(id)completion;
+- (void)_messageFromPaymentServiceSuppressingPassStateChanges:(BOOL)changes completion:(id)completion;
+- (void)_messageIfUnderlyingCredentialIsLockedOutWithCompletion:(id)completion;
+- (void)_messagesForAccountStatusWithCompletion:(id)completion;
+- (void)_monthlyTransactionGroupsWithCompletion:(id)completion;
+- (void)_peerPaymentAccountChanged:(id)changed;
+- (void)_peerPaymentResolutionTappedWithResolution:(unint64_t)resolution;
+- (void)_pendingRequestActionButtonPressedWithRequest:(id)request;
 - (void)_performReloadTransitSection;
 - (void)_presentAboutClosedAccounts;
-- (void)_presentAccountResolution:(unint64_t)a3 forBusinessChatContext:(id)a4 completion:(id)a5;
-- (void)_presentAccountUserDetails:(id)a3;
-- (void)_presentAccountUserInvitation:(id)a3;
-- (void)_presentActivatePhysicalCard:(id)a3 accountUser:(id)a4;
-- (void)_presentApplCashFamilySetupForFamilyMember:(id)a3;
+- (void)_presentAccountResolution:(unint64_t)resolution forBusinessChatContext:(id)context completion:(id)completion;
+- (void)_presentAccountUserDetails:(id)details;
+- (void)_presentAccountUserInvitation:(id)invitation;
+- (void)_presentActivatePhysicalCard:(id)card accountUser:(id)user;
+- (void)_presentApplCashFamilySetupForFamilyMember:(id)member;
 - (void)_presentBalanceDetails;
 - (void)_presentCardNumbers;
 - (void)_presentCreateAccountUserInvitation;
-- (void)_presentDetailsForRecurringPayment:(id)a3;
-- (void)_presentInboxMessage:(id)a3;
-- (void)_presentLegalAgreement:(id)a3 userConsented:(id)a4;
-- (void)_presentPassDetailsWithAction:(unint64_t)a3;
-- (void)_presentPassWithPassUniqueIdentifier:(id)a3;
-- (void)_presentPaymentOfferInstallmentSelectionForRecord:(id)a3 paymentOffersController:(id)a4 installmentCriteria:(id)a5 completion:(id)a6;
-- (void)_presentPaymentPassDetailsWithCompletion:(id)a3;
-- (void)_presentPrecursorActionFlowWithController:(id)a3;
+- (void)_presentDetailsForRecurringPayment:(id)payment;
+- (void)_presentInboxMessage:(id)message;
+- (void)_presentLegalAgreement:(id)agreement userConsented:(id)consented;
+- (void)_presentPassDetailsWithAction:(unint64_t)action;
+- (void)_presentPassWithPassUniqueIdentifier:(id)identifier;
+- (void)_presentPaymentOfferInstallmentSelectionForRecord:(id)record paymentOffersController:(id)controller installmentCriteria:(id)criteria completion:(id)completion;
+- (void)_presentPaymentPassDetailsWithCompletion:(id)completion;
+- (void)_presentPrecursorActionFlowWithController:(id)controller;
 - (void)_presentRestrictedGuestAccessSchedule;
-- (void)_reconsentInstitution:(id)a3 withPreviousConsentUUID:(id)a4;
-- (void)_recurringPeerPaymentSuggestionsWithCompletion:(id)a3;
-- (void)_refetchBalanceAndTransactionsForInstitution:(id)a3;
+- (void)_reconsentInstitution:(id)institution withPreviousConsentUUID:(id)d;
+- (void)_recurringPeerPaymentSuggestionsWithCompletion:(id)completion;
+- (void)_refetchBalanceAndTransactionsForInstitution:(id)institution;
 - (void)_refreshTransactionsSection;
 - (void)_reloadBalance;
 - (void)_reloadBankConnectConnectedMessageIfNeeded;
-- (void)_reloadMessagesWithReason:(id)a3;
-- (void)_reloadTiles:(id)a3 passUniqueIdentifier:(id)a4;
+- (void)_reloadMessagesWithReason:(id)reason;
+- (void)_reloadTiles:(id)tiles passUniqueIdentifier:(id)identifier;
 - (void)_reloadTransactionGrouping;
-- (void)_reportDashboardMessageStateChangeForMessageIdentifier:(id)a3;
-- (void)_scheduleExpirationTimerForCommutePlans:(id)a3;
-- (void)_setBankConnectMessage:(id)a3;
-- (void)_setPassStateProvider:(id)a3;
-- (void)_setupSpendingSummaryDataProviderIfNeededForInstitution:(id)a3 account:(id)a4 consentStatus:(unint64_t)a5;
-- (void)_showBankConnectMessage:(id)a3 forInstitution:(id)a4 shouldUseInstitutionLogo:(BOOL)a5 forceUpdate:(BOOL)a6;
+- (void)_reportDashboardMessageStateChangeForMessageIdentifier:(id)identifier;
+- (void)_scheduleExpirationTimerForCommutePlans:(id)plans;
+- (void)_setBankConnectMessage:(id)message;
+- (void)_setPassStateProvider:(id)provider;
+- (void)_setupSpendingSummaryDataProviderIfNeededForInstitution:(id)institution account:(id)account consentStatus:(unint64_t)status;
+- (void)_showBankConnectMessage:(id)message forInstitution:(id)institution shouldUseInstitutionLogo:(BOOL)logo forceUpdate:(BOOL)update;
 - (void)_showBankConnectMessageIfNeeded;
 - (void)_showTermsAndConditionsError;
 - (void)_startRefetchingData;
 - (void)_startTransactionsLoadingMessageTimer;
-- (void)_udpdateInternalStateForConfirmationRecord:(id)a3 paymentHash:(id)a4;
+- (void)_udpdateInternalStateForConfirmationRecord:(id)record paymentHash:(id)hash;
 - (void)_updateAccountEnhancedMerchants;
 - (void)_updateAccountPromotions;
 - (void)_updateAccountRewardsDataIfNecessary;
-- (void)_updateAccounts:(id)a3;
-- (void)_updateBalanceAndPreventReload:(BOOL)a3;
-- (void)_updateCanShowPeerPaymentRecurringPayments:(BOOL)a3;
+- (void)_updateAccounts:(id)accounts;
+- (void)_updateBalanceAndPreventReload:(BOOL)reload;
+- (void)_updateCanShowPeerPaymentRecurringPayments:(BOOL)payments;
 - (void)_updateRewardsBalanceItem;
 - (void)_updateSearchAvailability;
 - (void)_updateTransactionSourceCollection;
 - (void)_updateTransactionsTimer;
-- (void)_updateTransitBalanceProperties:(id)a3 dynamicBalances:(id)a4 dynamicPlans:(id)a5;
-- (void)_updateWithFamilyCollection:(id)a3;
-- (void)_updateWithHomeKitHasHomeAccessSchedule:(BOOL)a3 homeIdentifier:(id)a4 isHomeAccessRestricted:(BOOL)a5;
-- (void)_updateWithTiles:(id)a3;
-- (void)_updateWithTransactionGroups:(id)a3;
+- (void)_updateTransitBalanceProperties:(id)properties dynamicBalances:(id)balances dynamicPlans:(id)plans;
+- (void)_updateWithFamilyCollection:(id)collection;
+- (void)_updateWithHomeKitHasHomeAccessSchedule:(BOOL)schedule homeIdentifier:(id)identifier isHomeAccessRestricted:(BOOL)restricted;
+- (void)_updateWithTiles:(id)tiles;
+- (void)_updateWithTransactionGroups:(id)groups;
 - (void)_verificationButtonTapped;
-- (void)_yearlyTransactionGroupsWithCompletion:(id)a3;
-- (void)accountAdded:(id)a3;
-- (void)accountChanged:(id)a3;
-- (void)accountRemoved:(id)a3;
-- (void)accountServiceAccountResolutionController:(id)a3 requestsPresentViewController:(id)a4 animated:(BOOL)a5;
-- (void)accountUsersChanged:(id)a3 forAccountIdentifier:(id)a4;
-- (void)autoReloadSetupController:(id)a3 requestsDismissViewController:(id)a4;
-- (void)autoReloadSetupController:(id)a3 requestsPresentViewController:(id)a4;
-- (void)bankConnectAccountDidChange:(id)a3;
-- (void)bankConnectConsentStatusDidChange:(unint64_t)a3;
+- (void)_yearlyTransactionGroupsWithCompletion:(id)completion;
+- (void)accountAdded:(id)added;
+- (void)accountChanged:(id)changed;
+- (void)accountRemoved:(id)removed;
+- (void)accountServiceAccountResolutionController:(id)controller requestsPresentViewController:(id)viewController animated:(BOOL)animated;
+- (void)accountUsersChanged:(id)changed forAccountIdentifier:(id)identifier;
+- (void)autoReloadSetupController:(id)controller requestsDismissViewController:(id)viewController;
+- (void)autoReloadSetupController:(id)controller requestsPresentViewController:(id)viewController;
+- (void)bankConnectAccountDidChange:(id)change;
+- (void)bankConnectConsentStatusDidChange:(unint64_t)change;
 - (void)clearBankConnectData;
-- (void)contactIssuerHelper:(id)a3 didRequestDismissViewControllerAnimated:(BOOL)a4 completion:(id)a5;
-- (void)contactIssuerHelper:(id)a3 didRequestPresentViewController:(id)a4 animated:(BOOL)a5 completion:(id)a6;
-- (void)credentialIdentifier:(id)a3 paymentApplicationIdentifier:(id)a4 secureElementIdentifier:(id)a5 didUpdateRangingSuspensionReasons:(unint64_t)a6;
-- (void)creditRecoveryPaymentPlansChangedForAccountIdentifier:(id)a3;
-- (void)dashboardMessageForTransactionHistoryDisabled:(id)a3;
+- (void)contactIssuerHelper:(id)helper didRequestDismissViewControllerAnimated:(BOOL)animated completion:(id)completion;
+- (void)contactIssuerHelper:(id)helper didRequestPresentViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
+- (void)credentialIdentifier:(id)identifier paymentApplicationIdentifier:(id)applicationIdentifier secureElementIdentifier:(id)elementIdentifier didUpdateRangingSuspensionReasons:(unint64_t)reasons;
+- (void)creditRecoveryPaymentPlansChangedForAccountIdentifier:(id)identifier;
+- (void)dashboardMessageForTransactionHistoryDisabled:(id)disabled;
 - (void)dealloc;
-- (void)deleteItem:(id)a3 completionHandler:(id)a4;
-- (void)didRemoveAppleBalancePromotionWithUniqueIdentifier:(id)a3 forAccountIdentifier:(id)a4;
-- (void)didUpdateAppleBalancePromotion:(id)a3 forAccountIdentifier:(id)a4;
-- (void)didUpdateFamilyMembers:(id)a3;
-- (void)didUpdateLatestTransactions:(id)a3 monthlyTransactionGroups:(id)a4 yearlyTransactionGroups:(id)a5;
-- (void)discoveryService:(id)a3 dialogRequestsChangedForPlacement:(id)a4;
-- (void)dismissPendingRequestDashboardMessageWithRequest:(id)a3;
-- (void)executeAfterContentIsLoaded:(id)a3;
-- (void)executeEngagementActionForURL:(id)a3;
-- (void)featureApplicationAdded:(id)a3;
-- (void)featureApplicationChanged:(id)a3;
-- (void)featureApplicationRemoved:(id)a3;
-- (void)foregroundActiveArbiter:(id)a3 didUpdateForegroundActiveState:(id)a4;
+- (void)deleteItem:(id)item completionHandler:(id)handler;
+- (void)didRemoveAppleBalancePromotionWithUniqueIdentifier:(id)identifier forAccountIdentifier:(id)accountIdentifier;
+- (void)didUpdateAppleBalancePromotion:(id)promotion forAccountIdentifier:(id)identifier;
+- (void)didUpdateFamilyMembers:(id)members;
+- (void)didUpdateLatestTransactions:(id)transactions monthlyTransactionGroups:(id)groups yearlyTransactionGroups:(id)transactionGroups;
+- (void)discoveryService:(id)service dialogRequestsChangedForPlacement:(id)placement;
+- (void)dismissPendingRequestDashboardMessageWithRequest:(id)request;
+- (void)executeAfterContentIsLoaded:(id)loaded;
+- (void)executeEngagementActionForURL:(id)l;
+- (void)featureApplicationAdded:(id)added;
+- (void)featureApplicationChanged:(id)changed;
+- (void)featureApplicationRemoved:(id)removed;
+- (void)foregroundActiveArbiter:(id)arbiter didUpdateForegroundActiveState:(id)state;
 - (void)freezeContentLoaded;
-- (void)groupView:(id)a3 frontmostPassViewDidChange:(id)a4 withContext:(id)a5;
-- (void)inboxDataSourceDidUpdateInboxMessages:(id)a3;
-- (void)invalidatedSpendingSummariesOfType:(unint64_t)a3;
-- (void)invalidatedSpendingSummaryOfType:(unint64_t)a3 startingWithDate:(id)a4;
+- (void)groupView:(id)view frontmostPassViewDidChange:(id)change withContext:(id)context;
+- (void)inboxDataSourceDidUpdateInboxMessages:(id)messages;
+- (void)invalidatedSpendingSummariesOfType:(unint64_t)type;
+- (void)invalidatedSpendingSummaryOfType:(unint64_t)type startingWithDate:(id)date;
 - (void)invalidatedSummariesAvailable;
-- (void)issuerInstallmentDashboardMessagesWithCompletion:(id)a3;
-- (void)loadSummariesWithForceReload:(BOOL)a3;
-- (void)messageForSavingsRewardsRedemptionWithCompletion:(id)a3;
+- (void)issuerInstallmentDashboardMessagesWithCompletion:(id)completion;
+- (void)loadSummariesWithForceReload:(BOOL)reload;
+- (void)messageForSavingsRewardsRedemptionWithCompletion:(id)completion;
 - (void)openDeviceAssessmentEducationLearnMore;
-- (void)passStateProvider:(id)a3 didUpdatePassState:(id)a4;
-- (void)passWithUniqueIdentifier:(id)a3 didUpdateTiles:(id)a4 forContext:(int64_t)a5;
-- (void)paymentOfferConfirmationRecordChanged:(id)a3 forTransactionWithPaymentHash:(id)a4;
-- (void)paymentPassWithUniqueIdentifier:(id)a3 didEnableMessageService:(BOOL)a4;
-- (void)paymentPassWithUniqueIdentifier:(id)a3 didReceiveBalanceUpdate:(id)a4;
-- (void)paymentPassWithUniqueIdentifier:(id)a3 didReceiveMessage:(id)a4;
-- (void)paymentPassWithUniqueIdentifier:(id)a3 didReceivePlanUpdate:(id)a4;
-- (void)paymentPassWithUniqueIdentifier:(id)a3 didUpdateWithTransitPassProperties:(id)a4;
-- (void)peerPaymentAccountResolutionController:(id)a3 requestsDismissCurrentViewControllerAnimated:(BOOL)a4;
-- (void)peerPaymentAccountResolutionController:(id)a3 requestsPresentViewController:(id)a4 animated:(BOOL)a5;
+- (void)passStateProvider:(id)provider didUpdatePassState:(id)state;
+- (void)passWithUniqueIdentifier:(id)identifier didUpdateTiles:(id)tiles forContext:(int64_t)context;
+- (void)paymentOfferConfirmationRecordChanged:(id)changed forTransactionWithPaymentHash:(id)hash;
+- (void)paymentPassWithUniqueIdentifier:(id)identifier didEnableMessageService:(BOOL)service;
+- (void)paymentPassWithUniqueIdentifier:(id)identifier didReceiveBalanceUpdate:(id)update;
+- (void)paymentPassWithUniqueIdentifier:(id)identifier didReceiveMessage:(id)message;
+- (void)paymentPassWithUniqueIdentifier:(id)identifier didReceivePlanUpdate:(id)update;
+- (void)paymentPassWithUniqueIdentifier:(id)identifier didUpdateWithTransitPassProperties:(id)properties;
+- (void)peerPaymentAccountResolutionController:(id)controller requestsDismissCurrentViewControllerAnimated:(BOOL)animated;
+- (void)peerPaymentAccountResolutionController:(id)controller requestsPresentViewController:(id)viewController animated:(BOOL)animated;
 - (void)pendingRequestsChanged;
-- (void)physicalCardsChanged:(id)a3 forAccountIdentifier:(id)a4;
+- (void)physicalCardsChanged:(id)changed forAccountIdentifier:(id)identifier;
 - (void)recurringPaymentsChanged;
-- (void)reloadAccountPendingMembersWithNewMembers:(id)a3;
-- (void)reloadAccountUserInvitationsWithNewAccountUserInvitations:(id)a3;
-- (void)reloadAccountUsersWithNewAccountUserCollection:(id)a3;
-- (void)reloadAccountWithNewAccount:(id)a3;
+- (void)reloadAccountPendingMembersWithNewMembers:(id)members;
+- (void)reloadAccountUserInvitationsWithNewAccountUserInvitations:(id)invitations;
+- (void)reloadAccountUsersWithNewAccountUserCollection:(id)collection;
+- (void)reloadAccountWithNewAccount:(id)account;
 - (void)reloadAccounts;
 - (void)reloadAllContent;
 - (void)reloadAppleBalance;
@@ -274,28 +274,28 @@
 - (void)reloadFamilyCollection;
 - (void)reloadFrontmostPass;
 - (void)reloadHomeKitRestrictedGuestAccessState;
-- (void)reloadMessagesWithReason:(id)a3;
-- (void)reloadPeerPaymentPendingRequestsWithCompletion:(id)a3;
-- (void)reloadPhysicalCardsWithNewPhysicalCards:(id)a3;
-- (void)reloadRecurringPeerPaymentsWithCompletion:(id)a3;
+- (void)reloadMessagesWithReason:(id)reason;
+- (void)reloadPeerPaymentPendingRequestsWithCompletion:(id)completion;
+- (void)reloadPhysicalCardsWithNewPhysicalCards:(id)cards;
+- (void)reloadRecurringPeerPaymentsWithCompletion:(id)completion;
 - (void)reloadScheduledPayments;
 - (void)reloadSecondaryMessages;
 - (void)reloadTiles;
 - (void)reloadTransactionGroups;
-- (void)reloadTransactionsWithSummariesReload:(BOOL)a3;
+- (void)reloadTransactionsWithSummariesReload:(BOOL)reload;
 - (void)reloadTransitSection;
 - (void)resetAssociatedPaymentRewardsBalanceIfNeeded;
-- (void)setTransactions:(id)a3;
-- (void)sharesDidUpdateWithPaymentPassWithUniqueIdentifier:(id)a3;
-- (void)transactionsChanged:(id)a3;
+- (void)setTransactions:(id)transactions;
+- (void)sharesDidUpdateWithPaymentPassWithUniqueIdentifier:(id)identifier;
+- (void)transactionsChanged:(id)changed;
 - (void)updateContentIsLoaded;
-- (void)updateWithBankConnectAccount:(id)a3 consentStatus:(unint64_t)a4 institution:(id)a5;
-- (void)updateWithBlock:(id)a3 andDiff:(id)a4;
-- (void)updateWithTransactions:(id)a3;
-- (void)viewControllerDidCancelSetupFlow:(id)a3;
-- (void)viewControllerDidTerminateSetupFlow:(id)a3;
-- (void)virtualCardEnrollmentViewController:(id)a3 didCompleteWithSuccess:(BOOL)a4;
-- (void)visibilityDidChangeToState:(unsigned __int8)a3;
+- (void)updateWithBankConnectAccount:(id)account consentStatus:(unint64_t)status institution:(id)institution;
+- (void)updateWithBlock:(id)block andDiff:(id)diff;
+- (void)updateWithTransactions:(id)transactions;
+- (void)viewControllerDidCancelSetupFlow:(id)flow;
+- (void)viewControllerDidTerminateSetupFlow:(id)flow;
+- (void)virtualCardEnrollmentViewController:(id)controller didCompleteWithSuccess:(BOOL)success;
+- (void)visibilityDidChangeToState:(unsigned __int8)state;
 @end
 
 @implementation PKDashboardPaymentPassDataSource
@@ -303,22 +303,22 @@
 - (id)appleBalanceAccountItem
 {
   v3 = objc_alloc_init(PKDashboardBalanceItem);
-  v4 = [(PKDashboardPaymentPassDataSource *)self account];
-  v5 = [v4 appleBalanceDetails];
+  account = [(PKDashboardPaymentPassDataSource *)self account];
+  appleBalanceDetails = [account appleBalanceDetails];
 
-  v6 = [v5 accountSummary];
-  v7 = [v6 currentBalance];
-  v8 = [v5 currencyCode];
+  accountSummary = [appleBalanceDetails accountSummary];
+  currentBalance = [accountSummary currentBalance];
+  currencyCode = [appleBalanceDetails currencyCode];
   v9 = PKCurrencyAmountMake();
 
-  v10 = [v9 formattedStringValue];
-  [(PKDashboardBalanceItem *)v3 setBalance:v10];
+  formattedStringValue = [v9 formattedStringValue];
+  [(PKDashboardBalanceItem *)v3 setBalance:formattedStringValue];
 
   v11 = PKLocalizedAppleBalanceString(&cfstr_PassBalanceTit.isa);
   [(PKDashboardBalanceItem *)v3 setTitle:v11];
 
-  v12 = [MEMORY[0x1E69DC888] labelColor];
-  [(PKDashboardBalanceItem *)v3 setTitleColor:v12];
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  [(PKDashboardBalanceItem *)v3 setTitleColor:labelColor];
 
   v13 = PKLocalizedAppleBalanceString(&cfstr_PassAddMoneyBu.isa);
   [(PKDashboardBalanceItem *)v3 setTopUpTitle:v13];
@@ -352,74 +352,74 @@ void __73__PKDashboardPaymentPassDataSource_AppleBalance__appleBalanceAccountIte
 
 - (BOOL)_topUpEnabled
 {
-  v3 = [(PKDashboardPaymentPassDataSource *)self account];
-  if ([v3 supportsTopUp])
+  account = [(PKDashboardPaymentPassDataSource *)self account];
+  if ([account supportsTopUp])
   {
-    v4 = 1;
+    supportsAMPTopUp = 1;
   }
 
   else
   {
-    v5 = [(PKDashboardPaymentPassDataSource *)self account];
-    v4 = [v5 supportsAMPTopUp];
+    account2 = [(PKDashboardPaymentPassDataSource *)self account];
+    supportsAMPTopUp = [account2 supportsAMPTopUp];
   }
 
-  return v4;
+  return supportsAMPTopUp;
 }
 
 - (int64_t)numberOfAppleBalanceBalanceDashboardItems
 {
-  v3 = [(PKDashboardPaymentPassDataSource *)self account];
-  v4 = [(PKDashboardPaymentPassDataSource *)self pass];
+  account = [(PKDashboardPaymentPassDataSource *)self account];
+  pass = [(PKDashboardPaymentPassDataSource *)self pass];
   if (PKCanShowAppleBalanceTopUpOptions())
   {
-    v5 = [(PKDashboardPaymentPassDataSource *)self _topUpEnabled];
+    _topUpEnabled = [(PKDashboardPaymentPassDataSource *)self _topUpEnabled];
   }
 
   else
   {
-    v5 = 0;
+    _topUpEnabled = 0;
   }
 
-  return v5;
+  return _topUpEnabled;
 }
 
 - (void)reloadAppleBalance
 {
   if ([(PKDashboardPaymentPassDataSource *)self _isAppleBalancePass])
   {
-    v3 = [(PKDashboardPaymentPassDataSource *)self account];
-    v16 = [v3 appleBalanceDetails];
+    account = [(PKDashboardPaymentPassDataSource *)self account];
+    appleBalanceDetails = [account appleBalanceDetails];
 
-    v4 = [v16 accountSummary];
-    v5 = [v4 currentBalance];
-    v6 = [v16 currencyCode];
+    accountSummary = [appleBalanceDetails accountSummary];
+    currentBalance = [accountSummary currentBalance];
+    currencyCode = [appleBalanceDetails currencyCode];
     v7 = PKCurrencyAmountMake();
 
-    v8 = [(PKDashboardPaymentPassDataSource *)self lastUpdatedBalance];
-    LOBYTE(v5) = [v7 isEqual:v8];
+    lastUpdatedBalance = [(PKDashboardPaymentPassDataSource *)self lastUpdatedBalance];
+    LOBYTE(currentBalance) = [v7 isEqual:lastUpdatedBalance];
 
-    if ((v5 & 1) == 0)
+    if ((currentBalance & 1) == 0)
     {
       [(PKDashboardPaymentPassDataSource *)self setLastUpdatedBalance:v7];
       [(PKDashboardPaymentPassDataSource *)self _updateBalance];
     }
 
-    v9 = [(PKDashboardPaymentPassDataSource *)self appleBalanceAddMoneyUIManager];
+    appleBalanceAddMoneyUIManager = [(PKDashboardPaymentPassDataSource *)self appleBalanceAddMoneyUIManager];
 
-    if (!v9)
+    if (!appleBalanceAddMoneyUIManager)
     {
       v10 = [PKAppleBalanceAddMoneyUIManager alloc];
-      v11 = [(PKDashboardPaymentPassDataSource *)self account];
-      v12 = [(PKAppleBalanceAddMoneyUIManager *)v10 initWithAccount:v11];
+      account2 = [(PKDashboardPaymentPassDataSource *)self account];
+      v12 = [(PKAppleBalanceAddMoneyUIManager *)v10 initWithAccount:account2];
 
       [(PKDashboardPaymentPassDataSource *)self setAppleBalanceAddMoneyUIManager:v12];
     }
 
-    v13 = [(PKDashboardPaymentPassDataSource *)self accountService];
-    v14 = [(PKDashboardPaymentPassDataSource *)self account];
-    v15 = [v14 accountIdentifier];
-    [v13 appleBalancePromotionForAccountWithIdentifier:v15 completion:&__block_literal_global_32];
+    accountService = [(PKDashboardPaymentPassDataSource *)self accountService];
+    account3 = [(PKDashboardPaymentPassDataSource *)self account];
+    accountIdentifier = [account3 accountIdentifier];
+    [accountService appleBalancePromotionForAccountWithIdentifier:accountIdentifier completion:&__block_literal_global_32];
   }
 }
 
@@ -427,10 +427,10 @@ void __73__PKDashboardPaymentPassDataSource_AppleBalance__appleBalanceAccountIte
 {
   if ([(PKDashboardPaymentPassDataSource *)self hasAssociatedPaymentRewardsBalance])
   {
-    v3 = [(PKDashboardPaymentPassDataSource *)self paymentOffersController];
-    v4 = [(PKDashboardPaymentPassDataSource *)self pass];
-    v5 = [v4 uniqueID];
-    v6 = [v3 paymentOfferCriteriaForPassUniqueID:v5];
+    paymentOffersController = [(PKDashboardPaymentPassDataSource *)self paymentOffersController];
+    pass = [(PKDashboardPaymentPassDataSource *)self pass];
+    uniqueID = [pass uniqueID];
+    v6 = [paymentOffersController paymentOfferCriteriaForPassUniqueID:uniqueID];
     v7 = [v6 pk_firstObjectPassingTest:&__block_literal_global_53];
 
     if (v7)
@@ -454,25 +454,25 @@ void __73__PKDashboardPaymentPassDataSource_AppleBalance__appleBalanceAccountIte
 
 - (BOOL)hasAssociatedPaymentRewardsBalance
 {
-  v2 = [(PKDashboardPaymentPassDataSource *)self associatedPaymentRewardsBalance];
-  v3 = v2 != 0;
+  associatedPaymentRewardsBalance = [(PKDashboardPaymentPassDataSource *)self associatedPaymentRewardsBalance];
+  v3 = associatedPaymentRewardsBalance != 0;
 
   return v3;
 }
 
 - (id)dashboardRewardsBalanceItem
 {
-  v3 = [(PKDashboardPaymentPassDataSource *)self associatedPaymentRewardsBalance];
-  v4 = [(PKDashboardPaymentPassDataSource *)self pass];
-  v5 = v4;
+  associatedPaymentRewardsBalance = [(PKDashboardPaymentPassDataSource *)self associatedPaymentRewardsBalance];
+  pass = [(PKDashboardPaymentPassDataSource *)self pass];
+  v5 = pass;
   v6 = 0;
-  if (v3 && v4)
+  if (associatedPaymentRewardsBalance && pass)
   {
-    v7 = [(PKDashboardPaymentPassDataSource *)self transactionSourceCollection];
+    transactionSourceCollection = [(PKDashboardPaymentPassDataSource *)self transactionSourceCollection];
     v8 = [PKDashboardRewardsBalanceItem alloc];
-    v9 = [v5 uniqueID];
-    v10 = [v7 transactionSourceIdentifiers];
-    v6 = [(PKDashboardRewardsBalanceItem *)v8 initWithPaymentRewardsBalance:v3 passUniqueIdentifier:v9 transactionSourceIdentifiers:v10];
+    uniqueID = [v5 uniqueID];
+    transactionSourceIdentifiers = [transactionSourceCollection transactionSourceIdentifiers];
+    v6 = [(PKDashboardRewardsBalanceItem *)v8 initWithPaymentRewardsBalance:associatedPaymentRewardsBalance passUniqueIdentifier:uniqueID transactionSourceIdentifiers:transactionSourceIdentifiers];
   }
 
   return v6;
@@ -480,33 +480,33 @@ void __73__PKDashboardPaymentPassDataSource_AppleBalance__appleBalanceAccountIte
 
 - (void)reloadAssociatedPaymentRewardsBalance
 {
-  v3 = [(PKDashboardPaymentPassDataSource *)self supportsPaymentRewardsBalance];
-  v4 = [(PKDashboardPaymentPassDataSource *)self _hasPassPersonalized];
-  v5 = [(PKDashboardPaymentPassDataSource *)self _hasPassWithSupportedCardType];
-  if (v3 != [(PKDashboardPaymentPassDataSource *)self payWithRewardsSupportState])
+  supportsPaymentRewardsBalance = [(PKDashboardPaymentPassDataSource *)self supportsPaymentRewardsBalance];
+  _hasPassPersonalized = [(PKDashboardPaymentPassDataSource *)self _hasPassPersonalized];
+  _hasPassWithSupportedCardType = [(PKDashboardPaymentPassDataSource *)self _hasPassWithSupportedCardType];
+  if (supportsPaymentRewardsBalance != [(PKDashboardPaymentPassDataSource *)self payWithRewardsSupportState])
   {
-    [(PKDashboardPaymentPassDataSource *)self setPayWithRewardsSupportState:v3];
-    if (v4 && v5)
+    [(PKDashboardPaymentPassDataSource *)self setPayWithRewardsSupportState:supportsPaymentRewardsBalance];
+    if (_hasPassPersonalized && _hasPassWithSupportedCardType)
     {
       [(PKDashboardPaymentPassDataSource *)self _refreshTransactionsSection];
     }
   }
 
-  if (v3 && v4 && v5)
+  if (supportsPaymentRewardsBalance && _hasPassPersonalized && _hasPassWithSupportedCardType)
   {
-    v6 = [(PKDashboardPaymentPassDataSource *)self pass];
-    v7 = [v6 uniqueID];
+    pass = [(PKDashboardPaymentPassDataSource *)self pass];
+    uniqueID = [pass uniqueID];
 
-    if (v7)
+    if (uniqueID)
     {
-      v8 = [MEMORY[0x1E69B8DB8] paymentService];
-      v9 = [v8 paymentRewardsBalancesWithPassUniqueIdentifier:v7];
+      paymentService = [MEMORY[0x1E69B8DB8] paymentService];
+      v9 = [paymentService paymentRewardsBalancesWithPassUniqueIdentifier:uniqueID];
       v10 = __88__PKDashboardPaymentPassDataSource_PaymentOffers__reloadAssociatedPaymentRewardsBalance__block_invoke(v9, v9);
 
       if (v10)
       {
-        v11 = [(PKDashboardPaymentPassDataSource *)self associatedPaymentRewardsBalance];
-        v12 = [v10 isEqual:v11];
+        associatedPaymentRewardsBalance = [(PKDashboardPaymentPassDataSource *)self associatedPaymentRewardsBalance];
+        v12 = [v10 isEqual:associatedPaymentRewardsBalance];
 
         if ((v12 & 1) == 0)
         {
@@ -515,10 +515,10 @@ void __73__PKDashboardPaymentPassDataSource_AppleBalance__appleBalanceAccountIte
         }
       }
 
-      v13 = [(PKDashboardPaymentPassDataSource *)self associatedPaymentRewardsBalance];
-      v14 = [v13 isFresh];
+      associatedPaymentRewardsBalance2 = [(PKDashboardPaymentPassDataSource *)self associatedPaymentRewardsBalance];
+      isFresh = [associatedPaymentRewardsBalance2 isFresh];
 
-      if (v14)
+      if (isFresh)
       {
         v15 = PKLogFacilityTypeGetObject();
         if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -531,8 +531,8 @@ void __73__PKDashboardPaymentPassDataSource_AppleBalance__appleBalanceAccountIte
       else
       {
         objc_initWeak(buf, self);
-        v16 = [v8 paymentOffersCatalog];
-        v17 = [v16 criteriaWithType:2 passUniqueID:v7];
+        paymentOffersCatalog = [paymentService paymentOffersCatalog];
+        v17 = [paymentOffersCatalog criteriaWithType:2 passUniqueID:uniqueID];
 
         if (v17)
         {
@@ -542,7 +542,7 @@ void __73__PKDashboardPaymentPassDataSource_AppleBalance__appleBalanceAccountIte
           v18[3] = &unk_1E8014F40;
           v19 = &__block_literal_global_19;
           objc_copyWeak(&v20, buf);
-          [v8 updatePaymentRewardsBalancesWithPassUniqueIdentifier:v7 completion:v18];
+          [paymentService updatePaymentRewardsBalancesWithPassUniqueIdentifier:uniqueID completion:v18];
           objc_destroyWeak(&v20);
         }
 
@@ -552,11 +552,11 @@ void __73__PKDashboardPaymentPassDataSource_AppleBalance__appleBalanceAccountIte
 
     else
     {
-      v8 = PKLogFacilityTypeGetObject();
-      if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+      paymentService = PKLogFacilityTypeGetObject();
+      if (os_log_type_enabled(paymentService, OS_LOG_TYPE_DEFAULT))
       {
         LOWORD(buf[0]) = 0;
-        _os_log_impl(&dword_1BD026000, v8, OS_LOG_TYPE_DEFAULT, "Can't associate rewards balance with no pass", buf, 2u);
+        _os_log_impl(&dword_1BD026000, paymentService, OS_LOG_TYPE_DEFAULT, "Can't associate rewards balance with no pass", buf, 2u);
       }
     }
   }
@@ -654,27 +654,27 @@ void __88__PKDashboardPaymentPassDataSource_PaymentOffers__reloadAssociatedPayme
   }
 }
 
-- (void)dashboardMessageForTransactionHistoryDisabled:(id)a3
+- (void)dashboardMessageForTransactionHistoryDisabled:(id)disabled
 {
-  v4 = a3;
+  disabledCopy = disabled;
   if (PKSharedCacheGetBoolForKey() || (-[PKDashboardPaymentPassDataSource pass](self, "pass"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 settings], v5, (v6 & 8) != 0))
   {
-    v4[2](v4, 0);
+    disabledCopy[2](disabledCopy, 0);
   }
 
   else
   {
-    v7 = [(PKDashboardPaymentPassDataSource *)self paymentService];
-    v8 = [(PKDashboardPaymentPassDataSource *)self pass];
-    v9 = [v8 uniqueID];
+    paymentService = [(PKDashboardPaymentPassDataSource *)self paymentService];
+    pass = [(PKDashboardPaymentPassDataSource *)self pass];
+    uniqueID = [pass uniqueID];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __97__PKDashboardPaymentPassDataSource_PaymentOffers__dashboardMessageForTransactionHistoryDisabled___block_invoke;
     v10[3] = &unk_1E8013FD0;
     v12 = 0;
     v10[4] = self;
-    v11 = v4;
-    [v7 hasEligibleCriteriaForPassUniqueID:v9 completion:v10];
+    v11 = disabledCopy;
+    [paymentService hasEligibleCriteriaForPassUniqueID:uniqueID completion:v10];
   }
 }
 
@@ -777,59 +777,59 @@ void __97__PKDashboardPaymentPassDataSource_PaymentOffers__dashboardMessageForTr
 
 - (BOOL)_hasPassPersonalized
 {
-  v2 = [(PKDashboardPaymentPassDataSource *)self pass];
-  v3 = [v2 devicePrimaryPaymentApplication];
-  v4 = [v3 state];
+  pass = [(PKDashboardPaymentPassDataSource *)self pass];
+  devicePrimaryPaymentApplication = [pass devicePrimaryPaymentApplication];
+  state = [devicePrimaryPaymentApplication state];
 
-  return v4 == 1;
+  return state == 1;
 }
 
 - (BOOL)_hasPassWithSupportedCardType
 {
-  v2 = [(PKDashboardPaymentPassDataSource *)self pass];
-  v3 = [v2 secureElementPass];
-  v4 = [v3 cardType];
+  pass = [(PKDashboardPaymentPassDataSource *)self pass];
+  secureElementPass = [pass secureElementPass];
+  cardType = [secureElementPass cardType];
 
-  return v4 < 2;
+  return cardType < 2;
 }
 
 - (void)_updateRewardsBalanceItem
 {
   v3 = [(PKDashboardPaymentPassDataSource *)self firstSectionIndexForSectionIdentifier:4];
-  v5 = [(PKDashboardPaymentPassDataSource *)self delegate];
+  delegate = [(PKDashboardPaymentPassDataSource *)self delegate];
   v4 = [MEMORY[0x1E696AC90] indexSetWithIndex:v3];
-  [v5 reloadSections:v4];
+  [delegate reloadSections:v4];
 }
 
 - (void)_refreshTransactionsSection
 {
   v3 = [(PKDashboardPaymentPassDataSource *)self firstSectionIndexForSectionIdentifier:11];
-  v5 = [(PKDashboardPaymentPassDataSource *)self delegate];
+  delegate = [(PKDashboardPaymentPassDataSource *)self delegate];
   v4 = [MEMORY[0x1E696AC90] indexSetWithIndex:v3];
-  [v5 reloadSections:v4];
+  [delegate reloadSections:v4];
 }
 
-- (id)deviceTapAmountEntryViewControllerWithInitialAmount:(id)a3 initialMemo:(id)a4 dismissAction:(id)a5
+- (id)deviceTapAmountEntryViewControllerWithInitialAmount:(id)amount initialMemo:(id)memo dismissAction:(id)action
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  actionCopy = action;
+  memoCopy = memo;
+  amountCopy = amount;
   if (_UISolariumFeatureFlagEnabled())
   {
-    v11 = [[PKNearbyPeerPaymentAmountEntryViewController alloc] initWithInitialAmount:v10 initialMemo:v9];
+    nearbyPeerPaymentViewProvider = [[PKNearbyPeerPaymentAmountEntryViewController alloc] initWithInitialAmount:amountCopy initialMemo:memoCopy];
 
-    v12 = [[PKNavigationController alloc] initWithRootViewController:v11];
+    v12 = [[PKNavigationController alloc] initWithRootViewController:nearbyPeerPaymentViewProvider];
   }
 
   else
   {
-    v11 = [(PKDashboardPaymentPassDataSource *)self nearbyPeerPaymentViewProvider];
+    nearbyPeerPaymentViewProvider = [(PKDashboardPaymentPassDataSource *)self nearbyPeerPaymentViewProvider];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __133__PKDashboardPaymentPassDataSource_NearbyPeerPayment__deviceTapAmountEntryViewControllerWithInitialAmount_initialMemo_dismissAction___block_invoke;
     v14[3] = &unk_1E8012A48;
-    v15 = v8;
-    v12 = [(PKNearbyPeerPaymentAmountEntryViewController *)v11 amountEntryViewWithInitialAmount:v10 initialMemo:v9 dismissAction:v14];
+    v15 = actionCopy;
+    v12 = [(PKNearbyPeerPaymentAmountEntryViewController *)nearbyPeerPaymentViewProvider amountEntryViewWithInitialAmount:amountCopy initialMemo:memoCopy dismissAction:v14];
 
     [(PKNavigationController *)v12 setOverrideUserInterfaceStyle:2];
   }
@@ -854,8 +854,8 @@ uint64_t __133__PKDashboardPaymentPassDataSource_NearbyPeerPayment__deviceTapAmo
 
 - (unint64_t)numberOfAccounts
 {
-  v2 = [(PKDashboardPaymentPassDataSource *)self accounts];
-  v3 = [v2 count];
+  accounts = [(PKDashboardPaymentPassDataSource *)self accounts];
+  v3 = [accounts count];
 
   return v3;
 }
@@ -864,10 +864,10 @@ uint64_t __133__PKDashboardPaymentPassDataSource_NearbyPeerPayment__deviceTapAmo
 {
   if ([(PKDashboardPaymentPassDataSource *)self _isCreditPass])
   {
-    v3 = [MEMORY[0x1E69B8400] sharedInstance];
+    mEMORY[0x1E69B8400] = [MEMORY[0x1E69B8400] sharedInstance];
     v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v5 = objc_alloc_init(MEMORY[0x1E69B8658]);
-    v6 = [(PKDashboardPaymentPassDataSource *)self accountsLoaded];
+    accountsLoaded = [(PKDashboardPaymentPassDataSource *)self accountsLoaded];
     v46[0] = 0;
     v46[1] = v46;
     v46[2] = 0x2020000000;
@@ -884,7 +884,7 @@ uint64_t __133__PKDashboardPaymentPassDataSource_NearbyPeerPayment__deviceTapAmo
     v7 = v5;
     v38 = v7;
     objc_copyWeak(&v42, &location);
-    v8 = v3;
+    v8 = mEMORY[0x1E69B8400];
     v39 = v8;
     v41 = v44;
     v9 = v4;
@@ -898,7 +898,7 @@ uint64_t __133__PKDashboardPaymentPassDataSource_NearbyPeerPayment__deviceTapAmo
     v32 = v11;
     v12 = v9;
     v33 = v12;
-    v34 = self;
+    selfCopy = self;
     v13 = v8;
     v35 = v13;
     objc_copyWeak(&v36, &location);
@@ -913,7 +913,7 @@ uint64_t __133__PKDashboardPaymentPassDataSource_NearbyPeerPayment__deviceTapAmo
     v29 = v15;
     [v11 addOperation:v28];
     v14[2](v14, 5);
-    if (!v6)
+    if (!accountsLoaded)
     {
       v23[0] = MEMORY[0x1E69E9820];
       v23[1] = 3221225472;
@@ -928,7 +928,7 @@ uint64_t __133__PKDashboardPaymentPassDataSource_NearbyPeerPayment__deviceTapAmo
       objc_destroyWeak(&v27);
     }
 
-    v16 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __60__PKDashboardPaymentPassDataSource_Accounts__reloadAccounts__block_invoke_39;
@@ -937,7 +937,7 @@ uint64_t __133__PKDashboardPaymentPassDataSource_NearbyPeerPayment__deviceTapAmo
     v17 = v15;
     v20 = v17;
     v21 = v46;
-    v18 = [v11 evaluateWithInput:v16 completion:v19];
+    v18 = [v11 evaluateWithInput:null completion:v19];
 
     objc_destroyWeak(&v22);
     objc_destroyWeak(&v30);
@@ -1290,22 +1290,22 @@ void __60__PKDashboardPaymentPassDataSource_Accounts__reloadAccounts__block_invo
   }
 }
 
-- (void)_updateAccounts:(id)a3
+- (void)_updateAccounts:(id)accounts
 {
   v44 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v28 = self;
-  v5 = [(PKDashboardPaymentPassDataSource *)self accounts];
-  v6 = [v5 count];
-  v33 = v4;
-  v29 = v5;
-  if (v6 == [v4 count])
+  accountsCopy = accounts;
+  selfCopy = self;
+  accounts = [(PKDashboardPaymentPassDataSource *)self accounts];
+  v6 = [accounts count];
+  v33 = accountsCopy;
+  v29 = accounts;
+  if (v6 == [accountsCopy count])
   {
     v40 = 0u;
     v41 = 0u;
     v38 = 0u;
     v39 = 0u;
-    obj = v5;
+    obj = accounts;
     v32 = [obj countByEnumeratingWithState:&v38 objects:v43 count:16];
     if (v32)
     {
@@ -1340,10 +1340,10 @@ LABEL_9:
               }
 
               v14 = *(*(&v34 + 1) + 8 * v13);
-              v15 = [v14 accountIdentifier];
-              v16 = [v8 accountIdentifier];
-              v17 = v15;
-              v18 = v16;
+              accountIdentifier = [v14 accountIdentifier];
+              accountIdentifier2 = [v8 accountIdentifier];
+              v17 = accountIdentifier;
+              v18 = accountIdentifier2;
               v19 = v18;
               if (v17 == v18)
               {
@@ -1420,12 +1420,12 @@ LABEL_30:
     v23 = 0;
   }
 
-  [(PKDashboardPaymentPassDataSource *)v28 setAccountsLoaded:1];
-  [(PKDashboardPaymentPassDataSource *)v28 setAccounts:v33];
-  if ([(PKDashboardPaymentPassDataSource *)v28 allContentIsLoaded])
+  [(PKDashboardPaymentPassDataSource *)selfCopy setAccountsLoaded:1];
+  [(PKDashboardPaymentPassDataSource *)selfCopy setAccounts:v33];
+  if ([(PKDashboardPaymentPassDataSource *)selfCopy allContentIsLoaded])
   {
-    v24 = [(PKDashboardPaymentPassDataSource *)v28 delegate];
-    if (v24)
+    delegate = [(PKDashboardPaymentPassDataSource *)selfCopy delegate];
+    if (delegate)
     {
       v25 = v23;
     }
@@ -1437,26 +1437,26 @@ LABEL_30:
 
     if ((v25 & 1) == 0)
     {
-      v26 = [(PKDashboardPaymentPassDataSource *)v28 firstSectionIndexForSectionIdentifier:5];
+      v26 = [(PKDashboardPaymentPassDataSource *)selfCopy firstSectionIndexForSectionIdentifier:5];
       v27 = [objc_alloc(MEMORY[0x1E696AD50]) initWithIndex:v26];
-      [v27 addIndex:{-[PKDashboardPaymentPassDataSource numberOfSections](v28, "numberOfSections") - 1}];
-      [v24 reloadSections:v27];
+      [v27 addIndex:{-[PKDashboardPaymentPassDataSource numberOfSections](selfCopy, "numberOfSections") - 1}];
+      [delegate reloadSections:v27];
     }
   }
 
   else
   {
-    [(PKDashboardPaymentPassDataSource *)v28 updateContentIsLoaded];
+    [(PKDashboardPaymentPassDataSource *)selfCopy updateContentIsLoaded];
   }
 }
 
-- (id)accountItemAtIndex:(unint64_t)a3
+- (id)accountItemAtIndex:(unint64_t)index
 {
   v5 = [PKDashboardAccountItem alloc];
-  v6 = [(PKDashboardPaymentPassDataSource *)self accounts];
-  v7 = [v6 objectAtIndex:a3];
-  v8 = [(PKDashboardPaymentPassDataSource *)self pass];
-  v9 = [(PKDashboardAccountItem *)v5 initWithAccount:v7 presentingPass:v8];
+  accounts = [(PKDashboardPaymentPassDataSource *)self accounts];
+  v7 = [accounts objectAtIndex:index];
+  pass = [(PKDashboardPaymentPassDataSource *)self pass];
+  v9 = [(PKDashboardAccountItem *)v5 initWithAccount:v7 presentingPass:pass];
 
   return v9;
 }
@@ -1464,10 +1464,10 @@ LABEL_30:
 - (id)messagesForSavingsAccountStatus
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v4 = [(PKDashboardPaymentPassDataSource *)self account];
-  v5 = [v4 type];
+  account = [(PKDashboardPaymentPassDataSource *)self account];
+  type = [account type];
 
-  if (v5 == 1)
+  if (type == 1)
   {
     if (PKSavingsHasDismissedClosedAccountMessage() == 2)
     {
@@ -1566,29 +1566,29 @@ void __77__PKDashboardPaymentPassDataSource_Accounts__messagesForSavingsAccountS
   }
 }
 
-- (void)messageForSavingsRewardsRedemptionWithCompletion:(id)a3
+- (void)messageForSavingsRewardsRedemptionWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(PKDashboardPaymentPassDataSource *)self account];
-  v6 = [v5 creditDetails];
-  v7 = [v6 rewardsDestination];
+  completionCopy = completion;
+  account = [(PKDashboardPaymentPassDataSource *)self account];
+  creditDetails = [account creditDetails];
+  rewardsDestination = [creditDetails rewardsDestination];
 
-  if ([v5 type] == 1 && v7 == 3 && !PKSavingsHasDismissedFixRewardsMessage())
+  if ([account type] == 1 && rewardsDestination == 3 && !PKSavingsHasDismissedFixRewardsMessage())
   {
-    v8 = [MEMORY[0x1E69B8400] sharedInstance];
-    v9 = [v5 accountIdentifier];
+    mEMORY[0x1E69B8400] = [MEMORY[0x1E69B8400] sharedInstance];
+    accountIdentifier = [account accountIdentifier];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __95__PKDashboardPaymentPassDataSource_Accounts__messageForSavingsRewardsRedemptionWithCompletion___block_invoke;
     v10[3] = &unk_1E801BB78;
     v10[4] = self;
-    v11 = v4;
-    [v8 lastRedemptionEventToDestination:3 forAccountIdentifier:v9 altDSID:0 completion:v10];
+    v11 = completionCopy;
+    [mEMORY[0x1E69B8400] lastRedemptionEventToDestination:3 forAccountIdentifier:accountIdentifier altDSID:0 completion:v10];
   }
 
-  else if (v4)
+  else if (completionCopy)
   {
-    (*(v4 + 2))(v4, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
@@ -1693,11 +1693,11 @@ void __95__PKDashboardPaymentPassDataSource_Accounts__messageForSavingsRewardsRe
 
 - (id)messageForSavingsAccountFDIC
 {
-  v3 = [(PKDashboardPaymentPassDataSource *)self _fetchOpenSavingsAccount];
-  v4 = [v3 accountIdentifier];
-  v5 = [(PKDashboardPaymentPassDataSource *)self account];
-  v6 = [v5 type];
-  if (v3 && v6 == 1)
+  _fetchOpenSavingsAccount = [(PKDashboardPaymentPassDataSource *)self _fetchOpenSavingsAccount];
+  accountIdentifier = [_fetchOpenSavingsAccount accountIdentifier];
+  account = [(PKDashboardPaymentPassDataSource *)self account];
+  type = [account type];
+  if (_fetchOpenSavingsAccount && type == 1)
   {
     HasDismissedFDICMessage = PKSavingsHasDismissedFDICMessage();
 
@@ -1723,7 +1723,7 @@ void __95__PKDashboardPaymentPassDataSource_Accounts__messageForSavingsRewardsRe
       v16[2] = __74__PKDashboardPaymentPassDataSource_Accounts__messageForSavingsAccountFDIC__block_invoke;
       v16[3] = &unk_1E80110E0;
       objc_copyWeak(&v18, &location);
-      v17 = v4;
+      v17 = accountIdentifier;
       [(PKDashboardPassMessage *)v8 setActionOnDismiss:v16];
       v14[0] = MEMORY[0x1E69E9820];
       v14[1] = 3221225472;
@@ -1781,8 +1781,8 @@ void __74__PKDashboardPaymentPassDataSource_Accounts__messageForSavingsAccountFD
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(PKDashboardPaymentPassDataSource *)self accounts];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  accounts = [(PKDashboardPaymentPassDataSource *)self accounts];
+  v3 = [accounts countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = *v9;
@@ -1792,7 +1792,7 @@ void __74__PKDashboardPaymentPassDataSource_Accounts__messageForSavingsAccountFD
       {
         if (*v9 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(accounts);
         }
 
         v6 = *(*(&v8 + 1) + 8 * i);
@@ -1803,7 +1803,7 @@ void __74__PKDashboardPaymentPassDataSource_Accounts__messageForSavingsAccountFD
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v3 = [accounts countByEnumeratingWithState:&v8 objects:v12 count:16];
       if (v3)
       {
         continue;
@@ -1825,33 +1825,33 @@ LABEL_12:
     return 0;
   }
 
-  v3 = [(PKDashboardPaymentPassDataSource *)self upcomingRecurringPeerPayments];
-  v4 = [v3 count];
+  upcomingRecurringPeerPayments = [(PKDashboardPaymentPassDataSource *)self upcomingRecurringPeerPayments];
+  v4 = [upcomingRecurringPeerPayments count];
 
   return v4;
 }
 
-- (id)upcomingRecurringPeerPaymentItemAtIndex:(unint64_t)a3
+- (id)upcomingRecurringPeerPaymentItemAtIndex:(unint64_t)index
 {
-  v5 = [(PKDashboardPaymentPassDataSource *)self upcomingRecurringPeerPayments];
-  v6 = [v5 count];
+  upcomingRecurringPeerPayments = [(PKDashboardPaymentPassDataSource *)self upcomingRecurringPeerPayments];
+  v6 = [upcomingRecurringPeerPayments count];
 
-  if (v6 <= a3)
+  if (v6 <= index)
   {
     v9 = 0;
   }
 
   else
   {
-    v7 = [(PKDashboardPaymentPassDataSource *)self upcomingRecurringPeerPayments];
-    v8 = [v7 objectAtIndex:a3];
+    upcomingRecurringPeerPayments2 = [(PKDashboardPaymentPassDataSource *)self upcomingRecurringPeerPayments];
+    v8 = [upcomingRecurringPeerPayments2 objectAtIndex:index];
     v9 = [(PKDashboardPaymentPassDataSource *)self paymentTransactionItemForPayment:v8];
   }
 
   return v9;
 }
 
-- (id)paymentTransactionItemForPayment:(id)a3
+- (id)paymentTransactionItemForPayment:(id)payment
 {
   v4 = PKPeerPaymentTransactionForUpcomingRecurringPayment();
   v5 = [(PKDashboardPaymentPassDataSource *)self paymentTransactionItemForTransaction:v4];
@@ -1859,23 +1859,23 @@ LABEL_12:
   return v5;
 }
 
-- (void)_updateCanShowPeerPaymentRecurringPayments:(BOOL)a3
+- (void)_updateCanShowPeerPaymentRecurringPayments:(BOOL)payments
 {
-  v3 = a3;
-  v5 = [(PKDashboardPaymentPassDataSource *)self peerPaymentAccount];
-  v6 = [v5 state];
+  paymentsCopy = payments;
+  peerPaymentAccount = [(PKDashboardPaymentPassDataSource *)self peerPaymentAccount];
+  state = [peerPaymentAccount state];
 
   if ([(PKDashboardPaymentPassDataSource *)self _isPeerPaymentPass])
   {
-    v7 = [(PKDashboardPaymentPassDataSource *)self pass];
-    if ([v7 activationState])
+    pass = [(PKDashboardPaymentPassDataSource *)self pass];
+    if ([pass activationState])
     {
       v8 = 1;
     }
 
     else
     {
-      v8 = (v6 - 1) >= 2;
+      v8 = (state - 1) >= 2;
     }
 
     v9 = !v8;
@@ -1888,14 +1888,14 @@ LABEL_12:
 
   if ([(PKDashboardPaymentPassDataSource *)self allContentIsLoaded])
   {
-    v10 = [(PKDashboardPaymentPassDataSource *)self canShowPeerPaymentRecurringPayments];
+    canShowPeerPaymentRecurringPayments = [(PKDashboardPaymentPassDataSource *)self canShowPeerPaymentRecurringPayments];
     [(PKDashboardPaymentPassDataSource *)self setCanShowPeerPaymentRecurringPayments:v9];
-    if (v3 && v9 != v10)
+    if (paymentsCopy && v9 != canShowPeerPaymentRecurringPayments)
     {
       v11 = [(PKDashboardPaymentPassDataSource *)self firstSectionIndexForSectionIdentifier:10];
       v13 = [objc_alloc(MEMORY[0x1E696AC90]) initWithIndex:v11];
-      v12 = [(PKDashboardPaymentPassDataSource *)self delegate];
-      [v12 reloadSections:v13];
+      delegate = [(PKDashboardPaymentPassDataSource *)self delegate];
+      [delegate reloadSections:v13];
     }
   }
 
@@ -1906,22 +1906,22 @@ LABEL_12:
   }
 }
 
-- (void)reloadRecurringPeerPaymentsWithCompletion:(id)a3
+- (void)reloadRecurringPeerPaymentsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   [(PKDashboardPaymentPassDataSource *)self _updateCanShowPeerPaymentRecurringPayments:1];
   if ([(PKDashboardPaymentPassDataSource *)self canShowPeerPaymentRecurringPayments])
   {
     objc_initWeak(&location, self);
-    v5 = [MEMORY[0x1E69B9000] sharedInstance];
+    mEMORY[0x1E69B9000] = [MEMORY[0x1E69B9000] sharedInstance];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __100__PKDashboardPaymentPassDataSource_RecurringPeerPayment__reloadRecurringPeerPaymentsWithCompletion___block_invoke;
     v6[3] = &unk_1E801D410;
     objc_copyWeak(&v8, &location);
     v6[4] = self;
-    v7 = v4;
-    [v5 recurringPaymentsWithCompletion:v6];
+    v7 = completionCopy;
+    [mEMORY[0x1E69B9000] recurringPaymentsWithCompletion:v6];
 
     objc_destroyWeak(&v8);
     objc_destroyWeak(&location);
@@ -1931,9 +1931,9 @@ LABEL_12:
   {
     [(PKDashboardPaymentPassDataSource *)self setRecurringPeerPaymentsLoaded:1];
     [(PKDashboardPaymentPassDataSource *)self updateContentIsLoaded];
-    if (v4)
+    if (completionCopy)
     {
-      v4[2](v4);
+      completionCopy[2](completionCopy);
     }
   }
 }
@@ -2302,8 +2302,8 @@ void __100__PKDashboardPaymentPassDataSource_RecurringPeerPayment__reloadRecurri
           }
 
           v4 = *(*(&v48 + 1) + 8 * i);
-          v5 = [v4 lastExecutedTransaction];
-          if (([v4 status] == 3 || objc_msgSend(v4, "status") == 4) && objc_msgSend(v5, "status") == 3 && (objc_msgSend(v4, "lastExecutedTransactionAppearsInHistory") & 1) == 0)
+          lastExecutedTransaction = [v4 lastExecutedTransaction];
+          if (([v4 status] == 3 || objc_msgSend(v4, "status") == 4) && objc_msgSend(lastExecutedTransaction, "status") == 3 && (objc_msgSend(v4, "lastExecutedTransactionAppearsInHistory") & 1) == 0)
           {
             v6 = [(PKDashboardPaymentPassDataSource *)val _messageIdentifierForRecurringPayment:v4];
             if ((PKPeerPaymentRecurringPaymentHasDismissedMessageForMessageIdentifier() & 1) == 0)
@@ -2314,10 +2314,10 @@ void __100__PKDashboardPaymentPassDataSource_RecurringPeerPayment__reloadRecurri
               v8 = PKLocalizedPeerPaymentRecurringString(&cfstr_PaymentErrorPr.isa);
               [(PKDashboardPassMessage *)v7 setTitle:v8];
 
-              v9 = [v5 executionDate];
-              v10 = [(PKDashboardPaymentPassDataSource *)val _formattedDateStringForDate:v9];
-              v11 = [v4 recipientAddress];
-              v12 = [(PKDashboardPaymentPassDataSource *)val _recipientNameForAddress:v11];
+              executionDate = [lastExecutedTransaction executionDate];
+              v10 = [(PKDashboardPaymentPassDataSource *)val _formattedDateStringForDate:executionDate];
+              recipientAddress = [v4 recipientAddress];
+              v12 = [(PKDashboardPaymentPassDataSource *)val _recipientNameForAddress:recipientAddress];
               v13 = PKLocalizedPeerPaymentRecurringString(&cfstr_PaymentErrorDa.isa, &stru_1F3BD6370.isa, v10, v12);
               [(PKDashboardPassMessage *)v7 setMessage:v13];
 
@@ -2356,14 +2356,14 @@ void __100__PKDashboardPaymentPassDataSource_RecurringPeerPayment__reloadRecurri
       while (v35);
     }
 
-    v16 = [(PKDashboardPaymentPassDataSource *)val peerPaymentThresholdTopUp];
-    v17 = v16;
-    if (v16)
+    peerPaymentThresholdTopUp = [(PKDashboardPaymentPassDataSource *)val peerPaymentThresholdTopUp];
+    v17 = peerPaymentThresholdTopUp;
+    if (peerPaymentThresholdTopUp)
     {
-      v18 = [v16 lastExecutedTransaction];
+      lastExecutedTransaction2 = [peerPaymentThresholdTopUp lastExecutedTransaction];
       v19 = [(PKDashboardPaymentPassDataSource *)val _messageIdentifierForRecurringPayment:v17];
-      v20 = [v17 status];
-      if ([v18 status] == 3 && (v20 - 3) <= 1 && (PKPeerPaymentRecurringPaymentHasDismissedMessageForMessageIdentifier() & 1) == 0)
+      status = [v17 status];
+      if ([lastExecutedTransaction2 status] == 3 && (status - 3) <= 1 && (PKPeerPaymentRecurringPaymentHasDismissedMessageForMessageIdentifier() & 1) == 0)
       {
         v21 = objc_alloc_init(PKDashboardPassMessage);
         [(PKDashboardPassMessage *)v21 setType:0];
@@ -2372,7 +2372,7 @@ void __100__PKDashboardPaymentPassDataSource_RecurringPeerPayment__reloadRecurri
         [(PKDashboardPassMessage *)v21 setImage:v22];
 
         objc_initWeak(&location, val);
-        if (v20 == 4)
+        if (status == 4)
         {
           v23 = PKLocalizedPeerPaymentRecurringString(&cfstr_AutoReloadErro.isa);
           [(PKDashboardPassMessage *)v21 setTitle:v23];
@@ -2383,11 +2383,11 @@ void __100__PKDashboardPaymentPassDataSource_RecurringPeerPayment__reloadRecurri
 
         else
         {
-          v26 = [v18 errorCode];
-          v27 = [(PKDashboardPaymentPassDataSource *)val _titleForErrorCode:v26];
+          errorCode = [lastExecutedTransaction2 errorCode];
+          v27 = [(PKDashboardPaymentPassDataSource *)val _titleForErrorCode:errorCode];
           [(PKDashboardPassMessage *)v21 setTitle:v27];
 
-          v28 = [(PKDashboardPaymentPassDataSource *)val _messageForErrorCode:v26];
+          v28 = [(PKDashboardPaymentPassDataSource *)val _messageForErrorCode:errorCode];
           [(PKDashboardPassMessage *)v21 setMessage:v28];
 
           v40[0] = MEMORY[0x1E69E9820];
@@ -2401,7 +2401,7 @@ void __100__PKDashboardPaymentPassDataSource_RecurringPeerPayment__reloadRecurri
           objc_destroyWeak(&v42);
         }
 
-        if ([v18 exceedsAppleCashLimits])
+        if ([lastExecutedTransaction2 exceedsAppleCashLimits])
         {
           PKLocalizedPeerPaymentRecurringString(&cfstr_PaymentErrorLe.isa);
         }
@@ -2418,8 +2418,8 @@ void __100__PKDashboardPaymentPassDataSource_RecurringPeerPayment__reloadRecurri
         v36[2] = __91__PKDashboardPaymentPassDataSource_RecurringPeerPayment__recurringPaymentDashboardMessages__block_invoke_4;
         v36[3] = &unk_1E801D438;
         objc_copyWeak(v39, &location);
-        v37 = v18;
-        v39[1] = v20;
+        v37 = lastExecutedTransaction2;
+        v39[1] = status;
         v38 = v17;
         [(PKDashboardPassMessage *)v21 setActionOnButtonPress:v36];
         [v31 addObject:v21];
@@ -2501,15 +2501,15 @@ void __91__PKDashboardPaymentPassDataSource_RecurringPeerPayment__recurringPayme
   }
 }
 
-- (id)_messageForErrorCode:(unint64_t)a3
+- (id)_messageForErrorCode:(unint64_t)code
 {
   v3 = @"AUTO_RELOAD_ERROR_PROBLEM_MESSAGE_CUMULATIVE_LIMIT";
-  if (a3 - 40305 > 1)
+  if (code - 40305 > 1)
   {
     v3 = @"AUTO_RELOAD_ERROR_PROBLEM_MESSAGE_PAYMENT_METHOD";
   }
 
-  if (a3 - 40340 >= 4)
+  if (code - 40340 >= 4)
   {
     v4 = v3;
   }
@@ -2524,39 +2524,39 @@ void __91__PKDashboardPaymentPassDataSource_RecurringPeerPayment__recurringPayme
   return v5;
 }
 
-- (id)_messageIdentifierForRecurringPayment:(id)a3
+- (id)_messageIdentifierForRecurringPayment:(id)payment
 {
-  v3 = a3;
-  v4 = [v3 lastExecutedTransaction];
-  if (v4)
+  paymentCopy = payment;
+  lastExecutedTransaction = [paymentCopy lastExecutedTransaction];
+  if (lastExecutedTransaction)
   {
     v5 = MEMORY[0x1E696AEC0];
-    v6 = [v3 identifier];
+    identifier = [paymentCopy identifier];
 
-    v7 = [v4 identifier];
-    v8 = [v5 stringWithFormat:@"%@-%@", v6, v7];
+    identifier2 = [lastExecutedTransaction identifier];
+    identifier3 = [v5 stringWithFormat:@"%@-%@", identifier, identifier2];
 
-    v3 = v6;
+    paymentCopy = identifier;
   }
 
   else
   {
-    v8 = [v3 identifier];
+    identifier3 = [paymentCopy identifier];
   }
 
-  return v8;
+  return identifier3;
 }
 
-- (id)_formattedDateStringForDate:(id)a3
+- (id)_formattedDateStringForDate:(id)date
 {
   v3 = qword_1EBD6ACF0;
-  v4 = a3;
+  dateCopy = date;
   if (v3 != -1)
   {
     dispatch_once(&qword_1EBD6ACF0, &__block_literal_global_85_0);
   }
 
-  v5 = [_MergedGlobals_603 stringFromDate:v4];
+  v5 = [_MergedGlobals_603 stringFromDate:dateCopy];
 
   return v5;
 }
@@ -2573,73 +2573,73 @@ uint64_t __86__PKDashboardPaymentPassDataSource_RecurringPeerPayment___formatted
   return [v2 setFormattingContext:5];
 }
 
-- (id)_recipientNameForAddress:(id)a3
+- (id)_recipientNameForAddress:(id)address
 {
   v3 = MEMORY[0x1E695CE18];
-  v4 = a3;
+  addressCopy = address;
   v5 = objc_alloc_init(v3);
-  v6 = [MEMORY[0x1E69B8F30] requiredContactKeys];
-  v7 = [objc_alloc(MEMORY[0x1E69B8740]) initWithContactStore:v5 keysToFetch:v6];
-  v8 = [v7 contactForHandle:v4];
-  v9 = [MEMORY[0x1E69B8F30] displayNameForCounterpartHandle:v4 contact:v8];
+  requiredContactKeys = [MEMORY[0x1E69B8F30] requiredContactKeys];
+  v7 = [objc_alloc(MEMORY[0x1E69B8740]) initWithContactStore:v5 keysToFetch:requiredContactKeys];
+  v8 = [v7 contactForHandle:addressCopy];
+  v9 = [MEMORY[0x1E69B8F30] displayNameForCounterpartHandle:addressCopy contact:v8];
 
   return v9;
 }
 
-- (void)_presentDetailsForRecurringPayment:(id)a3
+- (void)_presentDetailsForRecurringPayment:(id)payment
 {
   v4 = MEMORY[0x1E69B8F28];
-  v5 = a3;
+  paymentCopy = payment;
   v6 = [v4 alloc];
-  v7 = [MEMORY[0x1E69B9020] sharedService];
-  v18 = [v6 initWithPeerPaymentWebService:v7];
+  mEMORY[0x1E69B9020] = [MEMORY[0x1E69B9020] sharedService];
+  v18 = [v6 initWithPeerPaymentWebService:mEMORY[0x1E69B9020]];
 
-  v8 = [v18 account];
-  v9 = [v8 recurringPaymentsFeatureDescriptor];
+  account = [v18 account];
+  recurringPaymentsFeatureDescriptor = [account recurringPaymentsFeatureDescriptor];
   v10 = [PKPeerPaymentRecurringPaymentDetailViewController alloc];
-  v11 = [v5 recipientAddress];
-  v12 = [(PKPeerPaymentRecurringPaymentDetailViewController *)v10 initWithRecurringPayment:v5 recipientAddress:v11 mode:2 context:0 peerPaymentController:v18 remoteMessagesComposer:0];
+  recipientAddress = [paymentCopy recipientAddress];
+  v12 = [(PKPeerPaymentRecurringPaymentDetailViewController *)v10 initWithRecurringPayment:paymentCopy recipientAddress:recipientAddress mode:2 context:0 peerPaymentController:v18 remoteMessagesComposer:0];
 
-  v13 = [v9 minimumAmount];
-  [(PKPeerPaymentRecurringPaymentDetailViewController *)v12 setMinimumAmount:v13];
+  minimumAmount = [recurringPaymentsFeatureDescriptor minimumAmount];
+  [(PKPeerPaymentRecurringPaymentDetailViewController *)v12 setMinimumAmount:minimumAmount];
 
-  v14 = [v9 maximumAmount];
-  [(PKPeerPaymentRecurringPaymentDetailViewController *)v12 setMaximumAmount:v14];
+  maximumAmount = [recurringPaymentsFeatureDescriptor maximumAmount];
+  [(PKPeerPaymentRecurringPaymentDetailViewController *)v12 setMaximumAmount:maximumAmount];
 
   [(PKPeerPaymentRecurringPaymentDetailViewController *)v12 setShowCancelButton:1];
-  v15 = [(PKDashboardPaymentPassDataSource *)self viewController];
-  v16 = [v15 navigationController];
+  viewController = [(PKDashboardPaymentPassDataSource *)self viewController];
+  navigationController = [viewController navigationController];
 
   v17 = [[PKNavigationController alloc] initWithRootViewController:v12];
-  [v16 presentViewController:v17 animated:1 completion:0];
+  [navigationController presentViewController:v17 animated:1 completion:0];
 }
 
-- (void)_dismissMessageForRecurringPayment:(id)a3
+- (void)_dismissMessageForRecurringPayment:(id)payment
 {
-  v4 = [(PKDashboardPaymentPassDataSource *)self _messageIdentifierForRecurringPayment:a3];
+  v4 = [(PKDashboardPaymentPassDataSource *)self _messageIdentifierForRecurringPayment:payment];
   PKPeerPaymentRecurringPaymentAddDismissedMessageForMessageIdentifier();
   [(PKDashboardPaymentPassDataSource *)self reloadMessagesAfterMessageInteraction];
 }
 
-- (PKDashboardPaymentPassDataSource)initWithGroupView:(id)a3 context:(id)a4
+- (PKDashboardPaymentPassDataSource)initWithGroupView:(id)view context:(id)context
 {
-  v7 = a3;
-  v8 = a4;
+  viewCopy = view;
+  contextCopy = context;
   v56.receiver = self;
   v56.super_class = PKDashboardPaymentPassDataSource;
   v9 = [(PKDashboardPaymentPassDataSource *)&v56 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_context, a4);
-    objc_storeStrong(&v10->_groupView, a3);
-    [v7 addPassGroupViewObserver:v10];
-    v11 = [v7 frontmostPassView];
-    [(PKDashboardPaymentPassDataSource *)v10 _setPassStateProvider:v11];
+    objc_storeStrong(&v9->_context, context);
+    objc_storeStrong(&v10->_groupView, view);
+    [viewCopy addPassGroupViewObserver:v10];
+    frontmostPassView = [viewCopy frontmostPassView];
+    [(PKDashboardPaymentPassDataSource *)v10 _setPassStateProvider:frontmostPassView];
 
-    v12 = [v7 group];
+    group = [viewCopy group];
     group = v10->_group;
-    v10->_group = v12;
+    v10->_group = group;
 
     v10->_lockImages._os_unfair_lock_opaque = 0;
     v14 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -2700,14 +2700,14 @@ uint64_t __86__PKDashboardPaymentPassDataSource_RecurringPeerPayment___formatted
     [(NSMutableDictionary *)v10->_dynamicSections setObject:&unk_1F3CC7AD8 forKeyedSubscript:&unk_1F3CC7AF0];
     [(NSMutableDictionary *)v10->_dynamicSections setObject:&unk_1F3CC7AD8 forKeyedSubscript:&unk_1F3CC7B08];
     [(NSMutableDictionary *)v10->_dynamicSections setObject:&unk_1F3CC7AD8 forKeyedSubscript:&unk_1F3CC7B20];
-    v35 = [MEMORY[0x1E69B8DB8] paymentService];
+    paymentService = [MEMORY[0x1E69B8DB8] paymentService];
     paymentService = v10->_paymentService;
-    v10->_paymentService = v35;
+    v10->_paymentService = paymentService;
 
     [(PKPaymentService *)v10->_paymentService registerObserver:v10];
-    v37 = [MEMORY[0x1E69B91E0] sharedSecureElement];
+    mEMORY[0x1E69B91E0] = [MEMORY[0x1E69B91E0] sharedSecureElement];
     secureElement = v10->_secureElement;
-    v10->_secureElement = v37;
+    v10->_secureElement = mEMORY[0x1E69B91E0];
 
     v10->_isInRestrictedMode = [(PKSecureElement *)v10->_secureElement isInRestrictedMode];
     [(PKSecureElement *)v10->_secureElement registerObserver:v10];
@@ -2716,20 +2716,20 @@ uint64_t __86__PKDashboardPaymentPassDataSource_RecurringPeerPayment___formatted
     v10->_formatterYear = v39;
 
     [(NSDateFormatter *)v10->_formatterYear setLocalizedDateFormatFromTemplate:@"y"];
-    v41 = [(PKAccount *)v10->_account creditDetails];
-    v42 = [v41 productTimeZone];
+    creditDetails = [(PKAccount *)v10->_account creditDetails];
+    productTimeZone = [creditDetails productTimeZone];
 
     v43 = objc_alloc_init(MEMORY[0x1E696AB78]);
     formatterMonth = v10->_formatterMonth;
     v10->_formatterMonth = v43;
 
-    [(NSDateFormatter *)v10->_formatterMonth setTimeZone:v42];
+    [(NSDateFormatter *)v10->_formatterMonth setTimeZone:productTimeZone];
     [(NSDateFormatter *)v10->_formatterMonth setLocalizedDateFormatFromTemplate:@"MMMM"];
     v45 = objc_alloc_init(MEMORY[0x1E696AB78]);
     formatterMonthDay = v10->_formatterMonthDay;
     v10->_formatterMonthDay = v45;
 
-    [(NSDateFormatter *)v10->_formatterMonthDay setTimeZone:v42];
+    [(NSDateFormatter *)v10->_formatterMonthDay setTimeZone:productTimeZone];
     [(NSDateFormatter *)v10->_formatterMonthDay setLocalizedDateFormatFromTemplate:@"MMMM d"];
     v47 = objc_alloc_init(MEMORY[0x1E696ADA0]);
     formatterPercentage = v10->_formatterPercentage;
@@ -2768,27 +2768,27 @@ uint64_t __86__PKDashboardPaymentPassDataSource_RecurringPeerPayment___formatted
   v3 = [(PKGroup *)self->_group passAtIndex:[(PKGroup *)self->_group frontmostPassIndex]];
   if (self->_pass != v3)
   {
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    v5 = [(PKPeerPaymentWebService *)self->_peerPaymentWebService targetDevice];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    targetDevice = [(PKPeerPaymentWebService *)self->_peerPaymentWebService targetDevice];
     v92 = *MEMORY[0x1E69BC378];
-    [v4 removeObserver:self name:? object:?];
+    [defaultCenter removeObserver:self name:? object:?];
 
-    v6 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
     v7 = *MEMORY[0x1E69B9E60];
-    [v6 removeObserver:self name:*MEMORY[0x1E69B9E60] object:0];
+    [defaultCenter2 removeObserver:self name:*MEMORY[0x1E69B9E60] object:0];
 
-    v8 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
     v9 = *MEMORY[0x1E695D8F0];
-    [v8 removeObserver:self name:*MEMORY[0x1E695D8F0] object:0];
+    [defaultCenter3 removeObserver:self name:*MEMORY[0x1E695D8F0] object:0];
 
-    v10 = [MEMORY[0x1E69B87F0] sharedInstance];
-    [v10 removeObserver:self];
+    mEMORY[0x1E69B87F0] = [MEMORY[0x1E69B87F0] sharedInstance];
+    [mEMORY[0x1E69B87F0] removeObserver:self];
 
     [(PKAccountService *)self->_accountService unregisterObserver:self];
     [(PKLinkedApplication *)self->_linkedApplication removeObserver:self];
-    v11 = [MEMORY[0x1E69B9000] sharedInstance];
+    mEMORY[0x1E69B9000] = [MEMORY[0x1E69B9000] sharedInstance];
     location = &self->_pass;
-    [v11 unregisterObserver:self];
+    [mEMORY[0x1E69B9000] unregisterObserver:self];
     if ([(PKDashboardPaymentPassDataSource *)self hasAssociatedPaymentRewardsBalance])
     {
       [(PKDashboardPaymentPassDataSource *)self resetAssociatedPaymentRewardsBalanceIfNeeded];
@@ -2797,16 +2797,16 @@ uint64_t __86__PKDashboardPaymentPassDataSource_RecurringPeerPayment___formatted
     [(PKDashboardPaymentPassDataSource *)self setPayWithRewardsSupportState:[(PKDashboardPaymentPassDataSource *)self supportsPaymentRewardsBalance]];
     v94 = self->_pass;
     objc_storeStrong(location, v3);
-    v93 = [(PKPaymentPass *)self->_pass uniqueID];
+    uniqueID = [(PKPaymentPass *)self->_pass uniqueID];
     v12 = PKLogFacilityTypeGetObject();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       [(PKDashboardPaymentPassDataSource *)self _passFeature];
       v13 = PKFeatureIdentifierToString();
       *buf = 134218498;
-      v108 = self;
+      selfCopy = self;
       v109 = 2114;
-      v110 = v93;
+      v110 = uniqueID;
       v111 = 2114;
       v112 = v13;
       _os_log_impl(&dword_1BD026000, v12, OS_LOG_TYPE_DEFAULT, "Dashboard loading (%p): for %{public}@, pass feature %{public}@", buf, 0x20u);
@@ -2863,10 +2863,10 @@ uint64_t __86__PKDashboardPaymentPassDataSource_RecurringPeerPayment___formatted
 
     else
     {
-      v22 = [(PKPaymentPass *)self->_pass isAccessPass];
-      self->_isAccessPass = v22;
+      isAccessPass = [(PKPaymentPass *)self->_pass isAccessPass];
+      self->_isAccessPass = isAccessPass;
       self->_productsLoaded = 1;
-      if (v22 && self->_expressChangedNotificationToken == -1)
+      if (isAccessPass && self->_expressChangedNotificationToken == -1)
       {
         objc_initWeak(buf, self);
         v102[0] = MEMORY[0x1E69E9820];
@@ -2875,10 +2875,10 @@ uint64_t __86__PKDashboardPaymentPassDataSource_RecurringPeerPayment___formatted
         v102[3] = &unk_1E8012010;
         objc_copyWeak(&v103, buf);
         v23 = _Block_copy(v102);
-        v24 = [*MEMORY[0x1E69BB808] UTF8String];
+        uTF8String = [*MEMORY[0x1E69BB808] UTF8String];
         v25 = MEMORY[0x1E69E96A0];
         v26 = MEMORY[0x1E69E96A0];
-        notify_register_dispatch(v24, &self->_expressChangedNotificationToken, v25, v23);
+        notify_register_dispatch(uTF8String, &self->_expressChangedNotificationToken, v25, v23);
 
         objc_destroyWeak(&v103);
         objc_destroyWeak(buf);
@@ -2888,9 +2888,9 @@ uint64_t __86__PKDashboardPaymentPassDataSource_RecurringPeerPayment___formatted
     self->_hasUpdatedAccountRewardsDataIfNecessary = 0;
     if (![(PKPaymentPass *)self->_pass hasAssociatedPeerPaymentAccount])
     {
-      v35 = [*location associatedAccountServiceAccountIdentifier];
+      associatedAccountServiceAccountIdentifier = [*location associatedAccountServiceAccountIdentifier];
 
-      if (v35 && (-[NSObject account](v11, "account"), v36 = objc_claimAutoreleasedReturnValue(), peerPaymentAccount = self->_peerPaymentAccount, self->_peerPaymentAccount = v36, peerPaymentAccount, [MEMORY[0x1E696AD88] defaultCenter], v38 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v38, "addObserver:selector:name:object:", self, sel_reloadAccount, v7, 0), v38, objc_msgSend(MEMORY[0x1E696AD88], "defaultCenter"), v39 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v39, "addObserver:selector:name:object:", self, sel__localeDidChangeNotification_, v9, 0), v39, objc_msgSend(MEMORY[0x1E69B8400], "sharedInstance"), v40 = objc_claimAutoreleasedReturnValue(), accountService = self->_accountService, self->_accountService = v40, accountService, -[PKAccountService registerObserver:](self->_accountService, "registerObserver:", self), -[PKDashboardPaymentPassDataSource _isCreditPass](self, "_isCreditPass")))
+      if (associatedAccountServiceAccountIdentifier && (-[NSObject account](mEMORY[0x1E69B9000], "account"), v36 = objc_claimAutoreleasedReturnValue(), peerPaymentAccount = self->_peerPaymentAccount, self->_peerPaymentAccount = v36, peerPaymentAccount, [MEMORY[0x1E696AD88] defaultCenter], v38 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v38, "addObserver:selector:name:object:", self, sel_reloadAccount, v7, 0), v38, objc_msgSend(MEMORY[0x1E696AD88], "defaultCenter"), v39 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v39, "addObserver:selector:name:object:", self, sel__localeDidChangeNotification_, v9, 0), v39, objc_msgSend(MEMORY[0x1E69B8400], "sharedInstance"), v40 = objc_claimAutoreleasedReturnValue(), accountService = self->_accountService, self->_accountService = v40, accountService, -[PKAccountService registerObserver:](self->_accountService, "registerObserver:", self), -[PKDashboardPaymentPassDataSource _isCreditPass](self, "_isCreditPass")))
       {
         self->_transactionGrouping = 2;
       }
@@ -2914,47 +2914,47 @@ uint64_t __86__PKDashboardPaymentPassDataSource_RecurringPeerPayment___formatted
     [(PKDashboardPaymentPassDataSource *)self setNearbyPeerPaymentViewProvider:v27];
 
     v28 = self->_peerPaymentAccount;
-    v29 = [v11 account];
+    account = [mEMORY[0x1E69B9000] account];
     v30 = self->_peerPaymentAccount;
-    self->_peerPaymentAccount = v29;
+    self->_peerPaymentAccount = account;
 
     self->_shouldReloadDisclosuresSection = [(PKDashboardPaymentPassDataSource *)self _isDisclosureSectionChangedWithPreviousAccount:v28 previousPass:v94];
-    v31 = [(PKPeerPaymentAccount *)self->_peerPaymentAccount associatedPassUniqueID];
-    v32 = v93;
+    associatedPassUniqueID = [(PKPeerPaymentAccount *)self->_peerPaymentAccount associatedPassUniqueID];
+    v32 = uniqueID;
     v33 = v32;
-    if (v31 == v32)
+    if (associatedPassUniqueID == v32)
     {
     }
 
     else
     {
-      if (!v32 || !v31)
+      if (!v32 || !associatedPassUniqueID)
       {
 
 LABEL_41:
 LABEL_42:
         v60 = objc_alloc(MEMORY[0x1E69B8CF0]);
-        v61 = [(PKPaymentPass *)self->_pass uniqueID];
-        v62 = [v60 initForInstoreConextWithPassUniqueID:v61];
+        uniqueID2 = [(PKPaymentPass *)self->_pass uniqueID];
+        v62 = [v60 initForInstoreConextWithPassUniqueID:uniqueID2];
 
-        v63 = [MEMORY[0x1E69B8CE8] sharedInstance];
+        mEMORY[0x1E69B8CE8] = [MEMORY[0x1E69B8CE8] sharedInstance];
         paymentOffersController = self->_paymentOffersController;
-        self->_paymentOffersController = v63;
+        self->_paymentOffersController = mEMORY[0x1E69B8CE8];
 
         [(PKPaymentOffersController *)self->_paymentOffersController updateSessionDetails:v62];
         [(PKPaymentOffersController *)self->_paymentOffersController updatePaymentOfferCatalogIfNecessaryWithReason:10 completion:0];
         if (!self->_paymentDataProvider)
         {
-          v65 = [MEMORY[0x1E69B8BD8] defaultDataProvider];
+          defaultDataProvider = [MEMORY[0x1E69B8BD8] defaultDataProvider];
           paymentDataProvider = self->_paymentDataProvider;
-          self->_paymentDataProvider = v65;
+          self->_paymentDataProvider = defaultDataProvider;
 
           [(PKPaymentDefaultDataProvider *)self->_paymentDataProvider addDelegate:self];
         }
 
         v67 = [PKContactAvatarManager alloc];
-        v68 = [(PKDashboardPaymentPassDataSource *)self _contactResolver];
-        v69 = [(PKContactAvatarManager *)v67 initWithContactResolver:v68 paymentDataProvider:self->_paymentDataProvider];
+        _contactResolver = [(PKDashboardPaymentPassDataSource *)self _contactResolver];
+        v69 = [(PKContactAvatarManager *)v67 initWithContactResolver:_contactResolver paymentDataProvider:self->_paymentDataProvider];
         avatarManager = self->_avatarManager;
         self->_avatarManager = v69;
 
@@ -2975,17 +2975,17 @@ LABEL_42:
           self->_linkedApplication = 0;
         }
 
-        v74 = [(PKDashboardPaymentPassDataSource *)self AMPEnagementPlacementForCurrentlyDisplayedPass];
+        aMPEnagementPlacementForCurrentlyDisplayedPass = [(PKDashboardPaymentPassDataSource *)self AMPEnagementPlacementForCurrentlyDisplayedPass];
 
-        if (v74)
+        if (aMPEnagementPlacementForCurrentlyDisplayedPass)
         {
-          v75 = [MEMORY[0x1E69B87F0] sharedInstance];
-          [v75 addObserver:self];
+          mEMORY[0x1E69B87F0]2 = [MEMORY[0x1E69B87F0] sharedInstance];
+          [mEMORY[0x1E69B87F0]2 addObserver:self];
         }
 
         pass = self->_pass;
-        v77 = [MEMORY[0x1E69B8EF8] sharedService];
-        self->_shouldDisplayDeviceAssessmentEducation = [(PKPaymentPass *)pass shouldDisplayDeviceAssessmentEducationAccordingToService:v77];
+        mEMORY[0x1E69B8EF8] = [MEMORY[0x1E69B8EF8] sharedService];
+        self->_shouldDisplayDeviceAssessmentEducation = [(PKPaymentPass *)pass shouldDisplayDeviceAssessmentEducationAccordingToService:mEMORY[0x1E69B8EF8]];
 
         [(PKSecureElementPassContactIssuerHelper *)self->_contactIssuerHelper setPass:self->_pass];
         if ([(PKDashboardPaymentPassDataSource *)self isBankConnectSupported])
@@ -3008,22 +3008,22 @@ LABEL_42:
             objc_destroyWeak(buf);
           }
 
-          v81 = [*location primaryAccountIdentifier];
-          if (!v94 || (-[PKPaymentPass primaryAccountIdentifier](v94, "primaryAccountIdentifier"), v82 = objc_claimAutoreleasedReturnValue(), v83 = [v81 isEqualToString:v82], v82, (v83 & 1) == 0))
+          primaryAccountIdentifier = [*location primaryAccountIdentifier];
+          if (!v94 || (-[PKPaymentPass primaryAccountIdentifier](v94, "primaryAccountIdentifier"), v82 = objc_claimAutoreleasedReturnValue(), v83 = [primaryAccountIdentifier isEqualToString:v82], v82, (v83 & 1) == 0))
           {
-            v84 = [objc_alloc(MEMORY[0x1E6967DA0]) initWithPrimaryAccountIdentifier:v81];
+            v84 = [objc_alloc(MEMORY[0x1E6967DA0]) initWithPrimaryAccountIdentifier:primaryAccountIdentifier];
             [(PKDashboardPaymentPassDataSource *)self setBankConnectAccountsProvider:v84];
 
-            v85 = [(PKDashboardPaymentPassDataSource *)self bankConnectAccountsProvider];
-            [v85 setDelegate:self];
+            bankConnectAccountsProvider = [(PKDashboardPaymentPassDataSource *)self bankConnectAccountsProvider];
+            [bankConnectAccountsProvider setDelegate:self];
 
             if (!self->_financeKitProvider)
             {
-              v86 = [objc_alloc(MEMORY[0x1E6967DE0]) initWithPrimaryAccountIdentifier:v81];
+              v86 = [objc_alloc(MEMORY[0x1E6967DE0]) initWithPrimaryAccountIdentifier:primaryAccountIdentifier];
               [(PKDashboardPaymentPassDataSource *)self setBankConnectTransactionsProvider:v86];
 
-              v87 = [(PKDashboardPaymentPassDataSource *)self bankConnectTransactionsProvider];
-              [v87 setDelegate:self];
+              bankConnectTransactionsProvider = [(PKDashboardPaymentPassDataSource *)self bankConnectTransactionsProvider];
+              [bankConnectTransactionsProvider setDelegate:self];
             }
 
             v88 = objc_alloc_init(MEMORY[0x1E6967DB8]);
@@ -3048,7 +3048,7 @@ LABEL_42:
         goto LABEL_61;
       }
 
-      v34 = [v31 isEqualToString:v32];
+      v34 = [associatedPassUniqueID isEqualToString:v32];
 
       if (!v34)
       {
@@ -3056,9 +3056,9 @@ LABEL_42:
       }
     }
 
-    v42 = [MEMORY[0x1E69B9020] sharedService];
+    mEMORY[0x1E69B9020] = [MEMORY[0x1E69B9020] sharedService];
     peerPaymentWebService = self->_peerPaymentWebService;
-    self->_peerPaymentWebService = v42;
+    self->_peerPaymentWebService = mEMORY[0x1E69B9020];
 
     v44 = [PKPeerPaymentAccountResolutionController alloc];
     v45 = self->_peerPaymentAccount;
@@ -3069,14 +3069,14 @@ LABEL_42:
     self->_peerPaymentAccountResolutionController = v48;
 
     [(PKPeerPaymentAccountResolutionController *)self->_peerPaymentAccountResolutionController setDelegate:self];
-    v50 = [MEMORY[0x1E696AD88] defaultCenter];
-    v51 = [(PKPeerPaymentWebService *)self->_peerPaymentWebService targetDevice];
-    [v50 addObserver:self selector:sel__peerPaymentAccountChanged_ name:v92 object:v51];
+    defaultCenter4 = [MEMORY[0x1E696AD88] defaultCenter];
+    targetDevice2 = [(PKPeerPaymentWebService *)self->_peerPaymentWebService targetDevice];
+    [defaultCenter4 addObserver:self selector:sel__peerPaymentAccountChanged_ name:v92 object:targetDevice2];
 
-    [v11 registerObserver:self];
-    v52 = [MEMORY[0x1E69B8310] sharedManager];
+    [mEMORY[0x1E69B9000] registerObserver:self];
+    mEMORY[0x1E69B8310] = [MEMORY[0x1E69B8310] sharedManager];
     AMPEnrollmentManager = self->_AMPEnrollmentManager;
-    self->_AMPEnrollmentManager = v52;
+    self->_AMPEnrollmentManager = mEMORY[0x1E69B8310];
 
     if ([(PKDashboardPaymentPassDataSource *)self _passAvailableForAMPEnrollment])
     {
@@ -3084,19 +3084,19 @@ LABEL_42:
     }
 
     objc_initWeak(buf, self);
-    v54 = [MEMORY[0x1E69B8400] sharedInstance];
+    mEMORY[0x1E69B8400] = [MEMORY[0x1E69B8400] sharedInstance];
     v100[0] = MEMORY[0x1E69E9820];
     v100[1] = 3221225472;
     v100[2] = __55__PKDashboardPaymentPassDataSource_reloadFrontmostPass__block_invoke_3;
     v100[3] = &unk_1E8017038;
     objc_copyWeak(&v101, buf);
-    [v54 accountsWithPassLocallyProvisionedWithCompletion:v100];
+    [mEMORY[0x1E69B8400] accountsWithPassLocallyProvisionedWithCompletion:v100];
 
     if ([(PKPeerPaymentAccount *)self->_peerPaymentAccount isAccountStateDirty])
     {
-      v55 = [MEMORY[0x1E695DF00] date];
-      v56 = [(PKPeerPaymentAccount *)self->_peerPaymentAccount lastUpdated];
-      [v55 timeIntervalSinceDate:v56];
+      date = [MEMORY[0x1E695DF00] date];
+      lastUpdated = [(PKPeerPaymentAccount *)self->_peerPaymentAccount lastUpdated];
+      [date timeIntervalSinceDate:lastUpdated];
       v58 = v57 > 300.0;
 
       if (v58)
@@ -3113,7 +3113,7 @@ LABEL_42:
         v98[2] = __55__PKDashboardPaymentPassDataSource_reloadFrontmostPass__block_invoke_403;
         v98[3] = &unk_1E801D8E8;
         objc_copyWeak(&v99, buf);
-        [v11 updateAccountWithCompletion:v98];
+        [mEMORY[0x1E69B9000] updateAccountWithCompletion:v98];
         objc_destroyWeak(&v99);
       }
     }
@@ -3123,11 +3123,11 @@ LABEL_42:
     goto LABEL_41;
   }
 
-  v11 = PKLogFacilityTypeGetObject();
-  if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+  mEMORY[0x1E69B9000] = PKLogFacilityTypeGetObject();
+  if (os_log_type_enabled(mEMORY[0x1E69B9000], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
-    _os_log_impl(&dword_1BD026000, v11, OS_LOG_TYPE_DEFAULT, "Skipping reload of pass...", buf, 2u);
+    _os_log_impl(&dword_1BD026000, mEMORY[0x1E69B9000], OS_LOG_TYPE_DEFAULT, "Skipping reload of pass...", buf, 2u);
   }
 
 LABEL_61:
@@ -3309,14 +3309,14 @@ void __55__PKDashboardPaymentPassDataSource_reloadFrontmostPass__block_invoke_2_
   v5 = +[PKUIForegroundActiveArbiter sharedInstance];
   [v5 unregisterObserver:self];
 
-  v6 = [MEMORY[0x1E69B87F0] sharedInstance];
-  [v6 removeObserver:self];
+  mEMORY[0x1E69B87F0] = [MEMORY[0x1E69B87F0] sharedInstance];
+  [mEMORY[0x1E69B87F0] removeObserver:self];
 
   [(PKSpendingSummaryFetcher *)self->_summaryFetcher unregisterObserver:self];
   [(PKPaymentService *)self->_paymentService unregisterObserver:self];
   [(PKAccountService *)self->_accountService unregisterObserver:self];
-  v7 = [MEMORY[0x1E69B9000] sharedInstance];
-  [v7 unregisterObserver:self];
+  mEMORY[0x1E69B9000] = [MEMORY[0x1E69B9000] sharedInstance];
+  [mEMORY[0x1E69B9000] unregisterObserver:self];
 
   timerTransactions = self->_timerTransactions;
   if (timerTransactions)
@@ -3339,7 +3339,7 @@ void __55__PKDashboardPaymentPassDataSource_reloadFrontmostPass__block_invoke_2_
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v19 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1BD026000, v11, OS_LOG_TYPE_DEFAULT, "Dashboard loading (%p): Deallocated", buf, 0xCu);
     }
   }
@@ -3368,21 +3368,21 @@ void __55__PKDashboardPaymentPassDataSource_reloadFrontmostPass__block_invoke_2_
   [(PKDashboardPaymentPassDataSource *)&v17 dealloc];
 }
 
-- (void)executeAfterContentIsLoaded:(id)a3
+- (void)executeAfterContentIsLoaded:(id)loaded
 {
-  v4 = a3;
-  if (v4)
+  loadedCopy = loaded;
+  if (loadedCopy)
   {
-    v7 = v4;
+    v7 = loadedCopy;
     if (self->_allContentIsLoaded || self->_contentLoadedFrozen)
     {
-      v4[2]();
+      loadedCopy[2]();
     }
 
     else
     {
       executionBlocksContentIsLoaded = self->_executionBlocksContentIsLoaded;
-      v6 = _Block_copy(v4);
+      v6 = _Block_copy(loadedCopy);
       [(NSMutableArray *)executionBlocksContentIsLoaded addObject:v6];
     }
   }
@@ -3393,17 +3393,17 @@ void __55__PKDashboardPaymentPassDataSource_reloadFrontmostPass__block_invoke_2_
   }
 }
 
-- (BOOL)_creditAccountItemTypeEnabled:(unint64_t)a3
+- (BOOL)_creditAccountItemTypeEnabled:(unint64_t)enabled
 {
   result = 0;
-  if (a3 <= 2)
+  if (enabled <= 2)
   {
-    if (a3 - 1 < 2)
+    if (enabled - 1 < 2)
     {
       return [(PKAccount *)self->_account accessLevel]== 2;
     }
 
-    if (a3)
+    if (enabled)
     {
       return result;
     }
@@ -3411,9 +3411,9 @@ void __55__PKDashboardPaymentPassDataSource_reloadFrontmostPass__block_invoke_2_
     return [(PKAccount *)self->_account accessLevel]== 1;
   }
 
-  if (a3 != 4)
+  if (enabled != 4)
   {
-    if (a3 != 3)
+    if (enabled != 3)
     {
       return result;
     }
@@ -3472,7 +3472,7 @@ void __55__PKDashboardPaymentPassDataSource_reloadFrontmostPass__block_invoke_2_
   return PKPeerPaymentAccountIsFDICInsured();
 }
 
-- (unint64_t)_creditAccountItemTypeForItemIndex:(unint64_t)a3
+- (unint64_t)_creditAccountItemTypeForItemIndex:(unint64_t)index
 {
   v5 = 0;
   v6 = 0;
@@ -3480,7 +3480,7 @@ void __55__PKDashboardPaymentPassDataSource_reloadFrontmostPass__block_invoke_2_
   {
     if ([(PKDashboardPaymentPassDataSource *)self _creditAccountItemTypeEnabled:v5])
     {
-      if (v6 == a3)
+      if (v6 == index)
       {
         return v5;
       }
@@ -3495,57 +3495,57 @@ void __55__PKDashboardPaymentPassDataSource_reloadFrontmostPass__block_invoke_2_
   return 0x7FFFFFFFFFFFFFFFLL;
 }
 
-- (id)itemAtIndexPath:(id)a3
+- (id)itemAtIndexPath:(id)path
 {
-  v4 = a3;
-  [(PKDashboardPaymentPassDataSource *)self _dataSourceIndicesForIndexPath:v4];
+  pathCopy = path;
+  [(PKDashboardPaymentPassDataSource *)self _dataSourceIndicesForIndexPath:pathCopy];
   v5 = [[PKDashboardPassGroupItem alloc] initWithGroupView:self->_groupView];
 
   return v5;
 }
 
-- (id)paymentTransactionItemForTransaction:(id)a3
+- (id)paymentTransactionItemForTransaction:(id)transaction
 {
-  v4 = a3;
+  transactionCopy = transaction;
   v5 = [PKDashboardPaymentTransactionItem alloc];
   transactionSourceCollection = self->_transactionSourceCollection;
   familyCollection = self->_familyCollection;
   account = self->_account;
   accountUserCollection = self->_accountUserCollection;
-  v10 = [(PKDashboardPaymentPassDataSource *)self bankConnectLinkedAccountData];
-  v11 = [v10 institution];
-  v12 = [(PKDashboardPaymentTransactionItem *)v5 initWithTransactionSourceCollection:transactionSourceCollection familyCollection:familyCollection transaction:v4 account:account accountUserCollection:accountUserCollection bankConnectInstitution:v11];
+  bankConnectLinkedAccountData = [(PKDashboardPaymentPassDataSource *)self bankConnectLinkedAccountData];
+  institution = [bankConnectLinkedAccountData institution];
+  v12 = [(PKDashboardPaymentTransactionItem *)v5 initWithTransactionSourceCollection:transactionSourceCollection familyCollection:familyCollection transaction:transactionCopy account:account accountUserCollection:accountUserCollection bankConnectInstitution:institution];
 
   [(PKDashboardPaymentTransactionItem *)v12 setPhysicalCards:self->_physicalCards];
-  if ([v4 transactionType] == 9)
+  if ([transactionCopy transactionType] == 9)
   {
     transactionFetcher = self->_transactionFetcher;
-    v14 = [v4 identifier];
-    v15 = [(PKDashboardTransactionFetcher *)transactionFetcher cashbackGroupForTransactionWithIdentifier:v14 cashbackTransactionSourceCollection:0];
+    identifier = [transactionCopy identifier];
+    v15 = [(PKDashboardTransactionFetcher *)transactionFetcher cashbackGroupForTransactionWithIdentifier:identifier cashbackTransactionSourceCollection:0];
     [(PKDashboardPaymentTransactionItem *)v12 setGroup:v15];
   }
 
-  v16 = [v4 secondaryFundingSourceFPANIdentifier];
-  if (v16)
+  secondaryFundingSourceFPANIdentifier = [transactionCopy secondaryFundingSourceFPANIdentifier];
+  if (secondaryFundingSourceFPANIdentifier)
   {
-    v17 = [(NSMutableDictionary *)self->_sourcesPerFundingSourceIdentifier objectForKey:v16];
+    v17 = [(NSMutableDictionary *)self->_sourcesPerFundingSourceIdentifier objectForKey:secondaryFundingSourceFPANIdentifier];
     if (!v17)
     {
-      v18 = [MEMORY[0x1E69B8A58] sharedInstance];
-      v19 = [v18 passWithFPANIdentifier:v16];
+      mEMORY[0x1E69B8A58] = [MEMORY[0x1E69B8A58] sharedInstance];
+      v19 = [mEMORY[0x1E69B8A58] passWithFPANIdentifier:secondaryFundingSourceFPANIdentifier];
 
       if (v19)
       {
-        v20 = [objc_alloc(MEMORY[0x1E69B92F8]) initWithPaymentPass:v19];
+        null = [objc_alloc(MEMORY[0x1E69B92F8]) initWithPaymentPass:v19];
       }
 
       else
       {
-        v20 = [MEMORY[0x1E695DFB0] null];
+        null = [MEMORY[0x1E695DFB0] null];
       }
 
-      v17 = v20;
-      [(NSMutableDictionary *)self->_sourcesPerFundingSourceIdentifier setObject:v20 forKey:v16];
+      v17 = null;
+      [(NSMutableDictionary *)self->_sourcesPerFundingSourceIdentifier setObject:null forKey:secondaryFundingSourceFPANIdentifier];
     }
 
     objc_opt_class();
@@ -3558,37 +3558,37 @@ void __55__PKDashboardPaymentPassDataSource_reloadFrontmostPass__block_invoke_2_
   return v12;
 }
 
-- (id)paymentTransactionItemForPendingRequest:(id)a3
+- (id)paymentTransactionItemForPendingRequest:(id)request
 {
   v4 = MEMORY[0x1E69B8EA8];
-  v5 = a3;
+  requestCopy = request;
   v6 = objc_alloc_init(v4);
-  v7 = [v5 requestToken];
-  [v6 setIdentifier:v7];
+  requestToken = [requestCopy requestToken];
+  [v6 setIdentifier:requestToken];
 
-  v8 = [v5 currencyAmount];
-  v9 = [v8 amount];
-  [v6 setAmount:v9];
+  currencyAmount = [requestCopy currencyAmount];
+  amount = [currencyAmount amount];
+  [v6 setAmount:amount];
 
-  v10 = [v5 currencyAmount];
-  v11 = [v10 currency];
-  [v6 setCurrencyCode:v11];
+  currencyAmount2 = [requestCopy currencyAmount];
+  currency = [currencyAmount2 currency];
+  [v6 setCurrencyCode:currency];
 
   [v6 setTransactionType:3];
   [v6 setPeerPaymentType:3];
   [v6 setTransactionStatus:0];
-  v12 = [v5 requesteeAddress];
-  [v6 setPeerPaymentCounterpartHandle:v12];
+  requesteeAddress = [requestCopy requesteeAddress];
+  [v6 setPeerPaymentCounterpartHandle:requesteeAddress];
 
-  v13 = [v5 memo];
-  [v6 setPeerPaymentMemo:v13];
+  memo = [requestCopy memo];
+  [v6 setPeerPaymentMemo:memo];
 
-  v14 = [v5 requestDate];
-  [v6 setTransactionDate:v14];
+  requestDate = [requestCopy requestDate];
+  [v6 setTransactionDate:requestDate];
 
-  v15 = [v5 expiryDate];
+  expiryDate = [requestCopy expiryDate];
 
-  [v6 setExpirationDate:v15];
+  [v6 setExpirationDate:expiryDate];
   [v6 setAccountType:1];
   [v6 setOriginatedByDevice:1];
   [v6 setHasNotificationServiceData:1];
@@ -3598,15 +3598,15 @@ void __55__PKDashboardPaymentPassDataSource_reloadFrontmostPass__block_invoke_2_
   return v16;
 }
 
-- (unint64_t)firstSectionIndexForSectionIdentifier:(unint64_t)a3
+- (unint64_t)firstSectionIndexForSectionIdentifier:(unint64_t)identifier
 {
-  if (!a3)
+  if (!identifier)
   {
     return 0;
   }
 
   v5 = 0;
-  for (i = 0; i != a3; ++i)
+  for (i = 0; i != identifier; ++i)
   {
     dynamicSections = self->_dynamicSections;
     v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:i];
@@ -3617,15 +3617,15 @@ void __55__PKDashboardPaymentPassDataSource_reloadFrontmostPass__block_invoke_2_
       v9 = &unk_1F3CC7B38;
     }
 
-    v11 = [v9 unsignedIntegerValue];
+    unsignedIntegerValue = [v9 unsignedIntegerValue];
 
-    v5 += v11;
+    v5 += unsignedIntegerValue;
   }
 
   return v5;
 }
 
-- ($F99D9A4FB75BC57F3386B8DC8EE08D7A)_dataSourceIndicesForIndexSection:(SEL)a3
+- ($F99D9A4FB75BC57F3386B8DC8EE08D7A)_dataSourceIndicesForIndexSection:(SEL)section
 {
   v6 = [MEMORY[0x1E696AC88] indexPathForItem:-1 inSection:a4];
   [(PKDashboardPaymentPassDataSource *)self _dataSourceIndicesForIndexPath:v6];
@@ -3633,10 +3633,10 @@ void __55__PKDashboardPaymentPassDataSource_reloadFrontmostPass__block_invoke_2_
   return result;
 }
 
-- ($F99D9A4FB75BC57F3386B8DC8EE08D7A)_dataSourceIndicesForIndexPath:(SEL)a3
+- ($F99D9A4FB75BC57F3386B8DC8EE08D7A)_dataSourceIndicesForIndexPath:(SEL)path
 {
   v16 = a4;
-  v6 = [v16 section];
+  section = [v16 section];
   v7 = 0;
   v8 = -1;
   do
@@ -3652,25 +3652,25 @@ void __55__PKDashboardPaymentPassDataSource_reloadFrontmostPass__block_invoke_2_
       v12 = &unk_1F3CC7B38;
     }
 
-    v14 = [v12 unsignedIntegerValue];
+    unsignedIntegerValue = [v12 unsignedIntegerValue];
 
-    v7 = v14 + v9;
+    v7 = unsignedIntegerValue + v9;
   }
 
-  while (v14 + v9 <= v6);
+  while (unsignedIntegerValue + v9 <= section);
   retstr->var0 = v8;
-  retstr->var1 = v6 - v9;
+  retstr->var1 = section - v9;
   retstr->var2 = [v16 item];
 
   return result;
 }
 
-- (unint64_t)numberOfItemsInSection:(unint64_t)a3
+- (unint64_t)numberOfItemsInSection:(unint64_t)section
 {
   v13 = 0;
   v14 = 0;
   v15 = 0;
-  result = [(PKDashboardPaymentPassDataSource *)self _dataSourceIndicesForIndexSection:a3];
+  result = [(PKDashboardPaymentPassDataSource *)self _dataSourceIndicesForIndexSection:section];
   switch(v13)
   {
     case 1:
@@ -3787,8 +3787,8 @@ LABEL_38:
       }
 
       v6 = [(NSArray *)self->_auxiliarySectionInfo objectAtIndex:v14];
-      v7 = [v6 items];
-      v5 = [v7 count];
+      items = [v6 items];
+      v5 = [items count];
 
 LABEL_29:
       return v5;
@@ -3839,15 +3839,15 @@ uint64_t __52__PKDashboardPaymentPassDataSource_numberOfSections__block_invoke(u
   return result;
 }
 
-- (id)titleForSection:(unint64_t)a3
+- (id)titleForSection:(unint64_t)section
 {
   v54 = *MEMORY[0x1E69E9840];
   v50 = 0;
   v51 = 0;
   v52 = 0;
-  [(PKDashboardPaymentPassDataSource *)self _dataSourceIndicesForIndexSection:a3];
+  [(PKDashboardPaymentPassDataSource *)self _dataSourceIndicesForIndexSection:section];
   objc_initWeak(&location, self);
-  v42 = 0;
+  header = 0;
   if (v50 <= 10)
   {
     if (v50 != 3)
@@ -3856,7 +3856,7 @@ uint64_t __52__PKDashboardPaymentPassDataSource_numberOfSections__block_invoke(u
       {
         if (self->_allContentIsLoaded && self->_isShowingPeerPaymentPendingRequests && [(NSArray *)self->_outgoingRequests count])
         {
-          v42 = PKLocalizedPeerPaymentString(&cfstr_PeerPaymentPen_1.isa);
+          header = PKLocalizedPeerPaymentString(&cfstr_PeerPaymentPen_1.isa);
           goto LABEL_45;
         }
       }
@@ -3865,7 +3865,7 @@ uint64_t __52__PKDashboardPaymentPassDataSource_numberOfSections__block_invoke(u
       {
         v6 = 0;
         v40 = 0;
-        v41 = 0;
+        labelColor = 0;
         v7 = 0;
         if (v50 != 10)
         {
@@ -3874,7 +3874,7 @@ uint64_t __52__PKDashboardPaymentPassDataSource_numberOfSections__block_invoke(u
 
         if (self->_allContentIsLoaded && [(PKDashboardPaymentPassDataSource *)self numberOfUpcomingRecurringPeerPayments])
         {
-          v42 = PKLocalizedPeerPaymentRecurringString(&cfstr_DashboardUpcom.isa);
+          header = PKLocalizedPeerPaymentRecurringString(&cfstr_DashboardUpcom.isa);
           goto LABEL_45;
         }
       }
@@ -3894,22 +3894,22 @@ uint64_t __52__PKDashboardPaymentPassDataSource_numberOfSections__block_invoke(u
     }
 
     v8 = [(NSArray *)tileGroups objectAtIndexedSubscript:v51];
-    v10 = [v8 tiles];
-    v11 = [v10 count];
+    tiles = [v8 tiles];
+    v11 = [tiles count];
 
     if (v11)
     {
-      v12 = [v8 state];
-      v13 = [v12 stateTypeGroup];
-      v42 = [v13 header];
+      state = [v8 state];
+      stateTypeGroup = [state stateTypeGroup];
+      header = [stateTypeGroup header];
       goto LABEL_49;
     }
 
     v7 = 0;
 LABEL_47:
     v40 = 0;
-    v41 = 0;
-    v42 = 0;
+    labelColor = 0;
+    header = 0;
     goto LABEL_52;
   }
 
@@ -3919,7 +3919,7 @@ LABEL_47:
     {
       v6 = 0;
       v40 = 0;
-      v41 = 0;
+      labelColor = 0;
       v7 = 0;
       if (v50 != 14)
       {
@@ -3932,7 +3932,7 @@ LABEL_47:
       }
 
       v8 = [(NSArray *)self->_auxiliarySectionInfo objectAtIndex:v51];
-      v42 = [v8 title];
+      header = [v8 title];
       goto LABEL_51;
     }
 
@@ -3944,27 +3944,27 @@ LABEL_47:
     v8 = [(NSArray *)self->_transactionGroups objectAtIndex:v51];
     if ([v8 count])
     {
-      v14 = [v8 firstObject];
-      v12 = [v14 group];
+      firstObject = [v8 firstObject];
+      state = [firstObject group];
 
-      if ([v12 type] == 3)
+      if ([state type] == 3)
       {
-        v42 = PKLocalizedPaymentString(&cfstr_DashboardAllTr.isa);
+        header = PKLocalizedPaymentString(&cfstr_DashboardAllTr.isa);
 LABEL_50:
 
 LABEL_51:
         v7 = 0;
         v11 = 0;
         v40 = 0;
-        v41 = 0;
+        labelColor = 0;
         goto LABEL_52;
       }
 
       formatterYear = self->_formatterYear;
-      v13 = [v8 firstObject];
-      v22 = [v13 group];
-      v23 = [v22 startDate];
-      v42 = [(NSDateFormatter *)formatterYear stringFromDate:v23];
+      stateTypeGroup = [v8 firstObject];
+      group = [stateTypeGroup group];
+      startDate = [group startDate];
+      header = [(NSDateFormatter *)formatterYear stringFromDate:startDate];
 
 LABEL_49:
       goto LABEL_50;
@@ -3981,18 +3981,18 @@ LABEL_49:
     {
       v5 = @"DASHBOARD_TRANSACTIONS_HEADER";
 LABEL_6:
-      v42 = PKLocalizedPaymentString(&v5->isa);
+      header = PKLocalizedPaymentString(&v5->isa);
 LABEL_45:
       v7 = 0;
       v11 = 0;
       v40 = 0;
-      v41 = 0;
+      labelColor = 0;
       goto LABEL_53;
     }
 
 LABEL_35:
-    v41 = 0;
-    v42 = 0;
+    labelColor = 0;
+    header = 0;
     v40 = 0;
     v7 = 0;
 LABEL_36:
@@ -4007,7 +4007,7 @@ LABEL_36:
 
   if ([(PKDashboardPaymentPassDataSource *)self supportsBankConnectTransactions])
   {
-    v42 = PKLocalizedBankConnectString(&cfstr_BankConnectDas_11.isa);
+    header = PKLocalizedBankConnectString(&cfstr_BankConnectDas_11.isa);
     goto LABEL_45;
   }
 
@@ -4017,13 +4017,13 @@ LABEL_36:
     goto LABEL_6;
   }
 
-  v42 = PKLocalizedPaymentString(&cfstr_DashboardTrans.isa);
-  v15 = [(PKAccount *)self->_account feature];
-  if (v15 == 2)
+  header = PKLocalizedPaymentString(&cfstr_DashboardTrans.isa);
+  feature = [(PKAccount *)self->_account feature];
+  if (feature == 2)
   {
     v16 = PKLocalizedFeatureString();
 
-    v42 = v16;
+    header = v16;
   }
 
   if (![(PKDashboardPaymentPassDataSource *)self _canFilterTransactions])
@@ -4033,14 +4033,14 @@ LABEL_36:
 
   if (_UISolariumEnabled())
   {
-    v17 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    v18 = [MEMORY[0x1E69DCAD8] configurationWithHierarchicalColor:v17];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    v18 = [MEMORY[0x1E69DCAD8] configurationWithHierarchicalColor:secondaryLabelColor];
     v19 = [MEMORY[0x1E69DCAD8] configurationWithWeight:6];
     v20 = [v18 configurationByApplyingConfiguration:v19];
 
     v40 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"line.horizontal.3.decrease.circle.fill" withConfiguration:v20];
 
-    v41 = 0;
+    labelColor = 0;
   }
 
   else
@@ -4056,7 +4056,7 @@ LABEL_36:
     }
 
     v40 = [MEMORY[0x1E69DCAB8] systemImageNamed:v26];
-    v41 = [MEMORY[0x1E69DC888] labelColor];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
   }
 
   if (self->_isShowingPeerPaymentPendingRequests)
@@ -4075,7 +4075,7 @@ LABEL_36:
   else
   {
     v27 = &unk_1F3CC8588;
-    if (v15 != 2)
+    if (feature != 2)
     {
       v27 = 0;
     }
@@ -4100,13 +4100,13 @@ LABEL_36:
           objc_enumerationMutation(obj);
         }
 
-        v31 = [*(*(&v45 + 1) + 8 * i) integerValue];
-        v32 = v31;
-        if (v31 <= 3)
+        integerValue = [*(*(&v45 + 1) + 8 * i) integerValue];
+        v32 = integerValue;
+        if (integerValue <= 3)
         {
-          if (v31 > 1)
+          if (integerValue > 1)
           {
-            if (v31 == 2)
+            if (integerValue == 2)
             {
               v33 = @"PEER_PAYMENT_TRANSACTION_FILTER_SENT";
             }
@@ -4138,9 +4138,9 @@ LABEL_99:
           goto LABEL_100;
         }
 
-        if (v31 <= 5)
+        if (integerValue <= 5)
         {
-          if (v31 == 4)
+          if (integerValue == 4)
           {
             v33 = @"PEER_PAYMENT_TRANSACTION_FILTER_TRANSFERS";
           }
@@ -4153,7 +4153,7 @@ LABEL_99:
           goto LABEL_97;
         }
 
-        if (v31 == 6 || v31 == 7 || v31 == 8)
+        if (integerValue == 6 || integerValue == 7 || integerValue == 8)
         {
           v34 = PKLocalizedFeatureString();
           goto LABEL_99;
@@ -4193,9 +4193,9 @@ LABEL_100:
 LABEL_52:
 
 LABEL_53:
-  if (!v42)
+  if (!header)
   {
-    v42 = 0;
+    header = 0;
     goto LABEL_36;
   }
 
@@ -4211,9 +4211,9 @@ LABEL_53:
     [v6 setMenu:v7];
   }
 
-  if (v41)
+  if (labelColor)
   {
-    [v6 setActionColor:v41];
+    [v6 setActionColor:labelColor];
   }
 
   [v6 setActionStyle:v11];
@@ -4244,13 +4244,13 @@ void __52__PKDashboardPaymentPassDataSource_titleForSection___block_invoke(uint6
   }
 }
 
-- (id)footerTextItemForSection:(unint64_t)a3
+- (id)footerTextItemForSection:(unint64_t)section
 {
   v47[1] = *MEMORY[0x1E69E9840];
   v44 = 0;
   v45 = 0;
   v46 = 0;
-  [(PKDashboardPaymentPassDataSource *)self _dataSourceIndicesForIndexSection:a3];
+  [(PKDashboardPaymentPassDataSource *)self _dataSourceIndicesForIndexSection:section];
   if (!self->_allContentIsLoaded)
   {
     v4 = 0;
@@ -4258,24 +4258,24 @@ void __52__PKDashboardPaymentPassDataSource_titleForSection___block_invoke(uint6
   }
 
   v5 = 0;
-  v6 = [(PKDashboardPaymentPassDataSource *)self bankConnectLinkedAccountData];
-  v7 = [v6 account];
+  bankConnectLinkedAccountData = [(PKDashboardPaymentPassDataSource *)self bankConnectLinkedAccountData];
+  account = [bankConnectLinkedAccountData account];
 
-  v8 = [v7 balance];
+  balance = [account balance];
   account = self->_account;
   if (account)
   {
 LABEL_7:
-    v10 = [(PKAccount *)account feature];
+    feature = [(PKAccount *)account feature];
     objc_initWeak(&location, self);
-    if (v10 == 2)
+    if (feature == 2)
     {
       if (v44 == 15)
       {
-        v11 = [(PKAccount *)self->_account creditDetails];
-        v12 = [v11 accountSummary];
+        creditDetails = [(PKAccount *)self->_account creditDetails];
+        accountSummary = [creditDetails accountSummary];
 
-        if ([(PKFDICSignageConfiguration *)v12 requiresDebtCollectionNotices])
+        if ([(PKFDICSignageConfiguration *)accountSummary requiresDebtCollectionNotices])
         {
           v13 = PKLocalizedFeatureString();
         }
@@ -4285,8 +4285,8 @@ LABEL_7:
           v13 = 0;
         }
 
-        v17 = [(PKDashboardPaymentPassDataSource *)self accounts];
-        v18 = [v17 pk_containsObjectPassingTest:&__block_literal_global_175];
+        accounts = [(PKDashboardPaymentPassDataSource *)self accounts];
+        v18 = [accounts pk_containsObjectPassingTest:&__block_literal_global_175];
 
         v19 = PKDynamicLocalizedFeatureString();
         v20 = @"FDIC_LEGAL_NOTICES_FOOTER";
@@ -4336,8 +4336,8 @@ LABEL_7:
       {
         if (self->_balanceSectionHasFooter)
         {
-          v12 = [[PKFDICSignageConfiguration alloc] initWithFeature:1 displayingBankName:1];
-          v4 = [PKDashboardFooterTextItem initWithFDICConfiguration:v12];
+          accountSummary = [[PKFDICSignageConfiguration alloc] initWithFeature:1 displayingBankName:1];
+          v4 = [PKDashboardFooterTextItem initWithFDICConfiguration:accountSummary];
 LABEL_37:
 
           goto LABEL_38;
@@ -4390,7 +4390,7 @@ LABEL_37:
           v32 = v22;
         }
 
-        v12 = v32;
+        accountSummary = v32;
 
         v33 = [PKTextRangeHyperlink alloc];
         v36[0] = MEMORY[0x1E69E9820];
@@ -4401,7 +4401,7 @@ LABEL_37:
         objc_copyWeak(&v37, &location);
         v26 = [(PKTextRangeHyperlink *)v33 initWithLinkText:v21 action:v36];
         [v35 addObject:v26];
-        v4 = [PKDashboardFooterTextItem itemWithFooterText:v12];
+        v4 = [PKDashboardFooterTextItem itemWithFooterText:accountSummary];
         [v4 setSources:v35];
 LABEL_36:
 
@@ -4486,16 +4486,16 @@ void __61__PKDashboardPaymentPassDataSource_footerTextItemForSection___block_inv
   }
 }
 
-- (id)_deletablePaymentTransactionForItem:(id)a3
+- (id)_deletablePaymentTransactionForItem:(id)item
 {
-  v3 = a3;
+  itemCopy = item;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 transaction];
-    if ([v4 isDeletable])
+    transaction = [itemCopy transaction];
+    if ([transaction isDeletable])
     {
-      v5 = v4;
+      v5 = transaction;
     }
 
     else
@@ -4514,21 +4514,21 @@ void __61__PKDashboardPaymentPassDataSource_footerTextItemForSection___block_inv
   return v6;
 }
 
-- (BOOL)canDeleteItem:(id)a3
+- (BOOL)canDeleteItem:(id)item
 {
-  v3 = [(PKDashboardPaymentPassDataSource *)self _deletablePaymentTransactionForItem:a3];
+  v3 = [(PKDashboardPaymentPassDataSource *)self _deletablePaymentTransactionForItem:item];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (void)deleteItem:(id)a3 completionHandler:(id)a4
+- (void)deleteItem:(id)item completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  itemCopy = item;
   WeakRetained = objc_loadWeakRetained(&self->_customDelegate);
   v9 = objc_loadWeakRetained(&self->_delegate);
-  v10 = [(PKDashboardPaymentPassDataSource *)self _deletablePaymentTransactionForItem:v7];
+  v10 = [(PKDashboardPaymentPassDataSource *)self _deletablePaymentTransactionForItem:itemCopy];
 
   if (WeakRetained && v9 && v10)
   {
@@ -4537,16 +4537,16 @@ void __61__PKDashboardPaymentPassDataSource_footerTextItemForSection___block_inv
     v12[1] = 3221225472;
     v12[2] = __65__PKDashboardPaymentPassDataSource_deleteItem_completionHandler___block_invoke;
     v12[3] = &unk_1E801D980;
-    v15 = v6;
+    v15 = handlerCopy;
     v12[4] = self;
     v13 = v10;
     v14 = v9;
     [WeakRetained presentActivityDeletionConfirmationAtIndexPath:v11 completion:v12];
   }
 
-  else if (v6)
+  else if (handlerCopy)
   {
-    (*(v6 + 2))(v6, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 
@@ -4699,12 +4699,12 @@ void __58__PKDashboardPaymentPassDataSource_reloadFamilyCollection__block_invoke
   [*(a1 + 40) _updateWithFamilyCollection:v2];
 }
 
-- (void)_updateWithFamilyCollection:(id)a3
+- (void)_updateWithFamilyCollection:(id)collection
 {
-  v5 = a3;
+  collectionCopy = collection;
   if ((PKEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_familyCollection, a3);
+    objc_storeStrong(&self->_familyCollection, collection);
     self->_familyCollectionLoaded = 1;
     self->_accountPendingFamilyMembersLoaded = 0;
     [(PKDashboardPaymentPassDataSource *)self reloadAccountPendingMembersWithNewMembers:0];
@@ -4716,10 +4716,10 @@ void __58__PKDashboardPaymentPassDataSource_reloadFamilyCollection__block_invoke
   }
 }
 
-- (void)reloadAccountWithNewAccount:(id)a3
+- (void)reloadAccountWithNewAccount:(id)account
 {
   v58 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  accountCopy = account;
   Current = CFAbsoluteTimeGetCurrent();
   if ([(PKPaymentPass *)self->_pass hasAssociatedPeerPaymentAccount])
   {
@@ -4748,13 +4748,13 @@ void __58__PKDashboardPaymentPassDataSource_reloadFamilyCollection__block_invoke
     v51[3] = &unk_1E801D9A8;
     objc_copyWeak(&v52, location);
     [v7 addOperation:v51];
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
     v49[0] = MEMORY[0x1E69E9820];
     v49[1] = 3221225472;
     v49[2] = __64__PKDashboardPaymentPassDataSource_reloadAccountWithNewAccount___block_invoke_5;
     v49[3] = &unk_1E8019248;
     objc_copyWeak(&v50, location);
-    v9 = [v7 evaluateWithInput:v8 completion:v49];
+    v9 = [v7 evaluateWithInput:null completion:v49];
 
     objc_destroyWeak(&v50);
     objc_destroyWeak(&v52);
@@ -4764,9 +4764,9 @@ void __58__PKDashboardPaymentPassDataSource_reloadFamilyCollection__block_invoke
     goto LABEL_75;
   }
 
-  v10 = [(PKPaymentPass *)self->_pass associatedAccountServiceAccountIdentifier];
+  associatedAccountServiceAccountIdentifier = [(PKPaymentPass *)self->_pass associatedAccountServiceAccountIdentifier];
 
-  if (!v10)
+  if (!associatedAccountServiceAccountIdentifier)
   {
     v18 = self->_account;
     self->_account = 0;
@@ -4794,9 +4794,9 @@ void __58__PKDashboardPaymentPassDataSource_reloadFamilyCollection__block_invoke
     v11 = 300.0;
   }
 
-  v12 = [(PKPaymentPass *)self->_pass associatedAccountServiceAccountIdentifier];
+  associatedAccountServiceAccountIdentifier2 = [(PKPaymentPass *)self->_pass associatedAccountServiceAccountIdentifier];
   v13 = self->_account;
-  if (!v4)
+  if (!accountCopy)
   {
     v14 = PKLogFacilityTypeGetObject();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -4807,26 +4807,26 @@ void __58__PKDashboardPaymentPassDataSource_reloadFamilyCollection__block_invoke
     }
 
     v48 = 0;
-    v15 = [(PKAccountService *)self->_accountService accountWithIdentifier:v12 error:&v48];
-    v4 = v15;
+    v15 = [(PKAccountService *)self->_accountService accountWithIdentifier:associatedAccountServiceAccountIdentifier2 error:&v48];
+    accountCopy = v15;
     v16 = (v15 | v48) == 0;
     if (v15 && [v15 feature] == 4)
     {
-      v17 = [v4 isCloudAccount];
+      isCloudAccount = [accountCopy isCloudAccount];
     }
 
     else
     {
-      v17 = 0;
+      isCloudAccount = 0;
     }
 
-    if (((v16 | v17) & 1) != 0 && !self->_performingAccountsUpdate && self->_accountService && Current - self->_lastAccountUpdate > 300.0)
+    if (((v16 | isCloudAccount) & 1) != 0 && !self->_performingAccountsUpdate && self->_accountService && Current - self->_lastAccountUpdate > 300.0)
     {
       self->_performingAccountsUpdate = 1;
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
         *location = 138412290;
-        *&location[4] = v12;
+        *&location[4] = associatedAccountServiceAccountIdentifier2;
         _os_log_impl(&dword_1BD026000, v14, OS_LOG_TYPE_DEFAULT, "Dashboard updating all accounts since account id %@ is missing from the device.", location, 0xCu);
       }
 
@@ -4837,19 +4837,19 @@ void __58__PKDashboardPaymentPassDataSource_reloadFamilyCollection__block_invoke
       v45[2] = __64__PKDashboardPaymentPassDataSource_reloadAccountWithNewAccount___block_invoke_561;
       v45[3] = &unk_1E8013DF8;
       objc_copyWeak(&v47, location);
-      v46 = v12;
+      v46 = associatedAccountServiceAccountIdentifier2;
       [(PKAccountService *)accountService updateAccountsWithCompletion:v45];
 
       objc_destroyWeak(&v47);
       objc_destroyWeak(location);
     }
 
-    if (!v4)
+    if (!accountCopy)
     {
       v21 = 0;
       LOBYTE(v27) = 0;
       v22 = 0;
-      v4 = 0;
+      accountCopy = 0;
       if (self->_account)
       {
         goto LABEL_64;
@@ -4863,8 +4863,8 @@ void __58__PKDashboardPaymentPassDataSource_reloadFamilyCollection__block_invoke
   {
     if ([(PKDashboardPaymentPassDataSource *)self _isCreditPass])
     {
-      v23 = [v4 creditDetails];
-      if (!v23)
+      creditDetails = [accountCopy creditDetails];
+      if (!creditDetails)
       {
         v21 = 0;
         goto LABEL_39;
@@ -4878,17 +4878,17 @@ void __58__PKDashboardPaymentPassDataSource_reloadFamilyCollection__block_invoke
         goto LABEL_34;
       }
 
-      v23 = [v4 appleBalanceDetails];
-      if (!v23)
+      creditDetails = [accountCopy appleBalanceDetails];
+      if (!creditDetails)
       {
         v21 = 0;
         goto LABEL_39;
       }
     }
 
-    v24 = [MEMORY[0x1E695DF00] date];
-    v25 = [v4 lastUpdated];
-    [v24 timeIntervalSinceDate:v25];
+    date = [MEMORY[0x1E695DF00] date];
+    lastUpdated = [accountCopy lastUpdated];
+    [date timeIntervalSinceDate:lastUpdated];
     v21 = v26 > v11;
 
 LABEL_39:
@@ -4896,7 +4896,7 @@ LABEL_39:
     goto LABEL_40;
   }
 
-  if ([v4 isContentEqualToAccount:self->_account])
+  if ([accountCopy isContentEqualToAccount:self->_account])
   {
 LABEL_34:
     v22 = 0;
@@ -4918,29 +4918,29 @@ LABEL_34:
 LABEL_40:
   if ([(PKDashboardPaymentPassDataSource *)self _canDisplayBalance])
   {
-    v28 = [(PKDashboardPaymentPassDataSource *)self _numberOfBalanceDashboardItems];
+    _numberOfBalanceDashboardItems = [(PKDashboardPaymentPassDataSource *)self _numberOfBalanceDashboardItems];
   }
 
   else
   {
-    v28 = 0;
+    _numberOfBalanceDashboardItems = 0;
   }
 
-  objc_storeStrong(&self->_account, v4);
-  -[PKSecureElementPassContactIssuerHelper setFeatureIdentifier:](self->_contactIssuerHelper, "setFeatureIdentifier:", [v4 feature]);
+  objc_storeStrong(&self->_account, accountCopy);
+  -[PKSecureElementPassContactIssuerHelper setFeatureIdentifier:](self->_contactIssuerHelper, "setFeatureIdentifier:", [accountCopy feature]);
   if ([(PKDashboardPaymentPassDataSource *)self _canDisplayBalance])
   {
-    v29 = [(PKDashboardPaymentPassDataSource *)self _numberOfBalanceDashboardItems];
+    _numberOfBalanceDashboardItems2 = [(PKDashboardPaymentPassDataSource *)self _numberOfBalanceDashboardItems];
   }
 
   else
   {
-    v29 = 0;
+    _numberOfBalanceDashboardItems2 = 0;
   }
 
   if (v13)
   {
-    v30 = v28 == v29;
+    v30 = _numberOfBalanceDashboardItems == _numberOfBalanceDashboardItems2;
   }
 
   else
@@ -4949,18 +4949,18 @@ LABEL_40:
   }
 
   v27 = !v30;
-  v31 = [(PKAccount *)self->_account creditDetails];
-  v32 = [v31 accountSummary];
-  v33 = [v32 currentStatement];
+  creditDetails2 = [(PKAccount *)self->_account creditDetails];
+  accountSummary = [creditDetails2 accountSummary];
+  currentStatement = [accountSummary currentStatement];
   currentStatement = self->_currentStatement;
-  self->_currentStatement = v33;
+  self->_currentStatement = currentStatement;
 
   if ([(PKDashboardPaymentPassDataSource *)self _isCreditPass])
   {
     physicalCardController = self->_physicalCardController;
     if (physicalCardController)
     {
-      [(PKPhysicalCardController *)physicalCardController updateWithAccount:v4];
+      [(PKPhysicalCardController *)physicalCardController updateWithAccount:accountCopy];
     }
 
     if (!self->_inboxDataSource)
@@ -4974,7 +4974,7 @@ LABEL_40:
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained accountDidUpdate:v4];
+    [WeakRetained accountDidUpdate:accountCopy];
   }
 
   if (self->_account)
@@ -5022,8 +5022,8 @@ LABEL_64:
     v39 = PKLogFacilityTypeGetObject();
     if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
     {
-      v40 = [(PKAccount *)self->_account lastUpdated];
-      v41 = [v40 description];
+      lastUpdated2 = [(PKAccount *)self->_account lastUpdated];
+      v41 = [lastUpdated2 description];
       *location = 134218242;
       *&location[4] = self;
       v56 = 2112;
@@ -5039,7 +5039,7 @@ LABEL_64:
     v43[2] = __64__PKDashboardPaymentPassDataSource_reloadAccountWithNewAccount___block_invoke_570;
     v43[3] = &unk_1E80159B0;
     objc_copyWeak(&v44, location);
-    [(PKAccountService *)v42 updateAccountWithIdentifier:v12 extended:0 completion:v43];
+    [(PKAccountService *)v42 updateAccountWithIdentifier:associatedAccountServiceAccountIdentifier2 extended:0 completion:v43];
     objc_destroyWeak(&v44);
     objc_destroyWeak(location);
   }
@@ -5250,13 +5250,13 @@ void __64__PKDashboardPaymentPassDataSource_reloadAccountWithNewAccount___block_
       {
         objc_initWeak(&location, self);
         accountService = self->_accountService;
-        v5 = [(PKAccount *)self->_account accountIdentifier];
+        accountIdentifier = [(PKAccount *)self->_account accountIdentifier];
         v6[0] = MEMORY[0x1E69E9820];
         v6[1] = 3221225472;
         v6[2] = __59__PKDashboardPaymentPassDataSource_reloadScheduledPayments__block_invoke;
         v6[3] = &unk_1E8017038;
         objc_copyWeak(&v7, &location);
-        [(PKAccountService *)accountService scheduledPaymentsWithAccountIdentifier:v5 includeFailedRecurringPayments:1 completion:v6];
+        [(PKAccountService *)accountService scheduledPaymentsWithAccountIdentifier:accountIdentifier includeFailedRecurringPayments:1 completion:v6];
 
         objc_destroyWeak(&v7);
         objc_destroyWeak(&location);
@@ -5445,8 +5445,8 @@ uint64_t __59__PKDashboardPaymentPassDataSource_reloadScheduledPayments__block_i
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v5 = [(PKAccountUserCollection *)self->_accountUserCollection accountUsers];
-    v6 = [v5 countByEnumeratingWithState:&v25 objects:v31 count:16];
+    accountUsers = [(PKAccountUserCollection *)self->_accountUserCollection accountUsers];
+    v6 = [accountUsers countByEnumeratingWithState:&v25 objects:v31 count:16];
     if (v6)
     {
       v7 = v6;
@@ -5457,14 +5457,14 @@ uint64_t __59__PKDashboardPaymentPassDataSource_reloadScheduledPayments__block_i
         {
           if (*v26 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(accountUsers);
           }
 
           v10 = [objc_alloc(MEMORY[0x1E69B92F8]) initWithAccountUser:*(*(&v25 + 1) + 8 * i)];
           [v3 addObject:v10];
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v25 objects:v31 count:16];
+        v7 = [accountUsers countByEnumeratingWithState:&v25 objects:v31 count:16];
       }
 
       while (v7);
@@ -5475,9 +5475,9 @@ uint64_t __59__PKDashboardPaymentPassDataSource_reloadScheduledPayments__block_i
     v13 = [v3 copy];
     v14 = [v12 initWithTransactionSources:v13];
 
-    v15 = [(PKDashboardPaymentPassDataSource *)self transactionsCount];
-    v16 = [(PKDashboardPaymentPassDataSource *)self _canShowTransactions];
-    if (!PKEqualObjects() || (((v15 == 0) ^ v16) & 1) == 0)
+    transactionsCount = [(PKDashboardPaymentPassDataSource *)self transactionsCount];
+    _canShowTransactions = [(PKDashboardPaymentPassDataSource *)self _canShowTransactions];
+    if (!PKEqualObjects() || (((transactionsCount == 0) ^ _canShowTransactions) & 1) == 0)
     {
       v17 = PKLogFacilityTypeGetObject();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
@@ -5525,29 +5525,29 @@ uint64_t __59__PKDashboardPaymentPassDataSource_reloadScheduledPayments__block_i
   }
 }
 
-- (void)reloadPhysicalCardsWithNewPhysicalCards:(id)a3
+- (void)reloadPhysicalCardsWithNewPhysicalCards:(id)cards
 {
-  v4 = a3;
-  v5 = [(PKDashboardPaymentPassDataSource *)self _isCreditPass];
-  if (v5 && self->_account)
+  cardsCopy = cards;
+  _isCreditPass = [(PKDashboardPaymentPassDataSource *)self _isCreditPass];
+  if (_isCreditPass && self->_account)
   {
-    if (v4)
+    if (cardsCopy)
     {
-      __76__PKDashboardPaymentPassDataSource_reloadPhysicalCardsWithNewPhysicalCards___block_invoke(v5, self, v4);
+      __76__PKDashboardPaymentPassDataSource_reloadPhysicalCardsWithNewPhysicalCards___block_invoke(_isCreditPass, self, cardsCopy);
     }
 
     else
     {
       objc_initWeak(&location, self);
       accountService = self->_accountService;
-      v7 = [(PKAccount *)self->_account accountIdentifier];
+      accountIdentifier = [(PKAccount *)self->_account accountIdentifier];
       v8[0] = MEMORY[0x1E69E9820];
       v8[1] = 3221225472;
       v8[2] = __76__PKDashboardPaymentPassDataSource_reloadPhysicalCardsWithNewPhysicalCards___block_invoke_592;
       v8[3] = &unk_1E8016958;
       objc_copyWeak(&v10, &location);
       v9 = &__block_literal_global_587;
-      [(PKAccountService *)accountService physicalCardsForAccountWithIdentifier:v7 completion:v8];
+      [(PKAccountService *)accountService physicalCardsForAccountWithIdentifier:accountIdentifier completion:v8];
 
       objc_destroyWeak(&v10);
       objc_destroyWeak(&location);
@@ -5637,24 +5637,24 @@ void __76__PKDashboardPaymentPassDataSource_reloadPhysicalCardsWithNewPhysicalCa
   }
 }
 
-- (void)reloadAccountUsersWithNewAccountUserCollection:(id)a3
+- (void)reloadAccountUsersWithNewAccountUserCollection:(id)collection
 {
-  v9 = a3;
+  collectionCopy = collection;
   if ([(PKDashboardPaymentPassDataSource *)self _isCreditPass])
   {
     account = self->_account;
     if (account)
     {
-      if (v9)
+      if (collectionCopy)
       {
-        __83__PKDashboardPaymentPassDataSource_reloadAccountUsersWithNewAccountUserCollection___block_invoke(self, v9);
+        __83__PKDashboardPaymentPassDataSource_reloadAccountUsersWithNewAccountUserCollection___block_invoke(self, collectionCopy);
       }
 
       else
       {
         accountService = self->_accountService;
-        v6 = [(PKAccount *)account accountIdentifier];
-        v7 = [(PKAccountService *)accountService accountUsersForAccountWithIdentifier:v6];
+        accountIdentifier = [(PKAccount *)account accountIdentifier];
+        v7 = [(PKAccountService *)accountService accountUsersForAccountWithIdentifier:accountIdentifier];
 
         v8 = [objc_alloc(MEMORY[0x1E69B8450]) initWithAccountUsers:v7];
         __83__PKDashboardPaymentPassDataSource_reloadAccountUsersWithNewAccountUserCollection___block_invoke(self, v8);
@@ -5704,29 +5704,29 @@ void __83__PKDashboardPaymentPassDataSource_reloadAccountUsersWithNewAccountUser
   }
 }
 
-- (void)reloadAccountUserInvitationsWithNewAccountUserInvitations:(id)a3
+- (void)reloadAccountUserInvitationsWithNewAccountUserInvitations:(id)invitations
 {
-  v4 = a3;
-  v5 = [(PKDashboardPaymentPassDataSource *)self _isCreditPass];
-  if (v5 && self->_account)
+  invitationsCopy = invitations;
+  _isCreditPass = [(PKDashboardPaymentPassDataSource *)self _isCreditPass];
+  if (_isCreditPass && self->_account)
   {
-    if (v4)
+    if (invitationsCopy)
     {
-      __94__PKDashboardPaymentPassDataSource_reloadAccountUserInvitationsWithNewAccountUserInvitations___block_invoke(v5, self, v4);
+      __94__PKDashboardPaymentPassDataSource_reloadAccountUserInvitationsWithNewAccountUserInvitations___block_invoke(_isCreditPass, self, invitationsCopy);
     }
 
     else
     {
       objc_initWeak(&location, self);
       paymentDataProvider = self->_paymentDataProvider;
-      v7 = [(PKAccount *)self->_account accountIdentifier];
+      accountIdentifier = [(PKAccount *)self->_account accountIdentifier];
       v8[0] = MEMORY[0x1E69E9820];
       v8[1] = 3221225472;
       v8[2] = __94__PKDashboardPaymentPassDataSource_reloadAccountUserInvitationsWithNewAccountUserInvitations___block_invoke_607;
       v8[3] = &unk_1E8012940;
       objc_copyWeak(&v10, &location);
       v9 = &__block_literal_global_603;
-      [(PKPaymentDefaultDataProvider *)paymentDataProvider featureApplicationsForAccountIdentifier:v7 completion:v8];
+      [(PKPaymentDefaultDataProvider *)paymentDataProvider featureApplicationsForAccountIdentifier:accountIdentifier completion:v8];
 
       objc_destroyWeak(&v10);
       objc_destroyWeak(&location);
@@ -5803,29 +5803,29 @@ void __94__PKDashboardPaymentPassDataSource_reloadAccountUserInvitationsWithNewA
   }
 }
 
-- (void)reloadAccountPendingMembersWithNewMembers:(id)a3
+- (void)reloadAccountPendingMembersWithNewMembers:(id)members
 {
-  v4 = a3;
-  v5 = [(PKDashboardPaymentPassDataSource *)self _isCreditPass];
-  if (v5 && self->_account)
+  membersCopy = members;
+  _isCreditPass = [(PKDashboardPaymentPassDataSource *)self _isCreditPass];
+  if (_isCreditPass && self->_account)
   {
-    if (v4)
+    if (membersCopy)
     {
-      __78__PKDashboardPaymentPassDataSource_reloadAccountPendingMembersWithNewMembers___block_invoke(v5, self, v4);
+      __78__PKDashboardPaymentPassDataSource_reloadAccountPendingMembersWithNewMembers___block_invoke(_isCreditPass, self, membersCopy);
     }
 
     else
     {
       objc_initWeak(&location, self);
       accountService = self->_accountService;
-      v7 = [(PKAccount *)self->_account accountIdentifier];
+      accountIdentifier = [(PKAccount *)self->_account accountIdentifier];
       v8[0] = MEMORY[0x1E69E9820];
       v8[1] = 3221225472;
       v8[2] = __78__PKDashboardPaymentPassDataSource_reloadAccountPendingMembersWithNewMembers___block_invoke_616;
       v8[3] = &unk_1E8011130;
       objc_copyWeak(&v10, &location);
       v9 = &__block_literal_global_612;
-      [(PKAccountService *)accountService accountPendingFamilyMembersForAccountIdentifier:v7 completion:v8];
+      [(PKAccountService *)accountService accountPendingFamilyMembersForAccountIdentifier:accountIdentifier completion:v8];
 
       objc_destroyWeak(&v10);
       objc_destroyWeak(&location);
@@ -5903,8 +5903,8 @@ void __78__PKDashboardPaymentPassDataSource_reloadAccountPendingMembersWithNewMe
 
 - (void)_updateAccountRewardsDataIfNecessary
 {
-  v3 = [(PKAccount *)self->_account accountIdentifier];
-  if (v3)
+  accountIdentifier = [(PKAccount *)self->_account accountIdentifier];
+  if (accountIdentifier)
   {
     if ([(PKAccount *)self->_account feature]== 2 && !self->_hasUpdatedAccountRewardsDataIfNecessary)
     {
@@ -5928,7 +5928,7 @@ void __78__PKDashboardPaymentPassDataSource_reloadAccountPendingMembersWithNewMe
 - (void)_updateAccountPromotions
 {
   v10 = *MEMORY[0x1E69E9840];
-  v3 = [(PKAccount *)self->_account accountIdentifier];
+  accountIdentifier = [(PKAccount *)self->_account accountIdentifier];
   if (([(PKAccount *)self->_account showCardPromotions]& 1) != 0)
   {
     accountService = self->_accountService;
@@ -5936,7 +5936,7 @@ void __78__PKDashboardPaymentPassDataSource_reloadAccountPendingMembersWithNewMe
     v6[1] = 3221225472;
     v6[2] = __60__PKDashboardPaymentPassDataSource__updateAccountPromotions__block_invoke;
     v6[3] = &unk_1E80197A0;
-    v7 = v3;
+    v7 = accountIdentifier;
     [(PKAccountService *)accountService updateAccountPromotionsForAccountWithIdentifier:v7 observeCooldownPeriod:1 completion:v6];
     v5 = v7;
   }
@@ -5947,7 +5947,7 @@ void __78__PKDashboardPaymentPassDataSource_reloadAccountPendingMembersWithNewMe
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v9 = v3;
+      v9 = accountIdentifier;
       _os_log_impl(&dword_1BD026000, v5, OS_LOG_TYPE_DEFAULT, "Not fetching promotions for account %@ because it is not a supported feature on this account", buf, 0xCu);
     }
   }
@@ -5971,7 +5971,7 @@ void __60__PKDashboardPaymentPassDataSource__updateAccountPromotions__block_invo
 - (void)_updateAccountEnhancedMerchants
 {
   v10 = *MEMORY[0x1E69E9840];
-  v3 = [(PKAccount *)self->_account accountIdentifier];
+  accountIdentifier = [(PKAccount *)self->_account accountIdentifier];
   if (([(PKAccount *)self->_account showEnhancedMerchants]& 1) != 0)
   {
     accountService = self->_accountService;
@@ -5979,7 +5979,7 @@ void __60__PKDashboardPaymentPassDataSource__updateAccountPromotions__block_invo
     v6[1] = 3221225472;
     v6[2] = __67__PKDashboardPaymentPassDataSource__updateAccountEnhancedMerchants__block_invoke;
     v6[3] = &unk_1E80197A0;
-    v7 = v3;
+    v7 = accountIdentifier;
     [(PKAccountService *)accountService updateAccountEnhancedMerchantsForAccountWithIdentifier:v7 cooldownLevel:2 completion:v6];
     v5 = v7;
   }
@@ -5990,7 +5990,7 @@ void __60__PKDashboardPaymentPassDataSource__updateAccountPromotions__block_invo
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v9 = v3;
+      v9 = accountIdentifier;
       _os_log_impl(&dword_1BD026000, v5, OS_LOG_TYPE_DEFAULT, "Not fetching enhanced merchants for account %@ because it is not a supported feature on this account", buf, 0xCu);
     }
   }
@@ -6011,7 +6011,7 @@ void __67__PKDashboardPaymentPassDataSource__updateAccountEnhancedMerchants__blo
   }
 }
 
-- (void)_updateBalanceAndPreventReload:(BOOL)a3
+- (void)_updateBalanceAndPreventReload:(BOOL)reload
 {
   v5 = 1;
   self->_balanceLoaded = 1;
@@ -6020,11 +6020,11 @@ void __67__PKDashboardPaymentPassDataSource__updateAccountEnhancedMerchants__blo
   numberOfBalanceDashboardItems = self->_numberOfBalanceDashboardItems;
   self->_numberOfBalanceDashboardItems = [(PKDashboardPaymentPassDataSource *)self _numberOfBalanceDashboardItems];
   balanceSectionHasFooter = self->_balanceSectionHasFooter;
-  v9 = [(PKDashboardPaymentPassDataSource *)self _balanceSectionHasFooter];
-  self->_balanceSectionHasFooter = v9;
+  _balanceSectionHasFooter = [(PKDashboardPaymentPassDataSource *)self _balanceSectionHasFooter];
+  self->_balanceSectionHasFooter = _balanceSectionHasFooter;
   if (canDisplayBalance == self->_canDisplayBalance)
   {
-    v5 = numberOfBalanceDashboardItems != self->_numberOfBalanceDashboardItems || balanceSectionHasFooter == !v9;
+    v5 = numberOfBalanceDashboardItems != self->_numberOfBalanceDashboardItems || balanceSectionHasFooter == !_balanceSectionHasFooter;
   }
 
   if (self->_allContentIsLoaded)
@@ -6036,7 +6036,7 @@ void __67__PKDashboardPaymentPassDataSource__updateAccountEnhancedMerchants__blo
 
       if (WeakRetained)
       {
-        if (!a3)
+        if (!reload)
         {
           v11 = [(PKDashboardPaymentPassDataSource *)self firstSectionIndexForSectionIdentifier:1];
           if (v5)
@@ -6074,14 +6074,14 @@ void __67__PKDashboardPaymentPassDataSource__updateAccountEnhancedMerchants__blo
   }
 }
 
-- (void)loadSummariesWithForceReload:(BOOL)a3
+- (void)loadSummariesWithForceReload:(BOOL)reload
 {
   v19 = *MEMORY[0x1E69E9840];
   if (self->_transactionSourceCollection)
   {
     if (self->_account)
     {
-      v4 = a3;
+      reloadCopy = reload;
       if ([(PKDashboardPaymentPassDataSource *)self _isCreditPass])
       {
         if (!self->_summaryFetcher)
@@ -6101,14 +6101,14 @@ void __67__PKDashboardPaymentPassDataSource__updateAccountEnhancedMerchants__blo
         objc_copyWeak(&v15, &location);
         v7 = _Block_copy(aBlock);
         v8 = v7;
-        if (!self->_weeks || v4)
+        if (!self->_weeks || reloadCopy)
         {
           *&self->_pendingSummaryUpdate = 0;
           v9 = PKLogFacilityTypeGetObject();
           if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 134217984;
-            v18 = self;
+            selfCopy = self;
             _os_log_impl(&dword_1BD026000, v9, OS_LOG_TYPE_DEFAULT, "Dashboard loading (%p): Fetching available summaries", buf, 0xCu);
           }
 
@@ -6311,9 +6311,9 @@ void __65__PKDashboardPaymentPassDataSource_loadSummariesWithForceReload___block
 
 - ($65C3FA8A572F9D8A414E710B16373297)_peerPaymentDashboardCondition
 {
-  v3 = [(PKPeerPaymentAccount *)self->_peerPaymentAccount state];
+  state = [(PKPeerPaymentAccount *)self->_peerPaymentAccount state];
   v4 = PKPeerPaymentAccountResolutionForAccountAndPeerPaymentPass();
-  v5 = [(PKPaymentPass *)self->_pass activationState];
+  activationState = [(PKPaymentPass *)self->_pass activationState];
   v6 = v4 == 5 || v4 == 0;
   v7 = 256;
   if (v6)
@@ -6321,7 +6321,7 @@ void __65__PKDashboardPaymentPassDataSource_loadSummariesWithForceReload___block
     v7 = 0;
   }
 
-  if (v5 == PKPaymentPassActivationStateDeactivated || (v3 - 1) >= 2)
+  if (activationState == PKPaymentPassActivationStateDeactivated || (state - 1) >= 2)
   {
     v9 = v7;
   }
@@ -6352,11 +6352,11 @@ void __65__PKDashboardPaymentPassDataSource_loadSummariesWithForceReload___block
   else
   {
     v7 = [(PKPaymentDefaultDataProvider *)self->_paymentDataProvider supportsTransactionsForPass:self->_pass];
-    v8 = [(PKPaymentPass *)self->_pass devicePrimaryPaymentApplication];
-    if (v8)
+    devicePrimaryPaymentApplication = [(PKPaymentPass *)self->_pass devicePrimaryPaymentApplication];
+    if (devicePrimaryPaymentApplication)
     {
-      v9 = [(PKPaymentPass *)self->_pass devicePrimaryPaymentApplication];
-      v10 = [v9 state] == 7;
+      devicePrimaryPaymentApplication2 = [(PKPaymentPass *)self->_pass devicePrimaryPaymentApplication];
+      v10 = [devicePrimaryPaymentApplication2 state] == 7;
     }
 
     else
@@ -6364,27 +6364,27 @@ void __65__PKDashboardPaymentPassDataSource_loadSummariesWithForceReload___block
       v10 = 0;
     }
 
-    v11 = [(PKPaymentPass *)self->_pass devicePrimaryPaymentApplication];
-    v12 = [v11 state];
+    devicePrimaryPaymentApplication3 = [(PKPaymentPass *)self->_pass devicePrimaryPaymentApplication];
+    state = [devicePrimaryPaymentApplication3 state];
 
-    v13 = [(PKPaymentPass *)self->_pass settings];
-    v14 = [(PKPaymentPass *)self->_pass hasAssociatedPeerPaymentAccount];
-    v15 = [(PKPaymentPass *)self->_pass associatedAccountFeatureIdentifier];
-    v16 = [(PKDashboardPaymentPassDataSource *)self supportsBankConnectTransactions];
+    settings = [(PKPaymentPass *)self->_pass settings];
+    hasAssociatedPeerPaymentAccount = [(PKPaymentPass *)self->_pass hasAssociatedPeerPaymentAccount];
+    associatedAccountFeatureIdentifier = [(PKPaymentPass *)self->_pass associatedAccountFeatureIdentifier];
+    supportsBankConnectTransactions = [(PKDashboardPaymentPassDataSource *)self supportsBankConnectTransactions];
     v17 = 0;
-    if (!self->_isAccessPass && ((v7 ^ 1) & 1) == 0 && !v10 && v12 != 6)
+    if (!self->_isAccessPass && ((v7 ^ 1) & 1) == 0 && !v10 && state != 6)
     {
-      v18 = [(PKTransactionSourceCollection *)self->_transactionSourceCollection transactionSourceIdentifiers];
-      v17 = [v18 count] != 0 || v16;
+      transactionSourceIdentifiers = [(PKTransactionSourceCollection *)self->_transactionSourceCollection transactionSourceIdentifiers];
+      v17 = [transactionSourceIdentifiers count] != 0 || supportsBankConnectTransactions;
     }
 
-    v19 = v17 & ((v13 & 8) != 0);
-    if (v15 == 4)
+    v19 = v17 & ((settings & 8) != 0);
+    if (associatedAccountFeatureIdentifier == 4)
     {
       v19 = v17;
     }
 
-    if ((v14 | v16))
+    if ((hasAssociatedPeerPaymentAccount | supportsBankConnectTransactions))
     {
       v20 = v17;
     }
@@ -6394,14 +6394,14 @@ void __65__PKDashboardPaymentPassDataSource_loadSummariesWithForceReload___block
       v20 = v19;
     }
 
-    if (v20 & v14)
+    if (v20 & hasAssociatedPeerPaymentAccount)
     {
-      v21 = [(PKPeerPaymentAccount *)self->_peerPaymentAccount state];
+      state2 = [(PKPeerPaymentAccount *)self->_peerPaymentAccount state];
       LOBYTE(v20) = [(PKPaymentPass *)self->_pass activationState]- 5 < 0xFFFFFFFFFFFFFFFELL;
-      if (v21 == 3)
+      if (state2 == 3)
       {
-        v22 = [(PKPeerPaymentAccount *)self->_peerPaymentAccount stateReason];
-        if (v22 <= 5 && ((1 << v22) & 0x31) != 0)
+        stateReason = [(PKPeerPaymentAccount *)self->_peerPaymentAccount stateReason];
+        if (stateReason <= 5 && ((1 << stateReason) & 0x31) != 0)
         {
           LOBYTE(v20) = 0;
         }
@@ -6414,19 +6414,19 @@ void __65__PKDashboardPaymentPassDataSource_loadSummariesWithForceReload___block
 
 - (void)_reloadTransactionGrouping
 {
-  v3 = [(PKDashboardPaymentPassDataSource *)self supportsBankConnectTransactions];
+  supportsBankConnectTransactions = [(PKDashboardPaymentPassDataSource *)self supportsBankConnectTransactions];
   if (([(PKPaymentPass *)self->_pass hasAssociatedPeerPaymentAccount]& 1) != 0)
   {
     goto LABEL_7;
   }
 
-  v4 = [(PKPaymentPass *)self->_pass associatedAccountServiceAccountIdentifier];
-  if (v4)
+  associatedAccountServiceAccountIdentifier = [(PKPaymentPass *)self->_pass associatedAccountServiceAccountIdentifier];
+  if (associatedAccountServiceAccountIdentifier)
   {
-    v5 = v4;
-    v6 = [(PKDashboardPaymentPassDataSource *)self _isCreditPass];
+    v5 = associatedAccountServiceAccountIdentifier;
+    _isCreditPass = [(PKDashboardPaymentPassDataSource *)self _isCreditPass];
 
-    if (v6 || v3)
+    if (_isCreditPass || supportsBankConnectTransactions)
     {
       goto LABEL_7;
     }
@@ -6440,7 +6440,7 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  if (!v3)
+  if (!supportsBankConnectTransactions)
   {
     goto LABEL_6;
   }
@@ -6449,17 +6449,17 @@ LABEL_7:
   self->_transactionGrouping = 2;
 }
 
-- (void)reloadTransactionsWithSummariesReload:(BOOL)a3
+- (void)reloadTransactionsWithSummariesReload:(BOOL)reload
 {
   v34 = *MEMORY[0x1E69E9840];
   if (self->_transactionSourceCollection)
   {
-    v3 = a3;
+    reloadCopy = reload;
     if (![(PKDashboardPaymentPassDataSource *)self _canShowTransactions])
     {
       [(PKDashboardPaymentPassDataSource *)self updateWithTransactions:MEMORY[0x1E695E0F0]];
 LABEL_14:
-      if (v3)
+      if (reloadCopy)
       {
         [(PKDashboardPaymentPassDataSource *)self loadSummariesWithForceReload:1];
       }
@@ -6471,7 +6471,7 @@ LABEL_14:
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v33 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1BD026000, v5, OS_LOG_TYPE_DEFAULT, "Dashboard loading (%p): Fetching transactions", buf, 0xCu);
     }
 
@@ -6508,8 +6508,8 @@ LABEL_40:
         }
 
         objc_destroyWeak(v16);
-        v17 = [MEMORY[0x1E695DFB0] null];
-        v18 = [v7 evaluateWithInput:v17 completion:0];
+        null = [MEMORY[0x1E695DFB0] null];
+        v18 = [v7 evaluateWithInput:null completion:0];
 
         objc_destroyWeak(buf);
         goto LABEL_14;
@@ -6781,20 +6781,20 @@ BOOL __74__PKDashboardPaymentPassDataSource_reloadTransactionsWithSummariesReloa
   return v7 == *(a1 + 32);
 }
 
-- (BOOL)isGroupInTheCurrentYear:(id)a3
+- (BOOL)isGroupInTheCurrentYear:(id)year
 {
-  if (!a3)
+  if (!year)
   {
     return 0;
   }
 
-  v3 = [a3 group];
-  v4 = [v3 startDate];
+  group = [year group];
+  startDate = [group startDate];
 
-  v5 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v6 = [v5 components:6 fromDate:v4];
-  v7 = [MEMORY[0x1E695DF00] date];
-  v8 = [v5 date:v7 matchesComponents:v6];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  v6 = [currentCalendar components:6 fromDate:startDate];
+  date = [MEMORY[0x1E695DF00] date];
+  v8 = [currentCalendar date:date matchesComponents:v6];
 
   return v8;
 }
@@ -6833,7 +6833,7 @@ LABEL_28:
     }
   }
 
-  v4 = [(PKDashboardPaymentPassDataSource *)self _canShowTransactions];
+  _canShowTransactions = [(PKDashboardPaymentPassDataSource *)self _canShowTransactions];
   if ([(PKDashboardPaymentPassDataSource *)self supportsBankConnectTransactions]|| ([(PKPaymentPass *)self->_pass hasAssociatedPeerPaymentAccount]& 1) != 0 || [(PKDashboardPaymentPassDataSource *)self _isCreditPass]|| [(PKDashboardPaymentPassDataSource *)self _isAppleBalancePass])
   {
     v5 = 1;
@@ -6841,8 +6841,8 @@ LABEL_28:
 
   else
   {
-    v14 = [(PKPaymentPass *)self->_pass devicePrimaryContactlessPaymentApplication];
-    [v14 paymentNetworkIdentifier];
+    devicePrimaryContactlessPaymentApplication = [(PKPaymentPass *)self->_pass devicePrimaryContactlessPaymentApplication];
+    [devicePrimaryContactlessPaymentApplication paymentNetworkIdentifier];
     v5 = PKTransactionsUnlimitedForCredentialType();
   }
 
@@ -6850,7 +6850,7 @@ LABEL_28:
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = @"NO";
-    if (v4)
+    if (_canShowTransactions)
     {
       v8 = @"YES";
     }
@@ -6891,7 +6891,7 @@ LABEL_28:
     _os_log_impl(&dword_1BD026000, v6, OS_LOG_TYPE_DEFAULT, "Groups reloading: shouldHideGroups - %@", buf, 0xCu);
   }
 
-  if (!v4 || filterType >= 6)
+  if (!_canShowTransactions || filterType >= 6)
   {
 LABEL_29:
     [(PKDashboardPaymentPassDataSource *)self _updateWithTransactionGroups:MEMORY[0x1E695E0F0]];
@@ -7191,33 +7191,33 @@ void *__59__PKDashboardPaymentPassDataSource_reloadTransactionGroups__block_invo
   return v3;
 }
 
-- (void)_yearlyTransactionGroupsWithCompletion:(id)a3
+- (void)_yearlyTransactionGroupsWithCompletion:(id)completion
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __75__PKDashboardPaymentPassDataSource__yearlyTransactionGroupsWithCompletion___block_invoke;
   aBlock[3] = &unk_1E8012940;
   objc_copyWeak(&v16, &location);
-  v5 = v4;
+  v5 = completionCopy;
   v15 = v5;
   v6 = _Block_copy(aBlock);
-  v7 = [(PKDashboardPaymentPassDataSource *)self supportsBankConnectTransactions];
+  supportsBankConnectTransactions = [(PKDashboardPaymentPassDataSource *)self supportsBankConnectTransactions];
   v8 = PKLogFacilityTypeGetObject();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
-  if (v7)
+  if (supportsBankConnectTransactions)
   {
     if (v9)
     {
       *buf = 134217984;
-      v19 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1BD026000, v8, OS_LOG_TYPE_DEFAULT, "Dashboard loading (%p): Processing FinanceKit yearly transaction groups", buf, 0xCu);
     }
 
-    v10 = [(PKDashboardPaymentPassDataSource *)self bankConnectYearlyTransactionGroups];
-    v6[2](v6, v10);
+    bankConnectYearlyTransactionGroups = [(PKDashboardPaymentPassDataSource *)self bankConnectYearlyTransactionGroups];
+    v6[2](v6, bankConnectYearlyTransactionGroups);
   }
 
   else
@@ -7225,7 +7225,7 @@ void *__59__PKDashboardPaymentPassDataSource_reloadTransactionGroups__block_invo
     if (v9)
     {
       *buf = 134217984;
-      v19 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1BD026000, v8, OS_LOG_TYPE_DEFAULT, "Dashboard loading (%p): Fetching yearly transaction groups", buf, 0xCu);
     }
 
@@ -7236,7 +7236,7 @@ void *__59__PKDashboardPaymentPassDataSource_reloadTransactionGroups__block_invo
     v12[3] = &unk_1E8010DA8;
     v13 = v6;
     [(PKDashboardTransactionFetcher *)transactionFetcher transactionCountByPeriod:4 withCompletion:v12];
-    v10 = v13;
+    bankConnectYearlyTransactionGroups = v13;
   }
 
   objc_destroyWeak(&v16);
@@ -7331,11 +7331,11 @@ void __75__PKDashboardPaymentPassDataSource__yearlyTransactionGroupsWithCompleti
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
-- (id)groupItemForTransactionGroup:(id)a3
+- (id)groupItemForTransactionGroup:(id)group
 {
-  v4 = a3;
+  groupCopy = group;
   v5 = objc_alloc_init(PKDashboardPaymentTransactionGroupItem);
-  [(PKDashboardPaymentTransactionGroupItem *)v5 setGroup:v4];
+  [(PKDashboardPaymentTransactionGroupItem *)v5 setGroup:groupCopy];
 
   [(PKDashboardPaymentTransactionGroupItem *)v5 setTransactionSourceCollection:self->_transactionSourceCollection];
   [(PKDashboardPaymentTransactionGroupItem *)v5 setFamilyCollection:self->_familyCollection];
@@ -7346,33 +7346,33 @@ void __75__PKDashboardPaymentPassDataSource__yearlyTransactionGroupsWithCompleti
   return v5;
 }
 
-- (void)_monthlyTransactionGroupsWithCompletion:(id)a3
+- (void)_monthlyTransactionGroupsWithCompletion:(id)completion
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __76__PKDashboardPaymentPassDataSource__monthlyTransactionGroupsWithCompletion___block_invoke;
   aBlock[3] = &unk_1E8012940;
   objc_copyWeak(&v16, &location);
-  v5 = v4;
+  v5 = completionCopy;
   v15 = v5;
   v6 = _Block_copy(aBlock);
-  v7 = [(PKDashboardPaymentPassDataSource *)self supportsBankConnectTransactions];
+  supportsBankConnectTransactions = [(PKDashboardPaymentPassDataSource *)self supportsBankConnectTransactions];
   v8 = PKLogFacilityTypeGetObject();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
-  if (v7)
+  if (supportsBankConnectTransactions)
   {
     if (v9)
     {
       *buf = 134217984;
-      v19 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1BD026000, v8, OS_LOG_TYPE_DEFAULT, "Dashboard loading (%p): Processing FinanceKit monthly transaction groups", buf, 0xCu);
     }
 
-    v10 = [(PKDashboardPaymentPassDataSource *)self bankConnectMonthlyTransactionGroups];
-    v6[2](v6, v10);
+    bankConnectMonthlyTransactionGroups = [(PKDashboardPaymentPassDataSource *)self bankConnectMonthlyTransactionGroups];
+    v6[2](v6, bankConnectMonthlyTransactionGroups);
   }
 
   else
@@ -7380,7 +7380,7 @@ void __75__PKDashboardPaymentPassDataSource__yearlyTransactionGroupsWithCompleti
     if (v9)
     {
       *buf = 134217984;
-      v19 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1BD026000, v8, OS_LOG_TYPE_DEFAULT, "Dashboard loading (%p): Fetching monthly transaction groups", buf, 0xCu);
     }
 
@@ -7391,7 +7391,7 @@ void __75__PKDashboardPaymentPassDataSource__yearlyTransactionGroupsWithCompleti
     v12[3] = &unk_1E8010DA8;
     v13 = v6;
     [(PKDashboardTransactionFetcher *)transactionFetcher transactionCountByPeriod:8 withCompletion:v12];
-    v10 = v13;
+    bankConnectMonthlyTransactionGroups = v13;
   }
 
   objc_destroyWeak(&v16);
@@ -7569,16 +7569,16 @@ void __76__PKDashboardPaymentPassDataSource__monthlyTransactionGroupsWithComplet
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
-- (void)_updateWithTransactionGroups:(id)a3
+- (void)_updateWithTransactionGroups:(id)groups
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 count];
+  groupsCopy = groups;
+  v5 = [groupsCopy count];
   v6 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218240;
-    v23 = self;
+    selfCopy = self;
     v24 = 2048;
     v25 = v5;
     _os_log_impl(&dword_1BD026000, v6, OS_LOG_TYPE_DEFAULT, "Dashboard loading (%p): Fetched transaction groups: %lu", buf, 0x16u);
@@ -7591,7 +7591,7 @@ void __76__PKDashboardPaymentPassDataSource__monthlyTransactionGroupsWithComplet
   aBlock[2] = __65__PKDashboardPaymentPassDataSource__updateWithTransactionGroups___block_invoke;
   aBlock[3] = &unk_1E8011408;
   objc_copyWeak(v20, &location);
-  v8 = v4;
+  v8 = groupsCopy;
   v19 = v8;
   v20[1] = v5;
   v9 = _Block_copy(aBlock);
@@ -7630,7 +7630,7 @@ void __76__PKDashboardPaymentPassDataSource__monthlyTransactionGroupsWithComplet
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134217984;
-        v23 = v5;
+        selfCopy = v5;
         _os_log_impl(&dword_1BD026000, v6, OS_LOG_TYPE_DEFAULT, "Updating with %lu Bank Connect transaction groups", buf, 0xCu);
       }
 
@@ -7718,15 +7718,15 @@ LABEL_7:
 LABEL_8:
 }
 
-- (void)transactionsChanged:(id)a3
+- (void)transactionsChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   if (![(PKDashboardPaymentPassDataSource *)self supportsBankConnectTransactions])
   {
     if ([(PKDashboardPaymentPassDataSource *)self _canFilterTransactions]&& self->_filterType)
     {
       objc_initWeak(&location, self);
-      v5 = [MEMORY[0x1E695DF00] date];
+      date = [MEMORY[0x1E695DF00] date];
       currentMonthFetcher = self->_currentMonthFetcher;
       v7 = PKStartOfMonth();
       v8 = PKEndOfMonth();
@@ -7738,7 +7738,7 @@ LABEL_8:
       v15[2] = __56__PKDashboardPaymentPassDataSource_transactionsChanged___block_invoke_2;
       v15[3] = &unk_1E8011850;
       objc_copyWeak(&v17, &location);
-      v16 = v4;
+      v16 = changedCopy;
       [(PKDashboardTransactionFetcher *)v9 reloadTransactionsWithCompletion:v15];
 
       objc_destroyWeak(&v17);
@@ -7747,20 +7747,20 @@ LABEL_8:
 
     else
     {
-      v10 = [MEMORY[0x1E695DEE8] currentCalendar];
-      v11 = [MEMORY[0x1E695DF00] date];
-      v12 = [v10 component:8 fromDate:v11];
+      currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+      date2 = [MEMORY[0x1E695DF00] date];
+      v12 = [currentCalendar component:8 fromDate:date2];
 
       v19[0] = MEMORY[0x1E69E9820];
       v19[1] = 3221225472;
       v19[2] = __56__PKDashboardPaymentPassDataSource_transactionsChanged___block_invoke;
       v19[3] = &__block_descriptor_40_e37_B32__0__PKPaymentTransaction_8Q16_B24l;
       v19[4] = v12;
-      v13 = [v4 pk_objectsPassingTest:v19];
+      v13 = [changedCopy pk_objectsPassingTest:v19];
       currentMonthTransactions = self->_currentMonthTransactions;
       self->_currentMonthTransactions = v13;
 
-      [(PKDashboardPaymentPassDataSource *)self updateWithTransactions:v4];
+      [(PKDashboardPaymentPassDataSource *)self updateWithTransactions:changedCopy];
       [(PKDashboardPaymentPassDataSource *)self reloadTransactionGroups];
     }
   }
@@ -7790,32 +7790,32 @@ void __56__PKDashboardPaymentPassDataSource_transactionsChanged___block_invoke_2
   }
 }
 
-- (void)updateWithTransactions:(id)a3
+- (void)updateWithTransactions:(id)transactions
 {
   v60 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  transactionsCopy = transactions;
   v5 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218240;
-    v57 = self;
+    selfCopy = self;
     v58 = 2048;
-    v59 = [v4 count];
+    v59 = [transactionsCopy count];
     _os_log_impl(&dword_1BD026000, v5, OS_LOG_TYPE_DEFAULT, "Dashboard loading (%p): Fetched transactions: %lu", buf, 0x16u);
   }
 
   v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
   os_unfair_lock_lock(&self->_lockTransactions);
-  v7 = [v4 copy];
+  v7 = [transactionsCopy copy];
   previousTransactions = self->_previousTransactions;
   self->_previousTransactions = v7;
 
   os_unfair_lock_unlock(&self->_lockTransactions);
-  v9 = [(PKDashboardPaymentPassDataSource *)self _canShowTransactions];
+  _canShowTransactions = [(PKDashboardPaymentPassDataSource *)self _canShowTransactions];
   v10 = MEMORY[0x1E695E0F0];
-  if (v9)
+  if (_canShowTransactions)
   {
-    v10 = v4;
+    v10 = transactionsCopy;
   }
 
   v11 = v10;
@@ -7825,7 +7825,7 @@ void __56__PKDashboardPaymentPassDataSource_transactionsChanged___block_invoke_2
     v13 = [(NSArray *)transactions count];
     if (v13 == [v11 count])
     {
-      v14 = v4;
+      v14 = transactionsCopy;
       v15 = [(PKDashboardPaymentPassDataSource *)self firstSectionIndexForSectionIdentifier:11];
       if ([v11 count])
       {
@@ -7849,7 +7849,7 @@ void __56__PKDashboardPaymentPassDataSource_transactionsChanged___block_invoke_2
       [v6 addObject:v22];
 
       v23 = 0;
-      v4 = v14;
+      transactionsCopy = v14;
       goto LABEL_17;
     }
 
@@ -7863,9 +7863,9 @@ void __56__PKDashboardPaymentPassDataSource_transactionsChanged___block_invoke_2
   v23 = 1;
 LABEL_17:
   self->_forceTransactionsUpdate = 0;
-  v24 = [MEMORY[0x1E695DF00] date];
+  date = [MEMORY[0x1E695DF00] date];
   lastTransactionReload = self->_lastTransactionReload;
-  self->_lastTransactionReload = v24;
+  self->_lastTransactionReload = date;
 
   v26 = [v11 copy];
   v27 = self->_transactions;
@@ -7894,7 +7894,7 @@ LABEL_45:
 
     else
     {
-      v45 = v4;
+      v45 = transactionsCopy;
       v52 = 0u;
       v53 = 0u;
       v50 = 0u;
@@ -7925,7 +7925,7 @@ LABEL_45:
         while (v34);
       }
 
-      v4 = v45;
+      transactionsCopy = v45;
       if (![v32 count])
       {
 LABEL_33:
@@ -7987,7 +7987,7 @@ LABEL_44:
 LABEL_46:
 }
 
-- (void)_localeDidChangeNotification:(id)a3
+- (void)_localeDidChangeNotification:(id)notification
 {
   objc_initWeak(&location, self);
   v3[0] = MEMORY[0x1E69E9820];
@@ -8098,8 +8098,8 @@ LABEL_10:
 
 - (void)reloadAuxiliaryItems
 {
-  v3 = [(PKPaymentPass *)self->_pass auxiliaryPassInformation];
-  v4 = [v3 copy];
+  auxiliaryPassInformation = [(PKPaymentPass *)self->_pass auxiliaryPassInformation];
+  v4 = [auxiliaryPassInformation copy];
 
   v5 = [v4 count];
   v6 = [(NSArray *)self->_auxiliarySectionInfo count];
@@ -8245,19 +8245,19 @@ uint64_t __56__PKDashboardPaymentPassDataSource_reloadAuxiliaryItems__block_invo
   return [v3 reloadSections:v4];
 }
 
-- (void)_fetchMerchantForAuxiliarySections:(id)a3 pass:(id)a4 completion:(id)a5
+- (void)_fetchMerchantForAuxiliarySections:(id)sections pass:(id)pass completion:(id)completion
 {
   v42 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v23 = a5;
+  sectionsCopy = sections;
+  passCopy = pass;
+  completionCopy = completion;
   v10 = self->_paymentService;
   v11 = dispatch_group_create();
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  obj = v8;
+  obj = sectionsCopy;
   v26 = [obj countByEnumeratingWithState:&v36 objects:v41 count:16];
   if (v26)
   {
@@ -8278,8 +8278,8 @@ uint64_t __56__PKDashboardPaymentPassDataSource_reloadAuxiliaryItems__block_invo
         v33 = 0u;
         v34 = 0u;
         v35 = 0u;
-        v14 = [v13 items];
-        v15 = [v14 countByEnumeratingWithState:&v32 objects:v40 count:16];
+        items = [v13 items];
+        v15 = [items countByEnumeratingWithState:&v32 objects:v40 count:16];
         if (v15)
         {
           v16 = v15;
@@ -8290,27 +8290,27 @@ uint64_t __56__PKDashboardPaymentPassDataSource_reloadAuxiliaryItems__block_invo
             {
               if (*v33 != v17)
               {
-                objc_enumerationMutation(v14);
+                objc_enumerationMutation(items);
               }
 
               v19 = *(*(&v32 + 1) + 8 * i);
-              v20 = [v19 merchant];
+              merchant = [v19 merchant];
 
-              if (!v20)
+              if (!merchant)
               {
                 dispatch_group_enter(v11);
-                v21 = [v9 uniqueID];
+                uniqueID = [passCopy uniqueID];
                 v30[0] = MEMORY[0x1E69E9820];
                 v30[1] = 3221225472;
                 v30[2] = __87__PKDashboardPaymentPassDataSource__fetchMerchantForAuxiliarySections_pass_completion___block_invoke;
                 v30[3] = &unk_1E801DBF0;
                 v30[4] = v19;
                 v31 = v11;
-                [(PKPaymentService *)v10 merchantForPassUniqueIdentifier:v21 withAuxiliaryPassInformationItem:v19 completion:v30];
+                [(PKPaymentService *)v10 merchantForPassUniqueIdentifier:uniqueID withAuxiliaryPassInformationItem:v19 completion:v30];
               }
             }
 
-            v16 = [v14 countByEnumeratingWithState:&v32 objects:v40 count:16];
+            v16 = [items countByEnumeratingWithState:&v32 objects:v40 count:16];
           }
 
           while (v16);
@@ -8330,8 +8330,8 @@ uint64_t __56__PKDashboardPaymentPassDataSource_reloadAuxiliaryItems__block_invo
   block[1] = 3221225472;
   block[2] = __87__PKDashboardPaymentPassDataSource__fetchMerchantForAuxiliarySections_pass_completion___block_invoke_3;
   block[3] = &unk_1E8010B50;
-  v29 = v23;
-  v22 = v23;
+  v29 = completionCopy;
+  v22 = completionCopy;
   dispatch_group_notify(v11, MEMORY[0x1E69E96A0], block);
 }
 
@@ -8360,7 +8360,7 @@ void __87__PKDashboardPaymentPassDataSource__fetchMerchantForAuxiliarySections_p
 
 - (void)reloadTiles
 {
-  v3 = [(PKPaymentPass *)self->_pass uniqueID];
+  uniqueID = [(PKPaymentPass *)self->_pass uniqueID];
   objc_initWeak(&location, self);
   paymentDataProvider = self->_paymentDataProvider;
   v5[0] = MEMORY[0x1E69E9820];
@@ -8368,8 +8368,8 @@ void __87__PKDashboardPaymentPassDataSource__fetchMerchantForAuxiliarySections_p
   v5[2] = __47__PKDashboardPaymentPassDataSource_reloadTiles__block_invoke;
   v5[3] = &unk_1E8011850;
   objc_copyWeak(&v6, &location);
-  v5[4] = v3;
-  [(PKPaymentDefaultDataProvider *)paymentDataProvider tilesForPassWithUniqueIdentifier:v3 context:1 completion:v5];
+  v5[4] = uniqueID;
+  [(PKPaymentDefaultDataProvider *)paymentDataProvider tilesForPassWithUniqueIdentifier:uniqueID context:1 completion:v5];
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
 }
@@ -8402,44 +8402,44 @@ void __47__PKDashboardPaymentPassDataSource_reloadTiles__block_invoke_2(uint64_t
   }
 }
 
-- (void)_reloadTiles:(id)a3 passUniqueIdentifier:(id)a4
+- (void)_reloadTiles:(id)tiles passUniqueIdentifier:(id)identifier
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = [(PKPaymentPass *)self->_pass uniqueID];
-  v8 = v6;
+  tilesCopy = tiles;
+  identifierCopy = identifier;
+  uniqueID = [(PKPaymentPass *)self->_pass uniqueID];
+  v8 = identifierCopy;
   v9 = v8;
-  if (v7 == v8)
+  if (uniqueID == v8)
   {
 
     goto LABEL_7;
   }
 
-  if (!v8 || !v7)
+  if (!v8 || !uniqueID)
   {
 
     goto LABEL_9;
   }
 
-  v10 = [v7 isEqualToString:v8];
+  v10 = [uniqueID isEqualToString:v8];
 
   if (v10)
   {
 LABEL_7:
-    [(PKDashboardPaymentPassDataSource *)self _updateWithTiles:v11];
+    [(PKDashboardPaymentPassDataSource *)self _updateWithTiles:tilesCopy];
   }
 
 LABEL_9:
 }
 
-- (void)_updateWithTiles:(id)a3
+- (void)_updateWithTiles:(id)tiles
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  tilesCopy = tiles;
   v5 = self->_tileGroups;
-  if ([v4 count] && (objc_msgSend(v4, "objectAtIndexedSubscript:", 0), v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "metadata"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "isGroupType"), v7, v6, (v8 & 1) == 0))
+  if ([tilesCopy count] && (objc_msgSend(tilesCopy, "objectAtIndexedSubscript:", 0), v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "metadata"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "isGroupType"), v7, v6, (v8 & 1) == 0))
   {
-    v10 = [MEMORY[0x1E69B8A90] _createDefaultDashboardGroupTileWithChildTiles:v4];
+    v10 = [MEMORY[0x1E69B8A90] _createDefaultDashboardGroupTileWithChildTiles:tilesCopy];
     v11 = v10;
     if (v10)
     {
@@ -8453,9 +8453,9 @@ LABEL_9:
     }
   }
 
-  else if ([v4 count])
+  else if ([tilesCopy count])
   {
-    v9 = [v4 copy];
+    v9 = [tilesCopy copy];
   }
 
   else
@@ -8529,16 +8529,16 @@ id __53__PKDashboardPaymentPassDataSource__updateWithTiles___block_invoke_3(uint
   return v6;
 }
 
-- (void)updateWithBlock:(id)a3 andDiff:(id)a4
+- (void)updateWithBlock:(id)block andDiff:(id)diff
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  blockCopy = block;
+  diffCopy = diff;
+  v8 = diffCopy;
+  if (diffCopy)
   {
-    if ([v7 isEmpty])
+    if ([diffCopy isEmpty])
     {
-      v6[2](v6);
+      blockCopy[2](blockCopy);
     }
 
     else
@@ -8550,7 +8550,7 @@ id __53__PKDashboardPaymentPassDataSource__updateWithTiles___block_invoke_3(uint
       v15[2] = __60__PKDashboardPaymentPassDataSource_updateWithBlock_andDiff___block_invoke;
       v15[3] = &unk_1E8011108;
       objc_copyWeak(&v18, &location);
-      v17 = v6;
+      v17 = blockCopy;
       v10 = v8;
       v16 = v10;
       [WeakRetained performBatchUpdates:v15 completion:0];
@@ -8594,24 +8594,24 @@ void __60__PKDashboardPaymentPassDataSource_updateWithBlock_andDiff___block_invo
   }
 }
 
-- (void)_applyMovesFromDiff:(id)a3
+- (void)_applyMovesFromDiff:(id)diff
 {
   v47 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  diffCopy = diff;
+  if (diffCopy)
   {
     v5 = PKLogFacilityTypeGetObject();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v36 = [v4 deletedIndexPaths];
-      v6 = [v36 count];
-      v35 = [v4 insertedIndexPaths];
-      v7 = [v35 count];
-      v8 = [v4 movedFromIndexPaths];
-      v9 = [v8 count];
-      v10 = [v4 movedToIndexPaths];
-      v11 = [v10 count];
-      v12 = [v4 changedIndexPaths];
+      deletedIndexPaths = [diffCopy deletedIndexPaths];
+      v6 = [deletedIndexPaths count];
+      insertedIndexPaths = [diffCopy insertedIndexPaths];
+      v7 = [insertedIndexPaths count];
+      movedFromIndexPaths = [diffCopy movedFromIndexPaths];
+      v9 = [movedFromIndexPaths count];
+      movedToIndexPaths = [diffCopy movedToIndexPaths];
+      v11 = [movedToIndexPaths count];
+      changedIndexPaths = [diffCopy changedIndexPaths];
       *buf = 134219008;
       v38 = v6;
       v39 = 2048;
@@ -8621,93 +8621,93 @@ void __60__PKDashboardPaymentPassDataSource_updateWithBlock_andDiff___block_invo
       v43 = 2048;
       v44 = v11;
       v45 = 2048;
-      v46 = [v12 count];
+      v46 = [changedIndexPaths count];
       _os_log_impl(&dword_1BD026000, v5, OS_LOG_TYPE_DEFAULT, "Applying moves from diff: %ld deletions, %ld insertions, %ld moves from, %ld moves to, %ld updates", buf, 0x34u);
     }
 
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v14 = [v4 deletedIndexPaths];
-    [WeakRetained deleteItemsAtIndexPaths:v14];
+    deletedIndexPaths2 = [diffCopy deletedIndexPaths];
+    [WeakRetained deleteItemsAtIndexPaths:deletedIndexPaths2];
 
     v15 = objc_loadWeakRetained(&self->_delegate);
-    v16 = [v4 deletedSections];
-    [v15 deleteSections:v16];
+    deletedSections = [diffCopy deletedSections];
+    [v15 deleteSections:deletedSections];
 
     v17 = objc_loadWeakRetained(&self->_delegate);
-    v18 = [v4 insertedIndexPaths];
-    [v17 insertItemsAtIndexPaths:v18];
+    insertedIndexPaths2 = [diffCopy insertedIndexPaths];
+    [v17 insertItemsAtIndexPaths:insertedIndexPaths2];
 
     v19 = objc_loadWeakRetained(&self->_delegate);
-    v20 = [v4 insertedSections];
-    [v19 insertSections:v20];
+    insertedSections = [diffCopy insertedSections];
+    [v19 insertSections:insertedSections];
 
-    v21 = [v4 movedFromSections];
-    v22 = [v4 movedToSections];
-    if ([v21 count])
+    movedFromSections = [diffCopy movedFromSections];
+    movedToSections = [diffCopy movedToSections];
+    if ([movedFromSections count])
     {
       v23 = 0;
       do
       {
-        v24 = [v21 objectAtIndexedSubscript:v23];
-        v25 = [v24 unsignedIntegerValue];
+        v24 = [movedFromSections objectAtIndexedSubscript:v23];
+        unsignedIntegerValue = [v24 unsignedIntegerValue];
 
-        v26 = [v22 objectAtIndexedSubscript:v23];
-        v27 = [v26 unsignedIntegerValue];
+        v26 = [movedToSections objectAtIndexedSubscript:v23];
+        unsignedIntegerValue2 = [v26 unsignedIntegerValue];
 
         v28 = objc_loadWeakRetained(&self->_delegate);
-        [v28 moveSection:v25 toSection:v27];
+        [v28 moveSection:unsignedIntegerValue toSection:unsignedIntegerValue2];
 
         ++v23;
       }
 
-      while ([v21 count] > v23);
+      while ([movedFromSections count] > v23);
     }
 
-    v29 = [v4 movedFromIndexPaths];
-    v30 = [v4 movedToIndexPaths];
-    if ([v29 count])
+    movedFromIndexPaths2 = [diffCopy movedFromIndexPaths];
+    movedToIndexPaths2 = [diffCopy movedToIndexPaths];
+    if ([movedFromIndexPaths2 count])
     {
       v31 = 0;
       do
       {
         v32 = objc_loadWeakRetained(&self->_delegate);
-        v33 = [v29 objectAtIndexedSubscript:v31];
-        v34 = [v30 objectAtIndexedSubscript:v31];
+        v33 = [movedFromIndexPaths2 objectAtIndexedSubscript:v31];
+        v34 = [movedToIndexPaths2 objectAtIndexedSubscript:v31];
         [v32 moveItemAtIndexPath:v33 toIndexPath:v34];
 
         ++v31;
       }
 
-      while ([v29 count] > v31);
+      while ([movedFromIndexPaths2 count] > v31);
     }
   }
 }
 
-- (void)_applyReloadsFromDiff:(id)a3
+- (void)_applyReloadsFromDiff:(id)diff
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  diffCopy = diff;
+  if (diffCopy)
   {
     v5 = PKLogFacilityTypeGetObject();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [v4 changedIndexPaths];
-      v7 = [v6 count];
-      v8 = [v4 changedIndexPaths];
+      changedIndexPaths = [diffCopy changedIndexPaths];
+      v7 = [changedIndexPaths count];
+      changedIndexPaths2 = [diffCopy changedIndexPaths];
       *buf = 134218242;
       v23 = v7;
       v24 = 2112;
-      v25 = v8;
+      v25 = changedIndexPaths2;
       _os_log_impl(&dword_1BD026000, v5, OS_LOG_TYPE_DEFAULT, "Applying reloads from diff with %ld updates: %@", buf, 0x16u);
     }
 
-    v9 = [v4 changedIndexPaths];
+    changedIndexPaths3 = [diffCopy changedIndexPaths];
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v10 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    v10 = [changedIndexPaths3 countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v10)
     {
       v11 = v10;
@@ -8719,7 +8719,7 @@ void __60__PKDashboardPaymentPassDataSource_updateWithBlock_andDiff___block_invo
         {
           if (*v18 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(changedIndexPaths3);
           }
 
           v14 = *(*(&v17 + 1) + 8 * v13);
@@ -8731,7 +8731,7 @@ void __60__PKDashboardPaymentPassDataSource_updateWithBlock_andDiff___block_invo
         }
 
         while (v11 != v13);
-        v11 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v11 = [changedIndexPaths3 countByEnumeratingWithState:&v17 objects:v21 count:16];
       }
 
       while (v11);
@@ -8744,16 +8744,16 @@ void __60__PKDashboardPaymentPassDataSource_updateWithBlock_andDiff___block_invo
   if (([(PKPaymentPass *)self->_pass isHomeKeyPass]& 1) != 0)
   {
     v3 = objc_alloc_init(MEMORY[0x1E69B88E8]);
-    v4 = [(PKPaymentPass *)self->_pass serialNumber];
+    serialNumber = [(PKPaymentPass *)self->_pass serialNumber];
     objc_initWeak(&location, self);
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __75__PKDashboardPaymentPassDataSource_reloadHomeKitRestrictedGuestAccessState__block_invoke;
     v5[3] = &unk_1E801DC18;
     v5[4] = v3;
-    v5[5] = v4;
+    v5[5] = serialNumber;
     objc_copyWeak(&v6, &location);
-    [v3 hasHomeAccessScheduleForPassSerialNumber:v4 withCompletion:v5];
+    [v3 hasHomeAccessScheduleForPassSerialNumber:serialNumber withCompletion:v5];
     objc_destroyWeak(&v6);
     objc_destroyWeak(&location);
   }
@@ -8815,28 +8815,28 @@ void __75__PKDashboardPaymentPassDataSource_reloadHomeKitRestrictedGuestAccessSt
   }
 }
 
-- (void)_updateWithHomeKitHasHomeAccessSchedule:(BOOL)a3 homeIdentifier:(id)a4 isHomeAccessRestricted:(BOOL)a5
+- (void)_updateWithHomeKitHasHomeAccessSchedule:(BOOL)schedule homeIdentifier:(id)identifier isHomeAccessRestricted:(BOOL)restricted
 {
-  v5 = a5;
-  v7 = a3;
-  v9 = a4;
+  restrictedCopy = restricted;
+  scheduleCopy = schedule;
+  identifierCopy = identifier;
   homeKitHasHomeGuestAccessSchedule = self->_homeKitHasHomeGuestAccessSchedule;
-  v11 = homeKitHasHomeGuestAccessSchedule != v7;
-  if (homeKitHasHomeGuestAccessSchedule != v7)
+  v11 = homeKitHasHomeGuestAccessSchedule != scheduleCopy;
+  if (homeKitHasHomeGuestAccessSchedule != scheduleCopy)
   {
-    self->_homeKitHasHomeGuestAccessSchedule = v7;
+    self->_homeKitHasHomeGuestAccessSchedule = scheduleCopy;
   }
 
-  v13 = v9;
-  if (([(NSUUID *)self->_homeKitHomeIdentifier isEqual:v9]& 1) == 0)
+  v13 = identifierCopy;
+  if (([(NSUUID *)self->_homeKitHomeIdentifier isEqual:identifierCopy]& 1) == 0)
   {
-    objc_storeStrong(&self->_homeKitHomeIdentifier, a4);
+    objc_storeStrong(&self->_homeKitHomeIdentifier, identifier);
     v11 = 1;
   }
 
-  if (self->_homeKitIsHomeAccessRestricted != v5)
+  if (self->_homeKitIsHomeAccessRestricted != restrictedCopy)
   {
-    self->_homeKitIsHomeAccessRestricted = v5;
+    self->_homeKitIsHomeAccessRestricted = restrictedCopy;
     self->_homeKitRestrictedGuestAccessStateLoaded = 1;
     [(PKDashboardPaymentPassDataSource *)self reloadMessagesWithReason:@"Homekit change"];
     if (self->_allContentIsLoaded)
@@ -8866,17 +8866,17 @@ LABEL_10:
 LABEL_12:
 }
 
-- (void)reloadMessagesWithReason:(id)a3
+- (void)reloadMessagesWithReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   objc_initWeak(&location, self);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __61__PKDashboardPaymentPassDataSource_reloadMessagesWithReason___block_invoke;
   block[3] = &unk_1E80110E0;
   objc_copyWeak(&v8, &location);
-  v7 = v4;
-  v5 = v4;
+  v7 = reasonCopy;
+  v5 = reasonCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 
   objc_destroyWeak(&v8);
@@ -8895,13 +8895,13 @@ void __61__PKDashboardPaymentPassDataSource_reloadMessagesWithReason___block_inv
   {
     objc_initWeak(&location, self);
     accountService = self->_accountService;
-    v4 = [(PKAccount *)self->_account accountIdentifier];
+    accountIdentifier = [(PKAccount *)self->_account accountIdentifier];
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __68__PKDashboardPaymentPassDataSource_reloadCreditRecoveryPaymentPlans__block_invoke;
     v5[3] = &unk_1E801DC68;
     objc_copyWeak(&v6, &location);
-    [(PKAccountService *)accountService creditRecoveryPaymentPlanInformationForAccountIdentifier:v4 allowFetchFromServer:1 completion:v5];
+    [(PKAccountService *)accountService creditRecoveryPaymentPlanInformationForAccountIdentifier:accountIdentifier allowFetchFromServer:1 completion:v5];
 
     objc_destroyWeak(&v6);
     objc_destroyWeak(&location);
@@ -8950,16 +8950,16 @@ void __68__PKDashboardPaymentPassDataSource_reloadCreditRecoveryPaymentPlans__bl
   }
 }
 
-- (void)_reloadMessagesWithReason:(id)a3
+- (void)_reloadMessagesWithReason:(id)reason
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [(NSMutableArray *)self->_pendingMessageReloadReasons addObject:v4];
+  reasonCopy = reason;
+  [(NSMutableArray *)self->_pendingMessageReloadReasons addObject:reasonCopy];
   if (!self->_loadingMessages)
   {
     if (self->_engagementMessagesLoaded && self->_familyCollectionLoaded && self->_pendingPeerPaymentRequestsLoaded && [(PKDashboardPaymentPassDataSource *)self accountsLoaded]&& self->_physicalCardsLoaded && self->_accountUserInvitationsLoaded && self->_accountUsersLoaded && self->_creditRecoveryPaymentPlansLoaded && self->_homeKitRestrictedGuestAccessStateLoaded)
     {
-      if (!self->_messagesLoaded || (v5 = v4, v5 == @"messageTap") || (v6 = v5) != 0 && (v7 = [(__CFString *)v5 isEqualToString:@"messageTap"], v6, v7))
+      if (!self->_messagesLoaded || (v5 = reasonCopy, v5 == @"messageTap") || (v6 = v5) != 0 && (v7 = [(__CFString *)v5 isEqualToString:@"messageTap"], v6, v7))
       {
         [(PKDashboardPaymentPassDataSource *)self _loadMessages];
       }
@@ -8985,7 +8985,7 @@ void __68__PKDashboardPaymentPassDataSource_reloadCreditRecoveryPaymentPlans__bl
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134217984;
-        v13 = self;
+        selfCopy = self;
         _os_log_impl(&dword_1BD026000, v8, OS_LOG_TYPE_DEFAULT, "Dashboard loading (%p): messages waiting for more data", buf, 0xCu);
       }
     }
@@ -9032,10 +9032,10 @@ void __62__PKDashboardPaymentPassDataSource__reloadMessagesWithReason___block_in
     v6 = v5;
     v287 = v6;
     [(PKDashboardPaymentPassDataSource *)self _messagesForAccountStatusWithCompletion:v286];
-    v112 = [(PKDashboardPaymentPassDataSource *)self _messageForSessionActive];
-    v7 = [(PKDashboardPaymentPassDataSource *)self _messageForAutoReload];
-    v108 = [(PKDashboardPaymentPassDataSource *)self _messageForExpressEducation];
-    v110 = v7;
+    _messageForSessionActive = [(PKDashboardPaymentPassDataSource *)self _messageForSessionActive];
+    _messageForAutoReload = [(PKDashboardPaymentPassDataSource *)self _messageForAutoReload];
+    _messageForExpressEducation = [(PKDashboardPaymentPassDataSource *)self _messageForExpressEducation];
+    v110 = _messageForAutoReload;
     v284[0] = 0;
     v284[1] = v284;
     v284[2] = 0x2020000000;
@@ -9143,8 +9143,8 @@ void __62__PKDashboardPaymentPassDataSource__reloadMessagesWithReason___block_in
     {
       v9 = objc_alloc(MEMORY[0x1E69B9088]);
       pass = self->_pass;
-      v11 = [MEMORY[0x1E69B8EF8] sharedService];
-      v8 = [v9 initWithPass:pass webService:v11];
+      mEMORY[0x1E69B8EF8] = [MEMORY[0x1E69B8EF8] sharedService];
+      v8 = [v9 initWithPass:pass webService:mEMORY[0x1E69B8EF8]];
 
       objc_storeStrong(&self->_precursorUpgradeController, v8);
     }
@@ -9154,7 +9154,7 @@ void __62__PKDashboardPaymentPassDataSource__reloadMessagesWithReason___block_in
     v218[2] = __49__PKDashboardPaymentPassDataSource__loadMessages__block_invoke_2;
     v218[3] = &unk_1E801DCB8;
     v219 = v8;
-    v220 = self;
+    selfCopy = self;
     v222 = v234;
     v223 = &v236;
     v12 = v6;
@@ -9193,7 +9193,7 @@ void __62__PKDashboardPaymentPassDataSource__reloadMessagesWithReason___block_in
 
     else
     {
-      v15 = self->_isAccessPass || v112 != 0;
+      v15 = self->_isAccessPass || _messageForSessionActive != 0;
     }
 
     v207[0] = MEMORY[0x1E69E9820];
@@ -9207,28 +9207,28 @@ void __62__PKDashboardPaymentPassDataSource__reloadMessagesWithReason___block_in
     account = self->_account;
     if (account)
     {
-      v18 = [(PKAccount *)account creditDetails];
-      if (v18)
+      creditDetails = [(PKAccount *)account creditDetails];
+      if (creditDetails)
       {
         v19 = [MEMORY[0x1E69B8770] shouldDisplayAccountInformationForTransactionSourceCollection:self->_transactionSourceCollection withAccount:self->_account];
 
         if (v19)
         {
-          v100 = [(PKDashboardPaymentPassDataSource *)self _messagesForPhysicalCard];
-          v107 = [(PKDashboardPaymentPassDataSource *)self _messagesForPhysicalCardExpiration];
-          v20 = [(PKDashboardPaymentPassDataSource *)self _messagesForInstallmentPlans];
+          _messagesForPhysicalCard = [(PKDashboardPaymentPassDataSource *)self _messagesForPhysicalCard];
+          _messagesForPhysicalCardExpiration = [(PKDashboardPaymentPassDataSource *)self _messagesForPhysicalCardExpiration];
+          _messagesForInstallmentPlans = [(PKDashboardPaymentPassDataSource *)self _messagesForInstallmentPlans];
           v21 = v271[5];
-          v271[5] = v20;
+          v271[5] = _messagesForInstallmentPlans;
 
-          v22 = [(PKDashboardPaymentPassDataSource *)self _messageForBroadwayDiscoverability];
+          _messageForBroadwayDiscoverability = [(PKDashboardPaymentPassDataSource *)self _messageForBroadwayDiscoverability];
           v23 = v229[5];
-          v229[5] = v22;
+          v229[5] = _messageForBroadwayDiscoverability;
 
           v24 = objc_alloc_init(MEMORY[0x1E69B8658]);
-          v25 = [(PKAccount *)self->_account creditDetails];
-          v26 = [v25 rewardsDestination];
+          creditDetails2 = [(PKAccount *)self->_account creditDetails];
+          rewardsDestination = [creditDetails2 rewardsDestination];
 
-          if (v26 == 1)
+          if (rewardsDestination == 1)
           {
             v206[0] = MEMORY[0x1E69E9820];
             v206[1] = 3221225472;
@@ -9239,7 +9239,7 @@ void __62__PKDashboardPaymentPassDataSource__reloadMessagesWithReason___block_in
             [v24 addOperation:v206];
           }
 
-          else if (v26 == 3)
+          else if (rewardsDestination == 3)
           {
             v205[0] = MEMORY[0x1E69E9820];
             v205[1] = 3221225472;
@@ -9258,17 +9258,17 @@ void __62__PKDashboardPaymentPassDataSource__reloadMessagesWithReason___block_in
           v204[5] = v280;
           [v24 addOperation:v204];
           dispatch_group_enter(v16);
-          v41 = [MEMORY[0x1E695DFB0] null];
+          null = [MEMORY[0x1E695DFB0] null];
           v202[0] = MEMORY[0x1E69E9820];
           v202[1] = 3221225472;
           v202[2] = __49__PKDashboardPaymentPassDataSource__loadMessages__block_invoke_13;
           v202[3] = &unk_1E801DD30;
           v42 = v16;
           v203 = v42;
-          v43 = [v24 evaluateWithInput:v41 completion:v202];
+          v43 = [v24 evaluateWithInput:null completion:v202];
 
-          v44 = [(PKDashboardPaymentPassDataSource *)self _cardSharingEducationMessages];
-          [v104 addObjectsFromArray:v44];
+          _cardSharingEducationMessages = [(PKDashboardPaymentPassDataSource *)self _cardSharingEducationMessages];
+          [v104 addObjectsFromArray:_cardSharingEducationMessages];
 
           dispatch_group_enter(v42);
           v199[0] = MEMORY[0x1E69E9820];
@@ -9288,15 +9288,15 @@ void __62__PKDashboardPaymentPassDataSource__reloadMessagesWithReason___block_in
     if (!peerPaymentAccount)
     {
 LABEL_21:
-      v107 = 0;
-      v100 = 0;
+      _messagesForPhysicalCardExpiration = 0;
+      _messagesForPhysicalCard = 0;
       goto LABEL_28;
     }
 
-    v28 = [(PKPeerPaymentAccount *)peerPaymentAccount associatedPassUniqueID];
-    v29 = [(PKPaymentPass *)self->_pass uniqueID];
-    v24 = v28;
-    v30 = v29;
+    associatedPassUniqueID = [(PKPeerPaymentAccount *)peerPaymentAccount associatedPassUniqueID];
+    uniqueID = [(PKPaymentPass *)self->_pass uniqueID];
+    v24 = associatedPassUniqueID;
+    v30 = uniqueID;
     v31 = v30;
     if (v24 == v30)
     {
@@ -9307,8 +9307,8 @@ LABEL_21:
       if (!v24 || !v30)
       {
 
-        v107 = 0;
-        v100 = 0;
+        _messagesForPhysicalCardExpiration = 0;
+        _messagesForPhysicalCard = 0;
         goto LABEL_27;
       }
 
@@ -9328,24 +9328,24 @@ LABEL_21:
     v198 = v282;
     v197 = v16;
     [(PKDashboardPaymentPassDataSource *)self _messageForPeerPaymentIdentityVerificationForRewardsWithCompletion:v196];
-    v33 = [(PKDashboardPaymentPassDataSource *)self _messageForPeerPaymentLockedAccountByAssociatedAccount];
+    _messageForPeerPaymentLockedAccountByAssociatedAccount = [(PKDashboardPaymentPassDataSource *)self _messageForPeerPaymentLockedAccountByAssociatedAccount];
     v34 = v265[5];
-    v265[5] = v33;
+    v265[5] = _messageForPeerPaymentLockedAccountByAssociatedAccount;
 
-    v35 = [(PKDashboardPaymentPassDataSource *)self _messageForPeerPaymentAssociatedAccountStateChangedForSecurityReasons];
+    _messageForPeerPaymentAssociatedAccountStateChangedForSecurityReasons = [(PKDashboardPaymentPassDataSource *)self _messageForPeerPaymentAssociatedAccountStateChangedForSecurityReasons];
     v36 = v259[5];
-    v259[5] = v35;
+    v259[5] = _messageForPeerPaymentAssociatedAccountStateChangedForSecurityReasons;
 
-    v37 = [(PKDashboardPaymentPassDataSource *)self _messageForPeerPaymentAssociatedAccountLockedAccount];
+    _messageForPeerPaymentAssociatedAccountLockedAccount = [(PKDashboardPaymentPassDataSource *)self _messageForPeerPaymentAssociatedAccountLockedAccount];
     v38 = v253[5];
-    v253[5] = v37;
+    v253[5] = _messageForPeerPaymentAssociatedAccountLockedAccount;
 
-    v39 = [(PKDashboardPaymentPassDataSource *)self _messageForPeerPaymentAssociatedAccountPending];
+    _messageForPeerPaymentAssociatedAccountPending = [(PKDashboardPaymentPassDataSource *)self _messageForPeerPaymentAssociatedAccountPending];
     v40 = v247[5];
-    v247[5] = v39;
+    v247[5] = _messageForPeerPaymentAssociatedAccountPending;
 
-    v107 = 0;
-    v100 = 0;
+    _messagesForPhysicalCardExpiration = 0;
+    _messagesForPhysicalCard = 0;
     v24 = v197;
 LABEL_27:
 
@@ -9380,35 +9380,35 @@ LABEL_28:
     v174[3] = __Block_byref_object_copy__41;
     v174[4] = __Block_byref_object_dispose__41;
     v175 = 0;
-    v45 = [(PKPaymentPass *)self->_pass devicePrimaryPaymentApplication];
-    v46 = [v45 state] == 7;
+    devicePrimaryPaymentApplication = [(PKPaymentPass *)self->_pass devicePrimaryPaymentApplication];
+    v46 = [devicePrimaryPaymentApplication state] == 7;
 
     if (!v46)
     {
       if (!self->_account && self->_peerPaymentAccount && PKPeerPaymentAccountResolutionForAccountAndPeerPaymentPass() == 3 && ![(PKPeerPaymentAccount *)self->_peerPaymentAccount role])
       {
-        v60 = [(PKDashboardPaymentPassDataSource *)self _peerPaymentAccountStatusMessage];
+        _peerPaymentAccountStatusMessage = [(PKDashboardPaymentPassDataSource *)self _peerPaymentAccountStatusMessage];
         v61 = v177[5];
-        v177[5] = v60;
+        v177[5] = _peerPaymentAccountStatusMessage;
       }
 
-      v47 = [(PKDashboardPaymentPassDataSource *)self _messagesForPeerPaymentPendingRequests];
+      _messagesForPeerPaymentPendingRequests = [(PKDashboardPaymentPassDataSource *)self _messagesForPeerPaymentPendingRequests];
       v48 = v185[5];
-      v185[5] = v47;
+      v185[5] = _messagesForPeerPaymentPendingRequests;
 
-      v49 = [(PKDashboardPaymentPassDataSource *)self recurringPaymentDashboardMessages];
+      recurringPaymentDashboardMessages = [(PKDashboardPaymentPassDataSource *)self recurringPaymentDashboardMessages];
       v50 = v191[5];
-      v191[5] = v49;
+      v191[5] = recurringPaymentDashboardMessages;
     }
 
     if (self->_showAMPEnrollmentMessage)
     {
-      v98 = [(PKDashboardPaymentPassDataSource *)self _messageForAMPEnrollment];
+      _messageForAMPEnrollment = [(PKDashboardPaymentPassDataSource *)self _messageForAMPEnrollment];
     }
 
     else
     {
-      v98 = 0;
+      _messageForAMPEnrollment = 0;
     }
 
     dispatch_group_enter(v16);
@@ -9420,21 +9420,21 @@ LABEL_28:
     v51 = v16;
     v172 = v51;
     [(PKDashboardPaymentPassDataSource *)self _messageForEnableNotificationsWithCompletion:v171];
-    v96 = [(PKDashboardPaymentPassDataSource *)self _messageForPaymentInformationEventExtensionInstallation];
-    v95 = [(PKDashboardPaymentPassDataSource *)self _messagesForAccountUserInvitations];
-    v93 = [(PKDashboardPaymentPassDataSource *)self _messagesForAccountUserSetupCashForFamily];
-    v92 = [(PKDashboardPaymentPassDataSource *)self _messagesToOrderPhysicalCardForUnderageParticipants];
-    v52 = [(PKDashboardPaymentPassDataSource *)self _messagesForLockedCardParticipants];
-    v106 = [(PKDashboardPaymentPassDataSource *)self _messageForAccountPendingFamilyMembers];
-    v53 = [(PKDashboardPaymentPassDataSource *)self _messageForFirstMonthCoOwners];
+    _messageForPaymentInformationEventExtensionInstallation = [(PKDashboardPaymentPassDataSource *)self _messageForPaymentInformationEventExtensionInstallation];
+    _messagesForAccountUserInvitations = [(PKDashboardPaymentPassDataSource *)self _messagesForAccountUserInvitations];
+    _messagesForAccountUserSetupCashForFamily = [(PKDashboardPaymentPassDataSource *)self _messagesForAccountUserSetupCashForFamily];
+    _messagesToOrderPhysicalCardForUnderageParticipants = [(PKDashboardPaymentPassDataSource *)self _messagesToOrderPhysicalCardForUnderageParticipants];
+    _messagesForLockedCardParticipants = [(PKDashboardPaymentPassDataSource *)self _messagesForLockedCardParticipants];
+    _messageForAccountPendingFamilyMembers = [(PKDashboardPaymentPassDataSource *)self _messageForAccountPendingFamilyMembers];
+    _messageForFirstMonthCoOwners = [(PKDashboardPaymentPassDataSource *)self _messageForFirstMonthCoOwners];
     if (([(PKPaymentPass *)self->_pass supportedRadioTechnologies]& 2) != 0)
     {
-      v54 = [(PKDashboardPaymentPassDataSource *)self _messageForRangingSuspendedPass];
+      _messageForRangingSuspendedPass = [(PKDashboardPaymentPassDataSource *)self _messageForRangingSuspendedPass];
     }
 
     else
     {
-      v54 = 0;
+      _messageForRangingSuspendedPass = 0;
     }
 
     dispatch_group_enter(v51);
@@ -9455,13 +9455,13 @@ LABEL_28:
     group = v55;
     v166 = group;
     [(PKDashboardPaymentPassDataSource *)self _messageForPassInconsistencyWithCompletion:v165];
-    v56 = [(PKDashboardPaymentPassDataSource *)self _messageForDeviceAssessmentEducation];
+    _messageForDeviceAssessmentEducation = [(PKDashboardPaymentPassDataSource *)self _messageForDeviceAssessmentEducation];
     v102 = self->_recurringPeerPaymentSuggestions;
     if (PKFinHealthPeerPaymentSuggestionsEnabled() && [(PKPeerPaymentAccount *)self->_peerPaymentAccount supportsRecurringPayments])
     {
       v57 = self->_peerPaymentAccount;
-      v58 = [(PKFamilyMemberCollection *)self->_familyCollection currentUser];
-      if (([(PKPeerPaymentAccount *)v57 isEligibleForRecurringPaymentsForUser:v58]& 1) != 0)
+      currentUser = [(PKFamilyMemberCollection *)self->_familyCollection currentUser];
+      if (([(PKPeerPaymentAccount *)v57 isEligibleForRecurringPaymentsForUser:currentUser]& 1) != 0)
       {
         v59 = PKIsVision();
 
@@ -9486,17 +9486,17 @@ LABEL_28:
       }
     }
 
-    v62 = [MEMORY[0x1E69B8EF8] sharedService];
+    mEMORY[0x1E69B8EF8]2 = [MEMORY[0x1E69B8EF8] sharedService];
     v63 = PKVirtualCardEnabledWithWebService();
 
     if (!v63)
     {
       v67 = 0;
 LABEL_58:
-      v71 = [(PKDashboardPaymentPassDataSource *)self messageForSavingsAccountFDIC];
-      v72 = [(PKDashboardPaymentPassDataSource *)self messagesForSavingsAccountStatus];
-      v90 = [(PKDashboardPaymentPassDataSource *)self _messageForHomeAccessRestricted];
-      v73 = [(PKDashboardPaymentPassDataSource *)self _userLegalAgreementDashboardMessage];
+      messageForSavingsAccountFDIC = [(PKDashboardPaymentPassDataSource *)self messageForSavingsAccountFDIC];
+      messagesForSavingsAccountStatus = [(PKDashboardPaymentPassDataSource *)self messagesForSavingsAccountStatus];
+      _messageForHomeAccessRestricted = [(PKDashboardPaymentPassDataSource *)self _messageForHomeAccessRestricted];
+      _userLegalAgreementDashboardMessage = [(PKDashboardPaymentPassDataSource *)self _userLegalAgreementDashboardMessage];
       objc_initWeak(&location, self);
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
@@ -9526,50 +9526,50 @@ LABEL_58:
       v157 = v182;
       v158 = v242;
       v159 = v280;
-      v88 = v52;
-      v89 = v54;
-      v115 = v54;
-      v116 = v52;
-      v117 = v107;
-      v118 = v71;
-      v119 = v72;
-      v120 = v112;
-      v121 = v56;
+      v88 = _messagesForLockedCardParticipants;
+      v89 = _messageForRangingSuspendedPass;
+      v115 = _messageForRangingSuspendedPass;
+      v116 = _messagesForLockedCardParticipants;
+      v117 = _messagesForPhysicalCardExpiration;
+      v118 = messageForSavingsAccountFDIC;
+      v119 = messagesForSavingsAccountStatus;
+      v120 = _messageForSessionActive;
+      v121 = _messageForDeviceAssessmentEducation;
       v122 = v110;
-      v123 = v108;
-      v124 = v106;
-      v74 = v53;
-      v125 = v53;
-      v126 = v95;
-      v127 = v93;
-      v128 = v92;
-      v129 = v100;
+      v123 = _messageForExpressEducation;
+      v124 = _messageForAccountPendingFamilyMembers;
+      v74 = _messageForFirstMonthCoOwners;
+      v125 = _messageForFirstMonthCoOwners;
+      v126 = _messagesForAccountUserInvitations;
+      v127 = _messagesForAccountUserSetupCashForFamily;
+      v128 = _messagesToOrderPhysicalCardForUnderageParticipants;
+      v129 = _messagesForPhysicalCard;
       v130 = v67;
-      v131 = v98;
-      v132 = v96;
-      v133 = v73;
+      v131 = _messageForAMPEnrollment;
+      v132 = _messageForPaymentInformationEventExtensionInstallation;
+      v133 = _userLegalAgreementDashboardMessage;
       v136 = &v176;
       v134 = v102;
-      v135 = v90;
-      v91 = v90;
+      v135 = _messageForHomeAccessRestricted;
+      v91 = _messageForHomeAccessRestricted;
       v86 = v102;
-      v103 = v73;
-      v97 = v96;
-      v85 = v98;
+      v103 = _userLegalAgreementDashboardMessage;
+      v97 = _messageForPaymentInformationEventExtensionInstallation;
+      v85 = _messageForAMPEnrollment;
       v99 = v67;
-      v84 = v100;
-      v101 = v92;
-      v94 = v93;
-      v75 = v95;
+      v84 = _messagesForPhysicalCard;
+      v101 = _messagesToOrderPhysicalCardForUnderageParticipants;
+      v94 = _messagesForAccountUserSetupCashForFamily;
+      v75 = _messagesForAccountUserInvitations;
       v76 = v74;
-      v77 = v106;
-      v109 = v108;
+      v77 = _messageForAccountPendingFamilyMembers;
+      v109 = _messageForExpressEducation;
       v111 = v110;
-      v78 = v56;
-      v113 = v112;
-      v79 = v72;
-      v80 = v71;
-      v81 = v107;
+      v78 = _messageForDeviceAssessmentEducation;
+      v113 = _messageForSessionActive;
+      v79 = messagesForSavingsAccountStatus;
+      v80 = messageForSavingsAccountFDIC;
+      v81 = _messagesForPhysicalCardExpiration;
       v82 = v88;
       v83 = v89;
       dispatch_group_notify(group, MEMORY[0x1E69E96A0], block);
@@ -9616,24 +9616,24 @@ LABEL_58:
       return;
     }
 
-    v64 = [(PKPaymentPass *)self->_pass paymentPass];
-    v65 = [v64 associatedAccountFeatureIdentifier];
-    if ([v64 supportsVirtualCardNumber] && (objc_msgSend(v64, "hasActiveVirtualCard") & 1) == 0)
+    paymentPass = [(PKPaymentPass *)self->_pass paymentPass];
+    associatedAccountFeatureIdentifier = [paymentPass associatedAccountFeatureIdentifier];
+    if ([paymentPass supportsVirtualCardNumber] && (objc_msgSend(paymentPass, "hasActiveVirtualCard") & 1) == 0)
     {
-      v68 = [(PKPaymentPass *)self->_pass ingestedDate];
-      [v68 timeIntervalSinceNow];
+      ingestedDate = [(PKPaymentPass *)self->_pass ingestedDate];
+      [ingestedDate timeIntervalSinceNow];
       v70 = fabs(v69) > 300.0;
 
       if (v70)
       {
-        v66 = [(PKDashboardPaymentPassDataSource *)self _messageForSetUpVirtualCardWithFeatureIdentifier:v65];
+        v66 = [(PKDashboardPaymentPassDataSource *)self _messageForSetUpVirtualCardWithFeatureIdentifier:associatedAccountFeatureIdentifier];
         goto LABEL_55;
       }
     }
 
-    else if ([v64 hasActiveVirtualCard])
+    else if ([paymentPass hasActiveVirtualCard])
     {
-      v66 = [(PKDashboardPaymentPassDataSource *)self _messageForVirtualCardEnabledWithFeatureIdentifier:v65];
+      v66 = [(PKDashboardPaymentPassDataSource *)self _messageForVirtualCardEnabledWithFeatureIdentifier:associatedAccountFeatureIdentifier];
 LABEL_55:
       v67 = v66;
 LABEL_57:
@@ -10142,12 +10142,12 @@ LABEL_113:
 {
   self->_secondaryMessagesLoaded = 1;
   v14 = objc_alloc_init(MEMORY[0x1E695DFA0]);
-  v3 = [(PKDashboardPaymentPassDataSource *)self bankConnectMessage];
+  bankConnectMessage = [(PKDashboardPaymentPassDataSource *)self bankConnectMessage];
 
-  if (v3)
+  if (bankConnectMessage)
   {
-    v4 = [(PKDashboardPaymentPassDataSource *)self bankConnectMessage];
-    [v14 addObject:v4];
+    bankConnectMessage2 = [(PKDashboardPaymentPassDataSource *)self bankConnectMessage];
+    [v14 addObject:bankConnectMessage2];
   }
 
   v5 = self->_secondaryMessages;
@@ -10186,9 +10186,9 @@ LABEL_113:
     v3 = objc_alloc_init(PKDashboardPassMessage);
     [(PKDashboardPassMessage *)v3 setIdentifier:@"deviceAssessmentEducation"];
     v4 = [PKDashboardPassMessageImageDescriptorSymbol alloc];
-    v5 = [MEMORY[0x1E69DC888] whiteColor];
-    v6 = [MEMORY[0x1E69DC888] blackColor];
-    v7 = [(PKDashboardPassMessageImageDescriptorSymbol *)v4 initWithName:@"shield.lefthalf.filled" tintColor:v5 backgroundColor:v6];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
+    v7 = [(PKDashboardPassMessageImageDescriptorSymbol *)v4 initWithName:@"shield.lefthalf.filled" tintColor:whiteColor backgroundColor:blackColor];
 
     [(PKDashboardPassMessage *)v3 setImageDescriptor:v7];
     v8 = PKLocalizedPaymentString(&cfstr_DeviceAssessme.isa);
@@ -10243,12 +10243,12 @@ void __72__PKDashboardPaymentPassDataSource__messageForDeviceAssessmentEducation
 - (void)openDeviceAssessmentEducationLearnMore
 {
   WeakRetained = objc_loadWeakRetained(&self->_viewController);
-  v4 = [WeakRetained navigationController];
+  navigationController = [WeakRetained navigationController];
 
-  if (v4)
+  if (navigationController)
   {
     v3 = [MEMORY[0x1E69B7D58] presenterForPrivacySplashWithIdentifier:@"com.apple.onboarding.applepay"];
-    [v3 setPresentingViewController:v4];
+    [v3 setPresentingViewController:navigationController];
     [v3 present];
   }
 }
@@ -10296,7 +10296,7 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v8 = [(PKDashboardPaymentPassDataSource *)self _peerPaymentDashboardCondition];
+  _peerPaymentDashboardCondition = [(PKDashboardPaymentPassDataSource *)self _peerPaymentDashboardCondition];
   v10 = 0;
   v7 = 0;
   LOBYTE(v133) = 0;
@@ -10310,13 +10310,13 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v11 = v8;
+  v11 = _peerPaymentDashboardCondition;
   HIDWORD(v133) = 0;
   v134 = 0;
   v12 = 0;
   v13 = 0;
   v14 = 0;
-  if ((v8 & 0x100) == 0)
+  if ((_peerPaymentDashboardCondition & 0x100) == 0)
   {
     goto LABEL_8;
   }
@@ -10344,8 +10344,8 @@ LABEL_7:
         goto LABEL_8;
       }
 
-      v42 = [(PKPeerPaymentAccount *)self->_peerPaymentAccount role];
-      if (v42 == 1)
+      role = [(PKPeerPaymentAccount *)self->_peerPaymentAccount role];
+      if (role == 1)
       {
         v14 = PKLocalizedPeerPaymentString(&cfstr_PeerPaymentDas_4.isa);
         v13 = PKLocalizedPeerPaymentString(&cfstr_PeerPaymentDas_5.isa);
@@ -10354,7 +10354,7 @@ LABEL_7:
 
       else
       {
-        if (v42)
+        if (role)
         {
           v12 = 0;
           v13 = 0;
@@ -10387,8 +10387,8 @@ LABEL_170:
       goto LABEL_172;
     }
 
-    v59 = [(PKPeerPaymentAccount *)self->_peerPaymentAccount role];
-    if (v59 == 1)
+    role2 = [(PKPeerPaymentAccount *)self->_peerPaymentAccount role];
+    if (role2 == 1)
     {
       v14 = PKLocalizedPeerPaymentString(&cfstr_PeerPaymentDas_2.isa);
       v13 = PKLocalizedPeerPaymentString(&cfstr_PeerPaymentDas_3.isa);
@@ -10397,7 +10397,7 @@ LABEL_170:
 
     else
     {
-      if (v59)
+      if (role2)
       {
         v12 = 0;
         v13 = 0;
@@ -10405,21 +10405,21 @@ LABEL_170:
 
       else
       {
-        v60 = [(PKPeerPaymentAccountResolutionController *)self->_peerPaymentAccountResolutionController account];
-        v61 = [v60 stateReason];
+        account = [(PKPeerPaymentAccountResolutionController *)self->_peerPaymentAccountResolutionController account];
+        stateReason = [account stateReason];
 
-        v62 = v61 & 0xFFFFFFFFFFFFFFFELL;
-        if ((v61 & 0xFFFFFFFFFFFFFFFELL) == 4)
+        v62 = stateReason & 0xFFFFFFFFFFFFFFFELL;
+        if ((stateReason & 0xFFFFFFFFFFFFFFFELL) == 4)
         {
           v63 = 0;
           goto LABEL_131;
         }
 
         v12 = PKLocalizedPeerPaymentString(&cfstr_PeerPaymentAcc_9.isa);
-        v127 = [(PKPeerPaymentAccountResolutionController *)self->_peerPaymentAccountResolutionController account];
-        v128 = [v127 state];
+        account2 = [(PKPeerPaymentAccountResolutionController *)self->_peerPaymentAccountResolutionController account];
+        state = [account2 state];
 
-        if (v128 == 2)
+        if (state == 2)
         {
           if (v62 == 6)
           {
@@ -10450,13 +10450,13 @@ LABEL_142:
   {
     v14 = PKLocalizedPeerPaymentString(&cfstr_PeerPaymentSet_14.isa);
     v12 = PKLocalizedPeerPaymentString(&cfstr_PeerPaymentAcc_3.isa);
-    v57 = [(PKPeerPaymentAccountResolutionController *)self->_peerPaymentAccountResolutionController account];
-    if ([v57 stage] == 1)
+    account3 = [(PKPeerPaymentAccountResolutionController *)self->_peerPaymentAccountResolutionController account];
+    if ([account3 stage] == 1)
     {
-      v58 = [v57 pendingPaymentCount];
-      if (v58 < 2)
+      pendingPaymentCount = [account3 pendingPaymentCount];
+      if (pendingPaymentCount < 2)
       {
-        if (v58 != 1)
+        if (pendingPaymentCount != 1)
         {
           goto LABEL_168;
         }
@@ -10465,8 +10465,8 @@ LABEL_142:
         if ([v116 length])
         {
           v117 = MEMORY[0x1E69B8F28];
-          v118 = [(PKDashboardPaymentPassDataSource *)self _contactResolver];
-          v119 = [v117 displayNameForAddress:v116 contactResolver:v118];
+          _contactResolver = [(PKDashboardPaymentPassDataSource *)self _contactResolver];
+          v119 = [v117 displayNameForAddress:v116 contactResolver:_contactResolver];
 
           if ([v119 length])
           {
@@ -10547,16 +10547,16 @@ LABEL_175:
 LABEL_8:
   if (PKNeedsLostModeExitAuth())
   {
-    v16 = 7;
+    effectiveContactlessPaymentApplicationState = 7;
   }
 
   else
   {
-    v16 = [(PKPaymentPass *)self->_pass effectiveContactlessPaymentApplicationState];
+    effectiveContactlessPaymentApplicationState = [(PKPaymentPass *)self->_pass effectiveContactlessPaymentApplicationState];
   }
 
-  v132 = v16;
-  if (v16 == 1)
+  v132 = effectiveContactlessPaymentApplicationState;
+  if (effectiveContactlessPaymentApplicationState == 1)
   {
     v17 = 1;
   }
@@ -10577,8 +10577,8 @@ LABEL_8:
   v3 = PKPassLocalizedStringForStateWithFormat(&cfstr_PassDashboardT.isa, &self->_pass->super, 0);
 
   pass = self->_pass;
-  v19 = [(PKPaymentPass *)pass localizedDescription];
-  v4 = PKPassLocalizedStringForStateWithFormat(&cfstr_PassDashboardD_22.isa, &pass->super, &stru_1F3BD5BF0.isa, v19);
+  localizedDescription = [(PKPaymentPass *)pass localizedDescription];
+  v4 = PKPassLocalizedStringForStateWithFormat(&cfstr_PassDashboardD_22.isa, &pass->super, &stru_1F3BD5BF0.isa, localizedDescription);
 
   v5 = PKPassLocalizedStringForStateWithFormat(&cfstr_PassDashboardB.isa, &self->_pass->super, 0);
 
@@ -10608,9 +10608,9 @@ LABEL_21:
     goto LABEL_37;
   }
 
-  v23 = [(PKPaymentPass *)self->_pass cardType];
+  cardType = [(PKPaymentPass *)self->_pass cardType];
   v24 = self->_pass;
-  if (v23 == 3)
+  if (cardType == 3)
   {
     v25 = [(PKPaymentPass *)v24 accessType]- 1;
     v26 = MEMORY[0x1E69BC708];
@@ -10627,15 +10627,15 @@ LABEL_35:
 
   else
   {
-    v29 = [(PKPaymentPass *)v24 cardType];
+    cardType2 = [(PKPaymentPass *)v24 cardType];
     v26 = MEMORY[0x1E69BC708];
-    if (v29 == 4)
+    if (cardType2 == 4)
     {
-      v30 = [(PKPaymentPass *)self->_pass identityType];
+      identityType = [(PKPaymentPass *)self->_pass identityType];
       v26 = MEMORY[0x1E69BC718];
-      if (v30 < 6)
+      if (identityType < 6)
       {
-        v27 = &off_1E801E928[v30];
+        v27 = &off_1E801E928[identityType];
         v28 = MEMORY[0x1E69BC718];
         goto LABEL_35;
       }
@@ -10660,17 +10660,17 @@ LABEL_37:
         paymentVerificationController = self->_paymentVerificationController;
         if (!paymentVerificationController)
         {
-          v44 = [MEMORY[0x1E69B8EF8] sharedService];
+          mEMORY[0x1E69B8EF8] = [MEMORY[0x1E69B8EF8] sharedService];
           v45 = [PKPaymentVerificationController alloc];
           v46 = self->_pass;
-          v47 = [(PKPassGroupView *)self->_groupView frontmostPassView];
-          v48 = [(PKPaymentVerificationController *)v45 initWithPass:v46 passView:v47 webService:v44 context:0 delegate:self verificationContext:2];
+          frontmostPassView = [(PKPassGroupView *)self->_groupView frontmostPassView];
+          v48 = [(PKPaymentVerificationController *)v45 initWithPass:v46 passView:frontmostPassView webService:mEMORY[0x1E69B8EF8] context:0 delegate:self verificationContext:2];
           v49 = self->_paymentVerificationController;
           self->_paymentVerificationController = v48;
 
-          v50 = [(PKPaymentVerificationController *)self->_paymentVerificationController verificationRecord];
-          v51 = [v50 activeMethodGroup];
-          LOBYTE(v46) = [v51 needsServerRequest];
+          verificationRecord = [(PKPaymentVerificationController *)self->_paymentVerificationController verificationRecord];
+          activeMethodGroup = [verificationRecord activeMethodGroup];
+          LOBYTE(v46) = [activeMethodGroup needsServerRequest];
 
           if ((v46 & 1) == 0)
           {
@@ -10680,17 +10680,17 @@ LABEL_37:
           paymentVerificationController = self->_paymentVerificationController;
         }
 
-        v52 = [(PKPaymentVerificationController *)paymentVerificationController verificationTitleString];
+        verificationTitleString = [(PKPaymentVerificationController *)paymentVerificationController verificationTitleString];
 
-        v53 = [(PKPaymentVerificationController *)self->_paymentVerificationController verificationBodyString];
+        verificationBodyString = [(PKPaymentVerificationController *)self->_paymentVerificationController verificationBodyString];
 
-        v54 = [(PKPaymentVerificationController *)self->_paymentVerificationController continueVerificationButtonTitle];
+        continueVerificationButtonTitle = [(PKPaymentVerificationController *)self->_paymentVerificationController continueVerificationButtonTitle];
 
         v55 = [(PKDashboardPaymentPassDataSource *)self _messageCachedRawImageForPass:self->_pass];
 
         v20 = 1;
         v134 = v55;
-        v5 = v54;
+        v5 = continueVerificationButtonTitle;
         goto LABEL_67;
       }
 
@@ -10719,22 +10719,22 @@ LABEL_37:
           goto LABEL_93;
         }
 
-        v31 = [(PKPaymentPass *)self->_pass provisioningMetadata];
-        v32 = v31;
-        if (v31 && [v31 sourceDeviceType] == 1)
+        provisioningMetadata = [(PKPaymentPass *)self->_pass provisioningMetadata];
+        v32 = provisioningMetadata;
+        if (provisioningMetadata && [provisioningMetadata sourceDeviceType] == 1)
         {
           v33 = PKLocalizedPaymentString(&cfstr_TransferringTi.isa);
 
-          v34 = [v32 localizedSourceDeviceDescription];
-          v35 = v34;
-          if (!v34)
+          localizedSourceDeviceDescription = [v32 localizedSourceDeviceDescription];
+          v35 = localizedSourceDeviceDescription;
+          if (!localizedSourceDeviceDescription)
           {
             v94 = PKLocalizedPaymentString(&cfstr_TransferringMe_0.isa);
             v35 = 0;
             goto LABEL_91;
           }
 
-          v36 = PKLocalizedPaymentString(&cfstr_TransferringMe.isa, &stru_1F3BD5BF0.isa, v34);
+          v36 = PKLocalizedPaymentString(&cfstr_TransferringMe.isa, &stru_1F3BD5BF0.isa, localizedSourceDeviceDescription);
         }
 
         else
@@ -10753,10 +10753,10 @@ LABEL_91:
         goto LABEL_92;
       }
 
-      v77 = [(PKPeerPaymentAccount *)self->_peerPaymentAccount associatedPassUniqueID];
-      v78 = [(PKPaymentPass *)self->_pass uniqueID];
-      v79 = v77;
-      v80 = v78;
+      associatedPassUniqueID = [(PKPeerPaymentAccount *)self->_peerPaymentAccount associatedPassUniqueID];
+      uniqueID = [(PKPaymentPass *)self->_pass uniqueID];
+      v79 = associatedPassUniqueID;
+      v80 = uniqueID;
       v81 = v80;
       if (v79 == v80)
       {
@@ -10783,15 +10783,15 @@ LABEL_152:
       v115 = [(PKPeerPaymentAccount *)self->_peerPaymentAccount role]!= 1;
 LABEL_153:
 
-      v121 = [(PKPaymentPass *)self->_pass devicePrimaryContactlessPaymentApplication];
-      if (v121)
+      devicePrimaryContactlessPaymentApplication = [(PKPaymentPass *)self->_pass devicePrimaryContactlessPaymentApplication];
+      if (devicePrimaryContactlessPaymentApplication)
       {
 
         goto LABEL_38;
       }
 
-      v122 = [(PKPaymentPass *)self->_pass deviceInAppPaymentApplications];
-      if (![v122 count])
+      deviceInAppPaymentApplications = [(PKPaymentPass *)self->_pass deviceInAppPaymentApplications];
+      if (![deviceInAppPaymentApplications count])
       {
 
         goto LABEL_38;
@@ -10806,26 +10806,26 @@ LABEL_38:
         goto LABEL_93;
       }
 
-      v124 = [(PKPaymentPass *)self->_pass organizationName];
+      organizationName = [(PKPaymentPass *)self->_pass organizationName];
 
-      if (v124)
+      if (organizationName)
       {
-        v125 = [(PKPaymentPass *)self->_pass organizationName];
-        v52 = PKLocalizedPaymentString(&cfstr_DashboardMessa_12.isa, &stru_1F3BD5BF0.isa, v125);
+        organizationName2 = [(PKPaymentPass *)self->_pass organizationName];
+        verificationTitleString = PKLocalizedPaymentString(&cfstr_DashboardMessa_12.isa, &stru_1F3BD5BF0.isa, organizationName2);
       }
 
       else
       {
-        v52 = PKLocalizedPaymentString(&cfstr_DashboardMessa_13.isa);
+        verificationTitleString = PKLocalizedPaymentString(&cfstr_DashboardMessa_13.isa);
       }
 
-      v126 = [(PKPaymentPass *)self->_pass localizedDescription];
-      v53 = PKLocalizedPaymentString(&cfstr_PaymentAppNoCo.isa, &stru_1F3BD5BF0.isa, v126);
+      localizedDescription2 = [(PKPaymentPass *)self->_pass localizedDescription];
+      verificationBodyString = PKLocalizedPaymentString(&cfstr_PaymentAppNoCo.isa, &stru_1F3BD5BF0.isa, localizedDescription2);
 
       v20 = 1;
 LABEL_67:
-      v4 = v53;
-      v3 = v52;
+      v4 = verificationBodyString;
+      v3 = verificationTitleString;
       goto LABEL_93;
     }
 
@@ -10858,9 +10858,9 @@ LABEL_77:
           goto LABEL_93;
         }
 
-        v52 = PKLocalizedCredentialString(&cfstr_DashboardMessa_11.isa);
+        verificationTitleString = PKLocalizedCredentialString(&cfstr_DashboardMessa_11.isa);
 
-        v53 = [(PKDashboardPaymentPassDataSource *)self revokingAccessMessage];
+        verificationBodyString = [(PKDashboardPaymentPassDataSource *)self revokingAccessMessage];
 
         v56 = [(PKDashboardPaymentPassDataSource *)self _messageImageWithName:@"MessageAlert" extension:@"pdf"];
 
@@ -10875,10 +10875,10 @@ LABEL_77:
       v88 = [@"PAYMENT_APP_REMOVED_BY_ISSUER" stringByAppendingString:v22];
       v89 = v21();
 
-      v131 = [(PKPaymentPass *)self->_pass organizationName];
+      organizationName3 = [(PKPaymentPass *)self->_pass organizationName];
       v90 = PKStringWithValidatedFormat();
 
-      v91 = [@"DELETE_PASS" stringByAppendingString:{v22, v131}];
+      v91 = [@"DELETE_PASS" stringByAppendingString:{v22, organizationName3}];
       v92 = v21();
 
       v93 = [(PKDashboardPaymentPassDataSource *)self _messageImageWithName:@"MessageAlert" extension:@"pdf"];
@@ -10925,24 +10925,24 @@ LABEL_92:
     v69 = [@"PAYMENT_APP_SUSPENDED_BY_ISSUER" stringByAppendingString:v22];
     v70 = v21();
 
-    v130 = [(PKPaymentPass *)self->_pass organizationName];
+    organizationName4 = [(PKPaymentPass *)self->_pass organizationName];
     v71 = PKStringWithValidatedFormat();
 
-    v72 = [(PKDashboardPaymentPassDataSource *)self _messageImageWithName:@"MessageAlert" extension:@"pdf", v130];
+    v130 = [(PKDashboardPaymentPassDataSource *)self _messageImageWithName:@"MessageAlert" extension:@"pdf", organizationName4];
 
     v20 = 1;
-    v134 = v72;
+    v134 = v130;
     v4 = v71;
     v3 = v68;
   }
 
-  v73 = [(PKPaymentPass *)self->_pass localizedSuspendedReason];
-  if (v73)
+  localizedSuspendedReason = [(PKPaymentPass *)self->_pass localizedSuspendedReason];
+  if (localizedSuspendedReason)
   {
     v74 = [@"PAYMENT_APP_ERROR_TITLE" stringByAppendingString:v22];
     v75 = v21();
 
-    v76 = v73;
+    v76 = localizedSuspendedReason;
     v20 = 1;
     v4 = v76;
     v3 = v75;
@@ -10953,26 +10953,26 @@ LABEL_93:
   v96 = v95;
   if (v95 && v132 != 7)
   {
-    v97 = [v95 title];
+    title = [v95 title];
 
-    v98 = [v96 body];
+    body = [v96 body];
 
-    v99 = [v96 action];
-    v100 = v99;
-    if (!v99)
+    action = [v96 action];
+    v100 = action;
+    if (!action)
     {
       goto LABEL_103;
     }
 
-    v101 = [v99 type];
-    switch(v101)
+    type = [action type];
+    switch(type)
     {
       case 3:
-        v108 = [v100 title];
-        v109 = v108;
-        if (v108)
+        title2 = [v100 title];
+        v109 = title2;
+        if (title2)
         {
-          v110 = v108;
+          v110 = title2;
         }
 
         else
@@ -10993,11 +10993,11 @@ LABEL_93:
         objc_destroyWeak(&v147);
         break;
       case 10:
-        v105 = [v100 title];
-        v106 = v105;
-        if (v105)
+        title3 = [v100 title];
+        v106 = title3;
+        if (title3)
         {
-          v107 = v105;
+          v107 = title3;
         }
 
         else
@@ -11016,11 +11016,11 @@ LABEL_93:
 
         break;
       case 11:
-        v102 = [v100 title];
-        v103 = v102;
-        if (v102)
+        title4 = [v100 title];
+        v103 = title4;
+        if (title4)
         {
-          v104 = v102;
+          v104 = title4;
         }
 
         else
@@ -11045,8 +11045,8 @@ LABEL_103:
         v6 = 0;
 LABEL_117:
 
-        v3 = v97;
-        v4 = v98;
+        v3 = title;
+        v4 = body;
         goto LABEL_118;
     }
 
@@ -11183,8 +11183,8 @@ void __71__PKDashboardPaymentPassDataSource__messageForPaymentApplicationStatus_
   if ([(PKPaymentPass *)self->_pass isTransitPass]&& PKExpressEducationHasDismissedMessage() == 2 && [(PKPaymentPass *)self->_pass activationState]== PKPaymentPassActivationStateActivated)
   {
     v5 = self->_paymentService;
-    v6 = [(PKPaymentPass *)self->_pass uniqueID];
-    v7 = [(PKPaymentService *)v5 isExpressModeEnabledForPassUniqueIdentifier:v6];
+    uniqueID = [(PKPaymentPass *)self->_pass uniqueID];
+    v7 = [(PKPaymentService *)v5 isExpressModeEnabledForPassUniqueIdentifier:uniqueID];
 
     if (v7)
     {
@@ -11196,8 +11196,8 @@ void __71__PKDashboardPaymentPassDataSource__messageForPaymentApplicationStatus_
       v9 = PKLocalizedPaymentString(&cfstr_DashboardMessa_15.isa);
       [(PKDashboardPassMessage *)v3 setMessage:v9];
 
-      v10 = [MEMORY[0x1E69DD1B8] currentTraitCollection];
-      v11 = [v10 userInterfaceStyle];
+      currentTraitCollection = [MEMORY[0x1E69DD1B8] currentTraitCollection];
+      userInterfaceStyle = [currentTraitCollection userInterfaceStyle];
 
       if (PKSystemApertureIsAvailable())
       {
@@ -11215,7 +11215,7 @@ void __71__PKDashboardPaymentPassDataSource__messageForPaymentApplicationStatus_
       }
 
       v14 = @"Light";
-      if (v11 == 2)
+      if (userInterfaceStyle == 2)
       {
         v14 = @"Dark";
       }
@@ -11369,23 +11369,23 @@ void __63__PKDashboardPaymentPassDataSource__messageForExpressEducation__block_i
     [(PKDashboardPassMessage *)v5 setButtonTitle:v9];
 
     v10 = [PKPaymentPassDetailAutoReloadSectionController autoTopUpActionForPass:self->_pass];
-    v11 = [v10 autoTopUpItem];
-    v12 = [v11 currency];
+    autoTopUpItem = [v10 autoTopUpItem];
+    currency = [autoTopUpItem currency];
 
-    if ([v12 isEqualToString:@"KRW"])
+    if ([currency isEqualToString:@"KRW"])
     {
       v13 = [PKDashboardPassMessageImageDescriptorImageAsset alloc];
-      v14 = [(PKDashboardPaymentPassDataSource *)self _messageImageWithName:@"WonIconArrowCirclePath" extension:@"pdf"];
-      v15 = [MEMORY[0x1E69DC888] blackColor];
-      v16 = [(PKDashboardPassMessageImageDescriptorImageAsset *)v13 initWithImage:v14 tintColor:0 backgroundColor:v15];
+      whiteColor = [(PKDashboardPaymentPassDataSource *)self _messageImageWithName:@"WonIconArrowCirclePath" extension:@"pdf"];
+      blackColor = [MEMORY[0x1E69DC888] blackColor];
+      v16 = [(PKDashboardPassMessageImageDescriptorImageAsset *)v13 initWithImage:whiteColor tintColor:0 backgroundColor:blackColor];
     }
 
     else
     {
       v17 = [PKDashboardPassMessageImageDescriptorSymbol alloc];
-      v14 = [MEMORY[0x1E69DC888] whiteColor];
-      v18 = [MEMORY[0x1E69DC888] blackColor];
-      v16 = [(PKDashboardPassMessageImageDescriptorSymbol *)v17 initWithName:@"dollarsign.arrow.circlepath" tintColor:v14 backgroundColor:v18];
+      whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+      blackColor2 = [MEMORY[0x1E69DC888] blackColor];
+      v16 = [(PKDashboardPassMessageImageDescriptorSymbol *)v17 initWithName:@"dollarsign.arrow.circlepath" tintColor:whiteColor backgroundColor:blackColor2];
     }
 
     [(PKDashboardPassMessage *)v5 setImageDescriptor:v16];
@@ -11439,19 +11439,19 @@ void __57__PKDashboardPaymentPassDataSource__messageForAutoReload__block_invoke_
   }
 }
 
-- (void)autoReloadSetupController:(id)a3 requestsPresentViewController:(id)a4
+- (void)autoReloadSetupController:(id)controller requestsPresentViewController:(id)viewController
 {
-  v5 = a4;
+  viewControllerCopy = viewController;
   WeakRetained = objc_loadWeakRetained(&self->_viewController);
-  v6 = [WeakRetained navigationController];
-  [v6 presentViewController:v5 animated:1 completion:0];
+  navigationController = [WeakRetained navigationController];
+  [navigationController presentViewController:viewControllerCopy animated:1 completion:0];
 }
 
-- (void)autoReloadSetupController:(id)a3 requestsDismissViewController:(id)a4
+- (void)autoReloadSetupController:(id)controller requestsDismissViewController:(id)viewController
 {
   WeakRetained = objc_loadWeakRetained(&self->_viewController);
-  v4 = [WeakRetained navigationController];
-  [v4 dismissViewControllerAnimated:1 completion:0];
+  navigationController = [WeakRetained navigationController];
+  [navigationController dismissViewControllerAnimated:1 completion:0];
 }
 
 - (id)_messageForSessionActive
@@ -11467,8 +11467,8 @@ void __57__PKDashboardPaymentPassDataSource__messageForAutoReload__block_invoke_
     v5 = PKLocalizedPaymentString(&cfstr_PaymentDeviceU.isa);
     [(PKDashboardPassMessage *)v3 setTitle:v5];
 
-    v6 = [(PKPaymentPass *)self->_pass localizedDescription];
-    v7 = PKLocalizedPaymentString(&cfstr_PaymentCardUna.isa, &stru_1F3BD5BF0.isa, v6);
+    localizedDescription = [(PKPaymentPass *)self->_pass localizedDescription];
+    v7 = PKLocalizedPaymentString(&cfstr_PaymentCardUna.isa, &stru_1F3BD5BF0.isa, localizedDescription);
     [(PKDashboardPassMessage *)v3 setMessage:v7];
   }
 
@@ -11480,23 +11480,23 @@ void __57__PKDashboardPaymentPassDataSource__messageForAutoReload__block_invoke_
   return v3;
 }
 
-- (void)_messageFromPaymentServiceSuppressingPassStateChanges:(BOOL)a3 completion:(id)a4
+- (void)_messageFromPaymentServiceSuppressingPassStateChanges:(BOOL)changes completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
   objc_initWeak(&location, self);
   paymentDataProvider = self->_paymentDataProvider;
-  v8 = [(PKPaymentPass *)self->_pass uniqueID];
+  uniqueID = [(PKPaymentPass *)self->_pass uniqueID];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __101__PKDashboardPaymentPassDataSource__messageFromPaymentServiceSuppressingPassStateChanges_completion___block_invoke;
   v10[3] = &unk_1E801DDF0;
   objc_copyWeak(&v12, &location);
-  v13 = a3;
+  changesCopy = changes;
   v10[4] = self;
-  v9 = v6;
+  v9 = completionCopy;
   v11 = v9;
-  [(PKPaymentDefaultDataProvider *)paymentDataProvider messagesForPaymentPassWithUniqueIdentifier:v8 completion:v10];
+  [(PKPaymentDefaultDataProvider *)paymentDataProvider messagesForPaymentPassWithUniqueIdentifier:uniqueID completion:v10];
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(&location);
@@ -11786,21 +11786,21 @@ void __101__PKDashboardPaymentPassDataSource__messageFromPaymentServiceSuppressi
   }
 }
 
-- (BOOL)_shouldPaymentMessageAppear:(id)a3
+- (BOOL)_shouldPaymentMessageAppear:(id)appear
 {
-  v4 = a3;
+  appearCopy = appear;
   os_unfair_lock_lock(&self->_lockTransactions);
-  v5 = [(NSArray *)self->_previousTransactions firstObject];
+  firstObject = [(NSArray *)self->_previousTransactions firstObject];
   os_unfair_lock_unlock(&self->_lockTransactions);
-  LOBYTE(self) = [v4 shouldMessageArchiveWithTransaction:v5];
+  LOBYTE(self) = [appearCopy shouldMessageArchiveWithTransaction:firstObject];
 
   return self ^ 1;
 }
 
-- (void)_messagesForAccountStatusWithCompletion:(id)a3
+- (void)_messagesForAccountStatusWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
+  completionCopy = completion;
+  v5 = completionCopy;
   if (self->_account)
   {
     v6 = dispatch_group_create();
@@ -11812,7 +11812,7 @@ void __101__PKDashboardPaymentPassDataSource__messageFromPaymentServiceSuppressi
     v35[4] = __Block_byref_object_dispose__41;
     v36 = 0;
     paymentDataProvider = self->_paymentDataProvider;
-    v8 = [(PKAccount *)self->_account accountIdentifier];
+    accountIdentifier = [(PKAccount *)self->_account accountIdentifier];
     v32[0] = MEMORY[0x1E69E9820];
     v32[1] = 3221225472;
     v32[2] = __76__PKDashboardPaymentPassDataSource__messagesForAccountStatusWithCompletion___block_invoke;
@@ -11820,14 +11820,14 @@ void __101__PKDashboardPaymentPassDataSource__messageFromPaymentServiceSuppressi
     v34 = v35;
     v9 = v6;
     v33 = v9;
-    [(PKPaymentDefaultDataProvider *)paymentDataProvider transactionsRequiringReviewForAccountWithIdentifier:v8 completion:v32];
+    [(PKPaymentDefaultDataProvider *)paymentDataProvider transactionsRequiringReviewForAccountWithIdentifier:accountIdentifier completion:v32];
 
-    v10 = [(PKAccount *)self->_account creditDetails];
-    v11 = [v10 accountSummary];
-    v12 = [v11 pastDueAmount];
+    creditDetails = [(PKAccount *)self->_account creditDetails];
+    accountSummary = [creditDetails accountSummary];
+    pastDueAmount = [accountSummary pastDueAmount];
 
-    v13 = [MEMORY[0x1E696AB90] zero];
-    v14 = [v13 compare:v12];
+    zero = [MEMORY[0x1E696AB90] zero];
+    v14 = [zero compare:pastDueAmount];
 
     v30[0] = 0;
     v30[1] = v30;
@@ -11840,14 +11840,14 @@ void __101__PKDashboardPaymentPassDataSource__messageFromPaymentServiceSuppressi
     {
       dispatch_group_enter(v9);
       accountService = self->_accountService;
-      v17 = [(PKAccount *)self->_account accountIdentifier];
+      accountIdentifier2 = [(PKAccount *)self->_account accountIdentifier];
       v27[0] = MEMORY[0x1E69E9820];
       v27[1] = 3221225472;
       v27[2] = __76__PKDashboardPaymentPassDataSource__messagesForAccountStatusWithCompletion___block_invoke_960;
       v27[3] = &unk_1E801DE18;
       v29 = v30;
       v28 = v9;
-      [(PKAccountService *)accountService eventsForAccountIdentifier:v17 types:&unk_1F3CC85A0 startDate:0 endDate:0 orderedByDate:1 limit:1 completion:v27];
+      [(PKAccountService *)accountService eventsForAccountIdentifier:accountIdentifier2 types:&unk_1F3CC85A0 startDate:0 endDate:0 orderedByDate:1 limit:1 completion:v27];
     }
 
     objc_initWeak(&location, self);
@@ -11859,9 +11859,9 @@ void __101__PKDashboardPaymentPassDataSource__messageFromPaymentServiceSuppressi
     v25 = v15;
     v22 = v35;
     v23 = v30;
-    v20 = v12;
+    v20 = pastDueAmount;
     v21 = v5;
-    v18 = v12;
+    v18 = pastDueAmount;
     dispatch_group_notify(v9, MEMORY[0x1E69E96A0], block);
 
     objc_destroyWeak(&v24);
@@ -11873,7 +11873,7 @@ void __101__PKDashboardPaymentPassDataSource__messageFromPaymentServiceSuppressi
 
   else
   {
-    (*(v4 + 2))(v4, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
@@ -12881,11 +12881,11 @@ void __76__PKDashboardPaymentPassDataSource__messagesForAccountStatusWithComplet
 
   objc_initWeak(&location, self);
   v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v4 = [(PKAccountUserCollection *)self->_accountUserCollection activeAccountUsers];
-  v5 = [v4 objectsPassingTest:&__block_literal_global_1143];
-  v6 = [v5 allObjects];
+  activeAccountUsers = [(PKAccountUserCollection *)self->_accountUserCollection activeAccountUsers];
+  v5 = [activeAccountUsers objectsPassingTest:&__block_literal_global_1143];
+  allObjects = [v5 allObjects];
 
-  if (![v6 count])
+  if (![allObjects count])
   {
     goto LABEL_20;
   }
@@ -12904,9 +12904,9 @@ void __76__PKDashboardPaymentPassDataSource__messagesForAccountStatusWithComplet
   v9 = PKLocalizedFeatureString();
   [(PKDashboardPassMessage *)v7 setTitle:v9];
 
-  if ([v6 count] < 2)
+  if ([allObjects count] < 2)
   {
-    if (![v6 count])
+    if (![allObjects count])
     {
       v26 = 0;
       goto LABEL_17;
@@ -12914,15 +12914,15 @@ void __76__PKDashboardPaymentPassDataSource__messagesForAccountStatusWithComplet
 
     v30 = MEMORY[0x1E69B8740];
     familyCollection = self->_familyCollection;
-    v32 = [v6 objectAtIndexedSubscript:0];
-    v33 = [v32 altDSID];
-    v34 = [(PKFamilyMemberCollection *)familyCollection familyMemberForAltDSID:v33];
-    v35 = [v6 objectAtIndexedSubscript:0];
-    v36 = [v35 nameComponents];
-    v27 = [v30 contactForFamilyMember:v34 nameComponents:v36 imageData:0];
+    v32 = [allObjects objectAtIndexedSubscript:0];
+    altDSID = [v32 altDSID];
+    v34 = [(PKFamilyMemberCollection *)familyCollection familyMemberForAltDSID:altDSID];
+    v35 = [allObjects objectAtIndexedSubscript:0];
+    nameComponents = [v35 nameComponents];
+    v27 = [v30 contactForFamilyMember:v34 nameComponents:nameComponents imageData:0];
 
-    v24 = [v27 givenName];
-    v38 = v24;
+    givenName = [v27 givenName];
+    v38 = givenName;
     v26 = PKLocalizedFeatureString();
   }
 
@@ -12930,25 +12930,25 @@ void __76__PKDashboardPaymentPassDataSource__messagesForAccountStatusWithComplet
   {
     v10 = MEMORY[0x1E69B8740];
     v11 = self->_familyCollection;
-    v12 = [v6 objectAtIndexedSubscript:0];
-    v13 = [v12 altDSID];
-    v14 = [(PKFamilyMemberCollection *)v11 familyMemberForAltDSID:v13];
-    v15 = [v6 objectAtIndexedSubscript:0];
-    v16 = [v15 nameComponents];
-    v40 = [v10 contactForFamilyMember:v14 nameComponents:v16 imageData:0];
+    v12 = [allObjects objectAtIndexedSubscript:0];
+    altDSID2 = [v12 altDSID];
+    v14 = [(PKFamilyMemberCollection *)v11 familyMemberForAltDSID:altDSID2];
+    v15 = [allObjects objectAtIndexedSubscript:0];
+    nameComponents2 = [v15 nameComponents];
+    v40 = [v10 contactForFamilyMember:v14 nameComponents:nameComponents2 imageData:0];
 
     v17 = MEMORY[0x1E69B8740];
     v18 = self->_familyCollection;
-    v19 = [v6 objectAtIndexedSubscript:1];
-    v20 = [v19 altDSID];
-    v21 = [(PKFamilyMemberCollection *)v18 familyMemberForAltDSID:v20];
-    v22 = [v6 objectAtIndexedSubscript:1];
-    v23 = [v22 nameComponents];
-    v24 = [v17 contactForFamilyMember:v21 nameComponents:v23 imageData:0];
+    v19 = [allObjects objectAtIndexedSubscript:1];
+    altDSID3 = [v19 altDSID];
+    v21 = [(PKFamilyMemberCollection *)v18 familyMemberForAltDSID:altDSID3];
+    v22 = [allObjects objectAtIndexedSubscript:1];
+    nameComponents3 = [v22 nameComponents];
+    givenName = [v17 contactForFamilyMember:v21 nameComponents:nameComponents3 imageData:0];
 
-    v25 = [v40 givenName];
-    [v24 givenName];
-    v39 = v38 = v25;
+    givenName2 = [v40 givenName];
+    [givenName givenName];
+    v39 = v38 = givenName2;
     v26 = PKLocalizedFeatureString();
 
     v27 = v40;
@@ -12997,10 +12997,10 @@ void __65__PKDashboardPaymentPassDataSource__cardSharingEducationMessages__block
   }
 }
 
-- (void)_presentAccountResolution:(unint64_t)a3 forBusinessChatContext:(id)a4 completion:(id)a5
+- (void)_presentAccountResolution:(unint64_t)resolution forBusinessChatContext:(id)context completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
+  completionCopy = completion;
+  contextCopy = context;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
   if (!self->_accountResolutionController)
   {
@@ -13012,21 +13012,21 @@ void __65__PKDashboardPaymentPassDataSource__cardSharingEducationMessages__block
   }
 
   v12 = objc_alloc_init(MEMORY[0x1E69B8408]);
-  [v12 setBusinessChatContext:v9];
+  [v12 setBusinessChatContext:contextCopy];
 
-  [(PKAccountServiceAccountResolutionController *)self->_accountResolutionController presentFlowForAccountResolution:a3 configuration:v12 completion:v8];
+  [(PKAccountServiceAccountResolutionController *)self->_accountResolutionController presentFlowForAccountResolution:resolution configuration:v12 completion:completionCopy];
 }
 
-- (void)_messageForPeerPaymentIdentityVerificationForRewardsWithCompletion:(id)a3
+- (void)_messageForPeerPaymentIdentityVerificationForRewardsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  if (v4)
+  if (completionCopy)
   {
     BoolForKey = PKSharedCacheGetBoolForKey();
     if (!self->_account || (BoolForKey & 1) != 0)
     {
-      v4[2](v4, 0);
+      completionCopy[2](completionCopy, 0);
     }
 
     else
@@ -13034,15 +13034,15 @@ void __65__PKDashboardPaymentPassDataSource__cardSharingEducationMessages__block
       objc_initWeak(&location, self);
       v6 = MEMORY[0x1E69B8770];
       account = self->_account;
-      v8 = [(PKAccountUserCollection *)self->_accountUserCollection currentAccountUser];
+      currentAccountUser = [(PKAccountUserCollection *)self->_accountUserCollection currentAccountUser];
       peerPaymentAccount = self->_peerPaymentAccount;
       v10[0] = MEMORY[0x1E69E9820];
       v10[1] = 3221225472;
       v10[2] = __103__PKDashboardPaymentPassDataSource__messageForPeerPaymentIdentityVerificationForRewardsWithCompletion___block_invoke;
       v10[3] = &unk_1E801DED8;
       objc_copyWeak(&v12, &location);
-      v11 = v4;
-      [v6 resolutionToReceiveCashbackForAccount:account accountUser:v8 withPeerPaymentAccount:peerPaymentAccount completion:v10];
+      v11 = completionCopy;
+      [v6 resolutionToReceiveCashbackForAccount:account accountUser:currentAccountUser withPeerPaymentAccount:peerPaymentAccount completion:v10];
 
       objc_destroyWeak(&v12);
       objc_destroyWeak(&location);
@@ -13170,10 +13170,10 @@ void __103__PKDashboardPaymentPassDataSource__messageForPeerPaymentIdentityVerif
   v66 = 0u;
   v67 = 0u;
   v68 = 0u;
-  v6 = [(PKFamilyMemberCollection *)self->_familyCollection familyMembersByAltDSID];
-  v7 = [v6 allValues];
+  familyMembersByAltDSID = [(PKFamilyMemberCollection *)self->_familyCollection familyMembersByAltDSID];
+  allValues = [familyMembersByAltDSID allValues];
 
-  v4 = [v7 countByEnumeratingWithState:&v65 objects:v71 count:16];
+  v4 = [allValues countByEnumeratingWithState:&v65 objects:v71 count:16];
   if (!v4)
   {
     goto LABEL_42;
@@ -13187,7 +13187,7 @@ void __103__PKDashboardPaymentPassDataSource__messageForPeerPaymentIdentityVerif
     {
       if (*v66 != v9)
       {
-        objc_enumerationMutation(v7);
+        objc_enumerationMutation(allValues);
       }
 
       v11 = *(*(&v65 + 1) + 8 * i);
@@ -13199,14 +13199,14 @@ void __103__PKDashboardPaymentPassDataSource__messageForPeerPaymentIdentityVerif
       else
       {
         v12 = self->_peerPaymentAccount;
-        v13 = [v11 altDSID];
-        v14 = [(PKPeerPaymentAccount *)v12 peerPaymentAccountWithAltDSID:v13];
+        altDSID = [v11 altDSID];
+        v14 = [(PKPeerPaymentAccount *)v12 peerPaymentAccountWithAltDSID:altDSID];
 
         if (v14)
         {
-          v15 = [v14 isPariticipantAccountSecurityDowngraded];
+          isPariticipantAccountSecurityDowngraded = [v14 isPariticipantAccountSecurityDowngraded];
           v16 = v49;
-          if ((v15 & 1) != 0 || (v17 = [v14 isPariticipantAccountEmbargoRecovery], v16 = v44, v17))
+          if ((isPariticipantAccountSecurityDowngraded & 1) != 0 || (v17 = [v14 isPariticipantAccountEmbargoRecovery], v16 = v44, v17))
           {
             [v16 addObject:v11];
           }
@@ -13214,14 +13214,14 @@ void __103__PKDashboardPaymentPassDataSource__messageForPeerPaymentIdentityVerif
       }
     }
 
-    v4 = [v7 countByEnumeratingWithState:&v65 objects:v71 count:16];
+    v4 = [allValues countByEnumeratingWithState:&v65 objects:v71 count:16];
   }
 
   while (v4);
 
   if (v8)
   {
-    v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
+    allValues = objc_alloc_init(MEMORY[0x1E695DF70]);
     v63 = 0u;
     v64 = 0u;
     v61 = 0u;
@@ -13241,16 +13241,16 @@ void __103__PKDashboardPaymentPassDataSource__messageForPeerPaymentIdentityVerif
           }
 
           v19 = *(*(&v61 + 1) + 8 * j);
-          v20 = [v19 firstName];
-          v21 = [v19 altDSID];
+          firstName = [v19 firstName];
+          altDSID2 = [v19 altDSID];
           v22 = objc_alloc_init(PKDashboardPassMessage);
-          v23 = PKLocalizedPeerPaymentString(&cfstr_PeerPaymentDas_8.isa, &stru_1F3BD5BF0.isa, v20);
+          v23 = PKLocalizedPeerPaymentString(&cfstr_PeerPaymentDas_8.isa, &stru_1F3BD5BF0.isa, firstName);
           [(PKDashboardPassMessage *)v22 setTitle:v23];
 
-          v24 = PKLocalizedPeerPaymentString(&cfstr_PeerPaymentDas_9.isa, &stru_1F3BD5BF0.isa, v20);
+          v24 = PKLocalizedPeerPaymentString(&cfstr_PeerPaymentDas_9.isa, &stru_1F3BD5BF0.isa, firstName);
           [(PKDashboardPassMessage *)v22 setMessage:v24];
 
-          v25 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%@", @"peerPaymentAssociatedAccountLockedHSA2Upgrade", v21];
+          v25 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%@", @"peerPaymentAssociatedAccountLockedHSA2Upgrade", altDSID2];
           [(PKDashboardPassMessage *)v22 setIdentifier:v25];
           v26 = [(PKDashboardPaymentPassDataSource *)self _messageImageWithName:@"MessageAlert" extension:@"pdf"];
           [(PKDashboardPassMessage *)v22 setImage:v26];
@@ -13269,10 +13269,10 @@ void __103__PKDashboardPaymentPassDataSource__messageForPeerPaymentIdentityVerif
           v57[3] = &unk_1E8015570;
           objc_copyWeak(&v59, &location);
           v57[4] = v19;
-          v29 = v21;
+          v29 = altDSID2;
           v58 = v29;
           [(PKDashboardPassMessage *)v22 setActionOnButtonPress:v57];
-          [v7 addObject:v22];
+          [allValues addObject:v22];
 
           objc_destroyWeak(&v59);
           objc_destroyWeak(&location);
@@ -13303,16 +13303,16 @@ void __103__PKDashboardPaymentPassDataSource__messageForPeerPaymentIdentityVerif
           }
 
           v31 = *(*(&v53 + 1) + 8 * k);
-          v32 = [v31 firstName];
-          v33 = [v31 altDSID];
+          firstName2 = [v31 firstName];
+          altDSID3 = [v31 altDSID];
           v34 = objc_alloc_init(PKDashboardPassMessage);
           v35 = PKLocalizedPeerPaymentString(&cfstr_PeerPaymentDas_11.isa);
           [(PKDashboardPassMessage *)v34 setTitle:v35];
 
-          v36 = PKLocalizedPeerPaymentString(&cfstr_PeerPaymentDas_12.isa, &stru_1F3BD6370.isa, v32, v32);
+          v36 = PKLocalizedPeerPaymentString(&cfstr_PeerPaymentDas_12.isa, &stru_1F3BD6370.isa, firstName2, firstName2);
           [(PKDashboardPassMessage *)v34 setMessage:v36];
 
-          v37 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%@", @"peerPaymentAssociatedAccountLockedEmbargoRecovery", v33];
+          v37 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%@", @"peerPaymentAssociatedAccountLockedEmbargoRecovery", altDSID3];
           [(PKDashboardPassMessage *)v34 setIdentifier:v37];
           v38 = [(PKDashboardPaymentPassDataSource *)self _messageImageWithName:@"MessageAlert" extension:@"pdf"];
           [(PKDashboardPassMessage *)v34 setImage:v38];
@@ -13331,10 +13331,10 @@ void __103__PKDashboardPaymentPassDataSource__messageForPeerPaymentIdentityVerif
           v50[3] = &unk_1E801DF00;
           v50[4] = v31;
           objc_copyWeak(&v52, &location);
-          v41 = v33;
+          v41 = altDSID3;
           v51 = v41;
           [(PKDashboardPassMessage *)v34 setActionOnButtonPress:v50];
-          [v7 addObject:v34];
+          [allValues addObject:v34];
 
           objc_destroyWeak(&v52);
           objc_destroyWeak(&location);
@@ -13346,9 +13346,9 @@ void __103__PKDashboardPaymentPassDataSource__messageForPeerPaymentIdentityVerif
       while (v48);
     }
 
-    if ([v7 count])
+    if ([allValues count])
     {
-      v4 = [v7 copy];
+      v4 = [allValues copy];
     }
 
     else
@@ -13426,8 +13426,8 @@ void __105__PKDashboardPaymentPassDataSource__messageForPeerPaymentAssociatedAcc
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v6 = [(PKFamilyMemberCollection *)self->_familyCollection familyMembersByAltDSID];
-  obj = [v6 allValues];
+  familyMembersByAltDSID = [(PKFamilyMemberCollection *)self->_familyCollection familyMembersByAltDSID];
+  obj = [familyMembersByAltDSID allValues];
 
   v7 = [obj countByEnumeratingWithState:&v39 objects:v44 count:16];
   if (v7)
@@ -13454,8 +13454,8 @@ LABEL_10:
       if (([v10 isMe] & 1) == 0)
       {
         v11 = self->_peerPaymentAccount;
-        v12 = [v10 altDSID];
-        v13 = [(PKPeerPaymentAccount *)v11 peerPaymentAccountWithAltDSID:v12];
+        altDSID = [v10 altDSID];
+        v13 = [(PKPeerPaymentAccount *)v11 peerPaymentAccountWithAltDSID:altDSID];
 
         if (v13 && PKPeerPaymentAccountShouldContactSupport())
         {
@@ -13497,17 +13497,17 @@ LABEL_10:
 
         v17 = *(*(&v35 + 1) + 8 * i);
         v18 = objc_alloc_init(PKDashboardPassMessage);
-        v19 = [v17 firstName];
-        v20 = PKLocalizedPeerPaymentString(&cfstr_PeerPaymentDas_14.isa, &stru_1F3BD5BF0.isa, v19);
+        firstName = [v17 firstName];
+        v20 = PKLocalizedPeerPaymentString(&cfstr_PeerPaymentDas_14.isa, &stru_1F3BD5BF0.isa, firstName);
         [(PKDashboardPassMessage *)v18 setTitle:v20];
 
-        v21 = [v17 firstName];
-        v22 = PKLocalizedPeerPaymentString(&cfstr_PeerPaymentDas_15.isa, &stru_1F3BD5BF0.isa, v21);
+        firstName2 = [v17 firstName];
+        v22 = PKLocalizedPeerPaymentString(&cfstr_PeerPaymentDas_15.isa, &stru_1F3BD5BF0.isa, firstName2);
         [(PKDashboardPassMessage *)v18 setMessage:v22];
 
         v23 = MEMORY[0x1E696AEC0];
-        v24 = [v17 altDSID];
-        v25 = [v23 stringWithFormat:@"%@-%@", @"peerPaymentAssociatedAccountLocked", v24];
+        altDSID2 = [v17 altDSID];
+        v25 = [v23 stringWithFormat:@"%@-%@", @"peerPaymentAssociatedAccountLocked", altDSID2];
 
         [(PKDashboardPassMessage *)v18 setIdentifier:v25];
         v26 = [(PKDashboardPaymentPassDataSource *)self _messageImageWithName:@"MessageAlert" extension:@"pdf"];
@@ -13575,10 +13575,10 @@ void __88__PKDashboardPaymentPassDataSource__messageForPeerPaymentAssociatedAcco
     v35 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v4 = [(PKFamilyMemberCollection *)self->_familyCollection familyMembersByAltDSID];
-    v5 = [v4 allValues];
+    familyMembersByAltDSID = [(PKFamilyMemberCollection *)self->_familyCollection familyMembersByAltDSID];
+    allValues = [familyMembersByAltDSID allValues];
 
-    v6 = [v5 countByEnumeratingWithState:&v32 objects:v36 count:16];
+    v6 = [allValues countByEnumeratingWithState:&v32 objects:v36 count:16];
     if (v6)
     {
       v7 = *v33;
@@ -13588,7 +13588,7 @@ void __88__PKDashboardPaymentPassDataSource__messageForPeerPaymentAssociatedAcco
         {
           if (*v33 != v7)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(allValues);
           }
 
           v9 = *(*(&v32 + 1) + 8 * i);
@@ -13599,7 +13599,7 @@ void __88__PKDashboardPaymentPassDataSource__messageForPeerPaymentAssociatedAcco
           }
         }
 
-        v6 = [v5 countByEnumeratingWithState:&v32 objects:v36 count:16];
+        v6 = [allValues countByEnumeratingWithState:&v32 objects:v36 count:16];
         if (v6)
         {
           continue;
@@ -13615,27 +13615,27 @@ void __88__PKDashboardPaymentPassDataSource__messageForPeerPaymentAssociatedAcco
     v29 = __Block_byref_object_copy__41;
     v30 = __Block_byref_object_dispose__41;
     v31 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-    v10 = [(PKPeerPaymentAccount *)self->_peerPaymentAccount associatedAccountInformation];
+    associatedAccountInformation = [(PKPeerPaymentAccount *)self->_peerPaymentAccount associatedAccountInformation];
     v25[0] = MEMORY[0x1E69E9820];
     v25[1] = 3221225472;
     v25[2] = __82__PKDashboardPaymentPassDataSource__messageForPeerPaymentAssociatedAccountPending__block_invoke;
     v25[3] = &unk_1E801DF28;
     v25[4] = &v26;
-    [v10 enumerateAccountInvitationsUsingBlock:v25];
+    [associatedAccountInformation enumerateAccountInvitationsUsingBlock:v25];
 
     if ([v27[5] count])
     {
       v11 = objc_alloc_init(PKDashboardPassMessage);
       if ([v27[5] count] == 1)
       {
-        v12 = [(PKFamilyMemberCollection *)self->_familyCollection familyMembersByAltDSID];
-        v13 = [v27[5] anyObject];
-        v14 = [v12 objectForKey:v13];
-        v15 = [v14 firstName];
+        familyMembersByAltDSID2 = [(PKFamilyMemberCollection *)self->_familyCollection familyMembersByAltDSID];
+        anyObject = [v27[5] anyObject];
+        v14 = [familyMembersByAltDSID2 objectForKey:anyObject];
+        firstName = [v14 firstName];
 
-        if ([v15 length])
+        if ([firstName length])
         {
-          PKLocalizedPeerPaymentString(&cfstr_PeerPaymentDas_16.isa, &stru_1F3BD5BF0.isa, v15);
+          PKLocalizedPeerPaymentString(&cfstr_PeerPaymentDas_16.isa, &stru_1F3BD5BF0.isa, firstName);
         }
 
         else
@@ -13717,20 +13717,20 @@ void __82__PKDashboardPaymentPassDataSource__messageForPeerPaymentAssociatedAcco
   }
 }
 
-- (void)_messageForPeerPaymentRewardsRedemptionWithCompletion:(id)a3
+- (void)_messageForPeerPaymentRewardsRedemptionWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  if (v4)
+  if (completionCopy)
   {
     v5 = self->_account;
-    v6 = [(PKAccount *)v5 creditDetails];
-    v7 = [v6 rewardsDestination];
+    creditDetails = [(PKAccount *)v5 creditDetails];
+    rewardsDestination = [creditDetails rewardsDestination];
 
-    if (v5 && -[PKAccount feature](v5, "feature") == 2 && v7 == 1 && ((v8 = PKSharedCacheGetBoolForKey() ^ 1, PKSharedCacheGetNumberForKey(), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 integerValue], v9, (v8 & 1) != 0) || v10 == 1))
+    if (v5 && -[PKAccount feature](v5, "feature") == 2 && rewardsDestination == 1 && ((v8 = PKSharedCacheGetBoolForKey() ^ 1, PKSharedCacheGetNumberForKey(), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 integerValue], v9, (v8 & 1) != 0) || v10 == 1))
     {
       objc_initWeak(&location, self);
-      v11 = [MEMORY[0x1E69B9000] sharedInstance];
+      mEMORY[0x1E69B9000] = [MEMORY[0x1E69B9000] sharedInstance];
       v12[0] = MEMORY[0x1E69E9820];
       v12[1] = 3221225472;
       v12[2] = __90__PKDashboardPaymentPassDataSource__messageForPeerPaymentRewardsRedemptionWithCompletion___block_invoke;
@@ -13739,8 +13739,8 @@ void __82__PKDashboardPaymentPassDataSource__messageForPeerPaymentAssociatedAcco
       v13 = v5;
       v16 = v8;
       v17 = v10 == 1;
-      v14 = v4;
-      [v11 accountWithCompletion:v12];
+      v14 = completionCopy;
+      [mEMORY[0x1E69B9000] accountWithCompletion:v12];
 
       objc_destroyWeak(&v15);
       objc_destroyWeak(&location);
@@ -13748,7 +13748,7 @@ void __82__PKDashboardPaymentPassDataSource__messageForPeerPaymentAssociatedAcco
 
     else
     {
-      (*(v4 + 2))(v4, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
   }
 }
@@ -14091,11 +14091,11 @@ void __90__PKDashboardPaymentPassDataSource__messageForPeerPaymentRewardsRedempt
   }
 }
 
-- (void)_messageForPaymentFailedWithCompletion:(id)a3
+- (void)_messageForPaymentFailedWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  if (v4)
+  if (completionCopy)
   {
     v5 = self->_account;
     v6 = v5;
@@ -14103,15 +14103,15 @@ void __90__PKDashboardPaymentPassDataSource__messageForPeerPaymentRewardsRedempt
     {
       objc_initWeak(&location, self);
       accountService = self->_accountService;
-      v8 = [(PKAccount *)v6 accountIdentifier];
+      accountIdentifier = [(PKAccount *)v6 accountIdentifier];
       v9[0] = MEMORY[0x1E69E9820];
       v9[1] = 3221225472;
       v9[2] = __75__PKDashboardPaymentPassDataSource__messageForPaymentFailedWithCompletion___block_invoke;
       v9[3] = &unk_1E801DFC8;
       objc_copyWeak(&v12, &location);
       v10 = v6;
-      v11 = v4;
-      [(PKAccountService *)accountService eventsForAccountIdentifier:v8 types:&unk_1F3CC85B8 startDate:0 endDate:0 orderedByDate:1 limit:1 completion:v9];
+      v11 = completionCopy;
+      [(PKAccountService *)accountService eventsForAccountIdentifier:accountIdentifier types:&unk_1F3CC85B8 startDate:0 endDate:0 orderedByDate:1 limit:1 completion:v9];
 
       objc_destroyWeak(&v12);
       objc_destroyWeak(&location);
@@ -14119,7 +14119,7 @@ void __90__PKDashboardPaymentPassDataSource__messageForPeerPaymentRewardsRedempt
 
     else
     {
-      (*(v4 + 2))(v4, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
   }
 }
@@ -14278,25 +14278,25 @@ void __75__PKDashboardPaymentPassDataSource__messageForPaymentFailedWithCompleti
   }
 }
 
-- (void)_messageForInterestChargeWithCompletion:(id)a3
+- (void)_messageForInterestChargeWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  if (v4)
+  if (completionCopy)
   {
     v5 = self->_account;
-    v6 = [(PKAccount *)v5 feature];
+    feature = [(PKAccount *)v5 feature];
     v7 = PKSharedCacheGetDateForKey();
-    if (v5 && v6 == 2 && (-[PKAccount hideInterestChargeClarity](v5, "hideInterestChargeClarity") & 1) == 0 && ([MEMORY[0x1E695DF00] now], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v7, "compare:", v8), v8, v9 != 1))
+    if (v5 && feature == 2 && (-[PKAccount hideInterestChargeClarity](v5, "hideInterestChargeClarity") & 1) == 0 && ([MEMORY[0x1E695DF00] now], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v7, "compare:", v8), v8, v9 != 1))
     {
-      v10 = [(PKAccount *)v5 creditDetails];
-      v11 = [v10 accountSummary];
-      v12 = [v11 balanceSummary];
+      creditDetails = [(PKAccount *)v5 creditDetails];
+      accountSummary = [creditDetails accountSummary];
+      balanceSummary = [accountSummary balanceSummary];
 
-      v13 = [v12 openingDate];
-      v14 = [v13 dateByAddingTimeInterval:-60.0];
+      openingDate = [balanceSummary openingDate];
+      v14 = [openingDate dateByAddingTimeInterval:-60.0];
 
-      v15 = [v12 closingDate];
+      closingDate = [balanceSummary closingDate];
       v41[0] = 0;
       v41[1] = v41;
       v41[2] = 0x3032000000;
@@ -14318,7 +14318,7 @@ void __75__PKDashboardPaymentPassDataSource__messageForPaymentFailedWithCompleti
       objc_copyWeak(&v37, &location);
       v17 = v14;
       v34 = v17;
-      v18 = v15;
+      v18 = closingDate;
       v35 = v18;
       v36 = v41;
       [v16 addOperation:v33];
@@ -14332,17 +14332,17 @@ void __75__PKDashboardPaymentPassDataSource__messageForPaymentFailedWithCompleti
       v29 = v19;
       v31 = v39;
       [v16 addOperation:v28];
-      v20 = [MEMORY[0x1E695DFB0] null];
+      null = [MEMORY[0x1E695DFB0] null];
       v22[0] = MEMORY[0x1E69E9820];
       v22[1] = 3221225472;
       v22[2] = __76__PKDashboardPaymentPassDataSource__messageForInterestChargeWithCompletion___block_invoke_6;
       v22[3] = &unk_1E801E060;
       objc_copyWeak(&v27, &location);
       v25 = v41;
-      v24 = v4;
+      v24 = completionCopy;
       v23 = v19;
       v26 = v39;
-      v21 = [v16 evaluateWithInput:v20 completion:v22];
+      v21 = [v16 evaluateWithInput:null completion:v22];
 
       objc_destroyWeak(&v27);
       objc_destroyWeak(&v32);
@@ -14356,7 +14356,7 @@ void __75__PKDashboardPaymentPassDataSource__messageForPaymentFailedWithCompleti
 
     else
     {
-      (*(v4 + 2))(v4, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
   }
 }
@@ -14672,32 +14672,32 @@ void __76__PKDashboardPaymentPassDataSource__messageForInterestChargeWithComplet
   }
 }
 
-- (void)_messageForEnableNotificationsWithCompletion:(id)a3
+- (void)_messageForEnableNotificationsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  if (v4)
+  if (completionCopy)
   {
     if (PKSharedCacheGetBoolForKey())
     {
-      v4[2](v4, 0);
+      completionCopy[2](completionCopy, 0);
     }
 
     else
     {
       objc_initWeak(&location, self);
-      v5 = [(PKAccount *)self->_account feature];
-      v6 = [MEMORY[0x1E69B9328] sharedInstance];
+      feature = [(PKAccount *)self->_account feature];
+      mEMORY[0x1E69B9328] = [MEMORY[0x1E69B9328] sharedInstance];
       v8[0] = MEMORY[0x1E69E9820];
       v8[1] = 3221225472;
       v8[2] = __81__PKDashboardPaymentPassDataSource__messageForEnableNotificationsWithCompletion___block_invoke;
       v8[3] = &unk_1E801E0B0;
       objc_copyWeak(v10, &location);
-      v7 = v4;
-      v10[1] = v5;
+      v7 = completionCopy;
+      v10[1] = feature;
       v8[4] = self;
       v9 = v7;
-      [v6 authorizationStatusWithCompletion:v8];
+      [mEMORY[0x1E69B9328] authorizationStatusWithCompletion:v8];
 
       objc_destroyWeak(v10);
       objc_destroyWeak(&location);
@@ -14836,31 +14836,31 @@ void __81__PKDashboardPaymentPassDataSource__messageForEnableNotificationsWithCo
   {
     v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
     objc_initWeak(location, self);
-    v4 = [(PKPhysicalCardController *)self->_physicalCardController primaryPhysicalCard];
-    v5 = [(PKPhysicalCardController *)self->_physicalCardController expiredPhysicalCard];
+    primaryPhysicalCard = [(PKPhysicalCardController *)self->_physicalCardController primaryPhysicalCard];
+    expiredPhysicalCard = [(PKPhysicalCardController *)self->_physicalCardController expiredPhysicalCard];
     if ([(PKPhysicalCardController *)self->_physicalCardController hasExpiredPhysicalCardOnly])
     {
-      v6 = v5;
+      v6 = expiredPhysicalCard;
     }
 
     else
     {
-      v6 = v4;
+      v6 = primaryPhysicalCard;
     }
 
     v7 = v6;
-    v8 = [(PKAccount *)self->_account accountIdentifier];
-    v9 = [v7 identifier];
+    accountIdentifier = [(PKAccount *)self->_account accountIdentifier];
+    identifier = [v7 identifier];
     v10 = PKAppleCardPhysicalCardExpiredMessagingStartDate();
 
-    v11 = [(PKAccount *)self->_account accountIdentifier];
-    v12 = [v4 identifier];
+    accountIdentifier2 = [(PKAccount *)self->_account accountIdentifier];
+    identifier2 = [primaryPhysicalCard identifier];
     v47 = PKAppleCardPhysicalCardExpiringSoonMessagingStartDate();
 
-    v13 = [(PKPhysicalCardController *)self->_physicalCardController canReplacePhysicalCard];
+    canReplacePhysicalCard = [(PKPhysicalCardController *)self->_physicalCardController canReplacePhysicalCard];
     if (v7)
     {
-      v14 = v13;
+      v14 = canReplacePhysicalCard;
     }
 
     else
@@ -14878,8 +14878,8 @@ void __81__PKDashboardPaymentPassDataSource__messageForEnableNotificationsWithCo
 
       else
       {
-        v17 = [(PKAccount *)self->_account accountIdentifier];
-        v18 = [v7 identifier];
+        accountIdentifier3 = [(PKAccount *)self->_account accountIdentifier];
+        identifier3 = [v7 identifier];
         HasDismissedPhysicalCardExpiredMessage = PKAppleCardHasDismissedPhysicalCardExpiredMessage();
 
         if ((HasDismissedPhysicalCardExpiredMessage & 1) == 0)
@@ -14903,7 +14903,7 @@ void __81__PKDashboardPaymentPassDataSource__messageForEnableNotificationsWithCo
           v54[3] = &unk_1E8014F68;
           v46 = &v55;
           objc_copyWeak(&v55, location);
-          v54[4] = v4;
+          v54[4] = primaryPhysicalCard;
           [(PKDashboardPassMessage *)v20 setActionOnButtonPress:v54];
           v25 = v52;
           v52[0] = MEMORY[0x1E69E9820];
@@ -14932,8 +14932,8 @@ void __81__PKDashboardPaymentPassDataSource__messageForEnableNotificationsWithCo
       goto LABEL_26;
     }
 
-    v30 = [(PKPhysicalCardController *)self->_physicalCardController canReplacePhysicalCard];
-    if (!v47 || !v30)
+    canReplacePhysicalCard2 = [(PKPhysicalCardController *)self->_physicalCardController canReplacePhysicalCard];
+    if (!v47 || !canReplacePhysicalCard2)
     {
       goto LABEL_26;
     }
@@ -14945,8 +14945,8 @@ void __81__PKDashboardPaymentPassDataSource__messageForEnableNotificationsWithCo
       goto LABEL_25;
     }
 
-    v33 = [(PKAccount *)self->_account accountIdentifier];
-    v34 = [v4 identifier];
+    accountIdentifier4 = [(PKAccount *)self->_account accountIdentifier];
+    identifier4 = [primaryPhysicalCard identifier];
     HasDismissedPhysicalCardExpiringSoonMessage = PKAppleCardHasDismissedPhysicalCardExpiringSoonMessage();
 
     if (HasDismissedPhysicalCardExpiringSoonMessage)
@@ -14967,7 +14967,7 @@ LABEL_26:
     }
 
     v20 = objc_alloc_init(PKDashboardPassMessage);
-    v36 = [(PKPhysicalCardController *)self->_physicalCardController primaryPhysicalCardExpirationDate];
+    primaryPhysicalCardExpirationDate = [(PKPhysicalCardController *)self->_physicalCardController primaryPhysicalCardExpirationDate];
     v37 = PKMediumDayAndMonthStringFromDate();
     v38 = PKLocalizedFeatureString();
     [(PKDashboardPassMessage *)v20 setTitle:v38, v37];
@@ -14987,7 +14987,7 @@ LABEL_26:
     v50[3] = &unk_1E8014F68;
     v46 = &v51;
     objc_copyWeak(&v51, location);
-    v42 = v4;
+    v42 = primaryPhysicalCard;
     v50[4] = v42;
     [(PKDashboardPassMessage *)v20 setActionOnButtonPress:v50];
     v48[0] = MEMORY[0x1E69E9820];
@@ -15148,7 +15148,7 @@ void __70__PKDashboardPaymentPassDataSource__messagesForPhysicalCardExpiration__
   if (self->_account && self->_physicalCardsLoaded)
   {
     v101 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v108 = self;
+    selfCopy = self;
     objc_initWeak(&location, self);
     if ([(PKPhysicalCardController *)self->_physicalCardController canRequestNewPhysicalCard]&& ![(PKPhysicalCardController *)self->_physicalCardController canReplacePhysicalCard]&& (PKSharedCacheGetBoolForKey() & 1) == 0)
     {
@@ -15159,7 +15159,7 @@ void __70__PKDashboardPaymentPassDataSource__messagesForPhysicalCardExpiration__
       v5 = PKLocalizedFeatureString();
       [(PKDashboardPassMessage *)v3 setMessage:v5];
 
-      v6 = [(PKDashboardPaymentPassDataSource *)v108 _messageImageWithName:@"PhysicalCardMessageModule" extension:@"pdf"];
+      v6 = [(PKDashboardPaymentPassDataSource *)selfCopy _messageImageWithName:@"PhysicalCardMessageModule" extension:@"pdf"];
       [(PKDashboardPassMessage *)v3 setImage:v6];
 
       v153[0] = MEMORY[0x1E69E9820];
@@ -15179,14 +15179,14 @@ void __70__PKDashboardPaymentPassDataSource__messagesForPhysicalCardExpiration__
       [(PKDashboardPassMessage *)v3 setActionOnButtonPress:v151];
       [(PKDashboardPassMessage *)v3 setIdentifier:@"physicalCardOrder"];
       [(PKDashboardPassMessage *)v3 setReportToAnalytics:1];
-      v8 = [MEMORY[0x1E69B8540] subjectToReportDashboardAnalyticsForPass:v108->_pass];
+      v8 = [MEMORY[0x1E69B8540] subjectToReportDashboardAnalyticsForPass:selfCopy->_pass];
       [(PKDashboardPassMessage *)v3 setAnalyticsReporterSubject:v8];
 
       [v101 addObject:v3];
       objc_destroyWeak(&v152);
       objc_destroyWeak(&v154);
 
-      self = v108;
+      self = selfCopy;
     }
 
     v9 = [(NSSet *)self->_physicalCards objectsPassingTest:&__block_literal_global_1380];
@@ -15210,12 +15210,12 @@ void __70__PKDashboardPaymentPassDataSource__messagesForPhysicalCardExpiration__
           }
 
           v12 = *(*(&v147 + 1) + 8 * i);
-          v13 = [v12 accountUserAltDSID];
-          v14 = [v12 identifier];
+          accountUserAltDSID = [v12 accountUserAltDSID];
+          identifier = [v12 identifier];
           accountUserCollection = self->_accountUserCollection;
-          if (v13)
+          if (accountUserAltDSID)
           {
-            [(PKAccountUserCollection *)accountUserCollection accountUserWithAltDSID:v13];
+            [(PKAccountUserCollection *)accountUserCollection accountUserWithAltDSID:accountUserAltDSID];
           }
 
           else
@@ -15223,10 +15223,10 @@ void __70__PKDashboardPaymentPassDataSource__messagesForPhysicalCardExpiration__
             [(PKAccountUserCollection *)accountUserCollection currentAccountUser];
           }
           v16 = ;
-          v17 = [v16 accessLevel];
+          accessLevel = [v16 accessLevel];
           if (v16)
           {
-            v18 = v17 == 2;
+            v18 = accessLevel == 2;
           }
 
           else
@@ -15238,24 +15238,24 @@ void __70__PKDashboardPaymentPassDataSource__messagesForPhysicalCardExpiration__
           {
             if (v16)
             {
-              v19 = [v16 isCurrentUser];
+              isCurrentUser = [v16 isCurrentUser];
             }
 
             else
             {
-              v19 = 1;
+              isCurrentUser = 1;
             }
 
-            v20 = [(PKDashboardPaymentPassDataSource *)self _lastPhysicalCardMessageDateKeyForPhysicalCardIdentifier:v14];
+            v20 = [(PKDashboardPaymentPassDataSource *)self _lastPhysicalCardMessageDateKeyForPhysicalCardIdentifier:identifier];
             v21 = PKSharedCacheGetDateForKey();
-            if (((v21 == 0) & v19) == 1)
+            if (((v21 == 0) & isCurrentUser) == 1)
             {
               v21 = PKSharedCacheGetDateForKey();
             }
 
-            if (v13)
+            if (accountUserAltDSID)
             {
-              v110 = [(PKFamilyMemberCollection *)self->_familyCollection familyMemberForAltDSID:v13];
+              v110 = [(PKFamilyMemberCollection *)self->_familyCollection familyMemberForAltDSID:accountUserAltDSID];
             }
 
             else
@@ -15264,33 +15264,33 @@ void __70__PKDashboardPaymentPassDataSource__messagesForPhysicalCardExpiration__
             }
 
             v22 = MEMORY[0x1E69B8740];
-            v23 = [v16 nameComponents];
-            v109 = [v22 contactForFamilyMember:v110 nameComponents:v23 imageData:0];
+            nameComponents = [v16 nameComponents];
+            v109 = [v22 contactForFamilyMember:v110 nameComponents:nameComponents imageData:0];
             v106 = v20;
 
-            v107 = [v109 givenName];
-            v111 = [v12 latestShippingActivity];
-            if (v111 && [v111 shippingStatus] && (!v21 || (objc_msgSend(v111, "timestamp"), v24 = objc_claimAutoreleasedReturnValue(), v25 = objc_msgSend(v21, "compare:", v24) == -1, v24, v25)))
+            givenName = [v109 givenName];
+            latestShippingActivity = [v12 latestShippingActivity];
+            if (latestShippingActivity && [latestShippingActivity shippingStatus] && (!v21 || (objc_msgSend(latestShippingActivity, "timestamp"), v24 = objc_claimAutoreleasedReturnValue(), v25 = objc_msgSend(v21, "compare:", v24) == -1, v24, v25)))
             {
-              v32 = [v111 shippingStatus];
-              if (v32 > 2)
+              shippingStatus = [latestShippingActivity shippingStatus];
+              if (shippingStatus > 2)
               {
-                if (v32 == 3)
+                if (shippingStatus == 3)
                 {
-                  if ((v19 & 1) != 0 || [v16 supportsPhysicalCardActivation])
+                  if ((isCurrentUser & 1) != 0 || [v16 supportsPhysicalCardActivation])
                   {
                     v27 = objc_alloc_init(PKDashboardPassMessage);
-                    v48 = [MEMORY[0x1E69B8540] subjectToReportDashboardAnalyticsForPass:v108->_pass];
+                    v48 = [MEMORY[0x1E69B8540] subjectToReportDashboardAnalyticsForPass:selfCopy->_pass];
                     [(PKDashboardPassMessage *)v27 setAnalyticsReporterSubject:v48];
 
-                    if (v19)
+                    if (isCurrentUser)
                     {
                       PKLocalizedFeatureString();
                     }
 
                     else
                     {
-                      v92 = v107;
+                      v92 = givenName;
                       PKLocalizedFeatureString();
                     }
                     v73 = ;
@@ -15308,10 +15308,10 @@ void __70__PKDashboardPaymentPassDataSource__messagesForPhysicalCardExpiration__
                     [(PKDashboardPassMessage *)v27 setActionOnButtonPress:v138];
                     [(PKDashboardPassMessage *)v27 setTitle:v73];
                     [(PKDashboardPassMessage *)v27 setMessage:v74];
-                    v76 = [(PKDashboardPaymentPassDataSource *)v108 _messageImageWithName:@"PhysicalCardMessageModule" extension:@"pdf"];
+                    v76 = [(PKDashboardPaymentPassDataSource *)selfCopy _messageImageWithName:@"PhysicalCardMessageModule" extension:@"pdf"];
                     [(PKDashboardPassMessage *)v27 setImage:v76];
 
-                    v77 = [(PKDashboardPaymentPassDataSource *)v108 _physicalCardMessageIdentifierFromIdentifier:@"physicalCardDelivered" physicalCard:v12];
+                    v77 = [(PKDashboardPaymentPassDataSource *)selfCopy _physicalCardMessageIdentifierFromIdentifier:@"physicalCardDelivered" physicalCard:v12];
                     [(PKDashboardPassMessage *)v27 setIdentifier:v77];
 
                     [(PKDashboardPassMessage *)v27 setReportToAnalytics:1];
@@ -15326,7 +15326,7 @@ LABEL_98:
                   goto LABEL_99;
                 }
 
-                if (v32 != 4)
+                if (shippingStatus != 4)
                 {
                   goto LABEL_98;
                 }
@@ -15335,26 +15335,26 @@ LABEL_98:
                 v34 = PKLocalizedFeatureString();
                 [(PKDashboardPassMessage *)v27 setTitle:v34];
 
-                v35 = [v111 localizedDeliveryExceptionReason];
-                if (!v35)
+                localizedDeliveryExceptionReason = [latestShippingActivity localizedDeliveryExceptionReason];
+                if (!localizedDeliveryExceptionReason)
                 {
-                  if (v19)
+                  if (isCurrentUser)
                   {
                     PKLocalizedFeatureString();
                   }
 
                   else
                   {
-                    v92 = v107;
+                    v92 = givenName;
                     PKLocalizedFeatureString();
                   }
-                  v35 = ;
+                  localizedDeliveryExceptionReason = ;
                 }
 
-                [(PKDashboardPassMessage *)v27 setMessage:v35, v92];
-                v81 = [(PKDashboardPaymentPassDataSource *)v108 _messageImageWithName:@"MessageAlert" extension:@"pdf"];
+                [(PKDashboardPassMessage *)v27 setMessage:localizedDeliveryExceptionReason, v92];
+                v81 = [(PKDashboardPaymentPassDataSource *)selfCopy _messageImageWithName:@"MessageAlert" extension:@"pdf"];
                 [(PKDashboardPassMessage *)v27 setImage:v81];
-                v105 = v35;
+                v105 = localizedDeliveryExceptionReason;
 
                 v82 = PKLocalizedFeatureString();
                 [(PKDashboardPassMessage *)v27 setButtonTitle:v82];
@@ -15372,11 +15372,11 @@ LABEL_98:
                 objc_copyWeak(&v132, &location);
                 v131 = v106;
                 [(PKDashboardPassMessage *)v27 setActionOnDismiss:v130];
-                v83 = [(PKDashboardPaymentPassDataSource *)v108 _physicalCardMessageIdentifierFromIdentifier:@"physicalCardCannotDeliver" physicalCard:v12];
+                v83 = [(PKDashboardPaymentPassDataSource *)selfCopy _physicalCardMessageIdentifierFromIdentifier:@"physicalCardCannotDeliver" physicalCard:v12];
                 [(PKDashboardPassMessage *)v27 setIdentifier:v83];
 
                 [(PKDashboardPassMessage *)v27 setReportToAnalytics:1];
-                v84 = [MEMORY[0x1E69B8540] subjectToReportDashboardAnalyticsForPass:v108->_pass];
+                v84 = [MEMORY[0x1E69B8540] subjectToReportDashboardAnalyticsForPass:selfCopy->_pass];
                 [(PKDashboardPassMessage *)v27 setAnalyticsReporterSubject:v84];
 
                 [v101 addObject:v27];
@@ -15384,28 +15384,28 @@ LABEL_98:
                 objc_destroyWeak(&v134);
               }
 
-              else if (v32 == 1)
+              else if (shippingStatus == 1)
               {
                 v27 = objc_alloc_init(PKDashboardPassMessage);
-                v44 = [(PKDashboardPaymentPassDataSource *)v108 _messageImageWithName:@"PhysicalCardMessageModule" extension:@"pdf"];
+                v44 = [(PKDashboardPaymentPassDataSource *)selfCopy _messageImageWithName:@"PhysicalCardMessageModule" extension:@"pdf"];
                 [(PKDashboardPassMessage *)v27 setImage:v44];
 
-                v45 = [MEMORY[0x1E69B8540] subjectToReportDashboardAnalyticsForPass:v108->_pass];
+                v45 = [MEMORY[0x1E69B8540] subjectToReportDashboardAnalyticsForPass:selfCopy->_pass];
                 [(PKDashboardPassMessage *)v27 setAnalyticsReporterSubject:v45];
 
-                if (v19)
+                if (isCurrentUser)
                 {
                   v46 = PKLocalizedFeatureString();
-                  v47 = [v111 formattedEstimatedDeliveryDate];
-                  v93 = v47;
+                  formattedEstimatedDeliveryDate = [latestShippingActivity formattedEstimatedDeliveryDate];
+                  v93 = formattedEstimatedDeliveryDate;
                 }
 
                 else
                 {
                   v46 = PKLocalizedFeatureString();
-                  v47 = [v111 formattedEstimatedDeliveryDate];
-                  v93 = v107;
-                  v94 = v47;
+                  formattedEstimatedDeliveryDate = [latestShippingActivity formattedEstimatedDeliveryDate];
+                  v93 = givenName;
+                  v94 = formattedEstimatedDeliveryDate;
                 }
 
                 v98 = PKLocalizedFeatureString();
@@ -15413,8 +15413,8 @@ LABEL_98:
 
                 [(PKDashboardPassMessage *)v27 setTitle:v46, v93];
                 [(PKDashboardPassMessage *)v27 setMessage:v98];
-                v56 = [v12 shipmentTrackingURL];
-                if (v56 || ([v111 shipmentTrackingURL], (v56 = objc_claimAutoreleasedReturnValue()) != 0))
+                shipmentTrackingURL = [v12 shipmentTrackingURL];
+                if (shipmentTrackingURL || ([latestShippingActivity shipmentTrackingURL], (shipmentTrackingURL = objc_claimAutoreleasedReturnValue()) != 0))
                 {
                   v57 = PKLocalizedFeatureString();
                   [(PKDashboardPassMessage *)v27 setButtonTitle:v57];
@@ -15424,8 +15424,8 @@ LABEL_98:
                   v144[2] = __60__PKDashboardPaymentPassDataSource__messagesForPhysicalCard__block_invoke_5;
                   v144[3] = &unk_1E8014F68;
                   objc_copyWeak(&v146, &location);
-                  v56 = v56;
-                  v145 = v56;
+                  shipmentTrackingURL = shipmentTrackingURL;
+                  v145 = shipmentTrackingURL;
                   [(PKDashboardPassMessage *)v27 setActionOnButtonPress:v144];
 
                   objc_destroyWeak(&v146);
@@ -15438,7 +15438,7 @@ LABEL_98:
                 objc_copyWeak(&v143, &location);
                 v142 = v106;
                 [(PKDashboardPassMessage *)v27 setActionOnDismiss:v141];
-                v58 = [(PKDashboardPaymentPassDataSource *)v108 _physicalCardMessageIdentifierFromIdentifier:@"physicalCardShipped" physicalCard:v12];
+                v58 = [(PKDashboardPaymentPassDataSource *)selfCopy _physicalCardMessageIdentifierFromIdentifier:@"physicalCardShipped" physicalCard:v12];
                 [(PKDashboardPassMessage *)v27 setIdentifier:v58];
 
                 [(PKDashboardPassMessage *)v27 setReportToAnalytics:1];
@@ -15449,13 +15449,13 @@ LABEL_98:
 
               else
               {
-                if (v32 != 2)
+                if (shippingStatus != 2)
                 {
                   goto LABEL_98;
                 }
 
                 v27 = objc_alloc_init(PKDashboardPassMessage);
-                if (v19)
+                if (isCurrentUser)
                 {
                   v33 = PKLocalizedFeatureString();
                   PKLocalizedFeatureString();
@@ -15464,21 +15464,21 @@ LABEL_98:
                 else
                 {
                   v33 = PKLocalizedFeatureString();
-                  v92 = v107;
+                  v92 = givenName;
                   PKLocalizedFeatureString();
                 }
                 v97 = ;
                 v105 = v33;
                 [(PKDashboardPassMessage *)v27 setTitle:v33, v92];
                 [(PKDashboardPassMessage *)v27 setMessage:v97];
-                v51 = [(PKDashboardPaymentPassDataSource *)v108 _messageImageWithName:@"PhysicalCardMessageModule" extension:@"pdf"];
+                v51 = [(PKDashboardPaymentPassDataSource *)selfCopy _messageImageWithName:@"PhysicalCardMessageModule" extension:@"pdf"];
                 [(PKDashboardPassMessage *)v27 setImage:v51];
 
-                v52 = [MEMORY[0x1E69B8540] subjectToReportDashboardAnalyticsForPass:v108->_pass];
+                v52 = [MEMORY[0x1E69B8540] subjectToReportDashboardAnalyticsForPass:selfCopy->_pass];
                 [(PKDashboardPassMessage *)v27 setAnalyticsReporterSubject:v52];
 
-                v53 = [v12 shipmentTrackingURL];
-                if (v53 || ([v111 shipmentTrackingURL], (v53 = objc_claimAutoreleasedReturnValue()) != 0))
+                shipmentTrackingURL2 = [v12 shipmentTrackingURL];
+                if (shipmentTrackingURL2 || ([latestShippingActivity shipmentTrackingURL], (shipmentTrackingURL2 = objc_claimAutoreleasedReturnValue()) != 0))
                 {
                   v54 = PKLocalizedFeatureString();
                   [(PKDashboardPassMessage *)v27 setButtonTitle:v54];
@@ -15488,14 +15488,14 @@ LABEL_98:
                   v135[2] = __60__PKDashboardPaymentPassDataSource__messagesForPhysicalCard__block_invoke_8;
                   v135[3] = &unk_1E8014F68;
                   objc_copyWeak(&v137, &location);
-                  v53 = v53;
-                  v136 = v53;
+                  shipmentTrackingURL2 = shipmentTrackingURL2;
+                  v136 = shipmentTrackingURL2;
                   [(PKDashboardPassMessage *)v27 setActionOnButtonPress:v135];
 
                   objc_destroyWeak(&v137);
                 }
 
-                v55 = [(PKDashboardPaymentPassDataSource *)v108 _physicalCardMessageIdentifierFromIdentifier:@"physicalCardOutForDelivery" physicalCard:v12];
+                v55 = [(PKDashboardPaymentPassDataSource *)selfCopy _physicalCardMessageIdentifierFromIdentifier:@"physicalCardOutForDelivery" physicalCard:v12];
                 [(PKDashboardPassMessage *)v27 setIdentifier:v55];
 
                 [(PKDashboardPassMessage *)v27 setReportToAnalytics:1];
@@ -15505,22 +15505,22 @@ LABEL_98:
 
             else
             {
-              v26 = [v12 latestOrderActivity];
-              v27 = v26;
-              if (!v26)
+              latestOrderActivity = [v12 latestOrderActivity];
+              v27 = latestOrderActivity;
+              if (!latestOrderActivity)
               {
                 goto LABEL_97;
               }
 
-              if (![(PKDashboardPassMessage *)v26 activity])
+              if (![(PKDashboardPassMessage *)latestOrderActivity activity])
               {
                 goto LABEL_97;
               }
 
               if (v21)
               {
-                v28 = [(PKDashboardPassMessage *)v27 date];
-                v29 = [v21 compare:v28] == -1;
+                date = [(PKDashboardPassMessage *)v27 date];
+                v29 = [v21 compare:date] == -1;
 
                 if (!v29)
                 {
@@ -15528,13 +15528,13 @@ LABEL_98:
                 }
               }
 
-              v30 = [(PKDashboardPassMessage *)v27 activity];
-              if (v30 <= 2)
+              activity = [(PKDashboardPassMessage *)v27 activity];
+              if (activity <= 2)
               {
-                if (v30 == 1)
+                if (activity == 1)
                 {
                   v49 = objc_alloc_init(PKDashboardPassMessage);
-                  if (v19)
+                  if (isCurrentUser)
                   {
                     v99 = PKLocalizedFeatureString();
                     PKLocalizedFeatureString();
@@ -15543,7 +15543,7 @@ LABEL_98:
                   else
                   {
                     v99 = PKLocalizedFeatureString();
-                    v92 = v107;
+                    v92 = givenName;
                     PKLocalizedFeatureString();
                   }
                   v63 = ;
@@ -15552,7 +15552,7 @@ LABEL_98:
                   v64 = PKLocalizedFeatureString();
                   [(PKDashboardPassMessage *)v49 setButtonTitle:v64];
 
-                  v65 = [(PKDashboardPaymentPassDataSource *)v108 _messageImageWithName:@"PhysicalCardMessageModule" extension:@"pdf"];
+                  v65 = [(PKDashboardPaymentPassDataSource *)selfCopy _messageImageWithName:@"PhysicalCardMessageModule" extension:@"pdf"];
                   [(PKDashboardPassMessage *)v49 setImage:v65];
 
                   v121[0] = MEMORY[0x1E69E9820];
@@ -15568,11 +15568,11 @@ LABEL_98:
                   objc_copyWeak(&v120, &location);
                   v119 = v106;
                   [(PKDashboardPassMessage *)v49 setActionOnDismiss:v118];
-                  v66 = [(PKDashboardPaymentPassDataSource *)v108 _physicalCardMessageIdentifierFromIdentifier:@"physicalCardOrdered" physicalCard:v12];
+                  v66 = [(PKDashboardPaymentPassDataSource *)selfCopy _physicalCardMessageIdentifierFromIdentifier:@"physicalCardOrdered" physicalCard:v12];
                   [(PKDashboardPassMessage *)v49 setIdentifier:v66];
 
                   [(PKDashboardPassMessage *)v49 setReportToAnalytics:1];
-                  v67 = [MEMORY[0x1E69B8540] subjectToReportDashboardAnalyticsForPass:v108->_pass];
+                  v67 = [MEMORY[0x1E69B8540] subjectToReportDashboardAnalyticsForPass:selfCopy->_pass];
                   [(PKDashboardPassMessage *)v49 setAnalyticsReporterSubject:v67];
 
                   [v101 addObject:v49];
@@ -15580,10 +15580,10 @@ LABEL_98:
                   objc_destroyWeak(&v122);
                 }
 
-                else if (v30 == 2)
+                else if (activity == 2)
                 {
                   v31 = objc_alloc_init(PKDashboardPassMessage);
-                  if (v19)
+                  if (isCurrentUser)
                   {
                     v96 = PKLocalizedFeatureString();
                     PKLocalizedFeatureString();
@@ -15592,20 +15592,20 @@ LABEL_98:
                   else
                   {
                     v96 = PKLocalizedFeatureString();
-                    v92 = v107;
+                    v92 = givenName;
                     PKLocalizedFeatureString();
                   }
                   v59 = ;
                   [(PKDashboardPassMessage *)v31 setTitle:v96, v92];
                   [(PKDashboardPassMessage *)v31 setMessage:v59];
-                  v60 = [(PKDashboardPaymentPassDataSource *)v108 _messageImageWithName:@"DeliveryBox" extension:@"pdf"];
+                  v60 = [(PKDashboardPaymentPassDataSource *)selfCopy _messageImageWithName:@"DeliveryBox" extension:@"pdf"];
                   [(PKDashboardPassMessage *)v31 setImage:v60];
                   v105 = v31;
 
-                  v61 = [v12 shipmentTrackingURL];
+                  shipmentTrackingURL3 = [v12 shipmentTrackingURL];
 
                   PKLocalizedFeatureString();
-                  if (v61)
+                  if (shipmentTrackingURL3)
                     v62 = {;
                     [(PKDashboardPassMessage *)v31 setButtonTitle:v62];
 
@@ -15639,11 +15639,11 @@ LABEL_98:
                   objc_copyWeak(&v125, &location);
                   v124 = v106;
                   [(PKDashboardPassMessage *)v31 setActionOnDismiss:v123];
-                  v79 = [(PKDashboardPaymentPassDataSource *)v108 _physicalCardMessageIdentifierFromIdentifier:@"physicalCardShippedNoDate" physicalCard:v12];
+                  v79 = [(PKDashboardPaymentPassDataSource *)selfCopy _physicalCardMessageIdentifierFromIdentifier:@"physicalCardShippedNoDate" physicalCard:v12];
                   [(PKDashboardPassMessage *)v31 setIdentifier:v79];
 
                   [(PKDashboardPassMessage *)v31 setReportToAnalytics:1];
-                  v80 = [MEMORY[0x1E69B8540] subjectToReportDashboardAnalyticsForPass:v108->_pass];
+                  v80 = [MEMORY[0x1E69B8540] subjectToReportDashboardAnalyticsForPass:selfCopy->_pass];
                   [(PKDashboardPassMessage *)v31 setAnalyticsReporterSubject:v80];
 
                   [v101 addObject:v31];
@@ -15657,10 +15657,10 @@ LABEL_97:
                 goto LABEL_98;
               }
 
-              if (v30 == 3)
+              if (activity == 3)
               {
                 v50 = objc_alloc_init(PKDashboardPassMessage);
-                if (v19)
+                if (isCurrentUser)
                 {
                   v100 = PKLocalizedFeatureString();
                   PKLocalizedFeatureString();
@@ -15669,7 +15669,7 @@ LABEL_97:
                 else
                 {
                   v100 = PKLocalizedFeatureString();
-                  v92 = v107;
+                  v92 = givenName;
                   PKLocalizedFeatureString();
                 }
                 v68 = ;
@@ -15678,7 +15678,7 @@ LABEL_97:
                 v69 = PKLocalizedFeatureString();
                 [(PKDashboardPassMessage *)v50 setButtonTitle:v69];
 
-                v70 = [(PKDashboardPaymentPassDataSource *)v108 _messageImageWithName:@"MessageAlert" extension:@"pdf"];
+                v70 = [(PKDashboardPaymentPassDataSource *)selfCopy _messageImageWithName:@"MessageAlert" extension:@"pdf"];
                 [(PKDashboardPassMessage *)v50 setImage:v70];
 
                 v116[0] = MEMORY[0x1E69E9820];
@@ -15687,11 +15687,11 @@ LABEL_97:
                 v116[3] = &unk_1E8015548;
                 objc_copyWeak(&v117, &location);
                 [(PKDashboardPassMessage *)v50 setActionOnButtonPress:v116];
-                v71 = [(PKDashboardPaymentPassDataSource *)v108 _physicalCardMessageIdentifierFromIdentifier:@"physicalCardFixShippingAddress" physicalCard:v12];
+                v71 = [(PKDashboardPaymentPassDataSource *)selfCopy _physicalCardMessageIdentifierFromIdentifier:@"physicalCardFixShippingAddress" physicalCard:v12];
                 [(PKDashboardPassMessage *)v50 setIdentifier:v71];
 
                 [(PKDashboardPassMessage *)v50 setReportToAnalytics:1];
-                v72 = [MEMORY[0x1E69B8540] subjectToReportDashboardAnalyticsForPass:v108->_pass];
+                v72 = [MEMORY[0x1E69B8540] subjectToReportDashboardAnalyticsForPass:selfCopy->_pass];
                 [(PKDashboardPassMessage *)v50 setAnalyticsReporterSubject:v72];
 
                 [v101 addObject:v50];
@@ -15700,7 +15700,7 @@ LABEL_97:
                 goto LABEL_97;
               }
 
-              if (v30 != 4)
+              if (activity != 4)
               {
                 goto LABEL_97;
               }
@@ -15710,23 +15710,23 @@ LABEL_97:
               [(PKDashboardPassMessage *)v36 setTitle:v37];
               v105 = v36;
 
-              v38 = [(PKDashboardPassMessage *)v27 localizedReason];
-              v39 = v38;
-              if (!v38)
+              localizedReason = [(PKDashboardPassMessage *)v27 localizedReason];
+              v39 = localizedReason;
+              if (!localizedReason)
               {
                 v95 = PKLocalizedFeatureString();
                 v39 = v95;
               }
 
               [(PKDashboardPassMessage *)v36 setMessage:v39];
-              if (!v38)
+              if (!localizedReason)
               {
               }
 
               v40 = PKLocalizedFeatureString();
               [(PKDashboardPassMessage *)v36 setButtonTitle:v40];
 
-              v41 = [(PKDashboardPaymentPassDataSource *)v108 _messageImageWithName:@"MessageAlert" extension:@"pdf"];
+              v41 = [(PKDashboardPaymentPassDataSource *)selfCopy _messageImageWithName:@"MessageAlert" extension:@"pdf"];
               [(PKDashboardPassMessage *)v36 setImage:v41];
 
               v114[0] = MEMORY[0x1E69E9820];
@@ -15735,11 +15735,11 @@ LABEL_97:
               v114[3] = &unk_1E8015548;
               objc_copyWeak(&v115, &location);
               [(PKDashboardPassMessage *)v36 setActionOnButtonPress:v114];
-              v42 = [(PKDashboardPaymentPassDataSource *)v108 _physicalCardMessageIdentifierFromIdentifier:@"physicalCardOrderIssue" physicalCard:v12];
+              v42 = [(PKDashboardPaymentPassDataSource *)selfCopy _physicalCardMessageIdentifierFromIdentifier:@"physicalCardOrderIssue" physicalCard:v12];
               [(PKDashboardPassMessage *)v36 setIdentifier:v42];
 
               [(PKDashboardPassMessage *)v36 setReportToAnalytics:1];
-              v43 = [MEMORY[0x1E69B8540] subjectToReportDashboardAnalyticsForPass:v108->_pass];
+              v43 = [MEMORY[0x1E69B8540] subjectToReportDashboardAnalyticsForPass:selfCopy->_pass];
               [(PKDashboardPassMessage *)v36 setAnalyticsReporterSubject:v43];
 
               [v101 addObject:v36];
@@ -15753,7 +15753,7 @@ LABEL_96:
 
 LABEL_99:
 
-          self = v108;
+          self = selfCopy;
         }
 
         v10 = [obj countByEnumeratingWithState:&v147 objects:v156 count:16];
@@ -15762,7 +15762,7 @@ LABEL_99:
       while (v10);
     }
 
-    if ([(PKAccount *)v108->_account state]== 1 && [(PKPhysicalCardController *)v108->_physicalCardController physicalCardBlocked])
+    if ([(PKAccount *)selfCopy->_account state]== 1 && [(PKPhysicalCardController *)selfCopy->_physicalCardController physicalCardBlocked])
     {
       v85 = objc_alloc_init(PKDashboardPassMessage);
       [(PKDashboardPassMessage *)v85 setIdentifier:@"physicalCardSuspended"];
@@ -15772,7 +15772,7 @@ LABEL_99:
       v87 = PKLocalizedFeatureString();
       [(PKDashboardPassMessage *)v85 setMessage:v87];
 
-      v88 = [(PKDashboardPaymentPassDataSource *)v108 _messageImageWithName:@"MessageAlert" extension:@"pdf"];
+      v88 = [(PKDashboardPaymentPassDataSource *)selfCopy _messageImageWithName:@"MessageAlert" extension:@"pdf"];
       [(PKDashboardPassMessage *)v85 setImage:v88];
 
       v89 = PKLocalizedFeatureString();
@@ -16039,95 +16039,95 @@ void __60__PKDashboardPaymentPassDataSource__messagesForPhysicalCard__block_invo
   }
 }
 
-- (id)_physicalCardMessageIdentifierFromIdentifier:(id)a3 physicalCard:(id)a4
+- (id)_physicalCardMessageIdentifierFromIdentifier:(id)identifier physicalCard:(id)card
 {
   v5 = MEMORY[0x1E696AEC0];
-  v6 = a4;
-  v7 = a3;
+  cardCopy = card;
+  identifierCopy = identifier;
   v8 = [v5 alloc];
-  v9 = [v6 identifier];
+  identifier = [cardCopy identifier];
 
-  v10 = [v8 initWithFormat:@"%@-%@", v7, v9];
+  v10 = [v8 initWithFormat:@"%@-%@", identifierCopy, identifier];
 
   return v10;
 }
 
-- (id)_lastPhysicalCardMessageDateKeyForPhysicalCardIdentifier:(id)a3
+- (id)_lastPhysicalCardMessageDateKeyForPhysicalCardIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v3 = MEMORY[0x1E696AEC0];
-    v4 = a3;
+    identifierCopy = identifier;
     v5 = [v3 alloc];
-    v6 = [v5 initWithFormat:@"%@-%@", *MEMORY[0x1E69BC4C8], v4];
+    identifierCopy = [v5 initWithFormat:@"%@-%@", *MEMORY[0x1E69BC4C8], identifierCopy];
   }
 
   else
   {
-    v6 = 0;
+    identifierCopy = 0;
   }
 
-  return v6;
+  return identifierCopy;
 }
 
-- (void)_presentActivatePhysicalCard:(id)a3 accountUser:(id)a4
+- (void)_presentActivatePhysicalCard:(id)card accountUser:(id)user
 {
-  v6 = a4;
-  v7 = a3;
-  v11 = [[PKPhysicalCardManualActivationViewController alloc] initWithAccountService:self->_accountService account:self->_account accountUser:v6 paymentPass:self->_pass physicalCard:v7 activationCode:0];
+  userCopy = user;
+  cardCopy = card;
+  v11 = [[PKPhysicalCardManualActivationViewController alloc] initWithAccountService:self->_accountService account:self->_account accountUser:userCopy paymentPass:self->_pass physicalCard:cardCopy activationCode:0];
 
   v8 = [[PKNavigationController alloc] initWithRootViewController:v11];
   WeakRetained = objc_loadWeakRetained(&self->_viewController);
-  v10 = [WeakRetained navigationController];
-  [v10 presentViewController:v8 animated:1 completion:0];
+  navigationController = [WeakRetained navigationController];
+  [navigationController presentViewController:v8 animated:1 completion:0];
 }
 
-- (id)_downloadMessageIconURLAndReloadIfNecessary:(id)a3
+- (id)_downloadMessageIconURLAndReloadIfNecessary:(id)necessary
 {
-  v4 = a3;
-  if (v4)
+  necessaryCopy = necessary;
+  if (necessaryCopy)
   {
     os_unfair_lock_lock(&self->_lockIcons);
-    v5 = [(NSMutableDictionary *)self->_icons objectForKey:v4];
+    v5 = [(NSMutableDictionary *)self->_icons objectForKey:necessaryCopy];
     os_unfair_lock_unlock(&self->_lockIcons);
     if (v5)
     {
       goto LABEL_10;
     }
 
-    v6 = [MEMORY[0x1E69B8A08] sharedImageAssetDownloader];
-    v7 = [v6 cachedDataForURL:v4];
+    mEMORY[0x1E69B8A08] = [MEMORY[0x1E69B8A08] sharedImageAssetDownloader];
+    v7 = [mEMORY[0x1E69B8A08] cachedDataForURL:necessaryCopy];
 
     v8 = [MEMORY[0x1E69DCAB8] imageWithData:v7];
     if (v8)
     {
       v5 = v8;
       os_unfair_lock_lock(&self->_lockIcons);
-      [(NSMutableDictionary *)self->_icons setObject:v5 forKey:v4];
+      [(NSMutableDictionary *)self->_icons setObject:v5 forKey:necessaryCopy];
       os_unfair_lock_unlock(&self->_lockIcons);
 
       goto LABEL_10;
     }
 
     os_unfair_lock_lock(&self->_lockIcons);
-    if (([(NSMutableSet *)self->_iconDownloads containsObject:v4]& 1) != 0 || ([(NSMutableSet *)self->_iconFailedDownloads containsObject:v4]& 1) != 0)
+    if (([(NSMutableSet *)self->_iconDownloads containsObject:necessaryCopy]& 1) != 0 || ([(NSMutableSet *)self->_iconFailedDownloads containsObject:necessaryCopy]& 1) != 0)
     {
       os_unfair_lock_unlock(&self->_lockIcons);
     }
 
     else
     {
-      [(NSMutableSet *)self->_iconDownloads addObject:v4];
+      [(NSMutableSet *)self->_iconDownloads addObject:necessaryCopy];
       os_unfair_lock_unlock(&self->_lockIcons);
       objc_initWeak(&location, self);
-      v9 = [MEMORY[0x1E69B8A08] sharedImageAssetDownloader];
+      mEMORY[0x1E69B8A08]2 = [MEMORY[0x1E69B8A08] sharedImageAssetDownloader];
       v11[0] = MEMORY[0x1E69E9820];
       v11[1] = 3221225472;
       v11[2] = __80__PKDashboardPaymentPassDataSource__downloadMessageIconURLAndReloadIfNecessary___block_invoke;
       v11[3] = &unk_1E801E148;
       objc_copyWeak(&v13, &location);
-      v12 = v4;
-      [v9 downloadFromUrl:v12 completionHandler:v11];
+      v12 = necessaryCopy;
+      [mEMORY[0x1E69B8A08]2 downloadFromUrl:v12 completionHandler:v11];
 
       objc_destroyWeak(&v13);
       objc_destroyWeak(&location);
@@ -16201,49 +16201,49 @@ void __80__PKDashboardPaymentPassDataSource__downloadMessageIconURLAndReloadIfNe
         }
 
         v4 = *(*(&v44 + 1) + 8 * i);
-        v5 = [(PKDashboardPaymentPassDataSource *)val _contactResolver];
-        v6 = [v4 requesterAddress];
-        v7 = [v5 contactForHandle:v6];
+        _contactResolver = [(PKDashboardPaymentPassDataSource *)val _contactResolver];
+        requesterAddress = [v4 requesterAddress];
+        v7 = [_contactResolver contactForHandle:requesterAddress];
 
         v8 = MEMORY[0x1E69B8F30];
-        v9 = [v4 requesterAddress];
-        v10 = [v8 displayNameForCounterpartHandle:v9 contact:v7];
+        requesterAddress2 = [v4 requesterAddress];
+        v10 = [v8 displayNameForCounterpartHandle:requesterAddress2 contact:v7];
 
-        v11 = [v4 currencyAmount];
-        v12 = [v11 amount];
-        v13 = [v11 currency];
+        currencyAmount = [v4 currencyAmount];
+        amount = [currencyAmount amount];
+        currency = [currencyAmount currency];
         v14 = PKFormattedCurrencyStringFromNumber();
 
         if (v10 && v14)
         {
-          v37 = [v4 expiryDate];
-          v36 = [v4 lastDismissedDate];
-          if (!v36)
+          expiryDate = [v4 expiryDate];
+          lastDismissedDate = [v4 lastDismissedDate];
+          if (!lastDismissedDate)
           {
             goto LABEL_14;
           }
 
-          v15 = [MEMORY[0x1E695DEE8] currentCalendar];
-          v16 = [(PKDashboardPassMessage *)v15 components:16 fromDate:v36 toDate:v37 options:0];
-          v17 = [MEMORY[0x1E695DF00] date];
-          v34 = [(PKDashboardPassMessage *)v15 components:16 fromDate:v17 toDate:v37 options:0];
+          currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+          v16 = [(PKDashboardPassMessage *)currentCalendar components:16 fromDate:lastDismissedDate toDate:expiryDate options:0];
+          date = [MEMORY[0x1E695DF00] date];
+          v34 = [(PKDashboardPassMessage *)currentCalendar components:16 fromDate:date toDate:expiryDate options:0];
 
           if ([v16 day] != 1 && objc_msgSend(v16, "day") && (objc_msgSend(v16, "day") < 2 || objc_msgSend(v34, "day") <= 1))
           {
 
 LABEL_14:
-            v15 = objc_alloc_init(PKDashboardPassMessage);
-            v32 = [v4 requestToken];
+            currentCalendar = objc_alloc_init(PKDashboardPassMessage);
+            requestToken = [v4 requestToken];
             v34 = v10;
             v29 = PKLocalizedPeerPaymentString(&cfstr_PeerPaymentPen_2.isa, &stru_1F3BD5BF0.isa, v14);
-            [(PKDashboardPassMessage *)v15 setType:3];
-            [(PKDashboardPassMessage *)v15 setIdentifier:v32];
-            [(PKDashboardPassMessage *)v15 setTitle:v34];
-            [(PKDashboardPassMessage *)v15 setSecondaryTitle:v29];
-            v18 = [MEMORY[0x1E695DEE8] currentCalendar];
-            v19 = [MEMORY[0x1E695DF00] date];
+            [(PKDashboardPassMessage *)currentCalendar setType:3];
+            [(PKDashboardPassMessage *)currentCalendar setIdentifier:requestToken];
+            [(PKDashboardPassMessage *)currentCalendar setTitle:v34];
+            [(PKDashboardPassMessage *)currentCalendar setSecondaryTitle:v29];
+            currentCalendar2 = [MEMORY[0x1E695DEE8] currentCalendar];
+            date2 = [MEMORY[0x1E695DF00] date];
             v20 = PKStartOfDay();
-            v28 = [v18 components:16 fromDate:v20 toDate:v37 options:0];
+            v28 = [currentCalendar2 components:16 fromDate:v20 toDate:expiryDate options:0];
 
             v21 = [v28 day];
             if (v21 == 1)
@@ -16265,16 +16265,16 @@ LABEL_14:
               v27 = ;
             }
 
-            v30 = [v4 memo];
-            if ([v30 length])
+            memo = [v4 memo];
+            if ([memo length])
             {
-              [(PKDashboardPassMessage *)v15 setMessage:v30];
-              [(PKDashboardPassMessage *)v15 setSecondaryMessage:v27];
+              [(PKDashboardPassMessage *)currentCalendar setMessage:memo];
+              [(PKDashboardPassMessage *)currentCalendar setSecondaryMessage:v27];
             }
 
             else
             {
-              [(PKDashboardPassMessage *)v15 setMessage:v27];
+              [(PKDashboardPassMessage *)currentCalendar setMessage:v27];
             }
 
             if (!v7)
@@ -16283,10 +16283,10 @@ LABEL_14:
               [v7 setContactType:0];
             }
 
-            [(PKDashboardPassMessage *)v15 setAvatarContact:v7];
+            [(PKDashboardPassMessage *)currentCalendar setAvatarContact:v7];
             v22 = PKLocalizedPeerPaymentString(&cfstr_PeerPaymentPen_6.isa);
-            [(PKDashboardPassMessage *)v15 setButtonTitle:v22];
-            -[PKDashboardPassMessage setShowSpinner:](v15, "setShowSpinner:", [v32 isEqualToString:val->_incomingRequestActionInProgressRequestToken]);
+            [(PKDashboardPassMessage *)currentCalendar setButtonTitle:v22];
+            -[PKDashboardPassMessage setShowSpinner:](currentCalendar, "setShowSpinner:", [requestToken isEqualToString:val->_incomingRequestActionInProgressRequestToken]);
             objc_initWeak(&location, val);
             v41[0] = MEMORY[0x1E69E9820];
             v41[1] = 3221225472;
@@ -16294,17 +16294,17 @@ LABEL_14:
             v41[3] = &unk_1E8014F68;
             objc_copyWeak(&v42, &location);
             v41[4] = v4;
-            [(PKDashboardPassMessage *)v15 setActionOnButtonPress:v41];
+            [(PKDashboardPassMessage *)currentCalendar setActionOnButtonPress:v41];
             v38[0] = MEMORY[0x1E69E9820];
             v38[1] = 3221225472;
             v38[2] = __74__PKDashboardPaymentPassDataSource__messagesForPeerPaymentPendingRequests__block_invoke_2;
             v38[3] = &unk_1E8011828;
             objc_copyWeak(&v40, &location);
             v38[4] = v4;
-            v16 = v32;
+            v16 = requestToken;
             v39 = v16;
-            [(PKDashboardPassMessage *)v15 setActionOnDismiss:v38];
-            [v25 addObject:v15];
+            [(PKDashboardPassMessage *)currentCalendar setActionOnDismiss:v38];
+            [v25 addObject:currentCalendar];
 
             objc_destroyWeak(&v40);
             objc_destroyWeak(&v42);
@@ -16525,30 +16525,30 @@ void __74__PKDashboardPaymentPassDataSource__messagesForPeerPaymentPendingReques
   }
 }
 
-- (void)_pendingRequestActionButtonPressedWithRequest:(id)a3
+- (void)_pendingRequestActionButtonPressedWithRequest:(id)request
 {
-  v4 = a3;
-  v5 = [v4 requestToken];
+  requestCopy = request;
+  requestToken = [requestCopy requestToken];
   v6 = [objc_alloc(MEMORY[0x1E69B8F28]) initWithPeerPaymentWebService:self->_peerPaymentWebService];
   v7 = [PKPeerPaymentRemoteMessagesComposer alloc];
   WeakRetained = objc_loadWeakRetained(&self->_viewController);
-  v9 = [WeakRetained navigationController];
-  v10 = [(PKPeerPaymentRemoteMessagesComposer *)v7 initWithPeerPaymentController:v6 presentingViewController:v9 actionType:1 sourceType:1];
+  navigationController = [WeakRetained navigationController];
+  v10 = [(PKPeerPaymentRemoteMessagesComposer *)v7 initWithPeerPaymentController:v6 presentingViewController:navigationController actionType:1 sourceType:1];
 
   if (!self->_incomingRequestActionInProgressRequestToken)
   {
-    objc_storeStrong(&self->_incomingRequestActionInProgressRequestToken, v5);
+    objc_storeStrong(&self->_incomingRequestActionInProgressRequestToken, requestToken);
     [(PKDashboardPaymentPassDataSource *)self reloadMessagesWithReason:@"request action in progress"];
     objc_initWeak(&location, self);
-    v11 = [v4 requesterAddress];
+    requesterAddress = [requestCopy requesterAddress];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __82__PKDashboardPaymentPassDataSource__pendingRequestActionButtonPressedWithRequest___block_invoke;
     v12[3] = &unk_1E8013220;
     objc_copyWeak(&v15, &location);
-    v13 = v4;
+    v13 = requestCopy;
     v14 = v10;
-    [(PKPeerPaymentRemoteMessagesComposer *)v14 validateRecipientWithAddress:v11 completion:v12];
+    [(PKPeerPaymentRemoteMessagesComposer *)v14 validateRecipientWithAddress:requesterAddress completion:v12];
 
     objc_destroyWeak(&v15);
     objc_destroyWeak(&location);
@@ -16622,28 +16622,28 @@ void __82__PKDashboardPaymentPassDataSource__pendingRequestActionButtonPressedWi
   }
 }
 
-- (void)dismissPendingRequestDashboardMessageWithRequest:(id)a3
+- (void)dismissPendingRequestDashboardMessageWithRequest:(id)request
 {
   v8[1] = *MEMORY[0x1E69E9840];
   peerPaymentWebService = self->_peerPaymentWebService;
-  v4 = a3;
-  v5 = [(PKPeerPaymentWebService *)peerPaymentWebService peerPaymentService];
-  v6 = [MEMORY[0x1E695DF00] date];
-  [v4 setLastDismissedDate:v6];
+  requestCopy = request;
+  peerPaymentService = [(PKPeerPaymentWebService *)peerPaymentWebService peerPaymentService];
+  date = [MEMORY[0x1E695DF00] date];
+  [requestCopy setLastDismissedDate:date];
 
-  v8[0] = v4;
+  v8[0] = requestCopy;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:1];
 
-  [v5 insertOrUpdatePeerPaymentPendingRequests:v7 shouldScheduleNotifications:0];
+  [peerPaymentService insertOrUpdatePeerPaymentPendingRequests:v7 shouldScheduleNotifications:0];
 }
 
-- (id)_messageForSetUpVirtualCardWithFeatureIdentifier:(unint64_t)a3
+- (id)_messageForSetUpVirtualCardWithFeatureIdentifier:(unint64_t)identifier
 {
   v32[2] = *MEMORY[0x1E69E9840];
   v5 = PKDismissedKeyForPass();
   BoolForKey = PKSharedCacheGetBoolForKey();
 
-  if ((BoolForKey & 1) != 0 || a3 == 1 && ([(PKPeerPaymentAccount *)self->_peerPaymentAccount state]- 5) > 0xFFFFFFFFFFFFFFFDLL)
+  if ((BoolForKey & 1) != 0 || identifier == 1 && ([(PKPeerPaymentAccount *)self->_peerPaymentAccount state]- 5) > 0xFFFFFFFFFFFFFFFDLL)
   {
     v7 = 0;
   }
@@ -16653,7 +16653,7 @@ void __82__PKDashboardPaymentPassDataSource__pendingRequestActionButtonPressedWi
     v7 = objc_alloc_init(PKDashboardPassMessage);
     [(PKDashboardPassMessage *)v7 setType:0];
     [(PKDashboardPassMessage *)v7 setIdentifier:@"virtualCardSetUp"];
-    if (a3 == 1)
+    if (identifier == 1)
     {
       if (PKFPANAutoFillEnabled())
       {
@@ -16687,8 +16687,8 @@ void __82__PKDashboardPaymentPassDataSource__pendingRequestActionButtonPressedWi
     v13 = PKLocalizedVirtualCardString(&cfstr_VirtualCardDas_5.isa);
     [(PKDashboardPassMessage *)v7 setButtonTitle:v13];
 
-    v14 = [MEMORY[0x1E69DD1B8] currentTraitCollection];
-    if ([v14 userInterfaceStyle] == 2)
+    currentTraitCollection = [MEMORY[0x1E69DD1B8] currentTraitCollection];
+    if ([currentTraitCollection userInterfaceStyle] == 2)
     {
       [MEMORY[0x1E69DC888] systemGray4Color];
     }
@@ -16700,8 +16700,8 @@ void __82__PKDashboardPaymentPassDataSource__pendingRequestActionButtonPressedWi
     v15 = ;
 
     v16 = [PKDashboardPassMessageImageDescriptorSymbol alloc];
-    v17 = [MEMORY[0x1E69DC888] labelColor];
-    v18 = [(PKDashboardPassMessageImageDescriptorSymbol *)v16 initWithName:@"creditcard.and.123" tintColor:v17 backgroundColor:v15];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    v18 = [(PKDashboardPassMessageImageDescriptorSymbol *)v16 initWithName:@"creditcard.and.123" tintColor:labelColor backgroundColor:v15];
 
     [(PKDashboardPassMessage *)v7 setImageDescriptor:v18];
     v19 = PKDefaultPaymentNetworkNameForPaymentPass();
@@ -16774,12 +16774,12 @@ void __85__PKDashboardPaymentPassDataSource__messageForSetUpVirtualCardWithFeatu
   }
 }
 
-- (id)_messageForVirtualCardEnabledWithFeatureIdentifier:(unint64_t)a3
+- (id)_messageForVirtualCardEnabledWithFeatureIdentifier:(unint64_t)identifier
 {
   v5 = PKDismissedKeyForPass();
   BoolForKey = PKSharedCacheGetBoolForKey();
 
-  if ((BoolForKey & 1) != 0 || a3 == 1 && ([(PKPeerPaymentAccount *)self->_peerPaymentAccount state]- 5) > 0xFFFFFFFFFFFFFFFDLL)
+  if ((BoolForKey & 1) != 0 || identifier == 1 && ([(PKPeerPaymentAccount *)self->_peerPaymentAccount state]- 5) > 0xFFFFFFFFFFFFFFFDLL)
   {
     v7 = 0;
   }
@@ -16793,7 +16793,7 @@ void __85__PKDashboardPaymentPassDataSource__messageForSetUpVirtualCardWithFeatu
     [(PKDashboardPassMessage *)v7 setTitle:v8];
 
     v9 = PKFPANAutoFillEnabled();
-    if (a3 == 1)
+    if (identifier == 1)
     {
       if (v9)
       {
@@ -16826,8 +16826,8 @@ void __85__PKDashboardPaymentPassDataSource__messageForSetUpVirtualCardWithFeatu
     v13 = v12;
     [(PKDashboardPassMessage *)v7 setMessage:v12];
 
-    v14 = [MEMORY[0x1E69DD1B8] currentTraitCollection];
-    if ([v14 userInterfaceStyle] == 2)
+    currentTraitCollection = [MEMORY[0x1E69DD1B8] currentTraitCollection];
+    if ([currentTraitCollection userInterfaceStyle] == 2)
     {
       [MEMORY[0x1E69DC888] systemGray4Color];
     }
@@ -16839,8 +16839,8 @@ void __85__PKDashboardPaymentPassDataSource__messageForSetUpVirtualCardWithFeatu
     v15 = ;
 
     v16 = [PKDashboardPassMessageImageDescriptorSymbol alloc];
-    v17 = [MEMORY[0x1E69DC888] labelColor];
-    v18 = [(PKDashboardPassMessageImageDescriptorSymbol *)v16 initWithName:@"creditcard.and.123" tintColor:v17 backgroundColor:v15];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    v18 = [(PKDashboardPassMessageImageDescriptorSymbol *)v16 initWithName:@"creditcard.and.123" tintColor:labelColor backgroundColor:v15];
 
     [(PKDashboardPassMessage *)v7 setImageDescriptor:v18];
     [(PKDashboardPassMessage *)v7 setReportToAnalytics:1];
@@ -16848,7 +16848,7 @@ void __85__PKDashboardPaymentPassDataSource__messageForSetUpVirtualCardWithFeatu
     [(PKDashboardPassMessage *)v7 setAnalyticsReporterSubject:v19];
 
     v20 = MEMORY[0x1E69BC6D0];
-    if (a3 == 1)
+    if (identifier == 1)
     {
       v20 = MEMORY[0x1E69BB790];
     }
@@ -16909,22 +16909,22 @@ void __87__PKDashboardPaymentPassDataSource__messageForVirtualCardEnabledWithFea
   }
 }
 
-- (void)virtualCardEnrollmentViewController:(id)a3 didCompleteWithSuccess:(BOOL)a4
+- (void)virtualCardEnrollmentViewController:(id)controller didCompleteWithSuccess:(BOOL)success
 {
-  v4 = [a3 presentingViewController];
-  [v4 dismissViewControllerAnimated:1 completion:0];
+  presentingViewController = [controller presentingViewController];
+  [presentingViewController dismissViewControllerAnimated:1 completion:0];
 }
 
-- (id)_replaceDashboardMessagePlaceholders:(id)a3
+- (id)_replaceDashboardMessagePlaceholders:(id)placeholders
 {
-  v4 = a3;
+  placeholdersCopy = placeholders;
   v5 = *MEMORY[0x1E69BB888];
-  v6 = [(PKAccount *)self->_account redeemRewardsFeatureDescriptor];
-  v7 = [v6 savingsAPY];
+  redeemRewardsFeatureDescriptor = [(PKAccount *)self->_account redeemRewardsFeatureDescriptor];
+  savingsAPY = [redeemRewardsFeatureDescriptor savingsAPY];
 
-  if (v7)
+  if (savingsAPY)
   {
-    v8 = [(NSNumberFormatter *)self->_formatterPercentage stringFromNumber:v7];
+    v8 = [(NSNumberFormatter *)self->_formatterPercentage stringFromNumber:savingsAPY];
   }
 
   else
@@ -16932,39 +16932,39 @@ void __87__PKDashboardPaymentPassDataSource__messageForVirtualCardEnabledWithFea
     v8 = 0;
   }
 
-  v9 = [(PKDashboardPaymentPassDataSource *)self _replaceDashboardMessage:v4 placeholder:v5 replacement:v8];
+  v9 = [(PKDashboardPaymentPassDataSource *)self _replaceDashboardMessage:placeholdersCopy placeholder:v5 replacement:v8];
 
   return v9;
 }
 
-- (id)_replaceDashboardMessage:(id)a3 placeholder:(id)a4 replacement:(id)a5
+- (id)_replaceDashboardMessage:(id)message placeholder:(id)placeholder replacement:(id)replacement
 {
   v30 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v27 = a5;
-  v9 = [v7 dialogRequest];
-  v10 = [v7 title];
-  v11 = [v7 message];
-  v12 = [v9 title];
-  v13 = [v9 message];
-  v26 = v10;
-  v14 = [v10 containsString:v8];
-  v15 = [v11 containsString:v8];
-  v16 = [v12 containsString:v8];
-  v17 = [v13 containsString:v8];
+  messageCopy = message;
+  placeholderCopy = placeholder;
+  replacementCopy = replacement;
+  dialogRequest = [messageCopy dialogRequest];
+  title = [messageCopy title];
+  message = [messageCopy message];
+  title2 = [dialogRequest title];
+  message2 = [dialogRequest message];
+  v26 = title;
+  v14 = [title containsString:placeholderCopy];
+  v15 = [message containsString:placeholderCopy];
+  v16 = [title2 containsString:placeholderCopy];
+  v17 = [message2 containsString:placeholderCopy];
   v18 = v17;
   if ((v14 & 1) == 0 && (v15 & 1) == 0 && (v16 & 1) == 0 && !v17)
   {
     goto LABEL_11;
   }
 
-  if (v27)
+  if (replacementCopy)
   {
     if (v14)
     {
-      v23 = [v26 stringByReplacingOccurrencesOfString:v8 withString:v27];
-      [v7 setTitle:v23];
+      v23 = [v26 stringByReplacingOccurrencesOfString:placeholderCopy withString:replacementCopy];
+      [messageCopy setTitle:v23];
 
       if (!v15)
       {
@@ -16983,8 +16983,8 @@ LABEL_8:
       goto LABEL_8;
     }
 
-    v24 = [v11 stringByReplacingOccurrencesOfString:v8 withString:v27];
-    [v7 setMessage:v24];
+    v24 = [message stringByReplacingOccurrencesOfString:placeholderCopy withString:replacementCopy];
+    [messageCopy setMessage:v24];
 
     if (!v16)
     {
@@ -16992,20 +16992,20 @@ LABEL_9:
       if (!v18)
       {
 LABEL_11:
-        v20 = v7;
+        v20 = messageCopy;
         goto LABEL_12;
       }
 
 LABEL_10:
-      v19 = [v13 stringByReplacingOccurrencesOfString:v8 withString:v27];
-      [v9 setMessage:v19];
+      v19 = [message2 stringByReplacingOccurrencesOfString:placeholderCopy withString:replacementCopy];
+      [dialogRequest setMessage:v19];
 
       goto LABEL_11;
     }
 
 LABEL_20:
-    v25 = [v12 stringByReplacingOccurrencesOfString:v8 withString:v27];
-    [v9 setTitle:v25];
+    v25 = [title2 stringByReplacingOccurrencesOfString:placeholderCopy withString:replacementCopy];
+    [dialogRequest setTitle:v25];
 
     if (!v18)
     {
@@ -17019,7 +17019,7 @@ LABEL_20:
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v29 = v8;
+    v29 = placeholderCopy;
     _os_log_impl(&dword_1BD026000, v22, OS_LOG_TYPE_DEFAULT, "Unavailable to replace placeholder '%@' for dashboard message", buf, 0xCu);
   }
 
@@ -17034,10 +17034,10 @@ LABEL_12:
   v52 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
   val = self;
-  v3 = [(PKAccount *)self->_account creditDetails];
-  v29 = [v3 installmentPlans];
+  creditDetails = [(PKAccount *)self->_account creditDetails];
+  installmentPlans = [creditDetails installmentPlans];
 
-  if ([v29 count])
+  if ([installmentPlans count])
   {
     v31 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v35 = PKSharedCacheGetArrayForKey();
@@ -17045,7 +17045,7 @@ LABEL_12:
     v50 = 0u;
     v47 = 0u;
     v48 = 0u;
-    obj = v29;
+    obj = installmentPlans;
     v38 = [obj countByEnumeratingWithState:&v47 objects:v51 count:16];
     if (!v38)
     {
@@ -17064,23 +17064,23 @@ LABEL_12:
         }
 
         v5 = *(*(&v47 + 1) + 8 * i);
-        v6 = [v5 identifier];
-        v7 = [v5 state];
-        if (v7 == 2)
+        identifier = [v5 identifier];
+        state = [v5 state];
+        if (state == 2)
         {
-          v12 = [v5 payments];
-          v9 = [v12 firstObject];
+          payments = [v5 payments];
+          firstObject = [payments firstObject];
 
-          v10 = [v9 statement];
-          v36 = [v5 product];
+          statement = [firstObject statement];
+          product = [v5 product];
           v11 = 0;
-          if (v9)
+          if (firstObject)
           {
             v39 = 0;
             v8 = 0;
-            if (v10)
+            if (statement)
             {
-              if ([v9 isPaid] && !PKForceNewInstallmentDashboardModule())
+              if ([firstObject isPaid] && !PKForceNewInstallmentDashboardModule())
               {
                 v11 = 0;
                 v39 = 0;
@@ -17089,21 +17089,21 @@ LABEL_12:
 
               else
               {
-                v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%@", @"installmentPlanPayment", v6];
+                v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%@", @"installmentPlanPayment", identifier];
                 v39 = PKLocalizedFeatureString();
-                v13 = [v9 amountDue];
-                v14 = [v9 currencyCode];
-                v32 = PKCurrencyAmountCreate(v13, v14);
+                amountDue = [firstObject amountDue];
+                currencyCode = [firstObject currencyCode];
+                v32 = PKCurrencyAmountCreate(amountDue, currencyCode);
 
                 v15 = [MEMORY[0x1E695DEE8] calendarWithIdentifier:v30];
-                v16 = [v10 closingDate];
-                v17 = [v15 components:8 fromDate:v16];
+                closingDate = [statement closingDate];
+                v17 = [v15 components:8 fromDate:closingDate];
                 [v17 month];
 
                 v18 = PKGregorianMonthSpecificLocalizedStringKeyForKey();
-                v19 = [v36 model];
+                model = [product model];
                 [v32 formattedStringValue];
-                v28 = v27 = v19;
+                v28 = v27 = model;
                 v11 = PKLocalizedFeatureString();
               }
             }
@@ -17118,7 +17118,7 @@ LABEL_12:
 
         else
         {
-          if (v7 != 1)
+          if (state != 1)
           {
             v8 = 0;
             v39 = 0;
@@ -17126,11 +17126,11 @@ LABEL_12:
             goto LABEL_24;
           }
 
-          v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%@", @"installmentPlanInitiated", v6];
+          v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%@", @"installmentPlanInitiated", identifier];
           v39 = PKLocalizedFeatureString();
-          v9 = [v5 product];
-          v10 = [v9 model];
-          v27 = v10;
+          firstObject = [v5 product];
+          statement = [firstObject model];
+          v27 = statement;
           v11 = PKLocalizedFeatureString();
         }
 
@@ -17144,8 +17144,8 @@ LABEL_12:
           v21 = PKLocalizedFeatureString();
           [(PKDashboardPassMessage *)v20 setButtonTitle:v21];
 
-          v22 = [v5 product];
-          v23 = [v22 iconURLForScale:0 suffix:PKUIScreenScale()];
+          product2 = [v5 product];
+          v23 = [product2 iconURLForScale:0 suffix:PKUIScreenScale()];
 
           v24 = [(PKDashboardPaymentPassDataSource *)val _downloadMessageIconURLAndReloadIfNecessary:v23];
           if (!v24)
@@ -17243,12 +17243,12 @@ void __64__PKDashboardPaymentPassDataSource__messagesForInstallmentPlans__block_
 
 - (id)_peerPaymentAccountStatusMessage
 {
-  v3 = [(PKPeerPaymentAccount *)self->_peerPaymentAccount state];
-  v4 = [(PKPeerPaymentAccount *)self->_peerPaymentAccount stateReason];
+  state = [(PKPeerPaymentAccount *)self->_peerPaymentAccount state];
+  stateReason = [(PKPeerPaymentAccount *)self->_peerPaymentAccount stateReason];
   objc_initWeak(&location, self);
-  if (v3 == 2)
+  if (state == 2)
   {
-    if (v4 == 5)
+    if (stateReason == 5)
     {
       v5 = objc_alloc_init(PKDashboardPassMessage);
       [(PKDashboardPassMessage *)v5 setIdentifier:@"peerPaymentRestrictedAndTerminal"];
@@ -17274,7 +17274,7 @@ void __64__PKDashboardPaymentPassDataSource__messagesForInstallmentPlans__block_
       goto LABEL_12;
     }
 
-    if (v4 == 4)
+    if (stateReason == 4)
     {
       v5 = objc_alloc_init(PKDashboardPassMessage);
       [(PKDashboardPassMessage *)v5 setIdentifier:@"peerPaymentRestrictedAndInReview"];
@@ -17305,12 +17305,12 @@ LABEL_9:
     goto LABEL_13;
   }
 
-  if (v3 != 3)
+  if (state != 3)
   {
     goto LABEL_9;
   }
 
-  if (v4 == 5)
+  if (stateReason == 5)
   {
     v5 = objc_alloc_init(PKDashboardPassMessage);
     [(PKDashboardPassMessage *)v5 setIdentifier:@"peerPaymentLockedAndTerminal"];
@@ -17336,7 +17336,7 @@ LABEL_9:
     goto LABEL_12;
   }
 
-  if (v4 != 4)
+  if (stateReason != 4)
   {
     goto LABEL_9;
   }
@@ -17432,8 +17432,8 @@ void __68__PKDashboardPaymentPassDataSource__peerPaymentAccountStatusMessage__bl
 
   [(PKDashboardPassMessage *)v3 setShowDisclosure:1];
   [(PKDashboardPassMessage *)v3 setShowSpinner:self->_performingAMPEnrollment];
-  v5 = [(PKPaymentPass *)self->_pass localizedDescription];
-  v6 = PKLocalizedAMPString(&cfstr_PassDashboardA.isa, &stru_1F3BD5BF0.isa, v5);
+  localizedDescription = [(PKPaymentPass *)self->_pass localizedDescription];
+  v6 = PKLocalizedAMPString(&cfstr_PassDashboardA.isa, &stru_1F3BD5BF0.isa, localizedDescription);
   [(PKDashboardPassMessage *)v3 setTitle:v6];
 
   v7 = PKLocalizedAMPString(&cfstr_PassDashboardA_0.isa);
@@ -17522,47 +17522,47 @@ void __60__PKDashboardPaymentPassDataSource__messageForAMPEnrollment__block_invo
           }
 
           v5 = *(*(&v109 + 1) + 8 * i);
-          v6 = [v5 applicationIdentifier];
+          applicationIdentifier = [v5 applicationIdentifier];
           from = 0;
           p_from = &from;
           v105 = 0x3032000000;
           v106 = __Block_byref_object_copy__41;
           v107 = __Block_byref_object_dispose__41;
           v108 = PKAppleCardGetAcceptedInvitationIdentifiersToDisplay();
-          if ([p_from[5] containsObject:v6])
+          if ([p_from[5] containsObject:applicationIdentifier])
           {
-            v7 = [v5 invitationDetails];
-            v8 = [v7 accountUserAltDSID];
+            invitationDetails = [v5 invitationDetails];
+            accountUserAltDSID = [invitationDetails accountUserAltDSID];
 
-            v9 = [(PKAccountUserCollection *)val->_accountUserCollection accountUserWithAltDSID:v8];
+            v9 = [(PKAccountUserCollection *)val->_accountUserCollection accountUserWithAltDSID:accountUserAltDSID];
             v10 = v9;
             if (v9)
             {
               [v9 accountState];
               if ((PKAccountStateIsTerminal() & 1) == 0)
               {
-                v11 = [(PKFamilyMemberCollection *)val->_familyCollection familyMembersByAltDSID];
-                v12 = [v10 altDSID];
-                v72 = [v11 objectForKey:v12];
+                familyMembersByAltDSID = [(PKFamilyMemberCollection *)val->_familyCollection familyMembersByAltDSID];
+                altDSID = [v10 altDSID];
+                v72 = [familyMembersByAltDSID objectForKey:altDSID];
 
                 v13 = MEMORY[0x1E69B8740];
-                v14 = [v10 nameComponents];
-                v15 = [v13 contactForFamilyMember:v72 nameComponents:v14 imageData:0];
+                nameComponents = [v10 nameComponents];
+                v15 = [v13 contactForFamilyMember:v72 nameComponents:nameComponents imageData:0];
 
-                v16 = [v15 givenName];
-                v17 = [v5 invitationDetails];
-                v18 = [v17 accountUserAccessLevel];
-                v19 = v18 == 1;
+                givenName = [v15 givenName];
+                invitationDetails2 = [v5 invitationDetails];
+                accountUserAccessLevel = [invitationDetails2 accountUserAccessLevel];
+                v19 = accountUserAccessLevel == 1;
 
                 v20 = objc_alloc_init(PKDashboardPassMessage);
-                [(PKDashboardPassMessage *)v20 setIdentifier:v6];
+                [(PKDashboardPassMessage *)v20 setIdentifier:applicationIdentifier];
                 PKLocalizedFeatureString();
-                if (v18 == 1)
+                if (accountUserAccessLevel == 1)
                   v21 = {;
                   [(PKDashboardPassMessage *)v20 setTitle:v21];
 
                   v22 = PKLocalizedFeatureString();
-                  [(PKDashboardPassMessage *)v20 setMessage:v22, v16];
+                  [(PKDashboardPassMessage *)v20 setMessage:v22, givenName];
 
                   v23 = PKLocalizedFeatureString();
                   [(PKDashboardPassMessage *)v20 setButtonTitle:v23];
@@ -17573,10 +17573,10 @@ void __60__PKDashboardPaymentPassDataSource__messageForAMPEnrollment__block_invo
                   [(PKDashboardPassMessage *)v20 setTitle:v24];
 
                   v25 = PKLocalizedFeatureString();
-                  [(PKDashboardPassMessage *)v20 setMessage:v25, v16];
+                  [(PKDashboardPassMessage *)v20 setMessage:v25, givenName];
 
                   v23 = PKLocalizedFeatureString();
-                  [(PKDashboardPassMessage *)v20 setButtonTitle:v23, v16];
+                  [(PKDashboardPassMessage *)v20 setButtonTitle:v23, givenName];
                 }
 
                 [(PKDashboardPassMessage *)v20 setShowDisclosure:1];
@@ -17602,7 +17602,7 @@ void __60__PKDashboardPaymentPassDataSource__messageForAMPEnrollment__block_invo
                 v94[3] = &unk_1E801E260;
                 objc_copyWeak(&v97, &location);
                 v96 = &from;
-                v95 = v6;
+                v95 = applicationIdentifier;
                 [(PKDashboardPassMessage *)v20 setActionOnDismiss:v94];
                 [v71 addObject:v20];
 
@@ -17641,30 +17641,30 @@ void __60__PKDashboardPaymentPassDataSource__messageForAMPEnrollment__block_invo
           }
 
           v29 = *(*(&v90 + 1) + 8 * j);
-          v30 = [v29 applicationIdentifier];
-          v31 = [v29 invitationDetails];
-          v32 = [v31 accountUserAltDSID];
-          v33 = [(PKAccountUserCollection *)val->_accountUserCollection accountUserWithAltDSID:v32];
+          applicationIdentifier2 = [v29 applicationIdentifier];
+          invitationDetails3 = [v29 invitationDetails];
+          accountUserAltDSID2 = [invitationDetails3 accountUserAltDSID];
+          v33 = [(PKAccountUserCollection *)val->_accountUserCollection accountUserWithAltDSID:accountUserAltDSID2];
           v34 = v33;
           if (!v33 || ([v33 accountState], (PKAccountStateIsTerminal() & 1) == 0))
           {
-            if ([v31 accountUserAccessLevel] == 1)
+            if ([invitationDetails3 accountUserAccessLevel] == 1)
             {
-              v35 = [(PKFamilyMemberCollection *)val->_familyCollection familyMembersByAltDSID];
-              v76 = [v35 objectForKey:v32];
+              familyMembersByAltDSID2 = [(PKFamilyMemberCollection *)val->_familyCollection familyMembersByAltDSID];
+              v76 = [familyMembersByAltDSID2 objectForKey:accountUserAltDSID2];
 
               v36 = MEMORY[0x1E69B8740];
-              v37 = [v34 nameComponents];
-              v38 = [v36 contactForFamilyMember:v76 nameComponents:v37 imageData:0];
+              nameComponents2 = [v34 nameComponents];
+              v38 = [v36 contactForFamilyMember:v76 nameComponents:nameComponents2 imageData:0];
 
-              v39 = [v38 givenName];
+              givenName2 = [v38 givenName];
               v40 = objc_alloc_init(PKDashboardPassMessage);
-              [(PKDashboardPassMessage *)v40 setIdentifier:v30];
+              [(PKDashboardPassMessage *)v40 setIdentifier:applicationIdentifier2];
               v41 = PKLocalizedFeatureString();
               [(PKDashboardPassMessage *)v40 setTitle:v41];
 
               v42 = PKLocalizedFeatureString();
-              [(PKDashboardPassMessage *)v40 setMessage:v42, v39];
+              [(PKDashboardPassMessage *)v40 setMessage:v42, givenName2];
 
               v43 = PKLocalizedFeatureString();
               [(PKDashboardPassMessage *)v40 setButtonTitle:v43];
@@ -17698,8 +17698,8 @@ void __60__PKDashboardPaymentPassDataSource__messageForAMPEnrollment__block_invo
       while (v79);
     }
 
-    v46 = [(PKInboxDataSource *)val->_inboxDataSource activeInboxMessages];
-    v47 = [v46 pk_objectsPassingTest:&__block_literal_global_1685];
+    activeInboxMessages = [(PKInboxDataSource *)val->_inboxDataSource activeInboxMessages];
+    v47 = [activeInboxMessages pk_objectsPassingTest:&__block_literal_global_1685];
 
     v86 = 0u;
     v87 = 0u;
@@ -17720,26 +17720,26 @@ void __60__PKDashboardPaymentPassDataSource__messageForAMPEnrollment__block_invo
           }
 
           v49 = *(*(&v84 + 1) + 8 * k);
-          v50 = [v49 accountUserInvitation];
-          v51 = [v50 feature];
-          if (v51 == [(PKAccount *)val->_account feature])
+          accountUserInvitation = [v49 accountUserInvitation];
+          feature = [accountUserInvitation feature];
+          if (feature == [(PKAccount *)val->_account feature])
           {
-            v80 = [v50 applicationIdentifier];
-            v52 = [v50 invitationDetails];
-            v53 = [v52 originatorAltDSID];
-            v54 = [(PKFamilyMemberCollection *)val->_familyCollection familyMemberForAltDSID:v53];
+            applicationIdentifier3 = [accountUserInvitation applicationIdentifier];
+            invitationDetails4 = [accountUserInvitation invitationDetails];
+            originatorAltDSID = [invitationDetails4 originatorAltDSID];
+            v54 = [(PKFamilyMemberCollection *)val->_familyCollection familyMemberForAltDSID:originatorAltDSID];
             v55 = MEMORY[0x1E69B8740];
-            v56 = [v52 originatorNameComponents];
-            v57 = [v55 contactForFamilyMember:v54 nameComponents:v56 imageData:0];
+            originatorNameComponents = [invitationDetails4 originatorNameComponents];
+            v57 = [v55 contactForFamilyMember:v54 nameComponents:originatorNameComponents imageData:0];
 
             v58 = objc_alloc_init(PKDashboardPassMessage);
-            [(PKDashboardPassMessage *)v58 setIdentifier:v80];
+            [(PKDashboardPassMessage *)v58 setIdentifier:applicationIdentifier3];
             v59 = PKLocalizedFeatureString();
             [(PKDashboardPassMessage *)v58 setTitle:v59];
 
-            v60 = [v57 givenName];
+            givenName3 = [v57 givenName];
             v61 = PKLocalizedFeatureString();
-            [(PKDashboardPassMessage *)v58 setMessage:v61, v60];
+            [(PKDashboardPassMessage *)v58 setMessage:v61, givenName3];
 
             v62 = PKLocalizedFeatureString();
             [(PKDashboardPassMessage *)v58 setButtonTitle:v62];
@@ -17912,9 +17912,9 @@ void __70__PKDashboardPaymentPassDataSource__messagesForAccountUserInvitations__
   v58 = *MEMORY[0x1E69E9840];
   if (self->_accountUsersLoaded && (peerPaymentAccount = self->_peerPaymentAccount) != 0 && self->_familyCollectionLoaded && -[PKPeerPaymentAccount supportsFamilySharing](peerPaymentAccount, "supportsFamilySharing") && -[PKPeerPaymentAccount role](self->_peerPaymentAccount, "role") != 1 && (-[PKFamilyMemberCollection currentUser](self->_familyCollection, "currentUser"), v4 = objc_claimAutoreleasedReturnValue(), v5 = [v4 isOrganizer], v4, v5))
   {
-    v29 = [(PKPeerPaymentAccount *)self->_peerPaymentAccount associatedPassUniqueID];
-    v6 = [MEMORY[0x1E69B8A58] sharedInstance];
-    v7 = [v6 hasPassWithUniqueID:v29];
+    associatedPassUniqueID = [(PKPeerPaymentAccount *)self->_peerPaymentAccount associatedPassUniqueID];
+    mEMORY[0x1E69B8A58] = [MEMORY[0x1E69B8A58] sharedInstance];
+    v7 = [mEMORY[0x1E69B8A58] hasPassWithUniqueID:associatedPassUniqueID];
 
     if (v7)
     {
@@ -17938,13 +17938,13 @@ void __70__PKDashboardPaymentPassDataSource__messagesForAccountUserInvitations__
             }
 
             v11 = *(*(&v53 + 1) + 8 * i);
-            v12 = [v11 altDSID];
+            altDSID = [v11 altDSID];
             v47 = 0;
             v48 = &v47;
             v49 = 0x3032000000;
             v50 = __Block_byref_object_copy__41;
             v51 = __Block_byref_object_dispose__41;
-            v52 = [(PKFamilyMemberCollection *)self->_familyCollection familyMemberForAltDSID:v12];
+            v52 = [(PKFamilyMemberCollection *)self->_familyCollection familyMemberForAltDSID:altDSID];
             v13 = v48[5];
             if (v13 && [v13 memberType] && objc_msgSend(v48[5], "memberType") != -1)
             {
@@ -17954,35 +17954,35 @@ void __70__PKDashboardPaymentPassDataSource__messagesForAccountUserInvitations__
               v44 = __Block_byref_object_copy__41;
               v45 = __Block_byref_object_dispose__41;
               v46 = PKSharedCacheGetArrayForKey();
-              if (([v42[5] containsObject:v12] & 1) == 0)
+              if (([v42[5] containsObject:altDSID] & 1) == 0)
               {
-                v14 = [(PKPeerPaymentAccount *)self->_peerPaymentAccount peerPaymentAccountWithAltDSID:v12];
+                v14 = [(PKPeerPaymentAccount *)self->_peerPaymentAccount peerPaymentAccountWithAltDSID:altDSID];
                 if (!v14)
                 {
                   v15 = MEMORY[0x1E69B8740];
                   v16 = v48[5];
-                  v17 = [v11 nameComponents];
-                  v31 = [v15 contactForFamilyMember:v16 nameComponents:v17 imageData:0];
+                  nameComponents = [v11 nameComponents];
+                  v31 = [v15 contactForFamilyMember:v16 nameComponents:nameComponents imageData:0];
 
-                  v32 = [v31 givenName];
+                  givenName = [v31 givenName];
                   v18 = objc_alloc_init(PKDashboardPassMessage);
-                  v30 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%@", @"accountUserSetupCashForFamily", v12];
+                  v30 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%@", @"accountUserSetupCashForFamily", altDSID];
                   [(PKDashboardPassMessage *)v18 setIdentifier:v30];
                   [(PKDashboardPassMessage *)v18 setShowDisclosure:1];
                   v19 = PKLocalizedFeatureString();
-                  [(PKDashboardPassMessage *)v18 setTitle:v19, v32];
+                  [(PKDashboardPassMessage *)v18 setTitle:v19, givenName];
 
                   v20 = PKLocalizedFeatureString();
-                  [(PKDashboardPassMessage *)v18 setMessage:v20, v32];
+                  [(PKDashboardPassMessage *)v18 setMessage:v20, givenName];
 
                   v21 = PKLocalizedFeatureString();
-                  [(PKDashboardPassMessage *)v18 setButtonTitle:v21, v32];
+                  [(PKDashboardPassMessage *)v18 setButtonTitle:v21, givenName];
 
-                  v22 = [MEMORY[0x1E69B8A58] sharedInstance];
-                  v23 = [v22 passWithUniqueID:v29];
-                  v24 = [v23 paymentPass];
+                  mEMORY[0x1E69B8A58]2 = [MEMORY[0x1E69B8A58] sharedInstance];
+                  v23 = [mEMORY[0x1E69B8A58]2 passWithUniqueID:associatedPassUniqueID];
+                  paymentPass = [v23 paymentPass];
 
-                  v25 = [(PKDashboardPaymentPassDataSource *)self _messageCachedRawImageForPass:v24];
+                  v25 = [(PKDashboardPaymentPassDataSource *)self _messageCachedRawImageForPass:paymentPass];
                   [(PKDashboardPassMessage *)v18 setImage:v25];
 
                   objc_initWeak(&location, self);
@@ -17999,7 +17999,7 @@ void __70__PKDashboardPaymentPassDataSource__messagesForAccountUserInvitations__
                   v34[3] = &unk_1E801E260;
                   objc_copyWeak(&v37, &location);
                   v36 = &v41;
-                  v35 = v12;
+                  v35 = altDSID;
                   [(PKDashboardPassMessage *)v18 setActionOnDismiss:v34];
                   [v28 addObject:v18];
 
@@ -18103,9 +18103,9 @@ void __77__PKDashboardPaymentPassDataSource__messagesForAccountUserSetupCashForF
         v62 = __Block_byref_object_copy__41;
         v63 = __Block_byref_object_dispose__41;
         v64 = PKSharedCacheGetArrayForKey();
-        v4 = [(PKAccountUserCollection *)self->_accountUserCollection activeAccountUsers];
-        v5 = [v4 allObjects];
-        v6 = [v5 pk_objectsPassingTest:&__block_literal_global_1706];
+        activeAccountUsers = [(PKAccountUserCollection *)self->_accountUserCollection activeAccountUsers];
+        allObjects = [activeAccountUsers allObjects];
+        v6 = [allObjects pk_objectsPassingTest:&__block_literal_global_1706];
 
         v57 = 0u;
         v58 = 0u;
@@ -18130,10 +18130,10 @@ void __77__PKDashboardPaymentPassDataSource__messagesForAccountUserSetupCashForF
             }
 
             v9 = *(*(&v55 + 1) + 8 * i);
-            v10 = [v9 altDSID];
-            v11 = [(PKFamilyMemberCollection *)val->_familyCollection familyMemberForAltDSID:v10];
+            altDSID = [v9 altDSID];
+            v11 = [(PKFamilyMemberCollection *)val->_familyCollection familyMemberForAltDSID:altDSID];
             v12 = v11;
-            if (!v11 || ![v11 memberType] || objc_msgSend(v12, "memberType") == -1 || (objc_msgSend(v60[5], "containsObject:", v10) & 1) != 0 || !objc_msgSend(v9, "supportsRequestPhysicalCard"))
+            if (!v11 || ![v11 memberType] || objc_msgSend(v12, "memberType") == -1 || (objc_msgSend(v60[5], "containsObject:", altDSID) & 1) != 0 || !objc_msgSend(v9, "supportsRequestPhysicalCard"))
             {
               goto LABEL_37;
             }
@@ -18163,22 +18163,22 @@ LABEL_21:
               }
 
               v15 = *(*(&v51 + 1) + 8 * v14);
-              v16 = [v15 accountUserAltDSID];
-              v17 = v16;
-              if (!v16)
+              accountUserAltDSID = [v15 accountUserAltDSID];
+              v17 = accountUserAltDSID;
+              if (!accountUserAltDSID)
               {
                 goto LABEL_30;
               }
 
-              v18 = v16;
-              v19 = v10;
+              v18 = accountUserAltDSID;
+              v19 = altDSID;
               v20 = v19;
               if (v18 == v19)
               {
                 break;
               }
 
-              if (v10)
+              if (altDSID)
               {
                 v21 = [v18 isEqualToString:v19];
 
@@ -18216,19 +18216,19 @@ LABEL_34:
 
 LABEL_35:
             v23 = MEMORY[0x1E69B8740];
-            v24 = [v37 nameComponents];
-            v25 = [v23 contactForFamilyMember:v12 nameComponents:v24 imageData:0];
+            nameComponents = [v37 nameComponents];
+            v25 = [v23 contactForFamilyMember:v12 nameComponents:nameComponents imageData:0];
 
-            v26 = [v25 givenName];
+            givenName = [v25 givenName];
             v27 = objc_alloc_init(PKDashboardPassMessage);
-            v28 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%@", @"underagePhysicalCardOrderPrompt", v10];
+            v28 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%@", @"underagePhysicalCardOrderPrompt", altDSID];
             [(PKDashboardPassMessage *)v27 setIdentifier:v28];
             [(PKDashboardPassMessage *)v27 setShowDisclosure:1];
             v29 = PKLocalizedFeatureString();
             [(PKDashboardPassMessage *)v27 setTitle:v29];
 
             v30 = PKLocalizedFeatureString();
-            [(PKDashboardPassMessage *)v27 setMessage:v30, v26];
+            [(PKDashboardPassMessage *)v27 setMessage:v30, givenName];
 
             v31 = PKLocalizedFeatureString();
             [(PKDashboardPassMessage *)v27 setButtonTitle:v31];
@@ -18254,7 +18254,7 @@ LABEL_35:
             v44[3] = &unk_1E801E260;
             objc_copyWeak(&v47, &location);
             v46 = &v59;
-            v45 = v10;
+            v45 = altDSID;
             [(PKDashboardPassMessage *)v27 setActionOnDismiss:v44];
             [v36 addObject:v27];
 
@@ -18379,9 +18379,9 @@ void __87__PKDashboardPaymentPassDataSource__messagesToOrderPhysicalCardForUnder
   if (self->_accountUsersLoaded && self->_accountUserInvitationsLoaded && self->_familyCollectionLoaded && (account = self->_account) != 0 && [(PKAccount *)account accessLevel]== 1)
   {
     v26 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v4 = [(PKAccountUserCollection *)self->_accountUserCollection activeAccountUsers];
-    v5 = [v4 allObjects];
-    v6 = [v5 pk_objectsPassingTest:&__block_literal_global_1717];
+    activeAccountUsers = [(PKAccountUserCollection *)self->_accountUserCollection activeAccountUsers];
+    allObjects = [activeAccountUsers allObjects];
+    v6 = [allObjects pk_objectsPassingTest:&__block_literal_global_1717];
 
     v33 = 0u;
     v34 = 0u;
@@ -18402,22 +18402,22 @@ void __87__PKDashboardPaymentPassDataSource__messagesToOrderPhysicalCardForUnder
           }
 
           v8 = *(*(&v31 + 1) + 8 * i);
-          v9 = [v8 altDSID];
-          v10 = [(PKFamilyMemberCollection *)self->_familyCollection familyMemberForAltDSID:v9];
+          altDSID = [v8 altDSID];
+          v10 = [(PKFamilyMemberCollection *)self->_familyCollection familyMemberForAltDSID:altDSID];
           v11 = MEMORY[0x1E69B8740];
-          v12 = [v8 nameComponents];
-          v13 = [v11 contactForFamilyMember:v10 nameComponents:v12 imageData:0];
+          nameComponents = [v8 nameComponents];
+          v13 = [v11 contactForFamilyMember:v10 nameComponents:nameComponents imageData:0];
 
-          v14 = [v13 givenName];
+          givenName = [v13 givenName];
           v15 = objc_alloc_init(PKDashboardPassMessage);
-          v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%@", @"cardParticipantLocked", v9];
+          v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%@", @"cardParticipantLocked", altDSID];
           [(PKDashboardPassMessage *)v15 setIdentifier:v16];
           [(PKDashboardPassMessage *)v15 setShowDisclosure:1];
           v17 = PKLocalizedFeatureString();
-          [(PKDashboardPassMessage *)v15 setTitle:v17, v14];
+          [(PKDashboardPassMessage *)v15 setTitle:v17, givenName];
 
           v18 = PKLocalizedFeatureString();
-          [(PKDashboardPassMessage *)v15 setMessage:v18, v14];
+          [(PKDashboardPassMessage *)v15 setMessage:v18, givenName];
 
           v19 = PKLocalizedFeatureString();
           [(PKDashboardPassMessage *)v15 setButtonTitle:v19];
@@ -18575,31 +18575,31 @@ void __74__PKDashboardPaymentPassDataSource__messageForAccountPendingFamilyMembe
     goto LABEL_14;
   }
 
-  v4 = [(PKAccount *)self->_account creditDetails];
-  v5 = [v4 accountSummary];
-  v6 = [v5 mergeSummary];
+  creditDetails = [(PKAccount *)self->_account creditDetails];
+  accountSummary = [creditDetails accountSummary];
+  mergeSummary = [accountSummary mergeSummary];
 
-  v7 = [v6 accountDetails];
-  v8 = [v7 pk_anyObjectPassingTest:&__block_literal_global_1738];
+  accountDetails = [mergeSummary accountDetails];
+  v8 = [accountDetails pk_anyObjectPassingTest:&__block_literal_global_1738];
 
   if (!v8)
   {
-    v9 = PKLogFacilityTypeGetObject();
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    creditDetails2 = PKLogFacilityTypeGetObject();
+    if (os_log_type_enabled(creditDetails2, OS_LOG_TYPE_DEFAULT))
     {
       LOWORD(location[0]) = 0;
-      _os_log_impl(&dword_1BD026000, v9, OS_LOG_TYPE_DEFAULT, "Not showing first month merge balance dashboard message because no account had a statement balance", location, 2u);
+      _os_log_impl(&dword_1BD026000, creditDetails2, OS_LOG_TYPE_DEFAULT, "Not showing first month merge balance dashboard message because no account had a statement balance", location, 2u);
     }
 
     v19 = 0;
     goto LABEL_26;
   }
 
-  v9 = [(PKAccount *)self->_account creditDetails];
-  v10 = [v9 mergeDate];
-  if (v10)
+  creditDetails2 = [(PKAccount *)self->_account creditDetails];
+  mergeDate = [creditDetails2 mergeDate];
+  if (mergeDate)
   {
-    if (![v9 isInMonthOfMerge])
+    if (![creditDetails2 isInMonthOfMerge])
     {
       v19 = 0;
       goto LABEL_25;
@@ -18704,9 +18704,9 @@ void __65__PKDashboardPaymentPassDataSource__messageForFirstMonthCoOwners__block
 
 - (id)_userLegalAgreementDashboardMessage
 {
-  v3 = [(PKPassDynamicStateProviding *)self->_passStateProvider passState];
-  v4 = [v3 agreements];
-  v5 = [v4 pk_firstObjectPassingTest:&__block_literal_global_1751];
+  passState = [(PKPassDynamicStateProviding *)self->_passStateProvider passState];
+  agreements = [passState agreements];
+  v5 = [agreements pk_firstObjectPassingTest:&__block_literal_global_1751];
 
   if (v5 && ([v5 userConsented] & 1) == 0)
   {
@@ -18715,8 +18715,8 @@ void __65__PKDashboardPaymentPassDataSource__messageForFirstMonthCoOwners__block
     v7 = PKLocalizedPaymentString(&cfstr_TermsAndCondit_0.isa);
     [(PKDashboardPassMessage *)v6 setTitle:v7];
 
-    v8 = [(PKPaymentPass *)self->_pass organizationName];
-    v9 = PKLocalizedPaymentString(&cfstr_TermsAndCondit_1.isa, &stru_1F3BD5BF0.isa, v8);
+    organizationName = [(PKPaymentPass *)self->_pass organizationName];
+    v9 = PKLocalizedPaymentString(&cfstr_TermsAndCondit_1.isa, &stru_1F3BD5BF0.isa, organizationName);
     [(PKDashboardPassMessage *)v6 setMessage:v9];
 
     v10 = PKLocalizedPaymentString(&cfstr_TermsAndCondit_2.isa);
@@ -18804,10 +18804,10 @@ void __71__PKDashboardPaymentPassDataSource__userLegalAgreementDashboardMessage_
   }
 }
 
-- (void)_presentLegalAgreement:(id)a3 userConsented:(id)a4
+- (void)_presentLegalAgreement:(id)agreement userConsented:(id)consented
 {
-  v6 = a3;
-  v7 = a4;
+  agreementCopy = agreement;
+  consentedCopy = consented;
   objc_initWeak(&location, self);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -18816,7 +18816,7 @@ void __71__PKDashboardPaymentPassDataSource__userLegalAgreementDashboardMessage_
   objc_copyWeak(&v20, &location);
   v8 = _Block_copy(aBlock);
   v8[2](v8, 1);
-  v9 = [MEMORY[0x1E69B8EF8] sharedService];
+  mEMORY[0x1E69B8EF8] = [MEMORY[0x1E69B8EF8] sharedService];
   pass = self->_pass;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
@@ -18825,11 +18825,11 @@ void __71__PKDashboardPaymentPassDataSource__userLegalAgreementDashboardMessage_
   v11 = v8;
   v16 = v11;
   objc_copyWeak(&v18, &location);
-  v12 = v9;
+  v12 = mEMORY[0x1E69B8EF8];
   v15 = v12;
-  v13 = v7;
+  v13 = consentedCopy;
   v17 = v13;
-  [v12 agreementURLForPass:pass agreement:v6 completion:v14];
+  [v12 agreementURLForPass:pass agreement:agreementCopy completion:v14];
 
   objc_destroyWeak(&v18);
   objc_destroyWeak(&v20);
@@ -18976,17 +18976,17 @@ void __73__PKDashboardPaymentPassDataSource__presentLegalAgreement_userConsented
   if (self && v10)
   {
     WeakRetained = objc_loadWeakRetained(&self->_viewController);
-    v9 = [WeakRetained navigationController];
-    [v9 presentViewController:v10 animated:1 completion:0];
+    navigationController = [WeakRetained navigationController];
+    [navigationController presentViewController:v10 animated:1 completion:0];
   }
 }
 
 - (void)_disagreeTerms
 {
   WeakRetained = objc_loadWeakRetained(&self->_viewController);
-  v15 = [WeakRetained navigationController];
+  navigationController = [WeakRetained navigationController];
 
-  v4 = [PKViewControllerPresentationTarget targetWithPresentingViewController:v15];
+  v4 = [PKViewControllerPresentationTarget targetWithPresentingViewController:navigationController];
   if ([(PKPaymentPass *)self->_pass hasMerchantTokens])
   {
     pass = self->_pass;
@@ -18994,7 +18994,7 @@ void __73__PKDashboardPaymentPassDataSource__presentLegalAgreement_userConsented
     v7 = objc_loadWeakRetained(&self->_viewController);
     v8 = objc_alloc_init(MEMORY[0x1E69B8A60]);
     LOBYTE(v14) = 0;
-    [PKPassDeleteHelper presentMerchantTokenDeletePaymentPassAlertForPass:pass withAccount:account merchantTokensResponse:0 deleteHander:v7 passLibraryDataProvider:v8 navigationController:v15 presentationTarget:v4 isBridge:v14];
+    [PKPassDeleteHelper presentMerchantTokenDeletePaymentPassAlertForPass:pass withAccount:account merchantTokensResponse:0 deleteHander:v7 passLibraryDataProvider:v8 navigationController:navigationController presentationTarget:v4 isBridge:v14];
   }
 
   else
@@ -19014,23 +19014,23 @@ void __73__PKDashboardPaymentPassDataSource__presentLegalAgreement_userConsented
 
     v9 = self->_pass;
     v10 = self->_account;
-    v11 = [MEMORY[0x1E69B8BD8] defaultDataProvider];
+    defaultDataProvider = [MEMORY[0x1E69B8BD8] defaultDataProvider];
     v12 = objc_loadWeakRetained(&self->_viewController);
     v13 = objc_alloc_init(MEMORY[0x1E69B8A60]);
-    [PKPassDeleteHelper presentDeletePaymentPassAlertForPass:v9 withAccount:v10 paymentServiceDataProvider:v11 transitBalanceModel:v8 transitPassProperties:v7 fkInstitution:0 detailViewStyle:0 deleteHander:v12 passLibraryDataProvider:v13 presentationTarget:v4];
+    [PKPassDeleteHelper presentDeletePaymentPassAlertForPass:v9 withAccount:v10 paymentServiceDataProvider:defaultDataProvider transitBalanceModel:v8 transitPassProperties:v7 fkInstitution:0 detailViewStyle:0 deleteHander:v12 passLibraryDataProvider:v13 presentationTarget:v4];
   }
 }
 
-- (id)_messageCachedImageWithIdentifier:(id)a3 imageProvider:(id)a4
+- (id)_messageCachedImageWithIdentifier:(id)identifier imageProvider:(id)provider
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  identifierCopy = identifier;
+  providerCopy = provider;
+  v8 = providerCopy;
   v9 = 0;
-  if (v6 && v7)
+  if (identifierCopy && providerCopy)
   {
     os_unfair_lock_lock(&self->_lockImages);
-    v10 = [(NSMutableDictionary *)self->_messageImagesCache objectForKey:v6];
+    v10 = [(NSMutableDictionary *)self->_messageImagesCache objectForKey:identifierCopy];
     os_unfair_lock_unlock(&self->_lockImages);
     if (!v10)
     {
@@ -19038,7 +19038,7 @@ void __73__PKDashboardPaymentPassDataSource__presentLegalAgreement_userConsented
       if (v10)
       {
         os_unfair_lock_lock(&self->_lockImages);
-        [(NSMutableDictionary *)self->_messageImagesCache setObject:v10 forKey:v6];
+        [(NSMutableDictionary *)self->_messageImagesCache setObject:v10 forKey:identifierCopy];
         os_unfair_lock_unlock(&self->_lockImages);
       }
     }
@@ -19049,21 +19049,21 @@ void __73__PKDashboardPaymentPassDataSource__presentLegalAgreement_userConsented
   return v9;
 }
 
-- (id)_messageImageWithName:(id)a3 extension:(id)a4
+- (id)_messageImageWithName:(id)name extension:(id)extension
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  nameCopy = name;
+  extensionCopy = extension;
+  v8 = extensionCopy;
+  if (nameCopy)
   {
-    v9 = [v6 stringByAppendingFormat:@".%@", v7];
+    extensionCopy = [nameCopy stringByAppendingFormat:@".%@", extensionCopy];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __68__PKDashboardPaymentPassDataSource__messageImageWithName_extension___block_invoke;
     v12[3] = &unk_1E801E3A8;
     v13 = v8;
-    v14 = v6;
-    v10 = [(PKDashboardPaymentPassDataSource *)self _messageCachedImageWithIdentifier:v9 imageProvider:v12];
+    v14 = nameCopy;
+    v10 = [(PKDashboardPaymentPassDataSource *)self _messageCachedImageWithIdentifier:extensionCopy imageProvider:v12];
   }
 
   else
@@ -19094,18 +19094,18 @@ id __68__PKDashboardPaymentPassDataSource__messageImageWithName_extension___bloc
   return v8;
 }
 
-- (id)_messageCachedRawImageForPass:(id)a3
+- (id)_messageCachedRawImageForPass:(id)pass
 {
-  v4 = a3;
-  v5 = [v4 uniqueID];
-  if (v5)
+  passCopy = pass;
+  uniqueID = [passCopy uniqueID];
+  if (uniqueID)
   {
-    v6 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"pass-rawImage-%@", v5];
+    v6 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"pass-rawImage-%@", uniqueID];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __66__PKDashboardPaymentPassDataSource__messageCachedRawImageForPass___block_invoke;
     v9[3] = &unk_1E801E3D0;
-    v10 = v4;
+    v10 = passCopy;
     v7 = [(PKDashboardPaymentPassDataSource *)self _messageCachedImageWithIdentifier:v6 imageProvider:v9];
   }
 
@@ -19129,26 +19129,26 @@ id __66__PKDashboardPaymentPassDataSource__messageCachedRawImageForPass___block_
   return v5;
 }
 
-- (id)_messageCachedIconForPass:(id)a3 useNotificationIcon:(BOOL)a4
+- (id)_messageCachedIconForPass:(id)pass useNotificationIcon:(BOOL)icon
 {
-  v4 = a4;
-  v6 = [a3 uniqueID];
-  if (v6)
+  iconCopy = icon;
+  uniqueID = [pass uniqueID];
+  if (uniqueID)
   {
     v7 = objc_alloc(MEMORY[0x1E696AEC0]);
     v8 = @"iconImage";
-    if (v4)
+    if (iconCopy)
     {
       v8 = @"notificationIcon";
     }
 
-    v9 = [v7 initWithFormat:@"pass-%@-%@", v8, v6];
+    v9 = [v7 initWithFormat:@"pass-%@-%@", v8, uniqueID];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __82__PKDashboardPaymentPassDataSource__messageCachedIconForPass_useNotificationIcon___block_invoke;
     v12[3] = &unk_1E801E3F8;
     v12[4] = self;
-    v13 = v4;
+    v13 = iconCopy;
     v10 = [(PKDashboardPaymentPassDataSource *)self _messageCachedImageWithIdentifier:v9 imageProvider:v12];
   }
 
@@ -19180,21 +19180,21 @@ id __82__PKDashboardPaymentPassDataSource__messageCachedIconForPass_useNotificat
 
 - (id)revokingAccessMessage
 {
-  v2 = [(PKPaymentPass *)self->_pass devicePrimaryPaymentApplication];
-  v3 = [v2 subcredentials];
-  v4 = [v3 anyObject];
+  devicePrimaryPaymentApplication = [(PKPaymentPass *)self->_pass devicePrimaryPaymentApplication];
+  subcredentials = [devicePrimaryPaymentApplication subcredentials];
+  anyObject = [subcredentials anyObject];
 
-  v5 = [v4 entitlement];
-  v6 = [v5 carKeyEntitlementType];
+  entitlement = [anyObject entitlement];
+  carKeyEntitlementType = [entitlement carKeyEntitlementType];
 
-  if ((v6 - 1) > 5)
+  if ((carKeyEntitlementType - 1) > 5)
   {
     v7 = @"DASHBOARD_MESSAGE_FULL_ACCESS_REVOKING_MESSAGE";
   }
 
   else
   {
-    v7 = off_1E801E998[v6 - 1];
+    v7 = off_1E801E998[carKeyEntitlementType - 1];
   }
 
   v8 = PKLocalizedCredentialString(&v7->isa);
@@ -19204,25 +19204,25 @@ id __82__PKDashboardPaymentPassDataSource__messageCachedIconForPass_useNotificat
 
 - (id)_messageForPaymentInformationEventExtensionInstallation
 {
-  v3 = [(PKPaymentPass *)self->_pass uniqueID];
+  uniqueID = [(PKPaymentPass *)self->_pass uniqueID];
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
   v21 = __Block_byref_object_copy__41;
   v22 = __Block_byref_object_dispose__41;
   v23 = PKSharedCacheGetArrayForKey();
-  if (-[PKPaymentPass supportsBarcodePayment](self->_pass, "supportsBarcodePayment") && ([v19[5] containsObject:v3] & 1) == 0 && -[PKLinkedApplication state](self->_linkedApplication, "state") == 1 && !-[PKLinkedApplication isInstalled](self->_linkedApplication, "isInstalled"))
+  if (-[PKPaymentPass supportsBarcodePayment](self->_pass, "supportsBarcodePayment") && ([v19[5] containsObject:uniqueID] & 1) == 0 && -[PKLinkedApplication state](self->_linkedApplication, "state") == 1 && !-[PKLinkedApplication isInstalled](self->_linkedApplication, "isInstalled"))
   {
-    v6 = [(PKPaymentPass *)self->_pass organizationName];
+    organizationName = [(PKPaymentPass *)self->_pass organizationName];
     v4 = objc_alloc_init(PKDashboardPassMessage);
     [(PKDashboardPassMessage *)v4 setIdentifier:@"paymentInformationExtensionInstallPrompt"];
     v7 = [(PKDashboardPaymentPassDataSource *)self _messageCachedRawImageForPass:self->_pass];
     [(PKDashboardPassMessage *)v4 setImage:v7];
 
-    v8 = PKLocalizedAquamanString(&cfstr_DashboardAppIn.isa, &stru_1F3BD5BF0.isa, v6);
+    v8 = PKLocalizedAquamanString(&cfstr_DashboardAppIn.isa, &stru_1F3BD5BF0.isa, organizationName);
     [(PKDashboardPassMessage *)v4 setTitle:v8];
 
-    v9 = PKLocalizedAquamanString(&cfstr_DashboardAppIn_0.isa, &stru_1F3BD6370.isa, v6, v6);
+    v9 = PKLocalizedAquamanString(&cfstr_DashboardAppIn_0.isa, &stru_1F3BD6370.isa, organizationName, organizationName);
     [(PKDashboardPassMessage *)v4 setMessage:v9];
 
     v10 = PKLocalizedAquamanString(&cfstr_ViewInAppStore.isa);
@@ -19242,7 +19242,7 @@ id __82__PKDashboardPaymentPassDataSource__messageCachedIconForPass_useNotificat
     v11[3] = &unk_1E801E260;
     objc_copyWeak(&v14, &location);
     v13 = &v18;
-    v12 = v3;
+    v12 = uniqueID;
     [(PKDashboardPassMessage *)v4 setActionOnDismiss:v11];
 
     objc_destroyWeak(&v14);
@@ -19301,10 +19301,10 @@ void __91__PKDashboardPaymentPassDataSource__messageForPaymentInformationEventEx
   }
 }
 
-- (void)_messageForUnusableIdentityPassWithCompletion:(id)a3
+- (void)_messageForUnusableIdentityPassWithCompletion:(id)completion
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   [(PKPaymentPass *)self->_pass devicePaymentApplications];
   v24 = 0u;
   v25 = 0u;
@@ -19327,11 +19327,11 @@ LABEL_3:
       [v9 paymentType];
       if (PKPaymentMethodTypeIsIdentityDocument())
       {
-        v10 = [v9 subcredentials];
-        v11 = [v10 anyObject];
-        v12 = [v11 identifier];
+        subcredentials = [v9 subcredentials];
+        anyObject = [subcredentials anyObject];
+        identifier = [anyObject identifier];
 
-        if (v12)
+        if (identifier)
         {
           break;
         }
@@ -19353,12 +19353,12 @@ LABEL_3:
   else
   {
 LABEL_10:
-    v12 = 0;
+    identifier = 0;
   }
 
-  v13 = [(PKPaymentPass *)self->_pass isIdentityPass];
-  v14 = [(PKPaymentPass *)self->_pass activationState];
-  if (v13 && v14 == PKPaymentPassActivationStateActivated && v12)
+  isIdentityPass = [(PKPaymentPass *)self->_pass isIdentityPass];
+  activationState = [(PKPaymentPass *)self->_pass activationState];
+  if (isIdentityPass && activationState == PKPaymentPassActivationStateActivated && identifier)
   {
     objc_initWeak(&location, self);
     v15 = objc_alloc(MEMORY[0x1E6997C28]);
@@ -19371,8 +19371,8 @@ LABEL_10:
     v18[2] = __82__PKDashboardPaymentPassDataSource__messageForUnusableIdentityPassWithCompletion___block_invoke;
     v18[3] = &unk_1E801E420;
     objc_copyWeak(&v20, &location);
-    v19 = v4;
-    [v17 propertiesOfCredential:v12 completion:v18];
+    v19 = completionCopy;
+    [v17 propertiesOfCredential:identifier completion:v18];
 
     objc_destroyWeak(&v20);
     objc_destroyWeak(&location);
@@ -19380,7 +19380,7 @@ LABEL_10:
 
   else
   {
-    (*(v4 + 2))(v4, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
@@ -19509,12 +19509,12 @@ void __82__PKDashboardPaymentPassDataSource__messageForUnusableIdentityPassWithC
   }
 }
 
-- (void)_messageIfUnderlyingCredentialIsLockedOutWithCompletion:(id)a3
+- (void)_messageIfUnderlyingCredentialIsLockedOutWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if ((PKNeedsLostModeExitAuth() & 1) != 0 || [(PKPaymentPass *)self->_pass effectiveContactlessPaymentApplicationState]!= 1)
   {
-    v4[2](v4, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
   else
@@ -19527,7 +19527,7 @@ void __82__PKDashboardPaymentPassDataSource__messageForUnusableIdentityPassWithC
     v6[3] = &unk_1E801E448;
     objc_copyWeak(&v8, &location);
     v6[4] = self;
-    v7 = v4;
+    v7 = completionCopy;
     [_PKJPKIInternalClientWrapper instantiateWithPass:pass completionHandler:v6];
 
     objc_destroyWeak(&v8);
@@ -19626,21 +19626,21 @@ void __92__PKDashboardPaymentPassDataSource__messageIfUnderlyingCredentialIsLock
   }
 }
 
-- (void)_messageForPrecursorPassUpgradeWithController:(id)a3 completion:(id)a4
+- (void)_messageForPrecursorPassUpgradeWithController:(id)controller completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 devicePrimaryPrecursorRequest];
+  controllerCopy = controller;
+  completionCopy = completion;
+  devicePrimaryPrecursorRequest = [controllerCopy devicePrimaryPrecursorRequest];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __93__PKDashboardPaymentPassDataSource__messageForPrecursorPassUpgradeWithController_completion___block_invoke;
   v11[3] = &unk_1E801E470;
-  v12 = v6;
-  v13 = v7;
+  v12 = controllerCopy;
+  v13 = completionCopy;
   v11[4] = self;
-  v9 = v6;
-  v10 = v7;
-  [v9 requestDescriptionFor:v8 completion:v11];
+  v9 = controllerCopy;
+  v10 = completionCopy;
+  [v9 requestDescriptionFor:devicePrimaryPrecursorRequest completion:v11];
 }
 
 void __93__PKDashboardPaymentPassDataSource__messageForPrecursorPassUpgradeWithController_completion___block_invoke(uint64_t a1, void *a2)
@@ -19783,9 +19783,9 @@ LABEL_15:
   return precursorUpgradeController != 0;
 }
 
-- (void)_presentPrecursorActionFlowWithController:(id)a3
+- (void)_presentPrecursorActionFlowWithController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   objc_initWeak(location, self);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -19796,13 +19796,13 @@ LABEL_15:
   v5[2](v5, 1);
   v6 = [[PKPaymentSetupDismissibleNavigationController alloc] initWithContext:0];
   v7 = objc_alloc(MEMORY[0x1E69B8D48]);
-  v8 = [MEMORY[0x1E69B8EF8] sharedService];
-  v9 = [v7 initWithWebService:v8];
+  mEMORY[0x1E69B8EF8] = [MEMORY[0x1E69B8EF8] sharedService];
+  v9 = [v7 initWithWebService:mEMORY[0x1E69B8EF8]];
 
   v10 = [objc_alloc(MEMORY[0x1E69B90E0]) initWithEnvironment:0 provisioningController:v9 groupsController:0];
   [v10 setIsFollowupProvisioning:1];
   WeakRetained = objc_loadWeakRetained(&self->_viewController);
-  v12 = [WeakRetained navigationController];
+  navigationController = [WeakRetained navigationController];
 
   pass = self->_pass;
   v19[0] = MEMORY[0x1E69E9820];
@@ -19820,7 +19820,7 @@ LABEL_15:
   v18 = v14;
   v15 = v20;
   v17 = v15;
-  [PKProvisioningFlowBridge startPrecursorPassFlowWithNavController:v15 context:v10 pass:pass precursorController:v4 parentNavController:v12 presentNavController:v19 completion:v16];
+  [PKProvisioningFlowBridge startPrecursorPassFlowWithNavController:v15 context:v10 pass:pass precursorController:controllerCopy parentNavController:navigationController presentNavController:v19 completion:v16];
 
   objc_destroyWeak(&v22);
   objc_destroyWeak(&v24);
@@ -19865,33 +19865,33 @@ uint64_t __78__PKDashboardPaymentPassDataSource__presentPrecursorActionFlowWithC
   return [v2 dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)_messageForPassInconsistencyWithCompletion:(id)a3
+- (void)_messageForPassInconsistencyWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v5 = [(PKPaymentPass *)self->_pass devicePrimaryContactlessPaymentApplication];
-    v6 = [v5 subcredentials];
-    if ((PKUIOnlyDemoModeEnabled() & 1) != 0 || PKStoreDemoModeEnabled() || ![(PKPaymentPass *)self->_pass isCarKeyPass]|| [(PKPaymentPass *)self->_pass activationState]|| !v6)
+    devicePrimaryContactlessPaymentApplication = [(PKPaymentPass *)self->_pass devicePrimaryContactlessPaymentApplication];
+    subcredentials = [devicePrimaryContactlessPaymentApplication subcredentials];
+    if ((PKUIOnlyDemoModeEnabled() & 1) != 0 || PKStoreDemoModeEnabled() || ![(PKPaymentPass *)self->_pass isCarKeyPass]|| [(PKPaymentPass *)self->_pass activationState]|| !subcredentials)
     {
-      v4[2](v4, 0);
+      completionCopy[2](completionCopy, 0);
     }
 
     else
     {
-      v7 = [v5 applicationIdentifier];
+      applicationIdentifier = [devicePrimaryContactlessPaymentApplication applicationIdentifier];
       objc_initWeak(&location, self);
-      v8 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{v7, 0}];
+      v8 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{applicationIdentifier, 0}];
       secureElement = self->_secureElement;
       v11[0] = MEMORY[0x1E69E9820];
       v11[1] = 3221225472;
       v11[2] = __79__PKDashboardPaymentPassDataSource__messageForPassInconsistencyWithCompletion___block_invoke;
       v11[3] = &unk_1E8015FC8;
       objc_copyWeak(&v15, &location);
-      v14 = v4;
-      v10 = v7;
+      v14 = completionCopy;
+      v10 = applicationIdentifier;
       v12 = v10;
-      v13 = v6;
+      v13 = subcredentials;
       [(PKSecureElement *)secureElement appletCredentialsForAIDs:v8 completion:v11];
 
       objc_destroyWeak(&v15);
@@ -19989,17 +19989,17 @@ LABEL_19:
   }
 }
 
-- (void)executeEngagementActionForURL:(id)a3
+- (void)executeEngagementActionForURL:(id)l
 {
-  v23 = a3;
+  lCopy = l;
   v4 = PKEnagementActionTypeForActionURL();
   if (v4 > 3)
   {
     if (v4 == 4)
     {
       paymentDataProvider = self->_paymentDataProvider;
-      v15 = [(PKPaymentPass *)self->_pass uniqueID];
-      [(PKPaymentDefaultDataProvider *)paymentDataProvider setDefaultPaymentPassIdentifier:v15];
+      uniqueID = [(PKPaymentPass *)self->_pass uniqueID];
+      [(PKPaymentDefaultDataProvider *)paymentDataProvider setDefaultPaymentPassIdentifier:uniqueID];
     }
 
     else
@@ -20007,15 +20007,15 @@ LABEL_19:
       if (v4 == 5)
       {
         v16 = objc_alloc(MEMORY[0x1E69B8D48]);
-        v17 = [MEMORY[0x1E69B8EF8] sharedService];
-        v7 = [v16 initWithWebService:v17];
+        mEMORY[0x1E69B8EF8] = [MEMORY[0x1E69B8EF8] sharedService];
+        v7 = [v16 initWithWebService:mEMORY[0x1E69B8EF8]];
 
         v8 = [objc_alloc(MEMORY[0x1E69B8350]) initWithAccount:self->_account];
         [v8 setPaymentPass:self->_pass];
         v9 = [PKAccountFlowController alloc];
         v10 = v8;
         v11 = v7;
-        v12 = self;
+        selfCopy2 = self;
         v13 = 24;
       }
 
@@ -20027,24 +20027,24 @@ LABEL_19:
         }
 
         v5 = objc_alloc(MEMORY[0x1E69B8D48]);
-        v6 = [MEMORY[0x1E69B8EF8] sharedService];
-        v7 = [v5 initWithWebService:v6];
+        mEMORY[0x1E69B8EF8]2 = [MEMORY[0x1E69B8EF8] sharedService];
+        v7 = [v5 initWithWebService:mEMORY[0x1E69B8EF8]2];
 
         v8 = [objc_alloc(MEMORY[0x1E69B8350]) initWithAccount:self->_account];
         [v8 setPaymentPass:self->_pass];
         v9 = [PKAccountFlowController alloc];
         v10 = v8;
         v11 = v7;
-        v12 = self;
+        selfCopy2 = self;
         v13 = 4;
       }
 
-      v18 = [(PKAccountFlowController *)v9 initWithAccountCredential:v10 provisioningController:v11 setupDelegate:v12 context:0 operations:v13];
-      v19 = [(PKAccountFlowController *)v18 firstAccountViewController];
-      v20 = [[PKNavigationController alloc] initWithRootViewController:v19];
+      v18 = [(PKAccountFlowController *)v9 initWithAccountCredential:v10 provisioningController:v11 setupDelegate:selfCopy2 context:0 operations:v13];
+      firstAccountViewController = [(PKAccountFlowController *)v18 firstAccountViewController];
+      v20 = [[PKNavigationController alloc] initWithRootViewController:firstAccountViewController];
       WeakRetained = objc_loadWeakRetained(&self->_viewController);
-      v22 = [WeakRetained navigationController];
-      [v22 presentViewController:v20 animated:1 completion:0];
+      navigationController = [WeakRetained navigationController];
+      [navigationController presentViewController:v20 animated:1 completion:0];
     }
   }
 
@@ -20077,16 +20077,16 @@ LABEL_15:
   }
 
   val = self;
-  v46 = [(PKPaymentPass *)self->_pass deviceContactlessPaymentApplications];
+  deviceContactlessPaymentApplications = [(PKPaymentPass *)self->_pass deviceContactlessPaymentApplications];
   v53 = self->_paymentService;
-  if ([v46 count])
+  if ([deviceContactlessPaymentApplications count])
   {
-    v52 = [(PKPaymentPass *)self->_pass isHomeKeyPass];
+    isHomeKeyPass = [(PKPaymentPass *)self->_pass isHomeKeyPass];
     v68 = 0u;
     v69 = 0u;
     v70 = 0u;
     v71 = 0u;
-    obj = v46;
+    obj = deviceContactlessPaymentApplications;
     v49 = [obj countByEnumeratingWithState:&v68 objects:v73 count:16];
     if (!v49)
     {
@@ -20097,7 +20097,7 @@ LABEL_15:
 
     v54 = 0;
     v3 = 0;
-    v51 = v52;
+    v51 = isHomeKeyPass;
     v48 = *v69;
     do
     {
@@ -20117,8 +20117,8 @@ LABEL_15:
         v65 = 0u;
         v66 = 0u;
         v67 = 0u;
-        v7 = [v6 subcredentials];
-        v8 = [v7 countByEnumeratingWithState:&v64 objects:v72 count:16];
+        subcredentials = [v6 subcredentials];
+        v8 = [subcredentials countByEnumeratingWithState:&v64 objects:v72 count:16];
         if (v8)
         {
           v9 = *v65;
@@ -20128,23 +20128,23 @@ LABEL_15:
             {
               if (*v65 != v9)
               {
-                objc_enumerationMutation(v7);
+                objc_enumerationMutation(subcredentials);
               }
 
               v11 = *(*(&v64 + 1) + 8 * i);
               if (([v11 supportedRadioTechnologies] & 2) != 0)
               {
-                v12 = [v11 identifier];
-                v13 = [v6 applicationIdentifier];
-                v14 = [v6 secureElementIdentifier];
-                v15 = [(PKPaymentService *)v53 rangingSuspensionReasonForAppletSubcredentialIdentifier:v12 paymentApplicationIdentifier:v13 secureElementIdentifier:v14];
+                identifier = [v11 identifier];
+                applicationIdentifier = [v6 applicationIdentifier];
+                secureElementIdentifier = [v6 secureElementIdentifier];
+                v15 = [(PKPaymentService *)v53 rangingSuspensionReasonForAppletSubcredentialIdentifier:identifier paymentApplicationIdentifier:applicationIdentifier secureElementIdentifier:secureElementIdentifier];
 
                 v54 |= v15;
-                if ((v52 & 1) == 0)
+                if ((isHomeKeyPass & 1) == 0)
                 {
-                  v16 = [v11 entitlement];
-                  v17 = [v16 value];
-                  [v17 unsignedIntegerValue];
+                  entitlement = [v11 entitlement];
+                  value = [entitlement value];
+                  [value unsignedIntegerValue];
                   v51 = PKAppletSubcredentialEntitlementTypeFromValue();
                 }
 
@@ -20152,7 +20152,7 @@ LABEL_15:
               }
             }
 
-            v8 = [v7 countByEnumeratingWithState:&v64 objects:v72 count:16];
+            v8 = [subcredentials countByEnumeratingWithState:&v64 objects:v72 count:16];
           }
 
           while (v8);
@@ -20169,7 +20169,7 @@ LABEL_15:
 
     if (v3)
     {
-      if (!v52)
+      if (!isHomeKeyPass)
       {
 LABEL_26:
         v20 = 0;
@@ -20178,8 +20178,8 @@ LABEL_26:
           goto LABEL_42;
         }
 
-        v21 = [(PKPaymentPass *)val->_pass secureElementPass];
-        v22 = [v21 supportedRadioTechnologies];
+        secureElementPass = [(PKPaymentPass *)val->_pass secureElementPass];
+        supportedRadioTechnologies = [secureElementPass supportedRadioTechnologies];
 
         v20 = objc_alloc_init(PKDashboardPassMessage);
         [(PKDashboardPassMessage *)v20 setIdentifier:@"identityUnusable"];
@@ -20221,7 +20221,7 @@ LABEL_26:
 
                 else if (((1 << v51) & 0xA) != 0)
                 {
-                  if (v52)
+                  if (isHomeKeyPass)
                   {
                     v30 = PKLocalizedHomeKitUWBString(&cfstr_UwbUpdateFaile_1.isa);
                     goto LABEL_36;
@@ -20283,7 +20283,7 @@ LABEL_78:
             {
               if (((1 << v51) & 0xA) != 0)
               {
-                if (v22 == 2)
+                if (supportedRadioTechnologies == 2)
                 {
                   v43 = @"KNOWN_PROHIBITED_LOCATION_BODY_BT_ONLY_UNLOCK_ONLY";
                 }
@@ -20293,7 +20293,7 @@ LABEL_78:
                   v43 = @"KNOWN_PROHIBITED_LOCATION_BODY_UNLOCK_ONLY";
                 }
 
-                if (v22 != 2 && ((v52 ^ 1) & 1) == 0)
+                if (supportedRadioTechnologies != 2 && ((isHomeKeyPass ^ 1) & 1) == 0)
                 {
                   v44 = PKLocalizedHomeKitUWBString(&cfstr_KnownProhibite_6.isa);
                   goto LABEL_75;
@@ -20313,7 +20313,7 @@ LABEL_76:
               v42 = @"KNOWN_PROHIBITED_LOCATION_BODY_BT_ONLY_PROPRIETARY";
             }
 
-            if (v22 == 2)
+            if (supportedRadioTechnologies == 2)
             {
               v43 = v42;
             }
@@ -20351,7 +20351,7 @@ LABEL_76:
           {
             if (((1 << v51) & 0xA) != 0)
             {
-              if (v22 == 2)
+              if (supportedRadioTechnologies == 2)
               {
                 v39 = @"BLUETOOTH_DISABLED_BODY_UNLOCK_ONLY_BT_ONLY";
               }
@@ -20361,7 +20361,7 @@ LABEL_76:
                 v39 = @"BLUETOOTH_DISABLED_BODY_UNLOCK_ONLY";
               }
 
-              if (v22 != 2 && ((v52 ^ 1) & 1) == 0)
+              if (supportedRadioTechnologies != 2 && ((isHomeKeyPass ^ 1) & 1) == 0)
               {
                 v40 = PKLocalizedHomeKitUWBString(&cfstr_BluetoothDisab_3.isa);
                 goto LABEL_66;
@@ -20381,7 +20381,7 @@ LABEL_67:
             v38 = @"BLUETOOTH_DISABLED_BODY_PROPRIETARY_BT_ONLY";
           }
 
-          if (v22 == 2)
+          if (supportedRadioTechnologies == 2)
           {
             v39 = v38;
           }
@@ -20435,7 +20435,7 @@ LABEL_67:
         {
           if (((1 << v51) & 0xA) != 0)
           {
-            if (v22 == 2)
+            if (supportedRadioTechnologies == 2)
             {
               v35 = @"AIRPLANE_MODE_ENABLED_BODY_UNLOCK_ONLY_BT_ONLY";
             }
@@ -20445,7 +20445,7 @@ LABEL_67:
               v35 = @"AIRPLANE_MODE_ENABLED_BODY_UNLOCK_ONLY";
             }
 
-            if (v22 != 2 && ((v52 ^ 1) & 1) == 0)
+            if (supportedRadioTechnologies != 2 && ((isHomeKeyPass ^ 1) & 1) == 0)
             {
               v36 = PKLocalizedHomeKitUWBString(&cfstr_AirplaneModeEn_3.isa);
               goto LABEL_57;
@@ -20465,7 +20465,7 @@ LABEL_58:
           v34 = @"AIRPLANE_MODE_ENABLED_BODY_PROPRIETARY_BT_ONLY";
         }
 
-        if (v22 == 2)
+        if (supportedRadioTechnologies == 2)
         {
           v35 = v34;
         }
@@ -20478,8 +20478,8 @@ LABEL_58:
         goto LABEL_56;
       }
 
-      v18 = [(PKPaymentPass *)val->_pass uniqueID];
-      v19 = [(PKPaymentService *)v53 expressPassConfigurationWithPassUniqueIdentifier:v18];
+      uniqueID = [(PKPaymentPass *)val->_pass uniqueID];
+      v19 = [(PKPaymentService *)v53 expressPassConfigurationWithPassUniqueIdentifier:uniqueID];
 
       if (v19)
       {
@@ -20578,8 +20578,8 @@ void __67__PKDashboardPaymentPassDataSource__messageForRangingSuspendedPass__blo
     [(PKDashboardPassMessage *)v3 setMessage:v5];
 
     v6 = [PKDashboardPassMessageImageDescriptorSymbol alloc];
-    v7 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    v8 = [(PKDashboardPassMessageImageDescriptorSymbol *)v6 initWithName:@"lock.badge.clock.fill" tintColor:v7 backgroundColor:0];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    v8 = [(PKDashboardPassMessageImageDescriptorSymbol *)v6 initWithName:@"lock.badge.clock.fill" tintColor:secondaryLabelColor backgroundColor:0];
 
     [(PKDashboardPassMessage *)v3 setImageDescriptor:v8];
     [(PKDashboardPassMessage *)v3 setIsDestructiveAction:0];
@@ -20681,19 +20681,19 @@ void __70__PKDashboardPaymentPassDataSource__messageForBroadwayDiscoverability__
   [WeakRetained reloadMessagesAfterMessageInteraction];
 }
 
-- (void)paymentOfferConfirmationRecordChanged:(id)a3 forTransactionWithPaymentHash:(id)a4
+- (void)paymentOfferConfirmationRecordChanged:(id)changed forTransactionWithPaymentHash:(id)hash
 {
-  v6 = a3;
-  v7 = a4;
+  changedCopy = changed;
+  hashCopy = hash;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __104__PKDashboardPaymentPassDataSource_paymentOfferConfirmationRecordChanged_forTransactionWithPaymentHash___block_invoke;
   block[3] = &unk_1E8010A88;
   block[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = changedCopy;
+  v12 = hashCopy;
+  v8 = hashCopy;
+  v9 = changedCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
@@ -20705,9 +20705,9 @@ uint64_t __104__PKDashboardPaymentPassDataSource_paymentOfferConfirmationRecordC
   return [v2 reloadMessagesWithReason:@"PKPaymentOfferConfirmationRecord updated"];
 }
 
-- (void)visibilityDidChangeToState:(unsigned __int8)a3
+- (void)visibilityDidChangeToState:(unsigned __int8)state
 {
-  if (a3 == 1)
+  if (state == 1)
   {
     [(PKDashboardPaymentPassDataSource *)self reloadBankConnectData];
 
@@ -20715,34 +20715,34 @@ uint64_t __104__PKDashboardPaymentPassDataSource_paymentOfferConfirmationRecordC
   }
 }
 
-- (void)groupView:(id)a3 frontmostPassViewDidChange:(id)a4 withContext:(id)a5
+- (void)groupView:(id)view frontmostPassViewDidChange:(id)change withContext:(id)context
 {
-  [(PKDashboardPaymentPassDataSource *)self _setPassStateProvider:a4];
+  [(PKDashboardPaymentPassDataSource *)self _setPassStateProvider:change];
   [(PKDashboardPaymentPassDataSource *)self reloadFrontmostPass];
 
   [(PKDashboardPaymentPassDataSource *)self reloadAllContent];
 }
 
-- (void)_setPassStateProvider:(id)a3
+- (void)_setPassStateProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   passStateProvider = self->_passStateProvider;
-  if (passStateProvider != v5)
+  if (passStateProvider != providerCopy)
   {
-    v7 = v5;
+    v7 = providerCopy;
     [(PKPassDynamicStateProviding *)passStateProvider removePassStateObserver:self];
-    objc_storeStrong(&self->_passStateProvider, a3);
+    objc_storeStrong(&self->_passStateProvider, provider);
     [(PKPassDynamicStateProviding *)self->_passStateProvider addPassStateObserver:self];
-    v5 = v7;
+    providerCopy = v7;
   }
 }
 
-- (void)passStateProvider:(id)a3 didUpdatePassState:(id)a4
+- (void)passStateProvider:(id)provider didUpdatePassState:(id)state
 {
-  v5 = [a3 pass];
+  pass = [provider pass];
   pass = self->_pass;
 
-  if (v5 == pass)
+  if (pass == pass)
   {
     v7 = [(PKDashboardPaymentPassDataSource *)self firstSectionIndexForSectionIdentifier:3];
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -20809,7 +20809,7 @@ uint64_t __104__PKDashboardPaymentPassDataSource_paymentOfferConfirmationRecordC
   v57 = *MEMORY[0x1E69E9840];
   if (!self->_allContentIsLoaded && !self->_contentLoadedFrozen)
   {
-    v48 = [(PKPaymentPass *)self->_pass uniqueID];
+    uniqueID = [(PKPaymentPass *)self->_pass uniqueID];
     v49 = objc_alloc(MEMORY[0x1E696AD60]);
     if (self->_messagesLoaded)
     {
@@ -20946,7 +20946,7 @@ uint64_t __104__PKDashboardPaymentPassDataSource_paymentOfferConfirmationRecordC
       v15 = @"NO";
     }
 
-    v16 = [v49 initWithFormat:@"Dashboard loading (%p): %@ - m:%@, sm:%@, em:%@, b:%@, p:%@, sp:%@, f:%@, crpp:%@, ti:%@, as:%@, rg:%@, fk:%@, a:%@", self, v48, v47, v46, v45, v44, v43, v8, v9, v10, v11, v12, v13, v14, v15];
+    v16 = [v49 initWithFormat:@"Dashboard loading (%p): %@ - m:%@, sm:%@, em:%@, b:%@, p:%@, sp:%@, f:%@, crpp:%@, ti:%@, as:%@, rg:%@, fk:%@, a:%@", self, uniqueID, v47, v46, v45, v44, v43, v8, v9, v10, v11, v12, v13, v14, v15];
     v17 = v16;
     if (self->_accountUsersLoaded)
     {
@@ -20994,9 +20994,9 @@ uint64_t __104__PKDashboardPaymentPassDataSource_paymentOfferConfirmationRecordC
     [v17 appendFormat:@" rpp:%@", v21];
     if ([(PKDashboardPaymentPassDataSource *)self isBankConnectSupported])
     {
-      v22 = [(PKDashboardPaymentPassDataSource *)self bankConnectDataLoaded];
-      v23 = !v22;
-      if (v22)
+      bankConnectDataLoaded = [(PKDashboardPaymentPassDataSource *)self bankConnectDataLoaded];
+      v23 = !bankConnectDataLoaded;
+      if (bankConnectDataLoaded)
       {
         v24 = @"YES";
       }
@@ -21014,9 +21014,9 @@ uint64_t __104__PKDashboardPaymentPassDataSource_paymentOfferConfirmationRecordC
     }
 
     [v17 appendFormat:@" bc:%@", v24];
-    v25 = [(PKDashboardPaymentPassDataSource *)self _shouldUseFinanceKitTransactions];
-    v26 = v25;
-    if (!v23 && !v25)
+    _shouldUseFinanceKitTransactions = [(PKDashboardPaymentPassDataSource *)self _shouldUseFinanceKitTransactions];
+    v26 = _shouldUseFinanceKitTransactions;
+    if (!v23 && !_shouldUseFinanceKitTransactions)
     {
       if ([(PKDashboardPaymentPassDataSource *)self isBankConnectLinked])
       {
@@ -21157,13 +21157,13 @@ uint64_t __104__PKDashboardPaymentPassDataSource_paymentOfferConfirmationRecordC
     }
 
     objc_initWeak(buf, self);
-    v5 = [MEMORY[0x1E699C848] sharedInstance];
+    mEMORY[0x1E699C848] = [MEMORY[0x1E699C848] sharedInstance];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __57__PKDashboardPaymentPassDataSource__lostModeButtonTapped__block_invoke;
     v6[3] = &unk_1E8011338;
     objc_copyWeak(&v7, buf);
-    [v5 initiateLostModeExitAuthWithCompletion:v6];
+    [mEMORY[0x1E699C848] initiateLostModeExitAuthWithCompletion:v6];
 
     objc_destroyWeak(&v7);
     objc_destroyWeak(buf);
@@ -21222,13 +21222,13 @@ void __57__PKDashboardPaymentPassDataSource__lostModeButtonTapped__block_invoke_
 - (void)_presentAboutClosedAccounts
 {
   WeakRetained = objc_loadWeakRetained(&self->_viewController);
-  v6 = [WeakRetained navigationController];
+  navigationController = [WeakRetained navigationController];
 
-  if (v6)
+  if (navigationController)
   {
     v4 = [[PKAccountClosedViewController alloc] initWithAccount:self->_account accountUserCollection:self->_accountUserCollection familyMemberCollection:self->_familyCollection context:0];
     v5 = [[PKNavigationController alloc] initWithRootViewController:v4];
-    [v6 presentViewController:v5 animated:1 completion:0];
+    [navigationController presentViewController:v5 animated:1 completion:0];
   }
 }
 
@@ -21238,39 +21238,39 @@ void __57__PKDashboardPaymentPassDataSource__lostModeButtonTapped__block_invoke_
   [WeakRetained presentCardNumbers];
 }
 
-- (void)_presentPassDetailsWithAction:(unint64_t)a3
+- (void)_presentPassDetailsWithAction:(unint64_t)action
 {
   WeakRetained = objc_loadWeakRetained(&self->_viewController);
-  [(PKDashboardPassGroupViewController *)WeakRetained _presentPassDetailsAnimated:a3 action:?];
+  [(PKDashboardPassGroupViewController *)WeakRetained _presentPassDetailsAnimated:action action:?];
 }
 
-- (void)_presentPaymentPassDetailsWithCompletion:(id)a3
+- (void)_presentPaymentPassDetailsWithCompletion:(id)completion
 {
-  v6 = a3;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_viewController);
   v5 = WeakRetained;
   if (WeakRetained)
   {
-    [(PKDashboardPassGroupViewController *)WeakRetained _presentPaymentPassDetailsAnimated:v6 completion:?];
+    [(PKDashboardPassGroupViewController *)WeakRetained _presentPaymentPassDetailsAnimated:completionCopy completion:?];
   }
 
-  else if (v6)
+  else if (completionCopy)
   {
-    (*(v6 + 2))(v6, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
-- (void)_presentPassWithPassUniqueIdentifier:(id)a3
+- (void)_presentPassWithPassUniqueIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   WeakRetained = objc_loadWeakRetained(&self->_viewController);
-  v5 = [(PKDashboardPassGroupViewController *)WeakRetained _passGroupsViewController];
-  [v5 presentPassWithUniqueID:v4 animated:1 completionHandler:0];
+  _passGroupsViewController = [(PKDashboardPassGroupViewController *)WeakRetained _passGroupsViewController];
+  [_passGroupsViewController presentPassWithUniqueID:identifierCopy animated:1 completionHandler:0];
 }
 
-- (void)_presentApplCashFamilySetupForFamilyMember:(id)a3
+- (void)_presentApplCashFamilySetupForFamilyMember:(id)member
 {
-  v4 = a3;
+  memberCopy = member;
   v5 = [PKPeerPaymentAssociatedAccountsController alloc];
   familyCollection = self->_familyCollection;
   avatarManager = self->_avatarManager;
@@ -21279,11 +21279,11 @@ void __57__PKDashboardPaymentPassDataSource__lostModeButtonTapped__block_invoke_
   associatedAccountsController = self->_associatedAccountsController;
   self->_associatedAccountsController = v9;
 
-  v13 = [[PKPeerPaymentAssociatedAccountPresentationContext alloc] initWithPKFamilyMember:v4 setupType:1];
+  v13 = [[PKPeerPaymentAssociatedAccountPresentationContext alloc] initWithPKFamilyMember:memberCopy setupType:1];
   WeakRetained = objc_loadWeakRetained(&self->_viewController);
-  v12 = [WeakRetained navigationController];
+  navigationController = [WeakRetained navigationController];
 
-  [(PKPeerPaymentAssociatedAccountsController *)self->_associatedAccountsController presentAssociatedAccountsFlowWithPresentationContext:v13 fromNavigationController:v12];
+  [(PKPeerPaymentAssociatedAccountsController *)self->_associatedAccountsController presentAssociatedAccountsFlowWithPresentationContext:v13 fromNavigationController:navigationController];
 }
 
 - (void)_presentBalanceDetails
@@ -21291,30 +21291,30 @@ void __57__PKDashboardPaymentPassDataSource__lostModeButtonTapped__block_invoke_
   v3 = [PKCreditBalanceDetailsViewController alloc];
   transactionSourceCollection = self->_transactionSourceCollection;
   familyCollection = self->_familyCollection;
-  v6 = [MEMORY[0x1E69B8EF8] sharedService];
-  v9 = [(PKCreditBalanceDetailsViewController *)v3 initWithStyle:0 transactionSourceCollection:transactionSourceCollection familyCollection:familyCollection webService:v6 account:self->_account accountUserCollection:self->_accountUserCollection physicalCards:self->_physicalCards statement:0 previousStatements:0];
+  mEMORY[0x1E69B8EF8] = [MEMORY[0x1E69B8EF8] sharedService];
+  v9 = [(PKCreditBalanceDetailsViewController *)v3 initWithStyle:0 transactionSourceCollection:transactionSourceCollection familyCollection:familyCollection webService:mEMORY[0x1E69B8EF8] account:self->_account accountUserCollection:self->_accountUserCollection physicalCards:self->_physicalCards statement:0 previousStatements:0];
 
   WeakRetained = objc_loadWeakRetained(&self->_viewController);
-  v8 = [WeakRetained navigationController];
-  [v8 pushViewController:v9 animated:1];
+  navigationController = [WeakRetained navigationController];
+  [navigationController pushViewController:v9 animated:1];
 }
 
 - (void)_presentCreateAccountUserInvitation
 {
   WeakRetained = objc_loadWeakRetained(&self->_viewController);
-  v3 = [WeakRetained navigationController];
-  [PKAccountInvitationController presentCreateAccountUserInvitationWithViewController:v3 account:self->_account accountUserCollection:self->_accountUserCollection familyMemberCollection:self->_familyCollection context:0 completion:0];
+  navigationController = [WeakRetained navigationController];
+  [PKAccountInvitationController presentCreateAccountUserInvitationWithViewController:navigationController account:self->_account accountUserCollection:self->_accountUserCollection familyMemberCollection:self->_familyCollection context:0 completion:0];
 }
 
-- (void)_presentAccountUserDetails:(id)a3
+- (void)_presentAccountUserDetails:(id)details
 {
-  v4 = a3;
+  detailsCopy = details;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __63__PKDashboardPaymentPassDataSource__presentAccountUserDetails___block_invoke;
   v6[3] = &unk_1E801E4B8;
-  v7 = v4;
-  v5 = v4;
+  v7 = detailsCopy;
+  v5 = detailsCopy;
   [(PKDashboardPaymentPassDataSource *)self _presentPaymentPassDetailsWithCompletion:v6];
 }
 
@@ -21326,15 +21326,15 @@ void __63__PKDashboardPaymentPassDataSource__presentAccountUserDetails___block_i
   [v3 presentAccountUserDetailsForAccountUserAltDSID:v4];
 }
 
-- (void)_presentAccountUserInvitation:(id)a3
+- (void)_presentAccountUserInvitation:(id)invitation
 {
-  v4 = a3;
+  invitationCopy = invitation;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __66__PKDashboardPaymentPassDataSource__presentAccountUserInvitation___block_invoke;
   v6[3] = &unk_1E801E4B8;
-  v7 = v4;
-  v5 = v4;
+  v7 = invitationCopy;
+  v5 = invitationCopy;
   [(PKDashboardPaymentPassDataSource *)self _presentPaymentPassDetailsWithCompletion:v6];
 }
 
@@ -21346,9 +21346,9 @@ void __66__PKDashboardPaymentPassDataSource__presentAccountUserInvitation___bloc
   [v3 presentAccountUserInvitationWithIdentifier:v4];
 }
 
-- (void)_presentInboxMessage:(id)a3
+- (void)_presentInboxMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   if (self->_inboxDataSource)
   {
     objc_initWeak(&location, self);
@@ -21358,7 +21358,7 @@ void __66__PKDashboardPaymentPassDataSource__presentAccountUserInvitation___bloc
     v6[2] = __57__PKDashboardPaymentPassDataSource__presentInboxMessage___block_invoke;
     v6[3] = &unk_1E80110E0;
     objc_copyWeak(&v8, &location);
-    v7 = v4;
+    v7 = messageCopy;
     [(PKInboxDataSource *)inboxDataSource updateInboxWithCompletion:v6];
 
     objc_destroyWeak(&v8);
@@ -21437,31 +21437,31 @@ void __73__PKDashboardPaymentPassDataSource__presentRestrictedGuestAccessSchedul
     transactionSourceCollection = self->_transactionSourceCollection;
     account = self->_account;
 
-    LOBYTE(v6) = [v3 shouldDisplayAccountInformationForTransactionSourceCollection:transactionSourceCollection withAccount:account];
+    LOBYTE(_isPeerPaymentPass) = [v3 shouldDisplayAccountInformationForTransactionSourceCollection:transactionSourceCollection withAccount:account];
   }
 
   else if ([(PKDashboardPaymentPassDataSource *)self _isAppleBalancePass])
   {
 
-    LOBYTE(v6) = [(PKDashboardPaymentPassDataSource *)self canDisplayAppleBalanceBalance];
+    LOBYTE(_isPeerPaymentPass) = [(PKDashboardPaymentPassDataSource *)self canDisplayAppleBalanceBalance];
   }
 
   else
   {
-    v6 = [(PKDashboardPaymentPassDataSource *)self _isPeerPaymentPass];
-    if (v6)
+    _isPeerPaymentPass = [(PKDashboardPaymentPassDataSource *)self _isPeerPaymentPass];
+    if (_isPeerPaymentPass)
     {
 
-      LOBYTE(v6) = [(PKDashboardPaymentPassDataSource *)self canDisplayPeerPaymentBalanceModule];
+      LOBYTE(_isPeerPaymentPass) = [(PKDashboardPaymentPassDataSource *)self canDisplayPeerPaymentBalanceModule];
     }
   }
 
-  return v6;
+  return _isPeerPaymentPass;
 }
 
 - (void)_performReloadTransitSection
 {
-  v3 = [(PKPaymentPass *)self->_pass uniqueID];
+  uniqueID = [(PKPaymentPass *)self->_pass uniqueID];
   v4 = dispatch_group_create();
   v31[0] = 0;
   v31[1] = v31;
@@ -21482,7 +21482,7 @@ void __73__PKDashboardPaymentPassDataSource__presentRestrictedGuestAccessSchedul
   v27[4] = __Block_byref_object_dispose__41;
   v28 = 0;
   objc_initWeak(&location, self);
-  v5 = [(PKPaymentPass *)self->_pass devicePrimaryPaymentApplication];
+  devicePrimaryPaymentApplication = [(PKPaymentPass *)self->_pass devicePrimaryPaymentApplication];
   dispatch_group_enter(v4);
   paymentDataProvider = self->_paymentDataProvider;
   v21[0] = MEMORY[0x1E69E9820];
@@ -21491,11 +21491,11 @@ void __73__PKDashboardPaymentPassDataSource__presentRestrictedGuestAccessSchedul
   v21[3] = &unk_1E801E4E0;
   objc_copyWeak(&v25, &location);
   v24 = v31;
-  v7 = v5;
+  v7 = devicePrimaryPaymentApplication;
   v22 = v7;
   v8 = v4;
   v23 = v8;
-  [(PKPaymentDefaultDataProvider *)paymentDataProvider transitStateWithPassUniqueIdentifier:v3 paymentApplication:v7 completion:v21];
+  [(PKPaymentDefaultDataProvider *)paymentDataProvider transitStateWithPassUniqueIdentifier:uniqueID paymentApplication:v7 completion:v21];
   dispatch_group_enter(v8);
   v9 = self->_paymentDataProvider;
   v18[0] = MEMORY[0x1E69E9820];
@@ -21505,7 +21505,7 @@ void __73__PKDashboardPaymentPassDataSource__presentRestrictedGuestAccessSchedul
   v20 = v29;
   v10 = v8;
   v19 = v10;
-  [(PKPaymentDefaultDataProvider *)v9 balancesForPaymentPassWithUniqueIdentifier:v3 completion:v18];
+  [(PKPaymentDefaultDataProvider *)v9 balancesForPaymentPassWithUniqueIdentifier:uniqueID completion:v18];
   dispatch_group_enter(v10);
   v11 = self->_paymentDataProvider;
   v15[0] = MEMORY[0x1E69E9820];
@@ -21515,7 +21515,7 @@ void __73__PKDashboardPaymentPassDataSource__presentRestrictedGuestAccessSchedul
   v17 = v27;
   v12 = v10;
   v16 = v12;
-  [(PKPaymentDefaultDataProvider *)v11 plansForPaymentPassWithUniqueIdentifier:v3 completion:v15];
+  [(PKPaymentDefaultDataProvider *)v11 plansForPaymentPassWithUniqueIdentifier:uniqueID completion:v15];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __64__PKDashboardPaymentPassDataSource__performReloadTransitSection__block_invoke_4;
@@ -21595,19 +21595,19 @@ void __64__PKDashboardPaymentPassDataSource__performReloadTransitSection__block_
   }
 }
 
-- (void)_scheduleExpirationTimerForCommutePlans:(id)a3
+- (void)_scheduleExpirationTimerForCommutePlans:(id)plans
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 count])
+  plansCopy = plans;
+  v5 = plansCopy;
+  if (plansCopy && [plansCopy count])
   {
     v6 = [v5 sortedArrayUsingComparator:&__block_literal_global_2065];
-    v7 = [v6 firstObject];
-    v8 = [v7 expiryDate];
-    if (v8)
+    firstObject = [v6 firstObject];
+    expiryDate = [firstObject expiryDate];
+    if (expiryDate)
     {
-      v9 = [MEMORY[0x1E695DF00] date];
-      [v8 timeIntervalSinceDate:v9];
+      date = [MEMORY[0x1E695DF00] date];
+      [expiryDate timeIntervalSinceDate:date];
       v11 = v10;
 
       if (v11 >= 1.0)
@@ -21690,8 +21690,8 @@ void __76__PKDashboardPaymentPassDataSource__scheduleExpirationTimerForCommutePl
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v3 = [(PKPaymentPass *)self->_pass actionGroups];
-  v4 = [v3 countByEnumeratingWithState:&v17 objects:v22 count:16];
+  actionGroups = [(PKPaymentPass *)self->_pass actionGroups];
+  v4 = [actionGroups countByEnumeratingWithState:&v17 objects:v22 count:16];
   if (v4)
   {
     v5 = v4;
@@ -21702,7 +21702,7 @@ LABEL_3:
     {
       if (*v18 != v6)
       {
-        objc_enumerationMutation(v3);
+        objc_enumerationMutation(actionGroups);
       }
 
       v8 = *(*(&v17 + 1) + 8 * v7);
@@ -21713,7 +21713,7 @@ LABEL_3:
 
       if (v5 == ++v7)
       {
-        v5 = [v3 countByEnumeratingWithState:&v17 objects:v22 count:16];
+        v5 = [actionGroups countByEnumeratingWithState:&v17 objects:v22 count:16];
         if (v5)
         {
           goto LABEL_3;
@@ -21732,9 +21732,9 @@ LABEL_9:
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v3 = [(PKPaymentPass *)self->_pass availableActions];
-    v9 = [v3 countByEnumeratingWithState:&v13 objects:v21 count:16];
-    if (!v9)
+    actionGroups = [(PKPaymentPass *)self->_pass availableActions];
+    externalActionContent = [actionGroups countByEnumeratingWithState:&v13 objects:v21 count:16];
+    if (!externalActionContent)
     {
       goto LABEL_19;
     }
@@ -21746,7 +21746,7 @@ LABEL_11:
     {
       if (*v14 != v10)
       {
-        objc_enumerationMutation(v3);
+        objc_enumerationMutation(actionGroups);
       }
 
       v8 = *(*(&v13 + 1) + 8 * v11);
@@ -21755,10 +21755,10 @@ LABEL_11:
         break;
       }
 
-      if (v9 == ++v11)
+      if (externalActionContent == ++v11)
       {
-        v9 = [v3 countByEnumeratingWithState:&v13 objects:v21 count:16];
-        if (v9)
+        externalActionContent = [actionGroups countByEnumeratingWithState:&v13 objects:v21 count:16];
+        if (externalActionContent)
         {
           goto LABEL_11;
         }
@@ -21768,17 +21768,17 @@ LABEL_11:
     }
   }
 
-  v9 = [v8 externalActionContent];
+  externalActionContent = [v8 externalActionContent];
 LABEL_19:
 
-  return v9;
+  return externalActionContent;
 }
 
-- (void)_updateTransitBalanceProperties:(id)a3 dynamicBalances:(id)a4 dynamicPlans:(id)a5
+- (void)_updateTransitBalanceProperties:(id)properties dynamicBalances:(id)balances dynamicPlans:(id)plans
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  propertiesCopy = properties;
+  balancesCopy = balances;
+  plansCopy = plans;
   v11 = self->_pass;
   if ([(PKPaymentPass *)v11 isStoredValuePass])
   {
@@ -21792,23 +21792,23 @@ LABEL_19:
       v14 = v16;
     }
 
-    if (v8)
+    if (propertiesCopy)
     {
-      [v14 setTransitProperties:v8];
+      [v14 setTransitProperties:propertiesCopy];
     }
 
-    if (v9)
+    if (balancesCopy)
     {
-      [v14 updateWithDynamicBalances:v9];
+      [v14 updateWithDynamicBalances:balancesCopy];
     }
 
-    if (v10)
+    if (plansCopy)
     {
-      [v14 updateWithDynamicCommutePlans:v10];
+      [v14 updateWithDynamicCommutePlans:plansCopy];
     }
 
-    v17 = [v14 displayableCommutePlans];
-    [(PKDashboardPaymentPassDataSource *)self _scheduleExpirationTimerForCommutePlans:v17];
+    displayableCommutePlans = [v14 displayableCommutePlans];
+    [(PKDashboardPaymentPassDataSource *)self _scheduleExpirationTimerForCommutePlans:displayableCommutePlans];
 
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
@@ -21817,7 +21817,7 @@ LABEL_19:
     v29 = v11;
     v18 = v14;
     v30 = v18;
-    v31 = self;
+    selfCopy = self;
     v32 = v12;
     v19 = _Block_copy(aBlock);
     v20 = v19;
@@ -21980,30 +21980,30 @@ void __97__PKDashboardPaymentPassDataSource__updateTransitBalanceProperties_dyna
     goto LABEL_2;
   }
 
-  v5 = [(PKPaymentPass *)self->_pass hasAssociatedPeerPaymentAccount];
-  if (!v5)
+  hasAssociatedPeerPaymentAccount = [(PKPaymentPass *)self->_pass hasAssociatedPeerPaymentAccount];
+  if (!hasAssociatedPeerPaymentAccount)
   {
-    return v5;
+    return hasAssociatedPeerPaymentAccount;
   }
 
-  v6 = [(PKPeerPaymentAccount *)self->_peerPaymentAccount currentBalance];
-  v7 = [v6 amount];
-  v8 = [MEMORY[0x1E696AB90] zero];
-  v9 = [v7 compare:v8];
+  currentBalance = [(PKPeerPaymentAccount *)self->_peerPaymentAccount currentBalance];
+  amount = [currentBalance amount];
+  zero = [MEMORY[0x1E696AB90] zero];
+  v9 = [amount compare:zero];
 
-  v10 = [(PKDashboardPaymentPassDataSource *)self _peerPaymentDashboardCondition];
+  _peerPaymentDashboardCondition = [(PKDashboardPaymentPassDataSource *)self _peerPaymentDashboardCondition];
   if (v9 != 1)
   {
 LABEL_2:
-    LOBYTE(v5) = 0;
+    LOBYTE(hasAssociatedPeerPaymentAccount) = 0;
   }
 
   else
   {
-    LOBYTE(v5) = (v10 & 0x100) == 0 || (v10 & 1) != 0 || [(PKPaymentPass *)self->_pass activationState]== PKPaymentPassActivationStateSuspended;
+    LOBYTE(hasAssociatedPeerPaymentAccount) = (_peerPaymentDashboardCondition & 0x100) == 0 || (_peerPaymentDashboardCondition & 1) != 0 || [(PKPaymentPass *)self->_pass activationState]== PKPaymentPassActivationStateSuspended;
   }
 
-  return v5;
+  return hasAssociatedPeerPaymentAccount;
 }
 
 - (void)_fetchAMPEnrollmentEligibility
@@ -22128,16 +22128,16 @@ void __66__PKDashboardPaymentPassDataSource__fetchAMPEnrollmentEligibility__bloc
   [WeakRetained reloadMessagesWithReason:@"AMP enrollment status change"];
 }
 
-- (void)_addToAMPButtonTappedForPass:(id)a3
+- (void)_addToAMPButtonTappedForPass:(id)pass
 {
-  v4 = a3;
+  passCopy = pass;
   if (!self->_performingAMPEnrollment)
   {
     self->_performingAMPEnrollment = 1;
     [(PKDashboardPaymentPassDataSource *)self reloadMessagesWithReason:@"add to AMP"];
     WeakRetained = objc_loadWeakRetained(&self->_viewController);
-    v6 = [WeakRetained navigationController];
-    objc_initWeak(&location, v6);
+    navigationController = [WeakRetained navigationController];
+    objc_initWeak(&location, navigationController);
 
     objc_initWeak(&from, self);
     AMPEnrollmentManager = self->_AMPEnrollmentManager;
@@ -22146,7 +22146,7 @@ void __66__PKDashboardPaymentPassDataSource__fetchAMPEnrollmentEligibility__bloc
     v8[2] = __65__PKDashboardPaymentPassDataSource__addToAMPButtonTappedForPass___block_invoke;
     v8[3] = &unk_1E801E618;
     objc_copyWeak(&v10, &from);
-    v9 = v4;
+    v9 = passCopy;
     objc_copyWeak(&v11, &location);
     [(PKAMPEnrollmentManager *)AMPEnrollmentManager enrollPaymentPass:v9 isDefault:0 completion:v8];
     objc_destroyWeak(&v11);
@@ -22293,10 +22293,10 @@ void __65__PKDashboardPaymentPassDataSource__addToAMPButtonTappedForPass___block
   [WeakRetained _addToAMPButtonTappedForPass:*(a1 + 32)];
 }
 
-- (void)_fetchAMPEnrollmentIconIfNeeded:(id)a3
+- (void)_fetchAMPEnrollmentIconIfNeeded:(id)needed
 {
-  v4 = a3;
-  v5 = v4;
+  neededCopy = needed;
+  v5 = neededCopy;
   if (self->_showAMPEnrollmentMessage && !self->_AMPEnrollmentIcon)
   {
     objc_initWeak(&location, self);
@@ -22313,9 +22313,9 @@ void __65__PKDashboardPaymentPassDataSource__addToAMPButtonTappedForPass___block
     objc_destroyWeak(&location);
   }
 
-  else if (v4)
+  else if (neededCopy)
   {
-    (*(v4 + 2))(v4);
+    (*(neededCopy + 2))(neededCopy);
   }
 }
 
@@ -22358,17 +22358,17 @@ void __68__PKDashboardPaymentPassDataSource__fetchAMPEnrollmentIconIfNeeded___bl
 
 - (void)reloadDialogRequests
 {
-  v3 = [(PKDashboardPaymentPassDataSource *)self AMPEnagementPlacementForCurrentlyDisplayedPass];
-  if (v3)
+  aMPEnagementPlacementForCurrentlyDisplayedPass = [(PKDashboardPaymentPassDataSource *)self AMPEnagementPlacementForCurrentlyDisplayedPass];
+  if (aMPEnagementPlacementForCurrentlyDisplayedPass)
   {
-    v4 = [MEMORY[0x1E69B87F0] sharedInstance];
+    mEMORY[0x1E69B87F0] = [MEMORY[0x1E69B87F0] sharedInstance];
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __56__PKDashboardPaymentPassDataSource_reloadDialogRequests__block_invoke;
     v5[3] = &unk_1E801ABD0;
     v5[4] = self;
-    v6 = v3;
-    [v4 dialogRequestsForPlacement:v6 completion:v5];
+    v6 = aMPEnagementPlacementForCurrentlyDisplayedPass;
+    [mEMORY[0x1E69B87F0] dialogRequestsForPlacement:v6 completion:v5];
   }
 
   else
@@ -22464,17 +22464,17 @@ void __56__PKDashboardPaymentPassDataSource_reloadDialogRequests__block_invoke_5
   [WeakRetained reloadDialogRequests];
 }
 
-- (void)didUpdateFamilyMembers:(id)a3
+- (void)didUpdateFamilyMembers:(id)members
 {
-  v4 = a3;
+  membersCopy = members;
   objc_initWeak(&location, self);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __59__PKDashboardPaymentPassDataSource_didUpdateFamilyMembers___block_invoke;
   block[3] = &unk_1E80110E0;
   objc_copyWeak(&v8, &location);
-  v7 = v4;
-  v5 = v4;
+  v7 = membersCopy;
+  v5 = membersCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 
   objc_destroyWeak(&v8);
@@ -22494,17 +22494,17 @@ void __59__PKDashboardPaymentPassDataSource_didUpdateFamilyMembers___block_invok
   }
 }
 
-- (void)paymentPassWithUniqueIdentifier:(id)a3 didEnableMessageService:(BOOL)a4
+- (void)paymentPassWithUniqueIdentifier:(id)identifier didEnableMessageService:(BOOL)service
 {
-  v5 = a3;
+  identifierCopy = identifier;
   objc_initWeak(&location, self);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __92__PKDashboardPaymentPassDataSource_paymentPassWithUniqueIdentifier_didEnableMessageService___block_invoke;
   block[3] = &unk_1E80110E0;
   objc_copyWeak(&v9, &location);
-  v8 = v5;
-  v6 = v5;
+  v8 = identifierCopy;
+  v6 = identifierCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 
   objc_destroyWeak(&v9);
@@ -22534,11 +22534,11 @@ void __92__PKDashboardPaymentPassDataSource_paymentPassWithUniqueIdentifier_didE
   }
 }
 
-- (void)passWithUniqueIdentifier:(id)a3 didUpdateTiles:(id)a4 forContext:(int64_t)a5
+- (void)passWithUniqueIdentifier:(id)identifier didUpdateTiles:(id)tiles forContext:(int64_t)context
 {
-  v8 = a3;
-  v9 = a4;
-  if (a5 == 1)
+  identifierCopy = identifier;
+  tilesCopy = tiles;
+  if (context == 1)
   {
     objc_initWeak(&location, self);
     v10[0] = MEMORY[0x1E69E9820];
@@ -22546,8 +22546,8 @@ void __92__PKDashboardPaymentPassDataSource_paymentPassWithUniqueIdentifier_didE
     v10[2] = __87__PKDashboardPaymentPassDataSource_passWithUniqueIdentifier_didUpdateTiles_forContext___block_invoke;
     v10[3] = &unk_1E8011828;
     objc_copyWeak(&v13, &location);
-    v11 = v9;
-    v12 = v8;
+    v11 = tilesCopy;
+    v12 = identifierCopy;
     dispatch_async(MEMORY[0x1E69E96A0], v10);
 
     objc_destroyWeak(&v13);
@@ -22566,17 +22566,17 @@ void __87__PKDashboardPaymentPassDataSource_passWithUniqueIdentifier_didUpdateTi
   }
 }
 
-- (void)paymentPassWithUniqueIdentifier:(id)a3 didReceiveMessage:(id)a4
+- (void)paymentPassWithUniqueIdentifier:(id)identifier didReceiveMessage:(id)message
 {
-  v5 = a3;
+  identifierCopy = identifier;
   objc_initWeak(&location, self);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __86__PKDashboardPaymentPassDataSource_paymentPassWithUniqueIdentifier_didReceiveMessage___block_invoke;
   block[3] = &unk_1E80110E0;
   objc_copyWeak(&v9, &location);
-  v8 = v5;
-  v6 = v5;
+  v8 = identifierCopy;
+  v6 = identifierCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 
   objc_destroyWeak(&v9);
@@ -22606,20 +22606,20 @@ void __86__PKDashboardPaymentPassDataSource_paymentPassWithUniqueIdentifier_didR
   }
 }
 
-- (void)paymentPassWithUniqueIdentifier:(id)a3 didUpdateWithTransitPassProperties:(id)a4
+- (void)paymentPassWithUniqueIdentifier:(id)identifier didUpdateWithTransitPassProperties:(id)properties
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  propertiesCopy = properties;
   objc_initWeak(&location, self);
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __103__PKDashboardPaymentPassDataSource_paymentPassWithUniqueIdentifier_didUpdateWithTransitPassProperties___block_invoke;
   v10[3] = &unk_1E8011828;
   objc_copyWeak(&v13, &location);
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = identifierCopy;
+  v12 = propertiesCopy;
+  v8 = propertiesCopy;
+  v9 = identifierCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v10);
 
   objc_destroyWeak(&v13);
@@ -22647,20 +22647,20 @@ void __103__PKDashboardPaymentPassDataSource_paymentPassWithUniqueIdentifier_did
   }
 }
 
-- (void)paymentPassWithUniqueIdentifier:(id)a3 didReceiveBalanceUpdate:(id)a4
+- (void)paymentPassWithUniqueIdentifier:(id)identifier didReceiveBalanceUpdate:(id)update
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  updateCopy = update;
   objc_initWeak(&location, self);
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __92__PKDashboardPaymentPassDataSource_paymentPassWithUniqueIdentifier_didReceiveBalanceUpdate___block_invoke;
   v10[3] = &unk_1E8011828;
   objc_copyWeak(&v13, &location);
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = identifierCopy;
+  v12 = updateCopy;
+  v8 = updateCopy;
+  v9 = identifierCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v10);
 
   objc_destroyWeak(&v13);
@@ -22688,20 +22688,20 @@ void __92__PKDashboardPaymentPassDataSource_paymentPassWithUniqueIdentifier_didR
   }
 }
 
-- (void)paymentPassWithUniqueIdentifier:(id)a3 didReceivePlanUpdate:(id)a4
+- (void)paymentPassWithUniqueIdentifier:(id)identifier didReceivePlanUpdate:(id)update
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  updateCopy = update;
   objc_initWeak(&location, self);
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __89__PKDashboardPaymentPassDataSource_paymentPassWithUniqueIdentifier_didReceivePlanUpdate___block_invoke;
   v10[3] = &unk_1E8011828;
   objc_copyWeak(&v13, &location);
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = identifierCopy;
+  v12 = updateCopy;
+  v8 = updateCopy;
+  v9 = identifierCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v10);
 
   objc_destroyWeak(&v13);
@@ -22729,23 +22729,23 @@ void __89__PKDashboardPaymentPassDataSource_paymentPassWithUniqueIdentifier_didR
   }
 }
 
-- (void)credentialIdentifier:(id)a3 paymentApplicationIdentifier:(id)a4 secureElementIdentifier:(id)a5 didUpdateRangingSuspensionReasons:(unint64_t)a6
+- (void)credentialIdentifier:(id)identifier paymentApplicationIdentifier:(id)applicationIdentifier secureElementIdentifier:(id)elementIdentifier didUpdateRangingSuspensionReasons:(unint64_t)reasons
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  identifierCopy = identifier;
+  applicationIdentifierCopy = applicationIdentifier;
+  elementIdentifierCopy = elementIdentifier;
   objc_initWeak(&location, self);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __144__PKDashboardPaymentPassDataSource_credentialIdentifier_paymentApplicationIdentifier_secureElementIdentifier_didUpdateRangingSuspensionReasons___block_invoke;
   block[3] = &unk_1E8014828;
   objc_copyWeak(&v19, &location);
-  v16 = v10;
-  v17 = v11;
-  v18 = v9;
-  v12 = v9;
-  v13 = v11;
-  v14 = v10;
+  v16 = applicationIdentifierCopy;
+  v17 = elementIdentifierCopy;
+  v18 = identifierCopy;
+  v12 = identifierCopy;
+  v13 = elementIdentifierCopy;
+  v14 = applicationIdentifierCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 
   objc_destroyWeak(&v19);
@@ -22956,17 +22956,17 @@ LABEL_24:
 LABEL_51:
 }
 
-- (void)sharesDidUpdateWithPaymentPassWithUniqueIdentifier:(id)a3
+- (void)sharesDidUpdateWithPaymentPassWithUniqueIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   objc_initWeak(&location, self);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __87__PKDashboardPaymentPassDataSource_sharesDidUpdateWithPaymentPassWithUniqueIdentifier___block_invoke;
   block[3] = &unk_1E80110E0;
   objc_copyWeak(&v8, &location);
-  v7 = v4;
-  v5 = v4;
+  v7 = identifierCopy;
+  v5 = identifierCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 
   objc_destroyWeak(&v8);
@@ -23024,7 +23024,7 @@ LABEL_11:
 LABEL_13:
 }
 
-- (void)inboxDataSourceDidUpdateInboxMessages:(id)a3
+- (void)inboxDataSourceDidUpdateInboxMessages:(id)messages
 {
   objc_initWeak(&location, self);
   v3[0] = MEMORY[0x1E69E9820];
@@ -23048,7 +23048,7 @@ void __74__PKDashboardPaymentPassDataSource_inboxDataSourceDidUpdateInboxMessage
   }
 }
 
-- (void)_peerPaymentAccountChanged:(id)a3
+- (void)_peerPaymentAccountChanged:(id)changed
 {
   objc_initWeak(&location, self);
   v3[0] = MEMORY[0x1E69E9820];
@@ -23089,23 +23089,23 @@ void __63__PKDashboardPaymentPassDataSource__peerPaymentAccountChanged___block_i
   }
 }
 
-- (void)_peerPaymentResolutionTappedWithResolution:(unint64_t)a3
+- (void)_peerPaymentResolutionTappedWithResolution:(unint64_t)resolution
 {
   if (!self->_performingPeerPaymentResolution)
   {
-    v5 = [(PKPeerPaymentAccountResolutionController *)self->_peerPaymentAccountResolutionController account];
-    v6 = v5;
-    if (v5)
+    account = [(PKPeerPaymentAccountResolutionController *)self->_peerPaymentAccountResolutionController account];
+    v6 = account;
+    if (account)
     {
-      v7 = [v5 pendingPaymentCount];
+      pendingPaymentCount = [account pendingPaymentCount];
       v8 = PKSharedCacheGetStringForKey();
       self->_performingPeerPaymentResolution = 1;
       objc_initWeak(&location, self);
       v9 = objc_alloc_init(MEMORY[0x1E69B8F08]);
-      v10 = [(PKPassPresentationContext *)self->_context campaignAttributionReferrerIdentifier];
-      [v9 setCampaignAttributionReferrerIdentifier:v10];
+      campaignAttributionReferrerIdentifier = [(PKPassPresentationContext *)self->_context campaignAttributionReferrerIdentifier];
+      [v9 setCampaignAttributionReferrerIdentifier:campaignAttributionReferrerIdentifier];
 
-      if (a3 == 1 && v7 == 1 && [v8 length])
+      if (resolution == 1 && pendingPaymentCount == 1 && [v8 length])
       {
         [v9 setRegistrationFlowState:2];
         [v9 setSenderAddress:v8];
@@ -23128,7 +23128,7 @@ void __63__PKDashboardPaymentPassDataSource__peerPaymentAccountChanged___block_i
         v14[3] = &unk_1E8011180;
         v12 = &v15;
         objc_copyWeak(&v15, &location);
-        [(PKPeerPaymentAccountResolutionController *)v13 presentFlowForAccountResolution:a3 configuration:v9 completion:v14];
+        [(PKPeerPaymentAccountResolutionController *)v13 presentFlowForAccountResolution:resolution configuration:v9 completion:v14];
       }
 
       objc_destroyWeak(v12);
@@ -23169,16 +23169,16 @@ void __79__PKDashboardPaymentPassDataSource__peerPaymentResolutionTappedWithReso
   if (!contactResolver)
   {
     v4 = objc_alloc_init(MEMORY[0x1E695CE18]);
-    v5 = [MEMORY[0x1E69B8F30] requiredContactKeys];
-    v6 = [v5 mutableCopy];
+    requiredContactKeys = [MEMORY[0x1E69B8F30] requiredContactKeys];
+    v6 = [requiredContactKeys mutableCopy];
 
     v7 = _MergedGlobals_622();
-    v8 = [MEMORY[0x1E69DC938] currentDevice];
-    v9 = -[objc_class descriptorForRequiredKeysWithThreeDTouchEnabled:](v7, "descriptorForRequiredKeysWithThreeDTouchEnabled:", [v8 _supportsForceTouch]);
-    v10 = [off_1EE98A6B0() descriptorForRequiredKeys];
-    v16[1] = v10;
-    v11 = [off_1EE98A6B8() descriptorForRequiredKeys];
-    v16[2] = v11;
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    v9 = -[objc_class descriptorForRequiredKeysWithThreeDTouchEnabled:](v7, "descriptorForRequiredKeysWithThreeDTouchEnabled:", [currentDevice _supportsForceTouch]);
+    descriptorForRequiredKeys = [off_1EE98A6B0() descriptorForRequiredKeys];
+    v16[1] = descriptorForRequiredKeys;
+    descriptorForRequiredKeys2 = [off_1EE98A6B8() descriptorForRequiredKeys];
+    v16[2] = descriptorForRequiredKeys2;
     v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:3];
     [v6 addObjectsFromArray:v12];
 
@@ -23192,26 +23192,26 @@ void __79__PKDashboardPaymentPassDataSource__peerPaymentResolutionTappedWithReso
   return contactResolver;
 }
 
-- (void)peerPaymentAccountResolutionController:(id)a3 requestsPresentViewController:(id)a4 animated:(BOOL)a5
+- (void)peerPaymentAccountResolutionController:(id)controller requestsPresentViewController:(id)viewController animated:(BOOL)animated
 {
-  v5 = a5;
-  v7 = a4;
+  animatedCopy = animated;
+  viewControllerCopy = viewController;
   WeakRetained = objc_loadWeakRetained(&self->_viewController);
-  v8 = [WeakRetained navigationController];
-  [v8 presentViewController:v7 animated:v5 completion:0];
+  navigationController = [WeakRetained navigationController];
+  [navigationController presentViewController:viewControllerCopy animated:animatedCopy completion:0];
 }
 
-- (void)peerPaymentAccountResolutionController:(id)a3 requestsDismissCurrentViewControllerAnimated:(BOOL)a4
+- (void)peerPaymentAccountResolutionController:(id)controller requestsDismissCurrentViewControllerAnimated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   WeakRetained = objc_loadWeakRetained(&self->_viewController);
-  v5 = [WeakRetained navigationController];
-  [v5 dismissViewControllerAnimated:v4 completion:0];
+  navigationController = [WeakRetained navigationController];
+  [navigationController dismissViewControllerAnimated:animatedCopy completion:0];
 }
 
-- (void)reloadPeerPaymentPendingRequestsWithCompletion:(id)a3
+- (void)reloadPeerPaymentPendingRequestsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -23221,15 +23221,15 @@ void __79__PKDashboardPaymentPassDataSource__peerPaymentResolutionTappedWithReso
   v5 = _Block_copy(aBlock);
   if (v5[2]())
   {
-    v6 = [MEMORY[0x1E69B9000] sharedInstance];
+    mEMORY[0x1E69B9000] = [MEMORY[0x1E69B9000] sharedInstance];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __83__PKDashboardPaymentPassDataSource_reloadPeerPaymentPendingRequestsWithCompletion___block_invoke_2;
     v10[3] = &unk_1E801E6B0;
     objc_copyWeak(&v13, &location);
     v11 = v5;
-    v12 = v4;
-    [v6 peerPaymentPendingRequestsForPeerPaymentAccountWithCompletion:v10];
+    v12 = completionCopy;
+    [mEMORY[0x1E69B9000] peerPaymentPendingRequestsForPeerPaymentAccountWithCompletion:v10];
 
     objc_destroyWeak(&v13);
   }
@@ -23254,9 +23254,9 @@ void __79__PKDashboardPaymentPassDataSource__peerPaymentResolutionTappedWithReso
       [(PKDashboardPaymentPassDataSource *)self updateContentIsLoaded];
     }
 
-    if (v4)
+    if (completionCopy)
     {
-      v4[2](v4);
+      completionCopy[2](completionCopy);
     }
   }
 
@@ -23410,34 +23410,34 @@ uint64_t __83__PKDashboardPaymentPassDataSource_reloadPeerPaymentPendingRequests
   return v7;
 }
 
-- (BOOL)_shouldShowGroupRequestTrackingForPendingRequest:(id)a3
+- (BOOL)_shouldShowGroupRequestTrackingForPendingRequest:(id)request
 {
-  v3 = a3;
-  v4 = [v3 currencyAmount];
-  v5 = [v4 amount];
+  requestCopy = request;
+  currencyAmount = [requestCopy currencyAmount];
+  amount = [currencyAmount amount];
 
   PKPeerPaymentGroupRequestExpirationOverride();
   v7 = v6;
-  v8 = [v3 context];
-  v9 = [v3 sentOnThisDevice];
-  v10 = [MEMORY[0x1E696AB90] zero];
-  v11 = [v5 compare:v10];
+  context = [requestCopy context];
+  sentOnThisDevice = [requestCopy sentOnThisDevice];
+  zero = [MEMORY[0x1E696AB90] zero];
+  v11 = [amount compare:zero];
 
-  v12 = [v3 groupID];
-  v13 = [v12 length];
+  groupID = [requestCopy groupID];
+  v13 = [groupID length];
 
-  v14 = [v3 requestDate];
-  [v14 timeIntervalSinceNow];
+  requestDate = [requestCopy requestDate];
+  [requestDate timeIntervalSinceNow];
   v16 = v15;
 
-  if ([v3 isComplete])
+  if ([requestCopy isComplete])
   {
     LOBYTE(v17) = 0;
   }
 
   else
   {
-    v17 = [v3 isPaid] ^ 1;
+    v17 = [requestCopy isPaid] ^ 1;
   }
 
   v18 = -2592000.0;
@@ -23446,7 +23446,7 @@ uint64_t __83__PKDashboardPaymentPassDataSource_reloadPeerPaymentPendingRequests
     v18 = v7;
   }
 
-  v19 = (v8 == 2) & v9;
+  v19 = (context == 2) & sentOnThisDevice;
   if (!v11)
   {
     v19 = 0;
@@ -23470,10 +23470,10 @@ uint64_t __83__PKDashboardPaymentPassDataSource_reloadPeerPaymentPendingRequests
   return v20 & v17;
 }
 
-- (BOOL)_isDisclosureSectionChangedWithPreviousAccount:(id)a3 previousPass:(id)a4
+- (BOOL)_isDisclosureSectionChangedWithPreviousAccount:(id)account previousPass:(id)pass
 {
-  v5 = a3;
-  v6 = a4;
+  accountCopy = account;
+  passCopy = pass;
   IsFDICInsured = PKPeerPaymentAccountIsFDICInsured();
   if (IsFDICInsured == PKPeerPaymentAccountIsFDICInsured() && (v8 = PKPeerPaymentAccountResolutionForAccountAndPeerPaymentPass(), v8 == PKPeerPaymentAccountResolutionForAccountAndPeerPaymentPass()))
   {
@@ -23577,8 +23577,8 @@ void __60__PKDashboardPaymentPassDataSource_recurringPaymentsChanged__block_invo
 {
   v3 = [[PKPaymentSetupDismissibleNavigationController alloc] initWithContext:0];
   v4 = objc_alloc(MEMORY[0x1E69B8D48]);
-  v5 = [MEMORY[0x1E69B8EF8] sharedService];
-  v6 = [v4 initWithWebService:v5];
+  mEMORY[0x1E69B8EF8] = [MEMORY[0x1E69B8EF8] sharedService];
+  v6 = [v4 initWithWebService:mEMORY[0x1E69B8EF8]];
 
   v7 = [objc_alloc(MEMORY[0x1E69B90E0]) initWithEnvironment:0 provisioningController:v6 groupsController:0];
   [v7 setIsFollowupProvisioning:1];
@@ -23631,18 +23631,18 @@ void __61__PKDashboardPaymentPassDataSource__verificationButtonTapped__block_inv
   }
 }
 
-- (void)invalidatedSpendingSummaryOfType:(unint64_t)a3 startingWithDate:(id)a4
+- (void)invalidatedSpendingSummaryOfType:(unint64_t)type startingWithDate:(id)date
 {
-  v6 = a4;
+  dateCopy = date;
   objc_initWeak(&location, self);
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __86__PKDashboardPaymentPassDataSource_invalidatedSpendingSummaryOfType_startingWithDate___block_invoke;
   v8[3] = &unk_1E8011408;
   objc_copyWeak(v10, &location);
-  v10[1] = a3;
-  v9 = v6;
-  v7 = v6;
+  v10[1] = type;
+  v9 = dateCopy;
+  v7 = dateCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v8);
 
   objc_destroyWeak(v10);
@@ -23672,7 +23672,7 @@ void __86__PKDashboardPaymentPassDataSource_invalidatedSpendingSummaryOfType_sta
   }
 }
 
-- (void)invalidatedSpendingSummariesOfType:(unint64_t)a3
+- (void)invalidatedSpendingSummariesOfType:(unint64_t)type
 {
   objc_initWeak(&location, self);
   block[0] = MEMORY[0x1E69E9820];
@@ -23680,7 +23680,7 @@ void __86__PKDashboardPaymentPassDataSource_invalidatedSpendingSummaryOfType_sta
   block[2] = __71__PKDashboardPaymentPassDataSource_invalidatedSpendingSummariesOfType___block_invoke;
   block[3] = &unk_1E801E5C8;
   objc_copyWeak(v5, &location);
-  v5[1] = a3;
+  v5[1] = type;
   dispatch_async(MEMORY[0x1E69E96A0], block);
   objc_destroyWeak(v5);
   objc_destroyWeak(&location);
@@ -23722,25 +23722,25 @@ void __65__PKDashboardPaymentPassDataSource_invalidatedSummariesAvailable__block
   [WeakRetained loadSummariesWithForceReload:1];
 }
 
-- (void)accountServiceAccountResolutionController:(id)a3 requestsPresentViewController:(id)a4 animated:(BOOL)a5
+- (void)accountServiceAccountResolutionController:(id)controller requestsPresentViewController:(id)viewController animated:(BOOL)animated
 {
-  v6 = a4;
+  viewControllerCopy = viewController;
   WeakRetained = objc_loadWeakRetained(&self->_viewController);
-  v7 = [WeakRetained navigationController];
-  [v7 presentViewController:v6 animated:1 completion:0];
+  navigationController = [WeakRetained navigationController];
+  [navigationController presentViewController:viewControllerCopy animated:1 completion:0];
 }
 
-- (void)discoveryService:(id)a3 dialogRequestsChangedForPlacement:(id)a4
+- (void)discoveryService:(id)service dialogRequestsChangedForPlacement:(id)placement
 {
-  v5 = a4;
+  placementCopy = placement;
   objc_initWeak(&location, self);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __87__PKDashboardPaymentPassDataSource_discoveryService_dialogRequestsChangedForPlacement___block_invoke;
   block[3] = &unk_1E80110E0;
   objc_copyWeak(&v9, &location);
-  v8 = v5;
-  v6 = v5;
+  v8 = placementCopy;
+  v6 = placementCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 
   objc_destroyWeak(&v9);
@@ -23787,20 +23787,20 @@ LABEL_10:
 LABEL_11:
 }
 
-- (void)accountUsersChanged:(id)a3 forAccountIdentifier:(id)a4
+- (void)accountUsersChanged:(id)changed forAccountIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  changedCopy = changed;
+  identifierCopy = identifier;
   objc_initWeak(&location, self);
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __77__PKDashboardPaymentPassDataSource_accountUsersChanged_forAccountIdentifier___block_invoke;
   v10[3] = &unk_1E8011828;
   objc_copyWeak(&v13, &location);
-  v11 = v7;
-  v12 = v6;
-  v8 = v6;
-  v9 = v7;
+  v11 = identifierCopy;
+  v12 = changedCopy;
+  v8 = changedCopy;
+  v9 = identifierCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v10);
 
   objc_destroyWeak(&v13);
@@ -23849,20 +23849,20 @@ LABEL_10:
 LABEL_11:
 }
 
-- (void)physicalCardsChanged:(id)a3 forAccountIdentifier:(id)a4
+- (void)physicalCardsChanged:(id)changed forAccountIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  changedCopy = changed;
+  identifierCopy = identifier;
   objc_initWeak(&location, self);
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __78__PKDashboardPaymentPassDataSource_physicalCardsChanged_forAccountIdentifier___block_invoke;
   v10[3] = &unk_1E8011828;
   objc_copyWeak(&v13, &location);
-  v11 = v7;
-  v12 = v6;
-  v8 = v6;
-  v9 = v7;
+  v11 = identifierCopy;
+  v12 = changedCopy;
+  v8 = changedCopy;
+  v9 = identifierCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v10);
 
   objc_destroyWeak(&v13);
@@ -23909,17 +23909,17 @@ LABEL_10:
 LABEL_11:
 }
 
-- (void)featureApplicationAdded:(id)a3
+- (void)featureApplicationAdded:(id)added
 {
-  v4 = a3;
+  addedCopy = added;
   objc_initWeak(&location, self);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __60__PKDashboardPaymentPassDataSource_featureApplicationAdded___block_invoke;
   block[3] = &unk_1E80110E0;
   objc_copyWeak(&v8, &location);
-  v7 = v4;
-  v5 = v4;
+  v7 = addedCopy;
+  v5 = addedCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 
   objc_destroyWeak(&v8);
@@ -23968,17 +23968,17 @@ LABEL_10:
   }
 }
 
-- (void)featureApplicationChanged:(id)a3
+- (void)featureApplicationChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   objc_initWeak(&location, self);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __62__PKDashboardPaymentPassDataSource_featureApplicationChanged___block_invoke;
   block[3] = &unk_1E80110E0;
   objc_copyWeak(&v8, &location);
-  v7 = v4;
-  v5 = v4;
+  v7 = changedCopy;
+  v5 = changedCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 
   objc_destroyWeak(&v8);
@@ -24027,17 +24027,17 @@ LABEL_10:
   }
 }
 
-- (void)featureApplicationRemoved:(id)a3
+- (void)featureApplicationRemoved:(id)removed
 {
-  v4 = a3;
+  removedCopy = removed;
   objc_initWeak(&location, self);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __62__PKDashboardPaymentPassDataSource_featureApplicationRemoved___block_invoke;
   block[3] = &unk_1E80110E0;
   objc_copyWeak(&v8, &location);
-  v7 = v4;
-  v5 = v4;
+  v7 = removedCopy;
+  v5 = removedCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 
   objc_destroyWeak(&v8);
@@ -24086,17 +24086,17 @@ LABEL_10:
   }
 }
 
-- (void)accountChanged:(id)a3
+- (void)accountChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   objc_initWeak(&location, self);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __51__PKDashboardPaymentPassDataSource_accountChanged___block_invoke;
   block[3] = &unk_1E80110E0;
   objc_copyWeak(&v8, &location);
-  v7 = v4;
-  v5 = v4;
+  v7 = changedCopy;
+  v5 = changedCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 
   objc_destroyWeak(&v8);
@@ -24200,7 +24200,7 @@ LABEL_26:
   }
 }
 
-- (void)accountAdded:(id)a3
+- (void)accountAdded:(id)added
 {
   objc_initWeak(&location, self);
   v3[0] = MEMORY[0x1E69E9820];
@@ -24224,7 +24224,7 @@ void __49__PKDashboardPaymentPassDataSource_accountAdded___block_invoke(uint64_t
   }
 }
 
-- (void)accountRemoved:(id)a3
+- (void)accountRemoved:(id)removed
 {
   objc_initWeak(&location, self);
   v3[0] = MEMORY[0x1E69E9820];
@@ -24248,7 +24248,7 @@ void __51__PKDashboardPaymentPassDataSource_accountRemoved___block_invoke(uint64
   }
 }
 
-- (void)didUpdateAppleBalancePromotion:(id)a3 forAccountIdentifier:(id)a4
+- (void)didUpdateAppleBalancePromotion:(id)promotion forAccountIdentifier:(id)identifier
 {
   objc_initWeak(&location, self);
   v4[0] = MEMORY[0x1E69E9820];
@@ -24272,7 +24272,7 @@ void __88__PKDashboardPaymentPassDataSource_didUpdateAppleBalancePromotion_forAc
   }
 }
 
-- (void)didRemoveAppleBalancePromotionWithUniqueIdentifier:(id)a3 forAccountIdentifier:(id)a4
+- (void)didRemoveAppleBalancePromotionWithUniqueIdentifier:(id)identifier forAccountIdentifier:(id)accountIdentifier
 {
   objc_initWeak(&location, self);
   v4[0] = MEMORY[0x1E69E9820];
@@ -24296,14 +24296,14 @@ void __108__PKDashboardPaymentPassDataSource_didRemoveAppleBalancePromotionWithU
   }
 }
 
-- (void)creditRecoveryPaymentPlansChangedForAccountIdentifier:(id)a3
+- (void)creditRecoveryPaymentPlansChangedForAccountIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    v5 = [(PKPaymentPass *)self->_pass associatedAccountServiceAccountIdentifier];
-    v6 = v4;
-    v7 = v5;
+    associatedAccountServiceAccountIdentifier = [(PKPaymentPass *)self->_pass associatedAccountServiceAccountIdentifier];
+    v6 = identifierCopy;
+    v7 = associatedAccountServiceAccountIdentifier;
     v8 = v7;
     if (v7 == v6)
     {
@@ -24350,12 +24350,12 @@ void __90__PKDashboardPaymentPassDataSource_creditRecoveryPaymentPlansChangedFor
   }
 }
 
-- (void)foregroundActiveArbiter:(id)a3 didUpdateForegroundActiveState:(id)a4
+- (void)foregroundActiveArbiter:(id)arbiter didUpdateForegroundActiveState:(id)state
 {
-  v7 = a3;
+  arbiterCopy = arbiter;
   foreground = self->_activeState.foreground;
-  self->_activeState = a4;
-  if (a4.var0 && !foreground)
+  self->_activeState = state;
+  if (state.var0 && !foreground)
   {
     [(PKDashboardPaymentPassDataSource *)self reloadAllContent];
     self->_forceTransactionsUpdate = 1;
@@ -24366,61 +24366,61 @@ void __90__PKDashboardPaymentPassDataSource_creditRecoveryPaymentPlansChangedFor
   [(PKDashboardPaymentPassDataSource *)self _updateTransactionsTimer];
 }
 
-- (void)viewControllerDidTerminateSetupFlow:(id)a3
+- (void)viewControllerDidTerminateSetupFlow:(id)flow
 {
-  v3 = [a3 presentingViewController];
-  [v3 dismissViewControllerAnimated:1 completion:0];
+  presentingViewController = [flow presentingViewController];
+  [presentingViewController dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)viewControllerDidCancelSetupFlow:(id)a3
+- (void)viewControllerDidCancelSetupFlow:(id)flow
 {
-  v3 = [a3 presentingViewController];
-  [v3 dismissViewControllerAnimated:1 completion:0];
+  presentingViewController = [flow presentingViewController];
+  [presentingViewController dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)contactIssuerHelper:(id)a3 didRequestPresentViewController:(id)a4 animated:(BOOL)a5 completion:(id)a6
+- (void)contactIssuerHelper:(id)helper didRequestPresentViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a5;
-  v9 = a6;
-  v10 = a4;
+  animatedCopy = animated;
+  completionCopy = completion;
+  controllerCopy = controller;
   WeakRetained = objc_loadWeakRetained(&self->_viewController);
-  v12 = [WeakRetained navigationController];
+  navigationController = [WeakRetained navigationController];
 
-  [v12 presentViewController:v10 animated:v6 completion:v9];
+  [navigationController presentViewController:controllerCopy animated:animatedCopy completion:completionCopy];
 }
 
-- (void)contactIssuerHelper:(id)a3 didRequestDismissViewControllerAnimated:(BOOL)a4 completion:(id)a5
+- (void)contactIssuerHelper:(id)helper didRequestDismissViewControllerAnimated:(BOOL)animated completion:(id)completion
 {
-  v5 = a4;
-  v7 = a5;
+  animatedCopy = animated;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_viewController);
-  v9 = [WeakRetained navigationController];
+  navigationController = [WeakRetained navigationController];
 
-  [v9 dismissViewControllerAnimated:v5 completion:v7];
+  [navigationController dismissViewControllerAnimated:animatedCopy completion:completionCopy];
 }
 
 - (id)peerPaymentBalanceItem
 {
   v3 = objc_alloc_init(PKDashboardBalanceItem);
-  v4 = [(PKDashboardPaymentPassDataSource *)self peerPaymentAccount];
-  v5 = [v4 currentBalance];
-  v6 = [v5 formattedStringValue];
-  [(PKDashboardBalanceItem *)v3 setBalance:v6];
+  peerPaymentAccount = [(PKDashboardPaymentPassDataSource *)self peerPaymentAccount];
+  currentBalance = [peerPaymentAccount currentBalance];
+  formattedStringValue = [currentBalance formattedStringValue];
+  [(PKDashboardBalanceItem *)v3 setBalance:formattedStringValue];
 
   v7 = PKLocalizedPeerPaymentString(&cfstr_PeerPaymentBal.isa);
   [(PKDashboardBalanceItem *)v3 setTitle:v7];
 
-  v8 = [MEMORY[0x1E69DC888] labelColor];
-  [(PKDashboardBalanceItem *)v3 setTitleColor:v8];
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  [(PKDashboardBalanceItem *)v3 setTitleColor:labelColor];
 
   v9 = PKLocalizedPeerPaymentString(&cfstr_PeerPaymentBal_0.isa);
   [(PKDashboardBalanceItem *)v3 setTopUpTitle:v9];
 
-  v10 = [(PKDashboardPaymentPassDataSource *)self peerPaymentThresholdTopUp];
-  v11 = v10;
-  if (v10)
+  peerPaymentThresholdTopUp = [(PKDashboardPaymentPassDataSource *)self peerPaymentThresholdTopUp];
+  v11 = peerPaymentThresholdTopUp;
+  if (peerPaymentThresholdTopUp)
   {
-    if ([v10 status] == 4)
+    if ([peerPaymentThresholdTopUp status] == 4)
     {
       v12 = @"DASHBOARD_BALANCE_THRESHOLD_PAUSED";
     }
@@ -24514,25 +24514,25 @@ void __58__PKDashboardPaymentPassDataSource_peerPaymentBalanceItem__block_invoke
 
 - (BOOL)canDisplayPeerPaymentBalanceModule
 {
-  v3 = [(PKPeerPaymentAccount *)self->_peerPaymentAccount state];
-  v4 = [(PKDashboardPaymentPassDataSource *)self pass];
-  v5 = [v4 effectiveContactlessPaymentApplicationState];
+  state = [(PKPeerPaymentAccount *)self->_peerPaymentAccount state];
+  pass = [(PKDashboardPaymentPassDataSource *)self pass];
+  effectiveContactlessPaymentApplicationState = [pass effectiveContactlessPaymentApplicationState];
 
-  v6 = [(PKDashboardPaymentPassDataSource *)self pass];
-  v7 = [v6 secureElementPass];
-  v8 = [v7 passActivationState];
+  pass2 = [(PKDashboardPaymentPassDataSource *)self pass];
+  secureElementPass = [pass2 secureElementPass];
+  passActivationState = [secureElementPass passActivationState];
 
-  if (v5 != 1)
+  if (effectiveContactlessPaymentApplicationState != 1)
   {
     return 0;
   }
 
-  return (v3 - 1) < 2 && v8 != 4;
+  return (state - 1) < 2 && passActivationState != 4;
 }
 
-- (void)_recurringPeerPaymentSuggestionsWithCompletion:(id)a3
+- (void)_recurringPeerPaymentSuggestionsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
   pass = self->_pass;
   if (pass && [(PKPaymentPass *)pass isValid]&& [(PKPaymentPass *)self->_pass isPeerPaymentPass])
@@ -24550,7 +24550,7 @@ void __58__PKDashboardPaymentPassDataSource_peerPaymentBalanceItem__block_invoke
     v7[2] = __83__PKDashboardPaymentPassDataSource__recurringPeerPaymentSuggestionsWithCompletion___block_invoke;
     v7[3] = &unk_1E801E6D8;
     objc_copyWeak(&v10, &location);
-    v8 = v4;
+    v8 = completionCopy;
     v9 = v11;
     [(FHSearchSuggestionController *)searchSuggestionController allPeerPaymentForecastingSignals:v7];
 
@@ -24562,7 +24562,7 @@ void __58__PKDashboardPaymentPassDataSource_peerPaymentBalanceItem__block_invoke
 
   else
   {
-    (*(v4 + 2))(v4, MEMORY[0x1E695E0F0]);
+    (*(completionCopy + 2))(completionCopy, MEMORY[0x1E695E0F0]);
   }
 }
 
@@ -24656,10 +24656,10 @@ void __83__PKDashboardPaymentPassDataSource__recurringPeerPaymentSuggestionsWith
   }
 }
 
-- (BOOL)_isExistingRecurringPeerPayment:(id)a3
+- (BOOL)_isExistingRecurringPeerPayment:(id)payment
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  paymentCopy = payment;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -24679,13 +24679,13 @@ void __83__PKDashboardPaymentPassDataSource__recurringPeerPaymentSuggestionsWith
         }
 
         v9 = *(*(&v16 + 1) + 8 * i);
-        v10 = [v4 amount];
-        v11 = [v9 amount];
-        if ([v10 isEqualToNumber:v11])
+        amount = [paymentCopy amount];
+        amount2 = [v9 amount];
+        if ([amount isEqualToNumber:amount2])
         {
-          v12 = [v4 personId];
-          v13 = [v9 recipientAddress];
-          v14 = [v12 isEqualToString:v13];
+          personId = [paymentCopy personId];
+          recipientAddress = [v9 recipientAddress];
+          v14 = [personId isEqualToString:recipientAddress];
 
           if (v14)
           {
@@ -24710,14 +24710,14 @@ LABEL_12:
   return v6;
 }
 
-- (void)_dismissRecurringPeerPaymentSuggestionsWithIdentifiers:(id)a3 dismissalType:(unint64_t)a4
+- (void)_dismissRecurringPeerPaymentSuggestionsWithIdentifiers:(id)identifiers dismissalType:(unint64_t)type
 {
   v27 = *MEMORY[0x1E69E9840];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  obj = a3;
+  obj = identifiers;
   v5 = [obj countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v5)
   {
@@ -24743,7 +24743,7 @@ LABEL_12:
         v14 = off_1EE98A6C8();
         [v10 setObject:v13 forKey:v14];
 
-        v15 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+        v15 = [MEMORY[0x1E696AD98] numberWithInteger:type];
         v16 = off_1EE98A6D0();
         [v10 setObject:v15 forKey:v16];
 
@@ -24765,37 +24765,37 @@ LABEL_12:
   }
 }
 
-- (id)_messageForPersonWithAmount:(id)a3 withHeuristicIds:(id)a4 andCurrencyCode:(id)a5
+- (id)_messageForPersonWithAmount:(id)amount withHeuristicIds:(id)ids andCurrencyCode:(id)code
 {
   v65 = *MEMORY[0x1E69E9840];
-  v44 = a3;
-  v39 = a4;
-  v41 = a5;
+  amountCopy = amount;
+  idsCopy = ids;
+  codeCopy = code;
   objc_initWeak(&location, self);
-  v45 = [v44 personId];
-  v8 = [(PKDashboardPaymentPassDataSource *)self _contactResolver];
-  v43 = [v8 contactForHandle:v45];
+  personId = [amountCopy personId];
+  _contactResolver = [(PKDashboardPaymentPassDataSource *)self _contactResolver];
+  v43 = [_contactResolver contactForHandle:personId];
 
-  v42 = [v43 givenName];
-  v9 = [v44 periodicCategory];
+  givenName = [v43 givenName];
+  periodicCategory = [amountCopy periodicCategory];
   v34 = PKPeerPaymentRecurringPaymentFrequencyFromString();
 
-  v38 = [v44 signalDate];
-  v35 = [v44 dayOfWeek];
-  v10 = [v44 amount];
+  signalDate = [amountCopy signalDate];
+  dayOfWeek = [amountCopy dayOfWeek];
+  amount = [amountCopy amount];
   v36 = PKCurrencyAmountMake();
-  v37 = v10;
-  if ([v42 length])
+  v37 = amount;
+  if ([givenName length])
   {
     v40 = objc_alloc_init(PKDashboardPassMessage);
     v60 = 0u;
     v61 = 0u;
     v58 = 0u;
     v59 = 0u;
-    v11 = [(PKFamilyMemberCollection *)self->_familyCollection familyMembersByAltDSID];
-    v12 = [v11 allValues];
+    familyMembersByAltDSID = [(PKFamilyMemberCollection *)self->_familyCollection familyMembersByAltDSID];
+    allValues = [familyMembersByAltDSID allValues];
 
-    v13 = [v12 countByEnumeratingWithState:&v58 objects:v64 count:16];
+    v13 = [allValues countByEnumeratingWithState:&v58 objects:v64 count:16];
     if (v13)
     {
       v14 = 0;
@@ -24806,22 +24806,22 @@ LABEL_12:
         {
           if (*v59 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(allValues);
           }
 
           v17 = *(*(&v58 + 1) + 8 * i);
           if ([v17 memberType] == 1 || objc_msgSend(v17, "memberType") == 2)
           {
-            v18 = [v17 contact];
-            v19 = [objc_alloc(MEMORY[0x1E69B8728]) initWithCNContact:v18];
-            v20 = [v19 contactHandle];
-            v21 = [v45 isEqualToString:v20];
+            contact = [v17 contact];
+            v19 = [objc_alloc(MEMORY[0x1E69B8728]) initWithCNContact:contact];
+            contactHandle = [v19 contactHandle];
+            v21 = [personId isEqualToString:contactHandle];
 
             v14 |= v21;
           }
         }
 
-        v13 = [v12 countByEnumeratingWithState:&v58 objects:v64 count:16];
+        v13 = [allValues countByEnumeratingWithState:&v58 objects:v64 count:16];
       }
 
       while (v13);
@@ -24831,22 +24831,22 @@ LABEL_12:
         v22 = v40;
         if (v34 == 3)
         {
-          v23 = [v36 minimalFormattedStringValue];
-          v24 = PKLocalizedPeerPaymentRecurringString(&cfstr_PeerPaymentSug_1.isa, &stru_1F3BD6370.isa, v42, v23);
+          minimalFormattedStringValue = [v36 minimalFormattedStringValue];
+          v24 = PKLocalizedPeerPaymentRecurringString(&cfstr_PeerPaymentSug_1.isa, &stru_1F3BD6370.isa, givenName, minimalFormattedStringValue);
           goto LABEL_28;
         }
 
         if (v34 == 2)
         {
-          v23 = [v36 minimalFormattedStringValue];
-          v24 = PKLocalizedPeerPaymentRecurringString(&cfstr_PeerPaymentSug_0.isa, &stru_1F3BDAC30.isa, v42, v23, v35);
+          minimalFormattedStringValue = [v36 minimalFormattedStringValue];
+          v24 = PKLocalizedPeerPaymentRecurringString(&cfstr_PeerPaymentSug_0.isa, &stru_1F3BDAC30.isa, givenName, minimalFormattedStringValue, dayOfWeek);
           goto LABEL_28;
         }
 
         if (v34 == 1)
         {
-          v23 = [v36 minimalFormattedStringValue];
-          v24 = PKLocalizedPeerPaymentRecurringString(&cfstr_PeerPaymentSug.isa, &stru_1F3BDAC30.isa, v42, v23, v35);
+          minimalFormattedStringValue = [v36 minimalFormattedStringValue];
+          v24 = PKLocalizedPeerPaymentRecurringString(&cfstr_PeerPaymentSug.isa, &stru_1F3BDAC30.isa, givenName, minimalFormattedStringValue, dayOfWeek);
 LABEL_28:
           v26 = v24;
 
@@ -24865,29 +24865,29 @@ LABEL_28:
     v22 = v40;
     if (v34 == 3)
     {
-      v23 = [v36 minimalFormattedStringValue];
-      v24 = PKLocalizedPeerPaymentRecurringString(&cfstr_PeerPaymentSug_4.isa, &stru_1F3BD6370.isa, v42, v23);
+      minimalFormattedStringValue = [v36 minimalFormattedStringValue];
+      v24 = PKLocalizedPeerPaymentRecurringString(&cfstr_PeerPaymentSug_4.isa, &stru_1F3BD6370.isa, givenName, minimalFormattedStringValue);
       goto LABEL_28;
     }
 
     if (v34 == 2)
     {
-      v23 = [v36 minimalFormattedStringValue];
-      v24 = PKLocalizedPeerPaymentRecurringString(&cfstr_PeerPaymentSug_3.isa, &stru_1F3BDAC30.isa, v42, v23, v35);
+      minimalFormattedStringValue = [v36 minimalFormattedStringValue];
+      v24 = PKLocalizedPeerPaymentRecurringString(&cfstr_PeerPaymentSug_3.isa, &stru_1F3BDAC30.isa, givenName, minimalFormattedStringValue, dayOfWeek);
       goto LABEL_28;
     }
 
     if (v34 == 1)
     {
-      v23 = [v36 minimalFormattedStringValue];
-      v24 = PKLocalizedPeerPaymentRecurringString(&cfstr_PeerPaymentSug_2.isa, &stru_1F3BDAC30.isa, v42, v23, v35);
+      minimalFormattedStringValue = [v36 minimalFormattedStringValue];
+      v24 = PKLocalizedPeerPaymentRecurringString(&cfstr_PeerPaymentSug_2.isa, &stru_1F3BDAC30.isa, givenName, minimalFormattedStringValue, dayOfWeek);
       goto LABEL_28;
     }
 
 LABEL_23:
     v26 = 0;
 LABEL_29:
-    v27 = PKLocalizedPeerPaymentRecurringString(&cfstr_PeerPaymentSug_5.isa, &stru_1F3BD5BF0.isa, v42);
+    v27 = PKLocalizedPeerPaymentRecurringString(&cfstr_PeerPaymentSug_5.isa, &stru_1F3BD5BF0.isa, givenName);
     [(PKDashboardPassMessage *)v22 setTitle:v27];
     [(PKDashboardPassMessage *)v22 setMessage:v26];
     [(PKDashboardPassMessage *)v22 setAvatarContact:v43];
@@ -24895,7 +24895,7 @@ LABEL_29:
     [(PKDashboardPassMessage *)v22 setButtonTitle:v28];
 
     memset(v57, 0, sizeof(v57));
-    v29 = v39;
+    v29 = idsCopy;
     if ([v29 countByEnumeratingWithState:v57 objects:v63 count:16])
     {
       v30 = **(&v57[0] + 1);
@@ -24915,11 +24915,11 @@ LABEL_29:
     v49[3] = &unk_1E801E700;
     objc_copyWeak(v56, &location);
     v50 = v43;
-    v51 = v45;
-    v52 = v41;
+    v51 = personId;
+    v52 = codeCopy;
     v53 = v37;
     v56[1] = v34;
-    v54 = v38;
+    v54 = signalDate;
     v32 = v29;
     v55 = v32;
     [(PKDashboardPassMessage *)v40 setActionOnButtonPress:v49];
@@ -24992,38 +24992,38 @@ void __97__PKDashboardPaymentPassDataSource__messageForPersonWithAmount_withHeur
   }
 }
 
-- (void)setTransactions:(id)a3
+- (void)setTransactions:(id)transactions
 {
-  v4 = [a3 copy];
+  v4 = [transactions copy];
   transactions = self->_transactions;
   self->_transactions = v4;
 }
 
-- (void)_calculateDiffAndUpdateWithTransactions:(id)a3
+- (void)_calculateDiffAndUpdateWithTransactions:(id)transactions
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  transactionsCopy = transactions;
   self->_forceTransactionsUpdate = 0;
-  v5 = [MEMORY[0x1E695DF00] date];
+  date = [MEMORY[0x1E695DF00] date];
   lastTransactionReload = self->_lastTransactionReload;
-  self->_lastTransactionReload = v5;
+  self->_lastTransactionReload = date;
 
   if (self->_allContentIsLoaded)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     if (WeakRetained)
     {
-      v8 = [PKCollectionViewItemsDiffCalculator calculateDiffBetweenOldItems:self->_transactions andNewItems:v4 inSection:[(PKDashboardPaymentPassDataSource *)self firstSectionIndexForSectionIdentifier:11]];
+      v8 = [PKCollectionViewItemsDiffCalculator calculateDiffBetweenOldItems:self->_transactions andNewItems:transactionsCopy inSection:[(PKDashboardPaymentPassDataSource *)self firstSectionIndexForSectionIdentifier:11]];
       v9 = PKLogFacilityTypeGetObject();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
-        v18 = [v8 deletedIndexPaths];
-        v17 = [v18 count];
-        v10 = [v8 insertedIndexPaths];
-        v11 = [v10 count];
-        v12 = [v8 movedFromIndexPaths];
-        v13 = [v12 count];
-        v14 = [v8 changedIndexPaths];
+        deletedIndexPaths = [v8 deletedIndexPaths];
+        v17 = [deletedIndexPaths count];
+        insertedIndexPaths = [v8 insertedIndexPaths];
+        v11 = [insertedIndexPaths count];
+        movedFromIndexPaths = [v8 movedFromIndexPaths];
+        v13 = [movedFromIndexPaths count];
+        changedIndexPaths = [v8 changedIndexPaths];
         *buf = 134218752;
         v23 = v17;
         v24 = 2048;
@@ -25031,7 +25031,7 @@ void __97__PKDashboardPaymentPassDataSource__messageForPersonWithAmount_withHeur
         v26 = 2048;
         v27 = v13;
         v28 = 2048;
-        v29 = [v14 count];
+        v29 = [changedIndexPaths count];
         _os_log_impl(&dword_1BD026000, v9, OS_LOG_TYPE_DEFAULT, "Bank Connect transactions batch updates: %ld deletions, %ld insertions, %ld moves, %ld updates", buf, 0x2Au);
       }
 
@@ -25041,7 +25041,7 @@ void __97__PKDashboardPaymentPassDataSource__messageForPersonWithAmount_withHeur
       v19[2] = __76__PKDashboardPaymentPassDataSource__calculateDiffAndUpdateWithTransactions___block_invoke;
       v19[3] = &unk_1E80110E0;
       objc_copyWeak(&v21, buf);
-      v20 = v4;
+      v20 = transactionsCopy;
       [(PKDashboardPaymentPassDataSource *)self updateWithBlock:v19 andDiff:v8];
 
       objc_destroyWeak(&v21);
@@ -25051,7 +25051,7 @@ void __97__PKDashboardPaymentPassDataSource__messageForPersonWithAmount_withHeur
 
   else
   {
-    v15 = [v4 copy];
+    v15 = [transactionsCopy copy];
     transactions = self->_transactions;
     self->_transactions = v15;
 
@@ -25070,38 +25070,38 @@ void __76__PKDashboardPaymentPassDataSource__calculateDiffAndUpdateWithTransacti
   }
 }
 
-- (void)_calculateDiffAndUpdateWithTransactionGroups:(id)a3
+- (void)_calculateDiffAndUpdateWithTransactionGroups:(id)groups
 {
   v88 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  groupsCopy = groups;
   v5 = [(NSArray *)self->_transactionGroups mutableCopy];
-  v56 = v4;
-  v6 = [v4 mutableCopy];
+  v56 = groupsCopy;
+  v6 = [groupsCopy mutableCopy];
   v61 = [v5 count];
   v60 = [v6 count];
   if ([v5 count])
   {
-    v7 = [v5 firstObject];
-    v59 = [v7 firstObject];
+    firstObject = [v5 firstObject];
+    v7FirstObject = [firstObject firstObject];
   }
 
   else
   {
-    v59 = 0;
+    v7FirstObject = 0;
   }
 
   if ([v6 count])
   {
-    v8 = [v6 firstObject];
-    v9 = [v8 firstObject];
+    firstObject2 = [v6 firstObject];
+    v8FirstObject = [firstObject2 firstObject];
   }
 
   else
   {
-    v9 = 0;
+    v8FirstObject = 0;
   }
 
-  if (v59)
+  if (v7FirstObject)
   {
     v10 = [(PKDashboardPaymentPassDataSource *)self isGroupInTheCurrentYear:?];
   }
@@ -25111,10 +25111,10 @@ void __76__PKDashboardPaymentPassDataSource__calculateDiffAndUpdateWithTransacti
     v10 = 0;
   }
 
-  v53 = v9;
-  if (v9)
+  v53 = v8FirstObject;
+  if (v8FirstObject)
   {
-    v11 = [(PKDashboardPaymentPassDataSource *)self isGroupInTheCurrentYear:v9];
+    v11 = [(PKDashboardPaymentPassDataSource *)self isGroupInTheCurrentYear:v8FirstObject];
   }
 
   else
@@ -25137,18 +25137,18 @@ void __76__PKDashboardPaymentPassDataSource__calculateDiffAndUpdateWithTransacti
   }
 
   v13 = MEMORY[0x1E695E0F0];
-  v58 = MEMORY[0x1E695E0F0];
+  firstObject3 = MEMORY[0x1E695E0F0];
   if (v10)
   {
-    v58 = [v5 firstObject];
+    firstObject3 = [v5 firstObject];
     [v5 removeObjectAtIndex:0];
   }
 
-  v14 = [v5 firstObject];
-  v15 = v14;
-  if (v14)
+  firstObject4 = [v5 firstObject];
+  v15 = firstObject4;
+  if (firstObject4)
   {
-    v16 = v14;
+    v16 = firstObject4;
   }
 
   else
@@ -25158,18 +25158,18 @@ void __76__PKDashboardPaymentPassDataSource__calculateDiffAndUpdateWithTransacti
 
   v55 = v16;
 
-  v57 = v13;
+  firstObject5 = v13;
   if (v11)
   {
-    v57 = [v6 firstObject];
+    firstObject5 = [v6 firstObject];
     [v6 removeObjectAtIndex:0];
   }
 
-  v17 = [v6 firstObject];
-  v18 = v17;
-  if (v17)
+  firstObject6 = [v6 firstObject];
+  v18 = firstObject6;
+  if (firstObject6)
   {
-    v19 = v17;
+    v19 = firstObject6;
   }
 
   else
@@ -25193,22 +25193,22 @@ void __76__PKDashboardPaymentPassDataSource__calculateDiffAndUpdateWithTransacti
     v21 = [(PKDashboardPaymentPassDataSource *)self firstSectionIndexForSectionIdentifier:13];
     if (v60 == v61)
     {
-      if ([v58 count] && objc_msgSend(v57, "count"))
+      if ([firstObject3 count] && objc_msgSend(firstObject5, "count"))
       {
-        v22 = [PKCollectionViewItemsDiffCalculator calculateDiffBetweenOldItems:v58 andNewItems:v57 inSection:v21];
+        v22 = [PKCollectionViewItemsDiffCalculator calculateDiffBetweenOldItems:firstObject3 andNewItems:firstObject5 inSection:v21];
         if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
         {
           v23 = v22;
-          v51 = [v22 deletedIndexPaths];
-          v45 = [v51 count];
-          v49 = [v22 insertedIndexPaths];
-          v43 = [v49 count];
-          v47 = [v22 movedFromIndexPaths];
-          v41 = [v47 count];
-          v24 = [v22 movedToIndexPaths];
-          v25 = [v24 count];
-          v26 = [v22 changedIndexPaths];
-          v27 = [v26 count];
+          deletedIndexPaths = [v22 deletedIndexPaths];
+          v45 = [deletedIndexPaths count];
+          insertedIndexPaths = [v22 insertedIndexPaths];
+          v43 = [insertedIndexPaths count];
+          movedFromIndexPaths = [v22 movedFromIndexPaths];
+          v41 = [movedFromIndexPaths count];
+          movedToIndexPaths = [v22 movedToIndexPaths];
+          v25 = [movedToIndexPaths count];
+          changedIndexPaths = [v22 changedIndexPaths];
+          v27 = [changedIndexPaths count];
           *buf = 134219008;
           v79 = v45;
           v80 = 2048;
@@ -25239,16 +25239,16 @@ void __76__PKDashboardPaymentPassDataSource__calculateDiffAndUpdateWithTransacti
         if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
         {
           v30 = v22;
-          v52 = [v29 deletedIndexPaths];
-          v44 = [v52 count];
-          v50 = [v29 insertedIndexPaths];
-          v42 = [v50 count];
-          v48 = [v29 movedFromIndexPaths];
-          v40 = [v48 count];
-          v46 = [v29 movedToIndexPaths];
-          v31 = [v46 count];
-          v32 = [v29 changedIndexPaths];
-          v33 = [v32 count];
+          deletedIndexPaths2 = [v29 deletedIndexPaths];
+          v44 = [deletedIndexPaths2 count];
+          insertedIndexPaths2 = [v29 insertedIndexPaths];
+          v42 = [insertedIndexPaths2 count];
+          movedFromIndexPaths2 = [v29 movedFromIndexPaths];
+          v40 = [movedFromIndexPaths2 count];
+          movedToIndexPaths2 = [v29 movedToIndexPaths];
+          v31 = [movedToIndexPaths2 count];
+          changedIndexPaths2 = [v29 changedIndexPaths];
+          v33 = [changedIndexPaths2 count];
           *buf = 134219008;
           v79 = v44;
           v80 = 2048;
@@ -25487,48 +25487,48 @@ LABEL_10:
 LABEL_11:
 }
 
-- (void)issuerInstallmentDashboardMessagesWithCompletion:(id)a3
+- (void)issuerInstallmentDashboardMessagesWithCompletion:(id)completion
 {
   v52 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v27 = v4;
+    v27 = completionCopy;
     val = self;
-    v5 = [(PKDashboardPaymentPassDataSource *)self paymentOffersController];
-    v6 = [(PKDashboardPaymentPassDataSource *)self pass];
-    v7 = [v6 uniqueID];
-    v28 = [v5 eligiblePaymentOfferCriteriaForPassUniqueID:v7 type:1];
+    paymentOffersController = [(PKDashboardPaymentPassDataSource *)self paymentOffersController];
+    pass = [(PKDashboardPaymentPassDataSource *)self pass];
+    uniqueID = [pass uniqueID];
+    v28 = [paymentOffersController eligiblePaymentOfferCriteriaForPassUniqueID:uniqueID type:1];
 
     if (v28)
     {
-      v8 = [(PKDashboardPaymentPassDataSource *)self paymentOfferConfirmationRecordsByPaymentHash];
+      paymentOfferConfirmationRecordsByPaymentHash = [(PKDashboardPaymentPassDataSource *)self paymentOfferConfirmationRecordsByPaymentHash];
 
-      if (!v8)
+      if (!paymentOfferConfirmationRecordsByPaymentHash)
       {
         v9 = objc_alloc_init(MEMORY[0x1E695DF90]);
         [(PKDashboardPaymentPassDataSource *)self setPaymentOfferConfirmationRecordsByPaymentHash:v9];
       }
 
-      v10 = [(PKDashboardPaymentPassDataSource *)self postPurchasePaymentOffersControllerByPaymentHash];
+      postPurchasePaymentOffersControllerByPaymentHash = [(PKDashboardPaymentPassDataSource *)self postPurchasePaymentOffersControllerByPaymentHash];
 
-      if (!v10)
+      if (!postPurchasePaymentOffersControllerByPaymentHash)
       {
         v11 = objc_alloc_init(MEMORY[0x1E695DF90]);
         [(PKDashboardPaymentPassDataSource *)self setPostPurchasePaymentOffersControllerByPaymentHash:v11];
       }
 
-      v12 = [(PKDashboardPaymentPassDataSource *)self paymentOfferFollowUpDashboardMessageIdentifiersLoading];
+      paymentOfferFollowUpDashboardMessageIdentifiersLoading = [(PKDashboardPaymentPassDataSource *)self paymentOfferFollowUpDashboardMessageIdentifiersLoading];
 
-      if (!v12)
+      if (!paymentOfferFollowUpDashboardMessageIdentifiersLoading)
       {
         v13 = objc_alloc_init(MEMORY[0x1E695DFA8]);
         [(PKDashboardPaymentPassDataSource *)self setPaymentOfferFollowUpDashboardMessageIdentifiersLoading:v13];
       }
 
       v14 = dispatch_group_create();
-      v15 = [(PKDashboardPaymentPassDataSource *)self paymentOfferConfirmationRecordsByPaymentHash];
-      v26 = [(PKDashboardPaymentPassDataSource *)self postPurchasePaymentOffersControllerByPaymentHash];
+      paymentOfferConfirmationRecordsByPaymentHash2 = [(PKDashboardPaymentPassDataSource *)self paymentOfferConfirmationRecordsByPaymentHash];
+      postPurchasePaymentOffersControllerByPaymentHash2 = [(PKDashboardPaymentPassDataSource *)self postPurchasePaymentOffersControllerByPaymentHash];
       objc_initWeak(&location, self);
       v48 = 0u;
       v49 = 0u;
@@ -25548,22 +25548,22 @@ LABEL_11:
               objc_enumerationMutation(v16);
             }
 
-            v20 = [*(*(&v46 + 1) + 8 * i) paymentHash];
-            if (v20)
+            paymentHash = [*(*(&v46 + 1) + 8 * i) paymentHash];
+            if (paymentHash)
             {
-              v21 = [v15 objectForKeyedSubscript:v20];
+              v21 = [paymentOfferConfirmationRecordsByPaymentHash2 objectForKeyedSubscript:paymentHash];
               if (!v21)
               {
                 dispatch_group_enter(v14);
-                v22 = [(PKDashboardPaymentPassDataSource *)val paymentService];
+                paymentService = [(PKDashboardPaymentPassDataSource *)val paymentService];
                 v42[0] = MEMORY[0x1E69E9820];
                 v42[1] = 3221225472;
                 v42[2] = __85__PKDashboardPaymentPassDataSource_issuerInstallmentDashboardMessagesWithCompletion___block_invoke;
                 v42[3] = &unk_1E801E778;
                 objc_copyWeak(&v45, &location);
                 v43 = v14;
-                v44 = v20;
-                [v22 paymentOfferConfirmationRecordForTransactionWithPaymentHash:v44 completion:v42];
+                v44 = paymentHash;
+                [paymentService paymentOfferConfirmationRecordForTransactionWithPaymentHash:v44 completion:v42];
 
                 objc_destroyWeak(&v45);
               }
@@ -25596,13 +25596,13 @@ LABEL_11:
       block[2] = __85__PKDashboardPaymentPassDataSource_issuerInstallmentDashboardMessagesWithCompletion___block_invoke_5;
       block[3] = &unk_1E801E818;
       objc_copyWeak(&v36, &location);
-      v31 = v15;
-      v32 = v26;
+      v31 = paymentOfferConfirmationRecordsByPaymentHash2;
+      v32 = postPurchasePaymentOffersControllerByPaymentHash2;
       v33 = v28;
       v35 = v40;
       v34 = v27;
-      v24 = v26;
-      v25 = v15;
+      v24 = postPurchasePaymentOffersControllerByPaymentHash2;
+      v25 = paymentOfferConfirmationRecordsByPaymentHash2;
       dispatch_group_notify(v23, MEMORY[0x1E69E96A0], block);
 
       objc_destroyWeak(&v36);
@@ -25616,7 +25616,7 @@ LABEL_11:
       (*(v27 + 2))(v27, 0);
     }
 
-    v4 = v27;
+    completionCopy = v27;
   }
 }
 
@@ -25929,47 +25929,47 @@ uint64_t __85__PKDashboardPaymentPassDataSource_issuerInstallmentDashboardMessag
   return v12;
 }
 
-- (void)_udpdateInternalStateForConfirmationRecord:(id)a3 paymentHash:(id)a4
+- (void)_udpdateInternalStateForConfirmationRecord:(id)record paymentHash:(id)hash
 {
-  v22 = a3;
-  v6 = a4;
-  v7 = [(PKDashboardPaymentPassDataSource *)self paymentOfferConfirmationRecordsByPaymentHash];
-  v8 = [(PKDashboardPaymentPassDataSource *)self postPurchasePaymentOffersControllerByPaymentHash];
-  [v7 setObject:v22 forKeyedSubscript:v6];
-  v9 = [v8 objectForKeyedSubscript:v6];
+  recordCopy = record;
+  hashCopy = hash;
+  paymentOfferConfirmationRecordsByPaymentHash = [(PKDashboardPaymentPassDataSource *)self paymentOfferConfirmationRecordsByPaymentHash];
+  postPurchasePaymentOffersControllerByPaymentHash = [(PKDashboardPaymentPassDataSource *)self postPurchasePaymentOffersControllerByPaymentHash];
+  [paymentOfferConfirmationRecordsByPaymentHash setObject:recordCopy forKeyedSubscript:hashCopy];
+  v9 = [postPurchasePaymentOffersControllerByPaymentHash objectForKeyedSubscript:hashCopy];
   v10 = v9;
   if (v9)
   {
     [v9 invalidate];
   }
 
-  v11 = [v22 selectedOfferConfirmationRecord];
-  v12 = [v11 selectedOffer];
+  selectedOfferConfirmationRecord = [recordCopy selectedOfferConfirmationRecord];
+  selectedOffer = [selectedOfferConfirmationRecord selectedOffer];
 
-  v13 = [v12 installmentSelectedPaymentOffer];
-  v14 = [v13 userEnteredAmount];
+  installmentSelectedPaymentOffer = [selectedOffer installmentSelectedPaymentOffer];
+  userEnteredAmount = [installmentSelectedPaymentOffer userEnteredAmount];
 
   v15 = objc_alloc(MEMORY[0x1E69B8CF0]);
-  v16 = [v22 transaction];
-  v17 = [v15 initForPostPurchaseInstallmentsWithTransaction:v16 userEnteredAmount:v14];
+  transaction = [recordCopy transaction];
+  v17 = [v15 initForPostPurchaseInstallmentsWithTransaction:transaction userEnteredAmount:userEnteredAmount];
 
   v18 = objc_alloc(MEMORY[0x1E69B8CE8]);
-  v19 = [(PKDashboardPaymentPassDataSource *)self paymentService];
-  v20 = [MEMORY[0x1E69B8EF8] sharedService];
-  v21 = [v18 initWithPaymentService:v19 paymentWebService:v20 configuration:v17];
+  paymentService = [(PKDashboardPaymentPassDataSource *)self paymentService];
+  mEMORY[0x1E69B8EF8] = [MEMORY[0x1E69B8EF8] sharedService];
+  v21 = [v18 initWithPaymentService:paymentService paymentWebService:mEMORY[0x1E69B8EF8] configuration:v17];
 
-  [v21 updateCurrentSelectedPaymentOffer:v12 updateReason:11];
-  [v8 setObject:v21 forKeyedSubscript:v6];
+  [v21 updateCurrentSelectedPaymentOffer:selectedOffer updateReason:11];
+  [postPurchasePaymentOffersControllerByPaymentHash setObject:v21 forKeyedSubscript:hashCopy];
 }
 
-- (void)_presentPaymentOfferInstallmentSelectionForRecord:(id)a3 paymentOffersController:(id)a4 installmentCriteria:(id)a5 completion:(id)a6
+- (void)_presentPaymentOfferInstallmentSelectionForRecord:(id)record paymentOffersController:(id)controller installmentCriteria:(id)criteria completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(PKDashboardPaymentPassDataSource *)self pass];
-  v15 = [PKPaymentOfferInstallmentPlanSelectionModel initForPostPurchaseInstallmentsWithPaymentOffersController:v11 criteria:v12 pass:v14 fromPushNotification:0];
+  recordCopy = record;
+  controllerCopy = controller;
+  criteriaCopy = criteria;
+  completionCopy = completion;
+  pass = [(PKDashboardPaymentPassDataSource *)self pass];
+  v15 = [PKPaymentOfferInstallmentPlanSelectionModel initForPostPurchaseInstallmentsWithPaymentOffersController:controllerCopy criteria:criteriaCopy pass:pass fromPushNotification:0];
 
   [(PKDashboardPaymentPassDataSource *)self setInstallmentPlanSelectionModel:v15];
   v24[0] = 0;
@@ -25985,7 +25985,7 @@ uint64_t __85__PKDashboardPaymentPassDataSource_issuerInstallmentDashboardMessag
   v19[3] = &unk_1E801E868;
   objc_copyWeak(&v22, &location);
   v21 = v24;
-  v16 = v13;
+  v16 = completionCopy;
   v20 = v16;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
@@ -26131,21 +26131,21 @@ void __141__PKDashboardPaymentPassDataSource__presentPaymentOfferInstallmentSele
       _os_log_impl(&dword_1BD026000, v3, OS_LOG_TYPE_DEFAULT, "Starting fetching Bank Connect transactions and groups", v5, 2u);
     }
 
-    v4 = [(PKDashboardPaymentPassDataSource *)self bankConnectTransactionsProvider];
-    [v4 performFetchAndStartObservingNotifications];
+    bankConnectTransactionsProvider = [(PKDashboardPaymentPassDataSource *)self bankConnectTransactionsProvider];
+    [bankConnectTransactionsProvider performFetchAndStartObservingNotifications];
   }
 }
 
 - (void)clearBankConnectData
 {
   objc_initWeak(&location, self);
-  v3 = [(PKDashboardPaymentPassDataSource *)self delegate];
+  delegate = [(PKDashboardPaymentPassDataSource *)self delegate];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __69__PKDashboardPaymentPassDataSource_BankConnect__clearBankConnectData__block_invoke;
   v4[3] = &unk_1E8010998;
   objc_copyWeak(&v5, &location);
-  [v3 performBatchUpdates:v4 completion:0];
+  [delegate performBatchUpdates:v4 completion:0];
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -26179,14 +26179,14 @@ void __69__PKDashboardPaymentPassDataSource_BankConnect__clearBankConnectData__b
     }
 
     objc_initWeak(buf, self);
-    v4 = [(PKDashboardPaymentPassDataSource *)self bankConnectAccountsProvider];
+    bankConnectAccountsProvider = [(PKDashboardPaymentPassDataSource *)self bankConnectAccountsProvider];
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __70__PKDashboardPaymentPassDataSource_BankConnect__reloadBankConnectData__block_invoke;
     v5[3] = &unk_1E8022288;
     v5[4] = self;
     objc_copyWeak(&v6, buf);
-    [v4 accountAndReconsentStatusWithCompletion:v5];
+    [bankConnectAccountsProvider accountAndReconsentStatusWithCompletion:v5];
 
     objc_destroyWeak(&v6);
     objc_destroyWeak(buf);
@@ -26340,8 +26340,8 @@ void __70__PKDashboardPaymentPassDataSource_BankConnect__reloadBankConnectData__
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(PKDashboardPaymentPassDataSource *)self secondaryMessages];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  secondaryMessages = [(PKDashboardPaymentPassDataSource *)self secondaryMessages];
+  v3 = [secondaryMessages countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = *v9;
@@ -26351,19 +26351,19 @@ void __70__PKDashboardPaymentPassDataSource_BankConnect__reloadBankConnectData__
       {
         if (*v9 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(secondaryMessages);
         }
 
-        v6 = [*(*(&v8 + 1) + 8 * i) identifier];
+        identifier = [*(*(&v8 + 1) + 8 * i) identifier];
 
-        if (v6 == @"bankConnectSetUp")
+        if (identifier == @"bankConnectSetUp")
         {
           LOBYTE(v3) = 1;
           goto LABEL_11;
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v3 = [secondaryMessages countByEnumeratingWithState:&v8 objects:v12 count:16];
       if (v3)
       {
         continue;
@@ -26378,23 +26378,23 @@ LABEL_11:
   return v3;
 }
 
-- (void)updateWithBankConnectAccount:(id)a3 consentStatus:(unint64_t)a4 institution:(id)a5
+- (void)updateWithBankConnectAccount:(id)account consentStatus:(unint64_t)status institution:(id)institution
 {
-  v8 = a3;
-  v9 = a5;
+  accountCopy = account;
+  institutionCopy = institution;
   v10 = ![(PKDashboardPaymentPassDataSource *)self bankConnectDataLoaded];
   [(PKDashboardPaymentPassDataSource *)self setBankConnectDataLoaded:1];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __104__PKDashboardPaymentPassDataSource_BankConnect__updateWithBankConnectAccount_consentStatus_institution___block_invoke;
   aBlock[3] = &unk_1E801D930;
-  v15 = v8;
-  v16 = self;
-  v17 = v9;
-  v18 = a4;
+  v15 = accountCopy;
+  selfCopy = self;
+  v17 = institutionCopy;
+  statusCopy = status;
   v19 = v10;
-  v11 = v9;
-  v12 = v8;
+  v11 = institutionCopy;
+  v12 = accountCopy;
   v13 = _Block_copy(aBlock);
   if ([(PKDashboardPaymentPassDataSource *)self allContentIsLoaded])
   {
@@ -26567,13 +26567,13 @@ LABEL_26:
   }
 }
 
-- (void)_refetchBalanceAndTransactionsForInstitution:(id)a3
+- (void)_refetchBalanceAndTransactionsForInstitution:(id)institution
 {
-  v4 = a3;
-  v5 = [v4 supportsTransactions];
+  institutionCopy = institution;
+  supportsTransactions = [institutionCopy supportsTransactions];
   v6 = *MEMORY[0x1E6967D50];
   v7 = *MEMORY[0x1E6967D58];
-  if (v5)
+  if (supportsTransactions)
   {
     [MEMORY[0x1E695DFD8] setWithObjects:{v6, v7, *MEMORY[0x1E6967D60], 0}];
   }
@@ -26585,14 +26585,14 @@ LABEL_26:
   v8 = ;
   objc_initWeak(&location, self);
   v9 = MEMORY[0x1E6967DA8];
-  v10 = [(PKDashboardPaymentPassDataSource *)self pass];
-  v11 = [v10 primaryAccountIdentifier];
+  pass = [(PKDashboardPaymentPassDataSource *)self pass];
+  primaryAccountIdentifier = [pass primaryAccountIdentifier];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __94__PKDashboardPaymentPassDataSource_BankConnect___refetchBalanceAndTransactionsForInstitution___block_invoke;
   v13[3] = &unk_1E8011338;
   objc_copyWeak(&v14, &location);
-  [v9 refreshAttributes:v8 forPrimaryAccountIdentifier:v11 completionHandler:v13];
+  [v9 refreshAttributes:v8 forPrimaryAccountIdentifier:primaryAccountIdentifier completionHandler:v13];
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
@@ -26633,17 +26633,17 @@ void __94__PKDashboardPaymentPassDataSource_BankConnect___refetchBalanceAndTrans
   }
 }
 
-- (void)_setupSpendingSummaryDataProviderIfNeededForInstitution:(id)a3 account:(id)a4 consentStatus:(unint64_t)a5
+- (void)_setupSpendingSummaryDataProviderIfNeededForInstitution:(id)institution account:(id)account consentStatus:(unint64_t)status
 {
-  v8 = a4;
-  if ([a3 personalizedInsightsEnabled])
+  accountCopy = account;
+  if ([institution personalizedInsightsEnabled])
   {
-    if (v8)
+    if (accountCopy)
     {
-      if (!a5)
+      if (!status)
       {
-        v9 = [(PKDashboardPaymentPassDataSource *)self spendingSummaryDataProvider];
-        if (!v9 || (v10 = v9, -[PKDashboardPaymentPassDataSource spendingSummaryDataProvider](self, "spendingSummaryDataProvider"), v11 = objc_claimAutoreleasedReturnValue(), [v11 accountID], v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "identifier"), v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v12, "isEqual:", v13), v13, v12, v11, v10, (v14 & 1) == 0))
+        spendingSummaryDataProvider = [(PKDashboardPaymentPassDataSource *)self spendingSummaryDataProvider];
+        if (!spendingSummaryDataProvider || (v10 = spendingSummaryDataProvider, -[PKDashboardPaymentPassDataSource spendingSummaryDataProvider](self, "spendingSummaryDataProvider"), v11 = objc_claimAutoreleasedReturnValue(), [v11 accountID], v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(accountCopy, "identifier"), v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v12, "isEqual:", v13), v13, v12, v11, v10, (v14 & 1) == 0))
         {
           v15 = PKLogFacilityTypeGetObject();
           if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -26653,8 +26653,8 @@ void __94__PKDashboardPaymentPassDataSource_BankConnect___refetchBalanceAndTrans
           }
 
           v16 = [FKSpendingSummaryDataProvider alloc];
-          v17 = [v8 identifier];
-          v18 = [(FKSpendingSummaryDataProvider *)v16 initWithAccountIdentifier:v17];
+          identifier = [accountCopy identifier];
+          v18 = [(FKSpendingSummaryDataProvider *)v16 initWithAccountIdentifier:identifier];
           [(PKDashboardPaymentPassDataSource *)self setSpendingSummaryDataProvider:v18];
         }
       }
@@ -26675,7 +26675,7 @@ void __94__PKDashboardPaymentPassDataSource_BankConnect___refetchBalanceAndTrans
 
 - (BOOL)isBankConnectSupported
 {
-  v2 = [(PKDashboardPaymentPassDataSource *)self pass];
+  pass = [(PKDashboardPaymentPassDataSource *)self pass];
   v3 = PKBankConnectAvailableForPass();
 
   return v3;
@@ -26683,11 +26683,11 @@ void __94__PKDashboardPaymentPassDataSource_BankConnect___refetchBalanceAndTrans
 
 - (BOOL)_isBankConnectPassReady
 {
-  v2 = [(PKDashboardPaymentPassDataSource *)self pass];
-  v3 = [v2 devicePrimaryPaymentApplication];
-  v4 = [v3 state];
+  pass = [(PKDashboardPaymentPassDataSource *)self pass];
+  devicePrimaryPaymentApplication = [pass devicePrimaryPaymentApplication];
+  state = [devicePrimaryPaymentApplication state];
 
-  return v4 == 1;
+  return state == 1;
 }
 
 - (BOOL)isBankConnectLinked
@@ -26697,12 +26697,12 @@ void __94__PKDashboardPaymentPassDataSource_BankConnect___refetchBalanceAndTrans
     return 0;
   }
 
-  v3 = [(PKDashboardPaymentPassDataSource *)self bankConnectLinkedAccountData];
-  v4 = [v3 consentStatus];
-  v5 = [v3 account];
-  if (v5)
+  bankConnectLinkedAccountData = [(PKDashboardPaymentPassDataSource *)self bankConnectLinkedAccountData];
+  consentStatus = [bankConnectLinkedAccountData consentStatus];
+  account = [bankConnectLinkedAccountData account];
+  if (account)
   {
-    v6 = v4 == 0;
+    v6 = consentStatus == 0;
   }
 
   else
@@ -26717,13 +26717,13 @@ void __94__PKDashboardPaymentPassDataSource_BankConnect___refetchBalanceAndTrans
 
 - (BOOL)hasBankConnectAccountBalance
 {
-  v3 = [(PKDashboardPaymentPassDataSource *)self bankConnectLinkedAccountData];
-  v4 = [v3 account];
+  bankConnectLinkedAccountData = [(PKDashboardPaymentPassDataSource *)self bankConnectLinkedAccountData];
+  account = [bankConnectLinkedAccountData account];
 
-  if (-[PKDashboardPaymentPassDataSource isBankConnectLinked](self, "isBankConnectLinked") && [v4 isAccountEnabled])
+  if (-[PKDashboardPaymentPassDataSource isBankConnectLinked](self, "isBankConnectLinked") && [account isAccountEnabled])
   {
-    v5 = [v4 balance];
-    v6 = v5 != 0;
+    balance = [account balance];
+    v6 = balance != 0;
   }
 
   else
@@ -26736,71 +26736,71 @@ void __94__PKDashboardPaymentPassDataSource_BankConnect___refetchBalanceAndTrans
 
 - (BOOL)supportsBankConnectTransactions
 {
-  v3 = [(PKDashboardPaymentPassDataSource *)self bankConnectLinkedAccountData];
-  v4 = [v3 institution];
+  bankConnectLinkedAccountData = [(PKDashboardPaymentPassDataSource *)self bankConnectLinkedAccountData];
+  institution = [bankConnectLinkedAccountData institution];
 
   if ([(PKDashboardPaymentPassDataSource *)self isBankConnectLinked])
   {
-    v5 = [v4 supportsTransactions];
+    supportsTransactions = [institution supportsTransactions];
   }
 
   else
   {
-    v5 = 0;
+    supportsTransactions = 0;
   }
 
-  return v5;
+  return supportsTransactions;
 }
 
 - (BOOL)isEligibleForPersonalizedInsights
 {
-  v3 = [MEMORY[0x1E69DC668] sharedApplication];
-  v4 = [v3 userInterfaceLayoutDirection];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  userInterfaceLayoutDirection = [mEMORY[0x1E69DC668] userInterfaceLayoutDirection];
 
-  if (v4 == 1 || ![(PKDashboardPaymentPassDataSource *)self hasBankConnectAccountBalance]|| !PKBankConnectSpendingSummariesAndHighlightsEnabled())
+  if (userInterfaceLayoutDirection == 1 || ![(PKDashboardPaymentPassDataSource *)self hasBankConnectAccountBalance]|| !PKBankConnectSpendingSummariesAndHighlightsEnabled())
   {
     return 0;
   }
 
-  v5 = [(PKDashboardPaymentPassDataSource *)self bankConnectLinkedAccountData];
-  v6 = [v5 institution];
+  bankConnectLinkedAccountData = [(PKDashboardPaymentPassDataSource *)self bankConnectLinkedAccountData];
+  institution = [bankConnectLinkedAccountData institution];
 
-  if (v6)
+  if (institution)
   {
-    v7 = [v6 personalizedInsightsEnabled];
+    personalizedInsightsEnabled = [institution personalizedInsightsEnabled];
   }
 
   else
   {
-    v7 = 0;
+    personalizedInsightsEnabled = 0;
   }
 
-  return v7;
+  return personalizedInsightsEnabled;
 }
 
 - (unint64_t)numberOfBankConnectDashboardItems
 {
-  v2 = [(PKDashboardPaymentPassDataSource *)self _enabledBankConnectAccountItemTypes];
-  v3 = [v2 count];
+  _enabledBankConnectAccountItemTypes = [(PKDashboardPaymentPassDataSource *)self _enabledBankConnectAccountItemTypes];
+  v3 = [_enabledBankConnectAccountItemTypes count];
 
   return v3;
 }
 
-- (unint64_t)bankConnectAccountItemForItemIndex:(unint64_t)a3
+- (unint64_t)bankConnectAccountItemForItemIndex:(unint64_t)index
 {
-  v4 = [(PKDashboardPaymentPassDataSource *)self _enabledBankConnectAccountItemTypes];
-  if ([v4 count] <= a3)
+  _enabledBankConnectAccountItemTypes = [(PKDashboardPaymentPassDataSource *)self _enabledBankConnectAccountItemTypes];
+  if ([_enabledBankConnectAccountItemTypes count] <= index)
   {
-    v6 = 0x7FFFFFFFFFFFFFFFLL;
+    integerValue = 0x7FFFFFFFFFFFFFFFLL;
   }
 
   else
   {
-    v5 = [v4 objectAtIndex:a3];
-    v6 = [v5 integerValue];
+    v5 = [_enabledBankConnectAccountItemTypes objectAtIndex:index];
+    integerValue = [v5 integerValue];
   }
 
-  return v6;
+  return integerValue;
 }
 
 - (id)_enabledBankConnectAccountItemTypes
@@ -26826,14 +26826,14 @@ void __94__PKDashboardPaymentPassDataSource_BankConnect___refetchBalanceAndTrans
   return v3;
 }
 
-- (BOOL)_accountItemTypeEnabled:(unint64_t)a3
+- (BOOL)_accountItemTypeEnabled:(unint64_t)enabled
 {
-  if (a3 == 1)
+  if (enabled == 1)
   {
     return [(PKDashboardPaymentPassDataSource *)self isEligibleForPersonalizedInsights];
   }
 
-  if (a3)
+  if (enabled)
   {
     return 0;
   }
@@ -26844,9 +26844,9 @@ void __94__PKDashboardPaymentPassDataSource_BankConnect___refetchBalanceAndTrans
 - (void)_reloadBalance
 {
   v3 = [(PKDashboardPaymentPassDataSource *)self firstSectionIndexForSectionIdentifier:2];
-  v5 = [(PKDashboardPaymentPassDataSource *)self delegate];
+  delegate = [(PKDashboardPaymentPassDataSource *)self delegate];
   v4 = [MEMORY[0x1E696AC90] indexSetWithIndex:v3];
-  [v5 reloadSections:v4];
+  [delegate reloadSections:v4];
 }
 
 - (void)_hideTransactionGroups
@@ -26859,12 +26859,12 @@ void __94__PKDashboardPaymentPassDataSource_BankConnect___refetchBalanceAndTrans
 
 - (id)getPassProductType
 {
-  v2 = [(PKDashboardPaymentPassDataSource *)self bankConnectLinkedAccountData];
-  v3 = [v2 account];
+  bankConnectLinkedAccountData = [(PKDashboardPaymentPassDataSource *)self bankConnectLinkedAccountData];
+  account = [bankConnectLinkedAccountData account];
 
-  v4 = [v3 accountType];
+  accountType = [account accountType];
   v5 = MEMORY[0x1E69BB0A8];
-  if (v4 != 1)
+  if (accountType != 1)
   {
     v5 = MEMORY[0x1E69BB0B0];
   }
@@ -26877,16 +26877,16 @@ void __94__PKDashboardPaymentPassDataSource_BankConnect___refetchBalanceAndTrans
 
 - (void)_updateSearchAvailability
 {
-  v2 = [(PKDashboardPaymentPassDataSource *)self delegate];
-  [v2 reloadNavigationBarAnimated:1];
+  delegate = [(PKDashboardPaymentPassDataSource *)self delegate];
+  [delegate reloadNavigationBarAnimated:1];
 }
 
 - (void)_hideBankConnectMessageAndReloadIfNeeded
 {
-  v3 = [(PKDashboardPaymentPassDataSource *)self bankConnectMessage];
+  bankConnectMessage = [(PKDashboardPaymentPassDataSource *)self bankConnectMessage];
 
   [(PKDashboardPaymentPassDataSource *)self setBankConnectMessage:0];
-  if (v3)
+  if (bankConnectMessage)
   {
 
     [(PKDashboardPaymentPassDataSource *)self reloadSecondaryMessages];
@@ -26895,27 +26895,27 @@ void __94__PKDashboardPaymentPassDataSource_BankConnect___refetchBalanceAndTrans
 
 - (void)_reloadBankConnectConnectedMessageIfNeeded
 {
-  v3 = [(PKDashboardPaymentPassDataSource *)self bankConnectLinkedAccountData];
-  v4 = [v3 account];
-  v5 = [v4 fullyQualifiedAccountIdentifier];
-  v13 = [v5 accountID];
+  bankConnectLinkedAccountData = [(PKDashboardPaymentPassDataSource *)self bankConnectLinkedAccountData];
+  account = [bankConnectLinkedAccountData account];
+  fullyQualifiedAccountIdentifier = [account fullyQualifiedAccountIdentifier];
+  accountID = [fullyQualifiedAccountIdentifier accountID];
 
-  v6 = [(PKDashboardPaymentPassDataSource *)self bankConnectLinkedAccountData];
-  v7 = [v6 institution];
+  bankConnectLinkedAccountData2 = [(PKDashboardPaymentPassDataSource *)self bankConnectLinkedAccountData];
+  institution = [bankConnectLinkedAccountData2 institution];
 
-  v8 = [(PKDashboardPaymentPassDataSource *)self bankConnectMessagesManager];
-  LOBYTE(v5) = [v8 isAccountMessageDismissed:2 forAccountIdentifier:v13];
+  bankConnectMessagesManager = [(PKDashboardPaymentPassDataSource *)self bankConnectMessagesManager];
+  LOBYTE(fullyQualifiedAccountIdentifier) = [bankConnectMessagesManager isAccountMessageDismissed:2 forAccountIdentifier:accountID];
 
-  if ((v5 & 1) == 0)
+  if ((fullyQualifiedAccountIdentifier & 1) == 0)
   {
-    v9 = [(PKDashboardPaymentPassDataSource *)self _createConnectedMessageWithInstitution:v7];
-    v10 = [(PKDashboardPaymentPassDataSource *)self bankConnectMessage];
-    v11 = [v10 identifier];
+    v9 = [(PKDashboardPaymentPassDataSource *)self _createConnectedMessageWithInstitution:institution];
+    bankConnectMessage = [(PKDashboardPaymentPassDataSource *)self bankConnectMessage];
+    identifier = [bankConnectMessage identifier];
 
-    v12 = [v9 identifier];
-    if ([v11 isEqualToString:v12])
+    identifier2 = [v9 identifier];
+    if ([identifier isEqualToString:identifier2])
     {
-      [(PKDashboardPaymentPassDataSource *)self _showBankConnectMessage:v9 forInstitution:v7 shouldUseInstitutionLogo:1 forceUpdate:1];
+      [(PKDashboardPaymentPassDataSource *)self _showBankConnectMessage:v9 forInstitution:institution shouldUseInstitutionLogo:1 forceUpdate:1];
     }
   }
 }
@@ -26924,39 +26924,39 @@ void __94__PKDashboardPaymentPassDataSource_BankConnect___refetchBalanceAndTrans
 {
   if ([(PKDashboardPaymentPassDataSource *)self _isBankConnectPassReady]&& (PKRunningInRemoteContext() & 1) == 0)
   {
-    v3 = [(PKDashboardPaymentPassDataSource *)self bankConnectLinkedAccountData];
-    v4 = [v3 account];
+    bankConnectLinkedAccountData = [(PKDashboardPaymentPassDataSource *)self bankConnectLinkedAccountData];
+    account = [bankConnectLinkedAccountData account];
 
-    v5 = [v4 fullyQualifiedAccountIdentifier];
-    v6 = [v5 accountID];
+    fullyQualifiedAccountIdentifier = [account fullyQualifiedAccountIdentifier];
+    accountID = [fullyQualifiedAccountIdentifier accountID];
 
-    v7 = [(PKDashboardPaymentPassDataSource *)self bankConnectLinkedAccountData];
-    v8 = [v7 institution];
+    bankConnectLinkedAccountData2 = [(PKDashboardPaymentPassDataSource *)self bankConnectLinkedAccountData];
+    institution = [bankConnectLinkedAccountData2 institution];
 
-    v9 = [v8 termsAndConditions];
-    v10 = [v9 shouldNotifyAboutChanges];
-    v11 = [(PKDashboardPaymentPassDataSource *)self bankConnectLinkedAccountData];
+    termsAndConditions = [institution termsAndConditions];
+    shouldNotifyAboutChanges = [termsAndConditions shouldNotifyAboutChanges];
+    bankConnectLinkedAccountData3 = [(PKDashboardPaymentPassDataSource *)self bankConnectLinkedAccountData];
 
-    if (!v11)
+    if (!bankConnectLinkedAccountData3)
     {
-      v24 = [(PKDashboardPaymentPassDataSource *)self bankConnectMessagesManager];
-      v25 = [(PKDashboardPaymentPassDataSource *)self pass];
-      v26 = [v25 primaryAccountIdentifier];
-      v27 = [v24 isPassMessageDismissed:0 forFPANIdentifier:v26];
+      bankConnectMessagesManager = [(PKDashboardPaymentPassDataSource *)self bankConnectMessagesManager];
+      pass = [(PKDashboardPaymentPassDataSource *)self pass];
+      primaryAccountIdentifier = [pass primaryAccountIdentifier];
+      v27 = [bankConnectMessagesManager isPassMessageDismissed:0 forFPANIdentifier:primaryAccountIdentifier];
 
       if ((v27 & 1) == 0)
       {
         objc_initWeak(&location, self);
-        v28 = [(PKDashboardPaymentPassDataSource *)self bankConnectInstitutionMatcher];
-        v29 = [(PKDashboardPaymentPassDataSource *)self pass];
-        v30 = [v29 primaryAccountIdentifier];
+        bankConnectInstitutionMatcher = [(PKDashboardPaymentPassDataSource *)self bankConnectInstitutionMatcher];
+        pass2 = [(PKDashboardPaymentPassDataSource *)self pass];
+        primaryAccountIdentifier2 = [pass2 primaryAccountIdentifier];
         v44[0] = MEMORY[0x1E69E9820];
         v44[1] = 3221225472;
         v44[2] = __80__PKDashboardPaymentPassDataSource_BankConnect___showBankConnectMessageIfNeeded__block_invoke;
         v44[3] = &unk_1E80222B0;
         v44[4] = self;
         objc_copyWeak(&v45, &location);
-        [v28 institutionForPrimaryAccountIdentifier:v30 withCompletion:v44];
+        [bankConnectInstitutionMatcher institutionForPrimaryAccountIdentifier:primaryAccountIdentifier2 withCompletion:v44];
 
         objc_destroyWeak(&v45);
         objc_destroyWeak(&location);
@@ -26965,27 +26965,27 @@ void __94__PKDashboardPaymentPassDataSource_BankConnect___refetchBalanceAndTrans
       goto LABEL_22;
     }
 
-    v12 = [(PKDashboardPaymentPassDataSource *)self bankConnectLinkedAccountData];
-    v13 = [v12 consentStatus];
+    bankConnectLinkedAccountData4 = [(PKDashboardPaymentPassDataSource *)self bankConnectLinkedAccountData];
+    consentStatus = [bankConnectLinkedAccountData4 consentStatus];
 
-    if (v13 == 1)
+    if (consentStatus == 1)
     {
-      v14 = [(PKDashboardPaymentPassDataSource *)self bankConnectMessagesManager];
-      v15 = [v14 isAccountMessageDismissed:1 forAccountIdentifier:v6];
+      bankConnectMessagesManager2 = [(PKDashboardPaymentPassDataSource *)self bankConnectMessagesManager];
+      v15 = [bankConnectMessagesManager2 isAccountMessageDismissed:1 forAccountIdentifier:accountID];
 
       if ((v15 & 1) == 0)
       {
-        v16 = [(PKDashboardPaymentPassDataSource *)self bankConnectLinkedAccountData];
-        v17 = [v16 account];
-        v18 = [v17 consentUUID];
+        bankConnectLinkedAccountData5 = [(PKDashboardPaymentPassDataSource *)self bankConnectLinkedAccountData];
+        account2 = [bankConnectLinkedAccountData5 account];
+        consentUUID = [account2 consentUUID];
 
-        v19 = [(PKDashboardPaymentPassDataSource *)self _createReconsentMessageWithInstitution:v8 withPreviousConsentUUID:v18];
-        v20 = self;
+        v19 = [(PKDashboardPaymentPassDataSource *)self _createReconsentMessageWithInstitution:institution withPreviousConsentUUID:consentUUID];
+        selfCopy2 = self;
         v21 = v19;
-        v22 = v8;
+        v22 = institution;
         v23 = 1;
 LABEL_16:
-        [(PKDashboardPaymentPassDataSource *)v20 _showBankConnectMessage:v21 forInstitution:v22 shouldUseInstitutionLogo:v23 forceUpdate:0];
+        [(PKDashboardPaymentPassDataSource *)selfCopy2 _showBankConnectMessage:v21 forInstitution:v22 shouldUseInstitutionLogo:v23 forceUpdate:0];
       }
 
 LABEL_22:
@@ -26993,40 +26993,40 @@ LABEL_22:
       return;
     }
 
-    if ([v4 isAccountMismatched])
+    if ([account isAccountMismatched])
     {
-      v31 = [(PKDashboardPaymentPassDataSource *)self bankConnectMessagesManager];
-      v32 = [v31 isAccountMessageDismissed:3 forAccountIdentifier:v6];
+      bankConnectMessagesManager3 = [(PKDashboardPaymentPassDataSource *)self bankConnectMessagesManager];
+      v32 = [bankConnectMessagesManager3 isAccountMessageDismissed:3 forAccountIdentifier:accountID];
 
       if ((v32 & 1) == 0)
       {
-        v38 = [(PKDashboardPaymentPassDataSource *)self bankConnectLinkedAccountData];
-        v39 = [v38 account];
-        v18 = [v39 consentUUID];
+        bankConnectLinkedAccountData6 = [(PKDashboardPaymentPassDataSource *)self bankConnectLinkedAccountData];
+        account3 = [bankConnectLinkedAccountData6 account];
+        consentUUID = [account3 consentUUID];
 
-        v19 = [(PKDashboardPaymentPassDataSource *)self _createMismatchedAccountMessageWithInstitution:v8 withPreviousConsentUUID:v18];
-        v20 = self;
+        v19 = [(PKDashboardPaymentPassDataSource *)self _createMismatchedAccountMessageWithInstitution:institution withPreviousConsentUUID:consentUUID];
+        selfCopy2 = self;
         v21 = v19;
-        v22 = v8;
+        v22 = institution;
         v23 = 0;
         goto LABEL_16;
       }
     }
 
-    if (v10 && (-[PKDashboardPaymentPassDataSource bankConnectMessagesManager](self, "bankConnectMessagesManager"), v33 = objc_claimAutoreleasedReturnValue(), v34 = [v33 isAccountMessageDismissed:5 forAccountIdentifier:v6], v33, (v34 & 1) == 0))
+    if (shouldNotifyAboutChanges && (-[PKDashboardPaymentPassDataSource bankConnectMessagesManager](self, "bankConnectMessagesManager"), v33 = objc_claimAutoreleasedReturnValue(), v34 = [v33 isAccountMessageDismissed:5 forAccountIdentifier:accountID], v33, (v34 & 1) == 0))
     {
-      v40 = [(PKDashboardPaymentPassDataSource *)self _createTermsAndConditionsUpdateMessageWithTermsAndConditions:v9];
+      v40 = [(PKDashboardPaymentPassDataSource *)self _createTermsAndConditionsUpdateMessageWithTermsAndConditions:termsAndConditions];
       if (!v40)
       {
         goto LABEL_22;
       }
 
       v37 = v40;
-      v41 = [(PKDashboardPaymentPassDataSource *)self bankConnectMessage];
-      v42 = [v41 identifier];
+      bankConnectMessage = [(PKDashboardPaymentPassDataSource *)self bankConnectMessage];
+      identifier = [bankConnectMessage identifier];
 
-      v43 = [v37 identifier];
-      if (([v42 isEqualToString:v43] & 1) == 0)
+      identifier2 = [v37 identifier];
+      if (([identifier isEqualToString:identifier2] & 1) == 0)
       {
         [(PKDashboardPaymentPassDataSource *)self setBankConnectMessage:v37];
         [(PKDashboardPaymentPassDataSource *)self reloadSecondaryMessages];
@@ -27035,16 +27035,16 @@ LABEL_22:
 
     else
     {
-      v35 = [(PKDashboardPaymentPassDataSource *)self bankConnectMessagesManager];
-      v36 = [v35 isAccountMessageDismissed:2 forAccountIdentifier:v6];
+      bankConnectMessagesManager4 = [(PKDashboardPaymentPassDataSource *)self bankConnectMessagesManager];
+      v36 = [bankConnectMessagesManager4 isAccountMessageDismissed:2 forAccountIdentifier:accountID];
 
       if (v36)
       {
         goto LABEL_22;
       }
 
-      v37 = [(PKDashboardPaymentPassDataSource *)self _createConnectedMessageWithInstitution:v8];
-      [(PKDashboardPaymentPassDataSource *)self _showBankConnectMessage:v37 forInstitution:v8 shouldUseInstitutionLogo:1 forceUpdate:0];
+      v37 = [(PKDashboardPaymentPassDataSource *)self _createConnectedMessageWithInstitution:institution];
+      [(PKDashboardPaymentPassDataSource *)self _showBankConnectMessage:v37 forInstitution:institution shouldUseInstitutionLogo:1 forceUpdate:0];
     }
 
     goto LABEL_22;
@@ -27083,11 +27083,11 @@ void __80__PKDashboardPaymentPassDataSource_BankConnect___showBankConnectMessage
   }
 }
 
-- (void)_reportDashboardMessageStateChangeForMessageIdentifier:(id)a3
+- (void)_reportDashboardMessageStateChangeForMessageIdentifier:(id)identifier
 {
   v19[3] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if ([v3 isEqualToString:@"bankConnectSetUp"])
+  identifierCopy = identifier;
+  if ([identifierCopy isEqualToString:@"bankConnectSetUp"])
   {
     v4 = MEMORY[0x1E69B8540];
     v5 = *MEMORY[0x1E69BB6F8];
@@ -27110,7 +27110,7 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  if ([v3 isEqualToString:@"bankConnectReconsent"])
+  if ([identifierCopy isEqualToString:@"bankConnectReconsent"])
   {
     v4 = MEMORY[0x1E69B8540];
     v5 = *MEMORY[0x1E69BB6F8];
@@ -27132,50 +27132,50 @@ LABEL_5:
 LABEL_6:
 }
 
-- (void)_setBankConnectMessage:(id)a3
+- (void)_setBankConnectMessage:(id)message
 {
-  v7 = a3;
-  v4 = [(PKDashboardPaymentPassDataSource *)self bankConnectMessage];
-  v5 = [v4 identifier];
+  messageCopy = message;
+  bankConnectMessage = [(PKDashboardPaymentPassDataSource *)self bankConnectMessage];
+  identifier = [bankConnectMessage identifier];
 
-  v6 = [v7 identifier];
-  if (([v5 isEqualToString:v6] & 1) == 0)
+  identifier2 = [messageCopy identifier];
+  if (([identifier isEqualToString:identifier2] & 1) == 0)
   {
-    [(PKDashboardPaymentPassDataSource *)self _reportDashboardMessageStateChangeForMessageIdentifier:v6];
-    [(PKDashboardPaymentPassDataSource *)self setBankConnectMessage:v7];
+    [(PKDashboardPaymentPassDataSource *)self _reportDashboardMessageStateChangeForMessageIdentifier:identifier2];
+    [(PKDashboardPaymentPassDataSource *)self setBankConnectMessage:messageCopy];
   }
 }
 
-- (void)_showBankConnectMessage:(id)a3 forInstitution:(id)a4 shouldUseInstitutionLogo:(BOOL)a5 forceUpdate:(BOOL)a6
+- (void)_showBankConnectMessage:(id)message forInstitution:(id)institution shouldUseInstitutionLogo:(BOOL)logo forceUpdate:(BOOL)update
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = [(PKDashboardPaymentPassDataSource *)self bankConnectMessage];
-  v13 = [v12 identifier];
+  messageCopy = message;
+  institutionCopy = institution;
+  bankConnectMessage = [(PKDashboardPaymentPassDataSource *)self bankConnectMessage];
+  identifier = [bankConnectMessage identifier];
 
-  v14 = [v10 identifier];
-  if (a6 || ([v13 isEqualToString:v14] & 1) == 0)
+  identifier2 = [messageCopy identifier];
+  if (update || ([identifier isEqualToString:identifier2] & 1) == 0)
   {
-    v15 = [(PKDashboardPaymentPassDataSource *)self bankConnectImageProvider];
-    if (v15)
+    bankConnectImageProvider = [(PKDashboardPaymentPassDataSource *)self bankConnectImageProvider];
+    if (bankConnectImageProvider)
     {
       v16 = PKUIScreenScale();
-      v17 = [v11 institutionIdentifier];
+      institutionIdentifier = [institutionCopy institutionIdentifier];
       v19[0] = MEMORY[0x1E69E9820];
       v19[1] = 3221225472;
       v19[2] = __125__PKDashboardPaymentPassDataSource_BankConnect___showBankConnectMessage_forInstitution_shouldUseInstitutionLogo_forceUpdate___block_invoke;
       v19[3] = &unk_1E8022300;
-      v23 = a5;
-      v20 = v17;
-      v21 = self;
-      v22 = v10;
-      v18 = v17;
-      [v15 logoForInstitutionID:v18 size:v19 scale:45.0 completion:{45.0, v16}];
+      logoCopy = logo;
+      v20 = institutionIdentifier;
+      selfCopy = self;
+      v22 = messageCopy;
+      v18 = institutionIdentifier;
+      [bankConnectImageProvider logoForInstitutionID:v18 size:v19 scale:45.0 completion:{45.0, v16}];
     }
 
     else
     {
-      [(PKDashboardPaymentPassDataSource *)self _setBankConnectMessage:v10];
+      [(PKDashboardPaymentPassDataSource *)self _setBankConnectMessage:messageCopy];
       [(PKDashboardPaymentPassDataSource *)self reloadSecondaryMessages];
     }
   }
@@ -27227,10 +27227,10 @@ void __125__PKDashboardPaymentPassDataSource_BankConnect___showBankConnectMessag
   }
 }
 
-- (id)_createReconsentMessageWithInstitution:(id)a3 withPreviousConsentUUID:(id)a4
+- (id)_createReconsentMessageWithInstitution:(id)institution withPreviousConsentUUID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  institutionCopy = institution;
+  dCopy = d;
   v8 = objc_alloc_init(PKDashboardPassMessage);
   [(PKDashboardPassMessage *)v8 setIdentifier:@"bankConnectReconsent"];
   [(PKDashboardPassMessage *)v8 setShowDisclosure:1];
@@ -27249,9 +27249,9 @@ void __125__PKDashboardPaymentPassDataSource_BankConnect___showBankConnectMessag
   v17[2] = __112__PKDashboardPaymentPassDataSource_BankConnect___createReconsentMessageWithInstitution_withPreviousConsentUUID___block_invoke;
   v17[3] = &unk_1E8015570;
   objc_copyWeak(&v20, &location);
-  v12 = v6;
+  v12 = institutionCopy;
   v18 = v12;
-  v13 = v7;
+  v13 = dCopy;
   v19 = v13;
   [(PKDashboardPassMessage *)v8 setActionOnButtonPress:v17];
   v15[0] = MEMORY[0x1E69E9820];
@@ -27302,13 +27302,13 @@ void __112__PKDashboardPaymentPassDataSource_BankConnect___createReconsentMessag
   [WeakRetained _hideBankConnectMessageAndReloadIfNeeded];
 }
 
-- (id)_createSetupMessageWithInstitution:(id)a3
+- (id)_createSetupMessageWithInstitution:(id)institution
 {
-  v4 = a3;
+  institutionCopy = institution;
   v5 = objc_alloc_init(PKDashboardPassMessage);
   [(PKDashboardPassMessage *)v5 setIdentifier:@"bankConnectSetUp"];
   [(PKDashboardPassMessage *)v5 setShowDisclosure:0];
-  if ([v4 supportsTransactions])
+  if ([institutionCopy supportsTransactions])
   {
     v6 = @"BANK_CONNECT_DASHBOARD_MESSAGE_SETUP_TITLE";
   }
@@ -27321,8 +27321,8 @@ void __112__PKDashboardPaymentPassDataSource_BankConnect___createReconsentMessag
   v7 = PKLocalizedBankConnectString(&v6->isa);
   [(PKDashboardPassMessage *)v5 setTitle:v7];
 
-  v8 = [v4 name];
-  v9 = PKLocalizedBankConnectString(&cfstr_BankConnectDas_17.isa, &stru_1F3BD5BF0.isa, v8);
+  name = [institutionCopy name];
+  v9 = PKLocalizedBankConnectString(&cfstr_BankConnectDas_17.isa, &stru_1F3BD5BF0.isa, name);
   [(PKDashboardPassMessage *)v5 setMessage:v9];
 
   v10 = PKLocalizedBankConnectString(&cfstr_BankConnectDas_18.isa);
@@ -27334,7 +27334,7 @@ void __112__PKDashboardPaymentPassDataSource_BankConnect___createReconsentMessag
   v15[2] = __84__PKDashboardPaymentPassDataSource_BankConnect___createSetupMessageWithInstitution___block_invoke;
   v15[3] = &unk_1E8014F68;
   objc_copyWeak(&v17, &location);
-  v11 = v4;
+  v11 = institutionCopy;
   v16 = v11;
   [(PKDashboardPassMessage *)v5 setActionOnButtonPress:v15];
   v13[0] = MEMORY[0x1E69E9820];
@@ -27382,23 +27382,23 @@ void __84__PKDashboardPaymentPassDataSource_BankConnect___createSetupMessageWith
   [WeakRetained _hideBankConnectMessageAndReloadIfNeeded];
 }
 
-- (id)_createConnectedMessageWithInstitution:(id)a3
+- (id)_createConnectedMessageWithInstitution:(id)institution
 {
-  v4 = a3;
+  institutionCopy = institution;
   v5 = objc_alloc_init(PKDashboardPassMessage);
   [(PKDashboardPassMessage *)v5 setIdentifier:@"bankConnectConnected"];
   [(PKDashboardPassMessage *)v5 setShowDisclosure:1];
-  v6 = [v4 name];
-  v7 = PKLocalizedBankConnectString(&cfstr_BankConnectDas_19.isa, &stru_1F3BD5BF0.isa, v6);
+  name = [institutionCopy name];
+  v7 = PKLocalizedBankConnectString(&cfstr_BankConnectDas_19.isa, &stru_1F3BD5BF0.isa, name);
   [(PKDashboardPassMessage *)v5 setTitle:v7];
 
-  v8 = [(PKDashboardPaymentPassDataSource *)self bankConnectLinkedAccountData];
-  v9 = [v8 account];
-  if ([v9 loadingStatus] == 1)
+  bankConnectLinkedAccountData = [(PKDashboardPaymentPassDataSource *)self bankConnectLinkedAccountData];
+  account = [bankConnectLinkedAccountData account];
+  if ([account loadingStatus] == 1)
   {
-    v10 = [v4 supportsTransactions];
+    supportsTransactions = [institutionCopy supportsTransactions];
 
-    if (v10)
+    if (supportsTransactions)
     {
       v11 = @"BANK_CONNECT_DASHBOARD_CONNECTED_MESSAGE_TRANSACTIONS_LOADING";
       goto LABEL_6;
@@ -27455,14 +27455,14 @@ void __88__PKDashboardPaymentPassDataSource_BankConnect___createConnectedMessage
   [WeakRetained _hideBankConnectMessageAndReloadIfNeeded];
 }
 
-- (id)_createTermsAndConditionsUpdateMessageWithTermsAndConditions:(id)a3
+- (id)_createTermsAndConditionsUpdateMessageWithTermsAndConditions:(id)conditions
 {
   location[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 identifier];
-  if (v5)
+  conditionsCopy = conditions;
+  identifier = [conditionsCopy identifier];
+  if (identifier)
   {
-    v6 = [v4 inEffectOn];
+    inEffectOn = [conditionsCopy inEffectOn];
     v7 = objc_alloc_init(MEMORY[0x1E696AB78]);
     v8 = [MEMORY[0x1E695DEE8] calendarWithIdentifier:*MEMORY[0x1E695D850]];
     [v7 setCalendar:v8];
@@ -27474,7 +27474,7 @@ void __88__PKDashboardPaymentPassDataSource_BankConnect___createConnectedMessage
     v10 = PKLocalizedBankConnectString(&cfstr_BankConnectDas_22.isa);
     [(PKDashboardPassMessage *)v9 setTitle:v10];
 
-    v11 = [v7 stringFromDate:v6];
+    v11 = [v7 stringFromDate:inEffectOn];
     v12 = PKLocalizedBankConnectString(&cfstr_BankConnectDas_23.isa, &stru_1F3BD5BF0.isa, v11);
     [(PKDashboardPassMessage *)v9 setMessage:v12];
 
@@ -27490,7 +27490,7 @@ void __88__PKDashboardPaymentPassDataSource_BankConnect___createConnectedMessage
     v18[2] = __110__PKDashboardPaymentPassDataSource_BankConnect___createTermsAndConditionsUpdateMessageWithTermsAndConditions___block_invoke_2;
     v18[3] = &unk_1E8022348;
     v18[4] = self;
-    v19 = v5;
+    v19 = identifier;
     objc_copyWeak(&v20, location);
     [(PKDashboardPassMessage *)v9 setActionOnButtonPress:v18];
     v16[0] = MEMORY[0x1E69E9820];
@@ -27507,12 +27507,12 @@ void __88__PKDashboardPaymentPassDataSource_BankConnect___createConnectedMessage
 
   else
   {
-    v6 = PKLogFacilityTypeGetObject();
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    inEffectOn = PKLogFacilityTypeGetObject();
+    if (os_log_type_enabled(inEffectOn, OS_LOG_TYPE_ERROR))
     {
       LODWORD(location[0]) = 138412290;
-      *(location + 4) = v4;
-      _os_log_error_impl(&dword_1BD026000, v6, OS_LOG_TYPE_ERROR, "Failed to create a message for T&Cs %@", location, 0xCu);
+      *(location + 4) = conditionsCopy;
+      _os_log_error_impl(&dword_1BD026000, inEffectOn, OS_LOG_TYPE_ERROR, "Failed to create a message for T&Cs %@", location, 0xCu);
     }
 
     v9 = 0;
@@ -27634,10 +27634,10 @@ void __110__PKDashboardPaymentPassDataSource_BankConnect___createTermsAndConditi
   [WeakRetained _hideBankConnectMessageAndReloadIfNeeded];
 }
 
-- (id)_createMismatchedAccountMessageWithInstitution:(id)a3 withPreviousConsentUUID:(id)a4
+- (id)_createMismatchedAccountMessageWithInstitution:(id)institution withPreviousConsentUUID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  institutionCopy = institution;
+  dCopy = d;
   v8 = objc_alloc_init(PKDashboardPassMessage);
   [(PKDashboardPassMessage *)v8 setIdentifier:@"bankConnectMismatchedAccount"];
   [(PKDashboardPassMessage *)v8 setShowDisclosure:1];
@@ -27659,9 +27659,9 @@ void __110__PKDashboardPaymentPassDataSource_BankConnect___createTermsAndConditi
   v18[2] = __120__PKDashboardPaymentPassDataSource_BankConnect___createMismatchedAccountMessageWithInstitution_withPreviousConsentUUID___block_invoke;
   v18[3] = &unk_1E8022370;
   v18[4] = self;
-  v13 = v6;
+  v13 = institutionCopy;
   v19 = v13;
-  v14 = v7;
+  v14 = dCopy;
   v20 = v14;
   objc_copyWeak(&v21, &location);
   [(PKDashboardPassMessage *)v8 setActionOnButtonPress:v18];
@@ -27772,36 +27772,36 @@ void __120__PKDashboardPaymentPassDataSource_BankConnect___createMismatchedAccou
   [WeakRetained _hideBankConnectMessageAndReloadIfNeeded];
 }
 
-- (id)_mismatchedAccountImageWithInstitutionImage:(id)a3 institutionIdentifier:(id)a4
+- (id)_mismatchedAccountImageWithInstitutionImage:(id)image institutionIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 length])
+  imageCopy = image;
+  identifierCopy = identifier;
+  if ([identifierCopy length])
   {
-    v8 = [@"institution-mismatched" stringByAppendingFormat:@"-%@", v7];
+    identifierCopy = [@"institution-mismatched" stringByAppendingFormat:@"-%@", identifierCopy];
   }
 
   else
   {
-    v8 = @"institution-mismatched";
+    identifierCopy = @"institution-mismatched";
   }
 
-  v9 = [MEMORY[0x1E69DD1B8] currentTraitCollection];
-  v10 = [v9 userInterfaceStyle];
+  currentTraitCollection = [MEMORY[0x1E69DD1B8] currentTraitCollection];
+  userInterfaceStyle = [currentTraitCollection userInterfaceStyle];
   v11 = @"light";
-  if (v10 == 2)
+  if (userInterfaceStyle == 2)
   {
     v11 = @"dark";
   }
 
-  v12 = [(__CFString *)v8 stringByAppendingFormat:@"-%@", v11];
+  v12 = [(__CFString *)identifierCopy stringByAppendingFormat:@"-%@", v11];
 
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __115__PKDashboardPaymentPassDataSource_BankConnect___mismatchedAccountImageWithInstitutionImage_institutionIdentifier___block_invoke;
   v16[3] = &unk_1E801E3D0;
-  v17 = v6;
-  v13 = v6;
+  v17 = imageCopy;
+  v13 = imageCopy;
   v14 = [(PKDashboardPaymentPassDataSource *)self _messageCachedImageWithIdentifier:v12 imageProvider:v16];
 
   return v14;
@@ -27840,18 +27840,18 @@ id __115__PKDashboardPaymentPassDataSource_BankConnect___mismatchedAccountImageW
 
 - (void)_startRefetchingData
 {
-  v2 = [(PKDashboardPaymentPassDataSource *)self bankConnectLinkedAccountData];
-  v3 = [v2 account];
-  v12 = [v3 fullyQualifiedAccountIdentifier];
+  bankConnectLinkedAccountData = [(PKDashboardPaymentPassDataSource *)self bankConnectLinkedAccountData];
+  account = [bankConnectLinkedAccountData account];
+  fullyQualifiedAccountIdentifier = [account fullyQualifiedAccountIdentifier];
 
   v4 = objc_alloc(MEMORY[0x1E696AEC0]);
   v5 = [v4 initWithFormat:@"prefs:root=PASSBOOK&path=%@", *MEMORY[0x1E69BC5A8]];
-  if (v12)
+  if (fullyQualifiedAccountIdentifier)
   {
     v6 = objc_alloc(MEMORY[0x1E696AEC0]);
-    v7 = [v12 institutionID];
-    v8 = [v12 accountID];
-    v9 = [v6 initWithFormat:@"/%@/%@", v7, v8];
+    institutionID = [fullyQualifiedAccountIdentifier institutionID];
+    accountID = [fullyQualifiedAccountIdentifier accountID];
+    v9 = [v6 initWithFormat:@"/%@/%@", institutionID, accountID];
 
     v10 = [v5 stringByAppendingString:v9];
 
@@ -27862,12 +27862,12 @@ id __115__PKDashboardPaymentPassDataSource_BankConnect___mismatchedAccountImageW
   PKOpenURL();
 }
 
-- (void)_authorizeInstitution:(id)a3
+- (void)_authorizeInstitution:(id)institution
 {
   v31[6] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PKDashboardPaymentPassDataSource *)self viewController];
-  v6 = [v5 navigationController];
+  institutionCopy = institution;
+  viewController = [(PKDashboardPaymentPassDataSource *)self viewController];
+  navigationController = [viewController navigationController];
 
   [(PKDashboardPaymentPassDataSource *)self _beginReportingIfNecessary];
   v7 = MEMORY[0x1E69B8540];
@@ -27883,36 +27883,36 @@ id __115__PKDashboardPaymentPassDataSource_BankConnect___mismatchedAccountImageW
   v12 = *MEMORY[0x1E69BAC90];
   v30[2] = v11;
   v30[3] = v12;
-  v13 = [(PKDashboardPaymentPassDataSource *)self getPassProductType];
-  v31[3] = v13;
+  getPassProductType = [(PKDashboardPaymentPassDataSource *)self getPassProductType];
+  v31[3] = getPassProductType;
   v30[4] = *MEMORY[0x1E69BAA28];
-  v14 = [v4 name];
-  v31[4] = v14;
+  name = [institutionCopy name];
+  v31[4] = name;
   v30[5] = *MEMORY[0x1E69BAC78];
-  v15 = [(PKDashboardPaymentPassDataSource *)self pass];
-  v16 = [v15 issuerCountryCode];
-  v31[5] = v16;
+  pass = [(PKDashboardPaymentPassDataSource *)self pass];
+  issuerCountryCode = [pass issuerCountryCode];
+  v31[5] = issuerCountryCode;
   v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v31 forKeys:v30 count:6];
   [v7 subject:*MEMORY[0x1E69BB6F8] sendEvent:v17];
 
-  if (v6)
+  if (navigationController)
   {
     objc_initWeak(&location, self);
     v18 = +[PKDismissalPreventionAssertionManager sharedInstance];
-    v19 = [v18 acquireAssertion];
+    acquireAssertion = [v18 acquireAssertion];
 
     FKBankConnectAuthorizationViewControllerProviderClass = getFKBankConnectAuthorizationViewControllerProviderClass();
-    v21 = [(PKDashboardPaymentPassDataSource *)self pass];
+    pass2 = [(PKDashboardPaymentPassDataSource *)self pass];
     v25[0] = MEMORY[0x1E69E9820];
     v25[1] = 3221225472;
     v25[2] = __71__PKDashboardPaymentPassDataSource_BankConnect___authorizeInstitution___block_invoke;
     v25[3] = &unk_1E8013220;
     objc_copyWeak(&v28, &location);
-    v22 = v6;
+    v22 = navigationController;
     v26 = v22;
-    v23 = v19;
+    v23 = acquireAssertion;
     v27 = v23;
-    v24 = [(objc_class *)FKBankConnectAuthorizationViewControllerProviderClass makeAuthorizationViewControllerWithPaymentPass:v21 institution:v4 completion:v25];
+    v24 = [(objc_class *)FKBankConnectAuthorizationViewControllerProviderClass makeAuthorizationViewControllerWithPaymentPass:pass2 institution:institutionCopy completion:v25];
 
     [v22 presentViewController:v24 animated:1 completion:0];
     objc_destroyWeak(&v28);
@@ -27935,31 +27935,31 @@ uint64_t __71__PKDashboardPaymentPassDataSource_BankConnect___authorizeInstituti
   return [v4 invalidate];
 }
 
-- (void)_reconsentInstitution:(id)a3 withPreviousConsentUUID:(id)a4
+- (void)_reconsentInstitution:(id)institution withPreviousConsentUUID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PKDashboardPaymentPassDataSource *)self viewController];
-  v9 = [v8 navigationController];
+  institutionCopy = institution;
+  dCopy = d;
+  viewController = [(PKDashboardPaymentPassDataSource *)self viewController];
+  navigationController = [viewController navigationController];
 
-  if (v9)
+  if (navigationController)
   {
     objc_initWeak(&location, self);
     v10 = +[PKDismissalPreventionAssertionManager sharedInstance];
-    v11 = [v10 acquireAssertion];
+    acquireAssertion = [v10 acquireAssertion];
 
     FKBankConnectAuthorizationViewControllerProviderClass = getFKBankConnectAuthorizationViewControllerProviderClass();
-    v13 = [(PKDashboardPaymentPassDataSource *)self pass];
+    pass = [(PKDashboardPaymentPassDataSource *)self pass];
     v17 = MEMORY[0x1E69E9820];
     v18 = 3221225472;
     v19 = __95__PKDashboardPaymentPassDataSource_BankConnect___reconsentInstitution_withPreviousConsentUUID___block_invoke;
     v20 = &unk_1E8013220;
     objc_copyWeak(&v23, &location);
-    v14 = v9;
+    v14 = navigationController;
     v21 = v14;
-    v15 = v11;
+    v15 = acquireAssertion;
     v22 = v15;
-    v16 = [(objc_class *)FKBankConnectAuthorizationViewControllerProviderClass makeReconsentAuthorizationViewControllerWithPaymentPass:v13 institution:v6 previousConsentUUID:v7 completion:&v17];
+    v16 = [(objc_class *)FKBankConnectAuthorizationViewControllerProviderClass makeReconsentAuthorizationViewControllerWithPaymentPass:pass institution:institutionCopy previousConsentUUID:dCopy completion:&v17];
 
     [v14 presentViewController:v16 animated:1 completion:{0, v17, v18, v19, v20}];
     objc_destroyWeak(&v23);
@@ -28036,15 +28036,15 @@ void __86__PKDashboardPaymentPassDataSource_BankConnect___startTransactionsLoadi
   _transactionsLoadingMessageTimer = 0;
 }
 
-- (void)didUpdateLatestTransactions:(id)a3 monthlyTransactionGroups:(id)a4 yearlyTransactionGroups:(id)a5
+- (void)didUpdateLatestTransactions:(id)transactions monthlyTransactionGroups:(id)groups yearlyTransactionGroups:(id)transactionGroups
 {
   v66 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  transactionsCopy = transactions;
+  groupsCopy = groups;
+  transactionGroupsCopy = transactionGroups;
   if ([(PKDashboardPaymentPassDataSource *)self supportsBankConnectTransactions])
   {
-    v46 = v10;
+    v46 = transactionGroupsCopy;
     if ([(PKDashboardPaymentPassDataSource *)self isEligibleForPersonalizedInsights])
     {
       +[_TtC9PassKitUI36BankConnectTransactionInsightsLoader requestPersonalizedInsightsUpdate];
@@ -28060,17 +28060,17 @@ void __86__PKDashboardPaymentPassDataSource_BankConnect___startTransactionsLoadi
       }
     }
 
-    v12 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v8, "count")}];
-    v43 = self;
-    v13 = [(PKDashboardPaymentPassDataSource *)self bankConnectLinkedAccountData];
-    v14 = [v13 institution];
+    v12 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(transactionsCopy, "count")}];
+    selfCopy = self;
+    bankConnectLinkedAccountData = [(PKDashboardPaymentPassDataSource *)self bankConnectLinkedAccountData];
+    institution = [bankConnectLinkedAccountData institution];
 
     v60 = 0u;
     v61 = 0u;
     v58 = 0u;
     v59 = 0u;
-    v45 = v8;
-    v15 = v8;
+    v45 = transactionsCopy;
+    v15 = transactionsCopy;
     v16 = [v15 countByEnumeratingWithState:&v58 objects:v65 count:16];
     if (v16)
     {
@@ -28086,7 +28086,7 @@ void __86__PKDashboardPaymentPassDataSource_BankConnect___startTransactionsLoadi
             objc_enumerationMutation(v15);
           }
 
-          v20 = [MEMORY[0x1E69B8EA8] transactionFromFKPaymentTransaction:*(*(&v58 + 1) + 8 * v19) institution:v14];
+          v20 = [MEMORY[0x1E69B8EA8] transactionFromFKPaymentTransaction:*(*(&v58 + 1) + 8 * v19) institution:institution];
           [v12 safelyAddObject:v20];
 
           ++v19;
@@ -28099,12 +28099,12 @@ void __86__PKDashboardPaymentPassDataSource_BankConnect___startTransactionsLoadi
       while (v17);
     }
 
-    v21 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v9, "count")}];
+    v21 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(groupsCopy, "count")}];
     v54 = 0u;
     v55 = 0u;
     v56 = 0u;
     v57 = 0u;
-    v22 = v9;
+    v22 = groupsCopy;
     v23 = [v22 countByEnumeratingWithState:&v54 objects:v64 count:16];
     if (v23)
     {
@@ -28133,7 +28133,7 @@ void __86__PKDashboardPaymentPassDataSource_BankConnect___startTransactionsLoadi
       while (v24);
     }
 
-    v44 = v9;
+    v44 = groupsCopy;
 
     v28 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v46, "count")}];
     v50 = 0u;
@@ -28173,22 +28173,22 @@ void __86__PKDashboardPaymentPassDataSource_BankConnect___startTransactionsLoadi
     aBlock[1] = 3221225472;
     aBlock[2] = __126__PKDashboardPaymentPassDataSource_BankConnect__didUpdateLatestTransactions_monthlyTransactionGroups_yearlyTransactionGroups___block_invoke;
     aBlock[3] = &unk_1E8022060;
-    aBlock[4] = v43;
+    aBlock[4] = selfCopy;
     v48 = v21;
     v49 = v28;
     v35 = v28;
     v36 = v21;
     v37 = _Block_copy(aBlock);
     v38 = MEMORY[0x1E69B8EA8];
-    v39 = [(PKDashboardPaymentPassDataSource *)v43 transactionSourceCollection];
-    v40 = [v39 transactionSourceIdentifiers];
-    v41 = [(PKDashboardPaymentPassDataSource *)v43 pass];
-    v42 = [v41 uniqueID];
-    [v38 augmentTransactionsIfNeeded:v12 transactionSourceIdentifiers:v40 passUniqueID:v42 usingDataProvider:0 completion:v37];
+    transactionSourceCollection = [(PKDashboardPaymentPassDataSource *)selfCopy transactionSourceCollection];
+    transactionSourceIdentifiers = [transactionSourceCollection transactionSourceIdentifiers];
+    pass = [(PKDashboardPaymentPassDataSource *)selfCopy pass];
+    uniqueID = [pass uniqueID];
+    [v38 augmentTransactionsIfNeeded:v12 transactionSourceIdentifiers:transactionSourceIdentifiers passUniqueID:uniqueID usingDataProvider:0 completion:v37];
 
-    v9 = v44;
-    v8 = v45;
-    v10 = v46;
+    groupsCopy = v44;
+    transactionsCopy = v45;
+    transactionGroupsCopy = v46;
   }
 }
 
@@ -28206,31 +28206,31 @@ uint64_t __126__PKDashboardPaymentPassDataSource_BankConnect__didUpdateLatestTra
   return [v6 reloadTransactionGroups];
 }
 
-- (void)bankConnectAccountDidChange:(id)a3
+- (void)bankConnectAccountDidChange:(id)change
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PKDashboardPaymentPassDataSource *)self bankConnectLinkedAccountData];
-  v6 = v5;
-  if (v5)
+  changeCopy = change;
+  bankConnectLinkedAccountData = [(PKDashboardPaymentPassDataSource *)self bankConnectLinkedAccountData];
+  v6 = bankConnectLinkedAccountData;
+  if (bankConnectLinkedAccountData)
   {
-    v7 = [v5 account];
-    if (([v7 isEqual:v4] & 1) == 0)
+    account = [bankConnectLinkedAccountData account];
+    if (([account isEqual:changeCopy] & 1) == 0)
     {
-      if (v7)
+      if (account)
       {
-        v8 = [v7 loadingStatus];
+        loadingStatus = [account loadingStatus];
         v9 = 0;
-        if (v4 && v8 != 1)
+        if (changeCopy && loadingStatus != 1)
         {
-          v9 = [(__CFString *)v4 loadingStatus]== 1;
+          v9 = [(__CFString *)changeCopy loadingStatus]== 1;
         }
 
-        v10 = [v7 loadingStatus];
+        loadingStatus2 = [account loadingStatus];
         v11 = 0;
-        if (v4 && v10 == 1)
+        if (changeCopy && loadingStatus2 == 1)
         {
-          v11 = [(__CFString *)v4 loadingStatus]!= 1;
+          v11 = [(__CFString *)changeCopy loadingStatus]!= 1;
         }
       }
 
@@ -28243,11 +28243,11 @@ uint64_t __126__PKDashboardPaymentPassDataSource_BankConnect__didUpdateLatestTra
       v12 = PKLogFacilityTypeGetObject();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
-        v13 = [v6 account];
+        account2 = [v6 account];
         v18 = 138412546;
-        v19 = v13;
+        v19 = account2;
         v20 = 2112;
-        v21 = v4;
+        v21 = changeCopy;
         _os_log_impl(&dword_1BD026000, v12, OS_LOG_TYPE_DEFAULT, "Handling Bank Connect account update from %@ to %@", &v18, 0x16u);
       }
 
@@ -28278,7 +28278,7 @@ uint64_t __126__PKDashboardPaymentPassDataSource_BankConnect__didUpdateLatestTra
 
       if (v9)
       {
-        [v6 setAccount:v4];
+        [v6 setAccount:changeCopy];
         [(PKDashboardPaymentPassDataSource *)self _startTransactionsLoadingMessageTimer];
 LABEL_23:
         [(PKDashboardPaymentPassDataSource *)self _reloadBankConnectConnectedMessageIfNeeded];
@@ -28287,14 +28287,14 @@ LABEL_23:
 
       if (!v11)
       {
-        v16 = [v6 consentStatus];
-        v17 = [v6 institution];
-        [(PKDashboardPaymentPassDataSource *)self updateWithBankConnectAccount:v4 consentStatus:v16 institution:v17];
+        consentStatus = [v6 consentStatus];
+        institution = [v6 institution];
+        [(PKDashboardPaymentPassDataSource *)self updateWithBankConnectAccount:changeCopy consentStatus:consentStatus institution:institution];
 
         goto LABEL_30;
       }
 
-      [v6 setAccount:v4];
+      [v6 setAccount:changeCopy];
       if (!_transactionsLoadingMessageTimer)
       {
         if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -28316,30 +28316,30 @@ LABEL_30:
 LABEL_31:
 }
 
-- (void)bankConnectConsentStatusDidChange:(unint64_t)a3
+- (void)bankConnectConsentStatusDidChange:(unint64_t)change
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = [(PKDashboardPaymentPassDataSource *)self bankConnectLinkedAccountData];
-  v6 = v5;
-  if (v5 && [v5 consentStatus] != a3)
+  bankConnectLinkedAccountData = [(PKDashboardPaymentPassDataSource *)self bankConnectLinkedAccountData];
+  v6 = bankConnectLinkedAccountData;
+  if (bankConnectLinkedAccountData && [bankConnectLinkedAccountData consentStatus] != change)
   {
     v7 = PKLogFacilityTypeGetObject();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v12 = 134218240;
-      v13 = [v6 consentStatus];
+      consentStatus = [v6 consentStatus];
       v14 = 2048;
-      v15 = a3;
+      changeCopy = change;
       _os_log_impl(&dword_1BD026000, v7, OS_LOG_TYPE_DEFAULT, "Handling Bank Connect consent status update from %ld to %ld", &v12, 0x16u);
     }
 
-    v8 = [v6 institution];
-    v9 = [v6 account];
-    [(PKDashboardPaymentPassDataSource *)self _setupSpendingSummaryDataProviderIfNeededForInstitution:v8 account:v9 consentStatus:a3];
+    institution = [v6 institution];
+    account = [v6 account];
+    [(PKDashboardPaymentPassDataSource *)self _setupSpendingSummaryDataProviderIfNeededForInstitution:institution account:account consentStatus:change];
 
-    v10 = [v6 account];
-    v11 = [v6 institution];
-    [(PKDashboardPaymentPassDataSource *)self updateWithBankConnectAccount:v10 consentStatus:a3 institution:v11];
+    account2 = [v6 account];
+    institution2 = [v6 institution];
+    [(PKDashboardPaymentPassDataSource *)self updateWithBankConnectAccount:account2 consentStatus:change institution:institution2];
   }
 }
 

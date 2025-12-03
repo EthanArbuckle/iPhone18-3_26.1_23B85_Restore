@@ -1,14 +1,14 @@
 @interface NSCachingFetchRequest
 - (NSCachingFetchRequest)init;
-- (NSCachingFetchRequest)initWithCoder:(id)a3;
+- (NSCachingFetchRequest)initWithCoder:(id)coder;
 - (NSDictionary)substitutionVariables;
-- (id)_cachedInfoForRequestor:(id)a3;
+- (id)_cachedInfoForRequestor:(id)requestor;
 - (id)_copyForDirtyContext;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)_cacheInfo:(id)a3 forRequestor:(id)a4;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)_cacheInfo:(id)info forRequestor:(id)requestor;
 - (void)_disableSQLStatementCaching;
 - (void)dealloc;
-- (void)setSubstitutionVariables:(id)a3;
+- (void)setSubstitutionVariables:(id)variables;
 @end
 
 @implementation NSCachingFetchRequest
@@ -79,7 +79,7 @@
   }
 }
 
-- (NSCachingFetchRequest)initWithCoder:(id)a3
+- (NSCachingFetchRequest)initWithCoder:(id)coder
 {
   v12.receiver = self;
   v12.super_class = NSCachingFetchRequest;
@@ -94,7 +94,7 @@
     v11 = v5;
     if (!v5 || (v6 = __39__NSCachingFetchRequest_initWithCoder___block_invoke, !v5[1]) && !v5[2])
     {
-      [a3 failWithError:{objc_msgSend(MEMORY[0x1E696ABC0], "errorWithDomain:code:userInfo:", *MEMORY[0x1E696A250], 4866, &unk_1EF435A30)}];
+      [coder failWithError:{objc_msgSend(MEMORY[0x1E696ABC0], "errorWithDomain:code:userInfo:", *MEMORY[0x1E696A250], 4866, &unk_1EF435A30)}];
 
       v4 = 0;
       v6 = v9;
@@ -106,11 +106,11 @@
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v10.receiver = self;
   v10.super_class = NSCachingFetchRequest;
-  v4 = [(NSFetchRequest *)&v10 copyWithZone:a3];
+  v4 = [(NSFetchRequest *)&v10 copyWithZone:zone];
   v5 = [(NSDictionary *)self->_substitutionVariables mutableCopy];
 
   *(v4 + 14) = v5;
@@ -145,8 +145,8 @@
   v4 = [(NSDictionary *)self->_substitutionVariables mutableCopy];
   if (![v4 objectForKey:@"FETCH_REQUEST_LIMIT_SUBSTITUTION"])
   {
-    v5 = [(NSFetchRequest *)self fetchLimit];
-    [v4 setObject:objc_msgSend(MEMORY[0x1E696ABC8] forKey:{"expressionForConstantValue:", objc_msgSend(MEMORY[0x1E696AD98], "numberWithInteger:", v5)), @"FETCH_REQUEST_LIMIT_SUBSTITUTION"}];
+    fetchLimit = [(NSFetchRequest *)self fetchLimit];
+    [v4 setObject:objc_msgSend(MEMORY[0x1E696ABC8] forKey:{"expressionForConstantValue:", objc_msgSend(MEMORY[0x1E696AD98], "numberWithInteger:", fetchLimit)), @"FETCH_REQUEST_LIMIT_SUBSTITUTION"}];
   }
 
   v3[14] = v4;
@@ -154,24 +154,24 @@
   return v3;
 }
 
-- (void)_cacheInfo:(id)a3 forRequestor:(id)a4
+- (void)_cacheInfo:(id)info forRequestor:(id)requestor
 {
   if (self->_cachedInfo)
   {
     os_unfair_lock_lock_with_options();
-    CFDictionarySetValue(self->_cachedInfo, a4, a3);
+    CFDictionarySetValue(self->_cachedInfo, requestor, info);
     os_unfair_lock_unlock(&self->_lock);
 
     [(NSFetchRequest *)self _incrementInUseCounter];
   }
 }
 
-- (id)_cachedInfoForRequestor:(id)a3
+- (id)_cachedInfoForRequestor:(id)requestor
 {
   if (self->_cachedInfo)
   {
     os_unfair_lock_lock_with_options();
-    v5 = CFDictionaryGetValue(self->_cachedInfo, a3);
+    v5 = CFDictionaryGetValue(self->_cachedInfo, requestor);
     os_unfair_lock_unlock(&self->_lock);
   }
 
@@ -183,11 +183,11 @@
   return v5;
 }
 
-- (void)setSubstitutionVariables:(id)a3
+- (void)setSubstitutionVariables:(id)variables
 {
   v45 = *MEMORY[0x1E69E9840];
   substitutionVariables = self->_substitutionVariables;
-  if (substitutionVariables == a3)
+  if (substitutionVariables == variables)
   {
     goto LABEL_36;
   }
@@ -198,9 +198,9 @@
     goto LABEL_27;
   }
 
-  v6 = [(NSFetchRequest *)self _isEditable];
+  _isEditable = [(NSFetchRequest *)self _isEditable];
   v7 = self->_substitutionVariables;
-  if (v6)
+  if (_isEditable)
   {
 LABEL_27:
     v39 = 0u;
@@ -225,7 +225,7 @@ LABEL_27:
         }
 
         v24 = *(*(&v39 + 1) + 8 * i);
-        if ([objc_msgSend(a3 valueForKey:{v24), "expressionType"}])
+        if ([objc_msgSend(variables valueForKey:{v24), "expressionType"}])
         {
           v31 = MEMORY[0x1E695DF30];
           v32 = *MEMORY[0x1E695D940];
@@ -246,7 +246,7 @@ LABEL_39:
   }
 
   v8 = [(NSDictionary *)self->_substitutionVariables count];
-  if (v8 != [a3 count])
+  if (v8 != [variables count])
   {
     v29 = MEMORY[0x1E695DF30];
     v30 = *MEMORY[0x1E695D940];
@@ -276,7 +276,7 @@ LABEL_41:
 
         v14 = *(*(&v35 + 1) + 8 * j);
         v15 = [(NSDictionary *)self->_substitutionVariables valueForKey:v14];
-        v16 = [a3 valueForKey:v14];
+        v16 = [variables valueForKey:v14];
         if (v16)
         {
           v17 = v16;
@@ -289,9 +289,9 @@ LABEL_41:
             goto LABEL_39;
           }
 
-          v18 = [v15 constantValue];
-          v19 = [v17 constantValue];
-          if ((([v18 isNSArray] & 1) != 0 || (objc_msgSend(v18, "isNSSet") & 1) != 0 || objc_msgSend(v18, "isNSOrderedSet")) && (objc_msgSend(v19, "isNSArray") & 1) == 0 && (objc_msgSend(v19, "isNSSet") & 1) == 0 && (objc_msgSend(v19, "isNSOrderedSet") & 1) == 0)
+          constantValue = [v15 constantValue];
+          constantValue2 = [v17 constantValue];
+          if ((([constantValue isNSArray] & 1) != 0 || (objc_msgSend(constantValue, "isNSSet") & 1) != 0 || objc_msgSend(constantValue, "isNSOrderedSet")) && (objc_msgSend(constantValue2, "isNSArray") & 1) == 0 && (objc_msgSend(constantValue2, "isNSSet") & 1) == 0 && (objc_msgSend(constantValue2, "isNSOrderedSet") & 1) == 0)
           {
             v31 = MEMORY[0x1E695DF30];
             v32 = *MEMORY[0x1E695D940];
@@ -320,7 +320,7 @@ LABEL_40:
   }
 
 LABEL_35:
-  v25 = [a3 copy];
+  v25 = [variables copy];
 
   self->_substitutionVariables = v25;
 LABEL_36:

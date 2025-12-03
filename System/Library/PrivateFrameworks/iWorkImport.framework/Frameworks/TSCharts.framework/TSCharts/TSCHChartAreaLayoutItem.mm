@@ -1,11 +1,11 @@
 @interface TSCHChartAreaLayoutItem
 - (CGRect)i_currentBufferAreaUnitRect;
 - (CGRect)titleFrame;
-- (Class)p_axisLayoutItemClassForAxisID:(id)a3;
+- (Class)p_axisLayoutItemClassForAxisID:(id)d;
 - (double)p_dataSetNameLabelPadding;
-- (id)renderersWithRep:(id)a3;
+- (id)renderersWithRep:(id)rep;
 - (void)buildSubTree;
-- (void)iterateHitChartElements:(CGPoint)a3 withBlock:(id)a4;
+- (void)iterateHitChartElements:(CGPoint)elements withBlock:(id)block;
 - (void)layoutInward;
 - (void)layoutOutward;
 - (void)p_arrangeSizedChildren;
@@ -34,11 +34,11 @@
   return result;
 }
 
-- (Class)p_axisLayoutItemClassForAxisID:(id)a3
+- (Class)p_axisLayoutItemClassForAxisID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v9 = objc_msgSend_model(self, v5, v6, v7, v8);
-  v14 = objc_msgSend_axisForID_(v9, v10, v11, v12, v13, v4);
+  v14 = objc_msgSend_axisForID_(v9, v10, v11, v12, v13, dCopy);
 
   if (v14)
   {
@@ -1106,16 +1106,16 @@ LABEL_63:
   self->_inOutwardLayout = 0;
 }
 
-- (id)renderersWithRep:(id)a3
+- (id)renderersWithRep:(id)rep
 {
-  v4 = a3;
+  repCopy = rep;
   v5 = objc_opt_new();
   v10 = objc_msgSend_titleElement(self, v6, v7, v8, v9);
 
   if (v10)
   {
     v15 = objc_msgSend_titleElement(self, v11, v12, v13, v14);
-    v20 = objc_msgSend_renderersWithRep_(v15, v16, v17, v18, v19, v4);
+    v20 = objc_msgSend_renderersWithRep_(v15, v16, v17, v18, v19, repCopy);
     objc_msgSend_addObjectsFromArray_(v5, v21, v22, v23, v24, v20);
   }
 
@@ -1124,38 +1124,38 @@ LABEL_63:
   if (v25)
   {
     v30 = objc_msgSend_dataSetNameElement(self, v26, v27, v28, v29);
-    v35 = objc_msgSend_renderersWithRep_(v30, v31, v32, v33, v34, v4);
+    v35 = objc_msgSend_renderersWithRep_(v30, v31, v32, v33, v34, repCopy);
     objc_msgSend_addObjectsFromArray_(v5, v36, v37, v38, v39, v35);
   }
 
-  v40 = objc_msgSend_renderersWithRep_(self->_gridLayoutItem, v26, v27, v28, v29, v4);
+  v40 = objc_msgSend_renderersWithRep_(self->_gridLayoutItem, v26, v27, v28, v29, repCopy);
   objc_msgSend_addObjectsFromArray_(v5, v41, v42, v43, v44, v40);
 
   v45 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v50 = objc_msgSend_renderersWithRep_(self->_topHorizontalAxis, v46, v47, v48, v49, v4);
+  v50 = objc_msgSend_renderersWithRep_(self->_topHorizontalAxis, v46, v47, v48, v49, repCopy);
   objc_msgSend_addObjectsFromArray_(v45, v51, v52, v53, v54, v50);
 
-  v59 = objc_msgSend_renderersWithRep_(self->_rightVerticalAxis, v55, v56, v57, v58, v4);
+  v59 = objc_msgSend_renderersWithRep_(self->_rightVerticalAxis, v55, v56, v57, v58, repCopy);
   objc_msgSend_addObjectsFromArray_(v45, v60, v61, v62, v63, v59);
 
-  v68 = objc_msgSend_renderersWithRep_(self->_leftVerticalAxis, v64, v65, v66, v67, v4);
+  v68 = objc_msgSend_renderersWithRep_(self->_leftVerticalAxis, v64, v65, v66, v67, repCopy);
   objc_msgSend_addObjectsFromArray_(v45, v69, v70, v71, v72, v68);
 
-  v77 = objc_msgSend_renderersWithRep_(self->_bottomHorizontalAxis, v73, v74, v75, v76, v4);
+  v77 = objc_msgSend_renderersWithRep_(self->_bottomHorizontalAxis, v73, v74, v75, v76, repCopy);
   objc_msgSend_addObjectsFromArray_(v45, v78, v79, v80, v81, v77);
 
   v82 = [TSCHCompositeRenderer alloc];
-  v87 = objc_msgSend_initWithChartRep_withSubRenderers_(v82, v83, v84, v85, v86, v4, v45);
+  v87 = objc_msgSend_initWithChartRep_withSubRenderers_(v82, v83, v84, v85, v86, repCopy, v45);
   objc_msgSend_addObject_(v5, v88, v89, v90, v91, v87);
 
   v96 = objc_msgSend_bodyLayoutItem(self, v92, v93, v94, v95);
-  v101 = objc_msgSend_renderersWithRep_(v96, v97, v98, v99, v100, v4);
+  v101 = objc_msgSend_renderersWithRep_(v96, v97, v98, v99, v100, repCopy);
   objc_msgSend_addObjectsFromArray_(v5, v102, v103, v104, v105, v101);
 
-  if ((objc_msgSend_is2DRepFor3DChartRep(v4, v106, v107, v108, v109) & 1) == 0)
+  if ((objc_msgSend_is2DRepFor3DChartRep(repCopy, v106, v107, v108, v109) & 1) == 0)
   {
     v110 = [TSCHReferenceLineRenderer alloc];
-    v115 = objc_msgSend_initWithChartRep_layoutItem_(v110, v111, v112, v113, v114, v4, self);
+    v115 = objc_msgSend_initWithChartRep_layoutItem_(v110, v111, v112, v113, v114, repCopy, self);
     objc_msgSend_addObject_(v5, v116, v117, v118, v119, v115);
   }
 
@@ -1264,15 +1264,15 @@ LABEL_63:
   }
 }
 
-- (void)iterateHitChartElements:(CGPoint)a3 withBlock:(id)a4
+- (void)iterateHitChartElements:(CGPoint)elements withBlock:(id)block
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = elements.y;
+  x = elements.x;
+  blockCopy = block;
   objc_msgSend_p_updateMinHitSizes(self, v8, v9, v10, v11);
   v12.receiver = self;
   v12.super_class = TSCHChartAreaLayoutItem;
-  [(TSCHChartLayoutItem *)&v12 iterateHitChartElements:v7 withBlock:x, y];
+  [(TSCHChartLayoutItem *)&v12 iterateHitChartElements:blockCopy withBlock:x, y];
 }
 
 @end

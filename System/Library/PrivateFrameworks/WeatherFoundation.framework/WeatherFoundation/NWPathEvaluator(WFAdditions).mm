@@ -8,42 +8,42 @@
 + (id)wf_pathEvaluatorForURL:()WFAdditions
 {
   v3 = a3;
-  v4 = [v3 host];
-  v5 = [v4 length];
+  host = [v3 host];
+  v5 = [host length];
 
   if (v5)
   {
-    v6 = [v3 host];
-    v7 = [v3 port];
-    v8 = [v7 stringValue];
-    v9 = v8;
+    host2 = [v3 host];
+    port = [v3 port];
+    stringValue = [port stringValue];
+    v9 = stringValue;
     v10 = @"80";
-    if (v8)
+    if (stringValue)
     {
-      v10 = v8;
+      v10 = stringValue;
     }
 
     v11 = v10;
 
-    v12 = [MEMORY[0x277CD91D0] endpointWithHostname:v6 port:v11];
+    v12 = [MEMORY[0x277CD91D0] endpointWithHostname:host2 port:v11];
 
-    v13 = [objc_alloc(MEMORY[0x277CD9200]) initWithEndpoint:v12 parameters:0];
+    mEMORY[0x277CD9200] = [objc_alloc(MEMORY[0x277CD9200]) initWithEndpoint:v12 parameters:0];
   }
 
   else
   {
-    v13 = [MEMORY[0x277CD9200] sharedDefaultEvaluator];
+    mEMORY[0x277CD9200] = [MEMORY[0x277CD9200] sharedDefaultEvaluator];
   }
 
-  return v13;
+  return mEMORY[0x277CD9200];
 }
 
 - (BOOL)wf_isReachable
 {
-  v1 = [a1 path];
-  v2 = [v1 status];
+  path = [self path];
+  status = [path status];
 
-  return (v2 & 0xFFFFFFFFFFFFFFFDLL) == 1;
+  return (status & 0xFFFFFFFFFFFFFFFDLL) == 1;
 }
 
 @end

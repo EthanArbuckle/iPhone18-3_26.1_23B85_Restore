@@ -1,29 +1,29 @@
 @interface HUServiceDetailsSeparateTileItem
-- (id)_subclass_updateWithOptions:(id)a3;
+- (id)_subclass_updateWithOptions:(id)options;
 @end
 
 @implementation HUServiceDetailsSeparateTileItem
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
   v41[1] = *MEMORY[0x277D85DE8];
-  v4 = [(HUServiceDetailsAbstractItem *)self home];
-  v5 = [(HUServiceDetailsAbstractItem *)self sourceServiceItem];
-  v6 = [v5 latestResults];
-  v7 = [v6 objectForKeyedSubscript:*MEMORY[0x277D14090]];
-  v8 = [v4 hf_roomWithIdentifier:v7];
+  home = [(HUServiceDetailsAbstractItem *)self home];
+  sourceServiceItem = [(HUServiceDetailsAbstractItem *)self sourceServiceItem];
+  latestResults = [sourceServiceItem latestResults];
+  v7 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D14090]];
+  v8 = [home hf_roomWithIdentifier:v7];
 
-  v9 = [(HUServiceDetailsAbstractItem *)self home];
-  LODWORD(v5) = [v9 hf_currentUserIsAdministrator];
+  home2 = [(HUServiceDetailsAbstractItem *)self home];
+  LODWORD(sourceServiceItem) = [home2 hf_currentUserIsAdministrator];
 
-  if (v5 && v8)
+  if (sourceServiceItem && v8)
   {
-    v10 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     objc_opt_class();
-    v11 = [(HUServiceDetailsAbstractItem *)self sourceServiceItem];
+    sourceServiceItem2 = [(HUServiceDetailsAbstractItem *)self sourceServiceItem];
     if (objc_opt_isKindOfClass())
     {
-      v12 = v11;
+      v12 = sourceServiceItem2;
     }
 
     else
@@ -34,10 +34,10 @@
     v13 = v12;
 
     objc_opt_class();
-    v14 = [(HUServiceDetailsAbstractItem *)self sourceServiceItem];
+    sourceServiceItem3 = [(HUServiceDetailsAbstractItem *)self sourceServiceItem];
     if (objc_opt_isKindOfClass())
     {
-      v15 = v14;
+      v15 = sourceServiceItem3;
     }
 
     else
@@ -48,10 +48,10 @@
     v16 = v15;
 
     objc_opt_class();
-    v17 = [(HUServiceDetailsAbstractItem *)self sourceServiceItem];
+    sourceServiceItem4 = [(HUServiceDetailsAbstractItem *)self sourceServiceItem];
     if (objc_opt_isKindOfClass())
     {
-      v18 = v17;
+      v18 = sourceServiceItem4;
     }
 
     else
@@ -69,10 +69,10 @@
 
     if (v16)
     {
-      v26 = [v16 service];
-      v21 = [v26 accessory];
+      service = [v16 service];
+      accessory = [service accessory];
 
-      if (v21)
+      if (accessory)
       {
         goto LABEL_21;
       }
@@ -84,14 +84,14 @@
       {
         v20 = v19;
 LABEL_14:
-        v21 = [v20 accessory];
-        if (!v21)
+        accessory = [v20 accessory];
+        if (!accessory)
         {
           goto LABEL_33;
         }
 
 LABEL_21:
-        if ([v21 hf_showAsIndividualServices])
+        if ([accessory hf_showAsIndividualServices])
         {
           v27 = _HULocalizedStringWithDefaultValue(@"HUServiceDetailsUnifyTileButton", @"HUServiceDetailsUnifyTileButton", 1);
           v28 = _HULocalizedStringWithDefaultValue(@"HUServiceDetailsUnifyTileFooter", @"HUServiceDetailsUnifyTileFooter", 1);
@@ -99,7 +99,7 @@ LABEL_21:
           if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
           {
             *v39 = 138412290;
-            *&v39[4] = v21;
+            *&v39[4] = accessory;
             v30 = "Separate tile item's sourceAccessory %@. Present option to show as single tile to user.";
 LABEL_26:
             _os_log_impl(&dword_20CEB6000, v29, OS_LOG_TYPE_DEFAULT, v30, v39, 0xCu);
@@ -114,49 +114,49 @@ LABEL_26:
           if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
           {
             *v39 = 138412290;
-            *&v39[4] = v21;
+            *&v39[4] = accessory;
             v30 = "Separate tile item's sourceAccessory %@. Present option to show as separate tiles to user.";
             goto LABEL_26;
           }
         }
 
-        v31 = [MEMORY[0x277CBEB98] setWithObject:v21];
-        [v10 setObject:v31 forKeyedSubscript:*MEMORY[0x277D13DA8]];
+        v31 = [MEMORY[0x277CBEB98] setWithObject:accessory];
+        [dictionary setObject:v31 forKeyedSubscript:*MEMORY[0x277D13DA8]];
 
-        [v21 hf_isMultiServiceAccessory];
-        if ([v21 hf_isCamera])
+        [accessory hf_isMultiServiceAccessory];
+        if ([accessory hf_isCamera])
         {
-          v32 = [v21 hf_visibleServices];
-          [v32 count];
+          hf_visibleServices = [accessory hf_visibleServices];
+          [hf_visibleServices count];
         }
 
-        [v10 setObject:v27 forKeyedSubscript:{*MEMORY[0x277D13F60], *v39}];
-        [v10 setObject:v28 forKeyedSubscript:@"HUServiceDetailsSeparateTileSectionFooterResultKey"];
+        [dictionary setObject:v27 forKeyedSubscript:{*MEMORY[0x277D13F60], *v39}];
+        [dictionary setObject:v28 forKeyedSubscript:@"HUServiceDetailsSeparateTileSectionFooterResultKey"];
         goto LABEL_34;
       }
 
-      v21 = 0;
+      accessory = 0;
     }
 
 LABEL_33:
     v27 = 0;
     v28 = 0;
 LABEL_34:
-    if (![v21 hf_canShowAsIndividualServices] || (objc_msgSend(v16, "service"), v33 = objc_claimAutoreleasedReturnValue(), v34 = objc_msgSend(v33, "hf_isSensorService"), v33, v34))
+    if (![accessory hf_canShowAsIndividualServices] || (objc_msgSend(v16, "service"), v33 = objc_claimAutoreleasedReturnValue(), v34 = objc_msgSend(v33, "hf_isSensorService"), v33, v34))
     {
       v35 = HFLogForCategory();
       if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
       {
         *v39 = 138412290;
-        *&v39[4] = v21;
+        *&v39[4] = accessory;
         _os_log_impl(&dword_20CEB6000, v35, OS_LOG_TYPE_DEFAULT, "Item is not separable into multiple tiles for sourceAccessory %@", v39, 0xCu);
       }
 
-      [v10 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277D13FB8]];
+      [dictionary setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277D13FB8]];
     }
 
     v36 = MEMORY[0x277D2C900];
-    v37 = [MEMORY[0x277D14780] outcomeWithResults:v10];
+    v37 = [MEMORY[0x277D14780] outcomeWithResults:dictionary];
     v25 = [v36 futureWithResult:v37];
 
     goto LABEL_40;
@@ -173,8 +173,8 @@ LABEL_34:
   v24 = MEMORY[0x277D14780];
   v40 = *MEMORY[0x277D13FB8];
   v41[0] = MEMORY[0x277CBEC38];
-  v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v41 forKeys:&v40 count:1];
-  v13 = [v24 outcomeWithResults:v10];
+  dictionary = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v41 forKeys:&v40 count:1];
+  v13 = [v24 outcomeWithResults:dictionary];
   v25 = [v23 futureWithResult:v13];
 LABEL_40:
 

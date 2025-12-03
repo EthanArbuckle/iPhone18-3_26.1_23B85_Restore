@@ -1,8 +1,8 @@
 @interface IAPStackshot
 + (id)sharedInstance;
 - (IAPStackshot)init;
-- (id)startTimer:(double)a3 withInfo:(id)a4;
-- (void)_saveStackshot:(id)a3;
+- (id)startTimer:(double)timer withInfo:(id)info;
+- (void)_saveStackshot:(id)stackshot;
 - (void)_stackshotThread;
 @end
 
@@ -40,7 +40,7 @@
   return result;
 }
 
-- (id)startTimer:(double)a3 withInfo:(id)a4
+- (id)startTimer:(double)timer withInfo:(id)info
 {
   if (((self + 8) & 7) != 0)
   {
@@ -51,14 +51,14 @@
   {
     if (*(self + 1))
     {
-      v5 = self;
-      v6 = [[NSTimer alloc] initWithFireDate:+[NSDate dateWithTimeIntervalSinceNow:](NSDate interval:"dateWithTimeIntervalSinceNow:" target:a3) selector:self userInfo:"_saveStackshot:" repeats:{a4, 0, 0.0}];
-      [v5[1] addTimer:v6 forMode:NSDefaultRunLoopMode];
+      selfCopy = self;
+      v6 = [[NSTimer alloc] initWithFireDate:+[NSDate dateWithTimeIntervalSinceNow:](NSDate interval:"dateWithTimeIntervalSinceNow:" target:timer) selector:self userInfo:"_saveStackshot:" repeats:{info, 0, 0.0}];
+      [selfCopy[1] addTimer:v6 forMode:NSDefaultRunLoopMode];
     }
 
     else
     {
-      NSLog(@"ERROR - %s:%s - %d no run loop", a2, a4, a3, "/Library/Caches/com.apple.xbs/Sources/iapd/iapd/IAPStackshot.m", "[IAPStackshot startTimer:withInfo:]", 53);
+      NSLog(@"ERROR - %s:%s - %d no run loop", a2, info, timer, "/Library/Caches/com.apple.xbs/Sources/iapd/iapd/IAPStackshot.m", "[IAPStackshot startTimer:withInfo:]", 53);
       v6 = 0;
     }
 
@@ -90,9 +90,9 @@
   }
 }
 
-- (void)_saveStackshot:(id)a3
+- (void)_saveStackshot:(id)stackshot
 {
-  [a3 userInfo];
+  [stackshot userInfo];
   WriteStackshotReport_async();
   if ((&self->_stackshotRunLoop & 7) != 0)
   {
@@ -101,7 +101,7 @@
 
   else
   {
-    NSLog(@"saveStackshot(%hhx): %@", self->_stackshotRunLoop, [a3 userInfo]);
+    NSLog(@"saveStackshot(%hhx): %@", self->_stackshotRunLoop, [stackshot userInfo]);
   }
 }
 

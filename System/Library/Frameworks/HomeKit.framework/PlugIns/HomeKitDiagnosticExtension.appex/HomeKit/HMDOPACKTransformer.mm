@@ -1,20 +1,20 @@
 @interface HMDOPACKTransformer
 + (Class)valueClass;
-+ (id)OPACKFromValue:(id)a3 error:(id *)a4;
-+ (id)allocWithZone:(_NSZone *)a3;
-+ (id)reverseTransformedValue:(id)a3 error:(id *)a4;
-+ (id)transformedValue:(id)a3 error:(id *)a4;
-+ (id)valueFromOPACK:(id)a3 error:(id *)a4;
-- (id)OPACKFromValue:(id)a3 error:(id *)a4;
-- (id)valueFromOPACK:(id)a3 error:(id *)a4;
++ (id)OPACKFromValue:(id)value error:(id *)error;
++ (id)allocWithZone:(_NSZone *)zone;
++ (id)reverseTransformedValue:(id)value error:(id *)error;
++ (id)transformedValue:(id)value error:(id *)error;
++ (id)valueFromOPACK:(id)k error:(id *)error;
+- (id)OPACKFromValue:(id)value error:(id *)error;
+- (id)valueFromOPACK:(id)k error:(id *)error;
 @end
 
 @implementation HMDOPACKTransformer
 
-- (id)valueFromOPACK:(id)a3 error:(id *)a4
+- (id)valueFromOPACK:(id)k error:(id *)error
 {
-  v5 = a3;
-  if (!v5)
+  kCopy = k;
+  if (!kCopy)
   {
     goto LABEL_13;
   }
@@ -24,7 +24,7 @@
     dispatch_once(&qword_10003B218, &stru_100030AD8);
   }
 
-  v6 = CFGetTypeID(v5);
+  v6 = CFGetTypeID(kCopy);
   if (v6 == qword_10003B1D8 || v6 == qword_10003B1E0 || v6 == qword_10003B1E8 || v6 == qword_10003B1F0 || v6 == qword_10003B1F8 || v6 == qword_10003B200 || v6 == qword_10003B208 || v6 == qword_10003B210)
   {
 
@@ -37,15 +37,15 @@
   if (isKindOfClass)
   {
 LABEL_16:
-    v8 = [objc_opt_class() valueFromOPACK:v5 error:a4];
+    v8 = [objc_opt_class() valueFromOPACK:kCopy error:error];
     goto LABEL_18;
   }
 
 LABEL_13:
-  if (a4)
+  if (error)
   {
     [NSError hmfErrorWithCode:3 reason:@"Expected OPACK-compatible value"];
-    *a4 = v8 = 0;
+    *error = v8 = 0;
   }
 
   else
@@ -58,30 +58,30 @@ LABEL_18:
   return v8;
 }
 
-- (id)OPACKFromValue:(id)a3 error:(id *)a4
+- (id)OPACKFromValue:(id)value error:(id *)error
 {
-  v5 = a3;
+  valueCopy = value;
   v6 = objc_opt_class();
-  v7 = [v6 valueClass];
+  valueClass = [v6 valueClass];
   if (objc_opt_isKindOfClass())
   {
-    a4 = [v6 OPACKFromValue:v5 error:a4];
+    error = [v6 OPACKFromValue:valueCopy error:error];
   }
 
-  else if (a4)
+  else if (error)
   {
-    v8 = [NSString stringWithFormat:@"Expected %@", v7];
-    *a4 = [NSError hmfErrorWithCode:3 reason:v8];
+    v8 = [NSString stringWithFormat:@"Expected %@", valueClass];
+    *error = [NSError hmfErrorWithCode:3 reason:v8];
 
-    a4 = 0;
+    error = 0;
   }
 
-  return a4;
+  return error;
 }
 
-+ (id)valueFromOPACK:(id)a3 error:(id *)a4
++ (id)valueFromOPACK:(id)k error:(id *)error
 {
-  v5 = a3;
+  kCopy = k;
   v6 = NSStringFromSelector(a2);
   v7 = [NSString stringWithFormat:@"You must override %@ in a subclass", v6];
   v8 = [NSException exceptionWithName:NSInternalInconsistencyException reason:v7 userInfo:0];
@@ -90,9 +90,9 @@ LABEL_18:
   objc_exception_throw(v8);
 }
 
-+ (id)OPACKFromValue:(id)a3 error:(id *)a4
++ (id)OPACKFromValue:(id)value error:(id *)error
 {
-  v5 = a3;
+  valueCopy = value;
   v6 = NSStringFromSelector(a2);
   v7 = [NSString stringWithFormat:@"You must override %@ in a subclass", v6];
   v8 = [NSException exceptionWithName:NSInternalInconsistencyException reason:v7 userInfo:0];
@@ -101,30 +101,30 @@ LABEL_18:
   objc_exception_throw(v8);
 }
 
-+ (id)reverseTransformedValue:(id)a3 error:(id *)a4
++ (id)reverseTransformedValue:(id)value error:(id *)error
 {
   v5 = OPACKDecodeData();
-  if (a4)
+  if (error)
   {
     v6 = [NSError errorWithDomain:NSOSStatusErrorDomain code:-6705 userInfo:0];
-    *a4 = v6;
+    *error = v6;
 
-    a4 = 0;
+    error = 0;
   }
 
-  return a4;
+  return error;
 }
 
-+ (id)transformedValue:(id)a3 error:(id *)a4
++ (id)transformedValue:(id)value error:(id *)error
 {
-  v5 = [a1 OPACKFromValue:a3 error:?];
+  v5 = [self OPACKFromValue:value error:?];
   if (v5)
   {
     Data = OPACKEncoderCreateData();
-    if (a4)
+    if (error)
     {
       v7 = [NSError errorWithDomain:"errorWithDomain:code:userInfo:" code:NSOSStatusErrorDomain userInfo:?];
-      *a4 = v7;
+      *error = v7;
     }
   }
 
@@ -141,19 +141,19 @@ LABEL_18:
   objc_exception_throw(v4);
 }
 
-+ (id)allocWithZone:(_NSZone *)a3
++ (id)allocWithZone:(_NSZone *)zone
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
-    return [(HMDOPACKTransformer *)HMDDefaultOPACKTransformer allocWithZone:a3];
+    return [(HMDOPACKTransformer *)HMDDefaultOPACKTransformer allocWithZone:zone];
   }
 
   else
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___HMDOPACKTransformer;
-    return objc_msgSendSuper2(&v6, "allocWithZone:", a3);
+    return objc_msgSendSuper2(&v6, "allocWithZone:", zone);
   }
 }
 

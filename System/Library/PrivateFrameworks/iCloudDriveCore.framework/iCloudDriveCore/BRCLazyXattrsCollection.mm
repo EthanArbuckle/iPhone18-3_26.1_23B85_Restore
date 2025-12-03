@@ -1,13 +1,13 @@
 @interface BRCLazyXattrsCollection
-- (BRCLazyXattrsCollection)initWithFD:(int)a3 sizeLimit:(int64_t)a4 syncable:(BOOL)a5 error:(id *)a6;
-- (id)getXattrValue:(id)a3 error:(id *)a4;
+- (BRCLazyXattrsCollection)initWithFD:(int)d sizeLimit:(int64_t)limit syncable:(BOOL)syncable error:(id *)error;
+- (id)getXattrValue:(id)value error:(id *)error;
 @end
 
 @implementation BRCLazyXattrsCollection
 
-- (BRCLazyXattrsCollection)initWithFD:(int)a3 sizeLimit:(int64_t)a4 syncable:(BOOL)a5 error:(id *)a6
+- (BRCLazyXattrsCollection)initWithFD:(int)d sizeLimit:(int64_t)limit syncable:(BOOL)syncable error:(id *)error
 {
-  v7 = a5;
+  syncableCopy = syncable;
   v52 = *MEMORY[0x277D85DE8];
   v47.receiver = self;
   v47.super_class = BRCLazyXattrsCollection;
@@ -16,18 +16,18 @@
   if (!v10)
   {
 LABEL_35:
-    v39 = [(BRCLazyXattrsCollection *)v11 contentXattrNamesBegin];
-    v40 = [(BRCLazyXattrsCollection *)v11 contentXattrNamesCount];
-    if (v40)
+    contentXattrNamesBegin = [(BRCLazyXattrsCollection *)v11 contentXattrNamesBegin];
+    contentXattrNamesCount = [(BRCLazyXattrsCollection *)v11 contentXattrNamesCount];
+    if (contentXattrNamesCount)
     {
-      qsort_b(v39, v40, 8uLL, &__block_literal_global_78);
+      qsort_b(contentXattrNamesBegin, contentXattrNamesCount, 8uLL, &__block_literal_global_78);
     }
 
-    v41 = [(BRCLazyXattrsCollection *)v11 structuralXattrNamesBegin];
-    v42 = [(BRCLazyXattrsCollection *)v11 structuralXattrNamesCount];
-    if (v42)
+    structuralXattrNamesBegin = [(BRCLazyXattrsCollection *)v11 structuralXattrNamesBegin];
+    structuralXattrNamesCount = [(BRCLazyXattrsCollection *)v11 structuralXattrNamesCount];
+    if (structuralXattrNamesCount)
     {
-      qsort_b(v41, v42, 8uLL, &__block_literal_global_78);
+      qsort_b(structuralXattrNamesBegin, structuralXattrNamesCount, 8uLL, &__block_literal_global_78);
     }
 
 LABEL_39:
@@ -35,13 +35,13 @@ LABEL_39:
     goto LABEL_40;
   }
 
-  v10->_sizeLimit = a4;
-  v10->_fd = a3;
-  v12 = flistxattr(a3, 0, 0, 0);
+  v10->_sizeLimit = limit;
+  v10->_fd = d;
+  v12 = flistxattr(d, 0, 0, 0);
   if ((v12 & 0x8000000000000000) != 0)
   {
-    v17 = [MEMORY[0x277CCA9B8] br_errorFromErrno];
-    if (v17)
+    br_errorFromErrno = [MEMORY[0x277CCA9B8] br_errorFromErrno];
+    if (br_errorFromErrno)
     {
       v18 = brc_bread_crumbs();
       v19 = brc_default_log();
@@ -51,40 +51,40 @@ LABEL_39:
         *buf = 136315906;
         *&buf[4] = "[BRCLazyXattrsCollection initWithFD:sizeLimit:syncable:error:]";
         *&buf[12] = 2080;
-        if (!a6)
+        if (!error)
         {
           v45 = "(ignored by caller)";
         }
 
         *&buf[14] = v45;
         *&buf[22] = 2112;
-        v49 = v17;
+        v49 = br_errorFromErrno;
         v50 = 2112;
         v51 = v18;
         _os_log_error_impl(&dword_223E7A000, v19, 0x90u, "[ERROR] %s: %s error: %@%@", buf, 0x2Au);
       }
     }
 
-    if (a6)
+    if (error)
     {
-      v20 = v17;
-      *a6 = v17;
+      v20 = br_errorFromErrno;
+      *error = br_errorFromErrno;
     }
 
     goto LABEL_39;
   }
 
   v13 = v12;
-  if (v12 <= a4)
+  if (v12 <= limit)
   {
     v21 = [objc_alloc(MEMORY[0x277CBEB28]) initWithLength:v12];
     xattrNamesList = v11->_xattrNamesList;
     v11->_xattrNamesList = v21;
 
-    if (flistxattr(a3, [(NSMutableData *)v11->_xattrNamesList mutableBytes], v13, 0) != v13)
+    if (flistxattr(d, [(NSMutableData *)v11->_xattrNamesList mutableBytes], v13, 0) != v13)
     {
-      v27 = [MEMORY[0x277CCA9B8] br_errorFromErrno];
-      if (v27)
+      br_errorFromErrno2 = [MEMORY[0x277CCA9B8] br_errorFromErrno];
+      if (br_errorFromErrno2)
       {
         v28 = brc_bread_crumbs();
         v29 = brc_default_log();
@@ -94,38 +94,38 @@ LABEL_39:
           *buf = 136315906;
           *&buf[4] = "[BRCLazyXattrsCollection initWithFD:sizeLimit:syncable:error:]";
           *&buf[12] = 2080;
-          if (!a6)
+          if (!error)
           {
             v46 = "(ignored by caller)";
           }
 
           *&buf[14] = v46;
           *&buf[22] = 2112;
-          v49 = v27;
+          v49 = br_errorFromErrno2;
           v50 = 2112;
           v51 = v28;
           _os_log_error_impl(&dword_223E7A000, v29, 0x90u, "[ERROR] %s: %s error: %@%@", buf, 0x2Au);
         }
       }
 
-      if (a6)
+      if (error)
       {
-        v30 = v27;
-        *a6 = v27;
+        v30 = br_errorFromErrno2;
+        *error = br_errorFromErrno2;
       }
 
       goto LABEL_25;
     }
 
-    v23 = [(BRCLazyXattrsCollection *)v11 xattrNamesListBegin];
-    v24 = [(BRCLazyXattrsCollection *)v11 xattrNamesListEnd];
+    xattrNamesListBegin = [(BRCLazyXattrsCollection *)v11 xattrNamesListBegin];
+    xattrNamesListEnd = [(BRCLazyXattrsCollection *)v11 xattrNamesListEnd];
     *buf = MEMORY[0x277D85DD0];
     *&buf[8] = 3221225472;
     *&buf[16] = __countSyncableXattrs_block_invoke;
     v49 = &__block_descriptor_33_e9_B16__0r_8l;
-    LOBYTE(v50) = v7;
+    LOBYTE(v50) = syncableCopy;
     v25 = buf;
-    if (v23 >= v24)
+    if (xattrNamesListBegin >= xattrNamesListEnd)
     {
       v26 = 0;
     }
@@ -135,11 +135,11 @@ LABEL_39:
       v26 = 0;
       do
       {
-        v26 += (*&buf[16])(v25, v23);
-        v23 += strlen(v23) + 1;
+        v26 += (*&buf[16])(v25, xattrNamesListBegin);
+        xattrNamesListBegin += strlen(xattrNamesListBegin) + 1;
       }
 
-      while (v23 < v24);
+      while (xattrNamesListBegin < xattrNamesListEnd);
     }
 
     v11->_xattrCount = v26;
@@ -147,17 +147,17 @@ LABEL_39:
     xattrNamesData = v11->_xattrNamesData;
     v11->_xattrNamesData = v31;
 
-    v33 = [(BRCLazyXattrsCollection *)v11 xattrNamesListBegin];
-    if (v33 < [(BRCLazyXattrsCollection *)v11 xattrNamesListEnd])
+    xattrNamesListBegin2 = [(BRCLazyXattrsCollection *)v11 xattrNamesListBegin];
+    if (xattrNamesListBegin2 < [(BRCLazyXattrsCollection *)v11 xattrNamesListEnd])
     {
       v34 = 0;
       do
       {
-        v35 = brc_xattr_flags_from_name(v33);
+        v35 = brc_xattr_flags_from_name(xattrNamesListBegin2);
         v36 = v35;
-        if ((xattr_intent_with_flags(4u, v35) == 0) != v7)
+        if ((xattr_intent_with_flags(4u, v35) == 0) != syncableCopy)
         {
-          v37 = [(BRCLazyXattrsCollection *)v11 xattrNamesBegin];
+          xattrNamesBegin = [(BRCLazyXattrsCollection *)v11 xattrNamesBegin];
           if ((v36 & 2) != 0)
           {
             contentXattrCount = v11->_contentXattrCount;
@@ -170,13 +170,13 @@ LABEL_39:
             contentXattrCount = v11->_xattrCount - v34;
           }
 
-          *(v37 + 8 * contentXattrCount) = v33;
+          *(xattrNamesBegin + 8 * contentXattrCount) = xattrNamesListBegin2;
         }
 
-        v33 += strlen(v33) + 1;
+        xattrNamesListBegin2 += strlen(xattrNamesListBegin2) + 1;
       }
 
-      while (v33 < [(BRCLazyXattrsCollection *)v11 xattrNamesListEnd]);
+      while (xattrNamesListBegin2 < [(BRCLazyXattrsCollection *)v11 xattrNamesListEnd]);
     }
 
     goto LABEL_35;
@@ -189,7 +189,7 @@ LABEL_39:
     [BRCLazyXattrsCollection initWithFD:sizeLimit:syncable:error:];
   }
 
-  if (!a6)
+  if (!error)
   {
 LABEL_25:
     v16 = 0;
@@ -197,17 +197,17 @@ LABEL_25:
   }
 
   [MEMORY[0x277CCA9B8] br_errorWithPOSIXCode:12];
-  *a6 = v16 = 0;
+  *error = v16 = 0;
 LABEL_40:
 
   v43 = *MEMORY[0x277D85DE8];
   return v16;
 }
 
-- (id)getXattrValue:(id)a3 error:(id *)a4
+- (id)getXattrValue:(id)value error:(id *)error
 {
   v41 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  valueCopy = value;
   cachedXattrs = self->_cachedXattrs;
   if (!cachedXattrs)
   {
@@ -218,12 +218,12 @@ LABEL_40:
     cachedXattrs = self->_cachedXattrs;
   }
 
-  v10 = [(NSMutableDictionary *)cachedXattrs valueForKey:v6];
+  v10 = [(NSMutableDictionary *)cachedXattrs valueForKey:valueCopy];
   if (v10)
   {
-    v11 = [MEMORY[0x277CBEB68] null];
+    null = [MEMORY[0x277CBEB68] null];
 
-    if (v10 != v11)
+    if (v10 != null)
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -256,16 +256,16 @@ LABEL_15:
   }
 
   fd = self->_fd;
-  v15 = [v6 UTF8String];
+  uTF8String = [valueCopy UTF8String];
   v16 = self->_sizeLimit - self->_cacheSize;
   v32 = 0;
-  v12 = BRCGetXattrValue(fd, v15, v16, &v32);
+  v12 = BRCGetXattrValue(fd, uTF8String, v16, &v32);
   v17 = v32;
   v18 = v17;
   if (v12)
   {
-    [(NSMutableDictionary *)self->_cachedXattrs setObject:v12 forKey:v6];
-    v19 = [v6 length];
+    [(NSMutableDictionary *)self->_cachedXattrs setObject:v12 forKey:valueCopy];
+    v19 = [valueCopy length];
     self->_cacheSize += [v12 length] + v19;
     v20 = v12;
   }
@@ -283,7 +283,7 @@ LABEL_15:
         *buf = 136315906;
         v34 = "[BRCLazyXattrsCollection getXattrValue:error:]";
         v35 = 2080;
-        if (!a4)
+        if (!error)
         {
           v31 = "(ignored by caller)";
         }
@@ -297,17 +297,17 @@ LABEL_15:
       }
     }
 
-    if (a4)
+    if (error)
     {
       v26 = v23;
-      *a4 = v23;
+      *error = v23;
     }
 
-    if (!*a4)
+    if (!*error)
     {
       v27 = self->_cachedXattrs;
-      v28 = [MEMORY[0x277CBEB68] null];
-      [(NSMutableDictionary *)v27 setObject:v28 forKey:v6];
+      null2 = [MEMORY[0x277CBEB68] null];
+      [(NSMutableDictionary *)v27 setObject:null2 forKey:valueCopy];
     }
   }
 

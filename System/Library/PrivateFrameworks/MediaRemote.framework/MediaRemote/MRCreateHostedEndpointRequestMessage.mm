@@ -1,13 +1,13 @@
 @interface MRCreateHostedEndpointRequestMessage
-- (MRCreateHostedEndpointRequestMessage)initWithOutputDeviceUIDs:(id)a3;
+- (MRCreateHostedEndpointRequestMessage)initWithOutputDeviceUIDs:(id)ds;
 - (NSArray)outputDeviceUIDs;
 @end
 
 @implementation MRCreateHostedEndpointRequestMessage
 
-- (MRCreateHostedEndpointRequestMessage)initWithOutputDeviceUIDs:(id)a3
+- (MRCreateHostedEndpointRequestMessage)initWithOutputDeviceUIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   v10.receiver = self;
   v10.super_class = MRCreateHostedEndpointRequestMessage;
   v5 = [(MRProtocolMessage *)&v10 init];
@@ -16,9 +16,9 @@
     v6 = objc_alloc_init(_MRCreateHostedEndpointRequestProtobuf);
     [(MRProtocolMessage *)v5 setUnderlyingCodableMessage:v6];
 
-    v7 = [v4 mutableCopy];
-    v8 = [(MRProtocolMessage *)v5 underlyingCodableMessage];
-    [v8 setOutputDeviceUIDs:v7];
+    v7 = [dsCopy mutableCopy];
+    underlyingCodableMessage = [(MRProtocolMessage *)v5 underlyingCodableMessage];
+    [underlyingCodableMessage setOutputDeviceUIDs:v7];
   }
 
   return v5;
@@ -26,10 +26,10 @@
 
 - (NSArray)outputDeviceUIDs
 {
-  v2 = [(MRProtocolMessage *)self underlyingCodableMessage];
-  v3 = [v2 outputDeviceUIDs];
+  underlyingCodableMessage = [(MRProtocolMessage *)self underlyingCodableMessage];
+  outputDeviceUIDs = [underlyingCodableMessage outputDeviceUIDs];
 
-  return v3;
+  return outputDeviceUIDs;
 }
 
 @end

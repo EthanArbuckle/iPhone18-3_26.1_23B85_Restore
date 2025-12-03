@@ -1,25 +1,25 @@
 @interface RTIDocumentTraits
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (RTIDocumentTraits)init;
-- (RTIDocumentTraits)initWithCoder:(id)a3;
+- (RTIDocumentTraits)initWithCoder:(id)coder;
 - (_NSRange)validTextRange;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)copyContextualPropertiesFromDocumentTraits:(id)a3;
+- (void)copyContextualPropertiesFromDocumentTraits:(id)traits;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)setDevicePasscodeEntry:(BOOL)a3;
-- (void)setDisableAutomaticKeyboardUI:(BOOL)a3;
-- (void)setDisableInputBars:(BOOL)a3;
-- (void)setDisablePrediction:(BOOL)a3;
-- (void)setExplicitAutoFillMode:(BOOL)a3;
-- (void)setHidePrediction:(BOOL)a3;
-- (void)setShouldReverseLayoutDirection:(BOOL)a3;
-- (void)setSingleLineDocument:(BOOL)a3;
-- (void)setSupportsAdaptiveImageGlyph:(BOOL)a3;
-- (void)setSupportsEmojiImageTextAttachments:(BOOL)a3;
-- (void)setSupportsGenmojiCreation:(BOOL)a3;
-- (void)setSupportsImagePaste:(BOOL)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setDevicePasscodeEntry:(BOOL)entry;
+- (void)setDisableAutomaticKeyboardUI:(BOOL)i;
+- (void)setDisableInputBars:(BOOL)bars;
+- (void)setDisablePrediction:(BOOL)prediction;
+- (void)setExplicitAutoFillMode:(BOOL)mode;
+- (void)setHidePrediction:(BOOL)prediction;
+- (void)setShouldReverseLayoutDirection:(BOOL)direction;
+- (void)setSingleLineDocument:(BOOL)document;
+- (void)setSupportsAdaptiveImageGlyph:(BOOL)glyph;
+- (void)setSupportsEmojiImageTextAttachments:(BOOL)attachments;
+- (void)setSupportsGenmojiCreation:(BOOL)creation;
+- (void)setSupportsImagePaste:(BOOL)paste;
 @end
 
 @implementation RTIDocumentTraits
@@ -52,9 +52,9 @@
   [(RTIDocumentTraits *)&v3 dealloc];
 }
 
-- (void)setSupportsImagePaste:(BOOL)a3
+- (void)setSupportsImagePaste:(BOOL)paste
 {
-  if (a3)
+  if (paste)
   {
     v3 = 2;
   }
@@ -67,9 +67,9 @@
   LOWORD(self->_textInputTraitsMask.integerValue) = self->_textInputTraitsMask.integerValue & 0xFFFD | v3;
 }
 
-- (void)setSupportsEmojiImageTextAttachments:(BOOL)a3
+- (void)setSupportsEmojiImageTextAttachments:(BOOL)attachments
 {
-  if (a3)
+  if (attachments)
   {
     v3 = 1024;
   }
@@ -82,9 +82,9 @@
   LOWORD(self->_textInputTraitsMask.integerValue) = self->_textInputTraitsMask.integerValue & 0xFBFF | v3;
 }
 
-- (void)setSupportsAdaptiveImageGlyph:(BOOL)a3
+- (void)setSupportsAdaptiveImageGlyph:(BOOL)glyph
 {
-  if (a3)
+  if (glyph)
   {
     v3 = 1024;
   }
@@ -97,9 +97,9 @@
   LOWORD(self->_textInputTraitsMask.integerValue) = self->_textInputTraitsMask.integerValue & 0xFBFF | v3;
 }
 
-- (void)setSupportsGenmojiCreation:(BOOL)a3
+- (void)setSupportsGenmojiCreation:(BOOL)creation
 {
-  if (a3)
+  if (creation)
   {
     v3 = 2048;
   }
@@ -112,9 +112,9 @@
   LOWORD(self->_textInputTraitsMask.integerValue) = self->_textInputTraitsMask.integerValue & 0xF7FF | v3;
 }
 
-- (void)setDevicePasscodeEntry:(BOOL)a3
+- (void)setDevicePasscodeEntry:(BOOL)entry
 {
-  if (a3)
+  if (entry)
   {
     v3 = 4;
   }
@@ -127,9 +127,9 @@
   LOWORD(self->_textInputTraitsMask.integerValue) = self->_textInputTraitsMask.integerValue & 0xFFFB | v3;
 }
 
-- (void)setDisableInputBars:(BOOL)a3
+- (void)setDisableInputBars:(BOOL)bars
 {
-  if (a3)
+  if (bars)
   {
     v3 = 8;
   }
@@ -142,9 +142,9 @@
   LOWORD(self->_textInputTraitsMask.integerValue) = self->_textInputTraitsMask.integerValue & 0xFFF7 | v3;
 }
 
-- (void)setDisablePrediction:(BOOL)a3
+- (void)setDisablePrediction:(BOOL)prediction
 {
-  if (a3)
+  if (prediction)
   {
     v3 = 16;
   }
@@ -157,9 +157,9 @@
   LOWORD(self->_textInputTraitsMask.integerValue) = self->_textInputTraitsMask.integerValue & 0xFFEF | v3;
 }
 
-- (void)setHidePrediction:(BOOL)a3
+- (void)setHidePrediction:(BOOL)prediction
 {
-  if (a3)
+  if (prediction)
   {
     v3 = 32;
   }
@@ -172,9 +172,9 @@
   LOWORD(self->_textInputTraitsMask.integerValue) = self->_textInputTraitsMask.integerValue & 0xFFDF | v3;
 }
 
-- (void)setDisableAutomaticKeyboardUI:(BOOL)a3
+- (void)setDisableAutomaticKeyboardUI:(BOOL)i
 {
-  if (a3)
+  if (i)
   {
     v3 = 64;
   }
@@ -187,9 +187,9 @@
   LOWORD(self->_textInputTraitsMask.integerValue) = self->_textInputTraitsMask.integerValue & 0xFFBF | v3;
 }
 
-- (void)setShouldReverseLayoutDirection:(BOOL)a3
+- (void)setShouldReverseLayoutDirection:(BOOL)direction
 {
-  if (a3)
+  if (direction)
   {
     v3 = 128;
   }
@@ -202,9 +202,9 @@
   LOWORD(self->_textInputTraitsMask.integerValue) = self->_textInputTraitsMask.integerValue & 0xFF7F | v3;
 }
 
-- (void)setExplicitAutoFillMode:(BOOL)a3
+- (void)setExplicitAutoFillMode:(BOOL)mode
 {
-  if (a3)
+  if (mode)
   {
     v3 = 256;
   }
@@ -217,9 +217,9 @@
   LOWORD(self->_textInputTraitsMask.integerValue) = self->_textInputTraitsMask.integerValue & 0xFEFF | v3;
 }
 
-- (void)setSingleLineDocument:(BOOL)a3
+- (void)setSingleLineDocument:(BOOL)document
 {
-  if (a3)
+  if (document)
   {
     v3 = 512;
   }
@@ -232,10 +232,10 @@
   LOWORD(self->_textInputTraitsMask.integerValue) = self->_textInputTraitsMask.integerValue & 0xFDFF | v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v43 = a3;
-  if (([v43 allowsKeyedCoding] & 1) == 0)
+  coderCopy = coder;
+  if (([coderCopy allowsKeyedCoding] & 1) == 0)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"The coder must allow keyed coding."];
   }
@@ -243,7 +243,7 @@
   processId = self->_processId;
   if (processId)
   {
-    [v43 encodeInt32:processId forKey:@"pId"];
+    [coderCopy encodeInt32:processId forKey:@"pId"];
   }
 
   appId = self->_appId;
@@ -253,9 +253,9 @@
     {
       if ([(NSString *)self->_appId hasSuffix:self->_bundleId])
       {
-        [v43 encodeBool:1 forKey:@"a2bId"];
+        [coderCopy encodeBool:1 forKey:@"a2bId"];
         v6 = [(NSString *)self->_appId substringToIndex:[(NSString *)self->_appId length]- [(NSString *)self->_bundleId length]];
-        [v43 encodeObject:v6 forKey:@"aId"];
+        [coderCopy encodeObject:v6 forKey:@"aId"];
 
         goto LABEL_11;
       }
@@ -263,26 +263,26 @@
       appId = self->_appId;
     }
 
-    [v43 encodeObject:appId forKey:@"aId"];
+    [coderCopy encodeObject:appId forKey:@"aId"];
   }
 
 LABEL_11:
   bundleId = self->_bundleId;
   if (bundleId)
   {
-    [v43 encodeObject:bundleId forKey:@"bId"];
+    [coderCopy encodeObject:bundleId forKey:@"bId"];
   }
 
   appName = self->_appName;
   if (appName)
   {
-    [v43 encodeObject:appName forKey:@"app"];
+    [coderCopy encodeObject:appName forKey:@"app"];
   }
 
   localizedAppName = self->_localizedAppName;
   if (localizedAppName)
   {
-    [v43 encodeObject:localizedAppName forKey:@"locApp"];
+    [coderCopy encodeObject:localizedAppName forKey:@"locApp"];
   }
 
   if ([(NSArray *)self->_associatedDomains count])
@@ -290,213 +290,213 @@ LABEL_11:
     v10 = [(NSArray *)self->_associatedDomains componentsJoinedByString:@"\n"];
     v11 = [v10 copy];
 
-    [v43 encodeObject:v11 forKey:@"assdDmns"];
+    [coderCopy encodeObject:v11 forKey:@"assdDmns"];
   }
 
   responderId = self->_responderId;
   if (responderId)
   {
-    [v43 encodeObject:responderId forKey:@"rId"];
+    [coderCopy encodeObject:responderId forKey:@"rId"];
   }
 
   sceneID = self->_sceneID;
   if (sceneID)
   {
-    [v43 encodeObject:sceneID forKey:@"sceneId"];
+    [coderCopy encodeObject:sceneID forKey:@"sceneId"];
   }
 
   entityID = self->_entityID;
   if (entityID)
   {
-    [v43 encodeInt64:entityID forKey:@"entityId"];
+    [coderCopy encodeInt64:entityID forKey:@"entityId"];
   }
 
   contextID = self->_contextID;
   if (contextID)
   {
-    [v43 encodeInt32:contextID forKey:@"ctxId"];
+    [coderCopy encodeInt32:contextID forKey:@"ctxId"];
   }
 
   layerID = self->_layerID;
   if (layerID)
   {
-    [v43 encodeInt64:layerID forKey:@"layerId"];
+    [coderCopy encodeInt64:layerID forKey:@"layerId"];
   }
 
   sceneExclusivityIdentifier = self->_sceneExclusivityIdentifier;
   if (sceneExclusivityIdentifier)
   {
-    [v43 encodeObject:sceneExclusivityIdentifier forKey:@"sceneExId"];
+    [coderCopy encodeObject:sceneExclusivityIdentifier forKey:@"sceneExId"];
   }
 
   delegateConformanceType = self->_delegateConformanceType;
   if (delegateConformanceType)
   {
-    [v43 encodeInt32:delegateConformanceType forKey:@"cfmType"];
+    [coderCopy encodeInt32:delegateConformanceType forKey:@"cfmType"];
   }
 
   title = self->_title;
   if (title)
   {
-    [v43 encodeObject:title forKey:@"title"];
+    [coderCopy encodeObject:title forKey:@"title"];
   }
 
   prompt = self->_prompt;
   if (prompt)
   {
-    [v43 encodeObject:prompt forKey:@"prompt"];
+    [coderCopy encodeObject:prompt forKey:@"prompt"];
   }
 
   textInputTraits = self->_textInputTraits;
   if (textInputTraits)
   {
-    [v43 encodeObject:textInputTraits forKey:@"tiTraits"];
+    [coderCopy encodeObject:textInputTraits forKey:@"tiTraits"];
   }
 
   keyboardActionButtonConfiguration = self->_keyboardActionButtonConfiguration;
   if (keyboardActionButtonConfiguration)
   {
-    [v43 encodeObject:keyboardActionButtonConfiguration forKey:@"kABC"];
+    [coderCopy encodeObject:keyboardActionButtonConfiguration forKey:@"kABC"];
   }
 
   textInputContextIdentifier = self->_textInputContextIdentifier;
   if (textInputContextIdentifier)
   {
-    [v43 encodeObject:textInputContextIdentifier forKey:@"tiCtxId"];
+    [coderCopy encodeObject:textInputContextIdentifier forKey:@"tiCtxId"];
   }
 
   PINEntrySeparatorIndexes = self->_PINEntrySeparatorIndexes;
   if (PINEntrySeparatorIndexes)
   {
-    [v43 encodeObject:PINEntrySeparatorIndexes forKey:@"pinIdxs"];
+    [coderCopy encodeObject:PINEntrySeparatorIndexes forKey:@"pinIdxs"];
   }
 
   length = self->_validTextRange.length;
   if (self->_validTextRange.location || length != -1)
   {
-    [v43 encodeInt32:self->_validTextRange.location | (length << 16) forKey:@"validRange"];
+    [coderCopy encodeInt32:self->_validTextRange.location | (length << 16) forKey:@"validRange"];
   }
 
   autofillMode = self->_autofillMode;
   if (autofillMode)
   {
-    [v43 encodeInt32:autofillMode forKey:@"afMode"];
+    [coderCopy encodeInt32:autofillMode forKey:@"afMode"];
   }
 
   autofillSubMode = self->_autofillSubMode;
   if (autofillSubMode)
   {
-    [v43 encodeInt32:autofillSubMode forKey:@"afSubMode"];
+    [coderCopy encodeInt32:autofillSubMode forKey:@"afSubMode"];
   }
 
   if ([(NSDictionary *)self->_autofillContext count])
   {
-    [v43 encodeObject:self->_autofillContext forKey:@"afCtx"];
+    [coderCopy encodeObject:self->_autofillContext forKey:@"afCtx"];
   }
 
   passwordRules = self->_passwordRules;
   if (passwordRules)
   {
-    [v43 encodeObject:passwordRules forKey:@"pwRules"];
+    [coderCopy encodeObject:passwordRules forKey:@"pwRules"];
   }
 
   inputViewInfo = self->_inputViewInfo;
-  v30 = v43;
+  v30 = coderCopy;
   if (inputViewInfo)
   {
-    [v43 encodeObject:inputViewInfo forKey:@"ivInfo"];
-    v30 = v43;
+    [coderCopy encodeObject:inputViewInfo forKey:@"ivInfo"];
+    v30 = coderCopy;
   }
 
   assistantViewInfo = self->_assistantViewInfo;
   if (assistantViewInfo)
   {
-    [v43 encodeObject:assistantViewInfo forKey:@"avInfo"];
-    v30 = v43;
+    [coderCopy encodeObject:assistantViewInfo forKey:@"avInfo"];
+    v30 = coderCopy;
   }
 
   assistantItem = self->_assistantItem;
   if (assistantItem)
   {
-    [v43 encodeObject:assistantItem forKey:@"aItem"];
-    v30 = v43;
+    [coderCopy encodeObject:assistantItem forKey:@"aItem"];
+    v30 = coderCopy;
   }
 
   recipientId = self->_recipientId;
   if (recipientId)
   {
-    [v43 encodeObject:recipientId forKey:@"recpId"];
-    v30 = v43;
+    [coderCopy encodeObject:recipientId forKey:@"recpId"];
+    v30 = coderCopy;
   }
 
   responseContext = self->_responseContext;
   if (responseContext)
   {
-    [v43 encodeObject:responseContext forKey:@"respCtx"];
-    v30 = v43;
+    [coderCopy encodeObject:responseContext forKey:@"respCtx"];
+    v30 = coderCopy;
   }
 
   inputContextHistory = self->_inputContextHistory;
   if (inputContextHistory)
   {
-    [v43 encodeObject:inputContextHistory forKey:@"ctxHistory"];
-    v30 = v43;
+    [coderCopy encodeObject:inputContextHistory forKey:@"ctxHistory"];
+    v30 = coderCopy;
   }
 
   enabledSupplementalLexiconIdentifiers = self->_enabledSupplementalLexiconIdentifiers;
   if (enabledSupplementalLexiconIdentifiers)
   {
-    [v43 encodeObject:enabledSupplementalLexiconIdentifiers forKey:@"aSuppLexIds"];
-    v30 = v43;
+    [coderCopy encodeObject:enabledSupplementalLexiconIdentifiers forKey:@"aSuppLexIds"];
+    v30 = coderCopy;
   }
 
   supportedPayloadIds = self->_supportedPayloadIds;
   if (supportedPayloadIds)
   {
-    [v43 encodeObject:supportedPayloadIds forKey:@"payIds"];
-    v30 = v43;
+    [coderCopy encodeObject:supportedPayloadIds forKey:@"payIds"];
+    v30 = coderCopy;
   }
 
   userInfo = self->_userInfo;
   if (userInfo)
   {
-    [v43 encodeObject:userInfo forKey:@"userInfo"];
-    v30 = v43;
+    [coderCopy encodeObject:userInfo forKey:@"userInfo"];
+    v30 = coderCopy;
   }
 
   fenceHandle = self->_fenceHandle;
   if (fenceHandle)
   {
-    [v43 encodeObject:fenceHandle forKey:@"fenceHandle"];
-    v30 = v43;
+    [coderCopy encodeObject:fenceHandle forKey:@"fenceHandle"];
+    v30 = coderCopy;
   }
 
   textInputModeData = self->_textInputModeData;
   if (textInputModeData)
   {
-    [v43 encodeObject:textInputModeData forKey:@"inputModeData"];
-    v30 = v43;
+    [coderCopy encodeObject:textInputModeData forKey:@"inputModeData"];
+    v30 = coderCopy;
   }
 
   additionalLocaleIdentifiers = self->_additionalLocaleIdentifiers;
   if (additionalLocaleIdentifiers)
   {
-    [v43 encodeObject:additionalLocaleIdentifiers forKey:@"addedLocales"];
-    v30 = v43;
+    [coderCopy encodeObject:additionalLocaleIdentifiers forKey:@"addedLocales"];
+    v30 = coderCopy;
   }
 
   integerValue = self->_textInputTraitsMask.integerValue;
   if (integerValue)
   {
-    [v43 encodeInt32:integerValue forKey:@"traitsMask"];
-    v30 = v43;
+    [coderCopy encodeInt32:integerValue forKey:@"traitsMask"];
+    v30 = coderCopy;
   }
 }
 
-- (RTIDocumentTraits)initWithCoder:(id)a3
+- (RTIDocumentTraits)initWithCoder:(id)coder
 {
-  v4 = a3;
-  if (([v4 allowsKeyedCoding] & 1) == 0)
+  coderCopy = coder;
+  if (([coderCopy allowsKeyedCoding] & 1) == 0)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"The decoder must allow keyed coding."];
   }
@@ -506,14 +506,14 @@ LABEL_11:
   v5 = [(RTIDocumentTraits *)&v101 init];
   if (v5)
   {
-    v5->_processId = [v4 decodeInt32ForKey:@"pId"];
-    v6 = [v4 decodeBoolForKey:@"a2bId"];
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"aId"];
+    v5->_processId = [coderCopy decodeInt32ForKey:@"pId"];
+    v6 = [coderCopy decodeBoolForKey:@"a2bId"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"aId"];
     v8 = [v7 copy];
     appId = v5->_appId;
     v5->_appId = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bId"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bId"];
     v11 = [v10 copy];
     bundleId = v5->_bundleId;
     v5->_bundleId = v11;
@@ -525,17 +525,17 @@ LABEL_11:
       v5->_appId = v13;
     }
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"app"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"app"];
     v16 = [v15 copy];
     appName = v5->_appName;
     v5->_appName = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"locApp"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"locApp"];
     v19 = [v18 copy];
     localizedAppName = v5->_localizedAppName;
     v5->_localizedAppName = v19;
 
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"assdDmns"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"assdDmns"];
     v22 = v21;
     if (v21)
     {
@@ -547,53 +547,53 @@ LABEL_11:
     v25 = MEMORY[0x1E695DFD8];
     v26 = objc_opt_class();
     v27 = [v25 setWithObjects:{v26, objc_opt_class(), 0}];
-    v28 = [v4 decodeObjectOfClasses:v27 forKey:@"rId"];
+    v28 = [coderCopy decodeObjectOfClasses:v27 forKey:@"rId"];
     v29 = [v28 copy];
     responderId = v5->_responderId;
     v5->_responderId = v29;
 
-    v31 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sceneId"];
+    v31 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sceneId"];
     v32 = [v31 copy];
     sceneID = v5->_sceneID;
     v5->_sceneID = v32;
 
-    v5->_entityID = [v4 decodeInt64ForKey:@"entityId"];
-    v5->_contextID = [v4 decodeInt32ForKey:@"ctxId"];
-    v5->_layerID = [v4 decodeInt64ForKey:@"layerId"];
-    v34 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sceneExId"];
+    v5->_entityID = [coderCopy decodeInt64ForKey:@"entityId"];
+    v5->_contextID = [coderCopy decodeInt32ForKey:@"ctxId"];
+    v5->_layerID = [coderCopy decodeInt64ForKey:@"layerId"];
+    v34 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sceneExId"];
     sceneExclusivityIdentifier = v5->_sceneExclusivityIdentifier;
     v5->_sceneExclusivityIdentifier = v34;
 
-    v5->_delegateConformanceType = [v4 decodeInt32ForKey:@"cfmType"];
-    v36 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"title"];
+    v5->_delegateConformanceType = [coderCopy decodeInt32ForKey:@"cfmType"];
+    v36 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"title"];
     v37 = [v36 copy];
     title = v5->_title;
     v5->_title = v37;
 
-    v39 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"prompt"];
+    v39 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"prompt"];
     v40 = [v39 copy];
     prompt = v5->_prompt;
     v5->_prompt = v40;
 
-    v42 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"tiTraits"];
+    v42 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"tiTraits"];
     textInputTraits = v5->_textInputTraits;
     v5->_textInputTraits = v42;
 
-    v44 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kABC"];
+    v44 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kABC"];
     keyboardActionButtonConfiguration = v5->_keyboardActionButtonConfiguration;
     v5->_keyboardActionButtonConfiguration = v44;
 
-    v46 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"tiCtxId"];
+    v46 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"tiCtxId"];
     textInputContextIdentifier = v5->_textInputContextIdentifier;
     v5->_textInputContextIdentifier = v46;
 
-    v48 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pinIdxs"];
+    v48 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pinIdxs"];
     PINEntrySeparatorIndexes = v5->_PINEntrySeparatorIndexes;
     v5->_PINEntrySeparatorIndexes = v48;
 
-    if ([v4 containsValueForKey:@"validRange"])
+    if ([coderCopy containsValueForKey:@"validRange"])
     {
-      v50 = [v4 decodeInt32ForKey:@"validRange"];
+      v50 = [coderCopy decodeInt32ForKey:@"validRange"];
       v51 = v50;
       v52 = HIWORD(v50);
     }
@@ -606,9 +606,9 @@ LABEL_11:
 
     v5->_validTextRange.location = v51;
     v5->_validTextRange.length = v52;
-    if ([v4 containsValueForKey:@"afMode"])
+    if ([coderCopy containsValueForKey:@"afMode"])
     {
-      v53 = [v4 decodeInt32ForKey:@"afMode"];
+      v53 = [coderCopy decodeInt32ForKey:@"afMode"];
     }
 
     else
@@ -617,9 +617,9 @@ LABEL_11:
     }
 
     v5->_autofillMode = v53;
-    if ([v4 containsValueForKey:@"afSubMode"])
+    if ([coderCopy containsValueForKey:@"afSubMode"])
     {
-      v54 = [v4 decodeInt32ForKey:@"afSubMode"];
+      v54 = [coderCopy decodeInt32ForKey:@"afSubMode"];
     }
 
     else
@@ -634,46 +634,46 @@ LABEL_11:
     v58 = objc_opt_class();
     v59 = objc_opt_class();
     v60 = [v55 setWithObjects:{v56, v57, v58, v59, objc_opt_class(), 0}];
-    v61 = [v4 decodeObjectOfClasses:v60 forKey:@"afCtx"];
+    v61 = [coderCopy decodeObjectOfClasses:v60 forKey:@"afCtx"];
     autofillContext = v5->_autofillContext;
     v5->_autofillContext = v61;
 
-    v63 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pwRules"];
+    v63 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pwRules"];
     passwordRules = v5->_passwordRules;
     v5->_passwordRules = v63;
 
-    v65 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ivInfo"];
+    v65 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ivInfo"];
     inputViewInfo = v5->_inputViewInfo;
     v5->_inputViewInfo = v65;
 
-    v67 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"avInfo"];
+    v67 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"avInfo"];
     assistantViewInfo = v5->_assistantViewInfo;
     v5->_assistantViewInfo = v67;
 
-    v69 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"aItem"];
+    v69 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"aItem"];
     assistantItem = v5->_assistantItem;
     v5->_assistantItem = v69;
 
-    v71 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"recpId"];
+    v71 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"recpId"];
     recipientId = v5->_recipientId;
     v5->_recipientId = v71;
 
-    v73 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"respCtx"];
+    v73 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"respCtx"];
     responseContext = v5->_responseContext;
     v5->_responseContext = v73;
 
-    v75 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ctxHistory"];
+    v75 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ctxHistory"];
     inputContextHistory = v5->_inputContextHistory;
     v5->_inputContextHistory = v75;
 
-    v77 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"aSuppLexIds"];
+    v77 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"aSuppLexIds"];
     enabledSupplementalLexiconIdentifiers = v5->_enabledSupplementalLexiconIdentifiers;
     v5->_enabledSupplementalLexiconIdentifiers = v77;
 
     v79 = MEMORY[0x1E695DFD8];
     v80 = objc_opt_class();
     v81 = [v79 setWithObjects:{v80, objc_opt_class(), 0}];
-    v82 = [v4 decodeObjectOfClasses:v81 forKey:@"payIds"];
+    v82 = [coderCopy decodeObjectOfClasses:v81 forKey:@"payIds"];
     supportedPayloadIds = v5->_supportedPayloadIds;
     v5->_supportedPayloadIds = v82;
 
@@ -682,139 +682,139 @@ LABEL_11:
     v86 = objc_opt_class();
     v87 = objc_opt_class();
     v88 = [v84 setWithObjects:{v85, v86, v87, objc_opt_class(), 0}];
-    v89 = [v4 decodeObjectOfClasses:v88 forKey:@"userInfo"];
+    v89 = [coderCopy decodeObjectOfClasses:v88 forKey:@"userInfo"];
     userInfo = v5->_userInfo;
     v5->_userInfo = v89;
 
-    v91 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"fenceHandle"];
+    v91 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"fenceHandle"];
     fenceHandle = v5->_fenceHandle;
     v5->_fenceHandle = v91;
 
-    v93 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"inputModeData"];
+    v93 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"inputModeData"];
     textInputModeData = v5->_textInputModeData;
     v5->_textInputModeData = v93;
 
     v95 = MEMORY[0x1E695DFD8];
     v96 = objc_opt_class();
     v97 = [v95 setWithObjects:{v96, objc_opt_class(), 0}];
-    v98 = [v4 decodeObjectOfClasses:v97 forKey:@"addedLocales"];
+    v98 = [coderCopy decodeObjectOfClasses:v97 forKey:@"addedLocales"];
     additionalLocaleIdentifiers = v5->_additionalLocaleIdentifiers;
     v5->_additionalLocaleIdentifiers = v98;
 
-    v5->_textInputTraitsMask.integerValue = [v4 decodeInt32ForKey:@"traitsMask"];
+    v5->_textInputTraitsMask.integerValue = [coderCopy decodeInt32ForKey:@"traitsMask"];
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[RTIDocumentTraits allocWithZone:](RTIDocumentTraits init];
   v5->_processId = self->_processId;
-  v6 = [(NSString *)self->_appId copyWithZone:a3];
+  v6 = [(NSString *)self->_appId copyWithZone:zone];
   appId = v5->_appId;
   v5->_appId = v6;
 
-  v8 = [(NSString *)self->_bundleId copyWithZone:a3];
+  v8 = [(NSString *)self->_bundleId copyWithZone:zone];
   bundleId = v5->_bundleId;
   v5->_bundleId = v8;
 
-  v10 = [(NSString *)self->_appName copyWithZone:a3];
+  v10 = [(NSString *)self->_appName copyWithZone:zone];
   appName = v5->_appName;
   v5->_appName = v10;
 
-  v12 = [(NSString *)self->_localizedAppName copyWithZone:a3];
+  v12 = [(NSString *)self->_localizedAppName copyWithZone:zone];
   localizedAppName = v5->_localizedAppName;
   v5->_localizedAppName = v12;
 
-  v14 = [(NSArray *)self->_associatedDomains copyWithZone:a3];
+  v14 = [(NSArray *)self->_associatedDomains copyWithZone:zone];
   associatedDomains = v5->_associatedDomains;
   v5->_associatedDomains = v14;
 
-  v16 = [(NSCopying *)self->_responderId copyWithZone:a3];
+  v16 = [(NSCopying *)self->_responderId copyWithZone:zone];
   responderId = v5->_responderId;
   v5->_responderId = v16;
 
-  v18 = [(NSString *)self->_sceneID copyWithZone:a3];
+  v18 = [(NSString *)self->_sceneID copyWithZone:zone];
   sceneID = v5->_sceneID;
   v5->_sceneID = v18;
 
   v5->_entityID = self->_entityID;
   v5->_contextID = self->_contextID;
   v5->_layerID = self->_layerID;
-  v20 = [(NSString *)self->_sceneExclusivityIdentifier copyWithZone:a3];
+  v20 = [(NSString *)self->_sceneExclusivityIdentifier copyWithZone:zone];
   sceneExclusivityIdentifier = v5->_sceneExclusivityIdentifier;
   v5->_sceneExclusivityIdentifier = v20;
 
   v5->_delegateConformanceType = self->_delegateConformanceType;
-  v22 = [(NSString *)self->_title copyWithZone:a3];
+  v22 = [(NSString *)self->_title copyWithZone:zone];
   title = v5->_title;
   v5->_title = v22;
 
-  v24 = [(NSString *)self->_prompt copyWithZone:a3];
+  v24 = [(NSString *)self->_prompt copyWithZone:zone];
   prompt = v5->_prompt;
   v5->_prompt = v24;
 
-  v26 = [(TITextInputTraits *)self->_textInputTraits copyWithZone:a3];
+  v26 = [(TITextInputTraits *)self->_textInputTraits copyWithZone:zone];
   textInputTraits = v5->_textInputTraits;
   v5->_textInputTraits = v26;
 
-  v28 = [(RTITextInputKeyboardActionButtonConfiguration *)self->_keyboardActionButtonConfiguration copyWithZone:a3];
+  v28 = [(RTITextInputKeyboardActionButtonConfiguration *)self->_keyboardActionButtonConfiguration copyWithZone:zone];
   keyboardActionButtonConfiguration = v5->_keyboardActionButtonConfiguration;
   v5->_keyboardActionButtonConfiguration = v28;
 
-  v30 = [(NSString *)self->_textInputContextIdentifier copyWithZone:a3];
+  v30 = [(NSString *)self->_textInputContextIdentifier copyWithZone:zone];
   textInputContextIdentifier = v5->_textInputContextIdentifier;
   v5->_textInputContextIdentifier = v30;
 
-  v32 = [(NSIndexSet *)self->_PINEntrySeparatorIndexes copyWithZone:a3];
+  v32 = [(NSIndexSet *)self->_PINEntrySeparatorIndexes copyWithZone:zone];
   PINEntrySeparatorIndexes = v5->_PINEntrySeparatorIndexes;
   v5->_PINEntrySeparatorIndexes = v32;
 
   v5->_validTextRange = self->_validTextRange;
   v5->_autofillMode = self->_autofillMode;
   v5->_autofillSubMode = self->_autofillSubMode;
-  v34 = [(NSDictionary *)self->_autofillContext copyWithZone:a3];
+  v34 = [(NSDictionary *)self->_autofillContext copyWithZone:zone];
   autofillContext = v5->_autofillContext;
   v5->_autofillContext = v34;
 
-  v36 = [(NSString *)self->_passwordRules copyWithZone:a3];
+  v36 = [(NSString *)self->_passwordRules copyWithZone:zone];
   passwordRules = v5->_passwordRules;
   v5->_passwordRules = v36;
 
-  v38 = [(RTIInputViewInfo *)self->_inputViewInfo copyWithZone:a3];
+  v38 = [(RTIInputViewInfo *)self->_inputViewInfo copyWithZone:zone];
   inputViewInfo = v5->_inputViewInfo;
   v5->_inputViewInfo = v38;
 
-  v40 = [(RTIInputViewInfo *)self->_assistantViewInfo copyWithZone:a3];
+  v40 = [(RTIInputViewInfo *)self->_assistantViewInfo copyWithZone:zone];
   assistantViewInfo = v5->_assistantViewInfo;
   v5->_assistantViewInfo = v40;
 
-  v42 = [(RTIAssistantItem *)self->_assistantItem copyWithZone:a3];
+  v42 = [(RTIAssistantItem *)self->_assistantItem copyWithZone:zone];
   assistantItem = v5->_assistantItem;
   v5->_assistantItem = v42;
 
-  v44 = [(NSString *)self->_recipientId copyWithZone:a3];
+  v44 = [(NSString *)self->_recipientId copyWithZone:zone];
   recipientId = v5->_recipientId;
   v5->_recipientId = v44;
 
-  v46 = [(NSString *)self->_responseContext copyWithZone:a3];
+  v46 = [(NSString *)self->_responseContext copyWithZone:zone];
   responseContext = v5->_responseContext;
   v5->_responseContext = v46;
 
-  v48 = [(TIInputContextHistory *)self->_inputContextHistory copyWithZone:a3];
+  v48 = [(TIInputContextHistory *)self->_inputContextHistory copyWithZone:zone];
   inputContextHistory = v5->_inputContextHistory;
   v5->_inputContextHistory = v48;
 
-  v50 = [(NSArray *)self->_enabledSupplementalLexiconIdentifiers copyWithZone:a3];
+  v50 = [(NSArray *)self->_enabledSupplementalLexiconIdentifiers copyWithZone:zone];
   enabledSupplementalLexiconIdentifiers = v5->_enabledSupplementalLexiconIdentifiers;
   v5->_enabledSupplementalLexiconIdentifiers = v50;
 
-  v52 = [(NSArray *)self->_supportedPayloadIds copyWithZone:a3];
+  v52 = [(NSArray *)self->_supportedPayloadIds copyWithZone:zone];
   supportedPayloadIds = v5->_supportedPayloadIds;
   v5->_supportedPayloadIds = v52;
 
-  v54 = [(NSDictionary *)self->_userInfo copyWithZone:a3];
+  v54 = [(NSDictionary *)self->_userInfo copyWithZone:zone];
   userInfo = v5->_userInfo;
   v5->_userInfo = v54;
 
@@ -824,11 +824,11 @@ LABEL_11:
     objc_storeStrong(&v5->_fenceHandle, fenceHandle);
   }
 
-  v57 = [(NSData *)self->_textInputModeData copyWithZone:a3];
+  v57 = [(NSData *)self->_textInputModeData copyWithZone:zone];
   textInputModeData = v5->_textInputModeData;
   v5->_textInputModeData = v57;
 
-  v59 = [(NSArray *)self->_additionalLocaleIdentifiers copyWithZone:a3];
+  v59 = [(NSArray *)self->_additionalLocaleIdentifiers copyWithZone:zone];
   additionalLocaleIdentifiers = v5->_additionalLocaleIdentifiers;
   v5->_additionalLocaleIdentifiers = v59;
 
@@ -844,60 +844,60 @@ LABEL_11:
     [v3 appendFormat:@"; processId = %d", -[RTIDocumentTraits processId](self, "processId")];
   }
 
-  v4 = [(RTIDocumentTraits *)self appId];
+  appId = [(RTIDocumentTraits *)self appId];
 
-  if (v4)
+  if (appId)
   {
-    v5 = [(RTIDocumentTraits *)self appId];
-    [v3 appendFormat:@"; appId = %@", v5];
+    appId2 = [(RTIDocumentTraits *)self appId];
+    [v3 appendFormat:@"; appId = %@", appId2];
   }
 
-  v6 = [(RTIDocumentTraits *)self bundleId];
+  bundleId = [(RTIDocumentTraits *)self bundleId];
 
-  if (v6)
+  if (bundleId)
   {
-    v7 = [(RTIDocumentTraits *)self bundleId];
-    [v3 appendFormat:@"; bundleId = %@", v7];
+    bundleId2 = [(RTIDocumentTraits *)self bundleId];
+    [v3 appendFormat:@"; bundleId = %@", bundleId2];
   }
 
-  v8 = [(RTIDocumentTraits *)self appName];
+  appName = [(RTIDocumentTraits *)self appName];
 
-  if (v8)
+  if (appName)
   {
-    v9 = [(RTIDocumentTraits *)self appName];
-    [v3 appendFormat:@"; appName = %@", v9];
+    appName2 = [(RTIDocumentTraits *)self appName];
+    [v3 appendFormat:@"; appName = %@", appName2];
   }
 
-  v10 = [(RTIDocumentTraits *)self localizedAppName];
+  localizedAppName = [(RTIDocumentTraits *)self localizedAppName];
 
-  if (v10)
+  if (localizedAppName)
   {
-    v11 = [(RTIDocumentTraits *)self localizedAppName];
-    [v3 appendFormat:@"; localizedAppName = %@", v11];
+    localizedAppName2 = [(RTIDocumentTraits *)self localizedAppName];
+    [v3 appendFormat:@"; localizedAppName = %@", localizedAppName2];
   }
 
-  v12 = [(RTIDocumentTraits *)self associatedDomains];
+  associatedDomains = [(RTIDocumentTraits *)self associatedDomains];
 
-  if (v12)
+  if (associatedDomains)
   {
-    v13 = [(RTIDocumentTraits *)self associatedDomains];
-    [v3 appendFormat:@"; associatedDomains = %@", v13];
+    associatedDomains2 = [(RTIDocumentTraits *)self associatedDomains];
+    [v3 appendFormat:@"; associatedDomains = %@", associatedDomains2];
   }
 
-  v14 = [(RTIDocumentTraits *)self responderId];
+  responderId = [(RTIDocumentTraits *)self responderId];
 
-  if (v14)
+  if (responderId)
   {
-    v15 = [(RTIDocumentTraits *)self responderId];
-    [v3 appendFormat:@"; responderId = %@", v15];
+    responderId2 = [(RTIDocumentTraits *)self responderId];
+    [v3 appendFormat:@"; responderId = %@", responderId2];
   }
 
-  v16 = [(RTIDocumentTraits *)self sceneID];
+  sceneID = [(RTIDocumentTraits *)self sceneID];
 
-  if (v16)
+  if (sceneID)
   {
-    v17 = [(RTIDocumentTraits *)self sceneID];
-    [v3 appendFormat:@"; sceneID = %@", v17];
+    sceneID2 = [(RTIDocumentTraits *)self sceneID];
+    [v3 appendFormat:@"; sceneID = %@", sceneID2];
   }
 
   if ([(RTIDocumentTraits *)self entityID])
@@ -915,12 +915,12 @@ LABEL_11:
     [v3 appendFormat:@"; layerID = %llx", -[RTIDocumentTraits layerID](self, "layerID")];
   }
 
-  v18 = [(RTIDocumentTraits *)self sceneExclusivityIdentifier];
+  sceneExclusivityIdentifier = [(RTIDocumentTraits *)self sceneExclusivityIdentifier];
 
-  if (v18)
+  if (sceneExclusivityIdentifier)
   {
-    v19 = [(RTIDocumentTraits *)self sceneExclusivityIdentifier];
-    [v3 appendFormat:@"; sceneExclusivityIdentifier = %@", v19];
+    sceneExclusivityIdentifier2 = [(RTIDocumentTraits *)self sceneExclusivityIdentifier];
+    [v3 appendFormat:@"; sceneExclusivityIdentifier = %@", sceneExclusivityIdentifier2];
   }
 
   if ([(RTIDocumentTraits *)self delegateConformanceType])
@@ -933,31 +933,31 @@ LABEL_11:
     [v3 appendFormat:@"; disableAutomaticKeyboardUI = %d", -[RTIDocumentTraits disableAutomaticKeyboardUI](self, "disableAutomaticKeyboardUI")];
   }
 
-  v20 = [(RTIDocumentTraits *)self title];
+  title = [(RTIDocumentTraits *)self title];
 
-  if (v20)
+  if (title)
   {
-    v21 = [(RTIDocumentTraits *)self title];
-    [v3 appendFormat:@"; title = %@", v21];
+    title2 = [(RTIDocumentTraits *)self title];
+    [v3 appendFormat:@"; title = %@", title2];
   }
 
-  v22 = [(RTIDocumentTraits *)self prompt];
+  prompt = [(RTIDocumentTraits *)self prompt];
 
-  if (v22)
+  if (prompt)
   {
-    v23 = [(RTIDocumentTraits *)self prompt];
-    [v3 appendFormat:@"; prompt = %@", v23];
+    prompt2 = [(RTIDocumentTraits *)self prompt];
+    [v3 appendFormat:@"; prompt = %@", prompt2];
   }
 
-  v24 = [(RTIDocumentTraits *)self textInputTraits];
-  [v3 appendFormat:@"; textInputTraits = %@", v24];
+  textInputTraits = [(RTIDocumentTraits *)self textInputTraits];
+  [v3 appendFormat:@"; textInputTraits = %@", textInputTraits];
 
-  v25 = [(RTIDocumentTraits *)self textInputContextIdentifier];
+  textInputContextIdentifier = [(RTIDocumentTraits *)self textInputContextIdentifier];
 
-  if (v25)
+  if (textInputContextIdentifier)
   {
-    v26 = [(RTIDocumentTraits *)self textInputContextIdentifier];
-    [v3 appendFormat:@"; textInputContextIdentifier = %@", v26];
+    textInputContextIdentifier2 = [(RTIDocumentTraits *)self textInputContextIdentifier];
+    [v3 appendFormat:@"; textInputContextIdentifier = %@", textInputContextIdentifier2];
   }
 
   if ([(RTIDocumentTraits *)self autofillMode])
@@ -970,12 +970,12 @@ LABEL_11:
     [v3 appendFormat:@"; autofillSubMode = %d", -[RTIDocumentTraits autofillSubMode](self, "autofillSubMode")];
   }
 
-  v27 = [(RTIDocumentTraits *)self autofillContext];
+  autofillContext = [(RTIDocumentTraits *)self autofillContext];
 
-  if (v27)
+  if (autofillContext)
   {
-    v28 = [(RTIDocumentTraits *)self autofillContext];
-    [v3 appendFormat:@"; autofillContext = %@", v28];
+    autofillContext2 = [(RTIDocumentTraits *)self autofillContext];
+    [v3 appendFormat:@"; autofillContext = %@", autofillContext2];
   }
 
   if ([(RTIDocumentTraits *)self shouldLoadAutofillSignUp])
@@ -983,76 +983,76 @@ LABEL_11:
     [v3 appendFormat:@"; shouldLoadAutofillSignUp = YES"];
   }
 
-  v29 = [(RTIDocumentTraits *)self passwordRules];
+  passwordRules = [(RTIDocumentTraits *)self passwordRules];
 
-  if (v29)
+  if (passwordRules)
   {
-    v30 = [(RTIDocumentTraits *)self passwordRules];
-    [v3 appendFormat:@"; passwordRules = %@", v30];
+    passwordRules2 = [(RTIDocumentTraits *)self passwordRules];
+    [v3 appendFormat:@"; passwordRules = %@", passwordRules2];
   }
 
-  v31 = [(RTIDocumentTraits *)self inputViewInfo];
+  inputViewInfo = [(RTIDocumentTraits *)self inputViewInfo];
 
-  if (v31)
+  if (inputViewInfo)
   {
-    v32 = [(RTIDocumentTraits *)self inputViewInfo];
-    [v3 appendFormat:@"; inputViewInfo = %@", v32];
+    inputViewInfo2 = [(RTIDocumentTraits *)self inputViewInfo];
+    [v3 appendFormat:@"; inputViewInfo = %@", inputViewInfo2];
   }
 
-  v33 = [(RTIDocumentTraits *)self assistantViewInfo];
+  assistantViewInfo = [(RTIDocumentTraits *)self assistantViewInfo];
 
-  if (v33)
+  if (assistantViewInfo)
   {
-    v34 = [(RTIDocumentTraits *)self assistantViewInfo];
-    [v3 appendFormat:@"; assistantViewInfo = %@", v34];
+    assistantViewInfo2 = [(RTIDocumentTraits *)self assistantViewInfo];
+    [v3 appendFormat:@"; assistantViewInfo = %@", assistantViewInfo2];
   }
 
-  v35 = [(RTIDocumentTraits *)self assistantItem];
+  assistantItem = [(RTIDocumentTraits *)self assistantItem];
 
-  if (v35)
+  if (assistantItem)
   {
-    v36 = [(RTIDocumentTraits *)self assistantItem];
-    [v3 appendFormat:@"; assistantItem = %@", v36];
+    assistantItem2 = [(RTIDocumentTraits *)self assistantItem];
+    [v3 appendFormat:@"; assistantItem = %@", assistantItem2];
   }
 
-  v37 = [(RTIDocumentTraits *)self recipientId];
+  recipientId = [(RTIDocumentTraits *)self recipientId];
 
-  if (v37)
+  if (recipientId)
   {
-    v38 = [(RTIDocumentTraits *)self recipientId];
-    [v3 appendFormat:@"; recipientId = %@", v38];
+    recipientId2 = [(RTIDocumentTraits *)self recipientId];
+    [v3 appendFormat:@"; recipientId = %@", recipientId2];
   }
 
-  v39 = [(RTIDocumentTraits *)self responseContext];
+  responseContext = [(RTIDocumentTraits *)self responseContext];
 
-  if (v39)
+  if (responseContext)
   {
-    v40 = [(RTIDocumentTraits *)self responseContext];
-    [v3 appendFormat:@"; responseContext = %@", v40];
+    responseContext2 = [(RTIDocumentTraits *)self responseContext];
+    [v3 appendFormat:@"; responseContext = %@", responseContext2];
   }
 
-  v41 = [(RTIDocumentTraits *)self inputContextHistory];
+  inputContextHistory = [(RTIDocumentTraits *)self inputContextHistory];
 
-  if (v41)
+  if (inputContextHistory)
   {
-    v42 = [(RTIDocumentTraits *)self inputContextHistory];
-    [v3 appendFormat:@"; inputContextHistory = %@", v42];
+    inputContextHistory2 = [(RTIDocumentTraits *)self inputContextHistory];
+    [v3 appendFormat:@"; inputContextHistory = %@", inputContextHistory2];
   }
 
-  v43 = [(RTIDocumentTraits *)self enabledSupplementalLexiconIdentifiers];
+  enabledSupplementalLexiconIdentifiers = [(RTIDocumentTraits *)self enabledSupplementalLexiconIdentifiers];
 
-  if (v43)
+  if (enabledSupplementalLexiconIdentifiers)
   {
-    v44 = [(RTIDocumentTraits *)self enabledSupplementalLexiconIdentifiers];
-    [v3 appendFormat:@"; enabledSupplementalLexiconIdentifiers = %@", v44];
+    enabledSupplementalLexiconIdentifiers2 = [(RTIDocumentTraits *)self enabledSupplementalLexiconIdentifiers];
+    [v3 appendFormat:@"; enabledSupplementalLexiconIdentifiers = %@", enabledSupplementalLexiconIdentifiers2];
   }
 
-  v45 = [(RTIDocumentTraits *)self supportedPayloadIds];
+  supportedPayloadIds = [(RTIDocumentTraits *)self supportedPayloadIds];
 
-  if (v45)
+  if (supportedPayloadIds)
   {
-    v46 = [(RTIDocumentTraits *)self supportedPayloadIds];
-    [v3 appendFormat:@"; supportedPayloadIds = %@", v46];
+    supportedPayloadIds2 = [(RTIDocumentTraits *)self supportedPayloadIds];
+    [v3 appendFormat:@"; supportedPayloadIds = %@", supportedPayloadIds2];
   }
 
   if ([(RTIDocumentTraits *)self supportsImagePaste])
@@ -1080,13 +1080,13 @@ LABEL_11:
     [v3 appendFormat:@"; disableInputBars = YES"];
   }
 
-  v47 = [(RTIDocumentTraits *)self userInfo];
+  userInfo = [(RTIDocumentTraits *)self userInfo];
 
-  if (v47)
+  if (userInfo)
   {
-    v48 = [(RTIDocumentTraits *)self userInfo];
-    v49 = [v48 allKeys];
-    [v3 appendFormat:@"; userInfo.keys = %@", v49];
+    userInfo2 = [(RTIDocumentTraits *)self userInfo];
+    allKeys = [userInfo2 allKeys];
+    [v3 appendFormat:@"; userInfo.keys = %@", allKeys];
   }
 
   if ([(RTIDocumentTraits *)self disablePrediction])
@@ -1101,9 +1101,9 @@ LABEL_11:
 
   if ([(RTIDocumentTraits *)self shouldReverseLayoutDirection])
   {
-    v50 = [(RTIDocumentTraits *)self shouldReverseLayoutDirection];
+    shouldReverseLayoutDirection = [(RTIDocumentTraits *)self shouldReverseLayoutDirection];
     v51 = @"N";
-    if (v50)
+    if (shouldReverseLayoutDirection)
     {
       v51 = @"Y";
     }
@@ -1111,28 +1111,28 @@ LABEL_11:
     [v3 appendFormat:@"; shouldReverseLayoutDirection = %@", v51];
   }
 
-  v52 = [(RTIDocumentTraits *)self fenceHandle];
+  fenceHandle = [(RTIDocumentTraits *)self fenceHandle];
 
-  if (v52)
+  if (fenceHandle)
   {
-    v53 = [(RTIDocumentTraits *)self fenceHandle];
-    [v3 appendFormat:@"; fenceHandle = %@", v53];
+    fenceHandle2 = [(RTIDocumentTraits *)self fenceHandle];
+    [v3 appendFormat:@"; fenceHandle = %@", fenceHandle2];
   }
 
-  v54 = [(RTIDocumentTraits *)self textInputModeData];
+  textInputModeData = [(RTIDocumentTraits *)self textInputModeData];
 
-  if (v54)
+  if (textInputModeData)
   {
-    v55 = [(RTIDocumentTraits *)self textInputModeData];
-    [v3 appendFormat:@"; has %lu bytes of textInputModeData", objc_msgSend(v55, "length")];
+    textInputModeData2 = [(RTIDocumentTraits *)self textInputModeData];
+    [v3 appendFormat:@"; has %lu bytes of textInputModeData", objc_msgSend(textInputModeData2, "length")];
   }
 
-  v56 = [(RTIDocumentTraits *)self additionalLocaleIdentifiers];
+  additionalLocaleIdentifiers = [(RTIDocumentTraits *)self additionalLocaleIdentifiers];
 
-  if (v56)
+  if (additionalLocaleIdentifiers)
   {
-    v57 = [(RTIDocumentTraits *)self additionalLocaleIdentifiers];
-    [v3 appendFormat:@"; addedLocales = %@", v57];
+    additionalLocaleIdentifiers2 = [(RTIDocumentTraits *)self additionalLocaleIdentifiers];
+    [v3 appendFormat:@"; addedLocales = %@", additionalLocaleIdentifiers2];
   }
 
   if ([(RTIDocumentTraits *)self isExplicitAutoFillMode])
@@ -1145,12 +1145,12 @@ LABEL_11:
     [v3 appendFormat:@"; singleLineDocument = YES"];
   }
 
-  v58 = [(RTIDocumentTraits *)self keyboardActionButtonConfiguration];
+  keyboardActionButtonConfiguration = [(RTIDocumentTraits *)self keyboardActionButtonConfiguration];
 
-  if (v58)
+  if (keyboardActionButtonConfiguration)
   {
-    v59 = [(RTIDocumentTraits *)self keyboardActionButtonConfiguration];
-    v60 = [v59 description];
+    keyboardActionButtonConfiguration2 = [(RTIDocumentTraits *)self keyboardActionButtonConfiguration];
+    v60 = [keyboardActionButtonConfiguration2 description];
     [v3 appendFormat:@"; keyboardActionButtonConfiguration = %@", v60];
   }
 
@@ -1159,10 +1159,10 @@ LABEL_11:
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     LOBYTE(v10) = 1;
   }
@@ -1172,14 +1172,14 @@ LABEL_11:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(RTIDocumentTraits *)self processId];
-      if (v6 == [(RTIDocumentTraits *)v5 processId])
+      v5 = equalCopy;
+      processId = [(RTIDocumentTraits *)self processId];
+      if (processId == [(RTIDocumentTraits *)v5 processId])
       {
         v7 = MEMORY[0x1E696AEC0];
-        v8 = [(RTIDocumentTraits *)self appId];
-        v9 = [(RTIDocumentTraits *)v5 appId];
-        v10 = [v7 _string:v8 matchesString:v9];
+        appId = [(RTIDocumentTraits *)self appId];
+        appId2 = [(RTIDocumentTraits *)v5 appId];
+        v10 = [v7 _string:appId matchesString:appId2];
 
         if (!v10)
         {
@@ -1187,9 +1187,9 @@ LABEL_11:
         }
 
         v11 = MEMORY[0x1E696AEC0];
-        v12 = [(RTIDocumentTraits *)self bundleId];
-        v13 = [(RTIDocumentTraits *)v5 bundleId];
-        v10 = [v11 _string:v12 matchesString:v13];
+        bundleId = [(RTIDocumentTraits *)self bundleId];
+        bundleId2 = [(RTIDocumentTraits *)v5 bundleId];
+        v10 = [v11 _string:bundleId matchesString:bundleId2];
 
         if (!v10)
         {
@@ -1197,9 +1197,9 @@ LABEL_11:
         }
 
         v14 = MEMORY[0x1E696AEC0];
-        v15 = [(RTIDocumentTraits *)self appName];
-        v16 = [(RTIDocumentTraits *)v5 appName];
-        v10 = [v14 _string:v15 matchesString:v16];
+        appName = [(RTIDocumentTraits *)self appName];
+        appName2 = [(RTIDocumentTraits *)v5 appName];
+        v10 = [v14 _string:appName matchesString:appName2];
 
         if (!v10)
         {
@@ -1207,27 +1207,27 @@ LABEL_11:
         }
 
         v17 = MEMORY[0x1E696AEC0];
-        v18 = [(RTIDocumentTraits *)self localizedAppName];
-        v19 = [(RTIDocumentTraits *)v5 localizedAppName];
-        v10 = [v17 _string:v18 matchesString:v19];
+        localizedAppName = [(RTIDocumentTraits *)self localizedAppName];
+        localizedAppName2 = [(RTIDocumentTraits *)v5 localizedAppName];
+        v10 = [v17 _string:localizedAppName matchesString:localizedAppName2];
 
         if (!v10)
         {
           goto LABEL_26;
         }
 
-        v20 = [(RTIDocumentTraits *)self associatedDomains];
-        v21 = [(RTIDocumentTraits *)v5 associatedDomains];
-        v22 = v21;
-        if (v20 == v21)
+        associatedDomains = [(RTIDocumentTraits *)self associatedDomains];
+        associatedDomains2 = [(RTIDocumentTraits *)v5 associatedDomains];
+        v22 = associatedDomains2;
+        if (associatedDomains == associatedDomains2)
         {
         }
 
         else
         {
-          v23 = [(RTIDocumentTraits *)self associatedDomains];
-          v24 = [(RTIDocumentTraits *)v5 associatedDomains];
-          v25 = [v23 isEqualToArray:v24];
+          associatedDomains3 = [(RTIDocumentTraits *)self associatedDomains];
+          associatedDomains4 = [(RTIDocumentTraits *)v5 associatedDomains];
+          v25 = [associatedDomains3 isEqualToArray:associatedDomains4];
 
           if (!v25)
           {
@@ -1235,18 +1235,18 @@ LABEL_11:
           }
         }
 
-        v26 = [(RTIDocumentTraits *)self responderId];
-        v27 = [(RTIDocumentTraits *)v5 responderId];
-        v28 = v27;
-        if (v26 == v27)
+        responderId = [(RTIDocumentTraits *)self responderId];
+        responderId2 = [(RTIDocumentTraits *)v5 responderId];
+        v28 = responderId2;
+        if (responderId == responderId2)
         {
         }
 
         else
         {
-          v29 = [(RTIDocumentTraits *)self responderId];
-          v30 = [(RTIDocumentTraits *)v5 responderId];
-          v31 = [v29 isEqual:v30];
+          responderId3 = [(RTIDocumentTraits *)self responderId];
+          responderId4 = [(RTIDocumentTraits *)v5 responderId];
+          v31 = [responderId3 isEqual:responderId4];
 
           if (!v31)
           {
@@ -1255,37 +1255,37 @@ LABEL_11:
         }
 
         v32 = MEMORY[0x1E696AEC0];
-        v33 = [(RTIDocumentTraits *)self sceneID];
-        v34 = [(RTIDocumentTraits *)v5 sceneID];
-        v10 = [v32 _string:v33 matchesString:v34];
+        sceneID = [(RTIDocumentTraits *)self sceneID];
+        sceneID2 = [(RTIDocumentTraits *)v5 sceneID];
+        v10 = [v32 _string:sceneID matchesString:sceneID2];
 
         if (!v10)
         {
           goto LABEL_26;
         }
 
-        v35 = [(RTIDocumentTraits *)self entityID];
-        if (v35 != [(RTIDocumentTraits *)v5 entityID])
+        entityID = [(RTIDocumentTraits *)self entityID];
+        if (entityID != [(RTIDocumentTraits *)v5 entityID])
         {
           goto LABEL_25;
         }
 
-        v36 = [(RTIDocumentTraits *)self contextID];
-        if (v36 != [(RTIDocumentTraits *)v5 contextID])
+        contextID = [(RTIDocumentTraits *)self contextID];
+        if (contextID != [(RTIDocumentTraits *)v5 contextID])
         {
           goto LABEL_25;
         }
 
-        v37 = [(RTIDocumentTraits *)self layerID];
-        if (v37 != [(RTIDocumentTraits *)v5 layerID])
+        layerID = [(RTIDocumentTraits *)self layerID];
+        if (layerID != [(RTIDocumentTraits *)v5 layerID])
         {
           goto LABEL_25;
         }
 
         v38 = MEMORY[0x1E696AEC0];
-        v39 = [(RTIDocumentTraits *)self sceneExclusivityIdentifier];
-        v40 = [(RTIDocumentTraits *)v5 sceneExclusivityIdentifier];
-        v10 = [v38 _string:v39 matchesString:v40];
+        sceneExclusivityIdentifier = [(RTIDocumentTraits *)self sceneExclusivityIdentifier];
+        sceneExclusivityIdentifier2 = [(RTIDocumentTraits *)v5 sceneExclusivityIdentifier];
+        v10 = [v38 _string:sceneExclusivityIdentifier matchesString:sceneExclusivityIdentifier2];
 
         if (!v10)
         {
@@ -1294,16 +1294,16 @@ LABEL_26:
           goto LABEL_27;
         }
 
-        v41 = [(RTIDocumentTraits *)self delegateConformanceType];
-        if (v41 == [(RTIDocumentTraits *)v5 delegateConformanceType])
+        delegateConformanceType = [(RTIDocumentTraits *)self delegateConformanceType];
+        if (delegateConformanceType == [(RTIDocumentTraits *)v5 delegateConformanceType])
         {
-          v42 = [(RTIDocumentTraits *)self disableAutomaticKeyboardUI];
-          if (v42 == [(RTIDocumentTraits *)v5 disableAutomaticKeyboardUI])
+          disableAutomaticKeyboardUI = [(RTIDocumentTraits *)self disableAutomaticKeyboardUI];
+          if (disableAutomaticKeyboardUI == [(RTIDocumentTraits *)v5 disableAutomaticKeyboardUI])
           {
             v44 = MEMORY[0x1E696AEC0];
-            v45 = [(RTIDocumentTraits *)self title];
-            v46 = [(RTIDocumentTraits *)v5 title];
-            v10 = [v44 _string:v45 matchesString:v46];
+            title = [(RTIDocumentTraits *)self title];
+            title2 = [(RTIDocumentTraits *)v5 title];
+            v10 = [v44 _string:title matchesString:title2];
 
             if (!v10)
             {
@@ -1311,27 +1311,27 @@ LABEL_26:
             }
 
             v47 = MEMORY[0x1E696AEC0];
-            v48 = [(RTIDocumentTraits *)self prompt];
-            v49 = [(RTIDocumentTraits *)v5 prompt];
-            v10 = [v47 _string:v48 matchesString:v49];
+            prompt = [(RTIDocumentTraits *)self prompt];
+            prompt2 = [(RTIDocumentTraits *)v5 prompt];
+            v10 = [v47 _string:prompt matchesString:prompt2];
 
             if (!v10)
             {
               goto LABEL_26;
             }
 
-            v50 = [(RTIDocumentTraits *)self textInputTraits];
-            v51 = [(RTIDocumentTraits *)v5 textInputTraits];
-            v52 = v51;
-            if (v50 == v51)
+            textInputTraits = [(RTIDocumentTraits *)self textInputTraits];
+            textInputTraits2 = [(RTIDocumentTraits *)v5 textInputTraits];
+            v52 = textInputTraits2;
+            if (textInputTraits == textInputTraits2)
             {
             }
 
             else
             {
-              v53 = [(RTIDocumentTraits *)self textInputTraits];
-              v54 = [(RTIDocumentTraits *)v5 textInputTraits];
-              v55 = [v53 isEqual:v54];
+              textInputTraits3 = [(RTIDocumentTraits *)self textInputTraits];
+              textInputTraits4 = [(RTIDocumentTraits *)v5 textInputTraits];
+              v55 = [textInputTraits3 isEqual:textInputTraits4];
 
               if (!v55)
               {
@@ -1339,18 +1339,18 @@ LABEL_26:
               }
             }
 
-            v56 = [(RTIDocumentTraits *)self textInputContextIdentifier];
-            v57 = [(RTIDocumentTraits *)v5 textInputContextIdentifier];
-            v58 = v57;
-            if (v56 == v57)
+            textInputContextIdentifier = [(RTIDocumentTraits *)self textInputContextIdentifier];
+            textInputContextIdentifier2 = [(RTIDocumentTraits *)v5 textInputContextIdentifier];
+            v58 = textInputContextIdentifier2;
+            if (textInputContextIdentifier == textInputContextIdentifier2)
             {
             }
 
             else
             {
-              v59 = [(RTIDocumentTraits *)self textInputContextIdentifier];
-              v60 = [(RTIDocumentTraits *)v5 textInputContextIdentifier];
-              v61 = [v59 isEqual:v60];
+              textInputContextIdentifier3 = [(RTIDocumentTraits *)self textInputContextIdentifier];
+              textInputContextIdentifier4 = [(RTIDocumentTraits *)v5 textInputContextIdentifier];
+              v61 = [textInputContextIdentifier3 isEqual:textInputContextIdentifier4];
 
               if (!v61)
               {
@@ -1358,18 +1358,18 @@ LABEL_26:
               }
             }
 
-            v62 = [(RTIDocumentTraits *)self PINEntrySeparatorIndexes];
-            v63 = [(RTIDocumentTraits *)v5 PINEntrySeparatorIndexes];
-            v64 = v63;
-            if (v62 == v63)
+            pINEntrySeparatorIndexes = [(RTIDocumentTraits *)self PINEntrySeparatorIndexes];
+            pINEntrySeparatorIndexes2 = [(RTIDocumentTraits *)v5 PINEntrySeparatorIndexes];
+            v64 = pINEntrySeparatorIndexes2;
+            if (pINEntrySeparatorIndexes == pINEntrySeparatorIndexes2)
             {
             }
 
             else
             {
-              v65 = [(RTIDocumentTraits *)self PINEntrySeparatorIndexes];
-              v66 = [(RTIDocumentTraits *)v5 PINEntrySeparatorIndexes];
-              v67 = [v65 isEqual:v66];
+              pINEntrySeparatorIndexes3 = [(RTIDocumentTraits *)self PINEntrySeparatorIndexes];
+              pINEntrySeparatorIndexes4 = [(RTIDocumentTraits *)v5 PINEntrySeparatorIndexes];
+              v67 = [pINEntrySeparatorIndexes3 isEqual:pINEntrySeparatorIndexes4];
 
               if (!v67)
               {
@@ -1377,38 +1377,38 @@ LABEL_26:
               }
             }
 
-            v68 = [(RTIDocumentTraits *)self validTextRange];
+            validTextRange = [(RTIDocumentTraits *)self validTextRange];
             v70 = v69;
             LOBYTE(v10) = 0;
-            if (v68 != [(RTIDocumentTraits *)v5 validTextRange]|| v70 != v71)
+            if (validTextRange != [(RTIDocumentTraits *)v5 validTextRange]|| v70 != v71)
             {
               goto LABEL_26;
             }
 
-            v72 = [(RTIDocumentTraits *)self autofillMode];
-            if (v72 != [(RTIDocumentTraits *)v5 autofillMode])
+            autofillMode = [(RTIDocumentTraits *)self autofillMode];
+            if (autofillMode != [(RTIDocumentTraits *)v5 autofillMode])
             {
               goto LABEL_25;
             }
 
-            v73 = [(RTIDocumentTraits *)self autofillSubMode];
-            if (v73 != [(RTIDocumentTraits *)v5 autofillSubMode])
+            autofillSubMode = [(RTIDocumentTraits *)self autofillSubMode];
+            if (autofillSubMode != [(RTIDocumentTraits *)v5 autofillSubMode])
             {
               goto LABEL_25;
             }
 
-            v74 = [(RTIDocumentTraits *)self autofillContext];
-            v75 = [(RTIDocumentTraits *)v5 autofillContext];
-            v76 = v75;
-            if (v74 == v75)
+            autofillContext = [(RTIDocumentTraits *)self autofillContext];
+            autofillContext2 = [(RTIDocumentTraits *)v5 autofillContext];
+            v76 = autofillContext2;
+            if (autofillContext == autofillContext2)
             {
             }
 
             else
             {
-              v77 = [(RTIDocumentTraits *)self autofillContext];
-              v78 = [(RTIDocumentTraits *)v5 autofillContext];
-              v79 = [v77 isEqualToDictionary:v78];
+              autofillContext3 = [(RTIDocumentTraits *)self autofillContext];
+              autofillContext4 = [(RTIDocumentTraits *)v5 autofillContext];
+              v79 = [autofillContext3 isEqualToDictionary:autofillContext4];
 
               if (!v79)
               {
@@ -1416,21 +1416,21 @@ LABEL_26:
               }
             }
 
-            v80 = [(RTIDocumentTraits *)self shouldLoadAutofillSignUp];
-            if (v80 == [(RTIDocumentTraits *)v5 shouldLoadAutofillSignUp])
+            shouldLoadAutofillSignUp = [(RTIDocumentTraits *)self shouldLoadAutofillSignUp];
+            if (shouldLoadAutofillSignUp == [(RTIDocumentTraits *)v5 shouldLoadAutofillSignUp])
             {
-              v81 = [(RTIDocumentTraits *)self passwordRules];
-              v82 = [(RTIDocumentTraits *)v5 passwordRules];
-              v83 = v82;
-              if (v81 == v82)
+              passwordRules = [(RTIDocumentTraits *)self passwordRules];
+              passwordRules2 = [(RTIDocumentTraits *)v5 passwordRules];
+              v83 = passwordRules2;
+              if (passwordRules == passwordRules2)
               {
               }
 
               else
               {
-                v84 = [(RTIDocumentTraits *)self passwordRules];
-                v85 = [(RTIDocumentTraits *)v5 passwordRules];
-                v86 = [v84 isEqual:v85];
+                passwordRules3 = [(RTIDocumentTraits *)self passwordRules];
+                passwordRules4 = [(RTIDocumentTraits *)v5 passwordRules];
+                v86 = [passwordRules3 isEqual:passwordRules4];
 
                 if (!v86)
                 {
@@ -1438,18 +1438,18 @@ LABEL_26:
                 }
               }
 
-              v87 = [(RTIDocumentTraits *)self inputViewInfo];
-              v88 = [(RTIDocumentTraits *)v5 inputViewInfo];
-              v89 = v88;
-              if (v87 == v88)
+              inputViewInfo = [(RTIDocumentTraits *)self inputViewInfo];
+              inputViewInfo2 = [(RTIDocumentTraits *)v5 inputViewInfo];
+              v89 = inputViewInfo2;
+              if (inputViewInfo == inputViewInfo2)
               {
               }
 
               else
               {
-                v90 = [(RTIDocumentTraits *)self inputViewInfo];
-                v91 = [(RTIDocumentTraits *)v5 inputViewInfo];
-                v92 = [v90 isEqual:v91];
+                inputViewInfo3 = [(RTIDocumentTraits *)self inputViewInfo];
+                inputViewInfo4 = [(RTIDocumentTraits *)v5 inputViewInfo];
+                v92 = [inputViewInfo3 isEqual:inputViewInfo4];
 
                 if (!v92)
                 {
@@ -1457,18 +1457,18 @@ LABEL_26:
                 }
               }
 
-              v93 = [(RTIDocumentTraits *)self assistantViewInfo];
-              v94 = [(RTIDocumentTraits *)v5 assistantViewInfo];
-              v95 = v94;
-              if (v93 == v94)
+              assistantViewInfo = [(RTIDocumentTraits *)self assistantViewInfo];
+              assistantViewInfo2 = [(RTIDocumentTraits *)v5 assistantViewInfo];
+              v95 = assistantViewInfo2;
+              if (assistantViewInfo == assistantViewInfo2)
               {
               }
 
               else
               {
-                v96 = [(RTIDocumentTraits *)self assistantViewInfo];
-                v97 = [(RTIDocumentTraits *)v5 assistantViewInfo];
-                v98 = [v96 isEqual:v97];
+                assistantViewInfo3 = [(RTIDocumentTraits *)self assistantViewInfo];
+                assistantViewInfo4 = [(RTIDocumentTraits *)v5 assistantViewInfo];
+                v98 = [assistantViewInfo3 isEqual:assistantViewInfo4];
 
                 if (!v98)
                 {
@@ -1476,18 +1476,18 @@ LABEL_26:
                 }
               }
 
-              v99 = [(RTIDocumentTraits *)self assistantItem];
-              v100 = [(RTIDocumentTraits *)v5 assistantItem];
-              v101 = v100;
-              if (v99 == v100)
+              assistantItem = [(RTIDocumentTraits *)self assistantItem];
+              assistantItem2 = [(RTIDocumentTraits *)v5 assistantItem];
+              v101 = assistantItem2;
+              if (assistantItem == assistantItem2)
               {
               }
 
               else
               {
-                v102 = [(RTIDocumentTraits *)self assistantItem];
-                v103 = [(RTIDocumentTraits *)v5 assistantItem];
-                v104 = [v102 isEqual:v103];
+                assistantItem3 = [(RTIDocumentTraits *)self assistantItem];
+                assistantItem4 = [(RTIDocumentTraits *)v5 assistantItem];
+                v104 = [assistantItem3 isEqual:assistantItem4];
 
                 if (!v104)
                 {
@@ -1496,9 +1496,9 @@ LABEL_26:
               }
 
               v105 = MEMORY[0x1E696AEC0];
-              v106 = [(RTIDocumentTraits *)self recipientId];
-              v107 = [(RTIDocumentTraits *)v5 recipientId];
-              v10 = [v105 _string:v106 matchesString:v107];
+              recipientId = [(RTIDocumentTraits *)self recipientId];
+              recipientId2 = [(RTIDocumentTraits *)v5 recipientId];
+              v10 = [v105 _string:recipientId matchesString:recipientId2];
 
               if (!v10)
               {
@@ -1506,27 +1506,27 @@ LABEL_26:
               }
 
               v108 = MEMORY[0x1E696AEC0];
-              v109 = [(RTIDocumentTraits *)self responseContext];
-              v110 = [(RTIDocumentTraits *)v5 responseContext];
-              v10 = [v108 _string:v109 matchesString:v110];
+              responseContext = [(RTIDocumentTraits *)self responseContext];
+              responseContext2 = [(RTIDocumentTraits *)v5 responseContext];
+              v10 = [v108 _string:responseContext matchesString:responseContext2];
 
               if (!v10)
               {
                 goto LABEL_26;
               }
 
-              v111 = [(RTIDocumentTraits *)self inputContextHistory];
-              v112 = [(RTIDocumentTraits *)v5 inputContextHistory];
-              v113 = v112;
-              if (v111 == v112)
+              inputContextHistory = [(RTIDocumentTraits *)self inputContextHistory];
+              inputContextHistory2 = [(RTIDocumentTraits *)v5 inputContextHistory];
+              v113 = inputContextHistory2;
+              if (inputContextHistory == inputContextHistory2)
               {
               }
 
               else
               {
-                v114 = [(RTIDocumentTraits *)self inputContextHistory];
-                v115 = [(RTIDocumentTraits *)v5 inputContextHistory];
-                v116 = [v114 isEqual:v115];
+                inputContextHistory3 = [(RTIDocumentTraits *)self inputContextHistory];
+                inputContextHistory4 = [(RTIDocumentTraits *)v5 inputContextHistory];
+                v116 = [inputContextHistory3 isEqual:inputContextHistory4];
 
                 if (!v116)
                 {
@@ -1534,18 +1534,18 @@ LABEL_26:
                 }
               }
 
-              v117 = [(RTIDocumentTraits *)self enabledSupplementalLexiconIdentifiers];
-              v118 = [(RTIDocumentTraits *)v5 enabledSupplementalLexiconIdentifiers];
-              v119 = v118;
-              if (v117 == v118)
+              enabledSupplementalLexiconIdentifiers = [(RTIDocumentTraits *)self enabledSupplementalLexiconIdentifiers];
+              enabledSupplementalLexiconIdentifiers2 = [(RTIDocumentTraits *)v5 enabledSupplementalLexiconIdentifiers];
+              v119 = enabledSupplementalLexiconIdentifiers2;
+              if (enabledSupplementalLexiconIdentifiers == enabledSupplementalLexiconIdentifiers2)
               {
               }
 
               else
               {
-                v120 = [(RTIDocumentTraits *)self enabledSupplementalLexiconIdentifiers];
-                v121 = [(RTIDocumentTraits *)v5 enabledSupplementalLexiconIdentifiers];
-                v122 = [v120 isEqualToArray:v121];
+                enabledSupplementalLexiconIdentifiers3 = [(RTIDocumentTraits *)self enabledSupplementalLexiconIdentifiers];
+                enabledSupplementalLexiconIdentifiers4 = [(RTIDocumentTraits *)v5 enabledSupplementalLexiconIdentifiers];
+                v122 = [enabledSupplementalLexiconIdentifiers3 isEqualToArray:enabledSupplementalLexiconIdentifiers4];
 
                 if (!v122)
                 {
@@ -1553,18 +1553,18 @@ LABEL_26:
                 }
               }
 
-              v123 = [(RTIDocumentTraits *)self supportedPayloadIds];
-              v124 = [(RTIDocumentTraits *)v5 supportedPayloadIds];
-              v125 = v124;
-              if (v123 == v124)
+              supportedPayloadIds = [(RTIDocumentTraits *)self supportedPayloadIds];
+              supportedPayloadIds2 = [(RTIDocumentTraits *)v5 supportedPayloadIds];
+              v125 = supportedPayloadIds2;
+              if (supportedPayloadIds == supportedPayloadIds2)
               {
               }
 
               else
               {
-                v126 = [(RTIDocumentTraits *)self supportedPayloadIds];
-                v127 = [(RTIDocumentTraits *)v5 supportedPayloadIds];
-                v128 = [v126 isEqualToArray:v127];
+                supportedPayloadIds3 = [(RTIDocumentTraits *)self supportedPayloadIds];
+                supportedPayloadIds4 = [(RTIDocumentTraits *)v5 supportedPayloadIds];
+                v128 = [supportedPayloadIds3 isEqualToArray:supportedPayloadIds4];
 
                 if (!v128)
                 {
@@ -1572,48 +1572,48 @@ LABEL_26:
                 }
               }
 
-              v129 = [(RTIDocumentTraits *)self supportsImagePaste];
-              if (v129 != [(RTIDocumentTraits *)v5 supportsImagePaste])
+              supportsImagePaste = [(RTIDocumentTraits *)self supportsImagePaste];
+              if (supportsImagePaste != [(RTIDocumentTraits *)v5 supportsImagePaste])
               {
                 goto LABEL_25;
               }
 
-              v130 = [(RTIDocumentTraits *)self supportsAdaptiveImageGlyph];
-              if (v130 != [(RTIDocumentTraits *)v5 supportsAdaptiveImageGlyph])
+              supportsAdaptiveImageGlyph = [(RTIDocumentTraits *)self supportsAdaptiveImageGlyph];
+              if (supportsAdaptiveImageGlyph != [(RTIDocumentTraits *)v5 supportsAdaptiveImageGlyph])
               {
                 goto LABEL_25;
               }
 
-              v131 = [(RTIDocumentTraits *)self supportsGenmojiCreation];
-              if (v131 != [(RTIDocumentTraits *)v5 supportsGenmojiCreation])
+              supportsGenmojiCreation = [(RTIDocumentTraits *)self supportsGenmojiCreation];
+              if (supportsGenmojiCreation != [(RTIDocumentTraits *)v5 supportsGenmojiCreation])
               {
                 goto LABEL_25;
               }
 
-              v132 = [(RTIDocumentTraits *)self devicePasscodeEntry];
-              if (v132 != [(RTIDocumentTraits *)v5 devicePasscodeEntry])
+              devicePasscodeEntry = [(RTIDocumentTraits *)self devicePasscodeEntry];
+              if (devicePasscodeEntry != [(RTIDocumentTraits *)v5 devicePasscodeEntry])
               {
                 goto LABEL_25;
               }
 
-              v133 = [(RTIDocumentTraits *)self disableInputBars];
-              if (v133 != [(RTIDocumentTraits *)v5 disableInputBars])
+              disableInputBars = [(RTIDocumentTraits *)self disableInputBars];
+              if (disableInputBars != [(RTIDocumentTraits *)v5 disableInputBars])
               {
                 goto LABEL_25;
               }
 
-              v134 = [(RTIDocumentTraits *)self userInfo];
-              v135 = [(RTIDocumentTraits *)v5 userInfo];
-              v136 = v135;
-              if (v134 == v135)
+              userInfo = [(RTIDocumentTraits *)self userInfo];
+              userInfo2 = [(RTIDocumentTraits *)v5 userInfo];
+              v136 = userInfo2;
+              if (userInfo == userInfo2)
               {
               }
 
               else
               {
-                v137 = [(RTIDocumentTraits *)self userInfo];
-                v138 = [(RTIDocumentTraits *)v5 userInfo];
-                v139 = [v137 isEqualToDictionary:v138];
+                userInfo3 = [(RTIDocumentTraits *)self userInfo];
+                userInfo4 = [(RTIDocumentTraits *)v5 userInfo];
+                v139 = [userInfo3 isEqualToDictionary:userInfo4];
 
                 if (!v139)
                 {
@@ -1621,36 +1621,36 @@ LABEL_26:
                 }
               }
 
-              v140 = [(RTIDocumentTraits *)self disablePrediction];
-              if (v140 != [(RTIDocumentTraits *)v5 disablePrediction])
+              disablePrediction = [(RTIDocumentTraits *)self disablePrediction];
+              if (disablePrediction != [(RTIDocumentTraits *)v5 disablePrediction])
               {
                 goto LABEL_25;
               }
 
-              v141 = [(RTIDocumentTraits *)self hidePrediction];
-              if (v141 != [(RTIDocumentTraits *)v5 hidePrediction])
+              hidePrediction = [(RTIDocumentTraits *)self hidePrediction];
+              if (hidePrediction != [(RTIDocumentTraits *)v5 hidePrediction])
               {
                 goto LABEL_25;
               }
 
-              v142 = [(RTIDocumentTraits *)self shouldReverseLayoutDirection];
-              if (v142 != [(RTIDocumentTraits *)v5 shouldReverseLayoutDirection])
+              shouldReverseLayoutDirection = [(RTIDocumentTraits *)self shouldReverseLayoutDirection];
+              if (shouldReverseLayoutDirection != [(RTIDocumentTraits *)v5 shouldReverseLayoutDirection])
               {
                 goto LABEL_25;
               }
 
-              v143 = [(RTIDocumentTraits *)self textInputModeData];
-              v144 = [(RTIDocumentTraits *)v5 textInputModeData];
-              v145 = v144;
-              if (v143 == v144)
+              textInputModeData = [(RTIDocumentTraits *)self textInputModeData];
+              textInputModeData2 = [(RTIDocumentTraits *)v5 textInputModeData];
+              v145 = textInputModeData2;
+              if (textInputModeData == textInputModeData2)
               {
               }
 
               else
               {
-                v146 = [(RTIDocumentTraits *)self textInputModeData];
-                v147 = [(RTIDocumentTraits *)v5 textInputModeData];
-                v148 = [v146 isEqual:v147];
+                textInputModeData3 = [(RTIDocumentTraits *)self textInputModeData];
+                textInputModeData4 = [(RTIDocumentTraits *)v5 textInputModeData];
+                v148 = [textInputModeData3 isEqual:textInputModeData4];
 
                 if (!v148)
                 {
@@ -1658,18 +1658,18 @@ LABEL_26:
                 }
               }
 
-              v149 = [(RTIDocumentTraits *)self additionalLocaleIdentifiers];
-              v150 = [(RTIDocumentTraits *)v5 additionalLocaleIdentifiers];
-              v151 = v150;
-              if (v149 == v150)
+              additionalLocaleIdentifiers = [(RTIDocumentTraits *)self additionalLocaleIdentifiers];
+              additionalLocaleIdentifiers2 = [(RTIDocumentTraits *)v5 additionalLocaleIdentifiers];
+              v151 = additionalLocaleIdentifiers2;
+              if (additionalLocaleIdentifiers == additionalLocaleIdentifiers2)
               {
               }
 
               else
               {
-                v152 = [(RTIDocumentTraits *)self additionalLocaleIdentifiers];
-                v153 = [(RTIDocumentTraits *)v5 additionalLocaleIdentifiers];
-                v154 = [v152 isEqualToArray:v153];
+                additionalLocaleIdentifiers3 = [(RTIDocumentTraits *)self additionalLocaleIdentifiers];
+                additionalLocaleIdentifiers4 = [(RTIDocumentTraits *)v5 additionalLocaleIdentifiers];
+                v154 = [additionalLocaleIdentifiers3 isEqualToArray:additionalLocaleIdentifiers4];
 
                 if (!v154)
                 {
@@ -1677,24 +1677,24 @@ LABEL_26:
                 }
               }
 
-              v155 = [(RTIDocumentTraits *)self isExplicitAutoFillMode];
-              if (v155 == [(RTIDocumentTraits *)v5 isExplicitAutoFillMode])
+              isExplicitAutoFillMode = [(RTIDocumentTraits *)self isExplicitAutoFillMode];
+              if (isExplicitAutoFillMode == [(RTIDocumentTraits *)v5 isExplicitAutoFillMode])
               {
-                v156 = [(RTIDocumentTraits *)self isSingleLineDocument];
-                if (v156 == [(RTIDocumentTraits *)v5 isSingleLineDocument])
+                isSingleLineDocument = [(RTIDocumentTraits *)self isSingleLineDocument];
+                if (isSingleLineDocument == [(RTIDocumentTraits *)v5 isSingleLineDocument])
                 {
-                  v157 = [(RTIDocumentTraits *)self keyboardActionButtonConfiguration];
-                  v158 = [(RTIDocumentTraits *)v5 keyboardActionButtonConfiguration];
-                  if (v157 == v158)
+                  keyboardActionButtonConfiguration = [(RTIDocumentTraits *)self keyboardActionButtonConfiguration];
+                  keyboardActionButtonConfiguration2 = [(RTIDocumentTraits *)v5 keyboardActionButtonConfiguration];
+                  if (keyboardActionButtonConfiguration == keyboardActionButtonConfiguration2)
                   {
                     LOBYTE(v10) = 1;
                   }
 
                   else
                   {
-                    v159 = [(RTIDocumentTraits *)self keyboardActionButtonConfiguration];
-                    v160 = [(RTIDocumentTraits *)v5 keyboardActionButtonConfiguration];
-                    LOBYTE(v10) = [v159 isEqual:v160];
+                    keyboardActionButtonConfiguration3 = [(RTIDocumentTraits *)self keyboardActionButtonConfiguration];
+                    keyboardActionButtonConfiguration4 = [(RTIDocumentTraits *)v5 keyboardActionButtonConfiguration];
+                    LOBYTE(v10) = [keyboardActionButtonConfiguration3 isEqual:keyboardActionButtonConfiguration4];
                   }
 
                   goto LABEL_26;
@@ -1718,102 +1718,102 @@ LABEL_27:
   return v10;
 }
 
-- (void)copyContextualPropertiesFromDocumentTraits:(id)a3
+- (void)copyContextualPropertiesFromDocumentTraits:(id)traits
 {
-  v54 = a3;
-  v4 = [*(v54 + 8) copy];
+  traitsCopy = traits;
+  v4 = [*(traitsCopy + 8) copy];
   responderId = self->_responderId;
   self->_responderId = v4;
 
-  v6 = [*(v54 + 9) copy];
+  v6 = [*(traitsCopy + 9) copy];
   sceneID = self->_sceneID;
   self->_sceneID = v6;
 
-  self->_entityID = *(v54 + 10);
-  self->_contextID = *(v54 + 4);
-  self->_layerID = *(v54 + 11);
-  v8 = [*(v54 + 12) copy];
+  self->_entityID = *(traitsCopy + 10);
+  self->_contextID = *(traitsCopy + 4);
+  self->_layerID = *(traitsCopy + 11);
+  v8 = [*(traitsCopy + 12) copy];
   sceneExclusivityIdentifier = self->_sceneExclusivityIdentifier;
   self->_sceneExclusivityIdentifier = v8;
 
-  self->_delegateConformanceType = *(v54 + 13);
-  v10 = [*(v54 + 14) copy];
+  self->_delegateConformanceType = *(traitsCopy + 13);
+  v10 = [*(traitsCopy + 14) copy];
   title = self->_title;
   self->_title = v10;
 
-  v12 = [*(v54 + 15) copy];
+  v12 = [*(traitsCopy + 15) copy];
   prompt = self->_prompt;
   self->_prompt = v12;
 
-  v14 = [*(v54 + 19) copy];
+  v14 = [*(traitsCopy + 19) copy];
   textInputTraits = self->_textInputTraits;
   self->_textInputTraits = v14;
 
-  v16 = [*(v54 + 35) copy];
+  v16 = [*(traitsCopy + 35) copy];
   keyboardActionButtonConfiguration = self->_keyboardActionButtonConfiguration;
   self->_keyboardActionButtonConfiguration = v16;
 
-  v18 = [*(v54 + 20) copy];
+  v18 = [*(traitsCopy + 20) copy];
   textInputContextIdentifier = self->_textInputContextIdentifier;
   self->_textInputContextIdentifier = v18;
 
-  v20 = [*(v54 + 21) copy];
+  v20 = [*(traitsCopy + 21) copy];
   PINEntrySeparatorIndexes = self->_PINEntrySeparatorIndexes;
   self->_PINEntrySeparatorIndexes = v20;
 
-  self->_validTextRange = *(v54 + 18);
-  self->_autofillMode = *(v54 + 22);
-  self->_autofillSubMode = *(v54 + 23);
-  v22 = [*(v54 + 24) copy];
+  self->_validTextRange = *(traitsCopy + 18);
+  self->_autofillMode = *(traitsCopy + 22);
+  self->_autofillSubMode = *(traitsCopy + 23);
+  v22 = [*(traitsCopy + 24) copy];
   autofillContext = self->_autofillContext;
   self->_autofillContext = v22;
 
-  v24 = [*(v54 + 25) copy];
+  v24 = [*(traitsCopy + 25) copy];
   passwordRules = self->_passwordRules;
   self->_passwordRules = v24;
 
-  v26 = [*(v54 + 7) copy];
+  v26 = [*(traitsCopy + 7) copy];
   associatedDomains = self->_associatedDomains;
   self->_associatedDomains = v26;
 
-  v28 = [*(v54 + 16) copy];
+  v28 = [*(traitsCopy + 16) copy];
   inputViewInfo = self->_inputViewInfo;
   self->_inputViewInfo = v28;
 
-  v30 = [*(v54 + 17) copy];
+  v30 = [*(traitsCopy + 17) copy];
   assistantViewInfo = self->_assistantViewInfo;
   self->_assistantViewInfo = v30;
 
-  v32 = [*(v54 + 18) copy];
+  v32 = [*(traitsCopy + 18) copy];
   assistantItem = self->_assistantItem;
   self->_assistantItem = v32;
 
-  v34 = [*(v54 + 26) copy];
+  v34 = [*(traitsCopy + 26) copy];
   recipientId = self->_recipientId;
   self->_recipientId = v34;
 
-  v36 = [*(v54 + 27) copy];
+  v36 = [*(traitsCopy + 27) copy];
   responseContext = self->_responseContext;
   self->_responseContext = v36;
 
-  v38 = [*(v54 + 28) copy];
+  v38 = [*(traitsCopy + 28) copy];
   inputContextHistory = self->_inputContextHistory;
   self->_inputContextHistory = v38;
 
-  v40 = [*(v54 + 29) copy];
+  v40 = [*(traitsCopy + 29) copy];
   enabledSupplementalLexiconIdentifiers = self->_enabledSupplementalLexiconIdentifiers;
   self->_enabledSupplementalLexiconIdentifiers = v40;
 
-  v42 = [*(v54 + 30) copy];
+  v42 = [*(traitsCopy + 30) copy];
   supportedPayloadIds = self->_supportedPayloadIds;
   self->_supportedPayloadIds = v42;
 
-  v44 = [*(v54 + 31) copy];
+  v44 = [*(traitsCopy + 31) copy];
   userInfo = self->_userInfo;
   self->_userInfo = v44;
 
-  v46 = v54;
-  v47 = *(v54 + 32);
+  v46 = traitsCopy;
+  v47 = *(traitsCopy + 32);
   if (v47)
   {
     fenceHandle = self->_fenceHandle;
@@ -1822,22 +1822,22 @@ LABEL_27:
       [(CAFenceHandle *)self->_fenceHandle invalidate];
     }
 
-    objc_storeStrong(&self->_fenceHandle, *(v54 + 32));
-    v49 = *(v54 + 32);
-    *(v54 + 32) = 0;
+    objc_storeStrong(&self->_fenceHandle, *(traitsCopy + 32));
+    v49 = *(traitsCopy + 32);
+    *(traitsCopy + 32) = 0;
 
-    v46 = v54;
+    v46 = traitsCopy;
   }
 
   v50 = [v46[33] copy];
   textInputModeData = self->_textInputModeData;
   self->_textInputModeData = v50;
 
-  v52 = [*(v54 + 34) copy];
+  v52 = [*(traitsCopy + 34) copy];
   additionalLocaleIdentifiers = self->_additionalLocaleIdentifiers;
   self->_additionalLocaleIdentifiers = v52;
 
-  self->_textInputTraitsMask.integerValue = *(v54 + 2);
+  self->_textInputTraitsMask.integerValue = *(traitsCopy + 2);
 }
 
 - (_NSRange)validTextRange

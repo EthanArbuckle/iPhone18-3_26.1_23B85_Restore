@@ -1,11 +1,11 @@
 @interface ImagePlaygroundDiagnosticExtension
 - (_TtC45com_apple_ImagePlayground_DiagnosticExtension34ImagePlaygroundDiagnosticExtension)init;
-- (id)attachmentsForParameters:(id)a3;
+- (id)attachmentsForParameters:(id)parameters;
 @end
 
 @implementation ImagePlaygroundDiagnosticExtension
 
-- (id)attachmentsForParameters:(id)a3
+- (id)attachmentsForParameters:(id)parameters
 {
   sub_100001020(&qword_100008140, &qword_100001408);
   inited = swift_initStackObject();

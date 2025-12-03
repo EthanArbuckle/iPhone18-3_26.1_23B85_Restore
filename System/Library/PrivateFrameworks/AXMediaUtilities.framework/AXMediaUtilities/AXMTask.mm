@@ -1,12 +1,12 @@
 @interface AXMTask
-- (void)markAsComplete:(BOOL)a3;
+- (void)markAsComplete:(BOOL)complete;
 @end
 
 @implementation AXMTask
 
-- (void)markAsComplete:(BOOL)a3
+- (void)markAsComplete:(BOOL)complete
 {
-  v3 = a3;
+  completeCopy = complete;
   if (self->_complete)
   {
     v5 = AXMediaLogCommon();
@@ -17,8 +17,8 @@
   }
 
   self->_complete = 1;
-  v6 = [(AXMTask *)self taskCompleteBlock];
-  (v6)[2](v6, self, v3);
+  taskCompleteBlock = [(AXMTask *)self taskCompleteBlock];
+  (taskCompleteBlock)[2](taskCompleteBlock, self, completeCopy);
 }
 
 @end

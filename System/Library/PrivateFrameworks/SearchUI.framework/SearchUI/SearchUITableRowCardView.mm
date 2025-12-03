@@ -1,13 +1,13 @@
 @interface SearchUITableRowCardView
-+ (BOOL)hasOnlyImages:(id)a3;
-+ (BOOL)isAHeader:(id)a3;
++ (BOOL)hasOnlyImages:(id)images;
++ (BOOL)isAHeader:(id)header;
 + (UIEdgeInsets)defaultLayoutMargins;
-+ (double)largestImageSizeForSection:(id)a3;
-- (UIEdgeInsets)verticalBaselineInsetsForHeader:(BOOL)a3 isCompactTable:(BOOL)a4;
-- (UIEdgeInsets)verticalBaselineInsetsForRowsWithCompactTable:(BOOL)a3;
++ (double)largestImageSizeForSection:(id)section;
+- (UIEdgeInsets)verticalBaselineInsetsForHeader:(BOOL)header isCompactTable:(BOOL)table;
+- (UIEdgeInsets)verticalBaselineInsetsForRowsWithCompactTable:(BOOL)table;
 - (id)leadingTextView;
 - (id)setupContentView;
-- (void)updateWithRowModel:(id)a3;
+- (void)updateWithRowModel:(id)model;
 @end
 
 @implementation SearchUITableRowCardView
@@ -21,33 +21,33 @@
 
 - (id)leadingTextView
 {
-  v2 = [(SearchUICardSectionView *)self contentView];
-  v3 = [v2 leadingTextView];
+  contentView = [(SearchUICardSectionView *)self contentView];
+  leadingTextView = [contentView leadingTextView];
 
-  return v3;
+  return leadingTextView;
 }
 
-- (void)updateWithRowModel:(id)a3
+- (void)updateWithRowModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   v45.receiver = self;
   v45.super_class = SearchUITableRowCardView;
-  [(SearchUICardSectionView *)&v45 updateWithRowModel:v4];
+  [(SearchUICardSectionView *)&v45 updateWithRowModel:modelCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 cardSection];
-    v6 = [v4 gridLayoutManager];
-    v7 = [(SearchUICardSectionView *)self contentView];
+    cardSection = [modelCopy cardSection];
+    gridLayoutManager = [modelCopy gridLayoutManager];
+    contentView = [(SearchUICardSectionView *)self contentView];
     v41[0] = MEMORY[0x1E69E9820];
     v41[1] = 3221225472;
     v41[2] = __47__SearchUITableRowCardView_updateWithRowModel___block_invoke;
     v41[3] = &unk_1E85B26A8;
-    v8 = v7;
+    v8 = contentView;
     v42 = v8;
-    v9 = v6;
+    v9 = gridLayoutManager;
     v43 = v9;
-    v10 = v5;
+    v10 = cardSection;
     v44 = v10;
     [v8 performBatchUpdates:v41];
     objc_opt_class();
@@ -63,17 +63,17 @@
 
     v13 = v11;
     v14 = v12;
-    v15 = [MEMORY[0x1E69D9148] font];
-    [MEMORY[0x1E69D91A8] scaledValueForValue:v15 withFont:self view:v13];
+    font = [MEMORY[0x1E69D9148] font];
+    [MEMORY[0x1E69D91A8] scaledValueForValue:font withFont:self view:v13];
     v16 = 0.0;
     [v10 hasTopPadding];
-    [v15 ascender];
+    [font ascender];
     [(SearchUITableRowCardView *)self tlks_scale];
     UICeilToScale();
     v18 = v17;
-    [MEMORY[0x1E69D91A8] scaledValueForValue:v15 withFont:self view:v14];
+    [MEMORY[0x1E69D91A8] scaledValueForValue:font withFont:self view:v14];
     [v10 hasBottomPadding];
-    [v15 descender];
+    [font descender];
     [(SearchUITableRowCardView *)self tlks_scale];
     UICeilToScale();
     v20 = v19;
@@ -82,9 +82,9 @@
     [v21 largestImageSizeForSection:v22];
     v24 = v23;
 
-    [v15 ascender];
+    [font ascender];
     v26 = v25;
-    [v15 descender];
+    [font descender];
     v28 = v27;
     v29 = objc_opt_class();
     v30 = [v9 tableRowForTableRowCardSection:v10];
@@ -132,15 +132,15 @@ void __47__SearchUITableRowCardView_updateWithRowModel___block_invoke(uint64_t a
   [*(a1 + 32) setTableRow:v3];
 }
 
-+ (double)largestImageSizeForSection:(id)a3
++ (double)largestImageSizeForSection:(id)section
 {
   v21 = *MEMORY[0x1E69E9840];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v3 = [a3 data];
-  v4 = [v3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  data = [section data];
+  v4 = [data countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v4)
   {
     v5 = v4;
@@ -152,17 +152,17 @@ void __47__SearchUITableRowCardView_updateWithRowModel___block_invoke(uint64_t a
       {
         if (*v17 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(data);
         }
 
         v9 = *(*(&v16 + 1) + 8 * i);
         if ([v9 hasOnlyImage])
         {
-          v10 = [v9 formattedTextItems];
-          v11 = [v10 firstObject];
+          formattedTextItems = [v9 formattedTextItems];
+          firstObject = [formattedTextItems firstObject];
 
-          v12 = [v11 tlkImage];
-          [v12 size];
+          tlkImage = [firstObject tlkImage];
+          [tlkImage size];
           v14 = v13;
 
           if (v14 >= v7)
@@ -172,7 +172,7 @@ void __47__SearchUITableRowCardView_updateWithRowModel___block_invoke(uint64_t a
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v5 = [data countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v5);
@@ -186,15 +186,15 @@ void __47__SearchUITableRowCardView_updateWithRowModel___block_invoke(uint64_t a
   return v7;
 }
 
-+ (BOOL)hasOnlyImages:(id)a3
++ (BOOL)hasOnlyImages:(id)images
 {
   v15 = *MEMORY[0x1E69E9840];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [a3 data];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  data = [images data];
+  v4 = [data countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -205,7 +205,7 @@ void __47__SearchUITableRowCardView_updateWithRowModel___block_invoke(uint64_t a
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(data);
         }
 
         if (![*(*(&v10 + 1) + 8 * i) hasOnlyImage])
@@ -215,7 +215,7 @@ void __47__SearchUITableRowCardView_updateWithRowModel___block_invoke(uint64_t a
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [data countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v5)
       {
         continue;
@@ -231,16 +231,16 @@ LABEL_11:
   return v8;
 }
 
-- (UIEdgeInsets)verticalBaselineInsetsForRowsWithCompactTable:(BOOL)a3
+- (UIEdgeInsets)verticalBaselineInsetsForRowsWithCompactTable:(BOOL)table
 {
   v3 = 27.0;
-  if (a3)
+  if (table)
   {
     v3 = 15.0;
   }
 
   v4 = 11.0;
-  if (!a3)
+  if (!table)
   {
     v4 = 17.0;
   }
@@ -254,18 +254,18 @@ LABEL_11:
   return result;
 }
 
-- (UIEdgeInsets)verticalBaselineInsetsForHeader:(BOOL)a3 isCompactTable:(BOOL)a4
+- (UIEdgeInsets)verticalBaselineInsetsForHeader:(BOOL)header isCompactTable:(BOOL)table
 {
   v4 = 0.0;
   v5 = 12.0;
   v6 = 20.0;
   v7 = 21.0;
-  if (a4)
+  if (table)
   {
     v7 = 18.0;
   }
 
-  if (a3)
+  if (header)
   {
     v6 = v7;
     v5 = 10.0;
@@ -295,9 +295,9 @@ LABEL_11:
   return result;
 }
 
-+ (BOOL)isAHeader:(id)a3
++ (BOOL)isAHeader:(id)header
 {
-  v3 = a3;
+  headerCopy = header;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 

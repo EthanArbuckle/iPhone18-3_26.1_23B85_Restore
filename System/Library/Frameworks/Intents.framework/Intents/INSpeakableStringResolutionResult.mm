@@ -1,26 +1,26 @@
 @interface INSpeakableStringResolutionResult
-- (id)_intentSlotValueForObject:(id)a3 slotDescription:(id)a4;
-- (id)_vocabularyValueForObject:(id)a3 slotDescription:(id)a4;
+- (id)_intentSlotValueForObject:(id)object slotDescription:(id)description;
+- (id)_vocabularyValueForObject:(id)object slotDescription:(id)description;
 @end
 
 @implementation INSpeakableStringResolutionResult
 
-- (id)_vocabularyValueForObject:(id)a3 slotDescription:(id)a4
+- (id)_vocabularyValueForObject:(id)object slotDescription:(id)description
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 description];
-  v8 = [MEMORY[0x1E695DF58] systemLocale];
-  v9 = [v8 groupingSeparator];
-  if ([v6 valueType] == 12)
+  objectCopy = object;
+  descriptionCopy = description;
+  v7 = [objectCopy description];
+  systemLocale = [MEMORY[0x1E695DF58] systemLocale];
+  groupingSeparator = [systemLocale groupingSeparator];
+  if ([descriptionCopy valueType] == 12)
   {
-    if ([v6 valueStyle] != 3)
+    if ([descriptionCopy valueStyle] != 3)
     {
       goto LABEL_9;
     }
   }
 
-  else if ([v6 valueType] != 11 || objc_msgSend(v6, "valueStyle") == 3)
+  else if ([descriptionCopy valueType] != 11 || objc_msgSend(descriptionCopy, "valueStyle") == 3)
   {
     goto LABEL_9;
   }
@@ -28,14 +28,14 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = [v5 firstObject];
+    firstObject = [objectCopy firstObject];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v12 = [v5 valueForKey:@"description"];
-      v13 = [v12 if_escapedComponentsJoinedByString:v9 forLocale:v8];
+      v12 = [objectCopy valueForKey:@"description"];
+      v13 = [v12 if_escapedComponentsJoinedByString:groupingSeparator forLocale:systemLocale];
 
       v7 = v13;
     }
@@ -46,15 +46,15 @@ LABEL_9:
   return v7;
 }
 
-- (id)_intentSlotValueForObject:(id)a3 slotDescription:(id)a4
+- (id)_intentSlotValueForObject:(id)object slotDescription:(id)description
 {
   v36 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  objectCopy = object;
+  descriptionCopy = description;
   v7 = objc_alloc_init(_INPBIntentSlotValue);
-  if ([v6 valueType] != 12)
+  if ([descriptionCopy valueType] != 12)
   {
-    if ([v6 valueType] != 13)
+    if ([descriptionCopy valueType] != 13)
     {
       goto LABEL_29;
     }
@@ -64,7 +64,7 @@ LABEL_9:
     if (objc_opt_isKindOfClass())
     {
       v8 = objc_alloc_init(_INPBDataStringList);
-      v9 = INIntentSlotValueTransformToDataString(v5);
+      v9 = INIntentSlotValueTransformToDataString(objectCopy);
       [(_INPBDataStringList *)v8 addDataString:v9];
     }
 
@@ -76,7 +76,7 @@ LABEL_9:
         goto LABEL_29;
       }
 
-      v17 = [v5 firstObject];
+      firstObject = [objectCopy firstObject];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
@@ -86,7 +86,7 @@ LABEL_9:
       }
 
       v8 = objc_alloc_init(_INPBDataStringList);
-      v9 = v5;
+      v9 = objectCopy;
       v26 = 0u;
       v27 = 0u;
       v28 = 0u;
@@ -125,7 +125,7 @@ LABEL_9:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = INIntentSlotValueTransformToDataString(v5);
+    v8 = INIntentSlotValueTransformToDataString(objectCopy);
     [(_INPBIntentSlotValue *)v7 addPayloadDataString:v8];
 LABEL_8:
 
@@ -135,13 +135,13 @@ LABEL_8:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = [v5 firstObject];
+    firstObject2 = [objectCopy firstObject];
     objc_opt_class();
     v11 = objc_opt_isKindOfClass();
 
     if (v11)
     {
-      v8 = v5;
+      v8 = objectCopy;
       v30 = 0u;
       v31 = 0u;
       v32 = 0u;

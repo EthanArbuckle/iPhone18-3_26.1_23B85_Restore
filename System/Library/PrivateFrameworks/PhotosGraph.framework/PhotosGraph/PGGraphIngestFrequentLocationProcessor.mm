@@ -1,20 +1,20 @@
 @interface PGGraphIngestFrequentLocationProcessor
-- (BOOL)shouldRunWithGraphUpdate:(id)a3;
-- (PGGraphIngestFrequentLocationProcessor)initWithGraphBuilder:(id)a3;
-- (id)processFrequentLocationWithGraph:(id)a3 progressBlock:(id)a4;
-- (void)deleteFrequentLocationNodesInGraph:(id)a3 changeRequest:(id)a4;
-- (void)processAndInsertFrequentLocationWithMomentNodes:(id)a3 inGraph:(id)a4 changeRequest:(id)a5 progressBlock:(id)a6;
-- (void)runWithGraphUpdate:(id)a3 progressBlock:(id)a4;
+- (BOOL)shouldRunWithGraphUpdate:(id)update;
+- (PGGraphIngestFrequentLocationProcessor)initWithGraphBuilder:(id)builder;
+- (id)processFrequentLocationWithGraph:(id)graph progressBlock:(id)block;
+- (void)deleteFrequentLocationNodesInGraph:(id)graph changeRequest:(id)request;
+- (void)processAndInsertFrequentLocationWithMomentNodes:(id)nodes inGraph:(id)graph changeRequest:(id)request progressBlock:(id)block;
+- (void)runWithGraphUpdate:(id)update progressBlock:(id)block;
 @end
 
 @implementation PGGraphIngestFrequentLocationProcessor
 
-- (id)processFrequentLocationWithGraph:(id)a3 progressBlock:(id)a4
+- (id)processFrequentLocationWithGraph:(id)graph progressBlock:(id)block
 {
   v59 = *MEMORY[0x277D85DE8];
-  v40 = a3;
-  v38 = a4;
-  v6 = _Block_copy(v38);
+  graphCopy = graph;
+  blockCopy = block;
+  v6 = _Block_copy(blockCopy);
   v39 = [MEMORY[0x277CBEB98] set];
   v53 = 0;
   v54 = &v53;
@@ -27,15 +27,15 @@
   if (!v6 || (v7 = CFAbsoluteTimeGetCurrent(), v7 - v50[3] < 0.01) || (v50[3] = v7, v48 = 0, v6[2](v6, &v48, 0.0), v8 = *(v54 + 24) | v48, *(v54 + 24) = v8, (v8 & 1) == 0))
   {
     v10 = objc_opt_new();
-    v11 = [v40 meNode];
+    meNode = [graphCopy meNode];
     v46[0] = MEMORY[0x277D85DD0];
     v46[1] = 3221225472;
     v46[2] = __89__PGGraphIngestFrequentLocationProcessor_processFrequentLocationWithGraph_progressBlock___block_invoke;
     v46[3] = &unk_27887F790;
     v12 = v10;
     v47 = v12;
-    [v11 enumerateHomeOrWorkAddressNodesUsingBlock:v46];
-    v37 = v11;
+    [meNode enumerateHomeOrWorkAddressNodesUsingBlock:v46];
+    v37 = meNode;
     if (v6)
     {
       Current = CFAbsoluteTimeGetCurrent();
@@ -63,13 +63,13 @@
       }
     }
 
-    v15 = [(PGGraphBuilder *)self->_graphBuilder photoLibrary:v11];
-    v16 = [v15 librarySpecificFetchOptions];
+    v15 = [(PGGraphBuilder *)self->_graphBuilder photoLibrary:meNode];
+    librarySpecificFetchOptions = [v15 librarySpecificFetchOptions];
 
-    v17 = [MEMORY[0x277CD98F8] fetchMomentsWithOptions:v16];
+    v17 = [MEMORY[0x277CD98F8] fetchMomentsWithOptions:librarySpecificFetchOptions];
     v18 = MEMORY[0x277CBEB98];
-    v19 = [v17 fetchedObjects];
-    v20 = [v18 setWithArray:v19];
+    fetchedObjects = [v17 fetchedObjects];
+    v20 = [v18 setWithArray:fetchedObjects];
 
     v21 = self->_loggingConnection;
     if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
@@ -200,13 +200,13 @@ void __89__PGGraphIngestFrequentLocationProcessor_processFrequentLocationWithGra
   }
 }
 
-- (void)processAndInsertFrequentLocationWithMomentNodes:(id)a3 inGraph:(id)a4 changeRequest:(id)a5 progressBlock:(id)a6
+- (void)processAndInsertFrequentLocationWithMomentNodes:(id)nodes inGraph:(id)graph changeRequest:(id)request progressBlock:(id)block
 {
   v97 = *MEMORY[0x277D85DE8];
-  v50 = a3;
-  v53 = a4;
-  v62 = a5;
-  v51 = a6;
+  nodesCopy = nodes;
+  graphCopy = graph;
+  requestCopy = request;
+  blockCopy = block;
   v87 = 0;
   v88 = 0;
   v89 = &v88;
@@ -215,7 +215,7 @@ void __89__PGGraphIngestFrequentLocationProcessor_processFrequentLocationWithGra
   v84 = 0;
   v85 = &v84;
   v86 = 0x2020000000;
-  v56 = _Block_copy(v51);
+  v56 = _Block_copy(blockCopy);
   if (!v56 || (v9 = CFAbsoluteTimeGetCurrent(), v9 - v85[3] < 0.01) || (v85[3] = v9, v83 = 0, (*(v56 + 2))(v56, &v83, 0.0), v10 = *(v89 + 24) | v83, *(v89 + 24) = v10, (v10 & 1) == 0))
   {
     v78[0] = MEMORY[0x277D85DD0];
@@ -227,7 +227,7 @@ void __89__PGGraphIngestFrequentLocationProcessor_processFrequentLocationWithGra
     v80 = &v84;
     v81 = &v88;
     v82 = 0x3F847AE147AE147BLL;
-    v52 = [(PGGraphIngestFrequentLocationProcessor *)self processFrequentLocationWithGraph:v53 progressBlock:v78];
+    v52 = [(PGGraphIngestFrequentLocationProcessor *)self processFrequentLocationWithGraph:graphCopy progressBlock:v78];
     if (*(v89 + 24) == 1)
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -256,7 +256,7 @@ LABEL_9:
           _os_log_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_INFO, "Ingesting %tu frequent locations", buf, 0xCu);
         }
 
-        v49 = [(PGGraphNodeCollection *)PGGraphMomentNodeCollection nodesInGraph:v53];
+        v49 = [(PGGraphNodeCollection *)PGGraphMomentNodeCollection nodesInGraph:graphCopy];
         v15 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(v49, "count")}];
         v76[0] = MEMORY[0x277D85DD0];
         v76[1] = 3221225472;
@@ -287,15 +287,15 @@ LABEL_9:
 
               v61 = *(*(&v72 + 1) + 8 * i);
               v19 = [PGGraphFrequentLocationNode alloc];
-              v20 = [v61 dateInterval];
-              v63 = [(PGGraphFrequentLocationNode *)v19 initWithUniversalDateInterval:v20];
+              dateInterval = [v61 dateInterval];
+              v63 = [(PGGraphFrequentLocationNode *)v19 initWithUniversalDateInterval:dateInterval];
 
-              v21 = [v61 centroid];
-              v22 = [v21 pl_uuid];
-              v23 = [v16 objectForKeyedSubscript:v22];
-              v24 = [v23 bestAddressNode];
+              centroid = [v61 centroid];
+              pl_uuid = [centroid pl_uuid];
+              v23 = [v16 objectForKeyedSubscript:pl_uuid];
+              bestAddressNode = [v23 bestAddressNode];
 
-              if (!v24)
+              if (!bestAddressNode)
               {
                 v25 = self->_loggingConnection;
                 if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
@@ -311,8 +311,8 @@ LABEL_9:
               v71 = 0u;
               v68 = 0u;
               v69 = 0u;
-              v27 = [v61 sortedMoments];
-              v28 = [v27 countByEnumeratingWithState:&v68 objects:v95 count:16];
+              sortedMoments = [v61 sortedMoments];
+              v28 = [sortedMoments countByEnumeratingWithState:&v68 objects:v95 count:16];
               if (v28)
               {
                 v29 = 0;
@@ -323,17 +323,17 @@ LABEL_9:
                   {
                     if (*v69 != v30)
                     {
-                      objc_enumerationMutation(v27);
+                      objc_enumerationMutation(sortedMoments);
                     }
 
-                    v32 = [*(*(&v68 + 1) + 8 * j) pl_uuid];
-                    v33 = [v16 objectForKeyedSubscript:v32];
+                    pl_uuid2 = [*(*(&v68 + 1) + 8 * j) pl_uuid];
+                    v33 = [v16 objectForKeyedSubscript:pl_uuid2];
 
                     if (v33)
                     {
-                      if (!v24)
+                      if (!bestAddressNode)
                       {
-                        v24 = [v33 bestAddressNode];
+                        bestAddressNode = [v33 bestAddressNode];
                       }
 
                       v34 = [[PGGraphFrequentLocationInEdge alloc] initFromMomentNode:v33 toFrequentLocationNode:v63];
@@ -346,7 +346,7 @@ LABEL_9:
                     }
                   }
 
-                  v28 = [v27 countByEnumeratingWithState:&v68 objects:v95 count:16];
+                  v28 = [sortedMoments countByEnumeratingWithState:&v68 objects:v95 count:16];
                 }
 
                 while (v28);
@@ -369,9 +369,9 @@ LABEL_9:
               {
               }
 
-              if (v24)
+              if (bestAddressNode)
               {
-                [v62 addNode:v63];
+                [requestCopy addNode:v63];
                 v66 = 0u;
                 v67 = 0u;
                 v64 = 0u;
@@ -390,7 +390,7 @@ LABEL_9:
                         objc_enumerationMutation(v36);
                       }
 
-                      [v62 addEdge:{*(*(&v64 + 1) + 8 * k), v49}];
+                      [requestCopy addEdge:{*(*(&v64 + 1) + 8 * k), v49}];
                     }
 
                     v37 = [v36 countByEnumeratingWithState:&v64 objects:v92 count:16];
@@ -399,8 +399,8 @@ LABEL_9:
                   while (v37);
                 }
 
-                v40 = [[PGGraphFrequentLocationAtEdge alloc] initFromFrequentLocationNode:v63 toAddressNode:v24];
-                [v62 addEdge:v40];
+                v40 = [[PGGraphFrequentLocationAtEdge alloc] initFromFrequentLocationNode:v63 toAddressNode:bestAddressNode];
+                [requestCopy addEdge:v40];
                 v18 = v17 + v18;
                 if (v56)
                 {
@@ -420,7 +420,7 @@ LABEL_9:
                   }
                 }
 
-                v26 = v24;
+                v26 = bestAddressNode;
               }
 
               else
@@ -547,19 +547,19 @@ void __126__PGGraphIngestFrequentLocationProcessor_processAndInsertFrequentLocat
   [v2 setObject:v3 forKeyedSubscript:v4];
 }
 
-- (void)deleteFrequentLocationNodesInGraph:(id)a3 changeRequest:(id)a4
+- (void)deleteFrequentLocationNodesInGraph:(id)graph changeRequest:(id)request
 {
-  v5 = a4;
-  v6 = [(PGGraphNodeCollection *)PGGraphFrequentLocationNodeCollection nodesInGraph:a3];
-  [v5 removeNodes:v6];
+  requestCopy = request;
+  v6 = [(PGGraphNodeCollection *)PGGraphFrequentLocationNodeCollection nodesInGraph:graph];
+  [requestCopy removeNodes:v6];
 }
 
-- (void)runWithGraphUpdate:(id)a3 progressBlock:(id)a4
+- (void)runWithGraphUpdate:(id)update progressBlock:(id)block
 {
   v29 = *MEMORY[0x277D85DE8];
   graphBuilder = self->_graphBuilder;
-  v6 = a4;
-  v7 = [(PGGraphBuilder *)graphBuilder graph];
+  blockCopy = block;
+  graph = [(PGGraphBuilder *)graphBuilder graph];
   v8 = self->_loggingConnection;
   v9 = os_signpost_id_generate(v8);
   v10 = v8;
@@ -573,14 +573,14 @@ void __126__PGGraphIngestFrequentLocationProcessor_processAndInsertFrequentLocat
   info = 0;
   mach_timebase_info(&info);
   v12 = mach_absolute_time();
-  [v7 invalidateSupersetCaches];
-  v13 = [(PGGraphNodeCollection *)PGGraphMomentNodeCollection nodesInGraph:v7];
+  [graph invalidateSupersetCaches];
+  v13 = [(PGGraphNodeCollection *)PGGraphMomentNodeCollection nodesInGraph:graph];
   if ([(PGGraphBuilder *)self->_graphBuilder isSharedLibraryEnabled])
   {
-    v14 = [(PGGraphBuilder *)self->_graphBuilder momentNodesWhereMeIsPresent];
-    if ([v14 count])
+    momentNodesWhereMeIsPresent = [(PGGraphBuilder *)self->_graphBuilder momentNodesWhereMeIsPresent];
+    if ([momentNodesWhereMeIsPresent count])
     {
-      v15 = v14;
+      v15 = momentNodesWhereMeIsPresent;
 
       v13 = v15;
     }
@@ -597,10 +597,10 @@ void __126__PGGraphIngestFrequentLocationProcessor_processAndInsertFrequentLocat
   }
 
   v17 = objc_alloc_init(MEMORY[0x277D22C50]);
-  [(PGGraphIngestFrequentLocationProcessor *)self deleteFrequentLocationNodesInGraph:v7 changeRequest:v17];
-  [(PGGraphIngestFrequentLocationProcessor *)self processAndInsertFrequentLocationWithMomentNodes:v13 inGraph:v7 changeRequest:v17 progressBlock:v6];
+  [(PGGraphIngestFrequentLocationProcessor *)self deleteFrequentLocationNodesInGraph:graph changeRequest:v17];
+  [(PGGraphIngestFrequentLocationProcessor *)self processAndInsertFrequentLocationWithMomentNodes:v13 inGraph:graph changeRequest:v17 progressBlock:blockCopy];
 
-  [v7 executeGraphChangeRequest:v17];
+  [graph executeGraphChangeRequest:v17];
   v18 = mach_absolute_time();
   numer = info.numer;
   denom = info.denom;
@@ -624,33 +624,33 @@ void __126__PGGraphIngestFrequentLocationProcessor_processAndInsertFrequentLocat
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)shouldRunWithGraphUpdate:(id)a3
+- (BOOL)shouldRunWithGraphUpdate:(id)update
 {
-  v3 = a3;
-  if ([v3 isResumingFullAnalysis] & 1) != 0 || (objc_msgSend(v3, "hasMomentsToInsert") & 1) != 0 || (objc_msgSend(v3, "hasMomentsToDelete"))
+  updateCopy = update;
+  if ([updateCopy isResumingFullAnalysis] & 1) != 0 || (objc_msgSend(updateCopy, "hasMomentsToInsert") & 1) != 0 || (objc_msgSend(updateCopy, "hasMomentsToDelete"))
   {
     v4 = 1;
   }
 
   else
   {
-    v6 = [v3 momentUpdateTypes];
-    v4 = ([objc_opt_class() requiredMomentUpdateTypes] & v6) != 0;
+    momentUpdateTypes = [updateCopy momentUpdateTypes];
+    v4 = ([objc_opt_class() requiredMomentUpdateTypes] & momentUpdateTypes) != 0;
   }
 
   return v4;
 }
 
-- (PGGraphIngestFrequentLocationProcessor)initWithGraphBuilder:(id)a3
+- (PGGraphIngestFrequentLocationProcessor)initWithGraphBuilder:(id)builder
 {
-  v5 = a3;
+  builderCopy = builder;
   v11.receiver = self;
   v11.super_class = PGGraphIngestFrequentLocationProcessor;
   v6 = [(PGGraphIngestFrequentLocationProcessor *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_graphBuilder, a3);
+    objc_storeStrong(&v6->_graphBuilder, builder);
     v8 = os_log_create("com.apple.PhotosGraph", "FrequentLocationProcessor");
     loggingConnection = v7->_loggingConnection;
     v7->_loggingConnection = v8;

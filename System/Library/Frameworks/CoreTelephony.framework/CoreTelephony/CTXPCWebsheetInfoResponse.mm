@@ -1,7 +1,7 @@
 @interface CTXPCWebsheetInfoResponse
 + (id)allowedClassesForArguments;
-- (CTXPCWebsheetInfoResponse)initWithURL:(id)a3 postdata:(id)a4;
-- (CTXPCWebsheetInfoResponse)initWithURLString:(id)a3 postdata:(id)a4 type:(id)a5;
+- (CTXPCWebsheetInfoResponse)initWithURL:(id)l postdata:(id)postdata;
+- (CTXPCWebsheetInfoResponse)initWithURLString:(id)string postdata:(id)postdata type:(id)type;
 - (NSDictionary)postdata;
 - (NSString)type;
 - (NSString)urlString;
@@ -10,15 +10,15 @@
 
 @implementation CTXPCWebsheetInfoResponse
 
-- (CTXPCWebsheetInfoResponse)initWithURLString:(id)a3 postdata:(id)a4 type:(id)a5
+- (CTXPCWebsheetInfoResponse)initWithURLString:(id)string postdata:(id)postdata type:(id)type
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  stringCopy = string;
+  postdataCopy = postdata;
+  typeCopy = type;
   v11 = objc_opt_new();
-  [v11 setObject:v8 forKeyedSubscript:@"urlString"];
-  [v11 setObject:v9 forKeyedSubscript:@"postdata"];
-  [v11 setObject:v10 forKeyedSubscript:@"type"];
+  [v11 setObject:stringCopy forKeyedSubscript:@"urlString"];
+  [v11 setObject:postdataCopy forKeyedSubscript:@"postdata"];
+  [v11 setObject:typeCopy forKeyedSubscript:@"type"];
   v14.receiver = self;
   v14.super_class = CTXPCWebsheetInfoResponse;
   v12 = [(CTXPCMessage *)&v14 initWithNamedArguments:v11];
@@ -26,13 +26,13 @@
   return v12;
 }
 
-- (CTXPCWebsheetInfoResponse)initWithURL:(id)a3 postdata:(id)a4
+- (CTXPCWebsheetInfoResponse)initWithURL:(id)l postdata:(id)postdata
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  postdataCopy = postdata;
   v8 = objc_opt_new();
-  [v8 setObject:v6 forKeyedSubscript:@"url"];
-  [v8 setObject:v7 forKeyedSubscript:@"postdata"];
+  [v8 setObject:lCopy forKeyedSubscript:@"url"];
+  [v8 setObject:postdataCopy forKeyedSubscript:@"postdata"];
   v11.receiver = self;
   v11.super_class = CTXPCWebsheetInfoResponse;
   v9 = [(CTXPCMessage *)&v11 initWithNamedArguments:v8];
@@ -42,8 +42,8 @@
 
 - (NSString)urlString
 {
-  v2 = [(CTXPCMessage *)self namedArguments];
-  v3 = [v2 objectForKey:@"urlString"];
+  namedArguments = [(CTXPCMessage *)self namedArguments];
+  v3 = [namedArguments objectForKey:@"urlString"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -60,8 +60,8 @@
 
 - (NSURL)url
 {
-  v2 = [(CTXPCMessage *)self namedArguments];
-  v3 = [v2 objectForKey:@"url"];
+  namedArguments = [(CTXPCMessage *)self namedArguments];
+  v3 = [namedArguments objectForKey:@"url"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -78,8 +78,8 @@
 
 - (NSDictionary)postdata
 {
-  v2 = [(CTXPCMessage *)self namedArguments];
-  v3 = [v2 objectForKey:@"postdata"];
+  namedArguments = [(CTXPCMessage *)self namedArguments];
+  v3 = [namedArguments objectForKey:@"postdata"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -96,8 +96,8 @@
 
 - (NSString)type
 {
-  v2 = [(CTXPCMessage *)self namedArguments];
-  v3 = [v2 objectForKey:@"type"];
+  namedArguments = [(CTXPCMessage *)self namedArguments];
+  v3 = [namedArguments objectForKey:@"type"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -115,7 +115,7 @@
 + (id)allowedClassesForArguments
 {
   v8[5] = *MEMORY[0x1E69E9840];
-  v7.receiver = a1;
+  v7.receiver = self;
   v7.super_class = &OBJC_METACLASS___CTXPCWebsheetInfoResponse;
   v2 = objc_msgSendSuper2(&v7, sel_allowedClassesForArguments);
   v8[0] = objc_opt_class();

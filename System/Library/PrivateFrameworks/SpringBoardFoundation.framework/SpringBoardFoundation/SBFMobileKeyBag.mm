@@ -2,34 +2,34 @@
 + (id)sharedInstance;
 - ($5FACF4406A79EE03481B7753C49AE7A4)_queue_aksDeviceState;
 - (BOOL)_queue_isContinuityUnlocked;
-- (BOOL)_queue_verifyExpectedStashState:(int64_t)a3;
-- (BOOL)_shouldHandleKeyBagEventWithHandleState:(id)a3;
-- (BOOL)beginRecovery:(id)a3 error:(id *)a4;
+- (BOOL)_queue_verifyExpectedStashState:(int64_t)state;
+- (BOOL)_shouldHandleKeyBagEventWithHandleState:(id)state;
+- (BOOL)beginRecovery:(id)recovery error:(id *)error;
 - (BOOL)hasBeenUnlockedSinceBoot;
 - (BOOL)hasPasscodeSet;
 - (BOOL)isContinuityUnlocked;
 - (BOOL)isInStoreDemoMode;
-- (BOOL)unlockWithOptions:(id)a3 error:(id *)a4;
-- (BOOL)verifyWithOptions:(id)a3 error:(id *)a4;
+- (BOOL)unlockWithOptions:(id)options error:(id *)error;
+- (BOOL)verifyWithOptions:(id)options error:(id *)error;
 - (SBFMobileKeyBag)init;
 - (SBFMobileKeyBagState)extendedState;
 - (SBFMobileKeyBagState)state;
 - (id)_queue_keyBagInfo;
-- (id)_queue_lockStateExtended:(BOOL)a3;
+- (id)_queue_lockStateExtended:(BOOL)extended;
 - (int64_t)maxUnlockAttempts;
 - (void)_queue_aksDeviceState;
-- (void)_queue_createStashBag:(id)a3 skipSEKeepUserDataOperation:(BOOL)a4;
+- (void)_queue_createStashBag:(id)bag skipSEKeepUserDataOperation:(BOOL)operation;
 - (void)_queue_firstUnlockOccurred;
 - (void)_queue_handleKeybagStatusChanged;
-- (void)addObserver:(id)a3;
-- (void)createStashBagWithOptions:(id)a3 completion:(id)a4 completionQueue:(id)a5;
+- (void)addObserver:(id)observer;
+- (void)createStashBagWithOptions:(id)options completion:(id)completion completionQueue:(id)queue;
 - (void)dealloc;
-- (void)lockSkippingGracePeriod:(BOOL)a3 endingContinuityUnlock:(BOOL)a4;
+- (void)lockSkippingGracePeriod:(BOOL)period endingContinuityUnlock:(BOOL)unlock;
 - (void)maxUnlockAttempts;
-- (void)performAfterFirstUnlockSinceBootUsingBlock:(id)a3;
+- (void)performAfterFirstUnlockSinceBootUsingBlock:(id)block;
 - (void)refreshContinuityUnlockHeartbeat;
-- (void)removeObserver:(id)a3;
-- (void)waitForUnlockWithTimeout:(float)a3;
+- (void)removeObserver:(id)observer;
+- (void)waitForUnlockWithTimeout:(float)timeout;
 @end
 
 @implementation SBFMobileKeyBag
@@ -262,9 +262,9 @@ uint64_t __23__SBFMobileKeyBag_init__block_invoke(uint64_t a1, int a2, uint64_t 
   v6 = SBLogAuthenticationKeybag();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v5 publicDescription];
+    publicDescription = [v5 publicDescription];
     *buf = 138543362;
-    v18 = v7;
+    v18 = publicDescription;
     _os_log_impl(&dword_1BEA11000, v6, OS_LOG_TYPE_DEFAULT, "Keybag state changed: %{public}@", buf, 0xCu);
   }
 
@@ -276,7 +276,7 @@ uint64_t __23__SBFMobileKeyBag_init__block_invoke(uint64_t a1, int a2, uint64_t 
   v13 = v4;
   v14 = v5;
   v15 = v3;
-  v16 = self;
+  selfCopy = self;
   v9 = v3;
   v10 = v5;
   v11 = v4;
@@ -487,7 +487,7 @@ void __23__SBFMobileKeyBag_init__block_invoke_2(uint64_t a1)
   [(SBFMobileKeyBag *)&v3 dealloc];
 }
 
-- (void)lockSkippingGracePeriod:(BOOL)a3 endingContinuityUnlock:(BOOL)a4
+- (void)lockSkippingGracePeriod:(BOOL)period endingContinuityUnlock:(BOOL)unlock
 {
   BSDispatchQueueAssertNot();
   queue = self->_queue;
@@ -496,8 +496,8 @@ void __23__SBFMobileKeyBag_init__block_invoke_2(uint64_t a1)
   v8[2] = __66__SBFMobileKeyBag_lockSkippingGracePeriod_endingContinuityUnlock___block_invoke;
   v8[3] = &unk_1E807F1A0;
   v8[4] = self;
-  v9 = a4;
-  v10 = a3;
+  unlockCopy = unlock;
+  periodCopy = period;
   dispatch_sync(queue, v8);
 }
 
@@ -533,9 +533,9 @@ void __66__SBFMobileKeyBag_lockSkippingGracePeriod_endingContinuityUnlock___bloc
   }
 }
 
-- (BOOL)unlockWithOptions:(id)a3 error:(id *)a4
+- (BOOL)unlockWithOptions:(id)options error:(id *)error
 {
-  v6 = a3;
+  optionsCopy = options;
   BSDispatchQueueAssertNot();
   v19 = 0;
   v20 = &v19;
@@ -552,14 +552,14 @@ void __66__SBFMobileKeyBag_lockSkippingGracePeriod_endingContinuityUnlock___bloc
   block[1] = 3221225472;
   block[2] = __43__SBFMobileKeyBag_unlockWithOptions_error___block_invoke;
   block[3] = &unk_1E807F1C8;
-  v8 = v6;
+  v8 = optionsCopy;
   v12 = v8;
   v13 = &v15;
   v14 = &v19;
   dispatch_sync(queue, block);
-  if (a4)
+  if (error)
   {
-    *a4 = v20[5];
+    *error = v20[5];
   }
 
   v9 = *(v16 + 24);
@@ -599,9 +599,9 @@ void __43__SBFMobileKeyBag_unlockWithOptions_error___block_invoke(uint64_t a1)
   }
 }
 
-- (BOOL)verifyWithOptions:(id)a3 error:(id *)a4
+- (BOOL)verifyWithOptions:(id)options error:(id *)error
 {
-  v6 = a3;
+  optionsCopy = options;
   BSDispatchQueueAssertNot();
   v19 = 0;
   v20 = &v19;
@@ -618,14 +618,14 @@ void __43__SBFMobileKeyBag_unlockWithOptions_error___block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __43__SBFMobileKeyBag_verifyWithOptions_error___block_invoke;
   block[3] = &unk_1E807F1C8;
-  v8 = v6;
+  v8 = optionsCopy;
   v12 = v8;
   v13 = &v15;
   v14 = &v19;
   dispatch_sync(queue, block);
-  if (a4)
+  if (error)
   {
-    *a4 = v20[5];
+    *error = v20[5];
   }
 
   v9 = *(v16 + 24);
@@ -703,8 +703,8 @@ uint64_t __39__SBFMobileKeyBag_isContinuityUnlocked__block_invoke(uint64_t a1)
 
 - (BOOL)isInStoreDemoMode
 {
-  v3 = [MEMORY[0x1E69B1FA8] sharedInstance];
-  v4 = [v3 isStoreDemoModeEnabled:0];
+  mEMORY[0x1E69B1FA8] = [MEMORY[0x1E69B1FA8] sharedInstance];
+  v4 = [mEMORY[0x1E69B1FA8] isStoreDemoModeEnabled:0];
 
   return v4 && ![(SBFMobileKeyBag *)self hasPasscodeSet];
 }
@@ -758,23 +758,23 @@ LABEL_10:
   return 10;
 }
 
-- (void)createStashBagWithOptions:(id)a3 completion:(id)a4 completionQueue:(id)a5
+- (void)createStashBagWithOptions:(id)options completion:(id)completion completionQueue:(id)queue
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  optionsCopy = options;
+  completionCopy = completion;
+  queueCopy = queue;
   queue = self->_queue;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __72__SBFMobileKeyBag_createStashBagWithOptions_completion_completionQueue___block_invoke;
   v15[3] = &unk_1E807F218;
   v15[4] = self;
-  v16 = v8;
-  v17 = v10;
-  v18 = v9;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = optionsCopy;
+  v17 = queueCopy;
+  v18 = completionCopy;
+  v12 = queueCopy;
+  v13 = completionCopy;
+  v14 = optionsCopy;
   dispatch_async(queue, v15);
 }
 
@@ -793,9 +793,9 @@ void __72__SBFMobileKeyBag_createStashBagWithOptions_completion_completionQueue_
   }
 }
 
-- (BOOL)beginRecovery:(id)a3 error:(id *)a4
+- (BOOL)beginRecovery:(id)recovery error:(id *)error
 {
-  v6 = a3;
+  recoveryCopy = recovery;
   BSDispatchQueueAssertNot();
   v19 = 0;
   v20 = &v19;
@@ -812,14 +812,14 @@ void __72__SBFMobileKeyBag_createStashBagWithOptions_completion_completionQueue_
   block[1] = 3221225472;
   block[2] = __39__SBFMobileKeyBag_beginRecovery_error___block_invoke;
   block[3] = &unk_1E807F1C8;
-  v8 = v6;
+  v8 = recoveryCopy;
   v12 = v8;
   v13 = &v19;
   v14 = &v15;
   dispatch_sync(queue, block);
-  if (a4)
+  if (error)
   {
-    *a4 = v20[5];
+    *error = v20[5];
   }
 
   v9 = *(v16 + 24);
@@ -852,7 +852,7 @@ void __39__SBFMobileKeyBag_beginRecovery_error___block_invoke(void *a1)
   }
 }
 
-- (void)waitForUnlockWithTimeout:(float)a3
+- (void)waitForUnlockWithTimeout:(float)timeout
 {
   BSDispatchQueueAssertNot();
   v5 = dispatch_semaphore_create(0);
@@ -872,15 +872,15 @@ void __39__SBFMobileKeyBag_beginRecovery_error___block_invoke(void *a1)
   v9 = v7;
   v18 = v9;
   dispatch_sync(queue, block);
-  v10 = [(SBFMobileKeyBag *)self state];
-  v11 = [v10 isEffectivelyLocked];
+  state = [(SBFMobileKeyBag *)self state];
+  isEffectivelyLocked = [state isEffectivelyLocked];
 
-  if ((v11 & 1) == 0)
+  if ((isEffectivelyLocked & 1) == 0)
   {
     dispatch_semaphore_signal(v6);
   }
 
-  v12 = dispatch_time(0, (a3 * 1000000000.0));
+  v12 = dispatch_time(0, (timeout * 1000000000.0));
   dispatch_semaphore_wait(v6, v12);
   v13 = self->_queue;
   v15[0] = MEMORY[0x1E69E9820];
@@ -930,10 +930,10 @@ void __44__SBFMobileKeyBag_waitForUnlockWithTimeout___block_invoke_3(uint64_t a1
   [v1 removeObject:v2];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v5 = a3;
-  if (!v5)
+  observerCopy = observer;
+  if (!observerCopy)
   {
     [(SBFMobileKeyBag *)a2 addObserver:?];
   }
@@ -945,8 +945,8 @@ void __44__SBFMobileKeyBag_waitForUnlockWithTimeout___block_invoke_3(uint64_t a1
   v8[2] = __31__SBFMobileKeyBag_addObserver___block_invoke;
   v8[3] = &unk_1E807F290;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = observerCopy;
+  v7 = observerCopy;
   dispatch_sync(queue, v8);
 }
 
@@ -968,10 +968,10 @@ uint64_t __31__SBFMobileKeyBag_addObserver___block_invoke(uint64_t a1)
   return [v2 addObject:v6];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v5 = a3;
-  if (!v5)
+  observerCopy = observer;
+  if (!observerCopy)
   {
     [(SBFMobileKeyBag *)a2 removeObserver:?];
   }
@@ -983,15 +983,15 @@ uint64_t __31__SBFMobileKeyBag_addObserver___block_invoke(uint64_t a1)
   v8[2] = __34__SBFMobileKeyBag_removeObserver___block_invoke;
   v8[3] = &unk_1E807F290;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = observerCopy;
+  v7 = observerCopy;
   dispatch_sync(queue, v8);
 }
 
-- (void)performAfterFirstUnlockSinceBootUsingBlock:(id)a3
+- (void)performAfterFirstUnlockSinceBootUsingBlock:(id)block
 {
-  v5 = a3;
-  if (!v5)
+  blockCopy = block;
+  if (!blockCopy)
   {
     [(SBFMobileKeyBag *)a2 performAfterFirstUnlockSinceBootUsingBlock:?];
   }
@@ -1008,7 +1008,7 @@ uint64_t __31__SBFMobileKeyBag_addObserver___block_invoke(uint64_t a1)
   block[3] = &unk_1E807F2B8;
   v10 = &v11;
   block[4] = self;
-  v7 = v5;
+  v7 = blockCopy;
   v9 = v7;
   dispatch_sync(queue, block);
   if (*(v12 + 24) == 1)
@@ -1083,7 +1083,7 @@ void __62__SBFMobileKeyBag_performAfterFirstUnlockSinceBootUsingBlock___block_in
   block[2] = __45__SBFMobileKeyBag__queue_firstUnlockOccurred__block_invoke;
   block[3] = &unk_1E807F2E0;
   v11 = v3;
-  v12 = self;
+  selfCopy = self;
   v13 = v4;
   v8 = v4;
   v9 = v3;
@@ -1161,7 +1161,7 @@ void __45__SBFMobileKeyBag__queue_firstUnlockOccurred__block_invoke(uint64_t a1)
   }
 }
 
-- (BOOL)_queue_verifyExpectedStashState:(int64_t)a3
+- (BOOL)_queue_verifyExpectedStashState:(int64_t)state
 {
   v23 = *MEMORY[0x1E69E9840];
   BSDispatchQueueAssert();
@@ -1175,7 +1175,7 @@ void __45__SBFMobileKeyBag__queue_firstUnlockOccurred__block_invoke(uint64_t a1)
     {
       valuePtr = 0;
       CFNumberGetValue(v8, kCFNumberLongLongType, &valuePtr);
-      v10 = valuePtr == a3;
+      v10 = valuePtr == state;
       if (!v10)
       {
         v11 = SBLogAuthenticationKeybag();
@@ -1230,15 +1230,15 @@ void __45__SBFMobileKeyBag__queue_firstUnlockOccurred__block_invoke(uint64_t a1)
   return v10;
 }
 
-- (void)_queue_createStashBag:(id)a3 skipSEKeepUserDataOperation:(BOOL)a4
+- (void)_queue_createStashBag:(id)bag skipSEKeepUserDataOperation:(BOOL)operation
 {
-  v4 = a4;
+  operationCopy = operation;
   v14[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  bagCopy = bag;
   BSDispatchQueueAssert();
   v13 = @"SkipSE";
   v7 = MEMORY[0x1E695E4D0];
-  if (!v4)
+  if (!operationCopy)
   {
     v7 = MEMORY[0x1E695E4C0];
   }
@@ -1246,7 +1246,7 @@ void __45__SBFMobileKeyBag__queue_firstUnlockOccurred__block_invoke(uint64_t a1)
   v14[0] = *v7;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:&v13 count:1];
   v9 = _get_MKBKeyBagKeyStashCreateWithOpts();
-  v10 = v9(v8, 1, 0, v6);
+  v10 = v9(v8, 1, 0, bagCopy);
 
   if (v10)
   {
@@ -1281,13 +1281,13 @@ void __45__SBFMobileKeyBag__queue_firstUnlockOccurred__block_invoke(uint64_t a1)
 LABEL_12:
 }
 
-- (id)_queue_lockStateExtended:(BOOL)a3
+- (id)_queue_lockStateExtended:(BOOL)extended
 {
-  v3 = a3;
+  extendedCopy = extended;
   BSDispatchQueueAssert();
   v5 = [SBFMobileKeyBagState alloc];
-  v6 = [(SBFMobileKeyBag *)self _queue_keyBagInfo];
-  v7 = [(SBFMobileKeyBagState *)v5 initWithKeyBagInfo:v6 extended:v3];
+  _queue_keyBagInfo = [(SBFMobileKeyBag *)self _queue_keyBagInfo];
+  v7 = [(SBFMobileKeyBagState *)v5 initWithKeyBagInfo:_queue_keyBagInfo extended:extendedCopy];
 
   return v7;
 }
@@ -1303,15 +1303,15 @@ LABEL_12:
   return (*(&v5 + 2) >> 4) & 1;
 }
 
-- (BOOL)_shouldHandleKeyBagEventWithHandleState:(id)a3
+- (BOOL)_shouldHandleKeyBagEventWithHandleState:(id)state
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v5 = [v4 BOOLForKey:@"SBOnenessUnlockPrototyping"];
+  stateCopy = state;
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v5 = [standardUserDefaults BOOLForKey:@"SBOnenessUnlockPrototyping"];
 
   if (v5)
   {
-    v6 = [v3 objectForKeyedSubscript:*MEMORY[0x1E698C3D0]];
+    v6 = [stateCopy objectForKeyedSubscript:*MEMORY[0x1E698C3D0]];
     v7 = [v6 integerValue] == -501;
   }
 

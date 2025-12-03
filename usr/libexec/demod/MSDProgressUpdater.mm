@@ -3,12 +3,12 @@
 - (MSDProgressUpdater)init;
 - (id)getContentStatus;
 - (id)getContentUpdateType;
-- (void)demoUpdateCompleted:(id)a3;
-- (void)demoUpdateFailed:(id)a3;
+- (void)demoUpdateCompleted:(id)completed;
+- (void)demoUpdateFailed:(id)failed;
 - (void)loadBundles;
 - (void)markBundleInProgressAsBundleCompleted;
-- (void)resetTrackerForBundleType:(int)a3;
-- (void)startBundleUpdateMonitor:(id)a3 inMode:(int)a4;
+- (void)resetTrackerForBundleType:(int)type;
+- (void)startBundleUpdateMonitor:(id)monitor inMode:(int)mode;
 @end
 
 @implementation MSDProgressUpdater
@@ -39,9 +39,9 @@
   return v3;
 }
 
-- (void)resetTrackerForBundleType:(int)a3
+- (void)resetTrackerForBundleType:(int)type
 {
-  if (a3 == 1)
+  if (type == 1)
   {
     [(MSDProgressUpdater *)self setBackgroundBundle:0];
   }
@@ -57,36 +57,36 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%s entered.", &v8, 0xCu);
   }
 
-  v4 = [(MSDProgressUpdater *)self bundleInProgress];
-  [v4 markBundleInProgressAsCompleted];
+  bundleInProgress = [(MSDProgressUpdater *)self bundleInProgress];
+  [bundleInProgress markBundleInProgressAsCompleted];
 
   v5 = +[MSDMailProcessor sharedInstance];
   [v5 reportBundleInstallCompleted];
 
-  v6 = [(MSDProgressUpdater *)self bundleInProgress];
-  [v6 renameBundleInPrgressToBundleInstalled];
+  bundleInProgress2 = [(MSDProgressUpdater *)self bundleInProgress];
+  [bundleInProgress2 renameBundleInPrgressToBundleInstalled];
 
-  v7 = [(MSDProgressUpdater *)self installingBundle];
-  [(MSDProgressUpdater *)self setInstalledBundle:v7];
+  installingBundle = [(MSDProgressUpdater *)self installingBundle];
+  [(MSDProgressUpdater *)self setInstalledBundle:installingBundle];
 
   [(MSDProgressUpdater *)self setInstallingBundle:0];
   [(MSDProgressUpdater *)self setBundleInProgress:0];
 }
 
-- (void)startBundleUpdateMonitor:(id)a3 inMode:(int)a4
+- (void)startBundleUpdateMonitor:(id)monitor inMode:(int)mode
 {
-  v6 = a3;
+  monitorCopy = monitor;
   v7 = sub_100063A54();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v28 = 138543362;
-    v29 = v6;
+    v29 = monitorCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "start content update monitor:%{public}@", &v28, 0xCu);
   }
 
   v8 = sub_100063A54();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
-  if (a4)
+  if (mode)
   {
     if (v9)
     {
@@ -94,8 +94,8 @@
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Inside start content background", &v28, 2u);
     }
 
-    v10 = [(MSDProgressUpdater *)self backgroundBundle];
-    v11 = [MSDBundleProgressTracker isBundleInstance:v10 identicalWithNewBundle:v6];
+    backgroundBundle = [(MSDProgressUpdater *)self backgroundBundle];
+    v11 = [MSDBundleProgressTracker isBundleInstance:backgroundBundle identicalWithNewBundle:monitorCopy];
 
     if ((v11 & 1) == 0)
     {
@@ -110,11 +110,11 @@
       [v13 cleanUpBackgroundState:1];
 
       v14 = [MSDBundleProgressTracker alloc];
-      v15 = [(MSDBundleProgressTracker *)v14 initializeTrackerForBundle:v6 withContentType:1];
+      v15 = [(MSDBundleProgressTracker *)v14 initializeTrackerForBundle:monitorCopy withContentType:1];
       [(MSDProgressUpdater *)self setBackgroundBundle:v15];
     }
 
-    v16 = [(MSDProgressUpdater *)self backgroundBundle];
+    backgroundBundle2 = [(MSDProgressUpdater *)self backgroundBundle];
   }
 
   else
@@ -125,8 +125,8 @@
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Inside start content foreground", &v28, 2u);
     }
 
-    v17 = [(MSDProgressUpdater *)self installingBundle];
-    v18 = [MSDBundleProgressTracker isBundleInstance:v17 identicalWithNewBundle:v6];
+    installingBundle = [(MSDProgressUpdater *)self installingBundle];
+    v18 = [MSDBundleProgressTracker isBundleInstance:installingBundle identicalWithNewBundle:monitorCopy];
 
     if ((v18 & 1) == 0)
     {
@@ -138,33 +138,33 @@
       }
 
       v20 = [MSDBundleProgressTracker alloc];
-      v21 = [(MSDBundleProgressTracker *)v20 initializeTrackerForBundle:v6 withContentType:2];
+      v21 = [(MSDBundleProgressTracker *)v20 initializeTrackerForBundle:monitorCopy withContentType:2];
       [(MSDProgressUpdater *)self setInstallingBundle:v21];
 
-      v22 = [(MSDProgressUpdater *)self backgroundBundle];
-      LODWORD(v20) = [MSDBundleProgressTracker isBundleInstance:v22 identicalWithNewBundle:v6];
+      backgroundBundle3 = [(MSDProgressUpdater *)self backgroundBundle];
+      LODWORD(v20) = [MSDBundleProgressTracker isBundleInstance:backgroundBundle3 identicalWithNewBundle:monitorCopy];
 
       if (v20)
       {
-        v23 = [(MSDProgressUpdater *)self installingBundle];
-        v24 = [(MSDProgressUpdater *)self backgroundBundle];
-        [v24 getBundleUpdateTime];
-        [v23 addToBundleUpdateTime:?];
+        installingBundle2 = [(MSDProgressUpdater *)self installingBundle];
+        backgroundBundle4 = [(MSDProgressUpdater *)self backgroundBundle];
+        [backgroundBundle4 getBundleUpdateTime];
+        [installingBundle2 addToBundleUpdateTime:?];
       }
     }
 
-    v16 = [(MSDProgressUpdater *)self installingBundle];
+    backgroundBundle2 = [(MSDProgressUpdater *)self installingBundle];
   }
 
-  v25 = v16;
-  [(MSDProgressUpdater *)self setBundleInProgress:v16];
+  v25 = backgroundBundle2;
+  [(MSDProgressUpdater *)self setBundleInProgress:backgroundBundle2];
 
   v26 = sub_100063A54();
   if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
   {
-    v27 = [(MSDProgressUpdater *)self bundleInProgress];
+    bundleInProgress = [(MSDProgressUpdater *)self bundleInProgress];
     v28 = 138543362;
-    v29 = v27;
+    v29 = bundleInProgress;
     _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "bundleInProgress:%{public}@", &v28, 0xCu);
   }
 }
@@ -186,10 +186,10 @@
 
   if ([v3 mode] < 2 || objc_msgSend(v3, "mode") > 4)
   {
-    v11 = [(MSDProgressUpdater *)self backgroundBundle];
-    v12 = [v11 bundleState];
+    backgroundBundle = [(MSDProgressUpdater *)self backgroundBundle];
+    bundleState = [backgroundBundle bundleState];
 
-    if (v12)
+    if (bundleState)
     {
       [(MSDProgressUpdater *)self backgroundBundle];
     }
@@ -198,29 +198,29 @@
     {
       [(MSDProgressUpdater *)self installedBundle];
     }
-    v10 = ;
+    installingBundle = ;
   }
 
   else
   {
-    v10 = [(MSDProgressUpdater *)self installingBundle];
+    installingBundle = [(MSDProgressUpdater *)self installingBundle];
   }
 
-  v13 = v10;
-  [(MSDProgressUpdater *)self setBundleInProgress:v10];
+  v13 = installingBundle;
+  [(MSDProgressUpdater *)self setBundleInProgress:installingBundle];
 
   v14 = sub_100063A54();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
-    v15 = [(MSDProgressUpdater *)self installedBundle];
-    v16 = [(MSDProgressUpdater *)self backgroundBundle];
-    v17 = [(MSDProgressUpdater *)self installingBundle];
+    installedBundle = [(MSDProgressUpdater *)self installedBundle];
+    backgroundBundle2 = [(MSDProgressUpdater *)self backgroundBundle];
+    installingBundle2 = [(MSDProgressUpdater *)self installingBundle];
     v18 = 138543874;
-    v19 = v15;
+    v19 = installedBundle;
     v20 = 2114;
-    v21 = v16;
+    v21 = backgroundBundle2;
     v22 = 2114;
-    v23 = v17;
+    v23 = installingBundle2;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Bundles are: installedBundle:%{public}@ backgroundBundle:%{public}@ installingBundle:%{public}@", &v18, 0x20u);
   }
 }
@@ -232,39 +232,39 @@
   v5 = objc_alloc_init(NSMutableDictionary);
   v6 = objc_alloc_init(NSMutableDictionary);
   v7 = objc_alloc_init(NSMutableDictionary);
-  v8 = [(MSDProgressUpdater *)self installedBundle];
+  installedBundle = [(MSDProgressUpdater *)self installedBundle];
 
   v76 = v5;
-  if (v8)
+  if (installedBundle)
   {
-    v9 = [v3 hubSuppliedSettings];
-    v74 = [v9 objectForKey:@"Components"];
+    hubSuppliedSettings = [v3 hubSuppliedSettings];
+    v74 = [hubSuppliedSettings objectForKey:@"Components"];
 
-    v10 = [(MSDProgressUpdater *)self installedBundle];
-    v11 = [v10 bundleInfo];
-    v12 = [NSMutableDictionary dictionaryWithDictionary:v11];
+    installedBundle2 = [(MSDProgressUpdater *)self installedBundle];
+    bundleInfo = [installedBundle2 bundleInfo];
+    v12 = [NSMutableDictionary dictionaryWithDictionary:bundleInfo];
 
-    v13 = [(MSDProgressUpdater *)self installedBundle];
-    v14 = [v13 installedComponentList];
-    v15 = [v14 copy];
+    installedBundle3 = [(MSDProgressUpdater *)self installedBundle];
+    installedComponentList = [installedBundle3 installedComponentList];
+    v15 = [installedComponentList copy];
 
-    v16 = [(MSDProgressUpdater *)self installedBundle];
-    v17 = [v16 bundleState];
+    installedBundle4 = [(MSDProgressUpdater *)self installedBundle];
+    bundleState = [installedBundle4 bundleState];
 
     [v12 removeObjectForKey:@"ManifestVersion"];
     [v6 setObject:v12 forKey:@"ContentDetails"];
-    v18 = [(MSDProgressUpdater *)self installedBundle];
-    v19 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v18 preInstalledContent]);
+    installedBundle5 = [(MSDProgressUpdater *)self installedBundle];
+    v19 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [installedBundle5 preInstalledContent]);
     [v6 setObject:v19 forKey:@"PreInstalledContent"];
 
-    if ((v17 - 3) > 3u)
+    if ((bundleState - 3) > 3u)
     {
       v20 = &off_10017B1A0;
     }
 
     else
     {
-      v20 = off_10016B918[(v17 - 3)];
+      v20 = off_10016B918[(bundleState - 3)];
     }
 
     v77 = v6;
@@ -333,38 +333,38 @@
   v78 = v23;
   [v7 setObject:? forKey:?];
   [v7 setObject:v22 forKey:@"MSDDemoComponentsInstalled"];
-  v31 = [(MSDProgressUpdater *)self bundleInProgress];
-  v32 = [v31 bundleType];
+  bundleInProgress = [(MSDProgressUpdater *)self bundleInProgress];
+  bundleType = [bundleInProgress bundleType];
 
-  if (v32)
+  if (bundleType)
   {
-    v33 = [(MSDProgressUpdater *)self bundleInProgress];
-    v34 = [v33 bundleType];
+    bundleInProgress2 = [(MSDProgressUpdater *)self bundleInProgress];
+    bundleType2 = [bundleInProgress2 bundleType];
 
     v71 = v4;
     v73 = v3;
     v69 = v7;
-    if (v34 == 1)
+    if (bundleType2 == 1)
     {
-      v35 = [(MSDProgressUpdater *)self backgroundBundle];
-      v36 = [v35 contentProgress];
-      [v5 setObject:v36 forKey:@"DownloadingProgress"];
+      backgroundBundle = [(MSDProgressUpdater *)self backgroundBundle];
+      contentProgress = [backgroundBundle contentProgress];
+      [v5 setObject:contentProgress forKey:@"DownloadingProgress"];
 
-      v37 = [(MSDProgressUpdater *)self backgroundBundle];
-      v38 = [v37 downloadedContentSource];
-      v75 = [NSDictionary dictionaryWithDictionary:v38];
+      backgroundBundle2 = [(MSDProgressUpdater *)self backgroundBundle];
+      downloadedContentSource = [backgroundBundle2 downloadedContentSource];
+      v75 = [NSDictionary dictionaryWithDictionary:downloadedContentSource];
 
-      v39 = [(MSDProgressUpdater *)self backgroundBundle];
+      backgroundBundle3 = [(MSDProgressUpdater *)self backgroundBundle];
       v40 = 0;
       v65 = &off_10017B188;
     }
 
     else
     {
-      v41 = [(MSDProgressUpdater *)self bundleInProgress];
-      v42 = [v41 bundleType];
+      bundleInProgress3 = [(MSDProgressUpdater *)self bundleInProgress];
+      bundleType3 = [bundleInProgress3 bundleType];
 
-      if (v42 != 2)
+      if (bundleType3 != 2)
       {
         v75 = 0;
         v40 = 0;
@@ -372,21 +372,21 @@
         v65 = 0;
 LABEL_30:
         v53 = [v40 objectForKey:@"remote"];
-        v54 = [v53 integerValue];
+        integerValue = [v53 integerValue];
         v55 = [v75 objectForKey:@"remote"];
-        v56 = [v55 integerValue];
+        integerValue2 = [v55 integerValue];
 
         v67 = v40;
         v57 = [v40 objectForKey:@"local"];
-        v58 = [v57 integerValue];
+        integerValue3 = [v57 integerValue];
         v59 = [v75 objectForKey:@"local"];
-        v60 = [v59 integerValue];
+        integerValue4 = [v59 integerValue];
 
-        v61 = [NSNumber numberWithInteger:&v54[v56]];
+        v61 = [NSNumber numberWithInteger:&integerValue[integerValue2]];
         v4 = v71;
         [v71 setObject:v61 forKey:@"remote"];
 
-        v62 = [NSNumber numberWithInteger:&v58[v60]];
+        v62 = [NSNumber numberWithInteger:&integerValue3[integerValue4]];
         [v71 setObject:v62 forKey:@"local"];
 
         v5 = v76;
@@ -416,21 +416,21 @@ LABEL_30:
         goto LABEL_36;
       }
 
-      v43 = [(MSDProgressUpdater *)self installingBundle];
-      v44 = [v43 contentProgress];
-      [v5 setObject:v44 forKey:@"InstallingProgress"];
+      installingBundle = [(MSDProgressUpdater *)self installingBundle];
+      contentProgress2 = [installingBundle contentProgress];
+      [v5 setObject:contentProgress2 forKey:@"InstallingProgress"];
 
-      v45 = [(MSDProgressUpdater *)self installingBundle];
-      v46 = [v45 downloadedContentSource];
-      v66 = [NSDictionary dictionaryWithDictionary:v46];
+      installingBundle2 = [(MSDProgressUpdater *)self installingBundle];
+      downloadedContentSource2 = [installingBundle2 downloadedContentSource];
+      v66 = [NSDictionary dictionaryWithDictionary:downloadedContentSource2];
 
-      v47 = [(MSDProgressUpdater *)self backgroundBundle];
+      backgroundBundle4 = [(MSDProgressUpdater *)self backgroundBundle];
 
-      if (v47)
+      if (backgroundBundle4)
       {
-        v48 = [(MSDProgressUpdater *)self backgroundBundle];
-        v49 = [v48 downloadedContentSource];
-        v75 = [NSDictionary dictionaryWithDictionary:v49];
+        backgroundBundle5 = [(MSDProgressUpdater *)self backgroundBundle];
+        downloadedContentSource3 = [backgroundBundle5 downloadedContentSource];
+        v75 = [NSDictionary dictionaryWithDictionary:downloadedContentSource3];
 
         v50 = &off_10017B1A0;
       }
@@ -442,12 +442,12 @@ LABEL_30:
       }
 
       v65 = v50;
-      v39 = [(MSDProgressUpdater *)self installingBundle];
+      backgroundBundle3 = [(MSDProgressUpdater *)self installingBundle];
       v40 = v66;
     }
 
-    v52 = [v39 bundleInfo];
-    v51 = [NSMutableDictionary dictionaryWithDictionary:v52];
+    bundleInfo2 = [backgroundBundle3 bundleInfo];
+    v51 = [NSMutableDictionary dictionaryWithDictionary:bundleInfo2];
 
     goto LABEL_30;
   }
@@ -459,17 +459,17 @@ LABEL_36:
 
 - (id)getContentUpdateType
 {
-  v3 = [(MSDProgressUpdater *)self installedBundle];
+  installedBundle = [(MSDProgressUpdater *)self installedBundle];
 
-  if (!v3)
+  if (!installedBundle)
   {
     return @"ContentUpdateTypeFreshInstall";
   }
 
-  v4 = [(MSDProgressUpdater *)self installedBundle];
-  v5 = [v4 preInstalledContent];
+  installedBundle2 = [(MSDProgressUpdater *)self installedBundle];
+  preInstalledContent = [installedBundle2 preInstalledContent];
 
-  if (v5)
+  if (preInstalledContent)
   {
     return @"ContentUpdateTypeFreshInstallFactory";
   }
@@ -480,42 +480,42 @@ LABEL_36:
   }
 }
 
-- (void)demoUpdateFailed:(id)a3
+- (void)demoUpdateFailed:(id)failed
 {
-  v3 = a3;
+  failedCopy = failed;
   v4 = +[MSDTargetDevice sharedInstance];
-  v5 = [v4 isOfflineMode];
+  isOfflineMode = [v4 isOfflineMode];
 
-  if ((v5 & 1) == 0)
+  if ((isOfflineMode & 1) == 0)
   {
     v6 = objc_alloc_init(MSDReportErrorRequest);
-    [(MSDReportErrorRequest *)v6 setError:v3];
+    [(MSDReportErrorRequest *)v6 setError:failedCopy];
     v7 = +[MSDServerRequestHandler sharedInstance];
     v8 = [v7 handleRequestSync:v6];
 
     v9 = sub_100063A54();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [v8 error];
+      error = [v8 error];
       v11 = 136315394;
       v12 = "[MSDProgressUpdater demoUpdateFailed:]";
       v13 = 2114;
-      v14 = v10;
+      v14 = error;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%s: sent error status to hub; error=%{public}@", &v11, 0x16u);
     }
   }
 }
 
-- (void)demoUpdateCompleted:(id)a3
+- (void)demoUpdateCompleted:(id)completed
 {
-  v7 = a3;
+  completedCopy = completed;
   v3 = +[MSDTargetDevice sharedInstance];
   if (([v3 isOfflineMode] & 1) == 0)
   {
     v4 = objc_alloc_init(MSDReportDoneRequest);
-    [(MSDReportDoneRequest *)v4 setRequestStr:v7];
-    v5 = [v3 getSavedError];
-    [(MSDReportDoneRequest *)v4 setError:v5];
+    [(MSDReportDoneRequest *)v4 setRequestStr:completedCopy];
+    getSavedError = [v3 getSavedError];
+    [(MSDReportDoneRequest *)v4 setError:getSavedError];
 
     [(MSDServerRequest *)v4 setCompletion:&stru_10016B8F8];
     v6 = +[MSDServerRequestHandler sharedInstance];

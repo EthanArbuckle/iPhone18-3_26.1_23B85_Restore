@@ -1,9 +1,9 @@
 @interface ADIDManagerService
 + (id)sharedInstance;
 - (ADIDManagerService)init;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (unint64_t)delayForNewForceReconcileRequest;
-- (void)forceReconcile:(id)a3;
+- (void)forceReconcile:(id)reconcile;
 @end
 
 @implementation ADIDManagerService
@@ -14,7 +14,7 @@
   block[1] = 3221225472;
   block[2] = __36__ADIDManagerService_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance__onceToken != -1)
   {
     dispatch_once(&sharedInstance__onceToken, block);
@@ -40,9 +40,9 @@ uint64_t __36__ADIDManagerService_sharedInstance__block_invoke(uint64_t a1)
   v2 = [(ADIDManagerService *)&v11 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     reconcileArray = v2->_reconcileArray;
-    v2->_reconcileArray = v3;
+    v2->_reconcileArray = array;
 
     v5 = dispatch_queue_create("com.apple.ap.adprivacyd.forceReconcile", 0);
     forceReconcileQueue = v2->_forceReconcileQueue;
@@ -60,32 +60,32 @@ uint64_t __36__ADIDManagerService_sharedInstance__block_invoke(uint64_t a1)
   return v2;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
-  v6 = [v5 valueForEntitlement:@"com.apple.private.ap.idmanager"];
-  v7 = [v6 BOOLValue];
+  connectionCopy = connection;
+  v6 = [connectionCopy valueForEntitlement:@"com.apple.private.ap.idmanager"];
+  bOOLValue = [v6 BOOLValue];
 
-  if (v7)
+  if (bOOLValue)
   {
-    [v5 setExportedObject:self];
+    [connectionCopy setExportedObject:self];
     v8 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_28510D318];
-    [v5 setExportedInterface:v8];
+    [connectionCopy setExportedInterface:v8];
 
-    [v5 setInvalidationHandler:&__block_literal_global_1];
+    [connectionCopy setInvalidationHandler:&__block_literal_global_1];
     v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"Accepted connection from ID manager client."];
     _ADLog();
 
-    [v5 resume];
+    [connectionCopy resume];
   }
 
   else
   {
-    v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"Rejected ID manager client with PID %d lacking the appropriate entitlement (%@).", objc_msgSend(v5, "processIdentifier"), @"com.apple.private.ap.idmanager"];
+    v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"Rejected ID manager client with PID %d lacking the appropriate entitlement (%@).", objc_msgSend(connectionCopy, "processIdentifier"), @"com.apple.private.ap.idmanager"];
     _ADLog();
   }
 
-  return v7;
+  return bOOLValue;
 }
 
 void __57__ADIDManagerService_listener_shouldAcceptNewConnection___block_invoke()
@@ -94,24 +94,24 @@ void __57__ADIDManagerService_listener_shouldAcceptNewConnection___block_invoke(
   _ADLog();
 }
 
-- (void)forceReconcile:(id)a3
+- (void)forceReconcile:(id)reconcile
 {
-  v4 = a3;
-  v5 = [(ADIDManagerService *)self delayForNewForceReconcileRequest];
-  if (v5)
+  reconcileCopy = reconcile;
+  delayForNewForceReconcileRequest = [(ADIDManagerService *)self delayForNewForceReconcileRequest];
+  if (delayForNewForceReconcileRequest)
   {
-    v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"Delaying forceReconcile for %lu seconds.", v5];
+    v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"Delaying forceReconcile for %lu seconds.", delayForNewForceReconcileRequest];
     _ADLog();
   }
 
-  v7 = dispatch_time(0, 1000000000 * v5);
+  v7 = dispatch_time(0, 1000000000 * delayForNewForceReconcileRequest);
   forceReconcileQueue = self->_forceReconcileQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __37__ADIDManagerService_forceReconcile___block_invoke;
   block[3] = &unk_278C57FC8;
-  v11 = v4;
-  v9 = v4;
+  v11 = reconcileCopy;
+  v9 = reconcileCopy;
   dispatch_after(v7, forceReconcileQueue, block);
 }
 
@@ -175,15 +175,15 @@ void __37__ADIDManagerService_forceReconcile___block_invoke_3(uint64_t a1, void 
 - (unint64_t)delayForNewForceReconcileRequest
 {
   v20 = *MEMORY[0x277D85DE8];
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [MEMORY[0x277CBEAA8] date];
-  v4 = [MEMORY[0x277CBEB18] array];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  date = [MEMORY[0x277CBEAA8] date];
+  array = [MEMORY[0x277CBEB18] array];
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = v2->_reconcileArray;
+  v5 = selfCopy->_reconcileArray;
   v6 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
@@ -198,10 +198,10 @@ void __37__ADIDManagerService_forceReconcile___block_invoke_3(uint64_t a1, void 
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
-        [v3 timeIntervalSinceDate:v9];
+        [date timeIntervalSinceDate:v9];
         if (v10 > 30.0)
         {
-          [v4 addObject:v9];
+          [array addObject:v9];
         }
       }
 
@@ -211,13 +211,13 @@ void __37__ADIDManagerService_forceReconcile___block_invoke_3(uint64_t a1, void 
     while (v6);
   }
 
-  [(NSMutableArray *)v2->_reconcileArray removeObjectsInArray:v4];
-  [(NSMutableArray *)v2->_reconcileArray addObject:v3];
-  v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"Times that a forceReconcile have been requested: %@", v2->_reconcileArray];
+  [(NSMutableArray *)selfCopy->_reconcileArray removeObjectsInArray:array];
+  [(NSMutableArray *)selfCopy->_reconcileArray addObject:date];
+  v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"Times that a forceReconcile have been requested: %@", selfCopy->_reconcileArray];
   _ADLog();
 
-  v12 = [(NSMutableArray *)v2->_reconcileArray count];
-  objc_sync_exit(v2);
+  v12 = [(NSMutableArray *)selfCopy->_reconcileArray count];
+  objc_sync_exit(selfCopy);
 
   v13 = *MEMORY[0x277D85DE8];
   return v12 - 1;

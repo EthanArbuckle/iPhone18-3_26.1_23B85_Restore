@@ -50,10 +50,10 @@
     [v6 setName:v8];
   }
 
-  v9 = [(HPRFSessionTrackerAppAutoPauseController *)self isAutoPauseEnabled];
-  v10 = [v9 BOOLValue];
+  isAutoPauseEnabled = [(HPRFSessionTrackerAppAutoPauseController *)self isAutoPauseEnabled];
+  bOOLValue = [isAutoPauseEnabled BOOLValue];
 
-  if ((v10 & 1) == 0)
+  if ((bOOLValue & 1) == 0)
   {
     v11 = [v3 specifierForID:@"AutoPauseWorkoutTypesGroup"];
     [v3 removeObject:v11];
@@ -85,10 +85,10 @@
 
 - (id)applicationBundleIdentifier
 {
-  v2 = [(HPRFSessionTrackerAppAutoPauseController *)self bundle];
-  v3 = [v2 bundleIdentifier];
+  bundle = [(HPRFSessionTrackerAppAutoPauseController *)self bundle];
+  bundleIdentifier = [bundle bundleIdentifier];
 
-  return v3;
+  return bundleIdentifier;
 }
 
 - (id)isAutoPauseEnabled

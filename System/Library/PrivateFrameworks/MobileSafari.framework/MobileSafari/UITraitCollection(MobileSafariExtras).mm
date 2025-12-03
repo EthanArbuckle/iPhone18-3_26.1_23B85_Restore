@@ -14,21 +14,21 @@
 {
   v2 = objc_opt_class();
 
-  return [a1 valueForNSIntegerTrait:v2];
+  return [self valueForNSIntegerTrait:v2];
 }
 
 - (uint64_t)sf_alternateTintColor
 {
   v2 = objc_opt_class();
 
-  return [a1 objectForTrait:v2];
+  return [self objectForTrait:v2];
 }
 
 - (uint64_t)sf_backgroundBlurEffect
 {
   v2 = objc_opt_class();
 
-  return [a1 objectForTrait:v2];
+  return [self objectForTrait:v2];
 }
 
 + (void)safari_removeAllCustomTraits:()MobileSafariExtras
@@ -54,25 +54,25 @@
 
 - (id)sf_traitCollectionWithAlternateUserInterfaceColorAsPrimary
 {
-  v2 = [a1 sf_alternateUserInterfaceStyle];
-  if (v2)
+  sf_alternateUserInterfaceStyle = [self sf_alternateUserInterfaceStyle];
+  if (sf_alternateUserInterfaceStyle)
   {
-    v3 = [a1 traitCollectionByReplacingNSIntegerValue:v2 forTrait:objc_opt_class()];
+    selfCopy = [self traitCollectionByReplacingNSIntegerValue:sf_alternateUserInterfaceStyle forTrait:objc_opt_class()];
   }
 
   else
   {
-    v3 = a1;
+    selfCopy = self;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (uint64_t)safari_barTintStyle
 {
   v2 = objc_opt_class();
 
-  return [a1 valueForNSIntegerTrait:v2];
+  return [self valueForNSIntegerTrait:v2];
 }
 
 @end

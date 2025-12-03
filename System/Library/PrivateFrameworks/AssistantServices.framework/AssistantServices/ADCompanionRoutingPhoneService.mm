@@ -1,21 +1,21 @@
 @interface ADCompanionRoutingPhoneService
-+ (id)_contactForCall:(id)a3;
-+ (id)_incomingCallTypeForService:(int)a3;
-+ (id)_personAttributeForCall:(id)a3;
-+ (id)_personForCall:(id)a3;
++ (id)_contactForCall:(id)call;
++ (id)_incomingCallTypeForService:(int)service;
++ (id)_personAttributeForCall:(id)call;
++ (id)_personForCall:(id)call;
 - (ADCompanionRoutingPhoneService)init;
 - (id)_hangUpCurrentCall;
-- (id)commandsForDomain:(id)a3;
+- (id)commandsForDomain:(id)domain;
 - (id)domains;
-- (void)_addTimer:(id)a3;
-- (void)_answerHandler:(id)a3 completion:(id)a4;
-- (void)_handleMessage:(id)a3 messageType:(id)a4 fromDeviceWithIdentifier:(id)a5 completion:(id)a6;
-- (void)_hangUpHandler:(id)a3 completion:(id)a4;
-- (void)_incomingCallSearchHandler:(id)a3 completion:(id)a4;
-- (void)_removeTimer:(id)a3;
-- (void)_unhandledCommand:(id)a3 completion:(id)a4;
-- (void)handleCommand:(id)a3 forDomain:(id)a4 executionContext:(id)a5 reply:(id)a6;
-- (void)handleMessage:(id)a3 messageType:(id)a4 fromDeviceWithIdentifier:(id)a5 completion:(id)a6;
+- (void)_addTimer:(id)timer;
+- (void)_answerHandler:(id)handler completion:(id)completion;
+- (void)_handleMessage:(id)message messageType:(id)type fromDeviceWithIdentifier:(id)identifier completion:(id)completion;
+- (void)_hangUpHandler:(id)handler completion:(id)completion;
+- (void)_incomingCallSearchHandler:(id)handler completion:(id)completion;
+- (void)_removeTimer:(id)timer;
+- (void)_unhandledCommand:(id)command completion:(id)completion;
+- (void)handleCommand:(id)command forDomain:(id)domain executionContext:(id)context reply:(id)reply;
+- (void)handleMessage:(id)message messageType:(id)type fromDeviceWithIdentifier:(id)identifier completion:(id)completion;
 @end
 
 @implementation ADCompanionRoutingPhoneService
@@ -28,34 +28,34 @@
   return v2;
 }
 
-- (void)_removeTimer:(id)a3
+- (void)_removeTimer:(id)timer
 {
-  v7 = a3;
+  timerCopy = timer;
   dispatch_assert_queue_V2(self->_serialQueue);
-  v5 = v7;
-  if (v7)
+  v5 = timerCopy;
+  if (timerCopy)
   {
-    [(NSMutableSet *)self->_watchdogTimers removeObject:v7];
+    [(NSMutableSet *)self->_watchdogTimers removeObject:timerCopy];
     v4 = [(NSMutableSet *)self->_watchdogTimers count];
-    v5 = v7;
+    v5 = timerCopy;
     if (!v4)
     {
       watchdogTimers = self->_watchdogTimers;
       self->_watchdogTimers = 0;
 
-      v5 = v7;
+      v5 = timerCopy;
     }
   }
 
   _objc_release_x1(v4, v5);
 }
 
-- (void)_addTimer:(id)a3
+- (void)_addTimer:(id)timer
 {
-  v9 = a3;
+  timerCopy = timer;
   dispatch_assert_queue_V2(self->_serialQueue);
-  v5 = v9;
-  if (v9)
+  v5 = timerCopy;
+  if (timerCopy)
   {
     watchdogTimers = self->_watchdogTimers;
     if (!watchdogTimers)
@@ -67,35 +67,35 @@
       watchdogTimers = self->_watchdogTimers;
     }
 
-    v4 = [(NSMutableSet *)watchdogTimers addObject:v9];
-    v5 = v9;
+    v4 = [(NSMutableSet *)watchdogTimers addObject:timerCopy];
+    v5 = timerCopy;
   }
 
   _objc_release_x1(v4, v5);
 }
 
-- (void)_handleMessage:(id)a3 messageType:(id)a4 fromDeviceWithIdentifier:(id)a5 completion:(id)a6
+- (void)_handleMessage:(id)message messageType:(id)type fromDeviceWithIdentifier:(id)identifier completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  messageCopy = message;
+  typeCopy = type;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v14 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     *buf = 136315650;
     v29 = "[ADCompanionRoutingPhoneService _handleMessage:messageType:fromDeviceWithIdentifier:completion:]";
     v30 = 2112;
-    v31 = v12;
+    v31 = identifierCopy;
     v32 = 2112;
-    v33 = v11;
+    v33 = typeCopy;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "%s deviceIdentifier = %@, messageType = %@", buf, 0x20u);
   }
 
   dispatch_assert_queue_V2(self->_serialQueue);
-  if ([v11 isEqualToString:@"phone"])
+  if ([typeCopy isEqualToString:@"phone"])
   {
-    v15 = [v10 objectForKey:@"cmd"];
+    v15 = [messageCopy objectForKey:@"cmd"];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
     v17 = AFSiriLogContextDaemon;
@@ -107,13 +107,13 @@
         *buf = 136315138;
         v29 = "[ADCompanionRoutingPhoneService _handleMessage:messageType:fromDeviceWithIdentifier:completion:]";
         _os_log_error_impl(&_mh_execute_header, v17, OS_LOG_TYPE_ERROR, "%s Received message with malformed command", buf, 0xCu);
-        if (!v13)
+        if (!completionCopy)
         {
           goto LABEL_21;
         }
       }
 
-      else if (!v13)
+      else if (!completionCopy)
       {
         goto LABEL_21;
       }
@@ -121,7 +121,7 @@
       v24 = 11;
 LABEL_19:
       v20 = [AFError errorWithCode:v24];
-      v13[2](v13, 0, v20);
+      completionCopy[2](completionCopy, 0, v20);
 LABEL_20:
 
       goto LABEL_21;
@@ -138,14 +138,14 @@ LABEL_20:
 
     if ([v15 isEqualToString:@"hangup"])
     {
-      v19 = [(ADCompanionRoutingPhoneService *)self _hangUpCurrentCall];
-      v20 = v19;
-      if (v13)
+      _hangUpCurrentCall = [(ADCompanionRoutingPhoneService *)self _hangUpCurrentCall];
+      v20 = _hangUpCurrentCall;
+      if (completionCopy)
       {
-        v21 = [v19 dictionary];
-        v27 = v21;
+        dictionary = [_hangUpCurrentCall dictionary];
+        v27 = dictionary;
         v22 = [NSDictionary dictionaryWithObjects:&v27 forKeys:&v26 count:1];
-        (v13)[2](v13, v22, 0);
+        (completionCopy)[2](completionCopy, v22, 0);
       }
 
       goto LABEL_20;
@@ -157,7 +157,7 @@ LABEL_20:
       *buf = 136315138;
       v29 = "[ADCompanionRoutingPhoneService _handleMessage:messageType:fromDeviceWithIdentifier:completion:]";
       _os_log_error_impl(&_mh_execute_header, v25, OS_LOG_TYPE_ERROR, "%s Received message with unrecognized command", buf, 0xCu);
-      if (!v13)
+      if (!completionCopy)
       {
         goto LABEL_21;
       }
@@ -165,7 +165,7 @@ LABEL_20:
       goto LABEL_18;
     }
 
-    if (v13)
+    if (completionCopy)
     {
 LABEL_18:
       v24 = 1004;
@@ -183,9 +183,9 @@ LABEL_21:
     *buf = 136315394;
     v29 = "[ADCompanionRoutingPhoneService _handleMessage:messageType:fromDeviceWithIdentifier:completion:]";
     v30 = 2112;
-    v31 = v11;
+    v31 = typeCopy;
     _os_log_error_impl(&_mh_execute_header, v23, OS_LOG_TYPE_ERROR, "%s Received message with unknown message type: %@", buf, 0x16u);
-    if (!v13)
+    if (!completionCopy)
     {
       goto LABEL_22;
     }
@@ -193,53 +193,53 @@ LABEL_21:
     goto LABEL_12;
   }
 
-  if (v13)
+  if (completionCopy)
   {
 LABEL_12:
     v15 = [AFError errorWithCode:1004];
-    v13[2](v13, 0, v15);
+    completionCopy[2](completionCopy, 0, v15);
     goto LABEL_21;
   }
 
 LABEL_22:
 }
 
-- (void)handleMessage:(id)a3 messageType:(id)a4 fromDeviceWithIdentifier:(id)a5 completion:(id)a6
+- (void)handleMessage:(id)message messageType:(id)type fromDeviceWithIdentifier:(id)identifier completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  messageCopy = message;
+  typeCopy = type;
+  identifierCopy = identifier;
+  completionCopy = completion;
   serialQueue = self->_serialQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10023E86C;
   block[3] = &unk_10051D2A0;
   block[4] = self;
-  v20 = v10;
-  v21 = v11;
-  v22 = v12;
-  v23 = v13;
-  v15 = v13;
-  v16 = v12;
-  v17 = v11;
-  v18 = v10;
+  v20 = messageCopy;
+  v21 = typeCopy;
+  v22 = identifierCopy;
+  v23 = completionCopy;
+  v15 = completionCopy;
+  v16 = identifierCopy;
+  v17 = typeCopy;
+  v18 = messageCopy;
   dispatch_async(serialQueue, block);
 }
 
-- (void)_unhandledCommand:(id)a3 completion:(id)a4
+- (void)_unhandledCommand:(id)command completion:(id)completion
 {
-  if (a4)
+  if (completion)
   {
-    v5 = a4;
+    completionCopy = completion;
     v6 = [[SACommandFailed alloc] initWithReason:@"Command not supported"];
-    (*(a4 + 2))(v5, v6, 0);
+    (*(completion + 2))(completionCopy, v6, 0);
   }
 }
 
-- (void)_incomingCallSearchHandler:(id)a3 completion:(id)a4
+- (void)_incomingCallSearchHandler:(id)handler completion:(id)completion
 {
-  v25 = a4;
+  completionCopy = completion;
   v24 = objc_alloc_init(SAPhoneIncomingCallSearchCompleted);
   v23 = [TUCallCenter callCenterWithQueue:self->_serialQueue];
   v5 = [v23 audioAndVideoCallsWithStatus:4];
@@ -270,32 +270,32 @@ LABEL_22:
         [v12 setIncomingCallType:v13];
 
         v14 = [objc_opt_class() _personAttributeForCall:v11];
-        v15 = [v14 object];
-        v16 = v15;
-        if (v15)
+        object = [v14 object];
+        v16 = object;
+        if (object)
         {
-          v17 = [v15 phones];
-          v18 = [v17 firstObject];
+          phones = [object phones];
+          firstObject = [phones firstObject];
 
-          if (v18)
+          if (firstObject)
           {
-            v19 = [v18 number];
-            [v14 setData:v19];
+            number = [firstObject number];
+            [v14 setData:number];
 
-            [v14 setTypedData:v18];
+            [v14 setTypedData:firstObject];
           }
 
           else
           {
-            v20 = [v16 emails];
-            v21 = [v20 firstObject];
+            emails = [v16 emails];
+            firstObject2 = [emails firstObject];
 
-            if (v21)
+            if (firstObject2)
             {
-              v22 = [v21 emailAddress];
-              [v14 setData:v22];
+              emailAddress = [firstObject2 emailAddress];
+              [v14 setData:emailAddress];
 
-              [v14 setTypedData:v21];
+              [v14 setTypedData:firstObject2];
             }
 
             v6 = v26;
@@ -313,9 +313,9 @@ LABEL_22:
   }
 
   [v24 setIncomingCallSearchResults:v6];
-  if (v25)
+  if (completionCopy)
   {
-    v25[2](v25, v24, 0);
+    completionCopy[2](completionCopy, v24, 0);
   }
 }
 
@@ -349,11 +349,11 @@ LABEL_22:
     }
 
     v12 = v11;
-    v13 = [v9 activeCallRemaining];
+    activeCallRemaining = [v9 activeCallRemaining];
     *buf = 136315394;
     v37 = "[ADCompanionRoutingPhoneService _hangUpCurrentCall]";
     v38 = 1024;
-    v39 = v13;
+    v39 = activeCallRemaining;
     v14 = "%s Outgoing call hung up. Active call remains: %d";
     goto LABEL_22;
   }
@@ -397,11 +397,11 @@ LABEL_22:
     if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
     {
       v12 = v21;
-      v22 = [v9 activeCallRemaining];
+      activeCallRemaining2 = [v9 activeCallRemaining];
       *buf = 136315394;
       v37 = "[ADCompanionRoutingPhoneService _hangUpCurrentCall]";
       v38 = 1024;
-      v39 = v22;
+      v39 = activeCallRemaining2;
       v14 = "%s Outgoing call hung up. Active call remains: %d";
 LABEL_22:
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, v14, buf, 0x12u);
@@ -425,11 +425,11 @@ LABEL_22:
       }
 
       v12 = v24;
-      v25 = [v9 activeCallRemaining];
+      activeCallRemaining3 = [v9 activeCallRemaining];
       *buf = 136315394;
       v37 = "[ADCompanionRoutingPhoneService _hangUpCurrentCall]";
       v38 = 1024;
-      v39 = v25;
+      v39 = activeCallRemaining3;
       v14 = "%s Active call hung up. Active call remains: %d";
       goto LABEL_22;
     }
@@ -449,11 +449,11 @@ LABEL_22:
       }
 
       v12 = v27;
-      v28 = [v9 activeCallRemaining];
+      activeCallRemaining4 = [v9 activeCallRemaining];
       *buf = 136315394;
       v37 = "[ADCompanionRoutingPhoneService _hangUpCurrentCall]";
       v38 = 1024;
-      v39 = v28;
+      v39 = activeCallRemaining4;
       v14 = "%s Held call hung up. Active call remains: %d";
       goto LABEL_22;
     }
@@ -474,11 +474,11 @@ LABEL_23:
   return v9;
 }
 
-- (void)_hangUpHandler:(id)a3 completion:(id)a4
+- (void)_hangUpHandler:(id)handler completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ADCompanionRoutingPhoneService *)self _hangUpCurrentCall];
+  handlerCopy = handler;
+  completionCopy = completion;
+  _hangUpCurrentCall = [(ADCompanionRoutingPhoneService *)self _hangUpCurrentCall];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -502,12 +502,12 @@ LABEL_23:
     v22[1] = 3221225472;
     v22[2] = sub_10023F4DC;
     v22[3] = &unk_100517788;
-    v23 = v6;
-    v24 = self;
+    v23 = handlerCopy;
+    selfCopy = self;
     p_buf = &buf;
-    v12 = v7;
+    v12 = completionCopy;
     v26 = v12;
-    v13 = v8;
+    v13 = _hangUpCurrentCall;
     v25 = v13;
     v14 = [v10 initWithTimeoutInterval:serialQueue onQueue:v22 timeoutHandler:10.0];
     objc_storeWeak((*(&buf + 1) + 40), v14);
@@ -532,18 +532,18 @@ LABEL_23:
     objc_destroyWeak(&v34);
   }
 
-  else if (v7)
+  else if (completionCopy)
   {
-    (*(v7 + 2))(v7, v8, 0);
+    (*(completionCopy + 2))(completionCopy, _hangUpCurrentCall, 0);
   }
 }
 
-- (void)_answerHandler:(id)a3 completion:(id)a4
+- (void)_answerHandler:(id)handler completion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   v6 = [TUCallCenter callCenterWithQueue:self->_serialQueue];
-  v7 = [v6 incomingCall];
-  if (v7)
+  incomingCall = [v6 incomingCall];
+  if (incomingCall)
   {
     v8 = AFSiriLogContextDaemon;
     if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
@@ -553,9 +553,9 @@ LABEL_23:
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "%s An incoming call exists. Answering it and returning success", &v12, 0xCu);
     }
 
-    [v6 answerCall:v7];
+    [v6 answerCall:incomingCall];
     v9 = objc_alloc_init(SACommandSucceeded);
-    if (v5)
+    if (completionCopy)
     {
       goto LABEL_5;
     }
@@ -564,9 +564,9 @@ LABEL_23:
   else
   {
     v9 = objc_alloc_init(SACommandFailed);
-    v10 = [v6 incomingVideoCall];
+    incomingVideoCall = [v6 incomingVideoCall];
 
-    if (v10)
+    if (incomingVideoCall)
     {
       [v9 setErrorCode:SAPhoneAnswerVideoCallErrorCode];
       v11 = @"Unable to answer video calls";
@@ -578,30 +578,30 @@ LABEL_23:
     }
 
     [v9 setReason:v11];
-    if (v5)
+    if (completionCopy)
     {
 LABEL_5:
-      v5[2](v5, v9, 0);
+      completionCopy[2](completionCopy, v9, 0);
     }
   }
 }
 
-- (void)handleCommand:(id)a3 forDomain:(id)a4 executionContext:(id)a5 reply:(id)a6
+- (void)handleCommand:(id)command forDomain:(id)domain executionContext:(id)context reply:(id)reply
 {
-  v8 = a3;
-  v9 = a6;
+  commandCopy = command;
+  replyCopy = reply;
   v10 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     v11 = v10;
-    v12 = [v8 encodedClassName];
-    v13 = [v8 groupIdentifier];
+    encodedClassName = [commandCopy encodedClassName];
+    groupIdentifier = [commandCopy groupIdentifier];
     *buf = 136315650;
     v22 = "[ADCompanionRoutingPhoneService handleCommand:forDomain:executionContext:reply:]";
     v23 = 2112;
-    v24 = v12;
+    v24 = encodedClassName;
     v25 = 2112;
-    v26 = v13;
+    v26 = groupIdentifier;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "%s Handling command (%@) for domain (%@)", buf, 0x20u);
   }
 
@@ -610,17 +610,17 @@ LABEL_5:
   block[1] = 3221225472;
   block[2] = sub_10023FCB8;
   block[3] = &unk_10051E088;
-  v18 = v8;
-  v19 = self;
-  v20 = v9;
-  v15 = v9;
-  v16 = v8;
+  v18 = commandCopy;
+  selfCopy = self;
+  v20 = replyCopy;
+  v15 = replyCopy;
+  v16 = commandCopy;
   dispatch_async(serialQueue, block);
 }
 
-- (id)commandsForDomain:(id)a3
+- (id)commandsForDomain:(id)domain
 {
-  if ([a3 isEqualToString:SAPhoneGroupIdentifier])
+  if ([domain isEqualToString:SAPhoneGroupIdentifier])
   {
     v5[0] = SAPhoneAnswerClassIdentifier;
     v5[1] = SAPhoneHangUpClassIdentifier;
@@ -660,45 +660,45 @@ LABEL_5:
   return v2;
 }
 
-+ (id)_contactForCall:(id)a3
++ (id)_contactForCall:(id)call
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  callCopy = call;
+  v4 = callCopy;
+  if (callCopy)
   {
-    v5 = [v3 displayContext];
-    v6 = [v5 personNameComponents];
+    displayContext = [callCopy displayContext];
+    personNameComponents = [displayContext personNameComponents];
 
-    if (v6)
+    if (personNameComponents)
     {
       v7 = objc_alloc_init(CNMutableContact);
-      v8 = [v6 namePrefix];
-      [v7 setNamePrefix:v8];
+      namePrefix = [personNameComponents namePrefix];
+      [v7 setNamePrefix:namePrefix];
 
-      v9 = [v6 givenName];
-      [v7 setGivenName:v9];
+      givenName = [personNameComponents givenName];
+      [v7 setGivenName:givenName];
 
-      v10 = [v6 middleName];
-      [v7 setMiddleName:v10];
+      middleName = [personNameComponents middleName];
+      [v7 setMiddleName:middleName];
 
-      v11 = [v6 familyName];
-      [v7 setFamilyName:v11];
+      familyName = [personNameComponents familyName];
+      [v7 setFamilyName:familyName];
 
-      v12 = [v6 nameSuffix];
-      [v7 setNameSuffix:v12];
+      nameSuffix = [personNameComponents nameSuffix];
+      [v7 setNameSuffix:nameSuffix];
 
-      v13 = [v6 nickname];
-      [v7 setNickname:v13];
+      nickname = [personNameComponents nickname];
+      [v7 setNickname:nickname];
 
-      v14 = [v6 phoneticRepresentation];
-      v15 = [v14 givenName];
-      [v7 setPhoneticGivenName:v15];
+      phoneticRepresentation = [personNameComponents phoneticRepresentation];
+      givenName2 = [phoneticRepresentation givenName];
+      [v7 setPhoneticGivenName:givenName2];
 
-      v16 = [v14 middleName];
-      [v7 setPhoneticMiddleName:v16];
+      middleName2 = [phoneticRepresentation middleName];
+      [v7 setPhoneticMiddleName:middleName2];
 
-      v17 = [v14 familyName];
-      [v7 setPhoneticFamilyName:v17];
+      familyName2 = [phoneticRepresentation familyName];
+      [v7 setPhoneticFamilyName:familyName2];
     }
 
     else
@@ -706,17 +706,17 @@ LABEL_5:
       v7 = 0;
     }
 
-    v18 = [v4 displayContext];
-    v19 = [v18 companyName];
+    displayContext2 = [v4 displayContext];
+    companyName = [displayContext2 companyName];
 
-    if ([v19 length])
+    if ([companyName length])
     {
       if (!v7)
       {
         v7 = objc_alloc_init(CNMutableContact);
       }
 
-      [v7 setOrganizationName:v19];
+      [v7 setOrganizationName:companyName];
     }
   }
 
@@ -728,54 +728,54 @@ LABEL_5:
   return v7;
 }
 
-+ (id)_personForCall:(id)a3
++ (id)_personForCall:(id)call
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  callCopy = call;
+  v5 = callCopy;
+  if (callCopy)
   {
-    v6 = [v4 contactIdentifier];
-    v7 = [v6 length];
+    contactIdentifier = [callCopy contactIdentifier];
+    v7 = [contactIdentifier length];
 
     if (v7)
     {
       v8 = objc_alloc_init(SAPerson);
-      v9 = [v5 contactIdentifier];
-      [v8 setInternalGUID:v9];
+      contactIdentifier2 = [v5 contactIdentifier];
+      [v8 setInternalGUID:contactIdentifier2];
 
-      v10 = [v5 displayContext];
-      v11 = [v10 personNameComponents];
+      displayContext = [v5 displayContext];
+      personNameComponents = [displayContext personNameComponents];
 
-      v12 = [v11 namePrefix];
-      [v8 setPrefix:v12];
+      namePrefix = [personNameComponents namePrefix];
+      [v8 setPrefix:namePrefix];
 
-      v13 = [v11 givenName];
-      [v8 setFirstName:v13];
+      givenName = [personNameComponents givenName];
+      [v8 setFirstName:givenName];
 
-      v14 = [v11 middleName];
-      [v8 setMiddleName:v14];
+      middleName = [personNameComponents middleName];
+      [v8 setMiddleName:middleName];
 
-      v15 = [v11 familyName];
-      [v8 setLastName:v15];
+      familyName = [personNameComponents familyName];
+      [v8 setLastName:familyName];
 
-      v16 = [v11 nameSuffix];
-      [v8 setSuffix:v16];
+      nameSuffix = [personNameComponents nameSuffix];
+      [v8 setSuffix:nameSuffix];
 
-      v17 = [v11 nickname];
-      [v8 setNickName:v17];
+      nickname = [personNameComponents nickname];
+      [v8 setNickName:nickname];
 
-      v18 = [v11 phoneticRepresentation];
-      v19 = [v18 givenName];
-      [v8 setFirstNamePhonetic:v19];
+      phoneticRepresentation = [personNameComponents phoneticRepresentation];
+      givenName2 = [phoneticRepresentation givenName];
+      [v8 setFirstNamePhonetic:givenName2];
 
-      v20 = [v18 familyName];
-      [v8 setLastNamePhonetic:v20];
+      familyName2 = [phoneticRepresentation familyName];
+      [v8 setLastNamePhonetic:familyName2];
 
-      v21 = [v5 displayContext];
-      v22 = [v21 companyName];
-      [v8 setCompany:v22];
+      displayContext2 = [v5 displayContext];
+      companyName = [displayContext2 companyName];
+      [v8 setCompany:companyName];
 
-      v23 = [a1 _contactForCall:v5];
+      v23 = [self _contactForCall:v5];
       if (v23)
       {
         v24 = [CNContactFormatter stringFromContact:v23 style:0];
@@ -788,20 +788,20 @@ LABEL_5:
       v8 = 0;
     }
 
-    v25 = [v5 handle];
-    v26 = [v25 type];
-    v27 = [v25 value];
-    if ([v27 length] && (v26 & 0xFFFFFFFFFFFFFFFELL) == 2)
+    handle = [v5 handle];
+    type = [handle type];
+    value = [handle value];
+    if ([value length] && (type & 0xFFFFFFFFFFFFFFFELL) == 2)
     {
       if (!v8)
       {
         v8 = objc_alloc_init(SAPerson);
       }
 
-      if (v26 == 2)
+      if (type == 2)
       {
         v28 = objc_alloc_init(SAPhone);
-        [v28 setNumber:v27];
+        [v28 setNumber:value];
         v32 = v28;
         v29 = [NSArray arrayWithObjects:&v32 count:1];
         [v8 setPhones:v29];
@@ -810,7 +810,7 @@ LABEL_5:
       else
       {
         v28 = objc_alloc_init(SAEmail);
-        [v28 setEmailAddress:v27];
+        [v28 setEmailAddress:value];
         v31 = v28;
         v29 = [NSArray arrayWithObjects:&v31 count:1];
         [v8 setEmails:v29];
@@ -826,18 +826,18 @@ LABEL_5:
   return v8;
 }
 
-+ (id)_personAttributeForCall:(id)a3
++ (id)_personAttributeForCall:(id)call
 {
-  if (a3)
+  if (call)
   {
-    v3 = a3;
+    callCopy = call;
     v4 = objc_alloc_init(SAPersonAttribute);
-    v5 = [objc_opt_class() _personForCall:v3];
+    v5 = [objc_opt_class() _personForCall:callCopy];
     [v4 setObject:v5];
-    v6 = [v3 displayContext];
+    displayContext = [callCopy displayContext];
 
-    v7 = [v6 name];
-    [v4 setDisplayText:v7];
+    name = [displayContext name];
+    [v4 setDisplayText:name];
   }
 
   else
@@ -848,16 +848,16 @@ LABEL_5:
   return v4;
 }
 
-+ (id)_incomingCallTypeForService:(int)a3
++ (id)_incomingCallTypeForService:(int)service
 {
-  if ((a3 - 1) > 2)
+  if ((service - 1) > 2)
   {
     v3 = &SAPhoneIncomingCallTypeUNKNOWNValue;
   }
 
   else
   {
-    v3 = *(&off_1005177A8 + (a3 - 1));
+    v3 = *(&off_1005177A8 + (service - 1));
   }
 
   return *v3;

@@ -1,19 +1,19 @@
 @interface ASAuthorizationWebBrowserPlatformPublicKeyCredential
-- (ASAuthorizationWebBrowserPlatformPublicKeyCredential)initWithCorePasskey:(id)a3;
+- (ASAuthorizationWebBrowserPlatformPublicKeyCredential)initWithCorePasskey:(id)passkey;
 @end
 
 @implementation ASAuthorizationWebBrowserPlatformPublicKeyCredential
 
-- (ASAuthorizationWebBrowserPlatformPublicKeyCredential)initWithCorePasskey:(id)a3
+- (ASAuthorizationWebBrowserPlatformPublicKeyCredential)initWithCorePasskey:(id)passkey
 {
-  v5 = a3;
+  passkeyCopy = passkey;
   v10.receiver = self;
   v10.super_class = ASAuthorizationWebBrowserPlatformPublicKeyCredential;
   v6 = [(ASAuthorizationWebBrowserPlatformPublicKeyCredential *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_corePasskey, a3);
+    objc_storeStrong(&v6->_corePasskey, passkey);
     v8 = v7;
   }
 

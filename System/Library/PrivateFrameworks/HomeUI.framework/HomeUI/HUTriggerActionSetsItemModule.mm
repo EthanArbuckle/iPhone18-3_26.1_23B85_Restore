@@ -1,30 +1,30 @@
 @interface HUTriggerActionSetsItemModule
-- (BOOL)prioritizedAccessoriesContainsMediaProfiles:(id)a3;
-- (BOOL)prioritizedAccessoriesContainsServices:(id)a3;
+- (BOOL)prioritizedAccessoriesContainsMediaProfiles:(id)profiles;
+- (BOOL)prioritizedAccessoriesContainsServices:(id)services;
 - (BOOL)shouldShowPrioritizedActions;
-- (HUTriggerActionSetsItemModule)initWithTriggerBuilder:(id)a3 flow:(id)a4 itemUpdater:(id)a5;
+- (HUTriggerActionSetsItemModule)initWithTriggerBuilder:(id)builder flow:(id)flow itemUpdater:(id)updater;
 - (id)_buildItemProviders;
-- (id)_itemsToHideForStandardTriggerInSet:(id)a3;
-- (id)_itemsToHideInSet:(id)a3;
+- (id)_itemsToHideForStandardTriggerInSet:(id)set;
+- (id)_itemsToHideInSet:(id)set;
 - (id)_staticItems;
-- (id)buildSectionsWithDisplayedItems:(id)a3;
+- (id)buildSectionsWithDisplayedItems:(id)items;
 - (id)itemProviders;
 @end
 
 @implementation HUTriggerActionSetsItemModule
 
-- (HUTriggerActionSetsItemModule)initWithTriggerBuilder:(id)a3 flow:(id)a4 itemUpdater:(id)a5
+- (HUTriggerActionSetsItemModule)initWithTriggerBuilder:(id)builder flow:(id)flow itemUpdater:(id)updater
 {
-  v9 = a3;
-  v10 = a4;
+  builderCopy = builder;
+  flowCopy = flow;
   v14.receiver = self;
   v14.super_class = HUTriggerActionSetsItemModule;
-  v11 = [(HFItemModule *)&v14 initWithItemUpdater:a5];
+  v11 = [(HFItemModule *)&v14 initWithItemUpdater:updater];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_triggerBuilder, a3);
-    objc_storeStrong(&v12->_flow, a4);
+    objc_storeStrong(&v11->_triggerBuilder, builder);
+    objc_storeStrong(&v12->_flow, flow);
   }
 
   return v12;
@@ -35,9 +35,9 @@
   itemProviders = self->_itemProviders;
   if (!itemProviders)
   {
-    v4 = [(HUTriggerActionSetsItemModule *)self _buildItemProviders];
+    _buildItemProviders = [(HUTriggerActionSetsItemModule *)self _buildItemProviders];
     v5 = self->_itemProviders;
-    self->_itemProviders = v4;
+    self->_itemProviders = _buildItemProviders;
 
     itemProviders = self->_itemProviders;
   }
@@ -48,8 +48,8 @@
 - (id)_buildItemProviders
 {
   v3 = objc_alloc(MEMORY[0x277D14B40]);
-  v4 = [(HUTriggerActionSetsItemModule *)self _staticItems];
-  v5 = [v3 initWithItems:v4];
+  _staticItems = [(HUTriggerActionSetsItemModule *)self _staticItems];
+  v5 = [v3 initWithItems:_staticItems];
 
   v6 = [MEMORY[0x277CBEB98] setWithObject:v5];
 
@@ -64,83 +64,83 @@
   v6 = [v4 initWithResults:MEMORY[0x277CBEC10]];
   [(HUTriggerActionSetsItemModule *)self setActionSetsGridItem:v6];
 
-  v7 = [(HUTriggerActionSetsItemModule *)self actionSetsGridItem];
-  [v3 na_safeAddObject:v7];
+  actionSetsGridItem = [(HUTriggerActionSetsItemModule *)self actionSetsGridItem];
+  [v3 na_safeAddObject:actionSetsGridItem];
 
   v8 = [objc_alloc(MEMORY[0x277D14B38]) initWithResults:v5];
   [(HUTriggerActionSetsItemModule *)self setServiceActionsGridItem:v8];
 
-  v9 = [(HUTriggerActionSetsItemModule *)self serviceActionsGridItem];
-  [v3 na_safeAddObject:v9];
+  serviceActionsGridItem = [(HUTriggerActionSetsItemModule *)self serviceActionsGridItem];
+  [v3 na_safeAddObject:serviceActionsGridItem];
 
   v10 = [objc_alloc(MEMORY[0x277D14B38]) initWithResults:v5];
   [(HUTriggerActionSetsItemModule *)self setPrioritizedServiceActionsGridItem:v10];
 
-  v11 = [(HUTriggerActionSetsItemModule *)self prioritizedServiceActionsGridItem];
-  [v3 na_safeAddObject:v11];
+  prioritizedServiceActionsGridItem = [(HUTriggerActionSetsItemModule *)self prioritizedServiceActionsGridItem];
+  [v3 na_safeAddObject:prioritizedServiceActionsGridItem];
 
-  v12 = [(HUTriggerActionSetsItemModule *)self triggerBuilder];
-  LODWORD(v9) = [v12 isShortcutOwned];
+  triggerBuilder = [(HUTriggerActionSetsItemModule *)self triggerBuilder];
+  LODWORD(serviceActionsGridItem) = [triggerBuilder isShortcutOwned];
 
-  if (v9)
+  if (serviceActionsGridItem)
   {
-    v13 = [(HUTriggerActionSetsItemModule *)self flow];
-    v14 = [v13 flowState] == 3;
+    flow = [(HUTriggerActionSetsItemModule *)self flow];
+    v14 = [flow flowState] == 3;
 
     v15 = [HUShortcutItem alloc];
-    v16 = [(HUTriggerActionSetsItemModule *)self triggerBuilder];
-    v17 = [(HUShortcutItem *)v15 initWithTriggerBuilder:v16 selectable:v14];
+    triggerBuilder2 = [(HUTriggerActionSetsItemModule *)self triggerBuilder];
+    v17 = [(HUShortcutItem *)v15 initWithTriggerBuilder:triggerBuilder2 selectable:v14];
     [(HUTriggerActionSetsItemModule *)self setShortcutItem:v17];
 
-    v18 = [(HUTriggerActionSetsItemModule *)self shortcutItem];
-    [v3 addObject:v18];
+    shortcutItem = [(HUTriggerActionSetsItemModule *)self shortcutItem];
+    [v3 addObject:shortcutItem];
   }
 
   return v3;
 }
 
-- (id)_itemsToHideInSet:(id)a3
+- (id)_itemsToHideInSet:(id)set
 {
-  v4 = a3;
+  setCopy = set;
   v5 = [MEMORY[0x277CBEB58] set];
-  v6 = [(HUTriggerActionSetsItemModule *)self triggerBuilder];
-  v7 = [v6 isShortcutOwned];
+  triggerBuilder = [(HUTriggerActionSetsItemModule *)self triggerBuilder];
+  isShortcutOwned = [triggerBuilder isShortcutOwned];
 
-  if (v7)
+  if (isShortcutOwned)
   {
-    v8 = [(HUTriggerActionSetsItemModule *)self actionSetsGridItem];
-    [v5 addObject:v8];
+    actionSetsGridItem = [(HUTriggerActionSetsItemModule *)self actionSetsGridItem];
+    [v5 addObject:actionSetsGridItem];
 
-    v9 = [(HUTriggerActionSetsItemModule *)self serviceActionsGridItem];
-    [v5 addObject:v9];
+    serviceActionsGridItem = [(HUTriggerActionSetsItemModule *)self serviceActionsGridItem];
+    [v5 addObject:serviceActionsGridItem];
 
-    v10 = [(HUTriggerActionSetsItemModule *)self prioritizedServiceActionsGridItem];
-    [v5 addObject:v10];
+    prioritizedServiceActionsGridItem = [(HUTriggerActionSetsItemModule *)self prioritizedServiceActionsGridItem];
+    [v5 addObject:prioritizedServiceActionsGridItem];
   }
 
   else
   {
-    v11 = [(HUTriggerActionSetsItemModule *)self _itemsToHideForStandardTriggerInSet:v4];
+    v11 = [(HUTriggerActionSetsItemModule *)self _itemsToHideForStandardTriggerInSet:setCopy];
     [v5 unionSet:v11];
 
-    v10 = [(HUTriggerActionSetsItemModule *)self shortcutItem];
-    [v5 na_safeAddObject:v10];
+    prioritizedServiceActionsGridItem = [(HUTriggerActionSetsItemModule *)self shortcutItem];
+    [v5 na_safeAddObject:prioritizedServiceActionsGridItem];
   }
 
   if (![(HUTriggerActionSetsItemModule *)self shouldShowPrioritizedActions])
   {
-    v12 = [(HUTriggerActionSetsItemModule *)self prioritizedServiceActionsGridItem];
-    [v5 addObject:v12];
+    prioritizedServiceActionsGridItem2 = [(HUTriggerActionSetsItemModule *)self prioritizedServiceActionsGridItem];
+    [v5 addObject:prioritizedServiceActionsGridItem2];
   }
 
   return v5;
 }
 
-- (id)buildSectionsWithDisplayedItems:(id)a3
+- (id)buildSectionsWithDisplayedItems:(id)items
 {
   v32[1] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277D14850];
-  v5 = a3;
+  itemsCopy = items;
   v6 = [[v4 alloc] initWithIdentifier:@"HUTriggerActionSetsItemModuleSectionIdentifierActionSets"];
   v7 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"HUTriggerActionSetsItemModuleSectionIdentifierPrioritizedServiceActions"];
   v8 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"HUTriggerActionSetsItemModuleSectionIdentifierServiceActions"];
@@ -170,24 +170,24 @@
   v15 = _HULocalizedStringWithDefaultValue(@"HUTriggerSummaryShortcutsInstructionTitle", @"HUTriggerSummaryShortcutsInstructionTitle", 1);
   [v9 setHeaderTitle:v15];
 
-  v16 = [(HUTriggerActionSetsItemModule *)self actionSetsGridItem];
-  v32[0] = v16;
+  actionSetsGridItem = [(HUTriggerActionSetsItemModule *)self actionSetsGridItem];
+  v32[0] = actionSetsGridItem;
   v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v32 count:1];
   [v6 setItems:v17];
 
-  v18 = [(HUTriggerActionSetsItemModule *)self prioritizedServiceActionsGridItem];
-  v31 = v18;
+  prioritizedServiceActionsGridItem = [(HUTriggerActionSetsItemModule *)self prioritizedServiceActionsGridItem];
+  v31 = prioritizedServiceActionsGridItem;
   v19 = [MEMORY[0x277CBEA60] arrayWithObjects:&v31 count:1];
   [v7 setItems:v19];
 
-  v20 = [(HUTriggerActionSetsItemModule *)self serviceActionsGridItem];
-  v30 = v20;
+  serviceActionsGridItem = [(HUTriggerActionSetsItemModule *)self serviceActionsGridItem];
+  v30 = serviceActionsGridItem;
   v21 = [MEMORY[0x277CBEA60] arrayWithObjects:&v30 count:1];
   [v8 setItems:v21];
 
   v22 = MEMORY[0x277CBEA60];
-  v23 = [(HUTriggerActionSetsItemModule *)self shortcutItem];
-  v24 = [v22 na_arrayWithSafeObject:v23];
+  shortcutItem = [(HUTriggerActionSetsItemModule *)self shortcutItem];
+  v24 = [v22 na_arrayWithSafeObject:shortcutItem];
   [v9 setItems:v24];
 
   v25 = MEMORY[0x277D14778];
@@ -196,92 +196,92 @@
   v29[2] = v8;
   v29[3] = v9;
   v26 = [MEMORY[0x277CBEA60] arrayWithObjects:v29 count:4];
-  v27 = [v25 filterSections:v26 toDisplayedItems:v5];
+  v27 = [v25 filterSections:v26 toDisplayedItems:itemsCopy];
 
   return v27;
 }
 
-- (id)_itemsToHideForStandardTriggerInSet:(id)a3
+- (id)_itemsToHideForStandardTriggerInSet:(id)set
 {
-  v4 = a3;
+  setCopy = set;
   v5 = [MEMORY[0x277CBEB58] set];
-  v6 = [(HUTriggerActionSetsItemModule *)self triggerBuilder];
-  v7 = [v6 triggerActionSets];
-  v8 = [v7 namedActionSets];
+  triggerBuilder = [(HUTriggerActionSetsItemModule *)self triggerBuilder];
+  triggerActionSets = [triggerBuilder triggerActionSets];
+  namedActionSets = [triggerActionSets namedActionSets];
 
-  v9 = [v8 na_filter:&__block_literal_global_36];
+  v9 = [namedActionSets na_filter:&__block_literal_global_36];
 
   if (![v9 count])
   {
-    v10 = [(HUTriggerActionSetsItemModule *)self actionSetsGridItem];
-    v11 = [v4 containsObject:v10];
+    actionSetsGridItem = [(HUTriggerActionSetsItemModule *)self actionSetsGridItem];
+    v11 = [setCopy containsObject:actionSetsGridItem];
 
     if (v11)
     {
-      v12 = [(HUTriggerActionSetsItemModule *)self actionSetsGridItem];
-      [v5 addObject:v12];
+      actionSetsGridItem2 = [(HUTriggerActionSetsItemModule *)self actionSetsGridItem];
+      [v5 addObject:actionSetsGridItem2];
     }
   }
 
-  v13 = [(HUTriggerActionSetsItemModule *)self triggerBuilder];
-  v14 = [v13 triggerActionSets];
-  v15 = [v14 anonymousActionSetBuilder];
-  v16 = [v15 actions];
-  if ([v16 count])
+  triggerBuilder2 = [(HUTriggerActionSetsItemModule *)self triggerBuilder];
+  triggerActionSets2 = [triggerBuilder2 triggerActionSets];
+  anonymousActionSetBuilder = [triggerActionSets2 anonymousActionSetBuilder];
+  actions = [anonymousActionSetBuilder actions];
+  if ([actions count])
   {
   }
 
   else
   {
-    v17 = [(HUTriggerActionSetsItemModule *)self serviceActionsGridItem];
-    v18 = [v4 containsObject:v17];
+    serviceActionsGridItem = [(HUTriggerActionSetsItemModule *)self serviceActionsGridItem];
+    v18 = [setCopy containsObject:serviceActionsGridItem];
 
     if (!v18)
     {
       goto LABEL_9;
     }
 
-    v13 = [(HUTriggerActionSetsItemModule *)self serviceActionsGridItem];
-    [v5 addObject:v13];
+    triggerBuilder2 = [(HUTriggerActionSetsItemModule *)self serviceActionsGridItem];
+    [v5 addObject:triggerBuilder2];
   }
 
 LABEL_9:
   if ([(HUTriggerActionSetsItemModule *)self shouldShowPrioritizedActions])
   {
-    v19 = [(HUTriggerActionSetsItemModule *)self triggerBuilder];
-    v20 = [v19 triggerActionSets];
-    v21 = [v20 anonymousActionSetBuilder];
-    v22 = [v21 actions];
+    triggerBuilder3 = [(HUTriggerActionSetsItemModule *)self triggerBuilder];
+    triggerActionSets3 = [triggerBuilder3 triggerActionSets];
+    anonymousActionSetBuilder2 = [triggerActionSets3 anonymousActionSetBuilder];
+    actions2 = [anonymousActionSetBuilder2 actions];
     v29[0] = MEMORY[0x277D85DD0];
     v29[1] = 3221225472;
     v29[2] = __69__HUTriggerActionSetsItemModule__itemsToHideForStandardTriggerInSet___block_invoke_2;
     v29[3] = &unk_277DB96C8;
     v29[4] = self;
-    v23 = [v22 na_any:v29];
+    v23 = [actions2 na_any:v29];
 
     if (v23)
     {
       goto LABEL_15;
     }
 
-    v24 = [(HUTriggerActionSetsItemModule *)self serviceActionsGridItem];
+    serviceActionsGridItem2 = [(HUTriggerActionSetsItemModule *)self serviceActionsGridItem];
   }
 
   else
   {
-    v25 = [(HUTriggerActionSetsItemModule *)self prioritizedServiceActionsGridItem];
-    v26 = [v4 containsObject:v25];
+    prioritizedServiceActionsGridItem = [(HUTriggerActionSetsItemModule *)self prioritizedServiceActionsGridItem];
+    v26 = [setCopy containsObject:prioritizedServiceActionsGridItem];
 
     if (!v26)
     {
       goto LABEL_15;
     }
 
-    v24 = [(HUTriggerActionSetsItemModule *)self prioritizedServiceActionsGridItem];
+    serviceActionsGridItem2 = [(HUTriggerActionSetsItemModule *)self prioritizedServiceActionsGridItem];
   }
 
-  v27 = v24;
-  [v5 addObject:v24];
+  v27 = serviceActionsGridItem2;
+  [v5 addObject:serviceActionsGridItem2];
 
 LABEL_15:
 
@@ -392,17 +392,17 @@ uint64_t __69__HUTriggerActionSetsItemModule__itemsToHideForStandardTriggerInSet
   return v5;
 }
 
-- (BOOL)prioritizedAccessoriesContainsServices:(id)a3
+- (BOOL)prioritizedAccessoriesContainsServices:(id)services
 {
-  v4 = a3;
-  v5 = [(HUTriggerActionSetsItemModule *)self prioritizedAccessories];
+  servicesCopy = services;
+  prioritizedAccessories = [(HUTriggerActionSetsItemModule *)self prioritizedAccessories];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __72__HUTriggerActionSetsItemModule_prioritizedAccessoriesContainsServices___block_invoke;
   v9[3] = &unk_277DB96A0;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 na_any:v9];
+  v10 = servicesCopy;
+  v6 = servicesCopy;
+  v7 = [prioritizedAccessories na_any:v9];
 
   return v7;
 }
@@ -415,17 +415,17 @@ uint64_t __72__HUTriggerActionSetsItemModule_prioritizedAccessoriesContainsServi
   return v4;
 }
 
-- (BOOL)prioritizedAccessoriesContainsMediaProfiles:(id)a3
+- (BOOL)prioritizedAccessoriesContainsMediaProfiles:(id)profiles
 {
-  v4 = a3;
-  v5 = [(HUTriggerActionSetsItemModule *)self prioritizedAccessories];
+  profilesCopy = profiles;
+  prioritizedAccessories = [(HUTriggerActionSetsItemModule *)self prioritizedAccessories];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __77__HUTriggerActionSetsItemModule_prioritizedAccessoriesContainsMediaProfiles___block_invoke;
   v9[3] = &unk_277DB96A0;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 na_any:v9];
+  v10 = profilesCopy;
+  v6 = profilesCopy;
+  v7 = [prioritizedAccessories na_any:v9];
 
   return v7;
 }
@@ -458,19 +458,19 @@ uint64_t __77__HUTriggerActionSetsItemModule_prioritizedAccessoriesContainsMedia
 
 - (BOOL)shouldShowPrioritizedActions
 {
-  v3 = [(HUTriggerActionSetsItemModule *)self prioritizedAccessories];
-  if ([v3 count])
+  prioritizedAccessories = [(HUTriggerActionSetsItemModule *)self prioritizedAccessories];
+  if ([prioritizedAccessories count])
   {
-    v4 = [(HUTriggerActionSetsItemModule *)self triggerBuilder];
-    v5 = [v4 triggerActionSets];
-    v6 = [v5 anonymousActionSetBuilder];
-    v7 = [v6 actions];
+    triggerBuilder = [(HUTriggerActionSetsItemModule *)self triggerBuilder];
+    triggerActionSets = [triggerBuilder triggerActionSets];
+    anonymousActionSetBuilder = [triggerActionSets anonymousActionSetBuilder];
+    actions = [anonymousActionSetBuilder actions];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __61__HUTriggerActionSetsItemModule_shouldShowPrioritizedActions__block_invoke;
     v10[3] = &unk_277DB96C8;
     v10[4] = self;
-    v8 = [v7 na_any:v10];
+    v8 = [actions na_any:v10];
   }
 
   else

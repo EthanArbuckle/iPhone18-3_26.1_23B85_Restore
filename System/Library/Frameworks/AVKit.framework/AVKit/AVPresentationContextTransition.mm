@@ -10,9 +10,9 @@
 
 - (int64_t)initialInterfaceOrientation
 {
-  v3 = [(AVPresentationContextTransition *)self wasCancelledWithInactiveScene];
+  wasCancelledWithInactiveScene = [(AVPresentationContextTransition *)self wasCancelledWithInactiveScene];
   v4 = 24;
-  if (v3)
+  if (wasCancelledWithInactiveScene)
   {
     v4 = 32;
   }
@@ -22,15 +22,15 @@
 
 - (BOOL)isRotated
 {
-  v2 = [(AVPresentationContextTransition *)self interfaceRotation];
-  if (v2 >= 0)
+  interfaceRotation = [(AVPresentationContextTransition *)self interfaceRotation];
+  if (interfaceRotation >= 0)
   {
-    v3 = v2;
+    v3 = interfaceRotation;
   }
 
   else
   {
-    v3 = -v2;
+    v3 = -interfaceRotation;
   }
 
   return v3 == 1;
@@ -38,26 +38,26 @@
 
 - (int64_t)interfaceRotation
 {
-  v3 = [(AVPresentationContextTransition *)self initialInterfaceOrientation];
-  v4 = [(AVPresentationContextTransition *)self finalInterfaceOrientation];
-  if ((v3 - 2) > 2)
+  initialInterfaceOrientation = [(AVPresentationContextTransition *)self initialInterfaceOrientation];
+  finalInterfaceOrientation = [(AVPresentationContextTransition *)self finalInterfaceOrientation];
+  if ((initialInterfaceOrientation - 2) > 2)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = qword_18B6EC6F0[v3 - 2];
+    v5 = qword_18B6EC6F0[initialInterfaceOrientation - 2];
   }
 
-  if ((v4 - 2) > 2)
+  if ((finalInterfaceOrientation - 2) > 2)
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = qword_18B6EC708[v4 - 2];
+    v6 = qword_18B6EC708[finalInterfaceOrientation - 2];
   }
 
   return v6 + v5;

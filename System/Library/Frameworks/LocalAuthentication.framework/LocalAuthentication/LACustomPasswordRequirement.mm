@@ -1,39 +1,39 @@
 @interface LACustomPasswordRequirement
-+ (void)requestCreationWithLocalizedReason:(id)a3 completion:(id)a4;
-- (LACustomPasswordRequirement)initWithCustomPassword:(id)a3;
-- (void)encodeWithACLCoder:(id)a3;
++ (void)requestCreationWithLocalizedReason:(id)reason completion:(id)completion;
+- (LACustomPasswordRequirement)initWithCustomPassword:(id)password;
+- (void)encodeWithACLCoder:(id)coder;
 @end
 
 @implementation LACustomPasswordRequirement
 
-- (LACustomPasswordRequirement)initWithCustomPassword:(id)a3
+- (LACustomPasswordRequirement)initWithCustomPassword:(id)password
 {
-  v5 = a3;
+  passwordCopy = password;
   v9.receiver = self;
   v9.super_class = LACustomPasswordRequirement;
   v6 = [(LACustomPasswordRequirement *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_password, a3);
+    objc_storeStrong(&v6->_password, password);
   }
 
   return v7;
 }
 
-+ (void)requestCreationWithLocalizedReason:(id)a3 completion:(id)a4
++ (void)requestCreationWithLocalizedReason:(id)reason completion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   v6 = +[LAAuthorizationError missingImplementation];
-  (*(a4 + 2))(v5, 0, v6);
+  (*(completion + 2))(completionCopy, 0, v6);
 }
 
-- (void)encodeWithACLCoder:(id)a3
+- (void)encodeWithACLCoder:(id)coder
 {
   password = self->_password;
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(NSString *)password dataUsingEncoding:4];
-  [v4 addCredential:v5 credentialType:0];
+  [coderCopy addCredential:v5 credentialType:0];
 }
 
 @end

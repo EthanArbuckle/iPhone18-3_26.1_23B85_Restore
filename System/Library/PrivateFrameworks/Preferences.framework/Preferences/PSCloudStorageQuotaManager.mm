@@ -1,6 +1,6 @@
 @interface PSCloudStorageQuotaManager
 + (id)sharedManager;
-- (void)getQuotaInfoForPrimaryAccountCompletion:(id)a3;
+- (void)getQuotaInfoForPrimaryAccountCompletion:(id)completion;
 @end
 
 @implementation PSCloudStorageQuotaManager
@@ -11,7 +11,7 @@
   block[1] = 3221225472;
   block[2] = __43__PSCloudStorageQuotaManager_sharedManager__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedManager_onceToken != -1)
   {
     dispatch_once(&sharedManager_onceToken, block);
@@ -30,9 +30,9 @@ void __43__PSCloudStorageQuotaManager_sharedManager__block_invoke()
   gSharedQuotaManager = v0;
 }
 
-- (void)getQuotaInfoForPrimaryAccountCompletion:(id)a3
+- (void)getQuotaInfoForPrimaryAccountCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2050000000;
@@ -51,14 +51,14 @@ void __43__PSCloudStorageQuotaManager_sharedManager__block_invoke()
 
   v5 = v4;
   _Block_object_dispose(&v11, 8);
-  v6 = [v4 sharedManager];
+  sharedManager = [v4 sharedManager];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __70__PSCloudStorageQuotaManager_getQuotaInfoForPrimaryAccountCompletion___block_invoke;
   v8[3] = &unk_1E71DEC18;
-  v9 = v3;
-  v7 = v3;
-  [v6 getQuotaInfoDetailed:1 handler:v8];
+  v9 = completionCopy;
+  v7 = completionCopy;
+  [sharedManager getQuotaInfoDetailed:1 handler:v8];
 }
 
 void __70__PSCloudStorageQuotaManager_getQuotaInfoForPrimaryAccountCompletion___block_invoke(uint64_t a1, void *a2)

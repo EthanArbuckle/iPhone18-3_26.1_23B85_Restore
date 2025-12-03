@@ -1,5 +1,5 @@
 @interface RoundedButtonCollectionViewCell
-- (void)didTapButton:(id)a3;
+- (void)didTapButton:(id)button;
 - (void)layoutSubviews;
 @end
 
@@ -7,15 +7,15 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_5BB43C();
 }
 
-- (void)didTapButton:(id)a3
+- (void)didTapButton:(id)button
 {
-  v4 = a3;
-  v5 = self;
-  sub_5BBB78(v4);
+  buttonCopy = button;
+  selfCopy = self;
+  sub_5BBB78(buttonCopy);
 }
 
 @end

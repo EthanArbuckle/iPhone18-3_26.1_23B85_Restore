@@ -6,9 +6,9 @@
 
 - (id)sha256Hash
 {
-  v2 = [(NSString *)self UTF8String];
-  v3 = strlen(v2);
-  CC_SHA256(v2, v3, md);
+  uTF8String = [(NSString *)self UTF8String];
+  v3 = strlen(uTF8String);
+  CC_SHA256(uTF8String, v3, md);
   v4 = [NSMutableString stringWithCapacity:64];
   for (i = 0; i != 32; ++i)
   {

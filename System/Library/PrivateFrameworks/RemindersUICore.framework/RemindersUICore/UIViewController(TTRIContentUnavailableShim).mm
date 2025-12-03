@@ -6,10 +6,10 @@
 
 - (id)ttr_unavailableSearchResultsText
 {
-  v1 = [a1 _contentUnavailableConfigurationState];
-  v2 = [v1 searchControllerText];
+  _contentUnavailableConfigurationState = [self _contentUnavailableConfigurationState];
+  searchControllerText = [_contentUnavailableConfigurationState searchControllerText];
 
-  return v2;
+  return searchControllerText;
 }
 
 @end

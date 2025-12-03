@@ -5,11 +5,11 @@
 - (HGAudioFeedbackConfigurationInternal)audioFeedbackConfig;
 - (HGConfigurationInternal)init;
 - (HGMLConfigurationInternal)mlConfig;
-- (void)setAudioFeedbackConfig:(id)a3;
-- (void)setEnableRawDataLogging:(BOOL)a3;
-- (void)setMlConfig:(id)a3;
-- (void)setRequestPartGestures:(BOOL)a3;
-- (void)setSingleDelivery:(BOOL)a3;
+- (void)setAudioFeedbackConfig:(id)config;
+- (void)setEnableRawDataLogging:(BOOL)logging;
+- (void)setMlConfig:(id)config;
+- (void)setRequestPartGestures:(BOOL)gestures;
+- (void)setSingleDelivery:(BOOL)delivery;
 @end
 
 @implementation HGConfigurationInternal
@@ -21,13 +21,13 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setMlConfig:(id)a3
+- (void)setMlConfig:(id)config
 {
   v5 = OBJC_IVAR___HGConfigurationInternal_mlConfig;
   swift_beginAccess();
   v6 = *(&self->super.isa + v5);
-  *(&self->super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.isa + v5) = config;
+  configCopy = config;
 }
 
 - (HGAudioFeedbackConfigurationInternal)audioFeedbackConfig
@@ -37,13 +37,13 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setAudioFeedbackConfig:(id)a3
+- (void)setAudioFeedbackConfig:(id)config
 {
   v5 = OBJC_IVAR___HGConfigurationInternal_audioFeedbackConfig;
   swift_beginAccess();
   v6 = *(&self->super.isa + v5);
-  *(&self->super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.isa + v5) = config;
+  configCopy = config;
 }
 
 - (BOOL)requestPartGestures
@@ -53,11 +53,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setRequestPartGestures:(BOOL)a3
+- (void)setRequestPartGestures:(BOOL)gestures
 {
   v5 = OBJC_IVAR___HGConfigurationInternal_requestPartGestures;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = gestures;
 }
 
 - (BOOL)singleDelivery
@@ -67,11 +67,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setSingleDelivery:(BOOL)a3
+- (void)setSingleDelivery:(BOOL)delivery
 {
   v5 = OBJC_IVAR___HGConfigurationInternal_singleDelivery;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = delivery;
 }
 
 - (BOOL)enableRawDataLogging
@@ -81,12 +81,12 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setEnableRawDataLogging:(BOOL)a3
+- (void)setEnableRawDataLogging:(BOOL)logging
 {
   v5 = OBJC_IVAR___HGConfigurationInternal_enableRawDataLogging;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
-  v6 = self;
+  *(&self->super.isa + v5) = logging;
+  selfCopy = self;
   sub_2510F7DE4();
 }
 

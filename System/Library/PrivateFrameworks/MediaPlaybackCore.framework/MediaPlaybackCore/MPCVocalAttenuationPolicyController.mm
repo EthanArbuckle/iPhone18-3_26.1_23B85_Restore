@@ -1,11 +1,11 @@
 @interface MPCVocalAttenuationPolicyController
-- (MPCVocalAttenuationPolicyController)initWithDelegate:(id)a3 parameters:(id)a4;
+- (MPCVocalAttenuationPolicyController)initWithDelegate:(id)delegate parameters:(id)parameters;
 - (MPCVocalAttenuationPolicyControllerDelegate)delegate;
 - (id)blockingEvaluation;
 - (void)_notifyDelegate;
-- (void)_setupPoliciesWithParameters:(id)a3;
+- (void)_setupPoliciesWithParameters:(id)parameters;
 - (void)resetPolicies;
-- (void)vocalAttenuationPolicy:(id)a3 didChangeEvaluation:(id)a4;
+- (void)vocalAttenuationPolicy:(id)policy didChangeEvaluation:(id)evaluation;
 @end
 
 @implementation MPCVocalAttenuationPolicyController
@@ -17,18 +17,18 @@
   return WeakRetained;
 }
 
-- (void)vocalAttenuationPolicy:(id)a3 didChangeEvaluation:(id)a4
+- (void)vocalAttenuationPolicy:(id)policy didChangeEvaluation:(id)evaluation
 {
-  v5 = a4;
+  evaluationCopy = evaluation;
   dispatch_assert_queue_V2(self->_accessQueue);
-  v6 = [(MPCVocalAttenuationPolicyController *)self blockingPolicies];
+  blockingPolicies = [(MPCVocalAttenuationPolicyController *)self blockingPolicies];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __82__MPCVocalAttenuationPolicyController_vocalAttenuationPolicy_didChangeEvaluation___block_invoke;
   v12[3] = &unk_1E8231848;
-  v7 = v5;
+  v7 = evaluationCopy;
   v13 = v7;
-  v8 = [v6 indexOfObjectPassingTest:v12];
+  v8 = [blockingPolicies indexOfObjectPassingTest:v12];
 
   if (v8 == 0x7FFFFFFFFFFFFFFFLL || (-[MPCVocalAttenuationPolicyController blockingPolicies](self, "blockingPolicies"), v9 = objc_claimAutoreleasedReturnValue(), [v9 objectAtIndexedSubscript:v8], v10 = objc_claimAutoreleasedReturnValue(), v9, !v10))
   {
@@ -38,16 +38,16 @@
       goto LABEL_10;
     }
 
-    v11 = [(MPCVocalAttenuationPolicyController *)self blockingPolicies];
-    [v11 addObject:v7];
+    blockingPolicies2 = [(MPCVocalAttenuationPolicyController *)self blockingPolicies];
+    [blockingPolicies2 addObject:v7];
     v10 = 0;
     goto LABEL_8;
   }
 
   if ([v10 shouldDisableVocalAttenuation] && (objc_msgSend(v7, "shouldDisableVocalAttenuation") & 1) == 0)
   {
-    v11 = [(MPCVocalAttenuationPolicyController *)self blockingPolicies];
-    [v11 removeObject:v10];
+    blockingPolicies2 = [(MPCVocalAttenuationPolicyController *)self blockingPolicies];
+    [blockingPolicies2 removeObject:v10];
 LABEL_8:
 
     [(MPCVocalAttenuationPolicyController *)self _notifyDelegate];
@@ -68,22 +68,22 @@ BOOL __82__MPCVocalAttenuationPolicyController_vocalAttenuationPolicy_didChangeE
   return v6 == v7;
 }
 
-- (void)_setupPoliciesWithParameters:(id)a3
+- (void)_setupPoliciesWithParameters:(id)parameters
 {
   accessQueue = self->_accessQueue;
-  v5 = a3;
+  parametersCopy = parameters;
   dispatch_assert_queue_V2(accessQueue);
   policies = self->_policies;
   v7 = [MPCVocalAttenuationThermalPressurePolicy alloc];
-  v8 = [v5 thermalMonitor];
-  v9 = [(MPCVocalAttenuationThermalPressurePolicy *)v7 initWithThermalMonitor:v8 calloutQueue:self->_accessQueue delegate:self];
+  thermalMonitor = [parametersCopy thermalMonitor];
+  v9 = [(MPCVocalAttenuationThermalPressurePolicy *)v7 initWithThermalMonitor:thermalMonitor calloutQueue:self->_accessQueue delegate:self];
   [(NSMutableArray *)policies addObject:v9];
 
   v10 = self->_policies;
   v11 = [MPCVocalAttenuationLowPowerModePolicy alloc];
-  v13 = [v5 lowPowerModeMonitor];
+  lowPowerModeMonitor = [parametersCopy lowPowerModeMonitor];
 
-  v12 = [(MPCVocalAttenuationLowPowerModePolicy *)v11 initWithPowerModeMonitor:v13 calloutQueue:self->_accessQueue delegate:self];
+  v12 = [(MPCVocalAttenuationLowPowerModePolicy *)v11 initWithPowerModeMonitor:lowPowerModeMonitor calloutQueue:self->_accessQueue delegate:self];
   [(NSMutableArray *)v10 addObject:v12];
 }
 
@@ -181,17 +181,17 @@ void __52__MPCVocalAttenuationPolicyController_resetPolicies__block_invoke(uint6
   }
 }
 
-- (MPCVocalAttenuationPolicyController)initWithDelegate:(id)a3 parameters:(id)a4
+- (MPCVocalAttenuationPolicyController)initWithDelegate:(id)delegate parameters:(id)parameters
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  parametersCopy = parameters;
   v21.receiver = self;
   v21.super_class = MPCVocalAttenuationPolicyController;
   v8 = [(MPCVocalAttenuationPolicyController *)&v21 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_delegate, v6);
+    objc_storeWeak(&v8->_delegate, delegateCopy);
     v10 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:3];
     policies = v9->_policies;
     v9->_policies = v10;
@@ -210,7 +210,7 @@ void __52__MPCVocalAttenuationPolicyController_resetPolicies__block_invoke(uint6
     v18[2] = __67__MPCVocalAttenuationPolicyController_initWithDelegate_parameters___block_invoke;
     v18[3] = &unk_1E82392C0;
     v19 = v9;
-    v20 = v7;
+    v20 = parametersCopy;
     dispatch_async(v16, v18);
   }
 

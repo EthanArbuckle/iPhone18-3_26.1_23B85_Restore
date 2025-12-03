@@ -1,8 +1,8 @@
 @interface MTRCameraAVStreamManagementClusterSnapshotStreamAllocateParams
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3;
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader;
 - (MTRCameraAVStreamManagementClusterSnapshotStreamAllocateParams)init;
-- (id)_encodeAsDataValue:(id *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_encodeAsDataValue:(id *)value;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -49,35 +49,35 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRCameraAVStreamManagementClusterSnapshotStreamAllocateParams);
-  v5 = [(MTRCameraAVStreamManagementClusterSnapshotStreamAllocateParams *)self imageCodec];
-  [(MTRCameraAVStreamManagementClusterSnapshotStreamAllocateParams *)v4 setImageCodec:v5];
+  imageCodec = [(MTRCameraAVStreamManagementClusterSnapshotStreamAllocateParams *)self imageCodec];
+  [(MTRCameraAVStreamManagementClusterSnapshotStreamAllocateParams *)v4 setImageCodec:imageCodec];
 
-  v6 = [(MTRCameraAVStreamManagementClusterSnapshotStreamAllocateParams *)self maxFrameRate];
-  [(MTRCameraAVStreamManagementClusterSnapshotStreamAllocateParams *)v4 setMaxFrameRate:v6];
+  maxFrameRate = [(MTRCameraAVStreamManagementClusterSnapshotStreamAllocateParams *)self maxFrameRate];
+  [(MTRCameraAVStreamManagementClusterSnapshotStreamAllocateParams *)v4 setMaxFrameRate:maxFrameRate];
 
-  v7 = [(MTRCameraAVStreamManagementClusterSnapshotStreamAllocateParams *)self minResolution];
-  [(MTRCameraAVStreamManagementClusterSnapshotStreamAllocateParams *)v4 setMinResolution:v7];
+  minResolution = [(MTRCameraAVStreamManagementClusterSnapshotStreamAllocateParams *)self minResolution];
+  [(MTRCameraAVStreamManagementClusterSnapshotStreamAllocateParams *)v4 setMinResolution:minResolution];
 
-  v8 = [(MTRCameraAVStreamManagementClusterSnapshotStreamAllocateParams *)self maxResolution];
-  [(MTRCameraAVStreamManagementClusterSnapshotStreamAllocateParams *)v4 setMaxResolution:v8];
+  maxResolution = [(MTRCameraAVStreamManagementClusterSnapshotStreamAllocateParams *)self maxResolution];
+  [(MTRCameraAVStreamManagementClusterSnapshotStreamAllocateParams *)v4 setMaxResolution:maxResolution];
 
-  v9 = [(MTRCameraAVStreamManagementClusterSnapshotStreamAllocateParams *)self quality];
-  [(MTRCameraAVStreamManagementClusterSnapshotStreamAllocateParams *)v4 setQuality:v9];
+  quality = [(MTRCameraAVStreamManagementClusterSnapshotStreamAllocateParams *)self quality];
+  [(MTRCameraAVStreamManagementClusterSnapshotStreamAllocateParams *)v4 setQuality:quality];
 
-  v10 = [(MTRCameraAVStreamManagementClusterSnapshotStreamAllocateParams *)self watermarkEnabled];
-  [(MTRCameraAVStreamManagementClusterSnapshotStreamAllocateParams *)v4 setWatermarkEnabled:v10];
+  watermarkEnabled = [(MTRCameraAVStreamManagementClusterSnapshotStreamAllocateParams *)self watermarkEnabled];
+  [(MTRCameraAVStreamManagementClusterSnapshotStreamAllocateParams *)v4 setWatermarkEnabled:watermarkEnabled];
 
-  v11 = [(MTRCameraAVStreamManagementClusterSnapshotStreamAllocateParams *)self osdEnabled];
-  [(MTRCameraAVStreamManagementClusterSnapshotStreamAllocateParams *)v4 setOsdEnabled:v11];
+  osdEnabled = [(MTRCameraAVStreamManagementClusterSnapshotStreamAllocateParams *)self osdEnabled];
+  [(MTRCameraAVStreamManagementClusterSnapshotStreamAllocateParams *)v4 setOsdEnabled:osdEnabled];
 
-  v12 = [(MTRCameraAVStreamManagementClusterSnapshotStreamAllocateParams *)self timedInvokeTimeoutMs];
-  [(MTRCameraAVStreamManagementClusterSnapshotStreamAllocateParams *)v4 setTimedInvokeTimeoutMs:v12];
+  timedInvokeTimeoutMs = [(MTRCameraAVStreamManagementClusterSnapshotStreamAllocateParams *)self timedInvokeTimeoutMs];
+  [(MTRCameraAVStreamManagementClusterSnapshotStreamAllocateParams *)v4 setTimedInvokeTimeoutMs:timedInvokeTimeoutMs];
 
-  v13 = [(MTRCameraAVStreamManagementClusterSnapshotStreamAllocateParams *)self serverSideProcessingTimeout];
-  [(MTRCameraAVStreamManagementClusterSnapshotStreamAllocateParams *)v4 setServerSideProcessingTimeout:v13];
+  serverSideProcessingTimeout = [(MTRCameraAVStreamManagementClusterSnapshotStreamAllocateParams *)self serverSideProcessingTimeout];
+  [(MTRCameraAVStreamManagementClusterSnapshotStreamAllocateParams *)v4 setServerSideProcessingTimeout:serverSideProcessingTimeout];
 
   return v4;
 }
@@ -92,7 +92,7 @@
   return v6;
 }
 
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader
 {
   LOBYTE(v36) = 0;
   LOBYTE(v39) = 0;
@@ -101,47 +101,47 @@
   v35[0] = 0;
   v35[1] = 0;
   v34 = v35;
-  v5 = [(MTRCameraAVStreamManagementClusterSnapshotStreamAllocateParams *)self imageCodec];
-  LOBYTE(v36) = [v5 unsignedCharValue];
+  imageCodec = [(MTRCameraAVStreamManagementClusterSnapshotStreamAllocateParams *)self imageCodec];
+  LOBYTE(v36) = [imageCodec unsignedCharValue];
 
-  v6 = [(MTRCameraAVStreamManagementClusterSnapshotStreamAllocateParams *)self maxFrameRate];
-  LOWORD(v37) = [v6 unsignedShortValue];
+  maxFrameRate = [(MTRCameraAVStreamManagementClusterSnapshotStreamAllocateParams *)self maxFrameRate];
+  LOWORD(v37) = [maxFrameRate unsignedShortValue];
 
-  v7 = [(MTRCameraAVStreamManagementClusterSnapshotStreamAllocateParams *)self minResolution];
-  v8 = [v7 width];
-  WORD1(v37) = [v8 unsignedShortValue];
+  minResolution = [(MTRCameraAVStreamManagementClusterSnapshotStreamAllocateParams *)self minResolution];
+  width = [minResolution width];
+  WORD1(v37) = [width unsignedShortValue];
 
-  v9 = [(MTRCameraAVStreamManagementClusterSnapshotStreamAllocateParams *)self minResolution];
-  v10 = [v9 height];
-  WORD2(v37) = [v10 unsignedShortValue];
+  minResolution2 = [(MTRCameraAVStreamManagementClusterSnapshotStreamAllocateParams *)self minResolution];
+  height = [minResolution2 height];
+  WORD2(v37) = [height unsignedShortValue];
 
-  v11 = [(MTRCameraAVStreamManagementClusterSnapshotStreamAllocateParams *)self maxResolution];
-  v12 = [v11 width];
-  HIWORD(v37) = [v12 unsignedShortValue];
+  maxResolution = [(MTRCameraAVStreamManagementClusterSnapshotStreamAllocateParams *)self maxResolution];
+  width2 = [maxResolution width];
+  HIWORD(v37) = [width2 unsignedShortValue];
 
-  v13 = [(MTRCameraAVStreamManagementClusterSnapshotStreamAllocateParams *)self maxResolution];
-  v14 = [v13 height];
-  *v38 = [v14 unsignedShortValue];
+  maxResolution2 = [(MTRCameraAVStreamManagementClusterSnapshotStreamAllocateParams *)self maxResolution];
+  height2 = [maxResolution2 height];
+  *v38 = [height2 unsignedShortValue];
 
-  v15 = [(MTRCameraAVStreamManagementClusterSnapshotStreamAllocateParams *)self quality];
-  v38[2] = [v15 unsignedCharValue];
+  quality = [(MTRCameraAVStreamManagementClusterSnapshotStreamAllocateParams *)self quality];
+  v38[2] = [quality unsignedCharValue];
 
-  v16 = [(MTRCameraAVStreamManagementClusterSnapshotStreamAllocateParams *)self watermarkEnabled];
+  watermarkEnabled = [(MTRCameraAVStreamManagementClusterSnapshotStreamAllocateParams *)self watermarkEnabled];
 
-  if (v16)
+  if (watermarkEnabled)
   {
     *&v38[3] = 1;
-    v17 = [(MTRCameraAVStreamManagementClusterSnapshotStreamAllocateParams *)self watermarkEnabled];
-    v38[4] = [v17 BOOLValue];
+    watermarkEnabled2 = [(MTRCameraAVStreamManagementClusterSnapshotStreamAllocateParams *)self watermarkEnabled];
+    v38[4] = [watermarkEnabled2 BOOLValue];
   }
 
-  v18 = [(MTRCameraAVStreamManagementClusterSnapshotStreamAllocateParams *)self osdEnabled];
+  osdEnabled = [(MTRCameraAVStreamManagementClusterSnapshotStreamAllocateParams *)self osdEnabled];
 
-  if (v18)
+  if (osdEnabled)
   {
     v39 = 1;
-    v19 = [(MTRCameraAVStreamManagementClusterSnapshotStreamAllocateParams *)self osdEnabled];
-    HIBYTE(v39) = [v19 BOOLValue];
+    osdEnabled2 = [(MTRCameraAVStreamManagementClusterSnapshotStreamAllocateParams *)self osdEnabled];
+    HIBYTE(v39) = [osdEnabled2 BOOLValue];
   }
 
   sub_2393D9C18(0x62FuLL, 0, &v33);
@@ -163,8 +163,8 @@
 
     else
     {
-      sub_238DD2F90(a3, &v33);
-      v20 = sub_2393C7114(a3, 21, 256);
+      sub_238DD2F90(reader, &v33);
+      v20 = sub_2393C7114(reader, 21, 256);
       v23 = v27;
       v22 = v20;
     }
@@ -192,19 +192,19 @@
   return result;
 }
 
-- (id)_encodeAsDataValue:(id *)a3
+- (id)_encodeAsDataValue:(id *)value
 {
   v5 = sub_2393C5AAC(v12);
   v13 = 0;
   v7 = [(MTRCameraAVStreamManagementClusterSnapshotStreamAllocateParams *)self _encodeToTLVReader:v12, v5];
   if (v7)
   {
-    if (a3)
+    if (value)
     {
       v8 = sub_23921C1E4(MTRError, v7, v6);
       v9 = 0;
 LABEL_7:
-      *a3 = v8;
+      *value = v8;
       goto LABEL_9;
     }
 
@@ -215,7 +215,7 @@ LABEL_7:
   {
     v10 = sub_238EE60DC(v12, 0);
     v9 = v10;
-    if (a3 && !v10)
+    if (value && !v10)
     {
       v8 = sub_23921C1E4(MTRError, 0x877900000003, "/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/zap-generated/MTRCommandPayloadsObjc.mm");
       goto LABEL_7;

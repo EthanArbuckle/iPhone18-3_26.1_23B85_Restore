@@ -1,21 +1,21 @@
 @interface ARObjectAnchor
-- (ARObjectAnchor)initWithAnchor:(id)a3;
-- (ARObjectAnchor)initWithCoder:(id)a3;
-- (ARObjectAnchor)initWithReferenceObject:(double)a3 transform:(double)a4;
+- (ARObjectAnchor)initWithAnchor:(id)anchor;
+- (ARObjectAnchor)initWithCoder:(id)coder;
+- (ARObjectAnchor)initWithReferenceObject:(double)object transform:(double)transform;
 - (id)description;
 - (id)name;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ARObjectAnchor
 
-- (ARObjectAnchor)initWithReferenceObject:(double)a3 transform:(double)a4
+- (ARObjectAnchor)initWithReferenceObject:(double)object transform:(double)transform
 {
   v9 = a7;
-  v10 = [v9 identifier];
-  v17.receiver = a1;
+  identifier = [v9 identifier];
+  v17.receiver = self;
   v17.super_class = ARObjectAnchor;
-  v11 = [(ARAnchor *)&v17 initWithIdentifier:v10 transform:a2, a3, a4, a5];
+  v11 = [(ARAnchor *)&v17 initWithIdentifier:identifier transform:a2, object, transform, a5];
 
   if (v11)
   {
@@ -27,10 +27,10 @@
 
 - (id)name
 {
-  v2 = [(ARObjectAnchor *)self referenceObject];
-  v3 = [v2 name];
+  referenceObject = [(ARObjectAnchor *)self referenceObject];
+  name = [referenceObject name];
 
-  return v3;
+  return name;
 }
 
 - (id)description
@@ -44,8 +44,8 @@
     v5 = [v3 substringToIndex:{objc_msgSend(v3, "length") - 1}];
     v6 = [v4 stringWithString:v5];
 
-    v7 = [(ARObjectAnchor *)self referenceObject];
-    v8 = [v7 description];
+    referenceObject = [(ARObjectAnchor *)self referenceObject];
+    v8 = [referenceObject description];
     [v6 appendFormat:@" reference object= %@", v8];
 
     [v6 appendFormat:@">"];
@@ -59,41 +59,41 @@
   return v6;
 }
 
-- (ARObjectAnchor)initWithAnchor:(id)a3
+- (ARObjectAnchor)initWithAnchor:(id)anchor
 {
-  v4 = a3;
+  anchorCopy = anchor;
   v9.receiver = self;
   v9.super_class = ARObjectAnchor;
-  v5 = [(ARAnchor *)&v9 initWithAnchor:v4];
+  v5 = [(ARAnchor *)&v9 initWithAnchor:anchorCopy];
   if (v5)
   {
-    v6 = [v4 referenceObject];
+    referenceObject = [anchorCopy referenceObject];
     referenceObject = v5->_referenceObject;
-    v5->_referenceObject = v6;
+    v5->_referenceObject = referenceObject;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = ARObjectAnchor;
-  v4 = a3;
-  [(ARAnchor *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(ARAnchor *)&v6 encodeWithCoder:coderCopy];
   v5 = [(ARObjectAnchor *)self referenceObject:v6.receiver];
-  [v4 encodeObject:v5 forKey:@"referenceObject"];
+  [coderCopy encodeObject:v5 forKey:@"referenceObject"];
 }
 
-- (ARObjectAnchor)initWithCoder:(id)a3
+- (ARObjectAnchor)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = ARObjectAnchor;
-  v5 = [(ARAnchor *)&v9 initWithCoder:v4];
+  v5 = [(ARAnchor *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"referenceObject"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"referenceObject"];
     referenceObject = v5->_referenceObject;
     v5->_referenceObject = v6;
   }

@@ -1,37 +1,37 @@
 @interface CRVehicleStore
-+ (BOOL)_addKeychainPairingForVehicle:(id)a3;
-+ (BOOL)_addPreferencesPairingForVehicle:(id)a3;
-+ (BOOL)_removeKeychainPairingForVehicle:(id)a3;
-+ (BOOL)_removePreferencesPairingForVehicle:(id)a3;
-+ (BOOL)_removePreferencesPairingForVehicleIdentifier:(id)a3;
-+ (BOOL)setPayload:(id)a3 forVehicleWithIdentifier:(id)a4;
-+ (id)_allKeychainAttributesForVehicle:(id)a3;
++ (BOOL)_addKeychainPairingForVehicle:(id)vehicle;
++ (BOOL)_addPreferencesPairingForVehicle:(id)vehicle;
++ (BOOL)_removeKeychainPairingForVehicle:(id)vehicle;
++ (BOOL)_removePreferencesPairingForVehicle:(id)vehicle;
++ (BOOL)_removePreferencesPairingForVehicleIdentifier:(id)identifier;
++ (BOOL)setPayload:(id)payload forVehicleWithIdentifier:(id)identifier;
++ (id)_allKeychainAttributesForVehicle:(id)vehicle;
 + (id)_allPreferencesPairings;
 + (id)_allUnpairedVehicleStorage;
-+ (id)_creationKeychainAttributesForVehicle:(id)a3;
-+ (id)_identifyingKeychainAttributesForVehicle:(id)a3;
++ (id)_creationKeychainAttributesForVehicle:(id)vehicle;
++ (id)_identifyingKeychainAttributesForVehicle:(id)vehicle;
 + (id)_itemClassKeychainAttributes;
-+ (id)_keychainAttributesMatchingQuery:(id)a3;
++ (id)_keychainAttributesMatchingQuery:(id)query;
 + (id)_keychainItemAttributesForAllVehicles;
-+ (id)_preferencesAttributesForVehicle:(id)a3;
-+ (id)_updateKeychainAttributesForVehicle:(id)a3;
-+ (id)payloadForVehicleWithIdentifier:(id)a3;
-+ (void)_addKeychainAttributesForVehicle:(id)a3 toDictionary:(id)a4;
-+ (void)_applyPreferencesAttributes:(id)a3 toVehicle:(id)a4;
-+ (void)_cleanupPreferencesForIncompleteVehicleIdentifier:(id)a3 name:(id)a4;
++ (id)_preferencesAttributesForVehicle:(id)vehicle;
++ (id)_updateKeychainAttributesForVehicle:(id)vehicle;
++ (id)payloadForVehicleWithIdentifier:(id)identifier;
++ (void)_addKeychainAttributesForVehicle:(id)vehicle toDictionary:(id)dictionary;
++ (void)_applyPreferencesAttributes:(id)attributes toVehicle:(id)vehicle;
++ (void)_cleanupPreferencesForIncompleteVehicleIdentifier:(id)identifier name:(id)name;
 + (void)postPairingsDidChangeNotification;
-- (BOOL)removeVehicle:(id)a3;
+- (BOOL)removeVehicle:(id)vehicle;
 - (CRVehicleStore)init;
-- (id)_matchingKeychainItemForIdentifier:(id)a3 inKeychainItems:(id)a4;
+- (id)_matchingKeychainItemForIdentifier:(id)identifier inKeychainItems:(id)items;
 - (id)allStoredVehicles;
-- (id)saveVehicle:(id)a3 withMergePolicy:(id)a4;
-- (id)vehicleForBluetoothAddress:(id)a3;
-- (id)vehicleForCertificateSerial:(id)a3;
-- (id)vehicleForIdentifier:(id)a3;
-- (void)addObserver:(id)a3;
+- (id)saveVehicle:(id)vehicle withMergePolicy:(id)policy;
+- (id)vehicleForBluetoothAddress:(id)address;
+- (id)vehicleForCertificateSerial:(id)serial;
+- (id)vehicleForIdentifier:(id)identifier;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
-- (void)handleAvailabilityDidChange:(id)a3;
-- (void)removeObserver:(id)a3;
+- (void)handleAvailabilityDidChange:(id)change;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation CRVehicleStore
@@ -40,25 +40,25 @@
 {
   if (+[CRVehicleStoreAvailability isVehicleStoreAvailable])
   {
-    v3 = [(CRVehicleStore *)self cachedVehicles];
-    if (v3)
+    cachedVehicles = [(CRVehicleStore *)self cachedVehicles];
+    if (cachedVehicles)
     {
       v4 = CarGeneralLogging();
       if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
       {
-        sub_100081A10(v3, v4);
+        sub_100081A10(cachedVehicles, v4);
       }
 
-      v5 = [[NSSet alloc] initWithSet:v3 copyItems:1];
+      v5 = [[NSSet alloc] initWithSet:cachedVehicles copyItems:1];
     }
 
     else
     {
       v6 = +[NSMutableSet set];
-      v7 = [objc_opt_class() _keychainItemAttributesForAllVehicles];
-      v8 = [v7 mutableCopy];
+      _keychainItemAttributesForAllVehicles = [objc_opt_class() _keychainItemAttributesForAllVehicles];
+      v8 = [_keychainItemAttributesForAllVehicles mutableCopy];
 
-      v9 = [objc_opt_class() _allPreferencesPairings];
+      _allPreferencesPairings = [objc_opt_class() _allPreferencesPairings];
       v13[0] = _NSConcreteStackBlock;
       v13[1] = 3221225472;
       v13[2] = sub_10000A624;
@@ -68,7 +68,7 @@
       v10 = v6;
       v15 = v10;
       v11 = v8;
-      [v9 enumerateKeysAndObjectsUsingBlock:v13];
+      [_allPreferencesPairings enumerateKeysAndObjectsUsingBlock:v13];
       if ([v10 count])
       {
         [(CRVehicleStore *)self setCachedVehicles:v10];
@@ -96,82 +96,82 @@
   return v2;
 }
 
-+ (id)_identifyingKeychainAttributesForVehicle:(id)a3
++ (id)_identifyingKeychainAttributesForVehicle:(id)vehicle
 {
-  v4 = [a3 identifier];
-  v5 = [v4 UUIDString];
+  identifier = [vehicle identifier];
+  uUIDString = [identifier UUIDString];
 
-  if (v5)
+  if (uUIDString)
   {
-    v6 = [a1 _itemClassKeychainAttributes];
-    [v6 setObject:v5 forKey:kSecAttrAccount];
+    _itemClassKeychainAttributes = [self _itemClassKeychainAttributes];
+    [_itemClassKeychainAttributes setObject:uUIDString forKey:kSecAttrAccount];
   }
 
   else
   {
-    v6 = 0;
+    _itemClassKeychainAttributes = 0;
   }
 
-  return v6;
+  return _itemClassKeychainAttributes;
 }
 
-+ (void)_addKeychainAttributesForVehicle:(id)a3 toDictionary:(id)a4
++ (void)_addKeychainAttributesForVehicle:(id)vehicle toDictionary:(id)dictionary
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 vehicleName];
+  vehicleCopy = vehicle;
+  dictionaryCopy = dictionary;
+  vehicleName = [vehicleCopy vehicleName];
 
-  if (v7)
+  if (vehicleName)
   {
-    v8 = [v5 vehicleName];
-    [v6 setObject:v8 forKey:kSecAttrLabel];
+    vehicleName2 = [vehicleCopy vehicleName];
+    [dictionaryCopy setObject:vehicleName2 forKey:kSecAttrLabel];
   }
 
-  v9 = [v5 certificateSerialNumber];
+  certificateSerialNumber = [vehicleCopy certificateSerialNumber];
 
-  if (v9)
+  if (certificateSerialNumber)
   {
-    v10 = [v5 certificateSerialNumber];
-    [v6 setObject:v10 forKey:kSecValueData];
+    certificateSerialNumber2 = [vehicleCopy certificateSerialNumber];
+    [dictionaryCopy setObject:certificateSerialNumber2 forKey:kSecValueData];
   }
 
-  v13 = bswap32([v5 pairingStatus]);
+  v13 = bswap32([vehicleCopy pairingStatus]);
   v11 = [NSMutableData dataWithBytes:&v13 length:4];
-  v12 = bswap32([v5 enhancedIntegrationStatus]);
+  v12 = bswap32([vehicleCopy enhancedIntegrationStatus]);
   [v11 appendBytes:&v12 length:4];
-  [v6 setObject:v11 forKey:kSecAttrGeneric];
+  [dictionaryCopy setObject:v11 forKey:kSecAttrGeneric];
 }
 
-+ (id)_allKeychainAttributesForVehicle:(id)a3
++ (id)_allKeychainAttributesForVehicle:(id)vehicle
 {
-  v4 = a3;
-  v5 = [a1 _identifyingKeychainAttributesForVehicle:v4];
-  [a1 _addKeychainAttributesForVehicle:v4 toDictionary:v5];
+  vehicleCopy = vehicle;
+  v5 = [self _identifyingKeychainAttributesForVehicle:vehicleCopy];
+  [self _addKeychainAttributesForVehicle:vehicleCopy toDictionary:v5];
 
   return v5;
 }
 
-+ (id)_creationKeychainAttributesForVehicle:(id)a3
++ (id)_creationKeychainAttributesForVehicle:(id)vehicle
 {
-  v3 = [a1 _allKeychainAttributesForVehicle:a3];
+  v3 = [self _allKeychainAttributesForVehicle:vehicle];
   [v3 setObject:kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly forKey:kSecAttrAccessible];
 
   return v3;
 }
 
-+ (id)_updateKeychainAttributesForVehicle:(id)a3
++ (id)_updateKeychainAttributesForVehicle:(id)vehicle
 {
-  v4 = a3;
+  vehicleCopy = vehicle;
   v5 = +[NSMutableDictionary dictionary];
-  [a1 _addKeychainAttributesForVehicle:v4 toDictionary:v5];
+  [self _addKeychainAttributesForVehicle:vehicleCopy toDictionary:v5];
 
   return v5;
 }
 
-+ (id)_keychainAttributesMatchingQuery:(id)a3
++ (id)_keychainAttributesMatchingQuery:(id)query
 {
   result = 0;
-  v3 = [a3 mutableCopy];
+  v3 = [query mutableCopy];
   [v3 setObject:kCFBooleanTrue forKey:kSecReturnAttributes];
   [v3 setObject:kCFBooleanTrue forKey:kSecReturnData];
   if (v3)
@@ -213,13 +213,13 @@
 + (id)_keychainItemAttributesForAllVehicles
 {
   result = 0;
-  v2 = [a1 _itemClassKeychainAttributes];
-  [v2 setObject:kSecMatchLimitAll forKey:kSecMatchLimit];
-  [v2 setObject:kCFBooleanTrue forKey:kSecReturnAttributes];
-  [v2 setObject:kCFBooleanTrue forKey:kSecReturnData];
-  if (v2)
+  _itemClassKeychainAttributes = [self _itemClassKeychainAttributes];
+  [_itemClassKeychainAttributes setObject:kSecMatchLimitAll forKey:kSecMatchLimit];
+  [_itemClassKeychainAttributes setObject:kCFBooleanTrue forKey:kSecReturnAttributes];
+  [_itemClassKeychainAttributes setObject:kCFBooleanTrue forKey:kSecReturnData];
+  if (_itemClassKeychainAttributes)
   {
-    v3 = SecItemCopyMatching(v2, &result);
+    v3 = SecItemCopyMatching(_itemClassKeychainAttributes, &result);
     v4 = result;
     v5 = CarGeneralLogging();
     v6 = os_log_type_enabled(v5, OS_LOG_TYPE_INFO);
@@ -228,7 +228,7 @@
       if (v6)
       {
         *buf = 138412546;
-        v10 = v2;
+        v10 = _itemClassKeychainAttributes;
         v11 = 1024;
         v12 = v3;
         _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "No vehicles found for keychain query: %@ error: %i", buf, 0x12u);
@@ -253,10 +253,10 @@
   return v4;
 }
 
-+ (BOOL)_addKeychainPairingForVehicle:(id)a3
++ (BOOL)_addKeychainPairingForVehicle:(id)vehicle
 {
-  v3 = a3;
-  v4 = [objc_opt_class() _identifyingKeychainAttributesForVehicle:v3];
+  vehicleCopy = vehicle;
+  v4 = [objc_opt_class() _identifyingKeychainAttributesForVehicle:vehicleCopy];
   if (v4)
   {
     v5 = [objc_opt_class() _keychainAttributesMatchingQuery:v4];
@@ -264,7 +264,7 @@
     v6 = objc_opt_class();
     if (v5)
     {
-      v7 = [v6 _updateKeychainAttributesForVehicle:v3];
+      v7 = [v6 _updateKeychainAttributesForVehicle:vehicleCopy];
       v8 = SecItemUpdate(v4, v7);
       v9 = CarGeneralLogging();
       v10 = v9;
@@ -291,7 +291,7 @@ LABEL_17:
 
     else
     {
-      v12 = [v6 _creationKeychainAttributesForVehicle:v3];
+      v12 = [v6 _creationKeychainAttributesForVehicle:vehicleCopy];
       v7 = v12;
       if (!v12 || SecItemAdd(v12, 0))
       {
@@ -327,10 +327,10 @@ LABEL_19:
   return v11;
 }
 
-+ (BOOL)_removeKeychainPairingForVehicle:(id)a3
++ (BOOL)_removeKeychainPairingForVehicle:(id)vehicle
 {
-  v3 = a3;
-  v4 = [objc_opt_class() _identifyingKeychainAttributesForVehicle:v3];
+  vehicleCopy = vehicle;
+  v4 = [objc_opt_class() _identifyingKeychainAttributesForVehicle:vehicleCopy];
 
   if (v4)
   {
@@ -382,36 +382,36 @@ LABEL_10:
   return v2;
 }
 
-+ (id)payloadForVehicleWithIdentifier:(id)a3
++ (id)payloadForVehicleWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [a1 _allUnpairedVehicleStorage];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  identifierCopy = identifier;
+  _allUnpairedVehicleStorage = [self _allUnpairedVehicleStorage];
+  v6 = [_allUnpairedVehicleStorage objectForKeyedSubscript:identifierCopy];
 
   return v6;
 }
 
-+ (BOOL)setPayload:(id)a3 forVehicleWithIdentifier:(id)a4
++ (BOOL)setPayload:(id)payload forVehicleWithIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [a1 _allUnpairedVehicleStorage];
-  v9 = [NSMutableDictionary dictionaryWithDictionary:v8];
+  payloadCopy = payload;
+  identifierCopy = identifier;
+  _allUnpairedVehicleStorage = [self _allUnpairedVehicleStorage];
+  v9 = [NSMutableDictionary dictionaryWithDictionary:_allUnpairedVehicleStorage];
 
   v10 = CarGeneralLogging();
   v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
-  if (v6)
+  if (payloadCopy)
   {
     if (v11)
     {
       v15 = 138412546;
-      v16 = v6;
+      v16 = payloadCopy;
       v17 = 2112;
-      v18 = v7;
+      v18 = identifierCopy;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Setting payload %@ for identifier %@", &v15, 0x16u);
     }
 
-    [v9 setObject:v6 forKeyedSubscript:v7];
+    [v9 setObject:payloadCopy forKeyedSubscript:identifierCopy];
   }
 
   else
@@ -419,11 +419,11 @@ LABEL_10:
     if (v11)
     {
       v15 = 138412290;
-      v16 = v7;
+      v16 = identifierCopy;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Removing payload for identifier %@", &v15, 0xCu);
     }
 
-    [v9 removeObjectForKey:v7];
+    [v9 removeObjectForKey:identifierCopy];
   }
 
   CFPreferencesSetAppValue(@"unpairedVehicleStorage", v9, CRPreferencesNotMigratedDomain);
@@ -440,258 +440,258 @@ LABEL_10:
   return v12 != 0;
 }
 
-+ (id)_preferencesAttributesForVehicle:(id)a3
++ (id)_preferencesAttributesForVehicle:(id)vehicle
 {
-  v3 = a3;
+  vehicleCopy = vehicle;
   v4 = +[NSMutableDictionary dictionary];
-  v5 = [v3 vehicleName];
+  vehicleName = [vehicleCopy vehicleName];
 
-  if (v5)
+  if (vehicleName)
   {
-    v6 = [v3 vehicleName];
-    [v4 setObject:v6 forKey:@"name"];
+    vehicleName2 = [vehicleCopy vehicleName];
+    [v4 setObject:vehicleName2 forKey:@"name"];
   }
 
-  v7 = [v3 bluetoothAddress];
+  bluetoothAddress = [vehicleCopy bluetoothAddress];
 
-  if (v7)
+  if (bluetoothAddress)
   {
-    v8 = [v3 bluetoothAddress];
-    [v4 setObject:v8 forKey:@"bluetoothAddress"];
+    bluetoothAddress2 = [vehicleCopy bluetoothAddress];
+    [v4 setObject:bluetoothAddress2 forKey:@"bluetoothAddress"];
   }
 
-  v9 = [v3 carplayWiFiUUID];
+  carplayWiFiUUID = [vehicleCopy carplayWiFiUUID];
 
-  if (v9)
+  if (carplayWiFiUUID)
   {
-    v10 = [v3 carplayWiFiUUID];
-    [v4 setObject:v10 forKey:@"carplayWiFiUUID"];
+    carplayWiFiUUID2 = [vehicleCopy carplayWiFiUUID];
+    [v4 setObject:carplayWiFiUUID2 forKey:@"carplayWiFiUUID"];
   }
 
-  v11 = [v3 accessoryProtocols];
+  accessoryProtocols = [vehicleCopy accessoryProtocols];
 
-  if (v11)
+  if (accessoryProtocols)
   {
-    v12 = [v3 accessoryProtocols];
-    v13 = [v12 allObjects];
-    [v4 setObject:v13 forKey:@"carPlayProtocols"];
+    accessoryProtocols2 = [vehicleCopy accessoryProtocols];
+    allObjects = [accessoryProtocols2 allObjects];
+    [v4 setObject:allObjects forKey:@"carPlayProtocols"];
   }
 
-  if ([v3 supportsEnhancedIntegration])
+  if ([vehicleCopy supportsEnhancedIntegration])
   {
     [v4 setObject:&__kCFBooleanTrue forKey:@"supportsEnhancedIntegration"];
   }
 
-  v14 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 supportsMixableAudio]);
+  v14 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [vehicleCopy supportsMixableAudio]);
   [v4 setObject:v14 forKey:@"supportsMixableAudio"];
 
-  v15 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 isSiriBargeInDisabled]);
+  v15 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [vehicleCopy isSiriBargeInDisabled]);
   [v4 setObject:v15 forKey:@"isSiriBargeInDisabled"];
 
-  v16 = [v3 supportsStartSessionRequest];
+  supportsStartSessionRequest = [vehicleCopy supportsStartSessionRequest];
 
-  if (v16)
+  if (supportsStartSessionRequest)
   {
-    v17 = [v3 supportsStartSessionRequest];
-    [v4 setObject:v17 forKey:@"supportsStartSessionRequest"];
+    supportsStartSessionRequest2 = [vehicleCopy supportsStartSessionRequest];
+    [v4 setObject:supportsStartSessionRequest2 forKey:@"supportsStartSessionRequest"];
   }
 
-  v18 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 supportsUSBCarPlay]);
+  v18 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [vehicleCopy supportsUSBCarPlay]);
   [v4 setObject:v18 forKey:@"supportsUSBCarPlay"];
 
-  v19 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 supportsWirelessCarPlay]);
+  v19 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [vehicleCopy supportsWirelessCarPlay]);
   [v4 setObject:v19 forKey:@"supportsWirelessCarPlay"];
 
-  if ([v3 albumArtUserPreference])
+  if ([vehicleCopy albumArtUserPreference])
   {
-    v20 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v3 albumArtUserPreference]);
+    v20 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [vehicleCopy albumArtUserPreference]);
     [v4 setObject:v20 forKey:@"albumArtUserPreference"];
   }
 
-  v21 = [v3 wallpaperIdentifier];
+  wallpaperIdentifier = [vehicleCopy wallpaperIdentifier];
 
-  if (v21)
+  if (wallpaperIdentifier)
   {
-    v22 = [v3 wallpaperIdentifier];
-    [v4 setObject:v22 forKey:@"wallpaperIdentifierUserPreference"];
+    wallpaperIdentifier2 = [vehicleCopy wallpaperIdentifier];
+    [v4 setObject:wallpaperIdentifier2 forKey:@"wallpaperIdentifierUserPreference"];
   }
 
-  v23 = [v3 previousWallpaperIdentifier];
+  previousWallpaperIdentifier = [vehicleCopy previousWallpaperIdentifier];
 
-  if (v23)
+  if (previousWallpaperIdentifier)
   {
-    v24 = [v3 previousWallpaperIdentifier];
-    [v4 setObject:v24 forKey:@"previousWallpaperIdentifierUserPreference"];
+    previousWallpaperIdentifier2 = [vehicleCopy previousWallpaperIdentifier];
+    [v4 setObject:previousWallpaperIdentifier2 forKey:@"previousWallpaperIdentifierUserPreference"];
   }
 
-  v25 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v3 displayScaleMode]);
+  v25 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [vehicleCopy displayScaleMode]);
   [v4 setObject:v25 forKey:@"displayScalingModeUserPreference"];
 
-  if ([v3 appearanceModePreference] == -1)
+  if ([vehicleCopy appearanceModePreference] == -1)
   {
     v26 = +[CARPrototypePref interfaceStyle];
-    v27 = [v26 value];
+    value = [v26 value];
 
-    if (v27)
+    if (value)
     {
-      [v3 setAppearanceModePreference:{objc_msgSend(v27, "unsignedIntegerValue")}];
+      [vehicleCopy setAppearanceModePreference:{objc_msgSend(value, "unsignedIntegerValue")}];
       v28 = +[CARPrototypePref interfaceStyle];
       [v28 setValue:0];
 
-      v29 = +[CARPrototypePref latestInterfaceStyle];
-      [v29 setValue:v27];
+      value2 = +[CARPrototypePref latestInterfaceStyle];
+      [value2 setValue:value];
     }
 
     else
     {
       v30 = +[CARPrototypePref latestInterfaceStyle];
-      v29 = [v30 value];
+      value2 = [v30 value];
 
-      if (v29)
+      if (value2)
       {
-        [v3 setAppearanceModePreference:{objc_msgSend(v29, "unsignedIntegerValue")}];
+        [vehicleCopy setAppearanceModePreference:{objc_msgSend(value2, "unsignedIntegerValue")}];
       }
     }
   }
 
-  v31 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v3 appearanceModePreference]);
+  v31 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [vehicleCopy appearanceModePreference]);
   [v4 setObject:v31 forKey:@"appearanceModeUserPreference"];
 
-  if ([v3 mapsAppearancePreference] != -1)
+  if ([vehicleCopy mapsAppearancePreference] != -1)
   {
-    v32 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v3 mapsAppearancePreference]);
+    v32 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [vehicleCopy mapsAppearancePreference]);
     [v4 setObject:v32 forKey:@"mapsAppearanceUserPreference"];
   }
 
-  if ([v3 colorFilterPreference])
+  if ([vehicleCopy colorFilterPreference])
   {
-    v33 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v3 colorFilterPreference]);
+    v33 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [vehicleCopy colorFilterPreference]);
     [v4 setObject:v33 forKey:@"colorFilterUserPreference"];
   }
 
-  v34 = [v3 colorFilterIntensityPreference];
+  colorFilterIntensityPreference = [vehicleCopy colorFilterIntensityPreference];
 
-  if (v34)
+  if (colorFilterIntensityPreference)
   {
-    v35 = [v3 colorFilterIntensityPreference];
-    [v4 setObject:v35 forKey:@"colorFilterIntensityUserPreference"];
+    colorFilterIntensityPreference2 = [vehicleCopy colorFilterIntensityPreference];
+    [v4 setObject:colorFilterIntensityPreference2 forKey:@"colorFilterIntensityUserPreference"];
   }
 
-  if ([v3 boldTextPreference])
+  if ([vehicleCopy boldTextPreference])
   {
-    v36 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v3 boldTextPreference]);
+    v36 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [vehicleCopy boldTextPreference]);
     [v4 setObject:v36 forKey:@"boldTextUserPreference"];
   }
 
-  v37 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v3 soundRecognitionPreference]);
+  v37 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [vehicleCopy soundRecognitionPreference]);
   [v4 setObject:v37 forKey:@"soundRecognitionUserPreference"];
 
-  v38 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v3 voiceControlPreference]);
+  v38 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [vehicleCopy voiceControlPreference]);
   [v4 setObject:v38 forKey:@"voiceControlUserPreference"];
 
-  if ([v3 textSizePreference])
+  if ([vehicleCopy textSizePreference])
   {
-    v39 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v3 textSizePreference]);
+    v39 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [vehicleCopy textSizePreference]);
     [v4 setObject:v39 forKey:@"textSizeUserPreference"];
   }
 
-  v40 = [v3 disabledFeaturesPreference];
+  disabledFeaturesPreference = [vehicleCopy disabledFeaturesPreference];
 
-  if (v40)
+  if (disabledFeaturesPreference)
   {
-    v41 = [v3 disabledFeaturesPreference];
-    [v4 setObject:v41 forKey:@"disabledFeaturesPreference"];
+    disabledFeaturesPreference2 = [vehicleCopy disabledFeaturesPreference];
+    [v4 setObject:disabledFeaturesPreference2 forKey:@"disabledFeaturesPreference"];
   }
 
-  v42 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 supportsBluetoothLE]);
+  v42 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [vehicleCopy supportsBluetoothLE]);
   [v4 setObject:v42 forKey:@"supportsBluetoothLE"];
 
-  v43 = [v3 supportsThemeAssets];
+  supportsThemeAssets = [vehicleCopy supportsThemeAssets];
 
-  if (v43)
+  if (supportsThemeAssets)
   {
-    v44 = [v3 supportsThemeAssets];
-    [v4 setObject:v44 forKey:@"supportsThemeAssets"];
+    supportsThemeAssets2 = [vehicleCopy supportsThemeAssets];
+    [v4 setObject:supportsThemeAssets2 forKey:@"supportsThemeAssets"];
   }
 
-  v45 = [v3 clusterAssetIdentifier];
+  clusterAssetIdentifier = [vehicleCopy clusterAssetIdentifier];
 
-  if (v45)
+  if (clusterAssetIdentifier)
   {
-    v46 = [v3 clusterAssetIdentifier];
-    [v4 setObject:v46 forKey:@"clusterAssetIdentifier"];
+    clusterAssetIdentifier2 = [vehicleCopy clusterAssetIdentifier];
+    [v4 setObject:clusterAssetIdentifier2 forKey:@"clusterAssetIdentifier"];
   }
 
-  v47 = [v3 clusterAssetiOSContentVersion];
+  clusterAssetiOSContentVersion = [vehicleCopy clusterAssetiOSContentVersion];
 
-  if (v47)
+  if (clusterAssetiOSContentVersion)
   {
-    v48 = [v3 clusterAssetiOSContentVersion];
-    [v4 setObject:v48 forKey:@"clusterAssetiOSContentVersion"];
+    clusterAssetiOSContentVersion2 = [vehicleCopy clusterAssetiOSContentVersion];
+    [v4 setObject:clusterAssetiOSContentVersion2 forKey:@"clusterAssetiOSContentVersion"];
   }
 
-  v49 = [v3 clusterAssetVersion];
+  clusterAssetVersion = [vehicleCopy clusterAssetVersion];
 
-  if (v49)
+  if (clusterAssetVersion)
   {
-    v50 = [v3 clusterAssetVersion];
-    [v4 setObject:v50 forKey:@"clusterAssetVersion"];
+    clusterAssetVersion2 = [vehicleCopy clusterAssetVersion];
+    [v4 setObject:clusterAssetVersion2 forKey:@"clusterAssetVersion"];
   }
 
-  v51 = [v3 SDKVersion];
+  sDKVersion = [vehicleCopy SDKVersion];
 
-  if (v51)
+  if (sDKVersion)
   {
-    v52 = [v3 SDKVersion];
-    [v4 setObject:v52 forKey:@"SDKVersion"];
+    sDKVersion2 = [vehicleCopy SDKVersion];
+    [v4 setObject:sDKVersion2 forKey:@"SDKVersion"];
   }
 
-  v53 = [v3 clusterAssetURL];
+  clusterAssetURL = [vehicleCopy clusterAssetURL];
 
-  if (v53)
+  if (clusterAssetURL)
   {
-    v54 = [v3 clusterAssetURL];
-    v55 = [v54 path];
-    [v4 setObject:v55 forKey:@"clusterAssetPath"];
+    clusterAssetURL2 = [vehicleCopy clusterAssetURL];
+    path = [clusterAssetURL2 path];
+    [v4 setObject:path forKey:@"clusterAssetPath"];
   }
 
-  v56 = [v3 stagedClusterAssetiOSContentVersion];
+  stagedClusterAssetiOSContentVersion = [vehicleCopy stagedClusterAssetiOSContentVersion];
 
-  if (v56)
+  if (stagedClusterAssetiOSContentVersion)
   {
-    v57 = [v3 stagedClusterAssetiOSContentVersion];
-    [v4 setObject:v57 forKey:@"stagedClusterAssetiOSContentVersion"];
+    stagedClusterAssetiOSContentVersion2 = [vehicleCopy stagedClusterAssetiOSContentVersion];
+    [v4 setObject:stagedClusterAssetiOSContentVersion2 forKey:@"stagedClusterAssetiOSContentVersion"];
   }
 
-  v58 = [v3 stagedClusterAssetVersion];
+  stagedClusterAssetVersion = [vehicleCopy stagedClusterAssetVersion];
 
-  if (v58)
+  if (stagedClusterAssetVersion)
   {
-    v59 = [v3 stagedClusterAssetVersion];
-    [v4 setObject:v59 forKey:@"stagedClusterAssetVersion"];
+    stagedClusterAssetVersion2 = [vehicleCopy stagedClusterAssetVersion];
+    [v4 setObject:stagedClusterAssetVersion2 forKey:@"stagedClusterAssetVersion"];
   }
 
-  v60 = [v3 stagedClusterAssetURL];
+  stagedClusterAssetURL = [vehicleCopy stagedClusterAssetURL];
 
-  if (v60)
+  if (stagedClusterAssetURL)
   {
-    v61 = [v3 stagedClusterAssetURL];
-    v62 = [v61 path];
-    [v4 setObject:v62 forKey:@"stagedClusterAssetPath"];
+    stagedClusterAssetURL2 = [vehicleCopy stagedClusterAssetURL];
+    path2 = [stagedClusterAssetURL2 path];
+    [v4 setObject:path2 forKey:@"stagedClusterAssetPath"];
   }
 
-  v63 = [v3 displayThemeData];
+  displayThemeData = [vehicleCopy displayThemeData];
 
   v111 = v4;
-  if (v63)
+  if (displayThemeData)
   {
     v64 = objc_alloc_init(NSMutableDictionary);
     v118 = 0u;
     v119 = 0u;
     v120 = 0u;
     v121 = 0u;
-    v65 = [v3 displayThemeData];
-    v66 = [v65 countByEnumeratingWithState:&v118 objects:v125 count:16];
+    displayThemeData2 = [vehicleCopy displayThemeData];
+    v66 = [displayThemeData2 countByEnumeratingWithState:&v118 objects:v125 count:16];
     if (v66)
     {
       v67 = v66;
@@ -703,17 +703,17 @@ LABEL_10:
         {
           if (*v119 != v68)
           {
-            objc_enumerationMutation(v65);
+            objc_enumerationMutation(displayThemeData2);
           }
 
           v70 = *(*(&v118 + 1) + 8 * v69);
-          v71 = [v3 displayThemeData];
-          v72 = [v71 objectForKey:v70];
-          v73 = [v72 asDictionary];
+          displayThemeData3 = [vehicleCopy displayThemeData];
+          v72 = [displayThemeData3 objectForKey:v70];
+          asDictionary = [v72 asDictionary];
 
-          if (v73)
+          if (asDictionary)
           {
-            [v64 setObject:v73 forKey:v70];
+            [v64 setObject:asDictionary forKey:v70];
           }
 
           else
@@ -731,7 +731,7 @@ LABEL_10:
         }
 
         while (v67 != v69);
-        v67 = [v65 countByEnumeratingWithState:&v118 objects:v125 count:16];
+        v67 = [displayThemeData2 countByEnumeratingWithState:&v118 objects:v125 count:16];
       }
 
       while (v67);
@@ -741,33 +741,33 @@ LABEL_10:
     [v111 setObject:v64 forKey:@"displayThemeData"];
   }
 
-  v75 = [v3 hasGaugeClusterScreen];
+  hasGaugeClusterScreen = [vehicleCopy hasGaugeClusterScreen];
 
-  if (v75)
+  if (hasGaugeClusterScreen)
   {
-    v76 = [v3 hasGaugeClusterScreen];
-    [v4 setObject:v76 forKey:@"hasGaugeClusterScreen"];
+    hasGaugeClusterScreen2 = [vehicleCopy hasGaugeClusterScreen];
+    [v4 setObject:hasGaugeClusterScreen2 forKey:@"hasGaugeClusterScreen"];
   }
 
-  v77 = [v3 finishedWelcome];
+  finishedWelcome = [vehicleCopy finishedWelcome];
 
-  if (v77)
+  if (finishedWelcome)
   {
-    v78 = [v3 finishedWelcome];
-    [v4 setObject:v78 forKey:@"finishedWelcome"];
+    finishedWelcome2 = [vehicleCopy finishedWelcome];
+    [v4 setObject:finishedWelcome2 forKey:@"finishedWelcome"];
   }
 
-  v79 = [v3 oemPunchThroughsAsApp];
+  oemPunchThroughsAsApp = [vehicleCopy oemPunchThroughsAsApp];
 
-  if (v79)
+  if (oemPunchThroughsAsApp)
   {
     v80 = objc_alloc_init(NSMutableDictionary);
     v114 = 0u;
     v115 = 0u;
     v116 = 0u;
     v117 = 0u;
-    v81 = [v3 oemPunchThroughsAsApp];
-    v82 = [v81 countByEnumeratingWithState:&v114 objects:v122 count:16];
+    oemPunchThroughsAsApp2 = [vehicleCopy oemPunchThroughsAsApp];
+    v82 = [oemPunchThroughsAsApp2 countByEnumeratingWithState:&v114 objects:v122 count:16];
     if (v82)
     {
       v83 = v82;
@@ -779,17 +779,17 @@ LABEL_10:
         {
           if (*v115 != v84)
           {
-            objc_enumerationMutation(v81);
+            objc_enumerationMutation(oemPunchThroughsAsApp2);
           }
 
           v86 = *(*(&v114 + 1) + 8 * v85);
-          v87 = [v3 oemPunchThroughsAsApp];
-          v88 = [v87 objectForKey:v86];
-          v89 = [v88 punchThroughs];
+          oemPunchThroughsAsApp3 = [vehicleCopy oemPunchThroughsAsApp];
+          v88 = [oemPunchThroughsAsApp3 objectForKey:v86];
+          punchThroughs = [v88 punchThroughs];
 
-          if (v89)
+          if (punchThroughs)
           {
-            [v80 setObject:v89 forKey:v86];
+            [v80 setObject:punchThroughs forKey:v86];
           }
 
           else
@@ -807,7 +807,7 @@ LABEL_10:
         }
 
         while (v83 != v85);
-        v83 = [v81 countByEnumeratingWithState:&v114 objects:v122 count:16];
+        v83 = [oemPunchThroughsAsApp2 countByEnumeratingWithState:&v114 objects:v122 count:16];
       }
 
       while (v83);
@@ -819,73 +819,73 @@ LABEL_10:
 
   if (CRIsInternalInstall())
   {
-    v91 = [v3 lastConnectedDate];
+    lastConnectedDate = [vehicleCopy lastConnectedDate];
 
-    if (v91)
+    if (lastConnectedDate)
     {
-      v92 = [v3 lastConnectedDate];
-      [v4 setObject:v92 forKey:@"lastConnectedDate"];
+      lastConnectedDate2 = [vehicleCopy lastConnectedDate];
+      [v4 setObject:lastConnectedDate2 forKey:@"lastConnectedDate"];
     }
 
-    v93 = [v3 vehicleModelName];
+    vehicleModelName = [vehicleCopy vehicleModelName];
 
-    if (v93)
+    if (vehicleModelName)
     {
-      v94 = [v3 vehicleModelName];
-      [v4 setObject:v94 forKey:@"vehicleModelName"];
+      vehicleModelName2 = [vehicleCopy vehicleModelName];
+      [v4 setObject:vehicleModelName2 forKey:@"vehicleModelName"];
     }
   }
 
-  v95 = [v3 internalNotes];
+  internalNotes = [vehicleCopy internalNotes];
 
-  if (v95)
+  if (internalNotes)
   {
-    v96 = [v3 internalNotes];
-    [v4 setObject:v96 forKey:@"internalNotes"];
+    internalNotes2 = [vehicleCopy internalNotes];
+    [v4 setObject:internalNotes2 forKey:@"internalNotes"];
   }
 
-  v97 = [v3 homeScreenStyleDataForDisplayWithID:0];
+  v97 = [vehicleCopy homeScreenStyleDataForDisplayWithID:0];
 
   if (v97)
   {
-    v98 = [v3 homeScreenStyleDataForDisplayWithID:0];
-    v99 = [v98 asDictionary];
-    [v4 setObject:v99 forKey:@"homeScreenStyleData"];
+    v98 = [vehicleCopy homeScreenStyleDataForDisplayWithID:0];
+    asDictionary2 = [v98 asDictionary];
+    [v4 setObject:asDictionary2 forKey:@"homeScreenStyleData"];
   }
 
-  v100 = [v3 viewAreas];
+  viewAreas = [vehicleCopy viewAreas];
 
-  if (v100)
+  if (viewAreas)
   {
     v101 = objc_alloc_init(NSMutableArray);
-    v102 = [v3 viewAreas];
+    viewAreas2 = [vehicleCopy viewAreas];
     v112[0] = _NSConcreteStackBlock;
     v112[1] = 3221225472;
     v112[2] = sub_100007E94;
     v112[3] = &unk_1000DD4A8;
     v103 = v101;
     v113 = v103;
-    [v102 enumerateObjectsUsingBlock:v112];
+    [viewAreas2 enumerateObjectsUsingBlock:v112];
 
     [v4 setObject:v103 forKey:@"viewAreas"];
   }
 
-  v104 = [v3 subtitleSettings];
+  subtitleSettings = [vehicleCopy subtitleSettings];
 
-  if (v104)
+  if (subtitleSettings)
   {
-    v105 = [v3 subtitleSettings];
-    v106 = [v105 dictionaryRepresentation];
+    subtitleSettings2 = [vehicleCopy subtitleSettings];
+    dictionaryRepresentation = [subtitleSettings2 dictionaryRepresentation];
 
-    [v4 setObject:v106 forKey:@"subtitleSettings"];
+    [v4 setObject:dictionaryRepresentation forKey:@"subtitleSettings"];
   }
 
-  v107 = [v3 videoDiagnosticsEnabled];
+  videoDiagnosticsEnabled = [vehicleCopy videoDiagnosticsEnabled];
 
-  if (v107)
+  if (videoDiagnosticsEnabled)
   {
-    v108 = [v3 videoDiagnosticsEnabled];
-    [v4 setObject:v108 forKey:@"videoDiagnostics"];
+    videoDiagnosticsEnabled2 = [vehicleCopy videoDiagnosticsEnabled];
+    [v4 setObject:videoDiagnosticsEnabled2 forKey:@"videoDiagnostics"];
   }
 
   v109 = v4;
@@ -893,12 +893,12 @@ LABEL_10:
   return v4;
 }
 
-+ (void)_applyPreferencesAttributes:(id)a3 toVehicle:(id)a4
++ (void)_applyPreferencesAttributes:(id)attributes toVehicle:(id)vehicle
 {
-  v5 = a3;
-  v6 = a4;
+  attributesCopy = attributes;
+  vehicleCopy = vehicle;
   objc_opt_class();
-  v7 = [v5 objectForKey:@"name"];
+  v7 = [attributesCopy objectForKey:@"name"];
   if (v7 && (objc_opt_isKindOfClass() & 1) != 0)
   {
     v8 = v7;
@@ -911,12 +911,12 @@ LABEL_10:
 
   if (v8)
   {
-    [v6 setVehicleName:v8];
+    [vehicleCopy setVehicleName:v8];
   }
 
   v167 = v8;
   objc_opt_class();
-  v9 = [v5 objectForKey:@"bluetoothAddress"];
+  v9 = [attributesCopy objectForKey:@"bluetoothAddress"];
   if (v9 && (objc_opt_isKindOfClass() & 1) != 0)
   {
     v10 = v9;
@@ -929,12 +929,12 @@ LABEL_10:
 
   if (v10)
   {
-    [v6 setBluetoothAddress:v10];
+    [vehicleCopy setBluetoothAddress:v10];
   }
 
   v166 = v10;
   objc_opt_class();
-  v11 = [v5 objectForKey:@"carplayWiFiUUID"];
+  v11 = [attributesCopy objectForKey:@"carplayWiFiUUID"];
   if (v11 && (objc_opt_isKindOfClass() & 1) != 0)
   {
     v12 = v11;
@@ -947,22 +947,22 @@ LABEL_10:
 
   if (v12)
   {
-    [v6 setCarplayWiFiUUID:v12];
+    [vehicleCopy setCarplayWiFiUUID:v12];
   }
 
   v165 = v12;
   v13 = objc_opt_class();
-  v14 = [v5 objectForKey:@"carPlayProtocols"];
+  v14 = [attributesCopy objectForKey:@"carPlayProtocols"];
   v15 = sub_1000097A0(v13, v14);
 
   if (v15)
   {
     v16 = [NSSet setWithArray:v15];
-    [v6 setAccessoryProtocols:v16];
+    [vehicleCopy setAccessoryProtocols:v16];
   }
 
   objc_opt_class();
-  v17 = [v5 objectForKey:@"supportsEnhancedIntegration"];
+  v17 = [attributesCopy objectForKey:@"supportsEnhancedIntegration"];
   if (v17 && (objc_opt_isKindOfClass() & 1) != 0)
   {
     v18 = v17;
@@ -975,12 +975,12 @@ LABEL_10:
 
   if (v18)
   {
-    [v6 setSupportsEnhancedIntegration:{objc_msgSend(v18, "BOOLValue")}];
+    [vehicleCopy setSupportsEnhancedIntegration:{objc_msgSend(v18, "BOOLValue")}];
   }
 
   v163 = v18;
   objc_opt_class();
-  v19 = [v5 objectForKey:@"supportsMixableAudio"];
+  v19 = [attributesCopy objectForKey:@"supportsMixableAudio"];
   if (v19 && (objc_opt_isKindOfClass() & 1) != 0)
   {
     v20 = v19;
@@ -993,12 +993,12 @@ LABEL_10:
 
   if (v20)
   {
-    [v6 setSupportsMixableAudio:{objc_msgSend(v20, "BOOLValue")}];
+    [vehicleCopy setSupportsMixableAudio:{objc_msgSend(v20, "BOOLValue")}];
   }
 
   v162 = v20;
   objc_opt_class();
-  v21 = [v5 objectForKey:@"isSiriBargeInDisabled"];
+  v21 = [attributesCopy objectForKey:@"isSiriBargeInDisabled"];
   if (v21 && (objc_opt_isKindOfClass() & 1) != 0)
   {
     v22 = v21;
@@ -1011,12 +1011,12 @@ LABEL_10:
 
   if (v22)
   {
-    [v6 setSiriBargeInDisabled:{objc_msgSend(v22, "BOOLValue")}];
+    [vehicleCopy setSiriBargeInDisabled:{objc_msgSend(v22, "BOOLValue")}];
   }
 
   v161 = v22;
   objc_opt_class();
-  v23 = [v5 objectForKey:@"supportsUSBCarPlay"];
+  v23 = [attributesCopy objectForKey:@"supportsUSBCarPlay"];
   if (v23 && (objc_opt_isKindOfClass() & 1) != 0)
   {
     v24 = v23;
@@ -1029,12 +1029,12 @@ LABEL_10:
 
   if (v24)
   {
-    [v6 setSupportsUSBCarPlay:{objc_msgSend(v24, "BOOLValue")}];
+    [vehicleCopy setSupportsUSBCarPlay:{objc_msgSend(v24, "BOOLValue")}];
   }
 
   v160 = v24;
   objc_opt_class();
-  v25 = [v5 objectForKey:@"supportsWirelessCarPlay"];
+  v25 = [attributesCopy objectForKey:@"supportsWirelessCarPlay"];
   if (v25 && (objc_opt_isKindOfClass() & 1) != 0)
   {
     v26 = v25;
@@ -1047,12 +1047,12 @@ LABEL_10:
 
   if (v26)
   {
-    [v6 setSupportsWirelessCarPlay:{objc_msgSend(v26, "BOOLValue")}];
+    [vehicleCopy setSupportsWirelessCarPlay:{objc_msgSend(v26, "BOOLValue")}];
   }
 
   v159 = v26;
   objc_opt_class();
-  v27 = [v5 objectForKey:@"supportsStartSessionRequest"];
+  v27 = [attributesCopy objectForKey:@"supportsStartSessionRequest"];
   if (v27 && (objc_opt_isKindOfClass() & 1) != 0)
   {
     v28 = v27;
@@ -1066,12 +1066,12 @@ LABEL_10:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v6 setSupportsStartSessionRequest:v28];
+    [vehicleCopy setSupportsStartSessionRequest:v28];
   }
 
   v158 = v28;
   objc_opt_class();
-  v29 = [v5 objectForKey:@"albumArtUserPreference"];
+  v29 = [attributesCopy objectForKey:@"albumArtUserPreference"];
   if (v29 && (objc_opt_isKindOfClass() & 1) != 0)
   {
     v30 = v29;
@@ -1084,12 +1084,12 @@ LABEL_10:
 
   if (v30)
   {
-    [v6 setAlbumArtUserPreference:{objc_msgSend(v30, "integerValue")}];
+    [vehicleCopy setAlbumArtUserPreference:{objc_msgSend(v30, "integerValue")}];
   }
 
   v157 = v30;
   objc_opt_class();
-  v31 = [v5 objectForKey:@"wallpaperIdentifierUserPreference"];
+  v31 = [attributesCopy objectForKey:@"wallpaperIdentifierUserPreference"];
   if (v31 && (objc_opt_isKindOfClass() & 1) != 0)
   {
     v32 = v31;
@@ -1102,12 +1102,12 @@ LABEL_10:
 
   if (v32)
   {
-    [v6 setWallpaperIdentifier:v32];
+    [vehicleCopy setWallpaperIdentifier:v32];
   }
 
   v156 = v32;
   objc_opt_class();
-  v33 = [v5 objectForKey:@"previousWallpaperIdentifierUserPreference"];
+  v33 = [attributesCopy objectForKey:@"previousWallpaperIdentifierUserPreference"];
   if (v33 && (objc_opt_isKindOfClass() & 1) != 0)
   {
     v34 = v33;
@@ -1120,12 +1120,12 @@ LABEL_10:
 
   if (v34)
   {
-    [v6 setPreviousWallpaperIdentifier:v34];
+    [vehicleCopy setPreviousWallpaperIdentifier:v34];
   }
 
   v155 = v34;
   objc_opt_class();
-  v35 = [v5 objectForKey:@"displayScalingModeUserPreference"];
+  v35 = [attributesCopy objectForKey:@"displayScalingModeUserPreference"];
   if (v35 && (objc_opt_isKindOfClass() & 1) != 0)
   {
     v36 = v35;
@@ -1138,12 +1138,12 @@ LABEL_10:
 
   if (v36)
   {
-    [v6 setDisplayScaleMode:{objc_msgSend(v36, "integerValue")}];
+    [vehicleCopy setDisplayScaleMode:{objc_msgSend(v36, "integerValue")}];
   }
 
   v154 = v36;
   objc_opt_class();
-  v37 = [v5 objectForKey:@"appearanceModeUserPreference"];
+  v37 = [attributesCopy objectForKey:@"appearanceModeUserPreference"];
   if (v37 && (objc_opt_isKindOfClass() & 1) != 0)
   {
     v38 = v37;
@@ -1156,12 +1156,12 @@ LABEL_10:
 
   if (v38)
   {
-    [v6 setAppearanceModePreference:{objc_msgSend(v38, "integerValue")}];
+    [vehicleCopy setAppearanceModePreference:{objc_msgSend(v38, "integerValue")}];
   }
 
   v153 = v38;
   objc_opt_class();
-  v39 = [v5 objectForKey:@"mapsAppearanceUserPreference"];
+  v39 = [attributesCopy objectForKey:@"mapsAppearanceUserPreference"];
   if (v39 && (objc_opt_isKindOfClass() & 1) != 0)
   {
     v40 = v39;
@@ -1174,12 +1174,12 @@ LABEL_10:
 
   if (v40)
   {
-    [v6 setMapsAppearancePreference:{objc_msgSend(v40, "integerValue")}];
+    [vehicleCopy setMapsAppearancePreference:{objc_msgSend(v40, "integerValue")}];
   }
 
   v152 = v40;
   objc_opt_class();
-  v41 = [v5 objectForKey:@"colorFilterUserPreference"];
+  v41 = [attributesCopy objectForKey:@"colorFilterUserPreference"];
   if (v41 && (objc_opt_isKindOfClass() & 1) != 0)
   {
     v42 = v41;
@@ -1194,23 +1194,23 @@ LABEL_10:
 
   if (v42)
   {
-    [v6 setColorFilterPreference:{objc_msgSend(v42, "integerValue")}];
+    [vehicleCopy setColorFilterPreference:{objc_msgSend(v42, "integerValue")}];
   }
 
   v151 = v42;
   v43 = objc_opt_class();
   v44 = objc_opt_class();
-  v45 = [v5 objectForKey:@"colorFilterIntensityUserPreference"];
+  v45 = [attributesCopy objectForKey:@"colorFilterIntensityUserPreference"];
   v46 = sub_1000098A8(v43, v44, v45);
 
   if (v46)
   {
-    [v6 setColorFilterIntensityPreference:v46];
+    [vehicleCopy setColorFilterIntensityPreference:v46];
   }
 
   v150 = v46;
   objc_opt_class();
-  v47 = [v5 objectForKey:@"boldTextUserPreference"];
+  v47 = [attributesCopy objectForKey:@"boldTextUserPreference"];
   if (v47 && (objc_opt_isKindOfClass() & 1) != 0)
   {
     v48 = v47;
@@ -1223,28 +1223,28 @@ LABEL_10:
 
   if (v48)
   {
-    [v6 setBoldTextPreference:{objc_msgSend(v48, "integerValue")}];
+    [vehicleCopy setBoldTextPreference:{objc_msgSend(v48, "integerValue")}];
   }
 
-  v49 = [v5 objectForKey:@"soundRecognitionUserPreference"];
+  v49 = [attributesCopy objectForKey:@"soundRecognitionUserPreference"];
   v50 = v49;
   if (v49)
   {
-    [v6 setSoundRecognitionPreference:{objc_msgSend(v49, "integerValue")}];
+    [vehicleCopy setSoundRecognitionPreference:{objc_msgSend(v49, "integerValue")}];
   }
 
   v148 = v50;
   v149 = v48;
-  v51 = [v5 objectForKey:@"voiceControlUserPreference"];
+  v51 = [attributesCopy objectForKey:@"voiceControlUserPreference"];
   v52 = v51;
   if (v51)
   {
-    [v6 setVoiceControlPreference:{objc_msgSend(v51, "integerValue")}];
+    [vehicleCopy setVoiceControlPreference:{objc_msgSend(v51, "integerValue")}];
   }
 
   v147 = v52;
   objc_opt_class();
-  v53 = [v5 objectForKey:@"textSizeUserPreference"];
+  v53 = [attributesCopy objectForKey:@"textSizeUserPreference"];
   if (v53 && (objc_opt_isKindOfClass() & 1) != 0)
   {
     v54 = v53;
@@ -1257,12 +1257,12 @@ LABEL_10:
 
   if (v54)
   {
-    [v6 setTextSizePreference:{objc_msgSend(v54, "integerValue")}];
+    [vehicleCopy setTextSizePreference:{objc_msgSend(v54, "integerValue")}];
   }
 
   v146 = v54;
   objc_opt_class();
-  v55 = [v5 objectForKey:@"supportsBluetoothLE"];
+  v55 = [attributesCopy objectForKey:@"supportsBluetoothLE"];
   if (v55 && (objc_opt_isKindOfClass() & 1) != 0)
   {
     v56 = v55;
@@ -1275,12 +1275,12 @@ LABEL_10:
 
   if (v56)
   {
-    [v6 setSupportsBluetoothLE:{objc_msgSend(v56, "BOOLValue")}];
+    [vehicleCopy setSupportsBluetoothLE:{objc_msgSend(v56, "BOOLValue")}];
   }
 
   v145 = v56;
   objc_opt_class();
-  v57 = [v5 objectForKey:@"supportsThemeAssets"];
+  v57 = [attributesCopy objectForKey:@"supportsThemeAssets"];
   if (v57 && (objc_opt_isKindOfClass() & 1) != 0)
   {
     v58 = v57;
@@ -1294,12 +1294,12 @@ LABEL_10:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v6 setSupportsThemeAssets:v58];
+    [vehicleCopy setSupportsThemeAssets:v58];
   }
 
   v144 = v58;
   objc_opt_class();
-  v59 = [v5 objectForKey:@"disabledFeaturesPreference"];
+  v59 = [attributesCopy objectForKey:@"disabledFeaturesPreference"];
   if (v59 && (objc_opt_isKindOfClass() & 1) != 0)
   {
     v60 = v59;
@@ -1312,12 +1312,12 @@ LABEL_10:
 
   if (v60)
   {
-    [v6 setDisabledFeaturesPreference:v60];
+    [vehicleCopy setDisabledFeaturesPreference:v60];
   }
 
   v143 = v60;
   objc_opt_class();
-  v61 = [v5 objectForKey:@"clusterAssetIdentifier"];
+  v61 = [attributesCopy objectForKey:@"clusterAssetIdentifier"];
   if (v61 && (objc_opt_isKindOfClass() & 1) != 0)
   {
     v62 = v61;
@@ -1330,12 +1330,12 @@ LABEL_10:
 
   if (v62)
   {
-    [v6 setClusterAssetIdentifier:v62];
+    [vehicleCopy setClusterAssetIdentifier:v62];
   }
 
   v142 = v62;
   objc_opt_class();
-  v63 = [v5 objectForKey:@"clusterAssetiOSContentVersion"];
+  v63 = [attributesCopy objectForKey:@"clusterAssetiOSContentVersion"];
   if (v63 && (objc_opt_isKindOfClass() & 1) != 0)
   {
     v64 = v63;
@@ -1348,12 +1348,12 @@ LABEL_10:
 
   if (v64)
   {
-    [v6 setClusterAssetiOSContentVersion:v64];
+    [vehicleCopy setClusterAssetiOSContentVersion:v64];
   }
 
   v141 = v64;
   objc_opt_class();
-  v65 = [v5 objectForKey:@"clusterAssetVersion"];
+  v65 = [attributesCopy objectForKey:@"clusterAssetVersion"];
   if (v65 && (objc_opt_isKindOfClass() & 1) != 0)
   {
     v66 = v65;
@@ -1366,12 +1366,12 @@ LABEL_10:
 
   if (v66)
   {
-    [v6 setClusterAssetVersion:v66];
+    [vehicleCopy setClusterAssetVersion:v66];
   }
 
   v140 = v66;
   objc_opt_class();
-  v67 = [v5 objectForKey:@"SDKVersion"];
+  v67 = [attributesCopy objectForKey:@"SDKVersion"];
   if (v67 && (objc_opt_isKindOfClass() & 1) != 0)
   {
     v68 = v67;
@@ -1384,12 +1384,12 @@ LABEL_10:
 
   if (v68)
   {
-    [v6 setSDKVersion:v68];
+    [vehicleCopy setSDKVersion:v68];
   }
 
   v139 = v68;
   objc_opt_class();
-  v69 = [v5 objectForKey:@"clusterAssetPath"];
+  v69 = [attributesCopy objectForKey:@"clusterAssetPath"];
   if (v69 && (objc_opt_isKindOfClass() & 1) != 0)
   {
     v70 = v69;
@@ -1403,11 +1403,11 @@ LABEL_10:
   if (v70)
   {
     v71 = [NSURL fileURLWithPath:v70 isDirectory:0];
-    [v6 setClusterAssetURL:v71];
+    [vehicleCopy setClusterAssetURL:v71];
   }
 
   objc_opt_class();
-  v72 = [v5 objectForKey:@"stagedClusterAssetiOSContentVersion"];
+  v72 = [attributesCopy objectForKey:@"stagedClusterAssetiOSContentVersion"];
   if (v72 && (objc_opt_isKindOfClass() & 1) != 0)
   {
     v73 = v72;
@@ -1420,12 +1420,12 @@ LABEL_10:
 
   if (v73)
   {
-    [v6 setStagedClusterAssetiOSContentVersion:v73];
+    [vehicleCopy setStagedClusterAssetiOSContentVersion:v73];
   }
 
   v137 = v73;
   objc_opt_class();
-  v74 = [v5 objectForKey:@"stagedClusterAssetVersion"];
+  v74 = [attributesCopy objectForKey:@"stagedClusterAssetVersion"];
   if (v74 && (objc_opt_isKindOfClass() & 1) != 0)
   {
     v75 = v74;
@@ -1438,12 +1438,12 @@ LABEL_10:
 
   if (v75)
   {
-    [v6 setStagedClusterAssetVersion:v75];
+    [vehicleCopy setStagedClusterAssetVersion:v75];
   }
 
   v136 = v75;
   objc_opt_class();
-  v76 = [v5 objectForKey:@"stagedClusterAssetPath"];
+  v76 = [attributesCopy objectForKey:@"stagedClusterAssetPath"];
   if (v76 && (objc_opt_isKindOfClass() & 1) != 0)
   {
     v77 = v76;
@@ -1460,17 +1460,17 @@ LABEL_10:
   if (v77)
   {
     v79 = [NSURL fileURLWithPath:v77 isDirectory:0];
-    [v6 setStagedClusterAssetURL:v79];
+    [vehicleCopy setStagedClusterAssetURL:v79];
   }
 
   v135 = v78;
   v80 = objc_opt_class();
   v81 = objc_opt_class();
-  v82 = [v5 objectForKey:@"displayThemeData"];
+  v82 = [attributesCopy objectForKey:@"displayThemeData"];
   v83 = sub_1000098A8(v80, v81, v82);
 
-  v169 = v6;
-  v170 = v5;
+  v169 = vehicleCopy;
+  v170 = attributesCopy;
   v168 = v83;
   if (v83)
   {
@@ -1520,15 +1520,15 @@ LABEL_10:
       while (v87);
     }
 
-    v6 = v169;
+    vehicleCopy = v169;
     [v169 setDisplayThemeData:v84];
 
-    v5 = v170;
+    attributesCopy = v170;
     v83 = v168;
   }
 
   objc_opt_class();
-  v94 = [v5 objectForKey:@"hasGaugeClusterScreen"];
+  v94 = [attributesCopy objectForKey:@"hasGaugeClusterScreen"];
   if (v94 && (objc_opt_isKindOfClass() & 1) != 0)
   {
     v95 = v94;
@@ -1541,12 +1541,12 @@ LABEL_10:
 
   if (v95)
   {
-    [v6 setHasGaugeClusterScreen:v95];
+    [vehicleCopy setHasGaugeClusterScreen:v95];
   }
 
   v134 = v95;
   objc_opt_class();
-  v96 = [v5 objectForKey:@"finishedWelcome"];
+  v96 = [attributesCopy objectForKey:@"finishedWelcome"];
   if (v96 && (objc_opt_isKindOfClass() & 1) != 0)
   {
     v97 = v96;
@@ -1559,13 +1559,13 @@ LABEL_10:
 
   if (v97)
   {
-    [v6 setFinishedWelcome:v97];
+    [vehicleCopy setFinishedWelcome:v97];
   }
 
   v133 = v97;
   v98 = objc_opt_class();
   v99 = objc_opt_class();
-  v100 = [v5 objectForKey:@"OEMPunchThroughsAsApp"];
+  v100 = [attributesCopy objectForKey:@"OEMPunchThroughsAsApp"];
   v101 = sub_1000098A8(v98, v99, v100);
 
   v171 = v101;
@@ -1617,17 +1617,17 @@ LABEL_10:
       while (v105);
     }
 
-    v6 = v169;
+    vehicleCopy = v169;
     [v169 setOemPunchThroughsAsApp:v102];
 
-    v5 = v170;
+    attributesCopy = v170;
     v83 = v168;
   }
 
   if (CRIsInternalInstall())
   {
     objc_opt_class();
-    v112 = [v5 objectForKey:@"lastConnectedDate"];
+    v112 = [attributesCopy objectForKey:@"lastConnectedDate"];
     if (v112 && (objc_opt_isKindOfClass() & 1) != 0)
     {
       v113 = v112;
@@ -1640,11 +1640,11 @@ LABEL_10:
 
     if (v113)
     {
-      [v6 setLastConnectedDate:v113];
+      [vehicleCopy setLastConnectedDate:v113];
     }
 
     objc_opt_class();
-    v114 = [v5 objectForKey:@"vehicleModelName"];
+    v114 = [attributesCopy objectForKey:@"vehicleModelName"];
     if (v114 && (objc_opt_isKindOfClass() & 1) != 0)
     {
       v115 = v114;
@@ -1657,12 +1657,12 @@ LABEL_10:
 
     if (v115)
     {
-      [v6 setVehicleModelName:v115];
+      [vehicleCopy setVehicleModelName:v115];
     }
   }
 
   objc_opt_class();
-  v116 = [v5 objectForKey:@"internalNotes"];
+  v116 = [attributesCopy objectForKey:@"internalNotes"];
   if (v116)
   {
     v117 = MAAsset_ptr;
@@ -1685,12 +1685,12 @@ LABEL_10:
 
   if (v118)
   {
-    [v6 setInternalNotes:v118];
+    [vehicleCopy setInternalNotes:v118];
   }
 
   v119 = v117[51];
   objc_opt_class();
-  v120 = [v5 objectForKey:@"homeScreenStyleData"];
+  v120 = [attributesCopy objectForKey:@"homeScreenStyleData"];
   if (v120 && (objc_opt_isKindOfClass() & 1) != 0)
   {
     v121 = v120;
@@ -1713,11 +1713,11 @@ LABEL_10:
       }
     }
 
-    [v6 setHomeScreenStyle:v122 forDisplayWithID:0];
+    [vehicleCopy setHomeScreenStyle:v122 forDisplayWithID:0];
   }
 
   objc_opt_class();
-  v124 = [v5 objectForKey:@"viewAreas"];
+  v124 = [attributesCopy objectForKey:@"viewAreas"];
   if (v124 && (objc_opt_isKindOfClass() & 1) != 0)
   {
     v125 = v124;
@@ -1737,12 +1737,12 @@ LABEL_10:
     v126 = objc_alloc_init(NSMutableArray);
     v173 = v126;
     [v125 enumerateObjectsUsingBlock:v172];
-    [v6 setViewAreas:v126];
+    [vehicleCopy setViewAreas:v126];
   }
 
   v127 = v117[51];
   objc_opt_class();
-  v128 = [v5 objectForKey:@"subtitleSettings"];
+  v128 = [attributesCopy objectForKey:@"subtitleSettings"];
   if (v128 && (objc_opt_isKindOfClass() & 1) != 0)
   {
     v129 = v128;
@@ -1756,11 +1756,11 @@ LABEL_10:
   if (v129)
   {
     v130 = [[CRSubtitleSettings alloc] initWithDictionaryRepresentation:v129];
-    [v6 setSubtitleSettings:v130];
+    [vehicleCopy setSubtitleSettings:v130];
   }
 
   objc_opt_class();
-  v131 = [v5 objectForKey:@"videoDiagnostics"];
+  v131 = [attributesCopy objectForKey:@"videoDiagnostics"];
   if (v131 && (objc_opt_isKindOfClass() & 1) != 0)
   {
     v132 = v131;
@@ -1773,7 +1773,7 @@ LABEL_10:
 
   if (v132)
   {
-    [v6 setVideoDiagnosticsEnabled:v132];
+    [vehicleCopy setVideoDiagnosticsEnabled:v132];
   }
 }
 
@@ -1788,21 +1788,21 @@ LABEL_10:
   return v2;
 }
 
-+ (BOOL)_addPreferencesPairingForVehicle:(id)a3
++ (BOOL)_addPreferencesPairingForVehicle:(id)vehicle
 {
-  v4 = a3;
-  v5 = [v4 identifier];
-  v6 = [v5 UUIDString];
+  vehicleCopy = vehicle;
+  identifier = [vehicleCopy identifier];
+  uUIDString = [identifier UUIDString];
 
-  if (v6)
+  if (uUIDString)
   {
-    v7 = [objc_opt_class() _preferencesAttributesForVehicle:v4];
+    v7 = [objc_opt_class() _preferencesAttributesForVehicle:vehicleCopy];
     if (v7)
     {
-      v8 = [a1 _allPreferencesPairings];
-      v9 = [v8 mutableCopy];
+      _allPreferencesPairings = [self _allPreferencesPairings];
+      v9 = [_allPreferencesPairings mutableCopy];
 
-      [v9 setObject:v7 forKey:v6];
+      [v9 setObject:v7 forKey:uUIDString];
       CFPreferencesSetAppValue(@"pairings", v9, CRPreferencesNotMigratedDomain);
       v10 = CFPreferencesAppSynchronize(CRPreferencesNotMigratedDomain);
       v11 = v10 != 0;
@@ -1811,7 +1811,7 @@ LABEL_10:
         v12 = CarGeneralLogging();
         if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
         {
-          sub_100081754(v6, v4);
+          sub_100081754(uUIDString, vehicleCopy);
         }
       }
     }
@@ -1830,25 +1830,25 @@ LABEL_10:
   return v11;
 }
 
-+ (BOOL)_removePreferencesPairingForVehicle:(id)a3
++ (BOOL)_removePreferencesPairingForVehicle:(id)vehicle
 {
-  v4 = a3;
-  v5 = [v4 identifier];
-  v6 = [v5 UUIDString];
+  vehicleCopy = vehicle;
+  identifier = [vehicleCopy identifier];
+  uUIDString = [identifier UUIDString];
 
-  if (!v6)
+  if (!uUIDString)
   {
 LABEL_7:
     v7 = 0;
     goto LABEL_8;
   }
 
-  if (([a1 _removePreferencesPairingForVehicleIdentifier:v6] & 1) == 0)
+  if (([self _removePreferencesPairingForVehicleIdentifier:uUIDString] & 1) == 0)
   {
     v8 = CarGeneralLogging();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      sub_1000817E8(v6, v4);
+      sub_1000817E8(uUIDString, vehicleCopy);
     }
 
     goto LABEL_7;
@@ -1860,30 +1860,30 @@ LABEL_8:
   return v7;
 }
 
-+ (BOOL)_removePreferencesPairingForVehicleIdentifier:(id)a3
++ (BOOL)_removePreferencesPairingForVehicleIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [a1 _allPreferencesPairings];
-  v6 = [v5 mutableCopy];
+  identifierCopy = identifier;
+  _allPreferencesPairings = [self _allPreferencesPairings];
+  v6 = [_allPreferencesPairings mutableCopy];
 
-  [v6 removeObjectForKey:v4];
+  [v6 removeObjectForKey:identifierCopy];
   CFPreferencesSetAppValue(@"pairings", v6, CRPreferencesNotMigratedDomain);
-  LOBYTE(v5) = CFPreferencesAppSynchronize(CRPreferencesNotMigratedDomain) != 0;
+  LOBYTE(_allPreferencesPairings) = CFPreferencesAppSynchronize(CRPreferencesNotMigratedDomain) != 0;
 
-  return v5;
+  return _allPreferencesPairings;
 }
 
-+ (void)_cleanupPreferencesForIncompleteVehicleIdentifier:(id)a3 name:(id)a4
++ (void)_cleanupPreferencesForIncompleteVehicleIdentifier:(id)identifier name:(id)name
 {
-  v5 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  nameCopy = name;
   v7 = CarGeneralLogging();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
   {
     sub_10008187C();
   }
 
-  v8 = [objc_opt_class() _removePreferencesPairingForVehicleIdentifier:v5];
+  v8 = [objc_opt_class() _removePreferencesPairingForVehicleIdentifier:identifierCopy];
   v9 = CarGeneralLogging();
   v10 = v9;
   if (v8)
@@ -1891,9 +1891,9 @@ LABEL_8:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v11 = 138412546;
-      v12 = v5;
+      v12 = identifierCopy;
       v13 = 2112;
-      v14 = v6;
+      v14 = nameCopy;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Cleaned up preferences for missing keychain item %@ (%@)", &v11, 0x16u);
     }
   }
@@ -1947,42 +1947,42 @@ LABEL_8:
   [(CRVehicleStore *)&v4 dealloc];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(CRVehicleStore *)self observers];
-  [v5 registerObserver:v4];
+  observerCopy = observer;
+  observers = [(CRVehicleStore *)self observers];
+  [observers registerObserver:observerCopy];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(CRVehicleStore *)self observers];
-  [v5 unregisterObserver:v4];
+  observerCopy = observer;
+  observers = [(CRVehicleStore *)self observers];
+  [observers unregisterObserver:observerCopy];
 }
 
-- (id)saveVehicle:(id)a3 withMergePolicy:(id)a4
+- (id)saveVehicle:(id)vehicle withMergePolicy:(id)policy
 {
-  v6 = a3;
-  v7 = a4;
+  vehicleCopy = vehicle;
+  policyCopy = policy;
   if (!+[CRVehicleStoreAvailability isVehicleStoreAvailable])
   {
     v20 = 0;
     goto LABEL_31;
   }
 
-  v8 = [v6 certificateSerialNumber];
+  certificateSerialNumber = [vehicleCopy certificateSerialNumber];
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v9 = [(CRVehicleStore *)self allStoredVehicles];
-  v10 = [v9 countByEnumeratingWithState:&v29 objects:v33 count:16];
+  allStoredVehicles = [(CRVehicleStore *)self allStoredVehicles];
+  v10 = [allStoredVehicles countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (v10)
   {
     v11 = v10;
-    v27 = self;
-    v28 = v7;
+    selfCopy = self;
+    v28 = policyCopy;
     v12 = 0;
     v13 = *v30;
     do
@@ -1991,19 +1991,19 @@ LABEL_8:
       {
         if (*v30 != v13)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(allStoredVehicles);
         }
 
         v15 = *(*(&v29 + 1) + 8 * i);
-        if (([v15 isEqual:{v6, v27}] & 1) == 0)
+        if (([v15 isEqual:{vehicleCopy, selfCopy}] & 1) == 0)
         {
-          if (!v8)
+          if (!certificateSerialNumber)
           {
             continue;
           }
 
-          v16 = [v15 certificateSerialNumber];
-          v17 = [v8 isEqualToData:v16];
+          certificateSerialNumber2 = [v15 certificateSerialNumber];
+          v17 = [certificateSerialNumber isEqualToData:certificateSerialNumber2];
 
           if (!v17)
           {
@@ -2016,38 +2016,38 @@ LABEL_8:
         v12 = v18;
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v29 objects:v33 count:16];
+      v11 = [allStoredVehicles countByEnumeratingWithState:&v29 objects:v33 count:16];
     }
 
     while (v11);
 
     if (!v12)
     {
-      self = v27;
-      v7 = v28;
+      self = selfCopy;
+      policyCopy = v28;
       goto LABEL_27;
     }
 
-    v9 = [v12 viewAreas];
-    self = v27;
-    v7 = v28;
+    allStoredVehicles = [v12 viewAreas];
+    self = selfCopy;
+    policyCopy = v28;
     if (v28)
     {
-      v19 = v28[2](v28, v6, v12);
+      v19 = v28[2](v28, vehicleCopy, v12);
     }
 
     else
     {
-      [v12 mergeAttributesFromVehicle:v6];
+      [v12 mergeAttributesFromVehicle:vehicleCopy];
       v19 = v12;
     }
 
     v21 = v19;
 
-    if (v9)
+    if (allStoredVehicles)
     {
-      v22 = [v21 viewAreas];
-      if (v22)
+      viewAreas = [v21 viewAreas];
+      if (viewAreas)
       {
 LABEL_25:
 
@@ -2056,8 +2056,8 @@ LABEL_25:
 
       if (CRIsInternalInstall())
       {
-        v22 = CarGeneralLogging();
-        if (os_log_type_enabled(v22, OS_LOG_TYPE_FAULT))
+        viewAreas = CarGeneralLogging();
+        if (os_log_type_enabled(viewAreas, OS_LOG_TYPE_FAULT))
         {
           sub_10008195C();
         }
@@ -2070,24 +2070,24 @@ LABEL_25:
   else
   {
     v12 = 0;
-    v21 = v6;
+    v21 = vehicleCopy;
   }
 
 LABEL_26:
 
-  v6 = v21;
+  vehicleCopy = v21;
 LABEL_27:
   [(CRVehicleStore *)self _invalidateCachedVehicles];
-  v23 = [objc_opt_class() _addPreferencesPairingForVehicle:v6];
-  v24 = [objc_opt_class() _addKeychainPairingForVehicle:v6];
-  v25 = [(CRVehicleStore *)self observers];
-  [v25 vehicleStore:self didSaveVehicle:v6];
+  v23 = [objc_opt_class() _addPreferencesPairingForVehicle:vehicleCopy];
+  v24 = [objc_opt_class() _addKeychainPairingForVehicle:vehicleCopy];
+  observers = [(CRVehicleStore *)self observers];
+  [observers vehicleStore:self didSaveVehicle:vehicleCopy];
 
   [objc_opt_class() postPairingsDidChangeNotification];
   v20 = 0;
   if (v23 && v24)
   {
-    v20 = v6;
+    v20 = vehicleCopy;
   }
 
 LABEL_31:
@@ -2095,10 +2095,10 @@ LABEL_31:
   return v20;
 }
 
-- (BOOL)removeVehicle:(id)a3
+- (BOOL)removeVehicle:(id)vehicle
 {
-  v4 = a3;
-  if (!v4)
+  vehicleCopy = vehicle;
+  if (!vehicleCopy)
   {
     v13 = CarGeneralLogging();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -2117,14 +2117,14 @@ LABEL_10:
   }
 
   [(CRVehicleStore *)self _invalidateCachedVehicles];
-  v5 = [objc_opt_class() _removePreferencesPairingForVehicle:v4];
-  v6 = [objc_opt_class() _removeKeychainPairingForVehicle:v4];
+  v5 = [objc_opt_class() _removePreferencesPairingForVehicle:vehicleCopy];
+  v6 = [objc_opt_class() _removeKeychainPairingForVehicle:vehicleCopy];
   v7 = objc_opt_class();
-  v8 = [v4 bluetoothAddress];
-  v9 = v8;
-  if (v8)
+  bluetoothAddress = [vehicleCopy bluetoothAddress];
+  v9 = bluetoothAddress;
+  if (bluetoothAddress)
   {
-    v10 = v8;
+    v10 = bluetoothAddress;
   }
 
   else
@@ -2134,8 +2134,8 @@ LABEL_10:
 
   [v7 removePayloadForVehicleWithIdentifier:v10];
 
-  v11 = [(CRVehicleStore *)self observers];
-  [v11 vehicleStore:self didRemoveVehicle:v4];
+  observers = [(CRVehicleStore *)self observers];
+  [observers vehicleStore:self didRemoveVehicle:vehicleCopy];
 
   [objc_opt_class() postPairingsDidChangeNotification];
   v12 = v5 & v6;
@@ -2144,15 +2144,15 @@ LABEL_11:
   return v12;
 }
 
-- (id)_matchingKeychainItemForIdentifier:(id)a3 inKeychainItems:(id)a4
+- (id)_matchingKeychainItemForIdentifier:(id)identifier inKeychainItems:(id)items
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = a4;
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  itemsCopy = items;
+  v7 = [itemsCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
     v8 = v7;
@@ -2163,13 +2163,13 @@ LABEL_11:
       {
         if (*v17 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(itemsCopy);
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
         v12 = [v11 objectForKey:{kSecAttrAccount, v16}];
         v13 = v12;
-        if (v12 && ([v12 isEqualToString:v5] & 1) != 0)
+        if (v12 && ([v12 isEqualToString:identifierCopy] & 1) != 0)
         {
           v14 = v11;
 
@@ -2177,7 +2177,7 @@ LABEL_11:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v8 = [itemsCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v8)
       {
         continue;
@@ -2193,7 +2193,7 @@ LABEL_12:
   return v14;
 }
 
-- (void)handleAvailabilityDidChange:(id)a3
+- (void)handleAvailabilityDidChange:(id)change
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -2203,9 +2203,9 @@ LABEL_12:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (id)vehicleForIdentifier:(id)a3
+- (id)vehicleForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   [(CRVehicleStore *)self allStoredVehicles];
   v13 = 0u;
   v14 = 0u;
@@ -2225,8 +2225,8 @@ LABEL_12:
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 identifier];
-        v11 = [v10 isEqual:v4];
+        identifier = [v9 identifier];
+        v11 = [identifier isEqual:identifierCopy];
 
         if (v11)
         {
@@ -2250,9 +2250,9 @@ LABEL_11:
   return v6;
 }
 
-- (id)vehicleForBluetoothAddress:(id)a3
+- (id)vehicleForBluetoothAddress:(id)address
 {
-  v4 = a3;
+  addressCopy = address;
   [(CRVehicleStore *)self allStoredVehicles];
   v15 = 0u;
   v16 = 0u;
@@ -2272,12 +2272,12 @@ LABEL_11:
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
-        v10 = [v9 bluetoothAddress];
-        if (v10)
+        bluetoothAddress = [v9 bluetoothAddress];
+        if (bluetoothAddress)
         {
-          v11 = v10;
-          v12 = [v9 bluetoothAddress];
-          v13 = [v12 isEqualToString:v4];
+          v11 = bluetoothAddress;
+          bluetoothAddress2 = [v9 bluetoothAddress];
+          v13 = [bluetoothAddress2 isEqualToString:addressCopy];
 
           if (v13)
           {
@@ -2302,9 +2302,9 @@ LABEL_12:
   return v6;
 }
 
-- (id)vehicleForCertificateSerial:(id)a3
+- (id)vehicleForCertificateSerial:(id)serial
 {
-  v4 = a3;
+  serialCopy = serial;
   [(CRVehicleStore *)self allStoredVehicles];
   v15 = 0u;
   v16 = 0u;
@@ -2324,12 +2324,12 @@ LABEL_12:
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
-        v10 = [v9 certificateSerialNumber];
-        if (v10)
+        certificateSerialNumber = [v9 certificateSerialNumber];
+        if (certificateSerialNumber)
         {
-          v11 = v10;
-          v12 = [v9 certificateSerialNumber];
-          v13 = [v12 isEqualToData:v4];
+          v11 = certificateSerialNumber;
+          certificateSerialNumber2 = [v9 certificateSerialNumber];
+          v13 = [certificateSerialNumber2 isEqualToData:serialCopy];
 
           if (v13)
           {

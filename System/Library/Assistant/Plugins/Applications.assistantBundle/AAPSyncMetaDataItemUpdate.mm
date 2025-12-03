@@ -1,27 +1,27 @@
 @interface AAPSyncMetaDataItemUpdate
-- (AAPSyncMetaDataItemUpdate)initWithAppId:(id)a3 appProxy:(id)a4 anchor:(id)a5 configuration:(id)a6;
+- (AAPSyncMetaDataItemUpdate)initWithAppId:(id)id appProxy:(id)proxy anchor:(id)anchor configuration:(id)configuration;
 - (id)scrapeAppInfo;
-- (id)valueForGenericParser:(id)a3 withDefaultGenerator:(id)a4 withErrorKeyDescriptor:(id)a5;
-- (id)valueForPlistEntry:(id *)a3 inBundle:(__CFBundle *)a4 withInfo:(id)a5 entitlements:(id)a6;
-- (id)valuesForEntries:(id *)a3 inPlistAtURL:(id)a4;
-- (id)valuesForInfoPlistEntries:(id *)a3 inBundle:(__CFBundle *)a4 withEntitlements:(id)a5 forLocalization:(id)a6 ignoringDefaultValues:(id)a7;
-- (id)valuesForLocalInfoPlistEntries:(id *)a3 inBundle:(__CFBundle *)a4 withEntitlements:(id)a5 ignoringDefaultValues:(id)a6;
+- (id)valueForGenericParser:(id)parser withDefaultGenerator:(id)generator withErrorKeyDescriptor:(id)descriptor;
+- (id)valueForPlistEntry:(id *)entry inBundle:(__CFBundle *)bundle withInfo:(id)info entitlements:(id)entitlements;
+- (id)valuesForEntries:(id *)entries inPlistAtURL:(id)l;
+- (id)valuesForInfoPlistEntries:(id *)entries inBundle:(__CFBundle *)bundle withEntitlements:(id)entitlements forLocalization:(id)localization ignoringDefaultValues:(id)values;
+- (id)valuesForLocalInfoPlistEntries:(id *)entries inBundle:(__CFBundle *)bundle withEntitlements:(id)entitlements ignoringDefaultValues:(id)values;
 - (void)_validate;
 - (void)dealloc;
 @end
 
 @implementation AAPSyncMetaDataItemUpdate
 
-- (AAPSyncMetaDataItemUpdate)initWithAppId:(id)a3 appProxy:(id)a4 anchor:(id)a5 configuration:(id)a6
+- (AAPSyncMetaDataItemUpdate)initWithAppId:(id)id appProxy:(id)proxy anchor:(id)anchor configuration:(id)configuration
 {
   v11.receiver = self;
   v11.super_class = AAPSyncMetaDataItemUpdate;
-  v9 = [(AAPSyncMetaDataItemUpdate *)&v11 init:a3];
+  v9 = [(AAPSyncMetaDataItemUpdate *)&v11 init:id];
   if (v9)
   {
-    v9->_appId = [a3 copy];
-    v9->_appProxy = a4;
-    v9->_anchor = [a5 copy];
+    v9->_appId = [id copy];
+    v9->_appProxy = proxy;
+    v9->_anchor = [anchor copy];
     [(AAPSyncMetaDataItemUpdate *)v9 _validate];
   }
 
@@ -74,14 +74,14 @@
   }
 }
 
-- (id)valueForGenericParser:(id)a3 withDefaultGenerator:(id)a4 withErrorKeyDescriptor:(id)a5
+- (id)valueForGenericParser:(id)parser withDefaultGenerator:(id)generator withErrorKeyDescriptor:(id)descriptor
 {
-  if (!a3)
+  if (!parser)
   {
     sub_10D80();
   }
 
-  if (!a5)
+  if (!descriptor)
   {
     sub_10DDC();
   }
@@ -97,7 +97,7 @@
   v25[2] = sub_6DD0;
   v25[3] = &unk_20A08;
   v25[4] = &v26;
-  v9 = (*(a3 + 2))(a3, v25);
+  v9 = (*(parser + 2))(parser, v25);
   v10 = v27[5];
   if (v9)
   {
@@ -106,7 +106,7 @@
       v11 = AFSiriLogContextPlugin;
       if (os_log_type_enabled(AFSiriLogContextPlugin, OS_LOG_TYPE_ERROR))
       {
-        v12 = (*(a5 + 2))(a5);
+        v12 = (*(descriptor + 2))(descriptor);
         appId = self->_appId;
         v14 = v27[5];
         *buf = 136316162;
@@ -128,7 +128,7 @@
 
   if (!v10 || (v15 = AFSiriLogContextPlugin, !os_log_type_enabled(AFSiriLogContextPlugin, OS_LOG_TYPE_ERROR)))
   {
-    if (a4)
+    if (generator)
     {
       goto LABEL_12;
     }
@@ -138,7 +138,7 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  v22 = (*(a5 + 2))(a5);
+  v22 = (*(descriptor + 2))(descriptor);
   v23 = self->_appId;
   v24 = v27[5];
   *buf = 136315906;
@@ -150,20 +150,20 @@ LABEL_17:
   v38 = 2114;
   v39 = v24;
   _os_log_error_impl(&dword_0, v15, OS_LOG_TYPE_ERROR, "%s com.apple.siri.applications: Error: parsing failed for %{public}@ (%@) -> %{public}@", buf, 0x2Au);
-  if (!a4)
+  if (!generator)
   {
     goto LABEL_17;
   }
 
 LABEL_12:
-  v9 = (*(a4 + 2))(a4);
+  v9 = (*(generator + 2))(generator);
   v16 = AFSiriLogContextPlugin;
   v17 = os_log_type_enabled(AFSiriLogContextPlugin, OS_LOG_TYPE_DEBUG);
   if (!v9)
   {
     if (v17)
     {
-      v20 = (*(a5 + 2))(a5);
+      v20 = (*(descriptor + 2))(descriptor);
       sub_10E38(v20, self, buf, v16);
     }
 
@@ -172,7 +172,7 @@ LABEL_12:
 
   if (v17)
   {
-    v18 = (*(a5 + 2))(a5);
+    v18 = (*(descriptor + 2))(descriptor);
     v19 = self->_appId;
     *buf = 136315906;
     v33 = "[AAPSyncMetaDataItemUpdate valueForGenericParser:withDefaultGenerator:withErrorKeyDescriptor:]";
@@ -191,30 +191,30 @@ LABEL_18:
   return v9;
 }
 
-- (id)valueForPlistEntry:(id *)a3 inBundle:(__CFBundle *)a4 withInfo:(id)a5 entitlements:(id)a6
+- (id)valueForPlistEntry:(id *)entry inBundle:(__CFBundle *)bundle withInfo:(id)info entitlements:(id)entitlements
 {
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_6F28;
   v9[3] = &unk_20A30;
-  v9[5] = a6;
-  v9[6] = a3;
-  v9[4] = a5;
-  var4 = a3->var4;
+  v9[5] = entitlements;
+  v9[6] = entry;
+  v9[4] = info;
+  var4 = entry->var4;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_6F9C;
   v8[3] = &unk_20A50;
-  v8[4] = a3;
+  v8[4] = entry;
   return [(AAPSyncMetaDataItemUpdate *)self valueForGenericParser:v9 withDefaultGenerator:var4 withErrorKeyDescriptor:v8];
 }
 
-- (id)valuesForInfoPlistEntries:(id *)a3 inBundle:(__CFBundle *)a4 withEntitlements:(id)a5 forLocalization:(id)a6 ignoringDefaultValues:(id)a7
+- (id)valuesForInfoPlistEntries:(id *)entries inBundle:(__CFBundle *)bundle withEntitlements:(id)entitlements forLocalization:(id)localization ignoringDefaultValues:(id)values
 {
   v13 = objc_alloc_init(NSMutableSet);
-  if (a3->var0)
+  if (entries->var0)
   {
-    v14 = a3 + 1;
+    v14 = entries + 1;
     do
     {
       [v13 addObject:?];
@@ -230,7 +230,7 @@ LABEL_18:
     goto LABEL_25;
   }
 
-  if (a6)
+  if (localization)
   {
     FilteredLocalizedInfoPlist = _CFBundleCreateFilteredLocalizedInfoPlist();
     if (!FilteredLocalizedInfoPlist)
@@ -238,7 +238,7 @@ LABEL_18:
       v17 = AFSiriLogContextPlugin;
       if (os_log_type_enabled(AFSiriLogContextPlugin, OS_LOG_TYPE_DEBUG))
       {
-        sub_10EA8(a6, self, v17);
+        sub_10EA8(localization, self, v17);
       }
 
 LABEL_25:
@@ -266,32 +266,32 @@ LABEL_25:
   if (objc_opt_isKindOfClass())
   {
     v19 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(v13, "count")}];
-    if (a3->var0)
+    if (entries->var0)
     {
-      v31 = a6;
+      localizationCopy = localization;
       *&v20 = 136316162;
       v30 = v20;
       do
       {
-        v21 = [(AAPSyncMetaDataItemUpdate *)self valueForPlistEntry:a3 inBundle:a4 withInfo:v18 entitlements:a5, v30];
+        v21 = [(AAPSyncMetaDataItemUpdate *)self valueForPlistEntry:entries inBundle:bundle withInfo:v18 entitlements:entitlements, v30];
         if (v21)
         {
           v22 = v21;
-          if ([v21 isEqual:{objc_msgSend(a7, "objectForKey:", a3->var0)}])
+          if ([v21 isEqual:{objc_msgSend(values, "objectForKey:", entries->var0)}])
           {
             v23 = AFSiriLogContextPlugin;
             if (os_log_type_enabled(AFSiriLogContextPlugin, OS_LOG_TYPE_DEBUG))
             {
-              v24 = a3->var0;
+              v24 = entries->var0;
               appId = self->_appId;
               *buf = v30;
               v33 = "[AAPSyncMetaDataItemUpdate valuesForInfoPlistEntries:inBundle:withEntitlements:forLocalization:ignoringDefaultValues:]";
               v34 = 2114;
               v35 = v24;
               v36 = 2112;
-              v37 = appId;
+              selfCopy = appId;
               v38 = 2114;
-              v39 = v31;
+              v39 = localizationCopy;
               v40 = 2112;
               v41 = v22;
               _os_log_debug_impl(&dword_0, v23, OS_LOG_TYPE_DEBUG, "%s com.apple.siri.applications: not setting value for key=%{public}@ (%@) for localization (%{public}@) because it is the same as the default -> %@", buf, 0x34u);
@@ -300,12 +300,12 @@ LABEL_25:
 
           else
           {
-            [v19 setObject:v22 forKey:a3->var0];
+            [v19 setObject:v22 forKey:entries->var0];
           }
         }
 
-        v26 = a3[1].var0;
-        ++a3;
+        v26 = entries[1].var0;
+        ++entries;
       }
 
       while (v26);
@@ -319,16 +319,16 @@ LABEL_25:
     {
       v33 = "[AAPSyncMetaDataItemUpdate valuesForInfoPlistEntries:inBundle:withEntitlements:forLocalization:ignoringDefaultValues:]";
       v34 = 2114;
-      v29 = &stru_210F8;
+      localizationCopy2 = &stru_210F8;
       *buf = 136315906;
-      if (a6)
+      if (localization)
       {
-        v29 = a6;
+        localizationCopy2 = localization;
       }
 
-      v35 = v29;
+      v35 = localizationCopy2;
       v36 = 2112;
-      v37 = self;
+      selfCopy = self;
       v38 = 2112;
       v39 = v18;
       _os_log_error_impl(&dword_0, v27, OS_LOG_TYPE_ERROR, "%s com.apple.siri.applications: Error: could not understand %{public}@ info file data for metaDataItem=%@ -> %@", buf, 0x2Au);
@@ -341,19 +341,19 @@ LABEL_26:
   return v19;
 }
 
-- (id)valuesForLocalInfoPlistEntries:(id *)a3 inBundle:(__CFBundle *)a4 withEntitlements:(id)a5 ignoringDefaultValues:(id)a6
+- (id)valuesForLocalInfoPlistEntries:(id *)entries inBundle:(__CFBundle *)bundle withEntitlements:(id)entitlements ignoringDefaultValues:(id)values
 {
   v6 = -1;
-  v7 = a3;
+  entriesCopy = entries;
   do
   {
-    var0 = v7->var0;
-    ++v7;
+    var0 = entriesCopy->var0;
+    ++entriesCopy;
     ++v6;
   }
 
   while (var0);
-  if (v6 && (v9 = CFBundleCopyBundleLocalizations(a4)) != 0)
+  if (v6 && (v9 = CFBundleCopyBundleLocalizations(bundle)) != 0)
   {
     v10 = v9;
     v11 = [[NSMutableDictionary alloc] initWithCapacity:v6];
@@ -375,7 +375,7 @@ LABEL_26:
           }
 
           v13 = *(*(&v35 + 1) + 8 * i);
-          v14 = [(AAPSyncMetaDataItemUpdate *)self valuesForInfoPlistEntries:a3 inBundle:a4 withEntitlements:a5 forLocalization:v13 ignoringDefaultValues:a6, v23];
+          v14 = [(AAPSyncMetaDataItemUpdate *)self valuesForInfoPlistEntries:entries inBundle:bundle withEntitlements:entitlements forLocalization:v13 ignoringDefaultValues:values, v23];
           if ([v14 count])
           {
             v30 = i;
@@ -439,14 +439,14 @@ LABEL_26:
   return v11;
 }
 
-- (id)valuesForEntries:(id *)a3 inPlistAtURL:(id)a4
+- (id)valuesForEntries:(id *)entries inPlistAtURL:(id)l
 {
-  if (a4)
+  if (l)
   {
     v7 = objc_alloc_init(NSMutableSet);
-    if (a3->var0)
+    if (entries->var0)
     {
-      v8 = a3 + 1;
+      v8 = entries + 1;
       do
       {
         [v7 addObject:?];
@@ -460,7 +460,7 @@ LABEL_26:
     if ([v7 count])
     {
       v20 = 0;
-      v10 = [[NSData alloc] initWithContentsOfURL:a4 options:1 error:&v20];
+      v10 = [[NSData alloc] initWithContentsOfURL:l options:1 error:&v20];
       if (v10)
       {
         v11 = v10;
@@ -468,7 +468,7 @@ LABEL_26:
         v14 = AFSiriLogContextPlugin;
         if (os_log_type_enabled(AFSiriLogContextPlugin, OS_LOG_TYPE_ERROR))
         {
-          sub_10FB8(a4, self, v14);
+          sub_10FB8(l, self, v14);
         }
       }
 
@@ -478,18 +478,18 @@ LABEL_26:
         if (os_log_type_enabled(AFSiriLogContextPlugin, OS_LOG_TYPE_DEBUG))
         {
           appId = self->_appId;
-          v18 = [v20 domain];
-          v19 = [v20 code];
+          domain = [v20 domain];
+          code = [v20 code];
           *buf = 136316418;
           v22 = "[AAPSyncMetaDataItemUpdate valuesForEntries:inPlistAtURL:]";
           v23 = 2112;
-          v24 = a4;
+          lCopy = l;
           v25 = 2112;
           v26 = appId;
           v27 = 2114;
-          v28 = v18;
+          v28 = domain;
           v29 = 2048;
-          v30 = v19;
+          v30 = code;
           v31 = 2112;
           v32 = v20;
           _os_log_debug_impl(&dword_0, v13, OS_LOG_TYPE_DEBUG, "%s com.apple.siri.applications: could not load plist file at url='%@' (%@) -> {%{public}@:%li}%@", buf, 0x3Eu);
@@ -515,7 +515,7 @@ LABEL_26:
   v4 = objc_alloc_init(SAAppInfo);
   v5 = objc_autoreleasePoolPush();
   [v4 setIdentifier:AAPSyncInfoIdentifierForAppId(self->_appId)];
-  v6 = [(LSApplicationProxy *)self->_appProxy bundleURL];
+  bundleURL = [(LSApplicationProxy *)self->_appProxy bundleURL];
   cf = _CFBundleCreateUnique();
   if (cf)
   {
@@ -542,7 +542,7 @@ LABEL_26:
     v47[1] = 3221225472;
     v47[2] = sub_8334;
     v47[3] = &unk_20AF8;
-    v47[4] = v6;
+    v47[4] = bundleURL;
     v83[19] = v47;
     v83[20] = @"CFBundleDisplayName";
     v83[21] = "setDisplayAppName:";
@@ -662,8 +662,8 @@ LABEL_26:
     v74 = 0;
     v73 = 0u;
     v72 = 0u;
-    v7 = [(LSApplicationProxy *)self->_appProxy entitlements];
-    if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+    entitlements = [(LSApplicationProxy *)self->_appProxy entitlements];
+    if (!entitlements || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       if (os_log_type_enabled(AFSiriLogContextPlugin, OS_LOG_TYPE_DEBUG))
       {
@@ -671,7 +671,7 @@ LABEL_26:
       }
     }
 
-    v8 = [(AAPSyncMetaDataItemUpdate *)self valuesForInfoPlistEntries:v45 inBundle:cf withEntitlements:v7 forLocalization:0 ignoringDefaultValues:0];
+    v8 = [(AAPSyncMetaDataItemUpdate *)self valuesForInfoPlistEntries:v45 inBundle:cf withEntitlements:entitlements forLocalization:0 ignoringDefaultValues:0];
     v46 = v8;
     if (v8)
     {
@@ -681,14 +681,14 @@ LABEL_26:
       {
         v32 = a2;
         v33 = v5;
-        v34 = v7;
-        v44 = [(AAPSyncMetaDataItemUpdate *)self valuesForLocalInfoPlistEntries:v43 inBundle:cf withEntitlements:v7 ignoringDefaultValues:v9];
+        v34 = entitlements;
+        v44 = [(AAPSyncMetaDataItemUpdate *)self valuesForLocalInfoPlistEntries:v43 inBundle:cf withEntitlements:entitlements ignoringDefaultValues:v9];
         if ([-[LSApplicationProxy applicationType](self->_appProxy "applicationType")])
         {
           v42 = -[AAPSyncMetaDataItemUpdate valuesForEntries:inPlistAtURL:](self, "valuesForEntries:inPlistAtURL:", v75, [-[LSApplicationProxy bundleContainerURL](self->_appProxy "bundleContainerURL")]);
         }
 
-        v35 = self;
+        selfCopy = self;
         v11 = 0;
         v12 = &v45;
         v48[0] = &v45;
@@ -765,7 +765,7 @@ LABEL_26:
             v37[2] = sub_841C;
             v37[3] = &unk_20A50;
             v37[4] = v26;
-            [(AAPSyncMetaDataItemUpdate *)v35 valueForGenericParser:v38 withDefaultGenerator:v27 withErrorKeyDescriptor:v37];
+            [(AAPSyncMetaDataItemUpdate *)selfCopy valueForGenericParser:v38 withDefaultGenerator:v27 withErrorKeyDescriptor:v37];
             v28 = *v26;
             (*(v26[1] + 2))();
             ++v22;

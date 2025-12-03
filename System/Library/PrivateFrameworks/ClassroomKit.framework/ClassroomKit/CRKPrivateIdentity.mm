@@ -1,29 +1,29 @@
 @interface CRKPrivateIdentity
-+ (id)commonNameWithPrefix:(id)a3;
-+ (id)freshPrivateIdentityWithCommonNamePrefix:(id)a3;
++ (id)commonNameWithPrefix:(id)prefix;
++ (id)freshPrivateIdentityWithCommonNamePrefix:(id)prefix;
 + (id)keychainGroup;
-+ (id)makeIdentityWithCommonName:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)makeIdentityWithCommonName:(id)name;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)refreshIdentities;
-- (CRKPrivateIdentity)initWithCoder:(id)a3;
-- (CRKPrivateIdentity)initWithDictionary:(id)a3;
-- (CRKPrivateIdentity)initWithIdentityPersistentId:(id)a3 stagedIdentityPersistentId:(id)a4 commonNamePrefix:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CRKPrivateIdentity)initWithCoder:(id)coder;
+- (CRKPrivateIdentity)initWithDictionary:(id)dictionary;
+- (CRKPrivateIdentity)initWithIdentityPersistentId:(id)id stagedIdentityPersistentId:(id)persistentId commonNamePrefix:(id)prefix;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryValue;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CRKPrivateIdentity
 
-- (CRKPrivateIdentity)initWithIdentityPersistentId:(id)a3 stagedIdentityPersistentId:(id)a4 commonNamePrefix:(id)a5
+- (CRKPrivateIdentity)initWithIdentityPersistentId:(id)id stagedIdentityPersistentId:(id)persistentId commonNamePrefix:(id)prefix
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
-  if (v9)
+  idCopy = id;
+  persistentIdCopy = persistentId;
+  prefixCopy = prefix;
+  v12 = prefixCopy;
+  if (idCopy)
   {
-    if (v11)
+    if (prefixCopy)
     {
       goto LABEL_3;
     }
@@ -46,45 +46,45 @@ LABEL_3:
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_identityPersistentId, a3);
-    objc_storeStrong(&v14->_stagedIdentityPersistentId, a4);
+    objc_storeStrong(&v13->_identityPersistentId, id);
+    objc_storeStrong(&v14->_stagedIdentityPersistentId, persistentId);
     v15 = [v12 copy];
     commonNamePrefix = v14->_commonNamePrefix;
     v14->_commonNamePrefix = v15;
 
     v17 = +[CRKKeychainProvider sharedProvider];
-    v18 = [v17 keychain];
+    keychain = [v17 keychain];
 
-    v19 = [v18 identityWithPersistentID:v9];
-    v20 = [v19 certificate];
-    v21 = [v20 validityDateInterval];
-    v22 = [v21 endDate];
+    v19 = [keychain identityWithPersistentID:idCopy];
+    certificate = [v19 certificate];
+    validityDateInterval = [certificate validityDateInterval];
+    endDate = [validityDateInterval endDate];
     identityExpirationDate = v14->_identityExpirationDate;
-    v14->_identityExpirationDate = v22;
+    v14->_identityExpirationDate = endDate;
 
-    if (v10)
+    if (persistentIdCopy)
     {
-      v24 = [v18 identityWithPersistentID:v10];
-      v25 = [v24 certificate];
-      v26 = [v25 validityDateInterval];
-      v27 = [v26 endDate];
+      v24 = [keychain identityWithPersistentID:persistentIdCopy];
+      certificate2 = [v24 certificate];
+      validityDateInterval2 = [certificate2 validityDateInterval];
+      endDate2 = [validityDateInterval2 endDate];
       stagedIdentityExpirationDate = v14->_stagedIdentityExpirationDate;
-      v14->_stagedIdentityExpirationDate = v27;
+      v14->_stagedIdentityExpirationDate = endDate2;
     }
   }
 
   return v14;
 }
 
-+ (id)freshPrivateIdentityWithCommonNamePrefix:(id)a3
++ (id)freshPrivateIdentityWithCommonNamePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [a1 commonNameWithPrefix:v4];
-  v6 = [a1 makeIdentityWithCommonName:v5];
+  prefixCopy = prefix;
+  v5 = [self commonNameWithPrefix:prefixCopy];
+  v6 = [self makeIdentityWithCommonName:v5];
 
   if (v6)
   {
-    v7 = [objc_alloc(objc_opt_class()) initWithIdentityPersistentId:v6 stagedIdentityPersistentId:0 commonNamePrefix:v4];
+    v7 = [objc_alloc(objc_opt_class()) initWithIdentityPersistentId:v6 stagedIdentityPersistentId:0 commonNamePrefix:prefixCopy];
   }
 
   else
@@ -101,19 +101,19 @@ LABEL_3:
   return v7;
 }
 
-+ (id)makeIdentityWithCommonName:(id)a3
++ (id)makeIdentityWithCommonName:(id)name
 {
-  v4 = a3;
-  v5 = [[CRKIdentityConfiguration alloc] initWithCommonName:v4];
+  nameCopy = name;
+  v5 = [[CRKIdentityConfiguration alloc] initWithCommonName:nameCopy];
 
   v6 = +[CRKKeychainProvider sharedProvider];
-  v7 = [v6 keychain];
+  keychain = [v6 keychain];
 
-  v8 = [v7 makeIdentityWithConfiguration:v5];
+  v8 = [keychain makeIdentityWithConfiguration:v5];
   if (v8)
   {
-    v9 = [a1 keychainGroup];
-    v10 = [v7 addIdentity:v8 toAccessGroup:v9];
+    keychainGroup = [self keychainGroup];
+    v10 = [keychain addIdentity:v8 toAccessGroup:keychainGroup];
   }
 
   else
@@ -124,14 +124,14 @@ LABEL_3:
   return v10;
 }
 
-+ (id)commonNameWithPrefix:(id)a3
++ (id)commonNameWithPrefix:(id)prefix
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = MEMORY[0x277CCAD78];
-  v5 = a3;
-  v6 = [v4 UUID];
-  v7 = [v6 UUIDString];
-  v8 = [v3 stringWithFormat:@"%@ %@", v5, v7];
+  prefixCopy = prefix;
+  uUID = [v4 UUID];
+  uUIDString = [uUID UUIDString];
+  v8 = [v3 stringWithFormat:@"%@ %@", prefixCopy, uUIDString];
 
   return v8;
 }
@@ -139,14 +139,14 @@ LABEL_3:
 - (BOOL)refreshIdentities
 {
   v36 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v4 = [v3 stringForKey:@"CERTIFICATE"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v4 = [standardUserDefaults stringForKey:@"CERTIFICATE"];
 
-  v5 = [v4 lowercaseString];
-  v6 = [v5 isEqualToString:@"expire"];
+  lowercaseString = [v4 lowercaseString];
+  v6 = [lowercaseString isEqualToString:@"expire"];
 
-  v7 = [v4 lowercaseString];
-  v8 = [v7 isEqualToString:@"stage"];
+  lowercaseString2 = [v4 lowercaseString];
+  v8 = [lowercaseString2 isEqualToString:@"stage"];
 
   if (v6)
   {
@@ -161,8 +161,8 @@ LABEL_3:
 
   else
   {
-    v11 = [(CRKPrivateIdentity *)self identityExpirationDate];
-    v9 = [v11 dateByAddingTimeInterval:-86400.0];
+    identityExpirationDate = [(CRKPrivateIdentity *)self identityExpirationDate];
+    v9 = [identityExpirationDate dateByAddingTimeInterval:-86400.0];
 
     if ((v8 & 1) == 0)
     {
@@ -174,51 +174,51 @@ LABEL_3:
 LABEL_6:
   v12 = v10;
   v13 = +[CRKKeychainProvider sharedProvider];
-  v14 = [v13 keychain];
+  keychain = [v13 keychain];
 
-  v15 = [(CRKPrivateIdentity *)self stagedIdentityPersistentId];
-  if (v15)
+  stagedIdentityPersistentId = [(CRKPrivateIdentity *)self stagedIdentityPersistentId];
+  if (stagedIdentityPersistentId)
   {
-    v16 = [MEMORY[0x277CBEAA8] date];
-    v17 = [v9 earlierDate:v16];
+    date = [MEMORY[0x277CBEAA8] date];
+    v17 = [v9 earlierDate:date];
 
     if (v17 == v9)
     {
-      v18 = [(CRKPrivateIdentity *)self identityPersistentId];
-      [v14 removeItemWithPersistentID:v18];
+      identityPersistentId = [(CRKPrivateIdentity *)self identityPersistentId];
+      [keychain removeItemWithPersistentID:identityPersistentId];
 
-      v19 = [(CRKPrivateIdentity *)self stagedIdentityPersistentId];
-      [(CRKPrivateIdentity *)self setIdentityPersistentId:v19];
+      stagedIdentityPersistentId2 = [(CRKPrivateIdentity *)self stagedIdentityPersistentId];
+      [(CRKPrivateIdentity *)self setIdentityPersistentId:stagedIdentityPersistentId2];
 
-      v15 = [(CRKPrivateIdentity *)self stagedIdentityExpirationDate];
-      [(CRKPrivateIdentity *)self setIdentityExpirationDate:v15];
+      stagedIdentityPersistentId = [(CRKPrivateIdentity *)self stagedIdentityExpirationDate];
+      [(CRKPrivateIdentity *)self setIdentityExpirationDate:stagedIdentityPersistentId];
 
       [(CRKPrivateIdentity *)self setStagedIdentityPersistentId:0];
       [(CRKPrivateIdentity *)self setStagedIdentityExpirationDate:0];
-      LOBYTE(v15) = 1;
+      LOBYTE(stagedIdentityPersistentId) = 1;
     }
 
     else
     {
-      LOBYTE(v15) = 0;
+      LOBYTE(stagedIdentityPersistentId) = 0;
     }
   }
 
-  v20 = [(CRKPrivateIdentity *)self stagedIdentityPersistentId];
-  if (v20)
+  stagedIdentityPersistentId3 = [(CRKPrivateIdentity *)self stagedIdentityPersistentId];
+  if (stagedIdentityPersistentId3)
   {
   }
 
   else
   {
-    v21 = [MEMORY[0x277CBEAA8] date];
-    v22 = [v12 earlierDate:v21];
+    date2 = [MEMORY[0x277CBEAA8] date];
+    v22 = [v12 earlierDate:date2];
 
     if (v22 == v12)
     {
       v23 = objc_opt_class();
-      v24 = [(CRKPrivateIdentity *)self commonNamePrefix];
-      v25 = [v23 commonNameWithPrefix:v24];
+      commonNamePrefix = [(CRKPrivateIdentity *)self commonNamePrefix];
+      v25 = [v23 commonNameWithPrefix:commonNamePrefix];
 
       v26 = _CRKLogGeneral_15();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
@@ -231,73 +231,73 @@ LABEL_6:
       v27 = [objc_opt_class() makeIdentityWithCommonName:v25];
       [(CRKPrivateIdentity *)self setStagedIdentityPersistentId:v27];
 
-      v28 = [(CRKPrivateIdentity *)self stagedIdentityPersistentId];
+      stagedIdentityPersistentId4 = [(CRKPrivateIdentity *)self stagedIdentityPersistentId];
 
-      if (v28)
+      if (stagedIdentityPersistentId4)
       {
-        v29 = [(CRKPrivateIdentity *)self stagedIdentityPersistentId];
-        v30 = [v14 identityWithPersistentID:v29];
+        stagedIdentityPersistentId5 = [(CRKPrivateIdentity *)self stagedIdentityPersistentId];
+        v30 = [keychain identityWithPersistentID:stagedIdentityPersistentId5];
 
-        v15 = [v30 certificate];
-        v31 = [v15 validityDateInterval];
-        v32 = [v31 endDate];
-        [(CRKPrivateIdentity *)self setStagedIdentityExpirationDate:v32];
+        stagedIdentityPersistentId = [v30 certificate];
+        validityDateInterval = [stagedIdentityPersistentId validityDateInterval];
+        endDate = [validityDateInterval endDate];
+        [(CRKPrivateIdentity *)self setStagedIdentityExpirationDate:endDate];
 
-        LOBYTE(v15) = 1;
+        LOBYTE(stagedIdentityPersistentId) = 1;
       }
     }
   }
 
-  return v15;
+  return stagedIdentityPersistentId;
 }
 
-- (CRKPrivateIdentity)initWithDictionary:(id)a3
+- (CRKPrivateIdentity)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  if (!v4)
+  dictionaryCopy = dictionary;
+  if (!dictionaryCopy)
   {
     [CRKPrivateIdentity initWithDictionary:];
   }
 
-  v5 = [v4 objectForKeyedSubscript:@"PersistentId"];
-  v6 = [v4 objectForKeyedSubscript:@"StagedPersistentId"];
-  v7 = [v4 objectForKeyedSubscript:@"CommonNamePrefix"];
-  v8 = v7;
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"PersistentId"];
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"StagedPersistentId"];
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"CommonNamePrefix"];
+  uUIDString = v7;
   if (v5)
   {
     if (!v7)
     {
-      v9 = [MEMORY[0x277CCAD78] UUID];
-      v8 = [v9 UUIDString];
+      uUID = [MEMORY[0x277CCAD78] UUID];
+      uUIDString = [uUID UUIDString];
     }
 
-    self = [(CRKPrivateIdentity *)self initWithIdentityPersistentId:v5 stagedIdentityPersistentId:v6 commonNamePrefix:v8];
-    v10 = self;
+    self = [(CRKPrivateIdentity *)self initWithIdentityPersistentId:v5 stagedIdentityPersistentId:v6 commonNamePrefix:uUIDString];
+    selfCopy = self;
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
 - (id)dictionaryValue
 {
   v3 = objc_opt_new();
-  v4 = [(CRKPrivateIdentity *)self identityPersistentId];
-  [v3 setObject:v4 forKeyedSubscript:@"PersistentId"];
+  identityPersistentId = [(CRKPrivateIdentity *)self identityPersistentId];
+  [v3 setObject:identityPersistentId forKeyedSubscript:@"PersistentId"];
 
-  v5 = [(CRKPrivateIdentity *)self commonNamePrefix];
-  [v3 setObject:v5 forKeyedSubscript:@"CommonNamePrefix"];
+  commonNamePrefix = [(CRKPrivateIdentity *)self commonNamePrefix];
+  [v3 setObject:commonNamePrefix forKeyedSubscript:@"CommonNamePrefix"];
 
-  v6 = [(CRKPrivateIdentity *)self stagedIdentityPersistentId];
+  stagedIdentityPersistentId = [(CRKPrivateIdentity *)self stagedIdentityPersistentId];
 
-  if (v6)
+  if (stagedIdentityPersistentId)
   {
-    v7 = [(CRKPrivateIdentity *)self stagedIdentityPersistentId];
-    [v3 setObject:v7 forKeyedSubscript:@"StagedPersistentId"];
+    stagedIdentityPersistentId2 = [(CRKPrivateIdentity *)self stagedIdentityPersistentId];
+    [v3 setObject:stagedIdentityPersistentId2 forKeyedSubscript:@"StagedPersistentId"];
   }
 
   v8 = [v3 copy];
@@ -307,18 +307,18 @@ LABEL_6:
 
 + (id)keychainGroup
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"CRKPrivateIdentity.m" lineNumber:174 description:@"Group name should be overwritten by Private Identity subclass"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"CRKPrivateIdentity.m" lineNumber:174 description:@"Group name should be overwritten by Private Identity subclass"];
 
   return &stru_285643BE8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [CFSTR(""identityPersistentId stagedIdentityPersistentId];
-  v6 = [v5 mutableCopy];
+  equalCopy = equal;
+  stagedIdentityPersistentId = [CFSTR(""identityPersistentId stagedIdentityPersistentId];
+  v6 = [stagedIdentityPersistentId mutableCopy];
 
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
@@ -328,10 +328,10 @@ LABEL_6:
   v29 = v7;
   [v7 enumerateObjectsUsingBlock:v28];
 
-  v8 = self;
-  v9 = v4;
+  selfCopy = self;
+  v9 = equalCopy;
   v10 = v7;
-  if (v8 == v9)
+  if (selfCopy == v9)
   {
     v21 = 1;
   }
@@ -360,7 +360,7 @@ LABEL_6:
 
           v16 = *(*(&v24 + 1) + 8 * i);
           v17 = v9;
-          v18 = [(CRKPrivateIdentity *)v8 valueForKey:v16];
+          v18 = [(CRKPrivateIdentity *)selfCopy valueForKey:v16];
           v19 = [(CRKPrivateIdentity *)v17 valueForKey:v16];
 
           if (v18 | v19)
@@ -403,39 +403,39 @@ LABEL_16:
   return v21;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(CRKPrivateIdentity *)self identityPersistentId];
-  v6 = [(CRKPrivateIdentity *)self stagedIdentityPersistentId];
-  v7 = [(CRKPrivateIdentity *)self commonNamePrefix];
-  v8 = [v4 initWithIdentityPersistentId:v5 stagedIdentityPersistentId:v6 commonNamePrefix:v7];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  identityPersistentId = [(CRKPrivateIdentity *)self identityPersistentId];
+  stagedIdentityPersistentId = [(CRKPrivateIdentity *)self stagedIdentityPersistentId];
+  commonNamePrefix = [(CRKPrivateIdentity *)self commonNamePrefix];
+  v8 = [v4 initWithIdentityPersistentId:identityPersistentId stagedIdentityPersistentId:stagedIdentityPersistentId commonNamePrefix:commonNamePrefix];
 
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
-  if (!v7)
+  coderCopy = coder;
+  if (!coderCopy)
   {
     [CRKPrivateIdentity encodeWithCoder:];
   }
 
-  v4 = [(CRKPrivateIdentity *)self identityPersistentId];
-  [v7 encodeObject:v4 forKey:@"identityPersistentId"];
+  identityPersistentId = [(CRKPrivateIdentity *)self identityPersistentId];
+  [coderCopy encodeObject:identityPersistentId forKey:@"identityPersistentId"];
 
-  v5 = [(CRKPrivateIdentity *)self stagedIdentityPersistentId];
-  [v7 encodeObject:v5 forKey:@"stagedIdentityPersistentId"];
+  stagedIdentityPersistentId = [(CRKPrivateIdentity *)self stagedIdentityPersistentId];
+  [coderCopy encodeObject:stagedIdentityPersistentId forKey:@"stagedIdentityPersistentId"];
 
-  v6 = [(CRKPrivateIdentity *)self commonNamePrefix];
-  [v7 encodeObject:v6 forKey:@"commonNamePrefix"];
+  commonNamePrefix = [(CRKPrivateIdentity *)self commonNamePrefix];
+  [coderCopy encodeObject:commonNamePrefix forKey:@"commonNamePrefix"];
 }
 
-- (CRKPrivateIdentity)initWithCoder:(id)a3
+- (CRKPrivateIdentity)initWithCoder:(id)coder
 {
-  v4 = a3;
-  if (!v4)
+  coderCopy = coder;
+  if (!coderCopy)
   {
     [CRKPrivateIdentity initWithCoder:];
   }
@@ -446,49 +446,49 @@ LABEL_16:
   if (v5)
   {
     v6 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-    v7 = [v4 decodeObjectOfClasses:v6 forKey:@"identityPersistentId"];
+    v7 = [coderCopy decodeObjectOfClasses:v6 forKey:@"identityPersistentId"];
     identityPersistentId = v5->_identityPersistentId;
     v5->_identityPersistentId = v7;
 
     v9 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"stagedIdentityPersistentId"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"stagedIdentityPersistentId"];
     stagedIdentityPersistentId = v5->_stagedIdentityPersistentId;
     v5->_stagedIdentityPersistentId = v10;
 
     v12 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-    v13 = [v4 decodeObjectOfClasses:v12 forKey:@"commonNamePrefix"];
+    v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"commonNamePrefix"];
     commonNamePrefix = v5->_commonNamePrefix;
     v5->_commonNamePrefix = v13;
 
     if (!v5->_commonNamePrefix)
     {
-      v15 = [MEMORY[0x277CCAD78] UUID];
-      v16 = [v15 UUIDString];
+      uUID = [MEMORY[0x277CCAD78] UUID];
+      uUIDString = [uUID UUIDString];
       v17 = v5->_commonNamePrefix;
-      v5->_commonNamePrefix = v16;
+      v5->_commonNamePrefix = uUIDString;
     }
 
     v18 = +[CRKKeychainProvider sharedProvider];
-    v19 = [v18 keychain];
+    keychain = [v18 keychain];
 
     if (v5->_identityPersistentId)
     {
-      v20 = [v19 identityWithPersistentID:?];
-      v21 = [v20 certificate];
-      v22 = [v21 validityDateInterval];
-      v23 = [v22 endDate];
+      v20 = [keychain identityWithPersistentID:?];
+      certificate = [v20 certificate];
+      validityDateInterval = [certificate validityDateInterval];
+      endDate = [validityDateInterval endDate];
       identityExpirationDate = v5->_identityExpirationDate;
-      v5->_identityExpirationDate = v23;
+      v5->_identityExpirationDate = endDate;
     }
 
     if (v5->_stagedIdentityPersistentId)
     {
-      v25 = [v19 identityWithPersistentID:?];
-      v26 = [v25 certificate];
-      v27 = [v26 validityDateInterval];
-      v28 = [v27 endDate];
+      v25 = [keychain identityWithPersistentID:?];
+      certificate2 = [v25 certificate];
+      validityDateInterval2 = [certificate2 validityDateInterval];
+      endDate2 = [validityDateInterval2 endDate];
       stagedIdentityExpirationDate = v5->_stagedIdentityExpirationDate;
-      v5->_stagedIdentityExpirationDate = v28;
+      v5->_stagedIdentityExpirationDate = endDate2;
     }
   }
 

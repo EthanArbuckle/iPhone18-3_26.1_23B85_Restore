@@ -1,23 +1,23 @@
 @interface SKUIBrowseItemCell
-- (SKUIBrowseItemCell)initWithFrame:(CGRect)a3;
+- (SKUIBrowseItemCell)initWithFrame:(CGRect)frame;
 - (void)_reloadHighlightState;
 - (void)layoutSubviews;
-- (void)setDecorationImage:(id)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setSelected:(BOOL)a3;
-- (void)setShowTopBorder:(BOOL)a3;
-- (void)setSubtitle:(id)a3;
-- (void)setTitle:(id)a3;
+- (void)setDecorationImage:(id)image;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setSelected:(BOOL)selected;
+- (void)setShowTopBorder:(BOOL)border;
+- (void)setSubtitle:(id)subtitle;
+- (void)setTitle:(id)title;
 @end
 
 @implementation SKUIBrowseItemCell
 
-- (SKUIBrowseItemCell)initWithFrame:(CGRect)a3
+- (SKUIBrowseItemCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIBrowseItemCell initWithFrame:];
@@ -25,54 +25,54 @@
 
   v24.receiver = self;
   v24.super_class = SKUIBrowseItemCell;
-  v8 = [(SKUIBrowseItemCell *)&v24 initWithFrame:x, y, width, height];
-  if (v8)
+  height = [(SKUIBrowseItemCell *)&v24 initWithFrame:x, y, width, height];
+  if (height)
   {
     v9 = objc_alloc_init(MEMORY[0x277D756B8]);
-    titleLabel = v8->_titleLabel;
-    v8->_titleLabel = v9;
+    titleLabel = height->_titleLabel;
+    height->_titleLabel = v9;
 
-    v11 = v8->_titleLabel;
+    v11 = height->_titleLabel;
     v12 = [MEMORY[0x277D74300] systemFontOfSize:18.0];
     [(UILabel *)v11 setFont:v12];
 
-    [(UILabel *)v8->_titleLabel setNumberOfLines:1];
-    [(SKUIBrowseItemCell *)v8 addSubview:v8->_titleLabel];
+    [(UILabel *)height->_titleLabel setNumberOfLines:1];
+    [(SKUIBrowseItemCell *)height addSubview:height->_titleLabel];
     v13 = objc_alloc_init(MEMORY[0x277D756B8]);
-    subtitleLabel = v8->_subtitleLabel;
-    v8->_subtitleLabel = v13;
+    subtitleLabel = height->_subtitleLabel;
+    height->_subtitleLabel = v13;
 
-    v15 = v8->_subtitleLabel;
+    v15 = height->_subtitleLabel;
     v16 = [MEMORY[0x277D74300] systemFontOfSize:16.0];
     [(UILabel *)v15 setFont:v16];
 
-    [(UILabel *)v8->_subtitleLabel setNumberOfLines:1];
-    v17 = v8->_subtitleLabel;
+    [(UILabel *)height->_subtitleLabel setNumberOfLines:1];
+    v17 = height->_subtitleLabel;
     v18 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:0.5];
     [(UILabel *)v17 setTextColor:v18];
 
-    [(SKUIBrowseItemCell *)v8 addSubview:v8->_subtitleLabel];
+    [(SKUIBrowseItemCell *)height addSubview:height->_subtitleLabel];
     v19 = objc_alloc_init(MEMORY[0x277D75D18]);
-    borderView = v8->_borderView;
-    v8->_borderView = v19;
+    borderView = height->_borderView;
+    height->_borderView = v19;
 
-    v21 = v8->_borderView;
+    v21 = height->_borderView;
     v22 = [MEMORY[0x277D75348] colorWithWhite:0.85 alpha:1.0];
     [(UIView *)v21 setBackgroundColor:v22];
 
-    [(SKUIBrowseItemCell *)v8 addSubview:v8->_borderView];
-    [(SKUIBrowseItemCell *)v8 setSemanticContentAttribute:storeSemanticContentAttribute()];
+    [(SKUIBrowseItemCell *)height addSubview:height->_borderView];
+    [(SKUIBrowseItemCell *)height setSemanticContentAttribute:storeSemanticContentAttribute()];
   }
 
-  return v8;
+  return height;
 }
 
-- (void)setDecorationImage:(id)a3
+- (void)setDecorationImage:(id)image
 {
-  v10 = a3;
-  if (v10)
+  imageCopy = image;
+  if (imageCopy)
   {
-    objc_storeStrong(&self->_decorationImage, a3);
+    objc_storeStrong(&self->_decorationImage, image);
     decorationImageView = self->_decorationImageView;
     if (decorationImageView)
     {
@@ -100,37 +100,37 @@
   }
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v6 = a3;
-  v4 = [(UILabel *)self->_titleLabel text];
-  v5 = [v6 isEqualToString:v4];
+  titleCopy = title;
+  text = [(UILabel *)self->_titleLabel text];
+  v5 = [titleCopy isEqualToString:text];
 
   if ((v5 & 1) == 0)
   {
-    [(UILabel *)self->_titleLabel setText:v6];
+    [(UILabel *)self->_titleLabel setText:titleCopy];
     [(SKUIBrowseItemCell *)self setNeedsLayout];
   }
 }
 
-- (void)setSubtitle:(id)a3
+- (void)setSubtitle:(id)subtitle
 {
-  v6 = a3;
-  v4 = [(UILabel *)self->_subtitleLabel text];
-  v5 = [v6 isEqualToString:v4];
+  subtitleCopy = subtitle;
+  text = [(UILabel *)self->_subtitleLabel text];
+  v5 = [subtitleCopy isEqualToString:text];
 
   if ((v5 & 1) == 0)
   {
-    [(UILabel *)self->_subtitleLabel setText:v6];
+    [(UILabel *)self->_subtitleLabel setText:subtitleCopy];
     [(SKUIBrowseItemCell *)self setNeedsLayout];
   }
 }
 
-- (void)setShowTopBorder:(BOOL)a3
+- (void)setShowTopBorder:(BOOL)border
 {
-  self->_showTopBorder = a3;
+  self->_showTopBorder = border;
   topBorderView = self->_topBorderView;
-  if (a3)
+  if (border)
   {
     if (!topBorderView)
     {
@@ -156,19 +156,19 @@
   }
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
   v4.receiver = self;
   v4.super_class = SKUIBrowseItemCell;
-  [(SKUIBrowseItemCell *)&v4 setHighlighted:a3];
+  [(SKUIBrowseItemCell *)&v4 setHighlighted:highlighted];
   [(SKUIBrowseItemCell *)self _reloadHighlightState];
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
   v4.receiver = self;
   v4.super_class = SKUIBrowseItemCell;
-  [(SKUIBrowseItemCell *)&v4 setSelected:a3];
+  [(SKUIBrowseItemCell *)&v4 setSelected:selected];
   [(SKUIBrowseItemCell *)self _reloadHighlightState];
 }
 
@@ -234,8 +234,8 @@
   [(UILabel *)titleLabel setFrame:?];
   [(UILabel *)self->_titleLabel setTextAlignment:v17];
   [(UIView *)self->_borderView frame];
-  v28 = [MEMORY[0x277D759A0] mainScreen];
-  [v28 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v30 = 1.0 / v29;
 
   v41.origin.x = x;
@@ -247,8 +247,8 @@
   SKUIRectByApplyingStoreUserInterfaceLayoutDirectionInRect(15.0, MaxY - v30, width + -15.0, v30, x, y, width, height);
   [(UIView *)borderView setFrame:?];
   [(UIView *)self->_topBorderView frame];
-  v33 = [MEMORY[0x277D759A0] mainScreen];
-  [v33 scale];
+  mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen2 scale];
   v35 = 1.0 / v34;
 
   topBorderView = self->_topBorderView;
@@ -259,27 +259,27 @@
 - (void)_reloadHighlightState
 {
   hasBlueBackgroundWhenSelected = self->_hasBlueBackgroundWhenSelected;
-  v4 = [(SKUIBrowseItemCell *)self isHighlighted];
-  v5 = v4;
+  isHighlighted = [(SKUIBrowseItemCell *)self isHighlighted];
+  v5 = isHighlighted;
   if (hasBlueBackgroundWhenSelected)
   {
-    if ((v4 & 1) != 0 || [(SKUIBrowseItemCell *)self isSelected])
+    if ((isHighlighted & 1) != 0 || [(SKUIBrowseItemCell *)self isSelected])
     {
       titleLabel = self->_titleLabel;
-      v7 = [MEMORY[0x277D75348] whiteColor];
-      [(UILabel *)titleLabel setTextColor:v7];
+      whiteColor = [MEMORY[0x277D75348] whiteColor];
+      [(UILabel *)titleLabel setTextColor:whiteColor];
 
       subtitleLabel = self->_subtitleLabel;
-      v9 = [MEMORY[0x277D75348] whiteColor];
-      [(UILabel *)subtitleLabel setTextColor:v9];
+      whiteColor2 = [MEMORY[0x277D75348] whiteColor];
+      [(UILabel *)subtitleLabel setTextColor:whiteColor2];
 
-      v10 = [MEMORY[0x277D75348] colorWithRed:0.298039216 green:0.631372549 blue:1.0 alpha:1.0];
+      whiteColor3 = [MEMORY[0x277D75348] colorWithRed:0.298039216 green:0.631372549 blue:1.0 alpha:1.0];
       goto LABEL_9;
     }
 
     v12 = self->_titleLabel;
-    v13 = [MEMORY[0x277D75348] blackColor];
-    [(UILabel *)v12 setTextColor:v13];
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    [(UILabel *)v12 setTextColor:blackColor];
 
     v14 = self->_subtitleLabel;
     v15 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:0.5];
@@ -293,40 +293,40 @@
     v11 = MEMORY[0x277D75348];
     if (v5)
     {
-      v10 = [MEMORY[0x277D75348] colorWithWhite:0.85 alpha:1.0];
+      whiteColor3 = [MEMORY[0x277D75348] colorWithWhite:0.85 alpha:1.0];
       goto LABEL_9;
     }
   }
 
-  v10 = [v11 whiteColor];
+  whiteColor3 = [v11 whiteColor];
 LABEL_9:
-  v16 = v10;
-  [(SKUIBrowseItemCell *)self setBackgroundColor:v10];
+  v16 = whiteColor3;
+  [(SKUIBrowseItemCell *)self setBackgroundColor:whiteColor3];
 
   borderView = self->_borderView;
   if (([(SKUIBrowseItemCell *)self isHighlighted]& 1) != 0)
   {
-    v18 = 1;
+    isSelected = 1;
   }
 
   else
   {
-    v18 = [(SKUIBrowseItemCell *)self isSelected];
+    isSelected = [(SKUIBrowseItemCell *)self isSelected];
   }
 
-  [(UIView *)borderView setHidden:v18];
+  [(UIView *)borderView setHidden:isSelected];
   topBorderView = self->_topBorderView;
   if (([(SKUIBrowseItemCell *)self isHighlighted]& 1) != 0)
   {
-    v20 = 1;
+    isSelected2 = 1;
   }
 
   else
   {
-    v20 = [(SKUIBrowseItemCell *)self isSelected];
+    isSelected2 = [(SKUIBrowseItemCell *)self isSelected];
   }
 
-  [(UIView *)topBorderView setHidden:v20];
+  [(UIView *)topBorderView setHidden:isSelected2];
 }
 
 - (void)initWithFrame:.cold.1()

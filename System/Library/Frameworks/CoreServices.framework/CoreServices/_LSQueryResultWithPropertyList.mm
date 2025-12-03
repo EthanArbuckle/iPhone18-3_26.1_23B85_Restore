@@ -1,28 +1,28 @@
 @interface _LSQueryResultWithPropertyList
-- (_LSQueryResultWithPropertyList)initWithCoder:(id)a3;
-- (_LSQueryResultWithPropertyList)initWithPropertyList:(id)a3;
-- (_LSQueryResultWithPropertyList)propertyListWithClass:(Class)a3 valuesOfClass:(Class)a4;
-- (void)encodeWithCoder:(id)a3;
+- (_LSQueryResultWithPropertyList)initWithCoder:(id)coder;
+- (_LSQueryResultWithPropertyList)initWithPropertyList:(id)list;
+- (_LSQueryResultWithPropertyList)propertyListWithClass:(Class)class valuesOfClass:(Class)ofClass;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _LSQueryResultWithPropertyList
 
-- (_LSQueryResultWithPropertyList)initWithPropertyList:(id)a3
+- (_LSQueryResultWithPropertyList)initWithPropertyList:(id)list
 {
-  v5 = a3;
+  listCopy = list;
   v9.receiver = self;
   v9.super_class = _LSQueryResultWithPropertyList;
-  v6 = [(_LSQueryResult *)&v9 _init];
-  v7 = v6;
-  if (v6)
+  _init = [(_LSQueryResult *)&v9 _init];
+  v7 = _init;
+  if (_init)
   {
-    objc_storeStrong(v6 + 1, a3);
+    objc_storeStrong(_init + 1, list);
   }
 
   return v7;
 }
 
-- (_LSQueryResultWithPropertyList)propertyListWithClass:(Class)a3 valuesOfClass:(Class)a4
+- (_LSQueryResultWithPropertyList)propertyListWithClass:(Class)class valuesOfClass:(Class)ofClass
 {
   v32 = *MEMORY[0x1E69E9840];
   v25 = 0;
@@ -30,9 +30,9 @@
   v27 = 0x3032000000;
   v28 = __Block_byref_object_copy__45;
   v29 = __Block_byref_object_dispose__45;
-  v30 = [(_LSQueryResultWithPropertyList *)self propertyList];
+  propertyList = [(_LSQueryResultWithPropertyList *)self propertyList];
   v6 = v26;
-  if (a3)
+  if (class)
   {
     if (v26[5])
     {
@@ -48,7 +48,7 @@
     }
   }
 
-  if (a4 && v6[5])
+  if (ofClass && v6[5])
   {
     v9 = _NSIsNSDictionary();
     v10 = v26[5];
@@ -59,7 +59,7 @@
       v24[2] = __70___LSQueryResultWithPropertyList_propertyListWithClass_valuesOfClass___block_invoke;
       v24[3] = &unk_1E6A1DB88;
       v24[4] = &v25;
-      v24[5] = a4;
+      v24[5] = ofClass;
       [v10 enumerateKeysAndObjectsUsingBlock:v24];
     }
 
@@ -115,27 +115,27 @@ LABEL_20:
   return v17;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  v4 = [(_LSQueryResultWithPropertyList *)self propertyList];
-  [v5 encodeObject:v4 forKey:@"propertyList"];
+  coderCopy = coder;
+  propertyList = [(_LSQueryResultWithPropertyList *)self propertyList];
+  [coderCopy encodeObject:propertyList forKey:@"propertyList"];
 }
 
-- (_LSQueryResultWithPropertyList)initWithCoder:(id)a3
+- (_LSQueryResultWithPropertyList)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(_LSQueryResult *)self _init];
-  if (v5)
+  coderCopy = coder;
+  _init = [(_LSQueryResult *)self _init];
+  if (_init)
   {
     v6 = objc_opt_class();
     v7 = XNSGetPropertyListClasses();
-    v8 = [v4 ls_decodeDictionaryWithKeysOfClass:v6 valuesOfClasses:v7 forKey:@"propertyList"];
-    propertyList = v5->_propertyList;
-    v5->_propertyList = v8;
+    v8 = [coderCopy ls_decodeDictionaryWithKeysOfClass:v6 valuesOfClasses:v7 forKey:@"propertyList"];
+    propertyList = _init->_propertyList;
+    _init->_propertyList = v8;
   }
 
-  return v5;
+  return _init;
 }
 
 @end

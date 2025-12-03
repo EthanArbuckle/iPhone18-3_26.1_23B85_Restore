@@ -1,45 +1,45 @@
 @interface ASTUploadFilesCertsEntry
-- (ASTUploadFilesCertsEntry)initWithCert:(id)a3 andPubKeyDigest:(id)a4 andSigAlgo:(id)a5;
-- (ASTUploadFilesCertsEntry)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (ASTUploadFilesCertsEntry)initWithCert:(id)cert andPubKeyDigest:(id)digest andSigAlgo:(id)algo;
+- (ASTUploadFilesCertsEntry)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ASTUploadFilesCertsEntry
 
-- (ASTUploadFilesCertsEntry)initWithCert:(id)a3 andPubKeyDigest:(id)a4 andSigAlgo:(id)a5
+- (ASTUploadFilesCertsEntry)initWithCert:(id)cert andPubKeyDigest:(id)digest andSigAlgo:(id)algo
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  certCopy = cert;
+  digestCopy = digest;
+  algoCopy = algo;
   v15.receiver = self;
   v15.super_class = ASTUploadFilesCertsEntry;
   v12 = [(ASTUploadFilesCertsEntry *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_certString, a3);
-    objc_storeStrong(&v13->_pubKeyDigest, a4);
-    objc_storeStrong(&v13->_sigAlgo, a5);
+    objc_storeStrong(&v12->_certString, cert);
+    objc_storeStrong(&v13->_pubKeyDigest, digest);
+    objc_storeStrong(&v13->_sigAlgo, algo);
   }
 
   return v13;
 }
 
-- (ASTUploadFilesCertsEntry)initWithCoder:(id)a3
+- (ASTUploadFilesCertsEntry)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(ASTUploadFilesCertsEntry *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"certString"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"certString"];
     certString = v5->_certString;
     v5->_certString = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pubKeyDigest"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pubKeyDigest"];
     pubKeyDigest = v5->_pubKeyDigest;
     v5->_pubKeyDigest = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sigAlgo"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sigAlgo"];
     sigAlgo = v5->_sigAlgo;
     v5->_sigAlgo = v10;
   }
@@ -47,17 +47,17 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(ASTUploadFilesCertsEntry *)self certString];
-  [v4 encodeObject:v5 forKey:@"certString"];
+  coderCopy = coder;
+  certString = [(ASTUploadFilesCertsEntry *)self certString];
+  [coderCopy encodeObject:certString forKey:@"certString"];
 
-  v6 = [(ASTUploadFilesCertsEntry *)self pubKeyDigest];
-  [v4 encodeObject:v6 forKey:@"pubKeyDigest"];
+  pubKeyDigest = [(ASTUploadFilesCertsEntry *)self pubKeyDigest];
+  [coderCopy encodeObject:pubKeyDigest forKey:@"pubKeyDigest"];
 
-  v7 = [(ASTUploadFilesCertsEntry *)self sigAlgo];
-  [v4 encodeObject:v7 forKey:@"sigAlgo"];
+  sigAlgo = [(ASTUploadFilesCertsEntry *)self sigAlgo];
+  [coderCopy encodeObject:sigAlgo forKey:@"sigAlgo"];
 }
 
 @end

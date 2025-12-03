@@ -3,31 +3,31 @@
 - (CGPoint)center;
 - (CGRect)bounds;
 - (UIView)heldView;
-- (_UIPlatterItem)initWithView:(id)a3;
-- (void)setCenter:(CGPoint)a3;
+- (_UIPlatterItem)initWithView:(id)view;
+- (void)setCenter:(CGPoint)center;
 @end
 
 @implementation _UIPlatterItem
 
-- (_UIPlatterItem)initWithView:(id)a3
+- (_UIPlatterItem)initWithView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v8.receiver = self;
   v8.super_class = _UIPlatterItem;
   v5 = [(_UIPlatterItem *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_heldView, v4);
+    objc_storeWeak(&v5->_heldView, viewCopy);
   }
 
   return v6;
 }
 
-- (void)setCenter:(CGPoint)a3
+- (void)setCenter:(CGPoint)center
 {
-  y = a3.y;
-  x = a3.x;
+  y = center.y;
+  x = center.x;
   WeakRetained = objc_loadWeakRetained(&self->_heldView);
   [WeakRetained setCenter:{x, y}];
 }

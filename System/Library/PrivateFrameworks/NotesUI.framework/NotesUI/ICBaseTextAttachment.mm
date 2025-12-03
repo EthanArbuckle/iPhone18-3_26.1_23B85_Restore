@@ -1,16 +1,16 @@
 @interface ICBaseTextAttachment
-- (BOOL)supportsUserConfigurablePresentationSizeForTextContainer:(id)a3;
-- (CGRect)attachmentBoundsForAttributes:(id)a3 location:(id)a4 textContainer:(id)a5 proposedLineFragment:(CGRect)a6 position:(CGPoint)a7;
-- (CGRect)attachmentBoundsForTextContainer:(id)a3 proposedLineFragment:(CGRect)a4 glyphPosition:(CGPoint)a5 characterIndex:(unint64_t)a6;
-- (ICBaseTextAttachment)initWithAttachment:(id)a3;
+- (BOOL)supportsUserConfigurablePresentationSizeForTextContainer:(id)container;
+- (CGRect)attachmentBoundsForAttributes:(id)attributes location:(id)location textContainer:(id)container proposedLineFragment:(CGRect)fragment position:(CGPoint)position;
+- (CGRect)attachmentBoundsForTextContainer:(id)container proposedLineFragment:(CGRect)fragment glyphPosition:(CGPoint)position characterIndex:(unint64_t)index;
+- (ICBaseTextAttachment)initWithAttachment:(id)attachment;
 - (id)attachmentAttributesForAttributedString;
 - (id)attachmentIdentifier;
-- (id)attachmentInContext:(id)a3;
+- (id)attachmentInContext:(id)context;
 - (id)attachmentUTI;
 - (id)image;
-- (signed)effectiveAttachmentViewSizeForTextContainer:(id)a3;
-- (void)detachView:(id)a3 fromParentView:(id)a4;
-- (void)fixAttachmentForAttributedString:(id)a3 range:(_NSRange)a4 forPlainText:(BOOL)a5 forStandardizedText:(BOOL)a6;
+- (signed)effectiveAttachmentViewSizeForTextContainer:(id)container;
+- (void)detachView:(id)view fromParentView:(id)parentView;
+- (void)fixAttachmentForAttributedString:(id)string range:(_NSRange)range forPlainText:(BOOL)text forStandardizedText:(BOOL)standardizedText;
 @end
 
 @implementation ICBaseTextAttachment
@@ -18,18 +18,18 @@
 - (id)image
 {
   v2 = MEMORY[0x1E69DCAB8];
-  v3 = [MEMORY[0x1E695F658] emptyImage];
-  v4 = [v2 imageWithCIImage:v3];
+  emptyImage = [MEMORY[0x1E695F658] emptyImage];
+  v4 = [v2 imageWithCIImage:emptyImage];
 
   return v4;
 }
 
-- (ICBaseTextAttachment)initWithAttachment:(id)a3
+- (ICBaseTextAttachment)initWithAttachment:(id)attachment
 {
-  v4 = a3;
+  attachmentCopy = attachment;
   v5 = MEMORY[0x1E69B7680];
-  v6 = [v4 typeUTI];
-  LODWORD(v5) = [v5 typeUTIIsInlineDrawing:v6];
+  typeUTI = [attachmentCopy typeUTI];
+  LODWORD(v5) = [v5 typeUTIIsInlineDrawing:typeUTI];
 
   if (v5)
   {
@@ -40,8 +40,8 @@ LABEL_3:
   }
 
   v9 = MEMORY[0x1E69B7680];
-  v10 = [v4 typeUTI];
-  if ([v9 typeUTIIsSystemPaper:v10])
+  typeUTI2 = [attachmentCopy typeUTI];
+  if ([v9 typeUTIIsSystemPaper:typeUTI2])
   {
     v11 = +[ICSystemPaperTextAttachment isEnabled];
 
@@ -58,106 +58,106 @@ LABEL_3:
 
   v8 = @"com.apple.notes.textattachment";
 LABEL_9:
-  v12 = [MEMORY[0x1E695DEF0] data];
-  v13 = [(ICAbstractTextAttachment *)self initWithData:v12 ofType:v8];
+  data = [MEMORY[0x1E695DEF0] data];
+  v13 = [(ICAbstractTextAttachment *)self initWithData:data ofType:v8];
 
   if (v13)
   {
-    [(ICAbstractTextAttachment *)v13 setAttachment:v4];
+    [(ICAbstractTextAttachment *)v13 setAttachment:attachmentCopy];
   }
 
   return v13;
 }
 
-- (void)fixAttachmentForAttributedString:(id)a3 range:(_NSRange)a4 forPlainText:(BOOL)a5 forStandardizedText:(BOOL)a6
+- (void)fixAttachmentForAttributedString:(id)string range:(_NSRange)range forPlainText:(BOOL)text forStandardizedText:(BOOL)standardizedText
 {
-  length = a4.length;
-  location = a4.location;
-  v21 = a3;
-  v9 = [(ICBaseTextAttachment *)self attachmentAttributesForAttributedString];
-  [v21 addAttributes:v9 range:{location, length}];
+  length = range.length;
+  location = range.location;
+  stringCopy = string;
+  attachmentAttributesForAttributedString = [(ICBaseTextAttachment *)self attachmentAttributesForAttributedString];
+  [stringCopy addAttributes:attachmentAttributesForAttributedString range:{location, length}];
   v10 = *MEMORY[0x1E69DB5F8];
-  v11 = [v9 objectForKeyedSubscript:*MEMORY[0x1E69DB5F8]];
+  v11 = [attachmentAttributesForAttributedString objectForKeyedSubscript:*MEMORY[0x1E69DB5F8]];
 
   if (!v11)
   {
-    [v21 removeAttribute:v10 range:{location, length}];
+    [stringCopy removeAttribute:v10 range:{location, length}];
   }
 
-  v12 = [(ICAbstractTextAttachment *)self attachment];
-  v13 = [v12 URL];
+  attachment = [(ICAbstractTextAttachment *)self attachment];
+  v13 = [attachment URL];
 
   if (v13)
   {
-    v14 = [(ICAbstractTextAttachment *)self attachment];
-    v15 = [v14 title];
-    if ([v15 length])
+    attachment2 = [(ICAbstractTextAttachment *)self attachment];
+    title = [attachment2 title];
+    if ([title length])
     {
-      v16 = [(ICAbstractTextAttachment *)self attachment];
-      v17 = [v16 title];
+      attachment3 = [(ICAbstractTextAttachment *)self attachment];
+      title2 = [attachment3 title];
     }
 
     else
     {
-      v17 = [v13 absoluteString];
+      title2 = [v13 absoluteString];
     }
 
-    [v21 replaceCharactersInRange:location withString:{length, v17}];
+    [stringCopy replaceCharactersInRange:location withString:{length, title2}];
   }
 
   else
   {
-    v18 = [(ICBaseTextAttachment *)self attachmentAsNSTextAttachment];
-    v19 = [v18 fileWrapper];
-    v20 = [v19 isDirectory];
+    attachmentAsNSTextAttachment = [(ICBaseTextAttachment *)self attachmentAsNSTextAttachment];
+    fileWrapper = [attachmentAsNSTextAttachment fileWrapper];
+    isDirectory = [fileWrapper isDirectory];
 
-    if (v20)
+    if (isDirectory)
     {
-      [v21 replaceCharactersInRange:location withString:{length, &stru_1F4F94F00}];
+      [stringCopy replaceCharactersInRange:location withString:{length, &stru_1F4F94F00}];
     }
   }
 }
 
 - (id)attachmentAttributesForAttributedString
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(ICBaseTextAttachment *)self attachmentAsNSTextAttachment];
-  if (v4)
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  attachmentAsNSTextAttachment = [(ICBaseTextAttachment *)self attachmentAsNSTextAttachment];
+  if (attachmentAsNSTextAttachment)
   {
-    [v3 setObject:v4 forKeyedSubscript:*MEMORY[0x1E69DB5F8]];
+    [dictionary setObject:attachmentAsNSTextAttachment forKeyedSubscript:*MEMORY[0x1E69DB5F8]];
   }
 
-  v5 = [(ICAbstractTextAttachment *)self attachment];
-  v6 = [v5 URL];
+  attachment = [(ICAbstractTextAttachment *)self attachment];
+  v6 = [attachment URL];
 
   if (v6)
   {
-    [v3 setObject:v6 forKeyedSubscript:*MEMORY[0x1E69DB670]];
+    [dictionary setObject:v6 forKeyedSubscript:*MEMORY[0x1E69DB670]];
   }
 
-  v7 = [v3 copy];
+  v7 = [dictionary copy];
 
   return v7;
 }
 
-- (signed)effectiveAttachmentViewSizeForTextContainer:(id)a3
+- (signed)effectiveAttachmentViewSizeForTextContainer:(id)container
 {
-  v3 = [(ICAbstractTextAttachment *)self attachment];
-  v4 = [v3 preferredViewSize];
+  attachment = [(ICAbstractTextAttachment *)self attachment];
+  preferredViewSize = [attachment preferredViewSize];
 
-  return v4;
+  return preferredViewSize;
 }
 
-- (BOOL)supportsUserConfigurablePresentationSizeForTextContainer:(id)a3
+- (BOOL)supportsUserConfigurablePresentationSizeForTextContainer:(id)container
 {
-  v4 = a3;
+  containerCopy = container;
   v9.receiver = self;
   v9.super_class = ICBaseTextAttachment;
-  if ([(ICAbstractTextAttachment *)&v9 supportsUserConfigurablePresentationSizeForTextContainer:v4])
+  if ([(ICAbstractTextAttachment *)&v9 supportsUserConfigurablePresentationSizeForTextContainer:containerCopy])
   {
-    v5 = [(ICBaseTextAttachment *)self effectiveAttachmentViewSizeForTextContainer:v4];
-    v6 = [(ICAbstractTextAttachment *)self attachment];
-    v7 = v5 == [v6 preferredViewSize];
+    v5 = [(ICBaseTextAttachment *)self effectiveAttachmentViewSizeForTextContainer:containerCopy];
+    attachment = [(ICAbstractTextAttachment *)self attachment];
+    v7 = v5 == [attachment preferredViewSize];
   }
 
   else
@@ -176,15 +176,15 @@ LABEL_9:
   v11 = __Block_byref_object_copy__50;
   v12 = __Block_byref_object_dispose__50;
   v13 = 0;
-  v3 = [(ICAbstractTextAttachment *)self attachment];
-  v4 = [v3 managedObjectContext];
+  attachment = [(ICAbstractTextAttachment *)self attachment];
+  managedObjectContext = [attachment managedObjectContext];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __44__ICBaseTextAttachment_attachmentIdentifier__block_invoke;
   v7[3] = &unk_1E8468FA8;
   v7[4] = self;
   v7[5] = &v8;
-  [v4 performBlockAndWait:v7];
+  [managedObjectContext performBlockAndWait:v7];
 
   v5 = v9[5];
   _Block_object_dispose(&v8, 8);
@@ -209,15 +209,15 @@ void __44__ICBaseTextAttachment_attachmentIdentifier__block_invoke(uint64_t a1)
   v11 = __Block_byref_object_copy__50;
   v12 = __Block_byref_object_dispose__50;
   v13 = 0;
-  v3 = [(ICAbstractTextAttachment *)self attachment];
-  v4 = [v3 managedObjectContext];
+  attachment = [(ICAbstractTextAttachment *)self attachment];
+  managedObjectContext = [attachment managedObjectContext];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __37__ICBaseTextAttachment_attachmentUTI__block_invoke;
   v7[3] = &unk_1E8468FA8;
   v7[4] = self;
   v7[5] = &v8;
-  [v4 performBlockAndWait:v7];
+  [managedObjectContext performBlockAndWait:v7];
 
   v5 = v9[5];
   _Block_object_dispose(&v8, 8);
@@ -234,28 +234,28 @@ void __37__ICBaseTextAttachment_attachmentUTI__block_invoke(uint64_t a1)
   *(v3 + 40) = v2;
 }
 
-- (id)attachmentInContext:(id)a3
+- (id)attachmentInContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__50;
   v16 = __Block_byref_object_dispose__50;
-  v17 = [(ICAbstractTextAttachment *)self attachment];
+  attachment = [(ICAbstractTextAttachment *)self attachment];
   v5 = v13[5];
   if (v5)
   {
-    v6 = [v5 managedObjectContext];
+    managedObjectContext = [v5 managedObjectContext];
 
-    if (v6 != v4)
+    if (managedObjectContext != contextCopy)
     {
       v9[0] = MEMORY[0x1E69E9820];
       v9[1] = 3221225472;
       v9[2] = __44__ICBaseTextAttachment_attachmentInContext___block_invoke;
       v9[3] = &unk_1E8468FA8;
       v11 = &v12;
-      v10 = v4;
+      v10 = contextCopy;
       [v10 performBlockAndWait:v9];
     }
   }
@@ -276,14 +276,14 @@ void __44__ICBaseTextAttachment_attachmentInContext___block_invoke(uint64_t a1)
   *(v4 + 40) = v3;
 }
 
-- (void)detachView:(id)a3 fromParentView:(id)a4
+- (void)detachView:(id)view fromParentView:(id)parentView
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isFirstResponder])
+  viewCopy = view;
+  parentViewCopy = parentView;
+  if ([viewCopy isFirstResponder])
   {
-    v8 = [v6 nextResponder];
-    if (v8)
+    nextResponder = [viewCopy nextResponder];
+    if (nextResponder)
     {
       while (1)
       {
@@ -293,10 +293,10 @@ void __44__ICBaseTextAttachment_attachmentInContext___block_invoke(uint64_t a1)
           break;
         }
 
-        v9 = [v8 nextResponder];
+        v8NextResponder = [nextResponder nextResponder];
 
-        v8 = v9;
-        if (!v9)
+        nextResponder = v8NextResponder;
+        if (!v8NextResponder)
         {
           goto LABEL_6;
         }
@@ -312,15 +312,15 @@ LABEL_6:
       v10 = 0;
     }
 
-    v11 = [v10 shouldAvoidBecomingFirstResponder];
+    shouldAvoidBecomingFirstResponder = [v10 shouldAvoidBecomingFirstResponder];
     [v10 setShouldAvoidBecomingFirstResponder:1];
-    [v6 resignFirstResponder];
-    [v10 setShouldAvoidBecomingFirstResponder:v11];
-    v12 = [v6 superview];
+    [viewCopy resignFirstResponder];
+    [v10 setShouldAvoidBecomingFirstResponder:shouldAvoidBecomingFirstResponder];
+    superview = [viewCopy superview];
 
-    if (v12 == v7)
+    if (superview == parentViewCopy)
     {
-      [v6 removeFromSuperview];
+      [viewCopy removeFromSuperview];
     }
   }
 
@@ -328,15 +328,15 @@ LABEL_6:
   {
     v13.receiver = self;
     v13.super_class = ICBaseTextAttachment;
-    [(ICBaseTextAttachment *)&v13 detachView:v6 fromParentView:v7];
+    [(ICBaseTextAttachment *)&v13 detachView:viewCopy fromParentView:parentViewCopy];
   }
 }
 
-- (CGRect)attachmentBoundsForAttributes:(id)a3 location:(id)a4 textContainer:(id)a5 proposedLineFragment:(CGRect)a6 position:(CGPoint)a7
+- (CGRect)attachmentBoundsForAttributes:(id)attributes location:(id)location textContainer:(id)container proposedLineFragment:(CGRect)fragment position:(CGPoint)position
 {
   v21.receiver = self;
   v21.super_class = ICBaseTextAttachment;
-  [(ICBaseTextAttachment *)&v21 attachmentBoundsForAttributes:a3 location:a4 textContainer:a5 proposedLineFragment:a6.origin.x position:a6.origin.y, a6.size.width, a6.size.height, a7.x, a7.y];
+  [(ICBaseTextAttachment *)&v21 attachmentBoundsForAttributes:attributes location:location textContainer:container proposedLineFragment:fragment.origin.x position:fragment.origin.y, fragment.size.width, fragment.size.height, position.x, position.y];
   v9 = v8;
   v11 = v10;
   v13 = v12;
@@ -377,11 +377,11 @@ LABEL_6:
   return result;
 }
 
-- (CGRect)attachmentBoundsForTextContainer:(id)a3 proposedLineFragment:(CGRect)a4 glyphPosition:(CGPoint)a5 characterIndex:(unint64_t)a6
+- (CGRect)attachmentBoundsForTextContainer:(id)container proposedLineFragment:(CGRect)fragment glyphPosition:(CGPoint)position characterIndex:(unint64_t)index
 {
   v20.receiver = self;
   v20.super_class = ICBaseTextAttachment;
-  [(ICBaseTextAttachment *)&v20 attachmentBoundsForTextContainer:a3 proposedLineFragment:a6 glyphPosition:a4.origin.x characterIndex:a4.origin.y, a4.size.width, a4.size.height, a5.x, a5.y];
+  [(ICBaseTextAttachment *)&v20 attachmentBoundsForTextContainer:container proposedLineFragment:index glyphPosition:fragment.origin.x characterIndex:fragment.origin.y, fragment.size.width, fragment.size.height, position.x, position.y];
   v8 = v7;
   v10 = v9;
   v12 = v11;

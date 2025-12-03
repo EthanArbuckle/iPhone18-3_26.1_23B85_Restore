@@ -1,17 +1,17 @@
 @interface CHINResumeWorkoutIntentHandler
-- (void)handleResumeWorkout:(INResumeWorkoutIntent *)a3 completion:(id)a4;
+- (void)handleResumeWorkout:(INResumeWorkoutIntent *)workout completion:(id)completion;
 @end
 
 @implementation CHINResumeWorkoutIntentHandler
 
-- (void)handleResumeWorkout:(INResumeWorkoutIntent *)a3 completion:(id)a4
+- (void)handleResumeWorkout:(INResumeWorkoutIntent *)workout completion:(id)completion
 {
   v7 = sub_100140278(&qword_1008E1760);
   __chkstk_darwin(v7 - 8);
   v9 = &v17 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(completion);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = workout;
   v11[3] = v10;
   v11[4] = self;
   v12 = type metadata accessor for TaskPriority();
@@ -26,8 +26,8 @@
   v14[3] = 0;
   v14[4] = &unk_1006DD4D0;
   v14[5] = v13;
-  v15 = a3;
-  v16 = self;
+  workoutCopy = workout;
+  selfCopy = self;
   sub_1005D7C20(0, 0, v9, &unk_1006DD4D8, v14);
 }
 

@@ -1,78 +1,78 @@
 @interface ML3DatabaseConnection
-- (BOOL)_alterTableNamed:(id)a3 withNewColumnDefinitions:(id)a4 newColumnNames:(id)a5 oldColumnNames:(id)a6;
-- (BOOL)_closeAndFlushTransactionState:(BOOL)a3;
+- (BOOL)_alterTableNamed:(id)named withNewColumnDefinitions:(id)definitions newColumnNames:(id)names oldColumnNames:(id)columnNames;
+- (BOOL)_closeAndFlushTransactionState:(BOOL)state;
 - (BOOL)_closeConnectionWhenCheckingIn;
 - (BOOL)_databaseFileExists;
 - (BOOL)_databaseFilesAreWritable;
-- (BOOL)_executeStatement:(id)a3 withError:(id *)a4;
-- (BOOL)_handleBusyLockWithNumberOfRetries:(int)a3;
-- (BOOL)_handleConnectionErrorWhileOpening:(int)a3;
+- (BOOL)_executeStatement:(id)statement withError:(id *)error;
+- (BOOL)_handleBusyLockWithNumberOfRetries:(int)retries;
+- (BOOL)_handleConnectionErrorWhileOpening:(int)opening;
 - (BOOL)_handleDiskIOError;
-- (BOOL)_handleZombieSQLiteConnection:(sqlite3 *)a3;
-- (BOOL)_internalBeginTransactionWithBehaviorType:(unint64_t)a3;
-- (BOOL)_internalEndTransactionAndCommit:(BOOL)a3;
-- (BOOL)_internalExecuteUpdate:(id)a3 withParameters:(id)a4 error:(id *)a5;
+- (BOOL)_handleZombieSQLiteConnection:(sqlite3 *)connection;
+- (BOOL)_internalBeginTransactionWithBehaviorType:(unint64_t)type;
+- (BOOL)_internalEndTransactionAndCommit:(BOOL)commit;
+- (BOOL)_internalExecuteUpdate:(id)update withParameters:(id)parameters error:(id *)error;
 - (BOOL)_isDeviceMediaLibraryDatabase;
-- (BOOL)_openWithFlags:(int)a3;
-- (BOOL)_validatePreparedStatement:(id)a3 error:(id *)a4;
+- (BOOL)_openWithFlags:(int)flags;
+- (BOOL)_validatePreparedStatement:(id)statement error:(id *)error;
 - (BOOL)close;
 - (BOOL)databasePathExists;
 - (BOOL)deleteDatabase;
-- (BOOL)executeUpdate:(id)a3 withParameters:(id)a4 error:(id *)a5;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)executeUpdate:(id)update withParameters:(id)parameters error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)open;
-- (BOOL)performTransactionWithBlock:(id)a3 usingBehaviorType:(unint64_t)a4;
-- (BOOL)popToRootTransactionAndCommit:(BOOL)a3;
-- (BOOL)popTransactionAndCommit:(BOOL)a3;
-- (BOOL)pushTransactionUsingBehaviorType:(unint64_t)a3;
-- (BOOL)registerFunctionName:(id)a3 argumentCount:(int)a4 block:(id)a5;
-- (BOOL)registerFunctionName:(id)a3 argumentCount:(int)a4 functionPointer:(void *)a5 userData:(void *)a6;
-- (BOOL)registerModule:(id)a3;
-- (BOOL)registerModuleName:(id)a3 moduleMethods:(sqlite3_module *)a4;
-- (BOOL)removeModuleNamed:(id)a3;
-- (BOOL)schemaAddColumnDefinition:(id)a3 toTable:(id)a4;
-- (BOOL)schemaDeleteColumn:(id)a3 inTable:(id)a4;
-- (BOOL)schemaDeleteColumns:(id)a3 inTable:(id)a4;
-- (BOOL)schemaInsertColumnDefinition:(id)a3 intoTable:(id)a4 atIndex:(unint64_t)a5;
-- (BOOL)schemaInsertColumnDefinitions:(id)a3 intoTable:(id)a4 atIndex:(unint64_t)a5;
-- (BOOL)schemaRenameColumn:(id)a3 inTable:(id)a4 toNewColumnName:(id)a5;
-- (BOOL)tableExists:(id)a3;
+- (BOOL)performTransactionWithBlock:(id)block usingBehaviorType:(unint64_t)type;
+- (BOOL)popToRootTransactionAndCommit:(BOOL)commit;
+- (BOOL)popTransactionAndCommit:(BOOL)commit;
+- (BOOL)pushTransactionUsingBehaviorType:(unint64_t)type;
+- (BOOL)registerFunctionName:(id)name argumentCount:(int)count block:(id)block;
+- (BOOL)registerFunctionName:(id)name argumentCount:(int)count functionPointer:(void *)pointer userData:(void *)data;
+- (BOOL)registerModule:(id)module;
+- (BOOL)registerModuleName:(id)name moduleMethods:(sqlite3_module *)methods;
+- (BOOL)removeModuleNamed:(id)named;
+- (BOOL)schemaAddColumnDefinition:(id)definition toTable:(id)table;
+- (BOOL)schemaDeleteColumn:(id)column inTable:(id)table;
+- (BOOL)schemaDeleteColumns:(id)columns inTable:(id)table;
+- (BOOL)schemaInsertColumnDefinition:(id)definition intoTable:(id)table atIndex:(unint64_t)index;
+- (BOOL)schemaInsertColumnDefinitions:(id)definitions intoTable:(id)table atIndex:(unint64_t)index;
+- (BOOL)schemaRenameColumn:(id)column inTable:(id)table toNewColumnName:(id)name;
+- (BOOL)tableExists:(id)exists;
 - (BOOL)transactionMarkedForRollBack;
 - (ML3DatabaseConnection)init;
-- (ML3DatabaseConnection)initWithDatabasePath:(id)a3;
+- (ML3DatabaseConnection)initWithDatabasePath:(id)path;
 - (ML3DatabaseConnectionDelegate)connectionDelegate;
 - (id)_databaseFilePaths;
-- (id)_internalExecuteQuery:(id)a3 withParameters:(id)a4 limitProperty:(id)a5 limitValue:(int64_t)a6;
+- (id)_internalExecuteQuery:(id)query withParameters:(id)parameters limitProperty:(id)property limitValue:(int64_t)value;
 - (id)_owningPool;
-- (id)_prepareStatement:(id)a3 error:(id *)a4;
-- (id)_registeredModuleNamed:(id)a3;
+- (id)_prepareStatement:(id)statement error:(id *)error;
+- (id)_registeredModuleNamed:(id)named;
 - (id)_shortDescription;
 - (id)debugDescription;
 - (id)description;
-- (id)openBlobInTable:(id)a3 column:(id)a4 row:(int64_t)a5 readOnly:(BOOL)a6;
+- (id)openBlobInTable:(id)table column:(id)column row:(int64_t)row readOnly:(BOOL)only;
 - (id)sqliteError;
-- (int)_distrustQueriesDuringBlock:(id)a3;
+- (int)_distrustQueriesDuringBlock:(id)block;
 - (int)checkpointDatabase;
 - (unint64_t)transactionLevel;
 - (void)_createDatabaseDirectoryIfNonexistent;
 - (void)_createDatabaseFileIfNonexistent;
 - (void)_ensureConnectionIsOpen;
-- (void)_enumerateTableColumnNamesAndDefinitionsFromTable:(id)a3 usingBlock:(id)a4;
-- (void)_executeTransactionCommitBlocks:(BOOL)a3;
+- (void)_enumerateTableColumnNamesAndDefinitionsFromTable:(id)table usingBlock:(id)block;
+- (void)_executeTransactionCommitBlocks:(BOOL)blocks;
 - (void)_handleDatabaseCorruption;
-- (void)_internalLogQuery:(id)a3 withParameters:(id)a4 limitProperty:(id)a5 limitValue:(int64_t)a6;
+- (void)_internalLogQuery:(id)query withParameters:(id)parameters limitProperty:(id)property limitValue:(int64_t)value;
 - (void)_logCurrentError;
-- (void)_logCurrentErrorWhilePerformingStatementOperation:(id)a3 statement:(id)a4;
-- (void)_logCurrentErrorWhilePerformingStatementOperation:(id)a3 statementSQL:(id)a4;
+- (void)_logCurrentErrorWhilePerformingStatementOperation:(id)operation statement:(id)statement;
+- (void)_logCurrentErrorWhilePerformingStatementOperation:(id)operation statementSQL:(id)l;
 - (void)_logDatabaseFileDebugInformation;
 - (void)_raiseConnectionClosedException;
 - (void)_resetUnfinalizedStatements;
 - (void)_setCloseConnectionWhenCheckingIn;
 - (void)dealloc;
-- (void)enqueueBlockForTransactionCommit:(id)a3;
+- (void)enqueueBlockForTransactionCommit:(id)commit;
 - (void)flush;
-- (void)setReadOnly:(BOOL)a3;
-- (void)setTransactionLevel:(unint64_t)a3;
+- (void)setReadOnly:(BOOL)only;
+- (void)setTransactionLevel:(unint64_t)level;
 @end
 
 @implementation ML3DatabaseConnection
@@ -109,13 +109,13 @@
 {
   v16 = *MEMORY[0x277D85DE8];
   v3 = +[ML3MusicLibrary mediaFolderPath];
-  v4 = [v3 msv_stringByResolvingRealPath];
+  msv_stringByResolvingRealPath = [v3 msv_stringByResolvingRealPath];
 
-  v5 = [(ML3DatabaseConnection *)self databasePath];
-  if ([v5 hasPrefix:v4])
+  databasePath = [(ML3DatabaseConnection *)self databasePath];
+  if ([databasePath hasPrefix:msv_stringByResolvingRealPath])
   {
-    v6 = [(ML3DatabaseConnection *)self databasePath];
-    v7 = [v6 containsString:@"MediaLibrary.sqlitedb"];
+    databasePath2 = [(ML3DatabaseConnection *)self databasePath];
+    v7 = [databasePath2 containsString:@"MediaLibrary.sqlitedb"];
 
     if (v7)
     {
@@ -131,11 +131,11 @@
   v9 = os_log_create("com.apple.amp.medialibrary", "Default");
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [(ML3DatabaseConnection *)self databasePath];
+    databasePath3 = [(ML3DatabaseConnection *)self databasePath];
     v12 = 138543618;
-    v13 = v10;
+    v13 = databasePath3;
     v14 = 2114;
-    v15 = v4;
+    v15 = msv_stringByResolvingRealPath;
     _os_log_impl(&dword_22D2FA000, v9, OS_LOG_TYPE_DEFAULT, "Database at path %{public}@, mediaFolderPath %{public}@ is not mediaLibraryDatabase", &v12, 0x16u);
   }
 
@@ -187,21 +187,21 @@ LABEL_8:
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_owningPool);
-  v11 = [v3 stringWithFormat:@"<%@ %p, path=%@, open=%@, readonly=%@, _closeConnectionWhenCheckingIn=%@, in transaction=%@, owning pool=%@>", v4, self, databasePath, v7, v8, v9, v6, WeakRetained];
+  weakRetained = [v3 stringWithFormat:@"<%@ %p, path=%@, open=%@, readonly=%@, _closeConnectionWhenCheckingIn=%@, in transaction=%@, owning pool=%@>", v4, self, databasePath, v7, v8, v9, v6, WeakRetained];
 
-  return v11;
+  return weakRetained;
 }
 
 - (BOOL)_databaseFilesAreWritable
 {
   v14 = *MEMORY[0x277D85DE8];
-  v2 = [(ML3DatabaseConnection *)self _databaseFilePaths];
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
+  _databaseFilePaths = [(ML3DatabaseConnection *)self _databaseFilePaths];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = v2;
+  v4 = _databaseFilePaths;
   v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
@@ -215,7 +215,7 @@ LABEL_8:
           objc_enumerationMutation(v4);
         }
 
-        if (![v3 isWritableFileAtPath:{*(*(&v9 + 1) + 8 * i), v9}])
+        if (![defaultManager isWritableFileAtPath:{*(*(&v9 + 1) + 8 * i), v9}])
         {
           LOBYTE(v5) = 0;
           goto LABEL_11;
@@ -252,25 +252,25 @@ LABEL_11:
   v6 = [v4 objectForKey:v5];
 
   v7 = [v6 count];
-  v8 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   if (v7 != -1)
   {
     v9 = 0;
     v10 = 1;
     do
     {
-      v11 = [(ML3DatabaseConnection *)self databasePath];
+      databasePath = [(ML3DatabaseConnection *)self databasePath];
       if (v7 != v9)
       {
         v12 = [v6 objectAtIndex:v9];
-        v13 = [v11 stringByAppendingString:v12];
+        v13 = [databasePath stringByAppendingString:v12];
 
-        v11 = v13;
+        databasePath = v13;
       }
 
-      if ([v8 fileExistsAtPath:v11])
+      if ([defaultManager fileExistsAtPath:databasePath])
       {
-        [v3 addObject:v11];
+        [v3 addObject:databasePath];
       }
 
       v9 = v10;
@@ -324,8 +324,8 @@ void __43__ML3DatabaseConnection__databaseFilePaths__block_invoke()
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(ML3DatabaseStatementCache *)self->_statementCache allStatements];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  allStatements = [(ML3DatabaseStatementCache *)self->_statementCache allStatements];
+  v3 = [allStatements countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = v3;
@@ -337,14 +337,14 @@ void __43__ML3DatabaseConnection__databaseFilePaths__block_invoke()
       {
         if (*v8 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(allStatements);
         }
 
         [*(*(&v7 + 1) + 8 * v6++) reset];
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v4 = [allStatements countByEnumeratingWithState:&v7 objects:v11 count:16];
     }
 
     while (v4);
@@ -366,12 +366,12 @@ void __43__ML3DatabaseConnection__databaseFilePaths__block_invoke()
   return WeakRetained;
 }
 
-- (BOOL)_alterTableNamed:(id)a3 withNewColumnDefinitions:(id)a4 newColumnNames:(id)a5 oldColumnNames:(id)a6
+- (BOOL)_alterTableNamed:(id)named withNewColumnDefinitions:(id)definitions newColumnNames:(id)names oldColumnNames:(id)columnNames
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  namedCopy = named;
+  definitionsCopy = definitions;
+  namesCopy = names;
+  columnNamesCopy = columnNames;
   v26 = 0;
   v27 = &v26;
   v28 = 0x2020000000;
@@ -380,15 +380,15 @@ void __43__ML3DatabaseConnection__databaseFilePaths__block_invoke()
   v19[1] = 3221225472;
   v19[2] = __114__ML3DatabaseConnection_SchemaUtilities___alterTableNamed_withNewColumnDefinitions_newColumnNames_oldColumnNames___block_invoke;
   v19[3] = &unk_2787622B0;
-  v14 = v11;
+  v14 = definitionsCopy;
   v20 = v14;
-  v15 = v10;
+  v15 = namedCopy;
   v25 = &v26;
   v21 = v15;
-  v22 = self;
-  v16 = v12;
+  selfCopy = self;
+  v16 = namesCopy;
   v23 = v16;
-  v17 = v13;
+  v17 = columnNamesCopy;
   v24 = v17;
   [(ML3DatabaseConnection *)self performTransactionWithBlock:v19];
   LOBYTE(self) = *(v27 + 24);
@@ -515,15 +515,15 @@ uint64_t __114__ML3DatabaseConnection_SchemaUtilities___alterTableNamed_withNewC
   return v21;
 }
 
-- (void)_enumerateTableColumnNamesAndDefinitionsFromTable:(id)a3 usingBlock:(id)a4
+- (void)_enumerateTableColumnNamesAndDefinitionsFromTable:(id)table usingBlock:(id)block
 {
   v41[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  tableCopy = table;
+  blockCopy = block;
+  v9 = blockCopy;
+  if (tableCopy)
   {
-    if (v8)
+    if (blockCopy)
     {
       goto LABEL_3;
     }
@@ -531,8 +531,8 @@ uint64_t __114__ML3DatabaseConnection_SchemaUtilities___alterTableNamed_withNewC
 
   else
   {
-    v29 = [MEMORY[0x277CCA890] currentHandler];
-    [v29 handleFailureInMethod:a2 object:self file:@"ML3DatabaseConnectionAdditions.m" lineNumber:131 description:{@"Invalid parameter not satisfying: %@", @"tableName"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ML3DatabaseConnectionAdditions.m" lineNumber:131 description:{@"Invalid parameter not satisfying: %@", @"tableName"}];
 
     if (v9)
     {
@@ -540,18 +540,18 @@ uint64_t __114__ML3DatabaseConnection_SchemaUtilities___alterTableNamed_withNewC
     }
   }
 
-  v30 = [MEMORY[0x277CCA890] currentHandler];
-  [v30 handleFailureInMethod:a2 object:self file:@"ML3DatabaseConnectionAdditions.m" lineNumber:132 description:{@"Invalid parameter not satisfying: %@", @"block"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"ML3DatabaseConnectionAdditions.m" lineNumber:132 description:{@"Invalid parameter not satisfying: %@", @"block"}];
 
 LABEL_3:
-  v41[0] = v7;
+  v41[0] = tableCopy;
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v41 count:1];
   v11 = [(ML3DatabaseConnection *)self executeQuery:@"SELECT sql FROM sqlite_master WHERE type='table' AND name=?" withParameters:v10];
-  v12 = [v11 stringValueForFirstRowAndColumn];
+  stringValueForFirstRowAndColumn = [v11 stringValueForFirstRowAndColumn];
 
   v13 = [MEMORY[0x277CCAC68] regularExpressionWithPattern:@"^CREATE( TEMPORARY)* TABLE *(\\w+)*( IF NOT EXISTS)* \\(([\\w\\s' options:]+)\\)" error:{1, 0}];
   v14 = [MEMORY[0x277CCAC68] regularExpressionWithPattern:@"(\\w+)( \\w+)*( \\w+)*" options:0 error:0];
-  v15 = [v13 firstMatchInString:v12 options:0 range:{0, objc_msgSend(v12, "length")}];
+  v15 = [v13 firstMatchInString:stringValueForFirstRowAndColumn options:0 range:{0, objc_msgSend(stringValueForFirstRowAndColumn, "length")}];
   if ([v15 numberOfRanges] < 5)
   {
     v28 = os_log_create("com.apple.amp.medialibrary", "Default");
@@ -566,9 +566,9 @@ LABEL_3:
   {
     v32 = v15;
     v33 = v13;
-    v34 = v7;
+    v34 = tableCopy;
     v16 = [v15 rangeAtIndex:4];
-    v31 = [v12 substringWithRange:{v16, v17}];
+    v31 = [stringValueForFirstRowAndColumn substringWithRange:{v16, v17}];
     v18 = [v31 componentsSeparatedByString:@", "];
     v36 = 0u;
     v37 = 0u;
@@ -606,22 +606,22 @@ LABEL_3:
       while (v20);
     }
 
-    v7 = v34;
+    tableCopy = v34;
     v15 = v32;
     v13 = v33;
     v28 = v31;
   }
 }
 
-- (BOOL)schemaDeleteColumns:(id)a3 inTable:(id)a4
+- (BOOL)schemaDeleteColumns:(id)columns inTable:(id)table
 {
   v29 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  columnsCopy = columns;
+  tableCopy = table;
+  if (!tableCopy)
   {
-    v17 = [MEMORY[0x277CCA890] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"ML3DatabaseConnectionAdditions.m" lineNumber:99 description:{@"Invalid parameter not satisfying: %@", @"tableName"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ML3DatabaseConnectionAdditions.m" lineNumber:99 description:{@"Invalid parameter not satisfying: %@", @"tableName"}];
   }
 
   v23 = 0;
@@ -634,17 +634,17 @@ LABEL_3:
   v18[1] = 3221225472;
   v18[2] = __70__ML3DatabaseConnection_SchemaUtilities__schemaDeleteColumns_inTable___block_invoke;
   v18[3] = &unk_278762288;
-  v11 = v7;
+  v11 = columnsCopy;
   v19 = v11;
   v12 = v9;
   v20 = v12;
   v13 = v10;
   v21 = v13;
   v22 = &v23;
-  [(ML3DatabaseConnection *)self _enumerateTableColumnNamesAndDefinitionsFromTable:v8 usingBlock:v18];
+  [(ML3DatabaseConnection *)self _enumerateTableColumnNamesAndDefinitionsFromTable:tableCopy usingBlock:v18];
   if (*(v24 + 24) == 1)
   {
-    v14 = [(ML3DatabaseConnection *)self _alterTableNamed:v8 withNewColumnDefinitions:v12 newColumnNames:v13 oldColumnNames:v13];
+    v14 = [(ML3DatabaseConnection *)self _alterTableNamed:tableCopy withNewColumnDefinitions:v12 newColumnNames:v13 oldColumnNames:v13];
   }
 
   else
@@ -653,7 +653,7 @@ LABEL_3:
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
-      v28 = v8;
+      v28 = tableCopy;
       _os_log_impl(&dword_22D2FA000, v15, OS_LOG_TYPE_ERROR, "Could not find columns in table %{public}@", buf, 0xCu);
     }
 
@@ -680,62 +680,62 @@ void __70__ML3DatabaseConnection_SchemaUtilities__schemaDeleteColumns_inTable___
   }
 }
 
-- (BOOL)schemaDeleteColumn:(id)a3 inTable:(id)a4
+- (BOOL)schemaDeleteColumn:(id)column inTable:(id)table
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  columnCopy = column;
+  tableCopy = table;
+  if (!columnCopy)
   {
-    v12 = [MEMORY[0x277CCA890] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"ML3DatabaseConnectionAdditions.m" lineNumber:93 description:{@"Invalid parameter not satisfying: %@", @"columnName"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ML3DatabaseConnectionAdditions.m" lineNumber:93 description:{@"Invalid parameter not satisfying: %@", @"columnName"}];
   }
 
-  v13[0] = v7;
+  v13[0] = columnCopy;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:1];
-  v10 = [(ML3DatabaseConnection *)self schemaDeleteColumns:v9 inTable:v8];
+  v10 = [(ML3DatabaseConnection *)self schemaDeleteColumns:v9 inTable:tableCopy];
 
   return v10;
 }
 
-- (BOOL)schemaRenameColumn:(id)a3 inTable:(id)a4 toNewColumnName:(id)a5
+- (BOOL)schemaRenameColumn:(id)column inTable:(id)table toNewColumnName:(id)name
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v9)
+  columnCopy = column;
+  tableCopy = table;
+  nameCopy = name;
+  if (columnCopy)
   {
-    if (v10)
+    if (tableCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_6:
-    v23 = [MEMORY[0x277CCA890] currentHandler];
-    [v23 handleFailureInMethod:a2 object:self file:@"ML3DatabaseConnectionAdditions.m" lineNumber:65 description:{@"Invalid parameter not satisfying: %@", @"tableName"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ML3DatabaseConnectionAdditions.m" lineNumber:65 description:{@"Invalid parameter not satisfying: %@", @"tableName"}];
 
-    if (v11)
+    if (nameCopy)
     {
       goto LABEL_4;
     }
 
 LABEL_7:
-    v24 = [MEMORY[0x277CCA890] currentHandler];
-    [v24 handleFailureInMethod:a2 object:self file:@"ML3DatabaseConnectionAdditions.m" lineNumber:66 description:{@"Invalid parameter not satisfying: %@", @"newName"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"ML3DatabaseConnectionAdditions.m" lineNumber:66 description:{@"Invalid parameter not satisfying: %@", @"newName"}];
 
     goto LABEL_4;
   }
 
-  v22 = [MEMORY[0x277CCA890] currentHandler];
-  [v22 handleFailureInMethod:a2 object:self file:@"ML3DatabaseConnectionAdditions.m" lineNumber:64 description:{@"Invalid parameter not satisfying: %@", @"columnName"}];
+  currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"ML3DatabaseConnectionAdditions.m" lineNumber:64 description:{@"Invalid parameter not satisfying: %@", @"columnName"}];
 
-  if (!v10)
+  if (!tableCopy)
   {
     goto LABEL_6;
   }
 
 LABEL_3:
-  if (!v11)
+  if (!nameCopy)
   {
     goto LABEL_7;
   }
@@ -748,18 +748,18 @@ LABEL_4:
   v25[1] = 3221225472;
   v25[2] = __85__ML3DatabaseConnection_SchemaUtilities__schemaRenameColumn_inTable_toNewColumnName___block_invoke;
   v25[3] = &unk_278762260;
-  v26 = v9;
-  v27 = v11;
+  v26 = columnCopy;
+  v27 = nameCopy;
   v28 = v12;
   v29 = v13;
   v30 = v14;
   v15 = v14;
   v16 = v13;
   v17 = v12;
-  v18 = v11;
-  v19 = v9;
-  [(ML3DatabaseConnection *)self _enumerateTableColumnNamesAndDefinitionsFromTable:v10 usingBlock:v25];
-  v20 = [(ML3DatabaseConnection *)self _alterTableNamed:v10 withNewColumnDefinitions:v17 newColumnNames:v15 oldColumnNames:v16];
+  v18 = nameCopy;
+  v19 = columnCopy;
+  [(ML3DatabaseConnection *)self _enumerateTableColumnNamesAndDefinitionsFromTable:tableCopy usingBlock:v25];
+  v20 = [(ML3DatabaseConnection *)self _alterTableNamed:tableCopy withNewColumnDefinitions:v17 newColumnNames:v15 oldColumnNames:v16];
 
   return v20;
 }
@@ -784,15 +784,15 @@ void __85__ML3DatabaseConnection_SchemaUtilities__schemaRenameColumn_inTable_toN
   [*(a1 + 64) addObject:v8];
 }
 
-- (BOOL)schemaInsertColumnDefinitions:(id)a3 intoTable:(id)a4 atIndex:(unint64_t)a5
+- (BOOL)schemaInsertColumnDefinitions:(id)definitions intoTable:(id)table atIndex:(unint64_t)index
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = v10;
-  if (!v9)
+  definitionsCopy = definitions;
+  tableCopy = table;
+  v11 = tableCopy;
+  if (!definitionsCopy)
   {
-    v19 = [MEMORY[0x277CCA890] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"ML3DatabaseConnectionAdditions.m" lineNumber:39 description:{@"Invalid parameter not satisfying: %@", @"newDefinitions"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ML3DatabaseConnectionAdditions.m" lineNumber:39 description:{@"Invalid parameter not satisfying: %@", @"newDefinitions"}];
 
     if (v11)
     {
@@ -800,13 +800,13 @@ void __85__ML3DatabaseConnection_SchemaUtilities__schemaRenameColumn_inTable_toN
     }
 
 LABEL_5:
-    v20 = [MEMORY[0x277CCA890] currentHandler];
-    [v20 handleFailureInMethod:a2 object:self file:@"ML3DatabaseConnectionAdditions.m" lineNumber:40 description:{@"Invalid parameter not satisfying: %@", @"tableName"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"ML3DatabaseConnectionAdditions.m" lineNumber:40 description:{@"Invalid parameter not satisfying: %@", @"tableName"}];
 
     goto LABEL_3;
   }
 
-  if (!v10)
+  if (!tableCopy)
   {
     goto LABEL_5;
   }
@@ -823,10 +823,10 @@ LABEL_3:
   v21[2] = __90__ML3DatabaseConnection_SchemaUtilities__schemaInsertColumnDefinitions_intoTable_atIndex___block_invoke;
   v21[3] = &unk_278762238;
   v25 = v27;
-  v26 = a5;
+  indexCopy = index;
   v14 = v12;
   v22 = v14;
-  v15 = v9;
+  v15 = definitionsCopy;
   v23 = v15;
   v16 = v13;
   v24 = v16;
@@ -851,28 +851,28 @@ void __90__ML3DatabaseConnection_SchemaUtilities__schemaInsertColumnDefinitions_
   ++*(*(*(a1 + 56) + 8) + 24);
 }
 
-- (BOOL)schemaInsertColumnDefinition:(id)a3 intoTable:(id)a4 atIndex:(unint64_t)a5
+- (BOOL)schemaInsertColumnDefinition:(id)definition intoTable:(id)table atIndex:(unint64_t)index
 {
   v14 = *MEMORY[0x277D85DE8];
-  v13 = a3;
+  definitionCopy = definition;
   v8 = MEMORY[0x277CBEA60];
-  v9 = a4;
-  v10 = a3;
-  v11 = [v8 arrayWithObjects:&v13 count:1];
+  tableCopy = table;
+  definitionCopy2 = definition;
+  v11 = [v8 arrayWithObjects:&definitionCopy count:1];
 
-  LOBYTE(a5) = [(ML3DatabaseConnection *)self schemaInsertColumnDefinitions:v11 intoTable:v9 atIndex:a5, v13, v14];
-  return a5;
+  LOBYTE(index) = [(ML3DatabaseConnection *)self schemaInsertColumnDefinitions:v11 intoTable:tableCopy atIndex:index, definitionCopy, v14];
+  return index;
 }
 
-- (BOOL)schemaAddColumnDefinition:(id)a3 toTable:(id)a4
+- (BOOL)schemaAddColumnDefinition:(id)definition toTable:(id)table
 {
   v22 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  definitionCopy = definition;
+  tableCopy = table;
+  v9 = tableCopy;
+  if (definitionCopy)
   {
-    if (v8)
+    if (tableCopy)
     {
       goto LABEL_3;
     }
@@ -880,8 +880,8 @@ void __90__ML3DatabaseConnection_SchemaUtilities__schemaInsertColumnDefinitions_
 
   else
   {
-    v15 = [MEMORY[0x277CCA890] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"ML3DatabaseConnectionAdditions.m" lineNumber:19 description:{@"Invalid parameter not satisfying: %@", @"columnDefinition"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ML3DatabaseConnectionAdditions.m" lineNumber:19 description:{@"Invalid parameter not satisfying: %@", @"columnDefinition"}];
 
     if (v9)
     {
@@ -889,13 +889,13 @@ void __90__ML3DatabaseConnection_SchemaUtilities__schemaInsertColumnDefinitions_
     }
   }
 
-  v16 = [MEMORY[0x277CCA890] currentHandler];
-  [v16 handleFailureInMethod:a2 object:self file:@"ML3DatabaseConnectionAdditions.m" lineNumber:20 description:{@"Invalid parameter not satisfying: %@", @"tableName"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"ML3DatabaseConnectionAdditions.m" lineNumber:20 description:{@"Invalid parameter not satisfying: %@", @"tableName"}];
 
 LABEL_3:
-  v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"ALTER TABLE %@ ADD COLUMN %@", v9, v7];
+  definitionCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"ALTER TABLE %@ ADD COLUMN %@", v9, definitionCopy];
   v17 = 0;
-  v11 = [(ML3DatabaseConnection *)self executeUpdate:v10 withParameters:0 error:&v17];
+  v11 = [(ML3DatabaseConnection *)self executeUpdate:definitionCopy withParameters:0 error:&v17];
   v12 = v17;
   if (!v11)
   {
@@ -913,25 +913,25 @@ LABEL_3:
   return v11;
 }
 
-- (BOOL)_handleZombieSQLiteConnection:(sqlite3 *)a3
+- (BOOL)_handleZombieSQLiteConnection:(sqlite3 *)connection
 {
   v27 = *MEMORY[0x277D85DE8];
   v5 = os_log_create("com.apple.amp.medialibrary", "Default");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218242;
-    v22 = a3;
+    connectionCopy2 = connection;
     v23 = 2114;
-    v24 = self;
+    selfCopy = self;
     _os_log_impl(&dword_22D2FA000, v5, OS_LOG_TYPE_DEFAULT, "Database connection was unable to close SQLite handle %p. Attempting to clean up remaining resources and close again. (connection = %{public}@)", buf, 0x16u);
   }
 
-  if (!a3)
+  if (!connection)
   {
     return 0;
   }
 
-  stmt = sqlite3_next_stmt(a3, 0);
+  stmt = sqlite3_next_stmt(connection, 0);
   if (stmt)
   {
     v7 = stmt;
@@ -941,7 +941,7 @@ LABEL_3:
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134217984;
-        v22 = v7;
+        connectionCopy2 = v7;
         _os_log_impl(&dword_22D2FA000, v8, OS_LOG_TYPE_DEFAULT, "Cleaning up unfinalized statement %p.", buf, 0xCu);
       }
 
@@ -952,18 +952,18 @@ LABEL_3:
         v11 = os_log_create("com.apple.amp.medialibrary", "Default");
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
         {
-          v12 = sqlite3_errmsg(a3);
+          v12 = sqlite3_errmsg(connection);
           *buf = 134218498;
-          v22 = a3;
+          connectionCopy2 = connection;
           v23 = 2080;
-          v24 = v12;
+          selfCopy = v12;
           v25 = 1024;
           v26 = v10;
           _os_log_impl(&dword_22D2FA000, v11, OS_LOG_TYPE_DEFAULT, "Failed to finalize statement %p. %s (%d)", buf, 0x1Cu);
         }
       }
 
-      v7 = sqlite3_next_stmt(a3, v7);
+      v7 = sqlite3_next_stmt(connection, v7);
     }
 
     while (v7);
@@ -976,7 +976,7 @@ LABEL_3:
     _os_log_impl(&dword_22D2FA000, v13, OS_LOG_TYPE_DEFAULT, "Reattempting close of connection...", buf, 2u);
   }
 
-  v14 = sqlite3_close(a3);
+  v14 = sqlite3_close(connection);
   v15 = os_log_create("com.apple.amp.medialibrary", "Default");
   v16 = os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT);
   if (v14)
@@ -989,7 +989,7 @@ LABEL_3:
 
     v17 = MEMORY[0x277CBEAD8];
     v18 = *MEMORY[0x277CBE658];
-    v19 = sqlite3_errmsg(a3);
+    v19 = sqlite3_errmsg(connection);
     [v17 raise:v18 format:{@"Failed to close connection for database. %s (errno = %d)", v19, *__error()}];
     return 0;
   }
@@ -1003,15 +1003,15 @@ LABEL_3:
   return 1;
 }
 
-- (BOOL)_handleConnectionErrorWhileOpening:(int)a3
+- (BOOL)_handleConnectionErrorWhileOpening:(int)opening
 {
-  if (a3 == 11)
+  if (opening == 11)
   {
     [(ML3DatabaseConnection *)self _handleDatabaseCorruption:v3];
     return 0;
   }
 
-  else if (a3 == 10)
+  else if (opening == 10)
   {
 
     return [(ML3DatabaseConnection *)self _handleDiskIOError];
@@ -1023,7 +1023,7 @@ LABEL_3:
   }
 }
 
-- (void)_executeTransactionCommitBlocks:(BOOL)a3
+- (void)_executeTransactionCommitBlocks:(BOOL)blocks
 {
   v16 = *MEMORY[0x277D85DE8];
   v5 = [(NSMutableArray *)self->_enqueuedTransactionCommitBlocks copy];
@@ -1032,7 +1032,7 @@ LABEL_3:
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v13 = self;
+    selfCopy = self;
     v14 = 1024;
     v15 = [v5 count];
     _os_log_impl(&dword_22D2FA000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@ running %d transaction commit blocks", buf, 0x12u);
@@ -1044,7 +1044,7 @@ LABEL_3:
   v9[2] = __57__ML3DatabaseConnection__executeTransactionCommitBlocks___block_invoke;
   v9[3] = &unk_278765E08;
   v10 = v5;
-  v11 = a3;
+  blocksCopy = blocks;
   v8 = v5;
   dispatch_async(v7, v9);
 }
@@ -1087,7 +1087,7 @@ void __57__ML3DatabaseConnection__executeTransactionCommitBlocks___block_invoke(
 - (void)_logDatabaseFileDebugInformation
 {
   v33 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
@@ -1112,25 +1112,25 @@ void __57__ML3DatabaseConnection__executeTransactionCommitBlocks___block_invoke(
 
         v9 = *(*(&v20 + 1) + 8 * i);
         v19 = 0;
-        v10 = [v3 attributesOfItemAtPath:v9 error:{&v19, v16}];
+        v10 = [defaultManager attributesOfItemAtPath:v9 error:{&v19, v16}];
         v11 = v19;
         if (v10)
         {
           v12 = os_log_create("com.apple.amp.medialibrary", "Default_Oversize");
           if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
           {
-            v13 = [(ML3DatabaseConnection *)self sqliteError];
-            v14 = [(ML3DatabaseConnection *)self _databaseFilesAreWritable];
+            sqliteError = [(ML3DatabaseConnection *)self sqliteError];
+            _databaseFilesAreWritable = [(ML3DatabaseConnection *)self _databaseFilesAreWritable];
             *buf = 138544130;
             v15 = "false";
-            if (v14)
+            if (_databaseFilesAreWritable)
             {
               v15 = "true";
             }
 
             v25 = v9;
             v26 = 2114;
-            v27 = v13;
+            v27 = sqliteError;
             v28 = 2082;
             v29 = v15;
             v30 = 2114;
@@ -1163,8 +1163,8 @@ void __57__ML3DatabaseConnection__executeTransactionCommitBlocks___block_invoke(
 - (void)_logCurrentError
 {
   v9 = *MEMORY[0x277D85DE8];
-  v2 = [(ML3DatabaseConnection *)self sqliteError];
-  if (v2)
+  sqliteError = [(ML3DatabaseConnection *)self sqliteError];
+  if (sqliteError)
   {
     v3 = os_log_create("com.apple.amp.medialibrary", "Default");
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -1172,20 +1172,20 @@ void __57__ML3DatabaseConnection__executeTransactionCommitBlocks___block_invoke(
       v5 = 138543618;
       v6 = objc_opt_class();
       v7 = 2114;
-      v8 = v2;
+      v8 = sqliteError;
       v4 = v6;
       _os_log_impl(&dword_22D2FA000, v3, OS_LOG_TYPE_DEFAULT, "[%{public}@] Database error: %{public}@", &v5, 0x16u);
     }
   }
 }
 
-- (void)_logCurrentErrorWhilePerformingStatementOperation:(id)a3 statement:(id)a4
+- (void)_logCurrentErrorWhilePerformingStatementOperation:(id)operation statement:(id)statement
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ML3DatabaseConnection *)self sqliteError];
-  if (v8)
+  operationCopy = operation;
+  statementCopy = statement;
+  sqliteError = [(ML3DatabaseConnection *)self sqliteError];
+  if (sqliteError)
   {
     v9 = os_log_create("com.apple.amp.medialibrary", "Default");
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -1193,24 +1193,24 @@ void __57__ML3DatabaseConnection__executeTransactionCommitBlocks___block_invoke(
       v11 = 138544130;
       v12 = objc_opt_class();
       v13 = 2114;
-      v14 = v6;
+      v14 = operationCopy;
       v15 = 2114;
-      v16 = v8;
+      v16 = sqliteError;
       v17 = 2114;
-      v18 = v7;
+      v18 = statementCopy;
       v10 = v12;
       _os_log_impl(&dword_22D2FA000, v9, OS_LOG_TYPE_DEFAULT, "[%{public}@] Database error while %{public}@ statement '%{public}@': %{public}@", &v11, 0x2Au);
     }
   }
 }
 
-- (void)_logCurrentErrorWhilePerformingStatementOperation:(id)a3 statementSQL:(id)a4
+- (void)_logCurrentErrorWhilePerformingStatementOperation:(id)operation statementSQL:(id)l
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ML3DatabaseConnection *)self sqliteError];
-  if (v8)
+  operationCopy = operation;
+  lCopy = l;
+  sqliteError = [(ML3DatabaseConnection *)self sqliteError];
+  if (sqliteError)
   {
     v9 = os_log_create("com.apple.amp.medialibrary", "Default");
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -1218,11 +1218,11 @@ void __57__ML3DatabaseConnection__executeTransactionCommitBlocks___block_invoke(
       v11 = 138544130;
       v12 = objc_opt_class();
       v13 = 2114;
-      v14 = v6;
+      v14 = operationCopy;
       v15 = 2114;
-      v16 = v8;
+      v16 = sqliteError;
       v17 = 2114;
-      v18 = v7;
+      v18 = lCopy;
       v10 = v12;
       _os_log_impl(&dword_22D2FA000, v9, OS_LOG_TYPE_DEFAULT, "[%{public}@] Database error while %{public}@ statement '%{public}@': %{public}@", &v11, 0x2Au);
     }
@@ -1234,8 +1234,8 @@ void __57__ML3DatabaseConnection__executeTransactionCommitBlocks___block_invoke(
   if (![(ML3DatabaseConnection *)self _databaseFileExists])
   {
     [(ML3DatabaseConnection *)self _createDatabaseDirectoryIfNonexistent];
-    v3 = [MEMORY[0x277CCAA00] defaultManager];
-    v4 = [v3 createFileAtPath:self->_databasePath contents:0 attributes:0];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    v4 = [defaultManager createFileAtPath:self->_databasePath contents:0 attributes:0];
 
     if ((v4 & 1) == 0)
     {
@@ -1246,12 +1246,12 @@ void __57__ML3DatabaseConnection__executeTransactionCommitBlocks___block_invoke(
 
 - (void)_createDatabaseDirectoryIfNonexistent
 {
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
-  v4 = [(NSString *)self->_databasePath stringByDeletingLastPathComponent];
-  if (([v3 fileExistsAtPath:v4] & 1) == 0)
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  stringByDeletingLastPathComponent = [(NSString *)self->_databasePath stringByDeletingLastPathComponent];
+  if (([defaultManager fileExistsAtPath:stringByDeletingLastPathComponent] & 1) == 0)
   {
     v7 = 0;
-    v5 = [v3 createDirectoryAtPath:v4 withIntermediateDirectories:1 attributes:0 error:&v7];
+    v5 = [defaultManager createDirectoryAtPath:stringByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:&v7];
     v6 = v7;
     if ((v5 & 1) == 0)
     {
@@ -1263,11 +1263,11 @@ void __57__ML3DatabaseConnection__executeTransactionCommitBlocks___block_invoke(
 
 - (BOOL)_databaseFileExists
 {
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
-  v4 = [(NSString *)self->_databasePath stringByDeletingLastPathComponent];
-  if ([v3 fileExistsAtPath:v4])
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  stringByDeletingLastPathComponent = [(NSString *)self->_databasePath stringByDeletingLastPathComponent];
+  if ([defaultManager fileExistsAtPath:stringByDeletingLastPathComponent])
   {
-    v5 = [v3 fileExistsAtPath:self->_databasePath];
+    v5 = [defaultManager fileExistsAtPath:self->_databasePath];
   }
 
   else
@@ -1278,10 +1278,10 @@ void __57__ML3DatabaseConnection__executeTransactionCommitBlocks___block_invoke(
   return v5;
 }
 
-- (id)_registeredModuleNamed:(id)a3
+- (id)_registeredModuleNamed:(id)named
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  namedCopy = named;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -1301,8 +1301,8 @@ void __57__ML3DatabaseConnection__executeTransactionCommitBlocks___block_invoke(
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 name];
-        v11 = [v10 isEqualToString:v4];
+        name = [v9 name];
+        v11 = [name isEqualToString:namedCopy];
 
         if (v11)
         {
@@ -1326,15 +1326,15 @@ LABEL_11:
   return v6;
 }
 
-- (BOOL)_validatePreparedStatement:(id)a3 error:(id *)a4
+- (BOOL)_validatePreparedStatement:(id)statement error:(id *)error
 {
   v22[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (-[ML3DatabaseConnection isReadOnly](self, "isReadOnly") && ([v6 isReadOnly] & 1) == 0)
+  statementCopy = statement;
+  if (-[ML3DatabaseConnection isReadOnly](self, "isReadOnly") && ([statementCopy isReadOnly] & 1) == 0)
   {
-    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"Attempt to write a readonly database with statement %@", v6];
+    statementCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Attempt to write a readonly database with statement %@", statementCopy];
     v21[0] = *MEMORY[0x277CCA450];
-    v22[0] = v8;
+    v22[0] = statementCopy;
     v9 = [objc_opt_class() description];
     v21[1] = v9;
     v10 = [(ML3DatabaseConnection *)self description];
@@ -1345,7 +1345,7 @@ LABEL_11:
     v13 = os_log_create("com.apple.amp.medialibrary", "Default");
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [v6 sql];
+      v14 = [statementCopy sql];
       *buf = 138543618;
       v18 = v14;
       v19 = 2114;
@@ -1353,10 +1353,10 @@ LABEL_11:
       _os_log_impl(&dword_22D2FA000, v13, OS_LOG_TYPE_DEFAULT, "Error preparing statement SQL. %{public}@ %{public}@", buf, 0x16u);
     }
 
-    if (a4)
+    if (error)
     {
       v15 = v12;
-      *a4 = v12;
+      *error = v12;
     }
 
     v7 = 0;
@@ -1379,13 +1379,13 @@ LABEL_11:
   return v2;
 }
 
-- (BOOL)_internalEndTransactionAndCommit:(BOOL)a3
+- (BOOL)_internalEndTransactionAndCommit:(BOOL)commit
 {
-  v3 = a3;
+  commitCopy = commit;
   v19 = *MEMORY[0x277D85DE8];
   v5 = +[ML3DatabaseStatementRenderer defaultRenderer];
   v6 = v5;
-  if (v3)
+  if (commitCopy)
   {
     [v5 commitTransactionStatement];
   }
@@ -1404,7 +1404,7 @@ LABEL_11:
   {
     if (objc_opt_respondsToSelector())
     {
-      [WeakRetained connection:self didEndDatabaseTransactionAndCommit:v3];
+      [WeakRetained connection:self didEndDatabaseTransactionAndCommit:commitCopy];
     }
   }
 
@@ -1414,7 +1414,7 @@ LABEL_11:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v16 = self;
+      selfCopy = self;
       v17 = 2114;
       v18 = v9;
       _os_log_impl(&dword_22D2FA000, v11, OS_LOG_TYPE_DEFAULT, "Error ending transaction on connection: %{public}@. %{public}@", buf, 0x16u);
@@ -1427,11 +1427,11 @@ LABEL_11:
   return v8;
 }
 
-- (BOOL)_internalBeginTransactionWithBehaviorType:(unint64_t)a3
+- (BOOL)_internalBeginTransactionWithBehaviorType:(unint64_t)type
 {
   v19 = *MEMORY[0x277D85DE8];
   v5 = +[ML3DatabaseStatementRenderer defaultRenderer];
-  v6 = [v5 beginTransactionStatementWithBehaviorType:a3];
+  v6 = [v5 beginTransactionStatementWithBehaviorType:type];
 
   v14 = 0;
   v7 = [(ML3DatabaseConnection *)self _internalExecuteUpdate:v6 withParameters:0 error:&v14];
@@ -1458,7 +1458,7 @@ LABEL_11:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v16 = self;
+      selfCopy = self;
       v17 = 2114;
       v18 = v8;
       _os_log_impl(&dword_22D2FA000, v12, OS_LOG_TYPE_DEFAULT, "Error beginning transaction on connection: %{public}@. %{public}@", buf, 0x16u);
@@ -1468,22 +1468,22 @@ LABEL_11:
   return v7;
 }
 
-- (BOOL)_internalExecuteUpdate:(id)a3 withParameters:(id)a4 error:(id *)a5
+- (BOOL)_internalExecuteUpdate:(id)update withParameters:(id)parameters error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
+  parametersCopy = parameters;
+  updateCopy = update;
   [(ML3DatabaseConnection *)self _ensureConnectionIsOpen];
-  [(ML3DatabaseConnection *)self _internalLogQuery:v9 withParameters:v8 limitProperty:0 limitValue:0];
+  [(ML3DatabaseConnection *)self _internalLogQuery:updateCopy withParameters:parametersCopy limitProperty:0 limitValue:0];
   [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
   v11 = v10;
   v23 = 0;
-  v12 = [(ML3DatabaseConnection *)self _prepareStatement:v9 error:&v23];
+  v12 = [(ML3DatabaseConnection *)self _prepareStatement:updateCopy error:&v23];
 
   v13 = v23;
   if (!v12)
   {
     v14 = 0;
-    if (!a5)
+    if (!error)
     {
       goto LABEL_9;
     }
@@ -1491,9 +1491,9 @@ LABEL_11:
     goto LABEL_7;
   }
 
-  if (v8)
+  if (parametersCopy)
   {
-    [v12 bindValuesInArray:v8];
+    [v12 bindValuesInArray:parametersCopy];
   }
 
   v22 = v13;
@@ -1502,13 +1502,13 @@ LABEL_11:
 
   [v12 reset];
   v13 = v15;
-  if (a5)
+  if (error)
   {
 LABEL_7:
     if (v13)
     {
       v16 = v13;
-      *a5 = v13;
+      *error = v13;
     }
   }
 
@@ -1539,29 +1539,29 @@ LABEL_9:
   return v14;
 }
 
-- (id)_internalExecuteQuery:(id)a3 withParameters:(id)a4 limitProperty:(id)a5 limitValue:(int64_t)a6
+- (id)_internalExecuteQuery:(id)query withParameters:(id)parameters limitProperty:(id)property limitValue:(int64_t)value
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a3;
+  parametersCopy = parameters;
+  propertyCopy = property;
+  queryCopy = query;
   [(ML3DatabaseConnection *)self _ensureConnectionIsOpen];
-  [(ML3DatabaseConnection *)self _internalLogQuery:v12 withParameters:v10 limitProperty:v11 limitValue:a6];
+  [(ML3DatabaseConnection *)self _internalLogQuery:queryCopy withParameters:parametersCopy limitProperty:propertyCopy limitValue:value];
   [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
   v14 = v13;
-  v15 = [(ML3DatabaseConnection *)self _prepareStatement:v12 error:0];
+  v15 = [(ML3DatabaseConnection *)self _prepareStatement:queryCopy error:0];
 
   if (v15)
   {
-    if (v10)
+    if (parametersCopy)
     {
-      [v15 bindValuesInArray:v10];
+      [v15 bindValuesInArray:parametersCopy];
     }
 
     v16 = [[ML3DatabaseResult alloc] initWithStatement:v15 connection:self];
     v17 = v16;
-    if (v11)
+    if (propertyCopy)
     {
-      [(ML3DatabaseResult *)v16 setLimitProperty:v11 limitValue:a6];
+      [(ML3DatabaseResult *)v16 setLimitProperty:propertyCopy limitValue:value];
     }
   }
 
@@ -1586,29 +1586,29 @@ LABEL_9:
   return v17;
 }
 
-- (void)_internalLogQuery:(id)a3 withParameters:(id)a4 limitProperty:(id)a5 limitValue:(int64_t)a6
+- (void)_internalLogQuery:(id)query withParameters:(id)parameters limitProperty:(id)property limitValue:(int64_t)value
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  queryCopy = query;
+  parametersCopy = parameters;
+  propertyCopy = property;
   if ([(ML3DatabaseConnection *)self logQueryPlans])
   {
     [(ML3DatabaseConnection *)self setLogQueryPlans:0];
-    v13 = [MEMORY[0x277CCAB68] stringWithFormat:@"EXPLAIN QUERY PLAN for: %@\n", v10];
-    v14 = [@"EXPLAIN QUERY PLAN " stringByAppendingString:v10];
+    queryCopy = [MEMORY[0x277CCAB68] stringWithFormat:@"EXPLAIN QUERY PLAN for: %@\n", queryCopy];
+    v14 = [@"EXPLAIN QUERY PLAN " stringByAppendingString:queryCopy];
 
-    v15 = [(ML3DatabaseConnection *)self _internalExecuteQuery:v14 withParameters:v11 limitProperty:v12 limitValue:a6];
+    v15 = [(ML3DatabaseConnection *)self _internalExecuteQuery:v14 withParameters:parametersCopy limitProperty:propertyCopy limitValue:value];
     v17 = MEMORY[0x277D85DD0];
     v18 = 3221225472;
     v19 = __83__ML3DatabaseConnection__internalLogQuery_withParameters_limitProperty_limitValue___block_invoke;
     v20 = &unk_278766118;
-    v21 = v13;
-    v16 = v13;
+    v21 = queryCopy;
+    v16 = queryCopy;
     [v15 enumerateRowsWithBlock:&v17];
     NSLog(&stru_28408CEB0.isa, v16, v17, v18, v19, v20);
     [(ML3DatabaseConnection *)self setLogQueryPlans:1];
 
-    v10 = v14;
+    queryCopy = v14;
   }
 }
 
@@ -1639,27 +1639,27 @@ void __83__ML3DatabaseConnection__internalLogQuery_withParameters_limitProperty_
   [*(a1 + 32) appendString:@"\n"];
 }
 
-- (BOOL)_executeStatement:(id)a3 withError:(id *)a4
+- (BOOL)_executeStatement:(id)statement withError:(id *)error
 {
   v42 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  statementCopy = statement;
   [(ML3DatabaseConnection *)self _ensureConnectionIsOpen];
   v8 = 0;
   v9 = *MEMORY[0x277D27EB8];
   while (1)
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = [v7 step];
-    if (v11 - 5 >= 2)
+    step = [statementCopy step];
+    if (step - 5 >= 2)
     {
       break;
     }
 
-    v12 = v11;
-    [v7 reset];
+    v12 = step;
+    [statementCopy reset];
     if ([(ML3DatabaseConnection *)self _handleBusyLockWithNumberOfRetries:v8])
     {
-      v14 = [(ML3DatabaseConnection *)self sqliteError];
+      sqliteError = [(ML3DatabaseConnection *)self sqliteError];
       v15 = os_log_create("com.apple.amp.medialibrary", "Default");
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
@@ -1677,7 +1677,7 @@ void __83__ML3DatabaseConnection__internalLogQuery_withParameters_limitProperty_
         v38 = 1024;
         v39 = v8;
         v40 = 2114;
-        v41 = v14;
+        v41 = sqliteError;
         _os_log_impl(&dword_22D2FA000, v15, OS_LOG_TYPE_DEFAULT, "(%s) SQLite was %s after %u retries. %{public}@", buf, 0x26u);
       }
 
@@ -1688,52 +1688,52 @@ void __83__ML3DatabaseConnection__internalLogQuery_withParameters_limitProperty_
     objc_autoreleasePoolPop(v10);
   }
 
-  if (v11 <= 0x63u)
+  if (step <= 0x63u)
   {
-    if (v11 == 10)
+    if (step == 10)
     {
       v18 = os_log_create("com.apple.amp.medialibrary", "Default");
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543362;
-        v35 = v7;
+        v35 = statementCopy;
         _os_log_impl(&dword_22D2FA000, v18, OS_LOG_TYPE_ERROR, "Disk IO error detected while executing statement %{public}@", buf, 0xCu);
       }
 
-      v14 = ML3DatabaseCreateDiskIOError();
+      sqliteError = ML3DatabaseCreateDiskIOError();
       [(ML3DatabaseConnection *)self _handleDiskIOError];
       goto LABEL_25;
     }
 
-    if (v11 == 11 || v11 == 26)
+    if (step == 11 || step == 26)
     {
       v13 = os_log_create("com.apple.amp.medialibrary", "Default");
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v35 = v7;
+        v35 = statementCopy;
         _os_log_impl(&dword_22D2FA000, v13, OS_LOG_TYPE_DEFAULT, "Database corruption detected while executing statement %{public}@", buf, 0xCu);
       }
 
       [(ML3DatabaseConnection *)self _handleDatabaseCorruption];
-      v14 = ML3DatabaseCreateCorruptionError();
+      sqliteError = ML3DatabaseCreateCorruptionError();
       goto LABEL_25;
     }
 
     goto LABEL_24;
   }
 
-  if (v11 - 100 > 1)
+  if (step - 100 > 1)
   {
 LABEL_24:
-    v14 = [(ML3DatabaseConnection *)self sqliteError];
-    v30 = [MEMORY[0x277CCACA8] stringWithFormat:@"Error stepping statement. %@ %@", v7, v14];
+    sqliteError = [(ML3DatabaseConnection *)self sqliteError];
+    v30 = [MEMORY[0x277CCACA8] stringWithFormat:@"Error stepping statement. %@ %@", statementCopy, sqliteError];
     v28 = dispatch_semaphore_create(0);
     v29 = MEMORY[0x277D27EF0];
     v19 = MEMORY[0x277CCACA8];
-    v20 = [v14 domain];
-    v21 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v14, "code")}];
-    v22 = [v19 stringWithFormat:@"Error domain=%@ code=%@", v20, v21];
+    domain = [sqliteError domain];
+    v21 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(sqliteError, "code")}];
+    v22 = [v19 stringWithFormat:@"Error domain=%@ code=%@", domain, v21];
     v33 = v30;
     v23 = [MEMORY[0x277CBEA60] arrayWithObjects:&v33 count:1];
     v31[0] = MEMORY[0x277D85DD0];
@@ -1745,44 +1745,44 @@ LABEL_24:
     [v29 snapshotWithDomain:v9 type:@"Bug" subType:@"ML3SQLiteBug" context:v22 triggerThresholdValues:0 events:v23 completion:v31];
 
     dispatch_semaphore_wait(v24, 0xFFFFFFFFFFFFFFFFLL);
-    v25 = [ML3DatabaseException databaseExceptionWithReason:v30 sqliteError:v14];
+    v25 = [ML3DatabaseException databaseExceptionWithReason:v30 sqliteError:sqliteError];
     [v25 raise];
 
 LABEL_25:
     objc_autoreleasePoolPop(v10);
-    if (a4 && v14)
+    if (error && sqliteError)
     {
-      v26 = v14;
-      *a4 = v14;
+      v26 = sqliteError;
+      *error = sqliteError;
     }
 
     goto LABEL_28;
   }
 
-  if ([v7 clearBindingsAfterRunning])
+  if ([statementCopy clearBindingsAfterRunning])
   {
-    [v7 clearBindings];
+    [statementCopy clearBindings];
   }
 
   objc_autoreleasePoolPop(v10);
-  v14 = 0;
+  sqliteError = 0;
 LABEL_28:
 
-  return v14 == 0;
+  return sqliteError == 0;
 }
 
-- (id)_prepareStatement:(id)a3 error:(id *)a4
+- (id)_prepareStatement:(id)statement error:(id *)error
 {
   v42 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  if (!v7)
+  statementCopy = statement;
+  if (!statementCopy)
   {
     v9 = 0;
     goto LABEL_42;
   }
 
   [(ML3DatabaseConnection *)self _ensureConnectionIsOpen];
-  v8 = [(ML3DatabaseStatementCache *)self->_statementCache cachedStatementForSQL:v7];
+  v8 = [(ML3DatabaseStatementCache *)self->_statementCache cachedStatementForSQL:statementCopy];
   if (v8)
   {
     v9 = v8;
@@ -1790,15 +1790,15 @@ LABEL_28:
     goto LABEL_42;
   }
 
-  v29 = a4;
-  v10 = [v7 UTF8String];
+  errorCopy = error;
+  uTF8String = [statementCopy UTF8String];
   v11 = 0;
   ppStmt = 0;
   while (1)
   {
     while (1)
     {
-      v12 = sqlite3_prepare_v3(self->_sqlitedb, v10, -1, 1u, &ppStmt, 0);
+      v12 = sqlite3_prepare_v3(self->_sqlitedb, uTF8String, -1, 1u, &ppStmt, 0);
       if (v12 != 10)
       {
         break;
@@ -1808,13 +1808,13 @@ LABEL_28:
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543362;
-        v35 = v7;
+        v35 = statementCopy;
         _os_log_impl(&dword_22D2FA000, v13, OS_LOG_TYPE_ERROR, "Disk IO error detected while preparing statement %{public}@", buf, 0xCu);
       }
 
       if (![(ML3DatabaseConnection *)self _handleDiskIOError])
       {
-        v19 = ML3DatabaseCreateDiskIOError();
+        sqliteError = ML3DatabaseCreateDiskIOError();
         goto LABEL_29;
       }
     }
@@ -1823,7 +1823,7 @@ LABEL_28:
     {
       if (v12 == 11 || v12 == 26)
       {
-        v16 = v29;
+        v16 = errorCopy;
         if (ppStmt)
         {
           sqlite3_finalize(ppStmt);
@@ -1831,7 +1831,7 @@ LABEL_28:
         }
 
         [(ML3DatabaseConnection *)self _handleDatabaseCorruption];
-        v19 = ML3DatabaseCreateCorruptionError();
+        sqliteError = ML3DatabaseCreateCorruptionError();
         goto LABEL_30;
       }
 
@@ -1842,10 +1842,10 @@ LABEL_28:
     {
       if (!v12)
       {
-        v16 = v29;
+        v16 = errorCopy;
         if (ppStmt)
         {
-          v19 = 0;
+          sqliteError = 0;
           goto LABEL_31;
         }
 
@@ -1858,16 +1858,16 @@ LABEL_35:
       }
 
 LABEL_26:
-      v19 = [(ML3DatabaseConnection *)self sqliteError];
-      v16 = v29;
+      sqliteError = [(ML3DatabaseConnection *)self sqliteError];
+      v16 = errorCopy;
       if (ppStmt)
       {
         sqlite3_finalize(ppStmt);
         ppStmt = 0;
       }
 
-      v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"Error preparing statement SQL. %@ %@", v7, v19];
-      v18 = [ML3DatabaseException databaseExceptionWithReason:v17 sqliteError:v19];
+      v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"Error preparing statement SQL. %@ %@", statementCopy, sqliteError];
+      v18 = [ML3DatabaseException databaseExceptionWithReason:v17 sqliteError:sqliteError];
       [v18 raise];
 
       goto LABEL_30;
@@ -1882,7 +1882,7 @@ LABEL_26:
     v11 = (v11 + 1);
   }
 
-  v19 = [(ML3DatabaseConnection *)self sqliteError];
+  sqliteError = [(ML3DatabaseConnection *)self sqliteError];
   v26 = _ML3LogCategoryDefault();
   if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
   {
@@ -1900,16 +1900,16 @@ LABEL_26:
     v38 = 1024;
     v39 = v11;
     v40 = 2114;
-    v41 = v19;
+    v41 = sqliteError;
     _os_log_impl(&dword_22D2FA000, v26, OS_LOG_TYPE_DEFAULT, "(%s) SQLite was %s after %u retries. %{public}@", buf, 0x26u);
   }
 
 LABEL_29:
-  v16 = v29;
+  v16 = errorCopy;
 LABEL_30:
   if (!ppStmt)
   {
-    if (v19)
+    if (sqliteError)
     {
       v9 = 0;
       goto LABEL_38;
@@ -1920,8 +1920,8 @@ LABEL_30:
 
 LABEL_31:
   v20 = [ML3DatabaseStatement alloc];
-  v21 = [(ML3DatabaseStatement *)v20 initWithSQLiteStatement:ppStmt SQL:v7];
-  v30 = v19;
+  v21 = [(ML3DatabaseStatement *)v20 initWithSQLiteStatement:ppStmt SQL:statementCopy];
+  v30 = sqliteError;
   v22 = [(ML3DatabaseConnection *)self _validatePreparedStatement:v21 error:&v30];
   v23 = v30;
 
@@ -1937,12 +1937,12 @@ LABEL_36:
   v9 = 0;
 LABEL_37:
 
-  v19 = v23;
+  sqliteError = v23;
 LABEL_38:
-  if (v16 && v19)
+  if (v16 && sqliteError)
   {
-    v24 = v19;
-    *v16 = v19;
+    v24 = sqliteError;
+    *v16 = sqliteError;
   }
 
 LABEL_42:
@@ -1958,18 +1958,18 @@ LABEL_42:
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setTransactionLevel:(unint64_t)a3
+- (void)setTransactionLevel:(unint64_t)level
 {
   os_unfair_lock_lock(&self->_lock);
-  self->_transactionLevel = a3;
+  self->_transactionLevel = level;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (int)_distrustQueriesDuringBlock:(id)a3
+- (int)_distrustQueriesDuringBlock:(id)block
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  blockCopy = block;
   pUserData = 0;
   v5 = sqlite3_set_authorizer(self->_sqlitedb, _databaseAuthorizer, &pUserData + 4);
   if (v5)
@@ -2023,7 +2023,7 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v4[2](v4);
+  blockCopy[2](blockCopy);
 LABEL_12:
   v14 = sqlite3_db_config(self->_sqlitedb, 1010, 0, &pUserData);
   if (v14 | pUserData)
@@ -2080,7 +2080,7 @@ LABEL_12:
   v43 = 0;
   if (!self->_isHandlingIOError)
   {
-    v5 = [(ML3DatabaseConnection *)self transactionLevel];
+    transactionLevel = [(ML3DatabaseConnection *)self transactionLevel];
     self->_isHandlingIOError = 1;
     v6 = [(ML3DatabaseConnection *)self _closeAndFlushTransactionState:0];
     v41[24] = v6;
@@ -2098,13 +2098,13 @@ LABEL_18:
 
       v15 = v41[24];
       v16 = os_log_create("com.apple.amp.medialibrary", "Default");
-      v17 = v16;
+      defaultManager = v16;
       if (v15 == 1)
       {
         if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
         {
           *v44 = 0;
-          _os_log_impl(&dword_22D2FA000, v17, OS_LOG_TYPE_DEBUG, "[_handleDiskIOError] successfully recovered from disk IO error", v44, 2u);
+          _os_log_impl(&dword_22D2FA000, defaultManager, OS_LOG_TYPE_DEBUG, "[_handleDiskIOError] successfully recovered from disk IO error", v44, 2u);
         }
 
         goto LABEL_44;
@@ -2113,10 +2113,10 @@ LABEL_18:
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
       {
         *v44 = 0;
-        _os_log_impl(&dword_22D2FA000, v17, OS_LOG_TYPE_ERROR, "[_handleDiskIOError] FAILED TO HANDLE DISK IO ERROR", v44, 2u);
+        _os_log_impl(&dword_22D2FA000, defaultManager, OS_LOG_TYPE_ERROR, "[_handleDiskIOError] FAILED TO HANDLE DISK IO ERROR", v44, 2u);
       }
 
-      v17 = [MEMORY[0x277CCAA00] defaultManager];
+      defaultManager = [MEMORY[0x277CCAA00] defaultManager];
       [(ML3DatabaseConnection *)self _databaseFilePaths];
       v35 = 0u;
       v36 = 0u;
@@ -2155,7 +2155,7 @@ LABEL_25:
 
         v23 = v22;
 
-        if (!v23 || ![v17 fileExistsAtPath:v23])
+        if (!v23 || ![defaultManager fileExistsAtPath:v23])
         {
           goto LABEL_39;
         }
@@ -2178,10 +2178,10 @@ LABEL_25:
           goto LABEL_42;
         }
 
-        v25 = [(ML3DatabaseConnection *)self _isDeviceMediaLibraryDatabase];
+        _isDeviceMediaLibraryDatabase = [(ML3DatabaseConnection *)self _isDeviceMediaLibraryDatabase];
         v26 = _ML3LogCategoryDefault();
         v27 = os_log_type_enabled(v26, OS_LOG_TYPE_ERROR);
-        if (v25)
+        if (_isDeviceMediaLibraryDatabase)
         {
           if (v27)
           {
@@ -2253,7 +2253,7 @@ LABEL_44:
     dispatch_semaphore_wait(v7, 0xFFFFFFFFFFFFFFFFLL);
     if (v41[24] == 1 && (v12 = [(ML3DatabaseConnection *)self open], (v41[24] = v12) != 0))
     {
-      if (!v5)
+      if (!transactionLevel)
       {
 LABEL_17:
 
@@ -2265,7 +2265,7 @@ LABEL_17:
       if (v13)
       {
         os_unfair_lock_lock(&self->_lock);
-        self->_transactionLevel = v5;
+        self->_transactionLevel = transactionLevel;
         self->_nestedTransactionWantsToRollback = 1;
         os_unfair_lock_unlock(&self->_lock);
         goto LABEL_17;
@@ -2326,11 +2326,11 @@ intptr_t __43__ML3DatabaseConnection__handleDiskIOError__block_invoke(uint64_t a
   return dispatch_semaphore_signal(*(a1 + 40));
 }
 
-- (BOOL)_handleBusyLockWithNumberOfRetries:(int)a3
+- (BOOL)_handleBusyLockWithNumberOfRetries:(int)retries
 {
-  if (a3)
+  if (retries)
   {
-    if (a3 >= 10 && self->_journalingMode == 1)
+    if (retries >= 10 && self->_journalingMode == 1)
     {
       return 1;
     }
@@ -2373,8 +2373,8 @@ intptr_t __43__ML3DatabaseConnection__handleDiskIOError__block_invoke(uint64_t a
       _os_log_impl(&dword_22D2FA000, v5, OS_LOG_TYPE_DEFAULT, "Attempting database recovery...", buf, 2u);
     }
 
-    v6 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v7 = [v6 componentsJoinedByString:@"\n"];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+    v7 = [callStackSymbols componentsJoinedByString:@"\n"];
 
     v8 = +[MLMediaLibraryService sharedMediaLibraryService];
     databasePath = self->_databasePath;
@@ -2542,24 +2542,24 @@ LABEL_7:
   return v13;
 }
 
-- (id)openBlobInTable:(id)a3 column:(id)a4 row:(int64_t)a5 readOnly:(BOOL)a6
+- (id)openBlobInTable:(id)table column:(id)column row:(int64_t)row readOnly:(BOOL)only
 {
-  v6 = a6;
+  onlyCopy = only;
   v20[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
+  tableCopy = table;
+  columnCopy = column;
   [(ML3DatabaseConnection *)self _ensureConnectionIsOpen];
   ppBlob = 0;
-  v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"SELECT 1 FROM %@ WHERE ROWID=?", v10];
-  v13 = [MEMORY[0x277CCABB0] numberWithLongLong:a5];
+  tableCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"SELECT 1 FROM %@ WHERE ROWID=?", tableCopy];
+  v13 = [MEMORY[0x277CCABB0] numberWithLongLong:row];
   v20[0] = v13;
   v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v20 count:1];
-  v15 = [(ML3DatabaseConnection *)self executeQuery:v12 withParameters:v14];
+  v15 = [(ML3DatabaseConnection *)self executeQuery:tableCopy withParameters:v14];
 
   v16 = 0;
   if ([v15 hasAtLeastOneRow])
   {
-    if (sqlite3_blob_open(self->_sqlitedb, "main", [v10 UTF8String], objc_msgSend(v11, "UTF8String"), a5, !v6, &ppBlob))
+    if (sqlite3_blob_open(self->_sqlitedb, "main", [tableCopy UTF8String], objc_msgSend(columnCopy, "UTF8String"), row, !onlyCopy, &ppBlob))
     {
       [(ML3DatabaseConnection *)self _logCurrentError];
       v16 = 0;
@@ -2575,10 +2575,10 @@ LABEL_7:
   return v16;
 }
 
-- (BOOL)removeModuleNamed:(id)a3
+- (BOOL)removeModuleNamed:(id)named
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  namedCopy = named;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -2599,8 +2599,8 @@ LABEL_3:
       }
 
       v10 = *(*(&v16 + 1) + 8 * v9);
-      v11 = [v10 name];
-      v12 = [v11 isEqualToString:v4];
+      name = [v10 name];
+      v12 = [name isEqualToString:namedCopy];
 
       if (v12)
       {
@@ -2642,21 +2642,21 @@ LABEL_12:
   return v13;
 }
 
-- (BOOL)registerModuleName:(id)a3 moduleMethods:(sqlite3_module *)a4
+- (BOOL)registerModuleName:(id)name moduleMethods:(sqlite3_module *)methods
 {
-  v7 = a3;
-  v8 = [(ML3DatabaseConnection *)self _registeredModuleNamed:v7];
+  nameCopy = name;
+  v8 = [(ML3DatabaseConnection *)self _registeredModuleNamed:nameCopy];
   if (!v8)
   {
-    v9 = [[ML3DatabaseModule alloc] initWithName:v7 moduleMethods:a4];
+    v9 = [[ML3DatabaseModule alloc] initWithName:nameCopy moduleMethods:methods];
 
     v13 = [(ML3DatabaseConnection *)self registerModule:v9];
     goto LABEL_6;
   }
 
   v9 = v8;
-  v10 = [(ML3DatabaseModule *)v8 name];
-  v11 = [v10 isEqualToString:v7];
+  name = [(ML3DatabaseModule *)v8 name];
+  v11 = [name isEqualToString:nameCopy];
 
   if (!v11)
   {
@@ -2664,13 +2664,13 @@ LABEL_12:
     goto LABEL_8;
   }
 
-  v12 = [(ML3DatabaseModule *)v9 moduleMethods];
+  moduleMethods = [(ML3DatabaseModule *)v9 moduleMethods];
 
-  if (v12 != a4)
+  if (moduleMethods != methods)
   {
 LABEL_8:
-    v15 = [MEMORY[0x277CCA890] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"ML3DatabaseConnection.m" lineNumber:817 description:@"modules can only be registered one time"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ML3DatabaseConnection.m" lineNumber:817 description:@"modules can only be registered one time"];
   }
 
   v13 = 1;
@@ -2679,65 +2679,65 @@ LABEL_6:
   return v13;
 }
 
-- (BOOL)registerModule:(id)a3
+- (BOOL)registerModule:(id)module
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  moduleCopy = module;
   if (!self->_sqlitedb)
   {
-    v15 = [MEMORY[0x277CCA890] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"ML3DatabaseConnection.m" lineNumber:794 description:{@"Cannot register module. SQLite handle not available, or connection is not open."}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ML3DatabaseConnection.m" lineNumber:794 description:{@"Cannot register module. SQLite handle not available, or connection is not open."}];
   }
 
-  v6 = [v5 context];
+  context = [moduleCopy context];
 
-  if (v6)
+  if (context)
   {
-    v7 = [v5 context];
+    context2 = [moduleCopy context];
   }
 
   else
   {
-    v7 = v5;
+    context2 = moduleCopy;
   }
 
-  v8 = v7;
+  v8 = context2;
   sqlitedb = self->_sqlitedb;
-  v10 = [v5 name];
-  module = sqlite3_create_module(sqlitedb, [v10 UTF8String], objc_msgSend(v5, "moduleMethods"), v8);
+  name = [moduleCopy name];
+  module = sqlite3_create_module(sqlitedb, [name UTF8String], objc_msgSend(moduleCopy, "moduleMethods"), v8);
 
   if (module)
   {
     v12 = os_log_create("com.apple.amp.medialibrary", "Default");
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [(ML3DatabaseConnection *)self sqliteError];
+      sqliteError = [(ML3DatabaseConnection *)self sqliteError];
       v16 = 138543618;
-      v17 = v5;
+      v17 = moduleCopy;
       v18 = 2114;
-      v19 = v13;
+      v19 = sqliteError;
       _os_log_impl(&dword_22D2FA000, v12, OS_LOG_TYPE_DEFAULT, "Error registering module: %{public}@. %{public}@", &v16, 0x16u);
     }
   }
 
   else
   {
-    [(NSMutableArray *)self->_registeredModules addObject:v5];
+    [(NSMutableArray *)self->_registeredModules addObject:moduleCopy];
   }
 
   return module == 0;
 }
 
-- (BOOL)registerFunctionName:(id)a3 argumentCount:(int)a4 functionPointer:(void *)a5 userData:(void *)a6
+- (BOOL)registerFunctionName:(id)name argumentCount:(int)count functionPointer:(void *)pointer userData:(void *)data
 {
-  v8 = *&a4;
-  v10 = a3;
-  v11 = [[ML3DatabaseFunctionPointer alloc] initWithName:v10 argumentCount:v8];
+  v8 = *&count;
+  nameCopy = name;
+  v11 = [[ML3DatabaseFunctionPointer alloc] initWithName:nameCopy argumentCount:v8];
 
-  [(ML3DatabaseFunctionPointer *)v11 setFunctionPointer:a5];
-  if (a6)
+  [(ML3DatabaseFunctionPointer *)v11 setFunctionPointer:pointer];
+  if (data)
   {
-    [(ML3DatabaseFunctionPointer *)v11 setUserData:a6];
+    [(ML3DatabaseFunctionPointer *)v11 setUserData:data];
   }
 
   v12 = [(ML3DatabaseFunctionPointer *)v11 registerWithConnection:self];
@@ -2749,14 +2749,14 @@ LABEL_6:
   return v12;
 }
 
-- (BOOL)registerFunctionName:(id)a3 argumentCount:(int)a4 block:(id)a5
+- (BOOL)registerFunctionName:(id)name argumentCount:(int)count block:(id)block
 {
-  v5 = *&a4;
-  v8 = a5;
-  v9 = a3;
-  v10 = [[ML3DatabaseFunctionBlock alloc] initWithName:v9 argumentCount:v5];
+  v5 = *&count;
+  blockCopy = block;
+  nameCopy = name;
+  v10 = [[ML3DatabaseFunctionBlock alloc] initWithName:nameCopy argumentCount:v5];
 
-  [(ML3DatabaseFunctionBlock *)v10 setBlock:v8];
+  [(ML3DatabaseFunctionBlock *)v10 setBlock:blockCopy];
   v11 = [(ML3DatabaseFunctionBlock *)v10 registerWithConnection:self];
   if (v11)
   {
@@ -2766,19 +2766,19 @@ LABEL_6:
   return v11;
 }
 
-- (void)enqueueBlockForTransactionCommit:(id)a3
+- (void)enqueueBlockForTransactionCommit:(id)commit
 {
   enqueuedTransactionCommitBlocks = self->_enqueuedTransactionCommitBlocks;
-  v4 = MEMORY[0x2318CDB10](a3, a2);
+  v4 = MEMORY[0x2318CDB10](commit, a2);
   [(NSMutableArray *)enqueuedTransactionCommitBlocks addObject:v4];
 }
 
-- (BOOL)performTransactionWithBlock:(id)a3 usingBehaviorType:(unint64_t)a4
+- (BOOL)performTransactionWithBlock:(id)block usingBehaviorType:(unint64_t)type
 {
-  v6 = a3;
-  if ([(ML3DatabaseConnection *)self pushTransactionUsingBehaviorType:a4])
+  blockCopy = block;
+  if ([(ML3DatabaseConnection *)self pushTransactionUsingBehaviorType:type])
   {
-    v7 = [(ML3DatabaseConnection *)self popTransactionAndCommit:v6[2](v6)];
+    v7 = [(ML3DatabaseConnection *)self popTransactionAndCommit:blockCopy[2](blockCopy)];
   }
 
   else
@@ -2789,9 +2789,9 @@ LABEL_6:
   return v7;
 }
 
-- (BOOL)popToRootTransactionAndCommit:(BOOL)a3
+- (BOOL)popToRootTransactionAndCommit:(BOOL)commit
 {
-  v3 = a3;
+  commitCopy = commit;
   v10 = *MEMORY[0x277D85DE8];
   if (![(ML3DatabaseConnection *)self isInTransaction])
   {
@@ -2802,22 +2802,22 @@ LABEL_6:
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138543362;
-    v9 = self;
+    selfCopy = self;
     _os_log_impl(&dword_22D2FA000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ ending transaction", &v8, 0xCu);
   }
 
-  v6 = [(ML3DatabaseConnection *)self _internalEndTransactionAndCommit:v3];
+  v6 = [(ML3DatabaseConnection *)self _internalEndTransactionAndCommit:commitCopy];
   os_unfair_lock_lock(&self->_lock);
   self->_transactionLevel = 0;
   self->_nestedTransactionWantsToRollback = 0;
   os_unfair_lock_unlock(&self->_lock);
-  [(ML3DatabaseConnection *)self _executeTransactionCommitBlocks:v3];
+  [(ML3DatabaseConnection *)self _executeTransactionCommitBlocks:commitCopy];
   return v6;
 }
 
-- (BOOL)popTransactionAndCommit:(BOOL)a3
+- (BOOL)popTransactionAndCommit:(BOOL)commit
 {
-  v3 = a3;
+  commitCopy = commit;
   v14 = *MEMORY[0x277D85DE8];
   os_unfair_lock_lock(&self->_lock);
   transactionLevel = self->_transactionLevel;
@@ -2828,7 +2828,7 @@ LABEL_6:
     if (transactionLevel == 1)
     {
       v7 = !nestedTransactionWantsToRollback;
-      v8 = [(ML3DatabaseConnection *)self _internalEndTransactionAndCommit:v3 && !nestedTransactionWantsToRollback];
+      v8 = [(ML3DatabaseConnection *)self _internalEndTransactionAndCommit:commitCopy && !nestedTransactionWantsToRollback];
       if (v8)
       {
         os_unfair_lock_lock(&self->_lock);
@@ -2843,19 +2843,19 @@ LABEL_6:
         if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
         {
           v12 = 138543362;
-          v13 = self;
+          selfCopy = self;
           _os_log_impl(&dword_22D2FA000, v10, OS_LOG_TYPE_DEFAULT, "Warning: unable to end transaction on connection %{public}@", &v12, 0xCu);
         }
       }
 
-      [(ML3DatabaseConnection *)self _executeTransactionCommitBlocks:v3 & v7];
+      [(ML3DatabaseConnection *)self _executeTransactionCommitBlocks:commitCopy & v7];
     }
 
     else
     {
       os_unfair_lock_lock(&self->_lock);
       --self->_transactionLevel;
-      self->_nestedTransactionWantsToRollback |= !v3;
+      self->_nestedTransactionWantsToRollback |= !commitCopy;
       os_unfair_lock_unlock(&self->_lock);
       LOBYTE(v8) = 1;
     }
@@ -2876,7 +2876,7 @@ LABEL_6:
   return v8;
 }
 
-- (BOOL)pushTransactionUsingBehaviorType:(unint64_t)a3
+- (BOOL)pushTransactionUsingBehaviorType:(unint64_t)type
 {
   v10 = *MEMORY[0x277D85DE8];
   if ([(ML3DatabaseConnection *)self isInTransaction])
@@ -2885,7 +2885,7 @@ LABEL_6:
     return 1;
   }
 
-  else if ([(ML3DatabaseConnection *)self _internalBeginTransactionWithBehaviorType:a3])
+  else if ([(ML3DatabaseConnection *)self _internalBeginTransactionWithBehaviorType:type])
   {
     os_unfair_lock_lock(&self->_lock);
     self->_nestedTransactionWantsToRollback = 0;
@@ -2900,7 +2900,7 @@ LABEL_6:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v8 = 138543362;
-      v9 = self;
+      selfCopy = self;
       _os_log_impl(&dword_22D2FA000, v6, OS_LOG_TYPE_DEFAULT, "Warning: unable to begin transaction on connection: %{public}@", &v8, 0xCu);
     }
 
@@ -2910,18 +2910,18 @@ LABEL_6:
   return v5;
 }
 
-- (BOOL)executeUpdate:(id)a3 withParameters:(id)a4 error:(id *)a5
+- (BOOL)executeUpdate:(id)update withParameters:(id)parameters error:(id *)error
 {
   v15 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  updateCopy = update;
+  parametersCopy = parameters;
   if ([(ML3DatabaseConnection *)self transactionMarkedForRollBack])
   {
     v10 = os_log_create("com.apple.amp.medialibrary", "Default");
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 138543362;
-      v14 = v8;
+      v14 = updateCopy;
       _os_log_impl(&dword_22D2FA000, v10, OS_LOG_TYPE_DEFAULT, "failing update request in a transaction marked for rollback. sql=%{public}@", &v13, 0xCu);
     }
 
@@ -2930,19 +2930,19 @@ LABEL_6:
 
   else
   {
-    v11 = [(ML3DatabaseConnection *)self _internalExecuteUpdate:v8 withParameters:v9 error:a5];
+    v11 = [(ML3DatabaseConnection *)self _internalExecuteUpdate:updateCopy withParameters:parametersCopy error:error];
   }
 
   return v11;
 }
 
-- (BOOL)tableExists:(id)a3
+- (BOOL)tableExists:(id)exists
 {
-  v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"SELECT name FROM sqlite_master WHERE type='table' AND name='%@'", a3];
-  v5 = [(ML3DatabaseConnection *)self executeQuery:v4];
-  v6 = [v5 hasAtLeastOneRow];
+  exists = [MEMORY[0x277CCACA8] stringWithFormat:@"SELECT name FROM sqlite_master WHERE type='table' AND name='%@'", exists];
+  v5 = [(ML3DatabaseConnection *)self executeQuery:exists];
+  hasAtLeastOneRow = [v5 hasAtLeastOneRow];
 
-  return v6;
+  return hasAtLeastOneRow;
 }
 
 - (BOOL)databasePathExists
@@ -2952,15 +2952,15 @@ LABEL_6:
     return 1;
   }
 
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
-  v5 = [v4 fileExistsAtPath:self->_databasePath];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v5 = [defaultManager fileExistsAtPath:self->_databasePath];
 
   return v5;
 }
 
-- (BOOL)_closeAndFlushTransactionState:(BOOL)a3
+- (BOOL)_closeAndFlushTransactionState:(BOOL)state
 {
-  v3 = a3;
+  stateCopy = state;
   v22 = *MEMORY[0x277D85DE8];
   if (![(ML3DatabaseConnection *)self isOpen])
   {
@@ -2968,7 +2968,7 @@ LABEL_6:
     if (os_log_type_enabled(WeakRetained, OS_LOG_TYPE_DEFAULT))
     {
       v17 = 138543362;
-      v18 = self;
+      selfCopy4 = self;
       _os_log_impl(&dword_22D2FA000, WeakRetained, OS_LOG_TYPE_DEFAULT, "%{public}@ is not open", &v17, 0xCu);
     }
 
@@ -2981,7 +2981,7 @@ LABEL_6:
     [WeakRetained connectionWillCloseDatabase:self];
   }
 
-  if (v3)
+  if (stateCopy)
   {
     [(ML3DatabaseConnection *)self flush];
   }
@@ -2991,7 +2991,7 @@ LABEL_6:
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v17 = 138543362;
-    v18 = self;
+    selfCopy4 = self;
     _os_log_impl(&dword_22D2FA000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@ starting to finalize all statements", &v17, 0xCu);
   }
 
@@ -3006,18 +3006,18 @@ LABEL_6:
   sqlitedb = self->_sqlitedb;
   if (!sqlitedb || !self->_isOpen)
   {
-    v12 = os_log_create("com.apple.amp.medialibrary", "Default_Oversize");
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+    sqliteError = os_log_create("com.apple.amp.medialibrary", "Default_Oversize");
+    if (os_log_type_enabled(sqliteError, OS_LOG_TYPE_DEFAULT))
     {
       v13 = self->_sqlitedb;
       isOpen = self->_isOpen;
       v17 = 138543874;
-      v18 = self;
+      selfCopy4 = self;
       v19 = 2048;
       *v20 = v13;
       *&v20[8] = 1024;
       v21 = isOpen;
-      _os_log_impl(&dword_22D2FA000, v12, OS_LOG_TYPE_DEFAULT, "%{public}@ not closing _sqlitedb=%p, _isOpen=%{BOOL}u", &v17, 0x1Cu);
+      _os_log_impl(&dword_22D2FA000, sqliteError, OS_LOG_TYPE_DEFAULT, "%{public}@ not closing _sqlitedb=%p, _isOpen=%{BOOL}u", &v17, 0x1Cu);
     }
 
     goto LABEL_19;
@@ -3038,7 +3038,7 @@ LABEL_6:
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
     v17 = 138543874;
-    v18 = self;
+    selfCopy4 = self;
     v19 = 1024;
     *v20 = v9;
     *&v20[4] = 1024;
@@ -3054,8 +3054,8 @@ LABEL_6:
       goto LABEL_20;
     }
 
-    v12 = [(ML3DatabaseConnection *)self sqliteError];
-    [WeakRetained connection:self didFailToCloseDatabaseWithError:v12];
+    sqliteError = [(ML3DatabaseConnection *)self sqliteError];
+    [WeakRetained connection:self didFailToCloseDatabaseWithError:sqliteError];
 LABEL_19:
 
 LABEL_20:
@@ -3086,29 +3086,29 @@ LABEL_21:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138543362;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&dword_22D2FA000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ starting to close", &v5, 0xCu);
   }
 
   return [(ML3DatabaseConnection *)self _closeAndFlushTransactionState:1];
 }
 
-- (BOOL)_openWithFlags:(int)a3
+- (BOOL)_openWithFlags:(int)flags
 {
   v126 = *MEMORY[0x277D85DE8];
   if (self->_databasePath)
   {
-    v4 = self;
+    selfCopy = self;
     WeakRetained = objc_loadWeakRetained(&self->_connectionDelegate);
     if (objc_opt_respondsToSelector())
     {
-      [WeakRetained connectionWillOpenDatabase:v4];
+      [WeakRetained connectionWillOpenDatabase:selfCopy];
     }
 
     v6 = os_log_create("com.apple.amp.medialibrary", "Default");
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      if (v4->_isReadOnly)
+      if (selfCopy->_isReadOnly)
       {
         v7 = @"readonly";
       }
@@ -3118,27 +3118,27 @@ LABEL_21:
         v7 = @"readwrite";
       }
 
-      v8 = [(ML3DatabaseConnection *)v4 databasePath];
+      databasePath = [(ML3DatabaseConnection *)selfCopy databasePath];
       *buf = 138544130;
-      *&buf[4] = v4;
+      *&buf[4] = selfCopy;
       *&buf[12] = 2114;
       *&buf[14] = v7;
       *&buf[22] = 2114;
-      *&v121 = v8;
+      *&v121 = databasePath;
       WORD4(v121) = 1024;
-      *(&v121 + 10) = a3;
+      *(&v121 + 10) = flags;
       _os_log_impl(&dword_22D2FA000, v6, OS_LOG_TYPE_DEFAULT, "Trying to open %{public}@ connection %{public}@ to database at path %{public}@ with flags=%d", buf, 0x26u);
     }
 
-    if ((a3 & 2) != 0)
+    if ((flags & 2) != 0)
     {
-      v4->_isReadOnly = 0;
+      selfCopy->_isReadOnly = 0;
       v9 = os_log_create("com.apple.amp.medialibrary", "Default");
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
-        isReadOnly = v4->_isReadOnly;
+        isReadOnly = selfCopy->_isReadOnly;
         *buf = 138543618;
-        *&buf[4] = v4;
+        *&buf[4] = selfCopy;
         *&buf[12] = 1024;
         *&buf[14] = isReadOnly;
         v11 = "Adjusting connection %{public}@ setting _isReadOnly=%{BOOL}u as the flags are SQLITE_OPEN_READWRITE";
@@ -3148,19 +3148,19 @@ LABEL_21:
 
     else
     {
-      if ((a3 & 1) == 0)
+      if ((flags & 1) == 0)
       {
 LABEL_18:
-        if ([(ML3DatabaseConnection *)v4 _databaseFilesAreWritable]|| v4->_journalingMode == 1)
+        if ([(ML3DatabaseConnection *)selfCopy _databaseFilesAreWritable]|| selfCopy->_journalingMode == 1)
         {
-          a3 = a3 & 0xFFFFFFFC | 2;
+          flags = flags & 0xFFFFFFFC | 2;
           v13 = os_log_create("com.apple.amp.medialibrary", "Default");
           if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138543618;
-            *&buf[4] = v4;
+            *&buf[4] = selfCopy;
             *&buf[12] = 1024;
-            *&buf[14] = a3;
+            *&buf[14] = flags;
             _os_log_impl(&dword_22D2FA000, v13, OS_LOG_TYPE_DEFAULT, "Adjusting connection %{public}@ setting openFlags=%d to account for WAL files", buf, 0x12u);
           }
         }
@@ -3169,65 +3169,65 @@ LABEL_18:
         v15 = __daemonProcessInfo != 0;
         if (__daemonProcessInfo)
         {
-          a3 |= 0x1000000u;
+          flags |= 0x1000000u;
           v16 = os_log_create("com.apple.amp.medialibrary", "Default");
           if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138543618;
-            *&buf[4] = v4;
+            *&buf[4] = selfCopy;
             *&buf[12] = 1024;
-            *&buf[14] = a3;
+            *&buf[14] = flags;
             _os_log_impl(&dword_22D2FA000, v16, OS_LOG_TYPE_DEFAULT, "Adjusting connection %{public}@ setting openFlags=%d for medialibrary deamon", buf, 0x12u);
           }
         }
 
-        v17 = [(ML3DatabaseConnection *)v4 _isDeviceMediaLibraryDatabase];
-        if (!v17)
+        _isDeviceMediaLibraryDatabase = [(ML3DatabaseConnection *)selfCopy _isDeviceMediaLibraryDatabase];
+        if (!_isDeviceMediaLibraryDatabase)
         {
-          v15 = !v4->_isReadOnly;
+          v15 = !selfCopy->_isReadOnly;
         }
 
         v18 = os_log_create("com.apple.amp.medialibrary", "Default");
         if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
         {
-          databasePath = v4->_databasePath;
-          v20 = v4->_isReadOnly;
+          databasePath = selfCopy->_databasePath;
+          v20 = selfCopy->_isReadOnly;
           *buf = 138544898;
-          *&buf[4] = v4;
+          *&buf[4] = selfCopy;
           *&buf[12] = 2114;
           *&buf[14] = databasePath;
           *&buf[22] = 1024;
           LODWORD(v121) = v20;
           WORD2(v121) = 1024;
-          *(&v121 + 6) = v17;
+          *(&v121 + 6) = _isDeviceMediaLibraryDatabase;
           WORD5(v121) = 1024;
           HIDWORD(v121) = v14 != 0;
           v122 = 1024;
           v123 = v15;
           v124 = 1024;
-          v125 = a3;
+          flagsCopy = flags;
           _os_log_impl(&dword_22D2FA000, v18, OS_LOG_TYPE_DEFAULT, "Connection %{public}@ attempting to open database at %{public}@ _isReadOnly=%{BOOL}u, isDeviceMediaLibraryDatabase=%{BOOL}u, isMediaLibraryDeamon=%{BOOL}u, canCreateDatabase=%{BOOL}u, openFlags=%d,", buf, 0x34u);
         }
 
         if (v15)
         {
-          a3 |= 4u;
-          [(ML3DatabaseConnection *)v4 _createDatabaseDirectoryIfNonexistent];
+          flags |= 4u;
+          [(ML3DatabaseConnection *)selfCopy _createDatabaseDirectoryIfNonexistent];
         }
 
-        else if (v4->_isReadOnly)
+        else if (selfCopy->_isReadOnly)
         {
-          v21 = [MEMORY[0x277CCAA00] defaultManager];
-          v22 = [v21 fileExistsAtPath:v4->_databasePath];
+          defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+          v22 = [defaultManager fileExistsAtPath:selfCopy->_databasePath];
 
           if ((v22 & 1) == 0)
           {
             v39 = os_log_create("com.apple.amp.medialibrary", "Default");
             if (os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
             {
-              v40 = v4->_databasePath;
+              v40 = selfCopy->_databasePath;
               *buf = 138543618;
-              *&buf[4] = v4;
+              *&buf[4] = selfCopy;
               *&buf[12] = 2114;
               *&buf[14] = v40;
               _os_log_impl(&dword_22D2FA000, v39, OS_LOG_TYPE_ERROR, "Connection %{public}@ is readOnly, creating DB is NOT allowed and database file doesn't exist at %{public}@", buf, 0x16u);
@@ -3237,7 +3237,7 @@ LABEL_18:
           }
         }
 
-        protectionLevel = v4->_protectionLevel;
+        protectionLevel = selfCopy->_protectionLevel;
         if (protectionLevel > 3)
         {
           v24 = 7340032;
@@ -3256,10 +3256,10 @@ LABEL_18:
         *&v121 = &__block_descriptor_33_e5_v8__0l;
         BYTE8(v121) = 1;
         _MLDispatchToSerialQueue(0, buf);
-        v25 = [(NSString *)v4->_databasePath fileSystemRepresentation];
-        v26 = sqlite3_open_v2(v25, &ppDb, v24 | a3, 0);
+        fileSystemRepresentation = [(NSString *)selfCopy->_databasePath fileSystemRepresentation];
+        v26 = sqlite3_open_v2(fileSystemRepresentation, &ppDb, v24 | flags, 0);
         v99 = WeakRetained;
-        v103 = v4;
+        v103 = selfCopy;
         v97 = v15;
         v95 = v24;
         if (v26)
@@ -3278,7 +3278,7 @@ LABEL_18:
               v34 = v32;
             }
 
-            *&buf[4] = v25;
+            *&buf[4] = fileSystemRepresentation;
             *&buf[12] = 1024;
             *&buf[14] = v27;
             *&buf[18] = 1024;
@@ -3292,12 +3292,12 @@ LABEL_18:
 
           if (v29)
           {
-            v35 = ML3DatabaseCreateCorruptionError();
+            sqliteError = ML3DatabaseCreateCorruptionError();
           }
 
           else
           {
-            if (((v27 & 0xFB) == 0xA || v28 == 15) && [(ML3DatabaseConnection *)v4 _handleDiskIOError])
+            if (((v27 & 0xFB) == 0xA || v28 == 15) && [(ML3DatabaseConnection *)selfCopy _handleDiskIOError])
             {
               v29 = 0;
               v102 = 0;
@@ -3308,16 +3308,16 @@ LABEL_63:
               goto LABEL_111;
             }
 
-            v35 = [(ML3DatabaseConnection *)v4 sqliteError];
+            sqliteError = [(ML3DatabaseConnection *)selfCopy sqliteError];
           }
 
-          v102 = v35;
+          v102 = sqliteError;
           goto LABEL_63;
         }
 
         sqlite3_extended_result_codes(ppDb, 1);
-        journalingMode = v4->_journalingMode;
-        v86 = a3;
+        journalingMode = selfCopy->_journalingMode;
+        flagsCopy2 = flags;
         if (journalingMode)
         {
           if (journalingMode != 1)
@@ -3337,23 +3337,23 @@ LABEL_63:
             if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138543618;
-              *&buf[4] = v4;
+              *&buf[4] = selfCopy;
               *&buf[12] = 1024;
               *&buf[14] = v93;
               _os_log_impl(&dword_22D2FA000, v31, OS_LOG_TYPE_DEFAULT, "Connection %{public}@ could not enable SQLITE_FCNTL_PERSIST_WAL option, result %d", buf, 0x12u);
             }
 
             v100 = @"enable SQLITE_FCNTL_PERSIST_WAL option failed";
-            if (![(ML3DatabaseConnection *)v4 _handleConnectionErrorWhileOpening:v93])
+            if (![(ML3DatabaseConnection *)selfCopy _handleConnectionErrorWhileOpening:v93])
             {
               v89 = 0;
 LABEL_72:
               v91 = 0;
 LABEL_86:
-              v119[0] = v4->_databasePath;
+              v119[0] = selfCopy->_databasePath;
               v48 = [v119[0] stringByAppendingString:@"-shm"];
               v119[1] = v48;
-              v49 = [(NSString *)v4->_databasePath stringByAppendingString:@"-wal"];
+              v49 = [(NSString *)selfCopy->_databasePath stringByAppendingString:@"-wal"];
               v119[2] = v49;
               v50 = [MEMORY[0x277CBEA60] arrayWithObjects:v119 count:3];
 
@@ -3377,8 +3377,8 @@ LABEL_86:
                     }
 
                     v56 = *(*(&v107 + 1) + 8 * i);
-                    v57 = [MEMORY[0x277CCAA00] defaultManager];
-                    v58 = [v57 fileExistsAtPath:v56];
+                    defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+                    v58 = [defaultManager2 fileExistsAtPath:v56];
 
                     if (v58)
                     {
@@ -3420,7 +3420,7 @@ LABEL_86:
 
               if (v91)
               {
-                v4 = v103;
+                selfCopy = v103;
                 if (__daemonProcessInfo && !v103->_isReadOnly && (v63 = sqlite3_exec(ppDb, "PRAGMA cache_size=500", 0, 0, &errmsg), v63))
                 {
                   v38 = v63;
@@ -3444,16 +3444,16 @@ LABEL_86:
                     v102 = 0;
                     v28 = 0;
                     v36 = @"set cache size error";
-                    a3 = v86;
+                    flags = flagsCopy2;
                     v37 = v93;
 LABEL_112:
-                    v4->_isOpen = 0;
+                    selfCopy->_isOpen = 0;
                     v66 = os_log_create("com.apple.amp.medialibrary", "Default");
                     if (os_log_type_enabled(v66, OS_LOG_TYPE_ERROR))
                     {
                       v67 = objc_opt_class();
                       v68 = v38;
-                      v69 = v4->_databasePath;
+                      v69 = selfCopy->_databasePath;
                       v70 = sqlite3_errmsg(ppDb);
                       *buf = 138412802;
                       *&buf[4] = v67;
@@ -3467,12 +3467,12 @@ LABEL_112:
 
                     if (errmsg)
                     {
-                      v71 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", errmsg];
+                      errmsg = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", errmsg];
                     }
 
                     else
                     {
-                      v71 = &stru_28408B690;
+                      errmsg = &stru_28408B690;
                     }
 
                     v88 = dispatch_semaphore_create(0);
@@ -3481,15 +3481,15 @@ LABEL_112:
                     v94 = [MEMORY[0x277CCABB0] numberWithBool:v29];
                     v116[0] = v94;
                     v115[1] = @"openError";
-                    v72 = v102;
+                    null = v102;
                     if (!v102)
                     {
-                      v72 = [MEMORY[0x277CBEB68] null];
+                      null = [MEMORY[0x277CBEB68] null];
                     }
 
                     v73 = MEMORY[0x277D27EC0];
-                    v83 = v72;
-                    v116[1] = v72;
+                    v83 = null;
+                    v116[1] = null;
                     v115[2] = @"minimalCode";
                     v92 = [MEMORY[0x277CCABB0] numberWithInt:v28];
                     v116[2] = v92;
@@ -3497,10 +3497,10 @@ LABEL_112:
                     v98 = [MEMORY[0x277CCABB0] numberWithBool:v97];
                     v116[3] = v98;
                     v115[4] = @"openFlags";
-                    v96 = [MEMORY[0x277CCABB0] numberWithInt:v95 | a3];
-                    v116[4] = v96;
+                    flags = [MEMORY[0x277CCABB0] numberWithInt:v95 | flags];
+                    v116[4] = flags;
                     v115[5] = @"isReadOnly";
-                    v87 = [MEMORY[0x277CCABB0] numberWithBool:v4->_isReadOnly];
+                    v87 = [MEMORY[0x277CCABB0] numberWithBool:selfCopy->_isReadOnly];
                     v116[5] = v87;
                     v115[6] = @"sqliteResult";
                     v85 = [MEMORY[0x277CCABB0] numberWithInt:v38];
@@ -3509,32 +3509,32 @@ LABEL_112:
                     v84 = [MEMORY[0x277CCABB0] numberWithInt:v37];
                     v116[7] = v84;
                     v115[8] = @"path";
-                    v74 = v4->_databasePath;
-                    v75 = v74;
+                    v74 = selfCopy->_databasePath;
+                    null2 = v74;
                     if (!v74)
                     {
-                      v75 = [MEMORY[0x277CBEB68] null];
+                      null2 = [MEMORY[0x277CBEB68] null];
                     }
 
                     v76 = *v73;
-                    v116[8] = v75;
+                    v116[8] = null2;
                     v115[9] = @"context";
-                    v77 = v36;
+                    null3 = v36;
                     if (!v36)
                     {
-                      v77 = [MEMORY[0x277CBEB68] null];
+                      null3 = [MEMORY[0x277CBEB68] null];
                     }
 
                     v101 = v36;
-                    v116[9] = v77;
+                    v116[9] = null3;
                     v115[10] = @"sqlErrorString";
-                    v78 = v71;
-                    if (!v71)
+                    null4 = errmsg;
+                    if (!errmsg)
                     {
-                      v78 = [MEMORY[0x277CBEB68] null];
+                      null4 = [MEMORY[0x277CBEB68] null];
                     }
 
-                    v116[10] = v78;
+                    v116[10] = null4;
                     v79 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v116 forKeys:v115 count:11];
                     v117 = v79;
                     v80 = [MEMORY[0x277CBEA60] arrayWithObjects:&v117 count:1];
@@ -3546,7 +3546,7 @@ LABEL_112:
                     v105 = v81;
                     [v90 snapshotWithDomain:v76 type:@"Bug" subType:@"Database Validation Bug" context:@"database open error" triggerThresholdValues:0 events:v80 completion:v104];
 
-                    if (!v71)
+                    if (!errmsg)
                     {
                     }
 
@@ -3600,8 +3600,8 @@ LABEL_136:
               v29 = 0;
               v102 = 0;
               v28 = 0;
-              v4 = v103;
-              a3 = v86;
+              selfCopy = v103;
+              flags = flagsCopy2;
               v36 = v100;
               v37 = v93;
               v38 = v89;
@@ -3629,7 +3629,7 @@ LABEL_111:
             if (os_log_type_enabled(v46, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138543874;
-              *&buf[4] = v4;
+              *&buf[4] = selfCopy;
               *&buf[12] = 2082;
               *&buf[14] = errmsg;
               *&buf[22] = 1024;
@@ -3642,7 +3642,7 @@ LABEL_111:
             v93 = v45;
 LABEL_84:
 
-            v91 = [(ML3DatabaseConnection *)v4 _handleConnectionErrorWhileOpening:v45];
+            v91 = [(ML3DatabaseConnection *)selfCopy _handleConnectionErrorWhileOpening:v45];
             goto LABEL_86;
           }
         }
@@ -3658,14 +3658,14 @@ LABEL_84:
             if (os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138543618;
-              *&buf[4] = v4;
+              *&buf[4] = selfCopy;
               *&buf[12] = 1024;
               *&buf[14] = v42;
               _os_log_impl(&dword_22D2FA000, v43, OS_LOG_TYPE_DEFAULT, "Connection %{public}@ could not disable SQLITE_FCNTL_PERSIST_WAL option, result %d", buf, 0x12u);
             }
 
             v100 = @"disable SQLITE_FCNTL_PERSIST_WAL option failed";
-            if (![(ML3DatabaseConnection *)v4 _handleConnectionErrorWhileOpening:v42])
+            if (![(ML3DatabaseConnection *)selfCopy _handleConnectionErrorWhileOpening:v42])
             {
               v89 = v42;
               v93 = 0;
@@ -3686,7 +3686,7 @@ LABEL_84:
             if (os_log_type_enabled(v46, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138543874;
-              *&buf[4] = v4;
+              *&buf[4] = selfCopy;
               *&buf[12] = 2082;
               *&buf[14] = errmsg;
               *&buf[22] = 1024;
@@ -3707,13 +3707,13 @@ LABEL_84:
         goto LABEL_86;
       }
 
-      v4->_isReadOnly = 1;
+      selfCopy->_isReadOnly = 1;
       v9 = os_log_create("com.apple.amp.medialibrary", "Default");
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
-        v10 = v4->_isReadOnly;
+        v10 = selfCopy->_isReadOnly;
         *buf = 138543618;
-        *&buf[4] = v4;
+        *&buf[4] = selfCopy;
         *&buf[12] = 1024;
         *&buf[14] = v10;
         v11 = "Adjusting connection %{public}@ setting _isReadOnly=%{BOOL}u as the flags are SQLITE_OPEN_READONLY";
@@ -3729,31 +3729,31 @@ LABEL_16:
   return 0;
 }
 
-- (void)setReadOnly:(BOOL)a3
+- (void)setReadOnly:(BOOL)only
 {
-  v5 = [(ML3DatabaseConnection *)self isOpen];
+  isOpen = [(ML3DatabaseConnection *)self isOpen];
   if ([(ML3DatabaseConnection *)self isOpen])
   {
     [(ML3DatabaseConnection *)self close];
   }
 
-  self->_isReadOnly = a3;
-  if (v5)
+  self->_isReadOnly = only;
+  if (isOpen)
   {
 
     [(ML3DatabaseConnection *)self open];
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     uniqueIdentifier = self->_uniqueIdentifier;
-    v6 = [v4 uniqueIdentifier];
-    v7 = [(NSUUID *)uniqueIdentifier isEqual:v6];
+    uniqueIdentifier = [equalCopy uniqueIdentifier];
+    v7 = [(NSUUID *)uniqueIdentifier isEqual:uniqueIdentifier];
   }
 
   else
@@ -3828,9 +3828,9 @@ LABEL_16:
   [(ML3DatabaseConnection *)&v3 dealloc];
 }
 
-- (ML3DatabaseConnection)initWithDatabasePath:(id)a3
+- (ML3DatabaseConnection)initWithDatabasePath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v20.receiver = self;
   v20.super_class = ML3DatabaseConnection;
   v5 = [(ML3DatabaseConnection *)&v20 init];
@@ -3838,7 +3838,7 @@ LABEL_16:
   if (v5)
   {
     v5->_lock._os_unfair_lock_opaque = 0;
-    v7 = [v4 copy];
+    v7 = [pathCopy copy];
     databasePath = v6->_databasePath;
     v6->_databasePath = v7;
 

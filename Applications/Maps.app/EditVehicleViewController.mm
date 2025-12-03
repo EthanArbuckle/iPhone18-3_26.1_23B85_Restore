@@ -1,6 +1,6 @@
 @interface EditVehicleViewController
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5;
-- (EditVehicleViewController)initWithColors:(id)a3 vehicle:(id)a4 delegate:(id)a5;
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string;
+- (EditVehicleViewController)initWithColors:(id)colors vehicle:(id)vehicle delegate:(id)delegate;
 - (EditVehicleViewControllerDelegate)delegate;
 - (NSArray)tableStructure;
 - (UIImageView)vehicleIconView;
@@ -10,29 +10,29 @@
 - (VehicleColorPicker)colorPicker;
 - (VehicleColorPickerCell)colorPickerCell;
 - (VehicleTextFieldCell)nicknameCell;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
 - (id)_selectedColor;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (unint64_t)selectedIndex;
-- (void)_captureAnalyticsForRemovedNetwork:(id)a3;
+- (void)_captureAnalyticsForRemovedNetwork:(id)network;
 - (void)_updateContent;
 - (void)_updateDoneButtonAvailability;
-- (void)availableNetworksDidChangeForProvider:(id)a3;
-- (void)colorPicker:(id)a3 didSelectIndex:(unint64_t)a4;
+- (void)availableNetworksDidChangeForProvider:(id)provider;
+- (void)colorPicker:(id)picker didSelectIndex:(unint64_t)index;
 - (void)pressedCancel;
 - (void)pressedDone;
-- (void)setSelectedIndex:(unint64_t)a3;
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5;
-- (void)textFieldDidBeginEditing:(id)a3;
-- (void)textFieldDidEndEditing:(id)a3;
+- (void)setSelectedIndex:(unint64_t)index;
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path;
+- (void)textFieldDidBeginEditing:(id)editing;
+- (void)textFieldDidEndEditing:(id)editing;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation EditVehicleViewController
@@ -46,16 +46,16 @@
 
 - (void)pressedDone
 {
-  v3 = [(EditVehicleViewController *)self nicknameCell];
-  v4 = [v3 textField];
-  [v4 endEditing:1];
+  nicknameCell = [(EditVehicleViewController *)self nicknameCell];
+  textField = [nicknameCell textField];
+  [textField endEditing:1];
 
   v5 = +[MKMapService sharedService];
   [v5 captureUserAction:41 onTarget:662 eventValue:0];
 
-  v13 = [(EditVehicleViewController *)self _selectedColor];
-  v6 = [v13 _maps_hexRepresentation];
-  [(VGVehicle *)self->_vehicle setColorHex:v6];
+  _selectedColor = [(EditVehicleViewController *)self _selectedColor];
+  _maps_hexRepresentation = [_selectedColor _maps_hexRepresentation];
+  [(VGVehicle *)self->_vehicle setColorHex:_maps_hexRepresentation];
 
   vehicle = self->_vehicle;
   v8 = self->_currentNickname;
@@ -64,11 +64,11 @@
   v10 = [NSSet setWithArray:self->_currentNetworks];
   [(VGVehicle *)self->_vehicle setPreferredChargingNetworks:v10];
 
-  v11 = [(EditVehicleViewController *)self delegate];
-  [v11 editVehicleViewController:self didSelectColor:v13 nickname:v8 removedNetworks:v9];
+  delegate = [(EditVehicleViewController *)self delegate];
+  [delegate editVehicleViewController:self didSelectColor:_selectedColor nickname:v8 removedNetworks:v9];
 
-  v12 = [(EditVehicleViewController *)self delegate];
-  [v12 editVehicleViewControllerDidSelectDone:self];
+  delegate2 = [(EditVehicleViewController *)self delegate];
+  [delegate2 editVehicleViewControllerDidSelectDone:self];
 }
 
 - (void)pressedCancel
@@ -76,11 +76,11 @@
   v3 = +[MKMapService sharedService];
   [v3 captureUserAction:34 onTarget:662 eventValue:0];
 
-  v5 = [(EditVehicleViewController *)self navigationController];
-  v4 = [v5 popViewControllerAnimated:1];
+  navigationController = [(EditVehicleViewController *)self navigationController];
+  v4 = [navigationController popViewControllerAnimated:1];
 }
 
-- (void)availableNetworksDidChangeForProvider:(id)a3
+- (void)availableNetworksDidChangeForProvider:(id)provider
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -90,20 +90,20 @@
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)_captureAnalyticsForRemovedNetwork:(id)a3
+- (void)_captureAnalyticsForRemovedNetwork:(id)network
 {
-  v4 = a3;
-  v5 = [(VGChargingNetworkAvailabilityProvider *)self->_networksProvider suggestedNetworks];
+  networkCopy = network;
+  suggestedNetworks = [(VGChargingNetworkAvailabilityProvider *)self->_networksProvider suggestedNetworks];
 
-  if (v5)
+  if (suggestedNetworks)
   {
-    v6 = [(VGChargingNetworkAvailabilityProvider *)self->_networksProvider suggestedNetworks];
+    suggestedNetworks2 = [(VGChargingNetworkAvailabilityProvider *)self->_networksProvider suggestedNetworks];
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_100A7B914;
     v10[3] = &unk_101633110;
-    v11 = v4;
-    v7 = sub_100030774(v6, v10);
+    v11 = networkCopy;
+    v7 = sub_100030774(suggestedNetworks2, v10);
 
     if (v7)
     {
@@ -121,55 +121,55 @@
 
   else
   {
-    [(NSMutableArray *)self->_networksAwaitingLogging addObject:v4];
+    [(NSMutableArray *)self->_networksAwaitingLogging addObject:networkCopy];
   }
 }
 
 - (void)_updateContent
 {
   [(EditVehicleViewController *)self _updateDoneButtonAvailability];
-  v3 = [(EditVehicleViewController *)self _selectedColor];
-  v4 = [(EditVehicleViewController *)self vehicleColorView];
-  [v4 setBackgroundColor:v3];
+  _selectedColor = [(EditVehicleViewController *)self _selectedColor];
+  vehicleColorView = [(EditVehicleViewController *)self vehicleColorView];
+  [vehicleColorView setBackgroundColor:_selectedColor];
 
   currentNickname = self->_currentNickname;
-  v6 = [(EditVehicleViewController *)self nicknameCell];
-  v7 = [v6 textField];
-  [v7 setText:currentNickname];
+  nicknameCell = [(EditVehicleViewController *)self nicknameCell];
+  textField = [nicknameCell textField];
+  [textField setText:currentNickname];
 
-  v8 = [(VGVehicle *)self->_vehicle licensePlate];
-  v9 = [(EditVehicleViewController *)self nicknameCell];
-  v10 = [v9 textField];
-  [v10 setPlaceholder:v8];
+  licensePlate = [(VGVehicle *)self->_vehicle licensePlate];
+  nicknameCell2 = [(EditVehicleViewController *)self nicknameCell];
+  textField2 = [nicknameCell2 textField];
+  [textField2 setPlaceholder:licensePlate];
 
-  v11 = [(EditVehicleViewController *)self vehicleColorView];
-  v12 = [v11 backgroundColor];
+  vehicleColorView2 = [(EditVehicleViewController *)self vehicleColorView];
+  backgroundColor = [vehicleColorView2 backgroundColor];
   v13 = +[UIColor whiteColor];
-  [v12 _maps_euclideanDistanceFromColor:v13];
+  [backgroundColor _maps_euclideanDistanceFromColor:v13];
   v15 = v14;
 
   if (v15 >= 0.1)
   {
     v19 = +[UIColor systemWhiteColor];
-    v16 = [(EditVehicleViewController *)self vehicleIconView];
-    [v16 setTintColor:v19];
+    vehicleIconView = [(EditVehicleViewController *)self vehicleIconView];
+    [vehicleIconView setTintColor:v19];
   }
 
   else
   {
     v19 = [NSBundle bundleForClass:objc_opt_class()];
-    v16 = [(EditVehicleViewController *)self traitCollection];
-    v17 = [UIColor colorNamed:@"TertiaryVehicleTint" inBundle:v19 compatibleWithTraitCollection:v16];
-    v18 = [(EditVehicleViewController *)self vehicleIconView];
-    [v18 setTintColor:v17];
+    vehicleIconView = [(EditVehicleViewController *)self traitCollection];
+    v17 = [UIColor colorNamed:@"TertiaryVehicleTint" inBundle:v19 compatibleWithTraitCollection:vehicleIconView];
+    vehicleIconView2 = [(EditVehicleViewController *)self vehicleIconView];
+    [vehicleIconView2 setTintColor:v17];
   }
 }
 
 - (void)_updateDoneButtonAvailability
 {
-  v3 = [(EditVehicleViewController *)self selectedIndex];
-  v4 = [(VGVehicle *)self->_vehicle combinedDisplayName];
-  v5 = [v4 isEqualToString:self->_currentNickname];
+  selectedIndex = [(EditVehicleViewController *)self selectedIndex];
+  combinedDisplayName = [(VGVehicle *)self->_vehicle combinedDisplayName];
+  v5 = [combinedDisplayName isEqualToString:self->_currentNickname];
 
   v6 = [(NSMutableArray *)self->_removedNetworks count];
   v7 = v5 ^ 1;
@@ -178,7 +178,7 @@
     v7 = 1;
   }
 
-  if (v3 == 0x7FFFFFFFFFFFFFFFLL)
+  if (selectedIndex == 0x7FFFFFFFFFFFFFFFLL)
   {
     v8 = v7;
   }
@@ -188,18 +188,18 @@
     v8 = 1;
   }
 
-  v10 = [(EditVehicleViewController *)self navigationItem];
-  v9 = [v10 rightBarButtonItem];
-  [v9 setEnabled:v8];
+  navigationItem = [(EditVehicleViewController *)self navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
+  [rightBarButtonItem setEnabled:v8];
 }
 
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path
 {
-  v7 = a5;
-  v8 = v7;
-  if (a4 == 1)
+  pathCopy = path;
+  v8 = pathCopy;
+  if (style == 1)
   {
-    v9 = [v7 row];
+    v9 = [pathCopy row];
     if (v9 >= [(NSMutableArray *)self->_currentNetworks count])
     {
       v12 = sub_10006D178();
@@ -234,43 +234,43 @@
       [(NSMutableArray *)self->_removedNetworks addObject:v10];
       -[NSMutableArray removeObjectAtIndex:](self->_currentNetworks, "removeObjectAtIndex:", [v8 row]);
       [(EditVehicleViewController *)self setTableStructure:0];
-      v11 = [(EditVehicleViewController *)self tableView];
-      [v11 reloadData];
+      tableView = [(EditVehicleViewController *)self tableView];
+      [tableView reloadData];
 
       [(EditVehicleViewController *)self _updateContent];
     }
   }
 }
 
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(EditVehicleViewController *)self tableStructure];
-  v7 = [v5 section];
+  pathCopy = path;
+  tableStructure = [(EditVehicleViewController *)self tableStructure];
+  section = [pathCopy section];
 
-  v8 = [v6 objectAtIndexedSubscript:v7];
+  v8 = [tableStructure objectAtIndexedSubscript:section];
 
   v9 = v8 == self->_preferredChargersSection;
   return v9;
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(EditVehicleViewController *)self tableStructure];
-  v9 = [v8 objectAtIndexedSubscript:{objc_msgSend(v6, "section")}];
+  pathCopy = path;
+  viewCopy = view;
+  tableStructure = [(EditVehicleViewController *)self tableStructure];
+  v9 = [tableStructure objectAtIndexedSubscript:{objc_msgSend(pathCopy, "section")}];
 
-  v10 = [v9 cells];
-  v11 = [v6 row];
+  cells = [v9 cells];
+  v11 = [pathCopy row];
 
-  v12 = [v10 objectAtIndexedSubscript:v11];
+  v12 = [cells objectAtIndexedSubscript:v11];
 
-  [v7 frame];
+  [viewCopy frame];
   Width = CGRectGetWidth(v21);
-  [v7 layoutMargins];
+  [viewCopy layoutMargins];
   v15 = v14;
-  [v7 layoutMargins];
+  [viewCopy layoutMargins];
   v17 = v16;
 
   [v12 cellHeightWithWidth:Width - (v15 + v17)];
@@ -279,86 +279,86 @@
   return v19;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(EditVehicleViewController *)self tableStructure];
-  v7 = [v6 objectAtIndexedSubscript:{objc_msgSend(v5, "section")}];
+  pathCopy = path;
+  tableStructure = [(EditVehicleViewController *)self tableStructure];
+  v7 = [tableStructure objectAtIndexedSubscript:{objc_msgSend(pathCopy, "section")}];
 
-  v8 = [v7 cells];
-  v9 = [v5 row];
+  cells = [v7 cells];
+  v9 = [pathCopy row];
 
-  v10 = [v8 objectAtIndexedSubscript:v9];
+  v10 = [cells objectAtIndexedSubscript:v9];
 
   return v10;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v5 = [(EditVehicleViewController *)self tableStructure];
-  v6 = [v5 objectAtIndexedSubscript:a4];
+  tableStructure = [(EditVehicleViewController *)self tableStructure];
+  v6 = [tableStructure objectAtIndexedSubscript:section];
 
-  v7 = [v6 cells];
-  v8 = [v7 count];
+  cells = [v6 cells];
+  v8 = [cells count];
 
   return v8;
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
-  v3 = [(EditVehicleViewController *)self tableStructure];
-  v4 = [v3 count];
+  tableStructure = [(EditVehicleViewController *)self tableStructure];
+  v4 = [tableStructure count];
 
   return v4;
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
-  v6 = a3;
+  viewCopy = view;
   v7 = objc_alloc_init(UITableViewHeaderFooterView);
   v8 = +[UIListContentConfiguration prominentInsetGroupedHeaderConfiguration];
-  v9 = [(EditVehicleViewController *)self tableView:v6 titleForHeaderInSection:a4];
+  v9 = [(EditVehicleViewController *)self tableView:viewCopy titleForHeaderInSection:section];
 
   [v8 setText:v9];
   v10 = +[UIColor secondaryLabelColor];
-  v11 = [v8 textProperties];
-  [v11 setColor:v10];
+  textProperties = [v8 textProperties];
+  [textProperties setColor:v10];
 
   v12 = [UIFont _preferredFontForTextStyle:UIFontTextStyleSubheadline weight:UIFontWeightBold];
-  v13 = [v8 textProperties];
-  [v13 setFont:v12];
+  textProperties2 = [v8 textProperties];
+  [textProperties2 setFont:v12];
 
   [v7 setContentConfiguration:v8];
 
   return v7;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v5 = [(EditVehicleViewController *)self tableStructure];
-  v6 = [v5 objectAtIndexedSubscript:a4];
+  tableStructure = [(EditVehicleViewController *)self tableStructure];
+  v6 = [tableStructure objectAtIndexedSubscript:section];
 
-  v7 = [v6 headerTitle];
+  headerTitle = [v6 headerTitle];
 
-  return v7;
+  return headerTitle;
 }
 
-- (void)textFieldDidEndEditing:(id)a3
+- (void)textFieldDidEndEditing:(id)editing
 {
-  v4 = [a3 text];
+  text = [editing text];
   currentNickname = self->_currentNickname;
-  self->_currentNickname = v4;
+  self->_currentNickname = text;
 
   [(EditVehicleViewController *)self _updateContent];
 }
 
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string
 {
-  length = a4.length;
-  location = a4.location;
-  v9 = a5;
-  v10 = [a3 text];
-  v11 = [v10 stringByReplacingCharactersInRange:location withString:{length, v9}];
+  length = range.length;
+  location = range.location;
+  stringCopy = string;
+  text = [field text];
+  v11 = [text stringByReplacingCharactersInRange:location withString:{length, stringCopy}];
 
   currentNickname = self->_currentNickname;
   self->_currentNickname = v11;
@@ -367,7 +367,7 @@
   return 1;
 }
 
-- (void)textFieldDidBeginEditing:(id)a3
+- (void)textFieldDidBeginEditing:(id)editing
 {
   v3 = +[MKMapService sharedService];
   [v3 captureUserAction:2128 onTarget:662 eventValue:0];
@@ -389,47 +389,47 @@
   return v3;
 }
 
-- (void)colorPicker:(id)a3 didSelectIndex:(unint64_t)a4
+- (void)colorPicker:(id)picker didSelectIndex:(unint64_t)index
 {
   v6 = +[MKMapService sharedService];
   [v6 captureUserAction:442 onTarget:662 eventValue:0];
 
-  [(EditVehicleViewController *)self setSelectedIndex:a4];
+  [(EditVehicleViewController *)self setSelectedIndex:index];
 
   [(EditVehicleViewController *)self _updateContent];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v7.receiver = self;
   v7.super_class = EditVehicleViewController;
-  [(EditVehicleViewController *)&v7 viewWillDisappear:a3];
-  v4 = [(EditVehicleViewController *)self traitCollection];
-  v5 = [v4 userInterfaceIdiom];
+  [(EditVehicleViewController *)&v7 viewWillDisappear:disappear];
+  traitCollection = [(EditVehicleViewController *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (!v5)
+  if (!userInterfaceIdiom)
   {
     v6 = +[UIApplication sharedMapsDelegate];
     [v6 setLockedOrientations:0];
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v9.receiver = self;
   v9.super_class = EditVehicleViewController;
   [(EditVehicleViewController *)&v9 viewWillAppear:?];
-  v5 = [(EditVehicleViewController *)self traitCollection];
-  v6 = [v5 userInterfaceIdiom];
+  traitCollection = [(EditVehicleViewController *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (!v6)
+  if (!userInterfaceIdiom)
   {
     v7 = +[UIApplication sharedMapsDelegate];
     [v7 setLockedOrientations:2];
 
     v8 = +[UIDevice currentDevice];
-    [v8 setOrientation:1 animated:v3];
+    [v8 setOrientation:1 animated:appearCopy];
   }
 }
 
@@ -438,50 +438,50 @@
   v29.receiver = self;
   v29.super_class = EditVehicleViewController;
   [(EditVehicleViewController *)&v29 viewDidLoad];
-  v3 = [(EditVehicleViewController *)self view];
-  v4 = [(EditVehicleViewController *)self tableView];
-  [v3 addSubview:v4];
+  view = [(EditVehicleViewController *)self view];
+  tableView = [(EditVehicleViewController *)self tableView];
+  [view addSubview:tableView];
 
-  v5 = [(EditVehicleViewController *)self tableView];
-  [v5 setEditing:1];
+  tableView2 = [(EditVehicleViewController *)self tableView];
+  [tableView2 setEditing:1];
 
-  v28 = [(EditVehicleViewController *)self tableView];
-  v26 = [v28 leadingAnchor];
-  v27 = [(EditVehicleViewController *)self view];
-  v25 = [v27 leadingAnchor];
-  v24 = [v26 constraintEqualToAnchor:v25];
+  tableView3 = [(EditVehicleViewController *)self tableView];
+  leadingAnchor = [tableView3 leadingAnchor];
+  view2 = [(EditVehicleViewController *)self view];
+  leadingAnchor2 = [view2 leadingAnchor];
+  v24 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v30[0] = v24;
-  v23 = [(EditVehicleViewController *)self tableView];
-  v21 = [v23 trailingAnchor];
-  v22 = [(EditVehicleViewController *)self view];
-  v20 = [v22 trailingAnchor];
-  v19 = [v21 constraintEqualToAnchor:v20];
+  tableView4 = [(EditVehicleViewController *)self tableView];
+  trailingAnchor = [tableView4 trailingAnchor];
+  view3 = [(EditVehicleViewController *)self view];
+  trailingAnchor2 = [view3 trailingAnchor];
+  v19 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v30[1] = v19;
-  v18 = [(EditVehicleViewController *)self tableView];
-  v17 = [v18 topAnchor];
-  v6 = [(EditVehicleViewController *)self view];
-  v7 = [v6 topAnchor];
-  v8 = [v17 constraintEqualToAnchor:v7];
+  tableView5 = [(EditVehicleViewController *)self tableView];
+  topAnchor = [tableView5 topAnchor];
+  view4 = [(EditVehicleViewController *)self view];
+  topAnchor2 = [view4 topAnchor];
+  v8 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v30[2] = v8;
-  v9 = [(EditVehicleViewController *)self tableView];
-  v10 = [v9 bottomAnchor];
-  v11 = [(EditVehicleViewController *)self view];
-  v12 = [v11 bottomAnchor];
-  v13 = [v10 constraintEqualToAnchor:v12];
+  tableView6 = [(EditVehicleViewController *)self tableView];
+  bottomAnchor = [tableView6 bottomAnchor];
+  view5 = [(EditVehicleViewController *)self view];
+  bottomAnchor2 = [view5 bottomAnchor];
+  v13 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v30[3] = v13;
   v14 = [NSArray arrayWithObjects:v30 count:4];
   [NSLayoutConstraint activateConstraints:v14];
 
   v15 = +[UIColor systemGroupedBackgroundColor];
-  v16 = [(EditVehicleViewController *)self view];
-  [v16 setBackgroundColor:v15];
+  view6 = [(EditVehicleViewController *)self view];
+  [view6 setBackgroundColor:v15];
 
   [(EditVehicleViewController *)self _updateContent];
 }
 
-- (void)setSelectedIndex:(unint64_t)a3
+- (void)setSelectedIndex:(unint64_t)index
 {
-  v4 = [NSNumber numberWithUnsignedInteger:a3];
+  v4 = [NSNumber numberWithUnsignedInteger:index];
   selectedIndexBacking = self->_selectedIndexBacking;
   self->_selectedIndexBacking = v4;
 }
@@ -492,8 +492,8 @@
   if (!selectedIndexBacking)
   {
     self->_selectedIndexBacking = &off_1016E82D0;
-    v4 = [(VGVehicle *)self->_vehicle colorHex];
-    v5 = [UIColor _maps_colorFromHexRepresentation:v4];
+    colorHex = [(VGVehicle *)self->_vehicle colorHex];
+    v5 = [UIColor _maps_colorFromHexRepresentation:colorHex];
 
     if (v5 && [(NSArray *)self->_colors count])
     {
@@ -530,17 +530,17 @@
   colorPicker = self->_colorPicker;
   if (!colorPicker)
   {
-    v4 = [(EditVehicleViewController *)self selectedIndex];
+    selectedIndex = [(EditVehicleViewController *)self selectedIndex];
     v5 = [VehicleColorPicker alloc];
     colors = self->_colors;
-    if (v4 == 0x7FFFFFFFFFFFFFFFLL)
+    if (selectedIndex == 0x7FFFFFFFFFFFFFFFLL)
     {
       v7 = 0;
     }
 
     else
     {
-      v7 = [NSNumber numberWithUnsignedInteger:v4];
+      v7 = [NSNumber numberWithUnsignedInteger:selectedIndex];
     }
 
     v8 = +[UIColor systemGroupedBackgroundColor];
@@ -548,7 +548,7 @@
     v10 = self->_colorPicker;
     self->_colorPicker = v9;
 
-    if (v4 != 0x7FFFFFFFFFFFFFFFLL)
+    if (selectedIndex != 0x7FFFFFFFFFFFFFFFLL)
     {
     }
 
@@ -571,33 +571,33 @@
     v5 = self->_colorPickerCell;
     self->_colorPickerCell = v4;
 
-    v6 = [(EditVehicleViewController *)self colorPicker];
-    [(VehicleColorPickerCell *)self->_colorPickerCell setColorPicker:v6];
+    colorPicker = [(EditVehicleViewController *)self colorPicker];
+    [(VehicleColorPickerCell *)self->_colorPickerCell setColorPicker:colorPicker];
 
     [(VehicleColorPickerCell *)self->_colorPickerCell setSelectionStyle:0];
     v7 = +[UIColor clearColor];
     [(VehicleColorPickerCell *)self->_colorPickerCell setBackgroundColor:v7];
 
     [(VehicleColorPickerCell *)self->_colorPickerCell setAccessibilityIdentifier:@"ColorPickerCell"];
-    v8 = [(VehicleColorPickerCell *)self->_colorPickerCell contentView];
-    v9 = [(EditVehicleViewController *)self colorPicker];
-    [v8 addSubview:v9];
+    contentView = [(VehicleColorPickerCell *)self->_colorPickerCell contentView];
+    colorPicker2 = [(EditVehicleViewController *)self colorPicker];
+    [contentView addSubview:colorPicker2];
 
     v19 = self->_colorPickerCell;
-    v24 = [(EditVehicleViewController *)self colorPicker];
-    v23 = [v24 centerYAnchor];
-    v22 = [(VehicleColorPickerCell *)self->_colorPickerCell centerYAnchor];
-    v21 = [v23 constraintEqualToAnchor:v22];
+    colorPicker3 = [(EditVehicleViewController *)self colorPicker];
+    centerYAnchor = [colorPicker3 centerYAnchor];
+    centerYAnchor2 = [(VehicleColorPickerCell *)self->_colorPickerCell centerYAnchor];
+    v21 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v25[0] = v21;
-    v20 = [(EditVehicleViewController *)self colorPicker];
-    v10 = [v20 leadingAnchor];
-    v11 = [(VehicleColorPickerCell *)self->_colorPickerCell leadingAnchor];
-    v12 = [v10 constraintEqualToAnchor:v11];
+    colorPicker4 = [(EditVehicleViewController *)self colorPicker];
+    leadingAnchor = [colorPicker4 leadingAnchor];
+    leadingAnchor2 = [(VehicleColorPickerCell *)self->_colorPickerCell leadingAnchor];
+    v12 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v25[1] = v12;
-    v13 = [(EditVehicleViewController *)self colorPicker];
-    v14 = [v13 trailingAnchor];
-    v15 = [(VehicleColorPickerCell *)self->_colorPickerCell trailingAnchor];
-    v16 = [v14 constraintEqualToAnchor:v15];
+    colorPicker5 = [(EditVehicleViewController *)self colorPicker];
+    trailingAnchor = [colorPicker5 trailingAnchor];
+    trailingAnchor2 = [(VehicleColorPickerCell *)self->_colorPickerCell trailingAnchor];
+    v16 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v25[2] = v16;
     v17 = [NSArray arrayWithObjects:v25 count:3];
     [(VehicleColorPickerCell *)v19 addConstraints:v17];
@@ -617,11 +617,11 @@
     v5 = self->_nicknameCell;
     self->_nicknameCell = v4;
 
-    v6 = [(VehicleTextFieldCell *)self->_nicknameCell textField];
-    [v6 setDelegate:self];
+    textField = [(VehicleTextFieldCell *)self->_nicknameCell textField];
+    [textField setDelegate:self];
 
-    v7 = [(VehicleTextFieldCell *)self->_nicknameCell textField];
-    [v7 setAutocorrectionType:1];
+    textField2 = [(VehicleTextFieldCell *)self->_nicknameCell textField];
+    [textField2 setAutocorrectionType:1];
 
     [(VehicleTextFieldCell *)self->_nicknameCell setSelectionStyle:0];
     v8 = +[UIColor tableCellGroupedBackgroundColor];
@@ -667,33 +667,33 @@
 
     [(UIView *)self->_vehicleColorView setAccessibilityIdentifier:@"VehicleColorView"];
     [(UIView *)self->_vehicleColorView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v6 = [(UIView *)self->_vehicleColorView layer];
-    [v6 setCornerRadius:50.0];
+    layer = [(UIView *)self->_vehicleColorView layer];
+    [layer setCornerRadius:50.0];
 
     v7 = self->_vehicleColorView;
-    v8 = [(EditVehicleViewController *)self vehicleIconView];
-    [(UIView *)v7 addSubview:v8];
+    vehicleIconView = [(EditVehicleViewController *)self vehicleIconView];
+    [(UIView *)v7 addSubview:vehicleIconView];
 
     v20 = self->_vehicleColorView;
-    v27 = [(EditVehicleViewController *)self vehicleIconView];
-    v26 = [v27 centerXAnchor];
-    v25 = [(UIView *)self->_vehicleColorView centerXAnchor];
-    v24 = [v26 constraintEqualToAnchor:v25];
+    vehicleIconView2 = [(EditVehicleViewController *)self vehicleIconView];
+    centerXAnchor = [vehicleIconView2 centerXAnchor];
+    centerXAnchor2 = [(UIView *)self->_vehicleColorView centerXAnchor];
+    v24 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v28[0] = v24;
-    v23 = [(EditVehicleViewController *)self vehicleIconView];
-    v22 = [v23 centerYAnchor];
-    v21 = [(UIView *)self->_vehicleColorView centerYAnchor];
-    v19 = [v22 constraintEqualToAnchor:v21];
+    vehicleIconView3 = [(EditVehicleViewController *)self vehicleIconView];
+    centerYAnchor = [vehicleIconView3 centerYAnchor];
+    centerYAnchor2 = [(UIView *)self->_vehicleColorView centerYAnchor];
+    v19 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v28[1] = v19;
-    v18 = [(EditVehicleViewController *)self vehicleIconView];
-    v9 = [v18 widthAnchor];
-    v10 = [(UIView *)self->_vehicleColorView widthAnchor];
-    v11 = [v9 constraintLessThanOrEqualToAnchor:v10];
+    vehicleIconView4 = [(EditVehicleViewController *)self vehicleIconView];
+    widthAnchor = [vehicleIconView4 widthAnchor];
+    widthAnchor2 = [(UIView *)self->_vehicleColorView widthAnchor];
+    v11 = [widthAnchor constraintLessThanOrEqualToAnchor:widthAnchor2];
     v28[2] = v11;
-    v12 = [(EditVehicleViewController *)self vehicleIconView];
-    v13 = [v12 heightAnchor];
-    v14 = [(UIView *)self->_vehicleColorView heightAnchor];
-    v15 = [v13 constraintLessThanOrEqualToAnchor:v14];
+    vehicleIconView5 = [(EditVehicleViewController *)self vehicleIconView];
+    heightAnchor = [vehicleIconView5 heightAnchor];
+    heightAnchor2 = [(UIView *)self->_vehicleColorView heightAnchor];
+    v15 = [heightAnchor constraintLessThanOrEqualToAnchor:heightAnchor2];
     v28[3] = v15;
     v16 = [NSArray arrayWithObjects:v28 count:4];
     [(UIView *)v20 addConstraints:v16];
@@ -715,35 +715,35 @@
 
     [(UIView *)self->_headerView setAccessibilityIdentifier:@"EditVehicleHeader"];
     v6 = self->_headerView;
-    v7 = [(EditVehicleViewController *)self vehicleColorView];
-    [(UIView *)v6 addSubview:v7];
+    vehicleColorView = [(EditVehicleViewController *)self vehicleColorView];
+    [(UIView *)v6 addSubview:vehicleColorView];
 
     v24 = self->_headerView;
-    v32 = [(EditVehicleViewController *)self vehicleColorView];
-    v31 = [v32 centerXAnchor];
-    v30 = [(UIView *)self->_headerView centerXAnchor];
-    v29 = [v31 constraintEqualToAnchor:v30];
+    vehicleColorView2 = [(EditVehicleViewController *)self vehicleColorView];
+    centerXAnchor = [vehicleColorView2 centerXAnchor];
+    centerXAnchor2 = [(UIView *)self->_headerView centerXAnchor];
+    v29 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v33[0] = v29;
-    v28 = [(EditVehicleViewController *)self vehicleColorView];
-    v27 = [v28 topAnchor];
-    v26 = [(UIView *)self->_headerView topAnchor];
-    v25 = [v27 constraintEqualToAnchor:v26 constant:32.0];
+    vehicleColorView3 = [(EditVehicleViewController *)self vehicleColorView];
+    topAnchor = [vehicleColorView3 topAnchor];
+    topAnchor2 = [(UIView *)self->_headerView topAnchor];
+    v25 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:32.0];
     v33[1] = v25;
-    v23 = [(EditVehicleViewController *)self vehicleColorView];
-    v22 = [v23 widthAnchor];
-    v21 = [v22 constraintEqualToConstant:100.0];
+    vehicleColorView4 = [(EditVehicleViewController *)self vehicleColorView];
+    widthAnchor = [vehicleColorView4 widthAnchor];
+    v21 = [widthAnchor constraintEqualToConstant:100.0];
     v33[2] = v21;
-    v20 = [(EditVehicleViewController *)self vehicleColorView];
-    v19 = [v20 heightAnchor];
-    v8 = [v19 constraintEqualToConstant:100.0];
+    vehicleColorView5 = [(EditVehicleViewController *)self vehicleColorView];
+    heightAnchor = [vehicleColorView5 heightAnchor];
+    v8 = [heightAnchor constraintEqualToConstant:100.0];
     v33[3] = v8;
-    v9 = [(EditVehicleViewController *)self vehicleColorView];
-    v10 = [v9 bottomAnchor];
-    v11 = [(UIView *)self->_headerView bottomAnchor];
-    v12 = [v10 constraintLessThanOrEqualToAnchor:v11 constant:-24.0];
+    vehicleColorView6 = [(EditVehicleViewController *)self vehicleColorView];
+    bottomAnchor = [vehicleColorView6 bottomAnchor];
+    bottomAnchor2 = [(UIView *)self->_headerView bottomAnchor];
+    v12 = [bottomAnchor constraintLessThanOrEqualToAnchor:bottomAnchor2 constant:-24.0];
     v33[4] = v12;
-    v13 = [(UIView *)self->_headerView heightAnchor];
-    v14 = [v13 constraintGreaterThanOrEqualToConstant:156.0];
+    heightAnchor2 = [(UIView *)self->_headerView heightAnchor];
+    v14 = [heightAnchor2 constraintGreaterThanOrEqualToConstant:156.0];
     v33[5] = v14;
     v15 = [NSArray arrayWithObjects:v33 count:6];
     [(UIView *)v24 addConstraints:v15];
@@ -769,8 +769,8 @@
     [(UITableView *)self->_tableView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UITableView *)self->_tableView setDataSource:self];
     [(UITableView *)self->_tableView setDelegate:self];
-    v6 = [(EditVehicleViewController *)self headerView];
-    [(UITableView *)self->_tableView setTableHeaderView:v6];
+    headerView = [(EditVehicleViewController *)self headerView];
+    [(UITableView *)self->_tableView setTableHeaderView:headerView];
 
     [(UITableView *)self->_tableView setKeyboardDismissMode:1];
     tableView = self->_tableView;
@@ -786,8 +786,8 @@
   {
     v4 = objc_opt_new();
     v5 = [VehicleDetailTableSection alloc];
-    v6 = [(EditVehicleViewController *)self nicknameCell];
-    v30 = v6;
+    nicknameCell = [(EditVehicleViewController *)self nicknameCell];
+    v30 = nicknameCell;
     v7 = [NSArray arrayWithObjects:&v30 count:1];
     v8 = [(VehicleDetailTableSection *)v5 initWithCells:v7];
 
@@ -797,8 +797,8 @@
 
     [v4 addObject:v8];
     v11 = [VehicleDetailTableSection alloc];
-    v12 = [(EditVehicleViewController *)self colorPickerCell];
-    v29 = v12;
+    colorPickerCell = [(EditVehicleViewController *)self colorPickerCell];
+    v29 = colorPickerCell;
     v13 = [NSArray arrayWithObjects:&v29 count:1];
     v14 = [(VehicleDetailTableSection *)v11 initWithCells:v13];
 
@@ -839,29 +839,29 @@
   return tableStructure;
 }
 
-- (EditVehicleViewController)initWithColors:(id)a3 vehicle:(id)a4 delegate:(id)a5
+- (EditVehicleViewController)initWithColors:(id)colors vehicle:(id)vehicle delegate:(id)delegate
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  colorsCopy = colors;
+  vehicleCopy = vehicle;
+  delegateCopy = delegate;
   v40.receiver = self;
   v40.super_class = EditVehicleViewController;
   v11 = [(EditVehicleViewController *)&v40 initWithNibName:0 bundle:0];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [colorsCopy copy];
     colors = v11->_colors;
     v11->_colors = v12;
 
-    objc_storeStrong(&v11->_vehicle, a4);
-    objc_storeWeak(&v11->_delegate, v10);
-    v14 = [v9 combinedDisplayName];
+    objc_storeStrong(&v11->_vehicle, vehicle);
+    objc_storeWeak(&v11->_delegate, delegateCopy);
+    combinedDisplayName = [vehicleCopy combinedDisplayName];
     currentNickname = v11->_currentNickname;
-    v11->_currentNickname = v14;
+    v11->_currentNickname = combinedDisplayName;
 
-    v16 = [v9 preferredChargingNetworks];
-    v17 = [v16 allObjects];
-    v18 = [v17 sortedArrayUsingComparator:&stru_1016330C8];
+    preferredChargingNetworks = [vehicleCopy preferredChargingNetworks];
+    allObjects = [preferredChargingNetworks allObjects];
+    v18 = [allObjects sortedArrayUsingComparator:&stru_1016330C8];
     v19 = [v18 mutableCopy];
     currentNetworks = v11->_currentNetworks;
     v11->_currentNetworks = v19;
@@ -880,27 +880,27 @@
 
     v27 = +[NSBundle mainBundle];
     v28 = [v27 localizedStringForKey:@"[Virtual Garage] Edit Vehicle" value:@"localized string not found" table:0];
-    v29 = [(EditVehicleViewController *)v11 navigationItem];
-    [v29 setTitle:v28];
+    navigationItem = [(EditVehicleViewController *)v11 navigationItem];
+    [navigationItem setTitle:v28];
 
     v30 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:1 target:v11 action:"pressedCancel"];
-    v31 = [(EditVehicleViewController *)v11 navigationItem];
-    [v31 setLeftBarButtonItem:v30];
+    navigationItem2 = [(EditVehicleViewController *)v11 navigationItem];
+    [navigationItem2 setLeftBarButtonItem:v30];
 
-    v32 = [(EditVehicleViewController *)v11 navigationItem];
-    v33 = [v32 leftBarButtonItem];
-    [v33 setAccessibilityIdentifier:@"LeftBarButtonItem"];
+    navigationItem3 = [(EditVehicleViewController *)v11 navigationItem];
+    leftBarButtonItem = [navigationItem3 leftBarButtonItem];
+    [leftBarButtonItem setAccessibilityIdentifier:@"LeftBarButtonItem"];
 
     v34 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:0 target:v11 action:"pressedDone"];
-    v35 = [(EditVehicleViewController *)v11 navigationItem];
-    [v35 setRightBarButtonItem:v34];
+    navigationItem4 = [(EditVehicleViewController *)v11 navigationItem];
+    [navigationItem4 setRightBarButtonItem:v34];
 
-    v36 = [(EditVehicleViewController *)v11 navigationItem];
-    v37 = [v36 rightBarButtonItem];
-    [v37 setAccessibilityIdentifier:@"RightBarButtonItem"];
+    navigationItem5 = [(EditVehicleViewController *)v11 navigationItem];
+    rightBarButtonItem = [navigationItem5 rightBarButtonItem];
+    [rightBarButtonItem setAccessibilityIdentifier:@"RightBarButtonItem"];
 
-    v38 = [(EditVehicleViewController *)v11 view];
-    [v38 setAccessibilityIdentifier:@"EditVehicleView"];
+    view = [(EditVehicleViewController *)v11 view];
+    [view setAccessibilityIdentifier:@"EditVehicleView"];
   }
 
   return v11;

@@ -1,30 +1,30 @@
 @interface AVExposureBiasRange
-+ (AVExposureBiasRange)exposureBiasRangeWithMinExposureBias:(float)a3 maxExposureBias:(float)a4;
-- (AVExposureBiasRange)initWithMinExposureBias:(float)a3 maxExposureBias:(float)a4;
++ (AVExposureBiasRange)exposureBiasRangeWithMinExposureBias:(float)bias maxExposureBias:(float)exposureBias;
+- (AVExposureBiasRange)initWithMinExposureBias:(float)bias maxExposureBias:(float)exposureBias;
 - (id)description;
 @end
 
 @implementation AVExposureBiasRange
 
-+ (AVExposureBiasRange)exposureBiasRangeWithMinExposureBias:(float)a3 maxExposureBias:(float)a4
++ (AVExposureBiasRange)exposureBiasRangeWithMinExposureBias:(float)bias maxExposureBias:(float)exposureBias
 {
   v6 = objc_alloc(objc_opt_class());
-  *&v7 = a3;
-  *&v8 = a4;
+  *&v7 = bias;
+  *&v8 = exposureBias;
   v9 = [v6 initWithMinExposureBias:v7 maxExposureBias:v8];
 
   return v9;
 }
 
-- (AVExposureBiasRange)initWithMinExposureBias:(float)a3 maxExposureBias:(float)a4
+- (AVExposureBiasRange)initWithMinExposureBias:(float)bias maxExposureBias:(float)exposureBias
 {
   v7.receiver = self;
   v7.super_class = AVExposureBiasRange;
   result = [(AVExposureBiasRange *)&v7 init];
   if (result)
   {
-    result->_minExposureBias = a3;
-    result->_maxExposureBias = a4;
+    result->_minExposureBias = bias;
+    result->_maxExposureBias = exposureBias;
   }
 
   return result;

@@ -1,22 +1,22 @@
 @interface TSCETrackedReference
-- (BOOL)isEqualToTrackedReference:(id)a3;
-- (TSCECellRef)refersToCellRefForCalculationEngine:(SEL)a3 referenceTrackerUID:(id)a4;
-- (TSCETrackedReference)initWithCellRef:(const TSCECellRef *)a3;
-- (TSCETrackedReference)initWithRangeRef:(const TSCERangeRef *)a3;
-- (TSCETrackedReference)initWithSpanningRangeRef:(const TSCESpanningRangeRef *)a3;
-- (TSCETrackedReference)initWithTrackedReferenceTSPObjectDeprecated:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)getPrecedentsWithCalcEngine:(id)a3 hostOwnerUID:(const TSKUIDStruct *)a4;
-- (id)initByCopyingASTNodeArray:(TSCEASTNodeArray *)a3 atFormulaCoord:(const TSUCellCoord *)a4;
-- (id)initFromArchive:(const void *)a3;
-- (id)initFromExpandedArchive:(const void *)a3;
-- (id)precedentsWithCalcEngine:(id)a3 hostOwnerUID:(const TSKUIDStruct *)a4;
-- (id)referencesForCalcEngine:(id)a3 referenceTrackerUID:(const TSKUIDStruct *)a4;
+- (BOOL)isEqualToTrackedReference:(id)reference;
+- (TSCECellRef)refersToCellRefForCalculationEngine:(SEL)engine referenceTrackerUID:(id)d;
+- (TSCETrackedReference)initWithCellRef:(const TSCECellRef *)ref;
+- (TSCETrackedReference)initWithRangeRef:(const TSCERangeRef *)ref;
+- (TSCETrackedReference)initWithSpanningRangeRef:(const TSCESpanningRangeRef *)ref;
+- (TSCETrackedReference)initWithTrackedReferenceTSPObjectDeprecated:(id)deprecated;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)getPrecedentsWithCalcEngine:(id)engine hostOwnerUID:(const TSKUIDStruct *)d;
+- (id)initByCopyingASTNodeArray:(TSCEASTNodeArray *)array atFormulaCoord:(const TSUCellCoord *)coord;
+- (id)initFromArchive:(const void *)archive;
+- (id)initFromExpandedArchive:(const void *)archive;
+- (id)precedentsWithCalcEngine:(id)engine hostOwnerUID:(const TSKUIDStruct *)d;
+- (id)referencesForCalcEngine:(id)engine referenceTrackerUID:(const TSKUIDStruct *)d;
 - (void)dealloc;
-- (void)encodeToArchive:(void *)a3 archiver:(id)a4;
-- (void)encodeToExpandedArchive:(void *)a3 archiver:(id)a4;
-- (void)registerWithCalcEngine:(id)a3 inOwner:(const TSKUIDStruct *)a4;
-- (void)replaceContentsWithContentsOfTrackedReference:(id)a3;
+- (void)encodeToArchive:(void *)archive archiver:(id)archiver;
+- (void)encodeToExpandedArchive:(void *)archive archiver:(id)archiver;
+- (void)registerWithCalcEngine:(id)engine inOwner:(const TSKUIDStruct *)owner;
+- (void)replaceContentsWithContentsOfTrackedReference:(id)reference;
 @end
 
 @implementation TSCETrackedReference
@@ -29,11 +29,11 @@
   [(TSCETrackedReference *)&v3 dealloc];
 }
 
-- (BOOL)isEqualToTrackedReference:(id)a3
+- (BOOL)isEqualToTrackedReference:(id)reference
 {
-  v4 = a3;
-  v9 = v4;
-  if (v4 && (v10 = objc_msgSend_formulaCoord(v4, v5, v6, v7, v8), formulaCoord = self->_formulaCoord, formulaCoord.row == v10) && ((*&formulaCoord ^ v10) & 0x101FFFF00000000) == 0)
+  referenceCopy = reference;
+  v9 = referenceCopy;
+  if (referenceCopy && (v10 = objc_msgSend_formulaCoord(referenceCopy, v5, v6, v7, v8), formulaCoord = self->_formulaCoord, formulaCoord.row == v10) && ((*&formulaCoord ^ v10) & 0x101FFFF00000000) == 0)
   {
     AST = self->_AST;
     v19 = objc_msgSend_ast(v9, v11, v12, v13, v14);
@@ -48,7 +48,7 @@
   return v16;
 }
 
-- (TSCETrackedReference)initWithCellRef:(const TSCECellRef *)a3
+- (TSCETrackedReference)initWithCellRef:(const TSCECellRef *)ref
 {
   v5._upper = self;
   v6 = TSCETrackedReference;
@@ -62,7 +62,7 @@
   return 0;
 }
 
-- (TSCETrackedReference)initWithRangeRef:(const TSCERangeRef *)a3
+- (TSCETrackedReference)initWithRangeRef:(const TSCERangeRef *)ref
 {
   v5._upper = self;
   v6 = TSCETrackedReference;
@@ -76,7 +76,7 @@
   return 0;
 }
 
-- (TSCETrackedReference)initWithSpanningRangeRef:(const TSCESpanningRangeRef *)a3
+- (TSCETrackedReference)initWithSpanningRangeRef:(const TSCESpanningRangeRef *)ref
 {
   v5.receiver = self;
   v5.super_class = TSCETrackedReference;
@@ -90,24 +90,24 @@
   return 0;
 }
 
-- (id)initByCopyingASTNodeArray:(TSCEASTNodeArray *)a3 atFormulaCoord:(const TSUCellCoord *)a4
+- (id)initByCopyingASTNodeArray:(TSCEASTNodeArray *)array atFormulaCoord:(const TSUCellCoord *)coord
 {
   v9.receiver = self;
   v9.super_class = TSCETrackedReference;
   v7 = [(TSCETrackedReference *)&v9 init];
   if (v7)
   {
-    v7->_AST = TSCEASTNodeArray::copyNodeArray(a3, v6);
-    v7->_formulaCoord = *a4;
+    v7->_AST = TSCEASTNodeArray::copyNodeArray(array, v6);
+    v7->_formulaCoord = *coord;
   }
 
   return v7;
 }
 
-- (void)replaceContentsWithContentsOfTrackedReference:(id)a3
+- (void)replaceContentsWithContentsOfTrackedReference:(id)reference
 {
-  v19 = a3;
-  if (!v19)
+  referenceCopy = reference;
+  if (!referenceCopy)
   {
     v7 = MEMORY[0x277D81150];
     v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v4, "[TSCETrackedReference replaceContentsWithContentsOfTrackedReference:]", v5, v6);
@@ -118,11 +118,11 @@
   }
 
   TSCEASTNodeArray::freeNodeArray(self->_AST, v4);
-  self->_AST = TSCEASTNodeArray::copyNodeArray(*(v19 + 1), v18);
-  self->_formulaCoord = *(v19 + 2);
+  self->_AST = TSCEASTNodeArray::copyNodeArray(*(referenceCopy + 1), v18);
+  self->_formulaCoord = *(referenceCopy + 2);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [TSCETrackedReference alloc];
   AST = self->_AST;
@@ -130,7 +130,7 @@
   return MEMORY[0x2821F9670](v4, sel_initByCopyingASTNodeArray_atFormulaCoord_, AST, &self->_formulaCoord, v5);
 }
 
-- (TSCECellRef)refersToCellRefForCalculationEngine:(SEL)a3 referenceTrackerUID:(id)a4
+- (TSCECellRef)refersToCellRefForCalculationEngine:(SEL)engine referenceTrackerUID:(id)d
 {
   v13 = 0;
   v14 = &v13;
@@ -141,7 +141,7 @@
   v20 = 0;
   v21 = 0;
   v19 = 0x7FFF7FFFFFFFLL;
-  v7 = objc_msgSend_referencesForCalcEngine_referenceTrackerUID_(self, a3, a4, a5, v5);
+  v7 = objc_msgSend_referencesForCalcEngine_referenceTrackerUID_(self, engine, d, a5, v5);
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = sub_22149088C;
@@ -154,13 +154,13 @@
   return result;
 }
 
-- (id)referencesForCalcEngine:(id)a3 referenceTrackerUID:(const TSKUIDStruct *)a4
+- (id)referencesForCalcEngine:(id)engine referenceTrackerUID:(const TSKUIDStruct *)d
 {
-  v6 = a3;
-  v11 = v6;
-  if (v6)
+  engineCopy = engine;
+  v11 = engineCopy;
+  if (engineCopy)
   {
-    v12 = objc_msgSend_emptyReferenceSetWrapper(v6, v7, v8, v9, v10);
+    v12 = objc_msgSend_emptyReferenceSetWrapper(engineCopy, v7, v8, v9, v10);
   }
 
   else
@@ -172,7 +172,7 @@
   if (v12)
   {
     v43 = 0;
-    v44 = *a4;
+    v44 = *d;
     sub_2212C7294(v40, &v43);
     TSCEFormulaRewriteContext::TSCEFormulaRewriteContext(&v45, v11, v40);
     AST = self->_AST;
@@ -200,20 +200,20 @@
   return v16;
 }
 
-- (id)getPrecedentsWithCalcEngine:(id)a3 hostOwnerUID:(const TSKUIDStruct *)a4
+- (id)getPrecedentsWithCalcEngine:(id)engine hostOwnerUID:(const TSKUIDStruct *)d
 {
-  v5 = objc_msgSend_referencesForCalcEngine_referenceTrackerUID_(self, a2, a3, a4, v4);
+  v5 = objc_msgSend_referencesForCalcEngine_referenceTrackerUID_(self, a2, engine, d, v4);
 
   return v5;
 }
 
-- (id)precedentsWithCalcEngine:(id)a3 hostOwnerUID:(const TSKUIDStruct *)a4
+- (id)precedentsWithCalcEngine:(id)engine hostOwnerUID:(const TSKUIDStruct *)d
 {
-  v6 = a3;
-  v11 = v6;
-  if (v6)
+  engineCopy = engine;
+  v11 = engineCopy;
+  if (engineCopy)
   {
-    v12 = objc_msgSend_emptyReferenceSetWrapper(v6, v7, v8, v9, v10);
+    v12 = objc_msgSend_emptyReferenceSetWrapper(engineCopy, v7, v8, v9, v10);
   }
 
   else
@@ -225,7 +225,7 @@
   if (v12)
   {
     v42 = 0;
-    v43 = *a4;
+    v43 = *d;
     sub_2212C7294(v40, &v42);
     TSCEFormulaRewriteContext::TSCEFormulaRewriteContext(&v44, v11, v40);
     AST = self->_AST;
@@ -252,70 +252,70 @@
   return v16;
 }
 
-- (void)registerWithCalcEngine:(id)a3 inOwner:(const TSKUIDStruct *)a4
+- (void)registerWithCalcEngine:(id)engine inOwner:(const TSKUIDStruct *)owner
 {
-  v6 = a3;
+  engineCopy = engine;
   TSCEReplaceFormulaOptions::TSCEReplaceFormulaOptions(&v12, 0, 1);
-  v9 = objc_msgSend_precedentsWithCalcEngine_hostOwnerUID_(self, v7, v6, a4, v8);
+  v9 = objc_msgSend_precedentsWithCalcEngine_hostOwnerUID_(self, v7, engineCopy, owner, v8);
   TSCEReplaceFormulaOptions::TSCEReplaceFormulaOptions(&v11, &v12);
-  objc_msgSend_replaceFormulaAt_inOwner_precedents_replaceOptions_(v6, v10, &self->_formulaCoord, a4, v9, &v11);
+  objc_msgSend_replaceFormulaAt_inOwner_precedents_replaceOptions_(engineCopy, v10, &self->_formulaCoord, owner, v9, &v11);
 }
 
-- (void)encodeToArchive:(void *)a3 archiver:(id)a4
+- (void)encodeToArchive:(void *)archive archiver:(id)archiver
 {
-  v6 = a4;
-  *(a3 + 4) |= 1u;
-  v7 = *(a3 + 3);
-  v10 = v6;
+  archiverCopy = archiver;
+  *(archive + 4) |= 1u;
+  v7 = *(archive + 3);
+  v10 = archiverCopy;
   if (!v7)
   {
-    v8 = *(a3 + 1);
+    v8 = *(archive + 1);
     if (v8)
     {
       v8 = *(v8 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v7 = google::protobuf::Arena::CreateMaybeMessage<TSCE::ASTNodeArrayArchive>(v8);
-    *(a3 + 3) = v7;
-    v6 = v10;
+    *(archive + 3) = v7;
+    archiverCopy = v10;
   }
 
-  sub_2215C8340(v7, self->_AST, v6);
+  sub_2215C8340(v7, self->_AST, archiverCopy);
   v9 = self->_formulaCoord.column + (self->_formulaCoord.row << 15);
-  *(a3 + 4) |= 2u;
-  *(a3 + 8) = v9;
+  *(archive + 4) |= 2u;
+  *(archive + 8) = v9;
 }
 
-- (void)encodeToExpandedArchive:(void *)a3 archiver:(id)a4
+- (void)encodeToExpandedArchive:(void *)archive archiver:(id)archiver
 {
-  v6 = a4;
-  *(a3 + 4) |= 1u;
-  v7 = *(a3 + 3);
-  v12 = v6;
+  archiverCopy = archiver;
+  *(archive + 4) |= 1u;
+  v7 = *(archive + 3);
+  v12 = archiverCopy;
   if (!v7)
   {
-    v8 = *(a3 + 1);
+    v8 = *(archive + 1);
     if (v8)
     {
       v8 = *(v8 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v7 = google::protobuf::Arena::CreateMaybeMessage<TSCE::ASTNodeArrayArchive>(v8);
-    *(a3 + 3) = v7;
-    v6 = v12;
+    *(archive + 3) = v7;
+    archiverCopy = v12;
   }
 
-  sub_2215C8340(v7, self->_AST, v6);
+  sub_2215C8340(v7, self->_AST, archiverCopy);
   column = self->_formulaCoord.column;
-  v10 = *(a3 + 4);
-  *(a3 + 4) = v10 | 2;
+  v10 = *(archive + 4);
+  *(archive + 4) = v10 | 2;
   row = self->_formulaCoord.row;
-  *(a3 + 4) = v10 | 6;
-  *(a3 + 8) = column;
-  *(a3 + 9) = row;
+  *(archive + 4) = v10 | 6;
+  *(archive + 8) = column;
+  *(archive + 9) = row;
 }
 
-- (id)initFromArchive:(const void *)a3
+- (id)initFromArchive:(const void *)archive
 {
   v4.receiver = self;
   v4.super_class = TSCETrackedReference;
@@ -327,7 +327,7 @@
   return 0;
 }
 
-- (id)initFromExpandedArchive:(const void *)a3
+- (id)initFromExpandedArchive:(const void *)archive
 {
   v4.receiver = self;
   v4.super_class = TSCETrackedReference;
@@ -339,21 +339,21 @@
   return 0;
 }
 
-- (TSCETrackedReference)initWithTrackedReferenceTSPObjectDeprecated:(id)a3
+- (TSCETrackedReference)initWithTrackedReferenceTSPObjectDeprecated:(id)deprecated
 {
-  v4 = a3;
+  deprecatedCopy = deprecated;
   v18.receiver = self;
   v18.super_class = TSCETrackedReference;
   v9 = [(TSCETrackedReference *)&v18 init];
   if (v9)
   {
-    if (objc_msgSend_ast(v4, v5, v6, v7, v8))
+    if (objc_msgSend_ast(deprecatedCopy, v5, v6, v7, v8))
     {
-      v14 = objc_msgSend_ast(v4, v10, v11, v12, v13);
+      v14 = objc_msgSend_ast(deprecatedCopy, v10, v11, v12, v13);
       v9->_AST = TSCEASTNodeArray::copyNodeArray(v14, v15);
     }
 
-    v16 = objc_msgSend_formulaID(v4, v10, v11, v12, v13);
+    v16 = objc_msgSend_formulaID(deprecatedCopy, v10, v11, v12, v13);
     v9->_formulaCoord = ((v16 >> 15) & 0x7FFFFFFF | ((v16 & 0x7FFF) << 32));
   }
 

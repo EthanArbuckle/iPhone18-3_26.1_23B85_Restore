@@ -8,8 +8,8 @@
 + (void)registerUserDefaults
 {
   v4 = +[NSUserDefaults standardUserDefaults];
-  v3 = [a1 defaultDefaults];
-  [v4 registerDefaults:v3];
+  defaultDefaults = [self defaultDefaults];
+  [v4 registerDefaults:defaultDefaults];
 }
 
 + (NSDictionary)defaultDefaults

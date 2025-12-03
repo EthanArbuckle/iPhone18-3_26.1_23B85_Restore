@@ -1,15 +1,15 @@
 @interface ActivityPickerRemoteViewController
-- (ActivityPickerRemoteViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (ActivityPickerRemoteViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)didCancel;
 - (void)didFinishSelection;
-- (void)didSelectWithApplications:(id)a3 categories:(id)a4 webDomains:(id)a5 untokenizedApplications:(id)a6 untokenizedCategories:(id)a7 untokenizedWebDomains:(id)a8;
+- (void)didSelectWithApplications:(id)applications categories:(id)categories webDomains:(id)domains untokenizedApplications:(id)untokenizedApplications untokenizedCategories:(id)untokenizedCategories untokenizedWebDomains:(id)webDomains;
 @end
 
 @implementation ActivityPickerRemoteViewController
 
-- (ActivityPickerRemoteViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (ActivityPickerRemoteViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_23833E9E0();
     v7 = v6;
@@ -21,11 +21,11 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_238304680(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_238304680(v5, v7, bundle);
 }
 
-- (void)didSelectWithApplications:(id)a3 categories:(id)a4 webDomains:(id)a5 untokenizedApplications:(id)a6 untokenizedCategories:(id)a7 untokenizedWebDomains:(id)a8
+- (void)didSelectWithApplications:(id)applications categories:(id)categories webDomains:(id)domains untokenizedApplications:(id)untokenizedApplications untokenizedCategories:(id)untokenizedCategories untokenizedWebDomains:(id)webDomains
 {
   v9 = sub_23833EAE0();
   v10 = sub_23833EAE0();
@@ -34,7 +34,7 @@
   v13 = sub_23833EAE0();
   v14 = sub_23833EAE0();
   v15 = *((*MEMORY[0x277D85000] & self->super.super.super.super.isa) + 0x68);
-  v16 = self;
+  selfCopy = self;
   v17 = v15();
   if (v17)
   {
@@ -52,7 +52,7 @@
 - (void)didCancel
 {
   v2 = *((*MEMORY[0x277D85000] & self->super.super.super.super.isa) + 0x98);
-  v5 = self;
+  selfCopy = self;
   v3 = v2();
   if (v3)
   {
@@ -70,7 +70,7 @@
 - (void)didFinishSelection
 {
   v2 = *((*MEMORY[0x277D85000] & self->super.super.super.super.isa) + 0x80);
-  v5 = self;
+  selfCopy = self;
   v3 = v2();
   if (v3)
   {

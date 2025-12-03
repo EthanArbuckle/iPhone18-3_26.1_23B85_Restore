@@ -1,36 +1,36 @@
 @interface WFAppDelegate
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4;
-- (BOOL)application:(id)a3 willFinishLaunchingWithOptions:(id)a4;
-- (id)application:(id)a3 configurationForConnectingSceneSession:(id)a4 options:(id)a5;
-- (void)applicationDidEnterBackground:(id)a3;
-- (void)applicationShouldRequestHealthAuthorization:(id)a3;
-- (void)applicationWillEnterForeground:(id)a3;
-- (void)buildMenuWithBuilder:(id)a3;
-- (void)userNotificationCenter:(id)a3 didReceiveNotificationResponse:(id)a4 withCompletionHandler:(id)a5;
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options;
+- (BOOL)application:(id)application willFinishLaunchingWithOptions:(id)options;
+- (id)application:(id)application configurationForConnectingSceneSession:(id)session options:(id)options;
+- (void)applicationDidEnterBackground:(id)background;
+- (void)applicationShouldRequestHealthAuthorization:(id)authorization;
+- (void)applicationWillEnterForeground:(id)foreground;
+- (void)buildMenuWithBuilder:(id)builder;
+- (void)userNotificationCenter:(id)center didReceiveNotificationResponse:(id)response withCompletionHandler:(id)handler;
 @end
 
 @implementation WFAppDelegate
 
-- (void)userNotificationCenter:(id)a3 didReceiveNotificationResponse:(id)a4 withCompletionHandler:(id)a5
+- (void)userNotificationCenter:(id)center didReceiveNotificationResponse:(id)response withCompletionHandler:(id)handler
 {
-  v5 = [a4 notification];
-  v6 = [v5 request];
-  v7 = [v6 content];
-  v8 = [v7 userInfo];
+  notification = [response notification];
+  request = [notification request];
+  content = [request content];
+  userInfo = [content userInfo];
   v15 = WFTriggerIDFromNotificationUserInfo();
 
   v9 = v15;
   if (v15)
   {
     v10 = +[WFWindowSceneManager mainScene];
-    v11 = [v10 delegate];
+    delegate = [v10 delegate];
 
-    if (v11)
+    if (delegate)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v12 = v11;
+        v12 = delegate;
       }
 
       else
@@ -46,28 +46,28 @@
 
     v13 = v12;
 
-    v14 = [v13 rootViewController];
+    rootViewController = [v13 rootViewController];
 
-    [v14 highlightAutomationWithTriggerID:v15];
+    [rootViewController highlightAutomationWithTriggerID:v15];
     v9 = v15;
   }
 }
 
-- (void)applicationShouldRequestHealthAuthorization:(id)a3
+- (void)applicationShouldRequestHealthAuthorization:(id)authorization
 {
   v3 = +[HKHealthStore wf_shortcutsAppHealthStore];
   [v3 handleAuthorizationForExtensionWithCompletion:&stru_1000F4320];
 }
 
-- (void)applicationDidEnterBackground:(id)a3
+- (void)applicationDidEnterBackground:(id)background
 {
-  v4 = [(WFAppDelegate *)self lastForegroundDate];
+  lastForegroundDate = [(WFAppDelegate *)self lastForegroundDate];
 
-  if (v4)
+  if (lastForegroundDate)
   {
     v5 = objc_opt_new();
-    v6 = [(WFAppDelegate *)self lastForegroundDate];
-    [v5 timeIntervalSinceDate:v6];
+    lastForegroundDate2 = [(WFAppDelegate *)self lastForegroundDate];
+    [v5 timeIntervalSinceDate:lastForegroundDate2];
     v8 = v7;
 
     v9 = objc_opt_new();
@@ -77,28 +77,28 @@
   }
 }
 
-- (void)applicationWillEnterForeground:(id)a3
+- (void)applicationWillEnterForeground:(id)foreground
 {
   v4 = objc_opt_new();
   [(WFAppDelegate *)self setLastForegroundDate:v4];
 }
 
-- (id)application:(id)a3 configurationForConnectingSceneSession:(id)a4 options:(id)a5
+- (id)application:(id)application configurationForConnectingSceneSession:(id)session options:(id)options
 {
-  v6 = a5;
-  v7 = a4;
-  v8 = [v7 configuration];
-  v9 = [v7 role];
+  optionsCopy = options;
+  sessionCopy = session;
+  configuration = [sessionCopy configuration];
+  role = [sessionCopy role];
 
-  if (v9 == UIWindowSceneSessionRoleApplication)
+  if (role == UIWindowSceneSessionRoleApplication)
   {
-    v10 = [v6 userActivities];
-    v11 = [v10 anyObject];
+    userActivities = [optionsCopy userActivities];
+    anyObject = [userActivities anyObject];
 
     v12 = @"Main";
-    if (v11)
+    if (anyObject)
     {
-      v13 = [WFWindowSceneManager workflowIdentifierFromUserActivity:v11];
+      v13 = [WFWindowSceneManager workflowIdentifierFromUserActivity:anyObject];
 
       if (v13)
       {
@@ -108,15 +108,15 @@
 
     v14 = [UISceneConfiguration configurationWithName:v12 sessionRole:UIWindowSceneSessionRoleApplication];
 
-    v8 = v14;
+    configuration = v14;
   }
 
-  return v8;
+  return configuration;
 }
 
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options
 {
-  [a3 setShortcutItems:{0, a4}];
+  [application setShortcutItems:{0, options}];
   v5 = +[UNUserNotificationCenter currentNotificationCenter];
   [v5 setDelegate:self];
 
@@ -132,13 +132,13 @@
   return 1;
 }
 
-- (BOOL)application:(id)a3 willFinishLaunchingWithOptions:(id)a4
+- (BOOL)application:(id)application willFinishLaunchingWithOptions:(id)options
 {
-  v5 = a3;
+  applicationCopy = application;
   v6 = +[WFApplicationContext sharedContext];
-  [v6 setProvider:v5];
+  [v6 setProvider:applicationCopy];
 
-  LODWORD(v6) = [v5 launchedToTest];
+  LODWORD(v6) = [applicationCopy launchedToTest];
   if (v6 && (+[NSUserDefaults standardUserDefaults](NSUserDefaults, "standardUserDefaults"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 BOOLForKey:@"WFUsePPTPerformanceContent"], v7, (v8 & 1) == 0))
   {
     self->_initializationResult = [WFInitialization initializeProcessWithDatabase:0];
@@ -193,16 +193,16 @@
   return 1;
 }
 
-- (void)buildMenuWithBuilder:(id)a3
+- (void)buildMenuWithBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v102.receiver = self;
   v102.super_class = WFAppDelegate;
-  [(WFAppDelegate *)&v102 buildMenuWithBuilder:v4];
-  v5 = [v4 system];
+  [(WFAppDelegate *)&v102 buildMenuWithBuilder:builderCopy];
+  system = [builderCopy system];
   v6 = +[UIMenuSystem mainSystem];
 
-  if (v5 == v6)
+  if (system == v6)
   {
     v7 = sub_100005D9C(@"New Shortcut");
     v8 = [UIImage systemImageNamed:@"plus"];
@@ -241,7 +241,7 @@
     v20 = [NSArray arrayWithObjects:v108 count:4];
     v93 = [UIMenu menuWithTitle:&stru_1000F49E8 image:0 identifier:0 options:1 children:v20];
 
-    [v4 insertChildMenu:v93 atStartOfMenuForIdentifier:UIMenuFile];
+    [builderCopy insertChildMenu:v93 atStartOfMenuForIdentifier:UIMenuFile];
     v21 = sub_100005D9C(@"Choose From Menu");
     v22 = [UIImage systemImageNamed:@"filemenu.and.selection"];
     v92 = [UIKeyCommand commandWithTitle:v21 image:v22 action:"addChooseFromMenuActionFromKeyPress" input:@"m" modifierFlags:1179648 propertyList:0];
@@ -272,9 +272,9 @@
     v86 = [UIKeyCommand commandWithTitle:v32 image:v33 action:"addCommentActionFromKeyPress" input:@"c" modifierFlags:1179648 propertyList:0];
 
     v34 = [WFImage workflowKitImageNamed:@"VariableSymbol"];
-    v35 = [v34 platformImage];
+    platformImage = [v34 platformImage];
 
-    v88 = [v35 imageWithRenderingMode:2];
+    v88 = [platformImage imageWithRenderingMode:2];
 
     v36 = sub_100005D9C(@"Set Variable");
     v85 = [UIKeyCommand commandWithTitle:v36 image:v88 action:"addSetVariableActionFromKeyPress" input:@"v" modifierFlags:1179648 propertyList:0];
@@ -295,8 +295,8 @@
     v41 = [NSArray arrayWithObjects:v106 count:5];
     v82 = [UIMenu menuWithTitle:&stru_1000F49E8 image:0 identifier:0 options:1 children:v41];
 
-    [v4 insertChildMenu:v82 atEndOfMenuForIdentifier:UIMenuEdit];
-    [v4 removeMenuForIdentifier:UIMenuFormat];
+    [builderCopy insertChildMenu:v82 atEndOfMenuForIdentifier:UIMenuEdit];
+    [builderCopy removeMenuForIdentifier:UIMenuFormat];
     v42 = sub_100005D9C(@"Run Shortcut");
     v43 = [UIImage systemImageNamed:@"play"];
     v81 = [UIKeyCommand commandWithTitle:v42 image:v43 action:"runWorkflowFromKeyPress" input:@"r" modifierFlags:0x100000 propertyList:0];
@@ -311,7 +311,7 @@
     v47 = [NSArray arrayWithObjects:v105 count:2];
     v79 = [UIMenu menuWithTitle:v46 image:0 identifier:0 options:1 children:v47];
 
-    [v4 insertSiblingMenu:v79 afterMenuForIdentifier:UIMenuEdit];
+    [builderCopy insertSiblingMenu:v79 afterMenuForIdentifier:UIMenuEdit];
     v48 = sub_100005D9C(@"Show All Shortcuts");
     v49 = [UIImage systemImageNamed:@"rectangle.stack"];
     v101 = [UIKeyCommand commandWithTitle:v48 image:v49 action:"switchToShortcutsViewController" input:@"s" modifierFlags:1703936 propertyList:0];
@@ -367,7 +367,7 @@
     v69 = [NSArray arrayWithObjects:v103 count:8];
     v70 = [UIMenu menuWithTitle:&stru_1000F49E8 image:0 identifier:0 options:1 children:v69];
 
-    [v4 insertChildMenu:v70 atEndOfMenuForIdentifier:UIMenuView];
+    [builderCopy insertChildMenu:v70 atEndOfMenuForIdentifier:UIMenuView];
   }
 }
 

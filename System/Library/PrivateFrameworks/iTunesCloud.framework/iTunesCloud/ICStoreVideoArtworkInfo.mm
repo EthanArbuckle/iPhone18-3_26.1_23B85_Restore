@@ -1,20 +1,20 @@
 @interface ICStoreVideoArtworkInfo
-- (BOOL)isEqual:(id)a3;
-- (ICStoreVideoArtworkInfo)initWithCoder:(id)a3;
-- (ICStoreVideoArtworkInfo)initWithVideoArtworkResponseDictionary:(id)a3;
-- (id)CRABSVideoURLMatchingSize:(CGSize)a3;
-- (id)HLSVideoURLForAspectRatio:(double)a3;
-- (id)_aspectRatioKeyForAspectRatio:(double)a3;
-- (id)previewFrameArtworkInfoMatchingAspectRatio:(double)a3;
-- (id)supportedSizesForCRABSVideoForAspectRatio:(double)a3;
+- (BOOL)isEqual:(id)equal;
+- (ICStoreVideoArtworkInfo)initWithCoder:(id)coder;
+- (ICStoreVideoArtworkInfo)initWithVideoArtworkResponseDictionary:(id)dictionary;
+- (id)CRABSVideoURLMatchingSize:(CGSize)size;
+- (id)HLSVideoURLForAspectRatio:(double)ratio;
+- (id)_aspectRatioKeyForAspectRatio:(double)ratio;
+- (id)previewFrameArtworkInfoMatchingAspectRatio:(double)ratio;
+- (id)supportedSizesForCRABSVideoForAspectRatio:(double)ratio;
 - (unint64_t)hash;
 @end
 
 @implementation ICStoreVideoArtworkInfo
 
-- (ICStoreVideoArtworkInfo)initWithCoder:(id)a3
+- (ICStoreVideoArtworkInfo)initWithCoder:(id)coder
 {
-  v4 = [a3 decodePropertyListForKey:@"responseDictionary"];
+  v4 = [coder decodePropertyListForKey:@"responseDictionary"];
   v5 = [(ICStoreVideoArtworkInfo *)self initWithVideoArtworkResponseDictionary:v4];
 
   return v5;
@@ -84,26 +84,26 @@
   return (v50 + v51) ^ __ROR8__(v50, 47) ^ v53 ^ __ROR8__(v50 + v51, 32) ^ v53 ^ __ROR8__(v51 ^ v52, 43);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
 
-  else if ([(ICStoreVideoArtworkInfo *)v4 isMemberOfClass:objc_opt_class()])
+  else if ([(ICStoreVideoArtworkInfo *)equalCopy isMemberOfClass:objc_opt_class()])
   {
     responseDictionary = self->_responseDictionary;
-    v6 = [(ICStoreVideoArtworkInfo *)v4 responseDictionary];
-    if (responseDictionary == v6)
+    responseDictionary = [(ICStoreVideoArtworkInfo *)equalCopy responseDictionary];
+    if (responseDictionary == responseDictionary)
     {
       v7 = 1;
     }
 
     else
     {
-      v7 = [(NSDictionary *)responseDictionary isEqual:v6];
+      v7 = [(NSDictionary *)responseDictionary isEqual:responseDictionary];
     }
   }
 
@@ -115,7 +115,7 @@
   return v7;
 }
 
-- (id)_aspectRatioKeyForAspectRatio:(double)a3
+- (id)_aspectRatioKeyForAspectRatio:(double)ratio
 {
   v19 = *MEMORY[0x1E69E9840];
   v5 = [MEMORY[0x1E696AD98] numberWithDouble:?];
@@ -132,8 +132,8 @@
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v8 = [(NSDictionary *)self->_aspectRatioToCRABSVideoDictionaries allKeys];
-    v7 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    allKeys = [(NSDictionary *)self->_aspectRatioToCRABSVideoDictionaries allKeys];
+    v7 = [allKeys countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v7)
     {
       v9 = *v15;
@@ -143,19 +143,19 @@
         {
           if (*v15 != v9)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(allKeys);
           }
 
           v11 = *(*(&v14 + 1) + 8 * i);
           [v11 doubleValue];
-          if (vabdd_f64(v12, a3) <= 0.12)
+          if (vabdd_f64(v12, ratio) <= 0.12)
           {
             v7 = v11;
             goto LABEL_13;
           }
         }
 
-        v7 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v7 = [allKeys countByEnumeratingWithState:&v14 objects:v18 count:16];
         if (v7)
         {
           continue;
@@ -171,22 +171,22 @@ LABEL_13:
   return v7;
 }
 
-- (id)previewFrameArtworkInfoMatchingAspectRatio:(double)a3
+- (id)previewFrameArtworkInfoMatchingAspectRatio:(double)ratio
 {
-  v4 = [(ICStoreVideoArtworkInfo *)self _aspectRatioKeyForAspectRatio:a3];
+  v4 = [(ICStoreVideoArtworkInfo *)self _aspectRatioKeyForAspectRatio:ratio];
   v5 = [(NSDictionary *)self->_aspectRatioToPreviewFrameArtworkInfo objectForKeyedSubscript:v4];
 
   return v5;
 }
 
-- (id)HLSVideoURLForAspectRatio:(double)a3
+- (id)HLSVideoURLForAspectRatio:(double)ratio
 {
-  v4 = [(ICStoreVideoArtworkInfo *)self _aspectRatioKeyForAspectRatio:a3];
+  v4 = [(ICStoreVideoArtworkInfo *)self _aspectRatioKeyForAspectRatio:ratio];
   if (v4)
   {
     v5 = [(NSDictionary *)self->_aspectRatioToHLSVideoURL objectForKeyedSubscript:v4];
-    v6 = [v5 absoluteString];
-    v7 = [v6 length];
+    absoluteString = [v5 absoluteString];
+    v7 = [absoluteString length];
 
     if (v7)
     {
@@ -207,12 +207,12 @@ LABEL_13:
   return v8;
 }
 
-- (id)CRABSVideoURLMatchingSize:(CGSize)a3
+- (id)CRABSVideoURLMatchingSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v31 = *MEMORY[0x1E69E9840];
-  v6 = [(ICStoreVideoArtworkInfo *)self _aspectRatioKeyForAspectRatio:a3.width / a3.height];
+  v6 = [(ICStoreVideoArtworkInfo *)self _aspectRatioKeyForAspectRatio:size.width / size.height];
   if (v6)
   {
     v24 = v6;
@@ -275,10 +275,10 @@ LABEL_13:
   return v22;
 }
 
-- (id)supportedSizesForCRABSVideoForAspectRatio:(double)a3
+- (id)supportedSizesForCRABSVideoForAspectRatio:(double)ratio
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = [(ICStoreVideoArtworkInfo *)self _aspectRatioKeyForAspectRatio:a3];
+  v4 = [(ICStoreVideoArtworkInfo *)self _aspectRatioKeyForAspectRatio:ratio];
   v23 = [MEMORY[0x1E695DFA8] set];
   if (v4)
   {
@@ -337,38 +337,38 @@ LABEL_13:
   return v23;
 }
 
-- (ICStoreVideoArtworkInfo)initWithVideoArtworkResponseDictionary:(id)a3
+- (ICStoreVideoArtworkInfo)initWithVideoArtworkResponseDictionary:(id)dictionary
 {
   v48 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF90] dictionary];
-  v6 = [MEMORY[0x1E695DF90] dictionary];
-  v7 = [MEMORY[0x1E695DF90] dictionary];
+  dictionaryCopy = dictionary;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary3 = [MEMORY[0x1E695DF90] dictionary];
   v42[0] = MEMORY[0x1E69E9820];
   v42[1] = 3221225472;
   v42[2] = __66__ICStoreVideoArtworkInfo_initWithVideoArtworkResponseDictionary___block_invoke;
   v42[3] = &unk_1E7BF9C88;
-  v8 = self;
-  v43 = v8;
-  v33 = v5;
-  v9 = v5;
+  selfCopy = self;
+  v43 = selfCopy;
+  v33 = dictionary;
+  v9 = dictionary;
   v44 = v9;
-  v32 = v6;
-  v36 = v6;
+  v32 = dictionary2;
+  v36 = dictionary2;
   v45 = v36;
-  v10 = v7;
+  v10 = dictionary3;
   v46 = v10;
-  v35 = v4;
-  [v4 enumerateKeysAndObjectsUsingBlock:v42];
-  v11 = [v9 allKeys];
-  v12 = [v11 lastObject];
+  v35 = dictionaryCopy;
+  [dictionaryCopy enumerateKeysAndObjectsUsingBlock:v42];
+  allKeys = [v9 allKeys];
+  lastObject = [allKeys lastObject];
 
   v40 = 0u;
   v41 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v13 = [v9 allKeys];
-  v14 = [v13 countByEnumeratingWithState:&v38 objects:v47 count:16];
+  allKeys2 = [v9 allKeys];
+  v14 = [allKeys2 countByEnumeratingWithState:&v38 objects:v47 count:16];
   if (v14)
   {
     v15 = v14;
@@ -379,45 +379,45 @@ LABEL_13:
       {
         if (*v39 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(allKeys2);
         }
 
         v18 = *(*(&v38 + 1) + 8 * i);
-        if ([v18 compare:v12] == 1)
+        if ([v18 compare:lastObject] == 1)
         {
           v19 = v18;
 
-          v12 = v19;
+          lastObject = v19;
         }
       }
 
-      v15 = [v13 countByEnumeratingWithState:&v38 objects:v47 count:16];
+      v15 = [allKeys2 countByEnumeratingWithState:&v38 objects:v47 count:16];
     }
 
     while (v15);
   }
 
-  v20 = [v10 objectForKeyedSubscript:v12];
-  v21 = [v20 stringRepresentation];
+  v20 = [v10 objectForKeyedSubscript:lastObject];
+  stringRepresentation = [v20 stringRepresentation];
 
-  v22 = [v9 objectForKeyedSubscript:v12];
-  v23 = [v36 objectForKeyedSubscript:v12];
-  v24 = [v23 absoluteString];
+  v22 = [v9 objectForKeyedSubscript:lastObject];
+  v23 = [v36 objectForKeyedSubscript:lastObject];
+  absoluteString = [v23 absoluteString];
 
-  v25 = [v22 lastObject];
-  v26 = [v25 objectForKeyedSubscript:@"assetUrl"];
+  lastObject2 = [v22 lastObject];
+  v26 = [lastObject2 objectForKeyedSubscript:@"assetUrl"];
 
-  v27 = [MEMORY[0x1E696AEC0] stringWithFormat:@"pf=%@/hls=%@/crabs=%@", v21, v24, v26];
-  v37.receiver = v8;
+  v27 = [MEMORY[0x1E696AEC0] stringWithFormat:@"pf=%@/hls=%@/crabs=%@", stringRepresentation, absoluteString, v26];
+  v37.receiver = selfCopy;
   v37.super_class = ICStoreVideoArtworkInfo;
   v28 = [(ICStoreVideoArtworkInfo *)&v37 init];
   p_isa = &v28->super.isa;
   if (v28)
   {
-    objc_storeStrong(&v28->_responseDictionary, a3);
+    objc_storeStrong(&v28->_responseDictionary, dictionary);
     objc_storeStrong(p_isa + 1, v33);
     objc_storeStrong(p_isa + 2, v32);
-    objc_storeStrong(p_isa + 3, v7);
+    objc_storeStrong(p_isa + 3, dictionary3);
     objc_storeStrong(p_isa + 4, v27);
   }
 

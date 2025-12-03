@@ -1,5 +1,5 @@
 @interface CPLTestFeedbackMessage
-- (CPLTestFeedbackMessage)initWithTestMessage:(id)a3 libraryIdentifier:(id)a4;
+- (CPLTestFeedbackMessage)initWithTestMessage:(id)message libraryIdentifier:(id)identifier;
 - (id)serverMessage;
 @end
 
@@ -9,24 +9,24 @@
 {
   v6.receiver = self;
   v6.super_class = CPLTestFeedbackMessage;
-  v3 = [(CPLFeedbackMessage *)&v6 serverMessage];
+  serverMessage = [(CPLFeedbackMessage *)&v6 serverMessage];
   v4 = objc_alloc_init(CPLServerFeedbackKeyAndValue);
   [(CPLServerFeedbackKeyAndValue *)v4 setKey:@"message"];
   [(CPLServerFeedbackKeyAndValue *)v4 setValue:self->_testMessage];
-  [v3 addKeysAndValues:v4];
+  [serverMessage addKeysAndValues:v4];
 
-  return v3;
+  return serverMessage;
 }
 
-- (CPLTestFeedbackMessage)initWithTestMessage:(id)a3 libraryIdentifier:(id)a4
+- (CPLTestFeedbackMessage)initWithTestMessage:(id)message libraryIdentifier:(id)identifier
 {
-  v6 = a3;
+  messageCopy = message;
   v11.receiver = self;
   v11.super_class = CPLTestFeedbackMessage;
-  v7 = [(CPLFeedbackMessage *)&v11 initWithLibraryIdentifier:a4];
+  v7 = [(CPLFeedbackMessage *)&v11 initWithLibraryIdentifier:identifier];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [messageCopy copy];
     testMessage = v7->_testMessage;
     v7->_testMessage = v8;
   }

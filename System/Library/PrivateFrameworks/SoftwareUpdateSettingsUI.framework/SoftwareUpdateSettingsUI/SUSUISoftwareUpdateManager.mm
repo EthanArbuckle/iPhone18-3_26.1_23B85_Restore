@@ -1,267 +1,267 @@
 @interface SUSUISoftwareUpdateManager
-+ (double)timeRemainingForProgress:(id)a3 isValid:(BOOL *)a4;
-- (BOOL)_SUDownloadPhaseIsQueued:(id)a3;
-- (BOOL)automaticDownloadEnabled:(BOOL *)a3;
-- (BOOL)automaticInstallSystemDataFilesStatusEnabled:(BOOL *)a3;
-- (BOOL)automaticUpdateEnabled:(BOOL *)a3;
-- (BOOL)automaticUpdatePreviousUserSpecifiedStatus:(BOOL *)a3;
++ (double)timeRemainingForProgress:(id)progress isValid:(BOOL *)valid;
+- (BOOL)_SUDownloadPhaseIsQueued:(id)queued;
+- (BOOL)automaticDownloadEnabled:(BOOL *)enabled;
+- (BOOL)automaticInstallSystemDataFilesStatusEnabled:(BOOL *)enabled;
+- (BOOL)automaticUpdateEnabled:(BOOL *)enabled;
+- (BOOL)automaticUpdatePreviousUserSpecifiedStatus:(BOOL *)status;
 - (BOOL)canCancelAutoInstall;
 - (BOOL)clearingSpaceForDownload;
-- (BOOL)enableUpdateButtonForError:(id)a3;
-- (BOOL)errorsAreEqual:(id)a3 error2:(id)a4 oldDescription:(id)a5;
-- (BOOL)previousUserSpecifiedSecurityResponseStatus:(BOOL *)a3;
+- (BOOL)enableUpdateButtonForError:(id)error;
+- (BOOL)errorsAreEqual:(id)equal error2:(id)error2 oldDescription:(id)description;
+- (BOOL)previousUserSpecifiedSecurityResponseStatus:(BOOL *)status;
 - (BOOL)readyToDownload;
-- (BOOL)securityResponseStatus:(BOOL *)a3;
-- (BOOL)shouldIgnoreUpdateError:(id)a3;
-- (BOOL)shouldSetStateForInstallError:(id)a3 outError:(id *)a4 outState:(int *)a5;
+- (BOOL)securityResponseStatus:(BOOL *)status;
+- (BOOL)shouldIgnoreUpdateError:(id)error;
+- (BOOL)shouldSetStateForInstallError:(id)error outError:(id *)outError outState:(int *)state;
 - (BOOL)shouldShowPreferredUpdateAsAlternate;
 - (NSString)actionString;
 - (NSString)prettyUpdateName;
 - (NSString)progressString;
 - (SUDescriptor)update;
 - (SUDownload)download;
-- (SUSUISoftwareUpdateManager)initWithDelegate:(id)a3 hostController:(id)a4;
+- (SUSUISoftwareUpdateManager)initWithDelegate:(id)delegate hostController:(id)controller;
 - (SUSUISoftwareUpdateManagerDelegate)delegate;
 - (UIViewController)hostController;
 - (id)actionStringForBuddy;
 - (id)betaUpdatesAppleID;
 - (id)buildVersionIncludingRSR;
-- (id)humanReadableDescriptionForError:(id)a3;
-- (id)humanReadableDescriptionForError:(id)a3 enableButton:(BOOL *)a4;
-- (id)humanReadableDescriptionForError:(id)a3 enableButton:(BOOL *)a4 showAsButtonFooter:(BOOL *)a5;
-- (id)humanReadableTitleForError:(id)a3;
-- (id)prettyNameForUpdate:(id)a3;
+- (id)humanReadableDescriptionForError:(id)error;
+- (id)humanReadableDescriptionForError:(id)error enableButton:(BOOL *)button;
+- (id)humanReadableDescriptionForError:(id)error enableButton:(BOOL *)button showAsButtonFooter:(BOOL *)footer;
+- (id)humanReadableTitleForError:(id)error;
+- (id)prettyNameForUpdate:(id)update;
 - (id)productVersionWithExtra;
 - (id)statusStringForBuddy;
-- (id)timeRemainingStringForProgress:(id)a3;
-- (void)_alertForDownloadConstraintsWithCompletion:(id)a3;
-- (void)_batteryLevelChanged:(id)a3;
-- (void)_batteryStateChanged:(id)a3;
-- (void)_didBecomeActive:(id)a3;
-- (void)_notifyScanFailed:(id)a3;
-- (void)_reallyDownloadAndInstall:(unint64_t)a3 update:(id)a4 AcceptingCellularFees:(int)a5 completion:(id)a6;
-- (void)_reallyDownloadAndInstallDidFinishWithResult:(BOOL)a3 andError:(id)a4 forUpdate:(id)a5 withDownload:(id)a6 andDownloadError:(id)a7 usingCompletionHandler:(id)a8;
-- (void)_reallyResumeDownloadAcceptingCellularFees:(int)a3;
+- (id)timeRemainingStringForProgress:(id)progress;
+- (void)_alertForDownloadConstraintsWithCompletion:(id)completion;
+- (void)_batteryLevelChanged:(id)changed;
+- (void)_batteryStateChanged:(id)changed;
+- (void)_didBecomeActive:(id)active;
+- (void)_notifyScanFailed:(id)failed;
+- (void)_reallyDownloadAndInstall:(unint64_t)install update:(id)update AcceptingCellularFees:(int)fees completion:(id)completion;
+- (void)_reallyDownloadAndInstallDidFinishWithResult:(BOOL)result andError:(id)error forUpdate:(id)update withDownload:(id)download andDownloadError:(id)downloadError usingCompletionHandler:(id)handler;
+- (void)_reallyResumeDownloadAcceptingCellularFees:(int)fees;
 - (void)_requestLayoutSubviews;
-- (void)_scanForBetaProgramsWithSeedingDevice:(id)a3;
-- (void)_setState:(int)a3 preferredUpdateError:(id)a4 alternateUpdateError:(id)a5;
-- (void)_updateDownloadProgressWithDownload:(id)a3 stateFromDownload:(int *)a4;
-- (void)assignScanResults:(id)a3;
-- (void)cancelOrPurgeIfNecessaryWithUpdate:(id)a3 completion:(id)a4;
+- (void)_scanForBetaProgramsWithSeedingDevice:(id)device;
+- (void)_setState:(int)state preferredUpdateError:(id)error alternateUpdateError:(id)updateError;
+- (void)_updateDownloadProgressWithDownload:(id)download stateFromDownload:(int *)fromDownload;
+- (void)assignScanResults:(id)results;
+- (void)cancelOrPurgeIfNecessaryWithUpdate:(id)update completion:(id)completion;
 - (void)checkAndSetReadyToInstall;
 - (void)checkAutoInstall;
 - (void)clearPastScanResults;
 - (void)dealloc;
-- (void)enrollInBetaUpdatesForProgram:(id)a3 completion:(id)a4;
-- (void)handleDownloadError:(id)a3;
+- (void)enrollInBetaUpdatesForProgram:(id)program completion:(id)completion;
+- (void)handleDownloadError:(id)error;
 - (void)handleRollbackApplied;
-- (void)handleScanError:(id)a3;
+- (void)handleScanError:(id)error;
 - (void)hideAlternateUpdate;
 - (void)hidePreferredUpdate;
-- (void)manager:(id)a3 autoUpdateScheduleStateChanged:(BOOL)a4 autoInstallOperation:(id)a5;
-- (void)manager:(id)a3 clearingSpaceForDownload:(id)a4 clearingSpace:(BOOL)a5;
-- (void)manager:(id)a3 downloadDidFail:(id)a4 withError:(id)a5;
-- (void)manager:(id)a3 downloadDidFinish:(id)a4 withInstallPolicy:(id)a5;
-- (void)manager:(id)a3 downloadDidStart:(id)a4;
-- (void)manager:(id)a3 downloadProgressDidChange:(id)a4;
-- (void)manager:(id)a3 downloadWasInvalidatedForNewUpdatesAvailable:(id)a4;
-- (void)manager:(id)a3 handleDDMDeclaration:(id)a4;
-- (void)manager:(id)a3 inUserInteraction:(id)a4;
-- (void)manager:(id)a3 installDidFail:(id)a4 withError:(id)a5;
-- (void)manager:(id)a3 installDidFinish:(id)a4;
-- (void)manager:(id)a3 installDidStart:(id)a4;
-- (void)manager:(id)a3 rollingBackStateChanged:(BOOL)a4 rollback:(id)a5;
-- (void)manager:(id)a3 scanRequestDidFinishForOptions:(id)a4 results:(id)a5 error:(id)a6;
-- (void)manager:(id)a3 scanRequestDidStartForOptions:(id)a4;
-- (void)networkChangedFromNetworkType:(int)a3 toNetworkType:(int)a4;
-- (void)presentTermsIfNecessaryCompletion:(id)a3;
-- (void)presentTermsIfNecessaryForUpdate:(id)a3 completion:(id)a4;
-- (void)promptForDevicePasscodeForDescriptor:(id)a3 unattendedInstall:(BOOL)a4 completion:(id)a5;
-- (void)purgeCurrentDownloadWithHandler:(id)a3;
-- (void)refreshErrors:(id)a3 alternateError:(id)a4 completion:(id)a5;
+- (void)manager:(id)manager autoUpdateScheduleStateChanged:(BOOL)changed autoInstallOperation:(id)operation;
+- (void)manager:(id)manager clearingSpaceForDownload:(id)download clearingSpace:(BOOL)space;
+- (void)manager:(id)manager downloadDidFail:(id)fail withError:(id)error;
+- (void)manager:(id)manager downloadDidFinish:(id)finish withInstallPolicy:(id)policy;
+- (void)manager:(id)manager downloadDidStart:(id)start;
+- (void)manager:(id)manager downloadProgressDidChange:(id)change;
+- (void)manager:(id)manager downloadWasInvalidatedForNewUpdatesAvailable:(id)available;
+- (void)manager:(id)manager handleDDMDeclaration:(id)declaration;
+- (void)manager:(id)manager inUserInteraction:(id)interaction;
+- (void)manager:(id)manager installDidFail:(id)fail withError:(id)error;
+- (void)manager:(id)manager installDidFinish:(id)finish;
+- (void)manager:(id)manager installDidStart:(id)start;
+- (void)manager:(id)manager rollingBackStateChanged:(BOOL)changed rollback:(id)rollback;
+- (void)manager:(id)manager scanRequestDidFinishForOptions:(id)options results:(id)results error:(id)error;
+- (void)manager:(id)manager scanRequestDidStartForOptions:(id)options;
+- (void)networkChangedFromNetworkType:(int)type toNetworkType:(int)networkType;
+- (void)presentTermsIfNecessaryCompletion:(id)completion;
+- (void)presentTermsIfNecessaryForUpdate:(id)update completion:(id)completion;
+- (void)promptForDevicePasscodeForDescriptor:(id)descriptor unattendedInstall:(BOOL)install completion:(id)completion;
+- (void)purgeCurrentDownloadWithHandler:(id)handler;
+- (void)refreshErrors:(id)errors alternateError:(id)error completion:(id)completion;
 - (void)refreshState;
-- (void)rescanForUpdatesInBackgroundWithOptions:(id)a3 andCompletionHandler:(id)a4;
+- (void)rescanForUpdatesInBackgroundWithOptions:(id)options andCompletionHandler:(id)handler;
 - (void)resumeDownload;
 - (void)revealHiddenAlteranteUpdate;
 - (void)revealHiddenPreferredUpdate;
-- (void)runEntryScan:(BOOL)a3;
-- (void)scanFinishedWithUpdates:(id)a3 options:(id)a4 andError:(id)a5;
+- (void)runEntryScan:(BOOL)scan;
+- (void)scanFinishedWithUpdates:(id)updates options:(id)options andError:(id)error;
 - (void)scanForBetaPrograms;
-- (void)scanForUpdateCompletion:(id)a3;
-- (void)scanForUpdatesCompletion:(id)a3;
-- (void)scanForUpdatesWithOptions:(id)a3 andCompletion:(id)a4;
-- (void)setAlternateUpdateError:(id)a3;
-- (void)setAutoInstall:(id)a3;
-- (void)setClearingSpaceForDownload:(BOOL)a3;
-- (void)setDownload:(id)a3;
-- (void)setPreferredUpdateError:(id)a3;
-- (void)setState:(int)a3 withDownloadUpdateError:(id)a4;
-- (void)startDownloadAndInstall:(unint64_t)a3 update:(id)a4 withHandler:(id)a5;
-- (void)startDownloadAndInstall:(unint64_t)a3 withHandler:(id)a4;
-- (void)startInstallWithHandler:(id)a3;
-- (void)startRollbackWithOptions:(id)a3 withHandler:(id)a4;
-- (void)unenrollBetaUpdatesWithCompletion:(id)a3;
-- (void)updateStateFromDownload:(id)a3;
+- (void)scanForUpdateCompletion:(id)completion;
+- (void)scanForUpdatesCompletion:(id)completion;
+- (void)scanForUpdatesWithOptions:(id)options andCompletion:(id)completion;
+- (void)setAlternateUpdateError:(id)error;
+- (void)setAutoInstall:(id)install;
+- (void)setClearingSpaceForDownload:(BOOL)download;
+- (void)setDownload:(id)download;
+- (void)setPreferredUpdateError:(id)error;
+- (void)setState:(int)state withDownloadUpdateError:(id)error;
+- (void)startDownloadAndInstall:(unint64_t)install update:(id)update withHandler:(id)handler;
+- (void)startDownloadAndInstall:(unint64_t)install withHandler:(id)handler;
+- (void)startInstallWithHandler:(id)handler;
+- (void)startRollbackWithOptions:(id)options withHandler:(id)handler;
+- (void)unenrollBetaUpdatesWithCompletion:(id)completion;
+- (void)updateStateFromDownload:(id)download;
 - (void)upgradeDownloadToUserInitiated;
 @end
 
 @implementation SUSUISoftwareUpdateManager
 
-- (SUSUISoftwareUpdateManager)initWithDelegate:(id)a3 hostController:(id)a4
+- (SUSUISoftwareUpdateManager)initWithDelegate:(id)delegate hostController:(id)controller
 {
-  v38 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, delegate);
   v36 = 0;
-  objc_storeStrong(&v36, a4);
-  v4 = v38;
-  v38 = 0;
+  objc_storeStrong(&v36, controller);
+  v4 = selfCopy;
+  selfCopy = 0;
   v35.receiver = v4;
   v35.super_class = SUSUISoftwareUpdateManager;
-  v38 = [(SUSUISoftwareUpdateManager *)&v35 init];
-  objc_storeStrong(&v38, v38);
-  if (v38)
+  selfCopy = [(SUSUISoftwareUpdateManager *)&v35 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
     v5 = dispatch_queue_create("com.apple.softwareupdatesettings._concurrentqueue", 0);
-    concurrentQueue = v38->_concurrentQueue;
-    v38->_concurrentQueue = v5;
+    concurrentQueue = selfCopy->_concurrentQueue;
+    selfCopy->_concurrentQueue = v5;
     MEMORY[0x277D82BD8](concurrentQueue);
     v24 = +[SUSUIServiceManager sharedInstance];
     v34 = [(SUSUIServiceManager *)v24 classForService:objc_opt_class()];
     MEMORY[0x277D82BD8](v24);
     v27 = [v34 alloc];
-    v26 = v38;
+    v26 = selfCopy;
     v25 = MEMORY[0x277D85CD0];
     v7 = MEMORY[0x277D85CD0];
     v28 = v25;
     v8 = [v27 initWithDelegate:v26 completionQueue:?];
-    suClient = v38->_suClient;
-    v38->_suClient = v8;
+    suClient = selfCopy->_suClient;
+    selfCopy->_suClient = v8;
     MEMORY[0x277D82BD8](suClient);
     MEMORY[0x277D82BD8](v28);
-    v10 = [(SUSUISoftwareUpdateClientManager *)v38->_suClient suManagerClient];
-    SUManager = v38->_SUManager;
-    v38->_SUManager = v10;
+    suManagerClient = [(SUSUISoftwareUpdateClientManager *)selfCopy->_suClient suManagerClient];
+    SUManager = selfCopy->_SUManager;
+    selfCopy->_SUManager = suManagerClient;
     MEMORY[0x277D82BD8](SUManager);
-    objc_storeWeak(&v38->_delegate, location[0]);
-    objc_storeWeak(&v38->_hostController, v36);
-    v38->_clearingSpaceForDownload = 0;
-    v33 = [getSUNetworkMonitorClass_0() sharedInstance];
-    v12 = [v33 currentNetworkType];
-    v38->_networkType = v12;
-    [v33 addObserver:v38];
+    objc_storeWeak(&selfCopy->_delegate, location[0]);
+    objc_storeWeak(&selfCopy->_hostController, v36);
+    selfCopy->_clearingSpaceForDownload = 0;
+    sharedInstance = [getSUNetworkMonitorClass_0() sharedInstance];
+    currentNetworkType = [sharedInstance currentNetworkType];
+    selfCopy->_networkType = currentNetworkType;
+    [sharedInstance addObserver:selfCopy];
     PSSetBatteryMonitoringEnabled();
-    v29 = [MEMORY[0x277D75418] currentDevice];
-    v30 = [v29 batteryState];
-    MEMORY[0x277D82BD8](v29);
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    batteryState = [currentDevice batteryState];
+    MEMORY[0x277D82BD8](currentDevice);
     v31 = 1;
-    if (v30 != 2)
+    if (batteryState != 2)
     {
-      v31 = v30 == 3;
+      v31 = batteryState == 3;
     }
 
-    v38->_connectedToPowerSource = v31;
-    v20 = [MEMORY[0x277D75418] currentDevice];
-    [v20 batteryLevel];
-    v38->_batteryLevel = v13;
-    MEMORY[0x277D82BD8](v20);
-    v21 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v21 addObserver:v38 selector:sel__batteryStateChanged_ name:*MEMORY[0x277D76870] object:?];
-    MEMORY[0x277D82BD8](v21);
-    v22 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v22 addObserver:v38 selector:sel__batteryLevelChanged_ name:*MEMORY[0x277D76868] object:0];
-    MEMORY[0x277D82BD8](v22);
-    v23 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v23 addObserver:v38 selector:sel__didBecomeActive_ name:*MEMORY[0x277D76648] object:0];
-    MEMORY[0x277D82BD8](v23);
+    selfCopy->_connectedToPowerSource = v31;
+    currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+    [currentDevice2 batteryLevel];
+    selfCopy->_batteryLevel = v13;
+    MEMORY[0x277D82BD8](currentDevice2);
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:selfCopy selector:sel__batteryStateChanged_ name:*MEMORY[0x277D76870] object:?];
+    MEMORY[0x277D82BD8](defaultCenter);
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:selfCopy selector:sel__batteryLevelChanged_ name:*MEMORY[0x277D76868] object:0];
+    MEMORY[0x277D82BD8](defaultCenter2);
+    defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter3 addObserver:selfCopy selector:sel__didBecomeActive_ name:*MEMORY[0x277D76648] object:0];
+    MEMORY[0x277D82BD8](defaultCenter3);
     v14 = SBSSpringBoardServerPort();
-    MEMORY[0x26D66A030](v14, &v38->_originalCellFlag, &v38->_originalWifiFlag);
+    MEMORY[0x26D66A030](v14, &selfCopy->_originalCellFlag, &selfCopy->_originalWifiFlag);
     v15 = SBSSpringBoardServerPort();
     MEMORY[0x26D66A050](v15, 1);
-    v38->_previousTimeRemaining = -1.0;
-    v38->_hidingPreferredUpdate = 0;
-    v38->_hidingAlternateUpdate = 0;
+    selfCopy->_previousTimeRemaining = -1.0;
+    selfCopy->_hidingPreferredUpdate = 0;
+    selfCopy->_hidingAlternateUpdate = 0;
     v16 = objc_alloc_init(SUSUIUpdateAgreementManager);
-    updateAgreementManager = v38->_updateAgreementManager;
-    v38->_updateAgreementManager = v16;
+    updateAgreementManager = selfCopy->_updateAgreementManager;
+    selfCopy->_updateAgreementManager = v16;
     MEMORY[0x277D82BD8](updateAgreementManager);
-    objc_storeStrong(&v38->_enrolledBetaProgram, 0);
-    objc_storeStrong(&v38->_currentSeedingDevice, 0);
-    objc_storeStrong(&v33, 0);
+    objc_storeStrong(&selfCopy->_enrolledBetaProgram, 0);
+    objc_storeStrong(&selfCopy->_currentSeedingDevice, 0);
+    objc_storeStrong(&sharedInstance, 0);
   }
 
-  v19 = MEMORY[0x277D82BE0](v38);
+  v19 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(&v36, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v38, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v19;
 }
 
 - (void)dealloc
 {
-  v10 = self;
+  selfCopy = self;
   v9 = a2;
   v2 = SBSSpringBoardServerPort();
-  MEMORY[0x26D66A050](v2, v10->_originalCellFlag, v10->_originalWifiFlag);
-  v4 = [getSUNetworkMonitorClass_0() sharedInstance];
-  [v4 removeObserver:v10];
-  MEMORY[0x277D82BD8](v4);
+  MEMORY[0x26D66A050](v2, selfCopy->_originalCellFlag, selfCopy->_originalWifiFlag);
+  sharedInstance = [getSUNetworkMonitorClass_0() sharedInstance];
+  [sharedInstance removeObserver:selfCopy];
+  MEMORY[0x277D82BD8](sharedInstance);
   PSSetBatteryMonitoringEnabled();
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 removeObserver:v10];
-  MEMORY[0x277D82BD8](v5);
-  WeakRetained = objc_loadWeakRetained(&v10->_hostController);
-  v7 = [WeakRetained presentedViewController];
-  MEMORY[0x277D82BD8](v7);
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:selfCopy];
+  MEMORY[0x277D82BD8](defaultCenter);
+  WeakRetained = objc_loadWeakRetained(&selfCopy->_hostController);
+  presentedViewController = [WeakRetained presentedViewController];
+  MEMORY[0x277D82BD8](presentedViewController);
   MEMORY[0x277D82BD8](WeakRetained);
-  if (v7)
+  if (presentedViewController)
   {
-    v3 = objc_loadWeakRetained(&v10->_hostController);
+    v3 = objc_loadWeakRetained(&selfCopy->_hostController);
     [v3 dismissViewControllerAnimated:0 completion:0];
     MEMORY[0x277D82BD8](v3);
   }
 
-  v8.receiver = v10;
+  v8.receiver = selfCopy;
   v8.super_class = SUSUISoftwareUpdateManager;
   [(SUSUISoftwareUpdateManager *)&v8 dealloc];
 }
 
-- (void)setPreferredUpdateError:(id)a3
+- (void)setPreferredUpdateError:(id)error
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  objc_storeStrong(&v5->_preferredUpdateError, location[0]);
-  v3 = [(SUSUISoftwareUpdateManager *)v5 humanReadableDescriptionForError:location[0] enableButton:0];
-  [(SUSUISoftwareUpdateManager *)v5 setPreferredUpdateErrorDescription:?];
+  objc_storeStrong(location, error);
+  objc_storeStrong(&selfCopy->_preferredUpdateError, location[0]);
+  v3 = [(SUSUISoftwareUpdateManager *)selfCopy humanReadableDescriptionForError:location[0] enableButton:0];
+  [(SUSUISoftwareUpdateManager *)selfCopy setPreferredUpdateErrorDescription:?];
   MEMORY[0x277D82BD8](v3);
   objc_storeStrong(location, 0);
 }
 
-- (void)setAlternateUpdateError:(id)a3
+- (void)setAlternateUpdateError:(id)error
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  objc_storeStrong(&v5->_alternateUpdateError, location[0]);
-  v3 = [(SUSUISoftwareUpdateManager *)v5 humanReadableDescriptionForError:location[0] enableButton:0];
-  [(SUSUISoftwareUpdateManager *)v5 setAlternateUpdateErrorDescription:?];
+  objc_storeStrong(location, error);
+  objc_storeStrong(&selfCopy->_alternateUpdateError, location[0]);
+  v3 = [(SUSUISoftwareUpdateManager *)selfCopy humanReadableDescriptionForError:location[0] enableButton:0];
+  [(SUSUISoftwareUpdateManager *)selfCopy setAlternateUpdateErrorDescription:?];
   MEMORY[0x277D82BD8](v3);
   objc_storeStrong(location, 0);
 }
 
-+ (double)timeRemainingForProgress:(id)a3 isValid:(BOOL *)a4
++ (double)timeRemainingForProgress:(id)progress isValid:(BOOL *)valid
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (a4)
+  objc_storeStrong(location, progress);
+  if (valid)
   {
-    *a4 = 0;
+    *valid = 0;
   }
 
   if (!location[0])
@@ -283,9 +283,9 @@
 
   if (v7 < 0x93A80uLL && v7 > 0.0)
   {
-    if (a4)
+    if (valid)
     {
-      *a4 = 1;
+      *valid = 1;
     }
 
     v9 = v7;
@@ -301,20 +301,20 @@ LABEL_13:
   return v9;
 }
 
-- (id)timeRemainingStringForProgress:(id)a3
+- (id)timeRemainingStringForProgress:(id)progress
 {
-  v42 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, progress);
   v39 = 0;
   v17 = 0;
   if (location[0])
   {
-    v40 = [location[0] phase];
+    phase = [location[0] phase];
     v39 = 1;
     v17 = 0;
-    if ([v40 isEqualToString:*MEMORY[0x277D64A00]])
+    if ([phase isEqualToString:*MEMORY[0x277D64A00]])
     {
       [location[0] percentComplete];
       v17 = v3 >= 1.0;
@@ -323,18 +323,18 @@ LABEL_13:
 
   if (v39)
   {
-    MEMORY[0x277D82BD8](v40);
+    MEMORY[0x277D82BD8](phase);
   }
 
   if (v17)
   {
-    v15 = [(SUSUISoftwareUpdateManager *)v42 download];
-    v16 = [(SUDownload *)v15 descriptor];
+    download = [(SUSUISoftwareUpdateManager *)selfCopy download];
+    descriptor = [(SUDownload *)download descriptor];
     v37 = 0;
     v35 = 0;
     v33 = 0;
     v31 = 0;
-    if (([(SUDescriptor *)v16 isSplatOnly]& 1) != 0)
+    if (([(SUDescriptor *)descriptor isSplatOnly]& 1) != 0)
     {
       v38 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v37 = 1;
@@ -373,20 +373,20 @@ LABEL_13:
       MEMORY[0x277D82BD8](v38);
     }
 
-    MEMORY[0x277D82BD8](v16);
-    MEMORY[0x277D82BD8](v15);
+    MEMORY[0x277D82BD8](descriptor);
+    MEMORY[0x277D82BD8](download);
     v30 = 1;
   }
 
   else
   {
-    v13 = [(SUSUISoftwareUpdateManager *)v42 download];
-    v14 = [(SUDownload *)v13 descriptor];
+    download2 = [(SUSUISoftwareUpdateManager *)selfCopy download];
+    descriptor2 = [(SUDownload *)download2 descriptor];
     v27 = 0;
     v25 = 0;
     v23 = 0;
     v21 = 0;
-    if (([(SUDescriptor *)v14 isSplatOnly]& 1) != 0)
+    if (([(SUDescriptor *)descriptor2 isSplatOnly]& 1) != 0)
     {
       v28 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v27 = 1;
@@ -425,8 +425,8 @@ LABEL_13:
       MEMORY[0x277D82BD8](v28);
     }
 
-    MEMORY[0x277D82BD8](v14);
-    MEMORY[0x277D82BD8](v13);
+    MEMORY[0x277D82BD8](descriptor2);
+    MEMORY[0x277D82BD8](download2);
     v20 = 0;
     [SUSUISoftwareUpdateManager timeRemainingForProgress:location[0] isValid:&v20];
     v19 = v6;
@@ -463,23 +463,23 @@ LABEL_13:
 
 - (id)statusStringForBuddy
 {
-  v61 = self;
+  selfCopy = self;
   v60 = a2;
   state = self->_state;
-  v18 = [(SUSUISoftwareUpdateManager *)self download];
-  v58 = [(SUDownload *)v18 progress];
-  MEMORY[0x277D82BD8](v18);
-  v57 = [v58 phase];
-  [v58 percentComplete];
+  download = [(SUSUISoftwareUpdateManager *)self download];
+  progress = [(SUDownload *)download progress];
+  MEMORY[0x277D82BD8](download);
+  phase = [progress phase];
+  [progress percentComplete];
   v56 = v2;
-  v20 = [(SUSUISoftwareUpdateManager *)v61 download];
-  v19 = [(SUDownload *)v20 descriptor];
-  v21 = [(SUDescriptor *)v19 isSplatOnly];
-  MEMORY[0x277D82BD8](v19);
-  MEMORY[0x277D82BD8](v20);
-  v55 = v21;
-  location = [(SUSUISoftwareUpdateManager *)v61 preferredUpdateError];
-  if (!location || [(SUSUISoftwareUpdateManager *)v61 shouldIgnoreUpdateError:location])
+  download2 = [(SUSUISoftwareUpdateManager *)selfCopy download];
+  descriptor = [(SUDownload *)download2 descriptor];
+  isSplatOnly = [(SUDescriptor *)descriptor isSplatOnly];
+  MEMORY[0x277D82BD8](descriptor);
+  MEMORY[0x277D82BD8](download2);
+  v55 = isSplatOnly;
+  location = [(SUSUISoftwareUpdateManager *)selfCopy preferredUpdateError];
+  if (!location || [(SUSUISoftwareUpdateManager *)selfCopy shouldIgnoreUpdateError:location])
   {
     if (state != 6 && state != 9 && state != 8)
     {
@@ -503,7 +503,7 @@ LABEL_13:
         else
         {
           v11 = getkSUDownloadPhasePreparingForInstallation_1();
-          v12 = [v57 isEqualToString:?];
+          v12 = [phase isEqualToString:?];
           MEMORY[0x277D82BD8](v11);
           if (v12)
           {
@@ -553,7 +553,7 @@ LABEL_13:
 
           else if (v56 >= 0.005)
           {
-            v62 = [(SUSUISoftwareUpdateManager *)v61 timeRemainingStringForProgress:v58];
+            v62 = [(SUSUISoftwareUpdateManager *)selfCopy timeRemainingStringForProgress:progress];
           }
 
           else
@@ -612,7 +612,7 @@ LABEL_13:
       }
     }
 
-    else if ([(SUSUISoftwareUpdateManager *)v61 clearingSpaceForDownload])
+    else if ([(SUSUISoftwareUpdateManager *)selfCopy clearingSpaceForDownload])
     {
       v44 = 0;
       v42 = 0;
@@ -661,22 +661,22 @@ LABEL_13:
     else
     {
       v13 = MEMORY[0x277CCA8E8];
-      v14 = [(SUSUISoftwareUpdateManager *)v61 preferredUpdate];
-      v62 = [v13 stringFromByteCount:-[SUDescriptor downloadSize](v14 countStyle:{"downloadSize"), 2}];
-      MEMORY[0x277D82BD8](v14);
+      preferredUpdate = [(SUSUISoftwareUpdateManager *)selfCopy preferredUpdate];
+      v62 = [v13 stringFromByteCount:-[SUDescriptor downloadSize](preferredUpdate countStyle:{"downloadSize"), 2}];
+      MEMORY[0x277D82BD8](preferredUpdate);
     }
   }
 
   else
   {
-    v15 = [(SUSUISoftwareUpdateManager *)v61 download];
-    v16 = [(SUDownload *)v15 descriptor];
-    v17 = [(SUSUISoftwareUpdateManager *)v61 preferredUpdate];
+    download3 = [(SUSUISoftwareUpdateManager *)selfCopy download];
+    descriptor2 = [(SUDownload *)download3 descriptor];
+    preferredUpdate2 = [(SUSUISoftwareUpdateManager *)selfCopy preferredUpdate];
     v52 = 0;
     v50 = 0;
     v48 = 0;
     v46 = 0;
-    if (([(SUDescriptor *)v16 isEqual:?]& 1) != 0 && state >= 0xA)
+    if (([(SUDescriptor *)descriptor2 isEqual:?]& 1) != 0 && state >= 0xA)
     {
       v53 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v52 = 1;
@@ -715,14 +715,14 @@ LABEL_13:
       MEMORY[0x277D82BD8](v53);
     }
 
-    MEMORY[0x277D82BD8](v17);
-    MEMORY[0x277D82BD8](v16);
-    MEMORY[0x277D82BD8](v15);
+    MEMORY[0x277D82BD8](preferredUpdate2);
+    MEMORY[0x277D82BD8](descriptor2);
+    MEMORY[0x277D82BD8](download3);
   }
 
   objc_storeStrong(&location, 0);
-  objc_storeStrong(&v57, 0);
-  objc_storeStrong(&v58, 0);
+  objc_storeStrong(&phase, 0);
+  objc_storeStrong(&progress, 0);
   v7 = v62;
 
   return v7;
@@ -731,11 +731,11 @@ LABEL_13:
 - (NSString)progressString
 {
   v9 = *MEMORY[0x277D85DE8];
-  v6 = self;
+  selfCopy = self;
   v5[1] = a2;
   if (PSIsRunningInAssistant())
   {
-    v5[0] = [(SUSUISoftwareUpdateManager *)v6 statusStringForBuddy];
+    v5[0] = [(SUSUISoftwareUpdateManager *)selfCopy statusStringForBuddy];
     oslog = _SUSUILoggingFacility();
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
@@ -750,7 +750,7 @@ LABEL_13:
 
   else
   {
-    v7 = MEMORY[0x277D82BE0](v6->_progressString);
+    v7 = MEMORY[0x277D82BE0](selfCopy->_progressString);
   }
 
   *MEMORY[0x277D85DE8];
@@ -817,11 +817,11 @@ LABEL_13:
 - (NSString)actionString
 {
   v9 = *MEMORY[0x277D85DE8];
-  v6 = self;
+  selfCopy = self;
   v5[1] = a2;
   if (PSIsRunningInAssistant())
   {
-    v5[0] = [(SUSUISoftwareUpdateManager *)v6 actionStringForBuddy];
+    v5[0] = [(SUSUISoftwareUpdateManager *)selfCopy actionStringForBuddy];
     oslog = _SUSUILoggingFacility();
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
@@ -836,7 +836,7 @@ LABEL_13:
 
   else
   {
-    v7 = MEMORY[0x277D82BE0](v6->_actionString);
+    v7 = MEMORY[0x277D82BE0](selfCopy->_actionString);
   }
 
   *MEMORY[0x277D85DE8];
@@ -845,19 +845,19 @@ LABEL_13:
   return v2;
 }
 
-- (void)_setState:(int)a3 preferredUpdateError:(id)a4 alternateUpdateError:(id)a5
+- (void)_setState:(int)state preferredUpdateError:(id)error alternateUpdateError:(id)updateError
 {
-  obj = a5;
+  obj = updateError;
   v99 = "[SUSUISoftwareUpdateManager _setState:preferredUpdateError:alternateUpdateError:]";
   v175 = *MEMORY[0x277D85DE8];
-  v172 = self;
+  selfCopy = self;
   v171 = a2;
-  v170 = a3;
+  stateCopy = state;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, error);
   v168 = 0;
   objc_storeStrong(&v168, obj);
-  if (v172->_runningInitialScan)
+  if (selfCopy->_runningInitialScan)
   {
     oslog = _SUSUILoggingFacility();
     type = OS_LOG_TYPE_DEFAULT;
@@ -865,17 +865,17 @@ LABEL_13:
     {
       log = oslog;
       *v95 = type;
-      v96 = SUSUISoftwareUpdateStateToString(v172->_state);
+      v96 = SUSUISoftwareUpdateStateToString(selfCopy->_state);
       v97 = MEMORY[0x277D82BE0](v96);
       v165 = v97;
-      state = v172->_state;
-      preferredUpdate = v172->_preferredUpdate;
+      state = selfCopy->_state;
+      preferredUpdate = selfCopy->_preferredUpdate;
       v163 = 0;
       if (preferredUpdate)
       {
-        v164 = [(SUDescriptor *)v172->_preferredUpdate humanReadableUpdateName];
+        humanReadableUpdateName = [(SUDescriptor *)selfCopy->_preferredUpdate humanReadableUpdateName];
         v163 = 1;
-        v93 = v164;
+        v93 = humanReadableUpdateName;
       }
 
       else
@@ -884,15 +884,15 @@ LABEL_13:
       }
 
       v90 = v93;
-      v91 = v172->_preferredUpdate;
-      preferredUpdateError = v172->_preferredUpdateError;
-      alternateUpdate = v172->_alternateUpdate;
+      v91 = selfCopy->_preferredUpdate;
+      preferredUpdateError = selfCopy->_preferredUpdateError;
+      alternateUpdate = selfCopy->_alternateUpdate;
       v161 = 0;
       if (alternateUpdate)
       {
-        v162 = [(SUDescriptor *)v172->_alternateUpdate humanReadableUpdateName];
+        humanReadableUpdateName2 = [(SUDescriptor *)selfCopy->_alternateUpdate humanReadableUpdateName];
         v161 = 1;
-        v89 = v162;
+        v89 = humanReadableUpdateName2;
       }
 
       else
@@ -901,21 +901,21 @@ LABEL_13:
       }
 
       v85 = v89;
-      v86 = v172->_alternateUpdate;
-      alternateUpdateError = v172->_alternateUpdateError;
-      download = v172->_download;
-      v7 = v172->_download;
+      v86 = selfCopy->_alternateUpdate;
+      alternateUpdateError = selfCopy->_alternateUpdateError;
+      download = selfCopy->_download;
+      v7 = selfCopy->_download;
       v159 = 0;
       v157 = 0;
       v155 = 0;
-      if (v7 && (v160 = [(SUDownload *)v172->_download descriptor], v159 = 1, v160))
+      if (v7 && (v160 = [(SUDownload *)selfCopy->_download descriptor], v159 = 1, v160))
       {
-        v158 = [(SUDownload *)v172->_download descriptor];
+        descriptor = [(SUDownload *)selfCopy->_download descriptor];
         v83 = 1;
         v157 = 1;
-        v156 = [(SUDescriptor *)v158 humanReadableUpdateName];
+        humanReadableUpdateName3 = [(SUDescriptor *)descriptor humanReadableUpdateName];
         v155 = 1;
-        v84 = v156;
+        v84 = humanReadableUpdateName3;
       }
 
       else
@@ -924,13 +924,13 @@ LABEL_13:
       }
 
       v80 = v84;
-      WeakRetained = objc_loadWeakRetained(&v172->_delegate);
-      v82 = objc_loadWeakRetained(&v172->_delegate);
+      WeakRetained = objc_loadWeakRetained(&selfCopy->_delegate);
+      v82 = objc_loadWeakRetained(&selfCopy->_delegate);
       v153 = 0;
       v151 = 0;
       if (v82)
       {
-        v154 = objc_loadWeakRetained(&v172->_delegate);
+        v154 = objc_loadWeakRetained(&selfCopy->_delegate);
         v78 = 1;
         v153 = 1;
         v8 = objc_opt_class();
@@ -945,13 +945,13 @@ LABEL_13:
       }
 
       v75 = v79;
-      v76 = objc_loadWeakRetained(&v172->_hostController);
-      v77 = objc_loadWeakRetained(&v172->_hostController);
+      v76 = objc_loadWeakRetained(&selfCopy->_hostController);
+      v77 = objc_loadWeakRetained(&selfCopy->_hostController);
       v149 = 0;
       v147 = 0;
       if (v77)
       {
-        v150 = objc_loadWeakRetained(&v172->_hostController);
+        v150 = objc_loadWeakRetained(&selfCopy->_hostController);
         v73 = 1;
         v149 = 1;
         v9 = objc_opt_class();
@@ -966,15 +966,15 @@ LABEL_13:
       }
 
       v66 = v74;
-      v72 = SUSUISoftwareUpdateStateToString(v172->_state);
+      v72 = SUSUISoftwareUpdateStateToString(selfCopy->_state);
       v67 = MEMORY[0x277D82BE0](v72);
       v146 = v67;
-      v68 = v172->_state;
-      v71 = SUSUISoftwareUpdateStateToString(v170);
+      v68 = selfCopy->_state;
+      v71 = SUSUISoftwareUpdateStateToString(stateCopy);
       v145 = MEMORY[0x277D82BE0](v71);
       v69 = &v15;
       buf = v174;
-      __os_log_helper_16_2_19_8_32_8_66_4_0_8_66_8_0_8_66_8_66_8_0_8_66_8_0_8_66_8_0_8_66_8_0_8_66_8_66_4_0_8_66_4_0(v174, v99, v97, state, v90, v91, preferredUpdateError, v85, v86, alternateUpdateError, download, v80, WeakRetained, v75, v76, v74, v67, v68, v145, v170);
+      __os_log_helper_16_2_19_8_32_8_66_4_0_8_66_8_0_8_66_8_66_8_0_8_66_8_0_8_66_8_0_8_66_8_0_8_66_8_66_4_0_8_66_4_0(v174, v99, v97, state, v90, v91, preferredUpdateError, v85, v86, alternateUpdateError, download, v80, WeakRetained, v75, v76, v74, v67, v68, v145, stateCopy);
       _os_log_impl(&dword_26AC94000, log, v95[0], "%s: Update Manager Checkpoint\n\tstate: %{public}@ (%d)\n\tpreferredUpdate: %{public}@ (%p)\n\tpreferredUpdateError: %{public}@\n\talternateUpdate: %{public}@ (%p)\n\talternateUpdateError: %{public}@\n\tdownload: %p (%{public}@)\n\tdelegate: %p (%{public}@)\n\thostController: %p (%{public}@)\n\nSkipping setting state due to initial scan. _state: %{public}@ (%d), new state: %{public}@ (%d)", buf, 0xB4u);
       MEMORY[0x277D82BD8](v71);
       MEMORY[0x277D82BD8](v72);
@@ -1004,12 +1004,12 @@ LABEL_13:
       MEMORY[0x277D82BD8](WeakRetained);
       if (v155)
       {
-        MEMORY[0x277D82BD8](v156);
+        MEMORY[0x277D82BD8](humanReadableUpdateName3);
       }
 
       if (v157)
       {
-        MEMORY[0x277D82BD8](v158);
+        MEMORY[0x277D82BD8](descriptor);
       }
 
       if (v159)
@@ -1019,12 +1019,12 @@ LABEL_13:
 
       if (v161)
       {
-        MEMORY[0x277D82BD8](v162);
+        MEMORY[0x277D82BD8](humanReadableUpdateName2);
       }
 
       if (v163)
       {
-        MEMORY[0x277D82BD8](v164);
+        MEMORY[0x277D82BD8](humanReadableUpdateName);
       }
 
       MEMORY[0x277D82BD8](v96);
@@ -1046,17 +1046,17 @@ LABEL_13:
     {
       v60 = v143;
       *v61 = v142;
-      v62 = SUSUISoftwareUpdateStateToString(v172->_state);
+      v62 = SUSUISoftwareUpdateStateToString(selfCopy->_state);
       v63 = MEMORY[0x277D82BE0](v62);
       v141 = v63;
-      v64 = v172->_state;
-      v10 = v172->_preferredUpdate;
+      v64 = selfCopy->_state;
+      v10 = selfCopy->_preferredUpdate;
       v139 = 0;
       if (v10)
       {
-        v140 = [(SUDescriptor *)v172->_preferredUpdate humanReadableUpdateName];
+        humanReadableUpdateName4 = [(SUDescriptor *)selfCopy->_preferredUpdate humanReadableUpdateName];
         v139 = 1;
-        v59 = v140;
+        v59 = humanReadableUpdateName4;
       }
 
       else
@@ -1065,15 +1065,15 @@ LABEL_13:
       }
 
       v56 = v59;
-      v57 = v172->_preferredUpdate;
-      v58 = v172->_preferredUpdateError;
-      v11 = v172->_alternateUpdate;
+      v57 = selfCopy->_preferredUpdate;
+      v58 = selfCopy->_preferredUpdateError;
+      v11 = selfCopy->_alternateUpdate;
       v137 = 0;
       if (v11)
       {
-        v138 = [(SUDescriptor *)v172->_alternateUpdate humanReadableUpdateName];
+        humanReadableUpdateName5 = [(SUDescriptor *)selfCopy->_alternateUpdate humanReadableUpdateName];
         v137 = 1;
-        v55 = v138;
+        v55 = humanReadableUpdateName5;
       }
 
       else
@@ -1082,21 +1082,21 @@ LABEL_13:
       }
 
       v51 = v55;
-      v52 = v172->_alternateUpdate;
-      v53 = v172->_alternateUpdateError;
-      v54 = v172->_download;
-      v12 = v172->_download;
+      v52 = selfCopy->_alternateUpdate;
+      v53 = selfCopy->_alternateUpdateError;
+      v54 = selfCopy->_download;
+      v12 = selfCopy->_download;
       v135 = 0;
       v133 = 0;
       v131 = 0;
-      if (v12 && (v136 = [(SUDownload *)v172->_download descriptor], v135 = 1, v136))
+      if (v12 && (v136 = [(SUDownload *)selfCopy->_download descriptor], v135 = 1, v136))
       {
-        v134 = [(SUDownload *)v172->_download descriptor];
+        descriptor2 = [(SUDownload *)selfCopy->_download descriptor];
         v49 = 1;
         v133 = 1;
-        v132 = [(SUDescriptor *)v134 humanReadableUpdateName];
+        humanReadableUpdateName6 = [(SUDescriptor *)descriptor2 humanReadableUpdateName];
         v131 = 1;
-        v50 = v132;
+        v50 = humanReadableUpdateName6;
       }
 
       else
@@ -1105,13 +1105,13 @@ LABEL_13:
       }
 
       v46 = v50;
-      v47 = objc_loadWeakRetained(&v172->_delegate);
-      v48 = objc_loadWeakRetained(&v172->_delegate);
+      v47 = objc_loadWeakRetained(&selfCopy->_delegate);
+      v48 = objc_loadWeakRetained(&selfCopy->_delegate);
       v129 = 0;
       v127 = 0;
       if (v48)
       {
-        v130 = objc_loadWeakRetained(&v172->_delegate);
+        v130 = objc_loadWeakRetained(&selfCopy->_delegate);
         v44 = 1;
         v129 = 1;
         v13 = objc_opt_class();
@@ -1126,13 +1126,13 @@ LABEL_13:
       }
 
       v41 = v45;
-      v42 = objc_loadWeakRetained(&v172->_hostController);
-      v43 = objc_loadWeakRetained(&v172->_hostController);
+      v42 = objc_loadWeakRetained(&selfCopy->_hostController);
+      v43 = objc_loadWeakRetained(&selfCopy->_hostController);
       v125 = 0;
       v123 = 0;
       if (v43)
       {
-        v126 = objc_loadWeakRetained(&v172->_hostController);
+        v126 = objc_loadWeakRetained(&selfCopy->_hostController);
         v39 = 1;
         v125 = 1;
         v14 = objc_opt_class();
@@ -1147,15 +1147,15 @@ LABEL_13:
       }
 
       v32 = v40;
-      v38 = SUSUISoftwareUpdateStateToString(v172->_state);
+      v38 = SUSUISoftwareUpdateStateToString(selfCopy->_state);
       v33 = MEMORY[0x277D82BE0](v38);
       v122 = v33;
-      v34 = v172->_state;
-      v37 = SUSUISoftwareUpdateStateToString(v170);
+      v34 = selfCopy->_state;
+      v37 = SUSUISoftwareUpdateStateToString(stateCopy);
       v121 = MEMORY[0x277D82BE0](v37);
       v35 = &v15;
       v36 = v173;
-      __os_log_helper_16_2_21_8_32_8_66_4_0_8_66_8_0_8_66_8_66_8_0_8_66_8_0_8_66_8_0_8_66_8_0_8_66_8_66_4_0_8_66_4_0_8_66_8_66(v173, v99, v63, v64, v56, v57, v58, v51, v52, v53, v54, v46, v47, v41, v42, v40, v33, v34, v121, v170, location, v168);
+      __os_log_helper_16_2_21_8_32_8_66_4_0_8_66_8_0_8_66_8_66_8_0_8_66_8_0_8_66_8_0_8_66_8_0_8_66_8_66_4_0_8_66_4_0_8_66_8_66(v173, v99, v63, v64, v56, v57, v58, v51, v52, v53, v54, v46, v47, v41, v42, v40, v33, v34, v121, stateCopy, location, v168);
       _os_log_impl(&dword_26AC94000, v60, v61[0], "%s: Update Manager Checkpoint\n\tstate: %{public}@ (%d)\n\tpreferredUpdate: %{public}@ (%p)\n\tpreferredUpdateError: %{public}@\n\talternateUpdate: %{public}@ (%p)\n\talternateUpdateError: %{public}@\n\tdownload: %p (%{public}@)\n\tdelegate: %p (%{public}@)\n\thostController: %p (%{public}@)\n\nAssigning new state: %{public}@ (%d) -> %{public}@ (%d). preferredUpdateError: %{public}@, alternateUpdateError: %{public}@", v36, 0xC8u);
       MEMORY[0x277D82BD8](v37);
       MEMORY[0x277D82BD8](v38);
@@ -1185,12 +1185,12 @@ LABEL_13:
       MEMORY[0x277D82BD8](v47);
       if (v131)
       {
-        MEMORY[0x277D82BD8](v132);
+        MEMORY[0x277D82BD8](humanReadableUpdateName6);
       }
 
       if (v133)
       {
-        MEMORY[0x277D82BD8](v134);
+        MEMORY[0x277D82BD8](descriptor2);
       }
 
       if (v135)
@@ -1200,12 +1200,12 @@ LABEL_13:
 
       if (v137)
       {
-        MEMORY[0x277D82BD8](v138);
+        MEMORY[0x277D82BD8](humanReadableUpdateName5);
       }
 
       if (v139)
       {
-        MEMORY[0x277D82BD8](v140);
+        MEMORY[0x277D82BD8](humanReadableUpdateName4);
       }
 
       MEMORY[0x277D82BD8](v62);
@@ -1216,11 +1216,11 @@ LABEL_13:
     }
 
     objc_storeStrong(&v143, 0);
-    v120 = v172->_state;
-    v119 = MEMORY[0x277D82BE0](v172->_preferredUpdateError);
-    v118 = MEMORY[0x277D82BE0](v172->_preferredUpdateErrorDescription);
-    v117 = MEMORY[0x277D82BE0](v172->_alternateUpdateError);
-    v116 = MEMORY[0x277D82BE0](v172->_alternateUpdateErrorDescription);
+    v120 = selfCopy->_state;
+    v119 = MEMORY[0x277D82BE0](selfCopy->_preferredUpdateError);
+    v118 = MEMORY[0x277D82BE0](selfCopy->_preferredUpdateErrorDescription);
+    v117 = MEMORY[0x277D82BE0](selfCopy->_alternateUpdateError);
+    v116 = MEMORY[0x277D82BE0](selfCopy->_alternateUpdateErrorDescription);
     v30 = &v107;
     v107 = MEMORY[0x277D85DD0];
     v108 = -1073741824;
@@ -1228,8 +1228,8 @@ LABEL_13:
     v110 = __82__SUSUISoftwareUpdateManager__setState_preferredUpdateError_alternateUpdateError___block_invoke;
     v111 = &unk_279CBE618;
     v23 = v112;
-    v112[0] = MEMORY[0x277D82BE0](v172);
-    v113 = v170;
+    v112[0] = MEMORY[0x277D82BE0](selfCopy);
+    v113 = stateCopy;
     v24 = v30 + 5;
     v112[1] = MEMORY[0x277D82BE0](v119);
     v25 = v30 + 6;
@@ -1244,14 +1244,14 @@ LABEL_13:
     v112[6] = MEMORY[0x277D82BE0](v168);
     v114 = v120;
     v115 = MEMORY[0x26D66A460](v30);
-    if (v170 < 5)
+    if (stateCopy < 5)
     {
       (*(v115 + 2))();
     }
 
     else
     {
-      v21 = v172;
+      v21 = selfCopy;
       v18 = location;
       v19 = v168;
       v20 = &v101;
@@ -1558,44 +1558,44 @@ uint64_t __82__SUSUISoftwareUpdateManager__setState_preferredUpdateError_alterna
   return MEMORY[0x277D82BD8](WeakRetained);
 }
 
-- (void)setState:(int)a3 withDownloadUpdateError:(id)a4
+- (void)setState:(int)state withDownloadUpdateError:(id)error
 {
-  v13 = self;
+  selfCopy = self;
   v12 = a2;
-  v11 = a3;
+  stateCopy = state;
   location = 0;
-  objc_storeStrong(&location, a4);
-  v8 = [(SUSUISoftwareUpdateManager *)v13 download];
-  v7 = [(SUDownload *)v8 descriptor];
-  v9 = [(SUDescriptor *)v7 isEqual:v13->_preferredUpdate];
-  MEMORY[0x277D82BD8](v7);
-  MEMORY[0x277D82BD8](v8);
+  objc_storeStrong(&location, error);
+  download = [(SUSUISoftwareUpdateManager *)selfCopy download];
+  descriptor = [(SUDownload *)download descriptor];
+  v9 = [(SUDescriptor *)descriptor isEqual:selfCopy->_preferredUpdate];
+  MEMORY[0x277D82BD8](descriptor);
+  MEMORY[0x277D82BD8](download);
   if (v9)
   {
-    [(SUSUISoftwareUpdateManager *)v13 _setState:v11 preferredUpdateError:location alternateUpdateError:v13->_alternateUpdateError];
+    [(SUSUISoftwareUpdateManager *)selfCopy _setState:stateCopy preferredUpdateError:location alternateUpdateError:selfCopy->_alternateUpdateError];
   }
 
   else
   {
-    v5 = [(SUSUISoftwareUpdateManager *)v13 download];
-    v4 = [(SUDownload *)v5 descriptor];
-    v6 = [(SUDescriptor *)v4 isEqual:v13->_alternateUpdate];
-    MEMORY[0x277D82BD8](v4);
-    MEMORY[0x277D82BD8](v5);
+    download2 = [(SUSUISoftwareUpdateManager *)selfCopy download];
+    descriptor2 = [(SUDownload *)download2 descriptor];
+    v6 = [(SUDescriptor *)descriptor2 isEqual:selfCopy->_alternateUpdate];
+    MEMORY[0x277D82BD8](descriptor2);
+    MEMORY[0x277D82BD8](download2);
     if (v6)
     {
-      [(SUSUISoftwareUpdateManager *)v13 _setState:v11 preferredUpdateError:v13->_preferredUpdateError alternateUpdateError:location];
+      [(SUSUISoftwareUpdateManager *)selfCopy _setState:stateCopy preferredUpdateError:selfCopy->_preferredUpdateError alternateUpdateError:location];
     }
   }
 
   objc_storeStrong(&location, 0);
 }
 
-- (void)setClearingSpaceForDownload:(BOOL)a3
+- (void)setClearingSpaceForDownload:(BOOL)download
 {
-  v13 = self;
+  selfCopy = self;
   v12 = a2;
-  v11 = a3;
+  downloadCopy = download;
   queue = self->_concurrentQueue;
   v4 = MEMORY[0x277D85DD0];
   v5 = -1073741824;
@@ -1603,7 +1603,7 @@ uint64_t __82__SUSUISoftwareUpdateManager__setState_preferredUpdateError_alterna
   v7 = __58__SUSUISoftwareUpdateManager_setClearingSpaceForDownload___block_invoke;
   v8 = &unk_279CB9758;
   v9 = MEMORY[0x277D82BE0](self);
-  v10 = v11;
+  v10 = downloadCopy;
   dispatch_async(queue, &v4);
   objc_storeStrong(&v9, 0);
 }
@@ -1801,7 +1801,7 @@ void __58__SUSUISoftwareUpdateManager_setClearingSpaceForDownload___block_invoke
 
 - (BOOL)clearingSpaceForDownload
 {
-  v17 = self;
+  selfCopy = self;
   v16 = a2;
   v11 = 0;
   v12 = &v11;
@@ -1825,20 +1825,20 @@ void __58__SUSUISoftwareUpdateManager_setClearingSpaceForDownload___block_invoke
 
 - (void)checkAndSetReadyToInstall
 {
-  v15 = self;
+  selfCopy = self;
   v14 = a2;
   state = self->_state;
   v12 = objc_alloc_init(MEMORY[0x277D648A0]);
-  v2 = [(SUSUISoftwareUpdateManager *)v15 ignorableConstraints];
-  [v12 setIgnorableConstraints:v2];
-  suClient = v15->_suClient;
+  ignorableConstraints = [(SUSUISoftwareUpdateManager *)selfCopy ignorableConstraints];
+  [v12 setIgnorableConstraints:ignorableConstraints];
+  suClient = selfCopy->_suClient;
   v3 = v12;
   v5 = MEMORY[0x277D85DD0];
   v6 = -1073741824;
   v7 = 0;
   v8 = __55__SUSUISoftwareUpdateManager_checkAndSetReadyToInstall__block_invoke;
   v9 = &unk_279CBE640;
-  v10 = MEMORY[0x277D82BE0](v15);
+  v10 = MEMORY[0x277D82BE0](selfCopy);
   v11 = state;
   [(SUSUISoftwareUpdateClientManager *)suClient isUpdateReadyForInstallationWithOptions:v3 completion:?];
   objc_storeStrong(&v10, 0);
@@ -2048,10 +2048,10 @@ void __55__SUSUISoftwareUpdateManager_checkAndSetReadyToInstall__block_invoke(ui
   *MEMORY[0x277D85DE8];
 }
 
-- (void)runEntryScan:(BOOL)a3
+- (void)runEntryScan:(BOOL)scan
 {
   [(SUSUISoftwareUpdateManager *)self setState:?];
-  self->_runningInitialScan = a3;
+  self->_runningInitialScan = scan;
   self->_userInitiatedRescan = 0;
   [(SUSUISoftwareUpdateManager *)self scanForUpdatesCompletion:0];
 }
@@ -2060,7 +2060,7 @@ void __55__SUSUISoftwareUpdateManager_checkAndSetReadyToInstall__block_invoke(ui
 {
   v44 = "[SUSUISoftwareUpdateManager refreshState]";
   v77 = *MEMORY[0x277D85DE8];
-  v74 = self;
+  selfCopy = self;
   v73[1] = a2;
   v73[0] = _SUSUILoggingFacility();
   v72 = 0;
@@ -2068,17 +2068,17 @@ void __55__SUSUISoftwareUpdateManager_checkAndSetReadyToInstall__block_invoke(ui
   {
     log = v73[0];
     *type = v72;
-    v41 = SUSUISoftwareUpdateStateToString(v74->_state);
+    v41 = SUSUISoftwareUpdateStateToString(selfCopy->_state);
     v42 = MEMORY[0x277D82BE0](v41);
     location = v42;
-    state = v74->_state;
-    preferredUpdate = v74->_preferredUpdate;
+    state = selfCopy->_state;
+    preferredUpdate = selfCopy->_preferredUpdate;
     v69 = 0;
     if (preferredUpdate)
     {
-      v70 = [(SUDescriptor *)v74->_preferredUpdate humanReadableUpdateName];
+      humanReadableUpdateName = [(SUDescriptor *)selfCopy->_preferredUpdate humanReadableUpdateName];
       v69 = 1;
-      v38 = v70;
+      v38 = humanReadableUpdateName;
     }
 
     else
@@ -2087,15 +2087,15 @@ void __55__SUSUISoftwareUpdateManager_checkAndSetReadyToInstall__block_invoke(ui
     }
 
     v35 = v38;
-    v36 = v74->_preferredUpdate;
-    preferredUpdateError = v74->_preferredUpdateError;
-    alternateUpdate = v74->_alternateUpdate;
+    v36 = selfCopy->_preferredUpdate;
+    preferredUpdateError = selfCopy->_preferredUpdateError;
+    alternateUpdate = selfCopy->_alternateUpdate;
     v67 = 0;
     if (alternateUpdate)
     {
-      v68 = [(SUDescriptor *)v74->_alternateUpdate humanReadableUpdateName];
+      humanReadableUpdateName2 = [(SUDescriptor *)selfCopy->_alternateUpdate humanReadableUpdateName];
       v67 = 1;
-      v34 = v68;
+      v34 = humanReadableUpdateName2;
     }
 
     else
@@ -2104,21 +2104,21 @@ void __55__SUSUISoftwareUpdateManager_checkAndSetReadyToInstall__block_invoke(ui
     }
 
     v30 = v34;
-    v31 = v74->_alternateUpdate;
-    alternateUpdateError = v74->_alternateUpdateError;
-    download = v74->_download;
-    v4 = v74->_download;
+    v31 = selfCopy->_alternateUpdate;
+    alternateUpdateError = selfCopy->_alternateUpdateError;
+    download = selfCopy->_download;
+    v4 = selfCopy->_download;
     v65 = 0;
     v63 = 0;
     v61 = 0;
-    if (v4 && (v66 = [(SUDownload *)v74->_download descriptor], v65 = 1, v66))
+    if (v4 && (v66 = [(SUDownload *)selfCopy->_download descriptor], v65 = 1, v66))
     {
-      v64 = [(SUDownload *)v74->_download descriptor];
+      descriptor = [(SUDownload *)selfCopy->_download descriptor];
       v28 = 1;
       v63 = 1;
-      v62 = [(SUDescriptor *)v64 humanReadableUpdateName];
+      humanReadableUpdateName3 = [(SUDescriptor *)descriptor humanReadableUpdateName];
       v61 = 1;
-      v29 = v62;
+      v29 = humanReadableUpdateName3;
     }
 
     else
@@ -2127,13 +2127,13 @@ void __55__SUSUISoftwareUpdateManager_checkAndSetReadyToInstall__block_invoke(ui
     }
 
     v25 = v29;
-    WeakRetained = objc_loadWeakRetained(&v74->_delegate);
-    v27 = objc_loadWeakRetained(&v74->_delegate);
+    WeakRetained = objc_loadWeakRetained(&selfCopy->_delegate);
+    v27 = objc_loadWeakRetained(&selfCopy->_delegate);
     v59 = 0;
     v57 = 0;
     if (v27)
     {
-      v60 = objc_loadWeakRetained(&v74->_delegate);
+      v60 = objc_loadWeakRetained(&selfCopy->_delegate);
       v23 = 1;
       v59 = 1;
       v5 = objc_opt_class();
@@ -2148,13 +2148,13 @@ void __55__SUSUISoftwareUpdateManager_checkAndSetReadyToInstall__block_invoke(ui
     }
 
     v20 = v24;
-    v21 = objc_loadWeakRetained(&v74->_hostController);
-    v22 = objc_loadWeakRetained(&v74->_hostController);
+    v21 = objc_loadWeakRetained(&selfCopy->_hostController);
+    v22 = objc_loadWeakRetained(&selfCopy->_hostController);
     v55 = 0;
     v53 = 0;
     if (v22)
     {
-      v56 = objc_loadWeakRetained(&v74->_hostController);
+      v56 = objc_loadWeakRetained(&selfCopy->_hostController);
       v18 = 1;
       v55 = 1;
       v6 = objc_opt_class();
@@ -2198,12 +2198,12 @@ void __55__SUSUISoftwareUpdateManager_checkAndSetReadyToInstall__block_invoke(ui
     MEMORY[0x277D82BD8](WeakRetained);
     if (v61)
     {
-      MEMORY[0x277D82BD8](v62);
+      MEMORY[0x277D82BD8](humanReadableUpdateName3);
     }
 
     if (v63)
     {
-      MEMORY[0x277D82BD8](v64);
+      MEMORY[0x277D82BD8](descriptor);
     }
 
     if (v65)
@@ -2213,12 +2213,12 @@ void __55__SUSUISoftwareUpdateManager_checkAndSetReadyToInstall__block_invoke(ui
 
     if (v67)
     {
-      MEMORY[0x277D82BD8](v68);
+      MEMORY[0x277D82BD8](humanReadableUpdateName2);
     }
 
     if (v69)
     {
-      MEMORY[0x277D82BD8](v70);
+      MEMORY[0x277D82BD8](humanReadableUpdateName);
     }
 
     MEMORY[0x277D82BD8](v41);
@@ -2226,10 +2226,10 @@ void __55__SUSUISoftwareUpdateManager_checkAndSetReadyToInstall__block_invoke(ui
   }
 
   objc_storeStrong(v73, 0);
-  v14 = [MEMORY[0x277D64418] sharedDevice];
-  v15 = [v14 hasSemiSplatActive];
-  MEMORY[0x277D82BD8](v14);
-  if (v15)
+  mEMORY[0x277D64418] = [MEMORY[0x277D64418] sharedDevice];
+  hasSemiSplatActive = [mEMORY[0x277D64418] hasSemiSplatActive];
+  MEMORY[0x277D82BD8](mEMORY[0x277D64418]);
+  if (hasSemiSplatActive)
   {
     oslog = _SUSUILoggingFacility();
     v51 = OS_LOG_TYPE_DEFAULT;
@@ -2243,19 +2243,19 @@ void __55__SUSUISoftwareUpdateManager_checkAndSetReadyToInstall__block_invoke(ui
     }
 
     objc_storeStrong(&oslog, 0);
-    [(SUSUISoftwareUpdateManager *)v74 clearPastScanResults];
-    [(SUSUISoftwareUpdateManager *)v74 setState:3];
-    [(SUSUISoftwareUpdateManager *)v74 handleRollbackApplied];
+    [(SUSUISoftwareUpdateManager *)selfCopy clearPastScanResults];
+    [(SUSUISoftwareUpdateManager *)selfCopy setState:3];
+    [(SUSUISoftwareUpdateManager *)selfCopy handleRollbackApplied];
   }
 
   else
   {
-    if (!v74->_state)
+    if (!selfCopy->_state)
     {
-      [(SUSUISoftwareUpdateManager *)v74 setState:1];
+      [(SUSUISoftwareUpdateManager *)selfCopy setState:1];
     }
 
-    suClient = v74->_suClient;
+    suClient = selfCopy->_suClient;
     v8 = &v45;
     v45 = MEMORY[0x277D85DD0];
     v46 = -1073741824;
@@ -2263,7 +2263,7 @@ void __55__SUSUISoftwareUpdateManager_checkAndSetReadyToInstall__block_invoke(ui
     v48 = __42__SUSUISoftwareUpdateManager_refreshState__block_invoke;
     v49 = &unk_279CBE668;
     v10 = &v50;
-    v50 = MEMORY[0x277D82BE0](v74);
+    v50 = MEMORY[0x277D82BE0](selfCopy);
     [(SUSUISoftwareUpdateClientManager *)suClient download:v8];
     objc_storeStrong(v10, 0);
   }
@@ -2767,40 +2767,40 @@ LABEL_59:
 
 - (SUDescriptor)update
 {
-  v5 = self;
+  selfCopy = self;
   v4[1] = a2;
-  v4[0] = [objc_alloc(MEMORY[0x277D64900]) initWithPreferredDescriptor:v5->_preferredUpdate alternateDescriptor:v5->_alternateUpdate];
-  v3 = [v4[0] latestUpdate];
+  v4[0] = [objc_alloc(MEMORY[0x277D64900]) initWithPreferredDescriptor:selfCopy->_preferredUpdate alternateDescriptor:selfCopy->_alternateUpdate];
+  latestUpdate = [v4[0] latestUpdate];
   objc_storeStrong(v4, 0);
 
-  return v3;
+  return latestUpdate;
 }
 
 - (void)hidePreferredUpdate
 {
-  v3 = self;
+  selfCopy = self;
   v2[1] = a2;
   objc_storeStrong(&self->_hiddenPreferredUpdate, self->_preferredUpdate);
-  objc_storeStrong(&v3->_preferredUpdate, v3->_alternateUpdate);
-  objc_storeStrong(&v3->_alternateUpdate, 0);
-  v2[0] = MEMORY[0x277D82BE0](v3->_preferredUpdateError);
-  [(SUSUISoftwareUpdateManager *)v3 setPreferredUpdateError:v3->_alternateUpdateError];
-  [(SUSUISoftwareUpdateManager *)v3 setAlternateUpdateError:v2[0]];
-  v3->_hidingPreferredUpdate = 1;
+  objc_storeStrong(&selfCopy->_preferredUpdate, selfCopy->_alternateUpdate);
+  objc_storeStrong(&selfCopy->_alternateUpdate, 0);
+  v2[0] = MEMORY[0x277D82BE0](selfCopy->_preferredUpdateError);
+  [(SUSUISoftwareUpdateManager *)selfCopy setPreferredUpdateError:selfCopy->_alternateUpdateError];
+  [(SUSUISoftwareUpdateManager *)selfCopy setAlternateUpdateError:v2[0]];
+  selfCopy->_hidingPreferredUpdate = 1;
   objc_storeStrong(v2, 0);
 }
 
 - (void)revealHiddenPreferredUpdate
 {
-  v3 = self;
+  selfCopy = self;
   v2[1] = a2;
   objc_storeStrong(&self->_alternateUpdate, self->_preferredUpdate);
-  objc_storeStrong(&v3->_preferredUpdate, v3->_hiddenPreferredUpdate);
-  objc_storeStrong(&v3->_hiddenPreferredUpdate, 0);
-  v2[0] = MEMORY[0x277D82BE0](v3->_preferredUpdateError);
-  [(SUSUISoftwareUpdateManager *)v3 setPreferredUpdateError:v3->_alternateUpdateError];
-  [(SUSUISoftwareUpdateManager *)v3 setAlternateUpdateError:v2[0]];
-  v3->_hidingPreferredUpdate = 0;
+  objc_storeStrong(&selfCopy->_preferredUpdate, selfCopy->_hiddenPreferredUpdate);
+  objc_storeStrong(&selfCopy->_hiddenPreferredUpdate, 0);
+  v2[0] = MEMORY[0x277D82BE0](selfCopy->_preferredUpdateError);
+  [(SUSUISoftwareUpdateManager *)selfCopy setPreferredUpdateError:selfCopy->_alternateUpdateError];
+  [(SUSUISoftwareUpdateManager *)selfCopy setAlternateUpdateError:v2[0]];
+  selfCopy->_hidingPreferredUpdate = 0;
   objc_storeStrong(v2, 0);
 }
 
@@ -2818,32 +2818,32 @@ LABEL_59:
   self->_hidingAlternateUpdate = 0;
 }
 
-- (void)refreshErrors:(id)a3 alternateError:(id)a4 completion:(id)a5
+- (void)refreshErrors:(id)errors alternateError:(id)error completion:(id)completion
 {
-  v25 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, errors);
   v23 = 0;
-  objc_storeStrong(&v23, a4);
+  objc_storeStrong(&v23, error);
   v22 = 0;
-  objc_storeStrong(&v22, a5);
+  objc_storeStrong(&v22, completion);
   v5 = objc_alloc(MEMORY[0x277D64890]);
-  v21 = [v5 initWithDescriptor:v25->_preferredUpdate];
-  [v21 setAllowUnrestrictedCellularDownload:{-[SUSUISoftwareUpdateManager allowCellularOverride](v25, "allowCellularOverride")}];
-  [v21 setDownloadFeeAgreementStatus:{-[SUSUIUpdateAgreementManager cellularFeeAgreementStatusForUpdate:](v25->_updateAgreementManager, "cellularFeeAgreementStatusForUpdate:", v25->_preferredUpdate)}];
+  v21 = [v5 initWithDescriptor:selfCopy->_preferredUpdate];
+  [v21 setAllowUnrestrictedCellularDownload:{-[SUSUISoftwareUpdateManager allowCellularOverride](selfCopy, "allowCellularOverride")}];
+  [v21 setDownloadFeeAgreementStatus:{-[SUSUIUpdateAgreementManager cellularFeeAgreementStatusForUpdate:](selfCopy->_updateAgreementManager, "cellularFeeAgreementStatusForUpdate:", selfCopy->_preferredUpdate)}];
   v6 = objc_alloc(MEMORY[0x277D64890]);
-  v20 = [v6 initWithDescriptor:v25->_alternateUpdate];
-  [v20 setAllowUnrestrictedCellularDownload:{-[SUSUISoftwareUpdateManager allowCellularOverride](v25, "allowCellularOverride")}];
-  [v20 setDownloadFeeAgreementStatus:{-[SUSUIUpdateAgreementManager cellularFeeAgreementStatusForUpdate:](v25->_updateAgreementManager, "cellularFeeAgreementStatusForUpdate:", v25->_alternateUpdate)}];
-  suClient = v25->_suClient;
+  v20 = [v6 initWithDescriptor:selfCopy->_alternateUpdate];
+  [v20 setAllowUnrestrictedCellularDownload:{-[SUSUISoftwareUpdateManager allowCellularOverride](selfCopy, "allowCellularOverride")}];
+  [v20 setDownloadFeeAgreementStatus:{-[SUSUIUpdateAgreementManager cellularFeeAgreementStatusForUpdate:](selfCopy->_updateAgreementManager, "cellularFeeAgreementStatusForUpdate:", selfCopy->_alternateUpdate)}];
+  suClient = selfCopy->_suClient;
   v9 = v21;
   v10 = v20;
   v12 = MEMORY[0x277D85DD0];
   v13 = 3221225472;
   v14 = __70__SUSUISoftwareUpdateManager_refreshErrors_alternateError_completion___block_invoke;
   v15 = &unk_279CBE690;
-  v16 = MEMORY[0x277D82BE0](v25);
+  v16 = MEMORY[0x277D82BE0](selfCopy);
   v17 = MEMORY[0x277D82BE0](location[0]);
   v18 = MEMORY[0x277D82BE0](v23);
   v19 = MEMORY[0x277D82BE0](v22);
@@ -3118,16 +3118,16 @@ void __70__SUSUISoftwareUpdateManager_refreshErrors_alternateError_completion___
   *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)errorsAreEqual:(id)a3 error2:(id)a4 oldDescription:(id)a5
+- (BOOL)errorsAreEqual:(id)equal error2:(id)error2 oldDescription:(id)description
 {
-  v20 = self;
+  selfCopy = self;
   v19 = a2;
   *(&v18 + 1) = 0;
-  objc_storeStrong(&v18 + 1, a3);
+  objc_storeStrong(&v18 + 1, equal);
   *&v18 = 0;
-  objc_storeStrong(&v18, a4);
+  objc_storeStrong(&v18, error2);
   v17 = 0;
-  objc_storeStrong(&v17, a5);
+  objc_storeStrong(&v17, description);
   if (v18 == 0)
   {
     v21 = 1;
@@ -3136,17 +3136,17 @@ void __70__SUSUISoftwareUpdateManager_refreshErrors_alternateError_completion___
 
   else
   {
-    v7 = [*(&v18 + 1) domain];
-    v8 = [v18 domain];
+    domain = [*(&v18 + 1) domain];
+    domain2 = [v18 domain];
     v9 = 1;
-    if ([v7 isEqualToString:?])
+    if ([domain isEqualToString:?])
     {
-      v6 = [*(&v18 + 1) code];
-      v9 = v6 != [v18 code];
+      code = [*(&v18 + 1) code];
+      v9 = code != [v18 code];
     }
 
-    MEMORY[0x277D82BD8](v8);
-    MEMORY[0x277D82BD8](v7);
+    MEMORY[0x277D82BD8](domain2);
+    MEMORY[0x277D82BD8](domain);
     if (v9)
     {
       v21 = 0;
@@ -3157,8 +3157,8 @@ void __70__SUSUISoftwareUpdateManager_refreshErrors_alternateError_completion___
     {
       v15 = 0;
       v14 = 0;
-      v13 = [(SUSUISoftwareUpdateManager *)v20 humanReadableDescriptionForError:*(&v18 + 1) enableButton:&v15];
-      v12 = [(SUSUISoftwareUpdateManager *)v20 humanReadableDescriptionForError:v18 enableButton:&v14];
+      v13 = [(SUSUISoftwareUpdateManager *)selfCopy humanReadableDescriptionForError:*(&v18 + 1) enableButton:&v15];
+      v12 = [(SUSUISoftwareUpdateManager *)selfCopy humanReadableDescriptionForError:v18 enableButton:&v14];
       if ((v15 & 1) == (v14 & 1))
       {
         if (v13 || v12)
@@ -3213,7 +3213,7 @@ void __70__SUSUISoftwareUpdateManager_refreshErrors_alternateError_completion___
   }
 }
 
-- (void)_batteryStateChanged:(id)a3
+- (void)_batteryStateChanged:(id)changed
 {
   v46 = &v65;
   v43 = "[SUSUISoftwareUpdateManager _batteryStateChanged:]";
@@ -3221,13 +3221,13 @@ void __70__SUSUISoftwareUpdateManager_refreshErrors_alternateError_completion___
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v44 = [MEMORY[0x277D75418] currentDevice];
-  v45 = [v44 batteryState];
-  MEMORY[0x277D82BD8](v44);
-  v70 = v45;
+  objc_storeStrong(location, changed);
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  batteryState = [currentDevice batteryState];
+  MEMORY[0x277D82BD8](currentDevice);
+  v70 = batteryState;
   v47 = 1;
-  if (v45 != 2)
+  if (batteryState != 2)
   {
     v47 = *(v46 + 5) == 3;
   }
@@ -3251,10 +3251,10 @@ void __70__SUSUISoftwareUpdateManager_refreshErrors_alternateError_completion___
     v64 = 0;
     if (v7)
     {
-      v8 = [*(*(v46 + 8) + 120) humanReadableUpdateName];
-      *v46 = v8;
+      humanReadableUpdateName = [*(*(v46 + 8) + 120) humanReadableUpdateName];
+      *v46 = humanReadableUpdateName;
       v64 = 1;
-      v37 = v8;
+      v37 = humanReadableUpdateName;
     }
 
     else
@@ -3269,9 +3269,9 @@ void __70__SUSUISoftwareUpdateManager_refreshErrors_alternateError_completion___
     v62 = 0;
     if (v9)
     {
-      v63 = [*(*(v46 + 8) + 128) humanReadableUpdateName];
+      humanReadableUpdateName2 = [*(*(v46 + 8) + 128) humanReadableUpdateName];
       v62 = 1;
-      v33 = v63;
+      v33 = humanReadableUpdateName2;
     }
 
     else
@@ -3289,12 +3289,12 @@ void __70__SUSUISoftwareUpdateManager_refreshErrors_alternateError_completion___
     v56 = 0;
     if (v10 && (v61 = [*(*(v46 + 8) + 8) descriptor], v60 = 1, v61))
     {
-      v59 = [*(*(v46 + 8) + 8) descriptor];
+      descriptor = [*(*(v46 + 8) + 8) descriptor];
       v27 = 1;
       v58 = 1;
-      v57 = [v59 humanReadableUpdateName];
+      humanReadableUpdateName3 = [descriptor humanReadableUpdateName];
       v56 = 1;
-      v28 = v57;
+      v28 = humanReadableUpdateName3;
     }
 
     else
@@ -3375,12 +3375,12 @@ void __70__SUSUISoftwareUpdateManager_refreshErrors_alternateError_completion___
     MEMORY[0x277D82BD8](WeakRetained);
     if (v56)
     {
-      MEMORY[0x277D82BD8](v57);
+      MEMORY[0x277D82BD8](humanReadableUpdateName3);
     }
 
     if (v58)
     {
-      MEMORY[0x277D82BD8](v59);
+      MEMORY[0x277D82BD8](descriptor);
     }
 
     if (v60)
@@ -3390,7 +3390,7 @@ void __70__SUSUISoftwareUpdateManager_refreshErrors_alternateError_completion___
 
     if (v62)
     {
-      MEMORY[0x277D82BD8](v63);
+      MEMORY[0x277D82BD8](humanReadableUpdateName2);
     }
 
     if (v64)
@@ -3414,23 +3414,23 @@ void __70__SUSUISoftwareUpdateManager_refreshErrors_alternateError_completion___
   *MEMORY[0x277D85DE8];
 }
 
-- (void)_batteryLevelChanged:(id)a3
+- (void)_batteryLevelChanged:(id)changed
 {
   v47 = &v66;
   v45 = "[SUSUISoftwareUpdateManager _batteryLevelChanged:]";
   v76 = *MEMORY[0x277D85DE8];
-  v74 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, changed);
   v48 = 0.2;
   v72 = 1045220557;
   v71 = 0.5;
-  batteryLevel = v74->_batteryLevel;
-  v46 = [MEMORY[0x277D75418] currentDevice];
-  [v46 batteryLevel];
-  v3 = v46;
-  v74->_batteryLevel = v4;
+  batteryLevel = selfCopy->_batteryLevel;
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  [currentDevice batteryLevel];
+  v3 = currentDevice;
+  selfCopy->_batteryLevel = v4;
   MEMORY[0x277D82BD8](v3);
   if (*(*(v47 + 8) + 28) < v48 && *(v47 + 9) >= 0.2 || *(*(v47 + 8) + 28) >= 0.2 && *(v47 + 9) < 0.2 || *(*(v47 + 8) + 28) < 0.5 && *(v47 + 9) >= 0.5 || *(*(v47 + 8) + 28) >= 0.5 && *(v47 + 9) < 0.5)
   {
@@ -3452,10 +3452,10 @@ void __70__SUSUISoftwareUpdateManager_refreshErrors_alternateError_completion___
       v65 = 0;
       if (v9)
       {
-        v10 = [*(*(v47 + 8) + 120) humanReadableUpdateName];
-        *v47 = v10;
+        humanReadableUpdateName = [*(*(v47 + 8) + 120) humanReadableUpdateName];
+        *v47 = humanReadableUpdateName;
         v65 = 1;
-        v39 = v10;
+        v39 = humanReadableUpdateName;
       }
 
       else
@@ -3470,9 +3470,9 @@ void __70__SUSUISoftwareUpdateManager_refreshErrors_alternateError_completion___
       v63 = 0;
       if (v11)
       {
-        v64 = [*(*(v47 + 8) + 128) humanReadableUpdateName];
+        humanReadableUpdateName2 = [*(*(v47 + 8) + 128) humanReadableUpdateName];
         v63 = 1;
-        v35 = v64;
+        v35 = humanReadableUpdateName2;
       }
 
       else
@@ -3490,12 +3490,12 @@ void __70__SUSUISoftwareUpdateManager_refreshErrors_alternateError_completion___
       v57 = 0;
       if (v12 && (v62 = [*(*(v47 + 8) + 8) descriptor], v61 = 1, v62))
       {
-        v60 = [*(*(v47 + 8) + 8) descriptor];
+        descriptor = [*(*(v47 + 8) + 8) descriptor];
         v29 = 1;
         v59 = 1;
-        v58 = [v60 humanReadableUpdateName];
+        humanReadableUpdateName3 = [descriptor humanReadableUpdateName];
         v57 = 1;
-        v30 = v58;
+        v30 = humanReadableUpdateName3;
       }
 
       else
@@ -3577,12 +3577,12 @@ void __70__SUSUISoftwareUpdateManager_refreshErrors_alternateError_completion___
       MEMORY[0x277D82BD8](WeakRetained);
       if (v57)
       {
-        MEMORY[0x277D82BD8](v58);
+        MEMORY[0x277D82BD8](humanReadableUpdateName3);
       }
 
       if (v59)
       {
-        MEMORY[0x277D82BD8](v60);
+        MEMORY[0x277D82BD8](descriptor);
       }
 
       if (v61)
@@ -3592,7 +3592,7 @@ void __70__SUSUISoftwareUpdateManager_refreshErrors_alternateError_completion___
 
       if (v63)
       {
-        MEMORY[0x277D82BD8](v64);
+        MEMORY[0x277D82BD8](humanReadableUpdateName2);
       }
 
       if (v65)
@@ -3612,26 +3612,26 @@ void __70__SUSUISoftwareUpdateManager_refreshErrors_alternateError_completion___
   *MEMORY[0x277D85DE8];
 }
 
-- (void)_didBecomeActive:(id)a3
+- (void)_didBecomeActive:(id)active
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (v4->_state != 1)
+  objc_storeStrong(location, active);
+  if (selfCopy->_state != 1)
   {
-    [(SUSUISoftwareUpdateManager *)v4 refreshState];
+    [(SUSUISoftwareUpdateManager *)selfCopy refreshState];
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (void)networkChangedFromNetworkType:(int)a3 toNetworkType:(int)a4
+- (void)networkChangedFromNetworkType:(int)type toNetworkType:(int)networkType
 {
-  v18 = self;
+  selfCopy = self;
   v17 = a2;
-  v16 = a3;
-  v15 = a4;
+  typeCopy = type;
+  networkTypeCopy = networkType;
   v5 = MEMORY[0x277D85CD0];
   v4 = MEMORY[0x277D85CD0];
   queue = v5;
@@ -3640,9 +3640,9 @@ void __70__SUSUISoftwareUpdateManager_refreshErrors_alternateError_completion___
   v9 = 0;
   v10 = __74__SUSUISoftwareUpdateManager_networkChangedFromNetworkType_toNetworkType___block_invoke;
   v11 = &unk_279CB97F8;
-  v13 = v15;
-  v12 = MEMORY[0x277D82BE0](v18);
-  v14 = v16;
+  v13 = networkTypeCopy;
+  v12 = MEMORY[0x277D82BE0](selfCopy);
+  v14 = typeCopy;
   dispatch_async(queue, &v7);
   MEMORY[0x277D82BD8](queue);
   objc_storeStrong(&v12, 0);
@@ -3882,12 +3882,12 @@ uint64_t __74__SUSUISoftwareUpdateManager_networkChangedFromNetworkType_toNetwor
 
 - (NSString)prettyUpdateName
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = [(SUSUISoftwareUpdateManager *)self update];
   if (location[0])
   {
-    v6 = [(SUSUISoftwareUpdateManager *)v5 prettyNameForUpdate:location[0]];
+    v6 = [(SUSUISoftwareUpdateManager *)selfCopy prettyNameForUpdate:location[0]];
   }
 
   else
@@ -3901,28 +3901,28 @@ uint64_t __74__SUSUISoftwareUpdateManager_networkChangedFromNetworkType_toNetwor
   return v2;
 }
 
-- (id)prettyNameForUpdate:(id)a3
+- (id)prettyNameForUpdate:(id)update
 {
-  v38 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, update);
   v36 = 0;
   if (location[0])
   {
-    v3 = [location[0] humanReadableUpdateName];
+    humanReadableUpdateName = [location[0] humanReadableUpdateName];
     v4 = v36;
-    v36 = v3;
+    v36 = humanReadableUpdateName;
     MEMORY[0x277D82BD8](v4);
   }
 
   if (!v36 || ![v36 length])
   {
     v35 = 0;
-    v27 = [MEMORY[0x277D75418] currentDevice];
-    v28 = [v27 sf_isiPad];
-    MEMORY[0x277D82BD8](v27);
-    if (v28)
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    sf_isiPad = [currentDevice sf_isiPad];
+    MEMORY[0x277D82BD8](currentDevice);
+    if (sf_isiPad)
     {
       v26 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v5 = [v26 localizedStringForKey:@"iPadOS_VERSION" value:&stru_287B79370 table:@"Software Update"];
@@ -3942,79 +3942,79 @@ uint64_t __74__SUSUISoftwareUpdateManager_networkChangedFromNetworkType_toNetwor
       MEMORY[0x277D82BD8](v25);
     }
 
-    v34 = 0;
+    systemVersion = 0;
     v32 = 0;
     v24 = 0;
     if (location[0])
     {
-      v33 = [location[0] productVersion];
+      productVersion = [location[0] productVersion];
       v32 = 1;
-      v24 = v33 != 0;
+      v24 = productVersion != 0;
     }
 
     if (v32)
     {
-      MEMORY[0x277D82BD8](v33);
+      MEMORY[0x277D82BD8](productVersion);
     }
 
     if (v24)
     {
-      v9 = [location[0] productVersion];
-      v10 = v34;
-      v34 = v9;
+      productVersion2 = [location[0] productVersion];
+      v10 = systemVersion;
+      systemVersion = productVersion2;
       MEMORY[0x277D82BD8](v10);
     }
 
     else
     {
-      v11 = [(SUSUISoftwareUpdateManager *)v38 productVersionWithExtra];
-      v12 = v34;
-      v34 = v11;
+      productVersionWithExtra = [(SUSUISoftwareUpdateManager *)selfCopy productVersionWithExtra];
+      v12 = systemVersion;
+      systemVersion = productVersionWithExtra;
       MEMORY[0x277D82BD8](v12);
-      if (!v34)
+      if (!systemVersion)
       {
-        v23 = [MEMORY[0x277D75418] currentDevice];
-        v34 = [v23 systemVersion];
+        currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+        systemVersion = [currentDevice2 systemVersion];
         MEMORY[0x277D82BD8](0);
-        MEMORY[0x277D82BD8](v23);
+        MEMORY[0x277D82BD8](currentDevice2);
       }
     }
 
-    v13 = [MEMORY[0x277CCACA8] stringWithValidatedFormat:v35 validFormatSpecifiers:@"%@" error:v34];
+    v13 = [MEMORY[0x277CCACA8] stringWithValidatedFormat:v35 validFormatSpecifiers:@"%@" error:systemVersion];
     v14 = v36;
     v36 = v13;
     MEMORY[0x277D82BD8](v14);
-    objc_storeStrong(&v34, 0);
+    objc_storeStrong(&systemVersion, 0);
     objc_storeStrong(&v35, 0);
   }
 
   v30 = 0;
-  v22 = 0;
+  sf_isInternalInstall = 0;
   if (!location[0])
   {
-    v31 = [MEMORY[0x277D75418] currentDevice];
+    currentDevice3 = [MEMORY[0x277D75418] currentDevice];
     v30 = 1;
-    v22 = [v31 sf_isInternalInstall];
+    sf_isInternalInstall = [currentDevice3 sf_isInternalInstall];
   }
 
   if (v30)
   {
-    MEMORY[0x277D82BD8](v31);
+    MEMORY[0x277D82BD8](currentDevice3);
   }
 
-  if (v22)
+  if (sf_isInternalInstall)
   {
-    v29 = [(SUSUISoftwareUpdateManager *)v38 buildVersionIncludingRSR];
+    buildVersionIncludingRSR = [(SUSUISoftwareUpdateManager *)selfCopy buildVersionIncludingRSR];
     v19 = MEMORY[0x277CCACA8];
     v21 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v20 = [v21 localizedStringForKey:@"%@ (%@)" value:&stru_287B79370 table:@"Software Update"];
-    v15 = [v19 stringWithFormat:v36, v29];
+    v15 = [v19 stringWithFormat:v36, buildVersionIncludingRSR];
     v16 = v36;
     v36 = v15;
     MEMORY[0x277D82BD8](v16);
     MEMORY[0x277D82BD8](v20);
     MEMORY[0x277D82BD8](v21);
-    objc_storeStrong(&v29, 0);
+    objc_storeStrong(&buildVersionIncludingRSR, 0);
   }
 
   v18 = MEMORY[0x277D82BE0](v36);
@@ -4079,19 +4079,19 @@ uint64_t __74__SUSUISoftwareUpdateManager_networkChangedFromNetworkType_toNetwor
 
 - (BOOL)canCancelAutoInstall
 {
-  v3 = [(SUSUISoftwareUpdateManager *)self installPolicy];
-  v4 = [(SUInstallPolicy *)v3 type]!= 1;
-  MEMORY[0x277D82BD8](v3);
+  installPolicy = [(SUSUISoftwareUpdateManager *)self installPolicy];
+  v4 = [(SUInstallPolicy *)installPolicy type]!= 1;
+  MEMORY[0x277D82BD8](installPolicy);
   return v4;
 }
 
-- (void)purgeCurrentDownloadWithHandler:(id)a3
+- (void)purgeCurrentDownloadWithHandler:(id)handler
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  suClient = v11->_suClient;
+  objc_storeStrong(location, handler);
+  suClient = selfCopy->_suClient;
   v4 = MEMORY[0x277D85DD0];
   v5 = -1073741824;
   v6 = 0;
@@ -4128,16 +4128,16 @@ void __62__SUSUISoftwareUpdateManager_purgeCurrentDownloadWithHandler___block_in
   return v4;
 }
 
-- (void)setDownload:(id)a3
+- (void)setDownload:(id)download
 {
   v29 = *MEMORY[0x277D85DE8];
-  v27 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  obj = MEMORY[0x277D82BE0](v27);
+  objc_storeStrong(location, download);
+  obj = MEMORY[0x277D82BE0](selfCopy);
   objc_sync_enter(obj);
-  if (location[0] != v27->_download || (v11 = v27->_download, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  if (location[0] != selfCopy->_download || (v11 = selfCopy->_download, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v25 = _SUSUILoggingFacility();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
@@ -4145,13 +4145,13 @@ void __62__SUSUISoftwareUpdateManager_purgeCurrentDownloadWithHandler___block_in
       v23 = 0;
       v21 = 0;
       v19 = 0;
-      if (v27->_download && (v24 = [(SUDownload *)v27->_download descriptor], v23 = 1, v24))
+      if (selfCopy->_download && (v24 = [(SUDownload *)selfCopy->_download descriptor], v23 = 1, v24))
       {
-        v22 = [(SUDownload *)v27->_download descriptor];
+        descriptor = [(SUDownload *)selfCopy->_download descriptor];
         v21 = 1;
-        v20 = [(SUDescriptor *)v22 humanReadableUpdateName];
+        humanReadableUpdateName = [(SUDescriptor *)descriptor humanReadableUpdateName];
         v19 = 1;
-        v10 = v20;
+        v10 = humanReadableUpdateName;
       }
 
       else
@@ -4159,7 +4159,7 @@ void __62__SUSUISoftwareUpdateManager_purgeCurrentDownloadWithHandler___block_in
         v10 = @"N/A";
       }
 
-      download = v27->_download;
+      download = selfCopy->_download;
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
       v3 = @"YES";
@@ -4174,11 +4174,11 @@ void __62__SUSUISoftwareUpdateManager_purgeCurrentDownloadWithHandler___block_in
       v13 = 0;
       if (location[0] && (v18 = [location[0] descriptor], v17 = 1, v18))
       {
-        v16 = [location[0] descriptor];
+        descriptor2 = [location[0] descriptor];
         v15 = 1;
-        v14 = [v16 humanReadableUpdateName];
+        humanReadableUpdateName2 = [descriptor2 humanReadableUpdateName];
         v13 = 1;
-        v6 = v14;
+        v6 = humanReadableUpdateName2;
       }
 
       else
@@ -4202,12 +4202,12 @@ void __62__SUSUISoftwareUpdateManager_purgeCurrentDownloadWithHandler___block_in
       _os_log_impl(&dword_26AC94000, v25, OS_LOG_TYPE_DEFAULT, "%s: Replacing the current download object with a new one.\n\tCurrent: %{public}@ (%p, is SUSUIUninitializedDownload? %{public}@)\n\tNew: %{public}@ (%p, is SUSUIUninitializedDownload? %{public}@)\n", v28, 0x48u);
       if (v13)
       {
-        MEMORY[0x277D82BD8](v14);
+        MEMORY[0x277D82BD8](humanReadableUpdateName2);
       }
 
       if (v15)
       {
-        MEMORY[0x277D82BD8](v16);
+        MEMORY[0x277D82BD8](descriptor2);
       }
 
       if (v17)
@@ -4217,12 +4217,12 @@ void __62__SUSUISoftwareUpdateManager_purgeCurrentDownloadWithHandler___block_in
 
       if (v19)
       {
-        MEMORY[0x277D82BD8](v20);
+        MEMORY[0x277D82BD8](humanReadableUpdateName);
       }
 
       if (v21)
       {
-        MEMORY[0x277D82BD8](v22);
+        MEMORY[0x277D82BD8](descriptor);
       }
 
       if (v23)
@@ -4232,7 +4232,7 @@ void __62__SUSUISoftwareUpdateManager_purgeCurrentDownloadWithHandler___block_in
     }
 
     objc_storeStrong(&v25, 0);
-    objc_storeStrong(&v27->_download, location[0]);
+    objc_storeStrong(&selfCopy->_download, location[0]);
   }
 
   objc_sync_exit(obj);
@@ -4241,19 +4241,19 @@ void __62__SUSUISoftwareUpdateManager_purgeCurrentDownloadWithHandler___block_in
   *MEMORY[0x277D85DE8];
 }
 
-- (void)_reallyDownloadAndInstall:(unint64_t)a3 update:(id)a4 AcceptingCellularFees:(int)a5 completion:(id)a6
+- (void)_reallyDownloadAndInstall:(unint64_t)install update:(id)update AcceptingCellularFees:(int)fees completion:(id)completion
 {
   v75 = &v93;
-  v76 = a5;
-  obj = a6;
+  feesCopy = fees;
+  obj = completion;
   v78 = "[SUSUISoftwareUpdateManager _reallyDownloadAndInstall:update:AcceptingCellularFees:completion:]";
   v108 = *MEMORY[0x277D85DE8];
   location[3] = self;
   location[2] = a2;
-  location[1] = a3;
+  location[1] = install;
   location[0] = 0;
-  objc_storeStrong(location, a4);
-  v105 = v76;
+  objc_storeStrong(location, update);
+  v105 = feesCopy;
   v104 = 0;
   objc_storeStrong(&v104, obj);
   v74 = _SUSUILoggingFacility();
@@ -4274,8 +4274,8 @@ void __62__SUSUISoftwareUpdateManager_purgeCurrentDownloadWithHandler___block_in
     v100 = 0;
     if (v8)
     {
-      v67 = [*(*(v75 + 23) + 120) humanReadableUpdateName];
-      v9 = v67;
+      humanReadableUpdateName = [*(*(v75 + 23) + 120) humanReadableUpdateName];
+      v9 = humanReadableUpdateName;
       *(v75 + 14) = v9;
       v100 = 1;
       v66 = v9;
@@ -4293,8 +4293,8 @@ void __62__SUSUISoftwareUpdateManager_purgeCurrentDownloadWithHandler___block_in
     v99 = 0;
     if (v10)
     {
-      v62 = [*(*(v75 + 23) + 128) humanReadableUpdateName];
-      v11 = v62;
+      humanReadableUpdateName2 = [*(*(v75 + 23) + 128) humanReadableUpdateName];
+      v11 = humanReadableUpdateName2;
       *(v75 + 12) = v11;
       v99 = 1;
       v61 = v11;
@@ -4315,12 +4315,12 @@ void __62__SUSUISoftwareUpdateManager_purgeCurrentDownloadWithHandler___block_in
     v96 = 0;
     if (v12 && (v56 = [*(*(v75 + 23) + 8) descriptor], v13 = v56, *(v75 + 10) = v13, v98 = 1, v13))
     {
-      v55 = [*(*(v75 + 23) + 8) descriptor];
-      v14 = v55;
+      descriptor = [*(*(v75 + 23) + 8) descriptor];
+      v14 = descriptor;
       *(v75 + 8) = v14;
       v97 = 1;
-      v54 = [v14 humanReadableUpdateName];
-      v15 = v54;
+      humanReadableUpdateName3 = [v14 humanReadableUpdateName];
+      v15 = humanReadableUpdateName3;
       *(v75 + 6) = v15;
       v96 = 1;
       v53 = v15;
@@ -4377,8 +4377,8 @@ void __62__SUSUISoftwareUpdateManager_purgeCurrentDownloadWithHandler___block_in
     }
 
     v37 = v39;
-    v38 = [*(v75 + 20) humanReadableUpdateName];
-    v36 = v38;
+    humanReadableUpdateName4 = [*(v75 + 20) humanReadableUpdateName];
+    v36 = humanReadableUpdateName4;
     v89 = MEMORY[0x277D82BE0](v36);
     v34 = &v18;
     buf = v107;
@@ -4445,8 +4445,8 @@ void __62__SUSUISoftwareUpdateManager_purgeCurrentDownloadWithHandler___block_in
   v88 = v32;
   SUDownloadPolicyFactoryClass_0 = getSUDownloadPolicyFactoryClass_0();
   v29 = *(v75 + 20);
-  v30 = [*(v75 + 23) allowCellularOverride];
-  v28 = [SUDownloadPolicyFactoryClass_0 userDownloadPolicyForDescriptor:v29 existingPolicy:0 allowCellularOverride:v30];
+  allowCellularOverride = [*(v75 + 23) allowCellularOverride];
+  v28 = [SUDownloadPolicyFactoryClass_0 userDownloadPolicyForDescriptor:v29 existingPolicy:0 allowCellularOverride:allowCellularOverride];
   v87 = v28;
   v27 = *(v75 + 21);
   if (!v27)
@@ -5265,28 +5265,28 @@ void __96__SUSUISoftwareUpdateManager__reallyDownloadAndInstall_update_Accepting
   *MEMORY[0x277D85DE8];
 }
 
-- (void)_reallyDownloadAndInstallDidFinishWithResult:(BOOL)a3 andError:(id)a4 forUpdate:(id)a5 withDownload:(id)a6 andDownloadError:(id)a7 usingCompletionHandler:(id)a8
+- (void)_reallyDownloadAndInstallDidFinishWithResult:(BOOL)result andError:(id)error forUpdate:(id)update withDownload:(id)download andDownloadError:(id)downloadError usingCompletionHandler:(id)handler
 {
   v89 = &v108;
-  obj = a5;
-  v86 = a6;
-  v87 = a7;
-  v88 = a8;
+  obj = update;
+  downloadCopy = download;
+  downloadErrorCopy = downloadError;
+  handlerCopy = handler;
   v84 = "[SUSUISoftwareUpdateManager _reallyDownloadAndInstallDidFinishWithResult:andError:forUpdate:withDownload:andDownloadError:usingCompletionHandler:]";
   v127 = *MEMORY[0x277D85DE8];
-  v123 = self;
+  selfCopy = self;
   v122 = a2;
-  v121 = a3;
+  resultCopy = result;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, error);
   v119 = 0;
   objc_storeStrong(&v119, obj);
   v118 = 0;
-  objc_storeStrong(&v118, v86);
+  objc_storeStrong(&v118, downloadCopy);
   v117 = 0;
-  objc_storeStrong(&v117, v87);
+  objc_storeStrong(&v117, downloadErrorCopy);
   v116 = 0;
-  objc_storeStrong(&v116, v88);
+  objc_storeStrong(&v116, handlerCopy);
   v115 = _SUSUILoggingFacility();
   type = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v115, OS_LOG_TYPE_DEFAULT))
@@ -5303,10 +5303,10 @@ void __96__SUSUISoftwareUpdateManager__reallyDownloadAndInstall_update_Accepting
     v112 = 0;
     if (v10)
     {
-      v11 = [*(*(v89 + 19) + 120) humanReadableUpdateName];
-      *(v89 + 8) = v11;
+      humanReadableUpdateName = [*(*(v89 + 19) + 120) humanReadableUpdateName];
+      *(v89 + 8) = humanReadableUpdateName;
       v112 = 1;
-      v78 = v11;
+      v78 = humanReadableUpdateName;
     }
 
     else
@@ -5321,10 +5321,10 @@ void __96__SUSUISoftwareUpdateManager__reallyDownloadAndInstall_update_Accepting
     v111 = 0;
     if (v12)
     {
-      v13 = [*(*(v89 + 19) + 128) humanReadableUpdateName];
-      *(v89 + 6) = v13;
+      humanReadableUpdateName2 = [*(*(v89 + 19) + 128) humanReadableUpdateName];
+      *(v89 + 6) = humanReadableUpdateName2;
       v111 = 1;
-      v74 = v13;
+      v74 = humanReadableUpdateName2;
     }
 
     else
@@ -5342,14 +5342,14 @@ void __96__SUSUISoftwareUpdateManager__reallyDownloadAndInstall_update_Accepting
     v107 = 0;
     if (v14 && (v15 = [*(*(v89 + 19) + 8) descriptor], *(v89 + 4) = v15, v110 = 1, v15))
     {
-      v16 = [*(*(v89 + 19) + 8) descriptor];
-      *(v89 + 2) = v16;
+      descriptor = [*(*(v89 + 19) + 8) descriptor];
+      *(v89 + 2) = descriptor;
       v68 = 1;
       v109 = 1;
-      v17 = [v16 humanReadableUpdateName];
-      *v89 = v17;
+      humanReadableUpdateName3 = [descriptor humanReadableUpdateName];
+      *v89 = humanReadableUpdateName3;
       v107 = 1;
-      v69 = v17;
+      v69 = humanReadableUpdateName3;
     }
 
     else
@@ -5400,8 +5400,8 @@ void __96__SUSUISoftwareUpdateManager__reallyDownloadAndInstall_update_Accepting
     }
 
     v54 = v59;
-    v57 = [*(v89 + 15) humanReadableUpdateName];
-    v98 = MEMORY[0x277D82BE0](v57);
+    humanReadableUpdateName4 = [*(v89 + 15) humanReadableUpdateName];
+    v98 = MEMORY[0x277D82BE0](humanReadableUpdateName4);
     v20 = *(v89 + 16);
     v21 = *(v89 + 14);
     v22 = *(v89 + 13);
@@ -5409,7 +5409,7 @@ void __96__SUSUISoftwareUpdateManager__reallyDownloadAndInstall_update_Accepting
     buf = v126;
     __os_log_helper_16_2_19_8_32_8_66_4_0_8_66_8_0_8_66_8_66_8_0_8_66_8_0_8_66_8_0_8_66_8_0_8_66_8_66_8_66_8_66_8_66(v126, v84, v82, v83, v75, v76, v77, v70, v71, v72, v73, v65, WeakRetained, v60, v61, v59, v98, v20, v21, v22);
     _os_log_impl(&dword_26AC94000, log, v80[0], "%s: Update Manager Checkpoint\n\tstate: %{public}@ (%d)\n\tpreferredUpdate: %{public}@ (%p)\n\tpreferredUpdateError: %{public}@\n\talternateUpdate: %{public}@ (%p)\n\talternateUpdateError: %{public}@\n\tdownload: %p (%{public}@)\n\tdelegate: %p (%{public}@)\n\thostController: %p (%{public}@)\n\nupdate: %{public}@, error: %{public}@, download: %{public}@, downloadError: %{public}@", buf, 0xBCu);
-    MEMORY[0x277D82BD8](v57);
+    MEMORY[0x277D82BD8](humanReadableUpdateName4);
     if (v99)
     {
       MEMORY[0x277D82BD8](v100);
@@ -5472,13 +5472,13 @@ void __96__SUSUISoftwareUpdateManager__reallyDownloadAndInstall_update_Accepting
   v52 = 0;
   if (!v23)
   {
-    v51 = [*(v89 + 16) domain];
-    v97 = v51;
+    domain = [*(v89 + 16) domain];
+    v97 = domain;
     v50 = 1;
     v96 = 1;
     v95 = getSUErrorDomain_3();
     v94 = v50 & 1;
-    v24 = [v51 isEqualToString:?];
+    v24 = [domain isEqualToString:?];
     v52 = 0;
     if (v24)
     {
@@ -5524,27 +5524,27 @@ void __96__SUSUISoftwareUpdateManager__reallyDownloadAndInstall_update_Accepting
   if (*(v89 + 14))
   {
     v39 = *(*(v89 + 19) + 64);
-    v41 = [*(v89 + 14) downloadOptions];
-    v38 = [v41 downloadFeeAgreementStatus];
-    v40 = [*(v89 + 14) descriptor];
-    [v39 setCellularFeeAgreementStatus:v38 forUpdate:?];
-    MEMORY[0x277D82BD8](v40);
-    MEMORY[0x277D82BD8](v41);
+    downloadOptions = [*(v89 + 14) downloadOptions];
+    downloadFeeAgreementStatus = [downloadOptions downloadFeeAgreementStatus];
+    descriptor2 = [*(v89 + 14) descriptor];
+    [v39 setCellularFeeAgreementStatus:downloadFeeAgreementStatus forUpdate:?];
+    MEMORY[0x277D82BD8](descriptor2);
+    MEMORY[0x277D82BD8](downloadOptions);
     v43 = *(*(v89 + 19) + 64);
-    v45 = [*(v89 + 14) downloadOptions];
-    v42 = [v45 termsAndConditionsAgreementStatus];
-    v44 = [*(v89 + 14) descriptor];
-    [v43 setTermsAgreementStatus:v42 forUpdate:?];
-    MEMORY[0x277D82BD8](v44);
-    MEMORY[0x277D82BD8](v45);
+    downloadOptions2 = [*(v89 + 14) downloadOptions];
+    termsAndConditionsAgreementStatus = [downloadOptions2 termsAndConditionsAgreementStatus];
+    descriptor3 = [*(v89 + 14) descriptor];
+    [v43 setTermsAgreementStatus:termsAndConditionsAgreementStatus forUpdate:?];
+    MEMORY[0x277D82BD8](descriptor3);
+    MEMORY[0x277D82BD8](downloadOptions2);
   }
 
-  if (v121)
+  if (resultCopy)
   {
-    v36 = [*(v89 + 14) progress];
-    v37 = [v36 isDone];
-    MEMORY[0x277D82BD8](v36);
-    if (v37)
+    progress = [*(v89 + 14) progress];
+    isDone = [progress isDone];
+    MEMORY[0x277D82BD8](progress);
+    if (isDone)
     {
       [*(v89 + 19) setState:10];
     }
@@ -5578,7 +5578,7 @@ void __96__SUSUISoftwareUpdateManager__reallyDownloadAndInstall_update_Accepting
     (*(*(v89 + 12) + 16))();
   }
 
-  if (!v121)
+  if (!resultCopy)
   {
     [*(v89 + 19) handleDownloadError:*(v89 + 16)];
   }
@@ -5592,31 +5592,31 @@ void __96__SUSUISoftwareUpdateManager__reallyDownloadAndInstall_update_Accepting
   *MEMORY[0x277D85DE8];
 }
 
-- (void)startDownloadAndInstall:(unint64_t)a3 withHandler:(id)a4
+- (void)startDownloadAndInstall:(unint64_t)install withHandler:(id)handler
 {
-  v10 = self;
+  selfCopy = self;
   v9 = a2;
-  v8 = a3;
+  installCopy = install;
   location = 0;
-  objc_storeStrong(&location, a4);
-  v5 = v10;
-  v4 = v8;
-  v6 = [(SUSUISoftwareUpdateManager *)v10 update];
+  objc_storeStrong(&location, handler);
+  v5 = selfCopy;
+  v4 = installCopy;
+  update = [(SUSUISoftwareUpdateManager *)selfCopy update];
   [SUSUISoftwareUpdateManager startDownloadAndInstall:v5 update:"startDownloadAndInstall:update:withHandler:" withHandler:v4];
-  MEMORY[0x277D82BD8](v6);
+  MEMORY[0x277D82BD8](update);
   objc_storeStrong(&location, 0);
 }
 
-- (void)startDownloadAndInstall:(unint64_t)a3 update:(id)a4 withHandler:(id)a5
+- (void)startDownloadAndInstall:(unint64_t)install update:(id)update withHandler:(id)handler
 {
-  obj = a5;
+  obj = handler;
   v55 = "[SUSUISoftwareUpdateManager startDownloadAndInstall:update:withHandler:]";
   v94 = *MEMORY[0x277D85DE8];
-  v92 = self;
+  selfCopy = self;
   v91 = a2;
-  v90 = a3;
+  installCopy = install;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, update);
   v88 = 0;
   objc_storeStrong(&v88, obj);
   oslog = _SUSUILoggingFacility();
@@ -5625,17 +5625,17 @@ void __96__SUSUISoftwareUpdateManager__reallyDownloadAndInstall_update_Accepting
   {
     log = oslog;
     *v51 = type;
-    v52 = SUSUISoftwareUpdateStateToString(v92->_state);
+    v52 = SUSUISoftwareUpdateStateToString(selfCopy->_state);
     v53 = MEMORY[0x277D82BE0](v52);
     v85 = v53;
-    state = v92->_state;
-    preferredUpdate = v92->_preferredUpdate;
+    state = selfCopy->_state;
+    preferredUpdate = selfCopy->_preferredUpdate;
     v83 = 0;
     if (preferredUpdate)
     {
-      v84 = [(SUDescriptor *)v92->_preferredUpdate humanReadableUpdateName];
+      humanReadableUpdateName = [(SUDescriptor *)selfCopy->_preferredUpdate humanReadableUpdateName];
       v83 = 1;
-      v49 = v84;
+      v49 = humanReadableUpdateName;
     }
 
     else
@@ -5644,15 +5644,15 @@ void __96__SUSUISoftwareUpdateManager__reallyDownloadAndInstall_update_Accepting
     }
 
     v46 = v49;
-    v47 = v92->_preferredUpdate;
-    preferredUpdateError = v92->_preferredUpdateError;
-    alternateUpdate = v92->_alternateUpdate;
+    v47 = selfCopy->_preferredUpdate;
+    preferredUpdateError = selfCopy->_preferredUpdateError;
+    alternateUpdate = selfCopy->_alternateUpdate;
     v81 = 0;
     if (alternateUpdate)
     {
-      v82 = [(SUDescriptor *)v92->_alternateUpdate humanReadableUpdateName];
+      humanReadableUpdateName2 = [(SUDescriptor *)selfCopy->_alternateUpdate humanReadableUpdateName];
       v81 = 1;
-      v45 = v82;
+      v45 = humanReadableUpdateName2;
     }
 
     else
@@ -5661,21 +5661,21 @@ void __96__SUSUISoftwareUpdateManager__reallyDownloadAndInstall_update_Accepting
     }
 
     v41 = v45;
-    v42 = v92->_alternateUpdate;
-    alternateUpdateError = v92->_alternateUpdateError;
-    download = v92->_download;
-    v7 = v92->_download;
+    v42 = selfCopy->_alternateUpdate;
+    alternateUpdateError = selfCopy->_alternateUpdateError;
+    download = selfCopy->_download;
+    v7 = selfCopy->_download;
     v79 = 0;
     v77 = 0;
     v75 = 0;
-    if (v7 && (v80 = [(SUDownload *)v92->_download descriptor], v79 = 1, v80))
+    if (v7 && (v80 = [(SUDownload *)selfCopy->_download descriptor], v79 = 1, v80))
     {
-      v78 = [(SUDownload *)v92->_download descriptor];
+      descriptor = [(SUDownload *)selfCopy->_download descriptor];
       v39 = 1;
       v77 = 1;
-      v76 = [(SUDescriptor *)v78 humanReadableUpdateName];
+      humanReadableUpdateName3 = [(SUDescriptor *)descriptor humanReadableUpdateName];
       v75 = 1;
-      v40 = v76;
+      v40 = humanReadableUpdateName3;
     }
 
     else
@@ -5684,13 +5684,13 @@ void __96__SUSUISoftwareUpdateManager__reallyDownloadAndInstall_update_Accepting
     }
 
     v36 = v40;
-    WeakRetained = objc_loadWeakRetained(&v92->_delegate);
-    v38 = objc_loadWeakRetained(&v92->_delegate);
+    WeakRetained = objc_loadWeakRetained(&selfCopy->_delegate);
+    v38 = objc_loadWeakRetained(&selfCopy->_delegate);
     v73 = 0;
     v71 = 0;
     if (v38)
     {
-      v74 = objc_loadWeakRetained(&v92->_delegate);
+      v74 = objc_loadWeakRetained(&selfCopy->_delegate);
       v34 = 1;
       v73 = 1;
       v8 = objc_opt_class();
@@ -5705,13 +5705,13 @@ void __96__SUSUISoftwareUpdateManager__reallyDownloadAndInstall_update_Accepting
     }
 
     v31 = v35;
-    v32 = objc_loadWeakRetained(&v92->_hostController);
-    v33 = objc_loadWeakRetained(&v92->_hostController);
+    v32 = objc_loadWeakRetained(&selfCopy->_hostController);
+    v33 = objc_loadWeakRetained(&selfCopy->_hostController);
     v69 = 0;
     v67 = 0;
     if (v33)
     {
-      v70 = objc_loadWeakRetained(&v92->_hostController);
+      v70 = objc_loadWeakRetained(&selfCopy->_hostController);
       v29 = 1;
       v69 = 1;
       v9 = objc_opt_class();
@@ -5726,17 +5726,17 @@ void __96__SUSUISoftwareUpdateManager__reallyDownloadAndInstall_update_Accepting
     }
 
     v22 = v30;
-    v28 = SUInstallationTypeToString(v90);
+    v28 = SUInstallationTypeToString(installCopy);
     v23 = MEMORY[0x277D82BE0](v28);
     v66 = v23;
-    v24 = v90;
-    v27 = [location humanReadableUpdateName];
-    v65 = MEMORY[0x277D82BE0](v27);
+    v24 = installCopy;
+    humanReadableUpdateName4 = [location humanReadableUpdateName];
+    v65 = MEMORY[0x277D82BE0](humanReadableUpdateName4);
     v25 = &v10;
     buf = v93;
     __os_log_helper_16_2_19_8_32_8_66_4_0_8_66_8_0_8_66_8_66_8_0_8_66_8_0_8_66_8_0_8_66_8_0_8_66_8_64_8_0_8_64_8_0(v93, v55, v53, state, v46, v47, preferredUpdateError, v41, v42, alternateUpdateError, download, v36, WeakRetained, v31, v32, v30, v23, v24, v65, location);
     _os_log_impl(&dword_26AC94000, log, v51[0], "%s: Update Manager Checkpoint\n\tstate: %{public}@ (%d)\n\tpreferredUpdate: %{public}@ (%p)\n\tpreferredUpdateError: %{public}@\n\talternateUpdate: %{public}@ (%p)\n\talternateUpdateError: %{public}@\n\tdownload: %p (%{public}@)\n\tdelegate: %p (%{public}@)\n\thostController: %p (%{public}@)\n\ninstallationType: %@ (%lu), update: %@ (%p)", buf, 0xBCu);
-    MEMORY[0x277D82BD8](v27);
+    MEMORY[0x277D82BD8](humanReadableUpdateName4);
     MEMORY[0x277D82BD8](v28);
     if (v67)
     {
@@ -5764,12 +5764,12 @@ void __96__SUSUISoftwareUpdateManager__reallyDownloadAndInstall_update_Accepting
     MEMORY[0x277D82BD8](WeakRetained);
     if (v75)
     {
-      MEMORY[0x277D82BD8](v76);
+      MEMORY[0x277D82BD8](humanReadableUpdateName3);
     }
 
     if (v77)
     {
-      MEMORY[0x277D82BD8](v78);
+      MEMORY[0x277D82BD8](descriptor);
     }
 
     if (v79)
@@ -5779,12 +5779,12 @@ void __96__SUSUISoftwareUpdateManager__reallyDownloadAndInstall_update_Accepting
 
     if (v81)
     {
-      MEMORY[0x277D82BD8](v82);
+      MEMORY[0x277D82BD8](humanReadableUpdateName2);
     }
 
     if (v83)
     {
-      MEMORY[0x277D82BD8](v84);
+      MEMORY[0x277D82BD8](humanReadableUpdateName);
     }
 
     MEMORY[0x277D82BD8](v52);
@@ -5796,13 +5796,13 @@ void __96__SUSUISoftwareUpdateManager__reallyDownloadAndInstall_update_Accepting
 
   objc_storeStrong(&oslog, 0);
   v20 = 1;
-  if (v90 != 2)
+  if (installCopy != 2)
   {
-    v20 = v90 == 1;
+    v20 = installCopy == 1;
   }
 
   v64 = v20;
-  v13 = v92;
+  v13 = selfCopy;
   p_location = &location;
   v11 = location;
   v12 = &v57;
@@ -5812,11 +5812,11 @@ void __96__SUSUISoftwareUpdateManager__reallyDownloadAndInstall_update_Accepting
   v60 = __73__SUSUISoftwareUpdateManager_startDownloadAndInstall_update_withHandler___block_invoke;
   v61 = &unk_279CBE7F8;
   v16 = v62;
-  v62[0] = MEMORY[0x277D82BE0](v92);
+  v62[0] = MEMORY[0x277D82BE0](selfCopy);
   v15 = (v12 + 5);
   v62[1] = MEMORY[0x277D82BE0](location);
   v63 = v64;
-  v62[3] = v90;
+  v62[3] = installCopy;
   v14 = (v12 + 6);
   v17 = &v88;
   v62[2] = MEMORY[0x277D82BE0](v88);
@@ -6415,38 +6415,38 @@ void __73__SUSUISoftwareUpdateManager_startDownloadAndInstall_update_withHandler
   objc_storeStrong(&location, 0);
 }
 
-- (void)_reallyResumeDownloadAcceptingCellularFees:(int)a3
+- (void)_reallyResumeDownloadAcceptingCellularFees:(int)fees
 {
   v19 = *MEMORY[0x277D85DE8];
-  v17 = self;
+  selfCopy = self;
   v16 = a2;
-  v15 = a3;
-  v14 = [(SUSUISoftwareUpdateManager *)self download];
-  v13 = [(SUDownload *)v14 downloadOptions];
-  [v13 setDownloadFeeAgreementStatus:v15];
+  feesCopy = fees;
+  download = [(SUSUISoftwareUpdateManager *)self download];
+  downloadOptions = [(SUDownload *)download downloadOptions];
+  [downloadOptions setDownloadFeeAgreementStatus:feesCopy];
   location = _SUSUILoggingFacility();
   v11 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(location, OS_LOG_TYPE_DEFAULT))
   {
-    __os_log_helper_16_0_1_4_0(v18, v15);
+    __os_log_helper_16_0_1_4_0(v18, feesCopy);
     _os_log_impl(&dword_26AC94000, location, v11, "Resuming SU download with cellular fee acceptance state: %d", v18, 8u);
   }
 
   objc_storeStrong(&location, 0);
-  v4 = [(SUSUISoftwareUpdateManager *)v17 SUManager];
-  v3 = [(SUDownload *)v14 downloadOptions];
+  sUManager = [(SUSUISoftwareUpdateManager *)selfCopy SUManager];
+  downloadOptions2 = [(SUDownload *)download downloadOptions];
   v5 = MEMORY[0x277D85DD0];
   v6 = -1073741824;
   v7 = 0;
   v8 = __73__SUSUISoftwareUpdateManager__reallyResumeDownloadAcceptingCellularFees___block_invoke;
   v9 = &unk_279CBE0E8;
-  v10 = MEMORY[0x277D82BE0](v17);
-  [(SUManagerClient *)v4 updateDownloadOptions:v3 withResult:&v5];
-  MEMORY[0x277D82BD8](v3);
-  MEMORY[0x277D82BD8](v4);
+  v10 = MEMORY[0x277D82BE0](selfCopy);
+  [(SUManagerClient *)sUManager updateDownloadOptions:downloadOptions2 withResult:&v5];
+  MEMORY[0x277D82BD8](downloadOptions2);
+  MEMORY[0x277D82BD8](sUManager);
   objc_storeStrong(&v10, 0);
-  objc_storeStrong(&v13, 0);
-  objc_storeStrong(&v14, 0);
+  objc_storeStrong(&downloadOptions, 0);
+  objc_storeStrong(&download, 0);
   *MEMORY[0x277D85DE8];
 }
 
@@ -6494,70 +6494,70 @@ void __73__SUSUISoftwareUpdateManager__reallyResumeDownloadAcceptingCellularFees
   objc_storeStrong(v8, 0);
 }
 
-- (void)_updateDownloadProgressWithDownload:(id)a3 stateFromDownload:(int *)a4
+- (void)_updateDownloadProgressWithDownload:(id)download stateFromDownload:(int *)fromDownload
 {
   v31 = *MEMORY[0x277D85DE8];
-  v28 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v26 = a4;
-  v25 = [location[0] progress];
+  objc_storeStrong(location, download);
+  fromDownloadCopy = fromDownload;
+  progress = [location[0] progress];
   v24 = 0;
-  [v25 normalizedPercentComplete];
+  [progress normalizedPercentComplete];
   v23 = v4;
-  [v25 percentComplete];
+  [progress percentComplete];
   v22 = v5;
-  v21 = [v25 phase];
-  if (a4)
+  phase = [progress phase];
+  if (fromDownload)
   {
-    *v26 = v28->_state;
+    *fromDownloadCopy = selfCopy->_state;
   }
 
   v20 = _SUSUILoggingFacility();
   v19 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
   {
-    v16 = [(SUSUISoftwareUpdateManager *)v28 state];
-    [v25 timeRemaining];
-    __os_log_helper_16_2_6_8_32_8_0_8_64_8_0_4_0_8_0(v30, "[SUSUISoftwareUpdateManager _updateDownloadProgressWithDownload:stateFromDownload:]", COERCE__INT64(v22), v21, COERCE__INT64(v23), v16, v6);
+    state = [(SUSUISoftwareUpdateManager *)selfCopy state];
+    [progress timeRemaining];
+    __os_log_helper_16_2_6_8_32_8_0_8_64_8_0_4_0_8_0(v30, "[SUSUISoftwareUpdateManager _updateDownloadProgressWithDownload:stateFromDownload:]", COERCE__INT64(v22), phase, COERCE__INT64(v23), state, v6);
     _os_log_impl(&dword_26AC94000, v20, v19, "%s - progress: %.02f; phase: %@; totalProgress: %.02f; state: %d; time remaining: %f", v30, 0x3Au);
   }
 
   objc_storeStrong(&v20, 0);
-  v15 = [(SUSUISoftwareUpdateManager *)v28 preferredUpdate];
-  MEMORY[0x277D82BD8](v15);
-  if (v15)
+  preferredUpdate = [(SUSUISoftwareUpdateManager *)selfCopy preferredUpdate];
+  MEMORY[0x277D82BD8](preferredUpdate);
+  if (preferredUpdate)
   {
-    if (SUPrefsDownloadPhaseIsStalled_0(v21))
+    if (SUPrefsDownloadPhaseIsStalled_0(phase))
     {
-      if (v26)
+      if (fromDownloadCopy)
       {
-        *v26 = 14;
+        *fromDownloadCopy = 14;
       }
 
       v24 = 2;
     }
 
-    else if ([(SUSUISoftwareUpdateManager *)v28 _SUDownloadPhaseIsQueued:v21])
+    else if ([(SUSUISoftwareUpdateManager *)selfCopy _SUDownloadPhaseIsQueued:phase])
     {
-      if (v26)
+      if (fromDownloadCopy)
       {
-        *v26 = 5;
+        *fromDownloadCopy = 5;
       }
     }
 
-    else if (([v25 isDone] & 1) == 0)
+    else if (([progress isDone] & 1) == 0)
     {
-      [v25 timeRemaining];
+      [progress timeRemaining];
       v14 = 0;
       if (v7 < 604800.0)
       {
-        [v25 timeRemaining];
+        [progress timeRemaining];
         v14 = v8 > 0.0;
       }
 
-      v11 = v21;
+      v11 = phase;
       v12 = getkSUDownloadPhasePreparingForInstallation_1();
       v13 = 1;
       if (([v11 isEqualToString:?] & 1) == 0)
@@ -6577,16 +6577,16 @@ void __73__SUSUISoftwareUpdateManager__reallyResumeDownloadAcceptingCellularFees
         v24 = 1;
       }
 
-      if (v26)
+      if (fromDownloadCopy)
       {
-        if (v28->_state == 13)
+        if (selfCopy->_state == 13)
         {
-          *v26 = 13;
+          *fromDownloadCopy = 13;
         }
 
         else
         {
-          *v26 = 12;
+          *fromDownloadCopy = 12;
         }
       }
     }
@@ -6604,24 +6604,24 @@ void __73__SUSUISoftwareUpdateManager__reallyResumeDownloadAcceptingCellularFees
     objc_storeStrong(&oslog, 0);
   }
 
-  v9 = [(SUSUISoftwareUpdateManager *)v28 delegate];
-  [(SUSUISoftwareUpdateManagerDelegate *)v9 manager:v28 downloadProgressChanged:location[0] displayStyle:v24];
-  MEMORY[0x277D82BD8](v9);
-  objc_storeStrong(&v21, 0);
-  objc_storeStrong(&v25, 0);
+  delegate = [(SUSUISoftwareUpdateManager *)selfCopy delegate];
+  [(SUSUISoftwareUpdateManagerDelegate *)delegate manager:selfCopy downloadProgressChanged:location[0] displayStyle:v24];
+  MEMORY[0x277D82BD8](delegate);
+  objc_storeStrong(&phase, 0);
+  objc_storeStrong(&progress, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x277D85DE8];
 }
 
 - (void)upgradeDownloadToUserInitiated
 {
-  v4 = self;
+  selfCopy = self;
   v3[1] = a2;
-  v2 = [(SUSUISoftwareUpdateManager *)self download];
-  v3[0] = [(SUDownload *)v2 downloadOptions];
-  MEMORY[0x277D82BD8](v2);
+  download = [(SUSUISoftwareUpdateManager *)self download];
+  v3[0] = [(SUDownload *)download downloadOptions];
+  MEMORY[0x277D82BD8](download);
   [v3[0] setAutoDownload:0];
-  [(SUSUISoftwareUpdateClientManager *)v4->_suClient updateDownloadOptions:v3[0] completion:&__block_literal_global_5];
+  [(SUSUISoftwareUpdateClientManager *)selfCopy->_suClient updateDownloadOptions:v3[0] completion:&__block_literal_global_5];
   objc_storeStrong(v3, 0);
 }
 
@@ -6649,31 +6649,31 @@ void __60__SUSUISoftwareUpdateManager_upgradeDownloadToUserInitiated__block_invo
   *MEMORY[0x277D85DE8];
 }
 
-- (void)setAutoInstall:(id)a3
+- (void)setAutoInstall:(id)install
 {
   v45 = "[SUSUISoftwareUpdateManager setAutoInstall:]";
   v76 = *MEMORY[0x277D85DE8];
-  v74 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, install);
   v72 = _SUSUILoggingFacility();
   v71 = 0;
   if (os_log_type_enabled(v72, OS_LOG_TYPE_DEFAULT))
   {
     log = v72;
     *type = v71;
-    v42 = SUSUISoftwareUpdateStateToString(v74->_state);
+    v42 = SUSUISoftwareUpdateStateToString(selfCopy->_state);
     v43 = MEMORY[0x277D82BE0](v42);
     v70 = v43;
-    state = v74->_state;
-    preferredUpdate = v74->_preferredUpdate;
+    state = selfCopy->_state;
+    preferredUpdate = selfCopy->_preferredUpdate;
     v68 = 0;
     if (preferredUpdate)
     {
-      v69 = [(SUDescriptor *)v74->_preferredUpdate humanReadableUpdateName];
+      humanReadableUpdateName = [(SUDescriptor *)selfCopy->_preferredUpdate humanReadableUpdateName];
       v68 = 1;
-      v39 = v69;
+      v39 = humanReadableUpdateName;
     }
 
     else
@@ -6682,15 +6682,15 @@ void __60__SUSUISoftwareUpdateManager_upgradeDownloadToUserInitiated__block_invo
     }
 
     v36 = v39;
-    v37 = v74->_preferredUpdate;
-    preferredUpdateError = v74->_preferredUpdateError;
-    alternateUpdate = v74->_alternateUpdate;
+    v37 = selfCopy->_preferredUpdate;
+    preferredUpdateError = selfCopy->_preferredUpdateError;
+    alternateUpdate = selfCopy->_alternateUpdate;
     v66 = 0;
     if (alternateUpdate)
     {
-      v67 = [(SUDescriptor *)v74->_alternateUpdate humanReadableUpdateName];
+      humanReadableUpdateName2 = [(SUDescriptor *)selfCopy->_alternateUpdate humanReadableUpdateName];
       v66 = 1;
-      v35 = v67;
+      v35 = humanReadableUpdateName2;
     }
 
     else
@@ -6699,21 +6699,21 @@ void __60__SUSUISoftwareUpdateManager_upgradeDownloadToUserInitiated__block_invo
     }
 
     v31 = v35;
-    v32 = v74->_alternateUpdate;
-    alternateUpdateError = v74->_alternateUpdateError;
-    download = v74->_download;
-    v5 = v74->_download;
+    v32 = selfCopy->_alternateUpdate;
+    alternateUpdateError = selfCopy->_alternateUpdateError;
+    download = selfCopy->_download;
+    v5 = selfCopy->_download;
     v64 = 0;
     v62 = 0;
     v60 = 0;
-    if (v5 && (v65 = [(SUDownload *)v74->_download descriptor], v64 = 1, v65))
+    if (v5 && (v65 = [(SUDownload *)selfCopy->_download descriptor], v64 = 1, v65))
     {
-      v63 = [(SUDownload *)v74->_download descriptor];
+      descriptor = [(SUDownload *)selfCopy->_download descriptor];
       v29 = 1;
       v62 = 1;
-      v61 = [(SUDescriptor *)v63 humanReadableUpdateName];
+      humanReadableUpdateName3 = [(SUDescriptor *)descriptor humanReadableUpdateName];
       v60 = 1;
-      v30 = v61;
+      v30 = humanReadableUpdateName3;
     }
 
     else
@@ -6722,13 +6722,13 @@ void __60__SUSUISoftwareUpdateManager_upgradeDownloadToUserInitiated__block_invo
     }
 
     v26 = v30;
-    WeakRetained = objc_loadWeakRetained(&v74->_delegate);
-    v28 = objc_loadWeakRetained(&v74->_delegate);
+    WeakRetained = objc_loadWeakRetained(&selfCopy->_delegate);
+    v28 = objc_loadWeakRetained(&selfCopy->_delegate);
     v58 = 0;
     v56 = 0;
     if (v28)
     {
-      v59 = objc_loadWeakRetained(&v74->_delegate);
+      v59 = objc_loadWeakRetained(&selfCopy->_delegate);
       v24 = 1;
       v58 = 1;
       v6 = objc_opt_class();
@@ -6743,13 +6743,13 @@ void __60__SUSUISoftwareUpdateManager_upgradeDownloadToUserInitiated__block_invo
     }
 
     v21 = v25;
-    v22 = objc_loadWeakRetained(&v74->_hostController);
-    v23 = objc_loadWeakRetained(&v74->_hostController);
+    v22 = objc_loadWeakRetained(&selfCopy->_hostController);
+    v23 = objc_loadWeakRetained(&selfCopy->_hostController);
     v54 = 0;
     v52 = 0;
     if (v23)
     {
-      v55 = objc_loadWeakRetained(&v74->_hostController);
+      v55 = objc_loadWeakRetained(&selfCopy->_hostController);
       v19 = 1;
       v54 = 1;
       v7 = objc_opt_class();
@@ -6793,12 +6793,12 @@ void __60__SUSUISoftwareUpdateManager_upgradeDownloadToUserInitiated__block_invo
     MEMORY[0x277D82BD8](WeakRetained);
     if (v60)
     {
-      MEMORY[0x277D82BD8](v61);
+      MEMORY[0x277D82BD8](humanReadableUpdateName3);
     }
 
     if (v62)
     {
-      MEMORY[0x277D82BD8](v63);
+      MEMORY[0x277D82BD8](descriptor);
     }
 
     if (v64)
@@ -6808,12 +6808,12 @@ void __60__SUSUISoftwareUpdateManager_upgradeDownloadToUserInitiated__block_invo
 
     if (v66)
     {
-      MEMORY[0x277D82BD8](v67);
+      MEMORY[0x277D82BD8](humanReadableUpdateName2);
     }
 
     if (v68)
     {
-      MEMORY[0x277D82BD8](v69);
+      MEMORY[0x277D82BD8](humanReadableUpdateName);
     }
 
     MEMORY[0x277D82BD8](v42);
@@ -6822,9 +6822,9 @@ void __60__SUSUISoftwareUpdateManager_upgradeDownloadToUserInitiated__block_invo
 
   obj = 0;
   objc_storeStrong(&v72, 0);
-  v10 = v74;
-  v12 = [(SUSUISoftwareUpdateManager *)v74 download];
-  v11 = [(SUDownload *)v12 descriptor];
+  v10 = selfCopy;
+  download = [(SUSUISoftwareUpdateManager *)selfCopy download];
+  descriptor2 = [(SUDownload *)download descriptor];
   v9 = &v46;
   v46 = MEMORY[0x277D85DD0];
   v47 = -1073741824;
@@ -6832,13 +6832,13 @@ void __60__SUSUISoftwareUpdateManager_upgradeDownloadToUserInitiated__block_invo
   v49 = __45__SUSUISoftwareUpdateManager_setAutoInstall___block_invoke;
   v50 = &unk_279CBBA40;
   v14 = v51;
-  v51[0] = MEMORY[0x277D82BE0](v74);
+  v51[0] = MEMORY[0x277D82BE0](selfCopy);
   v13 = (v9 + 5);
   v15 = location;
   v51[1] = MEMORY[0x277D82BE0](location[0]);
-  [(SUSUISoftwareUpdateManager *)v10 promptForDevicePasscodeForDescriptor:v11 unattendedInstall:1 completion:v9];
-  MEMORY[0x277D82BD8](v11);
-  MEMORY[0x277D82BD8](v12);
+  [(SUSUISoftwareUpdateManager *)v10 promptForDevicePasscodeForDescriptor:descriptor2 unattendedInstall:1 completion:v9];
+  MEMORY[0x277D82BD8](descriptor2);
+  MEMORY[0x277D82BD8](download);
   objc_storeStrong(v13, obj);
   objc_storeStrong(v14, obj);
   objc_storeStrong(v15, obj);
@@ -7137,12 +7137,12 @@ void __45__SUSUISoftwareUpdateManager_setAutoInstall___block_invoke_471(void *a1
 
 - (void)checkAutoInstall
 {
-  v4 = [(SUSUISoftwareUpdateManager *)self download];
-  v3 = [(SUDownload *)v4 progress];
-  v5 = [(SUOperationProgress *)v3 isDone];
-  MEMORY[0x277D82BD8](v3);
-  MEMORY[0x277D82BD8](v4);
-  if (v5)
+  download = [(SUSUISoftwareUpdateManager *)self download];
+  progress = [(SUDownload *)download progress];
+  isDone = [(SUOperationProgress *)progress isDone];
+  MEMORY[0x277D82BD8](progress);
+  MEMORY[0x277D82BD8](download);
+  if (isDone)
   {
     if ([(SUSUISoftwareUpdateClientManager *)self->_suClient isAutoUpdateArmedAndReady])
     {
@@ -7158,104 +7158,104 @@ void __45__SUSUISoftwareUpdateManager_setAutoInstall___block_invoke_471(void *a1
   }
 }
 
-- (BOOL)automaticUpdateEnabled:(BOOL *)a3
+- (BOOL)automaticUpdateEnabled:(BOOL *)enabled
 {
-  if (a3)
+  if (enabled)
   {
-    *a3 = 0;
+    *enabled = 0;
   }
 
   return [(SUSUISoftwareUpdateClientManager *)self->_suClient isAutoInstallEnabled];
 }
 
-- (BOOL)automaticUpdatePreviousUserSpecifiedStatus:(BOOL *)a3
+- (BOOL)automaticUpdatePreviousUserSpecifiedStatus:(BOOL *)status
 {
-  if (a3)
+  if (status)
   {
-    *a3 = 0;
+    *status = 0;
   }
 
   return [(SUSUISoftwareUpdateClientManager *)self->_suClient isAutoInstallPreviousUserSettingsEnabled];
 }
 
-- (BOOL)automaticDownloadEnabled:(BOOL *)a3
+- (BOOL)automaticDownloadEnabled:(BOOL *)enabled
 {
-  if (a3)
+  if (enabled)
   {
-    *a3 = 0;
+    *enabled = 0;
   }
 
   return [(SUSUISoftwareUpdateClientManager *)self->_suClient isAutoDownloadEnabled];
 }
 
-- (BOOL)securityResponseStatus:(BOOL *)a3
+- (BOOL)securityResponseStatus:(BOOL *)status
 {
-  if (a3)
+  if (status)
   {
-    *a3 = 0;
+    *status = 0;
   }
 
   return [(SUSUISoftwareUpdateClientManager *)self->_suClient isSecurityResponseEnabled];
 }
 
-- (BOOL)previousUserSpecifiedSecurityResponseStatus:(BOOL *)a3
+- (BOOL)previousUserSpecifiedSecurityResponseStatus:(BOOL *)status
 {
-  if (a3)
+  if (status)
   {
-    *a3 = 0;
+    *status = 0;
   }
 
   return [(SUSUISoftwareUpdateClientManager *)self->_suClient previousUserSpecifiedSecurityResponseEnabled];
 }
 
-- (BOOL)automaticInstallSystemDataFilesStatusEnabled:(BOOL *)a3
+- (BOOL)automaticInstallSystemDataFilesStatusEnabled:(BOOL *)enabled
 {
-  if (a3)
+  if (enabled)
   {
-    *a3 = 0;
+    *enabled = 0;
   }
 
   return [(SUSUISoftwareUpdateClientManager *)self->_suClient isAutomaticInstallSystemDataFilesEnabled];
 }
 
-- (void)startRollbackWithOptions:(id)a3 withHandler:(id)a4
+- (void)startRollbackWithOptions:(id)options withHandler:(id)handler
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, options);
   v5 = 0;
-  objc_storeStrong(&v5, a4);
-  [(SUSUISoftwareUpdateClientManager *)v7->_suClient rollbackUpdateWithOptions:location[0] completion:v5];
+  objc_storeStrong(&v5, handler);
+  [(SUSUISoftwareUpdateClientManager *)selfCopy->_suClient rollbackUpdateWithOptions:location[0] completion:v5];
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)startInstallWithHandler:(id)a3
+- (void)startInstallWithHandler:(id)handler
 {
   v46 = "[SUSUISoftwareUpdateManager startInstallWithHandler:]";
   v77 = *MEMORY[0x277D85DE8];
-  v75 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, handler);
   v73 = _SUSUILoggingFacility();
   v72 = 0;
   if (os_log_type_enabled(v73, OS_LOG_TYPE_DEFAULT))
   {
     log = v73;
     *type = v72;
-    v43 = SUSUISoftwareUpdateStateToString(v75->_state);
+    v43 = SUSUISoftwareUpdateStateToString(selfCopy->_state);
     v44 = MEMORY[0x277D82BE0](v43);
     v71 = v44;
-    state = v75->_state;
-    preferredUpdate = v75->_preferredUpdate;
+    state = selfCopy->_state;
+    preferredUpdate = selfCopy->_preferredUpdate;
     v69 = 0;
     if (preferredUpdate)
     {
-      v70 = [(SUDescriptor *)v75->_preferredUpdate humanReadableUpdateName];
+      humanReadableUpdateName = [(SUDescriptor *)selfCopy->_preferredUpdate humanReadableUpdateName];
       v69 = 1;
-      v40 = v70;
+      v40 = humanReadableUpdateName;
     }
 
     else
@@ -7264,15 +7264,15 @@ void __45__SUSUISoftwareUpdateManager_setAutoInstall___block_invoke_471(void *a1
     }
 
     v37 = v40;
-    v38 = v75->_preferredUpdate;
-    preferredUpdateError = v75->_preferredUpdateError;
-    alternateUpdate = v75->_alternateUpdate;
+    v38 = selfCopy->_preferredUpdate;
+    preferredUpdateError = selfCopy->_preferredUpdateError;
+    alternateUpdate = selfCopy->_alternateUpdate;
     v67 = 0;
     if (alternateUpdate)
     {
-      v68 = [(SUDescriptor *)v75->_alternateUpdate humanReadableUpdateName];
+      humanReadableUpdateName2 = [(SUDescriptor *)selfCopy->_alternateUpdate humanReadableUpdateName];
       v67 = 1;
-      v36 = v68;
+      v36 = humanReadableUpdateName2;
     }
 
     else
@@ -7281,21 +7281,21 @@ void __45__SUSUISoftwareUpdateManager_setAutoInstall___block_invoke_471(void *a1
     }
 
     v32 = v36;
-    v33 = v75->_alternateUpdate;
-    alternateUpdateError = v75->_alternateUpdateError;
-    download = v75->_download;
-    v5 = v75->_download;
+    v33 = selfCopy->_alternateUpdate;
+    alternateUpdateError = selfCopy->_alternateUpdateError;
+    download = selfCopy->_download;
+    v5 = selfCopy->_download;
     v65 = 0;
     v63 = 0;
     v61 = 0;
-    if (v5 && (v66 = [(SUDownload *)v75->_download descriptor], v65 = 1, v66))
+    if (v5 && (v66 = [(SUDownload *)selfCopy->_download descriptor], v65 = 1, v66))
     {
-      v64 = [(SUDownload *)v75->_download descriptor];
+      descriptor = [(SUDownload *)selfCopy->_download descriptor];
       v30 = 1;
       v63 = 1;
-      v62 = [(SUDescriptor *)v64 humanReadableUpdateName];
+      humanReadableUpdateName3 = [(SUDescriptor *)descriptor humanReadableUpdateName];
       v61 = 1;
-      v31 = v62;
+      v31 = humanReadableUpdateName3;
     }
 
     else
@@ -7304,13 +7304,13 @@ void __45__SUSUISoftwareUpdateManager_setAutoInstall___block_invoke_471(void *a1
     }
 
     v27 = v31;
-    WeakRetained = objc_loadWeakRetained(&v75->_delegate);
-    v29 = objc_loadWeakRetained(&v75->_delegate);
+    WeakRetained = objc_loadWeakRetained(&selfCopy->_delegate);
+    v29 = objc_loadWeakRetained(&selfCopy->_delegate);
     v59 = 0;
     v57 = 0;
     if (v29)
     {
-      v60 = objc_loadWeakRetained(&v75->_delegate);
+      v60 = objc_loadWeakRetained(&selfCopy->_delegate);
       v25 = 1;
       v59 = 1;
       v6 = objc_opt_class();
@@ -7325,13 +7325,13 @@ void __45__SUSUISoftwareUpdateManager_setAutoInstall___block_invoke_471(void *a1
     }
 
     v22 = v26;
-    v23 = objc_loadWeakRetained(&v75->_hostController);
-    v24 = objc_loadWeakRetained(&v75->_hostController);
+    v23 = objc_loadWeakRetained(&selfCopy->_hostController);
+    v24 = objc_loadWeakRetained(&selfCopy->_hostController);
     v55 = 0;
     v53 = 0;
     if (v24)
     {
-      v56 = objc_loadWeakRetained(&v75->_hostController);
+      v56 = objc_loadWeakRetained(&selfCopy->_hostController);
       v20 = 1;
       v55 = 1;
       v7 = objc_opt_class();
@@ -7375,12 +7375,12 @@ void __45__SUSUISoftwareUpdateManager_setAutoInstall___block_invoke_471(void *a1
     MEMORY[0x277D82BD8](WeakRetained);
     if (v61)
     {
-      MEMORY[0x277D82BD8](v62);
+      MEMORY[0x277D82BD8](humanReadableUpdateName3);
     }
 
     if (v63)
     {
-      MEMORY[0x277D82BD8](v64);
+      MEMORY[0x277D82BD8](descriptor);
     }
 
     if (v65)
@@ -7390,12 +7390,12 @@ void __45__SUSUISoftwareUpdateManager_setAutoInstall___block_invoke_471(void *a1
 
     if (v67)
     {
-      MEMORY[0x277D82BD8](v68);
+      MEMORY[0x277D82BD8](humanReadableUpdateName2);
     }
 
     if (v69)
     {
-      MEMORY[0x277D82BD8](v70);
+      MEMORY[0x277D82BD8](humanReadableUpdateName);
     }
 
     MEMORY[0x277D82BD8](v43);
@@ -7404,9 +7404,9 @@ void __45__SUSUISoftwareUpdateManager_setAutoInstall___block_invoke_471(void *a1
 
   obj = 0;
   objc_storeStrong(&v73, 0);
-  v11 = v75;
-  v13 = [(SUSUISoftwareUpdateManager *)v75 download];
-  v12 = [(SUDownload *)v13 descriptor];
+  v11 = selfCopy;
+  download = [(SUSUISoftwareUpdateManager *)selfCopy download];
+  descriptor2 = [(SUDownload *)download descriptor];
   v10 = &v47;
   v47 = MEMORY[0x277D85DD0];
   v48 = -1073741824;
@@ -7415,13 +7415,13 @@ void __45__SUSUISoftwareUpdateManager_setAutoInstall___block_invoke_471(void *a1
   v50 = __54__SUSUISoftwareUpdateManager_startInstallWithHandler___block_invoke;
   v51 = &unk_279CBBA40;
   v15 = v52;
-  v52[0] = MEMORY[0x277D82BE0](v75);
+  v52[0] = MEMORY[0x277D82BE0](selfCopy);
   v14 = (v10 + 5);
   v16 = location;
   v52[1] = MEMORY[0x277D82BE0](location[0]);
-  [(SUSUISoftwareUpdateManager *)v11 promptForDevicePasscodeForDescriptor:v12 unattendedInstall:v9 & 1 completion:v10];
-  MEMORY[0x277D82BD8](v12);
-  MEMORY[0x277D82BD8](v13);
+  [(SUSUISoftwareUpdateManager *)v11 promptForDevicePasscodeForDescriptor:descriptor2 unattendedInstall:v9 & 1 completion:v10];
+  MEMORY[0x277D82BD8](descriptor2);
+  MEMORY[0x277D82BD8](download);
   objc_storeStrong(v14, obj);
   objc_storeStrong(v15, obj);
   objc_storeStrong(v16, obj);
@@ -7875,45 +7875,45 @@ void __54__SUSUISoftwareUpdateManager_startInstallWithHandler___block_invoke_474
   objc_storeStrong(&location, 0);
 }
 
-- (void)_notifyScanFailed:(id)a3
+- (void)_notifyScanFailed:(id)failed
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  objc_storeStrong(&v7->_scanError, location[0]);
-  v4 = [(SUSUISoftwareUpdateManager *)v7 delegate];
+  objc_storeStrong(location, failed);
+  objc_storeStrong(&selfCopy->_scanError, location[0]);
+  delegate = [(SUSUISoftwareUpdateManager *)selfCopy delegate];
   v5 = objc_opt_respondsToSelector();
-  MEMORY[0x277D82BD8](v4);
+  MEMORY[0x277D82BD8](delegate);
   if (v5)
   {
-    v3 = [(SUSUISoftwareUpdateManager *)v7 delegate];
-    [(SUSUISoftwareUpdateManagerDelegate *)v3 manager:v7 scanFoundUpdates:0 error:location[0]];
-    MEMORY[0x277D82BD8](v3);
+    delegate2 = [(SUSUISoftwareUpdateManager *)selfCopy delegate];
+    [(SUSUISoftwareUpdateManagerDelegate *)delegate2 manager:selfCopy scanFoundUpdates:0 error:location[0]];
+    MEMORY[0x277D82BD8](delegate2);
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (void)handleScanError:(id)a3
+- (void)handleScanError:(id)error
 {
   v124 = "[SUSUISoftwareUpdateManager handleScanError:]";
   v182 = *MEMORY[0x277D85DE8];
-  v179 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, error);
   v176 = 0;
   v174 = 0;
   v125 = 0;
-  if (![(SUSUISoftwareUpdateManager *)v179 clientIsBuddy])
+  if (![(SUSUISoftwareUpdateManager *)selfCopy clientIsBuddy])
   {
-    WeakRetained = objc_loadWeakRetained(&v179->_delegate);
+    WeakRetained = objc_loadWeakRetained(&selfCopy->_delegate);
     v176 = 1;
     v125 = 0;
     if (WeakRetained)
     {
-      v175 = [(SUSUISoftwareUpdateManager *)v179 delegate];
+      delegate = [(SUSUISoftwareUpdateManager *)selfCopy delegate];
       v174 = 1;
       v125 = objc_opt_respondsToSelector();
     }
@@ -7922,7 +7922,7 @@ void __54__SUSUISoftwareUpdateManager_startInstallWithHandler___block_invoke_474
   v123 = v125;
   if (v174)
   {
-    MEMORY[0x277D82BD8](v175);
+    MEMORY[0x277D82BD8](delegate);
   }
 
   if (v176)
@@ -7932,10 +7932,10 @@ void __54__SUSUISoftwareUpdateManager_startInstallWithHandler___block_invoke_474
 
   if (v123)
   {
-    objc_storeStrong(&v179->_scanError, location[0]);
-    v122 = [(SUSUISoftwareUpdateManager *)v179 delegate];
-    [(SUSUISoftwareUpdateManagerDelegate *)v122 manager:v179 scanFailedWithError:location[0]];
-    MEMORY[0x277D82BD8](v122);
+    objc_storeStrong(&selfCopy->_scanError, location[0]);
+    delegate2 = [(SUSUISoftwareUpdateManager *)selfCopy delegate];
+    [(SUSUISoftwareUpdateManagerDelegate *)delegate2 manager:selfCopy scanFailedWithError:location[0]];
+    MEMORY[0x277D82BD8](delegate2);
     v173 = 1;
   }
 
@@ -7943,9 +7943,9 @@ void __54__SUSUISoftwareUpdateManager_startInstallWithHandler___block_invoke_474
   {
     v171 = 0;
     v121 = 0;
-    if ([(SUSUISoftwareUpdateManager *)v179 clientIsBuddy])
+    if ([(SUSUISoftwareUpdateManager *)selfCopy clientIsBuddy])
     {
-      v172 = [(SUSUISoftwareUpdateManager *)v179 delegate];
+      delegate3 = [(SUSUISoftwareUpdateManager *)selfCopy delegate];
       v171 = 1;
       v121 = objc_opt_respondsToSelector();
     }
@@ -7953,10 +7953,10 @@ void __54__SUSUISoftwareUpdateManager_startInstallWithHandler___block_invoke_474
     v120 = v121;
     if (v171)
     {
-      MEMORY[0x277D82BD8](v172);
+      MEMORY[0x277D82BD8](delegate3);
     }
 
-    if (v120 & 1) == 0 || (v118 = [(SUSUISoftwareUpdateManager *)v179 delegate], v119 = [(SUSUISoftwareUpdateManagerDelegate *)v118 manager:v179 shouldShowAlertForScanError:location[0]], MEMORY[0x277D82BD8](v118), (v119))
+    if (v120 & 1) == 0 || (v118 = [(SUSUISoftwareUpdateManager *)selfCopy delegate], v119 = [(SUSUISoftwareUpdateManagerDelegate *)v118 manager:selfCopy shouldShowAlertForScanError:location[0]], MEMORY[0x277D82BD8](v118), (v119))
     {
       v168 = _SUSUILoggingFacility();
       v167 = OS_LOG_TYPE_DEFAULT;
@@ -7964,17 +7964,17 @@ void __54__SUSUISoftwareUpdateManager_startInstallWithHandler___block_invoke_474
       {
         v110 = v168;
         *v111 = v167;
-        v112 = SUSUISoftwareUpdateStateToString(v179->_state);
+        v112 = SUSUISoftwareUpdateStateToString(selfCopy->_state);
         v113 = MEMORY[0x277D82BE0](v112);
         v166 = v113;
-        state = v179->_state;
-        preferredUpdate = v179->_preferredUpdate;
+        state = selfCopy->_state;
+        preferredUpdate = selfCopy->_preferredUpdate;
         v164 = 0;
         if (preferredUpdate)
         {
-          v165 = [(SUDescriptor *)v179->_preferredUpdate humanReadableUpdateName];
+          humanReadableUpdateName = [(SUDescriptor *)selfCopy->_preferredUpdate humanReadableUpdateName];
           v164 = 1;
-          v109 = v165;
+          v109 = humanReadableUpdateName;
         }
 
         else
@@ -7983,15 +7983,15 @@ void __54__SUSUISoftwareUpdateManager_startInstallWithHandler___block_invoke_474
         }
 
         v106 = v109;
-        v107 = v179->_preferredUpdate;
-        preferredUpdateError = v179->_preferredUpdateError;
-        alternateUpdate = v179->_alternateUpdate;
+        v107 = selfCopy->_preferredUpdate;
+        preferredUpdateError = selfCopy->_preferredUpdateError;
+        alternateUpdate = selfCopy->_alternateUpdate;
         v162 = 0;
         if (alternateUpdate)
         {
-          v163 = [(SUDescriptor *)v179->_alternateUpdate humanReadableUpdateName];
+          humanReadableUpdateName2 = [(SUDescriptor *)selfCopy->_alternateUpdate humanReadableUpdateName];
           v162 = 1;
-          v105 = v163;
+          v105 = humanReadableUpdateName2;
         }
 
         else
@@ -8000,21 +8000,21 @@ void __54__SUSUISoftwareUpdateManager_startInstallWithHandler___block_invoke_474
         }
 
         v101 = v105;
-        v102 = v179->_alternateUpdate;
-        alternateUpdateError = v179->_alternateUpdateError;
-        download = v179->_download;
-        v5 = v179->_download;
+        v102 = selfCopy->_alternateUpdate;
+        alternateUpdateError = selfCopy->_alternateUpdateError;
+        download = selfCopy->_download;
+        v5 = selfCopy->_download;
         v160 = 0;
         v158 = 0;
         v156 = 0;
-        if (v5 && (v161 = [(SUDownload *)v179->_download descriptor], v160 = 1, v161))
+        if (v5 && (v161 = [(SUDownload *)selfCopy->_download descriptor], v160 = 1, v161))
         {
-          v159 = [(SUDownload *)v179->_download descriptor];
+          descriptor = [(SUDownload *)selfCopy->_download descriptor];
           v99 = 1;
           v158 = 1;
-          v157 = [(SUDescriptor *)v159 humanReadableUpdateName];
+          humanReadableUpdateName3 = [(SUDescriptor *)descriptor humanReadableUpdateName];
           v156 = 1;
-          v100 = v157;
+          v100 = humanReadableUpdateName3;
         }
 
         else
@@ -8023,13 +8023,13 @@ void __54__SUSUISoftwareUpdateManager_startInstallWithHandler___block_invoke_474
         }
 
         v96 = v100;
-        v97 = objc_loadWeakRetained(&v179->_delegate);
-        v98 = objc_loadWeakRetained(&v179->_delegate);
+        v97 = objc_loadWeakRetained(&selfCopy->_delegate);
+        v98 = objc_loadWeakRetained(&selfCopy->_delegate);
         v154 = 0;
         v152 = 0;
         if (v98)
         {
-          v155 = objc_loadWeakRetained(&v179->_delegate);
+          v155 = objc_loadWeakRetained(&selfCopy->_delegate);
           v94 = 1;
           v154 = 1;
           v6 = objc_opt_class();
@@ -8044,13 +8044,13 @@ void __54__SUSUISoftwareUpdateManager_startInstallWithHandler___block_invoke_474
         }
 
         v91 = v95;
-        v92 = objc_loadWeakRetained(&v179->_hostController);
-        v93 = objc_loadWeakRetained(&v179->_hostController);
+        v92 = objc_loadWeakRetained(&selfCopy->_hostController);
+        v93 = objc_loadWeakRetained(&selfCopy->_hostController);
         v150 = 0;
         v148 = 0;
         if (v93)
         {
-          v151 = objc_loadWeakRetained(&v179->_hostController);
+          v151 = objc_loadWeakRetained(&selfCopy->_hostController);
           v89 = 1;
           v150 = 1;
           v7 = objc_opt_class();
@@ -8068,7 +8068,7 @@ void __54__SUSUISoftwareUpdateManager_startInstallWithHandler___block_invoke_474
         v86 = location[0];
         v87 = &v17;
         v88 = v180;
-        __os_log_helper_16_2_17_8_32_8_66_4_0_8_66_8_0_8_66_8_66_8_0_8_66_8_0_8_66_8_0_8_66_8_0_8_66_8_64_4_0(v180, v124, v113, state, v106, v107, preferredUpdateError, v101, v102, alternateUpdateError, download, v96, v97, v91, v92, v90, location[0], [(SUSUISoftwareUpdateManager *)v179 state]);
+        __os_log_helper_16_2_17_8_32_8_66_4_0_8_66_8_0_8_66_8_66_8_0_8_66_8_0_8_66_8_0_8_66_8_0_8_66_8_64_4_0(v180, v124, v113, state, v106, v107, preferredUpdateError, v101, v102, alternateUpdateError, download, v96, v97, v91, v92, v90, location[0], [(SUSUISoftwareUpdateManager *)selfCopy state]);
         _os_log_impl(&dword_26AC94000, v110, v111[0], "%s: Update Manager Checkpoint\n\tstate: %{public}@ (%d)\n\tpreferredUpdate: %{public}@ (%p)\n\tpreferredUpdateError: %{public}@\n\talternateUpdate: %{public}@ (%p)\n\talternateUpdateError: %{public}@\n\tdownload: %p (%{public}@)\n\tdelegate: %p (%{public}@)\n\thostController: %p (%{public}@)\n\nScan error: %@; state: %d", v88, 0xA4u);
         if (v148)
         {
@@ -8096,12 +8096,12 @@ void __54__SUSUISoftwareUpdateManager_startInstallWithHandler___block_invoke_474
         MEMORY[0x277D82BD8](v97);
         if (v156)
         {
-          MEMORY[0x277D82BD8](v157);
+          MEMORY[0x277D82BD8](humanReadableUpdateName3);
         }
 
         if (v158)
         {
-          MEMORY[0x277D82BD8](v159);
+          MEMORY[0x277D82BD8](descriptor);
         }
 
         if (v160)
@@ -8111,12 +8111,12 @@ void __54__SUSUISoftwareUpdateManager_startInstallWithHandler___block_invoke_474
 
         if (v162)
         {
-          MEMORY[0x277D82BD8](v163);
+          MEMORY[0x277D82BD8](humanReadableUpdateName2);
         }
 
         if (v164)
         {
-          MEMORY[0x277D82BD8](v165);
+          MEMORY[0x277D82BD8](humanReadableUpdateName);
         }
 
         MEMORY[0x277D82BD8](v112);
@@ -8124,9 +8124,9 @@ void __54__SUSUISoftwareUpdateManager_startInstallWithHandler___block_invoke_474
       }
 
       objc_storeStrong(&v168, 0);
-      v82 = [location[0] domain];
+      domain = [location[0] domain];
       v83 = getSUErrorDomain_3();
-      v8 = [v82 isEqualToString:?];
+      v8 = [domain isEqualToString:?];
       v84 = 0;
       if (v8)
       {
@@ -8135,7 +8135,7 @@ void __54__SUSUISoftwareUpdateManager_startInstallWithHandler___block_invoke_474
 
       v81 = v84;
       MEMORY[0x277D82BD8](v83);
-      MEMORY[0x277D82BD8](v82);
+      MEMORY[0x277D82BD8](domain);
       if (v81)
       {
         v59 = MEMORY[0x277D75110];
@@ -8171,7 +8171,7 @@ void __54__SUSUISoftwareUpdateManager_startInstallWithHandler___block_invoke_474
         v144 = __46__SUSUISoftwareUpdateManager_handleScanError___block_invoke;
         v145 = &unk_279CBE890;
         v78 = v146;
-        v146[0] = MEMORY[0x277D82BE0](v179);
+        v146[0] = MEMORY[0x277D82BE0](selfCopy);
         v77 = (v70 + 5);
         v146[1] = MEMORY[0x277D82BE0](location[0]);
         v73 = [v71 actionWithTitle:v74 style:v69 handler:v70];
@@ -8179,7 +8179,7 @@ void __54__SUSUISoftwareUpdateManager_startInstallWithHandler___block_invoke_474
         MEMORY[0x277D82BD8](v73);
         MEMORY[0x277D82BD8](v74);
         MEMORY[0x277D82BD8](v75);
-        v76 = objc_loadWeakRetained(&v179->_hostController);
+        v76 = objc_loadWeakRetained(&selfCopy->_hostController);
         obj = 0;
         [v76 presentViewController:v147 animated:1 completion:?];
         MEMORY[0x277D82BD8](v76);
@@ -8191,14 +8191,14 @@ void __54__SUSUISoftwareUpdateManager_startInstallWithHandler___block_invoke_474
       else
       {
         v140 = 0;
-        v55 = [MEMORY[0x277D75418] currentDevice];
-        v56 = [v55 sf_isInternalInstall];
-        MEMORY[0x277D82BD8](v55);
-        if (v56)
+        currentDevice = [MEMORY[0x277D75418] currentDevice];
+        sf_isInternalInstall = [currentDevice sf_isInternalInstall];
+        MEMORY[0x277D82BD8](currentDevice);
+        if (sf_isInternalInstall)
         {
-          v54 = [location[0] userInfo];
-          v139 = [v54 objectForKey:*MEMORY[0x277CCA498]];
-          MEMORY[0x277D82BD8](v54);
+          userInfo = [location[0] userInfo];
+          v139 = [userInfo objectForKey:*MEMORY[0x277CCA498]];
+          MEMORY[0x277D82BD8](userInfo);
           if (!v139)
           {
             objc_storeStrong(&v139, @"Verify that you are connected to the Internal Network; trigger VPN manually if applicable.");
@@ -8209,9 +8209,9 @@ void __54__SUSUISoftwareUpdateManager_startInstallWithHandler___block_invoke_474
           v52 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
           v51 = [v52 localizedStringForKey:@"GENERIC_SCAN_ERROR" value:&stru_287B79370 table:@"Software Update"];
           v53 = &v139;
-          v12 = [v50 stringWithFormat:@"%@\n\n[Internal Only]\n%@", v51, v139];
+          v139 = [v50 stringWithFormat:@"%@\n\n[Internal Only]\n%@", v51, v139];
           v13 = v140;
-          v140 = v12;
+          v140 = v139;
           MEMORY[0x277D82BD8](v13);
           MEMORY[0x277D82BD8](v51);
           MEMORY[0x277D82BD8](v52);
@@ -8254,7 +8254,7 @@ void __54__SUSUISoftwareUpdateManager_startInstallWithHandler___block_invoke_474
         v135 = __46__SUSUISoftwareUpdateManager_handleScanError___block_invoke_2;
         v136 = &unk_279CBE890;
         v38 = v137;
-        v137[0] = MEMORY[0x277D82BE0](v179);
+        v137[0] = MEMORY[0x277D82BE0](selfCopy);
         v39 = (v41 + 5);
         v137[1] = MEMORY[0x277D82BE0](location[0]);
         v44 = [v42 actionWithTitle:v45 style:v40 handler:v41];
@@ -8262,7 +8262,7 @@ void __54__SUSUISoftwareUpdateManager_startInstallWithHandler___block_invoke_474
         MEMORY[0x277D82BD8](v44);
         MEMORY[0x277D82BD8](v45);
         MEMORY[0x277D82BD8](v46);
-        if (![(SUSUISoftwareUpdateManager *)v179 clientIsBuddy])
+        if (![(SUSUISoftwareUpdateManager *)selfCopy clientIsBuddy])
         {
           v24 = v138;
           v23 = MEMORY[0x277D750F8];
@@ -8276,7 +8276,7 @@ void __54__SUSUISoftwareUpdateManager_startInstallWithHandler___block_invoke_474
           v129 = __46__SUSUISoftwareUpdateManager_handleScanError___block_invoke_3;
           v130 = &unk_279CB9068;
           v28 = &v131;
-          v131 = MEMORY[0x277D82BE0](v179);
+          v131 = MEMORY[0x277D82BE0](selfCopy);
           v25 = [v23 actionWithTitle:v26 style:0 handler:v22];
           [v24 addAction:?];
           MEMORY[0x277D82BD8](v25);
@@ -8285,7 +8285,7 @@ void __54__SUSUISoftwareUpdateManager_startInstallWithHandler___block_invoke_474
           objc_storeStrong(v28, 0);
         }
 
-        v18 = objc_loadWeakRetained(&v179->_hostController);
+        v18 = objc_loadWeakRetained(&selfCopy->_hostController);
         v19 = &v138;
         v20 = 0;
         [v18 presentViewController:v138 animated:1 completion:?];
@@ -8313,7 +8313,7 @@ void __54__SUSUISoftwareUpdateManager_startInstallWithHandler___block_invoke_474
       }
 
       objc_storeStrong(&oslog, 0);
-      [(SUSUISoftwareUpdateManager *)v179 _notifyScanFailed:location[0]];
+      [(SUSUISoftwareUpdateManager *)selfCopy _notifyScanFailed:location[0]];
       v173 = 1;
     }
   }
@@ -8353,7 +8353,7 @@ void __46__SUSUISoftwareUpdateManager_handleScanError___block_invoke_3(id *a1, v
 {
   v70 = "[SUSUISoftwareUpdateManager handleRollbackApplied]";
   v102 = *MEMORY[0x277D85DE8];
-  v100 = self;
+  selfCopy = self;
   v99[1] = a2;
   v99[0] = _SUSUILoggingFacility();
   v98 = 0;
@@ -8361,17 +8361,17 @@ void __46__SUSUISoftwareUpdateManager_handleScanError___block_invoke_3(id *a1, v
   {
     log = v99[0];
     *type = v98;
-    v67 = SUSUISoftwareUpdateStateToString(v100->_state);
+    v67 = SUSUISoftwareUpdateStateToString(selfCopy->_state);
     v68 = MEMORY[0x277D82BE0](v67);
     location = v68;
-    state = v100->_state;
-    preferredUpdate = v100->_preferredUpdate;
+    state = selfCopy->_state;
+    preferredUpdate = selfCopy->_preferredUpdate;
     v95 = 0;
     if (preferredUpdate)
     {
-      v96 = [(SUDescriptor *)v100->_preferredUpdate humanReadableUpdateName];
+      humanReadableUpdateName = [(SUDescriptor *)selfCopy->_preferredUpdate humanReadableUpdateName];
       v95 = 1;
-      v64 = v96;
+      v64 = humanReadableUpdateName;
     }
 
     else
@@ -8380,15 +8380,15 @@ void __46__SUSUISoftwareUpdateManager_handleScanError___block_invoke_3(id *a1, v
     }
 
     v61 = v64;
-    v62 = v100->_preferredUpdate;
-    preferredUpdateError = v100->_preferredUpdateError;
-    alternateUpdate = v100->_alternateUpdate;
+    v62 = selfCopy->_preferredUpdate;
+    preferredUpdateError = selfCopy->_preferredUpdateError;
+    alternateUpdate = selfCopy->_alternateUpdate;
     v93 = 0;
     if (alternateUpdate)
     {
-      v94 = [(SUDescriptor *)v100->_alternateUpdate humanReadableUpdateName];
+      humanReadableUpdateName2 = [(SUDescriptor *)selfCopy->_alternateUpdate humanReadableUpdateName];
       v93 = 1;
-      v60 = v94;
+      v60 = humanReadableUpdateName2;
     }
 
     else
@@ -8397,21 +8397,21 @@ void __46__SUSUISoftwareUpdateManager_handleScanError___block_invoke_3(id *a1, v
     }
 
     v56 = v60;
-    v57 = v100->_alternateUpdate;
-    alternateUpdateError = v100->_alternateUpdateError;
-    download = v100->_download;
-    v4 = v100->_download;
+    v57 = selfCopy->_alternateUpdate;
+    alternateUpdateError = selfCopy->_alternateUpdateError;
+    download = selfCopy->_download;
+    v4 = selfCopy->_download;
     v91 = 0;
     v89 = 0;
     v87 = 0;
-    if (v4 && (v92 = [(SUDownload *)v100->_download descriptor], v91 = 1, v92))
+    if (v4 && (v92 = [(SUDownload *)selfCopy->_download descriptor], v91 = 1, v92))
     {
-      v90 = [(SUDownload *)v100->_download descriptor];
+      descriptor = [(SUDownload *)selfCopy->_download descriptor];
       v54 = 1;
       v89 = 1;
-      v88 = [(SUDescriptor *)v90 humanReadableUpdateName];
+      humanReadableUpdateName3 = [(SUDescriptor *)descriptor humanReadableUpdateName];
       v87 = 1;
-      v55 = v88;
+      v55 = humanReadableUpdateName3;
     }
 
     else
@@ -8420,13 +8420,13 @@ void __46__SUSUISoftwareUpdateManager_handleScanError___block_invoke_3(id *a1, v
     }
 
     v51 = v55;
-    WeakRetained = objc_loadWeakRetained(&v100->_delegate);
-    v53 = objc_loadWeakRetained(&v100->_delegate);
+    WeakRetained = objc_loadWeakRetained(&selfCopy->_delegate);
+    v53 = objc_loadWeakRetained(&selfCopy->_delegate);
     v85 = 0;
     v83 = 0;
     if (v53)
     {
-      v86 = objc_loadWeakRetained(&v100->_delegate);
+      v86 = objc_loadWeakRetained(&selfCopy->_delegate);
       v49 = 1;
       v85 = 1;
       v5 = objc_opt_class();
@@ -8441,13 +8441,13 @@ void __46__SUSUISoftwareUpdateManager_handleScanError___block_invoke_3(id *a1, v
     }
 
     v46 = v50;
-    v47 = objc_loadWeakRetained(&v100->_hostController);
-    v48 = objc_loadWeakRetained(&v100->_hostController);
+    v47 = objc_loadWeakRetained(&selfCopy->_hostController);
+    v48 = objc_loadWeakRetained(&selfCopy->_hostController);
     v81 = 0;
     v79 = 0;
     if (v48)
     {
-      v82 = objc_loadWeakRetained(&v100->_hostController);
+      v82 = objc_loadWeakRetained(&selfCopy->_hostController);
       v44 = 1;
       v81 = 1;
       v6 = objc_opt_class();
@@ -8491,12 +8491,12 @@ void __46__SUSUISoftwareUpdateManager_handleScanError___block_invoke_3(id *a1, v
     MEMORY[0x277D82BD8](WeakRetained);
     if (v87)
     {
-      MEMORY[0x277D82BD8](v88);
+      MEMORY[0x277D82BD8](humanReadableUpdateName3);
     }
 
     if (v89)
     {
-      MEMORY[0x277D82BD8](v90);
+      MEMORY[0x277D82BD8](descriptor);
     }
 
     if (v91)
@@ -8506,12 +8506,12 @@ void __46__SUSUISoftwareUpdateManager_handleScanError___block_invoke_3(id *a1, v
 
     if (v93)
     {
-      MEMORY[0x277D82BD8](v94);
+      MEMORY[0x277D82BD8](humanReadableUpdateName2);
     }
 
     if (v95)
     {
-      MEMORY[0x277D82BD8](v96);
+      MEMORY[0x277D82BD8](humanReadableUpdateName);
     }
 
     MEMORY[0x277D82BD8](v67);
@@ -8555,7 +8555,7 @@ void __46__SUSUISoftwareUpdateManager_handleScanError___block_invoke_3(id *a1, v
   v74 = __51__SUSUISoftwareUpdateManager_handleRollbackApplied__block_invoke;
   v75 = &unk_279CB9068;
   v38 = &v76;
-  v76 = MEMORY[0x277D82BE0](v100);
+  v76 = MEMORY[0x277D82BE0](selfCopy);
   v23 = [v21 actionWithTitle:v24 style:v19 handler:v20];
   [v22 addAction:?];
   MEMORY[0x277D82BD8](v23);
@@ -8572,7 +8572,7 @@ void __46__SUSUISoftwareUpdateManager_handleScanError___block_invoke_3(id *a1, v
   MEMORY[0x277D82BD8](v34);
   MEMORY[0x277D82BD8](v35);
   MEMORY[0x277D82BD8](v36);
-  v37 = objc_loadWeakRetained(&v100->_hostController);
+  v37 = objc_loadWeakRetained(&selfCopy->_hostController);
   [v37 presentViewController:v77 animated:1 completion:obj];
   MEMORY[0x277D82BD8](v37);
   objc_storeStrong(v38, obj);
@@ -8605,7 +8605,7 @@ void __51__SUSUISoftwareUpdateManager_handleRollbackApplied__block_invoke_2(void
   objc_storeStrong(location, 0);
 }
 
-- (void)handleDownloadError:(id)a3
+- (void)handleDownloadError:(id)error
 {
   v119 = &v137;
   v118 = "[SUSUISoftwareUpdateManager handleDownloadError:]";
@@ -8613,7 +8613,7 @@ void __51__SUSUISoftwareUpdateManager_handleRollbackApplied__block_invoke_2(void
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, error);
   v166 = _SUSUILoggingFacility();
   v165 = 0;
   if (os_log_type_enabled(v166, OS_LOG_TYPE_DEFAULT))
@@ -8630,10 +8630,10 @@ void __51__SUSUISoftwareUpdateManager_handleRollbackApplied__block_invoke_2(void
     v163 = 0;
     if (v5)
     {
-      v6 = [*(*(v119 + 56) + 120) humanReadableUpdateName];
-      *(v119 + 50) = v6;
+      humanReadableUpdateName = [*(*(v119 + 56) + 120) humanReadableUpdateName];
+      *(v119 + 50) = humanReadableUpdateName;
       v163 = 1;
-      v112 = v6;
+      v112 = humanReadableUpdateName;
     }
 
     else
@@ -8648,10 +8648,10 @@ void __51__SUSUISoftwareUpdateManager_handleRollbackApplied__block_invoke_2(void
     v162 = 0;
     if (v7)
     {
-      v8 = [*(*(v119 + 56) + 128) humanReadableUpdateName];
-      *(v119 + 48) = v8;
+      humanReadableUpdateName2 = [*(*(v119 + 56) + 128) humanReadableUpdateName];
+      *(v119 + 48) = humanReadableUpdateName2;
       v162 = 1;
-      v108 = v8;
+      v108 = humanReadableUpdateName2;
     }
 
     else
@@ -8669,14 +8669,14 @@ void __51__SUSUISoftwareUpdateManager_handleRollbackApplied__block_invoke_2(void
     v159 = 0;
     if (v9 && (v10 = [*(*(v119 + 56) + 8) descriptor], *(v119 + 46) = v10, v161 = 1, v10))
     {
-      v11 = [*(*(v119 + 56) + 8) descriptor];
-      *(v119 + 44) = v11;
+      descriptor = [*(*(v119 + 56) + 8) descriptor];
+      *(v119 + 44) = descriptor;
       v102 = 1;
       v160 = 1;
-      v12 = [v11 humanReadableUpdateName];
-      *(v119 + 42) = v12;
+      humanReadableUpdateName3 = [descriptor humanReadableUpdateName];
+      *(v119 + 42) = humanReadableUpdateName3;
       v159 = 1;
-      v103 = v12;
+      v103 = humanReadableUpdateName3;
     }
 
     else
@@ -8787,13 +8787,13 @@ void __51__SUSUISoftwareUpdateManager_handleRollbackApplied__block_invoke_2(void
   }
 
   objc_storeStrong(&v166, 0);
-  v88 = [*(v119 + 54) domain];
-  v89 = [v88 isEqualToString:*MEMORY[0x277D64910]];
-  MEMORY[0x277D82BD8](v88);
+  domain = [*(v119 + 54) domain];
+  v89 = [domain isEqualToString:*MEMORY[0x277D64910]];
+  MEMORY[0x277D82BD8](domain);
   if (v89)
   {
-    v87 = [*(v119 + 54) code];
-    if (v87 == 1)
+    code = [*(v119 + 54) code];
+    if (code == 1)
     {
       if (*(*(v119 + 56) + 120))
       {
@@ -8816,7 +8816,7 @@ void __51__SUSUISoftwareUpdateManager_handleRollbackApplied__block_invoke_2(void
       goto LABEL_127;
     }
 
-    if (v87 == 3)
+    if (code == 3)
     {
 LABEL_52:
       v86 = MEMORY[0x277D75110];
@@ -8973,17 +8973,17 @@ LABEL_52:
       goto LABEL_127;
     }
 
-    if (v87 != 6)
+    if (code != 6)
     {
-      if (v87 == 11)
+      if (code == 11)
       {
         [*(v119 + 56) setState:12];
         goto LABEL_127;
       }
 
-      if (v87 != 14 && v87 != 24)
+      if (code != 14 && code != 24)
       {
-        if (v87 == 55)
+        if (code == 55)
         {
           [*(v119 + 56) setState:4];
         }
@@ -9148,39 +9148,39 @@ LABEL_127:
   *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)shouldIgnoreUpdateError:(id)a3
+- (BOOL)shouldIgnoreUpdateError:(id)error
 {
-  v21 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v19 = [location[0] code];
-  v12 = [location[0] domain];
-  v13 = [v12 isEqualToString:*MEMORY[0x277D64910]];
-  MEMORY[0x277D82BD8](v12);
+  objc_storeStrong(location, error);
+  code = [location[0] code];
+  domain = [location[0] domain];
+  v13 = [domain isEqualToString:*MEMORY[0x277D64910]];
+  MEMORY[0x277D82BD8](domain);
   if (v13)
   {
-    if (v19 == 3 || v19 == 11 || v19 == 13)
+    if (code == 3 || code == 11 || code == 13)
     {
       v22 = 1;
       v18 = 1;
       goto LABEL_36;
     }
 
-    download = v21->_download;
+    download = selfCopy->_download;
     v16 = 0;
     v11 = 0;
     if (download)
     {
-      v17 = [(SUDownload *)v21->_download progress];
+      progress = [(SUDownload *)selfCopy->_download progress];
       v16 = 1;
       v11 = 0;
-      if (v17)
+      if (progress)
       {
         v10 = 1;
-        if (v21->_state != 12)
+        if (selfCopy->_state != 12)
         {
-          v10 = v21->_state == 13;
+          v10 = selfCopy->_state == 13;
         }
 
         v11 = v10;
@@ -9189,7 +9189,7 @@ LABEL_127:
 
     if (v16)
     {
-      MEMORY[0x277D82BD8](v17);
+      MEMORY[0x277D82BD8](progress);
     }
 
     if (!v11)
@@ -9200,45 +9200,45 @@ LABEL_35:
       goto LABEL_36;
     }
 
-    v15 = [(SUDownload *)v21->_download progress];
-    v8 = [v15 phase];
+    progress2 = [(SUDownload *)selfCopy->_download progress];
+    phase = [progress2 phase];
     v9 = 0;
-    if ([v8 isEqualToString:*MEMORY[0x277D64A00]])
+    if ([phase isEqualToString:*MEMORY[0x277D64A00]])
     {
-      [v15 percentComplete];
+      [progress2 percentComplete];
       v9 = v4 >= 1.0;
     }
 
-    MEMORY[0x277D82BD8](v8);
+    MEMORY[0x277D82BD8](phase);
     if (!v9)
     {
       goto LABEL_33;
     }
 
-    if (v19 == 33 || v19 == 34 || v19 == 8 || v19 == 31 || v19 == 9 || v19 == 83)
+    if (code == 33 || code == 34 || code == 8 || code == 31 || code == 9 || code == 83)
     {
       v22 = 1;
       v18 = 1;
       goto LABEL_34;
     }
 
-    if (v19 == 6)
+    if (code == 6)
     {
       v22 = 1;
       v18 = 1;
       goto LABEL_34;
     }
 
-    if (v19 != 20)
+    if (code != 20)
     {
       goto LABEL_33;
     }
 
-    v7 = [location[0] userInfo];
+    userInfo = [location[0] userInfo];
     v6 = getkSUInstallationConstraintsUnmetKey_1();
-    v14 = [v7 objectForKey:?];
+    v14 = [userInfo objectForKey:?];
     MEMORY[0x277D82BD8](v6);
-    MEMORY[0x277D82BD8](v7);
+    MEMORY[0x277D82BD8](userInfo);
     if (v14 && [v14 unsignedIntegerValue] == 4)
     {
       v22 = 1;
@@ -9258,7 +9258,7 @@ LABEL_33:
     }
 
 LABEL_34:
-    objc_storeStrong(&v15, 0);
+    objc_storeStrong(&progress2, 0);
     if (v18)
     {
       goto LABEL_36;
@@ -9274,19 +9274,19 @@ LABEL_36:
   return v22 & 1;
 }
 
-- (BOOL)shouldSetStateForInstallError:(id)a3 outError:(id *)a4 outState:(int *)a5
+- (BOOL)shouldSetStateForInstallError:(id)error outError:(id *)outError outState:(int *)state
 {
   v72 = &v92;
-  v70 = a4;
-  v71 = a5;
+  outErrorCopy = outError;
+  stateCopy = state;
   v69 = "[SUSUISoftwareUpdateManager shouldSetStateForInstallError:outError:outState:]";
   v106 = *MEMORY[0x277D85DE8];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v100[2] = v70;
-  v100[1] = v71;
+  objc_storeStrong(location, error);
+  v100[2] = outErrorCopy;
+  v100[1] = stateCopy;
   v100[0] = _SUSUILoggingFacility();
   type = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v100[0], OS_LOG_TYPE_DEFAULT))
@@ -9303,10 +9303,10 @@ LABEL_36:
     v97 = 0;
     if (v7)
     {
-      v8 = [*(*(v72 + 18) + 120) humanReadableUpdateName];
-      *(v72 + 10) = v8;
+      humanReadableUpdateName = [*(*(v72 + 18) + 120) humanReadableUpdateName];
+      *(v72 + 10) = humanReadableUpdateName;
       v97 = 1;
-      v63 = v8;
+      v63 = humanReadableUpdateName;
     }
 
     else
@@ -9321,10 +9321,10 @@ LABEL_36:
     v96 = 0;
     if (v9)
     {
-      v10 = [*(*(v72 + 18) + 128) humanReadableUpdateName];
-      *(v72 + 8) = v10;
+      humanReadableUpdateName2 = [*(*(v72 + 18) + 128) humanReadableUpdateName];
+      *(v72 + 8) = humanReadableUpdateName2;
       v96 = 1;
-      v59 = v10;
+      v59 = humanReadableUpdateName2;
     }
 
     else
@@ -9342,14 +9342,14 @@ LABEL_36:
     v93 = 0;
     if (v11 && (v12 = [*(*(v72 + 18) + 8) descriptor], *(v72 + 6) = v12, v95 = 1, v12))
     {
-      v13 = [*(*(v72 + 18) + 8) descriptor];
-      *(v72 + 4) = v13;
+      descriptor = [*(*(v72 + 18) + 8) descriptor];
+      *(v72 + 4) = descriptor;
       v53 = 1;
       v94 = 1;
-      v14 = [v13 humanReadableUpdateName];
-      *(v72 + 2) = v14;
+      humanReadableUpdateName3 = [descriptor humanReadableUpdateName];
+      *(v72 + 2) = humanReadableUpdateName3;
       v93 = 1;
-      v54 = v14;
+      v54 = humanReadableUpdateName3;
     }
 
     else
@@ -9470,8 +9470,8 @@ LABEL_36:
     **(v72 + 14) = 10;
   }
 
-  v39 = [*(v72 + 16) code];
-  switch(v39)
+  code = [*(v72 + 16) code];
+  switch(code)
   {
     case 3:
     case 11:
@@ -9531,15 +9531,15 @@ LABEL_62:
     case 19:
       goto LABEL_61;
     case 20:
-      v29 = [*(v72 + 16) userInfo];
+      userInfo = [*(v72 + 16) userInfo];
       v28 = getkSUInstallationConstraintsUnmetKey_1();
-      v27 = [v29 objectForKey:?];
-      v30 = [v27 unsignedIntegerValue];
+      v27 = [userInfo objectForKey:?];
+      unsignedIntegerValue = [v27 unsignedIntegerValue];
       MEMORY[0x277D82BD8](v27);
       MEMORY[0x277D82BD8](v28);
-      MEMORY[0x277D82BD8](v29);
-      v75 = v30;
-      if (v30 != 16 && v75 != 32 && v75 != 48)
+      MEMORY[0x277D82BD8](userInfo);
+      v75 = unsignedIntegerValue;
+      if (unsignedIntegerValue != 16 && v75 != 32 && v75 != 48)
       {
         goto LABEL_71;
       }
@@ -9608,41 +9608,41 @@ void __78__SUSUISoftwareUpdateManager_shouldSetStateForInstallError_outError_out
   objc_storeStrong(location, 0);
 }
 
-- (id)humanReadableDescriptionForError:(id)a3 enableButton:(BOOL *)a4
+- (id)humanReadableDescriptionForError:(id)error enableButton:(BOOL *)button
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (a4)
+  objc_storeStrong(location, error);
+  if (button)
   {
-    *a4 = [(SUSUISoftwareUpdateManager *)v9 enableUpdateButtonForError:location[0]];
+    *button = [(SUSUISoftwareUpdateManager *)selfCopy enableUpdateButtonForError:location[0]];
   }
 
-  v6 = [(SUSUISoftwareUpdateManager *)v9 humanReadableDescriptionForError:location[0], location];
+  location = [(SUSUISoftwareUpdateManager *)selfCopy humanReadableDescriptionForError:location[0], location];
   objc_storeStrong(v5, 0);
 
-  return v6;
+  return location;
 }
 
-- (BOOL)enableUpdateButtonForError:(id)a3
+- (BOOL)enableUpdateButtonForError:(id)error
 {
   v31 = *MEMORY[0x277D85DE8];
-  v27 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (![(SUSUISoftwareUpdateManager *)v27 shouldIgnoreUpdateError:location[0]])
+  objc_storeStrong(location, error);
+  if (![(SUSUISoftwareUpdateManager *)selfCopy shouldIgnoreUpdateError:location[0]])
   {
-    v12 = [location[0] domain];
+    domain = [location[0] domain];
     v11 = getSUErrorDomain_3();
-    v13 = [v12 isEqualToString:?];
+    v13 = [domain isEqualToString:?];
     MEMORY[0x277D82BD8](v11);
-    MEMORY[0x277D82BD8](v12);
+    MEMORY[0x277D82BD8](domain);
     if (v13)
     {
-      v24 = [location[0] code];
-      if ((v24 - 33) > 1 || [(SUSUISoftwareUpdateManager *)v27 state]!= 14)
+      code = [location[0] code];
+      if ((code - 33) > 1 || [(SUSUISoftwareUpdateManager *)selfCopy state]!= 14)
       {
         goto LABEL_23;
       }
@@ -9748,30 +9748,30 @@ LABEL_25:
   return v28 & 1;
 }
 
-- (id)humanReadableTitleForError:(id)a3
+- (id)humanReadableTitleForError:(id)error
 {
   v58 = *MEMORY[0x277D85DE8];
-  v55 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, error);
   v53 = 0;
-  if ([(SUSUISoftwareUpdateManager *)v55 shouldIgnoreUpdateError:location[0]])
+  if ([(SUSUISoftwareUpdateManager *)selfCopy shouldIgnoreUpdateError:location[0]])
   {
     v56 = 0;
     v52 = 1;
     goto LABEL_37;
   }
 
-  v42 = [location[0] domain];
+  domain = [location[0] domain];
   v41 = getSUErrorDomain_3();
-  v43 = [v42 isEqualToString:?];
+  v43 = [domain isEqualToString:?];
   MEMORY[0x277D82BD8](v41);
-  MEMORY[0x277D82BD8](v42);
+  MEMORY[0x277D82BD8](domain);
   if (v43)
   {
-    v51 = [location[0] code];
-    if (v51 == 6)
+    code = [location[0] code];
+    if (code == 6)
     {
       v40 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v3 = [v40 localizedStringForKey:@"UPDATE_ERROR_TITLE_INSUFFICIENT_DISK_SPACE" value:&stru_287B79370 table:@"Software Update"];
@@ -9783,9 +9783,9 @@ LABEL_25:
 
     else
     {
-      if ((v51 - 7) > 2)
+      if ((code - 7) > 2)
       {
-        switch(v51)
+        switch(code)
         {
           case 17:
           case 19:
@@ -9798,11 +9798,11 @@ LABEL_30:
             MEMORY[0x277D82BD8](v24);
             goto LABEL_32;
           case 20:
-            v37 = [(SUSUISoftwareUpdateManager *)v55 preferredUpdate];
+            preferredUpdate = [(SUSUISoftwareUpdateManager *)selfCopy preferredUpdate];
             v48 = 0;
-            if (v37)
+            if (preferredUpdate)
             {
-              v49 = [(SUSUISoftwareUpdateManager *)v55 preferredUpdate];
+              preferredUpdate2 = [(SUSUISoftwareUpdateManager *)selfCopy preferredUpdate];
               v48 = 1;
               SURequiredBatteryLevelForInstallForDescriptor();
             }
@@ -9815,20 +9815,20 @@ LABEL_30:
             v36 = v9;
             if (v48)
             {
-              MEMORY[0x277D82BD8](v49);
+              MEMORY[0x277D82BD8](preferredUpdate2);
             }
 
-            MEMORY[0x277D82BD8](v37);
+            MEMORY[0x277D82BD8](preferredUpdate);
             v50 = v36;
-            v34 = [location[0] userInfo];
+            userInfo = [location[0] userInfo];
             v33 = getkSUInstallationConstraintsUnmetKey_1();
-            v32 = [v34 objectForKey:?];
-            v35 = [v32 unsignedIntegerValue];
+            v32 = [userInfo objectForKey:?];
+            unsignedIntegerValue = [v32 unsignedIntegerValue];
             MEMORY[0x277D82BD8](v32);
             MEMORY[0x277D82BD8](v33);
-            MEMORY[0x277D82BD8](v34);
-            v47 = v35;
-            if ([(SUSUISoftwareUpdateManager *)v55 clientIsBuddy]|| (v47 & 4) == 0)
+            MEMORY[0x277D82BD8](userInfo);
+            v47 = unsignedIntegerValue;
+            if ([(SUSUISoftwareUpdateManager *)selfCopy clientIsBuddy]|| (v47 & 4) == 0)
             {
               if (v47)
               {
@@ -9883,15 +9883,15 @@ LABEL_30:
             goto LABEL_32;
         }
 
-        if ((v51 - 33) > 1 && v51 != 57 && v51 != 83)
+        if ((code - 33) > 1 && code != 57 && code != 83)
         {
-          if (v51 == 104)
+          if (code == 104)
           {
             objc_storeStrong(&v53, @"Unable to Update");
             goto LABEL_32;
           }
 
-          if (v51 != 106)
+          if (code != 106)
           {
             goto LABEL_32;
           }
@@ -9939,15 +9939,15 @@ LABEL_37:
   return v21;
 }
 
-- (id)humanReadableDescriptionForError:(id)a3
+- (id)humanReadableDescriptionForError:(id)error
 {
   v452 = *MEMORY[0x277D85DE8];
-  v447 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, error);
   v445 = 0;
-  if ([(SUSUISoftwareUpdateManager *)v447 shouldIgnoreUpdateError:location[0]])
+  if ([(SUSUISoftwareUpdateManager *)selfCopy shouldIgnoreUpdateError:location[0]])
   {
     v448 = 0;
     v444 = 1;
@@ -9955,31 +9955,31 @@ LABEL_37:
 
   else
   {
-    v134 = [location[0] domain];
+    domain = [location[0] domain];
     v133 = getSUErrorDomain_3();
-    v135 = [v134 isEqualToString:?];
+    v135 = [domain isEqualToString:?];
     MEMORY[0x277D82BD8](v133);
-    MEMORY[0x277D82BD8](v134);
+    MEMORY[0x277D82BD8](domain);
     if (v135)
     {
-      v443 = [location[0] code];
-      switch(v443)
+      code = [location[0] code];
+      switch(code)
       {
         case 6:
           v110 = MEMORY[0x277CCA8E8];
           v109 = MEMORY[0x277D64908];
-          v111 = [(SUSUISoftwareUpdateManager *)v447 preferredUpdate];
+          preferredUpdate = [(SUSUISoftwareUpdateManager *)selfCopy preferredUpdate];
           v397 = [v110 stringFromByteCount:objc_msgSend(v109 countStyle:{"totalDiskSpaceForUpdate:"), 2}];
-          MEMORY[0x277D82BD8](v111);
+          MEMORY[0x277D82BD8](preferredUpdate);
           v112 = MEMORY[0x277CCACA8];
-          download = v447->_download;
+          download = selfCopy->_download;
           v395 = 0;
           v393 = 0;
           v391 = 0;
           v389 = 0;
           v387 = 0;
           v385 = 0;
-          if (download && (v396 = [(SUDownload *)v447->_download descriptor], v395 = 1, v396) && (v394 = [(SUDownload *)v447->_download descriptor], v393 = 1, ([(SUDescriptor *)v394 isSplatOnly]& 1) != 0))
+          if (download && (v396 = [(SUDownload *)selfCopy->_download descriptor], v395 = 1, v396) && (v394 = [(SUDownload *)selfCopy->_download descriptor], v393 = 1, ([(SUDescriptor *)v394 isSplatOnly]& 1) != 0))
           {
             v392 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
             v391 = 1;
@@ -9997,9 +9997,9 @@ LABEL_37:
             v108 = v386;
           }
 
-          v25 = [v112 stringWithFormat:v108, v397];
+          v397 = [v112 stringWithFormat:v108, v397];
           v26 = v445;
-          v445 = v25;
+          v445 = v397;
           MEMORY[0x277D82BD8](v26);
           if (v385)
           {
@@ -10036,14 +10036,14 @@ LABEL_37:
           break;
         case 7:
         case 57:
-          v3 = v447->_download;
+          v3 = selfCopy->_download;
           v441 = 0;
           v439 = 0;
           v437 = 0;
           v435 = 0;
           v433 = 0;
           v431 = 0;
-          if (v3 && (v442 = [(SUDownload *)v447->_download descriptor], v441 = 1, v442) && (v440 = [(SUDownload *)v447->_download descriptor], v439 = 1, ([(SUDescriptor *)v440 isSplatOnly]& 1) != 0))
+          if (v3 && (v442 = [(SUDownload *)selfCopy->_download descriptor], v441 = 1, v442) && (v440 = [(SUDownload *)selfCopy->_download descriptor], v439 = 1, ([(SUDescriptor *)v440 isSplatOnly]& 1) != 0))
           {
             v438 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
             v437 = 1;
@@ -10096,7 +10096,7 @@ LABEL_37:
           goto LABEL_59;
         case 9:
         case 83:
-          if ([(SUSUISoftwareUpdateManager *)v447 state]== 14)
+          if ([(SUSUISoftwareUpdateManager *)selfCopy state]== 14)
           {
             v116 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
             v115 = SFLocalizableWAPIStringKeyForKey();
@@ -10111,18 +10111,18 @@ LABEL_37:
           else
           {
             v114 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-            v21 = v447->_download;
+            v21 = selfCopy->_download;
             v400 = 0;
             v398 = 0;
             if (v21)
             {
-              v401 = [(SUDownload *)v447->_download descriptor];
+              descriptor = [(SUDownload *)selfCopy->_download descriptor];
               v400 = 1;
-              if (v401)
+              if (descriptor)
               {
-                v399 = [(SUDownload *)v447->_download descriptor];
+                descriptor2 = [(SUDownload *)selfCopy->_download descriptor];
                 v398 = 1;
-                [(SUDescriptor *)v399 isSplatOnly];
+                [(SUDescriptor *)descriptor2 isSplatOnly];
               }
             }
 
@@ -10134,12 +10134,12 @@ LABEL_37:
             MEMORY[0x277D82BD8](v113);
             if (v398)
             {
-              MEMORY[0x277D82BD8](v399);
+              MEMORY[0x277D82BD8](descriptor2);
             }
 
             if (v400)
             {
-              MEMORY[0x277D82BD8](v401);
+              MEMORY[0x277D82BD8](descriptor);
             }
 
             MEMORY[0x277D82BD8](v114);
@@ -10147,7 +10147,7 @@ LABEL_37:
 
           break;
         case 17:
-          v64 = v447->_download;
+          v64 = selfCopy->_download;
           v165 = 0;
           v163 = 0;
           v161 = 0;
@@ -10156,7 +10156,7 @@ LABEL_37:
           v155 = 0;
           v153 = 0;
           v151 = 0;
-          if (v64 && (v166 = [(SUDownload *)v447->_download descriptor], v165 = 1, v166) && (v164 = [(SUDownload *)v447->_download descriptor], v163 = 1, ([(SUDescriptor *)v164 isSplatOnly]& 1) != 0))
+          if (v64 && (v166 = [(SUDownload *)selfCopy->_download descriptor], v165 = 1, v166) && (v164 = [(SUDownload *)selfCopy->_download descriptor], v163 = 1, ([(SUDescriptor *)v164 isSplatOnly]& 1) != 0))
           {
             v162 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
             v161 = 1;
@@ -10221,14 +10221,14 @@ LABEL_37:
           break;
         case 19:
           v81 = MEMORY[0x277CCACA8];
-          v65 = v447->_download;
+          v65 = selfCopy->_download;
           v149 = 0;
           v147 = 0;
           v145 = 0;
           v143 = 0;
           v141 = 0;
           v139 = 0;
-          if (v65 && (v150 = [(SUDownload *)v447->_download descriptor], v149 = 1, v150) && (v148 = [(SUDownload *)v447->_download descriptor], v147 = 1, ([(SUDescriptor *)v148 isSplatOnly]& 1) != 0))
+          if (v65 && (v150 = [(SUDownload *)selfCopy->_download descriptor], v149 = 1, v150) && (v148 = [(SUDownload *)selfCopy->_download descriptor], v147 = 1, ([(SUDescriptor *)v148 isSplatOnly]& 1) != 0))
           {
             v146 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
             v145 = 1;
@@ -10246,14 +10246,14 @@ LABEL_37:
             v80 = v140;
           }
 
-          v79 = [(SUSUISoftwareUpdateManager *)v447 preferredUpdate];
-          v78 = [(SUDescriptor *)v79 humanReadableUpdateName];
-          v66 = [v81 stringWithFormat:v80, v78];
+          preferredUpdate2 = [(SUSUISoftwareUpdateManager *)selfCopy preferredUpdate];
+          humanReadableUpdateName = [(SUDescriptor *)preferredUpdate2 humanReadableUpdateName];
+          v66 = [v81 stringWithFormat:v80, humanReadableUpdateName];
           v67 = v445;
           v445 = v66;
           MEMORY[0x277D82BD8](v67);
-          MEMORY[0x277D82BD8](v78);
-          MEMORY[0x277D82BD8](v79);
+          MEMORY[0x277D82BD8](humanReadableUpdateName);
+          MEMORY[0x277D82BD8](preferredUpdate2);
           if (v139)
           {
             MEMORY[0x277D82BD8](v140);
@@ -10286,28 +10286,28 @@ LABEL_37:
 
           break;
         case 20:
-          v100 = [(SUSUISoftwareUpdateManager *)v447 preferredUpdate];
+          preferredUpdate3 = [(SUSUISoftwareUpdateManager *)selfCopy preferredUpdate];
           SURequiredBatteryLevelForInstallation();
           v101 = v27;
-          MEMORY[0x277D82BD8](v100);
+          MEMORY[0x277D82BD8](preferredUpdate3);
           v28 = 100.0 * v101;
           v29 = floorf(v28) / 100.0;
           v384 = v29;
           v102 = MEMORY[0x277CCA8E8];
-          v103 = [(SUSUISoftwareUpdateManager *)v447 preferredUpdate];
-          v383 = [v102 stringFromByteCount:-[SUDescriptor installationSize](v103 countStyle:{"installationSize"), 2}];
-          MEMORY[0x277D82BD8](v103);
-          v106 = [location[0] userInfo];
+          preferredUpdate4 = [(SUSUISoftwareUpdateManager *)selfCopy preferredUpdate];
+          v383 = [v102 stringFromByteCount:-[SUDescriptor installationSize](preferredUpdate4 countStyle:{"installationSize"), 2}];
+          MEMORY[0x277D82BD8](preferredUpdate4);
+          userInfo = [location[0] userInfo];
           v105 = getkSUInstallationConstraintsUnmetKey_1();
-          v104 = [v106 objectForKey:?];
-          v107 = [v104 unsignedIntegerValue];
+          v104 = [userInfo objectForKey:?];
+          unsignedIntegerValue = [v104 unsignedIntegerValue];
           MEMORY[0x277D82BD8](v104);
           MEMORY[0x277D82BD8](v105);
-          MEMORY[0x277D82BD8](v106);
-          v382 = v107;
-          if ((v107 & 8) != 0)
+          MEMORY[0x277D82BD8](userInfo);
+          v382 = unsignedIntegerValue;
+          if ((unsignedIntegerValue & 8) != 0)
           {
-            v31 = v447->_download;
+            v31 = selfCopy->_download;
             v380 = 0;
             v378 = 0;
             v376 = 0;
@@ -10316,7 +10316,7 @@ LABEL_37:
             v370 = 0;
             v368 = 0;
             v366 = 0;
-            if (v31 && (v381 = [(SUDownload *)v447->_download descriptor], v380 = 1, v381) && (v379 = [(SUDownload *)v447->_download descriptor], v378 = 1, ([(SUDescriptor *)v379 isSplatOnly]& 1) != 0))
+            if (v31 && (v381 = [(SUDownload *)selfCopy->_download descriptor], v380 = 1, v381) && (v379 = [(SUDownload *)selfCopy->_download descriptor], v378 = 1, ([(SUDescriptor *)v379 isSplatOnly]& 1) != 0))
             {
               v377 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
               v376 = 1;
@@ -10397,14 +10397,14 @@ LABEL_37:
             if ((v382 & v365) == v365)
             {
               v97 = MEMORY[0x277CCACA8];
-              v32 = v447->_download;
+              v32 = selfCopy->_download;
               v357 = 0;
               v355 = 0;
               v353 = 0;
               v351 = 0;
               v349 = 0;
               v347 = 0;
-              if (v32 && (v358 = [(SUDownload *)v447->_download descriptor], v357 = 1, v358) && (v356 = [(SUDownload *)v447->_download descriptor], v355 = 1, ([(SUDescriptor *)v356 isSplatOnly]& 1) != 0))
+              if (v32 && (v358 = [(SUDownload *)selfCopy->_download descriptor], v357 = 1, v358) && (v356 = [(SUDownload *)selfCopy->_download descriptor], v355 = 1, ([(SUDescriptor *)v356 isSplatOnly]& 1) != 0))
               {
                 v354 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
                 v353 = 1;
@@ -10422,9 +10422,9 @@ LABEL_37:
                 v96 = v348;
               }
 
-              v33 = [v97 stringWithFormat:v96, v361, v383];
+              v383 = [v97 stringWithFormat:v96, v361, v383];
               v34 = v445;
-              v445 = v33;
+              v445 = v383;
               MEMORY[0x277D82BD8](v34);
               if (v347)
               {
@@ -10460,14 +10460,14 @@ LABEL_37:
             else if ((v382 & v362) == v362)
             {
               v95 = MEMORY[0x277CCACA8];
-              v35 = v447->_download;
+              v35 = selfCopy->_download;
               v345 = 0;
               v343 = 0;
               v341 = 0;
               v339 = 0;
               v337 = 0;
               v335 = 0;
-              if (v35 && (v346 = [(SUDownload *)v447->_download descriptor], v345 = 1, v346) && (v344 = [(SUDownload *)v447->_download descriptor], v343 = 1, ([(SUDescriptor *)v344 isSplatOnly]& 1) != 0))
+              if (v35 && (v346 = [(SUDownload *)selfCopy->_download descriptor], v345 = 1, v346) && (v344 = [(SUDownload *)selfCopy->_download descriptor], v343 = 1, ([(SUDescriptor *)v344 isSplatOnly]& 1) != 0))
               {
                 v342 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
                 v341 = 1;
@@ -10485,9 +10485,9 @@ LABEL_37:
                 v94 = v336;
               }
 
-              v36 = [v95 stringWithFormat:v94, v383];
+              v3832 = [v95 stringWithFormat:v94, v383];
               v37 = v445;
-              v445 = v36;
+              v445 = v3832;
               MEMORY[0x277D82BD8](v37);
               if (v335)
               {
@@ -10523,14 +10523,14 @@ LABEL_37:
             else if ((v382 & v364) == v364)
             {
               v93 = MEMORY[0x277CCACA8];
-              v38 = v447->_download;
+              v38 = selfCopy->_download;
               v333 = 0;
               v331 = 0;
               v329 = 0;
               v327 = 0;
               v325 = 0;
               v323 = 0;
-              if (v38 && (v334 = [(SUDownload *)v447->_download descriptor], v333 = 1, v334) && (v332 = [(SUDownload *)v447->_download descriptor], v331 = 1, ([(SUDescriptor *)v332 isSplatOnly]& 1) != 0))
+              if (v38 && (v334 = [(SUDownload *)selfCopy->_download descriptor], v333 = 1, v334) && (v332 = [(SUDownload *)selfCopy->_download descriptor], v331 = 1, ([(SUDescriptor *)v332 isSplatOnly]& 1) != 0))
               {
                 v330 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
                 v329 = 1;
@@ -10548,9 +10548,9 @@ LABEL_37:
                 v92 = v324;
               }
 
-              v39 = [v93 stringWithFormat:v92, v361];
+              v361 = [v93 stringWithFormat:v92, v361];
               v40 = v445;
-              v445 = v39;
+              v445 = v361;
               MEMORY[0x277D82BD8](v40);
               if (v323)
               {
@@ -10586,14 +10586,14 @@ LABEL_37:
             else if ((v382 & v363) == v363)
             {
               v91 = MEMORY[0x277CCACA8];
-              v41 = v447->_download;
+              v41 = selfCopy->_download;
               v321 = 0;
               v319 = 0;
               v317 = 0;
               v315 = 0;
               v313 = 0;
               v311 = 0;
-              if (v41 && (v322 = [(SUDownload *)v447->_download descriptor], v321 = 1, v322) && (v320 = [(SUDownload *)v447->_download descriptor], v319 = 1, ([(SUDescriptor *)v320 isSplatOnly]& 1) != 0))
+              if (v41 && (v322 = [(SUDownload *)selfCopy->_download descriptor], v321 = 1, v322) && (v320 = [(SUDownload *)selfCopy->_download descriptor], v319 = 1, ([(SUDescriptor *)v320 isSplatOnly]& 1) != 0))
               {
                 v318 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
                 v317 = 1;
@@ -10611,9 +10611,9 @@ LABEL_37:
                 v90 = v312;
               }
 
-              v42 = [v91 stringWithFormat:v90, v361, v383];
+              v3833 = [v91 stringWithFormat:v90, v361, v383];
               v43 = v445;
-              v445 = v42;
+              v445 = v3833;
               MEMORY[0x277D82BD8](v43);
               if (v311)
               {
@@ -10651,14 +10651,14 @@ LABEL_37:
               if ((v382 & 1) != 0 && (v359 & 1) != 0 && (v360 & 1) == 0)
               {
                 v87 = MEMORY[0x277CCACA8];
-                v47 = v447->_download;
+                v47 = selfCopy->_download;
                 v297 = 0;
                 v295 = 0;
                 v293 = 0;
                 v291 = 0;
                 v289 = 0;
                 v287 = 0;
-                if (v47 && (v298 = [(SUDownload *)v447->_download descriptor], v297 = 1, v298) && (v296 = [(SUDownload *)v447->_download descriptor], v295 = 1, ([(SUDescriptor *)v296 isSplatOnly]& 1) != 0))
+                if (v47 && (v298 = [(SUDownload *)selfCopy->_download descriptor], v297 = 1, v298) && (v296 = [(SUDownload *)selfCopy->_download descriptor], v295 = 1, ([(SUDescriptor *)v296 isSplatOnly]& 1) != 0))
                 {
                   v294 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
                   v293 = 1;
@@ -10676,9 +10676,9 @@ LABEL_37:
                   v86 = v288;
                 }
 
-                v48 = [v87 stringWithFormat:v86, v361];
+                v3612 = [v87 stringWithFormat:v86, v361];
                 v49 = v445;
-                v445 = v48;
+                v445 = v3612;
                 MEMORY[0x277D82BD8](v49);
                 if (v287)
                 {
@@ -10714,14 +10714,14 @@ LABEL_37:
               else if (v382 & 1) != 0 && (v359 & 1) != 0 && (v360)
               {
                 v85 = MEMORY[0x277CCACA8];
-                v50 = v447->_download;
+                v50 = selfCopy->_download;
                 v285 = 0;
                 v283 = 0;
                 v281 = 0;
                 v279 = 0;
                 v277 = 0;
                 v275 = 0;
-                if (v50 && (v286 = [(SUDownload *)v447->_download descriptor], v285 = 1, v286) && (v284 = [(SUDownload *)v447->_download descriptor], v283 = 1, ([(SUDescriptor *)v284 isSplatOnly]& 1) != 0))
+                if (v50 && (v286 = [(SUDownload *)selfCopy->_download descriptor], v285 = 1, v286) && (v284 = [(SUDownload *)selfCopy->_download descriptor], v283 = 1, ([(SUDescriptor *)v284 isSplatOnly]& 1) != 0))
                 {
                   v282 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
                   v281 = 1;
@@ -10739,9 +10739,9 @@ LABEL_37:
                   v84 = v276;
                 }
 
-                v51 = [v85 stringWithFormat:v84, v361];
+                v3613 = [v85 stringWithFormat:v84, v361];
                 v52 = v445;
-                v445 = v51;
+                v445 = v3613;
                 MEMORY[0x277D82BD8](v52);
                 if (v275)
                 {
@@ -10777,14 +10777,14 @@ LABEL_37:
               else if ((v382 & 4) != 0)
               {
                 v83 = MEMORY[0x277CCACA8];
-                v53 = v447->_download;
+                v53 = selfCopy->_download;
                 v273 = 0;
                 v271 = 0;
                 v269 = 0;
                 v267 = 0;
                 v265 = 0;
                 v263 = 0;
-                if (v53 && (v274 = [(SUDownload *)v447->_download descriptor], v273 = 1, v274) && (v272 = [(SUDownload *)v447->_download descriptor], v271 = 1, ([(SUDescriptor *)v272 isSplatOnly]& 1) != 0))
+                if (v53 && (v274 = [(SUDownload *)selfCopy->_download descriptor], v273 = 1, v274) && (v272 = [(SUDownload *)selfCopy->_download descriptor], v271 = 1, ([(SUDescriptor *)v272 isSplatOnly]& 1) != 0))
                 {
                   v270 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
                   v269 = 1;
@@ -10802,9 +10802,9 @@ LABEL_37:
                   v82 = v264;
                 }
 
-                v54 = [v83 stringWithFormat:v82, v383];
+                v3834 = [v83 stringWithFormat:v82, v383];
                 v55 = v445;
-                v445 = v54;
+                v445 = v3834;
                 MEMORY[0x277D82BD8](v55);
                 if (v263)
                 {
@@ -10839,14 +10839,14 @@ LABEL_37:
 
               else if ((v382 & 2) != 0)
               {
-                v56 = v447->_download;
+                v56 = selfCopy->_download;
                 v261 = 0;
                 v259 = 0;
                 v257 = 0;
                 v255 = 0;
                 v253 = 0;
                 v251 = 0;
-                if (v56 && (v262 = [(SUDownload *)v447->_download descriptor], v261 = 1, v262) && (v260 = [(SUDownload *)v447->_download descriptor], v259 = 1, ([(SUDescriptor *)v260 isSplatOnly]& 1) != 0))
+                if (v56 && (v262 = [(SUDownload *)selfCopy->_download descriptor], v261 = 1, v262) && (v260 = [(SUDownload *)selfCopy->_download descriptor], v259 = 1, ([(SUDescriptor *)v260 isSplatOnly]& 1) != 0))
                 {
                   v258 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
                   v257 = 1;
@@ -10897,14 +10897,14 @@ LABEL_37:
 
               else if ((v382 & 0x80) != 0)
               {
-                v57 = v447->_download;
+                v57 = selfCopy->_download;
                 v249 = 0;
                 v247 = 0;
                 v245 = 0;
                 v243 = 0;
                 v241 = 0;
                 v239 = 0;
-                if (v57 && (v250 = [(SUDownload *)v447->_download descriptor], v249 = 1, v250) && (v248 = [(SUDownload *)v447->_download descriptor], v247 = 1, ([(SUDescriptor *)v248 isSplatOnly]& 1) != 0))
+                if (v57 && (v250 = [(SUDownload *)selfCopy->_download descriptor], v249 = 1, v250) && (v248 = [(SUDownload *)selfCopy->_download descriptor], v247 = 1, ([(SUDescriptor *)v248 isSplatOnly]& 1) != 0))
                 {
                   v246 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
                   v245 = 1;
@@ -10955,14 +10955,14 @@ LABEL_37:
 
               else if ((v382 & 0x100) != 0)
               {
-                v58 = v447->_download;
+                v58 = selfCopy->_download;
                 v237 = 0;
                 v235 = 0;
                 v233 = 0;
                 v231 = 0;
                 v229 = 0;
                 v227 = 0;
-                if (v58 && (v238 = [(SUDownload *)v447->_download descriptor], v237 = 1, v238) && (v236 = [(SUDownload *)v447->_download descriptor], v235 = 1, ([(SUDescriptor *)v236 isSplatOnly]& 1) != 0))
+                if (v58 && (v238 = [(SUDownload *)selfCopy->_download descriptor], v237 = 1, v238) && (v236 = [(SUDownload *)selfCopy->_download descriptor], v235 = 1, ([(SUDescriptor *)v236 isSplatOnly]& 1) != 0))
                 {
                   v234 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
                   v233 = 1;
@@ -11013,14 +11013,14 @@ LABEL_37:
 
               else if ((v382 & 0x40) != 0)
               {
-                v59 = v447->_download;
+                v59 = selfCopy->_download;
                 v225 = 0;
                 v223 = 0;
                 v221 = 0;
                 v219 = 0;
                 v217 = 0;
                 v215 = 0;
-                if (v59 && (v226 = [(SUDownload *)v447->_download descriptor], v225 = 1, v226) && (v224 = [(SUDownload *)v447->_download descriptor], v223 = 1, ([(SUDescriptor *)v224 isSplatOnly]& 1) != 0))
+                if (v59 && (v226 = [(SUDownload *)selfCopy->_download descriptor], v225 = 1, v226) && (v224 = [(SUDownload *)selfCopy->_download descriptor], v223 = 1, ([(SUDescriptor *)v224 isSplatOnly]& 1) != 0))
                 {
                   v222 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
                   v221 = 1;
@@ -11071,14 +11071,14 @@ LABEL_37:
 
               else if ((v382 & 0x200) != 0)
               {
-                v60 = v447->_download;
+                v60 = selfCopy->_download;
                 v213 = 0;
                 v211 = 0;
                 v209 = 0;
                 v207 = 0;
                 v205 = 0;
                 v203 = 0;
-                if (v60 && (v214 = [(SUDownload *)v447->_download descriptor], v213 = 1, v214) && (v212 = [(SUDownload *)v447->_download descriptor], v211 = 1, ([(SUDescriptor *)v212 isSplatOnly]& 1) != 0))
+                if (v60 && (v214 = [(SUDownload *)selfCopy->_download descriptor], v213 = 1, v214) && (v212 = [(SUDownload *)selfCopy->_download descriptor], v211 = 1, ([(SUDescriptor *)v212 isSplatOnly]& 1) != 0))
                 {
                   v210 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
                   v209 = 1;
@@ -11129,14 +11129,14 @@ LABEL_37:
 
               else if ((v382 & 0x400) != 0)
               {
-                v61 = v447->_download;
+                v61 = selfCopy->_download;
                 v201 = 0;
                 v199 = 0;
                 v197 = 0;
                 v195 = 0;
                 v193 = 0;
                 v191 = 0;
-                if (v61 && (v202 = [(SUDownload *)v447->_download descriptor], v201 = 1, v202) && (v200 = [(SUDownload *)v447->_download descriptor], v199 = 1, ([(SUDescriptor *)v200 isSplatOnly]& 1) != 0))
+                if (v61 && (v202 = [(SUDownload *)selfCopy->_download descriptor], v201 = 1, v202) && (v200 = [(SUDownload *)selfCopy->_download descriptor], v199 = 1, ([(SUDescriptor *)v200 isSplatOnly]& 1) != 0))
                 {
                   v198 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
                   v197 = 1;
@@ -11187,14 +11187,14 @@ LABEL_37:
 
               else if ((v382 & 0x800) != 0)
               {
-                v62 = v447->_download;
+                v62 = selfCopy->_download;
                 v189 = 0;
                 v187 = 0;
                 v185 = 0;
                 v183 = 0;
                 v181 = 0;
                 v179 = 0;
-                if (v62 && (v190 = [(SUDownload *)v447->_download descriptor], v189 = 1, v190) && (v188 = [(SUDownload *)v447->_download descriptor], v187 = 1, ([(SUDescriptor *)v188 isSplatOnly]& 1) != 0))
+                if (v62 && (v190 = [(SUDownload *)selfCopy->_download descriptor], v189 = 1, v190) && (v188 = [(SUDownload *)selfCopy->_download descriptor], v187 = 1, ([(SUDescriptor *)v188 isSplatOnly]& 1) != 0))
                 {
                   v186 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
                   v185 = 1;
@@ -11245,14 +11245,14 @@ LABEL_37:
 
               else if ((v382 & 0x1000) != 0)
               {
-                v63 = v447->_download;
+                v63 = selfCopy->_download;
                 v177 = 0;
                 v175 = 0;
                 v173 = 0;
                 v171 = 0;
                 v169 = 0;
                 v167 = 0;
-                if (v63 && (v178 = [(SUDownload *)v447->_download descriptor], v177 = 1, v178) && (v176 = [(SUDownload *)v447->_download descriptor], v175 = 1, ([(SUDescriptor *)v176 isSplatOnly]& 1) != 0))
+                if (v63 && (v178 = [(SUDownload *)selfCopy->_download descriptor], v177 = 1, v178) && (v176 = [(SUDownload *)selfCopy->_download descriptor], v175 = 1, ([(SUDescriptor *)v176 isSplatOnly]& 1) != 0))
                 {
                   v174 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
                   v173 = 1;
@@ -11305,14 +11305,14 @@ LABEL_37:
             else
             {
               v89 = MEMORY[0x277CCACA8];
-              v44 = v447->_download;
+              v44 = selfCopy->_download;
               v309 = 0;
               v307 = 0;
               v305 = 0;
               v303 = 0;
               v301 = 0;
               v299 = 0;
-              if (v44 && (v310 = [(SUDownload *)v447->_download descriptor], v309 = 1, v310) && (v308 = [(SUDownload *)v447->_download descriptor], v307 = 1, ([(SUDescriptor *)v308 isSplatOnly]& 1) != 0))
+              if (v44 && (v310 = [(SUDownload *)selfCopy->_download descriptor], v309 = 1, v310) && (v308 = [(SUDownload *)selfCopy->_download descriptor], v307 = 1, ([(SUDescriptor *)v308 isSplatOnly]& 1) != 0))
               {
                 v306 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
                 v305 = 1;
@@ -11330,9 +11330,9 @@ LABEL_37:
                 v88 = v300;
               }
 
-              v45 = [v89 stringWithFormat:v88, v361];
+              v3614 = [v89 stringWithFormat:v88, v361];
               v46 = v445;
-              v445 = v45;
+              v445 = v3614;
               MEMORY[0x277D82BD8](v46);
               if (v299)
               {
@@ -11383,7 +11383,7 @@ LABEL_37:
           break;
         case 33:
         case 34:
-          if ([(SUSUISoftwareUpdateManager *)v447 state]!= 14)
+          if ([(SUSUISoftwareUpdateManager *)selfCopy state]!= 14)
           {
             goto LABEL_59;
           }
@@ -11469,16 +11469,16 @@ LABEL_37:
             v444 = 2;
           }
 
-          else if (v443 == 33)
+          else if (code == 33)
           {
-            v9 = v447->_download;
+            v9 = selfCopy->_download;
             v416 = 0;
             v414 = 0;
             v412 = 0;
             v410 = 0;
             v408 = 0;
             v406 = 0;
-            if (v9 && (v417 = [(SUDownload *)v447->_download descriptor], v416 = 1, v417) && (v415 = [(SUDownload *)v447->_download descriptor], v414 = 1, ([(SUDescriptor *)v415 isSplatOnly]& 1) != 0))
+            if (v9 && (v417 = [(SUDownload *)selfCopy->_download descriptor], v416 = 1, v417) && (v415 = [(SUDownload *)selfCopy->_download descriptor], v414 = 1, ([(SUDescriptor *)v415 isSplatOnly]& 1) != 0))
             {
               v413 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
               v412 = 1;
@@ -11541,7 +11541,7 @@ LABEL_37:
           if (!v444)
           {
 LABEL_59:
-            if ([(SUSUISoftwareUpdateManager *)v447 state]== 14)
+            if ([(SUSUISoftwareUpdateManager *)selfCopy state]== 14)
             {
               v123 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
               v122 = SFLocalizableWAPIStringKeyForKey();
@@ -11556,18 +11556,18 @@ LABEL_59:
             else
             {
               v121 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-              v12 = v447->_download;
+              v12 = selfCopy->_download;
               v404 = 0;
               v402 = 0;
               if (v12)
               {
-                v405 = [(SUDownload *)v447->_download descriptor];
+                descriptor3 = [(SUDownload *)selfCopy->_download descriptor];
                 v404 = 1;
-                if (v405)
+                if (descriptor3)
                 {
-                  v403 = [(SUDownload *)v447->_download descriptor];
+                  descriptor4 = [(SUDownload *)selfCopy->_download descriptor];
                   v402 = 1;
-                  [(SUDescriptor *)v403 isSplatOnly];
+                  [(SUDescriptor *)descriptor4 isSplatOnly];
                 }
               }
 
@@ -11579,12 +11579,12 @@ LABEL_59:
               MEMORY[0x277D82BD8](v120);
               if (v402)
               {
-                MEMORY[0x277D82BD8](v403);
+                MEMORY[0x277D82BD8](descriptor4);
               }
 
               if (v404)
               {
-                MEMORY[0x277D82BD8](v405);
+                MEMORY[0x277D82BD8](descriptor3);
               }
 
               MEMORY[0x277D82BD8](v121);
@@ -11610,9 +11610,9 @@ LABEL_59:
 
     else
     {
-      v76 = [location[0] domain];
-      v77 = [v76 isEqualToString:@"com.apple.preferences.softwareupdate"];
-      MEMORY[0x277D82BD8](v76);
+      domain2 = [location[0] domain];
+      v77 = [domain2 isEqualToString:@"com.apple.preferences.softwareupdate"];
+      MEMORY[0x277D82BD8](domain2);
       if ((v77 & 1) != 0 && [location[0] code] == 1)
       {
         v75 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -11638,24 +11638,24 @@ LABEL_59:
     }
 
     v136 = 0;
-    v74 = 0;
+    sf_isInternalInstall = 0;
     if (location[0])
     {
-      v74 = 0;
+      sf_isInternalInstall = 0;
       if ([v445 isEqualToString:&stru_287B79370])
       {
-        v137 = [MEMORY[0x277D75418] currentDevice];
+        currentDevice = [MEMORY[0x277D75418] currentDevice];
         v136 = 1;
-        v74 = [v137 sf_isInternalInstall];
+        sf_isInternalInstall = [currentDevice sf_isInternalInstall];
       }
     }
 
     if (v136)
     {
-      MEMORY[0x277D82BD8](v137);
+      MEMORY[0x277D82BD8](currentDevice);
     }
 
-    if (v74)
+    if (sf_isInternalInstall)
     {
       v70 = [MEMORY[0x277CCACA8] stringWithFormat:@"[Internal Only] An unresolvable error has occurred, please file a radar. Error Code: %ld.", objc_msgSend(location[0], "code")];
       v71 = v445;
@@ -11675,37 +11675,37 @@ LABEL_59:
   return v72;
 }
 
-- (id)humanReadableDescriptionForError:(id)a3 enableButton:(BOOL *)a4 showAsButtonFooter:(BOOL *)a5
+- (id)humanReadableDescriptionForError:(id)error enableButton:(BOOL *)button showAsButtonFooter:(BOOL *)footer
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (a5)
+  objc_storeStrong(location, error);
+  if (footer)
   {
-    *a5 = 0;
+    *footer = 0;
   }
 
-  v6 = [(SUSUISoftwareUpdateManager *)v10 humanReadableDescriptionForError:location[0] enableButton:a4];
+  v6 = [(SUSUISoftwareUpdateManager *)selfCopy humanReadableDescriptionForError:location[0] enableButton:button];
   objc_storeStrong(location, 0);
 
   return v6;
 }
 
-- (void)promptForDevicePasscodeForDescriptor:(id)a3 unattendedInstall:(BOOL)a4 completion:(id)a5
+- (void)promptForDevicePasscodeForDescriptor:(id)descriptor unattendedInstall:(BOOL)install completion:(id)completion
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v14 = a4;
+  objc_storeStrong(location, descriptor);
+  installCopy = install;
   v13 = 0;
-  objc_storeStrong(&v13, a5);
-  suClient = v16->_suClient;
+  objc_storeStrong(&v13, completion);
+  suClient = selfCopy->_suClient;
   v7 = location[0];
-  v9 = MEMORY[0x277D82BE0](v16);
+  v9 = MEMORY[0x277D82BE0](selfCopy);
   v10 = MEMORY[0x277D82BE0](location[0]);
-  v12 = v14;
+  v12 = installCopy;
   v11 = MEMORY[0x277D82BE0](v13);
   [(SUSUISoftwareUpdateClientManager *)suClient isInstallationKeybagRequiredForDescriptor:v7 result:?];
   objc_storeStrong(&v11, 0);
@@ -12128,27 +12128,27 @@ void __96__SUSUISoftwareUpdateManager_promptForDevicePasscodeForDescriptor_unatt
   *MEMORY[0x277D85DE8];
 }
 
-- (void)_alertForDownloadConstraintsWithCompletion:(id)a3
+- (void)_alertForDownloadConstraintsWithCompletion:(id)completion
 {
   v106 = *MEMORY[0x277D85DE8];
-  v103 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, completion);
   if (location[0])
   {
     v98 = 0;
     v97 = 0;
     SUDownloadPolicyFactoryClass_0 = getSUDownloadPolicyFactoryClass_0();
-    v45 = [(SUSUISoftwareUpdateManager *)v103 preferredUpdate];
-    v44 = [(SUSUISoftwareUpdateManager *)v103 download];
-    v43 = [(SUDownload *)v44 downloadOptions];
-    v42 = [(SUDownloadOptions *)v43 activeDownloadPolicy];
-    v96 = [SUDownloadPolicyFactoryClass_0 userDownloadPolicyForDescriptor:v45 existingPolicy:v42 allowCellularOverride:{-[SUSUISoftwareUpdateManager allowCellularOverride](v103, "allowCellularOverride")}];
-    MEMORY[0x277D82BD8](v42);
-    MEMORY[0x277D82BD8](v43);
-    MEMORY[0x277D82BD8](v44);
-    MEMORY[0x277D82BD8](v45);
+    preferredUpdate = [(SUSUISoftwareUpdateManager *)selfCopy preferredUpdate];
+    download = [(SUSUISoftwareUpdateManager *)selfCopy download];
+    downloadOptions = [(SUDownload *)download downloadOptions];
+    activeDownloadPolicy = [(SUDownloadOptions *)downloadOptions activeDownloadPolicy];
+    v96 = [SUDownloadPolicyFactoryClass_0 userDownloadPolicyForDescriptor:preferredUpdate existingPolicy:activeDownloadPolicy allowCellularOverride:{-[SUSUISoftwareUpdateManager allowCellularOverride](selfCopy, "allowCellularOverride")}];
+    MEMORY[0x277D82BD8](activeDownloadPolicy);
+    MEMORY[0x277D82BD8](downloadOptions);
+    MEMORY[0x277D82BD8](download);
+    MEMORY[0x277D82BD8](preferredUpdate);
     v95 = [objc_alloc(MEMORY[0x277CC37B0]) initWithQueue:0];
     if (!v95)
     {
@@ -12182,13 +12182,13 @@ void __96__SUSUISoftwareUpdateManager_promptForDevicePasscodeForDescriptor_unatt
     if (!v99)
     {
 LABEL_65:
-      if (![(SUSUISoftwareUpdateManager *)v103 clientIsBuddy])
+      if (![(SUSUISoftwareUpdateManager *)selfCopy clientIsBuddy])
       {
         goto LABEL_21;
       }
 
-      v90 = [MEMORY[0x277D648C0] sharedInstance];
-      if ([v90 isBootstrap] & 1) == 0 || (objc_msgSend(v90, "isPathSatisfied"))
+      mEMORY[0x277D648C0] = [MEMORY[0x277D648C0] sharedInstance];
+      if ([mEMORY[0x277D648C0] isBootstrap] & 1) == 0 || (objc_msgSend(mEMORY[0x277D648C0], "isPathSatisfied"))
       {
         v99 = 0;
       }
@@ -12210,7 +12210,7 @@ LABEL_65:
         v99 = 1;
       }
 
-      objc_storeStrong(&v90, 0);
+      objc_storeStrong(&mEMORY[0x277D648C0], 0);
       if (!v99)
       {
 LABEL_21:
@@ -12219,7 +12219,7 @@ LABEL_21:
         {
           if ([v96 isDownloadAllowableForCellular])
           {
-            if (v103->_networkType == 1)
+            if (selfCopy->_networkType == 1)
             {
               v79 = _SUSUILoggingFacility();
               v78 = OS_LOG_TYPE_DEFAULT;
@@ -12255,14 +12255,14 @@ LABEL_21:
 
             else
             {
-              v73 = [v96 isDownloadFreeForCellular];
+              isDownloadFreeForCellular = [v96 isDownloadFreeForCellular];
               v72 = 0;
               v71 = 0;
               v70 = _SUSUILoggingFacility();
               v69 = OS_LOG_TYPE_DEFAULT;
               if (os_log_type_enabled(v70, OS_LOG_TYPE_DEFAULT))
               {
-                __os_log_helper_16_0_1_4_0(v104, v73 & 1);
+                __os_log_helper_16_0_1_4_0(v104, isDownloadFreeForCellular & 1);
                 _os_log_impl(&dword_26AC94000, v70, v69, "Alerting user about cellular fees. zero rated = %d", v104, 8u);
               }
 
@@ -12272,24 +12272,24 @@ LABEL_21:
               v65 = 0;
               v63 = 0;
               v61 = 0;
-              if (v73)
+              if (isDownloadFreeForCellular)
               {
-                v27 = 0;
-                if (v103->_download)
+                isSplatOnly = 0;
+                if (selfCopy->_download)
                 {
-                  v68 = [(SUDownload *)v103->_download descriptor];
+                  descriptor = [(SUDownload *)selfCopy->_download descriptor];
                   v67 = 1;
-                  v27 = 0;
-                  if (v68)
+                  isSplatOnly = 0;
+                  if (descriptor)
                   {
-                    v66 = [(SUDownload *)v103->_download descriptor];
+                    descriptor2 = [(SUDownload *)selfCopy->_download descriptor];
                     v65 = 1;
-                    v27 = [(SUDescriptor *)v66 isSplatOnly];
+                    isSplatOnly = [(SUDescriptor *)descriptor2 isSplatOnly];
                   }
                 }
 
                 v3 = @"RSR_CELLULAR_DOWNLOAD_ACCEPT_POSSIBLE_FEES";
-                if ((v27 & 1) == 0)
+                if ((isSplatOnly & 1) == 0)
                 {
                   v3 = @"CELLULAR_DOWNLOAD_ACCEPT_POSSIBLE_FEES";
                 }
@@ -12299,22 +12299,22 @@ LABEL_21:
 
               else
               {
-                v25 = 0;
-                if (v103->_download)
+                isSplatOnly2 = 0;
+                if (selfCopy->_download)
                 {
-                  v64 = [(SUDownload *)v103->_download descriptor];
+                  descriptor3 = [(SUDownload *)selfCopy->_download descriptor];
                   v63 = 1;
-                  v25 = 0;
-                  if (v64)
+                  isSplatOnly2 = 0;
+                  if (descriptor3)
                   {
-                    v62 = [(SUDownload *)v103->_download descriptor];
+                    descriptor4 = [(SUDownload *)selfCopy->_download descriptor];
                     v61 = 1;
-                    v25 = [(SUDescriptor *)v62 isSplatOnly];
+                    isSplatOnly2 = [(SUDescriptor *)descriptor4 isSplatOnly];
                   }
                 }
 
                 v4 = @"RSR_CELLULAR_DOWNLOAD_ACCEPT_DEFINITE_FEES";
-                if ((v25 & 1) == 0)
+                if ((isSplatOnly2 & 1) == 0)
                 {
                   v4 = @"CELLULAR_DOWNLOAD_ACCEPT_DEFINITE_FEES";
                 }
@@ -12328,22 +12328,22 @@ LABEL_21:
               MEMORY[0x277D82BD8](v6);
               if (v61)
               {
-                MEMORY[0x277D82BD8](v62);
+                MEMORY[0x277D82BD8](descriptor4);
               }
 
               if (v63)
               {
-                MEMORY[0x277D82BD8](v64);
+                MEMORY[0x277D82BD8](descriptor3);
               }
 
               if (v65)
               {
-                MEMORY[0x277D82BD8](v66);
+                MEMORY[0x277D82BD8](descriptor2);
               }
 
               if (v67)
               {
-                MEMORY[0x277D82BD8](v68);
+                MEMORY[0x277D82BD8](descriptor);
               }
 
               MEMORY[0x277D82BD8](v28);
@@ -12392,7 +12392,7 @@ LABEL_21:
               v23 = [v21 actionWithTitle:v20 style:1 handler:&v46];
               [v22 addAction:?];
               MEMORY[0x277D82BD8](v23);
-              WeakRetained = objc_loadWeakRetained(&v103->_hostController);
+              WeakRetained = objc_loadWeakRetained(&selfCopy->_hostController);
               [WeakRetained presentViewController:v60 animated:1 completion:?];
               MEMORY[0x277D82BD8](WeakRetained);
               objc_storeStrong(&v52, 0);
@@ -12507,15 +12507,15 @@ void __73__SUSUISoftwareUpdateManager__alertForDownloadConstraintsWithCompletion
   *MEMORY[0x277D85DE8];
 }
 
-- (void)cancelOrPurgeIfNecessaryWithUpdate:(id)a3 completion:(id)a4
+- (void)cancelOrPurgeIfNecessaryWithUpdate:(id)update completion:(id)completion
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, update);
   v14 = 0;
-  objc_storeStrong(&v14, a4);
-  suClient = v16->_suClient;
+  objc_storeStrong(&v14, completion);
+  suClient = selfCopy->_suClient;
   v6 = MEMORY[0x277D85DD0];
   v7 = -1073741824;
   v8 = 0;
@@ -12523,7 +12523,7 @@ void __73__SUSUISoftwareUpdateManager__alertForDownloadConstraintsWithCompletion
   v10 = &unk_279CBE980;
   v11 = MEMORY[0x277D82BE0](location[0]);
   v13 = MEMORY[0x277D82BE0](v14);
-  v12 = MEMORY[0x277D82BE0](v16);
+  v12 = MEMORY[0x277D82BE0](selfCopy);
   [(SUSUISoftwareUpdateClientManager *)suClient download:?];
   objc_storeStrong(&v12, 0);
   objc_storeStrong(&v13, 0);
@@ -12736,25 +12736,25 @@ void __76__SUSUISoftwareUpdateManager_cancelOrPurgeIfNecessaryWithUpdate_complet
   objc_storeStrong(&location, 0);
 }
 
-- (void)presentTermsIfNecessaryCompletion:(id)a3
+- (void)presentTermsIfNecessaryCompletion:(id)completion
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(SUSUISoftwareUpdateManager *)v4 presentTermsIfNecessaryForUpdate:0 completion:location[0]];
+  objc_storeStrong(location, completion);
+  [(SUSUISoftwareUpdateManager *)selfCopy presentTermsIfNecessaryForUpdate:0 completion:location[0]];
   objc_storeStrong(location, 0);
 }
 
-- (void)presentTermsIfNecessaryForUpdate:(id)a3 completion:(id)a4
+- (void)presentTermsIfNecessaryForUpdate:(id)update completion:(id)completion
 {
-  obj = a4;
+  obj = completion;
   v161 = "[SUSUISoftwareUpdateManager presentTermsIfNecessaryForUpdate:completion:]";
   v259 = *MEMORY[0x277D85DE8];
-  v255 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, update);
   v253 = 0;
   objc_storeStrong(&v253, obj);
   v246 = 0;
@@ -12766,9 +12766,9 @@ void __76__SUSUISoftwareUpdateManager_cancelOrPurgeIfNecessaryWithUpdate_complet
   v159 = objc_opt_new();
   v252 = v159;
   v158 = &v252;
-  [v247[5] setServerFlowStyle:v255->_serverFlowStyle];
-  v157 = [(SUSUISoftwareUpdateManager *)v255 download];
-  v245 = v157;
+  [v247[5] setServerFlowStyle:selfCopy->_serverFlowStyle];
+  download = [(SUSUISoftwareUpdateManager *)selfCopy download];
+  v245 = download;
   if (!v245)
   {
     goto LABEL_42;
@@ -12781,17 +12781,17 @@ void __76__SUSUISoftwareUpdateManager_cancelOrPurgeIfNecessaryWithUpdate_complet
   {
     log = oslog;
     *v154 = type;
-    updated = SUSUISoftwareUpdateStateToString(v255->_state);
+    updated = SUSUISoftwareUpdateStateToString(selfCopy->_state);
     v150 = updated;
     v151 = MEMORY[0x277D82BE0](v150);
     v242 = v151;
-    state = v255->_state;
-    preferredUpdate = v255->_preferredUpdate;
+    state = selfCopy->_state;
+    preferredUpdate = selfCopy->_preferredUpdate;
     v240 = 0;
     if (preferredUpdate)
     {
-      v149 = [(SUDescriptor *)v255->_preferredUpdate humanReadableUpdateName];
-      v241 = v149;
+      humanReadableUpdateName = [(SUDescriptor *)selfCopy->_preferredUpdate humanReadableUpdateName];
+      v241 = humanReadableUpdateName;
       v240 = 1;
       v148 = v241;
     }
@@ -12802,14 +12802,14 @@ void __76__SUSUISoftwareUpdateManager_cancelOrPurgeIfNecessaryWithUpdate_complet
     }
 
     v145 = v148;
-    v146 = v255->_preferredUpdate;
-    preferredUpdateError = v255->_preferredUpdateError;
-    alternateUpdate = v255->_alternateUpdate;
+    v146 = selfCopy->_preferredUpdate;
+    preferredUpdateError = selfCopy->_preferredUpdateError;
+    alternateUpdate = selfCopy->_alternateUpdate;
     v238 = 0;
     if (alternateUpdate)
     {
-      v144 = [(SUDescriptor *)v255->_alternateUpdate humanReadableUpdateName];
-      v239 = v144;
+      humanReadableUpdateName2 = [(SUDescriptor *)selfCopy->_alternateUpdate humanReadableUpdateName];
+      v239 = humanReadableUpdateName2;
       v238 = 1;
       v143 = v239;
     }
@@ -12820,20 +12820,20 @@ void __76__SUSUISoftwareUpdateManager_cancelOrPurgeIfNecessaryWithUpdate_complet
     }
 
     v139 = v143;
-    v140 = v255->_alternateUpdate;
-    alternateUpdateError = v255->_alternateUpdateError;
-    download = v255->_download;
-    v6 = v255->_download;
+    v140 = selfCopy->_alternateUpdate;
+    alternateUpdateError = selfCopy->_alternateUpdateError;
+    download = selfCopy->_download;
+    v6 = selfCopy->_download;
     v236 = 0;
     v234 = 0;
     v232 = 0;
-    if (v6 && (v138 = [(SUDownload *)v255->_download descriptor], v237 = v138, v236 = 1, v237))
+    if (v6 && (v138 = [(SUDownload *)selfCopy->_download descriptor], v237 = v138, v236 = 1, v237))
     {
-      v137 = [(SUDownload *)v255->_download descriptor];
-      v235 = v137;
+      descriptor = [(SUDownload *)selfCopy->_download descriptor];
+      v235 = descriptor;
       v234 = 1;
-      v136 = [v235 humanReadableUpdateName];
-      v233 = v136;
+      humanReadableUpdateName3 = [v235 humanReadableUpdateName];
+      v233 = humanReadableUpdateName3;
       v232 = 1;
       v135 = v233;
     }
@@ -12844,13 +12844,13 @@ void __76__SUSUISoftwareUpdateManager_cancelOrPurgeIfNecessaryWithUpdate_complet
     }
 
     v133 = v135;
-    WeakRetained = objc_loadWeakRetained(&v255->_delegate);
-    v132 = objc_loadWeakRetained(&v255->_delegate);
+    WeakRetained = objc_loadWeakRetained(&selfCopy->_delegate);
+    v132 = objc_loadWeakRetained(&selfCopy->_delegate);
     v230 = 0;
     v228 = 0;
     if (v132)
     {
-      v131 = objc_loadWeakRetained(&v255->_delegate);
+      v131 = objc_loadWeakRetained(&selfCopy->_delegate);
       v231 = v131;
       v230 = 1;
       aClass = objc_opt_class();
@@ -12866,13 +12866,13 @@ void __76__SUSUISoftwareUpdateManager_cancelOrPurgeIfNecessaryWithUpdate_complet
     }
 
     v126 = v128;
-    v127 = objc_loadWeakRetained(&v255->_hostController);
-    v125 = objc_loadWeakRetained(&v255->_hostController);
+    v127 = objc_loadWeakRetained(&selfCopy->_hostController);
+    v125 = objc_loadWeakRetained(&selfCopy->_hostController);
     v226 = 0;
     v224 = 0;
     if (v125)
     {
-      v124 = objc_loadWeakRetained(&v255->_hostController);
+      v124 = objc_loadWeakRetained(&selfCopy->_hostController);
       v227 = v124;
       v226 = 1;
       v123 = objc_opt_class();
@@ -12888,12 +12888,12 @@ void __76__SUSUISoftwareUpdateManager_cancelOrPurgeIfNecessaryWithUpdate_complet
     }
 
     v119 = v121;
-    v120 = [v245 downloadOptions];
-    v117 = v120;
-    v118 = [v117 termsAndConditionsAgreementStatus];
+    downloadOptions = [v245 downloadOptions];
+    v117 = downloadOptions;
+    termsAndConditionsAgreementStatus = [v117 termsAndConditionsAgreementStatus];
     v115 = &v15;
     buf = v258;
-    __os_log_helper_16_2_16_8_32_8_66_4_0_8_66_8_0_8_66_8_66_8_0_8_66_8_0_8_66_8_0_8_66_8_0_8_66_4_0(v258, v161, v151, state, v145, v146, preferredUpdateError, v139, v140, alternateUpdateError, download, v133, WeakRetained, v126, v127, v121, v118);
+    __os_log_helper_16_2_16_8_32_8_66_4_0_8_66_8_0_8_66_8_66_8_0_8_66_8_0_8_66_8_0_8_66_8_0_8_66_4_0(v258, v161, v151, state, v145, v146, preferredUpdateError, v139, v140, alternateUpdateError, download, v133, WeakRetained, v126, v127, v121, termsAndConditionsAgreementStatus);
     _os_log_impl(&dword_26AC94000, log, v154[0], "%s: Update Manager Checkpoint\n\tstate: %{public}@ (%d)\n\tpreferredUpdate: %{public}@ (%p)\n\tpreferredUpdateError: %{public}@\n\talternateUpdate: %{public}@ (%p)\n\talternateUpdateError: %{public}@\n\tdownload: %p (%{public}@)\n\tdelegate: %p (%{public}@)\n\thostController: %p (%{public}@)\n\nSU Terms: Agreement status %i", buf, 0x9Au);
     MEMORY[0x277D82BD8](v117);
     if (v224)
@@ -12950,11 +12950,11 @@ void __76__SUSUISoftwareUpdateManager_cancelOrPurgeIfNecessaryWithUpdate_complet
   }
 
   objc_storeStrong(&oslog, 0);
-  v114 = [v245 downloadOptions];
-  v112 = v114;
-  v113 = [v112 termsAndConditionsAgreementStatus];
+  downloadOptions2 = [v245 downloadOptions];
+  v112 = downloadOptions2;
+  termsAndConditionsAgreementStatus2 = [v112 termsAndConditionsAgreementStatus];
   MEMORY[0x277D82BD8](v112);
-  if (v113 == 1)
+  if (termsAndConditionsAgreementStatus2 == 1)
   {
     if (v253)
     {
@@ -12981,14 +12981,14 @@ void __76__SUSUISoftwareUpdateManager_cancelOrPurgeIfNecessaryWithUpdate_complet
 LABEL_42:
     if (location[0])
     {
-      v108 = [location[0] isSplatOnly];
-      v107 = v108;
+      isSplatOnly = [location[0] isSplatOnly];
+      v107 = isSplatOnly;
     }
 
     else
     {
-      v106 = [(SUDescriptor *)v255->_preferredUpdate isSplatOnly];
-      v107 = v106;
+      isSplatOnly2 = [(SUDescriptor *)selfCopy->_preferredUpdate isSplatOnly];
+      v107 = isSplatOnly2;
     }
 
     v216 = v107 != 0;
@@ -13001,17 +13001,17 @@ LABEL_42:
       {
         v102 = v215;
         *v103 = v214;
-        v104 = SUSUISoftwareUpdateStateToString(v255->_state);
+        v104 = SUSUISoftwareUpdateStateToString(selfCopy->_state);
         v99 = v104;
         v100 = MEMORY[0x277D82BE0](v99);
         v213 = v100;
-        v101 = v255->_state;
-        v8 = v255->_preferredUpdate;
+        v101 = selfCopy->_state;
+        v8 = selfCopy->_preferredUpdate;
         v211 = 0;
         if (v8)
         {
-          v98 = [(SUDescriptor *)v255->_preferredUpdate humanReadableUpdateName];
-          v212 = v98;
+          humanReadableUpdateName4 = [(SUDescriptor *)selfCopy->_preferredUpdate humanReadableUpdateName];
+          v212 = humanReadableUpdateName4;
           v211 = 1;
           v97 = v212;
         }
@@ -13022,14 +13022,14 @@ LABEL_42:
         }
 
         v94 = v97;
-        v95 = v255->_preferredUpdate;
-        v96 = v255->_preferredUpdateError;
-        v9 = v255->_alternateUpdate;
+        v95 = selfCopy->_preferredUpdate;
+        v96 = selfCopy->_preferredUpdateError;
+        v9 = selfCopy->_alternateUpdate;
         v209 = 0;
         if (v9)
         {
-          v93 = [(SUDescriptor *)v255->_alternateUpdate humanReadableUpdateName];
-          v210 = v93;
+          humanReadableUpdateName5 = [(SUDescriptor *)selfCopy->_alternateUpdate humanReadableUpdateName];
+          v210 = humanReadableUpdateName5;
           v209 = 1;
           v92 = v210;
         }
@@ -13040,20 +13040,20 @@ LABEL_42:
         }
 
         v88 = v92;
-        v89 = v255->_alternateUpdate;
-        v90 = v255->_alternateUpdateError;
-        v91 = v255->_download;
-        v10 = v255->_download;
+        v89 = selfCopy->_alternateUpdate;
+        v90 = selfCopy->_alternateUpdateError;
+        v91 = selfCopy->_download;
+        v10 = selfCopy->_download;
         v207 = 0;
         v205 = 0;
         v203 = 0;
-        if (v10 && (v87 = [(SUDownload *)v255->_download descriptor], v208 = v87, v207 = 1, v208))
+        if (v10 && (v87 = [(SUDownload *)selfCopy->_download descriptor], v208 = v87, v207 = 1, v208))
         {
-          v86 = [(SUDownload *)v255->_download descriptor];
-          v206 = v86;
+          descriptor2 = [(SUDownload *)selfCopy->_download descriptor];
+          v206 = descriptor2;
           v205 = 1;
-          v85 = [v206 humanReadableUpdateName];
-          v204 = v85;
+          humanReadableUpdateName6 = [v206 humanReadableUpdateName];
+          v204 = humanReadableUpdateName6;
           v203 = 1;
           v84 = v204;
         }
@@ -13064,13 +13064,13 @@ LABEL_42:
         }
 
         v82 = v84;
-        v83 = objc_loadWeakRetained(&v255->_delegate);
-        v81 = objc_loadWeakRetained(&v255->_delegate);
+        v83 = objc_loadWeakRetained(&selfCopy->_delegate);
+        v81 = objc_loadWeakRetained(&selfCopy->_delegate);
         v201 = 0;
         v199 = 0;
         if (v81)
         {
-          v80 = objc_loadWeakRetained(&v255->_delegate);
+          v80 = objc_loadWeakRetained(&selfCopy->_delegate);
           v202 = v80;
           v201 = 1;
           v79 = objc_opt_class();
@@ -13086,13 +13086,13 @@ LABEL_42:
         }
 
         v75 = v77;
-        v76 = objc_loadWeakRetained(&v255->_hostController);
-        v74 = objc_loadWeakRetained(&v255->_hostController);
+        v76 = objc_loadWeakRetained(&selfCopy->_hostController);
+        v74 = objc_loadWeakRetained(&selfCopy->_hostController);
         v197 = 0;
         v195 = 0;
         if (v74)
         {
-          v73 = objc_loadWeakRetained(&v255->_hostController);
+          v73 = objc_loadWeakRetained(&selfCopy->_hostController);
           v198 = v73;
           v197 = 1;
           v72 = objc_opt_class();
@@ -13185,7 +13185,7 @@ LABEL_42:
       v217 = 1;
     }
 
-    else if ([(SUSUISoftwareUpdateManager *)v255 bypassTermsAndConditions])
+    else if ([(SUSUISoftwareUpdateManager *)selfCopy bypassTermsAndConditions])
     {
       v63 = _SUSUILoggingFacility();
       v188 = v63;
@@ -13194,17 +13194,17 @@ LABEL_42:
       {
         v60 = v188;
         *v61 = v187;
-        v62 = SUSUISoftwareUpdateStateToString(v255->_state);
+        v62 = SUSUISoftwareUpdateStateToString(selfCopy->_state);
         v57 = v62;
         v58 = MEMORY[0x277D82BE0](v57);
         v186 = v58;
-        v59 = v255->_state;
-        v12 = v255->_preferredUpdate;
+        v59 = selfCopy->_state;
+        v12 = selfCopy->_preferredUpdate;
         v184 = 0;
         if (v12)
         {
-          v56 = [(SUDescriptor *)v255->_preferredUpdate humanReadableUpdateName];
-          v185 = v56;
+          humanReadableUpdateName7 = [(SUDescriptor *)selfCopy->_preferredUpdate humanReadableUpdateName];
+          v185 = humanReadableUpdateName7;
           v184 = 1;
           v55 = v185;
         }
@@ -13215,14 +13215,14 @@ LABEL_42:
         }
 
         v52 = v55;
-        v53 = v255->_preferredUpdate;
-        v54 = v255->_preferredUpdateError;
-        v13 = v255->_alternateUpdate;
+        v53 = selfCopy->_preferredUpdate;
+        v54 = selfCopy->_preferredUpdateError;
+        v13 = selfCopy->_alternateUpdate;
         v182 = 0;
         if (v13)
         {
-          v51 = [(SUDescriptor *)v255->_alternateUpdate humanReadableUpdateName];
-          v183 = v51;
+          humanReadableUpdateName8 = [(SUDescriptor *)selfCopy->_alternateUpdate humanReadableUpdateName];
+          v183 = humanReadableUpdateName8;
           v182 = 1;
           v50 = v183;
         }
@@ -13233,20 +13233,20 @@ LABEL_42:
         }
 
         v46 = v50;
-        v47 = v255->_alternateUpdate;
-        v48 = v255->_alternateUpdateError;
-        v49 = v255->_download;
-        v14 = v255->_download;
+        v47 = selfCopy->_alternateUpdate;
+        v48 = selfCopy->_alternateUpdateError;
+        v49 = selfCopy->_download;
+        v14 = selfCopy->_download;
         v180 = 0;
         v178 = 0;
         v176 = 0;
-        if (v14 && (v45 = [(SUDownload *)v255->_download descriptor], v181 = v45, v180 = 1, v181))
+        if (v14 && (v45 = [(SUDownload *)selfCopy->_download descriptor], v181 = v45, v180 = 1, v181))
         {
-          v44 = [(SUDownload *)v255->_download descriptor];
-          v179 = v44;
+          descriptor3 = [(SUDownload *)selfCopy->_download descriptor];
+          v179 = descriptor3;
           v178 = 1;
-          v43 = [v179 humanReadableUpdateName];
-          v177 = v43;
+          humanReadableUpdateName9 = [v179 humanReadableUpdateName];
+          v177 = humanReadableUpdateName9;
           v176 = 1;
           v42 = v177;
         }
@@ -13257,13 +13257,13 @@ LABEL_42:
         }
 
         v40 = v42;
-        v41 = objc_loadWeakRetained(&v255->_delegate);
-        v39 = objc_loadWeakRetained(&v255->_delegate);
+        v41 = objc_loadWeakRetained(&selfCopy->_delegate);
+        v39 = objc_loadWeakRetained(&selfCopy->_delegate);
         v174 = 0;
         v172 = 0;
         if (v39)
         {
-          v38 = objc_loadWeakRetained(&v255->_delegate);
+          v38 = objc_loadWeakRetained(&selfCopy->_delegate);
           v175 = v38;
           v174 = 1;
           v37 = objc_opt_class();
@@ -13279,13 +13279,13 @@ LABEL_42:
         }
 
         v33 = v35;
-        v34 = objc_loadWeakRetained(&v255->_hostController);
-        v32 = objc_loadWeakRetained(&v255->_hostController);
+        v34 = objc_loadWeakRetained(&selfCopy->_hostController);
+        v32 = objc_loadWeakRetained(&selfCopy->_hostController);
         v170 = 0;
         v168 = 0;
         if (v32)
         {
-          v31 = objc_loadWeakRetained(&v255->_hostController);
+          v31 = objc_loadWeakRetained(&selfCopy->_hostController);
           v171 = v31;
           v170 = 1;
           v30 = objc_opt_class();
@@ -13378,11 +13378,11 @@ LABEL_42:
 
       else
       {
-        v23 = v255->_preferredUpdate;
+        v23 = selfCopy->_preferredUpdate;
       }
 
       v21 = v23;
-      v22 = objc_loadWeakRetained(&v255->_hostController);
+      v22 = objc_loadWeakRetained(&selfCopy->_hostController);
       v20 = &v162;
       v162 = MEMORY[0x277D85DD0];
       v163 = -1073741824;
@@ -13391,7 +13391,7 @@ LABEL_42:
       v165 = __74__SUSUISoftwareUpdateManager_presentTermsIfNecessaryForUpdate_completion___block_invoke_767;
       v166 = &unk_279CBE9A8;
       v16 = v167;
-      v167[0] = MEMORY[0x277D82BE0](v255);
+      v167[0] = MEMORY[0x277D82BE0](selfCopy);
       v17 = (v20 + 5);
       v167[1] = MEMORY[0x277D82BE0](location[0]);
       v18 = (v20 + 6);
@@ -13618,13 +13618,13 @@ void __74__SUSUISoftwareUpdateManager_presentTermsIfNecessaryForUpdate_completio
   *MEMORY[0x277D85DE8];
 }
 
-- (void)scanForUpdateCompletion:(id)a3
+- (void)scanForUpdateCompletion:(id)completion
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v11;
+  objc_storeStrong(location, completion);
+  v3 = selfCopy;
   v4 = MEMORY[0x277D85DD0];
   v5 = -1073741824;
   v6 = 0;
@@ -13655,27 +13655,27 @@ void __54__SUSUISoftwareUpdateManager_scanForUpdateCompletion___block_invoke(voi
   objc_storeStrong(location, 0);
 }
 
-- (void)scanForUpdatesCompletion:(id)a3
+- (void)scanForUpdatesCompletion:(id)completion
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v4->_userInitiatedRescan = 0;
-  [(SUSUISoftwareUpdateManager *)v4 scanForUpdatesWithOptions:0 andCompletion:location[0]];
+  objc_storeStrong(location, completion);
+  selfCopy->_userInitiatedRescan = 0;
+  [(SUSUISoftwareUpdateManager *)selfCopy scanForUpdatesWithOptions:0 andCompletion:location[0]];
   objc_storeStrong(location, 0);
 }
 
-- (void)rescanForUpdatesInBackgroundWithOptions:(id)a3 andCompletionHandler:(id)a4
+- (void)rescanForUpdatesInBackgroundWithOptions:(id)options andCompletionHandler:(id)handler
 {
   v49 = &v67;
-  obj = a4;
+  obj = handler;
   v47 = "[SUSUISoftwareUpdateManager rescanForUpdatesInBackgroundWithOptions:andCompletionHandler:]";
   v74 = *MEMORY[0x277D85DE8];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, options);
   v71 = 0;
   objc_storeStrong(&v71, obj);
   v70 = _SUSUILoggingFacility();
@@ -13694,10 +13694,10 @@ void __54__SUSUISoftwareUpdateManager_scanForUpdateCompletion___block_invoke(voi
     v66 = 0;
     if (v6)
     {
-      v7 = [*(*(v49 + 7) + 120) humanReadableUpdateName];
-      *v49 = v7;
+      humanReadableUpdateName = [*(*(v49 + 7) + 120) humanReadableUpdateName];
+      *v49 = humanReadableUpdateName;
       v66 = 1;
-      v41 = v7;
+      v41 = humanReadableUpdateName;
     }
 
     else
@@ -13712,9 +13712,9 @@ void __54__SUSUISoftwareUpdateManager_scanForUpdateCompletion___block_invoke(voi
     v64 = 0;
     if (v8)
     {
-      v65 = [*(*(v49 + 7) + 128) humanReadableUpdateName];
+      humanReadableUpdateName2 = [*(*(v49 + 7) + 128) humanReadableUpdateName];
       v64 = 1;
-      v37 = v65;
+      v37 = humanReadableUpdateName2;
     }
 
     else
@@ -13732,12 +13732,12 @@ void __54__SUSUISoftwareUpdateManager_scanForUpdateCompletion___block_invoke(voi
     v58 = 0;
     if (v9 && (v63 = [*(*(v49 + 7) + 8) descriptor], v62 = 1, v63))
     {
-      v61 = [*(*(v49 + 7) + 8) descriptor];
+      descriptor = [*(*(v49 + 7) + 8) descriptor];
       v31 = 1;
       v60 = 1;
-      v59 = [v61 humanReadableUpdateName];
+      humanReadableUpdateName3 = [descriptor humanReadableUpdateName];
       v58 = 1;
-      v32 = v59;
+      v32 = humanReadableUpdateName3;
     }
 
     else
@@ -13817,12 +13817,12 @@ void __54__SUSUISoftwareUpdateManager_scanForUpdateCompletion___block_invoke(voi
     MEMORY[0x277D82BD8](WeakRetained);
     if (v58)
     {
-      MEMORY[0x277D82BD8](v59);
+      MEMORY[0x277D82BD8](humanReadableUpdateName3);
     }
 
     if (v60)
     {
-      MEMORY[0x277D82BD8](v61);
+      MEMORY[0x277D82BD8](descriptor);
     }
 
     if (v62)
@@ -13832,7 +13832,7 @@ void __54__SUSUISoftwareUpdateManager_scanForUpdateCompletion___block_invoke(voi
 
     if (v64)
     {
-      MEMORY[0x277D82BD8](v65);
+      MEMORY[0x277D82BD8](humanReadableUpdateName2);
     }
 
     if (v66)
@@ -13858,15 +13858,15 @@ void __54__SUSUISoftwareUpdateManager_scanForUpdateCompletion___block_invoke(voi
   *MEMORY[0x277D85DE8];
 }
 
-- (void)scanForUpdatesWithOptions:(id)a3 andCompletion:(id)a4
+- (void)scanForUpdatesWithOptions:(id)options andCompletion:(id)completion
 {
-  obj = a4;
+  obj = completion;
   v60 = "[SUSUISoftwareUpdateManager scanForUpdatesWithOptions:andCompletion:]";
   v99 = *MEMORY[0x277D85DE8];
-  v97 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, options);
   v95 = 0;
   objc_storeStrong(&v95, obj);
   v58 = _SUSUILoggingFacility();
@@ -13876,17 +13876,17 @@ void __54__SUSUISoftwareUpdateManager_scanForUpdateCompletion___block_invoke(voi
   {
     log = v94;
     *type = v93;
-    updated = SUSUISoftwareUpdateStateToString(v97->_state);
+    updated = SUSUISoftwareUpdateStateToString(selfCopy->_state);
     v52 = updated;
     v53 = MEMORY[0x277D82BE0](v52);
     v92 = v53;
-    state = v97->_state;
-    preferredUpdate = v97->_preferredUpdate;
+    state = selfCopy->_state;
+    preferredUpdate = selfCopy->_preferredUpdate;
     v90 = 0;
     if (preferredUpdate)
     {
-      v51 = [(SUDescriptor *)v97->_preferredUpdate humanReadableUpdateName];
-      v91 = v51;
+      humanReadableUpdateName = [(SUDescriptor *)selfCopy->_preferredUpdate humanReadableUpdateName];
+      v91 = humanReadableUpdateName;
       v90 = 1;
       v50 = v91;
     }
@@ -13897,14 +13897,14 @@ void __54__SUSUISoftwareUpdateManager_scanForUpdateCompletion___block_invoke(voi
     }
 
     v47 = v50;
-    v48 = v97->_preferredUpdate;
-    preferredUpdateError = v97->_preferredUpdateError;
-    alternateUpdate = v97->_alternateUpdate;
+    v48 = selfCopy->_preferredUpdate;
+    preferredUpdateError = selfCopy->_preferredUpdateError;
+    alternateUpdate = selfCopy->_alternateUpdate;
     v88 = 0;
     if (alternateUpdate)
     {
-      v46 = [(SUDescriptor *)v97->_alternateUpdate humanReadableUpdateName];
-      v89 = v46;
+      humanReadableUpdateName2 = [(SUDescriptor *)selfCopy->_alternateUpdate humanReadableUpdateName];
+      v89 = humanReadableUpdateName2;
       v88 = 1;
       v45 = v89;
     }
@@ -13915,20 +13915,20 @@ void __54__SUSUISoftwareUpdateManager_scanForUpdateCompletion___block_invoke(voi
     }
 
     v41 = v45;
-    v42 = v97->_alternateUpdate;
-    alternateUpdateError = v97->_alternateUpdateError;
-    download = v97->_download;
-    v6 = v97->_download;
+    v42 = selfCopy->_alternateUpdate;
+    alternateUpdateError = selfCopy->_alternateUpdateError;
+    download = selfCopy->_download;
+    v6 = selfCopy->_download;
     v86 = 0;
     v84 = 0;
     v82 = 0;
-    if (v6 && (v40 = [(SUDownload *)v97->_download descriptor], v87 = v40, v86 = 1, v87))
+    if (v6 && (v40 = [(SUDownload *)selfCopy->_download descriptor], v87 = v40, v86 = 1, v87))
     {
-      v39 = [(SUDownload *)v97->_download descriptor];
-      v85 = v39;
+      descriptor = [(SUDownload *)selfCopy->_download descriptor];
+      v85 = descriptor;
       v84 = 1;
-      v38 = [v85 humanReadableUpdateName];
-      v83 = v38;
+      humanReadableUpdateName3 = [v85 humanReadableUpdateName];
+      v83 = humanReadableUpdateName3;
       v82 = 1;
       v37 = v83;
     }
@@ -13939,13 +13939,13 @@ void __54__SUSUISoftwareUpdateManager_scanForUpdateCompletion___block_invoke(voi
     }
 
     v35 = v37;
-    WeakRetained = objc_loadWeakRetained(&v97->_delegate);
-    v34 = objc_loadWeakRetained(&v97->_delegate);
+    WeakRetained = objc_loadWeakRetained(&selfCopy->_delegate);
+    v34 = objc_loadWeakRetained(&selfCopy->_delegate);
     v80 = 0;
     v78 = 0;
     if (v34)
     {
-      v33 = objc_loadWeakRetained(&v97->_delegate);
+      v33 = objc_loadWeakRetained(&selfCopy->_delegate);
       v81 = v33;
       v80 = 1;
       aClass = objc_opt_class();
@@ -13961,13 +13961,13 @@ void __54__SUSUISoftwareUpdateManager_scanForUpdateCompletion___block_invoke(voi
     }
 
     v28 = v30;
-    v29 = objc_loadWeakRetained(&v97->_hostController);
-    v27 = objc_loadWeakRetained(&v97->_hostController);
+    v29 = objc_loadWeakRetained(&selfCopy->_hostController);
+    v27 = objc_loadWeakRetained(&selfCopy->_hostController);
     v76 = 0;
     v74 = 0;
     if (v27)
     {
-      v26 = objc_loadWeakRetained(&v97->_hostController);
+      v26 = objc_loadWeakRetained(&selfCopy->_hostController);
       v77 = v26;
       v76 = 1;
       v25 = objc_opt_class();
@@ -13982,7 +13982,7 @@ void __54__SUSUISoftwareUpdateManager_scanForUpdateCompletion___block_invoke(voi
       v23 = @"N/A";
     }
 
-    userInitiatedRescan = v97->_userInitiatedRescan;
+    userInitiatedRescan = selfCopy->_userInitiatedRescan;
     v21 = &v9;
     buf = v98;
     __os_log_helper_16_2_16_8_32_8_66_4_0_8_66_8_0_8_66_8_66_8_0_8_66_8_0_8_66_8_0_8_66_8_0_8_66_4_0(v98, v60, v53, state, v47, v48, preferredUpdateError, v41, v42, alternateUpdateError, download, v35, WeakRetained, v28, v29, v23, userInitiatedRescan);
@@ -14041,22 +14041,22 @@ void __54__SUSUISoftwareUpdateManager_scanForUpdateCompletion___block_invoke(voi
   }
 
   objc_storeStrong(&v94, 0);
-  v20 = MEMORY[0x277D82BE0](v97);
+  v20 = MEMORY[0x277D82BE0](selfCopy);
   objc_sync_enter(v20);
-  if (!v97->_userInitiatedRescan && v97->_state != 1)
+  if (!selfCopy->_userInitiatedRescan && selfCopy->_state != 1)
   {
-    [(SUSUISoftwareUpdateManager *)v97 setState:1];
+    [(SUSUISoftwareUpdateManager *)selfCopy setState:1];
   }
 
-  if (v97->_manuallyStartedScan)
+  if (selfCopy->_manuallyStartedScan)
   {
-    v97->_userInitiatedRescan = 0;
+    selfCopy->_userInitiatedRescan = 0;
     v73 = 1;
   }
 
   else
   {
-    v97->_manuallyStartedScan = 1;
+    selfCopy->_manuallyStartedScan = 1;
     if (!location[0])
     {
       SUScanOptionsClass = getSUScanOptionsClass();
@@ -14075,8 +14075,8 @@ void __54__SUSUISoftwareUpdateManager_scanForUpdateCompletion___block_invoke(voi
   MEMORY[0x277D82BD8](v20);
   if (!v73)
   {
-    [(SUSUISoftwareUpdateManager *)v97 scanForBetaPrograms];
-    suClient = v97->_suClient;
+    [(SUSUISoftwareUpdateManager *)selfCopy scanForBetaPrograms];
+    suClient = selfCopy->_suClient;
     v16 = &v67;
     v67 = MEMORY[0x277D85DD0];
     v68 = -1073741824;
@@ -14084,9 +14084,9 @@ void __54__SUSUISoftwareUpdateManager_scanForUpdateCompletion___block_invoke(voi
     v70 = __70__SUSUISoftwareUpdateManager_scanForUpdatesWithOptions_andCompletion___block_invoke;
     v71 = &unk_279CBE9F8;
     v15 = &v72;
-    v72 = MEMORY[0x277D82BE0](v97);
+    v72 = MEMORY[0x277D82BE0](selfCopy);
     [(SUSUISoftwareUpdateClientManager *)suClient getDDMDeclaration:v16];
-    v14 = v97->_suClient;
+    v14 = selfCopy->_suClient;
     v13 = &v61;
     v61 = MEMORY[0x277D85DD0];
     v62 = -1073741824;
@@ -14094,7 +14094,7 @@ void __54__SUSUISoftwareUpdateManager_scanForUpdateCompletion___block_invoke(voi
     v64 = __70__SUSUISoftwareUpdateManager_scanForUpdatesWithOptions_andCompletion___block_invoke_769;
     v65 = &unk_279CBEA48;
     v10 = v66;
-    v66[0] = MEMORY[0x277D82BE0](v97);
+    v66[0] = MEMORY[0x277D82BE0](selfCopy);
     v11 = (v13 + 5);
     v66[1] = MEMORY[0x277D82BE0](location[0]);
     v12 = (v13 + 6);
@@ -14429,12 +14429,12 @@ void __70__SUSUISoftwareUpdateManager_scanForUpdatesWithOptions_andCompletion___
   *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_SUDownloadPhaseIsQueued:(id)a3
+- (BOOL)_SUDownloadPhaseIsQueued:(id)queued
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, queued);
   v5 = location[0];
   v6 = getkSUDownloadPhaseBrainFetchingQueuedRemote();
   v8 = 0;
@@ -14458,7 +14458,7 @@ void __70__SUSUISoftwareUpdateManager_scanForUpdatesWithOptions_andCompletion___
   return v11 & 1;
 }
 
-- (void)updateStateFromDownload:(id)a3
+- (void)updateStateFromDownload:(id)download
 {
   v58 = &v77;
   v57 = "[SUSUISoftwareUpdateManager updateStateFromDownload:]";
@@ -14466,8 +14466,8 @@ void __70__SUSUISoftwareUpdateManager_scanForUpdatesWithOptions_andCompletion___
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v82 = [location[0] progress];
+  objc_storeStrong(location, download);
+  progress = [location[0] progress];
   v81 = _SUSUILoggingFacility();
   type = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v81, OS_LOG_TYPE_DEFAULT))
@@ -14484,10 +14484,10 @@ void __70__SUSUISoftwareUpdateManager_scanForUpdatesWithOptions_andCompletion___
     v78 = 0;
     if (v5)
     {
-      v6 = [*(*(v58 + 9) + 120) humanReadableUpdateName];
-      *(v58 + 2) = v6;
+      humanReadableUpdateName = [*(*(v58 + 9) + 120) humanReadableUpdateName];
+      *(v58 + 2) = humanReadableUpdateName;
       v78 = 1;
-      v51 = v6;
+      v51 = humanReadableUpdateName;
     }
 
     else
@@ -14502,10 +14502,10 @@ void __70__SUSUISoftwareUpdateManager_scanForUpdatesWithOptions_andCompletion___
     v76 = 0;
     if (v7)
     {
-      v8 = [*(*(v58 + 9) + 128) humanReadableUpdateName];
-      *v58 = v8;
+      humanReadableUpdateName2 = [*(*(v58 + 9) + 128) humanReadableUpdateName];
+      *v58 = humanReadableUpdateName2;
       v76 = 1;
-      v47 = v8;
+      v47 = humanReadableUpdateName2;
     }
 
     else
@@ -14523,12 +14523,12 @@ void __70__SUSUISoftwareUpdateManager_scanForUpdatesWithOptions_andCompletion___
     v70 = 0;
     if (v9 && (v75 = [*(*(v58 + 9) + 8) descriptor], v74 = 1, v75))
     {
-      v73 = [*(*(v58 + 9) + 8) descriptor];
+      descriptor = [*(*(v58 + 9) + 8) descriptor];
       v41 = 1;
       v72 = 1;
-      v71 = [v73 humanReadableUpdateName];
+      humanReadableUpdateName3 = [descriptor humanReadableUpdateName];
       v70 = 1;
-      v42 = v71;
+      v42 = humanReadableUpdateName3;
     }
 
     else
@@ -14580,10 +14580,10 @@ void __70__SUSUISoftwareUpdateManager_scanForUpdatesWithOptions_andCompletion___
 
     v27 = v32;
     v28 = *(v58 + 6);
-    v12 = [*(v58 + 6) isDone];
+    isDone = [*(v58 + 6) isDone];
     v29 = &v15;
     buf = v85;
-    __os_log_helper_16_2_17_8_32_8_66_4_0_8_66_8_0_8_66_8_66_8_0_8_66_8_0_8_66_8_0_8_66_8_0_8_66_8_64_4_0(v85, v57, v55, v56, v48, v49, v50, v43, v44, v45, v46, v38, WeakRetained, v33, v34, v32, v28, v12);
+    __os_log_helper_16_2_17_8_32_8_66_4_0_8_66_8_0_8_66_8_66_8_0_8_66_8_0_8_66_8_0_8_66_8_0_8_66_8_64_4_0(v85, v57, v55, v56, v48, v49, v50, v43, v44, v45, v46, v38, WeakRetained, v33, v34, v32, v28, isDone);
     _os_log_impl(&dword_26AC94000, log, v53[0], "%s: Update Manager Checkpoint\n\tstate: %{public}@ (%d)\n\tpreferredUpdate: %{public}@ (%p)\n\tpreferredUpdateError: %{public}@\n\talternateUpdate: %{public}@ (%p)\n\talternateUpdateError: %{public}@\n\tdownload: %p (%{public}@)\n\tdelegate: %p (%{public}@)\n\thostController: %p (%{public}@)\n\noperationProgress: %@; download done: %d", buf, 0xA4u);
     if (v62)
     {
@@ -14611,12 +14611,12 @@ void __70__SUSUISoftwareUpdateManager_scanForUpdatesWithOptions_andCompletion___
     MEMORY[0x277D82BD8](WeakRetained);
     if (v70)
     {
-      MEMORY[0x277D82BD8](v71);
+      MEMORY[0x277D82BD8](humanReadableUpdateName3);
     }
 
     if (v72)
     {
-      MEMORY[0x277D82BD8](v73);
+      MEMORY[0x277D82BD8](descriptor);
     }
 
     if (v74)
@@ -14639,10 +14639,10 @@ void __70__SUSUISoftwareUpdateManager_scanForUpdatesWithOptions_andCompletion___
   }
 
   objc_storeStrong(&v81, 0);
-  v25 = [*(v58 + 7) downloadOptions];
-  v13 = [v25 isAutoDownload];
+  downloadOptions = [*(v58 + 7) downloadOptions];
+  isAutoDownload = [downloadOptions isAutoDownload];
   v26 = 0;
-  if ((v13 & 1) == 0)
+  if ((isAutoDownload & 1) == 0)
   {
     v14 = *(*(v58 + 9) + 55);
     v26 = 0;
@@ -14653,12 +14653,12 @@ void __70__SUSUISoftwareUpdateManager_scanForUpdatesWithOptions_andCompletion___
   }
 
   v24 = v26;
-  MEMORY[0x277D82BD8](v25);
+  MEMORY[0x277D82BD8](downloadOptions);
   if (v24)
   {
-    v22 = [*(v58 + 7) descriptor];
-    v23 = [v22 isEqual:*(*(v58 + 9) + 120)];
-    MEMORY[0x277D82BD8](v22);
+    descriptor2 = [*(v58 + 7) descriptor];
+    v23 = [descriptor2 isEqual:*(*(v58 + 9) + 120)];
+    MEMORY[0x277D82BD8](descriptor2);
     if (v23)
     {
       [*(v58 + 9) hideAlternateUpdate];
@@ -14666,9 +14666,9 @@ void __70__SUSUISoftwareUpdateManager_scanForUpdatesWithOptions_andCompletion___
 
     else
     {
-      v20 = [*(v58 + 7) descriptor];
-      v21 = [v20 isEqual:*(*(v58 + 9) + 128)];
-      MEMORY[0x277D82BD8](v20);
+      descriptor3 = [*(v58 + 7) descriptor];
+      v21 = [descriptor3 isEqual:*(*(v58 + 9) + 128)];
+      MEMORY[0x277D82BD8](descriptor3);
       if (v21)
       {
         [*(v58 + 9) hidePreferredUpdate];
@@ -14683,7 +14683,7 @@ void __70__SUSUISoftwareUpdateManager_scanForUpdatesWithOptions_andCompletion___
 
   else
   {
-    v61 = [*(v58 + 6) phase];
+    phase = [*(v58 + 6) phase];
     oslog = _SUSUILoggingFacility();
     v59 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
@@ -14691,17 +14691,17 @@ void __70__SUSUISoftwareUpdateManager_scanForUpdatesWithOptions_andCompletion___
       v17 = oslog;
       *v18 = v59;
       v19 = v84;
-      __os_log_helper_16_2_2_8_32_8_64(v84, v57, v61);
+      __os_log_helper_16_2_2_8_32_8_64(v84, v57, phase);
       _os_log_impl(&dword_26AC94000, v17, v18[0], "%s - phase: %@", v19, 0x16u);
     }
 
     objc_storeStrong(&oslog, 0);
-    if (SUPrefsDownloadPhaseIsStalled_0(v61))
+    if (SUPrefsDownloadPhaseIsStalled_0(phase))
     {
       [*(v58 + 9) setState:14];
     }
 
-    else if ([*(v58 + 9) _SUDownloadPhaseIsQueued:v61])
+    else if ([*(v58 + 9) _SUDownloadPhaseIsQueued:phase])
     {
       [*(v58 + 9) setState:5];
     }
@@ -14711,30 +14711,30 @@ void __70__SUSUISoftwareUpdateManager_scanForUpdatesWithOptions_andCompletion___
       [*(v58 + 9) setState:12];
     }
 
-    objc_storeStrong(&v61, 0);
+    objc_storeStrong(&phase, 0);
   }
 
   obj = 0;
-  objc_storeStrong(&v82, 0);
+  objc_storeStrong(&progress, 0);
   objc_storeStrong(location, obj);
   *MEMORY[0x277D85DE8];
 }
 
-- (void)scanFinishedWithUpdates:(id)a3 options:(id)a4 andError:(id)a5
+- (void)scanFinishedWithUpdates:(id)updates options:(id)options andError:(id)error
 {
   v129 = v149;
-  obj = a4;
-  v131 = a5;
+  obj = options;
+  errorCopy = error;
   v132 = "[SUSUISoftwareUpdateManager scanFinishedWithUpdates:options:andError:]";
   v179 = *MEMORY[0x277D85DE8];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, updates);
   v174 = 0;
   objc_storeStrong(&v174, obj);
   v173 = 0;
-  objc_storeStrong(&v173, v131);
+  objc_storeStrong(&v173, errorCopy);
   v128 = _SUSUILoggingFacility();
   v172 = v128;
   type = OS_LOG_TYPE_DEFAULT;
@@ -14753,8 +14753,8 @@ void __70__SUSUISoftwareUpdateManager_scanForUpdatesWithOptions_andCompletion___
     v169 = 0;
     if (v7)
     {
-      v121 = [*(*(v129 + 40) + 120) humanReadableUpdateName];
-      v8 = v121;
+      humanReadableUpdateName = [*(*(v129 + 40) + 120) humanReadableUpdateName];
+      v8 = humanReadableUpdateName;
       *(v129 + 32) = v8;
       v169 = 1;
       v120 = v8;
@@ -14772,8 +14772,8 @@ void __70__SUSUISoftwareUpdateManager_scanForUpdatesWithOptions_andCompletion___
     v168 = 0;
     if (v9)
     {
-      v116 = [*(*(v129 + 40) + 128) humanReadableUpdateName];
-      v10 = v116;
+      humanReadableUpdateName2 = [*(*(v129 + 40) + 128) humanReadableUpdateName];
+      v10 = humanReadableUpdateName2;
       *(v129 + 30) = v10;
       v168 = 1;
       v115 = v10;
@@ -14794,12 +14794,12 @@ void __70__SUSUISoftwareUpdateManager_scanForUpdatesWithOptions_andCompletion___
     v165 = 0;
     if (v11 && (v110 = [*(*(v129 + 40) + 8) descriptor], v12 = v110, *(v129 + 28) = v12, v167 = 1, v12))
     {
-      v109 = [*(*(v129 + 40) + 8) descriptor];
-      v13 = v109;
+      descriptor = [*(*(v129 + 40) + 8) descriptor];
+      v13 = descriptor;
       *(v129 + 26) = v13;
       v166 = 1;
-      v108 = [v13 humanReadableUpdateName];
-      v14 = v108;
+      humanReadableUpdateName3 = [v13 humanReadableUpdateName];
+      v14 = humanReadableUpdateName3;
       *(v129 + 24) = v14;
       v165 = 1;
       v107 = v14;
@@ -14857,10 +14857,10 @@ void __70__SUSUISoftwareUpdateManager_scanForUpdatesWithOptions_andCompletion___
     }
 
     v91 = v93;
-    v92 = [*(v129 + 37) identifier];
-    v89 = v92;
-    v90 = [*(v129 + 37) clientName];
-    v88 = v90;
+    identifier = [*(v129 + 37) identifier];
+    v89 = identifier;
+    clientName = [*(v129 + 37) clientName];
+    v88 = clientName;
     v17 = *(v129 + 36);
     v18 = *(v129 + 38);
     v86 = &v30;
@@ -14925,11 +14925,11 @@ void __70__SUSUISoftwareUpdateManager_scanForUpdatesWithOptions_andCompletion___
   objc_storeStrong(&v172, 0);
   if (*(*(v129 + 40) + 17))
   {
-    v81 = [MEMORY[0x277D64418] sharedDevice];
-    v79 = v81;
-    v80 = [v79 hasSemiSplatActive];
+    mEMORY[0x277D64418] = [MEMORY[0x277D64418] sharedDevice];
+    v79 = mEMORY[0x277D64418];
+    hasSemiSplatActive = [v79 hasSemiSplatActive];
     MEMORY[0x277D82BD8](v79);
-    if (v80)
+    if (hasSemiSplatActive)
     {
       SULogInfo();
       [*(v129 + 40) clearPastScanResults];
@@ -14945,16 +14945,16 @@ void __70__SUSUISoftwareUpdateManager_scanForUpdatesWithOptions_andCompletion___
       objc_storeStrong((*(v21 + 40) + 152), 0);
       if (*(v129 + 36))
       {
-        v46 = [*(v129 + 36) domain];
-        v44 = v46;
+        domain = [*(v129 + 36) domain];
+        v44 = domain;
         SUErrorDomain_3 = getSUErrorDomain_3();
         v42 = SUErrorDomain_3;
         v43 = [v44 isEqualToString:?];
         v41 = 0;
         if (v43)
         {
-          v40 = [*(v129 + 36) code];
-          v41 = v40 == 3;
+          code = [*(v129 + 36) code];
+          v41 = code == 3;
         }
 
         v39 = v41;
@@ -14968,16 +14968,16 @@ void __70__SUSUISoftwareUpdateManager_scanForUpdatesWithOptions_andCompletion___
 
         else
         {
-          v38 = [*(v129 + 36) domain];
-          v36 = v38;
+          domain2 = [*(v129 + 36) domain];
+          v36 = domain2;
           v37 = getSUErrorDomain_3();
           v34 = v37;
           v35 = [v36 isEqualToString:?];
           v33 = 0;
           if (v35)
           {
-            v32 = [*(v129 + 36) code];
-            v33 = v32 == 55;
+            code2 = [*(v129 + 36) code];
+            v33 = code2 == 55;
           }
 
           v31 = v33;
@@ -15003,8 +15003,8 @@ void __70__SUSUISoftwareUpdateManager_scanForUpdatesWithOptions_andCompletion___
         v78 = 1;
         if (v22 != 1)
         {
-          v77 = [*(v129 + 40) download];
-          v23 = v77;
+          download = [*(v129 + 40) download];
+          v23 = download;
           *(v129 + 8) = v23;
           v155 = 1;
           v78 = 1;
@@ -15043,8 +15043,8 @@ void __70__SUSUISoftwareUpdateManager_scanForUpdatesWithOptions_andCompletion___
           if (v26)
           {
             v71 = *(*(v129 + 40) + 216);
-            v72 = [*(v129 + 38) preferredDescriptor];
-            v148 = v72;
+            preferredDescriptor = [*(v129 + 38) preferredDescriptor];
+            v148 = preferredDescriptor;
             v147 = 1;
             v70 = [v71 isEqual:?];
             v73 = 0;
@@ -15057,8 +15057,8 @@ void __70__SUSUISoftwareUpdateManager_scanForUpdatesWithOptions_andCompletion___
                 if (v27)
                 {
                   v65 = *(*(v129 + 40) + 120);
-                  v66 = [*(v129 + 38) alternateDescriptor];
-                  v144 = v66;
+                  alternateDescriptor = [*(v129 + 38) alternateDescriptor];
+                  v144 = alternateDescriptor;
                   v143 = 1;
                   v64 = [v65 isEqual:?];
                   v67 = v64;
@@ -15142,16 +15142,16 @@ void __70__SUSUISoftwareUpdateManager_scanForUpdatesWithOptions_andCompletion___
 
         else
         {
-          v52 = [*(v129 + 40) download];
-          v51 = v52;
+          download2 = [*(v129 + 40) download];
+          v51 = download2;
           MEMORY[0x277D82BD8](v51);
           if (v51)
           {
             if (v156)
             {
               v49 = *(v129 + 40);
-              v50 = [*(v129 + 40) download];
-              v48 = v50;
+              download3 = [*(v129 + 40) download];
+              v48 = download3;
               [v49 updateStateFromDownload:?];
               MEMORY[0x277D82BD8](v48);
             }
@@ -15159,8 +15159,8 @@ void __70__SUSUISoftwareUpdateManager_scanForUpdatesWithOptions_andCompletion___
 
           else if (*(*(v129 + 40) + 120))
           {
-            v47 = [*(v129 + 40) shouldShowPreferredUpdateAsAlternate];
-            if (v47)
+            shouldShowPreferredUpdateAsAlternate = [*(v129 + 40) shouldShowPreferredUpdateAsAlternate];
+            if (shouldShowPreferredUpdateAsAlternate)
             {
               v29 = 6;
             }
@@ -15386,26 +15386,26 @@ void __71__SUSUISoftwareUpdateManager_scanFinishedWithUpdates_options_andError__
   }
 }
 
-- (void)assignScanResults:(id)a3
+- (void)assignScanResults:(id)results
 {
   v65 = *MEMORY[0x277D85DE8];
-  v60 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v27 = [location[0] preferredDescriptor];
+  objc_storeStrong(location, results);
+  preferredDescriptor = [location[0] preferredDescriptor];
   v57 = 0;
   v55 = 0;
-  if (v27 || (v26 = 1, v60->_preferredUpdate))
+  if (preferredDescriptor || (v26 = 1, selfCopy->_preferredUpdate))
   {
-    v58 = [location[0] preferredDescriptor];
+    preferredDescriptor2 = [location[0] preferredDescriptor];
     v57 = 1;
     v25 = 0;
-    if (v58)
+    if (preferredDescriptor2)
     {
-      v56 = [location[0] preferredDescriptor];
+      preferredDescriptor3 = [location[0] preferredDescriptor];
       v55 = 1;
-      v25 = [v56 isEqual:v60->_preferredUpdate];
+      v25 = [preferredDescriptor3 isEqual:selfCopy->_preferredUpdate];
     }
 
     v26 = v25;
@@ -15413,28 +15413,28 @@ void __71__SUSUISoftwareUpdateManager_scanFinishedWithUpdates_options_andError__
 
   if (v55)
   {
-    MEMORY[0x277D82BD8](v56);
+    MEMORY[0x277D82BD8](preferredDescriptor3);
   }
 
   if (v57)
   {
-    MEMORY[0x277D82BD8](v58);
+    MEMORY[0x277D82BD8](preferredDescriptor2);
   }
 
-  MEMORY[0x277D82BD8](v27);
+  MEMORY[0x277D82BD8](preferredDescriptor);
   if (v26)
   {
     v46 = _SUSUILoggingFacility();
     v45 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(v46, OS_LOG_TYPE_DEFAULT))
     {
-      preferredUpdate = v60->_preferredUpdate;
+      preferredUpdate = selfCopy->_preferredUpdate;
       v43 = 0;
       if (preferredUpdate)
       {
-        v44 = [(SUDescriptor *)v60->_preferredUpdate humanReadableUpdateName];
+        humanReadableUpdateName = [(SUDescriptor *)selfCopy->_preferredUpdate humanReadableUpdateName];
         v43 = 1;
-        v17 = v44;
+        v17 = humanReadableUpdateName;
       }
 
       else
@@ -15442,11 +15442,11 @@ void __71__SUSUISoftwareUpdateManager_scanFinishedWithUpdates_options_andError__
         v17 = @"N/A";
       }
 
-      __os_log_helper_16_2_4_8_32_8_64_8_0_8_64(v63, "[SUSUISoftwareUpdateManager assignScanResults:]", v17, v60->_preferredUpdate, v60->_preferredUpdateError);
+      __os_log_helper_16_2_4_8_32_8_64_8_0_8_64(v63, "[SUSUISoftwareUpdateManager assignScanResults:]", v17, selfCopy->_preferredUpdate, selfCopy->_preferredUpdateError);
       _os_log_impl(&dword_26AC94000, v46, v45, "%s: The previous stored preferred update %@ (%p) is the same as the new received one. Keeping it with its related error: %@", v63, 0x2Au);
       if (v43)
       {
-        MEMORY[0x277D82BD8](v44);
+        MEMORY[0x277D82BD8](humanReadableUpdateName);
       }
     }
 
@@ -15459,13 +15459,13 @@ void __71__SUSUISoftwareUpdateManager_scanFinishedWithUpdates_options_andError__
     type = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(v54, OS_LOG_TYPE_DEFAULT))
     {
-      v3 = v60->_preferredUpdate;
+      v3 = selfCopy->_preferredUpdate;
       v51 = 0;
       if (v3)
       {
-        v52 = [(SUDescriptor *)v60->_preferredUpdate humanReadableUpdateName];
+        humanReadableUpdateName2 = [(SUDescriptor *)selfCopy->_preferredUpdate humanReadableUpdateName];
         v51 = 1;
-        v24 = v52;
+        v24 = humanReadableUpdateName2;
       }
 
       else
@@ -15473,17 +15473,17 @@ void __71__SUSUISoftwareUpdateManager_scanFinishedWithUpdates_options_andError__
         v24 = @"N/A";
       }
 
-      v22 = v60->_preferredUpdate;
-      v23 = [location[0] preferredDescriptor];
+      v22 = selfCopy->_preferredUpdate;
+      preferredDescriptor4 = [location[0] preferredDescriptor];
       v49 = 0;
       v47 = 0;
-      if (v23)
+      if (preferredDescriptor4)
       {
-        v50 = [location[0] preferredDescriptor];
+        preferredDescriptor5 = [location[0] preferredDescriptor];
         v49 = 1;
-        v48 = [v50 humanReadableUpdateName];
+        humanReadableUpdateName3 = [preferredDescriptor5 humanReadableUpdateName];
         v47 = 1;
-        v21 = v48;
+        v21 = humanReadableUpdateName3;
       }
 
       else
@@ -15491,48 +15491,48 @@ void __71__SUSUISoftwareUpdateManager_scanFinishedWithUpdates_options_andError__
         v21 = @"N/A";
       }
 
-      v20 = [location[0] preferredDescriptor];
-      __os_log_helper_16_2_6_8_32_8_64_8_0_8_64_8_0_8_64(v64, "[SUSUISoftwareUpdateManager assignScanResults:]", v24, v22, v21, v20, v60->_preferredUpdateError);
+      preferredDescriptor6 = [location[0] preferredDescriptor];
+      __os_log_helper_16_2_6_8_32_8_64_8_0_8_64_8_0_8_64(v64, "[SUSUISoftwareUpdateManager assignScanResults:]", v24, v22, v21, preferredDescriptor6, selfCopy->_preferredUpdateError);
       _os_log_impl(&dword_26AC94000, v54, type, "%s: Replacing the previous stored preferred update %@ (%p) with a new, different, preferred update: %@ (%p) and clearing the previous preferred update error: %@", v64, 0x3Eu);
-      MEMORY[0x277D82BD8](v20);
+      MEMORY[0x277D82BD8](preferredDescriptor6);
       if (v47)
       {
-        MEMORY[0x277D82BD8](v48);
+        MEMORY[0x277D82BD8](humanReadableUpdateName3);
       }
 
       if (v49)
       {
-        MEMORY[0x277D82BD8](v50);
+        MEMORY[0x277D82BD8](preferredDescriptor5);
       }
 
-      MEMORY[0x277D82BD8](v23);
+      MEMORY[0x277D82BD8](preferredDescriptor4);
       if (v51)
       {
-        MEMORY[0x277D82BD8](v52);
+        MEMORY[0x277D82BD8](humanReadableUpdateName2);
       }
     }
 
     objc_storeStrong(&v54, 0);
-    v18 = v60;
-    v19 = [location[0] preferredDescriptor];
+    v18 = selfCopy;
+    preferredDescriptor7 = [location[0] preferredDescriptor];
     [(SUSUISoftwareUpdateManager *)v18 setPreferredUpdate:?];
-    MEMORY[0x277D82BD8](v19);
-    [(SUSUISoftwareUpdateManager *)v60 setPreferredUpdateError:0];
+    MEMORY[0x277D82BD8](preferredDescriptor7);
+    [(SUSUISoftwareUpdateManager *)selfCopy setPreferredUpdateError:0];
   }
 
-  v16 = [location[0] alternateDescriptor];
+  alternateDescriptor = [location[0] alternateDescriptor];
   v41 = 0;
   v39 = 0;
-  if (v16 || (v15 = 1, v60->_alternateUpdate))
+  if (alternateDescriptor || (v15 = 1, selfCopy->_alternateUpdate))
   {
-    v42 = [location[0] alternateDescriptor];
+    alternateDescriptor2 = [location[0] alternateDescriptor];
     v41 = 1;
     v14 = 0;
-    if (v42)
+    if (alternateDescriptor2)
     {
-      v40 = [location[0] alternateDescriptor];
+      alternateDescriptor3 = [location[0] alternateDescriptor];
       v39 = 1;
-      v14 = [v40 isEqual:v60->_alternateUpdate];
+      v14 = [alternateDescriptor3 isEqual:selfCopy->_alternateUpdate];
     }
 
     v15 = v14;
@@ -15540,26 +15540,26 @@ void __71__SUSUISoftwareUpdateManager_scanFinishedWithUpdates_options_andError__
 
   if (v39)
   {
-    MEMORY[0x277D82BD8](v40);
+    MEMORY[0x277D82BD8](alternateDescriptor3);
   }
 
   if (v41)
   {
-    MEMORY[0x277D82BD8](v42);
+    MEMORY[0x277D82BD8](alternateDescriptor2);
   }
 
-  MEMORY[0x277D82BD8](v16);
+  MEMORY[0x277D82BD8](alternateDescriptor);
   if (v15)
   {
     v30 = _SUSUILoggingFacility();
     if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
     {
       v28 = 0;
-      if (v60->_alternateUpdate)
+      if (selfCopy->_alternateUpdate)
       {
-        v29 = [(SUDescriptor *)v60->_alternateUpdate humanReadableUpdateName];
+        humanReadableUpdateName4 = [(SUDescriptor *)selfCopy->_alternateUpdate humanReadableUpdateName];
         v28 = 1;
-        v6 = v29;
+        v6 = humanReadableUpdateName4;
       }
 
       else
@@ -15567,11 +15567,11 @@ void __71__SUSUISoftwareUpdateManager_scanFinishedWithUpdates_options_andError__
         v6 = @"N/A";
       }
 
-      __os_log_helper_16_2_4_8_32_8_64_8_0_8_64(v61, "[SUSUISoftwareUpdateManager assignScanResults:]", v6, v60->_alternateUpdate, v60->_alternateUpdateError);
+      __os_log_helper_16_2_4_8_32_8_64_8_0_8_64(v61, "[SUSUISoftwareUpdateManager assignScanResults:]", v6, selfCopy->_alternateUpdate, selfCopy->_alternateUpdateError);
       _os_log_impl(&dword_26AC94000, v30, OS_LOG_TYPE_DEFAULT, "%s: The previous stored alternate update %@ (%p) is the same as the new received one. Keeping it with its related error: %@", v61, 0x2Au);
       if (v28)
       {
-        MEMORY[0x277D82BD8](v29);
+        MEMORY[0x277D82BD8](humanReadableUpdateName4);
       }
     }
 
@@ -15584,13 +15584,13 @@ void __71__SUSUISoftwareUpdateManager_scanFinishedWithUpdates_options_andError__
     v37 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
-      alternateUpdate = v60->_alternateUpdate;
+      alternateUpdate = selfCopy->_alternateUpdate;
       v35 = 0;
       if (alternateUpdate)
       {
-        v36 = [(SUDescriptor *)v60->_alternateUpdate humanReadableUpdateName];
+        humanReadableUpdateName5 = [(SUDescriptor *)selfCopy->_alternateUpdate humanReadableUpdateName];
         v35 = 1;
-        v13 = v36;
+        v13 = humanReadableUpdateName5;
       }
 
       else
@@ -15598,17 +15598,17 @@ void __71__SUSUISoftwareUpdateManager_scanFinishedWithUpdates_options_andError__
         v13 = @"N/A";
       }
 
-      v11 = v60->_alternateUpdate;
-      v12 = [location[0] alternateDescriptor];
+      v11 = selfCopy->_alternateUpdate;
+      alternateDescriptor4 = [location[0] alternateDescriptor];
       v33 = 0;
       v31 = 0;
-      if (v12)
+      if (alternateDescriptor4)
       {
-        v34 = [location[0] alternateDescriptor];
+        alternateDescriptor5 = [location[0] alternateDescriptor];
         v33 = 1;
-        v32 = [v34 humanReadableUpdateName];
+        humanReadableUpdateName6 = [alternateDescriptor5 humanReadableUpdateName];
         v31 = 1;
-        v10 = v32;
+        v10 = humanReadableUpdateName6;
       }
 
       else
@@ -15616,66 +15616,66 @@ void __71__SUSUISoftwareUpdateManager_scanFinishedWithUpdates_options_andError__
         v10 = @"N/A";
       }
 
-      v9 = [location[0] alternateDescriptor];
-      __os_log_helper_16_2_6_8_32_8_64_8_0_8_64_8_0_8_64(v62, "[SUSUISoftwareUpdateManager assignScanResults:]", v13, v11, v10, v9, v60->_alternateUpdateError);
+      alternateDescriptor6 = [location[0] alternateDescriptor];
+      __os_log_helper_16_2_6_8_32_8_64_8_0_8_64_8_0_8_64(v62, "[SUSUISoftwareUpdateManager assignScanResults:]", v13, v11, v10, alternateDescriptor6, selfCopy->_alternateUpdateError);
       _os_log_impl(&dword_26AC94000, oslog, v37, "%s: Replacing the previous stored alternate update %@ (%p) with a new, different, alternate update: %@ (%p) and clearing the previous alternate update error: %@", v62, 0x3Eu);
-      MEMORY[0x277D82BD8](v9);
+      MEMORY[0x277D82BD8](alternateDescriptor6);
       if (v31)
       {
-        MEMORY[0x277D82BD8](v32);
+        MEMORY[0x277D82BD8](humanReadableUpdateName6);
       }
 
       if (v33)
       {
-        MEMORY[0x277D82BD8](v34);
+        MEMORY[0x277D82BD8](alternateDescriptor5);
       }
 
-      MEMORY[0x277D82BD8](v12);
+      MEMORY[0x277D82BD8](alternateDescriptor4);
       if (v35)
       {
-        MEMORY[0x277D82BD8](v36);
+        MEMORY[0x277D82BD8](humanReadableUpdateName5);
       }
     }
 
     objc_storeStrong(&oslog, 0);
-    v7 = v60;
-    v8 = [location[0] alternateDescriptor];
+    v7 = selfCopy;
+    alternateDescriptor7 = [location[0] alternateDescriptor];
     [(SUSUISoftwareUpdateManager *)v7 setAlternateUpdate:?];
-    MEMORY[0x277D82BD8](v8);
-    [(SUSUISoftwareUpdateManager *)v60 setAlternateUpdateError:0];
+    MEMORY[0x277D82BD8](alternateDescriptor7);
+    [(SUSUISoftwareUpdateManager *)selfCopy setAlternateUpdateError:0];
   }
 
   objc_storeStrong(location, 0);
   *MEMORY[0x277D85DE8];
 }
 
-- (void)enrollInBetaUpdatesForProgram:(id)a3 completion:(id)a4
+- (void)enrollInBetaUpdatesForProgram:(id)program completion:(id)completion
 {
   v33 = *MEMORY[0x277D85DE8];
-  v30 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, program);
   v28 = 0;
-  objc_storeStrong(&v28, a4);
+  objc_storeStrong(&v28, completion);
   if (_os_feature_enabled_impl())
   {
-    v10 = [(SUSUISoftwareUpdateManager *)v30 betaPrograms];
+    betaPrograms = [(SUSUISoftwareUpdateManager *)selfCopy betaPrograms];
     v23 = 0;
     v11 = 1;
-    if (v10)
+    if (betaPrograms)
     {
-      v24 = [(SUSUISoftwareUpdateManager *)v30 betaPrograms];
+      betaPrograms2 = [(SUSUISoftwareUpdateManager *)selfCopy betaPrograms];
       v23 = 1;
-      v11 = [(NSArray *)v24 count]== 0;
+      v11 = [(NSArray *)betaPrograms2 count]== 0;
     }
 
     if (v23)
     {
-      MEMORY[0x277D82BD8](v24);
+      MEMORY[0x277D82BD8](betaPrograms2);
     }
 
-    MEMORY[0x277D82BD8](v10);
+    MEMORY[0x277D82BD8](betaPrograms);
     if (v11)
     {
       v22 = _SUSUILoggingFacility();
@@ -15687,7 +15687,7 @@ void __71__SUSUISoftwareUpdateManager_scanFinishedWithUpdates_options_andError__
       }
 
       objc_storeStrong(&v22, 0);
-      [(SUSUISoftwareUpdateManager *)v30 scanForUpdatesCompletion:0];
+      [(SUSUISoftwareUpdateManager *)selfCopy scanForUpdatesCompletion:0];
       (*(v28 + 2))(v28, 0);
       v25 = 1;
     }
@@ -15696,28 +15696,28 @@ void __71__SUSUISoftwareUpdateManager_scanFinishedWithUpdates_options_andError__
     {
       if (!location[0])
       {
-        v9 = [(SUSUISoftwareUpdateManager *)v30 betaPrograms];
-        v4 = [(NSArray *)v9 firstObject];
+        betaPrograms3 = [(SUSUISoftwareUpdateManager *)selfCopy betaPrograms];
+        firstObject = [(NSArray *)betaPrograms3 firstObject];
         v5 = location[0];
-        location[0] = v4;
+        location[0] = firstObject;
         MEMORY[0x277D82BD8](v5);
-        MEMORY[0x277D82BD8](v9);
+        MEMORY[0x277D82BD8](betaPrograms3);
       }
 
-      v8 = [MEMORY[0x277D4D310] sharedManager];
-      v7 = [(SUSUISoftwareUpdateManager *)v30 currentSeedingDevice];
+      mEMORY[0x277D4D310] = [MEMORY[0x277D4D310] sharedManager];
+      currentSeedingDevice = [(SUSUISoftwareUpdateManager *)selfCopy currentSeedingDevice];
       v6 = location[0];
       v13 = MEMORY[0x277D85DD0];
       v14 = -1073741824;
       v15 = 0;
       v16 = __71__SUSUISoftwareUpdateManager_enrollInBetaUpdatesForProgram_completion___block_invoke;
       v17 = &unk_279CB9960;
-      v18 = MEMORY[0x277D82BE0](v30);
+      v18 = MEMORY[0x277D82BE0](selfCopy);
       v19 = MEMORY[0x277D82BE0](location[0]);
       v20 = MEMORY[0x277D82BE0](v28);
-      [v8 enrollDevice:v7 inBetaProgram:v6 completion:&v13];
-      MEMORY[0x277D82BD8](v7);
-      MEMORY[0x277D82BD8](v8);
+      [mEMORY[0x277D4D310] enrollDevice:currentSeedingDevice inBetaProgram:v6 completion:&v13];
+      MEMORY[0x277D82BD8](currentSeedingDevice);
+      MEMORY[0x277D82BD8](mEMORY[0x277D4D310]);
       objc_storeStrong(&v20, 0);
       objc_storeStrong(&v19, 0);
       objc_storeStrong(&v18, 0);
@@ -15985,26 +15985,26 @@ void __71__SUSUISoftwareUpdateManager_enrollInBetaUpdatesForProgram_completion__
   *MEMORY[0x277D85DE8];
 }
 
-- (void)unenrollBetaUpdatesWithCompletion:(id)a3
+- (void)unenrollBetaUpdatesWithCompletion:(id)completion
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, completion);
   if (_os_feature_enabled_impl())
   {
-    v4 = [MEMORY[0x277D4D310] sharedManager];
-    v3 = [(SUSUISoftwareUpdateManager *)v14 currentSeedingDevice];
+    mEMORY[0x277D4D310] = [MEMORY[0x277D4D310] sharedManager];
+    currentSeedingDevice = [(SUSUISoftwareUpdateManager *)selfCopy currentSeedingDevice];
     v5 = MEMORY[0x277D85DD0];
     v6 = -1073741824;
     v7 = 0;
     v8 = __64__SUSUISoftwareUpdateManager_unenrollBetaUpdatesWithCompletion___block_invoke;
     v9 = &unk_279CB9780;
-    v10 = MEMORY[0x277D82BE0](v14);
+    v10 = MEMORY[0x277D82BE0](selfCopy);
     v11 = MEMORY[0x277D82BE0](location[0]);
-    [v4 unenrollDevice:v3 completion:&v5];
-    MEMORY[0x277D82BD8](v3);
-    MEMORY[0x277D82BD8](v4);
+    [mEMORY[0x277D4D310] unenrollDevice:currentSeedingDevice completion:&v5];
+    MEMORY[0x277D82BD8](currentSeedingDevice);
+    MEMORY[0x277D82BD8](mEMORY[0x277D4D310]);
     objc_storeStrong(&v11, 0);
     objc_storeStrong(&v10, 0);
     v12 = 0;
@@ -16228,11 +16228,11 @@ uint64_t __64__SUSUISoftwareUpdateManager_unenrollBetaUpdatesWithCompletion___bl
 {
   v38 = "[SUSUISoftwareUpdateManager scanForBetaPrograms]";
   v68 = *MEMORY[0x277D85DE8];
-  v66 = self;
+  selfCopy = self;
   v65[1] = a2;
   if (_os_feature_enabled_impl())
   {
-    if ([(SUSUISoftwareUpdateManager *)v66 clientIsBuddy])
+    if ([(SUSUISoftwareUpdateManager *)selfCopy clientIsBuddy])
     {
       v65[0] = _SUSUILoggingFacility();
       v64 = 0;
@@ -16240,17 +16240,17 @@ uint64_t __64__SUSUISoftwareUpdateManager_unenrollBetaUpdatesWithCompletion___bl
       {
         log = v65[0];
         *type = v64;
-        v35 = SUSUISoftwareUpdateStateToString(v66->_state);
+        v35 = SUSUISoftwareUpdateStateToString(selfCopy->_state);
         v36 = MEMORY[0x277D82BE0](v35);
         location = v36;
-        state = v66->_state;
-        preferredUpdate = v66->_preferredUpdate;
+        state = selfCopy->_state;
+        preferredUpdate = selfCopy->_preferredUpdate;
         v61 = 0;
         if (preferredUpdate)
         {
-          v62 = [(SUDescriptor *)v66->_preferredUpdate humanReadableUpdateName];
+          humanReadableUpdateName = [(SUDescriptor *)selfCopy->_preferredUpdate humanReadableUpdateName];
           v61 = 1;
-          v32 = v62;
+          v32 = humanReadableUpdateName;
         }
 
         else
@@ -16259,15 +16259,15 @@ uint64_t __64__SUSUISoftwareUpdateManager_unenrollBetaUpdatesWithCompletion___bl
         }
 
         v29 = v32;
-        v30 = v66->_preferredUpdate;
-        preferredUpdateError = v66->_preferredUpdateError;
-        alternateUpdate = v66->_alternateUpdate;
+        v30 = selfCopy->_preferredUpdate;
+        preferredUpdateError = selfCopy->_preferredUpdateError;
+        alternateUpdate = selfCopy->_alternateUpdate;
         v59 = 0;
         if (alternateUpdate)
         {
-          v60 = [(SUDescriptor *)v66->_alternateUpdate humanReadableUpdateName];
+          humanReadableUpdateName2 = [(SUDescriptor *)selfCopy->_alternateUpdate humanReadableUpdateName];
           v59 = 1;
-          v28 = v60;
+          v28 = humanReadableUpdateName2;
         }
 
         else
@@ -16276,21 +16276,21 @@ uint64_t __64__SUSUISoftwareUpdateManager_unenrollBetaUpdatesWithCompletion___bl
         }
 
         v24 = v28;
-        v25 = v66->_alternateUpdate;
-        alternateUpdateError = v66->_alternateUpdateError;
-        download = v66->_download;
-        v4 = v66->_download;
+        v25 = selfCopy->_alternateUpdate;
+        alternateUpdateError = selfCopy->_alternateUpdateError;
+        download = selfCopy->_download;
+        v4 = selfCopy->_download;
         v57 = 0;
         v55 = 0;
         v53 = 0;
-        if (v4 && (v58 = [(SUDownload *)v66->_download descriptor], v57 = 1, v58))
+        if (v4 && (v58 = [(SUDownload *)selfCopy->_download descriptor], v57 = 1, v58))
         {
-          v56 = [(SUDownload *)v66->_download descriptor];
+          descriptor = [(SUDownload *)selfCopy->_download descriptor];
           v22 = 1;
           v55 = 1;
-          v54 = [(SUDescriptor *)v56 humanReadableUpdateName];
+          humanReadableUpdateName3 = [(SUDescriptor *)descriptor humanReadableUpdateName];
           v53 = 1;
-          v23 = v54;
+          v23 = humanReadableUpdateName3;
         }
 
         else
@@ -16299,13 +16299,13 @@ uint64_t __64__SUSUISoftwareUpdateManager_unenrollBetaUpdatesWithCompletion___bl
         }
 
         v19 = v23;
-        WeakRetained = objc_loadWeakRetained(&v66->_delegate);
-        v21 = objc_loadWeakRetained(&v66->_delegate);
+        WeakRetained = objc_loadWeakRetained(&selfCopy->_delegate);
+        v21 = objc_loadWeakRetained(&selfCopy->_delegate);
         v51 = 0;
         v49 = 0;
         if (v21)
         {
-          v52 = objc_loadWeakRetained(&v66->_delegate);
+          v52 = objc_loadWeakRetained(&selfCopy->_delegate);
           v17 = 1;
           v51 = 1;
           v5 = objc_opt_class();
@@ -16320,13 +16320,13 @@ uint64_t __64__SUSUISoftwareUpdateManager_unenrollBetaUpdatesWithCompletion___bl
         }
 
         v14 = v18;
-        v15 = objc_loadWeakRetained(&v66->_hostController);
-        v16 = objc_loadWeakRetained(&v66->_hostController);
+        v15 = objc_loadWeakRetained(&selfCopy->_hostController);
+        v16 = objc_loadWeakRetained(&selfCopy->_hostController);
         v47 = 0;
         v45 = 0;
         if (v16)
         {
-          v48 = objc_loadWeakRetained(&v66->_hostController);
+          v48 = objc_loadWeakRetained(&selfCopy->_hostController);
           v12 = 1;
           v47 = 1;
           v6 = objc_opt_class();
@@ -16370,12 +16370,12 @@ uint64_t __64__SUSUISoftwareUpdateManager_unenrollBetaUpdatesWithCompletion___bl
         MEMORY[0x277D82BD8](WeakRetained);
         if (v53)
         {
-          MEMORY[0x277D82BD8](v54);
+          MEMORY[0x277D82BD8](humanReadableUpdateName3);
         }
 
         if (v55)
         {
-          MEMORY[0x277D82BD8](v56);
+          MEMORY[0x277D82BD8](descriptor);
         }
 
         if (v57)
@@ -16385,12 +16385,12 @@ uint64_t __64__SUSUISoftwareUpdateManager_unenrollBetaUpdatesWithCompletion___bl
 
         if (v59)
         {
-          MEMORY[0x277D82BD8](v60);
+          MEMORY[0x277D82BD8](humanReadableUpdateName2);
         }
 
         if (v61)
         {
-          MEMORY[0x277D82BD8](v62);
+          MEMORY[0x277D82BD8](humanReadableUpdateName);
         }
 
         MEMORY[0x277D82BD8](v35);
@@ -16400,9 +16400,9 @@ uint64_t __64__SUSUISoftwareUpdateManager_unenrollBetaUpdatesWithCompletion___bl
       objc_storeStrong(v65, 0);
     }
 
-    else if (v66->_currentSeedingDevice)
+    else if (selfCopy->_currentSeedingDevice)
     {
-      [(SUSUISoftwareUpdateManager *)v66 _scanForBetaProgramsWithSeedingDevice:v66->_currentSeedingDevice];
+      [(SUSUISoftwareUpdateManager *)selfCopy _scanForBetaProgramsWithSeedingDevice:selfCopy->_currentSeedingDevice];
     }
 
     else
@@ -16415,7 +16415,7 @@ uint64_t __64__SUSUISoftwareUpdateManager_unenrollBetaUpdatesWithCompletion___bl
       v42 = __49__SUSUISoftwareUpdateManager_scanForBetaPrograms__block_invoke;
       v43 = &unk_279CBEB10;
       v9 = &v44;
-      v44 = MEMORY[0x277D82BE0](v66);
+      v44 = MEMORY[0x277D82BE0](selfCopy);
       [v8 getCurrentDevice:&v39];
       objc_storeStrong(&v44, 0);
     }
@@ -16434,30 +16434,30 @@ void __49__SUSUISoftwareUpdateManager_scanForBetaPrograms__block_invoke(id *a1, 
   objc_storeStrong(location, 0);
 }
 
-- (void)_scanForBetaProgramsWithSeedingDevice:(id)a3
+- (void)_scanForBetaProgramsWithSeedingDevice:(id)device
 {
-  v21 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, device);
   if (location[0])
   {
-    v15 = [MEMORY[0x277D4D310] sharedManager];
-    v4 = v15;
-    v3 = [location[0] platform];
+    mEMORY[0x277D4D310] = [MEMORY[0x277D4D310] sharedManager];
+    v4 = mEMORY[0x277D4D310];
+    platform = [location[0] platform];
     v7 = MEMORY[0x277D85DD0];
     v8 = -1073741824;
     v9 = 0;
     v10 = __68__SUSUISoftwareUpdateManager__scanForBetaProgramsWithSeedingDevice___block_invoke;
     v11 = &unk_279CBEB88;
-    v12 = MEMORY[0x277D82BE0](v21);
-    v13 = MEMORY[0x277D82BE0](v15);
+    v12 = MEMORY[0x277D82BE0](selfCopy);
+    v13 = MEMORY[0x277D82BE0](mEMORY[0x277D4D310]);
     v14 = MEMORY[0x277D82BE0](location[0]);
-    [v4 queryProgramsForSystemAccountsWithPlatforms:v3 completion:&v7];
+    [v4 queryProgramsForSystemAccountsWithPlatforms:platform completion:&v7];
     objc_storeStrong(&v14, 0);
     objc_storeStrong(&v13, 0);
     objc_storeStrong(&v12, 0);
-    objc_storeStrong(&v15, 0);
+    objc_storeStrong(&mEMORY[0x277D4D310], 0);
     v16 = 0;
   }
 
@@ -16809,28 +16809,28 @@ uint64_t __68__SUSUISoftwareUpdateManager__scanForBetaProgramsWithSeedingDevice_
 
 - (id)betaUpdatesAppleID
 {
-  v3 = [MEMORY[0x277D4D310] sharedManager];
-  v4 = [v3 seedingAppleIDUsernameForCurrentDevice];
-  MEMORY[0x277D82BD8](v3);
+  mEMORY[0x277D4D310] = [MEMORY[0x277D4D310] sharedManager];
+  seedingAppleIDUsernameForCurrentDevice = [mEMORY[0x277D4D310] seedingAppleIDUsernameForCurrentDevice];
+  MEMORY[0x277D82BD8](mEMORY[0x277D4D310]);
 
-  return v4;
+  return seedingAppleIDUsernameForCurrentDevice;
 }
 
-- (void)manager:(id)a3 scanRequestDidStartForOptions:(id)a4
+- (void)manager:(id)manager scanRequestDidStartForOptions:(id)options
 {
   v47 = &v67;
-  obj = a4;
+  obj = options;
   v45 = "[SUSUISoftwareUpdateManager manager:scanRequestDidStartForOptions:]";
   v74 = *MEMORY[0x277D85DE8];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, manager);
   v71 = 0;
   objc_storeStrong(&v71, obj);
-  v48 = [v71 identifier];
-  v49 = [v48 isEqualToString:@"com.apple.Preferences.software_update"];
-  MEMORY[0x277D82BD8](v48);
+  identifier = [v71 identifier];
+  v49 = [identifier isEqualToString:@"com.apple.Preferences.software_update"];
+  MEMORY[0x277D82BD8](identifier);
   if (v49)
   {
     v4 = _SUSUILoggingFacility();
@@ -16851,10 +16851,10 @@ uint64_t __68__SUSUISoftwareUpdateManager__scanForBetaProgramsWithSeedingDevice_
       v66 = 0;
       if (v8)
       {
-        v9 = [*(*(v47 + 7) + 120) humanReadableUpdateName];
-        *v47 = v9;
+        humanReadableUpdateName = [*(*(v47 + 7) + 120) humanReadableUpdateName];
+        *v47 = humanReadableUpdateName;
         v66 = 1;
-        v39 = v9;
+        v39 = humanReadableUpdateName;
       }
 
       else
@@ -16869,9 +16869,9 @@ uint64_t __68__SUSUISoftwareUpdateManager__scanForBetaProgramsWithSeedingDevice_
       v64 = 0;
       if (v10)
       {
-        v65 = [*(*(v47 + 7) + 128) humanReadableUpdateName];
+        humanReadableUpdateName2 = [*(*(v47 + 7) + 128) humanReadableUpdateName];
         v64 = 1;
-        v35 = v65;
+        v35 = humanReadableUpdateName2;
       }
 
       else
@@ -16889,12 +16889,12 @@ uint64_t __68__SUSUISoftwareUpdateManager__scanForBetaProgramsWithSeedingDevice_
       v58 = 0;
       if (v11 && (v63 = [*(*(v47 + 7) + 8) descriptor], v62 = 1, v63))
       {
-        v61 = [*(*(v47 + 7) + 8) descriptor];
+        descriptor = [*(*(v47 + 7) + 8) descriptor];
         v29 = 1;
         v60 = 1;
-        v59 = [v61 humanReadableUpdateName];
+        humanReadableUpdateName3 = [descriptor humanReadableUpdateName];
         v58 = 1;
-        v30 = v59;
+        v30 = humanReadableUpdateName3;
       }
 
       else
@@ -16974,12 +16974,12 @@ uint64_t __68__SUSUISoftwareUpdateManager__scanForBetaProgramsWithSeedingDevice_
       MEMORY[0x277D82BD8](WeakRetained);
       if (v58)
       {
-        MEMORY[0x277D82BD8](v59);
+        MEMORY[0x277D82BD8](humanReadableUpdateName3);
       }
 
       if (v60)
       {
-        MEMORY[0x277D82BD8](v61);
+        MEMORY[0x277D82BD8](descriptor);
       }
 
       if (v62)
@@ -16989,7 +16989,7 @@ uint64_t __68__SUSUISoftwareUpdateManager__scanForBetaProgramsWithSeedingDevice_
 
       if (v64)
       {
-        MEMORY[0x277D82BD8](v65);
+        MEMORY[0x277D82BD8](humanReadableUpdateName2);
       }
 
       if (v66)
@@ -17016,24 +17016,24 @@ uint64_t __68__SUSUISoftwareUpdateManager__scanForBetaProgramsWithSeedingDevice_
   *MEMORY[0x277D85DE8];
 }
 
-- (void)manager:(id)a3 scanRequestDidFinishForOptions:(id)a4 results:(id)a5 error:(id)a6
+- (void)manager:(id)manager scanRequestDidFinishForOptions:(id)options results:(id)results error:(id)error
 {
   v56 = &v74;
-  obj = a4;
-  v54 = a5;
-  v55 = a6;
+  obj = options;
+  resultsCopy = results;
+  errorCopy = error;
   v52 = "[SUSUISoftwareUpdateManager manager:scanRequestDidFinishForOptions:results:error:]";
   v84 = *MEMORY[0x277D85DE8];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, manager);
   v81 = 0;
   objc_storeStrong(&v81, obj);
   v80 = 0;
-  objc_storeStrong(&v80, v54);
+  objc_storeStrong(&v80, resultsCopy);
   v79 = 0;
-  objc_storeStrong(&v79, v55);
+  objc_storeStrong(&v79, errorCopy);
   v78 = _SUSUILoggingFacility();
   v77 = 0;
   if (os_log_type_enabled(v78, OS_LOG_TYPE_DEFAULT))
@@ -17050,10 +17050,10 @@ uint64_t __68__SUSUISoftwareUpdateManager__scanForBetaProgramsWithSeedingDevice_
     v75 = 0;
     if (v8)
     {
-      v9 = [*(*(v56 + 11) + 120) humanReadableUpdateName];
-      *(v56 + 2) = v9;
+      humanReadableUpdateName = [*(*(v56 + 11) + 120) humanReadableUpdateName];
+      *(v56 + 2) = humanReadableUpdateName;
       v75 = 1;
-      v46 = v9;
+      v46 = humanReadableUpdateName;
     }
 
     else
@@ -17068,10 +17068,10 @@ uint64_t __68__SUSUISoftwareUpdateManager__scanForBetaProgramsWithSeedingDevice_
     v73 = 0;
     if (v10)
     {
-      v11 = [*(*(v56 + 11) + 128) humanReadableUpdateName];
-      *v56 = v11;
+      humanReadableUpdateName2 = [*(*(v56 + 11) + 128) humanReadableUpdateName];
+      *v56 = humanReadableUpdateName2;
       v73 = 1;
-      v42 = v11;
+      v42 = humanReadableUpdateName2;
     }
 
     else
@@ -17089,12 +17089,12 @@ uint64_t __68__SUSUISoftwareUpdateManager__scanForBetaProgramsWithSeedingDevice_
     v67 = 0;
     if (v12 && (v72 = [*(*(v56 + 11) + 8) descriptor], v71 = 1, v72))
     {
-      v70 = [*(*(v56 + 11) + 8) descriptor];
+      descriptor = [*(*(v56 + 11) + 8) descriptor];
       v36 = 1;
       v69 = 1;
-      v68 = [v70 humanReadableUpdateName];
+      humanReadableUpdateName3 = [descriptor humanReadableUpdateName];
       v67 = 1;
-      v37 = v68;
+      v37 = humanReadableUpdateName3;
     }
 
     else
@@ -17175,12 +17175,12 @@ uint64_t __68__SUSUISoftwareUpdateManager__scanForBetaProgramsWithSeedingDevice_
     MEMORY[0x277D82BD8](WeakRetained);
     if (v67)
     {
-      MEMORY[0x277D82BD8](v68);
+      MEMORY[0x277D82BD8](humanReadableUpdateName3);
     }
 
     if (v69)
     {
-      MEMORY[0x277D82BD8](v70);
+      MEMORY[0x277D82BD8](descriptor);
     }
 
     if (v71)
@@ -17203,14 +17203,14 @@ uint64_t __68__SUSUISoftwareUpdateManager__scanForBetaProgramsWithSeedingDevice_
   }
 
   objc_storeStrong(&v78, 0);
-  v16 = [*(v56 + 8) isForced];
+  isForced = [*(v56 + 8) isForced];
   v57 = 0;
   v23 = 0;
-  if (!v16)
+  if (!isForced)
   {
-    v58 = [*(v56 + 8) types];
+    types = [*(v56 + 8) types];
     v57 = 1;
-    v17 = [v58 count];
+    v17 = [types count];
     v22 = 0;
     if (v17 == 1)
     {
@@ -17223,7 +17223,7 @@ uint64_t __68__SUSUISoftwareUpdateManager__scanForBetaProgramsWithSeedingDevice_
   v21 = v23;
   if (v57)
   {
-    MEMORY[0x277D82BD8](v58);
+    MEMORY[0x277D82BD8](types);
   }
 
   if (v21)
@@ -17241,16 +17241,16 @@ uint64_t __68__SUSUISoftwareUpdateManager__scanForBetaProgramsWithSeedingDevice_
   *MEMORY[0x277D85DE8];
 }
 
-- (void)manager:(id)a3 downloadDidStart:(id)a4
+- (void)manager:(id)manager downloadDidStart:(id)start
 {
   v50 = &v68;
-  obj = a4;
+  obj = start;
   v48 = "[SUSUISoftwareUpdateManager manager:downloadDidStart:]";
   v76 = *MEMORY[0x277D85DE8];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, manager);
   v73 = 0;
   objc_storeStrong(&v73, obj);
   v72 = _SUSUILoggingFacility();
@@ -17269,10 +17269,10 @@ uint64_t __68__SUSUISoftwareUpdateManager__scanForBetaProgramsWithSeedingDevice_
     v69 = 0;
     if (v6)
     {
-      v7 = [*(*(v50 + 9) + 120) humanReadableUpdateName];
-      *(v50 + 2) = v7;
+      humanReadableUpdateName = [*(*(v50 + 9) + 120) humanReadableUpdateName];
+      *(v50 + 2) = humanReadableUpdateName;
       v69 = 1;
-      v42 = v7;
+      v42 = humanReadableUpdateName;
     }
 
     else
@@ -17287,10 +17287,10 @@ uint64_t __68__SUSUISoftwareUpdateManager__scanForBetaProgramsWithSeedingDevice_
     v67 = 0;
     if (v8)
     {
-      v9 = [*(*(v50 + 9) + 128) humanReadableUpdateName];
-      *v50 = v9;
+      humanReadableUpdateName2 = [*(*(v50 + 9) + 128) humanReadableUpdateName];
+      *v50 = humanReadableUpdateName2;
       v67 = 1;
-      v38 = v9;
+      v38 = humanReadableUpdateName2;
     }
 
     else
@@ -17308,12 +17308,12 @@ uint64_t __68__SUSUISoftwareUpdateManager__scanForBetaProgramsWithSeedingDevice_
     v61 = 0;
     if (v10 && (v66 = [*(*(v50 + 9) + 8) descriptor], v65 = 1, v66))
     {
-      v64 = [*(*(v50 + 9) + 8) descriptor];
+      descriptor = [*(*(v50 + 9) + 8) descriptor];
       v32 = 1;
       v63 = 1;
-      v62 = [v64 humanReadableUpdateName];
+      humanReadableUpdateName3 = [descriptor humanReadableUpdateName];
       v61 = 1;
-      v33 = v62;
+      v33 = humanReadableUpdateName3;
     }
 
     else
@@ -17394,12 +17394,12 @@ uint64_t __68__SUSUISoftwareUpdateManager__scanForBetaProgramsWithSeedingDevice_
     MEMORY[0x277D82BD8](WeakRetained);
     if (v61)
     {
-      MEMORY[0x277D82BD8](v62);
+      MEMORY[0x277D82BD8](humanReadableUpdateName3);
     }
 
     if (v63)
     {
-      MEMORY[0x277D82BD8](v64);
+      MEMORY[0x277D82BD8](descriptor);
     }
 
     if (v65)
@@ -17424,12 +17424,12 @@ uint64_t __68__SUSUISoftwareUpdateManager__scanForBetaProgramsWithSeedingDevice_
   objc_storeStrong(&v72, 0);
   [*(v50 + 9) setDownload:*(v50 + 6)];
   [*(v50 + 9) updateStateFromDownload:*(v50 + 6)];
-  v18 = [*(v50 + 9) delegate];
+  delegate = [*(v50 + 9) delegate];
   v51 = 0;
   v19 = 0;
-  if (v18)
+  if (delegate)
   {
-    v52 = [*(v50 + 9) delegate];
+    delegate2 = [*(v50 + 9) delegate];
     v51 = 1;
     v19 = objc_opt_respondsToSelector();
   }
@@ -17437,15 +17437,15 @@ uint64_t __68__SUSUISoftwareUpdateManager__scanForBetaProgramsWithSeedingDevice_
   v17 = v19;
   if (v51)
   {
-    MEMORY[0x277D82BD8](v52);
+    MEMORY[0x277D82BD8](delegate2);
   }
 
-  MEMORY[0x277D82BD8](v18);
+  MEMORY[0x277D82BD8](delegate);
   if (v17)
   {
-    v16 = [*(v50 + 9) delegate];
-    [v16 manager:*(v50 + 9) downloadDidStart:*(v50 + 6)];
-    MEMORY[0x277D82BD8](v16);
+    delegate3 = [*(v50 + 9) delegate];
+    [delegate3 manager:*(v50 + 9) downloadDidStart:*(v50 + 6)];
+    MEMORY[0x277D82BD8](delegate3);
   }
 
   v15 = 0;
@@ -17454,20 +17454,20 @@ uint64_t __68__SUSUISoftwareUpdateManager__scanForBetaProgramsWithSeedingDevice_
   *MEMORY[0x277D85DE8];
 }
 
-- (void)manager:(id)a3 downloadProgressDidChange:(id)a4
+- (void)manager:(id)manager downloadProgressDidChange:(id)change
 {
   v27 = *MEMORY[0x277D85DE8];
-  v25 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, manager);
   v23 = 0;
-  objc_storeStrong(&v23, a4);
-  [(SUSUISoftwareUpdateManager *)v25 setDownload:v23];
-  v22 = [v23 progress];
-  [v22 normalizedPercentComplete];
+  objc_storeStrong(&v23, change);
+  [(SUSUISoftwareUpdateManager *)selfCopy setDownload:v23];
+  progress = [v23 progress];
+  [progress normalizedPercentComplete];
   v21 = v4;
-  v20 = [v22 phase];
+  phase = [progress phase];
   oslog = _SUSUILoggingFacility();
   type = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
@@ -17475,65 +17475,65 @@ uint64_t __68__SUSUISoftwareUpdateManager__scanForBetaProgramsWithSeedingDevice_
     log = oslog;
     v13 = type;
     *&v8 = v21;
-    v9 = v20;
-    v14 = SUSUISoftwareUpdateStateToString([(SUSUISoftwareUpdateManager *)v25 state]);
+    v9 = phase;
+    v14 = SUSUISoftwareUpdateStateToString([(SUSUISoftwareUpdateManager *)selfCopy state]);
     v10 = MEMORY[0x277D82BE0](v14);
     v17 = v10;
-    v11 = [(SUSUISoftwareUpdateManager *)v25 state];
-    [v22 timeRemaining];
-    __os_log_helper_16_2_7_8_32_8_0_8_64_8_64_4_0_8_0_8_0(v26, "[SUSUISoftwareUpdateManager manager:downloadProgressDidChange:]", v8, v9, v10, v11, v5, v23);
+    state = [(SUSUISoftwareUpdateManager *)selfCopy state];
+    [progress timeRemaining];
+    __os_log_helper_16_2_7_8_32_8_0_8_64_8_64_4_0_8_0_8_0(v26, "[SUSUISoftwareUpdateManager manager:downloadProgressDidChange:]", v8, v9, v10, state, v5, v23);
     _os_log_impl(&dword_26AC94000, log, v13, "%s - progress: %.02f; phase: %@; state: %@ (%d); time remaining: %f, download: %p", v26, 0x44u);
     MEMORY[0x277D82BD8](v14);
     objc_storeStrong(&v17, 0);
   }
 
   objc_storeStrong(&oslog, 0);
-  state = v25->_state;
-  [(SUSUISoftwareUpdateManager *)v25 _updateDownloadProgressWithDownload:v23 stateFromDownload:&state];
-  v6 = [v23 progress];
+  state = selfCopy->_state;
+  [(SUSUISoftwareUpdateManager *)selfCopy _updateDownloadProgressWithDownload:v23 stateFromDownload:&state];
+  progress2 = [v23 progress];
   v7 = 0;
-  if ([v6 isDone])
+  if ([progress2 isDone])
   {
     v7 = 0;
-    if (v25->_state == state)
+    if (selfCopy->_state == state)
     {
       v7 = state == 10;
     }
   }
 
-  MEMORY[0x277D82BD8](v6);
+  MEMORY[0x277D82BD8](progress2);
   if (v7)
   {
-    [(SUSUISoftwareUpdateManager *)v25 checkAndSetReadyToInstall];
+    [(SUSUISoftwareUpdateManager *)selfCopy checkAndSetReadyToInstall];
   }
 
   else
   {
-    [(SUSUISoftwareUpdateManager *)v25 setState:state];
+    [(SUSUISoftwareUpdateManager *)selfCopy setState:state];
   }
 
-  objc_storeStrong(&v20, 0);
-  objc_storeStrong(&v22, 0);
+  objc_storeStrong(&phase, 0);
+  objc_storeStrong(&progress, 0);
   objc_storeStrong(&v23, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x277D85DE8];
 }
 
-- (void)manager:(id)a3 downloadDidFinish:(id)a4 withInstallPolicy:(id)a5
+- (void)manager:(id)manager downloadDidFinish:(id)finish withInstallPolicy:(id)policy
 {
   v50 = &v68;
-  obj = a4;
-  v49 = a5;
+  obj = finish;
+  policyCopy = policy;
   v47 = "[SUSUISoftwareUpdateManager manager:downloadDidFinish:withInstallPolicy:]";
   v76 = *MEMORY[0x277D85DE8];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, manager);
   v73 = 0;
   objc_storeStrong(&v73, obj);
   v72 = 0;
-  objc_storeStrong(&v72, v49);
+  objc_storeStrong(&v72, policyCopy);
   v71 = _SUSUILoggingFacility();
   v70 = 0;
   if (os_log_type_enabled(v71, OS_LOG_TYPE_DEFAULT))
@@ -17550,10 +17550,10 @@ uint64_t __68__SUSUISoftwareUpdateManager__scanForBetaProgramsWithSeedingDevice_
     v67 = 0;
     if (v7)
     {
-      v8 = [*(*(v50 + 8) + 120) humanReadableUpdateName];
-      *v50 = v8;
+      humanReadableUpdateName = [*(*(v50 + 8) + 120) humanReadableUpdateName];
+      *v50 = humanReadableUpdateName;
       v67 = 1;
-      v41 = v8;
+      v41 = humanReadableUpdateName;
     }
 
     else
@@ -17568,9 +17568,9 @@ uint64_t __68__SUSUISoftwareUpdateManager__scanForBetaProgramsWithSeedingDevice_
     v65 = 0;
     if (v9)
     {
-      v66 = [*(*(v50 + 8) + 128) humanReadableUpdateName];
+      humanReadableUpdateName2 = [*(*(v50 + 8) + 128) humanReadableUpdateName];
       v65 = 1;
-      v37 = v66;
+      v37 = humanReadableUpdateName2;
     }
 
     else
@@ -17588,12 +17588,12 @@ uint64_t __68__SUSUISoftwareUpdateManager__scanForBetaProgramsWithSeedingDevice_
     v59 = 0;
     if (v10 && (v64 = [*(*(v50 + 8) + 8) descriptor], v63 = 1, v64))
     {
-      v62 = [*(*(v50 + 8) + 8) descriptor];
+      descriptor = [*(*(v50 + 8) + 8) descriptor];
       v31 = 1;
       v61 = 1;
-      v60 = [v62 humanReadableUpdateName];
+      humanReadableUpdateName3 = [descriptor humanReadableUpdateName];
       v59 = 1;
-      v32 = v60;
+      v32 = humanReadableUpdateName3;
     }
 
     else
@@ -17674,12 +17674,12 @@ uint64_t __68__SUSUISoftwareUpdateManager__scanForBetaProgramsWithSeedingDevice_
     MEMORY[0x277D82BD8](WeakRetained);
     if (v59)
     {
-      MEMORY[0x277D82BD8](v60);
+      MEMORY[0x277D82BD8](humanReadableUpdateName3);
     }
 
     if (v61)
     {
-      MEMORY[0x277D82BD8](v62);
+      MEMORY[0x277D82BD8](descriptor);
     }
 
     if (v63)
@@ -17689,7 +17689,7 @@ uint64_t __68__SUSUISoftwareUpdateManager__scanForBetaProgramsWithSeedingDevice_
 
     if (v65)
     {
-      MEMORY[0x277D82BD8](v66);
+      MEMORY[0x277D82BD8](humanReadableUpdateName2);
     }
 
     if (v67)
@@ -17705,14 +17705,14 @@ uint64_t __68__SUSUISoftwareUpdateManager__scanForBetaProgramsWithSeedingDevice_
   [*(v50 + 8) setDownload:*(v50 + 5)];
   [*(v50 + 8) setInstallPolicy:*(v50 + 4)];
   [*(v50 + 8) checkAndSetReadyToInstall];
-  v17 = [*(v50 + 8) delegate];
+  delegate = [*(v50 + 8) delegate];
   v18 = objc_opt_respondsToSelector();
-  MEMORY[0x277D82BD8](v17);
+  MEMORY[0x277D82BD8](delegate);
   if (v18)
   {
-    v16 = [*(v50 + 8) delegate];
-    [v16 manager:*(v50 + 8) downloadFinished:*(v50 + 5)];
-    MEMORY[0x277D82BD8](v16);
+    delegate2 = [*(v50 + 8) delegate];
+    [delegate2 manager:*(v50 + 8) downloadFinished:*(v50 + 5)];
+    MEMORY[0x277D82BD8](delegate2);
   }
 
   v15 = 0;
@@ -17722,15 +17722,15 @@ uint64_t __68__SUSUISoftwareUpdateManager__scanForBetaProgramsWithSeedingDevice_
   *MEMORY[0x277D85DE8];
 }
 
-- (void)manager:(id)a3 downloadWasInvalidatedForNewUpdatesAvailable:(id)a4
+- (void)manager:(id)manager downloadWasInvalidatedForNewUpdatesAvailable:(id)available
 {
-  obj = a4;
+  obj = available;
   v40 = "[SUSUISoftwareUpdateManager manager:downloadWasInvalidatedForNewUpdatesAvailable:]";
   v68 = *MEMORY[0x277D85DE8];
-  v66 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, manager);
   v64 = 0;
   objc_storeStrong(&v64, obj);
   v63 = _SUSUILoggingFacility();
@@ -17739,17 +17739,17 @@ uint64_t __68__SUSUISoftwareUpdateManager__scanForBetaProgramsWithSeedingDevice_
   {
     log = v63;
     *type = v62;
-    v37 = SUSUISoftwareUpdateStateToString(v66->_state);
+    v37 = SUSUISoftwareUpdateStateToString(selfCopy->_state);
     v38 = MEMORY[0x277D82BE0](v37);
     v61 = v38;
-    state = v66->_state;
-    preferredUpdate = v66->_preferredUpdate;
+    state = selfCopy->_state;
+    preferredUpdate = selfCopy->_preferredUpdate;
     v59 = 0;
     if (preferredUpdate)
     {
-      v60 = [(SUDescriptor *)v66->_preferredUpdate humanReadableUpdateName];
+      humanReadableUpdateName = [(SUDescriptor *)selfCopy->_preferredUpdate humanReadableUpdateName];
       v59 = 1;
-      v34 = v60;
+      v34 = humanReadableUpdateName;
     }
 
     else
@@ -17758,15 +17758,15 @@ uint64_t __68__SUSUISoftwareUpdateManager__scanForBetaProgramsWithSeedingDevice_
     }
 
     v31 = v34;
-    v32 = v66->_preferredUpdate;
-    preferredUpdateError = v66->_preferredUpdateError;
-    alternateUpdate = v66->_alternateUpdate;
+    v32 = selfCopy->_preferredUpdate;
+    preferredUpdateError = selfCopy->_preferredUpdateError;
+    alternateUpdate = selfCopy->_alternateUpdate;
     v57 = 0;
     if (alternateUpdate)
     {
-      v58 = [(SUDescriptor *)v66->_alternateUpdate humanReadableUpdateName];
+      humanReadableUpdateName2 = [(SUDescriptor *)selfCopy->_alternateUpdate humanReadableUpdateName];
       v57 = 1;
-      v30 = v58;
+      v30 = humanReadableUpdateName2;
     }
 
     else
@@ -17775,21 +17775,21 @@ uint64_t __68__SUSUISoftwareUpdateManager__scanForBetaProgramsWithSeedingDevice_
     }
 
     v26 = v30;
-    v27 = v66->_alternateUpdate;
-    alternateUpdateError = v66->_alternateUpdateError;
-    download = v66->_download;
-    v6 = v66->_download;
+    v27 = selfCopy->_alternateUpdate;
+    alternateUpdateError = selfCopy->_alternateUpdateError;
+    download = selfCopy->_download;
+    v6 = selfCopy->_download;
     v55 = 0;
     v53 = 0;
     v51 = 0;
-    if (v6 && (v56 = [(SUDownload *)v66->_download descriptor], v55 = 1, v56))
+    if (v6 && (v56 = [(SUDownload *)selfCopy->_download descriptor], v55 = 1, v56))
     {
-      v54 = [(SUDownload *)v66->_download descriptor];
+      descriptor = [(SUDownload *)selfCopy->_download descriptor];
       v24 = 1;
       v53 = 1;
-      v52 = [(SUDescriptor *)v54 humanReadableUpdateName];
+      humanReadableUpdateName3 = [(SUDescriptor *)descriptor humanReadableUpdateName];
       v51 = 1;
-      v25 = v52;
+      v25 = humanReadableUpdateName3;
     }
 
     else
@@ -17798,13 +17798,13 @@ uint64_t __68__SUSUISoftwareUpdateManager__scanForBetaProgramsWithSeedingDevice_
     }
 
     v21 = v25;
-    WeakRetained = objc_loadWeakRetained(&v66->_delegate);
-    v23 = objc_loadWeakRetained(&v66->_delegate);
+    WeakRetained = objc_loadWeakRetained(&selfCopy->_delegate);
+    v23 = objc_loadWeakRetained(&selfCopy->_delegate);
     v49 = 0;
     v47 = 0;
     if (v23)
     {
-      v50 = objc_loadWeakRetained(&v66->_delegate);
+      v50 = objc_loadWeakRetained(&selfCopy->_delegate);
       v19 = 1;
       v49 = 1;
       v7 = objc_opt_class();
@@ -17819,13 +17819,13 @@ uint64_t __68__SUSUISoftwareUpdateManager__scanForBetaProgramsWithSeedingDevice_
     }
 
     v16 = v20;
-    v17 = objc_loadWeakRetained(&v66->_hostController);
-    v18 = objc_loadWeakRetained(&v66->_hostController);
+    v17 = objc_loadWeakRetained(&selfCopy->_hostController);
+    v18 = objc_loadWeakRetained(&selfCopy->_hostController);
     v45 = 0;
     v43 = 0;
     if (v18)
     {
-      v46 = objc_loadWeakRetained(&v66->_hostController);
+      v46 = objc_loadWeakRetained(&selfCopy->_hostController);
       v14 = 1;
       v45 = 1;
       v8 = objc_opt_class();
@@ -17869,12 +17869,12 @@ uint64_t __68__SUSUISoftwareUpdateManager__scanForBetaProgramsWithSeedingDevice_
     MEMORY[0x277D82BD8](WeakRetained);
     if (v51)
     {
-      MEMORY[0x277D82BD8](v52);
+      MEMORY[0x277D82BD8](humanReadableUpdateName3);
     }
 
     if (v53)
     {
-      MEMORY[0x277D82BD8](v54);
+      MEMORY[0x277D82BD8](descriptor);
     }
 
     if (v55)
@@ -17884,12 +17884,12 @@ uint64_t __68__SUSUISoftwareUpdateManager__scanForBetaProgramsWithSeedingDevice_
 
     if (v57)
     {
-      MEMORY[0x277D82BD8](v58);
+      MEMORY[0x277D82BD8](humanReadableUpdateName2);
     }
 
     if (v59)
     {
-      MEMORY[0x277D82BD8](v60);
+      MEMORY[0x277D82BD8](humanReadableUpdateName);
     }
 
     MEMORY[0x277D82BD8](v37);
@@ -17898,42 +17898,42 @@ uint64_t __68__SUSUISoftwareUpdateManager__scanForBetaProgramsWithSeedingDevice_
 
   v11 = 0;
   objc_storeStrong(&v63, 0);
-  [(SUSUISoftwareUpdateManager *)v66 setDownload:v11];
+  [(SUSUISoftwareUpdateManager *)selfCopy setDownload:v11];
   v42 = 8;
-  if (v66->_hidingPreferredUpdate)
+  if (selfCopy->_hidingPreferredUpdate)
   {
     v42 = 9;
-    [(SUSUISoftwareUpdateManager *)v66 revealHiddenPreferredUpdate];
+    [(SUSUISoftwareUpdateManager *)selfCopy revealHiddenPreferredUpdate];
   }
 
-  if (v66->_hidingAlternateUpdate)
+  if (selfCopy->_hidingAlternateUpdate)
   {
     v42 = 9;
-    [(SUSUISoftwareUpdateManager *)v66 revealHiddenAlteranteUpdate];
+    [(SUSUISoftwareUpdateManager *)selfCopy revealHiddenAlteranteUpdate];
   }
 
-  [(SUSUISoftwareUpdateManager *)v66 setState:v42];
+  [(SUSUISoftwareUpdateManager *)selfCopy setState:v42];
   v10 = 0;
   objc_storeStrong(&v64, 0);
   objc_storeStrong(location, v10);
   *MEMORY[0x277D85DE8];
 }
 
-- (void)manager:(id)a3 downloadDidFail:(id)a4 withError:(id)a5
+- (void)manager:(id)manager downloadDidFail:(id)fail withError:(id)error
 {
   v66 = &v86;
-  obj = a4;
-  v65 = a5;
+  obj = fail;
+  errorCopy = error;
   v63 = "[SUSUISoftwareUpdateManager manager:downloadDidFail:withError:]";
   v98 = *MEMORY[0x277D85DE8];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, manager);
   v94 = 0;
   objc_storeStrong(&v94, obj);
   v93 = 0;
-  objc_storeStrong(&v93, v65);
+  objc_storeStrong(&v93, errorCopy);
   v92 = _SUSUILoggingFacility();
   type = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v92, OS_LOG_TYPE_DEFAULT))
@@ -17950,10 +17950,10 @@ uint64_t __68__SUSUISoftwareUpdateManager__scanForBetaProgramsWithSeedingDevice_
     v89 = 0;
     if (v7)
     {
-      v8 = [*(*(v66 + 14) + 120) humanReadableUpdateName];
-      *(v66 + 6) = v8;
+      humanReadableUpdateName = [*(*(v66 + 14) + 120) humanReadableUpdateName];
+      *(v66 + 6) = humanReadableUpdateName;
       v89 = 1;
-      v57 = v8;
+      v57 = humanReadableUpdateName;
     }
 
     else
@@ -17968,10 +17968,10 @@ uint64_t __68__SUSUISoftwareUpdateManager__scanForBetaProgramsWithSeedingDevice_
     v88 = 0;
     if (v9)
     {
-      v10 = [*(*(v66 + 14) + 128) humanReadableUpdateName];
-      *(v66 + 4) = v10;
+      humanReadableUpdateName2 = [*(*(v66 + 14) + 128) humanReadableUpdateName];
+      *(v66 + 4) = humanReadableUpdateName2;
       v88 = 1;
-      v53 = v10;
+      v53 = humanReadableUpdateName2;
     }
 
     else
@@ -17989,13 +17989,13 @@ uint64_t __68__SUSUISoftwareUpdateManager__scanForBetaProgramsWithSeedingDevice_
     v83 = 0;
     if (v11 && (v12 = [*(*(v66 + 14) + 8) descriptor], *(v66 + 2) = v12, v87 = 1, v12))
     {
-      v13 = [*(*(v66 + 14) + 8) descriptor];
-      *v66 = v13;
+      descriptor = [*(*(v66 + 14) + 8) descriptor];
+      *v66 = descriptor;
       v47 = 1;
       v85 = 1;
-      v84 = [v13 humanReadableUpdateName];
+      humanReadableUpdateName3 = [descriptor humanReadableUpdateName];
       v83 = 1;
-      v48 = v84;
+      v48 = humanReadableUpdateName3;
     }
 
     else
@@ -18076,7 +18076,7 @@ uint64_t __68__SUSUISoftwareUpdateManager__scanForBetaProgramsWithSeedingDevice_
     MEMORY[0x277D82BD8](WeakRetained);
     if (v83)
     {
-      MEMORY[0x277D82BD8](v84);
+      MEMORY[0x277D82BD8](humanReadableUpdateName3);
     }
 
     if (v85)
@@ -18120,28 +18120,28 @@ uint64_t __68__SUSUISoftwareUpdateManager__scanForBetaProgramsWithSeedingDevice_
     [*(v66 + 14) revealHiddenAlteranteUpdate];
   }
 
-  v31 = [*(v66 + 10) domain];
+  domain = [*(v66 + 10) domain];
   v32 = getSUErrorDomain_3();
-  v17 = [v31 isEqualToString:?];
+  v17 = [domain isEqualToString:?];
   v72 = 0;
   v70 = 0;
-  v33 = 0;
+  bOOLValue = 0;
   if (v17)
   {
-    v18 = [*(v66 + 10) code];
-    v33 = 0;
-    if (v18 == 16)
+    code = [*(v66 + 10) code];
+    bOOLValue = 0;
+    if (code == 16)
     {
-      v73 = [*(v66 + 10) userInfo];
+      userInfo = [*(v66 + 10) userInfo];
       v30 = 1;
       v72 = 1;
-      v71 = [v73 objectForKey:*MEMORY[0x277D64A90]];
+      v71 = [userInfo objectForKey:*MEMORY[0x277D64A90]];
       v70 = v30 & 1;
-      v33 = [v71 BOOLValue];
+      bOOLValue = [v71 BOOLValue];
     }
   }
 
-  v29 = v33;
+  v29 = bOOLValue;
   if (v70)
   {
     MEMORY[0x277D82BD8](v71);
@@ -18149,11 +18149,11 @@ uint64_t __68__SUSUISoftwareUpdateManager__scanForBetaProgramsWithSeedingDevice_
 
   if (v72)
   {
-    MEMORY[0x277D82BD8](v73);
+    MEMORY[0x277D82BD8](userInfo);
   }
 
   MEMORY[0x277D82BD8](v32);
-  MEMORY[0x277D82BD8](v31);
+  MEMORY[0x277D82BD8](domain);
   if (v29)
   {
     v69 = 0;
@@ -18198,14 +18198,14 @@ uint64_t __68__SUSUISoftwareUpdateManager__scanForBetaProgramsWithSeedingDevice_
     [*(v66 + 14) scanForUpdatesCompletion:v25];
   }
 
-  v23 = [*(v66 + 14) delegate];
+  delegate = [*(v66 + 14) delegate];
   v24 = objc_opt_respondsToSelector();
-  MEMORY[0x277D82BD8](v23);
+  MEMORY[0x277D82BD8](delegate);
   if (v24)
   {
-    v22 = [*(v66 + 14) delegate];
-    [v22 manager:*(v66 + 14) download:*(v66 + 11) failedWithError:*(v66 + 10)];
-    MEMORY[0x277D82BD8](v22);
+    delegate2 = [*(v66 + 14) delegate];
+    [delegate2 manager:*(v66 + 14) download:*(v66 + 11) failedWithError:*(v66 + 10)];
+    MEMORY[0x277D82BD8](delegate2);
   }
 
   v21 = 0;
@@ -18215,20 +18215,20 @@ uint64_t __68__SUSUISoftwareUpdateManager__scanForBetaProgramsWithSeedingDevice_
   *MEMORY[0x277D85DE8];
 }
 
-- (void)manager:(id)a3 clearingSpaceForDownload:(id)a4 clearingSpace:(BOOL)a5
+- (void)manager:(id)manager clearingSpaceForDownload:(id)download clearingSpace:(BOOL)space
 {
   v51 = &v69;
-  obj = a4;
-  v50 = a5;
+  obj = download;
+  spaceCopy = space;
   v48 = "[SUSUISoftwareUpdateManager manager:clearingSpaceForDownload:clearingSpace:]";
   v77 = *MEMORY[0x277D85DE8];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, manager);
   v74 = 0;
   objc_storeStrong(&v74, obj);
-  v73 = v50;
+  v73 = spaceCopy;
   v72 = _SUSUILoggingFacility();
   v71 = 0;
   if (os_log_type_enabled(v72, OS_LOG_TYPE_DEFAULT))
@@ -18245,10 +18245,10 @@ uint64_t __68__SUSUISoftwareUpdateManager__scanForBetaProgramsWithSeedingDevice_
     v68 = 0;
     if (v7)
     {
-      v8 = [*(*(v51 + 8) + 120) humanReadableUpdateName];
-      *v51 = v8;
+      humanReadableUpdateName = [*(*(v51 + 8) + 120) humanReadableUpdateName];
+      *v51 = humanReadableUpdateName;
       v68 = 1;
-      v42 = v8;
+      v42 = humanReadableUpdateName;
     }
 
     else
@@ -18263,9 +18263,9 @@ uint64_t __68__SUSUISoftwareUpdateManager__scanForBetaProgramsWithSeedingDevice_
     v66 = 0;
     if (v9)
     {
-      v67 = [*(*(v51 + 8) + 128) humanReadableUpdateName];
+      humanReadableUpdateName2 = [*(*(v51 + 8) + 128) humanReadableUpdateName];
       v66 = 1;
-      v38 = v67;
+      v38 = humanReadableUpdateName2;
     }
 
     else
@@ -18283,12 +18283,12 @@ uint64_t __68__SUSUISoftwareUpdateManager__scanForBetaProgramsWithSeedingDevice_
     v60 = 0;
     if (v10 && (v65 = [*(*(v51 + 8) + 8) descriptor], v64 = 1, v65))
     {
-      v63 = [*(*(v51 + 8) + 8) descriptor];
+      descriptor = [*(*(v51 + 8) + 8) descriptor];
       v32 = 1;
       v62 = 1;
-      v61 = [v63 humanReadableUpdateName];
+      humanReadableUpdateName3 = [descriptor humanReadableUpdateName];
       v60 = 1;
-      v33 = v61;
+      v33 = humanReadableUpdateName3;
     }
 
     else
@@ -18374,12 +18374,12 @@ uint64_t __68__SUSUISoftwareUpdateManager__scanForBetaProgramsWithSeedingDevice_
     MEMORY[0x277D82BD8](WeakRetained);
     if (v60)
     {
-      MEMORY[0x277D82BD8](v61);
+      MEMORY[0x277D82BD8](humanReadableUpdateName3);
     }
 
     if (v62)
     {
-      MEMORY[0x277D82BD8](v63);
+      MEMORY[0x277D82BD8](descriptor);
     }
 
     if (v64)
@@ -18389,7 +18389,7 @@ uint64_t __68__SUSUISoftwareUpdateManager__scanForBetaProgramsWithSeedingDevice_
 
     if (v66)
     {
-      MEMORY[0x277D82BD8](v67);
+      MEMORY[0x277D82BD8](humanReadableUpdateName2);
     }
 
     if (v68)
@@ -18402,18 +18402,18 @@ uint64_t __68__SUSUISoftwareUpdateManager__scanForBetaProgramsWithSeedingDevice_
   }
 
   objc_storeStrong(&v72, 0);
-  v14 = [*(v51 + 8) clearingSpaceForDownload];
-  if (v14 != v73)
+  clearingSpaceForDownload = [*(v51 + 8) clearingSpaceForDownload];
+  if (clearingSpaceForDownload != v73)
   {
     [*(v51 + 8) setClearingSpaceForDownload:v73];
-    v18 = [*(v51 + 8) delegate];
+    delegate = [*(v51 + 8) delegate];
     v19 = objc_opt_respondsToSelector();
-    MEMORY[0x277D82BD8](v18);
+    MEMORY[0x277D82BD8](delegate);
     if (v19)
     {
-      v17 = [*(v51 + 8) delegate];
-      [v17 manager:*(v51 + 8) clearingSpaceForDownload:v73];
-      MEMORY[0x277D82BD8](v17);
+      delegate2 = [*(v51 + 8) delegate];
+      [delegate2 manager:*(v51 + 8) clearingSpaceForDownload:v73];
+      MEMORY[0x277D82BD8](delegate2);
     }
   }
 
@@ -18423,16 +18423,16 @@ uint64_t __68__SUSUISoftwareUpdateManager__scanForBetaProgramsWithSeedingDevice_
   *MEMORY[0x277D85DE8];
 }
 
-- (void)manager:(id)a3 installDidStart:(id)a4
+- (void)manager:(id)manager installDidStart:(id)start
 {
   v48 = &v66;
-  obj = a4;
+  obj = start;
   v46 = "[SUSUISoftwareUpdateManager manager:installDidStart:]";
   v73 = *MEMORY[0x277D85DE8];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, manager);
   v70 = 0;
   objc_storeStrong(&v70, obj);
   v69 = _SUSUILoggingFacility();
@@ -18451,10 +18451,10 @@ uint64_t __68__SUSUISoftwareUpdateManager__scanForBetaProgramsWithSeedingDevice_
     v65 = 0;
     if (v6)
     {
-      v7 = [*(*(v48 + 7) + 120) humanReadableUpdateName];
-      *v48 = v7;
+      humanReadableUpdateName = [*(*(v48 + 7) + 120) humanReadableUpdateName];
+      *v48 = humanReadableUpdateName;
       v65 = 1;
-      v40 = v7;
+      v40 = humanReadableUpdateName;
     }
 
     else
@@ -18469,9 +18469,9 @@ uint64_t __68__SUSUISoftwareUpdateManager__scanForBetaProgramsWithSeedingDevice_
     v63 = 0;
     if (v8)
     {
-      v64 = [*(*(v48 + 7) + 128) humanReadableUpdateName];
+      humanReadableUpdateName2 = [*(*(v48 + 7) + 128) humanReadableUpdateName];
       v63 = 1;
-      v36 = v64;
+      v36 = humanReadableUpdateName2;
     }
 
     else
@@ -18489,12 +18489,12 @@ uint64_t __68__SUSUISoftwareUpdateManager__scanForBetaProgramsWithSeedingDevice_
     v57 = 0;
     if (v9 && (v62 = [*(*(v48 + 7) + 8) descriptor], v61 = 1, v62))
     {
-      v60 = [*(*(v48 + 7) + 8) descriptor];
+      descriptor = [*(*(v48 + 7) + 8) descriptor];
       v30 = 1;
       v59 = 1;
-      v58 = [v60 humanReadableUpdateName];
+      humanReadableUpdateName3 = [descriptor humanReadableUpdateName];
       v57 = 1;
-      v31 = v58;
+      v31 = humanReadableUpdateName3;
     }
 
     else
@@ -18575,12 +18575,12 @@ uint64_t __68__SUSUISoftwareUpdateManager__scanForBetaProgramsWithSeedingDevice_
     MEMORY[0x277D82BD8](WeakRetained);
     if (v57)
     {
-      MEMORY[0x277D82BD8](v58);
+      MEMORY[0x277D82BD8](humanReadableUpdateName3);
     }
 
     if (v59)
     {
-      MEMORY[0x277D82BD8](v60);
+      MEMORY[0x277D82BD8](descriptor);
     }
 
     if (v61)
@@ -18590,7 +18590,7 @@ uint64_t __68__SUSUISoftwareUpdateManager__scanForBetaProgramsWithSeedingDevice_
 
     if (v63)
     {
-      MEMORY[0x277D82BD8](v64);
+      MEMORY[0x277D82BD8](humanReadableUpdateName2);
     }
 
     if (v65)
@@ -18604,14 +18604,14 @@ uint64_t __68__SUSUISoftwareUpdateManager__scanForBetaProgramsWithSeedingDevice_
 
   objc_storeStrong(&v69, 0);
   [*(v48 + 7) setState:15];
-  v16 = [*(v48 + 7) delegate];
+  delegate = [*(v48 + 7) delegate];
   v17 = objc_opt_respondsToSelector();
-  MEMORY[0x277D82BD8](v16);
+  MEMORY[0x277D82BD8](delegate);
   if (v17)
   {
-    v15 = [*(v48 + 7) delegate];
-    [v15 manager:*(v48 + 7) installStartedForUpdate:*(v48 + 4)];
-    MEMORY[0x277D82BD8](v15);
+    delegate2 = [*(v48 + 7) delegate];
+    [delegate2 manager:*(v48 + 7) installStartedForUpdate:*(v48 + 4)];
+    MEMORY[0x277D82BD8](delegate2);
   }
 
   v14 = 0;
@@ -18620,21 +18620,21 @@ uint64_t __68__SUSUISoftwareUpdateManager__scanForBetaProgramsWithSeedingDevice_
   *MEMORY[0x277D85DE8];
 }
 
-- (void)manager:(id)a3 installDidFail:(id)a4 withError:(id)a5
+- (void)manager:(id)manager installDidFail:(id)fail withError:(id)error
 {
   v51 = &v69;
-  obj = a4;
-  v50 = a5;
+  obj = fail;
+  errorCopy = error;
   v48 = "[SUSUISoftwareUpdateManager manager:installDidFail:withError:]";
   v77 = *MEMORY[0x277D85DE8];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, manager);
   v74 = 0;
   objc_storeStrong(&v74, obj);
   v73 = 0;
-  objc_storeStrong(&v73, v50);
+  objc_storeStrong(&v73, errorCopy);
   v72 = _SUSUILoggingFacility();
   v71 = 0;
   if (os_log_type_enabled(v72, OS_LOG_TYPE_DEFAULT))
@@ -18651,10 +18651,10 @@ uint64_t __68__SUSUISoftwareUpdateManager__scanForBetaProgramsWithSeedingDevice_
     v68 = 0;
     if (v7)
     {
-      v8 = [*(*(v51 + 8) + 120) humanReadableUpdateName];
-      *v51 = v8;
+      humanReadableUpdateName = [*(*(v51 + 8) + 120) humanReadableUpdateName];
+      *v51 = humanReadableUpdateName;
       v68 = 1;
-      v42 = v8;
+      v42 = humanReadableUpdateName;
     }
 
     else
@@ -18669,9 +18669,9 @@ uint64_t __68__SUSUISoftwareUpdateManager__scanForBetaProgramsWithSeedingDevice_
     v66 = 0;
     if (v9)
     {
-      v67 = [*(*(v51 + 8) + 128) humanReadableUpdateName];
+      humanReadableUpdateName2 = [*(*(v51 + 8) + 128) humanReadableUpdateName];
       v66 = 1;
-      v38 = v67;
+      v38 = humanReadableUpdateName2;
     }
 
     else
@@ -18689,12 +18689,12 @@ uint64_t __68__SUSUISoftwareUpdateManager__scanForBetaProgramsWithSeedingDevice_
     v60 = 0;
     if (v10 && (v65 = [*(*(v51 + 8) + 8) descriptor], v64 = 1, v65))
     {
-      v63 = [*(*(v51 + 8) + 8) descriptor];
+      descriptor = [*(*(v51 + 8) + 8) descriptor];
       v32 = 1;
       v62 = 1;
-      v61 = [v63 humanReadableUpdateName];
+      humanReadableUpdateName3 = [descriptor humanReadableUpdateName];
       v60 = 1;
-      v33 = v61;
+      v33 = humanReadableUpdateName3;
     }
 
     else
@@ -18776,12 +18776,12 @@ uint64_t __68__SUSUISoftwareUpdateManager__scanForBetaProgramsWithSeedingDevice_
     MEMORY[0x277D82BD8](WeakRetained);
     if (v60)
     {
-      MEMORY[0x277D82BD8](v61);
+      MEMORY[0x277D82BD8](humanReadableUpdateName3);
     }
 
     if (v62)
     {
-      MEMORY[0x277D82BD8](v63);
+      MEMORY[0x277D82BD8](descriptor);
     }
 
     if (v64)
@@ -18791,7 +18791,7 @@ uint64_t __68__SUSUISoftwareUpdateManager__scanForBetaProgramsWithSeedingDevice_
 
     if (v66)
     {
-      MEMORY[0x277D82BD8](v67);
+      MEMORY[0x277D82BD8](humanReadableUpdateName2);
     }
 
     if (v68)
@@ -18804,14 +18804,14 @@ uint64_t __68__SUSUISoftwareUpdateManager__scanForBetaProgramsWithSeedingDevice_
   }
 
   objc_storeStrong(&v72, 0);
-  v18 = [*(v51 + 8) delegate];
+  delegate = [*(v51 + 8) delegate];
   v19 = objc_opt_respondsToSelector();
-  MEMORY[0x277D82BD8](v18);
+  MEMORY[0x277D82BD8](delegate);
   if (v19)
   {
-    v17 = [*(v51 + 8) delegate];
-    [v17 manager:*(v51 + 8) installFailedWithError:*(v51 + 4)];
-    MEMORY[0x277D82BD8](v17);
+    delegate2 = [*(v51 + 8) delegate];
+    [delegate2 manager:*(v51 + 8) installFailedWithError:*(v51 + 4)];
+    MEMORY[0x277D82BD8](delegate2);
   }
 
   [*(v51 + 8) refreshState];
@@ -18822,16 +18822,16 @@ uint64_t __68__SUSUISoftwareUpdateManager__scanForBetaProgramsWithSeedingDevice_
   *MEMORY[0x277D85DE8];
 }
 
-- (void)manager:(id)a3 installDidFinish:(id)a4
+- (void)manager:(id)manager installDidFinish:(id)finish
 {
   v48 = &v66;
-  obj = a4;
+  obj = finish;
   v46 = "[SUSUISoftwareUpdateManager manager:installDidFinish:]";
   v73 = *MEMORY[0x277D85DE8];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, manager);
   v70 = 0;
   objc_storeStrong(&v70, obj);
   v69 = _SUSUILoggingFacility();
@@ -18850,10 +18850,10 @@ uint64_t __68__SUSUISoftwareUpdateManager__scanForBetaProgramsWithSeedingDevice_
     v65 = 0;
     if (v6)
     {
-      v7 = [*(*(v48 + 7) + 120) humanReadableUpdateName];
-      *v48 = v7;
+      humanReadableUpdateName = [*(*(v48 + 7) + 120) humanReadableUpdateName];
+      *v48 = humanReadableUpdateName;
       v65 = 1;
-      v40 = v7;
+      v40 = humanReadableUpdateName;
     }
 
     else
@@ -18868,9 +18868,9 @@ uint64_t __68__SUSUISoftwareUpdateManager__scanForBetaProgramsWithSeedingDevice_
     v63 = 0;
     if (v8)
     {
-      v64 = [*(*(v48 + 7) + 128) humanReadableUpdateName];
+      humanReadableUpdateName2 = [*(*(v48 + 7) + 128) humanReadableUpdateName];
       v63 = 1;
-      v36 = v64;
+      v36 = humanReadableUpdateName2;
     }
 
     else
@@ -18888,12 +18888,12 @@ uint64_t __68__SUSUISoftwareUpdateManager__scanForBetaProgramsWithSeedingDevice_
     v57 = 0;
     if (v9 && (v62 = [*(*(v48 + 7) + 8) descriptor], v61 = 1, v62))
     {
-      v60 = [*(*(v48 + 7) + 8) descriptor];
+      descriptor = [*(*(v48 + 7) + 8) descriptor];
       v30 = 1;
       v59 = 1;
-      v58 = [v60 humanReadableUpdateName];
+      humanReadableUpdateName3 = [descriptor humanReadableUpdateName];
       v57 = 1;
-      v31 = v58;
+      v31 = humanReadableUpdateName3;
     }
 
     else
@@ -18974,12 +18974,12 @@ uint64_t __68__SUSUISoftwareUpdateManager__scanForBetaProgramsWithSeedingDevice_
     MEMORY[0x277D82BD8](WeakRetained);
     if (v57)
     {
-      MEMORY[0x277D82BD8](v58);
+      MEMORY[0x277D82BD8](humanReadableUpdateName3);
     }
 
     if (v59)
     {
-      MEMORY[0x277D82BD8](v60);
+      MEMORY[0x277D82BD8](descriptor);
     }
 
     if (v61)
@@ -18989,7 +18989,7 @@ uint64_t __68__SUSUISoftwareUpdateManager__scanForBetaProgramsWithSeedingDevice_
 
     if (v63)
     {
-      MEMORY[0x277D82BD8](v64);
+      MEMORY[0x277D82BD8](humanReadableUpdateName2);
     }
 
     if (v65)
@@ -19003,14 +19003,14 @@ uint64_t __68__SUSUISoftwareUpdateManager__scanForBetaProgramsWithSeedingDevice_
 
   objc_storeStrong(&v69, 0);
   [*(v48 + 7) setState:16];
-  v16 = [*(v48 + 7) delegate];
+  delegate = [*(v48 + 7) delegate];
   v17 = objc_opt_respondsToSelector();
-  MEMORY[0x277D82BD8](v16);
+  MEMORY[0x277D82BD8](delegate);
   if (v17)
   {
-    v15 = [*(v48 + 7) delegate];
-    [v15 manager:*(v48 + 7) installFinished:*(v48 + 4)];
-    MEMORY[0x277D82BD8](v15);
+    delegate2 = [*(v48 + 7) delegate];
+    [delegate2 manager:*(v48 + 7) installFinished:*(v48 + 4)];
+    MEMORY[0x277D82BD8](delegate2);
   }
 
   v14 = 0;
@@ -19019,18 +19019,18 @@ uint64_t __68__SUSUISoftwareUpdateManager__scanForBetaProgramsWithSeedingDevice_
   *MEMORY[0x277D85DE8];
 }
 
-- (void)manager:(id)a3 autoUpdateScheduleStateChanged:(BOOL)a4 autoInstallOperation:(id)a5
+- (void)manager:(id)manager autoUpdateScheduleStateChanged:(BOOL)changed autoInstallOperation:(id)operation
 {
   v50 = &v68;
-  v48 = a4;
-  obj = a5;
+  changedCopy = changed;
+  obj = operation;
   v47 = "[SUSUISoftwareUpdateManager manager:autoUpdateScheduleStateChanged:autoInstallOperation:]";
   v76 = *MEMORY[0x277D85DE8];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v73 = v48;
+  objc_storeStrong(location, manager);
+  v73 = changedCopy;
   v72 = 0;
   objc_storeStrong(&v72, obj);
   v71 = _SUSUILoggingFacility();
@@ -19049,10 +19049,10 @@ uint64_t __68__SUSUISoftwareUpdateManager__scanForBetaProgramsWithSeedingDevice_
     v67 = 0;
     if (v7)
     {
-      v8 = [*(*(v50 + 8) + 120) humanReadableUpdateName];
-      *v50 = v8;
+      humanReadableUpdateName = [*(*(v50 + 8) + 120) humanReadableUpdateName];
+      *v50 = humanReadableUpdateName;
       v67 = 1;
-      v41 = v8;
+      v41 = humanReadableUpdateName;
     }
 
     else
@@ -19067,9 +19067,9 @@ uint64_t __68__SUSUISoftwareUpdateManager__scanForBetaProgramsWithSeedingDevice_
     v65 = 0;
     if (v9)
     {
-      v66 = [*(*(v50 + 8) + 128) humanReadableUpdateName];
+      humanReadableUpdateName2 = [*(*(v50 + 8) + 128) humanReadableUpdateName];
       v65 = 1;
-      v37 = v66;
+      v37 = humanReadableUpdateName2;
     }
 
     else
@@ -19087,12 +19087,12 @@ uint64_t __68__SUSUISoftwareUpdateManager__scanForBetaProgramsWithSeedingDevice_
     v59 = 0;
     if (v10 && (v64 = [*(*(v50 + 8) + 8) descriptor], v63 = 1, v64))
     {
-      v62 = [*(*(v50 + 8) + 8) descriptor];
+      descriptor = [*(*(v50 + 8) + 8) descriptor];
       v31 = 1;
       v61 = 1;
-      v60 = [v62 humanReadableUpdateName];
+      humanReadableUpdateName3 = [descriptor humanReadableUpdateName];
       v59 = 1;
-      v32 = v60;
+      v32 = humanReadableUpdateName3;
     }
 
     else
@@ -19173,12 +19173,12 @@ uint64_t __68__SUSUISoftwareUpdateManager__scanForBetaProgramsWithSeedingDevice_
     MEMORY[0x277D82BD8](WeakRetained);
     if (v59)
     {
-      MEMORY[0x277D82BD8](v60);
+      MEMORY[0x277D82BD8](humanReadableUpdateName3);
     }
 
     if (v61)
     {
-      MEMORY[0x277D82BD8](v62);
+      MEMORY[0x277D82BD8](descriptor);
     }
 
     if (v63)
@@ -19188,7 +19188,7 @@ uint64_t __68__SUSUISoftwareUpdateManager__scanForBetaProgramsWithSeedingDevice_
 
     if (v65)
     {
-      MEMORY[0x277D82BD8](v66);
+      MEMORY[0x277D82BD8](humanReadableUpdateName2);
     }
 
     if (v67)
@@ -19217,18 +19217,18 @@ uint64_t __68__SUSUISoftwareUpdateManager__scanForBetaProgramsWithSeedingDevice_
   *MEMORY[0x277D85DE8];
 }
 
-- (void)manager:(id)a3 rollingBackStateChanged:(BOOL)a4 rollback:(id)a5
+- (void)manager:(id)manager rollingBackStateChanged:(BOOL)changed rollback:(id)rollback
 {
   v51 = &v69;
-  v49 = a4;
-  obj = a5;
+  changedCopy = changed;
+  obj = rollback;
   v48 = "[SUSUISoftwareUpdateManager manager:rollingBackStateChanged:rollback:]";
   v77 = *MEMORY[0x277D85DE8];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v74 = v49;
+  objc_storeStrong(location, manager);
+  v74 = changedCopy;
   v73 = 0;
   objc_storeStrong(&v73, obj);
   v72 = _SUSUILoggingFacility();
@@ -19247,10 +19247,10 @@ uint64_t __68__SUSUISoftwareUpdateManager__scanForBetaProgramsWithSeedingDevice_
     v68 = 0;
     if (v7)
     {
-      v8 = [*(*(v51 + 8) + 120) humanReadableUpdateName];
-      *v51 = v8;
+      humanReadableUpdateName = [*(*(v51 + 8) + 120) humanReadableUpdateName];
+      *v51 = humanReadableUpdateName;
       v68 = 1;
-      v42 = v8;
+      v42 = humanReadableUpdateName;
     }
 
     else
@@ -19265,9 +19265,9 @@ uint64_t __68__SUSUISoftwareUpdateManager__scanForBetaProgramsWithSeedingDevice_
     v66 = 0;
     if (v9)
     {
-      v67 = [*(*(v51 + 8) + 128) humanReadableUpdateName];
+      humanReadableUpdateName2 = [*(*(v51 + 8) + 128) humanReadableUpdateName];
       v66 = 1;
-      v38 = v67;
+      v38 = humanReadableUpdateName2;
     }
 
     else
@@ -19285,12 +19285,12 @@ uint64_t __68__SUSUISoftwareUpdateManager__scanForBetaProgramsWithSeedingDevice_
     v60 = 0;
     if (v10 && (v65 = [*(*(v51 + 8) + 8) descriptor], v64 = 1, v65))
     {
-      v63 = [*(*(v51 + 8) + 8) descriptor];
+      descriptor = [*(*(v51 + 8) + 8) descriptor];
       v32 = 1;
       v62 = 1;
-      v61 = [v63 humanReadableUpdateName];
+      humanReadableUpdateName3 = [descriptor humanReadableUpdateName];
       v60 = 1;
-      v33 = v61;
+      v33 = humanReadableUpdateName3;
     }
 
     else
@@ -19377,12 +19377,12 @@ uint64_t __68__SUSUISoftwareUpdateManager__scanForBetaProgramsWithSeedingDevice_
     MEMORY[0x277D82BD8](WeakRetained);
     if (v60)
     {
-      MEMORY[0x277D82BD8](v61);
+      MEMORY[0x277D82BD8](humanReadableUpdateName3);
     }
 
     if (v62)
     {
-      MEMORY[0x277D82BD8](v63);
+      MEMORY[0x277D82BD8](descriptor);
     }
 
     if (v64)
@@ -19392,7 +19392,7 @@ uint64_t __68__SUSUISoftwareUpdateManager__scanForBetaProgramsWithSeedingDevice_
 
     if (v66)
     {
-      MEMORY[0x277D82BD8](v67);
+      MEMORY[0x277D82BD8](humanReadableUpdateName2);
     }
 
     if (v68)
@@ -19421,21 +19421,21 @@ uint64_t __68__SUSUISoftwareUpdateManager__scanForBetaProgramsWithSeedingDevice_
   *MEMORY[0x277D85DE8];
 }
 
-- (void)manager:(id)a3 inUserInteraction:(id)a4
+- (void)manager:(id)manager inUserInteraction:(id)interaction
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, manager);
   v8 = 0;
-  objc_storeStrong(&v8, a4);
-  WeakRetained = objc_loadWeakRetained(&v10->_delegate);
+  objc_storeStrong(&v8, interaction);
+  WeakRetained = objc_loadWeakRetained(&selfCopy->_delegate);
   v7 = objc_opt_respondsToSelector();
   MEMORY[0x277D82BD8](WeakRetained);
   if (v7)
   {
-    v4 = objc_loadWeakRetained(&v10->_delegate);
-    [v4 manager:v10 inUserInteraction:v8];
+    v4 = objc_loadWeakRetained(&selfCopy->_delegate);
+    [v4 manager:selfCopy inUserInteraction:v8];
     MEMORY[0x277D82BD8](v4);
   }
 
@@ -19443,22 +19443,22 @@ uint64_t __68__SUSUISoftwareUpdateManager__scanForBetaProgramsWithSeedingDevice_
   objc_storeStrong(location, 0);
 }
 
-- (void)manager:(id)a3 handleDDMDeclaration:(id)a4
+- (void)manager:(id)manager handleDDMDeclaration:(id)declaration
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, manager);
   v8 = 0;
-  objc_storeStrong(&v8, a4);
-  [(SUSUISoftwareUpdateManager *)v10 setDdmDeclaration:v8];
-  WeakRetained = objc_loadWeakRetained(&v10->_delegate);
+  objc_storeStrong(&v8, declaration);
+  [(SUSUISoftwareUpdateManager *)selfCopy setDdmDeclaration:v8];
+  WeakRetained = objc_loadWeakRetained(&selfCopy->_delegate);
   v7 = objc_opt_respondsToSelector();
   MEMORY[0x277D82BD8](WeakRetained);
   if (v7)
   {
-    v4 = objc_loadWeakRetained(&v10->_delegate);
-    [v4 manager:v10 handleDDMDeclaration:v8];
+    v4 = objc_loadWeakRetained(&selfCopy->_delegate);
+    [v4 manager:selfCopy handleDDMDeclaration:v8];
     MEMORY[0x277D82BD8](v4);
   }
 

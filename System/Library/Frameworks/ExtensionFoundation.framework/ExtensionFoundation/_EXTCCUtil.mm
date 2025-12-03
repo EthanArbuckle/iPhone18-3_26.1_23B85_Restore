@@ -1,16 +1,16 @@
 @interface _EXTCCUtil
-+ (BOOL)photoServiceAuthorizationStatusWithExtensionUUID:(id)a3 error:(id *)a4;
++ (BOOL)photoServiceAuthorizationStatusWithExtensionUUID:(id)d error:(id *)error;
 @end
 
 @implementation _EXTCCUtil
 
-+ (BOOL)photoServiceAuthorizationStatusWithExtensionUUID:(id)a3 error:(id *)a4
++ (BOOL)photoServiceAuthorizationStatusWithExtensionUUID:(id)d error:(id *)error
 {
   v38 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [objc_alloc(MEMORY[0x1E69635D0]) initWithUUID:v5 error:0];
-  v7 = [v6 containingBundleRecord];
-  if (v7 && (Default = CFAllocatorGetDefault(), (v9 = CFBundleCreate(Default, [v7 URL])) != 0))
+  dCopy = d;
+  v6 = [objc_alloc(MEMORY[0x1E69635D0]) initWithUUID:dCopy error:0];
+  containingBundleRecord = [v6 containingBundleRecord];
+  if (containingBundleRecord && (Default = CFAllocatorGetDefault(), (v9 = CFBundleCreate(Default, [containingBundleRecord URL])) != 0))
   {
     v10 = v9;
     v31 = 0u;
@@ -23,8 +23,8 @@
     {
       v27 = v10;
       v28 = v6;
-      v29 = a4;
-      v30 = v5;
+      errorCopy = error;
+      v30 = dCopy;
       v13 = *v32;
       v14 = MEMORY[0x1E69D54F8];
       v15 = MEMORY[0x1E69D55C8];
@@ -60,8 +60,8 @@
       }
 
 LABEL_14:
-      a4 = v29;
-      v5 = v30;
+      error = errorCopy;
+      dCopy = v30;
       v10 = v27;
       v6 = v28;
     }
@@ -74,8 +74,8 @@ LABEL_14:
   {
     v35 = *MEMORY[0x1E696A578];
     v20 = MEMORY[0x1E696AEC0];
-    v21 = [v5 UUIDString];
-    v12 = [v20 stringWithFormat:@"Unable to resolve plugin for UUID %@", v21];
+    uUIDString = [dCopy UUIDString];
+    v12 = [v20 stringWithFormat:@"Unable to resolve plugin for UUID %@", uUIDString];
     v36 = v12;
     v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v36 forKeys:&v35 count:1];
 
@@ -83,10 +83,10 @@ LABEL_14:
     LOBYTE(v12) = 0;
   }
 
-  if (a4)
+  if (error)
   {
     v24 = v22;
-    *a4 = v22;
+    *error = v22;
   }
 
   v25 = *MEMORY[0x1E69E9840];

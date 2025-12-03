@@ -1,48 +1,48 @@
 @interface SBContinuousExposeSwitcherToAppModifier
-- (CGPoint)contentOffsetForIndex:(unint64_t)a3 alignment:(int64_t)a4;
-- (CGRect)frameForIndex:(unint64_t)a3;
-- (SBContinuousExposeSwitcherToAppModifier)initWithTransitionID:(id)a3 direction:(int64_t)a4 multitaskingModifier:(id)a5;
+- (CGPoint)contentOffsetForIndex:(unint64_t)index alignment:(int64_t)alignment;
+- (CGRect)frameForIndex:(unint64_t)index;
+- (SBContinuousExposeSwitcherToAppModifier)initWithTransitionID:(id)d direction:(int64_t)direction multitaskingModifier:(id)modifier;
 - (double)fadeInDelayForSplitViewHandles;
 - (id)_layoutSettings;
-- (id)adjustedAppLayoutsForAppLayouts:(id)a3;
-- (id)animationAttributesForLayoutElement:(id)a3;
-- (id)appLayoutsForContinuousExposeIdentifier:(id)a3;
+- (id)adjustedAppLayoutsForAppLayouts:(id)layouts;
+- (id)animationAttributesForLayoutElement:(id)element;
+- (id)appLayoutsForContinuousExposeIdentifier:(id)identifier;
 - (id)transitionWillBegin;
 - (id)transitionWillUpdate;
 - (id)visibleAppLayouts;
-- (void)didMoveToParentModifier:(id)a3;
+- (void)didMoveToParentModifier:(id)modifier;
 @end
 
 @implementation SBContinuousExposeSwitcherToAppModifier
 
-- (SBContinuousExposeSwitcherToAppModifier)initWithTransitionID:(id)a3 direction:(int64_t)a4 multitaskingModifier:(id)a5
+- (SBContinuousExposeSwitcherToAppModifier)initWithTransitionID:(id)d direction:(int64_t)direction multitaskingModifier:(id)modifier
 {
-  v9 = a5;
+  modifierCopy = modifier;
   v13.receiver = self;
   v13.super_class = SBContinuousExposeSwitcherToAppModifier;
-  v10 = [(SBTransitionSwitcherModifier *)&v13 initWithTransitionID:a3];
+  v10 = [(SBTransitionSwitcherModifier *)&v13 initWithTransitionID:d];
   v11 = v10;
   if (v10)
   {
-    v10->_direction = a4;
-    objc_storeStrong(&v10->_multitaskingModifier, a5);
+    v10->_direction = direction;
+    objc_storeStrong(&v10->_multitaskingModifier, modifier);
   }
 
   return v11;
 }
 
-- (void)didMoveToParentModifier:(id)a3
+- (void)didMoveToParentModifier:(id)modifier
 {
   v9.receiver = self;
   v9.super_class = SBContinuousExposeSwitcherToAppModifier;
   [(SBChainableModifier *)&v9 didMoveToParentModifier:?];
-  if (a3)
+  if (modifier)
   {
     if (!self->_coplanarModifier)
     {
       v5 = [SBCoplanarSwitcherModifier alloc];
-      v6 = [(SBContinuousExposeSwitcherToAppModifier *)self appLayoutOnStage];
-      v7 = [(SBCoplanarSwitcherModifier *)v5 initWithActiveAppLayout:v6];
+      appLayoutOnStage = [(SBContinuousExposeSwitcherToAppModifier *)self appLayoutOnStage];
+      v7 = [(SBCoplanarSwitcherModifier *)v5 initWithActiveAppLayout:appLayoutOnStage];
       coplanarModifier = self->_coplanarModifier;
       self->_coplanarModifier = v7;
 
@@ -55,45 +55,45 @@
 {
   v13.receiver = self;
   v13.super_class = SBContinuousExposeSwitcherToAppModifier;
-  v3 = [(SBTransitionSwitcherModifier *)&v13 transitionWillBegin];
+  transitionWillBegin = [(SBTransitionSwitcherModifier *)&v13 transitionWillBegin];
   if (self->_direction == 1)
   {
     v4 = [SBScrollToAppLayoutSwitcherEventResponse alloc];
-    v5 = [(SBContinuousExposeSwitcherToAppModifier *)self appLayouts];
-    v6 = [v5 firstObject];
-    v7 = [(SBScrollToAppLayoutSwitcherEventResponse *)v4 initWithAppLayout:v6 alignment:0 animated:0];
+    appLayouts = [(SBContinuousExposeSwitcherToAppModifier *)self appLayouts];
+    firstObject = [appLayouts firstObject];
+    v7 = [(SBScrollToAppLayoutSwitcherEventResponse *)v4 initWithAppLayout:firstObject alignment:0 animated:0];
 
-    v8 = SBAppendSwitcherModifierResponse(v7, v3);
+    v8 = SBAppendSwitcherModifierResponse(v7, transitionWillBegin);
 
     v9 = objc_alloc_init(SBInvalidateAdjustedAppLayoutsSwitcherEventResponse);
     v10 = SBAppendSwitcherModifierResponse(v9, v8);
 
     v11 = [[SBUpdateLayoutSwitcherEventResponse alloc] initWithOptions:2 updateMode:0];
-    v3 = SBAppendSwitcherModifierResponse(v11, v10);
+    transitionWillBegin = SBAppendSwitcherModifierResponse(v11, v10);
   }
 
-  return v3;
+  return transitionWillBegin;
 }
 
 - (id)transitionWillUpdate
 {
   v6.receiver = self;
   v6.super_class = SBContinuousExposeSwitcherToAppModifier;
-  v2 = [(SBTransitionSwitcherModifier *)&v6 transitionWillUpdate];
+  transitionWillUpdate = [(SBTransitionSwitcherModifier *)&v6 transitionWillUpdate];
   v3 = objc_alloc_init(SBInvalidateAdjustedAppLayoutsSwitcherEventResponse);
-  v4 = SBAppendSwitcherModifierResponse(v3, v2);
+  v4 = SBAppendSwitcherModifierResponse(v3, transitionWillUpdate);
 
   return v4;
 }
 
-- (id)appLayoutsForContinuousExposeIdentifier:(id)a3
+- (id)appLayoutsForContinuousExposeIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v15.receiver = self;
   v15.super_class = SBContinuousExposeSwitcherToAppModifier;
-  v5 = [(SBContinuousExposeSwitcherToAppModifier *)&v15 appLayoutsForContinuousExposeIdentifier:v4];
-  v6 = [(SBContinuousExposeSwitcherToAppModifier *)self appLayoutOnStage];
-  v7 = v6;
+  v5 = [(SBContinuousExposeSwitcherToAppModifier *)&v15 appLayoutsForContinuousExposeIdentifier:identifierCopy];
+  appLayoutOnStage = [(SBContinuousExposeSwitcherToAppModifier *)self appLayoutOnStage];
+  v7 = appLayoutOnStage;
   if (self->_direction)
   {
     v8 = 1;
@@ -101,10 +101,10 @@
 
   else
   {
-    v8 = v6 == 0;
+    v8 = appLayoutOnStage == 0;
   }
 
-  if (v8 || ([v6 continuousExposeIdentifier], v9 = objc_claimAutoreleasedReturnValue(), v10 = BSEqualStrings(), v9, !v10))
+  if (v8 || ([appLayoutOnStage continuousExposeIdentifier], v9 = objc_claimAutoreleasedReturnValue(), v10 = BSEqualStrings(), v9, !v10))
   {
     v11 = v5;
   }
@@ -138,9 +138,9 @@ uint64_t __83__SBContinuousExposeSwitcherToAppModifier_appLayoutsForContinuousEx
   return v4;
 }
 
-- (id)adjustedAppLayoutsForAppLayouts:(id)a3
+- (id)adjustedAppLayoutsForAppLayouts:(id)layouts
 {
-  v4 = a3;
+  layoutsCopy = layouts;
   if (self->_direction == 1)
   {
     v14 = 0;
@@ -149,15 +149,15 @@ uint64_t __83__SBContinuousExposeSwitcherToAppModifier_appLayoutsForContinuousEx
     v17 = __Block_byref_object_copy__83;
     v18 = __Block_byref_object_dispose__83;
     v19 = 0;
-    v5 = [(SBContinuousExposeSwitcherToAppModifier *)self multitaskingModifier];
+    multitaskingModifier = [(SBContinuousExposeSwitcherToAppModifier *)self multitaskingModifier];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __75__SBContinuousExposeSwitcherToAppModifier_adjustedAppLayoutsForAppLayouts___block_invoke;
     v10[3] = &unk_2783AB258;
     v13 = &v14;
-    v6 = v5;
+    v6 = multitaskingModifier;
     v11 = v6;
-    v12 = v4;
+    v12 = layoutsCopy;
     [(SBChainableModifier *)self performTransactionWithTemporaryChildModifier:v6 usingBlock:v10];
     v7 = v15[5];
 
@@ -168,7 +168,7 @@ uint64_t __83__SBContinuousExposeSwitcherToAppModifier_appLayoutsForContinuousEx
   {
     v9.receiver = self;
     v9.super_class = SBContinuousExposeSwitcherToAppModifier;
-    v7 = [(SBTransitionSwitcherModifier *)&v9 adjustedAppLayoutsForAppLayouts:v4];
+    v7 = [(SBTransitionSwitcherModifier *)&v9 adjustedAppLayoutsForAppLayouts:layoutsCopy];
   }
 
   return v7;
@@ -182,7 +182,7 @@ void __75__SBContinuousExposeSwitcherToAppModifier_adjustedAppLayoutsForAppLayou
   *(v3 + 40) = v2;
 }
 
-- (CGRect)frameForIndex:(unint64_t)a3
+- (CGRect)frameForIndex:(unint64_t)index
 {
   direction = self->_direction;
   if ([(SBTransitionSwitcherModifier *)self transitionPhase]== 1 && direction == 1)
@@ -194,20 +194,20 @@ void __75__SBContinuousExposeSwitcherToAppModifier_adjustedAppLayoutsForAppLayou
     v6 = *(MEMORY[0x277CBF3A0] + 16);
     v42 = *MEMORY[0x277CBF3A0];
     v43 = v6;
-    v7 = [(SBContinuousExposeSwitcherToAppModifier *)self appLayouts];
-    v8 = [v7 objectAtIndex:a3];
+    appLayouts = [(SBContinuousExposeSwitcherToAppModifier *)self appLayouts];
+    v8 = [appLayouts objectAtIndex:index];
 
     v37.receiver = self;
     v37.super_class = SBContinuousExposeSwitcherToAppModifier;
-    v9 = [(SBContinuousExposeSwitcherToAppModifier *)&v37 continuousExposeIdentifiersInStrip];
-    v10 = [v8 continuousExposeIdentifier];
-    v11 = [v9 containsObject:v10];
+    continuousExposeIdentifiersInStrip = [(SBContinuousExposeSwitcherToAppModifier *)&v37 continuousExposeIdentifiersInStrip];
+    continuousExposeIdentifier = [v8 continuousExposeIdentifier];
+    v11 = [continuousExposeIdentifiersInStrip containsObject:continuousExposeIdentifier];
 
-    v12 = [(SBContinuousExposeSwitcherToAppModifier *)self appLayoutOnStage];
-    v13 = [v8 isOrContainsAppLayout:v12];
+    appLayoutOnStage = [(SBContinuousExposeSwitcherToAppModifier *)self appLayoutOnStage];
+    v13 = [v8 isOrContainsAppLayout:appLayoutOnStage];
 
-    v14 = [(SBContinuousExposeSwitcherToAppModifier *)self desktopSpaceDisplayItems];
-    if ([v14 count] && objc_msgSend(v8, "containsAllItemsFromSet:", v14))
+    desktopSpaceDisplayItems = [(SBContinuousExposeSwitcherToAppModifier *)self desktopSpaceDisplayItems];
+    if ([desktopSpaceDisplayItems count] && objc_msgSend(v8, "containsAllItemsFromSet:", desktopSpaceDisplayItems))
     {
       coplanarModifier = self->_coplanarModifier;
       v36[0] = MEMORY[0x277D85DD0];
@@ -216,22 +216,22 @@ void __75__SBContinuousExposeSwitcherToAppModifier_adjustedAppLayoutsForAppLayou
       v36[3] = &unk_2783AA618;
       v36[4] = self;
       v36[5] = &v38;
-      v36[6] = a3;
+      v36[6] = index;
       [(SBChainableModifier *)self performTransactionWithTemporaryChildModifier:coplanarModifier usingBlock:v36];
     }
 
     else if (((v13 | v11) & 1) == 0)
     {
-      v24 = [(SBContinuousExposeSwitcherToAppModifier *)self multitaskingModifier];
+      multitaskingModifier = [(SBContinuousExposeSwitcherToAppModifier *)self multitaskingModifier];
       v31[0] = MEMORY[0x277D85DD0];
       v31[1] = 3221225472;
       v31[2] = __57__SBContinuousExposeSwitcherToAppModifier_frameForIndex___block_invoke_2;
       v31[3] = &unk_2783AA668;
       v34 = &v38;
-      v25 = v24;
-      v35 = a3;
+      v25 = multitaskingModifier;
+      indexCopy = index;
       v32 = v25;
-      v33 = self;
+      selfCopy = self;
       [(SBChainableModifier *)self performTransactionWithTemporaryChildModifier:v25 usingBlock:v31];
     }
 
@@ -247,7 +247,7 @@ void __75__SBContinuousExposeSwitcherToAppModifier_adjustedAppLayoutsForAppLayou
   {
     v30.receiver = self;
     v30.super_class = SBContinuousExposeSwitcherToAppModifier;
-    [(SBContinuousExposeSwitcherToAppModifier *)&v30 frameForIndex:a3];
+    [(SBContinuousExposeSwitcherToAppModifier *)&v30 frameForIndex:index];
     v17 = v16;
     v19 = v18;
     v21 = v20;
@@ -308,14 +308,14 @@ void __57__SBContinuousExposeSwitcherToAppModifier_frameForIndex___block_invoke_
   v15 = __Block_byref_object_dispose__83;
   v10.receiver = self;
   v10.super_class = SBContinuousExposeSwitcherToAppModifier;
-  v16 = [(SBContinuousExposeSwitcherToAppModifier *)&v10 visibleAppLayouts];
-  v3 = [(SBContinuousExposeSwitcherToAppModifier *)self multitaskingModifier];
+  visibleAppLayouts = [(SBContinuousExposeSwitcherToAppModifier *)&v10 visibleAppLayouts];
+  multitaskingModifier = [(SBContinuousExposeSwitcherToAppModifier *)self multitaskingModifier];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __60__SBContinuousExposeSwitcherToAppModifier_visibleAppLayouts__block_invoke;
   v7[3] = &unk_2783A8CE0;
   v9 = &v11;
-  v4 = v3;
+  v4 = multitaskingModifier;
   v8 = v4;
   [(SBChainableModifier *)self performTransactionWithTemporaryChildModifier:v4 usingBlock:v7];
   v5 = v12[5];
@@ -335,7 +335,7 @@ void __60__SBContinuousExposeSwitcherToAppModifier_visibleAppLayouts__block_invo
   *(v4 + 40) = v3;
 }
 
-- (CGPoint)contentOffsetForIndex:(unint64_t)a3 alignment:(int64_t)a4
+- (CGPoint)contentOffsetForIndex:(unint64_t)index alignment:(int64_t)alignment
 {
   v18 = 0;
   v19 = &v18;
@@ -343,16 +343,16 @@ void __60__SBContinuousExposeSwitcherToAppModifier_visibleAppLayouts__block_invo
   v22 = 0;
   v23 = 0;
   v21 = &unk_21F9DA6A3;
-  v7 = [(SBContinuousExposeSwitcherToAppModifier *)self multitaskingModifier];
+  multitaskingModifier = [(SBContinuousExposeSwitcherToAppModifier *)self multitaskingModifier];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __75__SBContinuousExposeSwitcherToAppModifier_contentOffsetForIndex_alignment___block_invoke;
   v13[3] = &unk_2783AA6B8;
   v15 = &v18;
-  v8 = v7;
+  v8 = multitaskingModifier;
   v14 = v8;
-  v16 = a3;
-  v17 = a4;
+  indexCopy = index;
+  alignmentCopy = alignment;
   [(SBChainableModifier *)self performTransactionWithTemporaryChildModifier:v8 usingBlock:v13];
   v9 = v19[4];
   v10 = v19[5];
@@ -374,29 +374,29 @@ uint64_t __75__SBContinuousExposeSwitcherToAppModifier_contentOffsetForIndex_ali
   return result;
 }
 
-- (id)animationAttributesForLayoutElement:(id)a3
+- (id)animationAttributesForLayoutElement:(id)element
 {
   v8.receiver = self;
   v8.super_class = SBContinuousExposeSwitcherToAppModifier;
-  v4 = [(SBTransitionSwitcherModifier *)&v8 animationAttributesForLayoutElement:a3];
+  v4 = [(SBTransitionSwitcherModifier *)&v8 animationAttributesForLayoutElement:element];
   v5 = [v4 mutableCopy];
 
   [v5 setLayoutUpdateMode:3];
-  v6 = [(SBContinuousExposeSwitcherToAppModifier *)self _layoutSettings];
-  [v5 setLayoutSettings:v6];
+  _layoutSettings = [(SBContinuousExposeSwitcherToAppModifier *)self _layoutSettings];
+  [v5 setLayoutSettings:_layoutSettings];
 
   return v5;
 }
 
 - (double)fadeInDelayForSplitViewHandles
 {
-  v2 = [(SBContinuousExposeSwitcherToAppModifier *)self switcherSettings];
-  v3 = [v2 windowingSettings];
-  [v3 percentageOfTransitionForSplitViewHandleFadeInDelay];
+  switcherSettings = [(SBContinuousExposeSwitcherToAppModifier *)self switcherSettings];
+  windowingSettings = [switcherSettings windowingSettings];
+  [windowingSettings percentageOfTransitionForSplitViewHandleFadeInDelay];
   v5 = v4;
-  v6 = [v2 animationSettings];
-  v7 = [v6 layoutSettings];
-  [v7 settlingDuration];
+  animationSettings = [switcherSettings animationSettings];
+  layoutSettings = [animationSettings layoutSettings];
+  [layoutSettings settlingDuration];
   v9 = v5 * v8;
 
   return v9;
@@ -404,11 +404,11 @@ uint64_t __75__SBContinuousExposeSwitcherToAppModifier_contentOffsetForIndex_ali
 
 - (id)_layoutSettings
 {
-  v2 = [(SBContinuousExposeSwitcherToAppModifier *)self switcherSettings];
-  v3 = [v2 animationSettings];
-  v4 = [v3 layoutSettings];
+  switcherSettings = [(SBContinuousExposeSwitcherToAppModifier *)self switcherSettings];
+  animationSettings = [switcherSettings animationSettings];
+  layoutSettings = [animationSettings layoutSettings];
 
-  return v4;
+  return layoutSettings;
 }
 
 @end

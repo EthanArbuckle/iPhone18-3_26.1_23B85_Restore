@@ -1,18 +1,18 @@
 @interface PSDSyncStateManager
 + (id)sharedSyncStateManager;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (PSDSyncStateManager)init;
-- (id)_queue_deviceSyncStateEntryForPairingID:(id)a3;
-- (id)domainAccessorForPairingID:(id)a3;
-- (id)isInitialSyncCompleteForPairingID:(id)a3;
-- (id)isSyncCompleteForPairingID:(id)a3;
+- (id)_queue_deviceSyncStateEntryForPairingID:(id)d;
+- (id)domainAccessorForPairingID:(id)d;
+- (id)isInitialSyncCompleteForPairingID:(id)d;
+- (id)isSyncCompleteForPairingID:(id)d;
 - (id)syncStatePersistentURL;
 - (void)_loadLegacySyncStateAndMigrateIfNeeded;
-- (void)_queue_tellRemoteObserversDidCompleteSyncForPairingID:(id)a3;
+- (void)_queue_tellRemoteObserversDidCompleteSyncForPairingID:(id)d;
 - (void)_updateMigrationCounter;
-- (void)connectionInterrupted:(id)a3;
-- (void)requestDeviceSyncStateEntriesForPairingIDs:(id)a3 completion:(id)a4;
-- (void)setSyncCompleteForPairingID:(id)a3 withBlock:(id)a4;
+- (void)connectionInterrupted:(id)interrupted;
+- (void)requestDeviceSyncStateEntriesForPairingIDs:(id)ds completion:(id)completion;
+- (void)setSyncCompleteForPairingID:(id)d withBlock:(id)block;
 - (void)setupListener;
 @end
 
@@ -24,7 +24,7 @@
   block[1] = 3221225472;
   block[2] = sub_1000097F0;
   block[3] = &unk_10002C778;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100038058 != -1)
   {
     dispatch_once(&qword_100038058, block);
@@ -53,13 +53,13 @@
 
     [(PSDSyncStateManager *)v2 _loadLegacySyncStateAndMigrateIfNeeded];
     v8 = +[PSYRegistrySingleton registry];
-    v9 = [v8 getPairedDevices];
+    getPairedDevices = [v8 getPairedDevices];
 
     v22 = 0u;
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v10 = v9;
+    v10 = getPairedDevices;
     v11 = [v10 countByEnumeratingWithState:&v20 objects:v25 count:16];
     if (v11)
     {
@@ -75,8 +75,8 @@
             objc_enumerationMutation(v10);
           }
 
-          v15 = [*(*(&v20 + 1) + 8 * v14) pairingID];
-          v16 = [(PSDSyncStateManager *)v2 isSyncCompleteForPairingID:v15];
+          pairingID = [*(*(&v20 + 1) + 8 * v14) pairingID];
+          v16 = [(PSDSyncStateManager *)v2 isSyncCompleteForPairingID:pairingID];
 
           v14 = v14 + 1;
         }
@@ -114,18 +114,18 @@
   }
 
   v5 = +[PSYRegistrySingleton registry];
-  v6 = [v5 pairingID];
+  pairingID = [v5 pairingID];
 
-  if (v6)
+  if (pairingID)
   {
-    v7 = [v6 UUIDString];
+    uUIDString = [pairingID UUIDString];
     v8 = +[PSYRegistrySingleton registry];
-    v9 = [v8 deviceForPairingID:v6];
+    v9 = [v8 deviceForPairingID:pairingID];
 
     v28 = v9;
     v10 = [v9 valueForProperty:PDRDevicePropertyKeyMigrationCount];
     v11 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v10 integerValue]);
-    v12 = [v11 stringValue];
+    stringValue = [v11 stringValue];
 
     v13 = PSYPairedSyncDomainName;
     v14 = CFPreferencesCopyValue(@"pairingIDMigrationCountDictionary", PSYPairedSyncDomainName, @"mobile", kCFPreferencesAnyHost);
@@ -155,12 +155,12 @@
       }
     }
 
-    v23 = [v19 objectForKeyedSubscript:v7];
-    v24 = [v12 isEqual:v23];
+    v23 = [v19 objectForKeyedSubscript:uUIDString];
+    v24 = [stringValue isEqual:v23];
 
     if ((v24 & 1) == 0)
     {
-      [v19 setObject:v12 forKeyedSubscript:v7];
+      [v19 setObject:stringValue forKeyedSubscript:uUIDString];
       v25 = psd_log();
       v26 = os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT);
 
@@ -188,11 +188,11 @@ LABEL_23:
 
   if (v18)
   {
-    v7 = psd_log();
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+    uUIDString = psd_log();
+    if (os_log_type_enabled(uUIDString, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Not updating because no active paired device", buf, 2u);
+      _os_log_impl(&_mh_execute_header, uUIDString, OS_LOG_TYPE_DEFAULT, "Not updating because no active paired device", buf, 2u);
     }
 
     goto LABEL_23;
@@ -201,19 +201,19 @@ LABEL_23:
 LABEL_24:
 }
 
-- (void)setSyncCompleteForPairingID:(id)a3 withBlock:(id)a4
+- (void)setSyncCompleteForPairingID:(id)d withBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  blockCopy = block;
   v8 = +[PSYRegistrySingleton registry];
-  v9 = [v8 deviceForPairingID:v6];
+  v9 = [v8 deviceForPairingID:dCopy];
 
-  v10 = [v9 isPaired];
-  v11 = [v9 isAltAccount];
+  isPaired = [v9 isPaired];
+  isAltAccount = [v9 isAltAccount];
   v12 = psd_log();
   v13 = os_log_type_enabled(v12, OS_LOG_TYPE_ERROR);
 
-  if ((v11 & 1) != 0 || !v10)
+  if ((isAltAccount & 1) != 0 || !isPaired)
   {
     if (v13)
     {
@@ -224,9 +224,9 @@ LABEL_24:
       }
     }
 
-    if (v7)
+    if (blockCopy)
     {
-      v7[2](v7);
+      blockCopy[2](blockCopy);
     }
   }
 
@@ -237,7 +237,7 @@ LABEL_24:
       v14 = psd_log();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
-        sub_10001AED8(v6, v14);
+        sub_10001AED8(dCopy, v14);
       }
     }
 
@@ -246,24 +246,24 @@ LABEL_24:
     block[1] = 3221225472;
     block[2] = sub_100009F54;
     block[3] = &unk_10002C908;
-    v18 = v6;
-    v19 = self;
-    v20 = v7;
+    v18 = dCopy;
+    selfCopy = self;
+    v20 = blockCopy;
     dispatch_async(queue, block);
   }
 }
 
-- (id)isSyncCompleteForPairingID:(id)a3
+- (id)isSyncCompleteForPairingID:(id)d
 {
-  v4 = a3;
-  v5 = v4;
+  dCopy = d;
+  v5 = dCopy;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
   v16 = sub_10000A278;
   v17 = sub_10000A288;
   v18 = 0;
-  if (v4)
+  if (dCopy)
   {
     queue = self->_queue;
     block[0] = _NSConcreteStackBlock;
@@ -271,7 +271,7 @@ LABEL_24:
     block[2] = sub_10000A290;
     block[3] = &unk_10002C7C8;
     block[4] = self;
-    v11 = v4;
+    v11 = dCopy;
     v12 = &v13;
     dispatch_sync(queue, block);
 
@@ -289,17 +289,17 @@ LABEL_24:
   return v8;
 }
 
-- (id)isInitialSyncCompleteForPairingID:(id)a3
+- (id)isInitialSyncCompleteForPairingID:(id)d
 {
-  v4 = a3;
-  v5 = v4;
+  dCopy = d;
+  v5 = dCopy;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
   v16 = sub_10000A278;
   v17 = sub_10000A288;
   v18 = 0;
-  if (v4)
+  if (dCopy)
   {
     queue = self->_queue;
     block[0] = _NSConcreteStackBlock;
@@ -307,7 +307,7 @@ LABEL_24:
     block[2] = sub_10000A438;
     block[3] = &unk_10002C7C8;
     block[4] = self;
-    v11 = v4;
+    v11 = dCopy;
     v12 = &v13;
     dispatch_sync(queue, block);
 
@@ -325,13 +325,13 @@ LABEL_24:
   return v8;
 }
 
-- (id)_queue_deviceSyncStateEntryForPairingID:(id)a3
+- (id)_queue_deviceSyncStateEntryForPairingID:(id)d
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_syncStateCache objectForKeyedSubscript:v4];
+  dCopy = d;
+  v5 = [(NSMutableDictionary *)self->_syncStateCache objectForKeyedSubscript:dCopy];
   if (!v5)
   {
-    v6 = [(PSDSyncStateManager *)self domainAccessorForPairingID:v4];
+    v6 = [(PSDSyncStateManager *)self domainAccessorForPairingID:dCopy];
     if (v6)
     {
       v5 = objc_opt_new();
@@ -355,8 +355,8 @@ LABEL_24:
         [v5 setSyncSwitchIndex:{objc_msgSend(v8, "switchIndex")}];
       }
 
-      [v5 setPairingID:v4];
-      [(NSMutableDictionary *)self->_syncStateCache setObject:v5 forKeyedSubscript:v4];
+      [v5 setPairingID:dCopy];
+      [(NSMutableDictionary *)self->_syncStateCache setObject:v5 forKeyedSubscript:dCopy];
     }
 
     else
@@ -369,7 +369,7 @@ LABEL_24:
         v11 = psd_log();
         if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
         {
-          sub_10001B028(v4);
+          sub_10001B028(dCopy);
         }
       }
 
@@ -380,17 +380,17 @@ LABEL_24:
   return v5;
 }
 
-- (id)domainAccessorForPairingID:(id)a3
+- (id)domainAccessorForPairingID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = +[PSYRegistrySingleton registry];
-  v5 = [v4 deviceForPairingID:v3];
+  v5 = [v4 deviceForPairingID:dCopy];
 
-  v6 = [v5 pairingStorePath];
-  v7 = v6;
+  pairingStorePath = [v5 pairingStorePath];
+  v7 = pairingStorePath;
   if (v5)
   {
-    v8 = v6 == 0;
+    v8 = pairingStorePath == 0;
   }
 
   else
@@ -405,7 +405,7 @@ LABEL_24:
 
   else
   {
-    v9 = [[NPSDomainAccessor alloc] initWithDomain:@"com.apple.pairedsync" pairingID:v3 pairingDataStore:v6];
+    v9 = [[NPSDomainAccessor alloc] initWithDomain:@"com.apple.pairedsync" pairingID:dCopy pairingDataStore:pairingStorePath];
   }
 
   return v9;
@@ -424,18 +424,18 @@ LABEL_24:
   [(NSXPCListener *)v6 resume];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  [v7 setExportedObject:self];
+  listenerCopy = listener;
+  connectionCopy = connection;
+  [connectionCopy setExportedObject:self];
   v8 = PSYSyncStateProviderXPCInterface();
-  [v7 setExportedInterface:v8];
+  [connectionCopy setExportedInterface:v8];
 
   v9 = PSYSyncStateObserverXPCInterface();
-  [v7 setRemoteObjectInterface:v9];
+  [connectionCopy setRemoteObjectInterface:v9];
 
-  objc_initWeak(&location, v7);
+  objc_initWeak(&location, connectionCopy);
   objc_initWeak(&from, self);
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
@@ -443,14 +443,14 @@ LABEL_24:
   v19[3] = &unk_10002CA90;
   objc_copyWeak(&v20, &from);
   objc_copyWeak(&v21, &location);
-  [v7 setInterruptionHandler:v19];
+  [connectionCopy setInterruptionHandler:v19];
   queue = self->_queue;
   v13 = _NSConcreteStackBlock;
   v14 = 3221225472;
   v15 = sub_10000A9C0;
   v16 = &unk_10002C8B8;
-  v17 = self;
-  v11 = v7;
+  selfCopy = self;
+  v11 = connectionCopy;
   v18 = v11;
   dispatch_sync(queue, &v13);
   [v11 resume];
@@ -463,40 +463,40 @@ LABEL_24:
   return 1;
 }
 
-- (void)connectionInterrupted:(id)a3
+- (void)connectionInterrupted:(id)interrupted
 {
-  v4 = a3;
+  interruptedCopy = interrupted;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10000AA64;
   v7[3] = &unk_10002C8B8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = interruptedCopy;
+  v6 = interruptedCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)requestDeviceSyncStateEntriesForPairingIDs:(id)a3 completion:(id)a4
+- (void)requestDeviceSyncStateEntriesForPairingIDs:(id)ds completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10000AB34;
   block[3] = &unk_10002C908;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = dsCopy;
+  selfCopy = self;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  v10 = dsCopy;
   dispatch_async(queue, block);
 }
 
-- (void)_queue_tellRemoteObserversDidCompleteSyncForPairingID:(id)a3
+- (void)_queue_tellRemoteObserversDidCompleteSyncForPairingID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -517,8 +517,8 @@ LABEL_24:
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v11 + 1) + 8 * v9) remoteObjectProxy];
-        [v10 didUpdateSyncForPairingID:v4];
+        remoteObjectProxy = [*(*(&v11 + 1) + 8 * v9) remoteObjectProxy];
+        [remoteObjectProxy didUpdateSyncForPairingID:dCopy];
 
         v9 = v9 + 1;
       }
@@ -533,25 +533,25 @@ LABEL_24:
 
 - (void)_loadLegacySyncStateAndMigrateIfNeeded
 {
-  v3 = [(PSDSyncStateManager *)self syncStatePersistentURL];
-  v4 = [NSData dataWithContentsOfURL:v3 options:0 error:0];
+  syncStatePersistentURL = [(PSDSyncStateManager *)self syncStatePersistentURL];
+  v4 = [NSData dataWithContentsOfURL:syncStatePersistentURL options:0 error:0];
   if (v4)
   {
     [NSKeyedUnarchiver setClass:objc_opt_class() forClassName:@"PSDDeviceSyncState"];
     v5 = [NSSet setWithObject:objc_opt_class()];
     v6 = [NSKeyedUnarchiver secureUnarchiveObjectOfClasses:v5 withData:v4];
 
-    v7 = [v6 pairingID];
+    pairingID = [v6 pairingID];
 
-    if (v7 && [v6 hasCompletedInitialSync])
+    if (pairingID && [v6 hasCompletedInitialSync])
     {
-      v8 = [v6 pairingID];
-      [(PSDSyncStateManager *)self setSyncCompleteForPairingID:v8 withBlock:0];
+      pairingID2 = [v6 pairingID];
+      [(PSDSyncStateManager *)self setSyncCompleteForPairingID:pairingID2 withBlock:0];
     }
 
     v9 = +[NSFileManager defaultManager];
     v15[0] = 0;
-    v10 = [v9 removeItemAtURL:v3 error:v15];
+    v10 = [v9 removeItemAtURL:syncStatePersistentURL error:v15];
     v11 = v15[0];
 
     if ((v10 & 1) == 0)
@@ -564,7 +564,7 @@ LABEL_24:
         v14 = psd_log();
         if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
         {
-          sub_10001B124(v3, v11);
+          sub_10001B124(syncStatePersistentURL, v11);
         }
       }
     }
@@ -574,8 +574,8 @@ LABEL_24:
 - (id)syncStatePersistentURL
 {
   v2 = +[PSDFileManager defaultManager];
-  v3 = [v2 storageURL];
-  v4 = [v3 URLByAppendingPathComponent:@"/syncState.state"];
+  storageURL = [v2 storageURL];
+  v4 = [storageURL URLByAppendingPathComponent:@"/syncState.state"];
 
   return v4;
 }

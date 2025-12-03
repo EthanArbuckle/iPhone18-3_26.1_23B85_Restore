@@ -1,20 +1,20 @@
 @interface FIChildrenIterator
-- (FIChildrenIterator)initWithChildren:(id)a3 fullyPopulated:(BOOL)a4 options:(unsigned int)a5;
+- (FIChildrenIterator)initWithChildren:(id)children fullyPopulated:(BOOL)populated options:(unsigned int)options;
 - (id)next;
 @end
 
 @implementation FIChildrenIterator
 
-- (FIChildrenIterator)initWithChildren:(id)a3 fullyPopulated:(BOOL)a4 options:(unsigned int)a5
+- (FIChildrenIterator)initWithChildren:(id)children fullyPopulated:(BOOL)populated options:(unsigned int)options
 {
-  v5 = a5;
-  v8 = a3;
+  optionsCopy = options;
+  childrenCopy = children;
   v11.receiver = self;
   v11.super_class = FIChildrenIterator;
   v9 = [(FIChildrenIterator *)&v11 init];
-  [(FIChildrenIterator *)v9 setChildren:v8];
-  v9->_includeInvisible = (v5 & 4) == 0;
-  v9->_fullyPopulated = a4;
+  [(FIChildrenIterator *)v9 setChildren:childrenCopy];
+  v9->_includeInvisible = (optionsCopy & 4) == 0;
+  v9->_fullyPopulated = populated;
 
   return v9;
 }

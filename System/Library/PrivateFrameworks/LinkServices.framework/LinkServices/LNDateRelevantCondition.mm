@@ -1,27 +1,27 @@
 @interface LNDateRelevantCondition
-- (LNDateRelevantCondition)initWithStartDate:(id)a3 endDate:(id)a4;
+- (LNDateRelevantCondition)initWithStartDate:(id)date endDate:(id)endDate;
 @end
 
 @implementation LNDateRelevantCondition
 
-- (LNDateRelevantCondition)initWithStartDate:(id)a3 endDate:(id)a4
+- (LNDateRelevantCondition)initWithStartDate:(id)date endDate:(id)endDate
 {
-  v8 = a3;
-  v9 = a4;
-  if (!v8)
+  dateCopy = date;
+  endDateCopy = endDate;
+  if (!dateCopy)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"LNRelevantContext.m" lineNumber:82 description:{@"Invalid parameter not satisfying: %@", @"startDate"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNRelevantContext.m" lineNumber:82 description:{@"Invalid parameter not satisfying: %@", @"startDate"}];
   }
 
   v15.receiver = self;
   v15.super_class = LNDateRelevantCondition;
-  v10 = [(LNRelevantCondition *)&v15 _init];
-  v11 = v10;
-  if (v10)
+  _init = [(LNRelevantCondition *)&v15 _init];
+  v11 = _init;
+  if (_init)
   {
-    objc_storeStrong(v10 + 1, a3);
-    objc_storeStrong(&v11->_endDate, a4);
+    objc_storeStrong(_init + 1, date);
+    objc_storeStrong(&v11->_endDate, endDate);
     v12 = v11;
   }
 

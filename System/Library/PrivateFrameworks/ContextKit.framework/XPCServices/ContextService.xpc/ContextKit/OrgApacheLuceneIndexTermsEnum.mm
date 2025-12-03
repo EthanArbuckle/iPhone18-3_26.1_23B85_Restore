@@ -1,10 +1,10 @@
 @interface OrgApacheLuceneIndexTermsEnum
 + (void)initialize;
-- (BOOL)seekExactWithOrgApacheLuceneUtilBytesRef:(id)a3;
+- (BOOL)seekExactWithOrgApacheLuceneUtilBytesRef:(id)ref;
 - (id)attributes;
 - (id)termState;
 - (void)dealloc;
-- (void)seekExactWithOrgApacheLuceneUtilBytesRef:(id)a3 withOrgApacheLuceneIndexTermState:(id)a4;
+- (void)seekExactWithOrgApacheLuceneUtilBytesRef:(id)ref withOrgApacheLuceneIndexTermState:(id)state;
 @end
 
 @implementation OrgApacheLuceneIndexTermsEnum
@@ -23,9 +23,9 @@
   return result;
 }
 
-- (BOOL)seekExactWithOrgApacheLuceneUtilBytesRef:(id)a3
+- (BOOL)seekExactWithOrgApacheLuceneUtilBytesRef:(id)ref
 {
-  v3 = [(OrgApacheLuceneIndexTermsEnum *)self seekCeilWithOrgApacheLuceneUtilBytesRef:a3];
+  v3 = [(OrgApacheLuceneIndexTermsEnum *)self seekCeilWithOrgApacheLuceneUtilBytesRef:ref];
   if ((atomic_load_explicit(OrgApacheLuceneIndexTermsEnum_SeekStatusEnum__initialized, memory_order_acquire) & 1) == 0)
   {
     sub_1000169C0();
@@ -34,9 +34,9 @@
   return v3 == qword_100557A48;
 }
 
-- (void)seekExactWithOrgApacheLuceneUtilBytesRef:(id)a3 withOrgApacheLuceneIndexTermState:(id)a4
+- (void)seekExactWithOrgApacheLuceneUtilBytesRef:(id)ref withOrgApacheLuceneIndexTermState:(id)state
 {
-  if (![(OrgApacheLuceneIndexTermsEnum *)self seekExactWithOrgApacheLuceneUtilBytesRef:a3, a4])
+  if (![(OrgApacheLuceneIndexTermsEnum *)self seekExactWithOrgApacheLuceneUtilBytesRef:ref, state])
   {
     v11 = JreStrcat("$@$", v4, v5, v6, v7, v8, v9, v10, @"term=");
     v12 = new_JavaLangIllegalArgumentException_initWithNSString_(v11);
@@ -61,7 +61,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = [OrgApacheLuceneIndexTermsEnum__1 alloc];
     JreStrongAssign(&v2->super.atts_, 0);

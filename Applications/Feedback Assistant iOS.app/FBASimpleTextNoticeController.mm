@@ -22,20 +22,20 @@
   v11.super_class = FBASimpleTextNoticeController;
   [(FBASimpleTextNoticeController *)&v11 viewDidLoad];
   v3 = +[UIColor systemBackgroundColor];
-  v4 = [(FBASimpleTextNoticeController *)self view];
-  [v4 setBackgroundColor:v3];
+  view = [(FBASimpleTextNoticeController *)self view];
+  [view setBackgroundColor:v3];
 
   v5 = +[UIColor labelColor];
-  v6 = [(FBASimpleTextNoticeController *)self fbaNameLabel];
-  [v6 setTextColor:v5];
+  fbaNameLabel = [(FBASimpleTextNoticeController *)self fbaNameLabel];
+  [fbaNameLabel setTextColor:v5];
 
   v7 = +[UIColor labelColor];
-  v8 = [(FBASimpleTextNoticeController *)self titleLabel];
-  [v8 setTextColor:v7];
+  titleLabel = [(FBASimpleTextNoticeController *)self titleLabel];
+  [titleLabel setTextColor:v7];
 
   v9 = +[UIColor labelColor];
-  v10 = [(FBASimpleTextNoticeController *)self subtitleLabel];
-  [v10 setTextColor:v9];
+  subtitleLabel = [(FBASimpleTextNoticeController *)self subtitleLabel];
+  [subtitleLabel setTextColor:v9];
 }
 
 - (void)viewDidLayoutSubviews
@@ -43,30 +43,30 @@
   v14.receiver = self;
   v14.super_class = FBASimpleTextNoticeController;
   [(FBASimpleTextNoticeController *)&v14 viewDidLayoutSubviews];
-  v3 = [(FBASimpleTextNoticeController *)self titleLabel];
+  titleLabel = [(FBASimpleTextNoticeController *)self titleLabel];
 
-  if (v3)
+  if (titleLabel)
   {
-    v4 = [(FBASimpleTextNoticeController *)self titleLabel];
-    [v4 frame];
+    titleLabel2 = [(FBASimpleTextNoticeController *)self titleLabel];
+    [titleLabel2 frame];
     v6 = v5;
-    v7 = [(FBASimpleTextNoticeController *)self titleLabel];
-    [v7 setPreferredMaxLayoutWidth:v6];
+    titleLabel3 = [(FBASimpleTextNoticeController *)self titleLabel];
+    [titleLabel3 setPreferredMaxLayoutWidth:v6];
   }
 
-  v8 = [(FBASimpleTextNoticeController *)self subtitleLabel];
+  subtitleLabel = [(FBASimpleTextNoticeController *)self subtitleLabel];
 
-  if (v8)
+  if (subtitleLabel)
   {
-    v9 = [(FBASimpleTextNoticeController *)self subtitleLabel];
-    [v9 frame];
+    subtitleLabel2 = [(FBASimpleTextNoticeController *)self subtitleLabel];
+    [subtitleLabel2 frame];
     v11 = v10;
-    v12 = [(FBASimpleTextNoticeController *)self subtitleLabel];
-    [v12 setPreferredMaxLayoutWidth:v11];
+    subtitleLabel3 = [(FBASimpleTextNoticeController *)self subtitleLabel];
+    [subtitleLabel3 setPreferredMaxLayoutWidth:v11];
   }
 
-  v13 = [(FBASimpleTextNoticeController *)self view];
-  [v13 layoutIfNeeded];
+  view = [(FBASimpleTextNoticeController *)self view];
+  [view layoutIfNeeded];
 }
 
 - (UILabel)fbaNameLabel

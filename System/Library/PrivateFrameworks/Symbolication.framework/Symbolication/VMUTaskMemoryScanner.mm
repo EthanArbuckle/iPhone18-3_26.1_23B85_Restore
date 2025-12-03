@@ -1,38 +1,38 @@
 @interface VMUTaskMemoryScanner
 + (void)initialize;
 - ($61A80719B04F7407D3E47539F1B23CAA)nodeDetails:(VMUTaskMemoryScanner *)self;
-- (BOOL)_callRemoteMallocEnumerators:(unsigned int)a3 error:(id *)a4 block:(id)a5;
+- (BOOL)_callRemoteMallocEnumerators:(unsigned int)enumerators error:(id *)error block:(id)block;
 - (BOOL)_suspend;
-- (BOOL)addAllNodesFromTaskWithError:(id *)a3;
-- (BOOL)addMallocNodesFromTaskWithError:(id *)a3;
-- (BOOL)addRootNodesFromTaskWithError:(id *)a3;
+- (BOOL)addAllNodesFromTaskWithError:(id *)error;
+- (BOOL)addMallocNodesFromTaskWithError:(id *)error;
+- (BOOL)addRootNodesFromTaskWithError:(id *)error;
 - (BOOL)doesTargetProcessHaveObjCPatches;
 - (BOOL)hasClassInfosDerivedFromStackBacktraces;
-- (VMUTaskMemoryScanner)initWithVMUTask:(id)a3 options:(unint64_t)a4;
+- (VMUTaskMemoryScanner)initWithVMUTask:(id)task options:(unint64_t)options;
 - (_VMUBlockNode)_untypedMallocBlockNodeReferencedFromAddress:;
-- (_VMURange)_rangeOfClassStructureForPossibleUnrealizedSwiftClassWithIsa:(unint64_t)a3;
-- (_VMURegionNode)validateAddressRangeForSwiftRemoteMirror:(VMUTaskMemoryScanner *)self allowUnusedSplitLibs:(_VMURegionNode *)a2;
-- (const)getCachedScanInfoForClassWithIsa:(unsigned int)a3 classInfo:(id)a4 scanCaches:(_VMUScanLocationCache *)a5;
-- (id)_cachedVariantForGenericInfo:(id)a3 variantKey:(unint64_t)a4;
+- (_VMURange)_rangeOfClassStructureForPossibleUnrealizedSwiftClassWithIsa:(unint64_t)isa;
+- (_VMURegionNode)validateAddressRangeForSwiftRemoteMirror:(VMUTaskMemoryScanner *)self allowUnusedSplitLibs:(_VMURegionNode *)libs;
+- (const)getCachedScanInfoForClassWithIsa:(unsigned int)isa classInfo:(id)info scanCaches:(_VMUScanLocationCache *)caches;
+- (id)_cachedVariantForGenericInfo:(id)info variantKey:(unint64_t)key;
 - (id)_readonlyRegionRanges;
-- (id)_recursivelyIdentifySwiftAsyncTaskSlabs:(unint64_t)a3 containerRange:(_VMURange)a4 remoteBlock:(unint64_t)a5 mappedBlock:(unint64_t)a6 asyncTaskSlabMetadataIsa:(unint64_t)a7 nestingLevel:(unsigned int)a8;
-- (id)classInfoForObjectAtAddress:(unint64_t)a3;
-- (id)processSnapshotGraphWithOptions:(unint64_t)a3;
-- (id)vmuVMRegionForAddress:(unint64_t)a3;
-- (id)zoneNameForIndex:(unsigned int)a3;
-- (id)zoneNameForNode:(unsigned int)a3;
-- (uint64_t)_recordFakeRootRefsForMallocBlock:(_DWORD *)a3 indexInSwiftTaskAllocationBlockIndexes:(uint64_t)a4 recorder:;
-- (uint64_t)_shouldScanVMregion:(uint64_t)a1;
-- (unint64_t)_lengthOfMappedFileOfRegion:(id)a3;
-- (unint64_t)ledgerValueForKey:(id)a3 keyExists:(BOOL *)a4;
-- (unsigned)_nodeForAddress:(unint64_t)a3 checkMaxInteriorOffset:(BOOL)a4;
-- (unsigned)_removeFalsePositiveLeakedVMregionsFromNodes:(unsigned int *)a3 nodeCount:(unsigned int)a4 recorder:(id)a5;
-- (unsigned)enumerateMarkedObjects:(void *)a3 withBlock:(id)a4;
-- (unsigned)enumerateObjectsWithBlock:(id)a3;
-- (unsigned)enumerateReferencesWithBlock:(id)a3;
-- (unsigned)enumerateRegionsWithBlock:(id)a3;
+- (id)_recursivelyIdentifySwiftAsyncTaskSlabs:(unint64_t)slabs containerRange:(_VMURange)range remoteBlock:(unint64_t)block mappedBlock:(unint64_t)mappedBlock asyncTaskSlabMetadataIsa:(unint64_t)isa nestingLevel:(unsigned int)level;
+- (id)classInfoForObjectAtAddress:(unint64_t)address;
+- (id)processSnapshotGraphWithOptions:(unint64_t)options;
+- (id)vmuVMRegionForAddress:(unint64_t)address;
+- (id)zoneNameForIndex:(unsigned int)index;
+- (id)zoneNameForNode:(unsigned int)node;
+- (uint64_t)_recordFakeRootRefsForMallocBlock:(_DWORD *)block indexInSwiftTaskAllocationBlockIndexes:(uint64_t)indexes recorder:;
+- (uint64_t)_shouldScanVMregion:(uint64_t)mregion;
+- (unint64_t)_lengthOfMappedFileOfRegion:(id)region;
+- (unint64_t)ledgerValueForKey:(id)key keyExists:(BOOL *)exists;
+- (unsigned)_nodeForAddress:(unint64_t)address checkMaxInteriorOffset:(BOOL)offset;
+- (unsigned)_removeFalsePositiveLeakedVMregionsFromNodes:(unsigned int *)nodes nodeCount:(unsigned int)count recorder:(id)recorder;
+- (unsigned)enumerateMarkedObjects:(void *)objects withBlock:(id)block;
+- (unsigned)enumerateObjectsWithBlock:(id)block;
+- (unsigned)enumerateReferencesWithBlock:(id)block;
+- (unsigned)enumerateRegionsWithBlock:(id)block;
 - (unsigned)mallocNodeCount;
-- (unsigned)nodeForAddress:(unint64_t)a3;
+- (unsigned)nodeForAddress:(unint64_t)address;
 - (void)_addSpecialNodesFromTask;
 - (void)_addThreadNodesFromTask;
 - (void)_buildRegionFirstBlockIndexOnPageArrays;
@@ -46,27 +46,27 @@
 - (void)_identifyObjCClassStructureBlocks;
 - (void)_identifySwiftAsyncTaskSlabs;
 - (void)_identifySwiftTypeNameCache;
-- (void)_identifyXPCDictionaryStorageReferencedByBlock:(_VMUBlockNode *)a3;
-- (void)_registerVariant:(id)a3 forGenericInfo:(id)a4 variantKey:(unint64_t)a5;
-- (void)_shortenScannableRangeOfMappedFile:(unsigned int)a3;
+- (void)_identifyXPCDictionaryStorageReferencedByBlock:(_VMUBlockNode *)block;
+- (void)_registerVariant:(id)variant forGenericInfo:(id)info variantKey:(unint64_t)key;
+- (void)_shortenScannableRangeOfMappedFile:(unsigned int)file;
 - (void)_sortAndClassifyBlocks;
-- (void)_withOrderedNodeMapper:(id)a3;
-- (void)_withReaderBlockForHeapEnumeration:(id)a3;
-- (void)addMallocNodes:(id)a3;
-- (void)applyTypeOverlayToMutableInfo:(id)a3;
-- (void)contentForNode:(unsigned int)a3;
+- (void)_withOrderedNodeMapper:(id)mapper;
+- (void)_withReaderBlockForHeapEnumeration:(id)enumeration;
+- (void)addMallocNodes:(id)nodes;
+- (void)applyTypeOverlayToMutableInfo:(id)info;
+- (void)contentForNode:(unsigned int)node;
 - (void)copyUserMarked;
 - (void)dealloc;
 - (void)detachFromTask;
-- (void)mapDyldSharedCacheFromTargetWithRegions:(id)a3;
+- (void)mapDyldSharedCacheFromTargetWithRegions:(id)regions;
 - (void)printRuntimeMetadataInfo;
-- (void)refineTypesWithOverlay:(id)a3;
-- (void)scanLocalMemory:(uint64_t)a3 atOffset:(unsigned int)a4 node:(unint64_t)a5 length:(uint64_t)a6 isa:(uint64_t)a7 scanCaches:(void *)a8 fieldInfo:(unsigned int)a9 stride:(uint64_t)a10 recorder:;
-- (void)scanNodesWithReferenceRecorder:(id)a3;
-- (void)setClassStructureFieldScanValueAtSourceAddress:(void *)a3 toCorrectedAddress:(void *)a4;
-- (void)setNodeScanningLogger:(id)a3;
-- (void)setObjectContentLevel:(unsigned int)a3;
-- (void)setReferenceScanningLogger:(id)a3;
+- (void)refineTypesWithOverlay:(id)overlay;
+- (void)scanLocalMemory:(uint64_t)memory atOffset:(unsigned int)offset node:(unint64_t)node length:(uint64_t)length isa:(uint64_t)isa scanCaches:(void *)caches fieldInfo:(unsigned int)info stride:(uint64_t)self0 recorder:;
+- (void)scanNodesWithReferenceRecorder:(id)recorder;
+- (void)setClassStructureFieldScanValueAtSourceAddress:(void *)address toCorrectedAddress:(void *)correctedAddress;
+- (void)setNodeScanningLogger:(id)logger;
+- (void)setObjectContentLevel:(unsigned int)level;
+- (void)setReferenceScanningLogger:(id)logger;
 - (void)unmapAllRegions;
 @end
 
@@ -223,7 +223,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = getenv("VMUEnumeratorValidation");
     v6 = 0;
@@ -298,9 +298,9 @@
   [(VMUObjectIdentifier *)self->_objectIdentifier flushRemoteMirrorMemoryCache];
 }
 
-- (VMUTaskMemoryScanner)initWithVMUTask:(id)a3 options:(unint64_t)a4
+- (VMUTaskMemoryScanner)initWithVMUTask:(id)task options:(unint64_t)options
 {
-  v7 = a3;
+  taskCopy = task;
   v130.receiver = self;
   v130.super_class = VMUTaskMemoryScanner;
   v8 = [(VMUTaskMemoryScanner *)&v130 init];
@@ -312,7 +312,7 @@
 
   v9 = v8;
   v10 = +[VMUDebugTimer sharedTimerIfCreated];
-  objc_storeStrong(&v9->_task, a3);
+  objc_storeStrong(&v9->_task, task);
   v9->_pid = [(VMUTask *)v9->_task pid];
   if ([(VMUTask *)v9->_task pid]< 0)
   {
@@ -323,7 +323,7 @@
     goto LABEL_8;
   }
 
-  if ([v7 taskType] == 2)
+  if ([taskCopy taskType] == 2)
   {
     NSLog(&cfstr_Vmutaskmemorys.isa);
 LABEL_8:
@@ -339,30 +339,30 @@ LABEL_103:
   {
     if ([v10 signpostID])
     {
-      v15 = [v10 logHandle];
-      v16 = [v10 signpostID];
-      if ((v16 - 1) <= 0xFFFFFFFFFFFFFFFDLL)
+      logHandle = [v10 logHandle];
+      signpostID = [v10 signpostID];
+      if ((signpostID - 1) <= 0xFFFFFFFFFFFFFFFDLL)
       {
-        v17 = v16;
-        if (os_signpost_enabled(v15))
+        v17 = signpostID;
+        if (os_signpost_enabled(logHandle))
         {
           LOWORD(buf[0]) = 0;
-          _os_signpost_emit_with_name_impl(&dword_1C679D000, v15, OS_SIGNPOST_INTERVAL_END, v17, "initMemoryScanner", "", buf, 2u);
+          _os_signpost_emit_with_name_impl(&dword_1C679D000, logHandle, OS_SIGNPOST_INTERVAL_END, v17, "initMemoryScanner", "", buf, 2u);
         }
       }
     }
 
     [v10 endEvent:"initMemoryScanner"];
     [v10 startWithCategory:"initMemoryScanner" message:"building VMUProcessDescription"];
-    v18 = [v10 logHandle];
-    v19 = [v10 signpostID];
-    if ((v19 - 1) <= 0xFFFFFFFFFFFFFFFDLL)
+    logHandle2 = [v10 logHandle];
+    signpostID2 = [v10 signpostID];
+    if ((signpostID2 - 1) <= 0xFFFFFFFFFFFFFFFDLL)
     {
-      v20 = v19;
-      if (os_signpost_enabled(v18))
+      v20 = signpostID2;
+      if (os_signpost_enabled(logHandle2))
       {
         LOWORD(buf[0]) = 0;
-        _os_signpost_emit_with_name_impl(&dword_1C679D000, v18, OS_SIGNPOST_INTERVAL_BEGIN, v20, "initMemoryScanner", "building VMUProcessDescription", buf, 2u);
+        _os_signpost_emit_with_name_impl(&dword_1C679D000, logHandle2, OS_SIGNPOST_INTERVAL_BEGIN, v20, "initMemoryScanner", "building VMUProcessDescription", buf, 2u);
       }
     }
   }
@@ -373,48 +373,48 @@ LABEL_103:
     [0 startWithCategory:"initMemoryScanner" message:"building VMUProcessDescription"];
   }
 
-  v21 = [(VMUTask *)v9->_task processDescription];
-  if ([v21 pid] >= 1)
+  processDescription = [(VMUTask *)v9->_task processDescription];
+  if ([processDescription pid] >= 1)
   {
-    v22 = [v21 description];
+    v22 = [processDescription description];
     processDescriptionString = v9->_processDescriptionString;
     v9->_processDescriptionString = v22;
 
-    v24 = [v21 date];
+    date = [processDescription date];
     suspendDate = v9->_suspendDate;
-    v9->_suspendDate = v24;
+    v9->_suspendDate = date;
 
-    v26 = [v21 processName];
+    processName = [processDescription processName];
     processName = v9->_processName;
-    v9->_processName = v26;
+    v9->_processName = processName;
 
-    if ((a4 & 0x8000) != 0)
+    if ((options & 0x8000) != 0)
     {
-      v28 = [v21 binaryImagesDescription];
+      binaryImagesDescription = [processDescription binaryImagesDescription];
       binaryImagesDescription = v9->_binaryImagesDescription;
-      v9->_binaryImagesDescription = v28;
+      v9->_binaryImagesDescription = binaryImagesDescription;
     }
 
-    v30 = [v21 executablePath];
+    executablePath = [processDescription executablePath];
     executablePath = v9->_executablePath;
-    v9->_executablePath = v30;
+    v9->_executablePath = executablePath;
 
-    v9->_physicalFootprint = [v21 physicalFootprint];
-    v9->_physicalFootprintPeak = [v21 physicalFootprintPeak];
-    v9->_idleExitStatus = [v21 idleExitStatus];
+    v9->_physicalFootprint = [processDescription physicalFootprint];
+    v9->_physicalFootprintPeak = [processDescription physicalFootprintPeak];
+    v9->_idleExitStatus = [processDescription idleExitStatus];
   }
 
   if (v10 && [v10 signpostID])
   {
-    v32 = [v10 logHandle];
-    v33 = [v10 signpostID];
-    if ((v33 - 1) <= 0xFFFFFFFFFFFFFFFDLL)
+    logHandle3 = [v10 logHandle];
+    signpostID3 = [v10 signpostID];
+    if ((signpostID3 - 1) <= 0xFFFFFFFFFFFFFFFDLL)
     {
-      v34 = v33;
-      if (os_signpost_enabled(v32))
+      v34 = signpostID3;
+      if (os_signpost_enabled(logHandle3))
       {
         LOWORD(buf[0]) = 0;
-        _os_signpost_emit_with_name_impl(&dword_1C679D000, v32, OS_SIGNPOST_INTERVAL_END, v34, "initMemoryScanner", "", buf, 2u);
+        _os_signpost_emit_with_name_impl(&dword_1C679D000, logHandle3, OS_SIGNPOST_INTERVAL_END, v34, "initMemoryScanner", "", buf, 2u);
       }
     }
   }
@@ -444,13 +444,13 @@ LABEL_101:
   mappedFileNameToLengthDict = v9->_mappedFileNameToLengthDict;
   v9->_mappedFileNameToLengthDict = v39;
 
-  v41 = VMUGetFlagsForAllVMRegionStatistics() | a4 | 0x180;
+  v41 = VMUGetFlagsForAllVMRegionStatistics() | options | 0x180;
   v42 = [[VMUVMRegionIdentifier alloc] initWithVMUTask:v9->_task options:v41];
   regionIdentifier = v9->_regionIdentifier;
   v9->_regionIdentifier = v42;
 
-  v44 = [(VMUVMRegionIdentifier *)v9->_regionIdentifier regions];
-  v45 = [v44 count];
+  regions = [(VMUVMRegionIdentifier *)v9->_regionIdentifier regions];
+  v45 = [regions count];
   v9->_regionsCount = v45;
   if (!v45)
   {
@@ -461,17 +461,17 @@ LABEL_100:
   }
 
   v117 = v41;
-  v119 = v21;
+  v119 = processDescription;
   v46 = malloc_type_calloc(v45, 0x40uLL, 0x10B0040310C8A7FuLL);
   v9->_regions = v46;
-  v120 = v7;
-  v118 = v44;
+  v120 = taskCopy;
+  v118 = regions;
   if (v9->_regionsCount)
   {
     v47 = 0;
     for (i = 0; i < regionsCount; ++i)
     {
-      v49 = [v44 objectAtIndexedSubscript:i];
+      v49 = [regions objectAtIndexedSubscript:i];
       regions = v9->_regions;
       *(&regions->var0 + v47) = v49;
       regionsCount = v9->_regionsCount;
@@ -618,15 +618,15 @@ LABEL_100:
   }
 
   v9->_regionMap = v52;
-  v76 = [(VMUTask *)v9->_task memoryCache];
+  memoryCache = [(VMUTask *)v9->_task memoryCache];
   memoryCache = v9->_memoryCache;
-  v9->_memoryCache = v76;
+  v9->_memoryCache = memoryCache;
 
   if (!v9->_memoryCache)
   {
-    v21 = v119;
-    v7 = v120;
-    v44 = v118;
+    processDescription = v119;
+    taskCopy = v120;
+    regions = v118;
     NSLog(&cfstr_CouldnTCreateT.isa);
     goto LABEL_100;
   }
@@ -651,24 +651,24 @@ LABEL_100:
   v9->_regionInfoBlock = v79;
 
   [(VMUTaskMemoryCache *)v9->_memoryCache setRegionInfoBlock:v9->_regionInfoBlock];
-  v7 = v120;
+  taskCopy = v120;
   v81 = objc_alloc_init(VMURangeArray);
   dataSegmentsRangeArrayOutsideSharedCache = v9->_dataSegmentsRangeArrayOutsideSharedCache;
   v9->_dataSegmentsRangeArrayOutsideSharedCache = v81;
 
-  v83 = [(VMUVMRegionIdentifier *)v9->_regionIdentifier taskThreadStates];
+  taskThreadStates = [(VMUVMRegionIdentifier *)v9->_regionIdentifier taskThreadStates];
   threadStates = v9->_threadStates;
-  v9->_threadStates = v83;
+  v9->_threadStates = taskThreadStates;
 
   v9->_threadsCount = [(VMUTaskThreadStates *)v9->_threadStates threadCount];
   if (v10 && [v10 signpostID])
   {
-    v85 = [v10 logHandle];
-    v86 = [v10 signpostID];
-    if (v86 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v85))
+    logHandle4 = [v10 logHandle];
+    signpostID4 = [v10 signpostID];
+    if (signpostID4 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(logHandle4))
     {
       *v122 = 0;
-      _os_signpost_emit_with_name_impl(&dword_1C679D000, v85, OS_SIGNPOST_INTERVAL_END, v86, "initMemoryScanner", "", v122, 2u);
+      _os_signpost_emit_with_name_impl(&dword_1C679D000, logHandle4, OS_SIGNPOST_INTERVAL_END, signpostID4, "initMemoryScanner", "", v122, 2u);
     }
   }
 
@@ -676,12 +676,12 @@ LABEL_100:
   [v10 startWithCategory:"initMemoryScanner" message:"get malloc zones array"];
   if (v10)
   {
-    v87 = [v10 logHandle];
-    v88 = [v10 signpostID];
-    if (v88 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v87))
+    logHandle5 = [v10 logHandle];
+    signpostID5 = [v10 signpostID];
+    if (signpostID5 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(logHandle5))
     {
       *v122 = 0;
-      _os_signpost_emit_with_name_impl(&dword_1C679D000, v87, OS_SIGNPOST_INTERVAL_BEGIN, v88, "initMemoryScanner", "get malloc zones array", v122, 2u);
+      _os_signpost_emit_with_name_impl(&dword_1C679D000, logHandle5, OS_SIGNPOST_INTERVAL_BEGIN, signpostID5, "initMemoryScanner", "get malloc zones array", v122, 2u);
     }
   }
 
@@ -699,12 +699,12 @@ LABEL_100:
   VMUTask_foreach_malloc_zone(task, v125);
   if (v10 && [v10 signpostID])
   {
-    v93 = [v10 logHandle];
-    v94 = [v10 signpostID];
-    if (v94 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v93))
+    logHandle6 = [v10 logHandle];
+    signpostID6 = [v10 signpostID];
+    if (signpostID6 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(logHandle6))
     {
       *v122 = 0;
-      _os_signpost_emit_with_name_impl(&dword_1C679D000, v93, OS_SIGNPOST_INTERVAL_END, v94, "initMemoryScanner", "", v122, 2u);
+      _os_signpost_emit_with_name_impl(&dword_1C679D000, logHandle6, OS_SIGNPOST_INTERVAL_END, signpostID6, "initMemoryScanner", "", v122, 2u);
     }
   }
 
@@ -732,18 +732,18 @@ LABEL_100:
       if (var7 >= v100->var6)
       {
         [v99 setValidVMRange:?];
-        v104 = [v92[8] realizedClasses];
+        realizedClasses = [v92[8] realizedClasses];
         v105 = v92[34];
-        v92[34] = v104;
+        v92[34] = realizedClasses;
 
         if (v10 && [v10 signpostID])
         {
-          v106 = [v10 logHandle];
-          v107 = [v10 signpostID];
-          if (v107 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v106))
+          logHandle7 = [v10 logHandle];
+          signpostID7 = [v10 signpostID];
+          if (signpostID7 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(logHandle7))
           {
             *v122 = 0;
-            _os_signpost_emit_with_name_impl(&dword_1C679D000, v106, OS_SIGNPOST_INTERVAL_END, v107, "initMemoryScanner", "", v122, 2u);
+            _os_signpost_emit_with_name_impl(&dword_1C679D000, logHandle7, OS_SIGNPOST_INTERVAL_END, signpostID7, "initMemoryScanner", "", v122, 2u);
           }
         }
 
@@ -751,12 +751,12 @@ LABEL_100:
         [v10 startWithCategory:"initMemoryScanner" message:"setting up VMUScanOverlay"];
         if (v10)
         {
-          v108 = [v10 logHandle];
-          v109 = [v10 signpostID];
-          if (v109 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v108))
+          logHandle8 = [v10 logHandle];
+          signpostID8 = [v10 signpostID];
+          if (signpostID8 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(logHandle8))
           {
             *v122 = 0;
-            _os_signpost_emit_with_name_impl(&dword_1C679D000, v108, OS_SIGNPOST_INTERVAL_BEGIN, v109, "initMemoryScanner", "setting up VMUScanOverlay", v122, 2u);
+            _os_signpost_emit_with_name_impl(&dword_1C679D000, logHandle8, OS_SIGNPOST_INTERVAL_BEGIN, signpostID8, "initMemoryScanner", "setting up VMUScanOverlay", v122, 2u);
           }
         }
 
@@ -767,12 +767,12 @@ LABEL_100:
         [v92 refineTypesWithOverlay:v92[71]];
         if (v10 && [v10 signpostID])
         {
-          v112 = [v10 logHandle];
-          v113 = [v10 signpostID];
-          if (v113 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v112))
+          logHandle9 = [v10 logHandle];
+          signpostID9 = [v10 signpostID];
+          if (signpostID9 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(logHandle9))
           {
             *v122 = 0;
-            _os_signpost_emit_with_name_impl(&dword_1C679D000, v112, OS_SIGNPOST_INTERVAL_END, v113, "initMemoryScanner", "", v122, 2u);
+            _os_signpost_emit_with_name_impl(&dword_1C679D000, logHandle9, OS_SIGNPOST_INTERVAL_END, signpostID9, "initMemoryScanner", "", v122, 2u);
           }
         }
 
@@ -784,8 +784,8 @@ LABEL_100:
         *v122 = 0;
         v121 = 0;
         v114 = v9->_task;
-        v115 = [v92[8] symbolicator];
-        malloc_zones_array_address_and_count = task_get_malloc_zones_array_address_and_count(v114, v115, v116, v122, &v121, 0);
+        symbolicator = [v92[8] symbolicator];
+        malloc_zones_array_address_and_count = task_get_malloc_zones_array_address_and_count(v114, symbolicator, v116, v122, &v121, 0);
         if (malloc_zones_array_address_and_count)
         {
           if (v121)
@@ -1037,8 +1037,8 @@ uint64_t __48__VMUTaskMemoryScanner_initWithVMUTask_options___block_invoke_2(uin
   if (v3)
   {
     v4 = v3;
-    v5 = [(VMUObjectIdentifier *)self->_objectIdentifier memoryReader];
-    v6 = v5[2](v5, v4, 1);
+    memoryReader = [(VMUObjectIdentifier *)self->_objectIdentifier memoryReader];
+    v6 = memoryReader[2](memoryReader, v4, 1);
 
     if (v6)
     {
@@ -1054,15 +1054,15 @@ uint64_t __48__VMUTaskMemoryScanner_initWithVMUTask_options___block_invoke_2(uin
   return v3;
 }
 
-- (void)mapDyldSharedCacheFromTargetWithRegions:(id)a3
+- (void)mapDyldSharedCacheFromTargetWithRegions:(id)regions
 {
   v23 = *MEMORY[0x1E69E9840];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  regionsCopy = regions;
+  v5 = [regionsCopy countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1077,7 +1077,7 @@ uint64_t __48__VMUTaskMemoryScanner_initWithVMUTask_options___block_invoke_2(uin
       {
         if (*v19 != v10)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(regionsCopy);
         }
 
         v12 = *(*(&v18 + 1) + 8 * i);
@@ -1125,7 +1125,7 @@ uint64_t __48__VMUTaskMemoryScanner_initWithVMUTask_options___block_invoke_2(uin
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v6 = [regionsCopy countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v6);
@@ -1151,17 +1151,17 @@ LABEL_23:
     goto LABEL_2;
   }
 
-  v3 = [(VMUTask *)self->_task taskPort];
-  if (!v3)
+  taskPort = [(VMUTask *)self->_task taskPort];
+  if (!taskPort)
   {
-    return v3;
+    return taskPort;
   }
 
   if ([(VMUTask *)self->_task taskPort]== -1)
   {
 LABEL_10:
-    LOBYTE(v3) = 0;
-    return v3;
+    LOBYTE(taskPort) = 0;
+    return taskPort;
   }
 
   [(VMUTask *)self->_task taskPort];
@@ -1186,20 +1186,20 @@ LABEL_10:
   }
 
 LABEL_2:
-  LOBYTE(v3) = 1;
-  return v3;
+  LOBYTE(taskPort) = 1;
+  return taskPort;
 }
 
-- (void)_withReaderBlockForHeapEnumeration:(id)a3
+- (void)_withReaderBlockForHeapEnumeration:(id)enumeration
 {
   task = self->_task;
-  v5 = a3;
+  enumerationCopy = enumeration;
   if ([(VMUTask *)task isExclave])
   {
     v6 = [VMUTaskMemoryCache alloc];
-    v7 = [(VMUTask *)self->_task coreFilePath];
+    coreFilePath = [(VMUTask *)self->_task coreFilePath];
     v17 = 0;
-    v8 = [(VMUTaskMemoryCache *)v6 initWithCorePath:v7 originalBinaryPaths:0 error:&v17];
+    v8 = [(VMUTaskMemoryCache *)v6 initWithCorePath:coreFilePath originalBinaryPaths:0 error:&v17];
     v9 = v17;
 
     if (!v8 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -1214,7 +1214,7 @@ LABEL_2:
     v16 = v8;
     v10 = v8;
     v11 = _Block_copy(aBlock);
-    v5[2](v5, v11);
+    enumerationCopy[2](enumerationCopy, v11);
   }
 
   else
@@ -1226,7 +1226,7 @@ LABEL_2:
     v13[4] = self;
     v14 = 0;
     v12 = _Block_copy(v13);
-    v5[2](v5, v12);
+    enumerationCopy[2](enumerationCopy, v12);
   }
 }
 
@@ -1604,9 +1604,9 @@ LABEL_25:
   return result;
 }
 
-- (BOOL)_callRemoteMallocEnumerators:(unsigned int)a3 error:(id *)a4 block:(id)a5
+- (BOOL)_callRemoteMallocEnumerators:(unsigned int)enumerators error:(id *)error block:(id)block
 {
-  v8 = a5;
+  blockCopy = block;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -1624,14 +1624,14 @@ LABEL_25:
   v12[2] = __65__VMUTaskMemoryScanner__callRemoteMallocEnumerators_error_block___block_invoke;
   v12[3] = &unk_1E8277740;
   v12[4] = self;
-  v15 = a3;
-  v9 = v8;
+  enumeratorsCopy = enumerators;
+  v9 = blockCopy;
   v13 = v9;
   v14 = &v17;
   [(VMUTaskMemoryScanner *)self _withReaderBlockForHeapEnumeration:v12];
-  if (a4)
+  if (error)
   {
-    *a4 = v18[5];
+    *error = v18[5];
   }
 
   v10 = v18[5] == 0;
@@ -1750,24 +1750,24 @@ char *__44__VMUTaskMemoryScanner__shouldScanVMregion___block_invoke()
   return result;
 }
 
-- (id)_cachedVariantForGenericInfo:(id)a3 variantKey:(unint64_t)a4
+- (id)_cachedVariantForGenericInfo:(id)info variantKey:(unint64_t)key
 {
-  v6 = [(VMUClassInfoMap *)self->_classInfoIndexer indexForClassInfo:a3];
+  v6 = [(VMUClassInfoMap *)self->_classInfoIndexer indexForClassInfo:info];
   variantCachesByIsaIndex = self->_variantCachesByIsaIndex;
   v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v6];
   v9 = [(NSMutableDictionary *)variantCachesByIsaIndex objectForKeyedSubscript:v8];
 
-  v10 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a4];
+  v10 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:key];
   v11 = [v9 objectForKeyedSubscript:v10];
 
   return v11;
 }
 
-- (void)_registerVariant:(id)a3 forGenericInfo:(id)a4 variantKey:(unint64_t)a5
+- (void)_registerVariant:(id)variant forGenericInfo:(id)info variantKey:(unint64_t)key
 {
   classInfoIndexer = self->_classInfoIndexer;
-  v9 = a3;
-  v10 = [(VMUClassInfoMap *)classInfoIndexer indexForClassInfo:a4];
+  variantCopy = variant;
+  v10 = [(VMUClassInfoMap *)classInfoIndexer indexForClassInfo:info];
   variantCachesByIsaIndex = self->_variantCachesByIsaIndex;
   v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v10];
   v16 = [(NSMutableDictionary *)variantCachesByIsaIndex objectForKeyedSubscript:v12];
@@ -1780,8 +1780,8 @@ char *__44__VMUTaskMemoryScanner__shouldScanVMregion___block_invoke()
     [(NSMutableDictionary *)v13 setObject:v16 forKeyedSubscript:v14];
   }
 
-  v15 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a5];
-  [v16 setObject:v9 forKeyedSubscript:v15];
+  v15 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:key];
+  [v16 setObject:variantCopy forKeyedSubscript:v15];
 }
 
 - (void)_addThreadNodesFromTask
@@ -1885,8 +1885,8 @@ char *__44__VMUTaskMemoryScanner__shouldScanVMregion___block_invoke()
   v9->var0 = v8;
   *(v9 + 1) = 3;
   ++self->_blocksCount;
-  v10 = [(VMUObjectIdentifier *)self->_objectIdentifier ObjCclassCount];
-  if (v10 + [(VMUObjectIdentifier *)self->_objectIdentifier SwiftClassCount])
+  objCclassCount = [(VMUObjectIdentifier *)self->_objectIdentifier ObjCclassCount];
+  if (objCclassCount + [(VMUObjectIdentifier *)self->_objectIdentifier SwiftClassCount])
   {
     if (_addSpecialNodesFromTask_onceToken != -1)
     {
@@ -1961,9 +1961,9 @@ char *__44__VMUTaskMemoryScanner__shouldScanVMregion___block_invoke()
     while (v35 < self->_zonesCount);
     if (self->_webKitZoneIndex != -1)
     {
-      v39 = [(VMUTask *)self->_task isExclaveCore];
+      isExclaveCore = [(VMUTask *)self->_task isExclaveCore];
       [(VMUObjectIdentifier *)self->_objectIdentifier symbolicator];
-      if (v39)
+      if (isExclaveCore)
       {
         CSSymbolicatorGetSymbolOwner();
       }
@@ -2042,9 +2042,9 @@ char *__44__VMUTaskMemoryScanner__shouldScanVMregion___block_invoke()
       if ([v20 hasPrefix:@"AttributeGraph_0x"])
       {
         self->_attributeGraphZoneIndex = i;
-        v21 = [(VMUTask *)self->_task isExclaveCore];
+        isExclaveCore2 = [(VMUTask *)self->_task isExclaveCore];
         [(VMUObjectIdentifier *)self->_objectIdentifier symbolicator];
-        if (v21)
+        if (isExclaveCore2)
         {
           CSSymbolicatorGetSymbolOwner();
         }
@@ -2119,9 +2119,9 @@ char *__44__VMUTaskMemoryScanner__shouldScanVMregion___block_invoke()
   self->_swiftTaskAllocationsFakeRootNode = -1;
   if (!getenv("SYMBOLICATION_DISABLE_FALSE_TASK_LEAKS_WORKAROUND"))
   {
-    v34 = [(VMUTask *)self->_task isExclaveCore];
+    isExclaveCore3 = [(VMUTask *)self->_task isExclaveCore];
     [(VMUObjectIdentifier *)self->_objectIdentifier symbolicator];
-    if (v34)
+    if (isExclaveCore3)
     {
       CSSymbolicatorGetSymbolOwner();
     }
@@ -2204,34 +2204,34 @@ void __48__VMUTaskMemoryScanner__addSpecialNodesFromTask__block_invoke()
   _addSpecialNodesFromTask_autoreleasePoolBoundaryClassInfo = v0;
 }
 
-- (unint64_t)_lengthOfMappedFileOfRegion:(id)a3
+- (unint64_t)_lengthOfMappedFileOfRegion:(id)region
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4[49])
+  regionCopy = region;
+  if (!regionCopy[49])
   {
     goto LABEL_11;
   }
 
-  if ([(VMUTask *)self->_task rangeIsInSharedCache:*(v4 + 1), *(v4 + 2)])
+  if ([(VMUTask *)self->_task rangeIsInSharedCache:*(regionCopy + 1), *(regionCopy + 2)])
   {
-    st_size = *(v4 + 2) + *(v4 + 15);
+    st_size = *(regionCopy + 2) + *(regionCopy + 15);
     goto LABEL_16;
   }
 
-  v6 = [v4 path];
-  if (!v6)
+  path = [regionCopy path];
+  if (!path)
   {
 LABEL_11:
     st_size = 0;
     goto LABEL_16;
   }
 
-  v7 = v6;
-  if (([v6 containsString:@"*"] & 1) != 0 || (objc_msgSend(v7, "hasPrefix:", @"/") & 1) == 0)
+  v7 = path;
+  if (([path containsString:@"*"] & 1) != 0 || (objc_msgSend(v7, "hasPrefix:", @"/") & 1) == 0)
   {
-    v8 = [(VMUTask *)self->_task memoryCache];
-    v9 = [v8 procRegionFileNameForAddress:*(v4 + 1) buffer:v16 bufferSize:1024];
+    memoryCache = [(VMUTask *)self->_task memoryCache];
+    v9 = [memoryCache procRegionFileNameForAddress:*(regionCopy + 1) buffer:v16 bufferSize:1024];
 
     if (v9 >= 1)
     {
@@ -2254,7 +2254,7 @@ LABEL_11:
     memset(v16, 0, 144);
     if (stat([v7 UTF8String], v16))
     {
-      st_size = *(v4 + 2) + *(v4 + 15);
+      st_size = *(regionCopy + 2) + *(regionCopy + 15);
     }
 
     else
@@ -2270,9 +2270,9 @@ LABEL_16:
   return st_size;
 }
 
-- (void)_shortenScannableRangeOfMappedFile:(unsigned int)a3
+- (void)_shortenScannableRangeOfMappedFile:(unsigned int)file
 {
-  v4 = self->_regions + 64 * a3;
+  v4 = self->_regions + 64 * file;
   v8 = *v4;
   v5 = [(VMUTaskMemoryScanner *)self _lengthOfMappedFileOfRegion:v8];
   v6 = v8[15];
@@ -2295,7 +2295,7 @@ LABEL_16:
 LABEL_6:
 }
 
-- (BOOL)addRootNodesFromTaskWithError:(id *)a3
+- (BOOL)addRootNodesFromTaskWithError:(id *)error
 {
   [(VMUTaskMemoryScanner *)self _addThreadNodesFromTask];
   [(VMUTaskMemoryScanner *)self _addSpecialNodesFromTask];
@@ -2369,8 +2369,8 @@ LABEL_6:
 
           if ((v12[132] & 2) != 0 && (v12[132] & 4) == 0 && ([v12 protection] & 1) != 0 && (objc_msgSend(v12, "protection") & 4) == 0)
           {
-            v154 = [v12 type];
-            v151 = [v154 isEqualToString:@"__LINKEDIT"];
+            type = [v12 type];
+            v151 = [type isEqualToString:@"__LINKEDIT"];
 
             if ((v151 & 1) == 0)
             {
@@ -2422,7 +2422,7 @@ LABEL_6:
   v156[4] = self;
   v156[5] = &v158;
   v157 = v24;
-  v25 = [(VMUTaskMemoryScanner *)self _callRemoteMallocEnumerators:6 error:a3 block:v156];
+  v25 = [(VMUTaskMemoryScanner *)self _callRemoteMallocEnumerators:6 error:error block:v156];
   if (v25)
   {
     if (!self->_stackRanges)
@@ -2508,8 +2508,8 @@ LABEL_6:
                 {
                   if (*(*v49 + 16) + *(*v49 + 8) > v32)
                   {
-                    v59 = [*v49 isSpecialPhysFootprintRegion];
-                    if (v59)
+                    isSpecialPhysFootprintRegion = [*v49 isSpecialPhysFootprintRegion];
+                    if (isSpecialPhysFootprintRegion)
                     {
                       v60 = 0;
                     }
@@ -2519,7 +2519,7 @@ LABEL_6:
                       v60 = v49;
                     }
 
-                    if (v59)
+                    if (isSpecialPhysFootprintRegion)
                     {
                       break;
                     }
@@ -2914,8 +2914,8 @@ LABEL_84:
                   v114 = *(v99 + 64);
                   if (*(*v99 + 16) + *(*v99 + 8) == v114[1] && [v114 protection] == 3)
                   {
-                    v115 = [*(v99 + 64) type];
-                    v116 = [v115 isEqualToString:@"MALLOC metadata"];
+                    type2 = [*(v99 + 64) type];
+                    v116 = [type2 isEqualToString:@"MALLOC metadata"];
 
                     if (v116)
                     {
@@ -2946,8 +2946,8 @@ LABEL_184:
         v25 = v155;
         if ([(VMUTaskMemoryScanner *)self objectContentLevel]== 2)
         {
-          v133 = [(VMUTaskMemoryScanner *)self _readonlyRegionRanges];
-          [(VMUObjectIdentifier *)self->_objectIdentifier setReadonlyRegionRanges:v133];
+          _readonlyRegionRanges = [(VMUTaskMemoryScanner *)self _readonlyRegionRanges];
+          [(VMUObjectIdentifier *)self->_objectIdentifier setReadonlyRegionRanges:_readonlyRegionRanges];
         }
 
         goto LABEL_186;
@@ -2958,14 +2958,14 @@ LABEL_184:
       do
       {
         v153 = *MEMORY[0x1E69E9848];
-        v150 = [*(&self->_regions->var0 + v135) address];
+        address = [*(&self->_regions->var0 + v135) address];
         v137 = *(&self->_regions->var0 + v135);
         v138 = *(v137 + 8);
         v139 = *(v137 + 16);
         v140 = *(v137 + 24);
         v149 = vm_prot_strings[v140];
         v141 = VMUExclaveOrDarwinRegionTypeDescriptionForTagShareProtAndPager(*(v137 + 232), *(v137 + 104), *(v137 + 50), v140, *(v137 + 49));
-        v142 = [v141 UTF8String];
+        uTF8String = [v141 UTF8String];
         v143 = (&self->_regions->var0 + v135);
         v144 = *(*v143 + 16) >> *MEMORY[0x1E69E9AC0];
         if (v144 == 1)
@@ -2978,7 +2978,7 @@ LABEL_184:
           v145 = "pages";
         }
 
-        v146 = "";
+        uTF8String2 = "";
         if (v143[3] == v143[4])
         {
           v147 = "";
@@ -2992,10 +2992,10 @@ LABEL_184:
         v148 = *(*v143 + 148);
         if (v148 < self->_zonesCount)
         {
-          v146 = [self->_zones[v148].var1 UTF8String];
+          uTF8String2 = [self->_zones[v148].var1 UTF8String];
         }
 
-        fprintf(v153, "region: [%#llx-%#llx] %s %s (%llu %s)%s  %s\n", v150, v139 + v138, v149, v142, v144, v145, v147, v146);
+        fprintf(v153, "region: [%#llx-%#llx] %s %s (%llu %s)%s  %s\n", address, v139 + v138, v149, uTF8String, v144, v145, v147, uTF8String2);
 
         ++v136;
         v119 = self->_regionsCount;
@@ -3538,13 +3538,13 @@ LABEL_80:
   return v3;
 }
 
-- (void)setObjectContentLevel:(unsigned int)a3
+- (void)setObjectContentLevel:(unsigned int)level
 {
   [(VMUObjectIdentifier *)self->_objectIdentifier setObjectContentLevel:?];
-  if (a3 == 2 && self->_regionsCount && self->_objectIdentifier)
+  if (level == 2 && self->_regionsCount && self->_objectIdentifier)
   {
-    v5 = [(VMUTaskMemoryScanner *)self _readonlyRegionRanges];
-    [(VMUObjectIdentifier *)self->_objectIdentifier setReadonlyRegionRanges:v5];
+    _readonlyRegionRanges = [(VMUTaskMemoryScanner *)self _readonlyRegionRanges];
+    [(VMUObjectIdentifier *)self->_objectIdentifier setReadonlyRegionRanges:_readonlyRegionRanges];
   }
 }
 
@@ -3561,14 +3561,14 @@ uint64_t __35__VMUTaskMemoryScanner__sortBlocks__block_invoke(uint64_t a1, void 
   }
 }
 
-- (BOOL)addMallocNodesFromTaskWithError:(id *)a3
+- (BOOL)addMallocNodesFromTaskWithError:(id *)error
 {
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __56__VMUTaskMemoryScanner_addMallocNodesFromTaskWithError___block_invoke;
   v6[3] = &unk_1E82777F0;
   v6[4] = self;
-  v4 = [(VMUTaskMemoryScanner *)self _callRemoteMallocEnumerators:1 error:a3 block:v6];
+  v4 = [(VMUTaskMemoryScanner *)self _callRemoteMallocEnumerators:1 error:error block:v6];
   if (v4)
   {
     [(VMUTaskMemoryScanner *)self _sortAndClassifyBlocks];
@@ -3860,14 +3860,14 @@ LABEL_59:
   v58 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addMallocNodes:(id)a3
+- (void)addMallocNodes:(id)nodes
 {
-  v18 = a3;
-  if ([v18 count])
+  nodesCopy = nodes;
+  if ([nodesCopy count])
   {
     blocksSize = self->_blocksSize;
-    v5 = v18;
-    v6 = v18[2];
+    v5 = nodesCopy;
+    v6 = nodesCopy[2];
     v7 = self->_blocksCount - 1;
     if (blocksSize <= v7 + v6)
     {
@@ -3888,7 +3888,7 @@ LABEL_59:
         v8 *= 2;
       }
 
-      while (v9 < v7 + v18[2]);
+      while (v9 < v7 + nodesCopy[2]);
       v10 = malloc_type_realloc(self->_blocks, 16 * v9, 0x1000040451B5BE8uLL);
       self->_blocks = v10;
       if (!v10)
@@ -3897,8 +3897,8 @@ LABEL_59:
         abort();
       }
 
-      v5 = v18;
-      v6 = v18[2];
+      v5 = nodesCopy;
+      v6 = nodesCopy[2];
     }
 
     if (v6)
@@ -3932,13 +3932,13 @@ LABEL_59:
   }
 }
 
-- (BOOL)addAllNodesFromTaskWithError:(id *)a3
+- (BOOL)addAllNodesFromTaskWithError:(id *)error
 {
   v5 = [(VMUTaskMemoryScanner *)self addRootNodesFromTaskWithError:?];
   if (v5)
   {
 
-    LOBYTE(v5) = [(VMUTaskMemoryScanner *)self addMallocNodesFromTaskWithError:a3];
+    LOBYTE(v5) = [(VMUTaskMemoryScanner *)self addMallocNodesFromTaskWithError:error];
   }
 
   return v5;
@@ -3957,7 +3957,7 @@ LABEL_59:
   }
 }
 
-- (void)setClassStructureFieldScanValueAtSourceAddress:(void *)a3 toCorrectedAddress:(void *)a4
+- (void)setClassStructureFieldScanValueAtSourceAddress:(void *)address toCorrectedAddress:(void *)correctedAddress
 {
   classStructureAddressToDestinationMapTable = self->_classStructureAddressToDestinationMapTable;
   if (!classStructureAddressToDestinationMapTable)
@@ -3969,13 +3969,13 @@ LABEL_59:
     classStructureAddressToDestinationMapTable = self->_classStructureAddressToDestinationMapTable;
   }
 
-  NSMapInsert(classStructureAddressToDestinationMapTable, a3, a4);
+  NSMapInsert(classStructureAddressToDestinationMapTable, address, correctedAddress);
 }
 
 - (void)_identifyObjCClassStructureBlocks
 {
-  v3 = [(VMUObjectIdentifier *)self->_objectIdentifier ObjCclassCount];
-  if (v3 + [(VMUObjectIdentifier *)self->_objectIdentifier SwiftClassCount])
+  objCclassCount = [(VMUObjectIdentifier *)self->_objectIdentifier ObjCclassCount];
+  if (objCclassCount + [(VMUObjectIdentifier *)self->_objectIdentifier SwiftClassCount])
   {
     [(VMUObjectIdentifier *)self->_objectIdentifier _generateClassInfosForObjCClassStructurePointerTypes];
     self->_objcClassStructureClassInfoIndex = [(VMUObjectIdentifier *)self->_objectIdentifier classInfoIndexForObjCClassStructurePointerType:0];
@@ -4100,8 +4100,8 @@ uint64_t __57__VMUTaskMemoryScanner__identifyObjCClassStructureBlocks__block_inv
   aBlock[3] = &unk_1E8277868;
   aBlock[4] = self;
   v3 = _Block_copy(aBlock);
-  v4 = [(NSMutableDictionary *)self->_addressToRuntimeMetadataChunkInfoDict allKeys];
-  v5 = [v4 sortedArrayUsingSelector:sel_compare_];
+  allKeys = [(NSMutableDictionary *)self->_addressToRuntimeMetadataChunkInfoDict allKeys];
+  v5 = [allKeys sortedArrayUsingSelector:sel_compare_];
 
   v28 = 0u;
   v29 = 0u;
@@ -4128,16 +4128,16 @@ uint64_t __57__VMUTaskMemoryScanner__identifyObjCClassStructureBlocks__block_inv
 
         v13 = *(*(&v26 + 1) + 8 * i);
         v14 = [(NSMutableDictionary *)self->_addressToRuntimeMetadataChunkInfoDict objectForKeyedSubscript:v13];
-        v15 = [v13 unsignedLongLongValue];
+        unsignedLongLongValue = [v13 unsignedLongLongValue];
         v16 = &self->_blocks[v10];
-        if (v15 >= ((*(v16 + 1) >> 5) & 0xFFFFFFFFFLL) + v16->var0)
+        if (unsignedLongLongValue >= ((*(v16 + 1) >> 5) & 0xFFFFFFFFFLL) + v16->var0)
         {
-          v20 = [(VMUTaskMemoryScanner *)self nodeForAddress:v15];
+          v20 = [(VMUTaskMemoryScanner *)self nodeForAddress:unsignedLongLongValue];
           v21 = v14;
 
           v8 = v21;
           v10 = v20;
-          v9 = v15;
+          v9 = unsignedLongLongValue;
         }
 
         else
@@ -4166,7 +4166,7 @@ uint64_t __57__VMUTaskMemoryScanner__identifyObjCClassStructureBlocks__block_inv
             v8 = 0;
           }
 
-          (*(v3 + 2))(v3, v10, v15, v14);
+          (*(v3 + 2))(v3, v10, unsignedLongLongValue, v14);
           v9 = 0;
         }
       }
@@ -4224,9 +4224,9 @@ void __48__VMUTaskMemoryScanner_printRuntimeMetadataInfo__block_invoke(uint64_t 
       blocks = self->_blocks;
       if ((*(&blocks[v3] + 1) & 0xFFFFFE0000000007) == 1)
       {
-        v6 = [(VMUObjectIdentifier *)self->_objectIdentifier swiftMirror];
+        swiftMirror = [(VMUObjectIdentifier *)self->_objectIdentifier swiftMirror];
         var0 = blocks[v3].var0;
-        if (vmu_swift_reflection_ownsObject(v6->var0))
+        if (vmu_swift_reflection_ownsObject(swiftMirror->var0))
         {
           v8 = vmu_swift_reflection_metadataForObject(*[(VMUObjectIdentifier *)self->_objectIdentifier swiftMirror], blocks[v3].var0);
           if (v8)
@@ -4245,8 +4245,8 @@ void __48__VMUTaskMemoryScanner_printRuntimeMetadataInfo__block_invoke(uint64_t 
                 v11 = [VMUMutableClassInfo alloc];
                 classInfoIndexer = self->_classInfoIndexer;
                 objectIdentifier = self->_objectIdentifier;
-                v14 = [(VMUObjectIdentifier *)objectIdentifier memoryReader];
-                v15 = [(VMUClassInfo *)v11 initWithClass:v9 type:8 infoMap:classInfoIndexer objectIdentifier:objectIdentifier reader:v14];
+                memoryReader = [(VMUObjectIdentifier *)objectIdentifier memoryReader];
+                v15 = [(VMUClassInfo *)v11 initWithClass:v9 type:8 infoMap:classInfoIndexer objectIdentifier:objectIdentifier reader:memoryReader];
 
                 [(VMUTaskMemoryScanner *)self applyTypeOverlayToMutableInfo:v15];
               }
@@ -4408,30 +4408,30 @@ LABEL_33:
   }
 
   self->_initializedRegionMallocBlockCounts = 1;
-  v27 = [(VMUObjectIdentifier *)self->_objectIdentifier memoryReader];
-  v28 = [(VMUObjectIdentifier *)self->_objectIdentifier swiftRuntimeInfoStableABI];
-  v29 = v28;
-  if (v28)
+  memoryReader = [(VMUObjectIdentifier *)self->_objectIdentifier memoryReader];
+  swiftRuntimeInfoStableABI = [(VMUObjectIdentifier *)self->_objectIdentifier swiftRuntimeInfoStableABI];
+  v29 = swiftRuntimeInfoStableABI;
+  if (swiftRuntimeInfoStableABI)
   {
-    v30 = v28;
+    swiftRuntimeInfoPreABI = swiftRuntimeInfoStableABI;
   }
 
   else
   {
-    v30 = [(VMUObjectIdentifier *)self->_objectIdentifier swiftRuntimeInfoPreABI];
+    swiftRuntimeInfoPreABI = [(VMUObjectIdentifier *)self->_objectIdentifier swiftRuntimeInfoPreABI];
   }
 
-  v31 = v30;
+  v31 = swiftRuntimeInfoPreABI;
 
   v35[0] = MEMORY[0x1E69E9820];
   v35[1] = 3221225472;
   v35[2] = __39__VMUTaskMemoryScanner__fixupBlockIsas__block_invoke;
   v35[3] = &unk_1E8277908;
   v36 = v31;
-  v37 = v27;
+  v37 = memoryReader;
   v35[4] = self;
   v32 = v31;
-  v33 = v27;
+  v33 = memoryReader;
   [(VMUTaskMemoryScanner *)self _withOrderedNodeMapper:v35];
   [(VMUTaskMemoryScanner *)self _identifySwiftTypeNameCache];
   [(VMUTaskMemoryScanner *)self _updateLinearClassInfos];
@@ -5227,9 +5227,9 @@ uint64_t __39__VMUTaskMemoryScanner__fixupBlockIsas__block_invoke_5(uint64_t a1,
 - (void)_identifySwiftTypeNameCache
 {
   v76 = *MEMORY[0x1E69E9840];
-  v3 = [(VMUTask *)self->_task isExclaveCore];
+  isExclaveCore = [(VMUTask *)self->_task isExclaveCore];
   [(VMUObjectIdentifier *)self->_objectIdentifier symbolicator];
-  if (v3)
+  if (isExclaveCore)
   {
     SymbolOwner = CSSymbolicatorGetSymbolOwner();
   }
@@ -5247,8 +5247,8 @@ uint64_t __39__VMUTaskMemoryScanner__fixupBlockIsas__block_invoke_5(uint64_t a1,
   }
 
   v71 = 0;
-  v8 = [(VMUObjectIdentifier *)self->_objectIdentifier memoryReader];
-  _copy_remote_mangled_symbol_value(v8, "__ZL13TypeNameCache", v6, v7, 8uLL, &v71);
+  memoryReader = [(VMUObjectIdentifier *)self->_objectIdentifier memoryReader];
+  _copy_remote_mangled_symbol_value(memoryReader, "__ZL13TypeNameCache", v6, v7, 8uLL, &v71);
 
   if (!v71)
   {
@@ -5340,9 +5340,9 @@ LABEL_39:
     goto LABEL_39;
   }
 
-  v47 = [*v27 isSpecialPhysFootprintRegion];
+  isSpecialPhysFootprintRegion = [*v27 isSpecialPhysFootprintRegion];
   v16 = MEMORY[0x1E69E9AC0];
-  if (v47)
+  if (isSpecialPhysFootprintRegion)
   {
     v48 = 0;
   }
@@ -5352,7 +5352,7 @@ LABEL_39:
     v48 = v27;
   }
 
-  if (v47)
+  if (isSpecialPhysFootprintRegion)
   {
     goto LABEL_75;
   }
@@ -5398,10 +5398,10 @@ LABEL_50:
   }
 
   v54 = v48;
-  v55 = [*v52 isSpecialPhysFootprintRegion];
+  isSpecialPhysFootprintRegion2 = [*v52 isSpecialPhysFootprintRegion];
   v48 = v54;
   v16 = MEMORY[0x1E69E9AC0];
-  if (v55)
+  if (isSpecialPhysFootprintRegion2)
   {
     v50 = 0;
   }
@@ -5668,8 +5668,8 @@ LABEL_39:
     goto LABEL_39;
   }
 
-  v42 = [*v22 isSpecialPhysFootprintRegion];
-  if (v42)
+  isSpecialPhysFootprintRegion = [*v22 isSpecialPhysFootprintRegion];
+  if (isSpecialPhysFootprintRegion)
   {
     v43 = 0;
   }
@@ -5679,7 +5679,7 @@ LABEL_39:
     v43 = v22;
   }
 
-  if (v42)
+  if (isSpecialPhysFootprintRegion)
   {
     return 0;
   }
@@ -5882,12 +5882,12 @@ LABEL_60:
   return result;
 }
 
-- (void)_identifyXPCDictionaryStorageReferencedByBlock:(_VMUBlockNode *)a3
+- (void)_identifyXPCDictionaryStorageReferencedByBlock:(_VMUBlockNode *)block
 {
   v9 = 0;
   memoryCache = self->_memoryCache;
-  v5 = (*(a3 + 1) >> 5) & 0xFFFFFFFFFLL;
-  var0 = a3->var0;
+  v5 = (*(block + 1) >> 5) & 0xFFFFFFFFFLL;
+  var0 = block->var0;
   while (![(VMUTaskMemoryCache *)memoryCache peekAtAddress:var0 size:v5 returnsBuf:&v9])
   {
     v7 = [(VMUTaskMemoryScanner *)self _untypedMallocBlockNodeReferencedFromAddress:v9];
@@ -6151,9 +6151,9 @@ void __64__VMUTaskMemoryScanner__identifyNonObjectsPointedToByTypedIvars__block_
 
 - (void)_identifyNonObjectsPointingToSwiftMetadata
 {
-  v3 = [(VMUTask *)self->_task isExclaveCore];
+  isExclaveCore = [(VMUTask *)self->_task isExclaveCore];
   [(VMUObjectIdentifier *)self->_objectIdentifier symbolicator];
-  if (v3)
+  if (isExclaveCore)
   {
     CSSymbolicatorGetSymbolOwner();
   }
@@ -6380,11 +6380,11 @@ LABEL_7:
   }
 }
 
-- (id)_recursivelyIdentifySwiftAsyncTaskSlabs:(unint64_t)a3 containerRange:(_VMURange)a4 remoteBlock:(unint64_t)a5 mappedBlock:(unint64_t)a6 asyncTaskSlabMetadataIsa:(unint64_t)a7 nestingLevel:(unsigned int)a8
+- (id)_recursivelyIdentifySwiftAsyncTaskSlabs:(unint64_t)slabs containerRange:(_VMURange)range remoteBlock:(unint64_t)block mappedBlock:(unint64_t)mappedBlock asyncTaskSlabMetadataIsa:(unint64_t)isa nestingLevel:(unsigned int)level
 {
-  length = a4.length;
-  location = a4.location;
-  v15 = a8;
+  length = range.length;
+  location = range.location;
+  levelCopy2 = level;
   v39 = 0u;
   v40 = 0u;
   vmu_swift_reflection_asyncTaskSlabAllocations(*[(VMUObjectIdentifier *)self->_objectIdentifier swiftMirror], &v39);
@@ -6397,7 +6397,7 @@ LABEL_7:
 
     if (_debugSwiftAsyncPrintfIsEnabled_enabled == 1)
     {
-      _debugSwiftAsyncPrintf(a8, "Bailing because vmu_reflection_interop_asyncTaskSlabAllocations error: %s\n");
+      _debugSwiftAsyncPrintf(level, "Bailing because vmu_reflection_interop_asyncTaskSlabAllocations error: %s\n");
     }
 
 LABEL_31:
@@ -6406,7 +6406,7 @@ LABEL_31:
   }
 
   v16 = v40;
-  if (!VMURangeContainsRange(location, length, a3, v40))
+  if (!VMURangeContainsRange(location, length, slabs, v40))
   {
     if (_debugSwiftAsyncPrintfIsEnabled_onceToken != -1)
     {
@@ -6415,7 +6415,7 @@ LABEL_31:
 
     if (_debugSwiftAsyncPrintfIsEnabled_enabled == 1)
     {
-      _debugSwiftAsyncPrintf(a8, "Bailing because slab %p [%llu] does not fit inside container\n");
+      _debugSwiftAsyncPrintf(level, "Bailing because slab %p [%llu] does not fit inside container\n");
     }
 
     goto LABEL_31;
@@ -6426,26 +6426,26 @@ LABEL_31:
     [VMUTaskMemoryScanner _recursivelyIdentifySwiftAsyncTaskSlabs:containerRange:remoteBlock:mappedBlock:asyncTaskSlabMetadataIsa:nestingLevel:];
   }
 
-  v38 = self;
+  selfCopy = self;
   if (_debugSwiftAsyncPrintfIsEnabled_enabled == 1)
   {
-    _debugSwiftAsyncPrintf(a8, "Slab %p [%llu], next slab %p\n", a3, v16, *(&v39 + 1));
+    _debugSwiftAsyncPrintf(level, "Slab %p [%llu], next slab %p\n", slabs, v16, *(&v39 + 1));
   }
 
   v17 = [VMUMutableFieldInfo alloc];
-  v37 = [(VMUFieldInfo *)v17 initWithName:@"slab" type:0 scan:0 offset:(a3 - location) size:v40];
+  v37 = [(VMUFieldInfo *)v17 initWithName:@"slab" type:0 scan:0 offset:(slabs - location) size:v40];
   if (DWORD1(v40))
   {
     v18 = 0;
     v33 = v16;
-    v34 = a3;
+    slabsCopy = slabs;
     while (2)
     {
       v19 = objc_autoreleasePoolPush();
       v20 = *(&v40 + 1) + 16 * v18;
       v21 = *v20;
       v22 = *(v20 + 8);
-      if (!VMURangeContainsRange(a3, v16, *v20, v22))
+      if (!VMURangeContainsRange(slabs, v16, *v20, v22))
       {
         v30 = v19;
 LABEL_36:
@@ -6465,23 +6465,23 @@ LABEL_36:
       if (_debugSwiftAsyncPrintfIsEnabled_enabled == 1)
       {
         v23 = VMURangeDescription(v21, v22);
-        _debugSwiftAsyncPrintf(v15 + 1, "Chunk %s\n", [v23 UTF8String]);
+        _debugSwiftAsyncPrintf(levelCopy2 + 1, "Chunk %s\n", [v23 UTF8String]);
       }
 
-      v24 = [(VMUFieldInfo *)[VMUMutableFieldInfo alloc] initWithName:@"chunk" type:0 scan:1 offset:(v21 - a3) size:v22];
+      v24 = [(VMUFieldInfo *)[VMUMutableFieldInfo alloc] initWithName:@"chunk" type:0 scan:1 offset:(v21 - slabs) size:v22];
       [(VMUMutableFieldInfo *)v37 addSubField:v24];
-      v25 = ((v21 + 7) & 0xFFFFFFFFFFFFFFF8) - a5;
-      while (v25 <= v21 - a5 + v22 - 8)
+      v25 = ((v21 + 7) & 0xFFFFFFFFFFFFFFF8) - block;
+      while (v25 <= v21 - block + v22 - 8)
       {
-        if (!VMURangeContainsRange(v21, v22, v25 + a5, 8))
+        if (!VMURangeContainsRange(v21, v22, v25 + block, 8))
         {
           goto LABEL_35;
         }
 
-        if (*(v25 + a6) == a7)
+        if (*(v25 + mappedBlock) == isa)
         {
-          LODWORD(v32) = a8 + 2;
-          v26 = [(VMUTaskMemoryScanner *)v38 _recursivelyIdentifySwiftAsyncTaskSlabs:v25 + a5 containerRange:v21 remoteBlock:v22 mappedBlock:a5 asyncTaskSlabMetadataIsa:a6 nestingLevel:a7, v32];
+          LODWORD(v32) = level + 2;
+          v26 = [(VMUTaskMemoryScanner *)selfCopy _recursivelyIdentifySwiftAsyncTaskSlabs:v25 + block containerRange:v21 remoteBlock:v22 mappedBlock:block asyncTaskSlabMetadataIsa:mappedBlock nestingLevel:isa, v32];
           if (!v26)
           {
 LABEL_35:
@@ -6492,7 +6492,7 @@ LABEL_35:
 
           v27 = v26;
           [(VMUMutableFieldInfo *)v24 addSubField:v26];
-          v25 = ((v25 + a5 + [v27 size] + 7) & 0xFFFFFFFFFFFFFFF8) - a5;
+          v25 = ((v25 + block + [v27 size] + 7) & 0xFFFFFFFFFFFFFFF8) - block;
         }
 
         else
@@ -6503,9 +6503,9 @@ LABEL_35:
 
       objc_autoreleasePoolPop(context);
       v18 = v35 + 1;
-      v15 = a8;
+      levelCopy2 = level;
       v16 = v33;
-      a3 = v34;
+      slabs = slabsCopy;
       if (v35 + 1 < DWORD1(v40))
       {
         continue;
@@ -6526,9 +6526,9 @@ LABEL_32:
 
 - (void)_identifyAttributeGraphAllocationsIfPreciseIdentificationIsUnavailable
 {
-  v3 = [(VMUTask *)self->_task isExclaveCore];
+  isExclaveCore = [(VMUTask *)self->_task isExclaveCore];
   [(VMUObjectIdentifier *)self->_objectIdentifier symbolicator];
-  if (v3)
+  if (isExclaveCore)
   {
     SymbolOwner = CSSymbolicatorGetSymbolOwner();
   }
@@ -6619,11 +6619,11 @@ LABEL_32:
 - (void)_identifySwiftAsyncTaskSlabs
 {
   v44[1] = *MEMORY[0x1E69E9840];
-  v3 = [(VMUObjectIdentifier *)self->_objectIdentifier swiftConcurrencyDebugAsyncTaskMetadataIsa];
-  v4 = [(VMUObjectIdentifier *)self->_objectIdentifier swiftConcurrencyDebugAsyncTaskSlabMetadataIsa];
-  if (v3)
+  swiftConcurrencyDebugAsyncTaskMetadataIsa = [(VMUObjectIdentifier *)self->_objectIdentifier swiftConcurrencyDebugAsyncTaskMetadataIsa];
+  swiftConcurrencyDebugAsyncTaskSlabMetadataIsa = [(VMUObjectIdentifier *)self->_objectIdentifier swiftConcurrencyDebugAsyncTaskSlabMetadataIsa];
+  if (swiftConcurrencyDebugAsyncTaskMetadataIsa)
   {
-    v5 = v4 == 0;
+    v5 = swiftConcurrencyDebugAsyncTaskSlabMetadataIsa == 0;
   }
 
   else
@@ -6633,8 +6633,8 @@ LABEL_32:
 
   if (!v5)
   {
-    v7 = v4;
-    v8 = [(VMUClassInfoMap *)self->_classInfoIndexer classInfoForAddress:v3];
+    v7 = swiftConcurrencyDebugAsyncTaskSlabMetadataIsa;
+    v8 = [(VMUClassInfoMap *)self->_classInfoIndexer classInfoForAddress:swiftConcurrencyDebugAsyncTaskMetadataIsa];
     v9 = [(VMUClassInfoMap *)self->_classInfoIndexer classInfoForAddress:v7];
     v40 = v8;
     v10 = [(VMUClassInfoMap *)self->_classInfoIndexer indexForClassInfo:v8];
@@ -6834,9 +6834,9 @@ LABEL_60:
   if (![(VMUTask *)self->_task isCore])
   {
     v3 = [VMUTaskStackLogReader alloc];
-    v4 = [(VMUTask *)self->_task taskPort];
-    v5 = [(VMUObjectIdentifier *)self->_objectIdentifier symbolicator];
-    v7 = [(VMUTaskStackLogReader *)v3 initWithTask:v4 symbolicator:v5, v6];
+    taskPort = [(VMUTask *)self->_task taskPort];
+    symbolicator = [(VMUObjectIdentifier *)self->_objectIdentifier symbolicator];
+    v7 = [(VMUTaskStackLogReader *)v3 initWithTask:taskPort symbolicator:symbolicator, v6];
     classInfoIndexer = self->_classInfoIndexer;
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
@@ -6910,12 +6910,12 @@ uint64_t __62__VMUTaskMemoryScanner__identifyNonObjectsUsingStackBacktrace__bloc
             else
             {
               v60 = *MEMORY[0x1E69E9848];
-              v59 = [*v8 address];
+              address = [*v8 address];
               v58 = *(*v8 + 2) + *(*v8 + 1);
               v39 = *(*v8 + 6);
               v57 = vm_prot_strings[v39];
               v40 = VMUExclaveOrDarwinRegionTypeDescriptionForTagShareProtAndPager(*(*v8 + 232), *(*v8 + 104), *(*v8 + 50), v39, *(*v8 + 49));
-              v41 = [v40 UTF8String];
+              uTF8String = [v40 UTF8String];
               v42 = *(*v8 + 2) >> *MEMORY[0x1E69E9AC0];
               v43 = "pages";
               if (v42 == 1)
@@ -6929,7 +6929,7 @@ uint64_t __62__VMUTaskMemoryScanner__identifyNonObjectsUsingStackBacktrace__bloc
                 v44 = "";
               }
 
-              fprintf(v60, "Failed to map remote region: [%#llx-%#llx] %s %s (%llu %s)%s (error: %d)\n", v59, v58, v57, v41, v42, v43, v44, v61);
+              fprintf(v60, "Failed to map remote region: [%#llx-%#llx] %s %s (%llu %s)%s (error: %d)\n", address, v58, v57, uTF8String, v42, v43, v44, v61);
             }
           }
         }
@@ -7155,20 +7155,20 @@ uint64_t __50__VMUTaskMemoryScanner__findMarkedAbandonedBlocks__block_invoke(uin
   }
 }
 
-- (void)refineTypesWithOverlay:(id)a3
+- (void)refineTypesWithOverlay:(id)overlay
 {
-  [(VMUClassInfoMap *)self->_classInfoIndexer _applyTypeOverlay:a3];
+  [(VMUClassInfoMap *)self->_classInfoIndexer _applyTypeOverlay:overlay];
 
   [(VMUTaskMemoryScanner *)self _updateLinearClassInfos];
 }
 
-- (void)applyTypeOverlayToMutableInfo:(id)a3
+- (void)applyTypeOverlayToMutableInfo:(id)info
 {
   classInfoIndexer = self->_classInfoIndexer;
   scanOverlay = self->_scanOverlay;
-  v5 = a3;
-  v6 = [(VMUScanOverlay *)scanOverlay refinementRules];
-  [(VMUClassInfoMap *)classInfoIndexer _applyTypeOverlayRules:v6 toMutableInfo:v5];
+  infoCopy = info;
+  refinementRules = [(VMUScanOverlay *)scanOverlay refinementRules];
+  [(VMUClassInfoMap *)classInfoIndexer _applyTypeOverlayRules:refinementRules toMutableInfo:infoCopy];
 }
 
 - (void)_buildRegionFirstBlockIndexOnPageArrays
@@ -7291,7 +7291,7 @@ uint64_t __50__VMUTaskMemoryScanner__findMarkedAbandonedBlocks__block_invoke(uin
                 v45 = v47 + v51->var0;
                 v49 = [*v10 description];
                 v35 = v49;
-                v36 = [v49 UTF8String];
+                uTF8String = [v49 UTF8String];
                 *buf = 67111426;
                 *v56 = v13;
                 *&v56[4] = 1024;
@@ -7311,7 +7311,7 @@ uint64_t __50__VMUTaskMemoryScanner__findMarkedAbandonedBlocks__block_invoke(uin
                 v67 = 2048;
                 v68 = v47;
                 v69 = 2080;
-                v70 = v36;
+                v70 = uTF8String;
                 _os_log_error_impl(&dword_1C679D000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "VMUTaskMemoryScanner _noteBlocksInRegion startIndex %u count %u lastIndex %u  startBlock %#llx-%#llx[%llu] lastBlock %#llx-%#llx[%llu]  %s\n", buf, 0x5Au);
               }
 
@@ -7341,7 +7341,7 @@ uint64_t __50__VMUTaskMemoryScanner__findMarkedAbandonedBlocks__block_invoke(uin
                   v52 = (*(v51 + 1) >> 5) & 0xFFFFFFFFFLL;
                   v54 = [*v10 description];
                   v37 = v54;
-                  v38 = [v54 UTF8String];
+                  uTF8String2 = [v54 UTF8String];
                   *buf = 134220546;
                   *v56 = v27;
                   *&v56[8] = 1024;
@@ -7363,7 +7363,7 @@ uint64_t __50__VMUTaskMemoryScanner__findMarkedAbandonedBlocks__block_invoke(uin
                   v69 = 2048;
                   v70 = v52;
                   v71 = 2080;
-                  v72 = v38;
+                  v72 = uTF8String2;
                   _os_log_error_impl(&dword_1C679D000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "numPages: %zu  VMUTaskMemoryScanner _noteBlocksInRegion startIndex %u count %u lastIndex %u  startBlock %#llx-%#llx[%llu] lastBlock %#llx-%#llx[%llu]  %s\n", buf, 0x64u);
                 }
 
@@ -7441,22 +7441,22 @@ LABEL_50:
   v39 = *MEMORY[0x1E69E9840];
 }
 
-- (const)getCachedScanInfoForClassWithIsa:(unsigned int)a3 classInfo:(id)a4 scanCaches:(_VMUScanLocationCache *)a5
+- (const)getCachedScanInfoForClassWithIsa:(unsigned int)isa classInfo:(id)info scanCaches:(_VMUScanLocationCache *)caches
 {
   result = 0;
-  if (a3)
+  if (isa)
   {
-    if (a4)
+    if (info)
     {
-      result = a5[a3];
+      result = caches[isa];
       if (!result)
       {
-        v10 = [a4 instanceSize];
+        instanceSize = [info instanceSize];
         v29[0] = 0;
         v29[1] = v29;
         v29[2] = 0x2020000000;
-        v30 = (v10 >> 3) + 2;
-        a5[a3] = malloc_type_malloc(4 * v30, 0x100004052888210uLL);
+        v30 = (instanceSize >> 3) + 2;
+        caches[isa] = malloc_type_malloc(4 * v30, 0x100004052888210uLL);
         v25 = 0;
         v26 = &v25;
         v27 = 0x2020000000;
@@ -7467,38 +7467,38 @@ LABEL_50:
         v23[3] = &unk_1E8277A60;
         v23[4] = &v25;
         v23[5] = v29;
-        v23[6] = a5;
-        v24 = a3;
-        [a4 enumerateScanningLocationsForSize:v10 withBlock:v23];
-        v11 = [a4 defaultScanType];
-        v12 = a5[a3];
+        v23[6] = caches;
+        isaCopy = isa;
+        [info enumerateScanningLocationsForSize:instanceSize withBlock:v23];
+        defaultScanType = [info defaultScanType];
+        v12 = caches[isa];
         v13 = *(v26 + 6);
         *(v26 + 6) = v13 + 1;
-        v14 = [a4 defaultScanType];
-        v15 = (v10 + 7) & 0xFFFFF8;
-        if (v11 == 1)
+        defaultScanType2 = [info defaultScanType];
+        v15 = (instanceSize + 7) & 0xFFFFF8;
+        if (defaultScanType == 1)
         {
-          v15 = v10;
+          v15 = instanceSize;
         }
 
-        v12[v13] = (v15 & 0xFFFFFF | ((v14 & 0x3F) << 24));
-        v16 = a5[a3];
+        v12[v13] = (v15 & 0xFFFFFF | ((defaultScanType2 & 0x3F) << 24));
+        v16 = caches[isa];
         v17 = *(v26 + 6);
         *(v26 + 6) = v17 + 1;
-        v16[v17] = ((([a4 defaultScanType] & 0x3F) << 24) | 0xFFFFFF);
+        v16[v17] = ((([info defaultScanType] & 0x3F) << 24) | 0xFFFFFF);
         swiftHeapGenericLocalVariableClassInfoIndex = self->_swiftHeapGenericLocalVariableClassInfoIndex;
-        v19 = [a4 infoType] - 8;
+        v19 = [info infoType] - 8;
         if (v19 <= 0x38 && ((1 << v19) & 0x100000001000001) != 0)
         {
-          v20 = a5[a3];
+          v20 = caches[isa];
           v21 = *v20;
         }
 
         else
         {
-          v20 = a5[a3];
+          v20 = caches[isa];
           v21 = *v20;
-          if (swiftHeapGenericLocalVariableClassInfoIndex != a3)
+          if (swiftHeapGenericLocalVariableClassInfoIndex != isa)
           {
             v22 = 0;
             goto LABEL_10;
@@ -7510,7 +7510,7 @@ LABEL_10:
         *v20 = (v22 | *&v21 & 0x7FFFFFFF);
         _Block_object_dispose(&v25, 8);
         _Block_object_dispose(v29, 8);
-        return a5[a3];
+        return caches[isa];
       }
     }
   }
@@ -7585,11 +7585,11 @@ void __78__VMUTaskMemoryScanner_getCachedScanInfoForClassWithIsa_classInfo_scanC
   }
 }
 
-- (void)_withOrderedNodeMapper:(id)a3
+- (void)_withOrderedNodeMapper:(id)mapper
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  mapperCopy = mapper;
+  v5 = mapperCopy;
+  if (mapperCopy)
   {
     v16[0] = 0;
     v16[1] = v16;
@@ -7617,7 +7617,7 @@ void __78__VMUTaskMemoryScanner_getCachedScanInfoForClassWithIsa_classInfo_scanC
     v11 = v13;
     v6[4] = self;
     v7 = 0;
-    (*(v4 + 2))(v4, v6);
+    (*(mapperCopy + 2))(mapperCopy, v6);
 
     _Block_object_dispose(v12, 8);
     _Block_object_dispose(v13, 8);
@@ -8069,10 +8069,10 @@ LABEL_72:
   }
 }
 
-- (void)scanNodesWithReferenceRecorder:(id)a3
+- (void)scanNodesWithReferenceRecorder:(id)recorder
 {
-  v4 = a3;
-  v5 = _Block_copy(v4);
+  recorderCopy = recorder;
+  v5 = _Block_copy(recorderCopy);
   v6 = malloc_type_calloc(self->_classInfosCount, 8uLL, 0x2004093837F09uLL);
   if (self->_referenceLogger || (maxInteriorOffset = self->_maxInteriorOffset, maxInteriorOffset != -1) && (!maxInteriorOffset || (maxInteriorOffset & ~(-1 << *MEMORY[0x1E69E9AC0])) != 0))
   {
@@ -8081,7 +8081,7 @@ LABEL_72:
     aBlock[2] = __55__VMUTaskMemoryScanner_scanNodesWithReferenceRecorder___block_invoke;
     aBlock[3] = &unk_1E8277AB0;
     aBlock[4] = self;
-    v22 = v4;
+    v22 = recorderCopy;
     v7 = _Block_copy(aBlock);
 
     v5 = v7;
@@ -8091,7 +8091,7 @@ LABEL_72:
   v14 = 3221225472;
   v15 = __55__VMUTaskMemoryScanner_scanNodesWithReferenceRecorder___block_invoke_2;
   v16 = &unk_1E8277B98;
-  v17 = self;
+  selfCopy = self;
   v8 = v5;
   v20 = 0;
   v18 = v8;
@@ -9255,10 +9255,10 @@ LABEL_61:
   return result;
 }
 
-- (unsigned)_removeFalsePositiveLeakedVMregionsFromNodes:(unsigned int *)a3 nodeCount:(unsigned int)a4 recorder:(id)a5
+- (unsigned)_removeFalsePositiveLeakedVMregionsFromNodes:(unsigned int *)nodes nodeCount:(unsigned int)count recorder:(id)recorder
 {
-  v8 = a5;
-  if (!a4)
+  recorderCopy = recorder;
+  if (!count)
   {
     v29 = 0;
     goto LABEL_5;
@@ -9309,11 +9309,11 @@ LABEL_11:
   v31 = v13;
   v30 = v13;
   v25 = -1;
-  v28 = v8;
+  v28 = recorderCopy;
   v27 = v10;
   do
   {
-    v18 = a3[v16];
+    v18 = nodes[v16];
     if (!v18 || !VMUGraphNodeType_IsVMRegion(*(&self->_blocks[v18] + 2) & 7))
     {
       goto LABEL_45;
@@ -9338,7 +9338,7 @@ LABEL_11:
 
       else
       {
-        (*(v8 + 2))(v8, v31, self->_blocks[v30].var0, 1, v18, self->_blocks[v18].var0);
+        (*(recorderCopy + 2))(recorderCopy, v31, self->_blocks[v30].var0, 1, v18, self->_blocks[v18].var0);
       }
 
 LABEL_43:
@@ -9358,7 +9358,7 @@ LABEL_43:
     {
       if (!VMUGraphNodeType_IsVMRegion(*(&self->_blocks->var0 + v20) & 7))
       {
-        a3[v29] = v18;
+        nodes[v29] = v18;
         v18 = v17;
         ++v29;
         goto LABEL_48;
@@ -9378,7 +9378,7 @@ LABEL_40:
       {
         v18 = v17;
 LABEL_48:
-        v8 = v28;
+        recorderCopy = v28;
         v10 = v27;
         goto LABEL_44;
       }
@@ -9415,7 +9415,7 @@ LABEL_34:
         v21 = v21;
       }
 
-      v8 = v28;
+      recorderCopy = v28;
       (*(v28 + 2))(v28, v21, self->_blocks[v21].var0, 1, v18, self->_blocks[v18].var0);
       v25 = v21;
 LABEL_60:
@@ -9433,7 +9433,7 @@ LABEL_60:
       v24 = v21;
     }
 
-    v8 = v28;
+    recorderCopy = v28;
     (*(v28 + 2))(v28, v24, self->_blocks[v24].var0, 1, v18, self->_blocks[v18].var0);
     v25 = v24;
     if (!v29)
@@ -9443,9 +9443,9 @@ LABEL_60:
     }
 
     v10 = v27;
-    if (a3[v29 - 1] >= v24)
+    if (nodes[v29 - 1] >= v24)
     {
-      a3[v29++] = v18;
+      nodes[v29++] = v18;
     }
 
 LABEL_61:
@@ -9456,13 +9456,13 @@ LABEL_45:
     ++v16;
   }
 
-  while (v16 != a4);
+  while (v16 != count);
 LABEL_5:
 
   return v29;
 }
 
-- (id)processSnapshotGraphWithOptions:(unint64_t)a3
+- (id)processSnapshotGraphWithOptions:(unint64_t)options
 {
   v130 = *MEMORY[0x1E69E9840];
   v81 = [VMUProcessObjectGraph alloc];
@@ -9471,8 +9471,8 @@ LABEL_5:
   blocksCount = self->_blocksCount;
   zoneNames = self->_zoneNames;
   classInfoIndexer = self->_classInfoIndexer;
-  v9 = [(VMUVMRegionIdentifier *)self->_regionIdentifier regions];
-  v10 = [(VMUProcessObjectGraph *)v81 initWithPid:pid nodes:blocks nodeCount:blocksCount zoneNames:zoneNames classInfoMap:classInfoIndexer regions:v9 pthreadOffsets:gPthreadOffsets userMarked:self->_userMarkedAbandoned autoreleasePoolOffsets:[(VMUObjectIdentifier *)self->_objectIdentifier autoreleasePoolPageLayout]];
+  regions = [(VMUVMRegionIdentifier *)self->_regionIdentifier regions];
+  v10 = [(VMUProcessObjectGraph *)v81 initWithPid:pid nodes:blocks nodeCount:blocksCount zoneNames:zoneNames classInfoMap:classInfoIndexer regions:regions pthreadOffsets:gPthreadOffsets userMarked:self->_userMarkedAbandoned autoreleasePoolOffsets:[(VMUObjectIdentifier *)self->_objectIdentifier autoreleasePoolPageLayout]];
   processObjectGraph = self->_processObjectGraph;
   self->_processObjectGraph = v10;
 
@@ -9486,20 +9486,20 @@ LABEL_5:
   [(VMUProcessObjectGraph *)self->_processObjectGraph setProcessName:self->_processName];
   [(VMUProcessObjectGraph *)self->_processObjectGraph setBinaryImagesDescription:self->_binaryImagesDescription];
   [(VMUProcessObjectGraph *)self->_processObjectGraph setPhysicalFootprint:self->_physicalFootprint];
-  v12 = [(VMUTaskMemoryScanner *)self ledger];
-  [(VMUProcessObjectGraph *)self->_processObjectGraph setLedger:v12];
+  ledger = [(VMUTaskMemoryScanner *)self ledger];
+  [(VMUProcessObjectGraph *)self->_processObjectGraph setLedger:ledger];
 
   [(VMUProcessObjectGraph *)self->_processObjectGraph setPhysicalFootprintPeak:self->_physicalFootprintPeak];
-  v13 = [(VMUTask *)self->_task taskDyldSharedCacheRange];
-  [(VMUProcessObjectGraph *)self->_processObjectGraph setDyldSharedCacheRange:v13, v14];
+  taskDyldSharedCacheRange = [(VMUTask *)self->_task taskDyldSharedCacheRange];
+  [(VMUProcessObjectGraph *)self->_processObjectGraph setDyldSharedCacheRange:taskDyldSharedCacheRange, v14];
   [(VMUProcessObjectGraph *)self->_processObjectGraph setObjectContentLevel:[(VMUTaskMemoryScanner *)self objectContentLevel]];
   [(VMUProcessObjectGraph *)self->_processObjectGraph setObjectContentLevelForNodeLabels:[(VMUTaskMemoryScanner *)self objectContentLevel]];
   [(VMUProcessObjectGraph *)self->_processObjectGraph setSrcAddressToExtraAutoreleaseCountDict:self->_srcAddressToExtraAutoreleaseCountDict];
   [(VMUProcessObjectGraph *)self->_processObjectGraph setShowsPhysFootprint:[(VMUVMRegionIdentifier *)self->_regionIdentifier recordedPhysFootprint]];
   [(VMUProcessObjectGraph *)self->_processObjectGraph setDidPhysFootprintDirtyAccounting:[(VMUVMRegionIdentifier *)self->_regionIdentifier didPhysFootprintDirtyAccounting]];
-  v15 = [(VMUObjectIdentifier *)self->_objectIdentifier symbolicator];
+  symbolicator = [(VMUObjectIdentifier *)self->_objectIdentifier symbolicator];
   v17 = v16;
-  v79 = v15;
+  v79 = symbolicator;
   if (self->_targetProcessHasObjCPatches)
   {
     v80 = CSSymbolicatorCreateForTaskSharedCache();
@@ -9531,16 +9531,16 @@ LABEL_5:
   debugTimer = self->_debugTimer;
   if (debugTimer)
   {
-    v20 = [(VMUDebugTimer *)debugTimer signpostID];
+    signpostID = [(VMUDebugTimer *)debugTimer signpostID];
     debugTimer = self->_debugTimer;
-    if (v20)
+    if (signpostID)
     {
-      v21 = [(VMUDebugTimer *)debugTimer logHandle];
-      v22 = [(VMUDebugTimer *)self->_debugTimer signpostID];
-      if (v22 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v21))
+      logHandle = [(VMUDebugTimer *)debugTimer logHandle];
+      signpostID2 = [(VMUDebugTimer *)self->_debugTimer signpostID];
+      if (signpostID2 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(logHandle))
       {
         *buf = 0;
-        _os_signpost_emit_with_name_impl(&dword_1C679D000, v21, OS_SIGNPOST_INTERVAL_END, v22, "processSnapshotGraph", "", buf, 2u);
+        _os_signpost_emit_with_name_impl(&dword_1C679D000, logHandle, OS_SIGNPOST_INTERVAL_END, signpostID2, "processSnapshotGraph", "", buf, 2u);
       }
 
       debugTimer = self->_debugTimer;
@@ -9552,25 +9552,25 @@ LABEL_5:
   v23 = self->_debugTimer;
   if (v23)
   {
-    v24 = [(VMUDebugTimer *)v23 logHandle];
-    v25 = [(VMUDebugTimer *)self->_debugTimer signpostID];
-    if (v25 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v24))
+    logHandle2 = [(VMUDebugTimer *)v23 logHandle];
+    signpostID3 = [(VMUDebugTimer *)self->_debugTimer signpostID];
+    if (signpostID3 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(logHandle2))
     {
       *buf = 0;
-      _os_signpost_emit_with_name_impl(&dword_1C679D000, v24, OS_SIGNPOST_INTERVAL_BEGIN, v25, "processSnapshotGraph", "sampling all threads", buf, 2u);
+      _os_signpost_emit_with_name_impl(&dword_1C679D000, logHandle2, OS_SIGNPOST_INTERVAL_BEGIN, signpostID3, "processSnapshotGraph", "sampling all threads", buf, 2u);
     }
   }
 
   if ([(VMUTask *)self->_task isCore])
   {
-    v26 = 0;
+    sampleAllThreadsOnce = 0;
     v27 = 0;
   }
 
   else
   {
     v27 = [[VMUSampler alloc] initWithTask:[(VMUTask *)self->_task taskPort] options:2305];
-    v26 = [(VMUSampler *)v27 sampleAllThreadsOnce];
+    sampleAllThreadsOnce = [(VMUSampler *)v27 sampleAllThreadsOnce];
   }
 
   v28 = getenv("PreserveMemgraphSampleAndSymbolStore");
@@ -9581,21 +9581,21 @@ LABEL_5:
 
   else
   {
-    [(VMUProcessObjectGraph *)self->_processObjectGraph setBacktraces:v26];
+    [(VMUProcessObjectGraph *)self->_processObjectGraph setBacktraces:sampleAllThreadsOnce];
     v32 = [[VMUSymbolStore alloc] initWithSymbolicator:v79 debugTimer:v17, self->_debugTimer];
     [(VMUProcessObjectGraph *)self->_processObjectGraph setSymbolStore:v32];
     v33 = self->_processObjectGraph;
-    v34 = [(VMUProcessObjectGraph *)v33 symbolStore];
-    [v34 setGraph:v33];
+    symbolStore = [(VMUProcessObjectGraph *)v33 symbolStore];
+    [symbolStore setGraph:v33];
   }
 
-  if (v26)
+  if (sampleAllThreadsOnce)
   {
     v123 = 0u;
     v124 = 0u;
     v121 = 0u;
     v122 = 0u;
-    v35 = v26;
+    v35 = sampleAllThreadsOnce;
     v36 = [v35 countByEnumeratingWithState:&v121 objects:v129 count:16];
     if (v36)
     {
@@ -9641,21 +9641,21 @@ LABEL_5:
   v110[1] = v110;
   v110[2] = 0x2020000000;
   v111 = 0;
-  if ((a3 & 2) != 0 && ([(VMUTaskMemoryScanner *)self objectContentLevel]& 0xFFFFFFFE) == 2)
+  if ((options & 2) != 0 && ([(VMUTaskMemoryScanner *)self objectContentLevel]& 0xFFFFFFFE) == 2)
   {
     v39 = self->_debugTimer;
     if (v39)
     {
-      v40 = [(VMUDebugTimer *)v39 signpostID];
+      signpostID4 = [(VMUDebugTimer *)v39 signpostID];
       v39 = self->_debugTimer;
-      if (v40)
+      if (signpostID4)
       {
-        v41 = [(VMUDebugTimer *)v39 logHandle];
-        v42 = [(VMUDebugTimer *)self->_debugTimer signpostID];
-        if (v42 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v41))
+        logHandle3 = [(VMUDebugTimer *)v39 logHandle];
+        signpostID5 = [(VMUDebugTimer *)self->_debugTimer signpostID];
+        if (signpostID5 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(logHandle3))
         {
           *v105 = 0;
-          _os_signpost_emit_with_name_impl(&dword_1C679D000, v41, OS_SIGNPOST_INTERVAL_END, v42, "processSnapshotGraph", "", v105, 2u);
+          _os_signpost_emit_with_name_impl(&dword_1C679D000, logHandle3, OS_SIGNPOST_INTERVAL_END, signpostID5, "processSnapshotGraph", "", v105, 2u);
         }
 
         v39 = self->_debugTimer;
@@ -9667,12 +9667,12 @@ LABEL_5:
     v43 = self->_debugTimer;
     if (v43)
     {
-      v44 = [(VMUDebugTimer *)v43 logHandle];
-      v45 = [(VMUDebugTimer *)self->_debugTimer signpostID];
-      if (v45 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v44))
+      logHandle4 = [(VMUDebugTimer *)v43 logHandle];
+      signpostID6 = [(VMUDebugTimer *)self->_debugTimer signpostID];
+      if (signpostID6 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(logHandle4))
       {
         *v105 = 0;
-        _os_signpost_emit_with_name_impl(&dword_1C679D000, v44, OS_SIGNPOST_INTERVAL_BEGIN, v45, "processSnapshotGraph", "getting node labels", v105, 2u);
+        _os_signpost_emit_with_name_impl(&dword_1C679D000, logHandle4, OS_SIGNPOST_INTERVAL_BEGIN, signpostID6, "processSnapshotGraph", "getting node labels", v105, 2u);
       }
     }
 
@@ -9691,16 +9691,16 @@ LABEL_5:
     v47 = self->_debugTimer;
     if (v47)
     {
-      v48 = [(VMUDebugTimer *)v47 signpostID];
+      signpostID7 = [(VMUDebugTimer *)v47 signpostID];
       v47 = self->_debugTimer;
-      if (v48)
+      if (signpostID7)
       {
-        v49 = [(VMUDebugTimer *)v47 logHandle];
-        v50 = [(VMUDebugTimer *)self->_debugTimer signpostID];
-        if (v50 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v49))
+        logHandle5 = [(VMUDebugTimer *)v47 logHandle];
+        signpostID8 = [(VMUDebugTimer *)self->_debugTimer signpostID];
+        if (signpostID8 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(logHandle5))
         {
           *v105 = 0;
-          _os_signpost_emit_with_name_impl(&dword_1C679D000, v49, OS_SIGNPOST_INTERVAL_END, v50, "processSnapshotGraph", "", v105, 2u);
+          _os_signpost_emit_with_name_impl(&dword_1C679D000, logHandle5, OS_SIGNPOST_INTERVAL_END, signpostID8, "processSnapshotGraph", "", v105, 2u);
         }
 
         v47 = self->_debugTimer;
@@ -9712,12 +9712,12 @@ LABEL_5:
     v51 = self->_debugTimer;
     if (v51)
     {
-      v52 = [(VMUDebugTimer *)v51 logHandle];
-      v53 = [(VMUDebugTimer *)self->_debugTimer signpostID];
-      if (v53 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v52))
+      logHandle6 = [(VMUDebugTimer *)v51 logHandle];
+      signpostID9 = [(VMUDebugTimer *)self->_debugTimer signpostID];
+      if (signpostID9 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(logHandle6))
       {
         *v105 = 0;
-        _os_signpost_emit_with_name_impl(&dword_1C679D000, v52, OS_SIGNPOST_INTERVAL_BEGIN, v53, "processSnapshotGraph", "scan nodes into the graph, while recording symbols of __DATA regions and stacks", v105, 2u);
+        _os_signpost_emit_with_name_impl(&dword_1C679D000, logHandle6, OS_SIGNPOST_INTERVAL_BEGIN, signpostID9, "processSnapshotGraph", "scan nodes into the graph, while recording symbols of __DATA regions and stacks", v105, 2u);
       }
     }
 
@@ -9739,7 +9739,7 @@ LABEL_5:
     v86[2] = __56__VMUTaskMemoryScanner_processSnapshotGraphWithOptions___block_invoke_3;
     v86[3] = &unk_1E8277C38;
     v98 = v54;
-    v99 = a3;
+    optionsCopy = options;
     v100 = v80;
     v101 = v82;
     v102 = v79;
@@ -9753,23 +9753,23 @@ LABEL_5:
     v94 = v114;
     v95 = v112;
     v96 = v110;
-    v88 = v26;
+    v88 = sampleAllThreadsOnce;
     v89 = v27;
     v97 = v105;
     [(VMUTaskMemoryScanner *)self scanNodesWithReferenceRecorder:v86];
     v56 = self->_debugTimer;
     if (v56)
     {
-      v57 = [(VMUDebugTimer *)v56 signpostID];
+      signpostID10 = [(VMUDebugTimer *)v56 signpostID];
       v56 = self->_debugTimer;
-      if (v57)
+      if (signpostID10)
       {
-        v58 = [(VMUDebugTimer *)v56 logHandle];
-        v59 = [(VMUDebugTimer *)self->_debugTimer signpostID];
-        if (v59 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v58))
+        logHandle7 = [(VMUDebugTimer *)v56 logHandle];
+        signpostID11 = [(VMUDebugTimer *)self->_debugTimer signpostID];
+        if (signpostID11 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(logHandle7))
         {
           *v85 = 0;
-          _os_signpost_emit_with_name_impl(&dword_1C679D000, v58, OS_SIGNPOST_INTERVAL_END, v59, "processSnapshotGraph", "", v85, 2u);
+          _os_signpost_emit_with_name_impl(&dword_1C679D000, logHandle7, OS_SIGNPOST_INTERVAL_END, signpostID11, "processSnapshotGraph", "", v85, 2u);
         }
 
         v56 = self->_debugTimer;
@@ -9781,12 +9781,12 @@ LABEL_5:
     v60 = self->_debugTimer;
     if (v60)
     {
-      v61 = [(VMUDebugTimer *)v60 logHandle];
-      v62 = [(VMUDebugTimer *)self->_debugTimer signpostID];
-      if (v62 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v61))
+      logHandle8 = [(VMUDebugTimer *)v60 logHandle];
+      signpostID12 = [(VMUDebugTimer *)self->_debugTimer signpostID];
+      if (signpostID12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(logHandle8))
       {
         *v85 = 0;
-        _os_signpost_emit_with_name_impl(&dword_1C679D000, v61, OS_SIGNPOST_INTERVAL_BEGIN, v62, "processSnapshotGraph", "find unreferenced VM regions", v85, 2u);
+        _os_signpost_emit_with_name_impl(&dword_1C679D000, logHandle8, OS_SIGNPOST_INTERVAL_BEGIN, signpostID12, "processSnapshotGraph", "find unreferenced VM regions", v85, 2u);
       }
     }
 
@@ -9836,16 +9836,16 @@ LABEL_5:
   v71 = self->_debugTimer;
   if (v71)
   {
-    v72 = [(VMUDebugTimer *)v71 signpostID];
+    signpostID13 = [(VMUDebugTimer *)v71 signpostID];
     v71 = self->_debugTimer;
-    if (v72)
+    if (signpostID13)
     {
-      v73 = [(VMUDebugTimer *)v71 logHandle];
-      v74 = [(VMUDebugTimer *)self->_debugTimer signpostID];
-      if (v74 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v73))
+      logHandle9 = [(VMUDebugTimer *)v71 logHandle];
+      signpostID14 = [(VMUDebugTimer *)self->_debugTimer signpostID];
+      if (signpostID14 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(logHandle9))
       {
         *v105 = 0;
-        _os_signpost_emit_with_name_impl(&dword_1C679D000, v73, OS_SIGNPOST_INTERVAL_END, v74, "processSnapshotGraph", "", v105, 2u);
+        _os_signpost_emit_with_name_impl(&dword_1C679D000, logHandle9, OS_SIGNPOST_INTERVAL_END, signpostID14, "processSnapshotGraph", "", v105, 2u);
       }
 
       v71 = self->_debugTimer;
@@ -9853,9 +9853,9 @@ LABEL_5:
   }
 
   [(VMUDebugTimer *)v71 endEvent:"processSnapshotGraph"];
-  if ((a3 & 1) != 0 && ![(VMUTask *)self->_task isCore])
+  if ((options & 1) != 0 && ![(VMUTask *)self->_task isCore])
   {
-    v75 = [[VMUGraphStackLogReader alloc] initWithTask:self->_task symbolicator:v79 graph:v17 debugTimer:self->_processObjectGraph collectDisklogs:self->_debugTimer, (a3 >> 3) & 1];
+    v75 = [[VMUGraphStackLogReader alloc] initWithTask:self->_task symbolicator:v79 graph:v17 debugTimer:self->_processObjectGraph collectDisklogs:self->_debugTimer, (options >> 3) & 1];
     if (v75)
     {
       [(VMUProcessObjectGraph *)self->_processObjectGraph setStackLogReader:v75];
@@ -10225,10 +10225,10 @@ LABEL_49:
 
 - (BOOL)hasClassInfosDerivedFromStackBacktraces
 {
-  v2 = [(VMUTaskMemoryScanner *)self realizedClasses];
-  v3 = [v2 hasClassInfosDerivedFromStackBacktraces];
+  realizedClasses = [(VMUTaskMemoryScanner *)self realizedClasses];
+  hasClassInfosDerivedFromStackBacktraces = [realizedClasses hasClassInfosDerivedFromStackBacktraces];
 
-  return v3;
+  return hasClassInfosDerivedFromStackBacktraces;
 }
 
 - ($61A80719B04F7407D3E47539F1B23CAA)nodeDetails:(VMUTaskMemoryScanner *)self
@@ -10246,12 +10246,12 @@ LABEL_49:
     v4 = v1;
     *v2 = 0;
     v2[1] = 0;
-    v5 = self;
-    v6 = &v5->_blocks[v4];
+    selfCopy = self;
+    v6 = &selfCopy->_blocks[v4];
     v7 = *(v6 + 1);
     if ((v7 & 7) == 1)
     {
-      classInfosCount = v5->_classInfosCount;
+      classInfosCount = selfCopy->_classInfosCount;
       *v3 = v6->var0;
       v3[1] = (v7 >> 5) & 0xFFFFFFFFFLL | 0x1000000000000000;
       if (classInfosCount <= v7 >> 41)
@@ -10261,7 +10261,7 @@ LABEL_49:
 
       else
       {
-        v9 = v5->_classInfos[v7 >> 41];
+        v9 = selfCopy->_classInfos[v7 >> 41];
       }
     }
 
@@ -10278,7 +10278,7 @@ LABEL_49:
   return self;
 }
 
-- (id)vmuVMRegionForAddress:(unint64_t)a3
+- (id)vmuVMRegionForAddress:(unint64_t)address
 {
   v4 = 0;
   regionMap = self->_regionMap;
@@ -10286,19 +10286,19 @@ LABEL_49:
   var7 = regionMap->var7;
   v8 = var7 - var6;
   v9 = var7 < var6;
-  if (a3 - var6 >= v8 || v9)
+  if (address - var6 >= v8 || v9)
   {
     goto LABEL_23;
   }
 
-  v11 = a3 >> *MEMORY[0x1E69E9AC0];
+  v11 = address >> *MEMORY[0x1E69E9AC0];
   if (v11)
   {
     var3 = regionMap->var3;
     v15 = *var3;
     v13 = var3 + 1;
     v14 = v15;
-    v16 = a3 >> *MEMORY[0x1E69E9AC0];
+    v16 = address >> *MEMORY[0x1E69E9AC0];
     do
     {
       v17 = v16 & 0x3FFFFFF;
@@ -10322,7 +10322,7 @@ LABEL_22:
   if (v20)
   {
     v22 = &var4->var0 + 8 * (v20 - 1);
-    if (a3 - *(*v22 + 1) < *(*v22 + 2))
+    if (address - *(*v22 + 1) < *(*v22 + 2))
     {
       goto LABEL_10;
     }
@@ -10339,7 +10339,7 @@ LABEL_22:
   {
     v25 = var5 >> 1;
     v22 = &v24->var0 + 8 * (var5 >> 1);
-    if (*(*v22 + 1) <= a3)
+    if (*(*v22 + 1) <= address)
     {
       break;
     }
@@ -10353,15 +10353,15 @@ LABEL_16:
     }
   }
 
-  if (*(*v22 + 2) + *(*v22 + 1) <= a3)
+  if (*(*v22 + 2) + *(*v22 + 1) <= address)
   {
     v24 = (v22 + 8);
     v25 = --var5 >> 1;
     goto LABEL_16;
   }
 
-  v27 = [*v22 isSpecialPhysFootprintRegion];
-  if (v27)
+  isSpecialPhysFootprintRegion = [*v22 isSpecialPhysFootprintRegion];
+  if (isSpecialPhysFootprintRegion)
   {
     v28 = 0;
   }
@@ -10371,7 +10371,7 @@ LABEL_16:
     v28 = v22;
   }
 
-  if (v27)
+  if (isSpecialPhysFootprintRegion)
   {
     goto LABEL_22;
   }
@@ -10392,7 +10392,7 @@ LABEL_16:
   {
     v32 = v31 >> 1;
     v33 = &v30[8 * (v31 >> 1)];
-    if (*(*v33 + 1) > a3)
+    if (*(*v33 + 1) > address)
     {
 LABEL_31:
       v34 = v31 > 1;
@@ -10409,7 +10409,7 @@ LABEL_31:
     break;
   }
 
-  if (*(*v33 + 2) + *(*v33 + 1) <= a3)
+  if (*(*v33 + 2) + *(*v33 + 1) <= address)
   {
     v30 = v33 + 8;
     v32 = --v31 >> 1;
@@ -10442,19 +10442,19 @@ LABEL_23:
   return v4;
 }
 
-- (id)zoneNameForNode:(unsigned int)a3
+- (id)zoneNameForNode:(unsigned int)node
 {
-  if (self->_blocksCount <= a3)
+  if (self->_blocksCount <= node)
   {
     v9 = 0;
 
     return v9;
   }
 
-  v5 = a3;
-  if (VMUGraphNodeType_IsVMRegion(*(&self->_blocks[a3] + 2) & 7))
+  nodeCopy = node;
+  if (VMUGraphNodeType_IsVMRegion(*(&self->_blocks[node] + 2) & 7))
   {
-    v6 = &self->_regions->var0 + 8 * (*(&self->_blocks[v5] + 1) >> 41);
+    v6 = &self->_regions->var0 + 8 * (*(&self->_blocks[nodeCopy] + 1) >> 41);
     if (!v6)
     {
       goto LABEL_46;
@@ -10463,7 +10463,7 @@ LABEL_23:
     goto LABEL_4;
   }
 
-  v11 = &self->_blocks[v5];
+  v11 = &self->_blocks[nodeCopy];
   if ((*(v11 + 1) & 7) != 1)
   {
     goto LABEL_46;
@@ -10554,8 +10554,8 @@ LABEL_26:
     goto LABEL_26;
   }
 
-  v32 = [*v6 isSpecialPhysFootprintRegion];
-  if (v32)
+  isSpecialPhysFootprintRegion = [*v6 isSpecialPhysFootprintRegion];
+  if (isSpecialPhysFootprintRegion)
   {
     v33 = 0;
   }
@@ -10565,7 +10565,7 @@ LABEL_26:
     v33 = v6;
   }
 
-  if (v32)
+  if (isSpecialPhysFootprintRegion)
   {
     goto LABEL_46;
   }
@@ -10655,22 +10655,22 @@ LABEL_47:
   return v9;
 }
 
-- (id)zoneNameForIndex:(unsigned int)a3
+- (id)zoneNameForIndex:(unsigned int)index
 {
-  if (self->_zonesCount <= a3)
+  if (self->_zonesCount <= index)
   {
     return 0;
   }
 
   else
   {
-    return self->_zones[a3].var1;
+    return self->_zones[index].var1;
   }
 }
 
-- (void)contentForNode:(unsigned int)a3
+- (void)contentForNode:(unsigned int)node
 {
-  if (self->_blocksCount <= a3)
+  if (self->_blocksCount <= node)
   {
     return 0;
   }
@@ -10687,7 +10687,7 @@ LABEL_47:
   v13 = var7 - var6;
   if (v12)
   {
-    var0 = self->_blocks[a3].var0;
+    var0 = self->_blocks[node].var0;
     if (var0 - var6 < v13)
     {
       v16 = MEMORY[0x1E69E9AC0];
@@ -10737,8 +10737,8 @@ LABEL_47:
           {
             if (*(*v27 + 16) + *(*v27 + 8) > var0)
             {
-              v60 = [*v27 isSpecialPhysFootprintRegion];
-              if (v60)
+              isSpecialPhysFootprintRegion = [*v27 isSpecialPhysFootprintRegion];
+              if (isSpecialPhysFootprintRegion)
               {
                 v61 = 0;
               }
@@ -10748,7 +10748,7 @@ LABEL_47:
                 v61 = v27;
               }
 
-              if (v60)
+              if (isSpecialPhysFootprintRegion)
               {
                 return 0;
               }
@@ -10774,9 +10774,9 @@ LABEL_47:
                   if (*(*v65 + 2) + *(*v65 + 1) > var0)
                   {
                     v77 = v61;
-                    v78 = [*v65 isSpecialPhysFootprintRegion];
+                    isSpecialPhysFootprintRegion2 = [*v65 isSpecialPhysFootprintRegion];
                     v61 = v77;
-                    if (v78)
+                    if (isSpecialPhysFootprintRegion2)
                     {
                       v63 = 0;
                     }
@@ -10796,8 +10796,8 @@ LABEL_70:
 LABEL_73:
                     regionMap->var8[v24] = ((v61 - var4) >> 6) + 1;
 LABEL_12:
-                    v28 = a3;
-                    v29 = &self->_blocks[a3];
+                    nodeCopy = node;
+                    v29 = &self->_blocks[node];
                     v30 = ((*(v29 + 1) >> 5) & 0xFFFFFFFFFLL) + v29->var0;
                     if (*(*v27 + 16) + *(*v27 + 8) >= v30)
                     {
@@ -10827,14 +10827,14 @@ LABEL_12:
                               else
                               {
                                 v94 = *MEMORY[0x1E69E9848];
-                                v91 = v28;
-                                v92 = [*v27 address];
+                                v91 = nodeCopy;
+                                address = [*v27 address];
                                 v79 = *(*v27 + 24);
                                 v80 = vm_prot_strings[v79];
                                 v81 = *(*v27 + 16) + *(*v27 + 8);
                                 VMUExclaveOrDarwinRegionTypeDescriptionForTagShareProtAndPager(*(*v27 + 232), *(*v27 + 104), *(*v27 + 50), v79, *(*v27 + 49));
                                 v83 = v82 = v35;
-                                v84 = [v83 UTF8String];
+                                uTF8String = [v83 UTF8String];
                                 v85 = *(*v27 + 16) >> *v16;
                                 v86 = "pages";
                                 if (v85 == 1)
@@ -10853,8 +10853,8 @@ LABEL_12:
                                 }
 
                                 v88 = v81;
-                                v28 = v91;
-                                fprintf(v94, "Failed to map remote region: [%#llx-%#llx] %s %s (%llu %s)%s (error: %d)\n", v92, v88, v80, v84, v85, v86, v87, v58);
+                                nodeCopy = v91;
+                                fprintf(v94, "Failed to map remote region: [%#llx-%#llx] %s %s (%llu %s)%s (error: %d)\n", address, v88, v80, uTF8String, v85, v86, v87, v58);
 
                                 v35 = v82;
                               }
@@ -10919,7 +10919,7 @@ LABEL_12:
                       }
 
                       v89 = v35;
-                      v90 = v28;
+                      v90 = nodeCopy;
                       if (v31)
                       {
                         v67 = v31;
@@ -10967,7 +10967,7 @@ LABEL_12:
                       }
 
                       v35 = v89;
-                      v28 = v90;
+                      nodeCopy = v90;
                       if ([(VMUTaskMemoryCache *)v38 mapAddress:*(*v27 + 8) size:v39 returnedAddress:v101 returnedSize:&v95])
                       {
                         if (task_exists(v89))
@@ -11005,7 +11005,7 @@ LABEL_20:
                     v76 = *(v27 + 6);
                     if (v76)
                     {
-                      return (v76 + self->_blocks[v28].var0 - *(*v27 + 8));
+                      return (v76 + self->_blocks[nodeCopy].var0 - *(*v27 + 8));
                     }
 
                     return 0;
@@ -11069,10 +11069,10 @@ LABEL_20:
   return result;
 }
 
-- (id)classInfoForObjectAtAddress:(unint64_t)a3
+- (id)classInfoForObjectAtAddress:(unint64_t)address
 {
   v4 = [VMUTask stripExtraPointerBits:?];
-  v5 = 0;
+  0xFFFFFFFFFLL = 0;
   regionMap = self->_regionMap;
   var6 = regionMap->var6;
   var7 = regionMap->var7;
@@ -11150,8 +11150,8 @@ LABEL_34:
     goto LABEL_34;
   }
 
-  v42 = [*v22 isSpecialPhysFootprintRegion];
-  if (v42)
+  isSpecialPhysFootprintRegion = [*v22 isSpecialPhysFootprintRegion];
+  if (isSpecialPhysFootprintRegion)
   {
     v43 = 0;
   }
@@ -11161,7 +11161,7 @@ LABEL_34:
     v43 = v22;
   }
 
-  if (v42)
+  if (isSpecialPhysFootprintRegion)
   {
     goto LABEL_63;
   }
@@ -11269,12 +11269,12 @@ LABEL_55:
                     v54 = v53 >> 41;
                     if (v53 >> 41 && self->_classInfosCount > v54)
                     {
-                      v5 = self->_classInfos[v54];
+                      0xFFFFFFFFFLL = self->_classInfos[v54];
                     }
 
                     else
                     {
-                      v5 = [(VMUObjectIdentifier *)self->_objectIdentifier classInfoForObjectWithRange:blocks[(v51 >> 4)].var0, (v53 >> 5) & 0xFFFFFFFFFLL];
+                      0xFFFFFFFFFLL = [(VMUObjectIdentifier *)self->_objectIdentifier classInfoForObjectWithRange:blocks[(v51 >> 4)].var0, (v53 >> 5) & 0xFFFFFFFFFLL];
                     }
 
                     goto LABEL_64;
@@ -11306,7 +11306,7 @@ LABEL_55:
                   v36 = --v35 >> 1;
                 }
 
-                v5 = 0;
+                0xFFFFFFFFFLL = 0;
                 v9 = v35 >= 2;
                 v35 = v36;
               }
@@ -11320,7 +11320,7 @@ LABEL_55:
     }
 
 LABEL_63:
-    v5 = 0;
+    0xFFFFFFFFFLL = 0;
     goto LABEL_64;
   }
 
@@ -11341,7 +11341,7 @@ LABEL_63:
       v38 = --v23 >> 1;
     }
 
-    v5 = 0;
+    0xFFFFFFFFFLL = 0;
     v9 = v23 >= 2;
     v23 = v38;
   }
@@ -11349,16 +11349,16 @@ LABEL_63:
   while (v9);
 LABEL_64:
 
-  return v5;
+  return 0xFFFFFFFFFLL;
 }
 
-- (_VMURange)_rangeOfClassStructureForPossibleUnrealizedSwiftClassWithIsa:(unint64_t)a3
+- (_VMURange)_rangeOfClassStructureForPossibleUnrealizedSwiftClassWithIsa:(unint64_t)isa
 {
   v5 = [(VMUTaskMemoryScanner *)self nodeForAddress:?];
   if (v5 == -1)
   {
     v12 = 0;
-    v13 = 0x7FFFFFFFFFFFFFFFLL;
+    isaCopy = 0x7FFFFFFFFFFFFFFFLL;
   }
 
   else
@@ -11368,7 +11368,7 @@ LABEL_64:
     v8 = *(v6 + 1);
     if (VMUGraphNodeType_IsVMRegion(*(v6 + 2) & 7))
     {
-      v9 = [(VMUTaskMemoryScanner *)self vmuVMRegionForAddress:a3];
+      v9 = [(VMUTaskMemoryScanner *)self vmuVMRegionForAddress:isa];
       if ((v9[132] & 2) != 0)
       {
         v10 = (v8 >> 5) & 0xFFFFFFFFFLL;
@@ -11415,16 +11415,16 @@ LABEL_64:
       }
     }
 
-    v16 = VMURangeContainsRange(v11, v10, a3, 40);
+    v16 = VMURangeContainsRange(v11, v10, isa, 40);
     v17 = !v16;
     if (v16)
     {
-      v13 = a3;
+      isaCopy = isa;
     }
 
     else
     {
-      v13 = 0x7FFFFFFFFFFFFFFFLL;
+      isaCopy = 0x7FFFFFFFFFFFFFFFLL;
     }
 
     if (v17)
@@ -11439,11 +11439,11 @@ LABEL_64:
   }
 
   result.length = v12;
-  result.location = v13;
+  result.location = isaCopy;
   return result;
 }
 
-- (_VMURegionNode)validateAddressRangeForSwiftRemoteMirror:(VMUTaskMemoryScanner *)self allowUnusedSplitLibs:(_VMURegionNode *)a2
+- (_VMURegionNode)validateAddressRangeForSwiftRemoteMirror:(VMUTaskMemoryScanner *)self allowUnusedSplitLibs:(_VMURegionNode *)libs
 {
   v5 = 0;
   regionMap = self->_regionMap;
@@ -11531,8 +11531,8 @@ LABEL_20:
     goto LABEL_20;
   }
 
-  v33 = [v26->var0 isSpecialPhysFootprintRegion];
-  if (v33)
+  isSpecialPhysFootprintRegion = [v26->var0 isSpecialPhysFootprintRegion];
+  if (isSpecialPhysFootprintRegion)
   {
     v34 = 0;
   }
@@ -11542,7 +11542,7 @@ LABEL_20:
     v34 = v26;
   }
 
-  if (v33)
+  if (isSpecialPhysFootprintRegion)
   {
     return 0;
   }
@@ -11589,10 +11589,10 @@ LABEL_55:
   }
 
   v56 = v34;
-  v57 = [*v54 isSpecialPhysFootprintRegion];
+  isSpecialPhysFootprintRegion2 = [*v54 isSpecialPhysFootprintRegion];
   v34 = v56;
   v15 = MEMORY[0x1E69E9AC0];
-  if (v57)
+  if (isSpecialPhysFootprintRegion2)
   {
     v52 = 0;
   }
@@ -11756,10 +11756,10 @@ LABEL_71:
   return v5;
 }
 
-- (unsigned)enumerateObjectsWithBlock:(id)a3
+- (unsigned)enumerateObjectsWithBlock:(id)block
 {
-  v4 = a3;
-  if (v4)
+  blockCopy = block;
+  if (blockCopy)
   {
     v16 = 0;
     if (self->_blocksCount)
@@ -11768,7 +11768,7 @@ LABEL_71:
       v6 = 0;
       do
       {
-        v7 = self;
+        selfCopy = self;
         v8 = &self->_blocks[v5];
         v9 = *(v8 + 1);
         if ((v9 & 7) == 1)
@@ -11793,11 +11793,11 @@ LABEL_71:
           v11 = ((v9 >> 5) | (v9 << 60)) & 0x7000000FFFFFFFFFLL;
         }
 
-        v13 = v4[2];
+        v13 = blockCopy[2];
         v15[0] = var0;
         v15[1] = v11;
         v15[2] = v12;
-        v13(v4, v6++, v15, &v16);
+        v13(blockCopy, v6++, v15, &v16);
         if (v6 >= self->_blocksCount)
         {
           break;
@@ -11823,10 +11823,10 @@ LABEL_71:
   return v6;
 }
 
-- (unsigned)enumerateMarkedObjects:(void *)a3 withBlock:(id)a4
+- (unsigned)enumerateMarkedObjects:(void *)objects withBlock:(id)block
 {
-  v6 = a4;
-  if (a3 && (v21 = 0, blocksCount = self->_blocksCount, blocksCount))
+  blockCopy = block;
+  if (objects && (v21 = 0, blocksCount = self->_blocksCount, blocksCount))
   {
     v8 = 0;
     v9 = 0;
@@ -11834,9 +11834,9 @@ LABEL_71:
     v11 = 0;
     do
     {
-      if (v10 < *a3 && ((*(a3 + (v10 >> 3) + 4) >> (v10 & 7)) & 1) != 0)
+      if (v10 < *objects && ((*(objects + (v10 >> 3) + 4) >> (v10 & 7)) & 1) != 0)
       {
-        v12 = self;
+        selfCopy = self;
         v13 = &self->_blocks[v8];
         v14 = *(v13 + 1);
         if ((v14 & 7) == 1)
@@ -11861,13 +11861,13 @@ LABEL_71:
           v16 = ((v14 >> 5) | (v14 << 60)) & 0x7000000FFFFFFFFFLL;
         }
 
-        if (v6)
+        if (blockCopy)
         {
-          v18 = v6[2];
+          v18 = blockCopy[2];
           v20[0] = var0;
           v20[1] = v16;
           v20[2] = v17;
-          v18(v6, v10, v20, &v21);
+          v18(blockCopy, v10, v20, &v21);
         }
 
         ++v11;
@@ -11894,7 +11894,7 @@ LABEL_71:
   return v11;
 }
 
-- (unsigned)enumerateRegionsWithBlock:(id)a3
+- (unsigned)enumerateRegionsWithBlock:(id)block
 {
   v8 = 0;
   if (self->_regionsCount)
@@ -11903,7 +11903,7 @@ LABEL_71:
     v6 = 0;
     do
     {
-      (*(a3 + 2))(a3, *(&self->_regions->var0 + v5), &v8);
+      (*(block + 2))(block, *(&self->_regions->var0 + v5), &v8);
       if (++v6 >= self->_regionsCount)
       {
         break;
@@ -11923,9 +11923,9 @@ LABEL_71:
   return v6;
 }
 
-- (unsigned)enumerateReferencesWithBlock:(id)a3
+- (unsigned)enumerateReferencesWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v15[0] = 0;
   v15[1] = v15;
   v15[2] = 0x2020000000;
@@ -11940,7 +11940,7 @@ LABEL_71:
   v7[3] = &unk_1E8277C88;
   v9 = v15;
   v7[4] = self;
-  v5 = v4;
+  v5 = blockCopy;
   v8 = v5;
   v10 = &v11;
   [(VMUTaskMemoryScanner *)self scanNodesWithReferenceRecorder:v7];
@@ -11977,7 +11977,7 @@ uint64_t __53__VMUTaskMemoryScanner_enumerateReferencesWithBlock___block_invoke(
   return result;
 }
 
-- (unsigned)nodeForAddress:(unint64_t)a3
+- (unsigned)nodeForAddress:(unint64_t)address
 {
   regionMap = self->_regionMap;
   var6 = regionMap->var6;
@@ -11985,20 +11985,20 @@ uint64_t __53__VMUTaskMemoryScanner_enumerateReferencesWithBlock___block_invoke(
   v6 = var7 - var6;
   v7 = var7 < var6;
   LODWORD(self) = -1;
-  if (a3 - var6 >= v6 || v7)
+  if (address - var6 >= v6 || v7)
   {
     return self;
   }
 
   v9 = MEMORY[0x1E69E9AC0];
-  v10 = a3 >> *MEMORY[0x1E69E9AC0];
+  v10 = address >> *MEMORY[0x1E69E9AC0];
   if (v10)
   {
     var3 = regionMap->var3;
     v14 = *var3;
     v12 = var3 + 1;
     v13 = v14;
-    v15 = a3 >> *MEMORY[0x1E69E9AC0];
+    v15 = address >> *MEMORY[0x1E69E9AC0];
     do
     {
       v16 = v15 & 0x3FFFFFF;
@@ -12019,7 +12019,7 @@ uint64_t __53__VMUTaskMemoryScanner_enumerateReferencesWithBlock___block_invoke(
   if (v18)
   {
     v20 = var4 + 64 * (v18 - 1);
-    if (a3 - *(*v20 + 8) < *(*v20 + 16))
+    if (address - *(*v20 + 8) < *(*v20 + 16))
     {
       goto LABEL_10;
     }
@@ -12036,7 +12036,7 @@ uint64_t __53__VMUTaskMemoryScanner_enumerateReferencesWithBlock___block_invoke(
   {
     v39 = var5 >> 1;
     v20 = v38 + 64 * (var5 >> 1);
-    if (*(*v20 + 8) <= a3)
+    if (*(*v20 + 8) <= address)
     {
       break;
     }
@@ -12050,15 +12050,15 @@ LABEL_33:
     }
   }
 
-  if (*(*v20 + 16) + *(*v20 + 8) <= a3)
+  if (*(*v20 + 16) + *(*v20 + 8) <= address)
   {
     v38 = (v20 + 64);
     v39 = --var5 >> 1;
     goto LABEL_33;
   }
 
-  v40 = [*v20 isSpecialPhysFootprintRegion];
-  if (v40)
+  isSpecialPhysFootprintRegion = [*v20 isSpecialPhysFootprintRegion];
+  if (isSpecialPhysFootprintRegion)
   {
     v41 = 0;
   }
@@ -12068,7 +12068,7 @@ LABEL_33:
     v41 = v20;
   }
 
-  if (v40)
+  if (isSpecialPhysFootprintRegion)
   {
     goto LABEL_39;
   }
@@ -12089,7 +12089,7 @@ LABEL_33:
   {
     v44 = v43 >> 1;
     v45 = &v42[8 * (v43 >> 1)];
-    if (*(*v45 + 1) > a3)
+    if (*(*v45 + 1) > address)
     {
 LABEL_46:
       v46 = v43 > 1;
@@ -12106,7 +12106,7 @@ LABEL_46:
     break;
   }
 
-  if (*(*v45 + 2) + *(*v45 + 1) <= a3)
+  if (*(*v45 + 2) + *(*v45 + 1) <= address)
   {
     v42 = v45 + 8;
     v44 = --v43 >> 1;
@@ -12146,21 +12146,21 @@ LABEL_10:
   if (v22)
   {
     v26 = v25->var0;
-    if (v26 <= a3)
+    if (v26 <= address)
     {
       v27 = &var0[v21 - 1 + v24];
-      if (((*(v27 + 1) >> 5) & 0xFFFFFFFFFLL) + v27->var0 > a3)
+      if (((*(v27 + 1) >> 5) & 0xFFFFFFFFFLL) + v27->var0 > address)
       {
-        v28 = (v22 + 4 * ((a3 - (v26 & -*MEMORY[0x1E69E9AC8])) >> *v9));
+        v28 = (v22 + 4 * ((address - (v26 & -*MEMORY[0x1E69E9AC8])) >> *v9));
         v29 = *v28;
         p_var0 = &var0[v29].var0;
-        if (*p_var0 <= a3)
+        if (*p_var0 <= address)
         {
           v31 = v28[1];
           if (v31 < regionMap->var1)
           {
             v32 = &var0[v31].var0;
-            if (*v32 <= a3)
+            if (*v32 <= address)
             {
               return (v32 - var0) >> 4;
             }
@@ -12173,9 +12173,9 @@ LABEL_10:
             {
               v34 = v33 >> 1;
               v32 = &p_var0[2 * (v33 >> 1)];
-              if (*v32 <= a3)
+              if (*v32 <= address)
               {
-                if (((v32[1] >> 5) & 0xFFFFFFFFFLL) + *v32 > a3)
+                if (((v32[1] >> 5) & 0xFFFFFFFFFLL) + *v32 > address)
                 {
                   return (v32 - var0) >> 4;
                 }
@@ -12205,9 +12205,9 @@ LABEL_39:
   {
     v36 = v21 >> 1;
     v32 = &v25[v21 >> 1].var0;
-    if (*v32 <= a3)
+    if (*v32 <= address)
     {
-      if (((v32[1] >> 5) & 0xFFFFFFFFFLL) + *v32 > a3)
+      if (((v32[1] >> 5) & 0xFFFFFFFFFLL) + *v32 > address)
       {
         return (v32 - var0) >> 4;
       }
@@ -12225,7 +12225,7 @@ LABEL_39:
   return self;
 }
 
-- (unsigned)_nodeForAddress:(unint64_t)a3 checkMaxInteriorOffset:(BOOL)a4
+- (unsigned)_nodeForAddress:(unint64_t)address checkMaxInteriorOffset:(BOOL)offset
 {
   regionMap = self->_regionMap;
   var6 = regionMap->var6;
@@ -12233,21 +12233,21 @@ LABEL_39:
   v7 = var7 - var6;
   v8 = var7 < var6;
   LODWORD(self) = -1;
-  if (a3 - var6 >= v7 || v8)
+  if (address - var6 >= v7 || v8)
   {
     return self;
   }
 
-  v9 = a4;
+  offsetCopy = offset;
   v11 = MEMORY[0x1E69E9AC0];
-  v12 = a3 >> *MEMORY[0x1E69E9AC0];
+  v12 = address >> *MEMORY[0x1E69E9AC0];
   if (v12)
   {
     var3 = regionMap->var3;
     v16 = *var3;
     v14 = var3 + 1;
     v15 = v16;
-    v17 = a3 >> *MEMORY[0x1E69E9AC0];
+    v17 = address >> *MEMORY[0x1E69E9AC0];
     do
     {
       v18 = v17 & 0x3FFFFFF;
@@ -12268,7 +12268,7 @@ LABEL_39:
   if (v20)
   {
     v22 = var4 + 64 * (v20 - 1);
-    if (a3 - *(*v22 + 8) < *(*v22 + 16))
+    if (address - *(*v22 + 8) < *(*v22 + 16))
     {
       goto LABEL_10;
     }
@@ -12285,7 +12285,7 @@ LABEL_39:
   {
     v41 = var5 >> 1;
     v22 = v40 + 64 * (var5 >> 1);
-    if (*(*v22 + 8) <= a3)
+    if (*(*v22 + 8) <= address)
     {
       break;
     }
@@ -12299,15 +12299,15 @@ LABEL_33:
     }
   }
 
-  if (*(*v22 + 16) + *(*v22 + 8) <= a3)
+  if (*(*v22 + 16) + *(*v22 + 8) <= address)
   {
     v40 = (v22 + 64);
     v41 = --var5 >> 1;
     goto LABEL_33;
   }
 
-  v42 = [*v22 isSpecialPhysFootprintRegion];
-  if (v42)
+  isSpecialPhysFootprintRegion = [*v22 isSpecialPhysFootprintRegion];
+  if (isSpecialPhysFootprintRegion)
   {
     v43 = 0;
   }
@@ -12317,7 +12317,7 @@ LABEL_33:
     v43 = v22;
   }
 
-  if (v42)
+  if (isSpecialPhysFootprintRegion)
   {
     goto LABEL_39;
   }
@@ -12338,7 +12338,7 @@ LABEL_33:
   {
     v46 = v45 >> 1;
     v47 = &v44[8 * (v45 >> 1)];
-    if (*(*v47 + 1) > a3)
+    if (*(*v47 + 1) > address)
     {
 LABEL_46:
       v48 = v45 > 1;
@@ -12355,7 +12355,7 @@ LABEL_46:
     break;
   }
 
-  if (*(*v47 + 2) + *(*v47 + 1) <= a3)
+  if (*(*v47 + 2) + *(*v47 + 1) <= address)
   {
     v44 = v47 + 8;
     v46 = --v45 >> 1;
@@ -12394,21 +12394,21 @@ LABEL_10:
   v27 = &regionMap->var0[v26];
   if (v24)
   {
-    if (v27->var0 <= a3)
+    if (v27->var0 <= address)
     {
       v28 = &var0[v23 - 1 + v26];
-      if (((*(v28 + 1) >> 5) & 0xFFFFFFFFFLL) + v28->var0 > a3)
+      if (((*(v28 + 1) >> 5) & 0xFFFFFFFFFLL) + v28->var0 > address)
       {
-        v29 = (v24 + 4 * ((a3 - (v27->var0 & -*MEMORY[0x1E69E9AC8])) >> *v11));
+        v29 = (v24 + 4 * ((address - (v27->var0 & -*MEMORY[0x1E69E9AC8])) >> *v11));
         v30 = *v29;
         p_var0 = &var0[v30].var0;
-        if (*p_var0 <= a3)
+        if (*p_var0 <= address)
         {
           v32 = v29[1];
-          if (v32 < regionMap->var1 && (v33 = &var0[v32].var0, v34 = *v33, *v33 <= a3))
+          if (v32 < regionMap->var1 && (v33 = &var0[v32].var0, v34 = *v33, *v33 <= address))
           {
 LABEL_48:
-            if (!v9)
+            if (!offsetCopy)
             {
               return (v33 - var0) >> 4;
             }
@@ -12416,7 +12416,7 @@ LABEL_48:
             v49 = v33[1];
             if ((v49 & 7) - 2 >= 3)
             {
-              v50 = a3 - v34;
+              v50 = address - v34;
               var2 = regionMap->var2;
               if (v50 < var2 || ((v49 >> 5) & 0xFFFFFFFFFLL) - v50 <= var2)
               {
@@ -12435,9 +12435,9 @@ LABEL_48:
                 v36 = v35 >> 1;
                 v33 = &p_var0[2 * (v35 >> 1)];
                 v34 = *v33;
-                if (*v33 <= a3)
+                if (*v33 <= address)
                 {
-                  if (((v33[1] >> 5) & 0xFFFFFFFFFLL) + v34 > a3)
+                  if (((v33[1] >> 5) & 0xFFFFFFFFFLL) + v34 > address)
                   {
                     goto LABEL_48;
                   }
@@ -12469,9 +12469,9 @@ LABEL_39:
     v38 = v23 >> 1;
     v33 = &v27[v23 >> 1].var0;
     v34 = *v33;
-    if (*v33 <= a3)
+    if (*v33 <= address)
     {
-      if (((v33[1] >> 5) & 0xFFFFFFFFFLL) + v34 > a3)
+      if (((v33[1] >> 5) & 0xFFFFFFFFFLL) + v34 > address)
       {
         goto LABEL_48;
       }
@@ -12503,58 +12503,58 @@ LABEL_39:
   return memcpy(v4, userMarkedAbandoned, v3);
 }
 
-- (unint64_t)ledgerValueForKey:(id)a3 keyExists:(BOOL *)a4
+- (unint64_t)ledgerValueForKey:(id)key keyExists:(BOOL *)exists
 {
-  v6 = a3;
-  v7 = [(VMUTaskMemoryScanner *)self ledger];
-  v8 = [v7 objectForKeyedSubscript:v6];
+  keyCopy = key;
+  ledger = [(VMUTaskMemoryScanner *)self ledger];
+  v8 = [ledger objectForKeyedSubscript:keyCopy];
 
   if (v8 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    if (a4)
+    if (exists)
     {
-      *a4 = 1;
+      *exists = 1;
     }
 
-    v9 = [v8 unsignedLongLongValue];
+    unsignedLongLongValue = [v8 unsignedLongLongValue];
   }
 
   else
   {
-    v9 = 0;
-    if (a4)
+    unsignedLongLongValue = 0;
+    if (exists)
     {
-      *a4 = 0;
+      *exists = 0;
     }
   }
 
-  return v9;
+  return unsignedLongLongValue;
 }
 
-- (void)setNodeScanningLogger:(id)a3
+- (void)setNodeScanningLogger:(id)logger
 {
-  if (self->_nodeLogger != a3)
+  if (self->_nodeLogger != logger)
   {
-    v5 = _Block_copy(a3);
+    v5 = _Block_copy(logger);
     nodeLogger = self->_nodeLogger;
     self->_nodeLogger = v5;
   }
 }
 
-- (void)setReferenceScanningLogger:(id)a3
+- (void)setReferenceScanningLogger:(id)logger
 {
-  if (self->_referenceLogger != a3)
+  if (self->_referenceLogger != logger)
   {
-    v5 = _Block_copy(a3);
+    v5 = _Block_copy(logger);
     referenceLogger = self->_referenceLogger;
     self->_referenceLogger = v5;
   }
 }
 
-- (uint64_t)_shouldScanVMregion:(uint64_t)a1
+- (uint64_t)_shouldScanVMregion:(uint64_t)mregion
 {
-  v2 = a1;
-  if (a1)
+  mregionCopy = mregion;
+  if (mregion)
   {
     v4 = *a2;
     v5 = v4;
@@ -12565,7 +12565,7 @@ LABEL_39:
 
     if (*(v4 + 49))
     {
-      if (*(v2 + 380) == 1 && (*(v4 + 132) & 2) == 0 && ((*(v4 + 132) & 4) == 0 || *(v2 + 192) != 1 || ![v4 dirtyLength]))
+      if (*(mregionCopy + 380) == 1 && (*(v4 + 132) & 2) == 0 && ((*(v4 + 132) & 4) == 0 || *(mregionCopy + 192) != 1 || ![v4 dirtyLength]))
       {
         goto LABEL_14;
       }
@@ -12577,8 +12577,8 @@ LABEL_39:
 
       if (!_MergedGlobals)
       {
-        v6 = [v5 path];
-        v7 = [v6 hasPrefix:kVMUUnknownMappedFileNamePrefix[0]];
+        path = [v5 path];
+        v7 = [path hasPrefix:kVMUUnknownMappedFileNamePrefix[0]];
 
         if (v7)
         {
@@ -12589,66 +12589,66 @@ LABEL_39:
 
     if ((*(v5 + 13) & 3) != 2)
     {
-      v2 = [v5 protection] != 1 || (objc_msgSend(v5[4], "isEqualToString:", @"MALLOC metadata") & 1) != 0 || (objc_msgSend(v5, "isActivityTracing") & 1) != 0 || (objc_msgSend(v5, "isDyldPrivateMemory") & 1) != 0 || objc_msgSend(v5, "address") == *(v2 + 552);
+      mregionCopy = [v5 protection] != 1 || (objc_msgSend(v5[4], "isEqualToString:", @"MALLOC metadata") & 1) != 0 || (objc_msgSend(v5, "isActivityTracing") & 1) != 0 || (objc_msgSend(v5, "isDyldPrivateMemory") & 1) != 0 || objc_msgSend(v5, "address") == *(mregionCopy + 552);
     }
 
     else
     {
 LABEL_14:
-      v2 = 0;
+      mregionCopy = 0;
     }
   }
 
-  return v2;
+  return mregionCopy;
 }
 
-- (void)scanLocalMemory:(uint64_t)a3 atOffset:(unsigned int)a4 node:(unint64_t)a5 length:(uint64_t)a6 isa:(uint64_t)a7 scanCaches:(void *)a8 fieldInfo:(unsigned int)a9 stride:(uint64_t)a10 recorder:
+- (void)scanLocalMemory:(uint64_t)memory atOffset:(unsigned int)offset node:(unint64_t)node length:(uint64_t)length isa:(uint64_t)isa scanCaches:(void *)caches fieldInfo:(unsigned int)info stride:(uint64_t)self0 recorder:
 {
-  if (a1)
+  if (self)
   {
-    v15 = [*(a1 + 64) swiftRuntimeInfoStableABI];
-    v16 = v15;
-    if (v15)
+    swiftRuntimeInfoStableABI = [*(self + 64) swiftRuntimeInfoStableABI];
+    v16 = swiftRuntimeInfoStableABI;
+    if (swiftRuntimeInfoStableABI)
     {
-      v17 = v15;
+      swiftRuntimeInfoPreABI = swiftRuntimeInfoStableABI;
     }
 
     else
     {
-      v17 = [*(a1 + 64) swiftRuntimeInfoPreABI];
+      swiftRuntimeInfoPreABI = [*(self + 64) swiftRuntimeInfoPreABI];
     }
 
-    v199 = v17;
+    v199 = swiftRuntimeInfoPreABI;
 
-    v200 = [*(a1 + 64) hasSwiftContent];
-    if (*(a1 + 344) == a6 || *(a1 + 348) == a6 || *(a1 + 352) == a6)
+    hasSwiftContent = [*(self + 64) hasSwiftContent];
+    if (*(self + 344) == length || *(self + 348) == length || *(self + 352) == length)
     {
       v18 = 1;
-      if (!a6)
+      if (!length)
       {
 LABEL_10:
-        if (!a8 || *(a1 + 380) != 1)
+        if (!caches || *(self + 380) != 1)
         {
-          if ((*(a1 + 392) & 2) == 0)
+          if ((*(self + 392) & 2) == 0)
           {
             goto LABEL_103;
           }
 
           v65 = a2;
-          v66 = (a2 + a3) % a9;
+          v66 = (a2 + memory) % info;
           if (v66)
           {
-            v67 = (a2 + a3 + a9 - v66);
+            v67 = (a2 + memory + info - v66);
           }
 
           else
           {
-            v67 = (a2 + a3);
+            v67 = (a2 + memory);
           }
 
-          if (a6)
+          if (length)
           {
-            v68 = *(*(a1 + 256) + 8 * a6);
+            v68 = *(*(self + 256) + 8 * length);
           }
 
           else
@@ -12657,7 +12657,7 @@ LABEL_10:
           }
 
           v205 = v68;
-          if ((*(*(a1 + 80) + 16 * a4 + 8) & 7u) - 2 < 3 || (v72 = *(a1 + 376)) != 0 && v72 == a4)
+          if ((*(*(self + 80) + 16 * offset + 8) & 7u) - 2 < 3 || (v72 = *(self + 376)) != 0 && v72 == offset)
           {
             v73 = 0;
             v74 = 1;
@@ -12665,7 +12665,7 @@ LABEL_10:
 
           else
           {
-            v139 = [a1 getCachedScanInfoForClassWithIsa:a6 classInfo:v205 scanCaches:a7];
+            v139 = [self getCachedScanInfoForClassWithIsa:length classInfo:v205 scanCaches:isa];
             v73 = v139;
             if (v139)
             {
@@ -12678,11 +12678,11 @@ LABEL_10:
             }
           }
 
-          v214 = a2 + a3 + a5 - 8;
-          if (*(a1 + 284))
+          v214 = a2 + memory + node - 8;
+          if (*(self + 284))
           {
-            v210 = *([*(a1 + 64) autoreleasePoolPageLayout] + 16);
-            v203 = *([*(a1 + 64) autoreleasePoolPageLayout] + 8);
+            v210 = *([*(self + 64) autoreleasePoolPageLayout] + 16);
+            v203 = *([*(self + 64) autoreleasePoolPageLayout] + 8);
           }
 
           else
@@ -12699,12 +12699,12 @@ LABEL_10:
             do
             {
               v76 = v67 - v65;
-              v77 = *(a1 + 80);
-              v78 = *(v77 + 16 * a4);
+              v77 = *(self + 80);
+              v78 = *(v77 + 16 * offset);
               v79 = *v67;
               if (*v67)
               {
-                if (v200)
+                if (hasSwiftContent)
                 {
                   v80 = v193;
                   if (v73)
@@ -12783,10 +12783,10 @@ LABEL_10:
                     v94 = v79 & v210;
                     if (v79 != (v79 & v210))
                     {
-                      if ([*(a1 + 64) countFromPointerInAutoreleasePool:v79] + 1 >= 2)
+                      if ([*(self + 64) countFromPointerInAutoreleasePool:v79] + 1 >= 2)
                       {
                         v95 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:?];
-                        v96 = *(a1 + 536);
+                        v96 = *(self + 536);
                         v97 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:&v76[v206]];
                         [v96 setObject:v95 forKeyedSubscript:v97];
 
@@ -12798,8 +12798,8 @@ LABEL_10:
                   }
                 }
 
-                v98 = *(a1 + 336);
-                if (v98 && (v194 || (*(*(a1 + 80) + 16 * a4 + 8) & 7) == 2))
+                v98 = *(self + 336);
+                if (v98 && (v194 || (*(*(self + 80) + 16 * offset + 8) & 7) == 2))
                 {
                   v99 = NSMapGet(v98, &v76[v206]);
                   if (v99)
@@ -12808,7 +12808,7 @@ LABEL_10:
                   }
                 }
 
-                v100 = *(a1 + 112);
+                v100 = *(self + 112);
                 if (*(v100 + 48) > v79)
                 {
                   goto LABEL_149;
@@ -12878,8 +12878,8 @@ LABEL_10:
                     {
                       v191 = *(v100 + 32);
                       v192 = v106;
-                      v122 = [*v108 isSpecialPhysFootprintRegion];
-                      if (v122)
+                      isSpecialPhysFootprintRegion = [*v108 isSpecialPhysFootprintRegion];
+                      if (isSpecialPhysFootprintRegion)
                       {
                         v123 = 0;
                       }
@@ -12889,7 +12889,7 @@ LABEL_10:
                         v123 = v108;
                       }
 
-                      if (v122)
+                      if (isSpecialPhysFootprintRegion)
                       {
                         goto LABEL_188;
                       }
@@ -12918,12 +12918,12 @@ LABEL_10:
                           if (*(*v131 + 2) + *(*v131 + 1) > v79)
                           {
                             v132 = v123;
-                            v133 = [*v131 isSpecialPhysFootprintRegion];
+                            isSpecialPhysFootprintRegion2 = [*v131 isSpecialPhysFootprintRegion];
                             v123 = v132;
                             v127 = v191;
                             v126 = v100 + 64;
                             v125 = v192;
-                            if (v133)
+                            if (isSpecialPhysFootprintRegion2)
                             {
                               v129 = 0;
                             }
@@ -13005,7 +13005,7 @@ LABEL_209:
 
                                           if (!v137)
                                           {
-                                            v87 = *(a10 + 16);
+                                            v87 = *(stride + 16);
 LABEL_124:
                                             v87();
                                           }
@@ -13072,7 +13072,7 @@ LABEL_188:
                 }
               }
 
-              if (*(a1 + 284))
+              if (*(self + 284))
               {
                 v85 = v76 >= v203;
               }
@@ -13084,13 +13084,13 @@ LABEL_188:
 
               if (v85)
               {
-                v86 = *(v77 + 16 * *(a1 + 280));
-                v87 = *(a10 + 16);
+                v86 = *(v77 + 16 * *(self + 280));
+                v87 = *(stride + 16);
                 goto LABEL_124;
               }
 
 LABEL_149:
-              v67 = (v67 + a9);
+              v67 = (v67 + info);
             }
 
             while (v67 <= v214);
@@ -13099,19 +13099,19 @@ LABEL_149:
           goto LABEL_102;
         }
 
-        v19 = ((a3 + 7) & 0xFFFFFFF8) - a3;
+        v19 = ((memory + 7) & 0xFFFFFFF8) - memory;
         v20 = (v19 + 8);
-        if (v20 > a5)
+        if (v20 > node)
         {
           goto LABEL_103;
         }
 
-        v212 = a2 + a3;
+        v212 = a2 + memory;
 LABEL_14:
         v21 = v19;
         v19 = v20;
         v215[0] = 0;
-        v22 = [a8 getLeafFieldAtOffset:v21 leafOffset:v215];
+        v22 = [caches getLeafFieldAtOffset:v21 leafOffset:v215];
         v23 = v215[0] + 8;
         if (v23 > [v22 size])
         {
@@ -13119,16 +13119,16 @@ LABEL_14:
         }
 
         v24 = *(v212 + v21);
-        v25 = *(a1 + 8);
-        v211 = *(*(a1 + 80) + 16 * a4);
-        v26 = [v22 scanType];
-        v27 = *(a1 + 112);
+        v25 = *(self + 8);
+        v211 = *(*(self + 80) + 16 * offset);
+        scanType = [v22 scanType];
+        v27 = *(self + 112);
         if (*(v27 + 48) > v24)
         {
           goto LABEL_16;
         }
 
-        v28 = v26;
+        v28 = scanType;
         [VMUTask ptrauthStripDataPointer:v25];
         if (*(v27 + 56) < *(v27 + 48))
         {
@@ -13193,11 +13193,11 @@ LABEL_14:
             {
               v204 = v34;
               v201 = *(v27 + 32);
-              v50 = [*v36 isSpecialPhysFootprintRegion];
+              isSpecialPhysFootprintRegion3 = [*v36 isSpecialPhysFootprintRegion];
               v52 = v201;
               v51 = v27 + 64;
               v53 = v204;
-              if (v50)
+              if (isSpecialPhysFootprintRegion3)
               {
                 v54 = 0;
               }
@@ -13207,7 +13207,7 @@ LABEL_14:
                 v54 = v36;
               }
 
-              if (v50)
+              if (isSpecialPhysFootprintRegion3)
               {
                 goto LABEL_16;
               }
@@ -13253,12 +13253,12 @@ LABEL_63:
               }
 
               v197 = v54;
-              v59 = [*v58 isSpecialPhysFootprintRegion];
+              isSpecialPhysFootprintRegion4 = [*v58 isSpecialPhysFootprintRegion];
               v54 = v197;
               v52 = v201;
               v51 = v27 + 64;
               v53 = v204;
-              if (v59)
+              if (isSpecialPhysFootprintRegion4)
               {
                 v56 = 0;
               }
@@ -13349,7 +13349,7 @@ LABEL_72:
                         goto LABEL_16;
                       }
 
-                      (*(a10 + 16))(a10, a4, a3 + v21 + v211, v28);
+                      (*(stride + 16))(stride, offset, memory + v21 + v211, v28);
                     }
                   }
                 }
@@ -13378,7 +13378,7 @@ LABEL_72:
 LABEL_16:
 
               v20 = (v19 + 8);
-              if (v20 > a5)
+              if (v20 > node)
               {
 LABEL_103:
 
@@ -13404,26 +13404,26 @@ LABEL_103:
 
     else
     {
-      v18 = *(a1 + 356) == a6;
-      if (!a6)
+      v18 = *(self + 356) == length;
+      if (!length)
       {
         goto LABEL_10;
       }
     }
 
-    if (v18 || (*(a1 + 380) & 1) == 0)
+    if (v18 || (*(self + 380) & 1) == 0)
     {
       goto LABEL_10;
     }
 
-    v69 = a5 - 8;
-    if (a5 < 8)
+    v69 = node - 8;
+    if (node < 8)
     {
       goto LABEL_103;
     }
 
-    v205 = *(*(a1 + 256) + 8 * a6);
-    v70 = [a1 getCachedScanInfoForClassWithIsa:a6 classInfo:? scanCaches:?];
+    v205 = *(*(self + 256) + 8 * length);
+    v70 = [self getCachedScanInfoForClassWithIsa:length classInfo:? scanCaches:?];
     v71 = v70;
     if (v70)
     {
@@ -13468,16 +13468,16 @@ LABEL_222:
       v147 = v140 + 1;
     }
 
-    if (((*(a1 + 392) >> HIBYTE(v71[v140])) & 1) == 0 || v141 > v69)
+    if (((*(self + 392) >> HIBYTE(v71[v140])) & 1) == 0 || v141 > v69)
     {
       goto LABEL_250;
     }
 
-    v148 = *(a2 + a3 + v141);
+    v148 = *(a2 + memory + v141);
     if (v144 == 3)
     {
       v148 &= ~1uLL;
-      v144 = (*(a2 + a3 + v141) & 1) != 0 ? 2 : 3;
+      v144 = (*(a2 + memory + v141) & 1) != 0 ? 2 : 3;
     }
 
     else if (v144 == 5)
@@ -13518,13 +13518,13 @@ LABEL_222:
       v148 &= 0xFFFFFFFFFFFFF8uLL;
     }
 
-    v154 = *(a1 + 112);
+    v154 = *(self + 112);
     if (*(v154 + 48) > v148)
     {
       goto LABEL_250;
     }
 
-    v208 = *(*(a1 + 80) + 16 * a4);
+    v208 = *(*(self + 80) + 16 * offset);
     [VMUTask ptrauthStripDataPointer:?];
     v142 = 0xFFFFFF;
     if (*(v154 + 56) < *(v154 + 48))
@@ -13590,11 +13590,11 @@ LABEL_222:
         if (*(*v163 + 16) + *(*v163 + 8) > v148)
         {
           v202 = v160;
-          v177 = [*v163 isSpecialPhysFootprintRegion];
+          isSpecialPhysFootprintRegion5 = [*v163 isSpecialPhysFootprintRegion];
           v178 = v154 + 64;
           v179 = v202;
           v142 = 0xFFFFFF;
-          if (v177)
+          if (isSpecialPhysFootprintRegion5)
           {
             v180 = 0;
           }
@@ -13604,7 +13604,7 @@ LABEL_222:
             v180 = v163;
           }
 
-          if (v177)
+          if (isSpecialPhysFootprintRegion5)
           {
             goto LABEL_250;
           }
@@ -13650,12 +13650,12 @@ LABEL_297:
           }
 
           v195 = v180;
-          v185 = [*v184 isSpecialPhysFootprintRegion];
+          isSpecialPhysFootprintRegion6 = [*v184 isSpecialPhysFootprintRegion];
           v180 = v195;
           v178 = v154 + 64;
           v179 = v202;
           v142 = 0xFFFFFF;
-          if (v185)
+          if (isSpecialPhysFootprintRegion6)
           {
             v182 = 0;
           }
@@ -13745,7 +13745,7 @@ LABEL_306:
                     goto LABEL_250;
                   }
 
-                  (*(a10 + 16))(a10, a4, v141 + a3 + v208, v144);
+                  (*(stride + 16))(stride, offset, v141 + memory + v208, v144);
                   v142 = 0xFFFFFF;
                 }
               }
@@ -13798,7 +13798,7 @@ LABEL_102:
   }
 }
 
-- (uint64_t)_recordFakeRootRefsForMallocBlock:(_DWORD *)a3 indexInSwiftTaskAllocationBlockIndexes:(uint64_t)a4 recorder:
+- (uint64_t)_recordFakeRootRefsForMallocBlock:(_DWORD *)block indexInSwiftTaskAllocationBlockIndexes:(uint64_t)indexes recorder:
 {
   if (result)
   {
@@ -13932,7 +13932,7 @@ LABEL_13:
                           v27 = *(v7 + 80);
                           v28 = *(v27 + 16 * *(v7 + 288));
                           v29 = *(v27 + 16 * a2);
-                          result = (*(a4 + 16))(a4);
+                          result = (*(indexes + 16))(indexes);
                         }
 
                         goto LABEL_26;
@@ -14102,7 +14102,7 @@ LABEL_37:
                     v50 = *(v7 + 80);
                     v51 = *(v50 + 16 * *(v7 + 296));
                     v52 = *(v50 + 16 * a2);
-                    result = (*(a4 + 16))(a4);
+                    result = (*(indexes + 16))(indexes);
                   }
 
                   goto LABEL_50;
@@ -14137,14 +14137,14 @@ LABEL_50:
     v59 = *(v7 + 304);
     if (v59 != -1)
     {
-      v60 = *a3;
+      v60 = *block;
       if (v60 < *(v7 + 320) && *(*(v7 + 312) + 4 * v60) == a2)
       {
         v61 = *(v7 + 80);
         v62 = *(v61 + 16 * v59);
         v63 = *(v61 + 16 * a2);
-        result = (*(a4 + 16))(a4);
-        ++*a3;
+        result = (*(indexes + 16))(indexes);
+        ++*block;
       }
     }
   }

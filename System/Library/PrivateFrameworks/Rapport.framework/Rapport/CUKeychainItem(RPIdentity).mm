@@ -7,25 +7,25 @@
 - (uint64_t)updateWithRPIdentity:()RPIdentity revisionUpdate:error:
 {
   v7 = a3;
-  v8 = [a1 metadata];
-  v265 = a1;
-  v9 = [a1 secrets];
+  metadata = [self metadata];
+  selfCopy = self;
+  secrets = [self secrets];
   CFArrayGetTypeID();
   v10 = CFDictionaryGetTypedValue();
-  v11 = [v7 accessGroups];
+  accessGroups = [v7 accessGroups];
   v12 = v10;
   v13 = v12;
   v261 = v12;
   v242 = a5;
-  if (v11 == v12)
+  if (accessGroups == v12)
   {
 
     goto LABEL_6;
   }
 
-  if ((v12 == 0) != (v11 != 0))
+  if ((v12 == 0) != (accessGroups != 0))
   {
-    v14 = [v11 isEqual:v12];
+    v14 = [accessGroups isEqual:v12];
 
     if ((v14 & 1) == 0)
     {
@@ -39,7 +39,7 @@ LABEL_6:
   }
 
 LABEL_8:
-  v17 = [v8 mutableCopy];
+  v17 = [metadata mutableCopy];
   v18 = v17;
   if (v17)
   {
@@ -51,20 +51,20 @@ LABEL_8:
     v15 = objc_alloc_init(MEMORY[0x1E695DF90]);
   }
 
-  [v15 setObject:v11 forKeyedSubscript:@"accessGroups"];
+  [v15 setObject:accessGroups forKeyedSubscript:@"accessGroups"];
   v16 = 0x80000;
 LABEL_12:
   CFStringGetTypeID();
   v19 = CFDictionaryGetTypedValue();
-  v20 = [v7 accountAltDSID];
+  accountAltDSID = [v7 accountAltDSID];
   v262 = v19;
-  v260 = v20;
-  if (![v20 length])
+  v260 = accountAltDSID;
+  if (![accountAltDSID length])
   {
     goto LABEL_25;
   }
 
-  v21 = v20;
+  v21 = accountAltDSID;
   v22 = v19;
   v23 = v22;
   if (v21 == v22)
@@ -93,7 +93,7 @@ LABEL_12:
   if (!v15)
   {
 LABEL_20:
-    v25 = [v8 mutableCopy];
+    v25 = [metadata mutableCopy];
     v26 = v25;
     if (v25)
     {
@@ -112,15 +112,15 @@ LABEL_24:
 LABEL_25:
   CFStringGetTypeID();
   v27 = CFDictionaryGetTypedValue();
-  v28 = [v7 accountID];
-  v258 = v28;
+  accountID = [v7 accountID];
+  v258 = accountID;
   v259 = v27;
-  if (![v28 length])
+  if (![accountID length])
   {
     goto LABEL_38;
   }
 
-  v29 = v28;
+  v29 = accountID;
   v30 = v27;
   v31 = v30;
   if (v29 == v30)
@@ -149,7 +149,7 @@ LABEL_25:
   if (!v15)
   {
 LABEL_33:
-    v33 = [v8 mutableCopy];
+    v33 = [metadata mutableCopy];
     v34 = v33;
     if (v33)
     {
@@ -168,15 +168,15 @@ LABEL_37:
 LABEL_38:
   CFStringGetTypeID();
   v35 = CFDictionaryGetTypedValue();
-  v36 = [v7 contactID];
-  v256 = v36;
+  contactID = [v7 contactID];
+  v256 = contactID;
   v257 = v35;
-  if (![v36 length])
+  if (![contactID length])
   {
     goto LABEL_51;
   }
 
-  v37 = v36;
+  v37 = contactID;
   v38 = v35;
   v39 = v38;
   if (v37 == v38)
@@ -205,7 +205,7 @@ LABEL_38:
   if (!v15)
   {
 LABEL_46:
-    v41 = [v8 mutableCopy];
+    v41 = [metadata mutableCopy];
     v42 = v41;
     if (v41)
     {
@@ -222,10 +222,10 @@ LABEL_50:
   [v15 setObject:v37 forKeyedSubscript:@"contactID"];
   v16 = v16 | 0x8000;
 LABEL_51:
-  v43 = [v7 dateAcknowledged];
+  dateAcknowledged = [v7 dateAcknowledged];
   CFDateGetTypeID();
   v44 = CFDictionaryGetTypedValue();
-  v45 = v43;
+  v45 = dateAcknowledged;
   v46 = v44;
   v47 = v45;
   v254 = v46;
@@ -256,7 +256,7 @@ LABEL_51:
   if (!v15)
   {
 LABEL_58:
-    v50 = [v8 mutableCopy];
+    v50 = [metadata mutableCopy];
     v51 = v50;
     if (v50)
     {
@@ -273,15 +273,15 @@ LABEL_62:
   [v15 setObject:v47 forKeyedSubscript:@"dateAck"];
   v16 = v16 | 2;
 LABEL_63:
-  v52 = [v7 dateAdded];
-  v263 = v52;
+  dateAdded = [v7 dateAdded];
+  v263 = dateAdded;
   v255 = v47;
-  if (!v52)
+  if (!dateAdded)
   {
     goto LABEL_77;
   }
 
-  v53 = v52;
+  v53 = dateAdded;
   CFDateGetTypeID();
   v54 = CFDictionaryGetTypedValue();
   v55 = v53;
@@ -299,7 +299,7 @@ LABEL_63:
       if (!v15)
       {
 LABEL_71:
-        v59 = [v8 mutableCopy];
+        v59 = [metadata mutableCopy];
         v60 = v59;
         if (v59)
         {
@@ -334,10 +334,10 @@ LABEL_75:
 LABEL_76:
 
 LABEL_77:
-  v61 = [v7 dateRemoved];
+  dateRemoved = [v7 dateRemoved];
   CFDateGetTypeID();
   v62 = CFDictionaryGetTypedValue();
-  v63 = v61;
+  v63 = dateRemoved;
   v64 = v62;
   v65 = v64;
   v252 = v64;
@@ -381,7 +381,7 @@ LABEL_81:
   {
     if (!v15)
     {
-      v67 = [v8 mutableCopy];
+      v67 = [metadata mutableCopy];
       v68 = v67;
       if (v67)
       {
@@ -406,10 +406,10 @@ LABEL_81:
 
   v16 = v16 | 2;
 LABEL_94:
-  v69 = [v7 dateRequested];
+  dateRequested = [v7 dateRequested];
   CFDateGetTypeID();
   v70 = CFDictionaryGetTypedValue();
-  v71 = v69;
+  v71 = dateRequested;
   v72 = v70;
   v251 = v72;
   if (v71 == v72)
@@ -456,7 +456,7 @@ LABEL_100:
   {
     if (!v15)
     {
-      v76 = [v8 mutableCopy];
+      v76 = [metadata mutableCopy];
       v77 = v76;
       if (v76)
       {
@@ -486,9 +486,9 @@ LABEL_100:
 
   v16 = v16 | 2;
 LABEL_115:
-  v79 = [v7 deviceIRKData];
-  v250 = v79;
-  if ([v79 length] != 16)
+  deviceIRKData = [v7 deviceIRKData];
+  v250 = deviceIRKData;
+  if ([deviceIRKData length] != 16)
   {
     v266 = 0;
     goto LABEL_129;
@@ -496,7 +496,7 @@ LABEL_115:
 
   CFDataGetTypeID();
   v80 = CFDictionaryGetTypedValue();
-  v81 = v79;
+  v81 = deviceIRKData;
   v82 = v80;
   v83 = v82;
   if (v81 != v82)
@@ -504,7 +504,7 @@ LABEL_115:
     v244 = v7;
     v84 = v15;
     v85 = v71;
-    v86 = v11;
+    v86 = accessGroups;
     if ((v81 != 0) != (v82 == 0))
     {
       v87 = [v81 isEqual:v82];
@@ -513,7 +513,7 @@ LABEL_115:
       {
         v266 = 0;
 LABEL_127:
-        v11 = v86;
+        accessGroups = v86;
         v71 = v85;
         v15 = v84;
         v7 = v244;
@@ -525,8 +525,8 @@ LABEL_127:
     {
     }
 
-    v88 = v9;
-    v89 = [v9 mutableCopy];
+    v88 = secrets;
+    v89 = [secrets mutableCopy];
     v90 = v89;
     if (v89)
     {
@@ -541,7 +541,7 @@ LABEL_127:
     v266 = v91;
     [v91 setObject:v81 forKeyedSubscript:@"dIRK"];
     v16 = v16 | 4;
-    v9 = v88;
+    secrets = v88;
     goto LABEL_127;
   }
 
@@ -549,13 +549,13 @@ LABEL_127:
 LABEL_128:
 
 LABEL_129:
-  v92 = [v7 edPKData];
-  v249 = v92;
-  if ([v92 length] == 32)
+  edPKData = [v7 edPKData];
+  v249 = edPKData;
+  if ([edPKData length] == 32)
   {
     CFDataGetTypeID();
     v93 = CFDictionaryGetTypedValue();
-    v94 = v92;
+    v94 = edPKData;
     v95 = v93;
     v96 = v95;
     if (v94 != v95)
@@ -578,13 +578,13 @@ LABEL_129:
       if (!v266)
       {
         v245 = v7;
-        v99 = v8;
+        v99 = metadata;
         v100 = v15;
         v101 = v16;
         v16 = v71;
-        v102 = v11;
-        v103 = v9;
-        v104 = [v9 mutableCopy];
+        v102 = accessGroups;
+        v103 = secrets;
+        v104 = [secrets mutableCopy];
         v105 = v104;
         if (v104)
         {
@@ -597,12 +597,12 @@ LABEL_129:
         }
 
         v98 = v106;
-        v9 = v103;
-        v11 = v102;
+        secrets = v103;
+        accessGroups = v102;
         v71 = v16;
         LODWORD(v16) = v101;
         v15 = v100;
-        v8 = v99;
+        metadata = v99;
         v7 = v245;
       }
 
@@ -615,13 +615,13 @@ LABEL_129:
 LABEL_142:
   }
 
-  v107 = [v7 edSKData];
-  v248 = v107;
-  if ([v107 length] == 32 || !v107 && +[RPIdentity _sepBackedIdentityEnabled](RPIdentity, "_sepBackedIdentityEnabled"))
+  edSKData = [v7 edSKData];
+  v248 = edSKData;
+  if ([edSKData length] == 32 || !edSKData && +[RPIdentity _sepBackedIdentityEnabled](RPIdentity, "_sepBackedIdentityEnabled"))
   {
     CFDataGetTypeID();
     v108 = CFDictionaryGetTypedValue();
-    v109 = v107;
+    v109 = edSKData;
     v110 = v108;
     v111 = v110;
     if (v109 != v110)
@@ -644,13 +644,13 @@ LABEL_142:
       if (!v266)
       {
         v246 = v7;
-        v114 = v8;
+        v114 = metadata;
         v115 = v15;
         v116 = v16;
         v16 = v71;
-        v117 = v11;
-        v118 = v9;
-        v119 = [v9 mutableCopy];
+        v117 = accessGroups;
+        v118 = secrets;
+        v119 = [secrets mutableCopy];
         v120 = v119;
         if (v119)
         {
@@ -663,12 +663,12 @@ LABEL_142:
         }
 
         v113 = v121;
-        v9 = v118;
-        v11 = v117;
+        secrets = v118;
+        accessGroups = v117;
         v71 = v16;
         LODWORD(v16) = v116;
         v15 = v115;
-        v8 = v114;
+        metadata = v114;
         v7 = v246;
       }
 
@@ -682,8 +682,8 @@ LABEL_159:
   }
 
   Int64 = CFDictionaryGetInt64();
-  v123 = [v7 featureFlags];
-  if (!v123 || (v124 = v123, v123 == Int64))
+  featureFlags = [v7 featureFlags];
+  if (!featureFlags || (v124 = featureFlags, featureFlags == Int64))
   {
     v125 = v263;
   }
@@ -693,7 +693,7 @@ LABEL_159:
     v125 = v263;
     if (!v15)
     {
-      v126 = [v8 mutableCopy];
+      v126 = [metadata mutableCopy];
       v127 = v126;
       if (v126)
       {
@@ -714,14 +714,14 @@ LABEL_159:
     v16 = v16 | 0x400;
   }
 
-  v129 = [v7 identifier];
-  v247 = v129;
-  if (v129)
+  identifier = [v7 identifier];
+  v247 = identifier;
+  if (identifier)
   {
-    v130 = v129;
-    v131 = [v265 identifier];
+    v130 = identifier;
+    identifier2 = [selfCopy identifier];
     v132 = v130;
-    v133 = v131;
+    v133 = identifier2;
     v134 = v133;
     if (v132 == v133)
     {
@@ -736,14 +736,14 @@ LABEL_159:
       if (v135)
       {
 LABEL_180:
-        v137 = [v7 idsDeviceID];
-        v241 = v137;
-        if (!v137)
+        idsDeviceID = [v7 idsDeviceID];
+        v241 = idsDeviceID;
+        if (!idsDeviceID)
         {
           goto LABEL_197;
         }
 
-        v138 = v137;
+        v138 = idsDeviceID;
         v139 = v132;
         if (v138 != v139)
         {
@@ -777,7 +777,7 @@ LABEL_180:
 
             if (!v15)
             {
-              v144 = [v8 mutableCopy];
+              v144 = [metadata mutableCopy];
               v145 = v144;
               if (v144)
               {
@@ -800,15 +800,15 @@ LABEL_196:
 LABEL_197:
         CFStringGetTypeID();
         v146 = CFDictionaryGetTypedValue();
-        v147 = [v7 mediaRemoteID];
-        v239 = v147;
+        mediaRemoteID = [v7 mediaRemoteID];
+        v239 = mediaRemoteID;
         v240 = v146;
-        if (![v147 length])
+        if (![mediaRemoteID length])
         {
           goto LABEL_210;
         }
 
-        v148 = v147;
+        v148 = mediaRemoteID;
         v149 = v146;
         v150 = v149;
         if (v148 == v149)
@@ -843,15 +843,15 @@ LABEL_209:
 LABEL_210:
             CFStringGetTypeID();
             v154 = CFDictionaryGetTypedValue();
-            v155 = [v7 mediaRouteID];
-            v237 = v155;
+            mediaRouteID = [v7 mediaRouteID];
+            v237 = mediaRouteID;
             v238 = v154;
-            if (![v155 length])
+            if (![mediaRouteID length])
             {
               goto LABEL_223;
             }
 
-            v156 = v155;
+            v156 = mediaRouteID;
             v157 = v154;
             v158 = v157;
             if (v156 == v157)
@@ -886,15 +886,15 @@ LABEL_222:
 LABEL_223:
                 CFStringGetTypeID();
                 v162 = CFDictionaryGetTypedValue();
-                v163 = [v7 model];
-                v235 = v163;
+                model = [v7 model];
+                v235 = model;
                 v236 = v162;
-                if (![v163 length])
+                if (![model length])
                 {
                   goto LABEL_236;
                 }
 
-                v164 = v163;
+                v164 = model;
                 v165 = v162;
                 v166 = v165;
                 if (v164 == v165)
@@ -927,17 +927,17 @@ LABEL_235:
                     [v15 setObject:v164 forKeyedSubscript:@"model"];
                     v16 = v16 | 0x80;
 LABEL_236:
-                    v170 = [v265 name];
-                    v171 = [v7 name];
-                    v233 = v171;
-                    v234 = v170;
-                    if (![v171 length])
+                    name = [selfCopy name];
+                    name2 = [v7 name];
+                    v233 = name2;
+                    v234 = name;
+                    if (![name2 length])
                     {
                       goto LABEL_244;
                     }
 
-                    v172 = v171;
-                    v173 = v170;
+                    v172 = name2;
+                    v173 = name;
                     v174 = v173;
                     if (v172 == v173)
                     {
@@ -954,15 +954,15 @@ LABEL_236:
 LABEL_244:
                         CFStringGetTypeID();
                         v176 = CFDictionaryGetTypedValue();
-                        v177 = [v7 sendersKnownAlias];
-                        v231 = v177;
+                        sendersKnownAlias = [v7 sendersKnownAlias];
+                        v231 = sendersKnownAlias;
                         v232 = v176;
-                        if (![v177 length])
+                        if (![sendersKnownAlias length])
                         {
                           goto LABEL_257;
                         }
 
-                        v178 = v177;
+                        v178 = sendersKnownAlias;
                         v179 = v176;
                         v180 = v179;
                         if (v178 == v179)
@@ -997,22 +997,22 @@ LABEL_256:
 LABEL_257:
                             objc_opt_class();
                             v184 = NSDictionaryGetNSArrayOfClass();
-                            v185 = [v7 allUsedSendersKnownAliases];
+                            allUsedSendersKnownAliases = [v7 allUsedSendersKnownAliases];
                             v186 = v184;
                             v187 = v186;
-                            if (v185 == v186)
+                            if (allUsedSendersKnownAliases == v186)
                             {
                             }
 
                             else
                             {
-                              if ((v186 == 0) == (v185 != 0))
+                              if ((v186 == 0) == (allUsedSendersKnownAliases != 0))
                               {
 
                                 if (!v15)
                                 {
 LABEL_264:
-                                  v189 = [v8 mutableCopy];
+                                  v189 = [metadata mutableCopy];
                                   v190 = v189;
                                   if (v189)
                                   {
@@ -1026,12 +1026,12 @@ LABEL_264:
                                 }
 
 LABEL_268:
-                                [v15 setObject:v185 forKeyedSubscript:@"allUsedSKAs"];
+                                [v15 setObject:allUsedSendersKnownAliases forKeyedSubscript:@"allUsedSKAs"];
                                 v16 = v16 | 0x1000000;
                                 goto LABEL_269;
                               }
 
-                              v188 = [v185 isEqual:v186];
+                              v188 = [allUsedSendersKnownAliases isEqual:v186];
 
                               if ((v188 & 1) == 0)
                               {
@@ -1059,30 +1059,30 @@ LABEL_269:
                               goto LABEL_332;
                             }
 
-                            v229 = v11;
-                            v243 = v9;
+                            v229 = accessGroups;
+                            v243 = secrets;
                             v192 = off_1E7C947F0[v191];
-                            v193 = [v265 type];
-                            v194 = v193;
-                            if (v192 == v193)
+                            type = [selfCopy type];
+                            v194 = type;
+                            if (v192 == type)
                             {
                             }
 
-                            else if (!v193 || (v195 = [(__CFString *)v192 isEqual:v193], v194, v194, (v195 & 1) == 0))
+                            else if (!type || (v195 = [(__CFString *)v192 isEqual:type], v194, v194, (v195 & 1) == 0))
                             {
-                              [v265 setType:v192];
+                              [selfCopy setType:v192];
                               v16 = v16 | 0x200;
                             }
 
                             v196 = CFDictionaryGetInt64();
-                            v197 = [v7 userAdded];
-                            v9 = v243;
-                            if (((v197 ^ (v196 == 0)) & 1) == 0)
+                            userAdded = [v7 userAdded];
+                            secrets = v243;
+                            if (((userAdded ^ (v196 == 0)) & 1) == 0)
                             {
-                              v198 = v197;
+                              v198 = userAdded;
                               if (!v15)
                               {
-                                v199 = [v8 mutableCopy];
+                                v199 = [metadata mutableCopy];
                                 v200 = v199;
                                 if (v199)
                                 {
@@ -1094,7 +1094,7 @@ LABEL_269:
                                   v15 = objc_alloc_init(MEMORY[0x1E695DF90]);
                                 }
 
-                                v9 = v243;
+                                secrets = v243;
                               }
 
                               v201 = [MEMORY[0x1E696AD98] numberWithBool:v198];
@@ -1103,21 +1103,21 @@ LABEL_269:
                               v16 = v16 | 0x4000;
                             }
 
-                            v202 = [v7 btIRKData];
-                            v228 = v202;
-                            if ([v202 length] != 16)
+                            btIRKData = [v7 btIRKData];
+                            v228 = btIRKData;
+                            if ([btIRKData length] != 16)
                             {
 LABEL_300:
-                              v211 = [v7 btAddress];
-                              v227 = v211;
-                              if ([v211 length] != 7)
+                              btAddress = [v7 btAddress];
+                              v227 = btAddress;
+                              if ([btAddress length] != 7)
                               {
                                 goto LABEL_314;
                               }
 
                               CFDataGetTypeID();
                               v212 = CFDictionaryGetTypedValue();
-                              v213 = v211;
+                              v213 = btAddress;
                               v214 = v212;
                               v215 = v214;
                               if (v213 != v214)
@@ -1161,7 +1161,7 @@ LABEL_300:
                               }
 
 LABEL_313:
-                              v9 = v243;
+                              secrets = v243;
 LABEL_314:
                               if (a4 && v16)
                               {
@@ -1169,19 +1169,19 @@ LABEL_314:
                               }
 
                               Int64Ranged = CFDictionaryGetInt64Ranged();
-                              v221 = [v7 revisionID];
-                              if (v221 == Int64Ranged)
+                              revisionID = [v7 revisionID];
+                              if (revisionID == Int64Ranged)
                               {
-                                v11 = v229;
+                                accessGroups = v229;
                               }
 
                               else
                               {
-                                v222 = v221;
-                                v11 = v229;
+                                v222 = revisionID;
+                                accessGroups = v229;
                                 if (!v15)
                                 {
-                                  v223 = [v8 mutableCopy];
+                                  v223 = [metadata mutableCopy];
                                   v224 = v223;
                                   if (v223)
                                   {
@@ -1193,7 +1193,7 @@ LABEL_314:
                                     v15 = objc_alloc_init(MEMORY[0x1E695DF90]);
                                   }
 
-                                  v9 = v243;
+                                  secrets = v243;
                                 }
 
                                 v225 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v222];
@@ -1203,17 +1203,17 @@ LABEL_314:
                               v136 = v262;
                               if (v15)
                               {
-                                [v265 setMetadata:v15];
+                                [selfCopy setMetadata:v15];
                               }
 
                               if (v264)
                               {
-                                [v265 setRemovedMetadata:?];
+                                [selfCopy setRemovedMetadata:?];
                               }
 
                               if (v266)
                               {
-                                [v265 setSecrets:?];
+                                [selfCopy setSecrets:?];
                               }
 
 LABEL_332:
@@ -1223,7 +1223,7 @@ LABEL_332:
 
                             CFDataGetTypeID();
                             v203 = CFDictionaryGetTypedValue();
-                            v204 = v202;
+                            v204 = btIRKData;
                             v205 = v203;
                             v206 = v205;
                             if (v204 != v205)
@@ -1267,12 +1267,12 @@ LABEL_332:
                             }
 
 LABEL_299:
-                            v9 = v243;
+                            secrets = v243;
                             goto LABEL_300;
                           }
                         }
 
-                        v182 = [v8 mutableCopy];
+                        v182 = [metadata mutableCopy];
                         v183 = v182;
                         if (v182)
                         {
@@ -1292,13 +1292,13 @@ LABEL_299:
                     {
                     }
 
-                    [v265 setName:v172];
+                    [selfCopy setName:v172];
                     v16 = v16 | 0x100;
                     goto LABEL_244;
                   }
                 }
 
-                v168 = [v8 mutableCopy];
+                v168 = [metadata mutableCopy];
                 v169 = v168;
                 if (v168)
                 {
@@ -1314,7 +1314,7 @@ LABEL_299:
               }
             }
 
-            v160 = [v8 mutableCopy];
+            v160 = [metadata mutableCopy];
             v161 = v160;
             if (v160)
             {
@@ -1330,7 +1330,7 @@ LABEL_299:
           }
         }
 
-        v152 = [v8 mutableCopy];
+        v152 = [metadata mutableCopy];
         v153 = v152;
         if (v152)
         {
@@ -1350,7 +1350,7 @@ LABEL_299:
     {
     }
 
-    [v265 setIdentifier:v132];
+    [selfCopy setIdentifier:v132];
     v16 = v16 | 0x20;
     goto LABEL_180;
   }

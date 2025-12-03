@@ -1,18 +1,18 @@
 @interface SettingsViewController
-- (_TtC36NanoMenstrualCyclesCompanionSettings22SettingsViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC36NanoMenstrualCyclesCompanionSettings22SettingsViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (id)specifiers;
 - (uint64_t)openHealthAppOnboarding;
 - (uint64_t)openHealthAppSettings;
 - (uint64_t)openHeartRateLearnMore;
 - (uint64_t)openWristTemperatureLearnMore;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation SettingsViewController
 
-- (_TtC36NanoMenstrualCyclesCompanionSettings22SettingsViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC36NanoMenstrualCyclesCompanionSettings22SettingsViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_8A3C();
     v6 = v5;
@@ -23,18 +23,18 @@
     v6 = 0;
   }
 
-  return sub_51A4(a4, v6, a4);
+  return sub_51A4(bundle, v6, bundle);
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_5474(a3);
+  selfCopy = self;
+  sub_5474(appear);
 }
 
 - (id)specifiers
 {
-  v2 = self;
+  selfCopy = self;
   sub_5950();
   v4 = v3;
 
@@ -79,7 +79,7 @@
 
   else
   {
-    v11 = [objc_opt_self() sharedApplication];
+    sharedApplication = [objc_opt_self() sharedApplication];
     sub_87FC(v12);
     v14 = v13;
     sub_77F8(&_swiftEmptyArrayStorage);
@@ -87,7 +87,7 @@
     sub_8700(&qword_106B0, type metadata accessor for OpenExternalURLOptionsKey);
     isa = sub_899C().super.isa;
 
-    [v11 openURL:v14 options:isa completionHandler:0];
+    [sharedApplication openURL:v14 options:isa completionHandler:0];
 
     return (*(v9 + 8))(v5, v8);
   }
@@ -123,7 +123,7 @@
 
   else
   {
-    v11 = [objc_opt_self() sharedApplication];
+    sharedApplication = [objc_opt_self() sharedApplication];
     sub_87FC(v12);
     v14 = v13;
     sub_77F8(&_swiftEmptyArrayStorage);
@@ -131,7 +131,7 @@
     sub_8700(&qword_106B0, type metadata accessor for OpenExternalURLOptionsKey);
     isa = sub_899C().super.isa;
 
-    [v11 openURL:v14 options:isa completionHandler:0];
+    [sharedApplication openURL:v14 options:isa completionHandler:0];
 
     return (*(v9 + 8))(v5, v8);
   }
@@ -156,7 +156,7 @@
 
   else
   {
-    v7 = [objc_opt_self() sharedApplication];
+    sharedApplication = [objc_opt_self() sharedApplication];
     sub_87FC(v8);
     v10 = v9;
     sub_77F8(&_swiftEmptyArrayStorage);
@@ -164,7 +164,7 @@
     sub_8700(&qword_106B0, type metadata accessor for OpenExternalURLOptionsKey);
     isa = sub_899C().super.isa;
 
-    [v7 openURL:v10 options:isa completionHandler:0];
+    [sharedApplication openURL:v10 options:isa completionHandler:0];
 
     return (*(v5 + 8))(v3, v4);
   }
@@ -189,7 +189,7 @@
 
   else
   {
-    v7 = [objc_opt_self() sharedApplication];
+    sharedApplication = [objc_opt_self() sharedApplication];
     sub_87FC(v8);
     v10 = v9;
     sub_77F8(&_swiftEmptyArrayStorage);
@@ -197,7 +197,7 @@
     sub_8700(&qword_106B0, type metadata accessor for OpenExternalURLOptionsKey);
     isa = sub_899C().super.isa;
 
-    [v7 openURL:v10 options:isa completionHandler:0];
+    [sharedApplication openURL:v10 options:isa completionHandler:0];
 
     return (*(v5 + 8))(v3, v4);
   }

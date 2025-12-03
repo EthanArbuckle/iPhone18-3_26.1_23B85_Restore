@@ -26,11 +26,11 @@
 - (void)setAccessKey:(NSString *)accessKey;
 - (void)setCharset:(NSString *)charset;
 - (void)setCoords:(NSString *)coords;
-- (void)setDownload:(id)a3;
+- (void)setDownload:(id)download;
 - (void)setHref:(NSString *)href;
 - (void)setHreflang:(NSString *)hreflang;
 - (void)setName:(NSString *)name;
-- (void)setPing:(id)a3;
+- (void)setPing:(id)ping;
 - (void)setRel:(NSString *)rel;
 - (void)setRev:(NSString *)rev;
 - (void)setShape:(NSString *)shape;
@@ -176,10 +176,10 @@
   return v4;
 }
 
-- (void)setDownload:(id)a3
+- (void)setDownload:(id)download
 {
   WebCore::JSMainThreadNullState::JSMainThreadNullState(v7);
-  WTF::AtomStringImpl::add(&v8, a3, v4);
+  WTF::AtomStringImpl::add(&v8, download, v4);
   v6 = v8;
   WebCore::Element::setAttributeWithoutSynchronization();
   if (v6 && atomic_fetch_add_explicit(v6, 0xFFFFFFFE, memory_order_relaxed) == 2)
@@ -385,10 +385,10 @@ LABEL_6:
   return v4;
 }
 
-- (void)setPing:(id)a3
+- (void)setPing:(id)ping
 {
   WebCore::JSMainThreadNullState::JSMainThreadNullState(v7);
-  WTF::AtomStringImpl::add(&v8, a3, v4);
+  WTF::AtomStringImpl::add(&v8, ping, v4);
   v6 = v8;
   WebCore::Element::setAttributeWithoutSynchronization();
   if (v6 && atomic_fetch_add_explicit(v6, 0xFFFFFFFE, memory_order_relaxed) == 2)

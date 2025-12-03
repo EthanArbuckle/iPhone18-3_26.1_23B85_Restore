@@ -1,8 +1,8 @@
 @interface HALSchemaHALClientEvent
-+ (id)getInnerTypeStringByTag:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
-- (HALSchemaHALClientEvent)initWithDictionary:(id)a3;
-- (HALSchemaHALClientEvent)initWithJSON:(id)a3;
++ (id)getInnerTypeStringByTag:(unint64_t)tag;
+- (BOOL)isEqual:(id)equal;
+- (HALSchemaHALClientEvent)initWithDictionary:(id)dictionary;
+- (HALSchemaHALClientEvent)initWithJSON:(id)n;
 - (HALSchemaHALCompanionDeviceCommunicationContext)companionDeviceCommunicationContext;
 - (HALSchemaHALCompanionDeviceDiscoveryContext)companionDeviceDiscoveryContext;
 - (HALSchemaHALContextCollectorFetchContext)contextCollectorFetchContext;
@@ -12,7 +12,7 @@
 - (HALSchemaHALNearbyPersonalDevicesReported)nearbyPersonalDevicesReported;
 - (NSData)jsonData;
 - (SISchemaInstrumentationMessage)innerEvent;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)getComponentId;
 - (id)qualifiedMessageName;
@@ -26,29 +26,29 @@
 - (void)deleteForceFetchContext;
 - (void)deleteLocalFetchContext;
 - (void)deleteNearbyPersonalDevicesReported;
-- (void)setCompanionDeviceCommunicationContext:(id)a3;
-- (void)setCompanionDeviceDiscoveryContext:(id)a3;
-- (void)setContextCollectorFetchContext:(id)a3;
-- (void)setCrossDeviceCommandContext:(id)a3;
-- (void)setForceFetchContext:(id)a3;
-- (void)setLocalFetchContext:(id)a3;
-- (void)setNearbyPersonalDevicesReported:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setCompanionDeviceCommunicationContext:(id)context;
+- (void)setCompanionDeviceDiscoveryContext:(id)context;
+- (void)setContextCollectorFetchContext:(id)context;
+- (void)setCrossDeviceCommandContext:(id)context;
+- (void)setForceFetchContext:(id)context;
+- (void)setLocalFetchContext:(id)context;
+- (void)setNearbyPersonalDevicesReported:(id)reported;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HALSchemaHALClientEvent
 
 - (id)qualifiedMessageName
 {
-  v2 = [(HALSchemaHALClientEvent *)self whichEvent_Type];
-  if (v2 - 2 > 6)
+  whichEvent_Type = [(HALSchemaHALClientEvent *)self whichEvent_Type];
+  if (whichEvent_Type - 2 > 6)
   {
     return @"com.apple.aiml.siri.hal.HALClientEvent";
   }
 
   else
   {
-    return off_1E78D7A28[v2 - 2];
+    return off_1E78D7A28[whichEvent_Type - 2];
   }
 }
 
@@ -157,15 +157,15 @@
   return v3;
 }
 
-- (HALSchemaHALClientEvent)initWithDictionary:(id)a3
+- (HALSchemaHALClientEvent)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v25.receiver = self;
   v25.super_class = HALSchemaHALClientEvent;
   v5 = [(HALSchemaHALClientEvent *)&v25 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"eventMetadata"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"eventMetadata"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -174,7 +174,7 @@
     }
 
     v24 = v6;
-    v8 = [v4 objectForKeyedSubscript:@"crossDeviceCommandContext"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"crossDeviceCommandContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -182,7 +182,7 @@
       [(HALSchemaHALClientEvent *)v5 setCrossDeviceCommandContext:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"localFetchContext"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"localFetchContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -190,7 +190,7 @@
       [(HALSchemaHALClientEvent *)v5 setLocalFetchContext:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"contextCollectorFetchContext"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"contextCollectorFetchContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -198,7 +198,7 @@
       [(HALSchemaHALClientEvent *)v5 setContextCollectorFetchContext:v13];
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"forceFetchContext"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"forceFetchContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -206,7 +206,7 @@
       [(HALSchemaHALClientEvent *)v5 setForceFetchContext:v15];
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"companionDeviceDiscoveryContext"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"companionDeviceDiscoveryContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -214,7 +214,7 @@
       [(HALSchemaHALClientEvent *)v5 setCompanionDeviceDiscoveryContext:v17];
     }
 
-    v18 = [v4 objectForKeyedSubscript:@"companionDeviceCommunicationContext"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"companionDeviceCommunicationContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -222,7 +222,7 @@
       [(HALSchemaHALClientEvent *)v5 setCompanionDeviceCommunicationContext:v19];
     }
 
-    v20 = [v4 objectForKeyedSubscript:@"nearbyPersonalDevicesReported"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"nearbyPersonalDevicesReported"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -236,30 +236,30 @@
   return v5;
 }
 
-- (HALSchemaHALClientEvent)initWithJSON:(id)a3
+- (HALSchemaHALClientEvent)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(HALSchemaHALClientEvent *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(HALSchemaHALClientEvent *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(HALSchemaHALClientEvent *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -272,138 +272,138 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_companionDeviceCommunicationContext)
   {
-    v4 = [(HALSchemaHALClientEvent *)self companionDeviceCommunicationContext];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    companionDeviceCommunicationContext = [(HALSchemaHALClientEvent *)self companionDeviceCommunicationContext];
+    dictionaryRepresentation = [companionDeviceCommunicationContext dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"companionDeviceCommunicationContext"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"companionDeviceCommunicationContext"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"companionDeviceCommunicationContext"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"companionDeviceCommunicationContext"];
     }
   }
 
   if (self->_companionDeviceDiscoveryContext)
   {
-    v7 = [(HALSchemaHALClientEvent *)self companionDeviceDiscoveryContext];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    companionDeviceDiscoveryContext = [(HALSchemaHALClientEvent *)self companionDeviceDiscoveryContext];
+    dictionaryRepresentation2 = [companionDeviceDiscoveryContext dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"companionDeviceDiscoveryContext"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"companionDeviceDiscoveryContext"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"companionDeviceDiscoveryContext"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"companionDeviceDiscoveryContext"];
     }
   }
 
   if (self->_contextCollectorFetchContext)
   {
-    v10 = [(HALSchemaHALClientEvent *)self contextCollectorFetchContext];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    contextCollectorFetchContext = [(HALSchemaHALClientEvent *)self contextCollectorFetchContext];
+    dictionaryRepresentation3 = [contextCollectorFetchContext dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"contextCollectorFetchContext"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"contextCollectorFetchContext"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"contextCollectorFetchContext"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"contextCollectorFetchContext"];
     }
   }
 
   if (self->_crossDeviceCommandContext)
   {
-    v13 = [(HALSchemaHALClientEvent *)self crossDeviceCommandContext];
-    v14 = [v13 dictionaryRepresentation];
-    if (v14)
+    crossDeviceCommandContext = [(HALSchemaHALClientEvent *)self crossDeviceCommandContext];
+    dictionaryRepresentation4 = [crossDeviceCommandContext dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v14 forKeyedSubscript:@"crossDeviceCommandContext"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"crossDeviceCommandContext"];
     }
 
     else
     {
-      v15 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v15 forKeyedSubscript:@"crossDeviceCommandContext"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"crossDeviceCommandContext"];
     }
   }
 
   if (self->_eventMetadata)
   {
-    v16 = [(HALSchemaHALClientEvent *)self eventMetadata];
-    v17 = [v16 dictionaryRepresentation];
-    if (v17)
+    eventMetadata = [(HALSchemaHALClientEvent *)self eventMetadata];
+    dictionaryRepresentation5 = [eventMetadata dictionaryRepresentation];
+    if (dictionaryRepresentation5)
     {
-      [v3 setObject:v17 forKeyedSubscript:@"eventMetadata"];
+      [dictionary setObject:dictionaryRepresentation5 forKeyedSubscript:@"eventMetadata"];
     }
 
     else
     {
-      v18 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v18 forKeyedSubscript:@"eventMetadata"];
+      null5 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null5 forKeyedSubscript:@"eventMetadata"];
     }
   }
 
   if (self->_forceFetchContext)
   {
-    v19 = [(HALSchemaHALClientEvent *)self forceFetchContext];
-    v20 = [v19 dictionaryRepresentation];
-    if (v20)
+    forceFetchContext = [(HALSchemaHALClientEvent *)self forceFetchContext];
+    dictionaryRepresentation6 = [forceFetchContext dictionaryRepresentation];
+    if (dictionaryRepresentation6)
     {
-      [v3 setObject:v20 forKeyedSubscript:@"forceFetchContext"];
+      [dictionary setObject:dictionaryRepresentation6 forKeyedSubscript:@"forceFetchContext"];
     }
 
     else
     {
-      v21 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v21 forKeyedSubscript:@"forceFetchContext"];
+      null6 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null6 forKeyedSubscript:@"forceFetchContext"];
     }
   }
 
   if (self->_localFetchContext)
   {
-    v22 = [(HALSchemaHALClientEvent *)self localFetchContext];
-    v23 = [v22 dictionaryRepresentation];
-    if (v23)
+    localFetchContext = [(HALSchemaHALClientEvent *)self localFetchContext];
+    dictionaryRepresentation7 = [localFetchContext dictionaryRepresentation];
+    if (dictionaryRepresentation7)
     {
-      [v3 setObject:v23 forKeyedSubscript:@"localFetchContext"];
+      [dictionary setObject:dictionaryRepresentation7 forKeyedSubscript:@"localFetchContext"];
     }
 
     else
     {
-      v24 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v24 forKeyedSubscript:@"localFetchContext"];
+      null7 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null7 forKeyedSubscript:@"localFetchContext"];
     }
   }
 
   if (self->_nearbyPersonalDevicesReported)
   {
-    v25 = [(HALSchemaHALClientEvent *)self nearbyPersonalDevicesReported];
-    v26 = [v25 dictionaryRepresentation];
-    if (v26)
+    nearbyPersonalDevicesReported = [(HALSchemaHALClientEvent *)self nearbyPersonalDevicesReported];
+    dictionaryRepresentation8 = [nearbyPersonalDevicesReported dictionaryRepresentation];
+    if (dictionaryRepresentation8)
     {
-      [v3 setObject:v26 forKeyedSubscript:@"nearbyPersonalDevicesReported"];
+      [dictionary setObject:dictionaryRepresentation8 forKeyedSubscript:@"nearbyPersonalDevicesReported"];
     }
 
     else
     {
-      v27 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v27 forKeyedSubscript:@"nearbyPersonalDevicesReported"];
+      null8 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null8 forKeyedSubscript:@"nearbyPersonalDevicesReported"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -418,34 +418,34 @@
   return v9 ^ [(HALSchemaHALNearbyPersonalDevicesReported *)self->_nearbyPersonalDevicesReported hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_43;
   }
 
   whichEvent_Type = self->_whichEvent_Type;
-  if (whichEvent_Type != [v4 whichEvent_Type])
+  if (whichEvent_Type != [equalCopy whichEvent_Type])
   {
     goto LABEL_43;
   }
 
-  v6 = [(HALSchemaHALClientEvent *)self eventMetadata];
-  v7 = [v4 eventMetadata];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(HALSchemaHALClientEvent *)self eventMetadata];
+  eventMetadata2 = [equalCopy eventMetadata];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_42;
   }
 
-  v8 = [(HALSchemaHALClientEvent *)self eventMetadata];
-  if (v8)
+  eventMetadata3 = [(HALSchemaHALClientEvent *)self eventMetadata];
+  if (eventMetadata3)
   {
-    v9 = v8;
-    v10 = [(HALSchemaHALClientEvent *)self eventMetadata];
-    v11 = [v4 eventMetadata];
-    v12 = [v10 isEqual:v11];
+    v9 = eventMetadata3;
+    eventMetadata4 = [(HALSchemaHALClientEvent *)self eventMetadata];
+    eventMetadata5 = [equalCopy eventMetadata];
+    v12 = [eventMetadata4 isEqual:eventMetadata5];
 
     if (!v12)
     {
@@ -457,20 +457,20 @@
   {
   }
 
-  v6 = [(HALSchemaHALClientEvent *)self crossDeviceCommandContext];
-  v7 = [v4 crossDeviceCommandContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(HALSchemaHALClientEvent *)self crossDeviceCommandContext];
+  eventMetadata2 = [equalCopy crossDeviceCommandContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_42;
   }
 
-  v13 = [(HALSchemaHALClientEvent *)self crossDeviceCommandContext];
-  if (v13)
+  crossDeviceCommandContext = [(HALSchemaHALClientEvent *)self crossDeviceCommandContext];
+  if (crossDeviceCommandContext)
   {
-    v14 = v13;
-    v15 = [(HALSchemaHALClientEvent *)self crossDeviceCommandContext];
-    v16 = [v4 crossDeviceCommandContext];
-    v17 = [v15 isEqual:v16];
+    v14 = crossDeviceCommandContext;
+    crossDeviceCommandContext2 = [(HALSchemaHALClientEvent *)self crossDeviceCommandContext];
+    crossDeviceCommandContext3 = [equalCopy crossDeviceCommandContext];
+    v17 = [crossDeviceCommandContext2 isEqual:crossDeviceCommandContext3];
 
     if (!v17)
     {
@@ -482,20 +482,20 @@
   {
   }
 
-  v6 = [(HALSchemaHALClientEvent *)self localFetchContext];
-  v7 = [v4 localFetchContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(HALSchemaHALClientEvent *)self localFetchContext];
+  eventMetadata2 = [equalCopy localFetchContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_42;
   }
 
-  v18 = [(HALSchemaHALClientEvent *)self localFetchContext];
-  if (v18)
+  localFetchContext = [(HALSchemaHALClientEvent *)self localFetchContext];
+  if (localFetchContext)
   {
-    v19 = v18;
-    v20 = [(HALSchemaHALClientEvent *)self localFetchContext];
-    v21 = [v4 localFetchContext];
-    v22 = [v20 isEqual:v21];
+    v19 = localFetchContext;
+    localFetchContext2 = [(HALSchemaHALClientEvent *)self localFetchContext];
+    localFetchContext3 = [equalCopy localFetchContext];
+    v22 = [localFetchContext2 isEqual:localFetchContext3];
 
     if (!v22)
     {
@@ -507,20 +507,20 @@
   {
   }
 
-  v6 = [(HALSchemaHALClientEvent *)self contextCollectorFetchContext];
-  v7 = [v4 contextCollectorFetchContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(HALSchemaHALClientEvent *)self contextCollectorFetchContext];
+  eventMetadata2 = [equalCopy contextCollectorFetchContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_42;
   }
 
-  v23 = [(HALSchemaHALClientEvent *)self contextCollectorFetchContext];
-  if (v23)
+  contextCollectorFetchContext = [(HALSchemaHALClientEvent *)self contextCollectorFetchContext];
+  if (contextCollectorFetchContext)
   {
-    v24 = v23;
-    v25 = [(HALSchemaHALClientEvent *)self contextCollectorFetchContext];
-    v26 = [v4 contextCollectorFetchContext];
-    v27 = [v25 isEqual:v26];
+    v24 = contextCollectorFetchContext;
+    contextCollectorFetchContext2 = [(HALSchemaHALClientEvent *)self contextCollectorFetchContext];
+    contextCollectorFetchContext3 = [equalCopy contextCollectorFetchContext];
+    v27 = [contextCollectorFetchContext2 isEqual:contextCollectorFetchContext3];
 
     if (!v27)
     {
@@ -532,20 +532,20 @@
   {
   }
 
-  v6 = [(HALSchemaHALClientEvent *)self forceFetchContext];
-  v7 = [v4 forceFetchContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(HALSchemaHALClientEvent *)self forceFetchContext];
+  eventMetadata2 = [equalCopy forceFetchContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_42;
   }
 
-  v28 = [(HALSchemaHALClientEvent *)self forceFetchContext];
-  if (v28)
+  forceFetchContext = [(HALSchemaHALClientEvent *)self forceFetchContext];
+  if (forceFetchContext)
   {
-    v29 = v28;
-    v30 = [(HALSchemaHALClientEvent *)self forceFetchContext];
-    v31 = [v4 forceFetchContext];
-    v32 = [v30 isEqual:v31];
+    v29 = forceFetchContext;
+    forceFetchContext2 = [(HALSchemaHALClientEvent *)self forceFetchContext];
+    forceFetchContext3 = [equalCopy forceFetchContext];
+    v32 = [forceFetchContext2 isEqual:forceFetchContext3];
 
     if (!v32)
     {
@@ -557,20 +557,20 @@
   {
   }
 
-  v6 = [(HALSchemaHALClientEvent *)self companionDeviceDiscoveryContext];
-  v7 = [v4 companionDeviceDiscoveryContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(HALSchemaHALClientEvent *)self companionDeviceDiscoveryContext];
+  eventMetadata2 = [equalCopy companionDeviceDiscoveryContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_42;
   }
 
-  v33 = [(HALSchemaHALClientEvent *)self companionDeviceDiscoveryContext];
-  if (v33)
+  companionDeviceDiscoveryContext = [(HALSchemaHALClientEvent *)self companionDeviceDiscoveryContext];
+  if (companionDeviceDiscoveryContext)
   {
-    v34 = v33;
-    v35 = [(HALSchemaHALClientEvent *)self companionDeviceDiscoveryContext];
-    v36 = [v4 companionDeviceDiscoveryContext];
-    v37 = [v35 isEqual:v36];
+    v34 = companionDeviceDiscoveryContext;
+    companionDeviceDiscoveryContext2 = [(HALSchemaHALClientEvent *)self companionDeviceDiscoveryContext];
+    companionDeviceDiscoveryContext3 = [equalCopy companionDeviceDiscoveryContext];
+    v37 = [companionDeviceDiscoveryContext2 isEqual:companionDeviceDiscoveryContext3];
 
     if (!v37)
     {
@@ -582,20 +582,20 @@
   {
   }
 
-  v6 = [(HALSchemaHALClientEvent *)self companionDeviceCommunicationContext];
-  v7 = [v4 companionDeviceCommunicationContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(HALSchemaHALClientEvent *)self companionDeviceCommunicationContext];
+  eventMetadata2 = [equalCopy companionDeviceCommunicationContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_42;
   }
 
-  v38 = [(HALSchemaHALClientEvent *)self companionDeviceCommunicationContext];
-  if (v38)
+  companionDeviceCommunicationContext = [(HALSchemaHALClientEvent *)self companionDeviceCommunicationContext];
+  if (companionDeviceCommunicationContext)
   {
-    v39 = v38;
-    v40 = [(HALSchemaHALClientEvent *)self companionDeviceCommunicationContext];
-    v41 = [v4 companionDeviceCommunicationContext];
-    v42 = [v40 isEqual:v41];
+    v39 = companionDeviceCommunicationContext;
+    companionDeviceCommunicationContext2 = [(HALSchemaHALClientEvent *)self companionDeviceCommunicationContext];
+    companionDeviceCommunicationContext3 = [equalCopy companionDeviceCommunicationContext];
+    v42 = [companionDeviceCommunicationContext2 isEqual:companionDeviceCommunicationContext3];
 
     if (!v42)
     {
@@ -607,12 +607,12 @@
   {
   }
 
-  v6 = [(HALSchemaHALClientEvent *)self nearbyPersonalDevicesReported];
-  v7 = [v4 nearbyPersonalDevicesReported];
-  if ((v6 != 0) != (v7 == 0))
+  eventMetadata = [(HALSchemaHALClientEvent *)self nearbyPersonalDevicesReported];
+  eventMetadata2 = [equalCopy nearbyPersonalDevicesReported];
+  if ((eventMetadata != 0) != (eventMetadata2 == 0))
   {
-    v43 = [(HALSchemaHALClientEvent *)self nearbyPersonalDevicesReported];
-    if (!v43)
+    nearbyPersonalDevicesReported = [(HALSchemaHALClientEvent *)self nearbyPersonalDevicesReported];
+    if (!nearbyPersonalDevicesReported)
     {
 
 LABEL_46:
@@ -620,10 +620,10 @@ LABEL_46:
       goto LABEL_44;
     }
 
-    v44 = v43;
-    v45 = [(HALSchemaHALClientEvent *)self nearbyPersonalDevicesReported];
-    v46 = [v4 nearbyPersonalDevicesReported];
-    v47 = [v45 isEqual:v46];
+    v44 = nearbyPersonalDevicesReported;
+    nearbyPersonalDevicesReported2 = [(HALSchemaHALClientEvent *)self nearbyPersonalDevicesReported];
+    nearbyPersonalDevicesReported3 = [equalCopy nearbyPersonalDevicesReported];
+    v47 = [nearbyPersonalDevicesReported2 isEqual:nearbyPersonalDevicesReported3];
 
     if (v47)
     {
@@ -643,74 +643,74 @@ LABEL_44:
   return v48;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v21 = a3;
-  v4 = [(HALSchemaHALClientEvent *)self eventMetadata];
+  toCopy = to;
+  eventMetadata = [(HALSchemaHALClientEvent *)self eventMetadata];
 
-  if (v4)
+  if (eventMetadata)
   {
-    v5 = [(HALSchemaHALClientEvent *)self eventMetadata];
+    eventMetadata2 = [(HALSchemaHALClientEvent *)self eventMetadata];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(HALSchemaHALClientEvent *)self crossDeviceCommandContext];
+  crossDeviceCommandContext = [(HALSchemaHALClientEvent *)self crossDeviceCommandContext];
 
-  if (v6)
+  if (crossDeviceCommandContext)
   {
-    v7 = [(HALSchemaHALClientEvent *)self crossDeviceCommandContext];
+    crossDeviceCommandContext2 = [(HALSchemaHALClientEvent *)self crossDeviceCommandContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(HALSchemaHALClientEvent *)self localFetchContext];
+  localFetchContext = [(HALSchemaHALClientEvent *)self localFetchContext];
 
-  if (v8)
+  if (localFetchContext)
   {
-    v9 = [(HALSchemaHALClientEvent *)self localFetchContext];
+    localFetchContext2 = [(HALSchemaHALClientEvent *)self localFetchContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v10 = [(HALSchemaHALClientEvent *)self contextCollectorFetchContext];
+  contextCollectorFetchContext = [(HALSchemaHALClientEvent *)self contextCollectorFetchContext];
 
-  if (v10)
+  if (contextCollectorFetchContext)
   {
-    v11 = [(HALSchemaHALClientEvent *)self contextCollectorFetchContext];
+    contextCollectorFetchContext2 = [(HALSchemaHALClientEvent *)self contextCollectorFetchContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v12 = [(HALSchemaHALClientEvent *)self forceFetchContext];
+  forceFetchContext = [(HALSchemaHALClientEvent *)self forceFetchContext];
 
-  if (v12)
+  if (forceFetchContext)
   {
-    v13 = [(HALSchemaHALClientEvent *)self forceFetchContext];
+    forceFetchContext2 = [(HALSchemaHALClientEvent *)self forceFetchContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v14 = [(HALSchemaHALClientEvent *)self companionDeviceDiscoveryContext];
+  companionDeviceDiscoveryContext = [(HALSchemaHALClientEvent *)self companionDeviceDiscoveryContext];
 
-  if (v14)
+  if (companionDeviceDiscoveryContext)
   {
-    v15 = [(HALSchemaHALClientEvent *)self companionDeviceDiscoveryContext];
+    companionDeviceDiscoveryContext2 = [(HALSchemaHALClientEvent *)self companionDeviceDiscoveryContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v16 = [(HALSchemaHALClientEvent *)self companionDeviceCommunicationContext];
+  companionDeviceCommunicationContext = [(HALSchemaHALClientEvent *)self companionDeviceCommunicationContext];
 
-  if (v16)
+  if (companionDeviceCommunicationContext)
   {
-    v17 = [(HALSchemaHALClientEvent *)self companionDeviceCommunicationContext];
+    companionDeviceCommunicationContext2 = [(HALSchemaHALClientEvent *)self companionDeviceCommunicationContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v18 = [(HALSchemaHALClientEvent *)self nearbyPersonalDevicesReported];
+  nearbyPersonalDevicesReported = [(HALSchemaHALClientEvent *)self nearbyPersonalDevicesReported];
 
-  v19 = v21;
-  if (v18)
+  v19 = toCopy;
+  if (nearbyPersonalDevicesReported)
   {
-    v20 = [(HALSchemaHALClientEvent *)self nearbyPersonalDevicesReported];
+    nearbyPersonalDevicesReported2 = [(HALSchemaHALClientEvent *)self nearbyPersonalDevicesReported];
     PBDataWriterWriteSubmessage();
 
-    v19 = v21;
+    v19 = toCopy;
   }
 }
 
@@ -724,9 +724,9 @@ LABEL_44:
   }
 }
 
-- (void)setNearbyPersonalDevicesReported:(id)a3
+- (void)setNearbyPersonalDevicesReported:(id)reported
 {
-  v4 = a3;
+  reportedCopy = reported;
   crossDeviceCommandContext = self->_crossDeviceCommandContext;
   self->_crossDeviceCommandContext = 0;
 
@@ -745,9 +745,9 @@ LABEL_44:
   companionDeviceCommunicationContext = self->_companionDeviceCommunicationContext;
   self->_companionDeviceCommunicationContext = 0;
 
-  self->_whichEvent_Type = 8 * (v4 != 0);
+  self->_whichEvent_Type = 8 * (reportedCopy != 0);
   nearbyPersonalDevicesReported = self->_nearbyPersonalDevicesReported;
-  self->_nearbyPersonalDevicesReported = v4;
+  self->_nearbyPersonalDevicesReported = reportedCopy;
 }
 
 - (void)deleteCompanionDeviceCommunicationContext
@@ -760,9 +760,9 @@ LABEL_44:
   }
 }
 
-- (void)setCompanionDeviceCommunicationContext:(id)a3
+- (void)setCompanionDeviceCommunicationContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   crossDeviceCommandContext = self->_crossDeviceCommandContext;
   self->_crossDeviceCommandContext = 0;
 
@@ -782,14 +782,14 @@ LABEL_44:
   self->_nearbyPersonalDevicesReported = 0;
 
   v11 = 7;
-  if (!v4)
+  if (!contextCopy)
   {
     v11 = 0;
   }
 
   self->_whichEvent_Type = v11;
   companionDeviceCommunicationContext = self->_companionDeviceCommunicationContext;
-  self->_companionDeviceCommunicationContext = v4;
+  self->_companionDeviceCommunicationContext = contextCopy;
 }
 
 - (void)deleteCompanionDeviceDiscoveryContext
@@ -802,9 +802,9 @@ LABEL_44:
   }
 }
 
-- (void)setCompanionDeviceDiscoveryContext:(id)a3
+- (void)setCompanionDeviceDiscoveryContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   crossDeviceCommandContext = self->_crossDeviceCommandContext;
   self->_crossDeviceCommandContext = 0;
 
@@ -824,14 +824,14 @@ LABEL_44:
   self->_nearbyPersonalDevicesReported = 0;
 
   v11 = 6;
-  if (!v4)
+  if (!contextCopy)
   {
     v11 = 0;
   }
 
   self->_whichEvent_Type = v11;
   companionDeviceDiscoveryContext = self->_companionDeviceDiscoveryContext;
-  self->_companionDeviceDiscoveryContext = v4;
+  self->_companionDeviceDiscoveryContext = contextCopy;
 }
 
 - (void)deleteForceFetchContext
@@ -844,9 +844,9 @@ LABEL_44:
   }
 }
 
-- (void)setForceFetchContext:(id)a3
+- (void)setForceFetchContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   crossDeviceCommandContext = self->_crossDeviceCommandContext;
   self->_crossDeviceCommandContext = 0;
 
@@ -866,14 +866,14 @@ LABEL_44:
   self->_nearbyPersonalDevicesReported = 0;
 
   v11 = 5;
-  if (!v4)
+  if (!contextCopy)
   {
     v11 = 0;
   }
 
   self->_whichEvent_Type = v11;
   forceFetchContext = self->_forceFetchContext;
-  self->_forceFetchContext = v4;
+  self->_forceFetchContext = contextCopy;
 }
 
 - (void)deleteContextCollectorFetchContext
@@ -886,9 +886,9 @@ LABEL_44:
   }
 }
 
-- (void)setContextCollectorFetchContext:(id)a3
+- (void)setContextCollectorFetchContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   crossDeviceCommandContext = self->_crossDeviceCommandContext;
   self->_crossDeviceCommandContext = 0;
 
@@ -907,9 +907,9 @@ LABEL_44:
   nearbyPersonalDevicesReported = self->_nearbyPersonalDevicesReported;
   self->_nearbyPersonalDevicesReported = 0;
 
-  self->_whichEvent_Type = 4 * (v4 != 0);
+  self->_whichEvent_Type = 4 * (contextCopy != 0);
   contextCollectorFetchContext = self->_contextCollectorFetchContext;
-  self->_contextCollectorFetchContext = v4;
+  self->_contextCollectorFetchContext = contextCopy;
 }
 
 - (void)deleteLocalFetchContext
@@ -922,9 +922,9 @@ LABEL_44:
   }
 }
 
-- (void)setLocalFetchContext:(id)a3
+- (void)setLocalFetchContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   crossDeviceCommandContext = self->_crossDeviceCommandContext;
   self->_crossDeviceCommandContext = 0;
 
@@ -944,14 +944,14 @@ LABEL_44:
   self->_nearbyPersonalDevicesReported = 0;
 
   v11 = 3;
-  if (!v4)
+  if (!contextCopy)
   {
     v11 = 0;
   }
 
   self->_whichEvent_Type = v11;
   localFetchContext = self->_localFetchContext;
-  self->_localFetchContext = v4;
+  self->_localFetchContext = contextCopy;
 }
 
 - (void)deleteCrossDeviceCommandContext
@@ -964,9 +964,9 @@ LABEL_44:
   }
 }
 
-- (void)setCrossDeviceCommandContext:(id)a3
+- (void)setCrossDeviceCommandContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   localFetchContext = self->_localFetchContext;
   self->_localFetchContext = 0;
 
@@ -985,85 +985,85 @@ LABEL_44:
   nearbyPersonalDevicesReported = self->_nearbyPersonalDevicesReported;
   self->_nearbyPersonalDevicesReported = 0;
 
-  self->_whichEvent_Type = 2 * (v4 != 0);
+  self->_whichEvent_Type = 2 * (contextCopy != 0);
   crossDeviceCommandContext = self->_crossDeviceCommandContext;
-  self->_crossDeviceCommandContext = v4;
+  self->_crossDeviceCommandContext = contextCopy;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v31.receiver = self;
   v31.super_class = HALSchemaHALClientEvent;
-  v5 = [(SISchemaInstrumentationMessage *)&v31 applySensitiveConditionsPolicy:v4];
-  v6 = [(HALSchemaHALClientEvent *)self eventMetadata];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v31 applySensitiveConditionsPolicy:policyCopy];
+  eventMetadata = [(HALSchemaHALClientEvent *)self eventMetadata];
+  v7 = [eventMetadata applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(HALSchemaHALClientEvent *)self deleteEventMetadata];
   }
 
-  v9 = [(HALSchemaHALClientEvent *)self crossDeviceCommandContext];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  crossDeviceCommandContext = [(HALSchemaHALClientEvent *)self crossDeviceCommandContext];
+  v10 = [crossDeviceCommandContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(HALSchemaHALClientEvent *)self deleteCrossDeviceCommandContext];
   }
 
-  v12 = [(HALSchemaHALClientEvent *)self localFetchContext];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  localFetchContext = [(HALSchemaHALClientEvent *)self localFetchContext];
+  v13 = [localFetchContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(HALSchemaHALClientEvent *)self deleteLocalFetchContext];
   }
 
-  v15 = [(HALSchemaHALClientEvent *)self contextCollectorFetchContext];
-  v16 = [v15 applySensitiveConditionsPolicy:v4];
-  v17 = [v16 suppressMessage];
+  contextCollectorFetchContext = [(HALSchemaHALClientEvent *)self contextCollectorFetchContext];
+  v16 = [contextCollectorFetchContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage4 = [v16 suppressMessage];
 
-  if (v17)
+  if (suppressMessage4)
   {
     [(HALSchemaHALClientEvent *)self deleteContextCollectorFetchContext];
   }
 
-  v18 = [(HALSchemaHALClientEvent *)self forceFetchContext];
-  v19 = [v18 applySensitiveConditionsPolicy:v4];
-  v20 = [v19 suppressMessage];
+  forceFetchContext = [(HALSchemaHALClientEvent *)self forceFetchContext];
+  v19 = [forceFetchContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage5 = [v19 suppressMessage];
 
-  if (v20)
+  if (suppressMessage5)
   {
     [(HALSchemaHALClientEvent *)self deleteForceFetchContext];
   }
 
-  v21 = [(HALSchemaHALClientEvent *)self companionDeviceDiscoveryContext];
-  v22 = [v21 applySensitiveConditionsPolicy:v4];
-  v23 = [v22 suppressMessage];
+  companionDeviceDiscoveryContext = [(HALSchemaHALClientEvent *)self companionDeviceDiscoveryContext];
+  v22 = [companionDeviceDiscoveryContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage6 = [v22 suppressMessage];
 
-  if (v23)
+  if (suppressMessage6)
   {
     [(HALSchemaHALClientEvent *)self deleteCompanionDeviceDiscoveryContext];
   }
 
-  v24 = [(HALSchemaHALClientEvent *)self companionDeviceCommunicationContext];
-  v25 = [v24 applySensitiveConditionsPolicy:v4];
-  v26 = [v25 suppressMessage];
+  companionDeviceCommunicationContext = [(HALSchemaHALClientEvent *)self companionDeviceCommunicationContext];
+  v25 = [companionDeviceCommunicationContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage7 = [v25 suppressMessage];
 
-  if (v26)
+  if (suppressMessage7)
   {
     [(HALSchemaHALClientEvent *)self deleteCompanionDeviceCommunicationContext];
   }
 
-  v27 = [(HALSchemaHALClientEvent *)self nearbyPersonalDevicesReported];
-  v28 = [v27 applySensitiveConditionsPolicy:v4];
-  v29 = [v28 suppressMessage];
+  nearbyPersonalDevicesReported = [(HALSchemaHALClientEvent *)self nearbyPersonalDevicesReported];
+  v28 = [nearbyPersonalDevicesReported applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage8 = [v28 suppressMessage];
 
-  if (v29)
+  if (suppressMessage8)
   {
     [(HALSchemaHALClientEvent *)self deleteNearbyPersonalDevicesReported];
   }
@@ -1081,27 +1081,27 @@ LABEL_44:
 
 - (int)componentName
 {
-  v3 = [(HALSchemaHALClientEvent *)self eventMetadata];
-  v4 = [v3 halId];
+  eventMetadata = [(HALSchemaHALClientEvent *)self eventMetadata];
+  halId = [eventMetadata halId];
 
-  if (v4 && ([v4 value], (v5 = objc_claimAutoreleasedReturnValue()) != 0) && (v6 = v5, objc_msgSend(v4, "value"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "length"), v7, v6, v8))
+  if (halId && ([halId value], (v5 = objc_claimAutoreleasedReturnValue()) != 0) && (v6 = v5, objc_msgSend(halId, "value"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "length"), v7, v6, v8))
   {
     v9 = 17;
   }
 
   else
   {
-    v10 = [(HALSchemaHALClientEvent *)self eventMetadata];
-    v11 = [v10 requestId];
+    eventMetadata2 = [(HALSchemaHALClientEvent *)self eventMetadata];
+    requestId = [eventMetadata2 requestId];
 
-    if (v11)
+    if (requestId)
     {
-      v12 = [v11 value];
-      if (v12)
+      value = [requestId value];
+      if (value)
       {
-        v13 = v12;
-        v14 = [v11 value];
-        v9 = [v14 length] != 0;
+        v13 = value;
+        value2 = [requestId value];
+        v9 = [value2 length] != 0;
       }
 
       else
@@ -1109,13 +1109,13 @@ LABEL_44:
         v9 = 0;
       }
 
-      v4 = v11;
+      halId = requestId;
     }
 
     else
     {
       v9 = 0;
-      v4 = 0;
+      halId = 0;
     }
   }
 
@@ -1124,17 +1124,17 @@ LABEL_44:
 
 - (id)getComponentId
 {
-  v3 = [(HALSchemaHALClientEvent *)self eventMetadata];
-  v4 = [v3 halId];
+  eventMetadata = [(HALSchemaHALClientEvent *)self eventMetadata];
+  halId = [eventMetadata halId];
 
-  if (v4)
+  if (halId)
   {
-    v5 = [v4 value];
-    if (v5)
+    value = [halId value];
+    if (value)
     {
-      v6 = v5;
-      v7 = [v4 value];
-      v8 = [v7 length];
+      v6 = value;
+      value2 = [halId value];
+      v8 = [value2 length];
 
       if (v8)
       {
@@ -1143,62 +1143,62 @@ LABEL_44:
     }
   }
 
-  v9 = [(HALSchemaHALClientEvent *)self eventMetadata];
-  v10 = [v9 requestId];
+  eventMetadata2 = [(HALSchemaHALClientEvent *)self eventMetadata];
+  requestId = [eventMetadata2 requestId];
 
-  if (v10)
+  if (requestId)
   {
-    v11 = [v10 value];
-    if (!v11)
+    value3 = [requestId value];
+    if (!value3)
     {
       goto LABEL_10;
     }
 
-    v12 = [v10 value];
-    v13 = [v12 length];
+    value4 = [requestId value];
+    v13 = [value4 length];
 
     if (v13)
     {
-      v4 = v10;
+      halId = requestId;
 LABEL_8:
-      v11 = v4;
-      v10 = v11;
+      value3 = halId;
+      requestId = value3;
       goto LABEL_10;
     }
   }
 
-  v11 = 0;
+  value3 = 0;
 LABEL_10:
 
-  return v11;
+  return value3;
 }
 
 - (SISchemaInstrumentationMessage)innerEvent
 {
-  v3 = [(HALSchemaHALClientEvent *)self whichEvent_Type];
-  if (v3 - 2 > 6)
+  whichEvent_Type = [(HALSchemaHALClientEvent *)self whichEvent_Type];
+  if (whichEvent_Type - 2 > 6)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = *(&self->super.super.super.super.isa + *off_1E78E9918[v3 - 2]);
+    v4 = *(&self->super.super.super.super.isa + *off_1E78E9918[whichEvent_Type - 2]);
   }
 
   return v4;
 }
 
-+ (id)getInnerTypeStringByTag:(unint64_t)a3
++ (id)getInnerTypeStringByTag:(unint64_t)tag
 {
-  if (a3 - 2 > 6)
+  if (tag - 2 > 6)
   {
     return 0;
   }
 
   else
   {
-    return off_1E78E9950[a3 - 2];
+    return off_1E78E9950[tag - 2];
   }
 }
 

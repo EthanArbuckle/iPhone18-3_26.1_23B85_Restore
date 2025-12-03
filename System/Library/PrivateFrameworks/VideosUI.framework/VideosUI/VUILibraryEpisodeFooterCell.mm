@@ -1,18 +1,18 @@
 @interface VUILibraryEpisodeFooterCell
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (VUILibraryEpisodeFooterCell)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (VUILibraryEpisodeFooterCell)initWithFrame:(CGRect)frame;
 - (VUILibraryEpisodeFooterCellDelegate)delegate;
 - (void)layoutSubviews;
-- (void)setTitle:(id)a3;
+- (void)setTitle:(id)title;
 @end
 
 @implementation VUILibraryEpisodeFooterCell
 
-- (VUILibraryEpisodeFooterCell)initWithFrame:(CGRect)a3
+- (VUILibraryEpisodeFooterCell)initWithFrame:(CGRect)frame
 {
   v10.receiver = self;
   v10.super_class = VUILibraryEpisodeFooterCell;
-  v3 = [(VUILibraryEpisodeFooterCell *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(VUILibraryEpisodeFooterCell *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(VUISeparatorView);
@@ -25,8 +25,8 @@
     v3->_topSeparatorView = v6;
 
     [(VUILibraryEpisodeFooterCell *)v3 addSubview:v3->_topSeparatorView];
-    v8 = [MEMORY[0x1E69DC888] vui_primaryDynamicBackgroundColor];
-    [(VUILibraryEpisodeFooterCell *)v3 setBackgroundColor:v8];
+    vui_primaryDynamicBackgroundColor = [MEMORY[0x1E69DC888] vui_primaryDynamicBackgroundColor];
+    [(VUILibraryEpisodeFooterCell *)v3 setBackgroundColor:vui_primaryDynamicBackgroundColor];
   }
 
   return v3;
@@ -49,9 +49,9 @@
   [(VUIBaseView *)bottomSeparatorView sizeThatFits:CGRectGetWidth(v30) - (v5 + v7), 1.79769313e308];
   v15 = v14;
   v17 = v16;
-  v18 = [(VUIButton *)self->_titleButton textContentView];
+  textContentView = [(VUIButton *)self->_titleButton textContentView];
   [(VUILibraryEpisodeFooterCell *)self bounds];
-  [v18 sizeThatFits:{CGRectGetWidth(v31), 1.79769313e308}];
+  [textContentView sizeThatFits:{CGRectGetWidth(v31), 1.79769313e308}];
   v20 = v19;
   v22 = v21;
 
@@ -68,10 +68,10 @@
   [(VUIButton *)titleButton setFrame:v25, v26, v20, v22];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  v4 = [(VUILibraryEpisodeFooterCell *)self traitCollection:a3.width];
+  width = fits.width;
+  v4 = [(VUILibraryEpisodeFooterCell *)self traitCollection:fits.width];
   [VUIUtilities scaleContentSizeValue:v4 forTraitCollection:54.0];
   v6 = v5;
 
@@ -82,31 +82,31 @@
   return result;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v5 = a3;
-  if (![(NSString *)self->_title isEqualToString:v5])
+  titleCopy = title;
+  if (![(NSString *)self->_title isEqualToString:titleCopy])
   {
-    objc_storeStrong(&self->_title, a3);
+    objc_storeStrong(&self->_title, title);
     if (self->_title)
     {
       v6 = objc_alloc_init(VUITextLayout);
-      v7 = [MEMORY[0x1E69DC888] vui_keyColor];
-      [(VUITextLayout *)v6 setColor:v7];
+      vui_keyColor = [MEMORY[0x1E69DC888] vui_keyColor];
+      [(VUITextLayout *)v6 setColor:vui_keyColor];
 
       [(VUITextLayout *)v6 setTextStyle:13];
       [(VUITextLayout *)v6 setMaximumContentSizeCategory:12];
       v8 = [VUIButton alloc];
-      v9 = [(VUILibraryEpisodeFooterCell *)self traitCollection];
-      v10 = -[VUIButton initWithType:interfaceStyle:](v8, "initWithType:interfaceStyle:", 8, [v9 userInterfaceStyle]);
+      traitCollection = [(VUILibraryEpisodeFooterCell *)self traitCollection];
+      v10 = -[VUIButton initWithType:interfaceStyle:](v8, "initWithType:interfaceStyle:", 8, [traitCollection userInterfaceStyle]);
       titleButton = self->_titleButton;
       self->_titleButton = v10;
 
       v12 = [VUILabel labelWithString:self->_title textLayout:v6 existingLabel:0];
       [(VUIButton *)self->_titleButton setTextContentView:v12];
       v13 = self->_titleButton;
-      v14 = [(VUITextLayout *)v6 color];
-      [(VUIButton *)v13 setTintColor:v14];
+      color = [(VUITextLayout *)v6 color];
+      [(VUIButton *)v13 setTintColor:color];
 
       objc_initWeak(&location, self);
       v15 = self->_titleButton;

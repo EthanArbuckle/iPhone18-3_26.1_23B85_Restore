@@ -1,28 +1,28 @@
 @interface CNUIPRSPosterArchiver
-+ (id)archiveCNConfiguration:(id)a3 error:(id *)a4;
-+ (id)unarchiveCNConfigurationAtURL:(id)a3 error:(id *)a4;
-+ (id)unarchiveCNConfigurationFromData:(id)a3 error:(id *)a4;
-+ (id)uncachedUnarchiveCNConfigurationFromData:(id)a3 error:(id *)a4;
++ (id)archiveCNConfiguration:(id)configuration error:(id *)error;
++ (id)unarchiveCNConfigurationAtURL:(id)l error:(id *)error;
++ (id)unarchiveCNConfigurationFromData:(id)data error:(id *)error;
++ (id)uncachedUnarchiveCNConfigurationFromData:(id)data error:(id *)error;
 @end
 
 @implementation CNUIPRSPosterArchiver
 
-+ (id)archiveCNConfiguration:(id)a3 error:(id *)a4
++ (id)archiveCNConfiguration:(id)configuration error:(id *)error
 {
-  v5 = a3;
+  configurationCopy = configuration;
   PRSPosterArchiverClass = getPRSPosterArchiverClass();
-  v7 = [v5 wrappedPosterConfiguration];
+  wrappedPosterConfiguration = [configurationCopy wrappedPosterConfiguration];
 
-  v8 = [PRSPosterArchiverClass archiveConfiguration:v7 format:1 error:a4];
+  v8 = [PRSPosterArchiverClass archiveConfiguration:wrappedPosterConfiguration format:1 error:error];
 
   return v8;
 }
 
-+ (id)unarchiveCNConfigurationAtURL:(id)a3 error:(id *)a4
++ (id)unarchiveCNConfigurationAtURL:(id)l error:(id *)error
 {
-  v5 = a3;
+  lCopy = l;
   v12 = 0;
-  v6 = [getPRSPosterArchiverClass() unarchiveConfigurationAtURL:v5 format:-1 error:&v12];
+  v6 = [getPRSPosterArchiverClass() unarchiveConfigurationAtURL:lCopy format:-1 error:&v12];
 
   v7 = v12;
   if (v6)
@@ -38,11 +38,11 @@
       [CNUIPRSPosterArchiver unarchiveCNConfigurationAtURL:v7 error:?];
     }
 
-    if (a4)
+    if (error)
     {
       v10 = v7;
       v8 = 0;
-      *a4 = v7;
+      *error = v7;
     }
 
     else
@@ -54,18 +54,18 @@
   return v8;
 }
 
-+ (id)unarchiveCNConfigurationFromData:(id)a3 error:(id *)a4
++ (id)unarchiveCNConfigurationFromData:(id)data error:(id *)error
 {
-  v5 = a3;
+  dataCopy = data;
   v6 = +[CNUICachingPosterArchiver sharedArchiver];
-  v7 = [v6 unarchiveConfigurationFromData:v5 error:a4];
+  v7 = [v6 unarchiveConfigurationFromData:dataCopy error:error];
 
   return v7;
 }
 
-+ (id)uncachedUnarchiveCNConfigurationFromData:(id)a3 error:(id *)a4
++ (id)uncachedUnarchiveCNConfigurationFromData:(id)data error:(id *)error
 {
-  v5 = a3;
+  dataCopy = data;
   if ((*(*MEMORY[0x1E6996540] + 16))())
   {
     v6 = +[CNUICoreLogProvider posters_os_log];
@@ -80,7 +80,7 @@
   else
   {
     v12 = 0;
-    v8 = [getPRSPosterArchiverClass() unarchiveConfigurationFromData:v5 format:-1 error:&v12];
+    v8 = [getPRSPosterArchiverClass() unarchiveConfigurationFromData:dataCopy format:-1 error:&v12];
     v6 = v12;
     if (v8)
     {
@@ -95,11 +95,11 @@
         [CNUIPRSPosterArchiver unarchiveCNConfigurationAtURL:v6 error:?];
       }
 
-      if (a4)
+      if (error)
       {
         v10 = v6;
         v7 = 0;
-        *a4 = v6;
+        *error = v6;
       }
 
       else

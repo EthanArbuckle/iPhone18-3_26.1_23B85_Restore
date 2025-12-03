@@ -1,29 +1,29 @@
 @interface CEMEventSubscriptionDeclaration
-- (id)dmf_installRequestWithContext:(id)a3 error:(id *)a4;
-- (id)dmf_removeRequestWithContext:(id)a3 error:(id *)a4;
+- (id)dmf_installRequestWithContext:(id)context error:(id *)error;
+- (id)dmf_removeRequestWithContext:(id)context error:(id *)error;
 @end
 
 @implementation CEMEventSubscriptionDeclaration
 
-- (id)dmf_installRequestWithContext:(id)a3 error:(id *)a4
+- (id)dmf_installRequestWithContext:(id)context error:(id *)error
 {
-  v5 = a3;
+  contextCopy = context;
   v6 = objc_opt_new();
-  v7 = [v5 organizationIdentifier];
+  organizationIdentifier = [contextCopy organizationIdentifier];
 
-  [v6 setOrganizationIdentifier:v7];
+  [v6 setOrganizationIdentifier:organizationIdentifier];
   [v6 setSubscriptionDeclaration:self];
 
   return v6;
 }
 
-- (id)dmf_removeRequestWithContext:(id)a3 error:(id *)a4
+- (id)dmf_removeRequestWithContext:(id)context error:(id *)error
 {
-  v5 = a3;
+  contextCopy = context;
   v6 = objc_opt_new();
-  v7 = [v5 organizationIdentifier];
+  organizationIdentifier = [contextCopy organizationIdentifier];
 
-  [v6 setOrganizationIdentifier:v7];
+  [v6 setOrganizationIdentifier:organizationIdentifier];
   [v6 setSubscriptionDeclaration:self];
 
   return v6;

@@ -1,20 +1,20 @@
 @interface WFToolKitIndexingRequest
 - (NSString)debugDescription;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFToolKitIndexingRequest
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_1B1E5A03C(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_1B1E5A03C(coderCopy);
 }
 
 - (NSString)debugDescription
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B1E5A53C();
 
   v3 = sub_1B1F1A860();

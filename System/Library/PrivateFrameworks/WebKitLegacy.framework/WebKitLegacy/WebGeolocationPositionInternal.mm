@@ -1,26 +1,26 @@
 @interface WebGeolocationPositionInternal
-- (WebGeolocationPositionInternal)initWithCoreGeolocationPosition:(void *)a3;
+- (WebGeolocationPositionInternal)initWithCoreGeolocationPosition:(void *)position;
 - (id).cxx_construct;
 @end
 
 @implementation WebGeolocationPositionInternal
 
-- (WebGeolocationPositionInternal)initWithCoreGeolocationPosition:(void *)a3
+- (WebGeolocationPositionInternal)initWithCoreGeolocationPosition:(void *)position
 {
   v10.receiver = self;
   v10.super_class = WebGeolocationPositionInternal;
   result = [(WebGeolocationPositionInternal *)&v10 init];
   if (result)
   {
-    v5 = *a3;
-    v6 = *(a3 + 1);
-    result->_position.altitude = *(a3 + 2);
+    v5 = *position;
+    v6 = *(position + 1);
+    result->_position.altitude = *(position + 2);
     *&result->_position.longitude = v6;
     *&result->_position.timestamp = v5;
-    v7 = *(a3 + 3);
-    v8 = *(a3 + 4);
-    v9 = *(a3 + 5);
-    result->_position.floorLevel = *(a3 + 6);
+    v7 = *(position + 3);
+    v8 = *(position + 4);
+    v9 = *(position + 5);
+    result->_position.floorLevel = *(position + 6);
     result->_position.speed = v9;
     result->_position.heading = v8;
     result->_position.altitudeAccuracy = v7;

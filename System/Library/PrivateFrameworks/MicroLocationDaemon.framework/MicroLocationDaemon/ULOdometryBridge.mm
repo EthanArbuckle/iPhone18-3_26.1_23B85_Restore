@@ -1,5 +1,5 @@
 @interface ULOdometryBridge
-- (ULOdometryBridge)initWithQueue:(id)a3 delegate:(id)a4;
+- (ULOdometryBridge)initWithQueue:(id)queue delegate:(id)delegate;
 - (ULOdometryDelegate)delegate;
 - (void)startBackgroundUpdates;
 - (void)stopBackgroundUpdates;
@@ -7,24 +7,24 @@
 
 @implementation ULOdometryBridge
 
-- (ULOdometryBridge)initWithQueue:(id)a3 delegate:(id)a4
+- (ULOdometryBridge)initWithQueue:(id)queue delegate:(id)delegate
 {
-  v6 = a3;
-  v7 = a4;
+  queueCopy = queue;
+  delegateCopy = delegate;
   if ([MEMORY[0x277CC1D08] isBackgroundAvailable])
   {
     v12.receiver = self;
     v12.super_class = ULOdometryBridge;
     v8 = [(ULOdometryBridge *)&v12 init];
-    dispatch_assert_queue_V2(v6);
+    dispatch_assert_queue_V2(queueCopy);
     if (v8)
     {
-      [(ULOdometryBridge *)v8 setQueue:v6];
-      [(ULOdometryBridge *)v8 setDelegate:v7];
+      [(ULOdometryBridge *)v8 setQueue:queueCopy];
+      [(ULOdometryBridge *)v8 setDelegate:delegateCopy];
     }
 
     self = v8;
-    v9 = self;
+    selfCopy = self;
   }
 
   else
@@ -41,17 +41,17 @@
       _os_log_impl(&dword_258FE9000, v10, OS_LOG_TYPE_ERROR, "requested odometry, but background updates are unavailable", buf, 2u);
     }
 
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
 - (void)startBackgroundUpdates
 {
   objc_initWeak(&location, self);
-  v3 = [(ULOdometryBridge *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(ULOdometryBridge *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   if ([(ULOdometryBridge *)self backgroudUpdatesRunning])
   {
@@ -70,9 +70,9 @@
 
   else
   {
-    v5 = [(ULOdometryBridge *)self odometryManager];
+    odometryManager = [(ULOdometryBridge *)self odometryManager];
 
-    if (!v5)
+    if (!odometryManager)
     {
       if (onceToken_MicroLocation_Default != -1)
       {
@@ -103,20 +103,20 @@
     }
 
     v9 = objc_alloc_init(MEMORY[0x277CCABD8]);
-    v10 = [(ULOdometryBridge *)self queue];
-    [v9 setUnderlyingQueue:v10];
+    queue2 = [(ULOdometryBridge *)self queue];
+    [v9 setUnderlyingQueue:queue2];
 
-    v11 = [(ULOdometryBridge *)self odometryManager];
+    odometryManager2 = [(ULOdometryBridge *)self odometryManager];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __42__ULOdometryBridge_startBackgroundUpdates__block_invoke;
     v13[3] = &unk_2798D4F60;
     objc_copyWeak(&v14, &location);
-    [v11 startBackgroundUpdatesUsingReferenceFrame:8 toQueue:v9 withHandler:v13];
+    [odometryManager2 startBackgroundUpdatesUsingReferenceFrame:8 toQueue:v9 withHandler:v13];
 
     [(ULOdometryBridge *)self setBackgroudUpdatesRunning:1];
-    v12 = [(ULOdometryBridge *)self delegate];
-    [v12 didReceiveOdometryProviderStateIsAvailable:1];
+    delegate = [(ULOdometryBridge *)self delegate];
+    [delegate didReceiveOdometryProviderStateIsAvailable:1];
 
     objc_destroyWeak(&v14);
   }
@@ -150,8 +150,8 @@ void __42__ULOdometryBridge_startBackgroundUpdates__block_invoke(uint64_t a1, vo
 
 - (void)stopBackgroundUpdates
 {
-  v3 = [(ULOdometryBridge *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(ULOdometryBridge *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   if ([(ULOdometryBridge *)self backgroudUpdatesRunning])
   {
@@ -167,13 +167,13 @@ void __42__ULOdometryBridge_startBackgroundUpdates__block_invoke(uint64_t a1, vo
       _os_log_impl(&dword_258FE9000, v4, OS_LOG_TYPE_DEFAULT, "stopping odometry updates", v8, 2u);
     }
 
-    v5 = [(ULOdometryBridge *)self odometryManager];
-    [v5 stopBackgroundUpdates];
+    odometryManager = [(ULOdometryBridge *)self odometryManager];
+    [odometryManager stopBackgroundUpdates];
 
     [(ULOdometryBridge *)self setOdometryManager:0];
     [(ULOdometryBridge *)self setBackgroudUpdatesRunning:0];
-    v6 = [(ULOdometryBridge *)self delegate];
-    [v6 didReceiveOdometryProviderStateIsAvailable:0];
+    delegate = [(ULOdometryBridge *)self delegate];
+    [delegate didReceiveOdometryProviderStateIsAvailable:0];
   }
 
   else

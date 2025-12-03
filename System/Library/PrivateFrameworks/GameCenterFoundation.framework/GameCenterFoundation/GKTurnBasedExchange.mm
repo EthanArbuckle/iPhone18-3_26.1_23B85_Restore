@@ -1,30 +1,30 @@
 @interface GKTurnBasedExchange
-+ (BOOL)instancesRespondToSelector:(SEL)a3;
-+ (id)instanceMethodSignatureForSelector:(SEL)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)respondsToSelector:(SEL)a3;
-- (GKTurnBasedExchange)initWithInternalRepresentation:(id)a3 daemonProxy:(id)a4;
++ (BOOL)instancesRespondToSelector:(SEL)selector;
++ (id)instanceMethodSignatureForSelector:(SEL)selector;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)respondsToSelector:(SEL)selector;
+- (GKTurnBasedExchange)initWithInternalRepresentation:(id)representation daemonProxy:(id)proxy;
 - (GKTurnBasedExchangeStatus)status;
 - (NSString)message;
 - (id)description;
-- (id)methodSignatureForSelector:(SEL)a3;
-- (id)valueForUndefinedKey:(id)a3;
+- (id)methodSignatureForSelector:(SEL)selector;
+- (id)valueForUndefinedKey:(id)key;
 - (unint64_t)hash;
-- (void)_updateInternalFromMatchInternal:(id)a3;
+- (void)_updateInternalFromMatchInternal:(id)internal;
 - (void)cancelWithLocalizableMessageKey:(NSString *)key arguments:(NSArray *)arguments completionHandler:(void *)completionHandler;
 - (void)replyWithLocalizableMessageKey:(NSString *)key arguments:(NSArray *)arguments data:(NSData *)data completionHandler:(void *)completionHandler;
-- (void)setValue:(id)a3 forUndefinedKey:(id)a4;
+- (void)setValue:(id)value forUndefinedKey:(id)key;
 @end
 
 @implementation GKTurnBasedExchange
 
-- (GKTurnBasedExchange)initWithInternalRepresentation:(id)a3 daemonProxy:(id)a4
+- (GKTurnBasedExchange)initWithInternalRepresentation:(id)representation daemonProxy:(id)proxy
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  representationCopy = representation;
+  proxyCopy = proxy;
+  if (!representationCopy)
   {
-    v6 = +[(GKInternalRepresentation *)GKTurnBasedExchangeInternal];
+    representationCopy = +[(GKInternalRepresentation *)GKTurnBasedExchangeInternal];
   }
 
   v11.receiver = self;
@@ -33,8 +33,8 @@
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_internal, v6);
-    objc_storeStrong(&v9->_daemonProxy, a4);
+    objc_storeStrong(&v8->_internal, representationCopy);
+    objc_storeStrong(&v9->_daemonProxy, proxy);
   }
 
   return v9;
@@ -43,32 +43,32 @@
 - (NSString)message
 {
   daemonProxy = self->_daemonProxy;
-  v4 = [(GKTurnBasedExchangeInternal *)self->_internal localizableMessage];
-  v5 = [(GKTurnBasedExchange *)self match];
-  v6 = [v5 bundleID];
-  v7 = [(GKDaemonProxy *)daemonProxy localizedMessageFromDictionary:v4 forBundleID:v6];
+  localizableMessage = [(GKTurnBasedExchangeInternal *)self->_internal localizableMessage];
+  match = [(GKTurnBasedExchange *)self match];
+  bundleID = [match bundleID];
+  v7 = [(GKDaemonProxy *)daemonProxy localizedMessageFromDictionary:localizableMessage forBundleID:bundleID];
 
   return v7;
 }
 
 - (GKTurnBasedExchangeStatus)status
 {
-  v2 = [(GKTurnBasedExchange *)self internal];
-  v3 = [v2 statusString];
+  internal = [(GKTurnBasedExchange *)self internal];
+  statusString = [internal statusString];
 
-  if (v3)
+  if (statusString)
   {
-    if ([v3 isEqualToString:@"A"])
+    if ([statusString isEqualToString:@"A"])
     {
       v4 = GKTurnBasedExchangeStatusActive;
     }
 
-    else if ([v3 isEqualToString:@"C"] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"T"))
+    else if ([statusString isEqualToString:@"C"] & 1) != 0 || (objc_msgSend(statusString, "isEqualToString:", @"T"))
     {
       v4 = GKTurnBasedExchangeStatusComplete;
     }
 
-    else if ([v3 isEqualToString:@"X"])
+    else if ([statusString isEqualToString:@"X"])
     {
       v4 = GKTurnBasedExchangeStatusCanceled;
     }
@@ -89,21 +89,21 @@
 
 - (unint64_t)hash
 {
-  v2 = [(GKTurnBasedExchange *)self internal];
-  v3 = [v2 hash];
+  internal = [(GKTurnBasedExchange *)self internal];
+  v3 = [internal hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(GKTurnBasedExchange *)self internal];
-    v6 = [v4 internal];
-    v7 = [v5 isEqual:v6];
+    internal = [(GKTurnBasedExchange *)self internal];
+    internal2 = [equalCopy internal];
+    v7 = [internal isEqual:internal2];
   }
 
   else
@@ -133,14 +133,14 @@
   }
 
   v35 = v6;
-  v7 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v34 = self;
-  v8 = [(GKTurnBasedExchange *)self recipients];
-  v9 = [v8 countByEnumeratingWithState:&v41 objects:v45 count:16];
+  selfCopy = self;
+  recipients = [(GKTurnBasedExchange *)self recipients];
+  v9 = [recipients countByEnumeratingWithState:&v41 objects:v45 count:16];
   if (v9)
   {
     v10 = v9;
@@ -151,17 +151,17 @@
       {
         if (*v42 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(recipients);
         }
 
         v13 = *(*(&v41 + 1) + 8 * i);
         v14 = MEMORY[0x277CCACA8];
-        v15 = [v13 internal];
-        v16 = [v15 playerID];
-        v17 = v16;
-        if (v16)
+        internal = [v13 internal];
+        playerID = [internal playerID];
+        v17 = playerID;
+        if (playerID)
         {
-          v18 = v16;
+          v18 = playerID;
         }
 
         else
@@ -170,10 +170,10 @@
         }
 
         v19 = [v14 stringWithFormat:@"%@", v18];
-        [v7 addObject:v19];
+        [array addObject:v19];
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v41 objects:v45 count:16];
+      v10 = [recipients countByEnumeratingWithState:&v41 objects:v45 count:16];
     }
 
     while (v10);
@@ -182,27 +182,27 @@
   v33 = MEMORY[0x277CCACA8];
   v20 = objc_opt_class();
   v40 = NSStringFromClass(v20);
-  v39 = [(GKTurnBasedExchange *)v34 exchangeID];
-  v38 = [(GKTurnBasedExchange *)v34 sendDate];
-  v37 = [(GKTurnBasedExchange *)v34 timeoutDate];
-  v36 = [(GKTurnBasedExchange *)v34 completionDate];
-  v32 = [(GKTurnBasedExchange *)v34 sender];
-  v21 = [v32 internal];
-  v22 = [v21 player];
-  v23 = [v22 playerID];
-  v24 = v23;
-  if (!v23)
+  exchangeID = [(GKTurnBasedExchange *)selfCopy exchangeID];
+  sendDate = [(GKTurnBasedExchange *)selfCopy sendDate];
+  timeoutDate = [(GKTurnBasedExchange *)selfCopy timeoutDate];
+  completionDate = [(GKTurnBasedExchange *)selfCopy completionDate];
+  sender = [(GKTurnBasedExchange *)selfCopy sender];
+  internal2 = [sender internal];
+  player = [internal2 player];
+  playerID2 = [player playerID];
+  sender2 = playerID2;
+  if (!playerID2)
   {
-    v24 = [(GKTurnBasedExchange *)v34 sender];
+    sender2 = [(GKTurnBasedExchange *)selfCopy sender];
   }
 
-  v25 = [(GKTurnBasedExchange *)v34 message];
-  v26 = [(GKTurnBasedExchange *)v34 data];
-  v27 = [v26 length];
-  v28 = [(GKTurnBasedExchange *)v34 replies];
-  v29 = [v33 stringWithFormat:@"<%@ %p - exchangeID:%@ status:%@ sendDate:%@ timeoutDate:%@ completionDate:%@ sender:%@ recipients:%@ message:%@ data.length:%ld replies:%@>", v40, v34, v39, v35, v38, v37, v36, v24, v7, v25, v27, v28];
+  message = [(GKTurnBasedExchange *)selfCopy message];
+  data = [(GKTurnBasedExchange *)selfCopy data];
+  v27 = [data length];
+  replies = [(GKTurnBasedExchange *)selfCopy replies];
+  v29 = [v33 stringWithFormat:@"<%@ %p - exchangeID:%@ status:%@ sendDate:%@ timeoutDate:%@ completionDate:%@ sender:%@ recipients:%@ message:%@ data.length:%ld replies:%@>", v40, selfCopy, exchangeID, v35, sendDate, timeoutDate, completionDate, sender2, array, message, v27, replies];
 
-  if (!v23)
+  if (!playerID2)
   {
   }
 
@@ -229,9 +229,9 @@ void __34__GKTurnBasedExchange_description__block_invoke()
   v2 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)instanceMethodSignatureForSelector:(SEL)a3
++ (id)instanceMethodSignatureForSelector:(SEL)selector
 {
-  v9.receiver = a1;
+  v9.receiver = self;
   v9.super_class = &OBJC_METACLASS___GKTurnBasedExchange;
   v4 = objc_msgSendSuper2(&v9, sel_instanceMethodSignatureForSelector_);
   v5 = v4;
@@ -242,7 +242,7 @@ void __34__GKTurnBasedExchange_description__block_invoke()
 
   else
   {
-    v6 = [objc_opt_class() instanceMethodSignatureForSelector:a3];
+    v6 = [objc_opt_class() instanceMethodSignatureForSelector:selector];
   }
 
   v7 = v6;
@@ -250,7 +250,7 @@ void __34__GKTurnBasedExchange_description__block_invoke()
   return v7;
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
   v10.receiver = self;
   v10.super_class = GKTurnBasedExchange;
@@ -263,14 +263,14 @@ void __34__GKTurnBasedExchange_description__block_invoke()
 
   else
   {
-    v8 = [(GKTurnBasedExchange *)self forwardingTargetForSelector:a3];
-    v7 = [v8 methodSignatureForSelector:a3];
+    v8 = [(GKTurnBasedExchange *)self forwardingTargetForSelector:selector];
+    v7 = [v8 methodSignatureForSelector:selector];
   }
 
   return v7;
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
   v8.receiver = self;
   v8.super_class = GKTurnBasedExchange;
@@ -281,18 +281,18 @@ void __34__GKTurnBasedExchange_description__block_invoke()
 
   else
   {
-    v6 = [(GKTurnBasedExchange *)self forwardingTargetForSelector:a3];
+    v6 = [(GKTurnBasedExchange *)self forwardingTargetForSelector:selector];
     v5 = objc_opt_respondsToSelector();
   }
 
   return v5 & 1;
 }
 
-+ (BOOL)instancesRespondToSelector:(SEL)a3
++ (BOOL)instancesRespondToSelector:(SEL)selector
 {
-  if (a3)
+  if (selector)
   {
-    if (class_respondsToSelector(a1, a3))
+    if (class_respondsToSelector(self, selector))
     {
       LOBYTE(v4) = 1;
     }
@@ -303,7 +303,7 @@ void __34__GKTurnBasedExchange_description__block_invoke()
       if (v4)
       {
 
-        LOBYTE(v4) = [GKTurnBasedExchangeInternal instancesRespondToSelector:a3];
+        LOBYTE(v4) = [GKTurnBasedExchangeInternal instancesRespondToSelector:selector];
       }
     }
   }
@@ -316,32 +316,32 @@ void __34__GKTurnBasedExchange_description__block_invoke()
   return v4;
 }
 
-- (id)valueForUndefinedKey:(id)a3
+- (id)valueForUndefinedKey:(id)key
 {
-  v4 = a3;
-  v5 = [(GKTurnBasedExchange *)self internal];
-  v6 = [v5 valueForKey:v4];
+  keyCopy = key;
+  internal = [(GKTurnBasedExchange *)self internal];
+  v6 = [internal valueForKey:keyCopy];
 
   return v6;
 }
 
-- (void)setValue:(id)a3 forUndefinedKey:(id)a4
+- (void)setValue:(id)value forUndefinedKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(GKTurnBasedExchange *)self internal];
-  [v8 setValue:v7 forKey:v6];
+  keyCopy = key;
+  valueCopy = value;
+  internal = [(GKTurnBasedExchange *)self internal];
+  [internal setValue:valueCopy forKey:keyCopy];
 }
 
-- (void)_updateInternalFromMatchInternal:(id)a3
+- (void)_updateInternalFromMatchInternal:(id)internal
 {
   v19 = *MEMORY[0x277D85DE8];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [a3 exchanges];
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  exchanges = [internal exchanges];
+  v5 = [exchanges countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -352,13 +352,13 @@ void __34__GKTurnBasedExchange_description__block_invoke()
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(exchanges);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [(GKTurnBasedExchange *)self exchangeID];
-        v11 = [v9 exchangeID];
-        v12 = [v10 isEqualToString:v11];
+        exchangeID = [(GKTurnBasedExchange *)self exchangeID];
+        exchangeID2 = [v9 exchangeID];
+        v12 = [exchangeID isEqualToString:exchangeID2];
 
         if (v12)
         {
@@ -367,7 +367,7 @@ void __34__GKTurnBasedExchange_description__block_invoke()
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [exchanges countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v6)
       {
         continue;
@@ -391,9 +391,9 @@ LABEL_11:
   v12 = [GKDispatchGroup dispatchGroupWithName:v11];
 
   v13 = +[GKPreferences shared];
-  v14 = [v13 multiplayerAllowedPlayerType];
+  multiplayerAllowedPlayerType = [v13 multiplayerAllowedPlayerType];
 
-  if (v14)
+  if (multiplayerAllowedPlayerType)
   {
     if (!v8)
     {
@@ -406,8 +406,8 @@ LABEL_11:
       v9 = MEMORY[0x277CBEBF8];
     }
 
-    v15 = [MEMORY[0x277CCA8D8] mainBundle];
-    v16 = [v15 _gkLocalizedStringForKey:v8 defaultValue:v8 arguments:v9];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v16 = [mainBundle _gkLocalizedStringForKey:v8 defaultValue:v8 arguments:v9];
     v24[0] = MEMORY[0x277D85DD0];
     v24[1] = 3221225472;
     v24[2] = __83__GKTurnBasedExchange_cancelWithLocalizableMessageKey_arguments_completionHandler___block_invoke;
@@ -416,7 +416,7 @@ LABEL_11:
     v9 = v9;
     v26 = v9;
     v27 = v16;
-    v28 = self;
+    selfCopy = self;
     v29 = v12;
     v17 = v16;
     [v29 perform:v24];
@@ -424,8 +424,8 @@ LABEL_11:
 
   else
   {
-    v15 = [MEMORY[0x277CCA9B8] userErrorForCode:10 underlyingError:0];
-    [v12 setError:v15];
+    mainBundle = [MEMORY[0x277CCA9B8] userErrorForCode:10 underlyingError:0];
+    [v12 setError:mainBundle];
   }
 
   v21[0] = MEMORY[0x277D85DD0];
@@ -502,9 +502,9 @@ void __83__GKTurnBasedExchange_cancelWithLocalizableMessageKey_arguments_complet
   v15 = [GKDispatchGroup dispatchGroupWithName:v14];
 
   v16 = +[GKPreferences shared];
-  v17 = [v16 multiplayerAllowedPlayerType];
+  multiplayerAllowedPlayerType = [v16 multiplayerAllowedPlayerType];
 
-  if (v17)
+  if (multiplayerAllowedPlayerType)
   {
     if (!v10)
     {
@@ -517,8 +517,8 @@ void __83__GKTurnBasedExchange_cancelWithLocalizableMessageKey_arguments_complet
       v11 = MEMORY[0x277CBEBF8];
     }
 
-    v18 = [MEMORY[0x277CCA8D8] mainBundle];
-    v19 = [v18 _gkLocalizedStringForKey:v10 defaultValue:v10 arguments:v11];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v19 = [mainBundle _gkLocalizedStringForKey:v10 defaultValue:v10 arguments:v11];
     v27[0] = MEMORY[0x277D85DD0];
     v27[1] = 3221225472;
     v27[2] = __87__GKTurnBasedExchange_replyWithLocalizableMessageKey_arguments_data_completionHandler___block_invoke;
@@ -527,7 +527,7 @@ void __83__GKTurnBasedExchange_cancelWithLocalizableMessageKey_arguments_complet
     v11 = v11;
     v29 = v11;
     v30 = v19;
-    v31 = self;
+    selfCopy = self;
     v32 = v12;
     v33 = v15;
     v20 = v19;
@@ -536,8 +536,8 @@ void __83__GKTurnBasedExchange_cancelWithLocalizableMessageKey_arguments_complet
 
   else
   {
-    v18 = [MEMORY[0x277CCA9B8] userErrorForCode:10 underlyingError:0];
-    [v15 setError:v18];
+    mainBundle = [MEMORY[0x277CCA9B8] userErrorForCode:10 underlyingError:0];
+    [v15 setError:mainBundle];
   }
 
   v24[0] = MEMORY[0x277D85DD0];

@@ -1,41 +1,41 @@
 @interface MapsScreenLayoutMonitor
 + (MapsScreenLayoutMonitor)sharedMonitor;
-- (BOOL)_isMapsActiveInLayout:(id)a3;
+- (BOOL)_isMapsActiveInLayout:(id)layout;
 - (FBSDisplayLayoutMonitor)layoutMonitor;
 - (FBSDisplayLayoutMonitorConfiguration)configuration;
 - (MapsScreenLayoutMonitor)init;
-- (unint64_t)_changeReasonWithNewLayout:(id)a3 context:(id)a4;
-- (void)_layoutMonitor:(id)a3 didUpdateDisplayLayout:(id)a4 withContext:(id)a5;
-- (void)_notifyObserversWithReason:(unint64_t)a3;
+- (unint64_t)_changeReasonWithNewLayout:(id)layout context:(id)context;
+- (void)_layoutMonitor:(id)monitor didUpdateDisplayLayout:(id)layout withContext:(id)context;
+- (void)_notifyObserversWithReason:(unint64_t)reason;
 - (void)dealloc;
-- (void)setChangeReason:(unint64_t)a3;
-- (void)setIsOurAppActive:(BOOL)a3;
-- (void)setIsScreenFullyOn:(BOOL)a3;
-- (void)setIsScreenOn:(BOOL)a3;
-- (void)setLayoutMonitor:(id)a3;
-- (void)setLocked:(BOOL)a3;
-- (void)startMonitoringWithObserver:(id)a3;
-- (void)stopMonitoringWithObserver:(id)a3;
+- (void)setChangeReason:(unint64_t)reason;
+- (void)setIsOurAppActive:(BOOL)active;
+- (void)setIsScreenFullyOn:(BOOL)on;
+- (void)setIsScreenOn:(BOOL)on;
+- (void)setLayoutMonitor:(id)monitor;
+- (void)setLocked:(BOOL)locked;
+- (void)startMonitoringWithObserver:(id)observer;
+- (void)stopMonitoringWithObserver:(id)observer;
 @end
 
 @implementation MapsScreenLayoutMonitor
 
-- (void)_layoutMonitor:(id)a3 didUpdateDisplayLayout:(id)a4 withContext:(id)a5
+- (void)_layoutMonitor:(id)monitor didUpdateDisplayLayout:(id)layout withContext:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v9)
+  monitorCopy = monitor;
+  layoutCopy = layout;
+  contextCopy = context;
+  if (layoutCopy)
   {
     v11 = sub_1009C2434();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412802;
-      v17 = v8;
+      v17 = monitorCopy;
       v18 = 2112;
-      v19 = v9;
+      v19 = layoutCopy;
       v20 = 2112;
-      v21 = v10;
+      v21 = contextCopy;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "monitor: %@ layout: %@ context: %@", buf, 0x20u);
     }
 
@@ -43,19 +43,19 @@
     block[1] = 3221225472;
     block[2] = sub_1009C2488;
     block[3] = &unk_101661A40;
-    v13 = v9;
-    v14 = self;
-    v15 = v10;
+    v13 = layoutCopy;
+    selfCopy = self;
+    v15 = contextCopy;
     dispatch_async(&_dispatch_main_q, block);
   }
 }
 
-- (unint64_t)_changeReasonWithNewLayout:(id)a3 context:(id)a4
+- (unint64_t)_changeReasonWithNewLayout:(id)layout context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 transitionReasons];
-  v9 = [v8 containsObject:SBDisplayLayoutBacklightTransitionReasonLockButton];
+  layoutCopy = layout;
+  contextCopy = context;
+  transitionReasons = [contextCopy transitionReasons];
+  v9 = [transitionReasons containsObject:SBDisplayLayoutBacklightTransitionReasonLockButton];
 
   if ((v9 & 1) == 0)
   {
@@ -68,25 +68,25 @@
     if (self->_lastKnownLayout)
     {
       v11 = [(MapsScreenLayoutMonitor *)self _isMapsActiveInLayout:?];
-      if (v11 != [(MapsScreenLayoutMonitor *)self _isMapsActiveInLayout:v6])
+      if (v11 != [(MapsScreenLayoutMonitor *)self _isMapsActiveInLayout:layoutCopy])
       {
         v10 = 2;
         goto LABEL_13;
       }
     }
 
-    v12 = [v7 transitionReasons];
-    if (([v12 containsObject:SBDisplayLayoutBacklightTransitionReasonLiftToWake] & 1) == 0)
+    transitionReasons2 = [contextCopy transitionReasons];
+    if (([transitionReasons2 containsObject:SBDisplayLayoutBacklightTransitionReasonLiftToWake] & 1) == 0)
     {
-      v13 = [v7 transitionReasons];
-      if (![v13 containsObject:SBDisplayLayoutBacklightTransitionReasonTouch])
+      transitionReasons3 = [contextCopy transitionReasons];
+      if (![transitionReasons3 containsObject:SBDisplayLayoutBacklightTransitionReasonTouch])
       {
-        v15 = [v7 transitionReasons];
-        if ([v15 containsObject:SBDisplayLayoutBacklightTransitionReasonIdleTimer])
+        transitionReasons4 = [contextCopy transitionReasons];
+        if ([transitionReasons4 containsObject:SBDisplayLayoutBacklightTransitionReasonIdleTimer])
         {
-          v16 = [(MapsScreenLayoutMonitor *)self isScreenFullyOn];
+          isScreenFullyOn = [(MapsScreenLayoutMonitor *)self isScreenFullyOn];
 
-          if (v16)
+          if (isScreenFullyOn)
           {
             goto LABEL_12;
           }
@@ -112,14 +112,14 @@ LABEL_13:
   return v10;
 }
 
-- (BOOL)_isMapsActiveInLayout:(id)a3
+- (BOOL)_isMapsActiveInLayout:(id)layout
 {
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = [a3 elements];
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  elements = [layout elements];
+  v4 = [elements countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v4)
   {
     v5 = v4;
@@ -131,11 +131,11 @@ LABEL_13:
       {
         if (*v14 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(elements);
         }
 
-        v9 = [*(*(&v13 + 1) + 8 * i) bundleIdentifier];
-        v10 = [v9 isEqualToString:v7];
+        bundleIdentifier = [*(*(&v13 + 1) + 8 * i) bundleIdentifier];
+        v10 = [bundleIdentifier isEqualToString:v7];
 
         if (v10)
         {
@@ -144,7 +144,7 @@ LABEL_13:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v5 = [elements countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v5)
       {
         continue;
@@ -160,7 +160,7 @@ LABEL_11:
   return v11;
 }
 
-- (void)_notifyObserversWithReason:(unint64_t)a3
+- (void)_notifyObserversWithReason:(unint64_t)reason
 {
   if (self->_needsUpdate || !self->_hasFirstUpdate)
   {
@@ -169,57 +169,57 @@ LABEL_11:
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6 = 134217984;
-      v7 = a3;
+      reasonCopy = reason;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Notifying observers didChange: %lu", &v6, 0xCu);
     }
 
-    [(GEOObserverHashTable *)self->_observers screenLayoutDidChangeWithReason:a3];
+    [(GEOObserverHashTable *)self->_observers screenLayoutDidChangeWithReason:reason];
   }
 }
 
-- (void)stopMonitoringWithObserver:(id)a3
+- (void)stopMonitoringWithObserver:(id)observer
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  [(GEOObserverHashTable *)v5->_observers unregisterObserver:v4];
+  observerCopy = observer;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(GEOObserverHashTable *)selfCopy->_observers unregisterObserver:observerCopy];
   v6 = sub_1009C2434();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = observerCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Removed observer %@", &v7, 0xCu);
   }
 
-  if (([(GEOObserverHashTable *)v5->_observers hasObservers]& 1) == 0)
+  if (([(GEOObserverHashTable *)selfCopy->_observers hasObservers]& 1) == 0)
   {
-    [(MapsScreenLayoutMonitor *)v5 setLayoutMonitor:0];
+    [(MapsScreenLayoutMonitor *)selfCopy setLayoutMonitor:0];
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)startMonitoringWithObserver:(id)a3
+- (void)startMonitoringWithObserver:(id)observer
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  [(GEOObserverHashTable *)v5->_observers registerObserver:v4];
+  observerCopy = observer;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(GEOObserverHashTable *)selfCopy->_observers registerObserver:observerCopy];
   v6 = sub_1009C2434();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = observerCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Added observer %@", &v7, 0xCu);
   }
 
-  if (v5->_hasFirstUpdate && ((objc_opt_respondsToSelector() & 1) == 0 || [v4 notifyCurrentStateWhenStartMonitoring]))
+  if (selfCopy->_hasFirstUpdate && ((objc_opt_respondsToSelector() & 1) == 0 || [observerCopy notifyCurrentStateWhenStartMonitoring]))
   {
-    [v4 screenLayoutDidChangeWithReason:{-[MapsScreenLayoutMonitor changeReason](v5, "changeReason")}];
+    [observerCopy screenLayoutDidChangeWithReason:{-[MapsScreenLayoutMonitor changeReason](selfCopy, "changeReason")}];
   }
 
-  [(MapsScreenLayoutMonitor *)v5 _prepareLayoutMonitor];
-  objc_sync_exit(v5);
+  [(MapsScreenLayoutMonitor *)selfCopy _prepareLayoutMonitor];
+  objc_sync_exit(selfCopy);
 }
 
 - (FBSDisplayLayoutMonitorConfiguration)configuration
@@ -233,7 +233,7 @@ LABEL_11:
     v9[2] = sub_1009C2D44;
     v9[3] = &unk_101631048;
     v9[4] = self;
-    v5 = self;
+    selfCopy = self;
     [v4 setTransitionHandler:v9];
     v6 = self->_configuration;
     self->_configuration = v4;
@@ -250,8 +250,8 @@ LABEL_11:
   layoutMonitor = self->_layoutMonitor;
   if (!layoutMonitor)
   {
-    v4 = [(MapsScreenLayoutMonitor *)self configuration];
-    v5 = [FBSDisplayLayoutMonitor monitorWithConfiguration:v4];
+    configuration = [(MapsScreenLayoutMonitor *)self configuration];
+    v5 = [FBSDisplayLayoutMonitor monitorWithConfiguration:configuration];
     v6 = self->_layoutMonitor;
     self->_layoutMonitor = v5;
 
@@ -262,69 +262,69 @@ LABEL_11:
   return layoutMonitor;
 }
 
-- (void)setLayoutMonitor:(id)a3
+- (void)setLayoutMonitor:(id)monitor
 {
-  v5 = a3;
+  monitorCopy = monitor;
   layoutMonitor = self->_layoutMonitor;
   p_layoutMonitor = &self->_layoutMonitor;
   v6 = layoutMonitor;
-  if (layoutMonitor != v5)
+  if (layoutMonitor != monitorCopy)
   {
-    v9 = v5;
+    v9 = monitorCopy;
     [(FBSDisplayLayoutMonitor *)v6 invalidate];
-    objc_storeStrong(p_layoutMonitor, a3);
-    v5 = v9;
+    objc_storeStrong(p_layoutMonitor, monitor);
+    monitorCopy = v9;
   }
 }
 
-- (void)setChangeReason:(unint64_t)a3
+- (void)setChangeReason:(unint64_t)reason
 {
-  if (self->_changeReason != a3)
+  if (self->_changeReason != reason)
   {
     v5 = sub_1009C2434();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v6 = 134217984;
-      v7 = a3;
+      reasonCopy = reason;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Setting changeReason to %lu", &v6, 0xCu);
     }
 
-    self->_changeReason = a3;
+    self->_changeReason = reason;
   }
 }
 
-- (void)setIsOurAppActive:(BOOL)a3
+- (void)setIsOurAppActive:(BOOL)active
 {
-  if (self->_isOurAppActive != a3)
+  if (self->_isOurAppActive != active)
   {
-    self->_isOurAppActive = a3;
+    self->_isOurAppActive = active;
     self->_needsUpdate = 1;
   }
 }
 
-- (void)setIsScreenOn:(BOOL)a3
+- (void)setIsScreenOn:(BOOL)on
 {
-  if (self->_isScreenOn != a3)
+  if (self->_isScreenOn != on)
   {
-    self->_isScreenOn = a3;
+    self->_isScreenOn = on;
     self->_needsUpdate = 1;
   }
 }
 
-- (void)setIsScreenFullyOn:(BOOL)a3
+- (void)setIsScreenFullyOn:(BOOL)on
 {
-  if (self->_isScreenFullyOn != a3)
+  if (self->_isScreenFullyOn != on)
   {
-    self->_isScreenFullyOn = a3;
+    self->_isScreenFullyOn = on;
     self->_needsUpdate = 1;
   }
 }
 
-- (void)setLocked:(BOOL)a3
+- (void)setLocked:(BOOL)locked
 {
-  if (self->_locked != a3)
+  if (self->_locked != locked)
   {
-    self->_locked = a3;
+    self->_locked = locked;
     self->_needsUpdate = 1;
   }
 }

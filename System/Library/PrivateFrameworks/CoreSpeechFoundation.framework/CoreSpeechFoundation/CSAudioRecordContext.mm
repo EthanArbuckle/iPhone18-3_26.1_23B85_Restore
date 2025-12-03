@@ -1,38 +1,38 @@
 @interface CSAudioRecordContext
-+ (id)contextForBTLEWithDeviceId:(id)a3;
++ (id)contextForBTLEWithDeviceId:(id)id;
 + (id)contextForBuiltInVoiceTrigger;
 + (id)contextForContinuousConversation;
-+ (id)contextForContinuousConversationWithRecordRoute:(id)a3 deviceId:(id)a4;
-+ (id)contextForDarwinVoiceTriggerWithDeviceId:(id)a3;
++ (id)contextForContinuousConversationWithRecordRoute:(id)route deviceId:(id)id;
++ (id)contextForDarwinVoiceTriggerWithDeviceId:(id)id;
 + (id)contextForDictation;
-+ (id)contextForHearstVoiceTriggerWithDeviceId:(id)a3;
++ (id)contextForHearstVoiceTriggerWithDeviceId:(id)id;
 + (id)contextForHomeButton;
-+ (id)contextForJarvisWithDeviceId:(id)a3;
++ (id)contextForJarvisWithDeviceId:(id)id;
 + (id)contextForOpportuneSpeakerListener;
 + (id)contextForOpportuneSpeakerListenerWithCall;
 + (id)contextForRaiseToSpeak;
-+ (id)contextForRemoraButtonTriggerWithDeviceId:(id)a3;
-+ (id)contextForRemoraVoiceTriggerWithDeviceId:(id)a3;
++ (id)contextForRemoraButtonTriggerWithDeviceId:(id)id;
++ (id)contextForRemoraVoiceTriggerWithDeviceId:(id)id;
 + (id)contextForServerInvoke;
 + (id)contextForVoiceTriggerTraining;
 + (id)defaultContext;
-+ (id)recordTypeString:(int64_t)a3;
-+ (int64_t)audioTypeForContinuousConversation:(int64_t)a3;
++ (id)recordTypeString:(int64_t)string;
++ (int64_t)audioTypeForContinuousConversation:(int64_t)conversation;
 - (BOOL)isAudioRecordTypeSupportedByContinuousConversation;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isGibraltarVoiceTriggered;
 - (BOOL)isTriggeredFromHearst;
 - (BOOL)isVoiceTriggered;
-- (CSAudioRecordContext)initWithAVVCContext:(id)a3;
-- (CSAudioRecordContext)initWithRecordType:(int64_t)a3 deviceId:(id)a4;
-- (CSAudioRecordContext)initWithXPCObject:(id)a3;
+- (CSAudioRecordContext)initWithAVVCContext:(id)context;
+- (CSAudioRecordContext)initWithRecordType:(int64_t)type deviceId:(id)id;
+- (CSAudioRecordContext)initWithXPCObject:(id)object;
 - (OS_xpc_object)xpcObject;
-- (id)_createAVVCContextWithType:(int64_t)a3 deviceId:(id)a4;
+- (id)_createAVVCContextWithType:(int64_t)type deviceId:(id)id;
 - (id)avvcContextSettings;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (int64_t)avvcActivationMode:(int64_t)a3;
-- (int64_t)recordTypeFromAVVCActivationMode:(int64_t)a3;
+- (int64_t)avvcActivationMode:(int64_t)mode;
+- (int64_t)recordTypeFromAVVCActivationMode:(int64_t)mode;
 @end
 
 @implementation CSAudioRecordContext
@@ -49,22 +49,22 @@
 
 - (id)description
 {
-  v3 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v4 = [CSAudioRecordContext recordTypeString:self->_type];
-  [v3 appendFormat:@"recordType[%@] deviceId[%@] turnIdentifier[%@] alwaysUseBuiltInMic[%d] isRequestDuringActiveCall[%d] triggerEventInfo[%@] spokenNotification [%d] isTriggerless [%d] speechEvent [%ld]", v4, self->_deviceId, self->_turnIdentifier, self->_alwaysUseRemoteBuiltInMic, self->_isRequestDuringActiveCall, self->_activationMetadata, self->_isRequestFromSpokenNotification, self->_isRequestFromTriggerless, self->_speechEvent];
+  [string appendFormat:@"recordType[%@] deviceId[%@] turnIdentifier[%@] alwaysUseBuiltInMic[%d] isRequestDuringActiveCall[%d] triggerEventInfo[%@] spokenNotification [%d] isTriggerless [%d] speechEvent [%ld]", v4, self->_deviceId, self->_turnIdentifier, self->_alwaysUseRemoteBuiltInMic, self->_isRequestDuringActiveCall, self->_activationMetadata, self->_isRequestFromSpokenNotification, self->_isRequestFromTriggerless, self->_speechEvent];
 
-  return v3;
+  return string;
 }
 
 - (id)avvcContextSettings
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = [(CSAudioRecordContext *)self avvcContext];
-  v4 = [v3 objectForKeyedSubscript:*MEMORY[0x1E69583A8]];
-  v5 = [v4 unsignedIntegerValue];
+  avvcContext = [(CSAudioRecordContext *)self avvcContext];
+  v4 = [avvcContext objectForKeyedSubscript:*MEMORY[0x1E69583A8]];
+  unsignedIntegerValue = [v4 unsignedIntegerValue];
 
-  v6 = [v3 objectForKeyedSubscript:*MEMORY[0x1E69583A0]];
-  v7 = [objc_alloc(MEMORY[0x1E6958540]) initWithMode:v5 deviceUID:v6];
+  v6 = [avvcContext objectForKeyedSubscript:*MEMORY[0x1E69583A0]];
+  v7 = [objc_alloc(MEMORY[0x1E6958540]) initWithMode:unsignedIntegerValue deviceUID:v6];
   if (+[CSUtils supportHandsFree])
   {
     if ([(CSAudioRecordContext *)self isRequestDuringActiveCall])
@@ -78,9 +78,9 @@
       }
 
       v9 = +[CSUtils supportRingtoneA2DP];
-      if (v5 == 1668314723 || v9)
+      if (unsignedIntegerValue == 1668314723 || v9)
       {
-        v11 = v5;
+        v11 = unsignedIntegerValue;
       }
 
       else
@@ -124,8 +124,8 @@
   activationMetadata = self->_activationMetadata;
   if (activationMetadata)
   {
-    v6 = [(NSDictionary *)activationMetadata _cs_xpcObject];
-    xpc_dictionary_set_value(v3, "triggerEventInfo", v6);
+    _cs_xpcObject = [(NSDictionary *)activationMetadata _cs_xpcObject];
+    xpc_dictionary_set_value(v3, "triggerEventInfo", _cs_xpcObject);
   }
 
   turnIdentifier = self->_turnIdentifier;
@@ -152,9 +152,9 @@
 
 - (BOOL)isVoiceTriggered
 {
-  v3 = [(CSAudioRecordContext *)self isBuiltInVoiceTriggered]|| [(CSAudioRecordContext *)self isHearstVoiceTriggered]|| [(CSAudioRecordContext *)self isJarvisVoiceTriggered];
-  v4 = [(CSAudioRecordContext *)self isRemoraVoiceTriggered];
-  return [(CSAudioRecordContext *)self isDarwinVoiceTriggered]|| v4 || v3;
+  isJarvisVoiceTriggered = [(CSAudioRecordContext *)self isBuiltInVoiceTriggered]|| [(CSAudioRecordContext *)self isHearstVoiceTriggered]|| [(CSAudioRecordContext *)self isJarvisVoiceTriggered];
+  isRemoraVoiceTriggered = [(CSAudioRecordContext *)self isRemoraVoiceTriggered];
+  return [(CSAudioRecordContext *)self isDarwinVoiceTriggered]|| isRemoraVoiceTriggered || isJarvisVoiceTriggered;
 }
 
 - (BOOL)isAudioRecordTypeSupportedByContinuousConversation
@@ -210,34 +210,34 @@ LABEL_4:
   return [(CSAudioRecordContext *)self isBuiltInVoiceTriggered];
 }
 
-- (int64_t)avvcActivationMode:(int64_t)a3
+- (int64_t)avvcActivationMode:(int64_t)mode
 {
-  if ((a3 - 2) > 0x19)
+  if ((mode - 2) > 0x19)
   {
     return 1752132965;
   }
 
   else
   {
-    return *&aPbhw[8 * a3 - 16];
+    return *&aPbhw[8 * mode - 16];
   }
 }
 
-- (int64_t)recordTypeFromAVVCActivationMode:(int64_t)a3
+- (int64_t)recordTypeFromAVVCActivationMode:(int64_t)mode
 {
   v3 = 1;
-  if (a3 > 1886352243)
+  if (mode > 1886352243)
   {
-    if (a3 <= 1936750195)
+    if (mode <= 1936750195)
     {
       v4 = 1919771247;
       v15 = 17;
-      if (a3 != 1919776372)
+      if (mode != 1919776372)
       {
         v15 = 1;
       }
 
-      if (a3 == 1919771248)
+      if (mode == 1919771248)
       {
         v7 = 18;
       }
@@ -249,7 +249,7 @@ LABEL_4:
 
       v8 = 1886352244;
       v9 = 14;
-      v10 = a3 == 1918986611;
+      v10 = mode == 1918986611;
       v11 = 9;
     }
 
@@ -257,12 +257,12 @@ LABEL_4:
     {
       v4 = 1986357345;
       v12 = 2;
-      if (a3 != 2003329648)
+      if (mode != 2003329648)
       {
         v12 = 1;
       }
 
-      if (a3 == 1987012963)
+      if (mode == 1987012963)
       {
         v13 = 6;
       }
@@ -272,7 +272,7 @@ LABEL_4:
         v13 = v12;
       }
 
-      if (a3 == 1986357346)
+      if (mode == 1986357346)
       {
         v7 = 7;
       }
@@ -284,21 +284,21 @@ LABEL_4:
 
       v8 = 1936750196;
       v9 = 16;
-      v10 = a3 == 1969840752;
+      v10 = mode == 1969840752;
       v11 = 4;
     }
   }
 
-  else if (a3 <= 1668314722)
+  else if (mode <= 1668314722)
   {
     v4 = 1651795059;
     v14 = 8;
-    if (a3 != 1651797093)
+    if (mode != 1651797093)
     {
       v14 = 1;
     }
 
-    if (a3 == 1651795060)
+    if (mode == 1651795060)
     {
       v7 = 10;
     }
@@ -310,7 +310,7 @@ LABEL_4:
 
     v8 = 1635087471;
     v9 = 5;
-    v10 = a3 == 1651794544;
+    v10 = mode == 1651794544;
     v11 = 3;
   }
 
@@ -318,12 +318,12 @@ LABEL_4:
   {
     v4 = 1684628339;
     v5 = 15;
-    if (a3 != 1752396914)
+    if (mode != 1752396914)
     {
       v5 = 1;
     }
 
-    if (a3 == 1751414371)
+    if (mode == 1751414371)
     {
       v6 = 11;
     }
@@ -333,7 +333,7 @@ LABEL_4:
       v6 = v5;
     }
 
-    if (a3 == 1684628340)
+    if (mode == 1684628340)
     {
       v7 = 13;
     }
@@ -345,7 +345,7 @@ LABEL_4:
 
     v8 = 1668314723;
     v9 = 12;
-    v10 = a3 == 1684108899;
+    v10 = mode == 1684108899;
     v11 = 21;
   }
 
@@ -354,12 +354,12 @@ LABEL_4:
     v3 = v11;
   }
 
-  if (a3 == v8)
+  if (mode == v8)
   {
     v3 = v9;
   }
 
-  if (a3 <= v4)
+  if (mode <= v4)
   {
     return v3;
   }
@@ -370,23 +370,23 @@ LABEL_4:
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   type = self->_type;
-  if (type == [v4 type])
+  if (type == [equalCopy type])
   {
     deviceId = self->_deviceId;
-    v7 = [v4 deviceId];
-    v8 = v7;
+    deviceId = [equalCopy deviceId];
+    v8 = deviceId;
     if (deviceId)
     {
-      v9 = [(NSString *)deviceId isEqualToString:v7];
+      v9 = [(NSString *)deviceId isEqualToString:deviceId];
     }
 
     else
     {
-      v9 = v7 == 0;
+      v9 = deviceId == 0;
     }
   }
 
@@ -398,35 +398,35 @@ LABEL_4:
   return v9;
 }
 
-- (id)_createAVVCContextWithType:(int64_t)a3 deviceId:(id)a4
+- (id)_createAVVCContextWithType:(int64_t)type deviceId:(id)id
 {
-  v6 = a4;
-  v7 = [(CSAudioRecordContext *)self avvcActivationMode:a3];
-  v8 = [MEMORY[0x1E695DF90] dictionary];
+  idCopy = id;
+  v7 = [(CSAudioRecordContext *)self avvcActivationMode:type];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v9 = [MEMORY[0x1E696AD98] numberWithInteger:v7];
-  [v8 setObject:v9 forKey:*MEMORY[0x1E69583A8]];
+  [dictionary setObject:v9 forKey:*MEMORY[0x1E69583A8]];
 
-  if (v6)
+  if (idCopy)
   {
-    [v8 setObject:v6 forKey:*MEMORY[0x1E69583A0]];
+    [dictionary setObject:idCopy forKey:*MEMORY[0x1E69583A0]];
   }
 
-  return v8;
+  return dictionary;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_alloc_init(CSAudioRecordContext);
   [(CSAudioRecordContext *)v5 setType:self->_type];
   [(CSAudioRecordContext *)v5 setAlwaysUseRemoteBuiltInMic:self->_alwaysUseRemoteBuiltInMic];
-  v6 = [(NSString *)self->_deviceId copyWithZone:a3];
+  v6 = [(NSString *)self->_deviceId copyWithZone:zone];
   [(CSAudioRecordContext *)v5 setDeviceId:v6];
 
   [(CSAudioRecordContext *)v5 setIsRequestDuringActiveCall:self->_isRequestDuringActiveCall];
-  v7 = [(NSDictionary *)self->_activationMetadata copyWithZone:a3];
+  v7 = [(NSDictionary *)self->_activationMetadata copyWithZone:zone];
   [(CSAudioRecordContext *)v5 setActivationMetadata:v7];
 
-  v8 = [(NSString *)self->_turnIdentifier copyWithZone:a3];
+  v8 = [(NSString *)self->_turnIdentifier copyWithZone:zone];
   [(CSAudioRecordContext *)v5 setTurnIdentifier:v8];
 
   [(CSAudioRecordContext *)v5 setIsRequestFromSpokenNotification:self->_isRequestFromSpokenNotification];
@@ -435,17 +435,17 @@ LABEL_4:
   return v5;
 }
 
-- (CSAudioRecordContext)initWithRecordType:(int64_t)a3 deviceId:(id)a4
+- (CSAudioRecordContext)initWithRecordType:(int64_t)type deviceId:(id)id
 {
-  v6 = a4;
+  idCopy = id;
   v12.receiver = self;
   v12.super_class = CSAudioRecordContext;
   v7 = [(CSAudioRecordContext *)&v12 init];
   v8 = v7;
   if (v7)
   {
-    v7->_type = a3;
-    v9 = [v6 copy];
+    v7->_type = type;
+    v9 = [idCopy copy];
     deviceId = v8->_deviceId;
     v8->_deviceId = v9;
   }
@@ -453,32 +453,32 @@ LABEL_4:
   return v8;
 }
 
-- (CSAudioRecordContext)initWithAVVCContext:(id)a3
+- (CSAudioRecordContext)initWithAVVCContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v17.receiver = self;
   v17.super_class = CSAudioRecordContext;
   v5 = [(CSAudioRecordContext *)&v17 init];
   v6 = v5;
-  if (v4 && v5)
+  if (contextCopy && v5)
   {
     v7 = *MEMORY[0x1E69583A8];
-    v8 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69583A8]];
+    v8 = [contextCopy objectForKeyedSubscript:*MEMORY[0x1E69583A8]];
 
     if (v8)
     {
-      v9 = [v4 objectForKeyedSubscript:v7];
-      v10 = [v9 integerValue];
+      v9 = [contextCopy objectForKeyedSubscript:v7];
+      integerValue = [v9 integerValue];
 
-      v6->_type = [(CSAudioRecordContext *)v6 recordTypeFromAVVCActivationMode:v10];
+      v6->_type = [(CSAudioRecordContext *)v6 recordTypeFromAVVCActivationMode:integerValue];
     }
 
     v11 = *MEMORY[0x1E69583A0];
-    v12 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69583A0]];
+    v12 = [contextCopy objectForKeyedSubscript:*MEMORY[0x1E69583A0]];
 
     if (v12)
     {
-      v13 = [v4 objectForKeyedSubscript:v11];
+      v13 = [contextCopy objectForKeyedSubscript:v11];
       v14 = [v13 copy];
       deviceId = v6->_deviceId;
       v6->_deviceId = v14;
@@ -488,17 +488,17 @@ LABEL_4:
   return v6;
 }
 
-- (CSAudioRecordContext)initWithXPCObject:(id)a3
+- (CSAudioRecordContext)initWithXPCObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v18.receiver = self;
   v18.super_class = CSAudioRecordContext;
   v5 = [(CSAudioRecordContext *)&v18 init];
   if (v5)
   {
-    v5->_type = xpc_dictionary_get_int64(v4, "type");
-    v5->_alwaysUseRemoteBuiltInMic = xpc_dictionary_get_BOOL(v4, "alwaysUseRemoteBuiltInMic");
-    string = xpc_dictionary_get_string(v4, "deviceId");
+    v5->_type = xpc_dictionary_get_int64(objectCopy, "type");
+    v5->_alwaysUseRemoteBuiltInMic = xpc_dictionary_get_BOOL(objectCopy, "alwaysUseRemoteBuiltInMic");
+    string = xpc_dictionary_get_string(objectCopy, "deviceId");
     if (string)
     {
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:string];
@@ -506,19 +506,19 @@ LABEL_4:
       v5->_deviceId = v7;
     }
 
-    v5->_isRequestDuringActiveCall = xpc_dictionary_get_BOOL(v4, "isRequestDuringActiveCall");
-    v9 = xpc_dictionary_get_value(v4, "triggerEventInfo");
+    v5->_isRequestDuringActiveCall = xpc_dictionary_get_BOOL(objectCopy, "isRequestDuringActiveCall");
+    v9 = xpc_dictionary_get_value(objectCopy, "triggerEventInfo");
 
     if (v9)
     {
-      v10 = xpc_dictionary_get_dictionary(v4, "triggerEventInfo");
+      v10 = xpc_dictionary_get_dictionary(objectCopy, "triggerEventInfo");
       v11 = objc_alloc(MEMORY[0x1E695DF20]);
       v12 = [v11 _cs_initWithXPCObject:v10];
       activationMetadata = v5->_activationMetadata;
       v5->_activationMetadata = v12;
     }
 
-    v14 = xpc_dictionary_get_string(v4, "turnIdentifier");
+    v14 = xpc_dictionary_get_string(objectCopy, "turnIdentifier");
     if (v14)
     {
       v15 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v14];
@@ -526,24 +526,24 @@ LABEL_4:
       v5->_turnIdentifier = v15;
     }
 
-    v5->_isRequestFromSpokenNotification = xpc_dictionary_get_BOOL(v4, "isSpokenNotification");
-    v5->_isRequestFromTriggerless = xpc_dictionary_get_BOOL(v4, "isRequestTriggerless");
-    v5->_speechEvent = xpc_dictionary_get_int64(v4, "speechEvent");
+    v5->_isRequestFromSpokenNotification = xpc_dictionary_get_BOOL(objectCopy, "isSpokenNotification");
+    v5->_isRequestFromTriggerless = xpc_dictionary_get_BOOL(objectCopy, "isRequestTriggerless");
+    v5->_speechEvent = xpc_dictionary_get_int64(objectCopy, "speechEvent");
   }
 
   return v5;
 }
 
-+ (id)recordTypeString:(int64_t)a3
++ (id)recordTypeString:(int64_t)string
 {
-  if (a3 > 0x1B)
+  if (string > 0x1B)
   {
     return @"CSAudioRecordTypeUnknown";
   }
 
   else
   {
-    return off_1E865AA68[a3];
+    return off_1E865AA68[string];
   }
 }
 
@@ -573,29 +573,29 @@ LABEL_4:
   return v2;
 }
 
-+ (id)contextForDarwinVoiceTriggerWithDeviceId:(id)a3
++ (id)contextForDarwinVoiceTriggerWithDeviceId:(id)id
 {
-  v3 = a3;
-  v4 = [[CSAudioRecordContext alloc] initWithRecordType:21 deviceId:v3];
+  idCopy = id;
+  v4 = [[CSAudioRecordContext alloc] initWithRecordType:21 deviceId:idCopy];
 
   return v4;
 }
 
-+ (int64_t)audioTypeForContinuousConversation:(int64_t)a3
++ (int64_t)audioTypeForContinuousConversation:(int64_t)conversation
 {
   v3 = 27;
   v4 = 20;
-  if (a3 == 12)
+  if (conversation == 12)
   {
     v4 = 23;
   }
 
-  if (a3 != 21)
+  if (conversation != 21)
   {
     v3 = v4;
   }
 
-  if ((a3 - 10) >= 2)
+  if ((conversation - 10) >= 2)
   {
     return v3;
   }
@@ -606,27 +606,27 @@ LABEL_4:
   }
 }
 
-+ (id)contextForContinuousConversationWithRecordRoute:(id)a3 deviceId:(id)a4
++ (id)contextForContinuousConversationWithRecordRoute:(id)route deviceId:(id)id
 {
-  v5 = a3;
-  v6 = a4;
-  if ([CSUtils isDoAPAudioRouteWithRecordRoute:v5])
+  routeCopy = route;
+  idCopy = id;
+  if ([CSUtils isDoAPAudioRouteWithRecordRoute:routeCopy])
   {
     v7 = [CSAudioRecordContext alloc];
     v8 = 22;
 LABEL_7:
-    v10 = v6;
+    v10 = idCopy;
     goto LABEL_8;
   }
 
-  if ([CSUtils isJarvisAudioRouteWithRecordRoute:v5])
+  if ([CSUtils isJarvisAudioRouteWithRecordRoute:routeCopy])
   {
     v7 = [CSAudioRecordContext alloc];
     v8 = 23;
     goto LABEL_7;
   }
 
-  v9 = [CSUtils isDisplayPortRouteWithRecordRoute:v5];
+  v9 = [CSUtils isDisplayPortRouteWithRecordRoute:routeCopy];
   v7 = [CSAudioRecordContext alloc];
   if (v9)
   {
@@ -677,18 +677,18 @@ LABEL_8:
   return v2;
 }
 
-+ (id)contextForBTLEWithDeviceId:(id)a3
++ (id)contextForBTLEWithDeviceId:(id)id
 {
-  v3 = a3;
-  v4 = [[CSAudioRecordContext alloc] initWithRecordType:8 deviceId:v3];
+  idCopy = id;
+  v4 = [[CSAudioRecordContext alloc] initWithRecordType:8 deviceId:idCopy];
 
   return v4;
 }
 
-+ (id)contextForJarvisWithDeviceId:(id)a3
++ (id)contextForJarvisWithDeviceId:(id)id
 {
-  v3 = a3;
-  v4 = [[CSAudioRecordContext alloc] initWithRecordType:12 deviceId:v3];
+  idCopy = id;
+  v4 = [[CSAudioRecordContext alloc] initWithRecordType:12 deviceId:idCopy];
 
   return v4;
 }
@@ -708,12 +708,12 @@ LABEL_8:
   return v2;
 }
 
-+ (id)contextForRemoraButtonTriggerWithDeviceId:(id)a3
++ (id)contextForRemoraButtonTriggerWithDeviceId:(id)id
 {
-  if (a3)
+  if (id)
   {
-    v3 = a3;
-    v4 = [[CSAudioRecordContext alloc] initWithRecordType:18 deviceId:v3];
+    idCopy = id;
+    v4 = [[CSAudioRecordContext alloc] initWithRecordType:18 deviceId:idCopy];
   }
 
   else
@@ -724,12 +724,12 @@ LABEL_8:
   return v4;
 }
 
-+ (id)contextForRemoraVoiceTriggerWithDeviceId:(id)a3
++ (id)contextForRemoraVoiceTriggerWithDeviceId:(id)id
 {
-  if (a3)
+  if (id)
   {
-    v3 = a3;
-    v4 = [[CSAudioRecordContext alloc] initWithRecordType:17 deviceId:v3];
+    idCopy = id;
+    v4 = [[CSAudioRecordContext alloc] initWithRecordType:17 deviceId:idCopy];
   }
 
   else
@@ -740,12 +740,12 @@ LABEL_8:
   return v4;
 }
 
-+ (id)contextForHearstVoiceTriggerWithDeviceId:(id)a3
++ (id)contextForHearstVoiceTriggerWithDeviceId:(id)id
 {
-  if (a3)
+  if (id)
   {
-    v3 = a3;
-    v4 = [[CSAudioRecordContext alloc] initWithRecordType:11 deviceId:v3];
+    idCopy = id;
+    v4 = [[CSAudioRecordContext alloc] initWithRecordType:11 deviceId:idCopy];
   }
 
   else

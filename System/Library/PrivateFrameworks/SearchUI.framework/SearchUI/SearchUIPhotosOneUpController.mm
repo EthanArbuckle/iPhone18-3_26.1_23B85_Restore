@@ -1,28 +1,28 @@
 @interface SearchUIPhotosOneUpController
-+ (id)bundleIdentifierForAsset:(id)a3;
++ (id)bundleIdentifierForAsset:(id)asset;
 + (id)sharedController;
-- (BOOL)setupOneUpViewWithAssets:(id)a3;
+- (BOOL)setupOneUpViewWithAssets:(id)assets;
 - (UIView)hiddenView;
 - (UIViewController)peekedViewController;
 - (id)command;
-- (id)imageViewInView:(id)a3;
-- (id)oneUpPresentation:(id)a3 regionOfInterestForAssetReference:(id)a4;
-- (id)oneUpPresentationActionManager:(id)a3;
-- (id)oneUpPresentationMatchedAudioIdentifiers:(id)a3;
-- (id)oneUpPresentationMatchedHumanActionIdentifiers:(id)a3;
-- (id)oneUpPresentationMatchedPersonLocalIdentifiers:(id)a3;
-- (id)oneUpPresentationMatchedQueryStrings:(id)a3;
-- (id)oneUpPresentationMatchedSceneIdentifiers:(id)a3;
-- (id)oneUpPresentationMediaProvider:(id)a3;
-- (id)previewViewControllerForRowModel:(id)a3 environment:(id)a4;
-- (id)rowModelForAsset:(id)a3;
-- (id)rowModelForAssetReference:(id)a3;
-- (id)updateWithRowModel:(id)a3 environment:(id)a4;
-- (id)viewForAssetReference:(id)a3;
-- (void)actionPerformer:(id)a3 didChangeState:(unint64_t)a4;
-- (void)oneUpPresentation:(id)a3 scrollAssetReferenceToVisible:(id)a4;
-- (void)oneUpPresentation:(id)a3 setHiddenAssetReferences:(id)a4;
-- (void)presentOneUpViewForRowModel:(id)a3 triggerEvent:(unint64_t)a4 environment:(id)a5;
+- (id)imageViewInView:(id)view;
+- (id)oneUpPresentation:(id)presentation regionOfInterestForAssetReference:(id)reference;
+- (id)oneUpPresentationActionManager:(id)manager;
+- (id)oneUpPresentationMatchedAudioIdentifiers:(id)identifiers;
+- (id)oneUpPresentationMatchedHumanActionIdentifiers:(id)identifiers;
+- (id)oneUpPresentationMatchedPersonLocalIdentifiers:(id)identifiers;
+- (id)oneUpPresentationMatchedQueryStrings:(id)strings;
+- (id)oneUpPresentationMatchedSceneIdentifiers:(id)identifiers;
+- (id)oneUpPresentationMediaProvider:(id)provider;
+- (id)previewViewControllerForRowModel:(id)model environment:(id)environment;
+- (id)rowModelForAsset:(id)asset;
+- (id)rowModelForAssetReference:(id)reference;
+- (id)updateWithRowModel:(id)model environment:(id)environment;
+- (id)viewForAssetReference:(id)reference;
+- (void)actionPerformer:(id)performer didChangeState:(unint64_t)state;
+- (void)oneUpPresentation:(id)presentation scrollAssetReferenceToVisible:(id)visible;
+- (void)oneUpPresentation:(id)presentation setHiddenAssetReferences:(id)references;
+- (void)presentOneUpViewForRowModel:(id)model triggerEvent:(unint64_t)event environment:(id)environment;
 @end
 
 @implementation SearchUIPhotosOneUpController
@@ -46,18 +46,18 @@ uint64_t __49__SearchUIPhotosOneUpController_sharedController__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)previewViewControllerForRowModel:(id)a3 environment:(id)a4
+- (id)previewViewControllerForRowModel:(id)model environment:(id)environment
 {
-  v6 = a4;
-  v7 = [(SearchUIPhotosOneUpController *)self updateWithRowModel:a3 environment:v6];
+  environmentCopy = environment;
+  v7 = [(SearchUIPhotosOneUpController *)self updateWithRowModel:model environment:environmentCopy];
   v8 = +[SearchUIPhotoAssetCache sharedCache];
   v9 = [v8 assetsForImages:v7];
 
   if ([(SearchUIPhotosOneUpController *)self setupOneUpViewWithAssets:v9])
   {
-    v10 = [v6 presentingViewController];
-    v11 = [v10 px_oneUpPresentation];
-    v12 = [v11 previewViewControllerAllowingActions:1];
+    presentingViewController = [environmentCopy presentingViewController];
+    px_oneUpPresentation = [presentingViewController px_oneUpPresentation];
+    v12 = [px_oneUpPresentation previewViewControllerAllowingActions:1];
   }
 
   else
@@ -70,31 +70,31 @@ uint64_t __49__SearchUIPhotosOneUpController_sharedController__block_invoke()
   return v12;
 }
 
-- (void)presentOneUpViewForRowModel:(id)a3 triggerEvent:(unint64_t)a4 environment:(id)a5
+- (void)presentOneUpViewForRowModel:(id)model triggerEvent:(unint64_t)event environment:(id)environment
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = v9;
-  if (a4 == 6)
+  modelCopy = model;
+  environmentCopy = environment;
+  v10 = environmentCopy;
+  if (event == 6)
   {
-    v11 = [v9 presentingViewController];
-    v12 = [v11 px_oneUpPresentation];
-    v13 = [(SearchUIPhotosOneUpController *)self peekedViewController];
-    [v12 commitPreviewViewController:v13];
+    presentingViewController = [environmentCopy presentingViewController];
+    px_oneUpPresentation = [presentingViewController px_oneUpPresentation];
+    peekedViewController = [(SearchUIPhotosOneUpController *)self peekedViewController];
+    [px_oneUpPresentation commitPreviewViewController:peekedViewController];
   }
 
   else
   {
-    v11 = [(SearchUIPhotosOneUpController *)self updateWithRowModel:v8 environment:v9];
+    presentingViewController = [(SearchUIPhotosOneUpController *)self updateWithRowModel:modelCopy environment:environmentCopy];
     v14 = +[SearchUIPhotoAssetCache sharedCache];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __86__SearchUIPhotosOneUpController_presentOneUpViewForRowModel_triggerEvent_environment___block_invoke;
     v15[3] = &unk_1E85B2770;
-    v16 = v8;
-    v17 = self;
+    v16 = modelCopy;
+    selfCopy = self;
     v18 = v10;
-    [v14 fetchAssetsForImages:v11 completionHandler:v15];
+    [v14 fetchAssetsForImages:presentingViewController completionHandler:v15];
   }
 }
 
@@ -156,57 +156,57 @@ void __86__SearchUIPhotosOneUpController_presentOneUpViewForRowModel_triggerEven
   }
 }
 
-- (id)updateWithRowModel:(id)a3 environment:(id)a4
+- (id)updateWithRowModel:(id)model environment:(id)environment
 {
-  v6 = a4;
-  [(SearchUIPhotosOneUpController *)self setRowModel:a3];
-  [(SearchUIPhotosOneUpController *)self setCommandEnvironment:v6];
+  environmentCopy = environment;
+  [(SearchUIPhotosOneUpController *)self setRowModel:model];
+  [(SearchUIPhotosOneUpController *)self setCommandEnvironment:environmentCopy];
   v27 = objc_opt_new();
   v26 = objc_opt_new();
-  v7 = [v6 lastEngagedSection];
-  v8 = [v7 section];
-  v9 = [v8 collectionSection];
-  v10 = [v9 collectionStyle];
+  lastEngagedSection = [environmentCopy lastEngagedSection];
+  section = [lastEngagedSection section];
+  collectionSection = [section collectionSection];
+  collectionStyle = [collectionSection collectionStyle];
 
   objc_opt_class();
-  v24 = self;
-  v25 = v6;
+  selfCopy = self;
+  v25 = environmentCopy;
   if (objc_opt_isKindOfClass())
   {
-    v11 = [v10 numberOfRows];
+    numberOfRows = [collectionStyle numberOfRows];
   }
 
   else
   {
-    v11 = 1;
+    numberOfRows = 1;
   }
 
-  v12 = [v7 rowModels];
-  v13 = [v12 count];
+  rowModels = [lastEngagedSection rowModels];
+  v13 = [rowModels count];
 
   if (v13)
   {
     v14 = 0;
-    v15 = vcvtpd_u64_f64(v13 / v11);
+    v15 = vcvtpd_u64_f64(v13 / numberOfRows);
     do
     {
-      if (v14 / v15 + v14 % v15 * v11 < v13)
+      if (v14 / v15 + v14 % v15 * numberOfRows < v13)
       {
-        v16 = [v7 rowModels];
-        v17 = [v16 objectAtIndexedSubscript:v14 / v15 + v14 % v15 * v11];
+        rowModels2 = [lastEngagedSection rowModels];
+        v17 = [rowModels2 objectAtIndexedSubscript:v14 / v15 + v14 % v15 * numberOfRows];
 
-        v18 = [v17 cardSection];
-        v19 = [v18 command];
+        cardSection = [v17 cardSection];
+        command = [cardSection command];
 
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v20 = [v19 photosLibraryImage];
-          v21 = [v20 photoIdentifier];
-          if ([v21 length])
+          photosLibraryImage = [command photosLibraryImage];
+          photoIdentifier = [photosLibraryImage photoIdentifier];
+          if ([photoIdentifier length])
           {
-            [v26 addObject:v20];
-            [v27 setObject:v17 forKeyedSubscript:v21];
+            [v26 addObject:photosLibraryImage];
+            [v27 setObject:v17 forKeyedSubscript:photoIdentifier];
           }
         }
       }
@@ -217,9 +217,9 @@ void __86__SearchUIPhotosOneUpController_presentOneUpViewForRowModel_triggerEven
     while (v13 != v14);
   }
 
-  [(SearchUIPhotosOneUpController *)v24 setRowModelsForCoreSpotlightIdentifiers:v27];
-  [(SearchUIPhotosOneUpController *)v24 setActiveDataSourceManager:0];
-  [(SearchUIPhotosOneUpController *)v24 setNavigatedAssetReference:0];
+  [(SearchUIPhotosOneUpController *)selfCopy setRowModelsForCoreSpotlightIdentifiers:v27];
+  [(SearchUIPhotosOneUpController *)selfCopy setActiveDataSourceManager:0];
+  [(SearchUIPhotosOneUpController *)selfCopy setNavigatedAssetReference:0];
   v22 = [v26 copy];
 
   return v22;
@@ -227,29 +227,29 @@ void __86__SearchUIPhotosOneUpController_presentOneUpViewForRowModel_triggerEven
 
 - (id)command
 {
-  v2 = [(SearchUIPhotosOneUpController *)self rowModel];
-  v3 = [v2 cardSection];
-  v4 = [v3 command];
+  rowModel = [(SearchUIPhotosOneUpController *)self rowModel];
+  cardSection = [rowModel cardSection];
+  command = [cardSection command];
 
-  return v4;
+  return command;
 }
 
-- (BOOL)setupOneUpViewWithAssets:(id)a3
+- (BOOL)setupOneUpViewWithAssets:(id)assets
 {
   v26[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(SearchUIPhotosOneUpController *)self command];
-  v6 = [v5 photosLibraryImage];
-  v7 = [v6 photoIdentifier];
+  assetsCopy = assets;
+  command = [(SearchUIPhotosOneUpController *)self command];
+  photosLibraryImage = [command photosLibraryImage];
+  photoIdentifier = [photosLibraryImage photoIdentifier];
 
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __58__SearchUIPhotosOneUpController_setupOneUpViewWithAssets___block_invoke;
   v24[3] = &unk_1E85B3C30;
-  v8 = v7;
+  v8 = photoIdentifier;
   v25 = v8;
-  v9 = [v4 indexOfObjectPassingTest:v24];
-  if (v4)
+  v9 = [assetsCopy indexOfObjectPassingTest:v24];
+  if (assetsCopy)
   {
     v10 = v9 == 0x7FFFFFFFFFFFFFFFLL;
   }
@@ -277,12 +277,12 @@ void __86__SearchUIPhotosOneUpController_presentOneUpViewForRowModel_triggerEven
     v18 = [objc_alloc(MEMORY[0x1E69C3768]) initWithDataSource:v16];
     [(SearchUIPhotosOneUpController *)self setNavigatedAssetReference:v17];
     [(SearchUIPhotosOneUpController *)self setActiveDataSourceManager:v18];
-    v19 = [(SearchUIPhotosOneUpController *)self commandEnvironment];
-    v20 = [v19 presentingViewController];
+    commandEnvironment = [(SearchUIPhotosOneUpController *)self commandEnvironment];
+    presentingViewController = [commandEnvironment presentingViewController];
 
-    [v20 px_enableOneUpPresentation];
-    v21 = [v20 px_oneUpPresentation];
-    [v21 setDelegate:self];
+    [presentingViewController px_enableOneUpPresentation];
+    px_oneUpPresentation = [presentingViewController px_oneUpPresentation];
+    [px_oneUpPresentation setDelegate:self];
   }
 
   return v11;
@@ -296,7 +296,7 @@ uint64_t __58__SearchUIPhotosOneUpController_setupOneUpViewWithAssets___block_in
   return v4;
 }
 
-- (id)oneUpPresentationMediaProvider:(id)a3
+- (id)oneUpPresentationMediaProvider:(id)provider
 {
   if (oneUpPresentationMediaProvider__onceToken != -1)
   {
@@ -318,15 +318,15 @@ void __64__SearchUIPhotosOneUpController_oneUpPresentationMediaProvider___block_
   oneUpPresentationMediaProvider__mediaProvider = v2;
 }
 
-- (id)rowModelForAssetReference:(id)a3
+- (id)rowModelForAssetReference:(id)reference
 {
-  v4 = a3;
-  v5 = [v4 asset];
+  referenceCopy = reference;
+  asset = [referenceCopy asset];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v4 asset];
-    v7 = [(SearchUIPhotosOneUpController *)self rowModelForAsset:v6];
+    asset2 = [referenceCopy asset];
+    v7 = [(SearchUIPhotosOneUpController *)self rowModelForAsset:asset2];
   }
 
   else
@@ -337,40 +337,40 @@ void __64__SearchUIPhotosOneUpController_oneUpPresentationMediaProvider___block_
   return v7;
 }
 
-- (id)rowModelForAsset:(id)a3
+- (id)rowModelForAsset:(id)asset
 {
-  v4 = [SearchUIPhotosUtilities coreSpotlightIdentifierForAsset:a3];
-  v5 = [(SearchUIPhotosOneUpController *)self rowModelsForCoreSpotlightIdentifiers];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  v4 = [SearchUIPhotosUtilities coreSpotlightIdentifierForAsset:asset];
+  rowModelsForCoreSpotlightIdentifiers = [(SearchUIPhotosOneUpController *)self rowModelsForCoreSpotlightIdentifiers];
+  v6 = [rowModelsForCoreSpotlightIdentifiers objectForKeyedSubscript:v4];
 
   return v6;
 }
 
-- (void)oneUpPresentation:(id)a3 scrollAssetReferenceToVisible:(id)a4
+- (void)oneUpPresentation:(id)presentation scrollAssetReferenceToVisible:(id)visible
 {
-  v7 = [(SearchUIPhotosOneUpController *)self rowModelForAssetReference:a4];
-  v5 = [(SearchUIPhotosOneUpController *)self commandEnvironment];
-  v6 = [v5 rowModelViewDelegate];
-  [v6 scrollRowModelToVisible:v7];
+  v7 = [(SearchUIPhotosOneUpController *)self rowModelForAssetReference:visible];
+  commandEnvironment = [(SearchUIPhotosOneUpController *)self commandEnvironment];
+  rowModelViewDelegate = [commandEnvironment rowModelViewDelegate];
+  [rowModelViewDelegate scrollRowModelToVisible:v7];
 }
 
-- (id)oneUpPresentation:(id)a3 regionOfInterestForAssetReference:(id)a4
+- (id)oneUpPresentation:(id)presentation regionOfInterestForAssetReference:(id)reference
 {
-  v5 = [(SearchUIPhotosOneUpController *)self viewForAssetReference:a4];
+  v5 = [(SearchUIPhotosOneUpController *)self viewForAssetReference:reference];
   [v5 layoutBelowIfNeeded];
   v6 = objc_alloc(MEMORY[0x1E69C45A0]);
   [v5 bounds];
   v7 = [v6 initWithRect:v5 inCoordinateSpace:?];
   v8 = [(SearchUIPhotosOneUpController *)self imageViewInView:v5];
-  v9 = [v8 layer];
-  if ([v9 maskedCorners])
+  layer = [v8 layer];
+  if ([layer maskedCorners])
   {
     v10 = objc_opt_new();
-    [v9 cornerRadius];
+    [layer cornerRadius];
     [v10 setCornerRadius:?];
-    [v10 setCornerMask:{objc_msgSend(v9, "maskedCorners")}];
-    v11 = [v9 cornerCurve];
-    [v10 setCornerCurve:v11];
+    [v10 setCornerMask:{objc_msgSend(layer, "maskedCorners")}];
+    cornerCurve = [layer cornerCurve];
+    [v10 setCornerCurve:cornerCurve];
 
     [v7 setImageViewSpec:v10];
   }
@@ -378,14 +378,14 @@ void __64__SearchUIPhotosOneUpController_oneUpPresentationMediaProvider___block_
   return v7;
 }
 
-- (id)imageViewInView:(id)a3
+- (id)imageViewInView:(id)view
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  viewCopy = view;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = viewCopy;
   }
 
   else
@@ -394,8 +394,8 @@ void __64__SearchUIPhotosOneUpController_oneUpPresentationMediaProvider___block_
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v6 = [v4 subviews];
-    v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    subviews = [viewCopy subviews];
+    v7 = [subviews countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v7)
     {
       v8 = v7;
@@ -406,7 +406,7 @@ void __64__SearchUIPhotosOneUpController_oneUpPresentationMediaProvider___block_
         {
           if (*v14 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(subviews);
           }
 
           v11 = [(SearchUIPhotosOneUpController *)self imageViewInView:*(*(&v13 + 1) + 8 * i)];
@@ -418,7 +418,7 @@ void __64__SearchUIPhotosOneUpController_oneUpPresentationMediaProvider___block_
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v8 = [subviews countByEnumeratingWithState:&v13 objects:v17 count:16];
         if (v8)
         {
           continue;
@@ -436,39 +436,39 @@ LABEL_13:
   return v5;
 }
 
-- (id)oneUpPresentationActionManager:(id)a3
+- (id)oneUpPresentationActionManager:(id)manager
 {
   v4 = objc_alloc(MEMORY[0x1E69C45C8]);
-  v5 = [(SearchUIPhotosOneUpController *)self activeDataSourceManager];
-  v6 = [v4 initWithDataSourceManager:v5];
+  activeDataSourceManager = [(SearchUIPhotosOneUpController *)self activeDataSourceManager];
+  v6 = [v4 initWithDataSourceManager:activeDataSourceManager];
 
   v7 = [objc_alloc(MEMORY[0x1E69C37C0]) initWithSelectionManager:v6];
-  v8 = [(SearchUIPhotosOneUpController *)self command];
-  v9 = [v8 _matchedPerson];
-  v10 = [v9 photosIdentifier];
+  command = [(SearchUIPhotosOneUpController *)self command];
+  _matchedPerson = [command _matchedPerson];
+  photosIdentifier = [_matchedPerson photosIdentifier];
 
   [v7 setPerformerDelegate:self];
-  if (v10)
+  if (photosIdentifier)
   {
-    v11 = [v8 photosLibraryImage];
-    v12 = +[SearchUIPhotosUtilities personWithIdentifier:isSyndicated:](SearchUIPhotosUtilities, "personWithIdentifier:isSyndicated:", v10, [v11 isSyndicated]);
+    photosLibraryImage = [command photosLibraryImage];
+    v12 = +[SearchUIPhotosUtilities personWithIdentifier:isSyndicated:](SearchUIPhotosUtilities, "personWithIdentifier:isSyndicated:", photosIdentifier, [photosLibraryImage isSyndicated]);
     [v7 setPerson:v12];
   }
 
   return v7;
 }
 
-- (id)oneUpPresentationMatchedQueryStrings:(id)a3
+- (id)oneUpPresentationMatchedQueryStrings:(id)strings
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v3 = [(SearchUIPhotosOneUpController *)self commandEnvironment];
-  v4 = [v3 searchString];
-  v5 = [v4 lowercaseString];
+  commandEnvironment = [(SearchUIPhotosOneUpController *)self commandEnvironment];
+  searchString = [commandEnvironment searchString];
+  lowercaseString = [searchString lowercaseString];
 
   v6 = &stru_1F55BC4E8;
-  if (v5)
+  if (lowercaseString)
   {
-    v6 = v5;
+    v6 = lowercaseString;
   }
 
   v9[0] = v6;
@@ -477,81 +477,81 @@ LABEL_13:
   return v7;
 }
 
-- (id)oneUpPresentationMatchedSceneIdentifiers:(id)a3
+- (id)oneUpPresentationMatchedSceneIdentifiers:(id)identifiers
 {
-  v3 = [(SearchUIPhotosOneUpController *)self command];
-  v4 = [SearchUIShowPhotosOneUpViewHandler matchedSceneIdentifiersForCommand:v3 andType:1];
+  command = [(SearchUIPhotosOneUpController *)self command];
+  v4 = [SearchUIShowPhotosOneUpViewHandler matchedSceneIdentifiersForCommand:command andType:1];
 
   return v4;
 }
 
-- (id)oneUpPresentationMatchedAudioIdentifiers:(id)a3
+- (id)oneUpPresentationMatchedAudioIdentifiers:(id)identifiers
 {
-  v3 = [(SearchUIPhotosOneUpController *)self command];
-  v4 = [SearchUIShowPhotosOneUpViewHandler matchedSceneIdentifiersForCommand:v3 andType:3];
+  command = [(SearchUIPhotosOneUpController *)self command];
+  v4 = [SearchUIShowPhotosOneUpViewHandler matchedSceneIdentifiersForCommand:command andType:3];
 
   return v4;
 }
 
-- (id)oneUpPresentationMatchedHumanActionIdentifiers:(id)a3
+- (id)oneUpPresentationMatchedHumanActionIdentifiers:(id)identifiers
 {
-  v3 = [(SearchUIPhotosOneUpController *)self command];
-  v4 = [SearchUIShowPhotosOneUpViewHandler matchedSceneIdentifiersForCommand:v3 andType:2];
+  command = [(SearchUIPhotosOneUpController *)self command];
+  v4 = [SearchUIShowPhotosOneUpViewHandler matchedSceneIdentifiersForCommand:command andType:2];
 
   return v4;
 }
 
-- (id)oneUpPresentationMatchedPersonLocalIdentifiers:(id)a3
+- (id)oneUpPresentationMatchedPersonLocalIdentifiers:(id)identifiers
 {
-  v3 = [(SearchUIPhotosOneUpController *)self command];
-  v4 = [SearchUIShowPhotosOneUpViewHandler matchedPersonLocalIdentifiersForCommand:v3];
+  command = [(SearchUIPhotosOneUpController *)self command];
+  v4 = [SearchUIShowPhotosOneUpViewHandler matchedPersonLocalIdentifiersForCommand:command];
 
   return v4;
 }
 
-- (void)oneUpPresentation:(id)a3 setHiddenAssetReferences:(id)a4
+- (void)oneUpPresentation:(id)presentation setHiddenAssetReferences:(id)references
 {
-  v5 = a4;
-  v6 = [(SearchUIPhotosOneUpController *)self hiddenView];
-  [v6 setHidden:0];
+  referencesCopy = references;
+  hiddenView = [(SearchUIPhotosOneUpController *)self hiddenView];
+  [hiddenView setHidden:0];
 
-  v7 = [v5 anyObject];
+  anyObject = [referencesCopy anyObject];
 
-  v8 = [(SearchUIPhotosOneUpController *)self viewForAssetReference:v7];
+  v8 = [(SearchUIPhotosOneUpController *)self viewForAssetReference:anyObject];
 
   [v8 setHidden:1];
   [(SearchUIPhotosOneUpController *)self setHiddenView:v8];
 }
 
-- (id)viewForAssetReference:(id)a3
+- (id)viewForAssetReference:(id)reference
 {
-  v4 = [(SearchUIPhotosOneUpController *)self rowModelForAssetReference:a3];
-  v5 = [(SearchUIPhotosOneUpController *)self commandEnvironment];
-  v6 = [v5 rowModelViewDelegate];
-  v7 = [v6 viewForRowModel:v4];
+  v4 = [(SearchUIPhotosOneUpController *)self rowModelForAssetReference:reference];
+  commandEnvironment = [(SearchUIPhotosOneUpController *)self commandEnvironment];
+  rowModelViewDelegate = [commandEnvironment rowModelViewDelegate];
+  v7 = [rowModelViewDelegate viewForRowModel:v4];
 
   return v7;
 }
 
-- (void)actionPerformer:(id)a3 didChangeState:(unint64_t)a4
+- (void)actionPerformer:(id)performer didChangeState:(unint64_t)state
 {
-  if (a4 != 30)
+  if (state != 30)
   {
     return;
   }
 
-  v6 = a3;
-  v16 = [v6 actionType];
-  v7 = [v6 selectionSnapshot];
+  performerCopy = performer;
+  actionType = [performerCopy actionType];
+  selectionSnapshot = [performerCopy selectionSnapshot];
 
-  v8 = [v7 firstObject];
+  firstObject = [selectionSnapshot firstObject];
 
-  v9 = [(SearchUIPhotosOneUpController *)self rowModelForAsset:v8];
-  v10 = [(SearchUIPhotosOneUpController *)self commandEnvironment];
-  if ([v16 isEqualToString:*MEMORY[0x1E69C47F0]])
+  v9 = [(SearchUIPhotosOneUpController *)self rowModelForAsset:firstObject];
+  commandEnvironment = [(SearchUIPhotosOneUpController *)self commandEnvironment];
+  if ([actionType isEqualToString:*MEMORY[0x1E69C47F0]])
   {
-    v11 = [objc_opt_class() bundleIdentifierForAsset:v8];
-    v12 = [SearchUIPhotosUtilities coreSpotlightIdentifierForAsset:v8];
+    v11 = [objc_opt_class() bundleIdentifierForAsset:firstObject];
+    v12 = [SearchUIPhotosUtilities coreSpotlightIdentifierForAsset:firstObject];
     if (!v11)
     {
 LABEL_13:
@@ -574,19 +574,19 @@ LABEL_13:
     [v13 setCoreSpotlightIdentifier:v12];
     v14 = objc_opt_new();
     [v14 setCommand:v13];
-    v15 = [SearchUICommandHandler handlerForButton:v14 rowModel:v9 environment:v10];
+    v15 = [SearchUICommandHandler handlerForButton:v14 rowModel:v9 environment:commandEnvironment];
     [v15 executeWithTriggerEvent:2];
 
 LABEL_12:
     goto LABEL_13;
   }
 
-  if ([v16 isEqualToString:*MEMORY[0x1E69C47C0]])
+  if ([actionType isEqualToString:*MEMORY[0x1E69C47C0]])
   {
     v11 = objc_opt_new();
     v12 = objc_opt_new();
     [v12 setCommand:v11];
-    v13 = [SearchUICommandHandler handlerForButton:v12 rowModel:v9 environment:v10];
+    v13 = [SearchUICommandHandler handlerForButton:v12 rowModel:v9 environment:commandEnvironment];
     [v13 wasPerformedWithTriggerEvent:2];
     goto LABEL_12;
   }
@@ -594,24 +594,24 @@ LABEL_12:
 LABEL_14:
 }
 
-+ (id)bundleIdentifierForAsset:(id)a3
++ (id)bundleIdentifierForAsset:(id)asset
 {
-  v3 = a3;
-  v4 = [v3 photoLibrary];
-  v5 = [v4 wellKnownPhotoLibraryIdentifier];
+  assetCopy = asset;
+  photoLibrary = [assetCopy photoLibrary];
+  wellKnownPhotoLibraryIdentifier = [photoLibrary wellKnownPhotoLibraryIdentifier];
 
-  if (v5 == 3)
+  if (wellKnownPhotoLibraryIdentifier == 3)
   {
-    v6 = [v3 curationProperties];
-    v7 = [v6 importedByBundleIdentifier];
+    curationProperties = [assetCopy curationProperties];
+    importedByBundleIdentifier = [curationProperties importedByBundleIdentifier];
   }
 
   else
   {
-    v7 = [SearchUIUtilities bundleIdentifierForApp:13];
+    importedByBundleIdentifier = [SearchUIUtilities bundleIdentifierForApp:13];
   }
 
-  return v7;
+  return importedByBundleIdentifier;
 }
 
 - (UIView)hiddenView

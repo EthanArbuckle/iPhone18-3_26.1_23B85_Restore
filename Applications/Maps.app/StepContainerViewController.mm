@@ -1,8 +1,8 @@
 @interface StepContainerViewController
-- (BOOL)_isStepOnTransitLine:(id)a3;
+- (BOOL)_isStepOnTransitLine:(id)line;
 - (BOOL)_isTrackingLocation;
-- (BOOL)_shouldShowHeadingIndicatorForStep:(id)a3;
-- (BOOL)mapView:(id)a3 shouldSelectLabelMarker:(id)a4;
+- (BOOL)_shouldShowHeadingIndicatorForStep:(id)step;
+- (BOOL)mapView:(id)view shouldSelectLabelMarker:(id)marker;
 - (BOOL)pptTestHasNextStep;
 - (BOOL)pptTestMoveToBoardStep;
 - (MKMapView)mapView;
@@ -11,8 +11,8 @@
 - (NSDateComponentsFormatter)debugMinsDurationFormatter;
 - (StatusIndicatorView)statusIndicatorView;
 - (StepActionCoordinator)stepActionCoordinator;
-- (StepContainerViewController)initWithRoute:(id)a3 initialStepIndex:(unint64_t)a4;
-- (StepContainerViewController)initWithRoute:(id)a3 initialStepIndex:(unint64_t)a4 desiredTrackingMode:(int64_t)a5;
+- (StepContainerViewController)initWithRoute:(id)route initialStepIndex:(unint64_t)index;
+- (StepContainerViewController)initWithRoute:(id)route initialStepIndex:(unint64_t)index desiredTrackingMode:(int64_t)mode;
 - (double)availableHeight;
 - (double)maximumSignHeight;
 - (double)topEdgeInset;
@@ -22,17 +22,17 @@
 - (id)statusBarSupplementaryView;
 - (int64_t)pptTestCurrentStepIndex;
 - (int64_t)preferredStatusBarStyle;
-- (unint64_t)originalLayoutForViewController:(id)a3;
+- (unint64_t)originalLayoutForViewController:(id)controller;
 - (void)_addNavigationObservers;
 - (void)_arrivalEndTimerFired;
 - (void)_backgroundArrivalTimerFired;
 - (void)_delayTimerFired;
-- (void)_didEnterBackground:(id)a3;
+- (void)_didEnterBackground:(id)background;
 - (void)_invalidateTimers;
 - (void)_locationExpirationTimerFired;
-- (void)_locationManagerApprovalDidChange:(id)a3;
+- (void)_locationManagerApprovalDidChange:(id)change;
 - (void)_setGizmoStepIndex:(unint64_t)matchedStepIndex;
-- (void)_setUserTrackingMode:(int64_t)a3 animated:(BOOL)a4;
+- (void)_setUserTrackingMode:(int64_t)mode animated:(BOOL)animated;
 - (void)_setupConstraints;
 - (void)_setupDebugUtilities;
 - (void)_setupViews;
@@ -41,61 +41,61 @@
 - (void)_stopArrivalEndTimer;
 - (void)_toggleTraceControls;
 - (void)_updateCompassLayout;
-- (void)_updateDebugConsoleForLocation:(id)a3;
-- (void)_updateForMatchedStepIndex:(unint64_t)a3 matchedSegmentIndex:(unint64_t)a4;
+- (void)_updateDebugConsoleForLocation:(id)location;
+- (void)_updateForMatchedStepIndex:(unint64_t)index matchedSegmentIndex:(unint64_t)segmentIndex;
 - (void)_updateIdleTimer;
-- (void)_updateMapRegionForSignAtIndex:(int64_t)a3;
+- (void)_updateMapRegionForSignAtIndex:(int64_t)index;
 - (void)_updateStatusBarIndicatorLayout;
-- (void)_updateUserLocationViewAppearanceWithMatchedLocation:(id)a3;
-- (void)_willEnterForeground:(id)a3;
-- (void)containerStyleManagerConfigureLayoutForStyle:(unint64_t)a3;
-- (void)containerStyleManagerDidChangeStyle:(unint64_t)a3;
+- (void)_updateUserLocationViewAppearanceWithMatchedLocation:(id)location;
+- (void)_willEnterForeground:(id)foreground;
+- (void)containerStyleManagerConfigureLayoutForStyle:(unint64_t)style;
+- (void)containerStyleManagerDidChangeStyle:(unint64_t)style;
 - (void)dealloc;
-- (void)didTapMapView:(id)a3 atPoint:(CGPoint)a4;
-- (void)idleTimerDidTimeout:(id)a3;
-- (void)mapView:(id)a3 didDeselectLabelMarker:(id)a4;
-- (void)mapView:(id)a3 didSelectAnnotationView:(id)a4;
-- (void)mapView:(id)a3 didSelectLabelMarker:(id)a4;
-- (void)mapView:(id)a3 regionDidChangeAnimated:(BOOL)a4;
-- (void)mapViewDidFinishInitialUserTrackingModeAnimation:(id)a3;
-- (void)mapViewDidStopUserInteraction:(id)a3;
-- (void)navigationService:(id)a3 didArriveAtWaypoint:(id)a4 endOfLegIndex:(unint64_t)a5;
-- (void)navigationService:(id)a3 didUpdateMatchedLocation:(id)a4;
-- (void)navigationService:(id)a3 didUpdateStepIndex:(unint64_t)a4 segmentIndex:(unint64_t)a5;
-- (void)navigationService:(id)a3 willChangeFromState:(unint64_t)a4 toState:(unint64_t)a5;
+- (void)didTapMapView:(id)view atPoint:(CGPoint)point;
+- (void)idleTimerDidTimeout:(id)timeout;
+- (void)mapView:(id)view didDeselectLabelMarker:(id)marker;
+- (void)mapView:(id)view didSelectAnnotationView:(id)annotationView;
+- (void)mapView:(id)view didSelectLabelMarker:(id)marker;
+- (void)mapView:(id)view regionDidChangeAnimated:(BOOL)animated;
+- (void)mapViewDidFinishInitialUserTrackingModeAnimation:(id)animation;
+- (void)mapViewDidStopUserInteraction:(id)interaction;
+- (void)navigationService:(id)service didArriveAtWaypoint:(id)waypoint endOfLegIndex:(unint64_t)index;
+- (void)navigationService:(id)service didUpdateMatchedLocation:(id)location;
+- (void)navigationService:(id)service didUpdateStepIndex:(unint64_t)index segmentIndex:(unint64_t)segmentIndex;
+- (void)navigationService:(id)service willChangeFromState:(unint64_t)state toState:(unint64_t)toState;
 - (void)pptTestMoveToNextStep;
-- (void)setUserTrackingViewVisible:(BOOL)a3 animated:(BOOL)a4;
-- (void)showOverview:(BOOL)a3 andZoomToMapRegion:(BOOL)a4;
-- (void)statusIndicatorTypeChanged:(unint64_t)a3;
-- (void)steppingPageViewController:(id)a3 didChangeCurrentSign:(int64_t)a4 previousSign:(int64_t)a5 fromUserGesture:(unint64_t)a6;
-- (void)steppingPageViewControllerDidChangeSignHeight:(id)a3;
-- (void)steppingPageViewControllerUserDidStartScrolling:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)updateLayoutAnimated:(BOOL)a3;
-- (void)updateWithDisplayedStep:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)setUserTrackingViewVisible:(BOOL)visible animated:(BOOL)animated;
+- (void)showOverview:(BOOL)overview andZoomToMapRegion:(BOOL)region;
+- (void)statusIndicatorTypeChanged:(unint64_t)changed;
+- (void)steppingPageViewController:(id)controller didChangeCurrentSign:(int64_t)sign previousSign:(int64_t)previousSign fromUserGesture:(unint64_t)gesture;
+- (void)steppingPageViewControllerDidChangeSignHeight:(id)height;
+- (void)steppingPageViewControllerUserDidStartScrolling:(id)scrolling;
+- (void)traitCollectionDidChange:(id)change;
+- (void)updateLayoutAnimated:(BOOL)animated;
+- (void)updateWithDisplayedStep:(id)step;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)vlfContaineeViewControllerDidDisappearNotification:(id)a3;
-- (void)vlfSessionTaskWillShowVLFUINotification:(id)a3;
-- (void)willTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)vlfContaineeViewControllerDidDisappearNotification:(id)notification;
+- (void)vlfSessionTaskWillShowVLFUINotification:(id)notification;
+- (void)willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation StepContainerViewController
 
 - (BOOL)pptTestMoveToBoardStep
 {
-  v3 = [(StepContainerViewController *)self route];
-  v4 = [v3 steps];
-  v5 = [v4 firstObject];
+  route = [(StepContainerViewController *)self route];
+  steps = [route steps];
+  firstObject = [steps firstObject];
 
-  v6 = [v5 nextBoardingStep];
-  if (v6 && (-[StepContainerViewController pagingVC](self, "pagingVC"), v7 = objc_claimAutoreleasedReturnValue(), [v7 signGenerator], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "signIndexForStep:", v6), v8, v7, v9 != 0x7FFFFFFFFFFFFFFFLL))
+  nextBoardingStep = [firstObject nextBoardingStep];
+  if (nextBoardingStep && (-[StepContainerViewController pagingVC](self, "pagingVC"), v7 = objc_claimAutoreleasedReturnValue(), [v7 signGenerator], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "signIndexForStep:", nextBoardingStep), v8, v7, v9 != 0x7FFFFFFFFFFFFFFFLL))
   {
-    v11 = [(StepContainerViewController *)self pagingVC];
-    [v11 setSignIndex:v9 animated:0];
+    pagingVC = [(StepContainerViewController *)self pagingVC];
+    [pagingVC setSignIndex:v9 animated:0];
 
     v10 = 1;
   }
@@ -112,37 +112,37 @@
 {
   if ([(StepContainerViewController *)self pptTestHasNextStep])
   {
-    v3 = [(StepContainerViewController *)self pagingVC];
-    [v3 setSignIndex:{objc_msgSend(v3, "signIndex") + 1}];
+    pagingVC = [(StepContainerViewController *)self pagingVC];
+    [pagingVC setSignIndex:{objc_msgSend(pagingVC, "signIndex") + 1}];
   }
 }
 
 - (BOOL)pptTestHasNextStep
 {
-  v3 = [(StepContainerViewController *)self pagingVC];
-  v4 = [v3 signGenerator];
-  v5 = [v4 numberOfSigns];
+  pagingVC = [(StepContainerViewController *)self pagingVC];
+  signGenerator = [pagingVC signGenerator];
+  numberOfSigns = [signGenerator numberOfSigns];
 
-  if (v5 < 2)
+  if (numberOfSigns < 2)
   {
     return 0;
   }
 
-  v7 = [(StepContainerViewController *)self pagingVC];
-  v8 = [v7 signIndex];
-  v9 = [(StepContainerViewController *)self pagingVC];
-  v10 = [v9 signGenerator];
-  v6 = v8 < ([v10 numberOfSigns] - 1);
+  pagingVC2 = [(StepContainerViewController *)self pagingVC];
+  signIndex = [pagingVC2 signIndex];
+  pagingVC3 = [(StepContainerViewController *)self pagingVC];
+  signGenerator2 = [pagingVC3 signGenerator];
+  v6 = signIndex < ([signGenerator2 numberOfSigns] - 1);
 
   return v6;
 }
 
 - (int64_t)pptTestCurrentStepIndex
 {
-  v2 = [(StepContainerViewController *)self pagingVC];
-  v3 = [v2 signIndex];
+  pagingVC = [(StepContainerViewController *)self pagingVC];
+  signIndex = [pagingVC signIndex];
 
-  return v3;
+  return signIndex;
 }
 
 - (void)_toggleTraceControls
@@ -154,9 +154,9 @@
 
     if (v4)
     {
-      v5 = [(NavigationDebugViewsController *)self->_debugViewsController isShowingTraceControls];
+      isShowingTraceControls = [(NavigationDebugViewsController *)self->_debugViewsController isShowingTraceControls];
       debugViewsController = self->_debugViewsController;
-      if (v5)
+      if (isShowingTraceControls)
       {
 
         [(NavigationDebugViewsController *)debugViewsController hideTraceControlsAnimated:1];
@@ -171,26 +171,26 @@
   }
 }
 
-- (void)_updateDebugConsoleForLocation:(id)a3
+- (void)_updateDebugConsoleForLocation:(id)location
 {
-  v35 = a3;
+  locationCopy = location;
   v4 = +[GEOPlatform sharedPlatform];
-  v5 = [v4 isInternalInstall];
+  isInternalInstall = [v4 isInternalInstall];
 
-  v6 = v35;
-  if (v5)
+  v6 = locationCopy;
+  if (isInternalInstall)
   {
-    if (v35)
+    if (locationCopy)
     {
-      v7 = [v35 routeMatch];
-      [v7 locationCoordinate];
+      routeMatch = [locationCopy routeMatch];
+      [routeMatch locationCoordinate];
       v9 = v8;
       v11 = v10;
-      v12 = [v7 routeCoordinate];
-      v13 = [v7 step];
-      if ([v13 transportType] == 1)
+      routeCoordinate = [routeMatch routeCoordinate];
+      step = [routeMatch step];
+      if ([step transportType] == 1)
       {
-        v14 = v13;
+        v14 = step;
       }
 
       else
@@ -202,38 +202,38 @@
       v16 = v15;
       if (v15)
       {
-        v17 = [v15 maneuver];
-        if (v17 >= 0xB)
+        maneuver = [v15 maneuver];
+        if (maneuver >= 0xB)
         {
-          v18 = [NSString stringWithFormat:@"(unknown: %i)", v17];
+          v18 = [NSString stringWithFormat:@"(unknown: %i)", maneuver];
         }
 
         else
         {
-          v18 = *(&off_101657510 + v17);
+          v18 = *(&off_101657510 + maneuver);
         }
 
-        v22 = [v18 lowercaseString];
+        lowercaseString = [v18 lowercaseString];
       }
 
       else
       {
-        v21 = [v13 routeSegmentType] - 1;
+        v21 = [step routeSegmentType] - 1;
         if (v21 > 5)
         {
-          v22 = @"unknown";
+          lowercaseString = @"unknown";
         }
 
         else
         {
-          v22 = *(&off_1016574E0 + v21);
+          lowercaseString = *(&off_1016574E0 + v21);
         }
       }
 
       v23 = +[MNNavigationService sharedService];
-      v24 = [v23 isNavigatingFromTrace];
+      isNavigatingFromTrace = [v23 isNavigatingFromTrace];
 
-      if (v24)
+      if (isNavigatingFromTrace)
       {
         v25 = +[MNNavigationService sharedService];
         [v25 tracePosition];
@@ -258,10 +258,10 @@
       }
       v28 = ;
       v29 = [v28 stringFromTimeInterval:v27];
-      v30 = [v7 stepIndex];
-      [v7 distanceFromRoute];
-      v20 = [NSString stringWithFormat:@"%@, (%0.5f %0.5f), [%d, %0.2f], Step %d\n[%@], dist to route: %0.1fm", v29, v9, v11, v12, *(&v12 + 1), v30, v22, v31];
-      if ([v7 isGoodMatch])
+      stepIndex = [routeMatch stepIndex];
+      [routeMatch distanceFromRoute];
+      v20 = [NSString stringWithFormat:@"%@, (%0.5f %0.5f), [%d, %0.2f], Step %d\n[%@], dist to route: %0.1fm", v29, v9, v11, routeCoordinate, *(&routeCoordinate + 1), stepIndex, lowercaseString, v31];
+      if ([routeMatch isGoodMatch])
       {
         +[UIColor greenColor];
       }
@@ -279,12 +279,12 @@
       v20 = @"No location";
     }
 
-    v32 = [(ContainerViewController *)self chromeViewController];
-    v33 = [v32 mapView];
-    v34 = [v33 _debugConsole];
+    chromeViewController = [(ContainerViewController *)self chromeViewController];
+    mapView = [chromeViewController mapView];
+    _debugConsole = [mapView _debugConsole];
 
-    [v34 updateCustomText:v20 textColor:v19];
-    v6 = v35;
+    [_debugConsole updateCustomText:v20 textColor:v19];
+    v6 = locationCopy;
   }
 }
 
@@ -293,8 +293,8 @@
   debugHoursDurationFormatter = self->_debugHoursDurationFormatter;
   if (!debugHoursDurationFormatter)
   {
-    v4 = [(StepContainerViewController *)self debugMinsDurationFormatter];
-    v5 = [v4 copy];
+    debugMinsDurationFormatter = [(StepContainerViewController *)self debugMinsDurationFormatter];
+    v5 = [debugMinsDurationFormatter copy];
 
     [(NSDateComponentsFormatter *)v5 setAllowedUnits:[(NSDateComponentsFormatter *)v5 allowedUnits]| 0x20];
     v6 = self->_debugHoursDurationFormatter;
@@ -326,76 +326,76 @@
 
 - (id)_geoRouteDetails
 {
-  v3 = [(SteppingPageViewController *)self->_pagingVC signGenerator];
-  v4 = [v3 stepAtSignIndex:{-[SteppingPageViewController signIndex](self->_pagingVC, "signIndex")}];
+  signGenerator = [(SteppingPageViewController *)self->_pagingVC signGenerator];
+  v4 = [signGenerator stepAtSignIndex:{-[SteppingPageViewController signIndex](self->_pagingVC, "signIndex")}];
 
   v5 = +[MNNavigationService sharedService];
-  v6 = [v5 lastLocation];
-  v7 = [v6 routeMatch];
-  v8 = [v7 isGoodMatch];
+  lastLocation = [v5 lastLocation];
+  routeMatch = [lastLocation routeMatch];
+  isGoodMatch = [routeMatch isGoodMatch];
 
-  v9 = [(StepContainerViewController *)self route];
-  v10 = [v9 _maps_routeIndex];
+  route = [(StepContainerViewController *)self route];
+  _maps_routeIndex = [route _maps_routeIndex];
 
   if (v4)
   {
-    v11 = [v4 stepIndex];
+    stepIndex = [v4 stepIndex];
   }
 
   else
   {
-    v11 = 0xFFFFFFFFLL;
+    stepIndex = 0xFFFFFFFFLL;
   }
 
-  v12 = [(SteppingPageViewController *)self->_pagingVC signGenerator];
-  v13 = [v12 signIndexForStepIndex:self->_matchedStepIndex];
+  signGenerator2 = [(SteppingPageViewController *)self->_pagingVC signGenerator];
+  v13 = [signGenerator2 signIndexForStepIndex:self->_matchedStepIndex];
 
   v14 = v13 == [(SteppingPageViewController *)self->_pagingVC signIndex];
-  v15 = [(ContainerViewController *)self chromeViewController];
-  v16 = [v15 mapView];
-  v17 = [v16 userTrackingMode] != 0;
+  chromeViewController = [(ContainerViewController *)self chromeViewController];
+  mapView = [chromeViewController mapView];
+  v17 = [mapView userTrackingMode] != 0;
 
   v18 = +[MNNavigationService sharedService];
-  v19 = [v18 currentRequest];
-  [v19 requestTime];
+  currentRequest = [v18 currentRequest];
+  [currentRequest requestTime];
   v21 = v20;
 
-  v22 = [GEORouteDetails routeDetailsWithResultIndex:v10 stepID:v11 nearRoute:v8 nearCurrentlyDisplayedStep:v14 userTrackingOn:v17 timeSinceResponse:CFAbsoluteTimeGetCurrent() - v21];
+  v22 = [GEORouteDetails routeDetailsWithResultIndex:_maps_routeIndex stepID:stepIndex nearRoute:isGoodMatch nearCurrentlyDisplayedStep:v14 userTrackingOn:v17 timeSinceResponse:CFAbsoluteTimeGetCurrent() - v21];
 
   return v22;
 }
 
-- (void)vlfContaineeViewControllerDidDisappearNotification:(id)a3
+- (void)vlfContaineeViewControllerDidDisappearNotification:(id)notification
 {
-  v4 = [(StepContainerViewController *)self pagingVC];
-  v5 = [v4 view];
-  [v5 setHidden:0];
+  pagingVC = [(StepContainerViewController *)self pagingVC];
+  view = [pagingVC view];
+  [view setHidden:0];
 
-  v6 = [(StepContainerViewController *)self recenterButton];
-  [v6 setHidden:0];
+  recenterButton = [(StepContainerViewController *)self recenterButton];
+  [recenterButton setHidden:0];
 
   [(StepContainerViewController *)self setVlfActive:0];
-  v7 = [(StepContainerViewController *)self iosBasedChromeViewController];
-  [v7 setNeedsUpdateComponent:@"statusBarStyle" animated:0];
+  iosBasedChromeViewController = [(StepContainerViewController *)self iosBasedChromeViewController];
+  [iosBasedChromeViewController setNeedsUpdateComponent:@"statusBarStyle" animated:0];
 }
 
-- (void)vlfSessionTaskWillShowVLFUINotification:(id)a3
+- (void)vlfSessionTaskWillShowVLFUINotification:(id)notification
 {
-  v4 = [(StepContainerViewController *)self pagingVC];
-  v5 = [v4 view];
-  [v5 setHidden:1];
+  pagingVC = [(StepContainerViewController *)self pagingVC];
+  view = [pagingVC view];
+  [view setHidden:1];
 
-  v6 = [(StepContainerViewController *)self recenterButton];
-  [v6 setHidden:1];
+  recenterButton = [(StepContainerViewController *)self recenterButton];
+  [recenterButton setHidden:1];
 
   [(StepContainerViewController *)self setVlfActive:1];
-  v7 = [(StepContainerViewController *)self iosBasedChromeViewController];
-  [v7 setNeedsUpdateComponent:@"statusBarStyle" animated:0];
+  iosBasedChromeViewController = [(StepContainerViewController *)self iosBasedChromeViewController];
+  [iosBasedChromeViewController setNeedsUpdateComponent:@"statusBarStyle" animated:0];
 }
 
-- (void)idleTimerDidTimeout:(id)a3
+- (void)idleTimerDidTimeout:(id)timeout
 {
-  v4 = [(ContainerViewController *)self currentViewController];
+  currentViewController = [(ContainerViewController *)self currentViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -411,13 +411,13 @@
   if (-[StepContainerViewController isViewLoaded](self, "isViewLoaded") && (-[StepContainerViewController view](self, "view"), v3 = objc_claimAutoreleasedReturnValue(), [v3 window], v4 = objc_claimAutoreleasedReturnValue(), v4, v3, v4) && -[ContainerViewController containeeLayout](self, "containeeLayout") != 1)
   {
     v5 = [NavIdleTimeoutTimer alloc];
-    v6 = [(StepContainerViewController *)self view];
-    v7 = [v6 window];
-    v8 = [(NavIdleTimeoutTimer *)v5 initWithWindow:v7];
+    view = [(StepContainerViewController *)self view];
+    window = [view window];
+    v8 = [(NavIdleTimeoutTimer *)v5 initWithWindow:window];
     [(StepContainerViewController *)self setIdleTimer:v8];
 
-    v9 = [(StepContainerViewController *)self idleTimer];
-    [v9 setDelegate:self];
+    idleTimer = [(StepContainerViewController *)self idleTimer];
+    [idleTimer setDelegate:self];
   }
 
   else
@@ -429,18 +429,18 @@
 
 - (id)statusBarSupplementaryView
 {
-  v3 = [(StepContainerViewController *)self statusIndicatorView];
-  if ([v3 isVisible])
+  statusIndicatorView = [(StepContainerViewController *)self statusIndicatorView];
+  if ([statusIndicatorView isVisible])
   {
-    v4 = [(StepContainerViewController *)self statusIndicatorView];
+    statusIndicatorView2 = [(StepContainerViewController *)self statusIndicatorView];
   }
 
   else
   {
-    v4 = 0;
+    statusIndicatorView2 = 0;
   }
 
-  return v4;
+  return statusIndicatorView2;
 }
 
 - (void)_updateStatusBarIndicatorLayout
@@ -448,23 +448,23 @@
   if (_UISolariumEnabled())
   {
     statusIndicatorView = self->_statusIndicatorView;
-    v4 = [(StepContainerViewController *)self preferredStatusBarStyle];
+    preferredStatusBarStyle = [(StepContainerViewController *)self preferredStatusBarStyle];
     v5 = statusIndicatorView;
   }
 
   else
   {
-    v6 = [(ContainerViewController *)self containerStyle];
-    if (v6 <= 7 && ((1 << v6) & 0xE3) != 0)
+    containerStyle = [(ContainerViewController *)self containerStyle];
+    if (containerStyle <= 7 && ((1 << containerStyle) & 0xE3) != 0)
     {
       v5 = self->_statusIndicatorView;
-      v4 = 1;
+      preferredStatusBarStyle = 1;
     }
 
     else
     {
-      v7 = [(StepContainerViewController *)self traitCollection];
-      if ([v7 userInterfaceStyle] == 2)
+      traitCollection = [(StepContainerViewController *)self traitCollection];
+      if ([traitCollection userInterfaceStyle] == 2)
       {
         v8 = 1;
       }
@@ -475,20 +475,20 @@
       }
 
       v5 = self->_statusIndicatorView;
-      v4 = v8;
+      preferredStatusBarStyle = v8;
     }
   }
 
-  [(StatusIndicatorView *)v5 updateWithStatusBarStyle:v4];
+  [(StatusIndicatorView *)v5 updateWithStatusBarStyle:preferredStatusBarStyle];
 }
 
-- (void)statusIndicatorTypeChanged:(unint64_t)a3
+- (void)statusIndicatorTypeChanged:(unint64_t)changed
 {
-  v5 = [(StepContainerViewController *)self statusIndicatorView];
-  [v5 setType:a3];
+  statusIndicatorView = [(StepContainerViewController *)self statusIndicatorView];
+  [statusIndicatorView setType:changed];
 
-  v6 = [(StepContainerViewController *)self iosBasedChromeViewController];
-  [v6 setNeedsUpdateComponent:@"statusBarSupplementaryView" animated:1];
+  iosBasedChromeViewController = [(StepContainerViewController *)self iosBasedChromeViewController];
+  [iosBasedChromeViewController setNeedsUpdateComponent:@"statusBarSupplementaryView" animated:1];
 }
 
 - (StatusIndicatorView)statusIndicatorView
@@ -531,9 +531,9 @@ LABEL_7:
   }
 
   v8 = [StatusBarBackgroundViewStyle alloc];
-  v9 = [(StepContainerViewController *)self theme];
-  v10 = [v9 navSignPrimaryColor];
-  v5 = [(StatusBarBackgroundViewStyle *)v8 initWithColor:v10];
+  theme = [(StepContainerViewController *)self theme];
+  navSignPrimaryColor = [theme navSignPrimaryColor];
+  v5 = [(StatusBarBackgroundViewStyle *)v8 initWithColor:navSignPrimaryColor];
 
 LABEL_8:
 
@@ -559,10 +559,10 @@ LABEL_8:
 
 LABEL_6:
 LABEL_7:
-    v6 = [(StepContainerViewController *)self theme];
-    v7 = [v6 statusBarStyle];
+    theme = [(StepContainerViewController *)self theme];
+    statusBarStyle = [theme statusBarStyle];
 
-    return v7;
+    return statusBarStyle;
   }
 
   v9 = _UISolariumEnabled();
@@ -575,39 +575,39 @@ LABEL_7:
   return 1;
 }
 
-- (void)didTapMapView:(id)a3 atPoint:(CGPoint)a4
+- (void)didTapMapView:(id)view atPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  v10 = a3;
+  y = point.y;
+  x = point.x;
+  viewCopy = view;
   v7 = +[MNNavigationService sharedService];
-  v8 = [v7 isNavigatingFromTrace];
+  isNavigatingFromTrace = [v7 isNavigatingFromTrace];
 
-  if (v8)
+  if (isNavigatingFromTrace)
   {
     [(StepContainerViewController *)self _toggleTraceControls];
   }
 
-  v9 = [(ContainerViewController *)self currentViewController];
-  if ([v9 conformsToProtocol:&OBJC_PROTOCOL___MapViewResponderHandling])
+  currentViewController = [(ContainerViewController *)self currentViewController];
+  if ([currentViewController conformsToProtocol:&OBJC_PROTOCOL___MapViewResponderHandling])
   {
-    [v9 didTapMapView:v10 atPoint:{x, y}];
+    [currentViewController didTapMapView:viewCopy atPoint:{x, y}];
   }
 }
 
-- (void)navigationService:(id)a3 willChangeFromState:(unint64_t)a4 toState:(unint64_t)a5
+- (void)navigationService:(id)service willChangeFromState:(unint64_t)state toState:(unint64_t)toState
 {
-  if (!a5)
+  if (!toState)
   {
-    v7 = [(StepContainerViewController *)self stepActionCoordinator:a3];
+    v7 = [(StepContainerViewController *)self stepActionCoordinator:service];
     [v7 pressedEndWithSender:self];
   }
 }
 
-- (void)navigationService:(id)a3 didArriveAtWaypoint:(id)a4 endOfLegIndex:(unint64_t)a5
+- (void)navigationService:(id)service didArriveAtWaypoint:(id)waypoint endOfLegIndex:(unint64_t)index
 {
-  v7 = [a3 route];
-  self->_hasArrived = [v7 isLegIndexOfLastLeg:a5];
+  route = [service route];
+  self->_hasArrived = [route isLegIndexOfLastLeg:index];
 
   if (self->_hasArrived)
   {
@@ -616,16 +616,16 @@ LABEL_7:
   }
 }
 
-- (void)navigationService:(id)a3 didUpdateStepIndex:(unint64_t)a4 segmentIndex:(unint64_t)a5
+- (void)navigationService:(id)service didUpdateStepIndex:(unint64_t)index segmentIndex:(unint64_t)segmentIndex
 {
-  v8 = a3;
+  serviceCopy = service;
   v9 = +[NSDate date];
-  v10 = [(NavigationDebugViewsController *)self->_debugViewsController tracePlayer];
+  tracePlayer = [(NavigationDebugViewsController *)self->_debugViewsController tracePlayer];
   GEOConfigGetDouble();
   v12 = v11;
-  if (v10)
+  if (tracePlayer)
   {
-    [v10 speedMultiplier];
+    [tracePlayer speedMultiplier];
   }
 
   else
@@ -637,7 +637,7 @@ LABEL_7:
   [v9 timeIntervalSinceDate:self->_startDate];
   if (v15 >= v14)
   {
-    [(StepContainerViewController *)self _updateForMatchedStepIndex:a4 matchedSegmentIndex:a5];
+    [(StepContainerViewController *)self _updateForMatchedStepIndex:index matchedSegmentIndex:segmentIndex];
   }
 
   else if (!self->_delayAutoAdvanceTimer)
@@ -658,33 +658,33 @@ LABEL_7:
   }
 }
 
-- (void)navigationService:(id)a3 didUpdateMatchedLocation:(id)a4
+- (void)navigationService:(id)service didUpdateMatchedLocation:(id)location
 {
-  objc_storeStrong(&self->_previousMatchedLocation, a4);
-  v8 = a4;
-  [(StepContainerViewController *)self _updateUserLocationViewAppearanceWithMatchedLocation:v8];
+  objc_storeStrong(&self->_previousMatchedLocation, location);
+  locationCopy = location;
+  [(StepContainerViewController *)self _updateUserLocationViewAppearanceWithMatchedLocation:locationCopy];
   debugLocationManager = self->_debugLocationManager;
-  v7 = [v8 rawLocation];
-  [(NavDebugLocationManager *)debugLocationManager addLocation:v7];
+  rawLocation = [locationCopy rawLocation];
+  [(NavDebugLocationManager *)debugLocationManager addLocation:rawLocation];
 
-  [(StepContainerViewController *)self _updateDebugConsoleForLocation:v8];
+  [(StepContainerViewController *)self _updateDebugConsoleForLocation:locationCopy];
 }
 
 - (BOOL)_isTrackingLocation
 {
   v2 = +[MNNavigationService sharedService];
-  v3 = [v2 isTrackingCurrentLocation];
+  isTrackingCurrentLocation = [v2 isTrackingCurrentLocation];
 
-  return v3;
+  return isTrackingCurrentLocation;
 }
 
 - (void)_setGizmoStepIndex:(unint64_t)matchedStepIndex
 {
-  v5 = [(SteppingPageViewController *)self->_pagingVC signGenerator];
-  v6 = [v5 signIndexForStepIndex:self->_matchedStepIndex];
+  signGenerator = [(SteppingPageViewController *)self->_pagingVC signGenerator];
+  v6 = [signGenerator signIndexForStepIndex:self->_matchedStepIndex];
 
-  v7 = [(SteppingPageViewController *)self->_pagingVC signGenerator];
-  v8 = [v7 signIndexForStepIndex:matchedStepIndex];
+  signGenerator2 = [(SteppingPageViewController *)self->_pagingVC signGenerator];
+  v8 = [signGenerator2 signIndexForStepIndex:matchedStepIndex];
 
   if (v6 == v8)
   {
@@ -724,12 +724,12 @@ LABEL_7:
   previousMatchedLocation = self->_previousMatchedLocation;
   if (previousMatchedLocation)
   {
-    v8 = [(MNLocation *)previousMatchedLocation routeMatch];
-    v5 = [v8 stepIndex];
-    v6 = [v8 route];
-    v7 = [v6 segmentIndexForStepIndex:v5];
+    routeMatch = [(MNLocation *)previousMatchedLocation routeMatch];
+    stepIndex = [routeMatch stepIndex];
+    route = [routeMatch route];
+    v7 = [route segmentIndexForStepIndex:stepIndex];
 
-    [(StepContainerViewController *)self _updateForMatchedStepIndex:v5 matchedSegmentIndex:v7];
+    [(StepContainerViewController *)self _updateForMatchedStepIndex:stepIndex matchedSegmentIndex:v7];
   }
 }
 
@@ -743,24 +743,24 @@ LABEL_7:
   backgroundArrivalTimer = self->_backgroundArrivalTimer;
   self->_backgroundArrivalTimer = 0;
 
-  v5 = [(StepContainerViewController *)self stepActionCoordinator];
-  [v5 pressedEndWithSender:self];
+  stepActionCoordinator = [(StepContainerViewController *)self stepActionCoordinator];
+  [stepActionCoordinator pressedEndWithSender:self];
 }
 
 - (void)_locationExpirationTimerFired
 {
-  v2 = [(ContainerViewController *)self chromeViewController];
-  v5 = [v2 userLocationView];
+  chromeViewController = [(ContainerViewController *)self chromeViewController];
+  userLocationView = [chromeViewController userLocationView];
 
-  v3 = v5;
-  if (v5)
+  v3 = userLocationView;
+  if (userLocationView)
   {
-    v4 = [v5 isStale];
-    v3 = v5;
-    if ((v4 & 1) == 0)
+    isStale = [userLocationView isStale];
+    v3 = userLocationView;
+    if ((isStale & 1) == 0)
     {
-      [v5 locationManagerFailedToUpdateLocation];
-      v3 = v5;
+      [userLocationView locationManagerFailedToUpdateLocation];
+      v3 = userLocationView;
     }
   }
 }
@@ -775,8 +775,8 @@ LABEL_7:
   backgroundArrivalTimer = self->_backgroundArrivalTimer;
   self->_backgroundArrivalTimer = 0;
 
-  v5 = [(StepContainerViewController *)self stepActionCoordinator];
-  [v5 pressedEndWithSender:self];
+  stepActionCoordinator = [(StepContainerViewController *)self stepActionCoordinator];
+  [stepActionCoordinator pressedEndWithSender:self];
 }
 
 - (void)_stopArrivalEndTimer
@@ -806,43 +806,43 @@ LABEL_7:
   }
 }
 
-- (void)_didEnterBackground:(id)a3
+- (void)_didEnterBackground:(id)background
 {
-  v4 = a3;
-  v5 = [v4 object];
-  v6 = [(StepContainerViewController *)self view];
-  v7 = [v6 window];
-  v8 = [v7 windowScene];
+  backgroundCopy = background;
+  object = [backgroundCopy object];
+  view = [(StepContainerViewController *)self view];
+  window = [view window];
+  windowScene = [window windowScene];
 
-  if (v5 == v8)
+  if (object == windowScene)
   {
     previousMatchedLocation = self->_previousMatchedLocation;
     if (previousMatchedLocation)
     {
-      v10 = [(MNLocation *)previousMatchedLocation routeMatch];
-      v11 = [v10 step];
+      routeMatch = [(MNLocation *)previousMatchedLocation routeMatch];
+      step = [routeMatch step];
 
-      if (v11)
+      if (step)
       {
-        if ([v11 isArrivalStep])
+        if ([step isArrivalStep])
         {
-          v12 = [(StepContainerViewController *)self stepActionCoordinator];
-          [v12 pressedEndWithSender:self];
+          stepActionCoordinator = [(StepContainerViewController *)self stepActionCoordinator];
+          [stepActionCoordinator pressedEndWithSender:self];
         }
 
         else
         {
-          v12 = -[GEOComposedRoute segmentForStepIndex:](self->_route, "segmentForStepIndex:", [v11 stepIndex]);
-          v13 = [(GEOComposedRoute *)self->_route segments];
-          v14 = [v13 lastObject];
+          stepActionCoordinator = -[GEOComposedRoute segmentForStepIndex:](self->_route, "segmentForStepIndex:", [step stepIndex]);
+          segments = [(GEOComposedRoute *)self->_route segments];
+          lastObject = [segments lastObject];
 
-          if (v14 == v12)
+          if (lastObject == stepActionCoordinator)
           {
-            [v12 expectedTime];
+            [stepActionCoordinator expectedTime];
             v16 = 15.0;
             if (v15 * 3.0 >= 15.0)
             {
-              [v12 expectedTime];
+              [stepActionCoordinator expectedTime];
               v16 = v17 * 3.0;
             }
 
@@ -865,71 +865,71 @@ LABEL_7:
   }
 }
 
-- (void)_willEnterForeground:(id)a3
+- (void)_willEnterForeground:(id)foreground
 {
-  v9 = [a3 object];
-  v4 = [(StepContainerViewController *)self view];
-  v5 = [v4 window];
-  v6 = [v5 windowScene];
+  object = [foreground object];
+  view = [(StepContainerViewController *)self view];
+  window = [view window];
+  windowScene = [window windowScene];
 
-  v7 = v9;
-  if (v9 == v6)
+  v7 = object;
+  if (object == windowScene)
   {
     [(NSTimer *)self->_backgroundArrivalTimer invalidate];
     backgroundArrivalTimer = self->_backgroundArrivalTimer;
     self->_backgroundArrivalTimer = 0;
 
-    v7 = v9;
+    v7 = object;
   }
 }
 
 - (double)maximumSignHeight
 {
-  v3 = [(StepContainerViewController *)self view];
-  [v3 bounds];
+  view = [(StepContainerViewController *)self view];
+  [view bounds];
   v5 = v4;
-  v6 = [(OverlayContainerViewController *)self topContentView];
-  [v6 frame];
+  topContentView = [(OverlayContainerViewController *)self topContentView];
+  [topContentView frame];
   v8 = v7;
   [(ContainerViewController *)self edgePadding];
   v10 = v9;
-  v11 = [(StepContainerViewController *)self stepActionCoordinator];
-  v12 = [v11 trayContaineeViewController];
-  [v12 heightForLayout:1];
+  stepActionCoordinator = [(StepContainerViewController *)self stepActionCoordinator];
+  trayContaineeViewController = [stepActionCoordinator trayContaineeViewController];
+  [trayContaineeViewController heightForLayout:1];
   v14 = v5 - (v10 + v8 + v13);
   v15 = 512.0;
   if (v14 < 512.0)
   {
-    v16 = [(StepContainerViewController *)self view];
-    [v16 bounds];
+    view2 = [(StepContainerViewController *)self view];
+    [view2 bounds];
     v18 = v17;
-    v19 = [(OverlayContainerViewController *)self topContentView];
-    [v19 frame];
+    topContentView2 = [(OverlayContainerViewController *)self topContentView];
+    [topContentView2 frame];
     v21 = v20;
     [(ContainerViewController *)self edgePadding];
     v23 = v22;
-    v24 = [(StepContainerViewController *)self stepActionCoordinator];
-    v25 = [v24 trayContaineeViewController];
-    [v25 heightForLayout:1];
+    stepActionCoordinator2 = [(StepContainerViewController *)self stepActionCoordinator];
+    trayContaineeViewController2 = [stepActionCoordinator2 trayContaineeViewController];
+    [trayContaineeViewController2 heightForLayout:1];
     v15 = v18 - (v23 + v21 + v26);
   }
 
   return v15;
 }
 
-- (void)steppingPageViewControllerDidChangeSignHeight:(id)a3
+- (void)steppingPageViewControllerDidChangeSignHeight:(id)height
 {
-  v20 = a3;
+  heightCopy = height;
   [(StepContainerViewController *)self maximumSignHeight];
   v6 = v5;
-  v7 = [v20 signHeightConstraint];
-  [v7 constant];
+  signHeightConstraint = [heightCopy signHeightConstraint];
+  [signHeightConstraint constant];
   v9 = v8;
 
   if (v9 <= v6)
   {
-    v10 = [v20 signHeightConstraint];
-    [v10 constant];
+    signHeightConstraint2 = [heightCopy signHeightConstraint];
+    [signHeightConstraint2 constant];
     [(NSLayoutConstraint *)self->_scrollViewHeightConstraint setConstant:?];
 
     [(UIScrollView *)self->_verticalSignScrollView setScrollEnabled:0];
@@ -941,33 +941,33 @@ LABEL_7:
     [(NSLayoutConstraint *)self->_scrollViewHeightConstraint setConstant:v6];
   }
 
-  v11 = [(ContainerViewController *)self containeeLayout];
-  if (v11 - 3 >= 2)
+  containeeLayout = [(ContainerViewController *)self containeeLayout];
+  if (containeeLayout - 3 >= 2)
   {
-    if (v11 != 5)
+    if (containeeLayout != 5)
     {
       goto LABEL_18;
     }
 
-    v13 = +[UIDevice currentDevice];
-    v14 = [v13 userInterfaceIdiom];
-    if (v14 != 1)
+    currentViewController2 = +[UIDevice currentDevice];
+    userInterfaceIdiom = [currentViewController2 userInterfaceIdiom];
+    if (userInterfaceIdiom != 1)
     {
-      v3 = +[UIDevice currentDevice];
-      if ([v3 userInterfaceIdiom] != 5)
+      cardPresentationController2 = +[UIDevice currentDevice];
+      if ([cardPresentationController2 userInterfaceIdiom] != 5)
       {
         goto LABEL_17;
       }
     }
 
-    v15 = [(ContainerViewController *)self currentViewController];
-    v16 = [v15 cardPresentationController];
-    v17 = [v16 presentedModally];
+    currentViewController = [(ContainerViewController *)self currentViewController];
+    cardPresentationController = [currentViewController cardPresentationController];
+    presentedModally = [cardPresentationController presentedModally];
 
-    if (v14 != 1)
+    if (userInterfaceIdiom != 1)
     {
 
-      if ((v17 & 1) == 0)
+      if ((presentedModally & 1) == 0)
       {
         goto LABEL_18;
       }
@@ -975,12 +975,12 @@ LABEL_7:
       goto LABEL_16;
     }
 
-    if (v17)
+    if (presentedModally)
     {
 LABEL_16:
-      v13 = [(ContainerViewController *)self currentViewController];
-      v3 = [v13 cardPresentationController];
-      [v3 updateHeightForCurrentLayout];
+      currentViewController2 = [(ContainerViewController *)self currentViewController];
+      cardPresentationController2 = [currentViewController2 cardPresentationController];
+      [cardPresentationController2 updateHeightForCurrentLayout];
 LABEL_17:
     }
   }
@@ -995,9 +995,9 @@ LABEL_17:
     }
 
     v18 = +[UIDevice currentDevice];
-    v19 = [v18 userInterfaceIdiom];
+    userInterfaceIdiom2 = [v18 userInterfaceIdiom];
 
-    if (v19 == 5)
+    if (userInterfaceIdiom2 == 5)
     {
       goto LABEL_16;
     }
@@ -1006,7 +1006,7 @@ LABEL_17:
 LABEL_18:
 }
 
-- (void)steppingPageViewControllerUserDidStartScrolling:(id)a3
+- (void)steppingPageViewControllerUserDidStartScrolling:(id)scrolling
 {
   self->_mustNotBreakUserTrackingMode = 0;
   [(StepContainerViewController *)self _setUserTrackingMode:0 animated:1];
@@ -1014,75 +1014,75 @@ LABEL_18:
   [(StepContainerViewController *)self _stopArrivalEndTimer];
 }
 
-- (void)steppingPageViewController:(id)a3 didChangeCurrentSign:(int64_t)a4 previousSign:(int64_t)a5 fromUserGesture:(unint64_t)a6
+- (void)steppingPageViewController:(id)controller didChangeCurrentSign:(int64_t)sign previousSign:(int64_t)previousSign fromUserGesture:(unint64_t)gesture
 {
-  v23 = a3;
-  if (a6)
+  controllerCopy = controller;
+  if (gesture)
   {
     [(StepContainerViewController *)self _startArrivalEndTimerIfNecessary];
   }
 
-  if (a4 != a5)
+  if (sign != previousSign)
   {
-    v10 = [(StepContainerViewController *)self route];
-    v11 = [(SteppingPageViewController *)self->_pagingVC signGenerator];
-    v12 = [v11 stepAtSignIndex:{-[SteppingPageViewController signIndex](self->_pagingVC, "signIndex")}];
+    route = [(StepContainerViewController *)self route];
+    signGenerator = [(SteppingPageViewController *)self->_pagingVC signGenerator];
+    v12 = [signGenerator stepAtSignIndex:{-[SteppingPageViewController signIndex](self->_pagingVC, "signIndex")}];
 
     if (v12)
     {
-      v13 = [v12 stepIndex];
+      stepIndex = [v12 stepIndex];
     }
 
     else
     {
-      v13 = 0x7FFFFFFFFFFFFFFFLL;
+      stepIndex = 0x7FFFFFFFFFFFFFFFLL;
     }
 
-    v14 = [v10 segmentIndexForStepIndex:v13];
-    v15 = [(StepContainerViewController *)self stepActionCoordinator];
-    v16 = [v15 trayContaineeViewController];
-    [v16 setCurrentStepIndex:v13];
+    v14 = [route segmentIndexForStepIndex:stepIndex];
+    stepActionCoordinator = [(StepContainerViewController *)self stepActionCoordinator];
+    trayContaineeViewController = [stepActionCoordinator trayContaineeViewController];
+    [trayContaineeViewController setCurrentStepIndex:stepIndex];
 
-    v17 = [(StepContainerViewController *)self mapView];
-    [v17 _setRouteContextInspectedSegmentIndex:v14 inspectedStepIndex:v13];
+    mapView = [(StepContainerViewController *)self mapView];
+    [mapView _setRouteContextInspectedSegmentIndex:v14 inspectedStepIndex:stepIndex];
 
-    if (a4 <= 0x7FFFFFFFFFFFFFFELL)
+    if (sign <= 0x7FFFFFFFFFFFFFFELL)
     {
-      [v10 setCurrentDisplayStep:a4];
+      [route setCurrentDisplayStep:sign];
     }
 
     v18 = +[NSDate date];
     [v18 timeIntervalSinceDate:self->_lastMapTouchDate];
     v20 = v19;
 
-    if (a6 || (!self->_lastMapTouchDate || v20 > 4.0) && (-[StepContainerViewController mapView](self, "mapView"), v21 = objc_claimAutoreleasedReturnValue(), v22 = [v21 userTrackingMode], v21, !v22))
+    if (gesture || (!self->_lastMapTouchDate || v20 > 4.0) && (-[StepContainerViewController mapView](self, "mapView"), v21 = objc_claimAutoreleasedReturnValue(), v22 = [v21 userTrackingMode], v21, !v22))
     {
-      [(StepContainerViewController *)self _updateMapRegionForSignAtIndex:a4];
+      [(StepContainerViewController *)self _updateMapRegionForSignAtIndex:sign];
     }
 
-    [(StepContainerViewController *)self _setGizmoStepIndex:v13];
+    [(StepContainerViewController *)self _setGizmoStepIndex:stepIndex];
   }
 }
 
-- (void)mapViewDidFinishInitialUserTrackingModeAnimation:(id)a3
+- (void)mapViewDidFinishInitialUserTrackingModeAnimation:(id)animation
 {
-  v15 = a3;
-  if ([v15 userTrackingMode])
+  animationCopy = animation;
+  if ([animationCopy userTrackingMode])
   {
-    v4 = [(MNLocation *)self->_previousMatchedLocation routeMatch];
-    v5 = [v4 transitTripStep];
+    routeMatch = [(MNLocation *)self->_previousMatchedLocation routeMatch];
+    transitTripStep = [routeMatch transitTripStep];
 
-    if ([v5 maneuver] == 5)
+    if ([transitTripStep maneuver] == 5)
     {
-      v6 = [v5 previousTransitStep];
+      previousTransitStep = [transitTripStep previousTransitStep];
 
-      v5 = v6;
+      transitTripStep = previousTransitStep;
     }
 
-    if ([(StepContainerViewController *)self _isStepOnTransitLine:v5])
+    if ([(StepContainerViewController *)self _isStepOnTransitLine:transitTripStep])
     {
-      [v5 startGeoCoordinate];
-      [v5 endGeoCoordinate];
+      [transitTripStep startGeoCoordinate];
+      [transitTripStep endGeoCoordinate];
       GEOCalculateDistance();
       v8 = fmin(v7 * 3.3, 8000.0);
       v9 = v8 * 0.8;
@@ -1096,63 +1096,63 @@ LABEL_18:
       v10 = 4500.0;
     }
 
-    v11 = [v15 camera];
-    [v11 altitude];
-    if (v12 < v9 || ([v11 altitude], v10 < v13))
+    camera = [animationCopy camera];
+    [camera altitude];
+    if (v12 < v9 || ([camera altitude], v10 < v13))
     {
-      v14 = [v11 copy];
+      v14 = [camera copy];
 
       [v14 setAltitude:v8];
-      [v15 setCamera:v14 animated:1];
-      v11 = v14;
+      [animationCopy setCamera:v14 animated:1];
+      camera = v14;
     }
   }
 }
 
-- (void)mapView:(id)a3 didSelectAnnotationView:(id)a4
+- (void)mapView:(id)view didSelectAnnotationView:(id)annotationView
 {
-  v13 = a4;
-  v6 = a3;
-  v7 = [v13 annotation];
-  [v6 deselectAnnotation:v7 animated:0];
+  annotationViewCopy = annotationView;
+  viewCopy = view;
+  annotation = [annotationViewCopy annotation];
+  [viewCopy deselectAnnotation:annotation animated:0];
 
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && [v13 isVLFPuckVisible])
+  if ((objc_opt_isKindOfClass() & 1) != 0 && [annotationViewCopy isVLFPuckVisible])
   {
-    v8 = [(ContainerViewController *)self chromeViewController];
-    v9 = [v8 appCoordinator];
-    v10 = [v9 platformController];
-    v11 = [v10 auxiliaryTasksManager];
-    v12 = [v11 auxilaryTaskForClass:objc_opt_class()];
+    chromeViewController = [(ContainerViewController *)self chromeViewController];
+    appCoordinator = [chromeViewController appCoordinator];
+    platformController = [appCoordinator platformController];
+    auxiliaryTasksManager = [platformController auxiliaryTasksManager];
+    v12 = [auxiliaryTasksManager auxilaryTaskForClass:objc_opt_class()];
 
     [v12 showVLFUI];
   }
 }
 
-- (void)mapView:(id)a3 didDeselectLabelMarker:(id)a4
+- (void)mapView:(id)view didDeselectLabelMarker:(id)marker
 {
-  v5 = a4;
-  v6 = [(StepContainerViewController *)self stepActionCoordinator];
-  [v6 deselectVKLabelMarker:v5];
+  markerCopy = marker;
+  stepActionCoordinator = [(StepContainerViewController *)self stepActionCoordinator];
+  [stepActionCoordinator deselectVKLabelMarker:markerCopy];
 }
 
-- (void)mapView:(id)a3 didSelectLabelMarker:(id)a4
+- (void)mapView:(id)view didSelectLabelMarker:(id)marker
 {
-  v5 = a4;
-  v6 = [(StepContainerViewController *)self stepActionCoordinator];
-  [v6 selectVKLabelMarker:v5];
+  markerCopy = marker;
+  stepActionCoordinator = [(StepContainerViewController *)self stepActionCoordinator];
+  [stepActionCoordinator selectVKLabelMarker:markerCopy];
 }
 
-- (BOOL)mapView:(id)a3 shouldSelectLabelMarker:(id)a4
+- (BOOL)mapView:(id)view shouldSelectLabelMarker:(id)marker
 {
-  v5 = a4;
-  v6 = [(StepContainerViewController *)self stepActionCoordinator];
-  v7 = [v6 canSelectVKLabelMarker:v5];
+  markerCopy = marker;
+  stepActionCoordinator = [(StepContainerViewController *)self stepActionCoordinator];
+  v7 = [stepActionCoordinator canSelectVKLabelMarker:markerCopy];
 
   return v7;
 }
 
-- (void)mapView:(id)a3 regionDidChangeAnimated:(BOOL)a4
+- (void)mapView:(id)view regionDidChangeAnimated:(BOOL)animated
 {
   if (self->_userIsInteractingWithMap)
   {
@@ -1160,7 +1160,7 @@ LABEL_18:
   }
 }
 
-- (void)mapViewDidStopUserInteraction:(id)a3
+- (void)mapViewDidStopUserInteraction:(id)interaction
 {
   self->_userIsInteractingWithMap = 0;
   v4 = +[NSDate date];
@@ -1170,24 +1170,24 @@ LABEL_18:
   [(StepContainerViewController *)self _startArrivalEndTimerIfNecessary];
 }
 
-- (void)_updateForMatchedStepIndex:(unint64_t)a3 matchedSegmentIndex:(unint64_t)a4
+- (void)_updateForMatchedStepIndex:(unint64_t)index matchedSegmentIndex:(unint64_t)segmentIndex
 {
   matchedStepIndex = self->_matchedStepIndex;
-  [(SteppingSignGenerator *)self->_signGenerator signIndexForStepIndex:a3, a4];
-  self->_matchedStepIndex = a3;
+  [(SteppingSignGenerator *)self->_signGenerator signIndexForStepIndex:index, segmentIndex];
+  self->_matchedStepIndex = index;
   if (self->_isGoingToEnterGuidance)
   {
     self->_isGoingToEnterGuidance = 0;
   }
 
-  v20 = [(SteppingPageViewController *)self->_pagingVC collectionView];
-  if ([v20 isTracking])
+  collectionView = [(SteppingPageViewController *)self->_pagingVC collectionView];
+  if ([collectionView isTracking])
   {
     goto LABEL_6;
   }
 
-  v7 = [(SteppingPageViewController *)self->_pagingVC collectionView];
-  if ([v7 isDragging])
+  collectionView2 = [(SteppingPageViewController *)self->_pagingVC collectionView];
+  if ([collectionView2 isDragging])
   {
 
 LABEL_6:
@@ -1195,30 +1195,30 @@ LABEL_6:
     return;
   }
 
-  v8 = [(StepContainerViewController *)self _isTrackingLocation];
+  _isTrackingLocation = [(StepContainerViewController *)self _isTrackingLocation];
 
-  if (v8)
+  if (_isTrackingLocation)
   {
-    v9 = [(SteppingPageViewController *)self->_pagingVC signGenerator];
-    v10 = [v9 signIndexForStepIndex:a3];
+    signGenerator = [(SteppingPageViewController *)self->_pagingVC signGenerator];
+    v10 = [signGenerator signIndexForStepIndex:index];
 
     v11 = v10 >= 0x7FFFFFFFFFFFFFFFLL ? 0x7FFFFFFFFFFFFFFFLL : v10;
-    v12 = [(SteppingPageViewController *)self->_pagingVC signIndex];
-    if (a3 != 0x7FFFFFFFFFFFFFFFLL)
+    signIndex = [(SteppingPageViewController *)self->_pagingVC signIndex];
+    if (index != 0x7FFFFFFFFFFFFFFFLL)
     {
-      if (v11 == v12)
+      if (v11 == signIndex)
       {
-        if (matchedStepIndex == a3)
+        if (matchedStepIndex == index)
         {
           return;
         }
 
-        v13 = [(StepContainerViewController *)self mapView];
-        v14 = [v13 userTrackingMode];
+        mapView = [(StepContainerViewController *)self mapView];
+        userTrackingMode = [mapView userTrackingMode];
 
-        if (!v14)
+        if (!userTrackingMode)
         {
-          v15 = [(GEOComposedRoute *)self->_route segmentForStepIndex:a3];
+          v15 = [(GEOComposedRoute *)self->_route segmentForStepIndex:index];
           if ([v15 type] == 6)
           {
             [(StepContainerViewController *)self _updateMapRegionForSignAtIndex:v11];
@@ -1234,11 +1234,11 @@ LABEL_6:
           return;
         }
 
-        v17 = [(SteppingPageViewController *)self->_pagingVC signIndex];
-        v18 = [(SteppingPageViewController *)self->_pagingVC signGenerator];
-        v19 = [v18 signIndexForStepIndex:a3];
+        signIndex2 = [(SteppingPageViewController *)self->_pagingVC signIndex];
+        signGenerator2 = [(SteppingPageViewController *)self->_pagingVC signGenerator];
+        v19 = [signGenerator2 signIndexForStepIndex:index];
 
-        if (v17 >= v19)
+        if (signIndex2 >= v19)
         {
           return;
         }
@@ -1247,37 +1247,37 @@ LABEL_6:
         self->_matchedSignIndex = v11;
       }
 
-      [(StepContainerViewController *)self _setGizmoStepIndex:a3];
+      [(StepContainerViewController *)self _setGizmoStepIndex:index];
     }
   }
 }
 
-- (BOOL)_shouldShowHeadingIndicatorForStep:(id)a3
+- (BOOL)_shouldShowHeadingIndicatorForStep:(id)step
 {
-  v4 = a3;
-  v5 = [(StepContainerViewController *)self stepActionCoordinator];
-  v6 = [v5 isAuthorizedForPreciseLocation];
+  stepCopy = step;
+  stepActionCoordinator = [(StepContainerViewController *)self stepActionCoordinator];
+  isAuthorizedForPreciseLocation = [stepActionCoordinator isAuthorizedForPreciseLocation];
 
-  if (v4)
+  if (stepCopy)
   {
-    if ([v4 transportType] == 1)
+    if ([stepCopy transportType] == 1)
     {
-      v7 = [v4 maneuver];
-      if (v7 - 4 <= 5)
+      maneuver = [stepCopy maneuver];
+      if (maneuver - 4 <= 5)
       {
-        v6 &= (0x27u >> (v7 - 4)) ^ 1;
+        isAuthorizedForPreciseLocation &= (0x27u >> (maneuver - 4)) ^ 1;
       }
     }
   }
 
-  return v6 & 1;
+  return isAuthorizedForPreciseLocation & 1;
 }
 
-- (BOOL)_isStepOnTransitLine:(id)a3
+- (BOOL)_isStepOnTransitLine:(id)line
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && [v3 routeSegmentType] == 6)
+  lineCopy = line;
+  v4 = lineCopy;
+  if (lineCopy && [lineCopy routeSegmentType] == 6)
   {
     v5 = v4;
     v6 = [v5 maneuver] == 4 || objc_msgSend(v5, "maneuver") == 5;
@@ -1291,56 +1291,56 @@ LABEL_6:
   return v6;
 }
 
-- (void)_updateUserLocationViewAppearanceWithMatchedLocation:(id)a3
+- (void)_updateUserLocationViewAppearanceWithMatchedLocation:(id)location
 {
-  v4 = a3;
-  v5 = [(ContainerViewController *)self chromeViewController];
-  v6 = [(ContainerViewController *)self chromeContext];
-  v7 = [v5 isCurrentContext:v6];
+  locationCopy = location;
+  chromeViewController = [(ContainerViewController *)self chromeViewController];
+  chromeContext = [(ContainerViewController *)self chromeContext];
+  v7 = [chromeViewController isCurrentContext:chromeContext];
 
-  if (v4 && v7)
+  if (locationCopy && v7)
   {
-    v8 = [v4 routeMatch];
-    v9 = [v8 step];
+    routeMatch = [locationCopy routeMatch];
+    step = [routeMatch step];
 
-    v10 = [(StepContainerViewController *)self _isStepOnTransitLine:v9];
-    v11 = [(StepContainerViewController *)self mapView];
-    v12 = [v11 _shouldSplitRouteLine];
+    v10 = [(StepContainerViewController *)self _isStepOnTransitLine:step];
+    mapView = [(StepContainerViewController *)self mapView];
+    _shouldSplitRouteLine = [mapView _shouldSplitRouteLine];
 
-    v13 = [(ContainerViewController *)self chromeViewController];
-    v14 = [v13 userLocationView];
+    chromeViewController2 = [(ContainerViewController *)self chromeViewController];
+    userLocationView = [chromeViewController2 userLocationView];
 
-    if (v14)
+    if (userLocationView)
     {
-      v12 = ([v4 isDirectional] & v10);
-      [v14 updateStateFromLocation:v4 duration:0.0];
+      _shouldSplitRouteLine = ([locationCopy isDirectional] & v10);
+      [userLocationView updateStateFromLocation:locationCopy duration:0.0];
     }
 
-    v15 = [(StepContainerViewController *)self mapView];
-    v16 = [v15 _shouldSplitRouteLine];
+    mapView2 = [(StepContainerViewController *)self mapView];
+    _shouldSplitRouteLine2 = [mapView2 _shouldSplitRouteLine];
 
-    if (v12 != v16)
+    if (_shouldSplitRouteLine != _shouldSplitRouteLine2)
     {
-      v17 = [(StepContainerViewController *)self mapView];
-      [v17 _setShouldSplitRouteLine:v12];
+      mapView3 = [(StepContainerViewController *)self mapView];
+      [mapView3 _setShouldSplitRouteLine:_shouldSplitRouteLine];
     }
 
-    v18 = [(StepContainerViewController *)self _shouldShowHeadingIndicatorForStep:v9];
-    v19 = [(StepContainerViewController *)self mapView];
-    [v19 _setShowHeadingIndicatorForStepping:v18];
+    v18 = [(StepContainerViewController *)self _shouldShowHeadingIndicatorForStep:step];
+    mapView4 = [(StepContainerViewController *)self mapView];
+    [mapView4 _setShowHeadingIndicatorForStepping:v18];
 
     [(NSTimer *)self->_locationExpirationTimer invalidate];
-    v20 = [v4 expirationDate];
+    expirationDate = [locationCopy expirationDate];
 
-    if (v20)
+    if (expirationDate)
     {
-      v21 = [v4 expirationDate];
-      [v21 timeIntervalSinceNow];
+      expirationDate2 = [locationCopy expirationDate];
+      [expirationDate2 timeIntervalSinceNow];
       v22 = 0.0;
       if (v23 > 0.0)
       {
-        v24 = [v4 expirationDate];
-        [v24 timeIntervalSinceNow];
+        expirationDate3 = [locationCopy expirationDate];
+        [expirationDate3 timeIntervalSinceNow];
         v22 = v25;
       }
 
@@ -1360,16 +1360,16 @@ LABEL_6:
   }
 }
 
-- (void)setUserTrackingViewVisible:(BOOL)a3 animated:(BOOL)a4
+- (void)setUserTrackingViewVisible:(BOOL)visible animated:(BOOL)animated
 {
-  if (self->_userTrackingViewVisible != a3)
+  if (self->_userTrackingViewVisible != visible)
   {
     v27 = v7;
     v28 = v6;
     v29 = v4;
     v30 = v5;
-    v8 = a4;
-    self->_userTrackingViewVisible = a3;
+    animatedCopy = animated;
+    self->_userTrackingViewVisible = visible;
     v10 = self->_recenterButton;
     v21 = _NSConcreteStackBlock;
     v22 = 3221225472;
@@ -1377,17 +1377,17 @@ LABEL_6:
     v24 = &unk_101661AE0;
     v11 = v10;
     v25 = v11;
-    v26 = a3;
+    visibleCopy = visible;
     v12 = objc_retainBlock(&v21);
     v15 = _NSConcreteStackBlock;
     v16 = 3221225472;
     v17 = sub_100EA281C;
     v18 = &unk_1016574C0;
     v19 = v11;
-    LOBYTE(v20) = a3;
+    LOBYTE(v20) = visible;
     v13 = v11;
     v14 = objc_retainBlock(&v15);
-    if (v8)
+    if (animatedCopy)
     {
       [UIView animateWithDuration:v12 animations:v14 completion:0.25, v15, v16, v17, v18, v19, v20, v21, v22, v23, v24];
     }
@@ -1400,7 +1400,7 @@ LABEL_6:
   }
 }
 
-- (void)_locationManagerApprovalDidChange:(id)a3
+- (void)_locationManagerApprovalDidChange:(id)change
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -1410,38 +1410,38 @@ LABEL_6:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)_setUserTrackingMode:(int64_t)a3 animated:(BOOL)a4
+- (void)_setUserTrackingMode:(int64_t)mode animated:(BOOL)animated
 {
-  v4 = a4;
-  if (a3 && self->_matchedStepIndex != 0x7FFFFFFFFFFFFFFFLL)
+  animatedCopy = animated;
+  if (mode && self->_matchedStepIndex != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v7 = [(SteppingPageViewController *)self->_pagingVC signGenerator];
-    v8 = [v7 signIndexForStepIndex:self->_matchedStepIndex];
+    signGenerator = [(SteppingPageViewController *)self->_pagingVC signGenerator];
+    v8 = [signGenerator signIndexForStepIndex:self->_matchedStepIndex];
 
     [(SteppingPageViewController *)self->_pagingVC setSignIndex:v8];
   }
 
-  v9 = [(StepContainerViewController *)self mapView];
-  [v9 setUserTrackingMode:a3 animated:v4];
+  mapView = [(StepContainerViewController *)self mapView];
+  [mapView setUserTrackingMode:mode animated:animatedCopy];
 }
 
-- (void)_updateMapRegionForSignAtIndex:(int64_t)a3
+- (void)_updateMapRegionForSignAtIndex:(int64_t)index
 {
   if (!self->_userIsInteractingWithMap)
   {
-    v5 = [(SteppingPageViewController *)self->_pagingVC signGenerator];
+    signGenerator = [(SteppingPageViewController *)self->_pagingVC signGenerator];
     matchedStepIndex = self->_matchedStepIndex;
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = sub_100EA2AEC;
     v8[3] = &unk_101657498;
     v8[4] = self;
-    [v5 rectForSignAtIndex:a3 currentStepIndex:matchedStepIndex handler:v8];
+    [signGenerator rectForSignAtIndex:index currentStepIndex:matchedStepIndex handler:v8];
 
     if (self->_showingOverview)
     {
-      v7 = [(StepContainerViewController *)self stepActionCoordinator];
-      [v7 viewController:self showOverview:0 zoomToMapRegion:0];
+      stepActionCoordinator = [(StepContainerViewController *)self stepActionCoordinator];
+      [stepActionCoordinator viewController:self showOverview:0 zoomToMapRegion:0];
     }
   }
 }
@@ -1452,8 +1452,8 @@ LABEL_6:
   if (!mapCameraController)
   {
     v4 = [MapCameraController alloc];
-    v5 = [(StepContainerViewController *)self mapView];
-    v6 = [(MapCameraController *)v4 initWithMapView:v5];
+    mapView = [(StepContainerViewController *)self mapView];
+    v6 = [(MapCameraController *)v4 initWithMapView:mapView];
     v7 = self->_mapCameraController;
     self->_mapCameraController = v6;
 
@@ -1465,28 +1465,28 @@ LABEL_6:
 
 - (MKMapView)mapView
 {
-  v2 = [(ContainerViewController *)self chromeViewController];
-  v3 = [v2 mapView];
+  chromeViewController = [(ContainerViewController *)self chromeViewController];
+  mapView = [chromeViewController mapView];
 
-  return v3;
+  return mapView;
 }
 
 - (id)passThroughView
 {
-  v2 = [(ContainerViewController *)self chromeViewController];
-  v3 = [v2 passThroughView];
+  chromeViewController = [(ContainerViewController *)self chromeViewController];
+  passThroughView = [chromeViewController passThroughView];
 
-  return v3;
+  return passThroughView;
 }
 
-- (void)containerStyleManagerDidChangeStyle:(unint64_t)a3
+- (void)containerStyleManagerDidChangeStyle:(unint64_t)style
 {
   v5.receiver = self;
   v5.super_class = StepContainerViewController;
-  [(ContainerViewController *)&v5 containerStyleManagerDidChangeStyle:a3];
+  [(ContainerViewController *)&v5 containerStyleManagerDidChangeStyle:style];
   [(StepContainerViewController *)self _showInitialStepIfNecessary];
-  v4 = [(StepContainerViewController *)self iosBasedChromeViewController];
-  [v4 setNeedsUpdateComponent:@"statusBarStyle" animated:0];
+  iosBasedChromeViewController = [(StepContainerViewController *)self iosBasedChromeViewController];
+  [iosBasedChromeViewController setNeedsUpdateComponent:@"statusBarStyle" animated:0];
 }
 
 - (double)availableHeight
@@ -1499,9 +1499,9 @@ LABEL_6:
   else
   {
     v4 = +[UIDevice currentDevice];
-    v5 = [v4 userInterfaceIdiom];
+    userInterfaceIdiom = [v4 userInterfaceIdiom];
 
-    if (v5 != 5)
+    if (userInterfaceIdiom != 5)
     {
 LABEL_9:
       v23.receiver = self;
@@ -1511,28 +1511,28 @@ LABEL_9:
     }
   }
 
-  v6 = [(ContainerViewController *)self containerStyle];
-  if (v6 > 6 || ((1 << v6) & 0x54) == 0)
+  containerStyle = [(ContainerViewController *)self containerStyle];
+  if (containerStyle > 6 || ((1 << containerStyle) & 0x54) == 0)
   {
     goto LABEL_9;
   }
 
-  v7 = [(StepContainerViewController *)self view];
-  [v7 bounds];
+  view = [(StepContainerViewController *)self view];
+  [view bounds];
   v9 = v8;
-  v10 = [(OverlayContainerViewController *)self topContentView];
-  [v10 frame];
+  topContentView = [(OverlayContainerViewController *)self topContentView];
+  [topContentView frame];
   MaxY = CGRectGetMaxY(v24);
   [(ContainerViewController *)self edgePadding];
   v13 = v12 + MaxY;
   v14 = 0.0;
   if (v9 >= v13)
   {
-    v15 = [(StepContainerViewController *)self view];
-    [v15 bounds];
+    view2 = [(StepContainerViewController *)self view];
+    [view2 bounds];
     v17 = v16;
-    v18 = [(OverlayContainerViewController *)self topContentView];
-    [v18 frame];
+    topContentView2 = [(OverlayContainerViewController *)self topContentView];
+    [topContentView2 frame];
     v19 = CGRectGetMaxY(v25);
     [(ContainerViewController *)self edgePadding];
     v14 = v17 - (v19 + v20);
@@ -1545,9 +1545,9 @@ LABEL_9:
 {
   if ([(StepContainerViewController *)self isVLFActive])
   {
-    v3 = [(ContainerViewController *)self chromeViewController];
-    v4 = [v3 view];
-    [v4 safeAreaInsets];
+    chromeViewController = [(ContainerViewController *)self chromeViewController];
+    view = [chromeViewController view];
+    [view safeAreaInsets];
     v6 = v5;
   }
 
@@ -1562,7 +1562,7 @@ LABEL_9:
   return v6;
 }
 
-- (void)containerStyleManagerConfigureLayoutForStyle:(unint64_t)a3
+- (void)containerStyleManagerConfigureLayoutForStyle:(unint64_t)style
 {
   v14.receiver = self;
   v14.super_class = StepContainerViewController;
@@ -1570,7 +1570,7 @@ LABEL_9:
   v5 = &OBJC_IVAR___StepContainerViewController__userLocationTrailingConstraint;
   v6 = &OBJC_IVAR___StepContainerViewController__userLocationLeadingConstraint;
   v7 = 0.0;
-  if (a3 <= 7 && ((1 << a3) & 0xE3) != 0)
+  if (style <= 7 && ((1 << style) & 0xE3) != 0)
   {
     [(ContainerViewController *)self attributionVerticalPadding];
     v5 = &OBJC_IVAR___StepContainerViewController__userLocationLeadingConstraint;
@@ -1580,80 +1580,80 @@ LABEL_9:
   [(NSLayoutConstraint *)self->_userLocationBottomConstraint setConstant:v7];
   [*(&self->super.super.super.super.super.super.super.isa + *v6) setActive:0];
   [*(&self->super.super.super.super.super.super.super.isa + *v5) setActive:1];
-  v8 = [(OverlayContainerViewController *)self topContentView];
-  v9 = [v8 layer];
-  [v9 cornerRadius];
+  topContentView = [(OverlayContainerViewController *)self topContentView];
+  layer = [topContentView layer];
+  [layer cornerRadius];
   v11 = v10;
-  v12 = [(SteppingPageViewController *)self->_pagingVC view];
-  v13 = [v12 layer];
-  [v13 setCornerRadius:v11];
+  view = [(SteppingPageViewController *)self->_pagingVC view];
+  layer2 = [view layer];
+  [layer2 setCornerRadius:v11];
 }
 
-- (void)updateLayoutAnimated:(BOOL)a3
+- (void)updateLayoutAnimated:(BOOL)animated
 {
   v4.receiver = self;
   v4.super_class = StepContainerViewController;
-  [(ContainerViewController *)&v4 updateLayoutAnimated:a3];
+  [(ContainerViewController *)&v4 updateLayoutAnimated:animated];
   [(StepContainerViewController *)self _updateIdleTimer];
 }
 
-- (unint64_t)originalLayoutForViewController:(id)a3
+- (unint64_t)originalLayoutForViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [(StepContainerViewController *)self stepActionCoordinator];
-  v6 = [v5 originalLayoutForViewController:v4];
+  controllerCopy = controller;
+  stepActionCoordinator = [(StepContainerViewController *)self stepActionCoordinator];
+  v6 = [stepActionCoordinator originalLayoutForViewController:controllerCopy];
 
   return v6;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = StepContainerViewController;
-  [(ContainerViewController *)&v4 traitCollectionDidChange:a3];
+  [(ContainerViewController *)&v4 traitCollectionDidChange:change];
   [(StepContainerViewController *)self _updateStatusBarIndicatorLayout];
 }
 
-- (void)willTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4
+- (void)willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator
 {
   v7.receiver = self;
   v7.super_class = StepContainerViewController;
-  [(ContainerViewController *)&v7 willTransitionToTraitCollection:a3 withTransitionCoordinator:a4];
+  [(ContainerViewController *)&v7 willTransitionToTraitCollection:collection withTransitionCoordinator:coordinator];
   v5 = objc_alloc_init(NSMutableDictionary);
   isExpandedMapping = self->_isExpandedMapping;
   self->_isExpandedMapping = v5;
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v9.receiver = self;
   v9.super_class = StepContainerViewController;
-  [(ContainerViewController *)&v9 viewDidDisappear:a3];
+  [(ContainerViewController *)&v9 viewDidDisappear:disappear];
   debugViewsController = self->_debugViewsController;
-  v5 = [(OverlayContainerViewController *)self overlayView];
-  [(NavigationDebugViewsController *)debugViewsController removeDebugViewsFromView:v5];
+  overlayView = [(OverlayContainerViewController *)self overlayView];
+  [(NavigationDebugViewsController *)debugViewsController removeDebugViewsFromView:overlayView];
 
   [(NavDebugLocationManager *)self->_debugLocationManager setMapView:0];
   debugLocationManager = self->_debugLocationManager;
   self->_debugLocationManager = 0;
 
-  v7 = [(StepContainerViewController *)self mapView];
-  v8 = [v7 _debugConsole];
-  [v8 setCustomTextEnabled:0];
+  mapView = [(StepContainerViewController *)self mapView];
+  _debugConsole = [mapView _debugConsole];
+  [_debugConsole setCustomTextEnabled:0];
 
   [(StepContainerViewController *)self _invalidateTimers];
 }
 
 - (void)_showInitialStepIfNecessary
 {
-  v11 = [(StepContainerViewController *)self view];
-  v3 = [v11 superview];
-  if (v3)
+  view = [(StepContainerViewController *)self view];
+  superview = [view superview];
+  if (superview)
   {
-    v4 = v3;
-    v5 = [(ContainerViewController *)self containerStyle];
+    v4 = superview;
+    containerStyle = [(ContainerViewController *)self containerStyle];
 
-    if (!v5)
+    if (!containerStyle)
     {
       return;
     }
@@ -1664,16 +1664,16 @@ LABEL_9:
       return;
     }
 
-    v7 = [(GEOComposedRoute *)self->_route steps];
-    v8 = [v7 count];
+    steps = [(GEOComposedRoute *)self->_route steps];
+    v8 = [steps count];
 
     if (initialStepIndex >= v8)
     {
       return;
     }
 
-    v9 = [(GEOComposedRoute *)self->_route steps];
-    v12 = [v9 objectAtIndexedSubscript:self->_initialStepIndex];
+    steps2 = [(GEOComposedRoute *)self->_route steps];
+    v12 = [steps2 objectAtIndexedSubscript:self->_initialStepIndex];
 
     v10 = v12;
     if (v12)
@@ -1688,30 +1688,30 @@ LABEL_9:
 
   else
   {
-    v10 = v11;
+    v10 = view;
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = StepContainerViewController;
-  [(OverlayContainerViewController *)&v4 viewDidAppear:a3];
+  [(OverlayContainerViewController *)&v4 viewDidAppear:appear];
   [(StepContainerViewController *)self _showInitialStepIfNecessary];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = StepContainerViewController;
-  [(ContainerViewController *)&v6 viewWillAppear:a3];
+  [(ContainerViewController *)&v6 viewWillAppear:appear];
   [(StepContainerViewController *)self _setupDebugUtilities];
   if ([(StepContainerViewController *)self _isTrackingLocation])
   {
     v4 = +[MNNavigationService sharedService];
-    v5 = [v4 lastLocation];
+    lastLocation = [v4 lastLocation];
 
-    [(StepContainerViewController *)self _updateUserLocationViewAppearanceWithMatchedLocation:v5];
+    [(StepContainerViewController *)self _updateUserLocationViewAppearanceWithMatchedLocation:lastLocation];
   }
 
   if (self->_hasDesiredUserTrackingMode)
@@ -1728,9 +1728,9 @@ LABEL_9:
 
 - (void)_updateCompassLayout
 {
-  v3 = [(ContainerViewController *)self chromeViewController];
-  v4 = [v3 mapView];
-  [v4 _compassInsets];
+  chromeViewController = [(ContainerViewController *)self chromeViewController];
+  mapView = [chromeViewController mapView];
+  [mapView _compassInsets];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -1738,101 +1738,101 @@ LABEL_9:
 
   if (sub_10000FA08(self) != 5)
   {
-    v13 = [(ContainerViewController *)self chromeViewController];
-    v14 = [v13 floatingControlsOverlay];
-    [v14 margin];
+    chromeViewController2 = [(ContainerViewController *)self chromeViewController];
+    floatingControlsOverlay = [chromeViewController2 floatingControlsOverlay];
+    [floatingControlsOverlay margin];
     v12 = v15;
 
     v6 = v12;
   }
 
-  v17 = [(ContainerViewController *)self chromeViewController];
-  v16 = [v17 mapView];
-  [v16 _setCompassInsets:{v6, v8, v10, v12}];
+  chromeViewController3 = [(ContainerViewController *)self chromeViewController];
+  mapView2 = [chromeViewController3 mapView];
+  [mapView2 _setCompassInsets:{v6, v8, v10, v12}];
 }
 
 - (void)_setupConstraints
 {
-  v3 = [(UIScrollView *)self->_verticalSignScrollView heightAnchor];
-  v4 = [v3 constraintEqualToConstant:0.0];
+  heightAnchor = [(UIScrollView *)self->_verticalSignScrollView heightAnchor];
+  v4 = [heightAnchor constraintEqualToConstant:0.0];
   scrollViewHeightConstraint = self->_scrollViewHeightConstraint;
   self->_scrollViewHeightConstraint = v4;
 
-  v6 = [(OverlayContainerViewController *)self innerLayoutGuide];
-  v7 = [v6 bottomAnchor];
-  v8 = [(UIButton *)self->_recenterButton bottomAnchor];
-  v9 = [v7 constraintEqualToAnchor:v8];
+  innerLayoutGuide = [(OverlayContainerViewController *)self innerLayoutGuide];
+  bottomAnchor = [innerLayoutGuide bottomAnchor];
+  bottomAnchor2 = [(UIButton *)self->_recenterButton bottomAnchor];
+  v9 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   userLocationBottomConstraint = self->_userLocationBottomConstraint;
   self->_userLocationBottomConstraint = v9;
 
-  v11 = [(UIButton *)self->_recenterButton leadingAnchor];
-  v12 = [(OverlayContainerViewController *)self innerLayoutGuide];
-  v13 = [v12 leadingAnchor];
-  v14 = [v11 constraintEqualToAnchor:v13];
+  leadingAnchor = [(UIButton *)self->_recenterButton leadingAnchor];
+  innerLayoutGuide2 = [(OverlayContainerViewController *)self innerLayoutGuide];
+  leadingAnchor2 = [innerLayoutGuide2 leadingAnchor];
+  v14 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   userLocationLeadingConstraint = self->_userLocationLeadingConstraint;
   self->_userLocationLeadingConstraint = v14;
 
-  v16 = [(OverlayContainerViewController *)self innerLayoutGuide];
-  v17 = [v16 trailingAnchor];
-  v18 = [(UIButton *)self->_recenterButton trailingAnchor];
-  v19 = [v17 constraintEqualToAnchor:v18];
+  innerLayoutGuide3 = [(OverlayContainerViewController *)self innerLayoutGuide];
+  trailingAnchor = [innerLayoutGuide3 trailingAnchor];
+  trailingAnchor2 = [(UIButton *)self->_recenterButton trailingAnchor];
+  v19 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   userLocationTrailingConstraint = self->_userLocationTrailingConstraint;
   self->_userLocationTrailingConstraint = v19;
 
-  v63 = [(UIScrollView *)self->_verticalSignScrollView topAnchor];
-  v64 = [(OverlayContainerViewController *)self topContentView];
-  v62 = [v64 topAnchor];
-  v61 = [v63 constraintEqualToAnchor:v62];
+  topAnchor = [(UIScrollView *)self->_verticalSignScrollView topAnchor];
+  topContentView = [(OverlayContainerViewController *)self topContentView];
+  topAnchor2 = [topContentView topAnchor];
+  v61 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v65[0] = v61;
-  v59 = [(UIScrollView *)self->_verticalSignScrollView bottomAnchor];
-  v60 = [(OverlayContainerViewController *)self topContentView];
-  v58 = [v60 bottomAnchor];
-  v57 = [v59 constraintEqualToAnchor:v58];
+  bottomAnchor3 = [(UIScrollView *)self->_verticalSignScrollView bottomAnchor];
+  topContentView2 = [(OverlayContainerViewController *)self topContentView];
+  bottomAnchor4 = [topContentView2 bottomAnchor];
+  v57 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
   v65[1] = v57;
-  v55 = [(UIScrollView *)self->_verticalSignScrollView leadingAnchor];
-  v56 = [(OverlayContainerViewController *)self topContentView];
-  v54 = [v56 leadingAnchor];
-  v53 = [v55 constraintEqualToAnchor:v54];
+  leadingAnchor3 = [(UIScrollView *)self->_verticalSignScrollView leadingAnchor];
+  topContentView3 = [(OverlayContainerViewController *)self topContentView];
+  leadingAnchor4 = [topContentView3 leadingAnchor];
+  v53 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v65[2] = v53;
-  v51 = [(UIScrollView *)self->_verticalSignScrollView trailingAnchor];
-  v52 = [(OverlayContainerViewController *)self topContentView];
-  v50 = [v52 trailingAnchor];
-  v49 = [v51 constraintEqualToAnchor:v50];
+  trailingAnchor3 = [(UIScrollView *)self->_verticalSignScrollView trailingAnchor];
+  topContentView4 = [(OverlayContainerViewController *)self topContentView];
+  trailingAnchor4 = [topContentView4 trailingAnchor];
+  v49 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v65[3] = v49;
-  v47 = [(UIScrollView *)self->_verticalSignScrollView widthAnchor];
-  v48 = [(SteppingPageViewController *)self->_pagingVC view];
-  v46 = [v48 widthAnchor];
-  v45 = [v47 constraintEqualToAnchor:v46];
+  widthAnchor = [(UIScrollView *)self->_verticalSignScrollView widthAnchor];
+  view = [(SteppingPageViewController *)self->_pagingVC view];
+  widthAnchor2 = [view widthAnchor];
+  v45 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
   v21 = self->_scrollViewHeightConstraint;
   v65[4] = v45;
   v65[5] = v21;
-  v44 = [(SteppingPageViewController *)self->_pagingVC view];
-  v43 = [v44 topAnchor];
-  v42 = [(UIScrollView *)self->_verticalSignScrollView topAnchor];
-  v41 = [v43 constraintEqualToAnchor:v42];
+  view2 = [(SteppingPageViewController *)self->_pagingVC view];
+  topAnchor3 = [view2 topAnchor];
+  topAnchor4 = [(UIScrollView *)self->_verticalSignScrollView topAnchor];
+  v41 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   v65[6] = v41;
-  v40 = [(SteppingPageViewController *)self->_pagingVC view];
-  v39 = [v40 bottomAnchor];
-  v38 = [(UIScrollView *)self->_verticalSignScrollView bottomAnchor];
-  v37 = [v39 constraintEqualToAnchor:v38];
+  view3 = [(SteppingPageViewController *)self->_pagingVC view];
+  bottomAnchor5 = [view3 bottomAnchor];
+  bottomAnchor6 = [(UIScrollView *)self->_verticalSignScrollView bottomAnchor];
+  v37 = [bottomAnchor5 constraintEqualToAnchor:bottomAnchor6];
   v65[7] = v37;
-  v36 = [(SteppingPageViewController *)self->_pagingVC view];
-  v35 = [v36 leadingAnchor];
-  v34 = [(UIScrollView *)self->_verticalSignScrollView leadingAnchor];
-  v33 = [v35 constraintEqualToAnchor:v34];
+  view4 = [(SteppingPageViewController *)self->_pagingVC view];
+  leadingAnchor5 = [view4 leadingAnchor];
+  leadingAnchor6 = [(UIScrollView *)self->_verticalSignScrollView leadingAnchor];
+  v33 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
   v65[8] = v33;
-  v22 = [(SteppingPageViewController *)self->_pagingVC view];
-  v23 = [v22 trailingAnchor];
-  v24 = [(UIScrollView *)self->_verticalSignScrollView trailingAnchor];
-  v25 = [v23 constraintEqualToAnchor:v24];
+  view5 = [(SteppingPageViewController *)self->_pagingVC view];
+  trailingAnchor5 = [view5 trailingAnchor];
+  trailingAnchor6 = [(UIScrollView *)self->_verticalSignScrollView trailingAnchor];
+  v25 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
   v65[9] = v25;
-  v26 = [(SteppingPageViewController *)self->_pagingVC signHeightConstraint];
-  v65[10] = v26;
-  v27 = [(UIButton *)self->_recenterButton widthAnchor];
-  v28 = [v27 constraintEqualToConstant:60.0];
+  signHeightConstraint = [(SteppingPageViewController *)self->_pagingVC signHeightConstraint];
+  v65[10] = signHeightConstraint;
+  widthAnchor3 = [(UIButton *)self->_recenterButton widthAnchor];
+  v28 = [widthAnchor3 constraintEqualToConstant:60.0];
   v65[11] = v28;
-  v29 = [(UIButton *)self->_recenterButton heightAnchor];
-  v30 = [v29 constraintEqualToConstant:60.0];
+  heightAnchor2 = [(UIButton *)self->_recenterButton heightAnchor];
+  v30 = [heightAnchor2 constraintEqualToConstant:60.0];
   v31 = self->_userLocationBottomConstraint;
   v65[12] = v30;
   v65[13] = v31;
@@ -1847,8 +1847,8 @@ LABEL_9:
   signGenerator = self->_signGenerator;
   self->_signGenerator = v3;
 
-  v5 = [(SteppingSignGenerator *)self->_signGenerator stepsWithCorrespondingSigns];
-  [(GEOComposedRoute *)self->_route setManeuverDisplaySteps:v5];
+  stepsWithCorrespondingSigns = [(SteppingSignGenerator *)self->_signGenerator stepsWithCorrespondingSigns];
+  [(GEOComposedRoute *)self->_route setManeuverDisplaySteps:stepsWithCorrespondingSigns];
 
   v6 = [[UIScrollView alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
   verticalSignScrollView = self->_verticalSignScrollView;
@@ -1860,8 +1860,8 @@ LABEL_9:
   [(UIScrollView *)self->_verticalSignScrollView setShowsHorizontalScrollIndicator:0];
   [(UIScrollView *)self->_verticalSignScrollView setShowsVerticalScrollIndicator:0];
   [(UIScrollView *)self->_verticalSignScrollView setAccessibilityIdentifier:@"StepContainerVerticalSignScrollView"];
-  v8 = [(OverlayContainerViewController *)self topContentView];
-  [v8 addSubview:self->_verticalSignScrollView];
+  topContentView = [(OverlayContainerViewController *)self topContentView];
+  [topContentView addSubview:self->_verticalSignScrollView];
 
   v9 = [[SteppingPageViewController alloc] initWithSignGenerator:self->_signGenerator];
   pagingVC = self->_pagingVC;
@@ -1870,12 +1870,12 @@ LABEL_9:
   [(SteppingPageViewController *)self->_pagingVC setDelegate:self];
   [(SteppingPageViewController *)self->_pagingVC setAccessibilityIdentifier:@"StepContainerPagingView"];
   [(ContainerViewController *)self addChildViewController:self->_pagingVC];
-  v11 = [(SteppingPageViewController *)self->_pagingVC view];
-  [v11 setTranslatesAutoresizingMaskIntoConstraints:0];
+  view = [(SteppingPageViewController *)self->_pagingVC view];
+  [view setTranslatesAutoresizingMaskIntoConstraints:0];
 
   v12 = self->_verticalSignScrollView;
-  v13 = [(SteppingPageViewController *)self->_pagingVC view];
-  [(UIScrollView *)v12 addSubview:v13];
+  view2 = [(SteppingPageViewController *)self->_pagingVC view];
+  [(UIScrollView *)v12 addSubview:view2];
 
   [(SteppingPageViewController *)self->_pagingVC didMoveToParentViewController:self];
   [(SteppingSignGenerator *)self->_signGenerator setCellVendor:self->_pagingVC];
@@ -1901,19 +1901,19 @@ LABEL_9:
   v21 = [UIImage systemImageNamed:@"location.fill" withConfiguration:v37];
   [(UIButton *)v20 setImage:v21 forState:0];
 
-  v22 = [(UIButton *)self->_recenterButton layer];
-  [v22 setCornerRadius:30.0];
+  layer = [(UIButton *)self->_recenterButton layer];
+  [layer setCornerRadius:30.0];
 
-  v23 = [(UIButton *)self->_recenterButton layer];
+  layer2 = [(UIButton *)self->_recenterButton layer];
   LODWORD(v24) = 1045220557;
-  [v23 setShadowOpacity:v24];
+  [layer2 setShadowOpacity:v24];
 
   height = CGSizeZero.height;
-  v26 = [(UIButton *)self->_recenterButton layer];
-  [v26 setShadowOffset:{CGSizeZero.width, height}];
+  layer3 = [(UIButton *)self->_recenterButton layer];
+  [layer3 setShadowOffset:{CGSizeZero.width, height}];
 
-  v27 = [(UIButton *)self->_recenterButton layer];
-  [v27 setShadowRadius:1.0];
+  layer4 = [(UIButton *)self->_recenterButton layer];
+  [layer4 setShadowRadius:1.0];
 
   v28 = _UISolariumEnabled();
   v29 = -8.0;
@@ -1923,20 +1923,20 @@ LABEL_9:
   }
 
   [(UIButton *)self->_recenterButton _setTouchInsets:v29, -16.0, v29, -16.0];
-  v30 = [(StepContainerViewController *)self stepActionCoordinator];
-  -[StepContainerViewController setUserTrackingViewVisible:](self, "setUserTrackingViewVisible:", [v30 isAuthorizedForPreciseLocation]);
+  stepActionCoordinator = [(StepContainerViewController *)self stepActionCoordinator];
+  -[StepContainerViewController setUserTrackingViewVisible:](self, "setUserTrackingViewVisible:", [stepActionCoordinator isAuthorizedForPreciseLocation]);
 
   v31 = +[NSNotificationCenter defaultCenter];
   [v31 addObserver:self selector:"_locationManagerApprovalDidChange:" name:MKLocationManagerApprovalDidChangeNotification object:0];
 
-  v32 = [(OverlayContainerViewController *)self overlayView];
-  [v32 addSubview:self->_recenterButton];
+  overlayView = [(OverlayContainerViewController *)self overlayView];
+  [overlayView addSubview:self->_recenterButton];
 
-  v33 = [(StepContainerViewController *)self mapView];
+  mapView = [(StepContainerViewController *)self mapView];
   [(ContainerViewController *)self edgePadding];
   v35 = v34;
   [(ContainerViewController *)self edgePadding];
-  [v33 _setCompassInsets:{v35, 0.0, 0.0, v36}];
+  [mapView _setCompassInsets:{v35, 0.0, 0.0, v36}];
 
   [(StepContainerViewController *)self _setupConstraints];
 }
@@ -1947,11 +1947,11 @@ LABEL_9:
   v5.super_class = StepContainerViewController;
   [(OverlayContainerViewController *)&v5 viewDidLoad];
   [(StepContainerViewController *)self _setupViews];
-  v3 = [(StepContainerViewController *)self stepActionCoordinator];
-  [v3 viewControllerPresentTray:self];
+  stepActionCoordinator = [(StepContainerViewController *)self stepActionCoordinator];
+  [stepActionCoordinator viewControllerPresentTray:self];
 
-  v4 = [(StepContainerViewController *)self statusIndicatorManager];
-  [v4 updateIndicatorType];
+  statusIndicatorManager = [(StepContainerViewController *)self statusIndicatorManager];
+  [statusIndicatorManager updateIndicatorType];
 }
 
 - (void)viewDidLayoutSubviews
@@ -1962,41 +1962,41 @@ LABEL_9:
   [(StepContainerViewController *)self _updateCompassLayout];
 }
 
-- (void)showOverview:(BOOL)a3 andZoomToMapRegion:(BOOL)a4
+- (void)showOverview:(BOOL)overview andZoomToMapRegion:(BOOL)region
 {
-  self->_showingOverview = a3;
-  if (a4)
+  self->_showingOverview = overview;
+  if (region)
   {
-    if (a3)
+    if (overview)
     {
-      v5 = [(StepContainerViewController *)self mapCameraController];
-      v6 = [(StepContainerViewController *)self route];
-      v9 = v6;
+      mapCameraController = [(StepContainerViewController *)self mapCameraController];
+      route = [(StepContainerViewController *)self route];
+      v9 = route;
       v7 = [NSArray arrayWithObjects:&v9 count:1];
-      [v5 frameRoutes:v7 includeCompassInset:1 animated:1 completion:0];
+      [mapCameraController frameRoutes:v7 includeCompassInset:1 animated:1 completion:0];
     }
 
     else
     {
-      v8 = [(SteppingPageViewController *)self->_pagingVC signIndex];
+      signIndex = [(SteppingPageViewController *)self->_pagingVC signIndex];
 
-      [(StepContainerViewController *)self _updateMapRegionForSignAtIndex:v8];
+      [(StepContainerViewController *)self _updateMapRegionForSignAtIndex:signIndex];
     }
   }
 }
 
-- (void)updateWithDisplayedStep:(id)a3
+- (void)updateWithDisplayedStep:(id)step
 {
   pagingVC = self->_pagingVC;
-  v5 = a3;
-  v6 = [(SteppingPageViewController *)pagingVC signGenerator];
-  v7 = [v6 signIndexForStep:v5];
+  stepCopy = step;
+  signGenerator = [(SteppingPageViewController *)pagingVC signGenerator];
+  v7 = [signGenerator signIndexForStep:stepCopy];
 
   [(SteppingPageViewController *)self->_pagingVC setSignIndex:v7];
   if (v7 <= 0x7FFFFFFFFFFFFFFELL)
   {
-    v8 = [(StepContainerViewController *)self route];
-    [v8 setCurrentDisplayStep:v7];
+    route = [(StepContainerViewController *)self route];
+    [route setCurrentDisplayStep:v7];
   }
 
   [(StepContainerViewController *)self _updateMapRegionForSignAtIndex:v7];
@@ -2015,46 +2015,46 @@ LABEL_9:
 
 - (void)_setupDebugUtilities
 {
-  v3 = [(ContainerViewController *)self chromeViewController];
-  v20 = [v3 mapView];
+  chromeViewController = [(ContainerViewController *)self chromeViewController];
+  mapView = [chromeViewController mapView];
 
   v4 = +[GEOPlatform sharedPlatform];
-  v5 = [v4 isInternalInstall];
+  isInternalInstall = [v4 isInternalInstall];
 
-  if (v5)
+  if (isInternalInstall)
   {
     v6 = objc_alloc_init(NavDebugLocationManager);
     debugLocationManager = self->_debugLocationManager;
     self->_debugLocationManager = v6;
 
-    v8 = [(ContainerViewController *)self chromeViewController];
-    v9 = [v8 mapView];
-    [(NavDebugLocationManager *)self->_debugLocationManager setMapView:v9];
+    chromeViewController2 = [(ContainerViewController *)self chromeViewController];
+    mapView2 = [chromeViewController2 mapView];
+    [(NavDebugLocationManager *)self->_debugLocationManager setMapView:mapView2];
 
-    v10 = [v20 _debugConsole];
-    [v10 setCustomTextEnabled:1];
+    _debugConsole = [mapView _debugConsole];
+    [_debugConsole setCustomTextEnabled:1];
 
-    v11 = [v20 _debugConsole];
-    [v11 setPageIndex:2];
+    _debugConsole2 = [mapView _debugConsole];
+    [_debugConsole2 setPageIndex:2];
 
     [(StepContainerViewController *)self _updateDebugConsoleForLocation:0];
   }
 
   v12 = +[MNNavigationService sharedService];
-  v13 = [v12 isNavigatingFromTrace];
+  isNavigatingFromTrace = [v12 isNavigatingFromTrace];
 
-  if (v13)
+  if (isNavigatingFromTrace)
   {
     v14 = [[NavigationDebugViewsController alloc] initWithDelegate:0];
     debugViewsController = self->_debugViewsController;
     self->_debugViewsController = v14;
 
     [(NavigationDebugViewsController *)self->_debugViewsController setShowTraceControlsForStaleLocations:0];
-    v16 = [(StepContainerViewController *)self debugViewsController];
-    v17 = [(OverlayContainerViewController *)self overlayView];
-    v18 = [(OverlayContainerViewController *)self innerLayoutGuide];
-    v19 = [(ContainerViewController *)self chromeViewController];
-    [v16 addDebugViewsToView:v17 layoutGuide:v18 mapView:v20 modalPresentingViewController:v19];
+    debugViewsController = [(StepContainerViewController *)self debugViewsController];
+    overlayView = [(OverlayContainerViewController *)self overlayView];
+    innerLayoutGuide = [(OverlayContainerViewController *)self innerLayoutGuide];
+    chromeViewController3 = [(ContainerViewController *)self chromeViewController];
+    [debugViewsController addDebugViewsToView:overlayView layoutGuide:innerLayoutGuide mapView:mapView modalPresentingViewController:chromeViewController3];
   }
 }
 
@@ -2079,21 +2079,21 @@ LABEL_9:
   return stepActionCoordinator;
 }
 
-- (StepContainerViewController)initWithRoute:(id)a3 initialStepIndex:(unint64_t)a4 desiredTrackingMode:(int64_t)a5
+- (StepContainerViewController)initWithRoute:(id)route initialStepIndex:(unint64_t)index desiredTrackingMode:(int64_t)mode
 {
-  result = [(StepContainerViewController *)self initWithRoute:a3 initialStepIndex:a4];
+  result = [(StepContainerViewController *)self initWithRoute:route initialStepIndex:index];
   if (result)
   {
     result->_hasDesiredUserTrackingMode = 1;
-    result->_desiredUserTrackingMode = a5;
+    result->_desiredUserTrackingMode = mode;
   }
 
   return result;
 }
 
-- (StepContainerViewController)initWithRoute:(id)a3 initialStepIndex:(unint64_t)a4
+- (StepContainerViewController)initWithRoute:(id)route initialStepIndex:(unint64_t)index
 {
-  v7 = a3;
+  routeCopy = route;
   v25.receiver = self;
   v25.super_class = StepContainerViewController;
   v8 = [(ContainerViewController *)&v25 initWithNibName:0 bundle:0];
@@ -2103,7 +2103,7 @@ LABEL_9:
     v10 = NSStringFromClass(v9);
     [(StepContainerViewController *)v8 setAccessibilityIdentifier:v10];
 
-    objc_storeStrong(&v8->_route, a3);
+    objc_storeStrong(&v8->_route, route);
     if ([(GEOComposedRoute *)v8->_route transportType]== 1)
     {
       v22 = sub_10006D178();
@@ -2142,7 +2142,7 @@ LABEL_9:
     startDate = v8->_startDate;
     v8->_startDate = v12;
 
-    v8->_initialStepIndex = a4;
+    v8->_initialStepIndex = index;
     v14 = objc_alloc_init(NSMutableDictionary);
     isExpandedMapping = v8->_isExpandedMapping;
     v8->_isExpandedMapping = v14;

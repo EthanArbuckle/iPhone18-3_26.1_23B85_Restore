@@ -1,5 +1,5 @@
 @interface ML3PersistentIDGenerator
-- (ML3PersistentIDGenerator)initWithDatabaseConnection:(id)a3 tableName:(id)a4;
+- (ML3PersistentIDGenerator)initWithDatabaseConnection:(id)connection tableName:(id)name;
 - (int64_t)nextPersistentID;
 - (void)_calculateNewRun;
 @end
@@ -20,9 +20,9 @@
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v30 count:1];
     v8 = [(ML3DatabaseConnection *)connection executeQuery:validateStartingPersistentIdSQL withParameters:v7];
 
-    v9 = [v8 int64ValueForFirstRowAndColumn];
+    int64ValueForFirstRowAndColumn = [v8 int64ValueForFirstRowAndColumn];
     currentPersistentID = self->_currentPersistentID;
-    if (v9 == currentPersistentID)
+    if (int64ValueForFirstRowAndColumn == currentPersistentID)
     {
       currentPersistentID = 0;
     }
@@ -40,11 +40,11 @@
   v15 = [MEMORY[0x277CBEA60] arrayWithObjects:&v29 count:1];
   v16 = [(ML3DatabaseConnection *)v12 executeQuery:nextUsedPersistentIdSQL withParameters:v15];
 
-  v17 = [v16 int64ValueForFirstRowAndColumn];
+  int64ValueForFirstRowAndColumn2 = [v16 int64ValueForFirstRowAndColumn];
   v18 = 0x7FFFFFFFFFFFFFFFLL;
-  if (v17)
+  if (int64ValueForFirstRowAndColumn2)
   {
-    v18 = v17;
+    v18 = int64ValueForFirstRowAndColumn2;
   }
 
   self->_nextUsedPersistentID = v18;
@@ -77,25 +77,25 @@
   return result;
 }
 
-- (ML3PersistentIDGenerator)initWithDatabaseConnection:(id)a3 tableName:(id)a4
+- (ML3PersistentIDGenerator)initWithDatabaseConnection:(id)connection tableName:(id)name
 {
-  v7 = a3;
-  v8 = a4;
+  connectionCopy = connection;
+  nameCopy = name;
   v16.receiver = self;
   v16.super_class = ML3PersistentIDGenerator;
   v9 = [(ML3PersistentIDGenerator *)&v16 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_connection, a3);
-    objc_storeStrong(&v10->_tableName, a4);
-    v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"SELECT ROWID FROM %@ WHERE ROWID = ?", v8];
+    objc_storeStrong(&v9->_connection, connection);
+    objc_storeStrong(&v10->_tableName, name);
+    nameCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"SELECT ROWID FROM %@ WHERE ROWID = ?", nameCopy];
     validateStartingPersistentIdSQL = v10->_validateStartingPersistentIdSQL;
-    v10->_validateStartingPersistentIdSQL = v11;
+    v10->_validateStartingPersistentIdSQL = nameCopy;
 
-    v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"SELECT ROWID FROM %@ WHERE ROWID > ? LIMIT 1", v8];
+    nameCopy2 = [MEMORY[0x277CCACA8] stringWithFormat:@"SELECT ROWID FROM %@ WHERE ROWID > ? LIMIT 1", nameCopy];
     nextUsedPersistentIdSQL = v10->_nextUsedPersistentIdSQL;
-    v10->_nextUsedPersistentIdSQL = v13;
+    v10->_nextUsedPersistentIdSQL = nameCopy2;
   }
 
   return v10;

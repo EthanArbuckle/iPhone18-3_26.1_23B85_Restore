@@ -1,42 +1,42 @@
 @interface GKDashboardLeaderboardScoreDataSource
-- (BOOL)collectionView:(id)a3 shouldSelectItemAtIndexPath:(id)a4;
-- (BOOL)isShowMoreIndexPath:(id)a3;
-- (BOOL)isShowcaseIndexPath:(id)a3;
+- (BOOL)collectionView:(id)view shouldSelectItemAtIndexPath:(id)path;
+- (BOOL)isShowMoreIndexPath:(id)path;
+- (BOOL)isShowcaseIndexPath:(id)path;
 - (BOOL)needsShowcaseCell;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 referenceSizeForFooterInSection:(int64_t)a5;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 referenceSizeForHeaderInSection:(int64_t)a5;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5;
-- (GKDashboardLeaderboardScoreDataSource)initWithGameRecord:(id)a3 leaderboard:(id)a4;
+- (CGSize)collectionView:(id)view layout:(id)layout referenceSizeForFooterInSection:(int64_t)section;
+- (CGSize)collectionView:(id)view layout:(id)layout referenceSizeForHeaderInSection:(int64_t)section;
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path;
+- (GKDashboardLeaderboardScoreDataSource)initWithGameRecord:(id)record leaderboard:(id)leaderboard;
 - (SEL)timeScopeAction;
 - (double)preferredCollectionHeight;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5;
-- (id)itemForIndexPath:(id)a3;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path;
+- (id)itemForIndexPath:(id)path;
 - (id)sectionHeaderText;
 - (id)timeScopeTarget;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)loadDataWithCompletionHandler:(id)a3;
-- (void)revealMoreItemsInCollectionView:(id)a3 section:(int64_t)a4 completion:(id)a5;
-- (void)sectionHeaderButtonPressed:(id)a3;
-- (void)setTimeScopeAction:(SEL)a3;
-- (void)setupCollectionView:(id)a3;
-- (void)showMoreInCollectionView:(id)a3 section:(int64_t)a4;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)loadDataWithCompletionHandler:(id)handler;
+- (void)revealMoreItemsInCollectionView:(id)view section:(int64_t)section completion:(id)completion;
+- (void)sectionHeaderButtonPressed:(id)pressed;
+- (void)setTimeScopeAction:(SEL)action;
+- (void)setupCollectionView:(id)view;
+- (void)showMoreInCollectionView:(id)view section:(int64_t)section;
 @end
 
 @implementation GKDashboardLeaderboardScoreDataSource
 
-- (GKDashboardLeaderboardScoreDataSource)initWithGameRecord:(id)a3 leaderboard:(id)a4
+- (GKDashboardLeaderboardScoreDataSource)initWithGameRecord:(id)record leaderboard:(id)leaderboard
 {
-  v6 = a3;
-  v7 = a4;
+  recordCopy = record;
+  leaderboardCopy = leaderboard;
   v11.receiver = self;
   v11.super_class = GKDashboardLeaderboardScoreDataSource;
   v8 = [(GKCollectionDataSource *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(GKDashboardLeaderboardScoreDataSource *)v8 setGameRecord:v6];
-    [(GKDashboardLeaderboardScoreDataSource *)v9 setLeaderboard:v7];
+    [(GKDashboardLeaderboardScoreDataSource *)v8 setGameRecord:recordCopy];
+    [(GKDashboardLeaderboardScoreDataSource *)v9 setLeaderboard:leaderboardCopy];
     [(GKDashboardLeaderboardScoreDataSource *)v9 setForceInitialShowMore:0];
     [(GKCollectionDataSource *)v9 setUseStandardHeaders:0];
   }
@@ -44,22 +44,22 @@
   return v9;
 }
 
-- (void)setupCollectionView:(id)a3
+- (void)setupCollectionView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v5 = +[GKDashboardLeaderboardScoreCell lowRankNib];
-  [v4 registerNib:v5 forCellWithReuseIdentifier:@"lowRankCell"];
+  [viewCopy registerNib:v5 forCellWithReuseIdentifier:@"lowRankCell"];
   v6 = +[GKDashboardLeaderboardScoreCell highRankNib];
 
-  [v4 registerNib:v6 forCellWithReuseIdentifier:@"highRankCell"];
+  [viewCopy registerNib:v6 forCellWithReuseIdentifier:@"highRankCell"];
   v7 = +[GKDashboardShowMoreTextCell];
 
-  [v4 registerNib:v7 forCellWithReuseIdentifier:@"showMoreCell"];
+  [viewCopy registerNib:v7 forCellWithReuseIdentifier:@"showMoreCell"];
   if (![(GKCollectionDataSource *)self useStandardHeaders])
   {
     v8 = +[GKDashboardButtonSectionHeaderView];
 
-    [v4 registerNib:v8 forSupplementaryViewOfKind:*MEMORY[0x277D767D8] withReuseIdentifier:@"sectionHeader"];
+    [viewCopy registerNib:v8 forSupplementaryViewOfKind:*MEMORY[0x277D767D8] withReuseIdentifier:@"sectionHeader"];
     v7 = v8;
   }
 
@@ -67,31 +67,31 @@
   {
     v9 = +[GKDashboardSingleButtonReusableFooterView];
 
-    [v4 registerNib:v9 forSupplementaryViewOfKind:*MEMORY[0x277D767D0] withReuseIdentifier:@"sectionFooter"];
+    [viewCopy registerNib:v9 forSupplementaryViewOfKind:*MEMORY[0x277D767D0] withReuseIdentifier:@"sectionFooter"];
     v7 = v9;
   }
 
   v10.receiver = self;
   v10.super_class = GKDashboardLeaderboardScoreDataSource;
-  [(GKCollectionDataSource *)&v10 setupCollectionView:v4];
+  [(GKCollectionDataSource *)&v10 setupCollectionView:viewCopy];
 }
 
-- (void)loadDataWithCompletionHandler:(id)a3
+- (void)loadDataWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(GKDashboardLeaderboardScoreDataSource *)self leaderboard];
-  [v5 setRange:{1, 100}];
+  handlerCopy = handler;
+  leaderboard = [(GKDashboardLeaderboardScoreDataSource *)self leaderboard];
+  [leaderboard setRange:{1, 100}];
 
-  v6 = [(GKDashboardLeaderboardScoreDataSource *)self leaderboard];
-  v7 = [(GKDashboardLeaderboardScoreDataSource *)self gameRecord];
+  leaderboard2 = [(GKDashboardLeaderboardScoreDataSource *)self leaderboard];
+  gameRecord = [(GKDashboardLeaderboardScoreDataSource *)self gameRecord];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __71__GKDashboardLeaderboardScoreDataSource_loadDataWithCompletionHandler___block_invoke;
   v9[3] = &unk_279669DF8;
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
-  [v6 loadScoresForGame:v7 withCompletionHandler:v9];
+  v10 = handlerCopy;
+  v8 = handlerCopy;
+  [leaderboard2 loadScoresForGame:gameRecord withCompletionHandler:v9];
 }
 
 void __71__GKDashboardLeaderboardScoreDataSource_loadDataWithCompletionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -142,34 +142,34 @@ LABEL_12:
   }
 }
 
-- (void)showMoreInCollectionView:(id)a3 section:(int64_t)a4
+- (void)showMoreInCollectionView:(id)view section:(int64_t)section
 {
-  v6 = a3;
+  viewCopy = view;
   if (![(GKDashboardLeaderboardScoreDataSource *)self isShowingMoreScores])
   {
     v7 = [MEMORY[0x277D0C020] dispatchGroupWithName:@"showMoreInCollectionView"];
     [(GKDashboardLeaderboardScoreDataSource *)self setShowingMoreScores:1];
     v8 = [(GKDashboardLeaderboardScoreDataSource *)self visibleItemCount]+ 25;
-    v9 = [(GKDashboardLeaderboardScoreDataSource *)self scores];
-    if (v8 <= [v9 count])
+    scores = [(GKDashboardLeaderboardScoreDataSource *)self scores];
+    if (v8 <= [scores count])
     {
     }
 
     else
     {
-      v10 = [(GKDashboardLeaderboardScoreDataSource *)self scores];
-      v11 = [v10 count];
-      v12 = [(GKDashboardLeaderboardScoreDataSource *)self leaderboard];
-      v13 = [v12 maxRange];
+      scores2 = [(GKDashboardLeaderboardScoreDataSource *)self scores];
+      v11 = [scores2 count];
+      leaderboard = [(GKDashboardLeaderboardScoreDataSource *)self leaderboard];
+      maxRange = [leaderboard maxRange];
 
-      if (v11 < v13)
+      if (v11 < maxRange)
       {
-        v14 = [(GKDashboardLeaderboardScoreDataSource *)self leaderboard];
-        v15 = [v14 range];
-        v16 = [(GKDashboardLeaderboardScoreDataSource *)self leaderboard];
-        v17 = [v16 maxRange];
+        leaderboard2 = [(GKDashboardLeaderboardScoreDataSource *)self leaderboard];
+        range = [leaderboard2 range];
+        leaderboard3 = [(GKDashboardLeaderboardScoreDataSource *)self leaderboard];
+        maxRange2 = [leaderboard3 maxRange];
 
-        if (v15 >= v17)
+        if (range >= maxRange2)
         {
 LABEL_11:
           v35[0] = MEMORY[0x277D85DD0];
@@ -182,24 +182,24 @@ LABEL_11:
           goto LABEL_12;
         }
 
-        v18 = [(GKDashboardLeaderboardScoreDataSource *)self leaderboard];
-        v19 = [v18 range];
+        leaderboard4 = [(GKDashboardLeaderboardScoreDataSource *)self leaderboard];
+        range2 = [leaderboard4 range];
         v21 = v20;
 
-        v22 = v19 + 100;
-        v23 = [(GKDashboardLeaderboardScoreDataSource *)self leaderboard];
-        v24 = [v23 maxRange];
+        v22 = range2 + 100;
+        leaderboard5 = [(GKDashboardLeaderboardScoreDataSource *)self leaderboard];
+        maxRange3 = [leaderboard5 maxRange];
 
-        if (v22 <= v24)
+        if (v22 <= maxRange3)
         {
-          v30 = [(GKDashboardLeaderboardScoreDataSource *)self leaderboard];
-          v31 = [v30 maxRange];
+          leaderboard6 = [(GKDashboardLeaderboardScoreDataSource *)self leaderboard];
+          maxRange4 = [leaderboard6 maxRange];
 
-          if (v22 + v21 <= v31)
+          if (v22 + v21 <= maxRange4)
           {
 LABEL_18:
-            v33 = [(GKDashboardLeaderboardScoreDataSource *)self leaderboard];
-            [v33 setRange:{v22, v21}];
+            leaderboard7 = [(GKDashboardLeaderboardScoreDataSource *)self leaderboard];
+            [leaderboard7 setRange:{v22, v21}];
 
             v36[0] = MEMORY[0x277D85DD0];
             v36[1] = 3221225472;
@@ -209,21 +209,21 @@ LABEL_18:
             v29 = &v37;
             v34 = v7;
             v37 = v34;
-            v38 = v6;
-            v39 = a4;
+            v38 = viewCopy;
+            sectionCopy = section;
             [v34 perform:v36];
 
             goto LABEL_10;
           }
 
-          v32 = [(GKDashboardLeaderboardScoreDataSource *)self leaderboard];
-          v21 = [v32 maxRange] - v22;
+          leaderboard8 = [(GKDashboardLeaderboardScoreDataSource *)self leaderboard];
+          v21 = [leaderboard8 maxRange] - v22;
         }
 
         else
         {
-          v25 = [(GKDashboardLeaderboardScoreDataSource *)self leaderboard];
-          [v25 range];
+          leaderboard9 = [(GKDashboardLeaderboardScoreDataSource *)self leaderboard];
+          [leaderboard9 range];
           if (v26 > 0x63)
           {
             v21 = 100;
@@ -231,13 +231,13 @@ LABEL_18:
 
           else
           {
-            v27 = [(GKDashboardLeaderboardScoreDataSource *)self leaderboard];
-            [v27 range];
+            leaderboard10 = [(GKDashboardLeaderboardScoreDataSource *)self leaderboard];
+            [leaderboard10 range];
             v21 = v28;
           }
 
-          v32 = [(GKDashboardLeaderboardScoreDataSource *)self leaderboard];
-          v22 = [v32 maxRange] - v21;
+          leaderboard8 = [(GKDashboardLeaderboardScoreDataSource *)self leaderboard];
+          v22 = [leaderboard8 maxRange] - v21;
         }
 
         goto LABEL_18;
@@ -250,8 +250,8 @@ LABEL_18:
     v40[3] = &unk_27966B2C0;
     v40[4] = self;
     v29 = v41;
-    v41[0] = v6;
-    v41[1] = a4;
+    v41[0] = viewCopy;
+    v41[1] = section;
     [v7 perform:v40];
 LABEL_10:
 
@@ -347,15 +347,15 @@ void __74__GKDashboardLeaderboardScoreDataSource_showMoreInCollectionView_sectio
   [v4 revealMoreItemsInCollectionView:v5 section:v6 completion:v8];
 }
 
-- (void)revealMoreItemsInCollectionView:(id)a3 section:(int64_t)a4 completion:(id)a5
+- (void)revealMoreItemsInCollectionView:(id)view section:(int64_t)section completion:(id)completion
 {
-  v23 = a3;
-  v24 = a5;
+  viewCopy = view;
+  completionCopy = completion;
   visibleItemCount = self->_visibleItemCount;
-  v22 = [MEMORY[0x277CCAA70] indexPathForItem:visibleItemCount - 1 inSection:a4];
+  v22 = [MEMORY[0x277CCAA70] indexPathForItem:visibleItemCount - 1 inSection:section];
   if ([(GKDashboardLeaderboardScoreDataSource *)self needsShowcaseCell])
   {
-    [MEMORY[0x277CCAA70] indexPathForItem:visibleItemCount - 2 inSection:a4];
+    [MEMORY[0x277CCAA70] indexPathForItem:visibleItemCount - 2 inSection:section];
     v9 = [(NSArray *)self->_scores count];
   }
 
@@ -375,11 +375,11 @@ void __74__GKDashboardLeaderboardScoreDataSource_showMoreInCollectionView_sectio
     v11 = v9 - visibleItemCount;
   }
 
-  v12 = [(GKDashboardLeaderboardScoreDataSource *)self needsShowcaseCell];
+  needsShowcaseCell = [(GKDashboardLeaderboardScoreDataSource *)self needsShowcaseCell];
   v13 = [MEMORY[0x277CBEB18] arrayWithCapacity:v11];
   if (v10 != visibleItemCount)
   {
-    v14 = visibleItemCount - 1 - v12;
+    v14 = visibleItemCount - 1 - needsShowcaseCell;
     if (v11 <= 1)
     {
       v15 = 1;
@@ -392,7 +392,7 @@ void __74__GKDashboardLeaderboardScoreDataSource_showMoreInCollectionView_sectio
 
     do
     {
-      v16 = [MEMORY[0x277CCAA70] indexPathForItem:v14 inSection:a4];
+      v16 = [MEMORY[0x277CCAA70] indexPathForItem:v14 inSection:section];
       [v13 addObject:v16];
 
       ++v14;
@@ -409,15 +409,15 @@ void __74__GKDashboardLeaderboardScoreDataSource_showMoreInCollectionView_sectio
   v25[3] = &unk_27966C1E8;
   v25[4] = self;
   v26 = v21;
-  v27 = v23;
+  v27 = viewCopy;
   v28 = v13;
   v29 = v22;
-  v30 = a4;
+  sectionCopy = section;
   v17 = v22;
   v18 = v13;
-  v19 = v23;
+  v19 = viewCopy;
   v20 = v21;
-  [v19 performBatchUpdates:v25 completion:v24];
+  [v19 performBatchUpdates:v25 completion:completionCopy];
 }
 
 void __92__GKDashboardLeaderboardScoreDataSource_revealMoreItemsInCollectionView_section_completion___block_invoke(uint64_t a1)
@@ -463,12 +463,12 @@ void __92__GKDashboardLeaderboardScoreDataSource_revealMoreItemsInCollectionView
   [*(a1 + 48) insertItemsAtIndexPaths:*(a1 + 56)];
 }
 
-- (BOOL)isShowMoreIndexPath:(id)a3
+- (BOOL)isShowMoreIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   if ([(GKDashboardLeaderboardScoreDataSource *)self needsShowMoreCell])
   {
-    v5 = [v4 item] == self->_visibleItemCount - 1;
+    v5 = [pathCopy item] == self->_visibleItemCount - 1;
   }
 
   else
@@ -479,12 +479,12 @@ void __92__GKDashboardLeaderboardScoreDataSource_revealMoreItemsInCollectionView
   return v5;
 }
 
-- (BOOL)isShowcaseIndexPath:(id)a3
+- (BOOL)isShowcaseIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   if ([(GKDashboardLeaderboardScoreDataSource *)self needsShowcaseCell])
   {
-    v5 = [v4 item] == self->_visibleItemCount - 2;
+    v5 = [pathCopy item] == self->_visibleItemCount - 2;
   }
 
   else
@@ -497,11 +497,11 @@ void __92__GKDashboardLeaderboardScoreDataSource_revealMoreItemsInCollectionView
 
 - (BOOL)needsShowcaseCell
 {
-  v3 = [(GKLeaderboard *)self->_leaderboard localPlayerScore];
-  if (v3 && [(GKLeaderboard *)self->_leaderboard playerScope]== GKLeaderboardPlayerScopeGlobal)
+  localPlayerScore = [(GKLeaderboard *)self->_leaderboard localPlayerScore];
+  if (localPlayerScore && [(GKLeaderboard *)self->_leaderboard playerScope]== GKLeaderboardPlayerScopeGlobal)
   {
-    v5 = [(GKLeaderboard *)self->_leaderboard localPlayerScore];
-    v4 = [v5 rank] > self->_visibleItemCount;
+    localPlayerScore2 = [(GKLeaderboard *)self->_leaderboard localPlayerScore];
+    v4 = [localPlayerScore2 rank] > self->_visibleItemCount;
   }
 
   else
@@ -517,8 +517,8 @@ void __92__GKDashboardLeaderboardScoreDataSource_revealMoreItemsInCollectionView
   v3 = MEMORY[0x277CCACA8];
   v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"Leaderboard scores are not intended to be embedded in a GKDashboardMultiCollectionViewController"];
   v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter/Frameworks/GameCenterUI/iOS/TVDashboard/GKDashboardLeaderboardScoreDataSource.m"];
-  v6 = [v5 lastPathComponent];
-  v7 = [v3 stringWithFormat:@"%@ (NO)\n[%s (%s:%d)]", v4, "-[GKDashboardLeaderboardScoreDataSource preferredCollectionHeight]", objc_msgSend(v6, "UTF8String"), 293];
+  lastPathComponent = [v5 lastPathComponent];
+  v7 = [v3 stringWithFormat:@"%@ (NO)\n[%s (%s:%d)]", v4, "-[GKDashboardLeaderboardScoreDataSource preferredCollectionHeight]", objc_msgSend(lastPathComponent, "UTF8String"), 293];
 
   [MEMORY[0x277CBEAD8] raise:@"GameKit Exception" format:{@"%@", v7}];
   v9.receiver = self;
@@ -527,21 +527,21 @@ void __92__GKDashboardLeaderboardScoreDataSource_revealMoreItemsInCollectionView
   return result;
 }
 
-- (id)itemForIndexPath:(id)a3
+- (id)itemForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [v4 item];
-  if ([(GKDashboardLeaderboardScoreDataSource *)self isShowcaseIndexPath:v4])
+  pathCopy = path;
+  item = [pathCopy item];
+  if ([(GKDashboardLeaderboardScoreDataSource *)self isShowcaseIndexPath:pathCopy])
   {
-    v6 = [(GKLeaderboard *)self->_leaderboard localPlayerScore];
+    localPlayerScore = [(GKLeaderboard *)self->_leaderboard localPlayerScore];
 LABEL_3:
-    v7 = v6;
+    v7 = localPlayerScore;
     goto LABEL_8;
   }
 
-  if (![(GKDashboardLeaderboardScoreDataSource *)self isShowMoreIndexPath:v4]&& [(NSArray *)self->_scores count]> v5)
+  if (![(GKDashboardLeaderboardScoreDataSource *)self isShowMoreIndexPath:pathCopy]&& [(NSArray *)self->_scores count]> item)
   {
-    v6 = [(NSArray *)self->_scores objectAtIndexedSubscript:v5];
+    localPlayerScore = [(NSArray *)self->_scores objectAtIndexedSubscript:item];
     goto LABEL_3;
   }
 
@@ -573,45 +573,45 @@ LABEL_8:
   return v4;
 }
 
-- (void)sectionHeaderButtonPressed:(id)a3
+- (void)sectionHeaderButtonPressed:(id)pressed
 {
-  v10 = a3;
-  v4 = [(GKDashboardLeaderboardScoreDataSource *)self timeScopeTarget];
-  if (v4)
+  pressedCopy = pressed;
+  timeScopeTarget = [(GKDashboardLeaderboardScoreDataSource *)self timeScopeTarget];
+  if (timeScopeTarget)
   {
-    v5 = v4;
-    v6 = [(GKDashboardLeaderboardScoreDataSource *)self timeScopeAction];
+    v5 = timeScopeTarget;
+    timeScopeAction = [(GKDashboardLeaderboardScoreDataSource *)self timeScopeAction];
 
-    if (v6)
+    if (timeScopeAction)
     {
-      v7 = [(GKDashboardLeaderboardScoreDataSource *)self timeScopeTarget];
-      v8 = [v7 methodForSelector:{-[GKDashboardLeaderboardScoreDataSource timeScopeAction](self, "timeScopeAction")}];
+      timeScopeTarget2 = [(GKDashboardLeaderboardScoreDataSource *)self timeScopeTarget];
+      v8 = [timeScopeTarget2 methodForSelector:{-[GKDashboardLeaderboardScoreDataSource timeScopeAction](self, "timeScopeAction")}];
 
-      v9 = [(GKDashboardLeaderboardScoreDataSource *)self timeScopeTarget];
-      v8(v9, [(GKDashboardLeaderboardScoreDataSource *)self timeScopeAction], v10);
+      timeScopeTarget3 = [(GKDashboardLeaderboardScoreDataSource *)self timeScopeTarget];
+      v8(timeScopeTarget3, [(GKDashboardLeaderboardScoreDataSource *)self timeScopeAction], pressedCopy);
     }
   }
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(GKDashboardLeaderboardScoreDataSource *)self isShowMoreIndexPath:v7])
+  viewCopy = view;
+  pathCopy = path;
+  if ([(GKDashboardLeaderboardScoreDataSource *)self isShowMoreIndexPath:pathCopy])
   {
-    v8 = [v6 dequeueReusableCellWithReuseIdentifier:@"showMoreCell" forIndexPath:v7];
+    v8 = [viewCopy dequeueReusableCellWithReuseIdentifier:@"showMoreCell" forIndexPath:pathCopy];
   }
 
   else
   {
-    v9 = [(GKDashboardLeaderboardScoreDataSource *)self itemForIndexPath:v7];
+    v9 = [(GKDashboardLeaderboardScoreDataSource *)self itemForIndexPath:pathCopy];
     if (!v9)
     {
       v10 = MEMORY[0x277CCACA8];
       v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"Assertion failed"];
       v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter/Frameworks/GameCenterUI/iOS/TVDashboard/GKDashboardLeaderboardScoreDataSource.m"];
-      v13 = [v12 lastPathComponent];
-      v14 = [v10 stringWithFormat:@"%@ (score)\n[%s (%s:%d)]", v11, "-[GKDashboardLeaderboardScoreDataSource collectionView:cellForItemAtIndexPath:]", objc_msgSend(v13, "UTF8String"), 361];
+      lastPathComponent = [v12 lastPathComponent];
+      v14 = [v10 stringWithFormat:@"%@ (score)\n[%s (%s:%d)]", v11, "-[GKDashboardLeaderboardScoreDataSource collectionView:cellForItemAtIndexPath:]", objc_msgSend(lastPathComponent, "UTF8String"), 361];
 
       [MEMORY[0x277CBEAD8] raise:@"GameKit Exception" format:{@"%@", v14}];
     }
@@ -626,12 +626,12 @@ LABEL_8:
       v15 = @"lowRankCell";
     }
 
-    v8 = [v6 dequeueReusableCellWithReuseIdentifier:v15 forIndexPath:v7];
+    v8 = [viewCopy dequeueReusableCellWithReuseIdentifier:v15 forIndexPath:pathCopy];
     [v8 setScore:v9];
     if ([(GKDashboardLeaderboardScoreDataSource *)self needsShowcaseCell])
     {
-      v16 = [v9 player];
-      [v8 setLinesVisible:{objc_msgSend(v16, "isLocalPlayer")}];
+      player = [v9 player];
+      [v8 setLinesVisible:{objc_msgSend(player, "isLocalPlayer")}];
     }
 
     else
@@ -643,11 +643,11 @@ LABEL_8:
   return v8;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path
 {
-  v5 = [(GKDashboardLeaderboardScoreDataSource *)self isShowMoreIndexPath:a5, a4];
+  layout = [(GKDashboardLeaderboardScoreDataSource *)self isShowMoreIndexPath:path, layout];
   v6 = off_279666DB0;
-  if (!v5)
+  if (!layout)
   {
     v6 = off_279666D40;
   }
@@ -660,15 +660,15 @@ LABEL_8:
   return result;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 referenceSizeForHeaderInSection:(int64_t)a5
+- (CGSize)collectionView:(id)view layout:(id)layout referenceSizeForHeaderInSection:(int64_t)section
 {
-  v8 = a3;
-  v9 = a4;
+  viewCopy = view;
+  layoutCopy = layout;
   if (![(GKCollectionDataSource *)self useStandardHeaders])
   {
-    v14 = [(GKDashboardLeaderboardScoreDataSource *)self sectionHeaderText];
-    v15 = [MEMORY[0x277D0C0A0] localizedStringForTimeScope:{-[GKDashboardLeaderboardScoreDataSource timeScope](self, "timeScope")}];
-    [GKDashboardButtonSectionHeaderView platformSizeForTitle:v14 buttonTitle:v15];
+    sectionHeaderText = [(GKDashboardLeaderboardScoreDataSource *)self sectionHeaderText];
+    sectionHeaderFont = [MEMORY[0x277D0C0A0] localizedStringForTimeScope:{-[GKDashboardLeaderboardScoreDataSource timeScope](self, "timeScope")}];
+    [GKDashboardButtonSectionHeaderView platformSizeForTitle:sectionHeaderText buttonTitle:sectionHeaderFont];
 LABEL_6:
     v11 = v16;
     v13 = v17;
@@ -678,15 +678,15 @@ LABEL_6:
 
   if (![(GKDashboardLeaderboardScoreDataSource *)self itemCount])
   {
-    v14 = [(GKDashboardLeaderboardScoreDataSource *)self sectionHeaderText];
-    v15 = [(GKDashboardLeaderboardScoreDataSource *)self sectionHeaderFont];
-    [GKDashboardSectionHeaderView platformSizeForTitle:v14 withFont:v15];
+    sectionHeaderText = [(GKDashboardLeaderboardScoreDataSource *)self sectionHeaderText];
+    sectionHeaderFont = [(GKDashboardLeaderboardScoreDataSource *)self sectionHeaderFont];
+    [GKDashboardSectionHeaderView platformSizeForTitle:sectionHeaderText withFont:sectionHeaderFont];
     goto LABEL_6;
   }
 
   v20.receiver = self;
   v20.super_class = GKDashboardLeaderboardScoreDataSource;
-  [(GKCollectionDataSource *)&v20 collectionView:v8 layout:v9 referenceSizeForHeaderInSection:a5];
+  [(GKCollectionDataSource *)&v20 collectionView:viewCopy layout:layoutCopy referenceSizeForHeaderInSection:section];
   v11 = v10;
   v13 = v12;
 LABEL_7:
@@ -698,11 +698,11 @@ LABEL_7:
   return result;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 referenceSizeForFooterInSection:(int64_t)a5
+- (CGSize)collectionView:(id)view layout:(id)layout referenceSizeForFooterInSection:(int64_t)section
 {
   v5 = *MEMORY[0x277CBF3A8];
   v6 = *(MEMORY[0x277CBF3A8] + 8);
-  v7 = [(GKDashboardLeaderboardScoreDataSource *)self hasFriendsButton:a3];
+  v7 = [(GKDashboardLeaderboardScoreDataSource *)self hasFriendsButton:view];
   if (v7)
   {
     v8 = 40.0;
@@ -724,31 +724,31 @@ LABEL_7:
   return result;
 }
 
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  viewCopy = view;
+  kindCopy = kind;
+  pathCopy = path;
   v11 = *MEMORY[0x277D767D8];
-  if ([v9 isEqualToString:*MEMORY[0x277D767D8]])
+  if ([kindCopy isEqualToString:*MEMORY[0x277D767D8]])
   {
     if ([(GKCollectionDataSource *)self useStandardHeaders])
     {
       v24.receiver = self;
       v24.super_class = GKDashboardLeaderboardScoreDataSource;
-      v12 = [(GKCollectionDataSource *)&v24 collectionView:v8 viewForSupplementaryElementOfKind:v9 atIndexPath:v10];
-      v13 = [(GKDashboardLeaderboardScoreDataSource *)self sectionHeaderFont];
-      [v12 setFont:v13];
+      v12 = [(GKCollectionDataSource *)&v24 collectionView:viewCopy viewForSupplementaryElementOfKind:kindCopy atIndexPath:pathCopy];
+      sectionHeaderFont = [(GKDashboardLeaderboardScoreDataSource *)self sectionHeaderFont];
+      [v12 setFont:sectionHeaderFont];
     }
 
     else
     {
-      v12 = [v8 dequeueReusableSupplementaryViewOfKind:v11 withReuseIdentifier:@"sectionHeader" forIndexPath:v10];
-      v17 = [(GKDashboardLeaderboardScoreDataSource *)self sectionHeaderText];
-      [v12 setTitle:v17];
+      v12 = [viewCopy dequeueReusableSupplementaryViewOfKind:v11 withReuseIdentifier:@"sectionHeader" forIndexPath:pathCopy];
+      sectionHeaderText = [(GKDashboardLeaderboardScoreDataSource *)self sectionHeaderText];
+      [v12 setTitle:sectionHeaderText];
 
-      v18 = [(GKDashboardLeaderboardScoreDataSource *)self sectionHeaderFont];
-      [v12 setFont:v18];
+      sectionHeaderFont2 = [(GKDashboardLeaderboardScoreDataSource *)self sectionHeaderFont];
+      [v12 setFont:sectionHeaderFont2];
 
       [v12 setOnDarkBackground:{-[GKCollectionDataSource onDarkBackground](self, "onDarkBackground")}];
       v19 = [MEMORY[0x277D0C0A0] localizedStringForTimeScope:{-[GKDashboardLeaderboardScoreDataSource timeScope](self, "timeScope")}];
@@ -762,9 +762,9 @@ LABEL_7:
   else
   {
     v14 = *MEMORY[0x277D767D0];
-    if ([v9 isEqualToString:*MEMORY[0x277D767D0]] && -[GKDashboardLeaderboardScoreDataSource hasFriendsButton](self, "hasFriendsButton"))
+    if ([kindCopy isEqualToString:*MEMORY[0x277D767D0]] && -[GKDashboardLeaderboardScoreDataSource hasFriendsButton](self, "hasFriendsButton"))
     {
-      v12 = [v8 dequeueReusableSupplementaryViewOfKind:v14 withReuseIdentifier:@"sectionFooter" forIndexPath:v10];
+      v12 = [viewCopy dequeueReusableSupplementaryViewOfKind:v14 withReuseIdentifier:@"sectionFooter" forIndexPath:pathCopy];
       v15 = GKGameCenterUIFrameworkBundle();
       v16 = GKGetLocalizedStringFromTableInBundle();
       [v12 setButtonTitle:v16 forState:0];
@@ -774,7 +774,7 @@ LABEL_7:
       v22[2] = __102__GKDashboardLeaderboardScoreDataSource_collectionView_viewForSupplementaryElementOfKind_atIndexPath___block_invoke;
       v22[3] = &unk_279669E48;
       v22[4] = self;
-      v23 = v8;
+      v23 = viewCopy;
       [v12 setButtonTapHandler:v22];
     }
 
@@ -782,7 +782,7 @@ LABEL_7:
     {
       v21.receiver = self;
       v21.super_class = GKDashboardLeaderboardScoreDataSource;
-      v12 = [(GKCollectionDataSource *)&v21 collectionView:v8 viewForSupplementaryElementOfKind:v9 atIndexPath:v10];
+      v12 = [(GKCollectionDataSource *)&v21 collectionView:viewCopy viewForSupplementaryElementOfKind:kindCopy atIndexPath:pathCopy];
     }
   }
 
@@ -847,59 +847,59 @@ void __102__GKDashboardLeaderboardScoreDataSource_collectionView_viewForSuppleme
   }
 }
 
-- (BOOL)collectionView:(id)a3 shouldSelectItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view shouldSelectItemAtIndexPath:(id)path
 {
-  v4 = [a3 indexPathsForSelectedItems];
-  v5 = [v4 count] == 0;
+  indexPathsForSelectedItems = [view indexPathsForSelectedItems];
+  v5 = [indexPathsForSelectedItems count] == 0;
 
   return v5;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v20 = a3;
-  v6 = a4;
-  if ([(GKDashboardLeaderboardScoreDataSource *)self isShowMoreIndexPath:v6])
+  viewCopy = view;
+  pathCopy = path;
+  if ([(GKDashboardLeaderboardScoreDataSource *)self isShowMoreIndexPath:pathCopy])
   {
-    [v20 deselectItemAtIndexPath:v6 animated:1];
+    [viewCopy deselectItemAtIndexPath:pathCopy animated:1];
     self->_forceInitialShowMore = 0;
-    -[GKDashboardLeaderboardScoreDataSource showMoreInCollectionView:section:](self, "showMoreInCollectionView:section:", v20, [v6 section]);
+    -[GKDashboardLeaderboardScoreDataSource showMoreInCollectionView:section:](self, "showMoreInCollectionView:section:", viewCopy, [pathCopy section]);
   }
 
   else
   {
-    v7 = [(GKCollectionDataSource *)self presentationViewController];
+    presentationViewController = [(GKCollectionDataSource *)self presentationViewController];
 
-    if (v7)
+    if (presentationViewController)
     {
-      if ([(GKDashboardLeaderboardScoreDataSource *)self isShowcaseIndexPath:v6])
+      if ([(GKDashboardLeaderboardScoreDataSource *)self isShowcaseIndexPath:pathCopy])
       {
-        v8 = [(GKLeaderboard *)self->_leaderboard localPlayerScore];
+        localPlayerScore = [(GKLeaderboard *)self->_leaderboard localPlayerScore];
       }
 
       else
       {
-        v9 = [v6 item];
-        if ([(NSArray *)self->_scores count]<= v9)
+        item = [pathCopy item];
+        if ([(NSArray *)self->_scores count]<= item)
         {
           v10 = MEMORY[0x277CCACA8];
           v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"Assertion failed"];
           v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter/Frameworks/GameCenterUI/iOS/TVDashboard/GKDashboardLeaderboardScoreDataSource.m"];
-          v13 = [v12 lastPathComponent];
-          v14 = [v10 stringWithFormat:@"%@ (_scores.count > index)\n[%s (%s:%d)]", v11, "-[GKDashboardLeaderboardScoreDataSource collectionView:didSelectItemAtIndexPath:]", objc_msgSend(v13, "UTF8String"), 499];
+          lastPathComponent = [v12 lastPathComponent];
+          v14 = [v10 stringWithFormat:@"%@ (_scores.count > index)\n[%s (%s:%d)]", v11, "-[GKDashboardLeaderboardScoreDataSource collectionView:didSelectItemAtIndexPath:]", objc_msgSend(lastPathComponent, "UTF8String"), 499];
 
           [MEMORY[0x277CBEAD8] raise:@"GameKit Exception" format:{@"%@", v14}];
         }
 
-        v8 = [(NSArray *)self->_scores objectAtIndexedSubscript:v9];
+        localPlayerScore = [(NSArray *)self->_scores objectAtIndexedSubscript:item];
       }
 
-      v15 = v8;
-      v16 = [v8 player];
-      v17 = [v16 internal];
-      v18 = [v17 playerID];
-      v19 = [(GKCollectionDataSource *)self presentationViewController];
-      [_TtC12GameCenterUI27PlayerProfileViewController showProfileFor:v18 from:v19 completion:0];
+      v15 = localPlayerScore;
+      player = [localPlayerScore player];
+      internal = [player internal];
+      playerID = [internal playerID];
+      presentationViewController2 = [(GKCollectionDataSource *)self presentationViewController];
+      [_TtC12GameCenterUI27PlayerProfileViewController showProfileFor:playerID from:presentationViewController2 completion:0];
     }
   }
 }
@@ -924,19 +924,19 @@ void __102__GKDashboardLeaderboardScoreDataSource_collectionView_viewForSuppleme
   }
 }
 
-- (void)setTimeScopeAction:(SEL)a3
+- (void)setTimeScopeAction:(SEL)action
 {
-  if (a3)
+  if (action)
   {
-    v3 = a3;
+    actionCopy = action;
   }
 
   else
   {
-    v3 = 0;
+    actionCopy = 0;
   }
 
-  self->_timeScopeAction = v3;
+  self->_timeScopeAction = actionCopy;
 }
 
 @end

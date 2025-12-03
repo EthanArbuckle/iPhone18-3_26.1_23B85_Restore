@@ -1,7 +1,7 @@
 @interface ParallaxView.ContentView
 - (UIColor)backgroundColor;
 - (void)layoutSubviews;
-- (void)setBackgroundColor:(id)a3;
+- (void)setBackgroundColor:(id)color;
 @end
 
 @implementation ParallaxView.ContentView
@@ -10,21 +10,21 @@
 {
   v4.receiver = self;
   v4.super_class = type metadata accessor for ParallaxView.ContentView();
-  v2 = [(ParallaxView.ContentView *)&v4 backgroundColor];
+  backgroundColor = [(ParallaxView.ContentView *)&v4 backgroundColor];
 
-  return v2;
+  return backgroundColor;
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
-  v6 = a3;
-  v5 = self;
-  sub_4F3F00(a3);
+  colorCopy = color;
+  selfCopy = self;
+  sub_4F3F00(color);
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_4F2768();
 }
 

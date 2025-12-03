@@ -1,5 +1,5 @@
 @interface _UIDocumentPickerVnodeDispatchSource
-- (_UIDocumentPickerVnodeDispatchSource)initWithTarget:(id)a3 url:(id)a4 queue:(id)a5;
+- (_UIDocumentPickerVnodeDispatchSource)initWithTarget:(id)target url:(id)url queue:(id)queue;
 - (void)dealloc;
 - (void)event;
 - (void)invalidate;
@@ -7,21 +7,21 @@
 
 @implementation _UIDocumentPickerVnodeDispatchSource
 
-- (_UIDocumentPickerVnodeDispatchSource)initWithTarget:(id)a3 url:(id)a4 queue:(id)a5
+- (_UIDocumentPickerVnodeDispatchSource)initWithTarget:(id)target url:(id)url queue:(id)queue
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  targetCopy = target;
+  urlCopy = url;
+  queueCopy = queue;
   v24.receiver = self;
   v24.super_class = _UIDocumentPickerVnodeDispatchSource;
   v11 = [(_UIDocumentPickerVnodeDispatchSource *)&v24 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_target, v8);
-    objc_storeStrong(&v12->_url, a4);
-    v13 = open([v9 fileSystemRepresentation], 0x8000);
-    v14 = dispatch_source_create(MEMORY[0x277D85D48], v13, 2uLL, v10);
+    objc_storeWeak(&v11->_target, targetCopy);
+    objc_storeStrong(&v12->_url, url);
+    v13 = open([urlCopy fileSystemRepresentation], 0x8000);
+    v14 = dispatch_source_create(MEMORY[0x277D85D48], v13, 2uLL, queueCopy);
     source = v12->_source;
     v12->_source = v14;
 

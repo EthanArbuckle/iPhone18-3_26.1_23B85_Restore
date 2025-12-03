@@ -1,7 +1,7 @@
 @interface GKBluetoothSupport
 + (int)_determineBluetoothStatus;
 + (int)bluetoothStatus;
-+ (void)_btPowerStateChanged:(id)a3;
++ (void)_btPowerStateChanged:(id)changed;
 + (void)_determineBluetoothStatus;
 + (void)turnBluetoothOn;
 @end
@@ -15,7 +15,7 @@
   {
     if ([MEMORY[0x277CCACC8] isMainThread])
     {
-      __bluetoothStatus = [a1 _determineBluetoothStatus];
+      __bluetoothStatus = [self _determineBluetoothStatus];
     }
 
     else
@@ -24,13 +24,13 @@
       block[1] = 3221225472;
       block[2] = __37__GKBluetoothSupport_bluetoothStatus__block_invoke;
       block[3] = &unk_279682BA8;
-      block[4] = a1;
+      block[4] = self;
       dispatch_sync(MEMORY[0x277D85CD0], block);
     }
 
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v5 = *MEMORY[0x277CF3230];
-    [v4 addObserver:a1 selector:sel__btPowerStateChanged_ name:*MEMORY[0x277CF3230] object:0];
+    [defaultCenter addObserver:self selector:sel__btPowerStateChanged_ name:*MEMORY[0x277CF3230] object:0];
     [objc_msgSend(MEMORY[0x277CCAB98] "defaultCenter")];
     return __bluetoothStatus;
   }
@@ -47,7 +47,7 @@ uint64_t __37__GKBluetoothSupport_bluetoothStatus__block_invoke(uint64_t a1)
 
 + (void)turnBluetoothOn
 {
-  v2 = [objc_msgSend(a1 "_bluetoothManagerClass")];
+  v2 = [objc_msgSend(self "_bluetoothManagerClass")];
 
   [v2 setPowered:1];
 }
@@ -55,7 +55,7 @@ uint64_t __37__GKBluetoothSupport_bluetoothStatus__block_invoke(uint64_t a1)
 + (int)_determineBluetoothStatus
 {
   v27 = *MEMORY[0x277D85DE8];
-  v3 = [objc_msgSend(a1 "_bluetoothManagerClass")];
+  v3 = [objc_msgSend(self "_bluetoothManagerClass")];
   if (v3)
   {
     v4 = v3;
@@ -66,8 +66,8 @@ uint64_t __37__GKBluetoothSupport_bluetoothStatus__block_invoke(uint64_t a1)
       {
         if (v5)
         {
-          v13 = [v4 powered];
-          if (v13)
+          powered = [v4 powered];
+          if (powered)
           {
             v6 = 5;
           }
@@ -88,7 +88,7 @@ uint64_t __37__GKBluetoothSupport_bluetoothStatus__block_invoke(uint64_t a1)
               v20 = v14;
               v21 = 2080;
               v22 = "+[GKBluetoothSupport _determineBluetoothStatus]";
-              if (v13)
+              if (powered)
               {
                 v16 = @"ON";
               }
@@ -198,7 +198,7 @@ LABEL_36:
   return v6;
 }
 
-+ (void)_btPowerStateChanged:(id)a3
++ (void)_btPowerStateChanged:(id)changed
 {
   if (![MEMORY[0x277CCACC8] isMainThread])
   {
@@ -206,7 +206,7 @@ LABEL_36:
     block[1] = 3221225472;
     block[2] = __43__GKBluetoothSupport__btPowerStateChanged___block_invoke;
     block[3] = &unk_279682BA8;
-    block[4] = a1;
+    block[4] = self;
     dispatch_sync(MEMORY[0x277D85CD0], block);
     if (!__bluetoothStatus)
     {
@@ -216,7 +216,7 @@ LABEL_36:
     goto LABEL_5;
   }
 
-  __bluetoothStatus = [a1 _determineBluetoothStatus];
+  __bluetoothStatus = [self _determineBluetoothStatus];
   if (__bluetoothStatus)
   {
 LABEL_5:

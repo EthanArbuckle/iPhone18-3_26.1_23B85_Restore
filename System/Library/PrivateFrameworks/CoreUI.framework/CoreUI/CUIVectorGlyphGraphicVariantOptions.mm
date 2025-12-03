@@ -1,11 +1,11 @@
 @interface CUIVectorGlyphGraphicVariantOptions
 + (CGSize)automaticOffset;
 - (BOOL)_areValid;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)prefersAutomaticCentering;
 - (CGSize)imageOffset;
 - (CUIVectorGlyphGraphicVariantOptions)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 - (void)dealloc;
 @end
@@ -41,7 +41,7 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[CUIVectorGlyphGraphicVariantOptions allocWithZone:?]];
   v4->shape = self->shape;
@@ -78,9 +78,9 @@
   [(CUIVectorGlyphGraphicVariantOptions *)&v3 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v16) = 1;
     return v16;
@@ -99,24 +99,24 @@
   }
 
   shape = self->shape;
-  if (shape != [a3 shape])
+  if (shape != [equal shape])
   {
     goto LABEL_19;
   }
 
   fill = self->fill;
-  if (fill != [a3 fill])
+  if (fill != [equal fill])
   {
     goto LABEL_19;
   }
 
   contentEffect = self->contentEffect;
-  if (contentEffect != [a3 contentEffect])
+  if (contentEffect != [equal contentEffect])
   {
     goto LABEL_19;
   }
 
-  v16 = -[NSArray isEqual:](self->fillColors, "isEqual:", [a3 fillColors]);
+  v16 = -[NSArray isEqual:](self->fillColors, "isEqual:", [equal fillColors]);
   if (!v16)
   {
     return v16;
@@ -128,11 +128,11 @@
     goto LABEL_10;
   }
 
-  if ([a3 monochromeForegroundColor])
+  if ([equal monochromeForegroundColor])
   {
     monochromeForegroundColor = self->monochromeForegroundColor;
 LABEL_10:
-    v16 = CGColorEqualToColor(monochromeForegroundColor, [a3 monochromeForegroundColor]);
+    v16 = CGColorEqualToColor(monochromeForegroundColor, [equal monochromeForegroundColor]);
     if (!v16)
     {
       return v16;
@@ -140,25 +140,25 @@ LABEL_10:
   }
 
   roundedRectCornerRadius = self->roundedRectCornerRadius;
-  [a3 roundedRectCornerRadius];
+  [equal roundedRectCornerRadius];
   if (roundedRectCornerRadius != v19)
   {
     goto LABEL_19;
   }
 
   imageScaling = self->imageScaling;
-  if (imageScaling != [a3 imageScaling])
+  if (imageScaling != [equal imageScaling])
   {
     goto LABEL_19;
   }
 
   imageAlignment = self->imageAlignment;
-  if (imageAlignment != [a3 imageAlignment])
+  if (imageAlignment != [equal imageAlignment])
   {
     goto LABEL_19;
   }
 
-  [a3 imageOffset];
+  [equal imageOffset];
   LOBYTE(v16) = 0;
   if (self->imageOffset.width != v23 || self->imageOffset.height != v22)
   {
@@ -166,18 +166,18 @@ LABEL_10:
   }
 
   shapeEffect = self->shapeEffect;
-  if (shapeEffect != [a3 shapeEffect])
+  if (shapeEffect != [equal shapeEffect])
   {
 LABEL_19:
     LOBYTE(v16) = 0;
     return v16;
   }
 
-  v16 = CGColorEqualToColor(self->borderColor, [a3 borderColor]);
+  v16 = CGColorEqualToColor(self->borderColor, [equal borderColor]);
   if (v16)
   {
     borderWidth = self->borderWidth;
-    [a3 borderWidth];
+    [equal borderWidth];
     LOBYTE(v16) = vabdd_f64(borderWidth, v26) < 0.0004;
   }
 

@@ -1,19 +1,19 @@
 @interface __NSCFArray
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (Class)classForCoder;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (id)objectAtIndex:(unint64_t)a3;
-- (id)objectAtIndexedSubscript:(unint64_t)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (id)objectAtIndex:(unint64_t)index;
+- (id)objectAtIndexedSubscript:(unint64_t)subscript;
 - (unint64_t)count;
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5;
-- (void)addObject:(id)a3;
-- (void)getObjects:(id *)a3 range:(_NSRange)a4;
-- (void)insertObject:(id)a3 atIndex:(unint64_t)a4;
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count;
+- (void)addObject:(id)object;
+- (void)getObjects:(id *)objects range:(_NSRange)range;
+- (void)insertObject:(id)object atIndex:(unint64_t)index;
 - (void)removeLastObject;
-- (void)removeObjectAtIndex:(unint64_t)a3;
-- (void)replaceObjectAtIndex:(unint64_t)a3 withObject:(id)a4;
+- (void)removeObjectAtIndex:(unint64_t)index;
+- (void)replaceObjectAtIndex:(unint64_t)index withObject:(id)object;
 @end
 
 @implementation __NSCFArray
@@ -70,7 +70,7 @@
   return result;
 }
 
-- (id)objectAtIndex:(unint64_t)a3
+- (id)objectAtIndex:(unint64_t)index
 {
   v11 = *MEMORY[0x1E69E9840];
   if (__cf_tsanReadFunction)
@@ -79,18 +79,18 @@
   }
 
   v10 = 0;
-  result = _CFArrayCheckAndGetValueAtIndex(self, a3, &v10);
+  result = _CFArrayCheckAndGetValueAtIndex(self, index, &v10);
   if (v10)
   {
     Count = _CFNonObjCArrayGetCount(self);
-    _NSArrayRaiseBoundException(self, a2, a3, Count);
+    _NSArrayRaiseBoundException(self, a2, index, Count);
   }
 
   v8 = *MEMORY[0x1E69E9840];
   return result;
 }
 
-- (id)objectAtIndexedSubscript:(unint64_t)a3
+- (id)objectAtIndexedSubscript:(unint64_t)subscript
 {
   v11 = *MEMORY[0x1E69E9840];
   if (__cf_tsanReadFunction)
@@ -99,21 +99,21 @@
   }
 
   v10 = 0;
-  result = _CFArrayCheckAndGetValueAtIndex(self, a3, &v10);
+  result = _CFArrayCheckAndGetValueAtIndex(self, subscript, &v10);
   if (v10)
   {
     Count = _CFNonObjCArrayGetCount(self);
-    _NSArrayRaiseBoundException(self, a2, a3, Count);
+    _NSArrayRaiseBoundException(self, a2, subscript, Count);
   }
 
   v8 = *MEMORY[0x1E69E9840];
   return result;
 }
 
-- (void)getObjects:(id *)a3 range:(_NSRange)a4
+- (void)getObjects:(id *)objects range:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   if (__cf_tsanReadFunction)
   {
     __cf_tsanReadFunction(self, v4, __CFTSANTagMutableArray);
@@ -131,25 +131,25 @@
     v12.location = location;
     v12.length = length;
 
-    CFArrayGetValues(self, v12, a3);
+    CFArrayGetValues(self, v12, objects);
   }
 }
 
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count
 {
   if (__cf_tsanReadFunction)
   {
     __cf_tsanReadFunction(self, v5, __CFTSANTagMutableArray);
   }
 
-  return _CFArrayFastEnumeration(self, a3);
+  return _CFArrayFastEnumeration(self, state);
 }
 
-- (void)addObject:(id)a3
+- (void)addObject:(id)object
 {
   Count = _CFNonObjCArrayGetCount(self);
 
-  [(__NSCFArray *)self insertObject:a3 atIndex:Count];
+  [(__NSCFArray *)self insertObject:object atIndex:Count];
 }
 
 - (void)removeLastObject
@@ -178,10 +178,10 @@
   [(__NSCFArray *)self removeObjectAtIndex:v4];
 }
 
-- (void)insertObject:(id)a3 atIndex:(unint64_t)a4
+- (void)insertObject:(id)object atIndex:(unint64_t)index
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v10[0] = a3;
+  v10[0] = object;
   if (!_CFArrayIsMutable(self))
   {
     [__NSCFArray insertObject:a2 atIndex:?];
@@ -189,7 +189,7 @@
 
   if (!__cf_tsanWriteFunction)
   {
-    if (a3)
+    if (object)
     {
       goto LABEL_4;
     }
@@ -199,22 +199,22 @@ LABEL_7:
   }
 
   __cf_tsanWriteFunction(self, v4, __CFTSANTagMutableArray);
-  if (!a3)
+  if (!object)
   {
     goto LABEL_7;
   }
 
 LABEL_4:
-  if (_CFNonObjCArrayGetCount(self) < a4)
+  if (_CFNonObjCArrayGetCount(self) < index)
   {
-    [(__NSCFArray *)self insertObject:a2 atIndex:a4];
+    [(__NSCFArray *)self insertObject:a2 atIndex:index];
   }
 
-  _CFArrayReplaceValues(self, a4, 0, v10, 1);
+  _CFArrayReplaceValues(self, index, 0, v10, 1);
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)replaceObjectAtIndex:(unint64_t)a3 withObject:(id)a4
+- (void)replaceObjectAtIndex:(unint64_t)index withObject:(id)object
 {
   if (!_CFArrayIsMutable(self))
   {
@@ -223,7 +223,7 @@ LABEL_4:
 
   if (!__cf_tsanWriteFunction)
   {
-    if (a4)
+    if (object)
     {
       goto LABEL_4;
     }
@@ -233,22 +233,22 @@ LABEL_9:
   }
 
   __cf_tsanWriteFunction(self, v4, __CFTSANTagMutableArray);
-  if (!a4)
+  if (!object)
   {
     goto LABEL_9;
   }
 
 LABEL_4:
-  if (_CFNonObjCArrayGetCount(self) <= a3)
+  if (_CFNonObjCArrayGetCount(self) <= index)
   {
     Count = _CFNonObjCArrayGetCount(self);
-    _NSArrayRaiseBoundException(self, a2, a3, Count);
+    _NSArrayRaiseBoundException(self, a2, index, Count);
   }
 
-  CFArraySetValueAtIndex(self, a3, a4);
+  CFArraySetValueAtIndex(self, index, object);
 }
 
-- (void)removeObjectAtIndex:(unint64_t)a3
+- (void)removeObjectAtIndex:(unint64_t)index
 {
   if (!_CFArrayIsMutable(self))
   {
@@ -260,37 +260,37 @@ LABEL_4:
     __cf_tsanWriteFunction(self, v3, __CFTSANTagMutableArray);
   }
 
-  if (_CFNonObjCArrayGetCount(self) <= a3)
+  if (_CFNonObjCArrayGetCount(self) <= index)
   {
     Count = _CFNonObjCArrayGetCount(self);
-    _NSArrayRaiseBoundException(self, a2, a3, Count);
+    _NSArrayRaiseBoundException(self, a2, index, Count);
   }
 
-  _CFArrayReplaceValues(self, a3, 1, 0, 0);
+  _CFArrayReplaceValues(self, index, 1, 0, 0);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   if (!__cf_tsanReadFunction)
   {
-    if (a3)
+    if (equal)
     {
-      return self == a3 || _CFNonObjCEqual(self, a3) != 0;
+      return self == equal || _CFNonObjCEqual(self, equal) != 0;
     }
 
     return 0;
   }
 
   __cf_tsanReadFunction(self, v3, __CFTSANTagMutableArray);
-  if (!a3)
+  if (!equal)
   {
     return 0;
   }
 
-  return self == a3 || _CFNonObjCEqual(self, a3) != 0;
+  return self == equal || _CFNonObjCEqual(self, equal) != 0;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   theArray = self;
   if (__cf_tsanReadFunction)
@@ -312,7 +312,7 @@ LABEL_4:
   }
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   if (__cf_tsanReadFunction)
   {

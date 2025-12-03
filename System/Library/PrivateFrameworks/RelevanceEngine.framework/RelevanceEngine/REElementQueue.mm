@@ -1,21 +1,21 @@
 @interface REElementQueue
-- (BOOL)containsElement:(id)a3;
+- (BOOL)containsElement:(id)element;
 - (NSArray)allElements;
-- (REElementQueue)initWithMaximumRelevantElementsCount:(int64_t)a3 comparators:(id)a4;
-- (id)elementAtIndex:(unint64_t)a3;
-- (int64_t)indexOfElement:(id)a3;
+- (REElementQueue)initWithMaximumRelevantElementsCount:(int64_t)count comparators:(id)comparators;
+- (id)elementAtIndex:(unint64_t)index;
+- (int64_t)indexOfElement:(id)element;
 - (int64_t)visibleCount;
-- (void)addElement:(id)a3 hidden:(BOOL)a4;
-- (void)removeElement:(id)a3;
-- (void)updatePositionForElement:(id)a3 hidden:(BOOL)a4;
+- (void)addElement:(id)element hidden:(BOOL)hidden;
+- (void)removeElement:(id)element;
+- (void)updatePositionForElement:(id)element hidden:(BOOL)hidden;
 @end
 
 @implementation REElementQueue
 
-- (REElementQueue)initWithMaximumRelevantElementsCount:(int64_t)a3 comparators:(id)a4
+- (REElementQueue)initWithMaximumRelevantElementsCount:(int64_t)count comparators:(id)comparators
 {
   v36 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  comparatorsCopy = comparators;
   v32.receiver = self;
   v32.super_class = REElementQueue;
   v7 = [(REElementQueue *)&v32 init];
@@ -23,12 +23,12 @@
   if (v7)
   {
     v27 = v7;
-    v9 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v6, "count")}];
+    v9 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(comparatorsCopy, "count")}];
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v10 = v6;
+    v10 = comparatorsCopy;
     v11 = [v10 countByEnumeratingWithState:&v28 objects:v35 count:16];
     if (v11)
     {
@@ -72,13 +72,13 @@
     hiddenElements = v27->_hiddenElements;
     v27->_hiddenElements = v22;
 
-    v24 = 0x7FFFFFFFFFFFFFFFLL;
-    if (a3 < 0x7FFFFFFFFFFFFFFFLL)
+    countCopy = 0x7FFFFFFFFFFFFFFFLL;
+    if (count < 0x7FFFFFFFFFFFFFFFLL)
     {
-      v24 = a3;
+      countCopy = count;
     }
 
-    v27->_maximumRelevantElementsCount = v24;
+    v27->_maximumRelevantElementsCount = countCopy;
   }
 
   v25 = *MEMORY[0x277D85DE8];
@@ -96,10 +96,10 @@
   return result;
 }
 
-- (BOOL)containsElement:(id)a3
+- (BOOL)containsElement:(id)element
 {
-  v4 = a3;
-  v5 = ([(NSMutableSet *)self->_hiddenElements containsObject:v4]& 1) != 0 || [(REOrderingArray *)self->_relevantElements containsObject:v4];
+  elementCopy = element;
+  v5 = ([(NSMutableSet *)self->_hiddenElements containsObject:elementCopy]& 1) != 0 || [(REOrderingArray *)self->_relevantElements containsObject:elementCopy];
 
   return v5;
 }
@@ -121,32 +121,32 @@
     while (v4 < [(REOrderingArray *)self->_relevantElements count]);
   }
 
-  v6 = [(NSMutableSet *)self->_hiddenElements allObjects];
-  [v3 addObjectsFromArray:v6];
+  allObjects = [(NSMutableSet *)self->_hiddenElements allObjects];
+  [v3 addObjectsFromArray:allObjects];
 
   v7 = [v3 copy];
 
   return v7;
 }
 
-- (id)elementAtIndex:(unint64_t)a3
+- (id)elementAtIndex:(unint64_t)index
 {
-  if ([(REElementQueue *)self visibleCount]<= a3)
+  if ([(REElementQueue *)self visibleCount]<= index)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [(REOrderingArray *)self->_relevantElements objectAtIndexedSubscript:a3];
+    v5 = [(REOrderingArray *)self->_relevantElements objectAtIndexedSubscript:index];
   }
 
   return v5;
 }
 
-- (int64_t)indexOfElement:(id)a3
+- (int64_t)indexOfElement:(id)element
 {
-  v4 = [(REOrderingArray *)self->_relevantElements indexOfObject:a3];
+  v4 = [(REOrderingArray *)self->_relevantElements indexOfObject:element];
   v5 = 0x7FFFFFFFFFFFFFFFLL;
   if (v4 != 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -160,60 +160,60 @@
   return v5;
 }
 
-- (void)addElement:(id)a3 hidden:(BOOL)a4
+- (void)addElement:(id)element hidden:(BOOL)hidden
 {
   v4 = 8;
-  if (a4)
+  if (hidden)
   {
     v4 = 16;
   }
 
-  [*(&self->super.isa + v4) addObject:a3];
+  [*(&self->super.isa + v4) addObject:element];
 }
 
-- (void)removeElement:(id)a3
+- (void)removeElement:(id)element
 {
   hiddenElements = self->_hiddenElements;
-  v7 = a3;
-  v5 = [(NSMutableSet *)hiddenElements containsObject:v7];
+  elementCopy = element;
+  v5 = [(NSMutableSet *)hiddenElements containsObject:elementCopy];
   v6 = 8;
   if (v5)
   {
     v6 = 16;
   }
 
-  [*(&self->super.isa + v6) removeObject:v7];
+  [*(&self->super.isa + v6) removeObject:elementCopy];
 }
 
-- (void)updatePositionForElement:(id)a3 hidden:(BOOL)a4
+- (void)updatePositionForElement:(id)element hidden:(BOOL)hidden
 {
-  v4 = a4;
-  v8 = a3;
+  hiddenCopy = hidden;
+  elementCopy = element;
   v6 = [(NSMutableSet *)self->_hiddenElements containsObject:?];
   if (v6)
   {
-    v7 = v8;
-    if (v4)
+    v7 = elementCopy;
+    if (hiddenCopy)
     {
       goto LABEL_8;
     }
 
-    [(NSMutableSet *)self->_hiddenElements removeObject:v8];
-    v6 = [(REElementQueue *)self addElement:v8 hidden:0];
+    [(NSMutableSet *)self->_hiddenElements removeObject:elementCopy];
+    v6 = [(REElementQueue *)self addElement:elementCopy hidden:0];
   }
 
-  else if (v4)
+  else if (hiddenCopy)
   {
-    [(REElementQueue *)self removeElement:v8];
-    v6 = [(NSMutableSet *)self->_hiddenElements addObject:v8];
+    [(REElementQueue *)self removeElement:elementCopy];
+    v6 = [(NSMutableSet *)self->_hiddenElements addObject:elementCopy];
   }
 
   else
   {
-    v6 = [(REOrderingArray *)self->_relevantElements updateObject:v8];
+    v6 = [(REOrderingArray *)self->_relevantElements updateObject:elementCopy];
   }
 
-  v7 = v8;
+  v7 = elementCopy;
 LABEL_8:
 
   MEMORY[0x2821F96F8](v6, v7);

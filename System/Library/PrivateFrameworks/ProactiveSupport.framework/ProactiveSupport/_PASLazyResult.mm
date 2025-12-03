@@ -1,8 +1,8 @@
 @interface _PASLazyResult
-- (_PASLazyResult)initWithBlock:(id)a3;
-- (_PASLazyResult)initWithResult:(id)a3;
+- (_PASLazyResult)initWithBlock:(id)block;
+- (_PASLazyResult)initWithResult:(id)result;
 - (id)_init;
-- (id)_initWithBlock:(id)a3;
+- (id)_initWithBlock:(id)block;
 - (void)dealloc;
 @end
 
@@ -30,40 +30,40 @@
   return v3;
 }
 
-- (_PASLazyResult)initWithResult:(id)a3
+- (_PASLazyResult)initWithResult:(id)result
 {
-  v4 = a3;
-  v5 = [[_PASLazyImmortalResult alloc] initWithResult:v4];
+  resultCopy = result;
+  v5 = [[_PASLazyImmortalResult alloc] initWithResult:resultCopy];
 
   return &v5->super;
 }
 
-- (_PASLazyResult)initWithBlock:(id)a3
+- (_PASLazyResult)initWithBlock:(id)block
 {
-  v4 = a3;
-  v5 = [[_PASLazyImmortalResult alloc] _initWithBlock:v4];
+  blockCopy = block;
+  v5 = [[_PASLazyImmortalResult alloc] _initWithBlock:blockCopy];
 
   return v5;
 }
 
-- (id)_initWithBlock:(id)a3
+- (id)_initWithBlock:(id)block
 {
-  v5 = a3;
-  v6 = [(_PASLazyResult *)self _init];
-  if (v6)
+  blockCopy = block;
+  _init = [(_PASLazyResult *)self _init];
+  if (_init)
   {
-    if (!v5)
+    if (!blockCopy)
     {
-      v10 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v10 handleFailureInMethod:a2 object:v6 file:@"_PASCachedResult.m" lineNumber:39 description:{@"Invalid parameter not satisfying: %@", @"block != nil"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:_init file:@"_PASCachedResult.m" lineNumber:39 description:{@"Invalid parameter not satisfying: %@", @"block != nil"}];
     }
 
-    v7 = [v5 copy];
-    v8 = v6[10];
-    v6[10] = v7;
+    v7 = [blockCopy copy];
+    v8 = _init[10];
+    _init[10] = v7;
   }
 
-  return v6;
+  return _init;
 }
 
 @end

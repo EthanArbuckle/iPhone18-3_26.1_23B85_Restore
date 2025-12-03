@@ -1,8 +1,8 @@
 @interface MCSelfSignedCertificatePayloadHandler
-- (BOOL)installWithInstaller:(id)a3 options:(id)a4 interactionClient:(id)a5 outError:(id *)a6;
-- (__SecIdentity)copyIdentityImmediatelyWithInteractionClient:(id)a3 outError:(id *)a4;
-- (id)_createKeyPairType:(id)a3 size:(unint64_t)a4 hardwareBound:(BOOL)a5 outPublicKey:(__SecKey *)a6 outPrivateKey:(__SecKey *)a7;
-- (id)generateSelfSignedCertificatePublicKey:(__SecKey *)a3 privateKey:(__SecKey *)a4 keyUsage:(unsigned int)a5 extendedKeyUsage:(id)a6 lifetime:(unint64_t)a7 outCert:(__SecCertificate *)a8;
+- (BOOL)installWithInstaller:(id)installer options:(id)options interactionClient:(id)client outError:(id *)error;
+- (__SecIdentity)copyIdentityImmediatelyWithInteractionClient:(id)client outError:(id *)error;
+- (id)_createKeyPairType:(id)type size:(unint64_t)size hardwareBound:(BOOL)bound outPublicKey:(__SecKey *)key outPrivateKey:(__SecKey *)privateKey;
+- (id)generateSelfSignedCertificatePublicKey:(__SecKey *)key privateKey:(__SecKey *)privateKey keyUsage:(unsigned int)usage extendedKeyUsage:(id)keyUsage lifetime:(unint64_t)lifetime outCert:(__SecCertificate *)cert;
 - (void)dealloc;
 @end
 
@@ -21,51 +21,51 @@
   [(MCSelfSignedCertificatePayloadHandler *)&v4 dealloc];
 }
 
-- (BOOL)installWithInstaller:(id)a3 options:(id)a4 interactionClient:(id)a5 outError:(id *)a6
+- (BOOL)installWithInstaller:(id)installer options:(id)options interactionClient:(id)client outError:(id *)error
 {
-  v8 = a5;
-  v9 = [(MCNewPayloadHandler *)self payload];
+  clientCopy = client;
+  payload = [(MCNewPayloadHandler *)self payload];
   v27 = 0;
-  v10 = [(MCSelfSignedCertificatePayloadHandler *)self copyIdentityImmediatelyWithInteractionClient:v8 outError:&v27];
-  v11 = v27;
-  if (!v11)
+  v10 = [(MCSelfSignedCertificatePayloadHandler *)self copyIdentityImmediatelyWithInteractionClient:clientCopy outError:&v27];
+  userCancelledError = v27;
+  if (!userCancelledError)
   {
-    v26 = a6;
-    v12 = [(MCNewCertificatePayloadHandler *)self accessibility];
+    errorCopy = error;
+    accessibility = [(MCNewCertificatePayloadHandler *)self accessibility];
     v13 = _MCLogObjects[0];
     if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      v29 = v12;
+      v29 = accessibility;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEBUG, "Storing self-signed identity with accessibility %@", buf, 0xCu);
     }
 
-    v14 = [v9 UUID];
+    uUID = [payload UUID];
     v15 = kMCAppleIdentitiesKeychainGroup;
-    v16 = [(MCNewPayloadHandler *)self profileHandler];
-    v17 = [v16 profile];
-    v18 = +[MCKeychain saveItem:withLabel:group:useSystemKeychain:accessibility:](MCKeychain, "saveItem:withLabel:group:useSystemKeychain:accessibility:", v10, v14, v15, [v17 isInstalledForSystem], v12);
+    profileHandler = [(MCNewPayloadHandler *)self profileHandler];
+    profile = [profileHandler profile];
+    v18 = +[MCKeychain saveItem:withLabel:group:useSystemKeychain:accessibility:](MCKeychain, "saveItem:withLabel:group:useSystemKeychain:accessibility:", v10, uUID, v15, [profile isInstalledForSystem], accessibility);
 
     CFRelease(v10);
     if (v18)
     {
-      v19 = [v9 UUID];
-      [(MCNewPayloadHandler *)self _touchDependencyBetweenPersistentID:v18 andUUID:v19];
+      uUID2 = [payload UUID];
+      [(MCNewPayloadHandler *)self _touchDependencyBetweenPersistentID:v18 andUUID:uUID2];
 
-      if (v8 && ([v8 didUpdateStatus:0] & 1) == 0)
+      if (clientCopy && ([clientCopy didUpdateStatus:0] & 1) == 0)
       {
-        v22 = [(MCNewPayloadHandler *)self profileHandler];
-        v11 = [v22 userCancelledError];
+        profileHandler2 = [(MCNewPayloadHandler *)self profileHandler];
+        userCancelledError = [profileHandler2 userCancelledError];
       }
 
       else
       {
-        v11 = 0;
+        userCancelledError = 0;
       }
 
-      [v9 setCertificatePersistentID:v18];
-      v23 = [v9 UUID];
-      [(MCNewPayloadHandler *)self _retainDependencyBetweenPersistentID:v18 andUUID:v23];
+      [payload setCertificatePersistentID:v18];
+      uUID3 = [payload UUID];
+      [(MCNewPayloadHandler *)self _retainDependencyBetweenPersistentID:v18 andUUID:uUID3];
 
       v24 = _MCLogObjects[0];
       if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_DEBUG))
@@ -79,34 +79,34 @@
     {
       v20 = MCCertificateErrorDomain;
       v21 = MCErrorArray();
-      v11 = [NSError MCErrorWithDomain:v20 code:9002 descriptionArray:v21 errorType:MCErrorTypeFatal, 0];
+      userCancelledError = [NSError MCErrorWithDomain:v20 code:9002 descriptionArray:v21 errorType:MCErrorTypeFatal, 0];
     }
 
-    a6 = v26;
+    error = errorCopy;
   }
 
-  if (a6 && v11)
+  if (error && userCancelledError)
   {
-    *a6 = [v11 MCCopyAsPrimaryError];
+    *error = [userCancelledError MCCopyAsPrimaryError];
   }
 
-  return v11 == 0;
+  return userCancelledError == 0;
 }
 
-- (id)_createKeyPairType:(id)a3 size:(unint64_t)a4 hardwareBound:(BOOL)a5 outPublicKey:(__SecKey *)a6 outPrivateKey:(__SecKey *)a7
+- (id)_createKeyPairType:(id)type size:(unint64_t)size hardwareBound:(BOOL)bound outPublicKey:(__SecKey *)key outPrivateKey:(__SecKey *)privateKey
 {
-  v9 = a5;
-  v11 = a3;
+  boundCopy = bound;
+  typeCopy = type;
   error = 0;
   v12 = [NSMutableDictionary dictionaryWithCapacity:3];
-  if ([v11 isEqualToString:kMCSSCKeyTypeRSA])
+  if ([typeCopy isEqualToString:kMCSSCKeyTypeRSA])
   {
     v13 = &kSecAttrKeyTypeRSA;
   }
 
   else
   {
-    if (![v11 isEqualToString:kMCSSCKeyTypeECSECPrimeRandom])
+    if (![typeCopy isEqualToString:kMCSSCKeyTypeECSECPrimeRandom])
     {
       goto LABEL_6;
     }
@@ -116,10 +116,10 @@
 
   [v12 setObject:*v13 forKeyedSubscript:kSecAttrKeyType];
 LABEL_6:
-  v14 = [NSNumber numberWithUnsignedInteger:a4];
+  v14 = [NSNumber numberWithUnsignedInteger:size];
   [v12 setObject:v14 forKeyedSubscript:kSecAttrKeySizeInBits];
 
-  if (v9)
+  if (boundCopy)
   {
     [v12 setObject:kSecAttrTokenIDSecureEnclave forKeyedSubscript:kSecAttrTokenID];
   }
@@ -159,9 +159,9 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  if (a6)
+  if (key)
   {
-    *a6 = v17;
+    *key = v17;
   }
 
   else if (v17)
@@ -169,9 +169,9 @@ LABEL_17:
     CFRelease(v17);
   }
 
-  if (a7)
+  if (privateKey)
   {
-    *a7 = v16;
+    *privateKey = v16;
   }
 
   else if (v16)
@@ -186,23 +186,23 @@ LABEL_18:
   return v21;
 }
 
-- (id)generateSelfSignedCertificatePublicKey:(__SecKey *)a3 privateKey:(__SecKey *)a4 keyUsage:(unsigned int)a5 extendedKeyUsage:(id)a6 lifetime:(unint64_t)a7 outCert:(__SecCertificate *)a8
+- (id)generateSelfSignedCertificatePublicKey:(__SecKey *)key privateKey:(__SecKey *)privateKey keyUsage:(unsigned int)usage extendedKeyUsage:(id)keyUsage lifetime:(unint64_t)lifetime outCert:(__SecCertificate *)cert
 {
   v9 = kSecOidCommonName;
   v34[0] = kSecOidCommonName;
-  v31 = a6;
-  v10 = [(MCNewPayloadHandler *)self payload];
-  v11 = [v10 identifier];
-  v34[1] = v11;
+  keyUsageCopy = keyUsage;
+  payload = [(MCNewPayloadHandler *)self payload];
+  identifier = [payload identifier];
+  v34[1] = identifier;
   v12 = [NSArray arrayWithObjects:v34 count:2];
   v35 = v12;
   v13 = [NSArray arrayWithObjects:&v35 count:1];
   v36[0] = v13;
   v32[0] = v9;
-  v14 = [(MCNewPayloadHandler *)self profileHandler];
-  v15 = [v14 profile];
-  v16 = [v15 identifier];
-  v32[1] = v16;
+  profileHandler = [(MCNewPayloadHandler *)self profileHandler];
+  profile = [profileHandler profile];
+  identifier2 = [profile identifier];
+  v32[1] = identifier2;
   v17 = [NSArray arrayWithObjects:v32 count:2];
   v33 = v17;
   v18 = [NSArray arrayWithObjects:&v33 count:1];
@@ -210,20 +210,20 @@ LABEL_18:
   v19 = [NSArray arrayWithObjects:v36 count:2];
 
   v20 = [NSMutableDictionary dictionaryWithCapacity:3];
-  v21 = [NSNumber numberWithUnsignedInt:a5];
+  v21 = [NSNumber numberWithUnsignedInt:usage];
   [v20 setObject:v21 forKeyedSubscript:kSecCertificateKeyUsage];
 
-  v22 = [NSNumber numberWithUnsignedInteger:a7];
+  v22 = [NSNumber numberWithUnsignedInteger:lifetime];
   [v20 setObject:v22 forKeyedSubscript:kSecCertificateLifetime];
 
-  [v20 setObject:v31 forKeyedSubscript:kSecCertificateExtendedKeyUsage];
+  [v20 setObject:keyUsageCopy forKeyedSubscript:kSecCertificateExtendedKeyUsage];
   SelfSignedCertificate = SecGenerateSelfSignedCertificate();
   if (SelfSignedCertificate)
   {
-    if (a8)
+    if (cert)
     {
       v24 = 0;
-      *a8 = SelfSignedCertificate;
+      *cert = SelfSignedCertificate;
     }
 
     else
@@ -243,20 +243,20 @@ LABEL_18:
   return v24;
 }
 
-- (__SecIdentity)copyIdentityImmediatelyWithInteractionClient:(id)a3 outError:(id *)a4
+- (__SecIdentity)copyIdentityImmediatelyWithInteractionClient:(id)client outError:(id *)error
 {
-  v6 = a3;
+  clientCopy = client;
   identity = self->_identity;
   if (!identity)
   {
-    v9 = [(MCNewPayloadHandler *)self payload];
+    payload = [(MCNewPayloadHandler *)self payload];
     v38 = 0;
     cf = 0;
     v37 = 0;
-    if (v6)
+    if (clientCopy)
     {
       v10 = MCLocalizedString();
-      v11 = [v6 didUpdateStatus:v10];
+      v11 = [clientCopy didUpdateStatus:v10];
 
       if ((v11 & 1) == 0)
       {
@@ -264,8 +264,8 @@ LABEL_18:
       }
     }
 
-    v12 = [v9 keyType];
-    v13 = -[MCSelfSignedCertificatePayloadHandler _createKeyPairType:size:hardwareBound:outPublicKey:outPrivateKey:](self, "_createKeyPairType:size:hardwareBound:outPublicKey:outPrivateKey:", v12, [v9 keySize], objc_msgSend(v9, "isHardwareBound"), &v38, &v37);
+    keyType = [payload keyType];
+    v13 = -[MCSelfSignedCertificatePayloadHandler _createKeyPairType:size:hardwareBound:outPublicKey:outPrivateKey:](self, "_createKeyPairType:size:hardwareBound:outPublicKey:outPrivateKey:", keyType, [payload keySize], objc_msgSend(payload, "isHardwareBound"), &v38, &v37);
 
     if (v13)
     {
@@ -275,25 +275,25 @@ LABEL_18:
       v17 = v14;
       v18 = 59000;
 LABEL_11:
-      v26 = [NSError MCErrorWithDomain:v17 code:v18 descriptionArray:v15 underlyingError:v13 errorType:v16, 0];
+      userCancelledError = [NSError MCErrorWithDomain:v17 code:v18 descriptionArray:v15 underlyingError:v13 errorType:v16, 0];
 
       goto LABEL_13;
     }
 
-    if (v6 && (MCLocalizedString(), v19 = objc_claimAutoreleasedReturnValue(), v20 = [v6 didUpdateStatus:v19], v19, (v20 & 1) == 0))
+    if (clientCopy && (MCLocalizedString(), v19 = objc_claimAutoreleasedReturnValue(), v20 = [clientCopy didUpdateStatus:v19], v19, (v20 & 1) == 0))
     {
 LABEL_12:
-      v27 = [(MCNewPayloadHandler *)self profileHandler];
-      v26 = [v27 userCancelledError];
+      profileHandler = [(MCNewPayloadHandler *)self profileHandler];
+      userCancelledError = [profileHandler userCancelledError];
     }
 
     else
     {
       v22 = v37;
       v21 = v38;
-      v23 = [v9 keyUsage];
-      v24 = [v9 extendedKeyUsage];
-      v13 = -[MCSelfSignedCertificatePayloadHandler generateSelfSignedCertificatePublicKey:privateKey:keyUsage:extendedKeyUsage:lifetime:outCert:](self, "generateSelfSignedCertificatePublicKey:privateKey:keyUsage:extendedKeyUsage:lifetime:outCert:", v21, v22, v23, v24, [v9 lifetime], &cf);
+      keyUsage = [payload keyUsage];
+      extendedKeyUsage = [payload extendedKeyUsage];
+      v13 = -[MCSelfSignedCertificatePayloadHandler generateSelfSignedCertificatePublicKey:privateKey:keyUsage:extendedKeyUsage:lifetime:outCert:](self, "generateSelfSignedCertificatePublicKey:privateKey:keyUsage:extendedKeyUsage:lifetime:outCert:", v21, v22, keyUsage, extendedKeyUsage, [payload lifetime], &cf);
 
       if (v13)
       {
@@ -309,14 +309,14 @@ LABEL_12:
       self->_identity = v34;
       if (v34)
       {
-        v26 = 0;
+        userCancelledError = 0;
       }
 
       else
       {
         v35 = MCSelfSignedCertificateErrorDomain;
         v36 = MCErrorArray();
-        v26 = [NSError MCErrorWithDomain:v35 code:59003 descriptionArray:v36 errorType:MCErrorTypeFatal, 0];
+        userCancelledError = [NSError MCErrorWithDomain:v35 code:59003 descriptionArray:v36 errorType:MCErrorTypeFatal, 0];
       }
     }
 
@@ -336,26 +336,26 @@ LABEL_13:
       CFRelease(v37);
     }
 
-    if (v6)
+    if (clientCopy)
     {
-      [v6 didUpdateStatus:0];
+      [clientCopy didUpdateStatus:0];
     }
 
-    if (v26)
+    if (userCancelledError)
     {
-      if (a4)
+      if (error)
       {
-        v28 = v26;
-        *a4 = v26;
+        v28 = userCancelledError;
+        *error = userCancelledError;
       }
 
       v29 = _MCLogObjects[0];
       if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_ERROR))
       {
         v30 = v29;
-        v31 = [v26 MCVerboseDescription];
+        mCVerboseDescription = [userCancelledError MCVerboseDescription];
         *buf = 138543362;
-        v41 = v31;
+        v41 = mCVerboseDescription;
         _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_ERROR, "Cannot generate self-signed certificate: %{public}@", buf, 0xCu);
       }
     }

@@ -1,31 +1,31 @@
 @interface TextView.Coordinator
 - (_TtCV5BooksP33_B79FF19A106F9D407BB73D2F778CFAEA8TextView11Coordinator)init;
-- (void)textViewDidBeginEditing:(id)a3;
-- (void)textViewDidChange:(id)a3;
-- (void)textViewDidEndEditing:(id)a3;
+- (void)textViewDidBeginEditing:(id)editing;
+- (void)textViewDidChange:(id)change;
+- (void)textViewDidEndEditing:(id)editing;
 @end
 
 @implementation TextView.Coordinator
 
-- (void)textViewDidBeginEditing:(id)a3
+- (void)textViewDidBeginEditing:(id)editing
 {
-  v4 = a3;
-  v5 = self;
-  sub_10076E59C(v4);
+  editingCopy = editing;
+  selfCopy = self;
+  sub_10076E59C(editingCopy);
 }
 
-- (void)textViewDidEndEditing:(id)a3
+- (void)textViewDidEndEditing:(id)editing
 {
-  v4 = a3;
-  v5 = self;
-  sub_10076E6E0(v4);
+  editingCopy = editing;
+  selfCopy = self;
+  sub_10076E6E0(editingCopy);
 }
 
-- (void)textViewDidChange:(id)a3
+- (void)textViewDidChange:(id)change
 {
-  v4 = a3;
-  v5 = self;
-  sub_10076E860(v4);
+  changeCopy = change;
+  selfCopy = self;
+  sub_10076E860(changeCopy);
 }
 
 - (_TtCV5BooksP33_B79FF19A106F9D407BB73D2F778CFAEA8TextView11Coordinator)init

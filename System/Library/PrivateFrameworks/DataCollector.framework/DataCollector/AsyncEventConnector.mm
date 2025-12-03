@@ -1,16 +1,16 @@
 @interface AsyncEventConnector
-- (int64_t)receiveInput:(id)a3;
+- (int64_t)receiveInput:(id)input;
 - (void)cancel;
-- (void)receiveCompletion:(id)a3;
-- (void)receiveSubscription:(id)a3;
+- (void)receiveCompletion:(id)completion;
+- (void)receiveSubscription:(id)subscription;
 @end
 
 @implementation AsyncEventConnector
 
-- (int64_t)receiveInput:(id)a3
+- (int64_t)receiveInput:(id)input
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_2485C8F10();
   swift_unknownObjectRelease();
   v5 = sub_2485B42F4(v7);
@@ -19,23 +19,23 @@
   return v5;
 }
 
-- (void)receiveSubscription:(id)a3
+- (void)receiveSubscription:(id)subscription
 {
-  v4 = a3;
-  v5 = self;
+  subscriptionCopy = subscription;
+  selfCopy = self;
   sub_2485B4774();
 }
 
-- (void)receiveCompletion:(id)a3
+- (void)receiveCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = self;
+  completionCopy = completion;
+  selfCopy = self;
   sub_2485B4918();
 }
 
 - (void)cancel
 {
-  v2 = self;
+  selfCopy = self;
   sub_2485B3864();
 }
 

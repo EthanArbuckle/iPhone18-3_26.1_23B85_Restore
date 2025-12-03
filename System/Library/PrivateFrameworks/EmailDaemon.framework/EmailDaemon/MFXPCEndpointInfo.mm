@@ -1,37 +1,37 @@
 @interface MFXPCEndpointInfo
-+ (MFXPCEndpointInfo)endpointInfoWithExportedInterface:(id)a3 remoteObjectInterface:(id)a4 shouldAcceptClient:(id)a5 exportedObjectForClient:(id)a6;
++ (MFXPCEndpointInfo)endpointInfoWithExportedInterface:(id)interface remoteObjectInterface:(id)objectInterface shouldAcceptClient:(id)client exportedObjectForClient:(id)forClient;
 - (MFXPCEndpointInfo)init;
-- (id)existingListener:(BOOL)a3;
+- (id)existingListener:(BOOL)listener;
 @end
 
 @implementation MFXPCEndpointInfo
 
-+ (MFXPCEndpointInfo)endpointInfoWithExportedInterface:(id)a3 remoteObjectInterface:(id)a4 shouldAcceptClient:(id)a5 exportedObjectForClient:(id)a6
++ (MFXPCEndpointInfo)endpointInfoWithExportedInterface:(id)interface remoteObjectInterface:(id)objectInterface shouldAcceptClient:(id)client exportedObjectForClient:(id)forClient
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = objc_alloc_init(a1);
+  interfaceCopy = interface;
+  objectInterfaceCopy = objectInterface;
+  clientCopy = client;
+  forClientCopy = forClient;
+  v14 = objc_alloc_init(self);
   v15 = v14;
-  if (!v12)
+  if (!clientCopy)
   {
-    v12 = &stru_10015A3A8;
+    clientCopy = &stru_10015A3A8;
   }
 
   v16 = v14[3];
-  v14[3] = v10;
-  v17 = v10;
+  v14[3] = interfaceCopy;
+  v17 = interfaceCopy;
 
   v18 = v15[4];
-  v15[4] = v11;
-  v19 = v11;
+  v15[4] = objectInterfaceCopy;
+  v19 = objectInterfaceCopy;
 
-  v20 = objc_retainBlock(v12);
+  v20 = objc_retainBlock(clientCopy);
   v21 = v15[5];
   v15[5] = v20;
 
-  v22 = objc_retainBlock(v13);
+  v22 = objc_retainBlock(forClientCopy);
   v23 = v15[6];
   v15[6] = v22;
 
@@ -55,9 +55,9 @@
   return v2;
 }
 
-- (id)existingListener:(BOOL)a3
+- (id)existingListener:(BOOL)listener
 {
-  v3 = a3;
+  listenerCopy = listener;
   [(NSLock *)self->_lock lock];
   listener = self->_listener;
   if (listener)
@@ -67,7 +67,7 @@
 
   else
   {
-    v6 = !v3;
+    v6 = !listenerCopy;
   }
 
   if (!v6)
@@ -79,10 +79,10 @@
     listener = self->_listener;
   }
 
-  v9 = listener;
+  listenerCopy2 = listener;
   [(NSLock *)self->_lock unlock];
 
-  return v9;
+  return listenerCopy2;
 }
 
 @end

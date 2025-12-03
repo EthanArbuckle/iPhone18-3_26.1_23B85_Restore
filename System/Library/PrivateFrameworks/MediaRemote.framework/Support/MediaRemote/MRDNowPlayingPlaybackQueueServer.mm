@@ -1,18 +1,18 @@
 @interface MRDNowPlayingPlaybackQueueServer
-- (id)_resolveRequest:(id)a3 withCapabilities:(unint64_t)a4;
-- (unsigned)_cachingPolicyForRequest:(id)a3;
-- (void)handlePlaybackQueueRequest:(id)a3 fromClient:(id)a4;
-- (void)relayArtworkRequest:(id)a3 forContentItems:(id)a4 withMessage:(id)a5 fromNowPlayingClient:(id)a6 andNotifyXPCClient:(id)a7;
-- (void)relayPlaybackQueueRequest:(id)a3 withMessage:(id)a4 toNowPlayingClient:(id)a5 backToXpcClient:(id)a6 completion:(id)a7;
-- (void)sendPlaybackQueueResponse:(id)a3 forRequest:(id)a4 withMessage:(id)a5 fromNowPlayingClient:(id)a6 toXpcClient:(id)a7;
+- (id)_resolveRequest:(id)request withCapabilities:(unint64_t)capabilities;
+- (unsigned)_cachingPolicyForRequest:(id)request;
+- (void)handlePlaybackQueueRequest:(id)request fromClient:(id)client;
+- (void)relayArtworkRequest:(id)request forContentItems:(id)items withMessage:(id)message fromNowPlayingClient:(id)client andNotifyXPCClient:(id)cClient;
+- (void)relayPlaybackQueueRequest:(id)request withMessage:(id)message toNowPlayingClient:(id)client backToXpcClient:(id)xpcClient completion:(id)completion;
+- (void)sendPlaybackQueueResponse:(id)response forRequest:(id)request withMessage:(id)message fromNowPlayingClient:(id)client toXpcClient:(id)xpcClient;
 @end
 
 @implementation MRDNowPlayingPlaybackQueueServer
 
-- (void)handlePlaybackQueueRequest:(id)a3 fromClient:(id)a4
+- (void)handlePlaybackQueueRequest:(id)request fromClient:(id)client
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  clientCopy = client;
   v8 = MRCreatePlaybackQueueRequestFromXPCMessage();
   v9 = +[NSDate now];
   v10 = [[NSMutableString alloc] initWithFormat:@"%@<%@>", @"handlePlaybackQueueRequest", v8];
@@ -32,8 +32,8 @@
   v44 = v12;
   v13 = objc_retainBlock(v43);
   v14 = +[MRDMediaRemoteServer server];
-  v15 = [v14 nowPlayingServer];
-  v16 = [v15 queryExistingPlayerPathForXPCMessage:v6 forClient:v7];
+  nowPlayingServer = [v14 nowPlayingServer];
+  v16 = [nowPlayingServer queryExistingPlayerPathForXPCMessage:requestCopy forClient:clientCopy];
 
   if ([v16 error])
   {
@@ -43,10 +43,10 @@
     v41[3] = &unk_1004B6E08;
     v17 = v16;
     v42 = v17;
-    sub_100008278(v6, v41);
+    sub_100008278(requestCopy, v41);
     v18 = [[NSError alloc] initWithMRError:{objc_msgSend(v17, "error")}];
-    v19 = [v17 unresolvedPlayerPath];
-    (v13[2])(v13, v8, v19, 0, @"now playing result", v18);
+    unresolvedPlayerPath = [v17 unresolvedPlayerPath];
+    (v13[2])(v13, v8, unresolvedPlayerPath, 0, @"now playing result", v18);
 
     v20 = v42;
   }
@@ -54,34 +54,34 @@
   else
   {
     v34 = v12;
-    v21 = [v16 playerClient];
+    playerClient = [v16 playerClient];
     v33 = v8;
-    v20 = -[MRDNowPlayingPlaybackQueueServer _resolveRequest:withCapabilities:](self, "_resolveRequest:withCapabilities:", v8, [v21 playbackQueueCapabilities]);
+    v20 = -[MRDNowPlayingPlaybackQueueServer _resolveRequest:withCapabilities:](self, "_resolveRequest:withCapabilities:", v8, [playerClient playbackQueueCapabilities]);
 
-    [v7 setHasRequestedLegacyNowPlayingInfo:{objc_msgSend(v20, "isLegacyNowPlayingInfoRequest") | objc_msgSend(v7, "hasRequestedLegacyNowPlayingInfo")}];
-    v22 = [v7 playbackQueueRequests];
+    [clientCopy setHasRequestedLegacyNowPlayingInfo:{objc_msgSend(v20, "isLegacyNowPlayingInfoRequest") | objc_msgSend(clientCopy, "hasRequestedLegacyNowPlayingInfo")}];
+    playbackQueueRequests = [clientCopy playbackQueueRequests];
     [v16 playerPath];
     v24 = v23 = self;
-    v25 = [v22 subscriptionControllerForPlayerPath:v24];
+    v25 = [playbackQueueRequests subscriptionControllerForPlayerPath:v24];
 
     [v25 addRequest:v20];
-    v26 = [v16 playerClient];
-    v27 = [v26 playerPath];
+    playerClient2 = [v16 playerClient];
+    playerPath = [playerClient2 playerPath];
 
     v32 = v23;
     v28 = [(MRDNowPlayingPlaybackQueueServer *)v23 _cachingPolicyForRequest:v20];
-    v29 = [v16 playerClient];
+    playerClient3 = [v16 playerClient];
     v40 = 0;
-    v30 = [v29 playbackQueueForRequest:v20 cachingPolicy:v28 playerPath:v27 partiallyCachedItems:&v40];
+    v30 = [playerClient3 playbackQueueForRequest:v20 cachingPolicy:v28 playerPath:playerPath partiallyCachedItems:&v40];
     v31 = v40;
 
     if (v30)
     {
-      [(MRDNowPlayingPlaybackQueueServer *)v32 sendPlaybackQueueResponse:v30 forRequest:v20 withMessage:v6 fromNowPlayingClient:v16 toXpcClient:v7];
-      (v13[2])(v13, v20, v27, v30, @"playback queue cache", 0);
+      [(MRDNowPlayingPlaybackQueueServer *)v32 sendPlaybackQueueResponse:v30 forRequest:v20 withMessage:requestCopy fromNowPlayingClient:v16 toXpcClient:clientCopy];
+      (v13[2])(v13, v20, playerPath, v30, @"playback queue cache", 0);
       if ([v31 count])
       {
-        [(MRDNowPlayingPlaybackQueueServer *)v32 relayArtworkRequest:v20 forContentItems:v31 withMessage:v6 fromNowPlayingClient:v16 andNotifyXPCClient:v7];
+        [(MRDNowPlayingPlaybackQueueServer *)v32 relayArtworkRequest:v20 forContentItems:v31 withMessage:requestCopy fromNowPlayingClient:v16 andNotifyXPCClient:clientCopy];
       }
     }
 
@@ -94,8 +94,8 @@
       v36 = v25;
       v37 = v20;
       v39 = v13;
-      v38 = v27;
-      [(MRDNowPlayingPlaybackQueueServer *)v32 relayPlaybackQueueRequest:v37 withMessage:v6 toNowPlayingClient:v16 backToXpcClient:v7 completion:v35];
+      v38 = playerPath;
+      [(MRDNowPlayingPlaybackQueueServer *)v32 relayPlaybackQueueRequest:v37 withMessage:requestCopy toNowPlayingClient:v16 backToXpcClient:clientCopy completion:v35];
     }
 
     v12 = v34;
@@ -103,51 +103,51 @@
   }
 }
 
-- (void)sendPlaybackQueueResponse:(id)a3 forRequest:(id)a4 withMessage:(id)a5 fromNowPlayingClient:(id)a6 toXpcClient:(id)a7
+- (void)sendPlaybackQueueResponse:(id)response forRequest:(id)request withMessage:(id)message fromNowPlayingClient:(id)client toXpcClient:(id)xpcClient
 {
-  v11 = a3;
-  v12 = a6;
-  v13 = a5;
-  v14 = a4;
-  v15 = [a7 playbackQueueRequests];
-  v16 = [v12 playerPath];
+  responseCopy = response;
+  clientCopy = client;
+  messageCopy = message;
+  requestCopy = request;
+  playbackQueueRequests = [xpcClient playbackQueueRequests];
+  playerPath = [clientCopy playerPath];
 
-  v17 = [v15 subscriptionControllerForPlayerPath:v16];
+  v17 = [playbackQueueRequests subscriptionControllerForPlayerPath:playerPath];
 
-  [v17 subscribeToPlaybackQueue:v11 forRequest:v14];
+  [v17 subscribeToPlaybackQueue:responseCopy forRequest:requestCopy];
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_1000E5B78;
   v19[3] = &unk_1004B6E08;
-  v20 = v11;
-  v18 = v11;
-  sub_100008278(v13, v19);
+  v20 = responseCopy;
+  v18 = responseCopy;
+  sub_100008278(messageCopy, v19);
 }
 
-- (void)relayPlaybackQueueRequest:(id)a3 withMessage:(id)a4 toNowPlayingClient:(id)a5 backToXpcClient:(id)a6 completion:(id)a7
+- (void)relayPlaybackQueueRequest:(id)request withMessage:(id)message toNowPlayingClient:(id)client backToXpcClient:(id)xpcClient completion:(id)completion
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a7;
-  v14 = a6;
-  v15 = a4;
+  requestCopy = request;
+  clientCopy = client;
+  completionCopy = completion;
+  xpcClientCopy = xpcClient;
+  messageCopy = message;
   v16 = +[NSDate now];
-  v17 = [[NSMutableString alloc] initWithFormat:@"%@<%@>", @"relayPlaybackQueueRequest", v11];
-  v18 = [v12 xpcClient];
-  v19 = [v18 displayName];
+  requestCopy = [[NSMutableString alloc] initWithFormat:@"%@<%@>", @"relayPlaybackQueueRequest", requestCopy];
+  xpcClient = [clientCopy xpcClient];
+  displayName = [xpcClient displayName];
 
-  if (v19)
+  if (displayName)
   {
-    v20 = [v12 xpcClient];
-    v21 = [v20 displayName];
-    [v17 appendFormat:@" for %@", v21];
+    xpcClient2 = [clientCopy xpcClient];
+    displayName2 = [xpcClient2 displayName];
+    [requestCopy appendFormat:@" for %@", displayName2];
   }
 
   v22 = _MRLogForCategory();
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v47 = v17;
+    v47 = requestCopy;
     _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "Request: %{public}@", buf, 0xCu);
   }
 
@@ -155,24 +155,24 @@
   v41[1] = 3221225472;
   v41[2] = sub_1000E5F08;
   v41[3] = &unk_1004BC0C0;
-  v23 = v12;
+  v23 = clientCopy;
   v42 = v23;
-  v24 = v11;
+  v24 = requestCopy;
   v43 = v24;
   v44 = v16;
-  v45 = v13;
-  v35 = v13;
+  v45 = completionCopy;
+  v35 = completionCopy;
   v25 = v16;
   v26 = objc_retainBlock(v41);
-  v27 = [v23 playerPath];
-  v28 = [v14 playbackQueueRequests];
+  playerPath = [v23 playerPath];
+  playbackQueueRequests = [xpcClientCopy playbackQueueRequests];
 
-  v29 = [v28 subscriptionControllerForPlayerPath:v27];
+  v29 = [playbackQueueRequests subscriptionControllerForPlayerPath:playerPath];
 
-  xpc_dictionary_set_uint64(v15, "MRXPC_MESSAGE_ID_KEY", 0x700000000000002uLL);
+  xpc_dictionary_set_uint64(messageCopy, "MRXPC_MESSAGE_ID_KEY", 0x700000000000002uLL);
   MRAddPlayerPathToXPCMessage();
   MRAddPlaybackQueueRequestToXPCMessage();
-  v30 = [v23 xpcClient];
+  xpcClient3 = [v23 xpcClient];
   v36[0] = _NSConcreteStackBlock;
   v36[1] = 3221225472;
   v36[2] = sub_1000E6330;
@@ -185,29 +185,29 @@
   v32 = v23;
   v33 = v24;
   v34 = v29;
-  [v30 relayXPCMessage:v15 andReply:1 resultCallback:v36];
+  [xpcClient3 relayXPCMessage:messageCopy andReply:1 resultCallback:v36];
 }
 
-- (void)relayArtworkRequest:(id)a3 forContentItems:(id)a4 withMessage:(id)a5 fromNowPlayingClient:(id)a6 andNotifyXPCClient:(id)a7
+- (void)relayArtworkRequest:(id)request forContentItems:(id)items withMessage:(id)message fromNowPlayingClient:(id)client andNotifyXPCClient:(id)cClient
 {
-  v11 = a3;
-  v34 = a5;
-  v12 = a6;
-  v33 = a7;
-  v13 = a4;
+  requestCopy = request;
+  messageCopy = message;
+  clientCopy = client;
+  cClientCopy = cClient;
+  itemsCopy = items;
   v14 = +[NSDate now];
-  [v12 playerPath];
+  [clientCopy playerPath];
   v39[0] = _NSConcreteStackBlock;
   v39[1] = 3221225472;
   v39[2] = sub_1000E67CC;
   v15 = v39[3] = &unk_1004BC110;
   v40 = v15;
-  v16 = v11;
+  v16 = requestCopy;
   v41 = v16;
   v17 = v14;
   v42 = v17;
   v18 = objc_retainBlock(v39);
-  v19 = [v13 msv_map:&stru_1004BC150];
+  v19 = [itemsCopy msv_map:&stru_1004BC150];
 
   v20 = [[NSMutableString alloc] initWithFormat:@"%@<%@>", @"requestArtworkForContentItems", v16];
   v21 = v20;
@@ -237,13 +237,13 @@
     [v16 artworkHeight];
     [v23 setArtworkHeight:?];
     v24 = +[NSUUID UUID];
-    v25 = [v24 UUIDString];
-    [v23 setRequestIdentifier:v25];
+    uUIDString = [v24 UUIDString];
+    [v23 setRequestIdentifier:uUIDString];
 
     v26 = [NSString alloc];
-    v27 = [v16 label];
-    v28 = [v16 requestIdentifier];
-    v29 = [v26 initWithFormat:@"ArtworkRequest for %@<%@>", v27, v28];
+    label = [v16 label];
+    requestIdentifier = [v16 requestIdentifier];
+    v29 = [v26 initWithFormat:@"ArtworkRequest for %@<%@>", label, requestIdentifier];
     [v23 setLabel:v29];
 
     v35[0] = _NSConcreteStackBlock;
@@ -251,24 +251,24 @@
     v35[2] = sub_1000E6B50;
     v35[3] = &unk_1004BC1B8;
     v36 = v15;
-    v30 = v33;
-    v37 = v33;
+    v30 = cClientCopy;
+    v37 = cClientCopy;
     v38 = v18;
-    v31 = v34;
-    [(MRDNowPlayingPlaybackQueueServer *)self relayPlaybackQueueRequest:v23 withMessage:v34 toNowPlayingClient:v12 backToXpcClient:v37 completion:v35];
+    v31 = messageCopy;
+    [(MRDNowPlayingPlaybackQueueServer *)self relayPlaybackQueueRequest:v23 withMessage:messageCopy toNowPlayingClient:clientCopy backToXpcClient:v37 completion:v35];
   }
 
   else
   {
     (v18[2])(v18, 0, 0);
-    v30 = v33;
-    v31 = v34;
+    v30 = cClientCopy;
+    v31 = messageCopy;
   }
 }
 
-- (unsigned)_cachingPolicyForRequest:(id)a3
+- (unsigned)_cachingPolicyForRequest:(id)request
 {
-  result = [a3 cachingPolicy];
+  result = [request cachingPolicy];
   if (result <= 1)
   {
     return 1;
@@ -277,14 +277,14 @@
   return result;
 }
 
-- (id)_resolveRequest:(id)a3 withCapabilities:(unint64_t)a4
+- (id)_resolveRequest:(id)request withCapabilities:(unint64_t)capabilities
 {
-  v5 = a3;
-  v6 = v5;
-  v7 = v5;
-  if (!a4)
+  requestCopy = request;
+  v6 = requestCopy;
+  v7 = requestCopy;
+  if (!capabilities)
   {
-    v7 = [v5 copy];
+    v7 = [requestCopy copy];
     if ([v7 rangeContainsNowPlayingItem])
     {
       if ([v7 location])

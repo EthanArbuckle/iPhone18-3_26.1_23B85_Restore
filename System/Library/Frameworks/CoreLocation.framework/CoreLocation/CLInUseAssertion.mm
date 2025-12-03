@@ -1,24 +1,24 @@
 @interface CLInUseAssertion
-+ (id)newAssertionForBundle:(id)a3 withReason:(id)a4 level:(int)a5;
-+ (id)newAssertionForBundleIdentifier:(id)a3 withReason:(id)a4 level:(int)a5;
++ (id)newAssertionForBundle:(id)bundle withReason:(id)reason level:(int)level;
++ (id)newAssertionForBundleIdentifier:(id)identifier withReason:(id)reason level:(int)level;
 @end
 
 @implementation CLInUseAssertion
 
-+ (id)newAssertionForBundleIdentifier:(id)a3 withReason:(id)a4 level:(int)a5
++ (id)newAssertionForBundleIdentifier:(id)identifier withReason:(id)reason level:(int)level
 {
-  v7 = [a3 copy];
-  v8 = [a4 copy];
+  v7 = [identifier copy];
+  v8 = [reason copy];
 
-  return MEMORY[0x1EEE66B58](a1, sel_newAssertionForBundleIdentifier_bundlePath_reason_level_);
+  return MEMORY[0x1EEE66B58](self, sel_newAssertionForBundleIdentifier_bundlePath_reason_level_);
 }
 
-+ (id)newAssertionForBundle:(id)a3 withReason:(id)a4 level:(int)a5
++ (id)newAssertionForBundle:(id)bundle withReason:(id)reason level:(int)level
 {
-  v7 = [objc_msgSend(a3 "bundlePath")];
-  v8 = [a4 copy];
+  v7 = [objc_msgSend(bundle "bundlePath")];
+  v8 = [reason copy];
 
-  return MEMORY[0x1EEE66B58](a1, sel_newAssertionForBundleIdentifier_bundlePath_reason_level_);
+  return MEMORY[0x1EEE66B58](self, sel_newAssertionForBundleIdentifier_bundlePath_reason_level_);
 }
 
 @end

@@ -1,6 +1,6 @@
 @interface QSSTextToSpeechUserVoiceProfile
-- (Offset<siri::speech::schema_fb::TextToSpeechUserVoiceProfile>)addObjectToBuffer:(void *)a3;
-- (QSSTextToSpeechUserVoiceProfile)initWithFlatbuffData:(id)a3 root:(const TextToSpeechUserVoiceProfile *)a4 verify:(BOOL)a5;
+- (Offset<siri::speech::schema_fb::TextToSpeechUserVoiceProfile>)addObjectToBuffer:(void *)buffer;
+- (QSSTextToSpeechUserVoiceProfile)initWithFlatbuffData:(id)data root:(const TextToSpeechUserVoiceProfile *)root verify:(BOOL)verify;
 - (float)duration_mean;
 - (float)duration_std;
 - (float)energy_mean;
@@ -41,7 +41,7 @@ flatbuffers::DetachedBuffer *__47__QSSTextToSpeechUserVoiceProfile_flatbuffData_
   return result;
 }
 
-- (Offset<siri::speech::schema_fb::TextToSpeechUserVoiceProfile>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::schema_fb::TextToSpeechUserVoiceProfile>)addObjectToBuffer:(void *)buffer
 {
   [(QSSTextToSpeechUserVoiceProfile *)self pitch_mean];
   v6 = v5;
@@ -55,18 +55,18 @@ flatbuffers::DetachedBuffer *__47__QSSTextToSpeechUserVoiceProfile_flatbuffData_
   v14 = v13;
   [(QSSTextToSpeechUserVoiceProfile *)self duration_std];
   v16 = v15;
-  flatbuffers::FlatBufferBuilder::NotNested(a3);
-  *(a3 + 70) = 1;
-  v17 = *(a3 + 10);
-  v18 = *(a3 + 8) - *(a3 + 12);
-  flatbuffers::FlatBufferBuilder::AddElement<float>(a3, 4, v6);
-  flatbuffers::FlatBufferBuilder::AddElement<float>(a3, 6, v8);
-  flatbuffers::FlatBufferBuilder::AddElement<float>(a3, 8, v10);
-  flatbuffers::FlatBufferBuilder::AddElement<float>(a3, 10, v12);
-  flatbuffers::FlatBufferBuilder::AddElement<float>(a3, 12, v14);
-  flatbuffers::FlatBufferBuilder::AddElement<float>(a3, 14, v16);
+  flatbuffers::FlatBufferBuilder::NotNested(buffer);
+  *(buffer + 70) = 1;
+  v17 = *(buffer + 10);
+  v18 = *(buffer + 8) - *(buffer + 12);
+  flatbuffers::FlatBufferBuilder::AddElement<float>(buffer, 4, v6);
+  flatbuffers::FlatBufferBuilder::AddElement<float>(buffer, 6, v8);
+  flatbuffers::FlatBufferBuilder::AddElement<float>(buffer, 8, v10);
+  flatbuffers::FlatBufferBuilder::AddElement<float>(buffer, 10, v12);
+  flatbuffers::FlatBufferBuilder::AddElement<float>(buffer, 12, v14);
+  flatbuffers::FlatBufferBuilder::AddElement<float>(buffer, 14, v16);
 
-  return flatbuffers::FlatBufferBuilder::EndTable(a3, v18 + v17);
+  return flatbuffers::FlatBufferBuilder::EndTable(buffer, v18 + v17);
 }
 
 - (float)duration_std
@@ -171,42 +171,42 @@ flatbuffers::DetachedBuffer *__47__QSSTextToSpeechUserVoiceProfile_flatbuffData_
   return result;
 }
 
-- (QSSTextToSpeechUserVoiceProfile)initWithFlatbuffData:(id)a3 root:(const TextToSpeechUserVoiceProfile *)a4 verify:(BOOL)a5
+- (QSSTextToSpeechUserVoiceProfile)initWithFlatbuffData:(id)data root:(const TextToSpeechUserVoiceProfile *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v29.receiver = self;
   v29.super_class = QSSTextToSpeechUserVoiceProfile;
   v10 = [(QSSTextToSpeechUserVoiceProfile *)&v29 init];
   v11 = v10;
   if (v10)
   {
-    if (!v9 || ![v9 length])
+    if (!dataCopy || ![dataCopy length])
     {
       goto LABEL_16;
     }
 
-    objc_storeStrong(&v10->_data, a3);
-    if (!a4)
+    objc_storeStrong(&v10->_data, data);
+    if (!root)
     {
-      v12 = [(NSData *)v10->_data bytes];
-      a4 = v12 + *v12;
+      bytes = [(NSData *)v10->_data bytes];
+      root = bytes + *bytes;
     }
 
-    v10->_root = a4;
-    if (v5)
+    v10->_root = root;
+    if (verifyCopy)
     {
-      v13 = [(NSData *)v10->_data bytes];
+      bytes2 = [(NSData *)v10->_data bytes];
       v14 = [(NSData *)v10->_data length];
       root = v10->_root;
-      if (root < v13 || root > v13 + v14)
+      if (root < bytes2 || root > bytes2 + v14)
       {
         goto LABEL_16;
       }
 
-      v17 = [(NSData *)v10->_data bytes];
+      bytes3 = [(NSData *)v10->_data bytes];
       v18 = [(NSData *)v10->_data length];
-      v24 = v17;
+      v24 = bytes3;
       v25 = v18;
       v26 = xmmword_26914CD70;
       v27 = 0;
@@ -228,9 +228,9 @@ LABEL_16:
       }
     }
 
-    v20 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     storage = v10->_storage;
-    v10->_storage = v20;
+    v10->_storage = dictionary;
   }
 
   v22 = v10;

@@ -1,19 +1,19 @@
 @interface _UIPointerContentEffectAnimationBuilder
-- (_UIPointerContentEffectAnimationBuilder)initWithCreationHandler:(id)a3;
+- (_UIPointerContentEffectAnimationBuilder)initWithCreationHandler:(id)handler;
 - (id)createAnimation;
 @end
 
 @implementation _UIPointerContentEffectAnimationBuilder
 
-- (_UIPointerContentEffectAnimationBuilder)initWithCreationHandler:(id)a3
+- (_UIPointerContentEffectAnimationBuilder)initWithCreationHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v9.receiver = self;
   v9.super_class = _UIPointerContentEffectAnimationBuilder;
   v5 = [(_UIPointerContentEffectAnimationBuilder *)&v9 init];
   if (v5)
   {
-    v6 = _Block_copy(v4);
+    v6 = _Block_copy(handlerCopy);
     creationHandler = v5->_creationHandler;
     v5->_creationHandler = v6;
   }

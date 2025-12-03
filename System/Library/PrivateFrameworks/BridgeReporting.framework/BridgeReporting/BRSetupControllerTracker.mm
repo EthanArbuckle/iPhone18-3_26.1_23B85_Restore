@@ -1,7 +1,7 @@
 @interface BRSetupControllerTracker
 - (BRSetupControllerTracker)init;
 - (id)lastPushedSetupController;
-- (void)addSetupController:(id)a3 action:(unint64_t)a4;
+- (void)addSetupController:(id)controller action:(unint64_t)action;
 @end
 
 @implementation BRSetupControllerTracker
@@ -21,23 +21,23 @@
   return v2;
 }
 
-- (void)addSetupController:(id)a3 action:(unint64_t)a4
+- (void)addSetupController:(id)controller action:(unint64_t)action
 {
-  v6 = a3;
+  controllerCopy = controller;
   v9 = [MEMORY[0x277CCABB0] numberWithDouble:CACurrentMediaTime()];
   v7 = objc_alloc_init(BRSetupControllerDetails);
   [(BRSetupControllerDetails *)v7 setTimeStamp:v9];
-  [(BRSetupControllerDetails *)v7 setControllerName:v6];
+  [(BRSetupControllerDetails *)v7 setControllerName:controllerCopy];
 
-  if (a4)
+  if (action)
   {
     [(BRSetupControllerTracker *)self setHoldControllerDetails:v7];
   }
 
   else
   {
-    v8 = [(BRSetupControllerTracker *)self setupControllers];
-    [v8 addObject:v7];
+    setupControllers = [(BRSetupControllerTracker *)self setupControllers];
+    [setupControllers addObject:v7];
 
     [(BRSetupControllerTracker *)self clearControllerHold];
   }
@@ -45,27 +45,27 @@
 
 - (id)lastPushedSetupController
 {
-  v3 = [(BRSetupControllerTracker *)self setupControllers];
-  v4 = [v3 count];
+  setupControllers = [(BRSetupControllerTracker *)self setupControllers];
+  v4 = [setupControllers count];
 
   if (v4)
   {
     v5 = MEMORY[0x277CCABB0];
-    v6 = [(BRSetupControllerTracker *)self setupControllers];
-    v7 = [v5 numberWithLong:{objc_msgSend(v6, "count") + 1}];
+    setupControllers2 = [(BRSetupControllerTracker *)self setupControllers];
+    v7 = [v5 numberWithLong:{objc_msgSend(setupControllers2, "count") + 1}];
 
-    v8 = [(BRSetupControllerTracker *)self setupControllers];
-    v9 = [v8 lastObject];
+    setupControllers3 = [(BRSetupControllerTracker *)self setupControllers];
+    lastObject = [setupControllers3 lastObject];
 
-    [v9 setControllerOrder:v7];
+    [lastObject setControllerOrder:v7];
   }
 
   else
   {
-    v9 = 0;
+    lastObject = 0;
   }
 
-  return v9;
+  return lastObject;
 }
 
 @end

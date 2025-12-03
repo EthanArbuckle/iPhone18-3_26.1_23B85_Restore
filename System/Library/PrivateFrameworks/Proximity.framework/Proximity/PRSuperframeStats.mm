@@ -1,12 +1,12 @@
 @interface PRSuperframeStats
-- (PRSuperframeStats)initWithStats:(const void *)a3;
+- (PRSuperframeStats)initWithStats:(const void *)stats;
 - (ResponderSuperframeStats)stats;
 - (id).cxx_construct;
 @end
 
 @implementation PRSuperframeStats
 
-- (PRSuperframeStats)initWithStats:(const void *)a3
+- (PRSuperframeStats)initWithStats:(const void *)stats
 {
   v4.receiver = self;
   v4.super_class = PRSuperframeStats;

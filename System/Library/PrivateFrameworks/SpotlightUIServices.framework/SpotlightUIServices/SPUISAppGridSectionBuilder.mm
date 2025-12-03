@@ -1,13 +1,13 @@
 @interface SPUISAppGridSectionBuilder
-+ (BOOL)supportsSection:(id)a3 queryContext:(id)a4;
++ (BOOL)supportsSection:(id)section queryContext:(id)context;
 - (id)buildSection;
 @end
 
 @implementation SPUISAppGridSectionBuilder
 
-+ (BOOL)supportsSection:(id)a3 queryContext:(id)a4
++ (BOOL)supportsSection:(id)section queryContext:(id)context
 {
-  v4 = a3;
+  sectionCopy = section;
   if (+[SPUISUtilities isMacOS])
   {
     v5 = 0;
@@ -15,13 +15,13 @@
 
   else
   {
-    v6 = [v4 bundleIdentifier];
-    if ([v6 isEqualToString:@"com.apple.spotlight.tophits"])
+    bundleIdentifier = [sectionCopy bundleIdentifier];
+    if ([bundleIdentifier isEqualToString:@"com.apple.spotlight.tophits"])
     {
-      v7 = [v4 results];
-      v8 = [v7 firstObject];
-      v9 = [v8 sectionBundleIdentifier];
-      v5 = [v9 isEqualToString:@"com.apple.application"];
+      results = [sectionCopy results];
+      firstObject = [results firstObject];
+      sectionBundleIdentifier = [firstObject sectionBundleIdentifier];
+      v5 = [sectionBundleIdentifier isEqualToString:@"com.apple.application"];
     }
 
     else
@@ -38,13 +38,13 @@
   v16 = *MEMORY[0x277D85DE8];
   v14.receiver = self;
   v14.super_class = SPUISAppGridSectionBuilder;
-  v2 = [(SPUISLegacySectionBuilder *)&v14 buildSection];
+  buildSection = [(SPUISLegacySectionBuilder *)&v14 buildSection];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [v2 results];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v15 count:16];
+  results = [buildSection results];
+  v4 = [results countByEnumeratingWithState:&v10 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -55,13 +55,13 @@
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(results);
         }
 
         [*(*(&v10 + 1) + 8 * i) setRenderHorizontallyWithOtherResultsInCategory:1];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v15 count:16];
+      v5 = [results countByEnumeratingWithState:&v10 objects:v15 count:16];
     }
 
     while (v5);
@@ -69,7 +69,7 @@
 
   v8 = *MEMORY[0x277D85DE8];
 
-  return v2;
+  return buildSection;
 }
 
 @end

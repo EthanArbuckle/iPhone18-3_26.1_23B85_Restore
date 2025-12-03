@@ -1,19 +1,19 @@
 @interface TPSContextualBiomeEventBuilder
-+ (id)contextualBiomeEventFromDictionary:(id)a3;
-+ (id)contextualBiomeEventFromDuetEventDictionary:(id)a3;
++ (id)contextualBiomeEventFromDictionary:(id)dictionary;
++ (id)contextualBiomeEventFromDuetEventDictionary:(id)dictionary;
 @end
 
 @implementation TPSContextualBiomeEventBuilder
 
-+ (id)contextualBiomeEventFromDictionary:(id)a3
++ (id)contextualBiomeEventFromDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [TPSContextualBiomeEvent streamFromDictionary:v3];
+  dictionaryCopy = dictionary;
+  v4 = [TPSContextualBiomeEvent streamFromDictionary:dictionaryCopy];
   if ([v4 isEqualToString:@"App.InFocus"])
   {
     v5 = off_1E8100920;
 LABEL_13:
-    v6 = [objc_alloc(*v5) initWithDictionary:v3];
+    v6 = [objc_alloc(*v5) initWithDictionary:dictionaryCopy];
     goto LABEL_14;
   }
 
@@ -53,21 +53,21 @@ LABEL_14:
   return v6;
 }
 
-+ (id)contextualBiomeEventFromDuetEventDictionary:(id)a3
++ (id)contextualBiomeEventFromDuetEventDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"stream"];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy objectForKeyedSubscript:@"stream"];
   v5 = [v4 isEqualToString:@"/discoverability/signals"];
 
   if (v5)
   {
-    v6 = [v3 mutableCopy];
+    v6 = [dictionaryCopy mutableCopy];
     [v6 setObject:@"Discoverability.Signals" forKeyedSubscript:@"stream"];
     v7 = [MEMORY[0x1E696AD98] numberWithInt:3];
     [v6 setObject:v7 forKeyedSubscript:@"type"];
 
     v8 = [MEMORY[0x1E695E0F8] mutableCopy];
-    v9 = [v3 objectForKeyedSubscript:@"value"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"value"];
     v10 = [v9 copy];
 
     v15[0] = MEMORY[0x1E69E9820];

@@ -1,7 +1,7 @@
 @interface AuthCodeTextField
 - (_TtC9CoreIDVUI17AuthCodeTextField)init;
-- (_TtC9CoreIDVUI17AuthCodeTextField)initWithCoder:(id)a3;
-- (_TtC9CoreIDVUI17AuthCodeTextField)initWithFrame:(CGRect)a3;
+- (_TtC9CoreIDVUI17AuthCodeTextField)initWithCoder:(id)coder;
+- (_TtC9CoreIDVUI17AuthCodeTextField)initWithFrame:(CGRect)frame;
 - (void)configureTextFieldViewScheme;
 @end
 
@@ -23,7 +23,7 @@
   return v6;
 }
 
-- (_TtC9CoreIDVUI17AuthCodeTextField)initWithCoder:(id)a3
+- (_TtC9CoreIDVUI17AuthCodeTextField)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC9CoreIDVUI17AuthCodeTextField_textFieldLabel;
   *(&self->super.super.super.isa + v4) = sub_2458B34CC();
@@ -37,11 +37,11 @@
 
 - (void)configureTextFieldViewScheme
 {
-  v2 = self;
+  selfCopy = self;
   sub_2458509F4();
 }
 
-- (_TtC9CoreIDVUI17AuthCodeTextField)initWithFrame:(CGRect)a3
+- (_TtC9CoreIDVUI17AuthCodeTextField)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

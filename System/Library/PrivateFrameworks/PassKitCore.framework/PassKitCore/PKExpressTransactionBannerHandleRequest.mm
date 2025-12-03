@@ -1,15 +1,15 @@
 @interface PKExpressTransactionBannerHandleRequest
-+ (id)createForPassUniqueIdentifier:(id)a3;
-- (PKExpressTransactionBannerHandleRequest)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
++ (id)createForPassUniqueIdentifier:(id)identifier;
+- (PKExpressTransactionBannerHandleRequest)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKExpressTransactionBannerHandleRequest
 
-+ (id)createForPassUniqueIdentifier:(id)a3
++ (id)createForPassUniqueIdentifier:(id)identifier
 {
-  v3 = a3;
-  if (v3)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     v4 = [PKExpressTransactionBannerHandleRequest alloc];
     if (v4)
@@ -29,7 +29,7 @@
       v6 = 0;
     }
 
-    v7 = [v3 copy];
+    v7 = [identifierCopy copy];
     v8 = v6[2];
     v6[2] = v7;
   }
@@ -42,16 +42,16 @@
   return v6;
 }
 
-- (PKExpressTransactionBannerHandleRequest)initWithCoder:(id)a3
+- (PKExpressTransactionBannerHandleRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = PKExpressTransactionBannerHandleRequest;
-  v5 = [(PKBannerHandleRequest *)&v11 initWithCoder:v4];
-  if (v5 && ([v4 decodeObjectOfClass:objc_opt_class() forKey:@"passUniqueIdentifier"], v6 = objc_claimAutoreleasedReturnValue(), passUniqueIdentifier = v5->_passUniqueIdentifier, v5->_passUniqueIdentifier = v6, passUniqueIdentifier, !v5->_passUniqueIdentifier))
+  v5 = [(PKBannerHandleRequest *)&v11 initWithCoder:coderCopy];
+  if (v5 && ([coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"passUniqueIdentifier"], v6 = objc_claimAutoreleasedReturnValue(), passUniqueIdentifier = v5->_passUniqueIdentifier, v5->_passUniqueIdentifier = v6, passUniqueIdentifier, !v5->_passUniqueIdentifier))
   {
     v9 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"PKExpressTransactionBannerHandleRequest" code:0 userInfo:0];
-    [v4 failWithError:v9];
+    [coderCopy failWithError:v9];
 
     v8 = 0;
   }
@@ -64,13 +64,13 @@
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = PKExpressTransactionBannerHandleRequest;
-  v4 = a3;
-  [(PKBannerHandleRequest *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_passUniqueIdentifier forKey:{@"passUniqueIdentifier", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(PKBannerHandleRequest *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_passUniqueIdentifier forKey:{@"passUniqueIdentifier", v5.receiver, v5.super_class}];
 }
 
 @end

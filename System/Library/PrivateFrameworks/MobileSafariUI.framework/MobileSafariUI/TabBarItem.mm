@@ -2,25 +2,25 @@
 + (id)placeholderItem;
 - (TabBar)tabBar;
 - (TabBarItem)init;
-- (id)menuElementRepresentationWithSelectionHandler:(id)a3;
-- (void)setActive:(BOOL)a3;
-- (void)setIcon:(id)a3;
-- (void)setIsPlaceholder:(BOOL)a3;
-- (void)setMediaStateIcon:(unint64_t)a3;
-- (void)setPinned:(BOOL)a3;
-- (void)setShareParticipants:(id)a3;
-- (void)setTabBar:(id)a3;
-- (void)setTitle:(id)a3;
-- (void)setUnread:(BOOL)a3;
+- (id)menuElementRepresentationWithSelectionHandler:(id)handler;
+- (void)setActive:(BOOL)active;
+- (void)setIcon:(id)icon;
+- (void)setIsPlaceholder:(BOOL)placeholder;
+- (void)setMediaStateIcon:(unint64_t)icon;
+- (void)setPinned:(BOOL)pinned;
+- (void)setShareParticipants:(id)participants;
+- (void)setTabBar:(id)bar;
+- (void)setTitle:(id)title;
+- (void)setUnread:(BOOL)unread;
 @end
 
 @implementation TabBarItem
 
 + (id)placeholderItem
 {
-  v2 = objc_alloc_init(a1);
-  v3 = [MEMORY[0x277CCAD78] UUID];
-  [v2 setUUID:v3];
+  v2 = objc_alloc_init(self);
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  [v2 setUUID:uUID];
 
   [v2 setIsPlaceholder:1];
 
@@ -44,9 +44,9 @@
   return v3;
 }
 
-- (void)setTabBar:(id)a3
+- (void)setTabBar:(id)bar
 {
-  obj = a3;
+  obj = bar;
   WeakRetained = objc_loadWeakRetained(&self->_tabBar);
 
   v5 = obj;
@@ -66,11 +66,11 @@
   }
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  if (self->_title != a3)
+  if (self->_title != title)
   {
-    v5 = [a3 copy];
+    v5 = [title copy];
     title = self->_title;
     self->_title = v5;
 
@@ -80,62 +80,62 @@
   }
 }
 
-- (void)setIcon:(id)a3
+- (void)setIcon:(id)icon
 {
-  v5 = a3;
+  iconCopy = icon;
   if ((WBSIsEqual() & 1) == 0)
   {
-    objc_storeStrong(&self->_icon, a3);
+    objc_storeStrong(&self->_icon, icon);
     [(TabBarItemLayoutInfo *)self->_layoutInfo itemDidUpdateIcon];
   }
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
-  if (self->_active != a3)
+  if (self->_active != active)
   {
-    self->_active = a3;
+    self->_active = active;
     [(TabBarItemLayoutInfo *)self->_layoutInfo itemDidUpdateIsActive];
   }
 }
 
-- (void)setIsPlaceholder:(BOOL)a3
+- (void)setIsPlaceholder:(BOOL)placeholder
 {
-  if (self->_isPlaceholder != a3)
+  if (self->_isPlaceholder != placeholder)
   {
-    self->_isPlaceholder = a3;
+    self->_isPlaceholder = placeholder;
     [(TabBarItemLayoutInfo *)self->_layoutInfo itemDidUpdateIsPlaceholder];
   }
 }
 
-- (void)setMediaStateIcon:(unint64_t)a3
+- (void)setMediaStateIcon:(unint64_t)icon
 {
-  if (self->_mediaStateIcon != a3)
+  if (self->_mediaStateIcon != icon)
   {
-    self->_mediaStateIcon = a3;
+    self->_mediaStateIcon = icon;
     [(TabBarItemLayoutInfo *)self->_layoutInfo itemDidUpdateMediaState];
   }
 }
 
-- (void)setPinned:(BOOL)a3
+- (void)setPinned:(BOOL)pinned
 {
-  if (self->_pinned != a3)
+  if (self->_pinned != pinned)
   {
-    self->_pinned = a3;
+    self->_pinned = pinned;
     [(TabBarItemLayoutInfo *)self->_layoutInfo itemDidUpdateIsPinned];
   }
 }
 
-- (id)menuElementRepresentationWithSelectionHandler:(id)a3
+- (id)menuElementRepresentationWithSelectionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = MEMORY[0x277D750C8];
   title = self->_title;
   icon = self->_icon;
-  v8 = icon;
+  fallbackFavicon = icon;
   if (!icon)
   {
-    v8 = [MEMORY[0x277D28F20] fallbackFavicon];
+    fallbackFavicon = [MEMORY[0x277D28F20] fallbackFavicon];
   }
 
   v12[0] = MEMORY[0x277D85DD0];
@@ -143,9 +143,9 @@
   v12[2] = __60__TabBarItem_menuElementRepresentationWithSelectionHandler___block_invoke;
   v12[3] = &unk_2781D96B0;
   v12[4] = self;
-  v13 = v4;
-  v9 = v4;
-  v10 = [v5 actionWithTitle:title image:v8 identifier:0 handler:v12];
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = [v5 actionWithTitle:title image:fallbackFavicon identifier:0 handler:v12];
 
   if (!icon)
   {
@@ -154,21 +154,21 @@
   return v10;
 }
 
-- (void)setUnread:(BOOL)a3
+- (void)setUnread:(BOOL)unread
 {
-  if (self->_unread != a3)
+  if (self->_unread != unread)
   {
-    self->_unread = a3;
+    self->_unread = unread;
     [(TabBarItemLayoutInfo *)self->_layoutInfo itemDidUpdateIsUnread];
   }
 }
 
-- (void)setShareParticipants:(id)a3
+- (void)setShareParticipants:(id)participants
 {
-  v6 = a3;
+  participantsCopy = participants;
   if (![(NSArray *)self->_shareParticipants isEqualToArray:?])
   {
-    v4 = [v6 copy];
+    v4 = [participantsCopy copy];
     shareParticipants = self->_shareParticipants;
     self->_shareParticipants = v4;
 

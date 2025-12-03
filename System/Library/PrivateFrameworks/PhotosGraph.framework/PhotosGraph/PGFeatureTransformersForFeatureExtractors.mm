@@ -1,26 +1,26 @@
 @interface PGFeatureTransformersForFeatureExtractors
 - (PGFeatureTransformersForFeatureExtractors)init;
-- (id)featureTransformersForFeatureExtractorName:(id)a3;
-- (void)addFeatureTransformers:(id)a3 forFeatureExtractorName:(id)a4;
+- (id)featureTransformersForFeatureExtractorName:(id)name;
+- (void)addFeatureTransformers:(id)transformers forFeatureExtractorName:(id)name;
 @end
 
 @implementation PGFeatureTransformersForFeatureExtractors
 
-- (id)featureTransformersForFeatureExtractorName:(id)a3
+- (id)featureTransformersForFeatureExtractorName:(id)name
 {
-  v4 = a3;
-  v5 = [(PGFeatureTransformersForFeatureExtractors *)self featureTransformersForFeatureExtractors];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  nameCopy = name;
+  featureTransformersForFeatureExtractors = [(PGFeatureTransformersForFeatureExtractors *)self featureTransformersForFeatureExtractors];
+  v6 = [featureTransformersForFeatureExtractors objectForKeyedSubscript:nameCopy];
 
   return v6;
 }
 
-- (void)addFeatureTransformers:(id)a3 forFeatureExtractorName:(id)a4
+- (void)addFeatureTransformers:(id)transformers forFeatureExtractorName:(id)name
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PGFeatureTransformersForFeatureExtractors *)self featureTransformersForFeatureExtractors];
-  [v8 setObject:v7 forKey:v6];
+  nameCopy = name;
+  transformersCopy = transformers;
+  featureTransformersForFeatureExtractors = [(PGFeatureTransformersForFeatureExtractors *)self featureTransformersForFeatureExtractors];
+  [featureTransformersForFeatureExtractors setObject:transformersCopy forKey:nameCopy];
 }
 
 - (PGFeatureTransformersForFeatureExtractors)init

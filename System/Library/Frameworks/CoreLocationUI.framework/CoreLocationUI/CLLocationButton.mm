@@ -1,20 +1,20 @@
 @interface CLLocationButton
 - (CGSize)intrinsicContentSize;
 - (CLLocationButton)init;
-- (CLLocationButton)initWithCoder:(id)a3;
-- (CLLocationButton)initWithFrame:(CGRect)a3;
+- (CLLocationButton)initWithCoder:(id)coder;
+- (CLLocationButton)initWithFrame:(CGRect)frame;
 - (LocationUIProtocol)locationUIProxy;
 - (id)_computeLocationButtonTag;
-- (int)convertToControlSize:(int)a3;
+- (int)convertToControlSize:(int)size;
 - (unsigned)_secureName;
-- (void)_populateArchivedSubviews:(id)a3;
-- (void)_sendActionsForEvents:(unint64_t)a3 withEvent:(id)a4;
+- (void)_populateArchivedSubviews:(id)subviews;
+- (void)_sendActionsForEvents:(unint64_t)events withEvent:(id)event;
 - (void)_setupSlotView;
-- (void)_yieldSlotViewContentForLayerContextID:(unint64_t)a3 slotStyle:(id)a4 withYieldBlock:(id)a5;
-- (void)encodeWithCoder:(id)a3;
+- (void)_yieldSlotViewContentForLayerContextID:(unint64_t)d slotStyle:(id)style withYieldBlock:(id)block;
+- (void)encodeWithCoder:(id)coder;
 - (void)layoutSubviews;
-- (void)setBackgroundColor:(id)a3;
-- (void)setTintColor:(id)a3;
+- (void)setBackgroundColor:(id)color;
+- (void)setTintColor:(id)color;
 @end
 
 @implementation CLLocationButton
@@ -36,11 +36,11 @@
   return v6;
 }
 
-- (CLLocationButton)initWithFrame:(CGRect)a3
+- (CLLocationButton)initWithFrame:(CGRect)frame
 {
   v16.receiver = self;
   v16.super_class = CLLocationButton;
-  v3 = [(CLLocationButton *)&v16 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CLLocationButton *)&v16 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v7 = v3;
   if (v3)
   {
@@ -53,27 +53,27 @@
   return v7;
 }
 
-- (CLLocationButton)initWithCoder:(id)a3
+- (CLLocationButton)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v58.receiver = self;
   v58.super_class = CLLocationButton;
-  v6 = [(CLLocationButton *)&v58 initWithCoder:v4];
+  v6 = [(CLLocationButton *)&v58 initWithCoder:coderCopy];
   if (v6)
   {
-    v9 = objc_msgSend_decodeIntForKey_(v4, v5, v7, v8, @"kCLLocationButtonIcon");
-    v13 = objc_msgSend_decodeIntForKey_(v4, v10, v11, v12, @"kCLLocationButtonLabel");
-    objc_msgSend_decodeFloatForKey_(v4, v14, v15, v16, @"kCLLocationButtonCornerRadius");
+    v9 = objc_msgSend_decodeIntForKey_(coderCopy, v5, v7, v8, @"kCLLocationButtonIcon");
+    v13 = objc_msgSend_decodeIntForKey_(coderCopy, v10, v11, v12, @"kCLLocationButtonLabel");
+    objc_msgSend_decodeFloatForKey_(coderCopy, v14, v15, v16, @"kCLLocationButtonCornerRadius");
     v18 = v17.n128_f32[0];
-    objc_msgSend_decodeFloatForKey_(v4, v19, v17, v20, @"kCLLocationButtonFontSize");
+    objc_msgSend_decodeFloatForKey_(coderCopy, v19, v17, v20, @"kCLLocationButtonFontSize");
     v22 = v21;
     v23 = objc_opt_class();
-    v27 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v24, v25, v26, v23, @"kCLLocationButtonBackgroundColor");
+    v27 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v24, v25, v26, v23, @"kCLLocationButtonBackgroundColor");
     backgroundColor = v6->_backgroundColor;
     v6->_backgroundColor = v27;
 
     v29 = objc_opt_class();
-    v33 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v30, v31, v32, v29, @"kCLLocationButtonTintColor");
+    v33 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v30, v31, v32, v29, @"kCLLocationButtonTintColor");
     tintColor = v6->_tintColor;
     v6->_tintColor = v33;
 
@@ -92,34 +92,34 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v40.receiver = self;
   v40.super_class = CLLocationButton;
-  v4 = a3;
-  [(CLLocationButton *)&v40 encodeWithCoder:v4];
-  objc_msgSend_encodeInt_forKey_(v4, v5, v6, v7, 1, @"kCLLocationButtonVersion", v40.receiver, v40.super_class);
+  coderCopy = coder;
+  [(CLLocationButton *)&v40 encodeWithCoder:coderCopy];
+  objc_msgSend_encodeInt_forKey_(coderCopy, v5, v6, v7, 1, @"kCLLocationButtonVersion", v40.receiver, v40.super_class);
   v11 = objc_msgSend_icon(self, v8, v9, v10);
-  objc_msgSend_encodeInt_forKey_(v4, v12, v13, v14, v11, @"kCLLocationButtonIcon");
+  objc_msgSend_encodeInt_forKey_(coderCopy, v12, v13, v14, v11, @"kCLLocationButtonIcon");
   v18 = objc_msgSend_label(self, v15, v16, v17);
-  objc_msgSend_encodeInt_forKey_(v4, v19, v20, v21, v18, @"kCLLocationButtonLabel");
+  objc_msgSend_encodeInt_forKey_(coderCopy, v19, v20, v21, v18, @"kCLLocationButtonLabel");
   objc_msgSend_cornerRadius(self, v22, v23, v24);
   v25.n128_f32[0] = v25.n128_f64[0];
-  objc_msgSend_encodeFloat_forKey_(v4, v26, v25, v27, @"kCLLocationButtonCornerRadius");
+  objc_msgSend_encodeFloat_forKey_(coderCopy, v26, v25, v27, @"kCLLocationButtonCornerRadius");
   objc_msgSend_fontSize(self, v28, v29, v30);
   v31.n128_f32[0] = v31.n128_f64[0];
-  objc_msgSend_encodeFloat_forKey_(v4, v32, v31, v33, @"kCLLocationButtonFontSize");
-  objc_msgSend_encodeObject_forKey_(v4, v34, v35, v36, self->_backgroundColor, @"kCLLocationButtonBackgroundColor");
-  objc_msgSend_encodeObject_forKey_(v4, v37, v38, v39, self->_tintColor, @"kCLLocationButtonTintColor");
+  objc_msgSend_encodeFloat_forKey_(coderCopy, v32, v31, v33, @"kCLLocationButtonFontSize");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v34, v35, v36, self->_backgroundColor, @"kCLLocationButtonBackgroundColor");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v37, v38, v39, self->_tintColor, @"kCLLocationButtonTintColor");
 }
 
-- (void)_populateArchivedSubviews:(id)a3
+- (void)_populateArchivedSubviews:(id)subviews
 {
   v8.receiver = self;
   v8.super_class = CLLocationButton;
-  v4 = a3;
-  [(CLLocationButton *)&v8 _populateArchivedSubviews:v4];
-  objc_msgSend_removeObject_(v4, v5, v6, v7, self->_slotView, v8.receiver, v8.super_class);
+  subviewsCopy = subviews;
+  [(CLLocationButton *)&v8 _populateArchivedSubviews:subviewsCopy];
+  objc_msgSend_removeObject_(subviewsCopy, v5, v6, v7, self->_slotView, v8.receiver, v8.super_class);
 }
 
 - (LocationUIProtocol)locationUIProxy
@@ -271,28 +271,28 @@
   v123 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_sendActionsForEvents:(unint64_t)a3 withEvent:(id)a4
+- (void)_sendActionsForEvents:(unint64_t)events withEvent:(id)event
 {
-  v6 = a4;
+  eventCopy = event;
   v10 = objc_msgSend_locationUIProxy(self, v7, v8, v9);
-  v14 = objc_msgSend__authenticationMessage(v6, v11, v12, v13);
+  v14 = objc_msgSend__authenticationMessage(eventCopy, v11, v12, v13);
   objc_msgSend_onPrimaryTouchDownEvent_(v10, v15, v16, v17, v14);
 
   v18.receiver = self;
   v18.super_class = CLLocationButton;
-  [(CLLocationButton *)&v18 _sendActionsForEvents:a3 withEvent:v6];
+  [(CLLocationButton *)&v18 _sendActionsForEvents:events withEvent:eventCopy];
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
-  objc_storeStrong(&self->_backgroundColor, a3);
+  objc_storeStrong(&self->_backgroundColor, color);
 
   objc_msgSend_markDirty(self, v4, v5, v6);
 }
 
-- (void)setTintColor:(id)a3
+- (void)setTintColor:(id)color
 {
-  objc_storeStrong(&self->_tintColor, a3);
+  objc_storeStrong(&self->_tintColor, color);
 
   objc_msgSend_markDirty(self, v4, v5, v6);
 }
@@ -381,14 +381,14 @@
   return v106;
 }
 
-- (void)_yieldSlotViewContentForLayerContextID:(unint64_t)a3 slotStyle:(id)a4 withYieldBlock:(id)a5
+- (void)_yieldSlotViewContentForLayerContextID:(unint64_t)d slotStyle:(id)style withYieldBlock:(id)block
 {
-  v8 = a4;
-  v9 = a5;
+  styleCopy = style;
+  blockCopy = block;
   v13 = objc_msgSend__computeLocationButtonTag(self, v10, v11, v12);
   v14 = self->_sandboxExtension;
   v15 = [CLLocationButtonDrawing alloc];
-  v19 = objc_msgSend_initWithStyle_tag_remote_(v15, v16, v17, v18, v8, v13, 0);
+  v19 = objc_msgSend_initWithStyle_tag_remote_(v15, v16, v17, v18, styleCopy, v13, 0);
   v23 = objc_msgSend_localizedTitle(v19, v20, v21, v22);
   objc_msgSend_setAccessibilityLabel_(self, v24, v25, v26, v23);
 
@@ -399,10 +399,10 @@
   self->_intrinsicSize.width = v31;
   self->_intrinsicSize.height = v34.n128_f64[0] + 1.0;
   v36 = MEMORY[0x277D777C8];
-  v38 = objc_msgSend_displayScale(v8, v37, v35, v34);
-  v42 = objc_msgSend_displayRange(v8, v39, v40, v41);
+  v38 = objc_msgSend_displayScale(styleCopy, v37, v35, v34);
+  v42 = objc_msgSend_displayRange(styleCopy, v39, v40, v41);
   v46 = objc_msgSend_contentWithDrawing_scale_range_(v36, v43, v44, v45, v19, v38, v42);
-  v9[2](v9, v46);
+  blockCopy[2](blockCopy, v46);
   objc_msgSend_frame(v13, v47, v48, v49);
   if (CGRectIsEmpty(v58))
   {
@@ -421,11 +421,11 @@
     v51[2] = sub_2371BB674;
     v51[3] = &unk_278A27DF0;
     v51[4] = self;
-    v52 = v8;
-    v56 = a3;
+    v52 = styleCopy;
+    dCopy = d;
     v53 = v13;
     v54 = v14;
-    v55 = v9;
+    v55 = blockCopy;
     dispatch_async(v50, v51);
   }
 }
@@ -469,16 +469,16 @@
   return objc_msgSend_secureNameForLabel_(CLLocationButtonTag, v4, v6, v7, v5);
 }
 
-- (int)convertToControlSize:(int)a3
+- (int)convertToControlSize:(int)size
 {
-  if (a3 >= 2)
+  if (size >= 2)
   {
     return 2;
   }
 
   else
   {
-    return a3;
+    return size;
   }
 }
 

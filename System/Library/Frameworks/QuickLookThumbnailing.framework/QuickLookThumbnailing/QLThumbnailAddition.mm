@@ -1,50 +1,50 @@
 @interface QLThumbnailAddition
-+ (BOOL)_removeAdditionsOnURLDirectly:(id)a3 error:(id *)a4;
-+ (BOOL)_removeAdditionsOnURLUsingDaemon:(id)a3 error:(id *)a4;
-+ (BOOL)_removedAdditionsOnURLUsingDaemon:(id)a3;
-+ (BOOL)associateImage:(CGImage *)a3 metadata:(id)a4 automaticallyGenerated:(BOOL)a5 withURL:(id)a6 error:(id *)a7;
-+ (BOOL)associateThumbnailImagesDictionary:(id)a3 serializedQuickLookMetadata:(id)a4 withImmutableDocument:(BOOL)a5 atURL:(id)a6 error:(id *)a7;
-+ (BOOL)associateThumbnailsForDocumentAtURL:(id)a3 withDocumentAtURL:(id)a4 error:(id *)a5;
-+ (BOOL)associateThumbnailsForDocumentAtURL:(id)a3 withImmutableDocument:(BOOL)a4 atURL:(id)a5 error:(id *)a6;
-+ (BOOL)hasThumbnailOnImmutableDocumentAtURL:(id)a3;
-+ (BOOL)imageContainsAlpha:(CGImage *)a3;
-+ (BOOL)imageContainsAlphaForOtherImages:(CGImage *)a3;
-+ (BOOL)makeAdditionFromStagingURL:(id)a3 metadata:(id)a4 inStorage:(id)a5 error:(id *)a6;
-+ (BOOL)removeAdditionsOnURL:(id)a3 error:(id *)a4;
-+ (BOOL)removeExtendedAttributeNamed:(const char *)a3 flags:(unint64_t)a4 onFileDescriptor:(int)a5 error:(id *)a6;
-+ (BOOL)removeThumbnailsStoredInExtendedAttributesOnURL:(id)a3 error:(id *)a4;
-+ (BOOL)setPropertyList:(id)a3 forExtendedAttributeNamed:(const char *)a4 flags:(unint64_t)a5 onFileDescriptor:(int)a6 error:(id *)a7;
-+ (BOOL)setThumbnailsDictionary:(id)a3 forURL:(id)a4 error:(id *)a5;
-+ (BOOL)shouldUseXattrsToStoreThumbnailsOnURL:(id)a3;
-+ (BOOL)storeThumbnailDataDictionary:(id)a3 metadata:(id)a4 asExtendedAttributeOnURL:(id)a5 error:(id *)a6;
++ (BOOL)_removeAdditionsOnURLDirectly:(id)directly error:(id *)error;
++ (BOOL)_removeAdditionsOnURLUsingDaemon:(id)daemon error:(id *)error;
++ (BOOL)_removedAdditionsOnURLUsingDaemon:(id)daemon;
++ (BOOL)associateImage:(CGImage *)image metadata:(id)metadata automaticallyGenerated:(BOOL)generated withURL:(id)l error:(id *)error;
++ (BOOL)associateThumbnailImagesDictionary:(id)dictionary serializedQuickLookMetadata:(id)metadata withImmutableDocument:(BOOL)document atURL:(id)l error:(id *)error;
++ (BOOL)associateThumbnailsForDocumentAtURL:(id)l withDocumentAtURL:(id)rL error:(id *)error;
++ (BOOL)associateThumbnailsForDocumentAtURL:(id)l withImmutableDocument:(BOOL)document atURL:(id)rL error:(id *)error;
++ (BOOL)hasThumbnailOnImmutableDocumentAtURL:(id)l;
++ (BOOL)imageContainsAlpha:(CGImage *)alpha;
++ (BOOL)imageContainsAlphaForOtherImages:(CGImage *)images;
++ (BOOL)makeAdditionFromStagingURL:(id)l metadata:(id)metadata inStorage:(id)storage error:(id *)error;
++ (BOOL)removeAdditionsOnURL:(id)l error:(id *)error;
++ (BOOL)removeExtendedAttributeNamed:(const char *)named flags:(unint64_t)flags onFileDescriptor:(int)descriptor error:(id *)error;
++ (BOOL)removeThumbnailsStoredInExtendedAttributesOnURL:(id)l error:(id *)error;
++ (BOOL)setPropertyList:(id)list forExtendedAttributeNamed:(const char *)named flags:(unint64_t)flags onFileDescriptor:(int)descriptor error:(id *)error;
++ (BOOL)setThumbnailsDictionary:(id)dictionary forURL:(id)l error:(id *)error;
++ (BOOL)shouldUseXattrsToStoreThumbnailsOnURL:(id)l;
++ (BOOL)storeThumbnailDataDictionary:(id)dictionary metadata:(id)metadata asExtendedAttributeOnURL:(id)l error:(id *)error;
 + (id)additionCreationInfo;
-+ (id)imageNameFor1024ThumbnailAtURL:(id)a3 metadataDictionary:(id)a4;
-+ (id)imageNameFor1024ThumbnailData:(id)a3 metadataDictionary:(id)a4;
-+ (id)imageNameFor1024ThumbnailInMetadataDictionary:(id)a3;
-+ (id)imageNameForThumbnailInImageSource:(CGImageSource *)a3;
-+ (id)metadataForGeneratedThumbnailForURL:(id)a3 maximumDimension:(double)a4;
-+ (id)plistInExtendedAttributeNamed:(const char *)a3 flags:(unint64_t)a4 onFileDescriptor:(int)a5 error:(id *)a6;
-+ (id)thumbnailsDictionaryForURL:(id)a3 error:(id *)a4;
-+ (unint64_t)sizeOfAdditionsPresentOnURL:(id)a3;
-+ (void)_hitAdditionsOnURL:(id)a3 size:(unint64_t)a4 completionHandler:(id)a5;
-+ (void)adjustFileProtectionForThumbnail:(id)a3 fromOriginalDocument:(id)a4;
-+ (void)downloadOrGenerateThumbnailAtTaggedURL:(id)a3 completionHandler:(id)a4;
-+ (void)downloadOrGenerateThumbnailAtURL:(id)a3 completionHandler:(id)a4;
-+ (void)fpfsDownloadOrGenerateThumbnailAtTaggedURL:(id)a3 completionHandler:(id)a4;
-+ (void)noteCloudDocsDownloadedFileAtURL:(id)a3 completionHandler:(id)a4;
-+ (void)preFPFSDownloadOrGenerateThumbnailAtTaggedURL:(id)a3 completionHandler:(id)a4;
-+ (void)preFPFSDownloadThumbnailAtTaggedURL:(id)a3 completionHandler:(id)a4;
-- (BOOL)_initWithAdditionsPresentOnURLDirectly:(id)a3 error:(id *)a4;
-- (BOOL)_initWithAdditionsPresentOnURLUsingDaemon:(id)a3 error:(id *)a4;
-- (BOOL)_initWithXattrsPresentOnURL:(id)a3 error:(id *)a4;
-- (BOOL)shouldBeInvalidatedByThumbnailVersion:(id)a3;
-- (CGImage)thumbnailWithMaximumDimension:(double)a3 contentRect:(CGRect *)a4 properties:(id *)a5;
-- (QLThumbnailAddition)initWithAdditionsPresentOnURL:(id)a3 includingExtendedAttributes:(BOOL)a4 error:(id *)a5;
++ (id)imageNameFor1024ThumbnailAtURL:(id)l metadataDictionary:(id)dictionary;
++ (id)imageNameFor1024ThumbnailData:(id)data metadataDictionary:(id)dictionary;
++ (id)imageNameFor1024ThumbnailInMetadataDictionary:(id)dictionary;
++ (id)imageNameForThumbnailInImageSource:(CGImageSource *)source;
++ (id)metadataForGeneratedThumbnailForURL:(id)l maximumDimension:(double)dimension;
++ (id)plistInExtendedAttributeNamed:(const char *)named flags:(unint64_t)flags onFileDescriptor:(int)descriptor error:(id *)error;
++ (id)thumbnailsDictionaryForURL:(id)l error:(id *)error;
++ (unint64_t)sizeOfAdditionsPresentOnURL:(id)l;
++ (void)_hitAdditionsOnURL:(id)l size:(unint64_t)size completionHandler:(id)handler;
++ (void)adjustFileProtectionForThumbnail:(id)thumbnail fromOriginalDocument:(id)document;
++ (void)downloadOrGenerateThumbnailAtTaggedURL:(id)l completionHandler:(id)handler;
++ (void)downloadOrGenerateThumbnailAtURL:(id)l completionHandler:(id)handler;
++ (void)fpfsDownloadOrGenerateThumbnailAtTaggedURL:(id)l completionHandler:(id)handler;
++ (void)noteCloudDocsDownloadedFileAtURL:(id)l completionHandler:(id)handler;
++ (void)preFPFSDownloadOrGenerateThumbnailAtTaggedURL:(id)l completionHandler:(id)handler;
++ (void)preFPFSDownloadThumbnailAtTaggedURL:(id)l completionHandler:(id)handler;
+- (BOOL)_initWithAdditionsPresentOnURLDirectly:(id)directly error:(id *)error;
+- (BOOL)_initWithAdditionsPresentOnURLUsingDaemon:(id)daemon error:(id *)error;
+- (BOOL)_initWithXattrsPresentOnURL:(id)l error:(id *)error;
+- (BOOL)shouldBeInvalidatedByThumbnailVersion:(id)version;
+- (CGImage)thumbnailWithMaximumDimension:(double)dimension contentRect:(CGRect *)rect properties:(id *)properties;
+- (QLThumbnailAddition)initWithAdditionsPresentOnURL:(id)l includingExtendedAttributes:(BOOL)attributes error:(id *)error;
 - (QLThumbnailVersion)thumbnailVersion;
 - (id)allImageURLs;
-- (id)thumbnailDataForKey:(id)a3;
-- (id)thumbnailURLForKey:(id)a3;
-- (id)thumbnailsDictionaryWithError:(id *)a3;
+- (id)thumbnailDataForKey:(id)key;
+- (id)thumbnailURLForKey:(id)key;
+- (id)thumbnailsDictionaryWithError:(id *)error;
 - (unint64_t)additionSize;
 - (void)dealloc;
 @end
@@ -63,19 +63,19 @@
   [(QLThumbnailAddition *)&v3 dealloc];
 }
 
-- (BOOL)shouldBeInvalidatedByThumbnailVersion:(id)a3
+- (BOOL)shouldBeInvalidatedByThumbnailVersion:(id)version
 {
-  v4 = a3;
-  v5 = [(QLThumbnailAddition *)self thumbnailVersion];
+  versionCopy = version;
+  thumbnailVersion = [(QLThumbnailAddition *)self thumbnailVersion];
   v6 = _log_0();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     [QLThumbnailAddition shouldBeInvalidatedByThumbnailVersion:];
   }
 
-  if (v5)
+  if (thumbnailVersion)
   {
-    v7 = [v5 shouldBeInvalidatedByThumbnailWithVersion:v4];
+    v7 = [thumbnailVersion shouldBeInvalidatedByThumbnailWithVersion:versionCopy];
   }
 
   else
@@ -86,33 +86,33 @@
   return v7;
 }
 
-- (id)thumbnailURLForKey:(id)a3
+- (id)thumbnailURLForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(QLThumbnailAddition *)self metadata];
-  v6 = [v5 objectForKey:@"QLThumbnailMetadataFileNamesDictionaryKey"];
+  keyCopy = key;
+  metadata = [(QLThumbnailAddition *)self metadata];
+  v6 = [metadata objectForKey:@"QLThumbnailMetadataFileNamesDictionaryKey"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v6 objectForKey:v4];
+    v7 = [v6 objectForKey:keyCopy];
 
     if (v7)
     {
-      v8 = [(QLThumbnailAddition *)self additionURL];
-      v9 = [v6 objectForKey:v4];
-      v10 = v8;
+      additionURL = [(QLThumbnailAddition *)self additionURL];
+      v9 = [v6 objectForKey:keyCopy];
+      additionURL2 = additionURL;
       v11 = v9;
       goto LABEL_7;
     }
   }
 
-  if ([v4 isEqualToString:*MEMORY[0x1E695DA70]])
+  if ([keyCopy isEqualToString:*MEMORY[0x1E695DA70]])
   {
-    v12 = [(QLThumbnailAddition *)self metadata];
-    v8 = [v12 objectForKey:@"QLThumbnailMetadataFileNameKey"];
+    metadata2 = [(QLThumbnailAddition *)self metadata];
+    additionURL = [metadata2 objectForKey:@"QLThumbnailMetadataFileNameKey"];
 
-    if (!v8)
+    if (!additionURL)
     {
       v13 = 0;
 LABEL_8:
@@ -125,11 +125,11 @@ LABEL_8:
       goto LABEL_9;
     }
 
-    v10 = [(QLThumbnailAddition *)self additionURL];
-    v9 = v10;
-    v11 = v8;
+    additionURL2 = [(QLThumbnailAddition *)self additionURL];
+    v9 = additionURL2;
+    v11 = additionURL;
 LABEL_7:
-    v13 = [v10 URLByAppendingPathComponent:v11 isDirectory:0];
+    v13 = [additionURL2 URLByAppendingPathComponent:v11 isDirectory:0];
 
     goto LABEL_8;
   }
@@ -147,13 +147,13 @@ LABEL_12:
   return v13;
 }
 
-- (id)thumbnailDataForKey:(id)a3
+- (id)thumbnailDataForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(NSDictionary *)self->_thumbnailDataDictionary objectForKey:v4];
+  keyCopy = key;
+  v5 = [(NSDictionary *)self->_thumbnailDataDictionary objectForKey:keyCopy];
   if (!v5)
   {
-    v6 = [(QLThumbnailAddition *)self thumbnailURLForKey:v4];
+    v6 = [(QLThumbnailAddition *)self thumbnailURLForKey:keyCopy];
     if (v6)
     {
       v5 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithContentsOfURL:v6 options:1 error:0];
@@ -168,14 +168,14 @@ LABEL_12:
   return v5;
 }
 
-- (BOOL)_initWithAdditionsPresentOnURLDirectly:(id)a3 error:(id *)a4
+- (BOOL)_initWithAdditionsPresentOnURLDirectly:(id)directly error:(id *)error
 {
-  v6 = a3;
-  if ([v6 checkResourceIsReachableAndReturnError:a4])
+  directlyCopy = directly;
+  if ([directlyCopy checkResourceIsReachableAndReturnError:error])
   {
     v7 = +[QLThumbnailAdditionCache sharedInstance];
     v17 = 0;
-    v8 = [v7 thumbnailAdditionForItemAtURL:v6 error:&v17];
+    v8 = [v7 thumbnailAdditionForItemAtURL:directlyCopy error:&v17];
     v9 = v17;
     addition = self->_addition;
     self->_addition = v8;
@@ -187,14 +187,14 @@ LABEL_12:
       v13 = [(GSAddition *)v11 url];
       [(QLThumbnailAddition *)self setAdditionURL:v13];
 
-      v14 = [(GSAddition *)self->_addition userInfo];
-      v15 = [v14 objectForKey:@"QLThumbnailAdditionMetadataKey"];
+      userInfo = [(GSAddition *)self->_addition userInfo];
+      v15 = [userInfo objectForKey:@"QLThumbnailAdditionMetadataKey"];
       [(QLThumbnailAddition *)self setMetadata:v15];
     }
 
     else
     {
-      setErrorWrappingUnderlyingError(v9, @"QLThumbnailErrorDomain", 102, a4);
+      setErrorWrappingUnderlyingError(v9, @"QLThumbnailErrorDomain", 102, error);
     }
   }
 
@@ -206,9 +206,9 @@ LABEL_12:
   return v12;
 }
 
-- (BOOL)_initWithAdditionsPresentOnURLUsingDaemon:(id)a3 error:(id *)a4
+- (BOOL)_initWithAdditionsPresentOnURLUsingDaemon:(id)daemon error:(id *)error
 {
-  v6 = a3;
+  daemonCopy = daemon;
   v7 = +[QLThumbnailServiceProxy sharedInstance];
   v23 = 0;
   v24 = &v23;
@@ -235,7 +235,7 @@ LABEL_12:
     v19 = &v23;
     v11 = v9;
     v18 = v11;
-    [v10 thumbnailsStoreURLForURL:v6 completionBlock:v17];
+    [v10 thumbnailsStoreURLForURL:daemonCopy completionBlock:v17];
 
     dispatch_semaphore_wait(v11, 0xFFFFFFFFFFFFFFFFLL);
     v12 = v24[5];
@@ -251,16 +251,16 @@ LABEL_12:
         v13 = 102;
       }
 
-      setErrorWrappingUnderlyingError(v24[5], @"QLThumbnailErrorDomain", v13, a4);
+      setErrorWrappingUnderlyingError(v24[5], @"QLThumbnailErrorDomain", v13, error);
     }
 
-    else if (a4)
+    else if (error)
     {
-      *a4 = 0;
+      *error = 0;
     }
 
-    v15 = [(QLThumbnailAddition *)self additionURL];
-    v14 = v15 != 0;
+    additionURL = [(QLThumbnailAddition *)self additionURL];
+    v14 = additionURL != 0;
   }
 
   else
@@ -317,15 +317,15 @@ void __71__QLThumbnailAddition__initWithAdditionsPresentOnURLUsingDaemon_error__
   dispatch_semaphore_signal(*(a1 + 40));
 }
 
-+ (id)plistInExtendedAttributeNamed:(const char *)a3 flags:(unint64_t)a4 onFileDescriptor:(int)a5 error:(id *)a6
++ (id)plistInExtendedAttributeNamed:(const char *)named flags:(unint64_t)flags onFileDescriptor:(int)descriptor error:(id *)error
 {
-  v8 = xattr_name_with_flags(a3, a4);
+  v8 = xattr_name_with_flags(named, flags);
   if (!v8)
   {
-    if (a6)
+    if (error)
     {
       [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:*__error() userInfo:0];
-      *a6 = v12 = 0;
+      *error = v12 = 0;
       goto LABEL_16;
     }
 
@@ -333,11 +333,11 @@ void __71__QLThumbnailAddition__initWithAdditionsPresentOnURLUsingDaemon_error__
   }
 
   v9 = v8;
-  v10 = fgetxattr(a5, v8, 0, 0, 0, 0);
+  v10 = fgetxattr(descriptor, v8, 0, 0, 0, 0);
   v11 = v10;
-  if (a6 && v10 < 0)
+  if (error && v10 < 0)
   {
-    *a6 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:*__error() userInfo:0];
+    *error = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:*__error() userInfo:0];
 LABEL_14:
     free(v9);
     goto LABEL_15;
@@ -349,12 +349,12 @@ LABEL_14:
   }
 
   v13 = malloc_type_malloc(v10, 0x6F92B0F2uLL);
-  v14 = fgetxattr(a5, v9, v13, v11, 0, 0);
+  v14 = fgetxattr(descriptor, v9, v13, v11, 0, 0);
   if (v14 < 0)
   {
-    if (a6)
+    if (error)
     {
-      *a6 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:*__error() userInfo:0];
+      *error = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:*__error() userInfo:0];
     }
 
     free(v13);
@@ -366,7 +366,7 @@ LABEL_14:
   if (v13)
   {
     v16 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytesNoCopy:v13 length:v15 freeWhenDone:1];
-    v12 = [MEMORY[0x1E696AE40] propertyListWithData:v16 options:0 format:0 error:a6];
+    v12 = [MEMORY[0x1E696AE40] propertyListWithData:v16 options:0 format:0 error:error];
 
     goto LABEL_16;
   }
@@ -378,26 +378,26 @@ LABEL_16:
   return v12;
 }
 
-+ (BOOL)setPropertyList:(id)a3 forExtendedAttributeNamed:(const char *)a4 flags:(unint64_t)a5 onFileDescriptor:(int)a6 error:(id *)a7
++ (BOOL)setPropertyList:(id)list forExtendedAttributeNamed:(const char *)named flags:(unint64_t)flags onFileDescriptor:(int)descriptor error:(id *)error
 {
-  v11 = a3;
-  v12 = xattr_name_with_flags(a4, a5);
+  listCopy = list;
+  v12 = xattr_name_with_flags(named, flags);
   if (v12)
   {
     v13 = v12;
-    v14 = [MEMORY[0x1E696AE40] dataWithPropertyList:v11 format:200 options:0 error:a7];
+    v14 = [MEMORY[0x1E696AE40] dataWithPropertyList:listCopy format:200 options:0 error:error];
     v15 = v14;
     if (v14)
     {
-      if (!fsetxattr(a6, v13, [v14 bytes], objc_msgSend(v14, "length"), 0, 0))
+      if (!fsetxattr(descriptor, v13, [v14 bytes], objc_msgSend(v14, "length"), 0, 0))
       {
         v17 = 1;
         goto LABEL_13;
       }
 
-      if (a7)
+      if (error)
       {
-        *a7 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:*__error() userInfo:0];
+        *error = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:*__error() userInfo:0];
       }
 
       v16 = _log_0();
@@ -414,10 +414,10 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if (a7)
+  if (error)
   {
     [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:*__error() userInfo:0];
-    *a7 = v17 = 0;
+    *error = v17 = 0;
   }
 
   else
@@ -430,17 +430,17 @@ LABEL_14:
   return v17;
 }
 
-+ (BOOL)removeExtendedAttributeNamed:(const char *)a3 flags:(unint64_t)a4 onFileDescriptor:(int)a5 error:(id *)a6
++ (BOOL)removeExtendedAttributeNamed:(const char *)named flags:(unint64_t)flags onFileDescriptor:(int)descriptor error:(id *)error
 {
-  v8 = xattr_name_with_flags(a3, a4);
+  v8 = xattr_name_with_flags(named, flags);
   if (v8)
   {
     v9 = v8;
-    if (fremovexattr(a5, v8, 0) && *__error() != 93)
+    if (fremovexattr(descriptor, v8, 0) && *__error() != 93)
     {
-      if (a6)
+      if (error)
       {
-        *a6 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:*__error() userInfo:0];
+        *error = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:*__error() userInfo:0];
       }
 
       v10 = _log_0();
@@ -453,29 +453,29 @@ LABEL_14:
     free(v9);
   }
 
-  else if (a6)
+  else if (error)
   {
-    *a6 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:*__error() userInfo:0];
+    *error = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:*__error() userInfo:0];
   }
 
   return 0;
 }
 
-- (BOOL)_initWithXattrsPresentOnURL:(id)a3 error:(id *)a4
+- (BOOL)_initWithXattrsPresentOnURL:(id)l error:(id *)error
 {
-  v6 = a3;
+  lCopy = l;
   if (QLThumbnailAdditionSimulateOneSlowIOForTesting == 1)
   {
     [QLThumbnailAddition _initWithXattrsPresentOnURL:error:];
   }
 
-  v7 = open([v6 fileSystemRepresentation], 4);
+  v7 = open([lCopy fileSystemRepresentation], 4);
   if ((v7 & 0x80000000) != 0)
   {
-    if (a4)
+    if (error)
     {
       [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:*__error() userInfo:0];
-      *a4 = v13 = 0;
+      *error = v13 = 0;
       goto LABEL_11;
     }
 
@@ -485,13 +485,13 @@ LABEL_10:
   }
 
   v8 = v7;
-  v9 = [objc_opt_class() plistInExtendedAttributeNamed:QLThumbnailDictionaryXattrName flags:3 onFileDescriptor:v7 error:a4];
+  v9 = [objc_opt_class() plistInExtendedAttributeNamed:QLThumbnailDictionaryXattrName flags:3 onFileDescriptor:v7 error:error];
   thumbnailDataDictionary = self->_thumbnailDataDictionary;
   self->_thumbnailDataDictionary = v9;
 
   if (self->_thumbnailDataDictionary)
   {
-    v11 = [objc_opt_class() plistInExtendedAttributeNamed:QLThumbnailMetadataXattrName flags:3 onFileDescriptor:v8 error:a4];
+    v11 = [objc_opt_class() plistInExtendedAttributeNamed:QLThumbnailMetadataXattrName flags:3 onFileDescriptor:v8 error:error];
     metadata = self->_metadata;
     self->_metadata = v11;
   }
@@ -508,42 +508,42 @@ LABEL_11:
   return v13;
 }
 
-+ (unint64_t)sizeOfAdditionsPresentOnURL:(id)a3
++ (unint64_t)sizeOfAdditionsPresentOnURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v5 = xattr_name_with_flags(QLThumbnailDictionaryXattrName, 3uLL);
-  if (!v5 || (v6 = v5, v7 = getxattr([v4 fileSystemRepresentation], v5, 0, 0, 0, 0), free(v6), v7 <= 0))
+  if (!v5 || (v6 = v5, additionSize = getxattr([lCopy fileSystemRepresentation], v5, 0, 0, 0, 0), free(v6), additionSize <= 0))
   {
-    v8 = [[a1 alloc] initWithAdditionsPresentOnURL:v4 includingExtendedAttributes:0 error:0];
+    v8 = [[self alloc] initWithAdditionsPresentOnURL:lCopy includingExtendedAttributes:0 error:0];
     v9 = v8;
     if (v8)
     {
-      v7 = [v8 additionSize];
+      additionSize = [v8 additionSize];
     }
 
     else
     {
-      v7 = 0;
+      additionSize = 0;
     }
   }
 
-  return v7;
+  return additionSize;
 }
 
-- (QLThumbnailAddition)initWithAdditionsPresentOnURL:(id)a3 includingExtendedAttributes:(BOOL)a4 error:(id *)a5
+- (QLThumbnailAddition)initWithAdditionsPresentOnURL:(id)l includingExtendedAttributes:(BOOL)attributes error:(id *)error
 {
-  v6 = a4;
-  v8 = a3;
+  attributesCopy = attributes;
+  lCopy = l;
   v20.receiver = self;
   v20.super_class = QLThumbnailAddition;
   v9 = [(QLThumbnailAddition *)&v20 init];
   v10 = v9;
   if (v9)
   {
-    if (v6)
+    if (attributesCopy)
     {
       v19 = 0;
-      v11 = [(QLThumbnailAddition *)v9 _initWithXattrsPresentOnURL:v8 error:&v19];
+      v11 = [(QLThumbnailAddition *)v9 _initWithXattrsPresentOnURL:lCopy error:&v19];
       v12 = v19;
       v13 = v12;
       if (v11)
@@ -555,17 +555,17 @@ LABEL_18:
 
       if ([v12 code] != 93)
       {
-        if (a5)
+        if (error)
         {
-          v14 = [v13 domain];
-          if ([v14 isEqualToString:*MEMORY[0x1E696A798]])
+          domain = [v13 domain];
+          if ([domain isEqualToString:*MEMORY[0x1E696A798]])
           {
-            v15 = [v13 code];
+            code = [v13 code];
 
-            if (v15 == 2)
+            if (code == 2)
             {
               v16 = v13;
-              *a5 = v13;
+              *error = v13;
               goto LABEL_17;
             }
           }
@@ -574,7 +574,7 @@ LABEL_18:
           {
           }
 
-          setErrorWrappingUnderlyingError(v13, @"QLThumbnailErrorDomain", 102, a5);
+          setErrorWrappingUnderlyingError(v13, @"QLThumbnailErrorDomain", 102, error);
         }
 
 LABEL_17:
@@ -593,13 +593,13 @@ LABEL_17:
     v17 = *MEMORY[0x1E69E9BD0];
     if (sandbox_check())
     {
-      if ([(QLThumbnailAddition *)v10 _initWithAdditionsPresentOnURLUsingDaemon:v8 error:a5, "com.apple.revisiond"])
+      if ([(QLThumbnailAddition *)v10 _initWithAdditionsPresentOnURLUsingDaemon:lCopy error:error, "com.apple.revisiond"])
       {
         goto LABEL_18;
       }
     }
 
-    else if ([(QLThumbnailAddition *)v10 _initWithAdditionsPresentOnURLDirectly:v8 error:a5, "com.apple.revisiond"])
+    else if ([(QLThumbnailAddition *)v10 _initWithAdditionsPresentOnURLDirectly:lCopy error:error, "com.apple.revisiond"])
     {
       goto LABEL_18;
     }
@@ -617,8 +617,8 @@ LABEL_19:
   thumbnailVersion = self->_thumbnailVersion;
   if (!thumbnailVersion)
   {
-    v4 = [(QLThumbnailAddition *)self metadata];
-    v5 = [v4 valueForKey:@"QLThumbnailMetadataFileVersionKey.2"];
+    metadata = [(QLThumbnailAddition *)self metadata];
+    v5 = [metadata valueForKey:@"QLThumbnailMetadataFileVersionKey.2"];
 
     if (v5)
     {
@@ -637,7 +637,7 @@ LABEL_19:
   return thumbnailVersion;
 }
 
-- (CGImage)thumbnailWithMaximumDimension:(double)a3 contentRect:(CGRect *)a4 properties:(id *)a5
+- (CGImage)thumbnailWithMaximumDimension:(double)dimension contentRect:(CGRect *)rect properties:(id *)properties
 {
   v32[4] = *MEMORY[0x1E69E9840];
   v9 = [(QLThumbnailAddition *)self thumbnailDataForKey:*MEMORY[0x1E695DA70]];
@@ -652,8 +652,8 @@ LABEL_19:
     v11 = 0;
   }
 
-  v12 = [(QLThumbnailAddition *)self metadata];
-  v13 = [v12 valueForKey:@"QLThumbnailMetadataMaximumDimensionKey"];
+  metadata = [(QLThumbnailAddition *)self metadata];
+  v13 = [metadata valueForKey:@"QLThumbnailMetadataMaximumDimensionKey"];
   [v13 doubleValue];
   v15 = v14;
 
@@ -668,7 +668,7 @@ LABEL_19:
     v16 = v15;
   }
 
-  if (v16 <= a3)
+  if (v16 <= dimension)
   {
     v29 = *MEMORY[0x1E696E0B8];
     v30 = MEMORY[0x1E695E118];
@@ -685,7 +685,7 @@ LABEL_19:
     v32[0] = MEMORY[0x1E695E118];
     v32[1] = MEMORY[0x1E695E118];
     v31[2] = *MEMORY[0x1E696E100];
-    v19 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+    v19 = [MEMORY[0x1E696AD98] numberWithDouble:dimension];
     v31[3] = *MEMORY[0x1E696E0B8];
     v32[2] = v19;
     v32[3] = v17;
@@ -699,18 +699,18 @@ LABEL_19:
   CFRelease(v11);
   if (v22)
   {
-    if (a5)
+    if (properties)
     {
-      v23 = [(QLThumbnailAddition *)self metadata];
-      *a5 = [v23 valueForKey:@"QLThumbnailMetadataQLPropertiesKey"];
+      metadata2 = [(QLThumbnailAddition *)self metadata];
+      *properties = [metadata2 valueForKey:@"QLThumbnailMetadataQLPropertiesKey"];
     }
 
-    v24 = [(QLThumbnailAddition *)self metadata];
-    v25 = [v24 valueForKey:@"QLThumbnailMetadataContentRectKey"];
+    metadata3 = [(QLThumbnailAddition *)self metadata];
+    v25 = [metadata3 valueForKey:@"QLThumbnailMetadataContentRectKey"];
 
-    if (a4 && v25)
+    if (rect && v25)
     {
-      *a4 = NSRectFromString(v25);
+      *rect = NSRectFromString(v25);
     }
 
     v26 = CFAutorelease(v22);
@@ -744,10 +744,10 @@ LABEL_17:
   return v4;
 }
 
-+ (void)_hitAdditionsOnURL:(id)a3 size:(unint64_t)a4 completionHandler:(id)a5
++ (void)_hitAdditionsOnURL:(id)l size:(unint64_t)size completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a5;
+  lCopy = l;
+  handlerCopy = handler;
   v22 = 0;
   v9 = [QLThumbnailServiceProxy sharedInstanceWithError:&v22];
   v10 = v22;
@@ -761,7 +761,7 @@ LABEL_17:
     v18[1] = 3221225472;
     v18[2] = __65__QLThumbnailAddition__hitAdditionsOnURL_size_completionHandler___block_invoke;
     v18[3] = &unk_1E836A2D8;
-    v11 = v8;
+    v11 = handlerCopy;
     v19 = v11;
     v12 = [v9 remoteObjectProxyWithErrorHandler:v18];
     v13[0] = MEMORY[0x1E69E9820];
@@ -770,16 +770,16 @@ LABEL_17:
     v13[3] = &unk_1E836A350;
     v15 = v11;
     v16 = v20;
-    v17 = a4;
-    v14 = v7;
+    sizeCopy = size;
+    v14 = lCopy;
     [v12 askThumbnailAdditionIndex:v13];
 
     _Block_object_dispose(v20, 8);
   }
 
-  else if (v8)
+  else if (handlerCopy)
   {
-    (*(v8 + 2))(v8, v10);
+    (*(handlerCopy + 2))(handlerCopy, v10);
   }
 }
 
@@ -917,17 +917,17 @@ uint64_t __65__QLThumbnailAddition__hitAdditionsOnURL_size_completionHandler___b
   return result;
 }
 
-+ (BOOL)storeThumbnailDataDictionary:(id)a3 metadata:(id)a4 asExtendedAttributeOnURL:(id)a5 error:(id *)a6
++ (BOOL)storeThumbnailDataDictionary:(id)dictionary metadata:(id)metadata asExtendedAttributeOnURL:(id)l error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = open([a5 fileSystemRepresentation], 4);
+  dictionaryCopy = dictionary;
+  metadataCopy = metadata;
+  v12 = open([l fileSystemRepresentation], 4);
   if ((v12 & 0x80000000) != 0)
   {
-    if (a6)
+    if (error)
     {
       [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:*__error() userInfo:0];
-      *a6 = v14 = 0;
+      *error = v14 = 0;
       goto LABEL_8;
     }
 
@@ -937,37 +937,37 @@ LABEL_7:
   }
 
   v13 = v12;
-  if (([a1 setPropertyList:v10 forExtendedAttributeNamed:QLThumbnailDictionaryXattrName flags:3 onFileDescriptor:v12 error:a6] & 1) == 0)
+  if (([self setPropertyList:dictionaryCopy forExtendedAttributeNamed:QLThumbnailDictionaryXattrName flags:3 onFileDescriptor:v12 error:error] & 1) == 0)
   {
     close(v13);
     goto LABEL_7;
   }
 
-  v14 = [a1 setPropertyList:v11 forExtendedAttributeNamed:QLThumbnailMetadataXattrName flags:3 onFileDescriptor:v13 error:a6];
+  v14 = [self setPropertyList:metadataCopy forExtendedAttributeNamed:QLThumbnailMetadataXattrName flags:3 onFileDescriptor:v13 error:error];
   close(v13);
 LABEL_8:
 
   return v14;
 }
 
-+ (BOOL)removeThumbnailsStoredInExtendedAttributesOnURL:(id)a3 error:(id *)a4
++ (BOOL)removeThumbnailsStoredInExtendedAttributesOnURL:(id)l error:(id *)error
 {
-  v7 = a3;
-  v8 = open([a3 fileSystemRepresentation], 4);
+  lCopy = l;
+  v8 = open([l fileSystemRepresentation], 4);
   if ((v8 & 0x80000000) != 0)
   {
-    if (a4)
+    if (error)
     {
-      *a4 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:*__error() userInfo:0];
+      *error = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:*__error() userInfo:0];
     }
   }
 
   else
   {
     v9 = v8;
-    if ([a1 removeExtendedAttributeNamed:QLThumbnailDictionaryXattrName flags:3 onFileDescriptor:v8 error:a4])
+    if ([self removeExtendedAttributeNamed:QLThumbnailDictionaryXattrName flags:3 onFileDescriptor:v8 error:error])
     {
-      v10 = [a1 removeExtendedAttributeNamed:QLThumbnailMetadataXattrName flags:3 onFileDescriptor:v9 error:a4];
+      v10 = [self removeExtendedAttributeNamed:QLThumbnailMetadataXattrName flags:3 onFileDescriptor:v9 error:error];
       close(v9);
       return v10;
     }
@@ -978,10 +978,10 @@ LABEL_8:
   return 0;
 }
 
-+ (id)imageNameFor1024ThumbnailInMetadataDictionary:(id)a3
++ (id)imageNameFor1024ThumbnailInMetadataDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [v3 objectForKey:@"QLThumbnailMetadataFileNamesDictionaryKey"];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy objectForKey:@"QLThumbnailMetadataFileNamesDictionaryKey"];
   v5 = [v4 objectForKey:*MEMORY[0x1E695DA70]];
 
   if (v5)
@@ -991,7 +991,7 @@ LABEL_8:
 
   else
   {
-    v6 = [v3 objectForKey:@"QLThumbnailMetadataFileNameKey"];
+    v6 = [dictionaryCopy objectForKey:@"QLThumbnailMetadataFileNameKey"];
   }
 
   v7 = v6;
@@ -999,19 +999,19 @@ LABEL_8:
   return v7;
 }
 
-+ (id)imageNameForThumbnailInImageSource:(CGImageSource *)a3
++ (id)imageNameForThumbnailInImageSource:(CGImageSource *)source
 {
-  Type = CGImageSourceGetType(a3);
+  Type = CGImageSourceGetType(source);
   if (Type)
   {
     v4 = [MEMORY[0x1E6982C40] typeWithIdentifier:Type];
     v5 = v4;
     if (v4)
     {
-      v6 = [v4 preferredFilenameExtension];
-      if (v6)
+      preferredFilenameExtension = [v4 preferredFilenameExtension];
+      if (preferredFilenameExtension)
       {
-        v7 = [@"thumbnail" stringByAppendingPathExtension:v6];
+        v7 = [@"thumbnail" stringByAppendingPathExtension:preferredFilenameExtension];
       }
 
       else
@@ -1034,17 +1034,17 @@ LABEL_8:
   return v7;
 }
 
-+ (id)imageNameFor1024ThumbnailAtURL:(id)a3 metadataDictionary:(id)a4
++ (id)imageNameFor1024ThumbnailAtURL:(id)l metadataDictionary:(id)dictionary
 {
-  v6 = a3;
-  v7 = [a1 imageNameFor1024ThumbnailInMetadataDictionary:a4];
+  lCopy = l;
+  v7 = [self imageNameFor1024ThumbnailInMetadataDictionary:dictionary];
   if (!v7)
   {
-    v8 = CGImageSourceCreateWithURL(v6, 0);
+    v8 = CGImageSourceCreateWithURL(lCopy, 0);
     if (v8)
     {
       v9 = v8;
-      v7 = [a1 imageNameForThumbnailInImageSource:v8];
+      v7 = [self imageNameForThumbnailInImageSource:v8];
       CFRelease(v9);
     }
 
@@ -1059,17 +1059,17 @@ LABEL_8:
   return v10;
 }
 
-+ (id)imageNameFor1024ThumbnailData:(id)a3 metadataDictionary:(id)a4
++ (id)imageNameFor1024ThumbnailData:(id)data metadataDictionary:(id)dictionary
 {
-  v6 = a3;
-  v7 = [a1 imageNameFor1024ThumbnailInMetadataDictionary:a4];
+  dataCopy = data;
+  v7 = [self imageNameFor1024ThumbnailInMetadataDictionary:dictionary];
   if (!v7)
   {
-    v8 = CGImageSourceCreateWithData(v6, 0);
+    v8 = CGImageSourceCreateWithData(dataCopy, 0);
     if (v8)
     {
       v9 = v8;
-      v7 = [a1 imageNameForThumbnailInImageSource:v8];
+      v7 = [self imageNameForThumbnailInImageSource:v8];
       CFRelease(v9);
     }
 
@@ -1084,18 +1084,18 @@ LABEL_8:
   return v10;
 }
 
-+ (BOOL)associateThumbnailImagesDictionary:(id)a3 serializedQuickLookMetadata:(id)a4 withImmutableDocument:(BOOL)a5 atURL:(id)a6 error:(id *)a7
++ (BOOL)associateThumbnailImagesDictionary:(id)dictionary serializedQuickLookMetadata:(id)metadata withImmutableDocument:(BOOL)document atURL:(id)l error:(id *)error
 {
   v74 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  dictionaryCopy = dictionary;
+  metadataCopy = metadata;
+  lCopy = l;
   v65 = 0u;
   v66 = 0u;
   v67 = 0u;
   v68 = 0u;
-  v13 = [v10 allValues];
-  v14 = [v13 countByEnumeratingWithState:&v65 objects:v73 count:16];
+  allValues = [dictionaryCopy allValues];
+  v14 = [allValues countByEnumeratingWithState:&v65 objects:v73 count:16];
   if (v14)
   {
     v15 = v14;
@@ -1108,7 +1108,7 @@ LABEL_8:
       {
         if (*v66 != v17)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(allValues);
         }
 
         v20 = *(*(&v65 + 1) + 8 * i);
@@ -1119,7 +1119,7 @@ LABEL_8:
         }
       }
 
-      v15 = [v13 countByEnumeratingWithState:&v65 objects:v73 count:16];
+      v15 = [allValues countByEnumeratingWithState:&v65 objects:v73 count:16];
     }
 
     while (v15);
@@ -1131,7 +1131,7 @@ LABEL_8:
   }
 
   v21 = *MEMORY[0x1E695DA70];
-  v22 = [v10 objectForKey:*MEMORY[0x1E695DA70]];
+  v22 = [dictionaryCopy objectForKey:*MEMORY[0x1E695DA70]];
   v23 = v22;
   if (v22)
   {
@@ -1147,11 +1147,11 @@ LABEL_8:
         +[QLThumbnailAddition associateThumbnailImagesDictionary:serializedQuickLookMetadata:withImmutableDocument:atURL:error:];
       }
 
-      if (a7)
+      if (error)
       {
         v31 = v26;
         v29 = 0;
-        *a7 = v26;
+        *error = v26;
       }
 
       else
@@ -1163,9 +1163,9 @@ LABEL_8:
     }
 
     v58 = v25;
-    if (v11)
+    if (metadataCopy)
     {
-      v27 = [MEMORY[0x1E696AE40] propertyListWithData:v11 options:0 format:0 error:0];
+      v27 = [MEMORY[0x1E696AE40] propertyListWithData:metadataCopy options:0 format:0 error:0];
     }
 
     else
@@ -1173,7 +1173,7 @@ LABEL_8:
       v27 = 0;
     }
 
-    v32 = [a1 imageNameFor1024ThumbnailAtURL:v23 metadataDictionary:v27];
+    v32 = [self imageNameFor1024ThumbnailAtURL:v23 metadataDictionary:v27];
     v33 = v32;
     if (!v32)
     {
@@ -1183,10 +1183,10 @@ LABEL_8:
         +[QLThumbnailAddition associateThumbnailImagesDictionary:serializedQuickLookMetadata:withImmutableDocument:atURL:error:];
       }
 
-      if (a7)
+      if (error)
       {
         [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A250] code:259 userInfo:0];
-        *a7 = v29 = 0;
+        *error = v29 = 0;
       }
 
       else
@@ -1199,17 +1199,17 @@ LABEL_8:
     }
 
     v55 = v32;
-    v56 = v11;
+    v56 = metadataCopy;
     v71 = v21;
     v72 = v32;
     v34 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v72 forKeys:&v71 count:1];
-    v35 = [[QLThumbnailVersion alloc] initWithFileURL:v12 automaticallyGenerated:0];
-    v36 = [(QLThumbnailVersion *)v35 dictionaryRepresentation];
+    v35 = [[QLThumbnailVersion alloc] initWithFileURL:lCopy automaticallyGenerated:0];
+    dictionaryRepresentation = [(QLThumbnailVersion *)v35 dictionaryRepresentation];
     if (v27)
     {
       v57 = [v27 mutableCopy];
       [v57 setObject:v34 forKeyedSubscript:@"QLThumbnailMetadataFileNamesDictionaryKey"];
-      if (!v36)
+      if (!dictionaryRepresentation)
       {
         goto LABEL_38;
       }
@@ -1222,54 +1222,54 @@ LABEL_8:
       v38 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v70 forKeys:&v69 count:1];
       v57 = [v38 mutableCopy];
 
-      if (!v36)
+      if (!dictionaryRepresentation)
       {
 LABEL_38:
 
-        [a1 _hitAdditionsOnURL:v12 size:v16 completionHandler:0];
-        if (a5)
+        [self _hitAdditionsOnURL:lCopy size:v16 completionHandler:0];
+        if (document)
         {
-          v40 = [MEMORY[0x1E695DF90] dictionary];
+          dictionary = [MEMORY[0x1E695DF90] dictionary];
           v61[0] = MEMORY[0x1E69E9820];
           v61[1] = 3221225472;
           v61[2] = __120__QLThumbnailAddition_associateThumbnailImagesDictionary_serializedQuickLookMetadata_withImmutableDocument_atURL_error___block_invoke;
           v61[3] = &unk_1E836A378;
-          v62 = v40;
-          v41 = v40;
-          [v10 enumerateKeysAndObjectsUsingBlock:v61];
-          v42 = a1;
+          v62 = dictionary;
+          v41 = dictionary;
+          [dictionaryCopy enumerateKeysAndObjectsUsingBlock:v61];
+          selfCopy = self;
           v43 = v57;
-          v29 = [v42 storeThumbnailDataDictionary:v41 metadata:v57 asExtendedAttributeOnURL:v12 error:a7];
-          [v10 enumerateKeysAndObjectsUsingBlock:&__block_literal_global_7];
+          v29 = [selfCopy storeThumbnailDataDictionary:v41 metadata:v57 asExtendedAttributeOnURL:lCopy error:error];
+          [dictionaryCopy enumerateKeysAndObjectsUsingBlock:&__block_literal_global_7];
 
-          v11 = v56;
+          metadataCopy = v56;
         }
 
         else
         {
-          v44 = [MEMORY[0x1E69A07C0] manager];
-          v45 = [v44 permanentStorageForItemAtURL:v12 allocateIfNone:1 error:a7];
+          manager = [MEMORY[0x1E69A07C0] manager];
+          v45 = [manager permanentStorageForItemAtURL:lCopy allocateIfNone:1 error:error];
 
-          v11 = v56;
+          metadataCopy = v56;
           if (v45)
           {
-            v46 = [v45 stagingURLforCreatingAdditionWithError:a7];
+            v46 = [v45 stagingURLforCreatingAdditionWithError:error];
             v47 = v46;
             if (v46)
             {
               v48 = [v46 URLByAppendingPathComponent:@"thumbnail.qlthumbnail"];
               v49 = [v48 URLByAppendingPathComponent:v55 isDirectory:0];
-              v50 = [MEMORY[0x1E696AC08] defaultManager];
-              [v50 createDirectoryAtURL:v48 withIntermediateDirectories:0 attributes:0 error:0];
+              defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+              [defaultManager createDirectoryAtURL:v48 withIntermediateDirectories:0 attributes:0 error:0];
 
-              v11 = v56;
-              v51 = [MEMORY[0x1E696AC08] defaultManager];
-              [v51 moveItemAtURL:v23 toURL:v49 error:0];
+              metadataCopy = v56;
+              defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+              [defaultManager2 moveItemAtURL:v23 toURL:v49 error:0];
 
-              [a1 adjustFileProtectionForThumbnail:v49 fromOriginalDocument:v12];
-              v52 = a1;
+              [self adjustFileProtectionForThumbnail:v49 fromOriginalDocument:lCopy];
+              selfCopy2 = self;
               v43 = v57;
-              v29 = [v52 makeAdditionFromStagingURL:v48 metadata:v57 inStorage:v45 error:a7];
+              v29 = [selfCopy2 makeAdditionFromStagingURL:v48 metadata:v57 inStorage:v45 error:error];
             }
 
             else
@@ -1300,7 +1300,7 @@ LABEL_51:
 
     if (!v39)
     {
-      [v57 setObject:v36 forKeyedSubscript:@"QLThumbnailMetadataFileVersionKey.2"];
+      [v57 setObject:dictionaryRepresentation forKeyedSubscript:@"QLThumbnailMetadataFileVersionKey.2"];
     }
 
     goto LABEL_38;
@@ -1312,10 +1312,10 @@ LABEL_51:
     +[QLThumbnailAddition associateThumbnailImagesDictionary:serializedQuickLookMetadata:withImmutableDocument:atURL:error:];
   }
 
-  if (a7)
+  if (error)
   {
     [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:22 userInfo:0];
-    *a7 = v29 = 0;
+    *error = v29 = 0;
   }
 
   else
@@ -1355,17 +1355,17 @@ void __120__QLThumbnailAddition_associateThumbnailImagesDictionary_serializedQui
   }
 }
 
-+ (void)adjustFileProtectionForThumbnail:(id)a3 fromOriginalDocument:(id)a4
++ (void)adjustFileProtectionForThumbnail:(id)thumbnail fromOriginalDocument:(id)document
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  thumbnailCopy = thumbnail;
+  documentCopy = document;
+  v7 = documentCopy;
+  if (documentCopy)
   {
     v19 = 0;
     v8 = *MEMORY[0x1E695DAF0];
     v18 = 0;
-    v9 = [v6 getResourceValue:&v19 forKey:v8 error:&v18];
+    v9 = [documentCopy getResourceValue:&v19 forKey:v8 error:&v18];
     v10 = v19;
     v11 = v18;
     v12 = v11;
@@ -1393,7 +1393,7 @@ void __120__QLThumbnailAddition_associateThumbnailImagesDictionary_serializedQui
     else
     {
       v17 = v11;
-      v15 = [v5 setResourceValue:v10 forKey:v8 error:&v17];
+      v15 = [thumbnailCopy setResourceValue:v10 forKey:v8 error:&v17];
       v16 = v17;
 
       if (v15)
@@ -1412,9 +1412,9 @@ LABEL_14:
   }
 }
 
-+ (BOOL)hasThumbnailOnImmutableDocumentAtURL:(id)a3
++ (BOOL)hasThumbnailOnImmutableDocumentAtURL:(id)l
 {
-  v3 = [a3 fileSystemRepresentation];
+  fileSystemRepresentation = [l fileSystemRepresentation];
   v4 = xattr_name_with_flags(QLThumbnailDictionaryXattrName, 3uLL);
   if (!v4)
   {
@@ -1422,24 +1422,24 @@ LABEL_14:
   }
 
   v5 = v4;
-  v6 = getxattr(v3, v4, 0, 0, 0, 0) >= 0;
+  v6 = getxattr(fileSystemRepresentation, v4, 0, 0, 0, 0) >= 0;
   free(v5);
   return v6;
 }
 
-+ (BOOL)makeAdditionFromStagingURL:(id)a3 metadata:(id)a4 inStorage:(id)a5 error:(id *)a6
++ (BOOL)makeAdditionFromStagingURL:(id)l metadata:(id)metadata inStorage:(id)storage error:(id *)error
 {
   v45[1] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [objc_opt_class() additionCreationInfo];
-  v13 = [v12 mutableCopy];
+  lCopy = l;
+  metadataCopy = metadata;
+  storageCopy = storage;
+  additionCreationInfo = [objc_opt_class() additionCreationInfo];
+  v13 = [additionCreationInfo mutableCopy];
 
-  if (v10)
+  if (metadataCopy)
   {
     v44 = @"QLThumbnailAdditionMetadataKey";
-    v45[0] = v10;
+    v45[0] = metadataCopy;
     v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v45 forKeys:&v44 count:1];
     [v13 setObject:v14 forKey:*MEMORY[0x1E69A0790]];
   }
@@ -1451,13 +1451,13 @@ LABEL_14:
   v40[3] = __Block_byref_object_dispose__3;
   v41 = 0;
   obj = 0;
-  v15 = [v11 prepareAdditionCreationWithItemAtURL:v9 byMoving:1 creationInfo:v13 error:&obj];
+  v15 = [storageCopy prepareAdditionCreationWithItemAtURL:lCopy byMoving:1 creationInfo:v13 error:&obj];
   objc_storeStrong(&v41, obj);
   if (v15)
   {
-    v16 = [v11 documentURL];
+    documentURL = [storageCopy documentURL];
     v37 = 0;
-    v17 = [v16 getResourceValue:&v37 forKey:*MEMORY[0x1E695DAB8] error:0];
+    v17 = [documentURL getResourceValue:&v37 forKey:*MEMORY[0x1E695DAB8] error:0];
     v18 = v37;
 
     if ((v17 & 1) == 0)
@@ -1481,7 +1481,7 @@ LABEL_14:
     v32 = &v39;
     v21 = v19;
     v30 = v21;
-    [v11 createAdditionStagedAtURL:v15 creationInfo:v13 completionHandler:v28];
+    [storageCopy createAdditionStagedAtURL:v15 creationInfo:v13 completionHandler:v28];
     dispatch_semaphore_wait(v21, 0xFFFFFFFFFFFFFFFFLL);
     if (v34[3])
     {
@@ -1489,7 +1489,7 @@ LABEL_14:
       if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v43 = v11;
+        v43 = storageCopy;
         _os_log_impl(&dword_1CA1E7000, v22, OS_LOG_TYPE_INFO, "Saved addition in storage %@", buf, 0xCu);
       }
     }
@@ -1499,10 +1499,10 @@ LABEL_14:
       v25 = _log_0();
       if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
       {
-        [QLThumbnailAddition makeAdditionFromStagingURL:v9 metadata:v40 inStorage:? error:?];
+        [QLThumbnailAddition makeAdditionFromStagingURL:lCopy metadata:v40 inStorage:? error:?];
       }
 
-      setErrorWrappingUnderlyingError(*(v40[0] + 40), @"QLThumbnailErrorDomain", 101, a6);
+      setErrorWrappingUnderlyingError(*(v40[0] + 40), @"QLThumbnailErrorDomain", 101, error);
     }
 
     v24 = *(v34 + 24);
@@ -1515,10 +1515,10 @@ LABEL_14:
     v23 = _log_0();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
-      [QLThumbnailAddition makeAdditionFromStagingURL:v9 metadata:v40 inStorage:? error:?];
+      [QLThumbnailAddition makeAdditionFromStagingURL:lCopy metadata:v40 inStorage:? error:?];
     }
 
-    setErrorWrappingUnderlyingError(*(v40[0] + 40), @"QLThumbnailErrorDomain", 101, a6);
+    setErrorWrappingUnderlyingError(*(v40[0] + 40), @"QLThumbnailErrorDomain", 101, error);
     v24 = 0;
   }
 
@@ -1555,10 +1555,10 @@ LABEL_6:
   dispatch_semaphore_signal(*(a1 + 40));
 }
 
-+ (BOOL)imageContainsAlphaForOtherImages:(CGImage *)a3
++ (BOOL)imageContainsAlphaForOtherImages:(CGImage *)images
 {
-  Width = CGImageGetWidth(a3);
-  Height = CGImageGetHeight(a3);
+  Width = CGImageGetWidth(images);
+  Height = CGImageGetHeight(images);
   DeviceGray = CGColorSpaceCreateDeviceGray();
   v7 = CGBitmapContextCreate(0, Width, Height, 8uLL, Width, DeviceGray, 7u);
   CFRelease(DeviceGray);
@@ -1577,7 +1577,7 @@ LABEL_6:
   v15.size.height = Height;
   v15.origin.x = 0.0;
   v15.origin.y = 0.0;
-  CGContextDrawImage(v7, v15, a3);
+  CGContextDrawImage(v7, v15, images);
   Data = CGBitmapContextGetData(v7);
   if (Height)
   {
@@ -1624,15 +1624,15 @@ LABEL_15:
   return v13;
 }
 
-+ (BOOL)imageContainsAlpha:(CGImage *)a3
++ (BOOL)imageContainsAlpha:(CGImage *)alpha
 {
-  if (CGImageGetBitsPerComponent(a3) != 8)
+  if (CGImageGetBitsPerComponent(alpha) != 8)
   {
     goto LABEL_8;
   }
 
-  v5 = CGImageGetBitmapInfo(a3) & 0x1F;
-  BitsPerPixel = CGImageGetBitsPerPixel(a3);
+  v5 = CGImageGetBitmapInfo(alpha) & 0x1F;
+  BitsPerPixel = CGImageGetBitsPerPixel(alpha);
   v7 = 0;
   result = 0;
   v9 = BitsPerPixel >> 3;
@@ -1650,7 +1650,7 @@ LABEL_15:
 
 LABEL_8:
 
-    return [a1 imageContainsAlphaForOtherImages:a3];
+    return [self imageContainsAlphaForOtherImages:alpha];
   }
 
   if (v5 > 1)
@@ -1668,12 +1668,12 @@ LABEL_8:
 
   v7 = v9 - 1;
 LABEL_13:
-  DataProvider = CGImageGetDataProvider(a3);
+  DataProvider = CGImageGetDataProvider(alpha);
   v11 = CGDataProviderCopyData(DataProvider);
-  Width = CGImageGetWidth(a3);
-  Height = CGImageGetHeight(a3);
-  BytesPerRow = CGImageGetBytesPerRow(a3);
-  v15 = [(__CFData *)v11 bytes];
+  Width = CGImageGetWidth(alpha);
+  Height = CGImageGetHeight(alpha);
+  BytesPerRow = CGImageGetBytesPerRow(alpha);
+  bytes = [(__CFData *)v11 bytes];
   if (Height)
   {
     v16 = 0;
@@ -1681,18 +1681,18 @@ LABEL_13:
     while (v17 < 1)
     {
 LABEL_19:
-      v15 += BytesPerRow;
+      bytes += BytesPerRow;
       if (++v16 == Height)
       {
         goto LABEL_20;
       }
     }
 
-    v18 = v15;
+    v18 = bytes;
     while (*(v18 + v7) == 255)
     {
       v18 += v9;
-      if (v18 >= v15 + v17)
+      if (v18 >= bytes + v17)
       {
         goto LABEL_19;
       }
@@ -1710,38 +1710,38 @@ LABEL_20:
   }
 }
 
-+ (id)metadataForGeneratedThumbnailForURL:(id)a3 maximumDimension:(double)a4
++ (id)metadataForGeneratedThumbnailForURL:(id)l maximumDimension:(double)dimension
 {
   v5 = MEMORY[0x1E695DF90];
-  v6 = a3;
-  v7 = [v5 dictionary];
-  v8 = [[QLThumbnailVersion alloc] initWithFileURL:v6 automaticallyGenerated:1];
+  lCopy = l;
+  dictionary = [v5 dictionary];
+  v8 = [[QLThumbnailVersion alloc] initWithFileURL:lCopy automaticallyGenerated:1];
 
-  v9 = [(QLThumbnailVersion *)v8 dictionaryRepresentation];
-  [v7 setValue:v9 forKey:@"QLThumbnailMetadataFileVersionKey.2"];
+  dictionaryRepresentation = [(QLThumbnailVersion *)v8 dictionaryRepresentation];
+  [dictionary setValue:dictionaryRepresentation forKey:@"QLThumbnailMetadataFileVersionKey.2"];
 
-  v10 = [MEMORY[0x1E696AD98] numberWithDouble:a4];
-  [v7 setObject:v10 forKey:@"QLThumbnailMetadataMaximumDimensionKey"];
+  v10 = [MEMORY[0x1E696AD98] numberWithDouble:dimension];
+  [dictionary setObject:v10 forKey:@"QLThumbnailMetadataMaximumDimensionKey"];
 
-  return v7;
+  return dictionary;
 }
 
-+ (BOOL)associateImage:(CGImage *)a3 metadata:(id)a4 automaticallyGenerated:(BOOL)a5 withURL:(id)a6 error:(id *)a7
++ (BOOL)associateImage:(CGImage *)image metadata:(id)metadata automaticallyGenerated:(BOOL)generated withURL:(id)l error:(id *)error
 {
-  v9 = a5;
+  generatedCopy = generated;
   v59[1] = *MEMORY[0x1E69E9840];
-  v12 = a4;
-  v13 = a6;
+  metadataCopy = metadata;
+  lCopy = l;
   v14 = _log_0();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
     +[QLThumbnailAddition associateImage:metadata:automaticallyGenerated:withURL:error:];
   }
 
-  v15 = [a1 imageContainsAlpha:a3];
-  v16 = [MEMORY[0x1E69A07C0] manager];
+  v15 = [self imageContainsAlpha:image];
+  manager = [MEMORY[0x1E69A07C0] manager];
   v57 = 0;
-  v17 = [v16 permanentStorageForItemAtURL:v13 allocateIfNone:1 error:&v57];
+  v17 = [manager permanentStorageForItemAtURL:lCopy allocateIfNone:1 error:&v57];
   v18 = v57;
 
   if (v17)
@@ -1753,10 +1753,10 @@ LABEL_20:
     v54 = v19;
     if (v19)
     {
-      v50 = v9;
-      v51 = a7;
-      Width = CGImageGetWidth(a3);
-      Height = CGImageGetHeight(a3);
+      v50 = generatedCopy;
+      errorCopy = error;
+      Width = CGImageGetWidth(image);
+      Height = CGImageGetHeight(image);
       if (Width <= Height)
       {
         v22 = Height;
@@ -1779,42 +1779,42 @@ LABEL_20:
       }
 
       v25 = [@"thumbnail" stringByAppendingPathExtension:v24];
-      v26 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
       v27 = [MEMORY[0x1E696AD98] numberWithDouble:v23];
-      [v26 setObject:v27 forKey:@"QLThumbnailMetadataMaximumDimensionKey"];
+      [dictionary setObject:v27 forKey:@"QLThumbnailMetadataMaximumDimensionKey"];
 
       v58 = *MEMORY[0x1E695DA70];
       v59[0] = v25;
       v52 = v25;
       v28 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v59 forKeys:&v58 count:1];
-      [v26 setObject:v28 forKey:@"QLThumbnailMetadataFileNamesDictionaryKey"];
+      [dictionary setObject:v28 forKey:@"QLThumbnailMetadataFileNamesDictionaryKey"];
 
       v29 = [MEMORY[0x1E696AD98] numberWithInteger:1];
-      [v26 setObject:v29 forKey:@"QLThumbnailMetadataVersionKey"];
+      [dictionary setObject:v29 forKey:@"QLThumbnailMetadataVersionKey"];
 
-      if (v12)
+      if (metadataCopy)
       {
-        [v26 addEntriesFromDictionary:v12];
+        [dictionary addEntriesFromDictionary:metadataCopy];
       }
 
-      v30 = [v26 valueForKey:@"QLThumbnailMetadataFileVersionKey.2"];
+      v30 = [dictionary valueForKey:@"QLThumbnailMetadataFileVersionKey.2"];
 
       if (!v30)
       {
-        v31 = [[QLThumbnailVersion alloc] initWithFileURL:v13 automaticallyGenerated:v50];
+        v31 = [[QLThumbnailVersion alloc] initWithFileURL:lCopy automaticallyGenerated:v50];
         v32 = _log_0();
         if (os_log_type_enabled(v32, OS_LOG_TYPE_DEBUG))
         {
           +[QLThumbnailAddition associateImage:metadata:automaticallyGenerated:withURL:error:];
         }
 
-        v33 = [(QLThumbnailVersion *)v31 dictionaryRepresentation];
-        [v26 setValue:v33 forKey:@"QLThumbnailMetadataFileVersionKey.2"];
+        dictionaryRepresentation = [(QLThumbnailVersion *)v31 dictionaryRepresentation];
+        [dictionary setValue:dictionaryRepresentation forKey:@"QLThumbnailMetadataFileVersionKey.2"];
       }
 
       v34 = [v54 URLByAppendingPathComponent:@"thumbnail.qlthumbnail"];
-      v35 = [MEMORY[0x1E696AC08] defaultManager];
-      [v35 createDirectoryAtURL:v34 withIntermediateDirectories:0 attributes:0 error:0];
+      defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+      [defaultManager createDirectoryAtURL:v34 withIntermediateDirectories:0 attributes:0 error:0];
 
       v36 = [v34 URLByAppendingPathComponent:v52 isDirectory:0];
       v37 = v36;
@@ -1825,28 +1825,28 @@ LABEL_20:
 
       else
       {
-        v42 = [*MEMORY[0x1E6982E58] identifier];
-        v38 = CGImageDestinationCreateWithURL(v37, v42, 1uLL, 0);
+        identifier = [*MEMORY[0x1E6982E58] identifier];
+        v38 = CGImageDestinationCreateWithURL(v37, identifier, 1uLL, 0);
       }
 
       v43 = [MEMORY[0x1E695DF20] dictionaryWithObject:&unk_1F49E74D8 forKey:*MEMORY[0x1E696D338]];
       CGImageDestinationSetProperties(v38, v43);
-      CGImageDestinationAddImage(v38, a3, 0);
+      CGImageDestinationAddImage(v38, image, 0);
       CGImageDestinationFinalize(v38);
       CFRelease(v38);
-      [a1 adjustFileProtectionForThumbnail:v37 fromOriginalDocument:v13];
+      [self adjustFileProtectionForThumbnail:v37 fromOriginalDocument:lCopy];
       v55 = 0;
       v44 = [(__CFURL *)v37 getResourceValue:&v55 forKey:*MEMORY[0x1E695DB50] error:0];
       v45 = v55;
       v46 = v45;
-      v47 = 0;
+      unsignedIntegerValue = 0;
       if (v44)
       {
-        v47 = [v45 unsignedIntegerValue];
+        unsignedIntegerValue = [v45 unsignedIntegerValue];
       }
 
-      [a1 _hitAdditionsOnURL:v13 size:v47 completionHandler:0];
-      v40 = [a1 makeAdditionFromStagingURL:v34 metadata:v26 inStorage:v17 error:v51];
+      [self _hitAdditionsOnURL:lCopy size:unsignedIntegerValue completionHandler:0];
+      v40 = [self makeAdditionFromStagingURL:v34 metadata:dictionary inStorage:v17 error:errorCopy];
 
       v18 = v53;
     }
@@ -1860,7 +1860,7 @@ LABEL_20:
         +[QLThumbnailAddition associateImage:metadata:automaticallyGenerated:withURL:error:];
       }
 
-      setErrorWrappingUnderlyingError(v53, @"QLThumbnailErrorDomain", 101, a7);
+      setErrorWrappingUnderlyingError(v53, @"QLThumbnailErrorDomain", 101, error);
       v40 = 0;
     }
   }
@@ -1873,7 +1873,7 @@ LABEL_20:
       +[QLThumbnailAddition associateImage:metadata:automaticallyGenerated:withURL:error:];
     }
 
-    setErrorWrappingUnderlyingError(v18, @"QLThumbnailErrorDomain", 101, a7);
+    setErrorWrappingUnderlyingError(v18, @"QLThumbnailErrorDomain", 101, error);
     v40 = 0;
   }
 
@@ -1881,13 +1881,13 @@ LABEL_20:
   return v40;
 }
 
-+ (BOOL)_removeAdditionsOnURLDirectly:(id)a3 error:(id *)a4
++ (BOOL)_removeAdditionsOnURLDirectly:(id)directly error:(id *)error
 {
   v33[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [MEMORY[0x1E69A07C0] manager];
+  directlyCopy = directly;
+  manager = [MEMORY[0x1E69A07C0] manager];
   v32 = 0;
-  v7 = [v6 permanentStorageForItemAtURL:v5 allocateIfNone:0 error:&v32];
+  v7 = [manager permanentStorageForItemAtURL:directlyCopy allocateIfNone:0 error:&v32];
   v8 = v32;
   v9 = v8;
   v28 = 0;
@@ -1911,18 +1911,18 @@ LABEL_20:
     v17[3] = &unk_1E836A3E8;
     v20 = &v28;
     v21 = &v22;
-    v18 = v5;
+    v18 = directlyCopy;
     v12 = v10;
     v19 = v12;
     [v7 removeAllAdditionsForNamespaces:v11 completionHandler:v17];
 
     dispatch_semaphore_wait(v12, 0xFFFFFFFFFFFFFFFFLL);
-    if (a4)
+    if (error)
     {
       v13 = v23[5];
       if (v13)
       {
-        *a4 = v13;
+        *error = v13;
       }
     }
   }
@@ -1930,7 +1930,7 @@ LABEL_20:
   else
   {
     v31 = 0;
-    setErrorWrappingUnderlyingError(v8, *MEMORY[0x1E696A250], 4, a4);
+    setErrorWrappingUnderlyingError(v8, *MEMORY[0x1E696A250], 4, error);
   }
 
   v14 = *(v29 + 24);
@@ -1970,9 +1970,9 @@ void __59__QLThumbnailAddition__removeAdditionsOnURLDirectly_error___block_invok
   v12 = *MEMORY[0x1E69E9840];
 }
 
-+ (BOOL)_removeAdditionsOnURLUsingDaemon:(id)a3 error:(id *)a4
++ (BOOL)_removeAdditionsOnURLUsingDaemon:(id)daemon error:(id *)error
 {
-  v5 = a3;
+  daemonCopy = daemon;
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
@@ -1995,7 +1995,7 @@ void __59__QLThumbnailAddition__removeAdditionsOnURLDirectly_error___block_invok
     v14 = &v15;
     v8 = v7;
     v12 = v8;
-    [v6 removeThumbnailAdditionsOnURL:v5 completionBlock:v11];
+    [v6 removeThumbnailAdditionsOnURL:daemonCopy completionBlock:v11];
     dispatch_semaphore_wait(v8, 0xFFFFFFFFFFFFFFFFLL);
     if (*(v22 + 24))
     {
@@ -2004,7 +2004,7 @@ void __59__QLThumbnailAddition__removeAdditionsOnURLDirectly_error___block_invok
 
     else
     {
-      setErrorWrappingUnderlyingError(v16[5], *MEMORY[0x1E696A250], 4, a4);
+      setErrorWrappingUnderlyingError(v16[5], *MEMORY[0x1E696A250], 4, error);
       v9 = *(v22 + 24) != 0;
     }
   }
@@ -2038,9 +2038,9 @@ void __62__QLThumbnailAddition__removeAdditionsOnURLUsingDaemon_error___block_in
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-+ (BOOL)_removedAdditionsOnURLUsingDaemon:(id)a3
++ (BOOL)_removedAdditionsOnURLUsingDaemon:(id)daemon
 {
-  v3 = a3;
+  daemonCopy = daemon;
   v4 = +[QLThumbnailServiceProxy sharedInstance];
   if (v4)
   {
@@ -2062,7 +2062,7 @@ void __62__QLThumbnailAddition__removeAdditionsOnURLUsingDaemon_error___block_in
     v11[3] = &unk_1E836A460;
     v8 = v6;
     v12 = v8;
-    v13 = v3;
+    v13 = daemonCopy;
     v14 = &v17;
     [v7 askThumbnailAdditionIndex:v11];
 
@@ -2112,9 +2112,9 @@ void __57__QLThumbnailAddition__removedAdditionsOnURLUsingDaemon___block_invoke_
   }
 }
 
-+ (BOOL)removeAdditionsOnURL:(id)a3 error:(id *)a4
++ (BOOL)removeAdditionsOnURL:(id)l error:(id *)error
 {
-  v6 = a3;
+  lCopy = l;
   getpid();
   v7 = *MEMORY[0x1E69E9BD0];
   v8 = sandbox_check();
@@ -2127,7 +2127,7 @@ void __57__QLThumbnailAddition__removedAdditionsOnURLUsingDaemon___block_invoke_
       +[QLThumbnailAddition removeAdditionsOnURL:error:];
     }
 
-    if ([a1 _removeAdditionsOnURLDirectly:v6 error:{a4, "com.apple.revisiond"}])
+    if ([self _removeAdditionsOnURLDirectly:lCopy error:{error, "com.apple.revisiond"}])
     {
       goto LABEL_5;
     }
@@ -2142,22 +2142,22 @@ LABEL_9:
     +[QLThumbnailAddition removeAdditionsOnURL:error:];
   }
 
-  if (![a1 _removeAdditionsOnURLUsingDaemon:v6 error:{a4, "com.apple.revisiond"}])
+  if (![self _removeAdditionsOnURLUsingDaemon:lCopy error:{error, "com.apple.revisiond"}])
   {
     goto LABEL_9;
   }
 
 LABEL_5:
-  v11 = [a1 _removedAdditionsOnURL:v6];
+  v11 = [self _removedAdditionsOnURL:lCopy];
 LABEL_10:
 
   return v11;
 }
 
-- (id)thumbnailsDictionaryWithError:(id *)a3
+- (id)thumbnailsDictionaryWithError:(id *)error
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v4 = QLTImageClassWithError(a3);
+  v4 = QLTImageClassWithError(error);
   if (v4)
   {
     v5 = [(QLThumbnailAddition *)self thumbnailWithMaximumDimension:0 contentRect:0 properties:1024.0];
@@ -2180,28 +2180,28 @@ LABEL_10:
   return v4;
 }
 
-+ (id)thumbnailsDictionaryForURL:(id)a3 error:(id *)a4
++ (id)thumbnailsDictionaryForURL:(id)l error:(id *)error
 {
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  lCopy = l;
   v27 = 0;
-  v7 = [[a1 alloc] initWithAdditionsPresentOnURL:v6 error:&v27];
+  v7 = [[self alloc] initWithAdditionsPresentOnURL:lCopy error:&v27];
   v8 = v27;
   v9 = v8;
   if (!v7)
   {
-    v13 = [v8 domain];
-    if ([v13 isEqualToString:@"QLThumbnailErrorDomain"])
+    domain = [v8 domain];
+    if ([domain isEqualToString:@"QLThumbnailErrorDomain"])
     {
-      v14 = [v9 code];
+      code = [v9 code];
 
-      if (v14 == 102)
+      if (code == 102)
       {
         v15 = _log_0();
         if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
         {
           *buf = 138412290;
-          v29 = v6;
+          v29 = lCopy;
           _os_log_impl(&dword_1CA1E7000, v15, OS_LOG_TYPE_INFO, "No thumbnail present for %@, pondering generation", buf, 0xCu);
         }
 
@@ -2215,8 +2215,8 @@ LABEL_10:
         v24[1] = 3221225472;
         v24[2] = __56__QLThumbnailAddition_thumbnailsDictionaryForURL_error___block_invoke_2;
         v24[3] = &unk_1E836A488;
-        v25 = v6;
-        v26 = a1;
+        v25 = lCopy;
+        selfCopy = self;
         dispatch_async(v16, v24);
 
 LABEL_19:
@@ -2235,11 +2235,11 @@ LABEL_19:
       +[QLThumbnailAddition thumbnailsDictionaryForURL:error:];
     }
 
-    if (a4)
+    if (error)
     {
       v18 = v9;
       v12 = 0;
-      *a4 = v9;
+      *error = v9;
       goto LABEL_20;
     }
 
@@ -2250,7 +2250,7 @@ LABEL_19:
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v29 = v6;
+    v29 = lCopy;
     _os_log_impl(&dword_1CA1E7000, v10, OS_LOG_TYPE_INFO, "Retrieved thumbnail addition for %@", buf, 0xCu);
   }
 
@@ -2264,11 +2264,11 @@ LABEL_19:
   block[1] = 3221225472;
   block[2] = __56__QLThumbnailAddition_thumbnailsDictionaryForURL_error___block_invoke_2_135;
   block[3] = &unk_1E836A488;
-  v23 = a1;
-  v22 = v6;
+  selfCopy2 = self;
+  v22 = lCopy;
   dispatch_async(v11, block);
 
-  v12 = [v7 thumbnailsDictionaryWithError:a4];
+  v12 = [v7 thumbnailsDictionaryWithError:error];
 LABEL_20:
 
   v19 = *MEMORY[0x1E69E9840];
@@ -2334,20 +2334,20 @@ uint64_t __56__QLThumbnailAddition_thumbnailsDictionaryForURL_error___block_invo
   return [v3 _hitAdditionsOnURL:v4 size:0 completionHandler:0];
 }
 
-+ (void)downloadOrGenerateThumbnailAtURL:(id)a3 completionHandler:(id)a4
++ (void)downloadOrGenerateThumbnailAtURL:(id)l completionHandler:(id)handler
 {
   v30[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 startAccessingSecurityScopedResource];
+  lCopy = l;
+  handlerCopy = handler;
+  startAccessingSecurityScopedResource = [lCopy startAccessingSecurityScopedResource];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __74__QLThumbnailAddition_downloadOrGenerateThumbnailAtURL_completionHandler___block_invoke;
   aBlock[3] = &unk_1E836A4B0;
-  v29 = v8;
-  v9 = v6;
+  v29 = startAccessingSecurityScopedResource;
+  v9 = lCopy;
   v27 = v9;
-  v10 = v7;
+  v10 = handlerCopy;
   v28 = v10;
   v11 = _Block_copy(aBlock);
   if (_CFURLIsItemPromiseAtURL())
@@ -2362,7 +2362,7 @@ uint64_t __56__QLThumbnailAddition_thumbnailsDictionaryForURL_error___block_invo
     if (v13)
     {
 LABEL_5:
-      [a1 downloadOrGenerateThumbnailAtTaggedURL:v13 completionHandler:v11];
+      [self downloadOrGenerateThumbnailAtTaggedURL:v13 completionHandler:v11];
 LABEL_15:
 
       goto LABEL_16;
@@ -2390,7 +2390,7 @@ LABEL_15:
       v22[1] = 3221225472;
       v22[2] = __74__QLThumbnailAddition_downloadOrGenerateThumbnailAtURL_completionHandler___block_invoke_139;
       v22[3] = &unk_1E836A4D8;
-      v25 = a1;
+      selfCopy = self;
       v23 = v17;
       v24 = v11;
       v20 = v17;
@@ -2447,26 +2447,26 @@ void __74__QLThumbnailAddition_downloadOrGenerateThumbnailAtURL_completionHandle
   [v2 downloadOrGenerateThumbnailAtTaggedURL:v3 completionHandler:*(a1 + 40)];
 }
 
-+ (void)downloadOrGenerateThumbnailAtTaggedURL:(id)a3 completionHandler:(id)a4
++ (void)downloadOrGenerateThumbnailAtTaggedURL:(id)l completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  lCopy = l;
   if (_FPIsCloudDocsWithFPFSEnabled())
   {
-    [a1 fpfsDownloadOrGenerateThumbnailAtTaggedURL:v7 completionHandler:v6];
+    [self fpfsDownloadOrGenerateThumbnailAtTaggedURL:lCopy completionHandler:handlerCopy];
   }
 
   else
   {
-    [a1 preFPFSDownloadOrGenerateThumbnailAtTaggedURL:v7 completionHandler:v6];
+    [self preFPFSDownloadOrGenerateThumbnailAtTaggedURL:lCopy completionHandler:handlerCopy];
   }
 }
 
-+ (void)preFPFSDownloadThumbnailAtTaggedURL:(id)a3 completionHandler:(id)a4
++ (void)preFPFSDownloadThumbnailAtTaggedURL:(id)l completionHandler:(id)handler
 {
   v42 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  lCopy = l;
+  handlerCopy = handler;
   v8 = *MEMORY[0x1E695DB78];
   v36[0] = *MEMORY[0x1E695DBD8];
   v7 = v36[0];
@@ -2475,7 +2475,7 @@ void __74__QLThumbnailAddition_downloadOrGenerateThumbnailAtURL_completionHandle
   v9 = v37;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v36 count:3];
   v30 = 0;
-  v11 = [v5 promisedItemResourceValuesForKeys:v10 error:&v30];
+  v11 = [lCopy promisedItemResourceValuesForKeys:v10 error:&v30];
   v12 = v30;
 
   v13 = [v11 objectForKeyedSubscript:v7];
@@ -2494,18 +2494,18 @@ void __74__QLThumbnailAddition_downloadOrGenerateThumbnailAtURL_completionHandle
     if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
     {
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v5;
+      *(&buf + 4) = lCopy;
       _os_log_impl(&dword_1CA1E7000, v17, OS_LOG_TYPE_INFO, "Downloading thumbnail for %@", &buf, 0xCu);
     }
 
-    v35 = v5;
+    v35 = lCopy;
     v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v35 count:1];
     v27[0] = MEMORY[0x1E69E9820];
     v27[1] = 3221225472;
     v27[2] = __77__QLThumbnailAddition_preFPFSDownloadThumbnailAtTaggedURL_completionHandler___block_invoke;
     v27[3] = &unk_1E836A500;
-    v28 = v5;
-    v29 = v6;
+    v28 = lCopy;
+    v29 = handlerCopy;
     v19 = v18;
     v20 = v27;
     v31 = 0;
@@ -2548,7 +2548,7 @@ void __74__QLThumbnailAddition_downloadOrGenerateThumbnailAtURL_completionHandle
       }
 
       v25 = [MEMORY[0x1E696ABC0] errorWithDomain:@"QLThumbnailErrorDomain" code:102 userInfo:0];
-      (*(v6 + 2))(v6, v25);
+      (*(handlerCopy + 2))(handlerCopy, v25);
     }
 
     else
@@ -2558,7 +2558,7 @@ void __74__QLThumbnailAddition_downloadOrGenerateThumbnailAtURL_completionHandle
         +[QLThumbnailAddition preFPFSDownloadThumbnailAtTaggedURL:completionHandler:];
       }
 
-      (*(v6 + 2))(v6, v12);
+      (*(handlerCopy + 2))(handlerCopy, v12);
     }
   }
 
@@ -2580,13 +2580,13 @@ void __77__QLThumbnailAddition_preFPFSDownloadThumbnailAtTaggedURL_completionHan
   (*(*(a1 + 40) + 16))();
 }
 
-+ (void)preFPFSDownloadOrGenerateThumbnailAtTaggedURL:(id)a3 completionHandler:(id)a4
++ (void)preFPFSDownloadOrGenerateThumbnailAtTaggedURL:(id)l completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [[QLThumbnailGenerationRequest alloc] initWithFileAtURL:v6 size:4 scale:1024.0 representationTypes:1024.0, 1.0];
+  lCopy = l;
+  handlerCopy = handler;
+  v8 = [[QLThumbnailGenerationRequest alloc] initWithFileAtURL:lCopy size:4 scale:1024.0 representationTypes:1024.0, 1.0];
   v20 = 0;
-  v9 = [MEMORY[0x1E695DFF8] _QLCreateTemporaryReplacementURLForOriginalFileAtURL:v6 withExtension:@"jpg" temporaryDirectoryURL:&v20];
+  v9 = [MEMORY[0x1E695DFF8] _QLCreateTemporaryReplacementURLForOriginalFileAtURL:lCopy withExtension:@"jpg" temporaryDirectoryURL:&v20];
   v10 = v20;
   if (v9)
   {
@@ -2596,10 +2596,10 @@ void __77__QLThumbnailAddition_preFPFSDownloadThumbnailAtTaggedURL_completionHan
     v14[1] = 3221225472;
     v14[2] = __87__QLThumbnailAddition_preFPFSDownloadOrGenerateThumbnailAtTaggedURL_completionHandler___block_invoke;
     v14[3] = &unk_1E836A528;
-    v15 = v6;
+    v15 = lCopy;
     v16 = v10;
-    v19 = a1;
-    v18 = v7;
+    selfCopy = self;
+    v18 = handlerCopy;
     v17 = v9;
     [v11 saveBestRepresentationForRequest:v8 toFileAtURL:v17 asContentType:v12 allowingThumbnailDownloads:0 completionHandler:v14];
 
@@ -2609,10 +2609,10 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  if (v7)
+  if (handlerCopy)
   {
     v13 = [MEMORY[0x1E696ABC0] errorWithDomain:@"QLThumbnailErrorDomain" code:0 userInfo:0];
-    (*(v7 + 2))(v7, v13);
+    (*(handlerCopy + 2))(handlerCopy, v13);
     goto LABEL_5;
   }
 
@@ -2708,13 +2708,13 @@ LABEL_18:
   v21 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)fpfsDownloadOrGenerateThumbnailAtTaggedURL:(id)a3 completionHandler:(id)a4
++ (void)fpfsDownloadOrGenerateThumbnailAtTaggedURL:(id)l completionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [[QLThumbnailGenerationRequest alloc] initWithFileAtURL:v5 size:4 scale:1024.0 representationTypes:1024.0, 1.0];
+  lCopy = l;
+  handlerCopy = handler;
+  v7 = [[QLThumbnailGenerationRequest alloc] initWithFileAtURL:lCopy size:4 scale:1024.0 representationTypes:1024.0, 1.0];
   v18 = 0;
-  v8 = [MEMORY[0x1E695DFF8] _QLCreateTemporaryReplacementURLForOriginalFileAtURL:v5 withExtension:@"jpg" temporaryDirectoryURL:&v18];
+  v8 = [MEMORY[0x1E695DFF8] _QLCreateTemporaryReplacementURLForOriginalFileAtURL:lCopy withExtension:@"jpg" temporaryDirectoryURL:&v18];
   v9 = v18;
   if (v8)
   {
@@ -2724,9 +2724,9 @@ LABEL_18:
     v13[1] = 3221225472;
     v13[2] = __84__QLThumbnailAddition_fpfsDownloadOrGenerateThumbnailAtTaggedURL_completionHandler___block_invoke;
     v13[3] = &unk_1E836A550;
-    v14 = v5;
+    v14 = lCopy;
     v15 = v9;
-    v17 = v6;
+    v17 = handlerCopy;
     v16 = v8;
     [v10 saveBestRepresentationForRequest:v7 toFileAtURL:v16 asContentType:v11 allowingThumbnailDownloads:1 completionHandler:v13];
 
@@ -2736,10 +2736,10 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  if (v6)
+  if (handlerCopy)
   {
     v12 = [MEMORY[0x1E696ABC0] errorWithDomain:@"QLThumbnailErrorDomain" code:0 userInfo:0];
-    (*(v6 + 2))(v6, v12);
+    (*(handlerCopy + 2))(handlerCopy, v12);
     goto LABEL_5;
   }
 
@@ -2825,22 +2825,22 @@ LABEL_17:
   v17 = *MEMORY[0x1E69E9840];
 }
 
-+ (BOOL)setThumbnailsDictionary:(id)a3 forURL:(id)a4 error:(id *)a5
++ (BOOL)setThumbnailsDictionary:(id)dictionary forURL:(id)l error:(id *)error
 {
   v27 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  if (v8)
+  dictionaryCopy = dictionary;
+  lCopy = l;
+  if (dictionaryCopy)
   {
     v10 = *MEMORY[0x1E695E738];
-    if (*MEMORY[0x1E695E738] == v8)
+    if (*MEMORY[0x1E695E738] == dictionaryCopy)
     {
       v12 = 0;
     }
 
     else
     {
-      v11 = [v8 valueForKey:*MEMORY[0x1E695DA70]];
+      v11 = [dictionaryCopy valueForKey:*MEMORY[0x1E695DA70]];
       v12 = v11;
       if (v11)
       {
@@ -2854,27 +2854,27 @@ LABEL_17:
 
       if (!v13)
       {
-        if (QLTImageClassWithError(a5))
+        if (QLTImageClassWithError(error))
         {
-          v14 = [v12 CGImage];
+          cGImage = [v12 CGImage];
           v15 = _log_0();
           v16 = v15;
-          if (v14)
+          if (cGImage)
           {
             if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
             {
               *buf = 138412290;
-              v26 = v9;
+              v26 = lCopy;
               _os_log_impl(&dword_1CA1E7000, v16, OS_LOG_TYPE_INFO, "Associating thumbnail for %@", buf, 0xCu);
             }
 
-            v17 = [a1 associateImage:v14 metadata:0 automaticallyGenerated:0 withURL:v9 error:a5];
+            v17 = [self associateImage:cGImage metadata:0 automaticallyGenerated:0 withURL:lCopy error:error];
             v18 = dispatch_get_global_queue(-2, 0);
             block[0] = MEMORY[0x1E69E9820];
             block[1] = 3221225472;
             block[2] = __60__QLThumbnailAddition_setThumbnailsDictionary_forURL_error___block_invoke;
             block[3] = &unk_1E8369F88;
-            v24 = v9;
+            v24 = lCopy;
             dispatch_async(v18, block);
 
             goto LABEL_17;
@@ -2885,10 +2885,10 @@ LABEL_17:
             +[QLThumbnailAddition setThumbnailsDictionary:forURL:error:];
           }
 
-          if (a5)
+          if (error)
           {
             [MEMORY[0x1E696ABC0] errorWithDomain:@"QLThumbnailErrorDomain" code:100 userInfo:0];
-            *a5 = v17 = 0;
+            *error = v17 = 0;
             goto LABEL_17;
           }
         }
@@ -2913,11 +2913,11 @@ LABEL_17:
     if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v26 = v9;
+      v26 = lCopy;
       _os_log_impl(&dword_1CA1E7000, v19, OS_LOG_TYPE_INFO, "Setting image to nil on %@ -> removing any preexisting thumbnails", buf, 0xCu);
     }
 
-    v17 = [a1 removeAdditionsOnURL:v9 error:a5];
+    v17 = [self removeAdditionsOnURL:lCopy error:error];
     goto LABEL_17;
   }
 
@@ -2992,76 +2992,76 @@ void __60__QLThumbnailAddition_setThumbnailsDictionary_forURL_error___block_invo
   v6 = *MEMORY[0x1E69E9840];
 }
 
-+ (BOOL)shouldUseXattrsToStoreThumbnailsOnURL:(id)a3
++ (BOOL)shouldUseXattrsToStoreThumbnailsOnURL:(id)l
 {
-  v3 = a3;
+  lCopy = l;
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
     CloudDocsLibrary();
   }
 
-  v4 = [MEMORY[0x1E69A07C0] manager];
-  if ([v4 isItemAtURLInsidePermanentStorage:v3 error:0])
+  manager = [MEMORY[0x1E69A07C0] manager];
+  if ([manager isItemAtURLInsidePermanentStorage:lCopy error:0])
   {
-    v5 = 1;
+    br_isInCloudDocsPrivateStorages = 1;
   }
 
   else
   {
-    v5 = [v3 br_isInCloudDocsPrivateStorages];
+    br_isInCloudDocsPrivateStorages = [lCopy br_isInCloudDocsPrivateStorages];
   }
 
-  return v5;
+  return br_isInCloudDocsPrivateStorages;
 }
 
-+ (BOOL)associateThumbnailsForDocumentAtURL:(id)a3 withDocumentAtURL:(id)a4 error:(id *)a5
++ (BOOL)associateThumbnailsForDocumentAtURL:(id)l withDocumentAtURL:(id)rL error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
-  LOBYTE(a5) = [a1 associateThumbnailsForDocumentAtURL:v9 withImmutableDocument:objc_msgSend(a1 atURL:"shouldUseXattrsToStoreThumbnailsOnURL:" error:{v8), v8, a5}];
+  rLCopy = rL;
+  lCopy = l;
+  LOBYTE(error) = [self associateThumbnailsForDocumentAtURL:lCopy withImmutableDocument:objc_msgSend(self atURL:"shouldUseXattrsToStoreThumbnailsOnURL:" error:{rLCopy), rLCopy, error}];
 
-  return a5;
+  return error;
 }
 
-+ (BOOL)associateThumbnailsForDocumentAtURL:(id)a3 withImmutableDocument:(BOOL)a4 atURL:(id)a5 error:(id *)a6
++ (BOOL)associateThumbnailsForDocumentAtURL:(id)l withImmutableDocument:(BOOL)document atURL:(id)rL error:(id *)error
 {
-  v8 = a4;
+  documentCopy = document;
   v77[1] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a5;
+  lCopy = l;
+  rLCopy = rL;
   v11 = _log_0();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412802;
-    *&buf[4] = v9;
+    *&buf[4] = lCopy;
     *&buf[12] = 2112;
-    *&buf[14] = v10;
+    *&buf[14] = rLCopy;
     *&buf[22] = 1024;
-    LODWORD(v73) = v8;
+    LODWORD(v73) = documentCopy;
     _os_log_debug_impl(&dword_1CA1E7000, v11, OS_LOG_TYPE_DEBUG, "Copying thumbnails from %@ to %@ (immutable: %d)", buf, 0x1Cu);
   }
 
-  v12 = [[QLThumbnailAddition alloc] initWithAdditionsPresentOnURL:v9 error:a6];
+  v12 = [[QLThumbnailAddition alloc] initWithAdditionsPresentOnURL:lCopy error:error];
   if (v12)
   {
     v62 = 0;
     v63 = &v62;
     v64 = 0x2020000000;
     v65 = 1;
-    v13 = [[QLThumbnailVersion alloc] initWithFileURL:v9 automaticallyGenerated:1];
+    v13 = [[QLThumbnailVersion alloc] initWithFileURL:lCopy automaticallyGenerated:1];
     if ([(QLThumbnailAddition *)v12 shouldBeInvalidatedByThumbnailVersion:v13])
     {
       v14 = _log_0();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        *&buf[4] = v9;
+        *&buf[4] = lCopy;
         *&buf[12] = 2112;
-        *&buf[14] = v10;
+        *&buf[14] = rLCopy;
         _os_log_impl(&dword_1CA1E7000, v14, OS_LOG_TYPE_DEFAULT, "Not copying thumbnails from %@ to %@ because it was outdated for the source already", buf, 0x16u);
       }
 
-      if (!a6)
+      if (!error)
       {
         LOBYTE(v16) = 0;
 LABEL_45:
@@ -3072,38 +3072,38 @@ LABEL_45:
 
       v16 = MEMORY[0x1E696ABC0];
       v76 = *MEMORY[0x1E696A980];
-      v77[0] = v9;
-      v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v77 forKeys:&v76 count:1];
-      [v16 errorWithDomain:@"QLThumbnailErrorDomain" code:115 userInfo:v15];
-      *a6 = LOBYTE(v16) = 0;
+      v77[0] = lCopy;
+      thumbnailDataDictionary = [MEMORY[0x1E695DF20] dictionaryWithObjects:v77 forKeys:&v76 count:1];
+      [v16 errorWithDomain:@"QLThumbnailErrorDomain" code:115 userInfo:thumbnailDataDictionary];
+      *error = LOBYTE(v16) = 0;
 LABEL_44:
 
       goto LABEL_45;
     }
 
-    v15 = [(QLThumbnailAddition *)v12 thumbnailDataDictionary];
+    thumbnailDataDictionary = [(QLThumbnailAddition *)v12 thumbnailDataDictionary];
     *buf = 0;
     *&buf[8] = buf;
     *&buf[16] = 0x3032000000;
     v73 = __Block_byref_object_copy__3;
     v74 = __Block_byref_object_dispose__3;
     v75 = 0;
-    v17 = [(QLThumbnailAddition *)v12 metadata];
-    v18 = [v17 mutableCopy];
+    metadata = [(QLThumbnailAddition *)v12 metadata];
+    v18 = [metadata mutableCopy];
 
     v19 = [QLThumbnailVersion alloc];
-    v20 = [(QLThumbnailAddition *)v12 thumbnailVersion];
-    v54 = -[QLThumbnailVersion initWithFileURL:automaticallyGenerated:](v19, "initWithFileURL:automaticallyGenerated:", v10, [v20 isAutomaticallyGenerated]);
+    thumbnailVersion = [(QLThumbnailAddition *)v12 thumbnailVersion];
+    v54 = -[QLThumbnailVersion initWithFileURL:automaticallyGenerated:](v19, "initWithFileURL:automaticallyGenerated:", rLCopy, [thumbnailVersion isAutomaticallyGenerated]);
 
-    v21 = [(QLThumbnailVersion *)v54 dictionaryRepresentation];
-    [v18 setObject:v21 forKeyedSubscript:@"QLThumbnailMetadataFileVersionKey.2"];
+    dictionaryRepresentation = [(QLThumbnailVersion *)v54 dictionaryRepresentation];
+    [v18 setObject:dictionaryRepresentation forKeyedSubscript:@"QLThumbnailMetadataFileVersionKey.2"];
 
-    if (v8)
+    if (documentCopy)
     {
-      if (!v15)
+      if (!thumbnailDataDictionary)
       {
-        v22 = [(QLThumbnailAddition *)v12 metadata];
-        v23 = [v22 objectForKey:@"QLThumbnailMetadataFileNamesDictionaryKey"];
+        metadata2 = [(QLThumbnailAddition *)v12 metadata];
+        v23 = [metadata2 objectForKey:@"QLThumbnailMetadataFileNamesDictionaryKey"];
 
         if (!v23)
         {
@@ -3127,25 +3127,25 @@ LABEL_44:
         v59 = v27;
         [v26 enumerateKeysAndObjectsUsingBlock:v56];
         v28 = v59;
-        v15 = v27;
+        thumbnailDataDictionary = v27;
       }
 
       if (*(v63 + 24) == 1)
       {
-        v29 = [a1 storeThumbnailDataDictionary:v15 metadata:v18 asExtendedAttributeOnURL:v10 error:a6];
+        v29 = [self storeThumbnailDataDictionary:thumbnailDataDictionary metadata:v18 asExtendedAttributeOnURL:rLCopy error:error];
         *(v63 + 24) = v29;
       }
 
-      else if (a6)
+      else if (error)
       {
-        *a6 = *(*&buf[8] + 40);
+        *error = *(*&buf[8] + 40);
       }
 
 LABEL_40:
-      v47 = [(QLThumbnailAddition *)v12 additionSize];
+      additionSize = [(QLThumbnailAddition *)v12 additionSize];
       if (*(v63 + 24) == 1)
       {
-        [a1 _hitAdditionsOnURL:v10 size:v47 completionHandler:0];
+        [self _hitAdditionsOnURL:rLCopy size:additionSize completionHandler:0];
         LOBYTE(v16) = *(v63 + 24);
         goto LABEL_43;
       }
@@ -3155,15 +3155,15 @@ LABEL_42:
       goto LABEL_43;
     }
 
-    v30 = [MEMORY[0x1E69A07C0] manager];
-    v31 = [v30 permanentStorageForItemAtURL:v10 allocateIfNone:1 error:a6];
+    manager = [MEMORY[0x1E69A07C0] manager];
+    v31 = [manager permanentStorageForItemAtURL:rLCopy allocateIfNone:1 error:error];
 
     if (!v31)
     {
       goto LABEL_42;
     }
 
-    v52 = [v31 stagingURLforCreatingAdditionWithError:a6];
+    v52 = [v31 stagingURLforCreatingAdditionWithError:error];
     if (!v52)
     {
 
@@ -3171,11 +3171,11 @@ LABEL_42:
     }
 
     v32 = *MEMORY[0x1E695DA70];
-    v51 = [v15 objectForKey:*MEMORY[0x1E695DA70]];
+    v51 = [thumbnailDataDictionary objectForKey:*MEMORY[0x1E695DA70]];
     v53 = [v52 URLByAppendingPathComponent:@"thumbnail.qlthumbnail"];
     if (v51)
     {
-      v33 = [a1 imageNameFor1024ThumbnailData:v51 metadataDictionary:v18];
+      v33 = [self imageNameFor1024ThumbnailData:v51 metadataDictionary:v18];
       v50 = v33;
       if (!v33)
       {
@@ -3185,10 +3185,10 @@ LABEL_42:
           +[QLThumbnailAddition associateThumbnailsForDocumentAtURL:withImmutableDocument:atURL:error:];
         }
 
-        if (a6)
+        if (error)
         {
           [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A250] code:259 userInfo:0];
-          *a6 = LODWORD(v16) = 0;
+          *error = LODWORD(v16) = 0;
         }
 
         else
@@ -3226,19 +3226,19 @@ LABEL_43:
         v18 = [v42 mutableCopy];
       }
 
-      v43 = [MEMORY[0x1E696AC08] defaultManager];
-      [v43 createDirectoryAtURL:v53 withIntermediateDirectories:0 attributes:0 error:0];
+      defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+      [defaultManager createDirectoryAtURL:v53 withIntermediateDirectories:0 attributes:0 error:0];
 
       v44 = [v53 URLByAppendingPathComponent:v50 isDirectory:0];
-      v45 = [v51 writeToURL:v44 options:0 error:a6];
+      v45 = [v51 writeToURL:v44 options:0 error:error];
       *(v63 + 24) = v45;
-      [a1 adjustFileProtectionForThumbnail:v44 fromOriginalDocument:v9];
+      [self adjustFileProtectionForThumbnail:v44 fromOriginalDocument:lCopy];
     }
 
     else
     {
-      v36 = [(QLThumbnailAddition *)v12 additionURL];
-      v37 = v36 == 0;
+      additionURL = [(QLThumbnailAddition *)v12 additionURL];
+      v37 = additionURL == 0;
 
       if (v37)
       {
@@ -3247,20 +3247,20 @@ LABEL_43:
 
       else
       {
-        v38 = [MEMORY[0x1E696AC08] defaultManager];
-        v39 = [(QLThumbnailAddition *)v12 additionURL];
-        v40 = [v38 copyItemAtURL:v39 toURL:v53 error:a6];
+        defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+        additionURL2 = [(QLThumbnailAddition *)v12 additionURL];
+        v40 = [defaultManager2 copyItemAtURL:additionURL2 toURL:v53 error:error];
         *(v63 + 24) = v40;
 
-        [a1 adjustFileProtectionForThumbnail:v53 fromOriginalDocument:v9];
+        [self adjustFileProtectionForThumbnail:v53 fromOriginalDocument:lCopy];
       }
     }
 
     if (*(v63 + 24) == 1)
     {
-      v46 = [a1 makeAdditionFromStagingURL:v53 metadata:v18 inStorage:v31 error:a6];
+      v46 = [self makeAdditionFromStagingURL:v53 metadata:v18 inStorage:v31 error:error];
       *(v63 + 24) = v46;
-      [a1 removeThumbnailsStoredInExtendedAttributesOnURL:v10 error:0];
+      [self removeThumbnailsStoredInExtendedAttributesOnURL:rLCopy error:0];
     }
 
     LODWORD(v16) = 1;
@@ -3297,19 +3297,19 @@ void __93__QLThumbnailAddition_associateThumbnailsForDocumentAtURL_withImmutable
   }
 }
 
-+ (void)noteCloudDocsDownloadedFileAtURL:(id)a3 completionHandler:(id)a4
++ (void)noteCloudDocsDownloadedFileAtURL:(id)l completionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
+  lCopy = l;
+  handlerCopy = handler;
   v7 = dispatch_get_global_queue(-32768, 0);
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __74__QLThumbnailAddition_noteCloudDocsDownloadedFileAtURL_completionHandler___block_invoke;
   v10[3] = &unk_1E836A618;
-  v11 = v5;
-  v12 = v6;
-  v8 = v5;
-  v9 = v6;
+  v11 = lCopy;
+  v12 = handlerCopy;
+  v8 = lCopy;
+  v9 = handlerCopy;
   dispatch_async(v7, v10);
 }
 
@@ -3468,18 +3468,18 @@ void __74__QLThumbnailAddition_noteCloudDocsDownloadedFileAtURL_completionHandle
 - (id)allImageURLs
 {
   v26 = *MEMORY[0x1E69E9840];
-  v3 = [(QLThumbnailAddition *)self metadata];
-  v4 = [v3 objectForKey:@"QLThumbnailMetadataFileNamesDictionaryKey"];
-  v5 = [v4 allValues];
+  metadata = [(QLThumbnailAddition *)self metadata];
+  v4 = [metadata objectForKey:@"QLThumbnailMetadataFileNamesDictionaryKey"];
+  allValues = [v4 allValues];
 
-  if ([v5 count])
+  if ([allValues count])
   {
-    v6 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v5, "count")}];
+    v6 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(allValues, "count")}];
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v7 = v5;
+    v7 = allValues;
     v8 = [v7 countByEnumeratingWithState:&v20 objects:v25 count:16];
     if (v8)
     {
@@ -3495,8 +3495,8 @@ void __74__QLThumbnailAddition_noteCloudDocsDownloadedFileAtURL_completionHandle
           }
 
           v12 = *(*(&v20 + 1) + 8 * i);
-          v13 = [(QLThumbnailAddition *)self additionURL];
-          v14 = [v13 URLByAppendingPathComponent:v12 isDirectory:0];
+          additionURL = [(QLThumbnailAddition *)self additionURL];
+          v14 = [additionURL URLByAppendingPathComponent:v12 isDirectory:0];
 
           [v6 addObject:v14];
         }
@@ -3510,13 +3510,13 @@ void __74__QLThumbnailAddition_noteCloudDocsDownloadedFileAtURL_completionHandle
 
   else
   {
-    v15 = [(QLThumbnailAddition *)self metadata];
-    v7 = [v15 objectForKey:@"QLThumbnailMetadataFileNameKey"];
+    metadata2 = [(QLThumbnailAddition *)self metadata];
+    v7 = [metadata2 objectForKey:@"QLThumbnailMetadataFileNameKey"];
 
     if (v7)
     {
-      v16 = [(QLThumbnailAddition *)self additionURL];
-      v17 = [v16 URLByAppendingPathComponent:v7 isDirectory:0];
+      additionURL2 = [(QLThumbnailAddition *)self additionURL];
+      v17 = [additionURL2 URLByAppendingPathComponent:v7 isDirectory:0];
       v24 = v17;
       v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v24 count:1];
     }
@@ -3556,8 +3556,8 @@ void __74__QLThumbnailAddition_noteCloudDocsDownloadedFileAtURL_completionHandle
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v4 = [(QLThumbnailAddition *)self allImageURLs];
-    v5 = [v4 countByEnumeratingWithState:&v18 objects:v27 count:16];
+    allImageURLs = [(QLThumbnailAddition *)self allImageURLs];
+    v5 = [allImageURLs countByEnumeratingWithState:&v18 objects:v27 count:16];
     if (v5)
     {
       v6 = *v19;
@@ -3569,7 +3569,7 @@ void __74__QLThumbnailAddition_noteCloudDocsDownloadedFileAtURL_completionHandle
         {
           if (*v19 != v6)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(allImageURLs);
           }
 
           v9 = *(*(&v18 + 1) + 8 * v8);
@@ -3579,15 +3579,15 @@ void __74__QLThumbnailAddition_noteCloudDocsDownloadedFileAtURL_completionHandle
           v12 = v11;
           if (v10)
           {
-            v13 = [v11 unsignedIntegerValue];
-            v24[3] += v13;
+            unsignedIntegerValue = [v11 unsignedIntegerValue];
+            v24[3] += unsignedIntegerValue;
           }
 
           ++v8;
         }
 
         while (v5 != v8);
-        v5 = [v4 countByEnumeratingWithState:&v18 objects:v27 count:16];
+        v5 = [allImageURLs countByEnumeratingWithState:&v18 objects:v27 count:16];
       }
 
       while (v5);

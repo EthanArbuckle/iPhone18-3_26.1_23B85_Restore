@@ -8,8 +8,8 @@
 {
   v22 = *MEMORY[0x1E69E9840];
   v8 = a3;
-  v9 = [a1 viewControllers];
-  v10 = [v9 containsObject:v8];
+  viewControllers = [self viewControllers];
+  v10 = [viewControllers containsObject:v8];
 
   if (v10)
   {
@@ -25,11 +25,11 @@
     v18 = buf;
     v11 = v8;
     v17 = v11;
-    [a1 pl_visitControllerHierarchyWithBlock:v16];
+    [self pl_visitControllerHierarchyWithBlock:v16];
     v12 = *(*&buf[8] + 24);
     if (v12 == 1)
     {
-      [a1 pu_popToViewController:v11 animated:a4 interactive:0];
+      [self pu_popToViewController:v11 animated:a4 interactive:0];
     }
 
     _Block_object_dispose(buf, 8);
@@ -40,13 +40,13 @@
     v13 = PLUIGetLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
-      v14 = [a1 viewControllers];
+      viewControllers2 = [self viewControllers];
       *buf = 138412802;
       *&buf[4] = v8;
       *&buf[12] = 2112;
-      *&buf[14] = a1;
+      *&buf[14] = self;
       *&buf[22] = 2112;
-      v21 = v14;
+      v21 = viewControllers2;
       _os_log_impl(&dword_1B36F3000, v13, OS_LOG_TYPE_ERROR, "Trying to pop to a view controller %@ that isn't in the view controllers of %@: %@", buf, 0x20u);
     }
 

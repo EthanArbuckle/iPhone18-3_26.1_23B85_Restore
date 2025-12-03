@@ -1,23 +1,23 @@
 @interface NTKTimelineRemoteDataSourceProvider
 - (CLKComplicationDataSource)dataSource;
-- (NTKTimelineRemoteDataSourceProvider)initWithDataSource:(id)a3;
-- (void)getCurrentEntryForComplication:(id)a3 completion:(id)a4;
-- (void)getEntriesForComplication:(id)a3 afterDate:(id)a4 limit:(unint64_t)a5 completion:(id)a6;
-- (void)tl_getDataSourceWithCompletion:(id)a3;
+- (NTKTimelineRemoteDataSourceProvider)initWithDataSource:(id)source;
+- (void)getCurrentEntryForComplication:(id)complication completion:(id)completion;
+- (void)getEntriesForComplication:(id)complication afterDate:(id)date limit:(unint64_t)limit completion:(id)completion;
+- (void)tl_getDataSourceWithCompletion:(id)completion;
 @end
 
 @implementation NTKTimelineRemoteDataSourceProvider
 
-- (NTKTimelineRemoteDataSourceProvider)initWithDataSource:(id)a3
+- (NTKTimelineRemoteDataSourceProvider)initWithDataSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   v12.receiver = self;
   v12.super_class = NTKTimelineRemoteDataSourceProvider;
   v5 = [(NTKTimelineRemoteDataSourceProvider *)&v12 init];
   v6 = v5;
-  if (v4 && v5)
+  if (sourceCopy && v5)
   {
-    v7 = [[NTKTimelineDataSourceWrapper alloc] initWithDataSource:v4];
+    v7 = [[NTKTimelineDataSourceWrapper alloc] initWithDataSource:sourceCopy];
     wrapper = v6->_wrapper;
     v6->_wrapper = v7;
 
@@ -32,20 +32,20 @@
   return v6;
 }
 
-- (void)getCurrentEntryForComplication:(id)a3 completion:(id)a4
+- (void)getCurrentEntryForComplication:(id)complication completion:(id)completion
 {
   v21[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [objc_alloc(MEMORY[0x277D71518]) initWithIdentifiable:v6 timeout:1 entryLimit:self->_timeout];
+  complicationCopy = complication;
+  completionCopy = completion;
+  v8 = [objc_alloc(MEMORY[0x277D71518]) initWithIdentifiable:complicationCopy timeout:1 entryLimit:self->_timeout];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __81__NTKTimelineRemoteDataSourceProvider_getCurrentEntryForComplication_completion___block_invoke;
   v18[3] = &unk_278780198;
-  v9 = v6;
+  v9 = complicationCopy;
   v19 = v9;
-  v20 = v7;
-  v10 = v7;
+  v20 = completionCopy;
+  v10 = completionCopy;
   [v8 setOperationCompletionBlock:v18];
   v11 = objc_alloc(MEMORY[0x277D71510]);
   v21[0] = v8;
@@ -59,8 +59,8 @@
   v17 = v9;
   v14 = v9;
   [v13 setSessionCompletionBlock:v16];
-  v15 = [(NTKTimelineRemoteDataSourceProvider *)self operationQueue];
-  [v15 addOperation:v13];
+  operationQueue = [(NTKTimelineRemoteDataSourceProvider *)self operationQueue];
+  [operationQueue addOperation:v13];
 }
 
 void __81__NTKTimelineRemoteDataSourceProvider_getCurrentEntryForComplication_completion___block_invoke(uint64_t a1, void *a2)
@@ -96,23 +96,23 @@ void __81__NTKTimelineRemoteDataSourceProvider_getCurrentEntryForComplication_co
   }
 }
 
-- (void)getEntriesForComplication:(id)a3 afterDate:(id)a4 limit:(unint64_t)a5 completion:(id)a6
+- (void)getEntriesForComplication:(id)complication afterDate:(id)date limit:(unint64_t)limit completion:(id)completion
 {
   v27[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a6;
+  complicationCopy = complication;
+  completionCopy = completion;
   v12 = MEMORY[0x277D71508];
-  v13 = a4;
-  v14 = [[v12 alloc] initWithIdentifiable:v10 afterDate:v13 timeout:a5 entryLimit:self->_timeout];
+  dateCopy = date;
+  v14 = [[v12 alloc] initWithIdentifiable:complicationCopy afterDate:dateCopy timeout:limit entryLimit:self->_timeout];
 
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __92__NTKTimelineRemoteDataSourceProvider_getEntriesForComplication_afterDate_limit_completion___block_invoke;
   v24[3] = &unk_2787801C0;
-  v15 = v10;
+  v15 = complicationCopy;
   v25 = v15;
-  v26 = v11;
-  v16 = v11;
+  v26 = completionCopy;
+  v16 = completionCopy;
   [v14 setOperationCompletionBlock:v24];
   v17 = objc_alloc(MEMORY[0x277D71510]);
   v27[0] = v14;
@@ -126,8 +126,8 @@ void __81__NTKTimelineRemoteDataSourceProvider_getCurrentEntryForComplication_co
   v23 = v15;
   v20 = v15;
   [v19 setSessionCompletionBlock:v22];
-  v21 = [(NTKTimelineRemoteDataSourceProvider *)self operationQueue];
-  [v21 addOperation:v19];
+  operationQueue = [(NTKTimelineRemoteDataSourceProvider *)self operationQueue];
+  [operationQueue addOperation:v19];
 }
 
 void __92__NTKTimelineRemoteDataSourceProvider_getEntriesForComplication_afterDate_limit_completion___block_invoke(uint64_t a1, void *a2)
@@ -163,25 +163,25 @@ void __92__NTKTimelineRemoteDataSourceProvider_getEntriesForComplication_afterDa
 
 - (CLKComplicationDataSource)dataSource
 {
-  v2 = [(NTKTimelineRemoteDataSourceProvider *)self wrapper];
-  v3 = [v2 dataSource];
+  wrapper = [(NTKTimelineRemoteDataSourceProvider *)self wrapper];
+  dataSource = [wrapper dataSource];
 
-  return v3;
+  return dataSource;
 }
 
-- (void)tl_getDataSourceWithCompletion:(id)a3
+- (void)tl_getDataSourceWithCompletion:(id)completion
 {
-  v6 = a3;
-  v4 = [(NTKTimelineRemoteDataSourceProvider *)self wrapper];
-  if (v4)
+  completionCopy = completion;
+  wrapper = [(NTKTimelineRemoteDataSourceProvider *)self wrapper];
+  if (wrapper)
   {
-    v6[2](v6, v4, 0);
+    completionCopy[2](completionCopy, wrapper, 0);
   }
 
   else
   {
     v5 = [MEMORY[0x277CCA9B8] errorWithDomain:@"NTKComplicationTimelineDomain" code:404 userInfo:&unk_284189A98];
-    (v6)[2](v6, 0, v5);
+    (completionCopy)[2](completionCopy, 0, v5);
   }
 }
 

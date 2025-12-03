@@ -1,15 +1,15 @@
 @interface MKLocalSearchRequest
-+ (MKLocalSearchRequest)searchRequestWithCompletion:(id)a3;
++ (MKLocalSearchRequest)searchRequestWithCompletion:(id)completion;
 - (MKCoordinateRegion)region;
 - (MKLocalSearchRequest)init;
 - (MKLocalSearchRequest)initWithCompletion:(MKLocalSearchCompletion *)completion;
-- (MKLocalSearchRequest)initWithMapsURL:(id)a3;
+- (MKLocalSearchRequest)initWithMapsURL:(id)l;
 - (MKLocalSearchRequest)initWithNaturalLanguageQuery:(NSString *)naturalLanguageQuery;
 - (MKLocalSearchRequest)initWithNaturalLanguageQuery:(NSString *)naturalLanguageQuery region:(MKCoordinateRegion)region;
 - (id)_dictionaryRepresentation;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)_setContactsDataString:(id)a3;
+- (void)_setContactsDataString:(id)string;
 @end
 
 @implementation MKLocalSearchRequest
@@ -21,10 +21,10 @@
   return [(MKLocalSearchRequest *)&v3 init];
 }
 
-+ (MKLocalSearchRequest)searchRequestWithCompletion:(id)a3
++ (MKLocalSearchRequest)searchRequestWithCompletion:(id)completion
 {
-  v3 = a3;
-  v4 = [[MKLocalSearchRequest alloc] initWithCompletion:v3];
+  completionCopy = completion;
+  v4 = [[MKLocalSearchRequest alloc] initWithCompletion:completionCopy];
 
   return v4;
 }
@@ -42,12 +42,12 @@
   return result;
 }
 
-- (void)_setContactsDataString:(id)a3
+- (void)_setContactsDataString:(id)string
 {
-  v5 = a3;
+  stringCopy = string;
   if (![(NSString *)self->_contactsDataString isEqualToString:?])
   {
-    objc_storeStrong(&self->_contactsDataString, a3);
+    objc_storeStrong(&self->_contactsDataString, string);
     [MKMapItem _fillOutRequest:self withMapsDataString:self->_contactsDataString];
   }
 }
@@ -58,20 +58,20 @@
   v8.receiver = self;
   v8.super_class = MKLocalSearchRequest;
   v4 = [(MKLocalSearchRequest *)&v8 description];
-  v5 = [(MKLocalSearchRequest *)self _dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  _dictionaryRepresentation = [(MKLocalSearchRequest *)self _dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, _dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)_dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   naturalLanguageQuery = self->_naturalLanguageQuery;
   if (naturalLanguageQuery)
   {
-    [v3 setObject:naturalLanguageQuery forKey:@"naturalLanguageQuery"];
+    [dictionary setObject:naturalLanguageQuery forKey:@"naturalLanguageQuery"];
   }
 
   if (self->_hasRegion)
@@ -156,9 +156,9 @@
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = [(NSString *)self->_naturalLanguageQuery copy];
   v6 = *(v4 + 8);
   *(v4 + 8) = v5;
@@ -207,14 +207,14 @@
   return v4;
 }
 
-- (MKLocalSearchRequest)initWithMapsURL:(id)a3
+- (MKLocalSearchRequest)initWithMapsURL:(id)l
 {
   v27 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  lCopy = l;
   v6 = [(MKLocalSearchRequest *)self init];
   if (v6)
   {
-    if (!v5)
+    if (!lCopy)
     {
       p_super = GEOFindOrCreateLog();
       if (os_log_type_enabled(p_super, OS_LOG_TYPE_ERROR))
@@ -228,7 +228,7 @@
       goto LABEL_19;
     }
 
-    v7 = [[_MKURLParser alloc] initWithURL:v5];
+    v7 = [[_MKURLParser alloc] initWithURL:lCopy];
     if (!v7)
     {
       v16 = GEOFindOrCreateLog();
@@ -238,7 +238,7 @@
         *buf = 138543618;
         v24 = v17;
         v25 = 2114;
-        v26 = v5;
+        v26 = lCopy;
         _os_log_impl(&dword_1A2EA0000, v16, OS_LOG_TYPE_ERROR, "%{public}@ could not build a parser for %{public}@", buf, 0x16u);
       }
 
@@ -249,12 +249,12 @@
     p_super = &v7->super;
     if ([(_MKURLParser *)v7 parseIncludingCustomParameters:0])
     {
-      v9 = [p_super searchUID];
-      v10 = [p_super searchProviderID];
-      if (v9)
+      searchUID = [p_super searchUID];
+      searchProviderID = [p_super searchProviderID];
+      if (searchUID)
       {
-        v11 = v10;
-        v12 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v9];
+        v11 = searchProviderID;
+        v12 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:searchUID];
         v22 = v12;
         v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v22 count:1];
         [(MKLocalSearchRequest *)v6 _setMuids:v13];
@@ -276,7 +276,7 @@ LABEL_20:
       *buf = 138543618;
       v24 = v19;
       v25 = 2114;
-      v26 = v5;
+      v26 = lCopy;
       v20 = "%{public}@ could not find a muid in %{public}@";
     }
 
@@ -296,7 +296,7 @@ LABEL_19:
       *buf = 138543618;
       v24 = v19;
       v25 = 2114;
-      v26 = v5;
+      v26 = lCopy;
       v20 = "%{public}@ failed parsing %{public}@";
     }
 
@@ -352,12 +352,12 @@ LABEL_21:
   v5 = [(MKLocalSearchRequest *)&v11 init];
   if (v5)
   {
-    v6 = [(MKLocalSearchCompletion *)v4 queryLine];
-    [(MKLocalSearchRequest *)v5 setNaturalLanguageQuery:v6];
+    queryLine = [(MKLocalSearchCompletion *)v4 queryLine];
+    [(MKLocalSearchRequest *)v5 setNaturalLanguageQuery:queryLine];
 
-    v7 = [(MKLocalSearchCompletion *)v4 geoCompletionItem];
+    geoCompletionItem = [(MKLocalSearchCompletion *)v4 geoCompletionItem];
     geoCompletionItem = v5->_geoCompletionItem;
-    v5->_geoCompletionItem = v7;
+    v5->_geoCompletionItem = geoCompletionItem;
 
     v5->_hasSentFeedbackForCompletion = [(MKLocalSearchCompletion *)v4 _alreadySentFeedback];
     v9 = v5;

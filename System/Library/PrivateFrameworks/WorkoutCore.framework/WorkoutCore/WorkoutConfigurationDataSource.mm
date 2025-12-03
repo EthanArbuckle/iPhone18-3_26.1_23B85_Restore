@@ -1,15 +1,15 @@
 @interface WorkoutConfigurationDataSource
 - (_TtC11WorkoutCore30WorkoutConfigurationDataSource)init;
-- (void)smartGoalStoreUpdatedOccurrenceDataWithNotification:(id)a3;
+- (void)smartGoalStoreUpdatedOccurrenceDataWithNotification:(id)notification;
 @end
 
 @implementation WorkoutConfigurationDataSource
 
-- (void)smartGoalStoreUpdatedOccurrenceDataWithNotification:(id)a3
+- (void)smartGoalStoreUpdatedOccurrenceDataWithNotification:(id)notification
 {
-  v4 = a3;
-  v5 = self;
-  WorkoutConfigurationDataSource.smartGoalStoreUpdatedOccurrenceData(notification:)(v4);
+  notificationCopy = notification;
+  selfCopy = self;
+  WorkoutConfigurationDataSource.smartGoalStoreUpdatedOccurrenceData(notification:)(notificationCopy);
 }
 
 - (_TtC11WorkoutCore30WorkoutConfigurationDataSource)init

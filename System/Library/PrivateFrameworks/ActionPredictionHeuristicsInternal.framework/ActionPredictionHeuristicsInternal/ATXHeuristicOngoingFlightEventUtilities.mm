@@ -1,15 +1,15 @@
 @interface ATXHeuristicOngoingFlightEventUtilities
-+ (id)suggestionsForFlightsWithHeuristicDevice:(id)a3;
++ (id)suggestionsForFlightsWithHeuristicDevice:(id)device;
 @end
 
 @implementation ATXHeuristicOngoingFlightEventUtilities
 
-+ (id)suggestionsForFlightsWithHeuristicDevice:(id)a3
++ (id)suggestionsForFlightsWithHeuristicDevice:(id)device
 {
   v56 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEAA8] date];
-  v5 = [v4 dateByAddingTimeInterval:64800.0];
+  deviceCopy = device;
+  date = [MEMORY[0x277CBEAA8] date];
+  v5 = [date dateByAddingTimeInterval:64800.0];
   v6 = __atxlog_handle_context_heuristic();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -17,16 +17,16 @@
     _os_log_impl(&dword_23E3EA000, v6, OS_LOG_TYPE_DEFAULT, "Ongoing flight event search", buf, 2u);
   }
 
-  v7 = [[ATXCalendarEventsDataSource alloc] initWithDevice:v3];
-  v8 = [(ATXCalendarEventsDataSource *)v7 flightEventsFromStartDate:v4 endDate:v5 reason:@"ongoing flight heuristic"];
+  v7 = [[ATXCalendarEventsDataSource alloc] initWithDevice:deviceCopy];
+  v8 = [(ATXCalendarEventsDataSource *)v7 flightEventsFromStartDate:date endDate:v5 reason:@"ongoing flight heuristic"];
   v9 = [(ATXCalendarEventsDataSource *)v7 sortEkEvents:v8];
   if ([v9 count])
   {
     v37 = v8;
     v38 = v7;
     v39 = v5;
-    v40 = v4;
-    v41 = v3;
+    v40 = date;
+    v41 = deviceCopy;
     v43 = objc_opt_new();
     v47 = 0u;
     v48 = 0u;
@@ -56,12 +56,12 @@
         }
 
         v15 = *(*(&v47 + 1) + 8 * v14);
-        v16 = [v15 startDate];
-        v17 = [v15 endDate];
-        if ([v16 compare:v17] != 1)
+        startDate = [v15 startDate];
+        endDate = [v15 endDate];
+        if ([startDate compare:endDate] != 1)
         {
           v18 = [*(v13 + 864) flightInformationSchemaForEvent:v15];
-          v19 = [*(v13 + 864) flightInformationSpotlightSuggestionForEvent:v15 schemaForFlight:v18 predictionReasons:0x100000000 score:v16 validStartDate:v17 validEndDate:70.0];
+          v19 = [*(v13 + 864) flightInformationSpotlightSuggestionForEvent:v15 schemaForFlight:v18 predictionReasons:0x100000000 score:startDate validStartDate:endDate validEndDate:70.0];
           if (v19)
           {
             [*(v13 + 864) logSuggestion:v19 description:@"ATXHeuristicOngoingFlightEventUtilities: FlightInfo suggestion"];
@@ -79,8 +79,8 @@
           {
             v25 = [*(v20 + 864) _dateIntervalWithEvent:v15];
             v26 = [ATXContextFlightEventSuggestionProducer alloc];
-            v27 = [v15 title];
-            v28 = [(ATXContextFlightEventSuggestionProducer *)v26 initWithTitle:v27 flightInformationSchema:v18 urlString:0 teamIdentifier:0 validFromStartDate:v16 validToEndDate:v17 alternateDestinationTitle:0 dateInterval:v25];
+            title = [v15 title];
+            v28 = [(ATXContextFlightEventSuggestionProducer *)v26 initWithTitle:title flightInformationSchema:v18 urlString:0 teamIdentifier:0 validFromStartDate:startDate validToEndDate:endDate alternateDestinationTitle:0 dateInterval:v25];
 
             v13 = v20;
             v29 = [(ATXContextFlightEventSuggestionProducer *)v28 suggestionForAirplaneModeWithPredictionReasons:0x100000000 score:80.0];
@@ -118,9 +118,9 @@ LABEL_20:
         if (os_log_type_enabled(v18, OS_LOG_TYPE_FAULT))
         {
           *buf = 138412546;
-          v52 = v16;
+          v52 = startDate;
           v53 = 2112;
-          v54 = v17;
+          v54 = endDate;
           _os_log_fault_impl(&dword_23E3EA000, v18, OS_LOG_TYPE_FAULT, "ATXHeuristicOngoingFlightEventUtilities: start %@ is after end %@", buf, 0x16u);
         }
 
@@ -139,8 +139,8 @@ LABEL_24:
         v32 = [MEMORY[0x277CBEB98] set];
         v33 = [(ATXContextHeuristicResult *)v31 initWithSuggestions:v43 additionalRefreshTriggers:v32];
 
-        v4 = v40;
-        v3 = v41;
+        date = v40;
+        deviceCopy = v41;
         v7 = v38;
         v5 = v39;
         v9 = v36;

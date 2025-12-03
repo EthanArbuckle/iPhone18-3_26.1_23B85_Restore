@@ -1,7 +1,7 @@
 @interface _GCDevicePhysicalInputDirectionPadElementParameters
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_GCDevicePhysicalInputDirectionPadElementParameters)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)downSources;
 - (id)leftSources;
 - (id)rightSources;
@@ -19,13 +19,13 @@
 - (uint64_t)setEventLeftValueField:(uint64_t)result;
 - (uint64_t)setEventRightValueField:(uint64_t)result;
 - (uint64_t)setEventUpValueField:(uint64_t)result;
-- (void)setDownSources:(uint64_t)a3;
-- (void)setLeftSources:(uint64_t)a3;
-- (void)setRightSources:(uint64_t)a3;
-- (void)setUpSources:(uint64_t)a3;
-- (void)setXSources:(uint64_t)a3;
-- (void)setXySources:(uint64_t)a3;
-- (void)setYSources:(uint64_t)a3;
+- (void)setDownSources:(uint64_t)sources;
+- (void)setLeftSources:(uint64_t)sources;
+- (void)setRightSources:(uint64_t)sources;
+- (void)setUpSources:(uint64_t)sources;
+- (void)setXSources:(uint64_t)sources;
+- (void)setXySources:(uint64_t)sources;
+- (void)setYSources:(uint64_t)sources;
 @end
 
 @implementation _GCDevicePhysicalInputDirectionPadElementParameters
@@ -42,11 +42,11 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = _GCDevicePhysicalInputDirectionPadElementParameters;
-  v4 = [(_GCDevicePhysicalInputElementParameters *)&v6 copyWithZone:a3];
+  v4 = [(_GCDevicePhysicalInputElementParameters *)&v6 copyWithZone:zone];
   objc_storeStrong(v4 + 6, self->_xySources);
   objc_storeStrong(v4 + 7, self->_xSources);
   objc_storeStrong(v4 + 8, self->_ySources);
@@ -62,12 +62,12 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v14.receiver = self;
   v14.super_class = _GCDevicePhysicalInputDirectionPadElementParameters;
-  v12 = [(_GCDevicePhysicalInputElementParameters *)&v14 isEqual:v4]&& ((xySources = self->_xySources, xySources == v4[6]) || [(NSSet *)xySources isEqual:?]) && ((xSources = self->_xSources, xSources == v4[7]) || [(NSSet *)xSources isEqual:?]) && ((ySources = self->_ySources, ySources == v4[8]) || [(NSSet *)ySources isEqual:?]) && ((upSources = self->_upSources, upSources == v4[9]) || [(NSSet *)upSources isEqual:?]) && ((leftSources = self->_leftSources, leftSources == v4[10]) || [(NSSet *)leftSources isEqual:?]) && ((downSources = self->_downSources, downSources == v4[11]) || [(NSSet *)downSources isEqual:?]) && ((rightSources = self->_rightSources, rightSources == v4[12]) || [(NSSet *)rightSources isEqual:?]) && self->_analog == *(v4 + 40) && self->_eventUpValueField == v4[13] && self->_eventDownValueField == v4[14] && self->_eventLeftValueField == v4[15] && self->_eventRightValueField == v4[16];
+  v12 = [(_GCDevicePhysicalInputElementParameters *)&v14 isEqual:equalCopy]&& ((xySources = self->_xySources, xySources == equalCopy[6]) || [(NSSet *)xySources isEqual:?]) && ((xSources = self->_xSources, xSources == equalCopy[7]) || [(NSSet *)xSources isEqual:?]) && ((ySources = self->_ySources, ySources == equalCopy[8]) || [(NSSet *)ySources isEqual:?]) && ((upSources = self->_upSources, upSources == equalCopy[9]) || [(NSSet *)upSources isEqual:?]) && ((leftSources = self->_leftSources, leftSources == equalCopy[10]) || [(NSSet *)leftSources isEqual:?]) && ((downSources = self->_downSources, downSources == equalCopy[11]) || [(NSSet *)downSources isEqual:?]) && ((rightSources = self->_rightSources, rightSources == equalCopy[12]) || [(NSSet *)rightSources isEqual:?]) && self->_analog == *(equalCopy + 40) && self->_eventUpValueField == equalCopy[13] && self->_eventDownValueField == equalCopy[14] && self->_eventLeftValueField == equalCopy[15] && self->_eventRightValueField == equalCopy[16];
 
   return v12;
 }
@@ -114,9 +114,9 @@
 
 - (uint64_t)isAnalog
 {
-  if (a1)
+  if (self)
   {
-    v1 = *(a1 + 40);
+    v1 = *(self + 40);
   }
 
   else
@@ -129,13 +129,13 @@
 
 - (id)xySources
 {
-  v5 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v6 = a1[7];
+    v6 = self[7];
     if (v6)
     {
-      v5 = v6;
+      selfCopy = v6;
     }
 
     else
@@ -151,22 +151,22 @@
       [(_GCDevicePhysicalInputElementParameters *)v10 symbol];
       objc_claimAutoreleasedReturnValue();
       [OUTLINED_FUNCTION_0_7() initWithElementAliases:? localizedName:? symbol:? direction:?];
-      v5 = [OUTLINED_FUNCTION_4_3() setWithObject:?];
+      selfCopy = [OUTLINED_FUNCTION_4_3() setWithObject:?];
     }
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (id)xSources
 {
-  v5 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v6 = a1[7];
+    v6 = self[7];
     if (v6)
     {
-      v5 = v6;
+      selfCopy = v6;
     }
 
     else
@@ -182,22 +182,22 @@
       [(_GCDevicePhysicalInputElementParameters *)v10 symbol];
       objc_claimAutoreleasedReturnValue();
       [OUTLINED_FUNCTION_0_7() initWithElementAliases:? localizedName:? symbol:? direction:?];
-      v5 = [OUTLINED_FUNCTION_4_3() setWithObject:?];
+      selfCopy = [OUTLINED_FUNCTION_4_3() setWithObject:?];
     }
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (id)ySources
 {
-  v5 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v6 = a1[8];
+    v6 = self[8];
     if (v6)
     {
-      v5 = v6;
+      selfCopy = v6;
     }
 
     else
@@ -213,22 +213,22 @@
       [(_GCDevicePhysicalInputElementParameters *)v10 symbol];
       objc_claimAutoreleasedReturnValue();
       [OUTLINED_FUNCTION_0_7() initWithElementAliases:? localizedName:? symbol:? direction:?];
-      v5 = [OUTLINED_FUNCTION_4_3() setWithObject:?];
+      selfCopy = [OUTLINED_FUNCTION_4_3() setWithObject:?];
     }
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (id)upSources
 {
-  v5 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v6 = a1[9];
+    v6 = self[9];
     if (v6)
     {
-      v5 = v6;
+      selfCopy = v6;
     }
 
     else
@@ -244,22 +244,22 @@
       [(_GCDevicePhysicalInputElementParameters *)v10 symbol];
       objc_claimAutoreleasedReturnValue();
       [OUTLINED_FUNCTION_0_7() initWithElementAliases:? localizedName:? symbol:? direction:?];
-      v5 = [OUTLINED_FUNCTION_4_3() setWithObject:?];
+      selfCopy = [OUTLINED_FUNCTION_4_3() setWithObject:?];
     }
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (id)downSources
 {
-  v5 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v6 = a1[11];
+    v6 = self[11];
     if (v6)
     {
-      v5 = v6;
+      selfCopy = v6;
     }
 
     else
@@ -275,22 +275,22 @@
       [(_GCDevicePhysicalInputElementParameters *)v10 symbol];
       objc_claimAutoreleasedReturnValue();
       [OUTLINED_FUNCTION_0_7() initWithElementAliases:? localizedName:? symbol:? direction:?];
-      v5 = [OUTLINED_FUNCTION_4_3() setWithObject:?];
+      selfCopy = [OUTLINED_FUNCTION_4_3() setWithObject:?];
     }
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (id)leftSources
 {
-  v5 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v6 = a1[10];
+    v6 = self[10];
     if (v6)
     {
-      v5 = v6;
+      selfCopy = v6;
     }
 
     else
@@ -306,22 +306,22 @@
       [(_GCDevicePhysicalInputElementParameters *)v10 symbol];
       objc_claimAutoreleasedReturnValue();
       [OUTLINED_FUNCTION_0_7() initWithElementAliases:? localizedName:? symbol:? direction:?];
-      v5 = [OUTLINED_FUNCTION_4_3() setWithObject:?];
+      selfCopy = [OUTLINED_FUNCTION_4_3() setWithObject:?];
     }
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (id)rightSources
 {
-  v5 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v6 = a1[12];
+    v6 = self[12];
     if (v6)
     {
-      v5 = v6;
+      selfCopy = v6;
     }
 
     else
@@ -337,66 +337,66 @@
       [(_GCDevicePhysicalInputElementParameters *)v10 symbol];
       objc_claimAutoreleasedReturnValue();
       [OUTLINED_FUNCTION_0_7() initWithElementAliases:? localizedName:? symbol:? direction:?];
-      v5 = [OUTLINED_FUNCTION_4_3() setWithObject:?];
+      selfCopy = [OUTLINED_FUNCTION_4_3() setWithObject:?];
     }
   }
 
-  return v5;
+  return selfCopy;
 }
 
-- (void)setXySources:(uint64_t)a3
+- (void)setXySources:(uint64_t)sources
 {
-  if (a1)
+  if (self)
   {
-    OUTLINED_FUNCTION_1_6(a1, a2, a3, 48);
+    OUTLINED_FUNCTION_1_6(self, a2, sources, 48);
   }
 }
 
-- (void)setXSources:(uint64_t)a3
+- (void)setXSources:(uint64_t)sources
 {
-  if (a1)
+  if (self)
   {
-    OUTLINED_FUNCTION_1_6(a1, a2, a3, 56);
+    OUTLINED_FUNCTION_1_6(self, a2, sources, 56);
   }
 }
 
-- (void)setYSources:(uint64_t)a3
+- (void)setYSources:(uint64_t)sources
 {
-  if (a1)
+  if (self)
   {
-    OUTLINED_FUNCTION_1_6(a1, a2, a3, 64);
+    OUTLINED_FUNCTION_1_6(self, a2, sources, 64);
   }
 }
 
-- (void)setUpSources:(uint64_t)a3
+- (void)setUpSources:(uint64_t)sources
 {
-  if (a1)
+  if (self)
   {
-    OUTLINED_FUNCTION_1_6(a1, a2, a3, 72);
+    OUTLINED_FUNCTION_1_6(self, a2, sources, 72);
   }
 }
 
-- (void)setLeftSources:(uint64_t)a3
+- (void)setLeftSources:(uint64_t)sources
 {
-  if (a1)
+  if (self)
   {
-    OUTLINED_FUNCTION_1_6(a1, a2, a3, 80);
+    OUTLINED_FUNCTION_1_6(self, a2, sources, 80);
   }
 }
 
-- (void)setDownSources:(uint64_t)a3
+- (void)setDownSources:(uint64_t)sources
 {
-  if (a1)
+  if (self)
   {
-    OUTLINED_FUNCTION_1_6(a1, a2, a3, 88);
+    OUTLINED_FUNCTION_1_6(self, a2, sources, 88);
   }
 }
 
-- (void)setRightSources:(uint64_t)a3
+- (void)setRightSources:(uint64_t)sources
 {
-  if (a1)
+  if (self)
   {
-    OUTLINED_FUNCTION_1_6(a1, a2, a3, 96);
+    OUTLINED_FUNCTION_1_6(self, a2, sources, 96);
   }
 }
 

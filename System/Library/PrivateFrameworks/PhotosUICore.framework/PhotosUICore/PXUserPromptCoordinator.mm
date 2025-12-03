@@ -1,13 +1,13 @@
 @interface PXUserPromptCoordinator
-+ (void)schedulePromptWithIdentifier:(id)a3 action:(id)a4;
++ (void)schedulePromptWithIdentifier:(id)identifier action:(id)action;
 - (PXUserPromptCoordinator)init;
 @end
 
 @implementation PXUserPromptCoordinator
 
-+ (void)schedulePromptWithIdentifier:(id)a3 action:(id)a4
++ (void)schedulePromptWithIdentifier:(id)identifier action:(id)action
 {
-  v4 = _Block_copy(a4);
+  v4 = _Block_copy(action);
   v5 = sub_1A524C674();
   v7 = v6;
   v8 = swift_allocObject();

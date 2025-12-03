@@ -1,31 +1,31 @@
 @interface SBUniversalControlServer
 - (NSString)description;
-- (SBUniversalControlServer)initWithKeyboardFocusController:(id)a3 keyboardSuppressionManager:(id)a4;
+- (SBUniversalControlServer)initWithKeyboardFocusController:(id)controller keyboardSuppressionManager:(id)manager;
 - (unint64_t)externalProcessActiveOnScreenEdges;
 - (void)_lock_reevaluateKeyboardFocusDisablement;
 - (void)_lock_reevaluateScreenEdgeOwnership;
-- (void)_queue_addConnection:(id)a3;
-- (void)_queue_removeConnection:(id)a3;
-- (void)appendDescriptionToFormatter:(id)a3;
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5;
-- (void)setKeyboardFocusDisabled:(id)a3 reason:(id)a4;
-- (void)setScreenEdgesOwned:(id)a3 reason:(id)a4;
+- (void)_queue_addConnection:(id)connection;
+- (void)_queue_removeConnection:(id)connection;
+- (void)appendDescriptionToFormatter:(id)formatter;
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context;
+- (void)setKeyboardFocusDisabled:(id)disabled reason:(id)reason;
+- (void)setScreenEdgesOwned:(id)owned reason:(id)reason;
 @end
 
 @implementation SBUniversalControlServer
 
-- (SBUniversalControlServer)initWithKeyboardFocusController:(id)a3 keyboardSuppressionManager:(id)a4
+- (SBUniversalControlServer)initWithKeyboardFocusController:(id)controller keyboardSuppressionManager:(id)manager
 {
-  v7 = a3;
-  v8 = a4;
+  controllerCopy = controller;
+  managerCopy = manager;
   v24.receiver = self;
   v24.super_class = SBUniversalControlServer;
   v9 = [(SBUniversalControlServer *)&v24 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_keyboardFocusController, a3);
-    objc_storeStrong(&v10->_keyboardSuppressionManager, a4);
+    objc_storeStrong(&v9->_keyboardFocusController, controller);
+    objc_storeStrong(&v10->_keyboardSuppressionManager, manager);
     v10->_lock._os_unfair_lock_opaque = 0;
     v11 = [objc_alloc(MEMORY[0x277D0AAF8]) initWithEntitlement:@"com.apple.springboard.universal-control"];
     clientAuthenticator = v10->_clientAuthenticator;
@@ -73,7 +73,7 @@ void __87__SBUniversalControlServer_initWithKeyboardFocusController_keyboardSupp
   v8 = 3221225472;
   v9 = __39__SBUniversalControlServer_description__block_invoke;
   v10 = &unk_2783A92D8;
-  v11 = self;
+  selfCopy = self;
   v12 = v3;
   v4 = v3;
   [v4 appendProem:self block:&v7];
@@ -82,24 +82,24 @@ void __87__SBUniversalControlServer_initWithKeyboardFocusController_keyboardSupp
   return v5;
 }
 
-- (void)appendDescriptionToFormatter:(id)a3
+- (void)appendDescriptionToFormatter:(id)formatter
 {
-  v6 = a3;
+  formatterCopy = formatter;
   os_unfair_lock_lock(&self->_lock);
   v4 = [(NSMutableDictionary *)self->_lock_keyboardDisabledReasonsByPID copy];
   os_unfair_lock_unlock(&self->_lock);
-  v5 = [v6 appendObject:v4 withName:@"keyboardDisabledReasonsByPID"];
+  v5 = [formatterCopy appendObject:v4 withName:@"keyboardDisabledReasonsByPID"];
 }
 
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  connectionCopy = connection;
   v7 = SBLogKeyboardFocus();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v17 = v6;
+    v17 = connectionCopy;
     _os_log_impl(&dword_21ED4E000, v7, OS_LOG_TYPE_DEFAULT, "Received SBUniversalControlServer connection: %{public}@", buf, 0xCu);
   }
 
@@ -108,11 +108,11 @@ void __87__SBUniversalControlServer_initWithKeyboardFocusController_keyboardSupp
   v15[2] = __70__SBUniversalControlServer_listener_didReceiveConnection_withContext___block_invoke;
   v15[3] = &unk_2783AB730;
   v15[4] = self;
-  [v6 configureConnection:v15];
+  [connectionCopy configureConnection:v15];
   clientAuthenticator = self->_clientAuthenticator;
-  v9 = [v6 remoteProcess];
-  v10 = [v9 auditToken];
-  LODWORD(clientAuthenticator) = [(FBServiceClientAuthenticator *)clientAuthenticator authenticateAuditToken:v10];
+  remoteProcess = [connectionCopy remoteProcess];
+  auditToken = [remoteProcess auditToken];
+  LODWORD(clientAuthenticator) = [(FBServiceClientAuthenticator *)clientAuthenticator authenticateAuditToken:auditToken];
 
   if (clientAuthenticator)
   {
@@ -122,7 +122,7 @@ void __87__SBUniversalControlServer_initWithKeyboardFocusController_keyboardSupp
     block[2] = __70__SBUniversalControlServer_listener_didReceiveConnection_withContext___block_invoke_13;
     block[3] = &unk_2783A92D8;
     block[4] = self;
-    v12 = v6;
+    v12 = connectionCopy;
     v14 = v12;
     dispatch_async(queue, block);
     [v12 activate];
@@ -130,7 +130,7 @@ void __87__SBUniversalControlServer_initWithKeyboardFocusController_keyboardSupp
 
   else
   {
-    [v6 invalidate];
+    [connectionCopy invalidate];
   }
 }
 
@@ -169,20 +169,20 @@ void __70__SBUniversalControlServer_listener_didReceiveConnection_withContext___
   [*(a1 + 32) _queue_removeConnection:v3];
 }
 
-- (void)setKeyboardFocusDisabled:(id)a3 reason:(id)a4
+- (void)setKeyboardFocusDisabled:(id)disabled reason:(id)reason
 {
-  v16 = a4;
+  reasonCopy = reason;
   v6 = MEMORY[0x277CF3280];
-  v7 = a3;
-  v8 = [v6 currentContext];
-  v9 = [v8 remoteTarget];
+  disabledCopy = disabled;
+  currentContext = [v6 currentContext];
+  remoteTarget = [currentContext remoteTarget];
 
-  v10 = [v9 pid];
+  v10 = [remoteTarget pid];
   os_unfair_lock_lock(&self->_lock);
-  v11 = [v7 BOOLValue];
+  bOOLValue = [disabledCopy BOOLValue];
 
   lock_keyboardDisabledReasonsByPID = self->_lock_keyboardDisabledReasonsByPID;
-  if (v11)
+  if (bOOLValue)
   {
     if (!lock_keyboardDisabledReasonsByPID)
     {
@@ -194,7 +194,7 @@ void __70__SBUniversalControlServer_listener_didReceiveConnection_withContext___
     }
 
     v15 = [MEMORY[0x277CCABB0] numberWithInt:v10];
-    [(NSMutableDictionary *)lock_keyboardDisabledReasonsByPID setObject:v16 forKey:v15];
+    [(NSMutableDictionary *)lock_keyboardDisabledReasonsByPID setObject:reasonCopy forKey:v15];
   }
 
   else
@@ -207,17 +207,17 @@ void __70__SBUniversalControlServer_listener_didReceiveConnection_withContext___
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setScreenEdgesOwned:(id)a3 reason:(id)a4
+- (void)setScreenEdgesOwned:(id)owned reason:(id)reason
 {
-  v13 = a3;
-  v5 = [MEMORY[0x277CF3280] currentContext];
-  v6 = [v5 remoteTarget];
+  ownedCopy = owned;
+  currentContext = [MEMORY[0x277CF3280] currentContext];
+  remoteTarget = [currentContext remoteTarget];
 
-  v7 = [v6 pid];
+  v7 = [remoteTarget pid];
   os_unfair_lock_lock(&self->_lock);
-  v8 = [v13 unsignedIntValue];
+  unsignedIntValue = [ownedCopy unsignedIntValue];
   lock_screenEdgesOwnedByPID = self->_lock_screenEdgesOwnedByPID;
-  if (v8)
+  if (unsignedIntValue)
   {
     if (!lock_screenEdgesOwnedByPID)
     {
@@ -229,7 +229,7 @@ void __70__SBUniversalControlServer_listener_didReceiveConnection_withContext___
     }
 
     v12 = [MEMORY[0x277CCABB0] numberWithInt:v7];
-    [(NSMutableDictionary *)lock_screenEdgesOwnedByPID setObject:v13 forKey:v12];
+    [(NSMutableDictionary *)lock_screenEdgesOwnedByPID setObject:ownedCopy forKey:v12];
   }
 
   else
@@ -259,8 +259,8 @@ void __70__SBUniversalControlServer_listener_didReceiveConnection_withContext___
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [(NSMutableDictionary *)self->_lock_screenEdgesOwnedByPID allValues];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v16 count:16];
+  allValues = [(NSMutableDictionary *)self->_lock_screenEdgesOwnedByPID allValues];
+  v4 = [allValues countByEnumeratingWithState:&v10 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -272,14 +272,14 @@ void __70__SBUniversalControlServer_listener_didReceiveConnection_withContext___
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allValues);
         }
 
         self->_lock_externallyControlledScreenEdgeMask |= [*(*(&v10 + 1) + 8 * v7++) unsignedIntValue];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v16 count:16];
+      v5 = [allValues countByEnumeratingWithState:&v10 objects:v16 count:16];
     }
 
     while (v5);
@@ -357,47 +357,47 @@ void __68__SBUniversalControlServer__lock_reevaluateKeyboardFocusDisablement__bl
   os_unfair_lock_unlock(v20);
 }
 
-- (void)_queue_addConnection:(id)a3
+- (void)_queue_addConnection:(id)connection
 {
   v8 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  connectionCopy = connection;
   v5 = SBLogKeyboardFocus();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138543362;
-    v7 = v4;
+    v7 = connectionCopy;
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "Adding SBUniversalControlServer connection: %{public}@", &v6, 0xCu);
   }
 
   dispatch_assert_queue_V2(self->_queue);
-  [(NSMutableSet *)self->_connections addObject:v4];
+  [(NSMutableSet *)self->_connections addObject:connectionCopy];
 }
 
-- (void)_queue_removeConnection:(id)a3
+- (void)_queue_removeConnection:(id)connection
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  connectionCopy = connection;
   v5 = SBLogKeyboardFocus();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138543362;
-    v13 = v4;
+    v13 = connectionCopy;
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "Removing SBUniversalControlServer connection: %{public}@", &v12, 0xCu);
   }
 
   dispatch_assert_queue_V2(self->_queue);
-  v6 = [MEMORY[0x277CF3280] currentContext];
-  v7 = [v6 remoteTarget];
+  currentContext = [MEMORY[0x277CF3280] currentContext];
+  remoteTarget = [currentContext remoteTarget];
 
-  [(NSMutableSet *)self->_connections removeObject:v4];
+  [(NSMutableSet *)self->_connections removeObject:connectionCopy];
   os_unfair_lock_lock(&self->_lock);
   lock_keyboardDisabledReasonsByPID = self->_lock_keyboardDisabledReasonsByPID;
-  v9 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v7, "pid")}];
+  v9 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(remoteTarget, "pid")}];
   [(NSMutableDictionary *)lock_keyboardDisabledReasonsByPID removeObjectForKey:v9];
 
   [(SBUniversalControlServer *)self _lock_reevaluateKeyboardFocusDisablement];
   lock_screenEdgesOwnedByPID = self->_lock_screenEdgesOwnedByPID;
-  v11 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v7, "pid")}];
+  v11 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(remoteTarget, "pid")}];
   [(NSMutableDictionary *)lock_screenEdgesOwnedByPID removeObjectForKey:v11];
 
   [(SBUniversalControlServer *)self _lock_reevaluateScreenEdgeOwnership];

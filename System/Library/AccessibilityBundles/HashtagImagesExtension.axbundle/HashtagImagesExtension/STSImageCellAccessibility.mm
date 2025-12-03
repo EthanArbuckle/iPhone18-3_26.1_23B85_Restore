@@ -1,16 +1,16 @@
 @interface STSImageCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation STSImageCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"STSImageCell" hasInstanceMethod:@"imageInfo" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"STSAnimatedImageInfo"];
-  [v3 validateClass:@"STSAnimatedImageInfo" hasInstanceMethod:@"duration" withFullSignature:{"d", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"STSImageCell" hasInstanceMethod:@"imageInfo" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"STSAnimatedImageInfo"];
+  [validationsCopy validateClass:@"STSAnimatedImageInfo" hasInstanceMethod:@"duration" withFullSignature:{"d", 0}];
 }
 
 - (id)accessibilityLabel

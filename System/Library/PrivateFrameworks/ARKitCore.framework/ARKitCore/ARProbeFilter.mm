@@ -1,14 +1,14 @@
 @interface ARProbeFilter
-+ (id)filter:(id)a3;
++ (id)filter:(id)filter;
 @end
 
 @implementation ARProbeFilter
 
-+ (id)filter:(id)a3
++ (id)filter:(id)filter
 {
-  v3 = a3;
+  filterCopy = filter;
   v4 = [MEMORY[0x1E696AE18] predicateWithBlock:&__block_literal_global_43];
-  v5 = [v3 filteredArrayUsingPredicate:v4];
+  v5 = [filterCopy filteredArrayUsingPredicate:v4];
 
   return v5;
 }

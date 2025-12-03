@@ -1,13 +1,13 @@
 @interface PDRRegistry_Stub
 + (id)sharedInstance;
-- (BOOL)removeDelegate:(id)a3;
+- (BOOL)removeDelegate:(id)delegate;
 - (OS_dispatch_queue)callbackQueue;
-- (id)getDevicesExcluding:(unint64_t)a3;
-- (int64_t)migrationCountForPairingID:(id)a3;
-- (void)addDelegate:(id)a3;
-- (void)pairingClientSetAltAccountName:(id)a3 altDSID:(id)a4 forDevice:(id)a5 completion:(id)a6;
-- (void)setActivePairedDevice:(id)a3 resultsCallback:(id)a4;
-- (void)setCallbackQueue:(id)a3;
+- (id)getDevicesExcluding:(unint64_t)excluding;
+- (int64_t)migrationCountForPairingID:(id)d;
+- (void)addDelegate:(id)delegate;
+- (void)pairingClientSetAltAccountName:(id)name altDSID:(id)d forDevice:(id)device completion:(id)completion;
+- (void)setActivePairedDevice:(id)device resultsCallback:(id)callback;
+- (void)setCallbackQueue:(id)queue;
 - (void)start;
 @end
 
@@ -17,12 +17,12 @@
 {
   v4.receiver = self;
   v4.super_class = type metadata accessor for Registry_Stub();
-  v2 = [(PDRRegistry *)&v4 callbackQueue];
+  callbackQueue = [(PDRRegistry *)&v4 callbackQueue];
 
-  return v2;
+  return callbackQueue;
 }
 
-- (void)setCallbackQueue:(id)a3
+- (void)setCallbackQueue:(id)queue
 {
   if (*(&self->super.super.isa + OBJC_IVAR___PDRRegistry_Stub_amSingleton) == 1)
   {
@@ -34,7 +34,7 @@
   {
     v4.receiver = self;
     v4.super_class = type metadata accessor for Registry_Stub();
-    [(PDRRegistry *)&v4 setCallbackQueue:a3];
+    [(PDRRegistry *)&v4 setCallbackQueue:queue];
   }
 }
 
@@ -64,7 +64,7 @@
   }
 }
 
-- (id)getDevicesExcluding:(unint64_t)a3
+- (id)getDevicesExcluding:(unint64_t)excluding
 {
   type metadata accessor for PDRDevice();
   v3.super.isa = Array._bridgeToObjectiveC()().super.isa;
@@ -72,33 +72,33 @@
   return v3.super.isa;
 }
 
-- (void)addDelegate:(id)a3
+- (void)addDelegate:(id)delegate
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   Registry_Stub.add(delegate:)();
   swift_unknownObjectRelease();
 }
 
-- (BOOL)removeDelegate:(id)a3
+- (BOOL)removeDelegate:(id)delegate
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  v6 = Registry_Stub.remove(delegate:)(a3);
+  selfCopy = self;
+  v6 = Registry_Stub.remove(delegate:)(delegate);
   swift_unknownObjectRelease();
 
   return v6 & 1;
 }
 
-- (void)setActivePairedDevice:(id)a3 resultsCallback:(id)a4
+- (void)setActivePairedDevice:(id)device resultsCallback:(id)callback
 {
-  v4 = _Block_copy(a4);
+  v4 = _Block_copy(callback);
   (*(v4 + 2))(v4, 0, 0);
 
   _Block_release(v4);
 }
 
-- (int64_t)migrationCountForPairingID:(id)a3
+- (int64_t)migrationCountForPairingID:(id)d
 {
   v3 = type metadata accessor for UUID();
   v4 = *(v3 - 8);
@@ -110,9 +110,9 @@
   return 0;
 }
 
-- (void)pairingClientSetAltAccountName:(id)a3 altDSID:(id)a4 forDevice:(id)a5 completion:(id)a6
+- (void)pairingClientSetAltAccountName:(id)name altDSID:(id)d forDevice:(id)device completion:(id)completion
 {
-  v6 = _Block_copy(a6);
+  v6 = _Block_copy(completion);
   v6[2](v6, 0);
 
   _Block_release(v6);

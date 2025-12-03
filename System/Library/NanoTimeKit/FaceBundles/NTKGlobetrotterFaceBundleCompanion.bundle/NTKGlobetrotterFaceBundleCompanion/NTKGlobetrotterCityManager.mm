@@ -4,11 +4,11 @@
 + (id)idealizedTimeZone;
 + (id)sharedInstance;
 - (BOOL)_skipLocalization;
-- (CLLocationCoordinate2D)cityCoordinateForHourOffset:(int64_t)a3;
+- (CLLocationCoordinate2D)cityCoordinateForHourOffset:(int64_t)offset;
 - (NTKGlobetrotterCityManager)init;
-- (id)_cityAtIndex:(unint64_t)a3;
-- (id)displayNameForCityAtIndex:(unint64_t)a3;
-- (id)timeZoneForCityAtIndex:(unint64_t)a3 hourOffset:(int64_t)a4;
+- (id)_cityAtIndex:(unint64_t)index;
+- (id)displayNameForCityAtIndex:(unint64_t)index;
+- (id)timeZoneForCityAtIndex:(unint64_t)index hourOffset:(int64_t)offset;
 @end
 
 @implementation NTKGlobetrotterCityManager
@@ -19,7 +19,7 @@
   block[1] = 3221225472;
   block[2] = sub_2668;
   block[3] = &unk_10490;
-  block[4] = a1;
+  block[4] = self;
   if (qword_15B98 != -1)
   {
     dispatch_once(&qword_15B98, block);
@@ -80,9 +80,9 @@
   return v2;
 }
 
-- (id)displayNameForCityAtIndex:(unint64_t)a3
+- (id)displayNameForCityAtIndex:(unint64_t)index
 {
-  v4 = [(NTKGlobetrotterCityManager *)self _cityAtIndex:a3];
+  v4 = [(NTKGlobetrotterCityManager *)self _cityAtIndex:index];
   v5 = v4;
   if (!v4)
   {
@@ -90,14 +90,14 @@
     goto LABEL_38;
   }
 
-  v6 = [v4 alCityId];
-  v7 = [v6 intValue];
+  alCityId = [v4 alCityId];
+  intValue = [alCityId intValue];
 
-  if (v7 <= 151)
+  if (intValue <= 151)
   {
-    if (v7 <= 59)
+    if (intValue <= 59)
     {
-      switch(v7)
+      switch(intValue)
       {
         case 12:
           v8 = @"CITY_NAME_ALASKA_TIME_ZONE";
@@ -111,15 +111,15 @@
       }
     }
 
-    else if (v7 > 118)
+    else if (intValue > 118)
     {
-      if (v7 == 119)
+      if (intValue == 119)
       {
         v8 = @"CITY_NAME_HAWAII_STANDARD_TIME_ZONE";
         goto LABEL_37;
       }
 
-      if (v7 == 149)
+      if (intValue == 149)
       {
         v8 = @"CITY_NAME_WESTERN_EUROPEAN_TIME_ZONE";
         goto LABEL_37;
@@ -128,13 +128,13 @@
 
     else
     {
-      if (v7 == 60)
+      if (intValue == 60)
       {
         v8 = @"CITY_NAME_VENEZUELAN_STANDARD_TIME_ZONE";
         goto LABEL_37;
       }
 
-      if (v7 == 105)
+      if (intValue == 105)
       {
         v8 = @"CITY_NAME_SOUTH_GEORGIA_TIME_ZONE";
 LABEL_37:
@@ -146,9 +146,9 @@ LABEL_37:
     goto LABEL_41;
   }
 
-  if (v7 <= 231)
+  if (intValue <= 231)
   {
-    switch(v7)
+    switch(intValue)
     {
       case 152:
         v8 = @"CITY_NAME_PACIFIC_TIME_ZONE";
@@ -164,15 +164,15 @@ LABEL_37:
     goto LABEL_41;
   }
 
-  if (v7 <= 367)
+  if (intValue <= 367)
   {
-    if (v7 == 232)
+    if (intValue == 232)
     {
       v8 = @"CITY_NAME_AZORES_TIME_ZONE";
       goto LABEL_37;
     }
 
-    if (v7 == 246)
+    if (intValue == 246)
     {
       v8 = @"CITY_NAME_BRASILIA_TIME_ZONE";
       goto LABEL_37;
@@ -181,50 +181,50 @@ LABEL_37:
     goto LABEL_41;
   }
 
-  if (v7 == 509)
+  if (intValue == 509)
   {
     v8 = @"CITY_NAME_PAKISTAN_STANDARD_TIME_ZONE";
     goto LABEL_37;
   }
 
-  if (v7 != 368)
+  if (intValue != 368)
   {
 LABEL_41:
     if ([(NTKGlobetrotterCityManager *)self _skipLocalization])
     {
-      v10 = [v5 unlocalizedCityName];
+      unlocalizedCityName = [v5 unlocalizedCityName];
       goto LABEL_43;
     }
 
-    v14 = [v5 name];
+    name = [v5 name];
 LABEL_46:
-    v12 = v14;
-    v13 = [v14 localizedUppercaseString];
+    v12 = name;
+    localizedUppercaseString = [name localizedUppercaseString];
     goto LABEL_47;
   }
 
   if (![(NTKGlobetrotterCityManager *)self _skipLocalization])
   {
-    v14 = [v5 countryName];
+    name = [v5 countryName];
     goto LABEL_46;
   }
 
-  v10 = [v5 unlocalizedCountryName];
+  unlocalizedCityName = [v5 unlocalizedCountryName];
 LABEL_43:
-  v12 = v10;
-  v13 = [v10 uppercaseString];
+  v12 = unlocalizedCityName;
+  localizedUppercaseString = [unlocalizedCityName uppercaseString];
 LABEL_47:
-  v9 = v13;
+  v9 = localizedUppercaseString;
 
 LABEL_38:
 
   return v9;
 }
 
-- (CLLocationCoordinate2D)cityCoordinateForHourOffset:(int64_t)a3
+- (CLLocationCoordinate2D)cityCoordinateForHourOffset:(int64_t)offset
 {
-  v4 = 12 - a3;
-  if (a3 >= 13)
+  v4 = 12 - offset;
+  if (offset >= 13)
   {
     v4 += [(NSArray *)self->_cities count];
   }
@@ -233,10 +233,10 @@ LABEL_38:
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 alCity];
-    [v7 latitude];
+    alCity = [v5 alCity];
+    [alCity latitude];
     v9 = v8;
-    [v7 longitude];
+    [alCity longitude];
     v11 = CLLocationCoordinate2DMake(v9, v10);
     latitude = v11.latitude;
     longitude = v11.longitude;
@@ -256,9 +256,9 @@ LABEL_38:
   return result;
 }
 
-- (id)timeZoneForCityAtIndex:(unint64_t)a3 hourOffset:(int64_t)a4
+- (id)timeZoneForCityAtIndex:(unint64_t)index hourOffset:(int64_t)offset
 {
-  v5 = a4 + a3;
+  v5 = offset + index;
   v6 = [(NSArray *)self->_cities count];
   if (v5 < 0)
   {
@@ -274,8 +274,8 @@ LABEL_38:
   v9 = v8;
   if (v8)
   {
-    v10 = [v8 timeZone];
-    v11 = [NSTimeZone timeZoneWithName:v10];
+    timeZone = [v8 timeZone];
+    v11 = [NSTimeZone timeZoneWithName:timeZone];
   }
 
   else
@@ -288,21 +288,21 @@ LABEL_38:
 
 + (id)idealizedTimeZone
 {
-  v2 = [a1 _idealizedCity];
-  v3 = [v2 timeZone];
-  v4 = [NSTimeZone timeZoneWithName:v3];
+  _idealizedCity = [self _idealizedCity];
+  timeZone = [_idealizedCity timeZone];
+  v4 = [NSTimeZone timeZoneWithName:timeZone];
 
   return v4;
 }
 
 + (CLLocationCoordinate2D)idealizedCityCoordinate
 {
-  v2 = [a1 _idealizedCity];
-  v3 = [v2 alCity];
+  _idealizedCity = [self _idealizedCity];
+  alCity = [_idealizedCity alCity];
 
-  [v3 latitude];
+  [alCity latitude];
   v5 = v4;
-  [v3 longitude];
+  [alCity longitude];
   v7 = CLLocationCoordinate2DMake(v5, v6);
 
   latitude = v7.latitude;
@@ -312,16 +312,16 @@ LABEL_38:
   return result;
 }
 
-- (id)_cityAtIndex:(unint64_t)a3
+- (id)_cityAtIndex:(unint64_t)index
 {
-  if ([(NSArray *)self->_cities count]<= a3)
+  if ([(NSArray *)self->_cities count]<= index)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [(NSArray *)self->_cities objectAtIndexedSubscript:a3];
+    v5 = [(NSArray *)self->_cities objectAtIndexedSubscript:index];
   }
 
   return v5;

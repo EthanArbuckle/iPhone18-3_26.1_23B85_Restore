@@ -1,36 +1,36 @@
 @interface PKPaymentSetupWelcomeViewController
-- (BOOL)_didSelectItemWithIdentifier:(id)a3 title:(id)a4 category:(id)a5 productIdentifiers:(id)a6 completion:(id)a7;
+- (BOOL)_didSelectItemWithIdentifier:(id)identifier title:(id)title category:(id)category productIdentifiers:(id)identifiers completion:(id)completion;
 - (BOOL)_updateAnalyticsProductCategoriesString;
-- (BOOL)didSelectAppExtensionWithIdentifier:(id)a3 title:(id)a4 completion:(id)a5;
-- (BOOL)didSelectCategory:(id)a3 completion:(id)a4;
-- (BOOL)didSelectYourCardsWithCompletion:(id)a3;
-- (PKPaymentSetupWelcomeViewController)initWithProvisioningController:(id)a3 context:(int64_t)a4;
+- (BOOL)didSelectAppExtensionWithIdentifier:(id)identifier title:(id)title completion:(id)completion;
+- (BOOL)didSelectCategory:(id)category completion:(id)completion;
+- (BOOL)didSelectYourCardsWithCompletion:(id)completion;
+- (PKPaymentSetupWelcomeViewController)initWithProvisioningController:(id)controller context:(int64_t)context;
 - (PKPaymentSetupWelcomeViewControllerFlowDelegate)flowDelegate;
-- (void)_updateFilteredPaymentSetupProductModelForRequirements:(unint64_t)a3 provisoningController:(id)a4 forceReload:(BOOL)a5;
-- (void)_updateHeaderContentsWithProvisoningController:(id)a3;
-- (void)didTapFooterLink:(id)a3;
-- (void)preflightRequirementsUpdated:(unint64_t)a3 displayableError:(id)a4;
-- (void)preflightWithCompletion:(id)a3;
-- (void)provisioningControllerUpdatedAccounts:(id)a3;
-- (void)provisioningControllerUpdatedProducts:(id)a3;
-- (void)reloadSectionsForRequirements:(unint64_t)a3 animated:(BOOL)a4 forceReload:(BOOL)a5;
-- (void)showLoadingUI:(BOOL)a3 animated:(BOOL)a4;
+- (void)_updateFilteredPaymentSetupProductModelForRequirements:(unint64_t)requirements provisoningController:(id)controller forceReload:(BOOL)reload;
+- (void)_updateHeaderContentsWithProvisoningController:(id)controller;
+- (void)didTapFooterLink:(id)link;
+- (void)preflightRequirementsUpdated:(unint64_t)updated displayableError:(id)error;
+- (void)preflightWithCompletion:(id)completion;
+- (void)provisioningControllerUpdatedAccounts:(id)accounts;
+- (void)provisioningControllerUpdatedProducts:(id)products;
+- (void)reloadSectionsForRequirements:(unint64_t)requirements animated:(BOOL)animated forceReload:(BOOL)reload;
+- (void)showLoadingUI:(BOOL)i animated:(BOOL)animated;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation PKPaymentSetupWelcomeViewController
 
-- (PKPaymentSetupWelcomeViewController)initWithProvisioningController:(id)a3 context:(int64_t)a4
+- (PKPaymentSetupWelcomeViewController)initWithProvisioningController:(id)controller context:(int64_t)context
 {
-  v7 = a3;
+  controllerCopy = controller;
   v15.receiver = self;
   v15.super_class = PKPaymentSetupWelcomeViewController;
-  v8 = [(PKPaymentSetupOptionsViewController *)&v15 initWithContext:a4];
+  v8 = [(PKPaymentSetupOptionsViewController *)&v15 initWithContext:context];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_provisioningController, a3);
+    objc_storeStrong(&v8->_provisioningController, controller);
     v10 = objc_alloc_init(PKPaymentSetupCategoriesSectionController);
     categoriesSectionController = v9->_categoriesSectionController;
     v9->_categoriesSectionController = v10;
@@ -59,7 +59,7 @@
 
   if (v4)
   {
-    v5 = [(PKPaymentSetupOptionsViewController *)self dockView];
+    dockView = [(PKPaymentSetupOptionsViewController *)self dockView];
     v6 = objc_alloc_init(PKMultiHyperlinkView);
     v7 = PKLocalizedPaymentString(&cfstr_WelcomePrivacy.isa);
     v8 = PKLocalizedPaymentString(&cfstr_WelcomePrivacy_0.isa);
@@ -78,7 +78,7 @@
     v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:1];
     [(PKMultiHyperlinkView *)v6 setSources:v12];
 
-    [v5 setAdditionalView:v6];
+    [dockView setAdditionalView:v6];
     objc_destroyWeak(&v16);
     objc_destroyWeak(&location);
   }
@@ -87,9 +87,9 @@
   [(PKPaymentProvisioningController *)v13 addDelegate:self];
   [(PKPaymentSetupWelcomeViewController *)self _updateHeaderContentsWithProvisoningController:self->_provisioningController];
   [(PKPaymentSetupWelcomeViewController *)self reloadSectionsForRequirements:[(PKPaymentProvisioningController *)self->_provisioningController preflightRequirements] animated:0 forceReload:0];
-  v14 = [(PKPaymentSetupWelcomeViewController *)self view];
+  view = [(PKPaymentSetupWelcomeViewController *)self view];
 
-  [v14 setAccessibilityIdentifier:*MEMORY[0x1E69B9A68]];
+  [view setAccessibilityIdentifier:*MEMORY[0x1E69B9A68]];
 }
 
 void __50__PKPaymentSetupWelcomeViewController_viewDidLoad__block_invoke(uint64_t a1)
@@ -105,9 +105,9 @@ void __50__PKPaymentSetupWelcomeViewController_viewDidLoad__block_invoke(uint64_
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v10[1] = *MEMORY[0x1E69E9840];
   v8.receiver = self;
   v8.super_class = PKPaymentSetupWelcomeViewController;
@@ -121,31 +121,31 @@ void __50__PKPaymentSetupWelcomeViewController_viewDidLoad__block_invoke(uint64_
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v10 forKeys:&v9 count:1];
   [(PKProvisioningAnalyticsSessionUIReporter *)reporter reportViewAppearedWithContext:v7];
 
-  [(PKPaymentSetupWelcomeViewController *)self reloadSectionsForRequirements:[(PKPaymentProvisioningController *)self->_provisioningController preflightRequirements] animated:v3 forceReload:0];
+  [(PKPaymentSetupWelcomeViewController *)self reloadSectionsForRequirements:[(PKPaymentProvisioningController *)self->_provisioningController preflightRequirements] animated:appearCopy forceReload:0];
   [(PKPaymentSetupWelcomeViewController *)self preflightWithCompletion:0];
 }
 
-- (void)reloadSectionsForRequirements:(unint64_t)a3 animated:(BOOL)a4 forceReload:(BOOL)a5
+- (void)reloadSectionsForRequirements:(unint64_t)requirements animated:(BOOL)animated forceReload:(BOOL)reload
 {
-  v5 = a5;
-  v6 = a4;
+  reloadCopy = reload;
+  animatedCopy = animated;
   v15[1] = *MEMORY[0x1E69E9840];
   v9 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v10 = self->_provisioningController;
-  [(PKPaymentSetupWelcomeViewController *)self _updateFilteredPaymentSetupProductModelForRequirements:a3 provisoningController:self->_provisioningController forceReload:v5];
-  if ([(PKPaymentSetupCategoriesSectionController *)self->_categoriesSectionController updateWithRequirements:a3 provisioningController:v10 paymentSetupProductModel:self->_filteredPaymentSetupProductModel forceProductConfiguration:v5])
+  [(PKPaymentSetupWelcomeViewController *)self _updateFilteredPaymentSetupProductModelForRequirements:requirements provisoningController:self->_provisioningController forceReload:reloadCopy];
+  if ([(PKPaymentSetupCategoriesSectionController *)self->_categoriesSectionController updateWithRequirements:requirements provisioningController:v10 paymentSetupProductModel:self->_filteredPaymentSetupProductModel forceProductConfiguration:reloadCopy])
   {
     [v9 addObject:self->_categoriesSectionController];
   }
 
-  if ([(PKPaymentSetupAppExtensionsSectionController *)self->_appExtensionSectionController updateWithRequirements:a3 paymentSetupProductModel:self->_filteredPaymentSetupProductModel])
+  if ([(PKPaymentSetupAppExtensionsSectionController *)self->_appExtensionSectionController updateWithRequirements:requirements paymentSetupProductModel:self->_filteredPaymentSetupProductModel])
   {
     [v9 addObject:self->_appExtensionSectionController];
   }
 
   [(PKPaymentSetupWelcomeViewController *)self _updateHeaderContentsWithProvisoningController:v10];
-  [(PKPaymentSetupOptionsViewController *)self setSections:v9 animated:v6];
-  [(PKPaymentSetupOptionsViewController *)self setShowHeaderSpinner:(a3 & 0xA) == 0];
+  [(PKPaymentSetupOptionsViewController *)self setSections:v9 animated:animatedCopy];
+  [(PKPaymentSetupOptionsViewController *)self setShowHeaderSpinner:(requirements & 0xA) == 0];
   if ([(PKPaymentSetupWelcomeViewController *)self _updateAnalyticsProductCategoriesString]&& self->_viewWillAppearReported)
   {
     reporter = self->_reporter;
@@ -157,37 +157,37 @@ void __50__PKPaymentSetupWelcomeViewController_viewDidLoad__block_invoke(uint64_
   }
 }
 
-- (void)_updateFilteredPaymentSetupProductModelForRequirements:(unint64_t)a3 provisoningController:(id)a4 forceReload:(BOOL)a5
+- (void)_updateFilteredPaymentSetupProductModelForRequirements:(unint64_t)requirements provisoningController:(id)controller forceReload:(BOOL)reload
 {
-  v16 = a4;
-  if (a5 || PKPaymentPreflightRequirementsImpactProducts())
+  controllerCopy = controller;
+  if (reload || PKPaymentPreflightRequirementsImpactProducts())
   {
-    self->_currentConfiguredRequirements = a3;
+    self->_currentConfiguredRequirements = requirements;
     v8 = PKCurrentMobileCarrierRegion();
-    v9 = [v16 webService];
-    v10 = [v9 targetDevice];
-    v11 = [v10 deviceRegion];
+    webService = [controllerCopy webService];
+    targetDevice = [webService targetDevice];
+    deviceRegion = [targetDevice deviceRegion];
 
-    v12 = [v16 paymentSetupProductModel];
-    v13 = [v16 localCredentials];
-    v14 = [v12 filteredPaymentSetupProductModelWithLocalCredentials:v13 setupContext:-[PKPaymentSetupOptionsViewController context](self webService:"context") mobileCarrierRegion:v9 deviceRegion:{v8, v11}];
+    paymentSetupProductModel = [controllerCopy paymentSetupProductModel];
+    localCredentials = [controllerCopy localCredentials];
+    v14 = [paymentSetupProductModel filteredPaymentSetupProductModelWithLocalCredentials:localCredentials setupContext:-[PKPaymentSetupOptionsViewController context](self webService:"context") mobileCarrierRegion:webService deviceRegion:{v8, deviceRegion}];
     filteredPaymentSetupProductModel = self->_filteredPaymentSetupProductModel;
     self->_filteredPaymentSetupProductModel = v14;
   }
 }
 
-- (void)_updateHeaderContentsWithProvisoningController:(id)a3
+- (void)_updateHeaderContentsWithProvisoningController:(id)controller
 {
-  v8 = [a3 paymentSetupProductModel];
-  v4 = [v8 localizedTitle];
-  v5 = [v8 localizedSubtitle];
-  if (v4)
+  paymentSetupProductModel = [controller paymentSetupProductModel];
+  localizedTitle = [paymentSetupProductModel localizedTitle];
+  localizedSubtitle = [paymentSetupProductModel localizedSubtitle];
+  if (localizedTitle)
   {
-    [(PKPaymentSetupOptionsViewController *)self setTitleText:v4];
-    if (v5)
+    [(PKPaymentSetupOptionsViewController *)self setTitleText:localizedTitle];
+    if (localizedSubtitle)
     {
 LABEL_3:
-      [(PKPaymentSetupOptionsViewController *)self setSubtitleText:v5];
+      [(PKPaymentSetupOptionsViewController *)self setSubtitleText:localizedSubtitle];
       goto LABEL_6;
     }
   }
@@ -197,7 +197,7 @@ LABEL_3:
     v6 = PKLocalizedPaymentString(&cfstr_PaymentSetupTi.isa);
     [(PKPaymentSetupOptionsViewController *)self setTitleText:v6];
 
-    if (v5)
+    if (localizedSubtitle)
     {
       goto LABEL_3;
     }
@@ -209,13 +209,13 @@ LABEL_3:
 LABEL_6:
 }
 
-- (void)preflightRequirementsUpdated:(unint64_t)a3 displayableError:(id)a4
+- (void)preflightRequirementsUpdated:(unint64_t)updated displayableError:(id)error
 {
-  v6 = a4;
-  v7 = v6;
+  errorCopy = error;
+  v7 = errorCopy;
   if (!self->_isDisplayingError)
   {
-    if (v6)
+    if (errorCopy)
     {
       self->_isDisplayingError = 1;
       [(PKPaymentSetupOptionsViewController *)self setShowHeaderSpinner:0];
@@ -236,7 +236,7 @@ LABEL_6:
 
     else
     {
-      [(PKPaymentSetupWelcomeViewController *)self reloadSectionsForRequirements:a3 animated:1 forceReload:0];
+      [(PKPaymentSetupWelcomeViewController *)self reloadSectionsForRequirements:updated animated:1 forceReload:0];
     }
   }
 }
@@ -258,31 +258,31 @@ void __85__PKPaymentSetupWelcomeViewController_preflightRequirementsUpdated_disp
   }
 }
 
-- (void)provisioningControllerUpdatedProducts:(id)a3
+- (void)provisioningControllerUpdatedProducts:(id)products
 {
-  v4 = [a3 preflightRequirements];
+  preflightRequirements = [products preflightRequirements];
 
-  [(PKPaymentSetupWelcomeViewController *)self reloadSectionsForRequirements:v4 animated:0 forceReload:1];
+  [(PKPaymentSetupWelcomeViewController *)self reloadSectionsForRequirements:preflightRequirements animated:0 forceReload:1];
 }
 
-- (void)provisioningControllerUpdatedAccounts:(id)a3
+- (void)provisioningControllerUpdatedAccounts:(id)accounts
 {
-  v4 = [a3 preflightRequirements];
+  preflightRequirements = [accounts preflightRequirements];
 
-  [(PKPaymentSetupWelcomeViewController *)self reloadSectionsForRequirements:v4 animated:1 forceReload:1];
+  [(PKPaymentSetupWelcomeViewController *)self reloadSectionsForRequirements:preflightRequirements animated:1 forceReload:1];
 }
 
-- (BOOL)didSelectAppExtensionWithIdentifier:(id)a3 title:(id)a4 completion:(id)a5
+- (BOOL)didSelectAppExtensionWithIdentifier:(id)identifier title:(id)title completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
+  identifierCopy = identifier;
+  titleCopy = title;
+  completionCopy = completion;
+  v12 = completionCopy;
   if (self->_loadingIdentifier)
   {
-    if (v11)
+    if (completionCopy)
     {
-      (*(v11 + 2))(v11, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
 
     v13 = 0;
@@ -290,15 +290,15 @@ void __85__PKPaymentSetupWelcomeViewController_preflightRequirementsUpdated_disp
 
   else
   {
-    objc_storeStrong(&self->_loadingIdentifier, a3);
-    v14 = [MEMORY[0x1E695DFD8] setWithObject:v9];
+    objc_storeStrong(&self->_loadingIdentifier, identifier);
+    v14 = [MEMORY[0x1E695DFD8] setWithObject:identifierCopy];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __92__PKPaymentSetupWelcomeViewController_didSelectAppExtensionWithIdentifier_title_completion___block_invoke;
     v16[3] = &unk_1E80109C0;
     v16[4] = self;
     v17 = v12;
-    v13 = [(PKPaymentSetupWelcomeViewController *)self _didSelectItemWithIdentifier:0 title:v10 category:0 productIdentifiers:v14 completion:v16];
+    v13 = [(PKPaymentSetupWelcomeViewController *)self _didSelectItemWithIdentifier:0 title:titleCopy category:0 productIdentifiers:v14 completion:v16];
   }
 
   return v13;
@@ -312,9 +312,9 @@ uint64_t __92__PKPaymentSetupWelcomeViewController_didSelectAppExtensionWithIden
   return [v2 deselectCells];
 }
 
-- (BOOL)didSelectYourCardsWithCompletion:(id)a3
+- (BOOL)didSelectYourCardsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   loadingIdentifier = self->_loadingIdentifier;
   if (!loadingIdentifier)
   {
@@ -326,24 +326,24 @@ uint64_t __92__PKPaymentSetupWelcomeViewController_didSelectAppExtensionWithIden
     self->_loadingIdentifier = 0;
   }
 
-  if (v4)
+  if (completionCopy)
   {
-    v4[2](v4, loadingIdentifier == 0);
+    completionCopy[2](completionCopy, loadingIdentifier == 0);
   }
 
   return loadingIdentifier == 0;
 }
 
-- (BOOL)didSelectCategory:(id)a3 completion:(id)a4
+- (BOOL)didSelectCategory:(id)category completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  categoryCopy = category;
+  completionCopy = completion;
+  v8 = completionCopy;
   if (self->_loadingIdentifier)
   {
-    if (v7)
+    if (completionCopy)
     {
-      (*(v7 + 2))(v7, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
 
     v9 = 0;
@@ -351,28 +351,28 @@ uint64_t __92__PKPaymentSetupWelcomeViewController_didSelectAppExtensionWithIden
 
   else
   {
-    v10 = [v6 identifier];
+    identifier = [categoryCopy identifier];
     loadingIdentifier = self->_loadingIdentifier;
-    self->_loadingIdentifier = v10;
+    self->_loadingIdentifier = identifier;
 
-    v12 = [v6 identifier];
-    v13 = [v6 localizedDisplayName];
-    v14 = [v6 productIdentifiers];
-    v9 = [(PKPaymentSetupWelcomeViewController *)self _didSelectItemWithIdentifier:v12 title:v13 category:v6 productIdentifiers:v14 completion:v8];
+    identifier2 = [categoryCopy identifier];
+    localizedDisplayName = [categoryCopy localizedDisplayName];
+    productIdentifiers = [categoryCopy productIdentifiers];
+    v9 = [(PKPaymentSetupWelcomeViewController *)self _didSelectItemWithIdentifier:identifier2 title:localizedDisplayName category:categoryCopy productIdentifiers:productIdentifiers completion:v8];
   }
 
   return v9;
 }
 
-- (void)preflightWithCompletion:(id)a3
+- (void)preflightWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
+  completionCopy = completion;
+  v5 = completionCopy;
   if (self->_didPreflight)
   {
-    if (v4)
+    if (completionCopy)
     {
-      (*(v4 + 2))(v4, 1);
+      (*(completionCopy + 2))(completionCopy, 1);
     }
   }
 
@@ -384,7 +384,7 @@ uint64_t __92__PKPaymentSetupWelcomeViewController_didSelectAppExtensionWithIden
     v7[1] = 3221225472;
     v7[2] = __63__PKPaymentSetupWelcomeViewController_preflightWithCompletion___block_invoke;
     v7[3] = &unk_1E8013FF8;
-    v8 = v4;
+    v8 = completionCopy;
     [(PKPaymentProvisioningController *)provisioningController preflightWithCompletion:v7];
   }
 }
@@ -400,40 +400,40 @@ uint64_t __63__PKPaymentSetupWelcomeViewController_preflightWithCompletion___blo
   return result;
 }
 
-- (BOOL)_didSelectItemWithIdentifier:(id)a3 title:(id)a4 category:(id)a5 productIdentifiers:(id)a6 completion:(id)a7
+- (BOOL)_didSelectItemWithIdentifier:(id)identifier title:(id)title category:(id)category productIdentifiers:(id)identifiers completion:(id)completion
 {
   v20 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a5;
-  v13 = a7;
-  v14 = [(PKPaymentSetupProductModel *)self->_filteredPaymentSetupProductModel availableProductsForProductIdentifiers:a6];
+  identifierCopy = identifier;
+  categoryCopy = category;
+  completionCopy = completion;
+  v14 = [(PKPaymentSetupProductModel *)self->_filteredPaymentSetupProductModel availableProductsForProductIdentifiers:identifiers];
   if ([v14 count])
   {
-    if (v13)
+    if (completionCopy)
     {
-      v13[2](v13, 0);
+      completionCopy[2](completionCopy, 0);
     }
 
     WeakRetained = objc_loadWeakRetained(&self->_flowDelegate);
-    [WeakRetained welcomeViewController:self didSelectCategory:v12 products:v14];
+    [WeakRetained welcomeViewController:self didSelectCategory:categoryCopy products:v14];
   }
 
   else
   {
-    if (([v11 isEqualToString:*MEMORY[0x1E69BC288]] & 1) == 0)
+    if (([identifierCopy isEqualToString:*MEMORY[0x1E69BC288]] & 1) == 0)
     {
       v16 = PKLogFacilityTypeGetObject();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
         v18 = 138412290;
-        v19 = v11;
+        v19 = identifierCopy;
         _os_log_impl(&dword_1BD026000, v16, OS_LOG_TYPE_DEFAULT, "Error: Category:%@ should have products - using default flow", &v18, 0xCu);
       }
     }
 
-    if (v13)
+    if (completionCopy)
     {
-      v13[2](v13, 1);
+      completionCopy[2](completionCopy, 1);
     }
 
     WeakRetained = objc_loadWeakRetained(&self->_flowDelegate);
@@ -443,13 +443,13 @@ uint64_t __63__PKPaymentSetupWelcomeViewController_preflightWithCompletion___blo
   return 1;
 }
 
-- (void)didTapFooterLink:(id)a3
+- (void)didTapFooterLink:(id)link
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  linkCopy = link;
+  if (linkCopy)
   {
-    v5 = [objc_alloc(MEMORY[0x1E697A838]) initWithURL:v4];
+    v5 = [objc_alloc(MEMORY[0x1E697A838]) initWithURL:linkCopy];
     [v5 setModalPresentationStyle:2];
     [(PKPaymentSetupWelcomeViewController *)self presentViewController:v5 animated:1 completion:0];
   }
@@ -468,29 +468,29 @@ uint64_t __63__PKPaymentSetupWelcomeViewController_preflightWithCompletion___blo
   }
 }
 
-- (void)showLoadingUI:(BOOL)a3 animated:(BOOL)a4
+- (void)showLoadingUI:(BOOL)i animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  v7 = [(PKDynamicCollectionViewController *)self collectionView];
-  [v7 setUserInteractionEnabled:!v5];
+  animatedCopy = animated;
+  iCopy = i;
+  collectionView = [(PKDynamicCollectionViewController *)self collectionView];
+  [collectionView setUserInteractionEnabled:!iCopy];
 
   loadingIdentifier = self->_loadingIdentifier;
-  if (loadingIdentifier && !v5)
+  if (loadingIdentifier && !iCopy)
   {
     self->_loadingIdentifier = 0;
 
-    [(PKPaymentSetupCategoriesSectionController *)self->_categoriesSectionController hideLoadingIndicatorsAnimated:v4];
+    [(PKPaymentSetupCategoriesSectionController *)self->_categoriesSectionController hideLoadingIndicatorsAnimated:animatedCopy];
     appExtensionSectionController = self->_appExtensionSectionController;
 
-    [(PKPaymentSetupAppExtensionsSectionController *)appExtensionSectionController hideLoadingIndicatorsAnimated:v4];
+    [(PKPaymentSetupAppExtensionsSectionController *)appExtensionSectionController hideLoadingIndicatorsAnimated:animatedCopy];
   }
 }
 
 - (BOOL)_updateAnalyticsProductCategoriesString
 {
-  v3 = [(PKPaymentSetupCategoriesSectionController *)self->_categoriesSectionController orderedAnalyticsProductCategories];
-  v4 = [v3 mutableCopy];
+  orderedAnalyticsProductCategories = [(PKPaymentSetupCategoriesSectionController *)self->_categoriesSectionController orderedAnalyticsProductCategories];
+  v4 = [orderedAnalyticsProductCategories mutableCopy];
 
   v5 = [(PKPaymentSetupProductModel *)self->_filteredPaymentSetupProductModel setupProductsOfType:6];
   v6 = [v5 count];

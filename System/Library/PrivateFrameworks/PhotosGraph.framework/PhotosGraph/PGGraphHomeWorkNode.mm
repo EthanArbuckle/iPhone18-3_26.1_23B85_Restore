@@ -4,12 +4,12 @@
 + (MARelation)addressOfHomeWork;
 + (MARelation)ownerOfHomeWork;
 + (id)filter;
-- (BOOL)hasProperties:(id)a3;
+- (BOOL)hasProperties:(id)properties;
 - (CLLocationCoordinate2D)coordinate;
 - (NSString)featureIdentifier;
 - (NSString)localizedName;
-- (PGGraphHomeWorkNode)initWithLabel:(id)a3 domain:(unsigned __int16)a4 properties:(id)a5;
-- (PGGraphHomeWorkNode)initWithLabel:(id)a3 uuid:(id)a4;
+- (PGGraphHomeWorkNode)initWithLabel:(id)label domain:(unsigned __int16)domain properties:(id)properties;
+- (PGGraphHomeWorkNode)initWithLabel:(id)label uuid:(id)uuid;
 - (PGGraphHomeWorkNodeCollection)collection;
 - (id)propertyDictionary;
 - (unint64_t)featureType;
@@ -19,24 +19,24 @@
 
 - (NSString)featureIdentifier
 {
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = [(PGGraphHomeWorkNode *)self collection];
-  v5 = [v4 ownerNodes];
+  array = [MEMORY[0x277CBEB18] array];
+  collection = [(PGGraphHomeWorkNode *)self collection];
+  ownerNodes = [collection ownerNodes];
   v14 = MEMORY[0x277D85DD0];
   v15 = 3221225472;
   v16 = __40__PGGraphHomeWorkNode_featureIdentifier__block_invoke;
   v17 = &unk_278889240;
-  v18 = v3;
-  v6 = v3;
-  [v5 enumerateNodesUsingBlock:&v14];
+  v18 = array;
+  v6 = array;
+  [ownerNodes enumerateNodesUsingBlock:&v14];
 
   [v6 sortUsingSelector:sel_localizedCaseInsensitiveCompare_];
   v7 = MEMORY[0x277CCACA8];
   v8 = objc_opt_class();
   v9 = NSStringFromClass(v8);
-  v10 = [(PGGraphHomeWorkNode *)self label];
+  label = [(PGGraphHomeWorkNode *)self label];
   v11 = [v6 componentsJoinedByString:@"|"];
-  v12 = [v7 stringWithFormat:@"%@|%@|%@", v9, v10, v11, v14, v15, v16, v17];
+  v12 = [v7 stringWithFormat:@"%@|%@|%@", v9, label, v11, v14, v15, v16, v17];
 
   return v12;
 }
@@ -66,9 +66,9 @@ void __40__PGGraphHomeWorkNode_featureIdentifier__block_invoke(uint64_t a1, void
   p_centroidCoordinate = &self->_centroidCoordinate;
   if (!CLLocationCoordinate2DIsValid(self->_centroidCoordinate))
   {
-    v4 = [(PGGraphHomeWorkNode *)self collection];
-    v5 = [v4 addressNodes];
-    [v5 centroidCoordinate];
+    collection = [(PGGraphHomeWorkNode *)self collection];
+    addressNodes = [collection addressNodes];
+    [addressNodes centroidCoordinate];
     p_centroidCoordinate->latitude = v6;
     p_centroidCoordinate->longitude = v7;
   }
@@ -89,8 +89,8 @@ void __40__PGGraphHomeWorkNode_featureIdentifier__block_invoke(uint64_t a1, void
 
 - (NSString)localizedName
 {
-  v3 = [(PGGraphHomeWorkNode *)self label];
-  v4 = [v3 isEqualToString:@"Home"];
+  label = [(PGGraphHomeWorkNode *)self label];
+  v4 = [label isEqualToString:@"Home"];
 
   if (v4)
   {
@@ -103,8 +103,8 @@ LABEL_5:
     goto LABEL_7;
   }
 
-  v8 = [(PGGraphHomeWorkNode *)self label];
-  v9 = [v8 isEqualToString:@"Work"];
+  label2 = [(PGGraphHomeWorkNode *)self label];
+  v9 = [label2 isEqualToString:@"Work"];
 
   if (v9)
   {
@@ -132,11 +132,11 @@ LABEL_7:
   return v3;
 }
 
-- (BOOL)hasProperties:(id)a3
+- (BOOL)hasProperties:(id)properties
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 count])
+  propertiesCopy = properties;
+  v5 = propertiesCopy;
+  if (propertiesCopy && [propertiesCopy count])
   {
     v6 = [v5 objectForKeyedSubscript:@"id"];
     v7 = v6;
@@ -151,29 +151,29 @@ LABEL_7:
   return v8;
 }
 
-- (PGGraphHomeWorkNode)initWithLabel:(id)a3 domain:(unsigned __int16)a4 properties:(id)a5
+- (PGGraphHomeWorkNode)initWithLabel:(id)label domain:(unsigned __int16)domain properties:(id)properties
 {
-  v7 = a3;
-  v8 = [a5 objectForKeyedSubscript:@"id"];
-  v9 = [(PGGraphHomeWorkNode *)self initWithLabel:v7 uuid:v8];
+  labelCopy = label;
+  v8 = [properties objectForKeyedSubscript:@"id"];
+  v9 = [(PGGraphHomeWorkNode *)self initWithLabel:labelCopy uuid:v8];
 
   return v9;
 }
 
-- (PGGraphHomeWorkNode)initWithLabel:(id)a3 uuid:(id)a4
+- (PGGraphHomeWorkNode)initWithLabel:(id)label uuid:(id)uuid
 {
-  v6 = a3;
-  v7 = a4;
+  labelCopy = label;
+  uuidCopy = uuid;
   v12.receiver = self;
   v12.super_class = PGGraphHomeWorkNode;
   v8 = [(PGGraphNode *)&v12 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [labelCopy copy];
     v10 = *(v8 + 7);
     *(v8 + 7) = v9;
 
-    objc_storeStrong(v8 + 4, a4);
+    objc_storeStrong(v8 + 4, uuid);
     *(v8 + 40) = *MEMORY[0x277CE4278];
   }
 
@@ -183,17 +183,17 @@ LABEL_7:
 + (MARelation)addressOfHomeWork
 {
   v2 = +[PGGraphIsHomeWorkEdge filter];
-  v3 = [v2 inRelation];
+  inRelation = [v2 inRelation];
 
-  return v3;
+  return inRelation;
 }
 
 + (MARelation)ownerOfHomeWork
 {
   v2 = +[PGGraphIsOwnedByEdge filter];
-  v3 = [v2 outRelation];
+  outRelation = [v2 outRelation];
 
-  return v3;
+  return outRelation;
 }
 
 + (MANodeFilter)workFilter

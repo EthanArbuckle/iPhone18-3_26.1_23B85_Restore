@@ -1,9 +1,9 @@
 @interface MKFullDeveloperPlaceCardSelectionAccessoryView
 - (id)_createErrorView;
 - (id)_createLoadingView;
-- (id)_createMapItemViewController:(id)a3;
+- (id)_createMapItemViewController:(id)controller;
 - (id)initAsAccessory;
-- (id)initAsStandAloneHidingInlineMap:(BOOL)a3;
+- (id)initAsStandAloneHidingInlineMap:(BOOL)map;
 @end
 
 @implementation MKFullDeveloperPlaceCardSelectionAccessoryView
@@ -15,21 +15,21 @@
   return v2;
 }
 
-- (id)_createMapItemViewController:(id)a3
+- (id)_createMapItemViewController:(id)controller
 {
   isStandAlonePlaceCard = self->_isStandAlonePlaceCard;
-  v5 = a3;
+  controllerCopy = controller;
   v6 = [MKFullDeveloperPlaceCardRemoteUIHostViewController alloc];
-  v7 = [(MKSelectionAccessoryView *)self delegate];
-  v8 = v7;
+  delegate = [(MKSelectionAccessoryView *)self delegate];
+  v8 = delegate;
   if (isStandAlonePlaceCard)
   {
-    v9 = [(MKFullDeveloperPlaceCardRemoteUIHostViewController *)v6 initAsStandAloneWithMapItem:v5 dismissButtonDisplayed:v7 != 0 hideInlineMap:self->_hideInlineMap];
+    v9 = [(MKFullDeveloperPlaceCardRemoteUIHostViewController *)v6 initAsStandAloneWithMapItem:controllerCopy dismissButtonDisplayed:delegate != 0 hideInlineMap:self->_hideInlineMap];
   }
 
   else
   {
-    v9 = [(MKFullDeveloperPlaceCardRemoteUIHostViewController *)v6 initAsAccessoryWithMapItem:v5 dismissButtonDisplayed:v7 != 0];
+    v9 = [(MKFullDeveloperPlaceCardRemoteUIHostViewController *)v6 initAsAccessoryWithMapItem:controllerCopy dismissButtonDisplayed:delegate != 0];
   }
 
   v10 = v9;
@@ -44,7 +44,7 @@
   return v2;
 }
 
-- (id)initAsStandAloneHidingInlineMap:(BOOL)a3
+- (id)initAsStandAloneHidingInlineMap:(BOOL)map
 {
   v5.receiver = self;
   v5.super_class = MKFullDeveloperPlaceCardSelectionAccessoryView;
@@ -52,7 +52,7 @@
   if (result)
   {
     *(result + 472) = 1;
-    *(result + 473) = a3;
+    *(result + 473) = map;
   }
 
   return result;

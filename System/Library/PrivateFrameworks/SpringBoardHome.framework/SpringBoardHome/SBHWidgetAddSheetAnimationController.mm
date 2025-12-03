@@ -1,23 +1,23 @@
 @interface SBHWidgetAddSheetAnimationController
 - (CGPoint)fromPoint;
 - (SBHPortaledShadowedWidgetView)portaledShadowedWidgetView;
-- (SBHWidgetAddSheetAnimationController)initWithSourceCell:(id)a3;
-- (id)interruptibleAnimatorForTransition:(id)a3;
-- (void)animateTransition:(id)a3;
+- (SBHWidgetAddSheetAnimationController)initWithSourceCell:(id)cell;
+- (id)interruptibleAnimatorForTransition:(id)transition;
+- (void)animateTransition:(id)transition;
 @end
 
 @implementation SBHWidgetAddSheetAnimationController
 
-- (SBHWidgetAddSheetAnimationController)initWithSourceCell:(id)a3
+- (SBHWidgetAddSheetAnimationController)initWithSourceCell:(id)cell
 {
-  v5 = a3;
+  cellCopy = cell;
   v9.receiver = self;
   v9.super_class = SBHWidgetAddSheetAnimationController;
   v6 = [(_UISheetAnimationController *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_sourceCell, a3);
+    objc_storeStrong(&v6->_sourceCell, cell);
   }
 
   return v7;
@@ -28,11 +28,11 @@
   portaledShadowedWidgetView = self->_portaledShadowedWidgetView;
   if (!portaledShadowedWidgetView)
   {
-    v4 = [(SBHAddWidgetSheetGalleryCollectionViewCell *)self->_sourceCell widgetWrapperViewController];
-    v5 = [v4 wrapperView];
-    v6 = [v5 newPortaledShadowedWidgetView];
+    widgetWrapperViewController = [(SBHAddWidgetSheetGalleryCollectionViewCell *)self->_sourceCell widgetWrapperViewController];
+    wrapperView = [widgetWrapperViewController wrapperView];
+    newPortaledShadowedWidgetView = [wrapperView newPortaledShadowedWidgetView];
     v7 = self->_portaledShadowedWidgetView;
-    self->_portaledShadowedWidgetView = v6;
+    self->_portaledShadowedWidgetView = newPortaledShadowedWidgetView;
 
     portaledShadowedWidgetView = self->_portaledShadowedWidgetView;
   }
@@ -40,17 +40,17 @@
   return portaledShadowedWidgetView;
 }
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
-  v4 = a3;
+  transitionCopy = transition;
   v5 = MEMORY[0x1E69DD250];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __58__SBHWidgetAddSheetAnimationController_animateTransition___block_invoke;
   v8[3] = &unk_1E8088F18;
-  v9 = v4;
-  v10 = self;
-  v6 = v4;
+  v9 = transitionCopy;
+  selfCopy = self;
+  v6 = transitionCopy;
   [v5 performWithoutAnimation:v8];
   v7.receiver = self;
   v7.super_class = SBHWidgetAddSheetAnimationController;
@@ -66,93 +66,93 @@ void __58__SBHWidgetAddSheetAnimationController_animateTransition___block_invoke
   [v5 configureForGalleryItem:v3 selectedSizeClass:{objc_msgSend(v4, "selectedSizeClass")}];
 }
 
-- (id)interruptibleAnimatorForTransition:(id)a3
+- (id)interruptibleAnimatorForTransition:(id)transition
 {
   v75[1] = *MEMORY[0x1E69E9840];
   v74.receiver = self;
   v74.super_class = SBHWidgetAddSheetAnimationController;
-  v4 = a3;
-  v5 = [(_UISheetAnimationController *)&v74 interruptibleAnimatorForTransition:v4];
-  v6 = [v4 viewControllerForKey:*MEMORY[0x1E69DE778]];
-  v7 = [(SBHAddWidgetSheetGalleryCollectionViewCell *)self->_sourceCell widgetWrapperViewController];
-  v8 = [v7 wrapperView];
-  v9 = [v8 contentView];
+  transitionCopy = transition;
+  v5 = [(_UISheetAnimationController *)&v74 interruptibleAnimatorForTransition:transitionCopy];
+  v6 = [transitionCopy viewControllerForKey:*MEMORY[0x1E69DE778]];
+  widgetWrapperViewController = [(SBHAddWidgetSheetGalleryCollectionViewCell *)self->_sourceCell widgetWrapperViewController];
+  wrapperView = [widgetWrapperViewController wrapperView];
+  contentView = [wrapperView contentView];
 
-  v10 = [v6 currentPage];
-  v11 = [v10 widgetWrapperViewController];
-  v12 = [v11 wrapperView];
-  v13 = [v12 containerView];
+  currentPage = [v6 currentPage];
+  widgetWrapperViewController2 = [currentPage widgetWrapperViewController];
+  wrapperView2 = [widgetWrapperViewController2 wrapperView];
+  containerView = [wrapperView2 containerView];
 
-  v14 = [(SBHWidgetAddSheetAnimationController *)self portaledShadowedWidgetView];
-  v15 = [v4 containerView];
+  portaledShadowedWidgetView = [(SBHWidgetAddSheetAnimationController *)self portaledShadowedWidgetView];
+  containerView2 = [transitionCopy containerView];
 
   [(SBHWidgetAddSheetAnimationController *)self fromPoint];
   v18 = v17 == *MEMORY[0x1E695EFF8] && v16 == *(MEMORY[0x1E695EFF8] + 8);
   v66 = v6;
-  v67 = v14;
+  v67 = portaledShadowedWidgetView;
   if (v18)
   {
-    [v9 bounds];
+    [contentView bounds];
     UIRectGetCenter();
-    [v15 convertPoint:v9 fromView:?];
+    [containerView2 convertPoint:contentView fromView:?];
     self->_fromPoint.x = v29;
     self->_fromPoint.y = v30;
-    [v13 bounds];
+    [containerView bounds];
     v32 = v31;
     v34 = v33;
     v36 = v35;
     v38 = v37;
-    v39 = [v6 view];
-    [v39 bounds];
+    view = [v6 view];
+    [view bounds];
     v41 = v40;
     v43 = v42;
     v45 = v44;
     v47 = v46;
     [v6 view];
-    v48 = v65 = v10;
-    [v15 convertRect:v48 fromView:{v41, v43, v45, v47}];
+    v48 = v65 = currentPage;
+    [containerView2 convertRect:v48 fromView:{v41, v43, v45, v47}];
     v50 = v49;
     v52 = v51;
 
-    [v15 bounds];
+    [containerView2 bounds];
     v26 = [objc_alloc(MEMORY[0x1E69DD250]) initWithFrame:{v50, 0.0, v52, v53}];
     [(UIView *)v26 setClipsToBounds:1];
     [(UIView *)v26 setUserInteractionEnabled:0];
-    [v15 addSubview:v26];
+    [containerView2 addSubview:v26];
     v54 = [objc_alloc(MEMORY[0x1E69DD250]) initWithFrame:{v32, v34, v36, v38}];
     matchMoveView = self->_matchMoveView;
     self->_matchMoveView = v54;
 
     v56 = self->_matchMoveView;
     UIRectGetCenter();
-    [(UIView *)v26 convertPoint:v13 fromView:?];
+    [(UIView *)v26 convertPoint:containerView fromView:?];
     [(UIView *)v56 setCenter:?];
     [(UIView *)self->_matchMoveView setClipsToBounds:0];
     [(UIView *)self->_matchMoveView setUserInteractionEnabled:0];
-    [(UIView *)self->_matchMoveView addSubview:v14];
+    [(UIView *)self->_matchMoveView addSubview:portaledShadowedWidgetView];
     [(UIView *)v26 addSubview:self->_matchMoveView];
-    v27 = [MEMORY[0x1E69793B8] animation];
-    [v13 layer];
-    v64 = v7;
-    v57 = v23 = v9;
-    [v27 setSourceLayer:v57];
+    animation = [MEMORY[0x1E69793B8] animation];
+    [containerView layer];
+    v64 = widgetWrapperViewController;
+    v57 = v23 = contentView;
+    [animation setSourceLayer:v57];
 
-    [v27 setDuration:INFINITY];
-    [v27 setFillMode:*MEMORY[0x1E69797E0]];
-    [v27 setRemovedOnCompletion:0];
-    [v27 setAppliesY:1];
-    [v27 setAppliesX:1];
+    [animation setDuration:INFINITY];
+    [animation setFillMode:*MEMORY[0x1E69797E0]];
+    [animation setRemovedOnCompletion:0];
+    [animation setAppliesY:1];
+    [animation setAppliesX:1];
     v58 = MEMORY[0x1E696B098];
     UIRectGetCenter();
     v59 = [v58 valueWithCGPoint:?];
     v75[0] = v59;
     [MEMORY[0x1E695DEC8] arrayWithObjects:v75 count:1];
     v61 = v60 = v5;
-    [v27 setSourcePoints:v61];
+    [animation setSourcePoints:v61];
 
     v5 = v60;
-    v62 = [(UIView *)self->_matchMoveView layer];
-    [v62 addAnimation:v27 forKey:@"match-move"];
+    layer = [(UIView *)self->_matchMoveView layer];
+    [layer addAnimation:animation forKey:@"match-move"];
 
     v28 = v64;
     v25 = v65;
@@ -160,15 +160,15 @@ void __58__SBHWidgetAddSheetAnimationController_animateTransition___block_invoke
 
   else
   {
-    v19 = [v7 forcesEdgeAntialiasing];
-    [v7 setForcesEdgeAntialiasing:1];
-    [v10 setJumpAnimationInProgress:1];
-    [(UIView *)self->_matchMoveView convertPoint:v15 fromView:self->_fromPoint.x, self->_fromPoint.y];
-    [v14 setCenter:?];
+    forcesEdgeAntialiasing = [widgetWrapperViewController forcesEdgeAntialiasing];
+    [widgetWrapperViewController setForcesEdgeAntialiasing:1];
+    [currentPage setJumpAnimationInProgress:1];
+    [(UIView *)self->_matchMoveView convertPoint:containerView2 fromView:self->_fromPoint.x, self->_fromPoint.y];
+    [portaledShadowedWidgetView setCenter:?];
     v20 = self->_matchMoveView;
-    v21 = v14;
-    v22 = v7;
-    v23 = v9;
+    v21 = portaledShadowedWidgetView;
+    v22 = widgetWrapperViewController;
+    v23 = contentView;
     v24 = v20;
     v68[0] = MEMORY[0x1E69E9820];
     v68[1] = 3221225472;
@@ -176,14 +176,14 @@ void __58__SBHWidgetAddSheetAnimationController_animateTransition___block_invoke
     v68[3] = &unk_1E80892C0;
     v69 = v20;
     v70 = v21;
-    v71 = v10;
+    v71 = currentPage;
     v72 = v22;
-    v73 = v19;
-    v25 = v10;
+    v73 = forcesEdgeAntialiasing;
+    v25 = currentPage;
     v26 = v24;
     [v5 addAnimations:v68];
 
-    v27 = v69;
+    animation = v69;
     v28 = v22;
   }
 

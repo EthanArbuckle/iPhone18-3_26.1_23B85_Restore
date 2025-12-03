@@ -1,46 +1,46 @@
 @interface REMListSectionsDataView
-- (REMListSectionsDataView)initWithStore:(id)a3;
-- (id)fetchListSectionWithObjectID:(id)a3 error:(id *)a4;
-- (id)fetchListSectionsCountWithListObjectID:(id)a3 error:(id *)a4;
-- (id)fetchListSectionsInList:(id)a3 error:(id *)a4;
-- (id)fetchListSectionsWithListObjectID:(id)a3 error:(id *)a4;
-- (id)fetchListSectionsWithObjectIDs:(id)a3 error:(id *)a4;
-- (id)listSectionsFromAccountStorages:(id)a3 listStorages:(id)a4 listSectionStorages:(id)a5 store:(id)a6;
+- (REMListSectionsDataView)initWithStore:(id)store;
+- (id)fetchListSectionWithObjectID:(id)d error:(id *)error;
+- (id)fetchListSectionsCountWithListObjectID:(id)d error:(id *)error;
+- (id)fetchListSectionsInList:(id)list error:(id *)error;
+- (id)fetchListSectionsWithListObjectID:(id)d error:(id *)error;
+- (id)fetchListSectionsWithObjectIDs:(id)ds error:(id *)error;
+- (id)listSectionsFromAccountStorages:(id)storages listStorages:(id)listStorages listSectionStorages:(id)sectionStorages store:(id)store;
 @end
 
 @implementation REMListSectionsDataView
 
-- (REMListSectionsDataView)initWithStore:(id)a3
+- (REMListSectionsDataView)initWithStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v9.receiver = self;
   v9.super_class = REMListSectionsDataView;
   v6 = [(REMListSectionsDataView *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_store, a3);
+    objc_storeStrong(&v6->_store, store);
   }
 
   return v7;
 }
 
-- (id)fetchListSectionsWithListObjectID:(id)a3 error:(id *)a4
+- (id)fetchListSectionsWithListObjectID:(id)d error:(id *)error
 {
-  v6 = a3;
-  if (v6)
+  dCopy = d;
+  if (dCopy)
   {
-    v7 = [[REMListSectionsDataViewInvocation_fetchListSectionsInList alloc] initWithParentListObjectID:v6];
-    v8 = [(REMListSectionsDataView *)self store];
-    v9 = [v8 resultFromPerformingInvocation:v7 error:a4];
+    v7 = [[REMListSectionsDataViewInvocation_fetchListSectionsInList alloc] initWithParentListObjectID:dCopy];
+    store = [(REMListSectionsDataView *)self store];
+    v9 = [store resultFromPerformingInvocation:v7 error:error];
 
     v10 = objc_opt_class();
     v11 = REMDynamicCast(v10, v9);
-    v12 = [v11 accountStorages];
-    v13 = [v11 listStorages];
-    v14 = [v11 listSectionStorages];
-    v15 = [(REMListSectionsDataView *)self store];
-    v16 = [(REMListSectionsDataView *)self listSectionsFromAccountStorages:v12 listStorages:v13 listSectionStorages:v14 store:v15];
+    accountStorages = [v11 accountStorages];
+    listStorages = [v11 listStorages];
+    listSectionStorages = [v11 listSectionStorages];
+    store2 = [(REMListSectionsDataView *)self store];
+    v16 = [(REMListSectionsDataView *)self listSectionsFromAccountStorages:accountStorages listStorages:listStorages listSectionStorages:listSectionStorages store:store2];
   }
 
   else
@@ -58,34 +58,34 @@
   return v16;
 }
 
-- (id)fetchListSectionsInList:(id)a3 error:(id *)a4
+- (id)fetchListSectionsInList:(id)list error:(id *)error
 {
-  v6 = [a3 objectID];
-  v7 = [(REMListSectionsDataView *)self fetchListSectionsWithListObjectID:v6 error:a4];
+  objectID = [list objectID];
+  v7 = [(REMListSectionsDataView *)self fetchListSectionsWithListObjectID:objectID error:error];
 
   return v7;
 }
 
-- (id)fetchListSectionsWithObjectIDs:(id)a3 error:(id *)a4
+- (id)fetchListSectionsWithObjectIDs:(id)ds error:(id *)error
 {
   v36 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  dsCopy = ds;
+  v7 = dsCopy;
+  if (dsCopy)
   {
-    if ([v6 count])
+    if ([dsCopy count])
     {
       v8 = [[REMListSectionsDataViewInvocation_fetchByObjectIDs alloc] initWithObjectIDs:v7];
-      v9 = [(REMListSectionsDataView *)self store];
-      v10 = [v9 resultFromPerformingInvocation:v8 error:a4];
+      store = [(REMListSectionsDataView *)self store];
+      v10 = [store resultFromPerformingInvocation:v8 error:error];
 
       v11 = objc_opt_class();
       v12 = REMDynamicCast(v11, v10);
-      v13 = [v12 accountStorages];
-      v14 = [v12 listStorages];
-      v15 = [v12 listSectionStorages];
-      v16 = [(REMListSectionsDataView *)self store];
-      v17 = [(REMListSectionsDataView *)self listSectionsFromAccountStorages:v13 listStorages:v14 listSectionStorages:v15 store:v16];
+      accountStorages = [v12 accountStorages];
+      listStorages = [v12 listStorages];
+      listSectionStorages = [v12 listSectionStorages];
+      store2 = [(REMListSectionsDataView *)self store];
+      v17 = [(REMListSectionsDataView *)self listSectionsFromAccountStorages:accountStorages listStorages:listStorages listSectionStorages:listSectionStorages store:store2];
 
       if (v17)
       {
@@ -112,8 +112,8 @@
               }
 
               v24 = *(*(&v31 + 1) + 8 * i);
-              v25 = [v24 objectID];
-              [v18 setObject:v24 forKeyedSubscript:v25];
+              objectID = [v24 objectID];
+              [v18 setObject:v24 forKeyedSubscript:objectID];
             }
 
             v21 = [v19 countByEnumeratingWithState:&v31 objects:v35 count:16];
@@ -155,16 +155,16 @@
   return v18;
 }
 
-- (id)fetchListSectionWithObjectID:(id)a3 error:(id *)a4
+- (id)fetchListSectionWithObjectID:(id)d error:(id *)error
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  dCopy = d;
+  v7 = dCopy;
+  if (dCopy)
   {
-    v15[0] = v6;
+    v15[0] = dCopy;
     v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
-    v9 = [(REMListSectionsDataView *)self fetchListSectionsWithObjectIDs:v8 error:a4];
+    v9 = [(REMListSectionsDataView *)self fetchListSectionsWithObjectIDs:v8 error:error];
 
     if (v9)
     {
@@ -182,10 +182,10 @@ LABEL_12:
         [REMListSectionsDataView fetchListSectionWithObjectID:v7 error:v11];
       }
 
-      if (a4)
+      if (error)
       {
         [REMError noSuchObjectErrorWithObjectID:v7];
-        *a4 = v10 = 0;
+        *error = v10 = 0;
         goto LABEL_12;
       }
     }
@@ -209,14 +209,14 @@ LABEL_13:
   return v10;
 }
 
-- (id)fetchListSectionsCountWithListObjectID:(id)a3 error:(id *)a4
+- (id)fetchListSectionsCountWithListObjectID:(id)d error:(id *)error
 {
-  v6 = a3;
-  if (v6)
+  dCopy = d;
+  if (dCopy)
   {
-    v7 = [[REMListSectionsDataViewInvocation_fetchListSectionsCountInList alloc] initWithParentListObjectID:v6];
-    v8 = [(REMListSectionsDataView *)self store];
-    v9 = [v8 resultFromPerformingInvocation:v7 error:a4];
+    v7 = [[REMListSectionsDataViewInvocation_fetchListSectionsCountInList alloc] initWithParentListObjectID:dCopy];
+    store = [(REMListSectionsDataView *)self store];
+    v9 = [store resultFromPerformingInvocation:v7 error:error];
 
     v10 = objc_opt_class();
     v11 = [v9 storedPropertyForKey:@"SectionsCount"];
@@ -227,12 +227,12 @@ LABEL_13:
       v15 = +[REMLogStore read];
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
-        [REMListSectionsDataView fetchListSectionsCountWithListObjectID:v6 error:v15];
+        [REMListSectionsDataView fetchListSectionsCountWithListObjectID:dCopy error:v15];
       }
 
-      if (a4 && !*a4)
+      if (error && !*error)
       {
-        *a4 = +[REMError unexpectedError];
+        *error = +[REMError unexpectedError];
       }
     }
   }
@@ -252,18 +252,18 @@ LABEL_13:
   return v12;
 }
 
-- (id)listSectionsFromAccountStorages:(id)a3 listStorages:(id)a4 listSectionStorages:(id)a5 store:(id)a6
+- (id)listSectionsFromAccountStorages:(id)storages listStorages:(id)listStorages listSectionStorages:(id)sectionStorages store:(id)store
 {
   v30 = *MEMORY[0x1E69E9840];
-  v9 = a5;
-  v10 = a6;
-  v11 = [REMListsDataView listsFromAccountStorages:a3 listStorages:a4 store:v10];
-  v12 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v9, "count")}];
+  sectionStoragesCopy = sectionStorages;
+  storeCopy = store;
+  v11 = [REMListsDataView listsFromAccountStorages:storages listStorages:listStorages store:storeCopy];
+  v12 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(sectionStoragesCopy, "count")}];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  obj = v9;
+  obj = sectionStoragesCopy;
   v13 = [obj countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v13)
   {
@@ -279,16 +279,16 @@ LABEL_13:
         }
 
         v17 = *(*(&v25 + 1) + 8 * i);
-        v18 = [v17 listID];
+        listID = [v17 listID];
 
-        if (!v18)
+        if (!listID)
         {
           NSLog(&cfstr_SIsUnexpectedl.isa, "listSectionStorage.listID");
         }
 
-        v19 = [v17 listID];
-        v20 = [v11 objectForKeyedSubscript:v19];
-        v21 = [[REMListSection alloc] initWithStore:v10 list:v20 storage:v17];
+        listID2 = [v17 listID];
+        v20 = [v11 objectForKeyedSubscript:listID2];
+        v21 = [[REMListSection alloc] initWithStore:storeCopy list:v20 storage:v17];
         [v12 addObject:v21];
       }
 

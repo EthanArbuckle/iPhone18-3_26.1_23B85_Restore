@@ -1,8 +1,8 @@
 @interface FCStorefrontAccessChecker
-- (BOOL)canSynchronouslyCheckAccessToItem:(id)a3;
-- (BOOL)hasAccessToItem:(id)a3 blockedReason:(unint64_t *)a4 error:(id *)a5;
+- (BOOL)canSynchronouslyCheckAccessToItem:(id)item;
+- (BOOL)hasAccessToItem:(id)item blockedReason:(unint64_t *)reason error:(id *)error;
 - (FCStorefrontAccessChecker)init;
-- (FCStorefrontAccessChecker)initWithPrivateChannelMembershipController:(id)a3;
+- (FCStorefrontAccessChecker)initWithPrivateChannelMembershipController:(id)controller;
 @end
 
 @implementation FCStorefrontAccessChecker
@@ -33,11 +33,11 @@
   objc_exception_throw(v6);
 }
 
-- (FCStorefrontAccessChecker)initWithPrivateChannelMembershipController:(id)a3
+- (FCStorefrontAccessChecker)initWithPrivateChannelMembershipController:(id)controller
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  controllerCopy = controller;
+  if (!controllerCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v10 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "privateChannelMembershipController != nil"];
     *buf = 136315906;
@@ -57,18 +57,18 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_privateChannelMembershipController, a3);
+    objc_storeStrong(&v6->_privateChannelMembershipController, controller);
   }
 
   v8 = *MEMORY[0x1E69E9840];
   return v7;
 }
 
-- (BOOL)canSynchronouslyCheckAccessToItem:(id)a3
+- (BOOL)canSynchronouslyCheckAccessToItem:(id)item
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (!v3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  itemCopy = item;
+  if (!itemCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v6 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "item != nil"];
     *buf = 136315906;
@@ -86,11 +86,11 @@
   return 1;
 }
 
-- (BOOL)hasAccessToItem:(id)a3 blockedReason:(unint64_t *)a4 error:(id *)a5
+- (BOOL)hasAccessToItem:(id)item blockedReason:(unint64_t *)reason error:(id *)error
 {
   v31 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  if (!v7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  itemCopy = item;
+  if (!itemCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v22 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "item != nil"];
     *buf = 136315906;
@@ -104,25 +104,25 @@
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
   }
 
-  v8 = [(FCStorefrontAccessChecker *)self privateChannelMembershipController];
-  v9 = [v7 sourceChannelID];
-  v10 = [v8 isMemberOfChannelID:v9];
+  privateChannelMembershipController = [(FCStorefrontAccessChecker *)self privateChannelMembershipController];
+  sourceChannelID = [itemCopy sourceChannelID];
+  v10 = [privateChannelMembershipController isMemberOfChannelID:sourceChannelID];
 
   if ((v10 & 1) == 0)
   {
     v12 = +[FCAppleAccount sharedAccount];
-    v13 = [v12 contentStoreFrontID];
+    contentStoreFrontID = [v12 contentStoreFrontID];
 
-    v14 = [v7 blockedStorefrontIDs];
-    v15 = [v7 allowedStorefrontIDs];
-    if ([v14 containsObject:v13])
+    blockedStorefrontIDs = [itemCopy blockedStorefrontIDs];
+    allowedStorefrontIDs = [itemCopy allowedStorefrontIDs];
+    if ([blockedStorefrontIDs containsObject:contentStoreFrontID])
     {
       v16 = 1;
     }
 
     else
     {
-      if (![v15 count])
+      if (![allowedStorefrontIDs count])
       {
         v11 = 1;
 LABEL_15:
@@ -130,22 +130,22 @@ LABEL_15:
         goto LABEL_16;
       }
 
-      v16 = [v15 containsObject:v13] ^ 1;
+      v16 = [allowedStorefrontIDs containsObject:contentStoreFrontID] ^ 1;
     }
 
     v11 = v16 ^ 1;
-    if (a4)
+    if (reason)
     {
       if (v16)
       {
-        *a4 = 2;
+        *reason = 2;
         v17 = FCDefaultLog;
         if (os_log_type_enabled(FCDefaultLog, OS_LOG_TYPE_DEFAULT))
         {
           v18 = v17;
-          v19 = [v7 identifier];
+          identifier = [itemCopy identifier];
           *buf = 138543362;
-          v24 = v19;
+          v24 = identifier;
           _os_log_impl(&dword_1B63EF000, v18, OS_LOG_TYPE_DEFAULT, "item %{public}@ is not accessible because it's not allowed in the current storefront", buf, 0xCu);
         }
       }

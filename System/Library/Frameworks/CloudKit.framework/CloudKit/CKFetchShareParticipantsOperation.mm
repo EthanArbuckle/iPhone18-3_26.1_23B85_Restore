@@ -1,20 +1,20 @@
 @interface CKFetchShareParticipantsOperation
-+ (void)applyDaemonCallbackInterfaceTweaks:(id)a3;
-- (BOOL)CKOperationShouldRun:(id *)a3;
++ (void)applyDaemonCallbackInterfaceTweaks:(id)tweaks;
+- (BOOL)CKOperationShouldRun:(id *)run;
 - (BOOL)hasCKOperationCallbacksSet;
 - (CKFetchShareParticipantsOperation)init;
 - (CKFetchShareParticipantsOperation)initWithUserIdentityLookupInfos:(NSArray *)userIdentityLookupInfos;
 - (id)activityCreate;
-- (void)_finishOnCallbackQueueWithError:(id)a3;
+- (void)_finishOnCallbackQueueWithError:(id)error;
 - (void)ckSignpostBegin;
-- (void)ckSignpostEndWithError:(id)a3;
+- (void)ckSignpostEndWithError:(id)error;
 - (void)fetchShareParticipantsCompletionBlock;
-- (void)fillFromOperationInfo:(id)a3;
-- (void)fillOutOperationInfo:(id)a3;
-- (void)handleShareParticipantFetchForLookupInfo:(id)a3 shareParticipant:(id)a4 error:(id)a5;
+- (void)fillFromOperationInfo:(id)info;
+- (void)fillOutOperationInfo:(id)info;
+- (void)handleShareParticipantFetchForLookupInfo:(id)info shareParticipant:(id)participant error:(id)error;
 - (void)perShareParticipantCompletionBlock;
 - (void)setFetchShareParticipantsCompletionBlock:(void *)fetchShareParticipantsCompletionBlock;
-- (void)setFetchShareParticipantsCompletionBlockIVar:(id)a3;
+- (void)setFetchShareParticipantsCompletionBlockIVar:(id)var;
 - (void)setPerShareParticipantCompletionBlock:(void *)perShareParticipantCompletionBlock;
 - (void)setShareParticipantFetchedBlock:(void *)shareParticipantFetchedBlock;
 - (void)shareParticipantFetchedBlock;
@@ -191,9 +191,9 @@ LABEL_9:
   return v6;
 }
 
-- (void)setFetchShareParticipantsCompletionBlockIVar:(id)a3
+- (void)setFetchShareParticipantsCompletionBlockIVar:(id)var
 {
-  v6 = a3;
+  varCopy = var;
   if (__sTestOverridesAvailable[0] == 1 && objc_msgSend__ckRaiseInGeneratedCallbackImplementation(self, v4, v5))
   {
     objc_msgSend_raise_format_(MEMORY[0x1E695DF30], v4, *MEMORY[0x1E695D920], @"Callback check triggered");
@@ -207,16 +207,16 @@ LABEL_9:
     v12[2] = sub_18860C728;
     v12[3] = &unk_1E70BC940;
     v12[4] = self;
-    v13 = v6;
+    v13 = varCopy;
     dispatch_sync(v11, v12);
 
     fetchShareParticipantsCompletionBlock = v13;
     goto LABEL_9;
   }
 
-  if (self->_fetchShareParticipantsCompletionBlock != v6)
+  if (self->_fetchShareParticipantsCompletionBlock != varCopy)
   {
-    v9 = objc_msgSend_copy(v6, v7, v8);
+    v9 = objc_msgSend_copy(varCopy, v7, v8);
     fetchShareParticipantsCompletionBlock = self->_fetchShareParticipantsCompletionBlock;
     self->_fetchShareParticipantsCompletionBlock = v9;
 LABEL_9:
@@ -267,24 +267,24 @@ LABEL_9:
   objc_msgSend_setFetchShareParticipantsCompletionBlockIVar_(self, v6, v7);
 }
 
-- (void)fillOutOperationInfo:(id)a3
+- (void)fillOutOperationInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v7 = objc_msgSend_userIdentityLookupInfos(self, v5, v6);
-  objc_msgSend_setUserIdentityLookupInfos_(v4, v8, v7);
+  objc_msgSend_setUserIdentityLookupInfos_(infoCopy, v8, v7);
 
   v9.receiver = self;
   v9.super_class = CKFetchShareParticipantsOperation;
-  [(CKOperation *)&v9 fillOutOperationInfo:v4];
+  [(CKOperation *)&v9 fillOutOperationInfo:infoCopy];
 }
 
-- (void)fillFromOperationInfo:(id)a3
+- (void)fillFromOperationInfo:(id)info
 {
   v9.receiver = self;
   v9.super_class = CKFetchShareParticipantsOperation;
-  v4 = a3;
-  [(CKOperation *)&v9 fillFromOperationInfo:v4];
-  v7 = objc_msgSend_userIdentityLookupInfos(v4, v5, v6, v9.receiver, v9.super_class);
+  infoCopy = info;
+  [(CKOperation *)&v9 fillFromOperationInfo:infoCopy];
+  v7 = objc_msgSend_userIdentityLookupInfos(infoCopy, v5, v6, v9.receiver, v9.super_class);
 
   objc_msgSend_setUserIdentityLookupInfos_(self, v8, v7);
 }
@@ -322,10 +322,10 @@ LABEL_9:
   return v5;
 }
 
-- (BOOL)CKOperationShouldRun:(id *)a3
+- (BOOL)CKOperationShouldRun:(id *)run
 {
   v46 = *MEMORY[0x1E69E9840];
-  v5 = objc_msgSend_set(MEMORY[0x1E695DFA8], a2, a3);
+  v5 = objc_msgSend_set(MEMORY[0x1E695DFA8], a2, run);
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
@@ -352,12 +352,12 @@ LABEL_9:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (a3)
+        if (run)
         {
           v33 = objc_opt_class();
           v34 = NSStringFromClass(v33);
           objc_msgSend_errorWithDomain_code_format_(CKPrettyError, v35, @"CKErrorDomain", 12, @"Unexpected identity fetch info passed to %@: %@", v34, v14);
-          *a3 = LABEL_19:;
+          *run = LABEL_19:;
         }
 
 LABEL_20:
@@ -367,7 +367,7 @@ LABEL_20:
 
       if (objc_msgSend_containsObject_(v5, v15, v14))
       {
-        if (a3)
+        if (run)
         {
           v34 = objc_msgSend_emailAddress(v14, v16, v17);
           objc_msgSend_errorWithDomain_code_format_(CKPrettyError, v36, @"CKErrorDomain", 12, @"Email addresses must be unique. %@ was used in two different CKUserIdentityLookupInfos", v34);
@@ -413,7 +413,7 @@ LABEL_10:
 LABEL_14:
     v40.receiver = self;
     v40.super_class = CKFetchShareParticipantsOperation;
-    v32 = [(CKOperation *)&v40 CKOperationShouldRun:a3];
+    v32 = [(CKOperation *)&v40 CKOperationShouldRun:run];
   }
 
   else
@@ -426,12 +426,12 @@ LABEL_21:
   return v32;
 }
 
-- (void)handleShareParticipantFetchForLookupInfo:(id)a3 shareParticipant:(id)a4 error:(id)a5
+- (void)handleShareParticipantFetchForLookupInfo:(id)info shareParticipant:(id)participant error:(id)error
 {
   v66 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v12 = objc_msgSend_CKClientSuitableError(a5, v10, v11);
+  infoCopy = info;
+  participantCopy = participant;
+  v12 = objc_msgSend_CKClientSuitableError(error, v10, v11);
   if (self)
   {
     signpost = self->super._signpost;
@@ -480,7 +480,7 @@ LABEL_21:
       }
 
       *v65 = 138412546;
-      *&v65[4] = v8;
+      *&v65[4] = infoCopy;
       *&v65[12] = 2112;
       *&v65[14] = v12;
       v27 = "Share participant %@ fetched with error: %@";
@@ -527,7 +527,7 @@ LABEL_21:
     }
 
     *v65 = 138412290;
-    *&v65[4] = v8;
+    *&v65[4] = infoCopy;
     v27 = "Share participant %@ fetched";
     v28 = v21;
     v29 = v39;
@@ -535,28 +535,28 @@ LABEL_21:
     goto LABEL_20;
   }
 
-  if (v9)
+  if (participantCopy)
   {
-    v40 = objc_msgSend_userIdentity(v9, v15, v16);
+    v40 = objc_msgSend_userIdentity(participantCopy, v15, v16);
     v43 = objc_msgSend_lookupInfo(v40, v41, v42);
 
     if (!v43)
     {
-      v44 = objc_msgSend_userIdentity(v9, v15, v16);
-      objc_msgSend_setLookupInfo_(v44, v45, v8);
+      v44 = objc_msgSend_userIdentity(participantCopy, v15, v16);
+      objc_msgSend_setLookupInfo_(v44, v45, infoCopy);
     }
   }
 
   if ((objc_msgSend_canDropItemResultsEarly(self, v15, v16, *v65, *&v65[16], v66) & 1) == 0)
   {
-    if (a5)
+    if (error)
     {
       v48 = objc_msgSend_lookupErrors(self, v46, v47);
-      objc_msgSend_setObject_forKeyedSubscript_(v48, v49, v12, v8);
+      objc_msgSend_setObject_forKeyedSubscript_(v48, v49, v12, infoCopy);
     }
 
     v50 = objc_msgSend_discoveredUserIdentities(self, v46, v47);
-    objc_msgSend_addObject_(v50, v51, v8);
+    objc_msgSend_addObject_(v50, v51, infoCopy);
   }
 
   v52 = objc_msgSend_perShareParticipantCompletionBlock_wrapper(self, v46, v47);
@@ -574,27 +574,27 @@ LABEL_21:
 
   if (v56)
   {
-    v56[2](v56, v8, v9, v12);
+    v56[2](v56, infoCopy, participantCopy, v12);
   }
 
   else
   {
     v60 = objc_msgSend_shareParticipantFetchedBlock(self, v58, v59);
 
-    if (v9 && v60)
+    if (participantCopy && v60)
     {
       v63 = objc_msgSend_shareParticipantFetchedBlock(self, v61, v62);
-      (v63)[2](v63, v9);
+      (v63)[2](v63, participantCopy);
     }
   }
 
   v64 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_finishOnCallbackQueueWithError:(id)a3
+- (void)_finishOnCallbackQueueWithError:(id)error
 {
   v76 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   if (self)
   {
     signpost = self->super._signpost;
@@ -651,7 +651,7 @@ LABEL_21:
 
   if (objc_msgSend_count(v22, v27, v28))
   {
-    v68 = v4;
+    v68 = errorCopy;
     v31 = objc_msgSend_errorWithDomain_code_format_(CKPrettyError, v29, @"CKErrorDomain", 11, @"Share participant not found in iCloud");
     v70 = 0u;
     v71 = 0u;
@@ -689,10 +689,10 @@ LABEL_21:
       while (v37);
     }
 
-    v4 = v68;
+    errorCopy = v68;
   }
 
-  if (!v4)
+  if (!errorCopy)
   {
     v46 = objc_msgSend_lookupErrors(self, v29, v30);
     v49 = objc_msgSend_count(v46, v47, v48);
@@ -703,12 +703,12 @@ LABEL_21:
       v53 = objc_msgSend_lookupErrors(self, v51, v52);
       objc_msgSend_setObject_forKeyedSubscript_(v50, v54, v53, @"CKPartialErrors");
 
-      v4 = objc_msgSend_errorWithDomain_code_userInfo_format_(CKPrettyError, v55, @"CKInternalErrorDomain", 1011, v50, @"Failed to lookup some share participants");
+      errorCopy = objc_msgSend_errorWithDomain_code_userInfo_format_(CKPrettyError, v55, @"CKInternalErrorDomain", 1011, v50, @"Failed to lookup some share participants");
     }
 
     else
     {
-      v4 = 0;
+      errorCopy = 0;
     }
   }
 
@@ -727,7 +727,7 @@ LABEL_21:
 
   if (v60)
   {
-    v64 = objc_msgSend_CKClientSuitableError(v4, v62, v63);
+    v64 = objc_msgSend_CKClientSuitableError(errorCopy, v62, v63);
     v60[2](v60, v64);
 
     objc_msgSend_setFetchShareParticipantsCompletionBlock_(self, v65, 0);
@@ -737,7 +737,7 @@ LABEL_21:
   objc_msgSend_setPerShareParticipantCompletionBlock_(self, v66, 0);
   v69.receiver = self;
   v69.super_class = CKFetchShareParticipantsOperation;
-  [(CKOperation *)&v69 _finishOnCallbackQueueWithError:v4];
+  [(CKOperation *)&v69 _finishOnCallbackQueueWithError:errorCopy];
 
   v67 = *MEMORY[0x1E69E9840];
 }
@@ -816,10 +816,10 @@ LABEL_21:
   v42 = *MEMORY[0x1E69E9840];
 }
 
-- (void)ckSignpostEndWithError:(id)a3
+- (void)ckSignpostEndWithError:(id)error
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   if (self)
   {
     signpost = self->super._signpost;
@@ -863,7 +863,7 @@ LABEL_21:
     if (v16 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v11))
     {
       v18 = 138412290;
-      v19 = v4;
+      v19 = errorCopy;
       _os_signpost_emit_with_name_impl(&dword_1883EA000, v11, OS_SIGNPOST_INTERVAL_END, v16, "CKFetchShareParticipantsOperation", "Error=%{signpost.description:attribute}@ ", &v18, 0xCu);
     }
   }
@@ -878,15 +878,15 @@ LABEL_21:
   return v2;
 }
 
-+ (void)applyDaemonCallbackInterfaceTweaks:(id)a3
++ (void)applyDaemonCallbackInterfaceTweaks:(id)tweaks
 {
-  v4 = a3;
+  tweaksCopy = tweaks;
   v5 = CKErrorUserInfoClasses();
-  objc_msgSend_setClasses_forSelector_argumentIndex_ofReply_(v4, v6, v5, sel_handleShareParticipantFetchForLookupInfo_shareParticipant_error_, 2, 0);
+  objc_msgSend_setClasses_forSelector_argumentIndex_ofReply_(tweaksCopy, v6, v5, sel_handleShareParticipantFetchForLookupInfo_shareParticipant_error_, 2, 0);
 
-  v7.receiver = a1;
+  v7.receiver = self;
   v7.super_class = &OBJC_METACLASS___CKFetchShareParticipantsOperation;
-  objc_msgSendSuper2(&v7, sel_applyDaemonCallbackInterfaceTweaks_, v4);
+  objc_msgSendSuper2(&v7, sel_applyDaemonCallbackInterfaceTweaks_, tweaksCopy);
 }
 
 @end

@@ -1,26 +1,26 @@
 @interface OrgApacheLuceneCodecsCompressingLZ4_HCHashTable
 - (void)dealloc;
-- (void)insertWithInt:(int)a3 withByteArray:(id)a4;
-- (void)resetWithInt:(int)a3;
+- (void)insertWithInt:(int)int withByteArray:(id)array;
+- (void)resetWithInt:(int)int;
 @end
 
 @implementation OrgApacheLuceneCodecsCompressingLZ4_HCHashTable
 
-- (void)resetWithInt:(int)a3
+- (void)resetWithInt:(int)int
 {
-  self->nextToUpdate_ = a3;
-  self->base_ = a3;
+  self->nextToUpdate_ = int;
+  self->base_ = int;
   JavaUtilArrays_fillWithIntArray_withInt_(self->hashTable_, -1);
   chainTable = self->chainTable_;
 
   JavaUtilArrays_fillWithShortArray_withShort_(chainTable, 0);
 }
 
-- (void)insertWithInt:(int)a3 withByteArray:(id)a4
+- (void)insertWithInt:(int)int withByteArray:(id)array
 {
-  for (i = self->nextToUpdate_; i < a3; self->nextToUpdate_ = i)
+  for (i = self->nextToUpdate_; i < int; self->nextToUpdate_ = i)
   {
-    sub_10007EE74(self, a4, i);
+    sub_10007EE74(self, array, i);
     i = (self->nextToUpdate_ + 1);
   }
 }

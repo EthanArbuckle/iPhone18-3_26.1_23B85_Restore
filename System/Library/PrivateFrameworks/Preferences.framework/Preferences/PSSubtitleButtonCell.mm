@@ -1,30 +1,30 @@
 @interface PSSubtitleButtonCell
 + (Class)alternativeCellClass;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 @end
 
 @implementation PSSubtitleButtonCell
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
   v11.receiver = self;
   v11.super_class = PSSubtitleButtonCell;
-  v4 = a3;
-  [(PSTableCell *)&v11 refreshCellContentsWithSpecifier:v4];
+  specifierCopy = specifier;
+  [(PSTableCell *)&v11 refreshCellContentsWithSpecifier:specifierCopy];
   v5 = [(PSSubtitleButtonCell *)self textLabel:v11.receiver];
-  v6 = [v4 name];
-  [v5 setText:v6];
+  name = [specifierCopy name];
+  [v5 setText:name];
 
-  v7 = [(PSSubtitleButtonCell *)self detailTextLabel];
-  v8 = [v4 propertyForKey:@"cellSubtitleText"];
-  [v7 setText:v8];
+  detailTextLabel = [(PSSubtitleButtonCell *)self detailTextLabel];
+  v8 = [specifierCopy propertyForKey:@"cellSubtitleText"];
+  [detailTextLabel setText:v8];
 
-  v9 = [v4 propertyForKey:@"cellSubtitleColor"];
+  v9 = [specifierCopy propertyForKey:@"cellSubtitleColor"];
 
   if (v9)
   {
-    v10 = [(PSSubtitleButtonCell *)self detailTextLabel];
-    [v10 setTextColor:v9];
+    detailTextLabel2 = [(PSSubtitleButtonCell *)self detailTextLabel];
+    [detailTextLabel2 setTextColor:v9];
   }
 
   [(PSSubtitleButtonCell *)self setNeedsLayout];
@@ -32,7 +32,7 @@
 
 + (Class)alternativeCellClass
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = objc_opt_class();
   }

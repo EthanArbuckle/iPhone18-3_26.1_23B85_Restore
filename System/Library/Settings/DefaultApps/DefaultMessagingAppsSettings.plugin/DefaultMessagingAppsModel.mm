@@ -23,15 +23,15 @@
 - (void)dealloc
 {
   v3 = objc_opt_self();
-  v4 = self;
-  v5 = [v3 defaultWorkspace];
-  if (v5)
+  selfCopy = self;
+  defaultWorkspace = [v3 defaultWorkspace];
+  if (defaultWorkspace)
   {
-    v6 = v5;
-    [v5 removeObserver:v4];
+    v6 = defaultWorkspace;
+    [defaultWorkspace removeObserver:selfCopy];
   }
 
-  v7.receiver = v4;
+  v7.receiver = selfCopy;
   v7.super_class = type metadata accessor for DefaultMessagingAppsModel();
   [(DefaultMessagingAppsModel *)&v7 dealloc];
 }

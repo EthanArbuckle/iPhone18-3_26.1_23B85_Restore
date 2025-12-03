@@ -4,10 +4,10 @@
 - (NSArray)applicationActivities;
 - (NSArray)excludedActivityTypes;
 - (NSData)pushSubmissionData;
-- (ShareItemSearchResult)initWithSearchResult:(id)a3 contact:(id)a4 includePrintActivity:(BOOL)a5 applicationActivities:(id)a6;
+- (ShareItemSearchResult)initWithSearchResult:(id)result contact:(id)contact includePrintActivity:(BOOL)activity applicationActivities:(id)activities;
 - (id)_airdropURLJSON;
 - (id)_annotationView;
-- (id)_sharingURLIncludingSensitiveParameters:(BOOL)a3;
+- (id)_sharingURLIncludingSensitiveParameters:(BOOL)parameters;
 - (id)_titleForMapActivity;
 - (id)mapItem;
 - (void)_setupCustomFeatureForMapItem;
@@ -19,20 +19,20 @@
 
 - (id)_airdropURLJSON
 {
-  v3 = [(ShareItemSearchResult *)self searchResult];
-  v4 = [v3 type];
+  searchResult = [(ShareItemSearchResult *)self searchResult];
+  type = [searchResult type];
 
-  if (v4 == 4)
+  if (type == 4)
   {
     v5 = &off_1016EE510;
   }
 
   else
   {
-    v6 = [(ShareItemSearchResult *)self searchResult];
-    v7 = [v6 type];
+    searchResult2 = [(ShareItemSearchResult *)self searchResult];
+    type2 = [searchResult2 type];
 
-    if (v7 == 3)
+    if (type2 == 3)
     {
       v5 = &off_1016EE538;
     }
@@ -40,9 +40,9 @@
     else
     {
       v10[0] = @"SFAirDropActivitySubjectMain";
-      v8 = [(ShareItemSearchResult *)self _titleForMapActivity];
+      _titleForMapActivity = [(ShareItemSearchResult *)self _titleForMapActivity];
       v10[1] = @"SFAirDropActivitySubjectMapsLinkType";
-      v11[0] = v8;
+      v11[0] = _titleForMapActivity;
       v11[1] = &off_1016E9698;
       v5 = [NSDictionary dictionaryWithObjects:v11 forKeys:v10 count:2];
     }
@@ -53,16 +53,16 @@
 
 - (id)_titleForMapActivity
 {
-  v2 = [(ShareItemSearchResult *)self searchResult];
-  v3 = [v2 type];
-  v4 = [v2 title];
-  v5 = v4;
-  if (v3 == 4)
+  searchResult = [(ShareItemSearchResult *)self searchResult];
+  type = [searchResult type];
+  title = [searchResult title];
+  v5 = title;
+  if (type == 4)
   {
     v6 = +[AddressBookManager sharedManager];
-    v7 = [v6 meCard];
+    meCard = [v6 meCard];
 
-    v8 = [CNContactFormatter stringFromContact:v7 style:0];
+    v8 = [CNContactFormatter stringFromContact:meCard style:0];
     v9 = +[NSBundle mainBundle];
     if (v8)
     {
@@ -78,23 +78,23 @@
 
   else
   {
-    v11 = v4;
+    v11 = title;
   }
 
   return v11;
 }
 
-- (id)_sharingURLIncludingSensitiveParameters:(BOOL)a3
+- (id)_sharingURLIncludingSensitiveParameters:(BOOL)parameters
 {
-  v3 = a3;
+  parametersCopy = parameters;
   v5 = +[UIApplication _maps_keyMapsSceneDelegate];
-  v6 = [v5 chromeViewController];
+  chromeViewController = [v5 chromeViewController];
 
-  v7 = [(ShareItemSearchResult *)self searchResult];
-  if (v7)
+  searchResult = [(ShareItemSearchResult *)self searchResult];
+  if (searchResult)
   {
-    v8 = [v6 mapView];
-    v9 = [v7 mapsURLfromMapView:v8 includingSensitiveFields:v3];
+    mapView = [chromeViewController mapView];
+    v9 = [searchResult mapsURLfromMapView:mapView includingSensitiveFields:parametersCopy];
     v10 = [NSURL URLWithString:v9];
   }
 
@@ -108,14 +108,14 @@
 
 - (id)_annotationView
 {
-  v3 = [(ShareItemSearchResult *)self searchResult];
-  v4 = [v3 type];
+  searchResult = [(ShareItemSearchResult *)self searchResult];
+  type = [searchResult type];
 
-  if (v4 == 4)
+  if (type == 4)
   {
     v5 = objc_alloc_init(MKUserLocation);
-    v6 = [(ShareItemSearchResult *)self searchResult];
-    [v6 coordinate];
+    searchResult2 = [(ShareItemSearchResult *)self searchResult];
+    [searchResult2 coordinate];
     [(MapsActivityAnnotation *)v5 setCoordinate:?];
 
     v7 = [[_MKUserLocationView alloc] initWithAnnotation:v5 reuseIdentifier:0];
@@ -124,8 +124,8 @@
   else
   {
     v8 = [MapsActivityAnnotation alloc];
-    v9 = [(ShareItemSearchResult *)self searchResult];
-    v5 = [(MapsActivityAnnotation *)v8 initWithSearchResult:v9];
+    searchResult3 = [(ShareItemSearchResult *)self searchResult];
+    v5 = [(MapsActivityAnnotation *)v8 initWithSearchResult:searchResult3];
 
     v7 = [[MKMarkerAnnotationView alloc] initWithAnnotation:v5 reuseIdentifier:0];
     [v7 setHidden:0];
@@ -136,16 +136,16 @@
 
 - (NSData)pushSubmissionData
 {
-  v2 = [(SearchResult *)self->_searchResult bookmarkRepresentation];
-  v3 = [v2 data];
+  bookmarkRepresentation = [(SearchResult *)self->_searchResult bookmarkRepresentation];
+  data = [bookmarkRepresentation data];
 
-  return v3;
+  return data;
 }
 
 - (void)_setupCustomFeatureForMapItem
 {
-  v3 = [(ShareItemSearchResult *)self mapItem];
-  v4 = [_ShareCustomFeature customFeatureForMapItem:v3];
+  mapItem = [(ShareItemSearchResult *)self mapItem];
+  v4 = [_ShareCustomFeature customFeatureForMapItem:mapItem];
   shareCustomFeature = self->_shareCustomFeature;
   self->_shareCustomFeature = v4;
 
@@ -164,10 +164,10 @@
 
 - (id)mapItem
 {
-  v2 = [(ShareItemSearchResult *)self searchResult];
-  v3 = [v2 mapItem];
+  searchResult = [(ShareItemSearchResult *)self searchResult];
+  mapItem = [searchResult mapItem];
 
-  return v3;
+  return mapItem;
 }
 
 - (NSArray)excludedActivityTypes
@@ -182,21 +182,21 @@
 {
   v3 = +[NSMutableArray array];
   v4 = +[UIDevice currentDevice];
-  v5 = [v4 userInterfaceIdiom];
+  userInterfaceIdiom = [v4 userInterfaceIdiom];
 
-  if (v5 == 5)
+  if (userInterfaceIdiom == 5)
   {
-    v6 = [(ShareItemSearchResult *)self pushSubmissionData];
-    if (v6)
+    pushSubmissionData = [(ShareItemSearchResult *)self pushSubmissionData];
+    if (pushSubmissionData)
     {
       v19 = 0u;
       v20 = 0u;
       v17 = 0u;
       v18 = 0u;
       v7 = +[MapsPushManager defaultManager];
-      v8 = [v7 devices];
+      devices = [v7 devices];
 
-      v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v9 = [devices countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v9)
       {
         v10 = v9;
@@ -207,14 +207,14 @@
           {
             if (*v18 != v11)
             {
-              objc_enumerationMutation(v8);
+              objc_enumerationMutation(devices);
             }
 
             v13 = [[PushToDeviceActivity alloc] initWithDevice:*(*(&v17 + 1) + 8 * i) place:self];
             [v3 addObject:v13];
           }
 
-          v10 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+          v10 = [devices countByEnumeratingWithState:&v17 objects:v21 count:16];
         }
 
         while (v10);
@@ -273,8 +273,8 @@
     return 0;
   }
 
-  v4 = [(SearchResult *)self->_searchResult address];
-  v3 = v4 == 0;
+  address = [(SearchResult *)self->_searchResult address];
+  v3 = address == 0;
 
   return v3;
 }
@@ -282,8 +282,8 @@
 - (void)_setupDataProvider
 {
   v3 = [MUPlaceActivityDataProviderConfiguration alloc];
-  v4 = [(SearchResult *)self->_searchResult mapItem];
-  v5 = [v3 initWithMapItem:v4];
+  mapItem = [(SearchResult *)self->_searchResult mapItem];
+  v5 = [v3 initWithMapItem:mapItem];
 
   objc_initWeak(&location, self);
   v14[0] = _NSConcreteStackBlock;
@@ -327,28 +327,28 @@
   objc_destroyWeak(&location);
 }
 
-- (ShareItemSearchResult)initWithSearchResult:(id)a3 contact:(id)a4 includePrintActivity:(BOOL)a5 applicationActivities:(id)a6
+- (ShareItemSearchResult)initWithSearchResult:(id)result contact:(id)contact includePrintActivity:(BOOL)activity applicationActivities:(id)activities
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  resultCopy = result;
+  contactCopy = contact;
+  activitiesCopy = activities;
   v23.receiver = self;
   v23.super_class = ShareItemSearchResult;
   v13 = [(ShareItemSearchResult *)&v23 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_extraAppActivities, a6);
-    v15 = [v10 copy];
+    objc_storeStrong(&v13->_extraAppActivities, activities);
+    v15 = [resultCopy copy];
     searchResult = v14->_searchResult;
     v14->_searchResult = v15;
 
-    objc_storeStrong(&v14->_contact, a4);
-    v14->_includePrintActivity = a5;
-    objc_storeStrong(&v14->_extraAppActivities, a6);
+    objc_storeStrong(&v14->_contact, contact);
+    v14->_includePrintActivity = activity;
+    objc_storeStrong(&v14->_extraAppActivities, activities);
     v17 = [_TtC4Maps23PlaceNoteSharingSession alloc];
-    v18 = [v10 mapItem];
-    v19 = [(PlaceNoteSharingSession *)v17 initWithMapItem:v18];
+    mapItem = [resultCopy mapItem];
+    v19 = [(PlaceNoteSharingSession *)v17 initWithMapItem:mapItem];
     noteSharingSession = v14->_noteSharingSession;
     v14->_noteSharingSession = v19;
 

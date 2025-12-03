@@ -50,10 +50,10 @@
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:9];
   v12 = [v2 sectionWithRows:v11 title:@"Settings"];
 
-  v13 = [MEMORY[0x1E69C6638] px_restoreDefaultsSection];
+  px_restoreDefaultsSection = [MEMORY[0x1E69C6638] px_restoreDefaultsSection];
   v14 = MEMORY[0x1E69C6638];
   v22[0] = v12;
-  v22[1] = v13;
+  v22[1] = px_restoreDefaultsSection;
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:2];
   v16 = [v14 moduleWithTitle:@"Variations" contents:v15];
 

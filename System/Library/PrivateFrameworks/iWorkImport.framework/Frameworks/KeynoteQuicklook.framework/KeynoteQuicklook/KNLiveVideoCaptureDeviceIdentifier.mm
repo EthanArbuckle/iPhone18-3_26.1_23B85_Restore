@@ -1,41 +1,41 @@
 @interface KNLiveVideoCaptureDeviceIdentifier
-- (BOOL)isEqual:(id)a3;
-- (KNLiveVideoCaptureDeviceIdentifier)initWithUniqueID:(id)a3 modelID:(id)a4 underlyingPosition:(int64_t)a5 underlyingDeviceType:(id)a6 localizedName:(id)a7 isIOSScreenRecordingDevice:(BOOL)a8;
+- (BOOL)isEqual:(id)equal;
+- (KNLiveVideoCaptureDeviceIdentifier)initWithUniqueID:(id)d modelID:(id)iD underlyingPosition:(int64_t)position underlyingDeviceType:(id)type localizedName:(id)name isIOSScreenRecordingDevice:(BOOL)device;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation KNLiveVideoCaptureDeviceIdentifier
 
-- (KNLiveVideoCaptureDeviceIdentifier)initWithUniqueID:(id)a3 modelID:(id)a4 underlyingPosition:(int64_t)a5 underlyingDeviceType:(id)a6 localizedName:(id)a7 isIOSScreenRecordingDevice:(BOOL)a8
+- (KNLiveVideoCaptureDeviceIdentifier)initWithUniqueID:(id)d modelID:(id)iD underlyingPosition:(int64_t)position underlyingDeviceType:(id)type localizedName:(id)name isIOSScreenRecordingDevice:(BOOL)device
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a6;
-  v17 = a7;
+  dCopy = d;
+  iDCopy = iD;
+  typeCopy = type;
+  nameCopy = name;
   v36.receiver = self;
   v36.super_class = KNLiveVideoCaptureDeviceIdentifier;
   v20 = [(KNLiveVideoCaptureDeviceIdentifier *)&v36 init];
   if (v20)
   {
-    v21 = objc_msgSend_copy(v14, v18, v19);
+    v21 = objc_msgSend_copy(dCopy, v18, v19);
     uniqueID = v20->_uniqueID;
     v20->_uniqueID = v21;
 
-    v25 = objc_msgSend_copy(v15, v23, v24);
+    v25 = objc_msgSend_copy(iDCopy, v23, v24);
     modelID = v20->_modelID;
     v20->_modelID = v25;
 
-    v20->_position = a5;
-    v29 = objc_msgSend_copy(v16, v27, v28);
+    v20->_position = position;
+    v29 = objc_msgSend_copy(typeCopy, v27, v28);
     deviceType = v20->_deviceType;
     v20->_deviceType = v29;
 
-    v33 = objc_msgSend_copy(v17, v31, v32);
+    v33 = objc_msgSend_copy(nameCopy, v31, v32);
     localizedName = v20->_localizedName;
     v20->_localizedName = v33;
 
-    v20->_isIOSScreenRecordingDevice = a8;
+    v20->_isIOSScreenRecordingDevice = device;
   }
 
   return v20;
@@ -62,14 +62,14 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
 
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   v5 = TSUDynamicCast();
 

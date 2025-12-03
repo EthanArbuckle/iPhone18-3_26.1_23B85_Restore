@@ -1,17 +1,17 @@
 @interface CPCluster
-+ (unsigned)createOrderIndexFor:(double *)a3 ofSize:(unsigned int)a4;
-+ (void)clusterTextLine:(id)a3;
-+ (void)clusterTextLine:(id)a3 withCluster:(id)a4 atLevel:(unsigned int)a5 withMaximumWordGap:(double *)a6 andMaximumLetterGap:(double *)a7;
-+ (void)reclusterTextLine:(id)a3 fromWordIndex:(unsigned int)a4 count:(unsigned int *)a5;
-- ($CAD616572B4749F850842224FCF53B5F)clusterStatisticsAtIndex:(SEL)a3;
-- ($CAD616572B4749F850842224FCF53B5F)differenceClusterStatisticsAtIndex:(SEL)a3;
++ (unsigned)createOrderIndexFor:(double *)for ofSize:(unsigned int)size;
++ (void)clusterTextLine:(id)line;
++ (void)clusterTextLine:(id)line withCluster:(id)cluster atLevel:(unsigned int)level withMaximumWordGap:(double *)gap andMaximumLetterGap:(double *)letterGap;
++ (void)reclusterTextLine:(id)line fromWordIndex:(unsigned int)index count:(unsigned int *)count;
+- ($CAD616572B4749F850842224FCF53B5F)clusterStatisticsAtIndex:(SEL)index;
+- ($CAD616572B4749F850842224FCF53B5F)differenceClusterStatisticsAtIndex:(SEL)index;
 - ($CAD616572B4749F850842224FCF53B5F)largestClusterStatistics;
-- (BOOL)applyDifferenceHints:(id *)a3 count:(unsigned int)a4;
-- (BOOL)coalesceFrom:(unsigned int)a3 to:(unsigned int)a4;
-- (BOOL)joinClosestLevelPairFrom:(unsigned int)a3 to:(unsigned int)a4;
-- (BOOL)joinLevelsFrom:(unsigned int)a3 to:(unsigned int)a4;
-- (BOOL)splitLevelAtIndex:(unsigned int)a3 betweenValue:(double)a4 andValue:(double)a5;
-- (CPCluster)initWithProfile:(id *)a3;
+- (BOOL)applyDifferenceHints:(id *)hints count:(unsigned int)count;
+- (BOOL)coalesceFrom:(unsigned int)from to:(unsigned int)to;
+- (BOOL)joinClosestLevelPairFrom:(unsigned int)from to:(unsigned int)to;
+- (BOOL)joinLevelsFrom:(unsigned int)from to:(unsigned int)to;
+- (BOOL)splitLevelAtIndex:(unsigned int)index betweenValue:(double)value andValue:(double)andValue;
+- (CPCluster)initWithProfile:(id *)profile;
 - (unsigned)clusterCount;
 - (void)analyzeDensities;
 - (void)analyzeDifferences;
@@ -23,14 +23,14 @@
 - (void)dealloc;
 - (void)dispose;
 - (void)finalize;
-- (void)findClusters:(double *)a3 count:(unsigned int)a4;
-- (void)findClustersFromCharacterSequence:(id)a3 withSpaceHint:(BOOL)a4;
-- (void)findClustersFromDifferences:(double *)a3 count:(unsigned int)a4;
-- (void)findDensityClusters:(double *)a3 count:(unsigned int)a4;
-- (void)makeWords:(id *)a3 count:(unsigned int)a4 fromCharacterSequence:(id)a5 charOffset:(unsigned int)a6;
+- (void)findClusters:(double *)clusters count:(unsigned int)count;
+- (void)findClustersFromCharacterSequence:(id)sequence withSpaceHint:(BOOL)hint;
+- (void)findClustersFromDifferences:(double *)differences count:(unsigned int)count;
+- (void)findDensityClusters:(double *)clusters count:(unsigned int)count;
+- (void)makeWords:(id *)words count:(unsigned int)count fromCharacterSequence:(id)sequence charOffset:(unsigned int)offset;
 - (void)resetAnalysis;
 - (void)splitSecondDifferences;
-- (void)tryLevel0SplitBetween:(double)a3 and:(double)a4 usingHints:(id *)a5;
+- (void)tryLevel0SplitBetween:(double)between and:(double)and usingHints:(id *)hints;
 @end
 
 @implementation CPCluster
@@ -97,7 +97,7 @@ LABEL_12:
   return result;
 }
 
-- ($CAD616572B4749F850842224FCF53B5F)differenceClusterStatisticsAtIndex:(SEL)a3
+- ($CAD616572B4749F850842224FCF53B5F)differenceClusterStatisticsAtIndex:(SEL)index
 {
   v4 = *&self[4].var0;
   if (v4)
@@ -117,7 +117,7 @@ LABEL_12:
   return self;
 }
 
-- ($CAD616572B4749F850842224FCF53B5F)clusterStatisticsAtIndex:(SEL)a3
+- ($CAD616572B4749F850842224FCF53B5F)clusterStatisticsAtIndex:(SEL)index
 {
   result = [(CPCluster *)self assembleDataStats];
   xStats = self->xStats;
@@ -168,16 +168,16 @@ LABEL_12:
   return result;
 }
 
-- (BOOL)applyDifferenceHints:(id *)a3 count:(unsigned int)a4
+- (BOOL)applyDifferenceHints:(id *)hints count:(unsigned int)count
 {
   v4 = 0;
-  if (a3 && a4 && self->levels)
+  if (hints && count && self->levels)
   {
     v7 = 0;
-    v8 = a4;
-    p_var2 = &a3->var2;
+    countCopy = count;
+    p_var2 = &hints->var2;
     v10 = 0.0;
-    v11 = a4;
+    countCopy2 = count;
     do
     {
       if (*(p_var2 - 4))
@@ -193,10 +193,10 @@ LABEL_12:
       }
 
       p_var2 += 4;
-      --v11;
+      --countCopy2;
     }
 
-    while (v11);
+    while (countCopy2);
     v12 = 0;
     LOBYTE(v13) = 0;
     v14 = 0;
@@ -206,7 +206,7 @@ LABEL_12:
     v17 = 0.0;
     do
     {
-      v18 = &a3[v12];
+      v18 = &hints[v12];
       if (v18->var0)
       {
         var1 = v18->var1;
@@ -369,7 +369,7 @@ LABEL_53:
       ++v12;
     }
 
-    while (v12 != v8);
+    while (v12 != countCopy);
     if (v16)
     {
       free(self->xStats);
@@ -380,31 +380,31 @@ LABEL_53:
   return v4 & 1;
 }
 
-- (void)findDensityClusters:(double *)a3 count:(unsigned int)a4
+- (void)findDensityClusters:(double *)clusters count:(unsigned int)count
 {
-  if (a4)
+  if (count)
   {
-    self->xCount = a4;
-    self->x = a3;
+    self->xCount = count;
+    self->x = clusters;
     [(CPCluster *)self computeDifferencesFromData];
 
     [(CPCluster *)self analyzeDensities];
   }
 }
 
-- (void)findClustersFromDifferences:(double *)a3 count:(unsigned int)a4
+- (void)findClustersFromDifferences:(double *)differences count:(unsigned int)count
 {
-  self->xCount = a4 + 1;
-  self->dx = a3;
+  self->xCount = count + 1;
+  self->dx = differences;
   [(CPCluster *)self analyzeDifferences];
 }
 
-- (void)findClusters:(double *)a3 count:(unsigned int)a4
+- (void)findClusters:(double *)clusters count:(unsigned int)count
 {
-  if (a4)
+  if (count)
   {
-    self->xCount = a4;
-    self->x = a3;
+    self->xCount = count;
+    self->x = clusters;
     [(CPCluster *)self computeDifferencesFromData];
 
     [(CPCluster *)self analyzeDifferences];
@@ -818,27 +818,27 @@ LABEL_45:
   v3->var3 = *dx;
 }
 
-- (BOOL)coalesceFrom:(unsigned int)a3 to:(unsigned int)a4
+- (BOOL)coalesceFrom:(unsigned int)from to:(unsigned int)to
 {
   levels = self->levels;
-  if (levels <= a4)
+  if (levels <= to)
   {
-    v5 = levels - 1;
+    toCopy = levels - 1;
   }
 
   else
   {
-    v5 = a4;
+    toCopy = to;
   }
 
-  if (v5 <= a3)
+  if (toCopy <= from)
   {
     v24 = 0;
     return v24 & 1;
   }
 
   profile = self->profile;
-  v9 = a3;
+  fromCopy = from;
   var9 = profile->var9;
   var8 = profile->var8;
   var10 = profile->var10;
@@ -851,23 +851,23 @@ LABEL_45:
   var17 = profile->var17;
   var18 = profile->var18;
   var19 = profile->var19;
-  v18 = malloc_type_malloc(4 * (v5 - a3 + 1), 0x100004052888210uLL);
+  v18 = malloc_type_malloc(4 * (toCopy - from + 1), 0x100004052888210uLL);
   v20 = v18;
   v21 = 0;
   v22 = 0;
   dxStats = self->dxStats;
   do
   {
-    v22 += dxStats[(v9 + v21)].var0;
+    v22 += dxStats[(fromCopy + v21)].var0;
     v18[v21++] = v22;
   }
 
-  while (v9 + v21 <= v5);
+  while (fromCopy + v21 <= toCopy);
   v24 = 0;
-  v25 = v9;
+  v25 = fromCopy;
   do
   {
-    if (v25 == a3)
+    if (v25 == from)
     {
       v26 = 0;
       v27 = var8;
@@ -879,7 +879,7 @@ LABEL_45:
 
     else
     {
-      v26 = v20[v25 + ~a3];
+      v26 = v20[v25 + ~from];
       v27 = var9;
       v28 = var11;
       v29 = var13;
@@ -894,7 +894,7 @@ LABEL_45:
     v35 = &v32[v25];
     if (v27 * v35->var0 < *&v19)
     {
-      if (v25 > a3)
+      if (v25 > from)
       {
         v36 = v34->var1 - v35->var2;
         v37 = (v25 - 1);
@@ -925,9 +925,9 @@ LABEL_45:
 LABEL_30:
       if ([(CPCluster *)self joinLevelsFrom:v25 to:v33])
       {
-        memmove(&v20[v25 - a3], &v20[v25 - a3 + 1], 4 * (v5 - v25));
-        --v5;
-        v33 = (__PAIR64__(v25, a3) - v25) >> 32;
+        memmove(&v20[v25 - from], &v20[v25 - from + 1], 4 * (toCopy - v25));
+        --toCopy;
+        v33 = (__PAIR64__(v25, from) - v25) >> 32;
         v24 = 1;
       }
 
@@ -946,7 +946,7 @@ LABEL_30:
     v19 = v35->var3 - v40;
     v43 = v29 * v19;
     v44 = v41 < v42 || v41 < v43;
-    if (v44 || v30 * (v22 - v26) > (v35->var0 + 1) || var1 * v22 < v31 * (v32[v5].var2 - v32[v9].var1) || var1 < self->minInterClusterDiff)
+    if (v44 || v30 * (v22 - v26) > (v35->var0 + 1) || var1 * v22 < v31 * (v32[toCopy].var2 - v32[fromCopy].var1) || var1 < self->minInterClusterDiff)
     {
       goto LABEL_30;
     }
@@ -955,8 +955,8 @@ LABEL_32:
     v25 = v33;
   }
 
-  while (v33 < v5);
-  if (var19 && v5 > a3 + 1)
+  while (v33 < toCopy);
+  if (var19 && toCopy > from + 1)
   {
     v24 |= [CPCluster joinLevelsFrom:"joinLevelsFrom:to:" to:?];
   }
@@ -965,10 +965,10 @@ LABEL_32:
   return v24 & 1;
 }
 
-- (BOOL)splitLevelAtIndex:(unsigned int)a3 betweenValue:(double)a4 andValue:(double)a5
+- (BOOL)splitLevelAtIndex:(unsigned int)index betweenValue:(double)value andValue:(double)andValue
 {
   levels = self->levels;
-  if (levels <= a3)
+  if (levels <= index)
   {
     LOBYTE(v30) = 0;
   }
@@ -976,23 +976,23 @@ LABEL_32:
   else
   {
     dxStats = self->dxStats;
-    v9 = a3;
-    v10 = &dxStats[a3];
+    indexCopy = index;
+    v10 = &dxStats[index];
     var1 = v10->var1;
     var2 = v10->var2;
-    if (var1 > a4)
+    if (var1 > value)
     {
-      a4 = v10->var1;
+      value = v10->var1;
     }
 
-    if (var2 < a5)
+    if (var2 < andValue)
     {
-      a5 = v10->var2;
+      andValue = v10->var2;
     }
 
     xCount = self->xCount;
-    v14 = a4;
-    v15 = a5;
+    valueCopy2 = value;
+    andValueCopy2 = andValue;
     if (xCount >= 3)
     {
       v16 = 0;
@@ -1002,8 +1002,8 @@ LABEL_32:
       dxOrderIndex = self->dxOrderIndex;
       v21 = dx[*dxOrderIndex];
       v22 = 0.0;
-      v14 = a4;
-      v15 = a5;
+      valueCopy2 = value;
+      andValueCopy2 = andValue;
       v23 = 0.0;
       v24 = 0;
       v25 = 0.0;
@@ -1019,18 +1019,18 @@ LABEL_8:
           ++v24;
         }
 
-        v27 = v21 <= a5;
+        v27 = v21 <= andValue;
         if (v22 == 0.0)
         {
           v27 = 1;
         }
 
-        if (v26 >= a4 && v27 && v21 - v26 >= v22)
+        if (v26 >= value && v27 && v21 - v26 >= v22)
         {
           v18 = 1;
           v22 = v21 - v26;
-          v14 = v26;
-          v15 = dx[dxOrderIndex[v16]];
+          valueCopy2 = v26;
+          andValueCopy2 = dx[dxOrderIndex[v16]];
           v17 = v24;
           v23 = v25;
           if (v16 != xCount - 2)
@@ -1048,8 +1048,8 @@ LABEL_8:
       while (v16 - (xCount - 2) != 1);
       v25 = v23;
       v24 = v17;
-      v21 = v15;
-      v26 = v14;
+      v21 = andValueCopy2;
+      v26 = valueCopy2;
       if (v18)
       {
         goto LABEL_40;
@@ -1071,7 +1071,7 @@ LABEL_8:
       v25 = v34;
       if (v33 == v31)
       {
-        v21 = v15;
+        v21 = andValueCopy2;
         v26 = v10->var2;
         goto LABEL_40;
       }
@@ -1087,12 +1087,12 @@ LABEL_8:
       v31 += 4;
     }
 
-    while (v26 < a4);
-    if (v26 - a4 <= a5 - v26)
+    while (v26 < value);
+    if (v26 - value <= andValue - v26)
     {
       v25 = v34;
       v24 = v32;
-      v21 = v15;
+      v21 = andValueCopy2;
     }
 
     else
@@ -1103,7 +1103,7 @@ LABEL_8:
       }
 
       v21 = v26;
-      v26 = v14;
+      v26 = valueCopy2;
     }
 
 LABEL_40:
@@ -1135,22 +1135,22 @@ LABEL_40:
       self->dxStats = v30;
       v39 = self->levels;
       self->levels = v39 + 1;
-      if (a3 + 2 < v39 + 1)
+      if (index + 2 < v39 + 1)
       {
-        memmove(&v30[v9 + 2], &v30[v9 + 1], 32 * (v39 + ~a3));
+        memmove(&v30[indexCopy + 2], &v30[indexCopy + 1], 32 * (v39 + ~index));
         v30 = self->dxStats;
       }
 
-      v40 = &v30[v9];
+      v40 = &v30[indexCopy];
       v40->var0 = v24;
       v40->var2 = v26;
       v40->var3 = var1;
-      v41 = &v30[a3 + 1];
+      v41 = &v30[index + 1];
       v41->var0 = v38;
       v41->var1 = v21;
       v41->var2 = var2;
       v41->var3 = v37;
-      if (!a3)
+      if (!index)
       {
         self->interClusterMinIndex = v24;
       }
@@ -1162,7 +1162,7 @@ LABEL_40:
   return v30;
 }
 
-- (BOOL)joinClosestLevelPairFrom:(unsigned int)a3 to:(unsigned int)a4
+- (BOOL)joinClosestLevelPairFrom:(unsigned int)from to:(unsigned int)to
 {
   levels = self->levels;
   if (levels < 2)
@@ -1170,40 +1170,40 @@ LABEL_40:
     return 0;
   }
 
-  if (levels <= a4)
+  if (levels <= to)
   {
-    v7 = levels - 1;
+    toCopy = levels - 1;
   }
 
   else
   {
-    v7 = a4;
+    toCopy = to;
   }
 
-  if (v7 <= a3)
+  if (toCopy <= from)
   {
-    v11 = *&a3;
+    fromCopy = *&from;
   }
 
   else
   {
     v8 = 0;
-    p_var1 = &self->dxStats[a3 + 1].var1;
-    v10 = a3 - v7;
+    p_var1 = &self->dxStats[from + 1].var1;
+    v10 = from - toCopy;
     v4 = 0.0;
-    LODWORD(v11) = a3;
+    LODWORD(fromCopy) = from;
     do
     {
       v12 = *(p_var1 - 3);
       v13 = *p_var1 - v12 < v4 || v8 == 0;
       if (v13)
       {
-        v11 = a3;
+        fromCopy = from;
       }
 
       else
       {
-        v11 = v11;
+        fromCopy = fromCopy;
       }
 
       if (v13)
@@ -1211,7 +1211,7 @@ LABEL_40:
         v4 = *p_var1 - v12;
       }
 
-      ++a3;
+      ++from;
       --v8;
       p_var1 += 4;
     }
@@ -1219,10 +1219,10 @@ LABEL_40:
     while (v10 != v8);
   }
 
-  return [(CPCluster *)self joinLevelsFrom:v11 to:(v11 + 1), v4];
+  return [(CPCluster *)self joinLevelsFrom:fromCopy to:(fromCopy + 1), v4];
 }
 
-- (BOOL)joinLevelsFrom:(unsigned int)a3 to:(unsigned int)a4
+- (BOOL)joinLevelsFrom:(unsigned int)from to:(unsigned int)to
 {
   levels = self->levels;
   if (levels < 2)
@@ -1230,28 +1230,28 @@ LABEL_40:
     return 0;
   }
 
-  LODWORD(v7) = levels - 1;
-  if (levels <= a4)
+  LODWORD(toCopy) = levels - 1;
+  if (levels <= to)
   {
-    v7 = v7;
+    toCopy = toCopy;
   }
 
   else
   {
-    v7 = a4;
+    toCopy = to;
   }
 
-  v8 = a3 - v7;
-  if (a3 >= v7)
+  v8 = from - toCopy;
+  if (from >= toCopy)
   {
     return 0;
   }
 
   v10 = 0;
   dxStats = self->dxStats;
-  v12 = (v7 + 1);
-  v13 = v12 - a3;
-  v14 = &dxStats[a3];
+  v12 = (toCopy + 1);
+  v13 = v12 - from;
+  v14 = &dxStats[from];
   v15 = 0.0;
   v16 = v14;
   do
@@ -1266,11 +1266,11 @@ LABEL_40:
 
   while (v13);
   v14->var0 = v10;
-  v14->var2 = dxStats[v7].var2;
+  v14->var2 = dxStats[toCopy].var2;
   v14->var3 = v15 / v10;
-  memmove(&dxStats[a3 + 1], &dxStats[v12], 32 * (self->levels + ~v7));
+  memmove(&dxStats[from + 1], &dxStats[v12], 32 * (self->levels + ~toCopy));
   self->levels += v8;
-  if (!a3)
+  if (!from)
   {
     self->interClusterMinIndex = v10;
   }
@@ -1589,29 +1589,29 @@ LABEL_34:
   }
 }
 
-- (CPCluster)initWithProfile:(id *)a3
+- (CPCluster)initWithProfile:(id *)profile
 {
   v5.receiver = self;
   v5.super_class = CPCluster;
   result = [(CPCluster *)&v5 init];
   if (result)
   {
-    result->profile = a3;
+    result->profile = profile;
     result->maxClusterSpread = 1.79769313e308;
   }
 
   return result;
 }
 
-+ (unsigned)createOrderIndexFor:(double *)a3 ofSize:(unsigned int)a4
++ (unsigned)createOrderIndexFor:(double *)for ofSize:(unsigned int)size
 {
-  v6 = a4;
-  v7 = malloc_type_malloc(4 * a4, 0x100004052888210uLL);
+  sizeCopy = size;
+  v7 = malloc_type_malloc(4 * size, 0x100004052888210uLL);
   v8 = v7;
-  if (a4)
+  if (size)
   {
     v9 = 0;
-    v10 = vdupq_n_s64(v6 - 1);
+    v10 = vdupq_n_s64(sizeCopy - 1);
     v11 = xmmword_18439C760;
     v12 = xmmword_18439C670;
     v13 = v7 + 2;
@@ -1641,30 +1641,30 @@ LABEL_34:
       v13 += 4;
     }
 
-    while (((v6 + 3) & 0x1FFFFFFFCLL) != v9);
+    while (((sizeCopy + 3) & 0x1FFFFFFFCLL) != v9);
   }
 
-  qsort_r(v7, v6, 4uLL, a3, compareDoubleIndirect);
+  qsort_r(v7, sizeCopy, 4uLL, for, compareDoubleIndirect);
   return v8;
 }
 
-- (void)makeWords:(id *)a3 count:(unsigned int)a4 fromCharacterSequence:(id)a5 charOffset:(unsigned int)a6
+- (void)makeWords:(id *)words count:(unsigned int)count fromCharacterSequence:(id)sequence charOffset:(unsigned int)offset
 {
-  v8 = a4;
-  if ([(CPCluster *)self clusterCount]< a4)
+  countCopy = count;
+  if ([(CPCluster *)self clusterCount]< count)
   {
-    v8 = [(CPCluster *)self clusterCount];
+    countCopy = [(CPCluster *)self clusterCount];
   }
 
-  if (v8)
+  if (countCopy)
   {
     v11 = 0;
     v12 = 0;
-    v13 = v8;
+    v13 = countCopy;
     while (1)
     {
-      v14 = &a3[v11];
-      v14->var0 = v12 + a6;
+      v14 = &words[v11];
+      v14->var0 = v12 + offset;
       if (v12)
       {
         break;
@@ -1681,7 +1681,7 @@ LABEL_34:
       v24 = 0u;
 LABEL_16:
       v14->var1 = v18;
-      [a5 boundsFrom:v12 length:{v18, v23, v24}];
+      [sequence boundsFrom:v12 length:{v18, v23, v24}];
       v14->var4.origin.x = v19;
       v14->var4.origin.y = v20;
       v14->var4.size.width = v21;
@@ -1722,10 +1722,10 @@ LABEL_15:
   }
 }
 
-- (void)findClustersFromCharacterSequence:(id)a3 withSpaceHint:(BOOL)a4
+- (void)findClustersFromCharacterSequence:(id)sequence withSpaceHint:(BOOL)hint
 {
-  v4 = a4;
-  v7 = [a3 length];
+  hintCopy = hint;
+  v7 = [sequence length];
   v8 = v7;
   if (v7)
   {
@@ -1752,7 +1752,7 @@ LABEL_15:
   v38[1] = v11;
   v39 = 0.0;
   v40 = 0.0;
-  [a3 mapToPairsWithIndex:assembleClusterGaps passing:v38];
+  [sequence mapToPairsWithIndex:assembleClusterGaps passing:v38];
   v12 = v39;
   v13 = v40;
   v14 = v39 / 5.0;
@@ -1773,7 +1773,7 @@ LABEL_15:
     goto LABEL_10;
   }
 
-  if (!v4)
+  if (!hintCopy)
   {
 LABEL_10:
     [(CPCluster *)self applyDifferenceHints:v11 count:2];
@@ -1927,40 +1927,40 @@ LABEL_11:
   free(v11);
 }
 
-- (void)tryLevel0SplitBetween:(double)a3 and:(double)a4 usingHints:(id *)a5
+- (void)tryLevel0SplitBetween:(double)between and:(double)and usingHints:(id *)hints
 {
-  if (!a5->var0)
+  if (!hints->var0)
   {
-    a5->var0 = 1;
-    a5->var1 = a3;
-    a5->var2 = a3;
-    a5->var3 = a3;
+    hints->var0 = 1;
+    hints->var1 = between;
+    hints->var2 = between;
+    hints->var3 = between;
     goto LABEL_5;
   }
 
-  if (a5->var2 < a4)
+  if (hints->var2 < and)
   {
 LABEL_5:
-    a5[1].var0 = 1;
-    a5[1].var1 = a4;
-    a5[1].var2 = a4;
-    a5[1].var3 = a4;
+    hints[1].var0 = 1;
+    hints[1].var1 = and;
+    hints[1].var2 = and;
+    hints[1].var3 = and;
   }
 }
 
-+ (void)reclusterTextLine:(id)a3 fromWordIndex:(unsigned int)a4 count:(unsigned int *)a5
++ (void)reclusterTextLine:(id)line fromWordIndex:(unsigned int)index count:(unsigned int *)count
 {
-  if (a5 && *a5)
+  if (count && *count)
   {
-    v8 = *a5 + a4;
-    v9 = [a3 wordAtIndex:*&a4];
-    v10 = [a3 wordAtIndex:v8 - 1];
+    v8 = *count + index;
+    v9 = [line wordAtIndex:*&index];
+    v10 = [line wordAtIndex:v8 - 1];
     v11 = *v9;
     v12 = v10[1];
     v13 = *v10 - v11;
     v38 = 1.70141173e38;
     v39 = 1.70141173e38;
-    v14 = [objc_msgSend(a3 "charSequence")];
+    v14 = [objc_msgSend(line "charSequence")];
     v15 = v9[3];
     if ((v15 & 4) != 0)
     {
@@ -1975,31 +1975,31 @@ LABEL_5:
 
     v18 = [[CPCluster alloc] initWithProfile:&kCPClusterProfileCharAdvance];
     [(CPCluster *)v18 findClustersFromCharacterSequence:v14 withSpaceHint:v17];
-    v19 = [(CPCluster *)v18 clusterCount];
-    v20 = [a3 wordCount];
-    v21 = [a3 wordArrayOfSize:v20 + v19 - *a5];
+    clusterCount = [(CPCluster *)v18 clusterCount];
+    wordCount = [line wordCount];
+    v21 = [line wordArrayOfSize:wordCount + clusterCount - *count];
     v22 = v21;
-    if (*a5 != v19)
+    if (*count != clusterCount)
     {
-      if (v20 > v8)
+      if (wordCount > v8)
       {
-        memmove((v21 + 48 * a4 + 48 * v19), (v21 + 48 * v8), 48 * (v20 - v8));
+        memmove((v21 + 48 * index + 48 * clusterCount), (v21 + 48 * v8), 48 * (wordCount - v8));
       }
 
-      *a5 = v19;
+      *count = clusterCount;
     }
 
-    [(CPCluster *)v18 makeWords:v22 + 48 * a4 count:v19 fromCharacterSequence:v14 charOffset:v11];
-    v23 = [(CPCluster *)v18 levels];
-    if (!a4)
+    [(CPCluster *)v18 makeWords:v22 + 48 * index count:clusterCount fromCharacterSequence:v14 charOffset:v11];
+    levels = [(CPCluster *)v18 levels];
+    if (!index)
     {
-      [a3 setIrregular:0];
+      [line setIrregular:0];
     }
 
-    if (v23)
+    if (levels)
     {
-      [a1 clusterTextLine:a3 withCluster:v18 atLevel:v23 withMaximumWordGap:&v38 andMaximumLetterGap:&v39];
-      if (v23 == 1)
+      [self clusterTextLine:line withCluster:v18 atLevel:levels withMaximumWordGap:&v38 andMaximumLetterGap:&v39];
+      if (levels == 1)
       {
         v25 = v38;
         v24 = v39;
@@ -2007,45 +2007,45 @@ LABEL_5:
         {
           v38 = v39;
           *&v24 = v39;
-          [a3 setMaximumWordGap:{v24, v25}];
+          [line setMaximumWordGap:{v24, v25}];
         }
       }
     }
 
-    if (a4)
+    if (index)
     {
-      v26 = [a3 levels];
-      v27 = v26;
-      if (v23 && v26 >= 1)
+      levels2 = [line levels];
+      v27 = levels2;
+      if (levels && levels2 >= 1)
       {
         v28 = v39;
-        [a3 maximumLetterGap];
+        [line maximumLetterGap];
         if (v28 > v29)
         {
           HIDWORD(v30) = HIDWORD(v39);
           *&v30 = v39;
-          [a3 setMaximumLetterGap:v30];
+          [line setMaximumLetterGap:v30];
         }
 
-        if (v23 >= 2 && v27 >= 2)
+        if (levels >= 2 && v27 >= 2)
         {
           v31 = v38;
-          [a3 maximumWordGap];
+          [line maximumWordGap];
           if (v31 > v32)
           {
             HIDWORD(v33) = HIDWORD(v38);
             *&v33 = v38;
-            [a3 setMaximumWordGap:v33];
+            [line setMaximumWordGap:v33];
           }
         }
       }
 
-      if (v23 <= v27)
+      if (levels <= v27)
       {
         goto LABEL_37;
       }
 
-      [a3 setLevels:v23];
+      [line setLevels:levels];
       if (v27 != 1)
       {
         if (v27)
@@ -2055,8 +2055,8 @@ LABEL_5:
 
         HIDWORD(v34) = HIDWORD(v39);
         *&v34 = v39;
-        [a3 setMaximumLetterGap:v34];
-        if (v23 < 2)
+        [line setMaximumLetterGap:v34];
+        if (levels < 2)
         {
           goto LABEL_37;
         }
@@ -2065,15 +2065,15 @@ LABEL_5:
 
     else
     {
-      [a3 setLevels:{v23, v24, v25}];
+      [line setLevels:{levels, v24, v25}];
       HIDWORD(v35) = HIDWORD(v39);
       *&v35 = v39;
-      [a3 setMaximumLetterGap:v35];
+      [line setMaximumLetterGap:v35];
     }
 
     HIDWORD(v36) = HIDWORD(v38);
     *&v36 = v38;
-    [a3 setMaximumWordGap:v36];
+    [line setMaximumWordGap:v36];
 LABEL_37:
     [(CPCluster *)v18 dispose];
 
@@ -2081,20 +2081,20 @@ LABEL_37:
   }
 }
 
-+ (void)clusterTextLine:(id)a3
++ (void)clusterTextLine:(id)line
 {
   v13 = 1.70141173e38;
   v14 = 1.70141173e38;
   v5 = [[CPCluster alloc] initWithProfile:&kCPClusterProfileCharAdvance];
-  v6 = [a3 charSequence];
-  -[CPCluster findClustersFromCharacterSequence:withSpaceHint:](v5, "findClustersFromCharacterSequence:withSpaceHint:", v6, [a3 hasJustifiedAlignment] ^ 1);
-  v7 = [(CPCluster *)v5 clusterCount];
-  -[CPCluster makeWords:count:fromCharacterSequence:charOffset:](v5, "makeWords:count:fromCharacterSequence:charOffset:", [a3 wordArrayOfSize:v7], v7, v6, 0);
-  v8 = [(CPCluster *)v5 levels];
-  if (v8)
+  charSequence = [line charSequence];
+  -[CPCluster findClustersFromCharacterSequence:withSpaceHint:](v5, "findClustersFromCharacterSequence:withSpaceHint:", charSequence, [line hasJustifiedAlignment] ^ 1);
+  clusterCount = [(CPCluster *)v5 clusterCount];
+  -[CPCluster makeWords:count:fromCharacterSequence:charOffset:](v5, "makeWords:count:fromCharacterSequence:charOffset:", [line wordArrayOfSize:clusterCount], clusterCount, charSequence, 0);
+  levels = [(CPCluster *)v5 levels];
+  if (levels)
   {
-    [a1 clusterTextLine:a3 withCluster:v5 atLevel:v8 withMaximumWordGap:&v13 andMaximumLetterGap:&v14];
-    if (v8 == 1)
+    [self clusterTextLine:line withCluster:v5 atLevel:levels withMaximumWordGap:&v13 andMaximumLetterGap:&v14];
+    if (levels == 1)
     {
       v10 = v13;
       v9 = v14;
@@ -2105,38 +2105,38 @@ LABEL_37:
     }
   }
 
-  [a3 setLevels:{v8, v9, v10, *&v13}];
+  [line setLevels:{levels, v9, v10, *&v13}];
   HIDWORD(v11) = HIDWORD(v14);
   *&v11 = v14;
-  [a3 setMaximumLetterGap:v11];
+  [line setMaximumLetterGap:v11];
   HIDWORD(v12) = HIDWORD(v13);
   *&v12 = v13;
-  [a3 setMaximumWordGap:v12];
+  [line setMaximumWordGap:v12];
   [(CPCluster *)v5 dispose];
 }
 
-+ (void)clusterTextLine:(id)a3 withCluster:(id)a4 atLevel:(unsigned int)a5 withMaximumWordGap:(double *)a6 andMaximumLetterGap:(double *)a7
++ (void)clusterTextLine:(id)line withCluster:(id)cluster atLevel:(unsigned int)level withMaximumWordGap:(double *)gap andMaximumLetterGap:(double *)letterGap
 {
-  if (a4)
+  if (cluster)
   {
-    [a4 differenceClusterStatisticsAtIndex:0];
+    [cluster differenceClusterStatisticsAtIndex:0];
   }
 
-  *a7 = fabs(0.0) * 0.00000011920929 + 1.17549435e-38 + 0.0;
-  if (a5 >= 2)
+  *letterGap = fabs(0.0) * 0.00000011920929 + 1.17549435e-38 + 0.0;
+  if (level >= 2)
   {
-    if (a4)
+    if (cluster)
     {
-      [a4 differenceClusterStatisticsAtIndex:1];
-      *a6 = fabs(0.0) * 0.00000011920929 + 1.17549435e-38 + 0.0;
+      [cluster differenceClusterStatisticsAtIndex:1];
+      *gap = fabs(0.0) * 0.00000011920929 + 1.17549435e-38 + 0.0;
     }
 
     else
     {
-      *a6 = 1.17549435e-38;
+      *gap = 1.17549435e-38;
     }
 
-    [a3 setIrregular:{1, 0}];
+    [line setIrregular:{1, 0}];
   }
 }
 

@@ -12,8 +12,8 @@
   }
 
   v4 = a3;
-  v5 = [a1 payloadCategories];
-  v6 = [v5 containsObject:v4];
+  payloadCategories = [self payloadCategories];
+  v6 = [payloadCategories containsObject:v4];
 
   return v6;
 }

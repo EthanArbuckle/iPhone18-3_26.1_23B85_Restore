@@ -1,27 +1,27 @@
 @interface PXCuratedLibraryToggleAspectFitActionPerformer
-- (BOOL)canPerformWithActivityItems:(id)a3 forActivity:(id)a4;
-- (PXCuratedLibraryToggleAspectFitActionPerformer)initWithViewModel:(id)a3;
-- (id)localizedTitleForUseCase:(unint64_t)a3;
+- (BOOL)canPerformWithActivityItems:(id)items forActivity:(id)activity;
+- (PXCuratedLibraryToggleAspectFitActionPerformer)initWithViewModel:(id)model;
+- (id)localizedTitleForUseCase:(unint64_t)case;
 - (id)menuActionImageName;
-- (void)performActionWithCompletionHandler:(id)a3;
+- (void)performActionWithCompletionHandler:(id)handler;
 @end
 
 @implementation PXCuratedLibraryToggleAspectFitActionPerformer
 
-- (void)performActionWithCompletionHandler:(id)a3
+- (void)performActionWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(PXCuratedLibraryActionPerformer *)self viewModel];
+  handlerCopy = handler;
+  viewModel = [(PXCuratedLibraryActionPerformer *)self viewModel];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __85__PXCuratedLibraryToggleAspectFitActionPerformer_performActionWithCompletionHandler___block_invoke;
   v6[3] = &unk_1E7748B68;
   v6[4] = self;
-  [v5 performChanges:v6];
+  [viewModel performChanges:v6];
 
-  if (v4)
+  if (handlerCopy)
   {
-    v4[2](v4, 1, 0);
+    handlerCopy[2](handlerCopy, 1, 0);
   }
 }
 
@@ -35,17 +35,17 @@ void __85__PXCuratedLibraryToggleAspectFitActionPerformer_performActionWithCompl
   [v4 setUserWantsAspectFitContent:v5];
 }
 
-- (id)localizedTitleForUseCase:(unint64_t)a3
+- (id)localizedTitleForUseCase:(unint64_t)case
 {
-  v4 = [(PXCuratedLibraryActionPerformer *)self viewModel];
-  v5 = [v4 aspectFitContent];
+  viewModel = [(PXCuratedLibraryActionPerformer *)self viewModel];
+  aspectFitContent = [viewModel aspectFitContent];
 
-  if (a3 - 1 < 2)
+  if (case - 1 < 2)
   {
     v6 = @"PXLibraryAllPhotosToggleFullFramesActionTitle";
     v7 = @"PXLibraryAllPhotosToggleSquaresActionTitle";
 LABEL_5:
-    if (v5)
+    if (aspectFitContent)
     {
       v8 = v7;
     }
@@ -59,7 +59,7 @@ LABEL_5:
     goto LABEL_10;
   }
 
-  if (!a3)
+  if (!case)
   {
     v6 = @"PXLibraryAllPhotosToggleFullFrames";
     v7 = @"PXLibraryAllPhotosToggleSquares";
@@ -74,9 +74,9 @@ LABEL_10:
 
 - (id)menuActionImageName
 {
-  v2 = [(PXCuratedLibraryActionPerformer *)self viewModel];
-  v3 = [v2 zoomablePhotosViewModel];
-  if ([v3 aspectFit])
+  viewModel = [(PXCuratedLibraryActionPerformer *)self viewModel];
+  zoomablePhotosViewModel = [viewModel zoomablePhotosViewModel];
+  if ([zoomablePhotosViewModel aspectFit])
   {
     v4 = @"rectangle.arrowtriangle.2.outward";
   }
@@ -91,34 +91,34 @@ LABEL_10:
   return v4;
 }
 
-- (BOOL)canPerformWithActivityItems:(id)a3 forActivity:(id)a4
+- (BOOL)canPerformWithActivityItems:(id)items forActivity:(id)activity
 {
-  v6 = [a4 activityType];
-  v7 = [(PXCuratedLibraryToggleAspectFitActionPerformer *)self activityType];
-  v8 = v7;
-  if (v6 == v7)
+  activityType = [activity activityType];
+  activityType2 = [(PXCuratedLibraryToggleAspectFitActionPerformer *)self activityType];
+  v8 = activityType2;
+  if (activityType == activityType2)
   {
 
     goto LABEL_5;
   }
 
-  v9 = [v6 isEqualToString:v7];
+  v9 = [activityType isEqualToString:activityType2];
 
   if ((v9 & 1) == 0)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryToggleAspectFitActionPerformer.m" lineNumber:35 description:{@"Invalid parameter not satisfying: %@", @"PXStringEqualToString(activity.activityType, self.activityType)"}];
+    activityType = [MEMORY[0x1E696AAA8] currentHandler];
+    [activityType handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryToggleAspectFitActionPerformer.m" lineNumber:35 description:{@"Invalid parameter not satisfying: %@", @"PXStringEqualToString(activity.activityType, self.activityType)"}];
 LABEL_5:
   }
 
   return 1;
 }
 
-- (PXCuratedLibraryToggleAspectFitActionPerformer)initWithViewModel:(id)a3
+- (PXCuratedLibraryToggleAspectFitActionPerformer)initWithViewModel:(id)model
 {
   v4.receiver = self;
   v4.super_class = PXCuratedLibraryToggleAspectFitActionPerformer;
-  return [(PXCuratedLibraryActionPerformer *)&v4 initWithActionType:@"PXCuratedLibraryActionAllPhotosToggleAspectFit" viewModel:a3];
+  return [(PXCuratedLibraryActionPerformer *)&v4 initWithActionType:@"PXCuratedLibraryActionAllPhotosToggleAspectFit" viewModel:model];
 }
 
 @end

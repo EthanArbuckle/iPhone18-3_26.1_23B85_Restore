@@ -1,28 +1,28 @@
 @interface TSTCompletionToken
 - (TSTCanvasReferenceProvider)canvasReferenceProvider;
-- (TSTCompletionToken)initWithContext:(id)a3 completionText:(id)a4;
+- (TSTCompletionToken)initWithContext:(id)context completionText:(id)text;
 - (_NSRange)prefixRange;
-- (id)copyIntoContext:(id)a3 bakeModes:(BOOL)a4;
+- (id)copyIntoContext:(id)context bakeModes:(BOOL)modes;
 - (id)description;
 - (void)dealloc;
-- (void)loadFromArchive:(const void *)a3 unarchiver:(id)a4;
-- (void)loadFromUnarchiver:(id)a3;
-- (void)saveToArchive:(void *)a3 archiver:(id)a4;
-- (void)saveToArchiver:(id)a3;
-- (void)setCompletionText:(id)a3;
-- (void)setEditingReferenceNode:(id)a3;
-- (void)setPrefixRange:(_NSRange)a3;
+- (void)loadFromArchive:(const void *)archive unarchiver:(id)unarchiver;
+- (void)loadFromUnarchiver:(id)unarchiver;
+- (void)saveToArchive:(void *)archive archiver:(id)archiver;
+- (void)saveToArchiver:(id)archiver;
+- (void)setCompletionText:(id)text;
+- (void)setEditingReferenceNode:(id)node;
+- (void)setPrefixRange:(_NSRange)range;
 @end
 
 @implementation TSTCompletionToken
 
-- (void)setCompletionText:(id)a3
+- (void)setCompletionText:(id)text
 {
-  v18 = a3;
+  textCopy = text;
   objc_msgSend_willModify(self, v5, v6, v7, v8);
-  if (self->_completionText != v18)
+  if (self->_completionText != textCopy)
   {
-    objc_storeStrong(&self->_completionText, a3);
+    objc_storeStrong(&self->_completionText, text);
     v13 = objc_msgSend_length(self->_completionText, v9, v10, v11, v12);
     self->_prefixRange.location = 0;
     self->_prefixRange.length = v13;
@@ -30,11 +30,11 @@
   }
 }
 
-- (void)setPrefixRange:(_NSRange)a3
+- (void)setPrefixRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  objc_msgSend_willModify(self, a2, a3.location, a3.length, v3);
+  length = range.length;
+  location = range.location;
+  objc_msgSend_willModify(self, a2, range.location, range.length, v3);
   if (location != self->_prefixRange.location || length != self->_prefixRange.length)
   {
     if (location == 0x7FFFFFFFFFFFFFFFLL)
@@ -64,32 +64,32 @@
   }
 }
 
-- (void)setEditingReferenceNode:(id)a3
+- (void)setEditingReferenceNode:(id)node
 {
-  v23 = a3;
-  if (self->_editingReferenceNode != v23)
+  nodeCopy = node;
+  if (self->_editingReferenceNode != nodeCopy)
   {
     objc_msgSend_p_removeCanvasReference(self, v5, v6, v7, v8);
     objc_msgSend_setTokenAttachment_(self->_editingReferenceNode, v9, 0, v10, v11);
-    objc_storeStrong(&self->_editingReferenceNode, a3);
+    objc_storeStrong(&self->_editingReferenceNode, node);
     objc_msgSend_setTokenAttachment_(self->_editingReferenceNode, v12, self, v13, v14);
     objc_msgSend_p_createCanvasReference(self, v15, v16, v17, v18);
     objc_msgSend_invalidate(self, v19, v20, v21, v22);
   }
 }
 
-- (TSTCompletionToken)initWithContext:(id)a3 completionText:(id)a4
+- (TSTCompletionToken)initWithContext:(id)context completionText:(id)text
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  textCopy = text;
   v21.receiver = self;
   v21.super_class = TSTCompletionToken;
-  v8 = [(TSTWPTokenAttachment *)&v21 initWithContext:v6 expressionNode:0];
+  v8 = [(TSTWPTokenAttachment *)&v21 initWithContext:contextCopy expressionNode:0];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_completionText, a4);
-    v14 = objc_msgSend_length(v7, v10, v11, v12, v13);
+    objc_storeStrong(&v8->_completionText, text);
+    v14 = objc_msgSend_length(textCopy, v10, v11, v12, v13);
     v9->_prefixRange.location = 0;
     v9->_prefixRange.length = v14;
     objc_msgSend_setActive_(v9, v15, 1, v16, v17);
@@ -113,17 +113,17 @@
   [(TSTWPTokenAttachment *)&v9 dealloc];
 }
 
-- (id)copyIntoContext:(id)a3 bakeModes:(BOOL)a4
+- (id)copyIntoContext:(id)context bakeModes:(BOOL)modes
 {
-  v4 = a4;
-  v6 = a3;
+  modesCopy = modes;
+  contextCopy = context;
   v28.receiver = self;
   v28.super_class = TSTCompletionToken;
-  v7 = [(TSTWPTokenAttachment *)&v28 copyIntoContext:v6 bakeModes:v4];
+  v7 = [(TSTWPTokenAttachment *)&v28 copyIntoContext:contextCopy bakeModes:modesCopy];
   objc_msgSend_setCompletionText_(v7, v8, self->_completionText, v9, v10);
   objc_msgSend_setPrefixRange_(v7, v11, self->_prefixRange.location, self->_prefixRange.length, v12);
   *(v7 + 26) = self->_renderAsTokenType;
-  v14 = objc_msgSend_copyIntoContext_bakeModes_children_(self->_editingReferenceNode, v13, v6, v4, 0);
+  v14 = objc_msgSend_copyIntoContext_bakeModes_children_(self->_editingReferenceNode, v13, contextCopy, modesCopy, 0);
   v15 = v7[15];
   v7[15] = v14;
 
@@ -134,30 +134,30 @@
   return v7;
 }
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
-  v10 = a3;
+  unarchiverCopy = unarchiver;
   google::protobuf::internal::AssignDescriptors();
-  v7 = objc_msgSend_messageWithDescriptor_(v10, v4, off_2812E4498[238], v5, v6);
+  v7 = objc_msgSend_messageWithDescriptor_(unarchiverCopy, v4, off_2812E4498[238], v5, v6);
 
-  objc_msgSend_loadFromArchive_unarchiver_(self, v8, v7, v10, v9);
+  objc_msgSend_loadFromArchive_unarchiver_(self, v8, v7, unarchiverCopy, v9);
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
-  v9 = a3;
+  archiverCopy = archiver;
   google::protobuf::internal::AssignDescriptors();
-  v6 = objc_msgSend_messageWithNewFunction_descriptor_(v9, v4, sub_2213FC598, off_2812E4498[238], v5);
+  v6 = objc_msgSend_messageWithNewFunction_descriptor_(archiverCopy, v4, sub_2213FC598, off_2812E4498[238], v5);
 
-  objc_msgSend_saveToArchive_archiver_(self, v7, v6, v9, v8);
+  objc_msgSend_saveToArchive_archiver_(self, v7, v6, archiverCopy, v8);
 }
 
-- (void)loadFromArchive:(const void *)a3 unarchiver:(id)a4
+- (void)loadFromArchive:(const void *)archive unarchiver:(id)unarchiver
 {
-  v6 = a4;
-  if (*(a3 + 4))
+  unarchiverCopy = unarchiver;
+  if (*(archive + 4))
   {
-    v7 = *(a3 + 4);
+    v7 = *(archive + 4);
   }
 
   else
@@ -167,10 +167,10 @@
 
   v21.receiver = self;
   v21.super_class = TSTCompletionToken;
-  [(TSTWPTokenAttachment *)&v21 loadFromArchive:v7 unarchiver:v6];
-  if (*(a3 + 16))
+  [(TSTWPTokenAttachment *)&v21 loadFromArchive:v7 unarchiver:unarchiverCopy];
+  if (*(archive + 16))
   {
-    v12 = *(a3 + 3) & 0xFFFFFFFFFFFFFFFELL;
+    v12 = *(archive + 3) & 0xFFFFFFFFFFFFFFFELL;
     if (*(v12 + 23) < 0)
     {
       v12 = *v12;
@@ -187,15 +187,15 @@
   completionText = self->_completionText;
   self->_completionText = v11;
 
-  v17 = *(a3 + 4);
+  v17 = *(archive + 4);
   if ((v17 & 4) != 0)
   {
-    self->_prefixRange.length = *(a3 + 10);
+    self->_prefixRange.length = *(archive + 10);
   }
 
   if ((v17 & 8) != 0)
   {
-    v18 = *(a3 + 11);
+    v18 = *(archive + 11);
     v19 = self->_prefixRange.location + v18;
     v20 = self->_prefixRange.length - v18;
     self->_prefixRange.location = v19;
@@ -206,31 +206,31 @@
   self->_renderAsTokenType = 0;
 }
 
-- (void)saveToArchive:(void *)a3 archiver:(id)a4
+- (void)saveToArchive:(void *)archive archiver:(id)archiver
 {
-  v6 = a4;
-  *(a3 + 4) |= 2u;
-  v7 = *(a3 + 4);
+  archiverCopy = archiver;
+  *(archive + 4) |= 2u;
+  v7 = *(archive + 4);
   if (!v7)
   {
-    v8 = *(a3 + 1);
+    v8 = *(archive + 1);
     if (v8)
     {
       v8 = *(v8 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v7 = google::protobuf::Arena::CreateMaybeMessage<TST::TokenAttachmentArchive>(v8);
-    *(a3 + 4) = v7;
+    *(archive + 4) = v7;
   }
 
   v17.receiver = self;
   v17.super_class = TSTCompletionToken;
-  [(TSTWPTokenAttachment *)&v17 saveToArchive:v7 archiver:v6];
+  [(TSTWPTokenAttachment *)&v17 saveToArchive:v7 archiver:archiverCopy];
   completionText = self->_completionText;
   if (completionText)
   {
     v14 = objc_msgSend_UTF8String(completionText, v9, v10, v11, v12);
-    sub_2213FC284(a3, v14);
+    sub_2213FC284(archive, v14);
     location = self->_prefixRange.location;
     v16 = self->_prefixRange.length + location;
     if (v16 >= 0xFFFFFFFF)
@@ -243,9 +243,9 @@
       LODWORD(location) = -1;
     }
 
-    *(a3 + 4) |= 0xCu;
-    *(a3 + 10) = v16;
-    *(a3 + 11) = location;
+    *(archive + 4) |= 0xCu;
+    *(archive + 10) = v16;
+    *(archive + 11) = location;
   }
 }
 

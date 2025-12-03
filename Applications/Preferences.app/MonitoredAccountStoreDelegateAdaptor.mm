@@ -43,10 +43,10 @@
   __chkstk_darwin(v4);
   v8 = &v10 - v7;
   (*(v5 + 16))(&v10 - v7, self + OBJC_IVAR____TtC11SettingsApp36MonitoredAccountStoreDelegateAdaptor_accountsStreamContinuation, v4);
-  v9 = self;
+  selfCopy = self;
   AsyncStream.Continuation.finish()();
   (*(v5 + 8))(v8, v4);
-  v10.receiver = v9;
+  v10.receiver = selfCopy;
   v10.super_class = ObjectType;
   [(MonitoredAccountStoreDelegateAdaptor *)&v10 dealloc];
 }

@@ -1,10 +1,10 @@
 @interface SBFluidSwitcherAnimationSettings
 + (id)settingsControllerModule;
-- (double)homeScreenAlphaForMode:(int64_t)a3;
-- (double)homeScreenBlurProgressForMode:(int64_t)a3;
-- (double)homeScreenDimmingAlphaForMode:(int64_t)a3;
-- (double)homeScreenScaleForMode:(int64_t)a3;
-- (double)wallpaperScaleForMode:(int64_t)a3;
+- (double)homeScreenAlphaForMode:(int64_t)mode;
+- (double)homeScreenBlurProgressForMode:(int64_t)mode;
+- (double)homeScreenDimmingAlphaForMode:(int64_t)mode;
+- (double)homeScreenScaleForMode:(int64_t)mode;
+- (double)wallpaperScaleForMode:(int64_t)mode;
 - (void)_setEntityPresentationDefaultValues;
 - (void)_setGenieAnimationDefaultValues;
 - (void)_setHomeGestureAnimationDefaultValues;
@@ -18,142 +18,142 @@
 - (void)setDefaultValues
 {
   v173 = *MEMORY[0x277D85DE8];
-  v3 = [(SBFluidSwitcherAnimationSettings *)self layoutSettings];
-  [v3 setDefaultValues];
+  layoutSettings = [(SBFluidSwitcherAnimationSettings *)self layoutSettings];
+  [layoutSettings setDefaultValues];
 
-  v4 = [(SBFluidSwitcherAnimationSettings *)self layoutSettings];
+  layoutSettings2 = [(SBFluidSwitcherAnimationSettings *)self layoutSettings];
   v174 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-  [v4 setFrameRateRange:1114113 highFrameRateReason:{*&v174.minimum, *&v174.maximum, *&v174.preferred}];
+  [layoutSettings2 setFrameRateRange:1114113 highFrameRateReason:{*&v174.minimum, *&v174.maximum, *&v174.preferred}];
 
-  v5 = [(SBFluidSwitcherAnimationSettings *)self zoomUpSettings];
-  [v5 setDefaultCriticallyDampedValues];
+  zoomUpSettings = [(SBFluidSwitcherAnimationSettings *)self zoomUpSettings];
+  [zoomUpSettings setDefaultCriticallyDampedValues];
 
-  v6 = [(SBFluidSwitcherAnimationSettings *)self zoomUpSettings];
+  zoomUpSettings2 = [(SBFluidSwitcherAnimationSettings *)self zoomUpSettings];
   v175 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-  [v6 setFrameRateRange:1114114 highFrameRateReason:{*&v175.minimum, *&v175.maximum, *&v175.preferred}];
+  [zoomUpSettings2 setFrameRateRange:1114114 highFrameRateReason:{*&v175.minimum, *&v175.maximum, *&v175.preferred}];
 
-  v7 = [(SBFluidSwitcherAnimationSettings *)self iconZoomDownSettings];
-  [v7 setDefaultCriticallyDampedValues];
+  iconZoomDownSettings = [(SBFluidSwitcherAnimationSettings *)self iconZoomDownSettings];
+  [iconZoomDownSettings setDefaultCriticallyDampedValues];
 
-  v8 = [(SBFluidSwitcherAnimationSettings *)self centerZoomSettings];
-  [v8 setDefaultCriticallyDampedValues];
+  centerZoomSettings = [(SBFluidSwitcherAnimationSettings *)self centerZoomSettings];
+  [centerZoomSettings setDefaultCriticallyDampedValues];
 
-  v9 = [(SBFluidSwitcherAnimationSettings *)self centerZoomSettings];
+  centerZoomSettings2 = [(SBFluidSwitcherAnimationSettings *)self centerZoomSettings];
   v176 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-  [v9 setFrameRateRange:1114113 highFrameRateReason:{*&v176.minimum, *&v176.maximum, *&v176.preferred}];
+  [centerZoomSettings2 setFrameRateRange:1114113 highFrameRateReason:{*&v176.minimum, *&v176.maximum, *&v176.preferred}];
 
-  v10 = [(SBFluidSwitcherAnimationSettings *)self slideOverSettings];
-  [v10 setDefaultCriticallyDampedValues];
+  slideOverSettings = [(SBFluidSwitcherAnimationSettings *)self slideOverSettings];
+  [slideOverSettings setDefaultCriticallyDampedValues];
 
-  v11 = [(SBFluidSwitcherAnimationSettings *)self slideOverSettings];
+  slideOverSettings2 = [(SBFluidSwitcherAnimationSettings *)self slideOverSettings];
   v177 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-  [v11 setFrameRateRange:1114113 highFrameRateReason:{*&v177.minimum, *&v177.maximum, *&v177.preferred}];
+  [slideOverSettings2 setFrameRateRange:1114113 highFrameRateReason:{*&v177.minimum, *&v177.maximum, *&v177.preferred}];
 
-  v12 = [(SBFluidSwitcherAnimationSettings *)self toggleAppSwitcherSettings];
-  [v12 setDefaultCriticallyDampedValues];
+  toggleAppSwitcherSettings = [(SBFluidSwitcherAnimationSettings *)self toggleAppSwitcherSettings];
+  [toggleAppSwitcherSettings setDefaultCriticallyDampedValues];
 
-  v13 = [(SBFluidSwitcherAnimationSettings *)self toggleAppSwitcherSettings];
+  toggleAppSwitcherSettings2 = [(SBFluidSwitcherAnimationSettings *)self toggleAppSwitcherSettings];
   v178 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-  [v13 setFrameRateRange:1114113 highFrameRateReason:{*&v178.minimum, *&v178.maximum, *&v178.preferred}];
+  [toggleAppSwitcherSettings2 setFrameRateRange:1114113 highFrameRateReason:{*&v178.minimum, *&v178.maximum, *&v178.preferred}];
 
-  v14 = [(SBFluidSwitcherAnimationSettings *)self launchAppFromSwitcherSettings];
-  [v14 setDefaultCriticallyDampedValues];
+  launchAppFromSwitcherSettings = [(SBFluidSwitcherAnimationSettings *)self launchAppFromSwitcherSettings];
+  [launchAppFromSwitcherSettings setDefaultCriticallyDampedValues];
 
-  v15 = [(SBFluidSwitcherAnimationSettings *)self launchAppFromSwitcherSettings];
+  launchAppFromSwitcherSettings2 = [(SBFluidSwitcherAnimationSettings *)self launchAppFromSwitcherSettings];
   v179 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-  [v15 setFrameRateRange:1114114 highFrameRateReason:{*&v179.minimum, *&v179.maximum, *&v179.preferred}];
+  [launchAppFromSwitcherSettings2 setFrameRateRange:1114114 highFrameRateReason:{*&v179.minimum, *&v179.maximum, *&v179.preferred}];
 
-  v16 = [(SBFluidSwitcherAnimationSettings *)self continuityBannerSlideUpSettings];
-  [v16 setDampingRatio:1.0];
+  continuityBannerSlideUpSettings = [(SBFluidSwitcherAnimationSettings *)self continuityBannerSlideUpSettings];
+  [continuityBannerSlideUpSettings setDampingRatio:1.0];
 
-  v17 = [(SBFluidSwitcherAnimationSettings *)self continuityBannerSlideUpSettings];
-  [v17 setResponse:0.4];
+  continuityBannerSlideUpSettings2 = [(SBFluidSwitcherAnimationSettings *)self continuityBannerSlideUpSettings];
+  [continuityBannerSlideUpSettings2 setResponse:0.4];
 
-  v18 = [(SBFluidSwitcherAnimationSettings *)self continuityBannerSlideUpSettings];
+  continuityBannerSlideUpSettings3 = [(SBFluidSwitcherAnimationSettings *)self continuityBannerSlideUpSettings];
   v180 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-  [v18 setFrameRateRange:1114114 highFrameRateReason:{*&v180.minimum, *&v180.maximum, *&v180.preferred}];
+  [continuityBannerSlideUpSettings3 setFrameRateRange:1114114 highFrameRateReason:{*&v180.minimum, *&v180.maximum, *&v180.preferred}];
 
-  v19 = [(SBFluidSwitcherAnimationSettings *)self stackedSwitcherTrackingSettings];
-  [v19 setTrackingDampingRatio:1.2];
+  stackedSwitcherTrackingSettings = [(SBFluidSwitcherAnimationSettings *)self stackedSwitcherTrackingSettings];
+  [stackedSwitcherTrackingSettings setTrackingDampingRatio:1.2];
 
-  v20 = [(SBFluidSwitcherAnimationSettings *)self stackedSwitcherTrackingSettings];
-  [v20 setTrackingResponse:0.14];
+  stackedSwitcherTrackingSettings2 = [(SBFluidSwitcherAnimationSettings *)self stackedSwitcherTrackingSettings];
+  [stackedSwitcherTrackingSettings2 setTrackingResponse:0.14];
 
-  v21 = [(SBFluidSwitcherAnimationSettings *)self stackedSwitcherTrackingSettings];
+  stackedSwitcherTrackingSettings3 = [(SBFluidSwitcherAnimationSettings *)self stackedSwitcherTrackingSettings];
   v181 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-  [v21 setFrameRateRange:1114113 highFrameRateReason:{*&v181.minimum, *&v181.maximum, *&v181.preferred}];
+  [stackedSwitcherTrackingSettings3 setFrameRateRange:1114113 highFrameRateReason:{*&v181.minimum, *&v181.maximum, *&v181.preferred}];
 
-  v22 = [(SBFluidSwitcherAnimationSettings *)self splitViewHandleFadeOutSettings];
-  [v22 setDampingRatio:1.0];
+  splitViewHandleFadeOutSettings = [(SBFluidSwitcherAnimationSettings *)self splitViewHandleFadeOutSettings];
+  [splitViewHandleFadeOutSettings setDampingRatio:1.0];
 
-  v23 = [(SBFluidSwitcherAnimationSettings *)self splitViewHandleFadeOutSettings];
-  [v23 setResponse:0.08];
+  splitViewHandleFadeOutSettings2 = [(SBFluidSwitcherAnimationSettings *)self splitViewHandleFadeOutSettings];
+  [splitViewHandleFadeOutSettings2 setResponse:0.08];
 
-  v24 = [(SBFluidSwitcherAnimationSettings *)self splitViewHandleFadeOutSettings];
+  splitViewHandleFadeOutSettings3 = [(SBFluidSwitcherAnimationSettings *)self splitViewHandleFadeOutSettings];
   v182 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-  [v24 setFrameRateRange:1114113 highFrameRateReason:{*&v182.minimum, *&v182.maximum, *&v182.preferred}];
+  [splitViewHandleFadeOutSettings3 setFrameRateRange:1114113 highFrameRateReason:{*&v182.minimum, *&v182.maximum, *&v182.preferred}];
 
-  v25 = [(SBFluidSwitcherAnimationSettings *)self splitViewHandleFadeInSettings];
-  [v25 setDampingRatio:1.0];
+  splitViewHandleFadeInSettings = [(SBFluidSwitcherAnimationSettings *)self splitViewHandleFadeInSettings];
+  [splitViewHandleFadeInSettings setDampingRatio:1.0];
 
-  v26 = [(SBFluidSwitcherAnimationSettings *)self splitViewHandleFadeInSettings];
-  [v26 setResponse:0.3];
+  splitViewHandleFadeInSettings2 = [(SBFluidSwitcherAnimationSettings *)self splitViewHandleFadeInSettings];
+  [splitViewHandleFadeInSettings2 setResponse:0.3];
 
-  v27 = [(SBFluidSwitcherAnimationSettings *)self splitViewHandleFadeInSettings];
+  splitViewHandleFadeInSettings3 = [(SBFluidSwitcherAnimationSettings *)self splitViewHandleFadeInSettings];
   v183 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-  [v27 setFrameRateRange:1114113 highFrameRateReason:{*&v183.minimum, *&v183.maximum, *&v183.preferred}];
+  [splitViewHandleFadeInSettings3 setFrameRateRange:1114113 highFrameRateReason:{*&v183.minimum, *&v183.maximum, *&v183.preferred}];
 
   [(SBFluidSwitcherAnimationSettings *)self _setTopAffordanceTransitionDefaultValues];
   [(SBFluidSwitcherAnimationSettings *)self _setEntityPresentationDefaultValues];
   [(SBFluidSwitcherAnimationSettings *)self _setKeyboardShortcutDefaultValues];
   [(SBFluidSwitcherAnimationSettings *)self _setGenieAnimationDefaultValues];
   [(SBFluidSwitcherAnimationSettings *)self _setHomeGestureAnimationDefaultValues];
-  v28 = [(SBFluidSwitcherAnimationSettings *)self dosidoSettings];
-  [v28 setDampingRatio:1.0];
+  dosidoSettings = [(SBFluidSwitcherAnimationSettings *)self dosidoSettings];
+  [dosidoSettings setDampingRatio:1.0];
 
-  v29 = [(SBFluidSwitcherAnimationSettings *)self dosidoSettings];
-  [v29 setResponse:0.442];
+  dosidoSettings2 = [(SBFluidSwitcherAnimationSettings *)self dosidoSettings];
+  [dosidoSettings2 setResponse:0.442];
 
-  v30 = [(SBFluidSwitcherAnimationSettings *)self dosidoSettings];
+  dosidoSettings3 = [(SBFluidSwitcherAnimationSettings *)self dosidoSettings];
   v184 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-  [v30 setFrameRateRange:1114116 highFrameRateReason:{*&v184.minimum, *&v184.maximum, *&v184.preferred}];
+  [dosidoSettings3 setFrameRateRange:1114116 highFrameRateReason:{*&v184.minimum, *&v184.maximum, *&v184.preferred}];
 
-  v31 = [(SBFluidSwitcherAnimationSettings *)self dosidoScaleDownSettings];
-  [v31 setDampingRatio:1.0];
+  dosidoScaleDownSettings = [(SBFluidSwitcherAnimationSettings *)self dosidoScaleDownSettings];
+  [dosidoScaleDownSettings setDampingRatio:1.0];
 
-  v32 = [(SBFluidSwitcherAnimationSettings *)self dosidoScaleDownSettings];
-  [v32 setResponse:0.331];
+  dosidoScaleDownSettings2 = [(SBFluidSwitcherAnimationSettings *)self dosidoScaleDownSettings];
+  [dosidoScaleDownSettings2 setResponse:0.331];
 
-  v33 = [(SBFluidSwitcherAnimationSettings *)self dosidoScaleDownSettings];
+  dosidoScaleDownSettings3 = [(SBFluidSwitcherAnimationSettings *)self dosidoScaleDownSettings];
   v185 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-  [v33 setFrameRateRange:1114116 highFrameRateReason:{*&v185.minimum, *&v185.maximum, *&v185.preferred}];
+  [dosidoScaleDownSettings3 setFrameRateRange:1114116 highFrameRateReason:{*&v185.minimum, *&v185.maximum, *&v185.preferred}];
 
-  v34 = [(SBFluidSwitcherAnimationSettings *)self dosidoScaleUpSettings];
-  [v34 setDampingRatio:1.0];
+  dosidoScaleUpSettings = [(SBFluidSwitcherAnimationSettings *)self dosidoScaleUpSettings];
+  [dosidoScaleUpSettings setDampingRatio:1.0];
 
-  v35 = [(SBFluidSwitcherAnimationSettings *)self dosidoScaleUpSettings];
-  [v35 setResponse:0.491];
+  dosidoScaleUpSettings2 = [(SBFluidSwitcherAnimationSettings *)self dosidoScaleUpSettings];
+  [dosidoScaleUpSettings2 setResponse:0.491];
 
-  v36 = [(SBFluidSwitcherAnimationSettings *)self dosidoScaleUpSettings];
+  dosidoScaleUpSettings3 = [(SBFluidSwitcherAnimationSettings *)self dosidoScaleUpSettings];
   v186 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-  [v36 setFrameRateRange:1114116 highFrameRateReason:{*&v186.minimum, *&v186.maximum, *&v186.preferred}];
+  [dosidoScaleUpSettings3 setFrameRateRange:1114116 highFrameRateReason:{*&v186.minimum, *&v186.maximum, *&v186.preferred}];
 
   [(SBFluidSwitcherAnimationSettings *)self setDosidoScale:0.8];
   [(SBFluidSwitcherAnimationSettings *)self setDosidoScaleUpDelay:0.137];
-  v37 = [(SBFluidSwitcherAnimationSettings *)self crossblurDosidoSettings];
-  [v37 setDampingRatio:1.0];
+  crossblurDosidoSettings = [(SBFluidSwitcherAnimationSettings *)self crossblurDosidoSettings];
+  [crossblurDosidoSettings setDampingRatio:1.0];
 
-  v38 = [(SBFluidSwitcherAnimationSettings *)self crossblurDosidoSettings];
-  [v38 setResponse:0.442];
+  crossblurDosidoSettings2 = [(SBFluidSwitcherAnimationSettings *)self crossblurDosidoSettings];
+  [crossblurDosidoSettings2 setResponse:0.442];
 
-  v39 = [(SBFluidSwitcherAnimationSettings *)self crossblurDosidoSettings];
+  crossblurDosidoSettings3 = [(SBFluidSwitcherAnimationSettings *)self crossblurDosidoSettings];
   v187 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-  [v39 setFrameRateRange:1114116 highFrameRateReason:{*&v187.minimum, *&v187.maximum, *&v187.preferred}];
+  [crossblurDosidoSettings3 setFrameRateRange:1114116 highFrameRateReason:{*&v187.minimum, *&v187.maximum, *&v187.preferred}];
 
-  v40 = [MEMORY[0x277D75418] currentDevice];
-  v41 = [v40 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  [(SBFluidSwitcherAnimationSettings *)self setCrossblurDosidoSmallScale:dbl_21F8A5730[(v41 & 0xFFFFFFFFFFFFFFFBLL) == 1]];
+  [(SBFluidSwitcherAnimationSettings *)self setCrossblurDosidoSmallScale:dbl_21F8A5730[(userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1]];
   if (__sb__runningInSpringBoard())
   {
     v42 = SBFEffectiveDeviceClass();
@@ -168,10 +168,10 @@
 
   else
   {
-    v44 = [MEMORY[0x277D75418] currentDevice];
-    v45 = [v44 userInterfaceIdiom];
+    currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom2 = [currentDevice2 userInterfaceIdiom];
     v46 = 0.92;
-    if (v45 != 1)
+    if (userInterfaceIdiom2 != 1)
     {
       v46 = 0.5;
     }
@@ -182,11 +182,11 @@
   [(SBFluidSwitcherAnimationSettings *)self setCrossblurDosidoLargeScale:1.1];
   [(SBFluidSwitcherAnimationSettings *)self setCrossblurDosidoBlurRadius:6.0];
   [(SBFluidSwitcherAnimationSettings *)self setCrossblurRasterizationScale:0.8];
-  v47 = [(SBFluidSwitcherAnimationSettings *)self crossfadeDosidoSettings];
-  [v47 setDampingRatio:1.0];
+  crossfadeDosidoSettings = [(SBFluidSwitcherAnimationSettings *)self crossfadeDosidoSettings];
+  [crossfadeDosidoSettings setDampingRatio:1.0];
 
-  v48 = [(SBFluidSwitcherAnimationSettings *)self crossfadeDosidoSettings];
-  [v48 setResponse:0.24];
+  crossfadeDosidoSettings2 = [(SBFluidSwitcherAnimationSettings *)self crossfadeDosidoSettings];
+  [crossfadeDosidoSettings2 setResponse:0.24];
 
   [(SBFluidSwitcherAnimationSettings *)self setAppToSwitcherTransitionMinCardScaleFactor:0.97];
   [(SBFluidSwitcherAnimationSettings *)self setDisableAsyncRenderingTransitionPercentage:0.6];
@@ -195,305 +195,305 @@
   [(SBFluidSwitcherAnimationSettings *)self setDockHurdlingIconZoomInitialVelocity:-4500.0];
   [(SBFluidSwitcherAnimationSettings *)self setDockHurdlingIconZoomDockToBackTiming:?];
   [(SBFluidSwitcherAnimationSettings *)self setDockHurdlingIconZoomDockToFrontTiming:0.215];
-  v49 = [(SBFluidSwitcherAnimationSettings *)self backdropBlurSettings];
-  [v49 setBehaviorType:1];
+  backdropBlurSettings = [(SBFluidSwitcherAnimationSettings *)self backdropBlurSettings];
+  [backdropBlurSettings setBehaviorType:1];
 
-  v50 = [(SBFluidSwitcherAnimationSettings *)self backdropBlurSettings];
-  [v50 setDampingRatio:0.776];
+  backdropBlurSettings2 = [(SBFluidSwitcherAnimationSettings *)self backdropBlurSettings];
+  [backdropBlurSettings2 setDampingRatio:0.776];
 
-  v51 = [(SBFluidSwitcherAnimationSettings *)self backdropBlurSettings];
-  [v51 setResponse:0.574];
+  backdropBlurSettings3 = [(SBFluidSwitcherAnimationSettings *)self backdropBlurSettings];
+  [backdropBlurSettings3 setResponse:0.574];
 
-  v52 = [(SBFluidSwitcherAnimationSettings *)self backdropBlurSettings];
-  [v52 setRetargetImpulse:0.006];
+  backdropBlurSettings4 = [(SBFluidSwitcherAnimationSettings *)self backdropBlurSettings];
+  [backdropBlurSettings4 setRetargetImpulse:0.006];
 
-  v53 = [(SBFluidSwitcherAnimationSettings *)self homeScreenOpacitySettings];
-  [v53 setBehaviorType:1];
+  homeScreenOpacitySettings = [(SBFluidSwitcherAnimationSettings *)self homeScreenOpacitySettings];
+  [homeScreenOpacitySettings setBehaviorType:1];
 
-  v54 = [(SBFluidSwitcherAnimationSettings *)self homeScreenOpacitySettings];
-  [v54 setDampingRatio:1.0];
+  homeScreenOpacitySettings2 = [(SBFluidSwitcherAnimationSettings *)self homeScreenOpacitySettings];
+  [homeScreenOpacitySettings2 setDampingRatio:1.0];
 
-  v55 = [(SBFluidSwitcherAnimationSettings *)self homeScreenOpacitySettings];
-  [v55 setResponse:0.23];
+  homeScreenOpacitySettings3 = [(SBFluidSwitcherAnimationSettings *)self homeScreenOpacitySettings];
+  [homeScreenOpacitySettings3 setResponse:0.23];
 
-  v56 = [(SBFluidSwitcherAnimationSettings *)self homeScreenScaleSettings];
-  [v56 setBehaviorType:2];
+  homeScreenScaleSettings = [(SBFluidSwitcherAnimationSettings *)self homeScreenScaleSettings];
+  [homeScreenScaleSettings setBehaviorType:2];
 
-  v57 = [(SBFluidSwitcherAnimationSettings *)self homeScreenScaleSettings];
-  [v57 setDampingRatio:0.783];
+  homeScreenScaleSettings2 = [(SBFluidSwitcherAnimationSettings *)self homeScreenScaleSettings];
+  [homeScreenScaleSettings2 setDampingRatio:0.783];
 
-  v58 = [(SBFluidSwitcherAnimationSettings *)self homeScreenScaleSettings];
-  [v58 setResponse:0.702];
+  homeScreenScaleSettings3 = [(SBFluidSwitcherAnimationSettings *)self homeScreenScaleSettings];
+  [homeScreenScaleSettings3 setResponse:0.702];
 
-  v59 = [(SBFluidSwitcherAnimationSettings *)self homeScreenScaleSettings];
+  homeScreenScaleSettings4 = [(SBFluidSwitcherAnimationSettings *)self homeScreenScaleSettings];
   v188 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-  [v59 setFrameRateRange:1114117 highFrameRateReason:{*&v188.minimum, *&v188.maximum, *&v188.preferred}];
+  [homeScreenScaleSettings4 setFrameRateRange:1114117 highFrameRateReason:{*&v188.minimum, *&v188.maximum, *&v188.preferred}];
 
-  v60 = [(SBFluidSwitcherAnimationSettings *)self opacitySettings];
-  [v60 setBehaviorType:1];
+  opacitySettings = [(SBFluidSwitcherAnimationSettings *)self opacitySettings];
+  [opacitySettings setBehaviorType:1];
 
-  v61 = [(SBFluidSwitcherAnimationSettings *)self opacitySettings];
-  [v61 setDampingRatio:1.0];
+  opacitySettings2 = [(SBFluidSwitcherAnimationSettings *)self opacitySettings];
+  [opacitySettings2 setDampingRatio:1.0];
 
-  v62 = [(SBFluidSwitcherAnimationSettings *)self opacitySettings];
-  [v62 setResponse:0.314];
+  opacitySettings3 = [(SBFluidSwitcherAnimationSettings *)self opacitySettings];
+  [opacitySettings3 setResponse:0.314];
 
-  v63 = [(SBFluidSwitcherAnimationSettings *)self centerZoomOpacitySettings];
-  [v63 setBehaviorType:1];
+  centerZoomOpacitySettings = [(SBFluidSwitcherAnimationSettings *)self centerZoomOpacitySettings];
+  [centerZoomOpacitySettings setBehaviorType:1];
 
-  v64 = [(SBFluidSwitcherAnimationSettings *)self centerZoomOpacitySettings];
-  [v64 setDampingRatio:4.33];
+  centerZoomOpacitySettings2 = [(SBFluidSwitcherAnimationSettings *)self centerZoomOpacitySettings];
+  [centerZoomOpacitySettings2 setDampingRatio:4.33];
 
-  v65 = [(SBFluidSwitcherAnimationSettings *)self centerZoomOpacitySettings];
-  [v65 setResponse:0.1];
+  centerZoomOpacitySettings3 = [(SBFluidSwitcherAnimationSettings *)self centerZoomOpacitySettings];
+  [centerZoomOpacitySettings3 setResponse:0.1];
 
-  v66 = [(SBFluidSwitcherAnimationSettings *)self swipeToKillOpacitySettings];
-  [v66 setBehaviorType:1];
+  swipeToKillOpacitySettings = [(SBFluidSwitcherAnimationSettings *)self swipeToKillOpacitySettings];
+  [swipeToKillOpacitySettings setBehaviorType:1];
 
-  v67 = [(SBFluidSwitcherAnimationSettings *)self swipeToKillOpacitySettings];
-  [v67 setDampingRatio:1.0];
+  swipeToKillOpacitySettings2 = [(SBFluidSwitcherAnimationSettings *)self swipeToKillOpacitySettings];
+  [swipeToKillOpacitySettings2 setDampingRatio:1.0];
 
-  v68 = [(SBFluidSwitcherAnimationSettings *)self swipeToKillOpacitySettings];
-  [v68 setResponse:0.25];
+  swipeToKillOpacitySettings3 = [(SBFluidSwitcherAnimationSettings *)self swipeToKillOpacitySettings];
+  [swipeToKillOpacitySettings3 setResponse:0.25];
 
-  v69 = [(SBFluidSwitcherAnimationSettings *)self wallpaperScaleSettings];
-  [v69 setBehaviorType:1];
+  wallpaperScaleSettings = [(SBFluidSwitcherAnimationSettings *)self wallpaperScaleSettings];
+  [wallpaperScaleSettings setBehaviorType:1];
 
-  v70 = [(SBFluidSwitcherAnimationSettings *)self wallpaperScaleSettings];
-  [v70 setDampingRatio:1.0];
+  wallpaperScaleSettings2 = [(SBFluidSwitcherAnimationSettings *)self wallpaperScaleSettings];
+  [wallpaperScaleSettings2 setDampingRatio:1.0];
 
-  v71 = [(SBFluidSwitcherAnimationSettings *)self wallpaperScaleSettings];
-  [v71 setResponse:0.75];
+  wallpaperScaleSettings3 = [(SBFluidSwitcherAnimationSettings *)self wallpaperScaleSettings];
+  [wallpaperScaleSettings3 setResponse:0.75];
 
-  v72 = [(SBFluidSwitcherAnimationSettings *)self appSelectionSquishSettings];
-  [v72 setBehaviorType:1];
+  appSelectionSquishSettings = [(SBFluidSwitcherAnimationSettings *)self appSelectionSquishSettings];
+  [appSelectionSquishSettings setBehaviorType:1];
 
-  v73 = [(SBFluidSwitcherAnimationSettings *)self appSelectionSquishSettings];
-  [v73 setDampingRatio:0.975];
+  appSelectionSquishSettings2 = [(SBFluidSwitcherAnimationSettings *)self appSelectionSquishSettings];
+  [appSelectionSquishSettings2 setDampingRatio:0.975];
 
-  v74 = [(SBFluidSwitcherAnimationSettings *)self appSelectionSquishSettings];
-  [v74 setResponse:0.35];
+  appSelectionSquishSettings3 = [(SBFluidSwitcherAnimationSettings *)self appSelectionSquishSettings];
+  [appSelectionSquishSettings3 setResponse:0.35];
 
-  v75 = [(SBFluidSwitcherAnimationSettings *)self appSelectionSquishSettings];
+  appSelectionSquishSettings4 = [(SBFluidSwitcherAnimationSettings *)self appSelectionSquishSettings];
   v189 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-  [v75 setFrameRateRange:1114113 highFrameRateReason:{*&v189.minimum, *&v189.maximum, *&v189.preferred}];
+  [appSelectionSquishSettings4 setFrameRateRange:1114113 highFrameRateReason:{*&v189.minimum, *&v189.maximum, *&v189.preferred}];
 
-  v76 = [(SBFluidSwitcherAnimationSettings *)self statusBarFadeInSettings];
-  [v76 setDefaultValues];
+  statusBarFadeInSettings = [(SBFluidSwitcherAnimationSettings *)self statusBarFadeInSettings];
+  [statusBarFadeInSettings setDefaultValues];
 
-  v77 = [(SBFluidSwitcherAnimationSettings *)self statusBarFadeInSettings];
-  [v77 setDampingRatio:1.0];
+  statusBarFadeInSettings2 = [(SBFluidSwitcherAnimationSettings *)self statusBarFadeInSettings];
+  [statusBarFadeInSettings2 setDampingRatio:1.0];
 
-  v78 = [(SBFluidSwitcherAnimationSettings *)self statusBarFadeInSettings];
-  [v78 setResponse:0.6];
+  statusBarFadeInSettings3 = [(SBFluidSwitcherAnimationSettings *)self statusBarFadeInSettings];
+  [statusBarFadeInSettings3 setResponse:0.6];
 
-  v79 = [(SBFluidSwitcherAnimationSettings *)self statusBarFadeOutSettings];
-  [v79 setDefaultValues];
+  statusBarFadeOutSettings = [(SBFluidSwitcherAnimationSettings *)self statusBarFadeOutSettings];
+  [statusBarFadeOutSettings setDefaultValues];
 
-  v80 = [(SBFluidSwitcherAnimationSettings *)self statusBarFadeOutSettings];
-  [v80 setDampingRatio:1.0];
+  statusBarFadeOutSettings2 = [(SBFluidSwitcherAnimationSettings *)self statusBarFadeOutSettings];
+  [statusBarFadeOutSettings2 setDampingRatio:1.0];
 
-  v81 = [(SBFluidSwitcherAnimationSettings *)self statusBarFadeOutSettings];
-  [v81 setResponse:0.4];
+  statusBarFadeOutSettings3 = [(SBFluidSwitcherAnimationSettings *)self statusBarFadeOutSettings];
+  [statusBarFadeOutSettings3 setResponse:0.4];
 
   [(SBFluidSwitcherAnimationSettings *)self setStatusBarToApexBounceAnimationDuration:0.2];
   [(SBFluidSwitcherAnimationSettings *)self setStatusBarFromApexBounceAnimationDuration:0.8];
-  v82 = [(SBFluidSwitcherAnimationSettings *)self reopenButtonScaleSettings];
-  [v82 setDefaultValues];
+  reopenButtonScaleSettings = [(SBFluidSwitcherAnimationSettings *)self reopenButtonScaleSettings];
+  [reopenButtonScaleSettings setDefaultValues];
 
-  v83 = [(SBFluidSwitcherAnimationSettings *)self reopenButtonScaleSettings];
-  [v83 setDampingRatio:0.75];
+  reopenButtonScaleSettings2 = [(SBFluidSwitcherAnimationSettings *)self reopenButtonScaleSettings];
+  [reopenButtonScaleSettings2 setDampingRatio:0.75];
 
-  v84 = [(SBFluidSwitcherAnimationSettings *)self reopenButtonScaleSettings];
-  [v84 setResponse:0.375];
+  reopenButtonScaleSettings3 = [(SBFluidSwitcherAnimationSettings *)self reopenButtonScaleSettings];
+  [reopenButtonScaleSettings3 setResponse:0.375];
 
   [(SBFluidSwitcherAnimationSettings *)self setReopenButtonInitialScale:?];
   [(SBFluidSwitcherAnimationSettings *)self setReopenButtonFadeInDelay:0.3];
-  v85 = [(SBFluidSwitcherAnimationSettings *)self alertCardifiedDismissalSettings];
-  [v85 setDefaultValues];
+  alertCardifiedDismissalSettings = [(SBFluidSwitcherAnimationSettings *)self alertCardifiedDismissalSettings];
+  [alertCardifiedDismissalSettings setDefaultValues];
 
-  v86 = [(SBFluidSwitcherAnimationSettings *)self alertCardifiedDismissalSettings];
-  [v86 setDampingRatio:0.748];
+  alertCardifiedDismissalSettings2 = [(SBFluidSwitcherAnimationSettings *)self alertCardifiedDismissalSettings];
+  [alertCardifiedDismissalSettings2 setDampingRatio:0.748];
 
-  v87 = [(SBFluidSwitcherAnimationSettings *)self alertCardifiedDismissalSettings];
-  [v87 setResponse:0.435];
+  alertCardifiedDismissalSettings3 = [(SBFluidSwitcherAnimationSettings *)self alertCardifiedDismissalSettings];
+  [alertCardifiedDismissalSettings3 setResponse:0.435];
 
-  v88 = [(SBFluidSwitcherAnimationSettings *)self alertCardifiedDismissalSettings];
-  [v88 setSmoothingAndProjectionEnabled:1];
+  alertCardifiedDismissalSettings4 = [(SBFluidSwitcherAnimationSettings *)self alertCardifiedDismissalSettings];
+  [alertCardifiedDismissalSettings4 setSmoothingAndProjectionEnabled:1];
 
-  v89 = [(SBFluidSwitcherAnimationSettings *)self alertCardifiedDismissalSettings];
-  [v89 setInertialTargetSmoothingRatio:0.4];
+  alertCardifiedDismissalSettings5 = [(SBFluidSwitcherAnimationSettings *)self alertCardifiedDismissalSettings];
+  [alertCardifiedDismissalSettings5 setInertialTargetSmoothingRatio:0.4];
 
-  v90 = [(SBFluidSwitcherAnimationSettings *)self alertCardifiedDismissalSettings];
-  [v90 setInertialProjectionDeceleration:0.995];
+  alertCardifiedDismissalSettings6 = [(SBFluidSwitcherAnimationSettings *)self alertCardifiedDismissalSettings];
+  [alertCardifiedDismissalSettings6 setInertialProjectionDeceleration:0.995];
 
   [(SBFluidSwitcherAnimationSettings *)self setAlertCardifiedDismissHapticDelay:0.34];
   [(SBFluidSwitcherAnimationSettings *)self setAlertCardifiedDismissZoomOutDelay:0.1];
   [(SBFluidSwitcherAnimationSettings *)self setAlertCardifiedDismissClientAnimationsDelay:0.2];
-  v91 = [(SBFluidSwitcherAnimationSettings *)self alertCardifiedDismissalSettings];
+  alertCardifiedDismissalSettings7 = [(SBFluidSwitcherAnimationSettings *)self alertCardifiedDismissalSettings];
   v190 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-  [v91 setFrameRateRange:1114115 highFrameRateReason:{*&v190.minimum, *&v190.maximum, *&v190.preferred}];
+  [alertCardifiedDismissalSettings7 setFrameRateRange:1114115 highFrameRateReason:{*&v190.minimum, *&v190.maximum, *&v190.preferred}];
 
-  v92 = [(SBFluidSwitcherAnimationSettings *)self alertBarSwipeDismissalSettings];
-  [v92 setDefaultValues];
+  alertBarSwipeDismissalSettings = [(SBFluidSwitcherAnimationSettings *)self alertBarSwipeDismissalSettings];
+  [alertBarSwipeDismissalSettings setDefaultValues];
 
-  v93 = [(SBFluidSwitcherAnimationSettings *)self alertBarSwipeDismissalSettings];
-  [v93 setDampingRatio:0.471];
+  alertBarSwipeDismissalSettings2 = [(SBFluidSwitcherAnimationSettings *)self alertBarSwipeDismissalSettings];
+  [alertBarSwipeDismissalSettings2 setDampingRatio:0.471];
 
-  v94 = [(SBFluidSwitcherAnimationSettings *)self alertBarSwipeDismissalSettings];
-  [v94 setResponse:0.299];
+  alertBarSwipeDismissalSettings3 = [(SBFluidSwitcherAnimationSettings *)self alertBarSwipeDismissalSettings];
+  [alertBarSwipeDismissalSettings3 setResponse:0.299];
 
   [(SBFluidSwitcherAnimationSettings *)self setAlertBarSwipeDismissHapticDelay:0.0];
   [(SBFluidSwitcherAnimationSettings *)self setAlertBarSwipeDismissZoomOutDelay:0.1];
   [(SBFluidSwitcherAnimationSettings *)self setAlertBarSwipeDismissClientAnimationsDelay:0.0];
-  v95 = [(SBFluidSwitcherAnimationSettings *)self alertBarSwipeDismissalSettings];
+  alertBarSwipeDismissalSettings4 = [(SBFluidSwitcherAnimationSettings *)self alertBarSwipeDismissalSettings];
   v191 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-  [v95 setFrameRateRange:1114115 highFrameRateReason:{*&v191.minimum, *&v191.maximum, *&v191.preferred}];
+  [alertBarSwipeDismissalSettings4 setFrameRateRange:1114115 highFrameRateReason:{*&v191.minimum, *&v191.maximum, *&v191.preferred}];
 
-  v96 = [(SBFluidSwitcherAnimationSettings *)self siriSwipeDismissalSettings];
-  [v96 setDefaultValues];
+  siriSwipeDismissalSettings = [(SBFluidSwitcherAnimationSettings *)self siriSwipeDismissalSettings];
+  [siriSwipeDismissalSettings setDefaultValues];
 
-  v97 = [(SBFluidSwitcherAnimationSettings *)self siriSwipeDismissalSettings];
-  [v97 setDampingRatio:1.1];
+  siriSwipeDismissalSettings2 = [(SBFluidSwitcherAnimationSettings *)self siriSwipeDismissalSettings];
+  [siriSwipeDismissalSettings2 setDampingRatio:1.1];
 
-  v98 = [(SBFluidSwitcherAnimationSettings *)self siriSwipeDismissalSettings];
-  [v98 setResponse:0.45];
+  siriSwipeDismissalSettings3 = [(SBFluidSwitcherAnimationSettings *)self siriSwipeDismissalSettings];
+  [siriSwipeDismissalSettings3 setResponse:0.45];
 
   [(SBFluidSwitcherAnimationSettings *)self setSiriSwipeDismissHapticDelay:0.25];
   [(SBFluidSwitcherAnimationSettings *)self setSiriSwipeDismissZoomOutDelay:0.06];
   [(SBFluidSwitcherAnimationSettings *)self setSiriSwipeDismissClientAnimationsDelay:0.0];
-  v99 = [(SBFluidSwitcherAnimationSettings *)self siriSwipeDismissalSettings];
+  siriSwipeDismissalSettings4 = [(SBFluidSwitcherAnimationSettings *)self siriSwipeDismissalSettings];
   v192 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-  [v99 setFrameRateRange:1114115 highFrameRateReason:{*&v192.minimum, *&v192.maximum, *&v192.preferred}];
+  [siriSwipeDismissalSettings4 setFrameRateRange:1114115 highFrameRateReason:{*&v192.minimum, *&v192.maximum, *&v192.preferred}];
 
-  v100 = [(SBFluidSwitcherAnimationSettings *)self bannerUnfurlSettings];
-  [v100 setDefaultValues];
+  bannerUnfurlSettings = [(SBFluidSwitcherAnimationSettings *)self bannerUnfurlSettings];
+  [bannerUnfurlSettings setDefaultValues];
 
-  v101 = [(SBFluidSwitcherAnimationSettings *)self bannerUnfurlSettings];
-  [v101 setDampingRatio:1.0];
+  bannerUnfurlSettings2 = [(SBFluidSwitcherAnimationSettings *)self bannerUnfurlSettings];
+  [bannerUnfurlSettings2 setDampingRatio:1.0];
 
-  v102 = [(SBFluidSwitcherAnimationSettings *)self bannerUnfurlSettings];
-  [v102 setResponse:0.4];
+  bannerUnfurlSettings3 = [(SBFluidSwitcherAnimationSettings *)self bannerUnfurlSettings];
+  [bannerUnfurlSettings3 setResponse:0.4];
 
-  v103 = [(SBFluidSwitcherAnimationSettings *)self bannerUnfurlSettings];
+  bannerUnfurlSettings4 = [(SBFluidSwitcherAnimationSettings *)self bannerUnfurlSettings];
   v193 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-  [v103 setFrameRateRange:1114114 highFrameRateReason:{*&v193.minimum, *&v193.maximum, *&v193.preferred}];
+  [bannerUnfurlSettings4 setFrameRateRange:1114114 highFrameRateReason:{*&v193.minimum, *&v193.maximum, *&v193.preferred}];
 
-  v104 = [(SBFluidSwitcherAnimationSettings *)self bannerUnfurlWallpaperAlphaSettings];
-  [v104 setDefaultValues];
+  bannerUnfurlWallpaperAlphaSettings = [(SBFluidSwitcherAnimationSettings *)self bannerUnfurlWallpaperAlphaSettings];
+  [bannerUnfurlWallpaperAlphaSettings setDefaultValues];
 
-  v105 = [(SBFluidSwitcherAnimationSettings *)self bannerUnfurlWallpaperAlphaSettings];
-  [v105 setDampingRatio:1.0];
+  bannerUnfurlWallpaperAlphaSettings2 = [(SBFluidSwitcherAnimationSettings *)self bannerUnfurlWallpaperAlphaSettings];
+  [bannerUnfurlWallpaperAlphaSettings2 setDampingRatio:1.0];
 
-  v106 = [(SBFluidSwitcherAnimationSettings *)self bannerUnfurlWallpaperAlphaSettings];
-  [v106 setResponse:0.39];
+  bannerUnfurlWallpaperAlphaSettings3 = [(SBFluidSwitcherAnimationSettings *)self bannerUnfurlWallpaperAlphaSettings];
+  [bannerUnfurlWallpaperAlphaSettings3 setResponse:0.39];
 
   [(SBFluidSwitcherAnimationSettings *)self setBannerUnfurlWallpaperAlphaDelay:0.025];
-  v107 = [(SBFluidSwitcherAnimationSettings *)self coverSheetFlyInScaleSettings];
-  [v107 setDefaultValues];
+  coverSheetFlyInScaleSettings = [(SBFluidSwitcherAnimationSettings *)self coverSheetFlyInScaleSettings];
+  [coverSheetFlyInScaleSettings setDefaultValues];
 
-  v108 = [(SBFluidSwitcherAnimationSettings *)self coverSheetFlyInScaleSettings];
-  [v108 setDampingRatio:0.8];
+  coverSheetFlyInScaleSettings2 = [(SBFluidSwitcherAnimationSettings *)self coverSheetFlyInScaleSettings];
+  [coverSheetFlyInScaleSettings2 setDampingRatio:0.8];
 
-  v109 = [(SBFluidSwitcherAnimationSettings *)self coverSheetFlyInScaleSettings];
-  [v109 setResponse:0.6];
+  coverSheetFlyInScaleSettings3 = [(SBFluidSwitcherAnimationSettings *)self coverSheetFlyInScaleSettings];
+  [coverSheetFlyInScaleSettings3 setResponse:0.6];
 
-  v110 = [(SBFluidSwitcherAnimationSettings *)self coverSheetFlyInScaleSettings];
+  coverSheetFlyInScaleSettings4 = [(SBFluidSwitcherAnimationSettings *)self coverSheetFlyInScaleSettings];
   v194 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-  [v110 setFrameRateRange:1114125 highFrameRateReason:{*&v194.minimum, *&v194.maximum, *&v194.preferred}];
+  [coverSheetFlyInScaleSettings4 setFrameRateRange:1114125 highFrameRateReason:{*&v194.minimum, *&v194.maximum, *&v194.preferred}];
 
-  v111 = [(SBFluidSwitcherAnimationSettings *)self coverSheetFlyInBlurSettings];
-  [v111 setDefaultValues];
+  coverSheetFlyInBlurSettings = [(SBFluidSwitcherAnimationSettings *)self coverSheetFlyInBlurSettings];
+  [coverSheetFlyInBlurSettings setDefaultValues];
 
-  v112 = [(SBFluidSwitcherAnimationSettings *)self coverSheetFlyInBlurSettings];
-  [v112 setDampingRatio:1.0];
+  coverSheetFlyInBlurSettings2 = [(SBFluidSwitcherAnimationSettings *)self coverSheetFlyInBlurSettings];
+  [coverSheetFlyInBlurSettings2 setDampingRatio:1.0];
 
-  v113 = [(SBFluidSwitcherAnimationSettings *)self coverSheetFlyInBlurSettings];
-  [v113 setResponse:0.3];
+  coverSheetFlyInBlurSettings3 = [(SBFluidSwitcherAnimationSettings *)self coverSheetFlyInBlurSettings];
+  [coverSheetFlyInBlurSettings3 setResponse:0.3];
 
-  v114 = [(SBFluidSwitcherAnimationSettings *)self coverSheetFlyInBlurSettings];
+  coverSheetFlyInBlurSettings4 = [(SBFluidSwitcherAnimationSettings *)self coverSheetFlyInBlurSettings];
   v195 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-  [v114 setFrameRateRange:1114125 highFrameRateReason:{*&v195.minimum, *&v195.maximum, *&v195.preferred}];
+  [coverSheetFlyInBlurSettings4 setFrameRateRange:1114125 highFrameRateReason:{*&v195.minimum, *&v195.maximum, *&v195.preferred}];
 
-  v115 = [(SBFluidSwitcherAnimationSettings *)self coverSheetFlyInOpacitySettings];
-  [v115 setDefaultValues];
+  coverSheetFlyInOpacitySettings = [(SBFluidSwitcherAnimationSettings *)self coverSheetFlyInOpacitySettings];
+  [coverSheetFlyInOpacitySettings setDefaultValues];
 
-  v116 = [(SBFluidSwitcherAnimationSettings *)self coverSheetFlyInOpacitySettings];
-  [v116 setDampingRatio:1.0];
+  coverSheetFlyInOpacitySettings2 = [(SBFluidSwitcherAnimationSettings *)self coverSheetFlyInOpacitySettings];
+  [coverSheetFlyInOpacitySettings2 setDampingRatio:1.0];
 
-  v117 = [(SBFluidSwitcherAnimationSettings *)self coverSheetFlyInOpacitySettings];
-  [v117 setResponse:0.2];
+  coverSheetFlyInOpacitySettings3 = [(SBFluidSwitcherAnimationSettings *)self coverSheetFlyInOpacitySettings];
+  [coverSheetFlyInOpacitySettings3 setResponse:0.2];
 
-  v118 = [(SBFluidSwitcherAnimationSettings *)self coverSheetFlyInOpacitySettings];
+  coverSheetFlyInOpacitySettings4 = [(SBFluidSwitcherAnimationSettings *)self coverSheetFlyInOpacitySettings];
   v196 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-  [v118 setFrameRateRange:1114125 highFrameRateReason:{*&v196.minimum, *&v196.maximum, *&v196.preferred}];
+  [coverSheetFlyInOpacitySettings4 setFrameRateRange:1114125 highFrameRateReason:{*&v196.minimum, *&v196.maximum, *&v196.preferred}];
 
   [(SBFluidSwitcherAnimationSettings *)self setCoverSheetFlyInScale:1.24];
   [(SBFluidSwitcherAnimationSettings *)self setCoverSheetFlyInBlurRadius:3.33];
   [(SBFluidSwitcherAnimationSettings *)self setCoverSheetFlyInVelocityScaleFactor:0.4];
   [(SBFluidSwitcherAnimationSettings *)self setCoverSheetFlyInMaximumVelocity:100000.0];
-  v119 = [(SBFluidSwitcherAnimationSettings *)self switcherToHomeSettings];
-  [v119 setDampingRatio:1.0];
+  switcherToHomeSettings = [(SBFluidSwitcherAnimationSettings *)self switcherToHomeSettings];
+  [switcherToHomeSettings setDampingRatio:1.0];
 
-  v120 = [MEMORY[0x277D75418] currentDevice];
-  v121 = [v120 userInterfaceIdiom];
+  currentDevice3 = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom3 = [currentDevice3 userInterfaceIdiom];
 
-  v122 = dbl_21F8A5740[(v121 & 0xFFFFFFFFFFFFFFFBLL) == 1];
-  v123 = [(SBFluidSwitcherAnimationSettings *)self switcherToHomeSettings];
-  [v123 setResponse:v122];
+  v122 = dbl_21F8A5740[(userInterfaceIdiom3 & 0xFFFFFFFFFFFFFFFBLL) == 1];
+  switcherToHomeSettings2 = [(SBFluidSwitcherAnimationSettings *)self switcherToHomeSettings];
+  [switcherToHomeSettings2 setResponse:v122];
 
-  v124 = [(SBFluidSwitcherAnimationSettings *)self switcherToHomeSettings];
+  switcherToHomeSettings3 = [(SBFluidSwitcherAnimationSettings *)self switcherToHomeSettings];
   v197 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-  [v124 setFrameRateRange:1114113 highFrameRateReason:{*&v197.minimum, *&v197.maximum, *&v197.preferred}];
+  [switcherToHomeSettings3 setFrameRateRange:1114113 highFrameRateReason:{*&v197.minimum, *&v197.maximum, *&v197.preferred}];
 
-  v125 = [(SBFluidSwitcherAnimationSettings *)self switcherToHomeOpacitySettings];
-  [v125 setBehaviorType:1];
+  switcherToHomeOpacitySettings = [(SBFluidSwitcherAnimationSettings *)self switcherToHomeOpacitySettings];
+  [switcherToHomeOpacitySettings setBehaviorType:1];
 
-  v126 = [(SBFluidSwitcherAnimationSettings *)self switcherToHomeOpacitySettings];
-  [v126 setResponse:0.0];
+  switcherToHomeOpacitySettings2 = [(SBFluidSwitcherAnimationSettings *)self switcherToHomeOpacitySettings];
+  [switcherToHomeOpacitySettings2 setResponse:0.0];
 
   [(SBFluidSwitcherAnimationSettings *)self setReduceMotionCrossfadeDuration:0.3];
-  v127 = [(SBFluidSwitcherAnimationSettings *)self floatingDockIconFadeSettings];
-  [v127 setResponse:0.21];
+  floatingDockIconFadeSettings = [(SBFluidSwitcherAnimationSettings *)self floatingDockIconFadeSettings];
+  [floatingDockIconFadeSettings setResponse:0.21];
 
-  v128 = [(SBFluidSwitcherAnimationSettings *)self floatingDockIconFadeSettings];
-  [v128 setDampingRatio:1.0];
+  floatingDockIconFadeSettings2 = [(SBFluidSwitcherAnimationSettings *)self floatingDockIconFadeSettings];
+  [floatingDockIconFadeSettings2 setDampingRatio:1.0];
 
   [(SBFluidSwitcherAnimationSettings *)self setIconZoomFloatingDockFadeDelay:0.1];
-  v129 = [(SBFluidSwitcherAnimationSettings *)self switcherZoomDownIconFadeOutSettings];
-  [v129 setResponse:0.25];
+  switcherZoomDownIconFadeOutSettings = [(SBFluidSwitcherAnimationSettings *)self switcherZoomDownIconFadeOutSettings];
+  [switcherZoomDownIconFadeOutSettings setResponse:0.25];
 
-  v130 = [(SBFluidSwitcherAnimationSettings *)self switcherZoomDownIconFadeOutSettings];
-  [v130 setDampingRatio:1.0];
+  switcherZoomDownIconFadeOutSettings2 = [(SBFluidSwitcherAnimationSettings *)self switcherZoomDownIconFadeOutSettings];
+  [switcherZoomDownIconFadeOutSettings2 setDampingRatio:1.0];
 
-  v131 = [(SBFluidSwitcherAnimationSettings *)self iconFadeInSettings];
-  [v131 setResponse:0.5];
+  iconFadeInSettings = [(SBFluidSwitcherAnimationSettings *)self iconFadeInSettings];
+  [iconFadeInSettings setResponse:0.5];
 
-  v132 = [(SBFluidSwitcherAnimationSettings *)self iconFadeInSettings];
-  [v132 setDampingRatio:1.0];
+  iconFadeInSettings2 = [(SBFluidSwitcherAnimationSettings *)self iconFadeInSettings];
+  [iconFadeInSettings2 setDampingRatio:1.0];
 
-  v133 = [(SBFluidSwitcherAnimationSettings *)self switcherFadeOutSettings];
-  [v133 setResponse:0.15];
+  switcherFadeOutSettings = [(SBFluidSwitcherAnimationSettings *)self switcherFadeOutSettings];
+  [switcherFadeOutSettings setResponse:0.15];
 
-  v134 = [(SBFluidSwitcherAnimationSettings *)self switcherFadeOutSettings];
-  [v134 setDampingRatio:1.0];
+  switcherFadeOutSettings2 = [(SBFluidSwitcherAnimationSettings *)self switcherFadeOutSettings];
+  [switcherFadeOutSettings2 setDampingRatio:1.0];
 
   [(SBFluidSwitcherAnimationSettings *)self setEmptySwitcherDismissDelay:0.2];
   [(SBFluidSwitcherAnimationSettings *)self setResizeBlurDelay:0.1];
   [(SBFluidSwitcherAnimationSettings *)self setAppSwitcherTitleAndIconFadeInSlowDownFactor:2.2];
   [(SBFluidSwitcherAnimationSettings *)self setCenterZoomScale:0.02];
-  v135 = [(SBFluidSwitcherAnimationSettings *)self pulseScaleSettings];
-  [v135 setDefaultValues];
+  pulseScaleSettings = [(SBFluidSwitcherAnimationSettings *)self pulseScaleSettings];
+  [pulseScaleSettings setDefaultValues];
 
-  v136 = [(SBFluidSwitcherAnimationSettings *)self pulseScaleSettings];
-  [v136 setDampingRatio:1.0];
+  pulseScaleSettings2 = [(SBFluidSwitcherAnimationSettings *)self pulseScaleSettings];
+  [pulseScaleSettings2 setDampingRatio:1.0];
 
-  v137 = [(SBFluidSwitcherAnimationSettings *)self pulseScaleSettings];
-  [v137 setResponse:0.358];
+  pulseScaleSettings3 = [(SBFluidSwitcherAnimationSettings *)self pulseScaleSettings];
+  [pulseScaleSettings3 setResponse:0.358];
 
-  v138 = [(SBFluidSwitcherAnimationSettings *)self pulseScaleSettings];
+  pulseScaleSettings4 = [(SBFluidSwitcherAnimationSettings *)self pulseScaleSettings];
   v198 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-  [v138 setFrameRateRange:1114113 highFrameRateReason:{*&v198.minimum, *&v198.maximum, *&v198.preferred}];
+  [pulseScaleSettings4 setFrameRateRange:1114113 highFrameRateReason:{*&v198.minimum, *&v198.maximum, *&v198.preferred}];
 
   [(SBFluidSwitcherAnimationSettings *)self setPulseScale:0.96];
   [(SBFluidSwitcherAnimationSettings *)self setPulseSecondStageDelay:0.07];
@@ -539,47 +539,47 @@
   [(SBFluidSwitcherAnimationSettings *)self homeScreenScaleInSwitcher];
   [(SBFluidSwitcherAnimationSettings *)self setHomeScreenScaleInApplication:?];
   [(SBFluidSwitcherAnimationSettings *)self setHomeScreenScaleInAssistant:0.92];
-  v145 = [MEMORY[0x277D75418] currentDevice];
-  v146 = [v145 userInterfaceIdiom];
+  currentDevice4 = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom4 = [currentDevice4 userInterfaceIdiom];
 
-  [(SBFluidSwitcherAnimationSettings *)self setWallpaperScaleInSwitcher:dbl_21F8A5750[(v146 & 0xFFFFFFFFFFFFFFFBLL) == 1]];
+  [(SBFluidSwitcherAnimationSettings *)self setWallpaperScaleInSwitcher:dbl_21F8A5750[(userInterfaceIdiom4 & 0xFFFFFFFFFFFFFFFBLL) == 1]];
   [(SBFluidSwitcherAnimationSettings *)self setWallpaperScaleInApplication:1.0];
   [(SBFluidSwitcherAnimationSettings *)self setDimmingAlphaInSwitcher:0.25];
   [(SBFluidSwitcherAnimationSettings *)self setDimmingAlphaInApplication:0.67];
   if (SBIsHomeGestureEnabledByDefault())
   {
-    v147 = [(SBFluidSwitcherAnimationSettings *)self layoutSettings];
-    [v147 setTrackingDampingRatio:0.577];
+    layoutSettings3 = [(SBFluidSwitcherAnimationSettings *)self layoutSettings];
+    [layoutSettings3 setTrackingDampingRatio:0.577];
 
-    v148 = [(SBFluidSwitcherAnimationSettings *)self layoutSettings];
-    [v148 setTrackingResponse:0.145];
+    layoutSettings4 = [(SBFluidSwitcherAnimationSettings *)self layoutSettings];
+    [layoutSettings4 setTrackingResponse:0.145];
 
-    v149 = [(SBFluidSwitcherAnimationSettings *)self layoutSettings];
-    [v149 setTrackingRetargetImpulse:0.008];
+    layoutSettings5 = [(SBFluidSwitcherAnimationSettings *)self layoutSettings];
+    [layoutSettings5 setTrackingRetargetImpulse:0.008];
 
-    v150 = [(SBFluidSwitcherAnimationSettings *)self homeScreenScaleSettings];
-    [v150 setDampingRatio:0.88];
+    homeScreenScaleSettings5 = [(SBFluidSwitcherAnimationSettings *)self homeScreenScaleSettings];
+    [homeScreenScaleSettings5 setDampingRatio:0.88];
 
-    v151 = [(SBFluidSwitcherAnimationSettings *)self homeScreenScaleSettings];
-    [v151 setResponse:0.7];
+    homeScreenScaleSettings6 = [(SBFluidSwitcherAnimationSettings *)self homeScreenScaleSettings];
+    [homeScreenScaleSettings6 setResponse:0.7];
 
-    v152 = [(SBFluidSwitcherAnimationSettings *)self wallpaperScaleSettings];
-    [v152 setDampingRatio:1.3];
+    wallpaperScaleSettings4 = [(SBFluidSwitcherAnimationSettings *)self wallpaperScaleSettings];
+    [wallpaperScaleSettings4 setDampingRatio:1.3];
 
-    v153 = [(SBFluidSwitcherAnimationSettings *)self wallpaperScaleSettings];
-    [v153 setResponse:0.75];
+    wallpaperScaleSettings5 = [(SBFluidSwitcherAnimationSettings *)self wallpaperScaleSettings];
+    [wallpaperScaleSettings5 setResponse:0.75];
 
-    v154 = [(SBFluidSwitcherAnimationSettings *)self wallpaperScaleSettings];
-    [v154 setRetargetImpulse:0.028];
+    wallpaperScaleSettings6 = [(SBFluidSwitcherAnimationSettings *)self wallpaperScaleSettings];
+    [wallpaperScaleSettings6 setRetargetImpulse:0.028];
 
     [(SBFluidSwitcherAnimationSettings *)self setHomeScreenBlurInSwitcher:0.6];
     [(SBFluidSwitcherAnimationSettings *)self setHomeScreenBlurInSwitcherReduceMotionEnabled:1.0];
     [(SBFluidSwitcherAnimationSettings *)self setHomeScreenBlurInApplication:1.0];
     [(SBFluidSwitcherAnimationSettings *)self setHomeScreenBlurInAssistant:0.045];
-    v155 = [MEMORY[0x277D75418] currentDevice];
-    v156 = [v155 userInterfaceIdiom];
+    currentDevice5 = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom5 = [currentDevice5 userInterfaceIdiom];
 
-    if ((v156 & 0xFFFFFFFFFFFFFFFBLL) != 1)
+    if ((userInterfaceIdiom5 & 0xFFFFFFFFFFFFFFFBLL) != 1)
     {
       [(SBFluidSwitcherAnimationSettings *)self setHomeScreenOpacityInSwitcher:0.6];
       [(SBFluidSwitcherAnimationSettings *)self setHomeScreenOpacityInApplication:0.95];
@@ -608,10 +608,10 @@
 
   else
   {
-    v159 = [MEMORY[0x277D75418] currentDevice];
-    v160 = [v159 userInterfaceIdiom];
+    currentDevice6 = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom6 = [currentDevice6 userInterfaceIdiom];
     v161 = 44.0;
-    if (v160 == 1)
+    if (userInterfaceIdiom6 == 1)
     {
       v161 = 10.0;
     }
@@ -633,10 +633,10 @@
 
   else
   {
-    v164 = [MEMORY[0x277D75418] currentDevice];
-    v165 = [v164 userInterfaceIdiom];
+    currentDevice7 = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom7 = [currentDevice7 userInterfaceIdiom];
     v166 = 0.86;
-    if (v165 != 1)
+    if (userInterfaceIdiom7 != 1)
     {
       v166 = 0.5;
     }
@@ -652,8 +652,8 @@
 
   else
   {
-    v167 = [MEMORY[0x277D75418] currentDevice];
-    -[SBFluidSwitcherAnimationSettings setHomeScreenCenterZoomTargetScaleWhenUnblurringIsComplete:](self, "setHomeScreenCenterZoomTargetScaleWhenUnblurringIsComplete:", dbl_21F8A5760[[v167 userInterfaceIdiom] == 1]);
+    currentDevice8 = [MEMORY[0x277D75418] currentDevice];
+    -[SBFluidSwitcherAnimationSettings setHomeScreenCenterZoomTargetScaleWhenUnblurringIsComplete:](self, "setHomeScreenCenterZoomTargetScaleWhenUnblurringIsComplete:", dbl_21F8A5760[[currentDevice8 userInterfaceIdiom] == 1]);
   }
 
   [(SBFluidSwitcherAnimationSettings *)self setHomeScreenCenterZoomYOffsetPercentOfScreenHeight:0.0];
@@ -662,53 +662,53 @@
 - (void)_setTopAffordanceTransitionDefaultValues
 {
   [(SBFluidSwitcherAnimationSettings *)self setPerformTwoPhaseFullScreenToPeekTransition:1];
-  v3 = [(SBFluidSwitcherAnimationSettings *)self fullScreenToPeekFirstPhaseAnimationSettings];
-  [v3 setDefaultValues];
+  fullScreenToPeekFirstPhaseAnimationSettings = [(SBFluidSwitcherAnimationSettings *)self fullScreenToPeekFirstPhaseAnimationSettings];
+  [fullScreenToPeekFirstPhaseAnimationSettings setDefaultValues];
 
-  v4 = [(SBFluidSwitcherAnimationSettings *)self fullScreenToPeekFirstPhaseAnimationSettings];
-  [v4 setDampingRatio:1.1];
+  fullScreenToPeekFirstPhaseAnimationSettings2 = [(SBFluidSwitcherAnimationSettings *)self fullScreenToPeekFirstPhaseAnimationSettings];
+  [fullScreenToPeekFirstPhaseAnimationSettings2 setDampingRatio:1.1];
 
-  v5 = [(SBFluidSwitcherAnimationSettings *)self fullScreenToPeekFirstPhaseAnimationSettings];
-  [v5 setResponse:0.45];
+  fullScreenToPeekFirstPhaseAnimationSettings3 = [(SBFluidSwitcherAnimationSettings *)self fullScreenToPeekFirstPhaseAnimationSettings];
+  [fullScreenToPeekFirstPhaseAnimationSettings3 setResponse:0.45];
 
-  v6 = [(SBFluidSwitcherAnimationSettings *)self fullScreenToPeekSecondPhaseAnimationSettings];
-  [v6 setDefaultValues];
+  fullScreenToPeekSecondPhaseAnimationSettings = [(SBFluidSwitcherAnimationSettings *)self fullScreenToPeekSecondPhaseAnimationSettings];
+  [fullScreenToPeekSecondPhaseAnimationSettings setDefaultValues];
 
-  v7 = [(SBFluidSwitcherAnimationSettings *)self fullScreenToPeekSecondPhaseAnimationSettings];
-  [v7 setDampingRatio:0.9];
+  fullScreenToPeekSecondPhaseAnimationSettings2 = [(SBFluidSwitcherAnimationSettings *)self fullScreenToPeekSecondPhaseAnimationSettings];
+  [fullScreenToPeekSecondPhaseAnimationSettings2 setDampingRatio:0.9];
 
-  v8 = [(SBFluidSwitcherAnimationSettings *)self fullScreenToPeekSecondPhaseAnimationSettings];
-  [v8 setResponse:0.44];
+  fullScreenToPeekSecondPhaseAnimationSettings3 = [(SBFluidSwitcherAnimationSettings *)self fullScreenToPeekSecondPhaseAnimationSettings];
+  [fullScreenToPeekSecondPhaseAnimationSettings3 setResponse:0.44];
 
   [(SBFluidSwitcherAnimationSettings *)self setFullScreenToPeekSecondPhaseAnimationDelay:0.4];
-  v9 = [(SBFluidSwitcherAnimationSettings *)self splitViewToSlideOverSettings];
-  [v9 setDefaultCriticallyDampedValues];
+  splitViewToSlideOverSettings = [(SBFluidSwitcherAnimationSettings *)self splitViewToSlideOverSettings];
+  [splitViewToSlideOverSettings setDefaultCriticallyDampedValues];
 
-  v10 = [(SBFluidSwitcherAnimationSettings *)self slideOverToFullScreenAnimationSettings];
-  [v10 setDefaultCriticallyDampedValues];
+  slideOverToFullScreenAnimationSettings = [(SBFluidSwitcherAnimationSettings *)self slideOverToFullScreenAnimationSettings];
+  [slideOverToFullScreenAnimationSettings setDefaultCriticallyDampedValues];
 
   [(SBFluidSwitcherAnimationSettings *)self setSlideOverToFullScreenOutgoingAppScaleBack:0.9];
   [(SBFluidSwitcherAnimationSettings *)self setSlideOverToFullScreenOutgoingFinalOpacity:0.0];
-  v11 = [(SBFluidSwitcherAnimationSettings *)self centerToSlideOverAnimationSettings];
-  [v11 setDefaultCriticallyDampedValues];
+  centerToSlideOverAnimationSettings = [(SBFluidSwitcherAnimationSettings *)self centerToSlideOverAnimationSettings];
+  [centerToSlideOverAnimationSettings setDefaultCriticallyDampedValues];
 }
 
 - (void)_setEntityPresentationDefaultValues
 {
-  v2 = [(SBFluidSwitcherAnimationSettings *)self slideUpSettings];
-  [v2 setDefaultCriticallyDampedValues];
+  slideUpSettings = [(SBFluidSwitcherAnimationSettings *)self slideUpSettings];
+  [slideUpSettings setDefaultCriticallyDampedValues];
 }
 
 - (void)_setKeyboardShortcutDefaultValues
 {
-  v3 = [(SBFluidSwitcherAnimationSettings *)self swapAppSidesLayoutAnimationSettings];
-  [v3 setDefaultCriticallyDampedValues];
+  swapAppSidesLayoutAnimationSettings = [(SBFluidSwitcherAnimationSettings *)self swapAppSidesLayoutAnimationSettings];
+  [swapAppSidesLayoutAnimationSettings setDefaultCriticallyDampedValues];
 
-  v4 = [(SBFluidSwitcherAnimationSettings *)self swapAppSidesOpacityAnimationSettings];
-  [v4 setDefaultCriticallyDampedValues];
+  swapAppSidesOpacityAnimationSettings = [(SBFluidSwitcherAnimationSettings *)self swapAppSidesOpacityAnimationSettings];
+  [swapAppSidesOpacityAnimationSettings setDefaultCriticallyDampedValues];
 
-  v5 = [(SBFluidSwitcherAnimationSettings *)self swapAppSidesOpacityAnimationSettings];
-  [v5 setResponse:0.15];
+  swapAppSidesOpacityAnimationSettings2 = [(SBFluidSwitcherAnimationSettings *)self swapAppSidesOpacityAnimationSettings];
+  [swapAppSidesOpacityAnimationSettings2 setResponse:0.15];
 
   [(SBFluidSwitcherAnimationSettings *)self setSwapAppSidesShadowFadeOutDelay:0.3];
 }
@@ -717,10 +717,10 @@
 {
   self->_genieCornerRadiusToAppResetDelay = 0.06;
   self->_genieCornerRadiusToHomeResetDelay = 0.12;
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v4 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v5 = 1.05;
   }
@@ -731,21 +731,21 @@
   }
 
   [(SBFFluidBehaviorSettings *)self->_genieFullScreenCenterRowZoomUpSettings setDampingRatio:v5];
-  v6 = [MEMORY[0x277D75418] currentDevice];
-  v7 = [v6 userInterfaceIdiom];
+  currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom2 = [currentDevice2 userInterfaceIdiom];
 
-  [(SBFFluidBehaviorSettings *)self->_genieFullScreenCenterRowZoomUpSettings setResponse:dbl_21F8A5770[(v7 & 0xFFFFFFFFFFFFFFFBLL) == 1]];
-  v8 = [MEMORY[0x277D75418] currentDevice];
-  [v8 userInterfaceIdiom];
+  [(SBFFluidBehaviorSettings *)self->_genieFullScreenCenterRowZoomUpSettings setResponse:dbl_21F8A5770[(userInterfaceIdiom2 & 0xFFFFFFFFFFFFFFFBLL) == 1]];
+  currentDevice3 = [MEMORY[0x277D75418] currentDevice];
+  [currentDevice3 userInterfaceIdiom];
 
   [(SBFFluidBehaviorSettings *)self->_genieFullScreenCenterRowZoomUpSettings setRetargetImpulse:0.0];
   genieFullScreenCenterRowZoomUpSettings = self->_genieFullScreenCenterRowZoomUpSettings;
   v19 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
   [(SBFFluidBehaviorSettings *)genieFullScreenCenterRowZoomUpSettings setFrameRateRange:1114114 highFrameRateReason:*&v19.minimum, *&v19.maximum, *&v19.preferred];
-  v10 = [MEMORY[0x277D75418] currentDevice];
-  v11 = [v10 userInterfaceIdiom];
+  currentDevice4 = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom3 = [currentDevice4 userInterfaceIdiom];
 
-  if ((v11 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom3 & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v12 = 1.05;
   }
@@ -756,12 +756,12 @@
   }
 
   [(SBFFluidBehaviorSettings *)self->_genieFullScreenEdgeRowZoomUpSettings setDampingRatio:v12];
-  v13 = [MEMORY[0x277D75418] currentDevice];
-  v14 = [v13 userInterfaceIdiom];
+  currentDevice5 = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom4 = [currentDevice5 userInterfaceIdiom];
 
-  [(SBFFluidBehaviorSettings *)self->_genieFullScreenEdgeRowZoomUpSettings setResponse:dbl_21F8A5780[(v14 & 0xFFFFFFFFFFFFFFFBLL) == 1]];
-  v15 = [MEMORY[0x277D75418] currentDevice];
-  [v15 userInterfaceIdiom];
+  [(SBFFluidBehaviorSettings *)self->_genieFullScreenEdgeRowZoomUpSettings setResponse:dbl_21F8A5780[(userInterfaceIdiom4 & 0xFFFFFFFFFFFFFFFBLL) == 1]];
+  currentDevice6 = [MEMORY[0x277D75418] currentDevice];
+  [currentDevice6 userInterfaceIdiom];
 
   [(SBFFluidBehaviorSettings *)self->_genieFullScreenEdgeRowZoomUpSettings setRetargetImpulse:0.0];
   genieFullScreenEdgeRowZoomUpSettings = self->_genieFullScreenEdgeRowZoomUpSettings;
@@ -790,10 +790,10 @@
   homeGestureEdgeRowZoomUpSettings = self->_homeGestureEdgeRowZoomUpSettings;
   v66 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
   [(SBFFluidBehaviorSettings *)homeGestureEdgeRowZoomUpSettings setFrameRateRange:1114114 highFrameRateReason:*&v66.minimum, *&v66.maximum, *&v66.preferred];
-  v5 = [MEMORY[0x277D75418] currentDevice];
-  v6 = [v5 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v6 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v7 = 1.0;
   }
@@ -804,38 +804,38 @@
   }
 
   self->_homeGestureZoomDownScaleMultiplier = v7;
-  v8 = [MEMORY[0x277D75418] currentDevice];
-  v9 = [v8 userInterfaceIdiom];
+  currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom2 = [currentDevice2 userInterfaceIdiom];
 
   v10 = 0.75;
-  if ((v9 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom2 & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v10 = 1.0;
   }
 
   self->_homeGestureZoomDownScaleMultiplierWidgets = v10;
   [(SBFFluidBehaviorSettings *)self->_homeGestureTopRowZoomDownLayoutSettings setDampingRatio:1.1];
-  v11 = [MEMORY[0x277D75418] currentDevice];
-  v12 = [v11 userInterfaceIdiom];
+  currentDevice3 = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom3 = [currentDevice3 userInterfaceIdiom];
 
   v13 = 0.375;
-  if ((v12 & 0xFFFFFFFFFFFFFFFBLL) != 1)
+  if ((userInterfaceIdiom3 & 0xFFFFFFFFFFFFFFFBLL) != 1)
   {
     v13 = 0.425;
   }
 
   [(SBFFluidBehaviorSettings *)self->_homeGestureTopRowZoomDownLayoutSettings setResponse:v13];
-  v14 = [MEMORY[0x277D75418] currentDevice];
-  [v14 userInterfaceIdiom];
+  currentDevice4 = [MEMORY[0x277D75418] currentDevice];
+  [currentDevice4 userInterfaceIdiom];
 
   [(SBFFluidBehaviorSettings *)self->_homeGestureTopRowZoomDownLayoutSettings setRetargetImpulse:0.0];
   homeGestureTopRowZoomDownLayoutSettings = self->_homeGestureTopRowZoomDownLayoutSettings;
   v67 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
   [(SBFFluidBehaviorSettings *)homeGestureTopRowZoomDownLayoutSettings setFrameRateRange:1114115 highFrameRateReason:*&v67.minimum, *&v67.maximum, *&v67.preferred];
-  v16 = [MEMORY[0x277D75418] currentDevice];
-  v17 = [v16 userInterfaceIdiom];
+  currentDevice5 = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom4 = [currentDevice5 userInterfaceIdiom];
 
-  if ((v17 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom4 & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v18 = 0.86;
   }
@@ -846,27 +846,27 @@
   }
 
   [(SBFFluidBehaviorSettings *)self->_homeGestureTopRowZoomDownPositionSettings setDampingRatio:v18];
-  v19 = [MEMORY[0x277D75418] currentDevice];
-  v20 = [v19 userInterfaceIdiom];
+  currentDevice6 = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom5 = [currentDevice6 userInterfaceIdiom];
 
   v21 = 0.45;
-  if ((v20 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom5 & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v21 = 0.55;
   }
 
   [(SBFFluidBehaviorSettings *)self->_homeGestureTopRowZoomDownPositionSettings setResponse:v21];
-  v22 = [MEMORY[0x277D75418] currentDevice];
-  [v22 userInterfaceIdiom];
+  currentDevice7 = [MEMORY[0x277D75418] currentDevice];
+  [currentDevice7 userInterfaceIdiom];
 
   [(SBFFluidBehaviorSettings *)self->_homeGestureTopRowZoomDownPositionSettings setRetargetImpulse:0.0];
   homeGestureTopRowZoomDownPositionSettings = self->_homeGestureTopRowZoomDownPositionSettings;
   v68 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
   [(SBFFluidBehaviorSettings *)homeGestureTopRowZoomDownPositionSettings setFrameRateRange:1114115 highFrameRateReason:*&v68.minimum, *&v68.maximum, *&v68.preferred];
-  v24 = [MEMORY[0x277D75418] currentDevice];
-  v25 = [v24 userInterfaceIdiom];
+  currentDevice8 = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom6 = [currentDevice8 userInterfaceIdiom];
 
-  if ((v25 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom6 & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v26 = 0.8;
   }
@@ -877,10 +877,10 @@
   }
 
   [(SBFFluidBehaviorSettings *)self->_homeGestureTopRowZoomDownScaleSettings setDampingRatio:v26];
-  v27 = [MEMORY[0x277D75418] currentDevice];
-  v28 = [v27 userInterfaceIdiom];
+  currentDevice9 = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom7 = [currentDevice9 userInterfaceIdiom];
 
-  if ((v28 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom7 & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v29 = 0.5;
   }
@@ -891,8 +891,8 @@
   }
 
   [(SBFFluidBehaviorSettings *)self->_homeGestureTopRowZoomDownScaleSettings setResponse:v29];
-  v30 = [MEMORY[0x277D75418] currentDevice];
-  [v30 userInterfaceIdiom];
+  currentDevice10 = [MEMORY[0x277D75418] currentDevice];
+  [currentDevice10 userInterfaceIdiom];
 
   [(SBFFluidBehaviorSettings *)self->_homeGestureTopRowZoomDownScaleSettings setRetargetImpulse:0.0];
   homeGestureTopRowZoomDownScaleSettings = self->_homeGestureTopRowZoomDownScaleSettings;
@@ -900,8 +900,8 @@
   [(SBFFluidBehaviorSettings *)homeGestureTopRowZoomDownScaleSettings setFrameRateRange:1114115 highFrameRateReason:*&v69.minimum, *&v69.maximum, *&v69.preferred];
   [(SBFFluidBehaviorSettings *)self->_homeGestureBottomRowZoomDownLayoutSettings setDampingRatio:1.1];
   [(SBFFluidBehaviorSettings *)self->_homeGestureBottomRowZoomDownLayoutSettings setResponse:0.375];
-  v32 = [MEMORY[0x277D75418] currentDevice];
-  [v32 userInterfaceIdiom];
+  currentDevice11 = [MEMORY[0x277D75418] currentDevice];
+  [currentDevice11 userInterfaceIdiom];
 
   [(SBFFluidBehaviorSettings *)self->_homeGestureBottomRowZoomDownLayoutSettings setRetargetImpulse:0.0];
   homeGestureBottomRowZoomDownLayoutSettings = self->_homeGestureBottomRowZoomDownLayoutSettings;
@@ -909,17 +909,17 @@
   [(SBFFluidBehaviorSettings *)homeGestureBottomRowZoomDownLayoutSettings setFrameRateRange:1114115 highFrameRateReason:*&v70.minimum, *&v70.maximum, *&v70.preferred];
   [(SBFFluidBehaviorSettings *)self->_homeGestureBottomRowZoomDownPositionSettings setDampingRatio:0.86];
   [(SBFFluidBehaviorSettings *)self->_homeGestureBottomRowZoomDownPositionSettings setResponse:0.55];
-  v34 = [MEMORY[0x277D75418] currentDevice];
-  [v34 userInterfaceIdiom];
+  currentDevice12 = [MEMORY[0x277D75418] currentDevice];
+  [currentDevice12 userInterfaceIdiom];
 
   [(SBFFluidBehaviorSettings *)self->_homeGestureBottomRowZoomDownPositionSettings setRetargetImpulse:0.0];
   homeGestureBottomRowZoomDownPositionSettings = self->_homeGestureBottomRowZoomDownPositionSettings;
   v71 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
   [(SBFFluidBehaviorSettings *)homeGestureBottomRowZoomDownPositionSettings setFrameRateRange:1114115 highFrameRateReason:*&v71.minimum, *&v71.maximum, *&v71.preferred];
-  v36 = [MEMORY[0x277D75418] currentDevice];
-  v37 = [v36 userInterfaceIdiom];
+  currentDevice13 = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom8 = [currentDevice13 userInterfaceIdiom];
 
-  if ((v37 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom8 & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v38 = 0.8;
   }
@@ -930,10 +930,10 @@
   }
 
   [(SBFFluidBehaviorSettings *)self->_homeGestureBottomRowZoomDownScaleSettings setDampingRatio:v38];
-  v39 = [MEMORY[0x277D75418] currentDevice];
-  v40 = [v39 userInterfaceIdiom];
+  currentDevice14 = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom9 = [currentDevice14 userInterfaceIdiom];
 
-  if ((v40 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom9 & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v41 = 0.5;
   }
@@ -944,8 +944,8 @@
   }
 
   [(SBFFluidBehaviorSettings *)self->_homeGestureBottomRowZoomDownScaleSettings setResponse:v41];
-  v42 = [MEMORY[0x277D75418] currentDevice];
-  [v42 userInterfaceIdiom];
+  currentDevice15 = [MEMORY[0x277D75418] currentDevice];
+  [currentDevice15 userInterfaceIdiom];
 
   [(SBFFluidBehaviorSettings *)self->_homeGestureBottomRowZoomDownScaleSettings setRetargetImpulse:0.0];
   homeGestureBottomRowZoomDownScaleSettings = self->_homeGestureBottomRowZoomDownScaleSettings;
@@ -1053,11 +1053,11 @@
   [(SBFFluidBehaviorSettings *)reduceMotionAppToSwitcherSettings setResponse:v61 * 0.8];
   [(SBFFluidBehaviorSettings *)self->_reduceMotionAppToSwitcherSettings setDampingRatio:1.0];
   [(SBFFluidBehaviorSettings *)self->_reduceMotionAppToSwitcherSettings setRetargetImpulse:0.018];
-  v62 = [MEMORY[0x277D75418] currentDevice];
-  v63 = [v62 userInterfaceIdiom];
+  currentDevice16 = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom10 = [currentDevice16 userInterfaceIdiom];
 
   v64 = 0.15;
-  if ((v63 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom10 & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v64 = 0.0;
   }
@@ -1441,65 +1441,65 @@
   v167 = [MEMORY[0x277CBEA60] arrayWithObjects:v291 count:7];
 
   v213 = [MEMORY[0x277D43210] sectionWithRows:v167 title:@"Cover Sheet Fly In"];
-  v90 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v91 = [MEMORY[0x277D431E8] rowWithTitle:@"Home Screen Blur in Switcher" valueKeyPath:@"homeScreenBlurInSwitcher"];
   v92 = [v91 between:0.0 and:1.0];
-  [v90 addObject:v92];
+  [array addObject:v92];
 
   v93 = [MEMORY[0x277D431E8] rowWithTitle:@"Home Screen Blur in Switcher (Reduce Motion Enabled)" valueKeyPath:@"homeScreenBlurInSwitcherReduceMotionEnabled"];
   v94 = [v93 between:0.0 and:1.0];
-  [v90 addObject:v94];
+  [array addObject:v94];
 
   v95 = [MEMORY[0x277D431E8] rowWithTitle:@"Home Screen Blur in Application" valueKeyPath:@"homeScreenBlurInApplication"];
   v96 = [v95 between:0.0 and:1.0];
-  [v90 addObject:v96];
+  [array addObject:v96];
 
   v97 = [MEMORY[0x277D431E8] rowWithTitle:@"Home Screen Blur in Assistant" valueKeyPath:@"homeScreenBlurInAssistant"];
   v98 = [v97 between:0.0 and:1.0];
   v99 = [v98 precision:3];
-  [v90 addObject:v99];
+  [array addObject:v99];
 
   v100 = [MEMORY[0x277D431E8] rowWithTitle:@"Home Screen Opacity in Switcher" valueKeyPath:@"homeScreenOpacityInSwitcher"];
   v101 = [v100 between:0.0 and:1.0];
-  [v90 addObject:v101];
+  [array addObject:v101];
 
   v102 = [MEMORY[0x277D431E8] rowWithTitle:@"Home Screen Opacity in Application" valueKeyPath:@"homeScreenOpacityInApplication"];
   v103 = [v102 between:0.0 and:1.0];
-  [v90 addObject:v103];
+  [array addObject:v103];
 
   v104 = [MEMORY[0x277D431E8] rowWithTitle:@"Home Screen Scale in Switcher" valueKeyPath:@"homeScreenScaleInSwitcher"];
   v105 = [v104 between:0.0 and:2.0];
-  [v90 addObject:v105];
+  [array addObject:v105];
 
   v106 = [MEMORY[0x277D431E8] rowWithTitle:@"Home Screen Scale in Application" valueKeyPath:@"homeScreenScaleInApplication"];
   v107 = [v106 between:0.0 and:2.0];
-  [v90 addObject:v107];
+  [array addObject:v107];
 
   v108 = [MEMORY[0x277D431E8] rowWithTitle:@"Home Screen Scale in Assistant" valueKeyPath:@"homeScreenScaleInAssistant"];
   v109 = [v108 between:0.0 and:2.0];
-  [v90 addObject:v109];
+  [array addObject:v109];
 
   v110 = [MEMORY[0x277D431E8] rowWithTitle:@"Wallpaper Scale in Switcher" valueKeyPath:@"wallpaperScaleInSwitcher"];
   v111 = [v110 between:0.0 and:2.0];
-  [v90 addObject:v111];
+  [array addObject:v111];
 
   v112 = [MEMORY[0x277D431E8] rowWithTitle:@"Wallpaper Scale in Application" valueKeyPath:@"wallpaperScaleInApplication"];
   v113 = [v112 between:0.0 and:2.0];
-  [v90 addObject:v113];
+  [array addObject:v113];
 
   v114 = [MEMORY[0x277D431E8] rowWithTitle:@"Dimming Alpha in Switcher" valueKeyPath:@"dimmingAlphaInSwitcher"];
   v115 = [v114 between:0.0 and:1.0];
-  [v90 addObject:v115];
+  [array addObject:v115];
 
   v116 = [MEMORY[0x277D431E8] rowWithTitle:@"Dimming Alpha in Application" valueKeyPath:@"dimmingAlphaInApplication"];
   v117 = [v116 between:0.0 and:1.0];
-  [v90 addObject:v117];
+  [array addObject:v117];
 
   v118 = [MEMORY[0x277D431E8] rowWithTitle:@"RM Crossfade Duration" valueKeyPath:@"reduceMotionCrossfadeDuration"];
   v119 = [v118 between:0.0 and:1.0];
-  [v90 addObject:v119];
+  [array addObject:v119];
 
-  v212 = [MEMORY[0x277D43210] sectionWithRows:v90];
+  v212 = [MEMORY[0x277D43210] sectionWithRows:array];
   v120 = MEMORY[0x277D431B0];
   v121 = [MEMORY[0x277D43240] actionWithSettingsKeyPath:0];
   v166 = [v120 rowWithTitle:@"Restore Defaults" action:v121];
@@ -1605,15 +1605,15 @@
   return v149;
 }
 
-- (double)homeScreenBlurProgressForMode:(int64_t)a3
+- (double)homeScreenBlurProgressForMode:(int64_t)mode
 {
-  if (a3 == 3)
+  if (mode == 3)
   {
 
     [(SBFluidSwitcherAnimationSettings *)self homeScreenBlurInApplication];
   }
 
-  else if (a3 == 2)
+  else if (mode == 2)
   {
     if (SBReduceMotion())
     {
@@ -1636,9 +1636,9 @@
   return result;
 }
 
-- (double)homeScreenAlphaForMode:(int64_t)a3
+- (double)homeScreenAlphaForMode:(int64_t)mode
 {
-  if (a3 == 3)
+  if (mode == 3)
   {
 
     [(SBFluidSwitcherAnimationSettings *)self homeScreenOpacityInApplication];
@@ -1647,7 +1647,7 @@
   else
   {
     v4 = 1.0;
-    if (a3 == 2 && (v4 = 0.0, !UIAccessibilityIsReduceTransparencyEnabled()))
+    if (mode == 2 && (v4 = 0.0, !UIAccessibilityIsReduceTransparencyEnabled()))
     {
 
       [(SBFluidSwitcherAnimationSettings *)self homeScreenOpacityInSwitcher];
@@ -1662,15 +1662,15 @@
   return result;
 }
 
-- (double)homeScreenScaleForMode:(int64_t)a3
+- (double)homeScreenScaleForMode:(int64_t)mode
 {
-  if (a3 == 3)
+  if (mode == 3)
   {
 
     [(SBFluidSwitcherAnimationSettings *)self homeScreenScaleInApplication];
   }
 
-  else if (a3 == 2 && !UIAccessibilityIsReduceTransparencyEnabled())
+  else if (mode == 2 && !UIAccessibilityIsReduceTransparencyEnabled())
   {
 
     [(SBFluidSwitcherAnimationSettings *)self homeScreenScaleInSwitcher];
@@ -1684,15 +1684,15 @@
   return result;
 }
 
-- (double)wallpaperScaleForMode:(int64_t)a3
+- (double)wallpaperScaleForMode:(int64_t)mode
 {
-  if (a3 == 3)
+  if (mode == 3)
   {
 
     [(SBFluidSwitcherAnimationSettings *)self wallpaperScaleInApplication];
   }
 
-  else if (a3 == 2 && !UIAccessibilityIsReduceTransparencyEnabled())
+  else if (mode == 2 && !UIAccessibilityIsReduceTransparencyEnabled())
   {
 
     [(SBFluidSwitcherAnimationSettings *)self wallpaperScaleInSwitcher];
@@ -1706,14 +1706,14 @@
   return result;
 }
 
-- (double)homeScreenDimmingAlphaForMode:(int64_t)a3
+- (double)homeScreenDimmingAlphaForMode:(int64_t)mode
 {
-  if (a3 == 3)
+  if (mode == 3)
   {
     [(SBFluidSwitcherAnimationSettings *)self dimmingAlphaInApplication];
   }
 
-  else if (a3 == 2)
+  else if (mode == 2)
   {
     [(SBFluidSwitcherAnimationSettings *)self dimmingAlphaInSwitcher];
   }

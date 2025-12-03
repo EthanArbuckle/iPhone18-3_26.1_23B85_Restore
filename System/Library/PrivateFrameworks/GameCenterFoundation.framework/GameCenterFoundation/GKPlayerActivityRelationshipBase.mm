@@ -1,6 +1,6 @@
 @interface GKPlayerActivityRelationshipBase
 + (id)secureCodedPropertyKeys;
-- (GKPlayerActivityRelationshipBase)initWithDictionary:(id)a3;
+- (GKPlayerActivityRelationshipBase)initWithDictionary:(id)dictionary;
 - (id)description;
 @end
 
@@ -34,21 +34,21 @@ void __59__GKPlayerActivityRelationshipBase_secureCodedPropertyKeys__block_invok
   v2 = *MEMORY[0x277D85DE8];
 }
 
-- (GKPlayerActivityRelationshipBase)initWithDictionary:(id)a3
+- (GKPlayerActivityRelationshipBase)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = GKPlayerActivityRelationshipBase;
   v5 = [(GKPlayerActivityRelationshipBase *)&v10 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"name"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"name"];
     [(GKPlayerActivityRelationshipBase *)v5 setName:v6];
 
-    v7 = [v4 objectForKeyedSubscript:@"image"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"image"];
     [(GKPlayerActivityRelationshipBase *)v5 setImage:v7];
 
-    v8 = [v4 objectForKeyedSubscript:@"id"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"id"];
     [(GKPlayerActivityRelationshipBase *)v5 setIdentifier:v8];
   }
 
@@ -58,10 +58,10 @@ void __59__GKPlayerActivityRelationshipBase_secureCodedPropertyKeys__block_invok
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(GKPlayerActivityRelationshipBase *)self identifier];
-  v5 = [(GKPlayerActivityRelationshipBase *)self name];
-  v6 = [(GKPlayerActivityRelationshipBase *)self image];
-  v7 = [v3 stringWithFormat:@"id: %@\nname: %@ \nimage: %@", v4, v5, v6];
+  identifier = [(GKPlayerActivityRelationshipBase *)self identifier];
+  name = [(GKPlayerActivityRelationshipBase *)self name];
+  image = [(GKPlayerActivityRelationshipBase *)self image];
+  v7 = [v3 stringWithFormat:@"id: %@\nname: %@ \nimage: %@", identifier, name, image];
 
   return v7;
 }

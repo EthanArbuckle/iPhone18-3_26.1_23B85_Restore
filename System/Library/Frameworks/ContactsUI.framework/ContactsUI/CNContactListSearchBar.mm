@@ -1,16 +1,16 @@
 @interface CNContactListSearchBar
-- (void)buildMenuWithBuilder:(id)a3;
+- (void)buildMenuWithBuilder:(id)builder;
 @end
 
 @implementation CNContactListSearchBar
 
-- (void)buildMenuWithBuilder:(id)a3
+- (void)buildMenuWithBuilder:(id)builder
 {
   v4.receiver = self;
   v4.super_class = CNContactListSearchBar;
-  v3 = a3;
-  [(CNContactListSearchBar *)&v4 buildMenuWithBuilder:v3];
-  [v3 removeMenuForIdentifier:{@"com.apple.menu.insert-from-external-sources", v4.receiver, v4.super_class}];
+  builderCopy = builder;
+  [(CNContactListSearchBar *)&v4 buildMenuWithBuilder:builderCopy];
+  [builderCopy removeMenuForIdentifier:{@"com.apple.menu.insert-from-external-sources", v4.receiver, v4.super_class}];
 }
 
 @end

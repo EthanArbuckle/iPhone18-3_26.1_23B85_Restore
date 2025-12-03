@@ -1,13 +1,13 @@
 @interface FCFileCoordinatedTodayDropboxTransaction
-+ (id)collapsedTransactionOfTransactions:(id)a3;
++ (id)collapsedTransactionOfTransactions:(id)transactions;
 + (id)transactionOfIdentity;
 + (id)transactionToClearSeenArticles;
-+ (id)transactionToMutateSeenArticlesWithInsertedOrUpdatedHistoryItems:(id)a3 deletedArticleIDs:(id)a4;
-+ (void)_mergeItem:(id)a3 intoItem:(id)a4;
++ (id)transactionToMutateSeenArticlesWithInsertedOrUpdatedHistoryItems:(id)items deletedArticleIDs:(id)ds;
++ (void)_mergeItem:(id)item intoItem:(id)intoItem;
 - (FCFileCoordinatedTodayDropboxTransaction)init;
-- (FCFileCoordinatedTodayDropboxTransaction)initWithTransactionType:(unint64_t)a3 insertedOrUpdatedHistoryItems:(id)a4 deletedArticleIDs:(id)a5;
+- (FCFileCoordinatedTodayDropboxTransaction)initWithTransactionType:(unint64_t)type insertedOrUpdatedHistoryItems:(id)items deletedArticleIDs:(id)ds;
 - (id)todayPrivateDataAccessor;
-- (void)_mergeItem:(id)a3 intoItem:(id)a4;
+- (void)_mergeItem:(id)item intoItem:(id)intoItem;
 @end
 
 @implementation FCFileCoordinatedTodayDropboxTransaction
@@ -15,7 +15,7 @@
 + (id)transactionOfIdentity
 {
   v3 = objc_opt_new();
-  v4 = [a1 transactionToMutateSeenArticlesWithInsertedOrUpdatedHistoryItems:MEMORY[0x1E695E0F0] deletedArticleIDs:v3];
+  v4 = [self transactionToMutateSeenArticlesWithInsertedOrUpdatedHistoryItems:MEMORY[0x1E695E0F0] deletedArticleIDs:v3];
 
   return v4;
 }
@@ -46,22 +46,22 @@
   objc_exception_throw(v6);
 }
 
-- (FCFileCoordinatedTodayDropboxTransaction)initWithTransactionType:(unint64_t)a3 insertedOrUpdatedHistoryItems:(id)a4 deletedArticleIDs:(id)a5
+- (FCFileCoordinatedTodayDropboxTransaction)initWithTransactionType:(unint64_t)type insertedOrUpdatedHistoryItems:(id)items deletedArticleIDs:(id)ds
 {
-  v8 = a4;
-  v9 = a5;
+  itemsCopy = items;
+  dsCopy = ds;
   v17.receiver = self;
   v17.super_class = FCFileCoordinatedTodayDropboxTransaction;
   v10 = [(FCFileCoordinatedTodayDropboxTransaction *)&v17 init];
   v11 = v10;
   if (v10)
   {
-    v10->_transactionType = a3;
-    v12 = [v8 copy];
+    v10->_transactionType = type;
+    v12 = [itemsCopy copy];
     insertedOrUpdatedHistoryItems = v11->_insertedOrUpdatedHistoryItems;
     v11->_insertedOrUpdatedHistoryItems = v12;
 
-    v14 = [v9 copy];
+    v14 = [dsCopy copy];
     deletedArticleIDs = v11->_deletedArticleIDs;
     v11->_deletedArticleIDs = v14;
   }
@@ -76,12 +76,12 @@
   return v2;
 }
 
-+ (id)transactionToMutateSeenArticlesWithInsertedOrUpdatedHistoryItems:(id)a3 deletedArticleIDs:(id)a4
++ (id)transactionToMutateSeenArticlesWithInsertedOrUpdatedHistoryItems:(id)items deletedArticleIDs:(id)ds
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if (!v5 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  itemsCopy = items;
+  dsCopy = ds;
+  if (!itemsCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v10 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "insertedOrUpdatedHistoryItems"];
     *buf = 136315906;
@@ -94,13 +94,13 @@
     v19 = v10;
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
 
-    if (v6)
+    if (dsCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v6)
+  else if (dsCopy)
   {
     goto LABEL_6;
   }
@@ -120,25 +120,25 @@
   }
 
 LABEL_6:
-  v7 = [objc_alloc(objc_opt_class()) initWithTransactionType:0 insertedOrUpdatedHistoryItems:v5 deletedArticleIDs:v6];
+  v7 = [objc_alloc(objc_opt_class()) initWithTransactionType:0 insertedOrUpdatedHistoryItems:itemsCopy deletedArticleIDs:dsCopy];
 
   v8 = *MEMORY[0x1E69E9840];
 
   return v7;
 }
 
-+ (id)collapsedTransactionOfTransactions:(id)a3
++ (id)collapsedTransactionOfTransactions:(id)transactions
 {
   v80 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v56 = [MEMORY[0x1E695DFA0] orderedSet];
-  v4 = [MEMORY[0x1E695DF90] dictionary];
+  transactionsCopy = transactions;
+  orderedSet = [MEMORY[0x1E695DFA0] orderedSet];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v65 = 0u;
   v66 = 0u;
   v67 = 0u;
   v68 = 0u;
-  v49 = v3;
-  obj = [v3 copy];
+  v49 = transactionsCopy;
+  obj = [transactionsCopy copy];
   v5 = [obj countByEnumeratingWithState:&v65 objects:v79 count:16];
   if (v5)
   {
@@ -158,43 +158,43 @@ LABEL_6:
         }
 
         v10 = *(*(&v65 + 1) + 8 * v9);
-        v11 = [v10 transactionType];
-        v12 = v11;
-        if (v11)
+        transactionType = [v10 transactionType];
+        v12 = transactionType;
+        if (transactionType)
         {
-          if (v11 == 1)
+          if (transactionType == 1)
           {
-            [v56 removeAllObjects];
+            [orderedSet removeAllObjects];
             [v7 removeAllObjects];
-            [v4 removeAllObjects];
+            [dictionary removeAllObjects];
           }
         }
 
         else
         {
           v53 = v9;
-          v13 = [v10 deletedArticleIDs];
-          v14 = [v13 count];
+          deletedArticleIDs = [v10 deletedArticleIDs];
+          v14 = [deletedArticleIDs count];
 
           if (v14)
           {
-            v15 = [v10 deletedArticleIDs];
-            v16 = v15;
+            deletedArticleIDs2 = [v10 deletedArticleIDs];
+            deletedArticleIDs4 = deletedArticleIDs2;
             if (v7)
             {
-              [v7 unionSet:v15];
+              [v7 unionSet:deletedArticleIDs2];
 
-              v17 = [v10 deletedArticleIDs];
-              [v56 minusSet:v17];
+              deletedArticleIDs3 = [v10 deletedArticleIDs];
+              [orderedSet minusSet:deletedArticleIDs3];
 
-              v16 = [v10 deletedArticleIDs];
-              v18 = [v16 allObjects];
-              [v4 removeObjectsForKeys:v18];
+              deletedArticleIDs4 = [v10 deletedArticleIDs];
+              allObjects = [deletedArticleIDs4 allObjects];
+              [dictionary removeObjectsForKeys:allObjects];
             }
 
             else
             {
-              v7 = [v15 mutableCopy];
+              v7 = [deletedArticleIDs2 mutableCopy];
             }
           }
 
@@ -202,8 +202,8 @@ LABEL_6:
           v64 = 0u;
           v61 = 0u;
           v62 = 0u;
-          v19 = [v10 insertedOrUpdatedHistoryItems];
-          v20 = [v19 countByEnumeratingWithState:&v61 objects:v78 count:16];
+          insertedOrUpdatedHistoryItems = [v10 insertedOrUpdatedHistoryItems];
+          v20 = [insertedOrUpdatedHistoryItems countByEnumeratingWithState:&v61 objects:v78 count:16];
           if (v20)
           {
             v21 = v20;
@@ -214,35 +214,35 @@ LABEL_6:
               {
                 if (*v62 != v22)
                 {
-                  objc_enumerationMutation(v19);
+                  objc_enumerationMutation(insertedOrUpdatedHistoryItems);
                 }
 
                 v24 = *(*(&v61 + 1) + 8 * i);
-                v25 = [v24 articleID];
-                if (v25)
+                articleID = [v24 articleID];
+                if (articleID)
                 {
-                  [v7 removeObject:v25];
-                  [v56 addObject:v25];
-                  v26 = [v4 objectForKeyedSubscript:v25];
+                  [v7 removeObject:articleID];
+                  [orderedSet addObject:articleID];
+                  v26 = [dictionary objectForKeyedSubscript:articleID];
                   if (v26)
                   {
                     FCCheckedProtocolCast(&unk_1F2ECDE28, v26);
-                    v27 = v4;
+                    v27 = dictionary;
                     v29 = v28 = v7;
-                    [a1 _mergeItem:v24 intoItem:v29];
+                    [self _mergeItem:v24 intoItem:v29];
 
                     v7 = v28;
-                    v4 = v27;
+                    dictionary = v27;
                   }
 
                   else
                   {
-                    [v4 setObject:v24 forKeyedSubscript:v25];
+                    [dictionary setObject:v24 forKeyedSubscript:articleID];
                   }
                 }
               }
 
-              v21 = [v19 countByEnumeratingWithState:&v61 objects:v78 count:16];
+              v21 = [insertedOrUpdatedHistoryItems countByEnumeratingWithState:&v61 objects:v78 count:16];
             }
 
             while (v21);
@@ -271,12 +271,12 @@ LABEL_6:
     v54 = 1;
   }
 
-  v30 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v56, "count")}];
+  v30 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(orderedSet, "count")}];
   v57 = 0u;
   v58 = 0u;
   v59 = 0u;
   v60 = 0u;
-  v31 = v56;
+  v31 = orderedSet;
   v32 = [v31 countByEnumeratingWithState:&v57 objects:v77 count:16];
   v33 = v7;
   if (v32)
@@ -293,7 +293,7 @@ LABEL_6:
           objc_enumerationMutation(v31);
         }
 
-        v38 = [v4 objectForKeyedSubscript:*(*(&v57 + 1) + 8 * j)];
+        v38 = [dictionary objectForKeyedSubscript:*(*(&v57 + 1) + 8 * j)];
         if (v38)
         {
           [v30 addObject:v38];
@@ -347,31 +347,31 @@ LABEL_6:
 
 - (id)todayPrivateDataAccessor
 {
-  v3 = [(FCFileCoordinatedTodayDropboxTransaction *)self transactionType];
-  if (v3 == 1)
+  transactionType = [(FCFileCoordinatedTodayDropboxTransaction *)self transactionType];
+  if (transactionType == 1)
   {
     v10 = &__block_literal_global_367;
   }
 
-  else if (v3)
+  else if (transactionType)
   {
     v10 = 0;
   }
 
   else
   {
-    v4 = [(FCFileCoordinatedTodayDropboxTransaction *)self insertedOrUpdatedHistoryItems];
-    v5 = [v4 copy];
+    insertedOrUpdatedHistoryItems = [(FCFileCoordinatedTodayDropboxTransaction *)self insertedOrUpdatedHistoryItems];
+    v5 = [insertedOrUpdatedHistoryItems copy];
 
-    v6 = [(FCFileCoordinatedTodayDropboxTransaction *)self deletedArticleIDs];
-    v7 = [v6 copy];
+    deletedArticleIDs = [(FCFileCoordinatedTodayDropboxTransaction *)self deletedArticleIDs];
+    v7 = [deletedArticleIDs copy];
 
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __68__FCFileCoordinatedTodayDropboxTransaction_todayPrivateDataAccessor__block_invoke;
     aBlock[3] = &unk_1E7C38DF8;
     v14 = v5;
-    v15 = self;
+    selfCopy = self;
     v16 = v7;
     v8 = v7;
     v9 = v5;
@@ -470,19 +470,19 @@ void __68__FCFileCoordinatedTodayDropboxTransaction_todayPrivateDataAccessor__bl
   }
 }
 
-- (void)_mergeItem:(id)a3 intoItem:(id)a4
+- (void)_mergeItem:(id)item intoItem:(id)intoItem
 {
-  v5 = a4;
-  v6 = a3;
-  [objc_opt_class() _mergeItem:v6 intoItem:v5];
+  intoItemCopy = intoItem;
+  itemCopy = item;
+  [objc_opt_class() _mergeItem:itemCopy intoItem:intoItemCopy];
 }
 
-+ (void)_mergeItem:(id)a3 intoItem:(id)a4
++ (void)_mergeItem:(id)item intoItem:(id)intoItem
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if (!v5 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  itemCopy = item;
+  intoItemCopy = intoItem;
+  if (!itemCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v10 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "rightItem"];
     *buf = 136315906;
@@ -495,13 +495,13 @@ void __68__FCFileCoordinatedTodayDropboxTransaction_todayPrivateDataAccessor__bl
     v19 = v10;
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
 
-    if (v6)
+    if (intoItemCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v6)
+  else if (intoItemCopy)
   {
     goto LABEL_6;
   }
@@ -521,8 +521,8 @@ void __68__FCFileCoordinatedTodayDropboxTransaction_todayPrivateDataAccessor__bl
   }
 
 LABEL_6:
-  v7 = FCCheckedProtocolCast(&unk_1F2ECDE28, v6);
-  v8 = FCCheckedProtocolCast(&unk_1F2ECDCD8, v5);
+  v7 = FCCheckedProtocolCast(&unk_1F2ECDE28, intoItemCopy);
+  v8 = FCCheckedProtocolCast(&unk_1F2ECDCD8, itemCopy);
   FCMergeHistoryItemSeenFields(v7, v8);
 
   v9 = *MEMORY[0x1E69E9840];

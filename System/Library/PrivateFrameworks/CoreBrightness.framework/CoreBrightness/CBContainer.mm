@@ -1,29 +1,29 @@
 @interface CBContainer
 - (void)dealloc;
-- (void)registerNotificationBlock:(id)a3;
-- (void)scheduleWithDispatchQueue:(id)a3;
+- (void)registerNotificationBlock:(id)block;
+- (void)scheduleWithDispatchQueue:(id)queue;
 - (void)unregisterNotificationBlock;
-- (void)unscheduleWithDispatchQueue:(id)a3;
+- (void)unscheduleWithDispatchQueue:(id)queue;
 @end
 
 @implementation CBContainer
 
-- (void)scheduleWithDispatchQueue:(id)a3
+- (void)scheduleWithDispatchQueue:(id)queue
 {
-  v13 = self;
+  selfCopy = self;
   v12 = a2;
-  v11 = a3;
+  queueCopy = queue;
   if (self->_queue)
   {
-    [(CBContainer *)v13 unscheduleWithDispatchQueue:v11];
-    queue = v13->_queue;
+    [(CBContainer *)selfCopy unscheduleWithDispatchQueue:queueCopy];
+    queue = selfCopy->_queue;
     block = MEMORY[0x1E69E9820];
     v5 = -1073741824;
     v6 = 0;
     v7 = __41__CBContainer_scheduleWithDispatchQueue___block_invoke;
     v8 = &unk_1E867BB90;
-    v9 = v13;
-    v10 = v11;
+    v9 = selfCopy;
+    v10 = queueCopy;
     dispatch_sync(queue, &block);
   }
 }
@@ -39,21 +39,21 @@ void __41__CBContainer_scheduleWithDispatchQueue___block_invoke(uint64_t a1)
   dispatch_retain(*(*(a1 + 32) + 24));
 }
 
-- (void)unscheduleWithDispatchQueue:(id)a3
+- (void)unscheduleWithDispatchQueue:(id)queue
 {
-  v13 = self;
+  selfCopy = self;
   v12 = a2;
-  v11 = a3;
+  queueCopy = queue;
   if (self->_queue)
   {
-    queue = v13->_queue;
+    queue = selfCopy->_queue;
     block = MEMORY[0x1E69E9820];
     v5 = -1073741824;
     v6 = 0;
     v7 = __43__CBContainer_unscheduleWithDispatchQueue___block_invoke;
     v8 = &unk_1E867BB90;
-    v9 = v13;
-    v10 = v11;
+    v9 = selfCopy;
+    v10 = queueCopy;
     dispatch_sync(queue, &block);
   }
 }
@@ -70,22 +70,22 @@ void __43__CBContainer_unscheduleWithDispatchQueue___block_invoke(uint64_t a1)
   }
 }
 
-- (void)registerNotificationBlock:(id)a3
+- (void)registerNotificationBlock:(id)block
 {
-  v13 = self;
+  selfCopy = self;
   v12 = a2;
-  v11 = a3;
+  blockCopy = block;
   [(CBContainer *)self unregisterNotificationBlock];
-  if (v13->_queue)
+  if (selfCopy->_queue)
   {
-    queue = v13->_queue;
+    queue = selfCopy->_queue;
     block = MEMORY[0x1E69E9820];
     v5 = -1073741824;
     v6 = 0;
     v7 = __41__CBContainer_registerNotificationBlock___block_invoke;
     v8 = &unk_1E867C818;
-    v10 = v11;
-    v9 = v13;
+    v10 = blockCopy;
+    v9 = selfCopy;
     dispatch_sync(queue, &block);
   }
 }
@@ -129,17 +129,17 @@ void __41__CBContainer_registerNotificationBlock___block_invoke(uint64_t a1)
 
 - (void)unregisterNotificationBlock
 {
-  v10 = self;
+  selfCopy = self;
   v9 = a2;
   if (self->_queue)
   {
-    queue = v10->_queue;
+    queue = selfCopy->_queue;
     block = MEMORY[0x1E69E9820];
     v4 = -1073741824;
     v5 = 0;
     v6 = __42__CBContainer_unregisterNotificationBlock__block_invoke;
     v7 = &unk_1E867B480;
-    v8 = v10;
+    v8 = selfCopy;
     dispatch_sync(queue, &block);
   }
 }
@@ -187,21 +187,21 @@ void __42__CBContainer_unregisterNotificationBlock__block_invoke(uint64_t a1)
 
 - (void)dealloc
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   if (self->_queue)
   {
-    dispatch_release(v4->_queue);
-    v4->_queue = 0;
+    dispatch_release(selfCopy->_queue);
+    selfCopy->_queue = 0;
   }
 
-  if (v4->_logHandle)
+  if (selfCopy->_logHandle)
   {
-    MEMORY[0x1E69E5920](v4->_logHandle);
-    v4->_logHandle = 0;
+    MEMORY[0x1E69E5920](selfCopy->_logHandle);
+    selfCopy->_logHandle = 0;
   }
 
-  v2.receiver = v4;
+  v2.receiver = selfCopy;
   v2.super_class = CBContainer;
   [(CBContainer *)&v2 dealloc];
 }

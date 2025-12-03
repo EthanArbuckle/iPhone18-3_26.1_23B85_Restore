@@ -1,8 +1,8 @@
 @interface ICQLPreviewController
 - (BOOL)viewOnlyDocumentButtonIsVisible;
 - (CGRect)viewOnlyDocumentButtonFrame;
-- (ICQLPreviewController)initWithCoder:(id)a3;
-- (ICQLPreviewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (ICQLPreviewController)initWithCoder:(id)coder;
+- (ICQLPreviewController)initWithNibName:(id)name bundle:(id)bundle;
 - (UIButton)viewOnlyDocumentButton;
 - (double)bottomButtonSpacing;
 - (void)commonInit;
@@ -12,19 +12,19 @@
 - (void)showViewOnlyDocumentPopover;
 - (void)showViewOnlyWarning;
 - (void)updateBackgroundColor;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation ICQLPreviewController
 
-- (ICQLPreviewController)initWithNibName:(id)a3 bundle:(id)a4
+- (ICQLPreviewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v7.receiver = self;
   v7.super_class = ICQLPreviewController;
-  v4 = [(QLPreviewController *)&v7 initWithNibName:a3 bundle:a4];
+  v4 = [(QLPreviewController *)&v7 initWithNibName:name bundle:bundle];
   v5 = v4;
   if (v4)
   {
@@ -34,11 +34,11 @@
   return v5;
 }
 
-- (ICQLPreviewController)initWithCoder:(id)a3
+- (ICQLPreviewController)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = ICQLPreviewController;
-  v3 = [(ICQLPreviewController *)&v6 initWithCoder:a3];
+  v3 = [(ICQLPreviewController *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -56,54 +56,54 @@
   [(ICQLPreviewController *)self registerForTraitChanges];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v10.receiver = self;
   v10.super_class = ICQLPreviewController;
-  [(QLPreviewController *)&v10 viewWillAppear:a3];
-  v4 = [(QLPreviewController *)self internalNavigationController];
-  v5 = [v4 navigationBar];
-  [v5 _setHidesShadow:1];
+  [(QLPreviewController *)&v10 viewWillAppear:appear];
+  internalNavigationController = [(QLPreviewController *)self internalNavigationController];
+  navigationBar = [internalNavigationController navigationBar];
+  [navigationBar _setHidesShadow:1];
 
-  v6 = [(QLPreviewController *)self toolbarController];
-  v7 = [v6 originalToolbar];
-  [v7 _setHidesShadow:1];
+  toolbarController = [(QLPreviewController *)self toolbarController];
+  originalToolbar = [toolbarController originalToolbar];
+  [originalToolbar _setHidesShadow:1];
 
-  v8 = [(QLPreviewController *)self toolbarController];
-  v9 = [v8 customToolbar];
-  [v9 _setHidesShadow:1];
+  toolbarController2 = [(QLPreviewController *)self toolbarController];
+  customToolbar = [toolbarController2 customToolbar];
+  [customToolbar _setHidesShadow:1];
 
   [(ICQLPreviewController *)self updateBackgroundColor];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = ICQLPreviewController;
-  [(QLPreviewController *)&v5 viewDidAppear:a3];
-  v4 = [(ICQLPreviewController *)self hideViewOnlyDocumentButtonSelectorDelayer];
-  [v4 requestFire];
+  [(QLPreviewController *)&v5 viewDidAppear:appear];
+  hideViewOnlyDocumentButtonSelectorDelayer = [(ICQLPreviewController *)self hideViewOnlyDocumentButtonSelectorDelayer];
+  [hideViewOnlyDocumentButtonSelectorDelayer requestFire];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = ICQLPreviewController;
-  [(QLPreviewController *)&v5 viewWillDisappear:a3];
+  [(QLPreviewController *)&v5 viewWillDisappear:disappear];
   if ([(ICQLPreviewController *)self viewOnlyDocumentButtonIsVisible])
   {
-    v4 = [(ICQLPreviewController *)self viewOnlyDocumentButton];
-    [v4 removeFromSuperview];
+    viewOnlyDocumentButton = [(ICQLPreviewController *)self viewOnlyDocumentButton];
+    [viewOnlyDocumentButton removeFromSuperview];
   }
 }
 
 - (void)updateBackgroundColor
 {
-  v3 = [(ICQLPreviewController *)self traitCollection];
-  v4 = [v3 ic_appearanceInfo];
-  v5 = [v4 isDark];
+  traitCollection = [(ICQLPreviewController *)self traitCollection];
+  ic_appearanceInfo = [traitCollection ic_appearanceInfo];
+  isDark = [ic_appearanceInfo isDark];
 
-  if (v5)
+  if (isDark)
   {
     [MEMORY[0x277D75348] blackColor];
   }
@@ -137,36 +137,36 @@
     v22 = &unk_2781ADD08;
     objc_copyWeak(&v23, &location);
     v5 = [v4 actionWithHandler:&v19];
-    v6 = [MEMORY[0x277CCA8D8] mainBundle];
-    v7 = [v6 localizedStringForKey:@"This document is view only." value:&stru_282757698 table:0];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v7 = [mainBundle localizedStringForKey:@"This document is view only." value:&stru_282757698 table:0];
 
-    v8 = [MEMORY[0x277D75230] filledButtonConfiguration];
-    v9 = [MEMORY[0x277D75348] darkGrayColor];
-    [v8 setBaseForegroundColor:v9];
+    filledButtonConfiguration = [MEMORY[0x277D75230] filledButtonConfiguration];
+    darkGrayColor = [MEMORY[0x277D75348] darkGrayColor];
+    [filledButtonConfiguration setBaseForegroundColor:darkGrayColor];
 
-    v10 = [MEMORY[0x277D75348] whiteColor];
-    v11 = [v8 background];
-    [v11 setBackgroundColor:v10];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    background = [filledButtonConfiguration background];
+    [background setBackgroundColor:whiteColor];
 
     v12 = [MEMORY[0x277D75348] colorWithWhite:0.9 alpha:1.0];
-    v13 = [v8 background];
-    [v13 setStrokeColor:v12];
+    background2 = [filledButtonConfiguration background];
+    [background2 setStrokeColor:v12];
 
-    v14 = [v8 background];
-    [v14 setStrokeWidth:1.0];
+    background3 = [filledButtonConfiguration background];
+    [background3 setStrokeWidth:1.0];
 
-    [v8 setCornerStyle:4];
-    [v8 setButtonSize:1];
-    [v8 setTitleAlignment:1];
-    [v8 setTitle:v7];
-    [v8 setAccessibilityLabel:v7];
-    [v8 contentInsets];
-    [v8 setContentInsets:{6.0, 12.0, 6.0, 12.0}];
+    [filledButtonConfiguration setCornerStyle:4];
+    [filledButtonConfiguration setButtonSize:1];
+    [filledButtonConfiguration setTitleAlignment:1];
+    [filledButtonConfiguration setTitle:v7];
+    [filledButtonConfiguration setAccessibilityLabel:v7];
+    [filledButtonConfiguration contentInsets];
+    [filledButtonConfiguration setContentInsets:{6.0, 12.0, 6.0, 12.0}];
     v15 = [MEMORY[0x277D755B8] ic_largeSystemImageNamed:@"info.circle"];
-    [v8 setImage:v15];
+    [filledButtonConfiguration setImage:v15];
 
-    [v8 setImagePadding:4.0];
-    v16 = [MEMORY[0x277D75220] buttonWithConfiguration:v8 primaryAction:v5];
+    [filledButtonConfiguration setImagePadding:4.0];
+    v16 = [MEMORY[0x277D75220] buttonWithConfiguration:filledButtonConfiguration primaryAction:v5];
     [(UIButton *)v16 ic_applyShadow];
     [(UIButton *)v16 setTranslatesAutoresizingMaskIntoConstraints:0];
     v17 = self->_viewOnlyDocumentButton;
@@ -227,26 +227,26 @@ void __43__ICQLPreviewController_hideViewOnlyButton__block_invoke_2(uint64_t a1,
     return 0;
   }
 
-  v3 = [(UIButton *)viewOnlyDocumentButton window];
-  v4 = v3 != 0;
+  window = [(UIButton *)viewOnlyDocumentButton window];
+  v4 = window != 0;
 
   return v4;
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __76__ICQLPreviewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke;
   v9[3] = &unk_2781AC788;
   v9[4] = self;
-  v7 = a4;
-  [v7 animateAlongsideTransition:v9 completion:0];
+  coordinatorCopy = coordinator;
+  [coordinatorCopy animateAlongsideTransition:v9 completion:0];
   v8.receiver = self;
   v8.super_class = ICQLPreviewController;
-  [(QLPreviewController *)&v8 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  [(QLPreviewController *)&v8 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
 }
 
 void __76__ICQLPreviewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke(uint64_t a1)
@@ -259,16 +259,16 @@ void __76__ICQLPreviewController_viewWillTransitionToSize_withTransitionCoordina
 
 - (double)bottomButtonSpacing
 {
-  v3 = [(ICQLPreviewController *)self traitCollection];
-  v4 = [v3 ic_hasCompactSize];
+  traitCollection = [(ICQLPreviewController *)self traitCollection];
+  ic_hasCompactSize = [traitCollection ic_hasCompactSize];
 
-  v5 = [(ICQLPreviewController *)self view];
-  [v5 bounds];
+  view = [(ICQLPreviewController *)self view];
+  [view bounds];
   v7 = v6;
   v9 = v8;
 
   result = -40.0;
-  if ((v4 & (v9 > v7)) != 0)
+  if ((ic_hasCompactSize & (v9 > v7)) != 0)
   {
     return -100.0;
   }
@@ -281,30 +281,30 @@ void __76__ICQLPreviewController_viewWillTransitionToSize_withTransitionCoordina
   v20[2] = *MEMORY[0x277D85DE8];
   if (![(ICQLPreviewController *)self viewOnlyDocumentButtonIsVisible])
   {
-    v3 = [(ICQLPreviewController *)self viewOnlyDocumentButton];
-    [v3 setAlpha:0.0];
+    viewOnlyDocumentButton = [(ICQLPreviewController *)self viewOnlyDocumentButton];
+    [viewOnlyDocumentButton setAlpha:0.0];
 
-    v4 = [(ICQLPreviewController *)self view];
-    v5 = [(ICQLPreviewController *)self viewOnlyDocumentButton];
-    [v4 addSubview:v5];
+    view = [(ICQLPreviewController *)self view];
+    viewOnlyDocumentButton2 = [(ICQLPreviewController *)self viewOnlyDocumentButton];
+    [view addSubview:viewOnlyDocumentButton2];
 
-    v6 = [(ICQLPreviewController *)self viewOnlyDocumentButton];
-    v7 = [v6 bottomAnchor];
-    v8 = [(ICQLPreviewController *)self view];
-    v9 = [v8 bottomAnchor];
+    viewOnlyDocumentButton3 = [(ICQLPreviewController *)self viewOnlyDocumentButton];
+    bottomAnchor = [viewOnlyDocumentButton3 bottomAnchor];
+    view2 = [(ICQLPreviewController *)self view];
+    bottomAnchor2 = [view2 bottomAnchor];
     [(ICQLPreviewController *)self bottomButtonSpacing];
-    v10 = [v7 constraintEqualToAnchor:v9 constant:?];
+    v10 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:?];
     [(ICQLPreviewController *)self setBottomButtonConstraint:v10];
 
     v11 = MEMORY[0x277CCAAD0];
-    v12 = [(ICQLPreviewController *)self viewOnlyDocumentButton];
-    v13 = [v12 centerXAnchor];
-    v14 = [(ICQLPreviewController *)self view];
-    v15 = [v14 centerXAnchor];
-    v16 = [v13 constraintEqualToAnchor:v15];
+    viewOnlyDocumentButton4 = [(ICQLPreviewController *)self viewOnlyDocumentButton];
+    centerXAnchor = [viewOnlyDocumentButton4 centerXAnchor];
+    view3 = [(ICQLPreviewController *)self view];
+    centerXAnchor2 = [view3 centerXAnchor];
+    v16 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v20[0] = v16;
-    v17 = [(ICQLPreviewController *)self bottomButtonConstraint];
-    v20[1] = v17;
+    bottomButtonConstraint = [(ICQLPreviewController *)self bottomButtonConstraint];
+    v20[1] = bottomButtonConstraint;
     v18 = [MEMORY[0x277CBEA60] arrayWithObjects:v20 count:2];
     [v11 activateConstraints:v18];
 
@@ -325,24 +325,24 @@ void __44__ICQLPreviewController_showViewOnlyWarning__block_invoke(uint64_t a1)
 
 - (void)showViewOnlyDocumentPopover
 {
-  v3 = [(ICQLPreviewController *)self hideViewOnlyDocumentButtonSelectorDelayer];
-  [v3 cancelPreviousFireRequests];
+  hideViewOnlyDocumentButtonSelectorDelayer = [(ICQLPreviewController *)self hideViewOnlyDocumentButtonSelectorDelayer];
+  [hideViewOnlyDocumentButtonSelectorDelayer cancelPreviousFireRequests];
 
-  v4 = [(ICQLPreviewController *)self viewOnlyDocumentButton];
-  v5 = [ICViewOnlyPopoverViewController viewOnlyPopoverViewController:self sourceView:v4];
+  viewOnlyDocumentButton = [(ICQLPreviewController *)self viewOnlyDocumentButton];
+  v5 = [ICViewOnlyPopoverViewController viewOnlyPopoverViewController:self sourceView:viewOnlyDocumentButton];
   [(ICQLPreviewController *)self setViewOnlyPopoverController:v5];
 
-  v6 = [(ICQLPreviewController *)self viewOnlyPopoverController];
-  -[ICQLPreviewController presentViewController:animated:completion:](self, "presentViewController:animated:completion:", v6, [MEMORY[0x277D75D18] areAnimationsEnabled], 0);
+  viewOnlyPopoverController = [(ICQLPreviewController *)self viewOnlyPopoverController];
+  -[ICQLPreviewController presentViewController:animated:completion:](self, "presentViewController:animated:completion:", viewOnlyPopoverController, [MEMORY[0x277D75D18] areAnimationsEnabled], 0);
 }
 
 - (void)popoverDidDismiss
 {
-  v3 = [(ICQLPreviewController *)self viewOnlyPopoverController];
-  [v3 removeFromParentViewController];
+  viewOnlyPopoverController = [(ICQLPreviewController *)self viewOnlyPopoverController];
+  [viewOnlyPopoverController removeFromParentViewController];
 
-  v4 = [(ICQLPreviewController *)self hideViewOnlyDocumentButtonSelectorDelayer];
-  [v4 requestFire];
+  hideViewOnlyDocumentButtonSelectorDelayer = [(ICQLPreviewController *)self hideViewOnlyDocumentButtonSelectorDelayer];
+  [hideViewOnlyDocumentButtonSelectorDelayer requestFire];
 }
 
 - (CGRect)viewOnlyDocumentButtonFrame

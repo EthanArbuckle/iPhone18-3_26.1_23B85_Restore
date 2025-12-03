@@ -4,31 +4,31 @@
 - (NSArray)pendingConsentRequests;
 - (NSArray)periodicLaunchAccessories;
 - (UARPDatabase)init;
-- (id)accessoryArrayForDictionary:(id)a3;
+- (id)accessoryArrayForDictionary:(id)dictionary;
 - (id)activeAccessoryDictionary;
-- (id)consentArrayForDictionary:(id)a3;
+- (id)consentArrayForDictionary:(id)dictionary;
 - (id)dasActivitiesDictionary;
-- (id)getDASActivitiesForServiceName:(id)a3;
+- (id)getDASActivitiesForServiceName:(id)name;
 - (id)pendingConsentRequestsDictionary;
 - (id)periodicLaunchAccessoryDictionary;
-- (id)unarchiveConsentData:(id)a3 forAccessory:(id)a4;
-- (id)unarchiveDASActivitiesData:(id)a3;
-- (id)unarchiveInternalAccessoryData:(id)a3 forUUID:(id)a4;
-- (void)addAccessoryToPeriodicLaunchCache:(id)a3 uuid:(id)a4;
-- (void)addActiveAccessory:(id)a3;
-- (void)addDASActivities:(id)a3 serviceName:(id)a4;
-- (void)addPendingConsentRequest:(id)a3;
+- (id)unarchiveConsentData:(id)data forAccessory:(id)accessory;
+- (id)unarchiveDASActivitiesData:(id)data;
+- (id)unarchiveInternalAccessoryData:(id)data forUUID:(id)d;
+- (void)addAccessoryToPeriodicLaunchCache:(id)cache uuid:(id)uuid;
+- (void)addActiveAccessory:(id)accessory;
+- (void)addDASActivities:(id)activities serviceName:(id)name;
+- (void)addPendingConsentRequest:(id)request;
 - (void)dealloc;
-- (void)dumpActiveAccessories:(id)a3;
-- (void)dumpConsentPendingAccessories:(id)a3;
-- (void)dumpDASActivities:(id)a3;
-- (void)dumpPeriodicLaunchCache:(id)a3;
-- (void)dumpToFile:(id)a3;
-- (void)removeActiveAccessoryForUUID:(id)a3 isUpdate:(BOOL)a4;
-- (void)removeDASActivitiesForServiceName:(id)a3;
-- (void)removePendingConsentRequest:(id)a3;
-- (void)removePeriodicLaunchCacheAccessoryForUUID:(id)a3;
-- (void)updateActiveAccessory:(id)a3;
+- (void)dumpActiveAccessories:(id)accessories;
+- (void)dumpConsentPendingAccessories:(id)accessories;
+- (void)dumpDASActivities:(id)activities;
+- (void)dumpPeriodicLaunchCache:(id)cache;
+- (void)dumpToFile:(id)file;
+- (void)removeActiveAccessoryForUUID:(id)d isUpdate:(BOOL)update;
+- (void)removeDASActivitiesForServiceName:(id)name;
+- (void)removePendingConsentRequest:(id)request;
+- (void)removePeriodicLaunchCacheAccessoryForUUID:(id)d;
+- (void)updateActiveAccessory:(id)accessory;
 @end
 
 @implementation UARPDatabase
@@ -65,14 +65,14 @@
   [(UARPDatabase *)&v3 dealloc];
 }
 
-- (id)accessoryArrayForDictionary:(id)a3
+- (id)accessoryArrayForDictionary:(id)dictionary
 {
   v5 = +[NSMutableArray array];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [a3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v6 = [dictionary countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -84,10 +84,10 @@
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(dictionary);
         }
 
-        v10 = -[UARPDatabase unarchiveInternalAccessoryData:forUUID:](self, "unarchiveInternalAccessoryData:forUUID:", [a3 objectForKeyedSubscript:*(*(&v12 + 1) + 8 * v9)], *(*(&v12 + 1) + 8 * v9));
+        v10 = -[UARPDatabase unarchiveInternalAccessoryData:forUUID:](self, "unarchiveInternalAccessoryData:forUUID:", [dictionary objectForKeyedSubscript:*(*(&v12 + 1) + 8 * v9)], *(*(&v12 + 1) + 8 * v9));
         if (v10)
         {
           [v5 addObject:v10];
@@ -97,7 +97,7 @@
       }
 
       while (v7 != v9);
-      v7 = [a3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [dictionary countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
@@ -108,25 +108,25 @@
 
 - (NSArray)activeAccessories
 {
-  v3 = [(UARPDatabase *)self activeAccessoryDictionary];
+  activeAccessoryDictionary = [(UARPDatabase *)self activeAccessoryDictionary];
 
-  return [(UARPDatabase *)self accessoryArrayForDictionary:v3];
+  return [(UARPDatabase *)self accessoryArrayForDictionary:activeAccessoryDictionary];
 }
 
-- (void)addActiveAccessory:(id)a3
+- (void)addActiveAccessory:(id)accessory
 {
-  v5 = [(UARPDatabase *)self activeAccessoryDictionary];
-  if (!v5)
+  activeAccessoryDictionary = [(UARPDatabase *)self activeAccessoryDictionary];
+  if (!activeAccessoryDictionary)
   {
-    v5 = +[NSMutableDictionary dictionary];
+    activeAccessoryDictionary = +[NSMutableDictionary dictionary];
   }
 
   v7 = 0;
-  v6 = [NSKeyedArchiver archivedDataWithRootObject:a3 requiringSecureCoding:1 error:&v7];
+  v6 = [NSKeyedArchiver archivedDataWithRootObject:accessory requiringSecureCoding:1 error:&v7];
   if (v6)
   {
-    [v5 setObject:v6 forKeyedSubscript:{objc_msgSend(objc_msgSend(objc_msgSend(a3, "accessoryID"), "uuid"), "UUIDString")}];
-    [(UARPDatabase *)self setActiveAccessories:v5];
+    [activeAccessoryDictionary setObject:v6 forKeyedSubscript:{objc_msgSend(objc_msgSend(objc_msgSend(accessory, "accessoryID"), "uuid"), "UUIDString")}];
+    [(UARPDatabase *)self setActiveAccessories:activeAccessoryDictionary];
   }
 
   else if (os_log_type_enabled(self->_log, OS_LOG_TYPE_ERROR))
@@ -134,14 +134,14 @@
     sub_10004ADEC();
   }
 
-  -[UARPDatabase removePeriodicLaunchCacheAccessoryForUUID:](self, "removePeriodicLaunchCacheAccessoryForUUID:", [objc_msgSend(a3 "accessoryID")]);
+  -[UARPDatabase removePeriodicLaunchCacheAccessoryForUUID:](self, "removePeriodicLaunchCacheAccessoryForUUID:", [objc_msgSend(accessory "accessoryID")]);
 }
 
-- (void)updateActiveAccessory:(id)a3
+- (void)updateActiveAccessory:(id)accessory
 {
   if ([-[UARPDatabase activeAccessoryDictionary](self "activeAccessoryDictionary")] < 0x65)
   {
-    -[UARPDatabase removeActiveAccessoryForUUID:isUpdate:](self, "removeActiveAccessoryForUUID:isUpdate:", [objc_msgSend(a3 "accessoryID")], 1);
+    -[UARPDatabase removeActiveAccessoryForUUID:isUpdate:](self, "removeActiveAccessoryForUUID:isUpdate:", [objc_msgSend(accessory "accessoryID")], 1);
   }
 
   else
@@ -155,24 +155,24 @@
     [(UARPDatabase *)self setActiveAccessories:0];
   }
 
-  [(UARPDatabase *)self addActiveAccessory:a3];
+  [(UARPDatabase *)self addActiveAccessory:accessory];
 }
 
-- (void)removeActiveAccessoryForUUID:(id)a3 isUpdate:(BOOL)a4
+- (void)removeActiveAccessoryForUUID:(id)d isUpdate:(BOOL)update
 {
-  v7 = [(UARPDatabase *)self activeAccessoryDictionary];
-  if (v7)
+  activeAccessoryDictionary = [(UARPDatabase *)self activeAccessoryDictionary];
+  if (activeAccessoryDictionary)
   {
-    v8 = v7;
-    v9 = [v7 objectForKeyedSubscript:{objc_msgSend(a3, "UUIDString")}];
+    v8 = activeAccessoryDictionary;
+    v9 = [activeAccessoryDictionary objectForKeyedSubscript:{objc_msgSend(d, "UUIDString")}];
     if (v9)
     {
-      if (!a4)
+      if (!update)
       {
-        [(UARPDatabase *)self addAccessoryToPeriodicLaunchCache:v9 uuid:a3];
+        [(UARPDatabase *)self addAccessoryToPeriodicLaunchCache:v9 uuid:d];
       }
 
-      [v8 removeObjectForKey:{objc_msgSend(a3, "UUIDString")}];
+      [v8 removeObjectForKey:{objc_msgSend(d, "UUIDString")}];
 
       [(UARPDatabase *)self setActiveAccessories:v8];
     }
@@ -186,13 +186,13 @@
   return v2;
 }
 
-- (id)unarchiveInternalAccessoryData:(id)a3 forUUID:(id)a4
+- (id)unarchiveInternalAccessoryData:(id)data forUUID:(id)d
 {
   v8 = 0;
-  v6 = +[NSKeyedUnarchiver unarchivedObjectOfClasses:fromData:error:](NSKeyedUnarchiver, "unarchivedObjectOfClasses:fromData:error:", +[UARPAccessoryInternal encodedClasses], a3, &v8);
+  v6 = +[NSKeyedUnarchiver unarchivedObjectOfClasses:fromData:error:](NSKeyedUnarchiver, "unarchivedObjectOfClasses:fromData:error:", +[UARPAccessoryInternal encodedClasses], data, &v8);
   if (!v6 && os_log_type_enabled(self->_log, OS_LOG_TYPE_ERROR))
   {
-    sub_10004AEF0(a4, &v8);
+    sub_10004AEF0(d, &v8);
   }
 
   return v6;
@@ -215,26 +215,26 @@
   return [NSArray arrayWithArray:v3];
 }
 
-- (void)addAccessoryToPeriodicLaunchCache:(id)a3 uuid:(id)a4
+- (void)addAccessoryToPeriodicLaunchCache:(id)cache uuid:(id)uuid
 {
-  v7 = [(UARPDatabase *)self periodicLaunchAccessoryDictionary];
-  if (!v7)
+  periodicLaunchAccessoryDictionary = [(UARPDatabase *)self periodicLaunchAccessoryDictionary];
+  if (!periodicLaunchAccessoryDictionary)
   {
-    v7 = +[NSMutableDictionary dictionary];
+    periodicLaunchAccessoryDictionary = +[NSMutableDictionary dictionary];
   }
 
-  [v7 setObject:a3 forKeyedSubscript:{objc_msgSend(a4, "UUIDString")}];
+  [periodicLaunchAccessoryDictionary setObject:cache forKeyedSubscript:{objc_msgSend(uuid, "UUIDString")}];
 
-  [(UARPDatabase *)self setPeriodicLaunchCache:v7];
+  [(UARPDatabase *)self setPeriodicLaunchCache:periodicLaunchAccessoryDictionary];
 }
 
-- (void)removePeriodicLaunchCacheAccessoryForUUID:(id)a3
+- (void)removePeriodicLaunchCacheAccessoryForUUID:(id)d
 {
-  v5 = [(UARPDatabase *)self periodicLaunchAccessoryDictionary];
-  if (v5)
+  periodicLaunchAccessoryDictionary = [(UARPDatabase *)self periodicLaunchAccessoryDictionary];
+  if (periodicLaunchAccessoryDictionary)
   {
-    v6 = v5;
-    [v5 removeObjectForKey:{objc_msgSend(a3, "UUIDString")}];
+    v6 = periodicLaunchAccessoryDictionary;
+    [periodicLaunchAccessoryDictionary removeObjectForKey:{objc_msgSend(d, "UUIDString")}];
 
     [(UARPDatabase *)self setPeriodicLaunchCache:v6];
   }
@@ -242,9 +242,9 @@
 
 - (NSArray)pendingConsentRequests
 {
-  v3 = [(UARPDatabase *)self pendingConsentRequestsDictionary];
+  pendingConsentRequestsDictionary = [(UARPDatabase *)self pendingConsentRequestsDictionary];
 
-  return [(UARPDatabase *)self consentArrayForDictionary:v3];
+  return [(UARPDatabase *)self consentArrayForDictionary:pendingConsentRequestsDictionary];
 }
 
 - (id)pendingConsentRequestsDictionary
@@ -254,37 +254,37 @@
   return v2;
 }
 
-- (void)addPendingConsentRequest:(id)a3
+- (void)addPendingConsentRequest:(id)request
 {
-  v5 = [(UARPDatabase *)self pendingConsentRequestsDictionary];
-  if (!v5)
+  pendingConsentRequestsDictionary = [(UARPDatabase *)self pendingConsentRequestsDictionary];
+  if (!pendingConsentRequestsDictionary)
   {
-    v5 = +[NSMutableDictionary dictionary];
+    pendingConsentRequestsDictionary = +[NSMutableDictionary dictionary];
   }
 
   v7 = 0;
-  v6 = [NSKeyedArchiver archivedDataWithRootObject:a3 requiringSecureCoding:1 error:&v7];
+  v6 = [NSKeyedArchiver archivedDataWithRootObject:request requiringSecureCoding:1 error:&v7];
   if (v6)
   {
-    [v5 setObject:v6 forKeyedSubscript:{objc_msgSend(a3, "accessoryName")}];
-    [(UARPDatabase *)self setPendingConsentRequests:v5];
+    [pendingConsentRequestsDictionary setObject:v6 forKeyedSubscript:{objc_msgSend(request, "accessoryName")}];
+    [(UARPDatabase *)self setPendingConsentRequests:pendingConsentRequestsDictionary];
   }
 
   else if (os_log_type_enabled(self->_log, OS_LOG_TYPE_ERROR))
   {
-    sub_10004AF60(a3, &v7);
+    sub_10004AF60(request, &v7);
   }
 }
 
-- (void)removePendingConsentRequest:(id)a3
+- (void)removePendingConsentRequest:(id)request
 {
-  v5 = [(UARPDatabase *)self pendingConsentRequestsDictionary];
-  if (v5)
+  pendingConsentRequestsDictionary = [(UARPDatabase *)self pendingConsentRequestsDictionary];
+  if (pendingConsentRequestsDictionary)
   {
-    v6 = v5;
-    if ([v5 objectForKeyedSubscript:{objc_msgSend(a3, "accessoryName")}])
+    v6 = pendingConsentRequestsDictionary;
+    if ([pendingConsentRequestsDictionary objectForKeyedSubscript:{objc_msgSend(request, "accessoryName")}])
     {
-      [v6 removeObjectForKey:{objc_msgSend(a3, "accessoryName")}];
+      [v6 removeObjectForKey:{objc_msgSend(request, "accessoryName")}];
 
       [(UARPDatabase *)self setPendingConsentRequests:v6];
     }
@@ -294,20 +294,20 @@
       log = self->_log;
       if (os_log_type_enabled(log, OS_LOG_TYPE_ERROR))
       {
-        sub_10004AFDC(a3, log);
+        sub_10004AFDC(request, log);
       }
     }
   }
 }
 
-- (id)consentArrayForDictionary:(id)a3
+- (id)consentArrayForDictionary:(id)dictionary
 {
   v5 = +[NSMutableArray array];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [a3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v6 = [dictionary countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -319,10 +319,10 @@
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(dictionary);
         }
 
-        v10 = -[UARPDatabase unarchiveConsentData:forAccessory:](self, "unarchiveConsentData:forAccessory:", [a3 objectForKeyedSubscript:*(*(&v12 + 1) + 8 * v9)], *(*(&v12 + 1) + 8 * v9));
+        v10 = -[UARPDatabase unarchiveConsentData:forAccessory:](self, "unarchiveConsentData:forAccessory:", [dictionary objectForKeyedSubscript:*(*(&v12 + 1) + 8 * v9)], *(*(&v12 + 1) + 8 * v9));
         if (v10)
         {
           [v5 addObject:v10];
@@ -332,7 +332,7 @@
       }
 
       while (v7 != v9);
-      v7 = [a3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [dictionary countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
@@ -341,13 +341,13 @@
   return [NSArray arrayWithArray:v5];
 }
 
-- (id)unarchiveConsentData:(id)a3 forAccessory:(id)a4
+- (id)unarchiveConsentData:(id)data forAccessory:(id)accessory
 {
   v8 = 0;
-  v6 = [NSKeyedUnarchiver unarchivedObjectOfClass:objc_opt_class() fromData:a3 error:&v8];
+  v6 = [NSKeyedUnarchiver unarchivedObjectOfClass:objc_opt_class() fromData:data error:&v8];
   if (!v6 && os_log_type_enabled(self->_log, OS_LOG_TYPE_ERROR))
   {
-    sub_10004AEF0(a4, &v8);
+    sub_10004AEF0(accessory, &v8);
   }
 
   return v6;
@@ -360,19 +360,19 @@
   return v2;
 }
 
-- (void)addDASActivities:(id)a3 serviceName:(id)a4
+- (void)addDASActivities:(id)activities serviceName:(id)name
 {
-  v7 = [(UARPDatabase *)self dasActivitiesDictionary];
-  if (!v7)
+  dasActivitiesDictionary = [(UARPDatabase *)self dasActivitiesDictionary];
+  if (!dasActivitiesDictionary)
   {
-    v7 = +[NSMutableDictionary dictionary];
+    dasActivitiesDictionary = +[NSMutableDictionary dictionary];
   }
 
   v11 = 0;
-  v8 = [a3 mutableCopy];
-  if ([v7 objectForKeyedSubscript:a4])
+  v8 = [activities mutableCopy];
+  if ([dasActivitiesDictionary objectForKeyedSubscript:name])
   {
-    v9 = -[UARPDatabase unarchiveDASActivitiesData:](self, "unarchiveDASActivitiesData:", [v7 objectForKeyedSubscript:a4]);
+    v9 = -[UARPDatabase unarchiveDASActivitiesData:](self, "unarchiveDASActivitiesData:", [dasActivitiesDictionary objectForKeyedSubscript:name]);
     if (v9)
     {
       [v8 addObjectsFromArray:v9];
@@ -382,8 +382,8 @@
   v10 = [NSKeyedArchiver archivedDataWithRootObject:v8 requiringSecureCoding:1 error:&v11];
   if (v10)
   {
-    [v7 setObject:v10 forKeyedSubscript:a4];
-    [(UARPDatabase *)self setDASActivities:v7];
+    [dasActivitiesDictionary setObject:v10 forKeyedSubscript:name];
+    [(UARPDatabase *)self setDASActivities:dasActivitiesDictionary];
   }
 
   else if (os_log_type_enabled(self->_log, OS_LOG_TYPE_ERROR))
@@ -392,13 +392,13 @@
   }
 }
 
-- (id)getDASActivitiesForServiceName:(id)a3
+- (id)getDASActivitiesForServiceName:(id)name
 {
-  v5 = [(UARPDatabase *)self dasActivitiesDictionary];
-  result = [v5 objectForKeyedSubscript:a3];
+  dasActivitiesDictionary = [(UARPDatabase *)self dasActivitiesDictionary];
+  result = [dasActivitiesDictionary objectForKeyedSubscript:name];
   if (result)
   {
-    v7 = [v5 objectForKeyedSubscript:a3];
+    v7 = [dasActivitiesDictionary objectForKeyedSubscript:name];
 
     return [(UARPDatabase *)self unarchiveDASActivitiesData:v7];
   }
@@ -406,41 +406,41 @@
   return result;
 }
 
-- (void)removeDASActivitiesForServiceName:(id)a3
+- (void)removeDASActivitiesForServiceName:(id)name
 {
-  v5 = [(UARPDatabase *)self dasActivitiesDictionary];
-  if ([v5 objectForKeyedSubscript:a3])
+  dasActivitiesDictionary = [(UARPDatabase *)self dasActivitiesDictionary];
+  if ([dasActivitiesDictionary objectForKeyedSubscript:name])
   {
-    [v5 removeObjectForKey:a3];
+    [dasActivitiesDictionary removeObjectForKey:name];
 
-    [(UARPDatabase *)self setDASActivities:v5];
+    [(UARPDatabase *)self setDASActivities:dasActivitiesDictionary];
   }
 }
 
-- (id)unarchiveDASActivitiesData:(id)a3
+- (id)unarchiveDASActivitiesData:(id)data
 {
   v8 = 0;
   v5 = objc_opt_class();
-  v6 = [NSKeyedUnarchiver unarchivedObjectOfClasses:[NSSet setWithObjects:v5 fromData:objc_opt_class() error:0], a3, &v8];
+  v6 = [NSKeyedUnarchiver unarchivedObjectOfClasses:[NSSet setWithObjects:v5 fromData:objc_opt_class() error:0], data, &v8];
   if (!v6 && os_log_type_enabled(self->_log, OS_LOG_TYPE_ERROR))
   {
-    sub_10004B0EC(a3, &v8);
+    sub_10004B0EC(data, &v8);
   }
 
   return v6;
 }
 
-- (void)dumpActiveAccessories:(id)a3
+- (void)dumpActiveAccessories:(id)accessories
 {
-  v4 = [(UARPDatabase *)self activeAccessories];
-  [a3 appendFormat:@"Active Accessories:\n"];
-  if ([(NSArray *)v4 count])
+  activeAccessories = [(UARPDatabase *)self activeAccessories];
+  [accessories appendFormat:@"Active Accessories:\n"];
+  if ([(NSArray *)activeAccessories count])
   {
     v11 = 0u;
     v12 = 0u;
     v9 = 0u;
     v10 = 0u;
-    v5 = [(NSArray *)v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+    v5 = [(NSArray *)activeAccessories countByEnumeratingWithState:&v9 objects:v13 count:16];
     if (v5)
     {
       v6 = v5;
@@ -451,13 +451,13 @@
         {
           if (*v10 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(activeAccessories);
           }
 
-          [*(*(&v9 + 1) + 8 * i) dumpWithTabDepth:1 dumpString:a3];
+          [*(*(&v9 + 1) + 8 * i) dumpWithTabDepth:1 dumpString:accessories];
         }
 
-        v6 = [(NSArray *)v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+        v6 = [(NSArray *)activeAccessories countByEnumeratingWithState:&v9 objects:v13 count:16];
       }
 
       while (v6);
@@ -467,14 +467,14 @@
   else
   {
 
-    [a3 appendWithTabDepth:1 format:@"No active accessories present.\n"];
+    [accessories appendWithTabDepth:1 format:@"No active accessories present.\n"];
   }
 }
 
-- (void)dumpPeriodicLaunchCache:(id)a3
+- (void)dumpPeriodicLaunchCache:(id)cache
 {
   v4 = [(UARPDatabase *)self accessoryArrayForDictionary:[(UARPDatabase *)self periodicLaunchAccessoryDictionary]];
-  [a3 appendFormat:@"Periodic Launch Cache:\n"];
+  [cache appendFormat:@"Periodic Launch Cache:\n"];
   if ([v4 count])
   {
     v11 = 0u;
@@ -495,7 +495,7 @@
             objc_enumerationMutation(v4);
           }
 
-          [*(*(&v9 + 1) + 8 * i) dumpWithTabDepth:1 dumpString:a3];
+          [*(*(&v9 + 1) + 8 * i) dumpWithTabDepth:1 dumpString:cache];
         }
 
         v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
@@ -508,14 +508,14 @@
   else
   {
 
-    [a3 appendWithTabDepth:1 format:@"No accessories present in periodic launch cache.\n"];
+    [cache appendWithTabDepth:1 format:@"No accessories present in periodic launch cache.\n"];
   }
 }
 
-- (void)dumpConsentPendingAccessories:(id)a3
+- (void)dumpConsentPendingAccessories:(id)accessories
 {
   v4 = [(UARPDatabase *)self consentArrayForDictionary:[(UARPDatabase *)self pendingConsentRequestsDictionary]];
-  [a3 appendFormat:@"Consent Pending Requests:\n"];
+  [accessories appendFormat:@"Consent Pending Requests:\n"];
   if ([v4 count])
   {
     v11 = 0u;
@@ -536,7 +536,7 @@
             objc_enumerationMutation(v4);
           }
 
-          [*(*(&v9 + 1) + 8 * i) dumpWithTabDepth:1 dumpString:a3];
+          [*(*(&v9 + 1) + 8 * i) dumpWithTabDepth:1 dumpString:accessories];
         }
 
         v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
@@ -549,21 +549,21 @@
   else
   {
 
-    [a3 appendWithTabDepth:1 format:@"No Pending Consent Requests present.\n"];
+    [accessories appendWithTabDepth:1 format:@"No Pending Consent Requests present.\n"];
   }
 }
 
-- (void)dumpDASActivities:(id)a3
+- (void)dumpDASActivities:(id)activities
 {
-  v5 = [(UARPDatabase *)self dasActivitiesDictionary];
-  [a3 appendFormat:@"DAS Activities:\n"];
-  if ([v5 count])
+  dasActivitiesDictionary = [(UARPDatabase *)self dasActivitiesDictionary];
+  [activities appendFormat:@"DAS Activities:\n"];
+  if ([dasActivitiesDictionary count])
   {
     v23 = 0u;
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    obj = [v5 allKeys];
+    obj = [dasActivitiesDictionary allKeys];
     v6 = [obj countByEnumeratingWithState:&v21 objects:v26 count:16];
     if (v6)
     {
@@ -579,8 +579,8 @@
           }
 
           v10 = *(*(&v21 + 1) + 8 * i);
-          [a3 appendWithTabDepth:1 format:{@"Service Name: %@", v10}];
-          v11 = -[UARPDatabase unarchiveDASActivitiesData:](self, "unarchiveDASActivitiesData:", [v5 objectForKeyedSubscript:v10]);
+          [activities appendWithTabDepth:1 format:{@"Service Name: %@", v10}];
+          v11 = -[UARPDatabase unarchiveDASActivitiesData:](self, "unarchiveDASActivitiesData:", [dasActivitiesDictionary objectForKeyedSubscript:v10]);
           v17 = 0u;
           v18 = 0u;
           v19 = 0u;
@@ -599,7 +599,7 @@
                   objc_enumerationMutation(v11);
                 }
 
-                [*(*(&v17 + 1) + 8 * j) dumpWithTabDepth:2 dumpString:a3];
+                [*(*(&v17 + 1) + 8 * j) dumpWithTabDepth:2 dumpString:activities];
               }
 
               v13 = [v11 countByEnumeratingWithState:&v17 objects:v25 count:16];
@@ -619,16 +619,16 @@
   else
   {
 
-    [a3 appendWithTabDepth:1 format:@"No DAS Activities present.\n"];
+    [activities appendWithTabDepth:1 format:@"No DAS Activities present.\n"];
   }
 }
 
-- (void)dumpToFile:(id)a3
+- (void)dumpToFile:(id)file
 {
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_ERROR))
   {
-    sub_10004B15C(a3, log);
+    sub_10004B15C(file, log);
   }
 
   v6 = +[NSMutableString string];
@@ -637,10 +637,10 @@
   [(UARPDatabase *)self dumpConsentPendingAccessories:v6];
   [(UARPDatabase *)self dumpDASActivities:v6];
   v8 = 0;
-  v7 = [a3 stringByExpandingTildeInPath];
-  if (([v6 writeToFile:objc_msgSend(a3 atomically:"stringByExpandingTildeInPath") encoding:1 error:{4, &v8}] & 1) == 0 && os_log_type_enabled(self->_log, OS_LOG_TYPE_ERROR))
+  stringByExpandingTildeInPath = [file stringByExpandingTildeInPath];
+  if (([v6 writeToFile:objc_msgSend(file atomically:"stringByExpandingTildeInPath") encoding:1 error:{4, &v8}] & 1) == 0 && os_log_type_enabled(self->_log, OS_LOG_TYPE_ERROR))
   {
-    sub_10004B1D4(v7, &v8);
+    sub_10004B1D4(stringByExpandingTildeInPath, &v8);
   }
 }
 

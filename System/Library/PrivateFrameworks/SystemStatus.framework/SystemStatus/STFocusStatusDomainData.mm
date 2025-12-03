@@ -1,156 +1,156 @@
 @interface STFocusStatusDomainData
-- (BOOL)isEqual:(id)a3;
-- (STFocusStatusDomainData)initWithCoder:(id)a3;
-- (id)_descriptionBuilderWithMultilinePrefix:(uint64_t)a3 forDebug:;
-- (id)dataByApplyingDiff:(id)a3;
-- (id)debugDescriptionWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)diffFromData:(id)a3;
-- (id)initWithData:(id *)a1;
-- (id)initWithModeIdentifier:(void *)a3 modeName:(void *)a4 modeSymbol:;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (STFocusStatusDomainData)initWithCoder:(id)coder;
+- (id)_descriptionBuilderWithMultilinePrefix:(uint64_t)prefix forDebug:;
+- (id)dataByApplyingDiff:(id)diff;
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)diffFromData:(id)data;
+- (id)initWithData:(id *)data;
+- (id)initWithModeIdentifier:(void *)identifier modeName:(void *)name modeSymbol:;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (id)succinctDescription;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation STFocusStatusDomainData
 
-- (id)initWithData:(id *)a1
+- (id)initWithData:(id *)data
 {
-  v2 = a1;
-  if (a1)
+  dataCopy = data;
+  if (data)
   {
     v3 = a2;
-    v4 = [v3 modeIdentifier];
-    v5 = [v3 modeName];
-    v6 = [v3 modeSymbol];
+    modeIdentifier = [v3 modeIdentifier];
+    modeName = [v3 modeName];
+    modeSymbol = [v3 modeSymbol];
 
-    v2 = [(STFocusStatusDomainData *)v2 initWithModeIdentifier:v4 modeName:v5 modeSymbol:v6];
+    dataCopy = [(STFocusStatusDomainData *)dataCopy initWithModeIdentifier:modeIdentifier modeName:modeName modeSymbol:modeSymbol];
   }
 
-  return v2;
+  return dataCopy;
 }
 
-- (id)initWithModeIdentifier:(void *)a3 modeName:(void *)a4 modeSymbol:
+- (id)initWithModeIdentifier:(void *)identifier modeName:(void *)name modeSymbol:
 {
   v8 = a2;
-  v9 = a3;
-  v10 = a4;
-  if (a1)
+  identifierCopy = identifier;
+  nameCopy = name;
+  if (self)
   {
-    v13.receiver = a1;
+    v13.receiver = self;
     v13.super_class = STFocusStatusDomainData;
     v11 = objc_msgSendSuper2(&v13, sel_init);
-    a1 = v11;
+    self = v11;
     if (v11)
     {
       objc_storeStrong(v11 + 1, a2);
-      objc_storeStrong(a1 + 2, a3);
-      objc_storeStrong(a1 + 3, a4);
+      objc_storeStrong(self + 2, identifier);
+      objc_storeStrong(self + 3, name);
     }
   }
 
-  return a1;
+  return self;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E698E6A0] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
-  v6 = [(STFocusStatusDomainData *)self modeIdentifier];
+  equalCopy = equal;
+  v5 = [MEMORY[0x1E698E6A0] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
+  modeIdentifier = [(STFocusStatusDomainData *)self modeIdentifier];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __35__STFocusStatusDomainData_isEqual___block_invoke;
   v20[3] = &unk_1E85DDD28;
-  v7 = v4;
+  v7 = equalCopy;
   v21 = v7;
-  v8 = [v5 appendString:v6 counterpart:v20];
+  v8 = [v5 appendString:modeIdentifier counterpart:v20];
 
-  v9 = [(STFocusStatusDomainData *)self modeName];
+  modeName = [(STFocusStatusDomainData *)self modeName];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __35__STFocusStatusDomainData_isEqual___block_invoke_2;
   v18[3] = &unk_1E85DDD28;
   v10 = v7;
   v19 = v10;
-  v11 = [v5 appendString:v9 counterpart:v18];
+  v11 = [v5 appendString:modeName counterpart:v18];
 
-  v12 = [(STFocusStatusDomainData *)self modeSymbol];
+  modeSymbol = [(STFocusStatusDomainData *)self modeSymbol];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __35__STFocusStatusDomainData_isEqual___block_invoke_3;
   v16[3] = &unk_1E85DDD28;
   v17 = v10;
   v13 = v10;
-  v14 = [v5 appendString:v12 counterpart:v16];
+  v14 = [v5 appendString:modeSymbol counterpart:v16];
 
-  LOBYTE(v12) = [v5 isEqual];
-  return v12;
+  LOBYTE(modeSymbol) = [v5 isEqual];
+  return modeSymbol;
 }
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E698E6B8] builder];
-  v4 = [(STFocusStatusDomainData *)self modeIdentifier];
-  v5 = [v3 appendString:v4];
+  builder = [MEMORY[0x1E698E6B8] builder];
+  modeIdentifier = [(STFocusStatusDomainData *)self modeIdentifier];
+  v5 = [builder appendString:modeIdentifier];
 
-  v6 = [(STFocusStatusDomainData *)self modeName];
-  v7 = [v3 appendString:v6];
+  modeName = [(STFocusStatusDomainData *)self modeName];
+  v7 = [builder appendString:modeName];
 
-  v8 = [(STFocusStatusDomainData *)self modeSymbol];
-  v9 = [v3 appendString:v8];
+  modeSymbol = [(STFocusStatusDomainData *)self modeSymbol];
+  v9 = [builder appendString:modeSymbol];
 
-  v10 = [v3 hash];
+  v10 = [builder hash];
   return v10;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [STMutableFocusStatusDomainData allocWithZone:a3];
+  v4 = [STMutableFocusStatusDomainData allocWithZone:zone];
 
   return [(STFocusStatusDomainData *)&v4->super.super.isa initWithData:?];
 }
 
 - (id)succinctDescription
 {
-  v2 = [(STFocusStatusDomainData *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(STFocusStatusDomainData *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(STFocusStatusDomainData *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(STFocusStatusDomainData *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)debugDescriptionWithMultilinePrefix:(id)a3
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(STFocusStatusDomainData *)self _descriptionBuilderWithMultilinePrefix:a3 forDebug:1];
-  v4 = [v3 build];
+  v3 = [(STFocusStatusDomainData *)self _descriptionBuilderWithMultilinePrefix:prefix forDebug:1];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)_descriptionBuilderWithMultilinePrefix:(uint64_t)a3 forDebug:
+- (id)_descriptionBuilderWithMultilinePrefix:(uint64_t)prefix forDebug:
 {
-  if (a1)
+  if (self)
   {
     v5 = a2;
-    v6 = [a1 succinctDescriptionBuilder];
-    [v6 setUseDebugDescription:a3];
-    [v6 setActiveMultilinePrefix:v5];
+    succinctDescriptionBuilder = [self succinctDescriptionBuilder];
+    [succinctDescriptionBuilder setUseDebugDescription:prefix];
+    [succinctDescriptionBuilder setActiveMultilinePrefix:v5];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __75__STFocusStatusDomainData__descriptionBuilderWithMultilinePrefix_forDebug___block_invoke;
     v10[3] = &unk_1E85DDD00;
-    v7 = v6;
+    v7 = succinctDescriptionBuilder;
     v11 = v7;
-    v12 = a1;
+    selfCopy = self;
     [v7 appendBodySectionWithName:0 multilinePrefix:v5 block:v10];
 
     v8 = v7;
@@ -179,13 +179,13 @@ void __75__STFocusStatusDomainData__descriptionBuilderWithMultilinePrefix_forDeb
   [v6 appendString:v7 withName:@"modeSymbol"];
 }
 
-- (id)diffFromData:(id)a3
+- (id)diffFromData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [STFocusStatusDomainDataDiff diffFromData:v4 toData:self];
+    v5 = [STFocusStatusDomainDataDiff diffFromData:dataCopy toData:self];
   }
 
   else
@@ -196,13 +196,13 @@ void __75__STFocusStatusDomainData__descriptionBuilderWithMultilinePrefix_forDeb
   return v5;
 }
 
-- (id)dataByApplyingDiff:(id)a3
+- (id)dataByApplyingDiff:(id)diff
 {
-  v4 = a3;
+  diffCopy = diff;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if ([v4 isEmpty])
+    if ([diffCopy isEmpty])
     {
       v5 = [(STFocusStatusDomainData *)self copy];
     }
@@ -210,7 +210,7 @@ void __75__STFocusStatusDomainData__descriptionBuilderWithMultilinePrefix_forDeb
     else
     {
       v5 = [(STFocusStatusDomainData *)self mutableCopy];
-      [v4 applyToMutableData:v5];
+      [diffCopy applyToMutableData:v5];
     }
   }
 
@@ -222,25 +222,25 @@ void __75__STFocusStatusDomainData__descriptionBuilderWithMultilinePrefix_forDeb
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(STFocusStatusDomainData *)self modeIdentifier];
-  [v4 encodeObject:v5 forKey:@"modeIdentifier"];
+  coderCopy = coder;
+  modeIdentifier = [(STFocusStatusDomainData *)self modeIdentifier];
+  [coderCopy encodeObject:modeIdentifier forKey:@"modeIdentifier"];
 
-  v6 = [(STFocusStatusDomainData *)self modeName];
-  [v4 encodeObject:v6 forKey:@"modeName"];
+  modeName = [(STFocusStatusDomainData *)self modeName];
+  [coderCopy encodeObject:modeName forKey:@"modeName"];
 
-  v7 = [(STFocusStatusDomainData *)self modeSymbol];
-  [v4 encodeObject:v7 forKey:@"modeSymbol"];
+  modeSymbol = [(STFocusStatusDomainData *)self modeSymbol];
+  [coderCopy encodeObject:modeSymbol forKey:@"modeSymbol"];
 }
 
-- (STFocusStatusDomainData)initWithCoder:(id)a3
+- (STFocusStatusDomainData)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"modeIdentifier"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"modeName"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"modeSymbol"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"modeIdentifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"modeName"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"modeSymbol"];
 
   v8 = [(STFocusStatusDomainData *)&self->super.isa initWithModeIdentifier:v5 modeName:v6 modeSymbol:v7];
   return v8;

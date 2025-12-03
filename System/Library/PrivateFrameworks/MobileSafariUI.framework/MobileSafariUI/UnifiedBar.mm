@@ -1,41 +1,41 @@
 @interface UnifiedBar
 - (CGRect)URLOutlineFrameInNavigationBarSpace;
-- (CGRect)urlOutlineFrameRelativeToView:(id)a3;
+- (CGRect)urlOutlineFrameRelativeToView:(id)view;
 - (NSArray)popoverPassthroughViews;
 - (UITextField)textField;
-- (UnifiedBar)initWithFrame:(CGRect)a3;
+- (UnifiedBar)initWithFrame:(CGRect)frame;
 - (_SFNavigationBarDelegateCommon)delegate;
 - (_SFPopoverSourceInfo)URLOutlinePopoverSourceInfo;
 - (_SFPopoverSourceInfo)formatMenuButtonPopoverSourceInfo;
-- (id)popoverSourceInfoForBarItem:(int64_t)a3;
-- (id)unifiedTabBar:(id)a3 mediaStateMuteButtonMenuElementsForItem:(id)a4;
-- (id)viewForBarItem:(int64_t)a3;
-- (void)animateLinkImage:(CGImage *)a3 fromRect:(CGRect)a4 inView:(id)a5 toBarItem:(int64_t)a6 afterDestinationLayerBouncesBlock:(id)a7;
+- (id)popoverSourceInfoForBarItem:(int64_t)item;
+- (id)unifiedTabBar:(id)bar mediaStateMuteButtonMenuElementsForItem:(id)item;
+- (id)viewForBarItem:(int64_t)item;
+- (void)animateLinkImage:(CGImage *)image fromRect:(CGRect)rect inView:(id)view toBarItem:(int64_t)item afterDestinationLayerBouncesBlock:(id)block;
 - (void)metricsDidChange;
-- (void)setOneStepBookmarkingController:(id)a3;
+- (void)setOneStepBookmarkingController:(id)controller;
 - (void)squishedBarTapped;
-- (void)unifiedTabBar:(id)a3 didFinishShowingAvailabilityLabelOfType:(int64_t)a4;
-- (void)unifiedTabBar:(id)a3 didTapMediaStateMuteButtonForItem:(id)a4;
-- (void)unifiedTabBar:(id)a3 extensionButtonTapped:(id)a4 extension:(id)a5;
-- (void)unifiedTabBar:(id)a3 multipleExtensionButtonTapped:(id)a4;
-- (void)unifiedTabBarMenuButtonClicked:(id)a3;
-- (void)unifiedTabBarMenuButtonReceivedTouchDown:(id)a3;
-- (void)unifiedTabBarMenuButtonTapped:(id)a3;
-- (void)unifiedTabBarReaderButtonTapped:(id)a3;
-- (void)unifiedTabBarReloadButtonTapped:(id)a3;
-- (void)unifiedTabBarStopButtonTapped:(id)a3;
-- (void)unifiedTabBarTranslationButtonTapped:(id)a3;
-- (void)unifiedTabBarURLTapped:(id)a3 completionHandler:(id)a4;
-- (void)unifiedTabBarVoiceSearchButtonTapped:(id)a3;
+- (void)unifiedTabBar:(id)bar didFinishShowingAvailabilityLabelOfType:(int64_t)type;
+- (void)unifiedTabBar:(id)bar didTapMediaStateMuteButtonForItem:(id)item;
+- (void)unifiedTabBar:(id)bar extensionButtonTapped:(id)tapped extension:(id)extension;
+- (void)unifiedTabBar:(id)bar multipleExtensionButtonTapped:(id)tapped;
+- (void)unifiedTabBarMenuButtonClicked:(id)clicked;
+- (void)unifiedTabBarMenuButtonReceivedTouchDown:(id)down;
+- (void)unifiedTabBarMenuButtonTapped:(id)tapped;
+- (void)unifiedTabBarReaderButtonTapped:(id)tapped;
+- (void)unifiedTabBarReloadButtonTapped:(id)tapped;
+- (void)unifiedTabBarStopButtonTapped:(id)tapped;
+- (void)unifiedTabBarTranslationButtonTapped:(id)tapped;
+- (void)unifiedTabBarURLTapped:(id)tapped completionHandler:(id)handler;
+- (void)unifiedTabBarVoiceSearchButtonTapped:(id)tapped;
 @end
 
 @implementation UnifiedBar
 
-- (UnifiedBar)initWithFrame:(CGRect)a3
+- (UnifiedBar)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = UnifiedBar;
-  v3 = [(SFUnifiedBar *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SFUnifiedBar *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -63,20 +63,20 @@
   [WeakRetained compressedNavigationBarWasTapped:self];
 }
 
-- (id)viewForBarItem:(int64_t)a3
+- (id)viewForBarItem:(int64_t)item
 {
   WeakRetained = objc_loadWeakRetained(&self->_barRegistrationToken);
-  v5 = [WeakRetained viewForBarItem:a3];
+  v5 = [WeakRetained viewForBarItem:item];
 
   return v5;
 }
 
-- (void)setOneStepBookmarkingController:(id)a3
+- (void)setOneStepBookmarkingController:(id)controller
 {
-  v5 = a3;
-  if (self->_oneStepBookmarkingController != v5)
+  controllerCopy = controller;
+  if (self->_oneStepBookmarkingController != controllerCopy)
   {
-    objc_storeStrong(&self->_oneStepBookmarkingController, a3);
+    objc_storeStrong(&self->_oneStepBookmarkingController, controller);
     objc_initWeak(&location, self);
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
@@ -137,7 +137,7 @@ LABEL_8:
 LABEL_11:
 }
 
-- (void)unifiedTabBarMenuButtonTapped:(id)a3
+- (void)unifiedTabBarMenuButtonTapped:(id)tapped
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
@@ -146,7 +146,7 @@ LABEL_11:
   }
 }
 
-- (void)unifiedTabBarMenuButtonReceivedTouchDown:(id)a3
+- (void)unifiedTabBarMenuButtonReceivedTouchDown:(id)down
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
@@ -155,7 +155,7 @@ LABEL_11:
   }
 }
 
-- (void)unifiedTabBarMenuButtonClicked:(id)a3
+- (void)unifiedTabBarMenuButtonClicked:(id)clicked
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
@@ -164,7 +164,7 @@ LABEL_11:
   }
 }
 
-- (void)unifiedTabBarVoiceSearchButtonTapped:(id)a3
+- (void)unifiedTabBarVoiceSearchButtonTapped:(id)tapped
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
@@ -173,7 +173,7 @@ LABEL_11:
   }
 }
 
-- (void)unifiedTabBarReloadButtonTapped:(id)a3
+- (void)unifiedTabBarReloadButtonTapped:(id)tapped
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
@@ -182,7 +182,7 @@ LABEL_11:
   }
 }
 
-- (void)unifiedTabBarStopButtonTapped:(id)a3
+- (void)unifiedTabBarStopButtonTapped:(id)tapped
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
@@ -191,7 +191,7 @@ LABEL_11:
   }
 }
 
-- (void)unifiedTabBarReaderButtonTapped:(id)a3
+- (void)unifiedTabBarReaderButtonTapped:(id)tapped
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
@@ -200,7 +200,7 @@ LABEL_11:
   }
 }
 
-- (void)unifiedTabBarTranslationButtonTapped:(id)a3
+- (void)unifiedTabBarTranslationButtonTapped:(id)tapped
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
@@ -209,23 +209,23 @@ LABEL_11:
   }
 }
 
-- (void)unifiedTabBar:(id)a3 didTapMediaStateMuteButtonForItem:(id)a4
+- (void)unifiedTabBar:(id)bar didTapMediaStateMuteButtonForItem:(id)item
 {
-  v6 = a4;
+  itemCopy = item;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained navigationBarMediaStateMuteButtonWasTapped:self forItem:v6];
+    [WeakRetained navigationBarMediaStateMuteButtonWasTapped:self forItem:itemCopy];
   }
 }
 
-- (id)unifiedTabBar:(id)a3 mediaStateMuteButtonMenuElementsForItem:(id)a4
+- (id)unifiedTabBar:(id)bar mediaStateMuteButtonMenuElementsForItem:(id)item
 {
-  v5 = a4;
+  itemCopy = item;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    v7 = [WeakRetained navigationBar:self mediaStateMuteButtonMenuElementsForItem:v5];
+    v7 = [WeakRetained navigationBar:self mediaStateMuteButtonMenuElementsForItem:itemCopy];
   }
 
   else
@@ -236,91 +236,91 @@ LABEL_11:
   return v7;
 }
 
-- (void)unifiedTabBarURLTapped:(id)a3 completionHandler:(id)a4
+- (void)unifiedTabBarURLTapped:(id)tapped completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained navigationBarURLWasTapped:self completionHandler:v6];
+    [WeakRetained navigationBarURLWasTapped:self completionHandler:handlerCopy];
   }
 
-  else if (v6)
+  else if (handlerCopy)
   {
-    v6[2]();
+    handlerCopy[2]();
   }
 }
 
-- (void)unifiedTabBar:(id)a3 didFinishShowingAvailabilityLabelOfType:(int64_t)a4
+- (void)unifiedTabBar:(id)bar didFinishShowingAvailabilityLabelOfType:(int64_t)type
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained navigationBar:self didFinishShowingAvailabilityLabelOfType:a4];
+    [WeakRetained navigationBar:self didFinishShowingAvailabilityLabelOfType:type];
   }
 }
 
-- (void)unifiedTabBar:(id)a3 extensionButtonTapped:(id)a4 extension:(id)a5
+- (void)unifiedTabBar:(id)bar extensionButtonTapped:(id)tapped extension:(id)extension
 {
-  v9 = a4;
-  v7 = a5;
+  tappedCopy = tapped;
+  extensionCopy = extension;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained navigationBar:self extensionButtonTapped:v9 extension:v7];
+    [WeakRetained navigationBar:self extensionButtonTapped:tappedCopy extension:extensionCopy];
   }
 }
 
-- (void)unifiedTabBar:(id)a3 multipleExtensionButtonTapped:(id)a4
+- (void)unifiedTabBar:(id)bar multipleExtensionButtonTapped:(id)tapped
 {
-  v6 = a4;
+  tappedCopy = tapped;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained navigationBar:self multipleExtensionsButtonTapped:v6];
+    [WeakRetained navigationBar:self multipleExtensionsButtonTapped:tappedCopy];
   }
 }
 
-- (void)animateLinkImage:(CGImage *)a3 fromRect:(CGRect)a4 inView:(id)a5 toBarItem:(int64_t)a6 afterDestinationLayerBouncesBlock:(id)a7
+- (void)animateLinkImage:(CGImage *)image fromRect:(CGRect)rect inView:(id)view toBarItem:(int64_t)item afterDestinationLayerBouncesBlock:(id)block
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v15 = a7;
-  v16 = a5;
-  if (a6 == 5)
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  blockCopy = block;
+  viewCopy = view;
+  if (item == 5)
   {
-    v17 = [(SFUnifiedBar *)self contentArrangement];
-    v18 = [v17 inlineContentView];
-    v24 = [v18 menuPopoverSourceView];
+    contentArrangement = [(SFUnifiedBar *)self contentArrangement];
+    inlineContentView = [contentArrangement inlineContentView];
+    menuPopoverSourceView = [inlineContentView menuPopoverSourceView];
   }
 
   else
   {
-    v24 = [(UnifiedBar *)self viewForBarItem:a6];
+    menuPopoverSourceView = [(UnifiedBar *)self viewForBarItem:item];
   }
 
   v19 = MEMORY[0x277D75D18];
-  [v24 bounds];
-  [v19 _sf_animateLinkImage:a3 withAnimation:1 fromRect:v16 inView:v24 toRect:0 inView:v15 afterImageDisappearsBlock:x afterDestinationLayerBouncesBlock:{y, width, height, v20, v21, v22, v23}];
+  [menuPopoverSourceView bounds];
+  [v19 _sf_animateLinkImage:image withAnimation:1 fromRect:viewCopy inView:menuPopoverSourceView toRect:0 inView:blockCopy afterImageDisappearsBlock:x afterDestinationLayerBouncesBlock:{y, width, height, v20, v21, v22, v23}];
 }
 
-- (id)popoverSourceInfoForBarItem:(int64_t)a3
+- (id)popoverSourceInfoForBarItem:(int64_t)item
 {
-  if (a3 == 5)
+  if (item == 5)
   {
     v4 = objc_alloc(MEMORY[0x277D28F68]);
     WeakRetained = [(SFUnifiedBar *)self contentArrangement];
-    v6 = [WeakRetained inlineContentView];
-    v7 = [v6 menuPopoverSourceView];
-    v8 = [v4 initWithView:v7];
+    inlineContentView = [WeakRetained inlineContentView];
+    menuPopoverSourceView = [inlineContentView menuPopoverSourceView];
+    v8 = [v4 initWithView:menuPopoverSourceView];
   }
 
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_barRegistrationToken);
-    v8 = [WeakRetained popoverSourceInfoForItem:a3];
+    v8 = [WeakRetained popoverSourceInfoForItem:item];
   }
 
   return v8;
@@ -328,19 +328,19 @@ LABEL_11:
 
 - (UITextField)textField
 {
-  v2 = [(SFUnifiedBar *)self contentArrangement];
-  v3 = [v2 inlineContentView];
+  contentArrangement = [(SFUnifiedBar *)self contentArrangement];
+  inlineContentView = [contentArrangement inlineContentView];
 
-  v4 = [v3 searchField];
+  searchField = [inlineContentView searchField];
 
-  return v4;
+  return searchField;
 }
 
 - (NSArray)popoverPassthroughViews
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v3 = [(SFUnifiedBar *)self contentArrangement];
-  v4 = [v3 inlineContentView];
+  contentArrangement = [(SFUnifiedBar *)self contentArrangement];
+  inlineContentView = [contentArrangement inlineContentView];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -349,57 +349,57 @@ LABEL_11:
     v6 = MEMORY[0x277CBEA60];
     v7 = v14;
 LABEL_7:
-    v3 = [v6 arrayWithObjects:v7 count:1];
+    contentArrangement = [v6 arrayWithObjects:v7 count:1];
     goto LABEL_8;
   }
 
-  v5 = [v4 role];
-  if (v5 == 2)
+  role = [inlineContentView role];
+  if (role == 2)
   {
-    v11 = self;
+    selfCopy = self;
     v6 = MEMORY[0x277CBEA60];
-    v7 = &v11;
+    v7 = &selfCopy;
     goto LABEL_7;
   }
 
-  if (v5 != 1)
+  if (role != 1)
   {
-    if (v5)
+    if (role)
     {
       goto LABEL_8;
     }
 
-    v13 = self;
+    selfCopy2 = self;
     v6 = MEMORY[0x277CBEA60];
-    v7 = &v13;
+    v7 = &selfCopy2;
     goto LABEL_7;
   }
 
-  v12[0] = v4;
-  v9 = [(SFUnifiedBar *)self leadingItemContainerView];
-  v12[1] = v9;
-  v10 = [(SFUnifiedBar *)self trailingItemContainerView];
-  v12[2] = v10;
-  v3 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:3];
+  v12[0] = inlineContentView;
+  leadingItemContainerView = [(SFUnifiedBar *)self leadingItemContainerView];
+  v12[1] = leadingItemContainerView;
+  trailingItemContainerView = [(SFUnifiedBar *)self trailingItemContainerView];
+  v12[2] = trailingItemContainerView;
+  contentArrangement = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:3];
 
 LABEL_8:
 
-  return v3;
+  return contentArrangement;
 }
 
 - (CGRect)URLOutlineFrameInNavigationBarSpace
 {
-  v3 = [(SFUnifiedBar *)self contentArrangement];
-  v4 = [v3 inlineContentView];
+  contentArrangement = [(SFUnifiedBar *)self contentArrangement];
+  inlineContentView = [contentArrangement inlineContentView];
 
-  v5 = [v4 searchFieldPopoverSourceView];
-  [v5 bounds];
-  [(UnifiedBar *)self convertRect:v5 fromView:?];
+  searchFieldPopoverSourceView = [inlineContentView searchFieldPopoverSourceView];
+  [searchFieldPopoverSourceView bounds];
+  [(UnifiedBar *)self convertRect:searchFieldPopoverSourceView fromView:?];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  [v4 searchFieldPopoverSourceInsets];
+  [inlineContentView searchFieldPopoverSourceInsets];
   v15 = v7 + v14;
   v17 = v9 + v16;
   v19 = v11 - (v14 + v18);
@@ -416,11 +416,11 @@ LABEL_8:
   return result;
 }
 
-- (CGRect)urlOutlineFrameRelativeToView:(id)a3
+- (CGRect)urlOutlineFrameRelativeToView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   [(UnifiedBar *)self URLOutlineFrameInNavigationBarSpace];
-  [(UnifiedBar *)self convertRect:v4 toView:?];
+  [(UnifiedBar *)self convertRect:viewCopy toView:?];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -439,18 +439,18 @@ LABEL_8:
 
 - (_SFPopoverSourceInfo)formatMenuButtonPopoverSourceInfo
 {
-  v2 = [(SFUnifiedBar *)self contentArrangement];
-  v3 = [v2 inlineContentView];
+  contentArrangement = [(SFUnifiedBar *)self contentArrangement];
+  inlineContentView = [contentArrangement inlineContentView];
 
-  v4 = [v3 menuPopoverSourceView];
-  v5 = [objc_alloc(MEMORY[0x277D28F68]) initWithView:v4];
+  menuPopoverSourceView = [inlineContentView menuPopoverSourceView];
+  v5 = [objc_alloc(MEMORY[0x277D28F68]) initWithView:menuPopoverSourceView];
   [v5 setPermittedArrowDirections:3];
   [v5 setShouldHideArrow:1];
   [v5 setShouldPassthroughSuperview:1];
-  v6 = [v3 role];
-  if (v6)
+  role = [inlineContentView role];
+  if (role)
   {
-    if (v6 != 1)
+    if (role != 1)
     {
       goto LABEL_6;
     }
@@ -471,13 +471,13 @@ LABEL_6:
 
 - (_SFPopoverSourceInfo)URLOutlinePopoverSourceInfo
 {
-  v2 = [(SFUnifiedBar *)self contentArrangement];
-  v3 = [v2 inlineContentView];
+  contentArrangement = [(SFUnifiedBar *)self contentArrangement];
+  inlineContentView = [contentArrangement inlineContentView];
 
   v4 = objc_alloc(MEMORY[0x277D28F68]);
-  v5 = [v3 searchFieldPopoverSourceView];
-  [v3 searchFieldPopoverSourceInsets];
-  v6 = [v4 initWithView:v5 insets:?];
+  searchFieldPopoverSourceView = [inlineContentView searchFieldPopoverSourceView];
+  [inlineContentView searchFieldPopoverSourceInsets];
+  v6 = [v4 initWithView:searchFieldPopoverSourceView insets:?];
 
   return v6;
 }

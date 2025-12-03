@@ -1,8 +1,8 @@
 @interface IOSurfaceTransactionListImpl
-- (IOSurfaceTransactionListImpl)initWithSerializedData:(shared_ptr<IOSurfaceTransactionSerialized[]>)a3 numWritten:(unint64_t)a4 actualLength:(unint64_t)a5 selectedLength:(unint64_t)a6;
+- (IOSurfaceTransactionListImpl)initWithSerializedData:(shared_ptr<IOSurfaceTransactionSerialized[]>)data numWritten:(unint64_t)written actualLength:(unint64_t)length selectedLength:(unint64_t)selectedLength;
 - (id).cxx_construct;
-- (id)transactionAtIndex:(unint64_t)a3;
-- (unsigned)eventPortAtIndex:(unint64_t)a3;
+- (id)transactionAtIndex:(unint64_t)index;
+- (unsigned)eventPortAtIndex:(unint64_t)index;
 - (void)dealloc;
 @end
 
@@ -46,14 +46,14 @@
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (IOSurfaceTransactionListImpl)initWithSerializedData:(shared_ptr<IOSurfaceTransactionSerialized[]>)a3 numWritten:(unint64_t)a4 actualLength:(unint64_t)a5 selectedLength:(unint64_t)a6
+- (IOSurfaceTransactionListImpl)initWithSerializedData:(shared_ptr<IOSurfaceTransactionSerialized[]>)data numWritten:(unint64_t)written actualLength:(unint64_t)length selectedLength:(unint64_t)selectedLength
 {
-  cntrl = a3.__cntrl_;
-  ptr = a3.__ptr_;
+  cntrl = data.__cntrl_;
+  ptr = data.__ptr_;
   v18 = *MEMORY[0x1E69E9840];
   v17.receiver = self;
   v17.super_class = IOSurfaceTransactionListImpl;
-  v10 = [(IOSurfaceTransactionListImpl *)&v17 init:a3.__ptr_];
+  v10 = [(IOSurfaceTransactionListImpl *)&v17 init:data.__ptr_];
   v11 = v10;
   if (v10)
   {
@@ -73,23 +73,23 @@
       std::__shared_weak_count::__release_shared[abi:ne200100](v14);
     }
 
-    *(v11 + 10) = a4;
-    *(v11 + 11) = a5;
+    *(v11 + 10) = written;
+    *(v11 + 11) = length;
   }
 
   v15 = *MEMORY[0x1E69E9840];
   return v11;
 }
 
-- (id)transactionAtIndex:(unint64_t)a3
+- (id)transactionAtIndex:(unint64_t)index
 {
   v23[3] = *MEMORY[0x1E69E9840];
-  v23[0] = a3;
-  if (*(self + 9) <= a3)
+  v23[0] = index;
+  if (*(self + 9) <= index)
   {
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_FAULT))
     {
-      [(IOSurfaceTransactionListImpl *)a3 transactionAtIndex:v7, v8, v9, v10, v11, v12, v13];
+      [(IOSurfaceTransactionListImpl *)index transactionAtIndex:v7, v8, v9, v10, v11, v12, v13];
     }
 
     v5 = 0;
@@ -131,17 +131,17 @@
   return v5;
 }
 
-- (unsigned)eventPortAtIndex:(unint64_t)a3
+- (unsigned)eventPortAtIndex:(unint64_t)index
 {
-  if (*(self + 9) > a3)
+  if (*(self + 9) > index)
   {
-    return *(*(self + 12) + 24 * a3);
+    return *(*(self + 12) + 24 * index);
   }
 
   result = os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_FAULT);
   if (result)
   {
-    [(IOSurfaceTransactionListImpl *)a3 eventPortAtIndex:v5, v6, v7, v8, v9, v10, v11];
+    [(IOSurfaceTransactionListImpl *)index eventPortAtIndex:v5, v6, v7, v8, v9, v10, v11];
     return 0;
   }
 

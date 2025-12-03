@@ -1,25 +1,25 @@
 @interface HearingPlaceholderCell
-- (HearingPlaceholderCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (HearingPlaceholderCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 @end
 
 @implementation HearingPlaceholderCell
 
-- (HearingPlaceholderCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (HearingPlaceholderCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v9.receiver = self;
   v9.super_class = HearingPlaceholderCell;
-  v4 = [(HearingPlaceholderCell *)&v9 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(HearingPlaceholderCell *)&v9 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:100];
     spinner = v4->_spinner;
     v4->_spinner = v5;
 
-    v7 = [(HearingPlaceholderCell *)v4 contentView];
-    [v7 addSubview:v4->_spinner];
+    contentView = [(HearingPlaceholderCell *)v4 contentView];
+    [contentView addSubview:v4->_spinner];
   }
 
   return v4;
@@ -33,11 +33,11 @@
   [(HearingPlaceholderCell *)&v3 dealloc];
 }
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
   v4.receiver = self;
   v4.super_class = HearingPlaceholderCell;
-  [(HearingPlaceholderCell *)&v4 refreshCellContentsWithSpecifier:a3];
+  [(HearingPlaceholderCell *)&v4 refreshCellContentsWithSpecifier:specifier];
   [(UIActivityIndicatorView *)self->_spinner startAnimating];
 }
 
@@ -52,13 +52,13 @@
   v7 = 10.0;
   if (![UIApp userInterfaceLayoutDirection])
   {
-    v8 = [(HearingPlaceholderCell *)self contentView];
-    [v8 frame];
+    contentView = [(HearingPlaceholderCell *)self contentView];
+    [contentView frame];
     v7 = v9 - v4 + -10.0;
   }
 
-  v10 = [(HearingPlaceholderCell *)self contentView];
-  [v10 frame];
+  contentView2 = [(HearingPlaceholderCell *)self contentView];
+  [contentView2 frame];
   v12 = (v11 - v6) * 0.5;
   v13 = ceilf(v12);
 

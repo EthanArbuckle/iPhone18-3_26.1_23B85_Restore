@@ -1,19 +1,19 @@
 @interface SpaceBarFollowingPunctuationFailure
-- (BOOL)doesMatchResult:(id)a3;
+- (BOOL)doesMatchResult:(id)result;
 - (SpaceBarFollowingPunctuationFailure)init;
 @end
 
 @implementation SpaceBarFollowingPunctuationFailure
 
-- (BOOL)doesMatchResult:(id)a3
+- (BOOL)doesMatchResult:(id)result
 {
-  v4 = a3;
-  v5 = [v4 corrected];
-  v6 = [v5 componentsJoinedByString:&stru_287EC4808];
+  resultCopy = result;
+  corrected = [resultCopy corrected];
+  v6 = [corrected componentsJoinedByString:&stru_287EC4808];
 
-  v7 = [v4 intended];
+  intended = [resultCopy intended];
 
-  v8 = [v7 componentsJoinedByString:&stru_287EC4808];
+  v8 = [intended componentsJoinedByString:&stru_287EC4808];
 
   if ([v6 isEqualToString:v8] & 1) != 0 || (objc_msgSend(v6, "hasSuffix:", @" "))
   {
@@ -35,9 +35,9 @@
   v2 = [(SpaceBarFollowingPunctuationFailure *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCA900] letterCharacterSet];
+    letterCharacterSet = [MEMORY[0x277CCA900] letterCharacterSet];
     letters = v2->_letters;
-    v2->_letters = v3;
+    v2->_letters = letterCharacterSet;
   }
 
   return v2;

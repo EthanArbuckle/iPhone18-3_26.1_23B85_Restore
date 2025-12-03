@@ -1,23 +1,23 @@
 @interface VTTextDependentSpeakerRecognizer
-+ (BOOL)psrTdAssetExistsAtResourcePath:(id)a3;
-+ (id)errorWithCode:(int64_t)a3 message:(id)a4;
-+ (void)_createDirectoryIfDoesNotExist:(id)a3;
++ (BOOL)psrTdAssetExistsAtResourcePath:(id)path;
++ (id)errorWithCode:(int64_t)code message:(id)message;
++ (void)_createDirectoryIfDoesNotExist:(id)exist;
 - (BOOL)tdPsrCanProcessRequest;
-- (VTTextDependentSpeakerRecognizer)initWithResourcePath:(id)a3 satDirectory:(id)a4 assetHash:(id)a5 shouldCreateModelDir:(BOOL)a6 delegate:(id)a7;
+- (VTTextDependentSpeakerRecognizer)initWithResourcePath:(id)path satDirectory:(id)directory assetHash:(id)hash shouldCreateModelDir:(BOOL)dir delegate:(id)delegate;
 - (VTTextDependentSpeakerRecognizerDelegate)delegate;
-- (double)_getFloatValueForNDAPIConfigOption:(id)a3 defaultValue:(double)a4;
-- (id)_getValueForNDAPIConfigOption:(id)a3;
+- (double)_getFloatValueForNDAPIConfigOption:(id)option defaultValue:(double)value;
+- (id)_getValueForNDAPIConfigOption:(id)option;
 - (int)_getSATVectorCount;
 - (int64_t)getSATVectorCount;
 - (void)dealloc;
 - (void)deleteExistingSATModel;
-- (void)deleteVectorAtIndex:(int)a3;
+- (void)deleteVectorAtIndex:(int)index;
 - (void)endAudio;
-- (void)logWithAudioFilepath:(id)a3;
-- (void)processAudio:(const signed __int16 *)a3 numSamples:(unint64_t)a4;
-- (void)psrAudioProcessor:(id)a3 hasResult:(id)a4 numElements:(unint64_t)a5;
+- (void)logWithAudioFilepath:(id)filepath;
+- (void)processAudio:(const signed __int16 *)audio numSamples:(unint64_t)samples;
+- (void)psrAudioProcessor:(id)processor hasResult:(id)result numElements:(unint64_t)elements;
 - (void)resetForNewRequest;
-- (void)setTdPsrCanProcessRequest:(BOOL)a3;
+- (void)setTdPsrCanProcessRequest:(BOOL)request;
 - (void)updateSAT;
 @end
 
@@ -30,11 +30,11 @@
   return WeakRetained;
 }
 
-- (void)logWithAudioFilepath:(id)a3
+- (void)logWithAudioFilepath:(id)filepath
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  filepathCopy = filepath;
+  if (!filepathCopy)
   {
     v19 = VTLogContextFacilityVoiceTrigger;
     if (os_log_type_enabled(VTLogContextFacilityVoiceTrigger, OS_LOG_TYPE_DEFAULT))
@@ -47,9 +47,9 @@
   }
 
   v5 = +[VTPreferences sharedPreferences];
-  v6 = [v5 fileLoggingIsEnabled];
+  fileLoggingIsEnabled = [v5 fileLoggingIsEnabled];
 
-  if ((v6 & 1) == 0)
+  if ((fileLoggingIsEnabled & 1) == 0)
   {
     v20 = VTLogContextFacilityVoiceTrigger;
     if (os_log_type_enabled(VTLogContextFacilityVoiceTrigger, OS_LOG_TYPE_DEFAULT))
@@ -67,13 +67,13 @@ LABEL_12:
 
   if ([(NSMutableData *)self->_psrAudioDataForLogging length])
   {
-    v7 = [v4 lastPathComponent];
-    v8 = [v7 stringByDeletingPathExtension];
-    v9 = [v8 stringByAppendingString:@"_psr"];
+    lastPathComponent = [filepathCopy lastPathComponent];
+    stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
+    v9 = [stringByDeletingPathExtension stringByAppendingString:@"_psr"];
     v10 = [v9 stringByAppendingPathExtension:@"wav"];
 
-    v11 = [v4 stringByDeletingLastPathComponent];
-    v12 = [v11 stringByAppendingPathComponent:v10];
+    stringByDeletingLastPathComponent = [filepathCopy stringByDeletingLastPathComponent];
+    v12 = [stringByDeletingLastPathComponent stringByAppendingPathComponent:v10];
 
     v13 = [MEMORY[0x277CBEBC0] fileURLWithPath:v12];
     v14 = VTLogContextFacilityVoiceTrigger;
@@ -114,14 +114,14 @@ LABEL_12:
 LABEL_13:
 }
 
-- (id)_getValueForNDAPIConfigOption:(id)a3
+- (id)_getValueForNDAPIConfigOption:(id)option
 {
-  v4 = a3;
-  v5 = v4;
+  optionCopy = option;
+  v5 = optionCopy;
   novDetect = self->_novDetect;
   if (novDetect)
   {
-    v7 = nd_getoption(novDetect, [v4 UTF8String]);
+    v7 = nd_getoption(novDetect, [optionCopy UTF8String]);
     if (v7)
     {
       novDetect = [MEMORY[0x277CCACA8] stringWithUTF8String:v7];
@@ -136,27 +136,27 @@ LABEL_13:
   return novDetect;
 }
 
-- (double)_getFloatValueForNDAPIConfigOption:(id)a3 defaultValue:(double)a4
+- (double)_getFloatValueForNDAPIConfigOption:(id)option defaultValue:(double)value
 {
-  v5 = [(VTTextDependentSpeakerRecognizer *)self _getValueForNDAPIConfigOption:a3];
+  v5 = [(VTTextDependentSpeakerRecognizer *)self _getValueForNDAPIConfigOption:option];
   v6 = v5;
   if (v5)
   {
     [v5 floatValue];
-    a4 = v7;
+    value = v7;
   }
 
-  return a4;
+  return value;
 }
 
-- (void)psrAudioProcessor:(id)a3 hasResult:(id)a4 numElements:(unint64_t)a5
+- (void)psrAudioProcessor:(id)processor hasResult:(id)result numElements:(unint64_t)elements
 {
   v28 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  processorCopy = processor;
+  resultCopy = result;
   v10 = VTLogContextFacilityVoiceTrigger;
   v11 = os_log_type_enabled(VTLogContextFacilityVoiceTrigger, OS_LOG_TYPE_DEFAULT);
-  if (v9)
+  if (resultCopy)
   {
     if (v11)
     {
@@ -164,12 +164,12 @@ LABEL_13:
       _os_log_impl(&dword_223A31000, v10, OS_LOG_TYPE_DEFAULT, "TDSR:: SpeakerVector available", &v24, 2u);
     }
 
-    v12 = v9;
-    v13 = [v9 bytes];
+    v12 = resultCopy;
+    bytes = [resultCopy bytes];
     novDetect = self->_novDetect;
     if (novDetect)
     {
-      v15 = nd_sat_analyze(novDetect, v13, a5);
+      v15 = nd_sat_analyze(novDetect, bytes, elements);
       if (v15)
       {
         v16 = *v15;
@@ -231,11 +231,11 @@ LABEL_13:
   }
 }
 
-- (void)deleteVectorAtIndex:(int)a3
+- (void)deleteVectorAtIndex:(int)index
 {
   v11 = *MEMORY[0x277D85DE8];
   novDetect = self->_novDetect;
-  if (novDetect && nd_sat_deletevector(novDetect, *&a3))
+  if (novDetect && nd_sat_deletevector(novDetect, *&index))
   {
     v5 = VTLogContextFacilityVoiceTrigger;
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -532,20 +532,20 @@ void __44__VTTextDependentSpeakerRecognizer_endAudio__block_invoke(uint64_t a1)
   }
 }
 
-- (void)processAudio:(const signed __int16 *)a3 numSamples:(unint64_t)a4
+- (void)processAudio:(const signed __int16 *)audio numSamples:(unint64_t)samples
 {
-  if (a3)
+  if (audio)
   {
-    v6 = [MEMORY[0x277CBEA90] dataWithBytes:a3 length:2 * a4];
+    samples = [MEMORY[0x277CBEA90] dataWithBytes:audio length:2 * samples];
     queue = self->_queue;
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __60__VTTextDependentSpeakerRecognizer_processAudio_numSamples___block_invoke;
     block[3] = &unk_2784EC980;
     block[4] = self;
-    v10 = v6;
-    v11 = a4;
-    v8 = v6;
+    v10 = samples;
+    samplesCopy = samples;
+    v8 = samples;
     dispatch_async(queue, block);
   }
 }
@@ -659,7 +659,7 @@ void __54__VTTextDependentSpeakerRecognizer_resetForNewRequest__block_invoke(uin
   }
 }
 
-- (void)setTdPsrCanProcessRequest:(BOOL)a3
+- (void)setTdPsrCanProcessRequest:(BOOL)request
 {
   stateSerialQueue = self->_stateSerialQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -667,7 +667,7 @@ void __54__VTTextDependentSpeakerRecognizer_resetForNewRequest__block_invoke(uin
   v4[2] = __62__VTTextDependentSpeakerRecognizer_setTdPsrCanProcessRequest___block_invoke;
   v4[3] = &unk_2784ED0F0;
   v4[4] = self;
-  v5 = a3;
+  requestCopy = request;
   dispatch_sync(stateSerialQueue, v4);
 }
 
@@ -705,26 +705,26 @@ void __54__VTTextDependentSpeakerRecognizer_resetForNewRequest__block_invoke(uin
   [(VTTextDependentSpeakerRecognizer *)&v4 dealloc];
 }
 
-- (VTTextDependentSpeakerRecognizer)initWithResourcePath:(id)a3 satDirectory:(id)a4 assetHash:(id)a5 shouldCreateModelDir:(BOOL)a6 delegate:(id)a7
+- (VTTextDependentSpeakerRecognizer)initWithResourcePath:(id)path satDirectory:(id)directory assetHash:(id)hash shouldCreateModelDir:(BOOL)dir delegate:(id)delegate
 {
   v31 = *MEMORY[0x277D85DE8];
-  v27 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a7;
+  pathCopy = path;
+  directoryCopy = directory;
+  hashCopy = hash;
+  delegateCopy = delegate;
   v28.receiver = self;
   v28.super_class = VTTextDependentSpeakerRecognizer;
   v15 = [(VTTextDependentSpeakerRecognizer *)&v28 init];
   p_isa = &v15->super.isa;
   if (v15)
   {
-    objc_storeWeak(&v15->_delegate, v14);
-    objc_storeStrong(p_isa + 6, a3);
-    objc_storeStrong(p_isa + 7, a4);
-    objc_storeStrong(p_isa + 9, a5);
+    objc_storeWeak(&v15->_delegate, delegateCopy);
+    objc_storeStrong(p_isa + 6, path);
+    objc_storeStrong(p_isa + 7, directory);
+    objc_storeStrong(p_isa + 9, hash);
     v17 = [p_isa[6] stringByAppendingPathComponent:@"config_sr_sat.txt"];
-    v18 = [MEMORY[0x277CCAA00] defaultManager];
-    v19 = [v18 fileExistsAtPath:v17 isDirectory:0];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    v19 = [defaultManager fileExistsAtPath:v17 isDirectory:0];
 
     v20 = VTLogContextFacilityVoiceTrigger;
     v21 = os_log_type_enabled(VTLogContextFacilityVoiceTrigger, OS_LOG_TYPE_DEFAULT);
@@ -789,19 +789,19 @@ void __54__VTTextDependentSpeakerRecognizer_resetForNewRequest__block_invoke(uin
   return v25;
 }
 
-+ (void)_createDirectoryIfDoesNotExist:(id)a3
++ (void)_createDirectoryIfDoesNotExist:(id)exist
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
+  existCopy = exist;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v11 = 0;
-  if (![v4 fileExistsAtPath:v3 isDirectory:&v11] || (v11 & 1) == 0)
+  if (![defaultManager fileExistsAtPath:existCopy isDirectory:&v11] || (v11 & 1) == 0)
   {
     v5 = VTLogContextFacilityVoiceTrigger;
     if (os_log_type_enabled(VTLogContextFacilityVoiceTrigger, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v13 = v3;
+      v13 = existCopy;
       _os_log_impl(&dword_223A31000, v5, OS_LOG_TYPE_DEFAULT, "TDSR:: Creating Directory : %@", buf, 0xCu);
     }
 
@@ -814,35 +814,35 @@ void __54__VTTextDependentSpeakerRecognizer_resetForNewRequest__block_invoke(uin
         _os_log_impl(&dword_223A31000, v6, OS_LOG_TYPE_DEFAULT, "TDSR:: same name of file exists, this will be removed", buf, 2u);
       }
 
-      [v4 removeItemAtPath:v3 error:0];
+      [defaultManager removeItemAtPath:existCopy error:0];
     }
 
     v10 = 0;
-    [v4 createDirectoryAtPath:v3 withIntermediateDirectories:1 attributes:0 error:&v10];
+    [defaultManager createDirectoryAtPath:existCopy withIntermediateDirectories:1 attributes:0 error:&v10];
     v7 = v10;
     if (v7)
     {
       v8 = VTLogContextFacilityVoiceTrigger;
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
-        v9 = [v7 localizedDescription];
+        localizedDescription = [v7 localizedDescription];
         *buf = 138543362;
-        v13 = v9;
+        v13 = localizedDescription;
         _os_log_impl(&dword_223A31000, v8, OS_LOG_TYPE_DEFAULT, "TDSR:: Creating Directory failed : %{public}@", buf, 0xCu);
       }
     }
   }
 }
 
-+ (id)errorWithCode:(int64_t)a3 message:(id)a4
++ (id)errorWithCode:(int64_t)code message:(id)message
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = v5;
+  messageCopy = message;
+  v6 = messageCopy;
   v7 = MEMORY[0x277CCA9B8];
-  if (v5)
+  if (messageCopy)
   {
-    v8 = v5;
+    v8 = messageCopy;
   }
 
   else
@@ -853,19 +853,19 @@ void __54__VTTextDependentSpeakerRecognizer_resetForNewRequest__block_invoke(uin
   v12 = *MEMORY[0x277CCA450];
   v13[0] = v8;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:&v12 count:1];
-  v10 = [v7 errorWithDomain:@"VTTextDependentSpeakerRecognizer" code:a3 userInfo:v9];
+  v10 = [v7 errorWithDomain:@"VTTextDependentSpeakerRecognizer" code:code userInfo:v9];
 
   return v10;
 }
 
-+ (BOOL)psrTdAssetExistsAtResourcePath:(id)a3
++ (BOOL)psrTdAssetExistsAtResourcePath:(id)path
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 stringByAppendingPathComponent:@"config_sr_sat.txt"];
+  pathCopy = path;
+  v4 = [pathCopy stringByAppendingPathComponent:@"config_sr_sat.txt"];
   v10 = 0;
-  v5 = [MEMORY[0x277CCAA00] defaultManager];
-  v6 = [v5 fileExistsAtPath:v4 isDirectory:&v10];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v6 = [defaultManager fileExistsAtPath:v4 isDirectory:&v10];
 
   if (v10 == 1)
   {

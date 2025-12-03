@@ -7,8 +7,8 @@
 - (void)isAssetLocalWithCompletion:()CloudSupport requiresDerivative:
 {
   v6 = a3;
-  v7 = [MEMORY[0x277CD9898] defaultManager];
-  if ([a1 mediaType] == 1)
+  defaultManager = [MEMORY[0x277CD9898] defaultManager];
+  if ([self mediaType] == 1)
   {
     v8 = objc_alloc_init(MEMORY[0x277CD9850]);
     [v8 setNetworkAccessAllowed:0];
@@ -19,7 +19,7 @@
     v19[3] = &unk_278D7AFC8;
     v20 = v6;
     v9 = v6;
-    [a1 requestContentEditingInputWithOptions:v8 completionHandler:v19];
+    [self requestContentEditingInputWithOptions:v8 completionHandler:v19];
     v10 = v20;
   }
 
@@ -44,13 +44,13 @@
     v14[2] = __71__PHAsset_CloudSupport__isAssetLocalWithCompletion_requiresDerivative___block_invoke_3;
     v14[3] = &unk_278D7AFF0;
     v18 = a4;
-    v14[4] = a1;
+    v14[4] = self;
     v15 = v11;
-    v16 = v7;
+    v16 = defaultManager;
     v17 = v6;
     v13 = v6;
     v8 = v11;
-    [v16 requestAVAssetForVideo:a1 options:v8 resultHandler:v14];
+    [v16 requestAVAssetForVideo:self options:v8 resultHandler:v14];
 
     v10 = v15;
   }

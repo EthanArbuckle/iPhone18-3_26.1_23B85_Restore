@@ -1,18 +1,18 @@
 @interface PKPassBannerMinimalView
-- (CGSize)_layoutWithBounds:(CGRect)a3 commit:(BOOL)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (id)_initWithStyle:(int64_t)a3 leadingView:(id)a4 trailingView:(id)a5;
-- (void)_setInteritemPadding:(double)a3;
+- (CGSize)_layoutWithBounds:(CGRect)bounds commit:(BOOL)commit;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (id)_initWithStyle:(int64_t)style leadingView:(id)view trailingView:(id)trailingView;
+- (void)_setInteritemPadding:(double)padding;
 - (void)layoutSubviews;
 @end
 
 @implementation PKPassBannerMinimalView
 
-- (id)_initWithStyle:(int64_t)a3 leadingView:(id)a4 trailingView:(id)a5
+- (id)_initWithStyle:(int64_t)style leadingView:(id)view trailingView:(id)trailingView
 {
-  v8 = a4;
-  result = a5;
-  if (v8 && (v10 = result) != 0)
+  viewCopy = view;
+  result = trailingView;
+  if (viewCopy && (v10 = result) != 0)
   {
     v17.receiver = self;
     v17.super_class = PKPassBannerMinimalView;
@@ -20,8 +20,8 @@
     v12 = v11;
     if (v11)
     {
-      v11->_style = a3;
-      v13 = [[PKPassBannerLeadingView alloc] _initWithStyle:v8[52] pass:?];
+      v11->_style = style;
+      v13 = [[PKPassBannerLeadingView alloc] _initWithStyle:viewCopy[52] pass:?];
       leadingView = v12->_leadingView;
       v12->_leadingView = v13;
 
@@ -44,9 +44,9 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(PKPassBannerMinimalView *)self _layoutWithBounds:0 commit:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), a3.width, a3.height];
+  [(PKPassBannerMinimalView *)self _layoutWithBounds:0 commit:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
@@ -61,9 +61,9 @@
   [(PKPassBannerMinimalView *)self _layoutWithBounds:1 commit:?];
 }
 
-- (CGSize)_layoutWithBounds:(CGRect)a3 commit:(BOOL)a4
+- (CGSize)_layoutWithBounds:(CGRect)bounds commit:(BOOL)commit
 {
-  v4 = a4;
+  commitCopy = commit;
   v6 = *MEMORY[0x1E695F060];
   v7 = *(MEMORY[0x1E695F060] + 8);
   [(PKPassBannerLeadingView *)self->_leadingView sizeThatFits:*MEMORY[0x1E695F060], v7];
@@ -103,7 +103,7 @@
       v21 = fmax(v9, v12);
       interitemPadding = self->_interitemPadding;
       v23 = v13 + v11 + interitemPadding;
-      if (v4)
+      if (commitCopy)
       {
         v39 = v15 + v11 + interitemPadding;
         v41 = v21;
@@ -174,7 +174,7 @@ LABEL_30:
     v21 = v37;
   }
 
-  if (v4)
+  if (commitCopy)
   {
     v39 = v23;
     v41 = v21;
@@ -202,11 +202,11 @@ LABEL_33:
   return result;
 }
 
-- (void)_setInteritemPadding:(double)a3
+- (void)_setInteritemPadding:(double)padding
 {
-  if (self->_interitemPadding != a3)
+  if (self->_interitemPadding != padding)
   {
-    self->_interitemPadding = a3;
+    self->_interitemPadding = padding;
     [(PKPassBannerMinimalView *)self setNeedsLayout];
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     [WeakRetained passBannerMinimalViewDidChangeSize:self];

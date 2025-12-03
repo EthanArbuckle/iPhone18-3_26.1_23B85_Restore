@@ -1,32 +1,32 @@
 @interface SBIconListViewIconLocationTransitionHandler
 - (SBIconListView)iconListView;
-- (SBIconListViewIconLocationTransitionHandler)initWithIconLocation:(id)a3 reason:(id)a4 iconListView:(id)a5;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (SBIconListViewIconLocationTransitionHandler)initWithIconLocation:(id)location reason:(id)reason iconListView:(id)view;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
-- (void)completeTransition:(BOOL)a3;
-- (void)setProgress:(double)a3;
+- (void)completeTransition:(BOOL)transition;
+- (void)setProgress:(double)progress;
 @end
 
 @implementation SBIconListViewIconLocationTransitionHandler
 
-- (SBIconListViewIconLocationTransitionHandler)initWithIconLocation:(id)a3 reason:(id)a4 iconListView:(id)a5
+- (SBIconListViewIconLocationTransitionHandler)initWithIconLocation:(id)location reason:(id)reason iconListView:(id)view
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  locationCopy = location;
+  reasonCopy = reason;
+  viewCopy = view;
   v18.receiver = self;
   v18.super_class = SBIconListViewIconLocationTransitionHandler;
   v11 = [(SBIconListViewIconLocationTransitionHandler *)&v18 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_iconListView, v10);
-    v13 = [v9 copy];
+    objc_storeWeak(&v11->_iconListView, viewCopy);
+    v13 = [reasonCopy copy];
     reason = v12->_reason;
     v12->_reason = v13;
 
-    v15 = [v8 copy];
+    v15 = [locationCopy copy];
     iconLocation = v12->_iconLocation;
     v12->_iconLocation = v15;
   }
@@ -34,51 +34,51 @@
   return v12;
 }
 
-- (void)setProgress:(double)a3
+- (void)setProgress:(double)progress
 {
-  self->_progress = a3;
-  v5 = [(SBIconListViewIconLocationTransitionHandler *)self iconListView];
-  [v5 iconLocationTransitionHandler:self setProgress:a3];
+  self->_progress = progress;
+  iconListView = [(SBIconListViewIconLocationTransitionHandler *)self iconListView];
+  [iconListView iconLocationTransitionHandler:self setProgress:progress];
 }
 
-- (void)completeTransition:(BOOL)a3
+- (void)completeTransition:(BOOL)transition
 {
-  v3 = a3;
-  v5 = [(SBIconListViewIconLocationTransitionHandler *)self iconListView];
-  [v5 iconLocationTransitionHandler:self completeTransition:v3];
+  transitionCopy = transition;
+  iconListView = [(SBIconListViewIconLocationTransitionHandler *)self iconListView];
+  [iconListView iconLocationTransitionHandler:self completeTransition:transitionCopy];
 }
 
 - (id)succinctDescription
 {
-  v2 = [(SBIconListViewIconLocationTransitionHandler *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBIconListViewIconLocationTransitionHandler *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBIconListViewIconLocationTransitionHandler *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBIconListViewIconLocationTransitionHandler *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(SBIconListViewIconLocationTransitionHandler *)self succinctDescriptionBuilder];
-  v5 = [(SBIconListViewIconLocationTransitionHandler *)self iconLocation];
-  v6 = [v4 appendObject:v5 withName:@"iconLocation"];
+  succinctDescriptionBuilder = [(SBIconListViewIconLocationTransitionHandler *)self succinctDescriptionBuilder];
+  iconLocation = [(SBIconListViewIconLocationTransitionHandler *)self iconLocation];
+  v6 = [succinctDescriptionBuilder appendObject:iconLocation withName:@"iconLocation"];
 
-  v7 = [(SBIconListViewIconLocationTransitionHandler *)self reason];
-  v8 = [v4 appendObject:v7 withName:@"reason"];
+  reason = [(SBIconListViewIconLocationTransitionHandler *)self reason];
+  v8 = [succinctDescriptionBuilder appendObject:reason withName:@"reason"];
 
   [(SBIconListViewIconLocationTransitionHandler *)self progress];
-  v9 = [v4 appendFloat:@"progress" withName:?];
-  v10 = [(SBIconListViewIconLocationTransitionHandler *)self iconListView];
-  v11 = [v4 appendPointer:v10 withName:@"iconListView"];
+  v9 = [succinctDescriptionBuilder appendFloat:@"progress" withName:?];
+  iconListView = [(SBIconListViewIconLocationTransitionHandler *)self iconListView];
+  v11 = [succinctDescriptionBuilder appendPointer:iconListView withName:@"iconListView"];
 
-  return v4;
+  return succinctDescriptionBuilder;
 }
 
 - (SBIconListView)iconListView

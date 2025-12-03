@@ -1,7 +1,7 @@
 @interface WorldLine
 - (NSArray)identifiersOfObjectsComposedInto;
 - (_TtC17MeasureFoundation9WorldLine)init;
-- (void)setIdentifiersOfObjectsComposedInto:(id)a3;
+- (void)setIdentifiersOfObjectsComposedInto:(id)into;
 @end
 
 @implementation WorldLine
@@ -24,9 +24,9 @@
   return v4;
 }
 
-- (void)setIdentifiersOfObjectsComposedInto:(id)a3
+- (void)setIdentifiersOfObjectsComposedInto:(id)into
 {
-  if (a3)
+  if (into)
   {
     v4 = sub_258428860();
   }

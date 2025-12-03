@@ -8,83 +8,83 @@
 
 - (uint64_t)hd_sqliteExtendedErrorCode
 {
-  v1 = a1;
-  if ([v1 hk_isErrorInDomain:@"com.apple.healthd.SQLite" code:2])
+  selfCopy = self;
+  if ([selfCopy hk_isErrorInDomain:@"com.apple.healthd.SQLite" code:2])
   {
-    v2 = [v1 userInfo];
-    v3 = [v2 objectForKeyedSubscript:*MEMORY[0x277CCA7E8]];
+    userInfo = [selfCopy userInfo];
+    v3 = [userInfo objectForKeyedSubscript:*MEMORY[0x277CCA7E8]];
 
-    v1 = v3;
+    selfCopy = v3;
   }
 
-  v4 = [v1 domain];
-  v5 = [v4 isEqualToString:@"com.apple.SQLite"];
+  domain = [selfCopy domain];
+  v5 = [domain isEqualToString:@"com.apple.SQLite"];
 
   if (v5)
   {
-    v6 = [v1 userInfo];
-    v7 = [v6 objectForKeyedSubscript:@"extended_error_code"];
+    userInfo2 = [selfCopy userInfo];
+    v7 = [userInfo2 objectForKeyedSubscript:@"extended_error_code"];
 
     if (v7)
     {
-      v8 = [v7 intValue];
+      intValue = [v7 intValue];
     }
 
     else
     {
-      v8 = [v1 code];
+      intValue = [selfCopy code];
     }
   }
 
   else
   {
-    v8 = 0;
+    intValue = 0;
   }
 
-  return v8;
+  return intValue;
 }
 
 - (uint64_t)hd_isConstraintViolation
 {
-  if ([a1 hk_isHealthKitError] && objc_msgSend(a1, "code") == 400 || objc_msgSend(a1, "hd_sqliteExtendedErrorCode") == 19)
+  if ([self hk_isHealthKitError] && objc_msgSend(self, "code") == 400 || objc_msgSend(self, "hd_sqliteExtendedErrorCode") == 19)
   {
     return 1;
   }
 
-  v3 = [a1 userInfo];
-  v4 = [v3 objectForKeyedSubscript:*MEMORY[0x277CCA7E8]];
+  userInfo = [self userInfo];
+  v4 = [userInfo objectForKeyedSubscript:*MEMORY[0x277CCA7E8]];
 
   if (v4)
   {
-    v2 = [v4 hd_isConstraintViolation];
+    hd_isConstraintViolation = [v4 hd_isConstraintViolation];
   }
 
   else
   {
-    v2 = 0;
+    hd_isConstraintViolation = 0;
   }
 
-  return v2;
+  return hd_isConstraintViolation;
 }
 
 - (id)hd_failingSQLStatement
 {
-  v1 = a1;
-  if ([v1 hk_isErrorInDomain:@"com.apple.healthd.SQLite" code:2])
+  selfCopy = self;
+  if ([selfCopy hk_isErrorInDomain:@"com.apple.healthd.SQLite" code:2])
   {
-    v2 = [v1 userInfo];
-    v3 = [v2 objectForKeyedSubscript:*MEMORY[0x277CCA7E8]];
+    userInfo = [selfCopy userInfo];
+    v3 = [userInfo objectForKeyedSubscript:*MEMORY[0x277CCA7E8]];
 
-    v1 = v3;
+    selfCopy = v3;
   }
 
-  v4 = [v1 domain];
-  v5 = [v4 isEqualToString:@"com.apple.SQLite"];
+  domain = [selfCopy domain];
+  v5 = [domain isEqualToString:@"com.apple.SQLite"];
 
   if (v5)
   {
-    v6 = [v1 userInfo];
-    v7 = [v6 objectForKeyedSubscript:@"sql_statement"];
+    userInfo2 = [selfCopy userInfo];
+    v7 = [userInfo2 objectForKeyedSubscript:@"sql_statement"];
   }
 
   else

@@ -1,29 +1,29 @@
 @interface PXLibraryFilterState
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isLibraryFilterActive:(int64_t)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isLibraryFilterActive:(int64_t)active;
 - (NSString)description;
 - (NSString)localizedDescription;
 - (NSString)localizedFooterDescription;
-- (PXLibraryFilterState)initWithSharedLibraryStatusProvider:(id)a3;
-- (id)_localizedDescriptionForViewMode:(int64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)menuItemTitleForLibraryFilter:(int64_t)a3;
-- (id)predicateForUseCase:(unint64_t)a3;
+- (PXLibraryFilterState)initWithSharedLibraryStatusProvider:(id)provider;
+- (id)_localizedDescriptionForViewMode:(int64_t)mode;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)menuItemTitleForLibraryFilter:(int64_t)filter;
+- (id)predicateForUseCase:(unint64_t)case;
 - (unsigned)sharingFilter;
 - (void)dealloc;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
 - (void)preferencesDidChange;
-- (void)setSharedLibraryBadgeEnabled:(BOOL)a3;
-- (void)setViewMode:(int64_t)a3;
+- (void)setSharedLibraryBadgeEnabled:(BOOL)enabled;
+- (void)setViewMode:(int64_t)mode;
 @end
 
 @implementation PXLibraryFilterState
 
 - (void)dealloc
 {
-  v3 = [(PXLibraryFilterState *)self sharedLibraryStatusProvider];
+  sharedLibraryStatusProvider = [(PXLibraryFilterState *)self sharedLibraryStatusProvider];
 
-  if (v3)
+  if (sharedLibraryStatusProvider)
   {
     PXUnregisterPreferencesObserver(self);
   }
@@ -35,10 +35,10 @@
 
 - (void)preferencesDidChange
 {
-  v3 = [(PXLibraryFilterState *)self sharedLibraryStatusProvider];
-  v4 = [v3 hasSharedLibraryOrPreview];
+  sharedLibraryStatusProvider = [(PXLibraryFilterState *)self sharedLibraryStatusProvider];
+  hasSharedLibraryOrPreview = [sharedLibraryStatusProvider hasSharedLibraryOrPreview];
 
-  if (v4)
+  if (hasSharedLibraryOrPreview)
   {
     LibraryFilterViewModeWithSharedLibraryOrPreview = PXPreferencesGetLibraryFilterViewModeWithSharedLibraryOrPreview(1);
     keyExistsAndHasValidFormat = 0;
@@ -65,14 +65,14 @@
   }
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  if ((a4 & 3) != 0 && PXSharedLibraryStatusProviderObservationContext_28195 == a5)
+  if ((change & 3) != 0 && PXSharedLibraryStatusProviderObservationContext_28195 == context)
   {
-    v6 = [(PXLibraryFilterState *)self sharedLibraryStatusProvider];
-    v7 = [v6 hasSharedLibraryOrPreview];
+    sharedLibraryStatusProvider = [(PXLibraryFilterState *)self sharedLibraryStatusProvider];
+    hasSharedLibraryOrPreview = [sharedLibraryStatusProvider hasSharedLibraryOrPreview];
 
-    if ((v7 & 1) == 0)
+    if ((hasSharedLibraryOrPreview & 1) == 0)
     {
 
       [(PXLibraryFilterState *)self setViewMode:0];
@@ -82,12 +82,12 @@
 
 - (NSString)localizedFooterDescription
 {
-  v3 = [(PXLibraryFilterState *)self viewMode];
-  switch(v3)
+  viewMode = [(PXLibraryFilterState *)self viewMode];
+  switch(viewMode)
   {
     case 2:
-      v6 = [(PXLibraryFilterState *)self sharedLibraryStatusProvider];
-      if ([v6 hasPreview])
+      sharedLibraryStatusProvider = [(PXLibraryFilterState *)self sharedLibraryStatusProvider];
+      if ([sharedLibraryStatusProvider hasPreview])
       {
         v7 = @"PXSharedLibrary_FilterFooter_Preview";
       }
@@ -118,52 +118,52 @@ LABEL_12:
 
 - (NSString)localizedDescription
 {
-  v3 = [(PXLibraryFilterState *)self viewMode];
+  viewMode = [(PXLibraryFilterState *)self viewMode];
 
-  return [(PXLibraryFilterState *)self _localizedDescriptionForViewMode:v3];
+  return [(PXLibraryFilterState *)self _localizedDescriptionForViewMode:viewMode];
 }
 
-- (id)predicateForUseCase:(unint64_t)a3
+- (id)predicateForUseCase:(unint64_t)case
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v6 = NSStringFromSelector(a2);
-  [v5 handleFailureInMethod:a2 object:self file:@"PXLibraryFilterState.m" lineNumber:212 description:{@"Use of this method is deprecated: %@", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXLibraryFilterState.m" lineNumber:212 description:{@"Use of this method is deprecated: %@", v6}];
 
   return 0;
 }
 
 - (unsigned)sharingFilter
 {
-  v2 = [(PXLibraryFilterState *)self viewMode];
+  viewMode = [(PXLibraryFilterState *)self viewMode];
 
-  return PXSharingFilterFromLibraryFilterViewMode(v2);
+  return PXSharingFilterFromLibraryFilterViewMode(viewMode);
 }
 
-- (void)setSharedLibraryBadgeEnabled:(BOOL)a3
+- (void)setSharedLibraryBadgeEnabled:(BOOL)enabled
 {
-  if (self->_sharedLibraryBadgeEnabled != a3)
+  if (self->_sharedLibraryBadgeEnabled != enabled)
   {
     v6[7] = v3;
     v6[8] = v4;
-    v5 = a3;
-    self->_sharedLibraryBadgeEnabled = a3;
+    enabledCopy = enabled;
+    self->_sharedLibraryBadgeEnabled = enabled;
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __53__PXLibraryFilterState_setSharedLibraryBadgeEnabled___block_invoke;
     v6[3] = &unk_1E774C5F8;
     v6[4] = self;
     [(PXLibraryFilterState *)self performChanges:v6];
-    PXPreferencesSetBool(@"SharedLibraryBadgingEnabled", v5);
+    PXPreferencesSetBool(@"SharedLibraryBadgingEnabled", enabledCopy);
   }
 }
 
-- (void)setViewMode:(int64_t)a3
+- (void)setViewMode:(int64_t)mode
 {
-  if (self->_viewMode != a3)
+  if (self->_viewMode != mode)
   {
     v9[9] = v3;
     v9[10] = v4;
-    self->_viewMode = a3;
+    self->_viewMode = mode;
     [(PXLibraryFilterObservableViewMode *)self->_viewModeObservable setViewMode:?];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
@@ -171,20 +171,20 @@ LABEL_12:
     v9[3] = &unk_1E774C5F8;
     v9[4] = self;
     [(PXLibraryFilterState *)self performChanges:v9];
-    v7 = [(PXLibraryFilterState *)self sharedLibraryStatusProvider];
-    v8 = [v7 hasSharedLibraryOrPreview];
+    sharedLibraryStatusProvider = [(PXLibraryFilterState *)self sharedLibraryStatusProvider];
+    hasSharedLibraryOrPreview = [sharedLibraryStatusProvider hasSharedLibraryOrPreview];
 
-    PXPreferencesSetLibraryFilterViewModeWithSharedLibraryOrPreview(a3, v8);
+    PXPreferencesSetLibraryFilterViewModeWithSharedLibraryOrPreview(mode, hasSharedLibraryOrPreview);
   }
 }
 
-- (id)_localizedDescriptionForViewMode:(int64_t)a3
+- (id)_localizedDescriptionForViewMode:(int64_t)mode
 {
-  switch(a3)
+  switch(mode)
   {
     case 2:
-      v5 = [(PXLibraryFilterState *)self sharedLibraryStatusProvider];
-      [v5 hasPreview];
+      sharedLibraryStatusProvider = [(PXLibraryFilterState *)self sharedLibraryStatusProvider];
+      [sharedLibraryStatusProvider hasPreview];
       v4 = PXLocalizedSharedLibraryString(@"PXSharedLibrary_FilterMenu_Shared");
 
       break;
@@ -204,21 +204,21 @@ LABEL_6:
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [PXLibraryFilterState alloc];
-  v5 = [(PXLibraryFilterState *)self sharedLibraryStatusProvider];
-  v6 = [(PXLibraryFilterState *)v4 initWithSharedLibraryStatusProvider:v5];
+  sharedLibraryStatusProvider = [(PXLibraryFilterState *)self sharedLibraryStatusProvider];
+  v6 = [(PXLibraryFilterState *)v4 initWithSharedLibraryStatusProvider:sharedLibraryStatusProvider];
 
   *(v6 + 104) = [(PXLibraryFilterState *)self viewMode];
   *(v6 + 96) = [(PXLibraryFilterState *)self isSharedLibraryBadgeEnabled];
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -228,11 +228,11 @@ LABEL_6:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(PXLibraryFilterState *)self viewMode];
-      v7 = [(PXLibraryFilterState *)v5 viewMode];
+      v5 = equalCopy;
+      viewMode = [(PXLibraryFilterState *)self viewMode];
+      viewMode2 = [(PXLibraryFilterState *)v5 viewMode];
 
-      v8 = v6 == v7;
+      v8 = viewMode == viewMode2;
     }
 
     else
@@ -246,35 +246,35 @@ LABEL_6:
 
 - (NSString)description
 {
-  v2 = [(PXLibraryFilterState *)self viewMode];
-  if (v2 > 2)
+  viewMode = [(PXLibraryFilterState *)self viewMode];
+  if (viewMode > 2)
   {
     v3 = 0;
   }
 
   else
   {
-    v3 = [MEMORY[0x1E696AEC0] stringWithFormat:off_1E772FE50[v2], objc_opt_class()];
+    v3 = [MEMORY[0x1E696AEC0] stringWithFormat:off_1E772FE50[viewMode], objc_opt_class()];
   }
 
   return v3;
 }
 
-- (id)menuItemTitleForLibraryFilter:(int64_t)a3
+- (id)menuItemTitleForLibraryFilter:(int64_t)filter
 {
-  v5 = [(PXLibraryFilterState *)self sharedLibraryStatusProvider];
-  v6 = [v5 hasSharedLibraryOrPreview];
+  sharedLibraryStatusProvider = [(PXLibraryFilterState *)self sharedLibraryStatusProvider];
+  hasSharedLibraryOrPreview = [sharedLibraryStatusProvider hasSharedLibraryOrPreview];
 
-  if (v6)
+  if (hasSharedLibraryOrPreview)
   {
-    if (a3 == 2)
+    if (filter == 2)
     {
       v7 = 2;
     }
 
     else
     {
-      v7 = a3 == 1;
+      v7 = filter == 1;
     }
 
     v8 = [(PXLibraryFilterState *)self _localizedDescriptionForViewMode:v7];
@@ -288,31 +288,31 @@ LABEL_6:
   return v8;
 }
 
-- (BOOL)isLibraryFilterActive:(int64_t)a3
+- (BOOL)isLibraryFilterActive:(int64_t)active
 {
-  v4 = [(PXLibraryFilterState *)self viewMode];
-  v5 = a3 == 1;
-  if (a3 == 2)
+  viewMode = [(PXLibraryFilterState *)self viewMode];
+  v5 = active == 1;
+  if (active == 2)
   {
     v5 = 2;
   }
 
-  return v4 == v5;
+  return viewMode == v5;
 }
 
-- (PXLibraryFilterState)initWithSharedLibraryStatusProvider:(id)a3
+- (PXLibraryFilterState)initWithSharedLibraryStatusProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v14.receiver = self;
   v14.super_class = PXLibraryFilterState;
   v6 = [(PXLibraryFilterState *)&v14 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_sharedLibraryStatusProvider, a3);
-    v8 = [v5 hasSharedLibraryOrPreview];
+    objc_storeStrong(&v6->_sharedLibraryStatusProvider, provider);
+    hasSharedLibraryOrPreview = [providerCopy hasSharedLibraryOrPreview];
     [(PXSharedLibraryStatusProvider *)v7->_sharedLibraryStatusProvider registerChangeObserver:v7 context:PXSharedLibraryStatusProviderObservationContext_28195];
-    v7->_viewMode = PXPreferencesGetLibraryFilterViewModeWithSharedLibraryOrPreview(v8);
+    v7->_viewMode = PXPreferencesGetLibraryFilterViewModeWithSharedLibraryOrPreview(hasSharedLibraryOrPreview);
     v9 = [[_TtC12PhotosUICore33PXLibraryFilterObservableViewMode alloc] initWithViewMode:v7->_viewMode];
     viewModeObservable = v7->_viewModeObservable;
     v7->_viewModeObservable = v9;
@@ -330,7 +330,7 @@ LABEL_6:
 
     v12 = v11;
     v7->_sharedLibraryBadgeEnabled = v12;
-    if (v5)
+    if (providerCopy)
     {
       PXRegisterPreferencesObserver(v7);
     }

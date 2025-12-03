@@ -1,32 +1,32 @@
 @interface NightShiftDisplayWrapper
 - (NightShiftDisplayWrapper)init;
-- (NightShiftDisplayWrapper)initWithDisplay:(__Display *)a3;
+- (NightShiftDisplayWrapper)initWithDisplay:(__Display *)display;
 - (void)dealloc;
-- (void)setNightShiftFactorDictionary:(id)a3;
+- (void)setNightShiftFactorDictionary:(id)dictionary;
 @end
 
 @implementation NightShiftDisplayWrapper
 
-- (NightShiftDisplayWrapper)initWithDisplay:(__Display *)a3
+- (NightShiftDisplayWrapper)initWithDisplay:(__Display *)display
 {
-  v7 = self;
+  selfCopy = self;
   v6 = a2;
-  v5 = a3;
+  displayCopy = display;
   v4.receiver = self;
   v4.super_class = NightShiftDisplayWrapper;
-  v7 = [(NightShiftDisplayWrapper *)&v4 init];
-  if (v7 && v5)
+  selfCopy = [(NightShiftDisplayWrapper *)&v4 init];
+  if (selfCopy && displayCopy)
   {
-    v7->_display = v5;
-    CFRetain(v7->_display);
+    selfCopy->_display = displayCopy;
+    CFRetain(selfCopy->_display);
   }
 
-  return v7;
+  return selfCopy;
 }
 
 - (NightShiftDisplayWrapper)init
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   v3.receiver = self;
   v3.super_class = NightShiftDisplayWrapper;
@@ -35,29 +35,29 @@
 
 - (void)dealloc
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   if (self->_display)
   {
-    CFRelease(v5->_display);
+    CFRelease(selfCopy->_display);
   }
 
-  *&v2 = MEMORY[0x1E69E5920](v5->_container).n128_u64[0];
-  v3.receiver = v5;
+  *&v2 = MEMORY[0x1E69E5920](selfCopy->_container).n128_u64[0];
+  v3.receiver = selfCopy;
   v3.super_class = NightShiftDisplayWrapper;
   [(NightShiftDisplayWrapper *)&v3 dealloc];
 }
 
-- (void)setNightShiftFactorDictionary:(id)a3
+- (void)setNightShiftFactorDictionary:(id)dictionary
 {
   if (self->_display)
   {
-    DisplaySetProperty(self->_display, @"BlueLightReductionFactor", a3);
+    DisplaySetProperty(self->_display, @"BlueLightReductionFactor", dictionary);
   }
 
   else
   {
-    [(CBContainerProtocol *)self->_container setProperty:a3 forKey:@"BlueLightReductionFactor"];
+    [(CBContainerProtocol *)self->_container setProperty:dictionary forKey:@"BlueLightReductionFactor"];
   }
 }
 

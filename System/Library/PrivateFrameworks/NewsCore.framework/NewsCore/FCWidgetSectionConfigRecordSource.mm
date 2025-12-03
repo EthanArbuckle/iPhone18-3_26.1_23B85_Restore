@@ -1,6 +1,6 @@
 @interface FCWidgetSectionConfigRecordSource
 - (id)nonLocalizableKeys;
-- (id)recordFromCKRecord:(id)a3 base:(id)a4;
+- (id)recordFromCKRecord:(id)record base:(id)base;
 @end
 
 @implementation FCWidgetSectionConfigRecordSource
@@ -26,24 +26,24 @@ uint64_t __55__FCWidgetSectionConfigRecordSource_nonLocalizableKeys__block_invok
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-- (id)recordFromCKRecord:(id)a3 base:(id)a4
+- (id)recordFromCKRecord:(id)record base:(id)base
 {
   v5 = MEMORY[0x1E69B7068];
-  v6 = a4;
-  v7 = a3;
+  baseCopy = base;
+  recordCopy = record;
   v8 = objc_alloc_init(v5);
-  [v8 setBase:v6];
+  [v8 setBase:baseCopy];
 
-  v9 = [v7 objectForKeyedSubscript:@"configuration2"];
+  v9 = [recordCopy objectForKeyedSubscript:@"configuration2"];
   [v8 setConfiguration2:v9];
 
-  v10 = [v7 objectForKeyedSubscript:@"singleTagConfiguration"];
+  v10 = [recordCopy objectForKeyedSubscript:@"singleTagConfiguration"];
   [v8 setSingleTagConfiguration:v10];
 
-  v11 = [v7 objectForKeyedSubscript:@"articleListIDs2"];
+  v11 = [recordCopy objectForKeyedSubscript:@"articleListIDs2"];
   [v8 setArticleListIDs2s:v11];
 
-  v12 = [v7 objectForKeyedSubscript:@"articleIDs2"];
+  v12 = [recordCopy objectForKeyedSubscript:@"articleIDs2"];
 
   [v8 setArticleIDs2s:v12];
 

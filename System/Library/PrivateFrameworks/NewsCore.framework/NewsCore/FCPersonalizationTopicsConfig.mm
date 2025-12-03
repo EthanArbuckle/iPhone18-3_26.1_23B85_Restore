@@ -1,10 +1,10 @@
 @interface FCPersonalizationTopicsConfig
 - (FCPersonalizationTopicsConfig)init;
-- (FCPersonalizationTopicsConfig)initWithCoder:(id)a3;
-- (FCPersonalizationTopicsConfig)initWithConfig:(id)a3;
-- (FCPersonalizationTopicsConfig)initWithConfig:(id)a3 defaultConfig:(id)a4;
-- (FCPersonalizationTopicsConfig)initWithTopicsConfig:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (FCPersonalizationTopicsConfig)initWithCoder:(id)coder;
+- (FCPersonalizationTopicsConfig)initWithConfig:(id)config;
+- (FCPersonalizationTopicsConfig)initWithConfig:(id)config defaultConfig:(id)defaultConfig;
+- (FCPersonalizationTopicsConfig)initWithTopicsConfig:(id)config;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FCPersonalizationTopicsConfig
@@ -35,15 +35,15 @@
   objc_exception_throw(v6);
 }
 
-- (FCPersonalizationTopicsConfig)initWithConfig:(id)a3
+- (FCPersonalizationTopicsConfig)initWithConfig:(id)config
 {
-  v4 = a3;
+  configCopy = config;
   v8.receiver = self;
   v8.super_class = FCPersonalizationTopicsConfig;
   v5 = [(FCPersonalizationTopicsConfig *)&v8 init];
   if (v5)
   {
-    v6 = [v4 fc_arrayByTransformingWithBlock:&__block_literal_global_159];
+    v6 = [configCopy fc_arrayByTransformingWithBlock:&__block_literal_global_159];
     v5 = [(FCPersonalizationTopicsConfig *)v5 initWithTopicsConfig:v6];
   }
 
@@ -58,23 +58,23 @@ FCPersonalizationTopicConfig *__48__FCPersonalizationTopicsConfig_initWithConfig
   return v3;
 }
 
-- (FCPersonalizationTopicsConfig)initWithConfig:(id)a3 defaultConfig:(id)a4
+- (FCPersonalizationTopicsConfig)initWithConfig:(id)config defaultConfig:(id)defaultConfig
 {
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  configCopy = config;
+  defaultConfigCopy = defaultConfig;
   v28.receiver = self;
   v28.super_class = FCPersonalizationTopicsConfig;
   v8 = [(FCPersonalizationTopicsConfig *)&v28 init];
   if (v8)
   {
-    v9 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v10 = [v7 topicsConfig];
-    v11 = [v10 countByEnumeratingWithState:&v24 objects:v29 count:16];
+    topicsConfig = [defaultConfigCopy topicsConfig];
+    v11 = [topicsConfig countByEnumeratingWithState:&v24 objects:v29 count:16];
     if (v11)
     {
       v12 = v11;
@@ -85,20 +85,20 @@ FCPersonalizationTopicConfig *__48__FCPersonalizationTopicsConfig_initWithConfig
         {
           if (*v25 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(topicsConfig);
           }
 
           v15 = *(*(&v24 + 1) + 8 * i);
-          v16 = [v15 topicID];
+          topicID = [v15 topicID];
 
-          if (v16)
+          if (topicID)
           {
-            v17 = [v15 topicID];
-            [v9 setObject:v15 forKeyedSubscript:v17];
+            topicID2 = [v15 topicID];
+            [dictionary setObject:v15 forKeyedSubscript:topicID2];
           }
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v24 objects:v29 count:16];
+        v12 = [topicsConfig countByEnumeratingWithState:&v24 objects:v29 count:16];
       }
 
       while (v12);
@@ -108,11 +108,11 @@ FCPersonalizationTopicConfig *__48__FCPersonalizationTopicsConfig_initWithConfig
     v22[1] = 3221225472;
     v22[2] = __62__FCPersonalizationTopicsConfig_initWithConfig_defaultConfig___block_invoke;
     v22[3] = &unk_1E7C41DD8;
-    v23 = v9;
-    v18 = v9;
-    [v6 enumerateObjectsUsingBlock:v22];
-    v19 = [v18 allValues];
-    v8 = [(FCPersonalizationTopicsConfig *)v8 initWithTopicsConfig:v19];
+    v23 = dictionary;
+    v18 = dictionary;
+    [configCopy enumerateObjectsUsingBlock:v22];
+    allValues = [v18 allValues];
+    v8 = [(FCPersonalizationTopicsConfig *)v8 initWithTopicsConfig:allValues];
   }
 
   v20 = *MEMORY[0x1E69E9840];
@@ -143,34 +143,34 @@ void __62__FCPersonalizationTopicsConfig_initWithConfig_defaultConfig___block_in
   }
 }
 
-- (FCPersonalizationTopicsConfig)initWithTopicsConfig:(id)a3
+- (FCPersonalizationTopicsConfig)initWithTopicsConfig:(id)config
 {
-  v5 = a3;
+  configCopy = config;
   v9.receiver = self;
   v9.super_class = FCPersonalizationTopicsConfig;
   v6 = [(FCPersonalizationTopicsConfig *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_topicsConfig, a3);
+    objc_storeStrong(&v6->_topicsConfig, config);
   }
 
   return v7;
 }
 
-- (FCPersonalizationTopicsConfig)initWithCoder:(id)a3
+- (FCPersonalizationTopicsConfig)initWithCoder:(id)coder
 {
-  v4 = [a3 decodeObjectForKey:@"topicsConfig"];
+  v4 = [coder decodeObjectForKey:@"topicsConfig"];
   v5 = [(FCPersonalizationTopicsConfig *)self initWithTopicsConfig:v4];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(FCPersonalizationTopicsConfig *)self topicsConfig];
-  [v4 encodeObject:v5 forKey:@"topicsConfig"];
+  coderCopy = coder;
+  topicsConfig = [(FCPersonalizationTopicsConfig *)self topicsConfig];
+  [coderCopy encodeObject:topicsConfig forKey:@"topicsConfig"];
 }
 
 @end

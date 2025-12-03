@@ -1,10 +1,10 @@
 @interface PLAccountingPowerEventEntry
-+ (BOOL)isValidPower:(double)a3 forRootNodeID:(id)a4;
++ (BOOL)isValidPower:(double)power forRootNodeID:(id)d;
 + (double)minPowerDifference;
 + (double)minPowerPercentageDifference;
 + (void)load;
-- (BOOL)isEqualContentsWithEvent:(id)a3;
-- (PLAccountingPowerEventEntry)initWithRootNodeID:(id)a3 withPower:(double)a4 withRange:(id)a5;
+- (BOOL)isEqualContentsWithEvent:(id)event;
+- (PLAccountingPowerEventEntry)initWithRootNodeID:(id)d withPower:(double)power withRange:(id)range;
 - (double)power;
 - (int)instanceDirectionality;
 @end
@@ -13,11 +13,11 @@
 
 - (int)instanceDirectionality
 {
-  v2 = [(PLAccountingPowerEventEntry *)self rootNodeID];
-  v3 = [&unk_2870F88E8 objectAtIndexedSubscript:{objc_msgSend(v2, "intValue")}];
-  v4 = [v3 intValue];
+  rootNodeID = [(PLAccountingPowerEventEntry *)self rootNodeID];
+  v3 = [&unk_2870F88E8 objectAtIndexedSubscript:{objc_msgSend(rootNodeID, "intValue")}];
+  intValue = [v3 intValue];
 
-  return v4;
+  return intValue;
 }
 
 - (double)power
@@ -79,7 +79,7 @@
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___PLAccountingPowerEventEntry;
   objc_msgSendSuper2(&v2, sel_load);
 }
@@ -98,10 +98,10 @@ uint64_t __59__PLAccountingPowerEventEntry_minPowerPercentageDifference__block_i
   return result;
 }
 
-+ (BOOL)isValidPower:(double)a3 forRootNodeID:(id)a4
++ (BOOL)isValidPower:(double)power forRootNodeID:(id)d
 {
-  v5 = a4;
-  if (a3 < 0.0)
+  dCopy = d;
+  if (power < 0.0)
   {
     if (![MEMORY[0x277D3F180] debugEnabled])
     {
@@ -124,12 +124,12 @@ uint64_t __59__PLAccountingPowerEventEntry_minPowerPercentageDifference__block_i
       goto LABEL_16;
     }
 
-    v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"ERROR: Negative power of %.2f mWh received for rootNodeID:%@", *&a3, v5];
+    dCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"ERROR: Negative power of %.2f mWh received for rootNodeID:%@", *&power, dCopy];
     v8 = MEMORY[0x277D3F178];
     v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/Entries/Power/PLAccountingPowerEventEntry.m"];
-    v10 = [v9 lastPathComponent];
+    lastPathComponent = [v9 lastPathComponent];
     v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[PLAccountingPowerEventEntry isValidPower:forRootNodeID:]"];
-    [v8 logMessage:v7 fromFile:v10 fromFunction:v11 fromLineNumber:37];
+    [v8 logMessage:dCopy fromFile:lastPathComponent fromFunction:v11 fromLineNumber:37];
 
     v12 = PLLogCommon();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
@@ -140,7 +140,7 @@ uint64_t __59__PLAccountingPowerEventEntry_minPowerPercentageDifference__block_i
     goto LABEL_15;
   }
 
-  if (a3 <= 10000.0)
+  if (power <= 10000.0)
   {
     v18 = 1;
     goto LABEL_18;
@@ -161,12 +161,12 @@ uint64_t __59__PLAccountingPowerEventEntry_minPowerPercentageDifference__block_i
 
     if (isValidPower_forRootNodeID__classDebugEnabled_24 == 1)
     {
-      v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"ERROR:  %.2f mWh received for rootNodeID:%@ exceeds max threshold of %d", *&a3, v5, 10000, v20, v21, v22, v23, v24];
+      dCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"ERROR:  %.2f mWh received for rootNodeID:%@ exceeds max threshold of %d", *&power, dCopy, 10000, v20, v21, v22, v23, v24];
       v14 = MEMORY[0x277D3F178];
       v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/Entries/Power/PLAccountingPowerEventEntry.m"];
-      v16 = [v15 lastPathComponent];
+      lastPathComponent2 = [v15 lastPathComponent];
       v17 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[PLAccountingPowerEventEntry isValidPower:forRootNodeID:]"];
-      [v14 logMessage:v7 fromFile:v16 fromFunction:v17 fromLineNumber:40];
+      [v14 logMessage:dCopy fromFile:lastPathComponent2 fromFunction:v17 fromLineNumber:40];
 
       v12 = PLLogCommon();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
@@ -206,36 +206,36 @@ uint64_t __58__PLAccountingPowerEventEntry_isValidPower_forRootNodeID___block_in
   return result;
 }
 
-- (PLAccountingPowerEventEntry)initWithRootNodeID:(id)a3 withPower:(double)a4 withRange:(id)a5
+- (PLAccountingPowerEventEntry)initWithRootNodeID:(id)d withPower:(double)power withRange:(id)range
 {
-  v8 = a3;
-  v9 = a5;
-  if ([v8 intValue] < 1 || (+[PLAccountingEngine deviceRootNodeIDs](PLAccountingEngine, "deviceRootNodeIDs"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "containsObject:", v8), v10, !v11) || !objc_msgSend(objc_opt_class(), "isValidPower:forRootNodeID:", v8, a4))
+  dCopy = d;
+  rangeCopy = range;
+  if ([dCopy intValue] < 1 || (+[PLAccountingEngine deviceRootNodeIDs](PLAccountingEngine, "deviceRootNodeIDs"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "containsObject:", dCopy), v10, !v11) || !objc_msgSend(objc_opt_class(), "isValidPower:forRootNodeID:", dCopy, power))
   {
 LABEL_10:
-    v14 = 0;
+    selfCopy = 0;
     goto LABEL_11;
   }
 
   v22.receiver = self;
   v22.super_class = PLAccountingPowerEventEntry;
-  v12 = [(PLAccountingEventEntry *)&v22 initWithRange:v9];
+  v12 = [(PLAccountingEventEntry *)&v22 initWithRange:rangeCopy];
   self = v12;
   if (v12)
   {
-    [(PLEntry *)v12 setObject:v8 forKeyedSubscript:*MEMORY[0x277D3F438]];
-    v13 = [MEMORY[0x277CCABB0] numberWithLong:llround(a4 * 1000.0)];
+    [(PLEntry *)v12 setObject:dCopy forKeyedSubscript:*MEMORY[0x277D3F438]];
+    v13 = [MEMORY[0x277CCABB0] numberWithLong:llround(power * 1000.0)];
     [(PLEntry *)self setObject:v13 forKeyedSubscript:*MEMORY[0x277D3F430]];
 
     LODWORD(v13) = [(PLAccountingPowerEventEntry *)self instanceDirectionality];
     if (v13 != [objc_opt_class() classDirectionality])
     {
-      v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"ERROR: Directionality mismatch for rootNodeID=%@", v8];
+      dCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"ERROR: Directionality mismatch for rootNodeID=%@", dCopy];
       v16 = MEMORY[0x277D3F178];
       v17 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/Entries/Power/PLAccountingPowerEventEntry.m"];
-      v18 = [v17 lastPathComponent];
+      lastPathComponent = [v17 lastPathComponent];
       v19 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAccountingPowerEventEntry initWithRootNodeID:withPower:withRange:]"];
-      [v16 logMessage:v15 fromFile:v18 fromFunction:v19 fromLineNumber:69];
+      [v16 logMessage:dCopy fromFile:lastPathComponent fromFunction:v19 fromLineNumber:69];
 
       v20 = PLLogCommon();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
@@ -248,19 +248,19 @@ LABEL_10:
   }
 
   self = self;
-  v14 = self;
+  selfCopy = self;
 LABEL_11:
 
-  return v14;
+  return selfCopy;
 }
 
-- (BOOL)isEqualContentsWithEvent:(id)a3
+- (BOOL)isEqualContentsWithEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   [(PLAccountingPowerEventEntry *)self power];
   if (v5 == 0.0)
   {
-    [v4 power];
+    [eventCopy power];
     v7 = v6 == 0.0;
   }
 
@@ -268,7 +268,7 @@ LABEL_11:
   {
     [(PLAccountingPowerEventEntry *)self power];
     v9 = v8;
-    [v4 power];
+    [eventCopy power];
     v11 = vabdd_f64(v9, v10);
     [objc_opt_class() minPowerDifference];
     if (v11 <= v12)
@@ -280,7 +280,7 @@ LABEL_11:
     {
       [(PLAccountingPowerEventEntry *)self power];
       v14 = v13;
-      [v4 power];
+      [eventCopy power];
       v16 = vabdd_f64(v14, v15);
       [(PLAccountingPowerEventEntry *)self power];
       v18 = v16 / v17 * 100.0;

@@ -1,23 +1,23 @@
 @interface VUIUpsellOnExitPolicy
-- (VUIUpsellOnExitPolicy)initWithDictionary:(id)a3;
+- (VUIUpsellOnExitPolicy)initWithDictionary:(id)dictionary;
 @end
 
 @implementation VUIUpsellOnExitPolicy
 
-- (VUIUpsellOnExitPolicy)initWithDictionary:(id)a3
+- (VUIUpsellOnExitPolicy)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v16.receiver = self;
   v16.super_class = VUIUpsellOnExitPolicy;
   v5 = [(VUIUpsellOnExitPolicy *)&v16 init];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"displayPolicy"];
-    v7 = [v4 objectForKey:@"rateLimitPolicies"];
+    v6 = [dictionaryCopy objectForKey:@"displayPolicy"];
+    v7 = [dictionaryCopy objectForKey:@"rateLimitPolicies"];
     rateLimitPolicies = v5->_rateLimitPolicies;
     v5->_rateLimitPolicies = v7;
 
-    v9 = [v4 objectForKey:@"showExitUpsell"];
+    v9 = [dictionaryCopy objectForKey:@"showExitUpsell"];
     v5->_showUpsell = [v9 BOOLValue];
 
     if (v6 && v5->_rateLimitPolicies)

@@ -1,7 +1,7 @@
 @interface AVRoutingOperation
-+ (int64_t)statusOfOperations:(id)a3 error:(id *)a4;
++ (int64_t)statusOfOperations:(id)operations error:(id *)error;
 - (AVRoutingOperation)init;
-- (BOOL)_setStatus:(int64_t)a3 error:(id)a4 resultingStatus:(int64_t *)a5 failureReason:(id *)a6;
+- (BOOL)_setStatus:(int64_t)status error:(id)error resultingStatus:(int64_t *)resultingStatus failureReason:(id *)reason;
 - (BOOL)evaluateDependenciesAndMarkAsExecuting;
 - (BOOL)isReady;
 - (NSError)error;
@@ -9,7 +9,7 @@
 - (void)dealloc;
 - (void)markAsCancelled;
 - (void)markAsCompleted;
-- (void)markAsFailedWithError:(id)a3;
+- (void)markAsFailedWithError:(id)error;
 @end
 
 @implementation AVRoutingOperation
@@ -90,13 +90,13 @@ uint64_t __27__AVRoutingOperation_error__block_invoke(uint64_t a1)
     goto LABEL_15;
   }
 
-  v9 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v10 = [(AVRoutingOperation *)self dependencies];
-  v11 = [v10 countByEnumeratingWithState:&v21 objects:v27 count:16];
+  dependencies = [(AVRoutingOperation *)self dependencies];
+  v11 = [dependencies countByEnumeratingWithState:&v21 objects:v27 count:16];
   if (v11)
   {
     v12 = v11;
@@ -108,28 +108,28 @@ uint64_t __27__AVRoutingOperation_error__block_invoke(uint64_t a1)
       {
         if (*v22 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(dependencies);
         }
 
         v15 = *(*(&v21 + 1) + 8 * v14);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          [v9 addObject:v15];
+          [array addObject:v15];
         }
 
         ++v14;
       }
 
       while (v12 != v14);
-      v12 = [v10 countByEnumeratingWithState:&v21 objects:v27 count:16];
+      v12 = [dependencies countByEnumeratingWithState:&v21 objects:v27 count:16];
     }
 
     while (v12);
   }
 
   v20 = 0;
-  v16 = [AVRoutingOperation statusOfOperations:v9 error:&v20];
+  v16 = [AVRoutingOperation statusOfOperations:array error:&v20];
   if (v16 != 2)
   {
     if (v16 == 4)
@@ -155,8 +155,8 @@ LABEL_16:
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [(AVRoutingOperation *)self dependencies];
-  v3 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  dependencies = [(AVRoutingOperation *)self dependencies];
+  v3 = [dependencies countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v3)
   {
     v4 = v3;
@@ -167,18 +167,18 @@ LABEL_3:
     {
       if (*v11 != v5)
       {
-        objc_enumerationMutation(v2);
+        objc_enumerationMutation(dependencies);
       }
 
-      v7 = [*(*(&v10 + 1) + 8 * v6) isFinished];
-      if (!v7)
+      isFinished = [*(*(&v10 + 1) + 8 * v6) isFinished];
+      if (!isFinished)
       {
         break;
       }
 
       if (v4 == ++v6)
       {
-        v4 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v4 = [dependencies countByEnumeratingWithState:&v10 objects:v14 count:16];
         if (v4)
         {
           goto LABEL_3;
@@ -192,18 +192,18 @@ LABEL_3:
   else
   {
 LABEL_9:
-    LOBYTE(v7) = 1;
+    LOBYTE(isFinished) = 1;
   }
 
   v8 = *MEMORY[0x1E69E9840];
-  return v7;
+  return isFinished;
 }
 
-- (BOOL)_setStatus:(int64_t)a3 error:(id)a4 resultingStatus:(int64_t *)a5 failureReason:(id *)a6
+- (BOOL)_setStatus:(int64_t)status error:(id)error resultingStatus:(int64_t *)resultingStatus failureReason:(id *)reason
 {
-  if (!a3)
+  if (!status)
   {
-    v17 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, @"invalid parameter not satisfying: %s", a4, a5, a6, v6, v7, "requestedStatus != AVRoutingOperationStatusUnknown"), 0}];
+    v17 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, @"invalid parameter not satisfying: %s", error, resultingStatus, reason, v6, v7, "requestedStatus != AVRoutingOperationStatusUnknown"), 0}];
     objc_exception_throw(v17);
   }
 
@@ -234,10 +234,10 @@ LABEL_9:
   block[3] = &unk_1E794EF30;
   block[6] = &v33;
   block[7] = &v29;
-  block[10] = a3;
-  block[11] = a6;
+  block[10] = status;
+  block[11] = reason;
   block[4] = self;
-  block[5] = a4;
+  block[5] = error;
   block[8] = &v25;
   block[9] = &v19;
   av_readwrite_dispatch_queue_write(ivarAccessQueue, block);
@@ -263,9 +263,9 @@ LABEL_9:
     v14 = *(v34 + 24);
   }
 
-  if (a5 && (v14 & 1) != 0)
+  if (resultingStatus && (v14 & 1) != 0)
   {
-    *a5 = v30[3];
+    *resultingStatus = v30[3];
   }
 
   _Block_object_dispose(&v19, 8);
@@ -364,10 +364,10 @@ LABEL_22:
   }
 }
 
-- (void)markAsFailedWithError:(id)a3
+- (void)markAsFailedWithError:(id)error
 {
   v11 = 0;
-  if (![(AVRoutingOperation *)self _setStatus:4 error:a3 resultingStatus:0 failureReason:&v11])
+  if (![(AVRoutingOperation *)self _setStatus:4 error:error resultingStatus:0 failureReason:&v11])
   {
     v10 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, @"%@", v5, v6, v7, v8, v9, v11), 0}];
     objc_exception_throw(v10);
@@ -384,14 +384,14 @@ LABEL_22:
   }
 }
 
-+ (int64_t)statusOfOperations:(id)a3 error:(id *)a4
++ (int64_t)statusOfOperations:(id)operations error:(id *)error
 {
   v22 = *MEMORY[0x1E69E9840];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = [a3 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v6 = [operations countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (!v6)
   {
     goto LABEL_28;
@@ -407,7 +407,7 @@ LABEL_3:
   {
     if (*v18 != v10)
     {
-      objc_enumerationMutation(a3);
+      objc_enumerationMutation(operations);
     }
 
     v12 = *(*(&v17 + 1) + 8 * v11);
@@ -432,7 +432,7 @@ LABEL_3:
 LABEL_11:
     if (v7 == ++v11)
     {
-      result = [a3 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      result = [operations countByEnumeratingWithState:&v17 objects:v21 count:16];
       v7 = result;
       if (result)
       {
@@ -466,9 +466,9 @@ LABEL_25:
   {
     if (result == 4)
     {
-      if (a4)
+      if (error)
       {
-        *a4 = [v12 error];
+        *error = [v12 error];
       }
 
       result = 4;

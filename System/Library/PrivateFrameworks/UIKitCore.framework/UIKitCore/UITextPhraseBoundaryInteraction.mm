@@ -1,41 +1,41 @@
 @interface UITextPhraseBoundaryInteraction
 - (CGPoint)pointIfPlacedCarefully:(CGPoint)result;
-- (CGPoint)touchAlignedPointForPoint:(CGPoint)result translation:(CGPoint)a4;
-- (UITextPhraseBoundaryInteraction)initWithTextInput:(id)a3;
+- (CGPoint)touchAlignedPointForPoint:(CGPoint)result translation:(CGPoint)translation;
+- (UITextPhraseBoundaryInteraction)initWithTextInput:(id)input;
 - (id)_phraseBoundaryGestureRecognizer;
-- (id)closestPositionToPoint:(CGPoint)a3 translation:(CGPoint)a4;
+- (id)closestPositionToPoint:(CGPoint)point translation:(CGPoint)translation;
 - (void)_createGestureTuningIfNecessary;
-- (void)_phraseBoundaryGesture:(id)a3;
-- (void)didMoveToView:(id)a3;
-- (void)updateVisibilityOffsetForGesture:(id)a3;
+- (void)_phraseBoundaryGesture:(id)gesture;
+- (void)didMoveToView:(id)view;
+- (void)updateVisibilityOffsetForGesture:(id)gesture;
 @end
 
 @implementation UITextPhraseBoundaryInteraction
 
-- (UITextPhraseBoundaryInteraction)initWithTextInput:(id)a3
+- (UITextPhraseBoundaryInteraction)initWithTextInput:(id)input
 {
-  v4 = a3;
+  inputCopy = input;
   v9.receiver = self;
   v9.super_class = UITextPhraseBoundaryInteraction;
   v5 = [(UITextInteraction *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    [(UITextInteraction *)v5 setTextInput:v4];
-    v7 = [(UITextPhraseBoundaryInteraction *)v6 _phraseBoundaryGestureRecognizer];
-    [(UITextInteraction *)v6 addGestureRecognizer:v7 withName:0x1EFBA7710];
+    [(UITextInteraction *)v5 setTextInput:inputCopy];
+    _phraseBoundaryGestureRecognizer = [(UITextPhraseBoundaryInteraction *)v6 _phraseBoundaryGestureRecognizer];
+    [(UITextInteraction *)v6 addGestureRecognizer:_phraseBoundaryGestureRecognizer withName:0x1EFBA7710];
   }
 
   return v6;
 }
 
-- (void)didMoveToView:(id)a3
+- (void)didMoveToView:(id)view
 {
   v5.receiver = self;
   v5.super_class = UITextPhraseBoundaryInteraction;
-  v4 = a3;
-  [(UITextInteraction *)&v5 didMoveToView:v4];
-  [(UITextGestureTuning *)self->_gestureTuning setContainerCoordinateSpace:v4, v5.receiver, v5.super_class];
+  viewCopy = view;
+  [(UITextInteraction *)&v5 didMoveToView:viewCopy];
+  [(UITextGestureTuning *)self->_gestureTuning setContainerCoordinateSpace:viewCopy, v5.receiver, v5.super_class];
 }
 
 - (CGPoint)pointIfPlacedCarefully:(CGPoint)result
@@ -49,12 +49,12 @@
   return result;
 }
 
-- (CGPoint)touchAlignedPointForPoint:(CGPoint)result translation:(CGPoint)a4
+- (CGPoint)touchAlignedPointForPoint:(CGPoint)result translation:(CGPoint)translation
 {
   gestureTuning = self->_gestureTuning;
   if (gestureTuning)
   {
-    [(UITextGestureTuning *)gestureTuning touchAlignedPointForPoint:result.x translation:result.y, a4.x, a4.y];
+    [(UITextGestureTuning *)gestureTuning touchAlignedPointForPoint:result.x translation:result.y, translation.x, translation.y];
   }
 
   return result;
@@ -65,8 +65,8 @@
   if (!self->_gestureTuning)
   {
     v3 = +[UIKeyboardPreferencesController sharedPreferencesController];
-    v4 = [v3 preferencesActions];
-    v5 = [v4 BOOLForPreferenceKey:@"YukonMagnifiersDisabled"];
+    preferencesActions = [v3 preferencesActions];
+    v5 = [preferencesActions BOOLForPreferenceKey:@"YukonMagnifiersDisabled"];
 
     if (v5)
     {
@@ -74,8 +74,8 @@
       gestureTuning = self->_gestureTuning;
       self->_gestureTuning = v6;
 
-      v8 = [(UITextInteraction *)self view];
-      [(UITextGestureTuning *)self->_gestureTuning setContainerCoordinateSpace:v8];
+      view = [(UITextInteraction *)self view];
+      [(UITextGestureTuning *)self->_gestureTuning setContainerCoordinateSpace:view];
 
       v9 = self->_gestureTuning;
 
@@ -84,22 +84,22 @@
   }
 }
 
-- (void)updateVisibilityOffsetForGesture:(id)a3
+- (void)updateVisibilityOffsetForGesture:(id)gesture
 {
-  v4 = a3;
+  gestureCopy = gesture;
   [(UITextPhraseBoundaryInteraction *)self _createGestureTuningIfNecessary];
   gestureTuning = self->_gestureTuning;
-  v7 = [v4 _allActiveTouches];
-  v6 = [v4 state];
+  _allActiveTouches = [gestureCopy _allActiveTouches];
+  state = [gestureCopy state];
 
-  [(UITextGestureTuning *)gestureTuning updateWithTouches:v7 gestureState:v6];
+  [(UITextGestureTuning *)gestureTuning updateWithTouches:_allActiveTouches gestureState:state];
 }
 
 - (id)_phraseBoundaryGestureRecognizer
 {
   v3 = [[UIPhraseBoundaryGestureRecognizer alloc] initWithTarget:self action:sel__phraseBoundaryGesture_];
-  v4 = [(UITextInteraction *)self textInput];
-  [(UIPhraseBoundaryGestureRecognizer *)v3 setTextInput:v4];
+  textInput = [(UITextInteraction *)self textInput];
+  [(UIPhraseBoundaryGestureRecognizer *)v3 setTextInput:textInput];
 
   [(UILongPressGestureRecognizer *)v3 setDelay:0.0];
   [(UIPhraseBoundaryGestureRecognizer *)v3 setSecondDelay:0.2];
@@ -110,19 +110,19 @@
   return v3;
 }
 
-- (void)_phraseBoundaryGesture:(id)a3
+- (void)_phraseBoundaryGesture:(id)gesture
 {
-  v4 = a3;
-  v5 = [(UITextInteraction *)self _textInput];
-  v6 = [(UITextInteraction *)self assistantDelegate];
-  [(UITextPhraseBoundaryInteraction *)self updateVisibilityOffsetForGesture:v4];
+  gestureCopy = gesture;
+  _textInput = [(UITextInteraction *)self _textInput];
+  assistantDelegate = [(UITextInteraction *)self assistantDelegate];
+  [(UITextPhraseBoundaryInteraction *)self updateVisibilityOffsetForGesture:gestureCopy];
   v7 = +[UIKeyboardImpl activeInstance];
-  if (([v5 isFirstResponder] & 1) == 0)
+  if (([_textInput isFirstResponder] & 1) == 0)
   {
-    v10 = [v7 inputDelegate];
-    v8 = v5 != v10;
+    inputDelegate = [v7 inputDelegate];
+    v8 = _textInput != inputDelegate;
 
-    if (v6)
+    if (assistantDelegate)
     {
       goto LABEL_3;
     }
@@ -133,50 +133,50 @@ LABEL_5:
   }
 
   v8 = 0;
-  if (!v6)
+  if (!assistantDelegate)
   {
     goto LABEL_5;
   }
 
 LABEL_3:
-  v9 = [v6 useGesturesForEditableContent] ^ 1;
+  v9 = [assistantDelegate useGesturesForEditableContent] ^ 1;
 LABEL_6:
-  if (((v8 | v9) & 1) != 0 || ([v5 _hasMarkedText] & 1) == 0)
+  if (((v8 | v9) & 1) != 0 || ([_textInput _hasMarkedText] & 1) == 0)
   {
     NSLog(&cfstr_WarningPhraseB_0.isa);
     [(UITextInteraction *)self setInGesture:0];
-    [v6 setGestureRecognizers];
+    [assistantDelegate setGestureRecognizers];
     goto LABEL_12;
   }
 
-  if (![v5 _usesAsynchronousProtocol])
+  if (![_textInput _usesAsynchronousProtocol])
   {
-    v16 = [v4 userData];
-    v17 = [v5 markedTextRange];
+    userData = [gestureCopy userData];
+    markedTextRange = [_textInput markedTextRange];
     aBlock = MEMORY[0x1E69E9820];
     v101 = 3221225472;
     v102 = __58__UITextPhraseBoundaryInteraction__phraseBoundaryGesture___block_invoke;
     v103 = &unk_1E7125360;
-    v18 = v5;
+    v18 = _textInput;
     v104 = v18;
-    v98 = v17;
+    v98 = markedTextRange;
     v105 = v98;
     v106 = v7;
     v19 = _Block_copy(&aBlock);
-    v20 = [v4 state];
-    if ((v20 - 3) < 2)
+    state = [gestureCopy state];
+    if ((state - 3) < 2)
     {
-      v56 = [v18 textInputView];
-      [v4 centroid];
+      textInputView = [v18 textInputView];
+      [gestureCopy centroid];
       v58 = v57;
       v60 = v59;
-      v61 = [v4 view];
-      [v56 convertPoint:v61 fromView:{v58, v60}];
+      view = [gestureCopy view];
+      [textInputView convertPoint:view fromView:{v58, v60}];
       v63 = v62;
       v65 = v64;
 
-      v66 = [v18 textInputView];
-      [v4 _translationInView:v66];
+      textInputView2 = [v18 textInputView];
+      [gestureCopy _translationInView:textInputView2];
       v68 = v67;
       v70 = v69;
 
@@ -185,29 +185,29 @@ LABEL_6:
       v72 = v71;
       v74 = v73;
       v19[2](v19, 1, v34);
-      if (v16)
+      if (userData)
       {
-        [v16 setMagnificationPoint:{v72, v74}];
-        [v16 stopMagnifying:1];
-        [v4 setUserData:0];
+        [userData setMagnificationPoint:{v72, v74}];
+        [userData stopMagnifying:1];
+        [gestureCopy setUserData:0];
       }
 
       [(UITextCursorAssertion *)self->_blinkAssertion invalidate:v98];
       blinkAssertion = self->_blinkAssertion;
       self->_blinkAssertion = 0;
 
-      v76 = [v18 inputDelegate];
-      [v76 selectionDidChange:v18];
+      inputDelegate2 = [v18 inputDelegate];
+      [inputDelegate2 selectionDidChange:v18];
 
-      [v6 cancelAutoscroll];
+      [assistantDelegate cancelAutoscroll];
       [(UITextInteraction *)self setInGesture:0];
     }
 
     else
     {
-      if (v20 != 2)
+      if (state != 2)
       {
-        if (v20 != 1)
+        if (state != 1)
         {
           v33 = v98;
 LABEL_35:
@@ -216,15 +216,15 @@ LABEL_35:
         }
 
         [(UITextInteraction *)self setInGesture:1];
-        v21 = [v18 inputDelegate];
-        [v21 selectionWillChange:v18];
+        inputDelegate3 = [v18 inputDelegate];
+        [inputDelegate3 selectionWillChange:v18];
 
-        v22 = [v18 textInputView];
-        [v4 centroid];
+        textInputView3 = [v18 textInputView];
+        [gestureCopy centroid];
         v24 = v23;
         v26 = v25;
-        v27 = [v4 view];
-        [v22 convertPoint:v27 fromView:{v24, v26}];
+        view2 = [gestureCopy view];
+        [textInputView3 convertPoint:view2 fromView:{v24, v26}];
         v29 = v28;
         v31 = v30;
 
@@ -232,8 +232,8 @@ LABEL_35:
         v33 = v98;
         v34 = [v32 closestPositionToPoint:v98 withinRange:{v29, v31}];
         v19[2](v19, 0, v34);
-        v35 = [(UITextInteraction *)self _assertionController];
-        v36 = [v35 nonBlinkingAssertionWithReason:@"Phrase Boundary gesture"];
+        _assertionController = [(UITextInteraction *)self _assertionController];
+        v36 = [_assertionController nonBlinkingAssertionWithReason:@"Phrase Boundary gesture"];
         v37 = self->_blinkAssertion;
         self->_blinkAssertion = v36;
 
@@ -241,17 +241,17 @@ LABEL_34:
         goto LABEL_35;
       }
 
-      v77 = [v18 textInputView];
-      [v4 centroid];
+      textInputView4 = [v18 textInputView];
+      [gestureCopy centroid];
       v79 = v78;
       v81 = v80;
-      v82 = [v4 view];
-      [v77 convertPoint:v82 fromView:{v79, v81}];
+      view3 = [gestureCopy view];
+      [textInputView4 convertPoint:view3 fromView:{v79, v81}];
       v84 = v83;
       v86 = v85;
 
-      v87 = [v18 textInputView];
-      [v4 _translationInView:v87];
+      textInputView5 = [v18 textInputView];
+      [gestureCopy _translationInView:textInputView5];
       v89 = v88;
       v91 = v90;
 
@@ -260,44 +260,44 @@ LABEL_34:
       v93 = v92;
       v95 = v94;
       v96 = (v19[2])(v19, 1, v34);
-      if (v16)
+      if (userData)
       {
-        [v16 setMagnificationPoint:{v93, v95}];
+        [userData setMagnificationPoint:{v93, v95}];
       }
 
-      else if (v96 & 1) != 0 || ([v4 secondDelayElapsed])
+      else if (v96 & 1) != 0 || ([gestureCopy secondDelayElapsed])
       {
-        v16 = [UITextMagnifierRanged sharedRangedMagnifier:v98];
-        [v4 setUserData:v16];
-        v97 = [v18 textInputView];
-        [v16 beginMagnifyingTarget:v97 text:v18 magnificationPoint:1 offset:v93 animated:{v95, *MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)}];
+        userData = [UITextMagnifierRanged sharedRangedMagnifier:v98];
+        [gestureCopy setUserData:userData];
+        textInputView6 = [v18 textInputView];
+        [userData beginMagnifyingTarget:textInputView6 text:v18 magnificationPoint:1 offset:v93 animated:{v95, *MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)}];
       }
 
       else
       {
-        v16 = 0;
+        userData = 0;
       }
 
-      [v6 startAutoscroll:{v93, v95, v98}];
+      [assistantDelegate startAutoscroll:{v93, v95, v98}];
     }
 
     v33 = v99;
     goto LABEL_34;
   }
 
-  [v4 centroid];
+  [gestureCopy centroid];
   v12 = v11;
   v14 = v13;
-  if ([v4 state] == 1)
+  if ([gestureCopy state] == 1)
   {
-    v15 = [v5 inputDelegate];
-    [v15 selectionWillChange:v5];
+    inputDelegate4 = [_textInput inputDelegate];
+    [inputDelegate4 selectionWillChange:_textInput];
   }
 
   else
   {
-    v38 = [v5 textInputView];
-    [v4 _translationInView:v38];
+    textInputView7 = [_textInput textInputView];
+    [gestureCopy _translationInView:textInputView7];
     v40 = v39;
     v42 = v41;
 
@@ -306,26 +306,26 @@ LABEL_34:
     v14 = v44;
   }
 
-  if ([v5 conformsToProtocolCached:&unk_1F016C810])
+  if ([_textInput conformsToProtocolCached:&unk_1F016C810])
   {
-    v45 = v5;
-    v46 = [v45 textInputView];
-    v47 = [v4 view];
-    [v46 convertPoint:v47 fromView:{v12, v14}];
+    view5 = _textInput;
+    textInputView8 = [view5 textInputView];
+    view4 = [gestureCopy view];
+    [textInputView8 convertPoint:view4 fromView:{v12, v14}];
     v49 = v48;
     v51 = v50;
 
-    [v45 updateCurrentSelectionTo:14 fromGesture:objc_msgSend(v4 inState:{"state"), v49, v51}];
+    [view5 updateCurrentSelectionTo:14 fromGesture:objc_msgSend(gestureCopy inState:{"state"), v49, v51}];
   }
 
   else
   {
-    [v5 conformsToProtocolCached:&unk_1F016C7B0];
-    v45 = [v6 view];
-    v52 = [v5 textInputView];
-    v53 = [v4 view];
-    [v52 convertPoint:v53 fromView:{v12, v14}];
-    [v45 changeSelectionWithGestureAt:14 withGesture:objc_msgSend(v4 withState:{"state"), v54, v55}];
+    [_textInput conformsToProtocolCached:&unk_1F016C7B0];
+    view5 = [assistantDelegate view];
+    textInputView9 = [_textInput textInputView];
+    view6 = [gestureCopy view];
+    [textInputView9 convertPoint:view6 fromView:{v12, v14}];
+    [view5 changeSelectionWithGestureAt:14 withGesture:objc_msgSend(gestureCopy withState:{"state"), v54, v55}];
   }
 
 LABEL_12:
@@ -373,23 +373,23 @@ uint64_t __58__UITextPhraseBoundaryInteraction__phraseBoundaryGesture___block_in
   return v15;
 }
 
-- (id)closestPositionToPoint:(CGPoint)a3 translation:(CGPoint)a4
+- (id)closestPositionToPoint:(CGPoint)point translation:(CGPoint)translation
 {
-  y = a4.y;
-  x = a4.x;
-  v6 = a3.y;
-  v7 = a3.x;
-  v9 = [(UITextInteraction *)self _textInput];
-  v10 = [v9 markedTextRange];
-  v11 = [v9 closestPositionToPoint:v10 withinRange:{v7, v6}];
-  [v9 caretRectForPosition:v11];
+  y = translation.y;
+  x = translation.x;
+  v6 = point.y;
+  v7 = point.x;
+  _textInput = [(UITextInteraction *)self _textInput];
+  markedTextRange = [_textInput markedTextRange];
+  v11 = [_textInput closestPositionToPoint:markedTextRange withinRange:{v7, v6}];
+  [_textInput caretRectForPosition:v11];
   UIDistanceBetweenPointAndRect(v7, v6, v12, v13, v14, v15);
   v17 = v16;
   [(UITextPhraseBoundaryInteraction *)self touchAlignedPointForPoint:v7 translation:v6, x, y];
   v19 = v18;
   v21 = v20;
-  v22 = [v9 closestPositionToPoint:v10 withinRange:?];
-  [v9 caretRectForPosition:v22];
+  v22 = [_textInput closestPositionToPoint:markedTextRange withinRange:?];
+  [_textInput caretRectForPosition:v22];
   UIDistanceBetweenPointAndRect(v19, v21, v23, v24, v25, v26);
   if (v17 >= v27)
   {

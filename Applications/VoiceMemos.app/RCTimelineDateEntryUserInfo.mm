@@ -1,30 +1,30 @@
 @interface RCTimelineDateEntryUserInfo
-- (BOOL)isEqual:(id)a3;
-- (RCTimelineDateEntryUserInfo)initWithCurrentTime:(double)a3 recordingDuration:(double)a4;
+- (BOOL)isEqual:(id)equal;
+- (RCTimelineDateEntryUserInfo)initWithCurrentTime:(double)time recordingDuration:(double)duration;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation RCTimelineDateEntryUserInfo
 
-- (RCTimelineDateEntryUserInfo)initWithCurrentTime:(double)a3 recordingDuration:(double)a4
+- (RCTimelineDateEntryUserInfo)initWithCurrentTime:(double)time recordingDuration:(double)duration
 {
   v7.receiver = self;
   v7.super_class = RCTimelineDateEntryUserInfo;
   result = [(RCTimelineDateEntryUserInfo *)&v7 init];
   if (result)
   {
-    result->_currentTime = a3;
-    result->_recordingDuration = a4;
+    result->_currentTime = time;
+    result->_recordingDuration = duration;
   }
 
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v14 = 1;
   }
@@ -34,7 +34,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       [(RCTimelineDateEntryUserInfo *)self currentTime];
       v7 = v6;
       [(RCTimelineDateEntryUserInfo *)v5 currentTime];

@@ -1,16 +1,16 @@
 @interface HMDSettingConstraint
-- (HMDSettingConstraint)initWithCoder:(id)a3;
-- (HMDSettingConstraint)initWithIdentifier:(id)a3 parentIdentifier:(id)a4 type:(id)a5 numberValue:(id)a6 dataValue:(id)a7;
+- (HMDSettingConstraint)initWithCoder:(id)coder;
+- (HMDSettingConstraint)initWithIdentifier:(id)identifier parentIdentifier:(id)parentIdentifier type:(id)type numberValue:(id)value dataValue:(id)dataValue;
 - (NSString)name;
 - (id)value;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMDSettingConstraint
 
-- (HMDSettingConstraint)initWithCoder:(id)a3
+- (HMDSettingConstraint)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE658];
   v7 = MEMORY[0x277CCACA8];
@@ -22,26 +22,26 @@
   objc_exception_throw(v10);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 hmd_isForXPCTransport])
+  coderCopy = coder;
+  if ([coderCopy hmd_isForXPCTransport])
   {
-    v5 = [(HMDSettingConstraint *)self identifier];
-    [v4 encodeObject:v5 forKey:*MEMORY[0x277CD0F70]];
+    identifier = [(HMDSettingConstraint *)self identifier];
+    [coderCopy encodeObject:identifier forKey:*MEMORY[0x277CD0F70]];
 
-    v6 = [(HMDSettingConstraint *)self type];
-    [v4 encodeObject:v6 forKey:*MEMORY[0x277CD0F78]];
+    type = [(HMDSettingConstraint *)self type];
+    [coderCopy encodeObject:type forKey:*MEMORY[0x277CD0F78]];
 
-    v7 = [(HMDSettingConstraint *)self value];
-    [v4 encodeObject:v7 forKey:*MEMORY[0x277CD0F80]];
+    value = [(HMDSettingConstraint *)self value];
+    [coderCopy encodeObject:value forKey:*MEMORY[0x277CD0F80]];
   }
 
   else
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
@@ -59,18 +59,18 @@
 
 - (NSString)name
 {
-  v3 = [(HMDSettingConstraint *)self type];
-  [v3 integerValue];
+  type = [(HMDSettingConstraint *)self type];
+  [type integerValue];
   v4 = HMSettingConstraintTypeToString();
 
-  v5 = [(HMDSettingConstraint *)self type];
-  v6 = [v5 integerValue];
+  type2 = [(HMDSettingConstraint *)self type];
+  integerValue = [type2 integerValue];
 
-  if (v6 == 4)
+  if (integerValue == 4)
   {
     v7 = MEMORY[0x277CCACA8];
-    v8 = [(HMDSettingConstraint *)self value];
-    v9 = [v7 stringWithFormat:@"%@.%@", v4, v8];
+    value = [(HMDSettingConstraint *)self value];
+    v9 = [v7 stringWithFormat:@"%@.%@", v4, value];
 
     v4 = v9;
   }
@@ -80,22 +80,22 @@
 
 - (id)value
 {
-  v3 = [(HMDSettingConstraint *)self type];
-  v4 = [v3 integerValue];
+  type = [(HMDSettingConstraint *)self type];
+  integerValue = [type integerValue];
 
-  if ((v4 - 1) < 3)
+  if ((integerValue - 1) < 3)
   {
-    v5 = [(HMDSettingConstraint *)self numberValue];
+    numberValue = [(HMDSettingConstraint *)self numberValue];
 LABEL_5:
-    v6 = v5;
-    v7 = [v5 copy];
+    v6 = numberValue;
+    v7 = [numberValue copy];
 
     goto LABEL_6;
   }
 
-  if (v4 == 4)
+  if (integerValue == 4)
   {
-    v5 = [(HMDSettingConstraint *)self dataValue];
+    numberValue = [(HMDSettingConstraint *)self dataValue];
     goto LABEL_5;
   }
 
@@ -105,35 +105,35 @@ LABEL_6:
   return v7;
 }
 
-- (HMDSettingConstraint)initWithIdentifier:(id)a3 parentIdentifier:(id)a4 type:(id)a5 numberValue:(id)a6 dataValue:(id)a7
+- (HMDSettingConstraint)initWithIdentifier:(id)identifier parentIdentifier:(id)parentIdentifier type:(id)type numberValue:(id)value dataValue:(id)dataValue
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  identifierCopy = identifier;
+  parentIdentifierCopy = parentIdentifier;
+  typeCopy = type;
+  valueCopy = value;
+  dataValueCopy = dataValue;
   v29.receiver = self;
   v29.super_class = HMDSettingConstraint;
   v17 = [(HMDSettingConstraint *)&v29 init];
   if (v17)
   {
-    v18 = [v12 copy];
+    v18 = [identifierCopy copy];
     identifier = v17->_identifier;
     v17->_identifier = v18;
 
-    v20 = [v13 copy];
+    v20 = [parentIdentifierCopy copy];
     parentIdentifier = v17->_parentIdentifier;
     v17->_parentIdentifier = v20;
 
-    v22 = [v14 copy];
+    v22 = [typeCopy copy];
     type = v17->_type;
     v17->_type = v22;
 
-    v24 = [v15 copy];
+    v24 = [valueCopy copy];
     numberValue = v17->_numberValue;
     v17->_numberValue = v24;
 
-    v26 = [v16 copy];
+    v26 = [dataValueCopy copy];
     dataValue = v17->_dataValue;
     v17->_dataValue = v26;
   }

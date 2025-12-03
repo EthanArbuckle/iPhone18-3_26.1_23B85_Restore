@@ -1,10 +1,10 @@
 @interface LabelView
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
 - (NSDictionary)labels;
 - (_TtC7Measure9LabelView)init;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)onLabelViewTapped;
-- (void)setLabels:(id)a3;
+- (void)setLabels:(id)labels;
 @end
 
 @implementation LabelView
@@ -19,7 +19,7 @@
   return v2.super.isa;
 }
 
-- (void)setLabels:(id)a3
+- (void)setLabels:(id)labels
 {
   type metadata accessor for LabelRender();
   v4 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
@@ -28,22 +28,22 @@
   *(self + v5) = v4;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (a3)
+  if (path)
   {
     v9 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v11 = v10;
-    if (a4)
+    if (object)
     {
       goto LABEL_3;
     }
 
 LABEL_6:
     memset(v16, 0, sizeof(v16));
-    v14 = a5;
-    v15 = self;
-    if (!a5)
+    changeCopy = change;
+    selfCopy = self;
+    if (!change)
     {
       goto LABEL_7;
     }
@@ -53,18 +53,18 @@ LABEL_6:
 
   v9 = 0;
   v11 = 0;
-  if (!a4)
+  if (!object)
   {
     goto LABEL_6;
   }
 
 LABEL_3:
   swift_unknownObjectRetain();
-  v12 = a5;
-  v13 = self;
+  changeCopy2 = change;
+  selfCopy2 = self;
   _bridgeAnyObjectToAny(_:)();
   swift_unknownObjectRelease();
-  if (a5)
+  if (change)
   {
 LABEL_4:
     type metadata accessor for NSKeyValueChangeKey(0);
@@ -78,19 +78,19 @@ LABEL_7:
   sub_10002D238(v16);
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_1000C8FF8(v6, v7);
+  recognizerCopy = recognizer;
+  touchCopy = touch;
+  selfCopy = self;
+  v9 = sub_1000C8FF8(recognizerCopy, touchCopy);
 
   return v9 & 1;
 }
 
 - (void)onLabelViewTapped
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000C54D0();
 }
 

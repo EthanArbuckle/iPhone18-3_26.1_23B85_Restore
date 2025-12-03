@@ -1,35 +1,35 @@
 @interface TSPDistributableFileManager
-- (BOOL)commitWithError:(id *)a3;
-- (BOOL)prepareForSaveToPath:(id)a3 error:(id *)a4;
-- (BOOL)rehomeOntoPath:(id)a3;
-- (TSPDistributableFileManager)initWithPath:(id)a3 shouldCreate:(BOOL)a4;
+- (BOOL)commitWithError:(id *)error;
+- (BOOL)prepareForSaveToPath:(id)path error:(id *)error;
+- (BOOL)rehomeOntoPath:(id)path;
+- (TSPDistributableFileManager)initWithPath:(id)path shouldCreate:(BOOL)create;
 - (id)_claimedPaths;
-- (id)_filePathForModifiedIdentifier:(id)a3;
+- (id)_filePathForModifiedIdentifier:(id)identifier;
 - (id)_modifiedFilesDirectoryPath;
-- (id)addDataFromInputStream:(id)a3 length:(int64_t)a4 filenameHint:(id)a5;
-- (id)addDataRepresentation:(id)a3 filenameHint:(id)a4;
-- (id)representationForIdentifier:(id)a3;
-- (void)_writeDataFromInputStream:(id)a3 length:(int64_t)a4 toPath:(id)a5;
-- (void)removeIdentifier:(id)a3;
-- (void)setDataFromInputStream:(id)a3 length:(int64_t)a4 forIdentifier:(id)a5;
-- (void)setDataRepresentation:(id)a3 forIdentifier:(id)a4;
+- (id)addDataFromInputStream:(id)stream length:(int64_t)length filenameHint:(id)hint;
+- (id)addDataRepresentation:(id)representation filenameHint:(id)hint;
+- (id)representationForIdentifier:(id)identifier;
+- (void)_writeDataFromInputStream:(id)stream length:(int64_t)length toPath:(id)path;
+- (void)removeIdentifier:(id)identifier;
+- (void)setDataFromInputStream:(id)stream length:(int64_t)length forIdentifier:(id)identifier;
+- (void)setDataRepresentation:(id)representation forIdentifier:(id)identifier;
 @end
 
 @implementation TSPDistributableFileManager
 
-- (TSPDistributableFileManager)initWithPath:(id)a3 shouldCreate:(BOOL)a4
+- (TSPDistributableFileManager)initWithPath:(id)path shouldCreate:(BOOL)create
 {
-  v6 = a3;
+  pathCopy = path;
   v18.receiver = self;
   v18.super_class = TSPDistributableFileManager;
   v8 = [(TSPDistributableFileManager *)&v18 init];
   if (v8)
   {
-    v9 = objc_msgSend_stringByAppendingPathComponent_(v6, v7, @"data");
+    v9 = objc_msgSend_stringByAppendingPathComponent_(pathCopy, v7, @"data");
     directoryPath = v8->_directoryPath;
     v8->_directoryPath = v9;
 
-    v8->_shouldCreate = a4;
+    v8->_shouldCreate = create;
     v11 = objc_alloc_init(MEMORY[0x277CBEB58]);
     newIdentifiers = v8->_newIdentifiers;
     v8->_newIdentifiers = v11;
@@ -46,10 +46,10 @@
   return v8;
 }
 
-- (BOOL)commitWithError:(id *)a3
+- (BOOL)commitWithError:(id *)error
 {
   v62 = *MEMORY[0x277D85DE8];
-  if (objc_msgSend_count(self->_modifiedIdentifiers, a2, a3) || objc_msgSend_count(self->_deletedIdentifiers, v4, v5))
+  if (objc_msgSend_count(self->_modifiedIdentifiers, a2, error) || objc_msgSend_count(self->_deletedIdentifiers, v4, v5))
   {
     v58 = 0u;
     v59 = 0u;
@@ -152,11 +152,11 @@
   return v14 & 1;
 }
 
-- (id)addDataRepresentation:(id)a3 filenameHint:(id)a4
+- (id)addDataRepresentation:(id)representation filenameHint:(id)hint
 {
-  v6 = a3;
-  v9 = a4;
-  if (!v9)
+  representationCopy = representation;
+  hintCopy = hint;
+  if (!hintCopy)
   {
     v10 = MEMORY[0x277D81150];
     v11 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, "[TSPDistributableFileManager addDataRepresentation:filenameHint:]");
@@ -167,12 +167,12 @@
   }
 
   v17 = objc_msgSend__claimedPaths(self, v7, v8);
-  v19 = objc_msgSend_addPath_(v17, v18, v9);
+  v19 = objc_msgSend_addPath_(v17, v18, hintCopy);
 
   objc_msgSend_addObject_(self->_modifiedIdentifiers, v20, v19);
   v21 = objc_autoreleasePoolPush();
-  v24 = objc_msgSend_bufferedInputStream(v6, v22, v23);
-  v27 = objc_msgSend_dataLength(v6, v25, v26);
+  v24 = objc_msgSend_bufferedInputStream(representationCopy, v22, v23);
+  v27 = objc_msgSend_dataLength(representationCopy, v25, v26);
   v29 = objc_msgSend__filePathForModifiedIdentifier_(self, v28, v19);
   objc_msgSend__writeDataFromInputStream_length_toPath_(self, v30, v24, v27, v29);
 
@@ -183,11 +183,11 @@
   return v19;
 }
 
-- (id)addDataFromInputStream:(id)a3 length:(int64_t)a4 filenameHint:(id)a5
+- (id)addDataFromInputStream:(id)stream length:(int64_t)length filenameHint:(id)hint
 {
-  v8 = a3;
-  v11 = a5;
-  if (!v11)
+  streamCopy = stream;
+  hintCopy = hint;
+  if (!hintCopy)
   {
     v12 = MEMORY[0x277D81150];
     v13 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v9, "[TSPDistributableFileManager addDataFromInputStream:length:filenameHint:]");
@@ -198,12 +198,12 @@
   }
 
   v19 = objc_msgSend__claimedPaths(self, v9, v10);
-  v21 = objc_msgSend_addPath_(v19, v20, v11);
+  v21 = objc_msgSend_addPath_(v19, v20, hintCopy);
 
   objc_msgSend_addObject_(self->_modifiedIdentifiers, v22, v21);
   v23 = objc_autoreleasePoolPush();
   v25 = objc_msgSend__filePathForModifiedIdentifier_(self, v24, v21);
-  objc_msgSend__writeDataFromInputStream_length_toPath_(self, v26, v8, a4, v25);
+  objc_msgSend__writeDataFromInputStream_length_toPath_(self, v26, streamCopy, length, v25);
 
   objc_autoreleasePoolPop(v23);
   objc_msgSend_addObject_(self->_newIdentifiers, v27, v21);
@@ -211,51 +211,51 @@
   return v21;
 }
 
-- (void)setDataRepresentation:(id)a3 forIdentifier:(id)a4
+- (void)setDataRepresentation:(id)representation forIdentifier:(id)identifier
 {
-  v17 = a3;
-  v6 = a4;
+  representationCopy = representation;
+  identifierCopy = identifier;
   v7 = objc_autoreleasePoolPush();
-  v10 = objc_msgSend_bufferedInputStream(v17, v8, v9);
-  v13 = objc_msgSend_dataLength(v17, v11, v12);
-  objc_msgSend_setDataFromInputStream_length_forIdentifier_(self, v14, v10, v13, v6);
+  v10 = objc_msgSend_bufferedInputStream(representationCopy, v8, v9);
+  v13 = objc_msgSend_dataLength(representationCopy, v11, v12);
+  objc_msgSend_setDataFromInputStream_length_forIdentifier_(self, v14, v10, v13, identifierCopy);
   objc_msgSend_close(v10, v15, v16);
 
   objc_autoreleasePoolPop(v7);
 }
 
-- (void)setDataFromInputStream:(id)a3 length:(int64_t)a4 forIdentifier:(id)a5
+- (void)setDataFromInputStream:(id)stream length:(int64_t)length forIdentifier:(id)identifier
 {
   modifiedIdentifiers = self->_modifiedIdentifiers;
-  v9 = a5;
-  v10 = a3;
-  objc_msgSend_addObject_(modifiedIdentifiers, v11, v9);
-  v14 = objc_msgSend__filePathForModifiedIdentifier_(self, v12, v9);
+  identifierCopy = identifier;
+  streamCopy = stream;
+  objc_msgSend_addObject_(modifiedIdentifiers, v11, identifierCopy);
+  v14 = objc_msgSend__filePathForModifiedIdentifier_(self, v12, identifierCopy);
 
-  objc_msgSend__writeDataFromInputStream_length_toPath_(self, v13, v10, a4, v14);
+  objc_msgSend__writeDataFromInputStream_length_toPath_(self, v13, streamCopy, length, v14);
 }
 
-- (id)representationForIdentifier:(id)a3
+- (id)representationForIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (objc_msgSend_containsObject_(self->_deletedIdentifiers, v5, v4))
+  identifierCopy = identifier;
+  if (objc_msgSend_containsObject_(self->_deletedIdentifiers, v5, identifierCopy))
   {
     v7 = MEMORY[0x277D81150];
     v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, "[TSPDistributableFileManager representationForIdentifier:]");
     v10 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v9, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/persistence/src/TSPDistributableFileManager.m");
-    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v7, v11, v8, v10, 126, 0, "Requested the data representation for the uncommitted deleted file for identifier %@", v4);
+    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v7, v11, v8, v10, 126, 0, "Requested the data representation for the uncommitted deleted file for identifier %@", identifierCopy);
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v12, v13);
   }
 
-  if (objc_msgSend_containsObject_(self->_modifiedIdentifiers, v6, v4))
+  if (objc_msgSend_containsObject_(self->_modifiedIdentifiers, v6, identifierCopy))
   {
-    objc_msgSend__filePathForModifiedIdentifier_(self, v14, v4);
+    objc_msgSend__filePathForModifiedIdentifier_(self, v14, identifierCopy);
   }
 
   else
   {
-    objc_msgSend__filePathForIdentifier_(self, v14, v4);
+    objc_msgSend__filePathForIdentifier_(self, v14, identifierCopy);
   }
   v15 = ;
   v16 = objc_alloc(MEMORY[0x277D81100]);
@@ -264,32 +264,32 @@
   return v18;
 }
 
-- (void)removeIdentifier:(id)a3
+- (void)removeIdentifier:(id)identifier
 {
-  v16 = a3;
+  identifierCopy = identifier;
   if (!self->_isCullingDisabled)
   {
-    objc_msgSend_addObject_(self->_deletedIdentifiers, v4, v16);
-    if (objc_msgSend_containsObject_(self->_modifiedIdentifiers, v5, v16))
+    objc_msgSend_addObject_(self->_deletedIdentifiers, v4, identifierCopy);
+    if (objc_msgSend_containsObject_(self->_modifiedIdentifiers, v5, identifierCopy))
     {
-      v8 = objc_msgSend__filePathForModifiedIdentifier_(self, v6, v16);
+      v8 = objc_msgSend__filePathForModifiedIdentifier_(self, v6, identifierCopy);
       v9 = v8;
       v12 = objc_msgSend_fileSystemRepresentation(v9, v10, v11);
       unlink(v12);
 
-      objc_msgSend_removeObject_(self->_modifiedIdentifiers, v13, v16);
+      objc_msgSend_removeObject_(self->_modifiedIdentifiers, v13, identifierCopy);
     }
 
     v14 = objc_msgSend__claimedPaths(self, v6, v7);
-    objc_msgSend_pathIsNoLongerUsed_(v14, v15, v16);
+    objc_msgSend_pathIsNoLongerUsed_(v14, v15, identifierCopy);
   }
 }
 
-- (BOOL)prepareForSaveToPath:(id)a3 error:(id *)a4
+- (BOOL)prepareForSaveToPath:(id)path error:(id *)error
 {
-  if (a3)
+  if (path)
   {
-    v5 = objc_msgSend_stringByAppendingPathComponent_(a3, a2, @"data", a4);
+    v5 = objc_msgSend_stringByAppendingPathComponent_(path, a2, @"data", error);
     directoryPath = self->_directoryPath;
     self->_directoryPath = v5;
 
@@ -299,7 +299,7 @@
   else
   {
     v8 = MEMORY[0x277D81150];
-    v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSPDistributableFileManager prepareForSaveToPath:error:]", a4);
+    v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSPDistributableFileManager prepareForSaveToPath:error:]", error);
     v11 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v10, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/persistence/src/TSPDistributableFileManager.m");
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v8, v12, v9, v11, 161, 0, "invalid nil value for '%{public}s'", "path");
 
@@ -308,10 +308,10 @@
   }
 }
 
-- (BOOL)rehomeOntoPath:(id)a3
+- (BOOL)rehomeOntoPath:(id)path
 {
-  v6 = a3;
-  if (!v6)
+  pathCopy = path;
+  if (!pathCopy)
   {
     v7 = MEMORY[0x277D81150];
     v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v4, "[TSPDistributableFileManager rehomeOntoPath:]");
@@ -334,7 +334,7 @@
 
   else
   {
-    v25 = objc_msgSend_stringByAppendingPathComponent_(v6, v4, @"data");
+    v25 = objc_msgSend_stringByAppendingPathComponent_(pathCopy, v4, @"data");
     directoryPath = self->_directoryPath;
     self->_directoryPath = v25;
 
@@ -424,32 +424,32 @@ LABEL_11:
   return v12;
 }
 
-- (id)_filePathForModifiedIdentifier:(id)a3
+- (id)_filePathForModifiedIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v7 = objc_msgSend__modifiedFilesDirectoryPath(self, v5, v6);
-  v9 = objc_msgSend_stringByAppendingPathComponent_(v7, v8, v4);
+  v9 = objc_msgSend_stringByAppendingPathComponent_(v7, v8, identifierCopy);
 
   return v9;
 }
 
-- (void)_writeDataFromInputStream:(id)a3 length:(int64_t)a4 toPath:(id)a5
+- (void)_writeDataFromInputStream:(id)stream length:(int64_t)length toPath:(id)path
 {
-  v7 = a3;
-  v8 = a5;
+  streamCopy = stream;
+  pathCopy = path;
   v9 = objc_alloc(MEMORY[0x277D81110]);
-  v12 = objc_msgSend_initWithPath_(v9, v10, v8);
+  v12 = objc_msgSend_initWithPath_(v9, v10, pathCopy);
   while (1)
   {
     v16 = 0;
-    v15 = objc_msgSend_readToOwnBuffer_size_(v7, v11, &v16, a4);
+    v15 = objc_msgSend_readToOwnBuffer_size_(streamCopy, v11, &v16, length);
     if (!v15)
     {
       break;
     }
 
     objc_msgSend_writeBuffer_size_(v12, v13, v16, v15);
-    a4 -= v15;
+    length -= v15;
   }
 
   objc_msgSend_close(v12, v13, v14);

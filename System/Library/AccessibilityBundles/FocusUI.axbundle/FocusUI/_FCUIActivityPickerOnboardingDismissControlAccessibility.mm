@@ -8,13 +8,13 @@
 {
   v4.receiver = self;
   v4.super_class = _FCUIActivityPickerOnboardingDismissControlAccessibility;
-  v2 = [(_FCUIActivityPickerOnboardingDismissControlAccessibility *)&v4 accessibilityActivate];
-  if (v2)
+  accessibilityActivate = [(_FCUIActivityPickerOnboardingDismissControlAccessibility *)&v4 accessibilityActivate];
+  if (accessibilityActivate)
   {
     UIAccessibilityPostNotification(*MEMORY[0x29EDC7ED8], 0);
   }
 
-  return v2;
+  return accessibilityActivate;
 }
 
 @end

@@ -1,15 +1,15 @@
 @interface DOCRenameSupport
-+ (id)_spi_renameDocumentAtURL:(id)a3 proposedName:(id)a4 error:(id *)a5;
++ (id)_spi_renameDocumentAtURL:(id)l proposedName:(id)name error:(id *)error;
 + (id)interface;
-+ (void)_spi_renameDocumentAtURL:(id)a3 proposedName:(id)a4 synchronous:(BOOL)a5 completionHandler:(id)a6;
++ (void)_spi_renameDocumentAtURL:(id)l proposedName:(id)name synchronous:(BOOL)synchronous completionHandler:(id)handler;
 @end
 
 @implementation DOCRenameSupport
 
-+ (id)_spi_renameDocumentAtURL:(id)a3 proposedName:(id)a4 error:(id *)a5
++ (id)_spi_renameDocumentAtURL:(id)l proposedName:(id)name error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  lCopy = l;
+  nameCopy = name;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -28,13 +28,13 @@
   v12[3] = &unk_278F9BA18;
   v12[4] = &v13;
   v12[5] = &v19;
-  [DOCRenameSupport _spi_renameDocumentAtURL:v7 proposedName:v8 synchronous:1 completionHandler:v12];
-  if (a5)
+  [DOCRenameSupport _spi_renameDocumentAtURL:lCopy proposedName:nameCopy synchronous:1 completionHandler:v12];
+  if (error)
   {
     v9 = v20[5];
     if (v9)
     {
-      *a5 = v9;
+      *error = v9;
     }
   }
 
@@ -60,13 +60,13 @@ void __64__DOCRenameSupport__spi_renameDocumentAtURL_proposedName_error___block_
   *(v9 + 40) = v6;
 }
 
-+ (void)_spi_renameDocumentAtURL:(id)a3 proposedName:(id)a4 synchronous:(BOOL)a5 completionHandler:(id)a6
++ (void)_spi_renameDocumentAtURL:(id)l proposedName:(id)name synchronous:(BOOL)synchronous completionHandler:(id)handler
 {
-  v7 = a5;
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
-  v12 = [v9 startAccessingSecurityScopedResource];
+  synchronousCopy = synchronous;
+  lCopy = l;
+  nameCopy = name;
+  handlerCopy = handler;
+  startAccessingSecurityScopedResource = [lCopy startAccessingSecurityScopedResource];
   v35[0] = 0;
   v35[1] = v35;
   v35[2] = 0x2020000000;
@@ -76,13 +76,13 @@ void __64__DOCRenameSupport__spi_renameDocumentAtURL_proposedName_error___block_
   aBlock[2] = __88__DOCRenameSupport__spi_renameDocumentAtURL_proposedName_synchronous_completionHandler___block_invoke;
   aBlock[3] = &unk_278F9BA40;
   v33 = v35;
-  v13 = v11;
+  v13 = handlerCopy;
   v32 = v13;
-  v34 = v12;
-  v14 = v9;
+  v34 = startAccessingSecurityScopedResource;
+  v14 = lCopy;
   v31 = v14;
   v15 = _Block_copy(aBlock);
-  if ([v10 length])
+  if ([nameCopy length])
   {
     v29 = 0;
     v16 = [MEMORY[0x277CC6438] wrapperWithURL:v14 readonly:0 error:&v29];
@@ -90,11 +90,11 @@ void __64__DOCRenameSupport__spi_renameDocumentAtURL_proposedName_error___block_
     if (v16)
     {
       v18 = [objc_alloc(MEMORY[0x277CCAE80]) initWithServiceName:@"com.apple.DocumentManagerCore.Rename"];
-      v19 = [objc_opt_class() interface];
-      [v18 setRemoteObjectInterface:v19];
+      interface = [objc_opt_class() interface];
+      [v18 setRemoteObjectInterface:interface];
 
       [v18 resume];
-      if (v7)
+      if (synchronousCopy)
       {
         v20 = v28;
         v28[0] = MEMORY[0x277D85DD0];
@@ -125,7 +125,7 @@ void __64__DOCRenameSupport__spi_renameDocumentAtURL_proposedName_error___block_
       v26 = v15;
       v23 = v18;
       v25 = v23;
-      [v22 renameDocumentAtURL:v16 proposedName:v10 completionHandler:v24];
+      [v22 renameDocumentAtURL:v16 proposedName:nameCopy completionHandler:v24];
     }
 
     else

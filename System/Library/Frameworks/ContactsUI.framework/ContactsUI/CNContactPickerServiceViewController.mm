@@ -1,16 +1,16 @@
 @interface CNContactPickerServiceViewController
 - (BOOL)shouldRecordPrivateAccessToAggregator;
 - (CNContactPickerServiceViewController)init;
-- (id)_filteredContact:(id)a3 withKeys:(id)a4;
-- (id)_filteredProperty:(id)a3;
+- (id)_filteredContact:(id)contact withKeys:(id)keys;
+- (id)_filteredProperty:(id)property;
 - (void)_logPrivacyAccountingAccessEvent;
 - (void)_logPrivateAccessEventForContactPickerUsage;
 - (void)pickerDidCancel;
-- (void)pickerDidCompleteWithNewContact:(id)a3;
+- (void)pickerDidCompleteWithNewContact:(id)contact;
 - (void)pickerDidSelectAddNewContact;
-- (void)pickerDidSelectContact:(id)a3 property:(id)a4;
-- (void)pickerDidSelectContacts:(id)a3 properties:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)pickerDidSelectContact:(id)contact property:(id)property;
+- (void)pickerDidSelectContacts:(id)contacts properties:(id)properties;
+- (void)viewDidAppear:(BOOL)appear;
 @end
 
 @implementation CNContactPickerServiceViewController
@@ -19,11 +19,11 @@
 {
   v7 = 0u;
   v8 = 0u;
-  v2 = [(CNContactPickerServiceViewController *)self extensionContext];
-  v3 = v2;
-  if (v2)
+  extensionContext = [(CNContactPickerServiceViewController *)self extensionContext];
+  v3 = extensionContext;
+  if (extensionContext)
   {
-    [v2 _extensionHostAuditToken];
+    [extensionContext _extensionHostAuditToken];
   }
 
   else
@@ -41,22 +41,22 @@
 
 - (void)_logPrivateAccessEventForContactPickerUsage
 {
-  v3 = [MEMORY[0x1E69966E8] currentEnvironment];
-  v4 = [v3 featureFlags];
-  v5 = [v4 isFeatureEnabled:20];
+  currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+  featureFlags = [currentEnvironment featureFlags];
+  v5 = [featureFlags isFeatureEnabled:20];
 
   if (v5)
   {
     if ([(CNContactPickerServiceViewController *)self shouldRecordPrivateAccessToAggregator])
     {
-      v6 = [(CNContactPickerContentViewController *)self managedConfiguration];
-      v7 = [v6 clientBundleIdentifier];
+      managedConfiguration = [(CNContactPickerContentViewController *)self managedConfiguration];
+      clientBundleIdentifier = [managedConfiguration clientBundleIdentifier];
 
-      if (v7)
+      if (clientBundleIdentifier)
       {
-        v9 = [(CNContactPickerContentViewController *)self managedConfiguration];
-        v8 = [v9 clientBundleIdentifier];
-        [CNPrivateAccessAggregator recordAccessForBundleIdentifier:v8];
+        managedConfiguration2 = [(CNContactPickerContentViewController *)self managedConfiguration];
+        clientBundleIdentifier2 = [managedConfiguration2 clientBundleIdentifier];
+        [CNPrivateAccessAggregator recordAccessForBundleIdentifier:clientBundleIdentifier2];
       }
     }
   }
@@ -65,45 +65,45 @@
 - (BOOL)shouldRecordPrivateAccessToAggregator
 {
   v3 = +[CNUIContactsEnvironment currentEnvironment];
-  v4 = [v3 authorizationContext];
+  authorizationContext = [v3 authorizationContext];
 
-  LOBYTE(v3) = [v4 isFullAccessGranted];
-  v5 = [(CNContactPickerContentViewController *)self managedConfiguration];
-  v6 = [v5 clientBundleIdentifier];
-  _CNUILog("/Library/Caches/com.apple.xbs/Sources/ContactsUI/Framework/CNContactPickerServiceViewController.m", 186, 5, @"%@ is %@ for full access:", v7, v8, v9, v10, v6);
+  LOBYTE(v3) = [authorizationContext isFullAccessGranted];
+  managedConfiguration = [(CNContactPickerContentViewController *)self managedConfiguration];
+  clientBundleIdentifier = [managedConfiguration clientBundleIdentifier];
+  _CNUILog("/Library/Caches/com.apple.xbs/Sources/ContactsUI/Framework/CNContactPickerServiceViewController.m", 186, 5, @"%@ is %@ for full access:", v7, v8, v9, v10, clientBundleIdentifier);
 
   return v3 ^ 1;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = CNContactPickerServiceViewController;
-  [(CNContactPickerServiceViewController *)&v4 viewDidAppear:a3];
+  [(CNContactPickerServiceViewController *)&v4 viewDidAppear:appear];
   [(CNContactPickerServiceViewController *)self _logPrivateAccessEventForContactPickerUsage];
 }
 
 - (void)pickerDidCancel
 {
-  v2 = [(CNContactPickerServiceViewController *)self extensionContext];
-  [v2 pickerDidCancel];
+  extensionContext = [(CNContactPickerServiceViewController *)self extensionContext];
+  [extensionContext pickerDidCancel];
 }
 
-- (void)pickerDidCompleteWithNewContact:(id)a3
+- (void)pickerDidCompleteWithNewContact:(id)contact
 {
-  v8 = a3;
-  v4 = v8;
+  contactCopy = contact;
+  v4 = contactCopy;
   if (![(CNContactPickerContentViewController *)self clientHasContactsAccess])
   {
-    if (v8)
+    if (contactCopy)
     {
-      v5 = [(CNContactPickerContentViewController *)self displayedPropertyKeys];
+      displayedPropertyKeys = [(CNContactPickerContentViewController *)self displayedPropertyKeys];
 
-      v4 = v8;
-      if (v5)
+      v4 = contactCopy;
+      if (displayedPropertyKeys)
       {
-        v6 = [(CNContactPickerContentViewController *)self displayedPropertyKeys];
-        v4 = [(CNContactPickerServiceViewController *)self _filteredContact:v8 withKeys:v6];
+        displayedPropertyKeys2 = [(CNContactPickerContentViewController *)self displayedPropertyKeys];
+        v4 = [(CNContactPickerServiceViewController *)self _filteredContact:contactCopy withKeys:displayedPropertyKeys2];
       }
     }
 
@@ -114,17 +114,17 @@
   }
 
   [(CNContactPickerServiceViewController *)self _logPrivacyAccountingAccessEvent];
-  v7 = [(CNContactPickerServiceViewController *)self extensionContext];
-  [v7 pickerDidCompleteWithNewContact:v4];
+  extensionContext = [(CNContactPickerServiceViewController *)self extensionContext];
+  [extensionContext pickerDidCompleteWithNewContact:v4];
 }
 
-- (void)pickerDidSelectContacts:(id)a3 properties:(id)a4
+- (void)pickerDidSelectContacts:(id)contacts properties:(id)properties
 {
   v38 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
-  v9 = v7;
+  contactsCopy = contacts;
+  propertiesCopy = properties;
+  v8 = contactsCopy;
+  v9 = propertiesCopy;
   v10 = v9;
   v11 = v8;
   if ([(CNContactPickerContentViewController *)self clientHasContactsAccess])
@@ -134,10 +134,10 @@
 
   if (v8)
   {
-    v12 = [(CNContactPickerContentViewController *)self displayedPropertyKeys];
+    displayedPropertyKeys = [(CNContactPickerContentViewController *)self displayedPropertyKeys];
 
     v11 = v8;
-    if (v12)
+    if (displayedPropertyKeys)
     {
       v11 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v8, "count")}];
       v32 = 0u;
@@ -161,8 +161,8 @@
             }
 
             v18 = *(*(&v32 + 1) + 8 * v17);
-            v19 = [(CNContactPickerContentViewController *)self displayedPropertyKeys];
-            v20 = [(CNContactPickerServiceViewController *)self _filteredContact:v18 withKeys:v19];
+            displayedPropertyKeys2 = [(CNContactPickerContentViewController *)self displayedPropertyKeys];
+            v20 = [(CNContactPickerServiceViewController *)self _filteredContact:v18 withKeys:displayedPropertyKeys2];
 
             [v11 addObject:v20];
             ++v17;
@@ -229,29 +229,29 @@ LABEL_13:
 
 LABEL_23:
   [(CNContactPickerServiceViewController *)self _logPrivacyAccountingAccessEvent];
-  v27 = [(CNContactPickerServiceViewController *)self extensionContext];
-  [v27 pickerDidSelectContacts:v11 properties:v10];
+  extensionContext = [(CNContactPickerServiceViewController *)self extensionContext];
+  [extensionContext pickerDidSelectContacts:v11 properties:v10];
 }
 
-- (void)pickerDidSelectContact:(id)a3 property:(id)a4
+- (void)pickerDidSelectContact:(id)contact property:(id)property
 {
-  v6 = a3;
-  v7 = a4;
-  v14 = v6;
-  v8 = v7;
+  contactCopy = contact;
+  propertyCopy = property;
+  v14 = contactCopy;
+  v8 = propertyCopy;
   v9 = v14;
   v10 = v8;
   if (![(CNContactPickerContentViewController *)self clientHasContactsAccess])
   {
     if (v14)
     {
-      v11 = [(CNContactPickerContentViewController *)self displayedPropertyKeys];
+      displayedPropertyKeys = [(CNContactPickerContentViewController *)self displayedPropertyKeys];
 
       v9 = v14;
-      if (v11)
+      if (displayedPropertyKeys)
       {
-        v12 = [(CNContactPickerContentViewController *)self displayedPropertyKeys];
-        v9 = [(CNContactPickerServiceViewController *)self _filteredContact:v14 withKeys:v12];
+        displayedPropertyKeys2 = [(CNContactPickerContentViewController *)self displayedPropertyKeys];
+        v9 = [(CNContactPickerServiceViewController *)self _filteredContact:v14 withKeys:displayedPropertyKeys2];
       }
 
       if (v8)
@@ -277,40 +277,40 @@ LABEL_6:
 
 LABEL_9:
   [(CNContactPickerServiceViewController *)self _logPrivacyAccountingAccessEvent];
-  v13 = [(CNContactPickerServiceViewController *)self extensionContext];
-  [v13 pickerDidSelectContact:v9 property:v10];
+  extensionContext = [(CNContactPickerServiceViewController *)self extensionContext];
+  [extensionContext pickerDidSelectContact:v9 property:v10];
 }
 
 - (void)pickerDidSelectAddNewContact
 {
   [(CNContactPickerServiceViewController *)self _logPrivacyAccountingAccessEvent];
-  v3 = [(CNContactPickerServiceViewController *)self extensionContext];
-  [v3 pickerDidSelectAddNewContact];
+  extensionContext = [(CNContactPickerServiceViewController *)self extensionContext];
+  [extensionContext pickerDidSelectAddNewContact];
 }
 
-- (id)_filteredProperty:(id)a3
+- (id)_filteredProperty:(id)property
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 contact];
-  v6 = [v4 key];
+  propertyCopy = property;
+  contact = [propertyCopy contact];
+  v6 = [propertyCopy key];
   v14[0] = v6;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
-  v8 = [(CNContactPickerServiceViewController *)self _filteredContact:v5 withKeys:v7];
+  v8 = [(CNContactPickerServiceViewController *)self _filteredContact:contact withKeys:v7];
 
   v9 = MEMORY[0x1E695CE08];
-  v10 = [v4 key];
-  v11 = [v4 identifier];
+  v10 = [propertyCopy key];
+  identifier = [propertyCopy identifier];
 
-  v12 = [v9 contactPropertyWithContact:v8 propertyKey:v10 identifier:v11];
+  v12 = [v9 contactPropertyWithContact:v8 propertyKey:v10 identifier:identifier];
 
   return v12;
 }
 
-- (id)_filteredContact:(id)a3 withKeys:(id)a4
+- (id)_filteredContact:(id)contact withKeys:(id)keys
 {
-  v5 = a3;
-  v6 = a4;
+  contactCopy = contact;
+  keysCopy = keys;
   if (_filteredContact_withKeys__cn_once_token_1 != -1)
   {
     dispatch_once(&_filteredContact_withKeys__cn_once_token_1, &__block_literal_global_24906);
@@ -318,12 +318,12 @@ LABEL_9:
 
   v7 = _filteredContact_withKeys__cn_once_object_1;
   v8 = v7;
-  if ([v6 count])
+  if ([keysCopy count])
   {
-    v8 = [v7 arrayByAddingObjectsFromArray:v6];
+    v8 = [v7 arrayByAddingObjectsFromArray:keysCopy];
   }
 
-  v9 = [v5 copyWithPropertyKeys:v8];
+  v9 = [contactCopy copyWithPropertyKeys:v8];
 
   return v9;
 }

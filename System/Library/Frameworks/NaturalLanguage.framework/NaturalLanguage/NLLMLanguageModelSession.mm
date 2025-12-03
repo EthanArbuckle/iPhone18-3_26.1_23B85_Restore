@@ -1,44 +1,44 @@
 @interface NLLMLanguageModelSession
-- (BOOL)addTokenForString:(id)a3 tokenID:(unsigned int *)a4;
-- (BOOL)getFirstDynamicTokenID:(unsigned int *)a3 lastDynamicTokenID:(unsigned int *)a4;
-- (BOOL)shouldAdaptToTokenIDs:(const unsigned int *)a3 length:(unint64_t)a4;
-- (NLLMLanguageModelSession)initWithLanguageModel:(id)a3 options:(id)a4;
-- (float)usageCountForTokenID:(unsigned int)a3;
-- (id)conditionalProbabilityForString:(id)a3 context:(id)a4;
-- (id)conditionalProbabilityForToken:(id)a3 context:(id)a4;
-- (id)conditionalProbabilityForTokenID:(unsigned int)a3 contextTokenIDs:(const unsigned int *)a4 length:(unint64_t)a5;
+- (BOOL)addTokenForString:(id)string tokenID:(unsigned int *)d;
+- (BOOL)getFirstDynamicTokenID:(unsigned int *)d lastDynamicTokenID:(unsigned int *)iD;
+- (BOOL)shouldAdaptToTokenIDs:(const unsigned int *)ds length:(unint64_t)length;
+- (NLLMLanguageModelSession)initWithLanguageModel:(id)model options:(id)options;
+- (float)usageCountForTokenID:(unsigned int)d;
+- (id)conditionalProbabilityForString:(id)string context:(id)context;
+- (id)conditionalProbabilityForToken:(id)token context:(id)context;
+- (id)conditionalProbabilityForTokenID:(unsigned int)d contextTokenIDs:(const unsigned int *)ds length:(unint64_t)length;
 - (id)description;
-- (int64_t)blocklistStatusForString:(id)a3 matchType:(int64_t)a4;
-- (int64_t)blocklistStatusForTokenIDs:(const unsigned int *)a3 length:(unint64_t)a4 matchType:(int64_t)a5;
-- (void)adaptToToken:(id)a3 context:(id)a4;
-- (void)adaptToTokenID:(unsigned int)a3 contextTokenIDs:(const unsigned int *)a4 length:(unint64_t)a5;
+- (int64_t)blocklistStatusForString:(id)string matchType:(int64_t)type;
+- (int64_t)blocklistStatusForTokenIDs:(const unsigned int *)ds length:(unint64_t)length matchType:(int64_t)type;
+- (void)adaptToToken:(id)token context:(id)context;
+- (void)adaptToTokenID:(unsigned int)d contextTokenIDs:(const unsigned int *)ds length:(unint64_t)length;
 - (void)applyExponentialDecay;
 - (void)dealloc;
-- (void)enumeratePredictionsForContext:(id)a3 maximumPredictions:(unint64_t)a4 maximumTokensPerPrediction:(unint64_t)a5 withBlock:(id)a6;
-- (void)enumeratePredictionsForContextTokenIDs:(const unsigned int *)a3 length:(unint64_t)a4 maximumPredictions:(unint64_t)a5 maximumTokensPerPrediction:(unint64_t)a6 withBlock:(id)a7;
+- (void)enumeratePredictionsForContext:(id)context maximumPredictions:(unint64_t)predictions maximumTokensPerPrediction:(unint64_t)prediction withBlock:(id)block;
+- (void)enumeratePredictionsForContextTokenIDs:(const unsigned int *)ds length:(unint64_t)length maximumPredictions:(unint64_t)predictions maximumTokensPerPrediction:(unint64_t)prediction withBlock:(id)block;
 - (void)flushDynamicData;
-- (void)pruneToSize:(unint64_t)a3;
-- (void)recordWithDifferentialPrivacy:(id)a3;
+- (void)pruneToSize:(unint64_t)size;
+- (void)recordWithDifferentialPrivacy:(id)privacy;
 - (void)reset;
-- (void)unadaptToToken:(id)a3 context:(id)a4;
-- (void)unadaptToTokenID:(unsigned int)a3 contextTokenIDs:(const unsigned int *)a4 length:(unint64_t)a5;
+- (void)unadaptToToken:(id)token context:(id)context;
+- (void)unadaptToTokenID:(unsigned int)d contextTokenIDs:(const unsigned int *)ds length:(unint64_t)length;
 @end
 
 @implementation NLLMLanguageModelSession
 
-- (NLLMLanguageModelSession)initWithLanguageModel:(id)a3 options:(id)a4
+- (NLLMLanguageModelSession)initWithLanguageModel:(id)model options:(id)options
 {
-  v6 = a3;
-  v7 = a4;
+  modelCopy = model;
+  optionsCopy = options;
   v8 = objc_alloc(MEMORY[0x1E695DF58]);
-  v9 = [v6 localization];
-  v10 = [v8 initWithLocaleIdentifier:v9];
+  localization = [modelCopy localization];
+  v10 = [v8 initWithLocaleIdentifier:localization];
 
   v11 = objc_alloc(MEMORY[0x1E695DF90]);
   v12 = [v11 initWithObjectsAndKeys:{v10, *MEMORY[0x1E69ABF90], 0}];
-  v13 = [v7 objectForKey:@"AppContext"];
-  v14 = BOOLForKey(v7, @"AdaptationEnabled", 1);
-  v15 = BOOLForKey(v7, @"IsSiriModel", 0);
+  v13 = [optionsCopy objectForKey:@"AppContext"];
+  v14 = BOOLForKey(optionsCopy, @"AdaptationEnabled", 1);
+  v15 = BOOLForKey(optionsCopy, @"IsSiriModel", 0);
   if (v13)
   {
     [v12 setObject:v13 forKey:*MEMORY[0x1E69ABF60]];
@@ -58,7 +58,7 @@
 
   v22.receiver = self;
   v22.super_class = NLLMLanguageModelSession;
-  v18 = [(NLLanguageModelSession *)&v22 initWithLanguageModel:v6 options:v7];
+  v18 = [(NLLanguageModelSession *)&v22 initWithLanguageModel:modelCopy options:optionsCopy];
   if (v18)
   {
     v18->_model = LMLanguageModelCreate();
@@ -88,9 +88,9 @@
   v9.receiver = self;
   v9.super_class = NLLMLanguageModelSession;
   v4 = [(NLLMLanguageModelSession *)&v9 description];
-  v5 = [(NLLanguageModelSession *)self languageModel];
-  v6 = [v5 localization];
-  v7 = objc_msgSend(v3, "stringWithFormat:", @"%@(%@"), v4, v6;
+  languageModel = [(NLLanguageModelSession *)self languageModel];
+  localization = [languageModel localization];
+  v7 = objc_msgSend(v3, "stringWithFormat:", @"%@(%@"), v4, localization;
 
   if (self->_model)
   {
@@ -102,16 +102,16 @@
   return v7;
 }
 
-- (id)conditionalProbabilityForToken:(id)a3 context:(id)a4
+- (id)conditionalProbabilityForToken:(id)token context:(id)context
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(NLLanguageModelSession *)self languageModel];
-  v9 = [v8 lexicon];
+  contextCopy = context;
+  tokenCopy = token;
+  languageModel = [(NLLanguageModelSession *)self languageModel];
+  lexicon = [languageModel lexicon];
 
-  v10 = [v9 entryForString:v7];
+  v10 = [lexicon entryForString:tokenCopy];
 
-  v11 = entrySequenceForStringWithOptionalBOS(v6, v9, self->_tokenizer, 1);
+  v11 = entrySequenceForStringWithOptionalBOS(contextCopy, lexicon, self->_tokenizer, 1);
 
   v12 = tokensForEntrySequence(v11);
   v13 = v12;
@@ -127,7 +127,7 @@
 
   if (v14 || v10 == 0 || v12 == 0)
   {
-    v17 = [[NLProbabilityInfo alloc] initWithInvalidProbability];
+    initWithInvalidProbability = [[NLProbabilityInfo alloc] initWithInvalidProbability];
     if (!v13)
     {
       goto LABEL_14;
@@ -136,24 +136,24 @@
 
   else
   {
-    v17 = -[NLLMLanguageModelSession conditionalProbabilityForTokenID:contextTokenIDs:length:](self, "conditionalProbabilityForTokenID:contextTokenIDs:length:", [v10 tokenID], v12, objc_msgSend(v11, "count"));
+    initWithInvalidProbability = -[NLLMLanguageModelSession conditionalProbabilityForTokenID:contextTokenIDs:length:](self, "conditionalProbabilityForTokenID:contextTokenIDs:length:", [v10 tokenID], v12, objc_msgSend(v11, "count"));
   }
 
   free(v13);
 LABEL_14:
 
-  return v17;
+  return initWithInvalidProbability;
 }
 
-- (id)conditionalProbabilityForString:(id)a3 context:(id)a4
+- (id)conditionalProbabilityForString:(id)string context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NLLanguageModelSession *)self languageModel];
-  v9 = [v8 lexicon];
+  stringCopy = string;
+  contextCopy = context;
+  languageModel = [(NLLanguageModelSession *)self languageModel];
+  lexicon = [languageModel lexicon];
 
-  v10 = entrySequenceForStringWithOptionalBOS(v7, v9, self->_tokenizer, 1);
-  v11 = entrySequenceForStringWithOptionalBOS(v6, v9, self->_tokenizer, 0);
+  v10 = entrySequenceForStringWithOptionalBOS(contextCopy, lexicon, self->_tokenizer, 1);
+  v11 = entrySequenceForStringWithOptionalBOS(stringCopy, lexicon, self->_tokenizer, 0);
   v12 = v11;
   if (v10)
   {
@@ -191,7 +191,7 @@ LABEL_14:
   if (v19)
   {
 LABEL_16:
-    v27 = [objc_alloc(*(v14 + 2280)) initWithInvalidProbability];
+    initWithInvalidProbability = [objc_alloc(*(v14 + 2280)) initWithInvalidProbability];
     if (!v18)
     {
       goto LABEL_18;
@@ -201,7 +201,7 @@ LABEL_16:
   }
 
   v30 = v15;
-  v31 = v6;
+  v31 = stringCopy;
   v20 = [v10 count];
   v21 = [v12 count];
   if (v21)
@@ -227,7 +227,7 @@ LABEL_16:
     }
 
     v18 = 1;
-    v6 = v31;
+    stringCopy = v31;
     v15 = v30;
     v14 = 0x1E7628000;
     goto LABEL_16;
@@ -241,30 +241,30 @@ LABEL_22:
   if (!v29)
   {
     v18 = 1;
-    v6 = v31;
+    stringCopy = v31;
     goto LABEL_16;
   }
 
-  v27 = v29;
-  v6 = v31;
+  initWithInvalidProbability = v29;
+  stringCopy = v31;
 LABEL_17:
   free(v17);
 LABEL_18:
 
-  return v27;
+  return initWithInvalidProbability;
 }
 
-- (void)enumeratePredictionsForContext:(id)a3 maximumPredictions:(unint64_t)a4 maximumTokensPerPrediction:(unint64_t)a5 withBlock:(id)a6
+- (void)enumeratePredictionsForContext:(id)context maximumPredictions:(unint64_t)predictions maximumTokensPerPrediction:(unint64_t)prediction withBlock:(id)block
 {
-  v10 = a6;
-  v11 = a3;
-  v12 = [(NLLanguageModelSession *)self languageModel];
-  v15 = [v12 lexicon];
+  blockCopy = block;
+  contextCopy = context;
+  languageModel = [(NLLanguageModelSession *)self languageModel];
+  lexicon = [languageModel lexicon];
 
-  v13 = entrySequenceForStringWithOptionalBOS(v11, v15, self->_tokenizer, 1);
+  v13 = entrySequenceForStringWithOptionalBOS(contextCopy, lexicon, self->_tokenizer, 1);
 
   v14 = tokensForEntrySequence(v13);
-  -[NLLMLanguageModelSession enumeratePredictionsForContextTokenIDs:length:maximumPredictions:maximumTokensPerPrediction:withBlock:](self, "enumeratePredictionsForContextTokenIDs:length:maximumPredictions:maximumTokensPerPrediction:withBlock:", v14, [v13 count], a4, a5, v10);
+  -[NLLMLanguageModelSession enumeratePredictionsForContextTokenIDs:length:maximumPredictions:maximumTokensPerPrediction:withBlock:](self, "enumeratePredictionsForContextTokenIDs:length:maximumPredictions:maximumTokensPerPrediction:withBlock:", v14, [v13 count], predictions, prediction, blockCopy);
 
   if (v14)
   {
@@ -272,16 +272,16 @@ LABEL_18:
   }
 }
 
-- (int64_t)blocklistStatusForString:(id)a3 matchType:(int64_t)a4
+- (int64_t)blocklistStatusForString:(id)string matchType:(int64_t)type
 {
-  v6 = a3;
-  v7 = [(NLLanguageModelSession *)self languageModel];
-  v8 = [v7 lexicon];
+  stringCopy = string;
+  languageModel = [(NLLanguageModelSession *)self languageModel];
+  lexicon = [languageModel lexicon];
 
-  v9 = entrySequenceForStringWithOptionalBOS(v6, v8, self->_tokenizer, 0);
+  v9 = entrySequenceForStringWithOptionalBOS(stringCopy, lexicon, self->_tokenizer, 0);
 
   v10 = tokensForEntrySequence(v9);
-  v11 = -[NLLMLanguageModelSession blocklistStatusForTokenIDs:length:matchType:](self, "blocklistStatusForTokenIDs:length:matchType:", v10, [v9 count], a4);
+  v11 = -[NLLMLanguageModelSession blocklistStatusForTokenIDs:length:matchType:](self, "blocklistStatusForTokenIDs:length:matchType:", v10, [v9 count], type);
   if (v10)
   {
     free(v10);
@@ -290,16 +290,16 @@ LABEL_18:
   return v11;
 }
 
-- (void)adaptToToken:(id)a3 context:(id)a4
+- (void)adaptToToken:(id)token context:(id)context
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(NLLanguageModelSession *)self languageModel];
-  v12 = [v8 lexicon];
+  contextCopy = context;
+  tokenCopy = token;
+  languageModel = [(NLLanguageModelSession *)self languageModel];
+  lexicon = [languageModel lexicon];
 
-  v9 = [v12 entryForString:v7];
+  v9 = [lexicon entryForString:tokenCopy];
 
-  v10 = entrySequenceForStringWithOptionalBOS(v6, v12, self->_tokenizer, 1);
+  v10 = entrySequenceForStringWithOptionalBOS(contextCopy, lexicon, self->_tokenizer, 1);
 
   v11 = tokensForEntrySequence(v10);
   if (v9)
@@ -313,16 +313,16 @@ LABEL_18:
   }
 }
 
-- (void)unadaptToToken:(id)a3 context:(id)a4
+- (void)unadaptToToken:(id)token context:(id)context
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(NLLanguageModelSession *)self languageModel];
-  v12 = [v8 lexicon];
+  contextCopy = context;
+  tokenCopy = token;
+  languageModel = [(NLLanguageModelSession *)self languageModel];
+  lexicon = [languageModel lexicon];
 
-  v9 = [v12 entryForString:v7];
+  v9 = [lexicon entryForString:tokenCopy];
 
-  v10 = entrySequenceForStringWithOptionalBOS(v6, v12, self->_tokenizer, 1);
+  v10 = entrySequenceForStringWithOptionalBOS(contextCopy, lexicon, self->_tokenizer, 1);
 
   v11 = tokensForEntrySequence(v10);
   if (v9)
@@ -336,35 +336,35 @@ LABEL_18:
   }
 }
 
-- (id)conditionalProbabilityForTokenID:(unsigned int)a3 contextTokenIDs:(const unsigned int *)a4 length:(unint64_t)a5
+- (id)conditionalProbabilityForTokenID:(unsigned int)d contextTokenIDs:(const unsigned int *)ds length:(unint64_t)length
 {
   if (self->_model)
   {
     LMLanguageModelConditionalProbability();
-    v6 = [[NLProbabilityInfo alloc] initWithLog10Probability:0 flags:v5];
+    initWithInvalidProbability = [[NLProbabilityInfo alloc] initWithLog10Probability:0 flags:v5];
   }
 
   else
   {
-    v6 = [[NLProbabilityInfo alloc] initWithInvalidProbability];
+    initWithInvalidProbability = [[NLProbabilityInfo alloc] initWithInvalidProbability];
   }
 
-  return v6;
+  return initWithInvalidProbability;
 }
 
-- (void)enumeratePredictionsForContextTokenIDs:(const unsigned int *)a3 length:(unint64_t)a4 maximumPredictions:(unint64_t)a5 maximumTokensPerPrediction:(unint64_t)a6 withBlock:(id)a7
+- (void)enumeratePredictionsForContextTokenIDs:(const unsigned int *)ds length:(unint64_t)length maximumPredictions:(unint64_t)predictions maximumTokensPerPrediction:(unint64_t)prediction withBlock:(id)block
 {
-  v8 = a7;
-  v9 = [(NLLanguageModelSession *)self languageModel];
-  v10 = [v9 lexicon];
+  blockCopy = block;
+  languageModel = [(NLLanguageModelSession *)self languageModel];
+  lexicon = [languageModel lexicon];
 
   v14[0] = 0;
   v14[1] = v14;
   v14[2] = 0x2020000000;
   v14[3] = 0;
   model = self->_model;
-  v12 = v10;
-  v13 = v8;
+  v12 = lexicon;
+  v13 = blockCopy;
   LMLanguageModelEnumeratePredictionsWithBlock();
 
   _Block_object_dispose(v14, 8);
@@ -419,7 +419,7 @@ void __130__NLLMLanguageModelSession_enumeratePredictionsForContextTokenIDs_leng
   }
 }
 
-- (int64_t)blocklistStatusForTokenIDs:(const unsigned int *)a3 length:(unint64_t)a4 matchType:(int64_t)a5
+- (int64_t)blocklistStatusForTokenIDs:(const unsigned int *)ds length:(unint64_t)length matchType:(int64_t)type
 {
   result = self->_model;
   if (result)
@@ -430,7 +430,7 @@ void __130__NLLMLanguageModelSession_enumeratePredictionsForContextTokenIDs_leng
   return result;
 }
 
-- (void)adaptToTokenID:(unsigned int)a3 contextTokenIDs:(const unsigned int *)a4 length:(unint64_t)a5
+- (void)adaptToTokenID:(unsigned int)d contextTokenIDs:(const unsigned int *)ds length:(unint64_t)length
 {
   if (self->_model)
   {
@@ -438,7 +438,7 @@ void __130__NLLMLanguageModelSession_enumeratePredictionsForContextTokenIDs_leng
   }
 }
 
-- (void)unadaptToTokenID:(unsigned int)a3 contextTokenIDs:(const unsigned int *)a4 length:(unint64_t)a5
+- (void)unadaptToTokenID:(unsigned int)d contextTokenIDs:(const unsigned int *)ds length:(unint64_t)length
 {
   if (self->_model)
   {
@@ -446,7 +446,7 @@ void __130__NLLMLanguageModelSession_enumeratePredictionsForContextTokenIDs_leng
   }
 }
 
-- (BOOL)addTokenForString:(id)a3 tokenID:(unsigned int *)a4
+- (BOOL)addTokenForString:(id)string tokenID:(unsigned int *)d
 {
   model = self->_model;
   if (model)
@@ -457,7 +457,7 @@ void __130__NLLMLanguageModelSession_enumeratePredictionsForContextTokenIDs_leng
   return model;
 }
 
-- (BOOL)getFirstDynamicTokenID:(unsigned int *)a3 lastDynamicTokenID:(unsigned int *)a4
+- (BOOL)getFirstDynamicTokenID:(unsigned int *)d lastDynamicTokenID:(unsigned int *)iD
 {
   model = self->_model;
   if (model)
@@ -468,7 +468,7 @@ void __130__NLLMLanguageModelSession_enumeratePredictionsForContextTokenIDs_leng
   return model;
 }
 
-- (void)recordWithDifferentialPrivacy:(id)a3
+- (void)recordWithDifferentialPrivacy:(id)privacy
 {
   if (self->_model)
   {
@@ -502,7 +502,7 @@ void __130__NLLMLanguageModelSession_enumeratePredictionsForContextTokenIDs_leng
   }
 }
 
-- (void)pruneToSize:(unint64_t)a3
+- (void)pruneToSize:(unint64_t)size
 {
   if (self->_model)
   {
@@ -510,7 +510,7 @@ void __130__NLLMLanguageModelSession_enumeratePredictionsForContextTokenIDs_leng
   }
 }
 
-- (BOOL)shouldAdaptToTokenIDs:(const unsigned int *)a3 length:(unint64_t)a4
+- (BOOL)shouldAdaptToTokenIDs:(const unsigned int *)ds length:(unint64_t)length
 {
   model = self->_model;
   if (model)
@@ -521,10 +521,10 @@ void __130__NLLMLanguageModelSession_enumeratePredictionsForContextTokenIDs_leng
   return model;
 }
 
-- (float)usageCountForTokenID:(unsigned int)a3
+- (float)usageCountForTokenID:(unsigned int)d
 {
   result = 0.0;
-  if (a3)
+  if (d)
   {
     if (self->_model)
     {

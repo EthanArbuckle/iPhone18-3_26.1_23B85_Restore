@@ -2,17 +2,17 @@
 - (COSResetController)init;
 - (id)specifiers;
 - (void)_eraseCellularPlans;
-- (void)confirmationSpecifierConfirmed:(id)a3;
+- (void)confirmationSpecifierConfirmed:(id)confirmed;
 - (void)didAcceptEnteredPIN;
-- (void)eraseSettingsAndContent:(BOOL)a3;
-- (void)onEraseConfirmationAction:(id)a3;
+- (void)eraseSettingsAndContent:(BOOL)content;
+- (void)onEraseConfirmationAction:(id)action;
 - (void)presentPasscodePrompt;
-- (void)resetAppLayoutConfirmed:(id)a3;
-- (void)resetCalendarSyncState:(id)a3;
-- (void)resetCellularPlans:(id)a3;
-- (void)resetContactsSyncState:(id)a3;
-- (void)resetSyncState:(id)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)resetAppLayoutConfirmed:(id)confirmed;
+- (void)resetCalendarSyncState:(id)state;
+- (void)resetCellularPlans:(id)plans;
+- (void)resetContactsSyncState:(id)state;
+- (void)resetSyncState:(id)state;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation COSResetController
@@ -36,21 +36,21 @@
   return v2;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v13.receiver = self;
   v13.super_class = COSResetController;
-  [(COSResetController *)&v13 viewWillAppear:a3];
+  [(COSResetController *)&v13 viewWillAppear:appear];
   v3 = [NSBundle bundleForClass:objc_opt_class()];
-  v4 = [v3 bundleURL];
+  bundleURL = [v3 bundleURL];
 
   v5 = [_NSLocalizedStringResource alloc];
   v6 = +[NSLocale currentLocale];
-  v7 = [v5 initWithKey:@"RESET" table:@"General" locale:v6 bundleURL:v4];
+  v7 = [v5 initWithKey:@"RESET" table:@"General" locale:v6 bundleURL:bundleURL];
 
   v8 = [_NSLocalizedStringResource alloc];
   v9 = +[NSLocale currentLocale];
-  v10 = [v8 initWithKey:@"GENERAL" table:@"Settings" locale:v9 bundleURL:v4];
+  v10 = [v8 initWithKey:@"GENERAL" table:@"Settings" locale:v9 bundleURL:bundleURL];
 
   v14 = v10;
   v11 = [NSArray arrayWithObjects:&v14 count:1];
@@ -68,9 +68,9 @@
     v6 = [(COSResetController *)self loadSpecifiersFromPlistName:@"Reset" target:self];
     v7 = [v5 initWithArray:v6];
 
-    v8 = [UIApp activeWatch];
+    activeWatch = [UIApp activeWatch];
     v9 = [[NSUUID alloc] initWithUUIDString:@"4AA3FF3B-3224-42E6-995E-481F49AE9260"];
-    v10 = [v8 supportsCapability:v9];
+    v10 = [activeWatch supportsCapability:v9];
 
     if ((v10 & 1) == 0)
     {
@@ -110,19 +110,19 @@
   return v4;
 }
 
-- (void)confirmationSpecifierConfirmed:(id)a3
+- (void)confirmationSpecifierConfirmed:(id)confirmed
 {
-  v4 = a3;
+  confirmedCopy = confirmed;
   v14 = [PSConfirmationSpecifier preferenceSpecifierNamed:0 target:self set:0 get:0 detail:0 cell:13 edit:0];
   v5 = [NSBundle bundleForClass:objc_opt_class()];
   v6 = [v5 localizedStringForKey:@"FULL_ERASE_CONFIRMATION_CANCEL" value:&stru_10026E598 table:@"Reset"];
   [v14 setCancelButton:v6];
 
   [v14 setProperty:kCFBooleanTrue forKey:PSConfirmationDestructiveKey];
-  v7 = [v4 identifier];
+  identifier = [confirmedCopy identifier];
 
-  LODWORD(v4) = [v7 isEqualToString:@"FULL_ERASE_CELL_ID"];
-  if (v4)
+  LODWORD(confirmedCopy) = [identifier isEqualToString:@"FULL_ERASE_CELL_ID"];
+  if (confirmedCopy)
   {
     [v14 setConfirmationAction:"onEraseConfirmationAction:"];
     v8 = [NSBundle bundleForClass:objc_opt_class()];
@@ -141,7 +141,7 @@
   [(COSResetController *)self showConfirmationViewForSpecifier:v14];
 }
 
-- (void)onEraseConfirmationAction:(id)a3
+- (void)onEraseConfirmationAction:(id)action
 {
   v4 = objc_alloc_init(COSUnpairActionsHelperContext);
   [(COSUnpairActionsHelperContext *)v4 setDevice:self->_device];
@@ -164,9 +164,9 @@
   [COSUnpairActionsHelper applyUnpairActionsForContext:v4 withCompletion:v11];
 }
 
-- (void)eraseSettingsAndContent:(BOOL)a3
+- (void)eraseSettingsAndContent:(BOOL)content
 {
-  v3 = a3;
+  contentCopy = content;
   v5 = [(COSResetController *)self specifierForID:@"FULL_ERASE_CELL_ID"];
   [v5 setProperty:&__kCFBooleanFalse forKey:PSEnabledKey];
   [(COSResetController *)self reloadSpecifier:v5];
@@ -179,12 +179,12 @@
   v9[2] = sub_1000F6108;
   v9[3] = &unk_100269278;
   v10 = v5;
-  v11 = self;
+  selfCopy = self;
   v8 = v5;
-  [(NSSManager *)manager obliterateGizmoPreservingeSIM:v3 completionHandler:v9];
+  [(NSSManager *)manager obliterateGizmoPreservingeSIM:contentCopy completionHandler:v9];
 }
 
-- (void)resetAppLayoutConfirmed:(id)a3
+- (void)resetAppLayoutConfirmed:(id)confirmed
 {
   v3 = [NSBundle bundleWithPath:@"/System/Library/NanoPreferenceBundles/Customization/CarouselLayoutSettings.bundle"];
   v4 = pbb_bridge_log();
@@ -221,19 +221,19 @@
   }
 }
 
-- (void)resetSyncState:(id)a3
+- (void)resetSyncState:(id)state
 {
-  v4 = a3;
-  [(COSResetController *)self resetContactsSyncState:v4];
-  [(COSResetController *)self resetCalendarSyncState:v4];
+  stateCopy = state;
+  [(COSResetController *)self resetContactsSyncState:stateCopy];
+  [(COSResetController *)self resetCalendarSyncState:stateCopy];
 }
 
-- (void)resetCellularPlans:(id)a3
+- (void)resetCellularPlans:(id)plans
 {
   v4 = +[MCProfileConnection sharedConnection];
-  v5 = [v4 isPasscodeSet];
+  isPasscodeSet = [v4 isPasscodeSet];
 
-  if (v5)
+  if (isPasscodeSet)
   {
 
     [(COSResetController *)self presentPasscodePrompt];
@@ -246,7 +246,7 @@
   }
 }
 
-- (void)resetContactsSyncState:(id)a3
+- (void)resetContactsSyncState:(id)state
 {
   v3 = pbb_bridge_log();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -259,7 +259,7 @@
   CFNotificationCenterPostNotification(DarwinNotifyCenter, @"com.apple.addressbooksync.fullsync", 0, 0, 0);
 }
 
-- (void)resetCalendarSyncState:(id)a3
+- (void)resetCalendarSyncState:(id)state
 {
   v3 = pbb_bridge_log();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -291,15 +291,15 @@
   [v4 setProperty:self forKey:kDevicePINControllerDelegate];
   [(COSResetController *)self showPINSheet:v4];
   v7 = +[UIApplication sharedApplication];
-  v8 = [v7 windows];
-  v9 = [v8 firstObject];
-  v10 = [v9 rootViewController];
+  windows = [v7 windows];
+  firstObject = [windows firstObject];
+  rootViewController = [firstObject rootViewController];
 
-  v11 = [v10 presentedViewController];
+  presentedViewController = [rootViewController presentedViewController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v12 = [v11 navigationBar];
+    navigationBar = [presentedViewController navigationBar];
     BPSApplyStyleToNavBar();
   }
 }
@@ -324,8 +324,8 @@
 
   v3 = v2;
   _Block_object_dispose(&v6, 8);
-  v4 = [v2 sharedManager];
-  [v4 eraseAllRemotePlansWithCompletion:&stru_10026BB28];
+  sharedManager = [v2 sharedManager];
+  [sharedManager eraseAllRemotePlansWithCompletion:&stru_10026BB28];
 }
 
 - (void)didAcceptEnteredPIN

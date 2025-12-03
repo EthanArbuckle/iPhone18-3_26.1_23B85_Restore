@@ -1,18 +1,18 @@
 @interface PKExplanationViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)layoutSubviews;
 @end
 
 @implementation PKExplanationViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PKExplanationView" hasInstanceVariable:@"_bodyTextView" withType:"UITextView"];
-  [v3 validateClass:@"PKExplanationView" hasInstanceVariable:@"_titleLabel" withType:"PKTrailingAccessoryLabel"];
-  [v3 validateClass:@"PKExplanationView" hasInstanceVariable:@"_logoImageView" withType:"UIImageView"];
-  [v3 validateClass:@"PKExplanationView" hasInstanceMethod:@"layoutSubviews" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PKExplanationView" hasInstanceVariable:@"_bodyTextView" withType:"UITextView"];
+  [validationsCopy validateClass:@"PKExplanationView" hasInstanceVariable:@"_titleLabel" withType:"PKTrailingAccessoryLabel"];
+  [validationsCopy validateClass:@"PKExplanationView" hasInstanceVariable:@"_logoImageView" withType:"UIImageView"];
+  [validationsCopy validateClass:@"PKExplanationView" hasInstanceMethod:@"layoutSubviews" withFullSignature:{"v", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

@@ -1,12 +1,12 @@
 @interface OADGradientFill
 + (id)defaultProperties;
-+ (id)stringForTileFlipMode:(int)a3;
++ (id)stringForTileFlipMode:(int)mode;
 - (BOOL)isAnythingOverridden;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)rotateWithShape;
 - (BOOL)usesPlaceholderColor;
 - (OADGradientFill)initWithDefaults;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)firstStop;
 - (id)lastStop;
 - (id)shade;
@@ -14,12 +14,12 @@
 - (id)tileRect;
 - (int)flipMode;
 - (unint64_t)hash;
-- (void)fixPropertiesForChangingParentPreservingEffectiveValues:(id)a3;
+- (void)fixPropertiesForChangingParentPreservingEffectiveValues:(id)values;
 - (void)removeUnnecessaryOverrides;
-- (void)setParent:(id)a3;
-- (void)setShade:(id)a3;
-- (void)setStops:(id)a3;
-- (void)setTileRect:(id)a3;
+- (void)setParent:(id)parent;
+- (void)setShade:(id)shade;
+- (void)setStops:(id)stops;
+- (void)setTileRect:(id)rect;
 - (void)sortStops;
 @end
 
@@ -41,8 +41,8 @@
 {
   v11.receiver = self;
   v11.super_class = OADGradientFill;
-  v2 = [(OADProperties *)&v11 initWithDefaults];
-  if (v2)
+  initWithDefaults = [(OADProperties *)&v11 initWithDefaults];
+  if (initWithDefaults)
   {
     v3 = [MEMORY[0x277CBEB18] arrayWithCapacity:2];
     v4 = +[OADRgbColor black];
@@ -52,17 +52,17 @@
     LODWORD(v6) = 1.0;
     [OADGradientFillStop addStopWithColor:v5 position:v3 toArray:v6];
 
-    [(OADGradientFill *)v2 setStops:v3];
+    [(OADGradientFill *)initWithDefaults setStops:v3];
     v7 = [[OADRelativeRect alloc] initWithLeft:0.0 top:0.0 right:0.0 bottom:0.0];
-    [(OADGradientFill *)v2 setTileRect:v7];
-    [(OADGradientFill *)v2 setFlipMode:0];
-    [(OADGradientFill *)v2 setRotateWithShape:1];
+    [(OADGradientFill *)initWithDefaults setTileRect:v7];
+    [(OADGradientFill *)initWithDefaults setFlipMode:0];
+    [(OADGradientFill *)initWithDefaults setRotateWithShape:1];
     v8 = +[OADLinearShade defaultProperties];
     v9 = [v8 copy];
-    [(OADGradientFill *)v2 setShade:v9];
+    [(OADGradientFill *)initWithDefaults setShade:v9];
   }
 
-  return v2;
+  return initWithDefaults;
 }
 
 - (id)stops
@@ -117,19 +117,19 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if (*&self->super.mDefinedByStyle)
   {
-    v6 = [objc_msgSend(MEMORY[0x277CBEA60] allocWithZone:{a3), "initWithArray:copyItems:", *&self->super.mDefinedByStyle, 1}];
+    v6 = [objc_msgSend(MEMORY[0x277CBEA60] allocWithZone:{zone), "initWithArray:copyItems:", *&self->super.mDefinedByStyle, 1}];
     [v5 setStops:v6];
   }
 
   mStops = self->mStops;
   if (mStops)
   {
-    v8 = [(NSArray *)mStops copyWithZone:a3];
+    v8 = [(NSArray *)mStops copyWithZone:zone];
     [v5 setTileRect:v8];
   }
 
@@ -146,7 +146,7 @@
   v9 = *&self->mFlipMode;
   if (v9)
   {
-    v10 = [v9 copyWithZone:a3];
+    v10 = [v9 copyWithZone:zone];
     [v5 setShade:v10];
   }
 
@@ -160,21 +160,21 @@ void __36__OADGradientFill_defaultProperties__block_invoke()
   +[OADGradientFill defaultProperties]::defaultProperties = v0;
 }
 
-- (void)setParent:(id)a3
+- (void)setParent:(id)parent
 {
-  v4 = a3;
+  parentCopy = parent;
   v6.receiver = self;
   v6.super_class = OADGradientFill;
-  [(OADProperties *)&v6 setParent:v4];
+  [(OADProperties *)&v6 setParent:parentCopy];
   if (*&self->mFlipMode)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [v4 shade];
-      if ([v5 isMemberOfClass:objc_opt_class()])
+      shade = [parentCopy shade];
+      if ([shade isMemberOfClass:objc_opt_class()])
       {
-        [*&self->mFlipMode setParent:v5];
+        [*&self->mFlipMode setParent:shade];
       }
     }
   }
@@ -187,39 +187,39 @@ void __36__OADGradientFill_defaultProperties__block_invoke()
   return [(OADProperties *)&v4 isAnythingOverridden]|| [(OADGradientFill *)self areStopsOverridden]|| [(OADGradientFill *)self isTileRectOverridden]|| [(OADGradientFill *)self isFlipModeOverridden]|| [(OADGradientFill *)self isRotateWithShapeOverridden]|| [(OADGradientFill *)self isShadeOverridden];
 }
 
-- (void)fixPropertiesForChangingParentPreservingEffectiveValues:(id)a3
+- (void)fixPropertiesForChangingParentPreservingEffectiveValues:(id)values
 {
-  v4 = a3;
+  valuesCopy = values;
   v31.receiver = self;
   v31.super_class = OADGradientFill;
-  [(OADProperties *)&v31 fixPropertiesForChangingParentPreservingEffectiveValues:v4];
-  if ([(OADGradientFill *)self areStopsOverridden]|| ([(OADProperties *)self parent], v5 = objc_claimAutoreleasedReturnValue(), v5, v5 != v4))
+  [(OADProperties *)&v31 fixPropertiesForChangingParentPreservingEffectiveValues:valuesCopy];
+  if ([(OADGradientFill *)self areStopsOverridden]|| ([(OADProperties *)self parent], v5 = objc_claimAutoreleasedReturnValue(), v5, v5 != valuesCopy))
   {
     v6 = [(OADProperties *)self possiblyInexistentOverrideForSelector:sel_areStopsOverridden];
 
     if (v6)
     {
-      v7 = [(OADGradientFill *)self stops];
+      stops = [(OADGradientFill *)self stops];
     }
 
     else
     {
-      v7 = 0;
+      stops = 0;
     }
 
-    v8 = [v4 possiblyInexistentOverrideForSelector:sel_areStopsOverridden];
+    v8 = [valuesCopy possiblyInexistentOverrideForSelector:sel_areStopsOverridden];
 
     if (v8)
     {
-      v9 = [v4 stops];
+      stops2 = [valuesCopy stops];
     }
 
     else
     {
-      v9 = 0;
+      stops2 = 0;
     }
 
-    v10 = TCObjectEqual(v7, v9);
+    v10 = TCObjectEqual(stops, stops2);
     v11 = *&self->super.mDefinedByStyle;
     if (v10)
     {
@@ -228,37 +228,37 @@ void __36__OADGradientFill_defaultProperties__block_invoke()
 
     else if (!v11 && v6)
     {
-      [(OADGradientFill *)self setStops:v7];
+      [(OADGradientFill *)self setStops:stops];
     }
   }
 
-  if ([(OADGradientFill *)self isTileRectOverridden]|| ([(OADProperties *)self parent], v12 = objc_claimAutoreleasedReturnValue(), v12, v12 != v4))
+  if ([(OADGradientFill *)self isTileRectOverridden]|| ([(OADProperties *)self parent], v12 = objc_claimAutoreleasedReturnValue(), v12, v12 != valuesCopy))
   {
     v13 = [(OADProperties *)self possiblyInexistentOverrideForSelector:sel_isTileRectOverridden];
 
     if (v13)
     {
-      v14 = [(OADGradientFill *)self tileRect];
+      tileRect = [(OADGradientFill *)self tileRect];
     }
 
     else
     {
-      v14 = 0;
+      tileRect = 0;
     }
 
-    v15 = [v4 possiblyInexistentOverrideForSelector:sel_isTileRectOverridden];
+    v15 = [valuesCopy possiblyInexistentOverrideForSelector:sel_isTileRectOverridden];
 
     if (v15)
     {
-      v16 = [v4 tileRect];
+      tileRect2 = [valuesCopy tileRect];
     }
 
     else
     {
-      v16 = 0;
+      tileRect2 = 0;
     }
 
-    v17 = TCObjectEqual(v14, v16);
+    v17 = TCObjectEqual(tileRect, tileRect2);
     mStops = self->mStops;
     if (v17)
     {
@@ -267,14 +267,14 @@ void __36__OADGradientFill_defaultProperties__block_invoke()
 
     else if (!mStops && v13)
     {
-      [(OADGradientFill *)self setTileRect:v14];
+      [(OADGradientFill *)self setTileRect:tileRect];
     }
   }
 
-  if ((BYTE4(self->mTileRect) & 1) != 0 || ([(OADProperties *)self parent], v19 = objc_claimAutoreleasedReturnValue(), v19, v19 != v4))
+  if ((BYTE4(self->mTileRect) & 1) != 0 || ([(OADProperties *)self parent], v19 = objc_claimAutoreleasedReturnValue(), v19, v19 != valuesCopy))
   {
-    v20 = [(OADGradientFill *)self flipMode];
-    if (v20 == [v4 flipMode])
+    flipMode = [(OADGradientFill *)self flipMode];
+    if (flipMode == [valuesCopy flipMode])
     {
       BYTE4(self->mTileRect) = 0;
     }
@@ -285,10 +285,10 @@ void __36__OADGradientFill_defaultProperties__block_invoke()
     }
   }
 
-  if ((BYTE6(self->mTileRect) & 1) != 0 || ([(OADProperties *)self parent], v21 = objc_claimAutoreleasedReturnValue(), v21, v21 != v4))
+  if ((BYTE6(self->mTileRect) & 1) != 0 || ([(OADProperties *)self parent], v21 = objc_claimAutoreleasedReturnValue(), v21, v21 != valuesCopy))
   {
-    v22 = [(OADGradientFill *)self rotateWithShape];
-    if (v22 == [v4 rotateWithShape])
+    rotateWithShape = [(OADGradientFill *)self rotateWithShape];
+    if (rotateWithShape == [valuesCopy rotateWithShape])
     {
       BYTE6(self->mTileRect) = 0;
     }
@@ -299,35 +299,35 @@ void __36__OADGradientFill_defaultProperties__block_invoke()
     }
   }
 
-  if (*&self->mFlipMode || ([(OADProperties *)self parent], v23 = objc_claimAutoreleasedReturnValue(), v23, v23 != v4))
+  if (*&self->mFlipMode || ([(OADProperties *)self parent], v23 = objc_claimAutoreleasedReturnValue(), v23, v23 != valuesCopy))
   {
-    v24 = [(OADGradientFill *)self shade];
+    shade = [(OADGradientFill *)self shade];
     v25 = objc_alloc_init(objc_opt_class());
 
-    v26 = [(OADGradientFill *)self shade];
-    [v25 setParent:v26];
+    shade2 = [(OADGradientFill *)self shade];
+    [v25 setParent:shade2];
 
     objc_storeStrong(&self->mFlipMode, v25);
-    v27 = [v4 possiblyInexistentOverrideForSelector:sel_isShadeOverridden];
+    shade3 = [valuesCopy possiblyInexistentOverrideForSelector:sel_isShadeOverridden];
 
-    if (v27)
+    if (shade3)
     {
-      v27 = [v4 shade];
+      shade3 = [valuesCopy shade];
     }
 
     v28 = *&self->mFlipMode;
-    if (v28 != v27)
+    if (v28 != shade3)
     {
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
       if ((isKindOfClass & 1) == 0)
       {
-        v30 = [objc_opt_class() defaultProperties];
+        defaultProperties = [objc_opt_class() defaultProperties];
 
-        v27 = v30;
+        shade3 = defaultProperties;
       }
 
-      [*&self->mFlipMode changeParentPreservingEffectiveValues:v27];
+      [*&self->mFlipMode changeParentPreservingEffectiveValues:shade3];
       if (isKindOfClass & 1) == 0 || ([*&self->mFlipMode isAnythingOverridden])
       {
         goto LABEL_52;
@@ -344,12 +344,12 @@ LABEL_52:
 
 - (void)removeUnnecessaryOverrides
 {
-  v3 = [(OADProperties *)self parent];
+  parent = [(OADProperties *)self parent];
 
-  if (v3)
+  if (parent)
   {
-    v4 = [(OADProperties *)self isMerged];
-    v5 = [(OADProperties *)self isMergedWithParent];
+    isMerged = [(OADProperties *)self isMerged];
+    isMergedWithParent = [(OADProperties *)self isMergedWithParent];
     [(OADProperties *)self setMerged:0];
     [(OADProperties *)self setMergedWithParent:0];
     if (![(OADGradientFill *)self areStopsOverridden])
@@ -357,30 +357,30 @@ LABEL_52:
       goto LABEL_10;
     }
 
-    v6 = [(OADProperties *)self parent];
-    v7 = [(OADGradientFill *)self stops];
-    v8 = [v6 stops];
+    parent2 = [(OADProperties *)self parent];
+    stops = [(OADGradientFill *)self stops];
+    stops2 = [parent2 stops];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(objc_object *)v7 removeUnnecessaryOverrides];
+      [(objc_object *)stops removeUnnecessaryOverrides];
       v9 = objc_opt_class();
       if (v9 != objc_opt_class())
       {
         goto LABEL_9;
       }
 
-      v10 = [(objc_object *)v7 isMergedWithParent];
-      [(objc_object *)v7 setMergedWithParent:0];
-      v11 = [(objc_object *)v7 isAnythingOverridden];
-      [(objc_object *)v7 setMergedWithParent:v10];
-      if (v11)
+      isMergedWithParent2 = [(objc_object *)stops isMergedWithParent];
+      [(objc_object *)stops setMergedWithParent:0];
+      isAnythingOverridden = [(objc_object *)stops isAnythingOverridden];
+      [(objc_object *)stops setMergedWithParent:isMergedWithParent2];
+      if (isAnythingOverridden)
       {
         goto LABEL_9;
       }
     }
 
-    else if (!TCObjectEqual(v7, v8))
+    else if (!TCObjectEqual(stops, stops2))
     {
 LABEL_9:
 
@@ -390,39 +390,39 @@ LABEL_10:
         goto LABEL_18;
       }
 
-      v13 = [(OADProperties *)self parent];
-      v14 = [(OADGradientFill *)self tileRect];
-      v15 = [v13 tileRect];
+      parent3 = [(OADProperties *)self parent];
+      tileRect = [(OADGradientFill *)self tileRect];
+      tileRect2 = [parent3 tileRect];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [(objc_object *)v14 removeUnnecessaryOverrides];
+        [(objc_object *)tileRect removeUnnecessaryOverrides];
         v16 = objc_opt_class();
         if (v16 != objc_opt_class())
         {
           goto LABEL_17;
         }
 
-        v17 = [(objc_object *)v14 isMergedWithParent];
-        [(objc_object *)v14 setMergedWithParent:0];
-        v18 = [(objc_object *)v14 isAnythingOverridden];
-        [(objc_object *)v14 setMergedWithParent:v17];
-        if (v18)
+        isMergedWithParent3 = [(objc_object *)tileRect isMergedWithParent];
+        [(objc_object *)tileRect setMergedWithParent:0];
+        isAnythingOverridden2 = [(objc_object *)tileRect isAnythingOverridden];
+        [(objc_object *)tileRect setMergedWithParent:isMergedWithParent3];
+        if (isAnythingOverridden2)
         {
           goto LABEL_17;
         }
       }
 
-      else if (!TCObjectEqual(v14, v15))
+      else if (!TCObjectEqual(tileRect, tileRect2))
       {
 LABEL_17:
 
 LABEL_18:
         if ([(OADGradientFill *)self isFlipModeOverridden])
         {
-          v20 = [(OADProperties *)self parent];
-          v21 = [(OADGradientFill *)self flipMode];
-          if (v21 == [v20 flipMode])
+          parent4 = [(OADProperties *)self parent];
+          flipMode = [(OADGradientFill *)self flipMode];
+          if (flipMode == [parent4 flipMode])
           {
             [(OADGradientFill *)self setFlipMode:0];
             BYTE4(self->mTileRect) = 0;
@@ -431,9 +431,9 @@ LABEL_18:
 
         if ([(OADGradientFill *)self isRotateWithShapeOverridden])
         {
-          v22 = [(OADProperties *)self parent];
-          v23 = [(OADGradientFill *)self rotateWithShape];
-          if (v23 == [v22 rotateWithShape])
+          parent5 = [(OADProperties *)self parent];
+          rotateWithShape = [(OADGradientFill *)self rotateWithShape];
+          if (rotateWithShape == [parent5 rotateWithShape])
           {
             [(OADGradientFill *)self setRotateWithShape:1];
             BYTE6(self->mTileRect) = 0;
@@ -445,36 +445,36 @@ LABEL_18:
           goto LABEL_34;
         }
 
-        v24 = [(OADProperties *)self parent];
-        v25 = [(OADGradientFill *)self shade];
-        v26 = [v24 shade];
+        parent6 = [(OADProperties *)self parent];
+        shade = [(OADGradientFill *)self shade];
+        shade2 = [parent6 shade];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          [(objc_object *)v25 removeUnnecessaryOverrides];
+          [(objc_object *)shade removeUnnecessaryOverrides];
           v27 = objc_opt_class();
           if (v27 != objc_opt_class())
           {
             goto LABEL_33;
           }
 
-          v28 = [(objc_object *)v25 isMergedWithParent];
-          [(objc_object *)v25 setMergedWithParent:0];
-          v29 = [(objc_object *)v25 isAnythingOverridden];
-          [(objc_object *)v25 setMergedWithParent:v28];
-          if (v29)
+          isMergedWithParent4 = [(objc_object *)shade isMergedWithParent];
+          [(objc_object *)shade setMergedWithParent:0];
+          isAnythingOverridden3 = [(objc_object *)shade isAnythingOverridden];
+          [(objc_object *)shade setMergedWithParent:isMergedWithParent4];
+          if (isAnythingOverridden3)
           {
             goto LABEL_33;
           }
         }
 
-        else if (!TCObjectEqual(v25, v26))
+        else if (!TCObjectEqual(shade, shade2))
         {
 LABEL_33:
 
 LABEL_34:
-          [(OADProperties *)self setMerged:v4];
-          [(OADProperties *)self setMergedWithParent:v5];
+          [(OADProperties *)self setMerged:isMerged];
+          [(OADProperties *)self setMergedWithParent:isMergedWithParent];
           v31.receiver = self;
           v31.super_class = OADGradientFill;
           [(OADProperties *)&v31 removeUnnecessaryOverrides];
@@ -500,9 +500,9 @@ LABEL_34:
   }
 }
 
-- (void)setStops:(id)a3
+- (void)setStops:(id)stops
 {
-  v4 = [a3 copy];
+  v4 = [stops copy];
   v5 = *&self->super.mDefinedByStyle;
   *&self->super.mDefinedByStyle = v4;
 }
@@ -524,10 +524,10 @@ LABEL_34:
   return v3;
 }
 
-- (void)setTileRect:(id)a3
+- (void)setTileRect:(id)rect
 {
-  v4 = a3;
-  if (!v4)
+  rectCopy = rect;
+  if (!rectCopy)
   {
     v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[OADGradientFill setTileRect:]"];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/OfficeImport/OfficeParser/compatibility/OfficeArt/Dom/OADFill.mm"];
@@ -537,7 +537,7 @@ LABEL_34:
   }
 
   mStops = self->mStops;
-  self->mStops = v4;
+  self->mStops = rectCopy;
 }
 
 - (int)flipMode
@@ -556,10 +556,10 @@ LABEL_34:
   return v3;
 }
 
-- (void)setShade:(id)a3
+- (void)setShade:(id)shade
 {
-  v4 = a3;
-  if (!v4)
+  shadeCopy = shade;
+  if (!shadeCopy)
   {
     v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[OADGradientFill setShade:]"];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/OfficeImport/OfficeParser/compatibility/OfficeArt/Dom/OADFill.mm"];
@@ -569,25 +569,25 @@ LABEL_34:
   }
 
   v7 = *&self->mFlipMode;
-  *&self->mFlipMode = v4;
+  *&self->mFlipMode = shadeCopy;
 }
 
 - (id)firstStop
 {
   objc_opt_class();
-  v3 = [(OADGradientFill *)self stops];
-  v4 = [v3 firstObject];
+  stops = [(OADGradientFill *)self stops];
+  firstObject = [stops firstObject];
 
-  return v4;
+  return firstObject;
 }
 
 - (id)lastStop
 {
   objc_opt_class();
-  v3 = [(OADGradientFill *)self stops];
-  v4 = [v3 lastObject];
+  stops = [(OADGradientFill *)self stops];
+  lastObject = [stops lastObject];
 
-  return v4;
+  return lastObject;
 }
 
 - (BOOL)usesPlaceholderColor
@@ -633,27 +633,27 @@ LABEL_11:
   return v3;
 }
 
-+ (id)stringForTileFlipMode:(int)a3
++ (id)stringForTileFlipMode:(int)mode
 {
-  if (a3 > 3)
+  if (mode > 3)
   {
     return @"unknown";
   }
 
   else
   {
-    return off_2799C7CD0[a3];
+    return off_2799C7CD0[mode];
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v8.receiver = self;
   v8.super_class = OADGradientFill;
-  if ([(OADFill *)&v8 isEqual:v4])
+  if ([(OADFill *)&v8 isEqual:equalCopy])
   {
-    v5 = v4;
+    v5 = equalCopy;
     if (TCObjectEqual(*&self->super.mDefinedByStyle, v5[3]) && TCObjectEqual(self->mStops, v5[4]) && BYTE4(self->mTileRect) == *(v5 + 44) && (!BYTE4(self->mTileRect) || LODWORD(self->mTileRect) == *(v5 + 10)) && BYTE6(self->mTileRect) == *(v5 + 46) && (!BYTE6(self->mTileRect) || BYTE5(self->mTileRect) == *(v5 + 45)))
     {
       v6 = TCObjectEqual(*&self->mFlipMode, v5[6]);

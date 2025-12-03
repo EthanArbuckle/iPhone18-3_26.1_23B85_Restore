@@ -1,18 +1,18 @@
 @interface MOWeatherDataProvider
 - (_TtC8momentsd21MOWeatherDataProvider)init;
-- (void)fetchCurrentWeatherFor:(id)a3 completion:(id)a4;
-- (void)fetchHourlyWeatherFor:(id)a3 startDate:(id)a4 endDate:(id)a5 completion:(id)a6;
+- (void)fetchCurrentWeatherFor:(id)for completion:(id)completion;
+- (void)fetchHourlyWeatherFor:(id)for startDate:(id)date endDate:(id)endDate completion:(id)completion;
 @end
 
 @implementation MOWeatherDataProvider
 
-- (void)fetchCurrentWeatherFor:(id)a3 completion:(id)a4
+- (void)fetchCurrentWeatherFor:(id)for completion:(id)completion
 {
   v6 = __swift_instantiateConcreteTypeFromMangledNameV2(&_sScPSgMd, &_sScPSgMR);
   v7 = *(*(v6 - 8) + 64);
   __chkstk_darwin(v6 - 8, v8);
   v10 = &v16 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(completion);
   v12 = swift_allocObject();
   *(v12 + 16) = v11;
   v13 = type metadata accessor for TaskPriority();
@@ -20,17 +20,17 @@
   v14 = swift_allocObject();
   v14[2] = 0;
   v14[3] = 0;
-  v14[4] = a3;
+  v14[4] = for;
   v14[5] = partial apply for thunk for @escaping @callee_unowned @convention(block) (@unowned MOWeatherData?, @unowned NSError?) -> ();
   v14[6] = v12;
-  v15 = a3;
+  forCopy = for;
   _sScTss5NeverORs_rlE4name8priority9operationScTyxABGSSSg_ScPSgxyYaYAcntcfCyt_Tt2g5(0, 0, v10, &closure #1 in MOWeatherDataProvider.fetchCurrentWeather(for:completion:)partial apply, v14);
 }
 
-- (void)fetchHourlyWeatherFor:(id)a3 startDate:(id)a4 endDate:(id)a5 completion:(id)a6
+- (void)fetchHourlyWeatherFor:(id)for startDate:(id)date endDate:(id)endDate completion:(id)completion
 {
-  v44 = a5;
-  v48 = a3;
+  endDateCopy = endDate;
+  forCopy = for;
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&_sScPSgMd, &_sScPSgMR);
   v8 = *(*(v7 - 8) + 64);
   __chkstk_darwin(v7 - 8, v9);
@@ -48,7 +48,7 @@
   v24 = &v41 - v23;
   __chkstk_darwin(v22, v25);
   v27 = &v41 - v26;
-  v28 = _Block_copy(a6);
+  v28 = _Block_copy(completion);
   v47 = v27;
   static Date._unconditionallyBridgeFromObjectiveC(_:)();
   v46 = v24;
@@ -66,8 +66,8 @@
   v35 = swift_allocObject();
   *(v35 + 2) = 0;
   *(v35 + 3) = 0;
-  v36 = v48;
-  *(v35 + 4) = v48;
+  v36 = forCopy;
+  *(v35 + 4) = forCopy;
   v37 = *(v13 + 32);
   v37(&v35[v33], v42, v12);
   v37(&v35[v34], v43, v12);

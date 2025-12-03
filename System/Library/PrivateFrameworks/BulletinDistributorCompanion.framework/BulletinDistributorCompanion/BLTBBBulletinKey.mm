@@ -1,26 +1,26 @@
 @interface BLTBBBulletinKey
-+ (id)bulletinKeyWithSectionID:(id)a3 publisherMatchID:(id)a4;
-- (BLTBBBulletinKey)initWithSectionID:(id)a3 publisherMatchID:(id)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)bulletinKeyWithSectionID:(id)d publisherMatchID:(id)iD;
+- (BLTBBBulletinKey)initWithSectionID:(id)d publisherMatchID:(id)iD;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 - (id)keyString;
 @end
 
 @implementation BLTBBBulletinKey
 
-+ (id)bulletinKeyWithSectionID:(id)a3 publisherMatchID:(id)a4
++ (id)bulletinKeyWithSectionID:(id)d publisherMatchID:(id)iD
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithSectionID:v7 publisherMatchID:v6];
+  iDCopy = iD;
+  dCopy = d;
+  v8 = [[self alloc] initWithSectionID:dCopy publisherMatchID:iDCopy];
 
   return v8;
 }
 
-- (BLTBBBulletinKey)initWithSectionID:(id)a3 publisherMatchID:(id)a4
+- (BLTBBBulletinKey)initWithSectionID:(id)d publisherMatchID:(id)iD
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  iDCopy = iD;
   if (initWithSectionID_publisherMatchID__onceToken != -1)
   {
     [BLTBBBulletinKey initWithSectionID:publisherMatchID:];
@@ -31,11 +31,11 @@
   v8 = [(BLTBBBulletinKey *)&v29 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [dCopy copy];
     sectionID = v8->_sectionID;
     v8->_sectionID = v9;
 
-    v11 = [v7 copy];
+    v11 = [iDCopy copy];
     publisherMatchID = v8->_publisherMatchID;
     v8->_publisherMatchID = v11;
   }
@@ -97,20 +97,20 @@ void __55__BLTBBBulletinKey_initWithSectionID_publisherMatchID___block_invoke_2(
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
-    v7 = [(BLTBBBulletinKey *)self sectionID];
-    v8 = [v6 sectionID];
-    if (v7 != v8)
+    v6 = equalCopy;
+    sectionID = [(BLTBBBulletinKey *)self sectionID];
+    sectionID2 = [v6 sectionID];
+    if (sectionID != sectionID2)
     {
-      v9 = [(BLTBBBulletinKey *)self sectionID];
-      v3 = [v6 sectionID];
-      if (![v9 isEqualToString:v3])
+      sectionID3 = [(BLTBBBulletinKey *)self sectionID];
+      sectionID4 = [v6 sectionID];
+      if (![sectionID3 isEqualToString:sectionID4])
       {
         v10 = 0;
 LABEL_11:
@@ -119,25 +119,25 @@ LABEL_12:
         goto LABEL_13;
       }
 
-      v16 = v9;
+      v16 = sectionID3;
     }
 
-    v11 = [(BLTBBBulletinKey *)self publisherMatchID];
-    v12 = [v6 publisherMatchID];
-    if (v11 == v12)
+    publisherMatchID = [(BLTBBBulletinKey *)self publisherMatchID];
+    publisherMatchID2 = [v6 publisherMatchID];
+    if (publisherMatchID == publisherMatchID2)
     {
       v10 = 1;
     }
 
     else
     {
-      v13 = [(BLTBBBulletinKey *)self publisherMatchID];
-      v14 = [v6 publisherMatchID];
-      v10 = [v13 isEqualToString:v14];
+      publisherMatchID3 = [(BLTBBBulletinKey *)self publisherMatchID];
+      publisherMatchID4 = [v6 publisherMatchID];
+      v10 = [publisherMatchID3 isEqualToString:publisherMatchID4];
     }
 
-    v9 = v16;
-    if (v7 == v8)
+    sectionID3 = v16;
+    if (sectionID == sectionID2)
     {
       goto LABEL_12;
     }
@@ -156,9 +156,9 @@ LABEL_13:
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(BLTBBBulletinKey *)self sectionID];
-  v7 = [(BLTBBBulletinKey *)self publisherMatchID];
-  v8 = [v3 stringWithFormat:@"<%@ %p sectionID=%@ publisherMatchID=%@>", v5, self, v6, v7];;
+  sectionID = [(BLTBBBulletinKey *)self sectionID];
+  publisherMatchID = [(BLTBBBulletinKey *)self publisherMatchID];
+  v8 = [v3 stringWithFormat:@"<%@ %p sectionID=%@ publisherMatchID=%@>", v5, self, sectionID, publisherMatchID];;
 
   return v8;
 }
@@ -166,12 +166,12 @@ LABEL_13:
 - (id)keyString
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(BLTBBBulletinKey *)self sectionID];
-  v5 = [(BLTBBBulletinKey *)self publisherMatchID];
-  v6 = [v3 stringWithFormat:@"%@--%@", v4, v5];
-  v7 = [v6 blt_sanitizeForURL];
+  sectionID = [(BLTBBBulletinKey *)self sectionID];
+  publisherMatchID = [(BLTBBBulletinKey *)self publisherMatchID];
+  v6 = [v3 stringWithFormat:@"%@--%@", sectionID, publisherMatchID];
+  blt_sanitizeForURL = [v6 blt_sanitizeForURL];
 
-  return v7;
+  return blt_sanitizeForURL;
 }
 
 @end

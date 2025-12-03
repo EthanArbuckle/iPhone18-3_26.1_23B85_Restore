@@ -1,19 +1,19 @@
 @interface SUScriptLookupRequest
-+ (id)webScriptNameForKeyName:(id)a3;
-+ (id)webScriptNameForSelector:(SEL)a3;
++ (id)webScriptNameForKeyName:(id)name;
++ (id)webScriptNameForSelector:(SEL)selector;
 + (void)initialize;
 - (NSString)keyProfile;
 - (SUScriptLookupRequest)init;
 - (id)authenticatesIfNeeded;
 - (id)scriptAttributeKeys;
-- (id)valueForRequestParameter:(id)a3;
+- (id)valueForRequestParameter:(id)parameter;
 - (int64_t)localizationStyle;
 - (void)dealloc;
-- (void)setAuthenticatesIfNeeded:(id)a3;
-- (void)setKeyProfile:(id)a3;
-- (void)setLocalizationStyle:(int64_t)a3;
-- (void)setValue:(id)a3 forRequestParameter:(id)a4;
-- (void)startWithLookupFunction:(id)a3;
+- (void)setAuthenticatesIfNeeded:(id)needed;
+- (void)setKeyProfile:(id)profile;
+- (void)setLocalizationStyle:(int64_t)style;
+- (void)setValue:(id)value forRequestParameter:(id)parameter;
+- (void)startWithLookupFunction:(id)function;
 @end
 
 @implementation SUScriptLookupRequest
@@ -38,12 +38,12 @@
   [(SUScriptObject *)&v3 dealloc];
 }
 
-- (void)setValue:(id)a3 forRequestParameter:(id)a4
+- (void)setValue:(id)value forRequestParameter:(id)parameter
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    a3 = 0;
+    value = 0;
   }
 
   objc_opt_class();
@@ -56,11 +56,11 @@ LABEL_11:
     return;
   }
 
-  if (!a3)
+  if (!value)
   {
     [(SUScriptObject *)self lock];
     request = self->_request;
-    v8 = 0;
+    valueCopy = 0;
     goto LABEL_15;
   }
 
@@ -80,23 +80,23 @@ LABEL_11:
   {
     [(SUScriptObject *)self lock];
     request = self->_request;
-    v8 = a3;
+    valueCopy = value;
 LABEL_15:
-    [(SSLookupRequest *)request setValue:v8 forRequestParameter:a4];
+    [(SSLookupRequest *)request setValue:valueCopy forRequestParameter:parameter];
 
     [(SUScriptObject *)self unlock];
     return;
   }
 
-  v10 = [(WebFrame *)[(SUScriptObject *)self webFrame] globalContext];
-  if (v10)
+  globalContext = [(WebFrame *)[(SUScriptObject *)self webFrame] globalContext];
+  if (globalContext)
   {
-    v11 = [a3 copyArrayOrDictionaryWithContext:v10];
+    v11 = [value copyArrayOrDictionaryWithContext:globalContext];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       [(SUScriptObject *)self lock];
-      [(SSLookupRequest *)self->_request setValue:v11 forRequestParameter:a4];
+      [(SSLookupRequest *)self->_request setValue:v11 forRequestParameter:parameter];
       [(SUScriptObject *)self unlock];
     }
 
@@ -107,14 +107,14 @@ LABEL_15:
   }
 }
 
-- (void)startWithLookupFunction:(id)a3
+- (void)startWithLookupFunction:(id)function
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = 0;
+    functionCopy = 0;
 LABEL_3:
-    v6 = [[SUScriptFunction alloc] initWithScriptObject:v5];
+    v6 = [[SUScriptFunction alloc] initWithScriptObject:functionCopy];
     [(SUScriptFunction *)v6 setThisObject:self];
     request = self->_request;
     v10[0] = MEMORY[0x1E69E9820];
@@ -129,8 +129,8 @@ LABEL_3:
 
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  v5 = 0;
-  if (!a3)
+  functionCopy = 0;
+  if (!function)
   {
     goto LABEL_3;
   }
@@ -141,7 +141,7 @@ LABEL_3:
   }
 
   objc_opt_class();
-  v5 = a3;
+  functionCopy = function;
   if (objc_opt_isKindOfClass())
   {
     goto LABEL_3;
@@ -174,10 +174,10 @@ void __49__SUScriptLookupRequest_startWithLookupFunction___block_invoke(uint64_t
   [*(a1 + 32) setThisObject:0];
 }
 
-- (id)valueForRequestParameter:(id)a3
+- (id)valueForRequestParameter:(id)parameter
 {
   [(SUScriptObject *)self lock];
-  v5 = [(SSLookupRequest *)self->_request valueForRequestParameter:a3];
+  v5 = [(SSLookupRequest *)self->_request valueForRequestParameter:parameter];
   [(SUScriptObject *)self unlock];
   return v5;
 }
@@ -185,10 +185,10 @@ void __49__SUScriptLookupRequest_startWithLookupFunction___block_invoke(uint64_t
 - (id)authenticatesIfNeeded
 {
   [(SUScriptObject *)self lock];
-  v3 = [(SSLookupRequest *)self->_request personalizationStyle];
+  personalizationStyle = [(SSLookupRequest *)self->_request personalizationStyle];
   [(SUScriptObject *)self unlock];
   v4 = MEMORY[0x1E695E4D0];
-  if (v3 != 1)
+  if (personalizationStyle != 1)
   {
     v4 = MEMORY[0x1E695E4C0];
   }
@@ -199,25 +199,25 @@ void __49__SUScriptLookupRequest_startWithLookupFunction___block_invoke(uint64_t
 - (NSString)keyProfile
 {
   [(SUScriptObject *)self lock];
-  v3 = [(SSLookupRequest *)self->_request keyProfile];
+  keyProfile = [(SSLookupRequest *)self->_request keyProfile];
   [(SUScriptObject *)self unlock];
-  return v3;
+  return keyProfile;
 }
 
 - (int64_t)localizationStyle
 {
   [(SUScriptObject *)self lock];
-  v3 = [(SSLookupRequest *)self->_request localizationStyle];
+  localizationStyle = [(SSLookupRequest *)self->_request localizationStyle];
   [(SUScriptObject *)self unlock];
-  return v3;
+  return localizationStyle;
 }
 
-- (void)setAuthenticatesIfNeeded:(id)a3
+- (void)setAuthenticatesIfNeeded:(id)needed
 {
   if (objc_opt_respondsToSelector())
   {
     [(SUScriptObject *)self lock];
-    -[SSLookupRequest setPersonalizationStyle:](self->_request, "setPersonalizationStyle:", [a3 BOOLValue]);
+    -[SSLookupRequest setPersonalizationStyle:](self->_request, "setPersonalizationStyle:", [needed BOOLValue]);
 
     [(SUScriptObject *)self unlock];
   }
@@ -230,7 +230,7 @@ void __49__SUScriptLookupRequest_startWithLookupFunction___block_invoke(uint64_t
   }
 }
 
-- (void)setKeyProfile:(id)a3
+- (void)setKeyProfile:(id)profile
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -242,7 +242,7 @@ void __49__SUScriptLookupRequest_startWithLookupFunction___block_invoke(uint64_t
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   v5 = 0;
-  if (!a3 || (isKindOfClass & 1) != 0 || (objc_opt_class(), v5 = a3, (objc_opt_isKindOfClass() & 1) != 0))
+  if (!profile || (isKindOfClass & 1) != 0 || (objc_opt_class(), v5 = profile, (objc_opt_isKindOfClass() & 1) != 0))
   {
 LABEL_3:
     [(SUScriptObject *)self lock];
@@ -257,35 +257,35 @@ LABEL_3:
   [v7 throwException:@"Invalid argument"];
 }
 
-- (void)setLocalizationStyle:(int64_t)a3
+- (void)setLocalizationStyle:(int64_t)style
 {
   [(SUScriptObject *)self lock];
-  [(SSLookupRequest *)self->_request setLocalizationStyle:a3];
+  [(SSLookupRequest *)self->_request setLocalizationStyle:style];
 
   [(SUScriptObject *)self unlock];
 }
 
-+ (id)webScriptNameForKeyName:(id)a3
++ (id)webScriptNameForKeyName:(id)name
 {
   result = [__KeyMapping_72 objectForKey:?];
   if (!result)
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___SUScriptLookupRequest;
-    return objc_msgSendSuper2(&v6, sel_webScriptNameForKeyName_, a3);
+    return objc_msgSendSuper2(&v6, sel_webScriptNameForKeyName_, name);
   }
 
   return result;
 }
 
-+ (id)webScriptNameForSelector:(SEL)a3
++ (id)webScriptNameForSelector:(SEL)selector
 {
-  result = SUWebScriptNameForSelector2(a3, &__SelectorMapping_54, 3);
+  result = SUWebScriptNameForSelector2(selector, &__SelectorMapping_54, 3);
   if (!result)
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___SUScriptLookupRequest;
-    return objc_msgSendSuper2(&v6, sel_webScriptNameForSelector_, a3);
+    return objc_msgSendSuper2(&v6, sel_webScriptNameForSelector_, selector);
   }
 
   return result;
@@ -295,14 +295,14 @@ LABEL_3:
 {
   v4.receiver = self;
   v4.super_class = SUScriptLookupRequest;
-  v2 = [(SUScriptObject *)&v4 scriptAttributeKeys];
-  -[NSMutableArray addObjectsFromArray:](v2, "addObjectsFromArray:", [__KeyMapping_72 allKeys]);
-  return v2;
+  scriptAttributeKeys = [(SUScriptObject *)&v4 scriptAttributeKeys];
+  -[NSMutableArray addObjectsFromArray:](scriptAttributeKeys, "addObjectsFromArray:", [__KeyMapping_72 allKeys]);
+  return scriptAttributeKeys;
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     __SelectorMapping_54 = sel_valueForRequestParameter_;
     unk_1EBF3B840 = @"getRequestParameter";

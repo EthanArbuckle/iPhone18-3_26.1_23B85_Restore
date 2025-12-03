@@ -1,21 +1,21 @@
 @interface GKTurnBasedMatch
-+ (BOOL)instancesRespondToSelector:(SEL)a3;
-+ (id)_localizableMessageWithKey:(id)a3 arguments:(id)a4 defaultMessage:(id)a5;
-+ (id)instanceMethodSignatureForSelector:(SEL)a3;
-+ (id)matchesWithInternalRepresentations:(id)a3;
++ (BOOL)instancesRespondToSelector:(SEL)selector;
++ (id)_localizableMessageWithKey:(id)key arguments:(id)arguments defaultMessage:(id)message;
++ (id)instanceMethodSignatureForSelector:(SEL)selector;
++ (id)matchesWithInternalRepresentations:(id)representations;
 + (void)findMatchForRequest:(GKMatchRequest *)request withCompletionHandler:(void *)completionHandler;
-+ (void)getTurnBasedBadgeCountWithHandler:(id)a3;
++ (void)getTurnBasedBadgeCountWithHandler:(id)handler;
 + (void)loadMatchWithID:(NSString *)matchID withCompletionHandler:(void *)completionHandler;
-+ (void)loadMatchesIncludingCompatibleBundleID:(BOOL)a3 withCompletionHandler:(id)a4;
-+ (void)loadTurnBasedMatchDetailsForMatchIDs:(id)a3 loadGameData:(BOOL)a4 withCompletionHandler:(id)a5;
-+ (void)loadTurnBasedMatchWithDetailsForMatchID:(id)a3 withCompletionHandler:(id)a4;
-- (BOOL)isEqual:(id)a3;
++ (void)loadMatchesIncludingCompatibleBundleID:(BOOL)d withCompletionHandler:(id)handler;
++ (void)loadTurnBasedMatchDetailsForMatchIDs:(id)ds loadGameData:(BOOL)data withCompletionHandler:(id)handler;
++ (void)loadTurnBasedMatchWithDetailsForMatchID:(id)d withCompletionHandler:(id)handler;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isMyTurn;
-- (BOOL)respondsToSelector:(SEL)a3;
+- (BOOL)respondsToSelector:(SEL)selector;
 - (GKGame)game;
 - (GKPlayer)currentPlayer;
 - (GKPlayer)showcasePlayer;
-- (GKTurnBasedMatch)initWithInternalRepresentation:(id)a3;
+- (GKTurnBasedMatch)initWithInternalRepresentation:(id)representation;
 - (GKTurnBasedMatchStatus)status;
 - (GKTurnBasedParticipant)currentParticipant;
 - (GKTurnBasedParticipant)firstWinnerOrTiedOrLastLoser;
@@ -31,16 +31,16 @@
 - (NSUInteger)exchangeDataMaximumSize;
 - (NSUInteger)exchangeMaxInitiatedExchangesPerPlayer;
 - (NSUInteger)matchDataMaximumSize;
-- (id)_exchangesForInternalRepresentation:(id)a3 participants:(id)a4;
-- (id)_participantsForInternalRepresentation:(id)a3;
-- (id)exchangeForID:(id)a3;
-- (id)indexesForParticipants:(id)a3;
-- (id)methodSignatureForSelector:(SEL)a3;
-- (id)valueForUndefinedKey:(id)a3;
-- (int64_t)compare:(id)a3;
+- (id)_exchangesForInternalRepresentation:(id)representation participants:(id)participants;
+- (id)_participantsForInternalRepresentation:(id)representation;
+- (id)exchangeForID:(id)d;
+- (id)indexesForParticipants:(id)participants;
+- (id)methodSignatureForSelector:(SEL)selector;
+- (id)valueForUndefinedKey:(id)key;
+- (int64_t)compare:(id)compare;
 - (unint64_t)hash;
 - (unsigned)state;
-- (void)_updateWithInternal:(id)a3;
+- (void)_updateWithInternal:(id)internal;
 - (void)acceptInviteWithCompletionHandler:(void *)completionHandler;
 - (void)declineInviteWithCompletionHandler:(void *)completionHandler;
 - (void)endMatchInTurnWithMatchData:(NSData *)matchData leaderboardScores:(NSArray *)scores achievements:(NSArray *)achievements completionHandler:(void *)completionHandler;
@@ -48,22 +48,22 @@
 - (void)endTurnWithNextParticipant:(GKTurnBasedParticipant *)nextParticipant matchData:(NSData *)matchData completionHandler:(void *)completionHandler;
 - (void)endTurnWithNextParticipants:(NSArray *)nextParticipants turnTimeout:(NSTimeInterval)timeout matchData:(NSData *)matchData completionHandler:(void *)completionHandler;
 - (void)loadMatchDataWithCompletionHandler:(void *)completionHandler;
-- (void)loadURLWithMatchRequest:(id)a3 completionHandler:(id)a4;
+- (void)loadURLWithMatchRequest:(id)request completionHandler:(id)handler;
 - (void)participantQuitInTurnWithOutcome:(GKTurnBasedMatchOutcome)matchOutcome nextParticipant:(GKTurnBasedParticipant *)nextParticipant matchData:(NSData *)matchData completionHandler:(void *)completionHandler;
 - (void)participantQuitInTurnWithOutcome:(GKTurnBasedMatchOutcome)matchOutcome nextParticipants:(NSArray *)nextParticipants turnTimeout:(NSTimeInterval)timeout matchData:(NSData *)matchData completionHandler:(void *)completionHandler;
 - (void)participantQuitOutOfTurnWithOutcome:(GKTurnBasedMatchOutcome)matchOutcome withCompletionHandler:(void *)completionHandler;
 - (void)rematchWithCompletionHandler:(void *)completionHandler;
 - (void)removeWithCompletionHandler:(void *)completionHandler;
-- (void)reserveShareParticipantSlots:(int64_t)a3 minPlayerCount:(int64_t)a4 maxPlayerCount:(int64_t)a5 andInvitePlayers:(id)a6 withMessage:(id)a7 handler:(id)a8;
+- (void)reserveShareParticipantSlots:(int64_t)slots minPlayerCount:(int64_t)count maxPlayerCount:(int64_t)playerCount andInvitePlayers:(id)players withMessage:(id)message handler:(id)handler;
 - (void)saveCurrentTurnWithMatchData:(NSData *)matchData completionHandler:(void *)completionHandler;
 - (void)saveMergedMatchData:(NSData *)matchData withResolvedExchanges:(NSArray *)exchanges completionHandler:(void *)completionHandler;
 - (void)sendExchangeToParticipants:(NSArray *)participants data:(NSData *)data localizableMessageKey:(NSString *)key arguments:(NSArray *)arguments timeout:(NSTimeInterval)timeout completionHandler:(void *)completionHandler;
 - (void)sendReminderToParticipants:(NSArray *)participants localizableMessageKey:(NSString *)key arguments:(NSArray *)arguments completionHandler:(void *)completionHandler;
-- (void)setCurrentParticipant:(id)a3;
-- (void)setInternal:(id)a3;
+- (void)setCurrentParticipant:(id)participant;
+- (void)setInternal:(id)internal;
 - (void)setLocalizableMessageWithKey:(NSString *)key arguments:(NSArray *)arguments;
 - (void)setMessage:(NSString *)message;
-- (void)setValue:(id)a3 forUndefinedKey:(id)a4;
+- (void)setValue:(id)value forUndefinedKey:(id)key;
 - (void)state;
 @end
 
@@ -72,48 +72,48 @@
 - (NSUInteger)matchDataMaximumSize
 {
   v2 = +[GKPreferences shared];
-  v3 = [v2 maxGameStateSizeTurnBased];
+  maxGameStateSizeTurnBased = [v2 maxGameStateSizeTurnBased];
 
-  return v3;
+  return maxGameStateSizeTurnBased;
 }
 
 - (NSUInteger)exchangeDataMaximumSize
 {
   v2 = +[GKPreferences shared];
-  v3 = [v2 exchangeDataMaximumSize];
+  exchangeDataMaximumSize = [v2 exchangeDataMaximumSize];
 
-  return v3;
+  return exchangeDataMaximumSize;
 }
 
 - (NSUInteger)exchangeMaxInitiatedExchangesPerPlayer
 {
   v2 = +[GKPreferences shared];
-  v3 = [v2 exchangeMaxInitiatedExchangesPerPlayer];
+  exchangeMaxInitiatedExchangesPerPlayer = [v2 exchangeMaxInitiatedExchangesPerPlayer];
 
-  return v3;
+  return exchangeMaxInitiatedExchangesPerPlayer;
 }
 
-+ (void)getTurnBasedBadgeCountWithHandler:(id)a3
++ (void)getTurnBasedBadgeCountWithHandler:(id)handler
 {
-  v3 = a3;
-  if (v3)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     v4 = +[GKDaemonProxy proxyForLocalPlayer];
-    v5 = [v4 turnBasedServicePrivate];
+    turnBasedServicePrivate = [v4 turnBasedServicePrivate];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __54__GKTurnBasedMatch_getTurnBasedBadgeCountWithHandler___block_invoke;
     v6[3] = &unk_2785DFB80;
-    v7 = v3;
-    [v5 getTurnBasedBadgeCountWithHandler:v6];
+    v7 = handlerCopy;
+    [turnBasedServicePrivate getTurnBasedBadgeCountWithHandler:v6];
   }
 }
 
-+ (id)matchesWithInternalRepresentations:(id)a3
++ (id)matchesWithInternalRepresentations:(id)representations
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 count];
+  representationsCopy = representations;
+  v4 = [representationsCopy count];
   if (v4)
   {
     v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:v4];
@@ -128,7 +128,7 @@
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v3;
+  v6 = representationsCopy;
   v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
@@ -144,9 +144,9 @@
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
-        v12 = [v11 matchID];
+        matchID = [v11 matchID];
 
-        if (v12)
+        if (matchID)
         {
           v13 = [[GKTurnBasedMatch alloc] initWithInternalRepresentation:v11];
           [v5 addObject:v13];
@@ -173,18 +173,18 @@
     v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d %s", "GKTurnBasedMatch.m", 710, "+[GKTurnBasedMatch findMatchForRequest:withCompletionHandler:]"];
     v8 = [GKDispatchGroup dispatchGroupWithName:v7];
 
-    v9 = [(GKMatchRequest *)v5 validateForTurnBased];
-    if (v9)
+    validateForTurnBased = [(GKMatchRequest *)v5 validateForTurnBased];
+    if (validateForTurnBased)
     {
-      [v8 setError:v9];
+      [v8 setError:validateForTurnBased];
     }
 
     else
     {
       v10 = +[GKPreferences shared];
-      v11 = [v10 multiplayerAllowedPlayerType];
+      multiplayerAllowedPlayerType = [v10 multiplayerAllowedPlayerType];
 
-      if (v11)
+      if (multiplayerAllowedPlayerType)
       {
         if (![(GKMatchRequest *)v5 isIncorrectlyInvitingPlayers])
         {
@@ -290,9 +290,9 @@ void __62__GKTurnBasedMatch_findMatchForRequest_withCompletionHandler___block_in
   (*(v2 + 16))(v2, v4, v3);
 }
 
-+ (void)loadMatchesIncludingCompatibleBundleID:(BOOL)a3 withCompletionHandler:(id)a4
++ (void)loadMatchesIncludingCompatibleBundleID:(BOOL)d withCompletionHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d %s", "GKTurnBasedMatch.m", 757, "+[GKTurnBasedMatch loadMatchesIncludingCompatibleBundleID:withCompletionHandler:]"];
   v7 = [GKDispatchGroup dispatchGroupWithName:v6];
 
@@ -300,7 +300,7 @@ void __62__GKTurnBasedMatch_findMatchForRequest_withCompletionHandler___block_in
   v14[1] = 3221225472;
   v14[2] = __81__GKTurnBasedMatch_loadMatchesIncludingCompatibleBundleID_withCompletionHandler___block_invoke;
   v14[3] = &unk_2785E0108;
-  v16 = a3;
+  dCopy = d;
   v8 = v7;
   v15 = v8;
   [v8 perform:v14];
@@ -309,9 +309,9 @@ void __62__GKTurnBasedMatch_findMatchForRequest_withCompletionHandler___block_in
   v11[2] = __81__GKTurnBasedMatch_loadMatchesIncludingCompatibleBundleID_withCompletionHandler___block_invoke_3;
   v11[3] = &unk_2785DDC10;
   v12 = v8;
-  v13 = v5;
+  v13 = handlerCopy;
   v9 = v8;
-  v10 = v5;
+  v10 = handlerCopy;
   [v9 notifyOnMainQueueWithBlock:v11];
 }
 
@@ -382,18 +382,18 @@ void __97__GKTurnBasedMatch_loadTurnBasedMatchSummariesIncludingCompatibleBundle
   (*(v4 + 16))(v4, v6, v5);
 }
 
-+ (void)loadTurnBasedMatchDetailsForMatchIDs:(id)a3 loadGameData:(BOOL)a4 withCompletionHandler:(id)a5
++ (void)loadTurnBasedMatchDetailsForMatchIDs:(id)ds loadGameData:(BOOL)data withCompletionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [v7 count];
+  dsCopy = ds;
+  handlerCopy = handler;
+  v9 = [dsCopy count];
   if (!v9 && GKApplicationLinkedOnOrAfter(458752, 657920))
   {
     v14 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE660] reason:@"Must pass in a non-nil and non-empty array of matchIDs" userInfo:0];
     objc_exception_throw(v14);
   }
 
-  if (v8)
+  if (handlerCopy)
   {
     v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d %s", "GKTurnBasedMatch.m", 804, "+[GKTurnBasedMatch loadTurnBasedMatchDetailsForMatchIDs:loadGameData:withCompletionHandler:]"];
     v11 = [GKDispatchGroup dispatchGroupWithName:v10];
@@ -404,8 +404,8 @@ void __97__GKTurnBasedMatch_loadTurnBasedMatchSummariesIncludingCompatibleBundle
       v18[1] = 3221225472;
       v18[2] = __92__GKTurnBasedMatch_loadTurnBasedMatchDetailsForMatchIDs_loadGameData_withCompletionHandler___block_invoke;
       v18[3] = &unk_2785DECC0;
-      v19 = v7;
-      v21 = a4;
+      v19 = dsCopy;
+      dataCopy = data;
       v20 = v11;
       [v20 perform:v18];
     }
@@ -421,7 +421,7 @@ void __97__GKTurnBasedMatch_loadTurnBasedMatchSummariesIncludingCompatibleBundle
     v15[2] = __92__GKTurnBasedMatch_loadTurnBasedMatchDetailsForMatchIDs_loadGameData_withCompletionHandler___block_invoke_3;
     v15[3] = &unk_2785DDC10;
     v16 = v11;
-    v17 = v8;
+    v17 = handlerCopy;
     v13 = v11;
     [v13 notifyOnMainQueueWithBlock:v15];
   }
@@ -516,12 +516,12 @@ void __58__GKTurnBasedMatch_loadMatchWithID_withCompletionHandler___block_invoke
   (*(*(a1 + 32) + 16))();
 }
 
-- (GKTurnBasedMatch)initWithInternalRepresentation:(id)a3
+- (GKTurnBasedMatch)initWithInternalRepresentation:(id)representation
 {
-  v4 = a3;
-  if (!v4)
+  representationCopy = representation;
+  if (!representationCopy)
   {
-    v4 = +[(GKInternalRepresentation *)GKTurnBasedMatchInternal];
+    representationCopy = +[(GKInternalRepresentation *)GKTurnBasedMatchInternal];
   }
 
   v8.receiver = self;
@@ -530,8 +530,8 @@ void __58__GKTurnBasedMatch_loadMatchWithID_withCompletionHandler___block_invoke
   v6 = v5;
   if (v5)
   {
-    objc_storeStrong(&v5->_internal, v4);
-    [(GKTurnBasedMatch *)v6 _updateWithInternal:v4];
+    objc_storeStrong(&v5->_internal, representationCopy);
+    [(GKTurnBasedMatch *)v6 _updateWithInternal:representationCopy];
   }
 
   return v6;
@@ -539,21 +539,21 @@ void __58__GKTurnBasedMatch_loadMatchWithID_withCompletionHandler___block_invoke
 
 - (unint64_t)hash
 {
-  v2 = [(GKTurnBasedMatch *)self internal];
-  v3 = [v2 hash];
+  internal = [(GKTurnBasedMatch *)self internal];
+  v3 = [internal hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(GKTurnBasedMatch *)self internal];
-    v6 = [v4 internal];
-    v7 = [v5 isEqual:v6];
+    internal = [(GKTurnBasedMatch *)self internal];
+    internal2 = [equalCopy internal];
+    v7 = [internal isEqual:internal2];
   }
 
   else
@@ -564,43 +564,43 @@ void __58__GKTurnBasedMatch_loadMatchWithID_withCompletionHandler___block_invoke
   return v7;
 }
 
-- (void)setInternal:(id)a3
+- (void)setInternal:(id)internal
 {
-  v6 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (v5->_internal != v6)
+  internalCopy = internal;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_internal != internalCopy)
   {
-    objc_storeStrong(&v5->_internal, a3);
-    [(GKTurnBasedMatch *)v5 _updateWithInternal:v6];
+    objc_storeStrong(&selfCopy->_internal, internal);
+    [(GKTurnBasedMatch *)selfCopy _updateWithInternal:internalCopy];
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)_updateWithInternal:(id)a3
+- (void)_updateWithInternal:(id)internal
 {
-  v4 = a3;
-  v5 = [(GKTurnBasedMatch *)self _participantsForInternalRepresentation:v4];
+  internalCopy = internal;
+  v5 = [(GKTurnBasedMatch *)self _participantsForInternalRepresentation:internalCopy];
   participants = self->_participants;
   self->_participants = v5;
 
-  v7 = [(GKTurnBasedMatch *)self _exchangesForInternalRepresentation:v4 participants:self->_participants];
+  v7 = [(GKTurnBasedMatch *)self _exchangesForInternalRepresentation:internalCopy participants:self->_participants];
 
   exchanges = self->_exchanges;
   self->_exchanges = v7;
 }
 
-- (id)_participantsForInternalRepresentation:(id)a3
+- (id)_participantsForInternalRepresentation:(id)representation
 {
-  v3 = a3;
-  v4 = [v3 participants];
-  v5 = [v4 count];
+  representationCopy = representation;
+  participants = [representationCopy participants];
+  v5 = [participants count];
 
   if (v5)
   {
-    v6 = [v3 participants];
-    v7 = [v6 _gkMapWithBlock:&__block_literal_global_276];
+    participants2 = [representationCopy participants];
+    v7 = [participants2 _gkMapWithBlock:&__block_literal_global_276];
   }
 
   else
@@ -619,26 +619,26 @@ GKTurnBasedParticipant *__59__GKTurnBasedMatch__participantsForInternalRepresent
   return v3;
 }
 
-- (id)_exchangesForInternalRepresentation:(id)a3 participants:(id)a4
+- (id)_exchangesForInternalRepresentation:(id)representation participants:(id)participants
 {
-  v5 = a3;
-  v6 = [v5 exchanges];
-  v7 = [v6 count];
+  representationCopy = representation;
+  exchanges = [representationCopy exchanges];
+  v7 = [exchanges count];
 
   if (v7)
   {
-    v8 = [(GKTurnBasedMatch *)self participants];
-    v9 = [v8 count];
-    v10 = [v5 exchanges];
+    participants = [(GKTurnBasedMatch *)self participants];
+    v9 = [participants count];
+    exchanges2 = [representationCopy exchanges];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __69__GKTurnBasedMatch__exchangesForInternalRepresentation_participants___block_invoke;
     v14[3] = &unk_2785E01A0;
     v14[4] = self;
-    v15 = v8;
+    v15 = participants;
     v16 = v9;
-    v11 = v8;
-    v12 = [v10 _gkMapWithBlock:v14];
+    v11 = participants;
+    v12 = [exchanges2 _gkMapWithBlock:v14];
   }
 
   else
@@ -726,26 +726,26 @@ GKTurnBasedExchangeReply *__69__GKTurnBasedMatch__exchangesForInternalRepresenta
 
 - (BOOL)isMyTurn
 {
-  v2 = [(GKTurnBasedMatch *)self internal];
-  v3 = [v2 currentPlayer];
-  v4 = [v3 isLocalPlayer];
+  internal = [(GKTurnBasedMatch *)self internal];
+  currentPlayer = [internal currentPlayer];
+  isLocalPlayer = [currentPlayer isLocalPlayer];
 
-  return v4;
+  return isLocalPlayer;
 }
 
 - (GKGame)game
 {
   v3 = [GKGame alloc];
-  v4 = [(GKTurnBasedMatch *)self internal];
-  v5 = [v4 game];
-  v6 = [(GKGame *)v3 initWithInternalRepresentation:v5];
+  internal = [(GKTurnBasedMatch *)self internal];
+  game = [internal game];
+  v6 = [(GKGame *)v3 initWithInternalRepresentation:game];
 
   return v6;
 }
 
-+ (id)instanceMethodSignatureForSelector:(SEL)a3
++ (id)instanceMethodSignatureForSelector:(SEL)selector
 {
-  v9.receiver = a1;
+  v9.receiver = self;
   v9.super_class = &OBJC_METACLASS___GKTurnBasedMatch;
   v4 = objc_msgSendSuper2(&v9, sel_instanceMethodSignatureForSelector_);
   v5 = v4;
@@ -756,7 +756,7 @@ GKTurnBasedExchangeReply *__69__GKTurnBasedMatch__exchangesForInternalRepresenta
 
   else
   {
-    v6 = [objc_opt_class() instanceMethodSignatureForSelector:a3];
+    v6 = [objc_opt_class() instanceMethodSignatureForSelector:selector];
   }
 
   v7 = v6;
@@ -764,7 +764,7 @@ GKTurnBasedExchangeReply *__69__GKTurnBasedMatch__exchangesForInternalRepresenta
   return v7;
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
   v10.receiver = self;
   v10.super_class = GKTurnBasedMatch;
@@ -777,14 +777,14 @@ GKTurnBasedExchangeReply *__69__GKTurnBasedMatch__exchangesForInternalRepresenta
 
   else
   {
-    v8 = [(GKTurnBasedMatch *)self forwardingTargetForSelector:a3];
-    v7 = [v8 methodSignatureForSelector:a3];
+    v8 = [(GKTurnBasedMatch *)self forwardingTargetForSelector:selector];
+    v7 = [v8 methodSignatureForSelector:selector];
   }
 
   return v7;
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
   v8.receiver = self;
   v8.super_class = GKTurnBasedMatch;
@@ -795,18 +795,18 @@ GKTurnBasedExchangeReply *__69__GKTurnBasedMatch__exchangesForInternalRepresenta
 
   else
   {
-    v6 = [(GKTurnBasedMatch *)self forwardingTargetForSelector:a3];
+    v6 = [(GKTurnBasedMatch *)self forwardingTargetForSelector:selector];
     v5 = objc_opt_respondsToSelector();
   }
 
   return v5 & 1;
 }
 
-+ (BOOL)instancesRespondToSelector:(SEL)a3
++ (BOOL)instancesRespondToSelector:(SEL)selector
 {
-  if (a3)
+  if (selector)
   {
-    if (class_respondsToSelector(a1, a3))
+    if (class_respondsToSelector(self, selector))
     {
       LOBYTE(v4) = 1;
     }
@@ -817,7 +817,7 @@ GKTurnBasedExchangeReply *__69__GKTurnBasedMatch__exchangesForInternalRepresenta
       if (v4)
       {
 
-        LOBYTE(v4) = [GKTurnBasedMatchInternal instancesRespondToSelector:a3];
+        LOBYTE(v4) = [GKTurnBasedMatchInternal instancesRespondToSelector:selector];
       }
     }
   }
@@ -830,67 +830,67 @@ GKTurnBasedExchangeReply *__69__GKTurnBasedMatch__exchangesForInternalRepresenta
   return v4;
 }
 
-- (id)valueForUndefinedKey:(id)a3
+- (id)valueForUndefinedKey:(id)key
 {
-  v4 = a3;
-  v5 = [(GKTurnBasedMatch *)self internal];
-  v6 = [v5 valueForKey:v4];
+  keyCopy = key;
+  internal = [(GKTurnBasedMatch *)self internal];
+  v6 = [internal valueForKey:keyCopy];
 
   return v6;
 }
 
-- (void)setValue:(id)a3 forUndefinedKey:(id)a4
+- (void)setValue:(id)value forUndefinedKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(GKTurnBasedMatch *)self internal];
-  [v8 setValue:v7 forKey:v6];
+  keyCopy = key;
+  valueCopy = value;
+  internal = [(GKTurnBasedMatch *)self internal];
+  [internal setValue:valueCopy forKey:keyCopy];
 }
 
 - (NSString)message
 {
-  v3 = [(GKTurnBasedMatch *)self internal];
-  v4 = [(GKTurnBasedMatch *)self daemonProxy];
-  v5 = [v3 localizableMessage];
-  v6 = [(GKTurnBasedMatch *)self bundleID];
-  v7 = [v4 localizedMessageFromDictionary:v5 forBundleID:v6];
+  internal = [(GKTurnBasedMatch *)self internal];
+  daemonProxy = [(GKTurnBasedMatch *)self daemonProxy];
+  localizableMessage = [internal localizableMessage];
+  bundleID = [(GKTurnBasedMatch *)self bundleID];
+  message = [daemonProxy localizedMessageFromDictionary:localizableMessage forBundleID:bundleID];
 
-  if (!v7)
+  if (!message)
   {
-    v7 = [v3 message];
+    message = [internal message];
   }
 
-  return v7;
+  return message;
 }
 
 - (void)setMessage:(NSString *)message
 {
   v5 = message;
-  v4 = [(GKTurnBasedMatch *)self internal];
-  [v4 setMessage:v5];
+  internal = [(GKTurnBasedMatch *)self internal];
+  [internal setMessage:v5];
 
   [(GKTurnBasedMatch *)self setLocalizableMessageWithKey:v5 arguments:0];
 }
 
-+ (id)_localizableMessageWithKey:(id)a3 arguments:(id)a4 defaultMessage:(id)a5
++ (id)_localizableMessageWithKey:(id)key arguments:(id)arguments defaultMessage:(id)message
 {
   v45 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v33 = a5;
-  v9 = [MEMORY[0x277CBEB18] array];
-  if (!v7)
+  keyCopy = key;
+  argumentsCopy = arguments;
+  messageCopy = message;
+  array = [MEMORY[0x277CBEB18] array];
+  if (!keyCopy)
   {
     v32 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE660] reason:@"nil key" userInfo:0];
     objc_exception_throw(v32);
   }
 
-  v10 = v9;
+  v10 = array;
   v36 = 0u;
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v11 = v8;
+  v11 = argumentsCopy;
   v12 = [(__CFString *)v11 countByEnumeratingWithState:&v34 objects:v44 count:16];
   if (v12)
   {
@@ -921,7 +921,7 @@ GKTurnBasedExchangeReply *__69__GKTurnBasedMatch__exchangesForInternalRepresenta
               v28 = v11;
             }
 
-            v41[0] = v7;
+            v41[0] = keyCopy;
             v41[1] = v28;
             v25 = MEMORY[0x277CBEAC0];
             v26 = v41;
@@ -934,7 +934,7 @@ LABEL_25:
             objc_exception_throw(v30);
           }
 
-          v17 = [v16 stringValue];
+          stringValue = [v16 stringValue];
 
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -949,7 +949,7 @@ LABEL_25:
               v24 = v11;
             }
 
-            v43[0] = v7;
+            v43[0] = keyCopy;
             v43[1] = v24;
             v25 = MEMORY[0x277CBEAC0];
             v26 = v43;
@@ -957,7 +957,7 @@ LABEL_25:
             goto LABEL_25;
           }
 
-          v16 = v17;
+          v16 = stringValue;
         }
 
         [v10 addObject:v16];
@@ -971,12 +971,12 @@ LABEL_25:
 
   v38[0] = @"loc-key";
   v38[1] = @"loc-args";
-  v39[0] = v7;
+  v39[0] = keyCopy;
   v39[1] = v10;
   v38[2] = @"loc-default";
-  if (v33)
+  if (messageCopy)
   {
-    v18 = v33;
+    v18 = messageCopy;
   }
 
   else
@@ -998,8 +998,8 @@ LABEL_25:
   v6 = arguments;
   if (v13)
   {
-    v7 = [MEMORY[0x277CCA8D8] mainBundle];
-    v8 = v7;
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    internal2 = mainBundle;
     if (v6)
     {
       v9 = v6;
@@ -1010,16 +1010,16 @@ LABEL_25:
       v9 = MEMORY[0x277CBEBF8];
     }
 
-    v10 = [v7 _gkLocalizedStringForKey:v13 defaultValue:v13 arguments:v9];
+    v10 = [mainBundle _gkLocalizedStringForKey:v13 defaultValue:v13 arguments:v9];
     v11 = [GKTurnBasedMatch _localizableMessageWithKey:v13 arguments:v6 defaultMessage:v10];
-    v12 = [(GKTurnBasedMatch *)self internal];
-    [v12 setLocalizableMessage:v11];
+    internal = [(GKTurnBasedMatch *)self internal];
+    [internal setLocalizableMessage:v11];
   }
 
   else
   {
-    v8 = [(GKTurnBasedMatch *)self internal];
-    [v8 setLocalizableMessage:0];
+    internal2 = [(GKTurnBasedMatch *)self internal];
+    [internal2 setLocalizableMessage:0];
   }
 }
 
@@ -1028,8 +1028,8 @@ LABEL_25:
   result = self->_state;
   if (!result)
   {
-    v4 = [(GKTurnBasedMatch *)self activeExchanges];
-    if ([v4 count])
+    activeExchanges = [(GKTurnBasedMatch *)self activeExchanges];
+    if ([activeExchanges count])
     {
       v5 = 2;
 LABEL_30:
@@ -1038,16 +1038,16 @@ LABEL_30:
       return self->_state;
     }
 
-    v6 = [(GKTurnBasedMatch *)self status];
-    if (v6 != GKTurnBasedMatchStatusMatching)
+    status = [(GKTurnBasedMatch *)self status];
+    if (status != GKTurnBasedMatchStatusMatching)
     {
-      if (v6 == GKTurnBasedMatchStatusEnded)
+      if (status == GKTurnBasedMatchStatusEnded)
       {
         v5 = 5;
         goto LABEL_30;
       }
 
-      if (v6 != GKTurnBasedMatchStatusOpen)
+      if (status != GKTurnBasedMatchStatusOpen)
       {
         if (!os_log_GKGeneral)
         {
@@ -1065,12 +1065,12 @@ LABEL_30:
       }
     }
 
-    v7 = [(GKTurnBasedMatch *)self currentParticipant];
-    v8 = [v7 player];
+    currentParticipant = [(GKTurnBasedMatch *)self currentParticipant];
+    player = [currentParticipant player];
 
-    v9 = [(GKTurnBasedMatch *)self localPlayerParticipant];
-    v10 = v9;
-    if (v9 && [v9 status] == 5)
+    localPlayerParticipant = [(GKTurnBasedMatch *)self localPlayerParticipant];
+    v10 = localPlayerParticipant;
+    if (localPlayerParticipant && [localPlayerParticipant status] == 5)
     {
       v5 = 5;
 LABEL_29:
@@ -1078,16 +1078,16 @@ LABEL_29:
       goto LABEL_30;
     }
 
-    v11 = [v8 internal];
-    if ([v11 isGuestPlayer])
+    internal = [player internal];
+    if ([internal isGuestPlayer])
     {
-      v26 = [v8 internal];
-      v12 = [v26 hostPlayerInternal];
-      v13 = [v12 playerID];
+      internal2 = [player internal];
+      hostPlayerInternal = [internal2 hostPlayerInternal];
+      playerID = [hostPlayerInternal playerID];
       v14 = +[GKLocalPlayer localPlayer];
-      v15 = [v14 internal];
-      v16 = [v15 playerID];
-      v25 = [v13 isEqualToString:v16];
+      internal3 = [v14 internal];
+      playerID2 = [internal3 playerID];
+      v25 = [playerID isEqualToString:playerID2];
 
       if (v25)
       {
@@ -1100,12 +1100,12 @@ LABEL_29:
     {
     }
 
-    if ([v8 isLocalPlayer])
+    if ([player isLocalPlayer])
     {
-      v19 = [(GKTurnBasedMatch *)self currentParticipant];
-      v20 = [v19 status];
+      currentParticipant2 = [(GKTurnBasedMatch *)self currentParticipant];
+      status2 = [currentParticipant2 status];
 
-      if (v20 == 1)
+      if (status2 == 1)
       {
         v5 = 1;
       }
@@ -1118,8 +1118,8 @@ LABEL_29:
 
     else
     {
-      v21 = [(GKTurnBasedMatch *)self participants];
-      if ([v21 count])
+      participants = [(GKTurnBasedMatch *)self participants];
+      if ([participants count])
       {
 
         v5 = 4;
@@ -1127,11 +1127,11 @@ LABEL_29:
 
       else
       {
-        v22 = [(GKTurnBasedMatch *)self internal];
-        v23 = [v22 currentPlayer];
-        v24 = [v23 isLocalPlayer];
+        internal4 = [(GKTurnBasedMatch *)self internal];
+        currentPlayer = [internal4 currentPlayer];
+        isLocalPlayer = [currentPlayer isLocalPlayer];
 
-        if (v24)
+        if (isLocalPlayer)
         {
           v5 = 3;
         }
@@ -1151,12 +1151,12 @@ LABEL_29:
 
 - (GKPlayer)currentPlayer
 {
-  v2 = [(GKTurnBasedMatch *)self internal];
-  v3 = [v2 currentPlayer];
+  internal = [(GKTurnBasedMatch *)self internal];
+  currentPlayer = [internal currentPlayer];
 
-  if (v3)
+  if (currentPlayer)
   {
-    v4 = [GKPlayer canonicalizedPlayerForInternal:v3];
+    v4 = [GKPlayer canonicalizedPlayerForInternal:currentPlayer];
   }
 
   else
@@ -1191,24 +1191,24 @@ LABEL_29:
   v25 = MEMORY[0x277CCACA8];
   v7 = objc_opt_class();
   v8 = NSStringFromClass(v7);
-  v30 = [(GKTurnBasedMatch *)self matchID];
-  v9 = [(GKTurnBasedMatch *)self bundleID];
+  matchID = [(GKTurnBasedMatch *)self matchID];
+  bundleID = [(GKTurnBasedMatch *)self bundleID];
   v10 = @"<nil>";
-  v26 = v9;
-  if (v9)
+  v26 = bundleID;
+  if (bundleID)
   {
-    v10 = v9;
+    v10 = bundleID;
   }
 
   v24 = v10;
-  v11 = [(GKTurnBasedMatch *)self message];
+  message = [(GKTurnBasedMatch *)self message];
   v27 = v8;
   v28 = v6;
-  if (v11)
+  if (message)
   {
     v12 = MEMORY[0x277CCACA8];
-    v23 = [(GKTurnBasedMatch *)self message];
-    v29 = [v12 stringWithFormat:@"'%@'", v23];
+    message2 = [(GKTurnBasedMatch *)self message];
+    v29 = [v12 stringWithFormat:@"'%@'", message2];
   }
 
   else
@@ -1216,17 +1216,17 @@ LABEL_29:
     v29 = 0;
   }
 
-  v13 = [(GKTurnBasedMatch *)self creationDate];
-  v14 = [(GKTurnBasedMatch *)self currentParticipant];
-  v15 = [(GKTurnBasedMatch *)self participants];
-  v16 = [v15 componentsJoinedByString:{@", "}];
-  v17 = [(GKTurnBasedMatch *)self matchData];
-  v18 = [v17 length];
-  v19 = [(GKTurnBasedMatch *)self matchDataMaximumSize];
-  v20 = [(GKTurnBasedMatch *)self exchanges];
-  v21 = [v25 stringWithFormat:@"<%@ %p - matchID:%@ bundleID:%@ status:%@ message:%@ creationDate:%@ currentParticipant:%@ participants:%@ matchData.length:%ld matchDataMaximumSize:%ld exchanges:%@ state:%u>", v27, self, v30, v24, v28, v29, v13, v14, v16, v18, v19, v20, -[GKTurnBasedMatch state](self, "state")];
+  creationDate = [(GKTurnBasedMatch *)self creationDate];
+  currentParticipant = [(GKTurnBasedMatch *)self currentParticipant];
+  participants = [(GKTurnBasedMatch *)self participants];
+  v16 = [participants componentsJoinedByString:{@", "}];
+  matchData = [(GKTurnBasedMatch *)self matchData];
+  v18 = [matchData length];
+  matchDataMaximumSize = [(GKTurnBasedMatch *)self matchDataMaximumSize];
+  exchanges = [(GKTurnBasedMatch *)self exchanges];
+  v21 = [v25 stringWithFormat:@"<%@ %p - matchID:%@ bundleID:%@ status:%@ message:%@ creationDate:%@ currentParticipant:%@ participants:%@ matchData.length:%ld matchDataMaximumSize:%ld exchanges:%@ state:%u>", v27, self, matchID, v24, v28, v29, creationDate, currentParticipant, v16, v18, matchDataMaximumSize, exchanges, -[GKTurnBasedMatch state](self, "state")];
 
-  if (v11)
+  if (message)
   {
   }
 
@@ -1247,22 +1247,22 @@ void __31__GKTurnBasedMatch_description__block_invoke()
 
 - (GKTurnBasedMatchStatus)status
 {
-  v2 = [(GKTurnBasedMatch *)self internal];
-  v3 = [v2 status];
+  internal = [(GKTurnBasedMatch *)self internal];
+  status = [internal status];
 
-  if (v3)
+  if (status)
   {
-    if ([v3 isEqualToString:@"Active"])
+    if ([status isEqualToString:@"Active"])
     {
       v4 = GKTurnBasedMatchStatusOpen;
     }
 
-    else if ([v3 isEqualToString:@"Complete"])
+    else if ([status isEqualToString:@"Complete"])
     {
       v4 = GKTurnBasedMatchStatusEnded;
     }
 
-    else if ([v3 isEqualToString:@"Matching"])
+    else if ([status isEqualToString:@"Matching"])
     {
       v4 = GKTurnBasedMatchStatusMatching;
     }
@@ -1281,19 +1281,19 @@ void __31__GKTurnBasedMatch_description__block_invoke()
   return v4;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  v5 = [(GKTurnBasedMatch *)self state];
-  v6 = [v4 state];
-  if (v5 == v6)
+  compareCopy = compare;
+  state = [(GKTurnBasedMatch *)self state];
+  state2 = [compareCopy state];
+  if (state == state2)
   {
-    v7 = [(GKTurnBasedMatch *)self dateSortKey];
-    v8 = [v4 dateSortKey];
-    v9 = -[v7 compare:v8];
+    dateSortKey = [(GKTurnBasedMatch *)self dateSortKey];
+    dateSortKey2 = [compareCopy dateSortKey];
+    v9 = -[dateSortKey compare:dateSortKey2];
   }
 
-  else if (v5 < v6)
+  else if (state < state2)
   {
     v9 = -1;
   }
@@ -1308,21 +1308,21 @@ void __31__GKTurnBasedMatch_description__block_invoke()
 
 - (NSDate)dateSortKey
 {
-  v3 = [(GKTurnBasedMatch *)self internal];
-  v4 = [v3 lastTurnDate];
-  v5 = v4;
-  if (v4)
+  internal = [(GKTurnBasedMatch *)self internal];
+  lastTurnDate = [internal lastTurnDate];
+  v5 = lastTurnDate;
+  if (lastTurnDate)
   {
-    v6 = v4;
+    creationDate = lastTurnDate;
   }
 
   else
   {
-    v7 = [(GKTurnBasedMatch *)self internal];
-    v6 = [v7 creationDate];
+    internal2 = [(GKTurnBasedMatch *)self internal];
+    creationDate = [internal2 creationDate];
   }
 
-  return v6;
+  return creationDate;
 }
 
 - (void)rematchWithCompletionHandler:(void *)completionHandler
@@ -1332,11 +1332,11 @@ void __31__GKTurnBasedMatch_description__block_invoke()
   v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d %s", "GKTurnBasedMatch.m", 1207, "-[GKTurnBasedMatch rematchWithCompletionHandler:]"];
   v6 = [GKDispatchGroup dispatchGroupWithName:v5];
 
-  v7 = [(GKTurnBasedMatch *)self participants];
-  v8 = [v7 valueForKeyPath:@"player"];
+  participants = [(GKTurnBasedMatch *)self participants];
+  v8 = [participants valueForKeyPath:@"player"];
 
-  v9 = [(GKTurnBasedMatch *)self participants];
-  v10 = [v9 count];
+  participants2 = [(GKTurnBasedMatch *)self participants];
+  v10 = [participants2 count];
 
   if (![GKMatchmaker canPlayMultiplayerGameWithPlayers:v8])
   {
@@ -1361,8 +1361,8 @@ LABEL_21:
   [(GKMatchRequest *)v11 setMinPlayers:v10];
   [(GKMatchRequest *)v11 setMaxPlayers:v10];
   v36 = v11;
-  v12 = [(GKMatchRequest *)v11 internal];
-  [v12 setMatchType:2];
+  internal = [(GKMatchRequest *)v11 internal];
+  [internal setMatchType:2];
 
   v13 = [MEMORY[0x277CBEB18] arrayWithCapacity:v10 - 1];
   v14 = [MEMORY[0x277CBEB58] set];
@@ -1370,8 +1370,8 @@ LABEL_21:
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
-  v15 = [(GKTurnBasedMatch *)self participants];
-  v16 = [v15 countByEnumeratingWithState:&v46 objects:v50 count:16];
+  participants3 = [(GKTurnBasedMatch *)self participants];
+  v16 = [participants3 countByEnumeratingWithState:&v46 objects:v50 count:16];
   if (v16)
   {
     v17 = v16;
@@ -1383,24 +1383,24 @@ LABEL_21:
       {
         if (*v47 != v18)
         {
-          objc_enumerationMutation(v15);
+          objc_enumerationMutation(participants3);
         }
 
-        v20 = [*(*(&v46 + 1) + 8 * v19) player];
-        v21 = v20;
-        if (v20)
+        player = [*(*(&v46 + 1) + 8 * v19) player];
+        v21 = player;
+        if (player)
         {
-          v22 = [v20 internal];
-          v23 = [v22 playerID];
-          if (v23 && ![v21 isLocalPlayer])
+          internal2 = [player internal];
+          playerID = [internal2 playerID];
+          if (playerID && ![v21 isLocalPlayer])
           {
             v24 = [v14 containsObject:v21];
 
             if ((v24 & 1) == 0)
             {
-              v25 = [v21 internal];
-              v26 = [v25 playerID];
-              [v13 addObject:v26];
+              internal3 = [v21 internal];
+              playerID2 = [internal3 playerID];
+              [v13 addObject:playerID2];
 
               [v14 addObject:v21];
             }
@@ -1415,18 +1415,18 @@ LABEL_21:
       }
 
       while (v17 != v19);
-      v27 = [v15 countByEnumeratingWithState:&v46 objects:v50 count:16];
+      v27 = [participants3 countByEnumeratingWithState:&v46 objects:v50 count:16];
       v17 = v27;
     }
 
     while (v27);
   }
 
-  v28 = [v14 allObjects];
-  [(GKMatchRequest *)v36 setRecipients:v28];
+  allObjects = [v14 allObjects];
+  [(GKMatchRequest *)v36 setRecipients:allObjects];
 
-  v29 = [(GKMatchRequest *)v36 internal];
-  [v29 setRecipientPlayerIDs:v13];
+  internal4 = [(GKMatchRequest *)v36 internal];
+  [internal4 setRecipientPlayerIDs:v13];
 
   v43[0] = MEMORY[0x277D85DD0];
   v43[1] = 3221225472;
@@ -1512,9 +1512,9 @@ void __49__GKTurnBasedMatch_rematchWithCompletionHandler___block_invoke_3(uint64
   v6 = [GKDispatchGroup dispatchGroupWithName:v5];
 
   v7 = +[GKPreferences shared];
-  v8 = [v7 multiplayerAllowedPlayerType];
+  multiplayerAllowedPlayerType = [v7 multiplayerAllowedPlayerType];
 
-  if (!v8)
+  if (!multiplayerAllowedPlayerType)
   {
     v10 = [MEMORY[0x277CCA9B8] userErrorForCode:10 underlyingError:0];
     [v6 setError:v10];
@@ -1606,16 +1606,16 @@ void __54__GKTurnBasedMatch_acceptInviteWithCompletionHandler___block_invoke_3(u
 {
   v4 = completionHandler;
   v5 = +[GKDaemonProxy proxyForLocalPlayer];
-  v6 = [v5 turnBasedService];
-  v7 = [(GKTurnBasedMatch *)self internal];
+  turnBasedService = [v5 turnBasedService];
+  internal = [(GKTurnBasedMatch *)self internal];
   v10 = MEMORY[0x277D85DD0];
   v11 = 3221225472;
   v12 = __55__GKTurnBasedMatch_declineInviteWithCompletionHandler___block_invoke;
   v13 = &unk_2785E00E0;
-  v14 = self;
+  selfCopy = self;
   v15 = v4;
   v8 = v4;
-  [v6 declineInviteForTurnBasedMatch:v7 handler:&v10];
+  [turnBasedService declineInviteForTurnBasedMatch:internal handler:&v10];
 
   v9 = [GKReporter reporter:v10];
   [v9 reportEvent:@"com.apple.GameKit.turnBased" type:@"matchDecline"];
@@ -1643,29 +1643,29 @@ void __55__GKTurnBasedMatch_declineInviteWithCompletionHandler___block_invoke(ui
 
 - (GKTurnBasedParticipant)currentParticipant
 {
-  v3 = [(GKTurnBasedMatch *)self internal];
-  v4 = [v3 currentParticipant];
+  internal = [(GKTurnBasedMatch *)self internal];
+  currentParticipant = [internal currentParticipant];
 
-  if (v4 < 0 || (-[GKTurnBasedMatch participants](self, "participants"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 count], v5, v6 <= v4))
+  if (currentParticipant < 0 || (-[GKTurnBasedMatch participants](self, "participants"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 count], v5, v6 <= currentParticipant))
   {
     v8 = 0;
   }
 
   else
   {
-    v7 = [(GKTurnBasedMatch *)self participants];
-    v8 = [v7 objectAtIndex:v4];
+    participants = [(GKTurnBasedMatch *)self participants];
+    v8 = [participants objectAtIndex:currentParticipant];
   }
 
   return v8;
 }
 
-- (void)setCurrentParticipant:(id)a3
+- (void)setCurrentParticipant:(id)participant
 {
-  v6 = [a3 internal];
-  v4 = [v6 slot];
-  v5 = [(GKTurnBasedMatch *)self internal];
-  [v5 setCurrentParticipant:v4];
+  internal = [participant internal];
+  slot = [internal slot];
+  internal2 = [(GKTurnBasedMatch *)self internal];
+  [internal2 setCurrentParticipant:slot];
 }
 
 - (GKTurnBasedParticipant)previousParticipant
@@ -1675,8 +1675,8 @@ void __55__GKTurnBasedMatch_declineInviteWithCompletionHandler___block_invoke(ui
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v2 = [(GKTurnBasedMatch *)self participants];
-  v3 = [v2 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  participants = [(GKTurnBasedMatch *)self participants];
+  v3 = [participants countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v3)
   {
     v4 = v3;
@@ -1688,13 +1688,13 @@ void __55__GKTurnBasedMatch_declineInviteWithCompletionHandler___block_invoke(ui
       {
         if (*v17 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(participants);
         }
 
         v8 = *(*(&v16 + 1) + 8 * i);
-        v9 = [v8 lastTurnDate];
+        lastTurnDate = [v8 lastTurnDate];
 
-        if (v9)
+        if (lastTurnDate)
         {
           if (!v5 || ([v8 lastTurnDate], v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "lastTurnDate"), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v10, "compare:", v11), v11, v10, v12 == 1))
           {
@@ -1705,7 +1705,7 @@ void __55__GKTurnBasedMatch_declineInviteWithCompletionHandler___block_invoke(ui
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v4 = [participants countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v4);
@@ -1724,27 +1724,27 @@ void __55__GKTurnBasedMatch_declineInviteWithCompletionHandler___block_invoke(ui
 - (GKTurnBasedParticipant)previousParticipantOrFirstKnownPlayer
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = [(GKTurnBasedMatch *)self previousParticipant];
-  v4 = v3;
-  if (!v3)
+  previousParticipant = [(GKTurnBasedMatch *)self previousParticipant];
+  v4 = previousParticipant;
+  if (!previousParticipant)
   {
     goto LABEL_3;
   }
 
-  v5 = [v3 internal];
-  v6 = [v5 player];
-  v7 = [v6 isLocalPlayer];
+  internal = [previousParticipant internal];
+  player = [internal player];
+  isLocalPlayer = [player isLocalPlayer];
 
   v8 = v4;
-  if (v7)
+  if (isLocalPlayer)
   {
 LABEL_3:
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v9 = [(GKTurnBasedMatch *)self participants];
-    v10 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    participants = [(GKTurnBasedMatch *)self participants];
+    v10 = [participants countByEnumeratingWithState:&v19 objects:v23 count:16];
     v8 = v4;
     if (v10)
     {
@@ -1756,14 +1756,14 @@ LABEL_3:
         {
           if (*v20 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(participants);
           }
 
           v14 = *(*(&v19 + 1) + 8 * i);
-          v15 = [v14 internal];
-          v16 = [v15 player];
+          internal2 = [v14 internal];
+          player2 = [internal2 player];
 
-          if (v16 && ([v16 isLocalPlayer] & 1) == 0)
+          if (player2 && ([player2 isLocalPlayer] & 1) == 0)
           {
             v8 = v14;
 
@@ -1771,7 +1771,7 @@ LABEL_3:
           }
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v11 = [participants countByEnumeratingWithState:&v19 objects:v23 count:16];
         if (v11)
         {
           continue;
@@ -1798,24 +1798,24 @@ LABEL_14:
 
 - (GKTurnBasedParticipant)playingWithParticipantOrFirstKnownPlayer
 {
-  v3 = [(GKTurnBasedMatch *)self currentParticipant];
-  if (!v3)
+  currentParticipant = [(GKTurnBasedMatch *)self currentParticipant];
+  if (!currentParticipant)
   {
-    v3 = [(GKTurnBasedMatch *)self firstWinnerOrTiedOrLastLoser];
+    currentParticipant = [(GKTurnBasedMatch *)self firstWinnerOrTiedOrLastLoser];
   }
 
-  v4 = [v3 internal];
-  v5 = [v4 player];
-  v6 = [v5 isLocalPlayer];
+  internal = [currentParticipant internal];
+  player = [internal player];
+  isLocalPlayer = [player isLocalPlayer];
 
-  if (v6)
+  if (isLocalPlayer)
   {
-    v7 = [(GKTurnBasedMatch *)self previousParticipantOrFirstKnownPlayer];
+    previousParticipantOrFirstKnownPlayer = [(GKTurnBasedMatch *)self previousParticipantOrFirstKnownPlayer];
 
-    v3 = v7;
+    currentParticipant = previousParticipantOrFirstKnownPlayer;
   }
 
-  return v3;
+  return currentParticipant;
 }
 
 - (GKTurnBasedParticipant)localPlayerParticipant
@@ -1825,8 +1825,8 @@ LABEL_14:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v2 = [(GKTurnBasedMatch *)self participants];
-  v3 = [v2 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  participants = [(GKTurnBasedMatch *)self participants];
+  v3 = [participants countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v3)
   {
     v4 = *v13;
@@ -1836,22 +1836,22 @@ LABEL_14:
       {
         if (*v13 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(participants);
         }
 
         v6 = *(*(&v12 + 1) + 8 * i);
-        v7 = [v6 internal];
-        v8 = [v7 player];
-        v9 = [v8 isLocalPlayer];
+        internal = [v6 internal];
+        player = [internal player];
+        isLocalPlayer = [player isLocalPlayer];
 
-        if (v9)
+        if (isLocalPlayer)
         {
           v3 = v6;
           goto LABEL_11;
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v3 = [participants countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v3)
       {
         continue;
@@ -1872,14 +1872,14 @@ LABEL_11:
 {
   if ([(GKTurnBasedMatch *)self state]== 1)
   {
-    v3 = [(GKTurnBasedMatch *)self currentParticipant];
-    [v3 invitedBy];
+    currentParticipant = [(GKTurnBasedMatch *)self currentParticipant];
+    [currentParticipant invitedBy];
   }
 
   else
   {
-    v3 = [(GKTurnBasedMatch *)self playingWithParticipantOrFirstKnownPlayer];
-    [v3 player];
+    currentParticipant = [(GKTurnBasedMatch *)self playingWithParticipantOrFirstKnownPlayer];
+    [currentParticipant player];
   }
   v4 = ;
 
@@ -1898,8 +1898,8 @@ LABEL_11:
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v2 = [(GKTurnBasedMatch *)self participants];
-  v25 = [v2 countByEnumeratingWithState:&v26 objects:v30 count:16];
+  participants = [(GKTurnBasedMatch *)self participants];
+  v25 = [participants countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (!v25)
   {
 
@@ -1913,7 +1913,7 @@ LABEL_27:
   v3 = 0;
   v4 = 0;
   v5 = 0;
-  obj = v2;
+  obj = participants;
   v24 = *v27;
   do
   {
@@ -1929,9 +1929,9 @@ LABEL_27:
       {
         if (v5)
         {
-          v8 = [v7 lastTurnDate];
-          v9 = [v5 lastTurnDate];
-          v10 = [v8 compare:v9];
+          lastTurnDate = [v7 lastTurnDate];
+          lastTurnDate2 = [v5 lastTurnDate];
+          v10 = [lastTurnDate compare:lastTurnDate2];
 
           v11 = v5;
           v12 = v3;
@@ -1965,9 +1965,9 @@ LABEL_21:
       {
         if (v4)
         {
-          v15 = [v7 lastTurnDate];
-          v16 = [v4 lastTurnDate];
-          v10 = [v15 compare:v16];
+          lastTurnDate3 = [v7 lastTurnDate];
+          lastTurnDate4 = [v4 lastTurnDate];
+          v10 = [lastTurnDate3 compare:lastTurnDate4];
 
           v11 = v4;
           v12 = v3;
@@ -1992,9 +1992,9 @@ LABEL_20:
         goto LABEL_21;
       }
 
-      v17 = [v7 lastTurnDate];
-      v18 = [v3 lastTurnDate];
-      v19 = [v17 compare:v18];
+      lastTurnDate5 = [v7 lastTurnDate];
+      lastTurnDate6 = [v3 lastTurnDate];
+      v19 = [lastTurnDate5 compare:lastTurnDate6];
 
       v11 = v3;
       v12 = v7;
@@ -2035,43 +2035,43 @@ LABEL_29:
   v37 = *MEMORY[0x277D85DE8];
   if ([(GKTurnBasedMatch *)self status]== GKTurnBasedMatchStatusOpen)
   {
-    v3 = [(GKTurnBasedMatch *)self localPlayerParticipant];
-    v26 = [MEMORY[0x277CBEB18] array];
-    v4 = [(GKTurnBasedMatch *)self exchanges];
+    localPlayerParticipant = [(GKTurnBasedMatch *)self localPlayerParticipant];
+    array = [MEMORY[0x277CBEB18] array];
+    exchanges = [(GKTurnBasedMatch *)self exchanges];
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v5 = [v4 countByEnumeratingWithState:&v31 objects:v36 count:16];
+    v5 = [exchanges countByEnumeratingWithState:&v31 objects:v36 count:16];
     if (v5)
     {
       v6 = v5;
       v7 = *v32;
       v24 = *v32;
-      v25 = v4;
+      v25 = exchanges;
       do
       {
         for (i = 0; i != v6; ++i)
         {
           if (*v32 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(exchanges);
           }
 
           v9 = *(*(&v31 + 1) + 8 * i);
           if ([v9 status] == 1)
           {
-            v10 = [v9 recipients];
-            v11 = [v10 indexOfObject:v3];
+            recipients = [v9 recipients];
+            v11 = [recipients indexOfObject:localPlayerParticipant];
 
             if (v11 != 0x7FFFFFFFFFFFFFFFLL)
             {
-              v12 = [v9 replies];
+              replies = [v9 replies];
               v27 = 0u;
               v28 = 0u;
               v29 = 0u;
               v30 = 0u;
-              v13 = [v12 countByEnumeratingWithState:&v27 objects:v35 count:16];
+              v13 = [replies countByEnumeratingWithState:&v27 objects:v35 count:16];
               if (!v13)
               {
                 goto LABEL_17;
@@ -2086,39 +2086,39 @@ LABEL_29:
                 {
                   if (*v28 != v16)
                   {
-                    objc_enumerationMutation(v12);
+                    objc_enumerationMutation(replies);
                   }
 
-                  v18 = [*(*(&v27 + 1) + 8 * j) recipient];
-                  v19 = v18 == v3;
+                  recipient = [*(*(&v27 + 1) + 8 * j) recipient];
+                  v19 = recipient == localPlayerParticipant;
 
                   v15 |= v19;
                 }
 
-                v14 = [v12 countByEnumeratingWithState:&v27 objects:v35 count:16];
+                v14 = [replies countByEnumeratingWithState:&v27 objects:v35 count:16];
               }
 
               while (v14);
               v7 = v24;
-              v4 = v25;
+              exchanges = v25;
               if ((v15 & 1) == 0)
               {
 LABEL_17:
-                [v26 addObject:v9];
+                [array addObject:v9];
               }
             }
           }
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v31 objects:v36 count:16];
+        v6 = [exchanges countByEnumeratingWithState:&v31 objects:v36 count:16];
       }
 
       while (v6);
     }
 
-    if ([v26 count])
+    if ([array count])
     {
-      v20 = v26;
+      v20 = array;
     }
 
     else
@@ -2144,17 +2144,17 @@ LABEL_17:
   v21 = *MEMORY[0x277D85DE8];
   if ([(GKTurnBasedMatch *)self status]== GKTurnBasedMatchStatusOpen)
   {
-    v3 = [(GKTurnBasedMatch *)self localPlayerParticipant];
-    v4 = [(GKTurnBasedMatch *)self currentParticipant];
-    if (v3 == v4)
+    localPlayerParticipant = [(GKTurnBasedMatch *)self localPlayerParticipant];
+    currentParticipant = [(GKTurnBasedMatch *)self currentParticipant];
+    if (localPlayerParticipant == currentParticipant)
     {
-      v6 = [MEMORY[0x277CBEB18] array];
-      v7 = [(GKTurnBasedMatch *)self exchanges];
+      array = [MEMORY[0x277CBEB18] array];
+      exchanges = [(GKTurnBasedMatch *)self exchanges];
       v16 = 0u;
       v17 = 0u;
       v18 = 0u;
       v19 = 0u;
-      v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v8 = [exchanges countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v8)
       {
         v9 = v8;
@@ -2165,25 +2165,25 @@ LABEL_17:
           {
             if (*v17 != v10)
             {
-              objc_enumerationMutation(v7);
+              objc_enumerationMutation(exchanges);
             }
 
             v12 = *(*(&v16 + 1) + 8 * i);
             if ([v12 status] == 2)
             {
-              [v6 addObject:v12];
+              [array addObject:v12];
             }
           }
 
-          v9 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+          v9 = [exchanges countByEnumeratingWithState:&v16 objects:v20 count:16];
         }
 
         while (v9);
       }
 
-      if ([v6 count])
+      if ([array count])
       {
-        v13 = v6;
+        v13 = array;
       }
 
       else
@@ -2216,16 +2216,16 @@ LABEL_17:
   v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d %s", "GKTurnBasedMatch.m", 1461, "-[GKTurnBasedMatch removeWithCompletionHandler:]"];
   v6 = [GKDispatchGroup dispatchGroupWithName:v5];
 
-  v7 = [(GKTurnBasedMatch *)self localPlayerParticipant];
+  localPlayerParticipant = [(GKTurnBasedMatch *)self localPlayerParticipant];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __48__GKTurnBasedMatch_removeWithCompletionHandler___block_invoke;
   v15[3] = &unk_2785DD910;
-  v16 = v7;
-  v17 = self;
+  v16 = localPlayerParticipant;
+  selfCopy = self;
   v8 = v6;
   v18 = v8;
-  v9 = v7;
+  v9 = localPlayerParticipant;
   [v8 perform:v15];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
@@ -2299,9 +2299,9 @@ void __48__GKTurnBasedMatch_removeWithCompletionHandler___block_invoke_4(uint64_
   v13[1] = *MEMORY[0x277D85DE8];
   v4 = completionHandler;
   v5 = +[GKDaemonProxy proxyForLocalPlayer];
-  v6 = [v5 turnBasedService];
-  v7 = [(GKTurnBasedMatch *)self matchID];
-  v13[0] = v7;
+  turnBasedService = [v5 turnBasedService];
+  matchID = [(GKTurnBasedMatch *)self matchID];
+  v13[0] = matchID;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:1];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
@@ -2310,7 +2310,7 @@ void __48__GKTurnBasedMatch_removeWithCompletionHandler___block_invoke_4(uint64_
   v11[4] = self;
   v12 = v4;
   v9 = v4;
-  [v6 getDetailsForTurnBasedMatchIDs:v8 includeGameData:1 handler:v11];
+  [turnBasedService getDetailsForTurnBasedMatchIDs:v8 includeGameData:1 handler:v11];
 
   v10 = *MEMORY[0x277D85DE8];
 }
@@ -2333,19 +2333,19 @@ void __55__GKTurnBasedMatch_loadMatchDataWithCompletionHandler___block_invoke(ui
   }
 }
 
-+ (void)loadTurnBasedMatchWithDetailsForMatchID:(id)a3 withCompletionHandler:(id)a4
++ (void)loadTurnBasedMatchWithDetailsForMatchID:(id)d withCompletionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
+  dCopy = d;
+  handlerCopy = handler;
   v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d %s", "GKTurnBasedMatch.m", 1495, "+[GKTurnBasedMatch loadTurnBasedMatchWithDetailsForMatchID:withCompletionHandler:]"];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __82__GKTurnBasedMatch_loadTurnBasedMatchWithDetailsForMatchID_withCompletionHandler___block_invoke;
   v10[3] = &unk_2785DE540;
-  v11 = v5;
-  v12 = v6;
-  v8 = v6;
-  v9 = v5;
+  v11 = dCopy;
+  v12 = handlerCopy;
+  v8 = handlerCopy;
+  v9 = dCopy;
   [GKActivity named:v7 execute:v10];
 }
 
@@ -2464,16 +2464,16 @@ void __82__GKTurnBasedMatch_loadTurnBasedMatchWithDetailsForMatchID_withCompleti
   (*(v2 + 16))(v2, v4, v3);
 }
 
-- (void)loadURLWithMatchRequest:(id)a3 completionHandler:(id)a4
+- (void)loadURLWithMatchRequest:(id)request completionHandler:(id)handler
 {
   v40 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __62__GKTurnBasedMatch_loadURLWithMatchRequest_completionHandler___block_invoke;
   aBlock[3] = &unk_2785DE008;
-  v8 = v7;
+  v8 = handlerCopy;
   v37 = v8;
   v9 = _Block_copy(aBlock);
   v34[0] = MEMORY[0x277D85DD0];
@@ -2496,9 +2496,9 @@ void __82__GKTurnBasedMatch_loadTurnBasedMatchWithDetailsForMatchID_withCompleti
   }
 
   v14 = +[GKLocalPlayer localPlayer];
-  v15 = [v14 isAuthenticated];
+  isAuthenticated = [v14 isAuthenticated];
 
-  if (v15)
+  if (isAuthenticated)
   {
     if (!os_log_GKGeneral)
     {
@@ -2513,12 +2513,12 @@ void __82__GKTurnBasedMatch_loadTurnBasedMatchWithDetailsForMatchID_withCompleti
     }
 
     v18 = +[GKPreferences shared];
-    v19 = [v18 multiplayerAllowedPlayerType];
+    multiplayerAllowedPlayerType = [v18 multiplayerAllowedPlayerType];
 
-    if (v19)
+    if (multiplayerAllowedPlayerType)
     {
-      v20 = [v6 validateForTurnBased];
-      if (v20)
+      validateForTurnBased = [requestCopy validateForTurnBased];
+      if (validateForTurnBased)
       {
         if (!os_log_GKGeneral)
         {
@@ -2529,11 +2529,11 @@ void __82__GKTurnBasedMatch_loadTurnBasedMatchWithDetailsForMatchID_withCompleti
         if (os_log_type_enabled(os_log_GKMatch, OS_LOG_TYPE_INFO))
         {
           *buf = 138412290;
-          v39 = v6;
+          v39 = requestCopy;
           _os_log_impl(&dword_227904000, v22, OS_LOG_TYPE_INFO, "TBGame - isTurnBasedValid: NO, request = %@", buf, 0xCu);
         }
 
-        (*(v10 + 2))(v10, v20);
+        (*(v10 + 2))(v10, validateForTurnBased);
       }
 
       else
@@ -2546,7 +2546,7 @@ void __82__GKTurnBasedMatch_loadTurnBasedMatchWithDetailsForMatchID_withCompleti
         v31[2] = __62__GKTurnBasedMatch_loadURLWithMatchRequest_completionHandler___block_invoke_373;
         v31[3] = &unk_2785DD910;
         v31[4] = self;
-        v32 = v6;
+        v32 = requestCopy;
         v25 = v24;
         v33 = v25;
         [v25 perform:v31];
@@ -2665,15 +2665,15 @@ void __62__GKTurnBasedMatch_loadURLWithMatchRequest_completionHandler___block_in
   }
 }
 
-- (void)reserveShareParticipantSlots:(int64_t)a3 minPlayerCount:(int64_t)a4 maxPlayerCount:(int64_t)a5 andInvitePlayers:(id)a6 withMessage:(id)a7 handler:(id)a8
+- (void)reserveShareParticipantSlots:(int64_t)slots minPlayerCount:(int64_t)count maxPlayerCount:(int64_t)playerCount andInvitePlayers:(id)players withMessage:(id)message handler:(id)handler
 {
-  v14 = a8;
-  v15 = a7;
-  v16 = a6;
+  handlerCopy = handler;
+  messageCopy = message;
+  playersCopy = players;
   v19 = +[GKDaemonProxy proxyForLocalPlayer];
-  v17 = [v19 turnBasedService];
-  v18 = [(GKTurnBasedMatch *)self internal];
-  [v17 reserveShareParticipantSlots:a3 minPlayerCount:a4 maxPlayerCount:a5 andInvitePlayers:v16 withMessage:v15 forMatch:v18 handler:v14];
+  turnBasedService = [v19 turnBasedService];
+  internal = [(GKTurnBasedMatch *)self internal];
+  [turnBasedService reserveShareParticipantSlots:slots minPlayerCount:count maxPlayerCount:playerCount andInvitePlayers:playersCopy withMessage:messageCopy forMatch:internal handler:handlerCopy];
 }
 
 - (void)endTurnWithNextParticipant:(GKTurnBasedParticipant *)nextParticipant matchData:(NSData *)matchData completionHandler:(void *)completionHandler
@@ -2685,23 +2685,23 @@ void __62__GKTurnBasedMatch_loadURLWithMatchRequest_completionHandler___block_in
   [(GKTurnBasedMatch *)self endTurnWithNextParticipants:v11 turnTimeout:v10 matchData:v9 completionHandler:GKTurnTimeoutDefault];
 }
 
-- (id)indexesForParticipants:(id)a3
+- (id)indexesForParticipants:(id)participants
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 count])
+  participantsCopy = participants;
+  if ([participantsCopy count])
   {
-    v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v4, "count")}];
+    v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(participantsCopy, "count")}];
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v6 = v4;
+    v6 = participantsCopy;
     v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v7)
     {
       v8 = v7;
-      v17 = v4;
+      v17 = participantsCopy;
       v9 = *v19;
       while (2)
       {
@@ -2713,8 +2713,8 @@ void __62__GKTurnBasedMatch_loadURLWithMatchRequest_completionHandler___block_in
           }
 
           v11 = *(*(&v18 + 1) + 8 * i);
-          v12 = [(GKTurnBasedMatch *)self participants];
-          v13 = [v12 indexOfObject:v11];
+          participants = [(GKTurnBasedMatch *)self participants];
+          v13 = [participants indexOfObject:v11];
 
           if (v13 == 0x7FFFFFFFFFFFFFFFLL)
           {
@@ -2737,7 +2737,7 @@ void __62__GKTurnBasedMatch_loadURLWithMatchRequest_completionHandler___block_in
       }
 
 LABEL_12:
-      v4 = v17;
+      participantsCopy = v17;
     }
   }
 
@@ -2761,9 +2761,9 @@ LABEL_12:
   v14 = [GKDispatchGroup dispatchGroupWithName:v13];
 
   v15 = +[GKPreferences shared];
-  v16 = [v15 multiplayerAllowedPlayerType];
+  multiplayerAllowedPlayerType = [v15 multiplayerAllowedPlayerType];
 
-  if (v16)
+  if (multiplayerAllowedPlayerType)
   {
     v17 = [(GKTurnBasedMatch *)self indexesForParticipants:v10];
     if (GKApplicationLinkedOnOrAfter(458752, 657920))
@@ -2803,8 +2803,8 @@ LABEL_12:
       v18 = [(NSArray *)v10 objectAtIndex:0];
       [(GKTurnBasedMatch *)self setCurrentParticipant:v18];
 
-      v19 = [(GKTurnBasedMatch *)self internal];
-      [v19 setMatchData:v11];
+      internal = [(GKTurnBasedMatch *)self internal];
+      [internal setMatchData:v11];
 
       v34[0] = MEMORY[0x277D85DD0];
       v34[1] = 3221225472;
@@ -2919,8 +2919,8 @@ void __88__GKTurnBasedMatch_endTurnWithNextParticipants_turnTimeout_matchData_co
       v22 = MEMORY[0x277CBEAD8];
       v23 = *MEMORY[0x277CBE660];
       v39 = @"matchOutcome";
-      v24 = [(GKTurnBasedMatch *)self participants];
-      v25 = +[GKTurnBasedParticipant stringForMatchOutcome:totalParticipant:](GKTurnBasedParticipant, "stringForMatchOutcome:totalParticipant:", matchOutcome, [v24 count]);
+      participants = [(GKTurnBasedMatch *)self participants];
+      v25 = +[GKTurnBasedParticipant stringForMatchOutcome:totalParticipant:](GKTurnBasedParticipant, "stringForMatchOutcome:totalParticipant:", matchOutcome, [participants count]);
       v40[0] = v25;
       v26 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v40 forKeys:&v39 count:1];
       v27 = [v22 exceptionWithName:v23 reason:@"invalid matchOutcome" userInfo:v26];
@@ -2965,11 +2965,11 @@ void __88__GKTurnBasedMatch_endTurnWithNextParticipants_turnTimeout_matchData_co
 
   if (v17)
   {
-    v18 = [(GKTurnBasedMatch *)self currentParticipant];
-    [v18 setStatus:5];
+    currentParticipant = [(GKTurnBasedMatch *)self currentParticipant];
+    [currentParticipant setStatus:5];
 
-    v19 = [(GKTurnBasedMatch *)self currentParticipant];
-    [v19 setMatchOutcome:matchOutcome];
+    currentParticipant2 = [(GKTurnBasedMatch *)self currentParticipant];
+    [currentParticipant2 setMatchOutcome:matchOutcome];
 
     [(GKTurnBasedMatch *)self endTurnWithNextParticipants:v12 turnTimeout:v13 matchData:v14 completionHandler:timeout];
   }
@@ -3008,9 +3008,9 @@ void __110__GKTurnBasedMatch_participantQuitInTurnWithOutcome_nextParticipants_t
 
   if ([GKTurnBasedParticipant matchOutcomeIsValidForDoneState:matchOutcome])
   {
-    v9 = [(GKTurnBasedMatch *)self localPlayerParticipant];
-    v10 = [(GKTurnBasedMatch *)self currentParticipant];
-    if ([v10 isEqual:v9])
+    localPlayerParticipant = [(GKTurnBasedMatch *)self localPlayerParticipant];
+    currentParticipant = [(GKTurnBasedMatch *)self currentParticipant];
+    if ([currentParticipant isEqual:localPlayerParticipant])
     {
       if (GKApplicationLinkedOnOrAfter(458752, 657920))
       {
@@ -3024,8 +3024,8 @@ void __110__GKTurnBasedMatch_participantQuitInTurnWithOutcome_nextParticipants_t
 
     else
     {
-      [v9 setStatus:5];
-      [v9 setMatchOutcome:matchOutcome];
+      [localPlayerParticipant setStatus:5];
+      [localPlayerParticipant setMatchOutcome:matchOutcome];
       v27[0] = MEMORY[0x277D85DD0];
       v27[1] = 3221225472;
       v27[2] = __78__GKTurnBasedMatch_participantQuitOutOfTurnWithOutcome_withCompletionHandler___block_invoke;
@@ -3044,8 +3044,8 @@ void __110__GKTurnBasedMatch_participantQuitInTurnWithOutcome_nextParticipants_t
       v16 = MEMORY[0x277CBEAD8];
       v17 = *MEMORY[0x277CBE660];
       v30 = @"matchOutcome";
-      v18 = [(GKTurnBasedMatch *)self participants];
-      v19 = +[GKTurnBasedParticipant stringForMatchOutcome:totalParticipant:](GKTurnBasedParticipant, "stringForMatchOutcome:totalParticipant:", matchOutcome, [v18 count]);
+      participants = [(GKTurnBasedMatch *)self participants];
+      v19 = +[GKTurnBasedParticipant stringForMatchOutcome:totalParticipant:](GKTurnBasedParticipant, "stringForMatchOutcome:totalParticipant:", matchOutcome, [participants count]);
       v31[0] = v19;
       v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v31 forKeys:&v30 count:1];
       v21 = [v16 exceptionWithName:v17 reason:@"invalid matchOutcome" userInfo:v20];
@@ -3140,15 +3140,15 @@ void __78__GKTurnBasedMatch_participantQuitOutOfTurnWithOutcome_withCompletionHa
   v16 = "nge received alert without further action";
   if (v10)
   {
-    v48 = self;
+    selfCopy = self;
     v49 = v11;
     v47 = v10;
     v63 = 0u;
     v64 = 0u;
     v61 = 0u;
     v62 = 0u;
-    v17 = [(GKTurnBasedMatch *)self participants];
-    v18 = [v17 countByEnumeratingWithState:&v61 objects:v68 count:16];
+    participants = [(GKTurnBasedMatch *)self participants];
+    v18 = [participants countByEnumeratingWithState:&v61 objects:v68 count:16];
     if (v18)
     {
       v19 = v18;
@@ -3159,7 +3159,7 @@ LABEL_4:
       {
         if (*v62 != v20)
         {
-          objc_enumerationMutation(v17);
+          objc_enumerationMutation(participants);
         }
 
         v22 = *(*(&v61 + 1) + 8 * v21);
@@ -3178,9 +3178,9 @@ LABEL_4:
             v67[0] = v39;
             v66[0] = @"participant";
             v66[1] = @"matchOutcome";
-            v40 = [(__CFString *)v22 matchOutcome];
-            v41 = [(GKTurnBasedMatch *)v48 participants];
-            v42 = +[GKTurnBasedParticipant stringForMatchOutcome:totalParticipant:](GKTurnBasedParticipant, "stringForMatchOutcome:totalParticipant:", v40, [v41 count]);
+            matchOutcome = [(__CFString *)v22 matchOutcome];
+            participants2 = [(GKTurnBasedMatch *)selfCopy participants];
+            v42 = +[GKTurnBasedParticipant stringForMatchOutcome:totalParticipant:](GKTurnBasedParticipant, "stringForMatchOutcome:totalParticipant:", matchOutcome, [participants2 count]);
             v67[1] = v42;
             v43 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v67 forKeys:v66 count:2];
             v44 = [v37 exceptionWithName:v38 reason:@"invalid matchOutcome for participant" userInfo:v43];
@@ -3193,16 +3193,16 @@ LABEL_4:
           [v15 setError:v23];
         }
 
-        v24 = [v15 error];
+        error = [v15 error];
 
-        if (v24)
+        if (error)
         {
           break;
         }
 
         if (v19 == ++v21)
         {
-          v19 = [v17 countByEnumeratingWithState:&v61 objects:v68 count:16];
+          v19 = [participants countByEnumeratingWithState:&v61 objects:v68 count:16];
           if (v19)
           {
             goto LABEL_4;
@@ -3213,26 +3213,26 @@ LABEL_4:
       }
     }
 
-    v25 = [v15 error];
+    error2 = [v15 error];
 
     v10 = v47;
-    self = v48;
+    self = selfCopy;
     v11 = v49;
     v16 = "Close the challenge received alert without further action" + 16;
-    if (!v25)
+    if (!error2)
     {
-      v26 = [(GKTurnBasedMatch *)v48 currentParticipant];
-      [v26 setStatus:5];
+      currentParticipant = [(GKTurnBasedMatch *)selfCopy currentParticipant];
+      [currentParticipant setStatus:5];
 
-      v27 = [(GKTurnBasedMatch *)v48 internal];
-      [v27 setMatchData:v47];
+      internal = [(GKTurnBasedMatch *)selfCopy internal];
+      [internal setMatchData:v47];
 
       v59 = 0u;
       v60 = 0u;
       v58 = 0u;
       v57 = 0u;
-      v28 = [(GKTurnBasedMatch *)v48 participants];
-      v29 = [v28 countByEnumeratingWithState:&v57 objects:v65 count:16];
+      participants3 = [(GKTurnBasedMatch *)selfCopy participants];
+      v29 = [participants3 countByEnumeratingWithState:&v57 objects:v65 count:16];
       if (v29)
       {
         v30 = v29;
@@ -3243,13 +3243,13 @@ LABEL_4:
           {
             if (*v58 != v31)
             {
-              objc_enumerationMutation(v28);
+              objc_enumerationMutation(participants3);
             }
 
             [*(*(&v57 + 1) + 8 * i) setStatus:5];
           }
 
-          v30 = [v28 countByEnumeratingWithState:&v57 objects:v65 count:16];
+          v30 = [participants3 countByEnumeratingWithState:&v57 objects:v65 count:16];
         }
 
         while (v30);
@@ -3260,7 +3260,7 @@ LABEL_4:
       v53[1] = 3221225472;
       v53[2] = __86__GKTurnBasedMatch_endMatchInTurnWithMatchData_scores_achievements_completionHandler___block_invoke;
       v53[3] = &unk_2785DE4C8;
-      v53[4] = v48;
+      v53[4] = selfCopy;
       v11 = v49;
       v54 = v49;
       v55 = v12;
@@ -3372,9 +3372,9 @@ void __86__GKTurnBasedMatch_endMatchInTurnWithMatchData_scores_achievements_comp
   }
 
   v10 = +[GKPreferences shared];
-  v11 = [v10 multiplayerAllowedPlayerType];
+  multiplayerAllowedPlayerType = [v10 multiplayerAllowedPlayerType];
 
-  if (!v11)
+  if (!multiplayerAllowedPlayerType)
   {
     v13 = MEMORY[0x277CCA9B8];
     v14 = 10;
@@ -3385,8 +3385,8 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v12 = [(GKTurnBasedMatch *)self internal];
-  [v12 setMatchData:v6];
+  internal = [(GKTurnBasedMatch *)self internal];
+  [internal setMatchData:v6];
 
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
@@ -3453,16 +3453,16 @@ void __67__GKTurnBasedMatch_saveCurrentTurnWithMatchData_completionHandler___blo
   }
 }
 
-- (id)exchangeForID:(id)a3
+- (id)exchangeForID:(id)d
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(GKTurnBasedMatch *)self exchanges];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  exchanges = [(GKTurnBasedMatch *)self exchanges];
+  v6 = [exchanges countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = *v15;
@@ -3472,12 +3472,12 @@ void __67__GKTurnBasedMatch_saveCurrentTurnWithMatchData_completionHandler___blo
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(exchanges);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 exchangeID];
-        v11 = [v4 isEqualToString:v10];
+        exchangeID = [v9 exchangeID];
+        v11 = [dCopy isEqualToString:exchangeID];
 
         if (v11)
         {
@@ -3486,7 +3486,7 @@ void __67__GKTurnBasedMatch_saveCurrentTurnWithMatchData_completionHandler___blo
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [exchanges countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v6)
       {
         continue;
@@ -3526,9 +3526,9 @@ LABEL_11:
   }
 
   v13 = +[GKPreferences shared];
-  v14 = [v13 multiplayerAllowedPlayerType];
+  multiplayerAllowedPlayerType = [v13 multiplayerAllowedPlayerType];
 
-  if (!v14)
+  if (!multiplayerAllowedPlayerType)
   {
     v24 = MEMORY[0x277CCA9B8];
     v25 = 10;
@@ -3560,8 +3560,8 @@ LABEL_14:
           objc_enumerationMutation(v16);
         }
 
-        v21 = [*(*(&v38 + 1) + 8 * i) exchangeID];
-        [v15 addObject:v21];
+        exchangeID = [*(*(&v38 + 1) + 8 * i) exchangeID];
+        [v15 addObject:exchangeID];
       }
 
       v18 = [(NSArray *)v16 countByEnumeratingWithState:&v38 objects:v42 count:16];
@@ -3570,8 +3570,8 @@ LABEL_14:
     while (v18);
   }
 
-  v22 = [(GKTurnBasedMatch *)self internal];
-  [v22 setMatchData:v8];
+  internal = [(GKTurnBasedMatch *)self internal];
+  [internal setMatchData:v8];
 
   v35[0] = MEMORY[0x277D85DD0];
   v35[1] = 3221225472;
@@ -3655,9 +3655,9 @@ void __80__GKTurnBasedMatch_saveMergedMatchData_withResolvedExchanges_completion
   v20 = [GKDispatchGroup dispatchGroupWithName:v19];
 
   v21 = +[GKPreferences shared];
-  v22 = [v21 multiplayerAllowedPlayerType];
+  multiplayerAllowedPlayerType = [v21 multiplayerAllowedPlayerType];
 
-  if (v22)
+  if (multiplayerAllowedPlayerType)
   {
     if (!v16)
     {
@@ -3705,7 +3705,7 @@ void __80__GKTurnBasedMatch_saveMergedMatchData_withResolvedExchanges_completion
     v42 = v24;
     v46 = timeout;
     v43 = v15;
-    v44 = self;
+    selfCopy = self;
     v45 = v20;
     v25 = v24;
     [v45 perform:v39];
@@ -3835,9 +3835,9 @@ void __110__GKTurnBasedMatch_sendExchangeToParticipants_data_localizableMessageK
   v15 = [GKDispatchGroup dispatchGroupWithName:v14];
 
   v16 = +[GKPreferences shared];
-  v17 = [v16 multiplayerAllowedPlayerType];
+  multiplayerAllowedPlayerType = [v16 multiplayerAllowedPlayerType];
 
-  if (!v17)
+  if (!multiplayerAllowedPlayerType)
   {
     v23 = [MEMORY[0x277CCA9B8] userErrorForCode:10 underlyingError:0];
     [v15 setError:v23];
@@ -3901,7 +3901,7 @@ void __110__GKTurnBasedMatch_sendExchangeToParticipants_data_localizableMessageK
   v12 = v12;
   v36 = v12;
   v37 = v20;
-  v38 = self;
+  selfCopy = self;
   v39 = v15;
   v21 = v20;
   [v39 perform:v34];
@@ -3986,12 +3986,12 @@ void __97__GKTurnBasedMatch_sendReminderToParticipants_localizableMessageKey_arg
 - (void)state
 {
   v8 = *MEMORY[0x277D85DE8];
-  v3 = a1;
+  selfCopy = self;
   v5[0] = 67109378;
   v5[1] = [a2 status];
   v6 = 2112;
   v7 = a2;
-  _os_log_error_impl(&dword_227904000, v3, OS_LOG_TYPE_ERROR, "Unexpected match status encountered: %d for match:%@", v5, 0x12u);
+  _os_log_error_impl(&dword_227904000, selfCopy, OS_LOG_TYPE_ERROR, "Unexpected match status encountered: %d for match:%@", v5, 0x12u);
 
   v4 = *MEMORY[0x277D85DE8];
 }

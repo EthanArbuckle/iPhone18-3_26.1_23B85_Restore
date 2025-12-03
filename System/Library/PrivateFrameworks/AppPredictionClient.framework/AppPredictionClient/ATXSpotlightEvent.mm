@@ -1,99 +1,99 @@
 @interface ATXSpotlightEvent
-+ (id)actionSuggestionContextMenuDismissOnceEventWithSuggestionId:(id)a3 actionBlendingCacheId:(id)a4 date:(id)a5;
-+ (id)actionSuggestionDismissedEventWithSuggestionId:(id)a3 actionBlendingCacheId:(id)a4 date:(id)a5;
-+ (id)actionSuggestionTappedEventWithSuggestion:(id)a3 actionBlendingCacheId:(id)a4 currentQuery:(id)a5 date:(id)a6;
-+ (id)appSuggestionTappedEventWithSuggestion:(id)a3 appBlendingCacheId:(id)a4 currentQuery:(id)a5 date:(id)a6;
-+ (id)documentSuggestionDismissedWithPaths:(id)a3 date:(id)a4;
-+ (id)documentSuggestionTappedWithPath:(id)a3 date:(id)a4;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
-+ (id)searchResultTappedWithEngagedBundleId:(id)a3 searchedActionType:(unint64_t)a4 date:(id)a5;
-+ (id)suggestionsAppearedEventWithAppSuggestionIds:(id)a3 actionSuggestionIds:(id)a4 appBlendingCacheId:(id)a5 actionBlendingCacheId:(id)a6 date:(id)a7;
-+ (id)viewAppearedEventWithSFFeedback:(id)a3 date:(id)a4;
-+ (id)viewDisappearedEventWithDidSearch:(BOOL)a3 date:(id)a4;
-- (ATXSpotlightEvent)initWithAbsoluteDate:(double)a3 eventType:(int)a4 appConsumerSubType:(id)a5 actionConsumerSubType:(id)a6 appBlendingCacheId:(id)a7 actionBlendingCacheId:(id)a8 appSuggestionIds:(id)a9 actionSuggestionIds:(id)a10 documentSuggestionIds:(id)a11 metadata:(id)a12;
-- (ATXSpotlightEvent)initWithCoder:(id)a3;
-- (ATXSpotlightEvent)initWithDate:(id)a3 eventType:(int)a4 appConsumerSubType:(id)a5 actionConsumerSubType:(id)a6 appBlendingCacheId:(id)a7 actionBlendingCacheId:(id)a8 appSuggestionIds:(id)a9 actionSuggestionIds:(id)a10 documentSuggestionIds:(id)a11 metadata:(id)a12;
-- (ATXSpotlightEvent)initWithProto:(id)a3;
-- (ATXSpotlightEvent)initWithProtoData:(id)a3;
-- (BOOL)checkAndReportDecodingFailureIfNeededFordouble:(double)a3 key:(id)a4 coder:(id)a5 errorDomain:(id)a6 errorCode:(int64_t)a7;
-- (BOOL)checkAndReportDecodingFailureIfNeededForid:(id)a3 key:(id)a4 coder:(id)a5 errorDomain:(id)a6 errorCode:(int64_t)a7;
-- (BOOL)checkAndReportDecodingFailureIfNeededForint32_t:(int)a3 key:(id)a4 coder:(id)a5 errorDomain:(id)a6 errorCode:(int64_t)a7;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToATXSpotlightEvent:(id)a3;
++ (id)actionSuggestionContextMenuDismissOnceEventWithSuggestionId:(id)id actionBlendingCacheId:(id)cacheId date:(id)date;
++ (id)actionSuggestionDismissedEventWithSuggestionId:(id)id actionBlendingCacheId:(id)cacheId date:(id)date;
++ (id)actionSuggestionTappedEventWithSuggestion:(id)suggestion actionBlendingCacheId:(id)id currentQuery:(id)query date:(id)date;
++ (id)appSuggestionTappedEventWithSuggestion:(id)suggestion appBlendingCacheId:(id)id currentQuery:(id)query date:(id)date;
++ (id)documentSuggestionDismissedWithPaths:(id)paths date:(id)date;
++ (id)documentSuggestionTappedWithPath:(id)path date:(id)date;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
++ (id)searchResultTappedWithEngagedBundleId:(id)id searchedActionType:(unint64_t)type date:(id)date;
++ (id)suggestionsAppearedEventWithAppSuggestionIds:(id)ids actionSuggestionIds:(id)suggestionIds appBlendingCacheId:(id)id actionBlendingCacheId:(id)cacheId date:(id)date;
++ (id)viewAppearedEventWithSFFeedback:(id)feedback date:(id)date;
++ (id)viewDisappearedEventWithDidSearch:(BOOL)search date:(id)date;
+- (ATXSpotlightEvent)initWithAbsoluteDate:(double)date eventType:(int)type appConsumerSubType:(id)subType actionConsumerSubType:(id)consumerSubType appBlendingCacheId:(id)id actionBlendingCacheId:(id)cacheId appSuggestionIds:(id)ids actionSuggestionIds:(id)self0 documentSuggestionIds:(id)self1 metadata:(id)self2;
+- (ATXSpotlightEvent)initWithCoder:(id)coder;
+- (ATXSpotlightEvent)initWithDate:(id)date eventType:(int)type appConsumerSubType:(id)subType actionConsumerSubType:(id)consumerSubType appBlendingCacheId:(id)id actionBlendingCacheId:(id)cacheId appSuggestionIds:(id)ids actionSuggestionIds:(id)self0 documentSuggestionIds:(id)self1 metadata:(id)self2;
+- (ATXSpotlightEvent)initWithProto:(id)proto;
+- (ATXSpotlightEvent)initWithProtoData:(id)data;
+- (BOOL)checkAndReportDecodingFailureIfNeededFordouble:(double)fordouble key:(id)key coder:(id)coder errorDomain:(id)domain errorCode:(int64_t)code;
+- (BOOL)checkAndReportDecodingFailureIfNeededForid:(id)forid key:(id)key coder:(id)coder errorDomain:(id)domain errorCode:(int64_t)code;
+- (BOOL)checkAndReportDecodingFailureIfNeededForint32_t:(int)forint32_t key:(id)key coder:(id)coder errorDomain:(id)domain errorCode:(int64_t)code;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToATXSpotlightEvent:(id)event;
 - (NSDate)date;
-- (id)blendingUICacheUpdateUUIDForUICacheConsumerSubType:(unsigned __int8)a3;
+- (id)blendingUICacheUpdateUUIDForUICacheConsumerSubType:(unsigned __int8)type;
 - (id)encodeAsProto;
 - (id)json;
 - (id)jsonDict;
 - (id)proto;
-- (id)sessionIdentifierForSessionType:(int64_t)a3 uiCacheConsumerSubType:(unsigned __int8)a4;
-- (id)sessionProcessingOptionsForSessionType:(int64_t)a3;
+- (id)sessionIdentifierForSessionType:(int64_t)type uiCacheConsumerSubType:(unsigned __int8)subType;
+- (id)sessionProcessingOptionsForSessionType:(int64_t)type;
 - (unint64_t)hash;
-- (void)_updateActionUIFeedbackSession:(id)a3;
-- (void)_updateAppUIFeedbackSession:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)updateUIFeedbackSession:(id)a3 uiCacheConsumerSubType:(unsigned __int8)a4;
+- (void)_updateActionUIFeedbackSession:(id)session;
+- (void)_updateAppUIFeedbackSession:(id)session;
+- (void)encodeWithCoder:(id)coder;
+- (void)updateUIFeedbackSession:(id)session uiCacheConsumerSubType:(unsigned __int8)type;
 @end
 
 @implementation ATXSpotlightEvent
 
-- (ATXSpotlightEvent)initWithDate:(id)a3 eventType:(int)a4 appConsumerSubType:(id)a5 actionConsumerSubType:(id)a6 appBlendingCacheId:(id)a7 actionBlendingCacheId:(id)a8 appSuggestionIds:(id)a9 actionSuggestionIds:(id)a10 documentSuggestionIds:(id)a11 metadata:(id)a12
+- (ATXSpotlightEvent)initWithDate:(id)date eventType:(int)type appConsumerSubType:(id)subType actionConsumerSubType:(id)consumerSubType appBlendingCacheId:(id)id actionBlendingCacheId:(id)cacheId appSuggestionIds:(id)ids actionSuggestionIds:(id)self0 documentSuggestionIds:(id)self1 metadata:(id)self2
 {
-  v18 = a12;
-  v19 = a11;
-  v20 = a10;
-  v21 = a9;
-  v22 = a8;
-  v23 = a7;
-  v24 = a6;
-  v25 = a5;
-  [a3 timeIntervalSince1970];
-  v26 = [(ATXSpotlightEvent *)self initWithAbsoluteDate:a4 eventType:v25 appConsumerSubType:v24 actionConsumerSubType:v23 appBlendingCacheId:v22 actionBlendingCacheId:v21 appSuggestionIds:v20 actionSuggestionIds:v19 documentSuggestionIds:v18 metadata:?];
+  metadataCopy = metadata;
+  documentSuggestionIdsCopy = documentSuggestionIds;
+  suggestionIdsCopy = suggestionIds;
+  idsCopy = ids;
+  cacheIdCopy = cacheId;
+  idCopy = id;
+  consumerSubTypeCopy = consumerSubType;
+  subTypeCopy = subType;
+  [date timeIntervalSince1970];
+  v26 = [(ATXSpotlightEvent *)self initWithAbsoluteDate:type eventType:subTypeCopy appConsumerSubType:consumerSubTypeCopy actionConsumerSubType:idCopy appBlendingCacheId:cacheIdCopy actionBlendingCacheId:idsCopy appSuggestionIds:suggestionIdsCopy actionSuggestionIds:documentSuggestionIdsCopy documentSuggestionIds:metadataCopy metadata:?];
 
   return v26;
 }
 
-- (ATXSpotlightEvent)initWithAbsoluteDate:(double)a3 eventType:(int)a4 appConsumerSubType:(id)a5 actionConsumerSubType:(id)a6 appBlendingCacheId:(id)a7 actionBlendingCacheId:(id)a8 appSuggestionIds:(id)a9 actionSuggestionIds:(id)a10 documentSuggestionIds:(id)a11 metadata:(id)a12
+- (ATXSpotlightEvent)initWithAbsoluteDate:(double)date eventType:(int)type appConsumerSubType:(id)subType actionConsumerSubType:(id)consumerSubType appBlendingCacheId:(id)id actionBlendingCacheId:(id)cacheId appSuggestionIds:(id)ids actionSuggestionIds:(id)self0 documentSuggestionIds:(id)self1 metadata:(id)self2
 {
-  v39 = a5;
-  v38 = a6;
-  v40 = a7;
-  v20 = a8;
-  v21 = a9;
-  v22 = a10;
-  v23 = a11;
-  v24 = a12;
+  subTypeCopy = subType;
+  consumerSubTypeCopy = consumerSubType;
+  idCopy = id;
+  cacheIdCopy = cacheId;
+  idsCopy = ids;
+  suggestionIdsCopy = suggestionIds;
+  documentSuggestionIdsCopy = documentSuggestionIds;
+  metadataCopy = metadata;
   v41.receiver = self;
   v41.super_class = ATXSpotlightEvent;
   v25 = [(ATXSpotlightEvent *)&v41 init];
   v26 = v25;
   if (v25)
   {
-    v25->_absoluteDate = a3;
-    v25->_eventType = a4;
-    objc_storeStrong(&v25->_appConsumerSubType, a5);
-    objc_storeStrong(&v26->_actionConsumerSubType, a6);
-    v27 = [v40 copy];
+    v25->_absoluteDate = date;
+    v25->_eventType = type;
+    objc_storeStrong(&v25->_appConsumerSubType, subType);
+    objc_storeStrong(&v26->_actionConsumerSubType, consumerSubType);
+    v27 = [idCopy copy];
     appBlendingCacheId = v26->_appBlendingCacheId;
     v26->_appBlendingCacheId = v27;
 
-    v29 = [v20 copy];
+    v29 = [cacheIdCopy copy];
     actionBlendingCacheId = v26->_actionBlendingCacheId;
     v26->_actionBlendingCacheId = v29;
 
-    v31 = [v21 copy];
+    v31 = [idsCopy copy];
     appSuggestionIds = v26->_appSuggestionIds;
     v26->_appSuggestionIds = v31;
 
-    v33 = [v22 copy];
+    v33 = [suggestionIdsCopy copy];
     actionSuggestionIds = v26->_actionSuggestionIds;
     v26->_actionSuggestionIds = v33;
 
-    v35 = [v23 copy];
+    v35 = [documentSuggestionIdsCopy copy];
     documentSuggestionIds = v26->_documentSuggestionIds;
     v26->_documentSuggestionIds = v35;
 
-    objc_storeStrong(&v26->_metadata, a12);
+    objc_storeStrong(&v26->_metadata, metadata);
   }
 
   return v26;
@@ -106,9 +106,9 @@
   return v2;
 }
 
-- (id)sessionProcessingOptionsForSessionType:(int64_t)a3
+- (id)sessionProcessingOptionsForSessionType:(int64_t)type
 {
-  if (a3)
+  if (type)
   {
     return MEMORY[0x1E695E0F0];
   }
@@ -125,15 +125,15 @@
   }
 }
 
-- (id)sessionIdentifierForSessionType:(int64_t)a3 uiCacheConsumerSubType:(unsigned __int8)a4
+- (id)sessionIdentifierForSessionType:(int64_t)type uiCacheConsumerSubType:(unsigned __int8)subType
 {
   v4 = @"spotlight-action";
-  if (a4 != 21)
+  if (subType != 21)
   {
     v4 = 0;
   }
 
-  if (a4 == 9)
+  if (subType == 9)
   {
     return @"spotlight-app";
   }
@@ -144,9 +144,9 @@
   }
 }
 
-- (id)blendingUICacheUpdateUUIDForUICacheConsumerSubType:(unsigned __int8)a3
+- (id)blendingUICacheUpdateUUIDForUICacheConsumerSubType:(unsigned __int8)type
 {
-  if (a3 == 21)
+  if (type == 21)
   {
     p_actionBlendingCacheId = &self->_actionBlendingCacheId;
     if (self->_actionBlendingCacheId)
@@ -157,7 +157,7 @@ LABEL_4:
     }
   }
 
-  else if (a3 == 9)
+  else if (type == 9)
   {
     p_actionBlendingCacheId = &self->_appBlendingCacheId;
     if (self->_appBlendingCacheId)
@@ -172,37 +172,37 @@ LABEL_7:
   return v4;
 }
 
-- (void)updateUIFeedbackSession:(id)a3 uiCacheConsumerSubType:(unsigned __int8)a4
+- (void)updateUIFeedbackSession:(id)session uiCacheConsumerSubType:(unsigned __int8)type
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = v6;
-  if (v4 == 21)
+  typeCopy = type;
+  sessionCopy = session;
+  v7 = sessionCopy;
+  if (typeCopy == 21)
   {
-    v8 = v6;
-    v6 = [(ATXSpotlightEvent *)self _updateActionUIFeedbackSession:v6];
+    v8 = sessionCopy;
+    sessionCopy = [(ATXSpotlightEvent *)self _updateActionUIFeedbackSession:sessionCopy];
   }
 
   else
   {
-    if (v4 != 9)
+    if (typeCopy != 9)
     {
       goto LABEL_6;
     }
 
-    v8 = v6;
-    v6 = [(ATXSpotlightEvent *)self _updateAppUIFeedbackSession:v6];
+    v8 = sessionCopy;
+    sessionCopy = [(ATXSpotlightEvent *)self _updateAppUIFeedbackSession:sessionCopy];
   }
 
   v7 = v8;
 LABEL_6:
 
-  MEMORY[0x1EEE66BB8](v6, v7);
+  MEMORY[0x1EEE66BB8](sessionCopy, v7);
 }
 
-- (void)_updateAppUIFeedbackSession:(id)a3
+- (void)_updateAppUIFeedbackSession:(id)session
 {
-  v12 = a3;
+  sessionCopy = session;
   eventType = self->_eventType;
   if (eventType <= 4)
   {
@@ -211,9 +211,9 @@ LABEL_6:
       if (eventType == 1)
       {
         v10 = [MEMORY[0x1E698B028] consumerSubtypeForString:self->_appConsumerSubType found:0];
-        v5 = [[ATXSpotlightSessionMetadata alloc] initWithAppConsumerSubType:v10 actionConsumerSubType:21];
-        [v12 updateConsumerSubTypeIfUnset:v10];
-        [v12 updateSessionMetadataIfUnset:v5];
+        sessionMetadata = [[ATXSpotlightSessionMetadata alloc] initWithAppConsumerSubType:v10 actionConsumerSubType:21];
+        [sessionCopy updateConsumerSubTypeIfUnset:v10];
+        [sessionCopy updateSessionMetadataIfUnset:sessionMetadata];
         goto LABEL_17;
       }
 
@@ -222,30 +222,30 @@ LABEL_6:
         goto LABEL_18;
       }
 
-      v5 = [v12 sessionMetadata];
-      v6 = [(ATXSpotlightEventMetadata *)self->_metadata didSearchDuringSession];
-      -[ATXSpotlightSessionMetadata setDidSearchDuringSession:](v5, "setDidSearchDuringSession:", [v6 BOOLValue]);
+      sessionMetadata = [sessionCopy sessionMetadata];
+      didSearchDuringSession = [(ATXSpotlightEventMetadata *)self->_metadata didSearchDuringSession];
+      -[ATXSpotlightSessionMetadata setDidSearchDuringSession:](sessionMetadata, "setDidSearchDuringSession:", [didSearchDuringSession BOOLValue]);
       goto LABEL_14;
     }
 
     if (eventType == 3)
     {
       v11 = [(ATXSpotlightEvent *)self _stringArrayToUUIDArray:self->_appSuggestionIds];
-      [v12 updateEngagedUUIDs:0 rejectedUUIDs:0 shownUUIDs:v11];
+      [sessionCopy updateEngagedUUIDs:0 rejectedUUIDs:0 shownUUIDs:v11];
 
-      v5 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:self->_appBlendingCacheId];
-      [v12 updateBlendingUICacheUpdateUUIDIfUnset:v5];
+      sessionMetadata = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:self->_appBlendingCacheId];
+      [sessionCopy updateBlendingUICacheUpdateUUIDIfUnset:sessionMetadata];
       goto LABEL_17;
     }
 
     v7 = [(ATXSpotlightEvent *)self _stringArrayToUUIDArray:self->_appSuggestionIds];
-    [v12 updateEngagedUUIDs:v7 rejectedUUIDs:0 shownUUIDs:0];
+    [sessionCopy updateEngagedUUIDs:v7 rejectedUUIDs:0 shownUUIDs:0];
 
-    v5 = [v12 sessionMetadata];
-    v8 = [(ATXSpotlightEventMetadata *)self->_metadata engagedAppString];
+    sessionMetadata = [sessionCopy sessionMetadata];
+    engagedAppString = [(ATXSpotlightEventMetadata *)self->_metadata engagedAppString];
 LABEL_13:
-    v6 = v8;
-    [(ATXSpotlightSessionMetadata *)v5 setEngagedAppString:v8];
+    didSearchDuringSession = engagedAppString;
+    [(ATXSpotlightSessionMetadata *)sessionMetadata setEngagedAppString:engagedAppString];
 LABEL_14:
 
     goto LABEL_17;
@@ -258,20 +258,20 @@ LABEL_14:
       goto LABEL_18;
     }
 
-    v5 = [v12 sessionMetadata];
-    v9 = [(ATXSpotlightEventMetadata *)self->_metadata searchEngagedBundleId];
+    sessionMetadata = [sessionCopy sessionMetadata];
+    searchEngagedBundleId = [(ATXSpotlightEventMetadata *)self->_metadata searchEngagedBundleId];
 
-    if (v9)
+    if (searchEngagedBundleId)
     {
-      v8 = [(ATXSpotlightEventMetadata *)self->_metadata searchEngagedBundleId];
+      engagedAppString = [(ATXSpotlightEventMetadata *)self->_metadata searchEngagedBundleId];
       goto LABEL_13;
     }
   }
 
   else
   {
-    v5 = [(ATXSpotlightEvent *)self _stringArrayToUUIDArray:self->_appSuggestionIds];
-    [v12 updateEngagedUUIDs:0 rejectedUUIDs:v5 shownUUIDs:0];
+    sessionMetadata = [(ATXSpotlightEvent *)self _stringArrayToUUIDArray:self->_appSuggestionIds];
+    [sessionCopy updateEngagedUUIDs:0 rejectedUUIDs:sessionMetadata shownUUIDs:0];
   }
 
 LABEL_17:
@@ -279,9 +279,9 @@ LABEL_17:
 LABEL_18:
 }
 
-- (void)_updateActionUIFeedbackSession:(id)a3
+- (void)_updateActionUIFeedbackSession:(id)session
 {
-  v11 = a3;
+  sessionCopy = session;
   eventType = self->_eventType;
   if (eventType <= 4)
   {
@@ -290,19 +290,19 @@ LABEL_18:
       if (eventType == 3)
       {
         v10 = [(ATXSpotlightEvent *)self _stringArrayToUUIDArray:self->_actionSuggestionIds];
-        [v11 updateEngagedUUIDs:0 rejectedUUIDs:0 shownUUIDs:v10];
+        [sessionCopy updateEngagedUUIDs:0 rejectedUUIDs:0 shownUUIDs:v10];
 
-        v5 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:self->_actionBlendingCacheId];
-        [v11 updateBlendingUICacheUpdateUUIDIfUnset:v5];
+        sessionMetadata = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:self->_actionBlendingCacheId];
+        [sessionCopy updateBlendingUICacheUpdateUUIDIfUnset:sessionMetadata];
         goto LABEL_16;
       }
 
-      v5 = [v11 sessionMetadata];
-      v7 = [(ATXSpotlightEventMetadata *)self->_metadata engagedAppString];
-      [(ATXSpotlightSessionMetadata *)v5 setEngagedAppString:v7];
+      sessionMetadata = [sessionCopy sessionMetadata];
+      engagedAppString = [(ATXSpotlightEventMetadata *)self->_metadata engagedAppString];
+      [(ATXSpotlightSessionMetadata *)sessionMetadata setEngagedAppString:engagedAppString];
 
-      v6 = [(ATXSpotlightEvent *)self _stringArrayToUUIDArray:self->_actionSuggestionIds];
-      [v11 updateEngagedUUIDs:v6 rejectedUUIDs:0 shownUUIDs:0];
+      didSearchDuringSession = [(ATXSpotlightEvent *)self _stringArrayToUUIDArray:self->_actionSuggestionIds];
+      [sessionCopy updateEngagedUUIDs:didSearchDuringSession rejectedUUIDs:0 shownUUIDs:0];
     }
 
     else
@@ -310,9 +310,9 @@ LABEL_18:
       if (eventType == 1)
       {
         v9 = [MEMORY[0x1E698B028] consumerSubtypeForString:self->_actionConsumerSubType found:0];
-        v5 = [[ATXSpotlightSessionMetadata alloc] initWithAppConsumerSubType:9 actionConsumerSubType:v9];
-        [v11 updateConsumerSubTypeIfUnset:v9];
-        [v11 updateSessionMetadataIfUnset:v5];
+        sessionMetadata = [[ATXSpotlightSessionMetadata alloc] initWithAppConsumerSubType:9 actionConsumerSubType:v9];
+        [sessionCopy updateConsumerSubTypeIfUnset:v9];
+        [sessionCopy updateSessionMetadataIfUnset:sessionMetadata];
         goto LABEL_16;
       }
 
@@ -321,9 +321,9 @@ LABEL_18:
         goto LABEL_17;
       }
 
-      v5 = [v11 sessionMetadata];
-      v6 = [(ATXSpotlightEventMetadata *)self->_metadata didSearchDuringSession];
-      -[ATXSpotlightSessionMetadata setDidSearchDuringSession:](v5, "setDidSearchDuringSession:", [v6 BOOLValue]);
+      sessionMetadata = [sessionCopy sessionMetadata];
+      didSearchDuringSession = [(ATXSpotlightEventMetadata *)self->_metadata didSearchDuringSession];
+      -[ATXSpotlightSessionMetadata setDidSearchDuringSession:](sessionMetadata, "setDidSearchDuringSession:", [didSearchDuringSession BOOLValue]);
     }
 
     goto LABEL_13;
@@ -336,21 +336,21 @@ LABEL_18:
       goto LABEL_17;
     }
 
-    v5 = [v11 sessionMetadata];
-    v8 = [(ATXSpotlightEventMetadata *)self->_metadata searchEngagedBundleId];
+    sessionMetadata = [sessionCopy sessionMetadata];
+    searchEngagedBundleId = [(ATXSpotlightEventMetadata *)self->_metadata searchEngagedBundleId];
 
-    if (v8)
+    if (searchEngagedBundleId)
     {
-      v6 = [(ATXSpotlightEventMetadata *)self->_metadata searchEngagedBundleId];
-      [(ATXSpotlightSessionMetadata *)v5 setEngagedAppString:v6];
+      didSearchDuringSession = [(ATXSpotlightEventMetadata *)self->_metadata searchEngagedBundleId];
+      [(ATXSpotlightSessionMetadata *)sessionMetadata setEngagedAppString:didSearchDuringSession];
 LABEL_13:
     }
   }
 
   else
   {
-    v5 = [(ATXSpotlightEvent *)self _stringArrayToUUIDArray:self->_actionSuggestionIds];
-    [v11 updateEngagedUUIDs:0 rejectedUUIDs:v5 shownUUIDs:0];
+    sessionMetadata = [(ATXSpotlightEvent *)self _stringArrayToUUIDArray:self->_actionSuggestionIds];
+    [sessionCopy updateEngagedUUIDs:0 rejectedUUIDs:sessionMetadata shownUUIDs:0];
   }
 
 LABEL_16:
@@ -358,12 +358,12 @@ LABEL_16:
 LABEL_17:
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4 == 2)
+  if (version == 2)
   {
-    v5 = a3;
-    v6 = [[a1 alloc] initWithProtoData:v5];
+    dataCopy = data;
+    v6 = [[self alloc] initWithProtoData:dataCopy];
   }
 
   else
@@ -379,8 +379,8 @@ LABEL_17:
   v19 = *MEMORY[0x1E69E9840];
   v14[0] = @"date";
   v3 = MEMORY[0x1E696AD98];
-  v4 = [(ATXSpotlightEvent *)self date];
-  [v4 timeIntervalSinceReferenceDate];
+  date = [(ATXSpotlightEvent *)self date];
+  [date timeIntervalSinceReferenceDate];
   v5 = [v3 numberWithDouble:?];
   v15[0] = v5;
   v14[1] = @"eventType";
@@ -421,39 +421,39 @@ LABEL_17:
 - (id)json
 {
   v2 = MEMORY[0x1E696ACB0];
-  v3 = [(ATXSpotlightEvent *)self jsonDict];
-  v4 = [v2 dataWithJSONObject:v3 options:1 error:0];
+  jsonDict = [(ATXSpotlightEvent *)self jsonDict];
+  v4 = [v2 dataWithJSONObject:jsonDict options:1 error:0];
 
   return v4;
 }
 
-- (BOOL)checkAndReportDecodingFailureIfNeededForid:(id)a3 key:(id)a4 coder:(id)a5 errorDomain:(id)a6 errorCode:(int64_t)a7
+- (BOOL)checkAndReportDecodingFailureIfNeededForid:(id)forid key:(id)key coder:(id)coder errorDomain:(id)domain errorCode:(int64_t)code
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!a3)
+  keyCopy = key;
+  coderCopy = coder;
+  domainCopy = domain;
+  if (!forid)
   {
-    v15 = [v12 error];
+    error = [coderCopy error];
 
-    if (v15)
+    if (error)
     {
       v14 = 1;
       goto LABEL_7;
     }
 
-    if (([v12 containsValueForKey:v11] & 1) == 0)
+    if (([coderCopy containsValueForKey:keyCopy] & 1) == 0)
     {
       v16 = objc_alloc(MEMORY[0x1E696ABC0]);
       v21 = *MEMORY[0x1E696A578];
-      v17 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Failed to decode key %@", v11, v21];
+      v17 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Failed to decode key %@", keyCopy, v21];
       v22[0] = v17;
       v14 = 1;
       v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v22 forKeys:&v21 count:1];
-      v19 = [v16 initWithDomain:v13 code:a7 userInfo:v18];
+      v19 = [v16 initWithDomain:domainCopy code:code userInfo:v18];
 
-      [v12 failWithError:v19];
+      [coderCopy failWithError:v19];
       goto LABEL_7;
     }
   }
@@ -464,33 +464,33 @@ LABEL_7:
   return v14;
 }
 
-- (BOOL)checkAndReportDecodingFailureIfNeededForint32_t:(int)a3 key:(id)a4 coder:(id)a5 errorDomain:(id)a6 errorCode:(int64_t)a7
+- (BOOL)checkAndReportDecodingFailureIfNeededForint32_t:(int)forint32_t key:(id)key coder:(id)coder errorDomain:(id)domain errorCode:(int64_t)code
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!a3)
+  keyCopy = key;
+  coderCopy = coder;
+  domainCopy = domain;
+  if (!forint32_t)
   {
-    v15 = [v12 error];
+    error = [coderCopy error];
 
-    if (v15)
+    if (error)
     {
       v14 = 1;
       goto LABEL_7;
     }
 
-    if (([v12 containsValueForKey:v11] & 1) == 0)
+    if (([coderCopy containsValueForKey:keyCopy] & 1) == 0)
     {
       v16 = objc_alloc(MEMORY[0x1E696ABC0]);
       v21 = *MEMORY[0x1E696A578];
-      v17 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Failed to decode key %@", v11, v21];
+      v17 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Failed to decode key %@", keyCopy, v21];
       v22[0] = v17;
       v14 = 1;
       v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v22 forKeys:&v21 count:1];
-      v19 = [v16 initWithDomain:v13 code:a7 userInfo:v18];
+      v19 = [v16 initWithDomain:domainCopy code:code userInfo:v18];
 
-      [v12 failWithError:v19];
+      [coderCopy failWithError:v19];
       goto LABEL_7;
     }
   }
@@ -501,33 +501,33 @@ LABEL_7:
   return v14;
 }
 
-- (BOOL)checkAndReportDecodingFailureIfNeededFordouble:(double)a3 key:(id)a4 coder:(id)a5 errorDomain:(id)a6 errorCode:(int64_t)a7
+- (BOOL)checkAndReportDecodingFailureIfNeededFordouble:(double)fordouble key:(id)key coder:(id)coder errorDomain:(id)domain errorCode:(int64_t)code
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (a3 == 0.0)
+  keyCopy = key;
+  coderCopy = coder;
+  domainCopy = domain;
+  if (fordouble == 0.0)
   {
-    v15 = [v12 error];
+    error = [coderCopy error];
 
-    if (v15)
+    if (error)
     {
       v14 = 1;
       goto LABEL_7;
     }
 
-    if (([v12 containsValueForKey:v11] & 1) == 0)
+    if (([coderCopy containsValueForKey:keyCopy] & 1) == 0)
     {
       v16 = objc_alloc(MEMORY[0x1E696ABC0]);
       v21 = *MEMORY[0x1E696A578];
-      v17 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Failed to decode key %@", v11, v21];
+      v17 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Failed to decode key %@", keyCopy, v21];
       v22[0] = v17;
       v14 = 1;
       v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v22 forKeys:&v21 count:1];
-      v19 = [v16 initWithDomain:v13 code:a7 userInfo:v18];
+      v19 = [v16 initWithDomain:domainCopy code:code userInfo:v18];
 
-      [v12 failWithError:v19];
+      [coderCopy failWithError:v19];
       goto LABEL_7;
     }
   }
@@ -538,48 +538,48 @@ LABEL_7:
   return v14;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(ATXSpotlightEvent *)self encodeAsProto];
-  [v4 encodeObject:v5 forKey:@"protobufData"];
+  coderCopy = coder;
+  encodeAsProto = [(ATXSpotlightEvent *)self encodeAsProto];
+  [coderCopy encodeObject:encodeAsProto forKey:@"protobufData"];
 }
 
-- (ATXSpotlightEvent)initWithCoder:(id)a3
+- (ATXSpotlightEvent)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"protobufData"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"protobufData"];
 
   v6 = [(ATXSpotlightEvent *)self initWithProtoData:v5];
   return v6;
 }
 
-- (ATXSpotlightEvent)initWithProtoData:(id)a3
+- (ATXSpotlightEvent)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[ATXPBSpotlightEvent alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[ATXPBSpotlightEvent alloc] initWithData:dataCopy];
 
     self = [(ATXSpotlightEvent *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (ATXSpotlightEvent)initWithProto:(id)a3
+- (ATXSpotlightEvent)initWithProto:(id)proto
 {
-  v4 = a3;
-  if (!v4)
+  protoCopy = proto;
+  if (!protoCopy)
   {
 LABEL_7:
-    v14 = 0;
+    selfCopy = 0;
     goto LABEL_8;
   }
 
@@ -595,26 +595,26 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v5 = v4;
-  v6 = [(ATXPBSpotlightEvent *)v5 date];
-  v20 = [(ATXPBSpotlightEvent *)v5 eventType];
-  v19 = [(ATXPBSpotlightEvent *)v5 appConsumerSubType];
-  v7 = [(ATXPBSpotlightEvent *)v5 actionConsumerSubType];
-  v8 = [(ATXPBSpotlightEvent *)v5 appBlendingCacheId];
-  v18 = [(ATXPBSpotlightEvent *)v5 actionBlendingCacheId];
-  v9 = [(ATXPBSpotlightEvent *)v5 appSuggestionIds];
-  v17 = [(ATXPBSpotlightEvent *)v5 actionSuggestionIds];
-  v10 = [(ATXPBSpotlightEvent *)v5 documentSuggestionIds];
+  v5 = protoCopy;
+  date = [(ATXPBSpotlightEvent *)v5 date];
+  eventType = [(ATXPBSpotlightEvent *)v5 eventType];
+  appConsumerSubType = [(ATXPBSpotlightEvent *)v5 appConsumerSubType];
+  actionConsumerSubType = [(ATXPBSpotlightEvent *)v5 actionConsumerSubType];
+  appBlendingCacheId = [(ATXPBSpotlightEvent *)v5 appBlendingCacheId];
+  actionBlendingCacheId = [(ATXPBSpotlightEvent *)v5 actionBlendingCacheId];
+  appSuggestionIds = [(ATXPBSpotlightEvent *)v5 appSuggestionIds];
+  actionSuggestionIds = [(ATXPBSpotlightEvent *)v5 actionSuggestionIds];
+  documentSuggestionIds = [(ATXPBSpotlightEvent *)v5 documentSuggestionIds];
   v11 = [ATXSpotlightEventMetadata alloc];
-  v12 = [(ATXPBSpotlightEvent *)v5 metadata];
+  metadata = [(ATXPBSpotlightEvent *)v5 metadata];
 
-  v13 = [(ATXSpotlightEventMetadata *)v11 initWithProto:v12];
-  self = [(ATXSpotlightEvent *)self initWithAbsoluteDate:v20 eventType:v19 appConsumerSubType:v7 actionConsumerSubType:v8 appBlendingCacheId:v18 actionBlendingCacheId:v9 appSuggestionIds:v6 actionSuggestionIds:v17 documentSuggestionIds:v10 metadata:v13];
+  v13 = [(ATXSpotlightEventMetadata *)v11 initWithProto:metadata];
+  self = [(ATXSpotlightEvent *)self initWithAbsoluteDate:eventType eventType:appConsumerSubType appConsumerSubType:actionConsumerSubType actionConsumerSubType:appBlendingCacheId appBlendingCacheId:actionBlendingCacheId actionBlendingCacheId:appSuggestionIds appSuggestionIds:date actionSuggestionIds:actionSuggestionIds documentSuggestionIds:documentSuggestionIds metadata:v13];
 
-  v14 = self;
+  selfCopy = self;
 LABEL_8:
 
-  return v14;
+  return selfCopy;
 }
 
 - (id)proto
@@ -632,8 +632,8 @@ LABEL_8:
   v5 = [(NSArray *)self->_actionSuggestionIds copy];
   [(ATXPBSpotlightEvent *)v3 setActionSuggestionIds:v5];
 
-  v6 = [(ATXSpotlightEventMetadata *)self->_metadata proto];
-  [(ATXPBSpotlightEvent *)v3 setMetadata:v6];
+  proto = [(ATXSpotlightEventMetadata *)self->_metadata proto];
+  [(ATXPBSpotlightEvent *)v3 setMetadata:proto];
 
   v7 = [(NSArray *)self->_documentSuggestionIds copy];
   [(ATXPBSpotlightEvent *)v3 setDocumentSuggestionIds:v7];
@@ -643,34 +643,34 @@ LABEL_8:
 
 - (id)encodeAsProto
 {
-  v2 = [(ATXSpotlightEvent *)self proto];
-  v3 = [v2 data];
+  proto = [(ATXSpotlightEvent *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXSpotlightEvent *)self isEqualToATXSpotlightEvent:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXSpotlightEvent *)self isEqualToATXSpotlightEvent:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToATXSpotlightEvent:(id)a3
+- (BOOL)isEqualToATXSpotlightEvent:(id)event
 {
-  v4 = a3;
-  v5 = v4;
-  v6 = self->_absoluteDate - v4[1];
+  eventCopy = event;
+  v5 = eventCopy;
+  v6 = self->_absoluteDate - eventCopy[1];
   if (v6 < 0.0)
   {
     v6 = -v6;
@@ -682,7 +682,7 @@ LABEL_8:
   }
 
   eventType = self->_eventType;
-  if (eventType != [v4 eventType])
+  if (eventType != [eventCopy eventType])
   {
     goto LABEL_23;
   }
@@ -805,22 +805,22 @@ id __45__ATXSpotlightEvent__stringArrayToUUIDArray___block_invoke(uint64_t a1, v
   return v4;
 }
 
-+ (id)viewAppearedEventWithSFFeedback:(id)a3 date:(id)a4
++ (id)viewAppearedEventWithSFFeedback:(id)feedback date:(id)date
 {
-  v5 = a3;
+  feedbackCopy = feedback;
   v6 = MEMORY[0x1E698B028];
-  v7 = v5;
-  v8 = a4;
-  v9 = [v7 viewAppearEvent];
+  v7 = feedbackCopy;
+  dateCopy = date;
+  viewAppearEvent = [v7 viewAppearEvent];
   v10 = 4;
-  if (v9 > 21)
+  if (viewAppearEvent > 21)
   {
-    if (v9 == 22)
+    if (viewAppearEvent == 22)
     {
       goto LABEL_15;
     }
 
-    if (v9 == 23 || v9 == 29)
+    if (viewAppearEvent == 23 || viewAppearEvent == 29)
     {
       v10 = 7;
       goto LABEL_15;
@@ -829,12 +829,12 @@ id __45__ATXSpotlightEvent__stringArrayToUUIDArray___block_invoke(uint64_t a1, v
 
   else
   {
-    if ((v9 - 4) < 2 || v9 == 0)
+    if ((viewAppearEvent - 4) < 2 || viewAppearEvent == 0)
     {
       goto LABEL_15;
     }
 
-    if (v9 == 2)
+    if (viewAppearEvent == 2)
     {
       v10 = 8;
       goto LABEL_15;
@@ -853,22 +853,22 @@ LABEL_15:
   v13 = [v6 stringForConsumerSubtype:v10];
   v14 = MEMORY[0x1E698B028];
   v15 = v7;
-  v16 = [v15 viewAppearEvent];
-  if (v16 > 0x1E)
+  viewAppearEvent2 = [v15 viewAppearEvent];
+  if (viewAppearEvent2 > 0x1E)
   {
     goto LABEL_24;
   }
 
-  if (((1 << v16) & 0x40400031) != 0)
+  if (((1 << viewAppearEvent2) & 0x40400031) != 0)
   {
 LABEL_17:
     v17 = 18;
     goto LABEL_18;
   }
 
-  if (v16 != 2)
+  if (viewAppearEvent2 != 2)
   {
-    if (v16 == 23)
+    if (viewAppearEvent2 == 23)
     {
       v17 = 19;
       goto LABEL_18;
@@ -888,148 +888,148 @@ LABEL_24:
 LABEL_18:
 
   v18 = [v14 stringForConsumerSubtype:v17];
-  v19 = [[ATXSpotlightEvent alloc] initWithDate:v8 eventType:1 appConsumerSubType:v13 actionConsumerSubType:v18 appBlendingCacheId:0 actionBlendingCacheId:0 appSuggestionIds:0 actionSuggestionIds:0 documentSuggestionIds:0 metadata:0];
+  v19 = [[ATXSpotlightEvent alloc] initWithDate:dateCopy eventType:1 appConsumerSubType:v13 actionConsumerSubType:v18 appBlendingCacheId:0 actionBlendingCacheId:0 appSuggestionIds:0 actionSuggestionIds:0 documentSuggestionIds:0 metadata:0];
 
   return v19;
 }
 
-+ (id)viewDisappearedEventWithDidSearch:(BOOL)a3 date:(id)a4
++ (id)viewDisappearedEventWithDidSearch:(BOOL)search date:(id)date
 {
-  v4 = a3;
-  v5 = a4;
+  searchCopy = search;
+  dateCopy = date;
   v6 = objc_opt_new();
-  v7 = [MEMORY[0x1E696AD98] numberWithBool:v4];
+  v7 = [MEMORY[0x1E696AD98] numberWithBool:searchCopy];
   [v6 setDidSearchDuringSession:v7];
 
-  v8 = [[ATXSpotlightEvent alloc] initWithDate:v5 eventType:2 appConsumerSubType:0 actionConsumerSubType:0 appBlendingCacheId:0 actionBlendingCacheId:0 appSuggestionIds:0 actionSuggestionIds:0 documentSuggestionIds:0 metadata:v6];
+  v8 = [[ATXSpotlightEvent alloc] initWithDate:dateCopy eventType:2 appConsumerSubType:0 actionConsumerSubType:0 appBlendingCacheId:0 actionBlendingCacheId:0 appSuggestionIds:0 actionSuggestionIds:0 documentSuggestionIds:0 metadata:v6];
 
   return v8;
 }
 
-+ (id)suggestionsAppearedEventWithAppSuggestionIds:(id)a3 actionSuggestionIds:(id)a4 appBlendingCacheId:(id)a5 actionBlendingCacheId:(id)a6 date:(id)a7
++ (id)suggestionsAppearedEventWithAppSuggestionIds:(id)ids actionSuggestionIds:(id)suggestionIds appBlendingCacheId:(id)id actionBlendingCacheId:(id)cacheId date:(id)date
 {
-  v11 = a7;
-  v12 = a6;
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
-  v16 = [[ATXSpotlightEvent alloc] initWithDate:v11 eventType:3 appConsumerSubType:0 actionConsumerSubType:0 appBlendingCacheId:v13 actionBlendingCacheId:v12 appSuggestionIds:v15 actionSuggestionIds:v14 documentSuggestionIds:0 metadata:0];
+  dateCopy = date;
+  cacheIdCopy = cacheId;
+  idCopy = id;
+  suggestionIdsCopy = suggestionIds;
+  idsCopy = ids;
+  v16 = [[ATXSpotlightEvent alloc] initWithDate:dateCopy eventType:3 appConsumerSubType:0 actionConsumerSubType:0 appBlendingCacheId:idCopy actionBlendingCacheId:cacheIdCopy appSuggestionIds:idsCopy actionSuggestionIds:suggestionIdsCopy documentSuggestionIds:0 metadata:0];
 
   return v16;
 }
 
-+ (id)appSuggestionTappedEventWithSuggestion:(id)a3 appBlendingCacheId:(id)a4 currentQuery:(id)a5 date:(id)a6
++ (id)appSuggestionTappedEventWithSuggestion:(id)suggestion appBlendingCacheId:(id)id currentQuery:(id)query date:(id)date
 {
   v21[1] = *MEMORY[0x1E69E9840];
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
+  dateCopy = date;
+  queryCopy = query;
+  idCopy = id;
+  suggestionCopy = suggestion;
   v13 = objc_opt_new();
-  [v13 setQueryAtEngagement:v10];
+  [v13 setQueryAtEngagement:queryCopy];
 
-  v14 = [v12 bundleIdExecutableObject];
-  [v13 setEngagedAppString:v14];
+  bundleIdExecutableObject = [suggestionCopy bundleIdExecutableObject];
+  [v13 setEngagedAppString:bundleIdExecutableObject];
   v15 = [ATXSpotlightEvent alloc];
-  v16 = [v12 uuid];
+  uuid = [suggestionCopy uuid];
 
-  v17 = [v16 UUIDString];
-  v21[0] = v17;
+  uUIDString = [uuid UUIDString];
+  v21[0] = uUIDString;
   v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:1];
-  v19 = [(ATXSpotlightEvent *)v15 initWithDate:v9 eventType:4 appConsumerSubType:0 actionConsumerSubType:0 appBlendingCacheId:v11 actionBlendingCacheId:0 appSuggestionIds:v18 actionSuggestionIds:0 documentSuggestionIds:0 metadata:v13];
+  v19 = [(ATXSpotlightEvent *)v15 initWithDate:dateCopy eventType:4 appConsumerSubType:0 actionConsumerSubType:0 appBlendingCacheId:idCopy actionBlendingCacheId:0 appSuggestionIds:v18 actionSuggestionIds:0 documentSuggestionIds:0 metadata:v13];
 
   return v19;
 }
 
-+ (id)actionSuggestionTappedEventWithSuggestion:(id)a3 actionBlendingCacheId:(id)a4 currentQuery:(id)a5 date:(id)a6
++ (id)actionSuggestionTappedEventWithSuggestion:(id)suggestion actionBlendingCacheId:(id)id currentQuery:(id)query date:(id)date
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
+  dateCopy = date;
+  queryCopy = query;
+  idCopy = id;
+  suggestionCopy = suggestion;
   v13 = objc_opt_new();
-  [v13 setQueryAtEngagement:v10];
+  [v13 setQueryAtEngagement:queryCopy];
 
-  v14 = [v12 atxActionExecutableObject];
-  v15 = [v14 bundleId];
-  [v13 setEngagedAppString:v15];
+  atxActionExecutableObject = [suggestionCopy atxActionExecutableObject];
+  bundleId = [atxActionExecutableObject bundleId];
+  [v13 setEngagedAppString:bundleId];
 
   v16 = [ATXSpotlightEvent alloc];
-  v17 = [v12 uuid];
+  uuid = [suggestionCopy uuid];
 
-  v18 = [v17 UUIDString];
-  v22[0] = v18;
+  uUIDString = [uuid UUIDString];
+  v22[0] = uUIDString;
   v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:1];
-  v20 = [(ATXSpotlightEvent *)v16 initWithDate:v9 eventType:4 appConsumerSubType:0 actionConsumerSubType:0 appBlendingCacheId:0 actionBlendingCacheId:v11 appSuggestionIds:0 actionSuggestionIds:v19 documentSuggestionIds:0 metadata:v13];
+  v20 = [(ATXSpotlightEvent *)v16 initWithDate:dateCopy eventType:4 appConsumerSubType:0 actionConsumerSubType:0 appBlendingCacheId:0 actionBlendingCacheId:idCopy appSuggestionIds:0 actionSuggestionIds:v19 documentSuggestionIds:0 metadata:v13];
 
   return v20;
 }
 
-+ (id)actionSuggestionContextMenuDismissOnceEventWithSuggestionId:(id)a3 actionBlendingCacheId:(id)a4 date:(id)a5
++ (id)actionSuggestionContextMenuDismissOnceEventWithSuggestionId:(id)id actionBlendingCacheId:(id)cacheId date:(id)date
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  dateCopy = date;
+  cacheIdCopy = cacheId;
+  idCopy = id;
   v10 = [ATXSpotlightEvent alloc];
-  v14[0] = v9;
+  v14[0] = idCopy;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
 
-  v12 = [(ATXSpotlightEvent *)v10 initWithDate:v7 eventType:6 appConsumerSubType:0 actionConsumerSubType:0 appBlendingCacheId:0 actionBlendingCacheId:v8 appSuggestionIds:0 actionSuggestionIds:v11 documentSuggestionIds:0 metadata:0];
+  v12 = [(ATXSpotlightEvent *)v10 initWithDate:dateCopy eventType:6 appConsumerSubType:0 actionConsumerSubType:0 appBlendingCacheId:0 actionBlendingCacheId:cacheIdCopy appSuggestionIds:0 actionSuggestionIds:v11 documentSuggestionIds:0 metadata:0];
 
   return v12;
 }
 
-+ (id)actionSuggestionDismissedEventWithSuggestionId:(id)a3 actionBlendingCacheId:(id)a4 date:(id)a5
++ (id)actionSuggestionDismissedEventWithSuggestionId:(id)id actionBlendingCacheId:(id)cacheId date:(id)date
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  dateCopy = date;
+  cacheIdCopy = cacheId;
+  idCopy = id;
   v10 = [ATXSpotlightEvent alloc];
-  v14[0] = v9;
+  v14[0] = idCopy;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
 
-  v12 = [(ATXSpotlightEvent *)v10 initWithDate:v7 eventType:5 appConsumerSubType:0 actionConsumerSubType:0 appBlendingCacheId:0 actionBlendingCacheId:v8 appSuggestionIds:0 actionSuggestionIds:v11 documentSuggestionIds:0 metadata:0];
+  v12 = [(ATXSpotlightEvent *)v10 initWithDate:dateCopy eventType:5 appConsumerSubType:0 actionConsumerSubType:0 appBlendingCacheId:0 actionBlendingCacheId:cacheIdCopy appSuggestionIds:0 actionSuggestionIds:v11 documentSuggestionIds:0 metadata:0];
 
   return v12;
 }
 
-+ (id)searchResultTappedWithEngagedBundleId:(id)a3 searchedActionType:(unint64_t)a4 date:(id)a5
++ (id)searchResultTappedWithEngagedBundleId:(id)id searchedActionType:(unint64_t)type date:(id)date
 {
-  v7 = a5;
-  v8 = a3;
+  dateCopy = date;
+  idCopy = id;
   v9 = objc_opt_new();
-  [v9 setSearchEngagedBundleId:v8];
+  [v9 setSearchEngagedBundleId:idCopy];
 
-  v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
+  v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:type];
   [v9 setSearchEngagedActionType:v10];
 
-  v11 = [[ATXSpotlightEvent alloc] initWithDate:v7 eventType:8 appConsumerSubType:0 actionConsumerSubType:0 appBlendingCacheId:0 actionBlendingCacheId:0 appSuggestionIds:0 actionSuggestionIds:0 documentSuggestionIds:0 metadata:v9];
+  v11 = [[ATXSpotlightEvent alloc] initWithDate:dateCopy eventType:8 appConsumerSubType:0 actionConsumerSubType:0 appBlendingCacheId:0 actionBlendingCacheId:0 appSuggestionIds:0 actionSuggestionIds:0 documentSuggestionIds:0 metadata:v9];
 
   return v11;
 }
 
-+ (id)documentSuggestionTappedWithPath:(id)a3 date:(id)a4
++ (id)documentSuggestionTappedWithPath:(id)path date:(id)date
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = a3;
+  dateCopy = date;
+  pathCopy = path;
   v7 = [ATXSpotlightEvent alloc];
-  v11[0] = v6;
+  v11[0] = pathCopy;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
 
-  v9 = [(ATXSpotlightEvent *)v7 initWithDate:v5 eventType:4 appConsumerSubType:0 actionConsumerSubType:0 appBlendingCacheId:0 actionBlendingCacheId:0 appSuggestionIds:0 actionSuggestionIds:0 documentSuggestionIds:v8 metadata:0];
+  v9 = [(ATXSpotlightEvent *)v7 initWithDate:dateCopy eventType:4 appConsumerSubType:0 actionConsumerSubType:0 appBlendingCacheId:0 actionBlendingCacheId:0 appSuggestionIds:0 actionSuggestionIds:0 documentSuggestionIds:v8 metadata:0];
 
   return v9;
 }
 
-+ (id)documentSuggestionDismissedWithPaths:(id)a3 date:(id)a4
++ (id)documentSuggestionDismissedWithPaths:(id)paths date:(id)date
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[ATXSpotlightEvent alloc] initWithDate:v5 eventType:5 appConsumerSubType:0 actionConsumerSubType:0 appBlendingCacheId:0 actionBlendingCacheId:0 appSuggestionIds:0 actionSuggestionIds:0 documentSuggestionIds:v6 metadata:0];
+  dateCopy = date;
+  pathsCopy = paths;
+  v7 = [[ATXSpotlightEvent alloc] initWithDate:dateCopy eventType:5 appConsumerSubType:0 actionConsumerSubType:0 appBlendingCacheId:0 actionBlendingCacheId:0 appSuggestionIds:0 actionSuggestionIds:0 documentSuggestionIds:pathsCopy metadata:0];
 
   return v7;
 }

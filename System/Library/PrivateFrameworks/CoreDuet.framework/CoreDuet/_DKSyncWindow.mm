@@ -1,90 +1,90 @@
 @interface _DKSyncWindow
-+ (id)choppedWindowsFromSortedNormalizedWindows:(id)a3 betweenWindowMinimumDate:(id)a4 andWindowMaximumDate:(id)a5;
-+ (id)completedWindowsFromWindows:(void *)a3 firstEvent:(void *)a4 lastEvent:(uint64_t)a5 fetchOrder:(uint64_t)a6 fillOrder:(_BOOL4)a7 hitLimit:;
-+ (id)completedWindowsWithSortedEvents:(void *)a3 windows:(uint64_t)a4 fetchOrder:(uint64_t)a5 fillOrder:(_BOOL4)a6 hitLimit:;
-+ (id)dictionaryArrayFromWindows:(uint64_t)a1;
-+ (id)lastWindowMissingFromSortedNormalizedWindows:(void *)a3 windowMinimumDate:(void *)a4 windowMaximumDate:;
-+ (id)lastWindowMissingFromSortedWindows:(void *)a3 windowMinimumDate:(void *)a4 windowMaximumDate:;
-+ (id)redundantWindowsFromSortedWindows:(void *)a3 olderThanDate:;
-+ (id)sortedUnionOfSortedWindows:(void *)a3 andSortedWindows:;
-+ (id)syncWindowWithStartDate:(void *)a3 endDate:;
-+ (id)unionOfSortedSyncWindows:(uint64_t)a1;
-+ (id)windowsFromDictionaryArray:(uint64_t)a1;
-+ (id)windowsMissingFromSortedWindows:(void *)a3 windowMinimumDate:(void *)a4 windowMaximumDate:;
-+ (id)windowsThatOverlapWithWindowMinimumDate:(void *)a3 windowMaximumDate:(void *)a4 sortedSyncWindows:;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)choppedWindowsFromSortedNormalizedWindows:(id)windows betweenWindowMinimumDate:(id)date andWindowMaximumDate:(id)maximumDate;
++ (id)completedWindowsFromWindows:(void *)windows firstEvent:(void *)event lastEvent:(uint64_t)lastEvent fetchOrder:(uint64_t)order fillOrder:(_BOOL4)fillOrder hitLimit:;
++ (id)completedWindowsWithSortedEvents:(void *)events windows:(uint64_t)windows fetchOrder:(uint64_t)order fillOrder:(_BOOL4)fillOrder hitLimit:;
++ (id)dictionaryArrayFromWindows:(uint64_t)windows;
++ (id)lastWindowMissingFromSortedNormalizedWindows:(void *)windows windowMinimumDate:(void *)date windowMaximumDate:;
++ (id)lastWindowMissingFromSortedWindows:(void *)windows windowMinimumDate:(void *)date windowMaximumDate:;
++ (id)redundantWindowsFromSortedWindows:(void *)windows olderThanDate:;
++ (id)sortedUnionOfSortedWindows:(void *)windows andSortedWindows:;
++ (id)syncWindowWithStartDate:(void *)date endDate:;
++ (id)unionOfSortedSyncWindows:(uint64_t)windows;
++ (id)windowsFromDictionaryArray:(uint64_t)array;
++ (id)windowsMissingFromSortedWindows:(void *)windows windowMinimumDate:(void *)date windowMaximumDate:;
++ (id)windowsThatOverlapWithWindowMinimumDate:(void *)date windowMaximumDate:(void *)maximumDate sortedSyncWindows:;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
 - (id)description;
 - (id)event;
-- (id)unionWithSyncWindow:(id *)a1;
-- (int64_t)compare:(id)a3;
-- (uint64_t)isEqualToWindow:(uint64_t)a1;
+- (id)unionWithSyncWindow:(id *)window;
+- (int64_t)compare:(id)compare;
+- (uint64_t)isEqualToWindow:(uint64_t)window;
 - (uint64_t)startDate;
-- (void)initWithEvent:(void *)a1;
-- (void)setEndDate:(uint64_t)a1;
-- (void)setStartDate:(uint64_t)a1;
+- (void)initWithEvent:(void *)event;
+- (void)setEndDate:(uint64_t)date;
+- (void)setStartDate:(uint64_t)date;
 @end
 
 @implementation _DKSyncWindow
 
-+ (id)syncWindowWithStartDate:(void *)a3 endDate:
++ (id)syncWindowWithStartDate:(void *)date endDate:
 {
-  v4 = a3;
+  dateCopy = date;
   v5 = a2;
   objc_opt_self();
   v6 = objc_opt_new();
   [(_DKSyncWindow *)v6 setStartDate:v5];
 
-  [(_DKSyncWindow *)v6 setEndDate:v4];
+  [(_DKSyncWindow *)v6 setEndDate:dateCopy];
 
   return v6;
 }
 
-+ (id)sortedUnionOfSortedWindows:(void *)a3 andSortedWindows:
++ (id)sortedUnionOfSortedWindows:(void *)windows andSortedWindows:
 {
-  v4 = a3;
+  windowsCopy = windows;
   v5 = a2;
   objc_opt_self();
   v6 = [v5 mutableCopy];
 
-  [v6 addObjectsFromArray:v4];
+  [v6 addObjectsFromArray:windowsCopy];
   [v6 sortUsingSelector:sel_compare_];
 
   return v6;
 }
 
-+ (id)choppedWindowsFromSortedNormalizedWindows:(id)a3 betweenWindowMinimumDate:(id)a4 andWindowMaximumDate:(id)a5
++ (id)choppedWindowsFromSortedNormalizedWindows:(id)windows betweenWindowMinimumDate:(id)date andWindowMaximumDate:(id)maximumDate
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([v7 count] && objc_msgSend(v7, "count"))
+  windowsCopy = windows;
+  dateCopy = date;
+  maximumDateCopy = maximumDate;
+  if ([windowsCopy count] && objc_msgSend(windowsCopy, "count"))
   {
     v10 = 0;
     while (1)
     {
-      v11 = [v7 objectAtIndexedSubscript:v10];
+      v11 = [windowsCopy objectAtIndexedSubscript:v10];
       v12 = v11;
       if (v11)
       {
         v11 = v11[3];
       }
 
-      v13 = [v11 compare:v8];
+      v13 = [v11 compare:dateCopy];
 
       if (v13 == 1)
       {
         break;
       }
 
-      if (++v10 >= [v7 count])
+      if (++v10 >= [windowsCopy count])
       {
         goto LABEL_23;
       }
     }
 
-    v14 = [v7 count];
+    v14 = [windowsCopy count];
     v15 = v14 - 1;
     while (1)
     {
@@ -94,7 +94,7 @@
         break;
       }
 
-      v17 = [_DKSyncWindow choppedWindowsFromSortedNormalizedWindows:v7 betweenWindowMinimumDate:v14 andWindowMaximumDate:v9];
+      v17 = [_DKSyncWindow choppedWindowsFromSortedNormalizedWindows:windowsCopy betweenWindowMinimumDate:v14 andWindowMaximumDate:maximumDateCopy];
       v15 = v16 - 1;
       if (v17)
       {
@@ -104,9 +104,9 @@
 
     v14 = -1;
 LABEL_14:
-    if (!v10 && v14 == [v7 count] - 1)
+    if (!v10 && v14 == [windowsCopy count] - 1)
     {
-      v18 = v7;
+      v18 = windowsCopy;
 LABEL_22:
       v20 = v18;
       goto LABEL_24;
@@ -124,7 +124,7 @@ LABEL_22:
         v19 = v16;
       }
 
-      v18 = [v7 subarrayWithRange:{v10, v19 - v10 + 1}];
+      v18 = [windowsCopy subarrayWithRange:{v10, v19 - v10 + 1}];
       goto LABEL_22;
     }
   }
@@ -136,66 +136,66 @@ LABEL_24:
   return v20;
 }
 
-+ (id)lastWindowMissingFromSortedNormalizedWindows:(void *)a3 windowMinimumDate:(void *)a4 windowMaximumDate:
++ (id)lastWindowMissingFromSortedNormalizedWindows:(void *)windows windowMinimumDate:(void *)date windowMaximumDate:
 {
   v6 = a2;
-  v7 = a3;
-  v8 = a4;
+  windowsCopy = windows;
+  dateCopy = date;
   objc_opt_self();
   if ([v6 count])
   {
-    [(_DKSyncWindow *)v6 lastWindowMissingFromSortedNormalizedWindows:v7 windowMinimumDate:v8 windowMaximumDate:&v11];
+    [(_DKSyncWindow *)v6 lastWindowMissingFromSortedNormalizedWindows:windowsCopy windowMinimumDate:dateCopy windowMaximumDate:&v11];
     v9 = v11;
   }
 
   else
   {
     v9 = objc_opt_new();
-    [(_DKSyncWindow *)v9 setStartDate:v7];
-    [(_DKSyncWindow *)v9 setEndDate:v8];
+    [(_DKSyncWindow *)v9 setStartDate:windowsCopy];
+    [(_DKSyncWindow *)v9 setEndDate:dateCopy];
   }
 
   return v9;
 }
 
-+ (id)lastWindowMissingFromSortedWindows:(void *)a3 windowMinimumDate:(void *)a4 windowMaximumDate:
++ (id)lastWindowMissingFromSortedWindows:(void *)windows windowMinimumDate:(void *)date windowMaximumDate:
 {
   v6 = a2;
-  v7 = a3;
-  v8 = a4;
+  windowsCopy = windows;
+  dateCopy = date;
   v9 = objc_opt_self();
   if ([v6 count])
   {
-    [(_DKSyncWindow *)v6 lastWindowMissingFromSortedWindows:v7 windowMinimumDate:v8 windowMaximumDate:&v12];
+    [(_DKSyncWindow *)v6 lastWindowMissingFromSortedWindows:windowsCopy windowMinimumDate:dateCopy windowMaximumDate:&v12];
     v6 = v12;
   }
 
-  v10 = [(_DKSyncWindow *)v9 lastWindowMissingFromSortedNormalizedWindows:v6 windowMinimumDate:v7 windowMaximumDate:v8];
+  v10 = [(_DKSyncWindow *)v9 lastWindowMissingFromSortedNormalizedWindows:v6 windowMinimumDate:windowsCopy windowMaximumDate:dateCopy];
 
   return v10;
 }
 
-+ (id)windowsMissingFromSortedWindows:(void *)a3 windowMinimumDate:(void *)a4 windowMaximumDate:
++ (id)windowsMissingFromSortedWindows:(void *)windows windowMinimumDate:(void *)date windowMaximumDate:
 {
   v6 = a2;
-  v7 = a3;
-  v8 = a4;
+  windowsCopy = windows;
+  dateCopy = date;
   v9 = objc_opt_self();
   v10 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v6, "count")}];
   if ([v6 count])
   {
     v12 = [_DKSyncWindow unionOfSortedSyncWindows:v6];
 
-    v13 = [_DKSyncWindow windowsThatOverlapWithWindowMinimumDate:v7 windowMaximumDate:v8 sortedSyncWindows:v12];
+    v13 = [_DKSyncWindow windowsThatOverlapWithWindowMinimumDate:windowsCopy windowMaximumDate:dateCopy sortedSyncWindows:v12];
 
     v14 = [v13 copy];
-    v15 = v8;
+    v15 = dateCopy;
     v16 = 0;
     while (1)
     {
       [v15 timeIntervalSinceReferenceDate];
       v18 = v17;
-      [v7 timeIntervalSinceReferenceDate];
+      [windowsCopy timeIntervalSinceReferenceDate];
       if (v18 <= v19)
       {
         v6 = v14;
@@ -203,7 +203,7 @@ LABEL_24:
         goto LABEL_11;
       }
 
-      v11 = [(_DKSyncWindow *)v9 lastWindowMissingFromSortedNormalizedWindows:v14 windowMinimumDate:v7 windowMaximumDate:v15];
+      v11 = [(_DKSyncWindow *)v9 lastWindowMissingFromSortedNormalizedWindows:v14 windowMinimumDate:windowsCopy windowMaximumDate:v15];
 
       if (!v11)
       {
@@ -213,7 +213,7 @@ LABEL_24:
       [v10 insertObject:v11 atIndex:0];
       v20 = v11[2];
 
-      v6 = [v9 choppedWindowsFromSortedNormalizedWindows:v14 betweenWindowMinimumDate:v7 andWindowMaximumDate:v20];
+      v6 = [v9 choppedWindowsFromSortedNormalizedWindows:v14 betweenWindowMinimumDate:windowsCopy andWindowMaximumDate:v20];
 
       if (v6)
       {
@@ -243,19 +243,19 @@ LABEL_12:
   else
   {
     v11 = objc_opt_new();
-    [(_DKSyncWindow *)v11 setStartDate:v7];
-    [(_DKSyncWindow *)v11 setEndDate:v8];
+    [(_DKSyncWindow *)v11 setStartDate:windowsCopy];
+    [(_DKSyncWindow *)v11 setEndDate:dateCopy];
     [v10 addObject:v11];
   }
 
   return v10;
 }
 
-+ (id)redundantWindowsFromSortedWindows:(void *)a3 olderThanDate:
++ (id)redundantWindowsFromSortedWindows:(void *)windows olderThanDate:
 {
   v48 = *MEMORY[0x1E69E9840];
   v4 = a2;
-  v5 = a3;
+  windowsCopy = windows;
   objc_opt_self();
   if ([v4 count] < 2)
   {
@@ -265,11 +265,11 @@ LABEL_12:
   else
   {
     v6 = objc_opt_new();
-    v7 = [v4 firstObject];
-    v8 = v7;
-    if (v7)
+    firstObject = [v4 firstObject];
+    v8 = firstObject;
+    if (firstObject)
     {
-      v9 = *(v7 + 16);
+      v9 = *(firstObject + 16);
     }
 
     else
@@ -277,7 +277,7 @@ LABEL_12:
       v9 = 0;
     }
 
-    v10 = [_DKSyncWindow lastWindowMissingFromSortedWindows:v4 windowMinimumDate:v9 windowMaximumDate:v5];
+    v10 = [_DKSyncWindow lastWindowMissingFromSortedWindows:v4 windowMinimumDate:v9 windowMaximumDate:windowsCopy];
 
     if (v10)
     {
@@ -310,7 +310,7 @@ LABEL_7:
           [v11 timeIntervalSinceReferenceDate];
           v23 = v22;
 
-          if (v21 >= v23 && ([(_DKSyncWindow *)v17 == 0 redundantWindowsFromSortedWindows:v17 olderThanDate:v5, v6]& 1) != 0)
+          if (v21 >= v23 && ([(_DKSyncWindow *)v17 == 0 redundantWindowsFromSortedWindows:v17 olderThanDate:windowsCopy, v6]& 1) != 0)
           {
             break;
           }
@@ -357,7 +357,7 @@ LABEL_23:
           v30 = v29 ? *(v29 + 24) : 0;
           [v30 timeIntervalSinceReferenceDate];
           v32 = v31;
-          [v5 timeIntervalSinceReferenceDate];
+          [windowsCopy timeIntervalSinceReferenceDate];
           if (v32 > v33)
           {
             break;
@@ -393,7 +393,7 @@ LABEL_23:
   return v6;
 }
 
-+ (id)unionOfSortedSyncWindows:(uint64_t)a1
++ (id)unionOfSortedSyncWindows:(uint64_t)windows
 {
   v18 = *MEMORY[0x1E69E9840];
   v2 = a2;
@@ -446,20 +446,20 @@ LABEL_23:
   return v3;
 }
 
-+ (id)completedWindowsWithSortedEvents:(void *)a3 windows:(uint64_t)a4 fetchOrder:(uint64_t)a5 fillOrder:(_BOOL4)a6 hitLimit:
++ (id)completedWindowsWithSortedEvents:(void *)events windows:(uint64_t)windows fetchOrder:(uint64_t)order fillOrder:(_BOOL4)fillOrder hitLimit:
 {
-  v10 = a3;
+  eventsCopy = events;
   v11 = a2;
   v12 = objc_opt_self();
-  v13 = [v11 firstObject];
-  v14 = [v11 lastObject];
+  firstObject = [v11 firstObject];
+  lastObject = [v11 lastObject];
 
-  v15 = [(_DKSyncWindow *)v12 completedWindowsFromWindows:v10 firstEvent:v13 lastEvent:v14 fetchOrder:a4 fillOrder:a5 hitLimit:a6];
+  v15 = [(_DKSyncWindow *)v12 completedWindowsFromWindows:eventsCopy firstEvent:firstObject lastEvent:lastObject fetchOrder:windows fillOrder:order hitLimit:fillOrder];
 
   return v15;
 }
 
-+ (id)dictionaryArrayFromWindows:(uint64_t)a1
++ (id)dictionaryArrayFromWindows:(uint64_t)windows
 {
   v35 = *MEMORY[0x1E69E9840];
   v2 = a2;
@@ -545,7 +545,7 @@ LABEL_23:
   return v18;
 }
 
-+ (id)windowsFromDictionaryArray:(uint64_t)a1
++ (id)windowsFromDictionaryArray:(uint64_t)array
 {
   v32 = *MEMORY[0x1E69E9840];
   v2 = a2;
@@ -621,7 +621,7 @@ LABEL_23:
   return v16;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   v5 = v4;
@@ -635,17 +635,17 @@ LABEL_23:
   return v5;
 }
 
-- (uint64_t)isEqualToWindow:(uint64_t)a1
+- (uint64_t)isEqualToWindow:(uint64_t)window
 {
   v3 = a2;
   v4 = v3;
   v5 = 0;
-  if (a1 && v3)
+  if (window && v3)
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && [*(a1 + 16) isEqualToDate:v4[2]])
+    if ((objc_opt_isKindOfClass() & 1) != 0 && [*(window + 16) isEqualToDate:v4[2]])
     {
-      v5 = [*(a1 + 24) isEqualToDate:v4[3]];
+      v5 = [*(window + 24) isEqualToDate:v4[3]];
     }
 
     else
@@ -657,10 +657,10 @@ LABEL_23:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -670,7 +670,7 @@ LABEL_23:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(_DKSyncWindow *)self isEqualToWindow:v4];
+      v5 = [(_DKSyncWindow *)self isEqualToWindow:equalCopy];
     }
 
     else
@@ -685,9 +685,9 @@ LABEL_23:
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(NSDate *)self->_startDate dk_localtimeString];
-  v5 = [(NSDate *)self->_endDate dk_localtimeString];
-  v6 = [v3 stringWithFormat:@"[%@ to %@]", v4, v5];
+  dk_localtimeString = [(NSDate *)self->_startDate dk_localtimeString];
+  dk_localtimeString2 = [(NSDate *)self->_endDate dk_localtimeString];
+  v6 = [v3 stringWithFormat:@"[%@ to %@]", dk_localtimeString, dk_localtimeString2];
 
   return v6;
 }
@@ -706,8 +706,8 @@ LABEL_23:
   v12 = v11;
   if (event)
   {
-    v13 = [(_DKObject *)self->_event UUID];
-    v14 = [v8 stringWithFormat:@"<%@ %p: %@ (delta=%f), event=%@>", v10, self, v12, *&v6, v13];
+    uUID = [(_DKObject *)self->_event UUID];
+    v14 = [v8 stringWithFormat:@"<%@ %p: %@ (delta=%f), event=%@>", v10, self, v12, *&v6, uUID];
   }
 
   else
@@ -718,70 +718,70 @@ LABEL_23:
   return v14;
 }
 
-- (void)initWithEvent:(void *)a1
+- (void)initWithEvent:(void *)event
 {
   v4 = a2;
-  if (a1)
+  if (event)
   {
-    v11.receiver = a1;
+    v11.receiver = event;
     v11.super_class = _DKSyncWindow;
     v5 = objc_msgSendSuper2(&v11, sel_init);
-    a1 = v5;
+    event = v5;
     if (v5)
     {
       objc_storeStrong(v5 + 1, a2);
-      v6 = [v4 startDate];
-      v7 = a1[2];
-      a1[2] = v6;
+      startDate = [v4 startDate];
+      v7 = event[2];
+      event[2] = startDate;
 
-      v8 = [v4 endDate];
-      v9 = a1[3];
-      a1[3] = v8;
+      endDate = [v4 endDate];
+      v9 = event[3];
+      event[3] = endDate;
     }
   }
 
-  return a1;
+  return event;
 }
 
-- (void)setStartDate:(uint64_t)a1
+- (void)setStartDate:(uint64_t)date
 {
-  if (a1)
+  if (date)
   {
-    objc_storeStrong((a1 + 16), a2);
+    objc_storeStrong((date + 16), a2);
   }
 }
 
-- (void)setEndDate:(uint64_t)a1
+- (void)setEndDate:(uint64_t)date
 {
-  if (a1)
+  if (date)
   {
-    objc_storeStrong((a1 + 24), a2);
+    objc_storeStrong((date + 24), a2);
   }
 }
 
 - (id)event
 {
-  if (a1)
+  if (self)
   {
-    a1 = a1[1];
+    self = self[1];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-- (id)unionWithSyncWindow:(id *)a1
+- (id)unionWithSyncWindow:(id *)window
 {
   v3 = a2;
-  if (!a1)
+  if (!window)
   {
     goto LABEL_26;
   }
 
-  v4 = a1 + 2;
-  [a1[2] timeIntervalSinceReferenceDate];
+  v4 = window + 2;
+  [window[2] timeIntervalSinceReferenceDate];
   v6 = v5;
-  [a1[3] timeIntervalSinceReferenceDate];
+  [window[3] timeIntervalSinceReferenceDate];
   v8 = v7;
   if (v3)
   {
@@ -813,7 +813,7 @@ LABEL_23:
     {
       if (v11 <= v8 && v8 <= v13)
       {
-        v21 = v3;
+        windowCopy = v3;
         goto LABEL_37;
       }
 
@@ -894,9 +894,9 @@ LABEL_26:
 
   if (v6 <= v13 && v13 <= v8)
   {
-    v21 = a1;
+    windowCopy = window;
 LABEL_37:
-    v19 = v21;
+    v19 = windowCopy;
     goto LABEL_38;
   }
 
@@ -908,7 +908,7 @@ LABEL_37:
   }
 
 LABEL_51:
-  v28 = a1[3];
+  v28 = window[3];
 LABEL_58:
   [(_DKSyncWindow *)v19 setEndDate:v28];
 LABEL_38:
@@ -926,22 +926,22 @@ LABEL_38:
   return result;
 }
 
-+ (id)windowsThatOverlapWithWindowMinimumDate:(void *)a3 windowMaximumDate:(void *)a4 sortedSyncWindows:
++ (id)windowsThatOverlapWithWindowMinimumDate:(void *)date windowMaximumDate:(void *)maximumDate sortedSyncWindows:
 {
   v25 = *MEMORY[0x1E69E9840];
   v6 = a2;
-  v7 = a3;
-  v8 = a4;
+  dateCopy = date;
+  maximumDateCopy = maximumDate;
   objc_opt_self();
   v9 = objc_opt_new();
   v10 = objc_opt_new();
   [(_DKSyncWindow *)v10 setStartDate:v6];
-  [(_DKSyncWindow *)v10 setEndDate:v7];
+  [(_DKSyncWindow *)v10 setEndDate:dateCopy];
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v11 = v8;
+  v11 = maximumDateCopy;
   v12 = [v11 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v12)
   {
@@ -976,12 +976,12 @@ LABEL_38:
   return v9;
 }
 
-+ (id)completedWindowsFromWindows:(void *)a3 firstEvent:(void *)a4 lastEvent:(uint64_t)a5 fetchOrder:(uint64_t)a6 fillOrder:(_BOOL4)a7 hitLimit:
++ (id)completedWindowsFromWindows:(void *)windows firstEvent:(void *)event lastEvent:(uint64_t)lastEvent fetchOrder:(uint64_t)order fillOrder:(_BOOL4)fillOrder hitLimit:
 {
   v108 = *MEMORY[0x1E69E9840];
   v12 = a2;
-  v74 = a3;
-  v73 = a4;
+  windowsCopy = windows;
+  eventCopy = event;
   objc_opt_self();
   v13 = +[_CDLogging syncChannel];
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
@@ -989,12 +989,12 @@ LABEL_38:
     v57 = [objc_opt_class() description];
     v58 = @"UNKNOWN";
     v59 = @"oldest";
-    if (a5 != 1)
+    if (lastEvent != 1)
     {
       v59 = @"UNKNOWN";
     }
 
-    if (a5 == 2)
+    if (lastEvent == 2)
     {
       v60 = @"newest";
     }
@@ -1005,7 +1005,7 @@ LABEL_38:
     }
 
     obja = v57;
-    switch(a6)
+    switch(order)
     {
       case 1:
         v58 = @"always-full";
@@ -1020,20 +1020,20 @@ LABEL_38:
 
     v78 = v58;
     v64 = @"was not";
-    if (a7)
+    if (fillOrder)
     {
       v64 = @"was";
     }
 
     v70 = v64;
-    v82 = [v74 UUID];
-    v68 = [v82 UUIDString];
-    v80 = [v74 creationDate];
-    v72 = [(NSDate *)v80 dk_localtimeString];
-    v76 = [v73 UUID];
-    v67 = [v76 UUIDString];
-    v65 = [v73 creationDate];
-    v69 = [(NSDate *)v65 dk_localtimeString];
+    uUID = [windowsCopy UUID];
+    uUIDString = [uUID UUIDString];
+    creationDate = [windowsCopy creationDate];
+    dk_localtimeString = [(NSDate *)creationDate dk_localtimeString];
+    uUID2 = [eventCopy UUID];
+    uUIDString2 = [uUID2 UUIDString];
+    creationDate2 = [eventCopy creationDate];
+    dk_localtimeString2 = [(NSDate *)creationDate2 dk_localtimeString];
     _DKSyncLoggingWindowsDescription(v12);
     *buf = 138545410;
     v91 = obja;
@@ -1044,40 +1044,40 @@ LABEL_38:
     v96 = 2114;
     v97 = v70;
     v98 = 2114;
-    v99 = v68;
+    v99 = uUIDString;
     v100 = 2114;
-    v101 = v72;
+    v101 = dk_localtimeString;
     v102 = 2114;
-    v103 = v67;
+    v103 = uUIDString2;
     v104 = 2114;
-    v105 = v69;
+    v105 = dk_localtimeString2;
     v107 = v106 = 2114;
     v66 = v107;
     _os_log_debug_impl(&dword_191750000, v13, OS_LOG_TYPE_DEBUG, "%{public}@: Computing completed windows using fetch order %{public}@, fill order %{public}@, limit %{public}@ hit, first event %{public}@ (created %{public}@), last event %{public}@ (created %{public}@) from windows %{public}@", buf, 0x5Cu);
   }
 
-  if (a6 == 1 || (v14 = 0, v74) && v73)
+  if (order == 1 || (v14 = 0, windowsCopy) && eventCopy)
   {
     v14 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v12, "count")}];
-    switch(a6)
+    switch(order)
     {
       case 3:
-        v15 = a5 == 1 && a7;
-        a7 = 1;
+        v15 = lastEvent == 1 && fillOrder;
+        fillOrder = 1;
         break;
       case 2:
-        if (a5 != 2)
+        if (lastEvent != 2)
         {
-          a7 = 0;
+          fillOrder = 0;
         }
 
         v15 = 1;
         break;
       case 1:
-        if (a7)
+        if (fillOrder)
         {
-          a7 = a5 == 2;
-          v15 = a5 != 2;
+          fillOrder = lastEvent == 2;
+          v15 = lastEvent != 2;
         }
 
         else
@@ -1088,18 +1088,18 @@ LABEL_38:
         break;
       default:
         v15 = 0;
-        a7 = 0;
+        fillOrder = 0;
         break;
     }
 
-    v81 = [v74 creationDate];
-    [v81 timeIntervalSinceReferenceDate];
+    creationDate3 = [windowsCopy creationDate];
+    [creationDate3 timeIntervalSinceReferenceDate];
     v17 = v16;
-    v79 = [v73 creationDate];
-    [v79 timeIntervalSinceReferenceDate];
+    creationDate4 = [eventCopy creationDate];
+    [creationDate4 timeIntervalSinceReferenceDate];
     v19 = v18;
-    v77 = [MEMORY[0x1E695DF00] date];
-    [v77 timeIntervalSinceReferenceDate];
+    date = [MEMORY[0x1E695DF00] date];
+    [date timeIntervalSinceReferenceDate];
     v21 = v20;
     v85 = 0u;
     v86 = 0u;
@@ -1140,7 +1140,7 @@ LABEL_38:
           [v27 timeIntervalSinceReferenceDate];
           v31 = v30;
           [v29 timeIntervalSinceReferenceDate];
-          if (v32 < v17 && a7)
+          if (v32 < v17 && fillOrder)
           {
 LABEL_30:
             v34 = 0;
@@ -1154,16 +1154,16 @@ LABEL_30:
             v36 = v32;
             if (v32 > v21)
             {
-              v37 = v77;
+              v37 = date;
 
               v29 = v37;
               v36 = v21;
             }
 
-            v38 = v31 < v17 && a7;
+            v38 = v31 < v17 && fillOrder;
             if (v38 && v17 < v36)
             {
-              v42 = [_DKSyncWindow syncWindowWithStartDate:v81 endDate:v29];
+              v42 = [_DKSyncWindow syncWindowWithStartDate:creationDate3 endDate:v29];
               v34 = v42;
               v43 = v31 < v19 && v15;
               if (v43 && v19 < v36)
@@ -1173,7 +1173,7 @@ LABEL_30:
                   goto LABEL_65;
                 }
 
-                [_DKSyncWindow syncWindowWithStartDate:v79 endDate:?];
+                [_DKSyncWindow syncWindowWithStartDate:creationDate4 endDate:?];
                 v46 = v45 = v14;
 
                 v34 = v46;
@@ -1204,7 +1204,7 @@ LABEL_66:
               }
 
 LABEL_65:
-              v34 = [_DKSyncWindow syncWindowWithStartDate:v27 endDate:v79];
+              v34 = [_DKSyncWindow syncWindowWithStartDate:v27 endDate:creationDate4];
               if (!v34)
               {
                 goto LABEL_66;
@@ -1231,11 +1231,11 @@ LABEL_69:
     v12 = v71;
   }
 
-  v49 = [v14 lastObject];
-  v50 = v49;
-  if (v49)
+  lastObject = [v14 lastObject];
+  v50 = lastObject;
+  if (lastObject)
   {
-    v51 = *(v49 + 24);
+    v51 = *(lastObject + 24);
   }
 
   else
@@ -1244,8 +1244,8 @@ LABEL_69:
   }
 
   v52 = v51;
-  v53 = [MEMORY[0x1E695DF00] distantFuture];
-  if ([v52 isEqualToDate:v53])
+  distantFuture = [MEMORY[0x1E695DF00] distantFuture];
+  if ([v52 isEqualToDate:distantFuture])
   {
     __assert_rtn("+[_DKSyncWindow completedWindowsFromWindows:firstEvent:lastEvent:fetchOrder:fillOrder:hitLimit:]", "_DKSyncWindow.m", 625, "![completedWindows.lastObject.endDate isEqualToDate:[NSDate distantFuture]]");
   }
@@ -1270,12 +1270,12 @@ LABEL_69:
   return v14;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  if (v4)
+  compareCopy = compare;
+  if (compareCopy)
   {
-    v5 = v4[2];
+    v5 = compareCopy[2];
   }
 
   else
@@ -1286,9 +1286,9 @@ LABEL_69:
   v6 = [(NSDate *)self->_startDate compare:v5];
   if (v6 == NSOrderedSame)
   {
-    if (v4)
+    if (compareCopy)
     {
-      v7 = v4[3];
+      v7 = compareCopy[3];
     }
 
     else

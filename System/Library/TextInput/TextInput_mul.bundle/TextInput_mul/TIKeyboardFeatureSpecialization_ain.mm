@@ -1,13 +1,13 @@
 @interface TIKeyboardFeatureSpecialization_ain
-- (id)internalStringToExternal:(id)a3;
+- (id)internalStringToExternal:(id)external;
 - (id)wordCharacters;
 @end
 
 @implementation TIKeyboardFeatureSpecialization_ain
 
-- (id)internalStringToExternal:(id)a3
+- (id)internalStringToExternal:(id)external
 {
-  v4 = [a3 _stringByReplacingCharacter:32 withCharacter:12288];
+  v4 = [external _stringByReplacingCharacter:32 withCharacter:12288];
   v5 = [v4 _stringByReplacingCharacter:45 withCharacter:12540];
 
   v8.receiver = self;
@@ -20,8 +20,8 @@
 - (id)wordCharacters
 {
   v3 = [objc_alloc(MEMORY[0x29EDC70E0]) initWithBaseCharacterSet:10];
-  v4 = [(TIKeyboardFeatureSpecialization *)self nonstopPunctuationCharacters];
-  [v3 addCharactersInString:v4];
+  nonstopPunctuationCharacters = [(TIKeyboardFeatureSpecialization *)self nonstopPunctuationCharacters];
+  [v3 addCharactersInString:nonstopPunctuationCharacters];
 
   [v3 removeCharactersInString:@"ー"];
 

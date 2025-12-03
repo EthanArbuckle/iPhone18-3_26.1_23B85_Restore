@@ -1,18 +1,18 @@
 @interface PIAutoLoopVideoNode
-+ (id)loopParamsForTrimRange:(id *)a3 frameDuration:(id *)a4;
-+ (int)fadeLengthForTrimRange:(id *)a3 frameDuration:(id *)a4;
-+ (int)loopPeriodForTrimRange:(id *)a3 frameDuration:(id *)a4;
-+ (int)loopStartForTrimRange:(id *)a3 frameDuration:(id *)a4;
++ (id)loopParamsForTrimRange:(id *)range frameDuration:(id *)duration;
++ (int)fadeLengthForTrimRange:(id *)range frameDuration:(id *)duration;
++ (int)loopPeriodForTrimRange:(id *)range frameDuration:(id *)duration;
++ (int)loopStartForTrimRange:(id *)range frameDuration:(id *)duration;
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)frameDuration;
 - (NURenderNode)input;
-- (PIAutoLoopVideoNode)initWithInput:(id)a3 frameDuration:(id *)a4 trimRange:(id *)a5 settings:(id)a6;
-- (PIAutoLoopVideoNode)initWithSettings:(id)a3 inputs:(id)a4;
-- (id)_evaluateAudioMix:(id *)a3;
-- (id)_evaluateVideo:(id *)a3;
-- (id)_evaluateVideoComposition:(id *)a3;
-- (id)_evaluateVideoProperties:(id *)a3;
-- (id)nodeByReplayingAgainstCache:(id)a3 pipelineState:(id)a4 error:(id *)a5;
-- (id)resolvedNodeWithCachedInputs:(id)a3 settings:(id)a4 pipelineState:(id)a5 error:(id *)a6;
+- (PIAutoLoopVideoNode)initWithInput:(id)input frameDuration:(id *)duration trimRange:(id *)range settings:(id)settings;
+- (PIAutoLoopVideoNode)initWithSettings:(id)settings inputs:(id)inputs;
+- (id)_evaluateAudioMix:(id *)mix;
+- (id)_evaluateVideo:(id *)video;
+- (id)_evaluateVideoComposition:(id *)composition;
+- (id)_evaluateVideoProperties:(id *)properties;
+- (id)nodeByReplayingAgainstCache:(id)cache pipelineState:(id)state error:(id *)error;
+- (id)resolvedNodeWithCachedInputs:(id)inputs settings:(id)settings pipelineState:(id)state error:(id *)error;
 @end
 
 @implementation PIAutoLoopVideoNode
@@ -24,10 +24,10 @@
   return self;
 }
 
-- (id)_evaluateAudioMix:(id *)a3
+- (id)_evaluateAudioMix:(id *)mix
 {
   v49 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!mix)
   {
     v28 = NUAssertLogger_29069();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
@@ -49,8 +49,8 @@
         v36 = dispatch_get_specific(*v30);
         v37 = MEMORY[0x1E696AF00];
         v38 = v36;
-        v39 = [v37 callStackSymbols];
-        v40 = [v39 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v37 callStackSymbols];
+        v40 = [callStackSymbols componentsJoinedByString:@"\n"];
         LODWORD(lhs.start.value) = 138543618;
         *(&lhs.start.value + 4) = v36;
         LOWORD(lhs.start.flags) = 2114;
@@ -61,8 +61,8 @@
 
     else if (v33)
     {
-      v34 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v35 = [v34 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v35 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       LODWORD(lhs.start.value) = 138543362;
       *(&lhs.start.value + 4) = v35;
       _os_log_error_impl(&dword_1C7694000, v32, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", &lhs, 0xCu);
@@ -130,31 +130,31 @@
       }
 
       while (v12 != 21);
-      v7 = [MEMORY[0x1E6988038] audioMix];
+      audioMix = [MEMORY[0x1E6988038] audioMix];
       v47[0] = v10;
       v47[1] = v14;
       v26 = [MEMORY[0x1E695DEC8] arrayWithObjects:v47 count:2];
-      [v7 setInputParameters:v26];
+      [audioMix setInputParameters:v26];
     }
 
     else
     {
-      v7 = [MEMORY[0x1E6988038] audioMix];
+      audioMix = [MEMORY[0x1E6988038] audioMix];
     }
   }
 
   else
   {
-    v7 = 0;
+    audioMix = 0;
   }
 
-  return v7;
+  return audioMix;
 }
 
-- (id)_evaluateVideoComposition:(id *)a3
+- (id)_evaluateVideoComposition:(id *)composition
 {
   v54 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!composition)
   {
     v29 = NUAssertLogger_29069();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
@@ -176,8 +176,8 @@
         v37 = dispatch_get_specific(*v31);
         v38 = MEMORY[0x1E696AF00];
         v39 = v37;
-        v40 = [v38 callStackSymbols];
-        v41 = [v40 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v38 callStackSymbols];
+        v41 = [callStackSymbols componentsJoinedByString:@"\n"];
         LODWORD(lhs.start.value) = 138543618;
         *(&lhs.start.value + 4) = v37;
         LOWORD(lhs.start.flags) = 2114;
@@ -188,8 +188,8 @@
 
     else if (v34)
     {
-      v35 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v36 = [v35 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v36 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       LODWORD(lhs.start.value) = 138543362;
       *(&lhs.start.value + 4) = v36;
       _os_log_error_impl(&dword_1C7694000, v33, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", &lhs, 0xCu);
@@ -207,15 +207,15 @@
   }
 
   v7 = [v5 tracksWithMediaType:*MEMORY[0x1E6987608]];
-  v8 = [(NURenderNode *)self inputs];
-  v9 = [v8 objectForKeyedSubscript:*MEMORY[0x1E695FAB0]];
+  inputs = [(NURenderNode *)self inputs];
+  v9 = [inputs objectForKeyedSubscript:*MEMORY[0x1E695FAB0]];
 
-  v10 = [v9 outputVideoComposition:a3];
+  v10 = [v9 outputVideoComposition:composition];
   v11 = v10;
   if (v10)
   {
-    v12 = [v10 instructions];
-    v13 = [v12 count];
+    instructions = [v10 instructions];
+    v13 = [instructions count];
 
     if (v13 == 1)
     {
@@ -278,8 +278,8 @@
     }
 
     v26 = MEMORY[0x1E69B3A48];
-    v27 = [v11 instructions];
-    *a3 = [v26 unsupportedError:@"Unsupported video configuration" object:v27];
+    instructions2 = [v11 instructions];
+    *composition = [v26 unsupportedError:@"Unsupported video configuration" object:instructions2];
   }
 
   v25 = 0;
@@ -290,10 +290,10 @@ LABEL_12:
   return v25;
 }
 
-- (id)_evaluateVideo:(id *)a3
+- (id)_evaluateVideo:(id *)video
 {
   v65 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!video)
   {
     v31 = NUAssertLogger_29069();
     if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
@@ -315,8 +315,8 @@ LABEL_12:
         v39 = dispatch_get_specific(*v33);
         v40 = MEMORY[0x1E696AF00];
         v41 = v39;
-        v42 = [v40 callStackSymbols];
-        v43 = [v42 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v40 callStackSymbols];
+        v43 = [callStackSymbols componentsJoinedByString:@"\n"];
         LODWORD(v64.start.value) = 138543618;
         *(&v64.start.value + 4) = v39;
         LOWORD(v64.start.flags) = 2114;
@@ -327,8 +327,8 @@ LABEL_12:
 
     else if (v36)
     {
-      v37 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v38 = [v37 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v38 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       LODWORD(v64.start.value) = 138543362;
       *(&v64.start.value + 4) = v38;
       _os_log_error_impl(&dword_1C7694000, v35, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", &v64, 0xCu);
@@ -337,8 +337,8 @@ LABEL_12:
     _NUAssertFailHandler();
   }
 
-  v5 = [(PIAutoLoopVideoNode *)self input];
-  v6 = [v5 outputVideo:a3];
+  input = [(PIAutoLoopVideoNode *)self input];
+  v6 = [input outputVideo:video];
 
   if (!v6)
   {
@@ -349,7 +349,7 @@ LABEL_12:
   v7 = objc_alloc_init(MEMORY[0x1E6988048]);
   if (v7)
   {
-    v8 = [MEMORY[0x1E69B3D40] firstEnabledVideoTrackInAsset:v6 error:a3];
+    v8 = [MEMORY[0x1E69B3D40] firstEnabledVideoTrackInAsset:v6 error:video];
     if (!v8)
     {
       v20 = 0;
@@ -360,7 +360,7 @@ LABEL_34:
 
     v49 = *MEMORY[0x1E69875A0];
     v9 = [v6 tracksWithMediaType:?];
-    v10 = [v9 firstObject];
+    firstObject = [v9 firstObject];
 
     v45 = *MEMORY[0x1E6987608];
     v11 = [v7 addMutableTrackWithMediaType:? preferredTrackID:?];
@@ -385,14 +385,14 @@ LABEL_34:
     if ((v12 & 1) == 0)
     {
       [MEMORY[0x1E69B3A48] errorWithCode:1 reason:@"Failed to update video track #1" object:self underlyingError:v14];
-      *a3 = v20 = 0;
-      v18 = v10;
+      *video = v20 = 0;
+      v18 = firstObject;
 LABEL_32:
       v29 = v50;
       goto LABEL_33;
     }
 
-    if (!v10)
+    if (!firstObject)
     {
       v18 = 0;
 LABEL_19:
@@ -459,14 +459,14 @@ LABEL_27:
           goto LABEL_28;
         }
 
-        *a3 = [MEMORY[0x1E69B3A48] errorWithCode:1 reason:@"Failed to update audio track #2" object:self underlyingError:v14];
+        *video = [MEMORY[0x1E69B3A48] errorWithCode:1 reason:@"Failed to update audio track #2" object:self underlyingError:v14];
 
         v18 = v28;
       }
 
       else
       {
-        *a3 = [MEMORY[0x1E69B3A48] errorWithCode:1 reason:@"Failed to update video track #2" object:self underlyingError:v24];
+        *video = [MEMORY[0x1E69B3A48] errorWithCode:1 reason:@"Failed to update video track #2" object:self underlyingError:v24];
         v14 = v24;
       }
 
@@ -477,7 +477,7 @@ LABEL_27:
     v15 = [v7 addMutableTrackWithMediaType:v49 preferredTrackID:2];
     memset(&duration, 0, sizeof(duration));
     v16 = MEMORY[0x1E69B3D40];
-    [v10 timeRange];
+    [firstObject timeRange];
     time2 = v64;
     [v16 conformRange:&time2 inRange:&time1];
     v58 = v14;
@@ -485,10 +485,10 @@ LABEL_27:
     *&time2.start.value = v46;
     time2.start.epoch = v13;
     v47 = v15;
-    LOBYTE(v16) = [v15 insertTimeRange:&time1 ofTrack:v10 atTime:&time2 error:&v58];
+    LOBYTE(v16) = [v15 insertTimeRange:&time1 ofTrack:firstObject atTime:&time2 error:&v58];
     v17 = v58;
 
-    v18 = v10;
+    v18 = firstObject;
     if (v16)
     {
       time1.start = duration.duration;
@@ -516,7 +516,7 @@ LABEL_18:
       v54 = v56;
       v55 = v57;
       CMTimeRangeMake(&time2, &v54, &v55);
-      [v10 timeRange];
+      [firstObject timeRange];
       [v21 conformRange:&time2 inRange:&v54];
       v53 = v17;
       time2 = time1;
@@ -531,12 +531,12 @@ LABEL_18:
         goto LABEL_18;
       }
 
-      *a3 = [MEMORY[0x1E69B3A48] errorWithCode:1 reason:@"Failed to update audio track #1" object:self underlyingError:v14];
+      *video = [MEMORY[0x1E69B3A48] errorWithCode:1 reason:@"Failed to update audio track #1" object:self underlyingError:v14];
     }
 
     else
     {
-      *a3 = [MEMORY[0x1E69B3A48] errorWithCode:1 reason:@"Failed to update audio track #1" object:self underlyingError:v17];
+      *video = [MEMORY[0x1E69B3A48] errorWithCode:1 reason:@"Failed to update audio track #1" object:self underlyingError:v17];
       v14 = v17;
       v19 = v47;
       v8 = v44;
@@ -548,7 +548,7 @@ LABEL_31:
   }
 
   [MEMORY[0x1E69B3A48] errorWithCode:1 reason:@"[[AVMutableComposition alloc] init] failed." object:self];
-  *a3 = v20 = 0;
+  *video = v20 = 0;
 LABEL_35:
 
 LABEL_36:
@@ -556,12 +556,12 @@ LABEL_36:
   return v20;
 }
 
-- (id)nodeByReplayingAgainstCache:(id)a3 pipelineState:(id)a4 error:(id *)a5
+- (id)nodeByReplayingAgainstCache:(id)cache pipelineState:(id)state error:(id *)error
 {
   v73[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  if (!a5)
+  cacheCopy = cache;
+  stateCopy = state;
+  if (!error)
   {
     v39 = NUAssertLogger_29069();
     if (os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
@@ -583,8 +583,8 @@ LABEL_36:
         v47 = dispatch_get_specific(*v41);
         v48 = MEMORY[0x1E696AF00];
         v49 = v47;
-        v50 = [v48 callStackSymbols];
-        v51 = [v50 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v48 callStackSymbols];
+        v51 = [callStackSymbols componentsJoinedByString:@"\n"];
         LODWORD(lhs.value) = 138543618;
         *(&lhs.value + 4) = v47;
         LOWORD(lhs.flags) = 2114;
@@ -595,8 +595,8 @@ LABEL_36:
 
     else if (v44)
     {
-      v45 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v46 = [v45 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v46 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       LODWORD(lhs.value) = 138543362;
       *(&lhs.value + 4) = v46;
       _os_log_error_impl(&dword_1C7694000, v43, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", &lhs, 0xCu);
@@ -605,17 +605,17 @@ LABEL_36:
     _NUAssertFailHandler();
   }
 
-  v10 = v9;
-  v11 = [v9 evaluationMode];
-  if ((v11 & 0xFFFFFFFFFFFFFFFDLL) != 1)
+  v10 = stateCopy;
+  evaluationMode = [stateCopy evaluationMode];
+  if ((evaluationMode & 0xFFFFFFFFFFFFFFFDLL) != 1)
   {
     v64.receiver = self;
     v64.super_class = PIAutoLoopVideoNode;
-    v17 = [(NURenderNode *)&v64 nodeByReplayingAgainstCache:v8 pipelineState:v10 error:a5];
+    v17 = [(NURenderNode *)&v64 nodeByReplayingAgainstCache:cacheCopy pipelineState:v10 error:error];
     goto LABEL_31;
   }
 
-  v12 = v11;
+  v12 = evaluationMode;
   v13 = [v10 copy];
   if (v12 != 3)
   {
@@ -634,8 +634,8 @@ LABEL_6:
     CMTimeAdd(&v63, &lhs, &rhs);
     lhs = v63;
     [v13 setTime:&lhs];
-    v18 = [(PIAutoLoopVideoNode *)self input];
-    v19 = [v18 nodeByReplayingAgainstCache:v8 pipelineState:v13 error:a5];
+    input = [(PIAutoLoopVideoNode *)self input];
+    v19 = [input nodeByReplayingAgainstCache:cacheCopy pipelineState:v13 error:error];
 
     if (!v19)
     {
@@ -676,19 +676,19 @@ LABEL_29:
       goto LABEL_29;
     }
 
-    v24 = [(PIAutoLoopVideoNode *)self loopPeriod];
-    v53 = [(PIAutoLoopVideoNode *)self fadeLength];
+    loopPeriod = [(PIAutoLoopVideoNode *)self loopPeriod];
+    fadeLength = [(PIAutoLoopVideoNode *)self fadeLength];
     v25 = [v10 copy];
     if (v12 == 3)
     {
-      v52 = v24;
-      v26 = [v10 videoFrames];
-      v27 = [v26 objectForKeyedSubscript:@"secondary"];
+      v52 = loopPeriod;
+      videoFrames = [v10 videoFrames];
+      v27 = [videoFrames objectForKeyedSubscript:@"secondary"];
 
       if (!v27)
       {
         [MEMORY[0x1E69B3A48] missingError:@"Missing secondary video frame" object:v10];
-        *a5 = v17 = 0;
+        *error = v17 = 0;
 LABEL_28:
 
         goto LABEL_29;
@@ -699,7 +699,7 @@ LABEL_28:
       v28 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v70 forKeys:&v69 count:1];
       [v25 setVideoFrames:v28];
 
-      v24 = v52;
+      loopPeriod = v52;
     }
 
     [(PIAutoLoopVideoNode *)self startTime];
@@ -718,14 +718,14 @@ LABEL_28:
     CMTimeSubtract(&v58, &v57, &v56);
     v57 = v58;
     [v25 setTime:&v57];
-    v29 = [(PIAutoLoopVideoNode *)self input];
-    v30 = [v29 nodeByReplayingAgainstCache:v8 pipelineState:v25 error:a5];
+    input2 = [(PIAutoLoopVideoNode *)self input];
+    v30 = [input2 nodeByReplayingAgainstCache:cacheCopy pipelineState:v25 error:error];
 
     if (v30)
     {
       v31 = objc_alloc(MEMORY[0x1E69B3A70]);
       v67 = *MEMORY[0x1E695FB30];
-      *&v32 = 1.0 - ((v24 - v23) / v53);
+      *&v32 = 1.0 - ((loopPeriod - v23) / fadeLength);
       v33 = [MEMORY[0x1E696AD98] numberWithFloat:v32];
       v68 = v33;
       v34 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v68 forKeys:&v67 count:1];
@@ -737,7 +737,7 @@ LABEL_28:
       v36 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v66 forKeys:v65 count:2];
       v37 = [v31 initWithFilterName:@"CIDissolveTransition" settings:v34 inputs:v36];
 
-      v17 = [MEMORY[0x1E69B3C28] nodeFromCache:v37 cache:v8];
+      v17 = [MEMORY[0x1E69B3C28] nodeFromCache:v37 cache:cacheCopy];
       [v17 setEvaluatedForMode:{objc_msgSend(v10, "evaluationMode")}];
     }
 
@@ -749,8 +749,8 @@ LABEL_28:
     goto LABEL_28;
   }
 
-  v14 = [v10 videoFrames];
-  v15 = [v14 objectForKeyedSubscript:@"primary"];
+  videoFrames2 = [v10 videoFrames];
+  v15 = [videoFrames2 objectForKeyedSubscript:@"primary"];
 
   if (v15)
   {
@@ -763,7 +763,7 @@ LABEL_28:
   }
 
   [MEMORY[0x1E69B3A48] missingError:@"Missing primary video frame" object:v10];
-  *a5 = v17 = 0;
+  *error = v17 = 0;
 LABEL_30:
 
 LABEL_31:
@@ -771,11 +771,11 @@ LABEL_31:
   return v17;
 }
 
-- (id)resolvedNodeWithCachedInputs:(id)a3 settings:(id)a4 pipelineState:(id)a5 error:(id *)a6
+- (id)resolvedNodeWithCachedInputs:(id)inputs settings:(id)settings pipelineState:(id)state error:(id *)error
 {
   v10.receiver = self;
   v10.super_class = PIAutoLoopVideoNode;
-  v7 = [(NURenderNode *)&v10 resolvedNodeWithCachedInputs:a3 settings:a4 pipelineState:a5 error:a6];
+  v7 = [(NURenderNode *)&v10 resolvedNodeWithCachedInputs:inputs settings:settings pipelineState:state error:error];
   v8 = *(&self->_fadeLength + 1);
   *(v7 + 196) = *&self->_frameDuration.flags;
   *(v7 + 180) = v8;
@@ -786,10 +786,10 @@ LABEL_31:
   return v7;
 }
 
-- (id)_evaluateVideoProperties:(id *)a3
+- (id)_evaluateVideoProperties:(id *)properties
 {
   v21 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!properties)
   {
     v6 = NUAssertLogger_29069();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -811,8 +811,8 @@ LABEL_31:
         v14 = dispatch_get_specific(*v8);
         v15 = MEMORY[0x1E696AF00];
         v16 = v14;
-        v17 = [v15 callStackSymbols];
-        v18 = [v17 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v15 callStackSymbols];
+        v18 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v14;
         *&buf[12] = 2114;
@@ -823,8 +823,8 @@ LABEL_31:
 
     else if (v11)
     {
-      v12 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v13 = [v12 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v13 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v13;
       _os_log_error_impl(&dword_1C7694000, v10, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -854,18 +854,18 @@ LABEL_31:
 
 - (NURenderNode)input
 {
-  v2 = [(NURenderNode *)self inputs];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x1E695FAB0]];
+  inputs = [(NURenderNode *)self inputs];
+  v3 = [inputs objectForKeyedSubscript:*MEMORY[0x1E695FAB0]];
 
   return v3;
 }
 
-- (PIAutoLoopVideoNode)initWithInput:(id)a3 frameDuration:(id *)a4 trimRange:(id *)a5 settings:(id)a6
+- (PIAutoLoopVideoNode)initWithInput:(id)input frameDuration:(id *)duration trimRange:(id *)range settings:(id)settings
 {
   v63 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a6;
-  if (!v10)
+  inputCopy = input;
+  settingsCopy = settings;
+  if (!inputCopy)
   {
     v25 = NUAssertLogger_29069();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -876,7 +876,7 @@ LABEL_31:
       _os_log_error_impl(&dword_1C7694000, v25, OS_LOG_TYPE_ERROR, "Fail: %{public}@", time, 0xCu);
     }
 
-    v27 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     specific = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v29 = NUAssertLogger_29069();
     v30 = os_log_type_enabled(v29, OS_LOG_TYPE_ERROR);
@@ -884,11 +884,11 @@ LABEL_31:
     {
       if (v30)
       {
-        v43 = dispatch_get_specific(*v27);
+        v43 = dispatch_get_specific(*callStackSymbols);
         v44 = MEMORY[0x1E696AF00];
         v45 = v43;
-        v27 = [v44 callStackSymbols];
-        v46 = [v27 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v44 callStackSymbols];
+        v46 = [callStackSymbols componentsJoinedByString:@"\n"];
         *time = 138543618;
         *&time[4] = v43;
         *&time[12] = 2114;
@@ -899,10 +899,10 @@ LABEL_31:
 
     else if (v30)
     {
-      v31 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v27 = [v31 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      callStackSymbols = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *time = 138543362;
-      *&time[4] = v27;
+      *&time[4] = callStackSymbols;
       _os_log_error_impl(&dword_1C7694000, v29, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", time, 0xCu);
     }
 
@@ -910,7 +910,7 @@ LABEL_31:
     goto LABEL_28;
   }
 
-  if ((a4->var2 & 1) == 0)
+  if ((duration->var2 & 1) == 0)
   {
     v32 = NUAssertLogger_29069();
     if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
@@ -921,7 +921,7 @@ LABEL_31:
       _os_log_error_impl(&dword_1C7694000, v32, OS_LOG_TYPE_ERROR, "Fail: %{public}@", time, 0xCu);
     }
 
-    v27 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     v34 = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v29 = NUAssertLogger_29069();
     v35 = os_log_type_enabled(v29, OS_LOG_TYPE_ERROR);
@@ -929,10 +929,10 @@ LABEL_31:
     {
       if (v35)
       {
-        v36 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v27 = [v36 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [MEMORY[0x1E696AF00] callStackSymbols];
+        callStackSymbols = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *time = 138543362;
-        *&time[4] = v27;
+        *&time[4] = callStackSymbols;
         _os_log_error_impl(&dword_1C7694000, v29, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", time, 0xCu);
       }
 
@@ -945,11 +945,11 @@ LABEL_30:
 LABEL_28:
     if (v35)
     {
-      v47 = dispatch_get_specific(*v27);
+      v47 = dispatch_get_specific(*callStackSymbols);
       v48 = MEMORY[0x1E696AF00];
       v49 = v47;
-      v27 = [v48 callStackSymbols];
-      v50 = [v27 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v48 callStackSymbols];
+      v50 = [callStackSymbols componentsJoinedByString:@"\n"];
       *time = 138543618;
       *&time[4] = v47;
       *&time[12] = 2114;
@@ -960,8 +960,8 @@ LABEL_28:
     goto LABEL_30;
   }
 
-  v12 = v11;
-  if (!v11)
+  v12 = settingsCopy;
+  if (!settingsCopy)
   {
     v37 = NUAssertLogger_29069();
     if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
@@ -972,7 +972,7 @@ LABEL_28:
       _os_log_error_impl(&dword_1C7694000, v37, OS_LOG_TYPE_ERROR, "Fail: %{public}@", time, 0xCu);
     }
 
-    v27 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     v39 = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v29 = NUAssertLogger_29069();
     v40 = os_log_type_enabled(v29, OS_LOG_TYPE_ERROR);
@@ -980,8 +980,8 @@ LABEL_28:
     {
       if (v40)
       {
-        v41 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v42 = [v41 componentsJoinedByString:@"\n"];
+        callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v42 = [callStackSymbols4 componentsJoinedByString:@"\n"];
         *time = 138543362;
         *&time[4] = v42;
         _os_log_error_impl(&dword_1C7694000, v29, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", time, 0xCu);
@@ -993,11 +993,11 @@ LABEL_28:
 LABEL_31:
     if (v40)
     {
-      v51 = dispatch_get_specific(*v27);
+      v51 = dispatch_get_specific(*callStackSymbols);
       v52 = MEMORY[0x1E696AF00];
       v53 = v51;
-      v54 = [v52 callStackSymbols];
-      v55 = [v54 componentsJoinedByString:@"\n"];
+      callStackSymbols5 = [v52 callStackSymbols];
+      v55 = [callStackSymbols5 componentsJoinedByString:@"\n"];
       *time = 138543618;
       *&time[4] = v51;
       *&time[12] = 2114;
@@ -1010,15 +1010,15 @@ LABEL_33:
     _NUAssertFailHandler();
   }
 
-  if ((a5->var0.var2 & 1) != 0 && (a5->var1.var2 & 1) != 0 && !a5->var1.var3 && (a5->var1.var0 & 0x8000000000000000) == 0)
+  if ((range->var0.var2 & 1) != 0 && (range->var1.var2 & 1) != 0 && !range->var1.var3 && (range->var1.var0 & 0x8000000000000000) == 0)
   {
     v13 = objc_opt_class();
-    v14 = *&a5->var0.var3;
-    *time = *&a5->var0.var0;
+    v14 = *&range->var0.var3;
+    *time = *&range->var0.var0;
     *&time[16] = v14;
-    v62 = *&a5->var1.var1;
-    v57 = *&a4->var0;
-    var3 = a4->var3;
+    v62 = *&range->var1.var1;
+    v57 = *&duration->var0;
+    var3 = duration->var3;
     v15 = [v13 loopParamsForTrimRange:time frameDuration:&v57];
 
     v12 = v15;
@@ -1026,20 +1026,20 @@ LABEL_33:
 
   v16 = objc_alloc_init(MEMORY[0x1E695DF90]);
   [v16 setObject:v12 forKeyedSubscript:@"loopParams"];
-  *time = *&a4->var0;
-  *&time[16] = a4->var3;
+  *time = *&duration->var0;
+  *&time[16] = duration->var3;
   v17 = CMTimeCopyAsDictionary(time, 0);
   [v16 setObject:v17 forKeyedSubscript:@"frameDuration"];
 
   v59 = *MEMORY[0x1E695FAB0];
-  v60 = v10;
+  v60 = inputCopy;
   v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v60 forKeys:&v59 count:1];
   v56.receiver = self;
   v56.super_class = PIAutoLoopVideoNode;
   v19 = [(NURenderNode *)&v56 initWithSettings:v16 inputs:v18];
 
-  v20 = a4->var3;
-  *(v19 + 180) = *&a4->var0;
+  v20 = duration->var3;
+  *(v19 + 180) = *&duration->var0;
   *(v19 + 196) = v20;
   v21 = [v12 objectForKeyedSubscript:*MEMORY[0x1E698E200]];
   *(v19 + 42) = [v21 intValue];
@@ -1053,11 +1053,11 @@ LABEL_33:
   return v19;
 }
 
-- (PIAutoLoopVideoNode)initWithSettings:(id)a3 inputs:(id)a4
+- (PIAutoLoopVideoNode)initWithSettings:(id)settings inputs:(id)inputs
 {
   v35 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  settingsCopy = settings;
+  inputsCopy = inputs;
   v8 = MEMORY[0x1E69B3D78];
   if (*MEMORY[0x1E69B3D78] != -1)
   {
@@ -1096,8 +1096,8 @@ LABEL_11:
           v25 = MEMORY[0x1E696AF00];
           v26 = specific;
           v27 = v23;
-          v28 = [v25 callStackSymbols];
-          v29 = [v28 componentsJoinedByString:@"\n"];
+          callStackSymbols = [v25 callStackSymbols];
+          v29 = [callStackSymbols componentsJoinedByString:@"\n"];
           *buf = 138543618;
           v32 = specific;
           v33 = 2114;
@@ -1124,8 +1124,8 @@ LABEL_11:
     {
       v19 = MEMORY[0x1E696AF00];
       v20 = v18;
-      v21 = [v19 callStackSymbols];
-      v22 = [v21 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [v19 callStackSymbols];
+      v22 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v32 = v22;
       _os_log_error_impl(&dword_1C7694000, v20, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1143,59 +1143,59 @@ LABEL_14:
   }
 }
 
-+ (int)fadeLengthForTrimRange:(id *)a3 frameDuration:(id *)a4
++ (int)fadeLengthForTrimRange:(id *)range frameDuration:(id *)duration
 {
-  var1 = a3->var1;
+  var1 = range->var1;
   v5 = fmin(CMTimeGetSeconds(&var1) * 0.5, 1.0);
-  var1 = *a4;
+  var1 = *duration;
   return vcvtmd_s64_f64(v5 / CMTimeGetSeconds(&var1));
 }
 
-+ (int)loopPeriodForTrimRange:(id *)a3 frameDuration:(id *)a4
++ (int)loopPeriodForTrimRange:(id *)range frameDuration:(id *)duration
 {
-  *time = a3->var1;
+  *time = range->var1;
   Seconds = CMTimeGetSeconds(time);
-  *time = *a4;
+  *time = *duration;
   v8 = vcvtpd_s64_f64(Seconds / CMTimeGetSeconds(time));
-  v9 = *&a3->var0.var3;
-  *time = *&a3->var0.var0;
+  v9 = *&range->var0.var3;
+  *time = *&range->var0.var0;
   *&time[16] = v9;
-  v13 = *&a3->var1.var1;
-  v11 = *a4;
-  return v8 - [a1 fadeLengthForTrimRange:time frameDuration:&v11];
+  v13 = *&range->var1.var1;
+  v11 = *duration;
+  return v8 - [self fadeLengthForTrimRange:time frameDuration:&v11];
 }
 
-+ (int)loopStartForTrimRange:(id *)a3 frameDuration:(id *)a4
++ (int)loopStartForTrimRange:(id *)range frameDuration:(id *)duration
 {
-  var0 = a3->var0;
+  var0 = range->var0;
   Seconds = CMTimeGetSeconds(&var0);
-  var0 = *a4;
+  var0 = *duration;
   return vcvtmd_s64_f64(Seconds / CMTimeGetSeconds(&var0));
 }
 
-+ (id)loopParamsForTrimRange:(id *)a3 frameDuration:(id *)a4
++ (id)loopParamsForTrimRange:(id *)range frameDuration:(id *)duration
 {
   v25[3] = *MEMORY[0x1E69E9840];
   v6 = objc_opt_class();
-  v7 = *&a3->var0.var3;
-  v21 = *&a3->var0.var0;
+  v7 = *&range->var0.var3;
+  v21 = *&range->var0.var0;
   v22 = v7;
-  v23 = *&a3->var1.var1;
-  v20 = *a4;
+  v23 = *&range->var1.var1;
+  v20 = *duration;
   v8 = [v6 loopStartForTrimRange:&v21 frameDuration:&v20];
   v9 = objc_opt_class();
-  v10 = *&a3->var0.var3;
-  v21 = *&a3->var0.var0;
+  v10 = *&range->var0.var3;
+  v21 = *&range->var0.var0;
   v22 = v10;
-  v23 = *&a3->var1.var1;
-  v20 = *a4;
+  v23 = *&range->var1.var1;
+  v20 = *duration;
   v11 = [v9 loopPeriodForTrimRange:&v21 frameDuration:&v20];
   v12 = objc_opt_class();
-  v13 = *&a3->var0.var3;
-  v21 = *&a3->var0.var0;
+  v13 = *&range->var0.var3;
+  v21 = *&range->var0.var0;
   v22 = v13;
-  v23 = *&a3->var1.var1;
-  v20 = *a4;
+  v23 = *&range->var1.var1;
+  v20 = *duration;
   v14 = [v12 fadeLengthForTrimRange:&v21 frameDuration:&v20];
   v24[0] = *MEMORY[0x1E698E200];
   v15 = [MEMORY[0x1E696AD98] numberWithInt:v8];

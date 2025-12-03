@@ -1,42 +1,42 @@
 @interface MapsSuggestionsDGVDataSource
-- (BOOL)_buildAnnotationsWithDictFromDeserializedJson:(id)a3;
-- (BOOL)_buildLinksWithDictFromDeserializedJson:(id)a3;
-- (MapsSuggestionsDGVDataSource)initWithJSONString:(id)a3;
-- (id)_annotationWithLatitude:(double)a3 longitude:(double)a4;
-- (id)_dictFromJSONString:(id)a3;
-- (id)_findAnnotationEquivalentToUnserializedJSON:(id)a3;
+- (BOOL)_buildAnnotationsWithDictFromDeserializedJson:(id)json;
+- (BOOL)_buildLinksWithDictFromDeserializedJson:(id)json;
+- (MapsSuggestionsDGVDataSource)initWithJSONString:(id)string;
+- (id)_annotationWithLatitude:(double)latitude longitude:(double)longitude;
+- (id)_dictFromJSONString:(id)string;
+- (id)_findAnnotationEquivalentToUnserializedJSON:(id)n;
 @end
 
 @implementation MapsSuggestionsDGVDataSource
 
-- (id)_annotationWithLatitude:(double)a3 longitude:(double)a4
+- (id)_annotationWithLatitude:(double)latitude longitude:(double)longitude
 {
   annotations = self->_annotations;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100725B24;
   v9[3] = &unk_101627968;
-  *&v9[4] = a3;
-  *&v9[5] = a4;
+  *&v9[4] = latitude;
+  *&v9[5] = longitude;
   v5 = [NSPredicate predicateWithBlock:v9];
   v6 = [(NSMutableArray *)annotations filteredArrayUsingPredicate:v5];
 
   if ([v6 count] == 1)
   {
-    v7 = [v6 firstObject];
+    firstObject = [v6 firstObject];
   }
 
   else
   {
-    v7 = 0;
+    firstObject = 0;
   }
 
-  return v7;
+  return firstObject;
 }
 
-- (id)_findAnnotationEquivalentToUnserializedJSON:(id)a3
+- (id)_findAnnotationEquivalentToUnserializedJSON:(id)n
 {
-  v4 = [a3 objectForKey:@"likelyLocation"];
+  v4 = [n objectForKey:@"likelyLocation"];
   v5 = v4;
   if (v4)
   {
@@ -95,9 +95,9 @@ LABEL_10:
   return v12;
 }
 
-- (BOOL)_buildLinksWithDictFromDeserializedJson:(id)a3
+- (BOOL)_buildLinksWithDictFromDeserializedJson:(id)json
 {
-  if (!a3)
+  if (!json)
   {
     v4 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_FAULT))
@@ -117,7 +117,7 @@ LABEL_10:
     goto LABEL_34;
   }
 
-  [a3 objectForKey:@"links"];
+  [json objectForKey:@"links"];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
@@ -270,9 +270,9 @@ LABEL_34:
   return v21;
 }
 
-- (BOOL)_buildAnnotationsWithDictFromDeserializedJson:(id)a3
+- (BOOL)_buildAnnotationsWithDictFromDeserializedJson:(id)json
 {
-  if (!a3)
+  if (!json)
   {
     v5 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_FAULT))
@@ -291,7 +291,7 @@ LABEL_34:
     goto LABEL_17;
   }
 
-  v4 = [a3 objectForKey:@"destinations"];
+  v4 = [json objectForKey:@"destinations"];
   if (!v4)
   {
     v5 = 0;
@@ -350,9 +350,9 @@ LABEL_18:
   return v14;
 }
 
-- (id)_dictFromJSONString:(id)a3
+- (id)_dictFromJSONString:(id)string
 {
-  v3 = [a3 dataUsingEncoding:4];
+  v3 = [string dataUsingEncoding:4];
   v8 = 0;
   v4 = [NSJSONSerialization JSONObjectWithData:v3 options:1 error:&v8];
   v5 = v4;
@@ -365,9 +365,9 @@ LABEL_18:
   return v6;
 }
 
-- (MapsSuggestionsDGVDataSource)initWithJSONString:(id)a3
+- (MapsSuggestionsDGVDataSource)initWithJSONString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v17.receiver = self;
   v17.super_class = MapsSuggestionsDGVDataSource;
   v5 = [(MapsSuggestionsDGVDataSource *)&v17 init];
@@ -381,7 +381,7 @@ LABEL_18:
     linkOverlays = v5->_linkOverlays;
     v5->_linkOverlays = v8;
 
-    v10 = [(MapsSuggestionsDGVDataSource *)v5 _dictFromJSONString:v4];
+    v10 = [(MapsSuggestionsDGVDataSource *)v5 _dictFromJSONString:stringCopy];
     if (!v10)
     {
 LABEL_13:

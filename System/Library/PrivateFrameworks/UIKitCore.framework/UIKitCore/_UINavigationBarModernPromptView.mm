@@ -1,19 +1,19 @@
 @interface _UINavigationBarModernPromptView
 - (CGSize)intrinsicContentSize;
 - (CGSize)sizeThatFits:(CGSize)result;
-- (_UINavigationBarModernPromptView)initWithFrame:(CGRect)a3;
+- (_UINavigationBarModernPromptView)initWithFrame:(CGRect)frame;
 - (void)_updatePromptLabel;
-- (void)setPrompt:(id)a3;
-- (void)setTextColor:(id)a3;
+- (void)setPrompt:(id)prompt;
+- (void)setTextColor:(id)color;
 @end
 
 @implementation _UINavigationBarModernPromptView
 
-- (_UINavigationBarModernPromptView)initWithFrame:(CGRect)a3
+- (_UINavigationBarModernPromptView)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = _UINavigationBarModernPromptView;
-  v3 = [(UIView *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -46,33 +46,33 @@
     v6 = [(UIView *)self layoutGuideForLayoutRegion:v5];
 
     v25 = MEMORY[0x1E69977A0];
-    v33 = [(UIView *)self->_promptLabel lastBaselineAnchor];
-    v32 = [(UIView *)self topAnchor];
-    v31 = [v33 constraintEqualToAnchor:v32 constant:22.0];
+    lastBaselineAnchor = [(UIView *)self->_promptLabel lastBaselineAnchor];
+    topAnchor = [(UIView *)self topAnchor];
+    v31 = [lastBaselineAnchor constraintEqualToAnchor:topAnchor constant:22.0];
     v34[0] = v31;
-    v29 = [(UIView *)self->_promptLabel centerXAnchor];
-    v30 = [(UIView *)self layoutMarginsGuide];
-    v28 = [v30 centerXAnchor];
-    v27 = [v29 constraintEqualToAnchor:v28];
+    centerXAnchor = [(UIView *)self->_promptLabel centerXAnchor];
+    layoutMarginsGuide = [(UIView *)self layoutMarginsGuide];
+    centerXAnchor2 = [layoutMarginsGuide centerXAnchor];
+    v27 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v34[1] = v27;
-    v24 = [(UIView *)self->_promptLabel leadingAnchor];
-    v26 = [(UIView *)self layoutMarginsGuide];
-    v23 = [v26 leadingAnchor];
-    v22 = [v24 constraintGreaterThanOrEqualToAnchor:v23];
+    leadingAnchor = [(UIView *)self->_promptLabel leadingAnchor];
+    layoutMarginsGuide2 = [(UIView *)self layoutMarginsGuide];
+    leadingAnchor2 = [layoutMarginsGuide2 leadingAnchor];
+    v22 = [leadingAnchor constraintGreaterThanOrEqualToAnchor:leadingAnchor2];
     v34[2] = v22;
-    v19 = [(UIView *)self->_promptLabel trailingAnchor];
-    v20 = [(UIView *)self layoutMarginsGuide];
-    v18 = [v20 trailingAnchor];
-    v7 = [v19 constraintLessThanOrEqualToAnchor:v18];
+    trailingAnchor = [(UIView *)self->_promptLabel trailingAnchor];
+    layoutMarginsGuide3 = [(UIView *)self layoutMarginsGuide];
+    trailingAnchor2 = [layoutMarginsGuide3 trailingAnchor];
+    v7 = [trailingAnchor constraintLessThanOrEqualToAnchor:trailingAnchor2];
     v34[3] = v7;
-    v8 = [(UIView *)self->_promptLabel leadingAnchor];
+    leadingAnchor3 = [(UIView *)self->_promptLabel leadingAnchor];
     v21 = v6;
-    v9 = [v6 leadingAnchor];
-    v10 = [v8 constraintGreaterThanOrEqualToAnchor:v9];
+    leadingAnchor4 = [v6 leadingAnchor];
+    v10 = [leadingAnchor3 constraintGreaterThanOrEqualToAnchor:leadingAnchor4];
     v34[4] = v10;
-    v11 = [(UIView *)self->_promptLabel trailingAnchor];
-    v12 = [v6 trailingAnchor];
-    v13 = [v11 constraintLessThanOrEqualToAnchor:v12];
+    trailingAnchor3 = [(UIView *)self->_promptLabel trailingAnchor];
+    trailingAnchor4 = [v6 trailingAnchor];
+    v13 = [trailingAnchor3 constraintLessThanOrEqualToAnchor:trailingAnchor4];
     v34[5] = v13;
     v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v34 count:6];
     [v25 activateConstraints:v14];
@@ -95,12 +95,12 @@
   [(UILabel *)self->_promptLabel setFont:v17];
 }
 
-- (void)setPrompt:(id)a3
+- (void)setPrompt:(id)prompt
 {
-  v4 = a3;
-  if (v4)
+  promptCopy = prompt;
+  if (promptCopy)
   {
-    v5 = v4;
+    v5 = promptCopy;
   }
 
   else
@@ -116,16 +116,16 @@
   }
 }
 
-- (void)setTextColor:(id)a3
+- (void)setTextColor:(id)color
 {
-  v4 = a3;
-  if (!v4)
+  colorCopy = color;
+  if (!colorCopy)
   {
-    v4 = +[UIColor labelColor];
+    colorCopy = +[UIColor labelColor];
   }
 
-  obj = v4;
-  if (![(UIColor *)self->_textColor isEqual:v4])
+  obj = colorCopy;
+  if (![(UIColor *)self->_textColor isEqual:colorCopy])
   {
     objc_storeStrong(&self->_textColor, obj);
     [(_UINavigationBarModernPromptView *)self _updatePromptLabel];

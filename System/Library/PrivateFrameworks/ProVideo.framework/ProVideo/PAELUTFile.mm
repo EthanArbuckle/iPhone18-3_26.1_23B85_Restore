@@ -1,16 +1,16 @@
 @interface PAELUTFile
 - (BOOL)addParameters;
-- (HGRef<HGBitmap>)lutBitmapForFilter:(int)a3 lutDimensions:(int *)a4;
-- (PAELUTFile)initWithAPIManager:(id)a3;
+- (HGRef<HGBitmap>)lutBitmapForFilter:(int)filter lutDimensions:(int *)dimensions;
+- (PAELUTFile)initWithAPIManager:(id)manager;
 @end
 
 @implementation PAELUTFile
 
-- (PAELUTFile)initWithAPIManager:(id)a3
+- (PAELUTFile)initWithAPIManager:(id)manager
 {
   v4.receiver = self;
   v4.super_class = PAELUTFile;
-  result = [(PAEPhotosFilters *)&v4 initWithAPIManager:a3];
+  result = [(PAEPhotosFilters *)&v4 initWithAPIManager:manager];
   if (result)
   {
     result->super.whichFilter = -1;
@@ -34,9 +34,9 @@
   return v4;
 }
 
-- (HGRef<HGBitmap>)lutBitmapForFilter:(int)a3 lutDimensions:(int *)a4
+- (HGRef<HGBitmap>)lutBitmapForFilter:(int)filter lutDimensions:(int *)dimensions
 {
-  v6 = *&a3;
+  v6 = *&filter;
   v8 = v4;
   v9 = [(PROAPIAccessing *)self->super.super.super._apiManager apiForProtocol:&unk_28735B780];
   v10.m_Obj = [(PROAPIAccessing *)self->super.super.super._apiManager apiForProtocol:&unk_28735AE68];
@@ -55,16 +55,16 @@
     m_Obj = v10.m_Obj;
     v18 = 0;
     [v9 getStringParameterValue:&v18 fromParm:101];
-    v13 = [(HGBitmap *)m_Obj URLForMediaFolder];
-    v14 = [v13 URLByAppendingPathComponent:v18];
-    v15 = [v14 pathExtension];
-    if ([v15 isEqualToString:@"cube"])
+    uRLForMediaFolder = [(HGBitmap *)m_Obj URLForMediaFolder];
+    v14 = [uRLForMediaFolder URLByAppendingPathComponent:v18];
+    pathExtension = [v14 pathExtension];
+    if ([pathExtension isEqualToString:@"cube"])
     {
       v6 = 30;
       v16 = &OBJC_IVAR___PAEPhotosFilters_LUTCubeURL;
     }
 
-    else if ([v15 isEqualToString:@"scube"])
+    else if ([pathExtension isEqualToString:@"scube"])
     {
       v6 = 31;
       v16 = &OBJC_IVAR___PAEPhotosFilters_LUTScubeURL;
@@ -72,12 +72,12 @@
 
     else
     {
-      if (![v15 isEqualToString:@"ccube"])
+      if (![pathExtension isEqualToString:@"ccube"])
       {
 LABEL_14:
         v17.receiver = self;
         v17.super_class = PAELUTFile;
-        return [(PAEPhotosFilters *)&v17 lutBitmapForFilter:v6 lutDimensions:a4];
+        return [(PAEPhotosFilters *)&v17 lutBitmapForFilter:v6 lutDimensions:dimensions];
       }
 
       v6 = 32;

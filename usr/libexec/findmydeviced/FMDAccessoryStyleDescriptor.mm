@@ -1,33 +1,33 @@
 @interface FMDAccessoryStyleDescriptor
-- (FMDAccessoryStyleDescriptor)initWithCoder:(id)a3;
-- (FMDAccessoryStyleDescriptor)initWithDictionary:(id)a3;
+- (FMDAccessoryStyleDescriptor)initWithCoder:(id)coder;
+- (FMDAccessoryStyleDescriptor)initWithDictionary:(id)dictionary;
 - (NSDictionary)dictionaryValue;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FMDAccessoryStyleDescriptor
 
-- (FMDAccessoryStyleDescriptor)initWithDictionary:(id)a3
+- (FMDAccessoryStyleDescriptor)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = FMDAccessoryStyleDescriptor;
   v5 = [(FMDAccessoryStyleDescriptor *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"colorCode"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"colorCode"];
     [(FMDAccessoryStyleDescriptor *)v5 setColorCode:v6];
 
-    v7 = [v4 objectForKeyedSubscript:@"colorCodeLeft"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"colorCodeLeft"];
     [(FMDAccessoryStyleDescriptor *)v5 setColorCodeLeft:v7];
 
-    v8 = [v4 objectForKeyedSubscript:@"colorCodeRight"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"colorCodeRight"];
     [(FMDAccessoryStyleDescriptor *)v5 setColorCodeRight:v8];
 
-    v9 = [v4 objectForKeyedSubscript:@"colorCodeCase"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"colorCodeCase"];
     [(FMDAccessoryStyleDescriptor *)v5 setColorCodeCase:v9];
 
-    v10 = [v4 objectForKeyedSubscript:@"headbandType"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"headbandType"];
     [(FMDAccessoryStyleDescriptor *)v5 setHeadbandType:v10];
   }
 
@@ -37,68 +37,68 @@
 - (NSDictionary)dictionaryValue
 {
   v3 = objc_opt_new();
-  v4 = [(FMDAccessoryStyleDescriptor *)self colorCode];
-  [v3 fm_safelySetObject:v4 forKey:@"colorCode"];
+  colorCode = [(FMDAccessoryStyleDescriptor *)self colorCode];
+  [v3 fm_safelySetObject:colorCode forKey:@"colorCode"];
 
-  v5 = [(FMDAccessoryStyleDescriptor *)self colorCodeLeft];
-  [v3 fm_safelySetObject:v5 forKey:@"colorCodeLeft"];
+  colorCodeLeft = [(FMDAccessoryStyleDescriptor *)self colorCodeLeft];
+  [v3 fm_safelySetObject:colorCodeLeft forKey:@"colorCodeLeft"];
 
-  v6 = [(FMDAccessoryStyleDescriptor *)self colorCodeRight];
-  [v3 fm_safelySetObject:v6 forKey:@"colorCodeRight"];
+  colorCodeRight = [(FMDAccessoryStyleDescriptor *)self colorCodeRight];
+  [v3 fm_safelySetObject:colorCodeRight forKey:@"colorCodeRight"];
 
-  v7 = [(FMDAccessoryStyleDescriptor *)self colorCodeCase];
-  [v3 fm_safelySetObject:v7 forKey:@"colorCodeCase"];
+  colorCodeCase = [(FMDAccessoryStyleDescriptor *)self colorCodeCase];
+  [v3 fm_safelySetObject:colorCodeCase forKey:@"colorCodeCase"];
 
-  v8 = [(FMDAccessoryStyleDescriptor *)self headbandType];
-  [v3 fm_safelySetObject:v8 forKey:@"headbandType"];
+  headbandType = [(FMDAccessoryStyleDescriptor *)self headbandType];
+  [v3 fm_safelySetObject:headbandType forKey:@"headbandType"];
 
   return v3;
 }
 
-- (FMDAccessoryStyleDescriptor)initWithCoder:(id)a3
+- (FMDAccessoryStyleDescriptor)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = FMDAccessoryStyleDescriptor;
   v5 = [(FMDAccessoryStyleDescriptor *)&v12 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"colorCode"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"colorCode"];
     [(FMDAccessoryStyleDescriptor *)v5 setColorCode:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"colorCodeLeft"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"colorCodeLeft"];
     [(FMDAccessoryStyleDescriptor *)v5 setColorCodeLeft:v7];
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"colorCodeRight"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"colorCodeRight"];
     [(FMDAccessoryStyleDescriptor *)v5 setColorCodeRight:v8];
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"colorCodeCase"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"colorCodeCase"];
     [(FMDAccessoryStyleDescriptor *)v5 setColorCodeCase:v9];
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"headbandType"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"headbandType"];
     [(FMDAccessoryStyleDescriptor *)v5 setHeadbandType:v10];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(FMDAccessoryStyleDescriptor *)self colorCode];
-  [v4 encodeObject:v5 forKey:@"colorCode"];
+  coderCopy = coder;
+  colorCode = [(FMDAccessoryStyleDescriptor *)self colorCode];
+  [coderCopy encodeObject:colorCode forKey:@"colorCode"];
 
-  v6 = [(FMDAccessoryStyleDescriptor *)self colorCodeLeft];
-  [v4 encodeObject:v6 forKey:@"colorCodeLeft"];
+  colorCodeLeft = [(FMDAccessoryStyleDescriptor *)self colorCodeLeft];
+  [coderCopy encodeObject:colorCodeLeft forKey:@"colorCodeLeft"];
 
-  v7 = [(FMDAccessoryStyleDescriptor *)self colorCodeRight];
-  [v4 encodeObject:v7 forKey:@"colorCodeRight"];
+  colorCodeRight = [(FMDAccessoryStyleDescriptor *)self colorCodeRight];
+  [coderCopy encodeObject:colorCodeRight forKey:@"colorCodeRight"];
 
-  v8 = [(FMDAccessoryStyleDescriptor *)self colorCodeCase];
-  [v4 encodeObject:v8 forKey:@"colorCodeCase"];
+  colorCodeCase = [(FMDAccessoryStyleDescriptor *)self colorCodeCase];
+  [coderCopy encodeObject:colorCodeCase forKey:@"colorCodeCase"];
 
-  v9 = [(FMDAccessoryStyleDescriptor *)self headbandType];
-  [v4 encodeObject:v9 forKey:@"headbandType"];
+  headbandType = [(FMDAccessoryStyleDescriptor *)self headbandType];
+  [coderCopy encodeObject:headbandType forKey:@"headbandType"];
 }
 
 @end

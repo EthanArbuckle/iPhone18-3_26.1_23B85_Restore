@@ -1,15 +1,15 @@
 @interface RBEventQueue
-- (RBEventQueue)initWithQueue:(id)a3 timeProvider:(id)a4;
+- (RBEventQueue)initWithQueue:(id)queue timeProvider:(id)provider;
 - (RBEventQueueEvent)nextEvent;
 - (id)description;
 - (unint64_t)count;
 - (void)_queue_processEvents;
 - (void)_queue_startEventTimer;
-- (void)addEvent:(id)a3;
-- (void)addEvents:(id)a3;
-- (void)batchModify:(id)a3;
-- (void)removeEvent:(id)a3;
-- (void)removeEvents:(id)a3;
+- (void)addEvent:(id)event;
+- (void)addEvents:(id)events;
+- (void)batchModify:(id)modify;
+- (void)removeEvent:(id)event;
+- (void)removeEvents:(id)events;
 @end
 
 @implementation RBEventQueue
@@ -17,16 +17,16 @@
 - (void)_queue_startEventTimer
 {
   v53 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
-    v3 = [*(a1 + 8) firstObject];
-    if (v3)
+    firstObject = [*(self + 8) firstObject];
+    if (firstObject)
     {
-      [*(a1 + 24) currentTime];
+      [*(self + 24) currentTime];
       v5 = v4;
-      if (*(a1 + 40))
+      if (*(self + 40))
       {
-        if (v4 - *(a1 + 32) <= 5.0)
+        if (v4 - *(self + 32) <= 5.0)
         {
           goto LABEL_8;
         }
@@ -34,7 +34,7 @@
         v1 = rbs_general_log();
         if (os_log_type_enabled(v1, OS_LOG_TYPE_ERROR))
         {
-          v39 = *(a1 + 32);
+          v39 = *(self + 32);
           *buf = 134218240;
           v50 = v39;
           v51 = 2048;
@@ -42,24 +42,24 @@
           _os_log_error_impl(&dword_262485000, v1, OS_LOG_TYPE_ERROR, "Event queue more than 5 seconds late, expected to fire at %f and it's now %f", buf, 0x16u);
         }
 
-        v6 = *(a1 + 16);
+        v6 = *(self + 16);
         block[0] = MEMORY[0x277D85DD0];
         block[1] = 3221225472;
         block[2] = __38__RBEventQueue__queue_startEventTimer__block_invoke;
         block[3] = &unk_279B32CB0;
-        block[4] = a1;
+        block[4] = self;
         dispatch_async(v6, block);
-        if (*(a1 + 40))
+        if (*(self + 40))
         {
 LABEL_8:
-          [v3 eventTime];
-          if (v7 + 0.01 >= *(a1 + 32))
+          [firstObject eventTime];
+          if (v7 + 0.01 >= *(self + 32))
           {
             v21 = rbs_general_log();
             if (OUTLINED_FUNCTION_2_3(v21))
             {
-              [v3 eventTime];
-              v40 = *(a1 + 32);
+              [firstObject eventTime];
+              v40 = *(self + 32);
               *buf = 134218240;
               v50 = v41;
               v51 = 2048;
@@ -71,23 +71,23 @@ LABEL_8:
             goto LABEL_21;
           }
 
-          v8 = *(a1 + 40);
+          v8 = *(self + 40);
           if (v8)
           {
             [v8 cancel];
-            v9 = *(a1 + 40);
-            *(a1 + 40) = 0;
+            v9 = *(self + 40);
+            *(self + 40) = 0;
           }
         }
       }
 
-      [v3 eventTime];
+      [firstObject eventTime];
       v11 = v10;
-      *(a1 + 32) = v10;
+      *(self + 32) = v10;
       v12 = rbs_general_log();
       if (OUTLINED_FUNCTION_2_3(v12))
       {
-        v23 = *(a1 + 32);
+        v23 = *(self + 32);
         *buf = 134217984;
         v50 = v23;
         OUTLINED_FUNCTION_0_4();
@@ -116,16 +116,16 @@ LABEL_8:
         _os_log_debug_impl(v34, v35, v36, v37, v38, 0xCu);
       }
 
-      v18 = *(a1 + 16);
-      v17 = *(a1 + 24);
+      v18 = *(self + 16);
+      v17 = *(self + 24);
       v47[0] = MEMORY[0x277D85DD0];
       v47[1] = 3221225472;
       v47[2] = __38__RBEventQueue__queue_startEventTimer__block_invoke_8;
       v47[3] = &unk_279B32CB0;
-      v47[4] = a1;
+      v47[4] = self;
       v19 = [v17 executeWithCancellingAfter:v18 onQueue:v47 block:v15];
-      v20 = *(a1 + 40);
-      *(a1 + 40) = v19;
+      v20 = *(self + 40);
+      *(self + 40) = v19;
     }
 
 LABEL_21:
@@ -146,18 +146,18 @@ void __38__RBEventQueue__queue_startEventTimer__block_invoke_8(uint64_t a1)
 
 - (void)_queue_processEvents
 {
-  if (a1)
+  if (self)
   {
-    dispatch_assert_queue_V2(*(a1 + 16));
-    v2 = *(a1 + 40);
+    dispatch_assert_queue_V2(*(self + 16));
+    v2 = *(self + 40);
     if (v2)
     {
       [v2 cancel];
-      v3 = *(a1 + 40);
-      *(a1 + 40) = 0;
+      v3 = *(self + 40);
+      *(self + 40) = 0;
     }
 
-    v4 = *(a1 + 48);
+    v4 = *(self + 48);
     v5 = rbs_general_log();
     v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG);
     if (v4 == 1)
@@ -177,69 +177,69 @@ void __38__RBEventQueue__queue_startEventTimer__block_invoke_8(uint64_t a1)
         _os_log_debug_impl(&dword_262485000, v5, OS_LOG_TYPE_DEBUG, "Processing events", v16, 2u);
       }
 
-      *(a1 + 48) = 1;
-      v7 = [*(a1 + 8) firstObject];
-      if (v7)
+      *(self + 48) = 1;
+      firstObject = [*(self + 8) firstObject];
+      if (firstObject)
       {
-        v8 = v7;
+        v8 = firstObject;
         do
         {
           [v8 eventTime];
           v10 = v9;
-          [*(a1 + 24) currentTime];
+          [*(self + 24) currentTime];
           if (v10 > v11)
           {
             break;
           }
 
-          v12 = [v8 action];
+          action = [v8 action];
 
-          if (v12)
+          if (action)
           {
-            v13 = [v8 action];
-            (v13)[2](v13, v8);
+            action2 = [v8 action];
+            (action2)[2](action2, v8);
           }
 
-          if ([*(a1 + 8) count])
+          if ([*(self + 8) count])
           {
-            v14 = [*(a1 + 8) firstObject];
+            firstObject2 = [*(self + 8) firstObject];
 
-            if (v14 == v8)
+            if (firstObject2 == v8)
             {
-              [*(a1 + 8) removeObjectAtIndex:0];
+              [*(self + 8) removeObjectAtIndex:0];
             }
           }
 
-          v15 = [*(a1 + 8) firstObject];
+          firstObject3 = [*(self + 8) firstObject];
 
-          v8 = v15;
+          v8 = firstObject3;
         }
 
-        while (v15);
+        while (firstObject3);
       }
 
-      *(a1 + 48) = 0;
-      [(RBEventQueue *)a1 _queue_startEventTimer];
+      *(self + 48) = 0;
+      [(RBEventQueue *)self _queue_startEventTimer];
     }
   }
 }
 
-- (RBEventQueue)initWithQueue:(id)a3 timeProvider:(id)a4
+- (RBEventQueue)initWithQueue:(id)queue timeProvider:(id)provider
 {
-  v7 = a3;
-  v8 = a4;
+  queueCopy = queue;
+  providerCopy = provider;
   v14.receiver = self;
   v14.super_class = RBEventQueue;
   v9 = [(RBEventQueue *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_queue, a3);
-    v11 = [MEMORY[0x277CBEB18] array];
+    objc_storeStrong(&v9->_queue, queue);
+    array = [MEMORY[0x277CBEB18] array];
     eventQueue = v10->_eventQueue;
-    v10->_eventQueue = v11;
+    v10->_eventQueue = array;
 
-    objc_storeStrong(&v10->_timeProvider, a4);
+    objc_storeStrong(&v10->_timeProvider, provider);
   }
 
   return v10;
@@ -261,20 +261,20 @@ void __38__RBEventQueue__queue_startEventTimer__block_invoke_8(uint64_t a1)
   return [(NSMutableArray *)eventQueue firstObject];
 }
 
-- (void)batchModify:(id)a3
+- (void)batchModify:(id)modify
 {
   queue = self->_queue;
-  v6 = a3;
+  modifyCopy = modify;
   dispatch_assert_queue_V2(queue);
   if (self->_inModifyBlock)
   {
-    v6[2]();
+    modifyCopy[2]();
   }
 
   else
   {
     self->_inModifyBlock = 1;
-    v6[2]();
+    modifyCopy[2]();
 
     dirtyDuringModify = self->_dirtyDuringModify;
     *&self->_inModifyBlock = 0;
@@ -287,29 +287,29 @@ void __38__RBEventQueue__queue_startEventTimer__block_invoke_8(uint64_t a1)
   }
 }
 
-- (void)addEvent:(id)a3
+- (void)addEvent:(id)event
 {
   v9 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  eventCopy = event;
   v4 = MEMORY[0x277CBEA60];
-  v5 = a3;
-  v6 = [v4 arrayWithObjects:&v8 count:1];
+  eventCopy2 = event;
+  v6 = [v4 arrayWithObjects:&eventCopy count:1];
 
-  [(RBEventQueue *)self addEvents:v6, v8, v9];
+  [(RBEventQueue *)self addEvents:v6, eventCopy, v9];
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addEvents:(id)a3
+- (void)addEvents:(id)events
 {
-  v4 = a3;
-  if ([v4 count])
+  eventsCopy = events;
+  if ([eventsCopy count])
   {
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
     v5[2] = __26__RBEventQueue_addEvents___block_invoke;
     v5[3] = &unk_279B32B80;
     v5[4] = self;
-    v6 = v4;
+    v6 = eventsCopy;
     [(RBEventQueue *)self batchModify:v5];
   }
 }
@@ -321,29 +321,29 @@ uint64_t __26__RBEventQueue_addEvents___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)removeEvent:(id)a3
+- (void)removeEvent:(id)event
 {
   v9 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  eventCopy = event;
   v4 = MEMORY[0x277CBEA60];
-  v5 = a3;
-  v6 = [v4 arrayWithObjects:&v8 count:1];
+  eventCopy2 = event;
+  v6 = [v4 arrayWithObjects:&eventCopy count:1];
 
-  [(RBEventQueue *)self removeEvents:v6, v8, v9];
+  [(RBEventQueue *)self removeEvents:v6, eventCopy, v9];
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeEvents:(id)a3
+- (void)removeEvents:(id)events
 {
-  v4 = a3;
-  if ([v4 count])
+  eventsCopy = events;
+  if ([eventsCopy count])
   {
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
     v5[2] = __29__RBEventQueue_removeEvents___block_invoke;
     v5[3] = &unk_279B32B80;
     v5[4] = self;
-    v6 = v4;
+    v6 = eventsCopy;
     [(RBEventQueue *)self batchModify:v5];
   }
 }

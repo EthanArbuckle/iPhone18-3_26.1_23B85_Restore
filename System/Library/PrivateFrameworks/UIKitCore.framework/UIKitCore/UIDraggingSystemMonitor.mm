@@ -1,13 +1,13 @@
 @interface UIDraggingSystemMonitor
 + (id)sharedInstance;
-- (BOOL)xpcQueue_shouldAcceptNewConnection:(id)a3;
+- (BOOL)xpcQueue_shouldAcceptNewConnection:(id)connection;
 - (NSSet)sessions;
 - (UIDraggingSystemMonitorDelegate)delegate;
 - (id)_init;
-- (id)sessionForDropSession:(id)a3;
-- (void)dragDidBeginWithSystemSession:(id)a3 info:(id)a4 reply:(id)a5;
-- (void)dragDidEndWithSystemSession:(id)a3;
-- (void)xpcQueue_acceptNewConnection:(id)a3;
+- (id)sessionForDropSession:(id)session;
+- (void)dragDidBeginWithSystemSession:(id)session info:(id)info reply:(id)reply;
+- (void)dragDidEndWithSystemSession:(id)session;
+- (void)xpcQueue_acceptNewConnection:(id)connection;
 @end
 
 @implementation UIDraggingSystemMonitor
@@ -26,9 +26,9 @@
     v3 = [(UIDraggingSystemMonitor *)&v13 init];
     if (v3)
     {
-      v4 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+      strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
       sessionsBySessionInfo = v3->_sessionsBySessionInfo;
-      v3->_sessionsBySessionInfo = v4;
+      v3->_sessionsBySessionInfo = strongToStrongObjectsMapTable;
 
       v6 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_USER_INTERACTIVE, 0);
       v7 = dispatch_queue_create("com.apple.UIKit.druid.system.xpcQueue", v6);
@@ -45,15 +45,15 @@
     }
 
     self = v3;
-    v11 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
 + (id)sharedInstance
@@ -62,7 +62,7 @@
   block[1] = 3221225472;
   block[2] = __41__UIDraggingSystemMonitor_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1ED4A2410 != -1)
   {
     dispatch_once(&qword_1ED4A2410, block);
@@ -83,29 +83,29 @@ void __41__UIDraggingSystemMonitor_sharedInstance__block_invoke(uint64_t a1)
 - (NSSet)sessions
 {
   v2 = MEMORY[0x1E695DFD8];
-  v3 = [(NSMapTable *)self->_sessionsBySessionInfo objectEnumerator];
-  v4 = [v3 allObjects];
-  v5 = [v2 setWithArray:v4];
+  objectEnumerator = [(NSMapTable *)self->_sessionsBySessionInfo objectEnumerator];
+  allObjects = [objectEnumerator allObjects];
+  v5 = [v2 setWithArray:allObjects];
 
   return v5;
 }
 
-- (id)sessionForDropSession:(id)a3
+- (id)sessionForDropSession:(id)session
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  sessionCopy = session;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 sessionDestination];
-    v6 = [v5 sessionIdentifier];
+    sessionDestination = [sessionCopy sessionDestination];
+    sessionIdentifier = [sessionDestination sessionIdentifier];
 
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v7 = [(NSMapTable *)self->_sessionsBySessionInfo keyEnumerator];
-    v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    keyEnumerator = [(NSMapTable *)self->_sessionsBySessionInfo keyEnumerator];
+    v8 = [keyEnumerator countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v8)
     {
       v9 = v8;
@@ -116,18 +116,18 @@ void __41__UIDraggingSystemMonitor_sharedInstance__block_invoke(uint64_t a1)
         {
           if (*v16 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(keyEnumerator);
           }
 
           v12 = *(*(&v15 + 1) + 8 * i);
-          if ([v12 sessionIdentifier] == v6)
+          if ([v12 sessionIdentifier] == sessionIdentifier)
           {
             v13 = [(NSMapTable *)self->_sessionsBySessionInfo objectForKey:v12];
             goto LABEL_13;
           }
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v9 = [keyEnumerator countByEnumeratingWithState:&v15 objects:v19 count:16];
         if (v9)
         {
           continue;
@@ -149,44 +149,44 @@ LABEL_13:
   return v13;
 }
 
-- (BOOL)xpcQueue_shouldAcceptNewConnection:(id)a3
+- (BOOL)xpcQueue_shouldAcceptNewConnection:(id)connection
 {
-  v4 = a3;
-  v5 = [v4 valueForEntitlement:@"com.apple.druid"];
+  connectionCopy = connection;
+  v5 = [connectionCopy valueForEntitlement:@"com.apple.druid"];
   v6 = [v5 isEqual:MEMORY[0x1E695E118]];
 
   if (v6)
   {
-    [(UIDraggingSystemMonitor *)self xpcQueue_acceptNewConnection:v4];
-    [v4 resume];
+    [(UIDraggingSystemMonitor *)self xpcQueue_acceptNewConnection:connectionCopy];
+    [connectionCopy resume];
   }
 
   return v6;
 }
 
-- (void)xpcQueue_acceptNewConnection:(id)a3
+- (void)xpcQueue_acceptNewConnection:(id)connection
 {
-  v4 = a3;
-  [v4 _setQueue:self->_xpcQueue];
+  connectionCopy = connection;
+  [connectionCopy _setQueue:self->_xpcQueue];
   v5 = _DUINewClientSystemAppInterface();
-  [v4 setExportedInterface:v5];
+  [connectionCopy setExportedInterface:v5];
 
-  [v4 setExportedObject:self];
-  [v4 setRemoteObjectInterface:0];
-  objc_initWeak(&location, v4);
+  [connectionCopy setExportedObject:self];
+  [connectionCopy setRemoteObjectInterface:0];
+  objc_initWeak(&location, connectionCopy);
   objc_initWeak(&from, self);
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __56__UIDraggingSystemMonitor_xpcQueue_acceptNewConnection___block_invoke;
   v8[3] = &unk_1E70F5A28;
   objc_copyWeak(&v9, &location);
-  [v4 setInterruptionHandler:v8];
+  [connectionCopy setInterruptionHandler:v8];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __56__UIDraggingSystemMonitor_xpcQueue_acceptNewConnection___block_invoke_2;
   v6[3] = &unk_1E70F5A28;
   objc_copyWeak(&v7, &from);
-  [v4 setInvalidationHandler:v6];
+  [connectionCopy setInvalidationHandler:v6];
   objc_destroyWeak(&v7);
   objc_destroyWeak(&v9);
   objc_destroyWeak(&from);
@@ -210,25 +210,25 @@ void __56__UIDraggingSystemMonitor_xpcQueue_acceptNewConnection___block_invoke_2
   }
 }
 
-- (void)dragDidBeginWithSystemSession:(id)a3 info:(id)a4 reply:(id)a5
+- (void)dragDidBeginWithSystemSession:(id)session info:(id)info reply:(id)reply
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
+  infoCopy = info;
+  replyCopy = reply;
+  sessionCopy = session;
   v11 = objc_opt_new();
-  [v11 setServerSession:v10];
+  [v11 setServerSession:sessionCopy];
 
-  [v11 setInfo:v8];
+  [v11 setInfo:infoCopy];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __68__UIDraggingSystemMonitor_dragDidBeginWithSystemSession_info_reply___block_invoke;
   v15[3] = &unk_1E70F5F08;
   v15[4] = self;
   v16 = v11;
-  v17 = v8;
-  v18 = v9;
-  v12 = v9;
-  v13 = v8;
+  v17 = infoCopy;
+  v18 = replyCopy;
+  v12 = replyCopy;
+  v13 = infoCopy;
   v14 = v11;
   dispatch_async(MEMORY[0x1E69E96A0], v15);
 }
@@ -278,13 +278,13 @@ void __68__UIDraggingSystemMonitor_dragDidBeginWithSystemSession_info_reply___bl
   (*(v2 + 16))(v2, v3);
 }
 
-- (void)dragDidEndWithSystemSession:(id)a3
+- (void)dragDidEndWithSystemSession:(id)session
 {
-  v4 = a3;
-  v5 = [(NSMapTable *)self->_sessionsBySessionInfo objectForKey:v4];
+  sessionCopy = session;
+  v5 = [(NSMapTable *)self->_sessionsBySessionInfo objectForKey:sessionCopy];
   if (v5)
   {
-    [(NSMapTable *)self->_sessionsBySessionInfo removeObjectForKey:v4];
+    [(NSMapTable *)self->_sessionsBySessionInfo removeObjectForKey:sessionCopy];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __55__UIDraggingSystemMonitor_dragDidEndWithSystemSession___block_invoke;

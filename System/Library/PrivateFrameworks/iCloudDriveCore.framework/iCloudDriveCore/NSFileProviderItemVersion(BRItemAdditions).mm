@@ -12,12 +12,12 @@
 
 - (BRFieldContentSignature)br_contentSignature
 {
-  v2 = [a1 contentVersion];
-  if ([v2 length])
+  contentVersion = [self contentVersion];
+  if ([contentVersion length])
   {
     v3 = [BRFieldContentSignature alloc];
-    v4 = [a1 contentVersion];
-    v5 = [(BRFieldContentSignature *)v3 initWithData:v4];
+    contentVersion2 = [self contentVersion];
+    v5 = [(BRFieldContentSignature *)v3 initWithData:contentVersion2];
   }
 
   else
@@ -30,12 +30,12 @@
 
 - (BRFieldStructureSignature)br_structureSignature
 {
-  v2 = [a1 metadataVersion];
-  if ([v2 length])
+  metadataVersion = [self metadataVersion];
+  if ([metadataVersion length])
   {
     v3 = [BRFieldStructureSignature alloc];
-    v4 = [a1 metadataVersion];
-    v5 = [(BRFieldStructureSignature *)v3 initWithData:v4];
+    metadataVersion2 = [self metadataVersion];
+    v5 = [(BRFieldStructureSignature *)v3 initWithData:metadataVersion2];
   }
 
   else
@@ -49,37 +49,37 @@
 - (id)br_prettyDescription
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [a1 br_structureSignature];
-  v4 = [a1 br_contentSignature];
-  v5 = [v2 stringWithFormat:@"[%@, %@]", v3, v4];
+  br_structureSignature = [self br_structureSignature];
+  br_contentSignature = [self br_contentSignature];
+  v5 = [v2 stringWithFormat:@"[%@, %@]", br_structureSignature, br_contentSignature];
 
   return v5;
 }
 
 - (id)br_structureEtag
 {
-  v1 = [a1 br_structureSignature];
-  v2 = [v1 etag];
+  br_structureSignature = [self br_structureSignature];
+  etag = [br_structureSignature etag];
 
-  return v2;
+  return etag;
 }
 
 - (id)br_contentEtag
 {
-  v1 = [a1 br_contentSignature];
-  v2 = [v1 etag];
+  br_contentSignature = [self br_contentSignature];
+  etag = [br_contentSignature etag];
 
-  return v2;
+  return etag;
 }
 
 - (uint64_t)br_isValidContentVersion
 {
-  v2 = [a1 contentVersion];
-  if ([v2 length])
+  contentVersion = [self contentVersion];
+  if ([contentVersion length])
   {
-    v3 = [MEMORY[0x277CC64A0] beforeFirstSyncComponent];
-    v4 = [a1 contentVersion];
-    v5 = [v3 isEqual:v4] ^ 1;
+    beforeFirstSyncComponent = [MEMORY[0x277CC64A0] beforeFirstSyncComponent];
+    contentVersion2 = [self contentVersion];
+    v5 = [beforeFirstSyncComponent isEqual:contentVersion2] ^ 1;
   }
 
   else
@@ -92,12 +92,12 @@
 
 - (uint64_t)br_isValidStructureVersion
 {
-  v2 = [a1 metadataVersion];
-  if ([v2 length])
+  metadataVersion = [self metadataVersion];
+  if ([metadataVersion length])
   {
-    v3 = [MEMORY[0x277CC64A0] beforeFirstSyncComponent];
-    v4 = [a1 metadataVersion];
-    v5 = [v3 isEqual:v4] ^ 1;
+    beforeFirstSyncComponent = [MEMORY[0x277CC64A0] beforeFirstSyncComponent];
+    metadataVersion2 = [self metadataVersion];
+    v5 = [beforeFirstSyncComponent isEqual:metadataVersion2] ^ 1;
   }
 
   else

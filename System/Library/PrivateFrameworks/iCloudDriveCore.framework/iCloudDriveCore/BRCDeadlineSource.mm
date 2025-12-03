@@ -1,11 +1,11 @@
 @interface BRCDeadlineSource
 - (BOOL)willRunEvenHandler;
-- (BRCDeadlineSource)initWithScheduler:(id)a3 name:(id)a4;
+- (BRCDeadlineSource)initWithScheduler:(id)scheduler name:(id)name;
 - (id)description;
 - (void)cancel;
 - (void)resume;
 - (void)runEventHandler;
-- (void)signalWithDeadline:(int64_t)a3 extend:(BOOL)a4;
+- (void)signalWithDeadline:(int64_t)deadline extend:(BOOL)extend;
 - (void)suspend;
 @end
 
@@ -13,10 +13,10 @@
 
 - (BOOL)willRunEvenHandler
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_suspendCount <= 0 && !v2->_cancelled;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_suspendCount <= 0 && !selfCopy->_cancelled;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -26,25 +26,25 @@
   dispatch_assert_queue_V2(self->_workloop);
   obj = objc_loadWeakRetained(&self->_scheduler);
   objc_sync_enter(obj);
-  v3 = self;
-  objc_sync_enter(v3);
-  if (v3->_suspendCount > 0 || v3->_cancelled)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_suspendCount > 0 || selfCopy->_cancelled)
   {
-    v3->_signaled = 1;
-    v3->_deadline = 0;
-    objc_sync_exit(v3);
+    selfCopy->_signaled = 1;
+    selfCopy->_deadline = 0;
+    objc_sync_exit(selfCopy);
 
     objc_sync_exit(obj);
   }
 
   else
   {
-    v3->_signaled = 0;
-    v3->_deadline = 0x7FFFFFFFFFFFFFFFLL;
-    objc_sync_exit(v3);
+    selfCopy->_signaled = 0;
+    selfCopy->_deadline = 0x7FFFFFFFFFFFFFFFLL;
+    objc_sync_exit(selfCopy);
 
     objc_sync_exit(obj);
-    obj = [(BRCDeadlineSource *)v3 eventHandler];
+    obj = [(BRCDeadlineSource *)selfCopy eventHandler];
     obj[2]();
   }
 }
@@ -59,10 +59,10 @@
 
 - (void)resume
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  suspendCount = v2->_suspendCount;
-  v2->_suspendCount = suspendCount - 1;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  suspendCount = selfCopy->_suspendCount;
+  selfCopy->_suspendCount = suspendCount - 1;
   if (suspendCount <= 0)
   {
     v5 = brc_bread_crumbs();
@@ -72,7 +72,7 @@
       [(BRCDeadlineSource *)v5 resume];
     }
 
-    if (v2->_suspendCount)
+    if (selfCopy->_suspendCount)
     {
       goto LABEL_3;
     }
@@ -81,45 +81,45 @@
   else if (suspendCount != 1)
   {
 LABEL_3:
-    objc_sync_exit(v2);
-    WeakRetained = v2;
+    objc_sync_exit(selfCopy);
+    WeakRetained = selfCopy;
     goto LABEL_9;
   }
 
-  signaled = v2->_signaled;
-  objc_sync_exit(v2);
+  signaled = selfCopy->_signaled;
+  objc_sync_exit(selfCopy);
 
   if (!signaled)
   {
     return;
   }
 
-  WeakRetained = objc_loadWeakRetained(&v2->_scheduler);
+  WeakRetained = objc_loadWeakRetained(&selfCopy->_scheduler);
   objc_sync_enter(WeakRetained);
-  [(BRCDeadlineSource *)v2 signalWithDeadline:v2->_deadline];
+  [(BRCDeadlineSource *)selfCopy signalWithDeadline:selfCopy->_deadline];
   objc_sync_exit(WeakRetained);
 LABEL_9:
 }
 
-- (BRCDeadlineSource)initWithScheduler:(id)a3 name:(id)a4
+- (BRCDeadlineSource)initWithScheduler:(id)scheduler name:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  schedulerCopy = scheduler;
+  nameCopy = name;
   v14.receiver = self;
   v14.super_class = BRCDeadlineSource;
   v8 = [(BRCDeadlineSource *)&v14 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_scheduler, v6);
-    v10 = [v6 fairScheduler];
-    v11 = [v10 workloop];
+    objc_storeWeak(&v8->_scheduler, schedulerCopy);
+    fairScheduler = [schedulerCopy fairScheduler];
+    workloop = [fairScheduler workloop];
     workloop = v9->_workloop;
-    v9->_workloop = v11;
+    v9->_workloop = workloop;
 
     v9->_deadline = 0x7FFFFFFFFFFFFFFFLL;
     v9->_suspendCount = 1;
-    objc_storeStrong(&v9->_name, a4);
+    objc_storeStrong(&v9->_name, name);
   }
 
   return v9;
@@ -129,24 +129,24 @@ LABEL_9:
 {
   deadline = self->_deadline;
   brc_current_date_nsec();
-  v4 = self;
-  objc_sync_enter(v4);
-  if (v4->_cancelled)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_cancelled)
   {
     v5 = @"cancelled";
   }
 
-  else if (v4->_suspendCount < 1)
+  else if (selfCopy->_suspendCount < 1)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"suspended (%d)", v4->_suspendCount];
+    v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"suspended (%d)", selfCopy->_suspendCount];
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 
   if (!v5)
   {
@@ -168,7 +168,7 @@ LABEL_9:
     }
   }
 
-  v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"<deadline %@: %@>", v4->_name, v5];
+  v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"<deadline %@: %@>", selfCopy->_name, v5];
 
   return v8;
 }
@@ -181,24 +181,24 @@ LABEL_9:
   objc_sync_exit(obj);
 }
 
-- (void)signalWithDeadline:(int64_t)a3 extend:(BOOL)a4
+- (void)signalWithDeadline:(int64_t)deadline extend:(BOOL)extend
 {
-  v4 = a4;
+  extendCopy = extend;
   WeakRetained = objc_loadWeakRetained(&self->_scheduler);
   if (WeakRetained)
   {
     v10 = WeakRetained;
     v8 = WeakRetained;
     objc_sync_enter(v8);
-    v9 = self;
-    objc_sync_enter(v9);
-    v9->_signaled = 1;
-    objc_sync_exit(v9);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    selfCopy->_signaled = 1;
+    objc_sync_exit(selfCopy);
 
-    if (v9->_deadline >= a3 || v4)
+    if (selfCopy->_deadline >= deadline || extendCopy)
     {
-      v9->_deadline = a3;
-      [v8 addSource:v9 deadline:a3];
+      selfCopy->_deadline = deadline;
+      [v8 addSource:selfCopy deadline:deadline];
     }
 
     objc_sync_exit(v8);

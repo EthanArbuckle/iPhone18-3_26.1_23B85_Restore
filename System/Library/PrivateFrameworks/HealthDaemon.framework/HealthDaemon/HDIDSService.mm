@@ -1,35 +1,35 @@
 @interface HDIDSService
-- (BOOL)sendMessage:(id)a3 destination:(id)a4 options:(id)a5 identifier:(id *)a6 error:(id *)a7;
-- (HDIDSService)initWithService:(id)a3;
-- (HDIDSService)initWithServiceName:(id)a3;
+- (BOOL)sendMessage:(id)message destination:(id)destination options:(id)options identifier:(id *)identifier error:(id *)error;
+- (HDIDSService)initWithService:(id)service;
+- (HDIDSService)initWithServiceName:(id)name;
 - (HDIDSServiceDelegate)delegate;
 - (id)devices;
-- (void)service:(id)a3 account:(id)a4 incomingMessage:(id)a5 fromID:(id)a6 context:(id)a7;
+- (void)service:(id)service account:(id)account incomingMessage:(id)message fromID:(id)d context:(id)context;
 @end
 
 @implementation HDIDSService
 
-- (HDIDSService)initWithServiceName:(id)a3
+- (HDIDSService)initWithServiceName:(id)name
 {
   v4 = MEMORY[0x277D18778];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithService:v5];
+  nameCopy = name;
+  v6 = [[v4 alloc] initWithService:nameCopy];
 
   v7 = [(HDIDSService *)self initWithService:v6];
   return v7;
 }
 
-- (HDIDSService)initWithService:(id)a3
+- (HDIDSService)initWithService:(id)service
 {
   v28 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [v5 serviceIdentifier];
+  serviceCopy = service;
+  serviceIdentifier = [serviceCopy serviceIdentifier];
   objc_opt_self();
-  v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"idsservice_%@", v6];
+  v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"idsservice_%@", serviceIdentifier];
 
   v8 = HKCreateSerialDispatchQueue();
 
-  v9 = v5;
+  v9 = serviceCopy;
   v10 = v8;
   if (self)
   {
@@ -39,11 +39,11 @@
     self = v11;
     if (v11)
     {
-      objc_storeStrong(&v11->_service, a3);
+      objc_storeStrong(&v11->_service, service);
       [(IDSService *)self->_service addDelegate:self queue:v10];
-      v12 = [v9 serviceIdentifier];
+      serviceIdentifier2 = [v9 serviceIdentifier];
       serviceIdentifier = self->_serviceIdentifier;
-      self->_serviceIdentifier = v12;
+      self->_serviceIdentifier = serviceIdentifier2;
 
       if (![(NSString *)self->_serviceIdentifier containsString:@"com.apple.private.alloy."])
       {
@@ -75,15 +75,15 @@
   return self;
 }
 
-- (BOOL)sendMessage:(id)a3 destination:(id)a4 options:(id)a5 identifier:(id *)a6 error:(id *)a7
+- (BOOL)sendMessage:(id)message destination:(id)destination options:(id)options identifier:(id *)identifier error:(id *)error
 {
-  v53 = a7;
+  errorCopy = error;
   v70 = *MEMORY[0x277D85DE8];
-  v10 = a5;
-  v11 = a4;
-  v56 = [a3 copy];
-  v12 = v11;
-  v55 = self;
+  optionsCopy = options;
+  destinationCopy = destination;
+  v56 = [message copy];
+  v12 = destinationCopy;
+  selfCopy = self;
   if (self)
   {
     v13 = [MEMORY[0x277CBEB58] set];
@@ -91,8 +91,8 @@
     v61 = 0u;
     v62 = 0u;
     v63 = 0u;
-    v14 = [(HDIDSService *)self devices];
-    v15 = [v14 countByEnumeratingWithState:&v60 objects:buf count:16];
+    devices = [(HDIDSService *)self devices];
+    v15 = [devices countByEnumeratingWithState:&v60 objects:buf count:16];
     if (v15)
     {
       v16 = v15;
@@ -103,21 +103,21 @@
         {
           if (*v61 != v17)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(devices);
           }
 
           v19 = *(*(&v60 + 1) + 8 * i);
-          v20 = [v12 deviceFilterBlock];
-          v21 = (v20)[2](v20, v19);
+          deviceFilterBlock = [v12 deviceFilterBlock];
+          v21 = (deviceFilterBlock)[2](deviceFilterBlock, v19);
 
           if (v21)
           {
-            v22 = [v19 destinationID];
-            [v13 addObject:v22];
+            destinationID = [v19 destinationID];
+            [v13 addObject:destinationID];
           }
         }
 
-        v16 = [v14 countByEnumeratingWithState:&v60 objects:buf count:16];
+        v16 = [devices countByEnumeratingWithState:&v60 objects:buf count:16];
       }
 
       while (v16);
@@ -131,21 +131,21 @@
     v23 = 0;
   }
 
-  v24 = [v10 priority];
-  if (v24 > 2)
+  priority = [optionsCopy priority];
+  if (priority > 2)
   {
     v25 = 200;
   }
 
   else
   {
-    v25 = qword_22916E428[v24];
+    v25 = qword_22916E428[priority];
   }
 
-  v26 = v10;
+  v26 = optionsCopy;
   v28 = v56;
-  v27 = a6;
-  if (v55)
+  identifierCopy2 = identifier;
+  if (selfCopy)
   {
     v29 = objc_alloc_init(MEMORY[0x277CBEB38]);
     [v26 timeoutInterval];
@@ -165,18 +165,18 @@
     v33 = 0;
   }
 
-  if ([v23 count] || v55->_unitTest_sendOnEmptyDestinationSet)
+  if ([v23 count] || selfCopy->_unitTest_sendOnEmptyDestinationSet)
   {
-    service = v55->_service;
+    service = selfCopy->_service;
     v58 = 0;
     v59 = 0;
-    v35 = [(IDSService *)service sendMessage:v56 toDestinations:v23 priority:v25 options:v33 identifier:&v59 error:&v58, v53];
+    errorCopy = [(IDSService *)service sendMessage:v56 toDestinations:v23 priority:v25 options:v33 identifier:&v59 error:&v58, errorCopy];
     v36 = v59;
     v37 = v58;
     _HKInitializeLogging();
     v38 = *MEMORY[0x277CCC328];
     v39 = *MEMORY[0x277CCC328];
-    if (v35)
+    if (errorCopy)
     {
       if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
       {
@@ -184,7 +184,7 @@
         v41 = v38;
         v42 = [v40 numberWithUnsignedInteger:{objc_msgSend(v23, "count")}];
         *buf = 138543875;
-        v65 = v55;
+        v65 = selfCopy;
         v66 = 2114;
         v67 = v36;
         v68 = 2113;
@@ -200,7 +200,7 @@
       if (os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543874;
-        v65 = v55;
+        v65 = selfCopy;
         v66 = 2114;
         v67 = v36;
         v68 = 2114;
@@ -224,13 +224,13 @@
         }
       }
 
-      v27 = a6;
+      identifierCopy2 = identifier;
     }
 
-    if (v27)
+    if (identifierCopy2)
     {
       v50 = v36;
-      *v27 = v36;
+      *identifierCopy2 = v36;
     }
   }
 
@@ -241,10 +241,10 @@
     if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
     {
       v47 = v46;
-      v48 = [(HDIDSService *)v55 devices];
-      v49 = [v48 count];
+      devices2 = [(HDIDSService *)selfCopy devices];
+      v49 = [devices2 count];
       *buf = 138543618;
-      v65 = v55;
+      v65 = selfCopy;
       v66 = 2048;
       v67 = v49;
       _os_log_impl(&dword_228986000, v47, OS_LOG_TYPE_DEFAULT, "%{public}@ Did not enqueue message: No valid destinations. Available devices: %lu", buf, 0x16u);
@@ -252,19 +252,19 @@
       v28 = v56;
     }
 
-    LOBYTE(v35) = 1;
+    LOBYTE(errorCopy) = 1;
   }
 
   v51 = *MEMORY[0x277D85DE8];
-  return v35;
+  return errorCopy;
 }
 
 - (id)devices
 {
-  if (a1)
+  if (self)
   {
-    v1 = [*(a1 + 48) devices];
-    v2 = [v1 hk_map:&__block_literal_global_149];
+    devices = [*(self + 48) devices];
+    v2 = [devices hk_map:&__block_literal_global_149];
   }
 
   else
@@ -283,14 +283,14 @@ HDIDSDevice *__23__HDIDSService_devices__block_invoke(uint64_t a1, void *a2)
   return v3;
 }
 
-- (void)service:(id)a3 account:(id)a4 incomingMessage:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)service:(id)service account:(id)account incomingMessage:(id)message fromID:(id)d context:(id)context
 {
   v31 = *MEMORY[0x277D85DE8];
-  v11 = a6;
-  v12 = a7;
-  v13 = a5;
-  v14 = a3;
-  v15 = [[HDIDSMessageContext alloc] initWithMessageContext:v12];
+  dCopy = d;
+  contextCopy = context;
+  messageCopy = message;
+  serviceCopy = service;
+  v15 = [[HDIDSMessageContext alloc] initWithMessageContext:contextCopy];
 
   _HKInitializeLogging();
   v16 = *MEMORY[0x277CCC328];
@@ -298,22 +298,22 @@ HDIDSDevice *__23__HDIDSService_devices__block_invoke(uint64_t a1, void *a2)
   {
     v17 = v16;
     v18 = HKSensitiveLogItem();
-    v19 = [(HDIDSMessageContext *)v15 originalGUID];
+    originalGUID = [(HDIDSMessageContext *)v15 originalGUID];
     v25 = 138543874;
-    v26 = self;
+    selfCopy = self;
     v27 = 2114;
     v28 = v18;
     v29 = 2114;
-    v30 = v19;
+    v30 = originalGUID;
     _os_log_impl(&dword_228986000, v17, OS_LOG_TYPE_DEFAULT, "%{public}@ Received message from %{public}@, originalGUID: %{public}@", &v25, 0x20u);
   }
 
-  v20 = [(HDIDSService *)self delegate];
+  delegate = [(HDIDSService *)self delegate];
   v21 = [HDIDSDevice alloc];
-  v22 = [v14 deviceForFromID:v11];
+  v22 = [serviceCopy deviceForFromID:dCopy];
 
   v23 = [(HDIDSDevice *)v21 initWithIDSDevice:v22];
-  [v20 service:self didReceiveMessage:v13 fromDevice:v23 messageContext:v15];
+  [delegate service:self didReceiveMessage:messageCopy fromDevice:v23 messageContext:v15];
 
   v24 = *MEMORY[0x277D85DE8];
 }

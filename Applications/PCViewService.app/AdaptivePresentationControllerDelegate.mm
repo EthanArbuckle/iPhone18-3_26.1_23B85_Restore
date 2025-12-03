@@ -1,16 +1,16 @@
 @interface AdaptivePresentationControllerDelegate
 - (_TtC13PCViewService38AdaptivePresentationControllerDelegate)init;
-- (void)presentationController:(id)a3 willPresentWithAdaptiveStyle:(int64_t)a4 transitionCoordinator:(id)a5;
+- (void)presentationController:(id)controller willPresentWithAdaptiveStyle:(int64_t)style transitionCoordinator:(id)coordinator;
 @end
 
 @implementation AdaptivePresentationControllerDelegate
 
-- (void)presentationController:(id)a3 willPresentWithAdaptiveStyle:(int64_t)a4 transitionCoordinator:(id)a5
+- (void)presentationController:(id)controller willPresentWithAdaptiveStyle:(int64_t)style transitionCoordinator:(id)coordinator
 {
   v6 = *(&self->super.isa + OBJC_IVAR____TtC13PCViewService38AdaptivePresentationControllerDelegate_subject);
-  v7 = a3;
+  controllerCopy = controller;
   swift_unknownObjectRetain();
-  v8 = self;
+  selfCopy = self;
   PassthroughSubject.send(_:)();
 
   swift_unknownObjectRelease();

@@ -1,20 +1,20 @@
 @interface TRITreatmentQualifiedAssetIndex
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToIndex:(id)a3;
-- (TRITreatmentQualifiedAssetIndex)initWithTreatmentId:(id)a3 index:(unsigned int)a4;
-- (id)copyWithReplacementTreatmentId:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToIndex:(id)index;
+- (TRITreatmentQualifiedAssetIndex)initWithTreatmentId:(id)id index:(unsigned int)index;
+- (id)copyWithReplacementTreatmentId:(id)id;
 - (id)description;
 @end
 
 @implementation TRITreatmentQualifiedAssetIndex
 
-- (TRITreatmentQualifiedAssetIndex)initWithTreatmentId:(id)a3 index:(unsigned int)a4
+- (TRITreatmentQualifiedAssetIndex)initWithTreatmentId:(id)id index:(unsigned int)index
 {
-  v8 = a3;
-  if (!v8)
+  idCopy = id;
+  if (!idCopy)
   {
-    v12 = [MEMORY[0x277CCA890] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"TRIServerTupleTypes.m" lineNumber:2636 description:{@"Invalid parameter not satisfying: %@", @"treatmentId != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIServerTupleTypes.m" lineNumber:2636 description:{@"Invalid parameter not satisfying: %@", @"treatmentId != nil"}];
   }
 
   v13.receiver = self;
@@ -23,33 +23,33 @@
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_treatmentId, a3);
-    v10->_index = a4;
+    objc_storeStrong(&v9->_treatmentId, id);
+    v10->_index = index;
   }
 
   return v10;
 }
 
-- (id)copyWithReplacementTreatmentId:(id)a3
+- (id)copyWithReplacementTreatmentId:(id)id
 {
-  v4 = a3;
-  v5 = [objc_alloc(objc_opt_class()) initWithTreatmentId:v4 index:self->_index];
+  idCopy = id;
+  v5 = [objc_alloc(objc_opt_class()) initWithTreatmentId:idCopy index:self->_index];
 
   return v5;
 }
 
-- (BOOL)isEqualToIndex:(id)a3
+- (BOOL)isEqualToIndex:(id)index
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  indexCopy = index;
+  v5 = indexCopy;
+  if (!indexCopy)
   {
     goto LABEL_6;
   }
 
   v6 = self->_treatmentId == 0;
-  v7 = [v4 treatmentId];
-  v8 = v7 != 0;
+  treatmentId = [indexCopy treatmentId];
+  v8 = treatmentId != 0;
 
   if (v6 == v8 || (treatmentId = self->_treatmentId) != 0 && ([v5 treatmentId], v10 = objc_claimAutoreleasedReturnValue(), v11 = -[NSString isEqual:](treatmentId, "isEqual:", v10), v10, !v11))
   {
@@ -66,18 +66,18 @@ LABEL_6:
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(TRITreatmentQualifiedAssetIndex *)self isEqualToIndex:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(TRITreatmentQualifiedAssetIndex *)self isEqualToIndex:v5];
   }
 
   return v6;

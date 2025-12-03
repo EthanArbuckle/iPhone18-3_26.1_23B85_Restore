@@ -1,19 +1,19 @@
 @interface INSetTaskAttributeIntentResponse
-+ (int)_typeFromCode:(int64_t)a3;
-+ (int64_t)_codeFromType:(int)a3 errorCode:(int)a4 appLaunchRequested:(BOOL)a5;
-- (INSetTaskAttributeIntentResponse)initWithBackingStore:(id)a3;
++ (int)_typeFromCode:(int64_t)code;
++ (int64_t)_codeFromType:(int)type errorCode:(int)code appLaunchRequested:(BOOL)requested;
+- (INSetTaskAttributeIntentResponse)initWithBackingStore:(id)store;
 - (INSetTaskAttributeIntentResponse)initWithCode:(INSetTaskAttributeIntentResponseCode)code userActivity:(NSUserActivity *)userActivity;
-- (INSetTaskAttributeIntentResponse)initWithCoder:(id)a3;
+- (INSetTaskAttributeIntentResponse)initWithCoder:(id)coder;
 - (INSetTaskAttributeIntentResponseCode)code;
 - (INTask)modifiedTask;
 - (id)_dictionaryRepresentation;
-- (id)_initWithCode:(int64_t)a3 userActivity:(id)a4;
-- (int64_t)_codeWithName:(id)a3;
+- (id)_initWithCode:(int64_t)code userActivity:(id)activity;
+- (int64_t)_codeWithName:(id)name;
 - (int64_t)_intentResponseCode;
 - (unint64_t)warnings;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)setModifiedTask:(INTask *)modifiedTask;
-- (void)setWarnings:(unint64_t)a3;
+- (void)setWarnings:(unint64_t)warnings;
 @end
 
 @implementation INSetTaskAttributeIntentResponse
@@ -22,32 +22,32 @@
 {
   v13[2] = *MEMORY[0x1E69E9840];
   v12[0] = @"code";
-  v3 = [(INSetTaskAttributeIntentResponse *)self code];
-  v4 = v3;
-  if (v3 < (INSetTaskAttributeIntentResponseCodeFailure|INSetTaskAttributeIntentResponseCodeInProgress))
+  code = [(INSetTaskAttributeIntentResponse *)self code];
+  v4 = code;
+  if (code < (INSetTaskAttributeIntentResponseCodeFailure|INSetTaskAttributeIntentResponseCodeInProgress))
   {
-    v5 = off_1E7280FC8[v3];
-    v6 = v5;
+    null = off_1E7280FC8[code];
+    v6 = null;
   }
 
   else
   {
-    v5 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
     v6 = 0;
   }
 
   v12[1] = @"modifiedTask";
-  v13[0] = v5;
-  v7 = [(INSetTaskAttributeIntentResponse *)self modifiedTask];
-  v8 = v7;
-  if (!v7)
+  v13[0] = null;
+  modifiedTask = [(INSetTaskAttributeIntentResponse *)self modifiedTask];
+  null2 = modifiedTask;
+  if (!modifiedTask)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v13[1] = v8;
+  v13[1] = null2;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:v12 count:2];
-  if (!v7)
+  if (!modifiedTask)
   {
   }
 
@@ -60,20 +60,20 @@
   return v9;
 }
 
-- (void)setWarnings:(unint64_t)a3
+- (void)setWarnings:(unint64_t)warnings
 {
-  v5 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  [v5 clearWarnings];
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  [_responseMessagePBRepresentation clearWarnings];
 
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __48__INSetTaskAttributeIntentResponse_setWarnings___block_invoke;
   v8[3] = &unk_1E7288628;
   v8[4] = self;
-  INTaskWarningCodeOptionsEnumerateBackingTypes(a3, v8);
-  v6 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v7 = [v6 data];
-  [(INIntentResponse *)self _setPayloadResponseMessageData:v7];
+  INTaskWarningCodeOptionsEnumerateBackingTypes(warnings, v8);
+  _responseMessagePBRepresentation2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  data = [_responseMessagePBRepresentation2 data];
+  [(INIntentResponse *)self _setPayloadResponseMessageData:data];
 }
 
 void __48__INSetTaskAttributeIntentResponse_setWarnings___block_invoke(uint64_t a1, uint64_t a2)
@@ -85,27 +85,27 @@ void __48__INSetTaskAttributeIntentResponse_setWarnings___block_invoke(uint64_t 
 - (void)setModifiedTask:(INTask *)modifiedTask
 {
   v4 = modifiedTask;
-  v5 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
   v6 = INIntentSlotValueTransformToTask(v4);
 
-  [v5 setModifiedTask:v6];
-  v8 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v7 = [v8 data];
-  [(INIntentResponse *)self _setPayloadResponseMessageData:v7];
+  [_responseMessagePBRepresentation setModifiedTask:v6];
+  _responseMessagePBRepresentation2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  data = [_responseMessagePBRepresentation2 data];
+  [(INIntentResponse *)self _setPayloadResponseMessageData:data];
 }
 
 - (unint64_t)warnings
 {
-  v3 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v4 = [v3 warningsCount];
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  warningsCount = [_responseMessagePBRepresentation warningsCount];
 
   v5 = 0;
-  if (v4)
+  if (warningsCount)
   {
-    for (i = 0; i != v4; ++i)
+    for (i = 0; i != warningsCount; ++i)
     {
-      v7 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-      v8 = [v7 warningsAtIndex:i];
+      _responseMessagePBRepresentation2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+      v8 = [_responseMessagePBRepresentation2 warningsAtIndex:i];
       v9 = v5 | 4;
       v10 = v5 | 8;
       if (v8 != 4)
@@ -147,29 +147,29 @@ void __48__INSetTaskAttributeIntentResponse_setWarnings___block_invoke(uint64_t 
 
 - (INTask)modifiedTask
 {
-  v2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v3 = [v2 modifiedTask];
-  v4 = INIntentSlotValueTransformFromTask(v3);
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  modifiedTask = [_responseMessagePBRepresentation modifiedTask];
+  v4 = INIntentSlotValueTransformFromTask(modifiedTask);
 
   return v4;
 }
 
-- (int64_t)_codeWithName:(id)a3
+- (int64_t)_codeWithName:(id)name
 {
-  v3 = a3;
-  [v3 isEqualToString:@"INSetTaskAttributeIntentResponseCodeUnspecified"];
-  v4 = [v3 isEqualToString:@"INSetTaskAttributeIntentResponseCodeReady"];
-  if ([v3 isEqualToString:@"INSetTaskAttributeIntentResponseCodeInProgress"])
+  nameCopy = name;
+  [nameCopy isEqualToString:@"INSetTaskAttributeIntentResponseCodeUnspecified"];
+  v4 = [nameCopy isEqualToString:@"INSetTaskAttributeIntentResponseCodeReady"];
+  if ([nameCopy isEqualToString:@"INSetTaskAttributeIntentResponseCodeInProgress"])
   {
     v4 = 2;
   }
 
-  if ([v3 isEqualToString:@"INSetTaskAttributeIntentResponseCodeSuccess"])
+  if ([nameCopy isEqualToString:@"INSetTaskAttributeIntentResponseCodeSuccess"])
   {
     v4 = 3;
   }
 
-  if ([v3 isEqualToString:@"INSetTaskAttributeIntentResponseCodeFailure"])
+  if ([nameCopy isEqualToString:@"INSetTaskAttributeIntentResponseCodeFailure"])
   {
     v5 = 4;
   }
@@ -179,7 +179,7 @@ void __48__INSetTaskAttributeIntentResponse_setWarnings___block_invoke(uint64_t 
     v5 = v4;
   }
 
-  v6 = [v3 isEqualToString:@"INSetTaskAttributeIntentResponseCodeFailureRequiringAppLaunch"];
+  v6 = [nameCopy isEqualToString:@"INSetTaskAttributeIntentResponseCodeFailureRequiringAppLaunch"];
 
   if (v6)
   {
@@ -194,30 +194,30 @@ void __48__INSetTaskAttributeIntentResponse_setWarnings___block_invoke(uint64_t 
 
 - (int64_t)_intentResponseCode
 {
-  v2 = [(INSetTaskAttributeIntentResponse *)self code];
-  if ((v2 - 1) > 4)
+  code = [(INSetTaskAttributeIntentResponse *)self code];
+  if ((code - 1) > 4)
   {
     return 0;
   }
 
   else
   {
-    return qword_18EE5FDC8[v2 - 1];
+    return qword_18EE5FDC8[code - 1];
   }
 }
 
-- (INSetTaskAttributeIntentResponse)initWithCoder:(id)a3
+- (INSetTaskAttributeIntentResponse)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = INSetTaskAttributeIntentResponse;
-  return [(INIntentResponse *)&v4 initWithCoder:a3];
+  return [(INIntentResponse *)&v4 initWithCoder:coder];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = INSetTaskAttributeIntentResponse;
-  [(INIntentResponse *)&v3 encodeWithCoder:a3];
+  [(INIntentResponse *)&v3 encodeWithCoder:coder];
 }
 
 - (INSetTaskAttributeIntentResponseCode)code
@@ -227,18 +227,18 @@ void __48__INSetTaskAttributeIntentResponse_setWarnings___block_invoke(uint64_t 
   return [(INIntentResponse *)&v3 code];
 }
 
-- (INSetTaskAttributeIntentResponse)initWithBackingStore:(id)a3
+- (INSetTaskAttributeIntentResponse)initWithBackingStore:(id)store
 {
   v4.receiver = self;
   v4.super_class = INSetTaskAttributeIntentResponse;
-  return [(INIntentResponse *)&v4 initWithBackingStore:a3];
+  return [(INIntentResponse *)&v4 initWithBackingStore:store];
 }
 
-- (id)_initWithCode:(int64_t)a3 userActivity:(id)a4
+- (id)_initWithCode:(int64_t)code userActivity:(id)activity
 {
   v5.receiver = self;
   v5.super_class = INSetTaskAttributeIntentResponse;
-  return [(INIntentResponse *)&v5 _initWithCode:a3 userActivity:a4];
+  return [(INIntentResponse *)&v5 _initWithCode:code userActivity:activity];
 }
 
 - (INSetTaskAttributeIntentResponse)initWithCode:(INSetTaskAttributeIntentResponseCode)code userActivity:(NSUserActivity *)userActivity
@@ -279,45 +279,45 @@ void __48__INSetTaskAttributeIntentResponse_setWarnings___block_invoke(uint64_t 
   return v11;
 }
 
-+ (int)_typeFromCode:(int64_t)a3
++ (int)_typeFromCode:(int64_t)code
 {
-  if ((a3 - 1) > 4)
+  if ((code - 1) > 4)
   {
     return 3;
   }
 
   else
   {
-    return dword_18EE5FDB0[a3 - 1];
+    return dword_18EE5FDB0[code - 1];
   }
 }
 
-+ (int64_t)_codeFromType:(int)a3 errorCode:(int)a4 appLaunchRequested:(BOOL)a5
++ (int64_t)_codeFromType:(int)type errorCode:(int)code appLaunchRequested:(BOOL)requested
 {
   v5 = 2;
-  if (a3 != 2)
+  if (type != 2)
   {
-    v5 = a3 == 5;
+    v5 = type == 5;
   }
 
   v6 = 3;
   v7 = 4;
-  if (a5)
+  if (requested)
   {
     v7 = 5;
   }
 
-  if (a3 != 1)
+  if (type != 1)
   {
     v7 = 0;
   }
 
-  if (a3)
+  if (type)
   {
     v6 = v7;
   }
 
-  if (a3 <= 1)
+  if (type <= 1)
   {
     return v6;
   }

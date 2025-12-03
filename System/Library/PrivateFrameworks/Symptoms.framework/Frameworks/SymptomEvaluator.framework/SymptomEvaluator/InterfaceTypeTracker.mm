@@ -1,15 +1,15 @@
 @interface InterfaceTypeTracker
 - (id)infoDir;
-- (unint64_t)scheduleExpiryCheckFor:(unint64_t)a3 delay:(double)a4;
+- (unint64_t)scheduleExpiryCheckFor:(unint64_t)for delay:(double)delay;
 - (void)_dumpState;
-- (void)configurePolicies:(id)a3;
+- (void)configurePolicies:(id)policies;
 - (void)dealloc;
-- (void)getNetworkActivity:(id)a3;
-- (void)noteFlow:(id)a3 withDelegatee:(id)a4 snapshot:(id)a5;
-- (void)noteFlow:(id)a3 withOwner:(id)a4 snapshot:(id)a5;
-- (void)noteFlowClassificationExpiry:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)removeLinkages:(id)a3;
+- (void)getNetworkActivity:(id)activity;
+- (void)noteFlow:(id)flow withDelegatee:(id)delegatee snapshot:(id)snapshot;
+- (void)noteFlow:(id)flow withOwner:(id)owner snapshot:(id)snapshot;
+- (void)noteFlowClassificationExpiry:(id)expiry;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)removeLinkages:(id)linkages;
 - (void)setupLightweightTimer;
 @end
 
@@ -109,8 +109,8 @@ void __31__InterfaceTypeTracker_infoDir__block_invoke(uint64_t a1, void *a2, voi
     }
   }
 
-  v5 = [(NSMutableDictionary *)self->_trackerCache allValues];
-  v6 = [v5 sortedArrayUsingComparator:&__block_literal_global_51];
+  allValues = [(NSMutableDictionary *)self->_trackerCache allValues];
+  v6 = [allValues sortedArrayUsingComparator:&__block_literal_global_51];
 
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
@@ -234,16 +234,16 @@ void __34__InterfaceTypeTracker__dumpState__block_invoke_2(uint64_t a1, void *a2
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v9 = a4;
-  v10 = a5;
-  if ([a3 isEqualToString:@"primary"])
+  objectCopy = object;
+  changeCopy = change;
+  if ([path isEqualToString:@"primary"])
   {
-    v11 = v9;
+    v11 = objectCopy;
     if ([v11 functionalInterfaceType] == 3)
     {
-      v12 = [v10 objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
+      v12 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
@@ -255,15 +255,15 @@ void __34__InterfaceTypeTracker__dumpState__block_invoke_2(uint64_t a1, void *a2
           block[2] = __71__InterfaceTypeTracker_observeValueForKeyPath_ofObject_change_context___block_invoke;
           block[3] = &unk_27898A328;
           v16 = v12;
-          v17 = self;
+          selfCopy = self;
           v18 = v11;
           dispatch_async(v13, block);
         }
 
         else if ([v12 BOOLValue])
         {
-          v14 = [v11 madePrimaryDate];
-          [(InterfaceTypeTracker *)self setMadePrimaryDate:v14];
+          madePrimaryDate = [v11 madePrimaryDate];
+          [(InterfaceTypeTracker *)self setMadePrimaryDate:madePrimaryDate];
         }
 
         else
@@ -325,23 +325,23 @@ void __71__InterfaceTypeTracker_observeValueForKeyPath_ofObject_change_context__
   }
 }
 
-- (void)removeLinkages:(id)a3
+- (void)removeLinkages:(id)linkages
 {
-  v7 = a3;
-  v3 = [v7 ultimateUser];
+  linkagesCopy = linkages;
+  ultimateUser = [linkagesCopy ultimateUser];
 
-  if (v3)
+  if (ultimateUser)
   {
-    v4 = [v7 ultimateUser];
-    [v4 removeFlow:v7];
+    ultimateUser2 = [linkagesCopy ultimateUser];
+    [ultimateUser2 removeFlow:linkagesCopy];
   }
 
-  v5 = [v7 immediateUser];
+  immediateUser = [linkagesCopy immediateUser];
 
-  if (v5)
+  if (immediateUser)
   {
-    v6 = [v7 immediateUser];
-    [v6 removeImmediateFlow:v7];
+    immediateUser2 = [linkagesCopy immediateUser];
+    [immediateUser2 removeImmediateFlow:linkagesCopy];
   }
 }
 
@@ -372,7 +372,7 @@ void __71__InterfaceTypeTracker_observeValueForKeyPath_ofObject_change_context__
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (unint64_t)scheduleExpiryCheckFor:(unint64_t)a3 delay:(double)a4
+- (unint64_t)scheduleExpiryCheckFor:(unint64_t)for delay:(double)delay
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -385,66 +385,66 @@ void __71__InterfaceTypeTracker_observeValueForKeyPath_ofObject_change_context__
   }
 
   lwTimer = self->_lwTimer;
-  v8 = [MEMORY[0x277CCABB0] numberWithLongLong:a3];
-  v9 = [(LightweightTimer *)lwTimer setRelativeTimer:v8 context:a4];
+  v8 = [MEMORY[0x277CCABB0] numberWithLongLong:for];
+  v9 = [(LightweightTimer *)lwTimer setRelativeTimer:v8 context:delay];
 
   return v9;
 }
 
-- (void)noteFlowClassificationExpiry:(id)a3
+- (void)noteFlowClassificationExpiry:(id)expiry
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [TrackedFlow flowForKey:v4];
-  v6 = [v4 unsignedLongLongValue];
+  expiryCopy = expiry;
+  v5 = [TrackedFlow flowForKey:expiryCopy];
+  unsignedLongLongValue = [expiryCopy unsignedLongLongValue];
 
   if (v5)
   {
     [v5 setClassificationChangeTimer:0];
-    v7 = [v5 classification];
-    v8 = [v7 nextClassification];
+    classification = [v5 classification];
+    nextClassification = [classification nextClassification];
     v9 = flowLogHandle;
     if (os_log_type_enabled(flowLogHandle, OS_LOG_TYPE_DEBUG))
     {
       v17 = 134218242;
-      v18 = v6;
+      v18 = unsignedLongLongValue;
       v19 = 2112;
-      v20 = v7;
+      v20 = classification;
       _os_log_impl(&dword_23255B000, v9, OS_LOG_TYPE_DEBUG, "noteFlowClassificationExpiry on %llu remove %@", &v17, 0x16u);
     }
 
     [(flowDispositionObserver *)self->_observer noteFlow:v5 snapshot:0 present:0 trackedBy:0];
-    if (v8 && [v8 disposition] != 40)
+    if (nextClassification && [nextClassification disposition] != 40)
     {
-      [v5 setClassification:v8];
+      [v5 setClassification:nextClassification];
       v11 = flowLogHandle;
       if (os_log_type_enabled(flowLogHandle, OS_LOG_TYPE_DEBUG))
       {
         v17 = 134218242;
-        v18 = v6;
+        v18 = unsignedLongLongValue;
         v19 = 2112;
-        v20 = v8;
+        v20 = nextClassification;
         _os_log_impl(&dword_23255B000, v11, OS_LOG_TYPE_DEBUG, "noteFlowClassificationExpiry on %llu add %@", &v17, 0x16u);
       }
 
       [(flowDispositionObserver *)self->_observer noteFlow:v5 snapshot:0 present:1 trackedBy:0];
-      [v8 expirationTime];
+      [nextClassification expirationTime];
       if (v12 != 0.0)
       {
         v13 = flowLogHandle;
         if (os_log_type_enabled(flowLogHandle, OS_LOG_TYPE_DEBUG))
         {
           v14 = v13;
-          [v8 expirationTime];
+          [nextClassification expirationTime];
           v17 = 134218240;
-          v18 = v6;
+          v18 = unsignedLongLongValue;
           v19 = 2048;
           v20 = v15;
           _os_log_impl(&dword_23255B000, v14, OS_LOG_TYPE_DEBUG, "noteFlowClassificationExpiry on %llu schedule for %f", &v17, 0x16u);
         }
 
-        [v8 expirationTime];
-        [v5 setClassificationChangeTimer:{-[InterfaceTypeTracker scheduleExpiryCheckFor:delay:](self, "scheduleExpiryCheckFor:delay:", v6)}];
+        [nextClassification expirationTime];
+        [v5 setClassificationChangeTimer:{-[InterfaceTypeTracker scheduleExpiryCheckFor:delay:](self, "scheduleExpiryCheckFor:delay:", unsignedLongLongValue)}];
       }
     }
 
@@ -454,7 +454,7 @@ void __71__InterfaceTypeTracker_observeValueForKeyPath_ofObject_change_context__
       if (os_log_type_enabled(flowLogHandle, OS_LOG_TYPE_DEBUG))
       {
         v17 = 134217984;
-        v18 = v6;
+        v18 = unsignedLongLongValue;
         _os_log_impl(&dword_23255B000, v10, OS_LOG_TYPE_DEBUG, "noteFlowClassificationExpiry on %llu remove linkages", &v17, 0xCu);
       }
 
@@ -465,93 +465,93 @@ void __71__InterfaceTypeTracker_observeValueForKeyPath_ofObject_change_context__
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)noteFlow:(id)a3 withDelegatee:(id)a4 snapshot:(id)a5
+- (void)noteFlow:(id)flow withDelegatee:(id)delegatee snapshot:(id)snapshot
 {
   v51 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 classification];
+  flowCopy = flow;
+  delegateeCopy = delegatee;
+  snapshotCopy = snapshot;
+  classification = [flowCopy classification];
 
-  if (!v11 || ([v8 classification], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "disposition"), v12, v13 != 40))
+  if (!classification || ([flowCopy classification], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "disposition"), v12, v13 != 40))
   {
-    v14 = [(NSMutableDictionary *)self->_trackerCache objectForKeyedSubscript:v9];
-    if (!v14)
+    immediateUser = [(NSMutableDictionary *)self->_trackerCache objectForKeyedSubscript:delegateeCopy];
+    if (!immediateUser)
     {
       [(InterfaceTypeTracker *)self _trackerCachePrune];
-      v15 = [[AppTracker alloc] initWithUserName:v9 interfaceType:[(InterfaceTypeTracker *)self functionalInterfaceType]];
+      v15 = [[AppTracker alloc] initWithUserName:delegateeCopy interfaceType:[(InterfaceTypeTracker *)self functionalInterfaceType]];
       if (!v15)
       {
-        v14 = [v8 immediateUser];
+        immediateUser = [flowCopy immediateUser];
 
-        if (v14)
+        if (immediateUser)
         {
-          v23 = [v8 immediateUser];
-          [v23 removeImmediateFlow:v8];
+          immediateUser2 = [flowCopy immediateUser];
+          [immediateUser2 removeImmediateFlow:flowCopy];
 
-          v14 = 0;
+          immediateUser = 0;
         }
 
         goto LABEL_37;
       }
 
-      v14 = v15;
-      [(NSMutableDictionary *)self->_trackerCache setObject:v15 forKeyedSubscript:v9];
+      immediateUser = v15;
+      [(NSMutableDictionary *)self->_trackerCache setObject:v15 forKeyedSubscript:delegateeCopy];
     }
 
-    [v14 setIsADaemon:0];
-    v16 = [v8 classification];
+    [immediateUser setIsADaemon:0];
+    classification2 = [flowCopy classification];
 
-    if (v16)
+    if (classification2)
     {
 LABEL_24:
-      v36 = [v8 classification];
-      v37 = [v36 disposition];
+      classification3 = [flowCopy classification];
+      disposition = [classification3 disposition];
 
-      if (v37 == 40)
+      if (disposition == 40)
       {
-        [(InterfaceTypeTracker *)self removeLinkages:v8];
+        [(InterfaceTypeTracker *)self removeLinkages:flowCopy];
       }
 
       else
       {
-        v38 = [v8 immediateUser];
+        immediateUser3 = [flowCopy immediateUser];
 
-        if (v14 != v38)
+        if (immediateUser != immediateUser3)
         {
-          v39 = [v8 immediateUser];
+          immediateUser4 = [flowCopy immediateUser];
 
-          if (v39)
+          if (immediateUser4)
           {
             v40 = flowLogHandle;
             if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
             {
-              v41 = [v8 flowId];
-              v42 = [v8 immediateUser];
-              if (v42)
+              flowId = [flowCopy flowId];
+              immediateUser5 = [flowCopy immediateUser];
+              if (immediateUser5)
               {
-                v43 = [v8 immediateUser];
+                immediateUser6 = [flowCopy immediateUser];
               }
 
               else
               {
-                v43 = @"<nil>";
+                immediateUser6 = @"<nil>";
               }
 
               v45 = 134218498;
-              v46 = v41;
+              v46 = flowId;
               v47 = 2112;
-              v48 = v9;
+              v48 = delegateeCopy;
               v49 = 2112;
-              v50 = v43;
+              v50 = immediateUser6;
               _os_log_impl(&dword_23255B000, v40, OS_LOG_TYPE_DEFAULT, "Flow %llu delegatee %@, changed user from %@", &v45, 0x20u);
-              if (v42)
+              if (immediateUser5)
               {
               }
             }
           }
 
-          [v14 adjustImmediateFlowLinkages:v8];
+          [immediateUser adjustImmediateFlowLinkages:flowCopy];
         }
       }
 
@@ -560,31 +560,31 @@ LABEL_37:
       goto LABEL_38;
     }
 
-    v17 = [v14 specificPolicy];
-    if (v17)
+    specificPolicy = [immediateUser specificPolicy];
+    if (specificPolicy)
     {
-      if ([v8 trafficClassFlags] || objc_msgSend(v8, "trafficMgtFlags"))
+      if ([flowCopy trafficClassFlags] || objc_msgSend(flowCopy, "trafficMgtFlags"))
       {
-        v18 = [(TrackerPolicy *)v17 nonDefaultFlowClassificationFor:v8];
-        [v8 setClassification:v18];
+        v18 = [(TrackerPolicy *)specificPolicy nonDefaultFlowClassificationFor:flowCopy];
+        [flowCopy setClassification:v18];
 
-        v19 = [v8 classification];
+        classification4 = [flowCopy classification];
 
-        if (!v19)
+        if (!classification4)
         {
-          v20 = [(TrackerPolicy *)self->_defaultPolicy nonDefaultFlowClassificationFor:v8];
-          [v8 setClassification:v20];
+          v20 = [(TrackerPolicy *)self->_defaultPolicy nonDefaultFlowClassificationFor:flowCopy];
+          [flowCopy setClassification:v20];
         }
       }
 
-      v21 = [v8 classification];
+      classification5 = [flowCopy classification];
 
-      if (v21)
+      if (classification5)
       {
         goto LABEL_18;
       }
 
-      defaultPolicy = v17;
+      defaultPolicy = specificPolicy;
     }
 
     else
@@ -592,17 +592,17 @@ LABEL_37:
       defaultPolicy = self->_defaultPolicy;
     }
 
-    v24 = [(TrackerPolicy *)defaultPolicy flowClassificationFor:v8];
-    [v8 setClassification:v24];
+    v24 = [(TrackerPolicy *)defaultPolicy flowClassificationFor:flowCopy];
+    [flowCopy setClassification:v24];
 
 LABEL_18:
-    [v8 setTrackerForStatistics:v14];
+    [flowCopy setTrackerForStatistics:immediateUser];
     observer = self->_observer;
     if (observer)
     {
-      [v14 setEversetClassFlags:{objc_msgSend(v14, "eversetClassFlags") | -[flowDispositionObserver noteFlow:snapshot:present:trackedBy:](observer, "noteFlow:snapshot:present:trackedBy:", v8, v10, 1, v14)}];
-      v26 = [v8 classification];
-      [v26 expirationTime];
+      [immediateUser setEversetClassFlags:{objc_msgSend(immediateUser, "eversetClassFlags") | -[flowDispositionObserver noteFlow:snapshot:present:trackedBy:](observer, "noteFlow:snapshot:present:trackedBy:", flowCopy, snapshotCopy, 1, immediateUser)}];
+      classification6 = [flowCopy classification];
+      [classification6 expirationTime];
       v28 = v27;
 
       if (v28 != 0.0)
@@ -611,20 +611,20 @@ LABEL_18:
         if (os_log_type_enabled(flowLogHandle, OS_LOG_TYPE_DEBUG))
         {
           v30 = v29;
-          v31 = [v8 flowId];
-          v32 = [v8 classification];
-          [v32 expirationTime];
+          flowId2 = [flowCopy flowId];
+          classification7 = [flowCopy classification];
+          [classification7 expirationTime];
           v45 = 134218240;
-          v46 = v31;
+          v46 = flowId2;
           v47 = 2048;
           v48 = v33;
           _os_log_impl(&dword_23255B000, v30, OS_LOG_TYPE_DEBUG, "noteFlow:withDelegatee %llu for %f", &v45, 0x16u);
         }
 
-        v34 = [v8 flowId];
-        v35 = [v8 classification];
-        [v35 expirationTime];
-        [v8 setClassificationChangeTimer:{-[InterfaceTypeTracker scheduleExpiryCheckFor:delay:](self, "scheduleExpiryCheckFor:delay:", v34)}];
+        flowId3 = [flowCopy flowId];
+        classification8 = [flowCopy classification];
+        [classification8 expirationTime];
+        [flowCopy setClassificationChangeTimer:{-[InterfaceTypeTracker scheduleExpiryCheckFor:delay:](self, "scheduleExpiryCheckFor:delay:", flowId3)}];
       }
     }
 
@@ -636,81 +636,81 @@ LABEL_38:
   v44 = *MEMORY[0x277D85DE8];
 }
 
-- (void)noteFlow:(id)a3 withOwner:(id)a4 snapshot:(id)a5
+- (void)noteFlow:(id)flow withOwner:(id)owner snapshot:(id)snapshot
 {
   v51 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 classification];
+  flowCopy = flow;
+  ownerCopy = owner;
+  snapshotCopy = snapshot;
+  classification = [flowCopy classification];
 
-  if (!v11 || ([v8 classification], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "disposition"), v12, v13 != 40))
+  if (!classification || ([flowCopy classification], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "disposition"), v12, v13 != 40))
   {
-    v14 = [(NSMutableDictionary *)self->_trackerCache objectForKeyedSubscript:v9];
-    if (!v14)
+    ultimateUser = [(NSMutableDictionary *)self->_trackerCache objectForKeyedSubscript:ownerCopy];
+    if (!ultimateUser)
     {
       [(InterfaceTypeTracker *)self _trackerCachePrune];
-      v15 = [[AppTracker alloc] initWithUserName:v9 interfaceType:[(InterfaceTypeTracker *)self functionalInterfaceType]];
+      v15 = [[AppTracker alloc] initWithUserName:ownerCopy interfaceType:[(InterfaceTypeTracker *)self functionalInterfaceType]];
       if (!v15)
       {
-        v14 = [v8 ultimateUser];
+        ultimateUser = [flowCopy ultimateUser];
 
-        if (v14)
+        if (ultimateUser)
         {
-          v23 = [v8 ultimateUser];
-          [v23 removeFlow:v8];
+          ultimateUser2 = [flowCopy ultimateUser];
+          [ultimateUser2 removeFlow:flowCopy];
 
-          v14 = 0;
+          ultimateUser = 0;
         }
 
         goto LABEL_31;
       }
 
-      v14 = v15;
-      [(NSMutableDictionary *)self->_trackerCache setObject:v15 forKeyedSubscript:v9];
+      ultimateUser = v15;
+      [(NSMutableDictionary *)self->_trackerCache setObject:v15 forKeyedSubscript:ownerCopy];
     }
 
-    [v14 setIsADaemon:{objc_msgSend(v10, "isADaemon")}];
-    v16 = [v8 classification];
+    [ultimateUser setIsADaemon:{objc_msgSend(snapshotCopy, "isADaemon")}];
+    classification2 = [flowCopy classification];
 
-    if (v16)
+    if (classification2)
     {
 LABEL_24:
-      v36 = [v8 classification];
-      v37 = [v36 disposition];
+      classification3 = [flowCopy classification];
+      disposition = [classification3 disposition];
 
-      if (v37 == 40)
+      if (disposition == 40)
       {
-        [(InterfaceTypeTracker *)self removeLinkages:v8];
+        [(InterfaceTypeTracker *)self removeLinkages:flowCopy];
       }
 
       else
       {
-        v38 = [v8 ultimateUser];
+        ultimateUser3 = [flowCopy ultimateUser];
 
-        if (v14 != v38)
+        if (ultimateUser != ultimateUser3)
         {
-          v39 = [v8 ultimateUser];
+          ultimateUser4 = [flowCopy ultimateUser];
 
-          if (v39)
+          if (ultimateUser4)
           {
             v40 = flowLogHandle;
             if (os_log_type_enabled(flowLogHandle, OS_LOG_TYPE_DEFAULT))
             {
               v41 = v40;
-              v42 = [v8 flowId];
-              v43 = [v8 ultimateUser];
+              flowId = [flowCopy flowId];
+              ultimateUser5 = [flowCopy ultimateUser];
               v45 = 134218498;
-              v46 = v42;
+              v46 = flowId;
               v47 = 2112;
-              v48 = v9;
+              v48 = ownerCopy;
               v49 = 2112;
-              v50 = v43;
+              v50 = ultimateUser5;
               _os_log_impl(&dword_23255B000, v41, OS_LOG_TYPE_DEFAULT, "Flow %llu owner %@, changed user from %@", &v45, 0x20u);
             }
           }
 
-          [v14 adjustFlowLinkages:v8];
+          [ultimateUser adjustFlowLinkages:flowCopy];
         }
       }
 
@@ -719,31 +719,31 @@ LABEL_31:
       goto LABEL_32;
     }
 
-    v17 = [v14 specificPolicy];
-    if (v17)
+    specificPolicy = [ultimateUser specificPolicy];
+    if (specificPolicy)
     {
-      if ([v8 trafficClassFlags] || objc_msgSend(v8, "trafficMgtFlags"))
+      if ([flowCopy trafficClassFlags] || objc_msgSend(flowCopy, "trafficMgtFlags"))
       {
-        v18 = [(TrackerPolicy *)v17 nonDefaultFlowClassificationFor:v8];
-        [v8 setClassification:v18];
+        v18 = [(TrackerPolicy *)specificPolicy nonDefaultFlowClassificationFor:flowCopy];
+        [flowCopy setClassification:v18];
 
-        v19 = [v8 classification];
+        classification4 = [flowCopy classification];
 
-        if (!v19)
+        if (!classification4)
         {
-          v20 = [(TrackerPolicy *)self->_defaultPolicy nonDefaultFlowClassificationFor:v8];
-          [v8 setClassification:v20];
+          v20 = [(TrackerPolicy *)self->_defaultPolicy nonDefaultFlowClassificationFor:flowCopy];
+          [flowCopy setClassification:v20];
         }
       }
 
-      v21 = [v8 classification];
+      classification5 = [flowCopy classification];
 
-      if (v21)
+      if (classification5)
       {
         goto LABEL_18;
       }
 
-      defaultPolicy = v17;
+      defaultPolicy = specificPolicy;
     }
 
     else
@@ -751,17 +751,17 @@ LABEL_31:
       defaultPolicy = self->_defaultPolicy;
     }
 
-    v24 = [(TrackerPolicy *)defaultPolicy flowClassificationFor:v8];
-    [v8 setClassification:v24];
+    v24 = [(TrackerPolicy *)defaultPolicy flowClassificationFor:flowCopy];
+    [flowCopy setClassification:v24];
 
 LABEL_18:
-    [v8 setTrackerForStatistics:v14];
+    [flowCopy setTrackerForStatistics:ultimateUser];
     observer = self->_observer;
     if (observer)
     {
-      [v14 setEversetClassFlags:{objc_msgSend(v14, "eversetClassFlags") | -[flowDispositionObserver noteFlow:snapshot:present:trackedBy:](observer, "noteFlow:snapshot:present:trackedBy:", v8, v10, 1, v14)}];
-      v26 = [v8 classification];
-      [v26 expirationTime];
+      [ultimateUser setEversetClassFlags:{objc_msgSend(ultimateUser, "eversetClassFlags") | -[flowDispositionObserver noteFlow:snapshot:present:trackedBy:](observer, "noteFlow:snapshot:present:trackedBy:", flowCopy, snapshotCopy, 1, ultimateUser)}];
+      classification6 = [flowCopy classification];
+      [classification6 expirationTime];
       v28 = v27;
 
       if (v28 != 0.0)
@@ -770,20 +770,20 @@ LABEL_18:
         if (os_log_type_enabled(flowLogHandle, OS_LOG_TYPE_DEBUG))
         {
           v30 = v29;
-          v31 = [v8 flowId];
-          v32 = [v8 classification];
-          [v32 expirationTime];
+          flowId2 = [flowCopy flowId];
+          classification7 = [flowCopy classification];
+          [classification7 expirationTime];
           v45 = 134218240;
-          v46 = v31;
+          v46 = flowId2;
           v47 = 2048;
           v48 = v33;
           _os_log_impl(&dword_23255B000, v30, OS_LOG_TYPE_DEBUG, "noteFlow:withOwner  %llu for %f", &v45, 0x16u);
         }
 
-        v34 = [v8 flowId];
-        v35 = [v8 classification];
-        [v35 expirationTime];
-        [v8 setClassificationChangeTimer:{-[InterfaceTypeTracker scheduleExpiryCheckFor:delay:](self, "scheduleExpiryCheckFor:delay:", v34)}];
+        flowId3 = [flowCopy flowId];
+        classification8 = [flowCopy classification];
+        [classification8 expirationTime];
+        [flowCopy setClassificationChangeTimer:{-[InterfaceTypeTracker scheduleExpiryCheckFor:delay:](self, "scheduleExpiryCheckFor:delay:", flowId3)}];
       }
     }
 
@@ -795,9 +795,9 @@ LABEL_32:
   v44 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getNetworkActivity:(id)a3
+- (void)getNetworkActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
   setApparentTime(v5);
   v7[0] = MEMORY[0x277D85DD0];
@@ -805,8 +805,8 @@ LABEL_32:
   v7[2] = __43__InterfaceTypeTracker_getNetworkActivity___block_invoke;
   v7[3] = &unk_27898FEC0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = activityCopy;
+  v6 = activityCopy;
   [FlowRefreshScheduler refreshDataUsageMaxStale:@"getNetworkActivity" maxDelay:v7 logAs:2.0 callback:0.0];
 }
 
@@ -1072,15 +1072,15 @@ LABEL_51:
   }
 }
 
-- (void)configurePolicies:(id)a3
+- (void)configurePolicies:(id)policies
 {
   v30 = *MEMORY[0x277D85DE8];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v25 objects:v29 count:16];
+  policiesCopy = policies;
+  v5 = [policiesCopy countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1092,7 +1092,7 @@ LABEL_51:
       {
         if (*v26 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(policiesCopy);
         }
 
         v10 = *(*(&v25 + 1) + 8 * i);
@@ -1108,12 +1108,12 @@ LABEL_51:
             v18 = [v12 objectForKeyedSubscript:@"OBSERVER_POLICIES"];
             if (v18)
             {
-              v19 = [(InterfaceTypeTracker *)self observer];
+              observer = [(InterfaceTypeTracker *)self observer];
 
-              if (v19)
+              if (observer)
               {
-                v20 = [(InterfaceTypeTracker *)self observer];
-                [v20 configurePolicies:v18];
+                observer2 = [(InterfaceTypeTracker *)self observer];
+                [observer2 configurePolicies:v18];
               }
             }
 
@@ -1157,8 +1157,8 @@ LABEL_27:
           if (v17)
           {
 LABEL_17:
-            v21 = [(AppTracker *)v17 specificPolicy];
-            if (!v21)
+            specificPolicy = [(AppTracker *)v17 specificPolicy];
+            if (!specificPolicy)
             {
               v23 = objc_alloc_init(TrackerPolicy);
               [(TrackerPolicy *)v23 configureInstance:v12];
@@ -1169,7 +1169,7 @@ LABEL_17:
               goto LABEL_24;
             }
 
-            v18 = v21;
+            v18 = specificPolicy;
           }
 
           else
@@ -1189,7 +1189,7 @@ LABEL_17:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v25 objects:v29 count:16];
+      v6 = [policiesCopy countByEnumeratingWithState:&v25 objects:v29 count:16];
     }
 
     while (v6);

@@ -1,22 +1,22 @@
 @interface EQKitMathMLBinaryNode
 - (BOOL)isBaseFontNameUsed;
-- (EQKitMathMLBinaryNode)initWithFirst:(id)a3 second:(id)a4;
+- (EQKitMathMLBinaryNode)initWithFirst:(id)first second:(id)second;
 - (id)children;
-- (id)initFromXMLNode:(_xmlNode *)a3 parser:(id)a4;
+- (id)initFromXMLNode:(_xmlNode *)node parser:(id)parser;
 - (void)dealloc;
 @end
 
 @implementation EQKitMathMLBinaryNode
 
-- (EQKitMathMLBinaryNode)initWithFirst:(id)a3 second:(id)a4
+- (EQKitMathMLBinaryNode)initWithFirst:(id)first second:(id)second
 {
   v8.receiver = self;
   v8.super_class = EQKitMathMLBinaryNode;
   v6 = [(EQKitMathMLBinaryNode *)&v8 init];
   if (v6)
   {
-    v6->mFirst = a3;
-    v6->mSecond = a4;
+    v6->mFirst = first;
+    v6->mSecond = second;
     [(EQKitMathMLNode *)v6->mFirst setParent:v6];
     [(EQKitMathMLNode *)v6->mSecond setParent:v6];
   }
@@ -24,9 +24,9 @@
   return v6;
 }
 
-- (id)initFromXMLNode:(_xmlNode *)a3 parser:(id)a4
+- (id)initFromXMLNode:(_xmlNode *)node parser:(id)parser
 {
-  v7 = [a4 parseChildrenAsArrayFromXMLNode:?];
+  v7 = [parser parseChildrenAsArrayFromXMLNode:?];
   if ([v7 count] == 2)
   {
     v8 = [v7 objectAtIndex:0];
@@ -37,7 +37,7 @@
 
   else
   {
-    [a4 reportError:5 withNode:a3];
+    [parser reportError:5 withNode:node];
 
     return 0;
   }

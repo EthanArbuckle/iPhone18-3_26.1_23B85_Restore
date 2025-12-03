@@ -1,7 +1,7 @@
 @interface ToneMappingPlist
 + (void)initialize;
 - (ToneMappingPlist)init;
-- (int)readPlist:(id)a3;
+- (int)readPlist:(id)plist;
 - (void)applyOverrides;
 @end
 
@@ -53,15 +53,15 @@
   return v2;
 }
 
-- (int)readPlist:(id)a3
+- (int)readPlist:(id)plist
 {
-  v4 = a3;
-  self->srlVersion = objc_msgSend_cmi_unsignedIntValueForKey_defaultValue_found_(v4, v5, @"EnableSRL", 0, 0);
-  self->enableSFF = objc_msgSend_cmi_BOOLValueForKey_defaultValue_found_(v4, v6, @"EnableSFF", 0, 0);
-  self->enableMSTM = objc_msgSend_cmi_BOOLValueForKey_defaultValue_found_(v4, v7, @"EnableMSTM", 0, 0);
-  self->enableTCR = objc_msgSend_cmi_BOOLValueForKey_defaultValue_found_(v4, v8, @"EnableTCR", 0, 0);
-  self->enableSTF = objc_msgSend_cmi_BOOLValueForKey_defaultValue_found_(v4, v9, @"EnableSTF", 0, 0);
-  v12 = objc_msgSend_objectForKeyedSubscript_(v4, v10, @"StfTuningParameters", v11);
+  plistCopy = plist;
+  self->srlVersion = objc_msgSend_cmi_unsignedIntValueForKey_defaultValue_found_(plistCopy, v5, @"EnableSRL", 0, 0);
+  self->enableSFF = objc_msgSend_cmi_BOOLValueForKey_defaultValue_found_(plistCopy, v6, @"EnableSFF", 0, 0);
+  self->enableMSTM = objc_msgSend_cmi_BOOLValueForKey_defaultValue_found_(plistCopy, v7, @"EnableMSTM", 0, 0);
+  self->enableTCR = objc_msgSend_cmi_BOOLValueForKey_defaultValue_found_(plistCopy, v8, @"EnableTCR", 0, 0);
+  self->enableSTF = objc_msgSend_cmi_BOOLValueForKey_defaultValue_found_(plistCopy, v9, @"EnableSTF", 0, 0);
+  v12 = objc_msgSend_objectForKeyedSubscript_(plistCopy, v10, @"StfTuningParameters", v11);
   stfTuningParameters = self->stfTuningParameters;
   self->stfTuningParameters = v12;
 
@@ -73,12 +73,12 @@ LABEL_4:
   }
 
   srl = self->srl;
-  v17 = objc_msgSend_objectForKeyedSubscript_(v4, v14, @"SRL", v15);
+  v17 = objc_msgSend_objectForKeyedSubscript_(plistCopy, v14, @"SRL", v15);
   Plist = objc_msgSend_readPlist_(srl, v18, v17, v19);
   v21 = Plist == 0;
 
   srlv2 = self->srlv2;
-  v25 = objc_msgSend_objectForKeyedSubscript_(v4, v23, @"SRLv2", v24);
+  v25 = objc_msgSend_objectForKeyedSubscript_(plistCopy, v23, @"SRLv2", v24);
   v28 = objc_msgSend_readPlist_(srlv2, v26, v25, v27);
 
   srlVersion = self->srlVersion;
@@ -97,7 +97,7 @@ LABEL_6:
   if (self->enableSFF)
   {
     sff = self->sff;
-    v31 = objc_msgSend_objectForKeyedSubscript_(v4, v14, @"SFF", v15);
+    v31 = objc_msgSend_objectForKeyedSubscript_(plistCopy, v14, @"SFF", v15);
     v34 = objc_msgSend_readPlist_(sff, v32, v31, v33) == 0;
   }
 
@@ -109,7 +109,7 @@ LABEL_6:
   if (self->enableMSTM)
   {
     mstm = self->mstm;
-    v36 = objc_msgSend_objectForKeyedSubscript_(v4, v14, @"MSTM", v15);
+    v36 = objc_msgSend_objectForKeyedSubscript_(plistCopy, v14, @"MSTM", v15);
     v39 = objc_msgSend_readPlist_(mstm, v37, v36, v38) == 0;
   }
 
@@ -121,7 +121,7 @@ LABEL_6:
   if (self->srlVersion)
   {
     mstmWithSRL = self->mstmWithSRL;
-    v41 = objc_msgSend_objectForKeyedSubscript_(v4, v14, @"MSTMWithSRL", v15);
+    v41 = objc_msgSend_objectForKeyedSubscript_(plistCopy, v14, @"MSTMWithSRL", v15);
     v44 = objc_msgSend_readPlist_(mstmWithSRL, v42, v41, v43) != 0;
   }
 
@@ -133,7 +133,7 @@ LABEL_6:
   if (self->enableTCR)
   {
     tcr = self->tcr;
-    v46 = objc_msgSend_objectForKeyedSubscript_(v4, v14, @"ToneCurveRegularization", v15);
+    v46 = objc_msgSend_objectForKeyedSubscript_(plistCopy, v14, @"ToneCurveRegularization", v15);
     v49 = objc_msgSend_readPlist_(tcr, v47, v46, v48) == 0;
   }
 
@@ -162,30 +162,30 @@ LABEL_6:
     self->enableMSTM = 0;
   }
 
-  self->enableLocalContrast = objc_msgSend_cmi_BOOLValueForKey_defaultValue_found_(v4, v14, @"EnableLocalContrast", 0, 0);
-  objc_msgSend_cmi_floatValueForKey_defaultValue_found_(v4, v50, @"DetailEnhanceLeftLimit", 0, 0.0);
+  self->enableLocalContrast = objc_msgSend_cmi_BOOLValueForKey_defaultValue_found_(plistCopy, v14, @"EnableLocalContrast", 0, 0);
+  objc_msgSend_cmi_floatValueForKey_defaultValue_found_(plistCopy, v50, @"DetailEnhanceLeftLimit", 0, 0.0);
   self->detailEnhanceLeftLimit = v51;
-  objc_msgSend_cmi_floatValueForKey_defaultValue_found_(v4, v52, @"DetailEnhanceRightLimit", 0, 0.0);
+  objc_msgSend_cmi_floatValueForKey_defaultValue_found_(plistCopy, v52, @"DetailEnhanceRightLimit", 0, 0.0);
   self->detailEnhanceRightLimit = v53;
-  objc_msgSend_cmi_floatValueForKey_defaultValue_found_(v4, v54, @"DetailEnhanceStrength", 0, 0.0);
+  objc_msgSend_cmi_floatValueForKey_defaultValue_found_(plistCopy, v54, @"DetailEnhanceStrength", 0, 0.0);
   self->detailEnhanceStrength = v55;
-  objc_msgSend_cmi_floatValueForKey_defaultValue_found_(v4, v56, @"ChromaGainAdjustmentPower", 0, 0.0);
+  objc_msgSend_cmi_floatValueForKey_defaultValue_found_(plistCopy, v56, @"ChromaGainAdjustmentPower", 0, 0.0);
   self->chromaGainAdjustmentPower = v57;
-  self->enableGlobalContrast = objc_msgSend_cmi_BOOLValueForKey_defaultValue_found_(v4, v58, @"EnableGlobalContrast", 0, 0);
-  objc_msgSend_cmi_floatValueForKey_defaultValue_found_(v4, v59, @"BlackSubtractionClippingRatio", 0, 0.0);
+  self->enableGlobalContrast = objc_msgSend_cmi_BOOLValueForKey_defaultValue_found_(plistCopy, v58, @"EnableGlobalContrast", 0, 0);
+  objc_msgSend_cmi_floatValueForKey_defaultValue_found_(plistCopy, v59, @"BlackSubtractionClippingRatio", 0, 0.0);
   self->blackSubtractionClippingRatio = v60;
-  objc_msgSend_cmi_floatValueForKey_defaultValue_found_(v4, v61, @"BlackSubtractionLowLimit", 0, 0.0);
+  objc_msgSend_cmi_floatValueForKey_defaultValue_found_(plistCopy, v61, @"BlackSubtractionLowLimit", 0, 0.0);
   self->blackSubtractionLowLimit = v62;
-  objc_msgSend_cmi_floatValueForKey_defaultValue_found_(v4, v63, @"MaximumContrastStrength", 0, 0.0);
+  objc_msgSend_cmi_floatValueForKey_defaultValue_found_(plistCopy, v63, @"MaximumContrastStrength", 0, 0.0);
   self->maximumContrastStrength = v64;
-  self->GreenSkyFixEnabled = objc_msgSend_cmi_BOOLValueForKey_defaultValue_found_(v4, v65, @"GreenSkyFixEnabled", 0, 0);
-  objc_msgSend_cmi_floatValueForKey_defaultValue_found_(v4, v66, @"GreenSkyFixEVZeroTargetGainThreshold", 0, 0.0);
+  self->GreenSkyFixEnabled = objc_msgSend_cmi_BOOLValueForKey_defaultValue_found_(plistCopy, v65, @"GreenSkyFixEnabled", 0, 0);
+  objc_msgSend_cmi_floatValueForKey_defaultValue_found_(plistCopy, v66, @"GreenSkyFixEVZeroTargetGainThreshold", 0, 0.0);
   self->GreenSkyFixEVZeroTargetGainThreshold = v67;
-  objc_msgSend_cmi_floatValueForKey_defaultValue_found_(v4, v68, @"GreenSkyFixCCTThreshold", 0, 0.0);
+  objc_msgSend_cmi_floatValueForKey_defaultValue_found_(plistCopy, v68, @"GreenSkyFixCCTThreshold", 0, 0.0);
   self->GreenSkyFixCCTThreshold = v69;
-  self->YellowSatFixEnabled = objc_msgSend_cmi_BOOLValueForKey_defaultValue_found_(v4, v70, @"YellowSatFixEnabled", 0, 0);
-  self->maskedSkyFixEnabled = objc_msgSend_cmi_BOOLValueForKey_defaultValue_found_(v4, v71, @"MaskedSkyFixEnabled", 0, 0);
-  self->maskedSkyCubeVersion = objc_msgSend_cmi_intValueForKey_defaultValue_found_(v4, v72, @"MaskedSkyCubeVersion", 0, 0);
+  self->YellowSatFixEnabled = objc_msgSend_cmi_BOOLValueForKey_defaultValue_found_(plistCopy, v70, @"YellowSatFixEnabled", 0, 0);
+  self->maskedSkyFixEnabled = objc_msgSend_cmi_BOOLValueForKey_defaultValue_found_(plistCopy, v71, @"MaskedSkyFixEnabled", 0, 0);
+  self->maskedSkyCubeVersion = objc_msgSend_cmi_intValueForKey_defaultValue_found_(plistCopy, v72, @"MaskedSkyCubeVersion", 0, 0);
 
   return 0;
 }

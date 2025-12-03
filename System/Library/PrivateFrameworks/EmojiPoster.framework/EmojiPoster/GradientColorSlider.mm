@@ -1,29 +1,29 @@
 @interface GradientColorSlider
 - (void)layoutSubviews;
-- (void)leftColorDidPanWithGr:(id)a3;
-- (void)rightColorDidPanWithGr:(id)a3;
+- (void)leftColorDidPanWithGr:(id)gr;
+- (void)rightColorDidPanWithGr:(id)gr;
 @end
 
 @implementation GradientColorSlider
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_249FEE77C();
 }
 
-- (void)leftColorDidPanWithGr:(id)a3
+- (void)leftColorDidPanWithGr:(id)gr
 {
-  v4 = a3;
-  v5 = self;
-  sub_249FEE8D4(v4);
+  grCopy = gr;
+  selfCopy = self;
+  sub_249FEE8D4(grCopy);
 }
 
-- (void)rightColorDidPanWithGr:(id)a3
+- (void)rightColorDidPanWithGr:(id)gr
 {
-  v4 = a3;
-  v5 = self;
-  sub_249FEEB98(v4);
+  grCopy = gr;
+  selfCopy = self;
+  sub_249FEEB98(grCopy);
 }
 
 @end

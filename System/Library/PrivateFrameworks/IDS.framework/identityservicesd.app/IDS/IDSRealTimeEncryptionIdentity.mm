@@ -3,8 +3,8 @@
 - (IDSRealTimeEncryptionIdentity)init;
 - (NSData)publicKeyData;
 - (void)dealloc;
-- (void)setFullIdentity:(__SecKey *)a3;
-- (void)setPublicIdentity:(__SecKey *)a3;
+- (void)setFullIdentity:(__SecKey *)identity;
+- (void)setPublicIdentity:(__SecKey *)identity;
 @end
 
 @implementation IDSRealTimeEncryptionIdentity
@@ -43,7 +43,7 @@
   [(IDSRealTimeEncryptionIdentity *)&v5 dealloc];
 }
 
-- (void)setFullIdentity:(__SecKey *)a3
+- (void)setFullIdentity:(__SecKey *)identity
 {
   os_unfair_lock_lock(&self->_lock);
   fullIdentity = self->_fullIdentity;
@@ -53,12 +53,12 @@
     self->_fullIdentity = 0;
   }
 
-  self->_fullIdentity = CFRetain(a3);
+  self->_fullIdentity = CFRetain(identity);
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setPublicIdentity:(__SecKey *)a3
+- (void)setPublicIdentity:(__SecKey *)identity
 {
   os_unfair_lock_lock(&self->_lock);
   publicIdentity = self->_publicIdentity;
@@ -68,7 +68,7 @@
     self->_publicIdentity = 0;
   }
 
-  self->_publicIdentity = CFRetain(a3);
+  self->_publicIdentity = CFRetain(identity);
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -89,7 +89,7 @@
       {
         v6 = self->_publicIdentityData;
         *buf = 134218242;
-        v16 = self;
+        selfCopy2 = self;
         v17 = 2112;
         v18 = v6;
         _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%p: Returned the random publicKeyData %@ for the simulator", buf, 0x16u);
@@ -147,7 +147,7 @@ LABEL_16:
   {
     groupID = self->_groupID;
     *buf = 134218499;
-    v16 = self;
+    selfCopy2 = self;
     v17 = 2113;
     v18 = groupID;
     v19 = 2112;
@@ -183,21 +183,21 @@ LABEL_26:
 - (BOOL)isExpired
 {
   v3 = +[NSDate date];
-  v4 = [(IDSRealTimeEncryptionIdentity *)self expirationDate];
-  v5 = [v3 compare:v4];
+  expirationDate = [(IDSRealTimeEncryptionIdentity *)self expirationDate];
+  v5 = [v3 compare:expirationDate];
 
   if (v5 != -1)
   {
     v6 = OSLogHandleForTransportCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [(IDSRealTimeEncryptionIdentity *)self expirationDate];
+      expirationDate2 = [(IDSRealTimeEncryptionIdentity *)self expirationDate];
       *buf = 134218498;
-      v12 = self;
+      selfCopy = self;
       v13 = 2112;
       v14 = v3;
       v15 = 2112;
-      v16 = v7;
+      v16 = expirationDate2;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%p: This IDSRealTimeEncryptionIdentity is expired. (now: %@, expirationDate: %@)", buf, 0x20u);
     }
 
@@ -205,7 +205,7 @@ LABEL_26:
     {
       if (_IDSShouldLogTransport())
       {
-        v9 = [(IDSRealTimeEncryptionIdentity *)self expirationDate];
+        expirationDate3 = [(IDSRealTimeEncryptionIdentity *)self expirationDate];
         _IDSLogTransport();
 
         if (_IDSShouldLog())

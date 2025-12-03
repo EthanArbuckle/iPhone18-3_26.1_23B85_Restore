@@ -1,8 +1,8 @@
 @interface PSGraphFrequencyInputDriven
 + (id)inputDriven;
 - (PSGraphFrequencyInputDriven)init;
-- (void)subsampleInput:(id)a3 factor:(unint64_t)a4;
-- (void)subsampleInputKey:(id)a3 factor:(unint64_t)a4;
+- (void)subsampleInput:(id)input factor:(unint64_t)factor;
+- (void)subsampleInputKey:(id)key factor:(unint64_t)factor;
 @end
 
 @implementation PSGraphFrequencyInputDriven
@@ -16,9 +16,9 @@
   if (v2)
   {
     v2->_type = 1;
-    v4 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     subsampledInputs = v3->_subsampledInputs;
-    v3->_subsampledInputs = v4;
+    v3->_subsampledInputs = dictionary;
   }
 
   return v3;
@@ -26,23 +26,23 @@
 
 + (id)inputDriven
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
 
-- (void)subsampleInputKey:(id)a3 factor:(unint64_t)a4
+- (void)subsampleInputKey:(id)key factor:(unint64_t)factor
 {
   v6 = MEMORY[0x277CCABB0];
-  v7 = a3;
-  v8 = [v6 numberWithUnsignedInteger:a4];
-  [(NSMutableDictionary *)self->_subsampledInputs setObject:v8 forKeyedSubscript:v7];
+  keyCopy = key;
+  v8 = [v6 numberWithUnsignedInteger:factor];
+  [(NSMutableDictionary *)self->_subsampledInputs setObject:v8 forKeyedSubscript:keyCopy];
 }
 
-- (void)subsampleInput:(id)a3 factor:(unint64_t)a4
+- (void)subsampleInput:(id)input factor:(unint64_t)factor
 {
-  v6 = [a3 resourceKey];
-  [(PSGraphFrequencyInputDriven *)self subsampleInputKey:v6 factor:a4];
+  resourceKey = [input resourceKey];
+  [(PSGraphFrequencyInputDriven *)self subsampleInputKey:resourceKey factor:factor];
 }
 
 @end

@@ -1,9 +1,9 @@
 @interface NUAuxiliaryImageRenderJob
-- (BOOL)complete:(id *)a3;
-- (BOOL)prepare:(id *)a3;
-- (BOOL)render:(id *)a3;
-- (id)evaluateOutputGeometry:(id *)a3;
-- (id)newRenderPipelineStateForEvaluationMode:(int64_t)a3;
+- (BOOL)complete:(id *)complete;
+- (BOOL)prepare:(id *)prepare;
+- (BOOL)render:(id *)render;
+- (id)evaluateOutputGeometry:(id *)geometry;
+- (id)newRenderPipelineStateForEvaluationMode:(int64_t)mode;
 - (id)result;
 - (id)scalePolicy;
 - (unsigned)targetPixelFormat;
@@ -15,8 +15,8 @@
 - (id)result
 {
   v3 = objc_alloc_init(_NUAuxiliaryImageRenderResult);
-  v4 = [(NUAuxiliaryImageRenderJob *)self auxiliaryImage];
-  [(_NUAuxiliaryImageRenderResult *)v3 setAuxiliaryImage:v4];
+  auxiliaryImage = [(NUAuxiliaryImageRenderJob *)self auxiliaryImage];
+  [(_NUAuxiliaryImageRenderResult *)v3 setAuxiliaryImage:auxiliaryImage];
 
   return v3;
 }
@@ -30,10 +30,10 @@
   self->_pixelBuffer = 0;
 }
 
-- (BOOL)complete:(id *)a3
+- (BOOL)complete:(id *)complete
 {
   v37 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!complete)
   {
     v17 = NUAssertLogger_981();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -54,8 +54,8 @@
         v24 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v25 = MEMORY[0x1E696AF00];
         v26 = v24;
-        v27 = [v25 callStackSymbols];
-        v28 = [v27 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v25 callStackSymbols];
+        v28 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v34 = v24;
         v35 = 2114;
@@ -66,8 +66,8 @@
 
     else if (v21)
     {
-      v22 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v23 = [v22 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v23 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v34 = v23;
       _os_log_error_impl(&dword_1C0184000, v20, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -76,43 +76,43 @@
     _NUAssertFailHandler("[NUAuxiliaryImageRenderJob complete:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Render/NUAuxiliaryImageRenderRequest.m", 297, @"Invalid parameter not satisfying: %s", v29, v30, v31, v32, "error != NULL");
   }
 
-  v5 = [(NUAuxiliaryImageRenderJob *)self auxiliaryImage];
+  auxiliaryImage = [(NUAuxiliaryImageRenderJob *)self auxiliaryImage];
 
-  if (!v5)
+  if (!auxiliaryImage)
   {
-    v6 = [(CIRenderTask *)self->_renderTask waitUntilCompletedAndReturnError:a3];
+    v6 = [(CIRenderTask *)self->_renderTask waitUntilCompletedAndReturnError:complete];
 
     if (!v6)
     {
-      v13 = [(NURenderJob *)self request];
-      v16 = [v13 copy];
-      *a3 = [NUError errorWithCode:1 reason:@"failed to render auxiliaryImage" object:v16 underlyingError:*a3];
+      request = [(NURenderJob *)self request];
+      v16 = [request copy];
+      *complete = [NUError errorWithCode:1 reason:@"failed to render auxiliaryImage" object:v16 underlyingError:*complete];
 
       v14 = 0;
       goto LABEL_6;
     }
 
-    v7 = [(NUAuxiliaryImageRenderJob *)self imageProperties];
-    v8 = [v7 auxiliaryImagePropertiesForType:{-[NUAuxiliaryImageRenderJob auxiliaryImageType](self, "auxiliaryImageType")}];
+    imageProperties = [(NUAuxiliaryImageRenderJob *)self imageProperties];
+    v8 = [imageProperties auxiliaryImagePropertiesForType:{-[NUAuxiliaryImageRenderJob auxiliaryImageType](self, "auxiliaryImageType")}];
 
-    v9 = [(NUCVPixelBuffer *)self->_pixelBuffer CVPixelBuffer];
-    v10 = [(NUAuxiliaryImageRenderJob *)self auxiliaryImageType];
-    v11 = [v8 auxiliaryImageTypeCGIdentifier];
-    v12 = [NUAuxiliaryImageFactory auxiliaryImageWithPixelBuffer:v9 auxiliaryImageType:v10 identifier:v11 originalProperties:v8 error:a3];
+    cVPixelBuffer = [(NUCVPixelBuffer *)self->_pixelBuffer CVPixelBuffer];
+    auxiliaryImageType = [(NUAuxiliaryImageRenderJob *)self auxiliaryImageType];
+    auxiliaryImageTypeCGIdentifier = [v8 auxiliaryImageTypeCGIdentifier];
+    v12 = [NUAuxiliaryImageFactory auxiliaryImageWithPixelBuffer:cVPixelBuffer auxiliaryImageType:auxiliaryImageType identifier:auxiliaryImageTypeCGIdentifier originalProperties:v8 error:complete];
     [(NUAuxiliaryImageRenderJob *)self setAuxiliaryImage:v12];
   }
 
-  v13 = [(NUAuxiliaryImageRenderJob *)self auxiliaryImage];
-  v14 = v13 != 0;
+  request = [(NUAuxiliaryImageRenderJob *)self auxiliaryImage];
+  v14 = request != 0;
 LABEL_6:
 
   return v14;
 }
 
-- (BOOL)render:(id *)a3
+- (BOOL)render:(id *)render
 {
   v71 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!render)
   {
     v51 = NUAssertLogger_981();
     if (os_log_type_enabled(v51, OS_LOG_TYPE_ERROR))
@@ -133,8 +133,8 @@ LABEL_6:
         v58 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v59 = MEMORY[0x1E696AF00];
         v60 = v58;
-        v61 = [v59 callStackSymbols];
-        v62 = [v61 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v59 callStackSymbols];
+        v62 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v58;
         *&buf[12] = 2114;
@@ -145,8 +145,8 @@ LABEL_6:
 
     else if (v55)
     {
-      v56 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v57 = [v56 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v57 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v57;
       _os_log_error_impl(&dword_1C0184000, v54, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -155,22 +155,22 @@ LABEL_6:
     _NUAssertFailHandler("[NUAuxiliaryImageRenderJob render:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Render/NUAuxiliaryImageRenderRequest.m", 195, @"Invalid parameter not satisfying: %s", v63, v64, v65, v66, "error != nil");
   }
 
-  v5 = [(NURenderJob *)self renderNode];
-  v6 = [v5 canPropagateOriginalAuxiliaryData:{-[NUAuxiliaryImageRenderJob auxiliaryImageType](self, "auxiliaryImageType")}];
+  renderNode = [(NURenderJob *)self renderNode];
+  v6 = [renderNode canPropagateOriginalAuxiliaryData:{-[NUAuxiliaryImageRenderJob auxiliaryImageType](self, "auxiliaryImageType")}];
 
   if (v6)
   {
-    v7 = [(NURenderJob *)self request];
-    if ([v7 skipRenderIfNotRequired])
+    request = [(NURenderJob *)self request];
+    if ([request skipRenderIfNotRequired])
     {
-      [NUError skippedError:@"Original auxiliary data can be propagated object:skipping render", v7];
-      *a3 = v8 = 0;
+      [NUError skippedError:@"Original auxiliary data can be propagated object:skipping render", request];
+      *render = v8 = 0;
     }
 
     else
     {
-      v22 = [(NURenderJob *)self renderNode];
-      v23 = [v22 originalAuxiliaryImageForType:-[NUAuxiliaryImageRenderJob auxiliaryImageType](self error:{"auxiliaryImageType"), a3}];
+      renderNode2 = [(NURenderJob *)self renderNode];
+      v23 = [renderNode2 originalAuxiliaryImageForType:-[NUAuxiliaryImageRenderJob auxiliaryImageType](self error:{"auxiliaryImageType"), render}];
 
       v8 = v23 != 0;
       if (v23)
@@ -182,41 +182,41 @@ LABEL_6:
     return v8;
   }
 
-  v9 = [(NURenderJob *)self renderer:a3];
+  v9 = [(NURenderJob *)self renderer:render];
   if (!v9)
   {
     return 0;
   }
 
   v10 = v9;
-  v11 = [(NURenderJob *)self outputGeometry];
-  v12 = [v11 scaledSize];
+  outputGeometry = [(NURenderJob *)self outputGeometry];
+  scaledSize = [outputGeometry scaledSize];
   v14 = v13;
-  v15 = [NUVideoUtilities newPixelBufferOfSize:v12 format:v13, [(NUAuxiliaryImageRenderJob *)self targetPixelFormat]];
+  v15 = [NUVideoUtilities newPixelBufferOfSize:scaledSize format:v13, [(NUAuxiliaryImageRenderJob *)self targetPixelFormat]];
   pixelBuffer = self->_pixelBuffer;
   self->_pixelBuffer = v15;
 
   v17 = self->_pixelBuffer;
   if (!v17)
   {
-    v24 = [(NURenderJob *)self request];
-    v25 = [v24 copy];
-    *a3 = [NUError failureError:@"failed to allocate buffer for depth" object:v25];
+    request2 = [(NURenderJob *)self request];
+    v25 = [request2 copy];
+    *render = [NUError failureError:@"failed to allocate buffer for depth" object:v25];
 
     return 0;
   }
 
   v18 = 0;
   auxiliaryImageType = self->_auxiliaryImageType;
-  v68 = v11;
+  v68 = outputGeometry;
   if (auxiliaryImageType <= 0xB)
   {
     if (((1 << auxiliaryImageType) & 0x378) != 0)
     {
-      v20 = [(NUCVPixelBuffer *)v17 CVPixelBuffer];
-      CVBufferSetAttachment(v20, *MEMORY[0x1E6965F30], *MEMORY[0x1E6965F60], kCVAttachmentMode_ShouldPropagate);
-      v21 = [(NUCVPixelBuffer *)self->_pixelBuffer CVPixelBuffer];
-      CVBufferSetAttachment(v21, *MEMORY[0x1E6965D88], *MEMORY[0x1E6965DB8], kCVAttachmentMode_ShouldPropagate);
+      cVPixelBuffer = [(NUCVPixelBuffer *)v17 CVPixelBuffer];
+      CVBufferSetAttachment(cVPixelBuffer, *MEMORY[0x1E6965F30], *MEMORY[0x1E6965F60], kCVAttachmentMode_ShouldPropagate);
+      cVPixelBuffer2 = [(NUCVPixelBuffer *)self->_pixelBuffer CVPixelBuffer];
+      CVBufferSetAttachment(cVPixelBuffer2, *MEMORY[0x1E6965D88], *MEMORY[0x1E6965DB8], kCVAttachmentMode_ShouldPropagate);
       v18 = 0;
       goto LABEL_29;
     }
@@ -236,35 +236,35 @@ LABEL_6:
     PixelFormatType = CVPixelBufferGetPixelFormatType([(NUCVPixelBuffer *)v17 CVPixelBuffer]);
     v27 = CVPixelFormatDescriptionCreateWithPixelFormatType(0, PixelFormatType);
     v28 = [(__CFDictionary *)v27 objectForKeyedSubscript:*MEMORY[0x1E69662A8]];
-    v29 = [v28 BOOLValue];
+    bOOLValue = [v28 BOOLValue];
 
     v30 = [(__CFDictionary *)v27 objectForKeyedSubscript:*MEMORY[0x1E69662B8]];
-    v31 = [v30 BOOLValue];
+    bOOLValue2 = [v30 BOOLValue];
 
-    if ((v29 & 1) != 0 || v31)
+    if ((bOOLValue & 1) != 0 || bOOLValue2)
     {
-      v34 = [(NUCVPixelBuffer *)self->_pixelBuffer CVPixelBuffer];
+      cVPixelBuffer3 = [(NUCVPixelBuffer *)self->_pixelBuffer CVPixelBuffer];
       v33 = *MEMORY[0x1E6965CE8];
-      CVBufferRemoveAttachment(v34, *MEMORY[0x1E6965CE8]);
-      v35 = [(NUCVPixelBuffer *)self->_pixelBuffer CVPixelBuffer];
-      CVBufferSetAttachment(v35, *MEMORY[0x1E6965F30], *MEMORY[0x1E6965F60], kCVAttachmentMode_ShouldPropagate);
-      v36 = [(NUCVPixelBuffer *)self->_pixelBuffer CVPixelBuffer];
-      CVBufferSetAttachment(v36, *MEMORY[0x1E6965F98], *MEMORY[0x1E6965FC8], kCVAttachmentMode_ShouldPropagate);
+      CVBufferRemoveAttachment(cVPixelBuffer3, *MEMORY[0x1E6965CE8]);
+      cVPixelBuffer4 = [(NUCVPixelBuffer *)self->_pixelBuffer CVPixelBuffer];
+      CVBufferSetAttachment(cVPixelBuffer4, *MEMORY[0x1E6965F30], *MEMORY[0x1E6965F60], kCVAttachmentMode_ShouldPropagate);
+      cVPixelBuffer5 = [(NUCVPixelBuffer *)self->_pixelBuffer CVPixelBuffer];
+      CVBufferSetAttachment(cVPixelBuffer5, *MEMORY[0x1E6965F98], *MEMORY[0x1E6965FC8], kCVAttachmentMode_ShouldPropagate);
       v18 = 0;
     }
 
     else
     {
       v18 = +[NUColorSpace linearGrayColorSpace];
-      v32 = [(NUCVPixelBuffer *)self->_pixelBuffer CVPixelBuffer];
+      cVPixelBuffer6 = [(NUCVPixelBuffer *)self->_pixelBuffer CVPixelBuffer];
       v33 = *MEMORY[0x1E6965CE8];
-      CVBufferSetAttachment(v32, *MEMORY[0x1E6965CE8], [v18 CGColorSpace], kCVAttachmentMode_ShouldPropagate);
+      CVBufferSetAttachment(cVPixelBuffer6, *MEMORY[0x1E6965CE8], [v18 CGColorSpace], kCVAttachmentMode_ShouldPropagate);
     }
 
-    v37 = [(NUImageProperties *)self->_imageProperties flexRangeProperties];
-    if (v37)
+    flexRangeProperties = [(NUImageProperties *)self->_imageProperties flexRangeProperties];
+    if (flexRangeProperties)
     {
-      v38 = v37;
+      v38 = flexRangeProperties;
     }
 
     else
@@ -278,9 +278,9 @@ LABEL_28:
 
       v67 = +[NUColorSpace genericGrayGamma2_2ColorSpace];
 
-      v39 = [(NUCVPixelBuffer *)self->_pixelBuffer CVPixelBuffer];
+      cVPixelBuffer7 = [(NUCVPixelBuffer *)self->_pixelBuffer CVPixelBuffer];
       v38 = +[NUColorSpace linearGrayColorSpace];
-      CVBufferSetAttachment(v39, v33, [v38 CGColorSpace], kCVAttachmentMode_ShouldPropagate);
+      CVBufferSetAttachment(cVPixelBuffer7, v33, [v38 CGColorSpace], kCVAttachmentMode_ShouldPropagate);
       v18 = v67;
     }
 
@@ -290,26 +290,26 @@ LABEL_28:
 LABEL_29:
   v40 = [objc_alloc(MEMORY[0x1E695F678]) initWithPixelBuffer:{-[NUCVPixelBuffer CVPixelBuffer](self->_pixelBuffer, "CVPixelBuffer")}];
   v41 = MEMORY[0x1E696AEC0];
-  v42 = [(NURenderJob *)self request];
-  v43 = [v42 name];
-  v44 = [v41 stringWithFormat:@"%@-j%lld", v43, -[NURenderJob jobNumber](self, "jobNumber")];
+  request3 = [(NURenderJob *)self request];
+  name = [request3 name];
+  v44 = [v41 stringWithFormat:@"%@-j%lld", name, -[NURenderJob jobNumber](self, "jobNumber")];
   [v40 setLabel:v44];
 
   [v40 setColorSpace:{objc_msgSend(v18, "CGColorSpace")}];
-  v45 = [(NURenderJob *)self outputImage];
+  outputImage = [(NURenderJob *)self outputImage];
   *buf = 0;
   *&buf[8] = 0;
-  *&buf[16] = v12;
+  *&buf[16] = scaledSize;
   v70 = v14;
-  v46 = [v10 renderImage:v45 rect:buf toDestination:v40 atPoint:0 error:{0, a3}];
+  v46 = [v10 renderImage:outputImage rect:buf toDestination:v40 atPoint:0 error:{0, render}];
   renderTask = self->_renderTask;
   self->_renderTask = v46;
 
   if (!self->_renderTask)
   {
-    v48 = [(NURenderJob *)self request];
-    v49 = [v48 copy];
-    *a3 = [NUError errorWithCode:1 reason:@"failed to prepare render auxiliaryImage" object:v49 underlyingError:*a3];
+    request4 = [(NURenderJob *)self request];
+    v49 = [request4 copy];
+    *render = [NUError errorWithCode:1 reason:@"failed to prepare render auxiliaryImage" object:v49 underlyingError:*render];
   }
 
   return self->_renderTask != 0;
@@ -317,39 +317,39 @@ LABEL_29:
 
 - (unsigned)targetPixelFormat
 {
-  v3 = [(NUAuxiliaryImageRenderJob *)self auxiliaryImageType];
-  if ((v3 - 10) < 2)
+  auxiliaryImageType = [(NUAuxiliaryImageRenderJob *)self auxiliaryImageType];
+  if ((auxiliaryImageType - 10) < 2)
   {
     return 1111970369;
   }
 
-  if (v3 == 2)
+  if (auxiliaryImageType == 2)
   {
     return 1751411059;
   }
 
-  v4 = 1278226488;
-  if (v3 == 7)
+  pixelFormatType = 1278226488;
+  if (auxiliaryImageType == 7)
   {
-    v5 = [(NUAuxiliaryImageRenderJob *)self imageProperties];
-    v6 = [v5 auxiliaryImagePropertiesForType:7];
+    imageProperties = [(NUAuxiliaryImageRenderJob *)self imageProperties];
+    v6 = [imageProperties auxiliaryImagePropertiesForType:7];
 
     v10 = 0;
     v7 = [v6 auxiliaryImage:&v10];
     v8 = v7;
     if (v7)
     {
-      v4 = [v7 pixelFormatType];
+      pixelFormatType = [v7 pixelFormatType];
     }
   }
 
-  return v4;
+  return pixelFormatType;
 }
 
-- (BOOL)prepare:(id *)a3
+- (BOOL)prepare:(id *)prepare
 {
   v28 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!prepare)
   {
     v7 = NUAssertLogger_981();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -370,8 +370,8 @@ LABEL_29:
         v14 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v15 = MEMORY[0x1E696AF00];
         v16 = v14;
-        v17 = [v15 callStackSymbols];
-        v18 = [v17 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v15 callStackSymbols];
+        v18 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v25 = v14;
         v26 = 2114;
@@ -382,8 +382,8 @@ LABEL_29:
 
     else if (v11)
     {
-      v12 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v13 = [v12 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v13 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v25 = v13;
       _os_log_error_impl(&dword_1C0184000, v10, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -392,22 +392,22 @@ LABEL_29:
     _NUAssertFailHandler("[NUAuxiliaryImageRenderJob prepare:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Render/NUAuxiliaryImageRenderRequest.m", 157, @"Invalid parameter not satisfying: %s", v19, v20, v21, v22, "error != nil");
   }
 
-  v3 = a3;
-  v5 = [(NURenderJob *)self request];
-  -[NUAuxiliaryImageRenderJob setAuxiliaryImageType:](self, "setAuxiliaryImageType:", [v5 auxiliaryImageType]);
+  prepareCopy = prepare;
+  request = [(NURenderJob *)self request];
+  -[NUAuxiliaryImageRenderJob setAuxiliaryImageType:](self, "setAuxiliaryImageType:", [request auxiliaryImageType]);
   v23.receiver = self;
   v23.super_class = NUAuxiliaryImageRenderJob;
-  LOBYTE(v3) = [(NURenderJob *)&v23 prepare:v3];
+  LOBYTE(prepareCopy) = [(NURenderJob *)&v23 prepare:prepareCopy];
 
-  return v3;
+  return prepareCopy;
 }
 
-- (id)evaluateOutputGeometry:(id *)a3
+- (id)evaluateOutputGeometry:(id *)geometry
 {
   v32 = *MEMORY[0x1E69E9840];
-  v5 = [(NURenderJob *)self prepareNode];
+  prepareNode = [(NURenderJob *)self prepareNode];
 
-  if (!v5)
+  if (!prepareNode)
   {
     v11 = NUAssertLogger_981();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -428,8 +428,8 @@ LABEL_29:
         v18 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v19 = MEMORY[0x1E696AF00];
         v20 = v18;
-        v21 = [v19 callStackSymbols];
-        v22 = [v21 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v19 callStackSymbols];
+        v22 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v29 = v18;
         v30 = 2114;
@@ -440,8 +440,8 @@ LABEL_29:
 
     else if (v15)
     {
-      v16 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v17 = [v16 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v17 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v29 = v17;
       _os_log_error_impl(&dword_1C0184000, v14, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -450,17 +450,17 @@ LABEL_29:
     _NUAssertFailHandler("[NUAuxiliaryImageRenderJob evaluateOutputGeometry:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Render/NUAuxiliaryImageRenderRequest.m", 144, @"Missing prepare node", v23, v24, v25, v26, v27.receiver);
   }
 
-  v6 = [(NURenderJob *)self prepareNode];
-  v7 = [v6 imageProperties:a3];
+  prepareNode2 = [(NURenderJob *)self prepareNode];
+  v7 = [prepareNode2 imageProperties:geometry];
   [(NUAuxiliaryImageRenderJob *)self setImageProperties:v7];
 
-  v8 = [(NUAuxiliaryImageRenderJob *)self imageProperties];
+  imageProperties = [(NUAuxiliaryImageRenderJob *)self imageProperties];
 
-  if (v8)
+  if (imageProperties)
   {
     v27.receiver = self;
     v27.super_class = NUAuxiliaryImageRenderJob;
-    v9 = [(NURenderJob *)&v27 evaluateOutputGeometry:a3];
+    v9 = [(NURenderJob *)&v27 evaluateOutputGeometry:geometry];
   }
 
   else
@@ -471,13 +471,13 @@ LABEL_29:
   return v9;
 }
 
-- (id)newRenderPipelineStateForEvaluationMode:(int64_t)a3
+- (id)newRenderPipelineStateForEvaluationMode:(int64_t)mode
 {
   v8.receiver = self;
   v8.super_class = NUAuxiliaryImageRenderJob;
   v5 = [(NURenderJob *)&v8 newRenderPipelineStateForEvaluationMode:?];
   v6 = v5;
-  if (a3)
+  if (mode)
   {
     [v5 setAuxiliaryImageType:self->_auxiliaryImageType];
   }
@@ -490,9 +490,9 @@ LABEL_29:
   v36 = *MEMORY[0x1E69E9840];
   v4 = *(&NUScaleOne + 1);
   v3 = NUScaleOne;
-  v5 = [(NUAuxiliaryImageRenderJob *)self imageProperties];
+  imageProperties = [(NUAuxiliaryImageRenderJob *)self imageProperties];
 
-  if (!v5)
+  if (!imageProperties)
   {
     v17 = NUAssertLogger_981();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -513,8 +513,8 @@ LABEL_29:
         v24 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v25 = MEMORY[0x1E696AF00];
         v26 = v24;
-        v27 = [v25 callStackSymbols];
-        v28 = [v27 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v25 callStackSymbols];
+        v28 = [callStackSymbols componentsJoinedByString:@"\n"];
         *v33 = 138543618;
         *&v33[4] = v24;
         v34 = 2114;
@@ -525,8 +525,8 @@ LABEL_29:
 
     else if (v21)
     {
-      v22 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v23 = [v22 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v23 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *v33 = 138543362;
       *&v33[4] = v23;
       _os_log_error_impl(&dword_1C0184000, v20, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", v33, 0xCu);
@@ -535,13 +535,13 @@ LABEL_29:
     _NUAssertFailHandler("[NUAuxiliaryImageRenderJob scalePolicy]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Render/NUAuxiliaryImageRenderRequest.m", 121, @"Missing image properties", v29, v30, v31, v32, *v33);
   }
 
-  v6 = [(NUAuxiliaryImageRenderJob *)self imageProperties];
-  v7 = [v6 auxiliaryImagePropertiesForType:{-[NUAuxiliaryImageRenderJob auxiliaryImageType](self, "auxiliaryImageType")}];
+  imageProperties2 = [(NUAuxiliaryImageRenderJob *)self imageProperties];
+  v7 = [imageProperties2 auxiliaryImagePropertiesForType:{-[NUAuxiliaryImageRenderJob auxiliaryImageType](self, "auxiliaryImageType")}];
 
   if (v7)
   {
-    v8 = [(NUAuxiliaryImageRenderJob *)self imageProperties];
-    v9 = [v8 size];
+    imageProperties3 = [(NUAuxiliaryImageRenderJob *)self imageProperties];
+    v9 = [imageProperties3 size];
     v11 = v10;
 
     v12 = [v7 size];

@@ -1,21 +1,21 @@
 @interface HDDeviceContext
-+ (id)localProductTypeEnumWithError:(id *)a3;
-- (BOOL)isEqual:(id)a3;
-- (HDDeviceContext)initWithCoder:(id)a3;
-- (HDDeviceContext)initWithType:(int64_t)a3 productTypeName:(id)a4 currentOSName:(id)a5 currentOSVersion:(id *)a6 modificationDate:(id)a7 syncIdentity:(id)a8;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)localProductTypeEnumWithError:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (HDDeviceContext)initWithCoder:(id)coder;
+- (HDDeviceContext)initWithType:(int64_t)type productTypeName:(id)name currentOSName:(id)sName currentOSVersion:(id *)version modificationDate:(id)date syncIdentity:(id)identity;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)initForLocalDeviceWithType:(int64_t)a3 syncIdentity:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (id)initForLocalDeviceWithType:(int64_t)type syncIdentity:(id)identity;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HDDeviceContext
 
-+ (id)localProductTypeEnumWithError:(id *)a3
++ (id)localProductTypeEnumWithError:(id *)error
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = [MEMORY[0x277CCDD30] currentDeviceProductType];
-  if ([v4 hasPrefix:*MEMORY[0x277CCC8D0]])
+  currentDeviceProductType = [MEMORY[0x277CCDD30] currentDeviceProductType];
+  if ([currentDeviceProductType hasPrefix:*MEMORY[0x277CCC8D0]])
   {
     v5 = 0;
 LABEL_9:
@@ -24,19 +24,19 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if ([v4 hasPrefix:*MEMORY[0x277CCC8C8]])
+  if ([currentDeviceProductType hasPrefix:*MEMORY[0x277CCC8C8]])
   {
     v5 = 1;
     goto LABEL_9;
   }
 
-  if ([v4 hasPrefix:*MEMORY[0x277CCC8E0]])
+  if ([currentDeviceProductType hasPrefix:*MEMORY[0x277CCC8E0]])
   {
     v5 = 2;
     goto LABEL_9;
   }
 
-  if ([v4 hasPrefix:*MEMORY[0x277CCC8D8]])
+  if ([currentDeviceProductType hasPrefix:*MEMORY[0x277CCC8D8]])
   {
     v5 = 3;
     goto LABEL_9;
@@ -47,11 +47,11 @@ LABEL_9:
   if (os_log_type_enabled(*MEMORY[0x277CCC2B0], OS_LOG_TYPE_ERROR))
   {
     v10 = 138412290;
-    v11 = v4;
+    v11 = currentDeviceProductType;
     _os_log_error_impl(&dword_228986000, v9, OS_LOG_TYPE_ERROR, "Device of type %@ is not supported", &v10, 0xCu);
   }
 
-  [MEMORY[0x277CCA9B8] hk_assignError:a3 code:3 format:@"Device of type is not supported"];
+  [MEMORY[0x277CCA9B8] hk_assignError:error code:3 format:@"Device of type is not supported"];
   v6 = 0;
 LABEL_10:
   v7 = *MEMORY[0x277D85DE8];
@@ -59,65 +59,65 @@ LABEL_10:
   return v6;
 }
 
-- (id)initForLocalDeviceWithType:(int64_t)a3 syncIdentity:(id)a4
+- (id)initForLocalDeviceWithType:(int64_t)type syncIdentity:(id)identity
 {
-  v7 = a4;
+  identityCopy = identity;
   v19.receiver = self;
   v19.super_class = HDDeviceContext;
   v8 = [(HDDeviceContext *)&v19 init];
   v9 = v8;
   if (v8)
   {
-    v8->_type = a3;
+    v8->_type = type;
     v10 = [MEMORY[0x277CBEAA8] now];
     modificationDate = v9->_modificationDate;
     v9->_modificationDate = v10;
 
-    v12 = [MEMORY[0x277CCDD30] currentDeviceProductType];
+    currentDeviceProductType = [MEMORY[0x277CCDD30] currentDeviceProductType];
     productTypeName = v9->_productTypeName;
-    v9->_productTypeName = v12;
+    v9->_productTypeName = currentDeviceProductType;
 
-    v14 = [MEMORY[0x277CCDD30] currentOSName];
+    currentOSName = [MEMORY[0x277CCDD30] currentOSName];
     currentOSName = v9->_currentOSName;
-    v9->_currentOSName = v14;
+    v9->_currentOSName = currentOSName;
 
     [MEMORY[0x277CCDD30] currentOSVersionStruct];
     *&v9->_currentOSVersion.majorVersion = v17;
     v9->_currentOSVersion.patchVersion = v18;
-    objc_storeStrong(&v9->_syncIdentity, a4);
+    objc_storeStrong(&v9->_syncIdentity, identity);
   }
 
   return v9;
 }
 
-- (HDDeviceContext)initWithType:(int64_t)a3 productTypeName:(id)a4 currentOSName:(id)a5 currentOSVersion:(id *)a6 modificationDate:(id)a7 syncIdentity:(id)a8
+- (HDDeviceContext)initWithType:(int64_t)type productTypeName:(id)name currentOSName:(id)sName currentOSVersion:(id *)version modificationDate:(id)date syncIdentity:(id)identity
 {
-  v22 = a4;
-  v15 = a5;
-  v16 = a7;
-  v17 = a8;
+  nameCopy = name;
+  sNameCopy = sName;
+  dateCopy = date;
+  identityCopy = identity;
   v23.receiver = self;
   v23.super_class = HDDeviceContext;
   v18 = [(HDDeviceContext *)&v23 init];
   v19 = v18;
   if (v18)
   {
-    v18->_type = a3;
-    objc_storeStrong(&v18->_modificationDate, a7);
-    objc_storeStrong(&v19->_productTypeName, a4);
-    objc_storeStrong(&v19->_currentOSName, a5);
-    v20 = *&a6->var0;
-    v19->_currentOSVersion.patchVersion = a6->var2;
+    v18->_type = type;
+    objc_storeStrong(&v18->_modificationDate, date);
+    objc_storeStrong(&v19->_productTypeName, name);
+    objc_storeStrong(&v19->_currentOSName, sName);
+    v20 = *&version->var0;
+    v19->_currentOSVersion.patchVersion = version->var2;
     *&v19->_currentOSVersion.majorVersion = v20;
-    objc_storeStrong(&v19->_syncIdentity, a8);
+    objc_storeStrong(&v19->_syncIdentity, identity);
   }
 
   return v19;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [HDDeviceContext allocWithZone:a3];
+  v4 = [HDDeviceContext allocWithZone:zone];
   currentOSName = self->_currentOSName;
   productTypeName = self->_productTypeName;
   type = self->_type;
@@ -127,10 +127,10 @@ LABEL_10:
   return [(HDDeviceContext *)v4 initWithType:type productTypeName:productTypeName currentOSName:currentOSName currentOSVersion:&currentOSVersion modificationDate:modificationDate syncIdentity:syncIdentity];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
-  if (self == v6)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v13 = 1;
   }
@@ -140,7 +140,7 @@ LABEL_10:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = v6;
+      v7 = equalCopy;
       type = self->_type;
       if (type != [(HDDeviceContext *)v7 type])
       {
@@ -151,20 +151,20 @@ LABEL_31:
       }
 
       productTypeName = self->_productTypeName;
-      v10 = [(HDDeviceContext *)v7 productTypeName];
-      if (productTypeName != v10)
+      productTypeName = [(HDDeviceContext *)v7 productTypeName];
+      if (productTypeName != productTypeName)
       {
-        v11 = [(HDDeviceContext *)v7 productTypeName];
-        if (!v11)
+        productTypeName2 = [(HDDeviceContext *)v7 productTypeName];
+        if (!productTypeName2)
         {
           v13 = 0;
           goto LABEL_30;
         }
 
-        v3 = v11;
+        v3 = productTypeName2;
         v12 = self->_productTypeName;
-        v4 = [(HDDeviceContext *)v7 productTypeName];
-        if (![(NSString *)v12 isEqualToString:v4])
+        productTypeName3 = [(HDDeviceContext *)v7 productTypeName];
+        if (![(NSString *)v12 isEqualToString:productTypeName3])
         {
 
           v13 = 0;
@@ -173,22 +173,22 @@ LABEL_29:
           goto LABEL_30;
         }
 
-        v24 = v4;
+        v24 = productTypeName3;
       }
 
       currentOSName = self->_currentOSName;
-      v15 = [(HDDeviceContext *)v7 currentOSName];
-      if (currentOSName != v15)
+      currentOSName = [(HDDeviceContext *)v7 currentOSName];
+      if (currentOSName != currentOSName)
       {
-        v16 = [(HDDeviceContext *)v7 currentOSName];
-        if (!v16)
+        currentOSName2 = [(HDDeviceContext *)v7 currentOSName];
+        if (!currentOSName2)
         {
           goto LABEL_24;
         }
 
-        v4 = v16;
+        productTypeName3 = currentOSName2;
         v17 = self->_currentOSName;
-        v23 = [(HDDeviceContext *)v7 currentOSName];
+        currentOSName3 = [(HDDeviceContext *)v7 currentOSName];
         if (![(NSString *)v17 isEqualToString:?])
         {
           v13 = 0;
@@ -209,10 +209,10 @@ LABEL_21:
       if (HKNSOperatingSystemVersionsEqual())
       {
         syncIdentity = self->_syncIdentity;
-        v20 = [(HDDeviceContext *)v7 syncIdentity];
-        v13 = [(HDSyncIdentity *)syncIdentity isEqual:v20];
+        syncIdentity = [(HDDeviceContext *)v7 syncIdentity];
+        v13 = [(HDSyncIdentity *)syncIdentity isEqual:syncIdentity];
 
-        v21 = currentOSName == v15;
+        v21 = currentOSName == currentOSName;
         v18 = v24;
         if (v21)
         {
@@ -222,13 +222,13 @@ LABEL_21:
         goto LABEL_21;
       }
 
-      if (currentOSName == v15)
+      if (currentOSName == currentOSName)
       {
         v13 = 0;
         v18 = v24;
 LABEL_27:
 
-        if (productTypeName != v10)
+        if (productTypeName != productTypeName)
         {
 LABEL_28:
 
@@ -243,7 +243,7 @@ LABEL_30:
 LABEL_24:
       v13 = 0;
       v18 = v24;
-      if (productTypeName == v10)
+      if (productTypeName == productTypeName)
       {
         goto LABEL_30;
       }
@@ -273,33 +273,33 @@ LABEL_32:
   return v9;
 }
 
-- (HDDeviceContext)initWithCoder:(id)a3
+- (HDDeviceContext)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v18.receiver = self;
   v18.super_class = HDDeviceContext;
   v5 = [(HDDeviceContext *)&v18 init];
   if (v5)
   {
-    v5->_type = [v4 decodeInt64ForKey:@"ProductType"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ProductTypeName"];
+    v5->_type = [coderCopy decodeInt64ForKey:@"ProductType"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ProductTypeName"];
     productTypeName = v5->_productTypeName;
     v5->_productTypeName = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CurrentOSName"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CurrentOSName"];
     currentOSName = v5->_currentOSName;
     v5->_currentOSName = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CurrentOSVersion"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CurrentOSVersion"];
     HKNSOperatingSystemVersionFromString();
     *&v5->_currentOSVersion.majorVersion = v16;
     v5->_currentOSVersion.patchVersion = v17;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ModificationDate"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ModificationDate"];
     modificationDate = v5->_modificationDate;
     v5->_modificationDate = v11;
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SyncIdentity"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SyncIdentity"];
     syncIdentity = v5->_syncIdentity;
     v5->_syncIdentity = v13;
   }
@@ -307,19 +307,19 @@ LABEL_32:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   type = self->_type;
-  v5 = a3;
-  [v5 encodeInt64:type forKey:@"ProductType"];
-  [v5 encodeObject:self->_productTypeName forKey:@"ProductTypeName"];
-  [v5 encodeObject:self->_currentOSName forKey:@"CurrentOSName"];
+  coderCopy = coder;
+  [coderCopy encodeInt64:type forKey:@"ProductType"];
+  [coderCopy encodeObject:self->_productTypeName forKey:@"ProductTypeName"];
+  [coderCopy encodeObject:self->_currentOSName forKey:@"CurrentOSName"];
   currentOSVersion = self->_currentOSVersion;
   v6 = HKNSOperatingSystemVersionString();
-  [v5 encodeObject:v6 forKey:{@"CurrentOSVersion", *&currentOSVersion.majorVersion, currentOSVersion.patchVersion}];
+  [coderCopy encodeObject:v6 forKey:{@"CurrentOSVersion", *&currentOSVersion.majorVersion, currentOSVersion.patchVersion}];
 
-  [v5 encodeObject:self->_modificationDate forKey:@"ModificationDate"];
-  [v5 encodeObject:self->_syncIdentity forKey:@"SyncIdentity"];
+  [coderCopy encodeObject:self->_modificationDate forKey:@"ModificationDate"];
+  [coderCopy encodeObject:self->_syncIdentity forKey:@"SyncIdentity"];
 }
 
 @end

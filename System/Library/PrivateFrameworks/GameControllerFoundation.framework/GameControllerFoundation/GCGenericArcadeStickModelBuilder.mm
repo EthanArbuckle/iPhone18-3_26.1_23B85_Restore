@@ -1,24 +1,24 @@
 @interface GCGenericArcadeStickModelBuilder
 - (id)build;
-- (void)initializeWithModel:(id)a3;
+- (void)initializeWithModel:(id)model;
 @end
 
 @implementation GCGenericArcadeStickModelBuilder
 
-- (void)initializeWithModel:(id)a3
+- (void)initializeWithModel:(id)model
 {
   v3.receiver = self;
   v3.super_class = GCGenericArcadeStickModelBuilder;
-  [(GCGenericDeviceModelBuilder *)&v3 initializeWithModel:a3];
+  [(GCGenericDeviceModelBuilder *)&v3 initializeWithModel:model];
 }
 
 - (id)build
 {
   v4.receiver = self;
   v4.super_class = GCGenericArcadeStickModelBuilder;
-  v2 = [(GCGenericDeviceModelBuilder *)&v4 build];
+  build = [(GCGenericDeviceModelBuilder *)&v4 build];
 
-  return v2;
+  return build;
 }
 
 @end

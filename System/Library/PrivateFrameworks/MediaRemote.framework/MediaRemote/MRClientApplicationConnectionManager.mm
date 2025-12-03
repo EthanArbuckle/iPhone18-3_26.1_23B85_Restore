@@ -1,14 +1,14 @@
 @interface MRClientApplicationConnectionManager
 + (MRClientApplicationConnectionManager)sharedManager;
 - (MRClientApplicationConnectionManager)init;
-- (id)connectionForIdentifier:(id)a3;
-- (id)handoffSessionHandlerForPlayerPath:(id)a3;
-- (id)listenerForServiceName:(id)a3 playerPath:(id)a4;
-- (void)listenerForHandlingConnection:(id)a3 completion:(id)a4;
-- (void)registerConnection:(id)a3;
-- (void)registerHandoffSessionHandlerForPlayerPath:(id)a3 handler:(id)a4;
-- (void)registerListener:(id)a3;
-- (void)unregisterConnection:(id)a3;
+- (id)connectionForIdentifier:(id)identifier;
+- (id)handoffSessionHandlerForPlayerPath:(id)path;
+- (id)listenerForServiceName:(id)name playerPath:(id)path;
+- (void)listenerForHandlingConnection:(id)connection completion:(id)completion;
+- (void)registerConnection:(id)connection;
+- (void)registerHandoffSessionHandlerForPlayerPath:(id)path handler:(id)handler;
+- (void)registerListener:(id)listener;
+- (void)unregisterConnection:(id)connection;
 @end
 
 @implementation MRClientApplicationConnectionManager
@@ -22,21 +22,21 @@
   if (v2)
   {
     v2->_lock._os_unfair_lock_opaque = 0;
-    v4 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
     connections = v3->_connections;
-    v3->_connections = v4;
+    v3->_connections = strongToStrongObjectsMapTable;
 
-    v6 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable2 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
     listeners = v3->_listeners;
-    v3->_listeners = v6;
+    v3->_listeners = strongToStrongObjectsMapTable2;
 
-    v8 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable3 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
     listenerPendingConnections = v3->_listenerPendingConnections;
-    v3->_listenerPendingConnections = v8;
+    v3->_listenerPendingConnections = strongToStrongObjectsMapTable3;
 
-    v10 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable4 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
     handoffSessionHandlers = v3->_handoffSessionHandlers;
-    v3->_handoffSessionHandlers = v10;
+    v3->_handoffSessionHandlers = strongToStrongObjectsMapTable4;
   }
 
   return v3;
@@ -61,55 +61,55 @@ void __53__MRClientApplicationConnectionManager_sharedManager__block_invoke()
   sharedManager___shared_0 = v0;
 }
 
-- (void)registerListener:(id)a3
+- (void)registerListener:(id)listener
 {
   v55 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  listenerCopy = listener;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [v4 serviceName];
-  v6 = [v4 playerPath];
-  v7 = [(MRClientApplicationConnectionManager *)self listeners];
-  v8 = [v7 objectForKey:v6];
+  serviceName = [listenerCopy serviceName];
+  playerPath = [listenerCopy playerPath];
+  listeners = [(MRClientApplicationConnectionManager *)self listeners];
+  v8 = [listeners objectForKey:playerPath];
 
   if (!v8)
   {
-    v9 = [(MRClientApplicationConnectionManager *)self listeners];
-    v10 = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
-    [v9 setObject:v10 forKey:v6];
+    listeners2 = [(MRClientApplicationConnectionManager *)self listeners];
+    strongToWeakObjectsMapTable = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
+    [listeners2 setObject:strongToWeakObjectsMapTable forKey:playerPath];
   }
 
-  v11 = [(MRClientApplicationConnectionManager *)self listeners];
-  v12 = [v11 objectForKey:v6];
+  listeners3 = [(MRClientApplicationConnectionManager *)self listeners];
+  v12 = [listeners3 objectForKey:playerPath];
 
-  v13 = [v12 objectForKey:v5];
+  v13 = [v12 objectForKey:serviceName];
 
   if (v13)
   {
     v14 = _MRLogForCategory(0);
     if (os_log_type_enabled(v14, OS_LOG_TYPE_FAULT))
     {
-      [(MRClientApplicationConnectionManager *)v5 registerListener:v6, v14];
+      [(MRClientApplicationConnectionManager *)serviceName registerListener:playerPath, v14];
     }
   }
 
   v34 = v12;
-  v36 = v5;
-  [v12 setObject:v4 forKey:v5];
+  v36 = serviceName;
+  [v12 setObject:listenerCopy forKey:serviceName];
   v15 = _MRLogForCategory(0);
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
-    v16 = [v4 serviceName];
+    serviceName2 = [listenerCopy serviceName];
     *buf = 138412546;
-    v52 = v16;
+    v52 = serviceName2;
     v53 = 2112;
-    v54 = v6;
+    v54 = playerPath;
     _os_log_impl(&dword_1A2860000, v15, OS_LOG_TYPE_DEFAULT, "[MRClientApplicationConnectionManager] Registered listener for service: %@, path: %@", buf, 0x16u);
   }
 
-  v35 = v6;
+  v35 = playerPath;
 
-  v37 = [MEMORY[0x1E695DF70] array];
-  v38 = self;
+  array = [MEMORY[0x1E695DF70] array];
+  selfCopy = self;
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
@@ -130,31 +130,31 @@ void __53__MRClientApplicationConnectionManager_sharedManager__block_invoke()
         }
 
         v20 = *(*(&v45 + 1) + 8 * i);
-        v21 = [v20 context];
-        v22 = [v21 destinationPlayerPath];
-        v23 = [v4 playerPath];
-        if (v22 != v23 && ([v22 isEqual:v23] & 1) == 0)
+        context = [v20 context];
+        destinationPlayerPath = [context destinationPlayerPath];
+        playerPath2 = [listenerCopy playerPath];
+        if (destinationPlayerPath != playerPath2 && ([destinationPlayerPath isEqual:playerPath2] & 1) == 0)
         {
 
           goto LABEL_22;
         }
 
-        v24 = [v20 serviceName];
-        v25 = [v4 serviceName];
-        v26 = v25;
-        if (v24 == v25)
+        serviceName3 = [v20 serviceName];
+        serviceName4 = [listenerCopy serviceName];
+        v26 = serviceName4;
+        if (serviceName3 == serviceName4)
         {
 
 LABEL_21:
-          v21 = [(NSMapTable *)v38->_listenerPendingConnections objectForKey:v20];
-          v22 = MEMORY[0x1A58E3570]();
-          [v37 addObject:v22];
+          context = [(NSMapTable *)selfCopy->_listenerPendingConnections objectForKey:v20];
+          destinationPlayerPath = MEMORY[0x1A58E3570]();
+          [array addObject:destinationPlayerPath];
 LABEL_22:
 
           continue;
         }
 
-        v27 = [v24 isEqual:v25];
+        v27 = [serviceName3 isEqual:serviceName4];
 
         if (v27)
         {
@@ -168,12 +168,12 @@ LABEL_22:
     while (v18);
   }
 
-  os_unfair_lock_unlock(&v38->_lock);
+  os_unfair_lock_unlock(&selfCopy->_lock);
   v43 = 0u;
   v44 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v28 = v37;
+  v28 = array;
   v29 = [v28 countByEnumeratingWithState:&v41 objects:v49 count:16];
   if (v29)
   {
@@ -200,103 +200,103 @@ LABEL_22:
   v33 = *MEMORY[0x1E69E9840];
 }
 
-- (id)listenerForServiceName:(id)a3 playerPath:(id)a4
+- (id)listenerForServiceName:(id)name playerPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
+  pathCopy = path;
+  nameCopy = name;
   os_unfair_lock_lock(&self->_lock);
-  v8 = [(MRClientApplicationConnectionManager *)self listeners];
-  v9 = [v8 objectForKey:v6];
+  listeners = [(MRClientApplicationConnectionManager *)self listeners];
+  v9 = [listeners objectForKey:pathCopy];
 
-  v10 = [v9 objectForKey:v7];
+  v10 = [v9 objectForKey:nameCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 
   return v10;
 }
 
-- (void)registerConnection:(id)a3
+- (void)registerConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(MRClientApplicationConnectionManager *)self connections];
-  v6 = [v4 identifier];
-  [v5 setObject:v4 forKey:v6];
+  connections = [(MRClientApplicationConnectionManager *)self connections];
+  identifier = [connectionCopy identifier];
+  [connections setObject:connectionCopy forKey:identifier];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)unregisterConnection:(id)a3
+- (void)unregisterConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(MRClientApplicationConnectionManager *)self connections];
-  v6 = [v4 identifier];
+  connections = [(MRClientApplicationConnectionManager *)self connections];
+  identifier = [connectionCopy identifier];
 
-  [v5 removeObjectForKey:v6];
+  [connections removeObjectForKey:identifier];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (id)connectionForIdentifier:(id)a3
+- (id)connectionForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(MRClientApplicationConnectionManager *)self connections];
-  v6 = [v5 objectForKey:v4];
+  connections = [(MRClientApplicationConnectionManager *)self connections];
+  v6 = [connections objectForKey:identifierCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 
   return v6;
 }
 
-- (void)listenerForHandlingConnection:(id)a3 completion:(id)a4
+- (void)listenerForHandlingConnection:(id)connection completion:(id)completion
 {
-  v15 = a3;
-  v6 = a4;
+  connectionCopy = connection;
+  completionCopy = completion;
   os_unfair_lock_lock(&self->_lock);
-  v7 = [(MRClientApplicationConnectionManager *)self listeners];
-  v8 = [v15 context];
-  v9 = [v8 destinationPlayerPath];
-  v10 = [v7 objectForKey:v9];
+  listeners = [(MRClientApplicationConnectionManager *)self listeners];
+  context = [connectionCopy context];
+  destinationPlayerPath = [context destinationPlayerPath];
+  v10 = [listeners objectForKey:destinationPlayerPath];
 
-  v11 = [v15 serviceName];
-  v12 = [v10 objectForKey:v11];
+  serviceName = [connectionCopy serviceName];
+  v12 = [v10 objectForKey:serviceName];
 
   if (v12)
   {
     os_unfair_lock_unlock(&self->_lock);
-    v6[2](v6, v12);
+    completionCopy[2](completionCopy, v12);
   }
 
   else
   {
     listenerPendingConnections = self->_listenerPendingConnections;
-    v14 = MEMORY[0x1A58E3570](v6);
-    [(NSMapTable *)listenerPendingConnections setObject:v14 forKey:v15];
+    v14 = MEMORY[0x1A58E3570](completionCopy);
+    [(NSMapTable *)listenerPendingConnections setObject:v14 forKey:connectionCopy];
 
     os_unfair_lock_unlock(&self->_lock);
   }
 }
 
-- (void)registerHandoffSessionHandlerForPlayerPath:(id)a3 handler:(id)a4
+- (void)registerHandoffSessionHandlerForPlayerPath:(id)path handler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  pathCopy = path;
   os_unfair_lock_lock(&self->_lock);
   handoffSessionHandlers = self->_handoffSessionHandlers;
-  v9 = MEMORY[0x1A58E3570](v6);
+  v9 = MEMORY[0x1A58E3570](handlerCopy);
 
-  [(NSMapTable *)handoffSessionHandlers setObject:v9 forKey:v7];
+  [(NSMapTable *)handoffSessionHandlers setObject:v9 forKey:pathCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (id)handoffSessionHandlerForPlayerPath:(id)a3
+- (id)handoffSessionHandlerForPlayerPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(NSMapTable *)self->_handoffSessionHandlers objectForKey:v4];
+  v5 = [(NSMapTable *)self->_handoffSessionHandlers objectForKey:pathCopy];
 
   os_unfair_lock_unlock(&self->_lock);
   v6 = MEMORY[0x1A58E3570](v5);

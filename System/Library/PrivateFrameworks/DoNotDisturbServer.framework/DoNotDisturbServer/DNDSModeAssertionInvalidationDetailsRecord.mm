@@ -1,19 +1,19 @@
 @interface DNDSModeAssertionInvalidationDetailsRecord
-+ (id)recordForDictionary:(id)a3 keys:(id *)a4;
-+ (id)recordForInvalidationDetails:(id)a3;
-- (id)dictionaryWithKeys:(id *)a3 options:(unint64_t)a4;
++ (id)recordForDictionary:(id)dictionary keys:(id *)keys;
++ (id)recordForInvalidationDetails:(id)details;
+- (id)dictionaryWithKeys:(id *)keys options:(unint64_t)options;
 - (id)object;
 @end
 
 @implementation DNDSModeAssertionInvalidationDetailsRecord
 
-+ (id)recordForDictionary:(id)a3 keys:(id *)a4
++ (id)recordForDictionary:(id)dictionary keys:(id *)keys
 {
-  if (a3)
+  if (dictionary)
   {
-    v5 = a3;
+    dictionaryCopy = dictionary;
     v6 = objc_alloc_init(DNDSModeAssertionInvalidationDetailsRecord);
-    v7 = [v5 bs_safeStringForKey:a4->var6.var0];
+    v7 = [dictionaryCopy bs_safeStringForKey:keys->var6.var0];
 
     [(DNDSModeAssertionInvalidationDetailsRecord *)v6 setIdentifier:v7];
   }
@@ -26,24 +26,24 @@
   return v6;
 }
 
-- (id)dictionaryWithKeys:(id *)a3 options:(unint64_t)a4
+- (id)dictionaryWithKeys:(id *)keys options:(unint64_t)options
 {
-  v6 = [MEMORY[0x277CBEB38] dictionary];
-  v7 = [(DNDSModeAssertionInvalidationDetailsRecord *)self identifier];
-  [v6 bs_setSafeObject:v7 forKey:a3->var6.var0];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  identifier = [(DNDSModeAssertionInvalidationDetailsRecord *)self identifier];
+  [dictionary bs_setSafeObject:identifier forKey:keys->var6.var0];
 
-  return v6;
+  return dictionary;
 }
 
-+ (id)recordForInvalidationDetails:(id)a3
++ (id)recordForInvalidationDetails:(id)details
 {
-  if (a3)
+  if (details)
   {
-    v3 = a3;
+    detailsCopy = details;
     v4 = objc_alloc_init(DNDSModeAssertionInvalidationDetailsRecord);
-    v5 = [v3 identifier];
+    identifier = [detailsCopy identifier];
 
-    [(DNDSModeAssertionInvalidationDetailsRecord *)v4 setIdentifier:v5];
+    [(DNDSModeAssertionInvalidationDetailsRecord *)v4 setIdentifier:identifier];
   }
 
   else
@@ -56,11 +56,11 @@
 
 - (id)object
 {
-  v2 = [(DNDSModeAssertionInvalidationDetailsRecord *)self identifier];
-  if (v2)
+  identifier = [(DNDSModeAssertionInvalidationDetailsRecord *)self identifier];
+  if (identifier)
   {
     v3 = objc_alloc_init(MEMORY[0x277D05A48]);
-    [v3 setIdentifier:v2];
+    [v3 setIdentifier:identifier];
   }
 
   else

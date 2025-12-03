@@ -1,25 +1,25 @@
 @interface PSESchemaPSECallSignalGenerated
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (PSESchemaPSECallSignalGenerated)initWithDictionary:(id)a3;
-- (PSESchemaPSECallSignalGenerated)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (PSESchemaPSECallSignalGenerated)initWithDictionary:(id)dictionary;
+- (PSESchemaPSECallSignalGenerated)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PSESchemaPSECallSignalGenerated
 
-- (PSESchemaPSECallSignalGenerated)initWithDictionary:(id)a3
+- (PSESchemaPSECallSignalGenerated)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = PSESchemaPSECallSignalGenerated;
   v5 = [(PSESchemaPSECallSignalGenerated *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"commonSignal"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"commonSignal"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -27,7 +27,7 @@
       [(PSESchemaPSECallSignalGenerated *)v5 setCommonSignal:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"callSignal"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"callSignal"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -41,30 +41,30 @@
   return v5;
 }
 
-- (PSESchemaPSECallSignalGenerated)initWithJSON:(id)a3
+- (PSESchemaPSECallSignalGenerated)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(PSESchemaPSECallSignalGenerated *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(PSESchemaPSECallSignalGenerated *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(PSESchemaPSECallSignalGenerated *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -77,66 +77,66 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_callSignal)
   {
-    v4 = [(PSESchemaPSECallSignalGenerated *)self callSignal];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    callSignal = [(PSESchemaPSECallSignalGenerated *)self callSignal];
+    dictionaryRepresentation = [callSignal dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"callSignal"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"callSignal"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"callSignal"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"callSignal"];
     }
   }
 
   if (self->_commonSignal)
   {
-    v7 = [(PSESchemaPSECallSignalGenerated *)self commonSignal];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    commonSignal = [(PSESchemaPSECallSignalGenerated *)self commonSignal];
+    dictionaryRepresentation2 = [commonSignal dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"commonSignal"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"commonSignal"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"commonSignal"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"commonSignal"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(PSESchemaPSECallSignalGenerated *)self commonSignal];
-  v6 = [v4 commonSignal];
-  if ((v5 != 0) == (v6 == 0))
+  commonSignal = [(PSESchemaPSECallSignalGenerated *)self commonSignal];
+  commonSignal2 = [equalCopy commonSignal];
+  if ((commonSignal != 0) == (commonSignal2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(PSESchemaPSECallSignalGenerated *)self commonSignal];
-  if (v7)
+  commonSignal3 = [(PSESchemaPSECallSignalGenerated *)self commonSignal];
+  if (commonSignal3)
   {
-    v8 = v7;
-    v9 = [(PSESchemaPSECallSignalGenerated *)self commonSignal];
-    v10 = [v4 commonSignal];
-    v11 = [v9 isEqual:v10];
+    v8 = commonSignal3;
+    commonSignal4 = [(PSESchemaPSECallSignalGenerated *)self commonSignal];
+    commonSignal5 = [equalCopy commonSignal];
+    v11 = [commonSignal4 isEqual:commonSignal5];
 
     if (!v11)
     {
@@ -148,12 +148,12 @@
   {
   }
 
-  v5 = [(PSESchemaPSECallSignalGenerated *)self callSignal];
-  v6 = [v4 callSignal];
-  if ((v5 != 0) != (v6 == 0))
+  commonSignal = [(PSESchemaPSECallSignalGenerated *)self callSignal];
+  commonSignal2 = [equalCopy callSignal];
+  if ((commonSignal != 0) != (commonSignal2 == 0))
   {
-    v12 = [(PSESchemaPSECallSignalGenerated *)self callSignal];
-    if (!v12)
+    callSignal = [(PSESchemaPSECallSignalGenerated *)self callSignal];
+    if (!callSignal)
     {
 
 LABEL_15:
@@ -161,10 +161,10 @@ LABEL_15:
       goto LABEL_13;
     }
 
-    v13 = v12;
-    v14 = [(PSESchemaPSECallSignalGenerated *)self callSignal];
-    v15 = [v4 callSignal];
-    v16 = [v14 isEqual:v15];
+    v13 = callSignal;
+    callSignal2 = [(PSESchemaPSECallSignalGenerated *)self callSignal];
+    callSignal3 = [equalCopy callSignal];
+    v16 = [callSignal2 isEqual:callSignal3];
 
     if (v16)
     {
@@ -184,46 +184,46 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
-  v4 = [(PSESchemaPSECallSignalGenerated *)self commonSignal];
+  toCopy = to;
+  commonSignal = [(PSESchemaPSECallSignalGenerated *)self commonSignal];
 
-  if (v4)
+  if (commonSignal)
   {
-    v5 = [(PSESchemaPSECallSignalGenerated *)self commonSignal];
+    commonSignal2 = [(PSESchemaPSECallSignalGenerated *)self commonSignal];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(PSESchemaPSECallSignalGenerated *)self callSignal];
+  callSignal = [(PSESchemaPSECallSignalGenerated *)self callSignal];
 
-  if (v6)
+  if (callSignal)
   {
-    v7 = [(PSESchemaPSECallSignalGenerated *)self callSignal];
+    callSignal2 = [(PSESchemaPSECallSignalGenerated *)self callSignal];
     PBDataWriterWriteSubmessage();
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v13.receiver = self;
   v13.super_class = PSESchemaPSECallSignalGenerated;
-  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:v4];
-  v6 = [(PSESchemaPSECallSignalGenerated *)self commonSignal];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:policyCopy];
+  commonSignal = [(PSESchemaPSECallSignalGenerated *)self commonSignal];
+  v7 = [commonSignal applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(PSESchemaPSECallSignalGenerated *)self deleteCommonSignal];
   }
 
-  v9 = [(PSESchemaPSECallSignalGenerated *)self callSignal];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  callSignal = [(PSESchemaPSECallSignalGenerated *)self callSignal];
+  v10 = [callSignal applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(PSESchemaPSECallSignalGenerated *)self deleteCallSignal];
   }

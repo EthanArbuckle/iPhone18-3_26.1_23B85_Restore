@@ -1,30 +1,30 @@
 @interface SCLMutableSimpleSchedule
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setEndTime:(id)a3;
-- (void)setStartTime:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setEndTime:(id)time;
+- (void)setStartTime:(id)time;
 @end
 
 @implementation SCLMutableSimpleSchedule
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [SCLSimpleSchedule alloc];
 
   return [(SCLSimpleSchedule *)v4 initWithSimpleSchedule:self];
 }
 
-- (void)setStartTime:(id)a3
+- (void)setStartTime:(id)time
 {
-  v4 = [a3 copy];
+  v4 = [time copy];
   startTime = self->super._startTime;
   self->super._startTime = v4;
 
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setEndTime:(id)a3
+- (void)setEndTime:(id)time
 {
-  v4 = [a3 copy];
+  v4 = [time copy];
   endTime = self->super._endTime;
   self->super._endTime = v4;
 

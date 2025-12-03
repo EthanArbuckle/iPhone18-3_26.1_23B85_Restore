@@ -1,7 +1,7 @@
 @interface CNUIDraftSupport
-+ (id)loadDraft:(id)a3;
++ (id)loadDraft:(id)draft;
 + (void)deleteDrafts;
-+ (void)saveNewContactDraft:(id)a3;
++ (void)saveNewContactDraft:(id)draft;
 @end
 
 @implementation CNUIDraftSupport
@@ -9,7 +9,7 @@
 + (void)deleteDrafts
 {
   v10 = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v3 = CNUILogContactCard();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
@@ -18,9 +18,9 @@
   }
 
   v7 = 0;
-  v4 = [v2 removeItemAtPath:@"/var/mobile/Library/AddressBook/NewContactDraft.cncontact" error:&v7];
+  v4 = [defaultManager removeItemAtPath:@"/var/mobile/Library/AddressBook/NewContactDraft.cncontact" error:&v7];
   v5 = v7;
-  if ((v4 & 1) == 0 && [v2 fileExistsAtPath:@"/var/mobile/Library/AddressBook/NewContactDraft.cncontact"])
+  if ((v4 & 1) == 0 && [defaultManager fileExistsAtPath:@"/var/mobile/Library/AddressBook/NewContactDraft.cncontact"])
   {
     v6 = CNUILogContactCard();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -32,10 +32,10 @@
   }
 }
 
-+ (id)loadDraft:(id)a3
++ (id)loadDraft:(id)draft
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = [MEMORY[0x1E695DEF0] dataWithContentsOfFile:a3];
+  v4 = [MEMORY[0x1E695DEF0] dataWithContentsOfFile:draft];
   if (v4)
   {
     v17 = 0;
@@ -79,7 +79,7 @@
       v11 = v6;
     }
 
-    [a1 deleteDrafts];
+    [self deleteDrafts];
   }
 
   else
@@ -93,11 +93,11 @@
   return v10;
 }
 
-+ (void)saveNewContactDraft:(id)a3
++ (void)saveNewContactDraft:(id)draft
 {
   v10 = *MEMORY[0x1E69E9840];
   v7 = 0;
-  v3 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:a3 requiringSecureCoding:1 error:&v7];
+  v3 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:draft requiringSecureCoding:1 error:&v7];
   v4 = v7;
   v5 = CNUILogContactCard();
   v6 = v5;

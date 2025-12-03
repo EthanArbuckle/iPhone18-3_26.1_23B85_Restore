@@ -1,25 +1,25 @@
 @interface DODMLASRSchemaDODMLASRFullPayloadCorrectionExperimentContext
-- (BOOL)isEqual:(id)a3;
-- (DODMLASRSchemaDODMLASRFullPayloadCorrectionExperimentContext)initWithDictionary:(id)a3;
-- (DODMLASRSchemaDODMLASRFullPayloadCorrectionExperimentContext)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (DODMLASRSchemaDODMLASRFullPayloadCorrectionExperimentContext)initWithDictionary:(id)dictionary;
+- (DODMLASRSchemaDODMLASRFullPayloadCorrectionExperimentContext)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation DODMLASRSchemaDODMLASRFullPayloadCorrectionExperimentContext
 
-- (DODMLASRSchemaDODMLASRFullPayloadCorrectionExperimentContext)initWithDictionary:(id)a3
+- (DODMLASRSchemaDODMLASRFullPayloadCorrectionExperimentContext)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = DODMLASRSchemaDODMLASRFullPayloadCorrectionExperimentContext;
   v5 = [(DODMLASRSchemaDODMLASRFullPayloadCorrectionExperimentContext *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"originalAsrId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"originalAsrId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -27,7 +27,7 @@
       [(DODMLASRSchemaDODMLASRFullPayloadCorrectionExperimentContext *)v5 setOriginalAsrId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"fullPayloadCorrectionContext"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"fullPayloadCorrectionContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -41,30 +41,30 @@
   return v5;
 }
 
-- (DODMLASRSchemaDODMLASRFullPayloadCorrectionExperimentContext)initWithJSON:(id)a3
+- (DODMLASRSchemaDODMLASRFullPayloadCorrectionExperimentContext)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(DODMLASRSchemaDODMLASRFullPayloadCorrectionExperimentContext *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(DODMLASRSchemaDODMLASRFullPayloadCorrectionExperimentContext *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(DODMLASRSchemaDODMLASRFullPayloadCorrectionExperimentContext *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -77,66 +77,66 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_fullPayloadCorrectionContext)
   {
-    v4 = [(DODMLASRSchemaDODMLASRFullPayloadCorrectionExperimentContext *)self fullPayloadCorrectionContext];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    fullPayloadCorrectionContext = [(DODMLASRSchemaDODMLASRFullPayloadCorrectionExperimentContext *)self fullPayloadCorrectionContext];
+    dictionaryRepresentation = [fullPayloadCorrectionContext dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"fullPayloadCorrectionContext"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"fullPayloadCorrectionContext"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"fullPayloadCorrectionContext"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"fullPayloadCorrectionContext"];
     }
   }
 
   if (self->_originalAsrId)
   {
-    v7 = [(DODMLASRSchemaDODMLASRFullPayloadCorrectionExperimentContext *)self originalAsrId];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    originalAsrId = [(DODMLASRSchemaDODMLASRFullPayloadCorrectionExperimentContext *)self originalAsrId];
+    dictionaryRepresentation2 = [originalAsrId dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"originalAsrId"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"originalAsrId"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"originalAsrId"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"originalAsrId"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(DODMLASRSchemaDODMLASRFullPayloadCorrectionExperimentContext *)self originalAsrId];
-  v6 = [v4 originalAsrId];
-  if ((v5 != 0) == (v6 == 0))
+  originalAsrId = [(DODMLASRSchemaDODMLASRFullPayloadCorrectionExperimentContext *)self originalAsrId];
+  originalAsrId2 = [equalCopy originalAsrId];
+  if ((originalAsrId != 0) == (originalAsrId2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(DODMLASRSchemaDODMLASRFullPayloadCorrectionExperimentContext *)self originalAsrId];
-  if (v7)
+  originalAsrId3 = [(DODMLASRSchemaDODMLASRFullPayloadCorrectionExperimentContext *)self originalAsrId];
+  if (originalAsrId3)
   {
-    v8 = v7;
-    v9 = [(DODMLASRSchemaDODMLASRFullPayloadCorrectionExperimentContext *)self originalAsrId];
-    v10 = [v4 originalAsrId];
-    v11 = [v9 isEqual:v10];
+    v8 = originalAsrId3;
+    originalAsrId4 = [(DODMLASRSchemaDODMLASRFullPayloadCorrectionExperimentContext *)self originalAsrId];
+    originalAsrId5 = [equalCopy originalAsrId];
+    v11 = [originalAsrId4 isEqual:originalAsrId5];
 
     if (!v11)
     {
@@ -148,12 +148,12 @@
   {
   }
 
-  v5 = [(DODMLASRSchemaDODMLASRFullPayloadCorrectionExperimentContext *)self fullPayloadCorrectionContext];
-  v6 = [v4 fullPayloadCorrectionContext];
-  if ((v5 != 0) != (v6 == 0))
+  originalAsrId = [(DODMLASRSchemaDODMLASRFullPayloadCorrectionExperimentContext *)self fullPayloadCorrectionContext];
+  originalAsrId2 = [equalCopy fullPayloadCorrectionContext];
+  if ((originalAsrId != 0) != (originalAsrId2 == 0))
   {
-    v12 = [(DODMLASRSchemaDODMLASRFullPayloadCorrectionExperimentContext *)self fullPayloadCorrectionContext];
-    if (!v12)
+    fullPayloadCorrectionContext = [(DODMLASRSchemaDODMLASRFullPayloadCorrectionExperimentContext *)self fullPayloadCorrectionContext];
+    if (!fullPayloadCorrectionContext)
     {
 
 LABEL_15:
@@ -161,10 +161,10 @@ LABEL_15:
       goto LABEL_13;
     }
 
-    v13 = v12;
-    v14 = [(DODMLASRSchemaDODMLASRFullPayloadCorrectionExperimentContext *)self fullPayloadCorrectionContext];
-    v15 = [v4 fullPayloadCorrectionContext];
-    v16 = [v14 isEqual:v15];
+    v13 = fullPayloadCorrectionContext;
+    fullPayloadCorrectionContext2 = [(DODMLASRSchemaDODMLASRFullPayloadCorrectionExperimentContext *)self fullPayloadCorrectionContext];
+    fullPayloadCorrectionContext3 = [equalCopy fullPayloadCorrectionContext];
+    v16 = [fullPayloadCorrectionContext2 isEqual:fullPayloadCorrectionContext3];
 
     if (v16)
     {
@@ -184,46 +184,46 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
-  v4 = [(DODMLASRSchemaDODMLASRFullPayloadCorrectionExperimentContext *)self originalAsrId];
+  toCopy = to;
+  originalAsrId = [(DODMLASRSchemaDODMLASRFullPayloadCorrectionExperimentContext *)self originalAsrId];
 
-  if (v4)
+  if (originalAsrId)
   {
-    v5 = [(DODMLASRSchemaDODMLASRFullPayloadCorrectionExperimentContext *)self originalAsrId];
+    originalAsrId2 = [(DODMLASRSchemaDODMLASRFullPayloadCorrectionExperimentContext *)self originalAsrId];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(DODMLASRSchemaDODMLASRFullPayloadCorrectionExperimentContext *)self fullPayloadCorrectionContext];
+  fullPayloadCorrectionContext = [(DODMLASRSchemaDODMLASRFullPayloadCorrectionExperimentContext *)self fullPayloadCorrectionContext];
 
-  if (v6)
+  if (fullPayloadCorrectionContext)
   {
-    v7 = [(DODMLASRSchemaDODMLASRFullPayloadCorrectionExperimentContext *)self fullPayloadCorrectionContext];
+    fullPayloadCorrectionContext2 = [(DODMLASRSchemaDODMLASRFullPayloadCorrectionExperimentContext *)self fullPayloadCorrectionContext];
     PBDataWriterWriteSubmessage();
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v13.receiver = self;
   v13.super_class = DODMLASRSchemaDODMLASRFullPayloadCorrectionExperimentContext;
-  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:v4];
-  v6 = [(DODMLASRSchemaDODMLASRFullPayloadCorrectionExperimentContext *)self originalAsrId];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:policyCopy];
+  originalAsrId = [(DODMLASRSchemaDODMLASRFullPayloadCorrectionExperimentContext *)self originalAsrId];
+  v7 = [originalAsrId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(DODMLASRSchemaDODMLASRFullPayloadCorrectionExperimentContext *)self deleteOriginalAsrId];
   }
 
-  v9 = [(DODMLASRSchemaDODMLASRFullPayloadCorrectionExperimentContext *)self fullPayloadCorrectionContext];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  fullPayloadCorrectionContext = [(DODMLASRSchemaDODMLASRFullPayloadCorrectionExperimentContext *)self fullPayloadCorrectionContext];
+  v10 = [fullPayloadCorrectionContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(DODMLASRSchemaDODMLASRFullPayloadCorrectionExperimentContext *)self deleteFullPayloadCorrectionContext];
   }

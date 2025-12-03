@@ -1,8 +1,8 @@
 @interface FPDTelemetryService
 - (FPDTelemetryService)init;
-- (void)_replaceFPCKTelemetryValuesInTelemetryReport:(id)a3;
+- (void)_replaceFPCKTelemetryValuesInTelemetryReport:(id)report;
 - (void)start;
-- (void)transformTimeIntoRelativeAgeOnReport:(id)a3 from:(id)a4 to:(id)a5;
+- (void)transformTimeIntoRelativeAgeOnReport:(id)report from:(id)from to:(id)to;
 @end
 
 @implementation FPDTelemetryService
@@ -25,12 +25,12 @@
   return v2;
 }
 
-- (void)transformTimeIntoRelativeAgeOnReport:(id)a3 from:(id)a4 to:(id)a5
+- (void)transformTimeIntoRelativeAgeOnReport:(id)report from:(id)from to:(id)to
 {
-  v17 = a4;
-  v7 = a5;
-  v8 = a3;
-  v9 = [v8 objectForKeyedSubscript:v17];
+  fromCopy = from;
+  toCopy = to;
+  reportCopy = report;
+  v9 = [reportCopy objectForKeyedSubscript:fromCopy];
   if (v9)
   {
     v10 = objc_alloc(MEMORY[0x1E695DF00]);
@@ -39,38 +39,38 @@
     v12 = [MEMORY[0x1E695DF00] now];
     [v12 timeIntervalSinceDate:v11];
 
-    v13 = [MEMORY[0x1E695DEE8] currentCalendar];
+    currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
     v14 = [MEMORY[0x1E695DF00] now];
-    v15 = [v13 components:16 fromDate:v11 toDate:v14 options:0];
+    v15 = [currentCalendar components:16 fromDate:v11 toDate:v14 options:0];
 
     v16 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInteger:{objc_msgSend(v15, "day")}];
-    [v8 setObject:v16 forKeyedSubscript:v7];
+    [reportCopy setObject:v16 forKeyedSubscript:toCopy];
 
-    [v8 setObject:0 forKeyedSubscript:v17];
-    v7 = v15;
-    v8 = v11;
+    [reportCopy setObject:0 forKeyedSubscript:fromCopy];
+    toCopy = v15;
+    reportCopy = v11;
   }
 
   else
   {
-    [v8 setObject:0 forKeyedSubscript:v17];
-    [v8 setObject:0 forKeyedSubscript:v7];
+    [reportCopy setObject:0 forKeyedSubscript:fromCopy];
+    [reportCopy setObject:0 forKeyedSubscript:toCopy];
   }
 }
 
-- (void)_replaceFPCKTelemetryValuesInTelemetryReport:(id)a3
+- (void)_replaceFPCKTelemetryValuesInTelemetryReport:(id)report
 {
-  v4 = a3;
-  [(FPDTelemetryService *)self transformTimeIntoRelativeAgeOnReport:v4 from:@"startTime" to:@"reportAge"];
-  [(FPDTelemetryService *)self transformTimeIntoRelativeAgeOnReport:v4 from:@"lastUpdateTime" to:@"lastUpdateAge"];
-  [(FPDTelemetryService *)self transformTimeIntoRelativeAgeOnReport:v4 from:@"spsTime" to:@"spsAge"];
-  [(FPDTelemetryService *)self transformTimeIntoRelativeAgeOnReport:v4 from:@"consistencyTime" to:@"consistencyAge"];
+  reportCopy = report;
+  [(FPDTelemetryService *)self transformTimeIntoRelativeAgeOnReport:reportCopy from:@"startTime" to:@"reportAge"];
+  [(FPDTelemetryService *)self transformTimeIntoRelativeAgeOnReport:reportCopy from:@"lastUpdateTime" to:@"lastUpdateAge"];
+  [(FPDTelemetryService *)self transformTimeIntoRelativeAgeOnReport:reportCopy from:@"spsTime" to:@"spsAge"];
+  [(FPDTelemetryService *)self transformTimeIntoRelativeAgeOnReport:reportCopy from:@"consistencyTime" to:@"consistencyAge"];
 }
 
 - (void)start
 {
   *buf = 138543618;
-  *(buf + 4) = a1;
+  *(buf + 4) = self;
   *(buf + 6) = 2114;
   *(buf + 14) = a2;
   _os_log_error_impl(&dword_1CEFC7000, log, OS_LOG_TYPE_ERROR, "[ERROR] Failed to submit background task %{public}@ error: %{public}@", buf, 0x16u);

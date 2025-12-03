@@ -1,19 +1,19 @@
 @interface FMMapAnnotationView
 - (BOOL)shouldShowCallout;
-- (_TtC26FindMyNotificationsContent19FMMapAnnotationView)initWithAnnotation:(id)a3 reuseIdentifier:(id)a4;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (_TtC26FindMyNotificationsContent19FMMapAnnotationView)initWithAnnotation:(id)annotation reuseIdentifier:(id)identifier;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (void)_updateFromMap;
 - (void)prepareForDisplay;
 - (void)prepareForReuse;
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation FMMapAnnotationView
 
-- (_TtC26FindMyNotificationsContent19FMMapAnnotationView)initWithAnnotation:(id)a3 reuseIdentifier:(id)a4
+- (_TtC26FindMyNotificationsContent19FMMapAnnotationView)initWithAnnotation:(id)annotation reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
     v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v6 = v5;
@@ -56,43 +56,43 @@ LABEL_4:
 
 - (void)_updateFromMap
 {
-  v2 = self;
+  selfCopy = self;
   sub_10000A5C0();
 }
 
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
-  v6 = self;
-  sub_10000ABA0(a3, a4);
+  selfCopy = self;
+  sub_10000ABA0(selected, animated);
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v8 = a4;
-  v9 = self;
-  v10 = sub_10000B270(a4, x, y);
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
+  selfCopy = self;
+  v10 = sub_10000B270(event, x, y);
 
   return v10;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v6.receiver = self;
   v6.super_class = type metadata accessor for FMMapAnnotationView();
-  v4 = a3;
+  changeCopy = change;
   v5 = v6.receiver;
-  [(FMMapAnnotationView *)&v6 traitCollectionDidChange:v4];
+  [(FMMapAnnotationView *)&v6 traitCollectionDidChange:changeCopy];
   sub_10000B460();
 }
 
 - (BOOL)shouldShowCallout
 {
-  v2 = self;
-  if ([(FMMapAnnotationView *)v2 isSelected])
+  selfCopy = self;
+  if ([(FMMapAnnotationView *)selfCopy isSelected])
   {
-    v3 = *(&v2->super.super.super.super.isa + OBJC_IVAR____TtC26FindMyNotificationsContent19FMMapAnnotationView_shouldHideCallout);
+    v3 = *(&selfCopy->super.super.super.super.isa + OBJC_IVAR____TtC26FindMyNotificationsContent19FMMapAnnotationView_shouldHideCallout);
 
     v4 = v3 ^ 1;
   }
@@ -108,7 +108,7 @@ LABEL_4:
 
 - (void)prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   sub_10000B81C();
 }
 

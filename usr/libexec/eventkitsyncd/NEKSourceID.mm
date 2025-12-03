@@ -1,29 +1,29 @@
 @interface NEKSourceID
-+ (id)accountForStore:(id)a3 identifier:(id)a4;
-+ (id)eventSourceForDatabase:(id)a3 identifier:(id)a4;
-- (BOOL)isEqualToNEKSourceID:(id)a3;
-- (NEKSourceID)initWithAccount:(id)a3;
-- (NEKSourceID)initWithPersistentID:(id)a3 isLocalStore:(BOOL)a4;
-- (NEKSourceID)initWithSource:(id)a3;
++ (id)accountForStore:(id)store identifier:(id)identifier;
++ (id)eventSourceForDatabase:(id)database identifier:(id)identifier;
+- (BOOL)isEqualToNEKSourceID:(id)d;
+- (NEKSourceID)initWithAccount:(id)account;
+- (NEKSourceID)initWithPersistentID:(id)d isLocalStore:(BOOL)store;
+- (NEKSourceID)initWithSource:(id)source;
 - (id)description;
 @end
 
 @implementation NEKSourceID
 
-- (NEKSourceID)initWithAccount:(id)a3
+- (NEKSourceID)initWithAccount:(id)account
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  accountCopy = account;
+  v5 = accountCopy;
+  if (accountCopy)
   {
-    v6 = [v4 store];
-    v7 = v6;
-    if (v6)
+    store = [accountCopy store];
+    v7 = store;
+    if (store)
     {
-      v8 = [v6 eks_localAccount];
-      v9 = [v8 objectID];
-      v10 = [v5 objectID];
-      if (v8 && ([v9 isEqual:v10] & 1) != 0)
+      eks_localAccount = [store eks_localAccount];
+      objectID = [eks_localAccount objectID];
+      objectID2 = [v5 objectID];
+      if (eks_localAccount && ([objectID isEqual:objectID2] & 1) != 0)
       {
         v11 = 0;
         v12 = 1;
@@ -31,9 +31,9 @@
 
       else
       {
-        v14 = [v10 uuid];
-        v15 = [v14 UUIDString];
-        v11 = [v15 copy];
+        uuid = [objectID2 uuid];
+        uUIDString = [uuid UUIDString];
+        v11 = [uUIDString copy];
 
         v12 = 0;
       }
@@ -47,70 +47,70 @@
 
     self = [(NEKSourceID *)self initWithPersistentID:v11 isLocalStore:v12];
 
-    v13 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v13 = 0;
+    selfCopy = 0;
   }
 
-  return v13;
+  return selfCopy;
 }
 
-+ (id)accountForStore:(id)a3 identifier:(id)a4
++ (id)accountForStore:(id)store identifier:(id)identifier
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v6 isLocalStore])
+  storeCopy = store;
+  identifierCopy = identifier;
+  if ([identifierCopy isLocalStore])
   {
-    v7 = [v5 eks_localAccount];
+    eks_localAccount = [storeCopy eks_localAccount];
   }
 
   else
   {
-    v8 = [v6 persistentID];
-    v9 = [[NSUUID alloc] initWithUUIDString:v8];
+    persistentID = [identifierCopy persistentID];
+    v9 = [[NSUUID alloc] initWithUUIDString:persistentID];
     if (!v9)
     {
       v10 = *(qword_1000D18A8 + 8);
       if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
       {
-        sub_10006EEF4(v8, v10);
+        sub_10006EEF4(persistentID, v10);
       }
     }
 
     v11 = [REMAccount objectIDWithUUID:v9];
     v15 = 0;
-    v7 = [v5 fetchAccountWithObjectID:v11 error:&v15];
+    eks_localAccount = [storeCopy fetchAccountWithObjectID:v11 error:&v15];
     v12 = v15;
     if (v12)
     {
       v13 = *(qword_1000D18A8 + 8);
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
-        sub_10006EF80(v8, v13);
+        sub_10006EF80(persistentID, v13);
       }
     }
   }
 
-  return v7;
+  return eks_localAccount;
 }
 
-- (NEKSourceID)initWithSource:(id)a3
+- (NEKSourceID)initWithSource:(id)source
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  sourceCopy = source;
+  v5 = sourceCopy;
+  if (sourceCopy)
   {
-    v6 = [v4 eventStore];
-    v7 = v6;
-    if (v6)
+    eventStore = [sourceCopy eventStore];
+    v7 = eventStore;
+    if (eventStore)
     {
-      v8 = [v6 localSource];
-      v9 = [v8 sourceIdentifier];
-      v10 = [v5 sourceIdentifier];
-      if (v8 && ([v9 isEqualToString:v10] & 1) != 0)
+      localSource = [eventStore localSource];
+      sourceIdentifier = [localSource sourceIdentifier];
+      sourceIdentifier2 = [v5 sourceIdentifier];
+      if (localSource && ([sourceIdentifier isEqualToString:sourceIdentifier2] & 1) != 0)
       {
         v11 = 0;
         v12 = 1;
@@ -118,7 +118,7 @@
 
       else
       {
-        v11 = [v10 copy];
+        v11 = [sourceIdentifier2 copy];
         v12 = 0;
       }
     }
@@ -131,48 +131,48 @@
 
     self = [(NEKSourceID *)self initWithPersistentID:v11 isLocalStore:v12];
 
-    v13 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v13 = 0;
+    selfCopy = 0;
   }
 
-  return v13;
+  return selfCopy;
 }
 
-+ (id)eventSourceForDatabase:(id)a3 identifier:(id)a4
++ (id)eventSourceForDatabase:(id)database identifier:(id)identifier
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v6 isLocalStore])
+  databaseCopy = database;
+  identifierCopy = identifier;
+  if ([identifierCopy isLocalStore])
   {
-    v7 = [v5 localSource];
+    localSource = [databaseCopy localSource];
   }
 
   else
   {
-    v8 = [v6 persistentID];
-    v7 = [v5 sourceWithIdentifier:v8];
+    persistentID = [identifierCopy persistentID];
+    localSource = [databaseCopy sourceWithIdentifier:persistentID];
   }
 
-  return v7;
+  return localSource;
 }
 
-- (NEKSourceID)initWithPersistentID:(id)a3 isLocalStore:(BOOL)a4
+- (NEKSourceID)initWithPersistentID:(id)d isLocalStore:(BOOL)store
 {
-  v6 = a3;
+  dCopy = d;
   v11.receiver = self;
   v11.super_class = NEKSourceID;
   v7 = [(NEKSourceID *)&v11 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [dCopy copy];
     persistentID = v7->_persistentID;
     v7->_persistentID = v8;
 
-    v7->_isLocalStore = a4;
+    v7->_isLocalStore = store;
   }
 
   return v7;
@@ -197,22 +197,22 @@
   return v6;
 }
 
-- (BOOL)isEqualToNEKSourceID:(id)a3
+- (BOOL)isEqualToNEKSourceID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if (-[NEKSourceID isLocalStore](self, "isLocalStore") && ([v4 isLocalStore] & 1) != 0)
+    if (-[NEKSourceID isLocalStore](self, "isLocalStore") && ([dCopy isLocalStore] & 1) != 0)
     {
       v5 = 1;
     }
 
     else
     {
-      v6 = [v4 persistentID];
-      v7 = [(NEKSourceID *)self persistentID];
-      v5 = [v6 isEqualToString:v7];
+      persistentID = [dCopy persistentID];
+      persistentID2 = [(NEKSourceID *)self persistentID];
+      v5 = [persistentID isEqualToString:persistentID2];
     }
   }
 

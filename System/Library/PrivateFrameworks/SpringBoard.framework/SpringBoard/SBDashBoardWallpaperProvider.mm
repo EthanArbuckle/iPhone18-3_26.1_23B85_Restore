@@ -1,14 +1,14 @@
 @interface SBDashBoardWallpaperProvider
 - (BOOL)adaptiveTimeHonorsPreferredSalientContentRectangle;
 - (CGRect)preferredSalientContentRectangle;
-- (id)createCoverSheetWallpaperViewWithTransformOptions:(unint64_t)a3;
-- (id)createWallpaperFloatingViewForReason:(id)a3 ignoreReplica:(BOOL)a4;
-- (id)setWallpaperFloatingLayerContainerView:(id)a3 forReason:(id)a4 withAnimationFactory:(id)a5;
-- (id)suspendWallpaperAnimationForReason:(id)a3;
-- (void)updateSalientContentRectangle:(CGRect)a3;
-- (void)wallpaperClientDidRotateFromInterfaceOrientation:(int64_t)a3;
-- (void)wallpaperClientWillAnimateRotationToInterfaceOrientation:(int64_t)a3 duration:(double)a4;
-- (void)wallpaperClientWillRotateToInterfaceOrientation:(int64_t)a3 duration:(double)a4;
+- (id)createCoverSheetWallpaperViewWithTransformOptions:(unint64_t)options;
+- (id)createWallpaperFloatingViewForReason:(id)reason ignoreReplica:(BOOL)replica;
+- (id)setWallpaperFloatingLayerContainerView:(id)view forReason:(id)reason withAnimationFactory:(id)factory;
+- (id)suspendWallpaperAnimationForReason:(id)reason;
+- (void)updateSalientContentRectangle:(CGRect)rectangle;
+- (void)wallpaperClientDidRotateFromInterfaceOrientation:(int64_t)orientation;
+- (void)wallpaperClientWillAnimateRotationToInterfaceOrientation:(int64_t)orientation duration:(double)duration;
+- (void)wallpaperClientWillRotateToInterfaceOrientation:(int64_t)orientation duration:(double)duration;
 @end
 
 @implementation SBDashBoardWallpaperProvider
@@ -16,9 +16,9 @@
 - (BOOL)adaptiveTimeHonorsPreferredSalientContentRectangle
 {
   v2 = +[SBWallpaperController sharedInstance];
-  v3 = [v2 adaptiveTimeHonorsPreferredSalientContentRectangle];
+  adaptiveTimeHonorsPreferredSalientContentRectangle = [v2 adaptiveTimeHonorsPreferredSalientContentRectangle];
 
-  return v3;
+  return adaptiveTimeHonorsPreferredSalientContentRectangle;
 }
 
 - (CGRect)preferredSalientContentRectangle
@@ -41,9 +41,9 @@
   return result;
 }
 
-- (id)createCoverSheetWallpaperViewWithTransformOptions:(unint64_t)a3
+- (id)createCoverSheetWallpaperViewWithTransformOptions:(unint64_t)options
 {
-  v3 = [[SBDashBoardWallpaperEffectView alloc] initWithWallpaperVariant:0 transformOptions:a3];
+  v3 = [[SBDashBoardWallpaperEffectView alloc] initWithWallpaperVariant:0 transformOptions:options];
   [(PBUIWallpaperEffectViewBase *)v3 setStyle:0];
   [(PBUIWallpaperEffectViewBase *)v3 setForcesOpaque:1];
   [(PBUIWallpaperEffectViewBase *)v3 setShouldMatchWallpaperPosition:0];
@@ -51,60 +51,60 @@
   return v3;
 }
 
-- (id)createWallpaperFloatingViewForReason:(id)a3 ignoreReplica:(BOOL)a4
+- (id)createWallpaperFloatingViewForReason:(id)reason ignoreReplica:(BOOL)replica
 {
-  v4 = a4;
-  v5 = a3;
+  replicaCopy = replica;
+  reasonCopy = reason;
   v6 = +[SBWallpaperController sharedInstance];
-  v7 = [v6 createWallpaperFloatingViewForReason:v5 ignoreReplica:v4];
+  v7 = [v6 createWallpaperFloatingViewForReason:reasonCopy ignoreReplica:replicaCopy];
 
   return v7;
 }
 
-- (id)setWallpaperFloatingLayerContainerView:(id)a3 forReason:(id)a4 withAnimationFactory:(id)a5
+- (id)setWallpaperFloatingLayerContainerView:(id)view forReason:(id)reason withAnimationFactory:(id)factory
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  factoryCopy = factory;
+  reasonCopy = reason;
+  viewCopy = view;
   v10 = +[SBWallpaperController sharedInstance];
-  v11 = [v10 setWallpaperFloatingLayerContainerView:v9 forReason:v8 withAnimationFactory:v7];
+  v11 = [v10 setWallpaperFloatingLayerContainerView:viewCopy forReason:reasonCopy withAnimationFactory:factoryCopy];
 
   return v11;
 }
 
-- (id)suspendWallpaperAnimationForReason:(id)a3
+- (id)suspendWallpaperAnimationForReason:(id)reason
 {
-  v3 = a3;
+  reasonCopy = reason;
   v4 = +[SBWallpaperController sharedInstance];
-  v5 = [v4 suspendWallpaperAnimationForReason:v3];
+  v5 = [v4 suspendWallpaperAnimationForReason:reasonCopy];
 
   return v5;
 }
 
-- (void)wallpaperClientWillRotateToInterfaceOrientation:(int64_t)a3 duration:(double)a4
+- (void)wallpaperClientWillRotateToInterfaceOrientation:(int64_t)orientation duration:(double)duration
 {
   v6 = +[SBWallpaperController sharedInstance];
-  [v6 orientationSource:3 willRotateToInterfaceOrientation:a3 duration:a4];
+  [v6 orientationSource:3 willRotateToInterfaceOrientation:orientation duration:duration];
 }
 
-- (void)wallpaperClientWillAnimateRotationToInterfaceOrientation:(int64_t)a3 duration:(double)a4
+- (void)wallpaperClientWillAnimateRotationToInterfaceOrientation:(int64_t)orientation duration:(double)duration
 {
   v6 = +[SBWallpaperController sharedInstance];
-  [v6 orientationSource:3 willAnimateRotationToInterfaceOrientation:a3 duration:a4];
+  [v6 orientationSource:3 willAnimateRotationToInterfaceOrientation:orientation duration:duration];
 }
 
-- (void)wallpaperClientDidRotateFromInterfaceOrientation:(int64_t)a3
+- (void)wallpaperClientDidRotateFromInterfaceOrientation:(int64_t)orientation
 {
   v4 = +[SBWallpaperController sharedInstance];
-  [v4 orientationSource:3 didRotateFromInterfaceOrientation:a3];
+  [v4 orientationSource:3 didRotateFromInterfaceOrientation:orientation];
 }
 
-- (void)updateSalientContentRectangle:(CGRect)a3
+- (void)updateSalientContentRectangle:(CGRect)rectangle
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rectangle.size.height;
+  width = rectangle.size.width;
+  y = rectangle.origin.y;
+  x = rectangle.origin.x;
   v7 = +[SBWallpaperController sharedInstance];
   [v7 updateSalientContentRectangle:{x, y, width, height}];
 }

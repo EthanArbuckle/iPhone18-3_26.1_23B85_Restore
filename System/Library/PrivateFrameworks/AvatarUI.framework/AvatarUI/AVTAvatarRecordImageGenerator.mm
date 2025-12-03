@@ -1,19 +1,19 @@
 @interface AVTAvatarRecordImageGenerator
-+ (id)supportedScopesForScale:(double)a3;
-- (AVTAvatarRecordImageGenerator)initWithImageStore:(id)a3 coreEnvironment:(id)a4;
-- (AVTAvatarRecordImageGenerator)initWithImageStore:(id)a3 renderer:(id)a4 environment:(id)a5;
++ (id)supportedScopesForScale:(double)scale;
+- (AVTAvatarRecordImageGenerator)initWithImageStore:(id)store coreEnvironment:(id)environment;
+- (AVTAvatarRecordImageGenerator)initWithImageStore:(id)store renderer:(id)renderer environment:(id)environment;
 - (AVTCoreModel)coreModel;
-- (BOOL)deleteThumbnailsForAvatarRecordsWithIdentifiers:(id)a3 error:(id *)a4;
-- (BOOL)generateThumbnailForAvatarRecordItem:(id)a3 avatarConfiguration:(id)a4 scope:(id)a5 error:(id *)a6;
-- (BOOL)generateThumbnailsForAvatarRecord:(id)a3 avatar:(id)a4 error:(id *)a5;
-- (BOOL)generateThumbnailsForAvatarRecords:(id)a3 error:(id *)a4;
-- (BOOL)generateThumbnailsForDuplicateAvatarRecord:(id)a3 originalRecord:(id)a4 error:(id *)a5;
-- (void)updateThumbnailsForChangesWithTracker:(id)a3 recordProvider:(id)a4;
+- (BOOL)deleteThumbnailsForAvatarRecordsWithIdentifiers:(id)identifiers error:(id *)error;
+- (BOOL)generateThumbnailForAvatarRecordItem:(id)item avatarConfiguration:(id)configuration scope:(id)scope error:(id *)error;
+- (BOOL)generateThumbnailsForAvatarRecord:(id)record avatar:(id)avatar error:(id *)error;
+- (BOOL)generateThumbnailsForAvatarRecords:(id)records error:(id *)error;
+- (BOOL)generateThumbnailsForDuplicateAvatarRecord:(id)record originalRecord:(id)originalRecord error:(id *)error;
+- (void)updateThumbnailsForChangesWithTracker:(id)tracker recordProvider:(id)provider;
 @end
 
 @implementation AVTAvatarRecordImageGenerator
 
-+ (id)supportedScopesForScale:(double)a3
++ (id)supportedScopesForScale:(double)scale
 {
   v8[3] = *MEMORY[0x1E69E9840];
   v3 = +[AVTRenderingScope gridThumbnailScope];
@@ -26,50 +26,50 @@
   return v6;
 }
 
-- (AVTAvatarRecordImageGenerator)initWithImageStore:(id)a3 renderer:(id)a4 environment:(id)a5
+- (AVTAvatarRecordImageGenerator)initWithImageStore:(id)store renderer:(id)renderer environment:(id)environment
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  storeCopy = store;
+  rendererCopy = renderer;
+  environmentCopy = environment;
   v21.receiver = self;
   v21.super_class = AVTAvatarRecordImageGenerator;
   v12 = [(AVTAvatarRecordImageGenerator *)&v21 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_imageStore, a3);
-    objc_storeStrong(&v13->_renderer, a4);
+    objc_storeStrong(&v12->_imageStore, store);
+    objc_storeStrong(&v13->_renderer, renderer);
     v14 = objc_opt_class();
-    [v11 mainScreenScale];
+    [environmentCopy mainScreenScale];
     v15 = [v14 supportedScopesForScale:?];
     v16 = [v15 copy];
     scopes = v13->_scopes;
     v13->_scopes = v16;
 
-    v18 = [v11 logger];
+    logger = [environmentCopy logger];
     logger = v13->_logger;
-    v13->_logger = v18;
+    v13->_logger = logger;
 
-    objc_storeStrong(&v13->_environment, a5);
+    objc_storeStrong(&v13->_environment, environment);
   }
 
   return v13;
 }
 
-- (AVTAvatarRecordImageGenerator)initWithImageStore:(id)a3 coreEnvironment:(id)a4
+- (AVTAvatarRecordImageGenerator)initWithImageStore:(id)store coreEnvironment:(id)environment
 {
-  v7 = a3;
-  v8 = a4;
+  storeCopy = store;
+  environmentCopy = environment;
   v14.receiver = self;
   v14.super_class = AVTAvatarRecordImageGenerator;
   v9 = [(AVTAvatarRecordImageGenerator *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_imageStore, a3);
-    v11 = [v8 logger];
+    objc_storeStrong(&v9->_imageStore, store);
+    logger = [environmentCopy logger];
     logger = v10->_logger;
-    v10->_logger = v11;
+    v10->_logger = logger;
   }
 
   return v10;
@@ -77,22 +77,22 @@
 
 - (AVTCoreModel)coreModel
 {
-  v2 = [(AVTAvatarRecordImageGenerator *)self environment];
-  v3 = [v2 editorCoreModel];
+  environment = [(AVTAvatarRecordImageGenerator *)self environment];
+  editorCoreModel = [environment editorCoreModel];
 
-  return v3;
+  return editorCoreModel;
 }
 
-- (BOOL)generateThumbnailsForAvatarRecord:(id)a3 avatar:(id)a4 error:(id *)a5
+- (BOOL)generateThumbnailsForAvatarRecord:(id)record avatar:(id)avatar error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(AVTAvatarRecordImageGenerator *)self coreModel];
-  v11 = [AVTAvatarConfiguration configurationFromAvatar:v9 coreModel:v10];
+  recordCopy = record;
+  avatarCopy = avatar;
+  coreModel = [(AVTAvatarRecordImageGenerator *)self coreModel];
+  v11 = [AVTAvatarConfiguration configurationFromAvatar:avatarCopy coreModel:coreModel];
 
   v12 = [AVTAvatarRecordCacheableResource alloc];
-  v13 = [(AVTAvatarRecordImageGenerator *)self environment];
-  v14 = [(AVTAvatarRecordCacheableResource *)v12 initWithAvatarRecord:v8 includeAvatarData:0 environment:v13];
+  environment = [(AVTAvatarRecordImageGenerator *)self environment];
+  v14 = [(AVTAvatarRecordCacheableResource *)v12 initWithAvatarRecord:recordCopy includeAvatarData:0 environment:environment];
 
   v31 = 0;
   v32 = &v31;
@@ -104,7 +104,7 @@
   v28 = __Block_byref_object_copy_;
   v29 = __Block_byref_object_dispose_;
   v30 = 0;
-  v15 = [(AVTAvatarRecordImageGenerator *)self scopes];
+  scopes = [(AVTAvatarRecordImageGenerator *)self scopes];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __80__AVTAvatarRecordImageGenerator_generateThumbnailsForAvatarRecord_avatar_error___block_invoke;
@@ -116,12 +116,12 @@
   v17 = v11;
   v22 = v17;
   v24 = &v25;
-  [v15 enumerateObjectsUsingBlock:v20];
+  [scopes enumerateObjectsUsingBlock:v20];
 
   v18 = *(v32 + 24);
-  if (a5 && (v32[3] & 1) == 0)
+  if (error && (v32[3] & 1) == 0)
   {
-    *a5 = v26[5];
+    *error = v26[5];
   }
 
   _Block_object_dispose(&v25, 8);
@@ -143,9 +143,9 @@ void __80__AVTAvatarRecordImageGenerator_generateThumbnailsForAvatarRecord_avata
   *a4 = *(*(a1[7] + 8) + 24) ^ 1;
 }
 
-- (BOOL)generateThumbnailsForAvatarRecords:(id)a3 error:(id *)a4
+- (BOOL)generateThumbnailsForAvatarRecords:(id)records error:(id *)error
 {
-  v6 = a3;
+  recordsCopy = records;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
@@ -163,11 +163,11 @@ void __80__AVTAvatarRecordImageGenerator_generateThumbnailsForAvatarRecord_avata
   v9[5] = &v16;
   v9[6] = &v10;
   v9[4] = self;
-  [v6 enumerateObjectsUsingBlock:v9];
+  [recordsCopy enumerateObjectsUsingBlock:v9];
   v7 = *(v17 + 24);
-  if (a4 && (v17[3] & 1) == 0)
+  if (error && (v17[3] & 1) == 0)
   {
-    *a4 = v11[5];
+    *error = v11[5];
   }
 
   _Block_object_dispose(&v10, 8);
@@ -233,51 +233,51 @@ void __74__AVTAvatarRecordImageGenerator_generateThumbnailsForAvatarRecords_erro
   *a4 = *(*(a1[7] + 8) + 24) ^ 1;
 }
 
-- (BOOL)generateThumbnailForAvatarRecordItem:(id)a3 avatarConfiguration:(id)a4 scope:(id)a5 error:(id *)a6
+- (BOOL)generateThumbnailForAvatarRecordItem:(id)item avatarConfiguration:(id)configuration scope:(id)scope error:(id *)error
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a4;
-  v13 = [(AVTAvatarRecordImageGenerator *)self logger];
-  v14 = [v10 record];
-  v15 = [v14 identifier];
-  v16 = [v11 description];
-  [v13 logGeneratingImageForRecord:v15 scope:v16 type:{objc_msgSend(v11, "renderingType")}];
+  itemCopy = item;
+  scopeCopy = scope;
+  configurationCopy = configuration;
+  logger = [(AVTAvatarRecordImageGenerator *)self logger];
+  record = [itemCopy record];
+  identifier = [record identifier];
+  v16 = [scopeCopy description];
+  [logger logGeneratingImageForRecord:identifier scope:v16 type:{objc_msgSend(scopeCopy, "renderingType")}];
 
-  v17 = [(AVTAvatarRecordImageGenerator *)self renderer];
+  renderer = [(AVTAvatarRecordImageGenerator *)self renderer];
 
-  if (!v17)
+  if (!renderer)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"I'm asked to render images but I did not get a renderer"];
   }
 
-  v18 = [(AVTAvatarRecordImageGenerator *)self renderer];
-  v19 = [v18 imageForAvatarConfiguration:v12 scope:v11];
+  renderer2 = [(AVTAvatarRecordImageGenerator *)self renderer];
+  v19 = [renderer2 imageForAvatarConfiguration:configurationCopy scope:scopeCopy];
 
-  v20 = [(AVTAvatarRecordImageGenerator *)self imageStore];
+  imageStore = [(AVTAvatarRecordImageGenerator *)self imageStore];
   v27 = 0;
-  v21 = [v20 saveImage:v19 forItem:v10 scope:v11 error:&v27];
+  v21 = [imageStore saveImage:v19 forItem:itemCopy scope:scopeCopy error:&v27];
   v22 = v27;
 
   if ((v21 & 1) == 0)
   {
-    if (a6)
+    if (error)
     {
       v23 = v22;
-      *a6 = v22;
+      *error = v22;
     }
 
-    v24 = [(AVTAvatarRecordImageGenerator *)self logger];
+    logger2 = [(AVTAvatarRecordImageGenerator *)self logger];
     v25 = [v22 description];
-    [v24 logGeneratingImageError:v25];
+    [logger2 logGeneratingImageError:v25];
   }
 
   return v21;
 }
 
-- (BOOL)deleteThumbnailsForAvatarRecordsWithIdentifiers:(id)a3 error:(id *)a4
+- (BOOL)deleteThumbnailsForAvatarRecordsWithIdentifiers:(id)identifiers error:(id *)error
 {
-  v6 = a3;
+  identifiersCopy = identifiers;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
@@ -295,11 +295,11 @@ void __74__AVTAvatarRecordImageGenerator_generateThumbnailsForAvatarRecords_erro
   v9[4] = self;
   v9[5] = &v16;
   v9[6] = &v10;
-  [v6 enumerateObjectsUsingBlock:v9];
+  [identifiersCopy enumerateObjectsUsingBlock:v9];
   v7 = *(v17 + 24);
-  if (a4 && (v17[3] & 1) == 0)
+  if (error && (v17[3] & 1) == 0)
   {
-    *a4 = v11[5];
+    *error = v11[5];
   }
 
   _Block_object_dispose(&v10, 8);
@@ -321,50 +321,50 @@ void __87__AVTAvatarRecordImageGenerator_deleteThumbnailsForAvatarRecordsWithIde
   *a4 = *(*(*(a1 + 40) + 8) + 24) ^ 1;
 }
 
-- (BOOL)generateThumbnailsForDuplicateAvatarRecord:(id)a3 originalRecord:(id)a4 error:(id *)a5
+- (BOOL)generateThumbnailsForDuplicateAvatarRecord:(id)record originalRecord:(id)originalRecord error:(id *)error
 {
-  v8 = a3;
-  v9 = [a4 identifier];
-  v10 = [AVTAvatarRecordCacheableResource persistentIdentifierPrefixForRecordWithIdentifier:v9];
+  recordCopy = record;
+  identifier = [originalRecord identifier];
+  v10 = [AVTAvatarRecordCacheableResource persistentIdentifierPrefixForRecordWithIdentifier:identifier];
 
-  v11 = [v8 identifier];
+  identifier2 = [recordCopy identifier];
 
-  v12 = [AVTAvatarRecordCacheableResource persistentIdentifierPrefixForRecordWithIdentifier:v11];
+  v12 = [AVTAvatarRecordCacheableResource persistentIdentifierPrefixForRecordWithIdentifier:identifier2];
 
-  v13 = [(AVTAvatarRecordImageGenerator *)self imageStore];
-  LOBYTE(a5) = [v13 copyImagesForPersistentIdentifierPrefix:v10 toPersistentIdentifierPrefix:v12 error:a5];
+  imageStore = [(AVTAvatarRecordImageGenerator *)self imageStore];
+  LOBYTE(error) = [imageStore copyImagesForPersistentIdentifierPrefix:v10 toPersistentIdentifierPrefix:v12 error:error];
 
-  return a5;
+  return error;
 }
 
-- (void)updateThumbnailsForChangesWithTracker:(id)a3 recordProvider:(id)a4
+- (void)updateThumbnailsForChangesWithTracker:(id)tracker recordProvider:(id)provider
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E695DF70] array];
+  trackerCopy = tracker;
+  providerCopy = provider;
+  array = [MEMORY[0x1E695DF70] array];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __86__AVTAvatarRecordImageGenerator_updateThumbnailsForChangesWithTracker_recordProvider___block_invoke;
   v22[3] = &unk_1E7F3A808;
   v22[4] = self;
-  v9 = v8;
+  v9 = array;
   v23 = v9;
   v10 = MEMORY[0x1BFB0DE80](v22);
-  v11 = [(AVTAvatarRecordImageGenerator *)self logger];
+  logger = [(AVTAvatarRecordImageGenerator *)self logger];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __86__AVTAvatarRecordImageGenerator_updateThumbnailsForChangesWithTracker_recordProvider___block_invoke_3;
   v16[3] = &unk_1E7F3A830;
-  v17 = v6;
-  v18 = self;
+  v17 = trackerCopy;
+  selfCopy = self;
   v19 = v9;
   v20 = v10;
-  v21 = v7;
-  v12 = v7;
+  v21 = providerCopy;
+  v12 = providerCopy;
   v13 = v9;
   v14 = v10;
-  v15 = v6;
-  [v11 updatingThumbnailsForRemoteChanges:v16];
+  v15 = trackerCopy;
+  [logger updatingThumbnailsForRemoteChanges:v16];
 }
 
 uint64_t __86__AVTAvatarRecordImageGenerator_updateThumbnailsForChangesWithTracker_recordProvider___block_invoke(uint64_t a1, void *a2)

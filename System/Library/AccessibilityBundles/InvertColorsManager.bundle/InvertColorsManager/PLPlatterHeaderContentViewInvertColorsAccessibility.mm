@@ -1,6 +1,6 @@
 @interface PLPlatterHeaderContentViewInvertColorsAccessibility
 - (void)_accessibilityLoadInvertColors;
-- (void)_configureIconButtonsForIcons:(id)a3;
+- (void)_configureIconButtonsForIcons:(id)icons;
 @end
 
 @implementation PLPlatterHeaderContentViewInvertColorsAccessibility
@@ -39,11 +39,11 @@
   }
 }
 
-- (void)_configureIconButtonsForIcons:(id)a3
+- (void)_configureIconButtonsForIcons:(id)icons
 {
   v4.receiver = self;
   v4.super_class = PLPlatterHeaderContentViewInvertColorsAccessibility;
-  [(PLPlatterHeaderContentViewInvertColorsAccessibility *)&v4 _configureIconButtonsForIcons:a3];
+  [(PLPlatterHeaderContentViewInvertColorsAccessibility *)&v4 _configureIconButtonsForIcons:icons];
   [(PLPlatterHeaderContentViewInvertColorsAccessibility *)self _accessibilityLoadInvertColors];
 }
 

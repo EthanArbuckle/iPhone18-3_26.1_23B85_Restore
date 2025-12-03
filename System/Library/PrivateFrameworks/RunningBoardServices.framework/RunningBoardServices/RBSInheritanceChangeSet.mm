@@ -1,9 +1,9 @@
 @interface RBSInheritanceChangeSet
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (RBSInheritanceChangeSet)initWithGainedInheritances:(id)a3 lostInheritances:(id)a4;
-- (RBSInheritanceChangeSet)initWithRBSXPCCoder:(id)a3;
-- (void)encodeWithRBSXPCCoder:(id)a3;
+- (RBSInheritanceChangeSet)initWithGainedInheritances:(id)inheritances lostInheritances:(id)lostInheritances;
+- (RBSInheritanceChangeSet)initWithRBSXPCCoder:(id)coder;
+- (void)encodeWithRBSXPCCoder:(id)coder;
 @end
 
 @implementation RBSInheritanceChangeSet
@@ -17,20 +17,20 @@
   return v5;
 }
 
-- (RBSInheritanceChangeSet)initWithGainedInheritances:(id)a3 lostInheritances:(id)a4
+- (RBSInheritanceChangeSet)initWithGainedInheritances:(id)inheritances lostInheritances:(id)lostInheritances
 {
-  v6 = a3;
-  v7 = a4;
+  inheritancesCopy = inheritances;
+  lostInheritancesCopy = lostInheritances;
   v14.receiver = self;
   v14.super_class = RBSInheritanceChangeSet;
   v8 = [(RBSInheritanceChangeSet *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [inheritancesCopy copy];
     gainedInheritances = v8->_gainedInheritances;
     v8->_gainedInheritances = v9;
 
-    v11 = [v7 copy];
+    v11 = [lostInheritancesCopy copy];
     lostInheritances = v8->_lostInheritances;
     v8->_lostInheritances = v11;
   }
@@ -38,10 +38,10 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     goto LABEL_14;
   }
@@ -55,7 +55,7 @@ LABEL_3:
   }
 
   gainedInheritances = self->_gainedInheritances;
-  v8 = v4->_gainedInheritances;
+  v8 = equalCopy->_gainedInheritances;
   if (gainedInheritances != v8)
   {
     v6 = 0;
@@ -72,7 +72,7 @@ LABEL_3:
   }
 
   lostInheritances = self->_lostInheritances;
-  v11 = v4->_lostInheritances;
+  v11 = equalCopy->_lostInheritances;
   if (lostInheritances == v11)
   {
 LABEL_14:
@@ -98,35 +98,35 @@ LABEL_15:
   return v6;
 }
 
-- (void)encodeWithRBSXPCCoder:(id)a3
+- (void)encodeWithRBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   if ([(NSSet *)self->_gainedInheritances count])
   {
-    [v4 encodeObject:self->_gainedInheritances forKey:@"gainedInheritances"];
+    [coderCopy encodeObject:self->_gainedInheritances forKey:@"gainedInheritances"];
   }
 
   if ([(NSSet *)self->_lostInheritances count])
   {
-    [v4 encodeObject:self->_lostInheritances forKey:@"lostInheritances"];
+    [coderCopy encodeObject:self->_lostInheritances forKey:@"lostInheritances"];
   }
 }
 
-- (RBSInheritanceChangeSet)initWithRBSXPCCoder:(id)a3
+- (RBSInheritanceChangeSet)initWithRBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = RBSInheritanceChangeSet;
   v5 = [(RBSInheritanceChangeSet *)&v13 init];
   if (v5)
   {
     v6 = objc_opt_class();
-    v7 = [v4 decodeCollectionOfClass:v6 containingClass:objc_opt_class() forKey:@"gainedInheritances"];
+    v7 = [coderCopy decodeCollectionOfClass:v6 containingClass:objc_opt_class() forKey:@"gainedInheritances"];
     gainedInheritances = v5->_gainedInheritances;
     v5->_gainedInheritances = v7;
 
     v9 = objc_opt_class();
-    v10 = [v4 decodeCollectionOfClass:v9 containingClass:objc_opt_class() forKey:@"lostInheritances"];
+    v10 = [coderCopy decodeCollectionOfClass:v9 containingClass:objc_opt_class() forKey:@"lostInheritances"];
     lostInheritances = v5->_lostInheritances;
     v5->_lostInheritances = v10;
   }

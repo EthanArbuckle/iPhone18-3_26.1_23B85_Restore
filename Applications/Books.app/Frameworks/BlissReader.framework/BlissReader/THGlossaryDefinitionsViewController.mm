@@ -1,39 +1,39 @@
 @interface THGlossaryDefinitionsViewController
-- (CGRect)p_contentFrameForEntryIndex:(int64_t)a3;
+- (CGRect)p_contentFrameForEntryIndex:(int64_t)index;
 - (CGRect)p_definitionViewFrame;
-- (CGRect)p_scrollViewFrameForPaging:(BOOL)a3;
-- (THGlossaryDefinitionsViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (CGRect)p_scrollViewFrameForPaging:(BOOL)paging;
+- (THGlossaryDefinitionsViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (id)displayedEntry;
 - (id)p_createGlossaryEntryViewController;
 - (id)p_dequeueRecycledEntryController;
 - (int64_t)p_currentEntryIndex;
-- (int64_t)p_entryIndexForContentFrame:(CGRect)a3;
+- (int64_t)p_entryIndexForContentFrame:(CGRect)frame;
 - (void)_stylizeForTheme;
 - (void)awakeFromNib;
 - (void)dealloc;
 - (void)didReceiveMemoryWarning;
-- (void)displayIndex:(id)a3 withEntry:(id)a4 animated:(BOOL)a5;
+- (void)displayIndex:(id)index withEntry:(id)entry animated:(BOOL)animated;
 - (void)layoutScrollView;
 - (void)loadView;
-- (void)p_loadEntryAtIndex:(int64_t)a3 scrollLocation:(int)a4;
-- (void)p_recycleEntry:(id)a3;
-- (void)p_releaseControllerForIndex:(int64_t)a3;
-- (void)p_showEntry:(id)a3 animated:(BOOL)a4;
-- (void)p_updateForContentFrame:(CGRect)a3;
-- (void)scrollViewDidEndDecelerating:(id)a3;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)setTheme:(id)a3;
+- (void)p_loadEntryAtIndex:(int64_t)index scrollLocation:(int)location;
+- (void)p_recycleEntry:(id)entry;
+- (void)p_releaseControllerForIndex:(int64_t)index;
+- (void)p_showEntry:(id)entry animated:(BOOL)animated;
+- (void)p_updateForContentFrame:(CGRect)frame;
+- (void)scrollViewDidEndDecelerating:(id)decelerating;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)setTheme:(id)theme;
 - (void)unload;
 - (void)viewDidLayoutSubviews;
 @end
 
 @implementation THGlossaryDefinitionsViewController
 
-- (THGlossaryDefinitionsViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (THGlossaryDefinitionsViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v7.receiver = self;
   v7.super_class = THGlossaryDefinitionsViewController;
-  v4 = [(THGlossaryDefinitionsViewController *)&v7 initWithNibName:a3 bundle:a4];
+  v4 = [(THGlossaryDefinitionsViewController *)&v7 initWithNibName:name bundle:bundle];
   v5 = v4;
   if (v4)
   {
@@ -92,10 +92,10 @@
   return result;
 }
 
-- (CGRect)p_contentFrameForEntryIndex:(int64_t)a3
+- (CGRect)p_contentFrameForEntryIndex:(int64_t)index
 {
   [(THGlossaryDefinitionsViewController *)self p_definitionViewFrame];
-  v7 = (v6 + 1.0) * a3;
+  v7 = (v6 + 1.0) * index;
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v7;
@@ -103,20 +103,20 @@
   return result;
 }
 
-- (int64_t)p_entryIndexForContentFrame:(CGRect)a3
+- (int64_t)p_entryIndexForContentFrame:(CGRect)frame
 {
-  y = a3.origin.y;
-  [(THGlossaryDefinitionsViewController *)self p_contentFrameForEntryIndex:1, a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  y = frame.origin.y;
+  [(THGlossaryDefinitionsViewController *)self p_contentFrameForEntryIndex:1, frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   return (y / v4 + 0.5);
 }
 
-- (CGRect)p_scrollViewFrameForPaging:(BOOL)a3
+- (CGRect)p_scrollViewFrameForPaging:(BOOL)paging
 {
-  v3 = a3;
+  pagingCopy = paging;
   [(THGlossaryDefinitionsViewController *)self p_contentFrameForEntryIndex:0];
   v7 = v6;
   v9 = v8;
-  if (v3)
+  if (pagingCopy)
   {
     [(THGlossaryDefinitionsViewController *)self p_contentFrameForEntryIndex:1];
     v11 = v10;
@@ -141,15 +141,15 @@
 
 - (void)layoutScrollView
 {
-  v3 = [(THGlossaryDefinitionsViewController *)self p_currentEntryIndex];
-  v4 = [(TSUIntegerKeyDictionary *)self->mEntryViewControllers keyEnumerator];
-  if (v4)
+  p_currentEntryIndex = [(THGlossaryDefinitionsViewController *)self p_currentEntryIndex];
+  keyEnumerator = [(TSUIntegerKeyDictionary *)self->mEntryViewControllers keyEnumerator];
+  if (keyEnumerator)
   {
-    v5 = v4;
-    v6 = [v4 nextKey];
-    if (v6 != 0x7FFFFFFFFFFFFFFFLL)
+    v5 = keyEnumerator;
+    nextKey = [keyEnumerator nextKey];
+    if (nextKey != 0x7FFFFFFFFFFFFFFFLL)
     {
-      for (i = v6; i != 0x7FFFFFFFFFFFFFFFLL; i = [v5 nextKey])
+      for (i = nextKey; i != 0x7FFFFFFFFFFFFFFFLL; i = [v5 nextKey])
       {
         [(THGlossaryDefinitionsViewController *)self p_releaseControllerForIndex:i];
       }
@@ -162,9 +162,9 @@
   v9 = v8;
   [(THGlossaryDefinitionsViewController *)self p_contentFrameForEntryIndex:[(THGlossaryIndex *)self->mEntryIndex numberOfEntries]];
   [(UIScrollView *)self->mScrollView setContentSize:v9];
-  [(THGlossaryDefinitionsViewController *)self p_contentFrameForEntryIndex:v3];
+  [(THGlossaryDefinitionsViewController *)self p_contentFrameForEntryIndex:p_currentEntryIndex];
   [(THGlossaryDefinitionsViewController *)self p_updateForContentFrame:?];
-  v10 = [(THGlossaryIndex *)self->mEntryIndex entryAtIndex:v3];
+  v10 = [(THGlossaryIndex *)self->mEntryIndex entryAtIndex:p_currentEntryIndex];
 
   [(THGlossaryDefinitionsViewController *)self p_showEntry:v10 animated:0];
 }
@@ -185,10 +185,10 @@
   [(UIScrollView *)self->mScrollView setBackgroundColor:v3];
   [(UIScrollView *)self->mScrollView setDelegate:self];
   [(UIScrollView *)self->mScrollView setPagingEnabled:1];
-  v6 = [(THGlossaryDefinitionsViewController *)self view];
+  view = [(THGlossaryDefinitionsViewController *)self view];
   mScrollView = self->mScrollView;
 
-  [v6 addSubview:mScrollView];
+  [view addSubview:mScrollView];
 }
 
 - (void)didReceiveMemoryWarning
@@ -197,15 +197,15 @@
   if (v3 >= 2)
   {
     v4 = v3;
-    v5 = [(TSUIntegerKeyDictionary *)self->mEntryViewControllers keyEnumerator];
-    v6 = [(THGlossaryDefinitionsViewController *)self p_currentEntryIndex];
+    keyEnumerator = [(TSUIntegerKeyDictionary *)self->mEntryViewControllers keyEnumerator];
+    p_currentEntryIndex = [(THGlossaryDefinitionsViewController *)self p_currentEntryIndex];
     v7 = [[NSMutableArray alloc] initWithCapacity:v4];
-    v8 = [v5 nextKey];
-    if (v8 != 0x7FFFFFFFFFFFFFFFLL)
+    nextKey = [keyEnumerator nextKey];
+    if (nextKey != 0x7FFFFFFFFFFFFFFFLL)
     {
-      for (i = v8; i != 0x7FFFFFFFFFFFFFFFLL; i = [v5 nextKey])
+      for (i = nextKey; i != 0x7FFFFFFFFFFFFFFFLL; i = [keyEnumerator nextKey])
       {
-        if (i != v6)
+        if (i != p_currentEntryIndex)
         {
           v10 = [[NSNumber alloc] initWithInteger:i];
           [v7 addObject:v10];
@@ -248,13 +248,13 @@
   [(THGlossaryDefinitionsViewController *)&v15 didReceiveMemoryWarning];
 }
 
-- (void)setTheme:(id)a3
+- (void)setTheme:(id)theme
 {
   if (([(IMTheme *)self->_theme isEqual:?]& 1) == 0)
   {
-    v5 = a3;
+    themeCopy = theme;
 
-    self->_theme = a3;
+    self->_theme = theme;
 
     [(THGlossaryDefinitionsViewController *)self _stylizeForTheme];
   }
@@ -265,39 +265,39 @@
   v3 = [(IMTheme *)[(THGlossaryDefinitionsViewController *)self theme] backgroundColorForTraitEnvironment:self];
   [-[THGlossaryDefinitionsViewController view](self "view")];
   [(UIScrollView *)[(THGlossaryDefinitionsViewController *)self scrollView] setBackgroundColor:v3];
-  v4 = [(THGlossaryDefinitionsViewController *)self p_currentEntryIndex];
+  p_currentEntryIndex = [(THGlossaryDefinitionsViewController *)self p_currentEntryIndex];
 
-  [(THGlossaryDefinitionsViewController *)self p_loadEntryAtIndex:v4 scrollLocation:0];
+  [(THGlossaryDefinitionsViewController *)self p_loadEntryAtIndex:p_currentEntryIndex scrollLocation:0];
 }
 
-- (void)p_recycleEntry:(id)a3
+- (void)p_recycleEntry:(id)entry
 {
-  [a3 viewWillDisappear:0];
-  [objc_msgSend(a3 "view")];
-  [a3 viewDidDisappear:0];
+  [entry viewWillDisappear:0];
+  [objc_msgSend(entry "view")];
+  [entry viewDidDisappear:0];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_BCC08;
   v5[3] = &unk_45CF58;
   v5[4] = self;
-  v5[5] = a3;
-  [a3 unloadEntryOnComplete:v5];
+  v5[5] = entry;
+  [entry unloadEntryOnComplete:v5];
 }
 
-- (void)p_releaseControllerForIndex:(int64_t)a3
+- (void)p_releaseControllerForIndex:(int64_t)index
 {
   v5 = [(TSUIntegerKeyDictionary *)self->mEntryViewControllers objectForKey:?];
-  [(TSUIntegerKeyDictionary *)self->mEntryViewControllers removeObjectForKey:a3];
+  [(TSUIntegerKeyDictionary *)self->mEntryViewControllers removeObjectForKey:index];
   [(THGlossaryDefinitionsViewController *)self p_recycleEntry:v5];
 }
 
 - (id)p_dequeueRecycledEntryController
 {
-  v3 = [(NSMutableSet *)self->mRecycledEntries anyObject];
-  v4 = v3;
-  if (v3)
+  anyObject = [(NSMutableSet *)self->mRecycledEntries anyObject];
+  v4 = anyObject;
+  if (anyObject)
   {
-    v5 = v3;
+    v5 = anyObject;
     [(NSMutableSet *)self->mRecycledEntries removeObject:v4];
   }
 
@@ -306,77 +306,77 @@
 
 - (id)p_createGlossaryEntryViewController
 {
-  v3 = [(THGlossaryDefinitionsViewController *)self p_dequeueRecycledEntryController];
-  if (!v3)
+  p_dequeueRecycledEntryController = [(THGlossaryDefinitionsViewController *)self p_dequeueRecycledEntryController];
+  if (!p_dequeueRecycledEntryController)
   {
-    v3 = [[THGlossaryEntryViewController alloc] initWithDocumentRoot:[(THGlossaryController *)[(THGlossaryDefinitionsViewController *)self glossaryController] documentRoot] bookNavigator:[(THGlossaryDefinitionsViewControllerDelegate *)[(THGlossaryDefinitionsViewController *)self delegate] bookNavigator]];
-    [(THGlossaryEntryViewController *)v3 setGlossaryController:[(THGlossaryDefinitionsViewController *)self glossaryController]];
-    [(THGlossaryEntryViewController *)v3 setModalViewControllerProvider:[(THGlossaryDefinitionsViewControllerDelegate *)[(THGlossaryDefinitionsViewController *)self delegate] modalViewControllerProviderForGlossaryDefinitionsViewController:self]];
-    [(THGlossaryEntryViewController *)v3 setLinkHandler:[(THGlossaryDefinitionsViewController *)self glossaryViewController]];
-    [(THGlossaryEntryViewController *)v3 setTheme:[(THGlossaryDefinitionsViewController *)self theme]];
+    p_dequeueRecycledEntryController = [[THGlossaryEntryViewController alloc] initWithDocumentRoot:[(THGlossaryController *)[(THGlossaryDefinitionsViewController *)self glossaryController] documentRoot] bookNavigator:[(THGlossaryDefinitionsViewControllerDelegate *)[(THGlossaryDefinitionsViewController *)self delegate] bookNavigator]];
+    [(THGlossaryEntryViewController *)p_dequeueRecycledEntryController setGlossaryController:[(THGlossaryDefinitionsViewController *)self glossaryController]];
+    [(THGlossaryEntryViewController *)p_dequeueRecycledEntryController setModalViewControllerProvider:[(THGlossaryDefinitionsViewControllerDelegate *)[(THGlossaryDefinitionsViewController *)self delegate] modalViewControllerProviderForGlossaryDefinitionsViewController:self]];
+    [(THGlossaryEntryViewController *)p_dequeueRecycledEntryController setLinkHandler:[(THGlossaryDefinitionsViewController *)self glossaryViewController]];
+    [(THGlossaryEntryViewController *)p_dequeueRecycledEntryController setTheme:[(THGlossaryDefinitionsViewController *)self theme]];
   }
 
-  return v3;
+  return p_dequeueRecycledEntryController;
 }
 
-- (void)p_loadEntryAtIndex:(int64_t)a3 scrollLocation:(int)a4
+- (void)p_loadEntryAtIndex:(int64_t)index scrollLocation:(int)location
 {
   v7 = [(THGlossaryIndex *)self->mEntryIndex entryAtIndex:?];
   if (v7)
   {
     v8 = v7;
-    v9 = [(TSUIntegerKeyDictionary *)self->mEntryViewControllers objectForKey:a3];
-    if (!v9)
+    p_createGlossaryEntryViewController = [(TSUIntegerKeyDictionary *)self->mEntryViewControllers objectForKey:index];
+    if (!p_createGlossaryEntryViewController)
     {
-      v9 = [(THGlossaryDefinitionsViewController *)self p_createGlossaryEntryViewController];
-      [(TSUIntegerKeyDictionary *)self->mEntryViewControllers setObject:v9 forKey:a3];
+      p_createGlossaryEntryViewController = [(THGlossaryDefinitionsViewController *)self p_createGlossaryEntryViewController];
+      [(TSUIntegerKeyDictionary *)self->mEntryViewControllers setObject:p_createGlossaryEntryViewController forKey:index];
 
-      [(THGlossaryDefinitionsViewController *)self p_contentFrameForEntryIndex:a3];
-      [objc_msgSend(v9 "view")];
-      [v9 viewWillAppear:0];
-      -[UIScrollView addSubview:](self->mScrollView, "addSubview:", [v9 view]);
-      [v9 viewDidAppear:0];
+      [(THGlossaryDefinitionsViewController *)self p_contentFrameForEntryIndex:index];
+      [objc_msgSend(p_createGlossaryEntryViewController "view")];
+      [p_createGlossaryEntryViewController viewWillAppear:0];
+      -[UIScrollView addSubview:](self->mScrollView, "addSubview:", [p_createGlossaryEntryViewController view]);
+      [p_createGlossaryEntryViewController viewDidAppear:0];
     }
 
-    [v9 setTheme:{-[THGlossaryDefinitionsViewController theme](self, "theme")}];
+    [p_createGlossaryEntryViewController setTheme:{-[THGlossaryDefinitionsViewController theme](self, "theme")}];
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = sub_BCF64;
     v14[3] = &unk_45CF80;
     v14[4] = self;
-    v14[5] = v9;
-    v15 = a4;
-    [v9 loadEntry:v8 withLayoutStyleProvider:-[THGlossaryDefinitionsViewController p_layoutStyleProvider](self onComplete:{"p_layoutStyleProvider"), v14}];
+    v14[5] = p_createGlossaryEntryViewController;
+    locationCopy = location;
+    [p_createGlossaryEntryViewController loadEntry:v8 withLayoutStyleProvider:-[THGlossaryDefinitionsViewController p_layoutStyleProvider](self onComplete:{"p_layoutStyleProvider"), v14}];
   }
 }
 
-- (void)p_updateForContentFrame:(CGRect)a3
+- (void)p_updateForContentFrame:(CGRect)frame
 {
-  v4 = [(THGlossaryDefinitionsViewController *)self p_entryIndexForContentFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v4 = [(THGlossaryDefinitionsViewController *)self p_entryIndexForContentFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(THGlossaryDefinitionsViewController *)self p_loadEntryAtIndex:v4 scrollLocation:0];
   [THGlossaryDefinitionsViewController p_loadEntryAtIndex:"p_loadEntryAtIndex:scrollLocation:" scrollLocation:?];
   [THGlossaryDefinitionsViewController p_loadEntryAtIndex:"p_loadEntryAtIndex:scrollLocation:" scrollLocation:?];
-  v5 = [(TSUIntegerKeyDictionary *)self->mEntryViewControllers keyEnumerator];
-  if (v5)
+  keyEnumerator = [(TSUIntegerKeyDictionary *)self->mEntryViewControllers keyEnumerator];
+  if (keyEnumerator)
   {
-    v6 = v5;
-    v7 = [v5 nextKey];
-    if (v7 != 0x7FFFFFFFFFFFFFFFLL)
+    v6 = keyEnumerator;
+    nextKey = [keyEnumerator nextKey];
+    if (nextKey != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v8 = v7;
+      nextKey2 = nextKey;
       v9 = v4 - 2;
       v10 = v4 + 2;
       do
       {
-        if (v8 < v9 || v8 > v10)
+        if (nextKey2 < v9 || nextKey2 > v10)
         {
           [(THGlossaryDefinitionsViewController *)self p_releaseControllerForIndex:?];
         }
 
-        v8 = [v6 nextKey];
+        nextKey2 = [v6 nextKey];
       }
 
-      while (v8 != 0x7FFFFFFFFFFFFFFFLL);
+      while (nextKey2 != 0x7FFFFFFFFFFFFFFFLL);
     }
   }
 }
@@ -398,26 +398,26 @@
   return (v5 / v4);
 }
 
-- (void)p_showEntry:(id)a3 animated:(BOOL)a4
+- (void)p_showEntry:(id)entry animated:(BOOL)animated
 {
-  v4 = a4;
-  v7 = [(THGlossaryDefinitionsViewController *)self p_currentEntryIndex];
-  v8 = [(THGlossaryIndex *)self->mEntryIndex indexForEntry:a3];
+  animatedCopy = animated;
+  p_currentEntryIndex = [(THGlossaryDefinitionsViewController *)self p_currentEntryIndex];
+  v8 = [(THGlossaryIndex *)self->mEntryIndex indexForEntry:entry];
   [(THGlossaryDefinitionsViewController *)self p_contentFrameForEntryIndex:v8];
   v10 = v9;
   v12 = v11;
   v14 = v13;
   [(THGlossaryDefinitionsViewController *)self p_updateForContentFrame:?];
-  v15 = v7 - v8;
-  if (v7 - v8 < 0)
+  v15 = p_currentEntryIndex - v8;
+  if (p_currentEntryIndex - v8 < 0)
   {
-    v15 = v8 - v7;
+    v15 = v8 - p_currentEntryIndex;
   }
 
   v16 = v15 < 3;
   [(UIScrollView *)self->mScrollView frame];
   v18 = v17;
-  v19 = v16 & v4;
+  v19 = v16 & animatedCopy;
   v20 = 0x7FFFFFFFFFFFFFFFLL;
   if (v19)
   {
@@ -431,24 +431,24 @@
   [(UIScrollView *)mScrollView scrollRectToVisible:v19 animated:v10, v12, v14, v18];
 }
 
-- (void)displayIndex:(id)a3 withEntry:(id)a4 animated:(BOOL)a5
+- (void)displayIndex:(id)index withEntry:(id)entry animated:(BOOL)animated
 {
-  v5 = a5;
+  animatedCopy = animated;
   if ([-[THGlossaryDefinitionsViewController view](self "view")])
   {
-    if (![(THGlossaryIndex *)self->mEntryIndex isEqual:a3])
+    if (![(THGlossaryIndex *)self->mEntryIndex isEqual:index])
     {
-      v22 = a4;
+      entryCopy = entry;
 
-      self->mEntryIndex = a3;
-      v23 = [a3 numberOfEntries];
-      v9 = [[TSUIntegerKeyDictionary alloc] initWithCapacity:v23];
+      self->mEntryIndex = index;
+      numberOfEntries = [index numberOfEntries];
+      v9 = [[TSUIntegerKeyDictionary alloc] initWithCapacity:numberOfEntries];
       v27 = 0u;
       v28 = 0u;
       v29 = 0u;
       v30 = 0u;
-      v10 = [(TSUIntegerKeyDictionary *)self->mEntryViewControllers valueEnumerator];
-      v11 = [v10 countByEnumeratingWithState:&v27 objects:v31 count:16];
+      valueEnumerator = [(TSUIntegerKeyDictionary *)self->mEntryViewControllers valueEnumerator];
+      v11 = [valueEnumerator countByEnumeratingWithState:&v27 objects:v31 count:16];
       if (v11)
       {
         v12 = *v28;
@@ -458,11 +458,11 @@
           {
             if (*v28 != v12)
             {
-              objc_enumerationMutation(v10);
+              objc_enumerationMutation(valueEnumerator);
             }
 
             v14 = *(*(&v27 + 1) + 8 * i);
-            v15 = [a3 indexForEntry:{objc_msgSend(v14, "entry")}];
+            v15 = [index indexForEntry:{objc_msgSend(v14, "entry")}];
             if (v15 == 0x7FFFFFFFFFFFFFFFLL)
             {
               [(THGlossaryDefinitionsViewController *)self p_recycleEntry:v14];
@@ -476,7 +476,7 @@
             }
           }
 
-          v11 = [v10 countByEnumeratingWithState:&v27 objects:v31 count:16];
+          v11 = [valueEnumerator countByEnumeratingWithState:&v27 objects:v31 count:16];
         }
 
         while (v11);
@@ -485,13 +485,13 @@
       self->mEntryViewControllers = v9;
       [(UIScrollView *)self->mScrollView frame];
       v21 = v20;
-      [(THGlossaryDefinitionsViewController *)self p_contentFrameForEntryIndex:v23];
+      [(THGlossaryDefinitionsViewController *)self p_contentFrameForEntryIndex:numberOfEntries];
       [(UIScrollView *)self->mScrollView setContentSize:v21];
-      v5 = 0;
-      a4 = v22;
+      animatedCopy = 0;
+      entry = entryCopy;
     }
 
-    [(THGlossaryDefinitionsViewController *)self p_showEntry:a4 animated:v5];
+    [(THGlossaryDefinitionsViewController *)self p_showEntry:entry animated:animatedCopy];
   }
 
   else
@@ -506,10 +506,10 @@
     v24[1] = 3221225472;
     v24[2] = sub_BD528;
     v24[3] = &unk_45CFA8;
-    v24[5] = a4;
+    v24[5] = entry;
     v24[6] = v26;
-    v24[4] = a3;
-    v25 = v5;
+    v24[4] = index;
+    v25 = animatedCopy;
     [(THGlossaryDefinitionsViewController *)self setDidLayoutBlock:v24];
     _Block_object_dispose(v26, 8);
   }
@@ -517,10 +517,10 @@
 
 - (id)displayedEntry
 {
-  v3 = [(THGlossaryDefinitionsViewController *)self p_currentEntryIndex];
+  p_currentEntryIndex = [(THGlossaryDefinitionsViewController *)self p_currentEntryIndex];
   mEntryIndex = self->mEntryIndex;
 
-  return [(THGlossaryIndex *)mEntryIndex entryAtIndex:v3];
+  return [(THGlossaryIndex *)mEntryIndex entryAtIndex:p_currentEntryIndex];
 }
 
 - (void)unload
@@ -529,8 +529,8 @@
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v3 = [(TSUIntegerKeyDictionary *)self->mEntryViewControllers valueEnumerator];
-  v4 = [v3 countByEnumeratingWithState:&v17 objects:v22 count:16];
+  valueEnumerator = [(TSUIntegerKeyDictionary *)self->mEntryViewControllers valueEnumerator];
+  v4 = [valueEnumerator countByEnumeratingWithState:&v17 objects:v22 count:16];
   if (v4)
   {
     v5 = v4;
@@ -541,13 +541,13 @@
       {
         if (*v18 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(valueEnumerator);
         }
 
         [(THGlossaryDefinitionsViewController *)self p_recycleEntry:*(*(&v17 + 1) + 8 * i)];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v17 objects:v22 count:16];
+      v5 = [valueEnumerator countByEnumeratingWithState:&v17 objects:v22 count:16];
     }
 
     while (v5);
@@ -587,20 +587,20 @@
   self->mEntryIndex = 0;
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
   [(UIScrollView *)self->mScrollView bounds];
 
   [(THGlossaryDefinitionsViewController *)self p_updateForContentFrame:?];
 }
 
-- (void)scrollViewDidEndDecelerating:(id)a3
+- (void)scrollViewDidEndDecelerating:(id)decelerating
 {
   self->mScrollTargetEntryIndex = 0x7FFFFFFFFFFFFFFFLL;
   mDelegate = self->mDelegate;
-  v4 = [(THGlossaryDefinitionsViewController *)self displayedEntry];
+  displayedEntry = [(THGlossaryDefinitionsViewController *)self displayedEntry];
 
-  [(THGlossaryDefinitionsViewControllerDelegate *)mDelegate didScrollToEntry:v4];
+  [(THGlossaryDefinitionsViewControllerDelegate *)mDelegate didScrollToEntry:displayedEntry];
 }
 
 - (void)viewDidLayoutSubviews

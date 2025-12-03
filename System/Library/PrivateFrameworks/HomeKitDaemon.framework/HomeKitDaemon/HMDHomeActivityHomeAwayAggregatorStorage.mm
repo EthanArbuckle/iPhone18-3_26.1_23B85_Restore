@@ -2,7 +2,7 @@
 + (id)logCategory;
 - (id)fetchLegacyPresenceMapOnManagedObjectContext;
 - (id)fetchUserActivityReportsOnManagedObjectContext;
-- (void)updateMKFUserActivityStatus:(id)a3 withReport:(id)a4;
+- (void)updateMKFUserActivityStatus:(id)status withReport:(id)report;
 @end
 
 @implementation HMDHomeActivityHomeAwayAggregatorStorage
@@ -10,24 +10,24 @@
 - (id)fetchLegacyPresenceMapOnManagedObjectContext
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDHomeActivityStateAggregatorStorage *)self home];
-  v4 = [v3 usersSupportingPresence];
-  v5 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(v4, "count")}];
-  v6 = [v3 uuid];
-  v7 = [HMCContext findHomeWithModelID:v6];
+  home = [(HMDHomeActivityStateAggregatorStorage *)self home];
+  usersSupportingPresence = [home usersSupportingPresence];
+  v5 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(usersSupportingPresence, "count")}];
+  uuid = [home uuid];
+  v7 = [HMCContext findHomeWithModelID:uuid];
 
   if (v7)
   {
-    v8 = [v7 homeMembers];
+    homeMembers = [v7 homeMembers];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __88__HMDHomeActivityHomeAwayAggregatorStorage_fetchLegacyPresenceMapOnManagedObjectContext__block_invoke;
     v17[3] = &unk_2786784D0;
-    v18 = v4;
-    v19 = self;
+    v18 = usersSupportingPresence;
+    selfCopy = self;
     v20 = v5;
     v9 = v5;
-    [v8 hmf_enumerateWithAutoreleasePoolUsingBlock:v17];
+    [homeMembers hmf_enumerateWithAutoreleasePoolUsingBlock:v17];
 
     v5 = [v9 copy];
   }
@@ -35,16 +35,16 @@
   else
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy2 = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       v13 = HMFGetLogIdentifier();
-      v14 = [v3 uuid];
+      uuid2 = [home uuid];
       *buf = 138543618;
       v22 = v13;
       v23 = 2112;
-      v24 = v14;
+      v24 = uuid2;
       _os_log_impl(&dword_229538000, v12, OS_LOG_TYPE_ERROR, "%{public}@Did not find the home with model id : %@", buf, 0x16u);
     }
 
@@ -214,12 +214,12 @@ uint64_t __88__HMDHomeActivityHomeAwayAggregatorStorage_fetchLegacyPresenceMapOn
   v48 = *MEMORY[0x277D85DE8];
   v40.receiver = self;
   v40.super_class = HMDHomeActivityHomeAwayAggregatorStorage;
-  v3 = [(HMDHomeActivityStateAggregatorStorage *)&v40 fetchUserActivityReportsOnManagedObjectContext];
-  v4 = [v3 mutableCopy];
+  fetchUserActivityReportsOnManagedObjectContext = [(HMDHomeActivityStateAggregatorStorage *)&v40 fetchUserActivityReportsOnManagedObjectContext];
+  v4 = [fetchUserActivityReportsOnManagedObjectContext mutableCopy];
 
-  v5 = [(HMDHomeActivityHomeAwayAggregatorStorage *)self fetchLegacyPresenceMapOnManagedObjectContext];
+  fetchLegacyPresenceMapOnManagedObjectContext = [(HMDHomeActivityHomeAwayAggregatorStorage *)self fetchLegacyPresenceMapOnManagedObjectContext];
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -229,7 +229,7 @@ uint64_t __88__HMDHomeActivityHomeAwayAggregatorStorage_fetchLegacyPresenceMapOn
     v44 = 2112;
     v45 = v4;
     v46 = 2112;
-    v47 = v5;
+    v47 = fetchLegacyPresenceMapOnManagedObjectContext;
     _os_log_impl(&dword_229538000, v8, OS_LOG_TYPE_INFO, "%{public}@Fetched home away reports %@ and presence reports %@", buf, 0x20u);
   }
 
@@ -238,7 +238,7 @@ uint64_t __88__HMDHomeActivityHomeAwayAggregatorStorage_fetchLegacyPresenceMapOn
   v39 = 0u;
   v36 = 0u;
   v37 = 0u;
-  obj = v5;
+  obj = fetchLegacyPresenceMapOnManagedObjectContext;
   v10 = [obj countByEnumeratingWithState:&v36 objects:v41 count:16];
   if (v10)
   {
@@ -256,19 +256,19 @@ uint64_t __88__HMDHomeActivityHomeAwayAggregatorStorage_fetchLegacyPresenceMapOn
         }
 
         v14 = *(*(&v36 + 1) + 8 * i);
-        v15 = [v4 allObjects];
+        allObjects = [v4 allObjects];
         v35[0] = MEMORY[0x277D85DD0];
         v35[1] = 3221225472;
         v35[2] = __90__HMDHomeActivityHomeAwayAggregatorStorage_fetchUserActivityReportsOnManagedObjectContext__block_invoke;
         v35[3] = &unk_2786784A8;
         v35[4] = v14;
-        v16 = [v15 hmf_objectPassingTest:v35];
+        v16 = [allObjects hmf_objectPassingTest:v35];
 
         if (v16)
         {
-          v17 = [v14 lastUpdateTimestamp];
-          v18 = [v16 lastUpdateTimestamp];
-          [v17 timeIntervalSinceDate:v18];
+          lastUpdateTimestamp = [v14 lastUpdateTimestamp];
+          lastUpdateTimestamp2 = [v16 lastUpdateTimestamp];
+          [lastUpdateTimestamp timeIntervalSinceDate:lastUpdateTimestamp2];
           v20 = v19;
 
           if (v20 < 0.0)
@@ -277,7 +277,7 @@ uint64_t __88__HMDHomeActivityHomeAwayAggregatorStorage_fetchLegacyPresenceMapOn
           }
 
           v21 = objc_autoreleasePoolPush();
-          v22 = v7;
+          v22 = selfCopy;
           v23 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
           {
@@ -298,7 +298,7 @@ uint64_t __88__HMDHomeActivityHomeAwayAggregatorStorage_fetchLegacyPresenceMapOn
         else
         {
           v25 = objc_autoreleasePoolPush();
-          v26 = v7;
+          v26 = selfCopy;
           v27 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
           {
@@ -340,15 +340,15 @@ uint64_t __90__HMDHomeActivityHomeAwayAggregatorStorage_fetchUserActivityReports
   return v7;
 }
 
-- (void)updateMKFUserActivityStatus:(id)a3 withReport:(id)a4
+- (void)updateMKFUserActivityStatus:(id)status withReport:(id)report
 {
   v36 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  statusCopy = status;
+  reportCopy = report;
   v8 = +[HMCContext currentContext];
   [v8 assertIsExecuting];
 
-  v9 = v7;
+  v9 = reportCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -367,25 +367,25 @@ uint64_t __90__HMDHomeActivityHomeAwayAggregatorStorage_fetchUserActivityReports
     _HMFPreconditionFailure();
   }
 
-  v12 = [v6 state];
+  state = [statusCopy state];
   v13 = 0x277CCA000uLL;
-  if (!v12)
+  if (!state)
   {
     goto LABEL_13;
   }
 
-  v14 = v12;
+  v14 = state;
   v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v11, "state")}];
-  v16 = [v6 state];
-  if (![v15 isEqual:v16] || (objc_msgSend(v6, "lastReportTimestamp"), (v17 = objc_claimAutoreleasedReturnValue()) == 0))
+  state2 = [statusCopy state];
+  if (![v15 isEqual:state2] || (objc_msgSend(statusCopy, "lastReportTimestamp"), (v17 = objc_claimAutoreleasedReturnValue()) == 0))
   {
 
     goto LABEL_13;
   }
 
   v18 = v17;
-  v32 = [v6 lastReportTimestamp];
-  v19 = [v32 dateByAddingTimeInterval:3600.0];
+  lastReportTimestamp = [statusCopy lastReportTimestamp];
+  v19 = [lastReportTimestamp dateByAddingTimeInterval:3600.0];
   [v9 lastUpdateTimestamp];
   v21 = v20 = self;
   v33 = [v19 compare:v21];
@@ -396,17 +396,17 @@ uint64_t __90__HMDHomeActivityHomeAwayAggregatorStorage_fetchUserActivityReports
   if (v33 == -1)
   {
 LABEL_13:
-    v27 = [v11 lastUpdateTimestamp];
-    [v6 setLastReportTimestamp:v27];
+    lastUpdateTimestamp = [v11 lastUpdateTimestamp];
+    [statusCopy setLastReportTimestamp:lastUpdateTimestamp];
 
-    v28 = [v11 changedTimestamp];
-    [v6 setStatusChangedTimestamp:v28];
+    changedTimestamp = [v11 changedTimestamp];
+    [statusCopy setStatusChangedTimestamp:changedTimestamp];
 
     v29 = [*(v13 + 2992) numberWithUnsignedInteger:{objc_msgSend(v11, "reason")}];
-    [v6 setStatusChangeReason:v29];
+    [statusCopy setStatusChangeReason:v29];
 
     v30 = [*(v13 + 2992) numberWithUnsignedInteger:{objc_msgSend(v11, "state")}];
-    [v6 setState:v30];
+    [statusCopy setState:v30];
 
     goto LABEL_14;
   }

@@ -1,5 +1,5 @@
 @interface AutocompleteItemManagerItemWrapper
-- (AutocompleteItemManagerItemWrapper)initWithItem:(id)a3 compoundItem:(id)a4;
+- (AutocompleteItemManagerItemWrapper)initWithItem:(id)item compoundItem:(id)compoundItem;
 - (AutocompleteMutableSection)section;
 @end
 
@@ -12,18 +12,18 @@
   return WeakRetained;
 }
 
-- (AutocompleteItemManagerItemWrapper)initWithItem:(id)a3 compoundItem:(id)a4
+- (AutocompleteItemManagerItemWrapper)initWithItem:(id)item compoundItem:(id)compoundItem
 {
-  v7 = a3;
-  v8 = a4;
+  itemCopy = item;
+  compoundItemCopy = compoundItem;
   v12.receiver = self;
   v12.super_class = AutocompleteItemManagerItemWrapper;
   v9 = [(AutocompleteItemManagerItemWrapper *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_item, a3);
-    objc_storeStrong(&v10->_compoundItem, a4);
+    objc_storeStrong(&v9->_item, item);
+    objc_storeStrong(&v10->_compoundItem, compoundItem);
   }
 
   return v10;

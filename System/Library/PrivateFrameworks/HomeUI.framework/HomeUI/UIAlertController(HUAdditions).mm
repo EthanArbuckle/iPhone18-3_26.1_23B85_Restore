@@ -77,13 +77,13 @@ LABEL_10:
   v5 = a4;
   v6 = MEMORY[0x277CCACA8];
   v7 = a3;
-  v8 = [v7 capitalizedString];
-  v9 = [v6 stringWithFormat:@"Add %@", v8];
+  capitalizedString = [v7 capitalizedString];
+  v9 = [v6 stringWithFormat:@"Add %@", capitalizedString];
 
   v10 = MEMORY[0x277CCACA8];
-  v11 = [v7 lowercaseString];
+  lowercaseString = [v7 lowercaseString];
 
-  v12 = [v10 stringWithFormat:@"Enter a name for this %@.", v11];
+  v12 = [v10 stringWithFormat:@"Enter a name for this %@.", lowercaseString];
 
   v13 = [MEMORY[0x277D75110] alertControllerWithTitle:v9 message:v12 preferredStyle:1];
   [v13 addTextFieldWithConfigurationHandler:&__block_literal_global_46];
@@ -133,8 +133,8 @@ LABEL_10:
   [v4 setLineBreakMode:2];
   [v4 setAdjustsFontSizeToFitWidth:1];
   [v4 setNeedsDisplayOnBoundsChange:1];
-  v6 = [v4 font];
-  [v6 pointSize];
+  font = [v4 font];
+  [font pointSize];
   [v4 setMinimumScaleFactor:10.0 / v7];
 
   v8 = [objc_alloc(MEMORY[0x277D750E8]) initWithActivityIndicatorStyle:100];
@@ -221,12 +221,12 @@ LABEL_10:
   v6 = a3;
   if (v6)
   {
-    v4 = [a1 popoverPresentationController];
+    popoverPresentationController = [self popoverPresentationController];
 
-    if (v4)
+    if (popoverPresentationController)
     {
-      v5 = [a1 popoverPresentationController];
-      [v5 setSourceView:v6];
+      popoverPresentationController2 = [self popoverPresentationController];
+      [popoverPresentationController2 setSourceView:v6];
     }
   }
 }
@@ -235,11 +235,11 @@ LABEL_10:
 {
   v5 = a3;
   v6 = a4;
-  v7 = [MEMORY[0x277D146E8] sharedDispatcher];
-  v8 = [v7 homeManager];
-  v9 = [v8 hasOptedToHH2];
+  mEMORY[0x277D146E8] = [MEMORY[0x277D146E8] sharedDispatcher];
+  homeManager = [mEMORY[0x277D146E8] homeManager];
+  hasOptedToHH2 = [homeManager hasOptedToHH2];
 
-  if (v9)
+  if (hasOptedToHH2)
   {
     v10 = HFLogForCategory();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))

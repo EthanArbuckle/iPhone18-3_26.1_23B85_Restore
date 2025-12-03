@@ -1,27 +1,27 @@
 @interface ORCHSchemaORCHMultiUserScore
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (ORCHSchemaORCHMultiUserScore)initWithDictionary:(id)a3;
-- (ORCHSchemaORCHMultiUserScore)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (ORCHSchemaORCHMultiUserScore)initWithDictionary:(id)dictionary;
+- (ORCHSchemaORCHMultiUserScore)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasUserScoreIdHash:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasUserScoreIdHash:(BOOL)hash;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ORCHSchemaORCHMultiUserScore
 
-- (ORCHSchemaORCHMultiUserScore)initWithDictionary:(id)a3
+- (ORCHSchemaORCHMultiUserScore)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v16.receiver = self;
   v16.super_class = ORCHSchemaORCHMultiUserScore;
   v5 = [(ORCHSchemaORCHMultiUserScore *)&v16 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"loggableSharedUserId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"loggableSharedUserId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -29,14 +29,14 @@
       [(ORCHSchemaORCHMultiUserScore *)v5 setLoggableSharedUserId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"score"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"score"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ORCHSchemaORCHMultiUserScore setScore:](v5, "setScore:", [v8 unsignedIntValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"userEphemeralId"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"userEphemeralId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -44,14 +44,14 @@
       [(ORCHSchemaORCHMultiUserScore *)v5 setUserEphemeralId:v10];
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"userScoreIdHash"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"userScoreIdHash"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ORCHSchemaORCHMultiUserScore setUserScoreIdHash:](v5, "setUserScoreIdHash:", [v11 unsignedIntValue]);
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"loggableUserIdHash"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"loggableUserIdHash"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -65,30 +65,30 @@
   return v5;
 }
 
-- (ORCHSchemaORCHMultiUserScore)initWithJSON:(id)a3
+- (ORCHSchemaORCHMultiUserScore)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(ORCHSchemaORCHMultiUserScore *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(ORCHSchemaORCHMultiUserScore *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(ORCHSchemaORCHMultiUserScore *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -101,52 +101,52 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_loggableSharedUserId)
   {
-    v4 = [(ORCHSchemaORCHMultiUserScore *)self loggableSharedUserId];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"loggableSharedUserId"];
+    loggableSharedUserId = [(ORCHSchemaORCHMultiUserScore *)self loggableSharedUserId];
+    v5 = [loggableSharedUserId copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"loggableSharedUserId"];
   }
 
   if (self->_loggableUserIdHash)
   {
-    v6 = [(ORCHSchemaORCHMultiUserScore *)self loggableUserIdHash];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"loggableUserIdHash"];
+    loggableUserIdHash = [(ORCHSchemaORCHMultiUserScore *)self loggableUserIdHash];
+    v7 = [loggableUserIdHash copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"loggableUserIdHash"];
   }
 
   if (*&self->_has)
   {
     v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[ORCHSchemaORCHMultiUserScore score](self, "score")}];
-    [v3 setObject:v8 forKeyedSubscript:@"score"];
+    [dictionary setObject:v8 forKeyedSubscript:@"score"];
   }
 
   if (self->_userEphemeralId)
   {
-    v9 = [(ORCHSchemaORCHMultiUserScore *)self userEphemeralId];
-    v10 = [v9 dictionaryRepresentation];
-    if (v10)
+    userEphemeralId = [(ORCHSchemaORCHMultiUserScore *)self userEphemeralId];
+    dictionaryRepresentation = [userEphemeralId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v10 forKeyedSubscript:@"userEphemeralId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"userEphemeralId"];
     }
 
     else
     {
-      v11 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v11 forKeyedSubscript:@"userEphemeralId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"userEphemeralId"];
     }
   }
 
   if ((*&self->_has & 2) != 0)
   {
     v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[ORCHSchemaORCHMultiUserScore userScoreIdHash](self, "userScoreIdHash")}];
-    [v3 setObject:v12 forKeyedSubscript:@"userScoreIdHash"];
+    [dictionary setObject:v12 forKeyedSubscript:@"userScoreIdHash"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -176,28 +176,28 @@
   return v4 ^ v3 ^ v5 ^ v6 ^ [(NSString *)self->_loggableUserIdHash hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_23;
   }
 
-  v5 = [(ORCHSchemaORCHMultiUserScore *)self loggableSharedUserId];
-  v6 = [v4 loggableSharedUserId];
-  if ((v5 != 0) == (v6 == 0))
+  loggableSharedUserId = [(ORCHSchemaORCHMultiUserScore *)self loggableSharedUserId];
+  loggableSharedUserId2 = [equalCopy loggableSharedUserId];
+  if ((loggableSharedUserId != 0) == (loggableSharedUserId2 == 0))
   {
     goto LABEL_22;
   }
 
-  v7 = [(ORCHSchemaORCHMultiUserScore *)self loggableSharedUserId];
-  if (v7)
+  loggableSharedUserId3 = [(ORCHSchemaORCHMultiUserScore *)self loggableSharedUserId];
+  if (loggableSharedUserId3)
   {
-    v8 = v7;
-    v9 = [(ORCHSchemaORCHMultiUserScore *)self loggableSharedUserId];
-    v10 = [v4 loggableSharedUserId];
-    v11 = [v9 isEqual:v10];
+    v8 = loggableSharedUserId3;
+    loggableSharedUserId4 = [(ORCHSchemaORCHMultiUserScore *)self loggableSharedUserId];
+    loggableSharedUserId5 = [equalCopy loggableSharedUserId];
+    v11 = [loggableSharedUserId4 isEqual:loggableSharedUserId5];
 
     if (!v11)
     {
@@ -209,7 +209,7 @@
   {
   }
 
-  if ((*&self->_has & 1) != (v4[48] & 1))
+  if ((*&self->_has & 1) != (equalCopy[48] & 1))
   {
     goto LABEL_23;
   }
@@ -217,26 +217,26 @@
   if (*&self->_has)
   {
     score = self->_score;
-    if (score != [v4 score])
+    if (score != [equalCopy score])
     {
       goto LABEL_23;
     }
   }
 
-  v5 = [(ORCHSchemaORCHMultiUserScore *)self userEphemeralId];
-  v6 = [v4 userEphemeralId];
-  if ((v5 != 0) == (v6 == 0))
+  loggableSharedUserId = [(ORCHSchemaORCHMultiUserScore *)self userEphemeralId];
+  loggableSharedUserId2 = [equalCopy userEphemeralId];
+  if ((loggableSharedUserId != 0) == (loggableSharedUserId2 == 0))
   {
     goto LABEL_22;
   }
 
-  v13 = [(ORCHSchemaORCHMultiUserScore *)self userEphemeralId];
-  if (v13)
+  userEphemeralId = [(ORCHSchemaORCHMultiUserScore *)self userEphemeralId];
+  if (userEphemeralId)
   {
-    v14 = v13;
-    v15 = [(ORCHSchemaORCHMultiUserScore *)self userEphemeralId];
-    v16 = [v4 userEphemeralId];
-    v17 = [v15 isEqual:v16];
+    v14 = userEphemeralId;
+    userEphemeralId2 = [(ORCHSchemaORCHMultiUserScore *)self userEphemeralId];
+    userEphemeralId3 = [equalCopy userEphemeralId];
+    v17 = [userEphemeralId2 isEqual:userEphemeralId3];
 
     if (!v17)
     {
@@ -249,7 +249,7 @@
   }
 
   v18 = (*&self->_has >> 1) & 1;
-  if (v18 != ((v4[48] >> 1) & 1))
+  if (v18 != ((equalCopy[48] >> 1) & 1))
   {
     goto LABEL_23;
   }
@@ -257,18 +257,18 @@
   if (v18)
   {
     userScoreIdHash = self->_userScoreIdHash;
-    if (userScoreIdHash != [v4 userScoreIdHash])
+    if (userScoreIdHash != [equalCopy userScoreIdHash])
     {
       goto LABEL_23;
     }
   }
 
-  v5 = [(ORCHSchemaORCHMultiUserScore *)self loggableUserIdHash];
-  v6 = [v4 loggableUserIdHash];
-  if ((v5 != 0) != (v6 == 0))
+  loggableSharedUserId = [(ORCHSchemaORCHMultiUserScore *)self loggableUserIdHash];
+  loggableSharedUserId2 = [equalCopy loggableUserIdHash];
+  if ((loggableSharedUserId != 0) != (loggableSharedUserId2 == 0))
   {
-    v20 = [(ORCHSchemaORCHMultiUserScore *)self loggableUserIdHash];
-    if (!v20)
+    loggableUserIdHash = [(ORCHSchemaORCHMultiUserScore *)self loggableUserIdHash];
+    if (!loggableUserIdHash)
     {
 
 LABEL_26:
@@ -276,10 +276,10 @@ LABEL_26:
       goto LABEL_24;
     }
 
-    v21 = v20;
-    v22 = [(ORCHSchemaORCHMultiUserScore *)self loggableUserIdHash];
-    v23 = [v4 loggableUserIdHash];
-    v24 = [v22 isEqual:v23];
+    v21 = loggableUserIdHash;
+    loggableUserIdHash2 = [(ORCHSchemaORCHMultiUserScore *)self loggableUserIdHash];
+    loggableUserIdHash3 = [equalCopy loggableUserIdHash];
+    v24 = [loggableUserIdHash2 isEqual:loggableUserIdHash3];
 
     if (v24)
     {
@@ -299,12 +299,12 @@ LABEL_24:
   return v25;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v9 = a3;
-  v4 = [(ORCHSchemaORCHMultiUserScore *)self loggableSharedUserId];
+  toCopy = to;
+  loggableSharedUserId = [(ORCHSchemaORCHMultiUserScore *)self loggableSharedUserId];
 
-  if (v4)
+  if (loggableSharedUserId)
   {
     PBDataWriterWriteStringField();
   }
@@ -314,11 +314,11 @@ LABEL_24:
     PBDataWriterWriteUint32Field();
   }
 
-  v5 = [(ORCHSchemaORCHMultiUserScore *)self userEphemeralId];
+  userEphemeralId = [(ORCHSchemaORCHMultiUserScore *)self userEphemeralId];
 
-  if (v5)
+  if (userEphemeralId)
   {
-    v6 = [(ORCHSchemaORCHMultiUserScore *)self userEphemeralId];
+    userEphemeralId2 = [(ORCHSchemaORCHMultiUserScore *)self userEphemeralId];
     PBDataWriterWriteSubmessage();
   }
 
@@ -327,19 +327,19 @@ LABEL_24:
     PBDataWriterWriteUint32Field();
   }
 
-  v7 = [(ORCHSchemaORCHMultiUserScore *)self loggableUserIdHash];
+  loggableUserIdHash = [(ORCHSchemaORCHMultiUserScore *)self loggableUserIdHash];
 
-  v8 = v9;
-  if (v7)
+  v8 = toCopy;
+  if (loggableUserIdHash)
   {
     PBDataWriterWriteStringField();
-    v8 = v9;
+    v8 = toCopy;
   }
 }
 
-- (void)setHasUserScoreIdHash:(BOOL)a3
+- (void)setHasUserScoreIdHash:(BOOL)hash
 {
-  if (a3)
+  if (hash)
   {
     v3 = 2;
   }
@@ -352,22 +352,22 @@ LABEL_24:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v10.receiver = self;
   v10.super_class = ORCHSchemaORCHMultiUserScore;
-  v5 = [(SISchemaInstrumentationMessage *)&v10 applySensitiveConditionsPolicy:v4];
-  if ([v4 isConditionSet:8])
+  v5 = [(SISchemaInstrumentationMessage *)&v10 applySensitiveConditionsPolicy:policyCopy];
+  if ([policyCopy isConditionSet:8])
   {
     [(ORCHSchemaORCHMultiUserScore *)self deleteLoggableSharedUserId];
   }
 
-  v6 = [(ORCHSchemaORCHMultiUserScore *)self userEphemeralId];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  userEphemeralId = [(ORCHSchemaORCHMultiUserScore *)self userEphemeralId];
+  v7 = [userEphemeralId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(ORCHSchemaORCHMultiUserScore *)self deleteUserEphemeralId];
   }

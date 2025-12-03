@@ -1,25 +1,25 @@
 @interface SISchemaUUFRShownTier1
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (SISchemaUUFRShownTier1)initWithDictionary:(id)a3;
-- (SISchemaUUFRShownTier1)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (SISchemaUUFRShownTier1)initWithDictionary:(id)dictionary;
+- (SISchemaUUFRShownTier1)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SISchemaUUFRShownTier1
 
-- (SISchemaUUFRShownTier1)initWithDictionary:(id)a3
+- (SISchemaUUFRShownTier1)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = SISchemaUUFRShownTier1;
   v5 = [(SISchemaUUFRShownTier1 *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"linkId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"linkId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -27,7 +27,7 @@
       [(SISchemaUUFRShownTier1 *)v5 setLinkId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"displayedSiriDialogOutput"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"displayedSiriDialogOutput"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -41,30 +41,30 @@
   return v5;
 }
 
-- (SISchemaUUFRShownTier1)initWithJSON:(id)a3
+- (SISchemaUUFRShownTier1)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SISchemaUUFRShownTier1 *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(SISchemaUUFRShownTier1 *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(SISchemaUUFRShownTier1 *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -77,57 +77,57 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_displayedSiriDialogOutput)
   {
-    v4 = [(SISchemaUUFRShownTier1 *)self displayedSiriDialogOutput];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"displayedSiriDialogOutput"];
+    displayedSiriDialogOutput = [(SISchemaUUFRShownTier1 *)self displayedSiriDialogOutput];
+    v5 = [displayedSiriDialogOutput copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"displayedSiriDialogOutput"];
   }
 
   if (self->_linkId)
   {
-    v6 = [(SISchemaUUFRShownTier1 *)self linkId];
-    v7 = [v6 dictionaryRepresentation];
-    if (v7)
+    linkId = [(SISchemaUUFRShownTier1 *)self linkId];
+    dictionaryRepresentation = [linkId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v7 forKeyedSubscript:@"linkId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"linkId"];
     }
 
     else
     {
-      v8 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v8 forKeyedSubscript:@"linkId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"linkId"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(SISchemaUUFRShownTier1 *)self linkId];
-  v6 = [v4 linkId];
-  if ((v5 != 0) == (v6 == 0))
+  linkId = [(SISchemaUUFRShownTier1 *)self linkId];
+  linkId2 = [equalCopy linkId];
+  if ((linkId != 0) == (linkId2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(SISchemaUUFRShownTier1 *)self linkId];
-  if (v7)
+  linkId3 = [(SISchemaUUFRShownTier1 *)self linkId];
+  if (linkId3)
   {
-    v8 = v7;
-    v9 = [(SISchemaUUFRShownTier1 *)self linkId];
-    v10 = [v4 linkId];
-    v11 = [v9 isEqual:v10];
+    v8 = linkId3;
+    linkId4 = [(SISchemaUUFRShownTier1 *)self linkId];
+    linkId5 = [equalCopy linkId];
+    v11 = [linkId4 isEqual:linkId5];
 
     if (!v11)
     {
@@ -139,12 +139,12 @@
   {
   }
 
-  v5 = [(SISchemaUUFRShownTier1 *)self displayedSiriDialogOutput];
-  v6 = [v4 displayedSiriDialogOutput];
-  if ((v5 != 0) != (v6 == 0))
+  linkId = [(SISchemaUUFRShownTier1 *)self displayedSiriDialogOutput];
+  linkId2 = [equalCopy displayedSiriDialogOutput];
+  if ((linkId != 0) != (linkId2 == 0))
   {
-    v12 = [(SISchemaUUFRShownTier1 *)self displayedSiriDialogOutput];
-    if (!v12)
+    displayedSiriDialogOutput = [(SISchemaUUFRShownTier1 *)self displayedSiriDialogOutput];
+    if (!displayedSiriDialogOutput)
     {
 
 LABEL_15:
@@ -152,10 +152,10 @@ LABEL_15:
       goto LABEL_13;
     }
 
-    v13 = v12;
-    v14 = [(SISchemaUUFRShownTier1 *)self displayedSiriDialogOutput];
-    v15 = [v4 displayedSiriDialogOutput];
-    v16 = [v14 isEqual:v15];
+    v13 = displayedSiriDialogOutput;
+    displayedSiriDialogOutput2 = [(SISchemaUUFRShownTier1 *)self displayedSiriDialogOutput];
+    displayedSiriDialogOutput3 = [equalCopy displayedSiriDialogOutput];
+    v16 = [displayedSiriDialogOutput2 isEqual:displayedSiriDialogOutput3];
 
     if (v16)
     {
@@ -175,61 +175,61 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v7 = a3;
-  v4 = [(SISchemaUUFRShownTier1 *)self linkId];
+  toCopy = to;
+  linkId = [(SISchemaUUFRShownTier1 *)self linkId];
 
-  if (v4)
+  if (linkId)
   {
-    v5 = [(SISchemaUUFRShownTier1 *)self linkId];
+    linkId2 = [(SISchemaUUFRShownTier1 *)self linkId];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(SISchemaUUFRShownTier1 *)self displayedSiriDialogOutput];
+  displayedSiriDialogOutput = [(SISchemaUUFRShownTier1 *)self displayedSiriDialogOutput];
 
-  if (v6)
+  if (displayedSiriDialogOutput)
   {
     PBDataWriterWriteStringField();
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v10.receiver = self;
   v10.super_class = SISchemaUUFRShownTier1;
-  v5 = [(SISchemaInstrumentationMessage *)&v10 applySensitiveConditionsPolicy:v4];
-  if ([v4 isConditionSet:2])
+  v5 = [(SISchemaInstrumentationMessage *)&v10 applySensitiveConditionsPolicy:policyCopy];
+  if ([policyCopy isConditionSet:2])
   {
     [(SISchemaUUFRShownTier1 *)self deleteDisplayedSiriDialogOutput];
   }
 
-  if ([v4 isConditionSet:4])
+  if ([policyCopy isConditionSet:4])
   {
     [(SISchemaUUFRShownTier1 *)self deleteDisplayedSiriDialogOutput];
   }
 
-  if ([v4 isConditionSet:5])
+  if ([policyCopy isConditionSet:5])
   {
     [(SISchemaUUFRShownTier1 *)self deleteDisplayedSiriDialogOutput];
   }
 
-  if ([v4 isConditionSet:6])
+  if ([policyCopy isConditionSet:6])
   {
     [(SISchemaUUFRShownTier1 *)self deleteDisplayedSiriDialogOutput];
   }
 
-  if ([v4 isConditionSet:7])
+  if ([policyCopy isConditionSet:7])
   {
     [(SISchemaUUFRShownTier1 *)self deleteDisplayedSiriDialogOutput];
   }
 
-  v6 = [(SISchemaUUFRShownTier1 *)self linkId];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  linkId = [(SISchemaUUFRShownTier1 *)self linkId];
+  v7 = [linkId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(SISchemaUUFRShownTier1 *)self deleteLinkId];
   }

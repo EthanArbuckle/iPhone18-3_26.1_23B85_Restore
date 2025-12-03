@@ -1,18 +1,18 @@
 @interface FTTextToSpeechCacheContainerRpcV2
-- (FTTextToSpeechCacheContainerRpcV2)initWithFlatbuffData:(id)a3 root:(const TextToSpeechCacheContainerRpcV2 *)a4 verify:(BOOL)a5;
+- (FTTextToSpeechCacheContainerRpcV2)initWithFlatbuffData:(id)data root:(const TextToSpeechCacheContainerRpcV2 *)root verify:(BOOL)verify;
 - (FTTextToSpeechRequest)cached_request;
 - (FTTextToSpeechResponse)cached_response;
 - (NSString)original_session_id;
-- (Offset<siri::speech::schema_fb::TextToSpeechCacheContainerRpcV2>)addObjectToBuffer:(void *)a3;
+- (Offset<siri::speech::schema_fb::TextToSpeechCacheContainerRpcV2>)addObjectToBuffer:(void *)buffer;
 - (id)flatbuffData;
 @end
 
 @implementation FTTextToSpeechCacheContainerRpcV2
 
-- (FTTextToSpeechCacheContainerRpcV2)initWithFlatbuffData:(id)a3 root:(const TextToSpeechCacheContainerRpcV2 *)a4 verify:(BOOL)a5
+- (FTTextToSpeechCacheContainerRpcV2)initWithFlatbuffData:(id)data root:(const TextToSpeechCacheContainerRpcV2 *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v25.receiver = self;
   v25.super_class = FTTextToSpeechCacheContainerRpcV2;
   v10 = [(FTTextToSpeechCacheContainerRpcV2 *)&v25 init];
@@ -21,35 +21,35 @@
     goto LABEL_13;
   }
 
-  if (!v9 || ![v9 length])
+  if (!dataCopy || ![dataCopy length])
   {
     goto LABEL_14;
   }
 
-  objc_storeStrong(&v10->_data, a3);
-  if (!a4)
+  objc_storeStrong(&v10->_data, data);
+  if (!root)
   {
-    v11 = [(NSData *)v10->_data bytes];
-    a4 = v11 + *v11;
+    bytes = [(NSData *)v10->_data bytes];
+    root = bytes + *bytes;
   }
 
-  v10->_root = a4;
-  if (!v5)
+  v10->_root = root;
+  if (!verifyCopy)
   {
     goto LABEL_13;
   }
 
-  v12 = [(NSData *)v10->_data bytes];
+  bytes2 = [(NSData *)v10->_data bytes];
   v13 = [(NSData *)v10->_data length];
   root = v10->_root;
-  if (root < v12 || root > v12 + v13)
+  if (root < bytes2 || root > bytes2 + v13)
   {
     goto LABEL_14;
   }
 
-  v16 = [(NSData *)v10->_data bytes];
+  bytes3 = [(NSData *)v10->_data bytes];
   v17 = [(NSData *)v10->_data length];
-  v21[0] = v16;
+  v21[0] = bytes3;
   v21[1] = v17;
   v22 = xmmword_233005E20;
   v23 = 0;
@@ -148,33 +148,33 @@ LABEL_13:
   return v3;
 }
 
-- (Offset<siri::speech::schema_fb::TextToSpeechCacheContainerRpcV2>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::schema_fb::TextToSpeechCacheContainerRpcV2>)addObjectToBuffer:(void *)buffer
 {
-  v5 = [(FTTextToSpeechCacheContainerRpcV2 *)self original_session_id];
-  v6 = v5;
-  if (!v5)
+  original_session_id = [(FTTextToSpeechCacheContainerRpcV2 *)self original_session_id];
+  v6 = original_session_id;
+  if (!original_session_id)
   {
-    v5 = &stru_284834138;
+    original_session_id = &stru_284834138;
   }
 
-  v7 = [(__CFString *)v5 UTF8String];
-  v8 = strlen(v7);
-  LODWORD(v7) = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(a3, v7, v8);
+  uTF8String = [(__CFString *)original_session_id UTF8String];
+  v8 = strlen(uTF8String);
+  LODWORD(uTF8String) = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(buffer, uTF8String, v8);
 
-  v9 = [(FTTextToSpeechCacheContainerRpcV2 *)self cached_request];
-  v10 = [v9 addObjectToBuffer:a3];
+  cached_request = [(FTTextToSpeechCacheContainerRpcV2 *)self cached_request];
+  v10 = [cached_request addObjectToBuffer:buffer];
 
-  v11 = [(FTTextToSpeechCacheContainerRpcV2 *)self cached_response];
-  v12 = [v11 addObjectToBuffer:a3];
+  cached_response = [(FTTextToSpeechCacheContainerRpcV2 *)self cached_response];
+  v12 = [cached_response addObjectToBuffer:buffer];
 
-  *(a3 + 70) = 1;
-  v13 = *(a3 + 10);
-  v14 = *(a3 + 8) - *(a3 + 12);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 4, v7);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 6, v10);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 8, v12);
+  *(buffer + 70) = 1;
+  v13 = *(buffer + 10);
+  v14 = *(buffer + 8) - *(buffer + 12);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 4, uTF8String);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 6, v10);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 8, v12);
 
-  return apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(a3, v14 + v13);
+  return apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(buffer, v14 + v13);
 }
 
 - (id)flatbuffData

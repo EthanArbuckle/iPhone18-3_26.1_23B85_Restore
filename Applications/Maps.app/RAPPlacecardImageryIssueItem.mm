@@ -1,8 +1,8 @@
 @interface RAPPlacecardImageryIssueItem
 + (NSArray)defaultIssueItems;
 - (NSString)localizedTitle;
-- (RAPPlacecardImageryIssueItem)initWithType:(unint64_t)a3;
-- (RAPPlacecardImageryIssueItem)initWithType:(unint64_t)a3 overridenText:(id)a4;
+- (RAPPlacecardImageryIssueItem)initWithType:(unint64_t)type;
+- (RAPPlacecardImageryIssueItem)initWithType:(unint64_t)type overridenText:(id)text;
 @end
 
 @implementation RAPPlacecardImageryIssueItem
@@ -33,27 +33,27 @@
   return v3;
 }
 
-- (RAPPlacecardImageryIssueItem)initWithType:(unint64_t)a3
+- (RAPPlacecardImageryIssueItem)initWithType:(unint64_t)type
 {
   v5.receiver = self;
   v5.super_class = RAPPlacecardImageryIssueItem;
   result = [(RAPPlacecardImageryIssueItem *)&v5 init];
   if (result)
   {
-    result->_type = a3;
+    result->_type = type;
   }
 
   return result;
 }
 
-- (RAPPlacecardImageryIssueItem)initWithType:(unint64_t)a3 overridenText:(id)a4
+- (RAPPlacecardImageryIssueItem)initWithType:(unint64_t)type overridenText:(id)text
 {
-  v7 = a4;
-  v8 = [(RAPPlacecardImageryIssueItem *)self initWithType:a3];
+  textCopy = text;
+  v8 = [(RAPPlacecardImageryIssueItem *)self initWithType:type];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_overridenText, a4);
+    objc_storeStrong(&v8->_overridenText, text);
   }
 
   return v9;
@@ -64,8 +64,8 @@
   v2 = objc_opt_new();
   v3 = [NSMutableArray arrayWithArray:&off_1016EDBF8];
   v4 = +[GEOCountryConfiguration sharedConfiguration];
-  v5 = [v4 countryCode];
-  v6 = [v5 isEqualToString:@"KR"];
+  countryCode = [v4 countryCode];
+  v6 = [countryCode isEqualToString:@"KR"];
 
   if (v6)
   {

@@ -1,9 +1,9 @@
 @interface MFPColorAdjust
 - (MFPColorAdjust)init;
 - (void)dealloc;
-- (void)setColorMatrix:(MFPColorMatrix *)a3;
-- (void)setGrayMatrix:(MFPColorMatrix *)a3;
-- (void)setTransparentLow:(id)a3 high:(id)a4;
+- (void)setColorMatrix:(MFPColorMatrix *)matrix;
+- (void)setGrayMatrix:(MFPColorMatrix *)matrix;
+- (void)setTransparentLow:(id)low high:(id)high;
 @end
 
 @implementation MFPColorAdjust
@@ -43,38 +43,38 @@
   [(MFPColorAdjust *)&v5 dealloc];
 }
 
-- (void)setColorMatrix:(MFPColorMatrix *)a3
+- (void)setColorMatrix:(MFPColorMatrix *)matrix
 {
   mColorMatrix = self->mColorMatrix;
   if (mColorMatrix)
   {
-    MEMORY[0x25F897000](mColorMatrix, 0x1000C4093FC706DLL, a3);
+    MEMORY[0x25F897000](mColorMatrix, 0x1000C4093FC706DLL, matrix);
   }
 
   operator new();
 }
 
-- (void)setGrayMatrix:(MFPColorMatrix *)a3
+- (void)setGrayMatrix:(MFPColorMatrix *)matrix
 {
   mGrayMatrix = self->mGrayMatrix;
   if (mGrayMatrix)
   {
-    MEMORY[0x25F897000](mGrayMatrix, 0x1000C4093FC706DLL, a3);
+    MEMORY[0x25F897000](mGrayMatrix, 0x1000C4093FC706DLL, matrix);
   }
 
   operator new();
 }
 
-- (void)setTransparentLow:(id)a3 high:(id)a4
+- (void)setTransparentLow:(id)low high:(id)high
 {
-  v6 = a3;
-  v7 = a4;
+  lowCopy = low;
+  highCopy = high;
   mTransparentRangeLow = self->mTransparentRangeLow;
-  self->mTransparentRangeLow = v6;
-  v10 = v6;
+  self->mTransparentRangeLow = lowCopy;
+  v10 = lowCopy;
 
   mTransparentRangeHigh = self->mTransparentRangeHigh;
-  self->mTransparentRangeHigh = v7;
+  self->mTransparentRangeHigh = highCopy;
 }
 
 @end

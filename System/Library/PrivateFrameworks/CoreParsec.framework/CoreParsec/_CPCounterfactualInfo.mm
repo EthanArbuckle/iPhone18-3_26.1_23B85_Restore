@@ -1,17 +1,17 @@
 @interface _CPCounterfactualInfo
-- (BOOL)isEqual:(id)a3;
-- (void)writeTo:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _CPCounterfactualInfo
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && (cfDiffered = self->_cfDiffered, cfDiffered == objc_msgSend(v4, "cfDiffered")) && (cfUsed = self->_cfUsed, cfUsed == objc_msgSend(v4, "cfUsed")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && (cfDiffered = self->_cfDiffered, cfDiffered == objc_msgSend(equalCopy, "cfDiffered")) && (cfUsed = self->_cfUsed, cfUsed == objc_msgSend(equalCopy, "cfUsed")))
   {
     cfError = self->_cfError;
-    v8 = cfError == [v4 cfError];
+    v8 = cfError == [equalCopy cfError];
   }
 
   else
@@ -22,9 +22,9 @@
   return v8;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  a3;
+  to;
   if ([(_CPCounterfactualInfo *)self cfDiffered])
   {
     cfDiffered = self->_cfDiffered;

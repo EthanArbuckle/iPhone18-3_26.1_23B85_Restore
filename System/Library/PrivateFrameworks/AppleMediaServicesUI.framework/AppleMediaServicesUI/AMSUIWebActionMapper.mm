@@ -1,22 +1,22 @@
 @interface AMSUIWebActionMapper
-+ (id)actionFromJSObject:(id)a3 context:(id)a4;
++ (id)actionFromJSObject:(id)object context:(id)context;
 @end
 
 @implementation AMSUIWebActionMapper
 
-+ (id)actionFromJSObject:(id)a3 context:(id)a4
++ (id)actionFromJSObject:(id)object context:(id)context
 {
   v15[58] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if ([AMSUIActionRunner canHandle:v5 context:0])
+  objectCopy = object;
+  contextCopy = context;
+  if ([AMSUIActionRunner canHandle:objectCopy context:0])
   {
-    v7 = [[AMSUIWebActionRunnerAction alloc] initWithJSObject:v5 context:v6];
+    v7 = [[AMSUIWebActionRunnerAction alloc] initWithJSObject:objectCopy context:contextCopy];
   }
 
   else
   {
-    v8 = [v5 objectForKeyedSubscript:@"actionClass"];
+    v8 = [objectCopy objectForKeyedSubscript:@"actionClass"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -148,7 +148,7 @@
     v11 = [v10 objectForKeyedSubscript:v9];
     if (v11)
     {
-      v7 = [[v11 alloc] initWithJSObject:v5 context:v6];
+      v7 = [[v11 alloc] initWithJSObject:objectCopy context:contextCopy];
     }
 
     else

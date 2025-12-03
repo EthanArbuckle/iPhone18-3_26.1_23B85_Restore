@@ -9,7 +9,7 @@
 - (void)setInternal:()InternalMessages
 {
   v2 = [MEMORY[0x277CCABB0] numberWithBool:?];
-  [a1 setUserInfoValue:v2 forKey:@"internal"];
+  [self setUserInfoValue:v2 forKey:@"internal"];
 }
 
 + (id)internalMessageWithName:()InternalMessages destination:messagePayload:

@@ -1,19 +1,19 @@
 @interface _SBDisplayItemSingleSizeGrid
 - (CGSize)maxSize;
 - (CGSize)minSize;
-- (CGSize)nearestGridSizeForSize:(CGSize)a3 countOnStage:(unint64_t)a4;
-- (CGSize)sizeAtIndexFromFullWidthForBounds:(unint64_t)a3;
-- (_SBDisplayItemSingleSizeGrid)initWithSize:(CGSize)a3;
+- (CGSize)nearestGridSizeForSize:(CGSize)size countOnStage:(unint64_t)stage;
+- (CGSize)sizeAtIndexFromFullWidthForBounds:(unint64_t)bounds;
+- (_SBDisplayItemSingleSizeGrid)initWithSize:(CGSize)size;
 - (id)allHeights;
 - (id)allWidths;
 @end
 
 @implementation _SBDisplayItemSingleSizeGrid
 
-- (_SBDisplayItemSingleSizeGrid)initWithSize:(CGSize)a3
+- (_SBDisplayItemSingleSizeGrid)initWithSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v6.receiver = self;
   v6.super_class = _SBDisplayItemSingleSizeGrid;
   result = [(_SBDisplayItemSingleSizeGrid *)&v6 init];
@@ -26,7 +26,7 @@
   return result;
 }
 
-- (CGSize)nearestGridSizeForSize:(CGSize)a3 countOnStage:(unint64_t)a4
+- (CGSize)nearestGridSizeForSize:(CGSize)size countOnStage:(unint64_t)stage
 {
   width = self->_size.width;
   height = self->_size.height;
@@ -53,7 +53,7 @@
   return result;
 }
 
-- (CGSize)sizeAtIndexFromFullWidthForBounds:(unint64_t)a3
+- (CGSize)sizeAtIndexFromFullWidthForBounds:(unint64_t)bounds
 {
   width = self->_size.width;
   height = self->_size.height;

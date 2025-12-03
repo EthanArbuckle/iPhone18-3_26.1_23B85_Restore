@@ -1,36 +1,36 @@
 @interface MapsMenuButton
-- (MapsMenuButton)initWithDelegate:(id)a3;
-- (void)contextMenuInteraction:(id)a3 willEndForConfiguration:(id)a4 animator:(id)a5;
+- (MapsMenuButton)initWithDelegate:(id)delegate;
+- (void)contextMenuInteraction:(id)interaction willEndForConfiguration:(id)configuration animator:(id)animator;
 @end
 
 @implementation MapsMenuButton
 
-- (void)contextMenuInteraction:(id)a3 willEndForConfiguration:(id)a4 animator:(id)a5
+- (void)contextMenuInteraction:(id)interaction willEndForConfiguration:(id)configuration animator:(id)animator
 {
-  v8 = a5;
+  animatorCopy = animator;
   v11.receiver = self;
   v11.super_class = MapsMenuButton;
-  [(MapsMenuButton *)&v11 contextMenuInteraction:a3 willEndForConfiguration:a4 animator:v8];
+  [(MapsMenuButton *)&v11 contextMenuInteraction:interaction willEndForConfiguration:configuration animator:animatorCopy];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  LOBYTE(a3) = objc_opt_respondsToSelector();
+  LOBYTE(interaction) = objc_opt_respondsToSelector();
 
-  if (a3)
+  if (interaction)
   {
     v10 = objc_loadWeakRetained(&self->_delegate);
-    [v10 menuWillDismissWithAnimator:v8];
+    [v10 menuWillDismissWithAnimator:animatorCopy];
   }
 }
 
-- (MapsMenuButton)initWithDelegate:(id)a3
+- (MapsMenuButton)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v8.receiver = self;
   v8.super_class = MapsMenuButton;
   v5 = [(MapsMenuButton *)&v8 initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
   }
 
   return v6;

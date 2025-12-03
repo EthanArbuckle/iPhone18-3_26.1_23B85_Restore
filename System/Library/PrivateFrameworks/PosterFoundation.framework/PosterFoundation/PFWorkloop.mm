@@ -1,9 +1,9 @@
 @interface PFWorkloop
 + (OS_dispatch_workloop)sharedWorkloop;
 + (OS_dispatch_workloop)snapshotWorkloop;
-+ (id)concurrentQueueTargetingWorkloop:(id)a3 label:(id)a4 withQoS:(unsigned int)a5;
-+ (id)serialQueueTargetingSharedWorkloop:(id)a3;
-+ (id)serialQueueTargetingWorkloop:(id)a3 label:(id)a4 withQoS:(unsigned int)a5;
++ (id)concurrentQueueTargetingWorkloop:(id)workloop label:(id)label withQoS:(unsigned int)s;
++ (id)serialQueueTargetingSharedWorkloop:(id)workloop;
++ (id)serialQueueTargetingWorkloop:(id)workloop label:(id)label withQoS:(unsigned int)s;
 @end
 
 @implementation PFWorkloop
@@ -58,36 +58,36 @@ void __30__PFWorkloop_snapshotWorkloop__block_invoke()
   dispatch_activate(v2);
 }
 
-+ (id)serialQueueTargetingSharedWorkloop:(id)a3
++ (id)serialQueueTargetingSharedWorkloop:(id)workloop
 {
-  v3 = [a3 UTF8String];
+  uTF8String = [workloop UTF8String];
   v4 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
   v5 = +[PFWorkloop sharedWorkloop];
-  v6 = dispatch_queue_create_with_target_V2(v3, v4, v5);
+  v6 = dispatch_queue_create_with_target_V2(uTF8String, v4, v5);
 
   return v6;
 }
 
-+ (id)serialQueueTargetingWorkloop:(id)a3 label:(id)a4 withQoS:(unsigned int)a5
++ (id)serialQueueTargetingWorkloop:(id)workloop label:(id)label withQoS:(unsigned int)s
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [a4 UTF8String];
+  labelCopy = label;
+  workloopCopy = workloop;
+  uTF8String = [label UTF8String];
   v11 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-  v12 = dispatch_queue_attr_make_with_qos_class(v11, a5, 0);
-  v13 = dispatch_queue_create_with_target_V2(v10, v12, v9);
+  v12 = dispatch_queue_attr_make_with_qos_class(v11, s, 0);
+  v13 = dispatch_queue_create_with_target_V2(uTF8String, v12, workloopCopy);
 
   return v13;
 }
 
-+ (id)concurrentQueueTargetingWorkloop:(id)a3 label:(id)a4 withQoS:(unsigned int)a5
++ (id)concurrentQueueTargetingWorkloop:(id)workloop label:(id)label withQoS:(unsigned int)s
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [a4 UTF8String];
+  labelCopy = label;
+  workloopCopy = workloop;
+  uTF8String = [label UTF8String];
   v11 = dispatch_queue_attr_make_with_autorelease_frequency(MEMORY[0x1E69E96A8], DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-  v12 = dispatch_queue_attr_make_with_qos_class(v11, a5, 0);
-  v13 = dispatch_queue_create_with_target_V2(v10, v12, v9);
+  v12 = dispatch_queue_attr_make_with_qos_class(v11, s, 0);
+  v13 = dispatch_queue_create_with_target_V2(uTF8String, v12, workloopCopy);
 
   return v13;
 }

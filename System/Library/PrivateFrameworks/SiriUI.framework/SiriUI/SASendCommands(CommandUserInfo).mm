@@ -13,8 +13,8 @@
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [a1 commands];
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  commands = [self commands];
+  v7 = [commands countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = v7;
@@ -25,7 +25,7 @@
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(commands);
         }
 
         v11 = *(*(&v13 + 1) + 8 * i);
@@ -33,14 +33,14 @@
         [v5 addObject:v11];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v8 = [commands countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v8);
   }
 
   v12 = [v5 copy];
-  [a1 setCommands:v12];
+  [self setCommands:v12];
 }
 
 @end

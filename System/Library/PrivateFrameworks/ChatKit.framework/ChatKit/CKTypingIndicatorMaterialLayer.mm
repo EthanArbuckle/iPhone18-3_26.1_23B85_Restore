@@ -1,11 +1,11 @@
 @interface CKTypingIndicatorMaterialLayer
-- (_TtC7ChatKitP33_874D58ACA4552234FF592E04B3E283C730CKTypingIndicatorMaterialLayer)initWithCoder:(id)a3;
+- (_TtC7ChatKitP33_874D58ACA4552234FF592E04B3E283C730CKTypingIndicatorMaterialLayer)initWithCoder:(id)coder;
 - (void)layoutSublayers;
 @end
 
 @implementation CKTypingIndicatorMaterialLayer
 
-- (_TtC7ChatKitP33_874D58ACA4552234FF592E04B3E283C730CKTypingIndicatorMaterialLayer)initWithCoder:(id)a3
+- (_TtC7ChatKitP33_874D58ACA4552234FF592E04B3E283C730CKTypingIndicatorMaterialLayer)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC7ChatKitP33_874D58ACA4552234FF592E04B3E283C730CKTypingIndicatorMaterialLayer_material;
   v5 = sub_190D56B90();
@@ -17,7 +17,7 @@
 
 - (void)layoutSublayers
 {
-  v2 = self;
+  selfCopy = self;
   sub_1909A29E8();
 }
 

@@ -6,13 +6,13 @@
 
 - (BOOL)addAuthHeader
 {
-  v2 = self;
+  selfCopy = self;
   if (![(MSDFMHSessionTaskInfo *)self useBAAAuthentication])
   {
-    v9.receiver = v2;
+    v9.receiver = selfCopy;
     v9.super_class = MSDFMHSessionTaskInfo;
-    LOBYTE(v2) = [(MSDHubSessionTaskInfo *)&v9 addAuthHeader];
-    return v2;
+    LOBYTE(selfCopy) = [(MSDHubSessionTaskInfo *)&v9 addAuthHeader];
+    return selfCopy;
   }
 
   v3 = +[MSDBAAInterface sharedInstance];
@@ -24,17 +24,17 @@
       sub_1000D14BC();
     }
 
-    LOBYTE(v2) = 0;
+    LOBYTE(selfCopy) = 0;
     goto LABEL_13;
   }
 
-  v4 = [(MSDSessionTaskInfo *)v2 request];
-  v5 = [(MSDSessionTaskInfo *)v2 postData];
+  request = [(MSDSessionTaskInfo *)selfCopy request];
+  postData = [(MSDSessionTaskInfo *)selfCopy postData];
   v8 = 0;
-  LODWORD(v2) = [v3 addBAAAuthenticationHeadersToRequest:v4 withBody:v5 error:&v8];
+  LODWORD(selfCopy) = [v3 addBAAAuthenticationHeadersToRequest:request withBody:postData error:&v8];
   v6 = v8;
 
-  if (!v2 || v6)
+  if (!selfCopy || v6)
   {
     sub_1000D14F8();
 LABEL_13:
@@ -42,10 +42,10 @@ LABEL_13:
     goto LABEL_6;
   }
 
-  LOBYTE(v2) = 1;
+  LOBYTE(selfCopy) = 1;
 LABEL_6:
 
-  return v2;
+  return selfCopy;
 }
 
 @end

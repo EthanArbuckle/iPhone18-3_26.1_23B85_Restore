@@ -2,23 +2,23 @@
 + (id)featuredImageFetchQueue;
 - (BOOL)_shouldShowContent;
 - (BOOL)hasAttachmentImage;
-- (NCDigestFeaturedNotificationContentProvider)initWithNotificationRequest:(id)a3 groupCount:(unint64_t)a4;
+- (NCDigestFeaturedNotificationContentProvider)initWithNotificationRequest:(id)request groupCount:(unint64_t)count;
 - (NCNotificationListComponentDelegate)listComponentDelegate;
 - (id)primaryText;
 - (id)thumbnail;
-- (void)fetchFeaturedAttachmentImageWithSizeRatio:(double)a3 completion:(id)a4;
+- (void)fetchFeaturedAttachmentImageWithSizeRatio:(double)ratio completion:(id)completion;
 @end
 
 @implementation NCDigestFeaturedNotificationContentProvider
 
-- (NCDigestFeaturedNotificationContentProvider)initWithNotificationRequest:(id)a3 groupCount:(unint64_t)a4
+- (NCDigestFeaturedNotificationContentProvider)initWithNotificationRequest:(id)request groupCount:(unint64_t)count
 {
   v6.receiver = self;
   v6.super_class = NCDigestFeaturedNotificationContentProvider;
-  result = [(NCNotificationRequestCoalescingContentProvider *)&v6 initWithNotificationRequest:a3];
+  result = [(NCNotificationRequestCoalescingContentProvider *)&v6 initWithNotificationRequest:request];
   if (result)
   {
-    result->_groupCount = a4;
+    result->_groupCount = count;
   }
 
   return result;
@@ -48,21 +48,21 @@ void __70__NCDigestFeaturedNotificationContentProvider_featuredImageFetchQueue__
 {
   v9.receiver = self;
   v9.super_class = NCDigestFeaturedNotificationContentProvider;
-  v3 = [(NCNotificationRequestCoalescingContentProvider *)&v9 primaryText];
-  v4 = v3;
-  if (v3)
+  primaryText = [(NCNotificationRequestCoalescingContentProvider *)&v9 primaryText];
+  v4 = primaryText;
+  if (primaryText)
   {
-    v5 = v3;
+    defaultHeader = primaryText;
   }
 
   else
   {
-    v6 = [(NCNotificationRequestCoalescingContentProvider *)self notificationRequest];
-    v7 = [v6 content];
-    v5 = [v7 defaultHeader];
+    notificationRequest = [(NCNotificationRequestCoalescingContentProvider *)self notificationRequest];
+    content = [notificationRequest content];
+    defaultHeader = [content defaultHeader];
   }
 
-  return v5;
+  return defaultHeader;
 }
 
 - (id)thumbnail
@@ -70,28 +70,28 @@ void __70__NCDigestFeaturedNotificationContentProvider_featuredImageFetchQueue__
   cachedFeaturedAttachmentImage = self->_cachedFeaturedAttachmentImage;
   if (cachedFeaturedAttachmentImage)
   {
-    v3 = cachedFeaturedAttachmentImage;
+    thumbnail = cachedFeaturedAttachmentImage;
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = NCDigestFeaturedNotificationContentProvider;
-    v3 = [(NCNotificationRequestCoalescingContentProvider *)&v5 thumbnail];
+    thumbnail = [(NCNotificationRequestCoalescingContentProvider *)&v5 thumbnail];
   }
 
-  return v3;
+  return thumbnail;
 }
 
 - (BOOL)hasAttachmentImage
 {
-  v2 = [(NCNotificationRequestCoalescingContentProvider *)self notificationRequest];
-  v3 = [v2 content];
-  v4 = [v3 attachmentImage];
+  notificationRequest = [(NCNotificationRequestCoalescingContentProvider *)self notificationRequest];
+  content = [notificationRequest content];
+  attachmentImage = [content attachmentImage];
 
-  if (v4)
+  if (attachmentImage)
   {
-    v5 = [v4 isSymbolImage] ^ 1;
+    v5 = [attachmentImage isSymbolImage] ^ 1;
   }
 
   else
@@ -102,29 +102,29 @@ void __70__NCDigestFeaturedNotificationContentProvider_featuredImageFetchQueue__
   return v5;
 }
 
-- (void)fetchFeaturedAttachmentImageWithSizeRatio:(double)a3 completion:(id)a4
+- (void)fetchFeaturedAttachmentImageWithSizeRatio:(double)ratio completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   if ([(NCDigestFeaturedNotificationContentProvider *)self _shouldShowContent])
   {
-    if (self->_cachedFeaturedAttachmentImage && ([(NCDigestFeaturedNotificationContentProvider *)self cachedImageSizeRatio], v7 == a3))
+    if (self->_cachedFeaturedAttachmentImage && ([(NCDigestFeaturedNotificationContentProvider *)self cachedImageSizeRatio], v7 == ratio))
     {
-      v6[2](v6, self->_cachedFeaturedAttachmentImage);
+      completionCopy[2](completionCopy, self->_cachedFeaturedAttachmentImage);
     }
 
     else
     {
       objc_initWeak(&location, self);
-      v8 = [objc_opt_class() featuredImageFetchQueue];
+      featuredImageFetchQueue = [objc_opt_class() featuredImageFetchQueue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __100__NCDigestFeaturedNotificationContentProvider_fetchFeaturedAttachmentImageWithSizeRatio_completion___block_invoke;
       block[3] = &unk_278370D20;
-      v11[1] = *&a3;
+      v11[1] = *&ratio;
       block[4] = self;
       objc_copyWeak(v11, &location);
-      v10 = v6;
-      dispatch_async(v8, block);
+      v10 = completionCopy;
+      dispatch_async(featuredImageFetchQueue, block);
 
       objc_destroyWeak(v11);
       objc_destroyWeak(&location);
@@ -133,7 +133,7 @@ void __70__NCDigestFeaturedNotificationContentProvider_featuredImageFetchQueue__
 
   else
   {
-    v6[2](v6, 0);
+    completionCopy[2](completionCopy, 0);
   }
 }
 
@@ -181,16 +181,16 @@ void __100__NCDigestFeaturedNotificationContentProvider_fetchFeaturedAttachmentI
 
 - (BOOL)_shouldShowContent
 {
-  v3 = [(NCNotificationRequestCoalescingContentProvider *)self notificationRequest];
-  v4 = [v3 options];
-  v5 = [v4 contentPreviewSetting];
+  notificationRequest = [(NCNotificationRequestCoalescingContentProvider *)self notificationRequest];
+  options = [notificationRequest options];
+  contentPreviewSetting = [options contentPreviewSetting];
 
-  if (!v5)
+  if (!contentPreviewSetting)
   {
     return 1;
   }
 
-  if (v5 != 1)
+  if (contentPreviewSetting != 1)
   {
     return 0;
   }

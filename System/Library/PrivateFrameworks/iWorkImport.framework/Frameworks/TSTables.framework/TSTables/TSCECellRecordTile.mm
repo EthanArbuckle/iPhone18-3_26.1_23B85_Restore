@@ -1,54 +1,54 @@
 @interface TSCECellRecordTile
-+ (int)compareTilesBefore:(id)a3 after:(id)a4;
-- (BOOL)applyBlockToRecords:(unint64_t)a3 doWillModify:(BOOL)a4 block:(id)a5;
-- (BOOL)applyBlockToSortedRecords:(unint64_t)a3 doWillModify:(BOOL)a4 block:(id)a5;
-- (BOOL)insertCellRecord:(TSCECellRecord *)a3 cellDependencies:(id)a4;
-- (BOOL)intersectsRange:(TSCERangeCoordinate)a3;
-- (BOOL)replaceCellRecord:(TSCECellRecord *)a3 cellDependencies:(id)a4;
-- (TSCECellRecord)findCellRecord:(TSUCellCoord)a3;
-- (TSCECellRecordTile)initWithOwnerId:(unsigned __int16)a3 tileColumnBegin:(unsigned __int16)a4 tileRowBegin:(unsigned int)a5 context:(id)a6;
++ (int)compareTilesBefore:(id)before after:(id)after;
+- (BOOL)applyBlockToRecords:(unint64_t)records doWillModify:(BOOL)modify block:(id)block;
+- (BOOL)applyBlockToSortedRecords:(unint64_t)records doWillModify:(BOOL)modify block:(id)block;
+- (BOOL)insertCellRecord:(TSCECellRecord *)record cellDependencies:(id)dependencies;
+- (BOOL)intersectsRange:(TSCERangeCoordinate)range;
+- (BOOL)replaceCellRecord:(TSCECellRecord *)record cellDependencies:(id)dependencies;
+- (TSCECellRecord)findCellRecord:(TSUCellCoord)record;
+- (TSCECellRecordTile)initWithOwnerId:(unsigned __int16)id tileColumnBegin:(unsigned __int16)begin tileRowBegin:(unsigned int)rowBegin context:(id)context;
 - (id).cxx_construct;
-- (unint64_t)cellRecordIndexInSortedSection:(unsigned __int16)a3 startingRow:(unsigned int)a4 beginIndex:(unint64_t)a5 endIndex:(unint64_t)a6 guessIndex:(unint64_t)a7;
+- (unint64_t)cellRecordIndexInSortedSection:(unsigned __int16)section startingRow:(unsigned int)row beginIndex:(unint64_t)index endIndex:(unint64_t)endIndex guessIndex:(unint64_t)guessIndex;
 - (unint64_t)memoryUseEstimate;
 - (unsigned)tileColumnEnd;
 - (unsigned)tileRowEnd;
 - (vector<TSCECellRecord)sortedCellRecordVector;
-- (void)appendExpandedEdgeToArchive:(void *)a3 edge:(const TSCEInternalCellReference *)a4;
-- (void)applyBlockToRecordsInRange:(TSCERangeCoordinate)a3 cellRestrictions:(unint64_t)a4 doWillModify:(BOOL)a5 block:(id)a6;
-- (void)collectDependencies:(id)a3 cellDependencies:(id)a4;
+- (void)appendExpandedEdgeToArchive:(void *)archive edge:(const TSCEInternalCellReference *)edge;
+- (void)applyBlockToRecordsInRange:(TSCERangeCoordinate)range cellRestrictions:(unint64_t)restrictions doWillModify:(BOOL)modify block:(id)block;
+- (void)collectDependencies:(id)dependencies cellDependencies:(id)cellDependencies;
 - (void)dealloc;
-- (void)deleteCellRecord:(TSCECellRecord *)a3 cellDependencies:(id)a4;
-- (void)encodeCellRecordsToArchive:(void *)a3;
+- (void)deleteCellRecord:(TSCECellRecord *)record cellDependencies:(id)dependencies;
+- (void)encodeCellRecordsToArchive:(void *)archive;
 - (void)incrementPruningNeededRecords;
-- (void)loadFromUnarchiver:(id)a3;
-- (void)pruneEmptyRecords:(id)a3;
-- (void)removeCellRecord:(TSUCellCoord)a3 cellDependencies:(id)a4;
-- (void)saveToArchiver:(id)a3;
+- (void)loadFromUnarchiver:(id)unarchiver;
+- (void)pruneEmptyRecords:(id)records;
+- (void)removeCellRecord:(TSUCellCoord)record cellDependencies:(id)dependencies;
+- (void)saveToArchiver:(id)archiver;
 - (void)sortCellRecords;
-- (void)unpackAfterUnarchiveForCellDependencies:(id)a3;
+- (void)unpackAfterUnarchiveForCellDependencies:(id)dependencies;
 @end
 
 @implementation TSCECellRecordTile
 
-+ (int)compareTilesBefore:(id)a3 after:(id)a4
++ (int)compareTilesBefore:(id)before after:(id)after
 {
-  v5 = a3;
-  v6 = a4;
-  v11 = objc_msgSend_tileRowBegin(v5, v7, v8, v9, v10);
-  if (v11 >= objc_msgSend_tileRowBegin(v6, v12, v13, v14, v15))
+  beforeCopy = before;
+  afterCopy = after;
+  v11 = objc_msgSend_tileRowBegin(beforeCopy, v7, v8, v9, v10);
+  if (v11 >= objc_msgSend_tileRowBegin(afterCopy, v12, v13, v14, v15))
   {
-    v21 = objc_msgSend_tileRowBegin(v5, v16, v17, v18, v19);
-    if (v21 > objc_msgSend_tileRowBegin(v6, v22, v23, v24, v25))
+    v21 = objc_msgSend_tileRowBegin(beforeCopy, v16, v17, v18, v19);
+    if (v21 > objc_msgSend_tileRowBegin(afterCopy, v22, v23, v24, v25))
     {
       v20 = 1;
       goto LABEL_7;
     }
 
-    v30 = objc_msgSend_tileColumnBegin(v5, v26, v27, v28, v29);
-    if (v30 >= objc_msgSend_tileColumnBegin(v6, v31, v32, v33, v34))
+    v30 = objc_msgSend_tileColumnBegin(beforeCopy, v26, v27, v28, v29);
+    if (v30 >= objc_msgSend_tileColumnBegin(afterCopy, v31, v32, v33, v34))
     {
-      v39 = objc_msgSend_tileColumnBegin(v5, v35, v36, v37, v38);
-      v20 = v39 > objc_msgSend_tileColumnBegin(v6, v40, v41, v42, v43);
+      v39 = objc_msgSend_tileColumnBegin(beforeCopy, v35, v36, v37, v38);
+      v20 = v39 > objc_msgSend_tileColumnBegin(afterCopy, v40, v41, v42, v43);
       goto LABEL_7;
     }
   }
@@ -59,18 +59,18 @@ LABEL_7:
   return v20;
 }
 
-- (TSCECellRecordTile)initWithOwnerId:(unsigned __int16)a3 tileColumnBegin:(unsigned __int16)a4 tileRowBegin:(unsigned int)a5 context:(id)a6
+- (TSCECellRecordTile)initWithOwnerId:(unsigned __int16)id tileColumnBegin:(unsigned __int16)begin tileRowBegin:(unsigned int)rowBegin context:(id)context
 {
-  v10 = a6;
+  contextCopy = context;
   v14.receiver = self;
   v14.super_class = TSCECellRecordTile;
-  v11 = [(TSCECellRecordTile *)&v14 initWithContext:v10];
+  v11 = [(TSCECellRecordTile *)&v14 initWithContext:contextCopy];
   v12 = v11;
   if (v11)
   {
-    v11->_internalOwnerID = a3;
-    v11->_tileColumnBegin = a4;
-    v11->_tileRowBegin = a5;
+    v11->_internalOwnerID = id;
+    v11->_tileColumnBegin = begin;
+    v11->_tileRowBegin = rowBegin;
     v11->_unsortedCellsSize = 0;
     v11->_pruningNeededRecords = 0;
     sub_22111B7CC(&v11->_cellRecords.__begin_, 0x80uLL);
@@ -170,7 +170,7 @@ LABEL_7:
   self->_pruningNeededRecords = v3;
 }
 
-- (TSCECellRecord)findCellRecord:(TSUCellCoord)a3
+- (TSCECellRecord)findCellRecord:(TSUCellCoord)record
 {
   begin = self->_cellRecords.__begin_;
   end = self->_cellRecords.__end_;
@@ -190,15 +190,15 @@ LABEL_7:
       v9 = v8 + (v7 - v8) / 2;
       result = begin[v9];
       var4 = result->var4;
-      if (var4 >= a3.row)
+      if (var4 >= record.row)
       {
-        if (var4 > a3.row)
+        if (var4 > record.row)
         {
           goto LABEL_9;
         }
 
         var5 = result->var5;
-        if (a3.column <= var5)
+        if (record.column <= var5)
         {
           break;
         }
@@ -212,7 +212,7 @@ LABEL_10:
       }
     }
 
-    if (a3.column >= var5)
+    if (record.column >= var5)
     {
       return result;
     }
@@ -233,7 +233,7 @@ LABEL_11:
   while (1)
   {
     result = begin[v15];
-    if (result->var4 == a3.row && result->var5 == a3.column)
+    if (result->var4 == record.row && result->var5 == record.column)
     {
       break;
     }
@@ -247,50 +247,50 @@ LABEL_11:
   return result;
 }
 
-- (unint64_t)cellRecordIndexInSortedSection:(unsigned __int16)a3 startingRow:(unsigned int)a4 beginIndex:(unint64_t)a5 endIndex:(unint64_t)a6 guessIndex:(unint64_t)a7
+- (unint64_t)cellRecordIndexInSortedSection:(unsigned __int16)section startingRow:(unsigned int)row beginIndex:(unint64_t)index endIndex:(unint64_t)endIndex guessIndex:(unint64_t)guessIndex
 {
-  if (a6 > a5)
+  if (endIndex > index)
   {
-    v8 = a7 < a5 || a7 == 0 || a7 >= a6;
-    v9 = a5 + ((a6 - a5) >> 1);
+    v8 = guessIndex < index || guessIndex == 0 || guessIndex >= endIndex;
+    endIndexCopy2 = index + ((endIndex - index) >> 1);
     if (!v8)
     {
-      v9 = a7;
+      endIndexCopy2 = guessIndex;
     }
 
     begin = self->_cellRecords.__begin_;
-    v11 = a6;
+    endIndexCopy = endIndex;
     while (1)
     {
-      v12 = begin[v9];
+      v12 = begin[endIndexCopy2];
       var4 = v12->var4;
-      if (var4 >= a4)
+      if (var4 >= row)
       {
-        if (var4 > a4)
+        if (var4 > row)
         {
-          a6 = v9;
+          endIndex = endIndexCopy2;
           goto LABEL_17;
         }
 
         var5 = v12->var5;
-        if (var5 >= a3)
+        if (var5 >= section)
         {
-          a6 = v9;
-          if (var5 <= a3)
+          endIndex = endIndexCopy2;
+          if (var5 <= section)
           {
-            return v9;
+            return endIndexCopy2;
           }
 
           goto LABEL_17;
         }
       }
 
-      a5 = v9 + 1;
-      v9 = v11;
+      index = endIndexCopy2 + 1;
+      endIndexCopy2 = endIndexCopy;
 LABEL_17:
-      v11 = v9;
-      v15 = v9 > a5;
-      v9 = a5 + ((v9 - a5) >> 1);
+      endIndexCopy = endIndexCopy2;
+      v15 = endIndexCopy2 > index;
+      endIndexCopy2 = index + ((endIndexCopy2 - index) >> 1);
       if (!v15)
       {
         goto LABEL_20;
@@ -300,7 +300,7 @@ LABEL_17:
 
   begin = self->_cellRecords.__begin_;
 LABEL_20:
-  if (a6 >= self->_cellRecords.__end_ - begin - self->_unsortedCellsSize)
+  if (endIndex >= self->_cellRecords.__end_ - begin - self->_unsortedCellsSize)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
   }
@@ -308,34 +308,34 @@ LABEL_20:
   v16 = begin - 1;
   do
   {
-    v9 = a6;
-    if (!a6)
+    endIndexCopy2 = endIndex;
+    if (!endIndex)
     {
       break;
     }
 
-    v17 = v16[a6];
-    if (v17->var4 < a4)
+    v17 = v16[endIndex];
+    if (v17->var4 < row)
     {
       break;
     }
 
-    --a6;
+    --endIndex;
   }
 
-  while (v17->var5 >= a3);
-  return v9;
+  while (v17->var5 >= section);
+  return endIndexCopy2;
 }
 
-- (BOOL)intersectsRange:(TSCERangeCoordinate)a3
+- (BOOL)intersectsRange:(TSCERangeCoordinate)range
 {
-  bottomRight = a3._bottomRight;
-  column = a3._topLeft.column;
-  v7 = *&a3._topLeft & 0xFFFF00000000;
-  v8 = *&a3._bottomRight & 0xFFFF00000000;
-  if (a3._topLeft.row == 0x7FFFFFFFLL && v7 != 0x7FFF00000000 && v8 != 0x7FFF00000000 && a3._bottomRight.row == 0x7FFFFFFFLL)
+  bottomRight = range._bottomRight;
+  column = range._topLeft.column;
+  v7 = *&range._topLeft & 0xFFFF00000000;
+  v8 = *&range._bottomRight & 0xFFFF00000000;
+  if (range._topLeft.row == 0x7FFFFFFFLL && v7 != 0x7FFF00000000 && v8 != 0x7FFF00000000 && range._bottomRight.row == 0x7FFFFFFFLL)
   {
-    if (objc_msgSend_tileRowEnd(self, a2, *&a3._topLeft, *&a3._bottomRight, v3) >= a3._topLeft.row)
+    if (objc_msgSend_tileRowEnd(self, a2, *&range._topLeft, *&range._bottomRight, v3) >= range._topLeft.row)
     {
       v13 = objc_msgSend_tileRowBegin(self, v9, v10, v11, v12) > bottomRight.row;
       return !v13;
@@ -344,7 +344,7 @@ LABEL_20:
     return 0;
   }
 
-  if ((a3._topLeft.row == 0x7FFFFFFFLL || v7 != 0x7FFF00000000 || v8 != 0x7FFF00000000 || a3._bottomRight.row == 0x7FFFFFFFLL) && (objc_msgSend_tileRowEnd(self, a2, *&a3._topLeft, *&a3._bottomRight, v3) < a3._topLeft.row || objc_msgSend_tileRowBegin(self, v19, v20, v21, v22) > bottomRight.row) || objc_msgSend_tileColumnEnd(self, a2, *&a3._topLeft, *&a3._bottomRight, v3) < column)
+  if ((range._topLeft.row == 0x7FFFFFFFLL || v7 != 0x7FFF00000000 || v8 != 0x7FFF00000000 || range._bottomRight.row == 0x7FFFFFFFLL) && (objc_msgSend_tileRowEnd(self, a2, *&range._topLeft, *&range._bottomRight, v3) < range._topLeft.row || objc_msgSend_tileRowBegin(self, v19, v20, v21, v22) > bottomRight.row) || objc_msgSend_tileColumnEnd(self, a2, *&range._topLeft, *&range._bottomRight, v3) < column)
   {
     return 0;
   }
@@ -353,12 +353,12 @@ LABEL_20:
   return !v13;
 }
 
-- (void)applyBlockToRecordsInRange:(TSCERangeCoordinate)a3 cellRestrictions:(unint64_t)a4 doWillModify:(BOOL)a5 block:(id)a6
+- (void)applyBlockToRecordsInRange:(TSCERangeCoordinate)range cellRestrictions:(unint64_t)restrictions doWillModify:(BOOL)modify block:(id)block
 {
-  v7 = a4;
-  bottomRight = a3._bottomRight;
-  topLeft = a3._topLeft;
-  v53 = a6;
+  restrictionsCopy = restrictions;
+  bottomRight = range._bottomRight;
+  topLeft = range._topLeft;
+  blockCopy = block;
   v54 = topLeft;
   v55 = bottomRight;
   if (!objc_msgSend_intersectsRange_(self, v10, topLeft, bottomRight, v11))
@@ -403,13 +403,13 @@ LABEL_20:
     v18 = topLeft;
     v19 = bottomRight;
 LABEL_25:
-    v20 = self;
+    selfCopy2 = self;
     goto LABEL_26;
   }
 
   v18 = topLeft;
   v19 = bottomRight;
-  v20 = self;
+  selfCopy2 = self;
   if (v14 == 0x7FFF00000000)
   {
     v56 = 1;
@@ -430,15 +430,15 @@ LABEL_26:
   v21 = HIDWORD(topLeft);
   v22 = HIDWORD(v55);
 LABEL_27:
-  p_cellRecords = &v20->_cellRecords;
-  v24 = v20->_cellRecords.__end_ - v20->_cellRecords.__begin_ - v20->_unsortedCellsSize;
-  v29 = objc_msgSend_cellRecordIndexInSortedSection_startingRow_beginIndex_endIndex_guessIndex_(v20, v12, v21, v18, 0, v24, 0);
-  v30 = !a5;
+  p_cellRecords = &selfCopy2->_cellRecords;
+  v24 = selfCopy2->_cellRecords.__end_ - selfCopy2->_cellRecords.__begin_ - selfCopy2->_unsortedCellsSize;
+  v29 = objc_msgSend_cellRecordIndexInSortedSection_startingRow_beginIndex_endIndex_guessIndex_(selfCopy2, v12, v21, v18, 0, v24, 0);
+  v30 = !modify;
   if (v29 != 0x7FFFFFFFFFFFFFFFLL)
   {
     if (v19 != 0x7FFFFFFF && v22 != 0x7FFF)
     {
-      v31 = objc_msgSend_cellRecordIndexInSortedSection_startingRow_beginIndex_endIndex_guessIndex_(v20, v25, v22, v19, v29, v24, 0);
+      v31 = objc_msgSend_cellRecordIndexInSortedSection_startingRow_beginIndex_endIndex_guessIndex_(selfCopy2, v25, v22, v19, v29, v24, 0);
       if (v31 != 0x7FFFFFFFFFFFFFFFLL)
       {
         v24 = v31 + 1;
@@ -463,7 +463,7 @@ LABEL_27:
         {
           if (v35)
           {
-            v36 = objc_msgSend_cellRecordIndexInSortedSection_startingRow_beginIndex_endIndex_guessIndex_(v20, v25, v21, v32->var4 + 1, v29, v24, v51 + v29);
+            v36 = objc_msgSend_cellRecordIndexInSortedSection_startingRow_beginIndex_endIndex_guessIndex_(selfCopy2, v25, v21, v32->var4 + 1, v29, v24, v51 + v29);
             if (v36 == 0x7FFFFFFFFFFFFFFFLL)
             {
               break;
@@ -474,14 +474,14 @@ LABEL_27:
           }
         }
 
-        else if (((v7 & 2) == 0 || v32->var2) && ((v7 & 1) == 0 || (v32->var6 & 4) != 0) && ((v7 & 4) == 0 || (v32->var6 & 2) == 0))
+        else if (((restrictionsCopy & 2) == 0 || v32->var2) && ((restrictionsCopy & 1) == 0 || (v32->var6 & 4) != 0) && ((restrictionsCopy & 4) == 0 || (v32->var6 & 2) == 0))
         {
           if (!v30)
           {
-            objc_msgSend_willModify(v20, v25, v26, v27, v28);
+            objc_msgSend_willModify(selfCopy2, v25, v26, v27, v28);
           }
 
-          (v53)[2](v53, v32);
+          (blockCopy)[2](blockCopy, v32);
           v30 = 1;
         }
 
@@ -492,8 +492,8 @@ LABEL_27:
     }
   }
 
-  v37 = v20->_cellRecords.__end_ - v20->_cellRecords.__begin_;
-  unsortedCellsSize = v20->_unsortedCellsSize;
+  v37 = selfCopy2->_cellRecords.__end_ - selfCopy2->_cellRecords.__begin_;
+  unsortedCellsSize = selfCopy2->_unsortedCellsSize;
   if (v37 - unsortedCellsSize < v37)
   {
     v39 = v30;
@@ -526,14 +526,14 @@ LABEL_27:
       if (v43 != 0x7FFF && WORD2(v54) <= v43 && WORD2(v55) >= v43)
       {
 LABEL_86:
-        if (((v7 & 2) == 0 || *(v42 + 16)) && ((v7 & 1) == 0 || (*(v42 + 38) & 4) != 0) && ((v7 & 4) == 0 || (*(v42 + 38) & 2) == 0))
+        if (((restrictionsCopy & 2) == 0 || *(v42 + 16)) && ((restrictionsCopy & 1) == 0 || (*(v42 + 38) & 4) != 0) && ((restrictionsCopy & 4) == 0 || (*(v42 + 38) & 2) == 0))
         {
           if ((v39 & 1) == 0)
           {
             objc_msgSend_willModify(self, v25, v26, v27, v28);
           }
 
-          v53[2](v53, v42);
+          blockCopy[2](blockCopy, v42);
           v39 = 1;
         }
       }
@@ -568,17 +568,17 @@ LABEL_76:
 LABEL_96:
 }
 
-- (BOOL)applyBlockToRecords:(unint64_t)a3 doWillModify:(BOOL)a4 block:(id)a5
+- (BOOL)applyBlockToRecords:(unint64_t)records doWillModify:(BOOL)modify block:(id)block
 {
-  v6 = a3;
-  v12 = a5;
+  recordsCopy = records;
+  blockCopy = block;
   v21 = 0;
   v13 = self->_cellRecords.__end_ - self->_cellRecords.__begin_;
   if (v13)
   {
     v14 = 0;
     v15 = v13 >> 3;
-    v16 = !a4;
+    v16 = !modify;
     if (v15 <= 1)
     {
       v17 = 1;
@@ -592,14 +592,14 @@ LABEL_96:
     do
     {
       v18 = self->_cellRecords.__begin_[v14];
-      if (v18 && ((v6 & 2) == 0 || v18->var2) && ((v6 & 1) == 0 || (v18->var6 & 4) != 0) && ((v6 & 4) == 0 || (v18->var6 & 2) == 0))
+      if (v18 && ((recordsCopy & 2) == 0 || v18->var2) && ((recordsCopy & 1) == 0 || (v18->var6 & 4) != 0) && ((recordsCopy & 4) == 0 || (v18->var6 & 2) == 0))
       {
         if (!v16)
         {
           objc_msgSend_willModify(self, v8, v9, v10, v11);
         }
 
-        v12[2](v12, v18, &v21);
+        blockCopy[2](blockCopy, v18, &v21);
         v16 = 1;
       }
 
@@ -618,10 +618,10 @@ LABEL_96:
   return v19 & 1;
 }
 
-- (BOOL)applyBlockToSortedRecords:(unint64_t)a3 doWillModify:(BOOL)a4 block:(id)a5
+- (BOOL)applyBlockToSortedRecords:(unint64_t)records doWillModify:(BOOL)modify block:(id)block
 {
-  v6 = a3;
-  v8 = a5;
+  recordsCopy = records;
+  blockCopy = block;
   v24 = 0;
   objc_msgSend_sortedCellRecordVector(self, v9, v10, v11, v12);
   v17 = __p;
@@ -636,18 +636,18 @@ LABEL_96:
     goto LABEL_14;
   }
 
-  v18 = !a4;
+  v18 = !modify;
   do
   {
     v19 = *v17;
-    if (((v6 & 2) == 0 || *(v19 + 16)) && ((v6 & 1) == 0 || (*(v19 + 38) & 4) != 0) && ((v6 & 4) == 0 || (*(v19 + 38) & 2) == 0))
+    if (((recordsCopy & 2) == 0 || *(v19 + 16)) && ((recordsCopy & 1) == 0 || (*(v19 + 38) & 4) != 0) && ((recordsCopy & 4) == 0 || (*(v19 + 38) & 2) == 0))
     {
       if (!v18)
       {
         objc_msgSend_willModify(self, v13, v14, v15, v16);
       }
 
-      v8[2](v8, v19, &v24);
+      blockCopy[2](blockCopy, v19, &v24);
       v18 = 1;
     }
 
@@ -668,14 +668,14 @@ LABEL_15:
   return v20 & 1;
 }
 
-- (BOOL)insertCellRecord:(TSCECellRecord *)a3 cellDependencies:(id)a4
+- (BOOL)insertCellRecord:(TSCECellRecord *)record cellDependencies:(id)dependencies
 {
-  v44 = a3;
-  v6 = a4;
-  v11 = v6;
-  if (a3)
+  recordCopy = record;
+  dependenciesCopy = dependencies;
+  v11 = dependenciesCopy;
+  if (record)
   {
-    if (!v6)
+    if (!dependenciesCopy)
     {
       v12 = MEMORY[0x277D81150];
       v13 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, "[TSCECellRecordTile insertCellRecord:cellDependencies:]", v9, v10);
@@ -689,9 +689,9 @@ LABEL_15:
     lock = &self->_cellsLock;
     os_unfair_lock_lock(&self->_cellsLock);
     v43 = 1;
-    a3->var1._os_unfair_lock_opaque = 0;
+    record->var1._os_unfair_lock_opaque = 0;
     __dmb(0xBu);
-    sub_221126E28(&self->_cellRecords, &v44);
+    sub_221126E28(&self->_cellRecords, &recordCopy);
     v23 = self->_cellRecords.__end_ - self->_cellRecords.__begin_;
     unsortedCellsSize = self->_unsortedCellsSize;
     if (unsortedCellsSize || v23 >= 2 && (end = self->_cellRecords.__end_, v26 = *(end - 2), v27 = *(end - 1), v28 = *(v26 + 32), v29 = *(v27 + 32), v28 >= v29) && (v28 > v29 || *(v26 + 36) > *(v27 + 36)))
@@ -704,9 +704,9 @@ LABEL_15:
     if (v11)
     {
       objc_msgSend_incrNumCells(v11, v30, v31, v32, v33);
-      objc_msgSend_setDirtyInGrid_row_isDirty_(v11, v34, v44->var5, v44->var4, v44->var2 != 0);
-      objc_msgSend_setInACycleInGrid_row_inACycle_(v11, v35, v44->var5, v44->var4, (v44->var6 >> 1) & 1);
-      objc_msgSend_setContainsAFormulaInGrid_row_containsFormula_(v11, v36, v44->var5, v44->var4, (v44->var6 >> 2) & 1);
+      objc_msgSend_setDirtyInGrid_row_isDirty_(v11, v34, recordCopy->var5, recordCopy->var4, recordCopy->var2 != 0);
+      objc_msgSend_setInACycleInGrid_row_inACycle_(v11, v35, recordCopy->var5, recordCopy->var4, (recordCopy->var6 >> 1) & 1);
+      objc_msgSend_setContainsAFormulaInGrid_row_containsFormula_(v11, v36, recordCopy->var5, recordCopy->var4, (recordCopy->var6 >> 2) & 1);
     }
 
     if (20 * vcvtps_u32_f32(logf((v23 - self->_unsortedCellsSize))) < self->_unsortedCellsSize)
@@ -717,35 +717,35 @@ LABEL_15:
     sub_2212E22F0(&lock);
   }
 
-  return a3 != 0;
+  return record != 0;
 }
 
-- (void)removeCellRecord:(TSUCellCoord)a3 cellDependencies:(id)a4
+- (void)removeCellRecord:(TSUCellCoord)record cellDependencies:(id)dependencies
 {
-  v6 = a4;
-  CellRecord = objc_msgSend_findCellRecord_(self, v7, *&a3, v8, v9);
+  dependenciesCopy = dependencies;
+  CellRecord = objc_msgSend_findCellRecord_(self, v7, *&record, v8, v9);
   if (CellRecord)
   {
     objc_msgSend_willModify(self, v10, v11, v12, v13);
     if (*(CellRecord + 16))
     {
       LODWORD(v23) = self->_internalOwnerID;
-      v19 = objc_msgSend_dependencyTracker(v6, v15, v16, v17, v18, *&a3 & 0xFFFFFFFFFFFFLL, v23);
+      v19 = objc_msgSend_dependencyTracker(dependenciesCopy, v15, v16, v17, v18, *&record & 0xFFFFFFFFFFFFLL, v23);
       objc_msgSend_dgl_updateGraphWithCleanReference_cellRecord_(v19, v20, &v22, CellRecord, v21);
     }
 
-    objc_msgSend_deleteCellRecord_cellDependencies_(self, v15, CellRecord, v6, v18);
+    objc_msgSend_deleteCellRecord_cellDependencies_(self, v15, CellRecord, dependenciesCopy, v18);
   }
 }
 
-- (BOOL)replaceCellRecord:(TSCECellRecord *)a3 cellDependencies:(id)a4
+- (BOOL)replaceCellRecord:(TSCECellRecord *)record cellDependencies:(id)dependencies
 {
-  v10 = a4;
-  v11 = a3->var4 | (a3->var5 << 32);
+  dependenciesCopy = dependencies;
+  v11 = record->var4 | (record->var5 << 32);
   internalOwnerID = self->_internalOwnerID;
   v115 = v11;
   v116 = internalOwnerID;
-  if (!v10)
+  if (!dependenciesCopy)
   {
     v13 = MEMORY[0x277D81150];
     v14 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, "[TSCECellRecordTile replaceCellRecord:cellDependencies:]", v8, v9);
@@ -755,7 +755,7 @@ LABEL_15:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v20, v21, v22, v23);
   }
 
-  v24 = objc_msgSend_dependencyTracker(v10, v6, v7, v8, v9);
+  v24 = objc_msgSend_dependencyTracker(dependenciesCopy, v6, v7, v8, v9);
   CellRecord = objc_msgSend_findCellRecord_(self, v25, v11, v26, v27);
   v33 = CellRecord;
   v107 = 0;
@@ -801,7 +801,7 @@ LABEL_15:
   v95[2] = 0x3032000000;
   v95[3] = sub_22145C434;
   v95[4] = sub_22145C444;
-  v37 = v10;
+  v37 = dependenciesCopy;
   v96 = v37;
   v87[0] = MEMORY[0x277D85DD0];
   v87[1] = 3221225472;
@@ -815,7 +815,7 @@ LABEL_15:
   v94 = v116;
   v92 = &v101;
   v93 = v115;
-  sub_2215C574C(a3, v87);
+  sub_2215C574C(record, v87);
   if (!v33)
   {
     v43 = *(v98 + 6);
@@ -832,7 +832,7 @@ LABEL_15:
 
     if (v43)
     {
-      sub_2215C52D0(a3, &v115, 0);
+      sub_2215C52D0(record, &v115, 0);
     }
 
     sub_2215C4E48();
@@ -844,29 +844,29 @@ LABEL_15:
   }
 
   v42 = *(v33 + 16);
-  if (a3->var2)
+  if (record->var2)
   {
     if (!v42)
     {
-      objc_msgSend_setDirtyInGrid_row_isDirty_(v37, v39, a3->var5, a3->var4, 1);
+      objc_msgSend_setDirtyInGrid_row_isDirty_(v37, v39, record->var5, record->var4, 1);
     }
   }
 
   else
   {
-    objc_msgSend_setDirtySelfPlusPrecedentsCount_dirtyCount_(v37, v39, a3, v42 != 0, v41);
+    objc_msgSend_setDirtySelfPlusPrecedentsCount_dirtyCount_(v37, v39, record, v42 != 0, v41);
   }
 
-  objc_msgSend_setInACycleInGrid_row_inACycle_(v37, v39, a3->var5, a3->var4, (a3->var6 >> 1) & 1);
-  objc_msgSend_setContainsAFormulaInGrid_row_containsFormula_(v37, v55, a3->var5, a3->var4, (a3->var6 >> 2) & 1);
+  objc_msgSend_setInACycleInGrid_row_inACycle_(v37, v39, record->var5, record->var4, (record->var6 >> 1) & 1);
+  objc_msgSend_setContainsAFormulaInGrid_row_containsFormula_(v37, v55, record->var5, record->var4, (record->var6 >> 2) & 1);
   if (v34)
   {
-    sub_2215C5120(a3, v34);
+    sub_2215C5120(record, v34);
   }
 
   else
   {
-    sub_2215C51E0(a3, v105, 0);
+    sub_2215C51E0(record, v105, 0);
   }
 
   v59 = *(v98 + 6);
@@ -883,12 +883,12 @@ LABEL_15:
 
   if (v59)
   {
-    sub_2215C52D0(a3, &v115, 0);
+    sub_2215C52D0(record, &v115, 0);
   }
 
   p_cellsLock = &self->_cellsLock;
   os_unfair_lock_lock(&self->_cellsLock);
-  sub_2215C4EA0(v33, a3);
+  sub_2215C4EA0(v33, record);
   os_unfair_lock_unlock(&self->_cellsLock);
   LOBYTE(v86) = 0;
   sub_2212E22F0(&p_cellsLock);
@@ -909,7 +909,7 @@ LABEL_15:
   v84 = v86;
   sub_2212E03B0((v73 + 6), v78);
   objc_msgSend_setCurrentCellBeingModified_(v74, v75, 0x7FFF7FFFFFFFLL, 0xFFFFLL, v76);
-  a3->var0 = 0;
+  record->var0 = 0;
 
   _Block_object_dispose(v95, 8);
   _Block_object_dispose(&v97, 8);
@@ -921,9 +921,9 @@ LABEL_15:
   return 1;
 }
 
-- (void)deleteCellRecord:(TSCECellRecord *)a3 cellDependencies:(id)a4
+- (void)deleteCellRecord:(TSCECellRecord *)record cellDependencies:(id)dependencies
 {
-  v6 = a4;
+  dependenciesCopy = dependencies;
   objc_msgSend_willModify(self, v7, v8, v9, v10);
   p_cellsLock = &self->_cellsLock;
   v25 = &self->_cellsLock;
@@ -936,7 +936,7 @@ LABEL_15:
     v14 = 0;
     v15 = end - begin;
     v16 = end - begin - 8;
-    while (*begin != a3)
+    while (*begin != record)
     {
       ++v14;
       ++begin;
@@ -960,17 +960,17 @@ LABEL_15:
     }
 
     self->_cellRecords.__end_ = (begin + v16);
-    if (v6)
+    if (dependenciesCopy)
     {
-      if (a3->var2)
+      if (record->var2)
       {
-        objc_msgSend_setDirtyInGrid_row_isDirty_(v6, v18, a3->var5, a3->var4, 0);
+        objc_msgSend_setDirtyInGrid_row_isDirty_(dependenciesCopy, v18, record->var5, record->var4, 0);
       }
 
-      objc_msgSend_setInACycleInGrid_row_inACycle_(v6, v18, a3->var5, a3->var4, 0, v25, v26);
-      objc_msgSend_setContainsAFormulaInGrid_row_containsFormula_(v6, v19, a3->var5, a3->var4, 0);
-      objc_msgSend_decrNumCells(v6, v20, v21, v22, v23);
-      v24 = sub_2211226F4(a3);
+      objc_msgSend_setInACycleInGrid_row_inACycle_(dependenciesCopy, v18, record->var5, record->var4, 0, v25, v26);
+      objc_msgSend_setContainsAFormulaInGrid_row_containsFormula_(dependenciesCopy, v19, record->var5, record->var4, 0);
+      objc_msgSend_decrNumCells(dependenciesCopy, v20, v21, v22, v23);
+      v24 = sub_2211226F4(record);
       MEMORY[0x223DA1450](v24, 0x1020C4012755DA7);
       p_cellsLock = v25;
     }
@@ -982,9 +982,9 @@ LABEL_15:
   sub_2212E22F0(&v25);
 }
 
-- (void)pruneEmptyRecords:(id)a3
+- (void)pruneEmptyRecords:(id)records
 {
-  v8 = a3;
+  recordsCopy = records;
   if (self->_pruningNeededRecords)
   {
     objc_msgSend_willModify(self, v4, v5, v6, v7);
@@ -1007,7 +1007,7 @@ LABEL_15:
             internalOwnerID = self->_internalOwnerID;
             *&v31 = *(v17 + 32) | (*(v17 + 36) << 32);
             DWORD2(v31) = internalOwnerID;
-            v19 = objc_msgSend_dependencyTracker(v8, v9, v10, v11, v12);
+            v19 = objc_msgSend_dependencyTracker(recordsCopy, v9, v10, v11, v12);
             objc_msgSend_dgl_updateGraphWithCleanReference_cellRecord_(v19, v20, &v31, v17, v21);
           }
 
@@ -1144,14 +1144,14 @@ LABEL_15:
   v8 = ((self[3].__end_ - self[3].__begin_) >> 3) - begin;
   if (v8 >= 1)
   {
-    v9 = self;
+    selfCopy = self;
     for (i = 0; i != v8; ++i)
     {
       v33 = v6->__begin_[i];
       sub_221126E28(retstr, &v33);
     }
 
-    begin = v9[4].__begin_;
+    begin = selfCopy[4].__begin_;
   }
 
   if (begin)
@@ -1238,96 +1238,96 @@ LABEL_16:
   return self;
 }
 
-- (void)appendExpandedEdgeToArchive:(void *)a3 edge:(const TSCEInternalCellReference *)a4
+- (void)appendExpandedEdgeToArchive:(void *)archive edge:(const TSCEInternalCellReference *)edge
 {
-  row = a4->coordinate.row;
-  column = a4->coordinate.column;
-  if (a4->tableID == self->_internalOwnerID)
+  row = edge->coordinate.row;
+  column = edge->coordinate.column;
+  if (edge->tableID == self->_internalOwnerID)
   {
-    v7 = *(a3 + 4);
-    if (v7 == *(a3 + 5))
+    v7 = *(archive + 4);
+    if (v7 == *(archive + 5))
     {
       v8 = v7 + 1;
-      sub_2210BBC64(a3 + 4, v7 + 1);
-      *(*(a3 + 3) + 4 * v7) = row;
+      sub_2210BBC64(archive + 4, v7 + 1);
+      *(*(archive + 3) + 4 * v7) = row;
     }
 
     else
     {
-      *(*(a3 + 3) + 4 * v7) = row;
+      *(*(archive + 3) + 4 * v7) = row;
       v8 = v7 + 1;
     }
 
-    v12 = *(a3 + 8);
-    *(a3 + 4) = v8;
-    if (v12 == *(a3 + 9))
+    v12 = *(archive + 8);
+    *(archive + 4) = v8;
+    if (v12 == *(archive + 9))
     {
       v13 = v12 + 1;
-      sub_2210BBC64(a3 + 8, v12 + 1);
-      *(*(a3 + 5) + 4 * v12) = column;
+      sub_2210BBC64(archive + 8, v12 + 1);
+      *(*(archive + 5) + 4 * v12) = column;
     }
 
     else
     {
-      *(*(a3 + 5) + 4 * v12) = column;
+      *(*(archive + 5) + 4 * v12) = column;
       v13 = v12 + 1;
     }
 
-    *(a3 + 8) = v13;
+    *(archive + 8) = v13;
   }
 
   else
   {
-    v10 = *(a3 + 12);
-    if (v10 == *(a3 + 13))
+    v10 = *(archive + 12);
+    if (v10 == *(archive + 13))
     {
       v11 = v10 + 1;
-      sub_2210BBC64(a3 + 12, v10 + 1);
-      *(*(a3 + 7) + 4 * v10) = row;
+      sub_2210BBC64(archive + 12, v10 + 1);
+      *(*(archive + 7) + 4 * v10) = row;
     }
 
     else
     {
-      *(*(a3 + 7) + 4 * v10) = row;
+      *(*(archive + 7) + 4 * v10) = row;
       v11 = v10 + 1;
     }
 
-    v14 = *(a3 + 16);
-    *(a3 + 12) = v11;
-    if (v14 == *(a3 + 17))
+    v14 = *(archive + 16);
+    *(archive + 12) = v11;
+    if (v14 == *(archive + 17))
     {
       v15 = v14 + 1;
-      sub_2210BBC64(a3 + 16, v14 + 1);
-      *(*(a3 + 9) + 4 * v14) = column;
+      sub_2210BBC64(archive + 16, v14 + 1);
+      *(*(archive + 9) + 4 * v14) = column;
     }
 
     else
     {
-      *(*(a3 + 9) + 4 * v14) = column;
+      *(*(archive + 9) + 4 * v14) = column;
       v15 = v14 + 1;
     }
 
-    v16 = *(a3 + 20);
-    *(a3 + 16) = v15;
-    tableID = a4->tableID;
-    if (v16 == *(a3 + 21))
+    v16 = *(archive + 20);
+    *(archive + 16) = v15;
+    tableID = edge->tableID;
+    if (v16 == *(archive + 21))
     {
       v18 = v16 + 1;
-      sub_2210BBC64(a3 + 20, v16 + 1);
-      *(*(a3 + 11) + 4 * v16) = tableID;
+      sub_2210BBC64(archive + 20, v16 + 1);
+      *(*(archive + 11) + 4 * v16) = tableID;
     }
 
     else
     {
-      *(*(a3 + 11) + 4 * v16) = tableID;
+      *(*(archive + 11) + 4 * v16) = tableID;
       v18 = v16 + 1;
     }
 
-    *(a3 + 20) = v18;
+    *(archive + 20) = v18;
   }
 }
 
-- (void)encodeCellRecordsToArchive:(void *)a3
+- (void)encodeCellRecordsToArchive:(void *)archive
 {
   p_cellsLock = &self->_cellsLock;
   v8 = &self->_cellsLock;
@@ -1338,18 +1338,18 @@ LABEL_16:
   v7[2] = sub_22145D488;
   v7[3] = &unk_27845F240;
   v7[4] = self;
-  v7[5] = a3;
+  v7[5] = archive;
   objc_msgSend_applyBlockToSortedRecords_doWillModify_block_(self, v6, 1, 0, v7);
   os_unfair_lock_unlock(p_cellsLock);
   v9 = 0;
   sub_2212E22F0(&v8);
 }
 
-- (void)collectDependencies:(id)a3 cellDependencies:(id)a4
+- (void)collectDependencies:(id)dependencies cellDependencies:(id)cellDependencies
 {
-  v33 = a3;
-  v32 = a4;
-  v34 = objc_msgSend_dependencyTracker(v32, v6, v7, v8, v9);
+  dependenciesCopy = dependencies;
+  cellDependenciesCopy = cellDependencies;
+  v34 = objc_msgSend_dependencyTracker(cellDependenciesCopy, v6, v7, v8, v9);
   v10 = self->_cellRecords.__end_ - self->_cellRecords.__begin_;
   if (v10)
   {
@@ -1393,7 +1393,7 @@ LABEL_16:
       v28 = v27;
       v37 = v28;
       sub_2215C57F8(v14, v35);
-      objc_msgSend_addDependencyRow_(v33, v29, v28, v30, v31);
+      objc_msgSend_addDependencyRow_(dependenciesCopy, v29, v28, v30, v31);
 
       ++v11;
     }
@@ -1402,11 +1402,11 @@ LABEL_16:
   }
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
-  v14 = a3;
+  archiverCopy = archiver;
   google::protobuf::internal::AssignDescriptors();
-  v6 = objc_msgSend_messageWithNewFunction_descriptor_(v14, v4, sub_22145E204, off_2812E2AC8[62], v5);
+  v6 = objc_msgSend_messageWithNewFunction_descriptor_(archiverCopy, v4, sub_22145E204, off_2812E2AC8[62], v5);
 
   internalOwnerID = self->_internalOwnerID;
   v8 = v6[4];
@@ -1420,11 +1420,11 @@ LABEL_16:
   objc_msgSend_encodeCellRecordsToArchive_(self, v11, v6, v12, v13);
 }
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
-  v8 = a3;
+  unarchiverCopy = unarchiver;
   google::protobuf::internal::AssignDescriptors();
-  v7 = objc_msgSend_messageWithDescriptor_(v8, v4, off_2812E2AC8[62], v5, v6);
+  v7 = objc_msgSend_messageWithDescriptor_(unarchiverCopy, v4, off_2812E2AC8[62], v5, v6);
 
   self->_internalOwnerID = v7[12];
   self->_tileColumnBegin = v7[13];
@@ -1437,10 +1437,10 @@ LABEL_16:
   operator new();
 }
 
-- (void)unpackAfterUnarchiveForCellDependencies:(id)a3
+- (void)unpackAfterUnarchiveForCellDependencies:(id)dependencies
 {
-  v8 = a3;
-  if (!v8)
+  dependenciesCopy = dependencies;
+  if (!dependenciesCopy)
   {
     v9 = MEMORY[0x277D81150];
     v10 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v4, "[TSCECellRecordTile unpackAfterUnarchiveForCellDependencies:]", v6, v7);
@@ -1450,7 +1450,7 @@ LABEL_16:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v16, v17, v18, v19);
   }
 
-  v23 = objc_msgSend_dependencyTracker(v8, v4, v5, v6, v7);
+  v23 = objc_msgSend_dependencyTracker(dependenciesCopy, v4, v5, v6, v7);
   if (!v23)
   {
     v24 = MEMORY[0x277D81150];
@@ -1474,7 +1474,7 @@ LABEL_16:
     do
     {
       v38 = *v36;
-      objc_msgSend_replaceCellRecord_cellDependencies_(self, v20, *v36, v8, v22);
+      objc_msgSend_replaceCellRecord_cellDependencies_(self, v20, *v36, dependenciesCopy, v22);
       if (*(v38 + 16) == 1)
       {
         internalOwnerID = self->_internalOwnerID;

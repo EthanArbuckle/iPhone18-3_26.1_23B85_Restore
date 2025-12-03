@@ -2,16 +2,16 @@
 - (IAMWebMessageController)init;
 - (IAMWebMessageControllerDelegate)delegate;
 - (IAMWebView)webView;
-- (void)_callLoadCompletionWithError:(id)a3;
+- (void)_callLoadCompletionWithError:(id)error;
 - (void)_checkReadyForLoadCompletion;
-- (void)_createJSOContentPages:(id)a3 fromMessageEntry:(id)a4 withBlock:(id)a5;
-- (void)loadMessageFromMessageEntry:(id)a3 withWebArchiveURL:(id)a4 completionHandler:(id)a5;
-- (void)setContentPages:(id)a3;
+- (void)_createJSOContentPages:(id)pages fromMessageEntry:(id)entry withBlock:(id)block;
+- (void)loadMessageFromMessageEntry:(id)entry withWebArchiveURL:(id)l completionHandler:(id)handler;
+- (void)setContentPages:(id)pages;
 - (void)unregisterExportedObjectInterface;
 - (void)webProcessJSODidCallClose;
-- (void)webProcessJSODidCallOpen:(id)a3 options:(id)a4;
-- (void)webProcessJSODidCallPerformAction:(id)a3 options:(id)a4;
-- (void)webProcessJSODidReportEvent:(id)a3;
+- (void)webProcessJSODidCallOpen:(id)open options:(id)options;
+- (void)webProcessJSODidCallPerformAction:(id)action options:(id)options;
+- (void)webProcessJSODidReportEvent:(id)event;
 - (void)webProcessPlugInBrowserContextControllerGlobalObjectIsAvailableForFrame;
 - (void)webProcessPlugInDidCreateBrowserContextController;
 - (void)webProcessPlugInWillDestroyBrowserContextController;
@@ -38,8 +38,8 @@
   if (!webView)
   {
     v4 = [IAMWebView alloc];
-    v5 = [MEMORY[0x277CE3858] sharedMessagesConfiguration];
-    v6 = [(IAMWebView *)v4 initWithFrame:v5 configuration:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
+    mEMORY[0x277CE3858] = [MEMORY[0x277CE3858] sharedMessagesConfiguration];
+    v6 = [(IAMWebView *)v4 initWithFrame:mEMORY[0x277CE3858] configuration:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
     v7 = self->_webView;
     self->_webView = v6;
 
@@ -48,8 +48,8 @@
     remoteObjectInterface = self->_remoteObjectInterface;
     self->_remoteObjectInterface = v8;
 
-    v10 = [(IAMWebView *)self->_webView _remoteObjectRegistry];
-    [v10 registerExportedObject:self interface:self->_remoteObjectInterface];
+    _remoteObjectRegistry = [(IAMWebView *)self->_webView _remoteObjectRegistry];
+    [_remoteObjectRegistry registerExportedObject:self interface:self->_remoteObjectInterface];
 
     webView = self->_webView;
   }
@@ -57,14 +57,14 @@
   return webView;
 }
 
-- (void)setContentPages:(id)a3
+- (void)setContentPages:(id)pages
 {
-  v5 = a3;
+  pagesCopy = pages;
   p_contentPages = &self->_contentPages;
-  if (self->_contentPages != v5)
+  if (self->_contentPages != pagesCopy)
   {
-    v7 = v5;
-    objc_storeStrong(p_contentPages, a3);
+    v7 = pagesCopy;
+    objc_storeStrong(p_contentPages, pages);
     if (self->_isGlobalJSOAvailable && !self->_hasSentContentPages)
     {
       p_contentPages = [(IAMWebProcessProxy *)self->_webProcessProxy setWebProcessJSOContentPages:v7];
@@ -75,34 +75,34 @@
   MEMORY[0x2821F9730](p_contentPages);
 }
 
-- (void)loadMessageFromMessageEntry:(id)a3 withWebArchiveURL:(id)a4 completionHandler:(id)a5
+- (void)loadMessageFromMessageEntry:(id)entry withWebArchiveURL:(id)l completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [(IAMWebMessageController *)self webView];
-  [(IAMWebMessageController *)self setLoadCompletion:v11];
+  entryCopy = entry;
+  lCopy = l;
+  handlerCopy = handler;
+  webView = [(IAMWebMessageController *)self webView];
+  [(IAMWebMessageController *)self setLoadCompletion:handlerCopy];
 
-  objc_storeStrong(&self->_messageEntry, a3);
-  if (!v10)
+  objc_storeStrong(&self->_messageEntry, entry);
+  if (!lCopy)
   {
     v19 = MEMORY[0x277CCA9B8];
     v20 = 1;
 LABEL_10:
-    v16 = [v19 errorWithDomain:@"IAMWebMessageErrorDomain" code:v20 userInfo:0];
-    [(IAMWebMessageController *)self _callLoadCompletionWithError:v16];
+    contentPages = [v19 errorWithDomain:@"IAMWebMessageErrorDomain" code:v20 userInfo:0];
+    [(IAMWebMessageController *)self _callLoadCompletionWithError:contentPages];
     goto LABEL_11;
   }
 
-  if (([v10 isFileURL] & 1) == 0)
+  if (([lCopy isFileURL] & 1) == 0)
   {
     v19 = MEMORY[0x277CCA9B8];
     v20 = 2;
     goto LABEL_10;
   }
 
-  v13 = [v10 pathExtension];
-  v14 = [v13 isEqualToString:@"webarchive"];
+  pathExtension = [lCopy pathExtension];
+  v14 = [pathExtension isEqualToString:@"webarchive"];
 
   if ((v14 & 1) == 0)
   {
@@ -111,21 +111,21 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  v15 = [(ICInAppMessageEntry *)self->_messageEntry applicationMessage];
-  v16 = [v15 contentPages];
+  applicationMessage = [(ICInAppMessageEntry *)self->_messageEntry applicationMessage];
+  contentPages = [applicationMessage contentPages];
 
-  if (v16)
+  if (contentPages)
   {
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __91__IAMWebMessageController_loadMessageFromMessageEntry_withWebArchiveURL_completionHandler___block_invoke;
     v21[3] = &unk_2797A75E8;
     v21[4] = self;
-    [(IAMWebMessageController *)self _createJSOContentPages:v16 fromMessageEntry:v9 withBlock:v21];
+    [(IAMWebMessageController *)self _createJSOContentPages:contentPages fromMessageEntry:entryCopy withBlock:v21];
   }
 
-  v17 = [v10 URLByDeletingLastPathComponent];
-  v18 = [v12 loadFileURL:v10 allowingReadAccessToURL:v17];
+  uRLByDeletingLastPathComponent = [lCopy URLByDeletingLastPathComponent];
+  v18 = [webView loadFileURL:lCopy allowingReadAccessToURL:uRLByDeletingLastPathComponent];
 
 LABEL_11:
 }
@@ -142,40 +142,40 @@ uint64_t __91__IAMWebMessageController_loadMessageFromMessageEntry_withWebArchiv
 
 - (void)unregisterExportedObjectInterface
 {
-  v3 = [(IAMWebView *)self->_webView _remoteObjectRegistry];
-  [v3 unregisterExportedObject:self interface:self->_remoteObjectInterface];
+  _remoteObjectRegistry = [(IAMWebView *)self->_webView _remoteObjectRegistry];
+  [_remoteObjectRegistry unregisterExportedObject:self interface:self->_remoteObjectInterface];
 }
 
-- (void)_callLoadCompletionWithError:(id)a3
+- (void)_callLoadCompletionWithError:(id)error
 {
-  v6 = a3;
-  v4 = [(IAMWebMessageController *)self loadCompletion];
+  errorCopy = error;
+  loadCompletion = [(IAMWebMessageController *)self loadCompletion];
 
-  if (v4)
+  if (loadCompletion)
   {
-    v5 = [(IAMWebMessageController *)self loadCompletion];
-    (v5)[2](v5, v6);
+    loadCompletion2 = [(IAMWebMessageController *)self loadCompletion];
+    (loadCompletion2)[2](loadCompletion2, errorCopy);
 
     [(IAMWebMessageController *)self setLoadCompletion:0];
   }
 }
 
-- (void)_createJSOContentPages:(id)a3 fromMessageEntry:(id)a4 withBlock:(id)a5
+- (void)_createJSOContentPages:(id)pages fromMessageEntry:(id)entry withBlock:(id)block
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  pagesCopy = pages;
+  entryCopy = entry;
+  blockCopy = block;
   v10 = dispatch_get_global_queue(0, 0);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __77__IAMWebMessageController__createJSOContentPages_fromMessageEntry_withBlock___block_invoke;
   block[3] = &unk_2797A7200;
-  v15 = v7;
-  v16 = v8;
-  v17 = v9;
-  v11 = v9;
-  v12 = v8;
-  v13 = v7;
+  v15 = pagesCopy;
+  v16 = entryCopy;
+  v17 = blockCopy;
+  v11 = blockCopy;
+  v12 = entryCopy;
+  v13 = pagesCopy;
   dispatch_async(v10, block);
 }
 
@@ -285,28 +285,28 @@ void __77__IAMWebMessageController__createJSOContentPages_fromMessageEntry_withB
 - (void)webProcessPlugInDidCreateBrowserContextController
 {
   v6 = [MEMORY[0x277CE3898] remoteObjectInterfaceWithProtocol:&unk_28671F620];
-  v3 = [(IAMWebView *)self->_webView _remoteObjectRegistry];
-  v4 = [v3 remoteObjectProxyWithInterface:v6];
+  _remoteObjectRegistry = [(IAMWebView *)self->_webView _remoteObjectRegistry];
+  v4 = [_remoteObjectRegistry remoteObjectProxyWithInterface:v6];
   webProcessProxy = self->_webProcessProxy;
   self->_webProcessProxy = v4;
 }
 
 - (void)webProcessPlugInWillDestroyBrowserContextController
 {
-  v3 = [(IAMWebView *)self->_webView _remoteObjectRegistry];
-  [v3 unregisterExportedObject:self interface:self->_remoteObjectInterface];
+  _remoteObjectRegistry = [(IAMWebView *)self->_webView _remoteObjectRegistry];
+  [_remoteObjectRegistry unregisterExportedObject:self interface:self->_remoteObjectInterface];
 }
 
 - (void)webProcessPlugInBrowserContextControllerGlobalObjectIsAvailableForFrame
 {
-  v3 = [(IAMWebMessageController *)self contentPages];
-  v4 = [v3 count];
+  contentPages = [(IAMWebMessageController *)self contentPages];
+  v4 = [contentPages count];
 
   if (v4 && !self->_hasSentContentPages)
   {
     webProcessProxy = self->_webProcessProxy;
-    v6 = [(IAMWebMessageController *)self contentPages];
-    [(IAMWebProcessProxy *)webProcessProxy setWebProcessJSOContentPages:v6];
+    contentPages2 = [(IAMWebMessageController *)self contentPages];
+    [(IAMWebProcessProxy *)webProcessProxy setWebProcessJSOContentPages:contentPages2];
 
     self->_hasSentContentPages = 1;
   }
@@ -314,57 +314,57 @@ void __77__IAMWebMessageController__createJSOContentPages_fromMessageEntry_withB
   self->_isGlobalJSOAvailable = 1;
 }
 
-- (void)webProcessJSODidReportEvent:(id)a3
+- (void)webProcessJSODidReportEvent:(id)event
 {
-  v7 = a3;
-  v4 = [(IAMWebMessageController *)self delegate];
+  eventCopy = event;
+  delegate = [(IAMWebMessageController *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(IAMWebMessageController *)self delegate];
-    [v6 webMessageControllerWebViewDidReportEvent:self event:v7];
+    delegate2 = [(IAMWebMessageController *)self delegate];
+    [delegate2 webMessageControllerWebViewDidReportEvent:self event:eventCopy];
   }
 }
 
-- (void)webProcessJSODidCallPerformAction:(id)a3 options:(id)a4
+- (void)webProcessJSODidCallPerformAction:(id)action options:(id)options
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [(IAMWebMessageController *)self delegate];
+  actionCopy = action;
+  optionsCopy = options;
+  delegate = [(IAMWebMessageController *)self delegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(IAMWebMessageController *)self delegate];
-    [v9 webMessageControllerWebViewDidRequestAction:self actionConfiguration:v10 options:v6];
+    delegate2 = [(IAMWebMessageController *)self delegate];
+    [delegate2 webMessageControllerWebViewDidRequestAction:self actionConfiguration:actionCopy options:optionsCopy];
   }
 }
 
-- (void)webProcessJSODidCallOpen:(id)a3 options:(id)a4
+- (void)webProcessJSODidCallOpen:(id)open options:(id)options
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = [(IAMWebMessageController *)self delegate];
+  openCopy = open;
+  optionsCopy = options;
+  delegate = [(IAMWebMessageController *)self delegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(IAMWebMessageController *)self delegate];
-    v10 = [MEMORY[0x277CBEBC0] URLWithString:v11];
-    [v9 webMessageControllerWebViewDidRequestOpenURL:self url:v10 options:v6];
+    delegate2 = [(IAMWebMessageController *)self delegate];
+    v10 = [MEMORY[0x277CBEBC0] URLWithString:openCopy];
+    [delegate2 webMessageControllerWebViewDidRequestOpenURL:self url:v10 options:optionsCopy];
   }
 }
 
 - (void)webProcessJSODidCallClose
 {
-  v3 = [(IAMWebMessageController *)self delegate];
+  delegate = [(IAMWebMessageController *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(IAMWebMessageController *)self delegate];
-    [v5 webMessageControllerWebViewDidRequestClose:self];
+    delegate2 = [(IAMWebMessageController *)self delegate];
+    [delegate2 webMessageControllerWebViewDidRequestClose:self];
   }
 }
 

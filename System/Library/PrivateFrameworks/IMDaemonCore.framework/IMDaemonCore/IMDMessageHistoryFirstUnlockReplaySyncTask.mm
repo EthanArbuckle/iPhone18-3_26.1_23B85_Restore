@@ -1,15 +1,15 @@
 @interface IMDMessageHistoryFirstUnlockReplaySyncTask
-- (IMDMessageHistoryFirstUnlockReplaySyncTask)initWithReplayController:(id)a3 accountController:(id)a4;
-- (id)_createProcessBatchBlockWithServiceSession:(id)a3;
-- (id)_createSyncCompletionBlockForServiceSession:(id)a3;
+- (IMDMessageHistoryFirstUnlockReplaySyncTask)initWithReplayController:(id)controller accountController:(id)accountController;
+- (id)_createProcessBatchBlockWithServiceSession:(id)session;
+- (id)_createSyncCompletionBlockForServiceSession:(id)session;
 - (void)_setupAndBeginSync;
 - (void)dealloc;
-- (void)startSyncTask:(id)a3;
+- (void)startSyncTask:(id)task;
 @end
 
 @implementation IMDMessageHistoryFirstUnlockReplaySyncTask
 
-- (IMDMessageHistoryFirstUnlockReplaySyncTask)initWithReplayController:(id)a3 accountController:(id)a4
+- (IMDMessageHistoryFirstUnlockReplaySyncTask)initWithReplayController:(id)controller accountController:(id)accountController
 {
   v9.receiver = self;
   v9.super_class = IMDMessageHistoryFirstUnlockReplaySyncTask;
@@ -18,8 +18,8 @@
   {
     v7 = objc_opt_class();
     v6->_className = NSStringFromClass(v7);
-    v6->_accountController = a4;
-    v6->_replayController = a3;
+    v6->_accountController = accountController;
+    v6->_replayController = controller;
   }
 
   return v6;
@@ -39,7 +39,7 @@
   [(IMDMessageHistoryFirstUnlockReplaySyncTask *)&v3 dealloc];
 }
 
-- (void)startSyncTask:(id)a3
+- (void)startSyncTask:(id)task
 {
   v10 = *MEMORY[0x277D85DE8];
   if (self->_taskGroupedByServiceName)
@@ -61,7 +61,7 @@
 
   else
   {
-    [(IMDMessageHistoryFirstUnlockReplaySyncTask *)self setSyncTaskCompletionBlock:a3];
+    [(IMDMessageHistoryFirstUnlockReplaySyncTask *)self setSyncTaskCompletionBlock:task];
     v7 = *MEMORY[0x277D85DE8];
 
     MEMORY[0x2821F9670](self, sel__setupAndBeginSync);
@@ -71,15 +71,15 @@
 - (void)_setupAndBeginSync
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = [(IMDAccountController *)[(IMDMessageHistoryFirstUnlockReplaySyncTask *)self accountController] activeSessions];
-  -[IMDMessageHistoryFirstUnlockReplaySyncTask setTaskGroupedByServiceName:](self, "setTaskGroupedByServiceName:", [MEMORY[0x277CBEB38] dictionaryWithCapacity:{-[NSArray count](v3, "count")}]);
+  activeSessions = [(IMDAccountController *)[(IMDMessageHistoryFirstUnlockReplaySyncTask *)self accountController] activeSessions];
+  -[IMDMessageHistoryFirstUnlockReplaySyncTask setTaskGroupedByServiceName:](self, "setTaskGroupedByServiceName:", [MEMORY[0x277CBEB38] dictionaryWithCapacity:{-[NSArray count](activeSessions, "count")}]);
   if (IMOSLoggingEnabled())
   {
     v4 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
       *buf = 134217984;
-      v19 = [(NSArray *)v3 count];
+      v19 = [(NSArray *)activeSessions count];
       _os_log_impl(&dword_22B4CC000, v4, OS_LOG_TYPE_INFO, "IMDMessageHistoryFirstUnlockReplaySyncTask: Begin replaying first unlock database for %ld services", buf, 0xCu);
     }
   }
@@ -88,7 +88,7 @@
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(NSArray *)v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v5 = [(NSArray *)activeSessions countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = *v14;
@@ -99,7 +99,7 @@
       {
         if (*v14 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(activeSessions);
         }
 
         v8 = *(*(&v13 + 1) + 8 * v7);
@@ -115,7 +115,7 @@
       }
 
       while (v5 != v7);
-      v5 = [(NSArray *)v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v5 = [(NSArray *)activeSessions countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v5);
@@ -125,25 +125,25 @@
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_createProcessBatchBlockWithServiceSession:(id)a3
+- (id)_createProcessBatchBlockWithServiceSession:(id)session
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = sub_22B571F7C;
   v4[3] = &unk_278704D30;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = session;
   return [v4 copy];
 }
 
-- (id)_createSyncCompletionBlockForServiceSession:(id)a3
+- (id)_createSyncCompletionBlockForServiceSession:(id)session
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = sub_22B5722CC;
   v4[3] = &unk_278704D58;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = session;
   return [v4 copy];
 }
 

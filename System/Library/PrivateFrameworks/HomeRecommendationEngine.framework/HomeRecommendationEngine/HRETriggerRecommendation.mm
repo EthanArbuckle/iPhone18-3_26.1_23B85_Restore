@@ -1,32 +1,32 @@
 @interface HRETriggerRecommendation
 - (BOOL)containsMeaningfulChanges;
 - (BOOL)containsRecommendableContent;
-- (BOOL)includesObjects:(id)a3;
+- (BOOL)includesObjects:(id)objects;
 - (HFTriggerBuilder)selectedTriggerBuilder;
-- (HRETriggerRecommendation)initWithHome:(id)a3 uniqueIdentifier:(id)a4;
+- (HRETriggerRecommendation)initWithHome:(id)home uniqueIdentifier:(id)identifier;
 - (NSSet)actions;
 - (NSSet)addedActions;
 - (id)changedInvolvedObjects;
-- (id)compareForMatchingToTrigger:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)compareForMatchingToTrigger:(id)trigger;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)descriptionBuilder;
-- (id)existingActionBuilder:(id)a3 inSet:(id)a4;
+- (id)existingActionBuilder:(id)builder inSet:(id)set;
 - (id)involvedObjects;
-- (void)addAction:(id)a3 allowEditingExistingActions:(BOOL)a4;
-- (void)addActions:(id)a3 allowEditingExistingActions:(BOOL)a4;
-- (void)removeAction:(id)a3;
-- (void)removeActions:(id)a3;
-- (void)replaceTriggerBuilder:(id)a3 withTriggerBuilder:(id)a4 allowEditingExistingActions:(BOOL)a5;
-- (void)setSelectedTriggerBuilder:(id)a3;
+- (void)addAction:(id)action allowEditingExistingActions:(BOOL)actions;
+- (void)addActions:(id)actions allowEditingExistingActions:(BOOL)existingActions;
+- (void)removeAction:(id)action;
+- (void)removeActions:(id)actions;
+- (void)replaceTriggerBuilder:(id)builder withTriggerBuilder:(id)triggerBuilder allowEditingExistingActions:(BOOL)actions;
+- (void)setSelectedTriggerBuilder:(id)builder;
 @end
 
 @implementation HRETriggerRecommendation
 
-- (HRETriggerRecommendation)initWithHome:(id)a3 uniqueIdentifier:(id)a4
+- (HRETriggerRecommendation)initWithHome:(id)home uniqueIdentifier:(id)identifier
 {
   v9.receiver = self;
   v9.super_class = HRETriggerRecommendation;
-  v4 = [(HRERecommendation *)&v9 initWithHome:a3 uniqueIdentifier:a4];
+  v4 = [(HRERecommendation *)&v9 initWithHome:home uniqueIdentifier:identifier];
   if (v4)
   {
     v5 = [MEMORY[0x277CBEB58] set];
@@ -38,8 +38,8 @@
     }
 
     v6 = qword_27F5F97B0;
-    v7 = [(HRERecommendation *)v4 defaultAnalyticsData];
-    [v7 setObject:v6 forKeyedSubscript:*MEMORY[0x277D134E8]];
+    defaultAnalyticsData = [(HRERecommendation *)v4 defaultAnalyticsData];
+    [defaultAnalyticsData setObject:v6 forKeyedSubscript:*MEMORY[0x277D134E8]];
   }
 
   return v4;
@@ -51,14 +51,14 @@ void __58__HRETriggerRecommendation_initWithHome_uniqueIdentifier___block_invoke
   qword_27F5F97B0 = @"trigger";
 }
 
-- (void)setSelectedTriggerBuilder:(id)a3
+- (void)setSelectedTriggerBuilder:(id)builder
 {
-  v5 = a3;
-  if (self->_selectedTriggerBuilder != v5)
+  builderCopy = builder;
+  if (self->_selectedTriggerBuilder != builderCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_selectedTriggerBuilder, a3);
-    v5 = v6;
+    v6 = builderCopy;
+    objc_storeStrong(&self->_selectedTriggerBuilder, builder);
+    builderCopy = v6;
   }
 }
 
@@ -67,13 +67,13 @@ void __58__HRETriggerRecommendation_initWithHome_uniqueIdentifier___block_invoke
   selectedTriggerBuilder = self->_selectedTriggerBuilder;
   if (!selectedTriggerBuilder)
   {
-    v4 = [(HRETriggerRecommendation *)self triggerBuilders];
-    v5 = [v4 count];
+    triggerBuilders = [(HRETriggerRecommendation *)self triggerBuilders];
+    v5 = [triggerBuilders count];
 
     if (v5 == 1)
     {
-      v6 = [(HRETriggerRecommendation *)self triggerBuilders];
-      v7 = [v6 anyObject];
+      triggerBuilders2 = [(HRETriggerRecommendation *)self triggerBuilders];
+      anyObject = [triggerBuilders2 anyObject];
 
       goto LABEL_6;
     }
@@ -81,29 +81,29 @@ void __58__HRETriggerRecommendation_initWithHome_uniqueIdentifier___block_invoke
     selectedTriggerBuilder = self->_selectedTriggerBuilder;
   }
 
-  v7 = selectedTriggerBuilder;
+  anyObject = selectedTriggerBuilder;
 LABEL_6:
 
-  return v7;
+  return anyObject;
 }
 
 - (NSSet)actions
 {
-  v3 = [(HRETriggerRecommendation *)self selectedTriggerBuilder];
+  selectedTriggerBuilder = [(HRETriggerRecommendation *)self selectedTriggerBuilder];
 
-  if (v3)
+  if (selectedTriggerBuilder)
   {
     v4 = MEMORY[0x277CBEB98];
-    v5 = [(HRETriggerRecommendation *)self selectedTriggerBuilder];
-    v6 = [v5 triggerActionSets];
-    v7 = [v6 anonymousActionBuilder];
-    v8 = [v4 setWithArray:v7];
+    selectedTriggerBuilder2 = [(HRETriggerRecommendation *)self selectedTriggerBuilder];
+    triggerActionSets = [selectedTriggerBuilder2 triggerActionSets];
+    anonymousActionBuilder = [triggerActionSets anonymousActionBuilder];
+    v8 = [v4 setWithArray:anonymousActionBuilder];
   }
 
   else
   {
-    v5 = [(HRETriggerRecommendation *)self triggerBuilders];
-    v8 = [v5 na_flatMap:&__block_literal_global_8_1];
+    selectedTriggerBuilder2 = [(HRETriggerRecommendation *)self triggerBuilders];
+    v8 = [selectedTriggerBuilder2 na_flatMap:&__block_literal_global_8_1];
   }
 
   return v8;
@@ -119,86 +119,86 @@ id __35__HRETriggerRecommendation_actions__block_invoke(uint64_t a1, void *a2)
   return v5;
 }
 
-- (id)existingActionBuilder:(id)a3 inSet:(id)a4
+- (id)existingActionBuilder:(id)builder inSet:(id)set
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HRETriggerRecommendation *)self selectedTriggerBuilder];
-  v9 = [v8 triggerActionSets];
-  v10 = [v9 anonymousActionSetBuilder];
-  v11 = [v10 existingActionBuilder:v7 inSet:v6];
+  setCopy = set;
+  builderCopy = builder;
+  selectedTriggerBuilder = [(HRETriggerRecommendation *)self selectedTriggerBuilder];
+  triggerActionSets = [selectedTriggerBuilder triggerActionSets];
+  anonymousActionSetBuilder = [triggerActionSets anonymousActionSetBuilder];
+  v11 = [anonymousActionSetBuilder existingActionBuilder:builderCopy inSet:setCopy];
 
   return v11;
 }
 
-- (void)addAction:(id)a3 allowEditingExistingActions:(BOOL)a4
+- (void)addAction:(id)action allowEditingExistingActions:(BOOL)actions
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(HRETriggerRecommendation *)self selectedTriggerBuilder];
-  v8 = v7;
-  if (v7)
+  actionsCopy = actions;
+  actionCopy = action;
+  selectedTriggerBuilder = [(HRETriggerRecommendation *)self selectedTriggerBuilder];
+  v8 = selectedTriggerBuilder;
+  if (selectedTriggerBuilder)
   {
-    v9 = [v7 triggerActionSets];
-    v10 = [v9 anonymousActionSetBuilder];
+    triggerActionSets = [selectedTriggerBuilder triggerActionSets];
+    anonymousActionSetBuilder = [triggerActionSets anonymousActionSetBuilder];
 
-    v11 = [v10 actionBuilders];
-    v12 = [v11 toSet];
-    v13 = [(HRETriggerRecommendation *)self existingActionBuilder:v6 inSet:v12];
+    actionBuilders = [anonymousActionSetBuilder actionBuilders];
+    toSet = [actionBuilders toSet];
+    composedString = [(HRETriggerRecommendation *)self existingActionBuilder:actionCopy inSet:toSet];
 
-    if (!v13)
+    if (!composedString)
     {
-      v14 = [v6 recommendableObjectsInvolved];
-      v15 = [v10 actionBuilders];
-      v16 = [v15 fromSet];
+      recommendableObjectsInvolved = [actionCopy recommendableObjectsInvolved];
+      actionBuilders2 = [anonymousActionSetBuilder actionBuilders];
+      fromSet = [actionBuilders2 fromSet];
       v25[0] = MEMORY[0x277D85DD0];
       v25[1] = 3221225472;
       v25[2] = __66__HRETriggerRecommendation_addAction_allowEditingExistingActions___block_invoke;
       v25[3] = &unk_2797767E8;
-      v26 = v14;
-      v17 = v14;
-      v13 = [v16 na_firstObjectPassingTest:v25];
+      v26 = recommendableObjectsInvolved;
+      v17 = recommendableObjectsInvolved;
+      composedString = [fromSet na_firstObjectPassingTest:v25];
 
-      if (!v13)
+      if (!composedString)
       {
         goto LABEL_7;
       }
     }
 
-    if (v4)
+    if (actionsCopy)
     {
 LABEL_7:
-      if (v13)
+      if (composedString)
       {
-        v18 = [v13 compareToObject:v6];
-        v19 = [v18 hasNoDifferencesHigherThanPriority:0];
-        v20 = [(HRETriggerRecommendation *)self allowedVariance];
-        v21 = [v20 anyRulePassesForAction:v13];
+        triggerActionSets3 = [composedString compareToObject:actionCopy];
+        v19 = [triggerActionSets3 hasNoDifferencesHigherThanPriority:0];
+        allowedVariance = [(HRETriggerRecommendation *)self allowedVariance];
+        v21 = [allowedVariance anyRulePassesForAction:composedString];
 
-        if ((v19 & 1) == 0 && (v21 & 1) == 0 && [v13 updateWithActionBuilder:v6])
+        if ((v19 & 1) == 0 && (v21 & 1) == 0 && [composedString updateWithActionBuilder:actionCopy])
         {
-          v22 = [v8 triggerActionSets];
-          [v22 updateAnonymousActionBuilder:v13];
+          triggerActionSets2 = [v8 triggerActionSets];
+          [triggerActionSets2 updateAnonymousActionBuilder:composedString];
         }
       }
 
       else
       {
-        v18 = [v8 triggerActionSets];
-        [v18 addAnonymousActionBuilder:v6];
+        triggerActionSets3 = [v8 triggerActionSets];
+        [triggerActionSets3 addAnonymousActionBuilder:actionCopy];
       }
 
-      v23 = [v8 triggerActionSets];
-      v24 = [v23 hre_recommendedActions];
-      [v24 addObject:v6];
+      triggerActionSets4 = [v8 triggerActionSets];
+      hre_recommendedActions = [triggerActionSets4 hre_recommendedActions];
+      [hre_recommendedActions addObject:actionCopy];
     }
   }
 
   else
   {
-    v10 = [(HRERecommendation *)self identifierBuilder];
-    v13 = [v10 composedString];
-    NSLog(&cfstr_Recommendation.isa, v13);
+    anonymousActionSetBuilder = [(HRERecommendation *)self identifierBuilder];
+    composedString = [anonymousActionSetBuilder composedString];
+    NSLog(&cfstr_Recommendation.isa, composedString);
   }
 }
 
@@ -210,50 +210,50 @@ uint64_t __66__HRETriggerRecommendation_addAction_allowEditingExistingActions___
   return v4;
 }
 
-- (void)removeAction:(id)a3
+- (void)removeAction:(id)action
 {
-  v7 = a3;
-  v4 = [(HRETriggerRecommendation *)self selectedTriggerBuilder];
-  v5 = v4;
-  if (v4)
+  actionCopy = action;
+  selectedTriggerBuilder = [(HRETriggerRecommendation *)self selectedTriggerBuilder];
+  v5 = selectedTriggerBuilder;
+  if (selectedTriggerBuilder)
   {
-    v6 = [v4 triggerActionSets];
-    [v6 removeAnonymousActionBuilder:v7];
+    triggerActionSets = [selectedTriggerBuilder triggerActionSets];
+    [triggerActionSets removeAnonymousActionBuilder:actionCopy];
   }
 }
 
-- (void)addActions:(id)a3 allowEditingExistingActions:(BOOL)a4
+- (void)addActions:(id)actions allowEditingExistingActions:(BOOL)existingActions
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __67__HRETriggerRecommendation_addActions_allowEditingExistingActions___block_invoke;
   v4[3] = &unk_279776810;
   v4[4] = self;
-  v5 = a4;
-  [a3 na_each:v4];
+  existingActionsCopy = existingActions;
+  [actions na_each:v4];
 }
 
-- (void)removeActions:(id)a3
+- (void)removeActions:(id)actions
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __42__HRETriggerRecommendation_removeActions___block_invoke;
   v3[3] = &unk_279776838;
   v3[4] = self;
-  [a3 na_each:v3];
+  [actions na_each:v3];
 }
 
 - (BOOL)containsMeaningfulChanges
 {
   if ([(HRETriggerRecommendation *)self containsRecommendableContent])
   {
-    v3 = [(HRETriggerRecommendation *)self triggerBuilders];
-    v4 = [v3 na_any:&__block_literal_global_16];
+    triggerBuilders = [(HRETriggerRecommendation *)self triggerBuilders];
+    v4 = [triggerBuilders na_any:&__block_literal_global_16];
 
-    v5 = [(HRETriggerRecommendation *)self triggerBuilders];
-    LOBYTE(v3) = [v5 na_any:&__block_literal_global_18];
+    triggerBuilders2 = [(HRETriggerRecommendation *)self triggerBuilders];
+    LOBYTE(triggerBuilders) = [triggerBuilders2 na_any:&__block_literal_global_18];
 
-    v6 = v4 | v3;
+    v6 = v4 | triggerBuilders;
   }
 
   else
@@ -320,19 +320,19 @@ uint64_t __53__HRETriggerRecommendation_containsMeaningfulChanges__block_invoke_
 
 - (BOOL)containsRecommendableContent
 {
-  v3 = [(HRETriggerRecommendation *)self triggerBuilders];
-  v4 = [v3 na_any:&__block_literal_global_20];
+  triggerBuilders = [(HRETriggerRecommendation *)self triggerBuilders];
+  v4 = [triggerBuilders na_any:&__block_literal_global_20];
 
-  v5 = [(HRETriggerRecommendation *)self triggerBuilders];
-  v6 = [v5 na_all:&__block_literal_global_22];
+  triggerBuilders2 = [(HRETriggerRecommendation *)self triggerBuilders];
+  v6 = [triggerBuilders2 na_all:&__block_literal_global_22];
 
-  v7 = [(HRETriggerRecommendation *)self triggerBuilders];
-  v8 = [v7 na_any:&__block_literal_global_24];
+  triggerBuilders3 = [(HRETriggerRecommendation *)self triggerBuilders];
+  v8 = [triggerBuilders3 na_any:&__block_literal_global_24];
 
-  v9 = [(HRETriggerRecommendation *)self triggerBuilders];
-  LOBYTE(v7) = ([v9 count] != 0) & (v4 | v8);
+  triggerBuilders4 = [(HRETriggerRecommendation *)self triggerBuilders];
+  LOBYTE(triggerBuilders3) = ([triggerBuilders4 count] != 0) & (v4 | v8);
 
-  return v7 & v6;
+  return triggerBuilders3 & v6;
 }
 
 uint64_t __56__HRETriggerRecommendation_containsRecommendableContent__block_invoke(uint64_t a1, void *a2)
@@ -365,21 +365,21 @@ uint64_t __56__HRETriggerRecommendation_containsRecommendableContent__block_invo
 
 - (id)changedInvolvedObjects
 {
-  v3 = [(HRETriggerRecommendation *)self selectedTriggerBuilder];
-  v4 = [v3 trigger];
+  selectedTriggerBuilder = [(HRETriggerRecommendation *)self selectedTriggerBuilder];
+  trigger = [selectedTriggerBuilder trigger];
 
-  if (v4)
+  if (trigger)
   {
-    v5 = [(HRETriggerRecommendation *)self mutableTriggerBuilders];
-    v6 = [v5 na_flatMap:&__block_literal_global_26];
+    mutableTriggerBuilders = [(HRETriggerRecommendation *)self mutableTriggerBuilders];
+    involvedObjects = [mutableTriggerBuilders na_flatMap:&__block_literal_global_26];
   }
 
   else
   {
-    v6 = [(HRETriggerRecommendation *)self involvedObjects];
+    involvedObjects = [(HRETriggerRecommendation *)self involvedObjects];
   }
 
-  return v6;
+  return involvedObjects;
 }
 
 id __50__HRETriggerRecommendation_changedInvolvedObjects__block_invoke(uint64_t a1, void *a2)
@@ -398,11 +398,11 @@ id __50__HRETriggerRecommendation_changedInvolvedObjects__block_invoke(uint64_t 
 
 - (id)involvedObjects
 {
-  v3 = [(HRETriggerRecommendation *)self actions];
-  v4 = [v3 na_flatMap:&__block_literal_global_31];
+  actions = [(HRETriggerRecommendation *)self actions];
+  v4 = [actions na_flatMap:&__block_literal_global_31];
 
-  v5 = [(HRETriggerRecommendation *)self triggerBuilders];
-  v6 = [v5 na_flatMap:&__block_literal_global_33];
+  triggerBuilders = [(HRETriggerRecommendation *)self triggerBuilders];
+  v6 = [triggerBuilders na_flatMap:&__block_literal_global_33];
 
   v7 = [v4 setByAddingObjectsFromSet:v6];
 
@@ -443,9 +443,9 @@ id __43__HRETriggerRecommendation_involvedObjects__block_invoke_2(uint64_t a1, v
   return v9;
 }
 
-- (BOOL)includesObjects:(id)a3
+- (BOOL)includesObjects:(id)objects
 {
-  v4 = [a3 na_flatMap:&__block_literal_global_40];
+  v4 = [objects na_flatMap:&__block_literal_global_40];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __44__HRETriggerRecommendation_includesObjects___block_invoke_2;
@@ -591,21 +591,21 @@ uint64_t __44__HRETriggerRecommendation_includesObjects___block_invoke_8(uint64_
   return (v5 | v2) & 1;
 }
 
-- (id)compareForMatchingToTrigger:(id)a3
+- (id)compareForMatchingToTrigger:(id)trigger
 {
-  v4 = a3;
-  v5 = [(HRETriggerRecommendation *)self selectedTriggerBuilder];
-  v6 = [v5 trigger];
-  v7 = [v4 trigger];
-  if ([v6 isEqual:v7])
+  triggerCopy = trigger;
+  selectedTriggerBuilder = [(HRETriggerRecommendation *)self selectedTriggerBuilder];
+  trigger = [selectedTriggerBuilder trigger];
+  trigger2 = [triggerCopy trigger];
+  if ([trigger isEqual:trigger2])
   {
-    v8 = [(HRETriggerRecommendation *)self containsMeaningfulChanges];
+    containsMeaningfulChanges = [(HRETriggerRecommendation *)self containsMeaningfulChanges];
 
-    if (!v8)
+    if (!containsMeaningfulChanges)
     {
       v9 = objc_alloc(MEMORY[0x277D14590]);
-      v10 = [(HRETriggerRecommendation *)self selectedTriggerBuilder];
-      v11 = [v9 initWithObjectA:v10 objectB:v4];
+      selectedTriggerBuilder2 = [(HRETriggerRecommendation *)self selectedTriggerBuilder];
+      v11 = [v9 initWithObjectA:selectedTriggerBuilder2 objectB:triggerCopy];
 LABEL_18:
       v25 = v11;
       goto LABEL_21;
@@ -616,21 +616,21 @@ LABEL_18:
   {
   }
 
-  v12 = [(HRETriggerRecommendation *)self selectedTriggerBuilder];
-  v10 = [v12 compareToObject:v4];
+  selectedTriggerBuilder3 = [(HRETriggerRecommendation *)self selectedTriggerBuilder];
+  selectedTriggerBuilder2 = [selectedTriggerBuilder3 compareToObject:triggerCopy];
 
-  v13 = [v10 highestPriorityDifference];
+  highestPriorityDifference = [selectedTriggerBuilder2 highestPriorityDifference];
 
-  if (!v13)
+  if (!highestPriorityDifference)
   {
-    v11 = v10;
-    v10 = v11;
+    v11 = selectedTriggerBuilder2;
+    selectedTriggerBuilder2 = v11;
     goto LABEL_18;
   }
 
   objc_opt_class();
-  v14 = [v10 differences];
-  v15 = [v14 objectForKeyedSubscript:*MEMORY[0x277D137D8]];
+  differences = [selectedTriggerBuilder2 differences];
+  v15 = [differences objectForKeyedSubscript:*MEMORY[0x277D137D8]];
   if (objc_opt_isKindOfClass())
   {
     v16 = v15;
@@ -645,10 +645,10 @@ LABEL_18:
 
   if (v17)
   {
-    v18 = [v17 containedObjectResult];
+    containedObjectResult = [v17 containedObjectResult];
     objc_opt_class();
-    v19 = [v18 differences];
-    v20 = [v19 objectForKeyedSubscript:*MEMORY[0x277D137C8]];
+    differences2 = [containedObjectResult differences];
+    v20 = [differences2 objectForKeyedSubscript:*MEMORY[0x277D137C8]];
     if (objc_opt_isKindOfClass())
     {
       v21 = v20;
@@ -664,18 +664,18 @@ LABEL_18:
     if (v22 && [v22 isASubsetOfB])
     {
       v23 = [v22 withPriority:0];
-      [v18 add:v23];
+      [containedObjectResult add:v23];
     }
 
-    v24 = v10;
+    v24 = selectedTriggerBuilder2;
   }
 
   else
   {
-    v26 = v10;
+    v26 = selectedTriggerBuilder2;
   }
 
-  v25 = v10;
+  v25 = selectedTriggerBuilder2;
 LABEL_21:
 
   return v25;
@@ -683,8 +683,8 @@ LABEL_21:
 
 - (NSSet)addedActions
 {
-  v2 = [(HRETriggerRecommendation *)self triggerBuilders];
-  v3 = [v2 na_flatMap:&__block_literal_global_52_0];
+  triggerBuilders = [(HRETriggerRecommendation *)self triggerBuilders];
+  v3 = [triggerBuilders na_flatMap:&__block_literal_global_52_0];
 
   return v3;
 }
@@ -699,32 +699,32 @@ id __40__HRETriggerRecommendation_addedActions__block_invoke(uint64_t a1, void *
   return v5;
 }
 
-- (void)replaceTriggerBuilder:(id)a3 withTriggerBuilder:(id)a4 allowEditingExistingActions:(BOOL)a5
+- (void)replaceTriggerBuilder:(id)builder withTriggerBuilder:(id)triggerBuilder allowEditingExistingActions:(BOOL)actions
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(HRETriggerRecommendation *)self mutableTriggerBuilders];
-  [v10 removeObject:v9];
+  triggerBuilderCopy = triggerBuilder;
+  builderCopy = builder;
+  mutableTriggerBuilders = [(HRETriggerRecommendation *)self mutableTriggerBuilders];
+  [mutableTriggerBuilders removeObject:builderCopy];
 
-  v11 = [(HRETriggerRecommendation *)self mutableTriggerBuilders];
-  [v11 addObject:v8];
+  mutableTriggerBuilders2 = [(HRETriggerRecommendation *)self mutableTriggerBuilders];
+  [mutableTriggerBuilders2 addObject:triggerBuilderCopy];
 
   v12 = self->_selectedTriggerBuilder;
   selectedTriggerBuilder = self->_selectedTriggerBuilder;
-  self->_selectedTriggerBuilder = v8;
-  v14 = v8;
+  self->_selectedTriggerBuilder = triggerBuilderCopy;
+  v14 = triggerBuilderCopy;
 
-  v15 = [v9 triggerActionSets];
+  triggerActionSets = [builderCopy triggerActionSets];
 
-  v16 = [v15 hre_recommendedActions];
-  v17 = [v16 additions];
+  hre_recommendedActions = [triggerActionSets hre_recommendedActions];
+  additions = [hre_recommendedActions additions];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __97__HRETriggerRecommendation_replaceTriggerBuilder_withTriggerBuilder_allowEditingExistingActions___block_invoke;
   v20[3] = &unk_279776810;
   v20[4] = self;
-  v21 = a5;
-  [v17 na_each:v20];
+  actionsCopy = actions;
+  [additions na_each:v20];
 
   v18 = self->_selectedTriggerBuilder;
   self->_selectedTriggerBuilder = v12;
@@ -735,33 +735,33 @@ id __40__HRETriggerRecommendation_addedActions__block_invoke(uint64_t a1, void *
 {
   v15.receiver = self;
   v15.super_class = HRETriggerRecommendation;
-  v3 = [(HRERecommendation *)&v15 descriptionBuilder];
-  v4 = [(HRETriggerRecommendation *)self selectedTriggerBuilder];
-  v5 = [v4 naturalLanguageNameOfType:2];
-  [v3 appendString:v5 withName:@"name"];
+  descriptionBuilder = [(HRERecommendation *)&v15 descriptionBuilder];
+  selectedTriggerBuilder = [(HRETriggerRecommendation *)self selectedTriggerBuilder];
+  v5 = [selectedTriggerBuilder naturalLanguageNameOfType:2];
+  [descriptionBuilder appendString:v5 withName:@"name"];
 
-  v6 = [(HRETriggerRecommendation *)self selectedTriggerBuilder];
-  v7 = [v6 trigger];
-  v8 = [v7 uniqueIdentifier];
-  v9 = [v3 appendObject:v8 withName:@"trigger" skipIfNil:1];
+  selectedTriggerBuilder2 = [(HRETriggerRecommendation *)self selectedTriggerBuilder];
+  trigger = [selectedTriggerBuilder2 trigger];
+  uniqueIdentifier = [trigger uniqueIdentifier];
+  v9 = [descriptionBuilder appendObject:uniqueIdentifier withName:@"trigger" skipIfNil:1];
 
-  v10 = [(HRETriggerRecommendation *)self addedActions];
+  addedActions = [(HRETriggerRecommendation *)self addedActions];
   v11 = MEMORY[0x277D14380];
-  v12 = [v10 allObjects];
-  v13 = [v11 hre_sortActionBuilders:v12];
+  allObjects = [addedActions allObjects];
+  v13 = [v11 hre_sortActionBuilders:allObjects];
 
-  [v3 appendArraySection:v13 withName:@"+actions" skipIfEmpty:1];
+  [descriptionBuilder appendArraySection:v13 withName:@"+actions" skipIfEmpty:1];
 
-  return v3;
+  return descriptionBuilder;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = HRETriggerRecommendation;
-  v4 = [(HRERecommendation *)&v7 copyWithZone:a3];
-  v5 = [(HRETriggerRecommendation *)self iconDescriptor];
-  [v4 setIconDescriptor:v5];
+  v4 = [(HRERecommendation *)&v7 copyWithZone:zone];
+  iconDescriptor = [(HRETriggerRecommendation *)self iconDescriptor];
+  [v4 setIconDescriptor:iconDescriptor];
 
   return v4;
 }

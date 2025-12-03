@@ -1,47 +1,47 @@
 @interface SYDocumentWorkflowsServiceHandle
-- (SYDocumentWorkflowsServiceHandle)initWithRepository:(id)a3;
+- (SYDocumentWorkflowsServiceHandle)initWithRepository:(id)repository;
 - (id)_createOpenLastModifiedDocumentImpl;
-- (id)_fallbackUserActivityForDocumentWithAttributes:(id)a3;
-- (void)fetchUserActivityForDocumentIndexKey:(id)a3 completion:(id)a4;
-- (void)hasLastModifiedDocument:(id)a3 completion:(id)a4;
-- (void)hasOriginalDocumentForFileAtURL:(id)a3 withAttributes:(id)a4 completion:(id)a5;
-- (void)openLastModifiedDocument:(id)a3 completion:(id)a4;
-- (void)returnToSenderDocument:(id)a3 withAttributes:(id)a4 shouldCreateNewMessage:(BOOL)a5 completion:(id)a6;
-- (void)saveUserActivity:(id)a3 forDocumentIndexKey:(id)a4 sourceBundleIdentifier:(id)a5 completion:(id)a6;
-- (void)unlinkDocumentsWithRelatedUniqueIdentifiers:(id)a3 completion:(id)a4;
-- (void)updateLinkedDocumentsWithCompletion:(id)a3;
+- (id)_fallbackUserActivityForDocumentWithAttributes:(id)attributes;
+- (void)fetchUserActivityForDocumentIndexKey:(id)key completion:(id)completion;
+- (void)hasLastModifiedDocument:(id)document completion:(id)completion;
+- (void)hasOriginalDocumentForFileAtURL:(id)l withAttributes:(id)attributes completion:(id)completion;
+- (void)openLastModifiedDocument:(id)document completion:(id)completion;
+- (void)returnToSenderDocument:(id)document withAttributes:(id)attributes shouldCreateNewMessage:(BOOL)message completion:(id)completion;
+- (void)saveUserActivity:(id)activity forDocumentIndexKey:(id)key sourceBundleIdentifier:(id)identifier completion:(id)completion;
+- (void)unlinkDocumentsWithRelatedUniqueIdentifiers:(id)identifiers completion:(id)completion;
+- (void)updateLinkedDocumentsWithCompletion:(id)completion;
 @end
 
 @implementation SYDocumentWorkflowsServiceHandle
 
-- (SYDocumentWorkflowsServiceHandle)initWithRepository:(id)a3
+- (SYDocumentWorkflowsServiceHandle)initWithRepository:(id)repository
 {
-  v5 = a3;
+  repositoryCopy = repository;
   v9.receiver = self;
   v9.super_class = SYDocumentWorkflowsServiceHandle;
   v6 = [(SYDocumentWorkflowsServiceHandle *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_repository, a3);
+    objc_storeStrong(&v6->_repository, repository);
   }
 
   return v7;
 }
 
-- (void)fetchUserActivityForDocumentIndexKey:(id)a3 completion:(id)a4
+- (void)fetchUserActivityForDocumentIndexKey:(id)key completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  completionCopy = completion;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __84__SYDocumentWorkflowsServiceHandle_fetchUserActivityForDocumentIndexKey_completion___block_invoke;
   v15[3] = &unk_27856BEF0;
-  v8 = v7;
+  v8 = completionCopy;
   v16 = v8;
   v9 = MEMORY[0x22AA6A360](v15);
   v14 = 0;
-  v10 = [(SYDocumentWorkflowsServiceHandle *)self _fetchUserActivityWithRelatedUniqueIdentifier:v6 error:&v14];
+  v10 = [(SYDocumentWorkflowsServiceHandle *)self _fetchUserActivityWithRelatedUniqueIdentifier:keyCopy error:&v14];
   v11 = v14;
   if (v10)
   {
@@ -72,24 +72,24 @@ uint64_t __84__SYDocumentWorkflowsServiceHandle_fetchUserActivityForDocumentInde
   return result;
 }
 
-- (void)saveUserActivity:(id)a3 forDocumentIndexKey:(id)a4 sourceBundleIdentifier:(id)a5 completion:(id)a6
+- (void)saveUserActivity:(id)activity forDocumentIndexKey:(id)key sourceBundleIdentifier:(id)identifier completion:(id)completion
 {
-  v10 = a4;
-  v11 = a6;
+  keyCopy = key;
+  completionCopy = completion;
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __107__SYDocumentWorkflowsServiceHandle_saveUserActivity_forDocumentIndexKey_sourceBundleIdentifier_completion___block_invoke;
   v22[3] = &unk_27856B738;
-  v12 = v11;
+  v12 = completionCopy;
   v23 = v12;
-  v13 = a5;
-  v14 = a3;
+  identifierCopy = identifier;
+  activityCopy = activity;
   v15 = MEMORY[0x22AA6A360](v22);
   repository = self->_repository;
-  v17 = [v14 userActivity];
+  userActivity = [activityCopy userActivity];
 
   v21 = 0;
-  v18 = [(SYDocumentWorkflowsRepository *)repository saveUserActivity:v17 forRelatedUniqueIdentifier:v10 sourceBundleIdentifier:v13 error:&v21];
+  v18 = [(SYDocumentWorkflowsRepository *)repository saveUserActivity:userActivity forRelatedUniqueIdentifier:keyCopy sourceBundleIdentifier:identifierCopy error:&v21];
 
   v19 = v21;
   if ((v18 & 1) == 0)
@@ -115,25 +115,25 @@ uint64_t __107__SYDocumentWorkflowsServiceHandle_saveUserActivity_forDocumentInd
   return result;
 }
 
-- (void)returnToSenderDocument:(id)a3 withAttributes:(id)a4 shouldCreateNewMessage:(BOOL)a5 completion:(id)a6
+- (void)returnToSenderDocument:(id)document withAttributes:(id)attributes shouldCreateNewMessage:(BOOL)message completion:(id)completion
 {
-  v7 = a5;
+  messageCopy = message;
   v56[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  documentCopy = document;
+  attributesCopy = attributes;
+  completionCopy = completion;
   v47[0] = MEMORY[0x277D85DD0];
   v47[1] = 3221225472;
   v47[2] = __108__SYDocumentWorkflowsServiceHandle_returnToSenderDocument_withAttributes_shouldCreateNewMessage_completion___block_invoke;
   v47[3] = &unk_27856B738;
-  v13 = v12;
+  v13 = completionCopy;
   v48 = v13;
   v14 = MEMORY[0x22AA6A360](v47);
-  v15 = [v11 sourceBundleIdentifier];
-  if ([v15 length])
+  sourceBundleIdentifier = [attributesCopy sourceBundleIdentifier];
+  if ([sourceBundleIdentifier length])
   {
     v46 = 0;
-    v16 = [objc_alloc(MEMORY[0x277CC1E70]) initWithBundleIdentifier:v15 allowPlaceholder:1 error:&v46];
+    v16 = [objc_alloc(MEMORY[0x277CC1E70]) initWithBundleIdentifier:sourceBundleIdentifier allowPlaceholder:1 error:&v46];
     v17 = v46;
     v18 = os_log_create("com.apple.synapse", "DocumentWorkflows");
     v19 = v18;
@@ -148,30 +148,30 @@ uint64_t __107__SYDocumentWorkflowsServiceHandle_saveUserActivity_forDocumentInd
       goto LABEL_26;
     }
 
-    v38 = v7;
-    v40 = v10;
+    v38 = messageCopy;
+    v40 = documentCopy;
     v20 = v18;
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
-      v21 = [v11 sender];
+      sender = [attributesCopy sender];
       *buf = 138412802;
-      v50 = v15;
+      v50 = sourceBundleIdentifier;
       v51 = 2112;
       v52 = v40;
       v53 = 2112;
-      v54 = v21;
+      v54 = sender;
       _os_log_impl(&dword_225901000, v20, OS_LOG_TYPE_DEFAULT, "Found record for bundle identifier: %@, to return document: %@, to sender: %@", buf, 0x20u);
     }
 
-    v22 = [v11 indexKey];
+    indexKey = [attributesCopy indexKey];
     v45 = 0;
-    v23 = [(SYDocumentWorkflowsServiceHandle *)self _fetchUserActivityWithRelatedUniqueIdentifier:v22 error:&v45];
+    v23 = [(SYDocumentWorkflowsServiceHandle *)self _fetchUserActivityWithRelatedUniqueIdentifier:indexKey error:&v45];
     v24 = v45;
 
     v39 = v24;
     if (v23 || !v24)
     {
-      v10 = v40;
+      documentCopy = v40;
       if (v23)
       {
         v28 = v23;
@@ -182,30 +182,30 @@ uint64_t __107__SYDocumentWorkflowsServiceHandle_saveUserActivity_forDocumentInd
     else
     {
       v25 = os_log_create("com.apple.synapse", "DocumentWorkflows");
-      v10 = v40;
+      documentCopy = v40;
       if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
       {
-        [SYDocumentWorkflowsServiceHandle returnToSenderDocument:v11 withAttributes:v39 shouldCreateNewMessage:v25 completion:?];
+        [SYDocumentWorkflowsServiceHandle returnToSenderDocument:attributesCopy withAttributes:v39 shouldCreateNewMessage:v25 completion:?];
       }
     }
 
-    v28 = [(SYDocumentWorkflowsServiceHandle *)self _fallbackUserActivityForDocumentWithAttributes:v11];
+    v28 = [(SYDocumentWorkflowsServiceHandle *)self _fallbackUserActivityForDocumentWithAttributes:attributesCopy];
     if (!v28)
     {
       v34 = os_log_create("com.apple.synapse", "DocumentWorkflows");
       if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
       {
-        [SYDocumentWorkflowsServiceHandle returnToSenderDocument:v11 withAttributes:v34 shouldCreateNewMessage:? completion:?];
+        [SYDocumentWorkflowsServiceHandle returnToSenderDocument:attributesCopy withAttributes:v34 shouldCreateNewMessage:? completion:?];
       }
 
-      v35 = [MEMORY[0x277CC1E80] defaultWorkspace];
+      defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
       v43[0] = MEMORY[0x277D85DD0];
       v43[1] = 3221225472;
       v43[2] = __108__SYDocumentWorkflowsServiceHandle_returnToSenderDocument_withAttributes_shouldCreateNewMessage_completion___block_invoke_10;
       v43[3] = &unk_27856BFE0;
-      v43[4] = v15;
+      v43[4] = sourceBundleIdentifier;
       v44 = v14;
-      [v35 openApplicationWithBundleIdentifier:v15 configuration:0 completionHandler:v43];
+      [defaultWorkspace openApplicationWithBundleIdentifier:sourceBundleIdentifier configuration:0 completionHandler:v43];
 
       goto LABEL_25;
     }
@@ -214,33 +214,33 @@ LABEL_17:
     v37 = v23;
     v29 = [MEMORY[0x277CC1EF0] _syReturnToSenderActivityWithOriginalUserActivity:v28];
     v30 = v29;
-    if (v10)
+    if (documentCopy)
     {
-      [(NSUserActivity *)v29 set_syDocument:v10];
+      [(NSUserActivity *)v29 set_syDocument:documentCopy];
     }
 
     [v30 set_syShouldCreateNewMessage:v38];
     v31 = os_log_create("com.apple.synapse", "DocumentWorkflows");
     if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
     {
-      v32 = [v30 _syLoggableDescription];
+      _syLoggableDescription = [v30 _syLoggableDescription];
       *buf = 138412546;
-      v50 = v15;
+      v50 = sourceBundleIdentifier;
       v51 = 2112;
-      v52 = v32;
+      v52 = _syLoggableDescription;
       _os_log_impl(&dword_225901000, v31, OS_LOG_TYPE_DEFAULT, "Launching app: %@, with user activity: %@", buf, 0x16u);
 
-      v10 = v40;
+      documentCopy = v40;
     }
 
-    v33 = [MEMORY[0x277CC1E80] defaultWorkspace];
+    defaultWorkspace2 = [MEMORY[0x277CC1E80] defaultWorkspace];
     v41[0] = MEMORY[0x277D85DD0];
     v41[1] = 3221225472;
     v41[2] = __108__SYDocumentWorkflowsServiceHandle_returnToSenderDocument_withAttributes_shouldCreateNewMessage_completion___block_invoke_12;
     v41[3] = &unk_27856BFE0;
-    v41[4] = v15;
+    v41[4] = sourceBundleIdentifier;
     v42 = v14;
-    [v33 openUserActivity:v30 usingApplicationRecord:v16 configuration:0 completionHandler:v41];
+    [defaultWorkspace2 openUserActivity:v30 usingApplicationRecord:v16 configuration:0 completionHandler:v41];
 
     v23 = v37;
 LABEL_25:
@@ -302,17 +302,17 @@ void __108__SYDocumentWorkflowsServiceHandle_returnToSenderDocument_withAttribut
   (*(*(a1 + 40) + 16))();
 }
 
-- (id)_fallbackUserActivityForDocumentWithAttributes:(id)a3
+- (id)_fallbackUserActivityForDocumentWithAttributes:(id)attributes
 {
-  v3 = a3;
-  v4 = [v3 sourceBundleIdentifier];
-  v6 = SYIsMailBundleId(v4, v5);
+  attributesCopy = attributes;
+  sourceBundleIdentifier = [attributesCopy sourceBundleIdentifier];
+  v6 = SYIsMailBundleId(sourceBundleIdentifier, v5);
 
   if (v6)
   {
     v7 = [objc_alloc(MEMORY[0x277CC1EF0]) initWithActivityType:@"com.apple.mail.message"];
-    v8 = [v3 indexKey];
-    [v7 set_syRelatedUniqueIdentifier:v8];
+    indexKey = [attributesCopy indexKey];
+    [v7 set_syRelatedUniqueIdentifier:indexKey];
   }
 
   else
@@ -323,56 +323,56 @@ void __108__SYDocumentWorkflowsServiceHandle_returnToSenderDocument_withAttribut
   return v7;
 }
 
-- (void)hasOriginalDocumentForFileAtURL:(id)a3 withAttributes:(id)a4 completion:(id)a5
+- (void)hasOriginalDocumentForFileAtURL:(id)l withAttributes:(id)attributes completion:(id)completion
 {
   v32 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  lCopy = l;
+  attributesCopy = attributes;
+  completionCopy = completion;
   v27[0] = MEMORY[0x277D85DD0];
   v27[1] = 3221225472;
   v27[2] = __94__SYDocumentWorkflowsServiceHandle_hasOriginalDocumentForFileAtURL_withAttributes_completion___block_invoke;
   v27[3] = &unk_27856B8D8;
-  v10 = v9;
+  v10 = completionCopy;
   v28 = v10;
   v11 = MEMORY[0x22AA6A360](v27);
   v12 = os_log_create("com.apple.synapse", "DocumentWorkflows");
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = [v7 path];
+    path = [lCopy path];
     *buf = 138412290;
-    v31 = v13;
+    v31 = path;
     _os_log_impl(&dword_225901000, v12, OS_LOG_TYPE_DEFAULT, "Asking for original document of file at url: %@", buf, 0xCu);
   }
 
-  v14 = [v7 path];
-  if (SYPathIsInUserLibrarySubdirectory(v14, @"Containers/com.apple.mail/Data/Library/Mail Downloads/"))
+  path2 = [lCopy path];
+  if (SYPathIsInUserLibrarySubdirectory(path2, @"Containers/com.apple.mail/Data/Library/Mail Downloads/"))
   {
     goto LABEL_7;
   }
 
-  v15 = [v7 path];
-  if (([v15 hasPrefix:@"/private/var/mobile/tmp/com.apple.email.maild/"] & 1) != 0 || objc_msgSend(v15, "hasPrefix:", @"/var/mobile/tmp/com.apple.email.maild/"))
+  path3 = [lCopy path];
+  if (([path3 hasPrefix:@"/private/var/mobile/tmp/com.apple.email.maild/"] & 1) != 0 || objc_msgSend(path3, "hasPrefix:", @"/var/mobile/tmp/com.apple.email.maild/"))
   {
 
 LABEL_7:
     goto LABEL_8;
   }
 
-  v19 = [v7 path];
-  v20 = SYPathIsInUserLibrarySubdirectory(v19, @"Mail/AttachmentData/");
+  path4 = [lCopy path];
+  v20 = SYPathIsInUserLibrarySubdirectory(path4, @"Mail/AttachmentData/");
 
   if ((v20 & 1) == 0)
   {
-    v21 = [v8 indexKey];
-    v29 = v21;
+    indexKey = [attributesCopy indexKey];
+    v29 = indexKey;
     v22 = [MEMORY[0x277CBEA60] arrayWithObjects:&v29 count:1];
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __94__SYDocumentWorkflowsServiceHandle_hasOriginalDocumentForFileAtURL_withAttributes_completion___block_invoke_18;
     v23[3] = &unk_27856BE50;
-    v24 = v7;
-    v25 = v8;
+    v24 = lCopy;
+    v25 = attributesCopy;
     v26 = v11;
     [SYDocumentAttributesFetchRequest fetchAttributesForDocumentsWithIndexKeys:v22 completion:v23];
 
@@ -383,9 +383,9 @@ LABEL_8:
   v16 = os_log_create("com.apple.synapse", "DocumentWorkflows");
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
-    v17 = [v7 path];
+    path5 = [lCopy path];
     *buf = 138412290;
-    v31 = v17;
+    v31 = path5;
     _os_log_impl(&dword_225901000, v16, OS_LOG_TYPE_DEFAULT, "Requested original of document considered the original itself, url: %@", buf, 0xCu);
   }
 
@@ -450,24 +450,24 @@ void __94__SYDocumentWorkflowsServiceHandle_hasOriginalDocumentForFileAtURL_with
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)hasLastModifiedDocument:(id)a3 completion:(id)a4
+- (void)hasLastModifiedDocument:(id)document completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  documentCopy = document;
+  completionCopy = completion;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __71__SYDocumentWorkflowsServiceHandle_hasLastModifiedDocument_completion___block_invoke;
   v14[3] = &unk_27856C120;
-  v15 = v6;
-  v7 = v6;
+  v15 = completionCopy;
+  v7 = completionCopy;
   v8 = MEMORY[0x22AA6A360](v14);
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __71__SYDocumentWorkflowsServiceHandle_hasLastModifiedDocument_completion___block_invoke_2;
   v11[3] = &unk_27856C0D0;
-  v12 = v5;
+  v12 = documentCopy;
   v13 = v8;
-  v9 = v5;
+  v9 = documentCopy;
   v10 = v8;
   [SYLastModifiedDocumentFetchRequest fetchLastModifiedDocument:v9 completion:v11];
 }
@@ -525,16 +525,16 @@ void __71__SYDocumentWorkflowsServiceHandle_hasLastModifiedDocument_completion__
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)openLastModifiedDocument:(id)a3 completion:(id)a4
+- (void)openLastModifiedDocument:(id)document completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __72__SYDocumentWorkflowsServiceHandle_openLastModifiedDocument_completion___block_invoke;
   v13[3] = &unk_27856B738;
-  v14 = v6;
-  v7 = v6;
-  v8 = a3;
+  v14 = completionCopy;
+  v7 = completionCopy;
+  documentCopy = document;
   v9 = MEMORY[0x22AA6A360](v13);
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
@@ -543,7 +543,7 @@ void __71__SYDocumentWorkflowsServiceHandle_hasLastModifiedDocument_completion__
   v11[4] = self;
   v12 = v9;
   v10 = v9;
-  [SYLastModifiedDocumentFetchRequest fetchLastModifiedDocument:v8 completion:v11];
+  [SYLastModifiedDocumentFetchRequest fetchLastModifiedDocument:documentCopy completion:v11];
 }
 
 uint64_t __72__SYDocumentWorkflowsServiceHandle_openLastModifiedDocument_completion___block_invoke(uint64_t a1)
@@ -585,15 +585,15 @@ void __72__SYDocumentWorkflowsServiceHandle_openLastModifiedDocument_completion_
   return v2;
 }
 
-- (void)updateLinkedDocumentsWithCompletion:(id)a3
+- (void)updateLinkedDocumentsWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __72__SYDocumentWorkflowsServiceHandle_updateLinkedDocumentsWithCompletion___block_invoke;
   v9[3] = &unk_27856B738;
-  v10 = v3;
-  v4 = v3;
+  v10 = completionCopy;
+  v4 = completionCopy;
   v5 = MEMORY[0x22AA6A360](v9);
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
@@ -801,16 +801,16 @@ void __72__SYDocumentWorkflowsServiceHandle_updateLinkedDocumentsWithCompletion_
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)unlinkDocumentsWithRelatedUniqueIdentifiers:(id)a3 completion:(id)a4
+- (void)unlinkDocumentsWithRelatedUniqueIdentifiers:(id)identifiers completion:(id)completion
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  identifiersCopy = identifiers;
+  completionCopy = completion;
   v7 = os_log_create("com.apple.synapse", "DocumentWorkflows");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v19 = v5;
+    v19 = identifiersCopy;
     _os_log_impl(&dword_225901000, v7, OS_LOG_TYPE_DEFAULT, "Unlinking documents with ids: %{public}@", buf, 0xCu);
   }
 
@@ -818,17 +818,17 @@ void __72__SYDocumentWorkflowsServiceHandle_updateLinkedDocumentsWithCompletion_
   v16[1] = 3221225472;
   v16[2] = __91__SYDocumentWorkflowsServiceHandle_unlinkDocumentsWithRelatedUniqueIdentifiers_completion___block_invoke;
   v16[3] = &unk_27856B738;
-  v17 = v6;
-  v8 = v6;
+  v17 = completionCopy;
+  v8 = completionCopy;
   v9 = MEMORY[0x22AA6A360](v16);
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __91__SYDocumentWorkflowsServiceHandle_unlinkDocumentsWithRelatedUniqueIdentifiers_completion___block_invoke_2;
   v13[3] = &unk_27856C270;
-  v14 = v5;
+  v14 = identifiersCopy;
   v15 = v9;
   v10 = v9;
-  v11 = v5;
+  v11 = identifiersCopy;
   [SYDocumentFetchRequest fetchDocumentsWithIndexIds:v11 completion:v13];
 
   v12 = *MEMORY[0x277D85DE8];

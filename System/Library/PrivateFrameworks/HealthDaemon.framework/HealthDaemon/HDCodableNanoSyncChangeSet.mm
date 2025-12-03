@@ -1,21 +1,21 @@
 @interface HDCodableNanoSyncChangeSet
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (id)copyForPersistentUserInfo;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)decodedSessionError;
 - (id)decodedSessionStartDate;
 - (id)decodedSessionUUID;
 - (id)dictionaryRepresentation;
 - (id)nanoSyncDescription;
-- (int)StringAsStatusCode:(id)a3;
+- (int)StringAsStatusCode:(id)code;
 - (int)statusCode;
 - (unint64_t)hash;
-- (void)addChanges:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasStatusCode:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addChanges:(id)changes;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasStatusCode:(BOOL)code;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HDCodableNanoSyncChangeSet
@@ -28,9 +28,9 @@
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v17 = self;
-  v4 = [(HDCodableNanoSyncChangeSet *)self changes];
-  v5 = [v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  selfCopy = self;
+  changes = [(HDCodableNanoSyncChangeSet *)self changes];
+  v5 = [changes countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v5)
   {
     v6 = v5;
@@ -42,7 +42,7 @@
       {
         if (*v19 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(changes);
         }
 
         v9 = *(*(&v18 + 1) + 8 * v8);
@@ -55,8 +55,8 @@
 
         if ([v9 hasEntityIdentifier])
         {
-          v12 = [v9 entityIdentifier];
-          [(HDCodableNanoSyncChange *)v11 setEntityIdentifier:v12];
+          entityIdentifier = [v9 entityIdentifier];
+          [(HDCodableNanoSyncChange *)v11 setEntityIdentifier:entityIdentifier];
         }
 
         v13 = *(v9 + 76);
@@ -96,19 +96,19 @@ LABEL_14:
       }
 
       while (v6 != v8);
-      v14 = [v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v14 = [changes countByEnumeratingWithState:&v18 objects:v22 count:16];
       v6 = v14;
     }
 
     while (v14);
   }
 
-  if ((*&v17->_has & 2) != 0)
+  if ((*&selfCopy->_has & 2) != 0)
   {
-    [(HDCodableNanoSyncChangeSet *)v3 setStatusCode:v17->_statusCode];
+    [(HDCodableNanoSyncChangeSet *)v3 setStatusCode:selfCopy->_statusCode];
   }
 
-  [(HDCodableNanoSyncChangeSet *)v3 setSessionUUID:v17->_sessionUUID];
+  [(HDCodableNanoSyncChangeSet *)v3 setSessionUUID:selfCopy->_sessionUUID];
   v15 = *MEMORY[0x277D85DE8];
   return v3;
 }
@@ -119,31 +119,31 @@ LABEL_14:
   switch(statusCode)
   {
     case 1:
-      v4 = @"Continue";
+      statusCode = @"Continue";
       goto LABEL_10;
     case 3:
-      v4 = @"Error";
+      statusCode = @"Error";
 LABEL_8:
       if ([(HDCodableNanoSyncChangeSet *)self hasSessionError])
       {
-        v5 = [(HDCodableNanoSyncChangeSet *)self sessionError];
-        v6 = [v5 code];
-        v7 = [(HDCodableNanoSyncChangeSet *)self sessionError];
-        v8 = [v7 domain];
-        v9 = [(HDCodableNanoSyncChangeSet *)self sessionError];
-        v10 = [v9 localizedDescription];
-        v11 = [(__CFString *)v4 stringByAppendingFormat:@":%lld, %@, %@", v6, v8, v10];
+        sessionError = [(HDCodableNanoSyncChangeSet *)self sessionError];
+        code = [sessionError code];
+        sessionError2 = [(HDCodableNanoSyncChangeSet *)self sessionError];
+        domain = [sessionError2 domain];
+        sessionError3 = [(HDCodableNanoSyncChangeSet *)self sessionError];
+        localizedDescription = [sessionError3 localizedDescription];
+        v11 = [(__CFString *)statusCode stringByAppendingFormat:@":%lld, %@, %@", code, domain, localizedDescription];
 
-        v4 = v11;
+        statusCode = v11;
       }
 
       goto LABEL_10;
     case 2:
-      v4 = @"Finished";
+      statusCode = @"Finished";
       goto LABEL_10;
   }
 
-  v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"(unknown: %i)", statusCode];
+  statusCode = [MEMORY[0x277CCACA8] stringWithFormat:@"(unknown: %i)", statusCode];
   if (self->_statusCode == 3)
   {
     goto LABEL_8;
@@ -151,11 +151,11 @@ LABEL_8:
 
 LABEL_10:
   v12 = MEMORY[0x277CCACA8];
-  v13 = [(HDCodableNanoSyncChangeSet *)self decodedSessionUUID];
-  v14 = [v13 UUIDString];
-  v15 = [(HDCodableNanoSyncChangeSet *)self changes];
-  v16 = HDNanoSyncDescriptionWithArray(v15);
-  v17 = [v12 stringWithFormat:@"session:%@ status:%@, changes:%@", v14, v4, v16];
+  decodedSessionUUID = [(HDCodableNanoSyncChangeSet *)self decodedSessionUUID];
+  uUIDString = [decodedSessionUUID UUIDString];
+  changes = [(HDCodableNanoSyncChangeSet *)self changes];
+  v16 = HDNanoSyncDescriptionWithArray(changes);
+  v17 = [v12 stringWithFormat:@"session:%@ status:%@, changes:%@", uUIDString, statusCode, v16];
 
   return v17;
 }
@@ -219,27 +219,27 @@ LABEL_10:
   return v3;
 }
 
-- (void)addChanges:(id)a3
+- (void)addChanges:(id)changes
 {
-  v4 = a3;
+  changesCopy = changes;
   changes = self->_changes;
-  v8 = v4;
+  v8 = changesCopy;
   if (!changes)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_changes;
     self->_changes = v6;
 
-    v4 = v8;
+    changesCopy = v8;
     changes = self->_changes;
   }
 
-  [(NSMutableArray *)changes addObject:v4];
+  [(NSMutableArray *)changes addObject:changesCopy];
 }
 
-- (void)setHasStatusCode:(BOOL)a3
+- (void)setHasStatusCode:(BOOL)code
 {
-  if (a3)
+  if (code)
   {
     v3 = 2;
   }
@@ -252,20 +252,20 @@ LABEL_10:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (int)StringAsStatusCode:(id)a3
+- (int)StringAsStatusCode:(id)code
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Continue"])
+  codeCopy = code;
+  if ([codeCopy isEqualToString:@"Continue"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Finished"])
+  else if ([codeCopy isEqualToString:@"Finished"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Error"])
+  else if ([codeCopy isEqualToString:@"Error"])
   {
     v4 = 3;
   }
@@ -284,8 +284,8 @@ LABEL_10:
   v8.receiver = self;
   v8.super_class = HDCodableNanoSyncChangeSet;
   v4 = [(HDCodableNanoSyncChangeSet *)&v8 description];
-  v5 = [(HDCodableNanoSyncChangeSet *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HDCodableNanoSyncChangeSet *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -293,7 +293,7 @@ LABEL_10:
 - (id)dictionaryRepresentation
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if ([(NSMutableArray *)self->_changes count])
   {
     v4 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{-[NSMutableArray count](self->_changes, "count")}];
@@ -316,8 +316,8 @@ LABEL_10:
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v19 + 1) + 8 * i) dictionaryRepresentation];
-          [v4 addObject:v10];
+          dictionaryRepresentation = [*(*(&v19 + 1) + 8 * i) dictionaryRepresentation];
+          [v4 addObject:dictionaryRepresentation];
         }
 
         v7 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
@@ -326,26 +326,26 @@ LABEL_10:
       while (v7);
     }
 
-    [v3 setObject:v4 forKey:@"changes"];
+    [dictionary setObject:v4 forKey:@"changes"];
   }
 
   sessionUUID = self->_sessionUUID;
   if (sessionUUID)
   {
-    [v3 setObject:sessionUUID forKey:@"sessionUUID"];
+    [dictionary setObject:sessionUUID forKey:@"sessionUUID"];
   }
 
   if (*&self->_has)
   {
     v12 = [MEMORY[0x277CCABB0] numberWithDouble:self->_sessionStartDate];
-    [v3 setObject:v12 forKey:@"sessionStartDate"];
+    [dictionary setObject:v12 forKey:@"sessionStartDate"];
   }
 
   sessionError = self->_sessionError;
   if (sessionError)
   {
-    v14 = [(HDCodableError *)sessionError dictionaryRepresentation];
-    [v3 setObject:v14 forKey:@"sessionError"];
+    dictionaryRepresentation2 = [(HDCodableError *)sessionError dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"sessionError"];
   }
 
   if ((*&self->_has & 2) != 0)
@@ -361,18 +361,18 @@ LABEL_10:
       v16 = off_2786243A8[v15];
     }
 
-    [v3 setObject:v16 forKey:@"statusCode"];
+    [dictionary setObject:v16 forKey:@"statusCode"];
   }
 
   v17 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -430,40 +430,40 @@ LABEL_10:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v9 = a3;
+  toCopy = to;
   if ([(HDCodableNanoSyncChangeSet *)self changesCount])
   {
-    [v9 clearChanges];
-    v4 = [(HDCodableNanoSyncChangeSet *)self changesCount];
-    if (v4)
+    [toCopy clearChanges];
+    changesCount = [(HDCodableNanoSyncChangeSet *)self changesCount];
+    if (changesCount)
     {
-      v5 = v4;
+      v5 = changesCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(HDCodableNanoSyncChangeSet *)self changesAtIndex:i];
-        [v9 addChanges:v7];
+        [toCopy addChanges:v7];
       }
     }
   }
 
   if (self->_sessionUUID)
   {
-    [v9 setSessionUUID:?];
+    [toCopy setSessionUUID:?];
   }
 
-  v8 = v9;
+  v8 = toCopy;
   if (*&self->_has)
   {
-    *(v9 + 1) = *&self->_sessionStartDate;
-    *(v9 + 44) |= 1u;
+    *(toCopy + 1) = *&self->_sessionStartDate;
+    *(toCopy + 44) |= 1u;
   }
 
   if (self->_sessionError)
   {
-    [v9 setSessionError:?];
-    v8 = v9;
+    [toCopy setSessionError:?];
+    v8 = toCopy;
   }
 
   if ((*&self->_has & 2) != 0)
@@ -473,10 +473,10 @@ LABEL_10:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
@@ -497,7 +497,7 @@ LABEL_10:
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v18 + 1) + 8 * v10) copyWithZone:{a3, v18}];
+        v11 = [*(*(&v18 + 1) + 8 * v10) copyWithZone:{zone, v18}];
         [v5 addChanges:v11];
 
         ++v10;
@@ -510,7 +510,7 @@ LABEL_10:
     while (v8);
   }
 
-  v12 = [(NSData *)self->_sessionUUID copyWithZone:a3];
+  v12 = [(NSData *)self->_sessionUUID copyWithZone:zone];
   v13 = *(v5 + 32);
   *(v5 + 32) = v12;
 
@@ -520,7 +520,7 @@ LABEL_10:
     *(v5 + 44) |= 1u;
   }
 
-  v14 = [(HDCodableError *)self->_sessionError copyWithZone:a3, v18];
+  v14 = [(HDCodableError *)self->_sessionError copyWithZone:zone, v18];
   v15 = *(v5 + 24);
   *(v5 + 24) = v14;
 
@@ -534,16 +534,16 @@ LABEL_10:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_18;
   }
 
   changes = self->_changes;
-  if (changes | *(v4 + 2))
+  if (changes | *(equalCopy + 2))
   {
     if (![(NSMutableArray *)changes isEqual:?])
     {
@@ -552,7 +552,7 @@ LABEL_10:
   }
 
   sessionUUID = self->_sessionUUID;
-  if (sessionUUID | *(v4 + 4))
+  if (sessionUUID | *(equalCopy + 4))
   {
     if (![(NSData *)sessionUUID isEqual:?])
     {
@@ -561,22 +561,22 @@ LABEL_10:
   }
 
   has = self->_has;
-  v8 = *(v4 + 44);
+  v8 = *(equalCopy + 44);
   if (has)
   {
-    if ((*(v4 + 44) & 1) == 0 || self->_sessionStartDate != *(v4 + 1))
+    if ((*(equalCopy + 44) & 1) == 0 || self->_sessionStartDate != *(equalCopy + 1))
     {
       goto LABEL_18;
     }
   }
 
-  else if (*(v4 + 44))
+  else if (*(equalCopy + 44))
   {
     goto LABEL_18;
   }
 
   sessionError = self->_sessionError;
-  if (sessionError | *(v4 + 3))
+  if (sessionError | *(equalCopy + 3))
   {
     if (![(HDCodableError *)sessionError isEqual:?])
     {
@@ -586,13 +586,13 @@ LABEL_18:
     }
 
     has = self->_has;
-    v8 = *(v4 + 44);
+    v8 = *(equalCopy + 44);
   }
 
   v10 = (v8 & 2) == 0;
   if ((has & 2) != 0)
   {
-    if ((v8 & 2) == 0 || self->_statusCode != *(v4 + 10))
+    if ((v8 & 2) == 0 || self->_statusCode != *(equalCopy + 10))
     {
       goto LABEL_18;
     }
@@ -656,15 +656,15 @@ LABEL_19:
   return v4 ^ v3 ^ v7 ^ v11 ^ v12;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fromCopy = from;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = *(v4 + 2);
+  v5 = *(fromCopy + 2);
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -688,19 +688,19 @@ LABEL_19:
     while (v7);
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(HDCodableNanoSyncChangeSet *)self setSessionUUID:?];
   }
 
-  if (*(v4 + 44))
+  if (*(fromCopy + 44))
   {
-    self->_sessionStartDate = *(v4 + 1);
+    self->_sessionStartDate = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
   sessionError = self->_sessionError;
-  v11 = *(v4 + 3);
+  v11 = *(fromCopy + 3);
   if (sessionError)
   {
     if (v11)
@@ -714,9 +714,9 @@ LABEL_19:
     [(HDCodableNanoSyncChangeSet *)self setSessionError:?];
   }
 
-  if ((*(v4 + 44) & 2) != 0)
+  if ((*(fromCopy + 44) & 2) != 0)
   {
-    self->_statusCode = *(v4 + 10);
+    self->_statusCode = *(fromCopy + 10);
     *&self->_has |= 2u;
   }
 

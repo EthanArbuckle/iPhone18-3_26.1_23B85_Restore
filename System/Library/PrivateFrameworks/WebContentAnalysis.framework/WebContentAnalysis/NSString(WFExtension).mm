@@ -80,8 +80,8 @@
 - (uint64_t)WF_rangeOfWord:()WFExtension
 {
   v5 = [a3 length];
-  v6 = [a1 length];
-  v7 = [a1 length];
+  v6 = [self length];
+  v7 = [self length];
   v8 = 0;
   while (1)
   {
@@ -91,7 +91,7 @@
       break;
     }
 
-    v10 = [a1 rangeOfString:a3 options:1 range:{v8, v7}];
+    v10 = [self rangeOfString:a3 options:1 range:{v8, v7}];
     if (v10 == 0x7FFFFFFFFFFFFFFFLL)
     {
       break;
@@ -130,7 +130,7 @@
       v15 = v14 + 1;
     }
 
-    v16 = [a1 substringWithRange:{v13, v15}];
+    v16 = [self substringWithRange:{v13, v15}];
     if (![objc_msgSend(v16 stringByTrimmingCharactersInSet:{objc_msgSend(MEMORY[0x277CCACA8], "WF_ignorableCharacterSet")), "caseInsensitiveCompare:", a3}])
     {
       return v12;
@@ -142,25 +142,25 @@
 
 - (void)WF_stringByRemovingWord:()WFExtension
 {
-  v4 = a1;
-  v5 = [a1 WF_rangeOfWord:?];
+  selfCopy = self;
+  v5 = [self WF_rangeOfWord:?];
   if (v5 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    for (i = v5; i != 0x7FFFFFFFFFFFFFFFLL; i = [v4 WF_rangeOfWord:a3])
+    for (i = v5; i != 0x7FFFFFFFFFFFFFFFLL; i = [selfCopy WF_rangeOfWord:a3])
     {
       v8 = i + v6;
-      v9 = [v4 length] - (i + v6);
-      v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@", objc_msgSend(v4, "substringWithRange:", 0, i), objc_msgSend(v4, "substringWithRange:", v8, v9)];
+      v9 = [selfCopy length] - (i + v6);
+      selfCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@", objc_msgSend(selfCopy, "substringWithRange:", 0, i), objc_msgSend(selfCopy, "substringWithRange:", v8, v9)];
     }
   }
 
-  return v4;
+  return selfCopy;
 }
 
 - (void)WF_stringByReplacingString:()WFExtension withString:
 {
   v7 = [MEMORY[0x277CCAB68] stringWithString:&stru_28826CB10];
-  v8 = [a1 componentsSeparatedByString:a3];
+  v8 = [self componentsSeparatedByString:a3];
   v9 = [v8 count];
   if (v9)
   {
@@ -188,10 +188,10 @@
 {
   v5 = objc_opt_new();
   v6 = 0;
-  v7 = [a1 length] - a3 + 1;
+  v7 = [self length] - a3 + 1;
   do
   {
-    [v5 appendString:{objc_msgSend(a1, "substringWithRange:", v6, a3)}];
+    [v5 appendString:{objc_msgSend(self, "substringWithRange:", v6, a3)}];
     [v5 appendString:@" "];
     ++v6;
   }
@@ -203,29 +203,29 @@
 
 - (uint64_t)WF_numericCompare:()WFExtension
 {
-  v5 = [a1 length];
+  v5 = [self length];
 
-  return [a1 compare:a3 options:64 range:{0, v5}];
+  return [self compare:a3 options:64 range:{0, v5}];
 }
 
 - (uint64_t)WF_stringByProperlyFixingPercentEscapesUsingEncoding:()WFExtension
 {
-  v2 = [a1 stringByReplacingPercentEscapesUsingEncoding:4];
-  if (!v2)
+  selfCopy = [self stringByReplacingPercentEscapesUsingEncoding:4];
+  if (!selfCopy)
   {
-    v2 = a1;
+    selfCopy = self;
   }
 
-  return [v2 stringByAddingPercentEscapesUsingEncoding:4];
+  return [selfCopy stringByAddingPercentEscapesUsingEncoding:4];
 }
 
 - (uint64_t)_isIPv4DomainAddress
 {
-  v2 = [objc_alloc(MEMORY[0x277CCAC80]) initWithString:a1];
+  v2 = [objc_alloc(MEMORY[0x277CCAC80]) initWithString:self];
   v5 = 0;
   if ([v2 scanCharactersFromSet:objc_msgSend(MEMORY[0x277CCA900] intoString:{"characterSetWithCharactersInString:", @".0123456789", &v5}])
   {
-    v3 = [v5 isEqualToString:a1];
+    v3 = [v5 isEqualToString:self];
   }
 
   else
@@ -238,16 +238,16 @@
 
 - (uint64_t)WF_stringWithMostSignificatDomainPart
 {
-  v2 = [MEMORY[0x277CBEB18] arrayWithArray:{objc_msgSend(a1, "componentsSeparatedByString:", @"."}];
-  if ([v2 count] < 3 || (objc_msgSend(a1, "_isIPv4DomainAddress") & 1) != 0)
+  v2 = [MEMORY[0x277CBEB18] arrayWithArray:{objc_msgSend(self, "componentsSeparatedByString:", @"."}];
+  if ([v2 count] < 3 || (objc_msgSend(self, "_isIPv4DomainAddress") & 1) != 0)
   {
-    return a1;
+    return self;
   }
 
-  v4 = [v2 lastObject];
+  lastObject = [v2 lastObject];
   [v2 removeLastObject];
-  v5 = [v2 lastObject];
-  return [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@", v5, v4];
+  lastObject2 = [v2 lastObject];
+  return [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@", lastObject2, lastObject];
 }
 
 @end

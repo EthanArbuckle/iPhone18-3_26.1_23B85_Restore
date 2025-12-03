@@ -1,10 +1,10 @@
 @interface TTRIRemindersListCellPersonView
-- (_TtC15RemindersUICore31TTRIRemindersListCellPersonView)initWithFrame:(CGRect)a3;
+- (_TtC15RemindersUICore31TTRIRemindersListCellPersonView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation TTRIRemindersListCellPersonView
 
-- (_TtC15RemindersUICore31TTRIRemindersListCellPersonView)initWithFrame:(CGRect)a3
+- (_TtC15RemindersUICore31TTRIRemindersListCellPersonView)initWithFrame:(CGRect)frame
 {
   ObjectType = swift_getObjectType();
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC15RemindersUICore31TTRIRemindersListCellPersonView_contact) = 0;

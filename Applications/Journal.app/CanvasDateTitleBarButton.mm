@@ -1,7 +1,7 @@
 @interface CanvasDateTitleBarButton
 - (_TtC7Journal24CanvasDateTitleBarButton)init;
 - (void)updateConfiguration;
-- (void)updateRolloverActive:(id)a3;
+- (void)updateRolloverActive:(id)active;
 @end
 
 @implementation CanvasDateTitleBarButton
@@ -20,17 +20,17 @@
 
 - (void)updateConfiguration
 {
-  v2 = self;
+  selfCopy = self;
   sub_10085D244();
 }
 
-- (void)updateRolloverActive:(id)a3
+- (void)updateRolloverActive:(id)active
 {
-  v4 = a3;
-  v5 = self;
-  if ([v4 state] != 1)
+  activeCopy = active;
+  selfCopy = self;
+  if ([activeCopy state] != 1)
   {
-    [v4 state];
+    [activeCopy state];
   }
 
   swift_getKeyPath();

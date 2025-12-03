@@ -1,66 +1,66 @@
 @interface NTKKaleidoscopeStyleOption
-+ (id)_nameLocalizationKeyForValue:(unint64_t)a3 forDevice:(id)a4;
-+ (id)_orderedValuesForDevice:(id)a3;
-+ (id)_snapshotKeyForValue:(unint64_t)a3 forDevice:(id)a4;
-+ (id)localizedNameForValidValue:(unint64_t)a3 forDevice:(id)a4;
-+ (int64_t)indexForStyle:(unint64_t)a3 forDevice:(id)a4;
++ (id)_nameLocalizationKeyForValue:(unint64_t)value forDevice:(id)device;
++ (id)_orderedValuesForDevice:(id)device;
++ (id)_snapshotKeyForValue:(unint64_t)value forDevice:(id)device;
++ (id)localizedNameForValidValue:(unint64_t)value forDevice:(id)device;
++ (int64_t)indexForStyle:(unint64_t)style forDevice:(id)device;
 - (id)_valueToFaceBundleStringDict;
 - (int64_t)swatchStyle;
 @end
 
 @implementation NTKKaleidoscopeStyleOption
 
-+ (int64_t)indexForStyle:(unint64_t)a3 forDevice:(id)a4
++ (int64_t)indexForStyle:(unint64_t)style forDevice:(id)device
 {
-  v5 = [a1 _orderedValuesForDevice:a4];
-  v6 = [NSNumber numberWithUnsignedInteger:a3];
+  v5 = [self _orderedValuesForDevice:device];
+  v6 = [NSNumber numberWithUnsignedInteger:style];
   v7 = [v5 indexOfObject:v6];
 
   return v7;
 }
 
-+ (id)_orderedValuesForDevice:(id)a3
++ (id)_orderedValuesForDevice:(id)device
 {
-  sub_CD1C(a1, a3);
+  sub_CD1C(self, device);
   v3 = qword_2CE48;
 
   return v3;
 }
 
-+ (id)_snapshotKeyForValue:(unint64_t)a3 forDevice:(id)a4
++ (id)_snapshotKeyForValue:(unint64_t)value forDevice:(id)device
 {
-  if (a3 > 3)
+  if (value > 3)
   {
     return 0;
   }
 
   else
   {
-    return off_24D50[a3];
+    return off_24D50[value];
   }
 }
 
-+ (id)localizedNameForValidValue:(unint64_t)a3 forDevice:(id)a4
++ (id)localizedNameForValidValue:(unint64_t)value forDevice:(id)device
 {
-  v4 = [a1 _nameLocalizationKeyForValue:a3 forDevice:a4];
+  v4 = [self _nameLocalizationKeyForValue:value forDevice:device];
   v5 = [NTKKaleidoscopeFaceBundle localizedStringForKey:v4 comment:@"<StyleOption>"];
 
   return v5;
 }
 
-+ (id)_nameLocalizationKeyForValue:(unint64_t)a3 forDevice:(id)a4
++ (id)_nameLocalizationKeyForValue:(unint64_t)value forDevice:(id)device
 {
-  v5 = a4;
-  v6 = v5;
-  if (a3 > 1)
+  deviceCopy = device;
+  v6 = deviceCopy;
+  if (value > 1)
   {
     v8 = @"EDIT_OPTION_LABEL_KALEIDOSCOPE_STYLE_FSFACET";
-    if (a3 != 3)
+    if (value != 3)
     {
       v8 = 0;
     }
 
-    if (a3 == 2)
+    if (value == 2)
     {
       v7 = @"EDIT_OPTION_LABEL_KALEIDOSCOPE_STYLE_LIMIT";
     }
@@ -71,9 +71,9 @@
     }
   }
 
-  else if (a3)
+  else if (value)
   {
-    if (a3 == 1)
+    if (value == 1)
     {
       v7 = @"EDIT_OPTION_LABEL_KALEIDOSCOPE_STYLE_RADIAL";
     }
@@ -84,7 +84,7 @@
     }
   }
 
-  else if ([v5 deviceCategory] == &dword_0 + 1)
+  else if ([deviceCopy deviceCategory] == &dword_0 + 1)
   {
     v7 = @"EDIT_OPTION_LABEL_KALEIDOSCOPE_STYLE_FACETED_CLASSIC";
   }
@@ -111,10 +111,10 @@
 
 - (int64_t)swatchStyle
 {
-  v2 = [(NTKKaleidoscopeStyleOption *)self device];
-  v3 = [v2 deviceCategory];
+  device = [(NTKKaleidoscopeStyleOption *)self device];
+  deviceCategory = [device deviceCategory];
 
-  if (v3 == &dword_0 + 1)
+  if (deviceCategory == &dword_0 + 1)
   {
     return 1;
   }

@@ -14,32 +14,32 @@
 
 - (id)iconRecipe
 {
-  v1 = [a1 sourceInfo];
-  v2 = [v1 objectForKey:@"NotificationIconRecipe"];
+  sourceInfo = [self sourceInfo];
+  v2 = [sourceInfo objectForKey:@"NotificationIconRecipe"];
 
   return v2;
 }
 
 - (id)subordinateIconRecipe
 {
-  v1 = [a1 sourceInfo];
-  v2 = [v1 objectForKey:@"NotificationSubordinateIconRecipe"];
+  sourceInfo = [self sourceInfo];
+  v2 = [sourceInfo objectForKey:@"NotificationSubordinateIconRecipe"];
 
   return v2;
 }
 
 - (id)bulletin
 {
-  v1 = [a1 sourceInfo];
-  v2 = [v1 objectForKey:@"BBBulletin"];
+  sourceInfo = [self sourceInfo];
+  v2 = [sourceInfo objectForKey:@"BBBulletin"];
 
   return v2;
 }
 
 - (id)observer
 {
-  v1 = [a1 sourceInfo];
-  v2 = [v1 objectForKey:@"BBObserver"];
+  sourceInfo = [self sourceInfo];
+  v2 = [sourceInfo objectForKey:@"BBObserver"];
 
   return v2;
 }
@@ -50,7 +50,7 @@
   v11 = a4;
   v12 = a3;
   v13 = objc_opt_new();
-  v14 = [a1 notificationRequestForBulletin:v12 observer:v11 sectionInfo:v10 feed:a6 uuid:v13];
+  v14 = [self notificationRequestForBulletin:v12 observer:v11 sectionInfo:v10 feed:a6 uuid:v13];
 
   return v14;
 }
@@ -62,74 +62,74 @@
   v219 = a4;
   v224 = a5;
   v12 = a9;
-  v13 = [v11 sectionID];
+  sectionID = [v11 sectionID];
   v14 = objc_opt_new();
   v216 = v12;
   [v14 setUuid:v12];
-  [v14 setSectionIdentifier:v13];
-  v15 = [v11 subsectionIDs];
-  [v14 setSubSectionIdentifiers:v15];
+  [v14 setSectionIdentifier:sectionID];
+  subsectionIDs = [v11 subsectionIDs];
+  [v14 setSubSectionIdentifiers:subsectionIDs];
 
-  v16 = [v11 publisherMatchID];
-  [v14 setNotificationIdentifier:v16];
+  publisherMatchID = [v11 publisherMatchID];
+  [v14 setNotificationIdentifier:publisherMatchID];
 
-  v17 = [v11 categoryID];
-  [v14 setCategoryIdentifier:v17];
+  categoryID = [v11 categoryID];
+  [v14 setCategoryIdentifier:categoryID];
 
-  v18 = [v11 intentIDs];
-  [v14 setIntentIdentifiers:v18];
+  intentIDs = [v11 intentIDs];
+  [v14 setIntentIdentifiers:intentIDs];
 
-  v19 = [v11 parentSectionID];
-  [v14 setParentSectionIdentifier:v19];
+  parentSectionID = [v11 parentSectionID];
+  [v14 setParentSectionIdentifier:parentSectionID];
 
-  v215 = [v11 eventBehavior];
+  eventBehavior = [v11 eventBehavior];
   [v14 setEventBehavior:?];
   [v14 setIsHighlight:{objc_msgSend(v11, "isHighlight")}];
-  v20 = [v11 priorityNotificationStatus];
-  if ((v20 - 1) >= 5)
+  priorityNotificationStatus = [v11 priorityNotificationStatus];
+  if ((priorityNotificationStatus - 1) >= 5)
   {
     v21 = 0;
   }
 
   else
   {
-    v21 = v20;
+    v21 = priorityNotificationStatus;
   }
 
   [v14 setPriorityStatus:v21];
-  v22 = [v11 notificationSummaryStatus];
-  if ((v22 - 1) >= 4)
+  notificationSummaryStatus = [v11 notificationSummaryStatus];
+  if ((notificationSummaryStatus - 1) >= 4)
   {
     v23 = 0;
   }
 
   else
   {
-    v23 = v22;
+    v23 = notificationSummaryStatus;
   }
 
   [v14 setSummaryStatus:v23];
   [v14 setIsPresentedAsBanner:0];
   [v14 setIsRemoved:0];
-  v24 = [v11 threadID];
-  v25 = [v24 length];
+  threadID = [v11 threadID];
+  v25 = [threadID length];
 
   v226 = v14;
   if (v25)
   {
-    v26 = [v11 threadID];
-    [v14 setThreadIdentifier:v26];
+    threadID2 = [v11 threadID];
+    [v14 setThreadIdentifier:threadID2];
   }
 
   else
   {
     v27 = MEMORY[0x277CCACA8];
-    v26 = [v14 sectionIdentifier];
-    v28 = [v27 stringWithFormat:@"req-%@", v26];
+    threadID2 = [v14 sectionIdentifier];
+    v28 = [v27 stringWithFormat:@"req-%@", threadID2];
     [v14 setThreadIdentifier:v28];
   }
 
-  v223 = v13;
+  v223 = sectionID;
 
   [v14 setThreadIdentifierUnique:v25 != 0];
   [v14 setCriticalAlert:{objc_msgSend(v11, "hasCriticalIcon")}];
@@ -137,8 +137,8 @@
   v234 = 0u;
   v231 = 0u;
   v232 = 0u;
-  v29 = [v224 subsections];
-  v30 = [v29 countByEnumeratingWithState:&v231 objects:v239 count:16];
+  subsections = [v224 subsections];
+  v30 = [subsections countByEnumeratingWithState:&v231 objects:v239 count:16];
   if (v30)
   {
     v31 = v30;
@@ -150,13 +150,13 @@
       {
         if (*v232 != v33)
         {
-          objc_enumerationMutation(v29);
+          objc_enumerationMutation(subsections);
         }
 
         v35 = *(*(&v231 + 1) + 8 * i);
-        v36 = [v11 subsectionIDs];
-        v37 = [v35 subsectionID];
-        v38 = [v36 containsObject:v37];
+        subsectionIDs2 = [v11 subsectionIDs];
+        subsectionID = [v35 subsectionID];
+        v38 = [subsectionIDs2 containsObject:subsectionID];
 
         if (v38)
         {
@@ -169,7 +169,7 @@
         }
       }
 
-      v31 = [v29 countByEnumeratingWithState:&v231 objects:v239 count:16];
+      v31 = [subsections countByEnumeratingWithState:&v231 objects:v239 count:16];
     }
 
     while (v31);
@@ -180,27 +180,27 @@
     v32 = 0;
   }
 
-  v41 = [v32 subsectionID];
-  [v226 setHighestPrioritySubSectionIdentifier:v41];
+  subsectionID2 = [v32 subsectionID];
+  [v226 setHighestPrioritySubSectionIdentifier:subsectionID2];
 
-  v42 = [v11 recencyDate];
-  if (v42)
+  recencyDate = [v11 recencyDate];
+  if (recencyDate)
   {
-    [v226 setTimestamp:v42];
+    [v226 setTimestamp:recencyDate];
   }
 
   else
   {
-    v43 = [v11 date];
-    if (v43)
+    date = [v11 date];
+    if (date)
     {
-      [v226 setTimestamp:v43];
+      [v226 setTimestamp:date];
     }
 
     else
     {
-      v44 = [v11 publicationDate];
-      [v226 setTimestamp:v44];
+      publicationDate = [v11 publicationDate];
+      [v226 setTimestamp:publicationDate];
     }
   }
 
@@ -275,15 +275,15 @@ LABEL_37:
 LABEL_47:
   [v226 setRequestDestinations:v46];
 
-  v49 = [v11 context];
-  [v226 setContext:v49];
+  context = [v11 context];
+  [v226 setContext:context];
 
-  v50 = [v11 subsectionIDs];
-  [v226 setSettingsSections:v50];
+  subsectionIDs3 = [v11 subsectionIDs];
+  [v226 setSettingsSections:subsectionIDs3];
 
   v51 = objc_opt_new();
-  v52 = [v11 contentType];
-  if ([v52 isEqualToString:*MEMORY[0x277CF34C8]])
+  contentType = [v11 contentType];
+  if ([contentType isEqualToString:*MEMORY[0x277CF34C8]])
   {
     v53 = MEMORY[0x277CE2158];
     v54 = v224;
@@ -292,34 +292,34 @@ LABEL_47:
   else
   {
     v54 = v224;
-    if ([v52 isEqualToString:*MEMORY[0x277CF34D0]])
+    if ([contentType isEqualToString:*MEMORY[0x277CF34D0]])
     {
       v53 = MEMORY[0x277CE2160];
     }
 
-    else if ([v52 isEqualToString:*MEMORY[0x277CF34C0]])
+    else if ([contentType isEqualToString:*MEMORY[0x277CF34C0]])
     {
       v53 = MEMORY[0x277CE2150];
     }
 
-    else if ([v52 isEqualToString:*MEMORY[0x277CF34D8]])
+    else if ([contentType isEqualToString:*MEMORY[0x277CF34D8]])
     {
       v53 = MEMORY[0x277CE2168];
     }
 
-    else if ([v52 isEqualToString:*MEMORY[0x277CF34B8]])
+    else if ([contentType isEqualToString:*MEMORY[0x277CF34B8]])
     {
       v53 = MEMORY[0x277CE2148];
     }
 
-    else if ([v52 isEqualToString:*MEMORY[0x277CF34E0]])
+    else if ([contentType isEqualToString:*MEMORY[0x277CF34E0]])
     {
       v53 = MEMORY[0x277CE2170];
     }
 
     else
     {
-      v55 = [v52 isEqualToString:*MEMORY[0x277CF34A8]];
+      v55 = [contentType isEqualToString:*MEMORY[0x277CF34A8]];
       v53 = MEMORY[0x277CE2140];
       if (v55)
       {
@@ -331,11 +331,11 @@ LABEL_47:
   v56 = *v53;
 
   [v51 setContentType:v56];
-  v57 = [v11 header];
-  if ([v57 length])
+  header = [v11 header];
+  if ([header length])
   {
-    v58 = [v11 header];
-    [v51 setCustomHeader:v58];
+    header2 = [v11 header];
+    [v51 setCustomHeader:header2];
   }
 
   else
@@ -343,8 +343,8 @@ LABEL_47:
     [v51 setCustomHeader:0];
   }
 
-  v59 = [v54 displayName];
-  if ([v59 length])
+  displayName = [v54 displayName];
+  if ([displayName length])
   {
     [v54 displayName];
   }
@@ -356,54 +356,54 @@ LABEL_47:
   v60 = ;
   [v51 setDefaultHeader:v60];
 
-  v61 = [v11 title];
-  [v51 setTitle:v61];
+  title = [v11 title];
+  [v51 setTitle:title];
 
-  v62 = [v11 subtitle];
-  [v51 setSubtitle:v62];
+  subtitle = [v11 subtitle];
+  [v51 setSubtitle:subtitle];
 
-  v63 = [v11 attributedMessage];
-  if (!v63)
+  attributedMessage = [v11 attributedMessage];
+  if (!attributedMessage)
   {
-    v64 = [v11 message];
-    v63 = [MEMORY[0x277CCA898] nc_safeAttributedStringWithString:v64];
+    message = [v11 message];
+    attributedMessage = [MEMORY[0x277CCA898] nc_safeAttributedStringWithString:message];
   }
 
-  [v51 setAttributedMessage:v63];
+  [v51 setAttributedMessage:attributedMessage];
   v221 = v51;
   v65 = v224;
   if (UNCCatchMe())
   {
-    v66 = [v11 summary];
-    [v51 setSummary:v66];
+    summary = [v11 summary];
+    [v51 setSummary:summary];
 
-    v67 = [v11 threadSummary];
-    [v51 setThreadSummary:v67];
+    threadSummary = [v11 threadSummary];
+    [v51 setThreadSummary:threadSummary];
 
-    v68 = [v11 spotlightIdentifier];
-    [v51 setSpotlightIdentifier:v68];
+    spotlightIdentifier = [v11 spotlightIdentifier];
+    [v51 setSpotlightIdentifier:spotlightIdentifier];
 
     v69 = MEMORY[0x277D77DE8];
     v70 = *MEMORY[0x277D77DE8];
     if (os_log_type_enabled(v70, OS_LOG_TYPE_DEFAULT))
     {
-      v71 = [v51 spotlightIdentifier];
+      spotlightIdentifier2 = [v51 spotlightIdentifier];
       v72 = MEMORY[0x277CCABB0];
-      v73 = [v51 threadSummary];
-      v74 = [v72 numberWithInt:{objc_msgSend(v73, "length") != 0}];
+      threadSummary2 = [v51 threadSummary];
+      v74 = [v72 numberWithInt:{objc_msgSend(threadSummary2, "length") != 0}];
       v75 = MEMORY[0x277CCABB0];
       [v51 summary];
-      v77 = v76 = v63;
+      v77 = v76 = attributedMessage;
       v78 = [v75 numberWithInt:{objc_msgSend(v77, "length") != 0}];
       *buf = 138412802;
-      *&buf[4] = v71;
+      *&buf[4] = spotlightIdentifier2;
       *&buf[12] = 2112;
       *&buf[14] = v74;
       v237 = 2112;
       v238 = v78;
       _os_log_impl(&dword_21E77E000, v70, OS_LOG_TYPE_DEFAULT, "notification request for bulletin with spotlightID: %@ hasThreadSummary: %@ hasSummary: %@", buf, 0x20u);
 
-      v63 = v76;
+      attributedMessage = v76;
       v69 = MEMORY[0x277D77DE8];
       v65 = v224;
     }
@@ -415,57 +415,57 @@ LABEL_47:
     }
   }
 
-  v80 = [v11 footer];
-  [v51 setFooter:v80];
+  footer = [v11 footer];
+  [v51 setFooter:footer];
 
-  v81 = [v11 date];
-  [v51 setDate:v81];
+  date2 = [v11 date];
+  [v51 setDate:date2];
 
   [v51 setDateAllDay:{objc_msgSend(v11, "dateIsAllDay")}];
-  v82 = [v11 timeZone];
-  [v51 setTimeZone:v82];
+  timeZone = [v11 timeZone];
+  [v51 setTimeZone:timeZone];
 
-  v83 = [v11 hiddenPreviewsBodyPlaceholder];
-  [v51 setHiddenPreviewsBodyPlaceholder:v83];
+  hiddenPreviewsBodyPlaceholder = [v11 hiddenPreviewsBodyPlaceholder];
+  [v51 setHiddenPreviewsBodyPlaceholder:hiddenPreviewsBodyPlaceholder];
 
-  v84 = [v11 subtypeSummaryFormat];
-  [v51 setCategorySummaryFormat:v84];
+  subtypeSummaryFormat = [v11 subtypeSummaryFormat];
+  [v51 setCategorySummaryFormat:subtypeSummaryFormat];
 
-  v85 = [v11 summaryArgument];
-  [v51 setSummaryArgument:v85];
+  summaryArgument = [v11 summaryArgument];
+  [v51 setSummaryArgument:summaryArgument];
 
   [v51 setSummaryArgumentCount:{objc_msgSend(v11, "summaryArgumentCount")}];
   v86 = v11;
   v87 = v65;
-  v88 = [v86 sectionID];
-  v89 = [v87 sectionID];
-  v90 = [v89 isEqualToString:@"com.apple.mobilecal"];
+  sectionID2 = [v86 sectionID];
+  sectionID3 = [v87 sectionID];
+  v90 = [sectionID3 isEqualToString:@"com.apple.mobilecal"];
 
-  v214 = v63;
+  v214 = attributedMessage;
   if (v90)
   {
-    v91 = [v86 icon];
-    v92 = [v91 _bestVariantForFormat:0];
+    icon = [v86 icon];
+    v92 = [icon _bestVariantForFormat:0];
 
-    v93 = [v92 dateComponentDetails];
+    dateComponentDetails = [v92 dateComponentDetails];
 
-    if (v93)
+    if (dateComponentDetails)
     {
-      v94 = [v86 sectionIcon];
-      v95 = [MEMORY[0x277D759A0] mainScreen];
-      [v95 scale];
-      v96 = [NCNotificationIconRecipe iconRecipeForSectionIcon:v94 scale:v88 applicationIdentifier:?];
+      sectionIcon = [v86 sectionIcon];
+      mainScreen = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen scale];
+      v96 = [NCNotificationIconRecipe iconRecipeForSectionIcon:sectionIcon scale:sectionID2 applicationIdentifier:?];
     }
 
     else
     {
-      v98 = [v92 imagePath];
-      v99 = [v98 lastPathComponent];
-      v94 = [v99 stringByDeletingPathExtension];
+      imagePath = [v92 imagePath];
+      lastPathComponent = [imagePath lastPathComponent];
+      sectionIcon = [lastPathComponent stringByDeletingPathExtension];
 
-      if (v94)
+      if (sectionIcon)
       {
-        v100 = [NCNotificationIconRecipe iconRecipeForDateIconIdentifier:v94];
+        v100 = [NCNotificationIconRecipe iconRecipeForDateIconIdentifier:sectionIcon];
       }
 
       else
@@ -473,16 +473,16 @@ LABEL_47:
         v100 = 0;
       }
 
-      v101 = [v86 context];
-      v95 = [v101 valueForKey:@"contentDate"];
+      context2 = [v86 context];
+      mainScreen = [context2 valueForKey:@"contentDate"];
 
       v102 = v100;
-      if (v100 || !v95)
+      if (v100 || !mainScreen)
       {
         goto LABEL_86;
       }
 
-      v96 = [NCNotificationIconRecipe iconRecipeForDate:v95];
+      v96 = [NCNotificationIconRecipe iconRecipeForDate:mainScreen];
     }
 
     v102 = v96;
@@ -494,11 +494,11 @@ LABEL_86:
 
   v97 = 0;
 LABEL_87:
-  v103 = [v86 sectionIcon];
-  v104 = [v87 sectionID];
-  v105 = _sectionIdentifierIconDenyListContains(v104, v103, 0);
+  sectionIcon2 = [v86 sectionIcon];
+  sectionID4 = [v87 sectionID];
+  v105 = _sectionIdentifierIconDenyListContains(sectionID4, sectionIcon2, 0);
 
-  if (v97 || (v105 & 1) != 0 || !v103)
+  if (v97 || (v105 & 1) != 0 || !sectionIcon2)
   {
 LABEL_92:
     if (v97)
@@ -509,21 +509,21 @@ LABEL_92:
     goto LABEL_93;
   }
 
-  v106 = [v86 communicationContext];
+  communicationContext = [v86 communicationContext];
 
-  if (!v106)
+  if (!communicationContext)
   {
-    v107 = [MEMORY[0x277D759A0] mainScreen];
-    [v107 scale];
-    v97 = [NCNotificationIconRecipe iconRecipeForSectionIcon:v103 scale:v88 applicationIdentifier:?];
+    mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen2 scale];
+    v97 = [NCNotificationIconRecipe iconRecipeForSectionIcon:sectionIcon2 scale:sectionID2 applicationIdentifier:?];
 
     goto LABEL_92;
   }
 
 LABEL_93:
-  if (NCApplicationIdentifierIsValid(v88))
+  if (NCApplicationIdentifierIsValid(sectionID2))
   {
-    v97 = [NCNotificationIconRecipe iconRecipeForApplicationIdentifier:v88];
+    v97 = [NCNotificationIconRecipe iconRecipeForApplicationIdentifier:sectionID2];
   }
 
   else
@@ -538,41 +538,41 @@ LABEL_96:
   if ([v86 hasSubordinateIcon])
   {
     v108 = v87;
-    v109 = [v108 sectionID];
-    v110 = [v108 icon];
-    v111 = _sectionIdentifierIconDenyListContains(v109, v110, 26);
+    sectionID5 = [v108 sectionID];
+    icon2 = [v108 icon];
+    v111 = _sectionIdentifierIconDenyListContains(sectionID5, icon2, 26);
 
-    v112 = [v108 sectionID];
-    v113 = [v108 icon];
+    sectionID6 = [v108 sectionID];
+    icon3 = [v108 icon];
 
     v114 = v226;
     if (v111)
     {
-      if (v113)
+      if (icon3)
       {
-        v115 = [v108 icon];
-        v116 = [MEMORY[0x277D759A0] mainScreen];
-        [v116 scale];
-        v113 = [NCNotificationIconRecipe iconRecipeForSectionIcon:v115 scale:v112 applicationIdentifier:?];
+        icon4 = [v108 icon];
+        mainScreen3 = [MEMORY[0x277D759A0] mainScreen];
+        [mainScreen3 scale];
+        icon3 = [NCNotificationIconRecipe iconRecipeForSectionIcon:icon4 scale:sectionID6 applicationIdentifier:?];
 
         v114 = v226;
       }
     }
 
-    else if (!v113 || ([v108 icon], v117 = objc_claimAutoreleasedReturnValue(), objc_msgSend(MEMORY[0x277D759A0], "mainScreen"), v118 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v118, "scale"), +[NCNotificationIconRecipe iconRecipeForSectionIcon:scale:applicationIdentifier:](NCNotificationIconRecipe, "iconRecipeForSectionIcon:scale:applicationIdentifier:", v117, v112), v113 = objc_claimAutoreleasedReturnValue(), v118, v114 = v226, v117, !v113))
+    else if (!icon3 || ([v108 icon], v117 = objc_claimAutoreleasedReturnValue(), objc_msgSend(MEMORY[0x277D759A0], "mainScreen"), v118 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v118, "scale"), +[NCNotificationIconRecipe iconRecipeForSectionIcon:scale:applicationIdentifier:](NCNotificationIconRecipe, "iconRecipeForSectionIcon:scale:applicationIdentifier:", v117, sectionID6), icon3 = objc_claimAutoreleasedReturnValue(), v118, v114 = v226, v117, !icon3))
     {
-      if (NCApplicationIdentifierIsValid(v112))
+      if (NCApplicationIdentifierIsValid(sectionID6))
       {
-        v113 = [NCNotificationIconRecipe iconRecipeForApplicationIdentifier:v112];
+        icon3 = [NCNotificationIconRecipe iconRecipeForApplicationIdentifier:sectionID6];
       }
 
       else
       {
-        v113 = 0;
+        icon3 = 0;
       }
     }
 
-    v213 = v113;
+    v213 = icon3;
   }
 
   else
@@ -581,18 +581,18 @@ LABEL_96:
     v114 = v226;
   }
 
-  v119 = [v86 communicationContext];
-  v120 = v119;
+  communicationContext2 = [v86 communicationContext];
+  v120 = communicationContext2;
   v121 = v223;
-  if (v119)
+  if (communicationContext2)
   {
-    v122 = [v119 recipients];
+    recipients = [communicationContext2 recipients];
     v123 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v227 = 0u;
     v228 = 0u;
     v229 = 0u;
     v230 = 0u;
-    v124 = v122;
+    v124 = recipients;
     v125 = [v124 countByEnumeratingWithState:&v227 objects:v235 count:16];
     if (v125)
     {
@@ -618,49 +618,49 @@ LABEL_96:
     }
 
     v130 = objc_alloc_init(MEMORY[0x277CE2048]);
-    v131 = [v120 identifier];
-    [v130 setIdentifier:v131];
+    identifier = [v120 identifier];
+    [v130 setIdentifier:identifier];
 
-    v132 = [v120 associatedObjectUri];
-    [v130 setAssociatedObjectUri:v132];
+    associatedObjectUri = [v120 associatedObjectUri];
+    [v130 setAssociatedObjectUri:associatedObjectUri];
 
-    v133 = [v120 bundleIdentifier];
-    [v130 setBundleIdentifier:v133];
+    bundleIdentifier = [v120 bundleIdentifier];
+    [v130 setBundleIdentifier:bundleIdentifier];
 
-    v134 = [v120 displayName];
-    [v130 setDisplayName:v134];
+    displayName2 = [v120 displayName];
+    [v130 setDisplayName:displayName2];
 
-    v135 = [v120 sender];
+    sender = [v120 sender];
 
-    if (v135)
+    if (sender)
     {
-      v136 = [v120 sender];
-      v137 = _unContactFromBBContact(v136);
+      sender2 = [v120 sender];
+      v137 = _unContactFromBBContact(sender2);
 
       [v130 setSender:v137];
-      v138 = [MEMORY[0x277D77F58] sharedInstance];
-      v139 = [v114 topLevelSectionIdentifier];
-      v140 = [v138 updateServiceWithContact:v137 bundleIdentifier:v139];
+      mEMORY[0x277D77F58] = [MEMORY[0x277D77F58] sharedInstance];
+      topLevelSectionIdentifier = [v114 topLevelSectionIdentifier];
+      v140 = [mEMORY[0x277D77F58] updateServiceWithContact:v137 bundleIdentifier:topLevelSectionIdentifier];
 
       v114 = v226;
     }
 
     [v130 setRecipients:v123];
-    v141 = [v120 contentURL];
-    [v130 setContentURL:v141];
+    contentURL = [v120 contentURL];
+    [v130 setContentURL:contentURL];
 
-    v142 = [v120 imageName];
-    [v130 setImageName:v142];
+    imageName = [v120 imageName];
+    [v130 setImageName:imageName];
 
     [v130 setSystemImage:{objc_msgSend(v120, "systemImage")}];
     [v130 setMentionsCurrentUser:{objc_msgSend(v120, "mentionsCurrentUser")}];
     [v130 setNotifyRecipientAnyway:{objc_msgSend(v120, "notifyRecipientAnyway")}];
     [v130 setReplyToCurrentUser:{objc_msgSend(v120, "isReplyToCurrentUser")}];
     [v130 setRecipientCount:{objc_msgSend(v120, "recipientCount")}];
-    v143 = [v86 communicationContext];
-    v144 = [v143 capabilities];
+    communicationContext3 = [v86 communicationContext];
+    capabilities = [communicationContext3 capabilities];
 
-    [v130 setCapabilities:v144 & 1];
+    [v130 setCapabilities:capabilities & 1];
     [v130 setBusinessCorrespondence:{objc_msgSend(v120, "isBusinessCorrespondence")}];
     v51 = v221;
     [v221 setCommunicationContext:v130];
@@ -677,46 +677,46 @@ LABEL_96:
   v212 = v145;
   [v114 setContent:v51];
   v146 = objc_opt_new();
-  v147 = [v86 alertSuppressionContexts];
-  [v146 setAlertSuppressionContexts:v147];
+  alertSuppressionContexts = [v86 alertSuppressionContexts];
+  [v146 setAlertSuppressionContexts:alertSuppressionContexts];
 
-  v148 = [v86 fullAlternateActionLabel];
-  v149 = [v148 length];
+  fullAlternateActionLabel = [v86 fullAlternateActionLabel];
+  v149 = [fullAlternateActionLabel length];
 
   if (v149)
   {
-    v150 = [v86 fullAlternateActionLabel];
+    fullAlternateActionLabel2 = [v86 fullAlternateActionLabel];
 LABEL_128:
-    v157 = v150;
-    [v146 setAlternateActionLabel:v150];
+    v157 = fullAlternateActionLabel2;
+    [v146 setAlternateActionLabel:fullAlternateActionLabel2];
 
     goto LABEL_129;
   }
 
-  v151 = [v86 fullUnlockActionLabel];
-  v152 = [v151 length];
+  fullUnlockActionLabel = [v86 fullUnlockActionLabel];
+  v152 = [fullUnlockActionLabel length];
 
   if (v152)
   {
-    v150 = [v86 fullUnlockActionLabel];
+    fullAlternateActionLabel2 = [v86 fullUnlockActionLabel];
     goto LABEL_128;
   }
 
-  v153 = [v86 alternateActionLabel];
-  v154 = [v153 length];
+  alternateActionLabel = [v86 alternateActionLabel];
+  v154 = [alternateActionLabel length];
 
   if (v154)
   {
-    v150 = [v86 alternateActionLabel];
+    fullAlternateActionLabel2 = [v86 alternateActionLabel];
     goto LABEL_128;
   }
 
-  v155 = [v86 unlockActionLabel];
-  v156 = [v155 length];
+  unlockActionLabel = [v86 unlockActionLabel];
+  v156 = [unlockActionLabel length];
 
   if (v156)
   {
-    v150 = [v86 unlockActionLabel];
+    fullAlternateActionLabel2 = [v86 unlockActionLabel];
     goto LABEL_128;
   }
 
@@ -828,51 +828,51 @@ LABEL_129:
   [v146 setHideClearActionInList:0];
   if ([v86 messageNumberOfLines] == -1)
   {
-    v162 = 1;
+    displaysActionsInline = 1;
   }
 
   else
   {
-    v162 = [v86 displaysActionsInline];
+    displaysActionsInline = [v86 displaysActionsInline];
   }
 
-  [v146 setNumberOfLinesInfinite:v162];
+  [v146 setNumberOfLinesInfinite:displaysActionsInline];
   [v146 setPreemptsPresentedNotification:{objc_msgSend(v86, "preemptsPresentedAlert")}];
   [v146 setDisplaysActionsInline:{objc_msgSend(v86, "displaysActionsInline")}];
   [v146 setRevealsAdditionalContentOnPresentation:{objc_msgSend(v86, "revealsAdditionalContentOnPresentation")}];
-  v163 = [v86 privacySettings];
-  v164 = [v86 contentPreviewSetting];
-  v166 = (v163 & 1) == 0 && v164 != 1;
+  privacySettings = [v86 privacySettings];
+  contentPreviewSetting = [v86 contentPreviewSetting];
+  v166 = (privacySettings & 1) == 0 && contentPreviewSetting != 1;
   [v146 setSuppressesTitleWhenLocked:v166];
-  v167 = [v86 contentPreviewSetting];
-  v169 = (v163 & 2) == 0 && v167 != 1;
+  contentPreviewSetting2 = [v86 contentPreviewSetting];
+  v169 = (privacySettings & 2) == 0 && contentPreviewSetting2 != 1;
   [v146 setSuppressesSubtitleWhenLocked:v169];
-  v170 = [v86 contentPreviewSetting];
-  v172 = (v163 & 4) == 0 && v170 != 1;
+  contentPreviewSetting3 = [v86 contentPreviewSetting];
+  v172 = (privacySettings & 4) == 0 && contentPreviewSetting3 != 1;
   [v146 setSuppressesBodyWhenLocked:v172];
-  v173 = [v86 contentPreviewSetting];
-  if (v173 == 3)
+  contentPreviewSetting4 = [v86 contentPreviewSetting];
+  if (contentPreviewSetting4 == 3)
   {
     v174 = 2;
   }
 
   else
   {
-    v174 = v173 == 2;
+    v174 = contentPreviewSetting4 == 2;
   }
 
   [v146 setContentPreviewSetting:v174];
   [v146 setCoalescesWhenLocked:{objc_msgSend(v86, "coalescesWhenLocked")}];
   [v146 setPreventsAutomaticLock:{objc_msgSend(v86, "preventLock")}];
-  v175 = 1;
+  hasCriticalIcon = 1;
   [v146 setRevealsAdditionalContentIfNoDefaultAction:1];
-  v176 = [v86 defaultAction];
-  if (v176)
+  defaultAction = [v86 defaultAction];
+  if (defaultAction)
   {
-    v175 = [v86 hasCriticalIcon];
+    hasCriticalIcon = [v86 hasCriticalIcon];
   }
 
-  [v146 setLauchUsingSiriForCarPlayDefaultAction:v175];
+  [v146 setLauchUsingSiriForCarPlayDefaultAction:hasCriticalIcon];
 
   [v146 setAllowActionsForCarPlay:{objc_msgSend(v86, "allowsSupplementaryActionsInCarPlay")}];
   [v146 setPlayMediaWhenRaised:{objc_msgSend(v86, "playsMediaWhenRaised")}];
@@ -881,22 +881,22 @@ LABEL_129:
   [v146 setSuppressPresentationInAmbient:{objc_msgSend(v86, "suppressPresentationInAmbient")}];
   [v146 setScreenCaptureProhibited:{objc_msgSend(v86, "screenCaptureProhibited")}];
   [v146 setCanShowSummary:{objc_msgSend(v225, "summarizationSetting") == 2}];
-  v177 = [v86 speechLanguage];
-  [v146 setSpeechLanguage:v177];
+  speechLanguage = [v86 speechLanguage];
+  [v146 setSpeechLanguage:speechLanguage];
 
   [v114 setOptions:v146];
   if ((a6 & 0x10) != 0)
   {
-    v178 = [v86 sound];
-    v179 = v178;
-    if (v178)
+    sound = [v86 sound];
+    v179 = sound;
+    if (sound)
     {
-      v180 = v178;
+      v180 = sound;
       v181 = objc_opt_new();
       [v181 setSoundType:2];
-      v182 = [v180 alertConfiguration];
+      alertConfiguration = [v180 alertConfiguration];
 
-      [v181 setAlertConfiguration:v182];
+      [v181 setAlertConfiguration:alertConfiguration];
     }
 
     else
@@ -908,8 +908,8 @@ LABEL_129:
   }
 
   v183 = MEMORY[0x277D77E30];
-  v184 = [v86 dismissAction];
-  v185 = [v183 notificationActionForDismissAction:v184 bulletin:v86 observer:v219];
+  dismissAction = [v86 dismissAction];
+  v185 = [v183 notificationActionForDismissAction:dismissAction bulletin:v86 observer:v219];
 
   if ([v86 wantsFullscreenPresentation])
   {
@@ -943,18 +943,18 @@ LABEL_129:
 
   [v114 setCloseAction:v187];
   v188 = MEMORY[0x277D77E30];
-  v189 = [v86 defaultAction];
-  v190 = [v188 notificationActionForDefaultAction:v189 bulletin:v86 observer:v219];
+  defaultAction2 = [v86 defaultAction];
+  v190 = [v188 notificationActionForDefaultAction:defaultAction2 bulletin:v86 observer:v219];
   [v114 setDefaultAction:v190];
 
   v191 = MEMORY[0x277D77E30];
-  v192 = [v86 silenceAction];
-  v193 = [v191 notificationActionForSilenceAction:v192 bulletin:v86 observer:v219];
+  silenceAction = [v86 silenceAction];
+  v193 = [v191 notificationActionForSilenceAction:silenceAction bulletin:v86 observer:v219];
   [v114 setSilenceAction:v193];
 
   v194 = MEMORY[0x277D77E30];
-  v195 = [v86 followActivityAction];
-  v196 = [v194 notificationActionForFollowActivityAction:v195 bulletin:v86 observer:v219];
+  followActivityAction = [v86 followActivityAction];
+  v196 = [v194 notificationActionForFollowActivityAction:followActivityAction bulletin:v86 observer:v219];
   [v114 setInlineAction:v196];
 
   v197 = v219;
@@ -1006,22 +1006,22 @@ LABEL_129:
   }
 
   [v226 setSourceInfo:v206];
-  v207 = [v198 interruptionLevel];
-  if ((v207 - 1) >= 3)
+  interruptionLevel = [v198 interruptionLevel];
+  if ((interruptionLevel - 1) >= 3)
   {
     v208 = 0;
   }
 
   else
   {
-    v208 = v207;
+    v208 = interruptionLevel;
   }
 
   [v226 setInterruptionLevel:v208];
   [v198 relevanceScore];
   [v226 setRelevanceScore:?];
-  v209 = [v198 filterCriteria];
-  [v226 setFilterCriteria:v209];
+  filterCriteria = [v198 filterCriteria];
+  [v226 setFilterCriteria:filterCriteria];
 
   v210 = [v226 copy];
 
@@ -1031,15 +1031,15 @@ LABEL_129:
 - (uint64_t)hasSameContactAsNotificationRequest:()Bulletin
 {
   v4 = a3;
-  v5 = [a1 bulletin];
-  v6 = [v5 context];
+  bulletin = [self bulletin];
+  context = [bulletin context];
   v7 = *MEMORY[0x277CF35C8];
-  v8 = [v6 objectForKey:*MEMORY[0x277CF35C8]];
+  v8 = [context objectForKey:*MEMORY[0x277CF35C8]];
 
-  v9 = [v4 bulletin];
+  bulletin2 = [v4 bulletin];
 
-  v10 = [v9 context];
-  v11 = [v10 objectForKey:v7];
+  context2 = [bulletin2 context];
+  v11 = [context2 objectForKey:v7];
 
   if ([v8 rangeOfString:@"@"] == 0x7FFFFFFFFFFFFFFFLL && (objc_msgSend(MEMORY[0x277CCA900], "letterCharacterSet"), v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v8, "rangeOfCharacterFromSet:", v12), v12, v13 == 0x7FFFFFFFFFFFFFFFLL))
   {
@@ -1060,27 +1060,27 @@ LABEL_129:
 
 - (id)contactIdentifier
 {
-  v1 = [a1 bulletin];
-  v2 = [v1 context];
-  v3 = [v2 objectForKey:*MEMORY[0x277CF35C8]];
+  bulletin = [self bulletin];
+  context = [bulletin context];
+  v3 = [context objectForKey:*MEMORY[0x277CF35C8]];
 
   return v3;
 }
 
 - (id)attachmentImageWithDimension:()Bulletin
 {
-  v4 = [a1 content];
-  v5 = [v4 attachmentImage];
+  content = [self content];
+  attachmentImage = [content attachmentImage];
 
   if (a2 > 0.0 && a2 != 35.0 && ([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
-    v6 = [a1 bulletin];
-    v7 = _attachmentImageForBulletin(v6, a2);
+    bulletin = [self bulletin];
+    v7 = _attachmentImageForBulletin(bulletin, a2);
 
-    v5 = v7;
+    attachmentImage = v7;
   }
 
-  return v5;
+  return attachmentImage;
 }
 
 + (void)_notificationRequestForBulletin:()Bulletin observer:sectionInfo:feed:playLightsAndSirens:hasPlayLightsAndSirens:uuid:.cold.1(void *a1, NSObject *a2)

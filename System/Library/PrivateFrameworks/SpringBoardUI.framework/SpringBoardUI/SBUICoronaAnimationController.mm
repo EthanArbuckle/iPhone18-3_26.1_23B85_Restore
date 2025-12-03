@@ -1,17 +1,17 @@
 @interface SBUICoronaAnimationController
-+ (id)animationSettingsForTransitionToStyle:(int64_t)a3;
-- (id)_configurePropertyAnimatorIfNecessaryForChangeToUserInterfaceStyle:(int64_t)a3;
-- (void)addParticipant:(id)a3;
-- (void)coronaDidChange:(int64_t)a3;
-- (void)removeParticipant:(id)a3;
++ (id)animationSettingsForTransitionToStyle:(int64_t)style;
+- (id)_configurePropertyAnimatorIfNecessaryForChangeToUserInterfaceStyle:(int64_t)style;
+- (void)addParticipant:(id)participant;
+- (void)coronaDidChange:(int64_t)change;
+- (void)removeParticipant:(id)participant;
 @end
 
 @implementation SBUICoronaAnimationController
 
-+ (id)animationSettingsForTransitionToStyle:(int64_t)a3
++ (id)animationSettingsForTransitionToStyle:(int64_t)style
 {
   v3 = MEMORY[0x277CDA7B0];
-  if (a3 == 2)
+  if (style == 2)
   {
     v3 = MEMORY[0x277CDA7C0];
   }
@@ -22,33 +22,33 @@
   return v5;
 }
 
-- (void)addParticipant:(id)a3
+- (void)addParticipant:(id)participant
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  participantCopy = participant;
+  v5 = participantCopy;
+  if (participantCopy)
   {
     participants = self->_participants;
     v9 = v5;
     if (!participants)
     {
-      v7 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+      weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
       v8 = self->_participants;
-      self->_participants = v7;
+      self->_participants = weakObjectsHashTable;
 
       participants = self->_participants;
     }
 
-    v4 = [(NSHashTable *)participants addObject:v9];
+    participantCopy = [(NSHashTable *)participants addObject:v9];
     v5 = v9;
   }
 
-  MEMORY[0x2821F96F8](v4, v5);
+  MEMORY[0x2821F96F8](participantCopy, v5);
 }
 
-- (void)removeParticipant:(id)a3
+- (void)removeParticipant:(id)participant
 {
-  if (a3)
+  if (participant)
   {
     participants = self->_participants;
     if (participants)
@@ -58,12 +58,12 @@
   }
 }
 
-- (id)_configurePropertyAnimatorIfNecessaryForChangeToUserInterfaceStyle:(int64_t)a3
+- (id)_configurePropertyAnimatorIfNecessaryForChangeToUserInterfaceStyle:(int64_t)style
 {
   propertyAnimator = self->_propertyAnimator;
   if (!propertyAnimator)
   {
-    if (a3 == 2)
+    if (style == 2)
     {
       v5 = 2;
     }
@@ -101,10 +101,10 @@ void __100__SBUICoronaAnimationController__configurePropertyAnimatorIfNecessaryF
   [WeakRetained _setPropertyAnimator:0];
 }
 
-- (void)coronaDidChange:(int64_t)a3
+- (void)coronaDidChange:(int64_t)change
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = [(SBUICoronaAnimationController *)self _configurePropertyAnimatorIfNecessaryForChangeToUserInterfaceStyle:a3];
+  v4 = [(SBUICoronaAnimationController *)self _configurePropertyAnimatorIfNecessaryForChangeToUserInterfaceStyle:change];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;

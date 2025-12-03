@@ -1,41 +1,41 @@
 @interface ICQUIStorageUsedController
-- (ICQUIStorageUsedController)initWithAppBundleID:(id)a3 account:(id)a4 navigationController:(id)a5;
-- (void)_beginLiftUIFlowWithURL:(id)a3;
-- (void)_beginRUIFlowWithURL:(id)a3;
-- (void)_startSpinnerInSpecifier:(id)a3;
-- (void)_stopSpinnerInSpecifier:(id)a3;
-- (void)beginLoadingForSpecifier:(id)a3;
-- (void)loadFailed:(id)a3 withError:(id)a4;
-- (void)loadFinished:(id)a3;
-- (void)loadStarted:(id)a3;
+- (ICQUIStorageUsedController)initWithAppBundleID:(id)d account:(id)account navigationController:(id)controller;
+- (void)_beginLiftUIFlowWithURL:(id)l;
+- (void)_beginRUIFlowWithURL:(id)l;
+- (void)_startSpinnerInSpecifier:(id)specifier;
+- (void)_stopSpinnerInSpecifier:(id)specifier;
+- (void)beginLoadingForSpecifier:(id)specifier;
+- (void)loadFailed:(id)failed withError:(id)error;
+- (void)loadFinished:(id)finished;
+- (void)loadStarted:(id)started;
 @end
 
 @implementation ICQUIStorageUsedController
 
-- (ICQUIStorageUsedController)initWithAppBundleID:(id)a3 account:(id)a4 navigationController:(id)a5
+- (ICQUIStorageUsedController)initWithAppBundleID:(id)d account:(id)account navigationController:(id)controller
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  dCopy = d;
+  accountCopy = account;
+  controllerCopy = controller;
   v15.receiver = self;
   v15.super_class = ICQUIStorageUsedController;
   v12 = [(ICQUIStorageUsedController *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_account, a4);
-    objc_storeStrong(&v13->_appBundleID, a3);
-    objc_storeStrong(&v13->_navigationController, a5);
+    objc_storeStrong(&v12->_account, account);
+    objc_storeStrong(&v13->_appBundleID, d);
+    objc_storeStrong(&v13->_navigationController, controller);
   }
 
   return v13;
 }
 
-- (void)beginLoadingForSpecifier:(id)a3
+- (void)beginLoadingForSpecifier:(id)specifier
 {
-  v5 = a3;
-  objc_storeStrong(&self->_activeSpecifier, a3);
-  [(ICQUIStorageUsedController *)self _startSpinnerInSpecifier:v5];
+  specifierCopy = specifier;
+  objc_storeStrong(&self->_activeSpecifier, specifier);
+  [(ICQUIStorageUsedController *)self _startSpinnerInSpecifier:specifierCopy];
   v6 = [objc_alloc(MEMORY[0x277D7F338]) initWithAccount:self->_account];
   appBundleID = self->_appBundleID;
   v9[0] = MEMORY[0x277D85DD0];
@@ -43,8 +43,8 @@
   v9[2] = __55__ICQUIStorageUsedController_beginLoadingForSpecifier___block_invoke;
   v9[3] = &unk_27A65B5D0;
   v9[4] = self;
-  v10 = v5;
-  v8 = v5;
+  v10 = specifierCopy;
+  v8 = specifierCopy;
   [v6 fetchStorageByApp:appBundleID completion:v9];
 }
 
@@ -103,9 +103,9 @@ void __55__ICQUIStorageUsedController_beginLoadingForSpecifier___block_invoke_34
   }
 }
 
-- (void)_beginRUIFlowWithURL:(id)a3
+- (void)_beginRUIFlowWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v5 = _ICQGetLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -118,12 +118,12 @@ void __55__ICQUIStorageUsedController_beginLoadingForSpecifier___block_invoke_34
   self->_ruiDelegate = v6;
 
   [(ICQPreferencesRemoteUIDelegate *)self->_ruiDelegate setDelegate:self];
-  [(ICQPreferencesRemoteUIDelegate *)self->_ruiDelegate loadURL:v4 postBody:0];
+  [(ICQPreferencesRemoteUIDelegate *)self->_ruiDelegate loadURL:lCopy postBody:0];
 }
 
-- (void)_beginLiftUIFlowWithURL:(id)a3
+- (void)_beginLiftUIFlowWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v5 = _ICQGetLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -135,11 +135,11 @@ void __55__ICQUIStorageUsedController_beginLoadingForSpecifier___block_invoke_34
   liftUIDelegate = self->_liftUIDelegate;
   self->_liftUIDelegate = v6;
 
-  [(ICQUIPreferencesLiftUIDelegate *)self->_liftUIDelegate loadURL:v4];
+  [(ICQUIPreferencesLiftUIDelegate *)self->_liftUIDelegate loadURL:lCopy];
   [(ICQUIStorageUsedController *)self _stopSpinnerInSpecifier:self->_activeSpecifier];
 }
 
-- (void)loadStarted:(id)a3
+- (void)loadStarted:(id)started
 {
   v3 = _ICQGetLogSystem();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -149,7 +149,7 @@ void __55__ICQUIStorageUsedController_beginLoadingForSpecifier___block_invoke_34
   }
 }
 
-- (void)loadFinished:(id)a3
+- (void)loadFinished:(id)finished
 {
   v4 = _ICQGetLogSystem();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -161,27 +161,27 @@ void __55__ICQUIStorageUsedController_beginLoadingForSpecifier___block_invoke_34
   [(ICQUIStorageUsedController *)self _stopSpinnerInSpecifier:self->_activeSpecifier];
 }
 
-- (void)loadFailed:(id)a3 withError:(id)a4
+- (void)loadFailed:(id)failed withError:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   v6 = _ICQGetLogSystem();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
-    [ICQUIStorageUsedController loadFailed:v5 withError:v6];
+    [ICQUIStorageUsedController loadFailed:errorCopy withError:v6];
   }
 
   [(ICQUIStorageUsedController *)self _stopSpinnerInSpecifier:self->_activeSpecifier];
 }
 
-- (void)_startSpinnerInSpecifier:(id)a3
+- (void)_startSpinnerInSpecifier:(id)specifier
 {
-  v3 = [a3 propertyForKey:*MEMORY[0x277D40148]];
+  v3 = [specifier propertyForKey:*MEMORY[0x277D40148]];
   if (v3)
   {
     v6 = v3;
     v4 = [objc_alloc(MEMORY[0x277D750E8]) initWithActivityIndicatorStyle:100];
-    v5 = [MEMORY[0x277D75348] systemGrayColor];
-    [v4 setColor:v5];
+    systemGrayColor = [MEMORY[0x277D75348] systemGrayColor];
+    [v4 setColor:systemGrayColor];
 
     [v4 startAnimating];
     [v6 setAccessoryView:v4];
@@ -190,13 +190,13 @@ void __55__ICQUIStorageUsedController_beginLoadingForSpecifier___block_invoke_34
   }
 }
 
-- (void)_stopSpinnerInSpecifier:(id)a3
+- (void)_stopSpinnerInSpecifier:(id)specifier
 {
-  v5 = a3;
-  v3 = [v5 propertyForKey:*MEMORY[0x277D40148]];
+  specifierCopy = specifier;
+  v3 = [specifierCopy propertyForKey:*MEMORY[0x277D40148]];
   if (v3)
   {
-    v4 = [v5 propertyForKey:*MEMORY[0x277D3FEB0]];
+    v4 = [specifierCopy propertyForKey:*MEMORY[0x277D3FEB0]];
     [v3 setAccessoryView:v4];
   }
 }

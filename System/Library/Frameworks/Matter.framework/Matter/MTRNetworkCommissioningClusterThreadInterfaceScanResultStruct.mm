@@ -1,6 +1,6 @@
 @interface MTRNetworkCommissioningClusterThreadInterfaceScanResultStruct
 - (MTRNetworkCommissioningClusterThreadInterfaceScanResultStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -29,9 +29,9 @@
     version = v3->_version;
     v3->_version = &unk_284C3E588;
 
-    v9 = [MEMORY[0x277CBEA90] data];
+    data = [MEMORY[0x277CBEA90] data];
     extendedAddress = v3->_extendedAddress;
-    v3->_extendedAddress = v9;
+    v3->_extendedAddress = data;
 
     rssi = v3->_rssi;
     v3->_rssi = &unk_284C3E588;
@@ -43,29 +43,29 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRNetworkCommissioningClusterThreadInterfaceScanResultStruct);
-  v5 = [(MTRNetworkCommissioningClusterThreadInterfaceScanResultStruct *)self panId];
-  [(MTRNetworkCommissioningClusterThreadInterfaceScanResultStruct *)v4 setPanId:v5];
+  panId = [(MTRNetworkCommissioningClusterThreadInterfaceScanResultStruct *)self panId];
+  [(MTRNetworkCommissioningClusterThreadInterfaceScanResultStruct *)v4 setPanId:panId];
 
-  v6 = [(MTRNetworkCommissioningClusterThreadInterfaceScanResultStruct *)self extendedPanId];
-  [(MTRNetworkCommissioningClusterThreadInterfaceScanResultStruct *)v4 setExtendedPanId:v6];
+  extendedPanId = [(MTRNetworkCommissioningClusterThreadInterfaceScanResultStruct *)self extendedPanId];
+  [(MTRNetworkCommissioningClusterThreadInterfaceScanResultStruct *)v4 setExtendedPanId:extendedPanId];
 
-  v7 = [(MTRNetworkCommissioningClusterThreadInterfaceScanResultStruct *)self networkName];
-  [(MTRNetworkCommissioningClusterThreadInterfaceScanResultStruct *)v4 setNetworkName:v7];
+  networkName = [(MTRNetworkCommissioningClusterThreadInterfaceScanResultStruct *)self networkName];
+  [(MTRNetworkCommissioningClusterThreadInterfaceScanResultStruct *)v4 setNetworkName:networkName];
 
-  v8 = [(MTRNetworkCommissioningClusterThreadInterfaceScanResultStruct *)self channel];
-  [(MTRNetworkCommissioningClusterThreadInterfaceScanResultStruct *)v4 setChannel:v8];
+  channel = [(MTRNetworkCommissioningClusterThreadInterfaceScanResultStruct *)self channel];
+  [(MTRNetworkCommissioningClusterThreadInterfaceScanResultStruct *)v4 setChannel:channel];
 
-  v9 = [(MTRNetworkCommissioningClusterThreadInterfaceScanResultStruct *)self version];
-  [(MTRNetworkCommissioningClusterThreadInterfaceScanResultStruct *)v4 setVersion:v9];
+  version = [(MTRNetworkCommissioningClusterThreadInterfaceScanResultStruct *)self version];
+  [(MTRNetworkCommissioningClusterThreadInterfaceScanResultStruct *)v4 setVersion:version];
 
-  v10 = [(MTRNetworkCommissioningClusterThreadInterfaceScanResultStruct *)self extendedAddress];
-  [(MTRNetworkCommissioningClusterThreadInterfaceScanResultStruct *)v4 setExtendedAddress:v10];
+  extendedAddress = [(MTRNetworkCommissioningClusterThreadInterfaceScanResultStruct *)self extendedAddress];
+  [(MTRNetworkCommissioningClusterThreadInterfaceScanResultStruct *)v4 setExtendedAddress:extendedAddress];
 
-  v11 = [(MTRNetworkCommissioningClusterThreadInterfaceScanResultStruct *)self rssi];
-  [(MTRNetworkCommissioningClusterThreadInterfaceScanResultStruct *)v4 setRssi:v11];
+  rssi = [(MTRNetworkCommissioningClusterThreadInterfaceScanResultStruct *)self rssi];
+  [(MTRNetworkCommissioningClusterThreadInterfaceScanResultStruct *)v4 setRssi:rssi];
 
   v12 = [(MTRNetworkCommissioningClusterThreadInterfaceScanResultStruct *)self lqi];
   [(MTRNetworkCommissioningClusterThreadInterfaceScanResultStruct *)v4 setLqi:v12];

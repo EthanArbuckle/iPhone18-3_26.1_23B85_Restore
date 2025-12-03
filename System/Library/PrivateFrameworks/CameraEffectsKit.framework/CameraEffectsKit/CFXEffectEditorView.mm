@@ -4,10 +4,10 @@
 - (BOOL)CFX_updateOverlayForTranslation;
 - (BOOL)CFX_updateTrackingTypeForTouchLocation;
 - (BOOL)CFX_useFaceReticle;
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
 - (BOOL)isEditing;
-- (BOOL)textEffectEditorView:(id)a3 shouldChangeTextInRange:(_NSRange)a4 replacementText:(id)a5;
-- (CFXEffectEditorView)initWithMode:(unint64_t)a3 delegate:(id)a4;
+- (BOOL)textEffectEditorView:(id)view shouldChangeTextInRange:(_NSRange)range replacementText:(id)text;
+- (CFXEffectEditorView)initWithMode:(unint64_t)mode delegate:(id)delegate;
 - (CGAffineTransform)editTransform;
 - (CGPoint)lastSpacingBetweenTouchAndCenterOfEffect;
 - (CGPoint)lastTouchLocation;
@@ -19,26 +19,26 @@
 - (id)CFX_getTextEditingProperties;
 - (id)CFX_springForTextEditAnimation;
 - (id)overlayEffectDebugViewOptions;
-- (void)CFX_addBeginEditingCompletionBlock:(id)a3;
-- (void)CFX_addEndEditingCompletionBlock:(id)a3;
-- (void)CFX_applyEffectAnimationView:(BOOL)a3;
+- (void)CFX_addBeginEditingCompletionBlock:(id)block;
+- (void)CFX_addEndEditingCompletionBlock:(id)block;
+- (void)CFX_applyEffectAnimationView:(BOOL)view;
 - (void)CFX_applyEffectTransformChanges;
-- (void)CFX_beginEditingEffect:(id)a3 isAnimating:(BOOL)a4;
+- (void)CFX_beginEditingEffect:(id)effect isAnimating:(BOOL)animating;
 - (void)CFX_beginPreviewingEditEffect;
 - (void)CFX_beginTextEditing;
-- (void)CFX_effectAnimationDisplayLinkFired:(id)a3;
+- (void)CFX_effectAnimationDisplayLinkFired:(id)fired;
 - (void)CFX_effectPreviewBoundsDidChange;
 - (void)CFX_endEditingEffect;
 - (void)CFX_endPreviewingEditEffect;
-- (void)CFX_endTextEditing:(BOOL)a3;
-- (void)CFX_hideEditControls:(BOOL)a3;
-- (void)CFX_performTextEditOnlyModeEnterAnimationWithCompletionBlock:(id)a3;
-- (void)CFX_performTextEditOnlyModeExitAnimationWithCompletionBlock:(id)a3;
+- (void)CFX_endTextEditing:(BOOL)editing;
+- (void)CFX_hideEditControls:(BOOL)controls;
+- (void)CFX_performTextEditOnlyModeEnterAnimationWithCompletionBlock:(id)block;
+- (void)CFX_performTextEditOnlyModeExitAnimationWithCompletionBlock:(id)block;
 - (void)CFX_previewEditEffectIfNeeded;
 - (void)CFX_removeEffect;
-- (void)CFX_rotateEffect:(double)a3;
-- (void)CFX_scaleEffect:(double)a3;
-- (void)CFX_setUserInteractionEnabledIfPossible:(BOOL)a3;
+- (void)CFX_rotateEffect:(double)effect;
+- (void)CFX_scaleEffect:(double)effect;
+- (void)CFX_setUserInteractionEnabledIfPossible:(BOOL)possible;
 - (void)CFX_setupControls;
 - (void)CFX_setupGestures;
 - (void)CFX_showEditControls;
@@ -47,44 +47,44 @@
 - (void)CFX_stopApplyingEffectAnimationViewDisplayLink;
 - (void)CFX_stopTrackingExternalEffectChanges;
 - (void)CFX_updateEditControlsLayout;
-- (void)CFX_updateEffectText:(id)a3 updateTextProperties:(BOOL)a4;
+- (void)CFX_updateEffectText:(id)text updateTextProperties:(BOOL)properties;
 - (void)CFX_updateExternalEffectTrackingRunningState;
-- (void)CFX_updateSpacingBetweenTouchAndCenterOfEffectWithGesture:(id)a3;
+- (void)CFX_updateSpacingBetweenTouchAndCenterOfEffectWithGesture:(id)gesture;
 - (void)CFX_updateTextEditFieldLayout;
-- (void)beginEditingEffect:(id)a3 animated:(BOOL)a4 withCompletionBlock:(id)a5;
+- (void)beginEditingEffect:(id)effect animated:(BOOL)animated withCompletionBlock:(id)block;
 - (void)dealloc;
-- (void)didTap:(id)a3;
-- (void)endEditingAnimated:(BOOL)a3 withCompletionBlock:(id)a4;
-- (void)externalEffectTrackingDisplayLinkFired:(id)a3;
-- (void)handlePanGesture:(id)a3;
-- (void)handlePinchGesture:(id)a3;
-- (void)handleRotateGesture:(id)a3;
+- (void)didTap:(id)tap;
+- (void)endEditingAnimated:(BOOL)animated withCompletionBlock:(id)block;
+- (void)externalEffectTrackingDisplayLinkFired:(id)fired;
+- (void)handlePanGesture:(id)gesture;
+- (void)handlePinchGesture:(id)gesture;
+- (void)handleRotateGesture:(id)gesture;
 - (void)initializeAvailabilityOfFrequentCalledDelegateMethods;
 - (void)layoutSubviews;
-- (void)notifyEffectTrackingDidChangeToType:(int64_t)a3;
-- (void)onDebugDisplayLink:(id)a3;
-- (void)setAppliedEditingGestures:(unint64_t)a3;
-- (void)setEditTransform:(CGAffineTransform *)a3;
+- (void)notifyEffectTrackingDidChangeToType:(int64_t)type;
+- (void)onDebugDisplayLink:(id)link;
+- (void)setAppliedEditingGestures:(unint64_t)gestures;
+- (void)setEditTransform:(CGAffineTransform *)transform;
 - (void)startUpdatingDebugOverlayView;
 - (void)stopUpdatingDebugOverlayView;
 @end
 
 @implementation CFXEffectEditorView
 
-- (CFXEffectEditorView)initWithMode:(unint64_t)a3 delegate:(id)a4
+- (CFXEffectEditorView)initWithMode:(unint64_t)mode delegate:(id)delegate
 {
-  v7 = a4;
+  delegateCopy = delegate;
   v21.receiver = self;
   v21.super_class = CFXEffectEditorView;
   v8 = [(CFXEffectEditorView *)&v21 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_delegate, a4);
-    v9->_mode = a3;
+    objc_storeStrong(&v8->_delegate, delegate);
+    v9->_mode = mode;
     [(CFXEffectEditorView *)v9 setBackgroundColor:0];
-    v10 = [MEMORY[0x277D759A0] mainScreen];
-    [v10 scale];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
     [(CFXEffectEditorView *)v9 setDisplayScale:?];
 
     v11 = MEMORY[0x277CBF2C0];
@@ -106,20 +106,20 @@
     v9->_isRenderPendingForEditEffect = 0;
     [(CFXEffectEditorView *)v9 CFX_setupGestures];
     [(CFXEffectEditorView *)v9 CFX_setupControls];
-    if (a3 == 1)
+    if (mode == 1)
     {
       [(CFXEffectEditorView *)v9 CFX_setUserInteractionEnabledIfPossible:0];
     }
 
     if (isDrawEffectsEditorBoundsEnabled())
     {
-      v16 = [(CFXEffectEditorView *)v9 layer];
-      [v16 setBorderWidth:2.0];
+      layer = [(CFXEffectEditorView *)v9 layer];
+      [layer setBorderWidth:2.0];
 
-      v17 = [MEMORY[0x277D75348] greenColor];
-      v18 = [v17 CGColor];
-      v19 = [(CFXEffectEditorView *)v9 layer];
-      [v19 setBorderColor:v18];
+      greenColor = [MEMORY[0x277D75348] greenColor];
+      cGColor = [greenColor CGColor];
+      layer2 = [(CFXEffectEditorView *)v9 layer];
+      [layer2 setBorderColor:cGColor];
     }
 
     [(CFXEffectEditorView *)v9 startUpdatingDebugOverlayView];
@@ -131,23 +131,23 @@
 
 - (void)initializeAvailabilityOfFrequentCalledDelegateMethods
 {
-  v3 = [(CFXEffectEditorView *)self delegate];
+  delegate = [(CFXEffectEditorView *)self delegate];
   self->_delegateSupportsDidMoveEffect = objc_opt_respondsToSelector() & 1;
 
-  v4 = [(CFXEffectEditorView *)self delegate];
+  delegate2 = [(CFXEffectEditorView *)self delegate];
   self->_delegateSupportsCalculatingAnimatedFaceTrackingTransform = objc_opt_respondsToSelector() & 1;
 
-  v5 = [(CFXEffectEditorView *)self delegate];
+  delegate3 = [(CFXEffectEditorView *)self delegate];
   self->_delegateSupportsApplyAnimationTransformsToEffect = objc_opt_respondsToSelector() & 1;
 }
 
 - (void)dealloc
 {
-  v3 = [(CFXEffectEditorView *)self editControlsTrackingDisplayLink];
-  [v3 invalidate];
+  editControlsTrackingDisplayLink = [(CFXEffectEditorView *)self editControlsTrackingDisplayLink];
+  [editControlsTrackingDisplayLink invalidate];
 
-  v4 = [(CFXEffectEditorView *)self effectAnimationDisplayLink];
-  [v4 invalidate];
+  effectAnimationDisplayLink = [(CFXEffectEditorView *)self effectAnimationDisplayLink];
+  [effectAnimationDisplayLink invalidate];
 
   [(CFXEffectEditorView *)self stopUpdatingDebugOverlayView];
   v5.receiver = self;
@@ -167,13 +167,13 @@
 {
   [(CFXEffectEditorView *)self CFX_updateEditControlsLayout];
   [(CFXEffectEditorView *)self CFX_updateTextEditFieldLayout];
-  v3 = [(CFXEffectEditorView *)self effectRenderingQueue];
+  effectRenderingQueue = [(CFXEffectEditorView *)self effectRenderingQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __55__CFXEffectEditorView_CFX_effectPreviewBoundsDidChange__block_invoke;
   block[3] = &unk_278D79D20;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(effectRenderingQueue, block);
 }
 
 - (void)CFX_setupGestures
@@ -194,28 +194,28 @@
   [(CFXEffectEditorView *)self addGestureRecognizer:v5];
 }
 
-- (void)didTap:(id)a3
+- (void)didTap:(id)tap
 {
-  v26 = a3;
-  v4 = [v26 state] == 3;
-  v5 = v26;
+  tapCopy = tap;
+  v4 = [tapCopy state] == 3;
+  v5 = tapCopy;
   if (v4)
   {
-    [v26 locationInView:self];
+    [tapCopy locationInView:self];
     v7 = v6;
     v9 = v8;
-    v10 = [(CFXEffectEditorView *)self delegate];
-    v11 = [v10 effectEditorView:self effectAtPoint:{v7, v9}];
+    delegate = [(CFXEffectEditorView *)self delegate];
+    v11 = [delegate effectEditorView:self effectAtPoint:{v7, v9}];
 
-    v12 = [v11 jtEffect];
-    if (v12)
+    jtEffect = [v11 jtEffect];
+    if (jtEffect)
     {
-      v13 = v12;
+      delegate3 = jtEffect;
     }
 
-    else if (!-[CFXEffectEditorView CFX_isPreviewingEditEffect](self, "CFX_isPreviewingEditEffect") || (-[CFXEffectEditorView delegate](self, "delegate"), v16 = objc_claimAutoreleasedReturnValue(), -[CFXEffectEditorView editEffect](self, "editEffect"), v17 = objc_claimAutoreleasedReturnValue(), v18 = [v16 effectEditorView:self isEffectAtPoint:v17 effect:{v7, v9}], v17, v16, !v18) || (-[CFXEffectEditorView editEffect](self, "editEffect"), v19 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v19, "jtEffect"), v13 = objc_claimAutoreleasedReturnValue(), v19, !v13))
+    else if (!-[CFXEffectEditorView CFX_isPreviewingEditEffect](self, "CFX_isPreviewingEditEffect") || (-[CFXEffectEditorView delegate](self, "delegate"), v16 = objc_claimAutoreleasedReturnValue(), -[CFXEffectEditorView editEffect](self, "editEffect"), v17 = objc_claimAutoreleasedReturnValue(), v18 = [v16 effectEditorView:self isEffectAtPoint:v17 effect:{v7, v9}], v17, v16, !v18) || (-[CFXEffectEditorView editEffect](self, "editEffect"), v19 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v19, "jtEffect"), delegate3 = objc_claimAutoreleasedReturnValue(), v19, !delegate3))
     {
-      v20 = [(CFXEffectEditorView *)self delegate];
+      delegate2 = [(CFXEffectEditorView *)self delegate];
       v21 = objc_opt_respondsToSelector();
 
       if ((v21 & 1) == 0)
@@ -228,19 +228,19 @@
       v23 = v22;
       v25 = v24;
       [(CFXEffectEditorView *)self endEditingAnimated:1 withCompletionBlock:0];
-      v13 = [(CFXEffectEditorView *)self delegate];
-      [v13 effectEditorView:self didEndEditingByTappingOutSideEffectAtScreenPoint:{v23, v25}];
+      delegate3 = [(CFXEffectEditorView *)self delegate];
+      [delegate3 effectEditorView:self didEndEditingByTappingOutSideEffectAtScreenPoint:{v23, v25}];
 LABEL_13:
 
 LABEL_14:
-      v5 = v26;
+      v5 = tapCopy;
       goto LABEL_15;
     }
 
-    v14 = [(CFXEffectEditorView *)self editEffect];
-    v15 = [v14 jtEffect];
+    editEffect = [(CFXEffectEditorView *)self editEffect];
+    jtEffect2 = [editEffect jtEffect];
 
-    if (v13 == v15)
+    if (delegate3 == jtEffect2)
     {
       [(CFXEffectEditorView *)self beginTextEditing];
     }
@@ -258,18 +258,18 @@ LABEL_14:
 LABEL_15:
 }
 
-- (void)setAppliedEditingGestures:(unint64_t)a3
+- (void)setAppliedEditingGestures:(unint64_t)gestures
 {
-  if (self->_appliedEditingGestures == a3)
+  if (self->_appliedEditingGestures == gestures)
   {
     return;
   }
 
-  v5 = [(CFXEffectEditorView *)self editEffect];
-  v9 = [v5 jtEffect];
+  editEffect = [(CFXEffectEditorView *)self editEffect];
+  jtEffect = [editEffect jtEffect];
 
   appliedEditingGestures = self->_appliedEditingGestures;
-  if (a3)
+  if (gestures)
   {
     v7 = appliedEditingGestures == 0;
   }
@@ -282,106 +282,106 @@ LABEL_15:
   v8 = v7;
   if (v7)
   {
-    [v9 beginInteractiveEditing];
+    [jtEffect beginInteractiveEditing];
 LABEL_14:
     [MEMORY[0x277D415F8] setInteractiveMode:v8];
     goto LABEL_15;
   }
 
-  if (!a3 && appliedEditingGestures)
+  if (!gestures && appliedEditingGestures)
   {
-    [v9 endInteractiveEditing];
+    [jtEffect endInteractiveEditing];
     goto LABEL_14;
   }
 
 LABEL_15:
-  self->_appliedEditingGestures = a3;
+  self->_appliedEditingGestures = gestures;
 }
 
-- (void)handlePinchGesture:(id)a3
+- (void)handlePinchGesture:(id)gesture
 {
-  v6 = a3;
+  gestureCopy = gesture;
   if (![(CFXEffectEditorView *)self isTextEditing])
   {
-    if ([v6 state] == 1)
+    if ([gestureCopy state] == 1)
     {
       [(CFXEffectEditorView *)self CFX_hideEditControls];
-      v4 = [(CFXEffectEditorView *)self appliedEditingGestures];
-      [(CFXEffectEditorView *)self setAppliedEditingGestures:v4 | 2];
-      [(CFXEffectEditorView *)self setAppliedEditingGestures:v4 | 2];
+      appliedEditingGestures = [(CFXEffectEditorView *)self appliedEditingGestures];
+      [(CFXEffectEditorView *)self setAppliedEditingGestures:appliedEditingGestures | 2];
+      [(CFXEffectEditorView *)self setAppliedEditingGestures:appliedEditingGestures | 2];
     }
 
-    [v6 scale];
+    [gestureCopy scale];
     [(CFXEffectEditorView *)self CFX_scaleEffect:?];
-    [v6 setScale:1.0];
-    if ([v6 state] == 3 || objc_msgSend(v6, "state") == 4)
+    [gestureCopy setScale:1.0];
+    if ([gestureCopy state] == 3 || objc_msgSend(gestureCopy, "state") == 4)
     {
-      v5 = [(CFXEffectEditorView *)self appliedEditingGestures];
-      [(CFXEffectEditorView *)self setAppliedEditingGestures:v5 & 0xFFFFFFFFFFFFFFFDLL];
-      [(CFXEffectEditorView *)self setAppliedEditingGestures:v5 & 0xFFFFFFFFFFFFFFFDLL];
+      appliedEditingGestures2 = [(CFXEffectEditorView *)self appliedEditingGestures];
+      [(CFXEffectEditorView *)self setAppliedEditingGestures:appliedEditingGestures2 & 0xFFFFFFFFFFFFFFFDLL];
+      [(CFXEffectEditorView *)self setAppliedEditingGestures:appliedEditingGestures2 & 0xFFFFFFFFFFFFFFFDLL];
       [(CFXEffectEditorView *)self CFX_showEditControls];
     }
   }
 }
 
-- (void)handleRotateGesture:(id)a3
+- (void)handleRotateGesture:(id)gesture
 {
-  v6 = a3;
+  gestureCopy = gesture;
   if (![(CFXEffectEditorView *)self isTextEditing])
   {
-    if ([v6 state] == 1)
+    if ([gestureCopy state] == 1)
     {
       [(CFXEffectEditorView *)self CFX_hideEditControls];
-      v4 = [(CFXEffectEditorView *)self appliedEditingGestures];
-      [(CFXEffectEditorView *)self setAppliedEditingGestures:v4 | 4];
-      [(CFXEffectEditorView *)self setAppliedEditingGestures:v4 | 4];
+      appliedEditingGestures = [(CFXEffectEditorView *)self appliedEditingGestures];
+      [(CFXEffectEditorView *)self setAppliedEditingGestures:appliedEditingGestures | 4];
+      [(CFXEffectEditorView *)self setAppliedEditingGestures:appliedEditingGestures | 4];
     }
 
-    [v6 rotation];
+    [gestureCopy rotation];
     [(CFXEffectEditorView *)self CFX_rotateEffect:?];
-    [v6 setRotation:0.0];
-    if ([v6 state] == 3 || objc_msgSend(v6, "state") == 4)
+    [gestureCopy setRotation:0.0];
+    if ([gestureCopy state] == 3 || objc_msgSend(gestureCopy, "state") == 4)
     {
-      v5 = [(CFXEffectEditorView *)self appliedEditingGestures];
-      [(CFXEffectEditorView *)self setAppliedEditingGestures:v5 & 0xFFFFFFFFFFFFFFFBLL];
-      [(CFXEffectEditorView *)self setAppliedEditingGestures:v5 & 0xFFFFFFFFFFFFFFFBLL];
+      appliedEditingGestures2 = [(CFXEffectEditorView *)self appliedEditingGestures];
+      [(CFXEffectEditorView *)self setAppliedEditingGestures:appliedEditingGestures2 & 0xFFFFFFFFFFFFFFFBLL];
+      [(CFXEffectEditorView *)self setAppliedEditingGestures:appliedEditingGestures2 & 0xFFFFFFFFFFFFFFFBLL];
       [(CFXEffectEditorView *)self CFX_showEditControls];
     }
   }
 }
 
-- (void)handlePanGesture:(id)a3
+- (void)handlePanGesture:(id)gesture
 {
-  v7 = a3;
+  gestureCopy = gesture;
   if (![(CFXEffectEditorView *)self isTextEditing])
   {
-    if ([v7 state] == 1)
+    if ([gestureCopy state] == 1)
     {
       [(CFXEffectEditorView *)self CFX_hideEditControls];
-      v4 = [(CFXEffectEditorView *)self appliedEditingGestures];
-      [(CFXEffectEditorView *)self setAppliedEditingGestures:v4 | 1];
-      [(CFXEffectEditorView *)self setAppliedEditingGestures:v4 | 1];
+      appliedEditingGestures = [(CFXEffectEditorView *)self appliedEditingGestures];
+      [(CFXEffectEditorView *)self setAppliedEditingGestures:appliedEditingGestures | 1];
+      [(CFXEffectEditorView *)self setAppliedEditingGestures:appliedEditingGestures | 1];
     }
 
-    if ([v7 state] == 3 || objc_msgSend(v7, "state") == 4)
+    if ([gestureCopy state] == 3 || objc_msgSend(gestureCopy, "state") == 4)
     {
-      v5 = [(CFXEffectEditorView *)self appliedEditingGestures];
-      [(CFXEffectEditorView *)self setAppliedEditingGestures:v5 & 0xFFFFFFFFFFFFFFFELL];
-      [(CFXEffectEditorView *)self setAppliedEditingGestures:v5 & 0xFFFFFFFFFFFFFFFELL];
+      appliedEditingGestures2 = [(CFXEffectEditorView *)self appliedEditingGestures];
+      [(CFXEffectEditorView *)self setAppliedEditingGestures:appliedEditingGestures2 & 0xFFFFFFFFFFFFFFFELL];
+      [(CFXEffectEditorView *)self setAppliedEditingGestures:appliedEditingGestures2 & 0xFFFFFFFFFFFFFFFELL];
       [(CFXEffectEditorView *)self CFX_showEditControls];
     }
 
-    [(CFXEffectEditorView *)self CFX_updateSpacingBetweenTouchAndCenterOfEffectWithGesture:v7];
-    v6 = [v7 view];
-    [v7 setTranslation:v6 inView:{0.0, 0.0}];
+    [(CFXEffectEditorView *)self CFX_updateSpacingBetweenTouchAndCenterOfEffectWithGesture:gestureCopy];
+    view = [gestureCopy view];
+    [gestureCopy setTranslation:view inView:{0.0, 0.0}];
   }
 }
 
-- (void)CFX_updateSpacingBetweenTouchAndCenterOfEffectWithGesture:(id)a3
+- (void)CFX_updateSpacingBetweenTouchAndCenterOfEffectWithGesture:(id)gesture
 {
-  v29 = a3;
-  v4 = [v29 state];
-  if ((v4 - 3) < 2)
+  gestureCopy = gesture;
+  state = [gestureCopy state];
+  if ((state - 3) < 2)
   {
     if ([(CFXEffectEditorView *)self appliedEditingGestures])
     {
@@ -393,28 +393,28 @@ LABEL_15:
     goto LABEL_7;
   }
 
-  if (v4 != 2)
+  if (state != 2)
   {
-    if (v4 != 1)
+    if (state != 1)
     {
       goto LABEL_9;
     }
 
-    v5 = [v29 view];
-    [v29 locationInView:v5];
+    view = [gestureCopy view];
+    [gestureCopy locationInView:view];
     v7 = v6;
     v9 = v8;
-    v10 = [v29 view];
-    [(CFXEffectEditorView *)self convertPoint:v10 fromView:v7, v9];
+    view2 = [gestureCopy view];
+    [(CFXEffectEditorView *)self convertPoint:view2 fromView:v7, v9];
     [(CFXEffectEditorView *)self setLastTouchLocationInView:?];
 
-    v11 = [(CFXEffectEditorView *)self delegate];
-    v12 = [(CFXEffectEditorView *)self editEffect];
+    delegate = [(CFXEffectEditorView *)self delegate];
+    editEffect = [(CFXEffectEditorView *)self editEffect];
     [(CFXEffectEditorView *)self lastTouchLocation];
     v14 = v13;
     v16 = v15;
     [(CFXEffectEditorView *)self renderBounds];
-    [v11 effectEditorView:self spacingBetweenCenterPointOfEffect:v12 point:v14 relativeToBounds:{v16, v17, v18, v19, v20}];
+    [delegate effectEditorView:self spacingBetweenCenterPointOfEffect:editEffect point:v14 relativeToBounds:{v16, v17, v18, v19, v20}];
     [(CFXEffectEditorView *)self setLastSpacingBetweenTouchAndCenterOfEffect:?];
 
 LABEL_7:
@@ -422,8 +422,8 @@ LABEL_7:
     goto LABEL_9;
   }
 
-  v21 = [v29 view];
-  [v29 translationInView:v21];
+  view3 = [gestureCopy view];
+  [gestureCopy translationInView:view3];
   v23 = v22;
   v25 = v24;
 
@@ -434,18 +434,18 @@ LABEL_7:
 LABEL_9:
 }
 
-- (void)CFX_setUserInteractionEnabledIfPossible:(BOOL)a3
+- (void)CFX_setUserInteractionEnabledIfPossible:(BOOL)possible
 {
-  v3 = a3;
-  v5 = [(CFXEffectEditorView *)self mode]!= 1 && v3;
+  possibleCopy = possible;
+  v5 = [(CFXEffectEditorView *)self mode]!= 1 && possibleCopy;
 
   [(CFXEffectEditorView *)self setUserInteractionEnabled:v5];
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  v5 = a3;
-  v6 = a4;
+  recognizerCopy = recognizer;
+  gestureRecognizerCopy = gestureRecognizer;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
@@ -477,21 +477,21 @@ LABEL_9:
 
 - (BOOL)isEditing
 {
-  v2 = [(CFXEffectEditorView *)self editEffect];
-  v3 = v2 != 0;
+  editEffect = [(CFXEffectEditorView *)self editEffect];
+  v3 = editEffect != 0;
 
   return v3;
 }
 
-- (void)beginEditingEffect:(id)a3 animated:(BOOL)a4 withCompletionBlock:(id)a5
+- (void)beginEditingEffect:(id)effect animated:(BOOL)animated withCompletionBlock:(id)block
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  v10 = [(CFXEffectEditorView *)self isEditing];
-  if (v9)
+  animatedCopy = animated;
+  effectCopy = effect;
+  blockCopy = block;
+  isEditing = [(CFXEffectEditorView *)self isEditing];
+  if (blockCopy)
   {
-    [(CFXEffectEditorView *)self CFX_addBeginEditingCompletionBlock:v9];
+    [(CFXEffectEditorView *)self CFX_addBeginEditingCompletionBlock:blockCopy];
   }
 
   if (![(CFXEffectEditorView *)self isBeginningEditing])
@@ -501,26 +501,26 @@ LABEL_9:
     v24[1] = 3221225472;
     v24[2] = __71__CFXEffectEditorView_beginEditingEffect_animated_withCompletionBlock___block_invoke;
     v24[3] = &unk_278D79E38;
-    v25 = v10;
+    v25 = isEditing;
     v24[4] = self;
     v11 = MEMORY[0x245D22230](v24);
     [(CFXEffectEditorView *)self CFX_setUserInteractionEnabledIfPossible:0];
-    v12 = [(CFXEffectEditorView *)self delegate];
+    delegate = [(CFXEffectEditorView *)self delegate];
     v13 = objc_opt_respondsToSelector();
 
     if (v13)
     {
-      v14 = [(CFXEffectEditorView *)self delegate];
-      v15 = [v14 effectEditorView:self shouldDisableEditingAnimationForEffect:v8];
+      delegate2 = [(CFXEffectEditorView *)self delegate];
+      v15 = [delegate2 effectEditorView:self shouldDisableEditingAnimationForEffect:effectCopy];
 
-      v6 &= ~v15;
+      animatedCopy &= ~v15;
     }
 
-    if ([(CFXEffectEditorView *)self mode]== 2 && v6)
+    if ([(CFXEffectEditorView *)self mode]== 2 && animatedCopy)
     {
-      v16 = [v8 jtEffect];
-      [v16 setHidden:1];
-      [(CFXEffectEditorView *)self CFX_beginEditingEffect:v8 isAnimating:1];
+      jtEffect = [effectCopy jtEffect];
+      [jtEffect setHidden:1];
+      [(CFXEffectEditorView *)self CFX_beginEditingEffect:effectCopy isAnimating:1];
       v22[0] = MEMORY[0x277D85DD0];
       v22[1] = 3221225472;
       v22[2] = __71__CFXEffectEditorView_beginEditingEffect_animated_withCompletionBlock___block_invoke_2;
@@ -531,18 +531,18 @@ LABEL_9:
 
     else
     {
-      [(CFXEffectEditorView *)self CFX_beginEditingEffect:v8 isAnimating:0];
+      [(CFXEffectEditorView *)self CFX_beginEditingEffect:effectCopy isAnimating:0];
       if ([(CFXEffectEditorView *)self CFX_useFaceReticle])
       {
-        v17 = [v8 jtEffect];
-        v18 = [v17 type];
+        jtEffect2 = [effectCopy jtEffect];
+        type = [jtEffect2 type];
 
-        if (v18 == 2)
+        if (type == 2)
         {
-          v19 = [v8 jtEffect];
-          v20 = [(CFXEffectEditorView *)self faceTrackingReticle];
-          v21 = [v19 trackingProps];
-          [v20 userFeedbackForTrackingType:objc_msgSend(v21 needsHaptics:{"trackingType"), 1}];
+          jtEffect3 = [effectCopy jtEffect];
+          faceTrackingReticle = [(CFXEffectEditorView *)self faceTrackingReticle];
+          trackingProps = [jtEffect3 trackingProps];
+          [faceTrackingReticle userFeedbackForTrackingType:objc_msgSend(trackingProps needsHaptics:{"trackingType"), 1}];
         }
       }
 
@@ -601,15 +601,15 @@ uint64_t __71__CFXEffectEditorView_beginEditingEffect_animated_withCompletionBlo
   return [*(a1 + 32) CFX_setUserInteractionEnabledIfPossible:1];
 }
 
-- (void)endEditingAnimated:(BOOL)a3 withCompletionBlock:(id)a4
+- (void)endEditingAnimated:(BOOL)animated withCompletionBlock:(id)block
 {
-  v4 = a3;
-  v6 = a4;
+  animatedCopy = animated;
+  blockCopy = block;
   if ([(CFXEffectEditorView *)self isEditing])
   {
-    if (v6)
+    if (blockCopy)
     {
-      [(CFXEffectEditorView *)self CFX_addEndEditingCompletionBlock:v6];
+      [(CFXEffectEditorView *)self CFX_addEndEditingCompletionBlock:blockCopy];
     }
 
     if (![(CFXEffectEditorView *)self isEndingEditing])
@@ -622,7 +622,7 @@ uint64_t __71__CFXEffectEditorView_beginEditingEffect_animated_withCompletionBlo
         v17[2] = __62__CFXEffectEditorView_endEditingAnimated_withCompletionBlock___block_invoke;
         v17[3] = &unk_278D7C3D8;
         objc_copyWeak(&v18, &location);
-        v19 = v4;
+        v19 = animatedCopy;
         [(CFXEffectEditorView *)self CFX_addBeginEditingCompletionBlock:v17];
         objc_destroyWeak(&v18);
         objc_destroyWeak(&location);
@@ -631,20 +631,20 @@ uint64_t __71__CFXEffectEditorView_beginEditingEffect_animated_withCompletionBlo
       else
       {
         [(CFXEffectEditorView *)self setIsEndingEditing:1];
-        v7 = [(CFXEffectEditorView *)self removeButton];
-        [v7 setHidden:1];
+        removeButton = [(CFXEffectEditorView *)self removeButton];
+        [removeButton setHidden:1];
 
         [(CFXEffectEditorView *)self CFX_setUserInteractionEnabledIfPossible:0];
-        v8 = [(CFXEffectEditorView *)self delegate];
+        delegate = [(CFXEffectEditorView *)self delegate];
         v9 = objc_opt_respondsToSelector();
 
         if (v9)
         {
-          v10 = [(CFXEffectEditorView *)self delegate];
-          v11 = [(CFXEffectEditorView *)self editEffect];
-          v12 = [v10 effectEditorView:self shouldDisableEditingAnimationForEffect:v11];
+          delegate2 = [(CFXEffectEditorView *)self delegate];
+          editEffect = [(CFXEffectEditorView *)self editEffect];
+          v12 = [delegate2 effectEditorView:self shouldDisableEditingAnimationForEffect:editEffect];
 
-          v4 &= ~v12;
+          animatedCopy &= ~v12;
         }
 
         v16[0] = MEMORY[0x277D85DD0];
@@ -653,15 +653,15 @@ uint64_t __71__CFXEffectEditorView_beginEditingEffect_animated_withCompletionBlo
         v16[3] = &unk_278D79D20;
         v16[4] = self;
         v13 = MEMORY[0x245D22230](v16);
-        if ([(CFXEffectEditorView *)self mode]== 2 && v4)
+        if ([(CFXEffectEditorView *)self mode]== 2 && animatedCopy)
         {
           [(CFXEffectEditorView *)self CFX_performTextEditOnlyModeExitAnimationWithCompletionBlock:v13];
         }
 
-        else if (([(CFXEffectEditorView *)self CFX_useFaceReticle]& v4) == 1 && ([(CFXEffectEditorView *)self faceTrackingReticle], v14 = objc_claimAutoreleasedReturnValue(), v14, v14))
+        else if (([(CFXEffectEditorView *)self CFX_useFaceReticle]& animatedCopy) == 1 && ([(CFXEffectEditorView *)self faceTrackingReticle], v14 = objc_claimAutoreleasedReturnValue(), v14, v14))
         {
-          v15 = [(CFXEffectEditorView *)self faceTrackingReticle];
-          [v15 fadeOutAndEndHapticWithCompletionBlock:v13];
+          faceTrackingReticle = [(CFXEffectEditorView *)self faceTrackingReticle];
+          [faceTrackingReticle fadeOutAndEndHapticWithCompletionBlock:v13];
         }
 
         else
@@ -672,9 +672,9 @@ uint64_t __71__CFXEffectEditorView_beginEditingEffect_animated_withCompletionBlo
     }
   }
 
-  else if (v6)
+  else if (blockCopy)
   {
-    v6[2](v6);
+    blockCopy[2](blockCopy);
   }
 }
 
@@ -729,47 +729,47 @@ uint64_t __62__CFXEffectEditorView_endEditingAnimated_withCompletionBlock___bloc
   return [*(a1 + 32) CFX_setUserInteractionEnabledIfPossible:1];
 }
 
-- (void)notifyEffectTrackingDidChangeToType:(int64_t)a3
+- (void)notifyEffectTrackingDidChangeToType:(int64_t)type
 {
   if ([(CFXEffectEditorView *)self CFX_useFaceReticle])
   {
-    v5 = [(CFXEffectEditorView *)self faceTrackingReticle];
-    [v5 userFeedbackForTrackingType:a3 needsHaptics:1];
+    faceTrackingReticle = [(CFXEffectEditorView *)self faceTrackingReticle];
+    [faceTrackingReticle userFeedbackForTrackingType:type needsHaptics:1];
   }
 }
 
-- (void)CFX_beginEditingEffect:(id)a3 isAnimating:(BOOL)a4
+- (void)CFX_beginEditingEffect:(id)effect isAnimating:(BOOL)animating
 {
-  v6 = a3;
+  effectCopy = effect;
   [(CFXEffectEditorView *)self setEffectWasEdited:0];
-  [(CFXEffectEditorView *)self setEditEffect:v6];
+  [(CFXEffectEditorView *)self setEditEffect:effectCopy];
   v7 = *(MEMORY[0x277CBF2C0] + 16);
   v14[0] = *MEMORY[0x277CBF2C0];
   v14[1] = v7;
   v14[2] = *(MEMORY[0x277CBF2C0] + 32);
   [(CFXEffectEditorView *)self setEditTransform:v14];
-  v8 = [v6 jtEffect];
+  jtEffect = [effectCopy jtEffect];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v10 = [v6 jtEffect];
-    [v10 beginInteractiveEditing];
+    jtEffect2 = [effectCopy jtEffect];
+    [jtEffect2 beginInteractiveEditing];
   }
 
-  if (!a4)
+  if (!animating)
   {
     [(CFXEffectEditorView *)self CFX_showEditControls];
   }
 
-  v11 = [(CFXEffectEditorView *)self delegate];
+  delegate = [(CFXEffectEditorView *)self delegate];
   v12 = objc_opt_respondsToSelector();
 
   if (v12)
   {
-    v13 = [(CFXEffectEditorView *)self delegate];
-    [v13 effectEditorView:self didBeginEditingEffect:v6];
+    delegate2 = [(CFXEffectEditorView *)self delegate];
+    [delegate2 effectEditorView:self didBeginEditingEffect:effectCopy];
   }
 
   [(CFXEffectEditorView *)self CFX_beginPreviewingEditEffect];
@@ -778,9 +778,9 @@ uint64_t __62__CFXEffectEditorView_endEditingAnimated_withCompletionBlock___bloc
 - (void)CFX_removeEffect
 {
   [(CFXEffectEditorView *)self CFX_endPreviewingEditEffect];
-  v3 = [(CFXEffectEditorView *)self delegate];
-  v4 = [(CFXEffectEditorView *)self editEffect];
-  [v3 effectEditorView:self didRemoveEffect:v4];
+  delegate = [(CFXEffectEditorView *)self delegate];
+  editEffect = [(CFXEffectEditorView *)self editEffect];
+  [delegate effectEditorView:self didRemoveEffect:editEffect];
 
   [(CFXEffectEditorView *)self endEditingAnimated:1 withCompletionBlock:0];
 }
@@ -790,64 +790,64 @@ uint64_t __62__CFXEffectEditorView_endEditingAnimated_withCompletionBlock___bloc
   [(CFXEffectEditorView *)self CFX_endTextEditing:0];
   [(CFXEffectEditorView *)self CFX_hideEditControls];
   [(CFXEffectEditorView *)self CFX_endPreviewingEditEffect];
-  v3 = [(CFXEffectEditorView *)self editEffect];
-  v4 = [v3 jtEffect];
+  editEffect = [(CFXEffectEditorView *)self editEffect];
+  jtEffect = [editEffect jtEffect];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v6 = [(CFXEffectEditorView *)self editEffect];
-    v7 = [v6 jtEffect];
-    [v7 endInteractiveEditing];
+    editEffect2 = [(CFXEffectEditorView *)self editEffect];
+    jtEffect2 = [editEffect2 jtEffect];
+    [jtEffect2 endInteractiveEditing];
   }
 
   [(CFXEffectEditorView *)self setAppliedEditingGestures:0];
-  v8 = [(CFXEffectEditorView *)self delegate];
+  delegate = [(CFXEffectEditorView *)self delegate];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v10 = [(CFXEffectEditorView *)self delegate];
-    v11 = [(CFXEffectEditorView *)self editEffect];
-    [v10 effectEditorView:self didEndEditingEffect:v11];
+    delegate2 = [(CFXEffectEditorView *)self delegate];
+    editEffect3 = [(CFXEffectEditorView *)self editEffect];
+    [delegate2 effectEditorView:self didEndEditingEffect:editEffect3];
   }
 
   [(CFXEffectEditorView *)self setEffectWasEdited:0];
 }
 
-- (void)CFX_addBeginEditingCompletionBlock:(id)a3
+- (void)CFX_addBeginEditingCompletionBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(CFXEffectEditorView *)self beginEditingCompletionBlocks];
+  blockCopy = block;
+  beginEditingCompletionBlocks = [(CFXEffectEditorView *)self beginEditingCompletionBlocks];
 
-  if (!v5)
+  if (!beginEditingCompletionBlocks)
   {
     v6 = objc_opt_new();
     [(CFXEffectEditorView *)self setBeginEditingCompletionBlocks:v6];
   }
 
-  v8 = [(CFXEffectEditorView *)self beginEditingCompletionBlocks];
-  v7 = [v4 copy];
+  beginEditingCompletionBlocks2 = [(CFXEffectEditorView *)self beginEditingCompletionBlocks];
+  v7 = [blockCopy copy];
 
-  [v8 addObject:v7];
+  [beginEditingCompletionBlocks2 addObject:v7];
 }
 
-- (void)CFX_addEndEditingCompletionBlock:(id)a3
+- (void)CFX_addEndEditingCompletionBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(CFXEffectEditorView *)self endEditingCompletionBlocks];
+  blockCopy = block;
+  endEditingCompletionBlocks = [(CFXEffectEditorView *)self endEditingCompletionBlocks];
 
-  if (!v5)
+  if (!endEditingCompletionBlocks)
   {
     v6 = objc_opt_new();
     [(CFXEffectEditorView *)self setEndEditingCompletionBlocks:v6];
   }
 
-  v8 = [(CFXEffectEditorView *)self endEditingCompletionBlocks];
-  v7 = [v4 copy];
+  endEditingCompletionBlocks2 = [(CFXEffectEditorView *)self endEditingCompletionBlocks];
+  v7 = [blockCopy copy];
 
-  [v8 addObject:v7];
+  [endEditingCompletionBlocks2 addObject:v7];
 }
 
 - (CGPoint)lastTouchLocation
@@ -876,19 +876,19 @@ uint64_t __62__CFXEffectEditorView_endEditingAnimated_withCompletionBlock___bloc
   return result;
 }
 
-- (void)CFX_scaleEffect:(double)a3
+- (void)CFX_scaleEffect:(double)effect
 {
   [(CFXEffectEditorView *)self editTransform];
-  CGAffineTransformScale(&v6, &v5, a3, a3);
+  CGAffineTransformScale(&v6, &v5, effect, effect);
   v5 = v6;
   [(CFXEffectEditorView *)self setEditTransform:&v5];
   [(CFXEffectEditorView *)self CFX_applyEffectTransformChanges];
 }
 
-- (void)CFX_rotateEffect:(double)a3
+- (void)CFX_rotateEffect:(double)effect
 {
   [(CFXEffectEditorView *)self editTransform];
-  CGAffineTransformRotate(&v6, &v5, a3);
+  CGAffineTransformRotate(&v6, &v5, effect);
   v5 = v6;
   [(CFXEffectEditorView *)self setEditTransform:&v5];
   [(CFXEffectEditorView *)self CFX_applyEffectTransformChanges];
@@ -896,13 +896,13 @@ uint64_t __62__CFXEffectEditorView_endEditingAnimated_withCompletionBlock___bloc
 
 - (BOOL)CFX_updateOverlayForTranslation
 {
-  v3 = [(CFXEffectEditorView *)self delegate];
-  v4 = [(CFXEffectEditorView *)self editEffect];
+  delegate = [(CFXEffectEditorView *)self delegate];
+  editEffect = [(CFXEffectEditorView *)self editEffect];
   [(CFXEffectEditorView *)self lastTouchLocation];
   v6 = v5;
   v8 = v7;
   [(CFXEffectEditorView *)self renderBounds];
-  [v3 effectEditorView:self spacingBetweenCenterPointOfEffect:v4 point:v6 relativeToBounds:{v8, v9, v10, v11, v12}];
+  [delegate effectEditorView:self spacingBetweenCenterPointOfEffect:editEffect point:v6 relativeToBounds:{v8, v9, v10, v11, v12}];
   v14 = v13;
   v16 = v15;
 
@@ -934,52 +934,52 @@ uint64_t __62__CFXEffectEditorView_endEditingAnimated_withCompletionBlock___bloc
   }
 
   [(CFXEffectEditorView *)self setLastEffectMovedNotifyTime:v4];
-  v7 = [(CFXEffectEditorView *)self editEffect];
-  v8 = [v7 jtEffect];
-  if ([v8 type] == 2)
+  editEffect = [(CFXEffectEditorView *)self editEffect];
+  jtEffect = [editEffect jtEffect];
+  if ([jtEffect type] == 2)
   {
-    v9 = [v7 jtEffect];
+    jtEffect2 = [editEffect jtEffect];
   }
 
   else
   {
-    v9 = 0;
+    jtEffect2 = 0;
   }
 
-  v10 = [v9 trackingProps];
-  v11 = [v10 trackingType];
+  trackingProps = [jtEffect2 trackingProps];
+  trackingType = [trackingProps trackingType];
 
   if ([(CFXEffectEditorView *)self delegateSupportsDidMoveEffect])
   {
-    v12 = [(CFXEffectEditorView *)self delegate];
+    delegate = [(CFXEffectEditorView *)self delegate];
     [(CFXEffectEditorView *)self lastTouchLocationInView];
-    [v12 effectEditorView:self didMoveEffect:v7 withTouchPoint:?];
+    [delegate effectEditorView:self didMoveEffect:editEffect withTouchPoint:?];
   }
 
-  if ([(CFXEffectEditorView *)self CFX_useFaceReticle]&& v9)
+  if ([(CFXEffectEditorView *)self CFX_useFaceReticle]&& jtEffect2)
   {
-    v13 = [(CFXEffectEditorView *)self faceTrackingReticle];
-    v14 = [v9 trackingProps];
-    [v13 userFeedbackForTrackingType:objc_msgSend(v14 needsHaptics:{"trackingType"), 0}];
+    faceTrackingReticle = [(CFXEffectEditorView *)self faceTrackingReticle];
+    trackingProps2 = [jtEffect2 trackingProps];
+    [faceTrackingReticle userFeedbackForTrackingType:objc_msgSend(trackingProps2 needsHaptics:{"trackingType"), 0}];
   }
 
-  v15 = [v9 trackingProps];
-  v16 = [v15 trackingType];
+  trackingProps3 = [jtEffect2 trackingProps];
+  trackingType2 = [trackingProps3 trackingType];
 
-  v17 = v11 == v16;
-  v6 = v11 != v16;
+  v17 = trackingType == trackingType2;
+  v6 = trackingType != trackingType2;
   if (!v17)
   {
     [(CFXEffectEditorView *)self lastSpacingBetweenTouchAndCenterOfEffect];
     if (v19 != 1.79769313e308 || v18 != 1.79769313e308)
     {
-      v20 = [(CFXEffectEditorView *)self delegate];
-      v21 = [(CFXEffectEditorView *)self editEffect];
+      delegate2 = [(CFXEffectEditorView *)self delegate];
+      editEffect2 = [(CFXEffectEditorView *)self editEffect];
       [(CFXEffectEditorView *)self lastTouchLocation];
       v23 = v22;
       v25 = v24;
       [(CFXEffectEditorView *)self renderBounds];
-      [v20 effectEditorView:self spacingBetweenCenterPointOfEffect:v21 point:v23 relativeToBounds:{v25, v26, v27, v28, v29}];
+      [delegate2 effectEditorView:self spacingBetweenCenterPointOfEffect:editEffect2 point:v23 relativeToBounds:{v25, v26, v27, v28, v29}];
       [(CFXEffectEditorView *)self setLastSpacingBetweenTouchAndCenterOfEffect:?];
     }
   }
@@ -992,19 +992,19 @@ uint64_t __62__CFXEffectEditorView_endEditingAnimated_withCompletionBlock___bloc
   [(CFXEffectEditorView *)self editTransform];
   if (!CGAffineTransformIsIdentity(&v8))
   {
-    v3 = [(CFXEffectEditorView *)self delegate];
-    v4 = [(CFXEffectEditorView *)self editEffect];
+    delegate = [(CFXEffectEditorView *)self delegate];
+    editEffect = [(CFXEffectEditorView *)self editEffect];
     [(CFXEffectEditorView *)self editTransform];
     [(CFXEffectEditorView *)self renderBounds];
-    [v3 effectEditorView:self didTransformEffect:v4 transform:&v8 relativeToBounds:?];
+    [delegate effectEditorView:self didTransformEffect:editEffect transform:&v8 relativeToBounds:?];
 
-    v5 = [(CFXEffectEditorView *)self effectRenderingQueue];
+    effectRenderingQueue = [(CFXEffectEditorView *)self effectRenderingQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __54__CFXEffectEditorView_CFX_applyEffectTransformChanges__block_invoke;
     block[3] = &unk_278D79D20;
     block[4] = self;
-    dispatch_async(v5, block);
+    dispatch_async(effectRenderingQueue, block);
 
     v6 = *(MEMORY[0x277CBF2C0] + 16);
     *&v8.a = *MEMORY[0x277CBF2C0];
@@ -1022,44 +1022,44 @@ uint64_t __62__CFXEffectEditorView_endEditingAnimated_withCompletionBlock___bloc
     v3 = objc_opt_new();
     [(CFXEffectEditorView *)self setRemoveButton:v3];
 
-    v4 = [(CFXEffectEditorView *)self removeButton];
-    [v4 addTarget:self action:sel_tapRemoveButton_ forControlEvents:64];
+    removeButton = [(CFXEffectEditorView *)self removeButton];
+    [removeButton addTarget:self action:sel_tapRemoveButton_ forControlEvents:64];
 
     v5 = [MEMORY[0x277D755B8] systemImageNamed:@"xmark.circle.fill"];
-    v6 = [(CFXEffectEditorView *)self removeButton];
-    [v6 setImage:v5 forState:0];
+    removeButton2 = [(CFXEffectEditorView *)self removeButton];
+    [removeButton2 setImage:v5 forState:0];
 
-    v7 = [(CFXEffectEditorView *)self removeButton];
-    [(CFXEffectEditorView *)self addSubview:v7];
+    removeButton3 = [(CFXEffectEditorView *)self removeButton];
+    [(CFXEffectEditorView *)self addSubview:removeButton3];
 
-    v8 = [(CFXEffectEditorView *)self removeButton];
-    [v8 sizeToFit];
+    removeButton4 = [(CFXEffectEditorView *)self removeButton];
+    [removeButton4 sizeToFit];
 
-    v9 = [(CFXEffectEditorView *)self removeButton];
-    [v9 setHidden:1];
+    removeButton5 = [(CFXEffectEditorView *)self removeButton];
+    [removeButton5 setHidden:1];
 
-    v10 = [MEMORY[0x277D75348] whiteColor];
-    v11 = [(CFXEffectEditorView *)self removeButton];
-    [v11 setTintColor:v10];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    removeButton6 = [(CFXEffectEditorView *)self removeButton];
+    [removeButton6 setTintColor:whiteColor];
 
-    v12 = [MEMORY[0x277D75348] blackColor];
-    v13 = [v12 CGColor];
-    v14 = [(CFXEffectEditorView *)self removeButton];
-    v15 = [v14 layer];
-    [v15 setShadowColor:v13];
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    cGColor = [blackColor CGColor];
+    removeButton7 = [(CFXEffectEditorView *)self removeButton];
+    layer = [removeButton7 layer];
+    [layer setShadowColor:cGColor];
 
-    v16 = [(CFXEffectEditorView *)self removeButton];
-    v17 = [v16 layer];
+    removeButton8 = [(CFXEffectEditorView *)self removeButton];
+    layer2 = [removeButton8 layer];
     LODWORD(v18) = 0.25;
-    [v17 setShadowOpacity:v18];
+    [layer2 setShadowOpacity:v18];
 
-    v19 = [(CFXEffectEditorView *)self removeButton];
-    v20 = [v19 layer];
-    [v20 setShadowRadius:1.0];
+    removeButton9 = [(CFXEffectEditorView *)self removeButton];
+    layer3 = [removeButton9 layer];
+    [layer3 setShadowRadius:1.0];
 
-    v21 = [(CFXEffectEditorView *)self removeButton];
-    v22 = [v21 layer];
-    [v22 setShadowOffset:{1.0, 1.0}];
+    removeButton10 = [(CFXEffectEditorView *)self removeButton];
+    layer4 = [removeButton10 layer];
+    [layer4 setShadowOffset:{1.0, 1.0}];
   }
 
   if ([(CFXEffectEditorView *)self CFX_useFaceReticle])
@@ -1069,17 +1069,17 @@ uint64_t __62__CFXEffectEditorView_endEditingAnimated_withCompletionBlock___bloc
     v24 = [(CFXFaceReticleView *)v23 initWithFrame:0 reticleType:?];
     [(CFXEffectEditorView *)self setFaceTrackingReticle:v24];
 
-    v25 = [(CFXEffectEditorView *)self faceTrackingReticle];
-    [(CFXEffectEditorView *)self addSubview:v25];
+    faceTrackingReticle = [(CFXEffectEditorView *)self faceTrackingReticle];
+    [(CFXEffectEditorView *)self addSubview:faceTrackingReticle];
   }
 }
 
-- (void)CFX_hideEditControls:(BOOL)a3
+- (void)CFX_hideEditControls:(BOOL)controls
 {
-  if (a3 || ![(CFXEffectEditorView *)self CFX_isRemoveAlwaysAvailableInCurrentMode])
+  if (controls || ![(CFXEffectEditorView *)self CFX_isRemoveAlwaysAvailableInCurrentMode])
   {
-    v4 = [(CFXEffectEditorView *)self removeButton];
-    [v4 setHidden:1];
+    removeButton = [(CFXEffectEditorView *)self removeButton];
+    [removeButton setHidden:1];
   }
 
   [(CFXEffectEditorView *)self CFX_updateExternalEffectTrackingRunningState];
@@ -1110,43 +1110,43 @@ uint64_t __62__CFXEffectEditorView_endEditingAnimated_withCompletionBlock___bloc
     return;
   }
 
-  v3 = [(CFXEffectEditorView *)self removeButton];
-  v4 = [v3 isHidden];
+  removeButton = [(CFXEffectEditorView *)self removeButton];
+  isHidden = [removeButton isHidden];
 
-  if (v4)
+  if (isHidden)
   {
     return;
   }
 
-  v5 = [(CFXEffectEditorView *)self delegate];
+  delegate = [(CFXEffectEditorView *)self delegate];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
 
     goto LABEL_8;
   }
 
-  v6 = [(CFXEffectEditorView *)self delegate];
-  v7 = [v6 removeButtonRelativeBoundsIsViewSpace];
+  delegate2 = [(CFXEffectEditorView *)self delegate];
+  removeButtonRelativeBoundsIsViewSpace = [delegate2 removeButtonRelativeBoundsIsViewSpace];
 
-  if (v7)
+  if (removeButtonRelativeBoundsIsViewSpace)
   {
 LABEL_8:
-    v29 = [(CFXEffectEditorView *)self delegate];
-    v23 = [(CFXEffectEditorView *)self editEffect];
+    delegate3 = [(CFXEffectEditorView *)self delegate];
+    editEffect = [(CFXEffectEditorView *)self editEffect];
     [(CFXEffectEditorView *)self bounds];
-    [v29 effectEditorView:self removeButtonPositionForEffect:v23 relativeToBounds:?];
+    [delegate3 effectEditorView:self removeButtonPositionForEffect:editEffect relativeToBounds:?];
     v25 = v24;
     v27 = v26;
-    v28 = [(CFXEffectEditorView *)self removeButton];
-    [v28 setCenter:{v25, v27}];
+    removeButton2 = [(CFXEffectEditorView *)self removeButton];
+    [removeButton2 setCenter:{v25, v27}];
 
     goto LABEL_9;
   }
 
-  v8 = [(CFXEffectEditorView *)self delegate];
-  v9 = [(CFXEffectEditorView *)self editEffect];
+  delegate4 = [(CFXEffectEditorView *)self delegate];
+  editEffect2 = [(CFXEffectEditorView *)self editEffect];
   [(CFXEffectEditorView *)self renderBounds];
-  [v8 effectEditorView:self removeButtonPositionForEffect:v9 relativeToBounds:?];
+  [delegate4 effectEditorView:self removeButtonPositionForEffect:editEffect2 relativeToBounds:?];
   v11 = v10;
   v13 = v12;
 
@@ -1156,8 +1156,8 @@ LABEL_8:
   [(CFXEffectEditorView *)self bounds];
   v20 = CGPointConvertToCoordinateSpace(1uLL, 0, v11, v13, v15, v17, v18, v19);
   v22 = v21;
-  v29 = [(CFXEffectEditorView *)self removeButton];
-  [v29 setCenter:{v20, v22}];
+  delegate3 = [(CFXEffectEditorView *)self removeButton];
+  [delegate3 setCenter:{v20, v22}];
 LABEL_9:
 }
 
@@ -1175,8 +1175,8 @@ LABEL_9:
 {
   if ([(CFXEffectEditorView *)self CFX_isRemoveAvailableInCurrentMode])
   {
-    v3 = [(CFXEffectEditorView *)self removeButton];
-    [v3 setHidden:0];
+    removeButton = [(CFXEffectEditorView *)self removeButton];
+    [removeButton setHidden:0];
 
     [(CFXEffectEditorView *)self CFX_updateEditControlsLayout];
   }
@@ -1186,33 +1186,33 @@ LABEL_9:
 
 - (void)CFX_startTrackingExternalEffectChanges
 {
-  v3 = [(CFXEffectEditorView *)self editControlsTrackingDisplayLink];
+  editControlsTrackingDisplayLink = [(CFXEffectEditorView *)self editControlsTrackingDisplayLink];
 
-  if (!v3)
+  if (!editControlsTrackingDisplayLink)
   {
-    v4 = [(CFXEffectEditorView *)self editControlsTrackingDisplayLink];
-    [v4 invalidate];
+    editControlsTrackingDisplayLink2 = [(CFXEffectEditorView *)self editControlsTrackingDisplayLink];
+    [editControlsTrackingDisplayLink2 invalidate];
 
     v5 = [MEMORY[0x277CD9E48] displayLinkWithTarget:self selector:sel_externalEffectTrackingDisplayLinkFired_];
     [(CFXEffectEditorView *)self setEditControlsTrackingDisplayLink:v5];
 
-    v6 = [(CFXEffectEditorView *)self editControlsTrackingDisplayLink];
-    [v6 setPreferredFramesPerSecond:60];
+    editControlsTrackingDisplayLink3 = [(CFXEffectEditorView *)self editControlsTrackingDisplayLink];
+    [editControlsTrackingDisplayLink3 setPreferredFramesPerSecond:60];
 
-    v8 = [(CFXEffectEditorView *)self editControlsTrackingDisplayLink];
-    v7 = [MEMORY[0x277CBEB88] mainRunLoop];
-    [v8 addToRunLoop:v7 forMode:*MEMORY[0x277CBE738]];
+    editControlsTrackingDisplayLink4 = [(CFXEffectEditorView *)self editControlsTrackingDisplayLink];
+    mainRunLoop = [MEMORY[0x277CBEB88] mainRunLoop];
+    [editControlsTrackingDisplayLink4 addToRunLoop:mainRunLoop forMode:*MEMORY[0x277CBE738]];
   }
 }
 
 - (void)CFX_stopTrackingExternalEffectChanges
 {
-  v3 = [(CFXEffectEditorView *)self editControlsTrackingDisplayLink];
+  editControlsTrackingDisplayLink = [(CFXEffectEditorView *)self editControlsTrackingDisplayLink];
 
-  if (v3)
+  if (editControlsTrackingDisplayLink)
   {
-    v4 = [(CFXEffectEditorView *)self editControlsTrackingDisplayLink];
-    [v4 invalidate];
+    editControlsTrackingDisplayLink2 = [(CFXEffectEditorView *)self editControlsTrackingDisplayLink];
+    [editControlsTrackingDisplayLink2 invalidate];
 
     [(CFXEffectEditorView *)self setEditControlsTrackingDisplayLink:0];
   }
@@ -1222,16 +1222,16 @@ LABEL_9:
 {
   if (-[CFXEffectEditorView mode](self, "mode") == 2 || ((-[CFXEffectEditorView lastTouchLocation](self, "lastTouchLocation"), v4 == 1.79769313e308) ? (v5 = v3 == 1.79769313e308) : (v5 = 0), v5 && (-[CFXEffectEditorView mode](self, "mode") || (-[CFXEffectEditorView removeButton](self, "removeButton"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 isHidden], v7, (v8 & 1) != 0))))
   {
-    v6 = 1;
+    editControlsTrackingDisplayLink = 1;
   }
 
   else
   {
-    v6 = [(CFXEffectEditorView *)self editControlsTrackingDisplayLink];
+    editControlsTrackingDisplayLink = [(CFXEffectEditorView *)self editControlsTrackingDisplayLink];
 
-    if (v6)
+    if (editControlsTrackingDisplayLink)
     {
-      v6 = 0;
+      editControlsTrackingDisplayLink = 0;
     }
 
     else
@@ -1240,11 +1240,11 @@ LABEL_9:
     }
   }
 
-  v9 = [(CFXEffectEditorView *)self editControlsTrackingDisplayLink];
-  [v9 setPaused:v6];
+  editControlsTrackingDisplayLink2 = [(CFXEffectEditorView *)self editControlsTrackingDisplayLink];
+  [editControlsTrackingDisplayLink2 setPaused:editControlsTrackingDisplayLink];
 }
 
-- (void)externalEffectTrackingDisplayLinkFired:(id)a3
+- (void)externalEffectTrackingDisplayLinkFired:(id)fired
 {
   [(CFXEffectEditorView *)self lastTouchLocationInView];
   v6 = v5 == 1.79769313e308 && v4 == 1.79769313e308;
@@ -1259,23 +1259,23 @@ LABEL_9:
   [(CFXEffectEditorView *)self lastFaceRectacleUpdateTime];
   if (v8 - v9 >= 0.0333333333)
   {
-    v10 = [(CFXEffectEditorView *)self CFX_useFaceReticle];
-    v11 = [(CFXEffectEditorView *)self faceTrackingReticle];
-    v13 = v11;
-    if (v10)
+    cFX_useFaceReticle = [(CFXEffectEditorView *)self CFX_useFaceReticle];
+    faceTrackingReticle = [(CFXEffectEditorView *)self faceTrackingReticle];
+    v13 = faceTrackingReticle;
+    if (cFX_useFaceReticle)
     {
-      [v11 setHidden:0];
+      [faceTrackingReticle setHidden:0];
 
-      v12 = [(CFXEffectEditorView *)self faceTrackingReticle];
+      faceTrackingReticle2 = [(CFXEffectEditorView *)self faceTrackingReticle];
       [(CFXEffectEditorView *)self bounds];
-      [v12 updateFrameForDisplayRelativeToBounds:?];
+      [faceTrackingReticle2 updateFrameForDisplayRelativeToBounds:?];
 
       [(CFXEffectEditorView *)self setLastFaceRectacleUpdateTime:v8];
     }
 
     else
     {
-      [v11 setHidden:1];
+      [faceTrackingReticle setHidden:1];
     }
   }
 }
@@ -1284,47 +1284,47 @@ LABEL_9:
 {
   if (![(CFXEffectEditorView *)self isTextEditing])
   {
-    v3 = [(CFXEffectEditorView *)self delegate];
-    v4 = [(CFXEffectEditorView *)self editEffect];
-    v5 = [v3 effectEditorView:self shouldEditTextForEffect:v4];
+    delegate = [(CFXEffectEditorView *)self delegate];
+    editEffect = [(CFXEffectEditorView *)self editEffect];
+    v5 = [delegate effectEditorView:self shouldEditTextForEffect:editEffect];
 
     if (v5)
     {
-      v6 = [(CFXEffectEditorView *)self CFX_getTextEditingProperties];
-      if (v6)
+      cFX_getTextEditingProperties = [(CFXEffectEditorView *)self CFX_getTextEditingProperties];
+      if (cFX_getTextEditingProperties)
       {
-        v7 = [(CFXEffectEditorView *)self delegate];
+        delegate2 = [(CFXEffectEditorView *)self delegate];
         v8 = objc_opt_respondsToSelector();
 
         if ((v8 & 1) == 0 || (-[CFXEffectEditorView delegate](self, "delegate"), v9 = objc_claimAutoreleasedReturnValue(), -[CFXEffectEditorView editEffect](self, "editEffect"), v10 = objc_claimAutoreleasedReturnValue(), v11 = [v9 effectEditorView:self presentCustomTextEditingUI:v10], v10, v9, (v11 & 1) == 0))
         {
           [(CFXEffectEditorView *)self CFX_hideEditControls];
           [(CFXEffectEditorView *)self setIsTextEditing:1];
-          v12 = [(CFXEffectEditorView *)self delegate];
-          v13 = [(CFXEffectEditorView *)self editEffect];
-          v14 = [v12 effectEditorView:self textForEffect:v13];
+          delegate3 = [(CFXEffectEditorView *)self delegate];
+          editEffect2 = [(CFXEffectEditorView *)self editEffect];
+          v14 = [delegate3 effectEditorView:self textForEffect:editEffect2];
           [(CFXEffectEditorView *)self setOldEditText:v14];
 
-          v15 = [(CFXEffectEditorView *)self delegate];
-          v16 = [(CFXEffectEditorView *)self editEffect];
-          [v15 effectEditorView:self didBeginEditingTextForEffect:v16];
+          delegate4 = [(CFXEffectEditorView *)self delegate];
+          editEffect3 = [(CFXEffectEditorView *)self editEffect];
+          [delegate4 effectEditorView:self didBeginEditingTextForEffect:editEffect3];
 
-          v17 = [(CFXEffectEditorView *)self effectRenderingQueue];
+          effectRenderingQueue = [(CFXEffectEditorView *)self effectRenderingQueue];
           block[0] = MEMORY[0x277D85DD0];
           block[1] = 3221225472;
           block[2] = __43__CFXEffectEditorView_CFX_beginTextEditing__block_invoke;
           block[3] = &unk_278D79D20;
           block[4] = self;
-          dispatch_async(v17, block);
+          dispatch_async(effectRenderingQueue, block);
 
-          v18 = [(CFXEffectEditorView *)self delegate];
-          LOBYTE(v16) = objc_opt_respondsToSelector();
+          delegate5 = [(CFXEffectEditorView *)self delegate];
+          LOBYTE(editEffect3) = objc_opt_respondsToSelector();
 
-          if (v16)
+          if (editEffect3)
           {
-            v19 = [(CFXEffectEditorView *)self delegate];
-            v20 = [(CFXEffectEditorView *)self editEffect];
-            -[CFXEffectEditorView setMaximumTextLength:](self, "setMaximumTextLength:", [v19 effectEditorView:self maximumTextLengthForEffect:v20]);
+            delegate6 = [(CFXEffectEditorView *)self delegate];
+            editEffect4 = [(CFXEffectEditorView *)self editEffect];
+            -[CFXEffectEditorView setMaximumTextLength:](self, "setMaximumTextLength:", [delegate6 effectEditorView:self maximumTextLengthForEffect:editEffect4]);
           }
 
           else
@@ -1333,30 +1333,30 @@ LABEL_9:
           }
 
           [(CFXEffectEditorView *)self bounds];
-          v21 = [CFXTextEffectEditorView viewWithFrame:v6 textEditingProperties:?];
+          v21 = [CFXTextEffectEditorView viewWithFrame:cFX_getTextEditingProperties textEditingProperties:?];
           [(CFXEffectEditorView *)self setTextEditorView:v21];
 
-          v22 = [(CFXEffectEditorView *)self textEditorView];
-          [v22 setDelegate:self];
+          textEditorView = [(CFXEffectEditorView *)self textEditorView];
+          [textEditorView setDelegate:self];
 
           [(CFXEffectEditorView *)self setTruncateTextToMaximumLength:0];
-          v23 = [MEMORY[0x277D75128] sharedApplication];
-          [v23 setApplicationSupportsShakeToEdit:0];
+          mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+          [mEMORY[0x277D75128] setApplicationSupportsShakeToEdit:0];
 
-          v24 = [(CFXEffectEditorView *)self textEditorView];
-          [(CFXEffectEditorView *)self addSubview:v24];
+          textEditorView2 = [(CFXEffectEditorView *)self textEditorView];
+          [(CFXEffectEditorView *)self addSubview:textEditorView2];
 
           if ([(CFXEffectEditorView *)self CFX_isRemoveAvailableInCurrentMode])
           {
-            v25 = [(CFXEffectEditorView *)self removeButton];
-            [(CFXEffectEditorView *)self bringSubviewToFront:v25];
+            removeButton = [(CFXEffectEditorView *)self removeButton];
+            [(CFXEffectEditorView *)self bringSubviewToFront:removeButton];
           }
 
-          v26 = [(CFXEffectEditorView *)self textEditorView];
-          [v26 applyTextEditingProperties:v6];
+          textEditorView3 = [(CFXEffectEditorView *)self textEditorView];
+          [textEditorView3 applyTextEditingProperties:cFX_getTextEditingProperties];
 
-          v27 = [(CFXEffectEditorView *)self textEditorView];
-          [v27 selectAll];
+          textEditorView4 = [(CFXEffectEditorView *)self textEditorView];
+          [textEditorView4 selectAll];
         }
       }
     }
@@ -1365,10 +1365,10 @@ LABEL_9:
 
 - (id)CFX_getTextEditingProperties
 {
-  v3 = [(CFXEffectEditorView *)self delegate];
-  v4 = [(CFXEffectEditorView *)self editEffect];
+  delegate = [(CFXEffectEditorView *)self delegate];
+  editEffect = [(CFXEffectEditorView *)self editEffect];
   [(CFXEffectEditorView *)self bounds];
-  v5 = [v3 effectEditorView:self textEditingPropertiesForEffect:v4 relativeToBounds:?];
+  v5 = [delegate effectEditorView:self textEditingPropertiesForEffect:editEffect relativeToBounds:?];
 
   return v5;
 }
@@ -1377,83 +1377,83 @@ LABEL_9:
 {
   if ([(CFXEffectEditorView *)self isTextEditing])
   {
-    v4 = [(CFXEffectEditorView *)self CFX_getTextEditingProperties];
-    v3 = [(CFXEffectEditorView *)self textEditorView];
-    [v3 applyTextEditingProperties:v4];
+    cFX_getTextEditingProperties = [(CFXEffectEditorView *)self CFX_getTextEditingProperties];
+    textEditorView = [(CFXEffectEditorView *)self textEditorView];
+    [textEditorView applyTextEditingProperties:cFX_getTextEditingProperties];
   }
 }
 
-- (void)CFX_endTextEditing:(BOOL)a3
+- (void)CFX_endTextEditing:(BOOL)editing
 {
-  v3 = a3;
+  editingCopy = editing;
   if ([(CFXEffectEditorView *)self isTextEditing])
   {
-    if (v3)
+    if (editingCopy)
     {
-      v12 = [(CFXEffectEditorView *)self oldEditText];
+      oldEditText = [(CFXEffectEditorView *)self oldEditText];
     }
 
     else
     {
-      v5 = [(CFXEffectEditorView *)self delegate];
-      v6 = [(CFXEffectEditorView *)self editEffect];
-      v12 = [v5 effectEditorView:self textForEffect:v6];
+      delegate = [(CFXEffectEditorView *)self delegate];
+      editEffect = [(CFXEffectEditorView *)self editEffect];
+      oldEditText = [delegate effectEditorView:self textForEffect:editEffect];
     }
 
-    [(CFXEffectEditorView *)self CFX_updateEffectText:v12 updateTextProperties:0];
-    v7 = [(CFXEffectEditorView *)self textEditorView];
-    [v7 endTextEditing];
+    [(CFXEffectEditorView *)self CFX_updateEffectText:oldEditText updateTextProperties:0];
+    textEditorView = [(CFXEffectEditorView *)self textEditorView];
+    [textEditorView endTextEditing];
 
-    v8 = [(CFXEffectEditorView *)self textEditorView];
-    [v8 removeFromSuperview];
+    textEditorView2 = [(CFXEffectEditorView *)self textEditorView];
+    [textEditorView2 removeFromSuperview];
 
     [(CFXEffectEditorView *)self setTextEditorView:0];
-    v9 = [MEMORY[0x277D75128] sharedApplication];
-    [v9 setApplicationSupportsShakeToEdit:1];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    [mEMORY[0x277D75128] setApplicationSupportsShakeToEdit:1];
 
     [(CFXEffectEditorView *)self setIsTextEditing:0];
-    v10 = [(CFXEffectEditorView *)self delegate];
-    v11 = [(CFXEffectEditorView *)self editEffect];
-    [v10 effectEditorView:self didEndEditingTextForEffect:v11 wasCancelled:v3];
+    delegate2 = [(CFXEffectEditorView *)self delegate];
+    editEffect2 = [(CFXEffectEditorView *)self editEffect];
+    [delegate2 effectEditorView:self didEndEditingTextForEffect:editEffect2 wasCancelled:editingCopy];
 
     [(CFXEffectEditorView *)self CFX_showEditControls];
   }
 }
 
-- (void)CFX_updateEffectText:(id)a3 updateTextProperties:(BOOL)a4
+- (void)CFX_updateEffectText:(id)text updateTextProperties:(BOOL)properties
 {
-  v4 = a4;
-  v6 = a3;
+  propertiesCopy = properties;
+  textCopy = text;
   if ((CFX_updateEffectText_updateTextProperties__applyingEffectAttributes & 1) == 0)
   {
     CFX_updateEffectText_updateTextProperties__applyingEffectAttributes = 1;
     if ([(CFXEffectEditorView *)self truncateTextToMaximumLength])
     {
-      v7 = [v6 substringWithRange:{0, fmin(objc_msgSend(v6, "length"), -[CFXEffectEditorView maximumTextLength](self, "maximumTextLength"))}];
+      v7 = [textCopy substringWithRange:{0, fmin(objc_msgSend(textCopy, "length"), -[CFXEffectEditorView maximumTextLength](self, "maximumTextLength"))}];
 
       [(CFXEffectEditorView *)self setTruncateTextToMaximumLength:0];
-      v6 = v7;
+      textCopy = v7;
     }
 
-    v8 = [(CFXEffectEditorView *)self delegate];
-    v9 = [(CFXEffectEditorView *)self editEffect];
-    [v8 effectEditorView:self didEditTextForEffect:v9 newText:v6];
+    delegate = [(CFXEffectEditorView *)self delegate];
+    editEffect = [(CFXEffectEditorView *)self editEffect];
+    [delegate effectEditorView:self didEditTextForEffect:editEffect newText:textCopy];
 
-    if (v4)
+    if (propertiesCopy)
     {
-      v10 = [(CFXEffectEditorView *)self CFX_getTextEditingProperties];
-      v11 = [(CFXEffectEditorView *)self textEditorView];
-      [v11 applyTextEditingProperties:v10];
+      cFX_getTextEditingProperties = [(CFXEffectEditorView *)self CFX_getTextEditingProperties];
+      textEditorView = [(CFXEffectEditorView *)self textEditorView];
+      [textEditorView applyTextEditingProperties:cFX_getTextEditingProperties];
     }
 
     [(CFXEffectEditorView *)self CFX_updateEditControlsLayout];
-    v12 = [(CFXEffectEditorView *)self effectRenderingQueue];
+    effectRenderingQueue = [(CFXEffectEditorView *)self effectRenderingQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __65__CFXEffectEditorView_CFX_updateEffectText_updateTextProperties___block_invoke;
     block[3] = &unk_278D79D20;
     block[4] = self;
-    dispatch_async(v12, block);
+    dispatch_async(effectRenderingQueue, block);
 
     CFX_updateEffectText_updateTextProperties__applyingEffectAttributes = 0;
   }
@@ -1461,8 +1461,8 @@ LABEL_9:
 
 - (CGRect)CFX_textEditingFrame
 {
-  v3 = [(CFXEffectEditorView *)self textEditorView];
-  [v3 textEditingFrameRelativeToView:self];
+  textEditorView = [(CFXEffectEditorView *)self textEditorView];
+  [textEditorView textEditingFrameRelativeToView:self];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -1479,16 +1479,16 @@ LABEL_9:
   return result;
 }
 
-- (BOOL)textEffectEditorView:(id)a3 shouldChangeTextInRange:(_NSRange)a4 replacementText:(id)a5
+- (BOOL)textEffectEditorView:(id)view shouldChangeTextInRange:(_NSRange)range replacementText:(id)text
 {
-  length = a4.length;
-  v8 = a3;
-  v9 = a5;
+  length = range.length;
+  viewCopy = view;
+  textCopy = text;
   if ([(CFXEffectEditorView *)self maximumTextLength]!= -1)
   {
-    v10 = [v8 text];
-    v11 = [v10 length];
-    v12 = v11 - length + [v9 length];
+    text = [viewCopy text];
+    v11 = [text length];
+    v12 = v11 - length + [textCopy length];
     if (v12 > [(CFXEffectEditorView *)self maximumTextLength])
     {
       [(CFXEffectEditorView *)self setTruncateTextToMaximumLength:1];
@@ -1517,95 +1517,95 @@ LABEL_9:
 
 - (void)CFX_beginPreviewingEditEffect
 {
-  v3 = [(CFXEffectEditorView *)self delegate];
+  delegate = [(CFXEffectEditorView *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(CFXEffectEditorView *)self delegate];
-    v6 = [v5 effectEditorViewShouldPreviewEditEffect:self];
+    delegate2 = [(CFXEffectEditorView *)self delegate];
+    v6 = [delegate2 effectEditorViewShouldPreviewEditEffect:self];
 
     if (v6)
     {
       v7 = objc_alloc_init(JFXImageView);
       [(CFXEffectEditorView *)self setEditEffectPreview:v7];
 
-      v8 = [(CFXEffectEditorView *)self editEffectPreview];
-      [v8 setUserInteractionEnabled:0];
+      editEffectPreview = [(CFXEffectEditorView *)self editEffectPreview];
+      [editEffectPreview setUserInteractionEnabled:0];
 
-      v9 = [MEMORY[0x277D75348] clearColor];
-      v10 = [(CFXEffectEditorView *)self editEffectPreview];
-      [v10 setBackgroundColor:v9];
+      clearColor = [MEMORY[0x277D75348] clearColor];
+      editEffectPreview2 = [(CFXEffectEditorView *)self editEffectPreview];
+      [editEffectPreview2 setBackgroundColor:clearColor];
 
-      v11 = [(CFXEffectEditorView *)self editEffectPreview];
-      [v11 setContentMode:2];
+      editEffectPreview3 = [(CFXEffectEditorView *)self editEffectPreview];
+      [editEffectPreview3 setContentMode:2];
 
-      v12 = [(CFXEffectEditorView *)self editEffectPreview];
-      [v12 setPreferIOSurfaceForYUV:1];
+      editEffectPreview4 = [(CFXEffectEditorView *)self editEffectPreview];
+      [editEffectPreview4 setPreferIOSurfaceForYUV:1];
 
-      v13 = [(CFXEffectEditorView *)self editEffectPreview];
-      [v13 setPreferMetalKit:1];
+      editEffectPreview5 = [(CFXEffectEditorView *)self editEffectPreview];
+      [editEffectPreview5 setPreferMetalKit:1];
 
-      v14 = [(CFXEffectEditorView *)self editEffectPreview];
-      [(CFXEffectEditorView *)self addSubview:v14];
+      editEffectPreview6 = [(CFXEffectEditorView *)self editEffectPreview];
+      [(CFXEffectEditorView *)self addSubview:editEffectPreview6];
 
       if ([(CFXEffectEditorView *)self CFX_isRemoveAvailableInCurrentMode])
       {
-        v15 = [(CFXEffectEditorView *)self removeButton];
-        [(CFXEffectEditorView *)self bringSubviewToFront:v15];
+        removeButton = [(CFXEffectEditorView *)self removeButton];
+        [(CFXEffectEditorView *)self bringSubviewToFront:removeButton];
       }
 
-      v16 = [(CFXEffectEditorView *)self editEffectPreview];
-      [v16 setTranslatesAutoresizingMaskIntoConstraints:0];
+      editEffectPreview7 = [(CFXEffectEditorView *)self editEffectPreview];
+      [editEffectPreview7 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-      v17 = [(CFXEffectEditorView *)self editEffectPreview];
-      v18 = [v17 leftAnchor];
-      v19 = [(CFXEffectEditorView *)self leftAnchor];
-      v20 = [v18 constraintEqualToAnchor:v19];
+      editEffectPreview8 = [(CFXEffectEditorView *)self editEffectPreview];
+      leftAnchor = [editEffectPreview8 leftAnchor];
+      leftAnchor2 = [(CFXEffectEditorView *)self leftAnchor];
+      v20 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
       [v20 setActive:1];
 
-      v21 = [(CFXEffectEditorView *)self editEffectPreview];
-      v22 = [v21 rightAnchor];
-      v23 = [(CFXEffectEditorView *)self rightAnchor];
-      v24 = [v22 constraintEqualToAnchor:v23];
+      editEffectPreview9 = [(CFXEffectEditorView *)self editEffectPreview];
+      rightAnchor = [editEffectPreview9 rightAnchor];
+      rightAnchor2 = [(CFXEffectEditorView *)self rightAnchor];
+      v24 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
       [v24 setActive:1];
 
-      v25 = [(CFXEffectEditorView *)self editEffectPreview];
-      v26 = [v25 topAnchor];
-      v27 = [(CFXEffectEditorView *)self topAnchor];
-      v28 = [v26 constraintEqualToAnchor:v27];
+      editEffectPreview10 = [(CFXEffectEditorView *)self editEffectPreview];
+      topAnchor = [editEffectPreview10 topAnchor];
+      topAnchor2 = [(CFXEffectEditorView *)self topAnchor];
+      v28 = [topAnchor constraintEqualToAnchor:topAnchor2];
       [v28 setActive:1];
 
-      v29 = [(CFXEffectEditorView *)self editEffectPreview];
-      v30 = [v29 bottomAnchor];
-      v31 = [(CFXEffectEditorView *)self bottomAnchor];
-      v32 = [v30 constraintEqualToAnchor:v31];
+      editEffectPreview11 = [(CFXEffectEditorView *)self editEffectPreview];
+      bottomAnchor = [editEffectPreview11 bottomAnchor];
+      bottomAnchor2 = [(CFXEffectEditorView *)self bottomAnchor];
+      v32 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
       [v32 setActive:1];
 
-      v33 = [(CFXEffectEditorView *)self delegate];
-      LOBYTE(v30) = objc_opt_respondsToSelector();
+      delegate3 = [(CFXEffectEditorView *)self delegate];
+      LOBYTE(bottomAnchor) = objc_opt_respondsToSelector();
 
-      if (v30)
+      if (bottomAnchor)
       {
-        v34 = [(CFXEffectEditorView *)self delegate];
-        [v34 effectEditorViewWillBeginPreviewingEditEffect:self];
+        delegate4 = [(CFXEffectEditorView *)self delegate];
+        [delegate4 effectEditorViewWillBeginPreviewingEditEffect:self];
       }
 
-      v35 = [(CFXEffectEditorView *)self effectRenderingQueue];
+      effectRenderingQueue = [(CFXEffectEditorView *)self effectRenderingQueue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __52__CFXEffectEditorView_CFX_beginPreviewingEditEffect__block_invoke;
       block[3] = &unk_278D79D20;
       block[4] = self;
-      dispatch_async(v35, block);
+      dispatch_async(effectRenderingQueue, block);
     }
   }
 }
 
 - (BOOL)CFX_isPreviewingEditEffect
 {
-  v2 = [(CFXEffectEditorView *)self editEffectPreview];
-  v3 = v2 != 0;
+  editEffectPreview = [(CFXEffectEditorView *)self editEffectPreview];
+  v3 = editEffectPreview != 0;
 
   return v3;
 }
@@ -1618,8 +1618,8 @@ LABEL_9:
     {
       self->_isRenderPendingForEditEffect = 1;
       kdebug_trace();
-      v3 = CFXLog_DebugEffectEditorRenderer();
-      if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
+      jtEffect = CFXLog_DebugEffectEditorRenderer();
+      if (os_log_type_enabled(jtEffect, OS_LOG_TYPE_DEBUG))
       {
         [CFXEffectEditorView CFX_previewEditEffectIfNeeded];
       }
@@ -1629,8 +1629,8 @@ LABEL_9:
     {
       self->_isRenderPendingForEditEffect = 0;
       self->_isRenderingEditEffect = 1;
-      v4 = [(CFXEffectEditorView *)self editEffect];
-      v3 = [v4 jtEffect];
+      editEffect = [(CFXEffectEditorView *)self editEffect];
+      jtEffect = [editEffect jtEffect];
 
       v5 = +[CFXMediaSettings sharedInstance];
       [v5 renderSize];
@@ -1642,23 +1642,23 @@ LABEL_9:
       v12 = v11;
       v14 = v13;
 
-      v15 = [(CFXEffectEditorView *)self delegate];
+      delegate = [(CFXEffectEditorView *)self delegate];
       v16 = objc_opt_respondsToSelector();
 
       v17 = 0;
       if (v16)
       {
-        v18 = [(CFXEffectEditorView *)self delegate];
-        v19 = [(CFXEffectEditorView *)self editEffect];
-        v17 = [v18 effectEditorView:self shouldDisableEditingAnimationForEffect:v19];
+        delegate2 = [(CFXEffectEditorView *)self delegate];
+        editEffect2 = [(CFXEffectEditorView *)self editEffect];
+        v17 = [delegate2 effectEditorView:self shouldDisableEditingAnimationForEffect:editEffect2];
       }
 
-      v20 = [MEMORY[0x277D75418] currentDevice];
-      v21 = [v20 userInterfaceIdiom];
+      currentDevice = [MEMORY[0x277D75418] currentDevice];
+      userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-      if (v17 && v21 == 1)
+      if (v17 && userInterfaceIdiom == 1)
       {
-        v22 = [v3 copy];
+        v22 = [jtEffect copy];
 
         [JFXEffectEditingUtilities beginTextEditingForEffect:v22];
         [v22 renderSize];
@@ -1785,23 +1785,23 @@ LABEL_9:
           v7 = v27;
         }
 
-        v3 = v22;
+        jtEffect = v22;
       }
 
       *location = kDefaultEffectPreviewRenderTime;
       v40 = 0;
-      v35 = [[JFXEffectsPreviewGenerationRequest alloc] initWithInputGenerator:v3 effectStack:0 outputSize:location frameSize:v7 renderTime:v9, v12, v14];
+      v35 = [[JFXEffectsPreviewGenerationRequest alloc] initWithInputGenerator:jtEffect effectStack:0 outputSize:location frameSize:v7 renderTime:v9, v12, v14];
       [(JFXEffectsPreviewGenerationRequest *)v35 setPriority:2];
       kdebug_trace();
       objc_initWeak(location, self);
-      v36 = [(CFXEffectEditorView *)self previewGenerator];
+      previewGenerator = [(CFXEffectEditorView *)self previewGenerator];
       v37[0] = MEMORY[0x277D85DD0];
       v37[1] = 3221225472;
       v37[2] = __52__CFXEffectEditorView_CFX_previewEditEffectIfNeeded__block_invoke;
       v37[3] = &unk_278D7BE48;
       objc_copyWeak(&v38, location);
       v37[4] = self;
-      [v36 generatePreviewRequest:v35 completionHandler:v37];
+      [previewGenerator generatePreviewRequest:v35 completionHandler:v37];
 
       objc_destroyWeak(&v38);
       objc_destroyWeak(location);
@@ -1885,18 +1885,18 @@ void __52__CFXEffectEditorView_CFX_previewEditEffectIfNeeded__block_invoke_2(uin
 {
   if ([(CFXEffectEditorView *)self CFX_isPreviewingEditEffect])
   {
-    v3 = [(CFXEffectEditorView *)self delegate];
+    delegate = [(CFXEffectEditorView *)self delegate];
     v4 = objc_opt_respondsToSelector();
 
     if (v4)
     {
-      v5 = [(CFXEffectEditorView *)self delegate];
-      [v5 effectEditorViewDidEndPreviewingEditingEffect:self];
+      delegate2 = [(CFXEffectEditorView *)self delegate];
+      [delegate2 effectEditorViewDidEndPreviewingEditingEffect:self];
     }
 
     self->_isRenderingEditEffect = 0;
-    v6 = [(CFXEffectEditorView *)self editEffectPreview];
-    [v6 removeFromSuperview];
+    editEffectPreview = [(CFXEffectEditorView *)self editEffectPreview];
+    [editEffectPreview removeFromSuperview];
 
     [(CFXEffectEditorView *)self setEditEffectPreview:0];
   }
@@ -1904,7 +1904,7 @@ void __52__CFXEffectEditorView_CFX_previewEditEffectIfNeeded__block_invoke_2(uin
 
 - (BOOL)CFX_useFaceReticle
 {
-  v3 = [(CFXEffectEditorView *)self delegate];
+  delegate = [(CFXEffectEditorView *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if ((v4 & 1) == 0)
@@ -1912,59 +1912,59 @@ void __52__CFXEffectEditorView_CFX_previewEditEffectIfNeeded__block_invoke_2(uin
     return 0;
   }
 
-  v5 = [(CFXEffectEditorView *)self delegate];
-  v6 = [v5 effectEditorViewShouldShowFaceReticle:self];
+  delegate2 = [(CFXEffectEditorView *)self delegate];
+  v6 = [delegate2 effectEditorViewShouldShowFaceReticle:self];
 
   return v6;
 }
 
 - (id)CFX_springForTextEditAnimation
 {
-  v2 = [MEMORY[0x277CD9FA0] animation];
-  [v2 setDamping:40.0];
-  [v2 setStiffness:400.0];
-  [v2 setMass:1.0];
-  [v2 setStiffness:400.0];
-  [v2 setDamping:40.0];
-  [v2 setInitialVelocity:0.0];
-  [v2 settlingDuration];
-  [v2 setDuration:?];
+  animation = [MEMORY[0x277CD9FA0] animation];
+  [animation setDamping:40.0];
+  [animation setStiffness:400.0];
+  [animation setMass:1.0];
+  [animation setStiffness:400.0];
+  [animation setDamping:40.0];
+  [animation setInitialVelocity:0.0];
+  [animation settlingDuration];
+  [animation setDuration:?];
 
-  return v2;
+  return animation;
 }
 
 - (void)CFX_startApplyingEffectAnimationViewDisplayLink
 {
-  v3 = [(CFXEffectEditorView *)self effectAnimationDisplayLink];
-  [v3 invalidate];
+  effectAnimationDisplayLink = [(CFXEffectEditorView *)self effectAnimationDisplayLink];
+  [effectAnimationDisplayLink invalidate];
 
   v4 = [MEMORY[0x277CD9E48] displayLinkWithTarget:self selector:sel_CFX_effectAnimationDisplayLinkFired_];
   [(CFXEffectEditorView *)self setEffectAnimationDisplayLink:v4];
 
-  v5 = [(CFXEffectEditorView *)self effectAnimationDisplayLink];
-  [v5 setPreferredFramesPerSecond:60];
+  effectAnimationDisplayLink2 = [(CFXEffectEditorView *)self effectAnimationDisplayLink];
+  [effectAnimationDisplayLink2 setPreferredFramesPerSecond:60];
 
-  v7 = [(CFXEffectEditorView *)self effectAnimationDisplayLink];
-  v6 = [MEMORY[0x277CBEB88] mainRunLoop];
-  [v7 addToRunLoop:v6 forMode:*MEMORY[0x277CBE738]];
+  effectAnimationDisplayLink3 = [(CFXEffectEditorView *)self effectAnimationDisplayLink];
+  mainRunLoop = [MEMORY[0x277CBEB88] mainRunLoop];
+  [effectAnimationDisplayLink3 addToRunLoop:mainRunLoop forMode:*MEMORY[0x277CBE738]];
 }
 
 - (void)CFX_stopApplyingEffectAnimationViewDisplayLink
 {
-  v3 = [(CFXEffectEditorView *)self effectAnimationDisplayLink];
+  effectAnimationDisplayLink = [(CFXEffectEditorView *)self effectAnimationDisplayLink];
 
-  if (v3)
+  if (effectAnimationDisplayLink)
   {
-    v4 = [(CFXEffectEditorView *)self effectAnimationDisplayLink];
-    [v4 invalidate];
+    effectAnimationDisplayLink2 = [(CFXEffectEditorView *)self effectAnimationDisplayLink];
+    [effectAnimationDisplayLink2 invalidate];
 
     [(CFXEffectEditorView *)self setEffectAnimationDisplayLink:0];
   }
 }
 
-- (void)CFX_effectAnimationDisplayLinkFired:(id)a3
+- (void)CFX_effectAnimationDisplayLinkFired:(id)fired
 {
-  v4 = a3;
+  firedCopy = fired;
   if (self->_isRenderingEditEffect)
   {
     kdebug_trace();
@@ -1993,64 +1993,64 @@ void __52__CFXEffectEditorView_CFX_previewEditEffectIfNeeded__block_invoke_2(uin
   }
 }
 
-- (void)CFX_applyEffectAnimationView:(BOOL)a3
+- (void)CFX_applyEffectAnimationView:(BOOL)view
 {
-  v3 = a3;
-  v5 = [(CFXEffectEditorView *)self effectAnimationView];
-  v6 = [v5 currentEffectTransforms];
+  viewCopy = view;
+  effectAnimationView = [(CFXEffectEditorView *)self effectAnimationView];
+  currentEffectTransforms = [effectAnimationView currentEffectTransforms];
 
-  if (v3)
+  if (viewCopy)
   {
-    v7 = [(CFXEffectEditorView *)self delegate];
-    v8 = [(CFXEffectEditorView *)self editEffect];
-    v9 = [v7 effectEditorView:self isFaceTrackingEffect:v8];
+    delegate = [(CFXEffectEditorView *)self delegate];
+    editEffect = [(CFXEffectEditorView *)self editEffect];
+    v9 = [delegate effectEditorView:self isFaceTrackingEffect:editEffect];
 
     if (v9)
     {
       if ([(CFXEffectEditorView *)self delegateSupportsCalculatingAnimatedFaceTrackingTransform])
       {
-        v10 = [(CFXEffectEditorView *)self delegate];
-        v26 = [(CFXEffectEditorView *)self effectAnimationView];
-        v11 = [v26 fromEffectFrame];
-        v12 = [v11 trackingType];
-        v13 = [v6 faceTrackingTransform];
-        v14 = [(CFXEffectEditorView *)self effectAnimationView];
-        v15 = [v14 toEffectFrame];
-        v16 = [v15 trackingType];
-        v17 = [(CFXEffectEditorView *)self effectAnimationView];
-        [v17 fractionComplete];
+        delegate2 = [(CFXEffectEditorView *)self delegate];
+        effectAnimationView2 = [(CFXEffectEditorView *)self effectAnimationView];
+        fromEffectFrame = [effectAnimationView2 fromEffectFrame];
+        trackingType = [fromEffectFrame trackingType];
+        faceTrackingTransform = [currentEffectTransforms faceTrackingTransform];
+        effectAnimationView3 = [(CFXEffectEditorView *)self effectAnimationView];
+        toEffectFrame = [effectAnimationView3 toEffectFrame];
+        trackingType2 = [toEffectFrame trackingType];
+        effectAnimationView4 = [(CFXEffectEditorView *)self effectAnimationView];
+        [effectAnimationView4 fractionComplete];
         *&v18 = v18;
-        v19 = [v10 effectEditorView:self calculateAnimatedFaceTrackingTransformWithCurrentFaceTrackingDataFromTrackingType:v12 interpolatedWithFaceTrackingTransform:v13 toTrackingType:v16 atAnimationProgress:v18];
+        v19 = [delegate2 effectEditorView:self calculateAnimatedFaceTrackingTransformWithCurrentFaceTrackingDataFromTrackingType:trackingType interpolatedWithFaceTrackingTransform:faceTrackingTransform toTrackingType:trackingType2 atAnimationProgress:v18];
 
-        v20 = [(CFXEffectEditorView *)self editEffectPreview];
-        v21 = v20;
+        editEffectPreview = [(CFXEffectEditorView *)self editEffectPreview];
+        v21 = editEffectPreview;
         if (!v19)
         {
-          [v20 setHidden:1];
+          [editEffectPreview setHidden:1];
 
           goto LABEL_7;
         }
 
-        [v20 setHidden:0];
+        [editEffectPreview setHidden:0];
 
-        v22 = [v6 transform];
-        v23 = [v6 transformAnimation];
-        v24 = [JFXOverlayEffectTransforms transformsWithTransform:v22 transformAnimation:v23 faceTrackingTransform:v19];
+        transform = [currentEffectTransforms transform];
+        transformAnimation = [currentEffectTransforms transformAnimation];
+        v24 = [JFXOverlayEffectTransforms transformsWithTransform:transform transformAnimation:transformAnimation faceTrackingTransform:v19];
 
-        v6 = v24;
+        currentEffectTransforms = v24;
       }
     }
   }
 
-  v25 = [(CFXEffectEditorView *)self effectRenderingQueue];
+  effectRenderingQueue = [(CFXEffectEditorView *)self effectRenderingQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __52__CFXEffectEditorView_CFX_applyEffectAnimationView___block_invoke;
   block[3] = &unk_278D79C88;
   block[4] = self;
-  v6 = v6;
-  v28 = v6;
-  dispatch_async(v25, block);
+  currentEffectTransforms = currentEffectTransforms;
+  v28 = currentEffectTransforms;
+  dispatch_async(effectRenderingQueue, block);
 
 LABEL_7:
 }
@@ -2070,47 +2070,47 @@ uint64_t __52__CFXEffectEditorView_CFX_applyEffectAnimationView___block_invoke(u
   return result;
 }
 
-- (void)CFX_performTextEditOnlyModeEnterAnimationWithCompletionBlock:(id)a3
+- (void)CFX_performTextEditOnlyModeEnterAnimationWithCompletionBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(CFXEffectEditorView *)self effectAnimationView];
+  blockCopy = block;
+  effectAnimationView = [(CFXEffectEditorView *)self effectAnimationView];
 
-  if (!v5)
+  if (!effectAnimationView)
   {
-    v6 = [(CFXEffectEditorView *)self delegate];
+    delegate = [(CFXEffectEditorView *)self delegate];
     v7 = objc_opt_respondsToSelector();
 
     if (v7 & 1) != 0 && (-[CFXEffectEditorView delegate](self, "delegate"), v8 = objc_claimAutoreleasedReturnValue(), -[CFXEffectEditorView editEffect](self, "editEffect"), v9 = objc_claimAutoreleasedReturnValue(), [v8 effectEditorView:self durationForBeginEditingAnimationForEffect:v9], v11 = v10, v9, v8, v11 > 0.0) && (-[CFXEffectEditorView delegate](self, "delegate"), v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_opt_respondsToSelector(), v12, -[CFXEffectEditorView delegate](self, "delegate"), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_opt_respondsToSelector(), v14, -[CFXEffectEditorView delegate](self, "delegate"), v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_opt_respondsToSelector(), v16, -[CFXEffectEditorView delegate](self, "delegate"), v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_opt_respondsToSelector(), v18, -[CFXEffectEditorView delegate](self, "delegate"), v20 = objc_claimAutoreleasedReturnValue(), v21 = objc_opt_respondsToSelector(), v20, (v13) && (v19 & 1) != 0 && (v15 & 1) != 0 && (v17 & 1) != 0 && (v21)
     {
-      v22 = [(CFXEffectEditorView *)self delegate];
-      v23 = [(CFXEffectEditorView *)self editEffect];
-      [v22 effectEditorView:self willBeginAnimationBeforeEditingEffect:v23];
+      delegate2 = [(CFXEffectEditorView *)self delegate];
+      editEffect = [(CFXEffectEditorView *)self editEffect];
+      [delegate2 effectEditorView:self willBeginAnimationBeforeEditingEffect:editEffect];
 
-      v24 = [(CFXEffectEditorView *)self editEffect];
-      v25 = [v24 jtEffect];
-      v26 = [v25 renderEffect];
-      [v26 outputSize];
+      editEffect2 = [(CFXEffectEditorView *)self editEffect];
+      jtEffect = [editEffect2 jtEffect];
+      renderEffect = [jtEffect renderEffect];
+      [renderEffect outputSize];
       v28 = v27;
       v30 = v29;
 
-      v31 = [(CFXEffectEditorView *)self delegate];
-      v32 = [(CFXEffectEditorView *)self editEffect];
-      v33 = [v31 effectEditorView:self beginEditingAnimationFromFrameForEffect:v32 relativeToBounds:{0.0, 0.0, v28, v30}];
+      delegate3 = [(CFXEffectEditorView *)self delegate];
+      editEffect3 = [(CFXEffectEditorView *)self editEffect];
+      v33 = [delegate3 effectEditorView:self beginEditingAnimationFromFrameForEffect:editEffect3 relativeToBounds:{0.0, 0.0, v28, v30}];
 
-      v34 = [(CFXEffectEditorView *)self delegate];
-      v35 = [(CFXEffectEditorView *)self editEffect];
-      v36 = [v34 effectEditorView:self beginEditingAnimationToFrameForEffect:v35 relativeToBounds:{0.0, 0.0, v28, v30}];
+      delegate4 = [(CFXEffectEditorView *)self delegate];
+      editEffect4 = [(CFXEffectEditorView *)self editEffect];
+      v36 = [delegate4 effectEditorView:self beginEditingAnimationToFrameForEffect:editEffect4 relativeToBounds:{0.0, 0.0, v28, v30}];
 
-      v37 = [(CFXEffectEditorView *)self editEffect];
-      v38 = [v37 jtEffect];
+      editEffect5 = [(CFXEffectEditorView *)self editEffect];
+      jtEffect2 = [editEffect5 jtEffect];
 
-      v39 = [(CFXEffectEditorView *)self delegate];
-      v40 = [(CFXEffectEditorView *)self editEffect];
-      v41 = [v39 effectEditorView:self isFaceTrackingEffect:v40];
+      delegate5 = [(CFXEffectEditorView *)self delegate];
+      editEffect6 = [(CFXEffectEditorView *)self editEffect];
+      v41 = [delegate5 effectEditorView:self isFaceTrackingEffect:editEffect6];
 
-      v42 = [(CFXEffectEditorView *)self delegate];
-      v43 = [(CFXEffectEditorView *)self editEffect];
-      v44 = [v42 effectEditorView:self isFaceTrackingDataAvailableForEffect:v43];
+      delegate6 = [(CFXEffectEditorView *)self delegate];
+      editEffect7 = [(CFXEffectEditorView *)self editEffect];
+      v44 = [delegate6 effectEditorView:self isFaceTrackingDataAvailableForEffect:editEffect7];
 
       if (v41 && (v44 & 1) == 0)
       {
@@ -2122,28 +2122,28 @@ uint64_t __52__CFXEffectEditorView_CFX_applyEffectAnimationView___block_invoke(u
       v46 = [[JFXOverlayEffectAnimationView alloc] initWithEffectFrame:v33 toEffectFrame:v36];
       [(CFXEffectEditorView *)self setEffectAnimationView:v46];
 
-      v47 = [(CFXEffectEditorView *)self effectAnimationView];
-      [(CFXEffectEditorView *)self addSubview:v47];
+      effectAnimationView2 = [(CFXEffectEditorView *)self effectAnimationView];
+      [(CFXEffectEditorView *)self addSubview:effectAnimationView2];
 
-      [v38 setHidden:0];
-      [v38 beginEditingFaceTrackingTransforms];
+      [jtEffect2 setHidden:0];
+      [jtEffect2 beginEditingFaceTrackingTransforms];
       [(CFXEffectEditorView *)self CFX_applyEffectAnimationView:1];
-      v48 = [(CFXEffectEditorView *)self delegate];
-      v49 = [(CFXEffectEditorView *)self editEffect];
+      delegate7 = [(CFXEffectEditorView *)self delegate];
+      editEffect8 = [(CFXEffectEditorView *)self editEffect];
       v51[0] = MEMORY[0x277D85DD0];
       v51[1] = 3221225472;
       v51[2] = __84__CFXEffectEditorView_CFX_performTextEditOnlyModeEnterAnimationWithCompletionBlock___block_invoke;
       v51[3] = &unk_278D7A190;
       v51[4] = self;
-      v52 = v38;
-      v53 = v4;
-      v50 = v38;
-      [v48 effectEditorView:self didStartBeginEditingAnimationForEffect:v49 completion:v51];
+      v52 = jtEffect2;
+      v53 = blockCopy;
+      v50 = jtEffect2;
+      [delegate7 effectEditorView:self didStartBeginEditingAnimationForEffect:editEffect8 completion:v51];
     }
 
     else
     {
-      v4[2](v4);
+      blockCopy[2](blockCopy);
     }
   }
 }
@@ -2184,70 +2184,70 @@ uint64_t __84__CFXEffectEditorView_CFX_performTextEditOnlyModeEnterAnimationWith
   return v6();
 }
 
-- (void)CFX_performTextEditOnlyModeExitAnimationWithCompletionBlock:(id)a3
+- (void)CFX_performTextEditOnlyModeExitAnimationWithCompletionBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(CFXEffectEditorView *)self effectAnimationView];
+  blockCopy = block;
+  effectAnimationView = [(CFXEffectEditorView *)self effectAnimationView];
 
-  if (!v5)
+  if (!effectAnimationView)
   {
-    v6 = [(CFXEffectEditorView *)self delegate];
+    delegate = [(CFXEffectEditorView *)self delegate];
     v7 = objc_opt_respondsToSelector();
 
     if (v7 & 1) != 0 && (-[CFXEffectEditorView delegate](self, "delegate"), v8 = objc_claimAutoreleasedReturnValue(), -[CFXEffectEditorView editEffect](self, "editEffect"), v9 = objc_claimAutoreleasedReturnValue(), [v8 effectEditorView:self durationForEndEditingAnimationForEffect:v9], v11 = v10, v9, v8, v11 > 0.0) && (-[CFXEffectEditorView delegate](self, "delegate"), v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_opt_respondsToSelector(), v12, -[CFXEffectEditorView delegate](self, "delegate"), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_opt_respondsToSelector(), v14, -[CFXEffectEditorView delegate](self, "delegate"), v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_opt_respondsToSelector(), v16, (v13) && (v15 & 1) != 0 && (v17)
     {
       [(CFXEffectEditorView *)self CFX_endTextEditing:0];
-      v18 = [(CFXEffectEditorView *)self delegate];
-      v19 = [(CFXEffectEditorView *)self editEffect];
-      [v18 effectEditorView:self willBeginAnimationAfterEditingEffect:v19];
+      delegate2 = [(CFXEffectEditorView *)self delegate];
+      editEffect = [(CFXEffectEditorView *)self editEffect];
+      [delegate2 effectEditorView:self willBeginAnimationAfterEditingEffect:editEffect];
 
-      v20 = [(CFXEffectEditorView *)self editEffect];
-      v21 = [v20 jtEffect];
-      v22 = [v21 renderEffect];
-      [v22 outputSize];
+      editEffect2 = [(CFXEffectEditorView *)self editEffect];
+      jtEffect = [editEffect2 jtEffect];
+      renderEffect = [jtEffect renderEffect];
+      [renderEffect outputSize];
       v24 = v23;
       v26 = v25;
 
-      v27 = [(CFXEffectEditorView *)self delegate];
-      v28 = [(CFXEffectEditorView *)self editEffect];
-      v29 = [v27 effectEditorView:self endEditingAnimationFromFrameForEffect:v28 relativeToBounds:{0.0, 0.0, v24, v26}];
+      delegate3 = [(CFXEffectEditorView *)self delegate];
+      editEffect3 = [(CFXEffectEditorView *)self editEffect];
+      v29 = [delegate3 effectEditorView:self endEditingAnimationFromFrameForEffect:editEffect3 relativeToBounds:{0.0, 0.0, v24, v26}];
 
-      v30 = [(CFXEffectEditorView *)self delegate];
-      v31 = [(CFXEffectEditorView *)self editEffect];
-      v32 = [v30 effectEditorView:self endEditingAnimationToFrameForEffect:v31 relativeToBounds:{0.0, 0.0, v24, v26}];
+      delegate4 = [(CFXEffectEditorView *)self delegate];
+      editEffect4 = [(CFXEffectEditorView *)self editEffect];
+      v32 = [delegate4 effectEditorView:self endEditingAnimationToFrameForEffect:editEffect4 relativeToBounds:{0.0, 0.0, v24, v26}];
 
       v33 = [[JFXOverlayEffectAnimationView alloc] initWithEffectFrame:v29 toEffectFrame:v32];
       [(CFXEffectEditorView *)self setEffectAnimationView:v33];
 
-      v34 = [(CFXEffectEditorView *)self effectAnimationView];
-      [(CFXEffectEditorView *)self addSubview:v34];
+      effectAnimationView2 = [(CFXEffectEditorView *)self effectAnimationView];
+      [(CFXEffectEditorView *)self addSubview:effectAnimationView2];
 
-      v35 = [(CFXEffectEditorView *)self editEffect];
-      v36 = [v35 jtEffect];
+      editEffect5 = [(CFXEffectEditorView *)self editEffect];
+      jtEffect2 = [editEffect5 jtEffect];
 
-      [v36 beginEditingFaceTrackingTransforms];
+      [jtEffect2 beginEditingFaceTrackingTransforms];
       [(CFXEffectEditorView *)self CFX_applyEffectAnimationView:[(CFXEffectEditorView *)self isEndingEditing]];
       [(CFXEffectEditorView *)self CFX_startApplyingEffectAnimationViewDisplayLink];
-      v37 = [(CFXEffectEditorView *)self CFX_springForTextEditAnimation];
-      v38 = [(CFXEffectEditorView *)self effectAnimationView];
+      cFX_springForTextEditAnimation = [(CFXEffectEditorView *)self CFX_springForTextEditAnimation];
+      effectAnimationView3 = [(CFXEffectEditorView *)self effectAnimationView];
       v44[0] = MEMORY[0x277D85DD0];
       v44[1] = 3221225472;
       v44[2] = __83__CFXEffectEditorView_CFX_performTextEditOnlyModeExitAnimationWithCompletionBlock___block_invoke;
       v44[3] = &unk_278D7B090;
       v44[4] = self;
-      v39 = v36;
+      v39 = jtEffect2;
       v45 = v39;
-      v46 = v4;
-      [v38 animate:v37 completion:v44];
+      v46 = blockCopy;
+      [effectAnimationView3 animate:cFX_springForTextEditAnimation completion:v44];
 
-      v40 = [(CFXEffectEditorView *)self delegate];
+      delegate5 = [(CFXEffectEditorView *)self delegate];
       v41 = objc_opt_respondsToSelector();
 
       if (v41)
       {
-        v42 = [(CFXEffectEditorView *)self delegate];
-        v43 = [(CFXEffectEditorView *)self editEffect];
-        [v42 effectEditorView:self didStartEndEditingAnimationForEffect:v43];
+        delegate6 = [(CFXEffectEditorView *)self delegate];
+        editEffect6 = [(CFXEffectEditorView *)self editEffect];
+        [delegate6 effectEditorView:self didStartEndEditingAnimationForEffect:editEffect6];
       }
 
       [(CFXEffectEditorView *)self CFX_forceHideEditControls];
@@ -2255,7 +2255,7 @@ uint64_t __84__CFXEffectEditorView_CFX_performTextEditOnlyModeEnterAnimationWith
 
     else
     {
-      v4[2](v4);
+      blockCopy[2](blockCopy);
     }
   }
 }
@@ -2331,9 +2331,9 @@ uint64_t __83__CFXEffectEditorView_CFX_performTextEditOnlyModeExitAnimationWithC
     v3 = [MEMORY[0x277CD9E48] displayLinkWithTarget:self selector:sel_onDebugDisplayLink_];
     [(CFXEffectEditorView *)self setDebugDisplayLink:v3];
 
-    v5 = [(CFXEffectEditorView *)self debugDisplayLink];
-    v4 = [MEMORY[0x277CBEB88] mainRunLoop];
-    [v5 addToRunLoop:v4 forMode:*MEMORY[0x277CBE738]];
+    debugDisplayLink = [(CFXEffectEditorView *)self debugDisplayLink];
+    mainRunLoop = [MEMORY[0x277CBEB88] mainRunLoop];
+    [debugDisplayLink addToRunLoop:mainRunLoop forMode:*MEMORY[0x277CBE738]];
   }
 }
 
@@ -2341,20 +2341,20 @@ uint64_t __83__CFXEffectEditorView_CFX_performTextEditOnlyModeExitAnimationWithC
 {
   if (JFX_isDrawOverlayBoundsEnabled())
   {
-    v3 = [(CFXEffectEditorView *)self debugDisplayLink];
-    [v3 invalidate];
+    debugDisplayLink = [(CFXEffectEditorView *)self debugDisplayLink];
+    [debugDisplayLink invalidate];
 
     [(CFXEffectEditorView *)self setDebugDisplayLink:0];
   }
 }
 
-- (void)onDebugDisplayLink:(id)a3
+- (void)onDebugDisplayLink:(id)link
 {
   if (JFX_isDrawOverlayBoundsEnabled())
   {
-    v4 = [(CFXEffectEditorView *)self editEffect];
+    editEffect = [(CFXEffectEditorView *)self editEffect];
 
-    if (v4)
+    if (editEffect)
     {
       [(CFXEffectEditorView *)self bounds];
       v6 = v5;
@@ -2366,20 +2366,20 @@ uint64_t __83__CFXEffectEditorView_CFX_performTextEditOnlyModeExitAnimationWithC
       v19 = v18;
       v21 = v20;
       v23 = v22;
-      v24 = [(CFXEffectEditorView *)self delegate];
-      v25 = [(CFXEffectEditorView *)self editEffect];
-      v33 = [v24 effectEditorView:self overlayEffectFrameForEffect:v25 relativeToBounds:{v17, v19, v21, v23}];
+      delegate = [(CFXEffectEditorView *)self delegate];
+      editEffect2 = [(CFXEffectEditorView *)self editEffect];
+      v33 = [delegate effectEditorView:self overlayEffectFrameForEffect:editEffect2 relativeToBounds:{v17, v19, v21, v23}];
 
-      v26 = [(CFXEffectEditorView *)self debugOverlayView];
-      [v26 updateWithEffectFrame:v33];
+      debugOverlayView = [(CFXEffectEditorView *)self debugOverlayView];
+      [debugOverlayView updateWithEffectFrame:v33];
 
-      v27 = [(CFXEffectEditorView *)self debugOverlayView];
-      [v27 frame];
+      debugOverlayView2 = [(CFXEffectEditorView *)self debugOverlayView];
+      [debugOverlayView2 frame];
       v29 = v28;
       v31 = v30;
 
-      v32 = [(CFXEffectEditorView *)self debugOverlayView];
-      [v32 setFrame:{v17, v19, v29, v31}];
+      debugOverlayView3 = [(CFXEffectEditorView *)self debugOverlayView];
+      [debugOverlayView3 setFrame:{v17, v19, v29, v31}];
     }
   }
 }
@@ -2401,11 +2401,11 @@ uint64_t __83__CFXEffectEditorView_CFX_performTextEditOnlyModeExitAnimationWithC
   return self;
 }
 
-- (void)setEditTransform:(CGAffineTransform *)a3
+- (void)setEditTransform:(CGAffineTransform *)transform
 {
-  v4 = *&a3->c;
-  v3 = *&a3->tx;
-  *&self->_editTransform.a = *&a3->a;
+  v4 = *&transform->c;
+  v3 = *&transform->tx;
+  *&self->_editTransform.a = *&transform->a;
   *&self->_editTransform.c = v4;
   *&self->_editTransform.tx = v3;
 }

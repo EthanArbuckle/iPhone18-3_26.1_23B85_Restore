@@ -1,186 +1,186 @@
 @interface CVAFilterBox
-- (CVAFilterBox)initWithFigMetalContext:(id)a3 textureSize:(id *)a4 error:(id *)a5;
-- (void)encodeBoxHorizontalToCommandBuffer:(id)a3 configBuffer:(const BoxFilterConfig *)a4 source:(id)a5 destination:(id)a6;
-- (void)encodeBoxVerticalToCommandBuffer:(id)a3 configBuffer:(const BoxFilterConfig *)a4 source:(id)a5 destination:(id)a6 normalize:(int64_t)a7;
-- (void)encodeToCommandBuffer:(id)a3 inTexture:(id)a4 outTexture:(id)a5 radius:(unint64_t)a6 normalize:(int64_t)a7;
+- (CVAFilterBox)initWithFigMetalContext:(id)context textureSize:(id *)size error:(id *)error;
+- (void)encodeBoxHorizontalToCommandBuffer:(id)buffer configBuffer:(const BoxFilterConfig *)configBuffer source:(id)source destination:(id)destination;
+- (void)encodeBoxVerticalToCommandBuffer:(id)buffer configBuffer:(const BoxFilterConfig *)configBuffer source:(id)source destination:(id)destination normalize:(int64_t)normalize;
+- (void)encodeToCommandBuffer:(id)buffer inTexture:(id)texture outTexture:(id)outTexture radius:(unint64_t)radius normalize:(int64_t)normalize;
 @end
 
 @implementation CVAFilterBox
 
-- (void)encodeBoxVerticalToCommandBuffer:(id)a3 configBuffer:(const BoxFilterConfig *)a4 source:(id)a5 destination:(id)a6 normalize:(int64_t)a7
+- (void)encodeBoxVerticalToCommandBuffer:(id)buffer configBuffer:(const BoxFilterConfig *)configBuffer source:(id)source destination:(id)destination normalize:(int64_t)normalize
 {
-  v12 = a5;
-  v13 = a6;
-  v14 = [a3 computeCommandEncoder];
-  if ([v12 pixelFormat] == 10 || objc_msgSend(v12, "pixelFormat") == 25 || objc_msgSend(v12, "pixelFormat") == 55)
+  sourceCopy = source;
+  destinationCopy = destination;
+  computeCommandEncoder = [buffer computeCommandEncoder];
+  if ([sourceCopy pixelFormat] == 10 || objc_msgSend(sourceCopy, "pixelFormat") == 25 || objc_msgSend(sourceCopy, "pixelFormat") == 55)
   {
-    if (a7 == 1)
+    if (normalize == 1)
     {
-      [v14 setLabel:@"_box_norm_float_pass_vert_kernel"];
+      [computeCommandEncoder setLabel:@"_box_norm_float_pass_vert_kernel"];
       v15 = 80;
     }
 
-    else if (a7 == 2)
+    else if (normalize == 2)
     {
-      [v14 setLabel:@"_box_normValid_float_pass_vert_kernel"];
+      [computeCommandEncoder setLabel:@"_box_normValid_float_pass_vert_kernel"];
       v15 = 72;
     }
 
     else
     {
-      [v14 setLabel:@"_box_float_pass_vert_kernel"];
+      [computeCommandEncoder setLabel:@"_box_float_pass_vert_kernel"];
       v15 = 88;
     }
   }
 
-  else if (a7 == 1)
+  else if (normalize == 1)
   {
-    [v14 setLabel:@"_box_norm_float4_pass_vert_kernel"];
+    [computeCommandEncoder setLabel:@"_box_norm_float4_pass_vert_kernel"];
     v15 = 104;
   }
 
-  else if (a7 == 2)
+  else if (normalize == 2)
   {
-    [v14 setLabel:@"_box_normValid_float4_pass_vert_kernel"];
+    [computeCommandEncoder setLabel:@"_box_normValid_float4_pass_vert_kernel"];
     v15 = 96;
   }
 
   else
   {
-    [v14 setLabel:@"_box_float4_pass_vert_kernel"];
+    [computeCommandEncoder setLabel:@"_box_float4_pass_vert_kernel"];
     v15 = 112;
   }
 
-  [v14 setComputePipelineState:*(&self->super.isa + v15)];
-  [v14 setTexture:v12 atIndex:0];
-  [v14 setTexture:v13 atIndex:1];
-  [v14 setBytes:a4 length:4 atIndex:0];
-  v18[0] = ([v12 width] + 15) >> 4;
-  v18[1] = ([v12 height] + 15) >> 4;
+  [computeCommandEncoder setComputePipelineState:*(&self->super.isa + v15)];
+  [computeCommandEncoder setTexture:sourceCopy atIndex:0];
+  [computeCommandEncoder setTexture:destinationCopy atIndex:1];
+  [computeCommandEncoder setBytes:configBuffer length:4 atIndex:0];
+  v18[0] = ([sourceCopy width] + 15) >> 4;
+  v18[1] = ([sourceCopy height] + 15) >> 4;
   v18[2] = 1;
   v16 = xmmword_1DED747F0;
   v17 = 1;
-  [v14 dispatchThreadgroups:v18 threadsPerThreadgroup:&v16];
-  [v14 endEncoding];
+  [computeCommandEncoder dispatchThreadgroups:v18 threadsPerThreadgroup:&v16];
+  [computeCommandEncoder endEncoding];
 }
 
-- (void)encodeBoxHorizontalToCommandBuffer:(id)a3 configBuffer:(const BoxFilterConfig *)a4 source:(id)a5 destination:(id)a6
+- (void)encodeBoxHorizontalToCommandBuffer:(id)buffer configBuffer:(const BoxFilterConfig *)configBuffer source:(id)source destination:(id)destination
 {
-  v11 = a5;
-  v12 = a6;
-  v13 = [a3 computeCommandEncoder];
-  v14 = [v11 pixelFormat];
-  if (v14 > 69)
+  sourceCopy = source;
+  destinationCopy = destination;
+  computeCommandEncoder = [buffer computeCommandEncoder];
+  pixelFormat = [sourceCopy pixelFormat];
+  if (pixelFormat > 69)
   {
-    if (v14 == 70 || v14 == 115 || v14 == 125)
+    if (pixelFormat == 70 || pixelFormat == 115 || pixelFormat == 125)
     {
-      [v13 setLabel:@"_box_float4_pass_horiz_kernel"];
+      [computeCommandEncoder setLabel:@"_box_float4_pass_horiz_kernel"];
       v15 = 64;
       goto LABEL_10;
     }
 
 LABEL_12:
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"CVAFilterBox.mm" lineNumber:180 description:{@"Bad output pixel format (%lu) for encodeBoxFilterToBuffer", objc_msgSend(v11, "pixelFormat")}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"CVAFilterBox.mm" lineNumber:180 description:{@"Bad output pixel format (%lu) for encodeBoxFilterToBuffer", objc_msgSend(sourceCopy, "pixelFormat")}];
 
     goto LABEL_11;
   }
 
-  if (v14 != 10 && v14 != 25 && v14 != 55)
+  if (pixelFormat != 10 && pixelFormat != 25 && pixelFormat != 55)
   {
     goto LABEL_12;
   }
 
-  [v13 setLabel:@"_box_float_pass_horiz_kernel"];
+  [computeCommandEncoder setLabel:@"_box_float_pass_horiz_kernel"];
   v15 = 56;
 LABEL_10:
-  [v13 setComputePipelineState:*(&self->super.isa + v15)];
+  [computeCommandEncoder setComputePipelineState:*(&self->super.isa + v15)];
 LABEL_11:
-  [v13 setTexture:v11 atIndex:0];
-  [v13 setTexture:v12 atIndex:1];
-  [v13 setBytes:a4 length:4 atIndex:0];
-  v19[0] = ([v11 width] + 15) >> 4;
-  v19[1] = ([v11 height] + 15) >> 4;
+  [computeCommandEncoder setTexture:sourceCopy atIndex:0];
+  [computeCommandEncoder setTexture:destinationCopy atIndex:1];
+  [computeCommandEncoder setBytes:configBuffer length:4 atIndex:0];
+  v19[0] = ([sourceCopy width] + 15) >> 4;
+  v19[1] = ([sourceCopy height] + 15) >> 4;
   v19[2] = 1;
   v17 = xmmword_1DED747F0;
   v18 = 1;
-  [v13 dispatchThreadgroups:v19 threadsPerThreadgroup:&v17];
-  [v13 endEncoding];
+  [computeCommandEncoder dispatchThreadgroups:v19 threadsPerThreadgroup:&v17];
+  [computeCommandEncoder endEncoding];
 }
 
-- (void)encodeToCommandBuffer:(id)a3 inTexture:(id)a4 outTexture:(id)a5 radius:(unint64_t)a6 normalize:(int64_t)a7
+- (void)encodeToCommandBuffer:(id)buffer inTexture:(id)texture outTexture:(id)outTexture radius:(unint64_t)radius normalize:(int64_t)normalize
 {
-  v8 = a6;
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  if (__PAIR128__([v14 height], objc_msgSend(v14, "width")) != *&self->_textureSize.width)
+  radiusCopy = radius;
+  bufferCopy = buffer;
+  textureCopy = texture;
+  outTextureCopy = outTexture;
+  if (__PAIR128__([textureCopy height], objc_msgSend(textureCopy, "width")) != *&self->_textureSize.width)
   {
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v20 handleFailureInMethod:a2 object:self file:@"CVAFilterBox.mm" lineNumber:102 description:{@"Texture dimension is not expected (%zux%zu) != (%zux%zu)", objc_msgSend(v14, "width"), objc_msgSend(v14, "height"), self->_textureSize.width, self->_textureSize.height}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"CVAFilterBox.mm" lineNumber:102 description:{@"Texture dimension is not expected (%zux%zu) != (%zux%zu)", objc_msgSend(textureCopy, "width"), objc_msgSend(textureCopy, "height"), self->_textureSize.width, self->_textureSize.height}];
   }
 
-  if ([v15 width] != self->_textureSize.width || objc_msgSend(v15, "height") != self->_textureSize.height)
+  if ([outTextureCopy width] != self->_textureSize.width || objc_msgSend(outTextureCopy, "height") != self->_textureSize.height)
   {
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"CVAFilterBox.mm" lineNumber:108 description:{@"Texture dimension is not expected (%zux%zu) != (%zux%zu)", objc_msgSend(v15, "width"), objc_msgSend(v15, "height"), self->_textureSize.width, self->_textureSize.height}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"CVAFilterBox.mm" lineNumber:108 description:{@"Texture dimension is not expected (%zux%zu) != (%zux%zu)", objc_msgSend(outTextureCopy, "width"), objc_msgSend(outTextureCopy, "height"), self->_textureSize.width, self->_textureSize.height}];
   }
 
-  if ([v14 pixelFormat] != 10 && objc_msgSend(v14, "pixelFormat") != 25 && objc_msgSend(v14, "pixelFormat") != 55 && objc_msgSend(v14, "pixelFormat") != 70 && objc_msgSend(v14, "pixelFormat") != 115 && objc_msgSend(v14, "pixelFormat") != 125)
+  if ([textureCopy pixelFormat] != 10 && objc_msgSend(textureCopy, "pixelFormat") != 25 && objc_msgSend(textureCopy, "pixelFormat") != 55 && objc_msgSend(textureCopy, "pixelFormat") != 70 && objc_msgSend(textureCopy, "pixelFormat") != 115 && objc_msgSend(textureCopy, "pixelFormat") != 125)
   {
-    v23 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v23 handleFailureInMethod:a2 object:self file:@"CVAFilterBox.mm" lineNumber:115 description:{@"Bad input pixel format (%lu) for encodeBoxFilterToBuffer", objc_msgSend(v14, "pixelFormat")}];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"CVAFilterBox.mm" lineNumber:115 description:{@"Bad input pixel format (%lu) for encodeBoxFilterToBuffer", objc_msgSend(textureCopy, "pixelFormat")}];
   }
 
-  if ([v15 pixelFormat] != 10 && objc_msgSend(v15, "pixelFormat") != 25 && objc_msgSend(v15, "pixelFormat") != 55 && objc_msgSend(v15, "pixelFormat") != 70 && objc_msgSend(v15, "pixelFormat") != 115 && objc_msgSend(v15, "pixelFormat") != 125)
+  if ([outTextureCopy pixelFormat] != 10 && objc_msgSend(outTextureCopy, "pixelFormat") != 25 && objc_msgSend(outTextureCopy, "pixelFormat") != 55 && objc_msgSend(outTextureCopy, "pixelFormat") != 70 && objc_msgSend(outTextureCopy, "pixelFormat") != 115 && objc_msgSend(outTextureCopy, "pixelFormat") != 125)
   {
-    v24 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v24 handleFailureInMethod:a2 object:self file:@"CVAFilterBox.mm" lineNumber:121 description:{@"Bad output pixel format (%lu) for encodeBoxFilterToBuffer", objc_msgSend(v15, "pixelFormat")}];
+    currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler4 handleFailureInMethod:a2 object:self file:@"CVAFilterBox.mm" lineNumber:121 description:{@"Bad output pixel format (%lu) for encodeBoxFilterToBuffer", objc_msgSend(outTextureCopy, "pixelFormat")}];
   }
 
-  if ([v14 pixelFormat] == 55)
+  if ([textureCopy pixelFormat] == 55)
   {
-    if (a7)
+    if (normalize)
     {
 LABEL_31:
-      v22 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v22 handleFailureInMethod:a2 object:self file:@"CVAFilterBox.mm" lineNumber:129 description:{@"Unsupported input pixel format (%lu) and normalization type (%ld) for encodeBoxFilterToBuffer", objc_msgSend(v14, "pixelFormat"), a7}];
+      currentHandler5 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler5 handleFailureInMethod:a2 object:self file:@"CVAFilterBox.mm" lineNumber:129 description:{@"Unsupported input pixel format (%lu) and normalization type (%ld) for encodeBoxFilterToBuffer", objc_msgSend(textureCopy, "pixelFormat"), normalize}];
     }
   }
 
   else
   {
-    v16 = [v14 pixelFormat];
-    if (a7 && v16 == 125)
+    pixelFormat = [textureCopy pixelFormat];
+    if (normalize && pixelFormat == 125)
     {
       goto LABEL_31;
     }
   }
 
-  v25 = v8;
-  if ([v14 pixelFormat] == 70 || objc_msgSend(v14, "pixelFormat") == 115)
+  v25 = radiusCopy;
+  if ([textureCopy pixelFormat] == 70 || objc_msgSend(textureCopy, "pixelFormat") == 115)
   {
     v17 = 40;
   }
 
   else
   {
-    v18 = [v14 pixelFormat];
+    pixelFormat2 = [textureCopy pixelFormat];
     v17 = 48;
-    if (v18 == 125)
+    if (pixelFormat2 == 125)
     {
       v17 = 40;
     }
   }
 
   v19 = *(&self->super.isa + v17);
-  [(CVAFilterBox *)self encodeBoxHorizontalToCommandBuffer:v13 configBuffer:&v25 source:v14 destination:v19];
-  [(CVAFilterBox *)self encodeBoxVerticalToCommandBuffer:v13 configBuffer:&v25 source:v19 destination:v15 normalize:a7];
+  [(CVAFilterBox *)self encodeBoxHorizontalToCommandBuffer:bufferCopy configBuffer:&v25 source:textureCopy destination:v19];
+  [(CVAFilterBox *)self encodeBoxVerticalToCommandBuffer:bufferCopy configBuffer:&v25 source:v19 destination:outTextureCopy normalize:normalize];
 }
 
-- (CVAFilterBox)initWithFigMetalContext:(id)a3 textureSize:(id *)a4 error:(id *)a5
+- (CVAFilterBox)initWithFigMetalContext:(id)context textureSize:(id *)size error:(id *)error
 {
-  v9 = a3;
+  contextCopy = context;
   v48.receiver = self;
   v48.super_class = CVAFilterBox;
   v10 = [(CVAFilterBox *)&v48 init];
@@ -216,17 +216,17 @@ LABEL_31:
     label = v11->_label;
     v11->_label = v13;
 
-    objc_storeStrong(&v11->_figMetalContext, a3);
-    v15 = *&a4->var0;
-    v11->_textureSize.depth = a4->var2;
+    objc_storeStrong(&v11->_figMetalContext, context);
+    v15 = *&size->var0;
+    v11->_textureSize.depth = size->var2;
     *&v11->_textureSize.width = v15;
-    v16 = [v9 device];
-    v17 = sub_1DED6FDC8(v16, 115, a4->var0, a4->var1, 0, a5);
+    device = [contextCopy device];
+    v17 = sub_1DED6FDC8(device, 115, size->var0, size->var1, 0, error);
     boxIntermediateTexture_rgba = v11->_boxIntermediateTexture_rgba;
     v11->_boxIntermediateTexture_rgba = v17;
 
-    v19 = [v9 device];
-    v20 = sub_1DED6FDC8(v19, 25, a4->var0, a4->var1, 0, a5);
+    device2 = [contextCopy device];
+    v20 = sub_1DED6FDC8(device2, 25, size->var0, size->var1, 0, error);
     boxIntermediateTexture_r = v11->_boxIntermediateTexture_r;
     v11->_boxIntermediateTexture_r = v20;
 
@@ -240,14 +240,14 @@ LABEL_31:
       goto LABEL_13;
     }
 
-    sub_1DED422A0(p_box_float_pass_horiz_kernel, v9, v25, v26);
+    sub_1DED422A0(p_box_float_pass_horiz_kernel, contextCopy, v25, v26);
     if (!p_box_float_pass_horiz_kernel)
     {
       goto LABEL_13;
     }
 
-    sub_1DED422A0(p_box_float4_pass_horiz_kernel, v9, v28, v29);
-    if (p_box_float4_pass_horiz_kernel && (sub_1DED422A0(p_box_normValid_float_pass_vert_kernel, v9, v31, v32), p_box_normValid_float_pass_vert_kernel) && (sub_1DED422A0(p_box_norm_float_pass_vert_kernel, v9, v34, v35), p_box_norm_float_pass_vert_kernel) && (sub_1DED422A0(p_box_float_pass_vert_kernel, v9, v37, v38), p_box_float_pass_vert_kernel) && (sub_1DED422A0(p_box_normValid_float4_pass_vert_kernel, v9, v40, v41), p_box_normValid_float4_pass_vert_kernel) && (sub_1DED422A0(p_box_norm_float4_pass_vert_kernel, v9, v43, v44), p_box_norm_float4_pass_vert_kernel) && (sub_1DED422A0(p_box_float4_pass_vert_kernel, v9, v46, v47), p_box_float4_pass_vert_kernel))
+    sub_1DED422A0(p_box_float4_pass_horiz_kernel, contextCopy, v28, v29);
+    if (p_box_float4_pass_horiz_kernel && (sub_1DED422A0(p_box_normValid_float_pass_vert_kernel, contextCopy, v31, v32), p_box_normValid_float_pass_vert_kernel) && (sub_1DED422A0(p_box_norm_float_pass_vert_kernel, contextCopy, v34, v35), p_box_norm_float_pass_vert_kernel) && (sub_1DED422A0(p_box_float_pass_vert_kernel, contextCopy, v37, v38), p_box_float_pass_vert_kernel) && (sub_1DED422A0(p_box_normValid_float4_pass_vert_kernel, contextCopy, v40, v41), p_box_normValid_float4_pass_vert_kernel) && (sub_1DED422A0(p_box_norm_float4_pass_vert_kernel, contextCopy, v43, v44), p_box_norm_float4_pass_vert_kernel) && (sub_1DED422A0(p_box_float4_pass_vert_kernel, contextCopy, v46, v47), p_box_float4_pass_vert_kernel))
     {
       v22 = v11;
     }

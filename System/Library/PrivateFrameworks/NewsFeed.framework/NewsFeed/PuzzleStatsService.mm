@@ -1,6 +1,6 @@
 @interface PuzzleStatsService
 - (_TtC8NewsFeed18PuzzleStatsService)init;
-- (void)userInfoDidChangeDatePuzzleStatsStart:(id)a3 fromCloud:(BOOL)a4;
+- (void)userInfoDidChangeDatePuzzleStatsStart:(id)start fromCloud:(BOOL)cloud;
 @end
 
 @implementation PuzzleStatsService
@@ -13,11 +13,11 @@
   return result;
 }
 
-- (void)userInfoDidChangeDatePuzzleStatsStart:(id)a3 fromCloud:(BOOL)a4
+- (void)userInfoDidChangeDatePuzzleStatsStart:(id)start fromCloud:(BOOL)cloud
 {
-  v5 = a3;
+  startCopy = start;
 
-  sub_1D60417E0(v5, a4);
+  sub_1D60417E0(startCopy, cloud);
 }
 
 @end

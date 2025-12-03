@@ -1,18 +1,18 @@
 @interface TUAudioRouteCollectionKey
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToAudioRouteCollectionKey:(id)a3;
-- (TUAudioRouteCollectionKey)initWithCategory:(id)a3 mode:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToAudioRouteCollectionKey:(id)key;
+- (TUAudioRouteCollectionKey)initWithCategory:(id)category mode:(id)mode;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation TUAudioRouteCollectionKey
 
-- (TUAudioRouteCollectionKey)initWithCategory:(id)a3 mode:(id)a4
+- (TUAudioRouteCollectionKey)initWithCategory:(id)category mode:(id)mode
 {
-  v6 = a3;
-  v7 = a4;
+  categoryCopy = category;
+  modeCopy = mode;
   v14.receiver = self;
   v14.super_class = TUAudioRouteCollectionKey;
   v8 = [(TUAudioRouteCollectionKey *)&v14 init];
@@ -23,17 +23,17 @@
       [TUAudioRouteCollectionKey initWithCategory:mode:];
     }
 
-    if ([(__CFString *)v6 isEqualToString:initWithCategory_mode___AVAudioSessionCategoryPhoneCall])
+    if ([(__CFString *)categoryCopy isEqualToString:initWithCategory_mode___AVAudioSessionCategoryPhoneCall])
     {
 
-      v6 = @"PhoneCall";
+      categoryCopy = @"PhoneCall";
     }
 
-    v9 = [(__CFString *)v6 copy];
+    v9 = [(__CFString *)categoryCopy copy];
     category = v8->_category;
     v8->_category = v9;
 
-    v11 = [v7 copy];
+    v11 = [modeCopy copy];
     mode = v8->_mode;
     v8->_mode = v11;
   }
@@ -61,32 +61,32 @@ void __51__TUAudioRouteCollectionKey_initWithCategory_mode___block_invoke()
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(TUAudioRouteCollectionKey *)self category];
-  v6 = [(TUAudioRouteCollectionKey *)self mode];
-  v7 = [v3 stringWithFormat:@"<%@ %p category=%@ mode=%@>", v4, self, v5, v6];
+  category = [(TUAudioRouteCollectionKey *)self category];
+  mode = [(TUAudioRouteCollectionKey *)self mode];
+  v7 = [v3 stringWithFormat:@"<%@ %p category=%@ mode=%@>", v4, self, category, mode];
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(TUAudioRouteCollectionKey *)self isEqualToAudioRouteCollectionKey:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(TUAudioRouteCollectionKey *)self isEqualToAudioRouteCollectionKey:equalCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToAudioRouteCollectionKey:(id)a3
+- (BOOL)isEqualToAudioRouteCollectionKey:(id)key
 {
-  v4 = a3;
-  v5 = [(TUAudioRouteCollectionKey *)self category];
-  v6 = [v4 category];
-  if (TUStringsAreEqualOrNil(v5, v6))
+  keyCopy = key;
+  category = [(TUAudioRouteCollectionKey *)self category];
+  category2 = [keyCopy category];
+  if (TUStringsAreEqualOrNil(category, category2))
   {
-    v7 = [(TUAudioRouteCollectionKey *)self mode];
-    v8 = [v4 mode];
-    v9 = TUStringsAreEqualOrNil(v7, v8);
+    mode = [(TUAudioRouteCollectionKey *)self mode];
+    mode2 = [keyCopy mode];
+    v9 = TUStringsAreEqualOrNil(mode, mode2);
   }
 
   else
@@ -99,20 +99,20 @@ void __51__TUAudioRouteCollectionKey_initWithCategory_mode___block_invoke()
 
 - (unint64_t)hash
 {
-  v3 = [(TUAudioRouteCollectionKey *)self category];
-  v4 = [v3 hash];
-  v5 = [(TUAudioRouteCollectionKey *)self mode];
-  v6 = [v5 hash];
+  category = [(TUAudioRouteCollectionKey *)self category];
+  v4 = [category hash];
+  mode = [(TUAudioRouteCollectionKey *)self mode];
+  v6 = [mode hash];
 
   return v6 ^ v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(TUAudioRouteCollectionKey *)self category];
-  v6 = [(TUAudioRouteCollectionKey *)self mode];
-  v7 = [v4 initWithCategory:v5 mode:v6];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  category = [(TUAudioRouteCollectionKey *)self category];
+  mode = [(TUAudioRouteCollectionKey *)self mode];
+  v7 = [v4 initWithCategory:category mode:mode];
 
   return v7;
 }

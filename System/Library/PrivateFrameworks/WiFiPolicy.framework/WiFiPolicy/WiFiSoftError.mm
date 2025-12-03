@@ -1,28 +1,28 @@
 @interface WiFiSoftError
-+ (void)_cloudAssetsFetchHandler:(id)a3;
++ (void)_cloudAssetsFetchHandler:(id)handler;
 + (void)_submitSummaryReportMetric;
-+ (void)_updateHUDWithHost:(id)a3 messageDict:(id)a4;
-+ (void)_updateHUDWithMessage:(id)a3;
-- (BOOL)_maxNonUIActionsReachedFor:(id)a3;
-- (BOOL)_maxUIActionsReachedFor:(id)a3;
-- (BOOL)askToLaunchTapToRadarWithMessage:(id)a3 timeout:(double)a4;
-- (BOOL)askToLaunchTapToRadarWithMessage:(id)a3 timeout:(double)a4 completionHandler:(id)a5;
++ (void)_updateHUDWithHost:(id)host messageDict:(id)dict;
++ (void)_updateHUDWithMessage:(id)message;
+- (BOOL)_maxNonUIActionsReachedFor:(id)for;
+- (BOOL)_maxUIActionsReachedFor:(id)for;
+- (BOOL)askToLaunchTapToRadarWithMessage:(id)message timeout:(double)timeout;
+- (BOOL)askToLaunchTapToRadarWithMessage:(id)message timeout:(double)timeout completionHandler:(id)handler;
 - (NSMutableString)logMessage;
-- (WiFiSoftError)initWithName:(id)a3 andParams:(id)a4;
-- (id)appendLogMessage:(id)a3 includeTimestamp:(BOOL)a4;
+- (WiFiSoftError)initWithName:(id)name andParams:(id)params;
+- (id)appendLogMessage:(id)message includeTimestamp:(BOOL)timestamp;
 - (id)incrementCount;
-- (id)submitABCReportWithReason:(id)a3 event:(id)a4;
+- (id)submitABCReportWithReason:(id)reason event:(id)event;
 - (id)submitMetric;
-- (id)submitMetricWithData:(id)a3;
-- (id)tapToRadarWithURL:(id)a3 completionHandler:(id)a4;
-- (id)updateHUDWithHost:(id)a3 messageDict:(id)a4;
-- (id)updateHUDWithMessage:(id)a3;
-- (int64_t)_countOf:(id)a3 withinInterval:(double)a4;
+- (id)submitMetricWithData:(id)data;
+- (id)tapToRadarWithURL:(id)l completionHandler:(id)handler;
+- (id)updateHUDWithHost:(id)host messageDict:(id)dict;
+- (id)updateHUDWithMessage:(id)message;
+- (int64_t)_countOf:(id)of withinInterval:(double)interval;
 - (int64_t)count;
-- (int64_t)recentCountWithinTimeInterval:(double)a3;
-- (void)_addConfigurationData:(id)a3;
-- (void)_addGenericMetricData:(id)a3;
-- (void)_recordCurrentTimestampIn:(id)a3;
+- (int64_t)recentCountWithinTimeInterval:(double)interval;
+- (void)_addConfigurationData:(id)data;
+- (void)_addGenericMetricData:(id)data;
+- (void)_recordCurrentTimestampIn:(id)in;
 - (void)_resetCount;
 - (void)clearLogMessage;
 - (void)dealloc;
@@ -32,11 +32,11 @@
 
 @implementation WiFiSoftError
 
-- (WiFiSoftError)initWithName:(id)a3 andParams:(id)a4
+- (WiFiSoftError)initWithName:(id)name andParams:(id)params
 {
   v123 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  nameCopy = name;
+  paramsCopy = params;
   if ((_os_feature_enabled_impl() & 1) == 0)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
@@ -56,11 +56,11 @@
 
 LABEL_9:
     v9 = 0;
-    v10 = self;
+    selfCopy2 = self;
     goto LABEL_10;
   }
 
-  v92 = v7;
+  v92 = nameCopy;
   p_info = TBTileMO.info;
   if (!queue)
   {
@@ -97,13 +97,13 @@ LABEL_9:
     dispatch_activate(metricTimer);
   }
 
-  objc_storeStrong(&self->_name, a3);
+  objc_storeStrong(&self->_name, name);
   v96 = 0u;
   v97 = 0u;
   v98 = 0u;
   v99 = 0u;
-  v10 = [currentSoftErrors copy];
-  v25 = [(WiFiSoftError *)v10 countByEnumeratingWithState:&v96 objects:v122 count:16];
+  selfCopy2 = [currentSoftErrors copy];
+  v25 = [(WiFiSoftError *)selfCopy2 countByEnumeratingWithState:&v96 objects:v122 count:16];
   if (v25)
   {
     v26 = v25;
@@ -115,17 +115,17 @@ LABEL_9:
       {
         if (*v97 != v28)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(selfCopy2);
         }
 
-        v30 = [*(*(&v96 + 1) + 8 * i) pointerValue];
-        v31 = [v30 name];
-        v32 = [v31 isEqualToString:self->_name];
+        pointerValue = [*(*(&v96 + 1) + 8 * i) pointerValue];
+        name = [pointerValue name];
+        v32 = [name isEqualToString:self->_name];
 
         v27 |= v32;
       }
 
-      v26 = [(WiFiSoftError *)v10 countByEnumeratingWithState:&v96 objects:v122 count:16];
+      v26 = [(WiFiSoftError *)selfCopy2 countByEnumeratingWithState:&v96 objects:v122 count:16];
     }
 
     while (v26);
@@ -139,8 +139,8 @@ LABEL_9:
       }
 
       v9 = 0;
-      v10 = self;
-      v7 = v92;
+      selfCopy2 = self;
+      nameCopy = v92;
       goto LABEL_10;
     }
   }
@@ -152,79 +152,79 @@ LABEL_9:
   v95.receiver = self;
   v95.super_class = WiFiSoftError;
   v33 = [(WiFiSoftError *)&v95 init];
-  v34 = [v8 objectForKeyedSubscript:@"maxOccurrences"];
-  v35 = [v34 integerValue];
-  v36 = v35 <= -1 || v34 == 0;
+  v34 = [paramsCopy objectForKeyedSubscript:@"maxOccurrences"];
+  integerValue = [v34 integerValue];
+  v36 = integerValue <= -1 || v34 == 0;
   v37 = 100;
   if (!v36)
   {
-    v37 = v35;
+    v37 = integerValue;
   }
 
   v33->_maxOccurrences = v37;
-  v38 = [v8 objectForKeyedSubscript:@"metricSubmissionSamplingRate"];
+  v38 = [paramsCopy objectForKeyedSubscript:@"metricSubmissionSamplingRate"];
 
-  v39 = [v38 integerValue];
-  v40 = v39 >= 0x65 || v38 == 0;
+  integerValue2 = [v38 integerValue];
+  v40 = integerValue2 >= 0x65 || v38 == 0;
   v41 = 30;
   if (!v40)
   {
-    v41 = v39;
+    v41 = integerValue2;
   }
 
   v33->_metricSubmissionSamplingRate = v41;
-  v42 = [v8 objectForKeyedSubscript:@"maxNonUIActions"];
+  v42 = [paramsCopy objectForKeyedSubscript:@"maxNonUIActions"];
 
-  v43 = [v42 integerValue];
-  v44 = v43 <= -1 || v42 == 0;
+  integerValue3 = [v42 integerValue];
+  v44 = integerValue3 <= -1 || v42 == 0;
   v45 = 5;
   if (!v44)
   {
-    v45 = v43;
+    v45 = integerValue3;
   }
 
   v33->_maxNonUIActions = v45;
-  v46 = [v8 objectForKeyedSubscript:@"intervalForMaxNonUIActions"];
+  v46 = [paramsCopy objectForKeyedSubscript:@"intervalForMaxNonUIActions"];
 
-  v47 = [v46 integerValue];
-  v48 = v47 <= -1 || v46 == 0;
+  integerValue4 = [v46 integerValue];
+  v48 = integerValue4 <= -1 || v46 == 0;
   v49 = 120;
   if (!v48)
   {
-    v49 = v47;
+    v49 = integerValue4;
   }
 
   v33->_intervalForMaxNonUIActions = v49;
-  v50 = [v8 objectForKeyedSubscript:@"maxUIActions"];
+  v50 = [paramsCopy objectForKeyedSubscript:@"maxUIActions"];
 
-  v51 = [v50 integerValue];
-  v52 = v51 <= -1 || v50 == 0;
+  integerValue5 = [v50 integerValue];
+  v52 = integerValue5 <= -1 || v50 == 0;
   v53 = 2;
   if (!v52)
   {
-    v53 = v51;
+    v53 = integerValue5;
   }
 
   v33->_maxUIActions = v53;
-  v54 = [v8 objectForKeyedSubscript:@"intervalForMaxUIActions"];
+  v54 = [paramsCopy objectForKeyedSubscript:@"intervalForMaxUIActions"];
 
-  v55 = [v54 integerValue];
-  v56 = v55 <= -1 || v54 == 0;
+  integerValue6 = [v54 integerValue];
+  v56 = integerValue6 <= -1 || v54 == 0;
   v57 = 86400;
   if (!v56)
   {
-    v57 = v55;
+    v57 = integerValue6;
   }
 
   v33->_intervalForMaxUIActions = v57;
-  v58 = [v8 objectForKeyedSubscript:@"maxLogMessageLength"];
+  v58 = [paramsCopy objectForKeyedSubscript:@"maxLogMessageLength"];
 
-  v59 = [v58 integerValue];
-  v60 = v59 <= -1 || v58 == 0;
+  integerValue7 = [v58 integerValue];
+  v60 = integerValue7 <= -1 || v58 == 0;
   v61 = 1000;
   if (!v60)
   {
-    v61 = v59;
+    v61 = integerValue7;
   }
 
   v33->_maxLogMessageLength = v61;
@@ -240,15 +240,15 @@ LABEL_9:
   v9->_creationDate = v63;
   *&v9->_enabled = vdupq_n_s64(1uLL);
   p_enabled = &v9->_enabled;
-  v65 = [v8 objectForKeyedSubscript:@"isRecommendedPriority"];
+  v65 = [paramsCopy objectForKeyedSubscript:@"isRecommendedPriority"];
 
   v91 = v65;
   v9->_isRecommendedPriority = (v65 != 0) & [v65 BOOLValue];
   v66 = MEMORY[0x277CCACA8];
   p_name = &v9->_name;
   name = v9->_name;
-  v69 = [MEMORY[0x277CCA900] URLUserAllowedCharacterSet];
-  v70 = [(NSString *)name stringByAddingPercentEncodingWithAllowedCharacters:v69];
+  uRLUserAllowedCharacterSet = [MEMORY[0x277CCA900] URLUserAllowedCharacterSet];
+  v70 = [(NSString *)name stringByAddingPercentEncodingWithAllowedCharacters:uRLUserAllowedCharacterSet];
   v71 = [v66 stringWithFormat:@"%@.%@", @"com.apple.wifi.softerror", v70];
   metricEventName = v9->_metricEventName;
   v9->_metricEventName = v71;
@@ -264,7 +264,7 @@ LABEL_9:
     cloudAssetsQueried = 1;
   }
 
-  v7 = v92;
+  nameCopy = v92;
   if (cloudAssets)
   {
     v73 = [cloudAssets objectForKey:*p_name];
@@ -272,11 +272,11 @@ LABEL_9:
     if (v73)
     {
       v75 = [v73 objectForKey:@"enabled"];
-      v76 = [v75 integerValue];
+      integerValue8 = [v75 integerValue];
       if (v75)
       {
-        v77 = v76;
-        if (v76 <= 1 && *p_enabled != v76)
+        v77 = integerValue8;
+        if (integerValue8 <= 1 && *p_enabled != integerValue8)
         {
           if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
           {
@@ -289,11 +289,11 @@ LABEL_9:
 
       v78 = [v74 objectForKey:@"metricsEnabled"];
 
-      v79 = [v78 integerValue];
+      integerValue9 = [v78 integerValue];
       if (v78)
       {
-        v80 = v79;
-        if (v79 <= 1 && v9->_metricsEnabled != v79)
+        v80 = integerValue9;
+        if (integerValue9 <= 1 && v9->_metricsEnabled != integerValue9)
         {
           if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
           {
@@ -553,7 +553,7 @@ void *__22__WiFiSoftError_count__block_invoke(uint64_t a1)
   return result;
 }
 
-- (int64_t)recentCountWithinTimeInterval:(double)a3
+- (int64_t)recentCountWithinTimeInterval:(double)interval
 {
   v8 = 0;
   v9 = &v8;
@@ -567,7 +567,7 @@ void *__22__WiFiSoftError_count__block_invoke(uint64_t a1)
     block[3] = &unk_2789C7C80;
     block[4] = self;
     block[5] = &v8;
-    *&block[6] = a3;
+    *&block[6] = interval;
     dispatch_sync(queue, block);
   }
 
@@ -588,9 +588,9 @@ void *__47__WiFiSoftError_recentCountWithinTimeInterval___block_invoke(uint64_t 
   return result;
 }
 
-- (id)appendLogMessage:(id)a3 includeTimestamp:(BOOL)a4
+- (id)appendLogMessage:(id)message includeTimestamp:(BOOL)timestamp
 {
-  v6 = a3;
+  messageCopy = message;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
@@ -605,8 +605,8 @@ void *__47__WiFiSoftError_recentCountWithinTimeInterval___block_invoke(uint64_t 
     v12[2] = __51__WiFiSoftError_appendLogMessage_includeTimestamp___block_invoke;
     v12[3] = &unk_2789C7CA8;
     v12[4] = self;
-    v15 = a4;
-    v13 = v6;
+    timestampCopy = timestamp;
+    v13 = messageCopy;
     v14 = &v16;
     dispatch_sync(v10, v12);
     v9 = v17[5];
@@ -900,9 +900,9 @@ void __29__WiFiSoftError_submitMetric__block_invoke(uint64_t a1)
   }
 }
 
-- (id)submitMetricWithData:(id)a3
+- (id)submitMetricWithData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -929,7 +929,7 @@ void __29__WiFiSoftError_submitMetric__block_invoke(uint64_t a1)
     block[3] = &unk_2789C7CD0;
     block[4] = self;
     v13 = &v14;
-    v12 = v4;
+    v12 = dataCopy;
     dispatch_sync(v9, block);
     v8 = v15[5];
   }
@@ -1028,10 +1028,10 @@ void __38__WiFiSoftError_submitMetricWithData___block_invoke(void *a1)
   }
 }
 
-- (id)submitABCReportWithReason:(id)a3 event:(id)a4
+- (id)submitABCReportWithReason:(id)reason event:(id)event
 {
-  v6 = a3;
-  v7 = a4;
+  reasonCopy = reason;
+  eventCopy = event;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -1047,8 +1047,8 @@ void __38__WiFiSoftError_submitMetricWithData___block_invoke(void *a1)
     v13[3] = &unk_2789C7CF8;
     v13[4] = self;
     v16 = &v17;
-    v14 = v6;
-    v15 = v7;
+    v14 = reasonCopy;
+    v15 = eventCopy;
     dispatch_sync(v8, v13);
     v9 = v18[5];
   }
@@ -1162,11 +1162,11 @@ void __49__WiFiSoftError_submitABCReportWithReason_event___block_invoke_93(uint6
   v3 = *MEMORY[0x277D85DE8];
 }
 
-- (id)updateHUDWithHost:(id)a3 messageDict:(id)a4
+- (id)updateHUDWithHost:(id)host messageDict:(id)dict
 {
   v39 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  hostCopy = host;
+  dictCopy = dict;
   v31 = 0;
   v32 = &v31;
   v33 = 0x3032000000;
@@ -1198,7 +1198,7 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if (![v7 count])
+  if (![dictCopy count])
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
@@ -1303,8 +1303,8 @@ LABEL_37:
   v30 = v19;
   block[4] = self;
   v29 = &v31;
-  v27 = v6;
-  v28 = v7;
+  v27 = hostCopy;
+  v28 = dictCopy;
   dispatch_sync(v25, block);
   v12 = v32[5];
 
@@ -1380,15 +1380,15 @@ void __47__WiFiSoftError_updateHUDWithHost_messageDict___block_invoke_125(uint64
   }
 }
 
-- (id)updateHUDWithMessage:(id)a3
+- (id)updateHUDWithMessage:(id)message
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (message)
   {
     v10 = @"content";
-    v11[0] = a3;
+    v11[0] = message;
     v4 = MEMORY[0x277CBEAC0];
-    v5 = a3;
+    messageCopy = message;
     v6 = [v4 dictionaryWithObjects:v11 forKeys:&v10 count:1];
   }
 
@@ -1404,9 +1404,9 @@ void __47__WiFiSoftError_updateHUDWithHost_messageDict___block_invoke_125(uint64
   return v7;
 }
 
-- (BOOL)askToLaunchTapToRadarWithMessage:(id)a3 timeout:(double)a4
+- (BOOL)askToLaunchTapToRadarWithMessage:(id)message timeout:(double)timeout
 {
-  v6 = a3;
+  messageCopy = message;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
@@ -1417,7 +1417,7 @@ void __47__WiFiSoftError_updateHUDWithHost_messageDict___block_invoke_125(uint64
   }
 
   v7 = isDisplayOff() ^ 1;
-  if (!v6)
+  if (!messageCopy)
   {
     LOBYTE(v7) = 0;
   }
@@ -1430,8 +1430,8 @@ void __47__WiFiSoftError_updateHUDWithHost_messageDict___block_invoke_125(uint64
     v11[2] = __58__WiFiSoftError_askToLaunchTapToRadarWithMessage_timeout___block_invoke;
     v11[3] = &unk_2789C7200;
     v11[4] = self;
-    v14 = a4;
-    v12 = v6;
+    timeoutCopy = timeout;
+    v12 = messageCopy;
     v13 = &v15;
     dispatch_sync(v10, v11);
     v8 = *(v16 + 24);
@@ -1488,11 +1488,11 @@ void __58__WiFiSoftError_askToLaunchTapToRadarWithMessage_timeout___block_invoke
   }
 }
 
-- (BOOL)askToLaunchTapToRadarWithMessage:(id)a3 timeout:(double)a4 completionHandler:(id)a5
+- (BOOL)askToLaunchTapToRadarWithMessage:(id)message timeout:(double)timeout completionHandler:(id)handler
 {
   v29[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  messageCopy = message;
+  handlerCopy = handler;
   v24 = 0;
   v25 = &v24;
   v26 = 0x2020000000;
@@ -1513,7 +1513,7 @@ void __58__WiFiSoftError_askToLaunchTapToRadarWithMessage_timeout___block_invoke
   }
 
   v11 = MGGetBoolAnswer() ^ 1;
-  if (!v8)
+  if (!messageCopy)
   {
     LOBYTE(v11) = 0;
   }
@@ -1526,13 +1526,13 @@ void __58__WiFiSoftError_askToLaunchTapToRadarWithMessage_timeout___block_invoke
     block[2] = __76__WiFiSoftError_askToLaunchTapToRadarWithMessage_timeout_completionHandler___block_invoke;
     block[3] = &unk_2789C7200;
     block[4] = self;
-    v23 = a4;
-    v21 = v8;
+    timeoutCopy = timeout;
+    v21 = messageCopy;
     v22 = &v24;
     dispatch_sync(v19, block);
-    if (v9)
+    if (handlerCopy)
     {
-      (*(v9 + 2))(v9, 0, 0);
+      (*(handlerCopy + 2))(handlerCopy, 0, 0);
     }
 
     v16 = *(v25 + 24);
@@ -1548,9 +1548,9 @@ LABEL_11:
     v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v29 forKeys:&v28 count:1];
     v15 = [v12 errorWithDomain:*MEMORY[0x277CCA5B8] code:45 userInfo:v14];
 
-    if (v9)
+    if (handlerCopy)
     {
-      (*(v9 + 2))(v9, 0, v15);
+      (*(handlerCopy + 2))(handlerCopy, 0, v15);
     }
 
     v16 = *(v25 + 24);
@@ -1602,11 +1602,11 @@ void __76__WiFiSoftError_askToLaunchTapToRadarWithMessage_timeout_completionHand
   }
 }
 
-- (id)tapToRadarWithURL:(id)a3 completionHandler:(id)a4
+- (id)tapToRadarWithURL:(id)l completionHandler:(id)handler
 {
   v30[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  handlerCopy = handler;
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
@@ -1623,7 +1623,7 @@ void __76__WiFiSoftError_askToLaunchTapToRadarWithMessage_timeout_completionHand
     v8 = isDisplayOff();
   }
 
-  if (_os_feature_enabled_impl() && ((MGGetBoolAnswer() | v8) & 1) == 0 && MGGetBoolAnswer() && MGGetBoolAnswer() && (v9 = objc_opt_class(), v6) && v9)
+  if (_os_feature_enabled_impl() && ((MGGetBoolAnswer() | v8) & 1) == 0 && MGGetBoolAnswer() && MGGetBoolAnswer() && (v9 = objc_opt_class(), lCopy) && v9)
   {
     v10 = queue;
     block[0] = MEMORY[0x277D85DD0];
@@ -1632,8 +1632,8 @@ void __76__WiFiSoftError_askToLaunchTapToRadarWithMessage_timeout_completionHand
     block[3] = &unk_2789C7D70;
     block[4] = self;
     v22 = &v23;
-    v21 = v7;
-    v20 = v6;
+    v21 = handlerCopy;
+    v20 = lCopy;
     dispatch_sync(v10, block);
     v11 = v24[5];
   }
@@ -1649,9 +1649,9 @@ void __76__WiFiSoftError_askToLaunchTapToRadarWithMessage_timeout_completionHand
     v16 = v24[5];
     v24[5] = v15;
 
-    if (v7)
+    if (handlerCopy)
     {
-      (*(v7 + 2))(v7, 0, v24[5]);
+      (*(handlerCopy + 2))(handlerCopy, 0, v24[5]);
     }
 
     v11 = v24[5];
@@ -1744,26 +1744,26 @@ void __53__WiFiSoftError_tapToRadarWithURL_completionHandler___block_invoke_147(
   }
 }
 
-- (void)_recordCurrentTimestampIn:(id)a3
+- (void)_recordCurrentTimestampIn:(id)in
 {
   v3 = MEMORY[0x277CCABB0];
   v4 = MEMORY[0x277CBEAA8];
-  v5 = a3;
+  inCopy = in;
   [v4 timeIntervalSinceReferenceDate];
   v6 = [v3 numberWithDouble:?];
-  [v5 addObject:v6];
+  [inCopy addObject:v6];
 }
 
-- (int64_t)_countOf:(id)a3 withinInterval:(double)a4
+- (int64_t)_countOf:(id)of withinInterval:(double)interval
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  ofCopy = of;
+  v6 = ofCopy;
+  if (ofCopy)
   {
-    if (a4 == 9.22337204e18)
+    if (interval == 9.22337204e18)
     {
-      v7 = [v5 count];
+      v7 = [ofCopy count];
     }
 
     else
@@ -1791,7 +1791,7 @@ void __53__WiFiSoftError_tapToRadarWithURL_completionHandler___block_invoke_147(
             }
 
             [*(*(&v18 + 1) + 8 * i) doubleValue];
-            if (v9 - v15 < a4)
+            if (v9 - v15 < interval)
             {
               ++v7;
             }
@@ -1819,14 +1819,14 @@ void __53__WiFiSoftError_tapToRadarWithURL_completionHandler___block_invoke_147(
   return v7;
 }
 
-- (BOOL)_maxNonUIActionsReachedFor:(id)a3
+- (BOOL)_maxNonUIActionsReachedFor:(id)for
 {
-  v4 = a3;
+  forCopy = for;
   v7 = 0;
-  if (v4)
+  if (forCopy)
   {
-    v5 = [(WiFiSoftError *)self _countOf:v4 withinInterval:self->_intervalForMaxNonUIActions];
-    v6 = [(WiFiSoftError *)self _countOf:v4 withinInterval:9.22337204e18];
+    v5 = [(WiFiSoftError *)self _countOf:forCopy withinInterval:self->_intervalForMaxNonUIActions];
+    v6 = [(WiFiSoftError *)self _countOf:forCopy withinInterval:9.22337204e18];
     if (v5 >= self->_maxNonUIActions || v6 >= self->_maxOccurrences)
     {
       v7 = 1;
@@ -1836,14 +1836,14 @@ void __53__WiFiSoftError_tapToRadarWithURL_completionHandler___block_invoke_147(
   return v7;
 }
 
-- (BOOL)_maxUIActionsReachedFor:(id)a3
+- (BOOL)_maxUIActionsReachedFor:(id)for
 {
-  v4 = a3;
+  forCopy = for;
   v7 = 0;
-  if (v4)
+  if (forCopy)
   {
-    v5 = [(WiFiSoftError *)self _countOf:v4 withinInterval:self->_intervalForMaxUIActions];
-    v6 = [(WiFiSoftError *)self _countOf:v4 withinInterval:9.22337204e18];
+    v5 = [(WiFiSoftError *)self _countOf:forCopy withinInterval:self->_intervalForMaxUIActions];
+    v6 = [(WiFiSoftError *)self _countOf:forCopy withinInterval:9.22337204e18];
     if (v5 >= self->_maxUIActions || v6 >= self->_maxOccurrences)
     {
       v7 = 1;
@@ -1861,24 +1861,24 @@ void __53__WiFiSoftError_tapToRadarWithURL_completionHandler___block_invoke_147(
   }
 }
 
-- (void)_addConfigurationData:(id)a3
+- (void)_addConfigurationData:(id)data
 {
   v4 = MEMORY[0x277CCABB0];
   metricSubmissionSamplingRate = self->_metricSubmissionSamplingRate;
-  v6 = a3;
+  dataCopy = data;
   v7 = [v4 numberWithInteger:metricSubmissionSamplingRate];
-  [v6 setObject:v7 forKey:@"samplingRate"];
+  [dataCopy setObject:v7 forKey:@"samplingRate"];
 
   v8 = [MEMORY[0x277CCABB0] numberWithInteger:self->_maxOccurrences];
-  [v6 setObject:v8 forKey:@"maxOccurrences"];
+  [dataCopy setObject:v8 forKey:@"maxOccurrences"];
 
   v9 = [MEMORY[0x277CCABB0] numberWithBool:{-[NSMutableArray count](self->_occurrenceTimestamps, "count") == self->_maxOccurrences}];
-  [v6 setObject:v9 forKey:@"reachedMaxDailyOccurrences"];
+  [dataCopy setObject:v9 forKey:@"reachedMaxDailyOccurrences"];
 }
 
-- (void)_addGenericMetricData:(id)a3
+- (void)_addGenericMetricData:(id)data
 {
-  v15 = a3;
+  dataCopy = data;
   v4 = [(WiFiSoftError *)self _countOf:self->_occurrenceTimestamps withinInterval:9.22337204e18];
   v5 = v4;
   if (v4 > 1 || v4 == 1 && self->_lastTimestamp)
@@ -1904,8 +1904,8 @@ void __53__WiFiSoftError_tapToRadarWithURL_completionHandler___block_invoke_147(
     if (v13)
     {
       v14 = v13;
-      [v15 setObject:v13 forKey:@"timeSinceLastOccurrenceBin"];
-      [(WiFiSoftError *)self _addConfigurationData:v15];
+      [dataCopy setObject:v13 forKey:@"timeSinceLastOccurrenceBin"];
+      [(WiFiSoftError *)self _addConfigurationData:dataCopy];
     }
   }
 }
@@ -1939,19 +1939,19 @@ void __53__WiFiSoftError_tapToRadarWithURL_completionHandler___block_invoke_147(
             objc_enumerationMutation(obj);
           }
 
-          v11 = [*(*(&v33 + 1) + 8 * i) pointerValue];
-          [v11 creationDate];
-          if (v4 - v12 >= 86400.0 && [v11 metricsEnabled])
+          pointerValue = [*(*(&v33 + 1) + 8 * i) pointerValue];
+          [pointerValue creationDate];
+          if (v4 - v12 >= 86400.0 && [pointerValue metricsEnabled])
           {
-            v13 = [v11 name];
-            [v6 setObject:v13 forKey:@"name"];
+            name = [pointerValue name];
+            [v6 setObject:name forKey:@"name"];
 
             v31 = 0u;
             v32 = 0u;
             v29 = 0u;
             v30 = 0u;
-            v14 = [v11 occurrenceTimestamps];
-            v15 = [v14 countByEnumeratingWithState:&v29 objects:v43 count:16];
+            occurrenceTimestamps = [pointerValue occurrenceTimestamps];
+            v15 = [occurrenceTimestamps countByEnumeratingWithState:&v29 objects:v43 count:16];
             if (v15)
             {
               v16 = v15;
@@ -1963,7 +1963,7 @@ void __53__WiFiSoftError_tapToRadarWithURL_completionHandler___block_invoke_147(
                 {
                   if (*v30 != v18)
                   {
-                    objc_enumerationMutation(v14);
+                    objc_enumerationMutation(occurrenceTimestamps);
                   }
 
                   [*(*(&v29 + 1) + 8 * j) doubleValue];
@@ -1973,7 +1973,7 @@ void __53__WiFiSoftError_tapToRadarWithURL_completionHandler___block_invoke_147(
                   }
                 }
 
-                v16 = [v14 countByEnumeratingWithState:&v29 objects:v43 count:16];
+                v16 = [occurrenceTimestamps countByEnumeratingWithState:&v29 objects:v43 count:16];
               }
 
               while (v16);
@@ -1987,21 +1987,21 @@ void __53__WiFiSoftError_tapToRadarWithURL_completionHandler___block_invoke_147(
             v21 = [MEMORY[0x277CCABB0] numberWithInteger:v17];
             [v6 setObject:v21 forKey:@"occurrenceCountIn24hr"];
 
-            [v11 _addConfigurationData:v6];
-            v22 = [v11 occurrenceTimestamps];
-            v23 = [v22 lastObject];
-            [v11 setLastTimestamp:v23];
+            [pointerValue _addConfigurationData:v6];
+            occurrenceTimestamps2 = [pointerValue occurrenceTimestamps];
+            lastObject = [occurrenceTimestamps2 lastObject];
+            [pointerValue setLastTimestamp:lastObject];
 
-            [v11 _resetCount];
+            [pointerValue _resetCount];
             v24 = v6;
             AnalyticsSendEventLazy();
             if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
             {
-              v25 = [v11 name];
+              name2 = [pointerValue name];
               *buf = 136315650;
               v38 = "+[WiFiSoftError _submitSummaryReportMetric]";
               v39 = 2112;
-              v40 = v25;
+              v40 = name2;
               v41 = 2112;
               v42 = v5;
               _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%s: SoftError <%@> submitted a summary in metric <%@>", buf, 0x20u);
@@ -2036,16 +2036,16 @@ void __53__WiFiSoftError_tapToRadarWithURL_completionHandler___block_invoke_147(
   v26 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)_cloudAssetsFetchHandler:(id)a3
++ (void)_cloudAssetsFetchHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v4 = queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __42__WiFiSoftError__cloudAssetsFetchHandler___block_invoke;
   block[3] = &unk_2789C6630;
-  v7 = v3;
-  v5 = v3;
+  v7 = handlerCopy;
+  v5 = handlerCopy;
   dispatch_sync(v4, block);
 }
 
@@ -2185,29 +2185,29 @@ void __42__WiFiSoftError__cloudAssetsFetchHandler___block_invoke(uint64_t a1)
   v26 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)_updateHUDWithHost:(id)a3 messageDict:(id)a4
++ (void)_updateHUDWithHost:(id)host messageDict:(id)dict
 {
   v36 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  if ([v6 count])
+  hostCopy = host;
+  dictCopy = dict;
+  if ([dictCopy count])
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v35 = v6;
+      v35 = dictCopy;
       _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "[HUD]: HUD message info: %@", buf, 0xCu);
     }
 
     if (objc_opt_class() && objc_opt_class() && objc_opt_class() && objc_opt_class())
     {
-      v27 = v5;
-      v7 = [MEMORY[0x277CBEB18] array];
+      v27 = hostCopy;
+      array = [MEMORY[0x277CBEB18] array];
       v29 = 0u;
       v30 = 0u;
       v31 = 0u;
       v32 = 0u;
-      v8 = v6;
+      v8 = dictCopy;
       v9 = [v8 countByEnumeratingWithState:&v29 objects:v33 count:16];
       if (v9)
       {
@@ -2227,7 +2227,7 @@ void __42__WiFiSoftError__cloudAssetsFetchHandler___block_invoke(uint64_t a1)
             v15 = [v14 description];
 
             v16 = [MEMORY[0x277CCAD18] queryItemWithName:v13 value:v15];
-            [v7 addObject:v16];
+            [array addObject:v16];
           }
 
           v10 = [v8 countByEnumeratingWithState:&v29 objects:v33 count:16];
@@ -2238,17 +2238,17 @@ void __42__WiFiSoftError__cloudAssetsFetchHandler___block_invoke(uint64_t a1)
 
       v17 = objc_alloc_init(MEMORY[0x277CCACE0]);
       [v17 setScheme:@"wifiapp"];
-      v5 = v27;
+      hostCopy = v27;
       [v17 setHost:v27];
-      v18 = [v7 copy];
+      v18 = [array copy];
       [v17 setQueryItems:v18];
 
       v19 = [v17 URL];
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
-        v20 = [v19 absoluteString];
+        absoluteString = [v19 absoluteString];
         *buf = 138412290;
-        v35 = v20;
+        v35 = absoluteString;
         _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "[HUD]: attempted to open url: %@", buf, 0xCu);
       }
 
@@ -2256,9 +2256,9 @@ void __42__WiFiSoftError__cloudAssetsFetchHandler___block_invoke(uint64_t a1)
       v22 = objc_opt_new();
       [v22 setValue:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277D0ABE8]];
       [v21 setFrontBoardOptions:v22];
-      v23 = [MEMORY[0x277CC1E80] defaultWorkspace];
+      defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
       v28 = 0;
-      v24 = [v23 openURL:v19 configuration:v21 error:&v28];
+      v24 = [defaultWorkspace openURL:v19 configuration:v21 error:&v28];
       v25 = v28;
 
       if (v25 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
@@ -2281,15 +2281,15 @@ void __42__WiFiSoftError__cloudAssetsFetchHandler___block_invoke(uint64_t a1)
   v26 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)_updateHUDWithMessage:(id)a3
++ (void)_updateHUDWithMessage:(id)message
 {
   v8[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  messageCopy = message;
+  v4 = messageCopy;
+  if (messageCopy)
   {
     v7 = @"content";
-    v8[0] = v3;
+    v8[0] = messageCopy;
     v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v8 forKeys:&v7 count:1];
   }
 

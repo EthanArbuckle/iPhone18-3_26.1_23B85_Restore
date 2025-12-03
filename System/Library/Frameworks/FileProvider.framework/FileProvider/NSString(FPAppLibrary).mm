@@ -8,8 +8,8 @@
 + (void)setFp_defaultProviderDomainID:()FPAppLibrary
 {
   v7 = a3;
-  v4 = a1;
-  objc_sync_enter(v4);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   if (([_defaultProviderDomainID isEqualToString:v7] & 1) == 0)
   {
     v5 = [v7 copy];
@@ -17,15 +17,15 @@
     _defaultProviderDomainID = v5;
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 + (id)fp_defaultProviderDomainID
 {
-  v1 = a1;
-  objc_sync_enter(v1);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v2 = [_defaultProviderDomainID copy];
-  objc_sync_exit(v1);
+  objc_sync_exit(selfCopy);
 
   return v2;
 }

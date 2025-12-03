@@ -7,8 +7,8 @@
 
 + (double)ic_scale
 {
-  v1 = [a1 mainScreen];
-  [v1 scale];
+  mainScreen = [self mainScreen];
+  [mainScreen scale];
   v3 = v2;
 
   return v3;
@@ -16,10 +16,10 @@
 
 - (uint64_t)ic_isSecure
 {
-  v1 = [a1 displayIdentity];
-  v2 = [v1 expectsSecureRendering];
+  displayIdentity = [self displayIdentity];
+  expectsSecureRendering = [displayIdentity expectsSecureRendering];
 
-  return v2;
+  return expectsSecureRendering;
 }
 
 @end

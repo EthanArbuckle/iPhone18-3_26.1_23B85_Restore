@@ -1,78 +1,78 @@
 @interface TSDCounterRotateInfo
-+ (CGAffineTransform)counterTransformForTransformInRoot:(SEL)a3;
-+ (id)infoGeometryForTransformInRoot:(CGAffineTransform *)a3 isChildFlipped:(BOOL)a4;
-+ (id)infoGeometryInRootIncludingCounterRotateIfNeededForDrawable:(id)a3;
-+ (id)p_infoGeometryForCounterTransform:(CGAffineTransform *)a3 isChildFlipped:(BOOL)a4;
++ (CGAffineTransform)counterTransformForTransformInRoot:(SEL)root;
++ (id)infoGeometryForTransformInRoot:(CGAffineTransform *)root isChildFlipped:(BOOL)flipped;
++ (id)infoGeometryInRootIncludingCounterRotateIfNeededForDrawable:(id)drawable;
++ (id)p_infoGeometryForCounterTransform:(CGAffineTransform *)transform isChildFlipped:(BOOL)flipped;
 - (CGAffineTransform)counterTransform;
 - (NSArray)childInfos;
-- (TSDCounterRotateInfo)initWithChildInfo:(id)a3 parentGroup:(id)a4 counterTransform:(CGAffineTransform *)a5;
+- (TSDCounterRotateInfo)initWithChildInfo:(id)info parentGroup:(id)group counterTransform:(CGAffineTransform *)transform;
 - (TSDDrawableInfo)childInfo;
 - (TSDGroupInfo)parentGroup;
 - (TSDInfo)parentInfo;
-- (id)copyWithContext:(id)a3;
-- (id)infoForSelectionPath:(id)a3;
-- (void)clearBackPointerToParentInfoIfNeeded:(id)a3;
-- (void)setCounterTransform:(CGAffineTransform *)a3;
-- (void)setParentInfo:(id)a3;
+- (id)copyWithContext:(id)context;
+- (id)infoForSelectionPath:(id)path;
+- (void)clearBackPointerToParentInfoIfNeeded:(id)needed;
+- (void)setCounterTransform:(CGAffineTransform *)transform;
+- (void)setParentInfo:(id)info;
 @end
 
 @implementation TSDCounterRotateInfo
 
-- (TSDCounterRotateInfo)initWithChildInfo:(id)a3 parentGroup:(id)a4 counterTransform:(CGAffineTransform *)a5
+- (TSDCounterRotateInfo)initWithChildInfo:(id)info parentGroup:(id)group counterTransform:(CGAffineTransform *)transform
 {
-  v8 = a3;
-  v9 = a4;
+  infoCopy = info;
+  groupCopy = group;
   v16.receiver = self;
   v16.super_class = TSDCounterRotateInfo;
   v10 = [(TSDCounterRotateInfo *)&v16 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeWeak(&v10->_childInfo, v8);
-    objc_storeWeak(&v11->_parentGroup, v9);
-    v12 = *&a5->c;
-    v15[0] = *&a5->a;
+    objc_storeWeak(&v10->_childInfo, infoCopy);
+    objc_storeWeak(&v11->_parentGroup, groupCopy);
+    v12 = *&transform->c;
+    v15[0] = *&transform->a;
     v15[1] = v12;
-    v15[2] = *&a5->tx;
+    v15[2] = *&transform->tx;
     objc_msgSend_setCounterTransform_(v11, v13, v15);
   }
 
   return v11;
 }
 
-+ (id)infoGeometryForTransformInRoot:(CGAffineTransform *)a3 isChildFlipped:(BOOL)a4
++ (id)infoGeometryForTransformInRoot:(CGAffineTransform *)root isChildFlipped:(BOOL)flipped
 {
-  v4 = a4;
+  flippedCopy = flipped;
   v14 = 0u;
   v15 = 0u;
-  v6 = *&a3->c;
-  v10 = *&a3->a;
+  v6 = *&root->c;
+  v10 = *&root->a;
   v11 = v6;
-  v12 = *&a3->tx;
+  v12 = *&root->tx;
   v13 = 0u;
-  objc_msgSend_counterTransformForTransformInRoot_(a1, a2, &v10);
+  objc_msgSend_counterTransformForTransformInRoot_(self, a2, &v10);
   v10 = v13;
   v11 = v14;
   v12 = v15;
-  v8 = objc_msgSend_p_infoGeometryForCounterTransform_isChildFlipped_(a1, v7, &v10, v4);
+  v8 = objc_msgSend_p_infoGeometryForCounterTransform_isChildFlipped_(self, v7, &v10, flippedCopy);
 
   return v8;
 }
 
-+ (id)p_infoGeometryForCounterTransform:(CGAffineTransform *)a3 isChildFlipped:(BOOL)a4
++ (id)p_infoGeometryForCounterTransform:(CGAffineTransform *)transform isChildFlipped:(BOOL)flipped
 {
-  v4 = a4;
+  flippedCopy = flipped;
   v6 = TSUIsTransformFlipped();
-  v13 = *a3;
+  v13 = *transform;
   TSUTransformAngleInDegrees();
   v8 = -v7;
   v9 = [TSDInfoGeometry alloc];
-  valid = objc_msgSend_initWithPosition_size_widthValid_heightValid_horizontalFlip_verticalFlip_angle_(v9, v10, 1, 1, v6 ^ v4, 0, *MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8), 10.0, 10.0, v8, *&v13.a, *&v13.c, *&v13.tx);
+  valid = objc_msgSend_initWithPosition_size_widthValid_heightValid_horizontalFlip_verticalFlip_angle_(v9, v10, 1, 1, v6 ^ flippedCopy, 0, *MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8), 10.0, 10.0, v8, *&v13.a, *&v13.c, *&v13.tx);
 
   return valid;
 }
 
-+ (CGAffineTransform)counterTransformForTransformInRoot:(SEL)a3
++ (CGAffineTransform)counterTransformForTransformInRoot:(SEL)root
 {
   v4 = *&a4->c;
   *&v6.a = *&a4->a;
@@ -85,19 +85,19 @@
   return CGAffineTransformInvert(retstr, &v6);
 }
 
-+ (id)infoGeometryInRootIncludingCounterRotateIfNeededForDrawable:(id)a3
++ (id)infoGeometryInRootIncludingCounterRotateIfNeededForDrawable:(id)drawable
 {
-  v3 = a3;
-  v6 = objc_msgSend_geometry(v3, v4, v5);
+  drawableCopy = drawable;
+  v6 = objc_msgSend_geometry(drawableCopy, v4, v5);
   objc_opt_class();
-  v9 = objc_msgSend_parentInfo(v3, v7, v8);
+  v9 = objc_msgSend_parentInfo(drawableCopy, v7, v8);
   v10 = TSUDynamicCast();
 
-  if (objc_msgSend_wantsCounterRotationWhenNotSupportingParentRotationInRotatedParent(v3, v11, v12))
+  if (objc_msgSend_wantsCounterRotationWhenNotSupportingParentRotationInRotatedParent(drawableCopy, v11, v12))
   {
-    if ((objc_msgSend_supportsParentRotation(v3, v13, v14) & 1) == 0)
+    if ((objc_msgSend_supportsParentRotation(drawableCopy, v13, v14) & 1) == 0)
     {
-      v15 = objc_msgSend_containingGroup(v3, v13, v14);
+      v15 = objc_msgSend_containingGroup(drawableCopy, v13, v14);
 
       if (v15)
       {
@@ -125,7 +125,7 @@
           memset(&v54, 0, sizeof(v54));
         }
 
-        v19 = objc_msgSend_geometry(v3, v17, v18);
+        v19 = objc_msgSend_geometry(drawableCopy, v17, v18);
         v22 = v19;
         if (v19)
         {
@@ -211,11 +211,11 @@
   return v45;
 }
 
-- (void)setCounterTransform:(CGAffineTransform *)a3
+- (void)setCounterTransform:(CGAffineTransform *)transform
 {
-  v5 = *&a3->a;
-  v6 = *&a3->tx;
-  *&self->_counterTransform.c = *&a3->c;
+  v5 = *&transform->a;
+  v6 = *&transform->tx;
+  *&self->_counterTransform.c = *&transform->c;
   *&self->_counterTransform.tx = v6;
   *&self->_counterTransform.a = v5;
   v7 = objc_opt_class();
@@ -235,10 +235,10 @@
   }
 
   v15 = TSUIsTransformFlipped();
-  v16 = *&a3->c;
-  v20 = *&a3->a;
+  v16 = *&transform->c;
+  v20 = *&transform->a;
   v21 = v16;
-  v22 = *&a3->tx;
+  v22 = *&transform->tx;
   v18 = objc_msgSend_p_infoGeometryForCounterTransform_isChildFlipped_(v7, v17, &v20, v15);
   objc_msgSend_setGeometry_(self, v19, v18);
 }
@@ -250,12 +250,12 @@
   return WeakRetained;
 }
 
-- (void)setParentInfo:(id)a3
+- (void)setParentInfo:(id)info
 {
-  v5 = a3;
+  infoCopy = info;
   objc_opt_class();
   v4 = TSUDynamicCast();
-  if (v5 && !v4)
+  if (infoCopy && !v4)
   {
     sub_27680A8BC();
   }
@@ -263,21 +263,21 @@
   objc_storeWeak(&self->_parentGroup, v4);
 }
 
-- (void)clearBackPointerToParentInfoIfNeeded:(id)a3
+- (void)clearBackPointerToParentInfoIfNeeded:(id)needed
 {
-  v4 = a3;
+  neededCopy = needed;
   WeakRetained = objc_loadWeakRetained(&self->_parentGroup);
 
-  if (WeakRetained == v4)
+  if (WeakRetained == neededCopy)
   {
 
     objc_storeWeak(&self->_parentGroup, 0);
   }
 }
 
-- (id)copyWithContext:(id)a3
+- (id)copyWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   TSUSetCrashReporterInfo();
   v4 = MEMORY[0x277D81150];
   v6 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v5, "[TSDCounterRotateInfo copyWithContext:]", "[TSDCounterRotateInfo copyWithContext:]", "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/drawables/TSDCounterRotateInfo.m", 174);
@@ -298,7 +298,7 @@
   return v4;
 }
 
-- (id)infoForSelectionPath:(id)a3
+- (id)infoForSelectionPath:(id)path
 {
   v3 = MEMORY[0x277D81150];
   v4 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSDCounterRotateInfo infoForSelectionPath:]");

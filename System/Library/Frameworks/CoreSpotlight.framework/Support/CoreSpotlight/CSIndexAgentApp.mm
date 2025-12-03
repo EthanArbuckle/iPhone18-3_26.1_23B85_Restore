@@ -1,45 +1,45 @@
 @interface CSIndexAgentApp
 + (void)initialize;
-- (BOOL)handleCommand:(const char *)a3 info:(id)a4 connection:(id)a5;
-- (BOOL)lostClientConnection:(id)a3 error:(id)a4;
-- (id)createVolumeConfigForMountPath:(const char *)a3 volumeUUID:(id)a4;
-- (id)indexerForCStringVolume:(const char *)a3;
-- (id)indexerForVolume:(id)a3;
-- (id)macOSJournalSafeScanDateFromIndexPath:(const char *)a3;
-- (int)_indexQueryStart:(id)a3 queryString:(id)a4 queryContext:(id)a5 queryID:(int64_t)a6 remoteConnection:(id)a7;
-- (int)_mountVolume:(id)a3;
-- (int)_queryCancel:(id)a3;
-- (int)_scanQueryStart:(id)a3 scope:(id)a4 queryString:(id)a5 criteria:(id)a6 queryContext:(id)a7 queryID:(int64_t)a8 remoteConnection:(id)a9;
-- (void)_closeAllWithCompletionHandler:(id)a3;
-- (void)_closeIndexAtPath:(id)a3;
-- (void)_handleFSE:(id)a3;
-- (void)_handleMount:(id)a3 force:(BOOL)a4;
-- (void)_handleScan:(id)a3 completionHandler:(id)a4;
-- (void)handleCloseAll:(id)a3 completionBlock:(id)a4;
-- (void)handleEjectOrUnmountNotificationFromDADisk:(__DADisk *)a3 label:(id)a4;
-- (void)handleFSE:(id)a3 completionBlock:(id)a4;
-- (void)handleMount:(id)a3 completionBlock:(id)a4;
-- (void)handleQueryCancel:(id)a3 completionBlock:(id)a4;
-- (void)handleQueryStart:(id)a3 completionBlock:(id)a4;
-- (void)handleReset:(id)a3 completionBlock:(id)a4;
-- (void)handleResolveInfo:(const char *)a3 completionBlock:(id)a4;
-- (void)handleResolvePath:(const char *)a3 info:(id)a4 completionBlock:(id)a5;
-- (void)handleScan:(id)a3 completionBlock:(id)a4;
-- (void)handleStatus:(id)a3 completionBlock:(id)a4;
-- (void)handleWalkPath:(const char *)a3 flat:(BOOL)a4 completionBlock:(id)a5;
-- (void)importItems:(id)a3 indexer:(id)a4;
-- (void)openIndex:(id)a3 rootPath:(id)a4 volumeUUID:(id)a5 options:(unint64_t)a6;
-- (void)performScan:(id)a3 liveFSHandle:(id)a4 pathFromMountPoint:(id)a5 fromDate:(id)a6 allowImport:(BOOL)a7 completionHandler:(id)a8;
+- (BOOL)handleCommand:(const char *)command info:(id)info connection:(id)connection;
+- (BOOL)lostClientConnection:(id)connection error:(id)error;
+- (id)createVolumeConfigForMountPath:(const char *)path volumeUUID:(id)d;
+- (id)indexerForCStringVolume:(const char *)volume;
+- (id)indexerForVolume:(id)volume;
+- (id)macOSJournalSafeScanDateFromIndexPath:(const char *)path;
+- (int)_indexQueryStart:(id)start queryString:(id)string queryContext:(id)context queryID:(int64_t)d remoteConnection:(id)connection;
+- (int)_mountVolume:(id)volume;
+- (int)_queryCancel:(id)cancel;
+- (int)_scanQueryStart:(id)start scope:(id)scope queryString:(id)string criteria:(id)criteria queryContext:(id)context queryID:(int64_t)d remoteConnection:(id)connection;
+- (void)_closeAllWithCompletionHandler:(id)handler;
+- (void)_closeIndexAtPath:(id)path;
+- (void)_handleFSE:(id)e;
+- (void)_handleMount:(id)mount force:(BOOL)force;
+- (void)_handleScan:(id)scan completionHandler:(id)handler;
+- (void)handleCloseAll:(id)all completionBlock:(id)block;
+- (void)handleEjectOrUnmountNotificationFromDADisk:(__DADisk *)disk label:(id)label;
+- (void)handleFSE:(id)e completionBlock:(id)block;
+- (void)handleMount:(id)mount completionBlock:(id)block;
+- (void)handleQueryCancel:(id)cancel completionBlock:(id)block;
+- (void)handleQueryStart:(id)start completionBlock:(id)block;
+- (void)handleReset:(id)reset completionBlock:(id)block;
+- (void)handleResolveInfo:(const char *)info completionBlock:(id)block;
+- (void)handleResolvePath:(const char *)path info:(id)info completionBlock:(id)block;
+- (void)handleScan:(id)scan completionBlock:(id)block;
+- (void)handleStatus:(id)status completionBlock:(id)block;
+- (void)handleWalkPath:(const char *)path flat:(BOOL)flat completionBlock:(id)block;
+- (void)importItems:(id)items indexer:(id)indexer;
+- (void)openIndex:(id)index rootPath:(id)path volumeUUID:(id)d options:(unint64_t)options;
+- (void)performScan:(id)scan liveFSHandle:(id)handle pathFromMountPoint:(id)point fromDate:(id)date allowImport:(BOOL)import completionHandler:(id)handler;
 - (void)queryActiviate;
-- (void)removeChildRecords:(int64_t)a3 withIndexer:(id)a4 withVolumeName:(const char *)a5;
-- (void)udatedWithAddedMountPoints:(id)a3 andRemovedMountPoints:(id)a4;
+- (void)removeChildRecords:(int64_t)records withIndexer:(id)indexer withVolumeName:(const char *)name;
+- (void)udatedWithAddedMountPoints:(id)points andRemovedMountPoints:(id)mountPoints;
 @end
 
 @implementation CSIndexAgentApp
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = [CSIndexAgentApp alloc];
     v3 = [(CSIndexAgentApp *)v2 initMachServiceListenerWithName:CSUserFSAppMachServiceName];
@@ -60,8 +60,8 @@
     v11 = [(FPMonitor *)v10 initWithDelegate:qword_10003CB90];
     [qword_10003CB90 setFpMonitor:v11];
 
-    v12 = [qword_10003CB90 indexQueue];
-    v13 = [SPQueryResultsQueue sharedInstanceDispatchQueue:v12];
+    indexQueue = [qword_10003CB90 indexQueue];
+    v13 = [SPQueryResultsQueue sharedInstanceDispatchQueue:indexQueue];
 
     [qword_10003CB90 indexQueue];
     v21 = _NSConcreteStackBlock;
@@ -93,10 +93,10 @@
   }
 }
 
-- (void)handleEjectOrUnmountNotificationFromDADisk:(__DADisk *)a3 label:(id)a4
+- (void)handleEjectOrUnmountNotificationFromDADisk:(__DADisk *)disk label:(id)label
 {
-  v5 = a4;
-  v6 = DADiskCopyDescription(a3);
+  labelCopy = label;
+  v6 = DADiskCopyDescription(disk);
   v7 = [(__CFDictionary *)v6 objectForKeyedSubscript:kDADiskDescriptionVolumeNameKey];
   v8 = [(__CFDictionary *)v6 objectForKeyedSubscript:kDADiskDescriptionMediaBSDNameKey];
   v9 = sub_10000EAB0(v6);
@@ -105,9 +105,9 @@
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138413570;
-    v18 = v5;
+    v18 = labelCopy;
     v19 = 2048;
-    v20 = a3;
+    diskCopy2 = disk;
     v21 = 2112;
     v22 = v8;
     v23 = 2112;
@@ -120,25 +120,25 @@
   }
 
   v12 = objc_opt_new();
-  sub_10000EBF8(a3, v12);
+  sub_10000EBF8(disk, v12);
   if ([v12 count])
   {
-    v13 = [qword_10003CB90 indexQueue];
+    indexQueue = [qword_10003CB90 indexQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_10000EEC0;
     block[3] = &unk_1000352E8;
     v16 = v12;
-    dispatch_sync(v13, block);
+    dispatch_sync(indexQueue, block);
   }
 
   v14 = logForCSLogCategoryDefault();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138413058;
-    v18 = v5;
+    v18 = labelCopy;
     v19 = 2048;
-    v20 = a3;
+    diskCopy2 = disk;
     v21 = 2112;
     v22 = v8;
     v23 = 2112;
@@ -147,7 +147,7 @@
   }
 }
 
-- (id)indexerForCStringVolume:(const char *)a3
+- (id)indexerForCStringVolume:(const char *)volume
 {
   v6 = 0;
   v7 = &v6;
@@ -160,7 +160,7 @@
   v5[2] = sub_10000F170;
   v5[3] = &unk_100035310;
   v5[4] = &v6;
-  v5[5] = a3;
+  v5[5] = volume;
   sub_10000F110(v5);
   v3 = v7[5];
   _Block_object_dispose(&v6, 8);
@@ -168,18 +168,18 @@
   return v3;
 }
 
-- (id)indexerForVolume:(id)a3
+- (id)indexerForVolume:(id)volume
 {
-  v5 = a3;
-  v6 = [a3 UTF8String];
+  volumeCopy = volume;
+  uTF8String = [volume UTF8String];
 
-  return [(CSIndexAgentApp *)self indexerForCStringVolume:v6];
+  return [(CSIndexAgentApp *)self indexerForCStringVolume:uTF8String];
 }
 
-- (void)_closeIndexAtPath:(id)a3
+- (void)_closeIndexAtPath:(id)path
 {
-  v3 = a3;
-  v4 = sub_10000F404(v3);
+  pathCopy = path;
+  v4 = sub_10000F404(pathCopy);
   if (v4)
   {
     v5 = logForCSLogCategoryDefault();
@@ -194,8 +194,8 @@
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v6 = [v4 allQueryTasks];
-    v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    allQueryTasks = [v4 allQueryTasks];
+    v7 = [allQueryTasks countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v7)
     {
       v8 = v7;
@@ -207,7 +207,7 @@
         {
           if (*v12 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(allQueryTasks);
           }
 
           [*(*(&v11 + 1) + 8 * v10) cancel];
@@ -215,14 +215,14 @@
         }
 
         while (v8 != v10);
-        v8 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v8 = [allQueryTasks countByEnumeratingWithState:&v11 objects:v15 count:16];
       }
 
       while (v8);
     }
 
     [v4 close];
-    sub_10000F470(0, v3);
+    sub_10000F470(0, pathCopy);
   }
 }
 
@@ -235,59 +235,59 @@
   }
 }
 
-- (void)udatedWithAddedMountPoints:(id)a3 andRemovedMountPoints:(id)a4
+- (void)udatedWithAddedMountPoints:(id)points andRemovedMountPoints:(id)mountPoints
 {
-  v6 = a3;
-  v7 = a4;
+  pointsCopy = points;
+  mountPointsCopy = mountPoints;
   indexQueue = self->_indexQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10000F604;
   block[3] = &unk_100035360;
-  v12 = v7;
-  v13 = self;
-  v14 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = mountPointsCopy;
+  selfCopy = self;
+  v14 = pointsCopy;
+  v9 = pointsCopy;
+  v10 = mountPointsCopy;
   dispatch_async(indexQueue, block);
 }
 
-- (void)handleStatus:(id)a3 completionBlock:(id)a4
+- (void)handleStatus:(id)status completionBlock:(id)block
 {
-  v5 = a4;
+  blockCopy = block;
   indexQueue = self->_indexQueue;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10000FB08;
   v8[3] = &unk_1000353B0;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = blockCopy;
+  v7 = blockCopy;
   dispatch_async(indexQueue, v8);
 }
 
-- (id)createVolumeConfigForMountPath:(const char *)a3 volumeUUID:(id)a4
+- (id)createVolumeConfigForMountPath:(const char *)path volumeUUID:(id)d
 {
-  v5 = a4;
-  v6 = v5;
-  v7 = 0;
+  dCopy = d;
+  v6 = dCopy;
+  uUIDString = 0;
   v8 = 22;
   v9 = 0;
   v10 = 0;
-  if (a3 && v5)
+  if (path && dCopy)
   {
     v11 = objc_opt_new();
-    v7 = [v11 UUIDString];
+    uUIDString = [v11 UUIDString];
 
-    v12 = [v7 UTF8String];
-    if (!v12)
+    uTF8String = [uUIDString UTF8String];
+    if (!uTF8String)
     {
       goto LABEL_5;
     }
 
-    v13 = v12;
-    v14 = strlen(v12);
-    v15 = strlen(a3);
+    v13 = uTF8String;
+    v14 = strlen(uTF8String);
+    v15 = strlen(path);
     if (v14 + v15 - 743 < 0xFFFFFFFFFFFFFC00)
     {
       goto LABEL_5;
@@ -308,7 +308,7 @@
       v31[2] = &__NSArray0__struct;
       v30[2] = @"Exclusions";
       v30[3] = @"Stores";
-      v28 = v7;
+      v28 = uUIDString;
       v29 = &off_100036C48;
       v22 = [NSDictionary dictionaryWithObjects:&v29 forKeys:&v28 count:1];
       v31[3] = v22;
@@ -388,19 +388,19 @@ LABEL_9:
   return v17;
 }
 
-- (void)_handleMount:(id)a3 force:(BOOL)a4
+- (void)_handleMount:(id)mount force:(BOOL)force
 {
-  v4 = a4;
-  v6 = a3;
+  forceCopy = force;
+  mountCopy = mount;
   bzero(__s, 0x400uLL);
-  v7 = [v6 fileSystemRepresentation];
-  if (!v7)
+  fileSystemRepresentation = [mountCopy fileSystemRepresentation];
+  if (!fileSystemRepresentation)
   {
     goto LABEL_14;
   }
 
-  v8 = v7;
-  if (strlen(v7) - 1 > 0x2FE)
+  v8 = fileSystemRepresentation;
+  if (strlen(fileSystemRepresentation) - 1 > 0x2FE)
   {
     goto LABEL_14;
   }
@@ -409,7 +409,7 @@ LABEL_9:
   {
     if (strlen(v8 + 89) + 69 <= 0x3FF)
     {
-      v66 = self;
+      selfCopy2 = self;
       qmemcpy(__s, "/private/var/mobile/Library/LiveFiles/com.apple.filesystems.userfsd/", 68);
       goto LABEL_7;
     }
@@ -424,7 +424,7 @@ LABEL_14:
     goto LABEL_16;
   }
 
-  v66 = self;
+  selfCopy2 = self;
 LABEL_7:
   __memcpy_chk();
   v9 = strlen(__s);
@@ -472,11 +472,11 @@ LABEL_7:
   }
 
   v14 = logForCSLogCategoryDefault();
-  v15 = v4;
+  v15 = forceCopy;
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
   {
     *v79 = 67109120;
-    LODWORD(st_ino) = v4;
+    LODWORD(st_ino) = forceCopy;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "force: %d", v79, 8u);
   }
 
@@ -583,7 +583,7 @@ LABEL_58:
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
       v78.st_dev = 138412290;
-      *&v78.st_mode = v6;
+      *&v78.st_mode = mountCopy;
       v26 = "/.metadata_never_index variant found on %@";
       v27 = &v78;
       v28 = v13;
@@ -636,7 +636,7 @@ LABEL_16:
     v36 = [NSString stringWithUTF8String:__s];
   }
 
-  v37 = v66;
+  v37 = selfCopy2;
   v38 = [NSString stringWithFormat:@"%s/%s", __s, ".Spotlight-V100/VolumeConfiguration.plist"];
   v75 = 0;
   v39 = [NSData dataWithContentsOfFile:v38 options:0 error:&v75];
@@ -649,7 +649,7 @@ LABEL_16:
 
   else
   {
-    [(CSIndexAgentApp *)v66 createVolumeConfigForMountPath:__s volumeUUID:v33];
+    [(CSIndexAgentApp *)selfCopy2 createVolumeConfigForMountPath:__s volumeUUID:v33];
   }
   v41 = ;
   v42 = v41;
@@ -776,7 +776,7 @@ LABEL_81:
           {
 LABEL_99:
             v33 = v64;
-            v37 = v66;
+            v37 = selfCopy2;
             v43 = v62;
             v48 = [NSString stringWithFormat:@"%s/.Spotlight-V100/Store-V2/%@", __s, v54];
 
@@ -808,7 +808,7 @@ LABEL_99:
 
   v48 = 0;
   v33 = v64;
-  v37 = v66;
+  v37 = selfCopy2;
   v43 = v62;
   v39 = v63;
 LABEL_100:
@@ -829,9 +829,9 @@ LABEL_104:
 LABEL_17:
 }
 
-- (id)macOSJournalSafeScanDateFromIndexPath:(const char *)a3
+- (id)macOSJournalSafeScanDateFromIndexPath:(const char *)path
 {
-  if (!a3 || (v3 = open(a3, 0), v3 == -1))
+  if (!path || (v3 = open(path, 0), v3 == -1))
   {
     v8 = 0;
     goto LABEL_12;
@@ -847,22 +847,22 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v6 = [(QueueImportJournal *)v5 oldestDateAfterRetirement];
+  oldestDateAfterRetirement = [(QueueImportJournal *)v5 oldestDateAfterRetirement];
   v7 = logForCSLogCategoryDefault();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v10 = 134217984;
-    v11 = v6;
+    v11 = oldestDateAfterRetirement;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "oldestTime from journal:%lu\n", &v10, 0xCu);
   }
 
   close(v4);
-  if (!v6)
+  if (!oldestDateAfterRetirement)
   {
     goto LABEL_10;
   }
 
-  v8 = [NSDate dateWithTimeIntervalSince1970:v6];
+  v8 = [NSDate dateWithTimeIntervalSince1970:oldestDateAfterRetirement];
 LABEL_11:
 
 LABEL_12:
@@ -870,17 +870,17 @@ LABEL_12:
   return v8;
 }
 
-- (void)openIndex:(id)a3 rootPath:(id)a4 volumeUUID:(id)a5 options:(unint64_t)a6
+- (void)openIndex:(id)index rootPath:(id)path volumeUUID:(id)d options:(unint64_t)options
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  indexCopy = index;
+  pathCopy = path;
+  dCopy = d;
   if (qword_10003CBA8 != -1)
   {
     sub_1000243D0();
   }
 
-  if ((a6 & 0xA) != 0)
+  if ((options & 0xA) != 0)
   {
     v13 = logForCSLogCategoryDefault();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -891,11 +891,11 @@ LABEL_12:
     goto LABEL_52;
   }
 
-  v14 = sub_10000F404(v10);
+  v14 = sub_10000F404(indexCopy);
   v13 = v14;
   if (v14)
   {
-    if ((a6 & 4) != 0 || [v14 isOpen])
+    if ((options & 4) != 0 || [v14 isOpen])
     {
       v15 = logForCSLogCategoryDefault();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -903,17 +903,17 @@ LABEL_12:
         *buf = 138412546;
         v59 = v13;
         v60 = 2112;
-        v61 = v10;
+        v61 = indexCopy;
         _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Found %@ for  %@", buf, 0x16u);
       }
 
       goto LABEL_52;
     }
 
-    sub_10000F470(0, v10);
+    sub_10000F470(0, indexCopy);
   }
 
-  v16 = [SIIndexer indexerWithPath:v10 rootPath:v11];
+  v16 = [SIIndexer indexerWithPath:indexCopy rootPath:pathCopy];
 
   v17 = logForCSLogCategoryDefault();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
@@ -921,18 +921,18 @@ LABEL_12:
     *buf = 138412546;
     v59 = v16;
     v60 = 2112;
-    v61 = v10;
+    v61 = indexCopy;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_INFO, "%@ for  %@", buf, 0x16u);
   }
 
   if (v16)
   {
     v18 = [VolumeScan alloc];
-    v19 = [v16 rootPath];
-    v20 = [(VolumeScan *)v18 initWithVolumeUUID:v12 rootPath:v19];
+    rootPath = [v16 rootPath];
+    v20 = [(VolumeScan *)v18 initWithVolumeUUID:dCopy rootPath:rootPath];
 
     [v16 setVolumeObject:v20];
-    if ((a6 & 0x80) != 0)
+    if ((options & 0x80) != 0)
     {
       LODWORD(location) = 45;
       [(VolumeScan *)v20 parentFromOID:2 error:&location];
@@ -942,28 +942,28 @@ LABEL_12:
         if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v59 = v10;
+          v59 = indexCopy;
           _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "Persistent fileIDs not supported for %@", buf, 0xCu);
         }
 
-        a6 = a6 & 0xFFFFFFFFFFFFFFD0 | 0x24;
+        options = options & 0xFFFFFFFFFFFFFFD0 | 0x24;
       }
     }
 
-    if ((a6 & 1) != 0 && (([v16 openWithOptions:a6], v22 = [v16 isOpen], (a6 & 0x64) != 0) ? (v23 = 1) : (v23 = v22), (v23 & 1) == 0))
+    if ((options & 1) != 0 && (([v16 openWithOptions:options], v22 = [v16 isOpen], (options & 0x64) != 0) ? (v23 = 1) : (v23 = v22), (v23 & 1) == 0))
     {
-      [v16 openWithOptions:a6 | 0x40];
-      v24 = [v16 isOpen];
+      [v16 openWithOptions:options | 0x40];
+      isOpen = [v16 isOpen];
     }
 
     else
     {
-      v24 = 0;
+      isOpen = 0;
     }
 
-    sub_10000F470(v16, v10);
+    sub_10000F470(v16, indexCopy);
     [v16 setBundleID:@"com.apple.filesystems.UserFS.FileProvider"];
-    [v16 setDomain:v12];
+    [v16 setDomain:dCopy];
     if ([v16 isOpen])
     {
       v25 = logForCSLogCategoryDefault();
@@ -972,9 +972,9 @@ LABEL_12:
         *buf = 138412802;
         v59 = v16;
         v60 = 2112;
-        v61 = v12;
+        v61 = dCopy;
         v62 = 2112;
-        v63 = v10;
+        v63 = indexCopy;
         _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_INFO, "Open %@ %@ %@", buf, 0x20u);
       }
 
@@ -986,13 +986,13 @@ LABEL_12:
       v54[2] = sub_100011A1C;
       v54[3] = &unk_1000353F8;
       objc_copyWeak(&v56, &location);
-      v51 = v12;
+      v51 = dCopy;
       v55 = v51;
       v28 = [v26 initWithQueue:indexQueue timeoutBlock:v54];
       [v28 setIdleTimeout:5000000000];
       [v28 setDirtyTimeout:30000000000];
       [v16 setDirtyIdleTimer:v28];
-      if (v24)
+      if (isOpen)
       {
         [(CSIndexAgentApp *)self performScan:v51 liveFSHandle:0 pathFromMountPoint:0 fromDate:0 allowImport:1 completionHandler:0];
       }
@@ -1001,8 +1001,8 @@ LABEL_12:
       {
         [v16 index];
         v29 = SICopyProperty();
-        v30 = v10;
-        v31 = [(CSIndexAgentApp *)self macOSJournalSafeScanDateFromIndexPath:[v10 fileSystemRepresentation]];
+        v30 = indexCopy;
+        v31 = [(CSIndexAgentApp *)self macOSJournalSafeScanDateFromIndexPath:[indexCopy fileSystemRepresentation]];
         v48 = v29;
         v50 = v31;
         v53 = v48;
@@ -1039,14 +1039,14 @@ LABEL_12:
           v52 = 0;
         }
 
-        v39 = [(VolumeScan *)v20 mountTime];
-        if (!v39)
+        mountTime = [(VolumeScan *)v20 mountTime];
+        if (!mountTime)
         {
           goto LABEL_46;
         }
 
-        v40 = [(VolumeScan *)v20 mountTime];
-        [v40 timeIntervalSinceNow];
+        mountTime2 = [(VolumeScan *)v20 mountTime];
+        [mountTime2 timeIntervalSinceNow];
         v42 = v41 < 60.0;
 
         if (v42)
@@ -1054,8 +1054,8 @@ LABEL_12:
           goto LABEL_46;
         }
 
-        v43 = [(VolumeScan *)v20 lastMTime];
-        if (!v43 || (-[VolumeScan lastMTime](v20, "lastMTime"), v44 = objc_claimAutoreleasedReturnValue(), [v44 timeIntervalSinceDate:v53], v46 = v45 < 60.0, v44, v43, v46))
+        lastMTime = [(VolumeScan *)v20 lastMTime];
+        if (!lastMTime || (-[VolumeScan lastMTime](v20, "lastMTime"), v44 = objc_claimAutoreleasedReturnValue(), [v44 timeIntervalSinceDate:v53], v46 = v45 < 60.0, v44, lastMTime, v46))
         {
 LABEL_46:
           v47 = logForCSLogCategoryDefault();
@@ -1095,22 +1095,22 @@ LABEL_46:
 LABEL_52:
 }
 
-- (void)importItems:(id)a3 indexer:(id)a4
+- (void)importItems:(id)items indexer:(id)indexer
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 count];
+  itemsCopy = items;
+  indexerCopy = indexer;
+  v7 = [itemsCopy count];
   __chkstk_darwin(v7, 8 * v7, v8, v9, v10);
   v12 = v28 - v11;
   bzero(v28 - v11, v13);
-  v30 = v6;
-  v14 = [v6 persistentFileIDs];
+  v30 = indexerCopy;
+  persistentFileIDs = [indexerCopy persistentFileIDs];
   if (!v7)
   {
     goto LABEL_18;
   }
 
-  v16 = v14;
+  v16 = persistentFileIDs;
   v28[1] = v28;
   v17 = 0;
   v18 = 0;
@@ -1118,7 +1118,7 @@ LABEL_52:
   v29 = v15;
   do
   {
-    v19 = [v5 objectAtIndexedSubscript:v18];
+    v19 = [itemsCopy objectAtIndexedSubscript:v18];
     v20 = v19;
     if (!v16 || ([v19 objectForKeyedSubscript:@":MD:_kMDItemOID"], v21 = objc_claimAutoreleasedReturnValue(), v22 = objc_msgSend(v21, "unsignedLongLongValue"), v21, !v22))
     {
@@ -1130,8 +1130,8 @@ LABEL_52:
       }
 
       v24 = v23;
-      v25 = [v23 UTF8String];
-      v22 = [v30 oidForPath:v25 allowCreate:1];
+      uTF8String = [v23 UTF8String];
+      v22 = [v30 oidForPath:uTF8String allowCreate:1];
 
       if (!v22)
       {
@@ -1174,25 +1174,25 @@ LABEL_11:
     }
 
     dispatch_semaphore_wait(qword_10003CBB8, 0xFFFFFFFFFFFFFFFFLL);
-    [v30 addRecords:v5 forIDs:v12 completionHandler:&stru_100035458];
+    [v30 addRecords:itemsCopy forIDs:v12 completionHandler:&stru_100035458];
   }
 
 LABEL_18:
 }
 
-- (void)handleReset:(id)a3 completionBlock:(id)a4
+- (void)handleReset:(id)reset completionBlock:(id)block
 {
-  v6 = a3;
-  v17 = a4;
+  resetCopy = reset;
+  blockCopy = block;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v7 = [(CSIndexAgentApp *)self fpMonitor];
-  v8 = [v7 domainsByPath];
-  v9 = [v8 allKeys];
+  fpMonitor = [(CSIndexAgentApp *)self fpMonitor];
+  domainsByPath = [fpMonitor domainsByPath];
+  allKeys = [domainsByPath allKeys];
 
-  v10 = [v9 countByEnumeratingWithState:&v20 objects:v26 count:16];
+  v10 = [allKeys countByEnumeratingWithState:&v20 objects:v26 count:16];
   if (v10)
   {
     v11 = v10;
@@ -1203,7 +1203,7 @@ LABEL_18:
       {
         if (*v21 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(allKeys);
         }
 
         v14 = *(*(&v20 + 1) + 8 * i);
@@ -1229,15 +1229,15 @@ LABEL_18:
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v20 objects:v26 count:16];
+      v11 = [allKeys countByEnumeratingWithState:&v20 objects:v26 count:16];
     }
 
     while (v11);
   }
 
-  if (v17)
+  if (blockCopy)
   {
-    v17[2]();
+    blockCopy[2]();
   }
 
   v16 = logForCSLogCategoryDefault();
@@ -1250,17 +1250,17 @@ LABEL_18:
   exit(0);
 }
 
-- (void)_closeAllWithCompletionHandler:(id)a3
+- (void)_closeAllWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(self->_indexQueue);
   dispatch_assert_queue_V2(qword_10003CBE0);
-  v5 = [qword_10003CC88 allKeys];
+  allKeys = [qword_10003CC88 allKeys];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v6 = [allKeys countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1272,7 +1272,7 @@ LABEL_18:
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allKeys);
         }
 
         [(CSIndexAgentApp *)self _closeIndexAtPath:*(*(&v10 + 1) + 8 * v9)];
@@ -1280,58 +1280,58 @@ LABEL_18:
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [allKeys countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);
   }
 
-  v4[2](v4, 0);
+  handlerCopy[2](handlerCopy, 0);
 }
 
-- (int)_indexQueryStart:(id)a3 queryString:(id)a4 queryContext:(id)a5 queryID:(int64_t)a6 remoteConnection:(id)a7
+- (int)_indexQueryStart:(id)start queryString:(id)string queryContext:(id)context queryID:(int64_t)d remoteConnection:(id)connection
 {
-  v12 = a3;
-  v30 = a4;
-  v13 = a5;
-  v31 = a7;
+  startCopy = start;
+  stringCopy = string;
+  contextCopy = context;
+  connectionCopy = connection;
   dispatch_assert_queue_V2(self->_indexQueue);
-  if ([v12 index])
+  if ([startCopy index])
   {
-    v29 = [v12 domain];
+    domain = [startCopy domain];
     v14 = logForCSLogCategoryDefault();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
       *buf = 138412802;
-      *&buf[4] = v31;
+      *&buf[4] = connectionCopy;
       *&buf[12] = 1024;
-      *&buf[14] = a6;
+      *&buf[14] = d;
       *&buf[18] = 2112;
-      *&buf[20] = v30;
+      *&buf[20] = stringCopy;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "Start Query[%@ %d] - %@", buf, 0x1Cu);
     }
 
-    v15 = [[SPCoreSpotlightTask alloc] initWithQueryString:v30 queryContext:v13];
+    v15 = [[SPCoreSpotlightTask alloc] initWithQueryString:stringCopy queryContext:contextCopy];
     [v15 start];
     if ([v15 siQuery])
     {
-      v16 = [v15 resultsQueue];
-      [v16 siResultsQueue];
+      resultsQueue = [v15 resultsQueue];
+      [resultsQueue siResultsQueue];
       v28 = SIExecuteQuery();
       v17 = objc_opt_new();
       [v17 setQueryTask:v15];
-      [v17 setClientConnection:v31];
-      v18 = [NSNumber numberWithInteger:a6];
-      [v12 setQueryTask:v17 forID:v18];
+      [v17 setClientConnection:connectionCopy];
+      v18 = [NSNumber numberWithInteger:d];
+      [startCopy setQueryTask:v17 forID:v18];
 
       v44[0] = _NSConcreteStackBlock;
       v44[1] = 3221225472;
       v44[2] = sub_100012768;
       v44[3] = &unk_1000354C0;
-      v45 = v12;
-      v46 = a6;
+      v45 = startCopy;
+      dCopy = d;
       [v15 setCompletionBlock:v44];
-      LOBYTE(v18) = [v13 live];
+      LOBYTE(v18) = [contextCopy live];
       *buf = 0;
       *&buf[8] = buf;
       *&buf[16] = 0x2020000000;
@@ -1340,26 +1340,26 @@ LABEL_18:
       v42[1] = v42;
       v42[2] = 0x2020000000;
       v43 = 0;
-      v19 = [v13 fetchAttributes];
-      v20 = [v19 count];
+      fetchAttributes = [contextCopy fetchAttributes];
+      v20 = [fetchAttributes count];
 
       v32[0] = _NSConcreteStackBlock;
       v32[1] = 3221225472;
       v32[2] = sub_1000127CC;
       v32[3] = &unk_100035528;
       v41 = v18;
-      v39 = a6;
+      dCopy2 = d;
       v40 = v20;
       v37 = v42;
       v38 = buf;
       v21 = v17;
       v33 = v21;
-      v34 = v29;
-      v35 = v31;
-      v36 = self;
+      v34 = domain;
+      v35 = connectionCopy;
+      selfCopy = self;
       v22 = objc_retainBlock(v32);
       v23 = [[SPQueryJob alloc] initWithSIJob:v28 dataclass:0 eventHandler:0 resultsHandler:v22];
-      [v16 addJob:v23];
+      [resultsQueue addJob:v23];
       [v15 addJob:v23];
 
       _Block_object_dispose(v42, 8);
@@ -1371,18 +1371,18 @@ LABEL_18:
     else
     {
       [v15 finishWithError:0];
-      v16 = logForCSLogCategoryDefault();
-      if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
+      resultsQueue = logForCSLogCategoryDefault();
+      if (os_log_type_enabled(resultsQueue, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        *&buf[4] = v30;
-        _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "could not create query for %@", buf, 0xCu);
+        *&buf[4] = stringCopy;
+        _os_log_impl(&_mh_execute_header, resultsQueue, OS_LOG_TYPE_INFO, "could not create query for %@", buf, 0xCu);
       }
 
       v24 = -1;
     }
 
-    v26 = v29;
+    v26 = domain;
   }
 
   else
@@ -1405,18 +1405,18 @@ LABEL_18:
   return v24;
 }
 
-- (int)_scanQueryStart:(id)a3 scope:(id)a4 queryString:(id)a5 criteria:(id)a6 queryContext:(id)a7 queryID:(int64_t)a8 remoteConnection:(id)a9
+- (int)_scanQueryStart:(id)start scope:(id)scope queryString:(id)string criteria:(id)criteria queryContext:(id)context queryID:(int64_t)d remoteConnection:(id)connection
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a9;
-  if ([v19 live])
+  startCopy = start;
+  scopeCopy = scope;
+  stringCopy = string;
+  criteriaCopy = criteria;
+  contextCopy = context;
+  connectionCopy = connection;
+  if ([contextCopy live])
   {
-    v21 = logForCSLogCategoryDefault();
-    if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
+    volumeObject = logForCSLogCategoryDefault();
+    if (os_log_type_enabled(volumeObject, OS_LOG_TYPE_ERROR))
     {
       sub_1000248A0();
     }
@@ -1424,15 +1424,15 @@ LABEL_18:
     goto LABEL_9;
   }
 
-  v21 = [v15 volumeObject];
-  if (v21)
+  volumeObject = [startCopy volumeObject];
+  if (volumeObject)
   {
-    v22 = -[NSObject resolveLiveFSHandleForPathFromMountPoint:](v21, "resolveLiveFSHandleForPathFromMountPoint:", [v16 UTF8String]);
+    v22 = -[NSObject resolveLiveFSHandleForPathFromMountPoint:](volumeObject, "resolveLiveFSHandleForPathFromMountPoint:", [scopeCopy UTF8String]);
     if (v22)
     {
-      v43 = v20;
-      v23 = [v16 hasPrefix:@".Trashes"];
-      v40 = [v15 persistentFileIDs];
+      v43 = connectionCopy;
+      v23 = [scopeCopy hasPrefix:@".Trashes"];
+      persistentFileIDs = [startCopy persistentFileIDs];
       location[1] = _NSConcreteStackBlock;
       location[2] = 3221225472;
       location[3] = sub_100013114;
@@ -1443,24 +1443,24 @@ LABEL_18:
       if (!EvaluatorWithBlock)
       {
         v27 = -1;
-        v20 = v43;
+        connectionCopy = v43;
 LABEL_20:
 
         goto LABEL_21;
       }
 
       v39 = EvaluatorWithBlock;
-      v41 = a8;
-      v38 = [v15 domain];
+      dCopy = d;
+      domain = [startCopy domain];
       v25 = objc_opt_new();
-      [v25 setVolumeScan:v21];
-      v20 = v43;
+      [v25 setVolumeScan:volumeObject];
+      connectionCopy = v43;
       [v25 setClientConnection:v43];
       v42 = v22;
-      v35 = v17;
-      if (v16)
+      v35 = stringCopy;
+      if (scopeCopy)
       {
-        v26 = sub_100020E24(v16);
+        v26 = sub_100020E24(scopeCopy);
       }
 
       else
@@ -1468,47 +1468,47 @@ LABEL_20:
         v26 = 1;
       }
 
-      v37 = [v16 length];
-      objc_initWeak(location, v21);
+      v37 = [scopeCopy length];
+      objc_initWeak(location, volumeObject);
       v53[0] = _NSConcreteStackBlock;
       v53[1] = 3221225472;
       v53[2] = sub_1000131EC;
       v53[3] = &unk_100035590;
-      v59[1] = v41;
+      v59[1] = dCopy;
       objc_copyWeak(v59, location);
       v54 = v25;
-      v55 = v16;
+      v55 = scopeCopy;
       v60 = v26;
-      v61 = v40;
+      v61 = persistentFileIDs;
       v59[2] = v37;
       v59[3] = v39;
-      v56 = v19;
-      v28 = v38;
+      v56 = contextCopy;
+      v28 = domain;
       v62 = v44;
       v57 = v28;
-      v58 = self;
+      selfCopy = self;
       v46[0] = _NSConcreteStackBlock;
       v46[1] = 3221225472;
       v46[2] = sub_100013970;
       v46[3] = &unk_1000355D8;
-      v51 = v41;
+      v51 = dCopy;
       v29 = v54;
       v47 = v29;
       v45 = v28;
       v48 = v45;
-      v49 = self;
-      v30 = v15;
+      selfCopy2 = self;
+      v30 = startCopy;
       v50 = v30;
       v52 = v39;
-      v31 = [v21 scanAtLiveFSHandle:v42 pathFromMountPoint:v55 withCriteria:v18 itemHandler:v53 completionHandler:v46];
+      v31 = [volumeObject scanAtLiveFSHandle:v42 pathFromMountPoint:v55 withCriteria:criteriaCopy itemHandler:v53 completionHandler:v46];
       [v29 setSearchToken:v31];
 
       [v29 searchToken];
-      v32 = v17 = v36;
+      v32 = stringCopy = v36;
 
       if (v32)
       {
-        v33 = [NSNumber numberWithInteger:v41];
+        v33 = [NSNumber numberWithInteger:dCopy];
         [v30 setQueryTask:v29 forID:v33];
 
         v27 = 0;
@@ -1546,12 +1546,12 @@ LABEL_21:
   return v27;
 }
 
-- (int)_queryCancel:(id)a3
+- (int)_queryCancel:(id)cancel
 {
   indexQueue = self->_indexQueue;
-  v4 = a3;
+  cancelCopy = cancel;
   dispatch_assert_queue_V2(indexQueue);
-  uint64 = xpc_dictionary_get_uint64(v4, "qid");
+  uint64 = xpc_dictionary_get_uint64(cancelCopy, "qid");
 
   [NSNumber numberWithUnsignedLongLong:uint64];
   v8[0] = _NSConcreteStackBlock;
@@ -1564,29 +1564,29 @@ LABEL_21:
   return 0;
 }
 
-- (void)removeChildRecords:(int64_t)a3 withIndexer:(id)a4 withVolumeName:(const char *)a5
+- (void)removeChildRecords:(int64_t)records withIndexer:(id)indexer withVolumeName:(const char *)name
 {
-  v8 = a4;
+  indexerCopy = indexer;
   dispatch_assert_queue_V2(self->_indexQueue);
-  v9 = [NSString stringWithFormat:@"_kMDItemQueryPathOID=%lld", a3];
+  records = [NSString stringWithFormat:@"_kMDItemQueryPathOID=%lld", records];
   v10 = objc_opt_new();
   v30 = MDItemIndexOID;
   v11 = [NSArray arrayWithObjects:&v30 count:1];
   [v10 setFetchAttributes:v11];
 
-  v12 = [NSString stringWithUTF8String:a5];
+  v12 = [NSString stringWithUTF8String:name];
   v29 = v12;
   v13 = [NSArray arrayWithObjects:&v29 count:1];
   [v10 setMountPoints:v13];
 
-  if ([v8 index])
+  if ([indexerCopy index])
   {
-    v14 = [[SPCoreSpotlightTask alloc] initWithQueryString:v9 queryContext:v10];
+    v14 = [[SPCoreSpotlightTask alloc] initWithQueryString:records queryContext:v10];
     [v14 start];
     if ([v14 siQuery])
     {
-      v15 = [v14 resultsQueue];
-      [v15 siResultsQueue];
+      resultsQueue = [v14 resultsQueue];
+      [resultsQueue siResultsQueue];
       v16 = SIExecuteQuery();
       v17 = objc_opt_new();
       [v17 setQueryTask:v14];
@@ -1599,14 +1599,14 @@ LABEL_21:
       v21[1] = 3221225472;
       v21[2] = sub_100013FE0;
       v21[3] = &unk_100035620;
-      v22 = v8;
+      v22 = indexerCopy;
       p_buf = &buf;
       v18 = v17;
       v23 = v18;
-      v25 = a3;
+      recordsCopy = records;
       v19 = objc_retainBlock(v21);
       v20 = [[SPQueryJob alloc] initWithSIJob:v16 dataclass:0 eventHandler:0 resultsHandler:v19];
-      [v15 addJob:v20];
+      [resultsQueue addJob:v20];
       [v14 addJob:v20];
 
       _Block_object_dispose(&buf, 8);
@@ -1615,12 +1615,12 @@ LABEL_21:
     else
     {
       [v14 finishWithError:0];
-      v15 = logForCSLogCategoryDefault();
-      if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
+      resultsQueue = logForCSLogCategoryDefault();
+      if (os_log_type_enabled(resultsQueue, OS_LOG_TYPE_INFO))
       {
         LODWORD(buf) = 138412290;
-        *(&buf + 4) = v9;
-        _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "could not create query for %@", &buf, 0xCu);
+        *(&buf + 4) = records;
+        _os_log_impl(&_mh_execute_header, resultsQueue, OS_LOG_TYPE_INFO, "could not create query for %@", &buf, 0xCu);
       }
     }
   }
@@ -1635,24 +1635,24 @@ LABEL_21:
   }
 }
 
-- (void)_handleFSE:(id)a3
+- (void)_handleFSE:(id)e
 {
-  v4 = a3;
+  eCopy = e;
   dispatch_assert_queue_V2(self->_indexQueue);
-  v5 = [v4 dataSize];
-  v6 = [v4 dataPtr];
-  if (v5)
+  dataSize = [eCopy dataSize];
+  dataPtr = [eCopy dataPtr];
+  if (dataSize)
   {
-    v7 = v6;
-    if (v6)
+    v7 = dataPtr;
+    if (dataPtr)
     {
-      v8 = (v6 + 8);
-      v105 = &v5[[v4 dataPtr]];
+      v8 = (dataPtr + 8);
+      v105 = &dataSize[[eCopy dataPtr]];
       if (v7 + 8 <= v105)
       {
         *&v9 = 67109376;
         v91 = v9;
-        v100 = self;
+        selfCopy = self;
         do
         {
           v10 = *v7;
@@ -1952,18 +1952,18 @@ LABEL_54:
               _os_log_impl(&_mh_execute_header, v43, OS_LOG_TYPE_INFO, "event[%d]: %d pid:%d volume:%s path:%s", buf, 0x28u);
             }
 
-            v46 = [(CSIndexAgentApp *)v100 indexerForCStringVolume:v101];
+            v46 = [(CSIndexAgentApp *)selfCopy indexerForCStringVolume:v101];
             v47 = v46;
             if (!v46 || ![v46 index] || (objc_msgSend(v47, "isFSOnly") & 1) != 0 || (objc_msgSend(v47, "readOnly") & 1) != 0)
             {
               goto LABEL_170;
             }
 
-            v48 = v4;
+            v48 = eCopy;
             v104 = v47;
-            v97 = [v47 rootPath];
-            v49 = [v97 UTF8String];
-            if (!v49 || (v50 = strlen(v49), v50 - 1022 < 0xFFFFFFFFFFFFFC00))
+            rootPath = [v47 rootPath];
+            uTF8String = [rootPath UTF8String];
+            if (!uTF8String || (v50 = strlen(uTF8String), v50 - 1022 < 0xFFFFFFFFFFFFFC00))
             {
 
 LABEL_170:
@@ -1976,7 +1976,7 @@ LABEL_170:
             v52 = v51 + 1;
             *&buf[v51] = 47;
             v113 = 0;
-            v53 = [v104 persistentFileIDs];
+            persistentFileIDs = [v104 persistentFileIDs];
             if (v51 + 1 + v13 < 0x400)
             {
               v54 = v98;
@@ -1997,14 +1997,14 @@ LABEL_170:
               v55 = 0;
             }
 
-            if ((v99 & 0x100) != 0 && v53)
+            if ((v99 & 0x100) != 0 && persistentFileIDs)
             {
               v113 = *(v22 + 64);
             }
 
             if (v28 == 3)
             {
-              if (v53)
+              if (persistentFileIDs)
               {
                 v56 = *(v7 + 1);
               }
@@ -2035,8 +2035,8 @@ LABEL_170:
                     v113 = v60;
                   }
 
-                  v4 = v48;
-                  v57 = v100;
+                  eCopy = v48;
+                  v57 = selfCopy;
                   if (v60 >= 3)
                   {
                     if (v94)
@@ -2076,8 +2076,8 @@ LABEL_170:
                   memcpy(&buf[v52], v8, v13 + 1);
                   v62 = [v104 oidForPath:buf allowCreate:v95];
                   v63 = v62;
-                  v4 = v48;
-                  v57 = v100;
+                  eCopy = v48;
+                  v57 = selfCopy;
                   if (v62 >= 3 && v113 >= 3 && v62 != v113)
                   {
                     v64 = logForCSLogCategoryDefault();
@@ -2098,14 +2098,14 @@ LABEL_170:
                   v113 = v63;
                   if (v94)
                   {
-                    v65 = [v104 volumeObject];
-                    v66 = [v65 resolveLiveFSHandleForPathFromMountPoint:v8];
+                    volumeObject = [v104 volumeObject];
+                    v66 = [volumeObject resolveLiveFSHandleForPathFromMountPoint:v8];
 
                     if (v66)
                     {
                       v67 = [NSString stringWithUTF8String:v101];
                       v68 = [NSString stringWithUTF8String:v8];
-                      [(CSIndexAgentApp *)v100 performScan:v67 liveFSHandle:v66 pathFromMountPoint:v68 fromDate:0 allowImport:1 completionHandler:0];
+                      [(CSIndexAgentApp *)selfCopy performScan:v67 liveFSHandle:v66 pathFromMountPoint:v68 fromDate:0 allowImport:1 completionHandler:0];
                     }
 
                     v58 = v102;
@@ -2131,8 +2131,8 @@ LABEL_170:
               {
                 v28 = 1;
                 LODWORD(v13) = v103;
-                v4 = v48;
-                v57 = v100;
+                eCopy = v48;
+                v57 = selfCopy;
               }
             }
 
@@ -2140,8 +2140,8 @@ LABEL_170:
             {
               v55 = v54;
               v26 = v8;
-              v4 = v48;
-              v57 = v100;
+              eCopy = v48;
+              v57 = selfCopy;
               v58 = v102;
             }
 
@@ -2156,7 +2156,7 @@ LABEL_170:
             v71 = 0;
             v72 = 1;
             v42 = v104;
-            v73 = v97;
+            v73 = rootPath;
             switch(v28)
             {
               case 0u:
@@ -2221,7 +2221,7 @@ LABEL_170:
 
 LABEL_123:
                 v74 = [NSString stringWithUTF8String:v26, v91];
-                v71 = sub_100020E90(v97, v74, v22, 0);
+                v71 = sub_100020E90(rootPath, v74, v22, 0);
                 goto LABEL_124;
               case 3u:
                 v77 = logForCSLogCategoryDefault();
@@ -2260,7 +2260,7 @@ LABEL_123:
                 v74 = [NSDictionary dictionaryWithObjects:&v118 forKeys:&v117 count:1];
 
                 v87 = [NSString stringWithUTF8String:v26];
-                v71 = sub_100020E90(v97, v87, v22, v74);
+                v71 = sub_100020E90(rootPath, v87, v22, v74);
 
                 v42 = v104;
                 goto LABEL_124;
@@ -2278,7 +2278,7 @@ LABEL_123:
                 v74 = [NSDictionary dictionaryWithObjects:&v116 forKeys:&v115 count:1];
 
                 v84 = [NSString stringWithUTF8String:v26];
-                v71 = sub_100020E90(v97, v84, v22, v74);
+                v71 = sub_100020E90(rootPath, v84, v22, v74);
 
                 v42 = v104;
 LABEL_124:
@@ -2312,8 +2312,8 @@ LABEL_153:
                   *&v121 = v75;
                   v114 = v71;
                   v76 = [NSArray arrayWithObjects:&v114 count:1, v91];
-                  v88 = [v42 dirtyIdleTimer];
-                  [v88 dirty];
+                  dirtyIdleTimer = [v42 dirtyIdleTimer];
+                  [dirtyIdleTimer dirty];
 
                   v89 = logForCSLogCategoryDefault();
                   v90 = os_log_type_enabled(v89, OS_LOG_TYPE_INFO);
@@ -2395,7 +2395,7 @@ LABEL_139:
                 goto LABEL_162;
               default:
                 v42 = v104;
-                v73 = v97;
+                v73 = rootPath;
                 goto LABEL_139;
             }
           }
@@ -2410,93 +2410,93 @@ LABEL_139:
   }
 }
 
-- (void)handleCloseAll:(id)a3 completionBlock:(id)a4
+- (void)handleCloseAll:(id)all completionBlock:(id)block
 {
-  v5 = a4;
+  blockCopy = block;
   indexQueue = self->_indexQueue;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1000156F8;
   v8[3] = &unk_1000353B0;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = blockCopy;
+  v7 = blockCopy;
   dispatch_async(indexQueue, v8);
 }
 
-- (void)handleScan:(id)a3 completionBlock:(id)a4
+- (void)handleScan:(id)scan completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  scanCopy = scan;
+  blockCopy = block;
   indexQueue = self->_indexQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100015868;
   block[3] = &unk_100035690;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = scanCopy;
+  v13 = blockCopy;
+  v9 = blockCopy;
+  v10 = scanCopy;
   dispatch_async(indexQueue, block);
 }
 
-- (void)handleMount:(id)a3 completionBlock:(id)a4
+- (void)handleMount:(id)mount completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  mountCopy = mount;
+  blockCopy = block;
   indexQueue = self->_indexQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000159E0;
   block[3] = &unk_100035690;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = mountCopy;
+  v13 = blockCopy;
+  v9 = blockCopy;
+  v10 = mountCopy;
   dispatch_async(indexQueue, block);
 }
 
-- (void)handleQueryStart:(id)a3 completionBlock:(id)a4
+- (void)handleQueryStart:(id)start completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  startCopy = start;
+  blockCopy = block;
+  if (blockCopy)
   {
     indexQueue = self->_indexQueue;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100015B0C;
     block[3] = &unk_1000356B8;
-    v10 = v6;
-    v11 = self;
-    v12 = v7;
+    v10 = startCopy;
+    selfCopy = self;
+    v12 = blockCopy;
     dispatch_async(indexQueue, block);
   }
 }
 
-- (void)handleQueryCancel:(id)a3 completionBlock:(id)a4
+- (void)handleQueryCancel:(id)cancel completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  cancelCopy = cancel;
+  blockCopy = block;
   indexQueue = self->_indexQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000161C0;
   block[3] = &unk_100035690;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = cancelCopy;
+  v13 = blockCopy;
+  v9 = blockCopy;
+  v10 = cancelCopy;
   dispatch_async(indexQueue, block);
 }
 
-- (void)handleFSE:(id)a3 completionBlock:(id)a4
+- (void)handleFSE:(id)e completionBlock:(id)block
 {
-  v6 = a4;
-  v7 = [CSXPCConnection dataWrapperForKey:"data" sizeKey:"data-size" fromXPCDictionary:a3];
+  blockCopy = block;
+  v7 = [CSXPCConnection dataWrapperForKey:"data" sizeKey:"data-size" fromXPCDictionary:e];
   if ([v7 dataPtr])
   {
     indexQueue = self->_indexQueue;
@@ -2509,44 +2509,44 @@ LABEL_139:
     dispatch_async(indexQueue, v9);
   }
 
-  if (v6)
+  if (blockCopy)
   {
-    (*(v6 + 2))(v6, 0, 0);
+    (*(blockCopy + 2))(blockCopy, 0, 0);
   }
 }
 
-- (void)performScan:(id)a3 liveFSHandle:(id)a4 pathFromMountPoint:(id)a5 fromDate:(id)a6 allowImport:(BOOL)a7 completionHandler:(id)a8
+- (void)performScan:(id)scan liveFSHandle:(id)handle pathFromMountPoint:(id)point fromDate:(id)date allowImport:(BOOL)import completionHandler:(id)handler
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a8;
+  scanCopy = scan;
+  handleCopy = handle;
+  pointCopy = point;
+  dateCopy = date;
+  handlerCopy = handler;
   indexQueue = self->_indexQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000164A4;
   block[3] = &unk_100035758;
   block[4] = self;
-  v26 = v14;
-  v27 = v15;
-  v28 = v17;
-  v31 = a7;
-  v29 = v16;
-  v30 = v18;
-  v20 = v18;
-  v21 = v16;
-  v22 = v17;
-  v23 = v15;
-  v24 = v14;
+  v26 = scanCopy;
+  v27 = handleCopy;
+  v28 = dateCopy;
+  importCopy = import;
+  v29 = pointCopy;
+  v30 = handlerCopy;
+  v20 = handlerCopy;
+  v21 = pointCopy;
+  v22 = dateCopy;
+  v23 = handleCopy;
+  v24 = scanCopy;
   dispatch_async(indexQueue, block);
 }
 
-- (int)_mountVolume:(id)a3
+- (int)_mountVolume:(id)volume
 {
-  v4 = a3;
+  volumeCopy = volume;
   dispatch_assert_queue_V2(self->_indexQueue);
-  string = xpc_dictionary_get_string(v4, "url");
+  string = xpc_dictionary_get_string(volumeCopy, "url");
   if (string)
   {
     v6 = [NSString stringWithUTF8String:string];
@@ -2554,9 +2554,9 @@ LABEL_139:
 
     if ([v7 isFileURL])
     {
-      v8 = [v7 path];
+      path = [v7 path];
 
-      if (v8)
+      if (path)
       {
         goto LABEL_4;
       }
@@ -2571,7 +2571,7 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v11 = xpc_dictionary_get_string(v4, "command");
+  v11 = xpc_dictionary_get_string(volumeCopy, "command");
   if (!v11)
   {
     goto LABEL_13;
@@ -2600,8 +2600,8 @@ LABEL_13:
   {
     [NSString stringWithFormat:@"%s%s", "/private/var/mobile/Library/LiveFiles/com.apple.filesystems.userfsd/", v14];
   }
-  v8 = ;
-  if (!v8)
+  path = ;
+  if (!path)
   {
     goto LABEL_13;
   }
@@ -2611,28 +2611,28 @@ LABEL_4:
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v18 = v8;
+    v18 = path;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "mounted at %@", buf, 0xCu);
   }
 
-  [(CSIndexAgentApp *)self _handleMount:v8 force:1];
+  [(CSIndexAgentApp *)self _handleMount:path force:1];
   v10 = 0;
 LABEL_14:
 
   return v10;
 }
 
-- (void)_handleScan:(id)a3 completionHandler:(id)a4
+- (void)_handleScan:(id)scan completionHandler:(id)handler
 {
-  v17 = a4;
+  handlerCopy = handler;
   indexQueue = self->_indexQueue;
-  v7 = a3;
+  scanCopy = scan;
   dispatch_assert_queue_V2(indexQueue);
-  string = xpc_dictionary_get_string(v7, "command");
+  string = xpc_dictionary_get_string(scanCopy, "command");
 
   if (!string || strncmp(string, "scan", 4uLL))
   {
-    v17[2](v17, 0xFFFFFFFFLL);
+    handlerCopy[2](handlerCopy, 0xFFFFFFFFLL);
     goto LABEL_20;
   }
 
@@ -2669,61 +2669,61 @@ LABEL_14:
   }
 
   v15 = +[VolumeScan volumeNames];
-  v16 = [v15 firstObject];
+  firstObject = [v15 firstObject];
 
-  if (v16)
+  if (firstObject)
   {
-    [(CSIndexAgentApp *)self performScan:v16 liveFSHandle:0 pathFromMountPoint:0 fromDate:v14 allowImport:v9 == 0 completionHandler:v17];
+    [(CSIndexAgentApp *)self performScan:firstObject liveFSHandle:0 pathFromMountPoint:0 fromDate:v14 allowImport:v9 == 0 completionHandler:handlerCopy];
   }
 
-  else if (v17)
+  else if (handlerCopy)
   {
-    (v17[2])();
+    (handlerCopy[2])();
     goto LABEL_19;
   }
 
-  v17 = 0;
+  handlerCopy = 0;
 LABEL_19:
 
 LABEL_20:
 }
 
-- (void)handleResolvePath:(const char *)a3 info:(id)a4 completionBlock:(id)a5
+- (void)handleResolvePath:(const char *)path info:(id)info completionBlock:(id)block
 {
-  v7 = a5;
+  blockCopy = block;
   memset(&v16, 0, sizeof(v16));
-  if (stat(a3, &v16))
+  if (stat(path, &v16))
   {
     v8 = __error();
-    if (!v7)
+    if (!blockCopy)
     {
       return;
     }
 
-    (*(v7 + 2))(v7, *v8, 0);
+    (*(blockCopy + 2))(blockCopy, *v8, 0);
   }
 
   else
   {
-    v9 = [NSString stringWithUTF8String:a3];
+    v9 = [NSString stringWithUTF8String:path];
     indexQueue = self->_indexQueue;
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_100016D54;
     v11[3] = &unk_100035780;
     v12 = v9;
-    v13 = self;
-    v14 = v7;
-    v15 = a3;
-    v7 = v9;
+    selfCopy = self;
+    v14 = blockCopy;
+    pathCopy = path;
+    blockCopy = v9;
     dispatch_async(indexQueue, v11);
   }
 }
 
-- (void)handleResolveInfo:(const char *)a3 completionBlock:(id)a4
+- (void)handleResolveInfo:(const char *)info completionBlock:(id)block
 {
-  v6 = a4;
-  v7 = [NSString stringWithUTF8String:a3];
+  blockCopy = block;
+  v7 = [NSString stringWithUTF8String:info];
   v8 = [v7 componentsSeparatedByString:@":"];
 
   v9 = [v8 count];
@@ -2736,63 +2736,63 @@ LABEL_20:
     block[3] = &unk_1000357A8;
     v14 = v9;
     v12 = v8;
-    v13 = v6;
+    v13 = blockCopy;
     dispatch_async(indexQueue, block);
 
-    v6 = v12;
+    blockCopy = v12;
 LABEL_5:
 
     goto LABEL_6;
   }
 
-  if (v6)
+  if (blockCopy)
   {
-    (*(v6 + 2))(v6, 0xFFFFFFFFLL, 0);
+    (*(blockCopy + 2))(blockCopy, 0xFFFFFFFFLL, 0);
     goto LABEL_5;
   }
 
 LABEL_6:
 }
 
-- (void)handleWalkPath:(const char *)a3 flat:(BOOL)a4 completionBlock:(id)a5
+- (void)handleWalkPath:(const char *)path flat:(BOOL)flat completionBlock:(id)block
 {
-  v7 = a5;
+  blockCopy = block;
   *&v9 = _NSConcreteStackBlock;
   *(&v9 + 1) = 3221225472;
   v10 = sub_100017418;
   v11 = &unk_1000357C8;
-  v12 = a4;
-  v8 = sub_1000040B0(a3, 0, 0, 4, &v9);
-  if (v7)
+  flatCopy = flat;
+  v8 = sub_1000040B0(path, 0, 0, 4, &v9);
+  if (blockCopy)
   {
-    v7[2](v7, v8, 0);
+    blockCopy[2](blockCopy, v8, 0);
   }
 }
 
-- (BOOL)handleCommand:(const char *)a3 info:(id)a4 connection:(id)a5
+- (BOOL)handleCommand:(const char *)command info:(id)info connection:(id)connection
 {
-  v8 = a4;
-  v9 = a5;
+  infoCopy = info;
+  connectionCopy = connection;
   v10 = logForCSLogCategoryDefault();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
-    sub_100024B88(a3, v9, v10);
+    sub_100024B88(command, connectionCopy, v10);
   }
 
   v28[0] = _NSConcreteStackBlock;
   v28[1] = 3221225472;
   v28[2] = sub_100017A00;
   v28[3] = &unk_1000357F0;
-  v11 = v8;
+  v11 = infoCopy;
   v29 = v11;
   v12 = objc_retainBlock(v28);
-  if (!strcmp(a3, "fse"))
+  if (!strcmp(command, "fse"))
   {
     [(CSIndexAgentApp *)self handleFSE:v11 completionBlock:v12];
     goto LABEL_21;
   }
 
-  if (!strcmp(a3, "startQuery"))
+  if (!strcmp(command, "startQuery"))
   {
     queryQueue = self->_queryQueue;
     block[0] = _NSConcreteStackBlock;
@@ -2810,7 +2810,7 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  if (!strcmp(a3, "cancelQuery"))
+  if (!strcmp(command, "cancelQuery"))
   {
     v15 = self->_queryQueue;
     v22[0] = _NSConcreteStackBlock;
@@ -2826,67 +2826,67 @@ LABEL_20:
     goto LABEL_20;
   }
 
-  if (!strncmp(a3, "mount", 5uLL))
+  if (!strncmp(command, "mount", 5uLL))
   {
     [(CSIndexAgentApp *)self handleMount:v11 completionBlock:v12];
     goto LABEL_21;
   }
 
-  if (!strncmp(a3, "scan", 4uLL))
+  if (!strncmp(command, "scan", 4uLL))
   {
     [(CSIndexAgentApp *)self handleScan:v11 completionBlock:v12];
     goto LABEL_21;
   }
 
-  if (!strcmp(a3, "closeAll"))
+  if (!strcmp(command, "closeAll"))
   {
     [(CSIndexAgentApp *)self handleCloseAll:v11 completionBlock:v12];
     goto LABEL_21;
   }
 
-  if (!strcmp(a3, "status"))
+  if (!strcmp(command, "status"))
   {
     [(CSIndexAgentApp *)self handleStatus:v11 completionBlock:v12];
     goto LABEL_21;
   }
 
-  if (!strcmp(a3, "reset"))
+  if (!strcmp(command, "reset"))
   {
     [(CSIndexAgentApp *)self handleReset:v11 completionBlock:v12];
     goto LABEL_21;
   }
 
-  if (!strncmp(a3, "resolve:", 8uLL))
+  if (!strncmp(command, "resolve:", 8uLL))
   {
-    [(CSIndexAgentApp *)self handleResolvePath:a3 + 8 info:v11 completionBlock:v12];
+    [(CSIndexAgentApp *)self handleResolvePath:command + 8 info:v11 completionBlock:v12];
     goto LABEL_21;
   }
 
-  if (!strncmp(a3, "resolveOIDs:", 0xCuLL))
+  if (!strncmp(command, "resolveOIDs:", 0xCuLL))
   {
-    [(CSIndexAgentApp *)self handleResolveInfo:a3 completionBlock:v12];
+    [(CSIndexAgentApp *)self handleResolveInfo:command completionBlock:v12];
     goto LABEL_21;
   }
 
-  if (!strncmp(a3, "walk:", 5uLL))
+  if (!strncmp(command, "walk:", 5uLL))
   {
-    v17 = a3 + 5;
-    v18 = self;
+    v17 = command + 5;
+    selfCopy2 = self;
     v19 = 0;
 LABEL_31:
-    [(CSIndexAgentApp *)v18 handleWalkPath:v17 flat:v19 completionBlock:v12];
+    [(CSIndexAgentApp *)selfCopy2 handleWalkPath:v17 flat:v19 completionBlock:v12];
     goto LABEL_21;
   }
 
-  if (!strncmp(a3, "walkFlat:", 5uLL))
+  if (!strncmp(command, "walkFlat:", 5uLL))
   {
-    v17 = a3 + 9;
-    v18 = self;
+    v17 = command + 9;
+    selfCopy2 = self;
     v19 = 1;
     goto LABEL_31;
   }
 
-  if (!strcmp(a3, "quit"))
+  if (!strcmp(command, "quit"))
   {
     if (v12)
     {
@@ -2909,16 +2909,16 @@ LABEL_21:
   return 1;
 }
 
-- (BOOL)lostClientConnection:(id)a3 error:(id)a4
+- (BOOL)lostClientConnection:(id)connection error:(id)error
 {
-  v5 = a3;
+  connectionCopy = connection;
   indexQueue = self->_indexQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100017BA4;
   block[3] = &unk_1000352E8;
-  v10 = v5;
-  v7 = v5;
+  v10 = connectionCopy;
+  v7 = connectionCopy;
   dispatch_async(indexQueue, block);
 
   return 0;

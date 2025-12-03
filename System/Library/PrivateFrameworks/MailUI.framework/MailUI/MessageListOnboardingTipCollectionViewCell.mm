@@ -4,12 +4,12 @@
 - (UIButton)okButton;
 - (UIButton)tryCategoriesButton;
 - (UIButton)turnOffCategoriesButton;
-- (void)configureForBucket:(int64_t)a3 primaryUnreadCount:(int64_t)a4 otherUnreadCount:(int64_t)a5;
-- (void)setCancelButton:(id)a3;
-- (void)setCustomizeButton:(id)a3;
-- (void)setOkButton:(id)a3;
-- (void)setTryCategoriesButton:(id)a3;
-- (void)setTurnOffCategoriesButton:(id)a3;
+- (void)configureForBucket:(int64_t)bucket primaryUnreadCount:(int64_t)count otherUnreadCount:(int64_t)unreadCount;
+- (void)setCancelButton:(id)button;
+- (void)setCustomizeButton:(id)button;
+- (void)setOkButton:(id)button;
+- (void)setTryCategoriesButton:(id)button;
+- (void)setTurnOffCategoriesButton:(id)button;
 @end
 
 @implementation MessageListOnboardingTipCollectionViewCell
@@ -23,11 +23,11 @@
   return v4;
 }
 
-- (void)setTryCategoriesButton:(id)a3
+- (void)setTryCategoriesButton:(id)button
 {
-  MEMORY[0x277D82BE0](a3);
+  MEMORY[0x277D82BE0](button);
   MEMORY[0x277D82BE0](self);
-  sub_214BF2D6C(a3);
+  sub_214BF2D6C(button);
   MEMORY[0x277D82BD8](self);
 }
 
@@ -40,11 +40,11 @@
   return v4;
 }
 
-- (void)setTurnOffCategoriesButton:(id)a3
+- (void)setTurnOffCategoriesButton:(id)button
 {
-  MEMORY[0x277D82BE0](a3);
+  MEMORY[0x277D82BE0](button);
   MEMORY[0x277D82BE0](self);
-  sub_214BF34E4(a3);
+  sub_214BF34E4(button);
   MEMORY[0x277D82BD8](self);
 }
 
@@ -57,11 +57,11 @@
   return v4;
 }
 
-- (void)setOkButton:(id)a3
+- (void)setOkButton:(id)button
 {
-  MEMORY[0x277D82BE0](a3);
+  MEMORY[0x277D82BE0](button);
   MEMORY[0x277D82BE0](self);
-  sub_214BF3AC4(a3);
+  sub_214BF3AC4(button);
   MEMORY[0x277D82BD8](self);
 }
 
@@ -74,11 +74,11 @@
   return v4;
 }
 
-- (void)setCustomizeButton:(id)a3
+- (void)setCustomizeButton:(id)button
 {
-  MEMORY[0x277D82BE0](a3);
+  MEMORY[0x277D82BE0](button);
   MEMORY[0x277D82BE0](self);
-  sub_214BF3E44(a3);
+  sub_214BF3E44(button);
   MEMORY[0x277D82BD8](self);
 }
 
@@ -91,18 +91,18 @@
   return v4;
 }
 
-- (void)setCancelButton:(id)a3
+- (void)setCancelButton:(id)button
 {
-  MEMORY[0x277D82BE0](a3);
+  MEMORY[0x277D82BE0](button);
   MEMORY[0x277D82BE0](self);
-  sub_214BF41C4(a3);
+  sub_214BF41C4(button);
   MEMORY[0x277D82BD8](self);
 }
 
-- (void)configureForBucket:(int64_t)a3 primaryUnreadCount:(int64_t)a4 otherUnreadCount:(int64_t)a5
+- (void)configureForBucket:(int64_t)bucket primaryUnreadCount:(int64_t)count otherUnreadCount:(int64_t)unreadCount
 {
   MEMORY[0x277D82BE0](self);
-  MessageListOnboardingTipCollectionViewCell.configure(forBucket:primaryUnreadCount:otherUnreadCount:)(a3, a4, a5);
+  MessageListOnboardingTipCollectionViewCell.configure(forBucket:primaryUnreadCount:otherUnreadCount:)(bucket, count, unreadCount);
   MEMORY[0x277D82BD8](self);
 }
 

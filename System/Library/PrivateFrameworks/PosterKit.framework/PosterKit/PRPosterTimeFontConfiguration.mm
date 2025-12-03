@@ -1,24 +1,24 @@
 @interface PRPosterTimeFontConfiguration
-+ (PRPosterTimeFontConfiguration)configurationWithTimeFontConfiguration:(id)a3 extensionBundleIdentifier:(id)a4 systemItem:(BOOL)a5;
++ (PRPosterTimeFontConfiguration)configurationWithTimeFontConfiguration:(id)configuration extensionBundleIdentifier:(id)identifier systemItem:(BOOL)item;
 + (PRPosterTimeFontConfiguration)defaultConfiguration;
-+ (id)configurationWithTimeFontConfiguration:(id)a3 extensionBundleURL:(id)a4 systemItem:(BOOL)a5;
++ (id)configurationWithTimeFontConfiguration:(id)configuration extensionBundleURL:(id)l systemItem:(BOOL)item;
 - (NSString)description;
 - (PRPosterTimeFontConfiguration)init;
-- (PRPosterTimeFontConfiguration)timeFontConfigurationWithExtensionBundle:(id)a3;
-- (PRPosterTimeFontConfiguration)timeFontConfigurationWithExtensionBundleIdentifier:(id)a3;
+- (PRPosterTimeFontConfiguration)timeFontConfigurationWithExtensionBundle:(id)bundle;
+- (PRPosterTimeFontConfiguration)timeFontConfigurationWithExtensionBundleIdentifier:(id)identifier;
 @end
 
 @implementation PRPosterTimeFontConfiguration
 
-+ (id)configurationWithTimeFontConfiguration:(id)a3 extensionBundleURL:(id)a4 systemItem:(BOOL)a5
++ (id)configurationWithTimeFontConfiguration:(id)configuration extensionBundleURL:(id)l systemItem:(BOOL)item
 {
-  v5 = a5;
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  itemCopy = item;
+  configurationCopy = configuration;
+  lCopy = l;
+  v9 = lCopy;
+  if (configurationCopy)
   {
-    if (v8)
+    if (lCopy)
     {
       goto LABEL_3;
     }
@@ -35,19 +35,19 @@
 
   +[PRPosterTimeFontConfiguration configurationWithTimeFontConfiguration:extensionBundleURL:systemItem:];
 LABEL_3:
-  v10 = [v7 timeFontIdentifier];
-  [v7 weight];
-  if (v10)
+  timeFontIdentifier = [configurationCopy timeFontIdentifier];
+  [configurationCopy weight];
+  if (timeFontIdentifier)
   {
-    v12 = [[PRPosterSystemTimeFontConfiguration alloc] initWithTimeFontIdentifier:v10 weight:v5 systemItem:v11];
+    v12 = [[PRPosterSystemTimeFontConfiguration alloc] initWithTimeFontIdentifier:timeFontIdentifier weight:itemCopy systemItem:v11];
   }
 
   else
   {
-    v13 = [v7 customFont];
-    if (v13)
+    customFont = [configurationCopy customFont];
+    if (customFont)
     {
-      v12 = [[PRPosterCustomTimeFontConfiguration alloc] initWithFont:v13 extensionBundleURL:v9];
+      v12 = [[PRPosterCustomTimeFontConfiguration alloc] initWithFont:customFont extensionBundleURL:v9];
     }
 
     else
@@ -59,18 +59,18 @@ LABEL_3:
   return v12;
 }
 
-+ (PRPosterTimeFontConfiguration)configurationWithTimeFontConfiguration:(id)a3 extensionBundleIdentifier:(id)a4 systemItem:(BOOL)a5
++ (PRPosterTimeFontConfiguration)configurationWithTimeFontConfiguration:(id)configuration extensionBundleIdentifier:(id)identifier systemItem:(BOOL)item
 {
-  v5 = a5;
-  v8 = a3;
+  itemCopy = item;
+  configurationCopy = configuration;
   v9 = MEMORY[0x1E69635D0];
-  v10 = a4;
-  v11 = [[v9 alloc] initWithBundleIdentifier:v10 error:0];
+  identifierCopy = identifier;
+  v11 = [[v9 alloc] initWithBundleIdentifier:identifierCopy error:0];
 
   v12 = [v11 URL];
   if (v12)
   {
-    v13 = [a1 configurationWithTimeFontConfiguration:v8 extensionBundleURL:v12 systemItem:v5];
+    v13 = [self configurationWithTimeFontConfiguration:configurationCopy extensionBundleURL:v12 systemItem:itemCopy];
   }
 
   else
@@ -88,29 +88,29 @@ LABEL_3:
   return v2;
 }
 
-- (PRPosterTimeFontConfiguration)timeFontConfigurationWithExtensionBundle:(id)a3
+- (PRPosterTimeFontConfiguration)timeFontConfigurationWithExtensionBundle:(id)bundle
 {
-  v4 = a3;
-  if (!v4)
+  bundleCopy = bundle;
+  if (!bundleCopy)
   {
     [PRPosterTimeFontConfiguration timeFontConfigurationWithExtensionBundle:];
   }
 
-  v5 = [v4 bundleURL];
-  v6 = [(PRPosterTimeFontConfiguration *)self timeFontConfigurationWithExtensionBundleURL:v5];
+  bundleURL = [bundleCopy bundleURL];
+  v6 = [(PRPosterTimeFontConfiguration *)self timeFontConfigurationWithExtensionBundleURL:bundleURL];
 
   return v6;
 }
 
-- (PRPosterTimeFontConfiguration)timeFontConfigurationWithExtensionBundleIdentifier:(id)a3
+- (PRPosterTimeFontConfiguration)timeFontConfigurationWithExtensionBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (!v4)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
     [PRPosterTimeFontConfiguration timeFontConfigurationWithExtensionBundleIdentifier:];
   }
 
-  v5 = [objc_alloc(MEMORY[0x1E69635D0]) initWithBundleIdentifier:v4 error:0];
+  v5 = [objc_alloc(MEMORY[0x1E69635D0]) initWithBundleIdentifier:identifierCopy error:0];
   v6 = [v5 URL];
   if (v6)
   {
@@ -155,7 +155,7 @@ LABEL_3:
   v8 = 3221225472;
   v9 = __44__PRPosterTimeFontConfiguration_description__block_invoke;
   v10 = &unk_1E7843070;
-  v11 = self;
+  selfCopy = self;
   v12 = v3;
   v4 = v3;
   [v4 appendProem:self block:&v7];

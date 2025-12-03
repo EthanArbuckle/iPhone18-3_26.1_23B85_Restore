@@ -2,11 +2,11 @@
 - (NSArray)attributes;
 - (NSURL)actionURL;
 - (TSEditorialItem)init;
-- (TSEditorialItem)initWithIdentifier:(id)a3 title:(id)a4 subtitle:(id)a5 subtitleColor:(id)a6 attributes:(id)a7 actionURL:(id)a8 thumbnailImage:(id)a9 backingTag:(id)a10 headline:(id)a11;
+- (TSEditorialItem)initWithIdentifier:(id)identifier title:(id)title subtitle:(id)subtitle subtitleColor:(id)color attributes:(id)attributes actionURL:(id)l thumbnailImage:(id)image backingTag:(id)self0 headline:(id)self1;
 - (UIImage)thumbnailImage;
-- (void)setActionURL:(id)a3;
-- (void)setAttributes:(id)a3;
-- (void)setThumbnailImage:(id)a3;
+- (void)setActionURL:(id)l;
+- (void)setAttributes:(id)attributes;
+- (void)setThumbnailImage:(id)image;
 @end
 
 @implementation TSEditorialItem
@@ -20,7 +20,7 @@
   return v2;
 }
 
-- (void)setAttributes:(id)a3
+- (void)setAttributes:(id)attributes
 {
   v4 = sub_219BF5924();
   v5 = OBJC_IVAR___TSEditorialItem_attributes;
@@ -50,12 +50,12 @@
   return v10;
 }
 
-- (void)setActionURL:(id)a3
+- (void)setActionURL:(id)l
 {
   sub_21873F65C(0);
   MEMORY[0x28223BE20](v5 - 8);
   v7 = &v12 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
-  if (a3)
+  if (l)
   {
     sub_219BDB8B4();
     v8 = sub_219BDB954();
@@ -70,7 +70,7 @@
 
   v10 = OBJC_IVAR___TSEditorialItem_actionURL;
   swift_beginAccess();
-  v11 = self;
+  selfCopy = self;
   sub_218FA6590(v7, self + v10);
   swift_endAccess();
 }
@@ -82,16 +82,16 @@
   return *(self + v3);
 }
 
-- (void)setThumbnailImage:(id)a3
+- (void)setThumbnailImage:(id)image
 {
   v5 = OBJC_IVAR___TSEditorialItem_thumbnailImage;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = a3;
-  v7 = a3;
+  *(self + v5) = image;
+  imageCopy = image;
 }
 
-- (TSEditorialItem)initWithIdentifier:(id)a3 title:(id)a4 subtitle:(id)a5 subtitleColor:(id)a6 attributes:(id)a7 actionURL:(id)a8 thumbnailImage:(id)a9 backingTag:(id)a10 headline:(id)a11
+- (TSEditorialItem)initWithIdentifier:(id)identifier title:(id)title subtitle:(id)subtitle subtitleColor:(id)color attributes:(id)attributes actionURL:(id)l thumbnailImage:(id)image backingTag:(id)self0 headline:(id)self1
 {
   sub_21873F65C(0);
   MEMORY[0x28223BE20](v14 - 8);
@@ -101,15 +101,15 @@
   v20 = sub_219BF5414();
   v41 = v21;
   v42 = v20;
-  if (a5)
+  if (subtitle)
   {
     v22 = sub_219BF5414();
     v39 = v23;
     v40 = v22;
-    if (a6)
+    if (color)
     {
 LABEL_3:
-      a6 = sub_219BF5414();
+      color = sub_219BF5414();
       v38 = v24;
       goto LABEL_6;
     }
@@ -119,7 +119,7 @@ LABEL_3:
   {
     v39 = 0;
     v40 = 0;
-    if (a6)
+    if (color)
     {
       goto LABEL_3;
     }
@@ -128,34 +128,34 @@ LABEL_3:
   v38 = 0;
 LABEL_6:
   v25 = sub_219BF5924();
-  if (a8)
+  if (l)
   {
     sub_219BDB8B4();
     v26 = sub_219BDB954();
     v27 = *(v26 - 8);
-    v37 = a6;
+    colorCopy = color;
     v28 = v17;
     v29 = *(v27 + 56);
     v36 = v25;
-    v30 = a9;
+    imageCopy = image;
     swift_unknownObjectRetain();
     swift_unknownObjectRetain();
     v29(v16, 0, 1, v26);
     v17 = v28;
     v25 = v36;
-    a6 = v37;
+    color = colorCopy;
   }
 
   else
   {
     v31 = sub_219BDB954();
     (*(*(v31 - 8) + 56))(v16, 1, 1, v31);
-    v32 = a9;
+    imageCopy2 = image;
     swift_unknownObjectRetain();
     swift_unknownObjectRetain();
   }
 
-  v33 = sub_218FA72AC(v17, v19, v42, v41, v40, v39, a6, v38, v25, v16, a9, a10, a11);
+  v33 = sub_218FA72AC(v17, v19, v42, v41, v40, v39, color, v38, v25, v16, image, tag, headline);
 
   swift_unknownObjectRelease();
   swift_unknownObjectRelease();

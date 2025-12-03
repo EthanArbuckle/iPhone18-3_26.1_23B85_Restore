@@ -1,8 +1,8 @@
 @interface SKDRecordProcessorCache
 + (id)sharedCache;
 - (SKDRecordProcessorCache)init;
-- (id)processorWithName:(id)a3;
-- (id)processorsWithNames:(id)a3;
+- (id)processorWithName:(id)name;
+- (id)processorsWithNames:(id)names;
 @end
 
 @implementation SKDRecordProcessorCache
@@ -41,37 +41,37 @@ void __38__SKDRecordProcessorCache_sharedCache__block_invoke()
   return v2;
 }
 
-- (id)processorWithName:(id)a3
+- (id)processorWithName:(id)name
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_cache objectForKeyedSubscript:v4];
+  nameCopy = name;
+  v5 = [(NSMutableDictionary *)self->_cache objectForKeyedSubscript:nameCopy];
   if (!v5)
   {
-    if ([v4 hasSuffix:@"TEST_PROCESSOR"])
+    if ([nameCopy hasSuffix:@"TEST_PROCESSOR"])
     {
-      v6 = [[SKDTestProcessor alloc] initWithName:v4];
+      v6 = [[SKDTestProcessor alloc] initWithName:nameCopy];
     }
 
     else
     {
-      if ([v4 isEqualToString:@"language"])
+      if ([nameCopy isEqualToString:@"language"])
       {
         v7 = SKDLanguageProcessor;
       }
 
-      else if ([v4 isEqualToString:@"breadcrumb"])
+      else if ([nameCopy isEqualToString:@"breadcrumb"])
       {
         v7 = SKDBreadcrumbProcessor;
       }
 
-      else if ([v4 isEqualToString:@"location"])
+      else if ([nameCopy isEqualToString:@"location"])
       {
         v7 = SKDLocationProcessor;
       }
 
       else
       {
-        if (![v4 isEqualToString:@"embedding"])
+        if (![nameCopy isEqualToString:@"embedding"])
         {
           v5 = 0;
           goto LABEL_15;
@@ -86,7 +86,7 @@ void __38__SKDRecordProcessorCache_sharedCache__block_invoke()
     v5 = v6;
     if (v6)
     {
-      [(NSMutableDictionary *)self->_cache setObject:v6 forKey:v4];
+      [(NSMutableDictionary *)self->_cache setObject:v6 forKey:nameCopy];
       [v5 load];
     }
   }
@@ -97,16 +97,16 @@ LABEL_15:
   return v8;
 }
 
-- (id)processorsWithNames:(id)a3
+- (id)processorsWithNames:(id)names
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  namesCopy = names;
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v4;
+  v6 = namesCopy;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {

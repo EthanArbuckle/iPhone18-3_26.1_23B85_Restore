@@ -19,7 +19,7 @@
 
 - (uint64_t)wifiModeConfigurable
 {
-  v2 = [a1 disable6EMode];
+  disable6EMode = [self disable6EMode];
   if (_os_feature_enabled_impl())
   {
     v3 = _os_feature_enabled_impl() ^ 1;
@@ -30,13 +30,13 @@
     v3 = 1;
   }
 
-  v4 = [a1 isStandalone6G] | v3;
-  if ((v4 & 1) != 0 || v2 == 2)
+  v4 = [self isStandalone6G] | v3;
+  if ((v4 & 1) != 0 || disable6EMode == 2)
   {
     return (v4 ^ 1) & 1;
   }
 
-  return [a1 hasJoined6GHz];
+  return [self hasJoined6GHz];
 }
 
 - (uint64_t)hasJoined6GHz
@@ -46,8 +46,8 @@
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v1 = [a1 BSSList];
-  v2 = [v1 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  bSSList = [self BSSList];
+  v2 = [bSSList countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v2)
   {
     v3 = *v10;
@@ -57,20 +57,20 @@
       {
         if (*v10 != v3)
         {
-          objc_enumerationMutation(v1);
+          objc_enumerationMutation(bSSList);
         }
 
-        v5 = [*(*(&v9 + 1) + 8 * i) channel];
-        v6 = [v5 band];
+        channel = [*(*(&v9 + 1) + 8 * i) channel];
+        band = [channel band];
 
-        if (v6 == 3)
+        if (band == 3)
         {
           v2 = 1;
           goto LABEL_11;
         }
       }
 
-      v2 = [v1 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v2 = [bSSList countByEnumeratingWithState:&v9 objects:v13 count:16];
       if (v2)
       {
         continue;
@@ -96,29 +96,29 @@ LABEL_11:
     v4 = v2;
     if (os_log_type_enabled(v4, v3))
     {
-      v5 = [a1 networkName];
+      networkName = [self networkName];
       v8 = 136316162;
       v9 = "[CWFNetworkProfile(WiFiKit) shouldShowInKnownNetworkList]";
       v10 = 2112;
-      v11 = v5;
+      v11 = networkName;
       v12 = 1024;
-      v13 = [a1 shouldShowInMyNetworkList];
+      shouldShowInMyNetworkList = [self shouldShowInMyNetworkList];
       v14 = 1024;
-      v15 = [a1 isPersonalHotspot];
+      isPersonalHotspot = [self isPersonalHotspot];
       v16 = 1024;
-      v17 = [a1 isAppBased];
+      isAppBased = [self isAppBased];
       _os_log_impl(&dword_273ECD000, v4, v3, "%s: networkName='%@' shouldShowInMyNetworkList=%d isPersonalHotspot=%d isAppBased=%d", &v8, 0x28u);
     }
   }
 
-  if ([a1 shouldShowInMyNetworkList] && !objc_msgSend(a1, "isPersonalHotspot"))
+  if ([self shouldShowInMyNetworkList] && !objc_msgSend(self, "isPersonalHotspot"))
   {
     result = 1;
   }
 
   else
   {
-    result = [a1 isAppBased];
+    result = [self isAppBased];
   }
 
   v7 = *MEMORY[0x277D85DE8];
@@ -128,21 +128,21 @@ LABEL_11:
 - (uint64_t)shouldShowInMyNetworkList
 {
   v24 = *MEMORY[0x277D85DE8];
-  v2 = [a1 lastJoinedAt];
-  if (v2)
+  lastJoinedAt = [self lastJoinedAt];
+  if (lastJoinedAt)
   {
     v3 = objc_alloc_init(MEMORY[0x277CBEAB8]);
     [v3 setDay:14];
-    v4 = [MEMORY[0x277CBEA80] currentCalendar];
-    v5 = [v4 dateByAddingComponents:v3 toDate:v2 options:0];
+    currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+    v5 = [currentCalendar dateByAddingComponents:v3 toDate:lastJoinedAt options:0];
 
-    v6 = [MEMORY[0x277CBEAA8] date];
-    v7 = [v6 compare:v5];
+    date = [MEMORY[0x277CBEAA8] date];
+    v7 = [date compare:v5];
 
-    v8 = [a1 isOpen];
+    isOpen = [self isOpen];
     if (v7 == 1)
     {
-      v9 = v8;
+      v9 = isOpen;
     }
 
     else
@@ -158,13 +158,13 @@ LABEL_11:
       if (os_log_type_enabled(v12, v11))
       {
         v13 = v7 == 1;
-        v14 = [a1 networkName];
+        networkName = [self networkName];
         v18 = 138412802;
-        v19 = v14;
+        v19 = networkName;
         v20 = 1024;
         v21 = v13;
         v22 = 1024;
-        v23 = [a1 isOpen];
+        isOpen2 = [self isOpen];
         _os_log_impl(&dword_273ECD000, v12, v11, "%@ did pass last joined checkpoint: %d, is open: %d", &v18, 0x18u);
       }
     }
@@ -183,21 +183,21 @@ LABEL_11:
 
 - (uint64_t)carPlayNetworkType
 {
-  if (![a1 isCarPlay])
+  if (![self isCarPlay])
   {
     return 0;
   }
 
-  v2 = [a1 lastJoinedByUserAt];
-  if (v2)
+  lastJoinedByUserAt = [self lastJoinedByUserAt];
+  if (lastJoinedByUserAt)
   {
 
     return 2;
   }
 
-  v4 = [a1 payloadUUID];
+  payloadUUID = [self payloadUUID];
 
-  if (v4)
+  if (payloadUUID)
   {
     return 2;
   }
@@ -207,25 +207,25 @@ LABEL_11:
 
 - (BOOL)isManaged
 {
-  v1 = [a1 payloadUUID];
-  v2 = v1 != 0;
+  payloadUUID = [self payloadUUID];
+  v2 = payloadUUID != 0;
 
   return v2;
 }
 
 - (uint64_t)autoLoginConfigurable
 {
-  result = [a1 isCaptive];
+  result = [self isCaptive];
   if (result)
   {
-    if ([a1 addReason] == 10)
+    if ([self addReason] == 10)
     {
       return 0;
     }
 
     else
     {
-      return [a1 isCarPlay] ^ 1;
+      return [self isCarPlay] ^ 1;
     }
   }
 
@@ -234,21 +234,21 @@ LABEL_11:
 
 - (uint64_t)autoJoinConfigurable
 {
-  if ([a1 isPersonalHotspot])
+  if ([self isPersonalHotspot])
   {
     return 0;
   }
 
   else
   {
-    return [a1 isCarPlayOnly] ^ 1;
+    return [self isCarPlayOnly] ^ 1;
   }
 }
 
 - (id)networkQualityDate
 {
-  v1 = [a1 OSSpecificAttributes];
-  v2 = [v1 objectForKey:*MEMORY[0x277D29860]];
+  oSSpecificAttributes = [self OSSpecificAttributes];
+  v2 = [oSSpecificAttributes objectForKey:*MEMORY[0x277D29860]];
 
   return v2;
 }
@@ -263,24 +263,24 @@ LABEL_11:
 
 - (id)displayFriendlyName
 {
-  v1 = [a1 OSSpecificAttributes];
-  v2 = [v1 objectForKeyedSubscript:@"DisplayFriendlyName"];
+  oSSpecificAttributes = [self OSSpecificAttributes];
+  v2 = [oSSpecificAttributes objectForKeyedSubscript:@"DisplayFriendlyName"];
 
   return v2;
 }
 
 - (id)accessoryIdentifier
 {
-  v1 = [a1 OSSpecificAttributes];
-  v2 = [v1 objectForKeyedSubscript:@"AccessoryIdentifier"];
+  oSSpecificAttributes = [self OSSpecificAttributes];
+  v2 = [oSSpecificAttributes objectForKeyedSubscript:@"AccessoryIdentifier"];
 
   return v2;
 }
 
 - (id)randomMACAddress
 {
-  v1 = [a1 OSSpecificAttributes];
-  v2 = [v1 objectForKey:@"PRIVATE_MAC_ADDRESS"];
+  oSSpecificAttributes = [self OSSpecificAttributes];
+  v2 = [oSSpecificAttributes objectForKey:@"PRIVATE_MAC_ADDRESS"];
 
   if (v2 && (v3 = [v2 objectForKey:@"PRIVATE_MAC_ADDRESS_VALUE"]) != 0)
   {
@@ -297,8 +297,8 @@ LABEL_11:
 
 - (double)networkQualityResponsiveness
 {
-  v1 = [a1 OSSpecificAttributes];
-  v2 = [v1 objectForKey:*MEMORY[0x277D29868]];
+  oSSpecificAttributes = [self OSSpecificAttributes];
+  v2 = [oSSpecificAttributes objectForKey:*MEMORY[0x277D29868]];
 
   if (v2)
   {

@@ -1,15 +1,15 @@
 @interface AVAssetDownloadDefaultAuxiliaryContentConfiguration
-- (void)_serializeIntoDownloadConfig:(FigStreamingAssetDownloadConfig *)a3 asset:(id)a4;
-- (void)_setupContentConfigWithDownloadConfig:(FigStreamingAssetDownloadConfig *)a3 asset:(id)a4;
+- (void)_serializeIntoDownloadConfig:(FigStreamingAssetDownloadConfig *)config asset:(id)asset;
+- (void)_setupContentConfigWithDownloadConfig:(FigStreamingAssetDownloadConfig *)config asset:(id)asset;
 @end
 
 @implementation AVAssetDownloadDefaultAuxiliaryContentConfiguration
 
-- (void)_setupContentConfigWithDownloadConfig:(FigStreamingAssetDownloadConfig *)a3 asset:(id)a4
+- (void)_setupContentConfigWithDownloadConfig:(FigStreamingAssetDownloadConfig *)config asset:(id)asset
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v6 = [a4 preferredMediaSelection];
-  v7 = [v6 selectedMediaOptionInMediaSelectionGroup:{objc_msgSend(a4, "mediaSelectionGroupForMediaCharacteristic:", @"AVMediaCharacteristicAudible"}];
+  preferredMediaSelection = [asset preferredMediaSelection];
+  v7 = [preferredMediaSelection selectedMediaOptionInMediaSelectionGroup:{objc_msgSend(asset, "mediaSelectionGroupForMediaCharacteristic:", @"AVMediaCharacteristicAudible"}];
   if (v7)
   {
     v8 = [AVAssetVariantQualifier predicateForChannelCount:2 mediaSelectionOption:v7 operatorType:2];
@@ -25,13 +25,13 @@
 
     if (![(NSArray *)[(AVAssetDownloadContentConfiguration *)self mediaSelections] count])
     {
-      v10 = v6;
+      v10 = preferredMediaSelection;
       -[AVAssetDownloadContentConfiguration setMediaSelections:](self, "setMediaSelections:", [MEMORY[0x1E695DEC8] arrayWithObjects:&v10 count:1]);
     }
   }
 }
 
-- (void)_serializeIntoDownloadConfig:(FigStreamingAssetDownloadConfig *)a3 asset:(id)a4
+- (void)_serializeIntoDownloadConfig:(FigStreamingAssetDownloadConfig *)config asset:(id)asset
 {
   if (![(NSArray *)[(AVAssetDownloadContentConfiguration *)self variantQualifiers] count])
   {
@@ -40,18 +40,18 @@
     v9[1] = 3221225472;
     v9[2] = __90__AVAssetDownloadDefaultAuxiliaryContentConfiguration__serializeIntoDownloadConfig_asset___block_invoke;
     v9[3] = &unk_1E7462A28;
-    v9[4] = a4;
+    v9[4] = asset;
     v9[5] = self;
     v9[6] = v7;
-    v9[7] = a3;
-    [a4 loadValuesAsynchronouslyForKeys:&unk_1F0AD3820 completionHandler:v9];
+    v9[7] = config;
+    [asset loadValuesAsynchronouslyForKeys:&unk_1F0AD3820 completionHandler:v9];
     dispatch_semaphore_wait(v7, 0xFFFFFFFFFFFFFFFFLL);
     dispatch_release(v7);
   }
 
   v8.receiver = self;
   v8.super_class = AVAssetDownloadDefaultAuxiliaryContentConfiguration;
-  [(AVAssetDownloadContentConfiguration *)&v8 _serializeIntoDownloadConfig:a3 asset:a4];
+  [(AVAssetDownloadContentConfiguration *)&v8 _serializeIntoDownloadConfig:config asset:asset];
 }
 
 intptr_t __90__AVAssetDownloadDefaultAuxiliaryContentConfiguration__serializeIntoDownloadConfig_asset___block_invoke(uint64_t a1)

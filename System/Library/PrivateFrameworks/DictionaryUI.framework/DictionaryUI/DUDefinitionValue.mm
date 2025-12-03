@@ -1,34 +1,34 @@
 @interface DUDefinitionValue
-- (DUDefinitionValue)initWithDefinitionDictionary:(id)a3 term:(id)a4;
+- (DUDefinitionValue)initWithDefinitionDictionary:(id)dictionary term:(id)term;
 - (NSAttributedString)definition;
 - (NSDictionary)definitionElements;
 - (NSString)longDefinition;
-- (id)_HTMLDefinitionForType:(int64_t)a3;
+- (id)_HTMLDefinitionForType:(int64_t)type;
 - (id)description;
 - (void)dealloc;
 @end
 
 @implementation DUDefinitionValue
 
-- (DUDefinitionValue)initWithDefinitionDictionary:(id)a3 term:(id)a4
+- (DUDefinitionValue)initWithDefinitionDictionary:(id)dictionary term:(id)term
 {
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  termCopy = term;
   v15.receiver = self;
   v15.super_class = DUDefinitionValue;
   v8 = [(DUDefinitionValue *)&v15 init];
   if (v8)
   {
-    v9 = [v6 localizedDictionaryName];
-    v10 = [v9 copy];
+    localizedDictionaryName = [dictionaryCopy localizedDictionaryName];
+    v10 = [localizedDictionaryName copy];
     localizedDictionaryName = v8->_localizedDictionaryName;
     v8->_localizedDictionaryName = v10;
 
-    v12 = [v7 copy];
+    v12 = [termCopy copy];
     term = v8->_term;
     v8->_term = v12;
 
-    if ([v6 dictionaryRef])
+    if ([dictionaryCopy dictionaryRef])
     {
       [(NSString *)v8->_term length];
       v8->_foundRecordRefs = DCSCopyDefinitionRecords();
@@ -66,8 +66,8 @@
       v7 = v6;
       if (v6)
       {
-        v8 = [v6 attributedString];
-        v9 = [v8 copy];
+        attributedString = [v6 attributedString];
+        v9 = [attributedString copy];
         v10 = self->_definition;
         self->_definition = v9;
       }
@@ -159,7 +159,7 @@ LABEL_2:
   return v3;
 }
 
-- (id)_HTMLDefinitionForType:(int64_t)a3
+- (id)_HTMLDefinitionForType:(int64_t)type
 {
   foundRecordRefs = self->_foundRecordRefs;
   if (foundRecordRefs && (Count = CFArrayGetCount(foundRecordRefs), Count >= 1))

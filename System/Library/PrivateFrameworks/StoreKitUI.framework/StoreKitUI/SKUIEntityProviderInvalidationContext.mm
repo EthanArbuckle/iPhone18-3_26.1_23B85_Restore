@@ -1,28 +1,28 @@
 @interface SKUIEntityProviderInvalidationContext
-- (void)setInvalidateDataSourceCounts:(BOOL)a3;
-- (void)setInvalidateEverything:(BOOL)a3;
+- (void)setInvalidateDataSourceCounts:(BOOL)counts;
+- (void)setInvalidateEverything:(BOOL)everything;
 @end
 
 @implementation SKUIEntityProviderInvalidationContext
 
-- (void)setInvalidateDataSourceCounts:(BOOL)a3
+- (void)setInvalidateDataSourceCounts:(BOOL)counts
 {
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIEntityProviderInvalidationContext setInvalidateDataSourceCounts:];
   }
 
-  self->_invalidateDataSourceCounts = a3;
+  self->_invalidateDataSourceCounts = counts;
 }
 
-- (void)setInvalidateEverything:(BOOL)a3
+- (void)setInvalidateEverything:(BOOL)everything
 {
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIEntityProviderInvalidationContext setInvalidateEverything:];
   }
 
-  self->_invalidateEverything = a3;
+  self->_invalidateEverything = everything;
 }
 
 - (void)setInvalidateDataSourceCounts:.cold.1()

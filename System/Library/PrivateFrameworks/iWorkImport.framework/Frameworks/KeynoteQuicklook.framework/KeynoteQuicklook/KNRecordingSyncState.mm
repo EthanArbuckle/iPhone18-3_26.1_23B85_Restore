@@ -1,41 +1,41 @@
 @interface KNRecordingSyncState
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isRecordingLocallyOutOfSyncUsingLocalOutOfSyncToken:(id)a3;
-- (KNRecordingSyncState)initWithArchive:(const void *)a3 unarchiver:(id)a4;
-- (KNRecordingSyncState)initWithOutOfSyncToken:(id)a3 canClearOutOfSyncToken:(BOOL)a4;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isRecordingLocallyOutOfSyncUsingLocalOutOfSyncToken:(id)token;
+- (KNRecordingSyncState)initWithArchive:(const void *)archive unarchiver:(id)unarchiver;
+- (KNRecordingSyncState)initWithOutOfSyncToken:(id)token canClearOutOfSyncToken:(BOOL)syncToken;
 - (id)description;
-- (id)recordingSyncStateByMarkingRecordingAsOutOfSync:(BOOL)a3 withLocalOutOfSyncToken:(id)a4;
-- (void)saveToArchive:(void *)a3 archiver:(id)a4;
+- (id)recordingSyncStateByMarkingRecordingAsOutOfSync:(BOOL)sync withLocalOutOfSyncToken:(id)token;
+- (void)saveToArchive:(void *)archive archiver:(id)archiver;
 @end
 
 @implementation KNRecordingSyncState
 
-- (KNRecordingSyncState)initWithOutOfSyncToken:(id)a3 canClearOutOfSyncToken:(BOOL)a4
+- (KNRecordingSyncState)initWithOutOfSyncToken:(id)token canClearOutOfSyncToken:(BOOL)syncToken
 {
-  v6 = a3;
+  tokenCopy = token;
   v13.receiver = self;
   v13.super_class = KNRecordingSyncState;
   v9 = [(KNRecordingSyncState *)&v13 init];
   if (v9)
   {
-    v10 = objc_msgSend_copy(v6, v7, v8);
+    v10 = objc_msgSend_copy(tokenCopy, v7, v8);
     outOfSyncToken = v9->_outOfSyncToken;
     v9->_outOfSyncToken = v10;
 
-    v9->_canClearOutOfSyncToken = a4;
+    v9->_canClearOutOfSyncToken = syncToken;
   }
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
 
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   v5 = TSUDynamicCast();
 
@@ -50,10 +50,10 @@
   return objc_msgSend_stringWithFormat_(v3, v5, @"<%@ %p outOfSyncToken=%@ canClear=%d>", v4, self, self->_outOfSyncToken, self->_canClearOutOfSyncToken);
 }
 
-- (BOOL)isRecordingLocallyOutOfSyncUsingLocalOutOfSyncToken:(id)a3
+- (BOOL)isRecordingLocallyOutOfSyncUsingLocalOutOfSyncToken:(id)token
 {
-  v5 = a3;
-  if (!v5)
+  tokenCopy = token;
+  if (!tokenCopy)
   {
     v6 = MEMORY[0x277D81150];
     v7 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v4, "[KNRecordingSyncState isRecordingLocallyOutOfSyncUsingLocalOutOfSyncToken:]");
@@ -68,7 +68,7 @@
     outOfSyncToken = self->_outOfSyncToken;
     if (outOfSyncToken)
     {
-      isEqual = objc_msgSend_isEqual_(outOfSyncToken, v4, v5);
+      isEqual = objc_msgSend_isEqual_(outOfSyncToken, v4, tokenCopy);
     }
 
     else
@@ -85,10 +85,10 @@
   return isEqual;
 }
 
-- (id)recordingSyncStateByMarkingRecordingAsOutOfSync:(BOOL)a3 withLocalOutOfSyncToken:(id)a4
+- (id)recordingSyncStateByMarkingRecordingAsOutOfSync:(BOOL)sync withLocalOutOfSyncToken:(id)token
 {
-  v7 = a4;
-  if (!v7)
+  tokenCopy = token;
+  if (!tokenCopy)
   {
     v8 = MEMORY[0x277D81150];
     v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, "[KNRecordingSyncState recordingSyncStateByMarkingRecordingAsOutOfSync:withLocalOutOfSyncToken:]");
@@ -96,7 +96,7 @@
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v8, v12, v9, v11, 78, 0, "invalid nil value for '%{public}s'", "localOutOfSyncToken");
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v13, v14);
-    v7 = objc_msgSend_UUID(MEMORY[0x277CCAD78], v15, v16);
+    tokenCopy = objc_msgSend_UUID(MEMORY[0x277CCAD78], v15, v16);
   }
 
   if (!self->_canClearOutOfSyncToken)
@@ -109,7 +109,7 @@
   if (!outOfSyncToken)
   {
     isEqual = 1;
-    if (a3)
+    if (sync)
     {
       goto LABEL_8;
     }
@@ -123,8 +123,8 @@ LABEL_11:
     goto LABEL_8;
   }
 
-  isEqual = objc_msgSend_isEqual_(outOfSyncToken, v6, v7);
-  if (!a3)
+  isEqual = objc_msgSend_isEqual_(outOfSyncToken, v6, tokenCopy);
+  if (!sync)
   {
     goto LABEL_11;
   }
@@ -132,7 +132,7 @@ LABEL_11:
 LABEL_8:
   if (!self->_outOfSyncToken)
   {
-    v19 = v7;
+    v19 = tokenCopy;
     goto LABEL_13;
   }
 
@@ -145,15 +145,15 @@ LABEL_13:
   return canClearOutOfSyncToken;
 }
 
-- (KNRecordingSyncState)initWithArchive:(const void *)a3 unarchiver:(id)a4
+- (KNRecordingSyncState)initWithArchive:(const void *)archive unarchiver:(id)unarchiver
 {
-  v7 = a4;
-  if (*(a3 + 16))
+  unarchiverCopy = unarchiver;
+  if (*(archive + 16))
   {
     v10 = objc_alloc(MEMORY[0x277CCAD78]);
-    if (*(a3 + 3))
+    if (*(archive + 3))
     {
-      v12 = objc_msgSend_tsp_initWithMessage_(v10, v11, *(a3 + 3));
+      v12 = objc_msgSend_tsp_initWithMessage_(v10, v11, *(archive + 3));
     }
 
     else
@@ -162,13 +162,13 @@ LABEL_13:
     }
 
     v8 = v12;
-    canClearOutOfSyncToken = objc_msgSend_initWithOutOfSyncToken_canClearOutOfSyncToken_(self, v13, v12, *(a3 + 32));
+    canClearOutOfSyncToken = objc_msgSend_initWithOutOfSyncToken_canClearOutOfSyncToken_(self, v13, v12, *(archive + 32));
   }
 
   else
   {
     v8 = 0;
-    canClearOutOfSyncToken = objc_msgSend_initWithOutOfSyncToken_canClearOutOfSyncToken_(self, v6, 0, *(a3 + 32));
+    canClearOutOfSyncToken = objc_msgSend_initWithOutOfSyncToken_canClearOutOfSyncToken_(self, v6, 0, *(archive + 32));
   }
 
   v14 = canClearOutOfSyncToken;
@@ -176,32 +176,32 @@ LABEL_13:
   return v14;
 }
 
-- (void)saveToArchive:(void *)a3 archiver:(id)a4
+- (void)saveToArchive:(void *)archive archiver:(id)archiver
 {
-  v11 = a4;
+  archiverCopy = archiver;
   outOfSyncToken = self->_outOfSyncToken;
   if (outOfSyncToken)
   {
-    *(a3 + 4) |= 1u;
-    v8 = *(a3 + 3);
+    *(archive + 4) |= 1u;
+    v8 = *(archive + 3);
     if (!v8)
     {
-      v9 = *(a3 + 1);
+      v9 = *(archive + 1);
       if (v9)
       {
         v9 = *(v9 & 0xFFFFFFFFFFFFFFFELL);
       }
 
       v8 = MEMORY[0x277C8F000](v9);
-      *(a3 + 3) = v8;
+      *(archive + 3) = v8;
     }
 
     objc_msgSend_tsp_saveToMessage_(outOfSyncToken, v6, v8);
   }
 
   canClearOutOfSyncToken = self->_canClearOutOfSyncToken;
-  *(a3 + 4) |= 2u;
-  *(a3 + 32) = canClearOutOfSyncToken;
+  *(archive + 4) |= 2u;
+  *(archive + 32) = canClearOutOfSyncToken;
 }
 
 @end

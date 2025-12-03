@@ -1,17 +1,17 @@
 @interface ActivityQoSObservationClient
 - (_TtC11ActivityKit28ActivityQoSObservationClient)init;
-- (id)listenForActivityQoSWithActivityIdentifier:(id)a3 handler:(id)a4;
+- (id)listenForActivityQoSWithActivityIdentifier:(id)identifier handler:(id)handler;
 @end
 
 @implementation ActivityQoSObservationClient
 
-- (id)listenForActivityQoSWithActivityIdentifier:(id)a3 handler:(id)a4
+- (id)listenForActivityQoSWithActivityIdentifier:(id)identifier handler:(id)handler
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(handler);
   v6 = swift_allocObject();
   *(v6 + 16) = v5;
   v7 = qword_1EB09F748;
-  v8 = a3;
+  identifierCopy = identifier;
   if (v7 != -1)
   {
     swift_once();
@@ -26,7 +26,7 @@
   v13[3] = &block_descriptor_63_2;
   v10 = _Block_copy(v13);
 
-  v11 = [v9 listenForActivityQoSWithActivityIdentifier:v8 handler:v10];
+  v11 = [v9 listenForActivityQoSWithActivityIdentifier:identifierCopy handler:v10];
   _Block_release(v10);
 
   return v11;

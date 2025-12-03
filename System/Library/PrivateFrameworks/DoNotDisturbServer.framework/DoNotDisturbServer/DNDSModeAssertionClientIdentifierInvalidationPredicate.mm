@@ -1,43 +1,43 @@
 @interface DNDSModeAssertionClientIdentifierInvalidationPredicate
-- (BOOL)evaluateWithObject:(id)a3 substitutionVariables:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (DNDSModeAssertionClientIdentifierInvalidationPredicate)initWithClientIdentifiers:(id)a3;
-- (DNDSModeAssertionClientIdentifierInvalidationPredicate)initWithCoder:(id)a3;
+- (BOOL)evaluateWithObject:(id)object substitutionVariables:(id)variables;
+- (BOOL)isEqual:(id)equal;
+- (DNDSModeAssertionClientIdentifierInvalidationPredicate)initWithClientIdentifiers:(id)identifiers;
+- (DNDSModeAssertionClientIdentifierInvalidationPredicate)initWithCoder:(id)coder;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DNDSModeAssertionClientIdentifierInvalidationPredicate
 
-- (DNDSModeAssertionClientIdentifierInvalidationPredicate)initWithClientIdentifiers:(id)a3
+- (DNDSModeAssertionClientIdentifierInvalidationPredicate)initWithClientIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   v9.receiver = self;
   v9.super_class = DNDSModeAssertionClientIdentifierInvalidationPredicate;
-  v5 = [(DNDSModeAssertionInvalidationPredicate *)&v9 _init];
-  if (v5)
+  _init = [(DNDSModeAssertionInvalidationPredicate *)&v9 _init];
+  if (_init)
   {
-    v6 = [v4 copy];
-    clientIdentifiers = v5->_clientIdentifiers;
-    v5->_clientIdentifiers = v6;
+    v6 = [identifiersCopy copy];
+    clientIdentifiers = _init->_clientIdentifiers;
+    _init->_clientIdentifiers = v6;
   }
 
-  return v5;
+  return _init;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(DNDSModeAssertionClientIdentifierInvalidationPredicate *)self clientIdentifiers];
-  v3 = [v2 hash];
+  clientIdentifiers = [(DNDSModeAssertionClientIdentifierInvalidationPredicate *)self clientIdentifiers];
+  v3 = [clientIdentifiers hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
@@ -47,25 +47,25 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(DNDSModeAssertionClientIdentifierInvalidationPredicate *)self clientIdentifiers];
-      v7 = [(DNDSModeAssertionClientIdentifierInvalidationPredicate *)v5 clientIdentifiers];
-      if (v6 == v7)
+      v5 = equalCopy;
+      clientIdentifiers = [(DNDSModeAssertionClientIdentifierInvalidationPredicate *)self clientIdentifiers];
+      clientIdentifiers2 = [(DNDSModeAssertionClientIdentifierInvalidationPredicate *)v5 clientIdentifiers];
+      if (clientIdentifiers == clientIdentifiers2)
       {
         v12 = 1;
       }
 
       else
       {
-        v8 = [(DNDSModeAssertionClientIdentifierInvalidationPredicate *)self clientIdentifiers];
-        if (v8)
+        clientIdentifiers3 = [(DNDSModeAssertionClientIdentifierInvalidationPredicate *)self clientIdentifiers];
+        if (clientIdentifiers3)
         {
-          v9 = [(DNDSModeAssertionClientIdentifierInvalidationPredicate *)v5 clientIdentifiers];
-          if (v9)
+          clientIdentifiers4 = [(DNDSModeAssertionClientIdentifierInvalidationPredicate *)v5 clientIdentifiers];
+          if (clientIdentifiers4)
           {
-            v10 = [(DNDSModeAssertionClientIdentifierInvalidationPredicate *)self clientIdentifiers];
-            v11 = [(DNDSModeAssertionClientIdentifierInvalidationPredicate *)v5 clientIdentifiers];
-            v12 = [v10 isEqual:v11];
+            clientIdentifiers5 = [(DNDSModeAssertionClientIdentifierInvalidationPredicate *)self clientIdentifiers];
+            clientIdentifiers6 = [(DNDSModeAssertionClientIdentifierInvalidationPredicate *)v5 clientIdentifiers];
+            v12 = [clientIdentifiers5 isEqual:clientIdentifiers6];
           }
 
           else
@@ -94,25 +94,25 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(DNDSModeAssertionClientIdentifierInvalidationPredicate *)self clientIdentifiers];
-  v6 = [v3 stringWithFormat:@"<%@: %p clientIdentifiers: %@>", v4, self, v5];;
+  clientIdentifiers = [(DNDSModeAssertionClientIdentifierInvalidationPredicate *)self clientIdentifiers];
+  v6 = [v3 stringWithFormat:@"<%@: %p clientIdentifiers: %@>", v4, self, clientIdentifiers];;
 
   return v6;
 }
 
-- (BOOL)evaluateWithObject:(id)a3 substitutionVariables:(id)a4
+- (BOOL)evaluateWithObject:(id)object substitutionVariables:(id)variables
 {
-  v6 = a3;
+  objectCopy = object;
   v13.receiver = self;
   v13.super_class = DNDSModeAssertionClientIdentifierInvalidationPredicate;
-  if ([(DNDSModeAssertionInvalidationPredicate *)&v13 evaluateWithObject:v6 substitutionVariables:a4])
+  if ([(DNDSModeAssertionInvalidationPredicate *)&v13 evaluateWithObject:objectCopy substitutionVariables:variables])
   {
-    v7 = v6;
-    v8 = [(DNDSModeAssertionClientIdentifierInvalidationPredicate *)self clientIdentifiers];
-    v9 = [v7 source];
+    v7 = objectCopy;
+    clientIdentifiers = [(DNDSModeAssertionClientIdentifierInvalidationPredicate *)self clientIdentifiers];
+    source = [v7 source];
 
-    v10 = [v9 clientIdentifier];
-    v11 = [v8 containsObject:v10];
+    clientIdentifier = [source clientIdentifier];
+    v11 = [clientIdentifiers containsObject:clientIdentifier];
   }
 
   else
@@ -123,23 +123,23 @@
   return v11;
 }
 
-- (DNDSModeAssertionClientIdentifierInvalidationPredicate)initWithCoder:(id)a3
+- (DNDSModeAssertionClientIdentifierInvalidationPredicate)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x277CBEB98];
-  v5 = a3;
+  coderCopy = coder;
   v6 = objc_opt_class();
   v7 = [v4 setWithObjects:{v6, objc_opt_class(), 0}];
-  v8 = [v5 decodeObjectOfClasses:v7 forKey:@"clientIdentifiers"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"clientIdentifiers"];
 
   v9 = [(DNDSModeAssertionClientIdentifierInvalidationPredicate *)self initWithClientIdentifiers:v8];
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(DNDSModeAssertionClientIdentifierInvalidationPredicate *)self clientIdentifiers];
-  [v4 encodeObject:v5 forKey:@"clientIdentifiers"];
+  coderCopy = coder;
+  clientIdentifiers = [(DNDSModeAssertionClientIdentifierInvalidationPredicate *)self clientIdentifiers];
+  [coderCopy encodeObject:clientIdentifiers forKey:@"clientIdentifiers"];
 }
 
 @end

@@ -1,7 +1,7 @@
 @interface CPTextBox
 - (CGRect)bounds;
 - (CPTextBox)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation CPTextBox
@@ -46,11 +46,11 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4.receiver = self;
   v4.super_class = CPTextBox;
-  return [(CPRegion *)&v4 copyWithZone:a3];
+  return [(CPRegion *)&v4 copyWithZone:zone];
 }
 
 - (CPTextBox)init

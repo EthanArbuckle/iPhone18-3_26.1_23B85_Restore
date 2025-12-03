@@ -1,22 +1,22 @@
 @interface SSMetricsEvent
 + (id)_globalCanaryLock;
 + (id)globalEventCanary;
-+ (void)setGlobalEventCanary:(id)a3;
-- (BOOL)isBlacklistedByConfiguration:(id)a3;
++ (void)setGlobalEventCanary:(id)canary;
+- (BOOL)isBlacklistedByConfiguration:(id)configuration;
 - (id)_dictionaryRepresentationOfBody;
-- (id)allTableEntityPropertiesPermittedByConfiguration:(id)a3 externalValues:(id)a4;
+- (id)allTableEntityPropertiesPermittedByConfiguration:(id)configuration externalValues:(id)values;
 @end
 
 @implementation SSMetricsEvent
 
 + (id)globalEventCanary
 {
-  v3 = [a1 _globalCanaryLock];
-  [v3 lock];
+  _globalCanaryLock = [self _globalCanaryLock];
+  [_globalCanaryLock lock];
 
   v4 = [_globalEventCanary copy];
-  v5 = [a1 _globalCanaryLock];
-  [v5 unlock];
+  _globalCanaryLock2 = [self _globalCanaryLock];
+  [_globalCanaryLock2 unlock];
 
   return v4;
 }
@@ -44,79 +44,79 @@ uint64_t __35__SSMetricsEvent__globalCanaryLock__block_invoke()
   return [v2 setName:@"com.StoreServices.globalEventCanaryLock"];
 }
 
-+ (void)setGlobalEventCanary:(id)a3
++ (void)setGlobalEventCanary:(id)canary
 {
-  v4 = [a3 copy];
-  v5 = [a1 _globalCanaryLock];
-  [v5 lock];
+  v4 = [canary copy];
+  _globalCanaryLock = [self _globalCanaryLock];
+  [_globalCanaryLock lock];
 
   v6 = _globalEventCanary;
   _globalEventCanary = v4;
 
-  v7 = [a1 _globalCanaryLock];
-  [v7 unlock];
+  _globalCanaryLock2 = [self _globalCanaryLock];
+  [_globalCanaryLock2 unlock];
 }
 
-- (id)allTableEntityPropertiesPermittedByConfiguration:(id)a3 externalValues:(id)a4
+- (id)allTableEntityPropertiesPermittedByConfiguration:(id)configuration externalValues:(id)values
 {
   v70 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  valuesCopy = values;
   v64 = objc_alloc_init(MEMORY[0x1E695DF90]);
   context = objc_autoreleasePoolPush();
   v8 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  if (([v6 disableEventDecoration] & 1) == 0)
+  if (([configurationCopy disableEventDecoration] & 1) == 0)
   {
-    v9 = [v6 eventFields];
-    if ([v9 count])
+    eventFields = [configurationCopy eventFields];
+    if ([eventFields count])
     {
-      [v8 addEntriesFromDictionary:v9];
+      [v8 addEntriesFromDictionary:eventFields];
     }
   }
 
-  v10 = [(SSMetricsEvent *)self _dictionaryRepresentationOfBody];
-  if ([v10 count])
+  _dictionaryRepresentationOfBody = [(SSMetricsEvent *)self _dictionaryRepresentationOfBody];
+  if ([_dictionaryRepresentationOfBody count])
   {
-    [v8 addEntriesFromDictionary:v10];
+    [v8 addEntriesFromDictionary:_dictionaryRepresentationOfBody];
   }
 
-  if (([v6 disableEventDecoration] & 1) == 0 && objc_msgSend(v7, "count"))
+  if (([configurationCopy disableEventDecoration] & 1) == 0 && objc_msgSend(valuesCopy, "count"))
   {
-    [v8 addEntriesFromDictionary:v7];
+    [v8 addEntriesFromDictionary:valuesCopy];
   }
 
-  v11 = [v6 blacklistedEventFields];
+  blacklistedEventFields = [configurationCopy blacklistedEventFields];
   if ([(SSMetricsEvent *)self isFieldBlacklistEnabled])
   {
-    if ([v11 count])
+    if ([blacklistedEventFields count])
     {
       v12 = [v8 count];
-      [v8 removeObjectsForKeys:v11];
+      [v8 removeObjectsForKeys:blacklistedEventFields];
       v13 = [v8 count];
       if (v12 != v13)
       {
         v14 = v13;
-        v59 = v11;
-        v61 = v7;
+        v59 = blacklistedEventFields;
+        v61 = valuesCopy;
         v15 = +[SSLogConfig sharedStoreServicesConfig];
         if (!v15)
         {
           v15 = +[SSLogConfig sharedConfig];
         }
 
-        v16 = [v15 shouldLog];
+        shouldLog = [v15 shouldLog];
         if ([v15 shouldLogToDisk])
         {
-          v17 = v16 | 2;
+          v17 = shouldLog | 2;
         }
 
         else
         {
-          v17 = v16;
+          v17 = shouldLog;
         }
 
-        v18 = [v15 OSLogObject];
-        if (!os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
+        oSLogObject = [v15 OSLogObject];
+        if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
         {
           v17 &= 2u;
         }
@@ -141,14 +141,14 @@ uint64_t __35__SSMetricsEvent__globalCanaryLock__block_invoke()
           {
 LABEL_24:
 
-            v11 = v59;
-            v7 = v61;
+            blacklistedEventFields = v59;
+            valuesCopy = v61;
             goto LABEL_25;
           }
 
-          v18 = [MEMORY[0x1E696AEC0] stringWithCString:v22 encoding:{4, &v66, v57}];
+          oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v22 encoding:{4, &v66, v57}];
           free(v22);
-          SSFileLog(v15, @"%@", v23, v24, v25, v26, v27, v28, v18);
+          SSFileLog(v15, @"%@", v23, v24, v25, v26, v27, v28, oSLogObject);
         }
 
         goto LABEL_24;
@@ -160,37 +160,37 @@ LABEL_25:
   if ([v8 count])
   {
     v65 = 0;
-    v29 = [MEMORY[0x1E696AE40] dataWithPropertyList:v8 format:200 options:0 error:&v65];
+    oSLogObject3 = [MEMORY[0x1E696AE40] dataWithPropertyList:v8 format:200 options:0 error:&v65];
     v30 = v65;
-    if (v29)
+    if (oSLogObject3)
     {
-      [v64 setObject:v29 forKey:@"eventBody"];
+      [v64 setObject:oSLogObject3 forKey:@"eventBody"];
 LABEL_49:
 
       goto LABEL_50;
     }
 
-    v60 = v11;
-    v62 = v7;
+    v60 = blacklistedEventFields;
+    v62 = valuesCopy;
     v42 = +[SSLogConfig sharedStoreServicesConfig];
     if (!v42)
     {
       v42 = +[SSLogConfig sharedConfig];
     }
 
-    v43 = [v42 shouldLog];
+    shouldLog2 = [v42 shouldLog];
     if ([v42 shouldLogToDisk])
     {
-      v44 = v43 | 2;
+      v44 = shouldLog2 | 2;
     }
 
     else
     {
-      v44 = v43;
+      v44 = shouldLog2;
     }
 
-    v45 = [v42 OSLogObject];
-    if (!os_log_type_enabled(v45, OS_LOG_TYPE_DEFAULT))
+    oSLogObject2 = [v42 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
     {
       v44 &= 2u;
     }
@@ -212,14 +212,14 @@ LABEL_49:
       {
 LABEL_48:
 
-        v11 = v60;
-        v7 = v62;
+        blacklistedEventFields = v60;
+        valuesCopy = v62;
         goto LABEL_49;
       }
 
-      v45 = [MEMORY[0x1E696AEC0] stringWithCString:v48 encoding:{4, &v66, v57}];
+      oSLogObject2 = [MEMORY[0x1E696AEC0] stringWithCString:v48 encoding:{4, &v66, v57}];
       free(v48);
-      SSFileLog(v42, @"%@", v49, v50, v51, v52, v53, v54, v45);
+      SSFileLog(v42, @"%@", v49, v50, v51, v52, v53, v54, oSLogObject2);
     }
 
     goto LABEL_48;
@@ -231,24 +231,24 @@ LABEL_48:
     v30 = +[SSLogConfig sharedConfig];
   }
 
-  v31 = [v30 shouldLog];
+  shouldLog3 = [v30 shouldLog];
   if ([v30 shouldLogToDisk])
   {
-    v31 |= 2u;
+    shouldLog3 |= 2u;
   }
 
-  v29 = [v30 OSLogObject];
-  if (!os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
+  oSLogObject3 = [v30 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_DEFAULT))
   {
-    v31 &= 2u;
+    shouldLog3 &= 2u;
   }
 
-  if (!v31)
+  if (!shouldLog3)
   {
     goto LABEL_49;
   }
 
-  v32 = v7;
+  v32 = valuesCopy;
   v33 = objc_opt_class();
   v66 = 138412546;
   v67 = v33;
@@ -260,14 +260,14 @@ LABEL_48:
 
   if (v35)
   {
-    v29 = [MEMORY[0x1E696AEC0] stringWithCString:v35 encoding:{4, &v66, v57}];
+    oSLogObject3 = [MEMORY[0x1E696AEC0] stringWithCString:v35 encoding:{4, &v66, v57}];
     free(v35);
-    SSFileLog(v30, @"%@", v36, v37, v38, v39, v40, v41, v29);
-    v7 = v32;
+    SSFileLog(v30, @"%@", v36, v37, v38, v39, v40, v41, oSLogObject3);
+    valuesCopy = v32;
     goto LABEL_49;
   }
 
-  v7 = v32;
+  valuesCopy = v32;
 LABEL_50:
 
   objc_autoreleasePoolPop(context);
@@ -275,11 +275,11 @@ LABEL_50:
   return v64;
 }
 
-- (BOOL)isBlacklistedByConfiguration:(id)a3
+- (BOOL)isBlacklistedByConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(SSMetricsEvent *)self eventType];
-  v6 = [v4 isEventTypeBlacklisted:v5];
+  configurationCopy = configuration;
+  eventType = [(SSMetricsEvent *)self eventType];
+  v6 = [configurationCopy isEventTypeBlacklisted:eventType];
 
   return v6;
 }

@@ -8,9 +8,9 @@
 
 - (id)exportedInterface
 {
-  v2 = [objc_opt_self() interfaceWithProtocol_];
+  interfaceWithProtocol_ = [objc_opt_self() interfaceWithProtocol_];
 
-  return v2;
+  return interfaceWithProtocol_;
 }
 
 - (id)remoteInterface

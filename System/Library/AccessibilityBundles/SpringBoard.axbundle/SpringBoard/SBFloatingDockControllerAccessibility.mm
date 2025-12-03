@@ -1,22 +1,22 @@
 @interface SBFloatingDockControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)dismissFloatingDockIfPresentedAnimated:(BOOL)a3 completionHandler:(id)a4;
-- (void)presentFloatingDockIfDismissedAnimated:(BOOL)a3 completionHandler:(id)a4;
+- (void)dismissFloatingDockIfPresentedAnimated:(BOOL)animated completionHandler:(id)handler;
+- (void)presentFloatingDockIfDismissedAnimated:(BOOL)animated completionHandler:(id)handler;
 @end
 
 @implementation SBFloatingDockControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBFloatingDockController" hasInstanceMethod:@"remoteContentManager" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBFloatingDockController" hasInstanceMethod:@"isFloatingDockFullyPresented" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"SBFloatingDockController" hasInstanceMethod:@"presentFloatingDockIfDismissedAnimated:completionHandler:" withFullSignature:{"v", "B", "@?", 0}];
-  [v3 validateClass:@"SBFloatingDockController" hasInstanceMethod:@"dismissFloatingDockIfPresentedAnimated:completionHandler:" withFullSignature:{"v", "B", "@?", 0}];
-  [v3 validateClass:@"SBFloatingDockController" hasInstanceMethod:@"isFloatingDockFullyPresented" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"SBFloatingDockController" hasInstanceMethod:@"isPresentingFolder" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"SBFloatingDockController" hasInstanceMethod:@"_allowGestureRecognizers" withFullSignature:{"B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBFloatingDockController" hasInstanceMethod:@"remoteContentManager" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBFloatingDockController" hasInstanceMethod:@"isFloatingDockFullyPresented" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"SBFloatingDockController" hasInstanceMethod:@"presentFloatingDockIfDismissedAnimated:completionHandler:" withFullSignature:{"v", "B", "@?", 0}];
+  [validationsCopy validateClass:@"SBFloatingDockController" hasInstanceMethod:@"dismissFloatingDockIfPresentedAnimated:completionHandler:" withFullSignature:{"v", "B", "@?", 0}];
+  [validationsCopy validateClass:@"SBFloatingDockController" hasInstanceMethod:@"isFloatingDockFullyPresented" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"SBFloatingDockController" hasInstanceMethod:@"isPresentingFolder" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"SBFloatingDockController" hasInstanceMethod:@"_allowGestureRecognizers" withFullSignature:{"B", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -28,10 +28,10 @@
   [v3 _accessibilityLoadAccessibilityInformation];
 }
 
-- (void)presentFloatingDockIfDismissedAnimated:(BOOL)a3 completionHandler:(id)a4
+- (void)presentFloatingDockIfDismissedAnimated:(BOOL)animated completionHandler:(id)handler
 {
-  v4 = a3;
-  v6 = a4;
+  animatedCopy = animated;
+  handlerCopy = handler;
   v7 = [(SBFloatingDockControllerAccessibility *)self safeBoolForKey:@"isFloatingDockFullyPresented"];
   v11[0] = MEMORY[0x29EDCA5F8];
   v11[1] = 3221225472;
@@ -39,13 +39,13 @@
   v11[3] = &unk_29F2FBEE8;
   v13 = v7;
   v11[4] = self;
-  v12 = v6;
-  v8 = v6;
+  v12 = handlerCopy;
+  v8 = handlerCopy;
   v9 = MEMORY[0x29ED38050](v11);
   UIAccessibilityPostNotification(*MEMORY[0x29EDC7EA8], *MEMORY[0x29EDBDA60]);
   v10.receiver = self;
   v10.super_class = SBFloatingDockControllerAccessibility;
-  [(SBFloatingDockControllerAccessibility *)&v10 presentFloatingDockIfDismissedAnimated:v4 completionHandler:v9];
+  [(SBFloatingDockControllerAccessibility *)&v10 presentFloatingDockIfDismissedAnimated:animatedCopy completionHandler:v9];
 }
 
 void __98__SBFloatingDockControllerAccessibility_presentFloatingDockIfDismissedAnimated_completionHandler___block_invoke(uint64_t a1)
@@ -71,10 +71,10 @@ void __98__SBFloatingDockControllerAccessibility_presentFloatingDockIfDismissedA
   }
 }
 
-- (void)dismissFloatingDockIfPresentedAnimated:(BOOL)a3 completionHandler:(id)a4
+- (void)dismissFloatingDockIfPresentedAnimated:(BOOL)animated completionHandler:(id)handler
 {
-  v4 = a3;
-  v6 = a4;
+  animatedCopy = animated;
+  handlerCopy = handler;
   v7 = [(SBFloatingDockControllerAccessibility *)self safeBoolForKey:@"isFloatingDockFullyPresented"];
   v12[0] = MEMORY[0x29EDCA5F8];
   v12[1] = 3221225472;
@@ -82,15 +82,15 @@ void __98__SBFloatingDockControllerAccessibility_presentFloatingDockIfDismissedA
   v12[3] = &unk_29F2FBEE8;
   v14 = v7;
   v12[4] = self;
-  v13 = v6;
-  v8 = v6;
+  v13 = handlerCopy;
+  v8 = handlerCopy;
   v9 = MEMORY[0x29ED38050](v12);
   UIAccessibilityPostNotification(*MEMORY[0x29EDC7EA8], *MEMORY[0x29EDBDA58]);
   v11.receiver = self;
   v11.super_class = SBFloatingDockControllerAccessibility;
-  [(SBFloatingDockControllerAccessibility *)&v11 dismissFloatingDockIfPresentedAnimated:v4 completionHandler:v9];
-  v10 = [MEMORY[0x29EDBDFA8] server];
-  [v10 didPotentiallyDismissNonExclusiveSystemUI];
+  [(SBFloatingDockControllerAccessibility *)&v11 dismissFloatingDockIfPresentedAnimated:animatedCopy completionHandler:v9];
+  server = [MEMORY[0x29EDBDFA8] server];
+  [server didPotentiallyDismissNonExclusiveSystemUI];
 }
 
 void __98__SBFloatingDockControllerAccessibility_dismissFloatingDockIfPresentedAnimated_completionHandler___block_invoke(uint64_t a1)

@@ -1,16 +1,16 @@
 @interface RTPredictedContextMO
-+ (id)managedObjectWithPredictedContext:(id)a3 managedObject:(id)a4 inManagedObjectContext:(id)a5;
++ (id)managedObjectWithPredictedContext:(id)context managedObject:(id)object inManagedObjectContext:(id)objectContext;
 @end
 
 @implementation RTPredictedContextMO
 
-+ (id)managedObjectWithPredictedContext:(id)a3 managedObject:(id)a4 inManagedObjectContext:(id)a5
++ (id)managedObjectWithPredictedContext:(id)context managedObject:(id)object inManagedObjectContext:(id)objectContext
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (!v7)
+  contextCopy = context;
+  objectCopy = object;
+  objectContextCopy = objectContext;
+  v10 = objectContextCopy;
+  if (!contextCopy)
   {
     v12 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -25,7 +25,7 @@ LABEL_12:
     goto LABEL_7;
   }
 
-  if (v9)
+  if (objectContextCopy)
   {
     *buf = 0;
     v21 = buf;
@@ -38,9 +38,9 @@ LABEL_12:
     v15[2] = __95__RTPredictedContextMO_managedObjectWithPredictedContext_managedObject_inManagedObjectContext___block_invoke;
     v15[3] = &unk_2788C5DA0;
     v19 = buf;
-    v16 = v8;
+    v16 = objectCopy;
     v17 = v10;
-    v18 = v7;
+    v18 = contextCopy;
     [v17 performBlockAndWait:v15];
     v11 = *(v21 + 5);
 

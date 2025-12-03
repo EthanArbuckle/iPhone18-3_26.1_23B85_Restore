@@ -7,13 +7,13 @@
 
 - (NSString)contentAsPlainText
 {
-  v3 = [(NoteBodyObject *)self content];
+  content = [(NoteBodyObject *)self content];
 
-  if (v3)
+  if (content)
   {
     v4 = MEMORY[0x277D24F18];
-    v5 = [(NoteBodyObject *)self content];
-    v6 = [v4 plainTextFromHTML:v5];
+    content2 = [(NoteBodyObject *)self content];
+    v6 = [v4 plainTextFromHTML:content2];
   }
 
   else
@@ -26,13 +26,13 @@
 
 - (id)contentAsPlainTextPreservingNewlines
 {
-  v3 = [(NoteBodyObject *)self content];
+  content = [(NoteBodyObject *)self content];
 
-  if (v3)
+  if (content)
   {
     v4 = MEMORY[0x277D24F18];
-    v5 = [(NoteBodyObject *)self content];
-    v6 = [v4 plainTextFromHTML:v5 limit:0xFFFFFFFFLL preserveNewlines:1];
+    content2 = [(NoteBodyObject *)self content];
+    v6 = [v4 plainTextFromHTML:content2 limit:0xFFFFFFFFLL preserveNewlines:1];
   }
 
   else

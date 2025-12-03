@@ -1,22 +1,22 @@
 @interface TPSConstellationContentUtilities
-+ (BOOL)contentContainsInlineIcon:(id)a3;
-+ (BOOL)contentContainsLink:(id)a3;
-+ (id)altTextRepresentationForContent:(id)a3;
++ (BOOL)contentContainsInlineIcon:(id)icon;
++ (BOOL)contentContainsLink:(id)link;
++ (id)altTextRepresentationForContent:(id)content;
 + (id)contentClasses;
-+ (id)hrefForLinkMark:(id)a3;
-+ (id)textContentWithText:(id)a3;
-+ (id)textRepresentationForContent:(id)a3;
-+ (int64_t)contentTypeForContentDictionary:(id)a3;
-+ (int64_t)markTypeForMarkDictionary:(id)a3;
++ (id)hrefForLinkMark:(id)mark;
++ (id)textContentWithText:(id)text;
++ (id)textRepresentationForContent:(id)content;
++ (int64_t)contentTypeForContentDictionary:(id)dictionary;
++ (int64_t)markTypeForMarkDictionary:(id)dictionary;
 @end
 
 @implementation TPSConstellationContentUtilities
 
-+ (BOOL)contentContainsLink:(id)a3
++ (BOOL)contentContainsLink:(id)link
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  linkCopy = link;
+  v5 = linkCopy;
+  if (linkCopy)
   {
     v9 = 0;
     v10 = &v9;
@@ -27,8 +27,8 @@
     v8[2] = __56__TPSConstellationContentUtilities_contentContainsLink___block_invoke;
     v8[3] = &unk_1E8101B70;
     v8[4] = &v9;
-    v8[5] = a1;
-    [v4 enumerateObjectsUsingBlock:v8];
+    v8[5] = self;
+    [linkCopy enumerateObjectsUsingBlock:v8];
     v6 = *(v10 + 24);
     _Block_object_dispose(&v9, 8);
   }
@@ -80,17 +80,17 @@ uint64_t __56__TPSConstellationContentUtilities_contentContainsLink___block_invo
   return result;
 }
 
-+ (BOOL)contentContainsInlineIcon:(id)a3
++ (BOOL)contentContainsInlineIcon:(id)icon
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 count])
+  iconCopy = icon;
+  if ([iconCopy count])
   {
     v28 = 0u;
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v5 = v4;
+    v5 = iconCopy;
     v6 = [v5 countByEnumeratingWithState:&v26 objects:v31 count:16];
     if (v6)
     {
@@ -128,7 +128,7 @@ uint64_t __56__TPSConstellationContentUtilities_contentContainsLink___block_invo
                   objc_enumerationMutation(v13);
                 }
 
-                if ([a1 contentTypeForContentDictionary:*(*(&v22 + 1) + 8 * j)] == 3)
+                if ([self contentTypeForContentDictionary:*(*(&v22 + 1) + 8 * j)] == 3)
                 {
 
                   v18 = 1;
@@ -174,25 +174,25 @@ LABEL_21:
   return v18;
 }
 
-+ (id)textRepresentationForContent:(id)a3
++ (id)textRepresentationForContent:(id)content
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 count] == 1)
+  contentCopy = content;
+  v5 = contentCopy;
+  if (contentCopy && [contentCopy count] == 1)
   {
-    v6 = [v5 firstObject];
-    v7 = [v6 TPSSafeArrayForKey:@"content"];
+    firstObject = [v5 firstObject];
+    v7 = [firstObject TPSSafeArrayForKey:@"content"];
     if ([v7 count] == 1)
     {
-      v8 = [v7 firstObject];
-      if ([a1 contentTypeForContentDictionary:v8])
+      firstObject2 = [v7 firstObject];
+      if ([self contentTypeForContentDictionary:firstObject2])
       {
         v9 = 0;
       }
 
       else
       {
-        v9 = [v8 TPSSafeStringForKey:@"text"];
+        v9 = [firstObject2 TPSSafeStringForKey:@"text"];
       }
     }
 
@@ -210,19 +210,19 @@ LABEL_21:
   return v9;
 }
 
-+ (id)altTextRepresentationForContent:(id)a3
++ (id)altTextRepresentationForContent:(id)content
 {
   v41 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  contentCopy = content;
+  if (contentCopy)
   {
     v5 = objc_opt_new();
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v25 = v4;
-    obj = v4;
+    v25 = contentCopy;
+    obj = contentCopy;
     v27 = [obj countByEnumeratingWithState:&v34 objects:v40 count:16];
     if (!v27)
     {
@@ -242,9 +242,9 @@ LABEL_21:
 
         v29 = v6;
         v7 = *(*(&v34 + 1) + 8 * v6);
-        v8 = [obj firstObject];
+        firstObject = [obj firstObject];
 
-        if (v7 != v8 && [a1 contentTypeForContentDictionary:v7] == 1)
+        if (v7 != firstObject && [self contentTypeForContentDictionary:v7] == 1)
         {
           [v5 appendString:@" "];
         }
@@ -284,7 +284,7 @@ LABEL_21:
               }
 
               v18 = *(*(&v30 + 1) + 8 * i);
-              v19 = [a1 contentTypeForContentDictionary:v18];
+              v19 = [self contentTypeForContentDictionary:v18];
               if ((v19 - 2) >= 2)
               {
                 if (v19)
@@ -292,7 +292,7 @@ LABEL_21:
                   continue;
                 }
 
-                v20 = [a1 textForContentNode:v18];
+                v20 = [self textForContentNode:v18];
                 [v5 appendString:v20];
               }
 
@@ -332,7 +332,7 @@ LABEL_29:
           v22 = 0;
         }
 
-        v4 = v25;
+        contentCopy = v25;
         goto LABEL_34;
       }
     }
@@ -346,9 +346,9 @@ LABEL_34:
   return v22;
 }
 
-+ (int64_t)contentTypeForContentDictionary:(id)a3
++ (int64_t)contentTypeForContentDictionary:(id)dictionary
 {
-  v3 = [a3 TPSSafeStringForKey:@"type"];
+  v3 = [dictionary TPSSafeStringForKey:@"type"];
   if ([v3 isEqualToString:@"text"])
   {
     v4 = 0;
@@ -382,9 +382,9 @@ LABEL_34:
   return v4;
 }
 
-+ (int64_t)markTypeForMarkDictionary:(id)a3
++ (int64_t)markTypeForMarkDictionary:(id)dictionary
 {
-  v3 = [a3 TPSSafeStringForKey:@"type"];
+  v3 = [dictionary TPSSafeStringForKey:@"type"];
   if ([v3 isEqualToString:@"a"])
   {
     v4 = 0;
@@ -413,21 +413,21 @@ LABEL_34:
   return v4;
 }
 
-+ (id)textContentWithText:(id)a3
++ (id)textContentWithText:(id)text
 {
   v14[1] = *MEMORY[0x1E69E9840];
   v10 = @"type";
   v11 = @"text";
-  v3 = &stru_1F3F2F4B8;
-  if (a3)
+  textCopy = &stru_1F3F2F4B8;
+  if (text)
   {
-    v3 = a3;
+    textCopy = text;
   }
 
   v12 = @"text";
-  v13 = v3;
+  v13 = textCopy;
   v4 = MEMORY[0x1E695DF20];
-  v5 = a3;
+  textCopy2 = text;
   v6 = [v4 dictionaryWithObjects:&v12 forKeys:&v10 count:2];
   v14[0] = v6;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:{1, v10, v11, v12, v13}];
@@ -437,9 +437,9 @@ LABEL_34:
   return v7;
 }
 
-+ (id)hrefForLinkMark:(id)a3
++ (id)hrefForLinkMark:(id)mark
 {
-  v3 = [a3 TPSSafeDictionaryForKey:@"attrs"];
+  v3 = [mark TPSSafeDictionaryForKey:@"attrs"];
   v4 = [v3 TPSSafeStringForKey:@"href"];
 
   return v4;

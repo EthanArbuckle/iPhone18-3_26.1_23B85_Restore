@@ -6,14 +6,14 @@
 + (id)p_cacheDirectory;
 + (id)p_storageCacheForCurrentThread;
 + (id)p_storagesByBrushName;
-+ (id)storageForBrushStrokeNamed:(id)a3;
++ (id)storageForBrushStrokeNamed:(id)named;
 + (void)backgroundLoadAllBrushStrokes;
 + (void)p_clearOnDiskCache;
-+ (void)p_loadBrushIfNeeded:(id)a3;
-+ (void)p_loadImageForBrush:(id)a3 intoStorage:(id)a4;
-+ (void)p_loadLineEndTextureForBrush:(id)a3 lineEnd:(id)a4 path:(CGPath *)a5 andBounds:(CGRect)a6;
-+ (void)p_loadLineEndsForBrush:(id)a3 fromSVGDoc:(_xmlDoc *)a4 intoStorage:(id)a5;
-+ (void)p_loadSectionsForBrush:(id)a3 fromSVGDoc:(_xmlDoc *)a4 intoStorage:(id)a5;
++ (void)p_loadBrushIfNeeded:(id)needed;
++ (void)p_loadImageForBrush:(id)brush intoStorage:(id)storage;
++ (void)p_loadLineEndTextureForBrush:(id)brush lineEnd:(id)end path:(CGPath *)path andBounds:(CGRect)bounds;
++ (void)p_loadLineEndsForBrush:(id)brush fromSVGDoc:(_xmlDoc *)doc intoStorage:(id)storage;
++ (void)p_loadSectionsForBrush:(id)brush fromSVGDoc:(_xmlDoc *)doc intoStorage:(id)storage;
 @end
 
 @implementation CRLBrushStrokeLoader
@@ -24,7 +24,7 @@
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  obj = [a1 p_allLoadableBrushStrokeNames];
+  obj = [self p_allLoadableBrushStrokeNames];
   v3 = [obj countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v3)
   {
@@ -46,7 +46,7 @@
         block[2] = sub_100017070;
         block[3] = &unk_10183B720;
         block[4] = v7;
-        block[5] = a1;
+        block[5] = self;
         v8 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, QOS_CLASS_BACKGROUND, 0, block);
         v9 = +[CRLBrushStrokeLoader p_brushStrokeLoadQueue];
         dispatch_async(v9, v8);
@@ -101,9 +101,9 @@
 + (id)p_cacheDirectory
 {
   v2 = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, 1uLL, 1);
-  v3 = [v2 lastObject];
+  lastObject = [v2 lastObject];
 
-  v4 = [v3 stringByAppendingPathComponent:@"Brushes"];
+  v4 = [lastObject stringByAppendingPathComponent:@"Brushes"];
 
   v5 = +[NSFileManager defaultManager];
   [v5 createDirectoryAtPath:v4 withIntermediateDirectories:1 attributes:0 error:0];
@@ -111,17 +111,17 @@
   return v4;
 }
 
-+ (id)storageForBrushStrokeNamed:(id)a3
++ (id)storageForBrushStrokeNamed:(id)named
 {
-  v4 = a3;
+  namedCopy = named;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
   v20 = sub_100126230;
   v21 = sub_100126240;
   v22 = 0;
-  v5 = [a1 p_storageCacheForCurrentThread];
-  v6 = [v5 objectForKey:v4];
+  p_storageCacheForCurrentThread = [self p_storageCacheForCurrentThread];
+  v6 = [p_storageCacheForCurrentThread objectForKey:namedCopy];
   v7 = v18[5];
   v18[5] = v6;
 
@@ -133,13 +133,13 @@
     block[1] = 3221225472;
     block[2] = sub_100126248;
     block[3] = &unk_10183B748;
-    v16 = a1;
-    v10 = v4;
+    selfCopy = self;
+    v10 = namedCopy;
     v14 = v10;
     v15 = &v17;
     dispatch_sync(v9, block);
 
-    [v5 setObject:v18[5] forKey:v10];
+    [p_storageCacheForCurrentThread setObject:v18[5] forKey:v10];
     v8 = v18[5];
   }
 
@@ -153,14 +153,14 @@
 + (id)p_storageCacheForCurrentThread
 {
   v3 = +[NSThread currentThread];
-  v4 = [v3 threadDictionary];
+  threadDictionary = [v3 threadDictionary];
 
   v10 = 0;
   v11 = &v10;
   v12 = 0x3032000000;
   v13 = sub_100126230;
   v14 = sub_100126240;
-  v15 = [v4 objectForKeyedSubscript:@"CRLBrushStrokeLoaderStorageCache"];
+  v15 = [threadDictionary objectForKeyedSubscript:@"CRLBrushStrokeLoaderStorageCache"];
   v5 = v11[5];
   if (!v5)
   {
@@ -169,9 +169,9 @@
     block[1] = 3221225472;
     block[2] = sub_100126448;
     block[3] = &unk_10183B670;
-    block[4] = v4;
+    block[4] = threadDictionary;
     block[5] = &v10;
-    block[6] = a1;
+    block[6] = self;
     dispatch_sync(v6, block);
 
     v5 = v11[5];
@@ -207,11 +207,11 @@
   return fmax(v3 * sqrt(v6 * v8 / 786432.0), 1.0);
 }
 
-+ (void)p_loadBrushIfNeeded:(id)a3
++ (void)p_loadBrushIfNeeded:(id)needed
 {
-  v4 = a3;
-  v5 = [a1 p_storagesByBrushName];
-  if (![v5 count])
+  neededCopy = needed;
+  p_storagesByBrushName = [self p_storagesByBrushName];
+  if (![p_storagesByBrushName count])
   {
     v6 = +[CRLBrushStrokeLoader p_cacheDirectory];
     v7 = [v6 stringByAppendingString:@"/CRLBrushCacheVersion.txt"];
@@ -219,17 +219,17 @@
     v9 = [NSString stringWithFormat:@"%ld", 17];
     if (!v8 || ([v8 isEqualToString:v9] & 1) == 0)
     {
-      [a1 p_clearOnDiskCache];
+      [self p_clearOnDiskCache];
       [v9 writeToFile:v7 atomically:0 encoding:4 error:0];
     }
   }
 
-  v10 = [v5 objectForKeyedSubscript:v4];
+  v10 = [p_storagesByBrushName objectForKeyedSubscript:neededCopy];
 
   if (!v10)
   {
     v11 = objc_alloc_init(CRLMutableBrushStrokeStorage);
-    v12 = [@"CRLBrush_" stringByAppendingString:v4];
+    v12 = [@"CRLBrush_" stringByAppendingString:neededCopy];
     v13 = +[NSBundle mainBundle];
     v14 = [v13 pathForResource:v12 ofType:@"svg"];
 
@@ -279,11 +279,11 @@
       v23 = [NSNumber numberWithBool:v22];
       [(CRLMutableBrushStrokeStorage *)v11 setOption:v23 forKey:@"split-at-sharp-angles"];
 
-      [a1 p_loadLineEndsForBrush:v4 fromSVGDoc:Memory intoStorage:v11];
-      [a1 p_loadSectionsForBrush:v4 fromSVGDoc:Memory intoStorage:v11];
+      [self p_loadLineEndsForBrush:neededCopy fromSVGDoc:Memory intoStorage:v11];
+      [self p_loadSectionsForBrush:neededCopy fromSVGDoc:Memory intoStorage:v11];
       xmlFreeDoc(Memory);
-      v24 = [(CRLMutableBrushStrokeStorage *)v11 deepCopy];
-      [v5 setObject:v24 forKeyedSubscript:v4];
+      deepCopy = [(CRLMutableBrushStrokeStorage *)v11 deepCopy];
+      [p_storagesByBrushName setObject:deepCopy forKeyedSubscript:neededCopy];
     }
   }
 }
@@ -420,18 +420,18 @@
   }
 }
 
-+ (void)p_loadLineEndTextureForBrush:(id)a3 lineEnd:(id)a4 path:(CGPath *)a5 andBounds:(CGRect)a6
++ (void)p_loadLineEndTextureForBrush:(id)brush lineEnd:(id)end path:(CGPath *)path andBounds:(CGRect)bounds
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v12 = a4;
-  v13 = a3;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  endCopy = end;
+  brushCopy = brush;
   v14 = +[CRLBrushStrokeLoader p_cacheDirectory];
-  v15 = [v14 stringByAppendingFormat:@"/CRLBrushEnd_%@_%@.png", v13, v12];
+  endCopy = [v14 stringByAppendingFormat:@"/CRLBrushEnd_%@_%@.png", brushCopy, endCopy];
 
-  v16 = [CRLImage imageWithContentsOfFile:v15];
+  v16 = [CRLImage imageWithContentsOfFile:endCopy];
   v17 = v16;
   if (v16)
   {
@@ -458,25 +458,25 @@
     CGContextConcatCTM(v23, &transform);
     CGAffineTransformMakeTranslation(&transform, -x, -y);
     CGContextConcatCTM(v23, &transform);
-    CGContextAddPath(v23, a5);
+    CGContextAddPath(v23, path);
     CGContextFillPath(v23);
     Image = CGBitmapContextCreateImage(v23);
     v26 = [CRLImage imageWithCGImage:Image];
-    v27 = [v26 PNGRepresentation];
+    pNGRepresentation = [v26 PNGRepresentation];
 
-    v28 = [NSURL crl_fileURLWithPath:v15];
-    [v27 writeToURL:v28 atomically:1];
+    v28 = [NSURL crl_fileURLWithPath:endCopy];
+    [pNGRepresentation writeToURL:v28 atomically:1];
     CGContextRelease(v23);
   }
 
   CGImageRelease(Image);
 }
 
-+ (void)p_loadLineEndsForBrush:(id)a3 fromSVGDoc:(_xmlDoc *)a4 intoStorage:(id)a5
++ (void)p_loadLineEndsForBrush:(id)brush fromSVGDoc:(_xmlDoc *)doc intoStorage:(id)storage
 {
-  v71 = a3;
-  v70 = a5;
-  sub_10006E4D0(a4, @"//svg:path['_wrap'=substring(@id,string-length(@id)-4)]");
+  brushCopy = brush;
+  storageCopy = storage;
+  sub_10006E4D0(doc, @"//svg:path['_wrap'=substring(@id,string-length(@id)-4)]");
   v82 = 0u;
   v83 = 0u;
   v84 = 0u;
@@ -508,7 +508,7 @@
         v12 = [v11 substringToIndex:{objc_msgSend(v11, "length") - 5}];
 
         v13 = [v8[101] stringWithFormat:@"//svg:path[@id='%@_end']", v12];
-        v14 = sub_10006E4D0(a4, v13);
+        v14 = sub_10006E4D0(doc, v13);
 
         if ([v14 count] != 1)
         {
@@ -556,12 +556,12 @@
           v8 = &_s10Foundation9IndexPathVSHAAMc_ptr;
         }
 
-        v20 = [v14 lastObject];
-        v21 = [v20 objectForKey:v7];
+        lastObject = [v14 lastObject];
+        v21 = [lastObject objectForKey:v7];
 
         v78 = [v21 objectForKey:@"d"];
         v22 = [v8[101] stringWithFormat:@"//svg:rect[@id='%@_end_bounds']", v12];
-        v23 = sub_10006E4D0(a4, v22);
+        v23 = sub_10006E4D0(doc, v22);
 
         if ([v23 count] != 1)
         {
@@ -607,8 +607,8 @@
           [CRLAssertionHandler handleFailureInFunction:v27 file:v28 lineNumber:297 isFatal:0 description:"Arrow head needs bounding rect"];
         }
 
-        v29 = [v23 lastObject];
-        v30 = [v29 objectForKey:v7];
+        lastObject2 = [v23 lastObject];
+        v30 = [lastObject2 objectForKey:v7];
 
         v31 = [v30 objectForKey:@"x"];
         [v31 doubleValue];
@@ -666,7 +666,7 @@
         v86.tx = v47;
         v86.ty = v48;
         v53 = sub_10007187C(v52, &v86);
-        v54 = a4;
+        docCopy = doc;
         v88.origin.x = v74;
         v88.origin.y = v36;
         v88.size.width = v76;
@@ -677,10 +677,10 @@
         v89.size.width = v76;
         v89.size.height = v75;
         MidY = CGRectGetMidY(v89);
-        v57 = [CRLLineEnd lineEndWithPath:v53 wrapPath:v50 endPoint:1 isFilled:v42 identifier:v47 + c * MidY + a * MaxX, v48 + d * MidY + v73 * MaxX];
-        [v70 setLineEnd:v57 forKey:v42];
+        maxX = [CRLLineEnd lineEndWithPath:v53 wrapPath:v50 endPoint:1 isFilled:v42 identifier:v47 + c * MidY + a * MaxX, v48 + d * MidY + v73 * MaxX];
+        [storageCopy setLineEnd:maxX forKey:v42];
         BoundingBox = CGPathGetBoundingBox(v50);
-        [a1 p_loadLineEndTextureForBrush:v71 lineEnd:v42 path:v53 andBounds:{BoundingBox.origin.x, BoundingBox.origin.y, BoundingBox.size.width, BoundingBox.size.height}];
+        [self p_loadLineEndTextureForBrush:brushCopy lineEnd:v42 path:v53 andBounds:{BoundingBox.origin.x, BoundingBox.origin.y, BoundingBox.size.width, BoundingBox.size.height}];
         v58 = v52;
         v7 = v51;
         v8 = &_s10Foundation9IndexPathVSHAAMc_ptr;
@@ -689,7 +689,7 @@
         CGPathRelease(v49);
         CGPathRelease(v50);
 
-        a4 = v54;
+        doc = docCopy;
         v9 = v79 + 1;
       }
 
@@ -701,15 +701,15 @@
   }
 }
 
-+ (void)p_loadImageForBrush:(id)a3 intoStorage:(id)a4
++ (void)p_loadImageForBrush:(id)brush intoStorage:(id)storage
 {
-  v5 = a3;
-  v6 = a4;
+  brushCopy = brush;
+  storageCopy = storage;
   v54 = +[CRLBrushStrokeLoader p_cacheDirectory];
-  v55 = v5;
-  v7 = [v54 stringByAppendingFormat:@"/CRLBrush_%@.png", v5];
-  v62 = [v6 paths];
-  if (!v62)
+  v55 = brushCopy;
+  brushCopy = [v54 stringByAppendingFormat:@"/CRLBrush_%@.png", brushCopy];
+  paths = [storageCopy paths];
+  if (!paths)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -738,8 +738,8 @@
     [CRLAssertionHandler handleFailureInFunction:v9 file:v10 lineNumber:340 isFatal:0 description:"invalid nil value for '%{public}s'", "paths"];
   }
 
-  v56 = v7;
-  v11 = [CRLImage imageWithContentsOfFile:v7];
+  v56 = brushCopy;
+  v11 = [CRLImage imageWithContentsOfFile:brushCopy];
   if (v11)
   {
     v12 = v11;
@@ -747,8 +747,8 @@
 
   else
   {
-    v59 = [v6 bounds];
-    if (!v59)
+    bounds = [storageCopy bounds];
+    if (!bounds)
     {
       +[CRLAssertionHandler _atomicIncrementAssertCount];
       if (qword_101AD5A10 != -1)
@@ -777,8 +777,8 @@
       [CRLAssertionHandler handleFailureInFunction:v14 file:v15 lineNumber:346 isFatal:0 description:"invalid nil value for '%{public}s'", "bounds"];
     }
 
-    v16 = [v6 totalSectionCount];
-    if (v16 == 1)
+    totalSectionCount = [storageCopy totalSectionCount];
+    if (totalSectionCount == 1)
     {
       v17 = 2048.0;
     }
@@ -788,13 +788,13 @@
       v17 = 512.0;
     }
 
-    v18 = sub_10050DF80(3, v17, v16 * 80.0);
+    v18 = sub_10050DF80(3, v17, totalSectionCount * 80.0);
     CGContextSetRGBFillColor(v18, 0.0, 0.0, 0.0, 1.0);
     ClipBoundingBox = CGContextGetClipBoundingBox(v18);
     CGContextFillRect(v18, ClipBoundingBox);
     CGContextSetRGBFillColor(v18, 1.0, 1.0, 1.0, 1.0);
-    v19 = [v62 allKeys];
-    v20 = [v19 sortedArrayUsingSelector:?];
+    allKeys = [paths allKeys];
+    v20 = [allKeys sortedArrayUsingSelector:?];
 
     v70 = 0u;
     v71 = 0u;
@@ -818,20 +818,20 @@
 
           v61 = v22;
           v23 = *(*(&v68 + 1) + 8 * v22);
-          v24 = [v62 objectForKeyedSubscript:v23];
-          v25 = [v59 objectForKeyedSubscript:v23];
+          v24 = [paths objectForKeyedSubscript:v23];
+          v25 = [bounds objectForKeyedSubscript:v23];
           if ([v24 count])
           {
             v26 = 0;
             do
             {
               v27 = [v24 objectAtIndexedSubscript:v26];
-              v28 = [v27 originalPath];
+              originalPath = [v27 originalPath];
 
               v29 = [v25 objectAtIndexedSubscript:v26];
               [v29 CGRectValue];
 
-              [v28 bounds];
+              [originalPath bounds];
               x = v75.origin.x;
               y = v75.origin.y;
               width = v75.size.width;
@@ -853,7 +853,7 @@
                 CGContextConcatCTM(v18, &transform);
                 CGAffineTransformMakeTranslation(&transform, -v34, 0.5);
                 CGContextConcatCTM(v18, &transform);
-                CGContextAddPath(v18, [v28 CGPath]);
+                CGContextAddPath(v18, [originalPath CGPath]);
                 CGContextFillPath(v18);
                 v35 = (v37 + v35) + 4.0;
                 CGContextRestoreGState(v18);
@@ -882,15 +882,15 @@
 
     Image = CGBitmapContextCreateImage(v18);
     v12 = [CRLImage imageWithCGImage:Image];
-    v40 = [v12 PNGRepresentation];
+    pNGRepresentation = [v12 PNGRepresentation];
     v41 = [NSURL crl_fileURLWithPath:v56];
-    [v40 writeToURL:v41 atomically:1];
+    [pNGRepresentation writeToURL:v41 atomically:1];
     CGImageRelease(Image);
     CGContextRelease(v18);
   }
 
-  v42 = [v62 allKeys];
-  v43 = [v42 sortedArrayUsingSelector:"compare:"];
+  allKeys2 = [paths allKeys];
+  v43 = [allKeys2 sortedArrayUsingSelector:"compare:"];
 
   v65 = 0u;
   v66 = 0u;
@@ -913,7 +913,7 @@
         }
 
         v50 = *(*(&v63 + 1) + 8 * i);
-        v51 = [v62 objectForKeyedSubscript:v50];
+        v51 = [paths objectForKeyedSubscript:v50];
         v52 = [v51 count];
 
         if (v52)
@@ -921,7 +921,7 @@
           v53 = &v47[v52];
           do
           {
-            [v6 addTextureIndex:v47++ forKey:v50];
+            [storageCopy addTextureIndex:v47++ forKey:v50];
             v52 = v52 - 1;
           }
 
@@ -936,15 +936,15 @@
     while (v46);
   }
 
-  [v6 setImage:v12];
+  [storageCopy setImage:v12];
 }
 
-+ (void)p_loadSectionsForBrush:(id)a3 fromSVGDoc:(_xmlDoc *)a4 intoStorage:(id)a5
++ (void)p_loadSectionsForBrush:(id)brush fromSVGDoc:(_xmlDoc *)doc intoStorage:(id)storage
 {
-  v52 = a3;
-  v50 = a4;
-  v51 = a5;
-  v7 = sub_10006E4D0(a4, @"//svg:path['_section'=substring(@id,string-length(@id)-7)]");
+  brushCopy = brush;
+  docCopy = doc;
+  storageCopy = storage;
+  v7 = sub_10006E4D0(doc, @"//svg:path['_section'=substring(@id,string-length(@id)-7)]");
   if (![v7 count])
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -1001,7 +1001,7 @@
         v15 = [v14 objectForKey:@"d"];
         v16 = [v14 objectForKey:@"id"];
         v17 = [NSString stringWithFormat:@"//svg:rect[@id='%@_bounds']", v16];
-        v18 = sub_10006E4D0(v50, v17);
+        v18 = sub_10006E4D0(docCopy, v17);
 
         if ([v18 count] != 1)
         {
@@ -1047,8 +1047,8 @@
           [CRLAssertionHandler handleFailureInFunction:v22 file:v23 lineNumber:481 isFatal:0 description:"Section needs bounding rect"];
         }
 
-        v24 = [v18 lastObject];
-        v25 = [v24 objectForKey:@"nodeAttributes"];
+        lastObject = [v18 lastObject];
+        v25 = [lastObject objectForKey:@"nodeAttributes"];
 
         v26 = [v25 objectForKey:@"x"];
         [v26 doubleValue];
@@ -1083,7 +1083,7 @@
         v59 = v54;
         [v39 transformUsingAffineTransform:&v54];
         v40 = [v16 substringToIndex:{objc_msgSend(v16, "rangeOfString:", @"_"}];
-        if ([v52 isEqualToString:@"Chalk2"])
+        if ([brushCopy isEqualToString:@"Chalk2"])
         {
           v41 = [v40 isEqualToString:@"small"] ^ 1;
         }
@@ -1093,7 +1093,7 @@
           v41 = 0;
         }
 
-        [v51 addPath:v39 withBounds:v41 shouldSmooth:v40 forKey:{v28, v31, v34, v37}];
+        [storageCopy addPath:v39 withBounds:v41 shouldSmooth:v40 forKey:{v28, v31, v34, v37}];
         CGPathRelease(v38);
 
         v13 = v13 + 1;
@@ -1106,7 +1106,7 @@
     while (v12);
   }
 
-  [a1 p_loadImageForBrush:v52 intoStorage:v51];
+  [self p_loadImageForBrush:brushCopy intoStorage:storageCopy];
 }
 
 @end

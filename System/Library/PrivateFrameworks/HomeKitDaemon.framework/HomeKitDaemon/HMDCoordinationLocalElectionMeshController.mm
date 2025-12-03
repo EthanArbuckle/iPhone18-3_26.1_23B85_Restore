@@ -2,22 +2,22 @@
 + (id)logCategory;
 - (BOOL)isLeader;
 - (BOOL)isProcessing;
-- (HMDCoordinationLocalElectionMeshController)initWithQueue:(id)a3;
+- (HMDCoordinationLocalElectionMeshController)initWithQueue:(id)queue;
 - (HMDLocalElectionMeshControllerDelegate)delegate;
 - (HMDLocalElectionMeshNode)leaderNode;
 - (NSArray)meshNodes;
 - (id)debugDescriptionForControllerType;
 - (id)debugDescriptionForMeshState;
 - (id)logIdentifier;
-- (id)meshNodeFor:(id)a3;
+- (id)meshNodeFor:(id)for;
 - (void)_setupMessageRegistrations;
 - (void)meshControllerDidElectLeader;
 - (void)meshControllerDidStartElection;
 - (void)meshControllerDidUpdatesNodes;
-- (void)sendPingCommandToLeaderWithCompletion:(id)a3;
-- (void)sendPingNotificationToFollowersWithPrimaryResident:(id)a3;
-- (void)sendPingRequestToNode:(id)a3 withCompletion:(id)a4;
-- (void)startMeshWithName:(id)a3;
+- (void)sendPingCommandToLeaderWithCompletion:(id)completion;
+- (void)sendPingNotificationToFollowersWithPrimaryResident:(id)resident;
+- (void)sendPingRequestToNode:(id)node withCompletion:(id)completion;
+- (void)startMeshWithName:(id)name;
 - (void)stop;
 @end
 
@@ -32,54 +32,54 @@
 
 - (void)meshControllerDidUpdatesNodes
 {
-  v3 = [(COMeshController *)self dispatchQueue];
-  dispatch_assert_queue_V2(v3);
+  dispatchQueue = [(COMeshController *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
-  v4 = [(HMDCoordinationLocalElectionMeshController *)self delegate];
-  [v4 meshControllerDidUpdatesNodes:self];
+  delegate = [(HMDCoordinationLocalElectionMeshController *)self delegate];
+  [delegate meshControllerDidUpdatesNodes:self];
 }
 
 - (void)meshControllerDidStartElection
 {
-  v3 = [(COMeshController *)self dispatchQueue];
-  dispatch_assert_queue_V2(v3);
+  dispatchQueue = [(COMeshController *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
-  v4 = [(HMDCoordinationLocalElectionMeshController *)self delegate];
-  [v4 meshControllerDidStartElection:self];
+  delegate = [(HMDCoordinationLocalElectionMeshController *)self delegate];
+  [delegate meshControllerDidStartElection:self];
 }
 
 - (void)meshControllerDidElectLeader
 {
-  v3 = [(COMeshController *)self dispatchQueue];
-  dispatch_assert_queue_V2(v3);
+  dispatchQueue = [(COMeshController *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
-  v4 = [(HMDCoordinationLocalElectionMeshController *)self delegate];
-  [v4 meshControllerDidElectLeader:self];
+  delegate = [(HMDCoordinationLocalElectionMeshController *)self delegate];
+  [delegate meshControllerDidElectLeader:self];
 }
 
 - (id)logIdentifier
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(COMeshController *)self meshName];
-  v4 = [v2 stringWithFormat:@"%@", v3];
+  meshName = [(COMeshController *)self meshName];
+  v4 = [v2 stringWithFormat:@"%@", meshName];
 
   return v4;
 }
 
 - (id)debugDescriptionForMeshState
 {
-  v3 = [(COMeshController *)self dispatchQueue];
-  dispatch_assert_queue_V2(v3);
+  dispatchQueue = [(COMeshController *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
-  v4 = [(COMeshController *)self state];
-  if (v4 >= 5)
+  state = [(COMeshController *)self state];
+  if (state >= 5)
   {
     v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"Unknown(%d)", -[COMeshController state](self, "state")];
   }
 
   else
   {
-    v5 = off_278683EB0[v4];
+    v5 = off_278683EB0[state];
   }
 
   return v5;
@@ -87,13 +87,13 @@
 
 - (id)debugDescriptionForControllerType
 {
-  v3 = [(COMeshController *)self dispatchQueue];
-  dispatch_assert_queue_V2(v3);
+  dispatchQueue = [(COMeshController *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
   v4 = [(COMeshController *)self me];
-  v5 = [v4 type];
+  type = [v4 type];
 
-  switch(v5)
+  switch(type)
   {
     case 61440:
       v6 = @"LongLived";
@@ -117,13 +117,13 @@
 
 - (NSArray)meshNodes
 {
-  v3 = [(COMeshController *)self dispatchQueue];
-  dispatch_assert_queue_V2(v3);
+  dispatchQueue = [(COMeshController *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
   v7.receiver = self;
   v7.super_class = HMDCoordinationLocalElectionMeshController;
-  v4 = [(COMeshController *)&v7 nodes];
-  v5 = [v4 na_map:&__block_literal_global_22_239449];
+  nodes = [(COMeshController *)&v7 nodes];
+  v5 = [nodes na_map:&__block_literal_global_22_239449];
 
   return v5;
 }
@@ -138,18 +138,18 @@ HMDCoordinationLocalElectionMeshNode *__55__HMDCoordinationLocalElectionMeshCont
 
 - (HMDLocalElectionMeshNode)leaderNode
 {
-  v3 = [(COMeshController *)self dispatchQueue];
-  dispatch_assert_queue_V2(v3);
+  dispatchQueue = [(COMeshController *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
   v9.receiver = self;
   v9.super_class = HMDCoordinationLocalElectionMeshController;
-  v4 = [(COMeshController *)&v9 nodes];
+  nodes = [(COMeshController *)&v9 nodes];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __56__HMDCoordinationLocalElectionMeshController_leaderNode__block_invoke;
   v8[3] = &unk_278683E48;
   v8[4] = self;
-  v5 = [v4 na_firstObjectPassingTest:v8];
+  v5 = [nodes na_firstObjectPassingTest:v8];
 
   v6 = [[HMDCoordinationLocalElectionMeshNode alloc] initWithMeshNode:v5];
 
@@ -169,33 +169,33 @@ uint64_t __56__HMDCoordinationLocalElectionMeshController_leaderNode__block_invo
 
 - (BOOL)isProcessing
 {
-  v3 = [(COMeshController *)self dispatchQueue];
-  dispatch_assert_queue_V2(v3);
+  dispatchQueue = [(COMeshController *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
   return [(COMeshController *)self state]== 3;
 }
 
 - (BOOL)isLeader
 {
-  v3 = [(COMeshController *)self dispatchQueue];
-  dispatch_assert_queue_V2(v3);
+  dispatchQueue = [(COMeshController *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
-  v4 = [(COMeshController *)self leader];
+  leader = [(COMeshController *)self leader];
   v5 = [(COMeshController *)self me];
-  v6 = [v4 isEqual:v5];
+  v6 = [leader isEqual:v5];
 
   return v6;
 }
 
-- (void)sendPingRequestToNode:(id)a3 withCompletion:(id)a4
+- (void)sendPingRequestToNode:(id)node withCompletion:(id)completion
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(COMeshController *)self dispatchQueue];
-  dispatch_assert_queue_V2(v8);
+  nodeCopy = node;
+  completionCopy = completion;
+  dispatchQueue = [(COMeshController *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
-  v9 = [(HMDCoordinationLocalElectionMeshController *)self meshNodeFor:v6];
+  v9 = [(HMDCoordinationLocalElectionMeshController *)self meshNodeFor:nodeCopy];
   if (v9)
   {
     v10 = objc_alloc_init(HMDCoordinationPingRequest);
@@ -203,14 +203,14 @@ uint64_t __56__HMDCoordinationLocalElectionMeshController_leaderNode__block_invo
     v16[1] = 3221225472;
     v16[2] = __83__HMDCoordinationLocalElectionMeshController_sendPingRequestToNode_withCompletion___block_invoke;
     v16[3] = &unk_278683E70;
-    v17 = v7;
+    v17 = completionCopy;
     [(COMeshController *)self sendRequest:v10 toPeer:v9 withCompletionHandler:v16];
   }
 
   else
   {
     v11 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
@@ -226,22 +226,22 @@ uint64_t __56__HMDCoordinationLocalElectionMeshController_leaderNode__block_invo
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (id)meshNodeFor:(id)a3
+- (id)meshNodeFor:(id)for
 {
-  v4 = a3;
-  v5 = [(COMeshController *)self dispatchQueue];
-  dispatch_assert_queue_V2(v5);
+  forCopy = for;
+  dispatchQueue = [(COMeshController *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
   v12.receiver = self;
   v12.super_class = HMDCoordinationLocalElectionMeshController;
-  v6 = [(COMeshController *)&v12 nodes];
+  nodes = [(COMeshController *)&v12 nodes];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __58__HMDCoordinationLocalElectionMeshController_meshNodeFor___block_invoke;
   v10[3] = &unk_278683E48;
-  v11 = v4;
-  v7 = v4;
-  v8 = [v6 na_firstObjectPassingTest:v10];
+  v11 = forCopy;
+  v7 = forCopy;
+  v8 = [nodes na_firstObjectPassingTest:v10];
 
   return v8;
 }
@@ -257,49 +257,49 @@ uint64_t __58__HMDCoordinationLocalElectionMeshController_meshNodeFor___block_in
   return v6;
 }
 
-- (void)sendPingNotificationToFollowersWithPrimaryResident:(id)a3
+- (void)sendPingNotificationToFollowersWithPrimaryResident:(id)resident
 {
-  v4 = a3;
-  v5 = [(COMeshController *)self dispatchQueue];
-  dispatch_assert_queue_V2(v5);
+  residentCopy = resident;
+  dispatchQueue = [(COMeshController *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
-  v6 = [[HMDCoordinationPingNotification alloc] initWithPrimaryResidentUUID:v4];
+  v6 = [[HMDCoordinationPingNotification alloc] initWithPrimaryResidentUUID:residentCopy];
   [(COMeshController *)self sendNotification:v6];
 }
 
-- (void)sendPingCommandToLeaderWithCompletion:(id)a3
+- (void)sendPingCommandToLeaderWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(COMeshController *)self dispatchQueue];
-  dispatch_assert_queue_V2(v5);
+  completionCopy = completion;
+  dispatchQueue = [(COMeshController *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
   v6 = objc_alloc_init(HMDCoordinationPingCommand);
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __84__HMDCoordinationLocalElectionMeshController_sendPingCommandToLeaderWithCompletion___block_invoke;
   v8[3] = &unk_278683E20;
-  v9 = v4;
-  v7 = v4;
+  v9 = completionCopy;
+  v7 = completionCopy;
   [(COMeshController *)self sendCommand:v6 withCompletionHandler:v8];
 }
 
 - (void)stop
 {
-  v3 = [(COMeshController *)self dispatchQueue];
-  dispatch_assert_queue_V2(v3);
+  dispatchQueue = [(COMeshController *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
   v4.receiver = self;
   v4.super_class = HMDCoordinationLocalElectionMeshController;
   [(COMeshController *)&v4 stop];
 }
 
-- (void)startMeshWithName:(id)a3
+- (void)startMeshWithName:(id)name
 {
-  v4 = a3;
-  v5 = [(COMeshController *)self dispatchQueue];
-  dispatch_assert_queue_V2(v5);
+  nameCopy = name;
+  dispatchQueue = [(COMeshController *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
-  [(COMeshController *)self setMeshName:v4];
+  [(COMeshController *)self setMeshName:nameCopy];
 
   [(COMeshController *)self start];
 }
@@ -383,30 +383,30 @@ void __72__HMDCoordinationLocalElectionMeshController__setupMessageRegistrations
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDCoordinationLocalElectionMeshController)initWithQueue:(id)a3
+- (HMDCoordinationLocalElectionMeshController)initWithQueue:(id)queue
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277D0F8D0] sharedPreferences];
-  v6 = [v5 preferenceForKey:@"meshElectionConstituentType"];
-  v7 = [v6 numberValue];
+  queueCopy = queue;
+  mEMORY[0x277D0F8D0] = [MEMORY[0x277D0F8D0] sharedPreferences];
+  v6 = [mEMORY[0x277D0F8D0] preferenceForKey:@"meshElectionConstituentType"];
+  numberValue = [v6 numberValue];
 
-  if (v7)
+  if (numberValue)
   {
-    v8 = [v7 unsignedLongLongValue];
+    unsignedLongLongValue = [numberValue unsignedLongLongValue];
   }
 
   else
   {
-    v8 = 4096;
+    unsignedLongLongValue = 4096;
   }
 
   v12.receiver = self;
   v12.super_class = HMDCoordinationLocalElectionMeshController;
-  v9 = [(COMeshController *)&v12 initWithConstituentType:v8];
+  v9 = [(COMeshController *)&v12 initWithConstituentType:unsignedLongLongValue];
   v10 = v9;
   if (v9)
   {
-    [(COMeshController *)v9 setDispatchQueue:v4];
+    [(COMeshController *)v9 setDispatchQueue:queueCopy];
     [(HMDCoordinationLocalElectionMeshController *)v10 _setupMessageRegistrations];
   }
 

@@ -1,11 +1,11 @@
 @interface GTServiceProvider
-- (BOOL)waitForService:(id)a3 error:(id *)a4;
+- (BOOL)waitForService:(id)service error:(id *)error;
 - (GTServiceProvider)init;
-- (void)_registerService:(id)a3 forProcess:(id)a4 forPort:(unint64_t)a5;
-- (void)deregisterService:(unint64_t)a3;
-- (void)disconnectServicePorts:(id)a3;
-- (void)notifyServiceListChanged:(id)a3;
-- (void)waitForService:(id)a3 completionHandler:(id)a4;
+- (void)_registerService:(id)service forProcess:(id)process forPort:(unint64_t)port;
+- (void)deregisterService:(unint64_t)service;
+- (void)disconnectServicePorts:(id)ports;
+- (void)notifyServiceListChanged:(id)changed;
+- (void)waitForService:(id)service completionHandler:(id)handler;
 @end
 
 @implementation GTServiceProvider
@@ -34,55 +34,55 @@
   return v2;
 }
 
-- (void)_registerService:(id)a3 forProcess:(id)a4 forPort:(unint64_t)a5
+- (void)_registerService:(id)service forProcess:(id)process forPort:(unint64_t)port
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 deviceUDID];
+  serviceCopy = service;
+  processCopy = process;
+  deviceUDID = [serviceCopy deviceUDID];
 
-  if (!v10)
+  if (!deviceUDID)
   {
     v11 = +[GTDeviceProperties uniqueDeviceID];
-    [v8 setDeviceUDID:v11];
+    [serviceCopy setDeviceUDID:v11];
   }
 
-  [v8 setServicePort:a5];
-  v12 = [[GTProcessService alloc] initWithService:v8 processInfo:v9];
+  [serviceCopy setServicePort:port];
+  v12 = [[GTProcessService alloc] initWithService:serviceCopy processInfo:processCopy];
   services = self->_services;
-  v14 = [NSNumber numberWithUnsignedInteger:a5];
+  v14 = [NSNumber numberWithUnsignedInteger:port];
   [(NSMutableDictionary *)services setObject:v12 forKeyedSubscript:v14];
 
   if (GTCoreLogUseOsLog())
   {
-    v15 = gt_tagged_log(0x10u);
-    if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
+    protocolName = gt_tagged_log(0x10u);
+    if (os_log_type_enabled(protocolName, OS_LOG_TYPE_DEBUG))
     {
-      sub_10000A3F0(v8, a5, v15);
+      sub_10000A3F0(serviceCopy, port, protocolName);
     }
   }
 
   else
   {
     v16 = __stdoutp;
-    v15 = [v8 protocolName];
-    v17 = [v15 UTF8String];
-    v18 = [v8 deviceUDID];
-    v19 = [NSString stringWithFormat:@"Service Registered name:%s port:%lu udid:%@", v17, a5, v18];
+    protocolName = [serviceCopy protocolName];
+    uTF8String = [protocolName UTF8String];
+    deviceUDID2 = [serviceCopy deviceUDID];
+    v19 = [NSString stringWithFormat:@"Service Registered name:%s port:%lu udid:%@", uTF8String, port, deviceUDID2];
     fprintf(v16, "%s\n", [v19 UTF8String]);
   }
 
-  v20 = [(NSMutableDictionary *)self->_services allValues];
-  [(GTServiceProvider *)self notifyServiceListChanged:v20];
+  allValues = [(NSMutableDictionary *)self->_services allValues];
+  [(GTServiceProvider *)self notifyServiceListChanged:allValues];
 
   waiting = self->_waiting;
-  v22 = [v8 protocolName];
-  v23 = [(NSMutableDictionary *)waiting objectForKeyedSubscript:v22];
+  protocolName2 = [serviceCopy protocolName];
+  v23 = [(NSMutableDictionary *)waiting objectForKeyedSubscript:protocolName2];
 
   if (v23)
   {
     v24 = self->_waiting;
-    v25 = [v8 protocolName];
-    [(NSMutableDictionary *)v24 removeObjectForKey:v25];
+    protocolName3 = [serviceCopy protocolName];
+    [(NSMutableDictionary *)v24 removeObjectForKey:protocolName3];
 
     v33 = 0u;
     v34 = 0u;
@@ -117,14 +117,14 @@
   }
 }
 
-- (void)waitForService:(id)a3 completionHandler:(id)a4
+- (void)waitForService:(id)service completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  serviceCopy = service;
+  handlerCopy = handler;
+  v8 = handlerCopy;
+  if (serviceCopy)
   {
-    v24 = v7;
+    v24 = handlerCopy;
     v27 = 0u;
     v28 = 0u;
     v25 = 0u;
@@ -146,9 +146,9 @@
           }
 
           v14 = [(NSMutableDictionary *)self->_services objectForKeyedSubscript:*(*(&v25 + 1) + 8 * v13)];
-          v15 = [v14 serviceProperties];
-          v16 = [v15 protocolName];
-          v17 = [v16 isEqualToString:v6];
+          serviceProperties = [v14 serviceProperties];
+          protocolName = [serviceProperties protocolName];
+          v17 = [protocolName isEqualToString:serviceCopy];
 
           if (v17)
           {
@@ -171,15 +171,15 @@
       }
     }
 
-    v18 = [(NSMutableDictionary *)self->_waiting objectForKeyedSubscript:v6];
+    v18 = [(NSMutableDictionary *)self->_waiting objectForKeyedSubscript:serviceCopy];
 
     if (!v18)
     {
       v19 = objc_alloc_init(NSMutableArray);
-      [(NSMutableDictionary *)self->_waiting setObject:v19 forKeyedSubscript:v6];
+      [(NSMutableDictionary *)self->_waiting setObject:v19 forKeyedSubscript:serviceCopy];
     }
 
-    v9 = [(NSMutableDictionary *)self->_waiting objectForKeyedSubscript:v6];
+    v9 = [(NSMutableDictionary *)self->_waiting objectForKeyedSubscript:serviceCopy];
     v8 = v24;
     v20 = [v24 copy];
     v21 = objc_retainBlock(v20);
@@ -200,7 +200,7 @@
 LABEL_15:
 }
 
-- (BOOL)waitForService:(id)a3 error:(id *)a4
+- (BOOL)waitForService:(id)service error:(id *)error
 {
   v13 = 0;
   v14 = &v13;
@@ -208,7 +208,7 @@ LABEL_15:
   v16 = sub_100008870;
   v17 = sub_100008880;
   v18 = 0;
-  v6 = a3;
+  serviceCopy = service;
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100008888;
@@ -216,12 +216,12 @@ LABEL_15:
   v11 = dispatch_semaphore_create(0);
   v12 = &v13;
   v7 = v11;
-  [(GTServiceProvider *)self waitForService:v6 completionHandler:v10];
+  [(GTServiceProvider *)self waitForService:serviceCopy completionHandler:v10];
 
   dispatch_semaphore_wait(v7, 0xFFFFFFFFFFFFFFFFLL);
-  if (a4)
+  if (error)
   {
-    *a4 = v14[5];
+    *error = v14[5];
   }
 
   v8 = v14[5] == 0;
@@ -230,22 +230,22 @@ LABEL_15:
   return v8;
 }
 
-- (void)deregisterService:(unint64_t)a3
+- (void)deregisterService:(unint64_t)service
 {
-  v4 = [NSNumber numberWithUnsignedLongLong:a3];
+  v4 = [NSNumber numberWithUnsignedLongLong:service];
   v6 = v4;
   v5 = [NSArray arrayWithObjects:&v6 count:1];
   [(GTServiceProvider *)self disconnectServicePorts:v5];
 }
 
-- (void)disconnectServicePorts:(id)a3
+- (void)disconnectServicePorts:(id)ports
 {
-  v4 = a3;
+  portsCopy = ports;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v20 objects:v28 count:16];
+  v5 = [portsCopy countByEnumeratingWithState:&v20 objects:v28 count:16];
   if (v5)
   {
     v6 = v5;
@@ -256,23 +256,23 @@ LABEL_15:
       {
         if (*v21 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(portsCopy);
         }
 
         v9 = *(*(&v20 + 1) + 8 * i);
         v10 = [(NSMutableDictionary *)self->_services objectForKeyedSubscript:v9];
-        v11 = [v10 serviceProperties];
-        v12 = [v11 protocolName];
-        v13 = [v12 UTF8String];
+        serviceProperties = [v10 serviceProperties];
+        protocolName = [serviceProperties protocolName];
+        uTF8String = [protocolName UTF8String];
 
         if (GTCoreLogUseOsLog())
         {
           v14 = gt_tagged_log(0x10u);
           if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
           {
-            if (v13)
+            if (uTF8String)
             {
-              v15 = v13;
+              v15 = uTF8String;
             }
 
             else
@@ -280,11 +280,11 @@ LABEL_15:
               v15 = "";
             }
 
-            v16 = [v9 unsignedLongValue];
+            unsignedLongValue = [v9 unsignedLongValue];
             *buf = 136315394;
             v25 = v15;
             v26 = 2048;
-            v27 = v16;
+            v27 = unsignedLongValue;
             _os_log_debug_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEBUG, "Service Unregistered name:%s port:%lu", buf, 0x16u);
           }
         }
@@ -292,9 +292,9 @@ LABEL_15:
         else
         {
           v17 = __stdoutp;
-          if (v13)
+          if (uTF8String)
           {
-            v18 = v13;
+            v18 = uTF8String;
           }
 
           else
@@ -307,27 +307,27 @@ LABEL_15:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v20 objects:v28 count:16];
+      v6 = [portsCopy countByEnumeratingWithState:&v20 objects:v28 count:16];
     }
 
     while (v6);
   }
 
-  [(NSMutableDictionary *)self->_services removeObjectsForKeys:v4];
-  v19 = [(NSMutableDictionary *)self->_services allValues];
-  [(GTServiceProvider *)self notifyServiceListChanged:v19];
+  [(NSMutableDictionary *)self->_services removeObjectsForKeys:portsCopy];
+  allValues = [(NSMutableDictionary *)self->_services allValues];
+  [(GTServiceProvider *)self notifyServiceListChanged:allValues];
 }
 
-- (void)notifyServiceListChanged:(id)a3
+- (void)notifyServiceListChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   observers = self->_observers;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100008C94;
   v7[3] = &unk_100040B70;
-  v8 = v4;
-  v6 = v4;
+  v8 = changedCopy;
+  v6 = changedCopy;
   [(GTObservableService *)observers notifyAll:v7];
 }
 

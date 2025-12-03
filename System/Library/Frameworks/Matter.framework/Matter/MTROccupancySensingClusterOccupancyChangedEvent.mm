@@ -1,6 +1,6 @@
 @interface MTROccupancySensingClusterOccupancyChangedEvent
 - (MTROccupancySensingClusterOccupancyChangedEvent)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -21,11 +21,11 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTROccupancySensingClusterOccupancyChangedEvent);
-  v5 = [(MTROccupancySensingClusterOccupancyChangedEvent *)self occupancy];
-  [(MTROccupancySensingClusterOccupancyChangedEvent *)v4 setOccupancy:v5];
+  occupancy = [(MTROccupancySensingClusterOccupancyChangedEvent *)self occupancy];
+  [(MTROccupancySensingClusterOccupancyChangedEvent *)v4 setOccupancy:occupancy];
 
   return v4;
 }

@@ -1,19 +1,19 @@
 @interface HSPlaybackStageProgressEvent
-- (BOOL)hsDecode:(void *)a3;
-- (BOOL)hsEncode:(void *)a3;
+- (BOOL)hsDecode:(void *)decode;
+- (BOOL)hsEncode:(void *)encode;
 - (id).cxx_construct;
 @end
 
 @implementation HSPlaybackStageProgressEvent
 
-- (BOOL)hsEncode:(void *)a3
+- (BOOL)hsEncode:(void *)encode
 {
-  if (!*a3)
+  if (!*encode)
   {
-    *&v9 = *(a3 + 17);
+    *&v9 = *(encode + 17);
     DWORD2(v9) = 4;
-    std::vector<HSUtil::Encoder::ContainerRecord>::push_back[abi:ne200100](a3 + 56, &v9);
-    HSUtil::Encoder::_writeTokenValue32(a3, 0xE8u, 0);
+    std::vector<HSUtil::Encoder::ContainerRecord>::push_back[abi:ne200100](encode + 56, &v9);
+    HSUtil::Encoder::_writeTokenValue32(encode, 0xE8u, 0);
   }
 
   begin = self->datas.__begin_;
@@ -21,23 +21,23 @@
   while (begin != var0)
   {
     v7 = *begin;
-    HSUtil::Encoder::encodeObject(a3, v7);
+    HSUtil::Encoder::encodeObject(encode, v7);
 
     ++begin;
   }
 
-  if (!*a3)
+  if (!*encode)
   {
-    HSUtil::Encoder::_encodeContainerStop(a3);
+    HSUtil::Encoder::_encodeContainerStop(encode);
   }
 
   return 1;
 }
 
-- (BOOL)hsDecode:(void *)a3
+- (BOOL)hsDecode:(void *)decode
 {
-  HSUtil::Decoder::decodeArray(a3, v10);
-  if (*a3)
+  HSUtil::Decoder::decodeArray(decode, v10);
+  if (*decode)
   {
     basename_r("/Library/Caches/com.apple.xbs/Sources/HIDSensingPipeline/HIDSensingPipeline/HSPlaybackStage.mm", v13);
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))

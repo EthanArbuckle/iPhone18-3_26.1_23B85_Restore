@@ -1,30 +1,30 @@
 @interface CKKSPCSIdentityQueryResult
-- (CKKSPCSIdentityQueryResult)initWithCoder:(id)a3;
-- (CKKSPCSIdentityQueryResult)initWithServiceNumber:(id)a3 publicKey:(id)a4 zoneID:(id)a5 decryptedRecord:(id)a6;
+- (CKKSPCSIdentityQueryResult)initWithCoder:(id)coder;
+- (CKKSPCSIdentityQueryResult)initWithServiceNumber:(id)number publicKey:(id)key zoneID:(id)d decryptedRecord:(id)record;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CKKSPCSIdentityQueryResult
 
-- (CKKSPCSIdentityQueryResult)initWithCoder:(id)a3
+- (CKKSPCSIdentityQueryResult)initWithCoder:(id)coder
 {
   v20[5] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v19.receiver = self;
   v19.super_class = CKKSPCSIdentityQueryResult;
   v5 = [(CKKSPCSIdentityQueryResult *)&v19 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"serviceNumber"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"serviceNumber"];
     serviceNumber = v5->_serviceNumber;
     v5->_serviceNumber = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"zoneID"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"zoneID"];
     zoneID = v5->_zoneID;
     v5->_zoneID = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"publicKey"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"publicKey"];
     publicKey = v5->_publicKey;
     v5->_publicKey = v10;
 
@@ -37,7 +37,7 @@
     v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:5];
     v14 = [v12 setWithArray:v13];
 
-    v15 = [v4 decodeObjectOfClasses:v14 forKey:@"decryptedRecord"];
+    v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"decryptedRecord"];
     decryptedRecord = v5->_decryptedRecord;
     v5->_decryptedRecord = v15;
   }
@@ -46,48 +46,48 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(CKKSPCSIdentityQueryResult *)self serviceNumber];
-  [v4 encodeObject:v5 forKey:@"serviceNumber"];
+  coderCopy = coder;
+  serviceNumber = [(CKKSPCSIdentityQueryResult *)self serviceNumber];
+  [coderCopy encodeObject:serviceNumber forKey:@"serviceNumber"];
 
-  v6 = [(CKKSPCSIdentityQueryResult *)self zoneID];
-  [v4 encodeObject:v6 forKey:@"zoneID"];
+  zoneID = [(CKKSPCSIdentityQueryResult *)self zoneID];
+  [coderCopy encodeObject:zoneID forKey:@"zoneID"];
 
-  v7 = [(CKKSPCSIdentityQueryResult *)self publicKey];
-  [v4 encodeObject:v7 forKey:@"publicKey"];
+  publicKey = [(CKKSPCSIdentityQueryResult *)self publicKey];
+  [coderCopy encodeObject:publicKey forKey:@"publicKey"];
 
-  v8 = [(CKKSPCSIdentityQueryResult *)self decryptedRecord];
-  [v4 encodeObject:v8 forKey:@"decryptedRecord"];
+  decryptedRecord = [(CKKSPCSIdentityQueryResult *)self decryptedRecord];
+  [coderCopy encodeObject:decryptedRecord forKey:@"decryptedRecord"];
 }
 
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(CKKSPCSIdentityQueryResult *)self zoneID];
-  v5 = [(CKKSPCSIdentityQueryResult *)self serviceNumber];
-  v6 = [v3 stringWithFormat:@"<CKKSPCSIdentityQueryResult(%@): %@>", v4, v5];
+  zoneID = [(CKKSPCSIdentityQueryResult *)self zoneID];
+  serviceNumber = [(CKKSPCSIdentityQueryResult *)self serviceNumber];
+  v6 = [v3 stringWithFormat:@"<CKKSPCSIdentityQueryResult(%@): %@>", zoneID, serviceNumber];
 
   return v6;
 }
 
-- (CKKSPCSIdentityQueryResult)initWithServiceNumber:(id)a3 publicKey:(id)a4 zoneID:(id)a5 decryptedRecord:(id)a6
+- (CKKSPCSIdentityQueryResult)initWithServiceNumber:(id)number publicKey:(id)key zoneID:(id)d decryptedRecord:(id)record
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  numberCopy = number;
+  keyCopy = key;
+  dCopy = d;
+  recordCopy = record;
   v18.receiver = self;
   v18.super_class = CKKSPCSIdentityQueryResult;
   v15 = [(CKKSPCSIdentityQueryResult *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_serviceNumber, a3);
-    objc_storeStrong(&v16->_publicKey, a4);
-    objc_storeStrong(&v16->_zoneID, a5);
-    objc_storeStrong(&v16->_decryptedRecord, a6);
+    objc_storeStrong(&v15->_serviceNumber, number);
+    objc_storeStrong(&v16->_publicKey, key);
+    objc_storeStrong(&v16->_zoneID, d);
+    objc_storeStrong(&v16->_decryptedRecord, record);
   }
 
   return v16;

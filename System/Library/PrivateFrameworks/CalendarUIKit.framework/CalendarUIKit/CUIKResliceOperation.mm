@@ -1,5 +1,5 @@
 @interface CUIKResliceOperation
-- (BOOL)_executeWithUndoDelegate:(id)a3 error:(id *)a4;
+- (BOOL)_executeWithUndoDelegate:(id)delegate error:(id *)error;
 - (id)_objectsForInverse;
 @end
 
@@ -8,13 +8,13 @@
 - (id)_objectsForInverse
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [(CUIKUserOperation *)self objects];
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  objects = [(CUIKUserOperation *)self objects];
+  v5 = [objects countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -25,27 +25,27 @@
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(objects);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
         v10 = [EKUndoSliceOutcome alloc];
-        v11 = [v9 originalPostSliceDescription];
-        v12 = [(EKUndoSliceOutcome *)v10 initWithOriginalPostSliceDescription:v11];
+        originalPostSliceDescription = [v9 originalPostSliceDescription];
+        v12 = [(EKUndoSliceOutcome *)v10 initWithOriginalPostSliceDescription:originalPostSliceDescription];
 
-        [v3 addObject:v12];
+        [array addObject:v12];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [objects countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v6);
   }
 
-  return v3;
+  return array;
 }
 
-- (BOOL)_executeWithUndoDelegate:(id)a3 error:(id *)a4
+- (BOOL)_executeWithUndoDelegate:(id)delegate error:(id *)error
 {
   objc_opt_class();
   NSRequestConcreteImplementation();

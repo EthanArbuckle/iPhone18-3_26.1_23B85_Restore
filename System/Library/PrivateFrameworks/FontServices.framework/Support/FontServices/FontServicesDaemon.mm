@@ -1,75 +1,75 @@
 @interface FontServicesDaemon
 + (id)sharedDaemon;
 - (BOOL)isCurrentConnectionFontPicker;
-- (BOOL)isIdentifierAllowedForFontEnumeration:(id)a3;
-- (BOOL)isKnownFamilyName:(id)a3 withEnabledState:(BOOL *)a4;
+- (BOOL)isIdentifierAllowedForFontEnumeration:(id)enumeration;
+- (BOOL)isKnownFamilyName:(id)name withEnabledState:(BOOL *)state;
 - (BOOL)isUserFontInstalled;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (FontServicesDaemon)init;
 - (NSDictionary)userFontsInfo;
 - (OS_dispatch_queue)assetHandlerQueue;
 - (OS_dispatch_queue)scheduledFontDeletionQueue;
 - (OS_dispatch_queue)subscriptionSupportQueue;
 - (id)_userFontsInfoFromDisk;
-- (id)displayLayoutMonitorWithHandler:(id)a3;
-- (id)filterUserFontInfoForAuditToken:(id *)a3 withEnumerationCapability:(BOOL)a4 withFilter:(id)a5;
-- (id)identifierFromFilePath:(id)a3;
-- (id)issuedFontFilePathsForIdentifier:(id)a3;
-- (id)knownFamilyNameFromPostScriptName:(id)a3 withEnabledState:(BOOL *)a4;
-- (id)missingFontsDialogRequestsFromDisabledFamilyNames:(id)a3;
-- (id)missingFontsDialogRequestsFromUnknownFontNames:(id)a3;
-- (id)providerIdentifiersAndFamilyName:(id *)a3 fromPostScriptName:(id)a4;
-- (id)providerIdentifiersFromFamilyName:(id)a3;
-- (id)sandboxExtensionForEnumeration:(id *)a3;
-- (id)sandboxExtensionForFontAssets:(id *)a3;
-- (id)sandboxExtensionForProvider:(id *)a3 withDirectoryName:(id)a4;
-- (id)sanitizeIssuedFontPaths:(id)a3;
-- (id)unknownFontNamesAndEnabledFamilyNames:(id *)a3 andDisabledFamilyNames:(id *)a4 fromRequests:(id)a5;
+- (id)displayLayoutMonitorWithHandler:(id)handler;
+- (id)filterUserFontInfoForAuditToken:(id *)token withEnumerationCapability:(BOOL)capability withFilter:(id)filter;
+- (id)identifierFromFilePath:(id)path;
+- (id)issuedFontFilePathsForIdentifier:(id)identifier;
+- (id)knownFamilyNameFromPostScriptName:(id)name withEnabledState:(BOOL *)state;
+- (id)missingFontsDialogRequestsFromDisabledFamilyNames:(id)names;
+- (id)missingFontsDialogRequestsFromUnknownFontNames:(id)names;
+- (id)providerIdentifiersAndFamilyName:(id *)name fromPostScriptName:(id)scriptName;
+- (id)providerIdentifiersFromFamilyName:(id)name;
+- (id)sandboxExtensionForEnumeration:(id *)enumeration;
+- (id)sandboxExtensionForFontAssets:(id *)assets;
+- (id)sandboxExtensionForProvider:(id *)provider withDirectoryName:(id)name;
+- (id)sanitizeIssuedFontPaths:(id)paths;
+- (id)unknownFontNamesAndEnabledFamilyNames:(id *)names andDisabledFamilyNames:(id *)familyNames fromRequests:(id)requests;
 - (unint64_t)countFontAssets;
-- (void)accessFontAsset:(id)a3;
-- (void)analyticsEventRequestFonts:(id)a3 misses:(unint64_t)a4 suggestions:(unint64_t)a5 resolved:(unint64_t)a6;
-- (void)capabilitiesFor:(id *)a3 allowEnumerate:(BOOL *)a4 allowUserFonts:(BOOL *)a5 allowInstallation:(BOOL *)a6 andIdentifier:(id *)a7;
-- (void)executeScheduledFontFilesDeletion:(id)a3;
-- (void)extractRequestFontsMissed:(unint64_t *)a3 andResolved:(unint64_t *)a4;
-- (void)fontChanged:(id)a3 reply:(id)a4;
-- (void)forgetClientApplication:(id)a3;
+- (void)accessFontAsset:(id)asset;
+- (void)analyticsEventRequestFonts:(id)fonts misses:(unint64_t)misses suggestions:(unint64_t)suggestions resolved:(unint64_t)resolved;
+- (void)capabilitiesFor:(id *)for allowEnumerate:(BOOL *)enumerate allowUserFonts:(BOOL *)fonts allowInstallation:(BOOL *)installation andIdentifier:(id *)identifier;
+- (void)executeScheduledFontFilesDeletion:(id)deletion;
+- (void)extractRequestFontsMissed:(unint64_t *)missed andResolved:(unint64_t *)resolved;
+- (void)fontChanged:(id)changed reply:(id)reply;
+- (void)forgetClientApplication:(id)application;
 - (void)invalidateUserFonts;
-- (void)recordIssuedFontPaths:(id)a3 forIdentifier:(id)a4;
-- (void)recordRequestFontsResultWihtMissed:(BOOL)a3 andResolved:(BOOL)a4;
-- (void)recordSuspendedProvider:(id)a3 url:(id)a4 andScheme:(id)a5 forDate:(id)a6;
-- (void)recordWarnedForIdenntifier:(id)a3;
+- (void)recordIssuedFontPaths:(id)paths forIdentifier:(id)identifier;
+- (void)recordRequestFontsResultWihtMissed:(BOOL)missed andResolved:(BOOL)resolved;
+- (void)recordSuspendedProvider:(id)provider url:(id)url andScheme:(id)scheme forDate:(id)date;
+- (void)recordWarnedForIdenntifier:(id)idenntifier;
 - (void)removeDeprecatedFontAsset;
-- (void)requestFonts:(id)a3 forClient:(id)a4 reply:(id)a5;
-- (void)requestFonts:(id)a3 sceneID:(id)a4 reply:(id)a5;
-- (void)resetIssuedFontsFor:(id)a3 reply:(id)a4;
-- (void)resetWarnedForIdenntifier:(id)a3;
-- (void)resumeAndShowAlertForSuspendedFontProviders:(id)a3;
-- (void)scheduleFontFilesDeletion:(id)a3;
-- (void)setFontFilesDeletionTimer:(unsigned int)a3;
+- (void)requestFonts:(id)fonts forClient:(id)client reply:(id)reply;
+- (void)requestFonts:(id)fonts sceneID:(id)d reply:(id)reply;
+- (void)resetIssuedFontsFor:(id)for reply:(id)reply;
+- (void)resetWarnedForIdenntifier:(id)idenntifier;
+- (void)resumeAndShowAlertForSuspendedFontProviders:(id)providers;
+- (void)scheduleFontFilesDeletion:(id)deletion;
+- (void)setFontFilesDeletionTimer:(unsigned int)timer;
 - (void)setup;
 - (void)setupForAssetNotifications;
 - (void)setupForDistributedNotifications;
 - (void)setupForMonitoringFontAssets;
 - (void)setupForScheduledFontDeletion;
 - (void)setupForXPCService;
-- (void)setupUserInstalledFontsFor:(id *)a3 withCapabilitiesFor:(id *)a4 hasEnumeration:(BOOL)a5 hasFontAccess:(BOOL)a6 isFontProvider:(BOOL)a7 processIdentifier:(id)a8 options:(id)a9 compat:(BOOL *)a10 reply:(id)a11;
+- (void)setupUserInstalledFontsFor:(id *)for withCapabilitiesFor:(id *)capabilitiesFor hasEnumeration:(BOOL)enumeration hasFontAccess:(BOOL)access isFontProvider:(BOOL)provider processIdentifier:(id)identifier options:(id)options compat:(BOOL *)self0 reply:(id)self1;
 - (void)stopFontFilesDeletionTimer;
 - (void)subscriptionSupportTimerHandler;
-- (void)synchronizeFontAssets:(id)a3 reply:(id)a4;
+- (void)synchronizeFontAssets:(id)assets reply:(id)reply;
 - (void)synchronizeFontProviders;
-- (void)updatingUserFonts:(id)a3;
-- (void)warnAboutSuspendedFontProviders:(id)a3;
+- (void)updatingUserFonts:(id)fonts;
+- (void)warnAboutSuspendedFontProviders:(id)providers;
 @end
 
 @implementation FontServicesDaemon
 
 - (NSDictionary)userFontsInfo
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if ([(FontServicesDaemon *)v2 isUserFontInstalled])
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([(FontServicesDaemon *)selfCopy isUserFontInstalled])
   {
-    v3 = v2->_userFontsInfo;
+    v3 = selfCopy->_userFontsInfo;
   }
 
   else
@@ -77,33 +77,33 @@
     v3 = 0;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (BOOL)isUserFontInstalled
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  userFontsInfo = v2->_userFontsInfo;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  userFontsInfo = selfCopy->_userFontsInfo;
   if (!userFontsInfo)
   {
-    v4 = [(FontServicesDaemon *)v2 _userFontsInfoFromDisk];
-    v5 = v2->_userFontsInfo;
-    v2->_userFontsInfo = v4;
+    _userFontsInfoFromDisk = [(FontServicesDaemon *)selfCopy _userFontsInfoFromDisk];
+    v5 = selfCopy->_userFontsInfo;
+    selfCopy->_userFontsInfo = _userFontsInfoFromDisk;
 
-    userFontsInfo = v2->_userFontsInfo;
+    userFontsInfo = selfCopy->_userFontsInfo;
     if (!userFontsInfo)
     {
-      v2->_userFontsInfo = &__NSDictionary0__struct;
+      selfCopy->_userFontsInfo = &__NSDictionary0__struct;
 
-      userFontsInfo = v2->_userFontsInfo;
+      userFontsInfo = selfCopy->_userFontsInfo;
     }
   }
 
   v6 = [(NSDictionary *)userFontsInfo count]!= 0;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
@@ -145,69 +145,69 @@
   objc_sync_exit(obj);
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v5 = qword_10001D898;
-  v6 = a4;
+  connectionCopy = connection;
   if (v5 != -1)
   {
     sub_10000CFD0();
   }
 
-  [v6 setExportedInterface:qword_10001D888];
+  [connectionCopy setExportedInterface:qword_10001D888];
   v7 = [[FontServicesHandler alloc] initWithFontServivesDaemon:self];
-  [v6 setExportedObject:v7];
-  [v6 setRemoteObjectInterface:qword_10001D890];
+  [connectionCopy setExportedObject:v7];
+  [connectionCopy setRemoteObjectInterface:qword_10001D890];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100001594;
   v10[3] = &unk_100018688;
   v11 = v7;
   v8 = v7;
-  [v6 setInvalidationHandler:v10];
-  [(FontServicesHandler *)v8 setClientConnection:v6];
-  [v6 resume];
+  [connectionCopy setInvalidationHandler:v10];
+  [(FontServicesHandler *)v8 setClientConnection:connectionCopy];
+  [connectionCopy resume];
 
   return 1;
 }
 
-- (id)filterUserFontInfoForAuditToken:(id *)a3 withEnumerationCapability:(BOOL)a4 withFilter:(id)a5
+- (id)filterUserFontInfoForAuditToken:(id *)token withEnumerationCapability:(BOOL)capability withFilter:(id)filter
 {
-  v8 = a5;
+  filterCopy = filter;
   v9 = [NSMutableDictionary dictionaryWithCapacity:0];
-  v10 = *&a3->var0[4];
-  v22[0] = *a3->var0;
+  v10 = *&token->var0[4];
+  v22[0] = *token->var0;
   v22[1] = v10;
   v11 = [(FontServicesDaemon *)self isAuditTokenSandboxed:v22];
-  v12 = [(FontServicesDaemon *)self userFontsInfo];
-  if (v12)
+  userFontsInfo = [(FontServicesDaemon *)self userFontsInfo];
+  if (userFontsInfo)
   {
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = sub_100001708;
     v15[3] = &unk_1000186B0;
-    v17 = v8;
+    v17 = filterCopy;
     v20 = v11;
-    v21 = a4;
-    v13 = *&a3->var0[4];
-    v18 = *a3->var0;
+    capabilityCopy = capability;
+    v13 = *&token->var0[4];
+    v18 = *token->var0;
     v19 = v13;
     v16 = v9;
-    [v12 enumerateKeysAndObjectsUsingBlock:v15];
+    [userFontsInfo enumerateKeysAndObjectsUsingBlock:v15];
   }
 
   return v9;
 }
 
-- (BOOL)isIdentifierAllowedForFontEnumeration:(id)a3
+- (BOOL)isIdentifierAllowedForFontEnumeration:(id)enumeration
 {
-  v4 = a3;
+  enumerationCopy = enumeration;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [(FontServicesDaemon *)self fontEnumerationProhibitedInfo];
-  v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  fontEnumerationProhibitedInfo = [(FontServicesDaemon *)self fontEnumerationProhibitedInfo];
+  v6 = [fontEnumerationProhibitedInfo countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
     v7 = v6;
@@ -218,17 +218,17 @@
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(fontEnumerationProhibitedInfo);
         }
 
-        v10 = [*(*(&v15 + 1) + 8 * i) objectForKey:v4];
+        v10 = [*(*(&v15 + 1) + 8 * i) objectForKey:enumerationCopy];
         if (v10)
         {
-          v11 = [[LSApplicationRecord alloc] initWithBundleIdentifier:v4 allowPlaceholder:0 error:0];
-          v12 = [v11 shortVersionString];
-          if ([v10 containsObject:v12])
+          v11 = [[LSApplicationRecord alloc] initWithBundleIdentifier:enumerationCopy allowPlaceholder:0 error:0];
+          shortVersionString = [v11 shortVersionString];
+          if ([v10 containsObject:shortVersionString])
           {
-            NSLog(@"This process is not allowed to enumerate fonts - %@", v4);
+            NSLog(@"This process is not allowed to enumerate fonts - %@", enumerationCopy);
 
             v13 = 0;
             goto LABEL_13;
@@ -236,7 +236,7 @@
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [fontEnumerationProhibitedInfo countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v7)
       {
         continue;
@@ -252,10 +252,10 @@ LABEL_13:
   return v13;
 }
 
-- (void)capabilitiesFor:(id *)a3 allowEnumerate:(BOOL *)a4 allowUserFonts:(BOOL *)a5 allowInstallation:(BOOL *)a6 andIdentifier:(id *)a7
+- (void)capabilitiesFor:(id *)for allowEnumerate:(BOOL *)enumerate allowUserFonts:(BOOL *)fonts allowInstallation:(BOOL *)installation andIdentifier:(id *)identifier
 {
-  v12 = *&a3->var0[4];
-  *v28.val = *a3->var0;
+  v12 = *&for->var0[4];
+  *v28.val = *for->var0;
   *&v28.val[4] = v12;
   v13 = SecTaskCreateWithAuditToken(kCFAllocatorDefault, &v28);
   if (v13)
@@ -326,11 +326,11 @@ LABEL_14:
   v20 = 0;
   v23 = 0;
 LABEL_15:
-  *a4 = v23;
-  *a5 = v21;
-  *a6 = v20;
+  *enumerate = v23;
+  *fonts = v21;
+  *installation = v20;
   v27 = v22;
-  *a7 = v22;
+  *identifier = v22;
 }
 
 - (BOOL)isCurrentConnectionFontPicker
@@ -380,9 +380,9 @@ LABEL_15:
   return v7;
 }
 
-- (id)sandboxExtensionForEnumeration:(id *)a3
+- (id)sandboxExtensionForEnumeration:(id *)enumeration
 {
-  v5 = *a3;
+  v5 = *enumeration;
   v3 = sandbox_extension_issue_file_to_process();
   if (v3)
   {
@@ -392,16 +392,16 @@ LABEL_15:
   return v3;
 }
 
-- (id)sandboxExtensionForFontAssets:(id *)a3
+- (id)sandboxExtensionForFontAssets:(id *)assets
 {
   v4 = sub_10000112C();
-  v5 = [v4 UTF8String];
-  v10 = *a3;
-  v9 = v5;
+  uTF8String = [v4 UTF8String];
+  v10 = *assets;
+  v9 = uTF8String;
   if (sandbox_check_by_audit_token())
   {
-    v11 = *a3->var0;
-    v12 = *&a3->var0[4];
+    v11 = *assets->var0;
+    v12 = *&assets->var0[4];
     v6 = sandbox_extension_issue_file_to_process();
     v7 = v6;
     if (v6)
@@ -418,14 +418,14 @@ LABEL_15:
   return v7;
 }
 
-- (id)sandboxExtensionForProvider:(id *)a3 withDirectoryName:(id)a4
+- (id)sandboxExtensionForProvider:(id *)provider withDirectoryName:(id)name
 {
-  v5 = [NSString stringWithFormat:@"/var/mobile/Library/UserFonts/FontFiles/%@", a4];
-  v6 = [v5 UTF8String];
-  if (v6 && (v11 = *a3->var0, v13 = *&a3->var0[4], v10 = v6, sandbox_check_by_audit_token()))
+  name = [NSString stringWithFormat:@"/var/mobile/Library/UserFonts/FontFiles/%@", name];
+  uTF8String = [name UTF8String];
+  if (uTF8String && (v11 = *provider->var0, v13 = *&provider->var0[4], v10 = uTF8String, sandbox_check_by_audit_token()))
   {
-    v12 = *a3->var0;
-    v14 = *&a3->var0[4];
+    v12 = *provider->var0;
+    v14 = *&provider->var0[4];
     v7 = sandbox_extension_issue_file_to_process();
     v8 = v7;
     if (v7)
@@ -442,40 +442,40 @@ LABEL_15:
   return v8;
 }
 
-- (void)setupUserInstalledFontsFor:(id *)a3 withCapabilitiesFor:(id *)a4 hasEnumeration:(BOOL)a5 hasFontAccess:(BOOL)a6 isFontProvider:(BOOL)a7 processIdentifier:(id)a8 options:(id)a9 compat:(BOOL *)a10 reply:(id)a11
+- (void)setupUserInstalledFontsFor:(id *)for withCapabilitiesFor:(id *)capabilitiesFor hasEnumeration:(BOOL)enumeration hasFontAccess:(BOOL)access isFontProvider:(BOOL)provider processIdentifier:(id)identifier options:(id)options compat:(BOOL *)self0 reply:(id)self1
 {
-  v12 = a6;
-  v16 = a8;
-  v17 = a9;
-  v18 = a11;
-  if (a5 || a7 || v12)
+  accessCopy = access;
+  identifierCopy = identifier;
+  optionsCopy = options;
+  replyCopy = reply;
+  if (enumeration || provider || accessCopy)
   {
-    v27 = [(FontServicesDaemon *)self mainHandlerQueue];
+    mainHandlerQueue = [(FontServicesDaemon *)self mainHandlerQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
-    v28 = *&a3->var0[4];
-    v43 = *a3->var0;
+    v28 = *&for->var0[4];
+    v43 = *for->var0;
     block[2] = sub_100002714;
     block[3] = &unk_100018728;
-    v45 = a5;
-    v46 = a7;
+    enumerationCopy = enumeration;
+    providerCopy = provider;
     block[4] = self;
     v44 = v28;
-    v47 = v12;
-    v41 = v16;
-    v42 = v18;
-    dispatch_sync(v27, block);
+    v47 = accessCopy;
+    v41 = identifierCopy;
+    v42 = replyCopy;
+    dispatch_sync(mainHandlerQueue, block);
 
     goto LABEL_17;
   }
 
-  v19 = [v17 objectForKeyedSubscript:@"compat1"];
-  v20 = [v19 BOOLValue];
+  v19 = [optionsCopy objectForKeyedSubscript:@"compat1"];
+  bOOLValue = [v19 BOOLValue];
 
-  if (!v20)
+  if (!bOOLValue)
   {
 LABEL_11:
-    (*(v18 + 2))(v18, 0);
+    (*(replyCopy + 2))(replyCopy, 0);
     goto LABEL_17;
   }
 
@@ -490,9 +490,9 @@ LABEL_11:
   v31[2] = sub_100002A40;
   v31[3] = &unk_100018750;
   v33 = &v34;
-  v32 = v16;
-  v21 = *&a3->var0[4];
-  v30[0] = *a3->var0;
+  v32 = identifierCopy;
+  v21 = *&for->var0[4];
+  v30[0] = *for->var0;
   v30[1] = v21;
   v22 = [(FontServicesDaemon *)self filterUserFontInfoForAuditToken:v30 withEnumerationCapability:0 withFilter:v31];
   if (![v22 count])
@@ -524,19 +524,19 @@ LABEL_11:
     }
   }
 
-  (*(v18 + 2))(v18, v23);
-  if (a10)
+  (*(replyCopy + 2))(replyCopy, v23);
+  if (compat)
   {
-    *a10 = 1;
+    *compat = 1;
   }
 
   _Block_object_dispose(&v34, 8);
 LABEL_17:
 }
 
-- (id)knownFamilyNameFromPostScriptName:(id)a3 withEnabledState:(BOOL *)a4
+- (id)knownFamilyNameFromPostScriptName:(id)name withEnabledState:(BOOL *)state
 {
-  v6 = a3;
+  nameCopy = name;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -547,19 +547,19 @@ LABEL_17:
   v16 = &v15;
   v17 = 0x2020000000;
   v18 = 0;
-  v7 = [(FontServicesDaemon *)self userFontsInfo];
+  userFontsInfo = [(FontServicesDaemon *)self userFontsInfo];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100002D78;
   v11[3] = &unk_100018778;
-  v8 = v6;
+  v8 = nameCopy;
   v12 = v8;
   v13 = &v19;
   v14 = &v15;
-  [v7 enumerateKeysAndObjectsUsingBlock:v11];
-  if (a4)
+  [userFontsInfo enumerateKeysAndObjectsUsingBlock:v11];
+  if (state)
   {
-    *a4 = *(v16 + 24);
+    *state = *(v16 + 24);
   }
 
   v9 = v20[5];
@@ -570,9 +570,9 @@ LABEL_17:
   return v9;
 }
 
-- (BOOL)isKnownFamilyName:(id)a3 withEnabledState:(BOOL *)a4
+- (BOOL)isKnownFamilyName:(id)name withEnabledState:(BOOL *)state
 {
-  v6 = a3;
+  nameCopy = name;
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;
@@ -581,19 +581,19 @@ LABEL_17:
   v16 = &v15;
   v17 = 0x2020000000;
   v18 = 0;
-  v7 = [(FontServicesDaemon *)self userFontsInfo];
+  userFontsInfo = [(FontServicesDaemon *)self userFontsInfo];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100002F88;
   v11[3] = &unk_100018778;
-  v8 = v6;
+  v8 = nameCopy;
   v12 = v8;
   v13 = &v19;
   v14 = &v15;
-  [v7 enumerateKeysAndObjectsUsingBlock:v11];
-  if (a4)
+  [userFontsInfo enumerateKeysAndObjectsUsingBlock:v11];
+  if (state)
   {
-    *a4 = *(v16 + 24);
+    *state = *(v16 + 24);
   }
 
   v9 = *(v20 + 24);
@@ -604,9 +604,9 @@ LABEL_17:
   return v9;
 }
 
-- (id)unknownFontNamesAndEnabledFamilyNames:(id *)a3 andDisabledFamilyNames:(id *)a4 fromRequests:(id)a5
+- (id)unknownFontNamesAndEnabledFamilyNames:(id *)names andDisabledFamilyNames:(id *)familyNames fromRequests:(id)requests
 {
-  v6 = a5;
+  requestsCopy = requests;
   v33 = [NSMutableSet setWithCapacity:0];
   v32 = [NSMutableSet setWithCapacity:0];
   v30 = [NSMutableSet setWithCapacity:0];
@@ -614,7 +614,7 @@ LABEL_17:
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  obj = v6;
+  obj = requestsCopy;
   v7 = [obj countByEnumeratingWithState:&v35 objects:v39 count:16];
   if (v7)
   {
@@ -729,57 +729,57 @@ LABEL_28:
     while (v24);
   }
 
-  if (a3)
+  if (names)
   {
-    *a3 = [v33 allObjects];
+    *names = [v33 allObjects];
   }
 
-  if (a4)
+  if (familyNames)
   {
     [v32 minusSet:v33];
-    *a4 = [v32 allObjects];
+    *familyNames = [v32 allObjects];
   }
 
-  v25 = [v30 allObjects];
-  v26 = [v25 sortedArrayUsingSelector:"compare:"];
+  allObjects = [v30 allObjects];
+  v26 = [allObjects sortedArrayUsingSelector:"compare:"];
 
   return v26;
 }
 
-- (id)identifierFromFilePath:(id)a3
+- (id)identifierFromFilePath:(id)path
 {
-  v3 = [a3 stringByDeletingLastPathComponent];
-  v4 = [v3 lastPathComponent];
+  stringByDeletingLastPathComponent = [path stringByDeletingLastPathComponent];
+  lastPathComponent = [stringByDeletingLastPathComponent lastPathComponent];
 
-  v5 = [FSUserFontManager identifierFromDirectoryName:v4];
+  v5 = [FSUserFontManager identifierFromDirectoryName:lastPathComponent];
 
   return v5;
 }
 
-- (id)providerIdentifiersFromFamilyName:(id)a3
+- (id)providerIdentifiersFromFamilyName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = [NSMutableSet setWithCapacity:0];
-  v6 = [(FontServicesDaemon *)self userFontsInfo];
+  userFontsInfo = [(FontServicesDaemon *)self userFontsInfo];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_10000349C;
   v12[3] = &unk_1000187A0;
-  v13 = v4;
-  v14 = self;
+  v13 = nameCopy;
+  selfCopy = self;
   v7 = v5;
   v15 = v7;
-  v8 = v4;
-  [v6 enumerateKeysAndObjectsUsingBlock:v12];
+  v8 = nameCopy;
+  [userFontsInfo enumerateKeysAndObjectsUsingBlock:v12];
   v9 = v15;
   v10 = v7;
 
   return v7;
 }
 
-- (id)providerIdentifiersAndFamilyName:(id *)a3 fromPostScriptName:(id)a4
+- (id)providerIdentifiersAndFamilyName:(id *)name fromPostScriptName:(id)scriptName
 {
-  v6 = a4;
+  scriptNameCopy = scriptName;
   v7 = [NSMutableSet setWithCapacity:0];
   v19 = 0;
   v20 = &v19;
@@ -787,19 +787,19 @@ LABEL_28:
   v22 = sub_100002A28;
   v23 = sub_100002A38;
   v24 = 0;
-  v8 = [(FontServicesDaemon *)self userFontsInfo];
+  userFontsInfo = [(FontServicesDaemon *)self userFontsInfo];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_1000036D8;
   v14[3] = &unk_1000187F0;
-  v9 = v6;
+  v9 = scriptNameCopy;
   v18 = &v19;
   v15 = v9;
-  v16 = self;
+  selfCopy = self;
   v10 = v7;
   v17 = v10;
-  [v8 enumerateKeysAndObjectsUsingBlock:v14];
-  *a3 = v20[5];
+  [userFontsInfo enumerateKeysAndObjectsUsingBlock:v14];
+  *name = v20[5];
   v11 = v17;
   v12 = v10;
 
@@ -808,15 +808,15 @@ LABEL_28:
   return v12;
 }
 
-- (id)missingFontsDialogRequestsFromDisabledFamilyNames:(id)a3
+- (id)missingFontsDialogRequestsFromDisabledFamilyNames:(id)names
 {
-  v4 = a3;
+  namesCopy = names;
   v5 = [NSMutableDictionary dictionaryWithCapacity:0];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v6 = v4;
+  v6 = namesCopy;
   v7 = [v6 countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v7)
   {
@@ -850,7 +850,7 @@ LABEL_28:
             v15 = [NSMutableDictionary dictionaryWithCapacity:0];
             [v15 setObject:v11 forKey:@"displayName"];
             v16 = v9;
-            v17 = self;
+            selfCopy = self;
             v18 = v5;
             v19 = v6;
             v20 = [v12 mutableCopy];
@@ -858,7 +858,7 @@ LABEL_28:
 
             v6 = v19;
             v5 = v18;
-            self = v17;
+            self = selfCopy;
             v9 = v16;
             v8 = v23;
             [v15 setObject:v11 forKey:@"uniqueID"];
@@ -887,15 +887,15 @@ LABEL_28:
   return v21;
 }
 
-- (id)missingFontsDialogRequestsFromUnknownFontNames:(id)a3
+- (id)missingFontsDialogRequestsFromUnknownFontNames:(id)names
 {
-  v3 = a3;
+  namesCopy = names;
   v4 = [NSMutableArray arrayWithCapacity:0];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = v3;
+  v5 = namesCopy;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v19 count:16];
   if (v6)
   {
@@ -928,12 +928,12 @@ LABEL_28:
   return v4;
 }
 
-- (id)sanitizeIssuedFontPaths:(id)a3
+- (id)sanitizeIssuedFontPaths:(id)paths
 {
-  v4 = a3;
-  v5 = [(FontServicesDaemon *)self userFontsInfo];
-  v6 = [v5 allKeys];
-  v7 = [NSSet setWithArray:v6];
+  pathsCopy = paths;
+  userFontsInfo = [(FontServicesDaemon *)self userFontsInfo];
+  allKeys = [userFontsInfo allKeys];
+  v7 = [NSSet setWithArray:allKeys];
 
   v8 = sub_10000106C();
   v9 = sub_10000112C();
@@ -942,7 +942,7 @@ LABEL_28:
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v11 = v4;
+  v11 = pathsCopy;
   v12 = [v11 countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v12)
   {
@@ -994,16 +994,16 @@ LABEL_11:
     while (v13);
   }
 
-  v23 = [v10 allObjects];
+  allObjects = [v10 allObjects];
 
-  return v23;
+  return allObjects;
 }
 
-- (void)recordIssuedFontPaths:(id)a3 forIdentifier:(id)a4
+- (void)recordIssuedFontPaths:(id)paths forIdentifier:(id)identifier
 {
-  v17 = a3;
-  v6 = a4;
-  if (v6)
+  pathsCopy = paths;
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     v7 = +[NSUserDefaults standardUserDefaults];
     v8 = [v7 dictionaryForKey:@"issues"];
@@ -1014,11 +1014,11 @@ LABEL_11:
       v9 = objc_opt_new();
     }
 
-    v10 = [NSMutableArray arrayWithArray:v17];
-    v11 = [v9 objectForKey:v6];
+    v10 = [NSMutableArray arrayWithArray:pathsCopy];
+    v11 = [v9 objectForKey:identifierCopy];
     if (v11)
     {
-      v12 = [(FontServicesDaemon *)self issuedFontFilePathsForIdentifier:v6];
+      v12 = [(FontServicesDaemon *)self issuedFontFilePathsForIdentifier:identifierCopy];
       [v10 addObjectsFromArray:v12];
 
       v13 = [(FontServicesDaemon *)self sanitizeIssuedFontPaths:v10];
@@ -1037,7 +1037,7 @@ LABEL_11:
       v13 = [(FontServicesDaemon *)self sanitizeIssuedFontPaths:v10];
     }
 
-    [v9 setObject:v13 forKey:v6];
+    [v9 setObject:v13 forKey:identifierCopy];
     [v7 setObject:v9 forKey:@"issues"];
     [v7 synchronize];
     CFPreferencesAppSynchronize(kCFPreferencesCurrentApplication);
@@ -1045,16 +1045,16 @@ LABEL_9:
   }
 }
 
-- (id)issuedFontFilePathsForIdentifier:(id)a3
+- (id)issuedFontFilePathsForIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v22 = +[NSUserDefaults standardUserDefaults];
   v4 = [v22 dictionaryForKey:@"issues"];
   v5 = [v4 mutableCopy];
 
   v21 = v5;
-  v23 = v3;
-  v6 = [v5 objectForKey:v3];
+  v23 = identifierCopy;
+  v6 = [v5 objectForKey:identifierCopy];
   v7 = sub_10000106C();
   v24 = sub_10000112C();
   v8 = objc_opt_new();
@@ -1115,10 +1115,10 @@ LABEL_11:
   return v8;
 }
 
-- (void)forgetClientApplication:(id)a3
+- (void)forgetClientApplication:(id)application
 {
-  v3 = a3;
-  if (v3)
+  applicationCopy = application;
+  if (applicationCopy)
   {
     v4 = +[NSUserDefaults standardUserDefaults];
     v15 = 0u;
@@ -1146,12 +1146,12 @@ LABEL_11:
 
           v11 = *(*(&v15 + 1) + 8 * i);
           v12 = [v4 dictionaryForKey:v11];
-          v13 = [v12 objectForKey:v3];
+          v13 = [v12 objectForKey:applicationCopy];
 
           if (v13)
           {
             v14 = [v12 mutableCopy];
-            [v14 removeObjectForKey:v3];
+            [v14 removeObjectForKey:applicationCopy];
             [v4 setObject:v14 forKey:v11];
 
             v8 = 1;
@@ -1176,19 +1176,19 @@ LABEL_11:
   }
 }
 
-- (void)recordRequestFontsResultWihtMissed:(BOOL)a3 andResolved:(BOOL)a4
+- (void)recordRequestFontsResultWihtMissed:(BOOL)missed andResolved:(BOOL)resolved
 {
-  v4 = a4;
-  v5 = a3;
-  if (a3 || a4)
+  resolvedCopy = resolved;
+  missedCopy = missed;
+  if (missed || resolved)
   {
     v6 = +[NSUserDefaults standardUserDefaults];
-    if (v5)
+    if (missedCopy)
     {
       [v6 setInteger:objc_msgSend(v6 forKey:{"integerForKey:", @"missed", @"missed"}];
     }
 
-    if (v4)
+    if (resolvedCopy)
     {
       [v6 setInteger:objc_msgSend(v6 forKey:{"integerForKey:", @"resolved", @"resolved"}];
     }
@@ -1198,7 +1198,7 @@ LABEL_11:
   }
 }
 
-- (void)extractRequestFontsMissed:(unint64_t *)a3 andResolved:(unint64_t *)a4
+- (void)extractRequestFontsMissed:(unint64_t *)missed andResolved:(unint64_t *)resolved
 {
   v8 = +[NSUserDefaults standardUserDefaults];
   v6 = [v8 integerForKey:@"missed"];
@@ -1211,15 +1211,15 @@ LABEL_11:
     CFPreferencesAppSynchronize(kCFPreferencesCurrentApplication);
   }
 
-  *a3 = v6;
-  *a4 = v7;
+  *missed = v6;
+  *resolved = v7;
 }
 
-- (void)requestFonts:(id)a3 sceneID:(id)a4 reply:(id)a5
+- (void)requestFonts:(id)fonts sceneID:(id)d reply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  fontsCopy = fonts;
+  dCopy = d;
+  replyCopy = reply;
   memset(&v48, 0, sizeof(v48));
   v11 = +[NSXPCConnection currentConnection];
   v12 = v11;
@@ -1234,7 +1234,7 @@ LABEL_11:
   }
 
   v13 = +[NSXPCConnection currentConnection];
-  v14 = [v13 processIdentifier];
+  processIdentifier = [v13 processIdentifier];
 
   v15 = +[FSUserFontManager resumeSuspendedFontFiles];
   token = v48;
@@ -1245,7 +1245,7 @@ LABEL_11:
     v18 = &stru_100019640;
 LABEL_31:
     NSLog(@"Application %@ does not have an entitlement to use custom fonts.", v24);
-    v10[2](v10, &__NSDictionary0__struct);
+    replyCopy[2](replyCopy, &__NSDictionary0__struct);
     goto LABEL_32;
   }
 
@@ -1260,8 +1260,8 @@ LABEL_31:
   }
 
   v20 = v19;
-  v32 = v14;
-  v33 = v9;
+  v32 = processIdentifier;
+  v33 = dCopy;
   v21 = CFGetTypeID(v19);
   if (v21 == CFArrayGetTypeID())
   {
@@ -1334,7 +1334,7 @@ LABEL_19:
   if (!v24)
   {
 LABEL_30:
-    v9 = v33;
+    dCopy = v33;
     goto LABEL_31;
   }
 
@@ -1355,40 +1355,40 @@ LABEL_21:
   v44[2] = sub_100004D8C;
   v44[3] = &unk_100018880;
   v45 = v15;
-  v46 = self;
+  selfCopy = self;
   v28 = objc_retainBlock(v44);
   FSLog_Debug();
-  v29 = [(FontServicesDaemon *)self mainHandlerQueue];
+  mainHandlerQueue = [(FontServicesDaemon *)self mainHandlerQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100004E1C;
   block[3] = &unk_1000188F8;
   block[4] = self;
-  v35 = v8;
+  v35 = fontsCopy;
   v41 = v48;
   v43 = v22;
   v24 = v24;
   v36 = v24;
   v42 = v32;
-  v9 = v33;
+  dCopy = v33;
   v37 = v33;
   v18 = v18;
   v38 = v18;
-  v39 = v10;
+  v39 = replyCopy;
   v40 = v28;
   v30 = v28;
-  dispatch_sync(v29, block);
+  dispatch_sync(mainHandlerQueue, block);
 
 LABEL_32:
 }
 
-- (void)requestFonts:(id)a3 forClient:(id)a4 reply:(id)a5
+- (void)requestFonts:(id)fonts forClient:(id)client reply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v21 = v9;
-  v11 = [[NSXPCConnection alloc] initWithListenerEndpoint:v9];
+  fontsCopy = fonts;
+  clientCopy = client;
+  replyCopy = reply;
+  v21 = clientCopy;
+  v11 = [[NSXPCConnection alloc] initWithListenerEndpoint:clientCopy];
   [v11 setInvalidationHandler:&stru_100018918];
   v12 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___FontServicesFontPickerClientSupportProtocol];
   [v11 setRemoteObjectInterface:v12];
@@ -1399,8 +1399,8 @@ LABEL_32:
   v32 = 0x2020000000;
   v33 = 0;
   v29 = 0;
-  v22 = v8;
-  v14 = [(FontServicesDaemon *)self providerIdentifiersAndFamilyName:&v29 fromPostScriptName:v8];
+  v22 = fontsCopy;
+  v14 = [(FontServicesDaemon *)self providerIdentifiersAndFamilyName:&v29 fromPostScriptName:fontsCopy];
   v15 = v29;
   if (v15)
   {
@@ -1427,7 +1427,7 @@ LABEL_32:
       v23[1] = 3221225472;
       v23[2] = sub_100005B4C;
       v23[3] = &unk_1000189C0;
-      v24 = v10;
+      v24 = replyCopy;
       v25 = &v30;
       [v13 activateFontsForFontPickerClient:v16 reply:v23];
       if (v11)
@@ -1447,8 +1447,8 @@ LABEL_32:
         v19 = SecTaskCopySigningIdentifier(v17, 0);
         if (v19)
         {
-          v20 = [v16 allKeys];
-          [(FontServicesDaemon *)self recordIssuedFontPaths:v20 forIdentifier:v19];
+          allKeys = [v16 allKeys];
+          [(FontServicesDaemon *)self recordIssuedFontPaths:allKeys forIdentifier:v19];
 
           CFRelease(v19);
         }
@@ -1460,7 +1460,7 @@ LABEL_32:
 
   if ((v31[3] & 1) == 0)
   {
-    (*(v10 + 2))(v10, 0);
+    (*(replyCopy + 2))(replyCopy, 0);
   }
 
   [v11 invalidate];
@@ -1468,14 +1468,14 @@ LABEL_32:
   _Block_object_dispose(&v30, 8);
 }
 
-- (void)recordSuspendedProvider:(id)a3 url:(id)a4 andScheme:(id)a5 forDate:(id)a6
+- (void)recordSuspendedProvider:(id)provider url:(id)url andScheme:(id)scheme forDate:(id)date
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  if (a3 && v9 && v10)
+  urlCopy = url;
+  schemeCopy = scheme;
+  dateCopy = date;
+  if (provider && urlCopy && schemeCopy)
   {
-    v12 = a3;
+    providerCopy = provider;
     v13 = +[NSUserDefaults standardUserDefaults];
     v14 = [v13 dictionaryForKey:@"suspended"];
     v15 = [v14 mutableCopy];
@@ -1487,12 +1487,12 @@ LABEL_32:
 
     v17[0] = @"url";
     v17[1] = @"scheme";
-    v18[0] = v9;
-    v18[1] = v10;
+    v18[0] = urlCopy;
+    v18[1] = schemeCopy;
     v17[2] = @"expirationDate";
-    v18[2] = v11;
+    v18[2] = dateCopy;
     v16 = [NSDictionary dictionaryWithObjects:v18 forKeys:v17 count:3];
-    [v15 setObject:v16 forKey:v12];
+    [v15 setObject:v16 forKey:providerCopy];
 
     [v13 setObject:v15 forKey:@"suspended"];
     [v13 synchronize];
@@ -1500,9 +1500,9 @@ LABEL_32:
   }
 }
 
-- (id)displayLayoutMonitorWithHandler:(id)a3
+- (id)displayLayoutMonitorWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   displayLayoutMonitor = self->_displayLayoutMonitor;
   if (displayLayoutMonitor)
   {
@@ -1512,7 +1512,7 @@ LABEL_32:
   }
 
   v7 = +[FBSDisplayLayoutMonitorConfiguration configurationForDefaultMainDisplayMonitor];
-  [v7 setTransitionHandler:v4];
+  [v7 setTransitionHandler:handlerCopy];
   v8 = [FBSDisplayLayoutMonitor monitorWithConfiguration:v7];
   v9 = self->_displayLayoutMonitor;
   self->_displayLayoutMonitor = v8;
@@ -1523,9 +1523,9 @@ LABEL_32:
   return v10;
 }
 
-- (void)recordWarnedForIdenntifier:(id)a3
+- (void)recordWarnedForIdenntifier:(id)idenntifier
 {
-  v6 = a3;
+  idenntifierCopy = idenntifier;
   v3 = +[NSUserDefaults standardUserDefaults];
   v4 = [v3 dictionaryForKey:@"warned"];
   v5 = [v4 mutableCopy];
@@ -1535,26 +1535,26 @@ LABEL_32:
     v5 = objc_opt_new();
   }
 
-  [v5 setObject:&__kCFBooleanTrue forKey:v6];
+  [v5 setObject:&__kCFBooleanTrue forKey:idenntifierCopy];
   [v3 setObject:v5 forKey:@"warned"];
   [v3 synchronize];
   CFPreferencesAppSynchronize(kCFPreferencesCurrentApplication);
 }
 
-- (void)resetWarnedForIdenntifier:(id)a3
+- (void)resetWarnedForIdenntifier:(id)idenntifier
 {
-  v7 = a3;
+  idenntifierCopy = idenntifier;
   v3 = +[NSUserDefaults standardUserDefaults];
   v4 = [v3 dictionaryForKey:@"warned"];
   v5 = [v4 mutableCopy];
 
   if (v5)
   {
-    v6 = [v5 objectForKey:v7];
+    v6 = [v5 objectForKey:idenntifierCopy];
 
     if (v6)
     {
-      [v5 removeObjectForKey:v7];
+      [v5 removeObjectForKey:idenntifierCopy];
       [v3 setObject:v5 forKey:@"warned"];
       [v3 synchronize];
       CFPreferencesAppSynchronize(kCFPreferencesCurrentApplication);
@@ -1562,23 +1562,23 @@ LABEL_32:
   }
 }
 
-- (void)resumeAndShowAlertForSuspendedFontProviders:(id)a3
+- (void)resumeAndShowAlertForSuspendedFontProviders:(id)providers
 {
-  v4 = a3;
-  v5 = [(FontServicesDaemon *)self subscriptionSupportQueue];
+  providersCopy = providers;
+  subscriptionSupportQueue = [(FontServicesDaemon *)self subscriptionSupportQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100006CBC;
   block[3] = &unk_100018688;
   block[4] = self;
-  dispatch_sync(v5, block);
+  dispatch_sync(subscriptionSupportQueue, block);
 
-  v4[2](v4);
+  providersCopy[2](providersCopy);
 }
 
-- (void)updatingUserFonts:(id)a3
+- (void)updatingUserFonts:(id)fonts
 {
-  v3 = a3;
+  fontsCopy = fonts;
   if (qword_10001D8C8 != -1)
   {
     sub_10000D00C();
@@ -1589,20 +1589,20 @@ LABEL_32:
   block[1] = 3221225472;
   block[2] = sub_100006E2C;
   block[3] = &unk_100018AA8;
-  v7 = v3;
-  v5 = v3;
+  v7 = fontsCopy;
+  v5 = fontsCopy;
   dispatch_sync(v4, block);
 }
 
-- (void)warnAboutSuspendedFontProviders:(id)a3
+- (void)warnAboutSuspendedFontProviders:(id)providers
 {
-  v3 = a3;
+  providersCopy = providers;
   v4 = +[NSUserDefaults standardUserDefaults];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v5 = v3;
+  v5 = providersCopy;
   v6 = [v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v6)
   {
@@ -1621,9 +1621,9 @@ LABEL_32:
         v10 = *(*(&v19 + 1) + 8 * v9);
         v11 = [v4 dictionaryForKey:@"warned"];
         v12 = [v11 objectForKey:v10];
-        v13 = [v12 BOOLValue];
+        bOOLValue = [v12 BOOLValue];
 
-        if ((v13 & 1) == 0)
+        if ((bOOLValue & 1) == 0)
         {
           v14 = [v4 dictionaryForKey:@"suspended"];
           v15 = [v14 objectForKey:v10];
@@ -1673,13 +1673,13 @@ LABEL_32:
   {
     block[7] = v2;
     block[8] = v3;
-    v5 = [(FontServicesDaemon *)self subscriptionSupportQueue];
+    subscriptionSupportQueue = [(FontServicesDaemon *)self subscriptionSupportQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_1000071B4;
     block[3] = &unk_100018688;
     block[4] = self;
-    dispatch_async(v5, block);
+    dispatch_async(subscriptionSupportQueue, block);
   }
 }
 
@@ -1688,34 +1688,34 @@ LABEL_32:
   v2 = [[MAAssetQuery alloc] initWithType:@"com.apple.MobileAsset.Font8"];
   [v2 returnTypes:1];
   [v2 queryMetaDataSync];
-  v3 = [v2 results];
-  v4 = [v3 count];
+  results = [v2 results];
+  v4 = [results count];
 
   return v4;
 }
 
-- (void)fontChanged:(id)a3 reply:(id)a4
+- (void)fontChanged:(id)changed reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  changedCopy = changed;
+  replyCopy = reply;
   FSLog_Debug();
-  v8 = [(FontServicesDaemon *)self mainHandlerQueue];
+  mainHandlerQueue = [(FontServicesDaemon *)self mainHandlerQueue];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100007D3C;
   v10[3] = &unk_100018880;
   v10[4] = self;
-  v11 = v6;
-  v9 = v6;
-  dispatch_async(v8, v10);
+  v11 = changedCopy;
+  v9 = changedCopy;
+  dispatch_async(mainHandlerQueue, v10);
 
-  v7[2](v7);
+  replyCopy[2](replyCopy);
 }
 
-- (void)resetIssuedFontsFor:(id)a3 reply:(id)a4
+- (void)resetIssuedFontsFor:(id)for reply:(id)reply
 {
-  v5 = a3;
-  v6 = a4;
+  forCopy = for;
+  replyCopy = reply;
   v7 = +[NSXPCConnection currentConnection];
   v8 = v7;
   if (v7)
@@ -1748,11 +1748,11 @@ LABEL_32:
           v16 = v15;
           if (v15)
           {
-            v17 = [v15 objectForKey:v5];
+            v17 = [v15 objectForKey:forCopy];
             if (v17)
             {
               v18 = [v16 mutableCopy];
-              [v18 removeObjectForKey:v5];
+              [v18 removeObjectForKey:forCopy];
               [v14 setObject:v18 forKey:@"issues"];
               [v14 synchronize];
               CFPreferencesAppSynchronize(kCFPreferencesCurrentApplication);
@@ -1770,7 +1770,7 @@ LABEL_32:
     CFRelease(v9);
   }
 
-  v6[2](v6);
+  replyCopy[2](replyCopy);
 }
 
 - (OS_dispatch_queue)scheduledFontDeletionQueue
@@ -1788,10 +1788,10 @@ LABEL_32:
   return self->_scheduledFontDeletionQueue;
 }
 
-- (void)scheduleFontFilesDeletion:(id)a3
+- (void)scheduleFontFilesDeletion:(id)deletion
 {
-  v4 = a3;
-  if ([v4 count])
+  deletionCopy = deletion;
+  if ([deletionCopy count])
   {
     if (os_variant_has_internal_content())
     {
@@ -1815,42 +1815,42 @@ LABEL_32:
       v8 = v7;
     }
 
-    v9 = [(FontServicesDaemon *)self scheduledFontDeletionQueue];
+    scheduledFontDeletionQueue = [(FontServicesDaemon *)self scheduledFontDeletionQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100008160;
     block[3] = &unk_100018B40;
     v13 = v8;
-    v11 = v4;
-    v12 = self;
-    dispatch_async(v9, block);
+    v11 = deletionCopy;
+    selfCopy = self;
+    dispatch_async(scheduledFontDeletionQueue, block);
   }
 }
 
-- (void)setFontFilesDeletionTimer:(unsigned int)a3
+- (void)setFontFilesDeletionTimer:(unsigned int)timer
 {
-  v5 = [(FontServicesDaemon *)self scheduledFontDeletionQueue];
+  scheduledFontDeletionQueue = [(FontServicesDaemon *)self scheduledFontDeletionQueue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1000083C4;
   v6[3] = &unk_100018B68;
   v6[4] = self;
-  v7 = a3;
-  dispatch_async(v5, v6);
+  timerCopy = timer;
+  dispatch_async(scheduledFontDeletionQueue, v6);
 }
 
 - (void)stopFontFilesDeletionTimer
 {
-  v3 = [(FontServicesDaemon *)self scheduledFontDeletionQueue];
+  scheduledFontDeletionQueue = [(FontServicesDaemon *)self scheduledFontDeletionQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000085C4;
   block[3] = &unk_100018688;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(scheduledFontDeletionQueue, block);
 }
 
-- (void)executeScheduledFontFilesDeletion:(id)a3
+- (void)executeScheduledFontFilesDeletion:(id)deletion
 {
   FSLog_Debug();
   v4 = +[NSUserDefaults standardUserDefaults];
@@ -1871,7 +1871,7 @@ LABEL_32:
   v69 = 0u;
   obj = v70 = 0u;
   v7 = [obj countByEnumeratingWithState:&v67 objects:v74 count:16];
-  v51 = self;
+  selfCopy = self;
   if (!v7)
   {
     v11 = 0xFFFFFFFFLL;
@@ -1939,7 +1939,7 @@ LABEL_14:
     CFPreferencesAppSynchronize(kCFPreferencesCurrentApplication);
   }
 
-  self = v51;
+  self = selfCopy;
 LABEL_25:
   if ([v52 count])
   {
@@ -1973,11 +1973,11 @@ LABEL_25:
             goto LABEL_33;
           }
 
-          v25 = [v24 stringByDeletingLastPathComponent];
-          v26 = [v25 lastPathComponent];
+          stringByDeletingLastPathComponent = [v24 stringByDeletingLastPathComponent];
+          lastPathComponent = [stringByDeletingLastPathComponent lastPathComponent];
 
           v27 = sub_10000BAEC();
-          v28 = [v27 stringByAppendingPathComponent:v26];
+          v28 = [v27 stringByAppendingPathComponent:lastPathComponent];
 
           LOBYTE(v27) = [v18 fileExistsAtPath:v28];
           if ((v27 & 1) == 0)
@@ -2022,8 +2022,8 @@ LABEL_33:
             objc_enumerationMutation(v33);
           }
 
-          v38 = [*(*(&v58 + 1) + 8 * j) stringByDeletingLastPathComponent];
-          [v32 addObject:v38];
+          stringByDeletingLastPathComponent2 = [*(*(&v58 + 1) + 8 * j) stringByDeletingLastPathComponent];
+          [v32 addObject:stringByDeletingLastPathComponent2];
         }
 
         v35 = [v33 countByEnumeratingWithState:&v58 objects:v72 count:16];
@@ -2066,7 +2066,7 @@ LABEL_33:
       while (v41);
     }
 
-    self = v51;
+    self = selfCopy;
     v11 = v49;
   }
 
@@ -2084,10 +2084,10 @@ LABEL_33:
 LABEL_59:
 }
 
-- (void)synchronizeFontAssets:(id)a3 reply:(id)a4
+- (void)synchronizeFontAssets:(id)assets reply:(id)reply
 {
-  v33 = a3;
-  v34 = a4;
+  assetsCopy = assets;
+  replyCopy = reply;
   memset(&v50, 0, sizeof(v50));
   v5 = +[NSXPCConnection currentConnection];
   v6 = v5;
@@ -2141,7 +2141,7 @@ LABEL_10:
     }
 
 LABEL_11:
-    (*(v34 + 2))(v34, 0, 0);
+    (*(replyCopy + 2))(replyCopy, 0, 0);
     goto LABEL_12;
   }
 
@@ -2153,7 +2153,7 @@ LABEL_14:
   v49 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v14 = v33;
+  v14 = assetsCopy;
   v16 = [v14 countByEnumeratingWithState:&v46 objects:v51 count:16];
   if (v16)
   {
@@ -2170,16 +2170,16 @@ LABEL_14:
         v19 = *(*(&v46 + 1) + 8 * i);
         if (sub_10000BB70(v19, v15))
         {
-          v20 = [v19 stringByDeletingLastPathComponent];
-          v21 = [v20 lastPathComponent];
-          v22 = [v21 isEqualToString:@"AssetData"];
+          stringByDeletingLastPathComponent = [v19 stringByDeletingLastPathComponent];
+          lastPathComponent = [stringByDeletingLastPathComponent lastPathComponent];
+          v22 = [lastPathComponent isEqualToString:@"AssetData"];
 
           if (v22)
           {
-            v23 = [v20 stringByDeletingLastPathComponent];
-            v24 = [v23 lastPathComponent];
+            v20StringByDeletingLastPathComponent = [stringByDeletingLastPathComponent stringByDeletingLastPathComponent];
+            lastPathComponent2 = [v20StringByDeletingLastPathComponent lastPathComponent];
 
-            [v35 addObject:v24];
+            [v35 addObject:lastPathComponent2];
           }
 
           else
@@ -2239,24 +2239,24 @@ LABEL_14:
     [v30 setObject:v31 forKey:@"extension.fontasset"];
   }
 
-  (*(v34 + 2))(v34, 1, v30);
+  (*(replyCopy + 2))(replyCopy, 1, v30);
 
   _Block_object_dispose(&token, 8);
 LABEL_12:
 }
 
-- (void)accessFontAsset:(id)a3
+- (void)accessFontAsset:(id)asset
 {
-  v4 = a3;
-  v5 = [(FontServicesDaemon *)self assetHandlerQueue];
+  assetCopy = asset;
+  assetHandlerQueue = [(FontServicesDaemon *)self assetHandlerQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100009490;
   v7[3] = &unk_100018880;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = assetCopy;
+  selfCopy = self;
+  v6 = assetCopy;
+  dispatch_sync(assetHandlerQueue, v7);
 }
 
 - (void)setupForXPCService
@@ -2305,10 +2305,10 @@ LABEL_12:
   return v2;
 }
 
-- (void)analyticsEventRequestFonts:(id)a3 misses:(unint64_t)a4 suggestions:(unint64_t)a5 resolved:(unint64_t)a6
+- (void)analyticsEventRequestFonts:(id)fonts misses:(unint64_t)misses suggestions:(unint64_t)suggestions resolved:(unint64_t)resolved
 {
-  v7 = a3;
-  v6 = v7;
+  fontsCopy = fonts;
+  v6 = fontsCopy;
   AnalyticsSendEventLazy();
 }
 

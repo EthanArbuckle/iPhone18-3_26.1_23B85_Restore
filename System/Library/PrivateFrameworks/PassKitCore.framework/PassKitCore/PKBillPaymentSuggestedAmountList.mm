@@ -1,50 +1,50 @@
 @interface PKBillPaymentSuggestedAmountList
 + (id)boundaryAngle;
 + (id)requiredSuggestedAmountCategories;
-- (BOOL)_addSuggestedAmount:(id)a3 force:(BOOL)a4;
-- (BOOL)_suggestedAmountIsRequiredCategory:(id)a3;
-- (BOOL)canAddAmount:(id)a3;
-- (BOOL)canAddAmount:(id)a3 andCategory:(unint64_t)a4;
-- (BOOL)canAddCategory:(unint64_t)a3;
-- (BOOL)isValidWithUnableReason:(unint64_t *)a3;
-- (BOOL)suggestedAmount:(id)a3 isAdjoiningSuggestedAmount:(id)a4;
-- (PKBillPaymentSuggestedAmountList)initWithCurrencyCode:(id)a3 remainingMinimumPayment:(id)a4 remainingStatementBalance:(id)a5 currentBalance:(id)a6;
+- (BOOL)_addSuggestedAmount:(id)amount force:(BOOL)force;
+- (BOOL)_suggestedAmountIsRequiredCategory:(id)category;
+- (BOOL)canAddAmount:(id)amount;
+- (BOOL)canAddAmount:(id)amount andCategory:(unint64_t)category;
+- (BOOL)canAddCategory:(unint64_t)category;
+- (BOOL)isValidWithUnableReason:(unint64_t *)reason;
+- (BOOL)suggestedAmount:(id)amount isAdjoiningSuggestedAmount:(id)suggestedAmount;
+- (PKBillPaymentSuggestedAmountList)initWithCurrencyCode:(id)code remainingMinimumPayment:(id)payment remainingStatementBalance:(id)balance currentBalance:(id)currentBalance;
 - (id)_boundaryAmount;
 - (id)_lastSuggestedAmountThatIsNotRequred;
 - (id)_smalllestSuggestionAmountBelowRemainingStatementAmount;
 - (id)_sortedAmounts;
 - (id)_sortedSuggestedAmounts;
-- (id)_suggestedAmountThatIsNotRequired:(id)a3 suggestedAmount2:(id)a4;
-- (id)billPaymentSelectedSuggestedAmountDataEventForAmount:(id)a3 accountIdentifier:(id)a4 statementIdentifier:(id)a5;
-- (id)maximumSuggestedAmountFromCategories:(id)a3;
-- (id)minimumSuggestedAmountFromCategories:(id)a3;
-- (id)suggestedAmountAfterSuggestedAmount:(id)a3;
-- (id)suggestedAmountBeforeSuggestedAmount:(id)a3;
-- (id)suggestedAmountGapMessageForStartSuggestedAmount:(id)a3;
-- (id)suggestedAmountWithCategory:(unint64_t)a3;
+- (id)_suggestedAmountThatIsNotRequired:(id)required suggestedAmount2:(id)amount2;
+- (id)billPaymentSelectedSuggestedAmountDataEventForAmount:(id)amount accountIdentifier:(id)identifier statementIdentifier:(id)statementIdentifier;
+- (id)maximumSuggestedAmountFromCategories:(id)categories;
+- (id)minimumSuggestedAmountFromCategories:(id)categories;
+- (id)suggestedAmountAfterSuggestedAmount:(id)amount;
+- (id)suggestedAmountBeforeSuggestedAmount:(id)amount;
+- (id)suggestedAmountGapMessageForStartSuggestedAmount:(id)amount;
+- (id)suggestedAmountWithCategory:(unint64_t)category;
 - (void)_createMandatorySuggestions;
-- (void)_removeSuggestedAmount:(id)a3;
+- (void)_removeSuggestedAmount:(id)amount;
 - (void)_updateValues;
-- (void)addSuggestedAmountGapMessage:(id)a3 forStartSuggestedAmount:(id)a4;
-- (void)addSuggestedAmountList:(id)a3;
+- (void)addSuggestedAmountGapMessage:(id)message forStartSuggestedAmount:(id)amount;
+- (void)addSuggestedAmountList:(id)list;
 - (void)attemptToPurgeInvalidSuggestedAmounts;
 @end
 
 @implementation PKBillPaymentSuggestedAmountList
 
-- (PKBillPaymentSuggestedAmountList)initWithCurrencyCode:(id)a3 remainingMinimumPayment:(id)a4 remainingStatementBalance:(id)a5 currentBalance:(id)a6
+- (PKBillPaymentSuggestedAmountList)initWithCurrencyCode:(id)code remainingMinimumPayment:(id)payment remainingStatementBalance:(id)balance currentBalance:(id)currentBalance
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  codeCopy = code;
+  paymentCopy = payment;
+  balanceCopy = balance;
+  currentBalanceCopy = currentBalance;
   v34.receiver = self;
   v34.super_class = PKBillPaymentSuggestedAmountList;
   v15 = [(PKBillPaymentSuggestedAmountList *)&v34 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_currencyCode, a3);
+    objc_storeStrong(&v15->_currencyCode, code);
     v17 = objc_alloc_init(MEMORY[0x1E695DF90]);
     suggestionsForCategory = v16->_suggestionsForCategory;
     v16->_suggestionsForCategory = v17;
@@ -57,63 +57,63 @@
     suggestedAmountGapMessageForAmount = v16->_suggestedAmountGapMessageForAmount;
     v16->_suggestedAmountGapMessageForAmount = v21;
 
-    v23 = [MEMORY[0x1E696AB90] zero];
-    if (v12 && [v12 compare:v23] != 1)
+    zero = [MEMORY[0x1E696AB90] zero];
+    if (paymentCopy && [paymentCopy compare:zero] != 1)
     {
 
-      v12 = 0;
+      paymentCopy = 0;
     }
 
-    if (v13 && [v13 compare:v23] != 1)
+    if (balanceCopy && [balanceCopy compare:zero] != 1)
     {
 
-      v13 = 0;
+      balanceCopy = 0;
     }
 
-    if (v14)
+    if (currentBalanceCopy)
     {
-      if ([v14 compare:v23] == -1)
+      if ([currentBalanceCopy compare:zero] == -1)
       {
-        v24 = v23;
+        v24 = zero;
 
-        v14 = v24;
+        currentBalanceCopy = v24;
       }
     }
 
     else
     {
-      v14 = v23;
+      currentBalanceCopy = zero;
     }
 
-    if (v12 && [v12 compare:v14] == 1)
+    if (paymentCopy && [paymentCopy compare:currentBalanceCopy] == 1)
     {
-      v25 = v12;
+      v25 = paymentCopy;
 
-      v14 = v25;
+      currentBalanceCopy = v25;
     }
 
-    if (v13 && [v13 compare:v14] == 1)
+    if (balanceCopy && [balanceCopy compare:currentBalanceCopy] == 1)
     {
-      v26 = v13;
+      v26 = balanceCopy;
 
-      v14 = v26;
+      currentBalanceCopy = v26;
     }
 
-    if (v12)
+    if (paymentCopy)
     {
-      v27 = [v12 copy];
+      v27 = [paymentCopy copy];
       minimumAmount = v16->_minimumAmount;
       v16->_minimumAmount = v27;
     }
 
-    if (v13)
+    if (balanceCopy)
     {
-      v29 = [v13 copy];
+      v29 = [balanceCopy copy];
       remainingStatementAmount = v16->_remainingStatementAmount;
       v16->_remainingStatementAmount = v29;
     }
 
-    v31 = [v14 copy];
+    v31 = [currentBalanceCopy copy];
     maximumAmount = v16->_maximumAmount;
     v16->_maximumAmount = v31;
 
@@ -257,32 +257,32 @@ void __69__PKBillPaymentSuggestedAmountList_requiredSuggestedAmountCategories__b
   qword_1ED6D1E98 = &unk_1F23B41A8;
 }
 
-- (BOOL)canAddAmount:(id)a3 andCategory:(unint64_t)a4
+- (BOOL)canAddAmount:(id)amount andCategory:(unint64_t)category
 {
-  v6 = [(PKBillPaymentSuggestedAmountList *)self canAddAmount:a3];
+  v6 = [(PKBillPaymentSuggestedAmountList *)self canAddAmount:amount];
   if (v6)
   {
 
-    LOBYTE(v6) = [(PKBillPaymentSuggestedAmountList *)self canAddCategory:a4];
+    LOBYTE(v6) = [(PKBillPaymentSuggestedAmountList *)self canAddCategory:category];
   }
 
   return v6;
 }
 
-- (BOOL)canAddAmount:(id)a3
+- (BOOL)canAddAmount:(id)amount
 {
-  v4 = a3;
-  if (v4)
+  amountCopy = amount;
+  if (amountCopy)
   {
-    v5 = [MEMORY[0x1E696AB90] zero];
-    if ([v4 isEqualToNumber:v5])
+    zero = [MEMORY[0x1E696AB90] zero];
+    if ([amountCopy isEqualToNumber:zero])
     {
       v6 = 0;
     }
 
     else
     {
-      v7 = [(NSMutableDictionary *)self->_suggestionsForAmount objectForKey:v4];
+      v7 = [(NSMutableDictionary *)self->_suggestionsForAmount objectForKey:amountCopy];
       v6 = v7 == 0;
     }
   }
@@ -295,25 +295,25 @@ void __69__PKBillPaymentSuggestedAmountList_requiredSuggestedAmountCategories__b
   return v6;
 }
 
-- (BOOL)canAddCategory:(unint64_t)a3
+- (BOOL)canAddCategory:(unint64_t)category
 {
   suggestionsForCategory = self->_suggestionsForCategory;
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:category];
   v5 = [(NSMutableDictionary *)suggestionsForCategory objectForKey:v4];
   LOBYTE(suggestionsForCategory) = v5 == 0;
 
   return suggestionsForCategory;
 }
 
-- (void)addSuggestedAmountList:(id)a3
+- (void)addSuggestedAmountList:(id)list
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  listCopy = list;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [listCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -325,37 +325,37 @@ void __69__PKBillPaymentSuggestedAmountList_requiredSuggestedAmountCategories__b
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(listCopy);
         }
 
         [(PKBillPaymentSuggestedAmountList *)self addSuggestedAmount:*(*(&v9 + 1) + 8 * v8++)];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [listCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (BOOL)_addSuggestedAmount:(id)a3 force:(BOOL)a4
+- (BOOL)_addSuggestedAmount:(id)amount force:(BOOL)force
 {
-  v6 = a3;
-  v7 = [v6 amount];
-  v8 = [objc_opt_class() roundingHandler];
-  v9 = [v7 decimalNumberByRoundingAccordingToBehavior:v8];
+  amountCopy = amount;
+  amount = [amountCopy amount];
+  roundingHandler = [objc_opt_class() roundingHandler];
+  v9 = [amount decimalNumberByRoundingAccordingToBehavior:roundingHandler];
 
-  [v6 setAmount:v9];
-  if (a4 || ([v6 amount], v10 = objc_claimAutoreleasedReturnValue(), v11 = -[PKBillPaymentSuggestedAmountList canAddAmount:andCategory:](self, "canAddAmount:andCategory:", v10, objc_msgSend(v6, "category")), v10, v11))
+  [amountCopy setAmount:v9];
+  if (force || ([amountCopy amount], v10 = objc_claimAutoreleasedReturnValue(), v11 = -[PKBillPaymentSuggestedAmountList canAddAmount:andCategory:](self, "canAddAmount:andCategory:", v10, objc_msgSend(amountCopy, "category")), v10, v11))
   {
     suggestionsForCategory = self->_suggestionsForCategory;
-    v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v6, "category")}];
-    [(NSMutableDictionary *)suggestionsForCategory setObject:v6 forKey:v13];
+    v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(amountCopy, "category")}];
+    [(NSMutableDictionary *)suggestionsForCategory setObject:amountCopy forKey:v13];
 
     suggestionsForAmount = self->_suggestionsForAmount;
-    v15 = [v6 amount];
-    [(NSMutableDictionary *)suggestionsForAmount setObject:v6 forKey:v15];
+    amount2 = [amountCopy amount];
+    [(NSMutableDictionary *)suggestionsForAmount setObject:amountCopy forKey:amount2];
 
     [(PKBillPaymentSuggestedAmountList *)self _updateValues];
     v16 = 1;
@@ -369,24 +369,24 @@ void __69__PKBillPaymentSuggestedAmountList_requiredSuggestedAmountCategories__b
   return v16;
 }
 
-- (id)suggestedAmountWithCategory:(unint64_t)a3
+- (id)suggestedAmountWithCategory:(unint64_t)category
 {
   suggestionsForCategory = self->_suggestionsForCategory;
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:category];
   v5 = [(NSMutableDictionary *)suggestionsForCategory objectForKey:v4];
 
   return v5;
 }
 
-- (id)maximumSuggestedAmountFromCategories:(id)a3
+- (id)maximumSuggestedAmountFromCategories:(id)categories
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  categoriesCopy = categories;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v5 = [categoriesCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -398,7 +398,7 @@ void __69__PKBillPaymentSuggestedAmountList_requiredSuggestedAmountCategories__b
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(categoriesCopy);
         }
 
         v10 = -[PKBillPaymentSuggestedAmountList suggestedAmountWithCategory:](self, "suggestedAmountWithCategory:", [*(*(&v14 + 1) + 8 * i) integerValue]);
@@ -411,7 +411,7 @@ void __69__PKBillPaymentSuggestedAmountList_requiredSuggestedAmountCategories__b
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [categoriesCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v6);
@@ -425,15 +425,15 @@ void __69__PKBillPaymentSuggestedAmountList_requiredSuggestedAmountCategories__b
   return v7;
 }
 
-- (id)minimumSuggestedAmountFromCategories:(id)a3
+- (id)minimumSuggestedAmountFromCategories:(id)categories
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  categoriesCopy = categories;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v5 = [categoriesCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -445,7 +445,7 @@ void __69__PKBillPaymentSuggestedAmountList_requiredSuggestedAmountCategories__b
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(categoriesCopy);
         }
 
         v10 = -[PKBillPaymentSuggestedAmountList suggestedAmountWithCategory:](self, "suggestedAmountWithCategory:", [*(*(&v14 + 1) + 8 * i) integerValue]);
@@ -458,7 +458,7 @@ void __69__PKBillPaymentSuggestedAmountList_requiredSuggestedAmountCategories__b
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [categoriesCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v6);
@@ -472,36 +472,36 @@ void __69__PKBillPaymentSuggestedAmountList_requiredSuggestedAmountCategories__b
   return v7;
 }
 
-- (BOOL)suggestedAmount:(id)a3 isAdjoiningSuggestedAmount:(id)a4
+- (BOOL)suggestedAmount:(id)amount isAdjoiningSuggestedAmount:(id)suggestedAmount
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isEqual:v7])
+  amountCopy = amount;
+  suggestedAmountCopy = suggestedAmount;
+  if ([amountCopy isEqual:suggestedAmountCopy])
   {
     v8 = 1;
   }
 
   else
   {
-    v9 = [(PKBillPaymentSuggestedAmountList *)self suggestedAmountBeforeSuggestedAmount:v6];
-    if ([v9 isEqual:v7])
+    v9 = [(PKBillPaymentSuggestedAmountList *)self suggestedAmountBeforeSuggestedAmount:amountCopy];
+    if ([v9 isEqual:suggestedAmountCopy])
     {
       v8 = 1;
     }
 
     else
     {
-      v10 = [(PKBillPaymentSuggestedAmountList *)self suggestedAmountAfterSuggestedAmount:v6];
-      v8 = [v10 isEqual:v7];
+      v10 = [(PKBillPaymentSuggestedAmountList *)self suggestedAmountAfterSuggestedAmount:amountCopy];
+      v8 = [v10 isEqual:suggestedAmountCopy];
     }
   }
 
   return v8;
 }
 
-- (id)suggestedAmountBeforeSuggestedAmount:(id)a3
+- (id)suggestedAmountBeforeSuggestedAmount:(id)amount
 {
-  v4 = [(NSArray *)self->_sortedSuggestedAmounts indexOfObject:a3];
+  v4 = [(NSArray *)self->_sortedSuggestedAmounts indexOfObject:amount];
   if (v4)
   {
     v5 = v4 == 0x7FFFFFFFFFFFFFFFLL;
@@ -525,9 +525,9 @@ void __69__PKBillPaymentSuggestedAmountList_requiredSuggestedAmountCategories__b
   return v6;
 }
 
-- (id)suggestedAmountAfterSuggestedAmount:(id)a3
+- (id)suggestedAmountAfterSuggestedAmount:(id)amount
 {
-  v4 = [(NSArray *)self->_sortedSuggestedAmounts indexOfObject:a3];
+  v4 = [(NSArray *)self->_sortedSuggestedAmounts indexOfObject:amount];
   if (v4 == 0x7FFFFFFFFFFFFFFFLL || (v5 = v4, v4 >= [(NSArray *)self->_sortedSuggestedAmounts count]- 1))
   {
     v6 = 0;
@@ -541,12 +541,12 @@ void __69__PKBillPaymentSuggestedAmountList_requiredSuggestedAmountCategories__b
   return v6;
 }
 
-- (id)suggestedAmountGapMessageForStartSuggestedAmount:(id)a3
+- (id)suggestedAmountGapMessageForStartSuggestedAmount:(id)amount
 {
-  if (a3)
+  if (amount)
   {
-    v4 = [a3 amount];
-    v5 = [(NSMutableDictionary *)self->_suggestedAmountGapMessageForAmount objectForKey:v4];
+    amount = [amount amount];
+    v5 = [(NSMutableDictionary *)self->_suggestedAmountGapMessageForAmount objectForKey:amount];
   }
 
   else
@@ -557,20 +557,20 @@ void __69__PKBillPaymentSuggestedAmountList_requiredSuggestedAmountCategories__b
   return v5;
 }
 
-- (void)addSuggestedAmountGapMessage:(id)a3 forStartSuggestedAmount:(id)a4
+- (void)addSuggestedAmountGapMessage:(id)message forStartSuggestedAmount:(id)amount
 {
   suggestedAmountGapMessageForAmount = self->_suggestedAmountGapMessageForAmount;
-  v6 = a3;
-  v7 = [a4 amount];
-  [(NSMutableDictionary *)suggestedAmountGapMessageForAmount setObject:v6 forKey:v7];
+  messageCopy = message;
+  amount = [amount amount];
+  [(NSMutableDictionary *)suggestedAmountGapMessageForAmount setObject:messageCopy forKey:amount];
 }
 
-- (id)billPaymentSelectedSuggestedAmountDataEventForAmount:(id)a3 accountIdentifier:(id)a4 statementIdentifier:(id)a5
+- (id)billPaymentSelectedSuggestedAmountDataEventForAmount:(id)amount accountIdentifier:(id)identifier statementIdentifier:(id)statementIdentifier
 {
   v36 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v30 = a4;
-  v9 = a5;
+  amountCopy = amount;
+  identifierCopy = identifier;
+  statementIdentifierCopy = statementIdentifier;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
@@ -591,8 +591,8 @@ LABEL_3:
       }
 
       v15 = *(*(&v31 + 1) + 8 * v14);
-      v16 = [v15 amount];
-      if ([v8 isEqualToNumber:v16])
+      amount = [v15 amount];
+      if ([amountCopy isEqualToNumber:amount])
       {
         break;
       }
@@ -611,9 +611,9 @@ LABEL_3:
 
     v17 = off_1E79BF000;
     v18 = [PKBillPaymentSelectedSuggestedAmountData alloc];
-    v19 = [MEMORY[0x1E695DF00] date];
-    v20 = [v15 amount];
-    v21 = -[PKBillPaymentSelectedSuggestedAmountData initWithStatementIdentifier:transactionDate:transactionAmount:suggestedAmountCategory:](v18, "initWithStatementIdentifier:transactionDate:transactionAmount:suggestedAmountCategory:", v9, v19, v20, [v15 category]);
+    date = [MEMORY[0x1E695DF00] date];
+    amount2 = [v15 amount];
+    v21 = -[PKBillPaymentSelectedSuggestedAmountData initWithStatementIdentifier:transactionDate:transactionAmount:suggestedAmountCategory:](v18, "initWithStatementIdentifier:transactionDate:transactionAmount:suggestedAmountCategory:", statementIdentifierCopy, date, amount2, [v15 category]);
 
     if (v21)
     {
@@ -629,8 +629,8 @@ LABEL_9:
   }
 
   v22 = objc_alloc(v17[220]);
-  v23 = [MEMORY[0x1E695DF00] date];
-  v21 = [v22 initWithStatementIdentifier:v9 transactionDate:v23 transactionAmount:v8 suggestedAmountCategory:0];
+  date2 = [MEMORY[0x1E695DF00] date];
+  v21 = [v22 initWithStatementIdentifier:statementIdentifierCopy transactionDate:date2 transactionAmount:amountCopy suggestedAmountCategory:0];
 
 LABEL_12:
   v24 = objc_alloc_init(PKAccountEvent);
@@ -638,18 +638,18 @@ LABEL_12:
   [(PKAccountEvent *)v24 setItems:v25];
 
   [(PKAccountEvent *)v24 setType:14];
-  [(PKAccountEvent *)v24 setAccountIdentifier:v30];
-  v26 = [(PKBillPaymentSelectedSuggestedAmountData *)v21 transactionDate];
-  [(PKAccountEvent *)v24 setDate:v26];
+  [(PKAccountEvent *)v24 setAccountIdentifier:identifierCopy];
+  transactionDate = [(PKBillPaymentSelectedSuggestedAmountData *)v21 transactionDate];
+  [(PKAccountEvent *)v24 setDate:transactionDate];
 
-  v27 = [MEMORY[0x1E696AFB0] UUID];
-  v28 = [v27 UUIDString];
-  [(PKAccountEvent *)v24 setIdentifier:v28];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
+  [(PKAccountEvent *)v24 setIdentifier:uUIDString];
 
   return v24;
 }
 
-- (BOOL)isValidWithUnableReason:(unint64_t *)a3
+- (BOOL)isValidWithUnableReason:(unint64_t *)reason
 {
   v27 = *MEMORY[0x1E69E9840];
   v5 = PKLogFacilityTypeGetObject(0xFuLL);
@@ -663,13 +663,13 @@ LABEL_12:
   v7 = [(PKBillPaymentSuggestedAmountList *)self suggestedAmountWithCategory:19];
   if (v6 | v7)
   {
-    v9 = [(PKBillPaymentSuggestedAmountList *)self maximumSuggestedAmount];
-    if ([v9 category] == 18 || objc_msgSend(v9, "category") == 19)
+    maximumSuggestedAmount = [(PKBillPaymentSuggestedAmountList *)self maximumSuggestedAmount];
+    if ([maximumSuggestedAmount category] == 18 || objc_msgSend(maximumSuggestedAmount, "category") == 19)
     {
-      v22 = a3;
+      reasonCopy = reason;
       v23 = v7;
       v24 = v6;
-      v10 = [(PKBillPaymentSuggestedAmountList *)self _boundaryAmount];
+      _boundaryAmount = [(PKBillPaymentSuggestedAmountList *)self _boundaryAmount];
       if ([(NSArray *)self->_sortedSuggestedAmounts count]!= 1)
       {
         v11 = 0;
@@ -677,18 +677,18 @@ LABEL_12:
         {
           v12 = [(NSArray *)self->_sortedSuggestedAmounts objectAtIndex:v11];
           v13 = [(NSArray *)self->_sortedSuggestedAmounts objectAtIndex:++v11];
-          v14 = [v12 amount];
-          v15 = [v13 amount];
-          v16 = [v15 decimalNumberBySubtracting:v14];
-          if ([v16 compare:v10] == -1)
+          amount = [v12 amount];
+          amount2 = [v13 amount];
+          v16 = [amount2 decimalNumberBySubtracting:amount];
+          if ([v16 compare:_boundaryAmount] == -1)
           {
             v17 = [(PKBillPaymentSuggestedAmountList *)self _suggestedAmountIsRequiredCategory:v12];
             v18 = [(PKBillPaymentSuggestedAmountList *)self _suggestedAmountIsRequiredCategory:v13];
             if (!v17 || !v18)
             {
-              if (v22)
+              if (reasonCopy)
               {
-                *v22 = 3;
+                *reasonCopy = 3;
               }
 
 LABEL_32:
@@ -724,9 +724,9 @@ LABEL_32:
       v19 = [(NSArray *)self->_sortedSuggestedAmounts count];
       if (v19 <= [objc_opt_class() maximumNumberSuggestions])
       {
-        if (v22)
+        if (reasonCopy)
         {
-          *v22 = 0;
+          *reasonCopy = 0;
         }
 
         v8 = 1;
@@ -734,27 +734,27 @@ LABEL_32:
 
       else
       {
-        if (!v22)
+        if (!reasonCopy)
         {
           goto LABEL_32;
         }
 
         v8 = 0;
-        *v22 = 4;
+        *reasonCopy = 4;
       }
 
 LABEL_33:
       v7 = v23;
       v6 = v24;
-      v9 = v21;
+      maximumSuggestedAmount = v21;
     }
 
     else
     {
       v8 = 0;
-      if (a3)
+      if (reason)
       {
-        *a3 = 2;
+        *reason = 2;
       }
     }
   }
@@ -762,9 +762,9 @@ LABEL_33:
   else
   {
     v8 = 0;
-    if (a3)
+    if (reason)
     {
-      *a3 = 1;
+      *reason = 1;
     }
   }
 
@@ -804,11 +804,11 @@ LABEL_33:
       v28 = [(PKBillPaymentSuggestedAmountList *)self suggestedAmountWithCategory:19];
       if (v13 | v28)
       {
-        v14 = v28;
-        v29 = [(PKBillPaymentSuggestedAmountList *)self maximumSuggestedAmount];
-        if (v29)
+        _boundaryAmount = v28;
+        maximumSuggestedAmount = [(PKBillPaymentSuggestedAmountList *)self maximumSuggestedAmount];
+        if (maximumSuggestedAmount)
         {
-          v30 = v29;
+          v30 = maximumSuggestedAmount;
           do
           {
             if ([v30 category] == 18)
@@ -816,10 +816,10 @@ LABEL_33:
               break;
             }
 
-            v31 = [v30 category];
+            category = [v30 category];
             v32 = v27-- != 0;
             v33 = v32;
-            if (v31 == 19 || !v33)
+            if (category == 19 || !v33)
             {
               break;
             }
@@ -833,18 +833,18 @@ LABEL_33:
             }
 
             [(PKBillPaymentSuggestedAmountList *)self _removeSuggestedAmount:v30];
-            v35 = [(PKBillPaymentSuggestedAmountList *)self maximumSuggestedAmount];
+            maximumSuggestedAmount2 = [(PKBillPaymentSuggestedAmountList *)self maximumSuggestedAmount];
 
-            v30 = v35;
+            v30 = maximumSuggestedAmount2;
           }
 
-          while (v35);
+          while (maximumSuggestedAmount2);
         }
       }
 
       else
       {
-        v14 = 0;
+        _boundaryAmount = 0;
         v13 = 0;
       }
     }
@@ -863,16 +863,16 @@ LABEL_33:
               break;
             }
 
-            v10 = [(PKBillPaymentSuggestedAmountList *)self _lastSuggestedAmountThatIsNotRequred];
+            _lastSuggestedAmountThatIsNotRequred = [(PKBillPaymentSuggestedAmountList *)self _lastSuggestedAmountThatIsNotRequred];
             v11 = PKLogFacilityTypeGetObject(0xFuLL);
             if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138412290;
-              v42 = v10;
+              v42 = _lastSuggestedAmountThatIsNotRequred;
               _os_log_impl(&dword_1AD337000, v11, OS_LOG_TYPE_DEFAULT, "Removing extra suggested amount from bill payment suggested amount list %@", buf, 0xCu);
             }
 
-            [(PKBillPaymentSuggestedAmountList *)self _removeSuggestedAmount:v10];
+            [(PKBillPaymentSuggestedAmountList *)self _removeSuggestedAmount:_lastSuggestedAmountThatIsNotRequred];
           }
         }
 
@@ -886,10 +886,10 @@ LABEL_33:
       {
         v38 = v12;
 
-        v14 = [(PKBillPaymentSuggestedAmountList *)self _boundaryAmount];
+        _boundaryAmount = [(PKBillPaymentSuggestedAmountList *)self _boundaryAmount];
         v15 = 0;
         v13 = 0;
-        v39 = v14;
+        v39 = _boundaryAmount;
         do
         {
           if (v15 >= [(NSArray *)self->_sortedSuggestedAmounts count]- 1)
@@ -899,23 +899,23 @@ LABEL_33:
 
           v16 = [(NSArray *)self->_sortedSuggestedAmounts objectAtIndex:v15];
           v17 = [(NSArray *)self->_sortedSuggestedAmounts objectAtIndex:++v15];
-          v18 = [v16 amount];
-          v19 = [v17 amount];
-          v20 = [v19 decimalNumberBySubtracting:v18];
-          v21 = [v20 compare:v14];
+          amount = [v16 amount];
+          amount2 = [v17 amount];
+          v20 = [amount2 decimalNumberBySubtracting:amount];
+          v21 = [v20 compare:_boundaryAmount];
           if (v21 == -1)
           {
             v22 = v13;
-            v23 = [v16 priority];
-            if (v23 == [v17 priority])
+            priority = [v16 priority];
+            if (priority == [v17 priority])
             {
               v24 = [(PKBillPaymentSuggestedAmountList *)self _suggestedAmountThatIsNotRequired:v16 suggestedAmount2:v17];
             }
 
             else
             {
-              v25 = [v16 priority];
-              if (v25 <= [v17 priority])
+              priority2 = [v16 priority];
+              if (priority2 <= [v17 priority])
               {
                 v24 = v16;
               }
@@ -928,7 +928,7 @@ LABEL_33:
 
             v13 = v24;
 
-            v14 = v39;
+            _boundaryAmount = v39;
           }
         }
 
@@ -964,26 +964,26 @@ LABEL_43:
   while (!v7);
 }
 
-- (void)_removeSuggestedAmount:(id)a3
+- (void)_removeSuggestedAmount:(id)amount
 {
   suggestionsForCategory = self->_suggestionsForCategory;
   v5 = MEMORY[0x1E696AD98];
-  v6 = a3;
-  v7 = [v5 numberWithUnsignedInteger:{objc_msgSend(v6, "category")}];
+  amountCopy = amount;
+  v7 = [v5 numberWithUnsignedInteger:{objc_msgSend(amountCopy, "category")}];
   [(NSMutableDictionary *)suggestionsForCategory removeObjectForKey:v7];
 
   suggestionsForAmount = self->_suggestionsForAmount;
-  v9 = [v6 amount];
+  amount = [amountCopy amount];
 
-  [(NSMutableDictionary *)suggestionsForAmount removeObjectForKey:v9];
+  [(NSMutableDictionary *)suggestionsForAmount removeObjectForKey:amount];
 
   [(PKBillPaymentSuggestedAmountList *)self _updateValues];
 }
 
 - (id)_sortedAmounts
 {
-  v2 = [(NSMutableDictionary *)self->_suggestionsForAmount allKeys];
-  v3 = [v2 sortedArrayUsingSelector:sel_compare_];
+  allKeys = [(NSMutableDictionary *)self->_suggestionsForAmount allKeys];
+  v3 = [allKeys sortedArrayUsingSelector:sel_compare_];
 
   return v3;
 }
@@ -991,13 +991,13 @@ LABEL_43:
 - (id)_sortedSuggestedAmounts
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [(PKBillPaymentSuggestedAmountList *)self _sortedAmounts];
+  _sortedAmounts = [(PKBillPaymentSuggestedAmountList *)self _sortedAmounts];
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = v3;
+  v5 = _sortedAmounts;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -1029,15 +1029,15 @@ LABEL_43:
 
 - (id)_smalllestSuggestionAmountBelowRemainingStatementAmount
 {
-  v3 = [(PKBillPaymentSuggestedAmountList *)self remainingStatementAmount];
-  if (v3)
+  remainingStatementAmount = [(PKBillPaymentSuggestedAmountList *)self remainingStatementAmount];
+  if (remainingStatementAmount)
   {
-    v4 = [(PKBillPaymentSuggestedAmountList *)self minimumSuggestedAmount];
-    v5 = [v4 amount];
+    minimumSuggestedAmount = [(PKBillPaymentSuggestedAmountList *)self minimumSuggestedAmount];
+    amount = [minimumSuggestedAmount amount];
 
-    if ([v5 compare:v3] == -1)
+    if ([amount compare:remainingStatementAmount] == -1)
     {
-      v6 = v5;
+      v6 = amount;
     }
 
     else
@@ -1054,12 +1054,12 @@ LABEL_43:
   return v6;
 }
 
-- (BOOL)_suggestedAmountIsRequiredCategory:(id)a3
+- (BOOL)_suggestedAmountIsRequiredCategory:(id)category
 {
-  v3 = [a3 category];
-  v4 = [objc_opt_class() requiredSuggestedAmountCategories];
-  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v3];
-  v6 = [v4 containsObject:v5];
+  category = [category category];
+  requiredSuggestedAmountCategories = [objc_opt_class() requiredSuggestedAmountCategories];
+  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:category];
+  v6 = [requiredSuggestedAmountCategories containsObject:v5];
 
   return v6;
 }
@@ -1094,12 +1094,12 @@ LABEL_5:
   return v5;
 }
 
-- (id)_suggestedAmountThatIsNotRequired:(id)a3 suggestedAmount2:(id)a4
+- (id)_suggestedAmountThatIsNotRequired:(id)required suggestedAmount2:(id)amount2
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PKBillPaymentSuggestedAmountList *)self _suggestedAmountIsRequiredCategory:v6];
-  v9 = [(PKBillPaymentSuggestedAmountList *)self _suggestedAmountIsRequiredCategory:v7];
+  requiredCopy = required;
+  amount2Copy = amount2;
+  v8 = [(PKBillPaymentSuggestedAmountList *)self _suggestedAmountIsRequiredCategory:requiredCopy];
+  v9 = [(PKBillPaymentSuggestedAmountList *)self _suggestedAmountIsRequiredCategory:amount2Copy];
   if (v8 && v9)
   {
     v10 = 0;
@@ -1109,12 +1109,12 @@ LABEL_5:
   {
     if (v8)
     {
-      v11 = v7;
+      v11 = amount2Copy;
     }
 
     else
     {
-      v11 = v6;
+      v11 = requiredCopy;
     }
 
     v10 = v11;
@@ -1125,13 +1125,13 @@ LABEL_5:
 
 - (void)_updateValues
 {
-  v3 = [(PKBillPaymentSuggestedAmountList *)self _sortedSuggestedAmounts];
+  _sortedSuggestedAmounts = [(PKBillPaymentSuggestedAmountList *)self _sortedSuggestedAmounts];
   sortedSuggestedAmounts = self->_sortedSuggestedAmounts;
-  self->_sortedSuggestedAmounts = v3;
+  self->_sortedSuggestedAmounts = _sortedSuggestedAmounts;
 
-  v5 = [(PKBillPaymentSuggestedAmountList *)self _smalllestSuggestionAmountBelowRemainingStatementAmount];
+  _smalllestSuggestionAmountBelowRemainingStatementAmount = [(PKBillPaymentSuggestedAmountList *)self _smalllestSuggestionAmountBelowRemainingStatementAmount];
   smalllestSuggestionAmountBelowRemainingStatementAmount = self->_smalllestSuggestionAmountBelowRemainingStatementAmount;
-  self->_smalllestSuggestionAmountBelowRemainingStatementAmount = v5;
+  self->_smalllestSuggestionAmountBelowRemainingStatementAmount = _smalllestSuggestionAmountBelowRemainingStatementAmount;
 }
 
 - (id)_boundaryAmount
@@ -1139,28 +1139,28 @@ LABEL_5:
   minimumAmount = self->_minimumAmount;
   if (minimumAmount)
   {
-    v4 = minimumAmount;
+    zero = minimumAmount;
   }
 
   else
   {
-    v4 = [MEMORY[0x1E696AB90] zero];
+    zero = [MEMORY[0x1E696AB90] zero];
   }
 
-  v5 = v4;
+  v5 = zero;
   maximumAmount = self->_maximumAmount;
   if (maximumAmount)
   {
-    v7 = maximumAmount;
+    zero2 = maximumAmount;
   }
 
   else
   {
-    v7 = [MEMORY[0x1E696AB90] zero];
+    zero2 = [MEMORY[0x1E696AB90] zero];
   }
 
-  v8 = v7;
-  v9 = [objc_opt_class() boundaryAngle];
+  v8 = zero2;
+  boundaryAngle = [objc_opt_class() boundaryAngle];
   v10 = [(NSDecimalNumber *)v8 decimalNumberBySubtracting:v5];
   v11 = MEMORY[0x1E696AB90];
   LODWORD(v12) = 1086918619;
@@ -1179,7 +1179,7 @@ LABEL_5:
   }
 
   v15 = [v11 decimalNumberWithDecimal:v19];
-  v16 = [v9 decimalNumberByDividingBy:v15];
+  v16 = [boundaryAngle decimalNumberByDividingBy:v15];
   v17 = [v16 decimalNumberByMultiplyingBy:v10];
 
   return v17;

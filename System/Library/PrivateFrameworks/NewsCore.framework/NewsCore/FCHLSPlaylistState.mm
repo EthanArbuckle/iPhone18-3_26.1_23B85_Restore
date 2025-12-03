@@ -1,15 +1,15 @@
 @interface FCHLSPlaylistState
 - (FCHLSPlaylistState)init;
-- (void)setCurrentStreamInf:(uint64_t)a1;
+- (void)setCurrentStreamInf:(uint64_t)inf;
 @end
 
 @implementation FCHLSPlaylistState
 
-- (void)setCurrentStreamInf:(uint64_t)a1
+- (void)setCurrentStreamInf:(uint64_t)inf
 {
-  if (a1)
+  if (inf)
   {
-    objc_storeStrong((a1 + 40), a2);
+    objc_storeStrong((inf + 40), a2);
   }
 }
 
@@ -20,21 +20,21 @@
   v2 = [(FCHLSPlaylistState *)&v12 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     mutableGroups = v2->_mutableGroups;
-    v2->_mutableGroups = v3;
+    v2->_mutableGroups = dictionary;
 
-    v5 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     mutableSegments = v2->_mutableSegments;
-    v2->_mutableSegments = v5;
+    v2->_mutableSegments = array;
 
-    v7 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     mutableStreamInfs = v2->_mutableStreamInfs;
-    v2->_mutableStreamInfs = v7;
+    v2->_mutableStreamInfs = array2;
 
-    v9 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     mutableSessionData = v2->_mutableSessionData;
-    v2->_mutableSessionData = v9;
+    v2->_mutableSessionData = dictionary2;
 
     v2->_currentDuration = -1.0;
   }

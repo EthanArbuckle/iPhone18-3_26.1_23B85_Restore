@@ -1,28 +1,28 @@
 @interface PSGSWVersionDetailCell
-- (PSGSWVersionDetailCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
-- (double)computeHeightForWidth:(double)a3 forAccessibilitySupportedWebContainer:(id)a4;
-- (double)preferredHeightWithTable:(id)a3;
+- (PSGSWVersionDetailCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
+- (double)computeHeightForWidth:(double)width forAccessibilitySupportedWebContainer:(id)container;
+- (double)preferredHeightWithTable:(id)table;
 - (id)deviceNameString;
 - (id)preparingRollbackString;
 - (id)releaseNotesSummary;
 - (id)releaseNotesSummaryString;
 - (id)releaseNotesSummaryView;
 - (id)revokedSplatView;
-- (id)systemVersionValueForKey:(id)a3;
+- (id)systemVersionValueForKey:(id)key;
 - (id)titleLabelString;
 - (id)titleLabelView;
 - (void)configureContentView;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation PSGSWVersionDetailCell
 
-- (PSGSWVersionDetailCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (PSGSWVersionDetailCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
-  v8 = a5;
+  specifierCopy = specifier;
   v24.receiver = self;
   v24.super_class = PSGSWVersionDetailCell;
-  v9 = [(PSTableCell *)&v24 initWithStyle:a3 reuseIdentifier:a4 specifier:v8];
+  v9 = [(PSTableCell *)&v24 initWithStyle:style reuseIdentifier:identifier specifier:specifierCopy];
   v10 = v9;
   if (v9)
   {
@@ -30,7 +30,7 @@
     documentationData = v9->_documentationData;
     v9->_documentationData = 0;
 
-    v12 = [v8 propertyForKey:@"OSUpdateType"];
+    v12 = [specifierCopy propertyForKey:@"OSUpdateType"];
     if (v12)
     {
       objc_opt_class();
@@ -40,7 +40,7 @@
       }
     }
 
-    v13 = [v8 propertyForKey:@"SUManagerClient"];
+    v13 = [specifierCopy propertyForKey:@"SUManagerClient"];
     suClient = v10->_suClient;
     v10->_suClient = v13;
 
@@ -51,7 +51,7 @@
       v10->_suClient = v15;
     }
 
-    v17 = [v8 propertyForKey:@"SUDocumentationData"];
+    v17 = [specifierCopy propertyForKey:@"SUDocumentationData"];
     v18 = v10->_documentationData;
     v10->_documentationData = v17;
 
@@ -87,14 +87,14 @@
 - (void)configureContentView
 {
   v55[3] = *MEMORY[0x277D85DE8];
-  v3 = [(PSGSWVersionDetailCell *)self titleLabelView];
+  titleLabelView = [(PSGSWVersionDetailCell *)self titleLabelView];
   titleLabelView = self->_titleLabelView;
-  self->_titleLabelView = v3;
+  self->_titleLabelView = titleLabelView;
 
   if (self->_titleLabelView)
   {
-    v5 = [(PSGSWVersionDetailCell *)self contentView];
-    [v5 addSubview:self->_titleLabelView];
+    contentView = [(PSGSWVersionDetailCell *)self contentView];
+    [contentView addSubview:self->_titleLabelView];
 
     v6 = self->_titleLabelView;
   }
@@ -105,48 +105,48 @@
   }
 
   v39 = MEMORY[0x277CCAAD0];
-  v47 = [(UILabel *)v6 topAnchor];
-  v49 = [(PSGSWVersionDetailCell *)self contentView];
-  v45 = [v49 layoutMarginsGuide];
-  v43 = [v45 topAnchor];
-  v41 = [v47 constraintEqualToAnchor:v43];
+  topAnchor = [(UILabel *)v6 topAnchor];
+  contentView2 = [(PSGSWVersionDetailCell *)self contentView];
+  layoutMarginsGuide = [contentView2 layoutMarginsGuide];
+  topAnchor2 = [layoutMarginsGuide topAnchor];
+  v41 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v55[0] = v41;
-  v38 = [(UILabel *)self->_titleLabelView leadingAnchor];
-  v40 = [(PSGSWVersionDetailCell *)self contentView];
-  v7 = [v40 layoutMarginsGuide];
-  v8 = [v7 leadingAnchor];
-  v9 = [v38 constraintEqualToAnchor:v8];
+  leadingAnchor = [(UILabel *)self->_titleLabelView leadingAnchor];
+  contentView3 = [(PSGSWVersionDetailCell *)self contentView];
+  layoutMarginsGuide2 = [contentView3 layoutMarginsGuide];
+  leadingAnchor2 = [layoutMarginsGuide2 leadingAnchor];
+  v9 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v55[1] = v9;
-  v10 = [(UILabel *)self->_titleLabelView trailingAnchor];
-  v11 = [(PSGSWVersionDetailCell *)self contentView];
-  v12 = [v11 layoutMarginsGuide];
-  v13 = [v12 trailingAnchor];
-  v14 = [v10 constraintEqualToAnchor:v13];
+  trailingAnchor = [(UILabel *)self->_titleLabelView trailingAnchor];
+  contentView4 = [(PSGSWVersionDetailCell *)self contentView];
+  layoutMarginsGuide3 = [contentView4 layoutMarginsGuide];
+  trailingAnchor2 = [layoutMarginsGuide3 trailingAnchor];
+  v14 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v55[2] = v14;
   v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v55 count:3];
   [v39 activateConstraints:v15];
 
-  v16 = [(PSGSWVersionDetailCell *)self releaseNotesSummaryView];
+  releaseNotesSummaryView = [(PSGSWVersionDetailCell *)self releaseNotesSummaryView];
   releaseNotesSummaryView = self->_releaseNotesSummaryView;
-  self->_releaseNotesSummaryView = v16;
+  self->_releaseNotesSummaryView = releaseNotesSummaryView;
 
   if (self->_releaseNotesSummaryView)
   {
-    v18 = [(PSGSWVersionDetailCell *)self contentView];
-    [v18 addSubview:self->_releaseNotesSummaryView];
+    contentView5 = [(PSGSWVersionDetailCell *)self contentView];
+    [contentView5 addSubview:self->_releaseNotesSummaryView];
   }
 
   if (self->_osUpdateType == 1 && [(SUManagerClient *)self->_suClient isSplatOnlyUpdateRollbackSuggested])
   {
-    v19 = [(PSGSWVersionDetailCell *)self revokedSplatView];
+    revokedSplatView = [(PSGSWVersionDetailCell *)self revokedSplatView];
     revokedSplatView = self->_revokedSplatView;
-    self->_revokedSplatView = v19;
+    self->_revokedSplatView = revokedSplatView;
 
     v21 = MEMORY[0x277CCAAD0];
-    v22 = [(PSWebContainerView *)self->_releaseNotesSummaryView bottomAnchor];
-    v23 = [(UIView *)self->_revokedSplatView topAnchor];
-    v24 = [v22 constraintEqualToAnchor:v23 constant:-5.0];
-    v54 = v24;
+    bottomAnchor = [(PSWebContainerView *)self->_releaseNotesSummaryView bottomAnchor];
+    topAnchor3 = [(UIView *)self->_revokedSplatView topAnchor];
+    bottomAnchor2 = [bottomAnchor constraintEqualToAnchor:topAnchor3 constant:-5.0];
+    v54 = bottomAnchor2;
     v25 = [MEMORY[0x277CBEA60] arrayWithObjects:&v54 count:1];
     [v21 activateConstraints:v25];
   }
@@ -154,31 +154,31 @@
   else
   {
     v26 = MEMORY[0x277CCAAD0];
-    v22 = [(PSWebContainerView *)self->_releaseNotesSummaryView bottomAnchor];
-    v23 = [(PSGSWVersionDetailCell *)self contentView];
-    v24 = [v23 bottomAnchor];
-    v25 = [v22 constraintEqualToAnchor:v24 constant:-5.0];
+    bottomAnchor = [(PSWebContainerView *)self->_releaseNotesSummaryView bottomAnchor];
+    topAnchor3 = [(PSGSWVersionDetailCell *)self contentView];
+    bottomAnchor2 = [topAnchor3 bottomAnchor];
+    v25 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-5.0];
     v53 = v25;
     v27 = [MEMORY[0x277CBEA60] arrayWithObjects:&v53 count:1];
     [v26 activateConstraints:v27];
   }
 
   v42 = MEMORY[0x277CCAAD0];
-  v50 = [(PSWebContainerView *)self->_releaseNotesSummaryView topAnchor];
-  v51 = [(UILabel *)self->_titleLabelView bottomAnchor];
-  v48 = [v50 constraintEqualToAnchor:v51 constant:5.0];
+  topAnchor4 = [(PSWebContainerView *)self->_releaseNotesSummaryView topAnchor];
+  bottomAnchor3 = [(UILabel *)self->_titleLabelView bottomAnchor];
+  v48 = [topAnchor4 constraintEqualToAnchor:bottomAnchor3 constant:5.0];
   v52[0] = v48;
-  v44 = [(PSWebContainerView *)self->_releaseNotesSummaryView leadingAnchor];
-  v46 = [(PSGSWVersionDetailCell *)self contentView];
-  v28 = [v46 layoutMarginsGuide];
-  v29 = [v28 leadingAnchor];
-  v30 = [v44 constraintEqualToAnchor:v29];
+  leadingAnchor3 = [(PSWebContainerView *)self->_releaseNotesSummaryView leadingAnchor];
+  contentView6 = [(PSGSWVersionDetailCell *)self contentView];
+  layoutMarginsGuide4 = [contentView6 layoutMarginsGuide];
+  leadingAnchor4 = [layoutMarginsGuide4 leadingAnchor];
+  v30 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v52[1] = v30;
-  v31 = [(PSWebContainerView *)self->_releaseNotesSummaryView trailingAnchor];
-  v32 = [(PSGSWVersionDetailCell *)self contentView];
-  v33 = [v32 layoutMarginsGuide];
-  v34 = [v33 trailingAnchor];
-  v35 = [v31 constraintEqualToAnchor:v34];
+  trailingAnchor3 = [(PSWebContainerView *)self->_releaseNotesSummaryView trailingAnchor];
+  contentView7 = [(PSGSWVersionDetailCell *)self contentView];
+  layoutMarginsGuide5 = [contentView7 layoutMarginsGuide];
+  trailingAnchor4 = [layoutMarginsGuide5 trailingAnchor];
+  v35 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v52[2] = v35;
   v36 = [MEMORY[0x277CBEA60] arrayWithObjects:v52 count:3];
   [v42 activateConstraints:v36];
@@ -199,8 +199,8 @@
   v4 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76968]];
   [v2 setFont:v4];
 
-  v5 = [MEMORY[0x277D75C80] currentTraitCollection];
-  if ([v5 userInterfaceStyle] == 2)
+  currentTraitCollection = [MEMORY[0x277D75C80] currentTraitCollection];
+  if ([currentTraitCollection userInterfaceStyle] == 2)
   {
     [MEMORY[0x277D75348] colorWithRed:0.62 green:0.6 blue:0.58 alpha:1.0];
   }
@@ -215,8 +215,8 @@
   [v2 setTextAlignment:4];
   [v2 setNumberOfLines:0];
   v7 = objc_opt_new();
-  v8 = [MEMORY[0x277D75C80] currentTraitCollection];
-  if ([v8 userInterfaceStyle] == 2)
+  currentTraitCollection2 = [MEMORY[0x277D75C80] currentTraitCollection];
+  if ([currentTraitCollection2 userInterfaceStyle] == 2)
   {
     v9 = 0.24;
     v10 = 0.22;
@@ -233,59 +233,59 @@
   v12 = [MEMORY[0x277D75348] colorWithRed:v9 green:v10 blue:v11 alpha:1.0];
   [v7 setBackgroundColor:v12];
 
-  v13 = [v7 layer];
-  [v13 setCornerRadius:5.0];
+  layer = [v7 layer];
+  [layer setCornerRadius:5.0];
 
-  v14 = [v7 layer];
-  [v14 setMasksToBounds:1];
+  layer2 = [v7 layer];
+  [layer2 setMasksToBounds:1];
 
   [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v7 addSubview:v2];
   v41 = MEMORY[0x277CCAAD0];
-  v49 = [v2 topAnchor];
-  v47 = [v7 topAnchor];
-  v45 = [v49 constraintEqualToAnchor:v47 constant:10.0];
+  topAnchor = [v2 topAnchor];
+  topAnchor2 = [v7 topAnchor];
+  v45 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:10.0];
   v54[0] = v45;
-  v43 = [v2 leadingAnchor];
-  v15 = [v7 leadingAnchor];
-  v16 = [v43 constraintEqualToAnchor:v15 constant:10.0];
+  leadingAnchor = [v2 leadingAnchor];
+  leadingAnchor2 = [v7 leadingAnchor];
+  v16 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:10.0];
   v54[1] = v16;
-  v17 = [v2 trailingAnchor];
-  v18 = [v7 trailingAnchor];
-  v19 = [v17 constraintEqualToAnchor:v18 constant:-10.0];
+  trailingAnchor = [v2 trailingAnchor];
+  trailingAnchor2 = [v7 trailingAnchor];
+  v19 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-10.0];
   v54[2] = v19;
   [v2 bottomAnchor];
   v20 = v51 = v2;
-  v21 = [v7 bottomAnchor];
-  v22 = [v20 constraintEqualToAnchor:v21 constant:-10.0];
+  bottomAnchor = [v7 bottomAnchor];
+  v22 = [v20 constraintEqualToAnchor:bottomAnchor constant:-10.0];
   v54[3] = v22;
   v23 = [MEMORY[0x277CBEA60] arrayWithObjects:v54 count:4];
   [v41 activateConstraints:v23];
 
-  v24 = [(PSGSWVersionDetailCell *)self contentView];
-  [v24 addSubview:v7];
+  contentView = [(PSGSWVersionDetailCell *)self contentView];
+  [contentView addSubview:v7];
 
   v38 = MEMORY[0x277CCAAD0];
-  v50 = [v7 topAnchor];
-  v48 = [(PSWebContainerView *)self->_releaseNotesSummaryView bottomAnchor];
-  v46 = [v50 constraintEqualToAnchor:v48 constant:30.0];
+  topAnchor3 = [v7 topAnchor];
+  bottomAnchor2 = [(PSWebContainerView *)self->_releaseNotesSummaryView bottomAnchor];
+  v46 = [topAnchor3 constraintEqualToAnchor:bottomAnchor2 constant:30.0];
   v53[0] = v46;
-  v42 = [v7 leadingAnchor];
-  v44 = [(PSGSWVersionDetailCell *)self contentView];
-  v40 = [v44 layoutMarginsGuide];
-  v39 = [v40 leadingAnchor];
-  v37 = [v42 constraintEqualToAnchor:v39 constant:10.0];
+  leadingAnchor3 = [v7 leadingAnchor];
+  contentView2 = [(PSGSWVersionDetailCell *)self contentView];
+  layoutMarginsGuide = [contentView2 layoutMarginsGuide];
+  leadingAnchor4 = [layoutMarginsGuide leadingAnchor];
+  v37 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:10.0];
   v53[1] = v37;
-  v36 = [v7 trailingAnchor];
-  v25 = [(PSGSWVersionDetailCell *)self contentView];
-  v26 = [v25 layoutMarginsGuide];
-  v27 = [v26 trailingAnchor];
-  v28 = [v36 constraintEqualToAnchor:v27 constant:-5.0];
+  trailingAnchor3 = [v7 trailingAnchor];
+  contentView3 = [(PSGSWVersionDetailCell *)self contentView];
+  layoutMarginsGuide2 = [contentView3 layoutMarginsGuide];
+  trailingAnchor4 = [layoutMarginsGuide2 trailingAnchor];
+  v28 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:-5.0];
   v53[2] = v28;
-  v29 = [v7 bottomAnchor];
-  v30 = [(PSGSWVersionDetailCell *)self contentView];
-  v31 = [v30 bottomAnchor];
-  v32 = [v29 constraintEqualToAnchor:v31 constant:-15.0];
+  bottomAnchor3 = [v7 bottomAnchor];
+  contentView4 = [(PSGSWVersionDetailCell *)self contentView];
+  bottomAnchor4 = [contentView4 bottomAnchor];
+  v32 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4 constant:-15.0];
   v53[3] = v32;
   v33 = [MEMORY[0x277CBEA60] arrayWithObjects:v53 count:4];
   [v38 activateConstraints:v33];
@@ -298,19 +298,19 @@
 - (id)titleLabelView
 {
   v3 = [MEMORY[0x277D74300] _preferredFontForTextStyle:*MEMORY[0x277D76988] maximumContentSizeCategory:*MEMORY[0x277D76800]];
-  v4 = [v3 fontDescriptor];
-  v5 = [v4 fontDescriptorWithSymbolicTraits:2];
+  fontDescriptor = [v3 fontDescriptor];
+  v5 = [fontDescriptor fontDescriptorWithSymbolicTraits:2];
 
   v6 = objc_opt_new();
   [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v7 = [(PSGSWVersionDetailCell *)self titleLabelString];
-  [v6 setText:v7];
+  titleLabelString = [(PSGSWVersionDetailCell *)self titleLabelString];
+  [v6 setText:titleLabelString];
 
   v8 = [MEMORY[0x277D74300] fontWithDescriptor:v5 size:0.0];
   [v6 setFont:v8];
 
-  v9 = [MEMORY[0x277D75348] labelColor];
-  [v6 setTextColor:v9];
+  labelColor = [MEMORY[0x277D75348] labelColor];
+  [v6 setTextColor:labelColor];
 
   [v6 setTextAlignment:4];
   [v6 setNumberOfLines:0];
@@ -322,10 +322,10 @@
 {
   v3 = [(PSGSWVersionDetailCell *)self systemVersionValueForKey:*MEMORY[0x277CBEC90]];
   v4 = MEMORY[0x277CCACA8];
-  v5 = [MEMORY[0x277D75418] currentDevice];
-  v6 = [v5 systemName];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  systemName = [currentDevice systemName];
   v7 = [(PSGSWVersionDetailCell *)self systemVersionValueForKey:@"ProductBuildVersion"];
-  v8 = [v4 stringWithFormat:@"%@ %@ (%@)", v6, v3, v7];
+  v8 = [v4 stringWithFormat:@"%@ %@ (%@)", systemName, v3, v7];
 
   return v8;
 }
@@ -335,16 +335,16 @@
   v3 = objc_alloc_init(MEMORY[0x277D3FBB0]);
   [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v3 setAutoresizesSubviews:0];
-  v4 = [(PSGSWVersionDetailCell *)self releaseNotesSummary];
-  [v3 setContent:v4];
+  releaseNotesSummary = [(PSGSWVersionDetailCell *)self releaseNotesSummary];
+  [v3 setContent:releaseNotesSummary];
 
   return v3;
 }
 
 - (id)releaseNotesSummary
 {
-  v2 = [(PSGSWVersionDetailCell *)self releaseNotesSummaryString];
-  v3 = [v2 stringByAppendingString:@"<style type=text/css>body { margin: 0px padding: 0px; }</style>"];;
+  releaseNotesSummaryString = [(PSGSWVersionDetailCell *)self releaseNotesSummaryString];
+  v3 = [releaseNotesSummaryString stringByAppendingString:@"<style type=text/css>body { margin: 0px padding: 0px; }</style>"];;
 
   v4 = [v3 dataUsingEncoding:4];
 
@@ -360,9 +360,9 @@
 
 - (id)releaseNotesSummaryString
 {
-  v3 = [(SUDocumentationData *)self->_documentationData readmeSummary];
-  v4 = v3;
-  if (v3 && [v3 length])
+  readmeSummary = [(SUDocumentationData *)self->_documentationData readmeSummary];
+  v4 = readmeSummary;
+  if (readmeSummary && [readmeSummary length])
   {
     v5 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v4 encoding:4];
   }
@@ -381,13 +381,13 @@
     }
 
     v8 = PSG_LocalizedStringForGeneral(v7);
-    v9 = [(PSGSWVersionDetailCell *)self deviceNameString];
-    v10 = [v6 stringWithFormat:v8, v9];
+    deviceNameString = [(PSGSWVersionDetailCell *)self deviceNameString];
+    v10 = [v6 stringWithFormat:v8, deviceNameString];
 
-    v11 = [MEMORY[0x277D75128] sharedApplication];
-    v12 = [v11 userInterfaceLayoutDirection];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    userInterfaceLayoutDirection = [mEMORY[0x277D75128] userInterfaceLayoutDirection];
     v13 = @"ltr";
-    if (v12 == 1)
+    if (userInterfaceLayoutDirection == 1)
     {
       v13 = @"rtl";
     }
@@ -417,10 +417,10 @@
   return v3;
 }
 
-- (id)systemVersionValueForKey:(id)a3
+- (id)systemVersionValueForKey:(id)key
 {
   osUpdateType = self->_osUpdateType;
-  v4 = a3;
+  keyCopy = key;
   if (osUpdateType == 1)
   {
     v5 = _CFCopySupplementalVersionDictionary();
@@ -432,45 +432,45 @@
   }
 
   v6 = v5;
-  v7 = [v5 objectForKey:v4];
+  v7 = [v5 objectForKey:keyCopy];
 
   return v7;
 }
 
-- (double)preferredHeightWithTable:(id)a3
+- (double)preferredHeightWithTable:(id)table
 {
   [(PSGSWVersionDetailCell *)self bounds];
   v5 = v4;
-  v6 = [MEMORY[0x277D759A0] mainScreen];
-  [v6 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v8 = v7;
 
-  v9 = [(PSWebContainerView *)self->_releaseNotesSummaryView webView];
-  v10 = [v9 scrollView];
-  [v10 contentOffset];
+  webView = [(PSWebContainerView *)self->_releaseNotesSummaryView webView];
+  scrollView = [webView scrollView];
+  [scrollView contentOffset];
   v12 = v11;
   v14 = v13;
 
   [(PSGSWVersionDetailCell *)self computeHeightForWidth:self->_releaseNotesSummaryView forAccessibilitySupportedWebContainer:v5];
   v16 = v15;
-  v17 = [(PSWebContainerView *)self->_releaseNotesSummaryView webView];
-  v18 = [v17 scrollView];
-  [v18 setContentOffset:{v12, v14}];
+  webView2 = [(PSWebContainerView *)self->_releaseNotesSummaryView webView];
+  scrollView2 = [webView2 scrollView];
+  [scrollView2 setContentOffset:{v12, v14}];
 
   v19 = v8 * 0.330000013;
-  v20 = [(PSWebContainerView *)self->_releaseNotesSummaryView webView];
-  v21 = [v20 scrollView];
-  [v21 setScrollEnabled:v16 > v19];
+  webView3 = [(PSWebContainerView *)self->_releaseNotesSummaryView webView];
+  scrollView3 = [webView3 scrollView];
+  [scrollView3 setScrollEnabled:v16 > v19];
 
-  v22 = [(PSWebContainerView *)self->_releaseNotesSummaryView webView];
-  v23 = [v22 scrollView];
-  [v23 setBounces:v16 > v19];
+  webView4 = [(PSWebContainerView *)self->_releaseNotesSummaryView webView];
+  scrollView4 = [webView4 scrollView];
+  [scrollView4 setBounces:v16 > v19];
 
   revokedSplatView = self->_revokedSplatView;
   if (revokedSplatView)
   {
-    v25 = [(UIView *)revokedSplatView subviews];
-    v26 = [v25 objectAtIndex:0];
+    subviews = [(UIView *)revokedSplatView subviews];
+    v26 = [subviews objectAtIndex:0];
 
     [v26 intrinsicContentSize];
     v28 = v27 + 45.0;
@@ -486,25 +486,25 @@
     v19 = v16;
   }
 
-  v29 = [(PSGSWVersionDetailCell *)self contentView];
-  [v29 layoutMargins];
+  contentView = [(PSGSWVersionDetailCell *)self contentView];
+  [contentView layoutMargins];
   v31 = v30;
   [(UILabel *)self->_titleLabelView frame];
   v33 = v28 + v19 + v31 + v32;
-  v34 = [(PSGSWVersionDetailCell *)self contentView];
-  [v34 layoutMargins];
+  contentView2 = [(PSGSWVersionDetailCell *)self contentView];
+  [contentView2 layoutMargins];
   v36 = v35 + v33;
 
   return v36;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v15.receiver = self;
   v15.super_class = PSGSWVersionDetailCell;
-  [(PSGSWVersionDetailCell *)&v15 traitCollectionDidChange:a3];
-  v4 = [MEMORY[0x277D75C80] currentTraitCollection];
-  if ([v4 userInterfaceStyle] == 2)
+  [(PSGSWVersionDetailCell *)&v15 traitCollectionDidChange:change];
+  currentTraitCollection = [MEMORY[0x277D75C80] currentTraitCollection];
+  if ([currentTraitCollection userInterfaceStyle] == 2)
   {
     v5 = 0.24;
     v6 = 0.22;
@@ -521,18 +521,18 @@
   v8 = [MEMORY[0x277D75348] colorWithRed:v5 green:v6 blue:v7 alpha:1.0];
   [(UIView *)self->_revokedSplatView setBackgroundColor:v8];
 
-  v9 = [(UIView *)self->_revokedSplatView subviews];
-  v10 = [v9 count];
+  subviews = [(UIView *)self->_revokedSplatView subviews];
+  v10 = [subviews count];
 
   if (v10)
   {
-    v11 = [(UIView *)self->_revokedSplatView subviews];
-    v12 = [v11 objectAtIndex:0];
+    subviews2 = [(UIView *)self->_revokedSplatView subviews];
+    v12 = [subviews2 objectAtIndex:0];
 
     if (v12)
     {
-      v13 = [MEMORY[0x277D75C80] currentTraitCollection];
-      if ([v13 userInterfaceStyle] == 2)
+      currentTraitCollection2 = [MEMORY[0x277D75C80] currentTraitCollection];
+      if ([currentTraitCollection2 userInterfaceStyle] == 2)
       {
         [MEMORY[0x277D75348] colorWithRed:0.62 green:0.6 blue:0.58 alpha:1.0];
       }
@@ -547,15 +547,15 @@
   }
 }
 
-- (double)computeHeightForWidth:(double)a3 forAccessibilitySupportedWebContainer:(id)a4
+- (double)computeHeightForWidth:(double)width forAccessibilitySupportedWebContainer:(id)container
 {
-  v5 = a4;
-  v6 = [v5 webView];
-  v7 = [v6 stringByEvaluatingJavaScriptFromString:{@"function get_height(){var e=documentreturn Math.max(e.body.scrollHeight, e.documentElement.scrollHeight, e.body.offsetHeight, e.documentElement.offsetHeight, e.body.clientHeight, e.documentElement.clientHeight)}; get_height();"}];;
+  containerCopy = container;
+  webView = [containerCopy webView];
+  v7 = [webView stringByEvaluatingJavaScriptFromString:{@"function get_height(){var e=documentreturn Math.max(e.body.scrollHeight, e.documentElement.scrollHeight, e.body.offsetHeight, e.documentElement.offsetHeight, e.body.clientHeight, e.documentElement.clientHeight)}; get_height();"}];;
 
   if (!v7 || [v7 isEqualToString:&stru_282E88A90] || (objc_msgSend(v7, "floatValue"), v8 <= 0.0))
   {
-    [v5 heightForWidth:a3];
+    [containerCopy heightForWidth:width];
     v9 = v10;
   }
 

@@ -1,24 +1,24 @@
 @interface MPCModelPlaybackIntentDataSource
-+ (BOOL)isValidInsertionIntent:(id)a3 atPosition:(int)a4 forDestination:(int64_t)a5 supportedQueueTypes:(unint64_t)a6 supportedCustomDataQueueIdentifiers:(id)a7;
-+ (BOOL)isValidReplaceIntent:(id)a3 forDestination:(int64_t)a4 supportedQueueTypes:(unint64_t)a5 supportedCustomDataQueueIdentifiers:(id)a6;
-- (void)_getPlaybackContextForIntent:(id)a3 withCompletion:(id)a4;
++ (BOOL)isValidInsertionIntent:(id)intent atPosition:(int)position forDestination:(int64_t)destination supportedQueueTypes:(unint64_t)types supportedCustomDataQueueIdentifiers:(id)identifiers;
++ (BOOL)isValidReplaceIntent:(id)intent forDestination:(int64_t)destination supportedQueueTypes:(unint64_t)types supportedCustomDataQueueIdentifiers:(id)identifiers;
+- (void)_getPlaybackContextForIntent:(id)intent withCompletion:(id)completion;
 @end
 
 @implementation MPCModelPlaybackIntentDataSource
 
-+ (BOOL)isValidInsertionIntent:(id)a3 atPosition:(int)a4 forDestination:(int64_t)a5 supportedQueueTypes:(unint64_t)a6 supportedCustomDataQueueIdentifiers:(id)a7
++ (BOOL)isValidInsertionIntent:(id)intent atPosition:(int)position forDestination:(int64_t)destination supportedQueueTypes:(unint64_t)types supportedCustomDataQueueIdentifiers:(id)identifiers
 {
-  v7 = a6;
-  v9 = a7;
-  v10 = v9;
-  if (a5 == 1)
+  typesCopy = types;
+  identifiersCopy = identifiers;
+  v10 = identifiersCopy;
+  if (destination == 1)
   {
     v11 = 1;
   }
 
-  else if (v7 < 0)
+  else if (typesCopy < 0)
   {
-    v11 = [v9 containsObject:@"com.apple.music.playbackqueue.tracklist"];
+    v11 = [identifiersCopy containsObject:@"com.apple.music.playbackqueue.tracklist"];
   }
 
   else
@@ -29,19 +29,19 @@
   return v11;
 }
 
-+ (BOOL)isValidReplaceIntent:(id)a3 forDestination:(int64_t)a4 supportedQueueTypes:(unint64_t)a5 supportedCustomDataQueueIdentifiers:(id)a6
++ (BOOL)isValidReplaceIntent:(id)intent forDestination:(int64_t)destination supportedQueueTypes:(unint64_t)types supportedCustomDataQueueIdentifiers:(id)identifiers
 {
-  v6 = a5;
-  v8 = a6;
-  v9 = v8;
-  if (a4 == 1)
+  typesCopy = types;
+  identifiersCopy = identifiers;
+  v9 = identifiersCopy;
+  if (destination == 1)
   {
     v10 = 1;
   }
 
-  else if (v6 < 0)
+  else if (typesCopy < 0)
   {
-    v10 = [v8 containsObject:@"com.apple.music.playbackqueue.tracklist"];
+    v10 = [identifiersCopy containsObject:@"com.apple.music.playbackqueue.tracklist"];
   }
 
   else
@@ -52,68 +52,68 @@
   return v10;
 }
 
-- (void)_getPlaybackContextForIntent:(id)a3 withCompletion:(id)a4
+- (void)_getPlaybackContextForIntent:(id)intent withCompletion:(id)completion
 {
-  v22 = a3;
-  v5 = a4;
+  intentCopy = intent;
+  completionCopy = completion;
   v6 = objc_alloc_init(MPCModelPlaybackContext);
-  v7 = [v22 tracklistToken];
-  v8 = [v7 request];
-  [(MPCModelPlaybackContext *)v6 setRequest:v8 overrideEnvironment:1];
+  tracklistToken = [intentCopy tracklistToken];
+  request = [tracklistToken request];
+  [(MPCModelPlaybackContext *)v6 setRequest:request overrideEnvironment:1];
 
-  v9 = [v7 startItemIdentifiers];
-  [(MPCModelPlaybackContext *)v6 setStartItemIdentifiers:v9];
+  startItemIdentifiers = [tracklistToken startItemIdentifiers];
+  [(MPCModelPlaybackContext *)v6 setStartItemIdentifiers:startItemIdentifiers];
 
-  v10 = [v22 startTimeModifications];
-  [(MPCModelPlaybackContext *)v6 setStartTimeModifications:v10];
+  startTimeModifications = [intentCopy startTimeModifications];
+  [(MPCModelPlaybackContext *)v6 setStartTimeModifications:startTimeModifications];
 
-  v11 = [v22 endTimeModifications];
-  [(MPCModelPlaybackContext *)v6 setEndTimeModifications:v11];
+  endTimeModifications = [intentCopy endTimeModifications];
+  [(MPCModelPlaybackContext *)v6 setEndTimeModifications:endTimeModifications];
 
-  v12 = [v22 shuffleMode];
-  if (v12 >= 3)
+  shuffleMode = [intentCopy shuffleMode];
+  if (shuffleMode >= 3)
   {
     v13 = 1000;
   }
 
   else
   {
-    v13 = v12;
+    v13 = shuffleMode;
   }
 
   [(MPCModelPlaybackContext *)v6 setShuffleType:v13];
-  v14 = [v22 repeatMode];
-  if (v14 > 2)
+  repeatMode = [intentCopy repeatMode];
+  if (repeatMode > 2)
   {
     v15 = 3;
   }
 
   else
   {
-    v15 = qword_1C60454C0[v14];
+    v15 = qword_1C60454C0[repeatMode];
   }
 
   [(MPCModelPlaybackContext *)v6 setRepeatType:v15];
-  v16 = [v22 playActivityRecommendationData];
-  [(MPCModelPlaybackContext *)v6 setPlayActivityRecommendationData:v16];
+  playActivityRecommendationData = [intentCopy playActivityRecommendationData];
+  [(MPCModelPlaybackContext *)v6 setPlayActivityRecommendationData:playActivityRecommendationData];
 
-  v17 = [v22 playActivityFeatureName];
-  [(MPCModelPlaybackContext *)v6 setPlayActivityFeatureName:v17];
+  playActivityFeatureName = [intentCopy playActivityFeatureName];
+  [(MPCModelPlaybackContext *)v6 setPlayActivityFeatureName:playActivityFeatureName];
 
-  v18 = [v22 queueGroupingID];
-  [(MPCModelPlaybackContext *)v6 setPlayActivityQueueGroupingID:v18];
+  queueGroupingID = [intentCopy queueGroupingID];
+  [(MPCModelPlaybackContext *)v6 setPlayActivityQueueGroupingID:queueGroupingID];
 
-  -[MPCModelPlaybackContext setActionAfterQueueLoad:](v6, "setActionAfterQueueLoad:", [v22 actionAfterQueueLoad]);
-  v19 = [v22 siriAssetInfo];
-  [(MPCModelPlaybackContext *)v6 setSiriAssetInfo:v19];
+  -[MPCModelPlaybackContext setActionAfterQueueLoad:](v6, "setActionAfterQueueLoad:", [intentCopy actionAfterQueueLoad]);
+  siriAssetInfo = [intentCopy siriAssetInfo];
+  [(MPCModelPlaybackContext *)v6 setSiriAssetInfo:siriAssetInfo];
 
-  v20 = [v22 siriReferenceIdentifier];
-  [(MPCModelPlaybackContext *)v6 setSiriReferenceIdentifier:v20];
+  siriReferenceIdentifier = [intentCopy siriReferenceIdentifier];
+  [(MPCModelPlaybackContext *)v6 setSiriReferenceIdentifier:siriReferenceIdentifier];
 
-  v21 = [v22 delegateTokenB];
-  [(MPCModelPlaybackContext *)v6 setDelegateTokenB:v21];
+  delegateTokenB = [intentCopy delegateTokenB];
+  [(MPCModelPlaybackContext *)v6 setDelegateTokenB:delegateTokenB];
 
-  v5[2](v5, v6, 0);
+  completionCopy[2](completionCopy, v6, 0);
 }
 
 @end

@@ -1,36 +1,36 @@
 @interface UARPMobileAssetManager
-- (BOOL)_updateFusingforAccessory:(id)a3;
-- (BOOL)performFirmwareAssetQuery:(id)a3;
+- (BOOL)_updateFusingforAccessory:(id)accessory;
+- (BOOL)performFirmwareAssetQuery:(id)query;
 - (BOOL)performIsRoamingEnabledCheck;
-- (BOOL)updateAssetSettingsForAccessory:(id)a3 checkForUpdate:(BOOL)a4 automaticUpdatesDisabled:(BOOL *)a5;
-- (UARPMobileAssetManager)initWithManager:(id)a3 queue:(id)a4;
-- (id)assetWithMaxVersion:(id)a3;
-- (id)getAssetBundle:(id)a3;
-- (id)getAssetVersionForMAAsset:(id)a3;
+- (BOOL)updateAssetSettingsForAccessory:(id)accessory checkForUpdate:(BOOL)update automaticUpdatesDisabled:(BOOL *)disabled;
+- (UARPMobileAssetManager)initWithManager:(id)manager queue:(id)queue;
+- (id)assetWithMaxVersion:(id)version;
+- (id)getAssetBundle:(id)bundle;
+- (id)getAssetVersionForMAAsset:(id)asset;
 - (id)profileAssetOverrideSettings;
-- (int64_t)downloadFirmwareForAccessory:(id)a3 assetID:(id)a4 mobileAsset:(id)a5;
-- (int64_t)downloadRemoteFirmwareForAccessory:(id)a3 assetID:(id)a4 mobileAsset:(id)a5;
-- (int64_t)performDownload:(id)a3 accessory:(id)a4 assetID:(id)a5 supplementalAsset:(BOOL)a6;
-- (int64_t)performRemoteQueryForAccessory:(id)a3;
-- (int64_t)uarpAssetLocationType:(unint64_t)a3;
-- (void)_mergePartnerAccessoriesInAssetSettings:(id)a3;
+- (int64_t)downloadFirmwareForAccessory:(id)accessory assetID:(id)d mobileAsset:(id)asset;
+- (int64_t)downloadRemoteFirmwareForAccessory:(id)accessory assetID:(id)d mobileAsset:(id)asset;
+- (int64_t)performDownload:(id)download accessory:(id)accessory assetID:(id)d supplementalAsset:(BOOL)asset;
+- (int64_t)performRemoteQueryForAccessory:(id)accessory;
+- (int64_t)uarpAssetLocationType:(unint64_t)type;
+- (void)_mergePartnerAccessoriesInAssetSettings:(id)settings;
 - (void)cleanupAssetCache;
 - (void)dealloc;
-- (void)handleFirmwareAssetQueryCompletion:(id)a3 result:(int64_t)a4 forAccessory:(id)a5 downstreamAppleModelNumber:(id)a6;
-- (void)handleMobileAssetDownloadCompletion:(id)a3 status:(int64_t)a4 accessory:(id)a5 assetID:(id)a6;
-- (void)handleSupplementalAssetDownloadCompletion:(id)a3 result:(int64_t)a4 forAccessory:(id)a5;
-- (void)handleSupplementalAssetQueryCompletion:(id)a3 result:(int64_t)a4 forAccessory:(id)a5;
-- (void)notifyFirmwareUpdateAvailabilityStatus:(int64_t)a3 accessory:(id)a4 downstreamAppleModelNumber:(id)a5;
-- (void)performQuery:(id)a3 assetType:(id)a4 supplementalAsset:(BOOL)a5 downstreamAppleModelNumber:(id)a6;
-- (void)performRemoteDownstreamAssetQuery:(id)a3 appleModelNumbers:(id)a4;
-- (void)performRemoteSupplementalAssetQuery:(id)a3 supplementalAssets:(id)a4;
-- (void)updateAccessoryInfoInDatabaseIfNeeded:(id)a3 serialNumber:(id)a4 accessory:(id)a5 updatePartnerSerialNumbers:(BOOL)a6;
-- (void)updateSettingsDatabaseForAccessory:(id)a3;
+- (void)handleFirmwareAssetQueryCompletion:(id)completion result:(int64_t)result forAccessory:(id)accessory downstreamAppleModelNumber:(id)number;
+- (void)handleMobileAssetDownloadCompletion:(id)completion status:(int64_t)status accessory:(id)accessory assetID:(id)d;
+- (void)handleSupplementalAssetDownloadCompletion:(id)completion result:(int64_t)result forAccessory:(id)accessory;
+- (void)handleSupplementalAssetQueryCompletion:(id)completion result:(int64_t)result forAccessory:(id)accessory;
+- (void)notifyFirmwareUpdateAvailabilityStatus:(int64_t)status accessory:(id)accessory downstreamAppleModelNumber:(id)number;
+- (void)performQuery:(id)query assetType:(id)type supplementalAsset:(BOOL)asset downstreamAppleModelNumber:(id)number;
+- (void)performRemoteDownstreamAssetQuery:(id)query appleModelNumbers:(id)numbers;
+- (void)performRemoteSupplementalAssetQuery:(id)query supplementalAssets:(id)assets;
+- (void)updateAccessoryInfoInDatabaseIfNeeded:(id)needed serialNumber:(id)number accessory:(id)accessory updatePartnerSerialNumbers:(BOOL)numbers;
+- (void)updateSettingsDatabaseForAccessory:(id)accessory;
 @end
 
 @implementation UARPMobileAssetManager
 
-- (UARPMobileAssetManager)initWithManager:(id)a3 queue:(id)a4
+- (UARPMobileAssetManager)initWithManager:(id)manager queue:(id)queue
 {
   v8.receiver = self;
   v8.super_class = UARPMobileAssetManager;
@@ -38,8 +38,8 @@
   if (v6)
   {
     v6->_log = os_log_create("com.apple.accessoryupdater.uarp", "mobileAssetManager");
-    v6->_assetManager = a3;
-    v6->_queue = a4;
+    v6->_assetManager = manager;
+    v6->_queue = queue;
     v6->_delegateQueue = dispatch_queue_create("com.apple.aam.uarpMobileAssetManager.queue", 0);
     [(UARPMobileAssetManager *)v6 cleanupAssetCache];
   }
@@ -60,14 +60,14 @@
   v4 = InternalStorageDirectoryPath();
   v5 = [NSString stringWithFormat:@"%@A", v4];
   v6 = [+[NSFileManager defaultManager](NSFileManager enumeratorAtPath:"enumeratorAtPath:", v4];
-  v7 = [(NSDirectoryEnumerator *)v6 nextObject];
-  if (v7)
+  nextObject = [(NSDirectoryEnumerator *)v6 nextObject];
+  if (nextObject)
   {
-    v8 = v7;
+    nextObject2 = nextObject;
     do
     {
       v35[0] = v4;
-      v35[1] = v8;
+      v35[1] = nextObject2;
       v9 = [NSString pathWithComponents:[NSArray arrayWithObjects:v35 count:2]];
       if ([(NSString *)v9 hasPrefix:v5])
       {
@@ -75,17 +75,17 @@
         if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
         {
           *buf = 138412290;
-          v34 = v8;
+          v34 = nextObject2;
           _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_INFO, "Removing legacy mobile asset download at %@", buf, 0xCu);
         }
 
         [v3 addObject:v9];
       }
 
-      v8 = [(NSDirectoryEnumerator *)v6 nextObject];
+      nextObject2 = [(NSDirectoryEnumerator *)v6 nextObject];
     }
 
-    while (v8);
+    while (nextObject2);
   }
 
   v29 = 0u;
@@ -155,11 +155,11 @@
   }
 }
 
-- (int64_t)downloadFirmwareForAccessory:(id)a3 assetID:(id)a4 mobileAsset:(id)a5
+- (int64_t)downloadFirmwareForAccessory:(id)accessory assetID:(id)d mobileAsset:(id)asset
 {
-  if (a5)
+  if (asset)
   {
-    return [(UARPMobileAssetManager *)self downloadRemoteFirmwareForAccessory:a3 assetID:a4 mobileAsset:?];
+    return [(UARPMobileAssetManager *)self downloadRemoteFirmwareForAccessory:accessory assetID:d mobileAsset:?];
   }
 
   else
@@ -168,12 +168,12 @@
   }
 }
 
-- (void)updateSettingsDatabaseForAccessory:(id)a3
+- (void)updateSettingsDatabaseForAccessory:(id)accessory
 {
-  if ([+[UARPSupportedAccessory findByAppleModelNumber:](UARPSupportedAccessory findByAppleModelNumber:{objc_msgSend(objc_msgSend(a3, "accessoryID"), "modelNumber")), "supportsInternalSettings"}])
+  if ([+[UARPSupportedAccessory findByAppleModelNumber:](UARPSupportedAccessory findByAppleModelNumber:{objc_msgSend(objc_msgSend(accessory, "accessoryID"), "modelNumber")), "supportsInternalSettings"}])
   {
     v5 = 0;
-    [(UARPMobileAssetManager *)self updateAssetSettingsForAccessory:a3 checkForUpdate:0 automaticUpdatesDisabled:&v5];
+    [(UARPMobileAssetManager *)self updateAssetSettingsForAccessory:accessory checkForUpdate:0 automaticUpdatesDisabled:&v5];
   }
 }
 
@@ -298,20 +298,20 @@
   return v5;
 }
 
-- (int64_t)uarpAssetLocationType:(unint64_t)a3
+- (int64_t)uarpAssetLocationType:(unint64_t)type
 {
   v3 = 13;
-  if (a3 == 7)
+  if (type == 7)
   {
     v3 = 11;
   }
 
-  if (a3 == 6)
+  if (type == 6)
   {
     v3 = 14;
   }
 
-  if ((a3 & 0xFFFFFFFFFFFFFFFELL) == 4)
+  if ((type & 0xFFFFFFFFFFFFFFFELL) == 4)
   {
     v4 = 11;
   }
@@ -321,7 +321,7 @@
     v4 = v3;
   }
 
-  if (a3 >= 2)
+  if (type >= 2)
   {
     return v4;
   }
@@ -332,20 +332,20 @@
   }
 }
 
-- (BOOL)_updateFusingforAccessory:(id)a3
+- (BOOL)_updateFusingforAccessory:(id)accessory
 {
   v5 = +[AUDeveloperSettingsDatabase sharedDatabase];
   v6 = [objc_msgSend(v5 "accessoriesDictionary")];
   if (v6)
   {
     v7 = v6;
-    v8 = +[UARPSupportedAccessory findByAppleModelNumber:](UARPSupportedAccessory, "findByAppleModelNumber:", [objc_msgSend(a3 "accessoryID")]);
-    if (![v8 fusingOverrideUnfused] || (objc_msgSend(objc_msgSend(objc_msgSend(a3, "accessoryID"), "hwFusingType"), "isEqualToString:", @"unfused") & 1) == 0)
+    v8 = +[UARPSupportedAccessory findByAppleModelNumber:](UARPSupportedAccessory, "findByAppleModelNumber:", [objc_msgSend(accessory "accessoryID")]);
+    if (![v8 fusingOverrideUnfused] || (objc_msgSend(objc_msgSend(objc_msgSend(accessory, "accessoryID"), "hwFusingType"), "isEqualToString:", @"unfused") & 1) == 0)
     {
       v9 = [v7 mutableCopy];
       v10 = [v9 objectForKeyedSubscript:@"fusing"];
       v11 = [v9 objectForKeyedSubscript:?];
-      v12 = [objc_msgSend(objc_msgSend(a3 "accessoryID")];
+      v12 = [objc_msgSend(objc_msgSend(accessory "accessoryID")];
       v13 = v12 != 0;
       if (!v12)
       {
@@ -355,19 +355,19 @@ LABEL_24:
       }
 
       v22 = v11;
-      if ([objc_msgSend(objc_msgSend(a3 "accessoryID")])
+      if ([objc_msgSend(objc_msgSend(accessory "accessoryID")])
       {
         v14 = 1;
       }
 
-      else if ([objc_msgSend(objc_msgSend(a3 "accessoryID")])
+      else if ([objc_msgSend(objc_msgSend(accessory "accessoryID")])
       {
         v14 = 0;
       }
 
       else
       {
-        if (![objc_msgSend(objc_msgSend(a3 "accessoryID")])
+        if (![objc_msgSend(objc_msgSend(accessory "accessoryID")])
         {
           goto LABEL_15;
         }
@@ -381,7 +381,7 @@ LABEL_15:
       if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543874;
-        v24 = [a3 accessoryID];
+        accessoryID = [accessory accessoryID];
         v25 = 2114;
         v26 = v10;
         v27 = 2114;
@@ -389,7 +389,7 @@ LABEL_15:
         _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEFAULT, "Updating HW Fusing for %{public}@, from %{public}@ to %{public}@", buf, 0x20u);
       }
 
-      if (MGGetBoolAnswer() && ([objc_msgSend(objc_msgSend(a3 "accessoryID")] & 1) == 0)
+      if (MGGetBoolAnswer() && ([objc_msgSend(objc_msgSend(accessory "accessoryID")] & 1) == 0)
       {
         [v9 setObject:+[NSString stringWithUTF8String:](NSString forKeyedSubscript:{"stringWithUTF8String:", sub_100004FFC(0)), @"assetLocation"}];
         v17 = 0;
@@ -409,10 +409,10 @@ LABEL_21:
           v18 = self->_log;
           if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
           {
-            v19 = [a3 accessoryID];
+            accessoryID2 = [accessory accessoryID];
             v20 = [v9 objectForKeyedSubscript:@"assetLocation"];
             *buf = 138543874;
-            v24 = v19;
+            accessoryID = accessoryID2;
             v25 = 2114;
             v26 = v22;
             v27 = 2114;
@@ -420,7 +420,7 @@ LABEL_21:
             _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "Updating Asset Location for %{public}@, from %{public}@ to %{public}@", buf, 0x20u);
           }
 
-          [v5 addAccessoryWithSerialNumber:objc_msgSend(objc_msgSend(a3 info:{"accessoryID"), "serialNumber"), +[NSDictionary dictionaryWithDictionary:](NSDictionary, "dictionaryWithDictionary:", v9)}];
+          [v5 addAccessoryWithSerialNumber:objc_msgSend(objc_msgSend(accessory info:{"accessoryID"), "serialNumber"), +[NSDictionary dictionaryWithDictionary:](NSDictionary, "dictionaryWithDictionary:", v9)}];
           goto LABEL_24;
         }
       }
@@ -436,7 +436,7 @@ LABEL_21:
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v24 = [a3 accessoryID];
+      accessoryID = [accessory accessoryID];
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Not updating fusing for %@ no Entry in Database", buf, 0xCu);
     }
   }
@@ -444,30 +444,30 @@ LABEL_21:
   return 0;
 }
 
-- (void)_mergePartnerAccessoriesInAssetSettings:(id)a3
+- (void)_mergePartnerAccessoriesInAssetSettings:(id)settings
 {
   v4 = [(UARPMobileAssetManager *)self _updateFusingforAccessory:?];
-  v36 = [objc_msgSend(a3 "accessoryID")];
+  v36 = [objc_msgSend(settings "accessoryID")];
   if (!v36)
   {
     return;
   }
 
-  v35 = +[UARPSupportedAccessory findByAppleModelNumber:](UARPSupportedAccessory, "findByAppleModelNumber:", [objc_msgSend(a3 "accessoryID")]);
+  v35 = +[UARPSupportedAccessory findByAppleModelNumber:](UARPSupportedAccessory, "findByAppleModelNumber:", [objc_msgSend(settings "accessoryID")]);
   v38 = +[AUDeveloperSettingsDatabase sharedDatabase];
   v5 = [objc_msgSend(v38 "accessoriesDictionary")];
-  v6 = [objc_msgSend(a3 "accessoryID")];
+  v6 = [objc_msgSend(settings "accessoryID")];
   HIDWORD(v31) = v4;
   if (![v6 count])
   {
-    v6 = sub_100005678([objc_msgSend(a3 "accessoryID")]);
+    v6 = sub_100005678([objc_msgSend(settings "accessoryID")]);
     log = self->_log;
     if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
       v45 = v6;
       v46 = 2114;
-      v47 = [a3 accessoryID];
+      accessoryID = [settings accessoryID];
       _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEFAULT, "Found Partner Serial Numbers updated to %{public}@ for accessory %{public}@", buf, 0x16u);
     }
   }
@@ -476,11 +476,11 @@ LABEL_21:
   v8 = self->_log;
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [a3 accessoryID];
+    accessoryID2 = [settings accessoryID];
     *buf = 138543618;
     v45 = v6;
     v46 = 2114;
-    v47 = v9;
+    accessoryID = accessoryID2;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Using reported Partner Serial Numbers %{public}@ for accessory %{public}@", buf, 0x16u);
   }
 
@@ -518,7 +518,7 @@ LABEL_9:
     v17 = [v16 objectForKey:@"fusing"];
     if (v17)
     {
-      if (![v15 isEqualToString:{objc_msgSend(objc_msgSend(a3, "accessoryID"), "serialNumber")}])
+      if (![v15 isEqualToString:{objc_msgSend(objc_msgSend(settings, "accessoryID"), "serialNumber")}])
       {
         break;
       }
@@ -530,7 +530,7 @@ LABEL_9:
       *buf = 138543618;
       v45 = v15;
       v46 = 2114;
-      v47 = v17;
+      accessoryID = v17;
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "Unexpected Accessory Entry for %{public}@ with fusing %{public}@", buf, 0x16u);
     }
 
@@ -555,15 +555,15 @@ LABEL_23:
       v20 = self->_log;
       if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
       {
-        v21 = [objc_msgSend(a3 "accessoryID")];
+        v21 = [objc_msgSend(settings "accessoryID")];
         *buf = 138412546;
         v45 = v21;
         v46 = 2112;
-        v47 = v19;
+        accessoryID = v19;
         _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_INFO, "Overriding friendly name %@, from Partner Accessory %@", buf, 0x16u);
       }
 
-      [objc_msgSend(a3 "accessoryID")];
+      [objc_msgSend(settings "accessoryID")];
     }
 
     goto LABEL_23;
@@ -591,16 +591,16 @@ LABEL_23:
     v25 = v32;
   }
 
-  if ((v23 == 0) | v33 & 1 && (v22 || ![objc_msgSend(a3 "accessoryID")]))
+  if ((v23 == 0) | v33 & 1 && (v22 || ![objc_msgSend(settings "accessoryID")]))
   {
     v25 = 0;
     v26 = v15;
-    v15 = [objc_msgSend(a3 "accessoryID")];
+    v15 = [objc_msgSend(settings "accessoryID")];
   }
 
   else
   {
-    v26 = [objc_msgSend(a3 "accessoryID")];
+    v26 = [objc_msgSend(settings "accessoryID")];
   }
 
   v27 = self->_log;
@@ -609,7 +609,7 @@ LABEL_23:
     *buf = 138412546;
     v45 = v26;
     v46 = 2112;
-    v47 = v15;
+    accessoryID = v15;
     _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_INFO, "Keeping Entry for %@, instead of %@", buf, 0x16u);
   }
 
@@ -624,14 +624,14 @@ LABEL_46:
     v29 = self->_log;
     if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
     {
-      v30 = [a3 accessoryID];
+      accessoryID3 = [settings accessoryID];
       *buf = 138412290;
-      v45 = v30;
+      v45 = accessoryID3;
       _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEFAULT, "Added Entry for %@ in AUDeveloperSettingsDatabase", buf, 0xCu);
     }
 
-    -[UARPMobileAssetManager updateAccessoryInfoInDatabaseIfNeeded:serialNumber:accessory:updatePartnerSerialNumbers:](self, "updateAccessoryInfoInDatabaseIfNeeded:serialNumber:accessory:updatePartnerSerialNumbers:", 0, [objc_msgSend(a3 "accessoryID")], a3, 1);
-    [a3 checkDropbox];
+    -[UARPMobileAssetManager updateAccessoryInfoInDatabaseIfNeeded:serialNumber:accessory:updatePartnerSerialNumbers:](self, "updateAccessoryInfoInDatabaseIfNeeded:serialNumber:accessory:updatePartnerSerialNumbers:", 0, [objc_msgSend(settings "accessoryID")], settings, 1);
+    [settings checkDropbox];
     return;
   }
 
@@ -650,11 +650,11 @@ LABEL_46:
   }
 }
 
-- (BOOL)updateAssetSettingsForAccessory:(id)a3 checkForUpdate:(BOOL)a4 automaticUpdatesDisabled:(BOOL *)a5
+- (BOOL)updateAssetSettingsForAccessory:(id)accessory checkForUpdate:(BOOL)update automaticUpdatesDisabled:(BOOL *)disabled
 {
-  v6 = a4;
-  *a5 = 0;
-  if (![objc_msgSend(a3 "accessoryID")])
+  updateCopy = update;
+  *disabled = 0;
+  if (![objc_msgSend(accessory "accessoryID")])
   {
     v15 = os_log_type_enabled(self->_log, OS_LOG_TYPE_ERROR);
     if (!v15)
@@ -662,45 +662,45 @@ LABEL_46:
       return v15;
     }
 
-    sub_10005354C(a3);
+    sub_10005354C(accessory);
     goto LABEL_43;
   }
 
-  v36 = v6;
-  [(UARPMobileAssetManager *)self _mergePartnerAccessoriesInAssetSettings:a3];
-  sub_1000065C4([objc_msgSend(a3 "accessoryID")]);
+  v36 = updateCopy;
+  [(UARPMobileAssetManager *)self _mergePartnerAccessoriesInAssetSettings:accessory];
+  sub_1000065C4([objc_msgSend(accessory "accessoryID")]);
   v9 = +[AUDeveloperSettingsDatabase sharedDatabase];
-  v10 = self;
+  selfCopy = self;
   v11 = [objc_msgSend(v9 "accessoriesDictionary")];
-  v38 = a5;
-  v39 = a3;
-  v37 = self;
+  disabledCopy = disabled;
+  accessoryCopy = accessory;
+  selfCopy2 = self;
   if (v11)
   {
     log = self->_log;
-    if (os_log_type_enabled(v10->_log, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(selfCopy->_log, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      *&buf[4] = [objc_msgSend(a3 "accessoryID")];
+      *&buf[4] = [objc_msgSend(accessory "accessoryID")];
       *&buf[12] = 2112;
       *&buf[14] = sub_100032D90(v11, 0);
       _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEFAULT, "Entry found in AUDeveloperSettingsDatabase Accessory:%@ assetLocation:%@", buf, 0x16u);
     }
 
     [v11 objectForKeyedSubscript:@"modelNumber"];
-    v13 = [objc_msgSend(a3 "accessoryID")];
+    v13 = [objc_msgSend(accessory "accessoryID")];
     v14 = v11;
 LABEL_6:
-    [(os_log_t *)v37 updateAccessoryInfoInDatabaseIfNeeded:v11 serialNumber:v13 accessory:v39 updatePartnerSerialNumbers:v14 != 0];
+    [(os_log_t *)selfCopy2 updateAccessoryInfoInDatabaseIfNeeded:v11 serialNumber:v13 accessory:accessoryCopy updatePartnerSerialNumbers:v14 != 0];
     v11 = [objc_msgSend(v9 "accessoriesDictionary")];
     goto LABEL_32;
   }
 
-  v16 = [objc_msgSend(a3 "accessoryID")];
-  v17 = [objc_msgSend(a3 "accessoryID")];
+  v16 = [objc_msgSend(accessory "accessoryID")];
+  v17 = [objc_msgSend(accessory "accessoryID")];
   if (![v17 count])
   {
-    v17 = sub_100005678([objc_msgSend(a3 "accessoryID")]);
+    v17 = sub_100005678([objc_msgSend(accessory "accessoryID")]);
   }
 
   v43 = 0u;
@@ -724,7 +724,7 @@ LABEL_13:
       v21 = [objc_msgSend(objc_msgSend(v9 "accessoriesDictionary")];
       if (v21)
       {
-        if (([v13 isEqualToString:{objc_msgSend(objc_msgSend(v39, "accessoryID"), "serialNumber")}] & 1) == 0 && (!objc_msgSend(v21, "caseInsensitiveCompare:", v16) || (objc_msgSend(v16, "isEqualToString:", @"prod") & 1) == 0 && objc_msgSend(v21, "caseInsensitiveCompare:", @"prod")))
+        if (([v13 isEqualToString:{objc_msgSend(objc_msgSend(accessoryCopy, "accessoryID"), "serialNumber")}] & 1) == 0 && (!objc_msgSend(v21, "caseInsensitiveCompare:", v16) || (objc_msgSend(v16, "isEqualToString:", @"prod") & 1) == 0 && objc_msgSend(v21, "caseInsensitiveCompare:", @"prod")))
         {
           break;
         }
@@ -749,7 +749,7 @@ LABEL_13:
       goto LABEL_29;
     }
 
-    v22 = v37[1];
+    v22 = selfCopy2[1];
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
       v23 = sub_100032D90(v11, 0);
@@ -760,7 +760,7 @@ LABEL_13:
       _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "Entry found in AUDeveloperSettingsDatabase Partner Accessory:%@ assetLocation:%@", buf, 0x16u);
     }
 
-    v24 = [objc_msgSend(objc_msgSend(v39 "accessoryID")];
+    v24 = [objc_msgSend(objc_msgSend(accessoryCopy "accessoryID")];
     v14 = 0;
     if (v24)
     {
@@ -771,44 +771,44 @@ LABEL_13:
   else
   {
 LABEL_29:
-    if (os_log_type_enabled(v37[1], OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(selfCopy2[1], OS_LOG_TYPE_ERROR))
     {
-      sub_1000533A4(v39);
+      sub_1000533A4(accessoryCopy);
     }
 
     v11 = 0;
-    *v38 = 1;
+    *disabledCopy = 1;
   }
 
 LABEL_32:
-  if (sub_100005DF0([v39 accessoryID]))
+  if (sub_100005DF0([accessoryCopy accessoryID]))
   {
-    v25 = v37[1];
+    v25 = selfCopy2[1];
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
     {
-      v26 = [v39 identifier];
+      identifier = [accessoryCopy identifier];
       *buf = 138412290;
-      *&buf[4] = v26;
+      *&buf[4] = identifier;
       _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "Entry found in AUDeveloperSettingsDatabase Accessory:%@ with OTA Update disabled, not attempting update", buf, 0xCu);
     }
 
-    *v38 = 1;
+    *disabledCopy = 1;
   }
 
   v27 = [v11 objectForKeyedSubscript:@"fusing"];
-  v28 = v38;
-  if (!v27 || (v28 = v38, [v27 isEqualToString:{+[NSString stringWithUTF8String:](NSString, "stringWithUTF8String:", sub_100004EB4(3uLL))}]))
+  v28 = disabledCopy;
+  if (!v27 || (v28 = disabledCopy, [v27 isEqualToString:{+[NSString stringWithUTF8String:](NSString, "stringWithUTF8String:", sub_100004EB4(3uLL))}]))
   {
-    if (os_log_type_enabled(v37[1], OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(selfCopy2[1], OS_LOG_TYPE_ERROR))
     {
-      sub_100053450(v39);
-      v28 = v38;
+      sub_100053450(accessoryCopy);
+      v28 = disabledCopy;
     }
 
     *v28 = 1;
   }
 
-  if (!v36 || *v28 || [objc_msgSend(v39 "assetID")] != 3 && objc_msgSend(objc_msgSend(v39, "assetID"), "type") != 11 && objc_msgSend(objc_msgSend(v39, "assetID"), "type") != 12 && objc_msgSend(objc_msgSend(v39, "assetID"), "type") != 13 && objc_msgSend(objc_msgSend(v39, "assetID"), "type") != 14)
+  if (!v36 || *v28 || [objc_msgSend(accessoryCopy "assetID")] != 3 && objc_msgSend(objc_msgSend(accessoryCopy, "assetID"), "type") != 11 && objc_msgSend(objc_msgSend(accessoryCopy, "assetID"), "type") != 12 && objc_msgSend(objc_msgSend(accessoryCopy, "assetID"), "type") != 13 && objc_msgSend(objc_msgSend(accessoryCopy, "assetID"), "type") != 14)
   {
     goto LABEL_43;
   }
@@ -818,15 +818,15 @@ LABEL_32:
   {
     v30 = sub_100005020([v11 objectForKeyedSubscript:@"assetLocation"]);
     v31 = [NSURL URLWithString:v29];
-    if ((-[NSURL isEqual:](v31, "isEqual:", [objc_msgSend(v39 "assetID")]) & 1) == 0)
+    if ((-[NSURL isEqual:](v31, "isEqual:", [objc_msgSend(accessoryCopy "assetID")]) & 1) == 0)
     {
-      v32 = v37[1];
+      v32 = selfCopy2[1];
       if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
       {
-        v33 = [v39 identifier];
-        v34 = [objc_msgSend(v39 "assetID")];
+        identifier2 = [accessoryCopy identifier];
+        v34 = [objc_msgSend(accessoryCopy "assetID")];
         *buf = 138412802;
-        *&buf[4] = v33;
+        *&buf[4] = identifier2;
         *&buf[12] = 2112;
         *&buf[14] = v34;
         *&buf[22] = 2112;
@@ -839,15 +839,15 @@ LABEL_32:
       *&buf[16] = 0x3052000000;
       v46 = sub_10003449C;
       v47 = sub_1000344AC;
-      v48 = [[UARPAssetID alloc] initWithLocationType:-[os_log_t uarpAssetLocationType:](v37 remoteURL:{"uarpAssetLocationType:", v30), v31}];
+      v48 = [[UARPAssetID alloc] initWithLocationType:-[os_log_t uarpAssetLocationType:](selfCopy2 remoteURL:{"uarpAssetLocationType:", v30), v31}];
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = sub_1000344B8;
       block[3] = &unk_1000817B0;
-      block[4] = v37;
-      block[5] = v39;
+      block[4] = selfCopy2;
+      block[5] = accessoryCopy;
       block[6] = buf;
-      dispatch_async([(os_log_t *)v37 delegateQueue], block);
+      dispatch_async([(os_log_t *)selfCopy2 delegateQueue], block);
       _Block_object_dispose(buf, 8);
       LOBYTE(v15) = 1;
       return v15;
@@ -858,33 +858,33 @@ LABEL_43:
     return v15;
   }
 
-  if (os_log_type_enabled(v37[1], OS_LOG_TYPE_ERROR))
+  if (os_log_type_enabled(selfCopy2[1], OS_LOG_TYPE_ERROR))
   {
     sub_1000534D8();
   }
 
   LOBYTE(v15) = 0;
-  *v38 = 1;
+  *disabledCopy = 1;
   return v15;
 }
 
-- (void)updateAccessoryInfoInDatabaseIfNeeded:(id)a3 serialNumber:(id)a4 accessory:(id)a5 updatePartnerSerialNumbers:(BOOL)a6
+- (void)updateAccessoryInfoInDatabaseIfNeeded:(id)needed serialNumber:(id)number accessory:(id)accessory updatePartnerSerialNumbers:(BOOL)numbers
 {
-  v6 = a6;
-  v36 = +[UARPSupportedAccessory findByAppleModelNumber:](UARPSupportedAccessory, "findByAppleModelNumber:", [objc_msgSend(a5 "accessoryID")]);
-  if (a3)
+  numbersCopy = numbers;
+  v36 = +[UARPSupportedAccessory findByAppleModelNumber:](UARPSupportedAccessory, "findByAppleModelNumber:", [objc_msgSend(accessory "accessoryID")]);
+  if (needed)
   {
-    v10 = v6;
-    v11 = a4;
-    v12 = [a3 objectForKeyedSubscript:@"fusing"];
+    v10 = numbersCopy;
+    numberCopy = number;
+    v12 = [needed objectForKeyedSubscript:@"fusing"];
     v13 = [NSString stringWithUTF8String:sub_100004EB4(3uLL)];
-    v14 = [a3 mutableCopy];
-    if (![v12 isEqualToString:v13] || !objc_msgSend(objc_msgSend(a5, "accessoryID"), "hwFusingType"))
+    v14 = [needed mutableCopy];
+    if (![v12 isEqualToString:v13] || !objc_msgSend(objc_msgSend(accessory, "accessoryID"), "hwFusingType"))
     {
       v16 = v36;
       if ([objc_msgSend(v36 "supplementalAssets")])
       {
-        a4 = v11;
+        number = numberCopy;
         if (![v14 objectForKeyedSubscript:@"supplementalAssetLocation"])
         {
           MGGetBoolAnswer();
@@ -894,24 +894,24 @@ LABEL_43:
 
       else
       {
-        a4 = v11;
+        number = numberCopy;
       }
 
-      v6 = v10;
+      numbersCopy = v10;
       goto LABEL_34;
     }
 
-    if ([objc_msgSend(objc_msgSend(a5 "accessoryID")])
+    if ([objc_msgSend(objc_msgSend(accessory "accessoryID")])
     {
       v15 = 0;
     }
 
-    else if ([objc_msgSend(objc_msgSend(a5 "accessoryID")])
+    else if ([objc_msgSend(objc_msgSend(accessory "accessoryID")])
     {
       v15 = 1;
     }
 
-    else if ([objc_msgSend(objc_msgSend(a5 "accessoryID")])
+    else if ([objc_msgSend(objc_msgSend(accessory "accessoryID")])
     {
       v15 = 2;
     }
@@ -925,31 +925,31 @@ LABEL_43:
     if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v39 = [a5 identifier];
+      identifier = [accessory identifier];
       v40 = 2080;
       v41 = sub_100004EB4(v15);
       _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEFAULT, "Updating fusing type for %@ to %s", buf, 0x16u);
     }
 
     [v14 setObject:+[NSString stringWithUTF8String:](NSString forKeyedSubscript:{"stringWithUTF8String:", sub_100004EB4(v15)), @"fusing"}];
-    a4 = v11;
-    v6 = v10;
+    number = numberCopy;
+    numbersCopy = v10;
   }
 
   else
   {
     v14 = objc_alloc_init(NSMutableDictionary);
-    if ([objc_msgSend(objc_msgSend(a5 "accessoryID")])
+    if ([objc_msgSend(objc_msgSend(accessory "accessoryID")])
     {
       v15 = 0;
     }
 
-    else if ([objc_msgSend(objc_msgSend(a5 "accessoryID")])
+    else if ([objc_msgSend(objc_msgSend(accessory "accessoryID")])
     {
       v15 = 1;
     }
 
-    else if ([objc_msgSend(objc_msgSend(a5 "accessoryID")])
+    else if ([objc_msgSend(objc_msgSend(accessory "accessoryID")])
     {
       v15 = 2;
     }
@@ -960,10 +960,10 @@ LABEL_43:
     }
 
     [v14 setObject:+[NSString stringWithUTF8String:](NSString forKeyedSubscript:{"stringWithUTF8String:", sub_100004EB4(v15)), @"fusing"}];
-    v17 = [objc_msgSend(objc_msgSend(a5 "accessoryID")];
+    v17 = [objc_msgSend(objc_msgSend(accessory "accessoryID")];
     [v14 setObject:v17 forKeyedSubscript:@"activeVersion"];
 
-    v18 = [objc_msgSend(objc_msgSend(a5 "accessoryID")];
+    v18 = [objc_msgSend(objc_msgSend(accessory "accessoryID")];
     [v14 setObject:v18 forKeyedSubscript:@"hwRevision"];
   }
 
@@ -992,7 +992,7 @@ LABEL_33:
 
 LABEL_34:
   v21 = [v14 objectForKeyedSubscript:@"name"];
-  if (![objc_msgSend(objc_msgSend(a5 "accessoryID")] || (v22 = objc_msgSend(objc_msgSend(a5, "accessoryID"), "friendlyName"), (objc_msgSend(v22, "isEqualToString:", kUARPDefaultFriendlyNameUnknown) & 1) != 0))
+  if (![objc_msgSend(objc_msgSend(accessory "accessoryID")] || (v22 = objc_msgSend(objc_msgSend(accessory, "accessoryID"), "friendlyName"), (objc_msgSend(v22, "isEqualToString:", kUARPDefaultFriendlyNameUnknown) & 1) != 0))
   {
     if (v21)
     {
@@ -1001,95 +1001,95 @@ LABEL_34:
 
     v23 = [NSMutableString alloc];
     v24 = v16 ? [v16 modelName] : kUARPDefaultDisplayNameAccessory;
-    v27 = [v23 initWithFormat:@"%@ (%@)", v24, a4];
-    if (!v27)
+    number = [v23 initWithFormat:@"%@ (%@)", v24, number];
+    if (!number)
     {
       goto LABEL_43;
     }
 
 LABEL_42:
-    [v14 setObject:+[NSString stringWithString:](NSString forKeyedSubscript:{"stringWithString:", v27), @"name"}];
+    [v14 setObject:+[NSString stringWithString:](NSString forKeyedSubscript:{"stringWithString:", number), @"name"}];
 
     goto LABEL_43;
   }
 
-  v25 = v6;
-  v26 = a4;
-  v27 = [objc_msgSend(objc_msgSend(a5 "accessoryID")];
-  v28 = [v16 modelName];
+  v25 = numbersCopy;
+  numberCopy2 = number;
+  number = [objc_msgSend(objc_msgSend(accessory "accessoryID")];
+  modelName = [v16 modelName];
   v29 = kUARPSupportedAccessoryCaseModelNameIdentifier;
-  if ([v28 containsString:kUARPSupportedAccessoryCaseModelNameIdentifier])
+  if ([modelName containsString:kUARPSupportedAccessoryCaseModelNameIdentifier])
   {
-    [v27 appendFormat:@" (%@)", v29];
+    [number appendFormat:@" (%@)", v29];
   }
 
-  a4 = v26;
-  v6 = v25;
-  if (v27)
+  number = numberCopy2;
+  numbersCopy = v25;
+  if (number)
   {
     goto LABEL_42;
   }
 
 LABEL_43:
-  v30 = [objc_msgSend(objc_msgSend(a5 "accessoryID")];
+  v30 = [objc_msgSend(objc_msgSend(accessory "accessoryID")];
   if (v30)
   {
     v31 = v30;
     [v14 setObject:v30 forKeyedSubscript:@"modelNumber"];
   }
 
-  if (([objc_msgSend(a3 objectForKeyedSubscript:{@"activeVersion", "isEqualToString:", objc_msgSend(objc_msgSend(a5, "accessoryID"), "firmwareVersion")}] & 1) == 0)
+  if (([objc_msgSend(needed objectForKeyedSubscript:{@"activeVersion", "isEqualToString:", objc_msgSend(objc_msgSend(accessory, "accessoryID"), "firmwareVersion")}] & 1) == 0)
   {
-    v32 = [objc_msgSend(objc_msgSend(a5 "accessoryID")];
+    v32 = [objc_msgSend(objc_msgSend(accessory "accessoryID")];
     [v14 setObject:v32 forKeyedSubscript:@"activeVersion"];
   }
 
-  if (([objc_msgSend(a3 objectForKeyedSubscript:{@"hwRevision", "isEqualToString:", objc_msgSend(objc_msgSend(a5, "accessoryID"), "hwRevision")}] & 1) == 0)
+  if (([objc_msgSend(needed objectForKeyedSubscript:{@"hwRevision", "isEqualToString:", objc_msgSend(objc_msgSend(accessory, "accessoryID"), "hwRevision")}] & 1) == 0)
   {
-    v33 = [objc_msgSend(objc_msgSend(a5 "accessoryID")];
+    v33 = [objc_msgSend(objc_msgSend(accessory "accessoryID")];
     [v14 setObject:v33 forKeyedSubscript:@"hwRevision"];
   }
 
-  if (v6 && [objc_msgSend(a5 "accessoryID")])
+  if (numbersCopy && [objc_msgSend(accessory "accessoryID")])
   {
-    v34 = [objc_msgSend(objc_msgSend(a5 "accessoryID")];
+    v34 = [objc_msgSend(objc_msgSend(accessory "accessoryID")];
     [v14 setObject:v34 forKeyedSubscript:@"partnerSerialNumbers"];
   }
 
-  [v14 setObject:objc_msgSend(-[UARPMobileAssetManager profileAssetOverrideSettings](self forKeyedSubscript:{"profileAssetOverrideSettings"), "objectForKeyedSubscript:", objc_msgSend(a5, "identifier")), @"assetURLOverride"}];
+  [v14 setObject:objc_msgSend(-[UARPMobileAssetManager profileAssetOverrideSettings](self forKeyedSubscript:{"profileAssetOverrideSettings"), "objectForKeyedSubscript:", objc_msgSend(accessory, "identifier")), @"assetURLOverride"}];
   v35 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v16 supportsDeveloperSettings]);
   [v14 setObject:v35 forKeyedSubscript:kUARPSupportedAccessoryKeySupportsDeveloperSettings];
   [+[AUDeveloperSettingsDatabase sharedDatabase](AUDeveloperSettingsDatabase "sharedDatabase")];
 }
 
-- (BOOL)performFirmwareAssetQuery:(id)a3
+- (BOOL)performFirmwareAssetQuery:(id)query
 {
-  v5 = +[NSMutableString stringWithFormat:](NSMutableString, "stringWithFormat:", @"%@.%@", @"com.apple.MobileAsset.UARP", [a3 identifier]);
-  v6 = +[UARPSupportedAccessory findByAppleModelNumber:](UARPSupportedAccessory, "findByAppleModelNumber:", [objc_msgSend(a3 "accessoryID")]);
+  v5 = +[NSMutableString stringWithFormat:](NSMutableString, "stringWithFormat:", @"%@.%@", @"com.apple.MobileAsset.UARP", [query identifier]);
+  v6 = +[UARPSupportedAccessory findByAppleModelNumber:](UARPSupportedAccessory, "findByAppleModelNumber:", [objc_msgSend(query "accessoryID")]);
   v12 = 0;
-  if ([objc_msgSend(objc_msgSend(a3 "accessoryID")] && objc_msgSend(objc_msgSend(objc_msgSend(a3, "accessoryID"), "hwFusingType"), "caseInsensitiveCompare:", +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%s", UARPAccessoryHardwareFusingToString())))
+  if ([objc_msgSend(objc_msgSend(query "accessoryID")] && objc_msgSend(objc_msgSend(objc_msgSend(query, "accessoryID"), "hwFusingType"), "caseInsensitiveCompare:", +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%s", UARPAccessoryHardwareFusingToString())))
   {
     log = self->_log;
     if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543874;
-      v14 = [objc_msgSend(a3 "accessoryID")];
+      v14 = [objc_msgSend(query "accessoryID")];
       v15 = 2114;
       v16 = v5;
       v17 = 2114;
-      v18 = [a3 accessoryID];
+      accessoryID = [query accessoryID];
       _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEFAULT, "Appending hwFusingType %{public}@ to assetType %{public}@ for accessory:%{public}@", buf, 0x20u);
     }
 
-    -[NSMutableString appendFormat:](v5, "appendFormat:", @"-%@", [objc_msgSend(a3 "accessoryID")]);
+    -[NSMutableString appendFormat:](v5, "appendFormat:", @"-%@", [objc_msgSend(query "accessoryID")]);
   }
 
-  if ([objc_msgSend(a3 "assetID")] || !objc_msgSend(v6, "supportsInternalSettings"))
+  if ([objc_msgSend(query "assetID")] || !objc_msgSend(v6, "supportsInternalSettings"))
   {
     goto LABEL_21;
   }
 
-  if ([(UARPMobileAssetManager *)self updateAssetSettingsForAccessory:a3 checkForUpdate:1 automaticUpdatesDisabled:&v12])
+  if ([(UARPMobileAssetManager *)self updateAssetSettingsForAccessory:query checkForUpdate:1 automaticUpdatesDisabled:&v12])
   {
     if ((v12 & 1) == 0)
     {
@@ -1102,45 +1102,45 @@ LABEL_43:
   if ((v12 & 1) == 0)
   {
 LABEL_21:
-    if ([objc_msgSend(objc_msgSend(objc_msgSend(a3 "assetID")])
+    if ([objc_msgSend(objc_msgSend(objc_msgSend(query "assetID")])
     {
       v9 = self->_log;
       if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
       {
-        v10 = [objc_msgSend(a3 "assetID")];
-        v11 = [a3 accessoryID];
+        v10 = [objc_msgSend(query "assetID")];
+        accessoryID2 = [query accessoryID];
         *buf = 138412802;
         v14 = v10;
         v15 = 2112;
         v16 = v5;
         v17 = 2112;
-        v18 = v11;
+        accessoryID = accessoryID2;
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "Pointing MobileAsset URL to %@, assetType %@ for accessory:%@", buf, 0x20u);
       }
 
-      [objc_msgSend(a3 "assetID")];
+      [objc_msgSend(query "assetID")];
       ASSetAssetServerURLForAssetType();
     }
 
-    [(UARPMobileAssetManager *)self performQuery:a3 assetType:v5 supplementalAsset:0 downstreamAppleModelNumber:0];
+    [(UARPMobileAssetManager *)self performQuery:query assetType:v5 supplementalAsset:0 downstreamAppleModelNumber:0];
     return 1;
   }
 
 LABEL_12:
-  [(UARPMobileAssetManager *)self notifyFirmwareUpdateAvailabilityStatus:6 accessory:a3 downstreamAppleModelNumber:0];
+  [(UARPMobileAssetManager *)self notifyFirmwareUpdateAvailabilityStatus:6 accessory:query downstreamAppleModelNumber:0];
   return 1;
 }
 
-- (int64_t)performRemoteQueryForAccessory:(id)a3
+- (int64_t)performRemoteQueryForAccessory:(id)accessory
 {
   if ([(UARPMobileAssetManager *)self performFirmwareAssetQuery:?])
   {
-    v5 = +[UARPSupportedAccessory findByAppleModelNumber:](UARPSupportedAccessory, "findByAppleModelNumber:", [objc_msgSend(a3 "accessoryID")]);
+    v5 = +[UARPSupportedAccessory findByAppleModelNumber:](UARPSupportedAccessory, "findByAppleModelNumber:", [objc_msgSend(accessory "accessoryID")]);
     if (v5)
     {
       v6 = v5;
-      -[UARPMobileAssetManager performRemoteSupplementalAssetQuery:supplementalAssets:](self, "performRemoteSupplementalAssetQuery:supplementalAssets:", a3, [v5 supplementalAssets]);
-      -[UARPMobileAssetManager performRemoteDownstreamAssetQuery:appleModelNumbers:](self, "performRemoteDownstreamAssetQuery:appleModelNumbers:", a3, [v6 downstreamAppleModelNumbers]);
+      -[UARPMobileAssetManager performRemoteSupplementalAssetQuery:supplementalAssets:](self, "performRemoteSupplementalAssetQuery:supplementalAssets:", accessory, [v5 supplementalAssets]);
+      -[UARPMobileAssetManager performRemoteDownstreamAssetQuery:appleModelNumbers:](self, "performRemoteDownstreamAssetQuery:appleModelNumbers:", accessory, [v6 downstreamAppleModelNumbers]);
     }
   }
 
@@ -1157,12 +1157,12 @@ LABEL_12:
   return 0;
 }
 
-- (void)performQuery:(id)a3 assetType:(id)a4 supplementalAsset:(BOOL)a5 downstreamAppleModelNumber:(id)a6
+- (void)performQuery:(id)query assetType:(id)type supplementalAsset:(BOOL)asset downstreamAppleModelNumber:(id)number
 {
-  v11 = [[MAAssetQuery alloc] initWithType:a4];
+  v11 = [[MAAssetQuery alloc] initWithType:type];
   v12 = objc_alloc_init(MADownloadOptions);
   [v12 setDiscretionary:0];
-  v13 = [objc_msgSend(a3 "accessoryID")];
+  v13 = [objc_msgSend(query "accessoryID")];
   uarpDownloadOnCellularAllowed = 0;
   if (v13)
   {
@@ -1175,23 +1175,23 @@ LABEL_12:
   v15[2] = sub_1000351A0;
   v15[3] = &unk_100081EC8;
   v15[4] = self;
-  v15[5] = a3;
-  v16 = a5;
-  v15[6] = a4;
+  v15[5] = query;
+  assetCopy = asset;
+  v15[6] = type;
   v15[7] = v11;
-  v15[8] = a6;
-  [MAAsset startCatalogDownload:a4 options:v12 then:v15];
+  v15[8] = number;
+  [MAAsset startCatalogDownload:type options:v12 then:v15];
 }
 
-- (void)notifyFirmwareUpdateAvailabilityStatus:(int64_t)a3 accessory:(id)a4 downstreamAppleModelNumber:(id)a5
+- (void)notifyFirmwareUpdateAvailabilityStatus:(int64_t)status accessory:(id)accessory downstreamAppleModelNumber:(id)number
 {
-  if (a5)
+  if (number)
   {
     v29 = 0u;
     v30 = 0u;
     v28 = 0u;
     v27 = 0u;
-    v9 = [objc_msgSend(a4 "assetID")];
+    v9 = [objc_msgSend(accessory "assetID")];
     v10 = [v9 countByEnumeratingWithState:&v27 objects:v35 count:16];
     if (v10)
     {
@@ -1210,7 +1210,7 @@ LABEL_12:
           {
             if (v13)
             {
-              [objc_msgSend(objc_msgSend(a4 "assetID")];
+              [objc_msgSend(objc_msgSend(accessory "assetID")];
             }
 
             goto LABEL_13;
@@ -1228,20 +1228,20 @@ LABEL_12:
     }
 
 LABEL_13:
-    v14 = [objc_msgSend(a4 "assetID")];
-    [v14 restoreDefaultStatus];
-    [v14 setModelNumber:a5];
+    assetID = [objc_msgSend(accessory "assetID")];
+    [assetID restoreDefaultStatus];
+    [assetID setModelNumber:number];
   }
 
   else
   {
-    v14 = [a4 assetID];
+    assetID = [accessory assetID];
   }
 
-  [v14 setLocalURL:0];
-  [v14 setDownloadStatus:0];
-  [v14 setUpdateAvailabilityStatus:a3];
-  if (a3 != 6)
+  [assetID setLocalURL:0];
+  [assetID setDownloadStatus:0];
+  [assetID setUpdateAvailabilityStatus:status];
+  if (status != 6)
   {
     goto LABEL_24;
   }
@@ -1249,7 +1249,7 @@ LABEL_13:
   v15 = kUARPAssetLocationTypeMobileAssetServerMesuStr;
   v16 = [kUARPAssetLocationTypeMobileAssetServerMesuStr stringByAppendingPathComponent:kUARPAssetLocationTypeMobileAssetServerAirPodsPublicSeed];
   v17 = [v15 stringByAppendingPathComponent:kUARPAssetLocationTypeMobileAssetServerAirPodsDeveloperSeed];
-  if (([objc_msgSend(objc_msgSend(v14 "remoteURL")] & 1) == 0 && !objc_msgSend(objc_msgSend(objc_msgSend(v14, "remoteURL"), "absoluteString"), "isEqualToString:", v17))
+  if (([objc_msgSend(objc_msgSend(assetID "remoteURL")] & 1) == 0 && !objc_msgSend(objc_msgSend(objc_msgSend(assetID, "remoteURL"), "absoluteString"), "isEqualToString:", v17))
   {
     goto LABEL_24;
   }
@@ -1257,7 +1257,7 @@ LABEL_13:
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
   {
-    v19 = [objc_msgSend(a4 "accessoryID")];
+    v19 = [objc_msgSend(accessory "accessoryID")];
     *buf = 138543362;
     *&buf[4] = v19;
     _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEFAULT, "Did not find an available asset for %{public}@. Falling back to Customer.", buf, 0xCu);
@@ -1270,8 +1270,8 @@ LABEL_13:
     v22 = self->_log;
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
-      v23 = [objc_msgSend(a4 "accessoryID")];
-      v24 = [objc_msgSend(a4 "assetID")];
+      v23 = [objc_msgSend(accessory "accessoryID")];
+      v24 = [objc_msgSend(accessory "assetID")];
       *buf = 138543874;
       *&buf[4] = v23;
       *&buf[12] = 2114;
@@ -1292,7 +1292,7 @@ LABEL_13:
     block[2] = sub_1000358D4;
     block[3] = &unk_1000817B0;
     block[4] = self;
-    block[5] = a4;
+    block[5] = accessory;
     block[6] = buf;
     dispatch_async([(UARPMobileAssetManager *)self delegateQueue], block);
     _Block_object_dispose(buf, 8);
@@ -1306,32 +1306,32 @@ LABEL_24:
     v25[2] = sub_100035940;
     v25[3] = &unk_100081B58;
     v25[4] = self;
-    v25[5] = a4;
-    v25[6] = v14;
-    v25[7] = a5;
+    v25[5] = accessory;
+    v25[6] = assetID;
+    v25[7] = number;
     dispatch_async([(UARPMobileAssetManager *)self delegateQueue], v25);
   }
 }
 
-- (void)handleFirmwareAssetQueryCompletion:(id)a3 result:(int64_t)a4 forAccessory:(id)a5 downstreamAppleModelNumber:(id)a6
+- (void)handleFirmwareAssetQueryCompletion:(id)completion result:(int64_t)result forAccessory:(id)accessory downstreamAppleModelNumber:(id)number
 {
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
   {
     *buf = 134218498;
-    v59 = a4;
+    resultCopy = result;
     v60 = 2112;
-    v61 = [a5 accessoryID];
+    numberCopy3 = [accessory accessoryID];
     v62 = 2112;
-    v63 = a6;
+    numberCopy4 = number;
     _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_INFO, "MobileAsset query status:%ld for accessory %@ / %@", buf, 0x20u);
   }
 
-  if (!a6)
+  if (!number)
   {
-    v17 = [a5 assetID];
+    assetID = [accessory assetID];
 LABEL_19:
-    v19 = [a5 identifier];
+    numberCopy2 = [accessory identifier];
     goto LABEL_21;
   }
 
@@ -1339,7 +1339,7 @@ LABEL_19:
   v56 = 0u;
   v53 = 0u;
   v54 = 0u;
-  v11 = [objc_msgSend(a5 "assetID")];
+  v11 = [objc_msgSend(accessory "assetID")];
   v12 = [v11 countByEnumeratingWithState:&v53 objects:v57 count:16];
   if (v12)
   {
@@ -1359,7 +1359,7 @@ LABEL_19:
         {
           if (v16)
           {
-            [objc_msgSend(objc_msgSend(a5 "assetID")];
+            [objc_msgSend(objc_msgSend(accessory "assetID")];
           }
 
           goto LABEL_15;
@@ -1377,14 +1377,14 @@ LABEL_19:
   }
 
 LABEL_15:
-  v17 = [objc_msgSend(a5 "assetID")];
-  [v17 restoreDefaultStatus];
-  [v17 setModelNumber:a6];
-  v18 = [UARPSupportedAccessory findByAppleModelNumber:a6];
+  assetID = [objc_msgSend(accessory "assetID")];
+  [assetID restoreDefaultStatus];
+  [assetID setModelNumber:number];
+  v18 = [UARPSupportedAccessory findByAppleModelNumber:number];
   if ([v18 mobileAssetAppleModelNumber])
   {
-    v19 = [v18 mobileAssetAppleModelNumber];
-    if (v19)
+    numberCopy2 = [v18 mobileAssetAppleModelNumber];
+    if (numberCopy2)
     {
       goto LABEL_21;
     }
@@ -1392,12 +1392,12 @@ LABEL_15:
     goto LABEL_19;
   }
 
-  v19 = a6;
+  numberCopy2 = number;
 LABEL_21:
-  v20 = sub_100032A1C([a5 accessoryID]);
-  if (a4)
+  v20 = sub_100032A1C([accessory accessoryID]);
+  if (result)
   {
-    v21 = sub_100002B4C(v19, [objc_msgSend(a5 "accessoryID")], v20);
+    v21 = sub_100002B4C(numberCopy2, [objc_msgSend(accessory "accessoryID")], v20);
     if (v21)
     {
       v22 = v21;
@@ -1405,30 +1405,30 @@ LABEL_21:
       if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
       {
         v24 = [(NSURL *)v22 description];
-        v25 = [a5 accessoryID];
-        v26 = [v17 modelNumber];
+        accessoryID = [accessory accessoryID];
+        modelNumber = [assetID modelNumber];
         *buf = 138543874;
-        v59 = v24;
+        resultCopy = v24;
         v60 = 2114;
-        v61 = v25;
+        numberCopy3 = accessoryID;
         v62 = 2114;
-        v63 = v26;
+        numberCopy4 = modelNumber;
         _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "Using latest asset from cache %{public}@ for accessory %{public}@ / %{public}@", buf, 0x20u);
       }
 
-      [v17 setAssetVersion:{sub_100002A1C(-[NSURL path](v22, "path"))}];
-      [v17 setLocalURL:v22];
-      [v17 setDownloadStatus:1];
-      [v17 setUpdateAvailabilityStatus:3];
-      v27 = [(UARPMobileAssetManager *)self delegateQueue];
+      [assetID setAssetVersion:{sub_100002A1C(-[NSURL path](v22, "path"))}];
+      [assetID setLocalURL:v22];
+      [assetID setDownloadStatus:1];
+      [assetID setUpdateAvailabilityStatus:3];
+      delegateQueue = [(UARPMobileAssetManager *)self delegateQueue];
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = sub_100036138;
       block[3] = &unk_100081B58;
       block[4] = self;
-      block[5] = a5;
-      block[6] = v17;
-      block[7] = a6;
+      block[5] = accessory;
+      block[6] = assetID;
+      block[7] = number;
       v28 = block;
       goto LABEL_26;
     }
@@ -1436,27 +1436,27 @@ LABEL_21:
     goto LABEL_38;
   }
 
-  v29 = [a3 results];
+  results = [completion results];
   v30 = self->_log;
   if (os_log_type_enabled(v30, OS_LOG_TYPE_INFO))
   {
-    v31 = [a5 accessoryID];
+    accessoryID2 = [accessory accessoryID];
     *buf = 138412802;
-    v59 = v31;
+    resultCopy = accessoryID2;
     v60 = 2112;
-    v61 = a6;
+    numberCopy3 = number;
     v62 = 2112;
-    v63 = v29;
+    numberCopy4 = results;
     _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_INFO, "MobileAsset query response for accessory %@ / %@: %@", buf, 0x20u);
   }
 
-  if (!v29)
+  if (!results)
   {
 LABEL_38:
-    v43 = self;
+    selfCopy2 = self;
     v44 = 6;
 LABEL_39:
-    [(UARPMobileAssetManager *)v43 notifyFirmwareUpdateAvailabilityStatus:v44 accessory:a5 downstreamAppleModelNumber:a6];
+    [(UARPMobileAssetManager *)selfCopy2 notifyFirmwareUpdateAvailabilityStatus:v44 accessory:accessory downstreamAppleModelNumber:number];
     return;
   }
 
@@ -1467,7 +1467,7 @@ LABEL_39:
     _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_INFO, "Mobile Asset Filtering moved to Uploader. Finding Max Asset from all the (unfiltered) assets.", buf, 2u);
   }
 
-  v33 = [(UARPMobileAssetManager *)self assetWithMaxVersion:v29];
+  v33 = [(UARPMobileAssetManager *)self assetWithMaxVersion:results];
   if (!v33)
   {
     if (os_log_type_enabled(self->_log, OS_LOG_TYPE_ERROR))
@@ -1475,13 +1475,13 @@ LABEL_39:
       sub_1000535CC();
     }
 
-    v43 = self;
+    selfCopy2 = self;
     v44 = 8;
     goto LABEL_39;
   }
 
   v34 = v33;
-  v35 = sub_100002B4C(v19, [objc_msgSend(a5 "accessoryID")], v20);
+  v35 = sub_100002B4C(numberCopy2, [objc_msgSend(accessory "accessoryID")], v20);
   if (v35)
   {
     v36 = v35;
@@ -1489,99 +1489,99 @@ LABEL_39:
     v38 = sub_100002A1C([(NSURL *)v36 path]);
     if ([v37 isEqualToString:v38])
     {
-      [v17 setAssetVersion:v38];
-      [v17 setLocalURL:v36];
-      [v17 setDownloadStatus:1];
-      [v17 setUpdateAvailabilityStatus:3];
-      [a5 analyticsSetDownloadAvailableForAssetID:v17];
+      [assetID setAssetVersion:v38];
+      [assetID setLocalURL:v36];
+      [assetID setDownloadStatus:1];
+      [assetID setUpdateAvailabilityStatus:3];
+      [accessory analyticsSetDownloadAvailableForAssetID:assetID];
       v39 = self->_log;
       if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
       {
         v40 = [(NSURL *)v36 description];
-        v41 = [a5 accessoryID];
-        v42 = [v17 modelNumber];
+        accessoryID3 = [accessory accessoryID];
+        modelNumber2 = [assetID modelNumber];
         *buf = 138543874;
-        v59 = v40;
+        resultCopy = v40;
         v60 = 2114;
-        v61 = v41;
+        numberCopy3 = accessoryID3;
         v62 = 2114;
-        v63 = v42;
+        numberCopy4 = modelNumber2;
         _os_log_impl(&_mh_execute_header, v39, OS_LOG_TYPE_DEFAULT, "Using matching asset from cache %{public}@ for accessory %{public}@ / %{public}@", buf, 0x20u);
       }
 
-      v27 = [(UARPMobileAssetManager *)self delegateQueue];
+      delegateQueue = [(UARPMobileAssetManager *)self delegateQueue];
       v51[0] = _NSConcreteStackBlock;
       v51[1] = 3221225472;
       v51[2] = sub_10003618C;
       v51[3] = &unk_100081B58;
       v51[4] = self;
-      v51[5] = a5;
-      v51[6] = v17;
-      v51[7] = a6;
+      v51[5] = accessory;
+      v51[6] = assetID;
+      v51[7] = number;
       v28 = v51;
       goto LABEL_26;
     }
   }
 
-  if (!a6)
+  if (!number)
   {
-    [a5 setAsset:v34];
+    [accessory setAsset:v34];
   }
 
   v45 = [objc_msgSend(v34 "attributes")];
   if (v45)
   {
-    [v17 processUARPDeploymentRules:v45];
+    [assetID processUARPDeploymentRules:v45];
   }
 
-  [v17 setAssetVersion:{-[UARPMobileAssetManager getAssetVersionForMAAsset:](self, "getAssetVersionForMAAsset:", v34)}];
+  [assetID setAssetVersion:{-[UARPMobileAssetManager getAssetVersionForMAAsset:](self, "getAssetVersionForMAAsset:", v34)}];
   v46 = self->_log;
   if (os_log_type_enabled(v46, OS_LOG_TYPE_INFO))
   {
-    v47 = [v17 assetVersion];
-    v48 = [a5 accessoryID];
+    assetVersion = [assetID assetVersion];
+    accessoryID4 = [accessory accessoryID];
     *buf = 138412802;
-    v59 = v47;
+    resultCopy = assetVersion;
     v60 = 2112;
-    v61 = v48;
+    numberCopy3 = accessoryID4;
     v62 = 2112;
-    v63 = a6;
+    numberCopy4 = number;
     _os_log_impl(&_mh_execute_header, v46, OS_LOG_TYPE_INFO, "Firmware Version %@ available on MobileAsset for accessory %@ / %@", buf, 0x20u);
   }
 
-  [a5 analyticsSetDownloadAvailableForAssetID:v17];
-  if (([objc_msgSend(a5 "accessoryID")] & 1) == 0 && objc_msgSend(v34, "state") != 2)
+  [accessory analyticsSetDownloadAvailableForAssetID:assetID];
+  if (([objc_msgSend(accessory "accessoryID")] & 1) == 0 && objc_msgSend(v34, "state") != 2)
   {
-    [v17 setLocalURL:0];
-    [a3 assetType];
-    [v17 setRemoteURL:ASServerURLForAssetType()];
-    [v17 setDownloadStatus:0];
-    [v17 setUpdateAvailabilityStatus:1];
-    [a5 analyticsSetDownloadConsentRequestedForAssetID:v17];
-    v27 = [(UARPMobileAssetManager *)self delegateQueue];
+    [assetID setLocalURL:0];
+    [completion assetType];
+    [assetID setRemoteURL:ASServerURLForAssetType()];
+    [assetID setDownloadStatus:0];
+    [assetID setUpdateAvailabilityStatus:1];
+    [accessory analyticsSetDownloadConsentRequestedForAssetID:assetID];
+    delegateQueue = [(UARPMobileAssetManager *)self delegateQueue];
     v50[0] = _NSConcreteStackBlock;
     v50[1] = 3221225472;
     v50[2] = sub_1000361E0;
     v50[3] = &unk_100081B58;
     v50[4] = self;
-    v50[5] = a5;
-    v50[6] = v17;
-    v50[7] = a6;
+    v50[5] = accessory;
+    v50[6] = assetID;
+    v50[7] = number;
     v28 = v50;
 LABEL_26:
-    dispatch_async(v27, v28);
+    dispatch_async(delegateQueue, v28);
     return;
   }
 
-  [(UARPMobileAssetManager *)self downloadFirmwareForAccessory:a5 assetID:v17 mobileAsset:v34];
+  [(UARPMobileAssetManager *)self downloadFirmwareForAccessory:accessory assetID:assetID mobileAsset:v34];
 }
 
-- (id)assetWithMaxVersion:(id)a3
+- (id)assetWithMaxVersion:(id)version
 {
-  if ([a3 count] <= 1)
+  if ([version count] <= 1)
   {
 
-    return [a3 firstObject];
+    return [version firstObject];
   }
 
   else
@@ -1591,7 +1591,7 @@ LABEL_26:
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v5 = [a3 countByEnumeratingWithState:&v17 objects:v23 count:16];
+    v5 = [version countByEnumeratingWithState:&v17 objects:v23 count:16];
     if (!v5)
     {
       return 0;
@@ -1608,7 +1608,7 @@ LABEL_26:
       {
         if (*v18 != v8)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(version);
         }
 
         v10 = *(*(&v17 + 1) + 8 * i);
@@ -1618,11 +1618,11 @@ LABEL_26:
           log = self->_log;
           if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
           {
-            v13 = [v10 state];
+            state = [v10 state];
             *buf = v15;
             *&buf[4] = v11;
             *&buf[12] = 2048;
-            *&buf[14] = v13;
+            *&buf[14] = state;
             _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_INFO, "Comparing asset with version %@ / state %ld", buf, 0x16u);
           }
 
@@ -1637,7 +1637,7 @@ LABEL_26:
         }
       }
 
-      v7 = [a3 countByEnumeratingWithState:&v17 objects:v23 count:16];
+      v7 = [version countByEnumeratingWithState:&v17 objects:v23 count:16];
     }
 
     while (v7);
@@ -1645,15 +1645,15 @@ LABEL_26:
   }
 }
 
-- (int64_t)performDownload:(id)a3 accessory:(id)a4 assetID:(id)a5 supplementalAsset:(BOOL)a6
+- (int64_t)performDownload:(id)download accessory:(id)accessory assetID:(id)d supplementalAsset:(BOOL)asset
 {
-  v6 = a6;
-  v11 = [a3 state];
-  if (v11 == 1 || v11 == 4)
+  assetCopy = asset;
+  state = [download state];
+  if (state == 1 || state == 4)
   {
     v12 = objc_alloc_init(MADownloadOptions);
     [v12 setDiscretionary:0];
-    v13 = [objc_msgSend(a4 "accessoryID")];
+    v13 = [objc_msgSend(accessory "accessoryID")];
     uarpDownloadOnCellularAllowed = 0;
     if (v13)
     {
@@ -1665,25 +1665,25 @@ LABEL_26:
     v17[1] = 3221225472;
     v17[2] = sub_1000365B4;
     v17[3] = &unk_100081EA0;
-    v18 = v6;
+    v18 = assetCopy;
     v17[4] = self;
-    v17[5] = a3;
-    v17[6] = a4;
-    v17[7] = a5;
-    [a3 startDownload:v12 then:v17];
+    v17[5] = download;
+    v17[6] = accessory;
+    v17[7] = d;
+    [download startDownload:v12 then:v17];
     goto LABEL_12;
   }
 
-  if (v11 == 2)
+  if (state == 2)
   {
-    if (v6)
+    if (assetCopy)
     {
-      [(UARPMobileAssetManager *)self handleSupplementalAssetDownloadCompletion:a3 result:0 forAccessory:a4];
+      [(UARPMobileAssetManager *)self handleSupplementalAssetDownloadCompletion:download result:0 forAccessory:accessory];
     }
 
     else
     {
-      [(UARPMobileAssetManager *)self handleMobileAssetDownloadCompletion:a3 status:0 accessory:a4 assetID:a5];
+      [(UARPMobileAssetManager *)self handleMobileAssetDownloadCompletion:download status:0 accessory:accessory assetID:d];
     }
 
     v12 = 0;
@@ -1699,31 +1699,31 @@ LABEL_13:
   return v15;
 }
 
-- (int64_t)downloadRemoteFirmwareForAccessory:(id)a3 assetID:(id)a4 mobileAsset:(id)a5
+- (int64_t)downloadRemoteFirmwareForAccessory:(id)accessory assetID:(id)d mobileAsset:(id)asset
 {
-  if (![a3 asset])
+  if (![accessory asset])
   {
     return 4;
   }
 
-  return [(UARPMobileAssetManager *)self performDownload:a5 accessory:a3 assetID:a4 supplementalAsset:0];
+  return [(UARPMobileAssetManager *)self performDownload:asset accessory:accessory assetID:d supplementalAsset:0];
 }
 
-- (void)handleMobileAssetDownloadCompletion:(id)a3 status:(int64_t)a4 accessory:(id)a5 assetID:(id)a6
+- (void)handleMobileAssetDownloadCompletion:(id)completion status:(int64_t)status accessory:(id)accessory assetID:(id)d
 {
-  v11 = [a6 modelNumber];
-  if (!v11 || (v12 = v11, v13 = +[UARPSupportedAccessory findByAppleModelNumber:](UARPSupportedAccessory, "findByAppleModelNumber:", v11), [v13 mobileAssetAppleModelNumber]) && (v12 = objc_msgSend(v13, "mobileAssetAppleModelNumber")) == 0)
+  modelNumber = [d modelNumber];
+  if (!modelNumber || (identifier = modelNumber, v13 = +[UARPSupportedAccessory findByAppleModelNumber:](UARPSupportedAccessory, "findByAppleModelNumber:", modelNumber), [v13 mobileAssetAppleModelNumber]) && (identifier = objc_msgSend(v13, "mobileAssetAppleModelNumber")) == 0)
   {
-    v12 = [a5 identifier];
+    identifier = [accessory identifier];
   }
 
-  v14 = sub_100032A1C([a5 accessoryID]);
+  v14 = sub_100032A1C([accessory accessoryID]);
   v15 = v14;
-  if (a4)
+  if (status)
   {
     if (v14)
     {
-      v16 = sub_100002B4C(v12, [objc_msgSend(a5 "accessoryID")], v14);
+      v16 = sub_100002B4C(identifier, [objc_msgSend(accessory "accessoryID")], v14);
       if (v16)
       {
         v17 = v16;
@@ -1733,19 +1733,19 @@ LABEL_13:
           *buf = 138543874;
           v32 = [(NSURL *)v17 description];
           v33 = 2114;
-          v34 = [a5 accessoryID];
+          accessoryID = [accessory accessoryID];
           v35 = 2114;
-          v36 = [a6 modelNumber];
+          modelNumber2 = [d modelNumber];
           _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEFAULT, "Using latest downloaded asset from cache %{public}@ for accessory %{public}@ / %{public}@", buf, 0x20u);
         }
 
-        [a6 setAssetVersion:{sub_100002A1C(-[NSURL path](v17, "path"))}];
+        [d setAssetVersion:{sub_100002A1C(-[NSURL path](v17, "path"))}];
 LABEL_21:
-        [a6 setLocalURL:v17];
-        [a6 setDownloadStatus:1];
-        [a6 setUpdateAvailabilityStatus:3];
+        [d setLocalURL:v17];
+        [d setDownloadStatus:1];
+        [d setUpdateAvailabilityStatus:3];
 LABEL_22:
-        -[UARPAssetManager assetAvailabilityUpdateForAccessory:assetID:downstreamAppleModelNumber:](self->_assetManager, "assetAvailabilityUpdateForAccessory:assetID:downstreamAppleModelNumber:", [a5 accessoryID], a6, objc_msgSend(a6, "modelNumber"));
+        -[UARPAssetManager assetAvailabilityUpdateForAccessory:assetID:downstreamAppleModelNumber:](self->_assetManager, "assetAvailabilityUpdateForAccessory:assetID:downstreamAppleModelNumber:", [accessory accessoryID], d, objc_msgSend(d, "modelNumber"));
         return;
       }
     }
@@ -1753,7 +1753,7 @@ LABEL_22:
 
   else
   {
-    v19 = [(UARPMobileAssetManager *)self getAssetBundle:a3];
+    v19 = [(UARPMobileAssetManager *)self getAssetBundle:completion];
     v20 = [v19 objectForInfoDictionaryKey:@"FirmwareImageFile"];
     if (v20)
     {
@@ -1762,20 +1762,20 @@ LABEL_22:
       if (v22)
       {
         v23 = v22;
-        v24 = sub_100002B4C(v12, [objc_msgSend(a5 "accessoryID")], v15);
+        v24 = sub_100002B4C(identifier, [objc_msgSend(accessory "accessoryID")], v15);
         v25 = self->_log;
         if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
         {
           *buf = 138412802;
           v32 = v21;
           v33 = 2112;
-          v34 = [a5 accessoryID];
+          accessoryID = [accessory accessoryID];
           v35 = 2112;
-          v36 = [a6 modelNumber];
+          modelNumber2 = [d modelNumber];
           _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_INFO, "Moving Firmware File %@ from MobileAsset to UARP Cache for accessory %@ / %@", buf, 0x20u);
         }
 
-        v26 = sub_100002D8C(+[NSURL fileURLWithPath:](NSURL, "fileURLWithPath:", v23), v12, [objc_msgSend(a5 "accessoryID")], objc_msgSend(a6, "assetVersion"), v15);
+        v26 = sub_100002D8C(+[NSURL fileURLWithPath:](NSURL, "fileURLWithPath:", v23), identifier, [objc_msgSend(accessory "accessoryID")], objc_msgSend(d, "assetVersion"), v15);
         if (v26)
         {
           v17 = v26;
@@ -1784,42 +1784,42 @@ LABEL_22:
             v27 = self->_log;
             if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
             {
-              v28 = [(NSURL *)v24 path];
-              v29 = [a5 accessoryID];
-              v30 = [a6 modelNumber];
+              path = [(NSURL *)v24 path];
+              accessoryID2 = [accessory accessoryID];
+              modelNumber3 = [d modelNumber];
               *buf = 138412802;
-              v32 = v28;
+              v32 = path;
               v33 = 2112;
-              v34 = v29;
+              accessoryID = accessoryID2;
               v35 = 2112;
-              v36 = v30;
+              modelNumber2 = modelNumber3;
               _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_INFO, "Deleting previously cached MobileAsset at %@ for accessory %@ / %@", buf, 0x20u);
             }
 
             [+[NSFileManager defaultManager](NSFileManager removeItemAtPath:"removeItemAtPath:error:" error:[(NSString *)[(NSURL *)v24 path] stringByDeletingLastPathComponent], 0];
           }
 
-          [a5 analyticsSetDownloadCompleteForAssetID:a6 status:1];
+          [accessory analyticsSetDownloadCompleteForAssetID:d status:1];
           goto LABEL_21;
         }
       }
     }
   }
 
-  if ((sub_100053668(a5, a6) & 1) == 0)
+  if ((sub_100053668(accessory, d) & 1) == 0)
   {
     goto LABEL_22;
   }
 }
 
-- (void)performRemoteDownstreamAssetQuery:(id)a3 appleModelNumbers:(id)a4
+- (void)performRemoteDownstreamAssetQuery:(id)query appleModelNumbers:(id)numbers
 {
-  v7 = sub_100005DF0([a3 accessoryID]);
+  v7 = sub_100005DF0([query accessoryID]);
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v8 = [a4 countByEnumeratingWithState:&v29 objects:v42 count:16];
+  v8 = [numbers countByEnumeratingWithState:&v29 objects:v42 count:16];
   if (v8)
   {
     v9 = v8;
@@ -1833,46 +1833,46 @@ LABEL_22:
       {
         if (*v30 != v10)
         {
-          objc_enumerationMutation(a4);
+          objc_enumerationMutation(numbers);
         }
 
         v12 = *(*(&v29 + 1) + 8 * v11);
         v13 = [UARPSupportedAccessory findByAppleModelNumber:v12];
         if ((v13 == 0) | v7 & 1)
         {
-          [(UARPMobileAssetManager *)self notifyFirmwareUpdateAvailabilityStatus:6 accessory:a3 downstreamAppleModelNumber:v12];
+          [(UARPMobileAssetManager *)self notifyFirmwareUpdateAvailabilityStatus:6 accessory:query downstreamAppleModelNumber:v12];
         }
 
         else
         {
           v14 = v13;
-          v15 = [v13 mobileAssetAppleModelNumber];
-          v16 = v12;
-          if (v15)
+          mobileAssetAppleModelNumber = [v13 mobileAssetAppleModelNumber];
+          mobileAssetAppleModelNumber2 = v12;
+          if (mobileAssetAppleModelNumber)
           {
-            v16 = [v14 mobileAssetAppleModelNumber];
+            mobileAssetAppleModelNumber2 = [v14 mobileAssetAppleModelNumber];
           }
 
-          v17 = [NSMutableString stringWithFormat:@"%@.%@", @"com.apple.MobileAsset.UARP", v16];
-          if ([objc_msgSend(objc_msgSend(a3 "accessoryID")] && objc_msgSend(objc_msgSend(objc_msgSend(a3, "accessoryID"), "hwFusingType"), "caseInsensitiveCompare:", +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%s", UARPAccessoryHardwareFusingToString())))
+          v17 = [NSMutableString stringWithFormat:@"%@.%@", @"com.apple.MobileAsset.UARP", mobileAssetAppleModelNumber2];
+          if ([objc_msgSend(objc_msgSend(query "accessoryID")] && objc_msgSend(objc_msgSend(objc_msgSend(query, "accessoryID"), "hwFusingType"), "caseInsensitiveCompare:", +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%s", UARPAccessoryHardwareFusingToString())))
           {
             log = self->_log;
             if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
             {
-              v19 = [objc_msgSend(a3 "accessoryID")];
-              v20 = [a3 accessoryID];
+              v19 = [objc_msgSend(query "accessoryID")];
+              accessoryID = [query accessoryID];
               *buf = 138544130;
               v35 = v19;
               v36 = 2114;
               v37 = v17;
               v38 = 2114;
-              v39 = v20;
+              v39 = accessoryID;
               v40 = 2114;
               v41 = v12;
               _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEFAULT, "Appending hwFusingType %{public}@ to assetType %{public}@ for accessory:%{public}@ with downstream accessory:%{public}@", buf, 0x2Au);
             }
 
-            -[NSMutableString appendFormat:](v17, "appendFormat:", @"-%@", [objc_msgSend(a3 "accessoryID")]);
+            -[NSMutableString appendFormat:](v17, "appendFormat:", @"-%@", [objc_msgSend(query "accessoryID")]);
           }
 
           v21 = sub_100032D90([objc_msgSend(+[AUDeveloperSettingsDatabase sharedDatabase](AUDeveloperSettingsDatabase "sharedDatabase")], 0);
@@ -1892,13 +1892,13 @@ LABEL_22:
               v24 = self->_log;
               if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
               {
-                v25 = [a3 accessoryID];
+                accessoryID2 = [query accessoryID];
                 *buf = 138412802;
                 v35 = v22;
                 v36 = 2112;
                 v37 = v17;
                 v38 = 2112;
-                v39 = v25;
+                v39 = accessoryID2;
                 _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "Pointing MobileAsset URL to %@, assetType %@ for accessory:%@", buf, 0x20u);
               }
 
@@ -1908,7 +1908,7 @@ LABEL_22:
 
           else if (os_log_type_enabled(self->_log, OS_LOG_TYPE_ERROR))
           {
-            sub_1000536B8(v33, a3);
+            sub_1000536B8(v33, query);
           }
 
           v26 = self->_log;
@@ -1919,7 +1919,7 @@ LABEL_22:
             _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "Perform Downstream Asset query:%@", buf, 0xCu);
           }
 
-          [(UARPMobileAssetManager *)self performQuery:a3 assetType:v17 supplementalAsset:0 downstreamAppleModelNumber:v12];
+          [(UARPMobileAssetManager *)self performQuery:query assetType:v17 supplementalAsset:0 downstreamAppleModelNumber:v12];
           v10 = v27;
           v9 = v28;
         }
@@ -1928,20 +1928,20 @@ LABEL_22:
       }
 
       while (v9 != v11);
-      v9 = [a4 countByEnumeratingWithState:&v29 objects:v42 count:16];
+      v9 = [numbers countByEnumeratingWithState:&v29 objects:v42 count:16];
     }
 
     while (v9);
   }
 }
 
-- (void)performRemoteSupplementalAssetQuery:(id)a3 supplementalAssets:(id)a4
+- (void)performRemoteSupplementalAssetQuery:(id)query supplementalAssets:(id)assets
 {
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v6 = [a4 countByEnumeratingWithState:&v18 objects:v29 count:16];
+  v6 = [assets countByEnumeratingWithState:&v18 objects:v29 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1952,7 +1952,7 @@ LABEL_22:
       {
         if (*v19 != v8)
         {
-          objc_enumerationMutation(a4);
+          objc_enumerationMutation(assets);
         }
 
         v10 = [NSString stringWithFormat:@"%@.%@", @"com.apple.MobileAsset.UARP", *(*(&v18 + 1) + 8 * i)];
@@ -1973,13 +1973,13 @@ LABEL_22:
             v14 = self->_log;
             if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
             {
-              v15 = [a3 accessoryID];
+              accessoryID = [query accessoryID];
               *buf = 138412802;
               v24 = v12;
               v25 = 2112;
               v26 = v10;
               v27 = 2112;
-              v28 = v15;
+              v28 = accessoryID;
               _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Pointing MobileAsset URL to %@, assetType %@ for accessory:%@", buf, 0x20u);
             }
 
@@ -1989,7 +1989,7 @@ LABEL_22:
 
         else if (os_log_type_enabled(self->_log, OS_LOG_TYPE_ERROR))
         {
-          sub_100053704(v22, a3);
+          sub_100053704(v22, query);
         }
 
         v16 = self->_log;
@@ -2000,19 +2000,19 @@ LABEL_22:
           _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Perform Supplemental Asset query:%@", buf, 0xCu);
         }
 
-        [(UARPMobileAssetManager *)self performQuery:a3 assetType:v10 supplementalAsset:1 downstreamAppleModelNumber:0];
+        [(UARPMobileAssetManager *)self performQuery:query assetType:v10 supplementalAsset:1 downstreamAppleModelNumber:0];
       }
 
-      v7 = [a4 countByEnumeratingWithState:&v18 objects:v29 count:16];
+      v7 = [assets countByEnumeratingWithState:&v18 objects:v29 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)handleSupplementalAssetQueryCompletion:(id)a3 result:(int64_t)a4 forAccessory:(id)a5
+- (void)handleSupplementalAssetQueryCompletion:(id)completion result:(int64_t)result forAccessory:(id)accessory
 {
-  if (a4)
+  if (result)
   {
     if (os_log_type_enabled(self->_log, OS_LOG_TYPE_ERROR))
     {
@@ -2022,13 +2022,13 @@ LABEL_22:
     return;
   }
 
-  if ([objc_msgSend(a3 "results")])
+  if ([objc_msgSend(completion "results")])
   {
-    v8 = -[UARPMobileAssetManager assetWithMaxVersion:](self, "assetWithMaxVersion:", [a3 results]);
+    v8 = -[UARPMobileAssetManager assetWithMaxVersion:](self, "assetWithMaxVersion:", [completion results]);
     if (v8)
     {
       v9 = v8;
-      v10 = [objc_msgSend(objc_msgSend(a3 "assetType")];
+      v10 = [objc_msgSend(objc_msgSend(completion "assetType")];
       v11 = [+[NSFileManager defaultManager](NSFileManager contentsOfDirectoryAtURL:"contentsOfDirectoryAtURL:includingPropertiesForKeys:options:error:" includingPropertiesForKeys:[NSURL options:"fileURLWithPath:" error:[NSString stringWithFormat:@"%@/%@/%@" fileURLWithPath:@"supplementalassets", v10]], 0, 4, 0];
       if ([(NSArray *)v11 count])
       {
@@ -2044,7 +2044,7 @@ LABEL_22:
           v14 = v13;
           v25 = v10;
           v26 = v9;
-          v27 = a5;
+          accessoryCopy = accessory;
           v28 = 0;
           v15 = *v31;
           do
@@ -2063,7 +2063,7 @@ LABEL_22:
               if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 138412546;
-                v35 = v12;
+                accessoryID = v12;
                 v36 = 2112;
                 v37 = v19;
                 _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEFAULT, "SupplementalAsset version %@ available, cached version %@", buf, 0x16u);
@@ -2078,7 +2078,7 @@ LABEL_22:
                   if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
                   {
                     *buf = 138412546;
-                    v35 = v18;
+                    accessoryID = v18;
                     v36 = 2112;
                     v37 = v29;
                     _os_log_error_impl(&_mh_execute_header, v21, OS_LOG_TYPE_ERROR, "Failed to clean up SupplementalAsset %@ with error %@", buf, 0x16u);
@@ -2103,26 +2103,26 @@ LABEL_22:
             if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138412546;
-              v35 = v12;
+              accessoryID = v12;
               v36 = 2112;
-              v37 = v27;
+              v37 = accessoryCopy;
               _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "Not Downloading SupplementalAsset version %@ for %@", buf, 0x16u);
             }
 
-            [(NSMutableString *)v27 setSupplementalAssetName:v25];
-            [(UARPAssetManager *)self->_assetManager supplementalAssetAvailabilityUpdateForAccessory:[(NSMutableString *)v27 accessoryID] assetName:[(NSMutableString *)v27 supplementalAssetName]];
+            [(NSMutableString *)accessoryCopy setSupplementalAssetName:v25];
+            [(UARPAssetManager *)self->_assetManager supplementalAssetAvailabilityUpdateForAccessory:[(NSMutableString *)accessoryCopy accessoryID] assetName:[(NSMutableString *)accessoryCopy supplementalAssetName]];
             return;
           }
 
           v9 = v26;
-          a5 = v27;
+          accessory = accessoryCopy;
         }
 
         v23 = self->_log;
         if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v35 = v12;
+          accessoryID = v12;
           v24 = "Downloading SupplementalAsset version %@";
           goto LABEL_36;
         }
@@ -2134,14 +2134,14 @@ LABEL_22:
         if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v35 = [a5 accessoryID];
+          accessoryID = [accessory accessoryID];
           v24 = "No cached SupplementalAsset found for accessory %@, downloading the asset available";
 LABEL_36:
           _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, v24, buf, 0xCu);
         }
       }
 
-      [(UARPMobileAssetManager *)self performDownload:v9 accessory:a5 assetID:0 supplementalAsset:1];
+      [(UARPMobileAssetManager *)self performDownload:v9 accessory:accessory assetID:0 supplementalAsset:1];
       return;
     }
 
@@ -2157,18 +2157,18 @@ LABEL_36:
   }
 }
 
-- (void)handleSupplementalAssetDownloadCompletion:(id)a3 result:(int64_t)a4 forAccessory:(id)a5
+- (void)handleSupplementalAssetDownloadCompletion:(id)completion result:(int64_t)result forAccessory:(id)accessory
 {
-  v8 = [(UARPMobileAssetManager *)self getAssetBundle:a3, a4];
-  if (v8)
+  result = [(UARPMobileAssetManager *)self getAssetBundle:completion, result];
+  if (result)
   {
-    v9 = v8;
-    v10 = [v8 objectForInfoDictionaryKey:@"FirmwareImageFile"];
+    v9 = result;
+    v10 = [result objectForInfoDictionaryKey:@"FirmwareImageFile"];
     if (v10)
     {
       v11 = v10;
       v12 = [v9 pathForResource:objc_msgSend(v10 ofType:{"stringByDeletingPathExtension"), objc_msgSend(v10, "pathExtension")}];
-      v13 = [objc_msgSend(objc_msgSend(a3 "assetType")];
+      v13 = [objc_msgSend(objc_msgSend(completion "assetType")];
       v14 = [NSString stringWithFormat:@"%@/%@/%@/", InternalStorageDirectoryPath(), @"supplementalassets", v13];
       v15 = [NSURL fileURLWithPath:v14];
       v28 = 0;
@@ -2203,8 +2203,8 @@ LABEL_36:
 
           if (v17)
           {
-            [a5 setSupplementalAssetName:v13];
-            -[UARPAssetManager supplementalAssetAvailabilityUpdateForAccessory:assetName:](self->_assetManager, "supplementalAssetAvailabilityUpdateForAccessory:assetName:", [a5 accessoryID], objc_msgSend(a5, "supplementalAssetName"));
+            [accessory setSupplementalAssetName:v13];
+            -[UARPAssetManager supplementalAssetAvailabilityUpdateForAccessory:assetName:](self->_assetManager, "supplementalAssetAvailabilityUpdateForAccessory:assetName:", [accessory accessoryID], objc_msgSend(accessory, "supplementalAssetName"));
           }
 
           else
@@ -2248,10 +2248,10 @@ LABEL_36:
   }
 }
 
-- (id)getAssetVersionForMAAsset:(id)a3
+- (id)getAssetVersionForMAAsset:(id)asset
 {
-  v4 = +[NSMutableString stringWithFormat:](NSMutableString, "stringWithFormat:", @"%u.%u.%u", [objc_msgSend(objc_msgSend(a3 "attributes")], objc_msgSend(objc_msgSend(objc_msgSend(a3, "attributes"), "objectForKey:", @"FirmwareVersionMinor"), "unsignedIntValue"), objc_msgSend(objc_msgSend(objc_msgSend(a3, "attributes"), "objectForKey:", @"FirmwareVersionRelease"), "unsignedIntValue"));
-  v5 = [objc_msgSend(a3 "attributes")];
+  v4 = +[NSMutableString stringWithFormat:](NSMutableString, "stringWithFormat:", @"%u.%u.%u", [objc_msgSend(objc_msgSend(asset "attributes")], objc_msgSend(objc_msgSend(objc_msgSend(asset, "attributes"), "objectForKey:", @"FirmwareVersionMinor"), "unsignedIntValue"), objc_msgSend(objc_msgSend(objc_msgSend(asset, "attributes"), "objectForKey:", @"FirmwareVersionRelease"), "unsignedIntValue"));
+  v5 = [objc_msgSend(asset "attributes")];
   if (v5)
   {
     -[NSMutableString appendFormat:](v4, "appendFormat:", @".%u", [v5 unsignedIntValue]);
@@ -2260,23 +2260,23 @@ LABEL_36:
   return [NSString stringWithString:v4];
 }
 
-- (id)getAssetBundle:(id)a3
+- (id)getAssetBundle:(id)bundle
 {
-  v4 = [objc_msgSend(a3 "attributes")];
+  v4 = [objc_msgSend(bundle "attributes")];
   if (!v4)
   {
     return 0;
   }
 
-  v5 = [objc_msgSend(objc_msgSend(a3 "getLocalFileUrl")];
+  v5 = [objc_msgSend(objc_msgSend(bundle "getLocalFileUrl")];
   if (!v5)
   {
     return 0;
   }
 
-  v6 = [v5 path];
+  path = [v5 path];
 
-  return [NSBundle bundleWithPath:v6];
+  return [NSBundle bundleWithPath:path];
 }
 
 @end

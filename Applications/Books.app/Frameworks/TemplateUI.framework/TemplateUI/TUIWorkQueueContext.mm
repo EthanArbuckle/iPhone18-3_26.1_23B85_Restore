@@ -1,15 +1,15 @@
 @interface TUIWorkQueueContext
 - (TUIWorkQueueContext)init;
-- (TUIWorkQueueContext)initWithQueue:(id)a3;
+- (TUIWorkQueueContext)initWithQueue:(id)queue;
 - (id)activeCallbackQueue;
 - (id)activeQueue;
 @end
 
 @implementation TUIWorkQueueContext
 
-- (TUIWorkQueueContext)initWithQueue:(id)a3
+- (TUIWorkQueueContext)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v37.receiver = self;
   v37.super_class = TUIWorkQueueContext;
   v6 = [(TUIWorkQueueContext *)&v37 init];
@@ -17,7 +17,7 @@
   if (v6)
   {
     v6->_priority = 0.5;
-    objc_storeStrong(&v6->_workQueue, a3);
+    objc_storeStrong(&v6->_workQueue, queue);
     v8 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v9 = dispatch_queue_attr_make_with_qos_class(v8, QOS_CLASS_USER_INTERACTIVE, 0);
     v10 = dispatch_queue_create_with_target_V2("TUIWorkQueueContext.syncWorkQueue", v9, v7[6]);

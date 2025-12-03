@@ -1,28 +1,28 @@
 @interface PRSRankingUtilities
-+ (BOOL)aToZInString:(id)a3;
-+ (BOOL)caseAndDiacriticInsensitiveLocalizedString:(id)a3 containsString:(id)a4 locale:(id)a5;
-+ (BOOL)caseAndDiacriticInsensitiveLocalizedString:(id)a3 hasPrefix:(id)a4 locale:(id)a5;
-+ (BOOL)caseAndDiacriticInsensitiveLocalizedString:(id)a3 isEqualToString:(id)a4;
-+ (BOOL)digitInString:(id)a3;
-+ (BOOL)multiWordString:(id)a3 hasPrefix:(id)a4;
-+ (BOOL)somePotentialPhoneNumbersInString:(id)a3;
-+ (BOOL)userQueryHasOnlySingleCharacterTerms:(id)a3;
-+ (BOOL)userQueryTermsHasOnlySingleCharacterTerms:(id)a3;
-+ (float)floatValue:(float)a3 withSigFigs:(int64_t)a4;
++ (BOOL)aToZInString:(id)string;
++ (BOOL)caseAndDiacriticInsensitiveLocalizedString:(id)string containsString:(id)containsString locale:(id)locale;
++ (BOOL)caseAndDiacriticInsensitiveLocalizedString:(id)string hasPrefix:(id)prefix locale:(id)locale;
++ (BOOL)caseAndDiacriticInsensitiveLocalizedString:(id)string isEqualToString:(id)toString;
++ (BOOL)digitInString:(id)string;
++ (BOOL)multiWordString:(id)string hasPrefix:(id)prefix;
++ (BOOL)somePotentialPhoneNumbersInString:(id)string;
++ (BOOL)userQueryHasOnlySingleCharacterTerms:(id)terms;
++ (BOOL)userQueryTermsHasOnlySingleCharacterTerms:(id)terms;
++ (float)floatValue:(float)value withSigFigs:(int64_t)figs;
 + (id)hyphensCharacterSet;
-+ (id)onlyPotentialPhoneNumbersInString:(id)a3;
-+ (void)computeDateCountsForDates:(id)a3 countLastYear:(unint64_t *)a4 countLastMonth:(unint64_t *)a5 countLastWeek:(unint64_t *)a6 countLastDay:(unint64_t *)a7 currentTime:(double)a8;
++ (id)onlyPotentialPhoneNumbersInString:(id)string;
++ (void)computeDateCountsForDates:(id)dates countLastYear:(unint64_t *)year countLastMonth:(unint64_t *)month countLastWeek:(unint64_t *)week countLastDay:(unint64_t *)day currentTime:(double)time;
 @end
 
 @implementation PRSRankingUtilities
 
-+ (BOOL)multiWordString:(id)a3 hasPrefix:(id)a4
++ (BOOL)multiWordString:(id)string hasPrefix:(id)prefix
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [a3 lowercaseString];
-  v7 = [v5 lowercaseString];
-  if ([v6 hasPrefix:v7])
+  prefixCopy = prefix;
+  lowercaseString = [string lowercaseString];
+  lowercaseString2 = [prefixCopy lowercaseString];
+  if ([lowercaseString hasPrefix:lowercaseString2])
   {
     LOBYTE(v8) = 1;
   }
@@ -33,7 +33,7 @@
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v9 = [v6 componentsSeparatedByString:{@" ", 0}];
+    v9 = [lowercaseString componentsSeparatedByString:{@" ", 0}];
     v8 = [v9 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v8)
     {
@@ -47,7 +47,7 @@
             objc_enumerationMutation(v9);
           }
 
-          if ([*(*(&v14 + 1) + 8 * i) hasPrefix:v7])
+          if ([*(*(&v14 + 1) + 8 * i) hasPrefix:lowercaseString2])
           {
             LOBYTE(v8) = 1;
             goto LABEL_13;
@@ -71,11 +71,11 @@ LABEL_13:
   return v8;
 }
 
-+ (BOOL)userQueryTermsHasOnlySingleCharacterTerms:(id)a3
++ (BOOL)userQueryTermsHasOnlySingleCharacterTerms:(id)terms
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && [v3 count])
+  termsCopy = terms;
+  v4 = termsCopy;
+  if (termsCopy && [termsCopy count])
   {
     v5 = [v4 count];
     if (v5)
@@ -111,65 +111,65 @@ LABEL_13:
   return v10;
 }
 
-+ (BOOL)userQueryHasOnlySingleCharacterTerms:(id)a3
++ (BOOL)userQueryHasOnlySingleCharacterTerms:(id)terms
 {
-  v3 = [a3 componentsSeparatedByString:@" "];
+  v3 = [terms componentsSeparatedByString:@" "];
   v4 = [PRSRankingUtilities userQueryTermsHasOnlySingleCharacterTerms:v3];
 
   return v4;
 }
 
-+ (BOOL)caseAndDiacriticInsensitiveLocalizedString:(id)a3 isEqualToString:(id)a4
++ (BOOL)caseAndDiacriticInsensitiveLocalizedString:(id)string isEqualToString:(id)toString
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 length];
-  if (v7 >= [v6 length])
+  stringCopy = string;
+  toStringCopy = toString;
+  v7 = [stringCopy length];
+  if (v7 >= [toStringCopy length])
   {
-    v8 = [v5 compare:v6 options:129 range:{0, objc_msgSend(v5, "length")}] == 0;
+    v8 = [stringCopy compare:toStringCopy options:129 range:{0, objc_msgSend(stringCopy, "length")}] == 0;
   }
 
   else
   {
-    v8 = [PRSRankingUtilities caseAndDiacriticInsensitiveLocalizedString:v6 isEqualToString:v5];
+    v8 = [PRSRankingUtilities caseAndDiacriticInsensitiveLocalizedString:toStringCopy isEqualToString:stringCopy];
   }
 
   return v8;
 }
 
-+ (BOOL)caseAndDiacriticInsensitiveLocalizedString:(id)a3 hasPrefix:(id)a4 locale:(id)a5
++ (BOOL)caseAndDiacriticInsensitiveLocalizedString:(id)string hasPrefix:(id)prefix locale:(id)locale
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  [v9 rangeOfString:v8 options:137 range:0 locale:{objc_msgSend(v9, "length"), v7}];
+  localeCopy = locale;
+  prefixCopy = prefix;
+  stringCopy = string;
+  [stringCopy rangeOfString:prefixCopy options:137 range:0 locale:{objc_msgSend(stringCopy, "length"), localeCopy}];
   v11 = v10;
 
   return v11 != 0;
 }
 
-+ (BOOL)caseAndDiacriticInsensitiveLocalizedString:(id)a3 containsString:(id)a4 locale:(id)a5
++ (BOOL)caseAndDiacriticInsensitiveLocalizedString:(id)string containsString:(id)containsString locale:(id)locale
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  [v9 rangeOfString:v8 options:129 range:0 locale:{objc_msgSend(v9, "length"), v7}];
+  localeCopy = locale;
+  containsStringCopy = containsString;
+  stringCopy = string;
+  [stringCopy rangeOfString:containsStringCopy options:129 range:0 locale:{objc_msgSend(stringCopy, "length"), localeCopy}];
   v11 = v10;
 
   return v11 != 0;
 }
 
-+ (void)computeDateCountsForDates:(id)a3 countLastYear:(unint64_t *)a4 countLastMonth:(unint64_t *)a5 countLastWeek:(unint64_t *)a6 countLastDay:(unint64_t *)a7 currentTime:(double)a8
++ (void)computeDateCountsForDates:(id)dates countLastYear:(unint64_t *)year countLastMonth:(unint64_t *)month countLastWeek:(unint64_t *)week countLastDay:(unint64_t *)day currentTime:(double)time
 {
-  v23 = a6;
-  v24 = a7;
+  weekCopy = week;
+  dayCopy = day;
   v30 = *MEMORY[0x1E69E9840];
-  v11 = a3;
+  datesCopy = dates;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v12 = [v11 countByEnumeratingWithState:&v25 objects:v29 count:16];
+  v12 = [datesCopy countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v12)
   {
     v13 = v12;
@@ -184,11 +184,11 @@ LABEL_13:
       {
         if (*v26 != v18)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(datesCopy);
         }
 
         [*(*(&v25 + 1) + 8 * i) timeIntervalSinceReferenceDate];
-        v21 = a8 - v20;
+        v21 = time - v20;
         if (v21 <= 86400.0)
         {
           ++v16;
@@ -210,7 +210,7 @@ LABEL_13:
         }
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v25 objects:v29 count:16];
+      v13 = [datesCopy countByEnumeratingWithState:&v25 objects:v29 count:16];
     }
 
     while (v13);
@@ -224,19 +224,19 @@ LABEL_13:
     v17 = 0;
   }
 
-  *a4 = v17;
-  *a5 = v14;
-  *v23 = v15;
-  *v24 = v16;
+  *year = v17;
+  *month = v14;
+  *weekCopy = v15;
+  *dayCopy = v16;
 
   v22 = *MEMORY[0x1E69E9840];
 }
 
-+ (float)floatValue:(float)a3 withSigFigs:(int64_t)a4
++ (float)floatValue:(float)value withSigFigs:(int64_t)figs
 {
-  v4 = a3;
+  valueCopy = value;
   v17 = *MEMORY[0x1E69E9840];
-  if (a3 >= 10.0)
+  if (value >= 10.0)
   {
     v15 = 0u;
     v16 = 0u;
@@ -246,27 +246,27 @@ LABEL_13:
     v12 = 0u;
     *__str = 0u;
     v10 = 0u;
-    snprintf(__str, 0x40uLL, "%%.%ldg", a4);
-    snprintf(v13, 0x40uLL, __str, v4);
+    snprintf(__str, 0x40uLL, "%%.%ldg", figs);
+    snprintf(v13, 0x40uLL, __str, valueCopy);
     v5 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v13];
     [v5 floatValue];
-    v4 = v6;
+    valueCopy = v6;
   }
 
   v7 = *MEMORY[0x1E69E9840];
-  return v4;
+  return valueCopy;
 }
 
-+ (BOOL)aToZInString:(id)a3
++ (BOOL)aToZInString:(id)string
 {
   v3 = aToZInString__aToZ_onceToken;
-  v4 = a3;
+  stringCopy = string;
   if (v3 != -1)
   {
     +[PRSRankingUtilities aToZInString:];
   }
 
-  v5 = [v4 rangeOfCharacterFromSet:aToZInString__aToZ];
+  v5 = [stringCopy rangeOfCharacterFromSet:aToZInString__aToZ];
 
   return v5 != 0x7FFFFFFFFFFFFFFFLL;
 }
@@ -278,16 +278,16 @@ uint64_t __36__PRSRankingUtilities_aToZInString___block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (BOOL)digitInString:(id)a3
++ (BOOL)digitInString:(id)string
 {
   v3 = digitInString__digitsOnceToken;
-  v4 = a3;
+  stringCopy = string;
   if (v3 != -1)
   {
     +[PRSRankingUtilities digitInString:];
   }
 
-  v5 = [v4 rangeOfCharacterFromSet:digitInString__digits];
+  v5 = [stringCopy rangeOfCharacterFromSet:digitInString__digits];
 
   return v5 != 0x7FFFFFFFFFFFFFFFLL;
 }
@@ -299,16 +299,16 @@ uint64_t __37__PRSRankingUtilities_digitInString___block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (id)onlyPotentialPhoneNumbersInString:(id)a3
++ (id)onlyPotentialPhoneNumbersInString:(id)string
 {
   v3 = onlyPotentialPhoneNumbersInString__oneToNine_onceToken;
-  v4 = a3;
+  stringCopy = string;
   if (v3 != -1)
   {
     +[PRSRankingUtilities onlyPotentialPhoneNumbersInString:];
   }
 
-  v5 = removeLeadingSpaces(v4);
+  v5 = removeLeadingSpaces(stringCopy);
 
   for (i = 0; i != 4; ++i)
   {
@@ -356,16 +356,16 @@ uint64_t __57__PRSRankingUtilities_onlyPotentialPhoneNumbersInString___block_inv
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (BOOL)somePotentialPhoneNumbersInString:(id)a3
++ (BOOL)somePotentialPhoneNumbersInString:(id)string
 {
   v3 = somePotentialPhoneNumbersInString__oneToNine_onceToken;
-  v4 = a3;
+  stringCopy = string;
   if (v3 != -1)
   {
     +[PRSRankingUtilities somePotentialPhoneNumbersInString:];
   }
 
-  v5 = [v4 rangeOfCharacterFromSet:somePotentialPhoneNumbersInString__oneToNine];
+  v5 = [stringCopy rangeOfCharacterFromSet:somePotentialPhoneNumbersInString__oneToNine];
 
   return v5 != 0x7FFFFFFFFFFFFFFFLL;
 }

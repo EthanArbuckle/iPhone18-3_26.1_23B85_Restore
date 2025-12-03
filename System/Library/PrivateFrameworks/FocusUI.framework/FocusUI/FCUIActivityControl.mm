@@ -1,33 +1,33 @@
 @interface FCUIActivityControl
-+ (id)_preferredFont:(BOOL)a3 textStyle:(id)a4 weight:(double)a5 additionalTraits:(unsigned int)a6;
++ (id)_preferredFont:(BOOL)font textStyle:(id)style weight:(double)weight additionalTraits:(unsigned int)traits;
 - (BOOL)_isBackgroundViewHighlighted;
 - (BOOL)adjustForContentSizeCategoryChange;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (CGRect)_glyphFrameForLayoutFrame:(CGRect *)a3 sizeThatFits:(CGSize)a4;
-- (CGRect)_iconLayoutFrameForControlFrame:(CGRect)a3 isRTL:(BOOL)a4 controlSize:(int64_t)a5;
-- (CGRect)_optionsButtonLayoutFrameForControlFrame:(CGRect)a3 isRTL:(BOOL)a4;
-- (CGRect)_textFrameForControlFrame:(CGRect)a3 iconLayoutFrame:(CGRect)a4 isRTL:(BOOL)a5 controlSize:(int64_t)a6;
-- (CGSize)_sizeThatFits:(CGSize)a3 withControlSize:(int64_t)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (FCUIActivityControl)initWithActivityDescription:(id)a3 style:(int64_t)a4;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (CGRect)_glyphFrameForLayoutFrame:(CGRect *)frame sizeThatFits:(CGSize)fits;
+- (CGRect)_iconLayoutFrameForControlFrame:(CGRect)frame isRTL:(BOOL)l controlSize:(int64_t)size;
+- (CGRect)_optionsButtonLayoutFrameForControlFrame:(CGRect)frame isRTL:(BOOL)l;
+- (CGRect)_textFrameForControlFrame:(CGRect)frame iconLayoutFrame:(CGRect)layoutFrame isRTL:(BOOL)l controlSize:(int64_t)size;
+- (CGSize)_sizeThatFits:(CGSize)fits withControlSize:(int64_t)size;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (FCUIActivityControl)initWithActivityDescription:(id)description style:(int64_t)style;
 - (NSString)description;
 - (UIAction)defaultAction;
 - (UIAction)optionsAction;
-- (double)_cornerRadiusForControlFrame:(CGRect)a3;
+- (double)_cornerRadiusForControlFrame:(CGRect)frame;
 - (double)_effectiveGlyphPointSize;
-- (double)_scaledValueForValue:(double)a3;
+- (double)_scaledValueForValue:(double)value;
 - (id)_activityDetailText;
-- (id)_activityIconTintColorForSelectedAppearance:(BOOL)a3;
+- (id)_activityIconTintColorForSelectedAppearance:(BOOL)appearance;
 - (id)_highlightingBackgroundView;
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5;
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4;
-- (id)visualStylingProviderForCategory:(int64_t)a3;
-- (int64_t)_detailLabelVisualStyleForHighlightState:(BOOL)a3;
-- (int64_t)_optionsControlTypeForControlStyle:(int64_t)a3;
-- (int64_t)_titleLabelVisualStyleForHighlightState:(BOOL)a3;
-- (int64_t)_userInterfaceStyleForSelectedAppearance:(BOOL)a3;
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region;
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region;
+- (id)visualStylingProviderForCategory:(int64_t)category;
+- (int64_t)_detailLabelVisualStyleForHighlightState:(BOOL)state;
+- (int64_t)_optionsControlTypeForControlStyle:(int64_t)style;
+- (int64_t)_titleLabelVisualStyleForHighlightState:(BOOL)state;
+- (int64_t)_userInterfaceStyleForSelectedAppearance:(BOOL)appearance;
 - (uint64_t)_usesStatefulSolariumStyleBackground;
-- (void)_configureActivityIconImageViewIfNecessaryForReference:(BOOL)a3;
+- (void)_configureActivityIconImageViewIfNecessaryForReference:(BOOL)reference;
 - (void)_configureActivityTitleLabelIfNecessary;
 - (void)_configureBackgroundViewIfNecesssary;
 - (void)_configureContentViewIfNecessary;
@@ -36,12 +36,12 @@
 - (void)_configureMenuViewIfNecessary;
 - (void)_configureOptionsButtonIfNecessary;
 - (void)_configureTextVisualStylingProviderIfNecessary;
-- (void)_setActivityIcon:(id)a3 forReference:(BOOL)a4;
-- (void)_setActivityIconPackageView:(id)a3;
-- (void)_setBackgroundViewHighlighted:(BOOL)a3;
-- (void)_setDrawingSelectedAppearance:(BOOL)a3;
+- (void)_setActivityIcon:(id)icon forReference:(BOOL)reference;
+- (void)_setActivityIconPackageView:(id)view;
+- (void)_setBackgroundViewHighlighted:(BOOL)highlighted;
+- (void)_setDrawingSelectedAppearance:(BOOL)appearance;
 - (void)_setNeedsTextAttributesUpdate;
-- (void)_setTextLayoutDisabled:(BOOL)a3;
+- (void)_setTextLayoutDisabled:(BOOL)disabled;
 - (void)_updateAccessibilityIdentifier;
 - (void)_updateActivityDetail;
 - (void)_updateActivityIcon;
@@ -52,45 +52,45 @@
 - (void)_updateTextAttributesForActivityTitleLabel;
 - (void)_updateTextAttributesForDetailLabel;
 - (void)_updateTextAttributesIfNecessary;
-- (void)_updateVisualStylingOfView:(id)a3 style:(int64_t)a4 visualStylingProvider:(id)a5 outgoingProvider:(id)a6;
-- (void)_visualStylingProviderDidChange:(id)a3 forCategory:(int64_t)a4 outgoingProvider:(id)a5;
-- (void)addAction:(id)a3 forControlEvents:(unint64_t)a4;
+- (void)_updateVisualStylingOfView:(id)view style:(int64_t)style visualStylingProvider:(id)provider outgoingProvider:(id)outgoingProvider;
+- (void)_visualStylingProviderDidChange:(id)change forCategory:(int64_t)category outgoingProvider:(id)provider;
+- (void)addAction:(id)action forControlEvents:(unint64_t)events;
 - (void)layoutSubviews;
-- (void)setActivityDescription:(id)a3;
-- (void)setAdjustsFontForContentSizeCategory:(BOOL)a3;
-- (void)setContracted:(BOOL)a3;
-- (void)setDefaultAction:(id)a3;
-- (void)setDetailText:(id)a3;
-- (void)setExpanded:(BOOL)a3;
-- (void)setExpanded:(BOOL)a3 withTransitionCoordinator:(id)a4;
-- (void)setFooterAction:(id)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setMenuAlternativeDescription:(id)a3;
-- (void)setMenuItemActions:(id)a3;
-- (void)setOptionsAction:(id)a3;
-- (void)setSelected:(BOOL)a3;
-- (void)setSelectionHidden:(BOOL)a3;
-- (void)willPresent:(BOOL)a3 withTargetContainerBounds:(CGRect)a4 transitionCoordinator:(id)a5;
+- (void)setActivityDescription:(id)description;
+- (void)setAdjustsFontForContentSizeCategory:(BOOL)category;
+- (void)setContracted:(BOOL)contracted;
+- (void)setDefaultAction:(id)action;
+- (void)setDetailText:(id)text;
+- (void)setExpanded:(BOOL)expanded;
+- (void)setExpanded:(BOOL)expanded withTransitionCoordinator:(id)coordinator;
+- (void)setFooterAction:(id)action;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setMenuAlternativeDescription:(id)description;
+- (void)setMenuItemActions:(id)actions;
+- (void)setOptionsAction:(id)action;
+- (void)setSelected:(BOOL)selected;
+- (void)setSelectionHidden:(BOOL)hidden;
+- (void)willPresent:(BOOL)present withTargetContainerBounds:(CGRect)bounds transitionCoordinator:(id)coordinator;
 @end
 
 @implementation FCUIActivityControl
 
-- (FCUIActivityControl)initWithActivityDescription:(id)a3 style:(int64_t)a4
+- (FCUIActivityControl)initWithActivityDescription:(id)description style:(int64_t)style
 {
-  v6 = a3;
+  descriptionCopy = description;
   v13.receiver = self;
   v13.super_class = FCUIActivityControl;
   v7 = [(FCUIActivityControl *)&v13 init];
   v8 = v7;
   if (v7)
   {
-    v7->_controlStyle = a4;
+    v7->_controlStyle = style;
     v7->_adjustsFontForContentSizeCategory = 1;
-    [(FCUIActivityControl *)v7 setActivityDescription:v6];
-    v9 = [MEMORY[0x277D75418] currentDevice];
-    v10 = [v9 userInterfaceIdiom];
+    [(FCUIActivityControl *)v7 setActivityDescription:descriptionCopy];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (v10 == 1)
+    if (userInterfaceIdiom == 1)
     {
       v11 = [objc_alloc(MEMORY[0x277D75870]) initWithDelegate:v8];
       [(FCUIActivityControl *)v8 addInteraction:v11];
@@ -100,12 +100,12 @@
   return v8;
 }
 
-- (void)setActivityDescription:(id)a3
+- (void)setActivityDescription:(id)description
 {
-  v5 = a3;
+  descriptionCopy = description;
   if ((BSEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_activityDescription, a3);
+    objc_storeStrong(&self->_activityDescription, description);
     [(FCUIActivityControl *)self _updateActivityIcon];
     [(FCUIActivityControl *)self _updateActivityTitle];
     [(FCUIActivityControl *)self _updateActivityDetail];
@@ -145,20 +145,20 @@ void __36__FCUIActivityControl_defaultAction__block_invoke(uint64_t a1, void *a2
   }
 }
 
-- (void)setDefaultAction:(id)a3
+- (void)setDefaultAction:(id)action
 {
-  v5 = a3;
-  v4 = [(FCUIActivityControl *)self defaultAction];
-  if (([v5 fcui_isEqualToAction:v4] & 1) == 0)
+  actionCopy = action;
+  defaultAction = [(FCUIActivityControl *)self defaultAction];
+  if (([actionCopy fcui_isEqualToAction:defaultAction] & 1) == 0)
   {
-    if (v4)
+    if (defaultAction)
     {
-      [(FCUIActivityControl *)self removeAction:v4 forControlEvents:64];
+      [(FCUIActivityControl *)self removeAction:defaultAction forControlEvents:64];
     }
 
-    if (v5)
+    if (actionCopy)
     {
-      [(FCUIActivityControl *)self addAction:v5 forControlEvents:64];
+      [(FCUIActivityControl *)self addAction:actionCopy forControlEvents:64];
     }
   }
 }
@@ -196,69 +196,69 @@ void __36__FCUIActivityControl_optionsAction__block_invoke(uint64_t a1, void *a2
   }
 }
 
-- (void)setOptionsAction:(id)a3
+- (void)setOptionsAction:(id)action
 {
-  v5 = a3;
-  v4 = [(FCUIActivityControl *)self optionsAction];
-  if (([v5 fcui_isEqualToAction:v4] & 1) == 0)
+  actionCopy = action;
+  optionsAction = [(FCUIActivityControl *)self optionsAction];
+  if (([actionCopy fcui_isEqualToAction:optionsAction] & 1) == 0)
   {
     [(FCUIActivityControl *)self _configureOptionsButtonIfNecessary];
-    if (v4)
+    if (optionsAction)
     {
-      [(FCUIOptionsControl *)self->_optionsButton removeAction:v4 forControlEvents:64];
+      [(FCUIOptionsControl *)self->_optionsButton removeAction:optionsAction forControlEvents:64];
     }
 
-    if (v5)
+    if (actionCopy)
     {
-      [(FCUIOptionsControl *)self->_optionsButton addAction:v5 forControlEvents:64];
+      [(FCUIOptionsControl *)self->_optionsButton addAction:actionCopy forControlEvents:64];
     }
   }
 }
 
-- (void)setMenuItemActions:(id)a3
+- (void)setMenuItemActions:(id)actions
 {
-  v6 = a3;
-  v4 = [(FCUIActivityControl *)self menuItemActions];
-  v5 = [v6 fcui_isEqualToActionArray:v4];
+  actionsCopy = actions;
+  menuItemActions = [(FCUIActivityControl *)self menuItemActions];
+  v5 = [actionsCopy fcui_isEqualToActionArray:menuItemActions];
 
   if ((v5 & 1) == 0)
   {
     [(FCUIActivityControl *)self _configureMenuViewIfNecessary];
-    [(FCUIActivityControlMenuView *)self->_menuView setMenuItemActions:v6];
+    [(FCUIActivityControlMenuView *)self->_menuView setMenuItemActions:actionsCopy];
     [(FCUIActivityControl *)self setNeedsLayout];
   }
 }
 
-- (void)setMenuAlternativeDescription:(id)a3
+- (void)setMenuAlternativeDescription:(id)description
 {
-  v6 = a3;
-  v4 = [(FCUIActivityControl *)self menuAlternativeDescription];
+  descriptionCopy = description;
+  menuAlternativeDescription = [(FCUIActivityControl *)self menuAlternativeDescription];
   v5 = BSEqualStrings();
 
   if ((v5 & 1) == 0)
   {
     [(FCUIActivityControl *)self _configureMenuViewIfNecessary];
-    [(FCUIActivityControlMenuView *)self->_menuView setMenuAlternativeDescription:v6];
+    [(FCUIActivityControlMenuView *)self->_menuView setMenuAlternativeDescription:descriptionCopy];
     [(FCUIActivityControl *)self setNeedsLayout];
   }
 }
 
-- (void)setFooterAction:(id)a3
+- (void)setFooterAction:(id)action
 {
-  v6 = a3;
-  v4 = [(FCUIActivityControl *)self footerAction];
-  v5 = [v6 fcui_isEqualToAction:v4];
+  actionCopy = action;
+  footerAction = [(FCUIActivityControl *)self footerAction];
+  v5 = [actionCopy fcui_isEqualToAction:footerAction];
 
   if ((v5 & 1) == 0)
   {
     [(FCUIActivityControl *)self _configureMenuViewIfNecessary];
-    [(FCUIActivityControlMenuView *)self->_menuView setFooterAction:v6];
+    [(FCUIActivityControlMenuView *)self->_menuView setFooterAction:actionCopy];
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(FCUIActivityControl *)self _sizeThatFits:self->_controlSize withControlSize:a3.width, a3.height];
+  [(FCUIActivityControl *)self _sizeThatFits:self->_controlSize withControlSize:fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
@@ -304,7 +304,7 @@ void __36__FCUIActivityControl_optionsAction__block_invoke(uint64_t a1, void *a2
   v70 = v7;
   rect = v8;
   [(FCUIActivityControl *)self _configureBackgroundViewIfNecesssary];
-  v9 = [(FCUIActivityControl *)self _shouldReverseLayoutDirection];
+  _shouldReverseLayoutDirection = [(FCUIActivityControl *)self _shouldReverseLayoutDirection];
   if (CGRectIsEmpty(self->_targetContainerBounds))
   {
     [(FCUIActivityControl *)self bounds];
@@ -336,16 +336,16 @@ void __36__FCUIActivityControl_optionsAction__block_invoke(uint64_t a1, void *a2
   v71 = v21;
   [(FCUIActivityControl *)self _cornerRadiusForControlFrame:?];
   v23 = v22;
-  v24 = [(UIView *)self->_contentView _background];
+  _background = [(UIView *)self->_contentView _background];
 
-  if (v24)
+  if (_background)
   {
     [(UIView *)self->_contentView _setContinuousCornerRadius:v23];
   }
 
   [(UIView *)self->_backgroundView _setContinuousCornerRadius:v23];
   [(FCUIActivityControlMenuView *)self->_menuView _setContinuousCornerRadius:v23];
-  [(FCUIActivityControl *)self _iconLayoutFrameForControlFrame:v9 isRTL:self->_controlSize controlSize:v16, v71, v18, v20];
+  [(FCUIActivityControl *)self _iconLayoutFrameForControlFrame:_shouldReverseLayoutDirection isRTL:self->_controlSize controlSize:v16, v71, v18, v20];
   v80 = v25;
   v81 = v26;
   v82 = v27;
@@ -356,7 +356,7 @@ void __36__FCUIActivityControl_optionsAction__block_invoke(uint64_t a1, void *a2
   v68 = v32;
   v69 = v31;
   v34 = v33;
-  [(FCUIActivityControl *)self _optionsButtonLayoutFrameForControlFrame:v9 isRTL:v16, v71, v18, v20];
+  [(FCUIActivityControl *)self _optionsButtonLayoutFrameForControlFrame:_shouldReverseLayoutDirection isRTL:v16, v71, v18, v20];
   v79[0] = v35;
   v79[1] = v36;
   v79[2] = v37;
@@ -397,7 +397,7 @@ void __36__FCUIActivityControl_optionsAction__block_invoke(uint64_t a1, void *a2
     }
 
     [(FCUIOptionsControl *)self->_optionsButton setAlpha:v46];
-    [(FCUIActivityControl *)self _textFrameForControlFrame:v9 iconLayoutFrame:self->_controlSize isRTL:v16 controlSize:v71, v18, v20, v80, v81, v82, v83];
+    [(FCUIActivityControl *)self _textFrameForControlFrame:_shouldReverseLayoutDirection iconLayoutFrame:self->_controlSize isRTL:v16 controlSize:v71, v18, v20, v80, v81, v82, v83];
     UIRectCenteredYInRect();
     v47 = *(MEMORY[0x277CBF3A0] + 16);
     *&v86.a = *MEMORY[0x277CBF3A0];
@@ -453,10 +453,10 @@ void __36__FCUIActivityControl_optionsAction__block_invoke(uint64_t a1, void *a2
   }
 
   [(FCUIActivityControlMenuView *)self->_menuView setAlpha:v48];
-  v52 = [(FCUIActivityControl *)self _isDrawingSelectedAppearance];
-  [(FCUIActivityControl *)self _setBackgroundViewHighlighted:v52];
+  _isDrawingSelectedAppearance = [(FCUIActivityControl *)self _isDrawingSelectedAppearance];
+  [(FCUIActivityControl *)self _setBackgroundViewHighlighted:_isDrawingSelectedAppearance];
   v53 = kFCUIPackageViewStateOn;
-  if (!v52)
+  if (!_isDrawingSelectedAppearance)
   {
     v53 = &kFCUIPackageViewStateOff;
   }
@@ -466,16 +466,16 @@ void __36__FCUIActivityControl_optionsAction__block_invoke(uint64_t a1, void *a2
   if (v54 == 2)
   {
     activityIconImageView = self->_activityIconImageView;
-    v56 = [(FCUIActivityControl *)self _activityIconTintColorForSelectedAppearance:v52];
+    v56 = [(FCUIActivityControl *)self _activityIconTintColorForSelectedAppearance:_isDrawingSelectedAppearance];
     [(UIImageView *)activityIconImageView setTintColor:v56];
 
-    [(FCUIOptionsControl *)self->_optionsButton setParentControlSelected:v52];
+    [(FCUIOptionsControl *)self->_optionsButton setParentControlSelected:_isDrawingSelectedAppearance];
     [(FCUIOptionsControl *)self->_optionsButton layoutIfNeeded];
   }
 
   else if (v54 == 1)
   {
-    [(FCUIActivityControl *)self setOverrideUserInterfaceStyle:[(FCUIActivityControl *)self _userInterfaceStyleForSelectedAppearance:v52]];
+    [(FCUIActivityControl *)self setOverrideUserInterfaceStyle:[(FCUIActivityControl *)self _userInterfaceStyleForSelectedAppearance:_isDrawingSelectedAppearance]];
     v73[0] = MEMORY[0x277D85DD0];
     v73[1] = 3221225472;
     v74 = v87;
@@ -530,23 +530,23 @@ uint64_t __37__FCUIActivityControl_layoutSubviews__block_invoke_4(uint64_t a1)
   return [v1 setTransform:v4];
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = [v4 view];
-  v6 = v5 == self || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || [v4 numberOfTouchesRequired] != 1 || objc_msgSend(v4, "numberOfTapsRequired") != 1;
+  beginCopy = begin;
+  view = [beginCopy view];
+  v6 = view == self || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || [beginCopy numberOfTouchesRequired] != 1 || objc_msgSend(beginCopy, "numberOfTapsRequired") != 1;
 
   return v6;
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
-  v5 = [(FCUIActivityControl *)self isHighlighted];
+  highlightedCopy = highlighted;
+  isHighlighted = [(FCUIActivityControl *)self isHighlighted];
   v7.receiver = self;
   v7.super_class = FCUIActivityControl;
-  [(FCUIActivityControl *)&v7 setHighlighted:v3];
-  if (v5 != [(FCUIActivityControl *)self isHighlighted])
+  [(FCUIActivityControl *)&v7 setHighlighted:highlightedCopy];
+  if (isHighlighted != [(FCUIActivityControl *)self isHighlighted])
   {
     if (self->_controlStyle != 1)
     {
@@ -563,30 +563,30 @@ uint64_t __37__FCUIActivityControl_layoutSubviews__block_invoke_4(uint64_t a1)
   }
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
   v4.receiver = self;
   v4.super_class = FCUIActivityControl;
-  [(FCUIActivityControl *)&v4 setSelected:a3];
+  [(FCUIActivityControl *)&v4 setSelected:selected];
   [(FCUIActivityControl *)self _updateDrawingSelectedAppearance];
 }
 
-- (void)addAction:(id)a3 forControlEvents:(unint64_t)a4
+- (void)addAction:(id)action forControlEvents:(unint64_t)events
 {
-  v6 = a3;
+  actionCopy = action;
   v7.receiver = self;
   v7.super_class = FCUIActivityControl;
-  [(FCUIActivityControl *)&v7 addAction:v6 forControlEvents:a4];
+  [(FCUIActivityControl *)&v7 addAction:actionCopy forControlEvents:events];
   if (!self->_controlStyle)
   {
-    [(FCUIActivityControl *)self setOptionsAction:v6];
+    [(FCUIActivityControl *)self setOptionsAction:actionCopy];
   }
 }
 
-- (void)setDetailText:(id)a3
+- (void)setDetailText:(id)text
 {
-  v4 = a3;
-  v5 = [(FCUIActivityControl *)self detailText];
+  textCopy = text;
+  detailText = [(FCUIActivityControl *)self detailText];
   v6 = BSEqualStrings();
 
   if ((v6 & 1) == 0)
@@ -596,12 +596,12 @@ uint64_t __37__FCUIActivityControl_layoutSubviews__block_invoke_4(uint64_t a1)
     v10 = 3221225472;
     v11 = __37__FCUIActivityControl_setDetailText___block_invoke;
     v12 = &unk_27901A380;
-    v13 = self;
-    v14 = v4;
+    selfCopy = self;
+    v14 = textCopy;
     [v7 performWithoutAnimation:&v9];
     [(FCUIActivityControl *)self setNeedsLayout:v9];
-    v8 = [(FCUIActivityControl *)self superview];
-    [v8 setNeedsLayout];
+    superview = [(FCUIActivityControl *)self superview];
+    [superview setNeedsLayout];
   }
 }
 
@@ -614,40 +614,40 @@ uint64_t __37__FCUIActivityControl_setDetailText___block_invoke(uint64_t a1)
   return [v2 setAlpha:0.0];
 }
 
-- (void)setSelectionHidden:(BOOL)a3
+- (void)setSelectionHidden:(BOOL)hidden
 {
-  if (self->_selectionHidden != a3)
+  if (self->_selectionHidden != hidden)
   {
-    self->_selectionHidden = a3;
+    self->_selectionHidden = hidden;
     [(FCUIActivityControl *)self _updateDrawingSelectedAppearance];
 
     [(FCUIActivityControl *)self setNeedsLayout];
   }
 }
 
-- (void)setExpanded:(BOOL)a3
+- (void)setExpanded:(BOOL)expanded
 {
-  if ((self->_controlSize == 1) != a3)
+  if ((self->_controlSize == 1) != expanded)
   {
-    self->_controlSize = a3;
+    self->_controlSize = expanded;
     [(FCUIActivityControl *)self _setNeedsTextAttributesUpdate];
 
     [(FCUIActivityControl *)self setNeedsLayout];
   }
 }
 
-- (void)setExpanded:(BOOL)a3 withTransitionCoordinator:(id)a4
+- (void)setExpanded:(BOOL)expanded withTransitionCoordinator:(id)coordinator
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277CCAD78] UUID];
-  v8 = [(FCUIActivityControl *)self isExpanded];
-  [(FCUIActivityControl *)self setExpanded:v4];
-  v9 = [(FCUIActivityControl *)self isExpanded];
-  if (v8 != v9)
+  expandedCopy = expanded;
+  coordinatorCopy = coordinator;
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  isExpanded = [(FCUIActivityControl *)self isExpanded];
+  [(FCUIActivityControl *)self setExpanded:expandedCopy];
+  isExpanded2 = [(FCUIActivityControl *)self isExpanded];
+  if (isExpanded != isExpanded2)
   {
-    v10 = v9;
-    objc_setAssociatedObject(self, &_FCUIActivityControlAnimationUUID, v7, 1);
+    v10 = isExpanded2;
+    objc_setAssociatedObject(self, &_FCUIActivityControlAnimationUUID, uUID, 1);
     [(UIView *)self->_contentView setClipsToBounds:1];
     [(FCUIActivityControl *)self setSelectionHidden:v10];
   }
@@ -657,9 +657,9 @@ uint64_t __37__FCUIActivityControl_setDetailText___block_invoke(uint64_t a1)
   v12[2] = __61__FCUIActivityControl_setExpanded_withTransitionCoordinator___block_invoke;
   v12[3] = &unk_27901A7E0;
   v12[4] = self;
-  v13 = v7;
-  v11 = v7;
-  [v6 animateAlongsideTransition:0 completion:v12];
+  v13 = uUID;
+  v11 = uUID;
+  [coordinatorCopy animateAlongsideTransition:0 completion:v12];
 }
 
 void __61__FCUIActivityControl_setExpanded_withTransitionCoordinator___block_invoke(uint64_t a1, void *a2)
@@ -679,44 +679,44 @@ void __61__FCUIActivityControl_setExpanded_withTransitionCoordinator___block_inv
   }
 }
 
-- (void)setContracted:(BOOL)a3
+- (void)setContracted:(BOOL)contracted
 {
-  if ((self->_controlSize == -1) != a3)
+  if ((self->_controlSize == -1) != contracted)
   {
-    self->_controlSize = a3 << 63 >> 63;
+    self->_controlSize = contracted << 63 >> 63;
     [(FCUIActivityControl *)self _setNeedsTextAttributesUpdate];
 
     [(FCUIActivityControl *)self setNeedsLayout];
   }
 }
 
-- (void)willPresent:(BOOL)a3 withTargetContainerBounds:(CGRect)a4 transitionCoordinator:(id)a5
+- (void)willPresent:(BOOL)present withTargetContainerBounds:(CGRect)bounds transitionCoordinator:(id)coordinator
 {
-  if (a5)
+  if (coordinator)
   {
-    height = a4.size.height;
-    width = a4.size.width;
-    y = a4.origin.y;
-    x = a4.origin.x;
-    v9 = a3;
+    height = bounds.size.height;
+    width = bounds.size.width;
+    y = bounds.origin.y;
+    x = bounds.origin.x;
+    presentCopy = present;
     v11 = MEMORY[0x277CCAD78];
-    v12 = a5;
-    v13 = [v11 UUID];
-    objc_setAssociatedObject(self, &_FCUIActivityControlAnimationUUID, v13, 1);
+    coordinatorCopy = coordinator;
+    uUID = [v11 UUID];
+    objc_setAssociatedObject(self, &_FCUIActivityControlAnimationUUID, uUID, 1);
     self->_targetContainerBounds.origin.x = x;
     self->_targetContainerBounds.origin.y = y;
     self->_targetContainerBounds.size.width = width;
     self->_targetContainerBounds.size.height = height;
     [(UIView *)self->_contentView setClipsToBounds:1];
-    [(FCUIActivityControl *)self _setTextLayoutDisabled:!v9];
+    [(FCUIActivityControl *)self _setTextLayoutDisabled:!presentCopy];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __83__FCUIActivityControl_willPresent_withTargetContainerBounds_transitionCoordinator___block_invoke;
     v15[3] = &unk_27901A7E0;
     v15[4] = self;
-    v16 = v13;
-    v14 = v13;
-    [v12 animateAlongsideTransition:0 completion:v15];
+    v16 = uUID;
+    v14 = uUID;
+    [coordinatorCopy animateAlongsideTransition:0 completion:v15];
   }
 }
 
@@ -742,11 +742,11 @@ void __83__FCUIActivityControl_willPresent_withTargetContainerBounds_transitionC
   }
 }
 
-- (void)setAdjustsFontForContentSizeCategory:(BOOL)a3
+- (void)setAdjustsFontForContentSizeCategory:(BOOL)category
 {
-  if (self->_adjustsFontForContentSizeCategory != a3)
+  if (self->_adjustsFontForContentSizeCategory != category)
   {
-    self->_adjustsFontForContentSizeCategory = a3;
+    self->_adjustsFontForContentSizeCategory = category;
     [(FCUIOptionsControl *)self->_optionsButton setAdjustsFontForContentSizeCategory:?];
     [(FCUIActivityControlMenuView *)self->_menuView setAdjustsFontForContentSizeCategory:self->_adjustsFontForContentSizeCategory];
 
@@ -756,18 +756,18 @@ void __83__FCUIActivityControl_willPresent_withTargetContainerBounds_transitionC
 
 - (BOOL)adjustForContentSizeCategoryChange
 {
-  v3 = [(FCUIActivityControl *)self adjustsFontForContentSizeCategory];
-  if (v3)
+  adjustsFontForContentSizeCategory = [(FCUIActivityControl *)self adjustsFontForContentSizeCategory];
+  if (adjustsFontForContentSizeCategory)
   {
     [(FCUIActivityControl *)self _setNeedsTextAttributesUpdate];
     [(FCUIOptionsControl *)self->_optionsButton adjustForContentSizeCategoryChange];
     [(FCUIActivityControlMenuView *)self->_menuView adjustForContentSizeCategoryChange];
   }
 
-  return v3;
+  return adjustsFontForContentSizeCategory;
 }
 
-- (id)visualStylingProviderForCategory:(int64_t)a3
+- (id)visualStylingProviderForCategory:(int64_t)category
 {
   [(FCUIActivityControl *)self _configureBackgroundViewIfNecesssary];
   backgroundView = self->_backgroundView;
@@ -793,12 +793,12 @@ void __83__FCUIActivityControl_willPresent_withTargetContainerBounds_transitionC
 
   v9 = v8;
 
-  v10 = [(UIView *)v9 visualStylingProviderForCategory:a3];
+  v10 = [(UIView *)v9 visualStylingProviderForCategory:category];
 
   return v10;
 }
 
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region
 {
   if (self->_controlSize == 1)
   {
@@ -807,11 +807,11 @@ void __83__FCUIActivityControl_willPresent_withTargetContainerBounds_transitionC
 
   else
   {
-    return a5;
+    return region;
   }
 }
 
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region
 {
   v5 = objc_alloc_init(MEMORY[0x277D758D8]);
   v6 = MEMORY[0x277D75208];
@@ -832,9 +832,9 @@ void __83__FCUIActivityControl_willPresent_withTargetContainerBounds_transitionC
   return v20;
 }
 
-- (double)_cornerRadiusForControlFrame:(CGRect)a3
+- (double)_cornerRadiusForControlFrame:(CGRect)frame
 {
-  CGRectGetHeight(a3);
+  CGRectGetHeight(frame);
   UIRoundToScale();
   if (result > 37.0)
   {
@@ -844,11 +844,11 @@ void __83__FCUIActivityControl_willPresent_withTargetContainerBounds_transitionC
   return result;
 }
 
-- (void)_setDrawingSelectedAppearance:(BOOL)a3
+- (void)_setDrawingSelectedAppearance:(BOOL)appearance
 {
-  if ([(FCUIActivityControl *)self _isDrawingSelectedAppearance]!= a3)
+  if ([(FCUIActivityControl *)self _isDrawingSelectedAppearance]!= appearance)
   {
-    self->_drawingSelectedAppearance = a3;
+    self->_drawingSelectedAppearance = appearance;
 
     [(FCUIActivityControl *)self setNeedsLayout];
   }
@@ -860,39 +860,39 @@ void __83__FCUIActivityControl_willPresent_withTargetContainerBounds_transitionC
   {
     if ([(FCUIActivityControl *)self isExpanded]|| ![(FCUIActivityControl *)self isSelected])
     {
-      v3 = 0;
+      isHighlighted = 0;
     }
 
     else
     {
-      v3 = [(FCUIActivityControl *)self isSelectionHidden]^ 1;
+      isHighlighted = [(FCUIActivityControl *)self isSelectionHidden]^ 1;
     }
   }
 
   else
   {
-    v3 = [(FCUIActivityControl *)self isHighlighted];
+    isHighlighted = [(FCUIActivityControl *)self isHighlighted];
   }
 
-  [(FCUIActivityControl *)self _setDrawingSelectedAppearance:v3];
+  [(FCUIActivityControl *)self _setDrawingSelectedAppearance:isHighlighted];
 }
 
-+ (id)_preferredFont:(BOOL)a3 textStyle:(id)a4 weight:(double)a5 additionalTraits:(unsigned int)a6
++ (id)_preferredFont:(BOOL)font textStyle:(id)style weight:(double)weight additionalTraits:(unsigned int)traits
 {
   v17[1] = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (font)
   {
-    [MEMORY[0x277D74310] preferredFontDescriptorWithTextStyle:a4 addingSymbolicTraits:*&a6 options:0];
+    [MEMORY[0x277D74310] preferredFontDescriptorWithTextStyle:style addingSymbolicTraits:*&traits options:0];
   }
 
   else
   {
-    [MEMORY[0x277D74310] defaultFontDescriptorWithTextStyle:a4 addingSymbolicTraits:*&a6 options:0];
+    [MEMORY[0x277D74310] defaultFontDescriptorWithTextStyle:style addingSymbolicTraits:*&traits options:0];
   }
   v7 = ;
   v16 = *MEMORY[0x277D74380];
   v14 = *MEMORY[0x277D74430];
-  v8 = [MEMORY[0x277CCABB0] numberWithDouble:a5];
+  v8 = [MEMORY[0x277CCABB0] numberWithDouble:weight];
   v15 = v8;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v15 forKeys:&v14 count:1];
   v17[0] = v9;
@@ -904,12 +904,12 @@ void __83__FCUIActivityControl_willPresent_withTargetContainerBounds_transitionC
   return v12;
 }
 
-- (double)_scaledValueForValue:(double)a3
+- (double)_scaledValueForValue:(double)value
 {
   [(FCUIActivityControl *)self _configureActivityTitleLabelIfNecessary];
   [(FCUIActivityControl *)self _updateTextAttributesIfNecessary];
-  v5 = [(UILabel *)self->_activityTitleLabel font];
-  [v5 _scaledValueForValue:a3];
+  font = [(UILabel *)self->_activityTitleLabel font];
+  [font _scaledValueForValue:value];
   v7 = v6;
 
   return v7;
@@ -968,10 +968,10 @@ void __83__FCUIActivityControl_willPresent_withTargetContainerBounds_transitionC
 
 - (void)_updateTextAttributes
 {
-  v3 = [(FCUIActivityControl *)self traitCollection];
-  v4 = [v3 preferredContentSizeCategory];
+  traitCollection = [(FCUIActivityControl *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
   preferredContentSizeCategory = self->_preferredContentSizeCategory;
-  self->_preferredContentSizeCategory = v4;
+  self->_preferredContentSizeCategory = preferredContentSizeCategory;
 
   [(FCUIActivityControl *)self _updateTextAttributesForActivityTitleLabel];
   [(FCUIActivityControl *)self _updateTextAttributesForActivityItemImageView];
@@ -1012,27 +1012,27 @@ void __83__FCUIActivityControl_willPresent_withTargetContainerBounds_transitionC
   }
 }
 
-- (void)_updateVisualStylingOfView:(id)a3 style:(int64_t)a4 visualStylingProvider:(id)a5 outgoingProvider:(id)a6
+- (void)_updateVisualStylingOfView:(id)view style:(int64_t)style visualStylingProvider:(id)provider outgoingProvider:(id)outgoingProvider
 {
-  if (a3)
+  if (view)
   {
-    v9 = a5;
-    v10 = a3;
-    [a6 stopAutomaticallyUpdatingView:v10];
-    [v9 automaticallyUpdateView:v10 withStyle:a4];
+    providerCopy = provider;
+    viewCopy = view;
+    [outgoingProvider stopAutomaticallyUpdatingView:viewCopy];
+    [providerCopy automaticallyUpdateView:viewCopy withStyle:style];
   }
 }
 
-- (void)_visualStylingProviderDidChange:(id)a3 forCategory:(int64_t)a4 outgoingProvider:(id)a5
+- (void)_visualStylingProviderDidChange:(id)change forCategory:(int64_t)category outgoingProvider:(id)provider
 {
-  v10 = a3;
-  v7 = [(FCUIActivityControlMenuView *)self->_menuView requiredVisualStyleCategories];
-  v8 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
-  v9 = [v7 containsObject:v8];
+  changeCopy = change;
+  requiredVisualStyleCategories = [(FCUIActivityControlMenuView *)self->_menuView requiredVisualStyleCategories];
+  v8 = [MEMORY[0x277CCABB0] numberWithInteger:category];
+  v9 = [requiredVisualStyleCategories containsObject:v8];
 
   if (v9)
   {
-    [(FCUIActivityControlMenuView *)self->_menuView setVisualStylingProvider:v10 forCategory:a4];
+    [(FCUIActivityControlMenuView *)self->_menuView setVisualStylingProvider:changeCopy forCategory:category];
   }
 }
 
@@ -1053,7 +1053,7 @@ void __83__FCUIActivityControl_willPresent_withTargetContainerBounds_transitionC
   }
 }
 
-- (void)_configureActivityIconImageViewIfNecessaryForReference:(BOOL)a3
+- (void)_configureActivityIconImageViewIfNecessaryForReference:(BOOL)reference
 {
   if (!self->_activityIconImageView)
   {
@@ -1062,7 +1062,7 @@ void __83__FCUIActivityControl_willPresent_withTargetContainerBounds_transitionC
     self->_activityIconImageView = v5;
 
     [(UIImageView *)self->_activityIconImageView setContentMode:4];
-    if (!a3)
+    if (!reference)
     {
       [(FCUIActivityControl *)self _configureContentViewIfNecessary];
       contentView = self->_contentView;
@@ -1073,7 +1073,7 @@ void __83__FCUIActivityControl_willPresent_withTargetContainerBounds_transitionC
   }
 }
 
-- (id)_activityIconTintColorForSelectedAppearance:(BOOL)a3
+- (id)_activityIconTintColorForSelectedAppearance:(BOOL)appearance
 {
   controlStyle = self->_controlStyle;
   if (!controlStyle)
@@ -1083,38 +1083,38 @@ void __83__FCUIActivityControl_willPresent_withTargetContainerBounds_transitionC
 
   if (controlStyle == 2)
   {
-    if (a3)
+    if (appearance)
     {
 LABEL_4:
-      v4 = [MEMORY[0x277D75348] fcui_colorForActivity:self->_activityDescription];
+      labelColor = [MEMORY[0x277D75348] fcui_colorForActivity:self->_activityDescription];
       goto LABEL_7;
     }
 
-    v4 = [MEMORY[0x277D75348] labelColor];
+    labelColor = [MEMORY[0x277D75348] labelColor];
   }
 
   else
   {
-    v4 = 0;
+    labelColor = 0;
   }
 
 LABEL_7:
 
-  return v4;
+  return labelColor;
 }
 
-- (void)_setActivityIcon:(id)a3 forReference:(BOOL)a4
+- (void)_setActivityIcon:(id)icon forReference:(BOOL)reference
 {
-  v4 = a4;
-  v10 = a3;
-  v6 = [(FCUIActivityControl *)self activityIcon];
+  referenceCopy = reference;
+  iconCopy = icon;
+  activityIcon = [(FCUIActivityControl *)self activityIcon];
   v7 = BSEqualObjects();
 
   if ((v7 & 1) == 0)
   {
-    [(FCUIActivityControl *)self _configureActivityIconImageViewIfNecessaryForReference:v4];
-    [(UIImageView *)self->_activityIconImageView setImage:v10];
-    if (!v4)
+    [(FCUIActivityControl *)self _configureActivityIconImageViewIfNecessaryForReference:referenceCopy];
+    [(UIImageView *)self->_activityIconImageView setImage:iconCopy];
+    if (!referenceCopy)
     {
       if (self->_controlStyle == 1)
       {
@@ -1134,9 +1134,9 @@ LABEL_7:
   }
 }
 
-- (int64_t)_titleLabelVisualStyleForHighlightState:(BOOL)a3
+- (int64_t)_titleLabelVisualStyleForHighlightState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     return 2;
   }
@@ -1173,15 +1173,15 @@ LABEL_7:
     else
     {
       v8 = self->_activityTitleLabel;
-      v9 = [MEMORY[0x277D75348] labelColor];
-      [(UILabel *)v8 setTextColor:v9];
+      labelColor = [MEMORY[0x277D75348] labelColor];
+      [(UILabel *)v8 setTextColor:labelColor];
     }
   }
 }
 
-- (int64_t)_detailLabelVisualStyleForHighlightState:(BOOL)a3
+- (int64_t)_detailLabelVisualStyleForHighlightState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     return 3;
   }
@@ -1218,13 +1218,13 @@ LABEL_7:
     else
     {
       v8 = self->_detailLabel;
-      v9 = [MEMORY[0x277D75348] secondaryLabelColor];
-      [(UILabel *)v8 setTextColor:v9];
+      secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+      [(UILabel *)v8 setTextColor:secondaryLabelColor];
     }
   }
 }
 
-- (int64_t)_optionsControlTypeForControlStyle:(int64_t)a3
+- (int64_t)_optionsControlTypeForControlStyle:(int64_t)style
 {
   controlStyle = self->_controlStyle;
   v4 = 1;
@@ -1264,8 +1264,8 @@ LABEL_7:
     else
     {
       v6 = self->_optionsButton;
-      v7 = [MEMORY[0x277D75348] labelColor];
-      [(FCUIOptionsControl *)v6 setTintColor:v7];
+      labelColor = [MEMORY[0x277D75348] labelColor];
+      [(FCUIOptionsControl *)v6 setTintColor:labelColor];
     }
 
     [(FCUIActivityControl *)self _configureContentViewIfNecessary];
@@ -1292,8 +1292,8 @@ LABEL_7:
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v5 = [(FCUIActivityControlMenuView *)self->_menuView requiredVisualStyleCategories];
-    v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    requiredVisualStyleCategories = [(FCUIActivityControlMenuView *)self->_menuView requiredVisualStyleCategories];
+    v6 = [requiredVisualStyleCategories countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v6)
     {
       v7 = v6;
@@ -1305,19 +1305,19 @@ LABEL_7:
         {
           if (*v14 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(requiredVisualStyleCategories);
           }
 
-          v10 = [*(*(&v13 + 1) + 8 * v9) integerValue];
+          integerValue = [*(*(&v13 + 1) + 8 * v9) integerValue];
           v11 = self->_menuView;
-          v12 = [(FCUIActivityControl *)self visualStylingProviderForCategory:v10];
-          [(FCUIActivityControlMenuView *)v11 setVisualStylingProvider:v12 forCategory:v10];
+          v12 = [(FCUIActivityControl *)self visualStylingProviderForCategory:integerValue];
+          [(FCUIActivityControlMenuView *)v11 setVisualStylingProvider:v12 forCategory:integerValue];
 
           ++v9;
         }
 
         while (v7 != v9);
-        v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v7 = [requiredVisualStyleCategories countByEnumeratingWithState:&v13 objects:v17 count:16];
       }
 
       while (v7);
@@ -1381,13 +1381,13 @@ LABEL_7:
   }
 }
 
-- (void)_setActivityIconPackageView:(id)a3
+- (void)_setActivityIconPackageView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   if ((BSEqualObjects() & 1) == 0)
   {
     [(FCUICAPackageView *)self->_activityIconPackageView removeFromSuperview];
-    objc_storeStrong(&self->_activityIconPackageView, a3);
+    objc_storeStrong(&self->_activityIconPackageView, view);
     [(FCUIActivityControl *)self _configureContentViewIfNecessary];
     [(UIView *)self->_contentView addSubview:self->_activityIconPackageView];
     [(FCUIActivityControl *)self setNeedsLayout];
@@ -1426,44 +1426,44 @@ LABEL_7:
 LABEL_9:
     [(FCUIActivityControl *)self _setActivityIconPackageView:v4];
     v6 = MEMORY[0x277D755B8];
-    v7 = [(FCActivityDescribing *)self->_activityDescription activitySymbolImageName];
-    v8 = [v6 _systemImageNamed:v7];
+    activitySymbolImageName = [(FCActivityDescribing *)self->_activityDescription activitySymbolImageName];
+    v8 = [v6 _systemImageNamed:activitySymbolImageName];
     [(FCUIActivityControl *)self _setActivityIcon:v8 forReference:1];
     goto LABEL_11;
   }
 
   [(FCUIActivityControl *)self _setActivityIconPackageView:0];
   v9 = MEMORY[0x277D755B8];
-  v7 = [(FCActivityDescribing *)self->_activityDescription activitySymbolImageName];
-  v8 = [v9 _systemImageNamed:v7];
+  activitySymbolImageName = [(FCActivityDescribing *)self->_activityDescription activitySymbolImageName];
+  v8 = [v9 _systemImageNamed:activitySymbolImageName];
   [(FCUIActivityControl *)self setActivityIcon:v8];
 LABEL_11:
 }
 
 - (void)_updateActivityTitle
 {
-  v5 = [(FCUIActivityControl *)self activityDisplayName];
-  v3 = [(UILabel *)self->_activityTitleLabel text];
+  activityDisplayName = [(FCUIActivityControl *)self activityDisplayName];
+  text = [(UILabel *)self->_activityTitleLabel text];
   v4 = BSEqualStrings();
 
   if ((v4 & 1) == 0)
   {
     [(FCUIActivityControl *)self _configureActivityTitleLabelIfNecessary];
-    [(UILabel *)self->_activityTitleLabel setText:v5];
+    [(UILabel *)self->_activityTitleLabel setText:activityDisplayName];
     [(FCUIActivityControl *)self setNeedsLayout];
   }
 }
 
 - (void)_updateActivityDetail
 {
-  v5 = [(FCUIActivityControl *)self _activityDetailText];
-  v3 = [(UILabel *)self->_detailLabel text];
+  _activityDetailText = [(FCUIActivityControl *)self _activityDetailText];
+  text = [(UILabel *)self->_detailLabel text];
   v4 = BSEqualStrings();
 
   if ((v4 & 1) == 0)
   {
     [(FCUIActivityControl *)self _configureDetailLabelIfNecessary];
-    [(UILabel *)self->_detailLabel setText:v5];
+    [(UILabel *)self->_detailLabel setText:_activityDetailText];
     [(FCUIActivityControl *)self setNeedsLayout];
   }
 }
@@ -1471,8 +1471,8 @@ LABEL_11:
 - (void)_updateAccessibilityIdentifier
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(FCUIActivityControl *)self activityDisplayName];
-  v5 = [v3 stringWithFormat:@"mode-%@", v4];
+  activityDisplayName = [(FCUIActivityControl *)self activityDisplayName];
+  v5 = [v3 stringWithFormat:@"mode-%@", activityDisplayName];
 
   [(FCUIActivityControl *)self setAccessibilityIdentifier:v5];
 }
@@ -1496,15 +1496,15 @@ LABEL_11:
 {
   if (self && self->_controlStyle == 1 && _UISolariumEnabled())
   {
-    v3 = [(FCUIActivityControl *)self _highlightingBackgroundView];
-    [v3 alpha];
+    _highlightingBackgroundView = [(FCUIActivityControl *)self _highlightingBackgroundView];
+    [_highlightingBackgroundView alpha];
     IsOne = BSFloatIsOne();
   }
 
   else
   {
-    v3 = [(FCUIActivityControl *)self _highlightingBackgroundView];
-    IsOne = [v3 isHighlighted];
+    _highlightingBackgroundView = [(FCUIActivityControl *)self _highlightingBackgroundView];
+    IsOne = [_highlightingBackgroundView isHighlighted];
   }
 
   v5 = IsOne;
@@ -1512,9 +1512,9 @@ LABEL_11:
   return v5;
 }
 
-- (int64_t)_userInterfaceStyleForSelectedAppearance:(BOOL)a3
+- (int64_t)_userInterfaceStyleForSelectedAppearance:(BOOL)appearance
 {
-  if (a3)
+  if (appearance)
   {
     return 1;
   }
@@ -1525,10 +1525,10 @@ LABEL_11:
   }
 }
 
-- (void)_setBackgroundViewHighlighted:(BOOL)a3
+- (void)_setBackgroundViewHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
-  if ([(FCUIActivityControl *)self _isBackgroundViewHighlighted]== a3)
+  highlightedCopy = highlighted;
+  if ([(FCUIActivityControl *)self _isBackgroundViewHighlighted]== highlighted)
   {
     return;
   }
@@ -1536,32 +1536,32 @@ LABEL_11:
   if (self && self->_controlStyle == 1)
   {
     v5 = _UISolariumEnabled();
-    v6 = [(FCUIActivityControl *)self _highlightingBackgroundView];
+    _highlightingBackgroundView = [(FCUIActivityControl *)self _highlightingBackgroundView];
     if (v5)
     {
       v7 = 0.0;
-      if (v3)
+      if (highlightedCopy)
       {
         v7 = 1.0;
       }
 
-      v16 = v6;
-      [v6 setAlpha:v7];
+      v16 = _highlightingBackgroundView;
+      [_highlightingBackgroundView setAlpha:v7];
       goto LABEL_11;
     }
   }
 
   else
   {
-    v6 = [(FCUIActivityControl *)self _highlightingBackgroundView];
+    _highlightingBackgroundView = [(FCUIActivityControl *)self _highlightingBackgroundView];
   }
 
-  v16 = v6;
-  [v6 setHighlighted:v3];
+  v16 = _highlightingBackgroundView;
+  [_highlightingBackgroundView setHighlighted:highlightedCopy];
 LABEL_11:
   if (self->_controlStyle == 1)
   {
-    if (v3)
+    if (highlightedCopy)
     {
       v8 = [(FCUIActivityControl *)self visualStylingProviderForCategory:1];
       [v8 stopAutomaticallyUpdatingView:self->_activityIconImageView];
@@ -1580,25 +1580,25 @@ LABEL_11:
     }
 
     activityTitleLabel = self->_activityTitleLabel;
-    v13 = [(MTVisualStylingProvider *)self->_textVisualStylingProvider _visualStylingForStyle:[(FCUIActivityControl *)self _titleLabelVisualStyleForHighlightState:v3]];
+    v13 = [(MTVisualStylingProvider *)self->_textVisualStylingProvider _visualStylingForStyle:[(FCUIActivityControl *)self _titleLabelVisualStyleForHighlightState:highlightedCopy]];
     [(UILabel *)activityTitleLabel mt_replaceVisualStyling:v13];
 
     detailLabel = self->_detailLabel;
-    v15 = [(MTVisualStylingProvider *)self->_textVisualStylingProvider _visualStylingForStyle:[(FCUIActivityControl *)self _detailLabelVisualStyleForHighlightState:v3]];
+    v15 = [(MTVisualStylingProvider *)self->_textVisualStylingProvider _visualStylingForStyle:[(FCUIActivityControl *)self _detailLabelVisualStyleForHighlightState:highlightedCopy]];
     [(UILabel *)detailLabel mt_replaceVisualStyling:v15];
 
-    [(FCUIOptionsControl *)self->_optionsButton setParentControlHighlighted:v3];
+    [(FCUIOptionsControl *)self->_optionsButton setParentControlHighlighted:highlightedCopy];
     [(FCUIOptionsControl *)self->_optionsButton layoutIfNeeded];
   }
 }
 
-- (CGRect)_iconLayoutFrameForControlFrame:(CGRect)a3 isRTL:(BOOL)a4 controlSize:(int64_t)a5
+- (CGRect)_iconLayoutFrameForControlFrame:(CGRect)frame isRTL:(BOOL)l controlSize:(int64_t)size
 {
-  v5 = a4;
-  rect_8 = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  lCopy = l;
+  rect_8 = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if (UIContentSizeCategoryCompareToCategory(*MEMORY[0x277D76840], self->_preferredContentSizeCategory) == NSOrderedDescending)
   {
     [(FCUIActivityControl *)self _scaledValueForValue:32.0];
@@ -1609,7 +1609,7 @@ LABEL_11:
   v13 = v12;
   v15 = v14;
   v17 = v16;
-  if (v5)
+  if (lCopy)
   {
     v24.origin.x = x;
     v24.origin.y = y;
@@ -1632,12 +1632,12 @@ LABEL_11:
   return result;
 }
 
-- (CGRect)_optionsButtonLayoutFrameForControlFrame:(CGRect)a3 isRTL:(BOOL)a4
+- (CGRect)_optionsButtonLayoutFrameForControlFrame:(CGRect)frame isRTL:(BOOL)l
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if (UIContentSizeCategoryCompareToCategory(*MEMORY[0x277D76840], self->_preferredContentSizeCategory) == NSOrderedDescending)
   {
     [(FCUIActivityControl *)self _scaledValueForValue:32.0];
@@ -1648,7 +1648,7 @@ LABEL_11:
   v13 = v12;
   v15 = v14;
   v17 = v16;
-  if (!a4)
+  if (!l)
   {
     v22.origin.x = x;
     v22.origin.y = y;
@@ -1670,7 +1670,7 @@ LABEL_11:
   return result;
 }
 
-- (CGRect)_glyphFrameForLayoutFrame:(CGRect *)a3 sizeThatFits:(CGSize)a4
+- (CGRect)_glyphFrameForLayoutFrame:(CGRect *)frame sizeThatFits:(CGSize)fits
 {
   BSRectWithSize();
   UIRectCenteredIntegralRectScale();
@@ -1679,12 +1679,12 @@ LABEL_11:
   width = v14.size.width;
   height = v14.size.height;
   v9 = CGRectGetWidth(v14);
-  if (v9 > CGRectGetWidth(*a3))
+  if (v9 > CGRectGetWidth(*frame))
   {
-    a3->origin.x = x;
-    a3->origin.y = y;
-    a3->size.width = width;
-    a3->size.height = height;
+    frame->origin.x = x;
+    frame->origin.y = y;
+    frame->size.width = width;
+    frame->size.height = height;
   }
 
   v10 = x;
@@ -1698,23 +1698,23 @@ LABEL_11:
   return result;
 }
 
-- (CGRect)_textFrameForControlFrame:(CGRect)a3 iconLayoutFrame:(CGRect)a4 isRTL:(BOOL)a5 controlSize:(int64_t)a6
+- (CGRect)_textFrameForControlFrame:(CGRect)frame iconLayoutFrame:(CGRect)layoutFrame isRTL:(BOOL)l controlSize:(int64_t)size
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v10 = a3.size.height;
-  v11 = a3.size.width;
-  v12 = a3.origin.y;
-  v13 = a3.origin.x;
-  if (a6 == -1)
+  height = layoutFrame.size.height;
+  width = layoutFrame.size.width;
+  y = layoutFrame.origin.y;
+  x = layoutFrame.origin.x;
+  v10 = frame.size.height;
+  v11 = frame.size.width;
+  v12 = frame.origin.y;
+  v13 = frame.origin.x;
+  if (size == -1)
   {
-    v14 = a4.origin.x;
-    v15 = a4.origin.y;
-    v16 = a4.size.width;
-    v17 = a4.size.height;
-    if (a5)
+    v14 = layoutFrame.origin.x;
+    v15 = layoutFrame.origin.y;
+    v16 = layoutFrame.size.width;
+    v17 = layoutFrame.size.height;
+    if (l)
     {
       v18 = CGRectGetMinX(*&v14) + -12.0;
       v19 = 22.0;
@@ -1741,9 +1741,9 @@ LABEL_11:
 
   else
   {
-    if (a5)
+    if (l)
     {
-      CGRectGetMaxX(a3);
+      CGRectGetMaxX(frame);
       v27.origin.x = x;
       v27.origin.y = y;
       v27.size.width = width;
@@ -1753,7 +1753,7 @@ LABEL_11:
 
     else
     {
-      CGRectGetMaxX(a4);
+      CGRectGetMaxX(layoutFrame);
     }
 
     v28.origin.x = v13;
@@ -1781,12 +1781,12 @@ LABEL_11:
   return result;
 }
 
-- (CGSize)_sizeThatFits:(CGSize)a3 withControlSize:(int64_t)a4
+- (CGSize)_sizeThatFits:(CGSize)fits withControlSize:(int64_t)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   [(FCUIActivityControl *)self _updateTextAttributesIfNecessary];
-  if (a4 == -1)
+  if (size == -1)
   {
     v8 = 40.0;
   }
@@ -1806,15 +1806,15 @@ LABEL_11:
   v12 = v11;
   v14 = v13;
   v16 = v15;
-  v17 = [(FCUIActivityControl *)self _shouldReverseLayoutDirection];
-  [(FCUIActivityControl *)self _iconLayoutFrameForControlFrame:v17 isRTL:a4 controlSize:v10, v12, v14, v16];
+  _shouldReverseLayoutDirection = [(FCUIActivityControl *)self _shouldReverseLayoutDirection];
+  [(FCUIActivityControl *)self _iconLayoutFrameForControlFrame:_shouldReverseLayoutDirection isRTL:size controlSize:v10, v12, v14, v16];
   v33 = v18;
   v34 = v19;
   v35 = v20;
   v36 = v21;
   [(UIImageView *)self->_activityIconImageView sizeThatFits:v14, v16];
   [(FCUIActivityControl *)self _glyphFrameForLayoutFrame:&v33 sizeThatFits:?];
-  [(FCUIActivityControl *)self _textFrameForControlFrame:v17 iconLayoutFrame:a4 isRTL:v10 controlSize:v12, v14, v16, v33, v34, v35, v36];
+  [(FCUIActivityControl *)self _textFrameForControlFrame:_shouldReverseLayoutDirection iconLayoutFrame:size isRTL:v10 controlSize:v12, v14, v16, v33, v34, v35, v36];
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __53__FCUIActivityControl__sizeThatFits_withControlSize___block_invoke;
@@ -1827,7 +1827,7 @@ LABEL_11:
   v25 = _Block_copy(aBlock);
   v25[2](v25, self->_activityTitleLabel);
   (v25[2])(v25, self->_detailLabel);
-  if (a4 == 1)
+  if (size == 1)
   {
     [(FCUIActivityControlMenuView *)self->_menuView sizeThatFits:width, height];
   }
@@ -1862,32 +1862,32 @@ double __53__FCUIActivityControl__sizeThatFits_withControlSize___block_invoke(do
   if ([(FCUIActivityControl *)self isPlaceholder])
   {
     controlStyle = self->_controlStyle;
-    v4 = [(FCUIActivityControl *)self showsPersistentDetailText];
+    showsPersistentDetailText = [(FCUIActivityControl *)self showsPersistentDetailText];
     if ((controlStyle - 1) <= 1)
     {
-      v5 = [(FCUIActivityControl *)self activityDetailText];
-      v6 = v5;
-      if (v5)
+      activityDetailText = [(FCUIActivityControl *)self activityDetailText];
+      v6 = activityDetailText;
+      if (activityDetailText)
       {
-        v7 = v5;
+        activityDetailText2 = activityDetailText;
       }
 
       else
       {
         v8 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-        v7 = [v8 localizedStringForKey:@"ACTIVITY_TRY_IT" value:&stru_285ECE868 table:0];
+        activityDetailText2 = [v8 localizedStringForKey:@"ACTIVITY_TRY_IT" value:&stru_285ECE868 table:0];
       }
 
       goto LABEL_11;
     }
 
-    if (!v4)
+    if (!showsPersistentDetailText)
     {
       goto LABEL_8;
     }
 
 LABEL_6:
-    v7 = [(FCUIActivityControl *)self activityDetailText];
+    activityDetailText2 = [(FCUIActivityControl *)self activityDetailText];
     goto LABEL_11;
   }
 
@@ -1897,16 +1897,16 @@ LABEL_6:
   }
 
 LABEL_8:
-  v7 = 0;
+  activityDetailText2 = 0;
 LABEL_11:
 
-  return v7;
+  return activityDetailText2;
 }
 
-- (void)_setTextLayoutDisabled:(BOOL)a3
+- (void)_setTextLayoutDisabled:(BOOL)disabled
 {
   v11 = *MEMORY[0x277D85DE8];
-  if (self->_textLayoutDisabled != a3)
+  if (self->_textLayoutDisabled != disabled)
   {
     v5 = FCUILogSelection;
     if (os_log_type_enabled(FCUILogSelection, OS_LOG_TYPE_DEFAULT))
@@ -1922,13 +1922,13 @@ LABEL_11:
       }
 
       v7 = 138543618;
-      v8 = self;
+      selfCopy = self;
       v9 = 2114;
       v10 = v6;
       _os_log_impl(&dword_24BB26000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: text layout %{public}@", &v7, 0x16u);
     }
 
-    self->_textLayoutDisabled = a3;
+    self->_textLayoutDisabled = disabled;
   }
 }
 
@@ -1940,8 +1940,8 @@ LABEL_11:
   v4 = [v3 mutableCopy];
 
   v5 = MEMORY[0x277CCACA8];
-  v6 = [(FCUIActivityControl *)self activityDisplayName];
-  v7 = [v5 stringWithFormat:@" activityDisplayName: %@", v6];;
+  activityDisplayName = [(FCUIActivityControl *)self activityDisplayName];
+  v7 = [v5 stringWithFormat:@" activityDisplayName: %@", activityDisplayName];;
   [v4 insertString:v7 atIndex:{objc_msgSend(v4, "rangeOfString:options:", @">", 4)}];
 
   return v4;
@@ -1949,7 +1949,7 @@ LABEL_11:
 
 - (uint64_t)_usesStatefulSolariumStyleBackground
 {
-  if (a1 && *(a1 + 608) == 1)
+  if (self && *(self + 608) == 1)
   {
     return _UISolariumEnabled();
   }

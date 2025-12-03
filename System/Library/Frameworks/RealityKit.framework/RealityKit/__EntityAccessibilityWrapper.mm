@@ -1,6 +1,6 @@
 @interface __EntityAccessibilityWrapper
 - (BOOL)entitySupportsAccessibilityActivateAction;
-- (CGRect)calculateScreenBoundingRectIn:(id)a3;
+- (CGRect)calculateScreenBoundingRectIn:(id)in;
 - (NSString)entityDescription;
 - (_TtC10RealityKit28__EntityAccessibilityWrapper)init;
 - (unint64_t)entityAccessibilityTraits;
@@ -14,7 +14,7 @@
   result = swift_weakLoadStrong();
   if (result)
   {
-    v4 = self;
+    selfCopy = self;
     v5 = Entity.id.getter();
 
     return v5;
@@ -23,13 +23,13 @@
   return result;
 }
 
-- (CGRect)calculateScreenBoundingRectIn:(id)a3
+- (CGRect)calculateScreenBoundingRectIn:(id)in
 {
   if (swift_weakLoadStrong())
   {
-    v5 = a3;
-    v6 = self;
-    Entity.__calculateScreenBoundingRect(in:)(v5);
+    inCopy = in;
+    selfCopy = self;
+    Entity.__calculateScreenBoundingRect(in:)(inCopy);
     v8 = v7;
     v10 = v9;
     v12 = v11;
@@ -60,7 +60,7 @@
   Strong = swift_weakLoadStrong();
   if (Strong)
   {
-    v4 = self;
+    selfCopy = self;
     v5 = MEMORY[0x1E12F2AB0]();
     v7 = v6;
 
@@ -91,7 +91,7 @@
     return 0;
   }
 
-  v7 = self;
+  selfCopy = self;
   Entity.accessibilityComponent.getter(v6);
   v8 = AccessibilityComponent.traitsRawValue.getter();
 
@@ -101,7 +101,7 @@
 
 - (BOOL)entitySupportsAccessibilityActivateAction
 {
-  v2 = self;
+  selfCopy = self;
   v3 = __EntityAccessibilityWrapper.entitySupportsAccessibilityActivateAction.getter();
 
   return v3 & 1;

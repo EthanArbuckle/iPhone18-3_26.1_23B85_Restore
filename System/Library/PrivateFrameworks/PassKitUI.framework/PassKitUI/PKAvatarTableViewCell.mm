@@ -1,26 +1,26 @@
 @interface PKAvatarTableViewCell
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKAvatarTableViewCell)initWithContact:(id)a3 delegate:(id)a4 style:(int64_t)a5 reuseIdentifier:(id)a6;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKAvatarTableViewCell)initWithContact:(id)contact delegate:(id)delegate style:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)layoutSubviews;
-- (void)setContact:(id)a3;
+- (void)setContact:(id)contact;
 @end
 
 @implementation PKAvatarTableViewCell
 
-- (PKAvatarTableViewCell)initWithContact:(id)a3 delegate:(id)a4 style:(int64_t)a5 reuseIdentifier:(id)a6
+- (PKAvatarTableViewCell)initWithContact:(id)contact delegate:(id)delegate style:(int64_t)style reuseIdentifier:(id)identifier
 {
-  v9 = a3;
-  v10 = [(PKAvatarTableViewCell *)self initWithStyle:a5 reuseIdentifier:a6];
+  contactCopy = contact;
+  v10 = [(PKAvatarTableViewCell *)self initWithStyle:style reuseIdentifier:identifier];
   if (v10)
   {
     v11 = objc_alloc_init(getCNAvatarViewClass_3());
     avatarView = v10->_avatarView;
     v10->_avatarView = v11;
 
-    v13 = [(PKAvatarTableViewCell *)v10 contentView];
-    [v13 addSubview:v10->_avatarView];
+    contentView = [(PKAvatarTableViewCell *)v10 contentView];
+    [contentView addSubview:v10->_avatarView];
 
-    [(PKAvatarTableViewCell *)v10 setContact:v9];
+    [(PKAvatarTableViewCell *)v10 setContact:contactCopy];
   }
 
   return v10;
@@ -41,8 +41,8 @@
     v3 = CGRectMinXEdge;
   }
 
-  v4 = [(PKAvatarTableViewCell *)self contentView];
-  [v4 bounds];
+  contentView = [(PKAvatarTableViewCell *)self contentView];
+  [contentView bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -64,11 +64,11 @@
   [(CNAvatarView *)avatarView setFrame:?];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   v5.receiver = self;
   v5.super_class = PKAvatarTableViewCell;
-  [(PKAvatarTableViewCell *)&v5 sizeThatFits:a3.width, a3.height];
+  [(PKAvatarTableViewCell *)&v5 sizeThatFits:fits.width, fits.height];
   if (v4 < 61.0)
   {
     v4 = 61.0;
@@ -79,15 +79,15 @@
   return result;
 }
 
-- (void)setContact:(id)a3
+- (void)setContact:(id)contact
 {
-  v5 = a3;
-  if (self->_contact != v5)
+  contactCopy = contact;
+  if (self->_contact != contactCopy)
   {
-    v6 = v5;
-    [(CNAvatarView *)self->_avatarView setContact:v5];
-    objc_storeStrong(&self->_contact, a3);
-    v5 = v6;
+    v6 = contactCopy;
+    [(CNAvatarView *)self->_avatarView setContact:contactCopy];
+    objc_storeStrong(&self->_contact, contact);
+    contactCopy = v6;
   }
 }
 

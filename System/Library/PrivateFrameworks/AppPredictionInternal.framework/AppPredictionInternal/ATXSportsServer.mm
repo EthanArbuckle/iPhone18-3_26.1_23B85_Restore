@@ -1,7 +1,7 @@
 @interface ATXSportsServer
 + (ATXSportsServer)sharedInstance;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (void)requestedSchedulesForTeamsWithReply:(id)a3;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (void)requestedSchedulesForTeamsWithReply:(id)reply;
 @end
 
 @implementation ATXSportsServer
@@ -18,13 +18,13 @@
   return v3;
 }
 
-- (void)requestedSchedulesForTeamsWithReply:(id)a3
+- (void)requestedSchedulesForTeamsWithReply:(id)reply
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27D7A1F30, &qword_226873360);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x28223BE20](v5 - 8, v7);
   v9 = &v16 - v8;
-  v10 = _Block_copy(a3);
+  v10 = _Block_copy(reply);
   v11 = swift_allocObject();
   *(v11 + 16) = v10;
   *(v11 + 24) = self;
@@ -40,16 +40,16 @@
   v14[3] = 0;
   v14[4] = &unk_226875C90;
   v14[5] = v13;
-  v15 = self;
+  selfCopy = self;
   sub_22679FE8C(0, 0, v9, &unk_226875CA0, v14);
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_2267F6B20(v7);
+  listenerCopy = listener;
+  connectionCopy = connection;
+  selfCopy = self;
+  v9 = sub_2267F6B20(connectionCopy);
 
   return v9 & 1;
 }

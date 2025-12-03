@@ -1,13 +1,13 @@
 @interface ICQiCloudDetailsPageInfo
 - (ICQLink)icqLink;
-- (ICQiCloudDetailsPageInfo)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (ICQiCloudDetailsPageInfo)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ICQiCloudDetailsPageInfo
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(ICQiCloudDetailsPageInfo);
   [(ICQiCloudDetailsPageInfo *)v4 setActionType:self->_actionType];
@@ -18,34 +18,34 @@
 - (ICQLink)icqLink
 {
   v3 = [ICQLink alloc];
-  v4 = [(ICQiCloudDetailsPageInfo *)self actionType];
-  v5 = [(ICQiCloudDetailsPageInfo *)self actionURL];
-  v6 = [(ICQLink *)v3 initWithActionString:v4 url:v5];
+  actionType = [(ICQiCloudDetailsPageInfo *)self actionType];
+  actionURL = [(ICQiCloudDetailsPageInfo *)self actionURL];
+  v6 = [(ICQLink *)v3 initWithActionString:actionType url:actionURL];
 
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   actionType = self->_actionType;
-  v5 = a3;
-  [v5 encodeObject:actionType forKey:@"actionType"];
-  [v5 encodeObject:self->_actionURL forKey:@"actionURL"];
+  coderCopy = coder;
+  [coderCopy encodeObject:actionType forKey:@"actionType"];
+  [coderCopy encodeObject:self->_actionURL forKey:@"actionURL"];
 }
 
-- (ICQiCloudDetailsPageInfo)initWithCoder:(id)a3
+- (ICQiCloudDetailsPageInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = ICQiCloudDetailsPageInfo;
   v5 = [(ICQiCloudDetailsPageInfo *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"actionType"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"actionType"];
     actionType = v5->_actionType;
     v5->_actionType = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"actionURL"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"actionURL"];
     actionURL = v5->_actionURL;
     v5->_actionURL = v8;
   }

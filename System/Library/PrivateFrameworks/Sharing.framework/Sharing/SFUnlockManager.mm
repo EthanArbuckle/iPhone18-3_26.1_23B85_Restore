@@ -1,14 +1,14 @@
 @interface SFUnlockManager
 + (id)sharedUnlockManager;
 - (SFUnlockManager)init;
-- (id)timerWithBlock:(id)a3;
+- (id)timerWithBlock:(id)block;
 - (void)cancelStateRequestTimer;
-- (void)disableUnlockWithDevice:(id)a3;
-- (void)enableUnlockWithDevice:(id)a3 fromKey:(BOOL)a4 withPasscode:(id)a5 completionHandler:(id)a6;
-- (void)establishStashBagWithCompletionHandler:(id)a3;
-- (void)establishStashBagWithManifest:(id)a3 completionHandler:(id)a4;
-- (void)unlockEnabledWithDevice:(id)a3 completionHandler:(id)a4;
-- (void)unlockStateForDevice:(id)a3 completionHandler:(id)a4;
+- (void)disableUnlockWithDevice:(id)device;
+- (void)enableUnlockWithDevice:(id)device fromKey:(BOOL)key withPasscode:(id)passcode completionHandler:(id)handler;
+- (void)establishStashBagWithCompletionHandler:(id)handler;
+- (void)establishStashBagWithManifest:(id)manifest completionHandler:(id)handler;
+- (void)unlockEnabledWithDevice:(id)device completionHandler:(id)handler;
+- (void)unlockStateForDevice:(id)device completionHandler:(id)handler;
 @end
 
 @implementation SFUnlockManager
@@ -51,12 +51,12 @@ void __38__SFUnlockManager_sharedUnlockManager__block_invoke()
   return v3;
 }
 
-- (void)enableUnlockWithDevice:(id)a3 fromKey:(BOOL)a4 withPasscode:(id)a5 completionHandler:(id)a6
+- (void)enableUnlockWithDevice:(id)device fromKey:(BOOL)key withPasscode:(id)passcode completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  if (v12)
+  deviceCopy = device;
+  passcodeCopy = passcode;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     v13 = +[SFCompanionXPCManager sharedManager];
     v14[0] = MEMORY[0x1E69E9820];
@@ -64,10 +64,10 @@ void __38__SFUnlockManager_sharedUnlockManager__block_invoke()
     v14[2] = __81__SFUnlockManager_enableUnlockWithDevice_fromKey_withPasscode_completionHandler___block_invoke;
     v14[3] = &unk_1E788C148;
     v14[4] = self;
-    v17 = v12;
-    v15 = v10;
-    v18 = a4;
-    v16 = v11;
+    v17 = handlerCopy;
+    v15 = deviceCopy;
+    keyCopy = key;
+    v16 = passcodeCopy;
     [v13 unlockManagerWithCompletionHandler:v14];
   }
 }
@@ -144,16 +144,16 @@ void __81__SFUnlockManager_enableUnlockWithDevice_fromKey_withPasscode_completio
   dispatch_async(v6, block);
 }
 
-- (void)disableUnlockWithDevice:(id)a3
+- (void)disableUnlockWithDevice:(id)device
 {
-  v3 = a3;
+  deviceCopy = device;
   v4 = +[SFCompanionXPCManager sharedManager];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __43__SFUnlockManager_disableUnlockWithDevice___block_invoke;
   v6[3] = &unk_1E788BE50;
-  v7 = v3;
-  v5 = v3;
+  v7 = deviceCopy;
+  v5 = deviceCopy;
   [v4 unlockManagerWithCompletionHandler:v6];
 }
 
@@ -228,11 +228,11 @@ void __43__SFUnlockManager_disableUnlockWithDevice___block_invoke_135(uint64_t a
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)unlockEnabledWithDevice:(id)a3 completionHandler:(id)a4
+- (void)unlockEnabledWithDevice:(id)device completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  deviceCopy = device;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     v8 = +[SFCompanionXPCManager sharedManager];
     v9[0] = MEMORY[0x1E69E9820];
@@ -240,8 +240,8 @@ void __43__SFUnlockManager_disableUnlockWithDevice___block_invoke_135(uint64_t a
     v9[2] = __61__SFUnlockManager_unlockEnabledWithDevice_completionHandler___block_invoke;
     v9[3] = &unk_1E788C198;
     v9[4] = self;
-    v11 = v7;
-    v10 = v6;
+    v11 = handlerCopy;
+    v10 = deviceCopy;
     [v8 unlockManagerWithCompletionHandler:v9];
   }
 }
@@ -316,10 +316,10 @@ void __61__SFUnlockManager_unlockEnabledWithDevice_completionHandler___block_inv
   dispatch_async(v6, block);
 }
 
-- (void)establishStashBagWithCompletionHandler:(id)a3
+- (void)establishStashBagWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  if (v4)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     v5 = +[SFCompanionXPCManager sharedManager];
     v6[0] = MEMORY[0x1E69E9820];
@@ -327,7 +327,7 @@ void __61__SFUnlockManager_unlockEnabledWithDevice_completionHandler___block_inv
     v6[2] = __58__SFUnlockManager_establishStashBagWithCompletionHandler___block_invoke;
     v6[3] = &unk_1E788BFD8;
     v6[4] = self;
-    v7 = v4;
+    v7 = handlerCopy;
     [v5 unlockManagerWithCompletionHandler:v6];
   }
 }
@@ -403,13 +403,13 @@ void __58__SFUnlockManager_establishStashBagWithCompletionHandler___block_invoke
   dispatch_async(v6, block);
 }
 
-- (void)establishStashBagWithManifest:(id)a3 completionHandler:(id)a4
+- (void)establishStashBagWithManifest:(id)manifest completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  manifestCopy = manifest;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    if (v6)
+    if (manifestCopy)
     {
       v8 = +[SFCompanionXPCManager sharedManager];
       v13[0] = MEMORY[0x1E69E9820];
@@ -417,8 +417,8 @@ void __58__SFUnlockManager_establishStashBagWithCompletionHandler___block_invoke
       v13[2] = __67__SFUnlockManager_establishStashBagWithManifest_completionHandler___block_invoke_2;
       v13[3] = &unk_1E788C198;
       v13[4] = self;
-      v15 = v7;
-      v14 = v6;
+      v15 = handlerCopy;
+      v14 = manifestCopy;
       [v8 unlockManagerWithCompletionHandler:v13];
 
       v9 = v15;
@@ -438,7 +438,7 @@ void __58__SFUnlockManager_establishStashBagWithCompletionHandler___block_invoke
       block[1] = 3221225472;
       block[2] = __67__SFUnlockManager_establishStashBagWithManifest_completionHandler___block_invoke;
       block[3] = &unk_1E788B1C0;
-      v17 = v7;
+      v17 = handlerCopy;
       dispatch_async(delegateQueue, block);
       v9 = v17;
     }
@@ -539,18 +539,18 @@ void __67__SFUnlockManager_establishStashBagWithManifest_completionHandler___blo
   dispatch_async(v6, block);
 }
 
-- (void)unlockStateForDevice:(id)a3 completionHandler:(id)a4
+- (void)unlockStateForDevice:(id)device completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  deviceCopy = device;
+  handlerCopy = handler;
+  v8 = handlerCopy;
+  if (handlerCopy)
   {
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __58__SFUnlockManager_unlockStateForDevice_completionHandler___block_invoke;
     v16[3] = &unk_1E788B318;
-    v9 = v7;
+    v9 = handlerCopy;
     v16[4] = self;
     v17 = v9;
     v10 = [(SFUnlockManager *)self timerWithBlock:v16];
@@ -565,7 +565,7 @@ void __67__SFUnlockManager_establishStashBagWithManifest_completionHandler___blo
     v13[3] = &unk_1E788C198;
     v13[4] = self;
     v15 = v9;
-    v14 = v6;
+    v14 = deviceCopy;
     [v12 unlockManagerWithCompletionHandler:v13];
   }
 }
@@ -692,14 +692,14 @@ uint64_t __58__SFUnlockManager_unlockStateForDevice_completionHandler___block_in
   return [v3 cancelStateRequestTimer];
 }
 
-- (id)timerWithBlock:(id)a3
+- (id)timerWithBlock:(id)block
 {
   delegateQueue = self->_delegateQueue;
-  v4 = a3;
+  blockCopy = block;
   v5 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, delegateQueue);
   v6 = dispatch_time(0, 30000000000);
   dispatch_source_set_timer(v5, v6, 0xFFFFFFFFFFFFFFFFLL, 0);
-  dispatch_source_set_event_handler(v5, v4);
+  dispatch_source_set_event_handler(v5, blockCopy);
 
   return v5;
 }

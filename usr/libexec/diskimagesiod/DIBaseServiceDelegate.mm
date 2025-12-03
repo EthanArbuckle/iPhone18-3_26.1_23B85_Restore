@@ -1,5 +1,5 @@
 @interface DIBaseServiceDelegate
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (DIBaseServiceDelegate)init;
 - (void)createListener;
 - (void)startXPClistener;
@@ -57,9 +57,9 @@
   return v5;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
+  connectionCopy = connection;
   v6 = *__error();
   if (sub_1000E95F0())
   {
@@ -70,9 +70,9 @@
     v14 = 2080;
     v15 = "[DIBaseServiceDelegate listener:shouldAcceptNewConnection:]";
     v16 = 1024;
-    v17 = [v5 processIdentifier];
+    processIdentifier = [connectionCopy processIdentifier];
     v18 = 1024;
-    v19 = [v5 effectiveUserIdentifier];
+    effectiveUserIdentifier = [connectionCopy effectiveUserIdentifier];
     v20 = 1024;
     v21 = geteuid();
     v8 = _os_log_send_and_compose_impl();
@@ -94,9 +94,9 @@
       v14 = 2080;
       v15 = "[DIBaseServiceDelegate listener:shouldAcceptNewConnection:]";
       v16 = 1024;
-      v17 = [v5 processIdentifier];
+      processIdentifier = [connectionCopy processIdentifier];
       v18 = 1024;
-      v19 = [v5 effectiveUserIdentifier];
+      effectiveUserIdentifier = [connectionCopy effectiveUserIdentifier];
       v20 = 1024;
       v21 = geteuid();
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%.*s: Received connection from pid %d with euid %d. Our euid is %d", buf, 0x24u);
@@ -104,8 +104,8 @@
   }
 
   *__error() = v6;
-  v10 = [(DIBaseServiceDelegate *)self setupNewConnection:v5];
-  [v5 resume];
+  v10 = [(DIBaseServiceDelegate *)self setupNewConnection:connectionCopy];
+  [connectionCopy resume];
   [(DIBaseServiceDelegate *)self validateConnection];
 
   return v10;
@@ -120,11 +120,11 @@
 - (void)startXPClistener
 {
   [(DIBaseServiceDelegate *)self createListener];
-  v3 = [(DIBaseServiceDelegate *)self listener];
-  [v3 setDelegate:self];
+  listener = [(DIBaseServiceDelegate *)self listener];
+  [listener setDelegate:self];
 
-  v4 = [(DIBaseServiceDelegate *)self listener];
-  [v4 resume];
+  listener2 = [(DIBaseServiceDelegate *)self listener];
+  [listener2 resume];
 }
 
 @end

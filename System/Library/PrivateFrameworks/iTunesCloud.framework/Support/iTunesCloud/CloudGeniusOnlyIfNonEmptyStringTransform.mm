@@ -1,16 +1,16 @@
 @interface CloudGeniusOnlyIfNonEmptyStringTransform
-- (id)geniusValueForMLValue:(id)a3;
+- (id)geniusValueForMLValue:(id)value;
 @end
 
 @implementation CloudGeniusOnlyIfNonEmptyStringTransform
 
-- (id)geniusValueForMLValue:(id)a3
+- (id)geniusValueForMLValue:(id)value
 {
-  v3 = a3;
+  valueCopy = value;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && [v3 length])
+  if ((objc_opt_isKindOfClass() & 1) != 0 && [valueCopy length])
   {
-    v4 = v3;
+    v4 = valueCopy;
   }
 
   else

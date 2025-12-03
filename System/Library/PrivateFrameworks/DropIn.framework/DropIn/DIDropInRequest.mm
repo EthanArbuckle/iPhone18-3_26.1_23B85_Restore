@@ -1,63 +1,63 @@
 @interface DIDropInRequest
-- (BOOL)isEqual:(id)a3;
-- (DIDropInRequest)initWithCoder:(id)a3;
-- (DIDropInRequest)initWithDevice:(id)a3;
-- (DIDropInRequest)initWithHandle:(id)a3 connectionManager:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (DIDropInRequest)initWithCoder:(id)coder;
+- (DIDropInRequest)initWithDevice:(id)device;
+- (DIDropInRequest)initWithHandle:(id)handle connectionManager:(id)manager;
 - (DIXPCConnectionManager)connectionManager;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DIDropInRequest
 
-- (DIDropInRequest)initWithDevice:(id)a3
+- (DIDropInRequest)initWithDevice:(id)device
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  deviceCopy = device;
   v5 = DILogHandleDropInRequest();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v14 = 138412546;
     v15 = &stru_285D02BA8;
     v16 = 2112;
-    v17 = v4;
+    v17 = deviceCopy;
     _os_log_impl(&dword_249DA7000, v5, OS_LOG_TYPE_DEFAULT, "%@Creating Request with device %@", &v14, 0x16u);
   }
 
-  v6 = [v4 homeKitIdentifier];
-  if (v6)
+  homeKitIdentifier = [deviceCopy homeKitIdentifier];
+  if (homeKitIdentifier)
   {
-    v7 = [v4 homeKitIdentifier];
-    v8 = [v7 UUIDString];
+    homeKitIdentifier2 = [deviceCopy homeKitIdentifier];
+    uUIDString = [homeKitIdentifier2 UUIDString];
   }
 
   else
   {
-    v8 = &stru_285D02BA8;
+    uUIDString = &stru_285D02BA8;
   }
 
-  v9 = [[DIHandle alloc] initWithType:0 value:v8];
-  v10 = [v4 connectionManager];
-  v11 = [(DIDropInRequest *)self initWithHandle:v9 connectionManager:v10];
+  v9 = [[DIHandle alloc] initWithType:0 value:uUIDString];
+  connectionManager = [deviceCopy connectionManager];
+  v11 = [(DIDropInRequest *)self initWithHandle:v9 connectionManager:connectionManager];
 
   v12 = *MEMORY[0x277D85DE8];
   return v11;
 }
 
-- (DIDropInRequest)initWithHandle:(id)a3 connectionManager:(id)a4
+- (DIDropInRequest)initWithHandle:(id)handle connectionManager:(id)manager
 {
   v19 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  handleCopy = handle;
+  managerCopy = manager;
   v14.receiver = self;
   v14.super_class = DIDropInRequest;
   v9 = [(DIDropInRequest *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_handle, a3);
-    objc_storeWeak(&v10->_connectionManager, v8);
+    objc_storeStrong(&v9->_handle, handle);
+    objc_storeWeak(&v10->_connectionManager, managerCopy);
   }
 
   v11 = DILogHandleDropInRequest();
@@ -74,10 +74,10 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -87,11 +87,11 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(DIDropInRequest *)self handle];
-      v7 = [(DIDropInRequest *)v5 handle];
+      v5 = equalCopy;
+      handle = [(DIDropInRequest *)self handle];
+      handle2 = [(DIDropInRequest *)v5 handle];
 
-      v8 = [v6 isEqual:v7];
+      v8 = [handle isEqual:handle2];
     }
 
     else
@@ -105,8 +105,8 @@
 
 - (unint64_t)hash
 {
-  v2 = [(DIDropInRequest *)self handle];
-  v3 = [v2 hash];
+  handle = [(DIDropInRequest *)self handle];
+  v3 = [handle hash];
 
   return v3;
 }
@@ -115,36 +115,36 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(DIDropInRequest *)self handle];
-  v6 = [v3 stringWithFormat:@"<%@: %p> Handle = [%@]", v4, self, v5];
+  handle = [(DIDropInRequest *)self handle];
+  v6 = [v3 stringWithFormat:@"<%@: %p> Handle = [%@]", v4, self, handle];
 
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(DIDropInRequest *)self handle];
-  [v4 encodeObject:v5 forKey:@"Handle"];
+  coderCopy = coder;
+  handle = [(DIDropInRequest *)self handle];
+  [coderCopy encodeObject:handle forKey:@"Handle"];
 
-  v6 = [(DIDropInRequest *)self existingSessionIdentifier];
-  [v4 encodeObject:v6 forKey:@"ExistingSessionIdentifier"];
+  existingSessionIdentifier = [(DIDropInRequest *)self existingSessionIdentifier];
+  [coderCopy encodeObject:existingSessionIdentifier forKey:@"ExistingSessionIdentifier"];
 }
 
-- (DIDropInRequest)initWithCoder:(id)a3
+- (DIDropInRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(DIDropInRequest *)self init];
   if (!v5)
   {
     goto LABEL_4;
   }
 
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Handle"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Handle"];
   if (v6)
   {
     [(DIDropInRequest *)v5 setHandle:v6];
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ExistingSessionIdentifier"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ExistingSessionIdentifier"];
     [(DIDropInRequest *)v5 setExistingSessionIdentifier:v7];
 
 LABEL_4:

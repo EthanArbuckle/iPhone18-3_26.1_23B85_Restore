@@ -18,13 +18,13 @@
     _os_log_impl(&dword_269B11000, v3, OS_LOG_TYPE_DEFAULT, "[%{public}@] it's time for wind down", buf, 0xCu);
   }
 
-  v5 = [(HKSPStateMachineState *)self stateMachine];
+  stateMachine = [(HKSPStateMachineState *)self stateMachine];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __63__HDSPSleepScheduleStateCoordinatorWakeUpState_windDownReached__block_invoke;
   v9[3] = &unk_279C7B108;
-  v10 = v5;
-  v6 = v5;
+  v10 = stateMachine;
+  v6 = stateMachine;
   v7 = [HDSPSleepScheduleStateCoordinatorStateMachineContext contextWithReason:1];
   [v6 perform:v9 withContext:v7];
 
@@ -50,13 +50,13 @@ void __63__HDSPSleepScheduleStateCoordinatorWakeUpState_windDownReached__block_i
     _os_log_impl(&dword_269B11000, v3, OS_LOG_TYPE_DEFAULT, "[%{public}@] it's time for bed", buf, 0xCu);
   }
 
-  v5 = [(HKSPStateMachineState *)self stateMachine];
+  stateMachine = [(HKSPStateMachineState *)self stateMachine];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __62__HDSPSleepScheduleStateCoordinatorWakeUpState_bedtimeReached__block_invoke;
   v9[3] = &unk_279C7B108;
-  v10 = v5;
-  v6 = v5;
+  v10 = stateMachine;
+  v6 = stateMachine;
   v7 = [HDSPSleepScheduleStateCoordinatorStateMachineContext contextWithReason:1];
   [v6 perform:v9 withContext:v7];
 
@@ -72,17 +72,17 @@ void __62__HDSPSleepScheduleStateCoordinatorWakeUpState_bedtimeReached__block_in
 
 - (id)expirationDate
 {
-  v2 = [(HKSPStateMachineState *)self stateMachine];
-  v3 = [v2 infoProvider];
+  stateMachine = [(HKSPStateMachineState *)self stateMachine];
+  infoProvider = [stateMachine infoProvider];
 
-  v4 = [v3 sleepScheduleModel];
-  v5 = [v3 currentDate];
-  v6 = [v4 upcomingEventsDueAfterDate:v5];
+  sleepScheduleModel = [infoProvider sleepScheduleModel];
+  currentDate = [infoProvider currentDate];
+  v6 = [sleepScheduleModel upcomingEventsDueAfterDate:currentDate];
   v7 = [v6 na_filter:&__block_literal_global_27];
-  v8 = [v7 firstObject];
-  v9 = [v8 dueDate];
+  firstObject = [v7 firstObject];
+  dueDate = [firstObject dueDate];
 
-  return v9;
+  return dueDate;
 }
 
 uint64_t __62__HDSPSleepScheduleStateCoordinatorWakeUpState_expirationDate__block_invoke(uint64_t a1, void *a2)

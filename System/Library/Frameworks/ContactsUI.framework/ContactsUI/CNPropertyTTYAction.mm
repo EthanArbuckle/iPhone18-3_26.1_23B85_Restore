@@ -1,42 +1,42 @@
 @interface CNPropertyTTYAction
-- (void)performActionForItem:(id)a3 sender:(id)a4;
+- (void)performActionForItem:(id)item sender:(id)sender;
 @end
 
 @implementation CNPropertyTTYAction
 
-- (void)performActionForItem:(id)a3 sender:(id)a4
+- (void)performActionForItem:(id)item sender:(id)sender
 {
-  v19 = a3;
-  v4 = [v19 labeledValue];
-  v5 = [v4 value];
+  itemCopy = item;
+  labeledValue = [itemCopy labeledValue];
+  value = [labeledValue value];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  v7 = v19;
+  v7 = itemCopy;
   if (isKindOfClass)
   {
-    v8 = [v19 labeledValue];
-    v9 = [v8 value];
+    labeledValue2 = [itemCopy labeledValue];
+    value2 = [labeledValue2 value];
 
-    v10 = [v9 stringValue];
-    v11 = [v19 contact];
-    if (![v10 length])
+    stringValue = [value2 stringValue];
+    contact = [itemCopy contact];
+    if (![stringValue length])
     {
 LABEL_9:
 
-      v7 = v19;
+      v7 = itemCopy;
       goto LABEL_10;
     }
 
-    v12 = [objc_alloc(MEMORY[0x1E6996A90]) initWithStringValue:v10 type:2];
-    v13 = [v19 delegate];
+    v12 = [objc_alloc(MEMORY[0x1E6996A90]) initWithStringValue:stringValue type:2];
+    delegate = [itemCopy delegate];
     v14 = objc_opt_respondsToSelector();
 
     if (v14)
     {
-      v15 = [v19 delegate];
-      v16 = [v15 geminiDataSource];
-      v17 = [v16 channelIdentifier];
+      delegate2 = [itemCopy delegate];
+      geminiDataSource = [delegate2 geminiDataSource];
+      channelIdentifier = [geminiDataSource channelIdentifier];
 
       if ((*(*MEMORY[0x1E6996568] + 16))())
       {
@@ -44,7 +44,7 @@ LABEL_9:
 
       else
       {
-        v18 = [MEMORY[0x1E695DFF8] _cnui_ttyURLWithHandle:v12 contact:v11 channelIdentifier:v17];
+        v18 = [MEMORY[0x1E695DFF8] _cnui_ttyURLWithHandle:v12 contact:contact channelIdentifier:channelIdentifier];
 
         if (v18)
         {
@@ -56,7 +56,7 @@ LABEL_8:
       }
     }
 
-    v18 = [MEMORY[0x1E695DFF8] _cnui_ttyURLWithHandle:v12 contact:v11];
+    v18 = [MEMORY[0x1E695DFF8] _cnui_ttyURLWithHandle:v12 contact:contact];
     goto LABEL_8;
   }
 

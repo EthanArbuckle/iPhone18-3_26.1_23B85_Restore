@@ -1,47 +1,47 @@
 @interface AFBluetoothWirelessSplitterSessionInfo
-+ (id)newWithBuilder:(id)a3;
-- (AFBluetoothWirelessSplitterSessionInfo)initWithBuilder:(id)a3;
-- (AFBluetoothWirelessSplitterSessionInfo)initWithCoder:(id)a3;
-- (AFBluetoothWirelessSplitterSessionInfo)initWithState:(int64_t)a3 deviceAddresses:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (id)_descriptionWithIndent:(unint64_t)a3;
-- (id)mutatedCopyWithMutator:(id)a3;
++ (id)newWithBuilder:(id)builder;
+- (AFBluetoothWirelessSplitterSessionInfo)initWithBuilder:(id)builder;
+- (AFBluetoothWirelessSplitterSessionInfo)initWithCoder:(id)coder;
+- (AFBluetoothWirelessSplitterSessionInfo)initWithState:(int64_t)state deviceAddresses:(id)addresses;
+- (BOOL)isEqual:(id)equal;
+- (id)_descriptionWithIndent:(unint64_t)indent;
+- (id)mutatedCopyWithMutator:(id)mutator;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AFBluetoothWirelessSplitterSessionInfo
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E696AD98];
   state = self->_state;
-  v7 = a3;
+  coderCopy = coder;
   v6 = [v4 numberWithInteger:state];
-  [v7 encodeObject:v6 forKey:@"AFBluetoothWirelessSplitterSessionInfo::state"];
+  [coderCopy encodeObject:v6 forKey:@"AFBluetoothWirelessSplitterSessionInfo::state"];
 
-  [v7 encodeObject:self->_deviceAddresses forKey:@"AFBluetoothWirelessSplitterSessionInfo::deviceAddresses"];
+  [coderCopy encodeObject:self->_deviceAddresses forKey:@"AFBluetoothWirelessSplitterSessionInfo::deviceAddresses"];
 }
 
-- (AFBluetoothWirelessSplitterSessionInfo)initWithCoder:(id)a3
+- (AFBluetoothWirelessSplitterSessionInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AFBluetoothWirelessSplitterSessionInfo::state"];
-  v6 = [v5 integerValue];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFBluetoothWirelessSplitterSessionInfo::state"];
+  integerValue = [v5 integerValue];
 
   v7 = MEMORY[0x1E695DFD8];
   v8 = objc_opt_class();
   v9 = [v7 setWithObjects:{v8, objc_opt_class(), 0}];
-  v10 = [v4 decodeObjectOfClasses:v9 forKey:@"AFBluetoothWirelessSplitterSessionInfo::deviceAddresses"];
+  v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"AFBluetoothWirelessSplitterSessionInfo::deviceAddresses"];
 
-  v11 = [(AFBluetoothWirelessSplitterSessionInfo *)self initWithState:v6 deviceAddresses:v10];
+  v11 = [(AFBluetoothWirelessSplitterSessionInfo *)self initWithState:integerValue deviceAddresses:v10];
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -51,13 +51,13 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       state = self->_state;
       if (state == [(AFBluetoothWirelessSplitterSessionInfo *)v5 state])
       {
-        v7 = [(AFBluetoothWirelessSplitterSessionInfo *)v5 deviceAddresses];
+        deviceAddresses = [(AFBluetoothWirelessSplitterSessionInfo *)v5 deviceAddresses];
         deviceAddresses = self->_deviceAddresses;
-        v9 = deviceAddresses == v7 || [(NSArray *)deviceAddresses isEqual:v7];
+        v9 = deviceAddresses == deviceAddresses || [(NSArray *)deviceAddresses isEqual:deviceAddresses];
       }
 
       else
@@ -84,7 +84,7 @@
   return v5 ^ v4;
 }
 
-- (id)_descriptionWithIndent:(unint64_t)a3
+- (id)_descriptionWithIndent:(unint64_t)indent
 {
   v4 = objc_alloc(MEMORY[0x1E696AEC0]);
   v11.receiver = self;
@@ -107,16 +107,16 @@
   return v9;
 }
 
-- (AFBluetoothWirelessSplitterSessionInfo)initWithState:(int64_t)a3 deviceAddresses:(id)a4
+- (AFBluetoothWirelessSplitterSessionInfo)initWithState:(int64_t)state deviceAddresses:(id)addresses
 {
-  v6 = a4;
+  addressesCopy = addresses;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __72__AFBluetoothWirelessSplitterSessionInfo_initWithState_deviceAddresses___block_invoke;
   v10[3] = &unk_1E7341DE8;
-  v11 = v6;
-  v12 = a3;
-  v7 = v6;
+  v11 = addressesCopy;
+  stateCopy = state;
+  v7 = addressesCopy;
   v8 = [(AFBluetoothWirelessSplitterSessionInfo *)self initWithBuilder:v10];
 
   return v8;
@@ -130,22 +130,22 @@ void __72__AFBluetoothWirelessSplitterSessionInfo_initWithState_deviceAddresses_
   [v4 setDeviceAddresses:*(a1 + 32)];
 }
 
-- (AFBluetoothWirelessSplitterSessionInfo)initWithBuilder:(id)a3
+- (AFBluetoothWirelessSplitterSessionInfo)initWithBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v12.receiver = self;
   v12.super_class = AFBluetoothWirelessSplitterSessionInfo;
   v5 = [(AFBluetoothWirelessSplitterSessionInfo *)&v12 init];
   v6 = v5;
-  if (v4 && v5)
+  if (builderCopy && v5)
   {
     v7 = [[_AFBluetoothWirelessSplitterSessionInfoMutation alloc] initWithBase:0];
-    v4[2](v4, v7);
+    builderCopy[2](builderCopy, v7);
     if ([(_AFBluetoothWirelessSplitterSessionInfoMutation *)v7 isDirty])
     {
       v6->_state = [(_AFBluetoothWirelessSplitterSessionInfoMutation *)v7 getState];
-      v8 = [(_AFBluetoothWirelessSplitterSessionInfoMutation *)v7 getDeviceAddresses];
-      v9 = [v8 copy];
+      getDeviceAddresses = [(_AFBluetoothWirelessSplitterSessionInfoMutation *)v7 getDeviceAddresses];
+      v9 = [getDeviceAddresses copy];
       deviceAddresses = v6->_deviceAddresses;
       v6->_deviceAddresses = v9;
     }
@@ -154,27 +154,27 @@ void __72__AFBluetoothWirelessSplitterSessionInfo_initWithState_deviceAddresses_
   return v6;
 }
 
-+ (id)newWithBuilder:(id)a3
++ (id)newWithBuilder:(id)builder
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:v3];
+  builderCopy = builder;
+  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:builderCopy];
 
   return v4;
 }
 
-- (id)mutatedCopyWithMutator:(id)a3
+- (id)mutatedCopyWithMutator:(id)mutator
 {
-  v4 = a3;
-  if (v4)
+  mutatorCopy = mutator;
+  if (mutatorCopy)
   {
     v5 = [[_AFBluetoothWirelessSplitterSessionInfoMutation alloc] initWithBase:self];
-    v4[2](v4, v5);
+    mutatorCopy[2](mutatorCopy, v5);
     if ([(_AFBluetoothWirelessSplitterSessionInfoMutation *)v5 isDirty])
     {
       v6 = objc_alloc_init(AFBluetoothWirelessSplitterSessionInfo);
       v6->_state = [(_AFBluetoothWirelessSplitterSessionInfoMutation *)v5 getState];
-      v7 = [(_AFBluetoothWirelessSplitterSessionInfoMutation *)v5 getDeviceAddresses];
-      v8 = [v7 copy];
+      getDeviceAddresses = [(_AFBluetoothWirelessSplitterSessionInfoMutation *)v5 getDeviceAddresses];
+      v8 = [getDeviceAddresses copy];
       deviceAddresses = v6->_deviceAddresses;
       v6->_deviceAddresses = v8;
     }

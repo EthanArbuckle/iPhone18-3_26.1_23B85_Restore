@@ -1,31 +1,31 @@
 @interface SearchUIMediaHandler
 - (void)executeFallbackPath;
-- (void)performCommand:(id)a3 triggerEvent:(unint64_t)a4 environment:(id)a5;
-- (void)performIntent:(id)a3 withBundleIdentifier:(id)a4;
-- (void)workflowRunnerClient:(id)a3 didFinishRunningWorkflowWithOutput:(id)a4 error:(id)a5 cancelled:(BOOL)a6;
+- (void)performCommand:(id)command triggerEvent:(unint64_t)event environment:(id)environment;
+- (void)performIntent:(id)intent withBundleIdentifier:(id)identifier;
+- (void)workflowRunnerClient:(id)client didFinishRunningWorkflowWithOutput:(id)output error:(id)error cancelled:(BOOL)cancelled;
 @end
 
 @implementation SearchUIMediaHandler
 
-- (void)performCommand:(id)a3 triggerEvent:(unint64_t)a4 environment:(id)a5
+- (void)performCommand:(id)command triggerEvent:(unint64_t)event environment:(id)environment
 {
-  v6 = [(SearchUIMediaHandler *)self clientSelectedBundleIdentifier:a3];
+  v6 = [(SearchUIMediaHandler *)self clientSelectedBundleIdentifier:command];
   if ([v6 length])
   {
-    v7 = [(SearchUIMediaHandler *)self intent];
-    [(SearchUIMediaHandler *)self performIntent:v7 withBundleIdentifier:v6];
+    intent = [(SearchUIMediaHandler *)self intent];
+    [(SearchUIMediaHandler *)self performIntent:intent withBundleIdentifier:v6];
   }
 
   else
   {
-    v8 = [(SearchUIMediaHandler *)self mediaMetadata];
+    mediaMetadata = [(SearchUIMediaHandler *)self mediaMetadata];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __64__SearchUIMediaHandler_performCommand_triggerEvent_environment___block_invoke;
     v10[3] = &unk_1E85B3930;
-    v11 = v8;
-    v12 = self;
-    v9 = v8;
+    v11 = mediaMetadata;
+    selfCopy = self;
+    v9 = mediaMetadata;
     [SearchUIMediaUtilities predictionForMediaMetadata:v9 completion:v10];
   }
 }
@@ -211,24 +211,24 @@ void __64__SearchUIMediaHandler_performCommand_triggerEvent_environment___block_
   [v4 executeWithTriggerEvent:2];
 }
 
-- (void)performIntent:(id)a3 withBundleIdentifier:(id)a4
+- (void)performIntent:(id)intent withBundleIdentifier:(id)identifier
 {
   v12 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  objc_storeStrong(&self->_clientSelectedBundleIdentifier, a4);
+  intentCopy = intent;
+  identifierCopy = identifier;
+  objc_storeStrong(&self->_clientSelectedBundleIdentifier, identifier);
   v8 = SearchUITapLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412290;
-    v11 = v7;
+    v11 = identifierCopy;
     _os_log_impl(&dword_1DA169000, v8, OS_LOG_TYPE_DEFAULT, "media bundle identifier selected %@", &v10, 0xCu);
   }
 
   if ([(SearchUIMediaHandler *)self supportsIntentPath])
   {
-    [v6 _setLaunchId:v7];
-    v9 = [objc_alloc(MEMORY[0x1E69E0D58]) initWithIntent:v6];
+    [intentCopy _setLaunchId:identifierCopy];
+    v9 = [objc_alloc(MEMORY[0x1E69E0D58]) initWithIntent:intentCopy];
     [v9 setDelegate:self];
     [v9 start];
     [(SearchUIMediaHandler *)self setWorkflowClient:v9];
@@ -249,20 +249,20 @@ void __64__SearchUIMediaHandler_performCommand_triggerEvent_environment___block_
 - (void)executeFallbackPath
 {
   v8 = *MEMORY[0x1E69E9840];
-  v3 = [a1 mediaMetadata];
-  v4 = [v3 mediaPunchouts];
-  v5 = [v4 firstObject];
-  v6 = [v5 preferredOpenableURL];
+  mediaMetadata = [self mediaMetadata];
+  mediaPunchouts = [mediaMetadata mediaPunchouts];
+  firstObject = [mediaPunchouts firstObject];
+  preferredOpenableURL = [firstObject preferredOpenableURL];
   OUTLINED_FUNCTION_1();
   _os_log_error_impl(&dword_1DA169000, a2, OS_LOG_TYPE_ERROR, "No clientSelectedBundleIDentifier, running first media punchout %@", v7, 0xCu);
 }
 
-- (void)workflowRunnerClient:(id)a3 didFinishRunningWorkflowWithOutput:(id)a4 error:(id)a5 cancelled:(BOOL)a6
+- (void)workflowRunnerClient:(id)client didFinishRunningWorkflowWithOutput:(id)output error:(id)error cancelled:(BOOL)cancelled
 {
-  v7 = a5;
+  errorCopy = error;
   v8 = SearchUITapLog();
   v9 = v8;
-  if (v7)
+  if (errorCopy)
   {
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {

@@ -1,19 +1,19 @@
 @interface ASUSQLiteConnectionOptions
-- (ASUSQLiteConnectionOptions)initWithDatabasePath:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (ASUSQLiteConnectionOptions)initWithDatabasePath:(id)path;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation ASUSQLiteConnectionOptions
 
-- (ASUSQLiteConnectionOptions)initWithDatabasePath:(id)a3
+- (ASUSQLiteConnectionOptions)initWithDatabasePath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v9.receiver = self;
   v9.super_class = ASUSQLiteConnectionOptions;
   v5 = [(ASUSQLiteConnectionOptions *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [pathCopy copy];
     databasePath = v5->_databasePath;
     v5->_databasePath = v6;
 
@@ -23,18 +23,18 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (v5)
   {
     *(v5 + 16) = self->_cacheSize;
-    v7 = [(NSString *)self->_databasePath copyWithZone:a3];
+    v7 = [(NSString *)self->_databasePath copyWithZone:zone];
     v8 = *(v6 + 24);
     *(v6 + 24) = v7;
 
-    v9 = [(NSString *)self->_encryptionKeyId copyWithZone:a3];
+    v9 = [(NSString *)self->_encryptionKeyId copyWithZone:zone];
     v10 = *(v6 + 32);
     *(v6 + 32) = v9;
 

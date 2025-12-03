@@ -1,22 +1,22 @@
 @interface HMDAssistantCharacteristicTuple
 - (HMDAssistantCharacteristicTuple)init;
-- (HMDAssistantCharacteristicTuple)initWithAttribute:(id)a3 value:(id)a4;
+- (HMDAssistantCharacteristicTuple)initWithAttribute:(id)attribute value:(id)value;
 @end
 
 @implementation HMDAssistantCharacteristicTuple
 
-- (HMDAssistantCharacteristicTuple)initWithAttribute:(id)a3 value:(id)a4
+- (HMDAssistantCharacteristicTuple)initWithAttribute:(id)attribute value:(id)value
 {
-  v7 = a3;
-  v8 = a4;
+  attributeCopy = attribute;
+  valueCopy = value;
   v12.receiver = self;
   v12.super_class = HMDAssistantCharacteristicTuple;
   v9 = [(HMDAssistantCharacteristicTuple *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_attribute, a3);
-    objc_storeStrong(&v10->_value, a4);
+    objc_storeStrong(&v9->_attribute, attribute);
+    objc_storeStrong(&v10->_value, value);
   }
 
   return v10;

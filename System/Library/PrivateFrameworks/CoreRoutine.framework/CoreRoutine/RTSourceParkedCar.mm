@@ -1,36 +1,36 @@
 @interface RTSourceParkedCar
-- (BOOL)isEqual:(id)a3;
-- (RTSourceParkedCar)initWithCoder:(id)a3;
-- (RTSourceParkedCar)initWithIdentifier:(id)a3 parkDate:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (RTSourceParkedCar)initWithCoder:(id)coder;
+- (RTSourceParkedCar)initWithIdentifier:(id)identifier parkDate:(id)date;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RTSourceParkedCar
 
-- (RTSourceParkedCar)initWithIdentifier:(id)a3 parkDate:(id)a4
+- (RTSourceParkedCar)initWithIdentifier:(id)identifier parkDate:(id)date
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  dateCopy = date;
   v12.receiver = self;
   v12.super_class = RTSourceParkedCar;
   v9 = [(RTSourceParkedCar *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_identifier, a3);
-    objc_storeStrong(&v10->_parkDate, a4);
+    objc_storeStrong(&v9->_identifier, identifier);
+    objc_storeStrong(&v10->_parkDate, date);
   }
 
   return v10;
 }
 
-- (RTSourceParkedCar)initWithCoder:(id)a3
+- (RTSourceParkedCar)initWithCoder:(id)coder
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (([v4 allowsKeyedCoding] & 1) == 0)
+  coderCopy = coder;
+  if (([coderCopy allowsKeyedCoding] & 1) == 0)
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -43,19 +43,19 @@
     }
   }
 
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"parkDate"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"parkDate"];
 
   v8 = [(RTSourceParkedCar *)self initWithIdentifier:v6 parkDate:v7];
   v9 = *MEMORY[0x1E69E9840];
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (([v4 allowsKeyedCoding] & 1) == 0)
+  coderCopy = coder;
+  if (([coderCopy allowsKeyedCoding] & 1) == 0)
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -68,37 +68,37 @@
     }
   }
 
-  v6 = [(RTSourceParkedCar *)self identifier];
-  [v4 encodeObject:v6 forKey:@"identifier"];
+  identifier = [(RTSourceParkedCar *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 
-  v7 = [(RTSourceParkedCar *)self parkDate];
-  [v4 encodeObject:v7 forKey:@"parkDate"];
+  parkDate = [(RTSourceParkedCar *)self parkDate];
+  [coderCopy encodeObject:parkDate forKey:@"parkDate"];
 
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
+  equalCopy = equal;
   v16.receiver = self;
   v16.super_class = RTSourceParkedCar;
-  if ([(RTSource *)&v16 isEqual:v5])
+  if ([(RTSource *)&v16 isEqual:equalCopy])
   {
-    v6 = v5;
-    v7 = [(RTSourceParkedCar *)self identifier];
-    if (v7 || ([v6 identifier], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+    v6 = equalCopy;
+    identifier = [(RTSourceParkedCar *)self identifier];
+    if (identifier || ([v6 identifier], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v8 = [(RTSourceParkedCar *)self identifier];
-      v9 = [v6 identifier];
-      v10 = [v8 isEqualToString:v9];
+      identifier2 = [(RTSourceParkedCar *)self identifier];
+      identifier3 = [v6 identifier];
+      v10 = [identifier2 isEqualToString:identifier3];
 
-      if (v7)
+      if (identifier)
       {
 LABEL_9:
 
-        v12 = [(RTSourceParkedCar *)self parkDate];
-        v13 = [v6 parkDate];
-        v14 = [v12 isEqualToDate:v13];
+        parkDate = [(RTSourceParkedCar *)self parkDate];
+        parkDate2 = [v6 parkDate];
+        v14 = [parkDate isEqualToDate:parkDate2];
 
         v11 = v10 & v14;
         goto LABEL_10;
@@ -124,10 +124,10 @@ LABEL_10:
   v9.receiver = self;
   v9.super_class = RTSourceParkedCar;
   v3 = [(RTSource *)&v9 hash];
-  v4 = [(RTSourceParkedCar *)self identifier];
-  v5 = [v4 hash];
-  v6 = [(RTSourceParkedCar *)self parkDate];
-  v7 = v5 ^ [v6 hash];
+  identifier = [(RTSourceParkedCar *)self identifier];
+  v5 = [identifier hash];
+  parkDate = [(RTSourceParkedCar *)self parkDate];
+  v7 = v5 ^ [parkDate hash];
 
   return v7 ^ v3;
 }
@@ -138,10 +138,10 @@ LABEL_10:
   v10.receiver = self;
   v10.super_class = RTSourceParkedCar;
   v4 = [(RTSource *)&v10 description];
-  v5 = [(RTSourceParkedCar *)self identifier];
-  v6 = [(RTSourceParkedCar *)self parkDate];
-  v7 = [v6 stringFromDate];
-  v8 = [v3 stringWithFormat:@"%@, identifier, %@, parkDate, %@", v4, v5, v7];
+  identifier = [(RTSourceParkedCar *)self identifier];
+  parkDate = [(RTSourceParkedCar *)self parkDate];
+  stringFromDate = [parkDate stringFromDate];
+  v8 = [v3 stringWithFormat:@"%@, identifier, %@, parkDate, %@", v4, identifier, stringFromDate];
 
   return v8;
 }

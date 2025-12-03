@@ -1,5 +1,5 @@
 @interface UPPreprocessorOutput
-- (UPPreprocessorOutput)initWithEmbeddingsTensor:(UPGenericTensor *)a3 spanLabelsTensor:(UPGenericTensor *)a4 outputTokens:()vector<nl_featurization:(std::allocator<nl_featurization::Token>> *)a5 :Token;
+- (UPPreprocessorOutput)initWithEmbeddingsTensor:(UPGenericTensor *)tensor spanLabelsTensor:(UPGenericTensor *)labelsTensor outputTokens:()vector<nl_featurization:(std::allocator<nl_featurization::Token>> *)nl_featurization :Token;
 - (id).cxx_construct;
 @end
 
@@ -18,7 +18,7 @@
   return self;
 }
 
-- (UPPreprocessorOutput)initWithEmbeddingsTensor:(UPGenericTensor *)a3 spanLabelsTensor:(UPGenericTensor *)a4 outputTokens:()vector<nl_featurization:(std::allocator<nl_featurization::Token>> *)a5 :Token
+- (UPPreprocessorOutput)initWithEmbeddingsTensor:(UPGenericTensor *)tensor spanLabelsTensor:(UPGenericTensor *)labelsTensor outputTokens:()vector<nl_featurization:(std::allocator<nl_featurization::Token>> *)nl_featurization :Token
 {
   v33.receiver = self;
   v33.super_class = UPPreprocessorOutput;
@@ -37,11 +37,11 @@
       v9->_embeddingsTensor.shape.__cap_ = 0;
     }
 
-    *&v9->_embeddingsTensor.shape.__begin_ = *&a3->shape.__begin_;
-    v9->_embeddingsTensor.shape.__cap_ = a3->shape.__cap_;
-    a3->shape.__begin_ = 0;
-    a3->shape.__end_ = 0;
-    a3->shape.__cap_ = 0;
+    *&v9->_embeddingsTensor.shape.__begin_ = *&tensor->shape.__begin_;
+    v9->_embeddingsTensor.shape.__cap_ = tensor->shape.__cap_;
+    tensor->shape.__begin_ = 0;
+    tensor->shape.__end_ = 0;
+    tensor->shape.__cap_ = 0;
     v12 = v9->_embeddingsTensor.data.__begin_;
     if (v12)
     {
@@ -52,11 +52,11 @@
       v9->_embeddingsTensor.data.__cap_ = 0;
     }
 
-    *&v9->_embeddingsTensor.data.__begin_ = *&a3->data.__begin_;
-    v9->_embeddingsTensor.data.__cap_ = a3->data.__cap_;
-    a3->data.__begin_ = 0;
-    a3->data.__end_ = 0;
-    a3->data.__cap_ = 0;
+    *&v9->_embeddingsTensor.data.__begin_ = *&tensor->data.__begin_;
+    v9->_embeddingsTensor.data.__cap_ = tensor->data.__cap_;
+    tensor->data.__begin_ = 0;
+    tensor->data.__end_ = 0;
+    tensor->data.__cap_ = 0;
     v13 = v9->_spanLabelsTensor.shape.__begin_;
     if (v13)
     {
@@ -67,11 +67,11 @@
       v9->_spanLabelsTensor.shape.__cap_ = 0;
     }
 
-    *&v9->_spanLabelsTensor.shape.__begin_ = *&a4->shape.__begin_;
-    v9->_spanLabelsTensor.shape.__cap_ = a4->shape.__cap_;
-    a4->shape.__begin_ = 0;
-    a4->shape.__end_ = 0;
-    a4->shape.__cap_ = 0;
+    *&v9->_spanLabelsTensor.shape.__begin_ = *&labelsTensor->shape.__begin_;
+    v9->_spanLabelsTensor.shape.__cap_ = labelsTensor->shape.__cap_;
+    labelsTensor->shape.__begin_ = 0;
+    labelsTensor->shape.__end_ = 0;
+    labelsTensor->shape.__cap_ = 0;
     v14 = v9->_spanLabelsTensor.data.__begin_;
     if (v14)
     {
@@ -82,16 +82,16 @@
       v9->_spanLabelsTensor.data.__cap_ = 0;
     }
 
-    *&v9->_spanLabelsTensor.data.__begin_ = *&a4->data.__begin_;
-    v9->_spanLabelsTensor.data.__cap_ = a4->data.__cap_;
-    a4->data.__begin_ = 0;
-    a4->data.__end_ = 0;
-    a4->data.__cap_ = 0;
+    *&v9->_spanLabelsTensor.data.__begin_ = *&labelsTensor->data.__begin_;
+    v9->_spanLabelsTensor.data.__cap_ = labelsTensor->data.__cap_;
+    labelsTensor->data.__begin_ = 0;
+    labelsTensor->data.__end_ = 0;
+    labelsTensor->data.__cap_ = 0;
     p_begin = &v9->_outputTokens.__begin_;
-    if (&v9->_outputTokens != a5)
+    if (&v9->_outputTokens != nl_featurization)
     {
-      v17 = a5->__begin_;
-      end = a5->__end_;
+      v17 = nl_featurization->__begin_;
+      end = nl_featurization->__end_;
       v18 = end - v17;
       cap = v9->_outputTokens.__cap_;
       v20 = v9->_outputTokens.__begin_;

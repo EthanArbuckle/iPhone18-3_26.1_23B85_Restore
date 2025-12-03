@@ -1,18 +1,18 @@
 @interface PLModelMigrationAction_RunSocialGroupAssetContainment
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4;
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error;
 @end
 
 @implementation PLModelMigrationAction_RunSocialGroupAssetContainment
 
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error
 {
   v78 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  contextCopy = context;
   v7 = [(PLModelMigrationActionCore *)self cancellableDiscreteProgressWithTotalUnitCount:1 pendingParentUnitCount:1];
-  [PLGraphLabel ensureLabelsAreUpdatedInContext:v6];
+  [PLGraphLabel ensureLabelsAreUpdatedInContext:contextCopy];
   [v7 becomeCurrentWithPendingUnitCount:1];
   v42 = 0;
-  v8 = [PLSocialGroup runAssetContainmentOnAllSocialGroupsInContext:v6 error:&v42];
+  v8 = [PLSocialGroup runAssetContainmentOnAllSocialGroupsInContext:contextCopy error:&v42];
   v9 = v42;
   v10 = v9;
   if (!v8)
@@ -22,9 +22,9 @@
 
     if (v14)
     {
-      v15 = [(PLModelMigrationActionCore *)self logger];
+      logger = [(PLModelMigrationActionCore *)self logger];
 
-      if (v15)
+      if (logger)
       {
         v76 = 0u;
         v77 = 0u;
@@ -97,7 +97,7 @@
   }
 
   v41 = v9;
-  v11 = [v6 save:&v41];
+  v11 = [contextCopy save:&v41];
   v12 = v41;
 
   if (v11)
@@ -115,9 +115,9 @@ LABEL_15:
 
   if (v22)
   {
-    v23 = [(PLModelMigrationActionCore *)self logger];
+    logger2 = [(PLModelMigrationActionCore *)self logger];
 
-    if (v23)
+    if (logger2)
     {
       v76 = 0u;
       v77 = 0u;
@@ -189,10 +189,10 @@ LABEL_15:
   [v7 resignCurrent];
   v37 = v12;
   v32 = v37;
-  if (a4)
+  if (error)
   {
     v38 = v37;
-    *a4 = v32;
+    *error = v32;
   }
 
   v33 = 3;

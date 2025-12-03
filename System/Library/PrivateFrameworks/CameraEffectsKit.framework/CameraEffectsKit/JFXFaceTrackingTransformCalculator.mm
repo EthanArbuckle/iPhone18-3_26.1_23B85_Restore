@@ -1,6 +1,6 @@
 @interface JFXFaceTrackingTransformCalculator
 - (CGSize)outputSize;
-- (JFXFaceTrackingTransformCalculator)initWithARMetaData:(id)a3 outputSize:(CGSize)a4 playableInterfaceOrientation:(int64_t)a5;
+- (JFXFaceTrackingTransformCalculator)initWithARMetaData:(id)data outputSize:(CGSize)size playableInterfaceOrientation:(int64_t)orientation;
 - (__n128)cameraProjection;
 - (__n128)cameraTransform;
 - (__n128)nonScaledOrientedCameraTransform;
@@ -12,33 +12,33 @@
 
 @implementation JFXFaceTrackingTransformCalculator
 
-- (JFXFaceTrackingTransformCalculator)initWithARMetaData:(id)a3 outputSize:(CGSize)a4 playableInterfaceOrientation:(int64_t)a5
+- (JFXFaceTrackingTransformCalculator)initWithARMetaData:(id)data outputSize:(CGSize)size playableInterfaceOrientation:(int64_t)orientation
 {
-  height = a4.height;
-  width = a4.width;
-  v10 = a3;
+  height = size.height;
+  width = size.width;
+  dataCopy = data;
   v17.receiver = self;
   v17.super_class = JFXFaceTrackingTransformCalculator;
   v11 = [(JFXFaceTrackingTransformCalculator *)&v17 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_arMetadata, a3);
+    objc_storeStrong(&v11->_arMetadata, data);
     v12->_outputSize.width = width;
     v12->_outputSize.height = height;
-    v13 = [v10 faceAnchor];
-    v14 = [v13 captureInterfaceOrientation];
-    if (v14)
+    faceAnchor = [dataCopy faceAnchor];
+    captureInterfaceOrientation = [faceAnchor captureInterfaceOrientation];
+    if (captureInterfaceOrientation)
     {
-      v15 = v14;
+      orientationCopy = captureInterfaceOrientation;
     }
 
     else
     {
-      v15 = a5;
+      orientationCopy = orientation;
     }
 
-    v12->_interfaceOrientation = v15;
+    v12->_interfaceOrientation = orientationCopy;
   }
 
   return v12;
@@ -46,17 +46,17 @@
 
 - (__n128)cameraTransform
 {
-  [a1 nonScaledOrientedCameraTransform];
+  [self nonScaledOrientedCameraTransform];
   v6 = v2;
-  [a1 pixelsPerUnit];
+  [self pixelsPerUnit];
   return v6;
 }
 
 - (__n128)cameraProjection
 {
-  v2 = [a1 arMetadata];
-  [a1 outputSize];
-  [v2 cameraProjectionForOutputSize:objc_msgSend(a1 interfaceOrientation:"interfaceOrientation") zNear:v3 zFar:{v4, 0.001, 10000.0}];
+  arMetadata = [self arMetadata];
+  [self outputSize];
+  [arMetadata cameraProjectionForOutputSize:objc_msgSend(self interfaceOrientation:"interfaceOrientation") zNear:v3 zFar:{v4, 0.001, 10000.0}];
   v7 = v5;
 
   return v7;
@@ -66,8 +66,8 @@
 {
   +[JFXFaceTrackingUtilities pointOnFaceMesh];
   v13 = v2;
-  v3 = [a1 arMetadata];
-  [v3 anchorTransform];
+  arMetadata = [self arMetadata];
+  [arMetadata anchorTransform];
   v8 = 0;
   v9 = v13;
   HIDWORD(v9) = 1.0;
@@ -87,7 +87,7 @@
   v11 = v16;
   v12 = v15[0];
 
-  [a1 pixelsPerUnit];
+  [self pixelsPerUnit];
   return v12;
 }
 
@@ -95,8 +95,8 @@
 {
   [x0_0 cameraTransform];
   pv_simd_matrix_get_rotation_matrix(v5);
-  v2 = [x0_0 arMetadata];
-  [v2 anchorTransform];
+  arMetadata = [x0_0 arMetadata];
+  [arMetadata anchorTransform];
   [x0_0 pixelsPerUnit];
 
   return pv_simd_matrix_translate();
@@ -107,11 +107,11 @@
   result = self->_pixelsPerUnit;
   if (result == 0.0)
   {
-    v4 = [(JFXFaceTrackingTransformCalculator *)self arMetadata];
-    [v4 imageResolution];
+    arMetadata = [(JFXFaceTrackingTransformCalculator *)self arMetadata];
+    [arMetadata imageResolution];
 
-    v5 = [(JFXFaceTrackingTransformCalculator *)self arMetadata];
-    [v5 anchorTransform];
+    arMetadata2 = [(JFXFaceTrackingTransformCalculator *)self arMetadata];
+    [arMetadata2 anchorTransform];
 
     [(JFXFaceTrackingTransformCalculator *)self nonScaledOrientedCameraTransform];
     [(JFXFaceTrackingTransformCalculator *)self cameraProjection];
@@ -124,8 +124,8 @@
 
 - (__n128)nonScaledOrientedCameraTransform
 {
-  v2 = [a1 arMetadata];
-  [v2 cameraTransformForInterfaceOrientation:{objc_msgSend(a1, "interfaceOrientation")}];
+  arMetadata = [self arMetadata];
+  [arMetadata cameraTransformForInterfaceOrientation:{objc_msgSend(self, "interfaceOrientation")}];
   v5 = v3;
 
   return v5;

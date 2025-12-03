@@ -2,11 +2,11 @@
 - (SKUIGiftSendDateSectionDelegate)delegate;
 - (UIEdgeInsets)headerInsets;
 - (id)_headerView;
-- (id)tableViewCellForTableView:(id)a3 indexPath:(id)a4;
+- (id)tableViewCellForTableView:(id)view indexPath:(id)path;
 - (int64_t)numberOfRowsInSection;
-- (void)giftDateTableViewCell:(id)a3 didChangeDate:(id)a4;
-- (void)setHeaderInsets:(UIEdgeInsets)a3;
-- (void)setSendDate:(id)a3;
+- (void)giftDateTableViewCell:(id)cell didChangeDate:(id)date;
+- (void)setHeaderInsets:(UIEdgeInsets)insets;
+- (void)setSendDate:(id)date;
 @end
 
 @implementation SKUIGiftSendDateSection
@@ -25,8 +25,8 @@
     }
   }
 
-  v11 = [(SKUIGiftSendDateSection *)self _headerView];
-  [v11 contentInsets];
+  _headerView = [(SKUIGiftSendDateSection *)self _headerView];
+  [_headerView contentInsets];
   v13 = v12;
   v15 = v14;
   v17 = v16;
@@ -43,12 +43,12 @@
   return result;
 }
 
-- (void)setHeaderInsets:(UIEdgeInsets)a3
+- (void)setHeaderInsets:(UIEdgeInsets)insets
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -61,14 +61,14 @@
     }
   }
 
-  v16 = [(SKUIGiftSendDateSection *)self _headerView];
-  [v16 setContentInsets:{top, left, bottom, right}];
-  [v16 sizeToFit];
+  _headerView = [(SKUIGiftSendDateSection *)self _headerView];
+  [_headerView setContentInsets:{top, left, bottom, right}];
+  [_headerView sizeToFit];
 }
 
-- (void)setSendDate:(id)a3
+- (void)setSendDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -81,20 +81,20 @@
     }
   }
 
-  if (self->_sendDate != v4)
+  if (self->_sendDate != dateCopy)
   {
-    if (v4)
+    if (dateCopy)
     {
-      v13 = [(NSDate *)v4 copy];
+      date = [(NSDate *)dateCopy copy];
     }
 
     else
     {
-      v13 = [MEMORY[0x277CBEAA8] date];
+      date = [MEMORY[0x277CBEAA8] date];
     }
 
     sendDate = self->_sendDate;
-    self->_sendDate = v13;
+    self->_sendDate = date;
   }
 }
 
@@ -115,14 +115,14 @@
   return 1;
 }
 
-- (id)tableViewCellForTableView:(id)a3 indexPath:(id)a4
+- (id)tableViewCellForTableView:(id)view indexPath:(id)path
 {
-  v5 = [a3 dequeueReusableCellWithIdentifier:{@"GDT", a4}];
+  v5 = [view dequeueReusableCellWithIdentifier:{@"GDT", path}];
   if (!v5)
   {
     v5 = [[SKUIGiftDateTableViewCell alloc] initWithStyle:0 reuseIdentifier:@"GDT"];
-    v6 = [(SKUIGiftTableViewSection *)self giftConfiguration];
-    [(SKUIGiftDateTableViewCell *)v5 setGiftConfiguration:v6];
+    giftConfiguration = [(SKUIGiftTableViewSection *)self giftConfiguration];
+    [(SKUIGiftDateTableViewCell *)v5 setGiftConfiguration:giftConfiguration];
   }
 
   [(SKUIGiftDateTableViewCell *)v5 setChecked:1];
@@ -139,17 +139,17 @@
   headerView = self->_headerView;
   if (!headerView)
   {
-    v4 = [(SKUIGiftTableViewSection *)self giftConfiguration];
-    v5 = [v4 clientContext];
+    giftConfiguration = [(SKUIGiftTableViewSection *)self giftConfiguration];
+    clientContext = [giftConfiguration clientContext];
 
     v6 = objc_alloc_init(SKUIGiftTableSectionHeaderView);
     v7 = self->_headerView;
     self->_headerView = v6;
 
     v8 = self->_headerView;
-    if (v5)
+    if (clientContext)
     {
-      [v5 localizedStringForKey:@"GIFTING_DATE_SECTION_HEADER" inTable:@"Gifting"];
+      [clientContext localizedStringForKey:@"GIFTING_DATE_SECTION_HEADER" inTable:@"Gifting"];
     }
 
     else
@@ -166,12 +166,12 @@
   return headerView;
 }
 
-- (void)giftDateTableViewCell:(id)a3 didChangeDate:(id)a4
+- (void)giftDateTableViewCell:(id)cell didChangeDate:(id)date
 {
-  objc_storeStrong(&self->_sendDate, a4);
-  v6 = a4;
+  objc_storeStrong(&self->_sendDate, date);
+  dateCopy = date;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained giftSendDateSection:self didChangeDate:v6];
+  [WeakRetained giftSendDateSection:self didChangeDate:dateCopy];
 }
 
 - (SKUIGiftSendDateSectionDelegate)delegate

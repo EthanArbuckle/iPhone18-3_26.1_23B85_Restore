@@ -1,16 +1,16 @@
 @interface MRGroupSessionRequestManager
 + (id)sharedManager;
-- (BOOL)updateGroupSessionEligibility:(id)a3;
+- (BOOL)updateGroupSessionEligibility:(id)eligibility;
 - (MRGroupSessionEligibilityStatus)eligibilityStatus;
 - (MRGroupSessionInfo)groupSessionInfo;
 - (MRGroupSessionRequestManager)init;
 - (MRUserIdentity)localUserIdentity;
-- (void)augmentLocalCommandOptions:(id)a3;
-- (void)handleGroupSessionNearbyContactDiscoveryDidChange:(id)a3;
+- (void)augmentLocalCommandOptions:(id)options;
+- (void)handleGroupSessionNearbyContactDiscoveryDidChange:(id)change;
 - (void)registerObservers;
 - (void)restoreState;
-- (void)updateGroupSessionInfo:(id)a3;
-- (void)updateLocalIdentity:(id)a3;
+- (void)updateGroupSessionInfo:(id)info;
+- (void)updateLocalIdentity:(id)identity;
 @end
 
 @implementation MRGroupSessionRequestManager
@@ -61,10 +61,10 @@ void __45__MRGroupSessionRequestManager_sharedManager__block_invoke()
 
 - (void)registerObservers
 {
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v3 = +[MRUserSettings currentSettings];
-  v4 = [v3 groupSessionNearbyContactDiscoveryDidChangeNotification];
-  [v5 addObserver:self selector:sel_handleGroupSessionNearbyContactDiscoveryDidChange_ name:v4 object:0];
+  groupSessionNearbyContactDiscoveryDidChangeNotification = [v3 groupSessionNearbyContactDiscoveryDidChangeNotification];
+  [defaultCenter addObserver:self selector:sel_handleGroupSessionNearbyContactDiscoveryDidChange_ name:groupSessionNearbyContactDiscoveryDidChangeNotification object:0];
 }
 
 - (MRGroupSessionInfo)groupSessionInfo
@@ -89,12 +89,12 @@ void __45__MRGroupSessionRequestManager_sharedManager__block_invoke()
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)augmentLocalCommandOptions:(id)a3
+- (void)augmentLocalCommandOptions:(id)options
 {
-  v4 = a3;
-  v6 = [(MRGroupSessionRequestManager *)self localUserIdentity];
-  v5 = [MRPlaybackQueueParticipant expectedIdentifierForUserIdentity:v6 withRandomData:0];
-  [v4 setObject:v5 forKeyedSubscript:@"kMRMediaRemoteOptionAssociatedParticipantIdentifier"];
+  optionsCopy = options;
+  localUserIdentity = [(MRGroupSessionRequestManager *)self localUserIdentity];
+  v5 = [MRPlaybackQueueParticipant expectedIdentifierForUserIdentity:localUserIdentity withRandomData:0];
+  [optionsCopy setObject:v5 forKeyedSubscript:@"kMRMediaRemoteOptionAssociatedParticipantIdentifier"];
 }
 
 - (MRUserIdentity)localUserIdentity
@@ -111,9 +111,9 @@ void __45__MRGroupSessionRequestManager_sharedManager__block_invoke()
     else
     {
       v4 = MRGetSharedService();
-      v5 = [v4 applicationUserIdentity];
+      applicationUserIdentity = [v4 applicationUserIdentity];
       v6 = self->_localUserIdentity;
-      self->_localUserIdentity = v5;
+      self->_localUserIdentity = applicationUserIdentity;
 
       self->_hasPopulatedIdentity = 1;
       localUserIdentity = self->_localUserIdentity;
@@ -135,54 +135,54 @@ void __45__MRGroupSessionRequestManager_sharedManager__block_invoke()
   return v3;
 }
 
-- (void)updateGroupSessionInfo:(id)a3
+- (void)updateGroupSessionInfo:(id)info
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  infoCopy = info;
   v5 = _MRLogForCategory(0xCuLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = v4;
+    v9 = infoCopy;
     _os_log_impl(&dword_1A2860000, v5, OS_LOG_TYPE_DEFAULT, "[MRGroupSessionRequestManager] Updating group session info: %@", &v8, 0xCu);
   }
 
   os_unfair_lock_lock(&self->_lock);
   groupSessionInfo = self->_groupSessionInfo;
-  self->_groupSessionInfo = v4;
+  self->_groupSessionInfo = infoCopy;
 
   os_unfair_lock_unlock(&self->_lock);
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updateLocalIdentity:(id)a3
+- (void)updateLocalIdentity:(id)identity
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identityCopy = identity;
   v5 = _MRLogForCategory(0xCuLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = v4;
+    v9 = identityCopy;
     _os_log_impl(&dword_1A2860000, v5, OS_LOG_TYPE_DEFAULT, "[MRGroupSessionRequestManager] Updating local identity: %@", &v8, 0xCu);
   }
 
   os_unfair_lock_lock(&self->_lock);
   localUserIdentity = self->_localUserIdentity;
-  self->_localUserIdentity = v4;
+  self->_localUserIdentity = identityCopy;
 
   self->_hasPopulatedIdentity = 1;
   os_unfair_lock_unlock(&self->_lock);
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)updateGroupSessionEligibility:(id)a3
+- (BOOL)updateGroupSessionEligibility:(id)eligibility
 {
   v15 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  eligibilityCopy = eligibility;
   os_unfair_lock_lock(&self->_lock);
   eligibilityStatus = self->_eligibilityStatus;
-  v7 = v5;
+  v7 = eligibilityCopy;
   v8 = v7;
   if (eligibilityStatus == v7)
   {
@@ -194,7 +194,7 @@ void __45__MRGroupSessionRequestManager_sharedManager__block_invoke()
     v9 = [(MRGroupSessionEligibilityStatus *)v7 isEqual:eligibilityStatus];
   }
 
-  objc_storeStrong(&self->_eligibilityStatus, a3);
+  objc_storeStrong(&self->_eligibilityStatus, eligibility);
   os_unfair_lock_unlock(&self->_lock);
   if ((v9 & 1) == 0)
   {
@@ -211,7 +211,7 @@ void __45__MRGroupSessionRequestManager_sharedManager__block_invoke()
   return v9 ^ 1;
 }
 
-- (void)handleGroupSessionNearbyContactDiscoveryDidChange:(id)a3
+- (void)handleGroupSessionNearbyContactDiscoveryDidChange:(id)change
 {
   v3 = _MRLogForCategory(0xCuLL);
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -220,8 +220,8 @@ void __45__MRGroupSessionRequestManager_sharedManager__block_invoke()
     _os_log_impl(&dword_1A2860000, v3, OS_LOG_TYPE_DEFAULT, "[MRGroupSessionRequestManager] Nearby contact discovery preference changed.", v5, 2u);
   }
 
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 postNotificationName:@"MRGroupSessionNearbyContactDiscoveryPreferenceDidChangeNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"MRGroupSessionNearbyContactDiscoveryPreferenceDidChangeNotification" object:0];
 }
 
 @end

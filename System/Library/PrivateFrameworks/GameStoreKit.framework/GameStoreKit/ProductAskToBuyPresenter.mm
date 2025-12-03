@@ -1,5 +1,5 @@
 @interface ProductAskToBuyPresenter
-- (void)handleAskToBuyRequestSent:(id)a3;
+- (void)handleAskToBuyRequestSent:(id)sent;
 - (void)updateStatusAndNotifyIfNeeded;
 @end
 
@@ -11,7 +11,7 @@
   sub_24E8FE920();
 }
 
-- (void)handleAskToBuyRequestSent:(id)a3
+- (void)handleAskToBuyRequestSent:(id)sent
 {
   v3 = sub_24F91EB58();
   v4 = *(v3 - 8);

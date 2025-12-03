@@ -1,26 +1,26 @@
 @interface WFActionWillRunIntentTestingEvent
-- (WFActionWillRunIntentTestingEvent)initWithAction:(id)a3 intent:(id)a4;
+- (WFActionWillRunIntentTestingEvent)initWithAction:(id)action intent:(id)intent;
 @end
 
 @implementation WFActionWillRunIntentTestingEvent
 
-- (WFActionWillRunIntentTestingEvent)initWithAction:(id)a3 intent:(id)a4
+- (WFActionWillRunIntentTestingEvent)initWithAction:(id)action intent:(id)intent
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  actionCopy = action;
+  intentCopy = intent;
+  if (!intentCopy)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"WFActionWillRunIntentTestingEvent.m" lineNumber:16 description:{@"Invalid parameter not satisfying: %@", @"intent"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFActionWillRunIntentTestingEvent.m" lineNumber:16 description:{@"Invalid parameter not satisfying: %@", @"intent"}];
   }
 
   v14.receiver = self;
   v14.super_class = WFActionWillRunIntentTestingEvent;
-  v9 = [(WFActionTestingEvent *)&v14 initWithAction:v7];
+  v9 = [(WFActionTestingEvent *)&v14 initWithAction:actionCopy];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_intent, a4);
+    objc_storeStrong(&v9->_intent, intent);
     v11 = v10;
   }
 

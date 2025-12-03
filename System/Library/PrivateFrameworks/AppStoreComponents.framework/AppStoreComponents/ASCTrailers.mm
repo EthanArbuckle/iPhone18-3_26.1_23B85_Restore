@@ -1,29 +1,29 @@
 @interface ASCTrailers
-- (ASCTrailers)initWithCoder:(id)a3;
-- (ASCTrailers)initWithVideos:(id)a3 mediaPlatform:(id)a4;
-- (BOOL)isEqual:(id)a3;
+- (ASCTrailers)initWithCoder:(id)coder;
+- (ASCTrailers)initWithVideos:(id)videos mediaPlatform:(id)platform;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ASCTrailers
 
-- (ASCTrailers)initWithVideos:(id)a3 mediaPlatform:(id)a4
+- (ASCTrailers)initWithVideos:(id)videos mediaPlatform:(id)platform
 {
-  v6 = a3;
-  v7 = a4;
+  videosCopy = videos;
+  platformCopy = platform;
   +[ASCEligibility assertCurrentProcessEligibility];
   v14.receiver = self;
   v14.super_class = ASCTrailers;
   v8 = [(ASCTrailers *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [videosCopy copy];
     videos = v8->_videos;
     v8->_videos = v9;
 
-    v11 = [v7 copy];
+    v11 = [platformCopy copy];
     mediaPlatform = v8->_mediaPlatform;
     v8->_mediaPlatform = v11;
   }
@@ -31,17 +31,17 @@
   return v8;
 }
 
-- (ASCTrailers)initWithCoder:(id)a3
+- (ASCTrailers)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   +[ASCEligibility assertCurrentProcessEligibility];
   v5 = objc_alloc(MEMORY[0x277CBEB98]);
   v6 = objc_opt_class();
   v7 = [v5 initWithObjects:{v6, objc_opt_class(), 0}];
-  v8 = [v4 decodeObjectOfClasses:v7 forKey:@"videos"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"videos"];
   if (v8)
   {
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"mediaPlatform"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"mediaPlatform"];
     if (v9)
     {
       v17.receiver = self;
@@ -59,7 +59,7 @@
       }
 
       self = v10;
-      v15 = self;
+      selfCopy = self;
     }
 
     else
@@ -69,7 +69,7 @@
         [ASCTrailers initWithCoder:];
       }
 
-      v15 = 0;
+      selfCopy = 0;
     }
   }
 
@@ -80,40 +80,40 @@
       [ASCTrailers initWithCoder:];
     }
 
-    v15 = 0;
+    selfCopy = 0;
   }
 
-  return v15;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(ASCTrailers *)self videos];
-  [v4 encodeObject:v5 forKey:@"videos"];
+  coderCopy = coder;
+  videos = [(ASCTrailers *)self videos];
+  [coderCopy encodeObject:videos forKey:@"videos"];
 
-  v6 = [(ASCTrailers *)self mediaPlatform];
-  [v4 encodeObject:v6 forKey:@"mediaPlatform"];
+  mediaPlatform = [(ASCTrailers *)self mediaPlatform];
+  [coderCopy encodeObject:mediaPlatform forKey:@"mediaPlatform"];
 }
 
 - (unint64_t)hash
 {
   v3 = objc_alloc_init(ASCHasher);
-  v4 = [(ASCTrailers *)self videos];
-  [(ASCHasher *)v3 combineObject:v4];
+  videos = [(ASCTrailers *)self videos];
+  [(ASCHasher *)v3 combineObject:videos];
 
-  v5 = [(ASCTrailers *)self mediaPlatform];
-  [(ASCHasher *)v3 combineObject:v5];
+  mediaPlatform = [(ASCTrailers *)self mediaPlatform];
+  [(ASCHasher *)v3 combineObject:mediaPlatform];
 
-  v6 = [(ASCHasher *)v3 finalizeHash];
-  return v6;
+  finalizeHash = [(ASCHasher *)v3 finalizeHash];
+  return finalizeHash;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = v4;
+  v5 = equalCopy;
   if (v5)
   {
     if (objc_opt_isKindOfClass())
@@ -136,31 +136,31 @@
 
   if (v7)
   {
-    v8 = [(ASCTrailers *)self videos];
-    v9 = [v7 videos];
-    v10 = v9;
-    if (v8 && v9)
+    videos = [(ASCTrailers *)self videos];
+    videos2 = [v7 videos];
+    v10 = videos2;
+    if (videos && videos2)
     {
-      if ([v8 isEqual:v9])
+      if ([videos isEqual:videos2])
       {
         goto LABEL_10;
       }
     }
 
-    else if (v8 == v9)
+    else if (videos == videos2)
     {
 LABEL_10:
-      v11 = [(ASCTrailers *)self mediaPlatform];
-      v12 = [v7 mediaPlatform];
-      v13 = v12;
-      if (v11 && v12)
+      mediaPlatform = [(ASCTrailers *)self mediaPlatform];
+      mediaPlatform2 = [v7 mediaPlatform];
+      v13 = mediaPlatform2;
+      if (mediaPlatform && mediaPlatform2)
       {
-        v14 = [v11 isEqual:v12];
+        v14 = [mediaPlatform isEqual:mediaPlatform2];
       }
 
       else
       {
-        v14 = v11 == v12;
+        v14 = mediaPlatform == mediaPlatform2;
       }
 
       goto LABEL_18;
@@ -181,15 +181,15 @@ LABEL_19:
 - (id)description
 {
   v3 = [[ASCDescriber alloc] initWithObject:self];
-  v4 = [(ASCTrailers *)self videos];
-  [(ASCDescriber *)v3 addObject:v4 withName:@"videos"];
+  videos = [(ASCTrailers *)self videos];
+  [(ASCDescriber *)v3 addObject:videos withName:@"videos"];
 
-  v5 = [(ASCTrailers *)self mediaPlatform];
-  [(ASCDescriber *)v3 addObject:v5 withName:@"mediaPlatform"];
+  mediaPlatform = [(ASCTrailers *)self mediaPlatform];
+  [(ASCDescriber *)v3 addObject:mediaPlatform withName:@"mediaPlatform"];
 
-  v6 = [(ASCDescriber *)v3 finalizeDescription];
+  finalizeDescription = [(ASCDescriber *)v3 finalizeDescription];
 
-  return v6;
+  return finalizeDescription;
 }
 
 @end

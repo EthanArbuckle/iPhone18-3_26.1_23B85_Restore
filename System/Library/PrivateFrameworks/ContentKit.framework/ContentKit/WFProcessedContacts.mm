@@ -1,18 +1,18 @@
 @interface WFProcessedContacts
-- (BOOL)isEqual:(id)a3;
-- (WFProcessedContacts)initWithCoder:(id)a3;
-- (WFProcessedContacts)initWithEntries:(id)a3 attributionSet:(id)a4 communicationMethod:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (WFProcessedContacts)initWithCoder:(id)coder;
+- (WFProcessedContacts)initWithEntries:(id)entries attributionSet:(id)set communicationMethod:(id)method;
 - (id)contentCollection;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFProcessedContacts
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     LOBYTE(v12) = 1;
   }
@@ -22,9 +22,9 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(WFProcessedContacts *)v4 entries];
-      v6 = [(WFProcessedContacts *)self entries];
-      if (![v5 isEqualToArray:v6])
+      entries = [(WFProcessedContacts *)equalCopy entries];
+      entries2 = [(WFProcessedContacts *)self entries];
+      if (![entries isEqualToArray:entries2])
       {
         LOBYTE(v12) = 0;
 LABEL_21:
@@ -32,10 +32,10 @@ LABEL_21:
         goto LABEL_22;
       }
 
-      v7 = [(WFProcessedContacts *)v4 attributionSet];
-      v8 = [(WFProcessedContacts *)self attributionSet];
-      v9 = v7;
-      v10 = v8;
+      attributionSet = [(WFProcessedContacts *)equalCopy attributionSet];
+      attributionSet2 = [(WFProcessedContacts *)self attributionSet];
+      v9 = attributionSet;
+      v10 = attributionSet2;
       v11 = v10;
       if (v9 == v10)
       {
@@ -62,10 +62,10 @@ LABEL_20:
         }
       }
 
-      v15 = [(WFProcessedContacts *)v4 communicationMethod];
-      v16 = [(WFProcessedContacts *)self communicationMethod];
-      v14 = v15;
-      v17 = v16;
+      communicationMethod = [(WFProcessedContacts *)equalCopy communicationMethod];
+      communicationMethod2 = [(WFProcessedContacts *)self communicationMethod];
+      v14 = communicationMethod;
+      v17 = communicationMethod2;
       v13 = v17;
       if (v14 == v17)
       {
@@ -94,53 +94,53 @@ LABEL_22:
 
 - (unint64_t)hash
 {
-  v3 = [(WFProcessedContacts *)self entries];
-  v4 = [v3 hash];
-  v5 = [(WFProcessedContacts *)self attributionSet];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(WFProcessedContacts *)self communicationMethod];
-  v8 = [v7 hash];
+  entries = [(WFProcessedContacts *)self entries];
+  v4 = [entries hash];
+  attributionSet = [(WFProcessedContacts *)self attributionSet];
+  v6 = [attributionSet hash] ^ v4;
+  communicationMethod = [(WFProcessedContacts *)self communicationMethod];
+  v8 = [communicationMethod hash];
 
   return v6 ^ v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(WFProcessedContacts *)self entries];
-  [v4 encodeObject:v5 forKey:@"entries"];
+  coderCopy = coder;
+  entries = [(WFProcessedContacts *)self entries];
+  [coderCopy encodeObject:entries forKey:@"entries"];
 
-  v6 = [(WFProcessedContacts *)self attributionSet];
-  [v4 encodeObject:v6 forKey:@"attributionSet"];
+  attributionSet = [(WFProcessedContacts *)self attributionSet];
+  [coderCopy encodeObject:attributionSet forKey:@"attributionSet"];
 
-  v7 = [(WFProcessedContacts *)self communicationMethod];
-  [v4 encodeObject:v7 forKey:@"communicationMethod"];
+  communicationMethod = [(WFProcessedContacts *)self communicationMethod];
+  [coderCopy encodeObject:communicationMethod forKey:@"communicationMethod"];
 }
 
-- (WFProcessedContacts)initWithCoder:(id)a3
+- (WFProcessedContacts)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x277CBEB98];
-  v5 = a3;
+  coderCopy = coder;
   v6 = objc_opt_class();
   v7 = [v4 setWithObjects:{v6, objc_opt_class(), 0}];
-  v8 = [v5 decodeObjectOfClasses:v7 forKey:@"entries"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"entries"];
 
-  v9 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"attributionSet"];
-  v10 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"communicationMethod"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"attributionSet"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"communicationMethod"];
 
   v11 = [(WFProcessedContacts *)self initWithEntries:v8 attributionSet:v9 communicationMethod:v10];
   return v11;
 }
 
-- (WFProcessedContacts)initWithEntries:(id)a3 attributionSet:(id)a4 communicationMethod:(id)a5
+- (WFProcessedContacts)initWithEntries:(id)entries attributionSet:(id)set communicationMethod:(id)method
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v9)
+  entriesCopy = entries;
+  setCopy = set;
+  methodCopy = method;
+  if (!entriesCopy)
   {
-    v18 = [MEMORY[0x277CCA890] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"WFProcessedContacts.m" lineNumber:21 description:{@"Invalid parameter not satisfying: %@", @"entries"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFProcessedContacts.m" lineNumber:21 description:{@"Invalid parameter not satisfying: %@", @"entries"}];
   }
 
   v19.receiver = self;
@@ -148,26 +148,26 @@ LABEL_22:
   v12 = [(WFProcessedContacts *)&v19 init];
   if (v12)
   {
-    if (!v10)
+    if (!setCopy)
     {
-      v13 = [v9 if_compactMap:&__block_literal_global_1781];
+      v13 = [entriesCopy if_compactMap:&__block_literal_global_1781];
       if ([v13 count])
       {
-        v10 = [WFContentAttributionSet attributionSetByMergingAttributionSets:v13];
+        setCopy = [WFContentAttributionSet attributionSetByMergingAttributionSets:v13];
       }
 
       else
       {
-        v10 = 0;
+        setCopy = 0;
       }
     }
 
-    v14 = [v9 copy];
+    v14 = [entriesCopy copy];
     entries = v12->_entries;
     v12->_entries = v14;
 
-    objc_storeStrong(&v12->_attributionSet, v10);
-    objc_storeStrong(&v12->_communicationMethod, a5);
+    objc_storeStrong(&v12->_attributionSet, setCopy);
+    objc_storeStrong(&v12->_communicationMethod, method);
     v16 = v12;
   }
 
@@ -184,13 +184,13 @@ id __74__WFProcessedContacts_initWithEntries_attributionSet_communicationMethod_
 
 - (id)contentCollection
 {
-  v3 = [(WFProcessedContacts *)self entries];
+  entries = [(WFProcessedContacts *)self entries];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __59__WFProcessedContacts_ContentCollection__contentCollection__block_invoke;
   v7[3] = &unk_2783451B0;
   v7[4] = self;
-  v4 = [v3 if_map:v7];
+  v4 = [entries if_map:v7];
 
   v5 = [WFContentCollection collectionWithItems:v4];
 

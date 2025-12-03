@@ -5,12 +5,12 @@
 - (PLAggregateSummarizationService)init;
 - (id)getAppMultipleVersionsData;
 - (id)getCellularConditionSummarizer;
-- (id)getDeviceMetadataInRange:(_PLTimeIntervalRange)a3 withSignpostData:(id)a4;
-- (id)getDrainInfoInRange:(_PLTimeIntervalRange)a3;
+- (id)getDeviceMetadataInRange:(_PLTimeIntervalRange)range withSignpostData:(id)data;
+- (id)getDrainInfoInRange:(_PLTimeIntervalRange)range;
 - (id)getGenericSummarizer;
-- (id)getInitCountInRange:(_PLTimeIntervalRange)a3;
+- (id)getInitCountInRange:(_PLTimeIntervalRange)range;
 - (id)getLocationActivitySummarizer;
-- (id)getPluggedInDurationInRange:(_PLTimeIntervalRange)a3;
+- (id)getPluggedInDurationInRange:(_PLTimeIntervalRange)range;
 - (id)getQueryForAppMultipleVersions;
 - (id)getQueryForAverageMemory;
 - (id)getQueryForCellularCondition;
@@ -20,10 +20,10 @@
 - (id)getQueryForLocationActivity;
 - (id)getQueryForNetworkIOData;
 - (id)getQueryForPeakMemory;
-- (id)handleAggregationQueryWithPayload:(id)a3;
-- (id)preformatMetricsForFormatter:(id)a3;
+- (id)handleAggregationQueryWithPayload:(id)payload;
+- (id)preformatMetricsForFormatter:(id)formatter;
 - (void)aggregateMetrics;
-- (void)getAppList:(id)a3;
+- (void)getAppList:(id)list;
 - (void)getAppMetadata;
 - (void)initOperatorDependancies;
 - (void)setupMetrics;
@@ -33,7 +33,7 @@
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___PLAggregateSummarizationService;
   objc_msgSendSuper2(&v2, sel_load);
 }
@@ -53,15 +53,15 @@
     }
 
     self = v3;
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (void)initOperatorDependancies
@@ -76,11 +76,11 @@
   [(PLAggregateSummarizationService *)self setAggregationResponder:v4];
 }
 
-- (id)preformatMetricsForFormatter:(id)a3
+- (id)preformatMetricsForFormatter:(id)formatter
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  [(PLAggregateSummarizationService *)self getAppList:v4];
+  formatterCopy = formatter;
+  [(PLAggregateSummarizationService *)self getAppList:formatterCopy];
   appList = self->_appList;
   if (appList && [(NSArray *)appList count])
   {
@@ -99,8 +99,8 @@
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v28 = v4;
-    obj = v4;
+    v28 = formatterCopy;
+    obj = formatterCopy;
     v9 = [obj countByEnumeratingWithState:&v31 objects:v37 count:16];
     if (v9)
     {
@@ -168,7 +168,7 @@ LABEL_18:
     }
 
     v24 = self->_summarizedData;
-    v4 = v28;
+    formatterCopy = v28;
   }
 
   else
@@ -187,10 +187,10 @@ LABEL_18:
   return v24;
 }
 
-- (id)handleAggregationQueryWithPayload:(id)a3
+- (id)handleAggregationQueryWithPayload:(id)payload
 {
   v180 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  payloadCopy = payload;
   v5 = PLLogAggregateSummarizationService();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -207,37 +207,37 @@ LABEL_18:
     [MEMORY[0x277CFB458] getGMOptInToggleWithCompletion:v164];
   }
 
-  v136 = self;
-  v6 = [v4 objectForKeyedSubscript:@"PLBatteryUIQueryTypeKey"];
-  v7 = [v6 intValue];
+  selfCopy = self;
+  v6 = [payloadCopy objectForKeyedSubscript:@"PLBatteryUIQueryTypeKey"];
+  intValue = [v6 intValue];
 
-  v8 = [v4 objectForKeyedSubscript:@"today"];
-  v9 = [v8 BOOLValue];
+  v8 = [payloadCopy objectForKeyedSubscript:@"today"];
+  bOOLValue = [v8 BOOLValue];
 
-  v10 = [v4 objectForKeyedSubscript:@"last24hrs"];
-  v11 = [v10 BOOLValue];
+  v10 = [payloadCopy objectForKeyedSubscript:@"last24hrs"];
+  bOOLValue2 = [v10 BOOLValue];
 
-  v12 = [v4 objectForKeyedSubscript:@"last1hr"];
-  v13 = [v12 BOOLValue];
+  v12 = [payloadCopy objectForKeyedSubscript:@"last1hr"];
+  bOOLValue3 = [v12 BOOLValue];
 
-  v14 = [v4 objectForKeyedSubscript:@"AppAnalyticsEnabled"];
-  v133 = [v14 BOOLValue];
+  v14 = [payloadCopy objectForKeyedSubscript:@"AppAnalyticsEnabled"];
+  bOOLValue4 = [v14 BOOLValue];
 
-  v138 = v4;
-  v15 = [v4 objectForKeyedSubscript:@"MetrickitClientsAvailable"];
-  v135 = [v15 BOOLValue];
+  v138 = payloadCopy;
+  v15 = [payloadCopy objectForKeyedSubscript:@"MetrickitClientsAvailable"];
+  bOOLValue5 = [v15 BOOLValue];
 
   v16 = PLLogAggregateSummarizationService();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
   {
-    [(PLAggregateSummarizationService *)v9 handleAggregationQueryWithPayload:v7, v16];
+    [(PLAggregateSummarizationService *)bOOLValue handleAggregationQueryWithPayload:intValue, v16];
   }
 
   v137 = objc_alloc_init(PLBatteryBreakdownService);
   [(PLOperator *)v137 initOperatorDependancies];
-  v139 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   v17 = [MEMORY[0x277CBEAA8] nearestMidnightBeforeDate:?];
-  if (v9)
+  if (bOOLValue)
   {
     v18 = PLLogAggregateSummarizationService();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
@@ -246,11 +246,11 @@ LABEL_18:
       _os_log_impl(&dword_25EE51000, v18, OS_LOG_TYPE_INFO, "Aggregating today", buf, 2u);
     }
 
-    v19 = [MEMORY[0x277CBEAA8] nearestMidnightAfterDate:v139];
+    v19 = [MEMORY[0x277CBEAA8] nearestMidnightAfterDate:date];
     v20 = 86400.0;
   }
 
-  else if (v11)
+  else if (bOOLValue2)
   {
     v21 = PLLogAggregateSummarizationService();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
@@ -259,13 +259,13 @@ LABEL_18:
       _os_log_impl(&dword_25EE51000, v21, OS_LOG_TYPE_DEFAULT, "Aggregating last 24hrs", buf, 2u);
     }
 
-    v19 = v139;
+    v19 = date;
     v20 = 86400.0;
   }
 
   else
   {
-    if (!v13)
+    if (!bOOLValue3)
     {
       v20 = 86400.0;
       goto LABEL_20;
@@ -278,24 +278,24 @@ LABEL_18:
       _os_log_impl(&dword_25EE51000, v22, OS_LOG_TYPE_DEFAULT, "Aggregating last hour", buf, 2u);
     }
 
-    v19 = v139;
+    v19 = date;
     v20 = 3600.0;
   }
 
   v17 = v19;
 LABEL_20:
-  v23 = [v4 objectForKey:@"off1"];
-  if (v23 && (v24 = v23, [v4 objectForKey:@"off2"], v25 = objc_claimAutoreleasedReturnValue(), v25, v24, v25))
+  v23 = [payloadCopy objectForKey:@"off1"];
+  if (v23 && (v24 = v23, [payloadCopy objectForKey:@"off2"], v25 = objc_claimAutoreleasedReturnValue(), v25, v24, v25))
   {
-    v26 = [v4 objectForKey:@"off1"];
+    v26 = [payloadCopy objectForKey:@"off1"];
     [v26 doubleValue];
     v28 = v27;
 
-    v29 = [v4 objectForKey:@"off2"];
+    v29 = [payloadCopy objectForKey:@"off2"];
     [v29 doubleValue];
     v20 = v30;
 
-    v31 = [v139 dateByAddingTimeInterval:-v28];
+    v31 = [date dateByAddingTimeInterval:-v28];
 
     v32 = PLLogAggregateSummarizationService();
     if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
@@ -323,10 +323,10 @@ LABEL_20:
     v31 = v17;
   }
 
-  v34 = [v31 convertFromSystemToMonotonic];
+  convertFromSystemToMonotonic = [v31 convertFromSystemToMonotonic];
   v35 = -v20;
-  v36 = [v34 dateByAddingTimeInterval:-v20];
-  v37 = v34;
+  v36 = [convertFromSystemToMonotonic dateByAddingTimeInterval:-v20];
+  v37 = convertFromSystemToMonotonic;
   [v36 timeIntervalSince1970];
   v39 = v38;
   [v37 timeIntervalSince1970];
@@ -335,7 +335,7 @@ LABEL_20:
   v42 = v41 - v39;
   v132 = v37;
   [v37 timeIntervalSince1970];
-  v136->_maxTimestamp = v43;
+  selfCopy->_maxTimestamp = v43;
   v140 = v31;
   v134 = [v31 dateByAddingTimeInterval:v35];
   v44 = PLLogAggregateSummarizationService();
@@ -382,62 +382,62 @@ LABEL_20:
           v150 = v48;
           [v49 setObject:v48 forKeyedSubscript:@"PLBatteryUIAppBundleIDKey"];
           v51 = [v47 objectForKeyedSubscript:@"PLBatteryUIAppForegroundRuntimeKey"];
-          v52 = [v51 intValue];
+          intValue2 = [v51 intValue];
 
           v53 = [v47 objectForKeyedSubscript:@"PLBatteryUIAppBackgroundRuntimeKey"];
-          v54 = [v53 intValue];
+          intValue3 = [v53 intValue];
 
           v55 = [v47 objectForKeyedSubscript:@"PLBatteryUIAppBackgroundAudioRuntimeKey"];
-          v154 = [v55 intValue];
+          intValue4 = [v55 intValue];
 
           v56 = [v47 objectForKeyedSubscript:@"PLBatteryUIAppBackgroundLocationRuntimeKey"];
-          v148 = [v56 intValue];
+          intValue5 = [v56 intValue];
 
           v57 = [v47 objectForKeyedSubscript:@"PLBatteryUIAppBackgroundLocationAudioRuntimeKey"];
-          v58 = [v57 intValue];
+          intValue6 = [v57 intValue];
 
           v59 = [v47 objectForKeyedSubscript:@"PLBatteryUIAppForegroundPluggedInRuntimeKey"];
           LODWORD(v57) = [v59 intValue];
 
           v60 = [v47 objectForKeyedSubscript:@"PLBatteryUIAppBackgroundPluggedInRuntimeKey"];
-          v61 = [v60 intValue];
+          intValue7 = [v60 intValue];
 
           v62 = [v47 objectForKeyedSubscript:@"PLBatteryUIAppBackgroundAudioPluggedInRuntimeKey"];
-          v63 = [v62 intValue];
+          intValue8 = [v62 intValue];
 
           v64 = [v47 objectForKeyedSubscript:@"PLBatteryUIAppBackgroundLocationPluggedInRuntimeKey"];
           LODWORD(v49) = [v64 intValue];
 
           v153 = v47;
           v65 = [v47 objectForKeyedSubscript:@"PLBatteryUIAppBackgroundLocationAudioPluggedInRuntimeKey"];
-          v66 = [v65 intValue];
+          intValue9 = [v65 intValue];
 
-          v152 = v54 - v61;
-          v67 = (v54 - v61) & ~((v54 - v61) >> 31);
-          v156 = (v148 - v49) & ~((v148 - v49) >> 31);
-          v158 = (v58 - v66) & ~((v58 - v66) >> 31);
-          v68 = [MEMORY[0x277CCABB0] numberWithInt:v52];
+          v152 = intValue3 - intValue7;
+          v67 = (intValue3 - intValue7) & ~((intValue3 - intValue7) >> 31);
+          v156 = (intValue5 - v49) & ~((intValue5 - v49) >> 31);
+          v158 = (intValue6 - intValue9) & ~((intValue6 - intValue9) >> 31);
+          v68 = [MEMORY[0x277CCABB0] numberWithInt:intValue2];
           [v50 setObject:v68 forKeyedSubscript:@"fgTime_Total"];
 
-          v69 = [MEMORY[0x277CCABB0] numberWithInt:v54];
+          v69 = [MEMORY[0x277CCABB0] numberWithInt:intValue3];
           [v50 setObject:v69 forKeyedSubscript:@"bgTime_Total"];
 
-          v70 = [MEMORY[0x277CCABB0] numberWithInt:v154];
+          v70 = [MEMORY[0x277CCABB0] numberWithInt:intValue4];
           [v50 setObject:v70 forKeyedSubscript:@"bgTime_Audio"];
 
-          v71 = [MEMORY[0x277CCABB0] numberWithInt:v148];
+          v71 = [MEMORY[0x277CCABB0] numberWithInt:intValue5];
           [v50 setObject:v71 forKeyedSubscript:@"bgTime_Location"];
 
-          v72 = [MEMORY[0x277CCABB0] numberWithInt:v58];
+          v72 = [MEMORY[0x277CCABB0] numberWithInt:intValue6];
           [v50 setObject:v72 forKeyedSubscript:@"bgLocationAudioTime"];
 
-          v73 = [MEMORY[0x277CCABB0] numberWithInt:(v52 - v57) & ~((v52 - v57) >> 31)];
+          v73 = [MEMORY[0x277CCABB0] numberWithInt:(intValue2 - v57) & ~((intValue2 - v57) >> 31)];
           [v50 setObject:v73 forKeyedSubscript:@"fgTime_Unplugged"];
 
           v74 = [MEMORY[0x277CCABB0] numberWithInt:v67];
           [v50 setObject:v74 forKeyedSubscript:@"bgTime_Unplugged"];
 
-          LODWORD(v57) = (v154 - v63) & ~((v154 - v63) >> 31);
+          LODWORD(v57) = (intValue4 - intValue8) & ~((intValue4 - intValue8) >> 31);
           v75 = [MEMORY[0x277CCABB0] numberWithInt:v57];
           [v50 setObject:v75 forKeyedSubscript:@"bgAudioTime_Unplugged"];
 
@@ -452,7 +452,7 @@ LABEL_20:
           v147 = v156;
           v149 = v57;
           v79 = v57 / v67;
-          v151 = (v54 - v61) & ~((v54 - v61) >> 31);
+          v151 = (intValue3 - intValue7) & ~((intValue3 - intValue7) >> 31);
           v80 = v158 / (2 * v67);
           v81 = 1;
           v82 = v156 / v67;
@@ -467,21 +467,21 @@ LABEL_20:
             v88 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@", @"bgAudio", v85];
             v89 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@", @"bgLocation", v85];
             v90 = [v153 objectForKeyedSubscript:v85];
-            v91 = [v90 intValue];
+            intValue10 = [v90 intValue];
 
             v159 = v86;
             v92 = [v153 objectForKeyedSubscript:v86];
-            v93 = [v92 intValue];
+            intValue11 = [v92 intValue];
 
             v157 = v87;
             v94 = [v153 objectForKeyedSubscript:v87];
-            v95 = [v94 intValue];
+            intValue12 = [v94 intValue];
 
             v96 = [v153 objectForKeyedSubscript:v88];
-            v97 = [v96 intValue];
+            intValue13 = [v96 intValue];
 
             v98 = [v153 objectForKeyedSubscript:v89];
-            v99 = [v98 intValue];
+            intValue14 = [v98 intValue];
 
             if (v152 <= 0)
             {
@@ -496,7 +496,7 @@ LABEL_20:
 
             else
             {
-              v100 = v95;
+              v100 = intValue12;
               v101 = PLLogAggregateSummarizationService();
               if (os_log_type_enabled(v101, OS_LOG_TYPE_DEBUG))
               {
@@ -505,7 +505,7 @@ LABEL_20:
                 v167 = 1024;
                 *v168 = v81;
                 *&v168[4] = 2048;
-                *&v168[6] = v95;
+                *&v168[6] = intValue12;
                 _os_log_debug_impl(&dword_25EE51000, v101, OS_LOG_TYPE_DEBUG, "%@: bucket:%d BEFORE E_B:%f", buf, 0x1Cu);
               }
 
@@ -521,9 +521,9 @@ LABEL_20:
                 v104 = 0.0;
               }
 
-              v95 = v104;
-              v97 = v102;
-              v99 = v103;
+              intValue12 = v104;
+              intValue13 = v102;
+              intValue14 = v103;
               v105 = PLLogAggregateSummarizationService();
               if (os_log_type_enabled(v105, OS_LOG_TYPE_DEBUG))
               {
@@ -547,33 +547,33 @@ LABEL_20:
               }
             }
 
-            if (v91 >= 1)
+            if (intValue10 >= 1)
             {
-              v106 = [MEMORY[0x277CCABB0] numberWithInt:v91];
+              v106 = [MEMORY[0x277CCABB0] numberWithInt:intValue10];
               [v155 setObject:v106 forKeyedSubscript:v85];
             }
 
-            if (v93 >= 1)
+            if (intValue11 >= 1)
             {
-              v107 = [MEMORY[0x277CCABB0] numberWithInt:v93];
+              v107 = [MEMORY[0x277CCABB0] numberWithInt:intValue11];
               [v155 setObject:v107 forKeyedSubscript:v159];
             }
 
-            if (v95 >= 1)
+            if (intValue12 >= 1)
             {
-              v108 = [MEMORY[0x277CCABB0] numberWithInt:v95];
+              v108 = [MEMORY[0x277CCABB0] numberWithInt:intValue12];
               [v155 setObject:v108 forKeyedSubscript:v157];
             }
 
-            if (v97 >= 1)
+            if (intValue13 >= 1)
             {
-              v109 = [MEMORY[0x277CCABB0] numberWithInt:v97];
+              v109 = [MEMORY[0x277CCABB0] numberWithInt:intValue13];
               [v155 setObject:v109 forKeyedSubscript:v88];
             }
 
-            if (v99 >= 1)
+            if (intValue14 >= 1)
             {
-              v110 = [MEMORY[0x277CCABB0] numberWithInt:v99];
+              v110 = [MEMORY[0x277CCABB0] numberWithInt:intValue14];
               [v155 setObject:v110 forKeyedSubscript:v89];
             }
 
@@ -603,23 +603,23 @@ LABEL_20:
   }
 
   v112 = objc_alloc_init(SignpostReaderHelper);
-  v113 = [(SignpostReaderHelper *)v112 getSignpostMetricsWithStartDate:v134 withEndDate:v140 processMXSignpost:v135];
-  v114 = [(PLAggregateSummarizationService *)v136 preformatMetricsForFormatter:v142];
+  v113 = [(SignpostReaderHelper *)v112 getSignpostMetricsWithStartDate:v134 withEndDate:v140 processMXSignpost:bOOLValue5];
+  v114 = [(PLAggregateSummarizationService *)selfCopy preformatMetricsForFormatter:v142];
   v115 = PLLogAggregateSummarizationService();
   if (os_log_type_enabled(v115, OS_LOG_TYPE_DEBUG))
   {
     [PLAggregateSummarizationService handleAggregationQueryWithPayload:];
   }
 
-  [(PLAggregateSummarizationService *)v136 setupMetrics];
-  [(PLAggregateSummarizationService *)v136 aggregateMetrics];
-  if (v133)
+  [(PLAggregateSummarizationService *)selfCopy setupMetrics];
+  [(PLAggregateSummarizationService *)selfCopy aggregateMetrics];
+  if (bOOLValue4)
   {
-    v116 = [(PLAggregateSummarizationService *)v136 getDeviceMetadataInRange:v113 withSignpostData:v130, v129];
+    v129 = [(PLAggregateSummarizationService *)selfCopy getDeviceMetadataInRange:v113 withSignpostData:v130, v129];
     v117 = objc_alloc_init(PLMetricsFormatterJSON);
-    [(PLMetricsFormatterJSON *)v117 addGlobalMetaData:v116];
+    [(PLMetricsFormatterJSON *)v117 addGlobalMetaData:v129];
     [(PLMetricsFormatterJSON *)v117 addAllMetrics:v114 signpostData:v113];
-    v118 = [(PLMetricsFormatterJSON *)v117 writeSessionFile];
+    writeSessionFile = [(PLMetricsFormatterJSON *)v117 writeSessionFile];
     v119 = PLLogAggregateSummarizationService();
     if (os_log_type_enabled(v119, OS_LOG_TYPE_DEBUG))
     {
@@ -629,10 +629,10 @@ LABEL_20:
 
   else
   {
-    v118 = 1;
+    writeSessionFile = 1;
   }
 
-  if (v135)
+  if (bOOLValue5)
   {
     v120 = PLLogAggregateSummarizationService();
     if (os_log_type_enabled(v120, OS_LOG_TYPE_DEBUG))
@@ -646,7 +646,7 @@ LABEL_20:
   }
 
   v123 = objc_opt_new();
-  v124 = [MEMORY[0x277CCABB0] numberWithBool:v118];
+  v124 = [MEMORY[0x277CCABB0] numberWithBool:writeSessionFile];
   [v123 setObject:v124 forKeyedSubscript:@"success"];
 
   v125 = [v113 objectForKeyedSubscript:@"launchesTimeSeries"];
@@ -693,61 +693,61 @@ void __69__PLAggregateSummarizationService_handleAggregationQueryWithPayload___b
 
 - (void)setupMetrics
 {
-  v3 = [(PLAggregateSummarizationService *)self metrics];
+  metrics = [(PLAggregateSummarizationService *)self metrics];
   v4 = [PLASMetric alloc];
-  v5 = [(PLAggregateSummarizationService *)self getQueryForNetworkIOData];
-  v6 = [(PLAggregateSummarizationService *)self getGenericSummarizer];
-  v7 = [(PLASMetric *)v4 initMetric:@"NetworkIOStats" withType:1 withProperties:&unk_28714C7A0 withQuery:v5 andSummarizerBlock:v6];
-  [v3 addObject:v7];
+  getQueryForNetworkIOData = [(PLAggregateSummarizationService *)self getQueryForNetworkIOData];
+  getGenericSummarizer = [(PLAggregateSummarizationService *)self getGenericSummarizer];
+  v7 = [(PLASMetric *)v4 initMetric:@"NetworkIOStats" withType:1 withProperties:&unk_28714C7A0 withQuery:getQueryForNetworkIOData andSummarizerBlock:getGenericSummarizer];
+  [metrics addObject:v7];
 
-  v8 = [(PLAggregateSummarizationService *)self metrics];
+  metrics2 = [(PLAggregateSummarizationService *)self metrics];
   v9 = [PLASMetric alloc];
-  v10 = [(PLAggregateSummarizationService *)self getQueryForCoalitionPowerData];
-  v11 = [(PLAggregateSummarizationService *)self getGenericSummarizer];
-  v12 = [(PLASMetric *)v9 initMetric:@"CoalitionPowerStats" withType:1 withProperties:&unk_28714C7B8 withQuery:v10 andSummarizerBlock:v11];
-  [v8 addObject:v12];
+  getQueryForCoalitionPowerData = [(PLAggregateSummarizationService *)self getQueryForCoalitionPowerData];
+  getGenericSummarizer2 = [(PLAggregateSummarizationService *)self getGenericSummarizer];
+  v12 = [(PLASMetric *)v9 initMetric:@"CoalitionPowerStats" withType:1 withProperties:&unk_28714C7B8 withQuery:getQueryForCoalitionPowerData andSummarizerBlock:getGenericSummarizer2];
+  [metrics2 addObject:v12];
 
-  v13 = [(PLAggregateSummarizationService *)self metrics];
+  metrics3 = [(PLAggregateSummarizationService *)self metrics];
   v14 = [PLASMetric alloc];
-  v15 = [(PLAggregateSummarizationService *)self getQueryForAverageMemory];
-  v16 = [(PLAggregateSummarizationService *)self getGenericSummarizer];
-  v17 = [(PLASMetric *)v14 initMetric:@"AverageMemory" withType:2 withProperties:&unk_28714C7D0 withQuery:v15 andSummarizerBlock:v16];
-  [v13 addObject:v17];
+  getQueryForAverageMemory = [(PLAggregateSummarizationService *)self getQueryForAverageMemory];
+  getGenericSummarizer3 = [(PLAggregateSummarizationService *)self getGenericSummarizer];
+  v17 = [(PLASMetric *)v14 initMetric:@"AverageMemory" withType:2 withProperties:&unk_28714C7D0 withQuery:getQueryForAverageMemory andSummarizerBlock:getGenericSummarizer3];
+  [metrics3 addObject:v17];
 
-  v18 = [(PLAggregateSummarizationService *)self metrics];
+  metrics4 = [(PLAggregateSummarizationService *)self metrics];
   v19 = [PLASMetric alloc];
-  v20 = [(PLAggregateSummarizationService *)self getQueryForPeakMemory];
-  v21 = [(PLAggregateSummarizationService *)self getGenericSummarizer];
-  v22 = [(PLASMetric *)v19 initMetric:@"PeakMemory" withType:2 withProperties:&unk_28714C7E8 withQuery:v20 andSummarizerBlock:v21];
-  [v18 addObject:v22];
+  getQueryForPeakMemory = [(PLAggregateSummarizationService *)self getQueryForPeakMemory];
+  getGenericSummarizer4 = [(PLAggregateSummarizationService *)self getGenericSummarizer];
+  v22 = [(PLASMetric *)v19 initMetric:@"PeakMemory" withType:2 withProperties:&unk_28714C7E8 withQuery:getQueryForPeakMemory andSummarizerBlock:getGenericSummarizer4];
+  [metrics4 addObject:v22];
 
-  v23 = [(PLAggregateSummarizationService *)self metrics];
+  metrics5 = [(PLAggregateSummarizationService *)self metrics];
   v24 = [PLASMetric alloc];
-  v25 = [(PLAggregateSummarizationService *)self getQueryForDiskIO];
-  v26 = [(PLAggregateSummarizationService *)self getGenericSummarizer];
-  v27 = [(PLASMetric *)v24 initMetric:@"DiskIO" withType:2 withProperties:&unk_28714C800 withQuery:v25 andSummarizerBlock:v26];
-  [v23 addObject:v27];
+  getQueryForDiskIO = [(PLAggregateSummarizationService *)self getQueryForDiskIO];
+  getGenericSummarizer5 = [(PLAggregateSummarizationService *)self getGenericSummarizer];
+  v27 = [(PLASMetric *)v24 initMetric:@"DiskIO" withType:2 withProperties:&unk_28714C800 withQuery:getQueryForDiskIO andSummarizerBlock:getGenericSummarizer5];
+  [metrics5 addObject:v27];
 
-  v28 = [(PLAggregateSummarizationService *)self metrics];
+  metrics6 = [(PLAggregateSummarizationService *)self metrics];
   v29 = [PLASMetric alloc];
-  v30 = [(PLAggregateSummarizationService *)self getQueryForLocationActivity];
-  v31 = [(PLAggregateSummarizationService *)self getLocationActivitySummarizer];
-  v32 = [(PLASMetric *)v29 initMetric:@"LocationActivity" withType:1 withProperties:&unk_28714C818 withQuery:v30 andSummarizerBlock:v31];
-  [v28 addObject:v32];
+  getQueryForLocationActivity = [(PLAggregateSummarizationService *)self getQueryForLocationActivity];
+  getLocationActivitySummarizer = [(PLAggregateSummarizationService *)self getLocationActivitySummarizer];
+  v32 = [(PLASMetric *)v29 initMetric:@"LocationActivity" withType:1 withProperties:&unk_28714C818 withQuery:getQueryForLocationActivity andSummarizerBlock:getLocationActivitySummarizer];
+  [metrics6 addObject:v32];
 
-  v33 = [(PLAggregateSummarizationService *)self metrics];
+  metrics7 = [(PLAggregateSummarizationService *)self metrics];
   v34 = [PLASMetric alloc];
-  v35 = [(PLAggregateSummarizationService *)self getQueryForDisplayAPL];
-  v36 = [(PLAggregateSummarizationService *)self getGenericSummarizer];
-  v37 = [(PLASMetric *)v34 initMetric:@"DisplayAPL" withType:1 withProperties:&unk_28714C830 withQuery:v35 andSummarizerBlock:v36];
-  [v33 addObject:v37];
+  getQueryForDisplayAPL = [(PLAggregateSummarizationService *)self getQueryForDisplayAPL];
+  getGenericSummarizer6 = [(PLAggregateSummarizationService *)self getGenericSummarizer];
+  v37 = [(PLASMetric *)v34 initMetric:@"DisplayAPL" withType:1 withProperties:&unk_28714C830 withQuery:getQueryForDisplayAPL andSummarizerBlock:getGenericSummarizer6];
+  [metrics7 addObject:v37];
 
-  v42 = [(PLAggregateSummarizationService *)self metrics];
+  metrics8 = [(PLAggregateSummarizationService *)self metrics];
   v38 = [PLASMetric alloc];
-  v39 = [(PLAggregateSummarizationService *)self getQueryForCellularCondition];
-  v40 = [(PLAggregateSummarizationService *)self getCellularConditionSummarizer];
-  v41 = [(PLASMetric *)v38 initMetric:@"CellularCondition" withType:1 withProperties:&unk_28714C848 withQuery:v39 andSummarizerBlock:v40];
-  [v42 addObject:v41];
+  getQueryForCellularCondition = [(PLAggregateSummarizationService *)self getQueryForCellularCondition];
+  getCellularConditionSummarizer = [(PLAggregateSummarizationService *)self getCellularConditionSummarizer];
+  v41 = [(PLASMetric *)v38 initMetric:@"CellularCondition" withType:1 withProperties:&unk_28714C848 withQuery:getQueryForCellularCondition andSummarizerBlock:getCellularConditionSummarizer];
+  [metrics8 addObject:v41];
 }
 
 - (void)aggregateMetrics
@@ -777,15 +777,15 @@ void __69__PLAggregateSummarizationService_handleAggregationQueryWithPayload___b
 
         v8 = *(*(&v20 + 1) + 8 * v7);
         v9 = objc_autoreleasePoolPush();
-        v10 = [v8 query];
-        v11 = v10[2](*(&self->super.super.super.isa + v6[114]));
+        query = [v8 query];
+        v11 = query[2](*(&self->super.super.super.isa + v6[114]));
 
         if (v11 && [v11 count])
         {
-          v12 = [v8 summarizer];
+          summarizer = [v8 summarizer];
           [v8 metricProperties];
           v14 = v13 = v6;
-          (v12)[2](v12, v11, v14);
+          (summarizer)[2](summarizer, v11, v14);
           v16 = v15 = v5;
 
           v6 = v13;
@@ -809,16 +809,16 @@ void __69__PLAggregateSummarizationService_handleAggregationQueryWithPayload___b
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getAppList:(id)a3
+- (void)getAppList:(id)list
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  listCopy = list;
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v4;
+  v6 = listCopy;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -856,12 +856,12 @@ void __69__PLAggregateSummarizationService_handleAggregationQueryWithPayload___b
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (id)getDeviceMetadataInRange:(_PLTimeIntervalRange)a3 withSignpostData:(id)a4
+- (id)getDeviceMetadataInRange:(_PLTimeIntervalRange)range withSignpostData:(id)data
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v37[12] = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  dataCopy = data;
   v8 = CFPreferencesCopyValue(@"AppleLanguages", @"Apple Global Domain", @"mobile", *MEMORY[0x277CBF030]);
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && [v8 count])
@@ -874,12 +874,12 @@ void __69__PLAggregateSummarizationService_handleAggregationQueryWithPayload___b
     v9 = @"<unknown>";
   }
 
-  v10 = [MEMORY[0x277CBEAF8] currentLocale];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
   v31 = v8;
-  v29 = v10;
-  if (v10)
+  v29 = currentLocale;
+  if (currentLocale)
   {
-    v11 = [v10 objectForKey:*MEMORY[0x277CBE690]];
+    v11 = [currentLocale objectForKey:*MEMORY[0x277CBE690]];
   }
 
   else
@@ -887,11 +887,11 @@ void __69__PLAggregateSummarizationService_handleAggregationQueryWithPayload___b
     v11 = @"<unknown>";
   }
 
-  v12 = [v7 objectForKeyedSubscript:@"hangtracer_enabled"];
-  v32 = v7;
+  v12 = [dataCopy objectForKeyedSubscript:@"hangtracer_enabled"];
+  v32 = dataCopy;
   if (v12)
   {
-    v35 = [v7 objectForKeyedSubscript:@"hangtracer_enabled"];
+    v35 = [dataCopy objectForKeyedSubscript:@"hangtracer_enabled"];
   }
 
   else
@@ -934,22 +934,22 @@ void __69__PLAggregateSummarizationService_handleAggregationQueryWithPayload___b
   v37[2] = v17;
   v36[2] = @"language";
   v36[3] = @"os_version";
-  v19 = [objc_opt_class() osVersion];
+  osVersion = [objc_opt_class() osVersion];
   v27 = v11;
-  if (v19)
+  if (osVersion)
   {
-    v20 = [objc_opt_class() osVersion];
+    osVersion2 = [objc_opt_class() osVersion];
   }
 
   else
   {
-    v20 = @"<unknown>";
+    osVersion2 = @"<unknown>";
   }
 
-  v37[3] = v20;
+  v37[3] = osVersion2;
   v36[4] = @"machine_config";
-  v21 = [objc_opt_class() modelIdentifier];
-  v37[4] = v21;
+  modelIdentifier = [objc_opt_class() modelIdentifier];
+  v37[4] = modelIdentifier;
   v36[5] = @"os_variant";
   v22 = [MEMORY[0x277CCABB0] numberWithShort:{objc_msgSend(objc_opt_class(), "buildType")}];
   v37[5] = v22;
@@ -976,7 +976,7 @@ void __69__PLAggregateSummarizationService_handleAggregationQueryWithPayload___b
   {
   }
 
-  if (v19)
+  if (osVersion)
   {
   }
 
@@ -985,15 +985,15 @@ void __69__PLAggregateSummarizationService_handleAggregationQueryWithPayload___b
   return v24;
 }
 
-- (id)getDrainInfoInRange:(_PLTimeIntervalRange)a3
+- (id)getDrainInfoInRange:(_PLTimeIntervalRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v32 = *MEMORY[0x277D85DE8];
   v6 = [(PLOperator *)PLBatteryAgent entryKeyForType:*MEMORY[0x277D3F5B8] andName:@"UILevel"];
-  v7 = [(PLOperator *)self storage];
+  storage = [(PLOperator *)self storage];
   v24 = v6;
-  v8 = [v7 aggregateEntriesForKey:v6 withBucketLength:3600.0 inTimeIntervalRange:{location, length}];
+  v8 = [storage aggregateEntriesForKey:v6 withBucketLength:3600.0 inTimeIntervalRange:{location, length}];
 
   v28 = 0u;
   v29 = 0u;
@@ -1018,9 +1018,9 @@ void __69__PLAggregateSummarizationService_handleAggregationQueryWithPayload___b
 
         v15 = *(*(&v26 + 1) + 8 * i);
         v16 = [v15 objectForKeyedSubscript:@"Level"];
-        v17 = [v16 intValue];
+        intValue = [v16 intValue];
 
-        v12 = (v17 + v12);
+        v12 = (intValue + v12);
         v18 = [v15 objectForKeyedSubscript:@"energyConsumed"];
         LODWORD(v16) = [v18 intValue];
 
@@ -1050,14 +1050,14 @@ void __69__PLAggregateSummarizationService_handleAggregationQueryWithPayload___b
   return v21;
 }
 
-- (id)getPluggedInDurationInRange:(_PLTimeIntervalRange)a3
+- (id)getPluggedInDurationInRange:(_PLTimeIntervalRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v25 = *MEMORY[0x277D85DE8];
   v6 = [(PLOperator *)PLAppTimeService entryKeyForType:*MEMORY[0x277D3F5B8] andName:@"UsageTime"];
-  v7 = [(PLOperator *)self storage];
-  v8 = [v7 aggregateEntriesForKey:v6 withBucketLength:3600.0 inTimeIntervalRange:{location, length}];
+  storage = [(PLOperator *)self storage];
+  v8 = [storage aggregateEntriesForKey:v6 withBucketLength:3600.0 inTimeIntervalRange:{location, length}];
 
   v22 = 0u;
   v23 = 0u;
@@ -1080,9 +1080,9 @@ void __69__PLAggregateSummarizationService_handleAggregationQueryWithPayload___b
         }
 
         v15 = [*(*(&v20 + 1) + 8 * i) objectForKeyedSubscript:{@"PluggedIn", v20}];
-        v16 = [v15 intValue];
+        intValue = [v15 intValue];
 
-        v12 = (v16 + v12);
+        v12 = (intValue + v12);
       }
 
       v11 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
@@ -1103,13 +1103,13 @@ void __69__PLAggregateSummarizationService_handleAggregationQueryWithPayload___b
   return v17;
 }
 
-- (id)getInitCountInRange:(_PLTimeIntervalRange)a3
+- (id)getInitCountInRange:(_PLTimeIntervalRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v6 = [MEMORY[0x277D3F230] entryKeyForType:*MEMORY[0x277D3F5D0] andName:*MEMORY[0x277D3F610]];
-  v7 = [(PLOperator *)self storage];
-  v8 = [v7 entriesForKey:v6 inTimeRange:0 withFilters:{location, length}];
+  storage = [(PLOperator *)self storage];
+  v8 = [storage entriesForKey:v6 inTimeRange:0 withFilters:{location, length}];
 
   v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v8, "count")}];
 
@@ -1359,12 +1359,12 @@ id __63__PLAggregateSummarizationService_getQueryForCellularCondition__block_inv
         v61 = v3;
         v4 = *(*(&v62 + 1) + 8 * v3);
         v5 = [objc_alloc(MEMORY[0x277D3F260]) initWithKey:@"AppBundleId" withValue:v4 withComparisonOperation:0];
-        v6 = [MEMORY[0x277D3F2A0] sharedCore];
-        v7 = [v6 storage];
+        mEMORY[0x277D3F2A0] = [MEMORY[0x277D3F2A0] sharedCore];
+        storage = [mEMORY[0x277D3F2A0] storage];
         v60 = v5;
         v68 = v5;
         v8 = [MEMORY[0x277CBEA60] arrayWithObjects:&v68 count:1];
-        v9 = [v7 lastEntryForKey:@"PLApplicationAgent_EventNone_AllApps" withComparisons:v8 isSingleton:1];
+        v9 = [storage lastEntryForKey:@"PLApplicationAgent_EventNone_AllApps" withComparisons:v8 isSingleton:1];
 
         v67[0] = v4;
         v66[0] = @"app_bundleid";
@@ -1608,18 +1608,18 @@ id __63__PLAggregateSummarizationService_getQueryForCellularCondition__block_inv
 - (id)getAppMultipleVersionsData
 {
   v3 = [PLASMetric alloc];
-  v4 = [(PLAggregateSummarizationService *)self getQueryForAppMultipleVersions];
-  v5 = [(PLAggregateSummarizationService *)self getGenericSummarizer];
-  v6 = [(PLASMetric *)v3 initMetric:@"app_multiple_versions" withType:0 withProperties:&unk_28714C860 withQuery:v4 andSummarizerBlock:v5];
+  getQueryForAppMultipleVersions = [(PLAggregateSummarizationService *)self getQueryForAppMultipleVersions];
+  getGenericSummarizer = [(PLAggregateSummarizationService *)self getGenericSummarizer];
+  v6 = [(PLASMetric *)v3 initMetric:@"app_multiple_versions" withType:0 withProperties:&unk_28714C860 withQuery:getQueryForAppMultipleVersions andSummarizerBlock:getGenericSummarizer];
 
-  v7 = [v6 query];
-  v8 = v7[2](self->_maxTimestamp);
+  query = [v6 query];
+  v8 = query[2](self->_maxTimestamp);
 
   if (v8 && [v8 count])
   {
-    v9 = [v6 summarizer];
-    v10 = [v6 metricProperties];
-    v11 = (v9)[2](v9, v8, v10);
+    summarizer = [v6 summarizer];
+    metricProperties = [v6 metricProperties];
+    v11 = (summarizer)[2](summarizer, v8, metricProperties);
   }
 
   else

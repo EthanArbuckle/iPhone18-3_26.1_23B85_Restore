@@ -1,43 +1,43 @@
 @interface VCAudioRedBuilder
-+ (unsigned)redOverheadForNumPayloads:(unsigned int)a3;
-- (BOOL)isPayloadTimestampWithinThreshold:(tagVCAudioRedPayload *)a3 forTimestamp:(unsigned int)a4;
-- (BOOL)redundantPayloads:(id)a3 containsPointer:(void *)a4;
-- (VCAudioRedBuilder)initWithRedPayloadType:(int)a3 sampleRate:(unsigned int)a4 samplesPerFrame:(unsigned int)a5 numPayloads:(unsigned int)a6 maxDelay:(unsigned int)a7 includeSequenceOffset:(BOOL)a8;
-- (char)payloadHistoryDescriptionForInfoIndex:(unsigned __int8)a3;
-- (char)redPayloadDescription:(tagVCAudioRedPayload *)a3;
-- (char)redundantPayloadsDescription:(id)a3;
-- (char)resetOutputPayload:(tagVCAudioRedPayload *)a3;
-- (id)selectRedPayloadsForPrimaryPayload:(tagVCAudioRedPayload *)a3;
-- (tagVCAudioRedPayload)buildRedPayloadWithPrimaryPayload:(tagVCAudioRedPayload *)a3 redPayloads:(id)a4;
-- (tagVCAudioRedPayload)nearestRedPayloadForTimestamp:(unsigned int)a3 payloadHistory:(tagVCAudioRedPayload *)a4 payloadHistoryCount:(unsigned int)a5;
-- (tagVCAudioRedPayload)redPayloadForPrimaryPayload:(tagVCAudioRedPayload *)a3;
++ (unsigned)redOverheadForNumPayloads:(unsigned int)payloads;
+- (BOOL)isPayloadTimestampWithinThreshold:(tagVCAudioRedPayload *)threshold forTimestamp:(unsigned int)timestamp;
+- (BOOL)redundantPayloads:(id)payloads containsPointer:(void *)pointer;
+- (VCAudioRedBuilder)initWithRedPayloadType:(int)type sampleRate:(unsigned int)rate samplesPerFrame:(unsigned int)frame numPayloads:(unsigned int)payloads maxDelay:(unsigned int)delay includeSequenceOffset:(BOOL)offset;
+- (char)payloadHistoryDescriptionForInfoIndex:(unsigned __int8)index;
+- (char)redPayloadDescription:(tagVCAudioRedPayload *)description;
+- (char)redundantPayloadsDescription:(id)description;
+- (char)resetOutputPayload:(tagVCAudioRedPayload *)payload;
+- (id)selectRedPayloadsForPrimaryPayload:(tagVCAudioRedPayload *)payload;
+- (tagVCAudioRedPayload)buildRedPayloadWithPrimaryPayload:(tagVCAudioRedPayload *)payload redPayloads:(id)payloads;
+- (tagVCAudioRedPayload)nearestRedPayloadForTimestamp:(unsigned int)timestamp payloadHistory:(tagVCAudioRedPayload *)history payloadHistoryCount:(unsigned int)count;
+- (tagVCAudioRedPayload)redPayloadForPrimaryPayload:(tagVCAudioRedPayload *)payload;
 - (unsigned)maxDelay;
 - (unsigned)numPayloads;
 - (void)dealloc;
-- (void)resetShortREDHistoryAndPrimaryPayloadHistory:(BOOL)a3;
-- (void)setMaxDelay:(unsigned int)a3;
-- (void)setMaxREDPayloadSize:(unsigned int)a3;
-- (void)setNumPayloads:(unsigned int)a3;
+- (void)resetShortREDHistoryAndPrimaryPayloadHistory:(BOOL)history;
+- (void)setMaxDelay:(unsigned int)delay;
+- (void)setMaxREDPayloadSize:(unsigned int)size;
+- (void)setNumPayloads:(unsigned int)payloads;
 @end
 
 @implementation VCAudioRedBuilder
 
-- (void)setMaxREDPayloadSize:(unsigned int)a3
+- (void)setMaxREDPayloadSize:(unsigned int)size
 {
   objc_sync_enter(self);
-  self->_maxREDPayloadSize = a3;
+  self->_maxREDPayloadSize = size;
 
   objc_sync_exit(self);
 }
 
-- (tagVCAudioRedPayload)buildRedPayloadWithPrimaryPayload:(tagVCAudioRedPayload *)a3 redPayloads:(id)a4
+- (tagVCAudioRedPayload)buildRedPayloadWithPrimaryPayload:(tagVCAudioRedPayload *)payload redPayloads:(id)payloads
 {
   v55 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 8)
   {
     __str = 0;
     v7 = objc_opt_class() ? [objc_msgSend(objc_opt_class() "description")] : "<nil>";
-    asprintf(&__str, "%s: primaryPayload:%s redPayloads:%s", v7, [(VCAudioRedBuilder *)self redPayloadDescription:a3], [(VCAudioRedBuilder *)self redundantPayloadsDescription:a4]);
+    asprintf(&__str, "%s: primaryPayload:%s redPayloads:%s", v7, [(VCAudioRedBuilder *)self redPayloadDescription:payload], [(VCAudioRedBuilder *)self redundantPayloadsDescription:payloads]);
     if (__str)
     {
       __lasts = 0;
@@ -95,7 +95,7 @@
 
   p_redPayloadToSend = &self->_redPayloadToSend;
   v14 = [(VCAudioRedBuilder *)self resetOutputPayload:?];
-  v15 = [a4 count];
+  v15 = [payloads count];
   v16 = 1472;
   v17 = 0;
   v18 = (v15 - 1);
@@ -104,7 +104,7 @@
     v43 = 1472 - 4 * v15;
     while (1)
     {
-      v19 = [a4 pointerAtIndex:v18];
+      v19 = [payloads pointerAtIndex:v18];
       v20 = *(v19 + 16);
       if (v20 >= 0x400)
       {
@@ -128,7 +128,7 @@
           goto LABEL_42;
         }
 
-        v22 = 100 * (a3->timestamp - *(v19 + 20)) / self->_sampleRate;
+        v22 = 100 * (payload->timestamp - *(v19 + 20)) / self->_sampleRate;
         if (v22 >= 0x100)
         {
           if (VRTraceGetErrorLogLevelForModule() >= 3)
@@ -148,7 +148,7 @@
 
       else
       {
-        v24 = a3->timestamp - *(v19 + 20);
+        v24 = payload->timestamp - *(v19 + 20);
         if (v24 >= 0x4000)
         {
           if (VRTraceGetErrorLogLevelForModule() >= 3)
@@ -224,15 +224,15 @@ LABEL_43:
   }
 
 LABEL_44:
-  *v14++ = a3->payloadType;
+  *v14++ = payload->payloadType;
   v16 = (v16 - 1);
-  v27 = [a4 count];
+  v27 = [payloads count];
   v28 = (v27 - 1);
   if (v27 - 1 >= 0)
   {
     while (1)
     {
-      v29 = [a4 pointerAtIndex:v28];
+      v29 = [payloads pointerAtIndex:v28];
       v30 = v29;
       v31 = *(v29 + 16);
       if (v16 < v31)
@@ -280,13 +280,13 @@ LABEL_44:
 
   v31 = 0;
 LABEL_50:
-  bufferLength = a3->bufferLength;
+  bufferLength = payload->bufferLength;
   if (v16 >= bufferLength)
   {
-    memcpy(v14, a3->buffer, bufferLength);
-    self->_redPayloadToSend.bufferLength = v14 + a3->bufferLength - LODWORD(self->_redPayloadToSend.buffer);
+    memcpy(v14, payload->buffer, bufferLength);
+    self->_redPayloadToSend.bufferLength = v14 + payload->bufferLength - LODWORD(self->_redPayloadToSend.buffer);
     self->_redPayloadToSend.payloadType = self->_redPayloadType;
-    self->_redPayloadToSend.timestamp = a3->timestamp;
+    self->_redPayloadToSend.timestamp = payload->timestamp;
     self->_redPayloadToSend.priority = v17;
     return p_redPayloadToSend;
   }
@@ -297,7 +297,7 @@ LABEL_50:
     v41 = *MEMORY[0x1E6986650];
     if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_ERROR))
     {
-      v42 = a3->bufferLength;
+      v42 = payload->bufferLength;
       *buf = 136316162;
       *&buf[4] = v40;
       v48 = 2080;
@@ -325,17 +325,17 @@ LABEL_58:
   return 0;
 }
 
-- (BOOL)isPayloadTimestampWithinThreshold:(tagVCAudioRedPayload *)a3 forTimestamp:(unsigned int)a4
+- (BOOL)isPayloadTimestampWithinThreshold:(tagVCAudioRedPayload *)threshold forTimestamp:(unsigned int)timestamp
 {
   v32 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!threshold)
   {
     return 0;
   }
 
   samplesPerFrame = self->_samplesPerFrame;
-  v6 = a4 + 2 * samplesPerFrame;
-  v7 = a4 - 2 * samplesPerFrame;
+  v6 = timestamp + 2 * samplesPerFrame;
+  v7 = timestamp - 2 * samplesPerFrame;
   if (VRTraceGetErrorLogLevelForModule() >= 8)
   {
     v8 = 2 * samplesPerFrame;
@@ -346,7 +346,7 @@ LABEL_58:
     {
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
-        timestamp = a3->timestamp;
+        timestamp = threshold->timestamp;
         v18 = 136316674;
         v19 = v9;
         v20 = 2080;
@@ -360,14 +360,14 @@ LABEL_58:
         v28 = 1024;
         v29 = v7;
         v30 = 1024;
-        v31 = timestamp;
+        timestampCopy = timestamp;
         _os_log_impl(&dword_1DB56E000, v10, OS_LOG_TYPE_DEFAULT, "VCAudioRedBuilder [%s] %s:%d timestampOffsetThreshold:%d highThreshold:%d lowThreshold:%d payloadTimestamp:%d", &v18, 0x34u);
       }
     }
 
     else if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
-      v17 = a3->timestamp;
+      v17 = threshold->timestamp;
       v18 = 136316674;
       v19 = v9;
       v20 = 2080;
@@ -381,12 +381,12 @@ LABEL_58:
       v28 = 1024;
       v29 = v7;
       v30 = 1024;
-      v31 = v17;
+      timestampCopy = v17;
       _os_log_debug_impl(&dword_1DB56E000, v10, OS_LOG_TYPE_DEBUG, "VCAudioRedBuilder [%s] %s:%d timestampOffsetThreshold:%d highThreshold:%d lowThreshold:%d payloadTimestamp:%d", &v18, 0x34u);
     }
   }
 
-  v13 = a3->timestamp;
+  v13 = threshold->timestamp;
   if (v13 - v7 <= 0x7FFFFFFE && ((v14 = v13 - v6) != 0 ? (v15 = v14 > 0x7FFFFFFE) : (v15 = 1), v15))
   {
     return 1;
@@ -398,48 +398,48 @@ LABEL_58:
   }
 }
 
-- (char)resetOutputPayload:(tagVCAudioRedPayload *)a3
+- (char)resetOutputPayload:(tagVCAudioRedPayload *)payload
 {
-  *&a3->payloadType = 0u;
-  *&a3->bufferLength = 0u;
+  *&payload->payloadType = 0u;
+  *&payload->bufferLength = 0u;
   result = self->_redPayloadBufferToSend;
-  a3->buffer = result;
+  payload->buffer = result;
   return result;
 }
 
-- (tagVCAudioRedPayload)nearestRedPayloadForTimestamp:(unsigned int)a3 payloadHistory:(tagVCAudioRedPayload *)a4 payloadHistoryCount:(unsigned int)a5
+- (tagVCAudioRedPayload)nearestRedPayloadForTimestamp:(unsigned int)timestamp payloadHistory:(tagVCAudioRedPayload *)history payloadHistoryCount:(unsigned int)count
 {
-  v5 = 0;
+  historyCopy2 = 0;
   v34 = *MEMORY[0x1E69E9840];
-  if (a4 && a5)
+  if (history && count)
   {
-    v6 = *&a3;
-    if (a4->timestamp - a3 <= 0x7FFFFFFE)
+    v6 = *&timestamp;
+    if (history->timestamp - timestamp <= 0x7FFFFFFE)
     {
       v8 = 0;
       v9 = 0;
-      v10 = a4;
-      v11 = a5;
-      while (--v11)
+      historyCopy = history;
+      countCopy = count;
+      while (--countCopy)
       {
-        v8 = &a4[v9++];
-        v5 = v10 + 1;
-        v12 = v10[1].timestamp - a3;
-        ++v10;
+        v8 = &history[v9++];
+        historyCopy2 = historyCopy + 1;
+        v12 = historyCopy[1].timestamp - timestamp;
+        ++historyCopy;
         if (v12 >= 0x7FFFFFFF)
         {
-          v8 = v5 - 1;
+          v8 = historyCopy2 - 1;
           goto LABEL_10;
         }
       }
 
-      v5 = &a4[a5 - 1];
+      historyCopy2 = &history[count - 1];
     }
 
     else
     {
       v8 = 0;
-      v5 = a4;
+      historyCopy2 = history;
     }
 
 LABEL_10:
@@ -447,10 +447,10 @@ LABEL_10:
     {
       __str = 0;
       v13 = objc_opt_class() ? [objc_msgSend(objc_opt_class() "description")] : "<nil>";
-      asprintf(&__str, "%s: redTimestamp:%d current:%s previous:%s", v13, v6, [(VCAudioRedBuilder *)self redPayloadDescription:v5], [(VCAudioRedBuilder *)self redPayloadDescription:v8]);
+      asprintf(&__str, "%s: redTimestamp:%d current:%s previous:%s", v13, v6, [(VCAudioRedBuilder *)self redPayloadDescription:historyCopy2], [(VCAudioRedBuilder *)self redPayloadDescription:v8]);
       if (__str)
       {
-        v21 = self;
+        selfCopy = self;
         __lasts = 0;
         v14 = strtok_r(__str, "\n", &__lasts);
         v15 = MEMORY[0x1E6986640];
@@ -501,18 +501,18 @@ LABEL_10:
 
         while (v14);
         free(__str);
-        self = v21;
+        self = selfCopy;
       }
     }
 
-    if (v5->timestamp != v6)
+    if (historyCopy2->timestamp != v6)
     {
       if (v8 && v8->timestamp == v6)
       {
         return v8;
       }
 
-      else if (![(VCAudioRedBuilder *)self isPayloadTimestampWithinThreshold:v5 forTimestamp:v6])
+      else if (![(VCAudioRedBuilder *)self isPayloadTimestampWithinThreshold:historyCopy2 forTimestamp:v6])
       {
         if ([(VCAudioRedBuilder *)self isPayloadTimestampWithinThreshold:v8 forTimestamp:v6])
         {
@@ -527,17 +527,17 @@ LABEL_10:
     }
   }
 
-  return v5;
+  return historyCopy2;
 }
 
-- (id)selectRedPayloadsForPrimaryPayload:(tagVCAudioRedPayload *)a3
+- (id)selectRedPayloadsForPrimaryPayload:(tagVCAudioRedPayload *)payload
 {
   v61 = *MEMORY[0x1E69E9840];
   [(NSPointerArray *)self->_selectedRedPayloads setCount:0];
   if (self->_historyCount)
   {
     LODWORD(v4) = self->_numPayloads;
-    v47 = self->_maxREDPayloadSize + ~a3->bufferLength;
+    v47 = self->_maxREDPayloadSize + ~payload->bufferLength;
     if (self->_includeSequenceOffset)
     {
       v5 = self->_maxDelay / v4;
@@ -545,7 +545,7 @@ LABEL_10:
       {
         __str = 0;
         v6 = objc_opt_class() ? [objc_msgSend(objc_opt_class() "description")] : "<nil>";
-        asprintf(&__str, "%s: primary:%s numPayloads:%d maxDelay:%d strideInBlocks:%f", v6, [(VCAudioRedBuilder *)self redPayloadDescription:a3], self->_numPayloads, self->_maxDelay, v5);
+        asprintf(&__str, "%s: primary:%s numPayloads:%d maxDelay:%d strideInBlocks:%f", v6, [(VCAudioRedBuilder *)self redPayloadDescription:payload], self->_numPayloads, self->_maxDelay, v5);
         if (__str)
         {
           __lasts = 0;
@@ -608,14 +608,14 @@ LABEL_10:
         {
           v16 = vcvtps_s32_f32(v5 * v15);
           v17 = self->_samplesPerFrame * v16;
-          v18 = a3->timestamp - v17;
+          v18 = payload->timestamp - v17;
           v19 = self->_historyCount - 1;
           if (v19 >= v15)
           {
             LOBYTE(v19) = v15;
           }
 
-          v20 = [(VCAudioRedBuilder *)self nearestRedPayloadForTimestamp:a3->timestamp - v17 payloadHistory:self->_history[v19].payloadHistory payloadHistoryCount:self->_history[v19].payloadHistoryCount];
+          v20 = [(VCAudioRedBuilder *)self nearestRedPayloadForTimestamp:payload->timestamp - v17 payloadHistory:self->_history[v19].payloadHistory payloadHistoryCount:self->_history[v19].payloadHistoryCount];
           if (VRTraceGetErrorLogLevelForModule() < 8)
           {
             goto LABEL_33;
@@ -721,7 +721,7 @@ LABEL_33:
       {
         __str = 0;
         v8 = objc_opt_class() ? [objc_msgSend(objc_opt_class() "description")] : "<nil>";
-        asprintf(&__str, "%s: primary:%s numPayloads:%d maxDelay:%d count:%d", v8, [(VCAudioRedBuilder *)self redPayloadDescription:a3], self->_numPayloads, self->_maxDelay, v48);
+        asprintf(&__str, "%s: primary:%s numPayloads:%d maxDelay:%d count:%d", v8, [(VCAudioRedBuilder *)self redPayloadDescription:payload], self->_numPayloads, self->_maxDelay, v48);
         if (__str)
         {
           __lasts = 0;
@@ -781,7 +781,7 @@ LABEL_33:
       {
         v32 = 0;
         v33 = 0;
-        v34 = self;
+        selfCopy = self;
         do
         {
           historyCount = self->_historyCount;
@@ -796,8 +796,8 @@ LABEL_33:
             v33 = v36;
           }
 
-          v37 = v34 + 344 * v33;
-          v38 = a3->timestamp - *(v37 + 21);
+          v37 = selfCopy + 344 * v33;
+          v38 = payload->timestamp - *(v37 + 21);
           if (VRTraceGetErrorLogLevelForModule() >= 8)
           {
             v39 = VRTraceErrorLogLevelToCSTR();
@@ -839,9 +839,9 @@ LABEL_33:
             }
           }
 
-          if (self->_numPayloads > v34->_history[v33].payloadHistory[0].redCount && v38 >> 14 == 0 && ![(VCAudioRedBuilder *)self redundantPayloads:self->_selectedRedPayloads containsPointer:v37 + 64])
+          if (self->_numPayloads > selfCopy->_history[v33].payloadHistory[0].redCount && v38 >> 14 == 0 && ![(VCAudioRedBuilder *)self redundantPayloads:self->_selectedRedPayloads containsPointer:v37 + 64])
           {
-            v44 = v34 + 344 * v33;
+            v44 = selfCopy + 344 * v33;
             if (v47 > *(v44 + 20) + 4)
             {
               [(NSPointerArray *)self->_selectedRedPayloads addPointer:v37 + 64];
@@ -850,7 +850,7 @@ LABEL_33:
           }
 
           ++v32;
-          v34 = (v34 + 32);
+          selfCopy = (selfCopy + 32);
         }
 
         while (v48 != v32);
@@ -861,9 +861,9 @@ LABEL_33:
   return self->_selectedRedPayloads;
 }
 
-- (BOOL)redundantPayloads:(id)a3 containsPointer:(void *)a4
+- (BOOL)redundantPayloads:(id)payloads containsPointer:(void *)pointer
 {
-  if ([a3 count] < 1)
+  if ([payloads count] < 1)
   {
     return 0;
   }
@@ -871,9 +871,9 @@ LABEL_33:
   v6 = 0;
   do
   {
-    v7 = [a3 pointerAtIndex:v6];
-    v8 = v7 == a4;
-    if (v7 == a4)
+    v7 = [payloads pointerAtIndex:v6];
+    v8 = v7 == pointer;
+    if (v7 == pointer)
     {
       break;
     }
@@ -881,16 +881,16 @@ LABEL_33:
     ++v6;
   }
 
-  while (v6 < [a3 count]);
+  while (v6 < [payloads count]);
   return v8;
 }
 
-- (char)redPayloadDescription:(tagVCAudioRedPayload *)a3
+- (char)redPayloadDescription:(tagVCAudioRedPayload *)description
 {
   redPayloadDebugMessage = self->_redPayloadDebugMessage;
-  if (a3)
+  if (description)
   {
-    snprintf(self->_redPayloadDebugMessage, 0x101uLL, "{ VCAudioRedPayload payloadType=%d bufferLen=%d timestamp=%u isRedAudio=%d redCount=%d sequenceOffset=%d }", a3->payloadType, a3->bufferLength, a3->timestamp, a3->isRedAudio, a3->redCount, a3->sequenceOffset);
+    snprintf(self->_redPayloadDebugMessage, 0x101uLL, "{ VCAudioRedPayload payloadType=%d bufferLen=%d timestamp=%u isRedAudio=%d redCount=%d sequenceOffset=%d }", description->payloadType, description->bufferLength, description->timestamp, description->isRedAudio, description->redCount, description->sequenceOffset);
   }
 
   else
@@ -901,33 +901,33 @@ LABEL_33:
   return redPayloadDebugMessage;
 }
 
-- (char)redundantPayloadsDescription:(id)a3
+- (char)redundantPayloadsDescription:(id)description
 {
   redPayloadHistoryDebugMessage = self->_redPayloadHistoryDebugMessage;
   strncpy(self->_redPayloadHistoryDebugMessage, "{ \n", 0x101uLL);
-  if ([a3 count] >= 1)
+  if ([description count] >= 1)
   {
     v6 = 0;
     do
     {
-      v7 = strncat(redPayloadHistoryDebugMessage, -[VCAudioRedBuilder redPayloadDescription:](self, "redPayloadDescription:", [a3 pointerAtIndex:v6]), 0x101uLL);
+      v7 = strncat(redPayloadHistoryDebugMessage, -[VCAudioRedBuilder redPayloadDescription:](self, "redPayloadDescription:", [description pointerAtIndex:v6]), 0x101uLL);
       *&redPayloadHistoryDebugMessage[strlen(v7)] = 10;
       ++v6;
     }
 
-    while (v6 < [a3 count]);
+    while (v6 < [description count]);
   }
 
   strcat(redPayloadHistoryDebugMessage, " }");
   return redPayloadHistoryDebugMessage;
 }
 
-- (char)payloadHistoryDescriptionForInfoIndex:(unsigned __int8)a3
+- (char)payloadHistoryDescriptionForInfoIndex:(unsigned __int8)index
 {
-  v3 = a3;
+  indexCopy = index;
   redPayloadHistoryDebugMessage = self->_redPayloadHistoryDebugMessage;
   strncpy(self->_redPayloadHistoryDebugMessage, "{ primary:\n", 0x101uLL);
-  v6 = self + 344 * v3;
+  v6 = self + 344 * indexCopy;
   if (*(v6 + 88))
   {
     v7 = 0;
@@ -948,19 +948,19 @@ LABEL_33:
   return redPayloadHistoryDebugMessage;
 }
 
-- (tagVCAudioRedPayload)redPayloadForPrimaryPayload:(tagVCAudioRedPayload *)a3
+- (tagVCAudioRedPayload)redPayloadForPrimaryPayload:(tagVCAudioRedPayload *)payload
 {
   objc_sync_enter(self);
-  v5 = [(VCAudioRedBuilder *)self buildRedPayloadWithPrimaryPayload:a3 redPayloads:[(VCAudioRedBuilder *)self selectRedPayloadsForPrimaryPayload:a3]];
+  v5 = [(VCAudioRedBuilder *)self buildRedPayloadWithPrimaryPayload:payload redPayloads:[(VCAudioRedBuilder *)self selectRedPayloadsForPrimaryPayload:payload]];
   objc_sync_exit(self);
   return v5;
 }
 
-- (void)resetShortREDHistoryAndPrimaryPayloadHistory:(BOOL)a3
+- (void)resetShortREDHistoryAndPrimaryPayloadHistory:(BOOL)history
 {
   v27 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v3 = !a3;
+  historyCopy = history;
+  v3 = !history;
   if (self->_historyCount > v3)
   {
     history = self->_history;
@@ -974,7 +974,7 @@ LABEL_33:
       if (VRTraceGetErrorLogLevelForModule() >= 8)
       {
         __str = 0;
-        asprintf(&__str, "resetPrimaryPayloadHistory=%d historyIndex=%u count=%u history=%s", v14, v3, v8->payloadHistoryCount, [(VCAudioRedBuilder *)self payloadHistoryDescriptionForInfoIndex:v3]);
+        asprintf(&__str, "resetPrimaryPayloadHistory=%d historyIndex=%u count=%u history=%s", historyCopy, v3, v8->payloadHistoryCount, [(VCAudioRedBuilder *)self payloadHistoryDescriptionForInfoIndex:v3]);
         if (__str)
         {
           __lasts = 0;
@@ -1063,7 +1063,7 @@ LABEL_33:
   [(VCAudioRedBuilder *)&v8 dealloc];
 }
 
-- (VCAudioRedBuilder)initWithRedPayloadType:(int)a3 sampleRate:(unsigned int)a4 samplesPerFrame:(unsigned int)a5 numPayloads:(unsigned int)a6 maxDelay:(unsigned int)a7 includeSequenceOffset:(BOOL)a8
+- (VCAudioRedBuilder)initWithRedPayloadType:(int)type sampleRate:(unsigned int)rate samplesPerFrame:(unsigned int)frame numPayloads:(unsigned int)payloads maxDelay:(unsigned int)delay includeSequenceOffset:(BOOL)offset
 {
   v24 = *MEMORY[0x1E69E9840];
   v23.receiver = self;
@@ -1072,22 +1072,22 @@ LABEL_33:
   v15 = v14;
   if (v14)
   {
-    v14->_redPayloadType = a3;
-    v14->_sampleRate = a4;
-    v14->_samplesPerFrame = a5;
-    if (a7 <= a6)
+    v14->_redPayloadType = type;
+    v14->_sampleRate = rate;
+    v14->_samplesPerFrame = frame;
+    if (delay <= payloads)
     {
-      v16 = a6;
+      delayCopy = payloads;
     }
 
     else
     {
-      v16 = a7;
+      delayCopy = delay;
     }
 
-    v14->_numPayloads = a6;
-    v14->_maxDelay = v16;
-    v14->_includeSequenceOffset = a8;
+    v14->_numPayloads = payloads;
+    v14->_maxDelay = delayCopy;
+    v14->_includeSequenceOffset = offset;
     v14->_maxREDPayloadSize = 1280;
     v17 = 1;
     v14->_historyCount = 1;
@@ -1134,11 +1134,11 @@ LABEL_33:
   return v15;
 }
 
-+ (unsigned)redOverheadForNumPayloads:(unsigned int)a3
++ (unsigned)redOverheadForNumPayloads:(unsigned int)payloads
 {
-  if (a3)
+  if (payloads)
   {
-    return 4 * a3 + 1;
+    return 4 * payloads + 1;
   }
 
   else
@@ -1155,25 +1155,25 @@ LABEL_33:
   return maxDelay;
 }
 
-- (void)setMaxDelay:(unsigned int)a3
+- (void)setMaxDelay:(unsigned int)delay
 {
   v19 = *MEMORY[0x1E69E9840];
   objc_sync_enter(self);
-  if (a3 < 0xA)
+  if (delay < 0xA)
   {
-    v7 = a3;
+    delayCopy = delay;
   }
 
   else if (VRTraceGetErrorLogLevelForModule() < 5)
   {
-    v7 = 9;
+    delayCopy = 9;
   }
 
   else
   {
     v5 = VRTraceErrorLogLevelToCSTR();
     v6 = *MEMORY[0x1E6986650];
-    v7 = 9;
+    delayCopy = 9;
     if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
     {
       v9 = 136316162;
@@ -1183,20 +1183,20 @@ LABEL_33:
       v13 = 1024;
       v14 = 594;
       v15 = 1024;
-      v16 = a3;
+      delayCopy2 = delay;
       v17 = 1024;
       v18 = 9;
       _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, "VCAudioRedBuilder [%s] %s:%d Cap exceeded for maxDelay:%d using %d instead", &v9, 0x28u);
     }
   }
 
-  if (self->_maxDelay != v7)
+  if (self->_maxDelay != delayCopy)
   {
-    self->_maxDelay = v7;
+    self->_maxDelay = delayCopy;
   }
 
   numPayloads = self->_numPayloads;
-  if (numPayloads > v7)
+  if (numPayloads > delayCopy)
   {
     self->_maxDelay = numPayloads;
   }
@@ -1212,25 +1212,25 @@ LABEL_33:
   return numPayloads;
 }
 
-- (void)setNumPayloads:(unsigned int)a3
+- (void)setNumPayloads:(unsigned int)payloads
 {
   v18 = *MEMORY[0x1E69E9840];
   objc_sync_enter(self);
-  if (a3 < 4)
+  if (payloads < 4)
   {
-    v7 = a3;
+    payloadsCopy = payloads;
   }
 
   else if (VRTraceGetErrorLogLevelForModule() < 5)
   {
-    v7 = 3;
+    payloadsCopy = 3;
   }
 
   else
   {
     v5 = VRTraceErrorLogLevelToCSTR();
     v6 = *MEMORY[0x1E6986650];
-    v7 = 3;
+    payloadsCopy = 3;
     if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
     {
       v8 = 136316162;
@@ -1240,19 +1240,19 @@ LABEL_33:
       v12 = 1024;
       v13 = 616;
       v14 = 1024;
-      v15 = a3;
+      payloadsCopy2 = payloads;
       v16 = 1024;
       v17 = 3;
       _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, "VCAudioRedBuilder [%s] %s:%d Cap exceeded for number of red payloads:%d using %d instead", &v8, 0x28u);
     }
   }
 
-  if (v7 != self->_numPayloads)
+  if (payloadsCopy != self->_numPayloads)
   {
-    self->_numPayloads = v7;
-    if (v7 > self->_maxDelay)
+    self->_numPayloads = payloadsCopy;
+    if (payloadsCopy > self->_maxDelay)
     {
-      self->_maxDelay = v7;
+      self->_maxDelay = payloadsCopy;
     }
   }
 

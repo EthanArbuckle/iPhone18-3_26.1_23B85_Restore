@@ -1,82 +1,82 @@
 @interface ULLabelWiFi
-- (BOOL)isEqual:(id)a3;
-- (ULLabelWiFi)initWithCoder:(id)a3;
-- (ULLabelWiFi)initWithName:(id)a3 rssi:(int64_t)a4;
-- (ULLabelWiFi)initWithName:(id)a3 rssi:(int64_t)a4 timestamp:(id)a5 coordinates:(id)a6 probabilityVector:(id)a7 imageIdentifiersVector:;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (ULLabelWiFi)initWithCoder:(id)coder;
+- (ULLabelWiFi)initWithName:(id)name rssi:(int64_t)rssi;
+- (ULLabelWiFi)initWithName:(id)name rssi:(int64_t)rssi timestamp:(id)timestamp coordinates:(id)coordinates probabilityVector:(id)vector imageIdentifiersVector:;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ULLabelWiFi
 
-- (ULLabelWiFi)initWithName:(id)a3 rssi:(int64_t)a4
+- (ULLabelWiFi)initWithName:(id)name rssi:(int64_t)rssi
 {
   v6 = MEMORY[0x277CBEAA8];
-  v7 = a3;
+  nameCopy = name;
   v8 = [v6 now];
-  v9 = [MEMORY[0x277CBEA60] array];
-  v10 = [MEMORY[0x277CBEA60] array];
-  v11 = [(ULLabelWiFi *)self initWithName:v7 rssi:a4 timestamp:v8 coordinates:v9 probabilityVector:v10 imageIdentifiersVector:*&ULCoordinatesNotAvailable];
+  array = [MEMORY[0x277CBEA60] array];
+  array2 = [MEMORY[0x277CBEA60] array];
+  v11 = [(ULLabelWiFi *)self initWithName:nameCopy rssi:rssi timestamp:v8 coordinates:array probabilityVector:array2 imageIdentifiersVector:*&ULCoordinatesNotAvailable];
 
   return v11;
 }
 
-- (ULLabelWiFi)initWithName:(id)a3 rssi:(int64_t)a4 timestamp:(id)a5 coordinates:(id)a6 probabilityVector:(id)a7 imageIdentifiersVector:
+- (ULLabelWiFi)initWithName:(id)name rssi:(int64_t)rssi timestamp:(id)timestamp coordinates:(id)coordinates probabilityVector:(id)vector imageIdentifiersVector:
 {
   v11.receiver = self;
   v11.super_class = ULLabelWiFi;
-  v8 = [(ULLabel *)&v11 initWithName:a3 timestamp:a5 contextLayer:@"ULContextLayerTypeWiFi" deviceClass:0 coordinates:a6 probabilityVector:a7 imageIdentifiersVector:?];
+  v8 = [(ULLabel *)&v11 initWithName:name timestamp:timestamp contextLayer:@"ULContextLayerTypeWiFi" deviceClass:0 coordinates:coordinates probabilityVector:vector imageIdentifiersVector:?];
   v9 = v8;
   if (v8)
   {
-    [(ULLabelWiFi *)v8 setRssi:a4];
+    [(ULLabelWiFi *)v8 setRssi:rssi];
   }
 
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(ULLabel *)self name];
-  v6 = [(ULLabelWiFi *)self rssi];
-  v7 = [(ULLabel *)self timestamp];
+  name = [(ULLabel *)self name];
+  rssi = [(ULLabelWiFi *)self rssi];
+  timestamp = [(ULLabel *)self timestamp];
   [(ULLabel *)self coordinates];
   v13 = v8;
-  v9 = [(ULLabel *)self probabilityVector];
-  v10 = [(ULLabel *)self imageIdentifiersVector];
-  v11 = [v4 initWithName:v5 rssi:v6 timestamp:v7 coordinates:v9 probabilityVector:v10 imageIdentifiersVector:v13];
+  probabilityVector = [(ULLabel *)self probabilityVector];
+  imageIdentifiersVector = [(ULLabel *)self imageIdentifiersVector];
+  v11 = [v4 initWithName:name rssi:rssi timestamp:timestamp coordinates:probabilityVector probabilityVector:imageIdentifiersVector imageIdentifiersVector:v13];
 
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = ULLabelWiFi;
-  v4 = a3;
-  [(ULLabel *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(ULLabel *)&v6 encodeWithCoder:coderCopy];
   v5 = [MEMORY[0x277CCABB0] numberWithInteger:{self->_rssi, v6.receiver, v6.super_class}];
-  [v4 encodeObject:v5 forKey:@"rssi"];
+  [coderCopy encodeObject:v5 forKey:@"rssi"];
 }
 
-- (ULLabelWiFi)initWithCoder:(id)a3
+- (ULLabelWiFi)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = ULLabelWiFi;
-  v5 = [(ULLabel *)&v10 initWithCoder:v4];
+  v5 = [(ULLabel *)&v10 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"rssi"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"rssi"];
     v7 = v6;
     if (v6)
     {
-      v8 = [(ULLabelWiFi *)v6 integerValue];
+      integerValue = [(ULLabelWiFi *)v6 integerValue];
 
-      v5->_rssi = v8;
+      v5->_rssi = integerValue;
       v7 = v5;
     }
   }
@@ -101,14 +101,14 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && (v8.receiver = self, v8.super_class = ULLabelWiFi, [(ULLabel *)&v8 isEqual:v4]))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && (v8.receiver = self, v8.super_class = ULLabelWiFi, [(ULLabel *)&v8 isEqual:equalCopy]))
   {
-    v5 = [(ULLabelWiFi *)self rssi];
-    v6 = v5 == [v4 rssi];
+    rssi = [(ULLabelWiFi *)self rssi];
+    v6 = rssi == [equalCopy rssi];
   }
 
   else

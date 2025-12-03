@@ -1,9 +1,9 @@
 @interface AEAClientConnection
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (_TtC15assessmentagent19AEAClientConnection)init;
 - (void)dealloc;
-- (void)endPublications:(id)a3;
-- (void)publishAssessmentState:(id)a3 withCompletion:(id)a4;
+- (void)endPublications:(id)publications;
+- (void)publishAssessmentState:(id)state withCompletion:(id)completion;
 @end
 
 @implementation AEAClientConnection
@@ -11,9 +11,9 @@
 - (void)dealloc
 {
   v2 = *(&self->super.isa + OBJC_IVAR____TtC15assessmentagent19AEAClientConnection_publicationListener);
-  v3 = self;
+  selfCopy = self;
   [v2 invalidate];
-  v4.receiver = v3;
+  v4.receiver = selfCopy;
   v4.super_class = type metadata accessor for AEAClientConnection();
   [(AEAClientConnection *)&v4 dealloc];
 }
@@ -25,32 +25,32 @@
   return result;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_10000BE58(v7);
+  listenerCopy = listener;
+  connectionCopy = connection;
+  selfCopy = self;
+  v9 = sub_10000BE58(connectionCopy);
 
   return v9 & 1;
 }
 
-- (void)publishAssessmentState:(id)a3 withCompletion:(id)a4
+- (void)publishAssessmentState:(id)state withCompletion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
-  v8 = a3;
-  v9 = self;
-  sub_10000A0B4(v8, sub_10000C7D8, v7);
+  stateCopy = state;
+  selfCopy = self;
+  sub_10000A0B4(stateCopy, sub_10000C7D8, v7);
 }
 
-- (void)endPublications:(id)a3
+- (void)endPublications:(id)publications
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(publications);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
-  v6 = self;
+  selfCopy = self;
   sub_10000A84C(sub_10000BD30, v5);
 }
 

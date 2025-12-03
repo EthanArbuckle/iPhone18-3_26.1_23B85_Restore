@@ -1,5 +1,5 @@
 @interface AVTAvatarActionsViewController
-- (AVTAvatarActionsViewController)initWithAVTViewSessionProvider:(id)a3 actionsController:(id)a4 environment:(id)a5;
+- (AVTAvatarActionsViewController)initWithAVTViewSessionProvider:(id)provider actionsController:(id)controller environment:(id)environment;
 - (AVTAvatarActionsViewControllerDelegate)delegate;
 - (AVTAvatarEditorViewController)editorViewController;
 - (UIEdgeInsets)additionalSafeAreaInsets;
@@ -7,76 +7,76 @@
 - (double)deleteMoveInDuration;
 - (double)duplicateScaleDelay;
 - (double)duplicateScaleDuration;
-- (id)actionsModel:(id)a3 recordUpdateForDeletingRecord:(id)a4;
-- (id)navigationController:(id)a3 animationControllerForOperation:(int64_t)a4 fromViewController:(id)a5 toViewController:(id)a6;
-- (int64_t)interfaceOrientationForFaceTrackingManager:(id)a3;
-- (void)actionsController:(id)a3 didAddRecord:(id)a4;
-- (void)actionsController:(id)a3 didDeleteRecord:(id)a4 withRecordUpdate:(id)a5 completionBlock:(id)a6;
-- (void)actionsController:(id)a3 didDuplicateToRecord:(id)a4 completionBlock:(id)a5;
-- (void)actionsController:(id)a3 didEditRecord:(id)a4;
-- (void)actionsControllerDidFinish:(id)a3;
-- (void)applyLayout:(id)a3;
-- (void)beginAVTViewSessionWithDidBeginBlock:(id)a3;
-- (void)beginUsingAVTViewFromSession:(id)a3;
-- (void)configureAVTViewSession:(id)a3 withAvatarRecord:(id)a4 completionBlock:(id)a5;
+- (id)actionsModel:(id)model recordUpdateForDeletingRecord:(id)record;
+- (id)navigationController:(id)controller animationControllerForOperation:(int64_t)operation fromViewController:(id)viewController toViewController:(id)toViewController;
+- (int64_t)interfaceOrientationForFaceTrackingManager:(id)manager;
+- (void)actionsController:(id)controller didAddRecord:(id)record;
+- (void)actionsController:(id)controller didDeleteRecord:(id)record withRecordUpdate:(id)update completionBlock:(id)block;
+- (void)actionsController:(id)controller didDuplicateToRecord:(id)record completionBlock:(id)block;
+- (void)actionsController:(id)controller didEditRecord:(id)record;
+- (void)actionsControllerDidFinish:(id)finish;
+- (void)applyLayout:(id)layout;
+- (void)beginAVTViewSessionWithDidBeginBlock:(id)block;
+- (void)beginUsingAVTViewFromSession:(id)session;
+- (void)configureAVTViewSession:(id)session withAvatarRecord:(id)record completionBlock:(id)block;
 - (void)configureNavigationItems;
 - (void)configureUserInfoLabel;
-- (void)contentSizeCategoryDidChange:(id)a3;
-- (void)controllerPresentationWillObstructView:(id)a3;
+- (void)contentSizeCategoryDidChange:(id)change;
+- (void)controllerPresentationWillObstructView:(id)view;
 - (void)createTransitionImageViewIfNeeded;
-- (void)didTapAvatarView:(id)a3;
-- (void)didTapDone:(id)a3;
-- (void)dismissEditorViewController:(id)a3 forActionsController:(id)a4 wasCreate:(BOOL)a5 didEdit:(BOOL)a6 animated:(BOOL)a7 completion:(id)a8;
+- (void)didTapAvatarView:(id)view;
+- (void)didTapDone:(id)done;
+- (void)dismissEditorViewController:(id)controller forActionsController:(id)actionsController wasCreate:(BOOL)create didEdit:(BOOL)edit animated:(BOOL)animated completion:(id)completion;
 - (void)layoutViewForActionsController;
 - (void)loadView;
 - (void)performEdit;
-- (void)performTransitionAfterDeleteToRecord:(id)a3 fromLeft:(BOOL)a4 previousRecordImage:(id)a5 completionBlock:(id)a6;
-- (void)performTransitionAfterDuplicateToRecord:(id)a3 previousRecordImage:(id)a4 completionBlock:(id)a5;
-- (void)prepareForAnimatedTransitionWithLayout:(id)a3 completionBlock:(id)a4;
-- (void)presentEditorViewController:(id)a3 forActionsController:(id)a4 isCreate:(BOOL)a5;
+- (void)performTransitionAfterDeleteToRecord:(id)record fromLeft:(BOOL)left previousRecordImage:(id)image completionBlock:(id)block;
+- (void)performTransitionAfterDuplicateToRecord:(id)record previousRecordImage:(id)image completionBlock:(id)block;
+- (void)prepareForAnimatedTransitionWithLayout:(id)layout completionBlock:(id)block;
+- (void)presentEditorViewController:(id)controller forActionsController:(id)actionsController isCreate:(BOOL)create;
 - (void)rebuildLayout;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
-- (void)willPresentAvatarRecord:(id)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
+- (void)willPresentAvatarRecord:(id)record;
 @end
 
 @implementation AVTAvatarActionsViewController
 
-- (AVTAvatarActionsViewController)initWithAVTViewSessionProvider:(id)a3 actionsController:(id)a4 environment:(id)a5
+- (AVTAvatarActionsViewController)initWithAVTViewSessionProvider:(id)provider actionsController:(id)controller environment:(id)environment
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  providerCopy = provider;
+  controllerCopy = controller;
+  environmentCopy = environment;
   v15.receiver = self;
   v15.super_class = AVTAvatarActionsViewController;
   v12 = [(AVTAvatarActionsViewController *)&v15 initWithNibName:0 bundle:0];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_sessionProvider, a3);
-    objc_storeStrong(&v13->_actionsController, a4);
-    objc_storeStrong(&v13->_environment, a5);
-    [v10 setDelegate:v13];
+    objc_storeStrong(&v12->_sessionProvider, provider);
+    objc_storeStrong(&v13->_actionsController, controller);
+    objc_storeStrong(&v13->_environment, environment);
+    [controllerCopy setDelegate:v13];
     v13->_allowFacetracking = AVTUIIsFacetrackingSupported();
   }
 
   return v13;
 }
 
-- (void)configureAVTViewSession:(id)a3 withAvatarRecord:(id)a4 completionBlock:(id)a5
+- (void)configureAVTViewSession:(id)session withAvatarRecord:(id)record completionBlock:(id)block
 {
-  v20 = a3;
-  v8 = a5;
-  v9 = a4;
-  v10 = [v20 avtView];
-  [v10 updateInterfaceOrientation];
+  sessionCopy = session;
+  blockCopy = block;
+  recordCopy = record;
+  avtView = [sessionCopy avtView];
+  [avtView updateInterfaceOrientation];
 
   v11 = AVTUIShowTrackingLostReticle_once();
-  v12 = [v20 avtView];
-  [v12 setEnableReticle:v11];
+  avtView2 = [sessionCopy avtView];
+  [avtView2 setEnableReticle:v11];
 
   if ((AVTUIForceCameraDisclosures_once() & 1) != 0 || AVTDeviceIsGreenTea())
   {
@@ -88,47 +88,47 @@
     v13 = 1;
   }
 
-  v14 = [(AVTAvatarActionsViewController *)self allowFacetracking];
-  v15 = [v20 avtView];
-  [v15 setEnableFaceTracking:v14 & v13];
+  allowFacetracking = [(AVTAvatarActionsViewController *)self allowFacetracking];
+  avtView3 = [sessionCopy avtView];
+  [avtView3 setEnableFaceTracking:allowFacetracking & v13];
 
-  v16 = [(AVTAvatarActionsViewController *)self view];
-  v17 = [v16 backgroundColor];
-  v18 = [v20 avtView];
-  [v18 setBackgroundColor:v17];
+  view = [(AVTAvatarActionsViewController *)self view];
+  backgroundColor = [view backgroundColor];
+  avtView4 = [sessionCopy avtView];
+  [avtView4 setBackgroundColor:backgroundColor];
 
-  v19 = [v20 avtViewUpdater];
-  [v19 setAvatarRecord:v9 completionHandler:v8];
+  avtViewUpdater = [sessionCopy avtViewUpdater];
+  [avtViewUpdater setAvatarRecord:recordCopy completionHandler:blockCopy];
 }
 
 - (void)loadView
 {
   v3 = objc_alloc(MEMORY[0x1E69DD250]);
-  v4 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v4 bounds];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen bounds];
   v5 = [v3 initWithFrame:?];
   [(AVTAvatarActionsViewController *)self setView:v5];
 
   v6 = +[AVTUIColorRepository modalBackgroundColor];
-  v7 = [(AVTAvatarActionsViewController *)self view];
-  [v7 setBackgroundColor:v6];
+  view = [(AVTAvatarActionsViewController *)self view];
+  [view setBackgroundColor:v6];
 
   v8 = [AVTImageTransitioningContainerView alloc];
-  v9 = [(AVTAvatarActionsViewController *)self view];
-  [v9 bounds];
+  view2 = [(AVTAvatarActionsViewController *)self view];
+  [view2 bounds];
   v10 = [(AVTImageTransitioningContainerView *)v8 initWithFrame:1 layoutMode:?];
   [(AVTAvatarActionsViewController *)self setAvatarContainer:v10];
 
-  v11 = [(AVTAvatarActionsViewController *)self sessionProvider];
-  [v11 avtViewBackingSize];
+  sessionProvider = [(AVTAvatarActionsViewController *)self sessionProvider];
+  [sessionProvider avtViewBackingSize];
   v13 = v12;
   v15 = v14;
-  v16 = [(AVTAvatarActionsViewController *)self avatarContainer];
-  [v16 setAspectRatio:{v13, v15}];
+  avatarContainer = [(AVTAvatarActionsViewController *)self avatarContainer];
+  [avatarContainer setAspectRatio:{v13, v15}];
 
-  v18 = [(AVTAvatarActionsViewController *)self view];
-  v17 = [(AVTAvatarActionsViewController *)self avatarContainer];
-  [v18 addSubview:v17];
+  view3 = [(AVTAvatarActionsViewController *)self view];
+  avatarContainer2 = [(AVTAvatarActionsViewController *)self avatarContainer];
+  [view3 addSubview:avatarContainer2];
 }
 
 - (void)viewDidLoad
@@ -141,34 +141,34 @@
 
 - (void)layoutViewForActionsController
 {
-  v3 = [(AVTAvatarActionsViewController *)self actionsController];
-  v12 = [v3 inlineActionButtons];
+  actionsController = [(AVTAvatarActionsViewController *)self actionsController];
+  inlineActionButtons = [actionsController inlineActionButtons];
 
-  v4 = [objc_alloc(MEMORY[0x1E69DCF90]) initWithArrangedSubviews:v12];
+  v4 = [objc_alloc(MEMORY[0x1E69DCF90]) initWithArrangedSubviews:inlineActionButtons];
   [v4 setAxis:1];
   [v4 setDistribution:1];
   [v4 setSpacing:10.0];
-  v5 = [(AVTAvatarActionsViewController *)self view];
-  [v5 addSubview:v4];
+  view = [(AVTAvatarActionsViewController *)self view];
+  [view addSubview:v4];
 
-  v6 = [(AVTAvatarActionsViewController *)self buttonsView];
+  buttonsView = [(AVTAvatarActionsViewController *)self buttonsView];
 
-  if (v6)
+  if (buttonsView)
   {
-    v7 = [(AVTAvatarActionsViewController *)self buttonsView];
-    [v7 removeFromSuperview];
+    buttonsView2 = [(AVTAvatarActionsViewController *)self buttonsView];
+    [buttonsView2 removeFromSuperview];
   }
 
   [(AVTAvatarActionsViewController *)self setButtonsView:v4];
   [(AVTAvatarActionsViewController *)self configureNavigationItems];
-  v8 = [(AVTAvatarActionsViewController *)self currentLayout];
-  v9 = [v8 buttonCount];
-  v10 = [v12 count];
+  currentLayout = [(AVTAvatarActionsViewController *)self currentLayout];
+  buttonCount = [currentLayout buttonCount];
+  v10 = [inlineActionButtons count];
 
-  if (v9 == v10)
+  if (buttonCount == v10)
   {
-    v11 = [(AVTAvatarActionsViewController *)self currentLayout];
-    [(AVTAvatarActionsViewController *)self applyLayout:v11];
+    currentLayout2 = [(AVTAvatarActionsViewController *)self currentLayout];
+    [(AVTAvatarActionsViewController *)self applyLayout:currentLayout2];
   }
 
   else
@@ -180,10 +180,10 @@
 - (void)configureNavigationItems
 {
   v24[1] = *MEMORY[0x1E69E9840];
-  v3 = [(AVTAvatarActionsViewController *)self environment];
-  v4 = [v3 deviceIsMac];
+  environment = [(AVTAvatarActionsViewController *)self environment];
+  deviceIsMac = [environment deviceIsMac];
 
-  if (v4)
+  if (deviceIsMac)
   {
     v5 = [AVTToolbarButton alloc];
     v6 = AVTAvatarUIBundle();
@@ -195,8 +195,8 @@
     v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:1];
     v11 = [(AVTToolBar *)v9 initWithButtons:v10];
 
-    v12 = [(AVTAvatarActionsViewController *)self view];
-    [v12 bounds];
+    view = [(AVTAvatarActionsViewController *)self view];
+    [view bounds];
     v14 = v13;
     v16 = v15;
     v18 = v17;
@@ -205,81 +205,81 @@
     [(AVTToolBar *)v11 setFrame:v14, v18 - v19, v16, v19];
     [(AVTToolBar *)v11 setAutoresizingMask:10];
     [(AVTToolBar *)v11 setDelegate:self];
-    v20 = [(AVTAvatarActionsViewController *)self view];
-    [v20 addSubview:v11];
+    view2 = [(AVTAvatarActionsViewController *)self view];
+    [view2 addSubview:v11];
 
     [(AVTAvatarActionsViewController *)self setToolbar:v11];
-    v21 = [(AVTAvatarActionsViewController *)self navigationController];
-    [v21 setNavigationBarHidden:1];
+    navigationController = [(AVTAvatarActionsViewController *)self navigationController];
+    [navigationController setNavigationBarHidden:1];
   }
 
   else
   {
     v23 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:0 target:self action:sel_didTapDone_];
-    v22 = [(AVTAvatarActionsViewController *)self navigationItem];
-    [v22 setRightBarButtonItem:v23];
+    navigationItem = [(AVTAvatarActionsViewController *)self navigationItem];
+    [navigationItem setRightBarButtonItem:v23];
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = AVTAvatarActionsViewController;
-  [(AVTAvatarActionsViewController *)&v5 viewWillAppear:a3];
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 addObserver:self selector:sel_contentSizeCategoryDidChange_ name:*MEMORY[0x1E69DDC48] object:0];
+  [(AVTAvatarActionsViewController *)&v5 viewWillAppear:appear];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_contentSizeCategoryDidChange_ name:*MEMORY[0x1E69DDC48] object:0];
 
   [(AVTAvatarActionsViewController *)self beginAVTViewSessionWithDidBeginBlock:0];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v6.receiver = self;
   v6.super_class = AVTAvatarActionsViewController;
-  [(AVTAvatarActionsViewController *)&v6 viewWillDisappear:a3];
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 removeObserver:self name:*MEMORY[0x1E69DDC48] object:0];
+  [(AVTAvatarActionsViewController *)&v6 viewWillDisappear:disappear];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69DDC48] object:0];
 
-  v5 = [(AVTAvatarActionsViewController *)self avtViewSession];
-  [v5 tearDownWithCompletionHandler:0];
+  avtViewSession = [(AVTAvatarActionsViewController *)self avtViewSession];
+  [avtViewSession tearDownWithCompletionHandler:0];
 }
 
-- (void)contentSizeCategoryDidChange:(id)a3
+- (void)contentSizeCategoryDidChange:(id)change
 {
-  v4 = [(AVTAvatarActionsViewController *)self actionsController];
-  [v4 updateForChangedContentCategorySize];
+  actionsController = [(AVTAvatarActionsViewController *)self actionsController];
+  [actionsController updateForChangedContentCategorySize];
 
   [(AVTAvatarActionsViewController *)self layoutViewForActionsController];
 }
 
-- (void)beginAVTViewSessionWithDidBeginBlock:(id)a3
+- (void)beginAVTViewSessionWithDidBeginBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(AVTAvatarActionsViewController *)self avtViewSession];
-  v6 = [v5 isActive];
+  blockCopy = block;
+  avtViewSession = [(AVTAvatarActionsViewController *)self avtViewSession];
+  isActive = [avtViewSession isActive];
 
-  if (v6)
+  if (isActive)
   {
-    if (v4)
+    if (blockCopy)
     {
-      v7 = [(AVTAvatarActionsViewController *)self avtViewSession];
-      v4[2](v4, v7);
+      avtViewSession2 = [(AVTAvatarActionsViewController *)self avtViewSession];
+      blockCopy[2](blockCopy, avtViewSession2);
     }
   }
 
   else
   {
-    v8 = [(AVTAvatarActionsViewController *)self postSessionDidBecomeActiveHandler];
+    postSessionDidBecomeActiveHandler = [(AVTAvatarActionsViewController *)self postSessionDidBecomeActiveHandler];
 
-    if (v8)
+    if (postSessionDidBecomeActiveHandler)
     {
-      v9 = [(AVTAvatarActionsViewController *)self postSessionDidBecomeActiveHandler];
-      v9[2](v9, 0);
+      postSessionDidBecomeActiveHandler2 = [(AVTAvatarActionsViewController *)self postSessionDidBecomeActiveHandler];
+      postSessionDidBecomeActiveHandler2[2](postSessionDidBecomeActiveHandler2, 0);
     }
 
-    [(AVTAvatarActionsViewController *)self setPostSessionDidBecomeActiveHandler:v4];
+    [(AVTAvatarActionsViewController *)self setPostSessionDidBecomeActiveHandler:blockCopy];
     objc_initWeak(&location, self);
-    v10 = [(AVTAvatarActionsViewController *)self sessionProvider];
+    sessionProvider = [(AVTAvatarActionsViewController *)self sessionProvider];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __71__AVTAvatarActionsViewController_beginAVTViewSessionWithDidBeginBlock___block_invoke;
@@ -290,7 +290,7 @@
     v12[2] = __71__AVTAvatarActionsViewController_beginAVTViewSessionWithDidBeginBlock___block_invoke_2;
     v12[3] = &unk_1E7F3AA30;
     objc_copyWeak(&v13, &location);
-    v11 = [v10 sessionWithDidBecomeActiveHandler:v14 tearDownHandler:v12];
+    v11 = [sessionProvider sessionWithDidBecomeActiveHandler:v14 tearDownHandler:v12];
     [(AVTAvatarActionsViewController *)self setAvtViewSession:v11];
 
     objc_destroyWeak(&v13);
@@ -359,27 +359,27 @@ void __71__AVTAvatarActionsViewController_beginAVTViewSessionWithDidBeginBlock__
   v5[2](v5);
 }
 
-- (void)beginUsingAVTViewFromSession:(id)a3
+- (void)beginUsingAVTViewFromSession:(id)session
 {
-  v4 = a3;
-  v5 = [(AVTAvatarActionsViewController *)self avatarContainer];
-  v6 = [v4 avtViewContainer];
-  [v5 setLiveView:v6];
+  sessionCopy = session;
+  avatarContainer = [(AVTAvatarActionsViewController *)self avatarContainer];
+  avtViewContainer = [sessionCopy avtViewContainer];
+  [avatarContainer setLiveView:avtViewContainer];
 
-  v7 = [(AVTAvatarActionsViewController *)self avatarContainer];
-  [v7 transitionLiveViewToFront];
+  avatarContainer2 = [(AVTAvatarActionsViewController *)self avatarContainer];
+  [avatarContainer2 transitionLiveViewToFront];
 
-  v8 = [(AVTAvatarActionsViewController *)self actionsController];
-  v9 = [v8 actionsModel];
-  v10 = [v9 avatarRecord];
+  actionsController = [(AVTAvatarActionsViewController *)self actionsController];
+  actionsModel = [actionsController actionsModel];
+  avatarRecord = [actionsModel avatarRecord];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __63__AVTAvatarActionsViewController_beginUsingAVTViewFromSession___block_invoke;
   v12[3] = &unk_1E7F3AA58;
   v12[4] = self;
-  v13 = v4;
-  v11 = v4;
-  [(AVTAvatarActionsViewController *)self configureAVTViewSession:v11 withAvatarRecord:v10 completionBlock:v12];
+  v13 = sessionCopy;
+  v11 = sessionCopy;
+  [(AVTAvatarActionsViewController *)self configureAVTViewSession:v11 withAvatarRecord:avatarRecord completionBlock:v12];
 }
 
 void __63__AVTAvatarActionsViewController_beginUsingAVTViewFromSession___block_invoke(uint64_t a1)
@@ -426,34 +426,34 @@ void __63__AVTAvatarActionsViewController_beginUsingAVTViewFromSession___block_i
 
 - (void)configureUserInfoLabel
 {
-  v3 = [(AVTAvatarActionsViewController *)self sessionProvider];
-  v4 = [v3 faceTrackingManager];
-  v10 = [v4 userInfoView];
+  sessionProvider = [(AVTAvatarActionsViewController *)self sessionProvider];
+  faceTrackingManager = [sessionProvider faceTrackingManager];
+  userInfoView = [faceTrackingManager userInfoView];
 
-  v5 = [(AVTAvatarActionsViewController *)self currentLayout];
+  currentLayout = [(AVTAvatarActionsViewController *)self currentLayout];
 
-  if (v5)
+  if (currentLayout)
   {
-    v6 = [(AVTAvatarActionsViewController *)self currentLayout];
-    [v6 userInfoFrame];
-    [v10 setFrame:?];
+    currentLayout2 = [(AVTAvatarActionsViewController *)self currentLayout];
+    [currentLayout2 userInfoFrame];
+    [userInfoView setFrame:?];
   }
 
-  v7 = [(AVTAvatarActionsViewController *)self view];
-  v8 = [v7 backgroundColor];
-  [v10 setContainerBackgroundColor:v8];
+  view = [(AVTAvatarActionsViewController *)self view];
+  backgroundColor = [view backgroundColor];
+  [userInfoView setContainerBackgroundColor:backgroundColor];
 
-  v9 = [(AVTAvatarActionsViewController *)self view];
-  [v9 addSubview:v10];
+  view2 = [(AVTAvatarActionsViewController *)self view];
+  [view2 addSubview:userInfoView];
 }
 
 - (UIEdgeInsets)additionalSafeAreaInsets
 {
-  v3 = [(AVTAvatarActionsViewController *)self toolbar];
-  if (v3)
+  toolbar = [(AVTAvatarActionsViewController *)self toolbar];
+  if (toolbar)
   {
-    v4 = [(AVTAvatarActionsViewController *)self toolbar];
-    [v4 bounds];
+    toolbar2 = [(AVTAvatarActionsViewController *)self toolbar];
+    [toolbar2 bounds];
     v6 = v5;
 
     v7 = 0.0;
@@ -485,12 +485,12 @@ void __63__AVTAvatarActionsViewController_beginUsingAVTViewFromSession___block_i
   v30.receiver = self;
   v30.super_class = AVTAvatarActionsViewController;
   [(AVTAvatarActionsViewController *)&v30 viewDidLayoutSubviews];
-  v3 = [(AVTAvatarActionsViewController *)self currentLayout];
-  [v3 containerSize];
+  currentLayout = [(AVTAvatarActionsViewController *)self currentLayout];
+  [currentLayout containerSize];
   v5 = v4;
   v7 = v6;
-  v8 = [(AVTAvatarActionsViewController *)self view];
-  [v8 bounds];
+  view = [(AVTAvatarActionsViewController *)self view];
+  [view bounds];
   if (v5 != v10 || v7 != v9)
   {
 
@@ -499,14 +499,14 @@ LABEL_6:
     return;
   }
 
-  v12 = [(AVTAvatarActionsViewController *)self currentLayout];
-  [v12 edgeInsets];
+  currentLayout2 = [(AVTAvatarActionsViewController *)self currentLayout];
+  [currentLayout2 edgeInsets];
   v14 = v13;
   v16 = v15;
   v18 = v17;
   v20 = v19;
-  v21 = [(AVTAvatarActionsViewController *)self view];
-  [v21 safeAreaInsets];
+  view2 = [(AVTAvatarActionsViewController *)self view];
+  [view2 safeAreaInsets];
   v23 = v22;
   v25 = v24;
   v27 = v26;
@@ -520,8 +520,8 @@ LABEL_6:
 
 - (void)rebuildLayout
 {
-  v3 = [(AVTAvatarActionsViewController *)self environment];
-  if ([v3 deviceIsPad])
+  environment = [(AVTAvatarActionsViewController *)self environment];
+  if ([environment deviceIsPad])
   {
 
     v4 = off_1E7F398B0;
@@ -529,50 +529,50 @@ LABEL_6:
 
   else
   {
-    v5 = [(AVTAvatarActionsViewController *)self environment];
-    v6 = [v5 deviceIsMac];
+    environment2 = [(AVTAvatarActionsViewController *)self environment];
+    deviceIsMac = [environment2 deviceIsMac];
 
     v4 = off_1E7F398A8;
-    if (v6)
+    if (deviceIsMac)
     {
       v4 = off_1E7F398B0;
     }
   }
 
   v7 = objc_alloc(*v4);
-  v8 = [(AVTAvatarActionsViewController *)self view];
-  [v8 bounds];
+  view = [(AVTAvatarActionsViewController *)self view];
+  [view bounds];
   v10 = v9;
   v12 = v11;
-  v13 = [(AVTAvatarActionsViewController *)self view];
-  [v13 safeAreaInsets];
+  view2 = [(AVTAvatarActionsViewController *)self view];
+  [view2 safeAreaInsets];
   v15 = v14;
   v17 = v16;
   v19 = v18;
   v21 = v20;
-  v22 = [(AVTAvatarActionsViewController *)self buttonsView];
-  v23 = [v22 arrangedSubviews];
-  v24 = [v23 count];
-  v25 = [(AVTAvatarActionsViewController *)self sessionProvider];
-  v26 = [v7 initWithContainerSize:v24 insets:v25 buttonCount:v10 avtViewLayoutInfo:{v12, v15, v17, v19, v21}];
+  buttonsView = [(AVTAvatarActionsViewController *)self buttonsView];
+  arrangedSubviews = [buttonsView arrangedSubviews];
+  v24 = [arrangedSubviews count];
+  sessionProvider = [(AVTAvatarActionsViewController *)self sessionProvider];
+  v26 = [v7 initWithContainerSize:v24 insets:sessionProvider buttonCount:v10 avtViewLayoutInfo:{v12, v15, v17, v19, v21}];
 
   [(AVTAvatarActionsViewController *)self applyLayout:v26];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v9.receiver = self;
   v9.super_class = AVTAvatarActionsViewController;
-  v7 = a4;
-  [(AVTAvatarActionsViewController *)&v9 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  coordinatorCopy = coordinator;
+  [(AVTAvatarActionsViewController *)&v9 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __85__AVTAvatarActionsViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke;
   v8[3] = &unk_1E7F3A9E0;
   v8[4] = self;
-  [v7 animateAlongsideTransition:v8 completion:0];
+  [coordinatorCopy animateAlongsideTransition:v8 completion:0];
 }
 
 void __85__AVTAvatarActionsViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke(uint64_t a1)
@@ -582,121 +582,121 @@ void __85__AVTAvatarActionsViewController_viewWillTransitionToSize_withTransitio
   [v1 updateInterfaceOrientation];
 }
 
-- (void)applyLayout:(id)a3
+- (void)applyLayout:(id)layout
 {
-  v40 = a3;
-  v4 = [(AVTAvatarActionsViewController *)self isAnimating];
-  v5 = v40;
-  if (v40 && (v4 & 1) == 0)
+  layoutCopy = layout;
+  isAnimating = [(AVTAvatarActionsViewController *)self isAnimating];
+  v5 = layoutCopy;
+  if (layoutCopy && (isAnimating & 1) == 0)
   {
-    v6 = [(AVTAvatarActionsViewController *)self avtViewSession];
-    v7 = [v6 isActive];
+    avtViewSession = [(AVTAvatarActionsViewController *)self avtViewSession];
+    isActive = [avtViewSession isActive];
 
-    if (v7)
+    if (isActive)
     {
-      [v40 avatarContainerViewFrame];
+      [layoutCopy avatarContainerViewFrame];
       v9 = v8;
       v11 = v10;
       v13 = v12;
       v15 = v14;
-      v16 = [(AVTAvatarActionsViewController *)self avatarContainer];
-      [v16 setFrame:{v9, v11, v13, v15}];
+      avatarContainer = [(AVTAvatarActionsViewController *)self avatarContainer];
+      [avatarContainer setFrame:{v9, v11, v13, v15}];
 
       if (![(AVTAvatarActionsViewController *)self shouldHideUserInfoView])
       {
-        [v40 userInfoFrame];
+        [layoutCopy userInfoFrame];
         v18 = v17;
         v20 = v19;
         v22 = v21;
         v24 = v23;
-        v25 = [(AVTAvatarActionsViewController *)self sessionProvider];
-        v26 = [v25 faceTrackingManager];
-        v27 = [v26 userInfoView];
-        [v27 setFrame:{v18, v20, v22, v24}];
+        sessionProvider = [(AVTAvatarActionsViewController *)self sessionProvider];
+        faceTrackingManager = [sessionProvider faceTrackingManager];
+        userInfoView = [faceTrackingManager userInfoView];
+        [userInfoView setFrame:{v18, v20, v22, v24}];
       }
     }
 
-    [v40 actionButtonsViewAlpha];
+    [layoutCopy actionButtonsViewAlpha];
     v29 = v28;
-    v30 = [(AVTAvatarActionsViewController *)self buttonsView];
-    [v30 setAlpha:v29];
+    buttonsView = [(AVTAvatarActionsViewController *)self buttonsView];
+    [buttonsView setAlpha:v29];
 
-    [v40 actionButtonsViewFrame];
+    [layoutCopy actionButtonsViewFrame];
     v32 = v31;
     v34 = v33;
     v36 = v35;
     v38 = v37;
-    v39 = [(AVTAvatarActionsViewController *)self buttonsView];
-    [v39 setFrame:{v32, v34, v36, v38}];
+    buttonsView2 = [(AVTAvatarActionsViewController *)self buttonsView];
+    [buttonsView2 setFrame:{v32, v34, v36, v38}];
 
-    v4 = [(AVTAvatarActionsViewController *)self setCurrentLayout:v40];
-    v5 = v40;
+    isAnimating = [(AVTAvatarActionsViewController *)self setCurrentLayout:layoutCopy];
+    v5 = layoutCopy;
   }
 
-  MEMORY[0x1EEE66BB8](v4, v5);
+  MEMORY[0x1EEE66BB8](isAnimating, v5);
 }
 
 - (void)createTransitionImageViewIfNeeded
 {
-  v3 = [(AVTAvatarActionsViewController *)self transitionImageView];
+  transitionImageView = [(AVTAvatarActionsViewController *)self transitionImageView];
 
-  if (!v3)
+  if (!transitionImageView)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69DCAE0]);
     [(AVTAvatarActionsViewController *)self setTransitionImageView:v4];
 
-    v5 = [(AVTAvatarActionsViewController *)self transitionImageView];
-    [v5 setContentMode:1];
+    transitionImageView2 = [(AVTAvatarActionsViewController *)self transitionImageView];
+    [transitionImageView2 setContentMode:1];
 
-    v6 = [(AVTAvatarActionsViewController *)self avtViewSession];
-    v7 = [v6 isActive];
+    avtViewSession = [(AVTAvatarActionsViewController *)self avtViewSession];
+    isActive = [avtViewSession isActive];
 
-    if (v7)
+    if (isActive)
     {
-      v17 = [(AVTAvatarActionsViewController *)self avatarContainer];
-      [v17 frame];
+      avatarContainer = [(AVTAvatarActionsViewController *)self avatarContainer];
+      [avatarContainer frame];
       v9 = v8;
       v11 = v10;
       v13 = v12;
       v15 = v14;
-      v16 = [(AVTAvatarActionsViewController *)self transitionImageView];
-      [v16 setFrame:{v9, v11, v13, v15}];
+      transitionImageView3 = [(AVTAvatarActionsViewController *)self transitionImageView];
+      [transitionImageView3 setFrame:{v9, v11, v13, v15}];
     }
   }
 }
 
-- (void)didTapAvatarView:(id)a3
+- (void)didTapAvatarView:(id)view
 {
-  v4 = [(AVTAvatarActionsViewController *)self avtViewSession];
-  v5 = [v4 isActive];
+  avtViewSession = [(AVTAvatarActionsViewController *)self avtViewSession];
+  isActive = [avtViewSession isActive];
 
-  if (v5)
+  if (isActive)
   {
-    v7 = [(AVTAvatarActionsViewController *)self sessionProvider];
-    v6 = [v7 faceTrackingManager];
-    [v6 resumeFaceTrackingIfNeededAnimated:1];
+    sessionProvider = [(AVTAvatarActionsViewController *)self sessionProvider];
+    faceTrackingManager = [sessionProvider faceTrackingManager];
+    [faceTrackingManager resumeFaceTrackingIfNeededAnimated:1];
   }
 }
 
-- (void)didTapDone:(id)a3
+- (void)didTapDone:(id)done
 {
-  v4 = [(AVTAvatarActionsViewController *)self delegate];
-  [v4 avatarActionsViewControllerDidFinish:self];
+  delegate = [(AVTAvatarActionsViewController *)self delegate];
+  [delegate avatarActionsViewControllerDidFinish:self];
 }
 
-- (void)prepareForAnimatedTransitionWithLayout:(id)a3 completionBlock:(id)a4
+- (void)prepareForAnimatedTransitionWithLayout:(id)layout completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  layoutCopy = layout;
+  blockCopy = block;
   objc_initWeak(&location, self);
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __89__AVTAvatarActionsViewController_prepareForAnimatedTransitionWithLayout_completionBlock___block_invoke;
   v10[3] = &unk_1E7F3C770;
   objc_copyWeak(&v13, &location);
-  v8 = v6;
+  v8 = layoutCopy;
   v11 = v8;
-  v9 = v7;
+  v9 = blockCopy;
   v12 = v9;
   [(AVTAvatarActionsViewController *)self beginAVTViewSessionWithDidBeginBlock:v10];
 
@@ -714,119 +714,119 @@ void __89__AVTAvatarActionsViewController_prepareForAnimatedTransitionWithLayout
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)presentEditorViewController:(id)a3 forActionsController:(id)a4 isCreate:(BOOL)a5
+- (void)presentEditorViewController:(id)controller forActionsController:(id)actionsController isCreate:(BOOL)create
 {
-  v9 = a3;
+  controllerCopy = controller;
   [(AVTAvatarActionsViewController *)self setEditorViewController:?];
-  if (a5 || +[AVTAvatarEditorViewController shouldShowSplashScreen])
+  if (create || +[AVTAvatarEditorViewController shouldShowSplashScreen])
   {
-    v7 = [[AVTTransparentNavigationController alloc] initWithRootViewController:v9];
-    [(AVTAvatarActionsViewController *)self presentViewController:v7 animated:1 completion:0];
+    navigationController2 = [[AVTTransparentNavigationController alloc] initWithRootViewController:controllerCopy];
+    [(AVTAvatarActionsViewController *)self presentViewController:navigationController2 animated:1 completion:0];
   }
 
   else
   {
-    v8 = [(AVTAvatarActionsViewController *)self navigationController];
-    [v8 setDelegate:self];
+    navigationController = [(AVTAvatarActionsViewController *)self navigationController];
+    [navigationController setDelegate:self];
 
-    v7 = [(AVTAvatarActionsViewController *)self navigationController];
-    [(AVTTransparentNavigationController *)v7 pushViewController:v9 animated:1];
+    navigationController2 = [(AVTAvatarActionsViewController *)self navigationController];
+    [(AVTTransparentNavigationController *)navigationController2 pushViewController:controllerCopy animated:1];
   }
 }
 
-- (void)dismissEditorViewController:(id)a3 forActionsController:(id)a4 wasCreate:(BOOL)a5 didEdit:(BOOL)a6 animated:(BOOL)a7 completion:(id)a8
+- (void)dismissEditorViewController:(id)controller forActionsController:(id)actionsController wasCreate:(BOOL)create didEdit:(BOOL)edit animated:(BOOL)animated completion:(id)completion
 {
-  v9 = a7;
-  v19 = a3;
-  v14 = a4;
-  v15 = a8;
-  if (a5 || ([(AVTAvatarActionsViewController *)self presentedViewController], v16 = objc_claimAutoreleasedReturnValue(), v16, v16))
+  animatedCopy = animated;
+  controllerCopy = controller;
+  actionsControllerCopy = actionsController;
+  completionCopy = completion;
+  if (create || ([(AVTAvatarActionsViewController *)self presentedViewController], v16 = objc_claimAutoreleasedReturnValue(), v16, v16))
   {
-    if (!a6)
+    if (!edit)
     {
-      [(AVTAvatarActionsViewController *)self dismissViewControllerAnimated:v9 completion:v15];
+      [(AVTAvatarActionsViewController *)self dismissViewControllerAnimated:animatedCopy completion:completionCopy];
       goto LABEL_8;
     }
   }
 
   else
   {
-    v17 = [(AVTAvatarActionsViewController *)self navigationController];
-    v18 = [v17 popViewControllerAnimated:1];
+    navigationController = [(AVTAvatarActionsViewController *)self navigationController];
+    v18 = [navigationController popViewControllerAnimated:1];
   }
 
-  if (v15)
+  if (completionCopy)
   {
-    v15[2](v15);
+    completionCopy[2](completionCopy);
   }
 
 LABEL_8:
   [(AVTAvatarActionsViewController *)self setEditorViewController:0];
 }
 
-- (void)actionsController:(id)a3 didAddRecord:(id)a4
+- (void)actionsController:(id)controller didAddRecord:(id)record
 {
-  v8 = a4;
-  v5 = [(AVTAvatarActionsViewController *)self delegate];
+  recordCopy = record;
+  delegate = [(AVTAvatarActionsViewController *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(AVTAvatarActionsViewController *)self delegate];
-    [v7 avatarActionsViewController:self didPerformAction:3 withAvatarRecord:v8];
+    delegate2 = [(AVTAvatarActionsViewController *)self delegate];
+    [delegate2 avatarActionsViewController:self didPerformAction:3 withAvatarRecord:recordCopy];
   }
 
-  [(AVTAvatarActionsViewController *)self willPresentAvatarRecord:v8];
+  [(AVTAvatarActionsViewController *)self willPresentAvatarRecord:recordCopy];
 }
 
-- (void)actionsController:(id)a3 didEditRecord:(id)a4
+- (void)actionsController:(id)controller didEditRecord:(id)record
 {
-  v8 = a4;
-  v5 = [(AVTAvatarActionsViewController *)self delegate];
+  recordCopy = record;
+  delegate = [(AVTAvatarActionsViewController *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(AVTAvatarActionsViewController *)self delegate];
-    [v7 avatarActionsViewController:self didPerformAction:0 withAvatarRecord:v8];
+    delegate2 = [(AVTAvatarActionsViewController *)self delegate];
+    [delegate2 avatarActionsViewController:self didPerformAction:0 withAvatarRecord:recordCopy];
   }
 
-  [(AVTAvatarActionsViewController *)self willPresentAvatarRecord:v8];
+  [(AVTAvatarActionsViewController *)self willPresentAvatarRecord:recordCopy];
 }
 
-- (void)willPresentAvatarRecord:(id)a3
+- (void)willPresentAvatarRecord:(id)record
 {
-  v7 = a3;
-  v4 = [(AVTAvatarActionsViewController *)self delegate];
+  recordCopy = record;
+  delegate = [(AVTAvatarActionsViewController *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(AVTAvatarActionsViewController *)self delegate];
-    [v6 avatarActionsViewController:self willPresentAvatarRecord:v7];
+    delegate2 = [(AVTAvatarActionsViewController *)self delegate];
+    [delegate2 avatarActionsViewController:self willPresentAvatarRecord:recordCopy];
   }
 }
 
-- (void)actionsController:(id)a3 didDuplicateToRecord:(id)a4 completionBlock:(id)a5
+- (void)actionsController:(id)controller didDuplicateToRecord:(id)record completionBlock:(id)block
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [(AVTAvatarActionsViewController *)self delegate];
+  recordCopy = record;
+  blockCopy = block;
+  delegate = [(AVTAvatarActionsViewController *)self delegate];
   v10 = objc_opt_respondsToSelector();
 
   if (v10)
   {
-    v11 = [(AVTAvatarActionsViewController *)self delegate];
-    [v11 avatarActionsViewController:self didPerformAction:3 withAvatarRecord:v7];
+    delegate2 = [(AVTAvatarActionsViewController *)self delegate];
+    [delegate2 avatarActionsViewController:self didPerformAction:3 withAvatarRecord:recordCopy];
   }
 
   v12 = MEMORY[0x1E698E2D8];
-  v13 = [(AVTAvatarActionsViewController *)self avtViewSession];
-  v14 = [v13 avtView];
-  v15 = [(AVTAvatarActionsViewController *)self avatarContainer];
-  v16 = [(AVTAvatarActionsViewController *)self environment];
-  v17 = [v16 logger];
-  v18 = [v12 snapshotAVTView:v14 matchingViewSize:v15 highQuality:1 logger:v17];
+  avtViewSession = [(AVTAvatarActionsViewController *)self avtViewSession];
+  avtView = [avtViewSession avtView];
+  avatarContainer = [(AVTAvatarActionsViewController *)self avatarContainer];
+  environment = [(AVTAvatarActionsViewController *)self environment];
+  logger = [environment logger];
+  v18 = [v12 snapshotAVTView:avtView matchingViewSize:avatarContainer highQuality:1 logger:logger];
 
   [(AVTAvatarActionsViewController *)self createTransitionImageViewIfNeeded];
   [(AVTAvatarActionsViewController *)self setIsAnimating:1];
@@ -835,9 +835,9 @@ LABEL_8:
   v20[2] = __89__AVTAvatarActionsViewController_actionsController_didDuplicateToRecord_completionBlock___block_invoke;
   v20[3] = &unk_1E7F3ACA0;
   v20[4] = self;
-  v21 = v8;
-  v19 = v8;
-  [(AVTAvatarActionsViewController *)self performTransitionAfterDuplicateToRecord:v7 previousRecordImage:v18 completionBlock:v20];
+  v21 = blockCopy;
+  v19 = blockCopy;
+  [(AVTAvatarActionsViewController *)self performTransitionAfterDuplicateToRecord:recordCopy previousRecordImage:v18 completionBlock:v20];
 }
 
 uint64_t __89__AVTAvatarActionsViewController_actionsController_didDuplicateToRecord_completionBlock___block_invoke(uint64_t a1)
@@ -848,55 +848,55 @@ uint64_t __89__AVTAvatarActionsViewController_actionsController_didDuplicateToRe
   return v2();
 }
 
-- (id)actionsModel:(id)a3 recordUpdateForDeletingRecord:(id)a4
+- (id)actionsModel:(id)model recordUpdateForDeletingRecord:(id)record
 {
-  v5 = a4;
-  v6 = [(AVTAvatarActionsViewController *)self delegate];
-  v7 = [v6 avatarActionsViewController:self recordUpdateForDeletingRecord:v5];
+  recordCopy = record;
+  delegate = [(AVTAvatarActionsViewController *)self delegate];
+  v7 = [delegate avatarActionsViewController:self recordUpdateForDeletingRecord:recordCopy];
 
   return v7;
 }
 
-- (void)actionsController:(id)a3 didDeleteRecord:(id)a4 withRecordUpdate:(id)a5 completionBlock:(id)a6
+- (void)actionsController:(id)controller didDeleteRecord:(id)record withRecordUpdate:(id)update completionBlock:(id)block
 {
-  v9 = a4;
-  v10 = a6;
-  v11 = a5;
-  v12 = [(AVTAvatarActionsViewController *)self delegate];
+  recordCopy = record;
+  blockCopy = block;
+  updateCopy = update;
+  delegate = [(AVTAvatarActionsViewController *)self delegate];
   v13 = objc_opt_respondsToSelector();
 
   if (v13)
   {
-    v14 = [(AVTAvatarActionsViewController *)self delegate];
-    [v14 avatarActionsViewController:self didPerformAction:2 withAvatarRecord:v9];
+    delegate2 = [(AVTAvatarActionsViewController *)self delegate];
+    [delegate2 avatarActionsViewController:self didPerformAction:2 withAvatarRecord:recordCopy];
   }
 
-  v15 = [v11 avatarRecord];
-  [(AVTAvatarActionsViewController *)self willPresentAvatarRecord:v15];
+  avatarRecord = [updateCopy avatarRecord];
+  [(AVTAvatarActionsViewController *)self willPresentAvatarRecord:avatarRecord];
 
   v16 = MEMORY[0x1E698E2D8];
-  v17 = [(AVTAvatarActionsViewController *)self avtViewSession];
-  v18 = [v17 avtView];
-  v19 = [(AVTAvatarActionsViewController *)self avtViewSession];
-  v20 = [v19 avtView];
-  v21 = [(AVTAvatarActionsViewController *)self environment];
-  [v21 logger];
-  v22 = v27 = v9;
-  v23 = [v16 snapshotAVTView:v18 matchingViewSize:v20 highQuality:1 logger:v22];
+  avtViewSession = [(AVTAvatarActionsViewController *)self avtViewSession];
+  avtView = [avtViewSession avtView];
+  avtViewSession2 = [(AVTAvatarActionsViewController *)self avtViewSession];
+  avtView2 = [avtViewSession2 avtView];
+  environment = [(AVTAvatarActionsViewController *)self environment];
+  [environment logger];
+  v22 = v27 = recordCopy;
+  v23 = [v16 snapshotAVTView:avtView matchingViewSize:avtView2 highQuality:1 logger:v22];
 
   [(AVTAvatarActionsViewController *)self createTransitionImageViewIfNeeded];
   [(AVTAvatarActionsViewController *)self setIsAnimating:1];
-  v24 = [v11 avatarRecord];
-  v25 = [v11 fromLeft];
+  avatarRecord2 = [updateCopy avatarRecord];
+  fromLeft = [updateCopy fromLeft];
 
   v28[0] = MEMORY[0x1E69E9820];
   v28[1] = 3221225472;
   v28[2] = __101__AVTAvatarActionsViewController_actionsController_didDeleteRecord_withRecordUpdate_completionBlock___block_invoke;
   v28[3] = &unk_1E7F3ACA0;
   v28[4] = self;
-  v29 = v10;
-  v26 = v10;
-  [(AVTAvatarActionsViewController *)self performTransitionAfterDeleteToRecord:v24 fromLeft:v25 previousRecordImage:v23 completionBlock:v28];
+  v29 = blockCopy;
+  v26 = blockCopy;
+  [(AVTAvatarActionsViewController *)self performTransitionAfterDeleteToRecord:avatarRecord2 fromLeft:fromLeft previousRecordImage:v23 completionBlock:v28];
 }
 
 uint64_t __101__AVTAvatarActionsViewController_actionsController_didDeleteRecord_withRecordUpdate_completionBlock___block_invoke(uint64_t a1)
@@ -907,10 +907,10 @@ uint64_t __101__AVTAvatarActionsViewController_actionsController_didDeleteRecord
   return v2();
 }
 
-- (void)actionsControllerDidFinish:(id)a3
+- (void)actionsControllerDidFinish:(id)finish
 {
-  v4 = [(AVTAvatarActionsViewController *)self delegate];
-  [v4 avatarActionsViewControllerDidFinish:self];
+  delegate = [(AVTAvatarActionsViewController *)self delegate];
+  [delegate avatarActionsViewControllerDidFinish:self];
 }
 
 - (double)duplicateScaleDuration
@@ -931,25 +931,25 @@ uint64_t __101__AVTAvatarActionsViewController_actionsController_didDeleteRecord
   return v4;
 }
 
-- (void)performTransitionAfterDuplicateToRecord:(id)a3 previousRecordImage:(id)a4 completionBlock:(id)a5
+- (void)performTransitionAfterDuplicateToRecord:(id)record previousRecordImage:(id)image completionBlock:(id)block
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(AVTAvatarActionsViewController *)self transitionImageView];
-  [v11 frame];
+  blockCopy = block;
+  imageCopy = image;
+  recordCopy = record;
+  transitionImageView = [(AVTAvatarActionsViewController *)self transitionImageView];
+  [transitionImageView frame];
   v52 = CGRectInset(v51, 20.0, 20.0);
   x = v52.origin.x;
   y = v52.origin.y;
   width = v52.size.width;
   height = v52.size.height;
 
-  v15 = [(AVTAvatarActionsViewController *)self environment];
-  v16 = [v15 userInterfaceLayoutDirection];
+  environment = [(AVTAvatarActionsViewController *)self environment];
+  userInterfaceLayoutDirection = [environment userInterfaceLayoutDirection];
 
-  v17 = [(AVTAvatarActionsViewController *)self view];
-  [v17 bounds];
-  if (v16)
+  view = [(AVTAvatarActionsViewController *)self view];
+  [view bounds];
+  if (userInterfaceLayoutDirection)
   {
     v19 = -v18;
   }
@@ -961,31 +961,31 @@ uint64_t __101__AVTAvatarActionsViewController_actionsController_didDeleteRecord
 
   memset(&v50, 0, sizeof(v50));
   CGAffineTransformMakeScale(&v50, 0.0, 0.0);
-  v20 = [(AVTAvatarActionsViewController *)self transitionImageView];
-  [v20 setImage:v9];
+  transitionImageView2 = [(AVTAvatarActionsViewController *)self transitionImageView];
+  [transitionImageView2 setImage:imageCopy];
 
-  v21 = [(AVTAvatarActionsViewController *)self avatarContainer];
-  [v21 frame];
+  avatarContainer = [(AVTAvatarActionsViewController *)self avatarContainer];
+  [avatarContainer frame];
   v23 = v22;
   v25 = v24;
   v27 = v26;
   v29 = v28;
-  v30 = [(AVTAvatarActionsViewController *)self transitionImageView];
-  [v30 setFrame:{v23, v25, v27, v29}];
+  transitionImageView3 = [(AVTAvatarActionsViewController *)self transitionImageView];
+  [transitionImageView3 setFrame:{v23, v25, v27, v29}];
 
-  v31 = [(AVTAvatarActionsViewController *)self view];
-  v32 = [(AVTAvatarActionsViewController *)self transitionImageView];
-  [v31 addSubview:v32];
+  view2 = [(AVTAvatarActionsViewController *)self view];
+  transitionImageView4 = [(AVTAvatarActionsViewController *)self transitionImageView];
+  [view2 addSubview:transitionImageView4];
 
   v49 = v50;
-  v33 = [(AVTAvatarActionsViewController *)self avatarContainer];
+  avatarContainer2 = [(AVTAvatarActionsViewController *)self avatarContainer];
   v48 = v49;
-  [v33 setTransform:&v48];
+  [avatarContainer2 setTransform:&v48];
 
-  v34 = [(AVTAvatarActionsViewController *)self avatarContainer];
-  [v34 setAlpha:0.0];
+  avatarContainer3 = [(AVTAvatarActionsViewController *)self avatarContainer];
+  [avatarContainer3 setAlpha:0.0];
 
-  v35 = [(AVTAvatarActionsViewController *)self avtViewSession];
+  avtViewSession = [(AVTAvatarActionsViewController *)self avtViewSession];
   v38[0] = MEMORY[0x1E69E9820];
   v38[1] = 3221225472;
   v38[2] = __110__AVTAvatarActionsViewController_performTransitionAfterDuplicateToRecord_previousRecordImage_completionBlock___block_invoke;
@@ -999,9 +999,9 @@ uint64_t __101__AVTAvatarActionsViewController_actionsController_didDeleteRecord
   v46 = width;
   v47 = height;
   v38[4] = self;
-  v39 = v8;
-  v36 = v8;
-  [(AVTAvatarActionsViewController *)self configureAVTViewSession:v35 withAvatarRecord:v10 completionBlock:v38];
+  v39 = blockCopy;
+  v36 = blockCopy;
+  [(AVTAvatarActionsViewController *)self configureAVTViewSession:avtViewSession withAvatarRecord:recordCopy completionBlock:v38];
 }
 
 void __110__AVTAvatarActionsViewController_performTransitionAfterDuplicateToRecord_previousRecordImage_completionBlock___block_invoke(uint64_t a1, int a2)
@@ -1162,29 +1162,29 @@ void __110__AVTAvatarActionsViewController_performTransitionAfterDuplicateToReco
   return v4;
 }
 
-- (void)performTransitionAfterDeleteToRecord:(id)a3 fromLeft:(BOOL)a4 previousRecordImage:(id)a5 completionBlock:(id)a6
+- (void)performTransitionAfterDeleteToRecord:(id)record fromLeft:(BOOL)left previousRecordImage:(id)image completionBlock:(id)block
 {
-  v8 = a4;
-  v10 = a3;
-  v11 = a6;
-  v12 = a5;
-  v13 = [(AVTAvatarActionsViewController *)self avatarContainer];
-  [v13 frame];
+  leftCopy = left;
+  recordCopy = record;
+  blockCopy = block;
+  imageCopy = image;
+  avatarContainer = [(AVTAvatarActionsViewController *)self avatarContainer];
+  [avatarContainer frame];
   v63 = v14;
   v16 = v15;
   v18 = v17;
   v20 = v19;
 
-  v21 = [(AVTAvatarActionsViewController *)self transitionImageView];
-  [v21 frame];
+  transitionImageView = [(AVTAvatarActionsViewController *)self transitionImageView];
+  [transitionImageView frame];
   v82 = CGRectInset(v81, -20.0, -20.0);
   y = v82.origin.y;
   x = v82.origin.x;
   height = v82.size.height;
   width = v82.size.width;
 
-  v22 = [(AVTAvatarActionsViewController *)self transitionImageView];
-  [v22 frame];
+  transitionImageView2 = [(AVTAvatarActionsViewController *)self transitionImageView];
+  [transitionImageView2 frame];
   v24 = v23;
   v26 = v25;
   v28 = v27;
@@ -1192,13 +1192,13 @@ void __110__AVTAvatarActionsViewController_performTransitionAfterDuplicateToReco
 
   v57 = v26 + v30 * 0.5;
   v58 = v24 + v28 * 0.5;
-  v31 = [(AVTAvatarActionsViewController *)self environment];
-  v32 = [v31 userInterfaceLayoutDirection] != 0;
+  environment = [(AVTAvatarActionsViewController *)self environment];
+  v32 = [environment userInterfaceLayoutDirection] != 0;
 
-  if (v32 == v8)
+  if (v32 == leftCopy)
   {
-    v34 = [(AVTAvatarActionsViewController *)self view];
-    [v34 bounds];
+    view = [(AVTAvatarActionsViewController *)self view];
+    [view bounds];
     MaxX = CGRectGetMaxX(v83);
   }
 
@@ -1207,24 +1207,24 @@ void __110__AVTAvatarActionsViewController_performTransitionAfterDuplicateToReco
     MaxX = 0.0 - v18;
   }
 
-  v35 = [(AVTAvatarActionsViewController *)self transitionImageView];
-  [v35 setImage:v12];
+  transitionImageView3 = [(AVTAvatarActionsViewController *)self transitionImageView];
+  [transitionImageView3 setImage:imageCopy];
 
-  v36 = [(AVTAvatarActionsViewController *)self avatarContainer];
-  [v36 frame];
+  avatarContainer2 = [(AVTAvatarActionsViewController *)self avatarContainer];
+  [avatarContainer2 frame];
   v38 = v37;
   v40 = v39;
   v42 = v41;
   v44 = v43;
-  v45 = [(AVTAvatarActionsViewController *)self transitionImageView];
-  [v45 setFrame:{v38, v40, v42, v44}];
+  transitionImageView4 = [(AVTAvatarActionsViewController *)self transitionImageView];
+  [transitionImageView4 setFrame:{v38, v40, v42, v44}];
 
-  v46 = [(AVTAvatarActionsViewController *)self view];
-  v47 = [(AVTAvatarActionsViewController *)self transitionImageView];
-  [v46 addSubview:v47];
+  view2 = [(AVTAvatarActionsViewController *)self view];
+  transitionImageView5 = [(AVTAvatarActionsViewController *)self transitionImageView];
+  [view2 addSubview:transitionImageView5];
 
-  v48 = [(AVTAvatarActionsViewController *)self avatarContainer];
-  [v48 setFrame:{MaxX, v16, v18, v20}];
+  avatarContainer3 = [(AVTAvatarActionsViewController *)self avatarContainer];
+  [avatarContainer3 setFrame:{MaxX, v16, v18, v20}];
 
   v67[0] = MEMORY[0x1E69E9820];
   v67[1] = 3221225472;
@@ -1240,23 +1240,23 @@ void __110__AVTAvatarActionsViewController_performTransitionAfterDuplicateToReco
   __asm { FMOV            V0.2D, #1.0 }
 
   v75 = _Q0;
-  v54 = v11;
+  v54 = blockCopy;
   v68 = v54;
-  v80 = v10 != 0;
+  v80 = recordCopy != 0;
   v76 = v63;
   v77 = v16;
   v78 = v18;
   v79 = v20;
   v55 = MEMORY[0x1BFB0DE80](v67);
   v56 = v55;
-  if (v10)
+  if (recordCopy)
   {
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __116__AVTAvatarActionsViewController_performTransitionAfterDeleteToRecord_fromLeft_previousRecordImage_completionBlock___block_invoke_8;
     block[3] = &unk_1E7F3C860;
     block[4] = self;
-    v65 = v10;
+    v65 = recordCopy;
     v66 = v56;
     dispatch_async(MEMORY[0x1E69E96A0], block);
   }
@@ -1444,13 +1444,13 @@ void __116__AVTAvatarActionsViewController_performTransitionAfterDeleteToRecord_
   [v2 configureAVTViewSession:v3 withAvatarRecord:v4 completionBlock:v5];
 }
 
-- (id)navigationController:(id)a3 animationControllerForOperation:(int64_t)a4 fromViewController:(id)a5 toViewController:(id)a6
+- (id)navigationController:(id)controller animationControllerForOperation:(int64_t)operation fromViewController:(id)viewController toViewController:(id)toViewController
 {
-  v8 = [(AVTAvatarActionsViewController *)self currentLayout:a3];
+  v8 = [(AVTAvatarActionsViewController *)self currentLayout:controller];
   if (v8)
   {
-    v9 = [(AVTAvatarActionsViewController *)self currentLayout];
-    [v9 userInfoFrame];
+    currentLayout = [(AVTAvatarActionsViewController *)self currentLayout];
+    [currentLayout userInfoFrame];
     v11 = v10;
   }
 
@@ -1460,56 +1460,56 @@ void __116__AVTAvatarActionsViewController_performTransitionAfterDeleteToRecord_
   }
 
   v12 = off_1E7F39828;
-  if (a4 != 1)
+  if (operation != 1)
   {
     v12 = off_1E7F39868;
   }
 
   v13 = objc_alloc(*v12);
-  v14 = [(AVTAvatarActionsViewController *)self sessionProvider];
-  v15 = [(AVTAvatarActionsViewController *)self traitCollection];
-  v16 = [v15 layoutDirection] == 1;
-  v17 = [(AVTAvatarActionsViewController *)self environment];
-  v18 = [v13 initWithAVTViewLayoutInfo:v14 userInfoViewHeight:v16 RTL:v17 environment:v11];
+  sessionProvider = [(AVTAvatarActionsViewController *)self sessionProvider];
+  traitCollection = [(AVTAvatarActionsViewController *)self traitCollection];
+  v16 = [traitCollection layoutDirection] == 1;
+  environment = [(AVTAvatarActionsViewController *)self environment];
+  v18 = [v13 initWithAVTViewLayoutInfo:sessionProvider userInfoViewHeight:v16 RTL:environment environment:v11];
 
   return v18;
 }
 
-- (int64_t)interfaceOrientationForFaceTrackingManager:(id)a3
+- (int64_t)interfaceOrientationForFaceTrackingManager:(id)manager
 {
-  v3 = [(AVTAvatarActionsViewController *)self view];
-  v4 = [v3 window];
-  v5 = [v4 _windowInterfaceOrientation];
+  view = [(AVTAvatarActionsViewController *)self view];
+  window = [view window];
+  _windowInterfaceOrientation = [window _windowInterfaceOrientation];
 
-  return v5;
+  return _windowInterfaceOrientation;
 }
 
-- (void)controllerPresentationWillObstructView:(id)a3
+- (void)controllerPresentationWillObstructView:(id)view
 {
-  v10 = a3;
-  v4 = [(AVTAvatarActionsViewController *)self editorViewController];
+  viewCopy = view;
+  editorViewController = [(AVTAvatarActionsViewController *)self editorViewController];
 
-  if (v4)
+  if (editorViewController)
   {
-    v5 = [(AVTAvatarActionsViewController *)self editorViewController];
-    [v5 controllerPresentationWillObstructView:v10];
+    editorViewController2 = [(AVTAvatarActionsViewController *)self editorViewController];
+    [editorViewController2 controllerPresentationWillObstructView:viewCopy];
 LABEL_3:
 
     goto LABEL_4;
   }
 
-  v6 = [(AVTAvatarActionsViewController *)self presentedViewController];
-  if (v6)
+  presentedViewController = [(AVTAvatarActionsViewController *)self presentedViewController];
+  if (presentedViewController)
   {
-    v7 = v6;
-    v8 = [(AVTAvatarActionsViewController *)self presentedViewController];
+    v7 = presentedViewController;
+    presentedViewController2 = [(AVTAvatarActionsViewController *)self presentedViewController];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v5 = [(AVTAvatarActionsViewController *)self presentedViewController];
-      [v5 dismissViewControllerAnimated:0 completion:0];
+      editorViewController2 = [(AVTAvatarActionsViewController *)self presentedViewController];
+      [editorViewController2 dismissViewControllerAnimated:0 completion:0];
       goto LABEL_3;
     }
   }
@@ -1533,9 +1533,9 @@ LABEL_4:
 
 - (void)performEdit
 {
-  v3 = [(AVTAvatarActionsViewController *)self actionsController];
-  v2 = [v3 actionsModel];
-  [v2 didTapEdit];
+  actionsController = [(AVTAvatarActionsViewController *)self actionsController];
+  actionsModel = [actionsController actionsModel];
+  [actionsModel didTapEdit];
 }
 
 @end

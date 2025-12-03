@@ -131,11 +131,11 @@ void __67__MPModelTVEpisode_MPModelObjectMediaItem__mediaItemPropertyValues__blo
 
 - (id)artworkCatalog
 {
-  v3 = [(MPModelTVEpisode *)self artworkCatalogBlock];
-  v4 = v3;
-  if (v3)
+  artworkCatalogBlock = [(MPModelTVEpisode *)self artworkCatalogBlock];
+  v4 = artworkCatalogBlock;
+  if (artworkCatalogBlock)
   {
-    v5 = (*(v3 + 16))(v3, self);
+    v5 = (*(artworkCatalogBlock + 16))(artworkCatalogBlock, self);
   }
 
   else
@@ -149,15 +149,15 @@ void __67__MPModelTVEpisode_MPModelObjectMediaItem__mediaItemPropertyValues__blo
 - (id)humanDescription
 {
   v3 = MEMORY[0x1E696AD60];
-  v4 = [(MPModelObject *)self identifiers];
-  v5 = [v4 humanDescription];
-  v6 = [v3 stringWithFormat:@"TV episode %@", v5];
+  identifiers = [(MPModelObject *)self identifiers];
+  humanDescription = [identifiers humanDescription];
+  v6 = [v3 stringWithFormat:@"TV episode %@", humanDescription];
 
   if ([(MPModelObject *)self hasLoadedValueForKey:@"MPModelPropertyTVEpisodeTitle"])
   {
     v7 = MEMORY[0x1E696AEC0];
-    v8 = [(MPModelTVEpisode *)self title];
-    v9 = [v7 stringWithFormat:@"“%@” ", v8];
+    title = [(MPModelTVEpisode *)self title];
+    v9 = [v7 stringWithFormat:@"“%@” ", title];
 
     [v6 insertString:v9 atIndex:0];
   }
@@ -167,173 +167,173 @@ void __67__MPModelTVEpisode_MPModelObjectMediaItem__mediaItemPropertyValues__blo
 
 + (void)__MPModelPropertyTVEpisodeDownloadedDate__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelTVEpisode.m" lineNumber:146 description:@"Translator was missing mapping for MPModelPropertyTVEpisodeDownloadedDate"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelTVEpisode.m" lineNumber:146 description:@"Translator was missing mapping for MPModelPropertyTVEpisodeDownloadedDate"];
 }
 
 + (void)__MPModelPropertyTVEpisodeArtwork__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelTVEpisode.m" lineNumber:145 description:@"Translator was missing mapping for MPModelPropertyTVEpisodeArtwork"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelTVEpisode.m" lineNumber:145 description:@"Translator was missing mapping for MPModelPropertyTVEpisodeArtwork"];
 }
 
 + (void)__MPModelPropertyTVEpisodeKeepLocalConstraints__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelTVEpisode.m" lineNumber:144 description:@"Translator was missing mapping for MPModelPropertyTVEpisodeKeepLocalConstraints"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelTVEpisode.m" lineNumber:144 description:@"Translator was missing mapping for MPModelPropertyTVEpisodeKeepLocalConstraints"];
 }
 
 + (void)__MPModelPropertyTVEpisodeKeepLocalManagedStatusReason__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelTVEpisode.m" lineNumber:143 description:@"Translator was missing mapping for MPModelPropertyTVEpisodeKeepLocalManagedStatusReason"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelTVEpisode.m" lineNumber:143 description:@"Translator was missing mapping for MPModelPropertyTVEpisodeKeepLocalManagedStatusReason"];
 }
 
 + (void)__MPModelPropertyTVEpisodeKeepLocalManagedStatus__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelTVEpisode.m" lineNumber:142 description:@"Translator was missing mapping for MPModelPropertyTVEpisodeKeepLocalManagedStatus"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelTVEpisode.m" lineNumber:142 description:@"Translator was missing mapping for MPModelPropertyTVEpisodeKeepLocalManagedStatus"];
 }
 
 + (void)__MPModelPropertyTVEpisodeKeepLocalEnableState__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelTVEpisode.m" lineNumber:141 description:@"Translator was missing mapping for MPModelPropertyTVEpisodeKeepLocalEnableState"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelTVEpisode.m" lineNumber:141 description:@"Translator was missing mapping for MPModelPropertyTVEpisodeKeepLocalEnableState"];
 }
 
 + (void)__MPModelPropertyTVEpisodeLibraryAddEligible__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelTVEpisode.m" lineNumber:140 description:@"Translator was missing mapping for MPModelPropertyTVEpisodeLibraryAddEligible"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelTVEpisode.m" lineNumber:140 description:@"Translator was missing mapping for MPModelPropertyTVEpisodeLibraryAddEligible"];
 }
 
 + (void)__MPModelPropertyTVEpisodeLastDevicePlaybackDate__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelTVEpisode.m" lineNumber:139 description:@"Translator was missing mapping for MPModelPropertyTVEpisodeLastDevicePlaybackDate"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelTVEpisode.m" lineNumber:139 description:@"Translator was missing mapping for MPModelPropertyTVEpisodeLastDevicePlaybackDate"];
 }
 
 + (void)__MPModelPropertyTVEpisodeLibraryAddedDate__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelTVEpisode.m" lineNumber:138 description:@"Translator was missing mapping for MPModelPropertyTVEpisodeLibraryAddedDate"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelTVEpisode.m" lineNumber:138 description:@"Translator was missing mapping for MPModelPropertyTVEpisodeLibraryAddedDate"];
 }
 
 + (void)__MPModelPropertyTVEpisodeLibraryAdded__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelTVEpisode.m" lineNumber:137 description:@"Translator was missing mapping for MPModelPropertyTVEpisodeLibraryAdded"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelTVEpisode.m" lineNumber:137 description:@"Translator was missing mapping for MPModelPropertyTVEpisodeLibraryAdded"];
 }
 
 + (void)__MPModelPropertyTVEpisodeTypeDisplayName__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelTVEpisode.m" lineNumber:136 description:@"Translator was missing mapping for MPModelPropertyTVEpisodeTypeDisplayName"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelTVEpisode.m" lineNumber:136 description:@"Translator was missing mapping for MPModelPropertyTVEpisodeTypeDisplayName"];
 }
 
 + (void)__MPModelPropertyTVEpisodeType__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelTVEpisode.m" lineNumber:135 description:@"Translator was missing mapping for MPModelPropertyTVEpisodeType"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelTVEpisode.m" lineNumber:135 description:@"Translator was missing mapping for MPModelPropertyTVEpisodeType"];
 }
 
 + (void)__MPModelPropertyTVEpisodeReleaseDate__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelTVEpisode.m" lineNumber:134 description:@"Translator was missing mapping for MPModelPropertyTVEpisodeReleaseDate"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelTVEpisode.m" lineNumber:134 description:@"Translator was missing mapping for MPModelPropertyTVEpisodeReleaseDate"];
 }
 
 + (void)__MPModelPropertyTVEpisodeStoreCanonicalID__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelTVEpisode.m" lineNumber:132 description:@"Translator was missing mapping for MPModelPropertyTVEpisodeStoreCanonicalID"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelTVEpisode.m" lineNumber:132 description:@"Translator was missing mapping for MPModelPropertyTVEpisodeStoreCanonicalID"];
 }
 
 + (void)__MPModelRelationshipTVEpisodeShow__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelTVEpisode.m" lineNumber:131 description:@"Translator was missing mapping for MPModelRelationshipTVEpisodeShow"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelTVEpisode.m" lineNumber:131 description:@"Translator was missing mapping for MPModelRelationshipTVEpisodeShow"];
 }
 
 + (void)__MPModelRelationshipTVEpisodeSeason__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelTVEpisode.m" lineNumber:130 description:@"Translator was missing mapping for MPModelRelationshipTVEpisodeSeason"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelTVEpisode.m" lineNumber:130 description:@"Translator was missing mapping for MPModelRelationshipTVEpisodeSeason"];
 }
 
 + (void)__MPModelRelationshipTVEpisodeStoreAsset__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelTVEpisode.m" lineNumber:129 description:@"Translator was missing mapping for MPModelRelationshipTVEpisodeStoreAsset"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelTVEpisode.m" lineNumber:129 description:@"Translator was missing mapping for MPModelRelationshipTVEpisodeStoreAsset"];
 }
 
 + (void)__MPModelRelationshipTVEpisodePlaybackPosition__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelTVEpisode.m" lineNumber:128 description:@"Translator was missing mapping for MPModelRelationshipTVEpisodePlaybackPosition"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelTVEpisode.m" lineNumber:128 description:@"Translator was missing mapping for MPModelRelationshipTVEpisodePlaybackPosition"];
 }
 
 + (void)__MPModelRelationshipTVEpisodeLocalFileAsset__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelTVEpisode.m" lineNumber:127 description:@"Translator was missing mapping for MPModelRelationshipTVEpisodeLocalFileAsset"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelTVEpisode.m" lineNumber:127 description:@"Translator was missing mapping for MPModelRelationshipTVEpisodeLocalFileAsset"];
 }
 
 + (void)__MPModelPropertyTVEpisodeExplicitRating__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelTVEpisode.m" lineNumber:126 description:@"Translator was missing mapping for MPModelPropertyTVEpisodeExplicitRating"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelTVEpisode.m" lineNumber:126 description:@"Translator was missing mapping for MPModelPropertyTVEpisodeExplicitRating"];
 }
 
 + (void)__MPModelPropertyTVEpisodeNumber__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelTVEpisode.m" lineNumber:125 description:@"Translator was missing mapping for MPModelPropertyTVEpisodeNumber"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelTVEpisode.m" lineNumber:125 description:@"Translator was missing mapping for MPModelPropertyTVEpisodeNumber"];
 }
 
 + (void)__MPModelPropertyTVEpisodeMusicShow__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelTVEpisode.m" lineNumber:124 description:@"Translator was missing mapping for MPModelPropertyTVEpisodeMusicShow"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelTVEpisode.m" lineNumber:124 description:@"Translator was missing mapping for MPModelPropertyTVEpisodeMusicShow"];
 }
 
 + (void)__MPModelPropertyTVEpisodeHasCloudSyncSource__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelTVEpisode.m" lineNumber:123 description:@"Translator was missing mapping for MPModelPropertyTVEpisodeHasCloudSyncSource"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelTVEpisode.m" lineNumber:123 description:@"Translator was missing mapping for MPModelPropertyTVEpisodeHasCloudSyncSource"];
 }
 
 + (void)__MPModelPropertyTVEpisodeDuration__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelTVEpisode.m" lineNumber:122 description:@"Translator was missing mapping for MPModelPropertyTVEpisodeDuration"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelTVEpisode.m" lineNumber:122 description:@"Translator was missing mapping for MPModelPropertyTVEpisodeDuration"];
 }
 
 + (void)__MPModelPropertyTVEpisodeDescriptionText__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelTVEpisode.m" lineNumber:121 description:@"Translator was missing mapping for MPModelPropertyTVEpisodeDescriptionText"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelTVEpisode.m" lineNumber:121 description:@"Translator was missing mapping for MPModelPropertyTVEpisodeDescriptionText"];
 }
 
 + (void)__MPModelPropertyTVEpisodeTitle__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelTVEpisode.m" lineNumber:120 description:@"Translator was missing mapping for MPModelPropertyTVEpisodeTitle"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelTVEpisode.m" lineNumber:120 description:@"Translator was missing mapping for MPModelPropertyTVEpisodeTitle"];
 }
 
 - (MPLibraryAddStatusObserverConfiguration)libraryAddStatusObserverConfiguration
 {
   IsRestricted = MPModelTVEpisodeIsRestricted(self);
-  v4 = [(MPModelTVEpisode *)self isLibraryAdded];
-  v5 = [(MPModelTVEpisode *)self isLibraryAddEligible];
+  isLibraryAdded = [(MPModelTVEpisode *)self isLibraryAdded];
+  isLibraryAddEligible = [(MPModelTVEpisode *)self isLibraryAddEligible];
   v6 = 0x100000000;
-  if (!v5)
+  if (!isLibraryAddEligible)
   {
     v6 = 0;
   }
 
   v7 = 256;
-  if (!v4)
+  if (!isLibraryAdded)
   {
     v7 = 0;
   }
@@ -362,13 +362,13 @@ void __67__MPModelTVEpisode_MPModelObjectMediaItem__mediaItemPropertyValues__blo
 - (id)newKeepLocalStatusObserverConfiguration
 {
   v3 = objc_alloc_init(MPLibraryKeepLocalStatusObserverIndividualEntityConfiguration);
-  v4 = [(MPModelTVEpisode *)self localFileAsset];
-  -[MPLibraryKeepLocalStatusObserverIndividualEntityConfiguration setHasNonPurgeableAsset:](v3, "setHasNonPurgeableAsset:", [v4 isNonPurgeable]);
+  localFileAsset = [(MPModelTVEpisode *)self localFileAsset];
+  -[MPLibraryKeepLocalStatusObserverIndividualEntityConfiguration setHasNonPurgeableAsset:](v3, "setHasNonPurgeableAsset:", [localFileAsset isNonPurgeable]);
   [(MPLibraryKeepLocalStatusObserverConfiguration *)v3 setIdentifyingModelObject:self];
   [(MPLibraryKeepLocalStatusObserverConfiguration *)v3 setEnableState:[(MPModelTVEpisode *)self keepLocalEnableState]];
   [(MPLibraryKeepLocalStatusObserverIndividualEntityConfiguration *)v3 setManagedStatus:[(MPModelTVEpisode *)self keepLocalManagedStatus]];
-  v5 = [(MPModelTVEpisode *)self storeAsset];
-  -[MPLibraryKeepLocalStatusObserverIndividualEntityConfiguration setStoreRedownloadable:](v3, "setStoreRedownloadable:", [v5 isRedownloadable]);
+  storeAsset = [(MPModelTVEpisode *)self storeAsset];
+  -[MPLibraryKeepLocalStatusObserverIndividualEntityConfiguration setStoreRedownloadable:](v3, "setStoreRedownloadable:", [storeAsset isRedownloadable]);
 
   return v3;
 }
@@ -400,11 +400,11 @@ void __67__MPModelTVEpisode_MPModelObjectMediaItem__mediaItemPropertyValues__blo
 
 - (int64_t)libraryRemovalSupportedOptions
 {
-  v3 = [(MPModelTVEpisode *)self keepLocalManagedStatus];
-  v4 = [(MPModelTVEpisode *)self isLibraryAdded];
-  v5 = [(MPModelTVEpisode *)self localFileAsset];
-  v6 = [(MPModelTVEpisode *)self storeAsset];
-  v7 = _MPModelLibraryRemovalSupportedOptionsForIndividualItemProperties(v3, v4, v5, v6);
+  keepLocalManagedStatus = [(MPModelTVEpisode *)self keepLocalManagedStatus];
+  isLibraryAdded = [(MPModelTVEpisode *)self isLibraryAdded];
+  localFileAsset = [(MPModelTVEpisode *)self localFileAsset];
+  storeAsset = [(MPModelTVEpisode *)self storeAsset];
+  v7 = _MPModelLibraryRemovalSupportedOptionsForIndividualItemProperties(keepLocalManagedStatus, isLibraryAdded, localFileAsset, storeAsset);
 
   return v7;
 }

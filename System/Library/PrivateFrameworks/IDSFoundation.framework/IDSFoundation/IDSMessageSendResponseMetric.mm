@@ -1,28 +1,28 @@
 @interface IDSMessageSendResponseMetric
-- (IDSMessageSendResponseMetric)initWithResponseCode:(int64_t)a3 service:(id)a4 command:(id)a5 hasDataToEncrypt:(BOOL)a6 messageType:(int64_t)a7;
+- (IDSMessageSendResponseMetric)initWithResponseCode:(int64_t)code service:(id)service command:(id)command hasDataToEncrypt:(BOOL)encrypt messageType:(int64_t)type;
 - (NSDictionary)dictionaryRepresentation;
 @end
 
 @implementation IDSMessageSendResponseMetric
 
-- (IDSMessageSendResponseMetric)initWithResponseCode:(int64_t)a3 service:(id)a4 command:(id)a5 hasDataToEncrypt:(BOOL)a6 messageType:(int64_t)a7
+- (IDSMessageSendResponseMetric)initWithResponseCode:(int64_t)code service:(id)service command:(id)command hasDataToEncrypt:(BOOL)encrypt messageType:(int64_t)type
 {
-  v12 = a4;
-  v13 = a5;
+  serviceCopy = service;
+  commandCopy = command;
   v19.receiver = self;
   v19.super_class = IDSMessageSendResponseMetric;
   v14 = [(IDSMessageSendResponseMetric *)&v19 init];
   v15 = v14;
   if (v14)
   {
-    v14->_responseCode = a3;
-    v16 = [v12 copy];
+    v14->_responseCode = code;
+    v16 = [serviceCopy copy];
     service = v15->_service;
     v15->_service = v16;
 
-    objc_storeStrong(&v15->_command, a5);
-    v15->_hasDataToEncrypt = a6;
-    v15->_messageType = a7;
+    objc_storeStrong(&v15->_command, command);
+    v15->_hasDataToEncrypt = encrypt;
+    v15->_messageType = type;
   }
 
   return v15;
@@ -30,33 +30,33 @@
 
 - (NSDictionary)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(IDSMessageSendResponseMetric *)self service];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  service = [(IDSMessageSendResponseMetric *)self service];
 
-  if (v4)
+  if (service)
   {
-    v5 = [(IDSMessageSendResponseMetric *)self service];
-    [v3 setObject:v5 forKeyedSubscript:@"service"];
+    service2 = [(IDSMessageSendResponseMetric *)self service];
+    [dictionary setObject:service2 forKeyedSubscript:@"service"];
   }
 
-  v6 = [(IDSMessageSendResponseMetric *)self command];
+  command = [(IDSMessageSendResponseMetric *)self command];
 
-  if (v6)
+  if (command)
   {
-    v7 = [(IDSMessageSendResponseMetric *)self command];
-    [v3 setObject:v7 forKeyedSubscript:@"command"];
+    command2 = [(IDSMessageSendResponseMetric *)self command];
+    [dictionary setObject:command2 forKeyedSubscript:@"command"];
   }
 
   v8 = [MEMORY[0x1E696AD98] numberWithInteger:{-[IDSMessageSendResponseMetric responseCode](self, "responseCode")}];
-  [v3 setObject:v8 forKeyedSubscript:@"responseCode"];
+  [dictionary setObject:v8 forKeyedSubscript:@"responseCode"];
 
   v9 = [MEMORY[0x1E696AD98] numberWithInteger:{-[IDSMessageSendResponseMetric messageType](self, "messageType")}];
-  [v3 setObject:v9 forKeyedSubscript:@"messageType"];
+  [dictionary setObject:v9 forKeyedSubscript:@"messageType"];
 
   v10 = [MEMORY[0x1E696AD98] numberWithBool:{-[IDSMessageSendResponseMetric hasDataToEncrypt](self, "hasDataToEncrypt")}];
-  [v3 setObject:v10 forKeyedSubscript:@"hasDataToEncrypt"];
+  [dictionary setObject:v10 forKeyedSubscript:@"hasDataToEncrypt"];
 
-  v11 = [v3 copy];
+  v11 = [dictionary copy];
 
   return v11;
 }

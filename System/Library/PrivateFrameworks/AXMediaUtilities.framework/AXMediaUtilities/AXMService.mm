@@ -6,7 +6,7 @@
 - (void)_destroyXPCConnection;
 - (void)dealloc;
 - (void)prewarmVisionEngineService;
-- (void)visionEngine:(id)a3 evaluateSource:(id)a4 context:(id)a5 options:(int64_t)a6 result:(id)a7;
+- (void)visionEngine:(id)engine evaluateSource:(id)source context:(id)context options:(int64_t)options result:(id)result;
 @end
 
 @implementation AXMService
@@ -40,7 +40,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1AE37B000, v3, OS_LOG_TYPE_DEFAULT, "AXMService being deallocated: %@", buf, 0xCu);
   }
 
@@ -139,13 +139,13 @@ void __27__AXMService_xpcConnection__block_invoke_71(uint64_t a1)
 - (id)_serviceProxy
 {
   objc_initWeak(&location, self);
-  v3 = [(AXMService *)self xpcConnection];
+  xpcConnection = [(AXMService *)self xpcConnection];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __27__AXMService__serviceProxy__block_invoke;
   v6[3] = &unk_1E7A1CAC0;
   objc_copyWeak(&v7, &location);
-  v4 = [v3 remoteObjectProxyWithErrorHandler:v6];
+  v4 = [xpcConnection remoteObjectProxyWithErrorHandler:v6];
   objc_destroyWeak(&v7);
 
   objc_destroyWeak(&location);
@@ -169,18 +169,18 @@ void __27__AXMService__serviceProxy__block_invoke(uint64_t a1, void *a2)
 
 - (void)prewarmVisionEngineService
 {
-  v2 = [(AXMService *)self _serviceProxy];
-  [v2 prewarmVisionEngineService];
+  _serviceProxy = [(AXMService *)self _serviceProxy];
+  [_serviceProxy prewarmVisionEngineService];
 }
 
-- (void)visionEngine:(id)a3 evaluateSource:(id)a4 context:(id)a5 options:(int64_t)a6 result:(id)a7
+- (void)visionEngine:(id)engine evaluateSource:(id)source context:(id)context options:(int64_t)options result:(id)result
 {
-  v12 = a7;
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
-  v16 = [(AXMService *)self _serviceProxy];
-  [v16 visionEngine:v15 evaluateSource:v14 context:v13 options:a6 result:v12];
+  resultCopy = result;
+  contextCopy = context;
+  sourceCopy = source;
+  engineCopy = engine;
+  _serviceProxy = [(AXMService *)self _serviceProxy];
+  [_serviceProxy visionEngine:engineCopy evaluateSource:sourceCopy context:contextCopy options:options result:resultCopy];
 }
 
 - (AXMServiceDelegate)delegate

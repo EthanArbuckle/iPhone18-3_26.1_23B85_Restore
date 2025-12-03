@@ -1,25 +1,25 @@
 @interface QLInteractiveTransitionController
 - (void)_performForcedDismissal;
-- (void)setCompleteProgress:(double)a3;
-- (void)startInteractiveTransition:(id)a3;
-- (void)updateTransitionWithProgress:(double)a3 isFinal:(BOOL)a4;
+- (void)setCompleteProgress:(double)progress;
+- (void)startInteractiveTransition:(id)transition;
+- (void)updateTransitionWithProgress:(double)progress isFinal:(BOOL)final;
 @end
 
 @implementation QLInteractiveTransitionController
 
-- (void)startInteractiveTransition:(id)a3
+- (void)startInteractiveTransition:(id)transition
 {
-  [(QLTransitionController *)self setUpWithTransitionContext:a3 completionHandler:0];
+  [(QLTransitionController *)self setUpWithTransitionContext:transition completionHandler:0];
   [(QLInteractiveTransitionController *)self setCompleteProgress:0.0];
-  v5 = [(QLTransitionController *)self animatedController];
-  v4 = [v5 transitioningView];
-  [v4 frame];
+  animatedController = [(QLTransitionController *)self animatedController];
+  transitioningView = [animatedController transitioningView];
+  [transitioningView frame];
   self->_initialTransitioningViewWidth = CGRectGetWidth(v7);
 }
 
-- (void)setCompleteProgress:(double)a3
+- (void)setCompleteProgress:(double)progress
 {
-  v3 = fmax(a3, 0.0);
+  v3 = fmax(progress, 0.0);
   if (v3 > 1.0)
   {
     v3 = 1.0;
@@ -27,27 +27,27 @@
 
   self->_completeProgress = v3;
   v4 = -(v3 * (v3 + -2.0));
-  v5 = [(QLTransitionController *)self transitionContext];
-  [v5 updateInteractiveTransition:v4];
+  transitionContext = [(QLTransitionController *)self transitionContext];
+  [transitionContext updateInteractiveTransition:v4];
 }
 
-- (void)updateTransitionWithProgress:(double)a3 isFinal:(BOOL)a4
+- (void)updateTransitionWithProgress:(double)progress isFinal:(BOOL)final
 {
   v16 = *MEMORY[0x277D85DE8];
   v4 = 0.999;
-  if (a4)
+  if (final)
   {
     v4 = 1.0;
   }
 
-  if (v4 >= a3)
+  if (v4 >= progress)
   {
-    v5 = a3;
+    progressCopy = progress;
   }
 
   else
   {
-    v5 = v4;
+    progressCopy = v4;
   }
 
   v6 = MEMORY[0x277D43EF8];
@@ -58,7 +58,7 @@
     v7 = *v6;
   }
 
-  v8 = fmax(v5, 0.0);
+  v8 = fmax(progressCopy, 0.0);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v9 = v7;
@@ -203,7 +203,7 @@ uint64_t __69__QLInteractiveTransitionController_completeTransition_withDuration
   if (os_log_type_enabled(v4, OS_LOG_TYPE_FAULT))
   {
     *buf = 138412290;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_23A714000, v4, OS_LOG_TYPE_FAULT, "QLInteractiveTransitionController (%@) had to performed a forced dismissal. #AppearanceTransition", buf, 0xCu);
   }
 

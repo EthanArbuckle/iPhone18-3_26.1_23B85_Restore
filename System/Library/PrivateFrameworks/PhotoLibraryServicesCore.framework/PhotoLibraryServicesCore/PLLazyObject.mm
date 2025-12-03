@@ -1,12 +1,12 @@
 @interface PLLazyObject
-- (PLLazyObject)initWithObject:(id)a3;
-- (PLLazyObject)initWithRetry:(BOOL)a3 block:(id)a4;
+- (PLLazyObject)initWithObject:(id)object;
+- (PLLazyObject)initWithRetry:(BOOL)retry block:(id)block;
 - (id)currentObjectValueWithoutForcingEvaluation;
 - (id)objectValue;
 - (void)invalidate;
-- (void)invalidateWithHandler:(id)a3;
+- (void)invalidateWithHandler:(id)handler;
 - (void)resetObject;
-- (void)resetObjectWithHandler:(id)a3;
+- (void)resetObjectWithHandler:(id)handler;
 @end
 
 @implementation PLLazyObject
@@ -85,9 +85,9 @@ void __26__PLLazyObject_invalidate__block_invoke(uint64_t a1)
   *(v4 + 24) = 0;
 }
 
-- (void)invalidateWithHandler:(id)a3
+- (void)invalidateWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __38__PLLazyObject_invalidateWithHandler___block_invoke;
@@ -96,7 +96,7 @@ void __26__PLLazyObject_invalidate__block_invoke(uint64_t a1)
   v5 = PLResultWithUnfairLock(&self->_lock, v6);
   if (v5)
   {
-    v4[2](v4, v5);
+    handlerCopy[2](handlerCopy, v5);
   }
 }
 
@@ -115,9 +115,9 @@ void *__38__PLLazyObject_invalidateWithHandler___block_invoke(uint64_t a1)
   return v4;
 }
 
-- (void)resetObjectWithHandler:(id)a3
+- (void)resetObjectWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __39__PLLazyObject_resetObjectWithHandler___block_invoke;
@@ -126,7 +126,7 @@ void *__38__PLLazyObject_invalidateWithHandler___block_invoke(uint64_t a1)
   v5 = PLResultWithUnfairLock(&self->_lock, v6);
   if (v5)
   {
-    v4[2](v4, v5);
+    handlerCopy[2](handlerCopy, v5);
   }
 }
 
@@ -145,8 +145,8 @@ void *__39__PLLazyObject_resetObjectWithHandler___block_invoke(uint64_t a1)
 {
   if (!self->_shouldRetryBlockOnNil)
   {
-    v4 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v4 handleFailureInMethod:a2 object:self file:@"PLLazyObject.m" lineNumber:79 description:@"Only retriable lazy objects can be reset"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLLazyObject.m" lineNumber:79 description:@"Only retriable lazy objects can be reset"];
   }
 
   v5[0] = MEMORY[0x1E69E9820];
@@ -164,35 +164,35 @@ void __27__PLLazyObject_resetObject__block_invoke(uint64_t a1)
   *(v1 + 24) = 0;
 }
 
-- (PLLazyObject)initWithRetry:(BOOL)a3 block:(id)a4
+- (PLLazyObject)initWithRetry:(BOOL)retry block:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v12.receiver = self;
   v12.super_class = PLLazyObject;
   v7 = [(PLLazyObject *)&v12 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [blockCopy copy];
     block = v7->_block;
     v7->_block = v8;
 
     v7->_lock._os_unfair_lock_opaque = 0;
-    v7->_shouldRetryBlockOnNil = a3;
+    v7->_shouldRetryBlockOnNil = retry;
     v10 = v7;
   }
 
   return v7;
 }
 
-- (PLLazyObject)initWithObject:(id)a3
+- (PLLazyObject)initWithObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __31__PLLazyObject_initWithObject___block_invoke;
   v8[3] = &unk_1E79325E0;
-  v9 = v4;
-  v5 = v4;
+  v9 = objectCopy;
+  v5 = objectCopy;
   v6 = [(PLLazyObject *)self initWithBlock:v8];
 
   return v6;

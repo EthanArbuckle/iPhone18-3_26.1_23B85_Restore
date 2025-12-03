@@ -11,161 +11,161 @@
 - (unint64_t)significantEventOptions;
 - (unint64_t)significantEventTime;
 - (unint64_t)supportedMotionEffectsMode;
-- (void)setDeviceMotionMode:(unint64_t)a3;
-- (void)setHideChrome:(BOOL)a3;
-- (void)setPreferredDeviceMotionUpdateInterval:(double)a3;
-- (void)setSignificantEventOptions:(unint64_t)a3;
-- (void)setSignificantEventTime:(unint64_t)a3;
-- (void)setStatusBarTintColor:(id)a3;
-- (void)setSupportedMotionEffectsMode:(unint64_t)a3;
-- (void)setTimeColor:(id)a3;
-- (void)setTimeFont:(id)a3;
-- (void)setUserTapEventsRequested:(BOOL)a3;
+- (void)setDeviceMotionMode:(unint64_t)mode;
+- (void)setHideChrome:(BOOL)chrome;
+- (void)setPreferredDeviceMotionUpdateInterval:(double)interval;
+- (void)setSignificantEventOptions:(unint64_t)options;
+- (void)setSignificantEventTime:(unint64_t)time;
+- (void)setStatusBarTintColor:(id)color;
+- (void)setSupportedMotionEffectsMode:(unint64_t)mode;
+- (void)setTimeColor:(id)color;
+- (void)setTimeFont:(id)font;
+- (void)setUserTapEventsRequested:(BOOL)requested;
 @end
 
 @implementation MutablePosterRenderingPreferences
 
 - (UIFont)timeFont
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100005BAC();
 
   return v3;
 }
 
-- (void)setTimeFont:(id)a3
+- (void)setTimeFont:(id)font
 {
-  v5 = a3;
-  v6 = self;
-  sub_100005C48(a3);
+  fontCopy = font;
+  selfCopy = self;
+  sub_100005C48(font);
 }
 
 - (UIColor)timeColor
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100005CDC();
 
   return v3;
 }
 
-- (void)setTimeColor:(id)a3
+- (void)setTimeColor:(id)color
 {
-  v5 = a3;
-  v6 = self;
-  sub_100005D78(a3);
+  colorCopy = color;
+  selfCopy = self;
+  sub_100005D78(color);
 }
 
 - (UIColor)statusBarTintColor
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100005E0C();
 
   return v3;
 }
 
-- (void)setStatusBarTintColor:(id)a3
+- (void)setStatusBarTintColor:(id)color
 {
-  v5 = a3;
-  v6 = self;
-  sub_100005EA8(a3);
+  colorCopy = color;
+  selfCopy = self;
+  sub_100005EA8(color);
 }
 
 - (unint64_t)significantEventTime
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100005F2C();
 
   return v3;
 }
 
-- (void)setSignificantEventTime:(unint64_t)a3
+- (void)setSignificantEventTime:(unint64_t)time
 {
-  v4 = self;
-  sub_100005F98(a3);
+  selfCopy = self;
+  sub_100005F98(time);
 }
 
 - (unint64_t)significantEventOptions
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100005FE8();
 
   return v3;
 }
 
-- (void)setSignificantEventOptions:(unint64_t)a3
+- (void)setSignificantEventOptions:(unint64_t)options
 {
-  v4 = self;
-  sub_1000060C8(a3);
+  selfCopy = self;
+  sub_1000060C8(options);
 }
 
 - (BOOL)hideChrome
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100006198();
 
   return v3 & 1;
 }
 
-- (void)setHideChrome:(BOOL)a3
+- (void)setHideChrome:(BOOL)chrome
 {
-  v4 = self;
-  sub_100006214(a3);
+  selfCopy = self;
+  sub_100006214(chrome);
 }
 
 - (BOOL)userTapEventsRequested
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100006264();
 
   return v3 & 1;
 }
 
-- (void)setUserTapEventsRequested:(BOOL)a3
+- (void)setUserTapEventsRequested:(BOOL)requested
 {
-  v4 = self;
-  sub_100006370(a3);
+  selfCopy = self;
+  sub_100006370(requested);
 }
 
 - (unint64_t)supportedMotionEffectsMode
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100006850();
 
   return v3;
 }
 
-- (void)setSupportedMotionEffectsMode:(unint64_t)a3
+- (void)setSupportedMotionEffectsMode:(unint64_t)mode
 {
-  v4 = self;
-  sub_1000068D8(a3);
+  selfCopy = self;
+  sub_1000068D8(mode);
 }
 
 - (unint64_t)deviceMotionMode
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10000694C();
 
   return v3;
 }
 
-- (void)setDeviceMotionMode:(unint64_t)a3
+- (void)setDeviceMotionMode:(unint64_t)mode
 {
-  v4 = self;
-  sub_100006A18(a3);
+  selfCopy = self;
+  sub_100006A18(mode);
 }
 
 - (double)preferredDeviceMotionUpdateInterval
 {
-  v2 = self;
+  selfCopy = self;
   sub_100006ADC();
   v4 = v3;
 
   return v4;
 }
 
-- (void)setPreferredDeviceMotionUpdateInterval:(double)a3
+- (void)setPreferredDeviceMotionUpdateInterval:(double)interval
 {
-  v3 = self;
+  selfCopy = self;
   sub_100006B4C();
 }
 

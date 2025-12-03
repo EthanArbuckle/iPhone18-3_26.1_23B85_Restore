@@ -1,6 +1,6 @@
 @interface VNTrackMaskDetectorState
 - (VNTrackMaskDetectorState)init;
-- (VNTrackMaskDetectorState)initWithFrameUpdateSpacing:(id *)a3 mask:(__CVBuffer *)a4;
+- (VNTrackMaskDetectorState)initWithFrameUpdateSpacing:(id *)spacing mask:(__CVBuffer *)mask;
 - (void)dealloc;
 @end
 
@@ -24,32 +24,32 @@
   [(VNTrackMaskDetectorState *)&v3 dealloc];
 }
 
-- (VNTrackMaskDetectorState)initWithFrameUpdateSpacing:(id *)a3 mask:(__CVBuffer *)a4
+- (VNTrackMaskDetectorState)initWithFrameUpdateSpacing:(id *)spacing mask:(__CVBuffer *)mask
 {
   v6 = [(VNTrackMaskDetectorState *)self init];
   v7 = v6;
   if (v6)
   {
-    v8 = *&a3->var0;
-    v6->_frameUpdateSpacing.epoch = a3->var3;
+    v8 = *&spacing->var0;
+    v6->_frameUpdateSpacing.epoch = spacing->var3;
     *&v6->_frameUpdateSpacing.value = v8;
-    Width = CVPixelBufferGetWidth(a4);
-    Height = CVPixelBufferGetHeight(a4);
+    Width = CVPixelBufferGetWidth(mask);
+    Height = CVPixelBufferGetHeight(mask);
     VNCVPixelBufferCreateUsingIOSurface(Width, Height, 0x4C303068u, 0, &v7->_inititalMask);
     inititalMask = v7->_inititalMask;
     if (inititalMask)
     {
       objc_opt_self();
-      v12 = CVPixelBufferGetWidth(a4);
-      if (v12 == CVPixelBufferGetWidth(inititalMask) && (v13 = CVPixelBufferGetHeight(a4), v13 == CVPixelBufferGetHeight(inititalMask)))
+      v12 = CVPixelBufferGetWidth(mask);
+      if (v12 == CVPixelBufferGetWidth(inititalMask) && (v13 = CVPixelBufferGetHeight(mask), v13 == CVPixelBufferGetHeight(inititalMask)))
       {
-        CVPixelBufferLockBaseAddress(a4, 1uLL);
+        CVPixelBufferLockBaseAddress(mask, 1uLL);
         CVPixelBufferLockBaseAddress(inititalMask, 0);
-        v14 = CVPixelBufferGetWidth(a4);
-        v15 = CVPixelBufferGetHeight(a4);
-        BytesPerRow = CVPixelBufferGetBytesPerRow(a4);
+        v14 = CVPixelBufferGetWidth(mask);
+        v15 = CVPixelBufferGetHeight(mask);
+        BytesPerRow = CVPixelBufferGetBytesPerRow(mask);
         v17 = CVPixelBufferGetBytesPerRow(inititalMask);
-        src.data = CVPixelBufferGetBaseAddress(a4);
+        src.data = CVPixelBufferGetBaseAddress(mask);
         src.height = v15;
         src.width = v14;
         src.rowBytes = BytesPerRow;
@@ -59,7 +59,7 @@
         v21.rowBytes = v17;
         v18 = vImageConvert_PlanarFtoPlanar16F(&src, &v21, 0);
         CVPixelBufferUnlockBaseAddress(inititalMask, 0);
-        CVPixelBufferUnlockBaseAddress(a4, 1uLL);
+        CVPixelBufferUnlockBaseAddress(mask, 1uLL);
         if (v18)
         {
           v19 = [VNError errorForInternalErrorWithLocalizedDescription:@"conversion from FP32 to FP16 failed"];

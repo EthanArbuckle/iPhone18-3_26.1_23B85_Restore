@@ -2,13 +2,13 @@
 - (NSString)debugDescription;
 - (PKNANSubscriber)init;
 - (id)queue;
-- (void)activateWithCompletion:(id)a3;
+- (void)activateWithCompletion:(id)completion;
 - (void)invalidate;
-- (void)subscriber:(id)a3 failedToStartWithError:(int64_t)a4;
-- (void)subscriber:(id)a3 receivedDiscoveryResult:(id)a4;
-- (void)subscriber:(id)a3 receivedMessage:(id)a4 fromPublishID:(unsigned __int8)a5 address:(id)a6;
-- (void)subscriber:(id)a3 terminatedWithReason:(int64_t)a4;
-- (void)subscriberStarted:(id)a3;
+- (void)subscriber:(id)subscriber failedToStartWithError:(int64_t)error;
+- (void)subscriber:(id)subscriber receivedDiscoveryResult:(id)result;
+- (void)subscriber:(id)subscriber receivedMessage:(id)message fromPublishID:(unsigned __int8)d address:(id)address;
+- (void)subscriber:(id)subscriber terminatedWithReason:(int64_t)reason;
+- (void)subscriberStarted:(id)started;
 @end
 
 @implementation PKNANSubscriber
@@ -43,27 +43,27 @@
 
 - (id)queue
 {
-  v3 = [(PKNANSubscriber *)self dispatchQueue];
+  dispatchQueue = [(PKNANSubscriber *)self dispatchQueue];
 
-  if (v3)
+  if (dispatchQueue)
   {
-    v4 = [(PKNANSubscriber *)self dispatchQueue];
+    dispatchQueue2 = [(PKNANSubscriber *)self dispatchQueue];
   }
 
   else
   {
-    v4 = &_dispatch_main_q;
+    dispatchQueue2 = &_dispatch_main_q;
     v5 = &_dispatch_main_q;
   }
 
-  return v4;
+  return dispatchQueue2;
 }
 
-- (void)subscriberStarted:(id)a3
+- (void)subscriberStarted:(id)started
 {
-  v5 = a3;
+  startedCopy = started;
   v6 = NSStringFromSelector(a2);
-  NSLog(@"%@: %@ %@", self, v6, v5);
+  NSLog(@"%@: %@ %@", self, v6, startedCopy);
 
   v7 = objc_retainBlock(self->_activateHandler);
   activateHandler = self->_activateHandler;
@@ -71,20 +71,20 @@
 
   if (v7)
   {
-    v9 = [(PKNANSubscriber *)self queue];
+    queue = [(PKNANSubscriber *)self queue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_10002D2DC;
     block[3] = &unk_100095840;
     v11 = v7;
-    dispatch_async(v9, block);
+    dispatch_async(queue, block);
   }
 }
 
-- (void)subscriber:(id)a3 failedToStartWithError:(int64_t)a4
+- (void)subscriber:(id)subscriber failedToStartWithError:(int64_t)error
 {
   v6 = NSStringFromSelector(a2);
-  NSLog(@"%@: %@ - %d", self, v6, a4);
+  NSLog(@"%@: %@ - %d", self, v6, error);
 
   v7 = objc_retainBlock(self->_activateHandler);
   activateHandler = self->_activateHandler;
@@ -93,12 +93,12 @@
   if (v7)
   {
     v17 = @"WiFiP2PError";
-    v9 = [NSNumber numberWithInteger:a4];
+    v9 = [NSNumber numberWithInteger:error];
     v18 = v9;
     v10 = [NSDictionary dictionaryWithObjects:&v18 forKeys:&v17 count:1];
     v11 = [NSError errorWithDomain:NSPOSIXErrorDomain code:14 userInfo:v10];
 
-    v12 = [(PKNANSubscriber *)self queue];
+    queue = [(PKNANSubscriber *)self queue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_10002D4EC;
@@ -106,13 +106,13 @@
     v15 = v11;
     v16 = v7;
     v13 = v11;
-    dispatch_async(v12, block);
+    dispatch_async(queue, block);
   }
 }
 
-- (void)subscriber:(id)a3 terminatedWithReason:(int64_t)a4
+- (void)subscriber:(id)subscriber terminatedWithReason:(int64_t)reason
 {
-  v7 = a3;
+  subscriberCopy = subscriber;
   v6 = NSStringFromSelector(a2);
   NSLog(@"%@: %@", self, v6);
 
@@ -121,47 +121,47 @@
     __assert_rtn("[PKNANSubscriber subscriber:terminatedWithReason:]", "PKNan.mm", 293, "_activateHandler == nil");
   }
 
-  [v7 setDelegate:0];
+  [subscriberCopy setDelegate:0];
 }
 
-- (void)subscriber:(id)a3 receivedDiscoveryResult:(id)a4
+- (void)subscriber:(id)subscriber receivedDiscoveryResult:(id)result
 {
-  v6 = a4;
+  resultCopy = result;
   v7 = NSStringFromSelector(a2);
-  v8 = [v6 debugDescription];
+  v8 = [resultCopy debugDescription];
   NSLog(@"%@: %@ - %@", self, v7, v8);
 
-  v9 = [[PKNANEndpoint alloc] initWithDiscoveryResult:v6];
+  v9 = [[PKNANEndpoint alloc] initWithDiscoveryResult:resultCopy];
   [(NSMutableSet *)self->_endpoints addObject:v9];
-  v10 = [(PKNANSubscriber *)self endpointFoundHandler];
-  if (v10)
+  endpointFoundHandler = [(PKNANSubscriber *)self endpointFoundHandler];
+  if (endpointFoundHandler)
   {
-    v11 = [(PKNANSubscriber *)self queue];
+    queue = [(PKNANSubscriber *)self queue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_10002DA98;
     block[3] = &unk_100095B90;
-    v14 = v10;
+    v14 = endpointFoundHandler;
     v13 = v9;
-    dispatch_async(v11, block);
+    dispatch_async(queue, block);
   }
 }
 
-- (void)subscriber:(id)a3 receivedMessage:(id)a4 fromPublishID:(unsigned __int8)a5 address:(id)a6
+- (void)subscriber:(id)subscriber receivedMessage:(id)message fromPublishID:(unsigned __int8)d address:(id)address
 {
   v7 = NSStringFromSelector(a2);
   NSLog(@"%@: %@", self, v7);
 }
 
-- (void)activateWithCompletion:(id)a3
+- (void)activateWithCompletion:(id)completion
 {
-  v4 = objc_retainBlock(a3);
+  v4 = objc_retainBlock(completion);
   activateHandler = self->_activateHandler;
   self->_activateHandler = v4;
 
   v6 = [WiFiAwareSubscribeConfiguration alloc];
-  v7 = [(PKNANSubscriber *)self serviceType];
-  v10 = [v6 initWithServiceName:v7];
+  serviceType = [(PKNANSubscriber *)self serviceType];
+  v10 = [v6 initWithServiceName:serviceType];
 
   if (([(PKNANSubscriber *)self controlFlags]& 1) != 0)
   {

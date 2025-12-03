@@ -1,25 +1,25 @@
 @interface CoreDAVMkcolTask
-- (CoreDAVMkcolTask)initWithPropertiesToSet:(id)a3 atURL:(id)a4;
+- (CoreDAVMkcolTask)initWithPropertiesToSet:(id)set atURL:(id)l;
 - (id)additionalHeaderValues;
-- (id)copyDefaultParserForContentType:(id)a3;
+- (id)copyDefaultParserForContentType:(id)type;
 - (id)description;
 - (id)requestBody;
-- (void)finishCoreDAVTaskWithError:(id)a3;
-- (void)setPriorOrderedURL:(id)a3;
+- (void)finishCoreDAVTaskWithError:(id)error;
+- (void)setPriorOrderedURL:(id)l;
 @end
 
 @implementation CoreDAVMkcolTask
 
-- (CoreDAVMkcolTask)initWithPropertiesToSet:(id)a3 atURL:(id)a4
+- (CoreDAVMkcolTask)initWithPropertiesToSet:(id)set atURL:(id)l
 {
-  v7 = a3;
+  setCopy = set;
   v11.receiver = self;
   v11.super_class = CoreDAVMkcolTask;
-  v8 = [(CoreDAVTask *)&v11 initWithURL:a4];
+  v8 = [(CoreDAVTask *)&v11 initWithURL:l];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_propertiesToSet, a3);
+    objc_storeStrong(&v8->_propertiesToSet, set);
   }
 
   return v9;
@@ -33,11 +33,11 @@
   v4 = [(CoreDAVActionBackedTask *)&v13 description];
   [v3 appendFormat:@"[%@ ", v4];
 
-  v5 = [(CoreDAVMkcolTask *)self propertiesToSet];
-  if (v5)
+  propertiesToSet = [(CoreDAVMkcolTask *)self propertiesToSet];
+  if (propertiesToSet)
   {
-    v6 = [(CoreDAVMkcolTask *)self propertiesToSet];
-    [v3 appendFormat:@"| Number of properties to set: [%lu]", objc_msgSend(v6, "count")];
+    propertiesToSet2 = [(CoreDAVMkcolTask *)self propertiesToSet];
+    [v3 appendFormat:@"| Number of properties to set: [%lu]", objc_msgSend(propertiesToSet2, "count")];
   }
 
   else
@@ -50,9 +50,9 @@
 
   if (v8)
   {
-    v9 = [(CoreDAVMkcolTask *)self requestBody];
-    v10 = [v9 bytes];
-    v11 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:v10 length:objc_msgSend(v9 encoding:{"length"), 4}];
+    requestBody = [(CoreDAVMkcolTask *)self requestBody];
+    bytes = [requestBody bytes];
+    v11 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:bytes length:objc_msgSend(requestBody encoding:{"length"), 4}];
     [v3 appendFormat:@"| Request body: [%@]", v11];
   }
 
@@ -66,25 +66,25 @@
   v3 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v11.receiver = self;
   v11.super_class = CoreDAVMkcolTask;
-  v4 = [(CoreDAVTask *)&v11 additionalHeaderValues];
-  [v3 addEntriesFromDictionary:v4];
+  additionalHeaderValues = [(CoreDAVTask *)&v11 additionalHeaderValues];
+  [v3 addEntriesFromDictionary:additionalHeaderValues];
 
   if (self->_sendOrder)
   {
-    v5 = [(NSURL *)self->_priorOrderedURL CDVRawLastPathComponent];
-    if ([v5 length])
+    cDVRawLastPathComponent = [(NSURL *)self->_priorOrderedURL CDVRawLastPathComponent];
+    if ([cDVRawLastPathComponent length])
     {
       v6 = MEMORY[0x277CCACA8];
       v7 = CDVRelativeOrderHeaderString();
-      v8 = [v6 stringWithFormat:@"%@%@", v7, v5];
+      stringValue = [v6 stringWithFormat:@"%@%@", v7, cDVRawLastPathComponent];
     }
 
     else
     {
       v9 = [MEMORY[0x277CCABB0] numberWithInt:self->_absoluteOrder];
-      v8 = [v9 stringValue];
+      stringValue = [v9 stringValue];
 
-      if (!v8)
+      if (!stringValue)
       {
 LABEL_6:
 
@@ -92,7 +92,7 @@ LABEL_6:
       }
     }
 
-    [v3 setObject:v8 forKey:@"Position"];
+    [v3 setObject:stringValue forKey:@"Position"];
     goto LABEL_6;
   }
 
@@ -104,17 +104,17 @@ LABEL_7:
 - (id)requestBody
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = [(CoreDAVMkcolTask *)self propertiesToSet];
-  if (v3 && (v4 = v3, -[CoreDAVMkcolTask propertiesToSet](self, "propertiesToSet"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 count], v5, v4, v6))
+  propertiesToSet = [(CoreDAVMkcolTask *)self propertiesToSet];
+  if (propertiesToSet && (v4 = propertiesToSet, -[CoreDAVMkcolTask propertiesToSet](self, "propertiesToSet"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 count], v5, v4, v6))
   {
     v7 = objc_alloc_init(CoreDAVXMLData);
     [(CoreDAVXMLData *)v7 startElement:@"mkcol" inNamespace:@"DAV:" withAttributeNamesAndValues:0];
-    v8 = [(CoreDAVMkcolTask *)self propertiesToSet];
-    if (v8)
+    propertiesToSet2 = [(CoreDAVMkcolTask *)self propertiesToSet];
+    if (propertiesToSet2)
     {
-      v9 = v8;
-      v10 = [(CoreDAVMkcolTask *)self propertiesToSet];
-      v11 = [v10 count];
+      v9 = propertiesToSet2;
+      propertiesToSet3 = [(CoreDAVMkcolTask *)self propertiesToSet];
+      v11 = [propertiesToSet3 count];
 
       if (v11)
       {
@@ -124,8 +124,8 @@ LABEL_7:
         v23 = 0u;
         v20 = 0u;
         v21 = 0u;
-        v12 = [(CoreDAVMkcolTask *)self propertiesToSet];
-        v13 = [v12 countByEnumeratingWithState:&v20 objects:v24 count:16];
+        propertiesToSet4 = [(CoreDAVMkcolTask *)self propertiesToSet];
+        v13 = [propertiesToSet4 countByEnumeratingWithState:&v20 objects:v24 count:16];
         if (v13)
         {
           v14 = v13;
@@ -136,13 +136,13 @@ LABEL_7:
             {
               if (*v21 != v15)
               {
-                objc_enumerationMutation(v12);
+                objc_enumerationMutation(propertiesToSet4);
               }
 
               [*(*(&v20 + 1) + 8 * i) write:v7];
             }
 
-            v14 = [v12 countByEnumeratingWithState:&v20 objects:v24 count:16];
+            v14 = [propertiesToSet4 countByEnumeratingWithState:&v20 objects:v24 count:16];
           }
 
           while (v14);
@@ -154,23 +154,23 @@ LABEL_7:
     }
 
     [(CoreDAVXMLData *)v7 endElement:@"mkcol" inNamespace:@"DAV:"];
-    v17 = [(CoreDAVXMLData *)v7 data];
+    data = [(CoreDAVXMLData *)v7 data];
   }
 
   else
   {
-    v17 = 0;
+    data = 0;
   }
 
   v18 = *MEMORY[0x277D85DE8];
 
-  return v17;
+  return data;
 }
 
-- (id)copyDefaultParserForContentType:(id)a3
+- (id)copyDefaultParserForContentType:(id)type
 {
-  v4 = a3;
-  if ([CoreDAVXMLParser canHandleContentType:v4])
+  typeCopy = type;
+  if ([CoreDAVXMLParser canHandleContentType:typeCopy])
   {
     v5 = [CoreDAVXMLParser alloc];
     v6 = objc_opt_class();
@@ -182,25 +182,25 @@ LABEL_7:
   {
     v10.receiver = self;
     v10.super_class = CoreDAVMkcolTask;
-    v8 = [(CoreDAVTask *)&v10 copyDefaultParserForContentType:v4];
+    v8 = [(CoreDAVTask *)&v10 copyDefaultParserForContentType:typeCopy];
   }
 
   return v8;
 }
 
-- (void)finishCoreDAVTaskWithError:(id)a3
+- (void)finishCoreDAVTaskWithError:(id)error
 {
   v36 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  errorCopy = error;
+  v5 = errorCopy;
+  if (errorCopy)
   {
-    v6 = [v4 code];
+    code = [errorCopy code];
     v7 = +[CoreDAVLogging sharedLogging];
     WeakRetained = objc_loadWeakRetained(&self->super.super._accountInfoProvider);
     v9 = [v7 logHandleForAccountInfoProvider:WeakRetained];
 
-    if (v6 == 1)
+    if (code == 1)
     {
       if (v9)
       {
@@ -245,22 +245,22 @@ LABEL_16:
     }
 
     v25 = v5;
-    v21 = 0;
+    allObjects = 0;
     goto LABEL_21;
   }
 
-  v16 = [(CoreDAVTask *)self responseBodyParser];
+  responseBodyParser = [(CoreDAVTask *)self responseBodyParser];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v18 = [(CoreDAVTask *)self responseBodyParser];
-    v19 = [v18 rootElement];
-    v20 = [v19 propStats];
-    v21 = [v20 allObjects];
+    responseBodyParser2 = [(CoreDAVTask *)self responseBodyParser];
+    rootElement = [responseBodyParser2 rootElement];
+    propStats = [rootElement propStats];
+    allObjects = [propStats allObjects];
 
-    if ([v19 hasPropertyError])
+    if ([rootElement hasPropertyError])
     {
       v22 = +[CoreDAVLogging sharedLogging];
       v23 = objc_loadWeakRetained(&self->super.super._accountInfoProvider);
@@ -269,7 +269,7 @@ LABEL_16:
       if (v24 && os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v33 = v19;
+        v33 = rootElement;
         _os_log_impl(&dword_2452FB000, v24, OS_LOG_TYPE_DEFAULT, "There we no properties successfully applied according to the following item: [%@].", buf, 0xCu);
       }
 
@@ -284,19 +284,19 @@ LABEL_16:
 
   else
   {
-    v21 = 0;
+    allObjects = 0;
     v25 = 0;
   }
 
 LABEL_21:
-  self->super.super._numDownloadedElements = [v21 count];
-  v27 = [(CoreDAVTask *)self delegate];
+  self->super.super._numDownloadedElements = [allObjects count];
+  delegate = [(CoreDAVTask *)self delegate];
   v28 = objc_opt_respondsToSelector();
 
   if (v28)
   {
-    v29 = [(CoreDAVTask *)self delegate];
-    [v29 mkcolTask:self parsedPropStats:v21 error:v25];
+    delegate2 = [(CoreDAVTask *)self delegate];
+    [delegate2 mkcolTask:self parsedPropStats:allObjects error:v25];
 
     [(CoreDAVTask *)self setDelegate:0];
   }
@@ -308,14 +308,14 @@ LABEL_21:
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setPriorOrderedURL:(id)a3
+- (void)setPriorOrderedURL:(id)l
 {
-  v5 = a3;
-  if (self->_priorOrderedURL != v5)
+  lCopy = l;
+  if (self->_priorOrderedURL != lCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_priorOrderedURL, a3);
-    v5 = v6;
+    v6 = lCopy;
+    objc_storeStrong(&self->_priorOrderedURL, l);
+    lCopy = v6;
     if (self->_priorOrderedURL)
     {
       self->_sendOrder = 1;

@@ -1,26 +1,26 @@
 @interface _HKFitnessMachineConnectionInitiator
 + (id)taskIdentifier;
-- (_HKFitnessMachineConnectionInitiator)initWithHealthStore:(id)a3;
+- (_HKFitnessMachineConnectionInitiator)initWithHealthStore:(id)store;
 - (_HKFitnessMachineConnectionInitiatorDelegate)delegate;
-- (void)_fetchProxyWithHandler:(id)a3;
-- (void)_simulateTapWithFitnessMachineType:(unint64_t)a3;
-- (void)clientRemote_encounteredError:(id)a3;
-- (void)clientRemote_updatedConnectionState:(unint64_t)a3 fitnessMachineSessionUUID:(id)a4;
-- (void)clientRemote_updatedFitnessMachine:(id)a3 fitnessMachineSessionUUID:(id)a4;
-- (void)clientRemote_updatedFitnessMachineState:(unint64_t)a3 fitnessMachineSessionUUID:(id)a4;
+- (void)_fetchProxyWithHandler:(id)handler;
+- (void)_simulateTapWithFitnessMachineType:(unint64_t)type;
+- (void)clientRemote_encounteredError:(id)error;
+- (void)clientRemote_updatedConnectionState:(unint64_t)state fitnessMachineSessionUUID:(id)d;
+- (void)clientRemote_updatedFitnessMachine:(id)machine fitnessMachineSessionUUID:(id)d;
+- (void)clientRemote_updatedFitnessMachineState:(unint64_t)state fitnessMachineSessionUUID:(id)d;
 - (void)clientRemote_workoutAppReady;
 - (void)connectionInterrupted;
 - (void)connectionInvalidated;
-- (void)forbidConnectionForFitnessMachineSessionUUID:(id)a3;
-- (void)permitConnectionForFitnessMachineSessionUUID:(id)a3 activityType:(unint64_t)a4;
+- (void)forbidConnectionForFitnessMachineSessionUUID:(id)d;
+- (void)permitConnectionForFitnessMachineSessionUUID:(id)d activityType:(unint64_t)type;
 - (void)registerClientIfNeeded;
 @end
 
 @implementation _HKFitnessMachineConnectionInitiator
 
-- (_HKFitnessMachineConnectionInitiator)initWithHealthStore:(id)a3
+- (_HKFitnessMachineConnectionInitiator)initWithHealthStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   v19.receiver = self;
   v19.super_class = _HKFitnessMachineConnectionInitiator;
   v5 = [(_HKFitnessMachineConnectionInitiator *)&v19 init];
@@ -29,9 +29,9 @@
   {
     atomic_store(1u, &v5->_requiresRegistration);
     v7 = [HKTaskServerProxyProvider alloc];
-    v8 = [objc_opt_class() taskIdentifier];
-    v9 = [MEMORY[0x1E696AFB0] UUID];
-    v10 = [(HKTaskServerProxyProvider *)v7 initWithHealthStore:v4 taskIdentifier:v8 exportedObject:v6 taskUUID:v9];
+    taskIdentifier = [objc_opt_class() taskIdentifier];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    v10 = [(HKTaskServerProxyProvider *)v7 initWithHealthStore:storeCopy taskIdentifier:taskIdentifier exportedObject:v6 taskUUID:uUID];
     proxyProvider = v6->_proxyProvider;
     v6->_proxyProvider = v10;
 
@@ -60,9 +60,9 @@
 - (void)connectionInterrupted
 {
   atomic_store(1u, &self->_requiresRegistration);
-  v4 = [(_HKFitnessMachineConnectionInitiator *)self delegate];
+  delegate = [(_HKFitnessMachineConnectionInitiator *)self delegate];
   v3 = [MEMORY[0x1E696ABC0] hk_error:100 description:@"connection interrupted"];
-  [v4 connectionInitiator:self failedWithError:v3];
+  [delegate connectionInitiator:self failedWithError:v3];
 }
 
 - (void)connectionInvalidated
@@ -73,7 +73,7 @@
   if (os_log_type_enabled(HKLogWorkouts, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138543362;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19197B000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@: Connection invalidated", &v5, 0xCu);
   }
 
@@ -89,7 +89,7 @@
   if (os_log_type_enabled(HKLogWorkouts, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v8 = self;
+    selfCopy2 = self;
     _os_log_impl(&dword_19197B000, v3, OS_LOG_TYPE_DEFAULT, "Register Client if needed. Fitness machine connection initiator %@", buf, 0xCu);
   }
 
@@ -100,7 +100,7 @@
     if (os_log_type_enabled(HKLogWorkouts, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v8 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_19197B000, v4, OS_LOG_TYPE_DEFAULT, "Registering Client. Fitness machine connection initiator %@", buf, 0xCu);
     }
 
@@ -115,32 +115,32 @@
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)permitConnectionForFitnessMachineSessionUUID:(id)a3 activityType:(unint64_t)a4
+- (void)permitConnectionForFitnessMachineSessionUUID:(id)d activityType:(unint64_t)type
 {
-  v6 = a3;
+  dCopy = d;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __98___HKFitnessMachineConnectionInitiator_permitConnectionForFitnessMachineSessionUUID_activityType___block_invoke;
   v8[3] = &unk_1E7379190;
-  v9 = v6;
-  v10 = a4;
-  v7 = v6;
+  v9 = dCopy;
+  typeCopy = type;
+  v7 = dCopy;
   [(_HKFitnessMachineConnectionInitiator *)self _fetchProxyWithHandler:v8];
 }
 
-- (void)forbidConnectionForFitnessMachineSessionUUID:(id)a3
+- (void)forbidConnectionForFitnessMachineSessionUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __85___HKFitnessMachineConnectionInitiator_forbidConnectionForFitnessMachineSessionUUID___block_invoke;
   v6[3] = &unk_1E7379168;
-  v7 = v4;
-  v5 = v4;
+  v7 = dCopy;
+  v5 = dCopy;
   [(_HKFitnessMachineConnectionInitiator *)self _fetchProxyWithHandler:v6];
 }
 
-- (void)_fetchProxyWithHandler:(id)a3
+- (void)_fetchProxyWithHandler:(id)handler
 {
   proxyProvider = self->_proxyProvider;
   v4[0] = MEMORY[0x1E69E9820];
@@ -148,20 +148,20 @@
   v4[2] = __63___HKFitnessMachineConnectionInitiator__fetchProxyWithHandler___block_invoke;
   v4[3] = &unk_1E7376898;
   v4[4] = self;
-  [(HKProxyProvider *)proxyProvider fetchProxyWithHandler:a3 errorHandler:v4];
+  [(HKProxyProvider *)proxyProvider fetchProxyWithHandler:handler errorHandler:v4];
 }
 
-- (void)clientRemote_updatedConnectionState:(unint64_t)a3 fitnessMachineSessionUUID:(id)a4
+- (void)clientRemote_updatedConnectionState:(unint64_t)state fitnessMachineSessionUUID:(id)d
 {
-  v11 = a4;
-  v6 = [(_HKFitnessMachineConnectionInitiator *)self delegate];
+  dCopy = d;
+  delegate = [(_HKFitnessMachineConnectionInitiator *)self delegate];
   v7 = objc_opt_respondsToSelector();
 
-  v8 = [(_HKFitnessMachineConnectionInitiator *)self delegate];
-  v9 = v8;
+  delegate2 = [(_HKFitnessMachineConnectionInitiator *)self delegate];
+  delegate3 = delegate2;
   if (v7)
   {
-    [v8 connectionInitiator:self updatedConnectionState:a3 fitnessMachineSessionUUID:v11];
+    [delegate2 connectionInitiator:self updatedConnectionState:state fitnessMachineSessionUUID:dCopy];
   }
 
   else
@@ -173,48 +173,48 @@
       goto LABEL_6;
     }
 
-    v9 = [(_HKFitnessMachineConnectionInitiator *)self delegate];
-    [v9 connectionInitiator:self updatedConnectionState:a3 error:0 fitnessMachineSessionUUID:v11];
+    delegate3 = [(_HKFitnessMachineConnectionInitiator *)self delegate];
+    [delegate3 connectionInitiator:self updatedConnectionState:state error:0 fitnessMachineSessionUUID:dCopy];
   }
 
 LABEL_6:
 }
 
-- (void)clientRemote_updatedFitnessMachine:(id)a3 fitnessMachineSessionUUID:(id)a4
+- (void)clientRemote_updatedFitnessMachine:(id)machine fitnessMachineSessionUUID:(id)d
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(_HKFitnessMachineConnectionInitiator *)self delegate];
-  [v8 connectionInitiator:self updatedFitnessMachine:v7 fitnessMachineSessionUUID:v6];
+  dCopy = d;
+  machineCopy = machine;
+  delegate = [(_HKFitnessMachineConnectionInitiator *)self delegate];
+  [delegate connectionInitiator:self updatedFitnessMachine:machineCopy fitnessMachineSessionUUID:dCopy];
 }
 
-- (void)clientRemote_updatedFitnessMachineState:(unint64_t)a3 fitnessMachineSessionUUID:(id)a4
+- (void)clientRemote_updatedFitnessMachineState:(unint64_t)state fitnessMachineSessionUUID:(id)d
 {
-  v6 = a4;
-  v7 = [(_HKFitnessMachineConnectionInitiator *)self delegate];
-  [v7 connectionInitiator:self updatedFitnessMachineState:a3 fitnessMachineSessionUUID:v6];
+  dCopy = d;
+  delegate = [(_HKFitnessMachineConnectionInitiator *)self delegate];
+  [delegate connectionInitiator:self updatedFitnessMachineState:state fitnessMachineSessionUUID:dCopy];
 }
 
 - (void)clientRemote_workoutAppReady
 {
-  v3 = [(_HKFitnessMachineConnectionInitiator *)self delegate];
-  [v3 connectionInitiatorWorkoutAppReady:self];
+  delegate = [(_HKFitnessMachineConnectionInitiator *)self delegate];
+  [delegate connectionInitiatorWorkoutAppReady:self];
 }
 
-- (void)clientRemote_encounteredError:(id)a3
+- (void)clientRemote_encounteredError:(id)error
 {
-  v4 = a3;
-  v5 = [(_HKFitnessMachineConnectionInitiator *)self delegate];
-  [v5 connectionInitiator:self failedWithError:v4];
+  errorCopy = error;
+  delegate = [(_HKFitnessMachineConnectionInitiator *)self delegate];
+  [delegate connectionInitiator:self failedWithError:errorCopy];
 }
 
-- (void)_simulateTapWithFitnessMachineType:(unint64_t)a3
+- (void)_simulateTapWithFitnessMachineType:(unint64_t)type
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __75___HKFitnessMachineConnectionInitiator__simulateTapWithFitnessMachineType___block_invoke;
   v3[3] = &__block_descriptor_40_e62_v16__0___HKFitnessMachineConnectionInitiatorServerInterface__8l;
-  v3[4] = a3;
+  v3[4] = type;
   [(_HKFitnessMachineConnectionInitiator *)self _fetchProxyWithHandler:v3];
 }
 

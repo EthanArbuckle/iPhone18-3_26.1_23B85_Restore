@@ -1,19 +1,19 @@
 @interface TTRIVSReminderCreationViewServiceViewController
 + (id)_exportedInterface;
 + (id)_remoteViewControllerInterface;
-- (TTRIVSReminderCreationViewServiceViewController)initWithCoder:(id)a3;
-- (TTRIVSReminderCreationViewServiceViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)displayForCreationWithContext:(id)a3 completion:(id)a4;
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3;
+- (TTRIVSReminderCreationViewServiceViewController)initWithCoder:(id)coder;
+- (TTRIVSReminderCreationViewServiceViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)displayForCreationWithContext:(id)context completion:(id)completion;
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container;
 - (void)viewDidLoad;
 - (void)viewHostDidDismiss;
 @end
 
 @implementation TTRIVSReminderCreationViewServiceViewController
 
-- (TTRIVSReminderCreationViewServiceViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (TTRIVSReminderCreationViewServiceViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_1000168BC();
     v7 = v6;
@@ -25,11 +25,11 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_10000CEEC(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_10000CEEC(v5, v7, bundle);
 }
 
-- (TTRIVSReminderCreationViewServiceViewController)initWithCoder:(id)a3
+- (TTRIVSReminderCreationViewServiceViewController)initWithCoder:(id)coder
 {
   v3 = (self + OBJC_IVAR___TTRIVSReminderCreationViewServiceViewController_currentEventHandler);
   *v3 = 0u;
@@ -58,11 +58,11 @@
   v9.super_class = type metadata accessor for TTRIVSReminderCreationViewServiceViewController();
   v2 = v9.receiver;
   [(TTRIVSReminderCreationViewServiceViewController *)&v9 viewDidLoad];
-  v3 = [v2 view];
-  if (v3)
+  view = [v2 view];
+  if (view)
   {
-    v4 = v3;
-    [v3 systemLayoutSizeFittingSize:{UILayoutFittingCompressedSize.width, UILayoutFittingCompressedSize.height}];
+    v4 = view;
+    [view systemLayoutSizeFittingSize:{UILayoutFittingCompressedSize.width, UILayoutFittingCompressedSize.height}];
     v6 = v5;
     v8 = v7;
 
@@ -75,16 +75,16 @@
   }
 }
 
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for TTRIVSReminderCreationViewServiceViewController();
   swift_unknownObjectRetain();
   v4 = v7.receiver;
-  [(TTRIVSReminderCreationViewServiceViewController *)&v7 preferredContentSizeDidChangeForChildContentContainer:a3];
+  [(TTRIVSReminderCreationViewServiceViewController *)&v7 preferredContentSizeDidChangeForChildContentContainer:container];
   sub_10000D2E0();
   v6 = v5;
-  [a3 preferredContentSize];
+  [container preferredContentSize];
   [v6 viewServicePreferredSizeDidChange:?];
   swift_unknownObjectRelease();
   swift_unknownObjectRelease();
@@ -92,9 +92,9 @@
 
 + (id)_exportedInterface
 {
-  v2 = [objc_opt_self() rem_reminderCreationViewServiceViewControllerExportedInterface];
+  rem_reminderCreationViewServiceViewControllerExportedInterface = [objc_opt_self() rem_reminderCreationViewServiceViewControllerExportedInterface];
 
-  return v2;
+  return rem_reminderCreationViewServiceViewControllerExportedInterface;
 }
 
 + (id)_remoteViewControllerInterface
@@ -104,13 +104,13 @@
   return v2;
 }
 
-- (void)displayForCreationWithContext:(id)a3 completion:(id)a4
+- (void)displayForCreationWithContext:(id)context completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   _Block_copy(v6);
-  v7 = a3;
-  v8 = self;
-  sub_10000E74C(v7, v8, v6);
+  contextCopy = context;
+  selfCopy = self;
+  sub_10000E74C(contextCopy, selfCopy, v6);
   _Block_release(v6);
   _Block_release(v6);
 }

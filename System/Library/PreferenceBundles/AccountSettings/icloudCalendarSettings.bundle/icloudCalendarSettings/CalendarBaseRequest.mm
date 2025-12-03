@@ -1,55 +1,55 @@
 @interface CalendarBaseRequest
-- (CalendarBaseRequest)initWithURLString:(id)a3 accountStore:(id)a4 appleAccount:(id)a5 httpRequestType:(id)a6 requestBody:(id)a7 httpHeader:(id)a8;
-- (id)_errorDictionaryFromServerResponse:(id)a3;
+- (CalendarBaseRequest)initWithURLString:(id)string accountStore:(id)store appleAccount:(id)account httpRequestType:(id)type requestBody:(id)body httpHeader:(id)header;
+- (id)_errorDictionaryFromServerResponse:(id)response;
 - (id)urlRequest;
-- (void)_performRequestWithHandler:(id)a3 renewToken:(BOOL)a4;
+- (void)_performRequestWithHandler:(id)handler renewToken:(BOOL)token;
 @end
 
 @implementation CalendarBaseRequest
 
-- (CalendarBaseRequest)initWithURLString:(id)a3 accountStore:(id)a4 appleAccount:(id)a5 httpRequestType:(id)a6 requestBody:(id)a7 httpHeader:(id)a8
+- (CalendarBaseRequest)initWithURLString:(id)string accountStore:(id)store appleAccount:(id)account httpRequestType:(id)type requestBody:(id)body httpHeader:(id)header
 {
-  v15 = a3;
-  v16 = a4;
-  obj = a5;
-  v17 = a5;
-  v33 = a6;
-  v32 = a7;
-  v31 = a8;
+  stringCopy = string;
+  storeCopy = store;
+  obj = account;
+  accountCopy = account;
+  typeCopy = type;
+  bodyCopy = body;
+  headerCopy = header;
   v34.receiver = self;
   v34.super_class = CalendarBaseRequest;
-  v18 = [(CalendarBaseRequest *)&v34 initWithURLString:v15];
+  v18 = [(CalendarBaseRequest *)&v34 initWithURLString:stringCopy];
   if (v18)
   {
-    v28 = a4;
-    v29 = [v16 aida_accountForPrimaryiCloudAccount];
+    storeCopy2 = store;
+    aida_accountForPrimaryiCloudAccount = [storeCopy aida_accountForPrimaryiCloudAccount];
     v19 = _CalLogSystem();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
-      [v29 accountType];
-      v20 = v27 = v15;
-      v21 = [v17 accountType];
+      [aida_accountForPrimaryiCloudAccount accountType];
+      v20 = v27 = stringCopy;
+      accountType = [accountCopy accountType];
       *buf = 138412546;
       v36 = v20;
       v37 = 2112;
-      v38 = v21;
+      v38 = accountType;
       _os_log_impl(&dword_0, v19, OS_LOG_TYPE_DEFAULT, "adding aida account type %@ and apple account type %@", buf, 0x16u);
 
-      v15 = v27;
+      stringCopy = v27;
     }
 
     v22 = [AAGrandSlamSigner alloc];
-    v23 = [v16 aida_accountForiCloudAccount:v17];
-    v24 = [v22 initWithAccountStore:v16 grandSlamAccount:v23 appTokenID:AAGrandSlamAppTokenIDiCloudSettings];
+    v23 = [storeCopy aida_accountForiCloudAccount:accountCopy];
+    v24 = [v22 initWithAccountStore:storeCopy grandSlamAccount:v23 appTokenID:AAGrandSlamAppTokenIDiCloudSettings];
     v25 = _grandSlamSigner;
     _grandSlamSigner = v24;
 
-    objc_storeStrong(&_requestType, a6);
-    objc_storeStrong(&_requestUrl, a3);
-    objc_storeStrong(&_headers, a8);
-    objc_storeStrong(&v18->_requestBody, a7);
+    objc_storeStrong(&_requestType, type);
+    objc_storeStrong(&_requestUrl, string);
+    objc_storeStrong(&_headers, header);
+    objc_storeStrong(&v18->_requestBody, body);
     objc_storeStrong(&v18->_iCloudAppleAccount, obj);
-    objc_storeStrong(&_accountStore, v28);
+    objc_storeStrong(&_accountStore, storeCopy2);
   }
 
   return v18;
@@ -59,8 +59,8 @@
 {
   v18.receiver = self;
   v18.super_class = CalendarBaseRequest;
-  v3 = [(CalendarBaseRequest *)&v18 urlRequest];
-  v4 = [v3 mutableCopy];
+  urlRequest = [(CalendarBaseRequest *)&v18 urlRequest];
+  v4 = [urlRequest mutableCopy];
 
   [_grandSlamSigner setUseAltDSID:1];
   if (([_grandSlamSigner signURLRequest:v4 isUserInitiated:1] & 1) == 0)
@@ -72,11 +72,11 @@
     }
   }
 
-  v6 = [(CalendarBaseRequest *)self bodyDictionary];
-  if (v6)
+  bodyDictionary = [(CalendarBaseRequest *)self bodyDictionary];
+  if (bodyDictionary)
   {
     v17 = 0;
-    v7 = [NSJSONSerialization dataWithJSONObject:v6 options:1 error:&v17];
+    v7 = [NSJSONSerialization dataWithJSONObject:bodyDictionary options:1 error:&v17];
     [v4 setHTTPBody:v7];
   }
 
@@ -88,76 +88,76 @@
 
   v9 = [NSDictionary dictionaryWithContentsOfFile:@"/System/Library/CoreServices/SystemVersion.plist"];
   v10 = +[NSBundle mainBundle];
-  v11 = [v10 infoDictionary];
+  infoDictionary = [v10 infoDictionary];
 
   v12 = [v9 objectForKey:@"ProductVersion"];
-  v13 = [v11 objectForKey:@"CFBundleName"];
-  v14 = [v11 objectForKey:@"CFBundleVersion"];
+  v13 = [infoDictionary objectForKey:@"CFBundleName"];
+  v14 = [infoDictionary objectForKey:@"CFBundleVersion"];
   v15 = [NSString stringWithFormat:@"%@/%@ iOS/%@", v13, v14, v12];
   [v4 setValue:v15 forHTTPHeaderField:@"User-agent"];
 
   return v4;
 }
 
-- (void)_performRequestWithHandler:(id)a3 renewToken:(BOOL)a4
+- (void)_performRequestWithHandler:(id)handler renewToken:(BOOL)token
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_4EC0;
   v6[3] = &unk_14780;
-  v9 = a4;
-  v7 = self;
-  v8 = a3;
-  v5.receiver = v7;
+  tokenCopy = token;
+  selfCopy = self;
+  handlerCopy = handler;
+  v5.receiver = selfCopy;
   v5.super_class = CalendarBaseRequest;
-  v4 = v8;
+  v4 = handlerCopy;
   [(CalendarBaseRequest *)&v5 performRequestWithHandler:v6];
 }
 
-- (id)_errorDictionaryFromServerResponse:(id)a3
+- (id)_errorDictionaryFromServerResponse:(id)response
 {
-  v3 = a3;
+  responseCopy = response;
   v4 = objc_alloc_init(NSMutableDictionary);
-  v5 = [v3 calError];
-  if (v5)
+  calError = [responseCopy calError];
+  if (calError)
   {
-    v6 = v5;
-    v7 = [v3 calError];
-    v8 = [v7 errorTitle];
+    v6 = calError;
+    calError2 = [responseCopy calError];
+    errorTitle = [calError2 errorTitle];
 
-    if (v8)
+    if (errorTitle)
     {
-      v9 = [v3 calError];
-      v10 = [v9 errorTitle];
-      [v4 setObject:v10 forKey:@"errorTitle"];
+      calError3 = [responseCopy calError];
+      errorTitle2 = [calError3 errorTitle];
+      [v4 setObject:errorTitle2 forKey:@"errorTitle"];
     }
   }
 
-  v11 = [v3 calError];
-  if (!v11)
+  calError4 = [responseCopy calError];
+  if (!calError4)
   {
     goto LABEL_7;
   }
 
-  v12 = v11;
-  v13 = [v3 calError];
-  v14 = [v13 errorMessage];
+  v12 = calError4;
+  calError5 = [responseCopy calError];
+  errorMessage = [calError5 errorMessage];
 
-  if (v14)
+  if (errorMessage)
   {
-    v15 = [v3 calError];
-    v16 = [v15 errorMessage];
+    calError6 = [responseCopy calError];
+    errorMessage2 = [calError6 errorMessage];
   }
 
   else
   {
 LABEL_7:
-    v15 = [NSBundle bundleForClass:objc_opt_class()];
-    v16 = [v15 localizedStringForKey:@"CALENDAR_GENERIC_ERROR_MESSAGE" value:&stru_14AB8 table:@"calendarSettings"];
+    calError6 = [NSBundle bundleForClass:objc_opt_class()];
+    errorMessage2 = [calError6 localizedStringForKey:@"CALENDAR_GENERIC_ERROR_MESSAGE" value:&stru_14AB8 table:@"calendarSettings"];
   }
 
-  v17 = v16;
-  [v4 setObject:v16 forKey:@"errorDescription"];
+  v17 = errorMessage2;
+  [v4 setObject:errorMessage2 forKey:@"errorDescription"];
 
   return v4;
 }

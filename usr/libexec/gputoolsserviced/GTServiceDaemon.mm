@@ -1,23 +1,23 @@
 @interface GTServiceDaemon
-- (BOOL)deviceIsHandledLocally:(id)a3;
+- (BOOL)deviceIsHandledLocally:(id)locally;
 - (GTServiceDaemon)init;
-- (id)connectionForDeviceUDID:(id)a3;
-- (id)connectionForServicePort:(unint64_t)a3;
+- (id)connectionForDeviceUDID:(id)d;
+- (id)connectionForServicePort:(unint64_t)port;
 - (unint64_t)currentRemoteRelayPid;
-- (void)broadcastDisconnection:(id)a3 connectionId:(unint64_t)a4;
-- (void)handleConnection:(id)a3;
-- (void)handleDisconnection:(id)a3;
-- (void)handleMessage:(id)a3 fromConnection:(id)a4;
-- (void)handleMessageBroadcast:(id)a3 fromConnection:(id)a4;
-- (void)handleMessageDaemon:(id)a3 fromConnection:(id)a4;
+- (void)broadcastDisconnection:(id)disconnection connectionId:(unint64_t)id;
+- (void)handleConnection:(id)connection;
+- (void)handleDisconnection:(id)disconnection;
+- (void)handleMessage:(id)message fromConnection:(id)connection;
+- (void)handleMessageBroadcast:(id)broadcast fromConnection:(id)connection;
+- (void)handleMessageDaemon:(id)daemon fromConnection:(id)connection;
 - (void)initServiceListener;
 - (void)initSignalHandler;
-- (void)patchMessage:(id)a3;
+- (void)patchMessage:(id)message;
 - (void)registerServices;
-- (void)relayMessage:(id)a3 fromConnection:(id)a4 toConnection:(id)a5;
-- (void)updateAndRelayMessage:(id)a3 fromConnection:(id)a4 toConnection:(id)a5;
-- (void)updateMessage:(id)a3 sourceConnection:(id)a4;
-- (void)updateMessagePath:(id)a3 sourceConnection:(id)a4;
+- (void)relayMessage:(id)message fromConnection:(id)connection toConnection:(id)toConnection;
+- (void)updateAndRelayMessage:(id)message fromConnection:(id)connection toConnection:(id)toConnection;
+- (void)updateMessage:(id)message sourceConnection:(id)connection;
+- (void)updateMessagePath:(id)path sourceConnection:(id)connection;
 @end
 
 @implementation GTServiceDaemon
@@ -33,21 +33,21 @@
   return *(&self->super.isa + v2);
 }
 
-- (id)connectionForServicePort:(unint64_t)a3
+- (id)connectionForServicePort:(unint64_t)port
 {
   portToConnection = self->_portToConnection;
-  v4 = [NSNumber numberWithUnsignedLongLong:a3];
+  v4 = [NSNumber numberWithUnsignedLongLong:port];
   v5 = [(NSMutableDictionary *)portToConnection objectForKeyedSubscript:v4];
 
   return v5;
 }
 
-- (id)connectionForDeviceUDID:(id)a3
+- (id)connectionForDeviceUDID:(id)d
 {
-  if (a3)
+  if (d)
   {
-    v4 = [(GTServiceProvider *)self->_serviceProvider allServices];
-    v5 = filteredArrayByService(v4, &OBJC_PROTOCOL___GTRemoteDeviceRelay);
+    allServices = [(GTServiceProvider *)self->_serviceProvider allServices];
+    v5 = filteredArrayByService(allServices, &OBJC_PROTOCOL___GTRemoteDeviceRelay);
 
     if ([v5 count])
     {
@@ -75,9 +75,9 @@
         }
 
         portToConnection = self->_portToConnection;
-        v11 = [v8 firstObject];
-        v12 = [v11 serviceProperties];
-        v13 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v12 servicePort]);
+        firstObject = [v8 firstObject];
+        serviceProperties = [firstObject serviceProperties];
+        v13 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [serviceProperties servicePort]);
         v14 = [(NSMutableDictionary *)portToConnection objectForKeyedSubscript:v13];
       }
 
@@ -95,7 +95,7 @@
           v18 = v17;
           v36 = v8;
           v37 = v5;
-          v19 = 0;
+          processIdentifier = 0;
           v20 = 0;
           v21 = *v39;
           do
@@ -108,15 +108,15 @@
               }
 
               v23 = *(*(&v38 + 1) + 8 * i);
-              v24 = [v23 serviceProperties];
-              v25 = [v24 servicePort];
+              serviceProperties2 = [v23 serviceProperties];
+              servicePort = [serviceProperties2 servicePort];
 
-              if (v25 > v20)
+              if (servicePort > v20)
               {
-                v26 = [v23 processInfo];
-                v19 = [v26 processIdentifier];
+                processInfo = [v23 processInfo];
+                processIdentifier = [processInfo processIdentifier];
 
-                v20 = v25;
+                v20 = servicePort;
               }
             }
 
@@ -124,7 +124,7 @@
           }
 
           while (v18);
-          v27 = v19;
+          v27 = processIdentifier;
           v8 = v36;
           v5 = v37;
         }
@@ -182,58 +182,58 @@
   return v15;
 }
 
-- (void)updateAndRelayMessage:(id)a3 fromConnection:(id)a4 toConnection:(id)a5
+- (void)updateAndRelayMessage:(id)message fromConnection:(id)connection toConnection:(id)toConnection
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  [(GTServiceDaemon *)self updateMessage:v10 sourceConnection:v9];
-  [(GTServiceDaemon *)self relayMessage:v10 fromConnection:v9 toConnection:v8];
+  toConnectionCopy = toConnection;
+  connectionCopy = connection;
+  messageCopy = message;
+  [(GTServiceDaemon *)self updateMessage:messageCopy sourceConnection:connectionCopy];
+  [(GTServiceDaemon *)self relayMessage:messageCopy fromConnection:connectionCopy toConnection:toConnectionCopy];
 }
 
-- (void)relayMessage:(id)a3 fromConnection:(id)a4 toConnection:(id)a5
+- (void)relayMessage:(id)message fromConnection:(id)connection toConnection:(id)toConnection
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (MessageHasReply(v8))
+  messageCopy = message;
+  connectionCopy = connection;
+  toConnectionCopy = toConnection;
+  if (MessageHasReply(messageCopy))
   {
-    gt_xpc_dictionary_create_reply(v8);
+    gt_xpc_dictionary_create_reply(messageCopy);
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_10002141C;
     v13 = v12[3] = &unk_100041168;
-    v14 = self;
-    v15 = v10;
-    v16 = v9;
+    selfCopy = self;
+    v15 = toConnectionCopy;
+    v16 = connectionCopy;
     v11 = v13;
-    [v15 sendMessage:v8 replyHandler:v12];
+    [v15 sendMessage:messageCopy replyHandler:v12];
   }
 
   else
   {
-    [v10 sendMessage:v8];
+    [toConnectionCopy sendMessage:messageCopy];
   }
 }
 
-- (void)updateMessage:(id)a3 sourceConnection:(id)a4
+- (void)updateMessage:(id)message sourceConnection:(id)connection
 {
-  v6 = a3;
-  [(GTServiceDaemon *)self updateMessagePath:v6 sourceConnection:a4];
-  [(GTServiceDaemon *)self patchMessage:v6];
+  messageCopy = message;
+  [(GTServiceDaemon *)self updateMessagePath:messageCopy sourceConnection:connection];
+  [(GTServiceDaemon *)self patchMessage:messageCopy];
 }
 
-- (void)patchMessage:(id)a3
+- (void)patchMessage:(id)message
 {
-  v3 = a3;
-  if (xpc_dictionary_get_flag(v3, "_flags", 5))
+  messageCopy = message;
+  if (xpc_dictionary_get_flag(messageCopy, "_flags", 5))
   {
-    v4 = xpc_dictionary_get_value(v3, "response");
+    v4 = xpc_dictionary_get_value(messageCopy, "response");
 
     if (v4)
     {
       v5 = objc_opt_class();
-      nsobject = xpc_dictionary_get_nsobject(v3, "response", v5);
+      nsobject = xpc_dictionary_get_nsobject(messageCopy, "response", v5);
       if (nsobject)
       {
         v7 = [NSSet alloc];
@@ -242,8 +242,8 @@
         v10 = objc_opt_class();
         v11 = objc_opt_class();
         v12 = [v7 initWithObjects:{v8, v9, v10, v11, objc_opt_class(), 0}];
-        v13 = [nsobject data];
-        v14 = [NSKeyedUnarchiver unarchivedObjectOfClasses:v12 fromData:v13 error:0];
+        data = [nsobject data];
+        v14 = [NSKeyedUnarchiver unarchivedObjectOfClasses:v12 fromData:data error:0];
         v15 = [v14 mutableCopy];
 
         if (v15)
@@ -252,8 +252,8 @@
           v17 = v16;
           if (v16)
           {
-            v18 = [v16 host];
-            v19 = [v18 isEqualToString:@"localhost"];
+            host = [v16 host];
+            v19 = [host isEqualToString:@"localhost"];
 
             if (v19)
             {
@@ -269,9 +269,9 @@
               v24 = v27;
               [nsobject setData:v23];
 
-              v25 = [nsobject data];
+              data2 = [nsobject data];
 
-              if (!v25)
+              if (!data2)
               {
                 v26 = gt_tagged_log(0x10u);
                 if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
@@ -284,7 +284,7 @@
                 [nsobject setError:v24];
               }
 
-              xpc_dictionary_set_nsobject(v3, "response", nsobject);
+              xpc_dictionary_set_nsobject(messageCopy, "response", nsobject);
             }
           }
         }
@@ -293,16 +293,16 @@
   }
 }
 
-- (void)updateMessagePath:(id)a3 sourceConnection:(id)a4
+- (void)updateMessagePath:(id)path sourceConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  if (MessageRecordsPathHistory(v6))
+  pathCopy = path;
+  connectionCopy = connection;
+  if (MessageRecordsPathHistory(pathCopy))
   {
     v10 = 0;
-    if ([(GTConnectionMap *)self->_connectionMap retrieveId:&v10 forConnection:v7])
+    if ([(GTConnectionMap *)self->_connectionMap retrieveId:&v10 forConnection:connectionCopy])
     {
-      MessagePathPush(v6, v10);
+      MessagePathPush(pathCopy, v10);
     }
 
     else
@@ -317,11 +317,11 @@
   }
 }
 
-- (void)handleMessageBroadcast:(id)a3 fromConnection:(id)a4
+- (void)handleMessageBroadcast:(id)broadcast fromConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  if (MessageVisit(v6, [(NSString *)self->_daemonId UTF8String]))
+  broadcastCopy = broadcast;
+  connectionCopy = connection;
+  if (MessageVisit(broadcastCopy, [(NSString *)self->_daemonId UTF8String]))
   {
     v8 = gt_tagged_log(0x10u);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
@@ -350,7 +350,7 @@
           }
 
           v14 = [(NSMutableDictionary *)self->_portToDispatcher objectForKeyedSubscript:*(*(&v29 + 1) + 8 * i)];
-          [v14 dispatchMessage:v6 replyConnection:v7];
+          [v14 dispatchMessage:broadcastCopy replyConnection:connectionCopy];
         }
 
         v11 = [(NSMutableDictionary *)v9 countByEnumeratingWithState:&v29 objects:v34 count:16];
@@ -360,15 +360,15 @@
     }
 
     *buf = 0;
-    if ([(GTConnectionMap *)self->_connectionMap retrieveId:buf forConnection:v7])
+    if ([(GTConnectionMap *)self->_connectionMap retrieveId:buf forConnection:connectionCopy])
     {
-      [(GTServiceDaemon *)self updateMessage:v6 sourceConnection:v7];
+      [(GTServiceDaemon *)self updateMessage:broadcastCopy sourceConnection:connectionCopy];
       v26 = 0u;
       v27 = 0u;
       v24 = 0u;
       v25 = 0u;
-      v15 = [(GTConnectionMap *)self->_connectionMap connections];
-      v16 = [v15 countByEnumeratingWithState:&v24 objects:v33 count:16];
+      connections = [(GTConnectionMap *)self->_connectionMap connections];
+      v16 = [connections countByEnumeratingWithState:&v24 objects:v33 count:16];
       if (v16)
       {
         v17 = v16;
@@ -379,20 +379,20 @@
           {
             if (*v25 != v18)
             {
-              objc_enumerationMutation(v15);
+              objc_enumerationMutation(connections);
             }
 
             v20 = *(*(&v24 + 1) + 8 * j);
-            v21 = [v20 connection];
-            v22 = [v7 connection];
+            connection = [v20 connection];
+            connection2 = [connectionCopy connection];
 
-            if (v21 != v22)
+            if (connection != connection2)
             {
-              [(GTServiceDaemon *)self relayMessage:v6 fromConnection:v7 toConnection:v20];
+              [(GTServiceDaemon *)self relayMessage:broadcastCopy fromConnection:connectionCopy toConnection:v20];
             }
           }
 
-          v17 = [v15 countByEnumeratingWithState:&v24 objects:v33 count:16];
+          v17 = [connections countByEnumeratingWithState:&v24 objects:v33 count:16];
         }
 
         while (v17);
@@ -401,29 +401,29 @@
 
     else
     {
-      v15 = gt_tagged_log(0x10u);
-      if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+      connections = gt_tagged_log(0x10u);
+      if (os_log_type_enabled(connections, OS_LOG_TYPE_ERROR))
       {
         *v23 = 0;
-        _os_log_error_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "Missing ID for active connection", v23, 2u);
+        _os_log_error_impl(&_mh_execute_header, connections, OS_LOG_TYPE_ERROR, "Missing ID for active connection", v23, 2u);
       }
     }
   }
 }
 
-- (void)handleMessageDaemon:(id)a3 fromConnection:(id)a4
+- (void)handleMessageDaemon:(id)daemon fromConnection:(id)connection
 {
-  v5 = a3;
-  v6 = a4;
-  uint64 = xpc_dictionary_get_uint64(v5, "_daemon");
+  daemonCopy = daemon;
+  connectionCopy = connection;
+  uint64 = xpc_dictionary_get_uint64(daemonCopy, "_daemon");
   if (uint64 == 1)
   {
-    reply = xpc_dictionary_create_reply(v5);
+    reply = xpc_dictionary_create_reply(daemonCopy);
     v9 = objc_opt_new();
     xpc_dictionary_set_nsobject(reply, "processInfo", v9);
 
 LABEL_7:
-    [v6 sendMessage:reply];
+    [connectionCopy sendMessage:reply];
 
     goto LABEL_8;
   }
@@ -437,21 +437,21 @@ LABEL_7:
     _os_log_debug_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEBUG, "Unrecognized daemon message %lu", &v12, 0xCu);
   }
 
-  if (MessageHasReply(v5))
+  if (MessageHasReply(daemonCopy))
   {
-    reply = xpc_dictionary_create_reply(v5);
+    reply = xpc_dictionary_create_reply(daemonCopy);
     goto LABEL_7;
   }
 
 LABEL_8:
 }
 
-- (void)handleMessage:(id)a3 fromConnection:(id)a4
+- (void)handleMessage:(id)message fromConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  connectionCopy = connection;
   v28 = 0;
-  IsValid = MessageIsValid(v6, &v28);
+  IsValid = MessageIsValid(messageCopy, &v28);
   v9 = v28;
   if (!IsValid)
   {
@@ -465,18 +465,18 @@ LABEL_8:
     goto LABEL_6;
   }
 
-  MessageRemoteRoutingInfoGet(v6, &self->_remoteRoutingInfo);
-  if (!xpc_dictionary_get_flag(v6, "_flags", 3))
+  MessageRemoteRoutingInfoGet(messageCopy, &self->_remoteRoutingInfo);
+  if (!xpc_dictionary_get_flag(messageCopy, "_flags", 3))
   {
-    if (xpc_dictionary_get_flag(v6, "_flags", 1))
+    if (xpc_dictionary_get_flag(messageCopy, "_flags", 1))
     {
-      [(GTServiceDaemon *)self handleMessageBroadcast:v6 fromConnection:v7];
+      [(GTServiceDaemon *)self handleMessageBroadcast:messageCopy fromConnection:connectionCopy];
       goto LABEL_7;
     }
 
-    if (MessageIsStreamReply(v6))
+    if (MessageIsStreamReply(messageCopy))
     {
-      v11 = MessagePathPop(v6);
+      v11 = MessagePathPop(messageCopy);
       connectionMap = self->_connectionMap;
       v27 = 0;
       v13 = [(GTConnectionMap *)connectionMap retrieveConnection:&v27 forId:v11];
@@ -499,21 +499,21 @@ LABEL_26:
 
     else
     {
-      if (![(GTServiceDaemon *)self deviceIsHandledLocally:v6])
+      if (![(GTServiceDaemon *)self deviceIsHandledLocally:messageCopy])
       {
-        v10 = sub_100022198(v6);
+        v10 = sub_100022198(messageCopy);
         v15 = [(GTServiceDaemon *)self connectionForDeviceUDID:v10];
         if (v15)
         {
           v16 = v15;
-          [(GTServiceDaemon *)self updateAndRelayMessage:v6 fromConnection:v7 toConnection:v15];
+          [(GTServiceDaemon *)self updateAndRelayMessage:messageCopy fromConnection:connectionCopy toConnection:v15];
 
 LABEL_6:
           goto LABEL_7;
         }
       }
 
-      uint64 = xpc_dictionary_get_uint64(v6, "_port");
+      uint64 = xpc_dictionary_get_uint64(messageCopy, "_port");
       portToConnection = self->_portToConnection;
       v19 = [NSNumber numberWithUnsignedLongLong:uint64];
       v10 = [(NSMutableDictionary *)portToConnection objectForKeyedSubscript:v19];
@@ -526,7 +526,7 @@ LABEL_6:
 
         if (v14)
         {
-          [v14 dispatchMessage:v6 replyConnection:v7];
+          [v14 dispatchMessage:messageCopy replyConnection:connectionCopy];
         }
 
         else
@@ -539,9 +539,9 @@ LABEL_6:
             _os_log_debug_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEBUG, "Message unhandled - servicePort:%llu", buf, 0xCu);
           }
 
-          if (MessageHasReply(v6))
+          if (MessageHasReply(messageCopy))
           {
-            v23 = gt_xpc_dictionary_create_reply(v6);
+            v23 = gt_xpc_dictionary_create_reply(messageCopy);
             v29 = NSLocalizedDescriptionKey;
             v24 = [NSString stringWithFormat:@"Target destination for message doesn't exist"];
             v30 = v24;
@@ -549,7 +549,7 @@ LABEL_6:
             v26 = [NSError errorWithDomain:@"com.apple.gputools.transport" code:2 userInfo:v25];
 
             xpc_dictionary_set_nserror(v23, "_error", v26);
-            [v7 sendMessage:v23];
+            [connectionCopy sendMessage:v23];
           }
         }
 
@@ -557,27 +557,27 @@ LABEL_6:
       }
     }
 
-    [(GTServiceDaemon *)self updateAndRelayMessage:v6 fromConnection:v7 toConnection:v10];
+    [(GTServiceDaemon *)self updateAndRelayMessage:messageCopy fromConnection:connectionCopy toConnection:v10];
     goto LABEL_6;
   }
 
-  [(GTServiceDaemon *)self handleMessageDaemon:v6 fromConnection:v7];
+  [(GTServiceDaemon *)self handleMessageDaemon:messageCopy fromConnection:connectionCopy];
 LABEL_7:
 }
 
-- (BOOL)deviceIsHandledLocally:(id)a3
+- (BOOL)deviceIsHandledLocally:(id)locally
 {
-  v4 = a3;
-  v5 = sub_100022198(v4);
-  if (!v5 || [(NSString *)self->_deviceUDID isEqualToString:v5]|| (xpc_dictionary_get_flag(v4, "_flags", 4) & 1) != 0)
+  locallyCopy = locally;
+  v5 = sub_100022198(locallyCopy);
+  if (!v5 || [(NSString *)self->_deviceUDID isEqualToString:v5]|| (xpc_dictionary_get_flag(locallyCopy, "_flags", 4) & 1) != 0)
   {
     v6 = 1;
   }
 
   else
   {
-    v8 = [(GTServiceProvider *)self->_serviceProvider allServices];
-    v9 = filteredArrayByService(v8, &OBJC_PROTOCOL___GTSimulatorDeviceBrowser);
+    allServices = [(GTServiceProvider *)self->_serviceProvider allServices];
+    v9 = filteredArrayByService(allServices, &OBJC_PROTOCOL___GTSimulatorDeviceBrowser);
     if ([v9 count])
     {
       v6 = 0;
@@ -593,14 +593,14 @@ LABEL_7:
   return v6;
 }
 
-- (void)broadcastDisconnection:(id)a3 connectionId:(unint64_t)a4
+- (void)broadcastDisconnection:(id)disconnection connectionId:(unint64_t)id
 {
-  v6 = a3;
+  disconnectionCopy = disconnection;
   v7 = gt_tagged_log(0x10u);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134217984;
-    v31 = a4;
+    idCopy = id;
     _os_log_debug_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "Broadcast Disconnection of Connection ID %lu", buf, 0xCu);
   }
 
@@ -629,7 +629,7 @@ LABEL_7:
         }
 
         v14 = [(NSMutableDictionary *)self->_portToDispatcher objectForKeyedSubscript:*(*(&v24 + 1) + 8 * v13)];
-        [v14 dispatchMessage:empty replyConnection:v6];
+        [v14 dispatchMessage:empty replyConnection:disconnectionCopy];
 
         v13 = v13 + 1;
       }
@@ -641,13 +641,13 @@ LABEL_7:
     while (v11);
   }
 
-  MessagePathPush(empty, a4);
+  MessagePathPush(empty, id);
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v15 = [(GTConnectionMap *)self->_connectionMap connections];
-  v16 = [v15 countByEnumeratingWithState:&v20 objects:v28 count:16];
+  connections = [(GTConnectionMap *)self->_connectionMap connections];
+  v16 = [connections countByEnumeratingWithState:&v20 objects:v28 count:16];
   if (v16)
   {
     v17 = v16;
@@ -659,7 +659,7 @@ LABEL_7:
       {
         if (*v21 != v18)
         {
-          objc_enumerationMutation(v15);
+          objc_enumerationMutation(connections);
         }
 
         [*(*(&v20 + 1) + 8 * v19) sendMessage:empty];
@@ -667,18 +667,18 @@ LABEL_7:
       }
 
       while (v17 != v19);
-      v17 = [v15 countByEnumeratingWithState:&v20 objects:v28 count:16];
+      v17 = [connections countByEnumeratingWithState:&v20 objects:v28 count:16];
     }
 
     while (v17);
   }
 }
 
-- (void)handleDisconnection:(id)a3
+- (void)handleDisconnection:(id)disconnection
 {
-  v4 = a3;
-  v5 = [v4 connection];
-  v6 = xpc_copy_description(v5);
+  disconnectionCopy = disconnection;
+  connection = [disconnectionCopy connection];
+  v6 = xpc_copy_description(connection);
 
   v7 = gt_tagged_log(0x10u);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -689,16 +689,16 @@ LABEL_7:
   }
 
   free(v6);
-  v8 = [(NSMutableDictionary *)self->_portToConnection allKeysForObject:v4];
+  v8 = [(NSMutableDictionary *)self->_portToConnection allKeysForObject:disconnectionCopy];
   [(GTServiceProvider *)self->_serviceProvider disconnectServicePorts:v8];
   [(NSMutableDictionary *)self->_portToConnection removeObjectsForKeys:v8];
-  [(GTServiceDaemon *)self broadcastDisconnection:v4 connectionId:[(GTConnectionMap *)self->_connectionMap remove:v4]];
+  [(GTServiceDaemon *)self broadcastDisconnection:disconnectionCopy connectionId:[(GTConnectionMap *)self->_connectionMap remove:disconnectionCopy]];
 }
 
-- (void)handleConnection:(id)a3
+- (void)handleConnection:(id)connection
 {
-  v4 = a3;
-  v5 = xpc_copy_description(v4);
+  connectionCopy = connection;
+  v5 = xpc_copy_description(connectionCopy);
   v6 = gt_tagged_log(0x10u);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
@@ -709,8 +709,8 @@ LABEL_7:
 
   free(v5);
   v7 = dispatch_queue_create("com.apple.gputoolsserviced.connectionTarget", 0);
-  xpc_connection_set_target_queue(v4, v7);
-  v8 = [(GTLocalXPCConnection *)[GTEntitlementCheckingConnection alloc] initWithTransactionScopedXPCConnection:v4 messageQueue:self->_serialQueue];
+  xpc_connection_set_target_queue(connectionCopy, v7);
+  v8 = [(GTLocalXPCConnection *)[GTEntitlementCheckingConnection alloc] initWithTransactionScopedXPCConnection:connectionCopy messageQueue:self->_serialQueue];
 
   [(GTConnectionMap *)self->_connectionMap insert:v8];
   objc_initWeak(location, v8);
@@ -848,9 +848,9 @@ LABEL_7:
     }
 
     v4 = +[NSUUID UUID];
-    v5 = [v4 UUIDString];
+    uUIDString = [v4 UUIDString];
     daemonId = v2->_daemonId;
-    v2->_daemonId = v5;
+    v2->_daemonId = uUIDString;
 
     v7 = +[GTDeviceProperties uniqueDeviceID];
     deviceUDID = v2->_deviceUDID;

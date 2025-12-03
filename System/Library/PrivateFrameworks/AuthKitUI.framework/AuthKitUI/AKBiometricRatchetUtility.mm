@@ -1,68 +1,68 @@
 @interface AKBiometricRatchetUtility
 + (id)ratchetIdentifier;
-+ (id)resultForNonArmingFromError:(id)a3;
-+ (id)resultForSuccessfulArmingFromResponse:(id)a3;
-+ (id)stateFromLARatchetState:(id)a3;
-+ (unint64_t)armingMethodFromRatchetResult:(id)a3;
-+ (void)setRatchetIdentifier:(id)a3;
++ (id)resultForNonArmingFromError:(id)error;
++ (id)resultForSuccessfulArmingFromResponse:(id)response;
++ (id)stateFromLARatchetState:(id)state;
++ (unint64_t)armingMethodFromRatchetResult:(id)result;
++ (void)setRatchetIdentifier:(id)identifier;
 @end
 
 @implementation AKBiometricRatchetUtility
 
-+ (id)stateFromLARatchetState:(id)a3
++ (id)stateFromLARatchetState:(id)state
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, state);
   v30 = 0;
   v29 = 0.0;
-  v26 = [location[0] rawValue];
-  if (v26)
+  rawValue = [location[0] rawValue];
+  if (rawValue)
   {
-    if (v26 != 1)
+    if (rawValue != 1)
     {
-      switch(v26)
+      switch(rawValue)
       {
         case 2:
           v30 = 2;
-          v21 = [location[0] value];
+          value = [location[0] value];
           v22 = objc_opt_respondsToSelector();
-          *&v5 = MEMORY[0x277D82BD8](v21).n128_u64[0];
+          *&v5 = MEMORY[0x277D82BD8](value).n128_u64[0];
           if (v22)
           {
-            v20 = [location[0] value];
-            [v20 duration];
+            value2 = [location[0] value];
+            [value2 duration];
             v29 = v6;
-            MEMORY[0x277D82BD8](v20);
+            MEMORY[0x277D82BD8](value2);
           }
 
           break;
         case 3:
           v30 = 3;
-          v18 = [location[0] value];
+          value3 = [location[0] value];
           v19 = objc_opt_respondsToSelector();
-          *&v7 = MEMORY[0x277D82BD8](v18).n128_u64[0];
+          *&v7 = MEMORY[0x277D82BD8](value3).n128_u64[0];
           if (v19)
           {
-            v17 = [location[0] value];
-            [v17 duration];
+            value4 = [location[0] value];
+            [value4 duration];
             v29 = v8;
-            MEMORY[0x277D82BD8](v17);
+            MEMORY[0x277D82BD8](value4);
           }
 
           break;
         case 4:
           v30 = 4;
-          v15 = [location[0] value];
+          value5 = [location[0] value];
           v16 = objc_opt_respondsToSelector();
-          *&v9 = MEMORY[0x277D82BD8](v15).n128_u64[0];
+          *&v9 = MEMORY[0x277D82BD8](value5).n128_u64[0];
           if (v16)
           {
-            v14 = [location[0] value];
-            [v14 duration];
+            value6 = [location[0] value];
+            [value6 duration];
             v29 = v10;
-            MEMORY[0x277D82BD8](v14);
+            MEMORY[0x277D82BD8](value6);
           }
 
           break;
@@ -78,15 +78,15 @@
   }
 
   v30 = 1;
-  v24 = [location[0] value];
+  value7 = [location[0] value];
   v25 = objc_opt_respondsToSelector();
-  *&v3 = MEMORY[0x277D82BD8](v24).n128_u64[0];
+  *&v3 = MEMORY[0x277D82BD8](value7).n128_u64[0];
   if (v25)
   {
-    v23 = [location[0] value];
-    [v23 duration];
+    value8 = [location[0] value];
+    [value8 duration];
     v29 = v4;
-    MEMORY[0x277D82BD8](v23);
+    MEMORY[0x277D82BD8](value8);
   }
 
 LABEL_19:
@@ -101,12 +101,12 @@ LABEL_19:
   return v13;
 }
 
-+ (unint64_t)armingMethodFromRatchetResult:(id)a3
++ (unint64_t)armingMethodFromRatchetResult:(id)result
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, result);
   v4 = objc_opt_class();
   v5 = [location[0] objectForKeyedSubscript:&unk_2835AADF8];
   v10 = _AKSafeCast_0(v4, v5);
@@ -137,12 +137,12 @@ LABEL_19:
 
 + (id)ratchetIdentifier
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  v7 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v8 = [v7 objectForKey:@"AKBiometricRatchetIdentifierKey"];
-  *&v2 = MEMORY[0x277D82BD8](v7).n128_u64[0];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v8 = [standardUserDefaults objectForKey:@"AKBiometricRatchetIdentifierKey"];
+  *&v2 = MEMORY[0x277D82BD8](standardUserDefaults).n128_u64[0];
   if (v8)
   {
     objc_storeStrong(location, v8);
@@ -150,9 +150,9 @@ LABEL_19:
 
   else
   {
-    v3 = [MEMORY[0x277CE4560] bundleIdentifier];
+    bundleIdentifier = [MEMORY[0x277CE4560] bundleIdentifier];
     v4 = location[0];
-    location[0] = v3;
+    location[0] = bundleIdentifier;
     MEMORY[0x277D82BD8](v4);
   }
 
@@ -163,13 +163,13 @@ LABEL_19:
   return v6;
 }
 
-+ (void)setRatchetIdentifier:(id)a3
++ (void)setRatchetIdentifier:(id)identifier
 {
   v7 = *MEMORY[0x277D85DE8];
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, identifier);
   oslog = _AKLogSystem();
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEBUG))
   {
@@ -185,13 +185,13 @@ LABEL_19:
   *MEMORY[0x277D85DE8];
 }
 
-+ (id)resultForSuccessfulArmingFromResponse:(id)a3
++ (id)resultForSuccessfulArmingFromResponse:(id)response
 {
   v14 = *MEMORY[0x277D85DE8];
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, response);
   v11 = [location[0] objectForKeyedSubscript:&unk_2835AAE28];
   v10 = _AKLogSystem();
   v9 = OS_LOG_TYPE_DEBUG;
@@ -216,16 +216,16 @@ LABEL_19:
   return v5;
 }
 
-+ (id)resultForNonArmingFromError:(id)a3
++ (id)resultForNonArmingFromError:(id)error
 {
   v21 = *MEMORY[0x277D85DE8];
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v8 = [location[0] userInfo];
-  v17 = [v8 objectForKeyedSubscript:*MEMORY[0x277CD4788]];
-  MEMORY[0x277D82BD8](v8);
+  objc_storeStrong(location, error);
+  userInfo = [location[0] userInfo];
+  v17 = [userInfo objectForKeyedSubscript:*MEMORY[0x277CD4788]];
+  MEMORY[0x277D82BD8](userInfo);
   v16 = _AKLogSystem();
   v15 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))

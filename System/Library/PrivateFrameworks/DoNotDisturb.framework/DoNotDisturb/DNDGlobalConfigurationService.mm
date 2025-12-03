@@ -1,32 +1,32 @@
 @interface DNDGlobalConfigurationService
-+ (id)serviceForClientIdentifier:(id)a3;
++ (id)serviceForClientIdentifier:(id)identifier;
 - (BOOL)_queue_registerForUpdatesIfRequired;
-- (BOOL)getPreventAutoReplyReturningError:(id *)a3;
+- (BOOL)getPreventAutoReplyReturningError:(id *)error;
 - (BOOL)modesCanImpactAvailability;
-- (BOOL)setPhoneCallBypassSettings:(id)a3 error:(id *)a4;
-- (id)_initWithClientIdentifier:(id)a3;
-- (id)getAccountFeatureSupportWithError:(id *)a3;
-- (id)getPhoneCallBypassSettingsReturningError:(id *)a3;
-- (id)getStateDumpReturningError:(id *)a3;
-- (unint64_t)getCloudSyncStateReturningError:(id *)a3;
-- (unint64_t)getPairSyncStateReturningError:(id *)a3;
+- (BOOL)setPhoneCallBypassSettings:(id)settings error:(id *)error;
+- (id)_initWithClientIdentifier:(id)identifier;
+- (id)getAccountFeatureSupportWithError:(id *)error;
+- (id)getPhoneCallBypassSettingsReturningError:(id *)error;
+- (id)getStateDumpReturningError:(id *)error;
+- (unint64_t)getCloudSyncStateReturningError:(id *)error;
+- (unint64_t)getPairSyncStateReturningError:(id *)error;
 - (void)_queue_registerForUpdatesIfRequired;
-- (void)_updateListenersOfCloudSyncPreferenceChange:(BOOL)a3;
-- (void)addListener:(id)a3 withCompletionHandler:(id)a4;
-- (void)didChangeFocusStatusSharingSettingForApplicationIdentifier:(id)a3;
-- (void)isCloudSyncActiveWithCompletionHandler:(id)a3;
+- (void)_updateListenersOfCloudSyncPreferenceChange:(BOOL)change;
+- (void)addListener:(id)listener withCompletionHandler:(id)handler;
+- (void)didChangeFocusStatusSharingSettingForApplicationIdentifier:(id)identifier;
+- (void)isCloudSyncActiveWithCompletionHandler:(id)handler;
 - (void)modesCanImpactAvailability;
-- (void)remoteService:(id)a3 didReceiveUpdatedPairSyncState:(unint64_t)a4;
-- (void)remoteService:(id)a3 didReceiveUpdatedPhoneCallBypassSettings:(id)a4;
-- (void)remoteService:(id)a3 didReceiveUpdatedPreventAutoReplySetting:(BOOL)a4;
-- (void)removeListener:(id)a3;
+- (void)remoteService:(id)service didReceiveUpdatedPairSyncState:(unint64_t)state;
+- (void)remoteService:(id)service didReceiveUpdatedPhoneCallBypassSettings:(id)settings;
+- (void)remoteService:(id)service didReceiveUpdatedPreventAutoReplySetting:(BOOL)setting;
+- (void)removeListener:(id)listener;
 @end
 
 @implementation DNDGlobalConfigurationService
 
-+ (id)serviceForClientIdentifier:(id)a3
++ (id)serviceForClientIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   if (serviceForClientIdentifier__onceToken_9 != -1)
   {
     +[DNDGlobalConfigurationService serviceForClientIdentifier:];
@@ -43,10 +43,10 @@
   block[1] = 3221225472;
   block[2] = __60__DNDGlobalConfigurationService_serviceForClientIdentifier___block_invoke_2;
   block[3] = &unk_27843A080;
-  v10 = v4;
+  v10 = identifierCopy;
   v11 = &v13;
-  v12 = a1;
-  v6 = v4;
+  selfCopy = self;
+  v6 = identifierCopy;
   dispatch_sync(v5, block);
   v7 = v14[5];
 
@@ -91,7 +91,7 @@ void __60__DNDGlobalConfigurationService_serviceForClientIdentifier___block_invo
   }
 }
 
-- (BOOL)getPreventAutoReplyReturningError:(id *)a3
+- (BOOL)getPreventAutoReplyReturningError:(id *)error
 {
   v27 = *MEMORY[0x277D85DE8];
   v5 = _os_activity_create(&dword_22002F000, "com.apple.donotdisturb.DNDGlobalConfigurationService.getPreventAutoReply", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
@@ -146,12 +146,12 @@ void __60__DNDGlobalConfigurationService_serviceForClientIdentifier___block_invo
     _os_log_impl(&dword_22002F000, v8, OS_LOG_TYPE_DEFAULT, "[%{public}@] Auto reply is %{public}@", buf, 0x16u);
   }
 
-  if (a3)
+  if (error)
   {
     v10 = *(v16[0] + 40);
     if (v10)
     {
-      *a3 = v10;
+      *error = v10;
     }
   }
 
@@ -266,14 +266,14 @@ void __69__DNDGlobalConfigurationService_setModesCanImpactAvailability_error___b
   *(v6 + 40) = v5;
 }
 
-- (id)getPhoneCallBypassSettingsReturningError:(id *)a3
+- (id)getPhoneCallBypassSettingsReturningError:(id *)error
 {
   v10[1] = *MEMORY[0x277D85DE8];
   v4 = DNDLogGlobalConfiguration;
   if (os_log_type_enabled(DNDLogGlobalConfiguration, OS_LOG_TYPE_ERROR))
   {
     [DNDGlobalConfigurationService getPhoneCallBypassSettingsReturningError:v4];
-    if (!a3)
+    if (!error)
     {
       goto LABEL_4;
     }
@@ -281,14 +281,14 @@ void __69__DNDGlobalConfigurationService_setModesCanImpactAvailability_error___b
     goto LABEL_3;
   }
 
-  if (a3)
+  if (error)
   {
 LABEL_3:
     v5 = MEMORY[0x277CCA9B8];
     v9 = *MEMORY[0x277CCA450];
     v10[0] = @"Bypass settings are now per mode configuration";
     v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v10 forKeys:&v9 count:1];
-    *a3 = [v5 errorWithDomain:@"DNDErrorDomain" code:1004 userInfo:v6];
+    *error = [v5 errorWithDomain:@"DNDErrorDomain" code:1004 userInfo:v6];
   }
 
 LABEL_4:
@@ -296,15 +296,15 @@ LABEL_4:
   return 0;
 }
 
-- (BOOL)setPhoneCallBypassSettings:(id)a3 error:(id *)a4
+- (BOOL)setPhoneCallBypassSettings:(id)settings error:(id *)error
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  settingsCopy = settings;
   v6 = DNDLogGlobalConfiguration;
   if (os_log_type_enabled(DNDLogGlobalConfiguration, OS_LOG_TYPE_ERROR))
   {
     [DNDGlobalConfigurationService getPhoneCallBypassSettingsReturningError:v6];
-    if (!a4)
+    if (!error)
     {
       goto LABEL_4;
     }
@@ -312,14 +312,14 @@ LABEL_4:
     goto LABEL_3;
   }
 
-  if (a4)
+  if (error)
   {
 LABEL_3:
     v7 = MEMORY[0x277CCA9B8];
     v11 = *MEMORY[0x277CCA450];
     v12[0] = @"Bypass settings are now per mode configuration";
     v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:&v11 count:1];
-    *a4 = [v7 errorWithDomain:@"DNDErrorDomain" code:1004 userInfo:v8];
+    *error = [v7 errorWithDomain:@"DNDErrorDomain" code:1004 userInfo:v8];
   }
 
 LABEL_4:
@@ -328,9 +328,9 @@ LABEL_4:
   return 0;
 }
 
-- (void)isCloudSyncActiveWithCompletionHandler:(id)a3
+- (void)isCloudSyncActiveWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -338,8 +338,8 @@ LABEL_4:
   block[2] = __72__DNDGlobalConfigurationService_isCloudSyncActiveWithCompletionHandler___block_invoke;
   block[3] = &unk_27843ABE0;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(queue, block);
 
   objc_destroyWeak(&v9);
@@ -364,7 +364,7 @@ void __72__DNDGlobalConfigurationService_isCloudSyncActiveWithCompletionHandler_
   }
 }
 
-- (unint64_t)getCloudSyncStateReturningError:(id *)a3
+- (unint64_t)getCloudSyncStateReturningError:(id *)error
 {
   v25 = *MEMORY[0x277D85DE8];
   v4 = _os_activity_create(&dword_22002F000, "com.apple.donotdisturb.DNDModeConfigurationService.getCloudSyncState", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
@@ -441,7 +441,7 @@ void __69__DNDGlobalConfigurationService_setCloudSyncPreferenceEnabled_error___b
   *(v6 + 40) = v5;
 }
 
-- (void)_updateListenersOfCloudSyncPreferenceChange:(BOOL)a3
+- (void)_updateListenersOfCloudSyncPreferenceChange:(BOOL)change
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -449,7 +449,7 @@ void __69__DNDGlobalConfigurationService_setCloudSyncPreferenceEnabled_error___b
   v4[2] = __77__DNDGlobalConfigurationService__updateListenersOfCloudSyncPreferenceChange___block_invoke;
   v4[3] = &unk_27843AC30;
   v4[4] = self;
-  v5 = a3;
+  changeCopy = change;
   dispatch_sync(queue, v4);
 }
 
@@ -518,7 +518,7 @@ void __77__DNDGlobalConfigurationService__updateListenersOfCloudSyncPreferenceCh
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (unint64_t)getPairSyncStateReturningError:(id *)a3
+- (unint64_t)getPairSyncStateReturningError:(id *)error
 {
   v25 = *MEMORY[0x277D85DE8];
   v4 = _os_activity_create(&dword_22002F000, "com.apple.donotdisturb.DNDModeConfigurationService.getPairSyncState", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
@@ -595,9 +595,9 @@ void __68__DNDGlobalConfigurationService_setPairSyncPreferenceEnabled_error___bl
   *(v6 + 40) = v5;
 }
 
-- (void)didChangeFocusStatusSharingSettingForApplicationIdentifier:(id)a3
+- (void)didChangeFocusStatusSharingSettingForApplicationIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = _os_activity_create(&dword_22002F000, "com.apple.donotdisturb.DNDModeConfigurationService.didChangeFocusStatusSharingSettingForApplicationIdentifier", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -610,7 +610,7 @@ void __68__DNDGlobalConfigurationService_setPairSyncPreferenceEnabled_error___bl
   v10[3] = &unk_27843A520;
   v8 = v6;
   v11 = v8;
-  v9 = v4;
+  v9 = identifierCopy;
   v12 = v9;
   [v7 didChangeFocusStatusSharingSettingForApplicationIdentifier:v9 withRequestDetails:v8 completionHandler:v10];
 
@@ -656,7 +656,7 @@ void __92__DNDGlobalConfigurationService_didChangeFocusStatusSharingSettingForAp
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (id)getAccountFeatureSupportWithError:(id *)a3
+- (id)getAccountFeatureSupportWithError:(id *)error
 {
   v4 = _os_activity_create(&dword_22002F000, "com.apple.donotdisturb.DNDModeConfigurationService.getAccountFeatureSupport", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
@@ -715,11 +715,11 @@ void __67__DNDGlobalConfigurationService_getAccountFeatureSupportWithError___blo
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addListener:(id)a3 withCompletionHandler:(id)a4
+- (void)addListener:(id)listener withCompletionHandler:(id)handler
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  handlerCopy = handler;
   v8 = _os_activity_create(&dword_22002F000, "com.apple.donotdisturb.DNDGlobalConfigurationService.addListener", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -728,7 +728,7 @@ void __67__DNDGlobalConfigurationService_getAccountFeatureSupportWithError___blo
   if (os_log_type_enabled(DNDLogGlobalConfiguration, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v22 = v6;
+    v22 = listenerCopy;
     _os_log_impl(&dword_22002F000, v9, OS_LOG_TYPE_DEFAULT, "Adding update listener: listener=%{public}@", buf, 0xCu);
   }
 
@@ -738,11 +738,11 @@ void __67__DNDGlobalConfigurationService_getAccountFeatureSupportWithError___blo
   v15[2] = __67__DNDGlobalConfigurationService_addListener_withCompletionHandler___block_invoke;
   v15[3] = &unk_27843A728;
   v16 = v8;
-  v17 = self;
-  v18 = v6;
-  v19 = v7;
-  v11 = v7;
-  v12 = v6;
+  selfCopy = self;
+  v18 = listenerCopy;
+  v19 = handlerCopy;
+  v11 = handlerCopy;
+  v12 = listenerCopy;
   v13 = v8;
   dispatch_sync(queue, v15);
 
@@ -797,10 +797,10 @@ void __67__DNDGlobalConfigurationService_addListener_withCompletionHandler___blo
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeListener:(id)a3
+- (void)removeListener:(id)listener
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  listenerCopy = listener;
   v5 = _os_activity_create(&dword_22002F000, "com.apple.donotdisturb.DNDGlobalConfigurationService.removeListener", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -809,7 +809,7 @@ void __67__DNDGlobalConfigurationService_addListener_withCompletionHandler___blo
   if (os_log_type_enabled(DNDLogGlobalConfiguration, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v17 = v4;
+    v17 = listenerCopy;
     _os_log_impl(&dword_22002F000, v6, OS_LOG_TYPE_DEFAULT, "Removing update listener: listener=%{public}@", buf, 0xCu);
   }
 
@@ -819,9 +819,9 @@ void __67__DNDGlobalConfigurationService_addListener_withCompletionHandler___blo
   block[2] = __48__DNDGlobalConfigurationService_removeListener___block_invoke;
   block[3] = &unk_27843A210;
   v12 = v5;
-  v13 = self;
-  v14 = v4;
-  v8 = v4;
+  selfCopy = self;
+  v14 = listenerCopy;
+  v8 = listenerCopy;
   v9 = v5;
   dispatch_sync(queue, block);
 
@@ -838,7 +838,7 @@ void __48__DNDGlobalConfigurationService_removeListener___block_invoke(uint64_t 
   os_activity_scope_leave(&v2);
 }
 
-- (void)remoteService:(id)a3 didReceiveUpdatedPairSyncState:(unint64_t)a4
+- (void)remoteService:(id)service didReceiveUpdatedPairSyncState:(unint64_t)state
 {
   queue = self->_queue;
   v5[0] = MEMORY[0x277D85DD0];
@@ -846,7 +846,7 @@ void __48__DNDGlobalConfigurationService_removeListener___block_invoke(uint64_t 
   v5[2] = __78__DNDGlobalConfigurationService_remoteService_didReceiveUpdatedPairSyncState___block_invoke;
   v5[3] = &unk_27843ACA8;
   v5[4] = self;
-  v5[5] = a4;
+  v5[5] = state;
   dispatch_sync(queue, v5);
 }
 
@@ -916,7 +916,7 @@ void __78__DNDGlobalConfigurationService_remoteService_didReceiveUpdatedPairSync
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)remoteService:(id)a3 didReceiveUpdatedPreventAutoReplySetting:(BOOL)a4
+- (void)remoteService:(id)service didReceiveUpdatedPreventAutoReplySetting:(BOOL)setting
 {
   queue = self->_queue;
   v5[0] = MEMORY[0x277D85DD0];
@@ -924,7 +924,7 @@ void __78__DNDGlobalConfigurationService_remoteService_didReceiveUpdatedPairSync
   v5[2] = __88__DNDGlobalConfigurationService_remoteService_didReceiveUpdatedPreventAutoReplySetting___block_invoke;
   v5[3] = &unk_27843AC30;
   v5[4] = self;
-  v6 = a4;
+  settingCopy = setting;
   dispatch_sync(queue, v5);
 }
 
@@ -993,17 +993,17 @@ void __88__DNDGlobalConfigurationService_remoteService_didReceiveUpdatedPreventA
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)remoteService:(id)a3 didReceiveUpdatedPhoneCallBypassSettings:(id)a4
+- (void)remoteService:(id)service didReceiveUpdatedPhoneCallBypassSettings:(id)settings
 {
-  v5 = a4;
+  settingsCopy = settings;
   queue = self->_queue;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __88__DNDGlobalConfigurationService_remoteService_didReceiveUpdatedPhoneCallBypassSettings___block_invoke;
   v8[3] = &unk_27843A1E8;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = settingsCopy;
+  v7 = settingsCopy;
   dispatch_sync(queue, v8);
 }
 
@@ -1072,7 +1072,7 @@ void __88__DNDGlobalConfigurationService_remoteService_didReceiveUpdatedPhoneCal
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (id)getStateDumpReturningError:(id *)a3
+- (id)getStateDumpReturningError:(id *)error
 {
   v24 = *MEMORY[0x277D85DE8];
   v4 = _os_activity_create(&dword_22002F000, "com.apple.donotdisturb.DNDModeConfigurationService.getStateDump", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
@@ -1142,15 +1142,15 @@ void __60__DNDGlobalConfigurationService_getStateDumpReturningError___block_invo
   *(v9 + 40) = v6;
 }
 
-- (id)_initWithClientIdentifier:(id)a3
+- (id)_initWithClientIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v18.receiver = self;
   v18.super_class = DNDGlobalConfigurationService;
   v5 = [(DNDGlobalConfigurationService *)&v18 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     clientIdentifier = v5->_clientIdentifier;
     v5->_clientIdentifier = v6;
 

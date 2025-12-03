@@ -1,5 +1,5 @@
 @interface BLSHPseudoFlipbookFrame
-- (BLSHPseudoFlipbookFrame)initWithPresentationTime:(unint64_t)a3 frameId:(unint64_t)a4 specifier:(id)a5 memoryUsage:(unint64_t)a6;
+- (BLSHPseudoFlipbookFrame)initWithPresentationTime:(unint64_t)time frameId:(unint64_t)id specifier:(id)specifier memoryUsage:(unint64_t)usage;
 - (CGRect)rawSurfaceFrame;
 - (id)bls_loggingString;
 - (id)bls_shortLoggingString;
@@ -7,18 +7,18 @@
 
 @implementation BLSHPseudoFlipbookFrame
 
-- (BLSHPseudoFlipbookFrame)initWithPresentationTime:(unint64_t)a3 frameId:(unint64_t)a4 specifier:(id)a5 memoryUsage:(unint64_t)a6
+- (BLSHPseudoFlipbookFrame)initWithPresentationTime:(unint64_t)time frameId:(unint64_t)id specifier:(id)specifier memoryUsage:(unint64_t)usage
 {
-  v10 = a5;
+  specifierCopy = specifier;
   v14.receiver = self;
   v14.super_class = BLSHPseudoFlipbookFrame;
   v11 = [(BLSHPseudoFlipbookFrame *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    v11->_presentationTime = a3;
-    v11->_frameId = a4;
-    objc_storeStrong(&v11->_bls_specifier, a5);
+    v11->_presentationTime = time;
+    v11->_frameId = id;
+    objc_storeStrong(&v11->_bls_specifier, specifier);
   }
 
   return v12;
@@ -45,36 +45,36 @@
   [v3 appendString:v4 withName:@"presentationTime"];
 
   v5 = [v3 appendUInt64:-[BLSHPseudoFlipbookFrame frameId](self withName:{"frameId"), @"frameId"}];
-  v6 = [(BLSHPseudoFlipbookFrame *)self bls_specifier];
-  v7 = [v3 appendObject:v6 withName:@"specifier"];
+  bls_specifier = [(BLSHPseudoFlipbookFrame *)self bls_specifier];
+  v7 = [v3 appendObject:bls_specifier withName:@"specifier"];
 
-  v8 = [v3 build];
+  build = [v3 build];
 
-  return v8;
+  return build;
 }
 
 - (id)bls_shortLoggingString
 {
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
   v4 = [v3 appendUInt64:-[BLSHPseudoFlipbookFrame frameId](self withName:{"frameId"), @"frameId"}];
-  v5 = [(BLSHPseudoFlipbookFrame *)self bls_specifier];
-  if (v5)
+  bls_specifier = [(BLSHPseudoFlipbookFrame *)self bls_specifier];
+  if (bls_specifier)
   {
-    v6 = [(BLSHPseudoFlipbookFrame *)self bls_specifier];
-    v7 = [v6 bls_shortLoggingString];
-    [v3 appendString:v7 withName:&stru_283373E60];
+    bls_specifier2 = [(BLSHPseudoFlipbookFrame *)self bls_specifier];
+    bls_shortLoggingString = [bls_specifier2 bls_shortLoggingString];
+    [v3 appendString:bls_shortLoggingString withName:&stru_283373E60];
   }
 
   else
   {
     [(BLSHPseudoFlipbookFrame *)self presentationTime];
-    v6 = BLSShortLoggingStringForMachTime();
-    [v3 appendString:v6 withName:&stru_283373E60];
+    bls_specifier2 = BLSShortLoggingStringForMachTime();
+    [v3 appendString:bls_specifier2 withName:&stru_283373E60];
   }
 
-  v8 = [v3 build];
+  build = [v3 build];
 
-  return v8;
+  return build;
 }
 
 @end

@@ -1,12 +1,12 @@
 @interface SCNActionPerformSelector
-+ (id)performSelector:(SEL)a3 onTarget:(id)a4;
++ (id)performSelector:(SEL)selector onTarget:(id)target;
 - (SCNActionPerformSelector)init;
-- (SCNActionPerformSelector)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SCNActionPerformSelector)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)reversedAction;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)updateWithTarget:(id)a3 forTime:(double)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)updateWithTarget:(id)target forTime:(double)time;
 @end
 
 @implementation SCNActionPerformSelector
@@ -25,11 +25,11 @@
   return result;
 }
 
-- (SCNActionPerformSelector)initWithCoder:(id)a3
+- (SCNActionPerformSelector)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = SCNActionPerformSelector;
-  return [(SCNAction *)&v4 initWithCoder:a3];
+  return [(SCNAction *)&v4 initWithCoder:coder];
 }
 
 - (void)dealloc
@@ -39,16 +39,16 @@
   [(SCNAction *)&v3 dealloc];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = SCNActionPerformSelector;
-  [(SCNAction *)&v3 encodeWithCoder:a3];
+  [(SCNAction *)&v3 encodeWithCoder:coder];
 }
 
-- (void)updateWithTarget:(id)a3 forTime:(double)a4
+- (void)updateWithTarget:(id)target forTime:(double)time
 {
-  if (![(SCNAction *)self finished:a3])
+  if (![(SCNAction *)self finished:target])
   {
     [(SCNAction *)self setFinished:1];
     target = self->_target;
@@ -64,16 +64,16 @@
   }
 }
 
-+ (id)performSelector:(SEL)a3 onTarget:(id)a4
++ (id)performSelector:(SEL)selector onTarget:(id)target
 {
   v4 = 0;
-  if (a3 && a4)
+  if (selector && target)
   {
     if (objc_opt_respondsToSelector())
     {
       v4 = objc_alloc_init(SCNActionPerformSelector);
-      v4->_selector = a3;
-      v4->_target = a4;
+      v4->_selector = selector;
+      v4->_target = target;
     }
 
     else
@@ -85,11 +85,11 @@
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = SCNActionPerformSelector;
-  v4 = [(SCNAction *)&v6 copyWithZone:a3];
+  v4 = [(SCNAction *)&v6 copyWithZone:zone];
   v4[2] = self->_selector;
   v4[3] = self->_target;
   return v4;

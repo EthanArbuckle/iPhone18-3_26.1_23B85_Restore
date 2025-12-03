@@ -1,13 +1,13 @@
 @interface CCUISControlsGalleryConfiguration
 - (CCUISControlsGalleryConfiguration)init;
-- (id)copyWithZone:(void *)a3;
+- (id)copyWithZone:(void *)zone;
 @end
 
 @implementation CCUISControlsGalleryConfiguration
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
-  v3 = self;
+  selfCopy = self;
   sub_2442A7F7C(v6);
 
   __swift_project_boxed_opaque_existential_0(v6, v6[3]);

@@ -1,12 +1,12 @@
 @interface MRUIBackgroundContentScene
-- (void)handleTouchAction:(id)a3;
+- (void)handleTouchAction:(id)action;
 @end
 
 @implementation MRUIBackgroundContentScene
 
-- (void)handleTouchAction:(id)a3
+- (void)handleTouchAction:(id)action
 {
-  v3 = a3;
+  actionCopy = action;
   v4 = +[UIApplication sharedApplication];
   [v4 setIdleTimerDisabled:1];
 
@@ -14,7 +14,7 @@
   [v5 setIdleTimerDisabled:0];
 
   v10 = +[_TtC13MediaRemoteUI21LockScreenCoordinator shared];
-  [v3 location];
+  [actionCopy location];
   v7 = v6;
   v9 = v8;
 

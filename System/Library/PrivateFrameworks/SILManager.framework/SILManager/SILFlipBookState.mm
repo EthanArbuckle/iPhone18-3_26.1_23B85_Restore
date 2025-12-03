@@ -1,7 +1,7 @@
 @interface SILFlipBookState
 - (NSDictionary)transitions;
 - (_TtC10SILManager16SILFlipBookState)init;
-- (id)init:(id)a3 name:(id)a4 transitions:(id)a5 error:(id *)a6;
+- (id)init:(id)init name:(id)name transitions:(id)transitions error:(id *)error;
 @end
 
 @implementation SILFlipBookState
@@ -15,7 +15,7 @@
   return v2.super.isa;
 }
 
-- (id)init:(id)a3 name:(id)a4 transitions:(id)a5 error:(id *)a6
+- (id)init:(id)init name:(id)name transitions:(id)transitions error:(id *)error
 {
   type metadata accessor for FrameDesc();
   v6 = static Array._unconditionallyBridgeFromObjectiveC(_:)();

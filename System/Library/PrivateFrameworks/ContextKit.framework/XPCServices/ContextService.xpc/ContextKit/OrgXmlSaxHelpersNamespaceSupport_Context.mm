@@ -1,33 +1,33 @@
 @interface OrgXmlSaxHelpersNamespaceSupport_Context
 - (id)getDeclaredPrefixes;
-- (id)getPrefixWithNSString:(id)a3;
+- (id)getPrefixWithNSString:(id)string;
 - (id)getPrefixes;
-- (id)getURIWithNSString:(id)a3;
-- (id)processNameWithNSString:(id)a3 withBoolean:(BOOL)a4;
+- (id)getURIWithNSString:(id)string;
+- (id)processNameWithNSString:(id)string withBoolean:(BOOL)boolean;
 - (void)__javaClone;
 - (void)clear;
 - (void)copyTables;
 - (void)dealloc;
-- (void)declarePrefixWithNSString:(id)a3 withNSString:(id)a4;
-- (void)setParentWithOrgXmlSaxHelpersNamespaceSupport_Context:(id)a3;
+- (void)declarePrefixWithNSString:(id)string withNSString:(id)sString;
+- (void)setParentWithOrgXmlSaxHelpersNamespaceSupport_Context:(id)context;
 @end
 
 @implementation OrgXmlSaxHelpersNamespaceSupport_Context
 
-- (void)setParentWithOrgXmlSaxHelpersNamespaceSupport_Context:(id)a3
+- (void)setParentWithOrgXmlSaxHelpersNamespaceSupport_Context:(id)context
 {
-  JreStrongAssign(&self->parent_, a3);
+  JreStrongAssign(&self->parent_, context);
   JreStrongAssign(&self->declarations_, 0);
-  if (!a3)
+  if (!context)
   {
     JreThrowNullPointerException();
   }
 
-  JreStrongAssign(&self->prefixTable_, *(a3 + 1));
-  JreStrongAssign(&self->uriTable_, *(a3 + 2));
-  JreStrongAssign(&self->elementNameTable_, *(a3 + 3));
-  JreStrongAssign(&self->attributeNameTable_, *(a3 + 4));
-  JreStrongAssign(&self->defaultNS_, *(a3 + 5));
+  JreStrongAssign(&self->prefixTable_, *(context + 1));
+  JreStrongAssign(&self->uriTable_, *(context + 2));
+  JreStrongAssign(&self->elementNameTable_, *(context + 3));
+  JreStrongAssign(&self->attributeNameTable_, *(context + 4));
+  JreStrongAssign(&self->defaultNS_, *(context + 5));
   self->declSeen_ = 0;
   self->declsOK_ = 1;
 }
@@ -43,7 +43,7 @@
   JreStrongAssign(&self->defaultNS_, 0);
 }
 
-- (void)declarePrefixWithNSString:(id)a3 withNSString:(id)a4
+- (void)declarePrefixWithNSString:(id)string withNSString:(id)sString
 {
   if (!self->declsOK_)
   {
@@ -63,29 +63,29 @@
     JreStrongAssignAndConsume(&self->declarations_, v8);
   }
 
-  if (!a3)
+  if (!string)
   {
     goto LABEL_20;
   }
 
-  v9 = [a3 intern];
-  if (!a4)
+  intern = [string intern];
+  if (!sString)
   {
     goto LABEL_20;
   }
 
-  v10 = v9;
-  v11 = [a4 intern];
+  v10 = intern;
+  intern2 = [sString intern];
   if (![&stru_100484358 isEqual:v10])
   {
     prefixTable = self->prefixTable_;
     if (prefixTable)
     {
-      [(JavaUtilHashtable *)prefixTable putWithId:v10 withId:v11];
+      [(JavaUtilHashtable *)prefixTable putWithId:v10 withId:intern2];
       uriTable = self->uriTable_;
       if (uriTable)
       {
-        [(JavaUtilHashtable *)uriTable putWithId:v11 withId:v10];
+        [(JavaUtilHashtable *)uriTable putWithId:intern2 withId:v10];
         goto LABEL_16;
       }
     }
@@ -94,7 +94,7 @@ LABEL_20:
     JreThrowNullPointerException();
   }
 
-  if ([&stru_100484358 isEqual:v11])
+  if ([&stru_100484358 isEqual:intern2])
   {
     p_defaultNS = &self->defaultNS_;
     v13 = 0;
@@ -103,7 +103,7 @@ LABEL_20:
   else
   {
     p_defaultNS = &self->defaultNS_;
-    v13 = v11;
+    v13 = intern2;
   }
 
   JreStrongAssign(p_defaultNS, v13);
@@ -119,18 +119,18 @@ LABEL_16:
 
 - (void)copyTables
 {
-  v3 = (a1 + 8);
-  v2 = *(a1 + 8);
+  v3 = (self + 8);
+  v2 = *(self + 8);
   if (v2)
   {
-    v4 = [v2 clone];
+    clone = [v2 clone];
     objc_opt_class();
-    if (v4 && (objc_opt_isKindOfClass() & 1) == 0)
+    if (clone && (objc_opt_isKindOfClass() & 1) == 0)
     {
       goto LABEL_12;
     }
 
-    JreStrongAssign(v3, v4);
+    JreStrongAssign(v3, clone);
   }
 
   else
@@ -139,37 +139,37 @@ LABEL_16:
     JreStrongAssignAndConsume(v3, v5);
   }
 
-  v6 = *(a1 + 16);
+  v6 = *(self + 16);
   if (!v6)
   {
     v8 = new_JavaUtilHashtable_init();
-    JreStrongAssignAndConsume((a1 + 16), v8);
+    JreStrongAssignAndConsume((self + 16), v8);
     goto LABEL_11;
   }
 
-  v7 = [v6 clone];
+  clone2 = [v6 clone];
   objc_opt_class();
-  if (v7 && (objc_opt_isKindOfClass() & 1) == 0)
+  if (clone2 && (objc_opt_isKindOfClass() & 1) == 0)
   {
 LABEL_12:
     JreThrowClassCastException();
   }
 
-  JreStrongAssign((a1 + 16), v7);
+  JreStrongAssign((self + 16), clone2);
 LABEL_11:
   v9 = new_JavaUtilHashtable_init();
-  JreStrongAssignAndConsume((a1 + 24), v9);
+  JreStrongAssignAndConsume((self + 24), v9);
   v10 = new_JavaUtilHashtable_init();
-  result = JreStrongAssignAndConsume((a1 + 32), v10);
-  *(a1 + 72) = 1;
+  result = JreStrongAssignAndConsume((self + 32), v10);
+  *(self + 72) = 1;
   return result;
 }
 
-- (id)processNameWithNSString:(id)a3 withBoolean:(BOOL)a4
+- (id)processNameWithNSString:(id)string withBoolean:(BOOL)boolean
 {
   self->declsOK_ = 0;
   v4 = 24;
-  if (a4)
+  if (boolean)
   {
     v4 = 32;
   }
@@ -180,25 +180,25 @@ LABEL_11:
     goto LABEL_31;
   }
 
-  v6 = a4;
+  booleanCopy = boolean;
   v9 = [*(&self->super.isa + v4) getWithId:?];
   objc_opt_class();
   if (!v9)
   {
     v10 = [IOSObjectArray arrayWithLength:3 type:NSString_class_()];
-    if (!a3)
+    if (!string)
     {
       goto LABEL_31;
     }
 
     v9 = v10;
-    IOSObjectArray_Set(v10, 2, [a3 intern]);
-    v11 = [a3 indexOf:58];
+    IOSObjectArray_Set(v10, 2, [string intern]);
+    v11 = [string indexOf:58];
     if (v11 != -1)
     {
       v12 = v11;
-      v13 = [a3 substring:0 endIndex:v11];
-      v14 = [a3 substring:(v12 + 1)];
+      v13 = [string substring:0 endIndex:v11];
+      v14 = [string substring:(v12 + 1)];
       if ([&stru_100484358 isEqual:v13])
       {
         defaultNS = self->defaultNS_;
@@ -230,7 +230,7 @@ LABEL_6:
         }
       }
 
-      if (!v6 && ([@"xmlns" isEqual:v13] & 1) != 0)
+      if (!booleanCopy && ([@"xmlns" isEqual:v13] & 1) != 0)
       {
         return 0;
       }
@@ -238,9 +238,9 @@ LABEL_6:
       IOSObjectArray_Set(v9, 0, defaultNS);
       if (v14)
       {
-        v18 = [v14 intern];
+        intern = [v14 intern];
 LABEL_28:
-        IOSObjectArray_Set(v9, 1, v18);
+        IOSObjectArray_Set(v9, 1, intern);
         size = v9->super.size_;
         if (size <= 2)
         {
@@ -255,9 +255,9 @@ LABEL_31:
       JreThrowNullPointerException();
     }
 
-    if (v6)
+    if (booleanCopy)
     {
-      if ([@"xmlns" isEqual:a3] && *(objc_loadWeak(&self->this$0_) + 28) == 1)
+      if ([@"xmlns" isEqual:string] && *(objc_loadWeak(&self->this$0_) + 28) == 1)
       {
         v16 = OrgXmlSaxHelpersNamespaceSupport_NSDECL_;
 LABEL_26:
@@ -268,7 +268,7 @@ LABEL_26:
           IOSArray_throwOutOfBoundsWithMsg(v19, 2);
         }
 
-        v18 = v9->buffer_[1];
+        intern = v9->buffer_[1];
         goto LABEL_28;
       }
     }
@@ -294,7 +294,7 @@ LABEL_26:
   return v9;
 }
 
-- (id)getURIWithNSString:(id)a3
+- (id)getURIWithNSString:(id)string
 {
   if ([&stru_100484358 isEqual:?])
   {
@@ -307,7 +307,7 @@ LABEL_26:
     return 0;
   }
 
-  v5 = [(JavaUtilHashtable *)prefixTable getWithId:a3];
+  v5 = [(JavaUtilHashtable *)prefixTable getWithId:string];
   objc_opt_class();
   if (v5 && (objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -317,7 +317,7 @@ LABEL_26:
   return v5;
 }
 
-- (id)getPrefixWithNSString:(id)a3
+- (id)getPrefixWithNSString:(id)string
 {
   uriTable = self->uriTable_;
   if (!uriTable)
@@ -325,7 +325,7 @@ LABEL_26:
     return 0;
   }
 
-  v4 = [(JavaUtilHashtable *)uriTable getWithId:a3];
+  v4 = [(JavaUtilHashtable *)uriTable getWithId:string];
   objc_opt_class();
   if (v4 && (objc_opt_isKindOfClass() & 1) == 0)
   {

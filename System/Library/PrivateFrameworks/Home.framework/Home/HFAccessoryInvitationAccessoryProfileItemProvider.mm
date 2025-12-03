@@ -1,32 +1,32 @@
 @interface HFAccessoryInvitationAccessoryProfileItemProvider
-- (HFAccessoryInvitationAccessoryProfileItemProvider)initWithHome:(id)a3;
-- (HFAccessoryInvitationAccessoryProfileItemProvider)initWithHome:(id)a3 user:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (HFAccessoryInvitationAccessoryProfileItemProvider)initWithHome:(id)home;
+- (HFAccessoryInvitationAccessoryProfileItemProvider)initWithHome:(id)home user:(id)user;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)invalidationReasons;
 @end
 
 @implementation HFAccessoryInvitationAccessoryProfileItemProvider
 
-- (HFAccessoryInvitationAccessoryProfileItemProvider)initWithHome:(id)a3
+- (HFAccessoryInvitationAccessoryProfileItemProvider)initWithHome:(id)home
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v6 = NSStringFromSelector(sel_initWithHome_user_);
-  [v5 handleFailureInMethod:a2 object:self file:@"HFAccessoryInvitationAccessoryProfileItemProvider.m" lineNumber:28 description:{@"%s is unavailable; use %@ instead", "-[HFAccessoryInvitationAccessoryProfileItemProvider initWithHome:]", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFAccessoryInvitationAccessoryProfileItemProvider.m" lineNumber:28 description:{@"%s is unavailable; use %@ instead", "-[HFAccessoryInvitationAccessoryProfileItemProvider initWithHome:]", v6}];
 
   return 0;
 }
 
-- (HFAccessoryInvitationAccessoryProfileItemProvider)initWithHome:(id)a3 user:(id)a4
+- (HFAccessoryInvitationAccessoryProfileItemProvider)initWithHome:(id)home user:(id)user
 {
-  v6 = a3;
-  v7 = a4;
+  homeCopy = home;
+  userCopy = user;
   v15.receiver = self;
   v15.super_class = HFAccessoryInvitationAccessoryProfileItemProvider;
-  v8 = [(HFAccessoryProfileItemProvider *)&v15 initWithHome:v6];
+  v8 = [(HFAccessoryProfileItemProvider *)&v15 initWithHome:homeCopy];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_user, a4);
+    objc_storeStrong(&v8->_user, user);
     objc_initWeak(&location, v9);
     v12 = MEMORY[0x277D85DD0];
     objc_copyWeak(&v13, &location);
@@ -70,12 +70,12 @@ id __71__HFAccessoryInvitationAccessoryProfileItemProvider_initWithHome_user___b
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(HFAccessoryProfileItemProvider *)self home];
-  v6 = [(HFAccessoryInvitationAccessoryProfileItemProvider *)self user];
-  v7 = [v4 initWithHome:v5 user:v6];
+  home = [(HFAccessoryProfileItemProvider *)self home];
+  user = [(HFAccessoryInvitationAccessoryProfileItemProvider *)self user];
+  v7 = [v4 initWithHome:home user:user];
 
   return v7;
 }
@@ -84,8 +84,8 @@ id __71__HFAccessoryInvitationAccessoryProfileItemProvider_initWithHome_user___b
 {
   v5.receiver = self;
   v5.super_class = HFAccessoryInvitationAccessoryProfileItemProvider;
-  v2 = [(HFAccessoryProfileItemProvider *)&v5 invalidationReasons];
-  v3 = [v2 setByAddingObject:@"pendingAccessories"];
+  invalidationReasons = [(HFAccessoryProfileItemProvider *)&v5 invalidationReasons];
+  v3 = [invalidationReasons setByAddingObject:@"pendingAccessories"];
 
   return v3;
 }

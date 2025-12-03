@@ -1,33 +1,33 @@
 @interface PXGOtherItemPlacementController
 - (PXGOtherItemPlacementController)init;
-- (PXGOtherItemPlacementController)initWithOriginalItemPlacementController:(id)a3 originalItemReference:(id)a4;
-- (void)setPlacementOverride:(id)a3 forItemReference:(id)a4;
+- (PXGOtherItemPlacementController)initWithOriginalItemPlacementController:(id)controller originalItemReference:(id)reference;
+- (void)setPlacementOverride:(id)override forItemReference:(id)reference;
 @end
 
 @implementation PXGOtherItemPlacementController
 
-- (void)setPlacementOverride:(id)a3 forItemReference:(id)a4
+- (void)setPlacementOverride:(id)override forItemReference:(id)reference
 {
-  v5 = a3;
-  v8 = [(PXGOtherItemPlacementController *)self originalItemPlacementController];
-  v6 = [v5 otherItemsPlacement];
+  overrideCopy = override;
+  originalItemPlacementController = [(PXGOtherItemPlacementController *)self originalItemPlacementController];
+  otherItemsPlacement = [overrideCopy otherItemsPlacement];
 
-  v7 = [(PXGOtherItemPlacementController *)self originalItemReference];
-  [v8 setPlacementOverride:v6 forItemReference:v7];
+  originalItemReference = [(PXGOtherItemPlacementController *)self originalItemReference];
+  [originalItemPlacementController setPlacementOverride:otherItemsPlacement forItemReference:originalItemReference];
 }
 
-- (PXGOtherItemPlacementController)initWithOriginalItemPlacementController:(id)a3 originalItemReference:(id)a4
+- (PXGOtherItemPlacementController)initWithOriginalItemPlacementController:(id)controller originalItemReference:(id)reference
 {
-  v7 = a3;
-  v8 = a4;
+  controllerCopy = controller;
+  referenceCopy = reference;
   v12.receiver = self;
   v12.super_class = PXGOtherItemPlacementController;
   v9 = [(PXGOtherItemPlacementController *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_originalItemPlacementController, a3);
-    objc_storeStrong(&v10->_originalItemReference, a4);
+    objc_storeStrong(&v9->_originalItemPlacementController, controller);
+    objc_storeStrong(&v10->_originalItemReference, reference);
   }
 
   return v10;
@@ -35,8 +35,8 @@
 
 - (PXGOtherItemPlacementController)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXGItemPlacementController.m" lineNumber:30 description:{@"%s is not available as initializer", "-[PXGOtherItemPlacementController init]"}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXGItemPlacementController.m" lineNumber:30 description:{@"%s is not available as initializer", "-[PXGOtherItemPlacementController init]"}];
 
   abort();
 }

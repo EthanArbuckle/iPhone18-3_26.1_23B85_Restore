@@ -1,6 +1,6 @@
 @interface ProximityReaderDiscoveryAnalyticsManager
 - (_TtC15ProximityReader40ProximityReaderDiscoveryAnalyticsManager)init;
-- (void)discoveryItemWithIdentifier:(id)a3 position:(double)a4;
+- (void)discoveryItemWithIdentifier:(id)identifier position:(double)position;
 @end
 
 @implementation ProximityReaderDiscoveryAnalyticsManager
@@ -20,11 +20,11 @@
   return [(ProximityReaderDiscoveryAnalyticsManager *)&v4 init];
 }
 
-- (void)discoveryItemWithIdentifier:(id)a3 position:(double)a4
+- (void)discoveryItemWithIdentifier:(id)identifier position:(double)position
 {
   v5 = *((*MEMORY[0x277D85000] & self->super.isa) + 0xB8);
-  v6 = self;
-  v5(a4);
+  selfCopy = self;
+  v5(position);
 }
 
 @end

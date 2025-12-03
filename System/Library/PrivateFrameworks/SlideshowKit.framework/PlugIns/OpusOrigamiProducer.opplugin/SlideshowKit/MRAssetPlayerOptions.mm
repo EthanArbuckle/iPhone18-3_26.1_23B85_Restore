@@ -2,7 +2,7 @@
 - (CGSize)resolutionIfEmbeddedAsset;
 - (MRAssetPlayerOptions)init;
 - (void)dealloc;
-- (void)setInitialImage:(id)a3;
+- (void)setInitialImage:(id)image;
 @end
 
 @implementation MRAssetPlayerOptions
@@ -32,13 +32,13 @@
   [(MRAssetPlayerOptions *)&v3 dealloc];
 }
 
-- (void)setInitialImage:(id)a3
+- (void)setInitialImage:(id)image
 {
   initialImage = self->_initialImage;
-  if (initialImage != a3)
+  if (initialImage != image)
   {
     [(MRImage *)initialImage releaseByUser];
-    self->_initialImage = [a3 retainByUser];
+    self->_initialImage = [image retainByUser];
   }
 }
 

@@ -1,20 +1,20 @@
 @interface TVSetupAlertViewController
-- (_TtC16TVSetupUIService26TVSetupAlertViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)_physicalButtonInteraction:(id)a3 handleAction:(id)a4 withActiveActions:(id)a5;
-- (void)configureWithContext:(id)a3 completion:(id)a4;
-- (void)consumeSinglePressUpForButtonKind:(int64_t)a3;
-- (void)handleButtonActions:(id)a3;
-- (void)presentationControllerTransitionDidEnd:(id)a3;
+- (_TtC16TVSetupUIService26TVSetupAlertViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)_physicalButtonInteraction:(id)interaction handleAction:(id)action withActiveActions:(id)actions;
+- (void)configureWithContext:(id)context completion:(id)completion;
+- (void)consumeSinglePressUpForButtonKind:(int64_t)kind;
+- (void)handleButtonActions:(id)actions;
+- (void)presentationControllerTransitionDidEnd:(id)end;
 - (void)proxCardFlowDidDismiss;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 @end
 
 @implementation TVSetupAlertViewController
 
-- (void)configureWithContext:(id)a3 completion:(id)a4
+- (void)configureWithContext:(id)context completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   if (v6)
   {
     v7 = swift_allocObject();
@@ -27,25 +27,25 @@
     v7 = 0;
   }
 
-  v8 = a3;
-  v9 = self;
-  sub_100007FCC(a3, v6, v7);
+  contextCopy = context;
+  selfCopy = self;
+  sub_100007FCC(context, v6, v7);
   sub_1000106BC(v6);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_100008758(a3);
+  selfCopy = self;
+  sub_100008758(appear);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_100008C70(a3);
+  selfCopy = self;
+  sub_100008C70(disappear);
 }
 
-- (void)presentationControllerTransitionDidEnd:(id)a3
+- (void)presentationControllerTransitionDidEnd:(id)end
 {
   v4 = type metadata accessor for Notification();
   v5 = *(v4 - 8);
@@ -53,24 +53,24 @@
   __chkstk_darwin(v4, v7);
   v9 = &v11 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   static Notification._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = self;
+  selfCopy = self;
   sub_10000BBF0();
 
   (*(v5 + 8))(v9, v4);
 }
 
-- (void)handleButtonActions:(id)a3
+- (void)handleButtonActions:(id)actions
 {
   sub_100002E88(0, &qword_1000260A0, SBUIRemoteAlertButtonAction_ptr);
   sub_1000100C4(&qword_1000260A8, &qword_1000260A0, SBUIRemoteAlertButtonAction_ptr);
   v4 = static Set._unconditionallyBridgeFromObjectiveC(_:)();
-  v5 = self;
+  selfCopy = self;
   sub_10000C23C(v4);
 }
 
-- (_TtC16TVSetupUIService26TVSetupAlertViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC16TVSetupUIService26TVSetupAlertViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v7 = v6;
@@ -82,28 +82,28 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_10000CA14(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_10000CA14(v5, v7, bundle);
 }
 
 - (void)proxCardFlowDidDismiss
 {
-  v2 = self;
+  selfCopy = self;
   sub_10000CF28();
 }
 
-- (void)consumeSinglePressUpForButtonKind:(int64_t)a3
+- (void)consumeSinglePressUpForButtonKind:(int64_t)kind
 {
-  v3 = self;
+  selfCopy = self;
   sub_10000F860();
 }
 
-- (void)_physicalButtonInteraction:(id)a3 handleAction:(id)a4 withActiveActions:(id)a5
+- (void)_physicalButtonInteraction:(id)interaction handleAction:(id)action withActiveActions:(id)actions
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
-  sub_10000FACC(v8);
+  interactionCopy = interaction;
+  actionCopy = action;
+  selfCopy = self;
+  sub_10000FACC(actionCopy);
 }
 
 @end

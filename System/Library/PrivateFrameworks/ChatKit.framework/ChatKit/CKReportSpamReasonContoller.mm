@@ -1,7 +1,7 @@
 @interface CKReportSpamReasonContoller
-- (CKReportSpamReasonContoller)initWithCoder:(id)a3;
-- (CKReportSpamReasonContoller)initWithConversations:(id)a3 didReportBlock:(id)a4;
-- (CKReportSpamReasonContoller)initWithNibName:(id)a3 bundle:(id)a4;
+- (CKReportSpamReasonContoller)initWithCoder:(id)coder;
+- (CKReportSpamReasonContoller)initWithConversations:(id)conversations didReportBlock:(id)block;
+- (CKReportSpamReasonContoller)initWithNibName:(id)name bundle:(id)bundle;
 - (void)dismissReportSpamController;
 - (void)reportSpam;
 - (void)viewDidLoad;
@@ -9,9 +9,9 @@
 
 @implementation CKReportSpamReasonContoller
 
-- (CKReportSpamReasonContoller)initWithConversations:(id)a3 didReportBlock:(id)a4
+- (CKReportSpamReasonContoller)initWithConversations:(id)conversations didReportBlock:(id)block
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(block);
   sub_1902188FC(0, &qword_1EAD466B0);
   v6 = sub_190D57180();
   v7 = swift_allocObject();
@@ -30,7 +30,7 @@
   return [(CKReportSpamReasonContoller *)&v11 initWithNibName:0 bundle:0];
 }
 
-- (CKReportSpamReasonContoller)initWithCoder:(id)a3
+- (CKReportSpamReasonContoller)initWithCoder:(id)coder
 {
   v3 = self + OBJC_IVAR___CKReportSpamReasonContoller_reportSpamReson;
   *v3 = 0;
@@ -42,23 +42,23 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_190ABC004();
 }
 
 - (void)dismissReportSpamController
 {
-  v2 = self;
+  selfCopy = self;
   sub_190ABC730();
 }
 
 - (void)reportSpam
 {
-  v2 = self;
+  selfCopy = self;
   sub_190ABC8E4();
 }
 
-- (CKReportSpamReasonContoller)initWithNibName:(id)a3 bundle:(id)a4
+- (CKReportSpamReasonContoller)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

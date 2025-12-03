@@ -1,32 +1,32 @@
 @interface IDSQueryKeyTransparencyContext
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToQueryKeyTransparencyContext:(id)a3;
-- (IDSQueryKeyTransparencyContext)initWithCoder:(id)a3;
-- (IDSQueryKeyTransparencyContext)initWithVerifierResult:(id)a3 ticket:(id)a4 accountKey:(id)a5 queryResponseTime:(id)a6 ktOptIn:(unint64_t)a7;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToQueryKeyTransparencyContext:(id)context;
+- (IDSQueryKeyTransparencyContext)initWithCoder:(id)coder;
+- (IDSQueryKeyTransparencyContext)initWithVerifierResult:(id)result ticket:(id)ticket accountKey:(id)key queryResponseTime:(id)time ktOptIn:(unint64_t)in;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IDSQueryKeyTransparencyContext
 
-- (IDSQueryKeyTransparencyContext)initWithVerifierResult:(id)a3 ticket:(id)a4 accountKey:(id)a5 queryResponseTime:(id)a6 ktOptIn:(unint64_t)a7
+- (IDSQueryKeyTransparencyContext)initWithVerifierResult:(id)result ticket:(id)ticket accountKey:(id)key queryResponseTime:(id)time ktOptIn:(unint64_t)in
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
+  resultCopy = result;
+  ticketCopy = ticket;
+  keyCopy = key;
+  timeCopy = time;
   v20.receiver = self;
   v20.super_class = IDSQueryKeyTransparencyContext;
   v17 = [(IDSQueryKeyTransparencyContext *)&v20 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_verifierResult, a3);
-    objc_storeStrong(&v18->_ticket, a4);
-    objc_storeStrong(&v18->_accountKey, a5);
-    objc_storeStrong(&v18->_queryResponseTime, a6);
-    v18->_ktOptIn = a7;
+    objc_storeStrong(&v17->_verifierResult, result);
+    objc_storeStrong(&v18->_ticket, ticket);
+    objc_storeStrong(&v18->_accountKey, key);
+    objc_storeStrong(&v18->_queryResponseTime, time);
+    v18->_ktOptIn = in;
   }
 
   return v18;
@@ -36,116 +36,116 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(IDSQueryKeyTransparencyContext *)self verifierResult];
-  v6 = [(IDSQueryKeyTransparencyContext *)self ticket];
-  v7 = [(IDSQueryKeyTransparencyContext *)self accountKey];
-  v8 = [(IDSQueryKeyTransparencyContext *)self queryResponseTime];
+  verifierResult = [(IDSQueryKeyTransparencyContext *)self verifierResult];
+  ticket = [(IDSQueryKeyTransparencyContext *)self ticket];
+  accountKey = [(IDSQueryKeyTransparencyContext *)self accountKey];
+  queryResponseTime = [(IDSQueryKeyTransparencyContext *)self queryResponseTime];
   v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[IDSQueryKeyTransparencyContext ktOptIn](self, "ktOptIn")}];
-  v10 = [v3 stringWithFormat:@"<%@: %p verifierResult: %@, ticket: %@, accountKey: %@, queryResponseTime: %@>, ktOptInStatus: %@", v4, self, v5, v6, v7, v8, v9];
+  v10 = [v3 stringWithFormat:@"<%@: %p verifierResult: %@, ticket: %@, accountKey: %@, queryResponseTime: %@>, ktOptInStatus: %@", v4, self, verifierResult, ticket, accountKey, queryResponseTime, v9];
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(IDSQueryKeyTransparencyContext *)self isEqualToQueryKeyTransparencyContext:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(IDSQueryKeyTransparencyContext *)self isEqualToQueryKeyTransparencyContext:equalCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToQueryKeyTransparencyContext:(id)a3
+- (BOOL)isEqualToQueryKeyTransparencyContext:(id)context
 {
-  v6 = a3;
-  v7 = v6;
-  if (self == v6)
+  contextCopy = context;
+  v7 = contextCopy;
+  if (self == contextCopy)
   {
     v10 = 1;
   }
 
   else
   {
-    if (v6)
+    if (contextCopy)
     {
-      v8 = [(IDSQueryKeyTransparencyContext *)self ticket];
-      v9 = [(IDSQueryKeyTransparencyContext *)v7 ticket];
-      if (v8 != v9)
+      ticket = [(IDSQueryKeyTransparencyContext *)self ticket];
+      ticket2 = [(IDSQueryKeyTransparencyContext *)v7 ticket];
+      if (ticket != ticket2)
       {
-        v3 = [(IDSQueryKeyTransparencyContext *)self ticket];
-        v4 = [(IDSQueryKeyTransparencyContext *)v7 ticket];
-        if (![v3 isEqual:v4])
+        ticket3 = [(IDSQueryKeyTransparencyContext *)self ticket];
+        ticket4 = [(IDSQueryKeyTransparencyContext *)v7 ticket];
+        if (![ticket3 isEqual:ticket4])
         {
           v10 = 0;
           goto LABEL_25;
         }
       }
 
-      v11 = [(IDSQueryKeyTransparencyContext *)self verifierResult];
-      v12 = [(IDSQueryKeyTransparencyContext *)v7 verifierResult];
-      if (![v11 isEqual:v12])
+      verifierResult = [(IDSQueryKeyTransparencyContext *)self verifierResult];
+      verifierResult2 = [(IDSQueryKeyTransparencyContext *)v7 verifierResult];
+      if (![verifierResult isEqual:verifierResult2])
       {
 
         v10 = 0;
         goto LABEL_24;
       }
 
-      v13 = [(IDSQueryKeyTransparencyContext *)self accountKey];
-      v14 = [(IDSQueryKeyTransparencyContext *)v7 accountKey];
-      v31 = [v13 isEqualToData:v14];
+      accountKey = [(IDSQueryKeyTransparencyContext *)self accountKey];
+      accountKey2 = [(IDSQueryKeyTransparencyContext *)v7 accountKey];
+      v31 = [accountKey isEqualToData:accountKey2];
       if ((v31 & 1) == 0)
       {
-        v29 = v4;
-        v15 = [(IDSQueryKeyTransparencyContext *)self accountKey];
-        v25 = [(IDSQueryKeyTransparencyContext *)v7 accountKey];
-        v26 = v15;
-        if (![v15 isEqual:?])
+        v29 = ticket4;
+        accountKey3 = [(IDSQueryKeyTransparencyContext *)self accountKey];
+        accountKey4 = [(IDSQueryKeyTransparencyContext *)v7 accountKey];
+        v26 = accountKey3;
+        if (![accountKey3 isEqual:?])
         {
           v10 = 0;
-          v4 = v29;
+          ticket4 = v29;
           goto LABEL_22;
         }
 
-        v4 = v29;
+        ticket4 = v29;
       }
 
-      v27 = v14;
-      v28 = v13;
-      v30 = v3;
-      v16 = [(IDSQueryKeyTransparencyContext *)self queryResponseTime];
-      v17 = [(IDSQueryKeyTransparencyContext *)v7 queryResponseTime];
-      v18 = [v16 isEqualToDate:v17];
+      v27 = accountKey2;
+      v28 = accountKey;
+      v30 = ticket3;
+      queryResponseTime = [(IDSQueryKeyTransparencyContext *)self queryResponseTime];
+      queryResponseTime2 = [(IDSQueryKeyTransparencyContext *)v7 queryResponseTime];
+      v18 = [queryResponseTime isEqualToDate:queryResponseTime2];
       if ((v18 & 1) == 0)
       {
-        v22 = v16;
-        v19 = [(IDSQueryKeyTransparencyContext *)self queryResponseTime];
-        v23 = [(IDSQueryKeyTransparencyContext *)v7 queryResponseTime];
-        v24 = v19;
-        if (![v19 isEqual:?])
+        v22 = queryResponseTime;
+        queryResponseTime3 = [(IDSQueryKeyTransparencyContext *)self queryResponseTime];
+        queryResponseTime4 = [(IDSQueryKeyTransparencyContext *)v7 queryResponseTime];
+        v24 = queryResponseTime3;
+        if (![queryResponseTime3 isEqual:?])
         {
           v10 = 0;
-          v16 = v22;
+          queryResponseTime = v22;
           goto LABEL_20;
         }
 
-        v16 = v22;
+        queryResponseTime = v22;
       }
 
-      v20 = [(IDSQueryKeyTransparencyContext *)self ktOptIn];
-      v10 = v20 == [(IDSQueryKeyTransparencyContext *)v7 ktOptIn];
+      ktOptIn = [(IDSQueryKeyTransparencyContext *)self ktOptIn];
+      v10 = ktOptIn == [(IDSQueryKeyTransparencyContext *)v7 ktOptIn];
       if (v18)
       {
 LABEL_21:
 
-        v13 = v28;
-        v3 = v30;
-        v14 = v27;
+        accountKey = v28;
+        ticket3 = v30;
+        accountKey2 = v27;
         if (v31)
         {
 LABEL_23:
 
 LABEL_24:
-          if (v8 == v9)
+          if (ticket == ticket2)
           {
 LABEL_26:
 
@@ -177,23 +177,23 @@ LABEL_27:
 
 - (unint64_t)hash
 {
-  v3 = [(IDSQueryKeyTransparencyContext *)self ticket];
-  v4 = [v3 hash];
-  v5 = [(IDSQueryKeyTransparencyContext *)self verifierResult];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(IDSQueryKeyTransparencyContext *)self accountKey];
-  v8 = [v7 hash];
-  v9 = [(IDSQueryKeyTransparencyContext *)self queryResponseTime];
-  v10 = v6 ^ v8 ^ [v9 hash];
-  v11 = [(IDSQueryKeyTransparencyContext *)self ktOptIn];
+  ticket = [(IDSQueryKeyTransparencyContext *)self ticket];
+  v4 = [ticket hash];
+  verifierResult = [(IDSQueryKeyTransparencyContext *)self verifierResult];
+  v6 = [verifierResult hash] ^ v4;
+  accountKey = [(IDSQueryKeyTransparencyContext *)self accountKey];
+  v8 = [accountKey hash];
+  queryResponseTime = [(IDSQueryKeyTransparencyContext *)self queryResponseTime];
+  v10 = v6 ^ v8 ^ [queryResponseTime hash];
+  ktOptIn = [(IDSQueryKeyTransparencyContext *)self ktOptIn];
 
-  return v10 ^ v11;
+  return v10 ^ ktOptIn;
 }
 
-- (IDSQueryKeyTransparencyContext)initWithCoder:(id)a3
+- (IDSQueryKeyTransparencyContext)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Ticket"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Ticket"];
   v16 = 0;
   v17 = &v16;
   v18 = 0x2050000000;
@@ -212,33 +212,33 @@ LABEL_27:
 
   v7 = v6;
   _Block_object_dispose(&v16, 8);
-  v8 = [v4 decodeObjectOfClass:v6 forKey:@"VerifierResult"];
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AccountKey"];
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"QueryResponseTime"];
-  v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"OptInStatus"];
-  v12 = [v11 unsignedIntegerValue];
+  v8 = [coderCopy decodeObjectOfClass:v6 forKey:@"VerifierResult"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AccountKey"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"QueryResponseTime"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"OptInStatus"];
+  unsignedIntegerValue = [v11 unsignedIntegerValue];
 
-  v13 = [(IDSQueryKeyTransparencyContext *)self initWithVerifierResult:v8 ticket:v5 accountKey:v9 queryResponseTime:v10 ktOptIn:v12];
+  v13 = [(IDSQueryKeyTransparencyContext *)self initWithVerifierResult:v8 ticket:v5 accountKey:v9 queryResponseTime:v10 ktOptIn:unsignedIntegerValue];
   return v13;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(IDSQueryKeyTransparencyContext *)self ticket];
-  [v4 encodeObject:v5 forKey:@"Ticket"];
+  coderCopy = coder;
+  ticket = [(IDSQueryKeyTransparencyContext *)self ticket];
+  [coderCopy encodeObject:ticket forKey:@"Ticket"];
 
-  v6 = [(IDSQueryKeyTransparencyContext *)self verifierResult];
-  [v4 encodeObject:v6 forKey:@"VerifierResult"];
+  verifierResult = [(IDSQueryKeyTransparencyContext *)self verifierResult];
+  [coderCopy encodeObject:verifierResult forKey:@"VerifierResult"];
 
-  v7 = [(IDSQueryKeyTransparencyContext *)self accountKey];
-  [v4 encodeObject:v7 forKey:@"AccountKey"];
+  accountKey = [(IDSQueryKeyTransparencyContext *)self accountKey];
+  [coderCopy encodeObject:accountKey forKey:@"AccountKey"];
 
-  v8 = [(IDSQueryKeyTransparencyContext *)self queryResponseTime];
-  [v4 encodeObject:v8 forKey:@"QueryResponseTime"];
+  queryResponseTime = [(IDSQueryKeyTransparencyContext *)self queryResponseTime];
+  [coderCopy encodeObject:queryResponseTime forKey:@"QueryResponseTime"];
 
   v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[IDSQueryKeyTransparencyContext ktOptIn](self, "ktOptIn")}];
-  [v4 encodeObject:v9 forKey:@"OptInStatus"];
+  [coderCopy encodeObject:v9 forKey:@"OptInStatus"];
 }
 
 @end

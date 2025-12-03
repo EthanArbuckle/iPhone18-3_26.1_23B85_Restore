@@ -1,20 +1,20 @@
 @interface UITableViewCellContentViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityClearTableCellChildren;
-- (void)_didRemoveSubview:(id)a3;
-- (void)didAddSubview:(id)a3;
+- (void)_didRemoveSubview:(id)subview;
+- (void)didAddSubview:(id)subview;
 @end
 
 @implementation UITableViewCellContentViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v5 = location;
   obj = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   v3 = @"UIView";
   [location[0] validateClass:@"UITableViewCellContentView" isKindOfClass:?];
   [location[0] validateClass:@"UIView" hasInstanceMethod:@"_didRemoveSubview:" withFullSignature:{"v", "@", 0}];
@@ -24,12 +24,12 @@
 - (void)_accessibilityClearTableCellChildren
 {
   v27 = *MEMORY[0x29EDCA608];
-  v25 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
     v23 = 0;
     objc_opt_class();
-    v10 = [v25 _accessibilityAncestorIsKindOf:objc_opt_class()];
+    v10 = [selfCopy _accessibilityAncestorIsKindOf:objc_opt_class()];
     v22 = __UIAccessibilityCastAsSafeCategory();
     MEMORY[0x29EDC9740](v10);
     v21 = MEMORY[0x29EDC9748](v22);
@@ -112,29 +112,29 @@ BOOL __79__UITableViewCellContentViewAccessibility__accessibilityClearTableCellC
   return v4;
 }
 
-- (void)_didRemoveSubview:(id)a3
+- (void)_didRemoveSubview:(id)subview
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3.receiver = v5;
+  objc_storeStrong(location, subview);
+  v3.receiver = selfCopy;
   v3.super_class = UITableViewCellContentViewAccessibility;
   [(UITableViewCellContentViewAccessibility *)&v3 _didRemoveSubview:location[0]];
-  [(UITableViewCellContentViewAccessibility *)v5 _accessibilityClearTableCellChildren];
+  [(UITableViewCellContentViewAccessibility *)selfCopy _accessibilityClearTableCellChildren];
   objc_storeStrong(location, 0);
 }
 
-- (void)didAddSubview:(id)a3
+- (void)didAddSubview:(id)subview
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3.receiver = v5;
+  objc_storeStrong(location, subview);
+  v3.receiver = selfCopy;
   v3.super_class = UITableViewCellContentViewAccessibility;
   [(UITableViewCellContentViewAccessibility *)&v3 didAddSubview:location[0]];
-  [(UITableViewCellContentViewAccessibility *)v5 _accessibilityClearTableCellChildren];
+  [(UITableViewCellContentViewAccessibility *)selfCopy _accessibilityClearTableCellChildren];
   objc_storeStrong(location, 0);
 }
 

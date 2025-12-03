@@ -6,99 +6,99 @@
 - (BOOL)_wantsBlackBackground;
 - (BOOL)forcesStatusBarHidden;
 - (NSString)description;
-- (SBDeviceApplicationSceneView)initWithSceneHandle:(id)a3 referenceSize:(CGSize)a4 contentOrientation:(int64_t)a5 containerOrientation:(int64_t)a6 hostRequester:(id)a7;
+- (SBDeviceApplicationSceneView)initWithSceneHandle:(id)handle referenceSize:(CGSize)size contentOrientation:(int64_t)orientation containerOrientation:(int64_t)containerOrientation hostRequester:(id)requester;
 - (UIEdgeInsets)_contentContainerEdgeInsets;
 - (double)cornerRadius;
 - (id)_adjustedOverlayViewPriorities;
 - (id)_transitionViewForHostView;
 - (id)prepareForContentRotation;
 - (int64_t)_wallpaperStyle;
-- (void)_cleanUpTransitionOverlayView:(id)a3;
-- (void)_configureSceneLiveHostView:(id)a3;
-- (void)_configureSceneLiveSnapshotView:(id)a3;
-- (void)_configureSceneSnapshot:(id)a3;
-- (void)_createClassicWrapperViewIfNecessaryForHostView:(id)a3;
+- (void)_cleanUpTransitionOverlayView:(id)view;
+- (void)_configureSceneLiveHostView:(id)view;
+- (void)_configureSceneLiveSnapshotView:(id)view;
+- (void)_configureSceneSnapshot:(id)snapshot;
+- (void)_createClassicWrapperViewIfNecessaryForHostView:(id)view;
 - (void)_createHostCounterRotationViewIfNecessary;
-- (void)_enumerateOrderedOverlayViewPriorities:(id)a3;
-- (void)_invalidateSceneLiveHostView:(id)a3;
-- (void)_layoutLiveHostView:(id)a3;
-- (void)_layoutLiveSnapshotView:(id)a3;
+- (void)_enumerateOrderedOverlayViewPriorities:(id)priorities;
+- (void)_invalidateSceneLiveHostView:(id)view;
+- (void)_layoutLiveHostView:(id)view;
+- (void)_layoutLiveSnapshotView:(id)view;
 - (void)_refresh;
-- (void)_sceneHandleDidUpdateClientSettings:(id)a3;
-- (void)_sceneHandleDidUpdateSettingsWithDiff:(id)a3 previousSettings:(id)a4;
-- (void)_setOrientation:(int64_t)a3;
+- (void)_sceneHandleDidUpdateClientSettings:(id)settings;
+- (void)_sceneHandleDidUpdateSettingsWithDiff:(id)diff previousSettings:(id)settings;
+- (void)_setOrientation:(int64_t)orientation;
 - (void)_tearDownHostCounterRotationViewIfNecessary;
 - (void)_updateDragAndDropExclusionDebugViewsIfNecessary;
 - (void)_updateEdgeProtectAndAutoHideOnHomeGrabberView;
 - (void)_updateStatusBarVisibilityForHostView;
-- (void)_windowManagementStyleDidChange:(id)a3;
-- (void)addOverlayView:(id)a3 withPriority:(int64_t)a4;
-- (void)applicationSceneCompatibilityModeAnimatingChangeTo:(int64_t)a3;
+- (void)_windowManagementStyleDidChange:(id)change;
+- (void)addOverlayView:(id)view withPriority:(int64_t)priority;
+- (void)applicationSceneCompatibilityModeAnimatingChangeTo:(int64_t)to;
 - (void)createClassicAccessoryViewIfNecessary;
-- (void)createHomeGrabberViewIfNecessaryWithSettings:(id)a3;
+- (void)createHomeGrabberViewIfNecessaryWithSettings:(id)settings;
 - (void)dealloc;
 - (void)didMoveToWindow;
-- (void)enableTransitionOverlay:(BOOL)a3;
+- (void)enableTransitionOverlay:(BOOL)overlay;
 - (void)invalidate;
 - (void)layoutSubviews;
-- (void)noteApplicationClassicPhoneSceneOrientationPreferenceChangingForUserAction:(BOOL)a3;
-- (void)removeOverlayView:(id)a3 withPriority:(int64_t)a4;
-- (void)setBackgroundView:(id)a3;
-- (void)setBounds:(CGRect)a3;
-- (void)setCornerRadius:(double)a3;
-- (void)setForcesStatusBarHidden:(BOOL)a3;
-- (void)setStatusBarAlpha:(double)a3;
-- (void)setStatusBarDescriptor:(id)a3;
+- (void)noteApplicationClassicPhoneSceneOrientationPreferenceChangingForUserAction:(BOOL)action;
+- (void)removeOverlayView:(id)view withPriority:(int64_t)priority;
+- (void)setBackgroundView:(id)view;
+- (void)setBounds:(CGRect)bounds;
+- (void)setCornerRadius:(double)radius;
+- (void)setForcesStatusBarHidden:(BOOL)hidden;
+- (void)setStatusBarAlpha:(double)alpha;
+- (void)setStatusBarDescriptor:(id)descriptor;
 - (void)tearDownHomeGrabberView;
 - (void)teardownClassicAccessoryViewIfNecessary;
-- (void)willRotateFromInterfaceOrientation:(int64_t)a3 toInterfaceOrientation:(int64_t)a4 alongsideContainerView:(id)a5 animated:(BOOL)a6;
+- (void)willRotateFromInterfaceOrientation:(int64_t)orientation toInterfaceOrientation:(int64_t)interfaceOrientation alongsideContainerView:(id)view animated:(BOOL)animated;
 @end
 
 @implementation SBDeviceApplicationSceneView
 
 - (int64_t)_wallpaperStyle
 {
-  v2 = [(SBSceneView *)self sceneHandle];
-  v3 = [v2 wallpaperStyle];
+  sceneHandle = [(SBSceneView *)self sceneHandle];
+  wallpaperStyle = [sceneHandle wallpaperStyle];
 
-  return v3;
+  return wallpaperStyle;
 }
 
 - (BOOL)_contentPrefersToDisableClipping
 {
-  v2 = [(SBSceneView *)self sceneHandle];
-  v3 = [v2 contentPrefersToDisableClipping];
+  sceneHandle = [(SBSceneView *)self sceneHandle];
+  contentPrefersToDisableClipping = [sceneHandle contentPrefersToDisableClipping];
 
-  return v3;
+  return contentPrefersToDisableClipping;
 }
 
 - (BOOL)_wantsBlackBackground
 {
-  v3 = [(SBDeviceApplicationSceneView *)self _useClassicWrapperView];
-  if (v3)
+  _useClassicWrapperView = [(SBDeviceApplicationSceneView *)self _useClassicWrapperView];
+  if (_useClassicWrapperView)
   {
     classicWrapperView = self->_classicWrapperView;
 
-    LOBYTE(v3) = [(SBDeviceApplicationSceneClassicWrapperView *)classicWrapperView wantsBlackBackground];
+    LOBYTE(_useClassicWrapperView) = [(SBDeviceApplicationSceneClassicWrapperView *)classicWrapperView wantsBlackBackground];
   }
 
-  return v3;
+  return _useClassicWrapperView;
 }
 
 - (BOOL)_useClassicWrapperView
 {
-  v2 = [(SBSceneView *)self sceneHandle];
-  v3 = [SBDeviceApplicationSceneClassicWrapperView shouldUseWrapperViewForSceneHandle:v2];
+  sceneHandle = [(SBSceneView *)self sceneHandle];
+  v3 = [SBDeviceApplicationSceneClassicWrapperView shouldUseWrapperViewForSceneHandle:sceneHandle];
 
   return v3;
 }
 
 - (BOOL)forcesStatusBarHidden
 {
-  v2 = [(SBDeviceApplicationSceneView *)self statusBarDescriptor];
-  v3 = [v2 isForcedHidden];
+  statusBarDescriptor = [(SBDeviceApplicationSceneView *)self statusBarDescriptor];
+  isForcedHidden = [statusBarDescriptor isForcedHidden];
 
-  return v3;
+  return isForcedHidden;
 }
 
 - (void)didMoveToWindow
@@ -110,8 +110,8 @@
   if (WeakRetained)
   {
     v4 = self->_snapshottingInfoAssertion;
-    v5 = [(SBSceneView *)self sceneHandle];
-    v6 = [v5 _sceneHostingInfoForSnapshottingAssertionWithView:WeakRetained];
+    sceneHandle = [(SBSceneView *)self sceneHandle];
+    v6 = [sceneHandle _sceneHostingInfoForSnapshottingAssertionWithView:WeakRetained];
     snapshottingInfoAssertion = self->_snapshottingInfoAssertion;
     self->_snapshottingInfoAssertion = v6;
 
@@ -135,13 +135,13 @@
     if (self->_hostCounterRotationView)
     {
       [(SBDeviceApplicationSceneView *)self bringSubviewToFront:?];
-      v11 = [(SBSceneView *)self orientation];
+      orientation = [(SBSceneView *)self orientation];
       v23 = 0u;
       v24 = 0u;
       v22 = 0u;
       SBFTransformFromOrientationToOrientation();
       [(SBDeviceApplicationSceneView *)self center];
-      if ((v11 - 3) >= 2)
+      if ((orientation - 3) >= 2)
       {
         v12 = v10;
       }
@@ -151,7 +151,7 @@
         v12 = v8;
       }
 
-      if ((v11 - 3) >= 2)
+      if ((orientation - 3) >= 2)
       {
         v13 = v8;
       }
@@ -302,7 +302,7 @@ void __46__SBDeviceApplicationSceneView_layoutSubviews__block_invoke(uint64_t a1
 
 - (void)_updateDragAndDropExclusionDebugViewsIfNecessary
 {
-  v2 = self;
+  selfCopy = self;
   v63 = *MEMORY[0x277D85DE8];
   multitaskingExclusionRectDebugViews = self->_multitaskingExclusionRectDebugViews;
   if (multitaskingExclusionRectDebugViews)
@@ -335,24 +335,24 @@ void __46__SBDeviceApplicationSceneView_layoutSubviews__block_invoke(uint64_t a1
       while (v6);
     }
 
-    [(NSMutableArray *)v2->_multitaskingExclusionRectDebugViews removeAllObjects];
+    [(NSMutableArray *)selfCopy->_multitaskingExclusionRectDebugViews removeAllObjects];
   }
 
   v9 = +[SBMedusaDomain rootSettings];
-  v10 = [v9 showContentDragExclusionRects];
+  showContentDragExclusionRects = [v9 showContentDragExclusionRects];
 
-  if (v10)
+  if (showContentDragExclusionRects)
   {
-    v11 = [(SBSceneView *)v2 sceneHandle];
-    v12 = [v11 sceneIfExists];
+    sceneHandle = [(SBSceneView *)selfCopy sceneHandle];
+    sceneIfExists = [sceneHandle sceneIfExists];
 
-    if (v12)
+    if (sceneIfExists)
     {
-      v13 = [v12 clientSettings];
-      if ([v13 isUISubclass])
+      clientSettings = [sceneIfExists clientSettings];
+      if ([clientSettings isUISubclass])
       {
-        v50 = v13;
-        [v13 multitaskingDragExclusionRects];
+        v50 = clientSettings;
+        [clientSettings multitaskingDragExclusionRects];
         v53 = 0u;
         v54 = 0u;
         v55 = 0u;
@@ -381,16 +381,16 @@ void __46__SBDeviceApplicationSceneView_layoutSubviews__block_invoke(uint64_t a1
               v25 = v24;
               v27 = v26;
               v28 = v16[356];
-              v29 = [*(v18 + 2464) mainScreen];
-              v30 = [v29 fixedCoordinateSpace];
-              v31 = [(__objc2_class *)v28 coordinateSpaceForInterfaceOrientation:1 withReferenceCoordinateSpace:v30 inOrientation:1];
+              mainScreen = [*(v18 + 2464) mainScreen];
+              fixedCoordinateSpace = [mainScreen fixedCoordinateSpace];
+              v31 = [(__objc2_class *)v28 coordinateSpaceForInterfaceOrientation:1 withReferenceCoordinateSpace:fixedCoordinateSpace inOrientation:1];
 
               v32 = v16[356];
-              v33 = [v12 settings];
-              [v33 frame];
+              settings = [sceneIfExists settings];
+              [settings frame];
               v34 = [(__objc2_class *)v32 coordinateSpaceForFrame:v31 withinCoordinateSpace:?];
 
-              [(SBDeviceApplicationSceneView *)v2 convertRect:v34 fromCoordinateSpace:v21, v23, v25, v27];
+              [(SBDeviceApplicationSceneView *)selfCopy convertRect:v34 fromCoordinateSpace:v21, v23, v25, v27];
               x = v64.origin.x;
               y = v64.origin.y;
               width = v64.size.width;
@@ -399,17 +399,17 @@ void __46__SBDeviceApplicationSceneView_layoutSubviews__block_invoke(uint64_t a1
               {
                 v39 = v17;
                 v40 = v16;
-                v41 = v12;
+                v41 = sceneIfExists;
                 v42 = [objc_alloc(MEMORY[0x277D65F80]) initWithFrame:{x, y, width, height}];
-                v43 = [v42 layer];
-                [v43 setAllowsHitTesting:0];
+                layer = [v42 layer];
+                [layer setAllowsHitTesting:0];
 
-                v44 = [MEMORY[0x277D75348] redColor];
-                [v44 colorWithAlphaComponent:0.5];
-                v46 = v45 = v2;
+                redColor = [MEMORY[0x277D75348] redColor];
+                [redColor colorWithAlphaComponent:0.5];
+                v46 = v45 = selfCopy;
                 [v42 setBackgroundColor:v46];
 
-                v2 = v45;
+                selfCopy = v45;
                 v47 = v45->_multitaskingExclusionRectDebugViews;
                 if (!v47)
                 {
@@ -423,7 +423,7 @@ void __46__SBDeviceApplicationSceneView_layoutSubviews__block_invoke(uint64_t a1
                 [(NSMutableArray *)v47 addObject:v42];
                 [(SBDeviceApplicationSceneView *)v45 addSubview:v42];
 
-                v12 = v41;
+                sceneIfExists = v41;
                 v16 = v40;
                 v17 = v39;
                 v18 = 0x277D75000;
@@ -440,93 +440,93 @@ void __46__SBDeviceApplicationSceneView_layoutSubviews__block_invoke(uint64_t a1
           while (v15);
         }
 
-        v13 = v50;
+        clientSettings = v50;
       }
     }
   }
 
   else
   {
-    v12 = v2->_multitaskingExclusionRectDebugViews;
-    v2->_multitaskingExclusionRectDebugViews = 0;
+    sceneIfExists = selfCopy->_multitaskingExclusionRectDebugViews;
+    selfCopy->_multitaskingExclusionRectDebugViews = 0;
   }
 }
 
 - (void)_updateStatusBarVisibilityForHostView
 {
-  v3 = [(SBSceneView *)self sceneHandle];
-  v4 = [v3 sceneIfExists];
+  sceneHandle = [(SBSceneView *)self sceneHandle];
+  sceneIfExists = [sceneHandle sceneIfExists];
 
   if (self->_statusBarLayerTarget)
   {
-    v5 = [(SBSceneView *)self presenter];
+    presenter = [(SBSceneView *)self presenter];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __69__SBDeviceApplicationSceneView__updateStatusBarVisibilityForHostView__block_invoke;
     v12[3] = &unk_2783A9210;
     v12[4] = self;
-    [v5 modifyPresentationContext:v12];
+    [presenter modifyPresentationContext:v12];
   }
 
-  v6 = [v4 clientSettings];
-  v7 = [v6 statusBarContextID];
+  clientSettings = [sceneIfExists clientSettings];
+  statusBarContextID = [clientSettings statusBarContextID];
 
-  if (v7)
+  if (statusBarContextID)
   {
-    v8 = [MEMORY[0x277D75968] targetForContextID:v7];
+    v8 = [MEMORY[0x277D75968] targetForContextID:statusBarContextID];
     statusBarLayerTarget = self->_statusBarLayerTarget;
     self->_statusBarLayerTarget = v8;
 
-    v10 = [(SBSceneView *)self presenter];
+    presenter2 = [(SBSceneView *)self presenter];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __69__SBDeviceApplicationSceneView__updateStatusBarVisibilityForHostView__block_invoke_2;
     v11[3] = &unk_2783A9210;
     v11[4] = self;
-    [v10 modifyPresentationContext:v11];
+    [presenter2 modifyPresentationContext:v11];
   }
 }
 
 - (BOOL)_sceneDrivesOwnRotation
 {
-  v2 = [(SBSceneView *)self sceneHandle];
-  v3 = [v2 _interfaceOrientationMode] == 100;
+  sceneHandle = [(SBSceneView *)self sceneHandle];
+  v3 = [sceneHandle _interfaceOrientationMode] == 100;
 
   return v3;
 }
 
 - (void)_updateEdgeProtectAndAutoHideOnHomeGrabberView
 {
-  v7 = [(SBDeviceApplicationSceneView *)self homeGrabberView];
-  v3 = [(SBSceneView *)self sceneHandle];
-  v4 = [v3 isAutoHideEnabledForHomeAffordance];
+  homeGrabberView = [(SBDeviceApplicationSceneView *)self homeGrabberView];
+  sceneHandle = [(SBSceneView *)self sceneHandle];
+  isAutoHideEnabledForHomeAffordance = [sceneHandle isAutoHideEnabledForHomeAffordance];
 
   grabberSettings = self->_grabberSettings;
-  if (v4)
+  if (isAutoHideEnabledForHomeAffordance)
   {
     [(SBFHomeGrabberSettings *)grabberSettings autoHideTimeOnAppRequest];
-    [v7 turnOnAutoHideWithInitialDelay:?];
+    [homeGrabberView turnOnAutoHideWithInitialDelay:?];
   }
 
   else
   {
     [(SBFHomeGrabberSettings *)grabberSettings delayForUnhideOnAppRequest];
-    [v7 turnOffAutoHideWithDelay:?];
+    [homeGrabberView turnOffAutoHideWithDelay:?];
   }
 
-  v6 = [(SBSceneView *)self sceneHandle];
-  [v7 setEdgeProtectEnabled:{objc_msgSend(v6, "isEdgeProtectEnabledForHomeGesture")}];
+  sceneHandle2 = [(SBSceneView *)self sceneHandle];
+  [homeGrabberView setEdgeProtectEnabled:{objc_msgSend(sceneHandle2, "isEdgeProtectEnabledForHomeGesture")}];
 }
 
 - (void)createClassicAccessoryViewIfNecessary
 {
   if (!self->_classicAccessoryView)
   {
-    v3 = [(SBSceneView *)self sceneHandle];
-    v4 = [v3 application];
-    v5 = [v4 classicAppPhoneAppRunningOnPad];
+    sceneHandle = [(SBSceneView *)self sceneHandle];
+    application = [sceneHandle application];
+    classicAppPhoneAppRunningOnPad = [application classicAppPhoneAppRunningOnPad];
 
-    if (v5)
+    if (classicAppPhoneAppRunningOnPad)
     {
       v6 = [SBDeviceApplicationSceneClassicAccessoryView alloc];
       [(SBDeviceApplicationSceneView *)self bounds];
@@ -534,8 +534,8 @@ void __46__SBDeviceApplicationSceneView_layoutSubviews__block_invoke(uint64_t a1
       v10 = v9;
       v12 = v11;
       v14 = v13;
-      v15 = [(SBSceneView *)self sceneHandle];
-      v16 = [(SBDeviceApplicationSceneClassicAccessoryView *)v6 initWithFrame:v15 sceneHandle:v8, v10, v12, v14];
+      sceneHandle2 = [(SBSceneView *)self sceneHandle];
+      v16 = [(SBDeviceApplicationSceneClassicAccessoryView *)v6 initWithFrame:sceneHandle2 sceneHandle:v8, v10, v12, v14];
       classicAccessoryView = self->_classicAccessoryView;
       self->_classicAccessoryView = v16;
 
@@ -552,91 +552,91 @@ void __46__SBDeviceApplicationSceneView_layoutSubviews__block_invoke(uint64_t a1
   classicWrapperView = self->_classicWrapperView;
   if (classicWrapperView)
   {
-    v3 = classicWrapperView;
+    _transitionViewForHostView = classicWrapperView;
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = SBDeviceApplicationSceneView;
-    v3 = [(SBSceneView *)&v5 _transitionViewForHostView];
+    _transitionViewForHostView = [(SBSceneView *)&v5 _transitionViewForHostView];
   }
 
-  return v3;
+  return _transitionViewForHostView;
 }
 
-- (SBDeviceApplicationSceneView)initWithSceneHandle:(id)a3 referenceSize:(CGSize)a4 contentOrientation:(int64_t)a5 containerOrientation:(int64_t)a6 hostRequester:(id)a7
+- (SBDeviceApplicationSceneView)initWithSceneHandle:(id)handle referenceSize:(CGSize)size contentOrientation:(int64_t)orientation containerOrientation:(int64_t)containerOrientation hostRequester:(id)requester
 {
-  height = a4.height;
-  width = a4.width;
-  v14 = a3;
-  v15 = a7;
-  if (([v14 isDeviceApplicationSceneHandle] & 1) == 0)
+  height = size.height;
+  width = size.width;
+  handleCopy = handle;
+  requesterCopy = requester;
+  if (([handleCopy isDeviceApplicationSceneHandle] & 1) == 0)
   {
     [SBDeviceApplicationSceneView initWithSceneHandle:a2 referenceSize:self contentOrientation:? containerOrientation:? hostRequester:?];
   }
 
   v51.receiver = self;
   v51.super_class = SBDeviceApplicationSceneView;
-  v16 = [(SBApplicationSceneView *)&v51 initWithSceneHandle:v14 referenceSize:a5 contentOrientation:a6 containerOrientation:v15 hostRequester:width, height];
-  if (v16)
+  height = [(SBApplicationSceneView *)&v51 initWithSceneHandle:handleCopy referenceSize:orientation contentOrientation:containerOrientation containerOrientation:requesterCopy hostRequester:width, height];
+  if (height)
   {
     v17 = [[SBApplicationSceneViewStatusBarDescriptor alloc] initWithForceHidden:0];
-    statusBarDescriptor = v16->_statusBarDescriptor;
-    v16->_statusBarDescriptor = v17;
+    statusBarDescriptor = height->_statusBarDescriptor;
+    height->_statusBarDescriptor = v17;
 
-    v16->_statusBarAlpha = 1.0;
+    height->_statusBarAlpha = 1.0;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v19 = [v14 placeholderContentProvider];
-      [(SBSceneView *)v16 setPlaceholderContentProvider:v19];
+      placeholderContentProvider = [handleCopy placeholderContentProvider];
+      [(SBSceneView *)height setPlaceholderContentProvider:placeholderContentProvider];
     }
 
-    v20 = [(SBSceneView *)v16 placeholderContentProvider];
+    placeholderContentProvider2 = [(SBSceneView *)height placeholderContentProvider];
 
-    if (!v20)
+    if (!placeholderContentProvider2)
     {
       v21 = [SBDeviceApplicationSceneViewPlaceholderContentViewProvider alloc];
-      v22 = [v14 application];
-      v23 = [(SBDeviceApplicationSceneViewPlaceholderContentViewProvider *)v21 initWithApplication:v22];
-      [(SBSceneView *)v16 setPlaceholderContentProvider:v23];
+      application = [handleCopy application];
+      v23 = [(SBDeviceApplicationSceneViewPlaceholderContentViewProvider *)v21 initWithApplication:application];
+      [(SBSceneView *)height setPlaceholderContentProvider:v23];
     }
 
     v24 = [SBApplicationSceneBackgroundView alloc];
-    [(SBDeviceApplicationSceneView *)v16 bounds];
+    [(SBDeviceApplicationSceneView *)height bounds];
     v25 = [(SBApplicationSceneBackgroundView *)v24 initWithFrame:?];
-    [(SBApplicationSceneBackgroundView *)v25 setWallpaperStyle:[(SBDeviceApplicationSceneView *)v16 _wallpaperStyle]];
-    [(SBDeviceApplicationSceneView *)v16 setBackgroundView:v25];
-    v26 = [MEMORY[0x277D65E80] rootSettings];
-    grabberSettings = v16->_grabberSettings;
-    v16->_grabberSettings = v26;
+    [(SBApplicationSceneBackgroundView *)v25 setWallpaperStyle:[(SBDeviceApplicationSceneView *)height _wallpaperStyle]];
+    [(SBDeviceApplicationSceneView *)height setBackgroundView:v25];
+    rootSettings = [MEMORY[0x277D65E80] rootSettings];
+    grabberSettings = height->_grabberSettings;
+    height->_grabberSettings = rootSettings;
 
     v28 = +[SBMedusaDomain rootSettings];
-    medusaSettings = v16->_medusaSettings;
-    v16->_medusaSettings = v28;
+    medusaSettings = height->_medusaSettings;
+    height->_medusaSettings = v28;
 
-    objc_initWeak(&location, v16);
+    objc_initWeak(&location, height);
     v30 = objc_alloc_init(MEMORY[0x277D67978]);
-    sceneHandleObserver = v16->_sceneHandleObserver;
-    v16->_sceneHandleObserver = v30;
+    sceneHandleObserver = height->_sceneHandleObserver;
+    height->_sceneHandleObserver = v30;
 
-    [v14 addObserver:v16->_sceneHandleObserver];
-    v32 = v16->_sceneHandleObserver;
+    [handleCopy addObserver:height->_sceneHandleObserver];
+    v32 = height->_sceneHandleObserver;
     v48[0] = MEMORY[0x277D85DD0];
     v48[1] = 3221225472;
     v48[2] = __120__SBDeviceApplicationSceneView_initWithSceneHandle_referenceSize_contentOrientation_containerOrientation_hostRequester___block_invoke;
     v48[3] = &unk_2783B3BA0;
     objc_copyWeak(&v49, &location);
     v33 = [(SBSceneHandleBlockObserver *)v32 observeCreate:v48];
-    v34 = v16->_sceneHandleObserver;
+    v34 = height->_sceneHandleObserver;
     v46[0] = MEMORY[0x277D85DD0];
     v46[1] = 3221225472;
     v46[2] = __120__SBDeviceApplicationSceneView_initWithSceneHandle_referenceSize_contentOrientation_containerOrientation_hostRequester___block_invoke_12;
     v46[3] = &unk_2783B3BC8;
     objc_copyWeak(&v47, &location);
     v35 = [(SBSceneHandleBlockObserver *)v34 observeDidUpdateClientSettings:v46];
-    v36 = v16->_sceneHandleObserver;
+    v36 = height->_sceneHandleObserver;
     v41 = MEMORY[0x277D85DD0];
     v42 = 3221225472;
     v43 = __120__SBDeviceApplicationSceneView_initWithSceneHandle_referenceSize_contentOrientation_containerOrientation_hostRequester___block_invoke_2;
@@ -644,10 +644,10 @@ void __46__SBDeviceApplicationSceneView_layoutSubviews__block_invoke(uint64_t a1
     objc_copyWeak(&v45, &location);
     v37 = [(SBSceneHandleBlockObserver *)v36 observeDidUpdateSettings:&v41];
     v38 = [SBMedusaDomain rootSettings:v41];
-    [v38 addKeyObserver:v16];
+    [v38 addKeyObserver:height];
 
-    v39 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v39 addObserver:v16 selector:sel__windowManagementStyleDidChange_ name:@"SBSwitcherControllerWindowManagementStyleDidChangeNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:height selector:sel__windowManagementStyleDidChange_ name:@"SBSwitcherControllerWindowManagementStyleDidChangeNotification" object:0];
 
     objc_destroyWeak(&v45);
     objc_destroyWeak(&v47);
@@ -655,7 +655,7 @@ void __46__SBDeviceApplicationSceneView_layoutSubviews__block_invoke(uint64_t a1
     objc_destroyWeak(&location);
   }
 
-  return v16;
+  return height;
 }
 
 void __120__SBDeviceApplicationSceneView_initWithSceneHandle_referenceSize_contentOrientation_containerOrientation_hostRequester___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -710,19 +710,19 @@ void __120__SBDeviceApplicationSceneView_initWithSceneHandle_referenceSize_conte
   v3 = +[SBMedusaDomain rootSettings];
   [v3 removeKeyObserver:self];
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v5.receiver = self;
   v5.super_class = SBDeviceApplicationSceneView;
   [(SBSceneView *)&v5 dealloc];
 }
 
-- (void)setBackgroundView:(id)a3
+- (void)setBackgroundView:(id)view
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  viewCopy = view;
+  v5 = viewCopy;
+  if (!viewCopy)
   {
     v6 = [SBApplicationSceneBackgroundView alloc];
     [(SBDeviceApplicationSceneView *)self bounds];
@@ -731,14 +731,14 @@ void __120__SBDeviceApplicationSceneView_initWithSceneHandle_referenceSize_conte
 
   if (objc_opt_respondsToSelector())
   {
-    [(SBApplicationSceneBackgroundView *)v4 setWallpaperStyle:[(SBDeviceApplicationSceneView *)self _wallpaperStyle]];
+    [(SBApplicationSceneBackgroundView *)viewCopy setWallpaperStyle:[(SBDeviceApplicationSceneView *)self _wallpaperStyle]];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v7 = [(SBSceneView *)self sceneHandle];
-    v8 = [v7 application];
-    -[SBApplicationSceneBackgroundView setNeedsClassicModeBackground:](v4, "setNeedsClassicModeBackground:", [v8 isClassic]);
+    sceneHandle = [(SBSceneView *)self sceneHandle];
+    application = [sceneHandle application];
+    -[SBApplicationSceneBackgroundView setNeedsClassicModeBackground:](viewCopy, "setNeedsClassicModeBackground:", [application isClassic]);
   }
 
   v9.receiver = self;
@@ -746,18 +746,18 @@ void __120__SBDeviceApplicationSceneView_initWithSceneHandle_referenceSize_conte
   [(SBSceneView *)&v9 setBackgroundView:v5];
 }
 
-- (void)addOverlayView:(id)a3 withPriority:(int64_t)a4
+- (void)addOverlayView:(id)view withPriority:(int64_t)priority
 {
-  v6 = a3;
-  if (v6)
+  viewCopy = view;
+  if (viewCopy)
   {
     overlayViewsByPriority = self->_overlayViewsByPriority;
-    v22 = v6;
-    v8 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+    v22 = viewCopy;
+    v8 = [MEMORY[0x277CCABB0] numberWithInteger:priority];
     v9 = [(NSMutableDictionary *)overlayViewsByPriority objectForKeyedSubscript:v8];
     v10 = [v9 containsObject:v22];
 
-    v6 = v22;
+    viewCopy = v22;
     if ((v10 & 1) == 0)
     {
       v11 = self->_overlayViewsByPriority;
@@ -770,79 +770,79 @@ void __120__SBDeviceApplicationSceneView_initWithSceneHandle_referenceSize_conte
         v11 = self->_overlayViewsByPriority;
       }
 
-      v14 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+      v14 = [MEMORY[0x277CCABB0] numberWithInteger:priority];
       v15 = [(NSMutableDictionary *)v11 objectForKeyedSubscript:v14];
 
       if (!v15)
       {
         v16 = objc_alloc_init(MEMORY[0x277CBEB18]);
         v17 = self->_overlayViewsByPriority;
-        v18 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+        v18 = [MEMORY[0x277CCABB0] numberWithInteger:priority];
         [(NSMutableDictionary *)v17 setObject:v16 forKeyedSubscript:v18];
       }
 
       v19 = self->_overlayViewsByPriority;
-      v20 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+      v20 = [MEMORY[0x277CCABB0] numberWithInteger:priority];
       v21 = [(NSMutableDictionary *)v19 objectForKeyedSubscript:v20];
       [v21 addObject:v22];
 
       [(SBDeviceApplicationSceneView *)self addSubview:v22];
       [(SBDeviceApplicationSceneView *)self setNeedsLayout];
       [(SBDeviceApplicationSceneView *)self layoutIfNeeded];
-      v6 = v22;
+      viewCopy = v22;
     }
   }
 }
 
-- (void)removeOverlayView:(id)a3 withPriority:(int64_t)a4
+- (void)removeOverlayView:(id)view withPriority:(int64_t)priority
 {
-  v6 = a3;
-  if (v6)
+  viewCopy = view;
+  if (viewCopy)
   {
     overlayViewsByPriority = self->_overlayViewsByPriority;
-    v22 = v6;
-    v8 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+    v22 = viewCopy;
+    v8 = [MEMORY[0x277CCABB0] numberWithInteger:priority];
     v9 = [(NSMutableDictionary *)overlayViewsByPriority objectForKeyedSubscript:v8];
     v10 = [v9 containsObject:v22];
 
-    v6 = v22;
+    viewCopy = v22;
     if (v10)
     {
       [v22 removeFromSuperview];
       v11 = self->_overlayViewsByPriority;
-      v12 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+      v12 = [MEMORY[0x277CCABB0] numberWithInteger:priority];
       v13 = [(NSMutableDictionary *)v11 objectForKeyedSubscript:v12];
       [v13 removeObject:v22];
 
       v14 = self->_overlayViewsByPriority;
-      v15 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+      v15 = [MEMORY[0x277CCABB0] numberWithInteger:priority];
       v16 = [(NSMutableDictionary *)v14 objectForKeyedSubscript:v15];
       v17 = [v16 count];
 
       if (!v17)
       {
         v18 = self->_overlayViewsByPriority;
-        v19 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+        v19 = [MEMORY[0x277CCABB0] numberWithInteger:priority];
         [(NSMutableDictionary *)v18 removeObjectForKey:v19];
       }
 
       v20 = [(NSMutableDictionary *)self->_overlayViewsByPriority count];
-      v6 = v22;
+      viewCopy = v22;
       if (!v20)
       {
         v21 = self->_overlayViewsByPriority;
         self->_overlayViewsByPriority = 0;
 
-        v6 = v22;
+        viewCopy = v22;
       }
     }
   }
 }
 
-- (void)enableTransitionOverlay:(BOOL)a3
+- (void)enableTransitionOverlay:(BOOL)overlay
 {
   transitionOverlayView = self->_transitionOverlayView;
-  if (a3)
+  if (overlay)
   {
     if (!transitionOverlayView)
     {
@@ -882,10 +882,10 @@ void __56__SBDeviceApplicationSceneView_enableTransitionOverlay___block_invoke(u
   [WeakRetained _cleanUpTransitionOverlayView:v3];
 }
 
-- (void)_cleanUpTransitionOverlayView:(id)a3
+- (void)_cleanUpTransitionOverlayView:(id)view
 {
   transitionOverlayView = self->_transitionOverlayView;
-  if (transitionOverlayView == a3)
+  if (transitionOverlayView == view)
   {
     [(_UITransitionOverlayView *)transitionOverlayView removeFromSuperview];
     v5 = self->_transitionOverlayView;
@@ -893,13 +893,13 @@ void __56__SBDeviceApplicationSceneView_enableTransitionOverlay___block_invoke(u
   }
 }
 
-- (void)setForcesStatusBarHidden:(BOOL)a3
+- (void)setForcesStatusBarHidden:(BOOL)hidden
 {
-  v3 = a3;
-  if ([(SBDeviceApplicationSceneView *)self forcesStatusBarHidden]!= a3)
+  hiddenCopy = hidden;
+  if ([(SBDeviceApplicationSceneView *)self forcesStatusBarHidden]!= hidden)
   {
-    v5 = [(SBDeviceApplicationSceneView *)self statusBarDescriptor];
-    [v5 setForceHidden:v3];
+    statusBarDescriptor = [(SBDeviceApplicationSceneView *)self statusBarDescriptor];
+    [statusBarDescriptor setForceHidden:hiddenCopy];
 
     if ([(SBSceneView *)self effectiveDisplayMode]== 4)
     {
@@ -909,28 +909,28 @@ void __56__SBDeviceApplicationSceneView_enableTransitionOverlay___block_invoke(u
   }
 }
 
-- (void)setStatusBarDescriptor:(id)a3
+- (void)setStatusBarDescriptor:(id)descriptor
 {
-  v5 = a3;
-  if (self->_statusBarDescriptor != v5)
+  descriptorCopy = descriptor;
+  if (self->_statusBarDescriptor != descriptorCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_statusBarDescriptor, a3);
+    v7 = descriptorCopy;
+    objc_storeStrong(&self->_statusBarDescriptor, descriptor);
     v6 = [(SBSceneView *)self effectiveDisplayMode]== 4;
-    v5 = v7;
+    descriptorCopy = v7;
     if (v6)
     {
       [(SBDeviceApplicationSceneView *)self _updateStatusBarVisibilityForHostView];
-      v5 = v7;
+      descriptorCopy = v7;
     }
   }
 }
 
-- (void)setStatusBarAlpha:(double)a3
+- (void)setStatusBarAlpha:(double)alpha
 {
-  if (self->_statusBarAlpha != a3)
+  if (self->_statusBarAlpha != alpha)
   {
-    self->_statusBarAlpha = a3;
+    self->_statusBarAlpha = alpha;
     if ([(SBSceneView *)self effectiveDisplayMode]== 4)
     {
 
@@ -939,15 +939,15 @@ void __56__SBDeviceApplicationSceneView_enableTransitionOverlay___block_invoke(u
   }
 }
 
-- (void)createHomeGrabberViewIfNecessaryWithSettings:(id)a3
+- (void)createHomeGrabberViewIfNecessaryWithSettings:(id)settings
 {
   v23 = *MEMORY[0x277D85DE8];
   if (!self->_grabberRotationView)
   {
-    v4 = a3;
+    settingsCopy = settings;
     v5 = [SBHomeGrabberRotationView alloc];
     [(SBDeviceApplicationSceneView *)self bounds];
-    v6 = [(SBHomeGrabberRotationView *)v5 initWithFrame:v4 settings:?];
+    v6 = [(SBHomeGrabberRotationView *)v5 initWithFrame:settingsCopy settings:?];
 
     grabberRotationView = self->_grabberRotationView;
     self->_grabberRotationView = v6;
@@ -958,21 +958,21 @@ void __56__SBDeviceApplicationSceneView_enableTransitionOverlay___block_invoke(u
     {
       self->_grabberLivesInCounterRotationView = 1;
       [(_UIDirectionalRotationView *)self->_hostCounterRotationView addSubview:self->_grabberRotationView];
-      v8 = [(SBSceneView *)self sceneHandle];
-      v9 = [v8 sceneIfExists];
-      v10 = [v9 uiClientSettings];
+      sceneHandle = [(SBSceneView *)self sceneHandle];
+      sceneIfExists = [sceneHandle sceneIfExists];
+      uiClientSettings = [sceneIfExists uiClientSettings];
 
-      if (v10)
+      if (uiClientSettings)
       {
-        -[SBHomeGrabberRotationView setOrientation:](self->_grabberRotationView, "setOrientation:", [v10 interfaceOrientation]);
+        -[SBHomeGrabberRotationView setOrientation:](self->_grabberRotationView, "setOrientation:", [uiClientSettings interfaceOrientation]);
         v11 = SBLogHomeAffordance();
         if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
         {
-          v12 = [(SBDeviceApplicationSceneView *)self homeGrabberView];
+          homeGrabberView = [(SBDeviceApplicationSceneView *)self homeGrabberView];
           [(SBHomeGrabberRotationView *)self->_grabberRotationView orientation];
           v13 = BSInterfaceOrientationDescription();
           *buf = 134218242;
-          v20 = v12;
+          v20 = homeGrabberView;
           v21 = 2114;
           v22 = v13;
           _os_log_impl(&dword_21ED4E000, v11, OS_LOG_TYPE_INFO, "grabber=%p initializing affordance orientation to %{public}@", buf, 0x16u);
@@ -986,15 +986,15 @@ void __56__SBDeviceApplicationSceneView_enableTransitionOverlay___block_invoke(u
       [(SBDeviceApplicationSceneView *)self addSubview:self->_grabberRotationView];
     }
 
-    v14 = [(SBSceneView *)self sceneHandle];
+    sceneHandle2 = [(SBSceneView *)self sceneHandle];
     v15 = MEMORY[0x277D75D18];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __77__SBDeviceApplicationSceneView_createHomeGrabberViewIfNecessaryWithSettings___block_invoke;
     v17[3] = &unk_2783A92D8;
     v17[4] = self;
-    v18 = v14;
-    v16 = v14;
+    v18 = sceneHandle2;
+    v16 = sceneHandle2;
     [v15 performWithoutAnimation:v17];
   }
 }
@@ -1042,20 +1042,20 @@ void __77__SBDeviceApplicationSceneView_createHomeGrabberViewIfNecessaryWithSett
   }
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
   v4.receiver = self;
   v4.super_class = SBDeviceApplicationSceneView;
-  [(SBDeviceApplicationSceneView *)&v4 setBounds:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(SBDeviceApplicationSceneView *)&v4 setBounds:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   [(SBSceneView *)self _updateBackgroundColor];
 }
 
 - (NSString)description
 {
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
-  v4 = [(SBApplicationSceneView *)self application];
-  v5 = [v4 bundleIdentifier];
-  v6 = [v3 appendObject:v5 withName:0];
+  application = [(SBApplicationSceneView *)self application];
+  bundleIdentifier = [application bundleIdentifier];
+  v6 = [v3 appendObject:bundleIdentifier withName:0];
 
   [(SBSceneView *)self displayMode];
   v7 = NSStringFromSBSceneViewDisplayMode();
@@ -1064,10 +1064,10 @@ void __77__SBDeviceApplicationSceneView_createHomeGrabberViewIfNecessaryWithSett
   v9 = [v3 appendBool:-[SBDeviceApplicationSceneView forcesStatusBarHidden](self withName:"forcesStatusBarHidden") ifEqualTo:{@"forceStatusBarHidden", 1}];
   [(SBDeviceApplicationSceneView *)self statusBarAlpha];
   v10 = [v3 appendFloat:@"statusBarAlpha" withName:?];
-  v11 = [v3 appendSuper];
-  v12 = [v3 build];
+  appendSuper = [v3 appendSuper];
+  build = [v3 build];
 
-  return v12;
+  return build;
 }
 
 - (void)invalidate
@@ -1090,16 +1090,16 @@ void __77__SBDeviceApplicationSceneView_createHomeGrabberViewIfNecessaryWithSett
   [(SBSceneView *)&v6 invalidate];
 }
 
-- (void)_enumerateOrderedOverlayViewPriorities:(id)a3
+- (void)_enumerateOrderedOverlayViewPriorities:(id)priorities
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  prioritiesCopy = priorities;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(SBDeviceApplicationSceneView *)self _adjustedOverlayViewPriorities];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  _adjustedOverlayViewPriorities = [(SBDeviceApplicationSceneView *)self _adjustedOverlayViewPriorities];
+  v6 = [_adjustedOverlayViewPriorities countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1111,14 +1111,14 @@ void __77__SBDeviceApplicationSceneView_createHomeGrabberViewIfNecessaryWithSett
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(_adjustedOverlayViewPriorities);
         }
 
-        v4[2](v4, [*(*(&v10 + 1) + 8 * v9++) integerValue]);
+        prioritiesCopy[2](prioritiesCopy, [*(*(&v10 + 1) + 8 * v9++) integerValue]);
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [_adjustedOverlayViewPriorities countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);
@@ -1136,30 +1136,30 @@ void __77__SBDeviceApplicationSceneView_createHomeGrabberViewIfNecessaryWithSett
   }
 }
 
-- (void)_configureSceneSnapshot:(id)a3
+- (void)_configureSceneSnapshot:(id)snapshot
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SBSceneView *)self sceneHandle];
-  v6 = [v5 sceneIfExists];
+  snapshotCopy = snapshot;
+  sceneHandle = [(SBSceneView *)self sceneHandle];
+  sceneIfExists = [sceneHandle sceneIfExists];
 
   if ([(SBDeviceApplicationSceneView *)self forcesStatusBarHidden]|| ([(SBDeviceApplicationSceneView *)self statusBarAlpha], v7 < 1.0))
   {
     v8 = MEMORY[0x277CBEB58];
-    v9 = [v4 layersToExclude];
-    v10 = [v8 setWithSet:v9];
+    layersToExclude = [snapshotCopy layersToExclude];
+    v10 = [v8 setWithSet:layersToExclude];
 
-    v11 = [v6 clientSettings];
-    v12 = [v11 statusBarContextID];
+    clientSettings = [sceneIfExists clientSettings];
+    statusBarContextID = [clientSettings statusBarContextID];
 
     v24 = 0u;
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v13 = [v6 layerManager];
-    v14 = [v13 layers];
+    layerManager = [sceneIfExists layerManager];
+    layers = [layerManager layers];
 
-    v15 = [v14 countByEnumeratingWithState:&v22 objects:v26 count:16];
+    v15 = [layers countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v15)
     {
       v16 = v15;
@@ -1170,14 +1170,14 @@ void __77__SBDeviceApplicationSceneView_createHomeGrabberViewIfNecessaryWithSett
         {
           if (*v23 != v17)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(layers);
           }
 
           v19 = *(*(&v22 + 1) + 8 * i);
-          v20 = [v19 contextID];
-          if (v20)
+          contextID = [v19 contextID];
+          if (contextID)
           {
-            v21 = v20 == v12;
+            v21 = contextID == statusBarContextID;
           }
 
           else
@@ -1192,7 +1192,7 @@ void __77__SBDeviceApplicationSceneView_createHomeGrabberViewIfNecessaryWithSett
           }
         }
 
-        v16 = [v14 countByEnumeratingWithState:&v22 objects:v26 count:16];
+        v16 = [layers countByEnumeratingWithState:&v22 objects:v26 count:16];
         if (v16)
         {
           continue;
@@ -1204,28 +1204,28 @@ void __77__SBDeviceApplicationSceneView_createHomeGrabberViewIfNecessaryWithSett
 
 LABEL_16:
 
-    [v4 setLayersToExclude:v10];
+    [snapshotCopy setLayersToExclude:v10];
   }
 }
 
 - (BOOL)_representsTranslucentContent
 {
-  v2 = [(SBSceneView *)self sceneHandle];
-  v3 = [v2 isTranslucent];
+  sceneHandle = [(SBSceneView *)self sceneHandle];
+  isTranslucent = [sceneHandle isTranslucent];
 
-  return v3;
+  return isTranslucent;
 }
 
-- (void)setCornerRadius:(double)a3
+- (void)setCornerRadius:(double)radius
 {
-  v4 = [(SBDeviceApplicationSceneView *)self layer];
-  [v4 setCornerRadius:a3];
+  layer = [(SBDeviceApplicationSceneView *)self layer];
+  [layer setCornerRadius:radius];
 }
 
 - (double)cornerRadius
 {
-  v2 = [(SBDeviceApplicationSceneView *)self layer];
-  [v2 cornerRadius];
+  layer = [(SBDeviceApplicationSceneView *)self layer];
+  [layer cornerRadius];
   v4 = v3;
 
   return v4;
@@ -1252,16 +1252,16 @@ void __69__SBDeviceApplicationSceneView__updateStatusBarVisibilityForHostView__b
   [v4 setHidden:{objc_msgSend(*(a1 + 32), "forcesStatusBarHidden")}];
 }
 
-- (void)_sceneHandleDidUpdateClientSettings:(id)a3
+- (void)_sceneHandleDidUpdateClientSettings:(id)settings
 {
-  v4 = a3;
+  settingsCopy = settings;
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
     [SBDeviceApplicationSceneView _sceneHandleDidUpdateClientSettings:];
   }
 
-  v5 = [v4 settingsDiff];
-  v6 = [v4 transitionContext];
+  settingsDiff = [settingsCopy settingsDiff];
+  transitionContext = [settingsCopy transitionContext];
   if (!self->_clientSettingsInspector)
   {
     v7 = objc_alloc_init(MEMORY[0x277D75160]);
@@ -1313,7 +1313,7 @@ void __69__SBDeviceApplicationSceneView__updateStatusBarVisibilityForHostView__b
   }
 
   [(SBDeviceApplicationSceneView *)self _updateDragAndDropExclusionDebugViewsIfNecessary];
-  [(UIApplicationSceneClientSettingsDiffInspector *)self->_clientSettingsInspector inspectDiff:v5 withContext:v6];
+  [(UIApplicationSceneClientSettingsDiffInspector *)self->_clientSettingsInspector inspectDiff:settingsDiff withContext:transitionContext];
 }
 
 void __68__SBDeviceApplicationSceneView__sceneHandleDidUpdateClientSettings___block_invoke(uint64_t a1)
@@ -1438,10 +1438,10 @@ void __68__SBDeviceApplicationSceneView__sceneHandleDidUpdateClientSettings___bl
   }
 }
 
-- (void)_sceneHandleDidUpdateSettingsWithDiff:(id)a3 previousSettings:(id)a4
+- (void)_sceneHandleDidUpdateSettingsWithDiff:(id)diff previousSettings:(id)settings
 {
-  v6 = a3;
-  v7 = a4;
+  diffCopy = diff;
+  settingsCopy = settings;
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
     [SBDeviceApplicationSceneView _sceneHandleDidUpdateSettingsWithDiff:previousSettings:];
@@ -1467,7 +1467,7 @@ void __68__SBDeviceApplicationSceneView__sceneHandleDidUpdateClientSettings___bl
     sceneSettingsInspector = self->_sceneSettingsInspector;
   }
 
-  [(UIApplicationSceneSettingsDiffInspector *)sceneSettingsInspector inspectDiff:v6 withContext:0, v12, v13, v14, v15];
+  [(UIApplicationSceneSettingsDiffInspector *)sceneSettingsInspector inspectDiff:diffCopy withContext:0, v12, v13, v14, v15];
 }
 
 void __87__SBDeviceApplicationSceneView__sceneHandleDidUpdateSettingsWithDiff_previousSettings___block_invoke(uint64_t a1)
@@ -1484,11 +1484,11 @@ void __87__SBDeviceApplicationSceneView__sceneHandleDidUpdateSettingsWithDiff_pr
 
 - (id)prepareForContentRotation
 {
-  v3 = [(SBSceneView *)self sceneHandle];
-  v4 = [v3 application];
-  v5 = [v4 classicAppPhoneAppRunningOnPad];
+  sceneHandle = [(SBSceneView *)self sceneHandle];
+  application = [sceneHandle application];
+  classicAppPhoneAppRunningOnPad = [application classicAppPhoneAppRunningOnPad];
 
-  if (v5 && ([(SBDeviceApplicationSceneClassicWrapperView *)self->_classicWrapperView setStartingOrientationForClassicPhoneAppRotation:[(SBSceneView *)self orientation]], [(SBDeviceApplicationSceneClassicWrapperView *)self->_classicWrapperView suppressLayoutUpdatesForStartOfClassicPhoneAppRotation]))
+  if (classicAppPhoneAppRunningOnPad && ([(SBDeviceApplicationSceneClassicWrapperView *)self->_classicWrapperView setStartingOrientationForClassicPhoneAppRotation:[(SBSceneView *)self orientation]], [(SBDeviceApplicationSceneClassicWrapperView *)self->_classicWrapperView suppressLayoutUpdatesForStartOfClassicPhoneAppRotation]))
   {
     v6 = [SBUIBlockAnimationController alloc];
     v9[0] = MEMORY[0x277D85DD0];
@@ -1542,27 +1542,27 @@ uint64_t __57__SBDeviceApplicationSceneView_prepareForContentRotation__block_inv
   return [v2 layoutIfNeeded];
 }
 
-- (void)willRotateFromInterfaceOrientation:(int64_t)a3 toInterfaceOrientation:(int64_t)a4 alongsideContainerView:(id)a5 animated:(BOOL)a6
+- (void)willRotateFromInterfaceOrientation:(int64_t)orientation toInterfaceOrientation:(int64_t)interfaceOrientation alongsideContainerView:(id)view animated:(BOOL)animated
 {
-  if (a6)
+  if (animated)
   {
-    v9 = [SBAnimationUtilities animationSettingsForRotationFromInterfaceOrientation:a3 toInterfaceOrientation:a4, a5];
+    view = [SBAnimationUtilities animationSettingsForRotationFromInterfaceOrientation:orientation toInterfaceOrientation:interfaceOrientation, view];
   }
 
   else
   {
-    v9 = 0;
+    view = 0;
   }
 
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __122__SBDeviceApplicationSceneView_willRotateFromInterfaceOrientation_toInterfaceOrientation_alongsideContainerView_animated___block_invoke;
   v11[3] = &unk_2783BB158;
-  v13 = a3;
-  v14 = a4;
+  orientationCopy = orientation;
+  interfaceOrientationCopy = interfaceOrientation;
   v11[4] = self;
-  v12 = v9;
-  v10 = v9;
+  v12 = view;
+  v10 = view;
   [(SBDeviceApplicationSceneView *)self _enumerateOrderedOverlayViewPriorities:v11];
 }
 
@@ -1615,7 +1615,7 @@ void __122__SBDeviceApplicationSceneView_willRotateFromInterfaceOrientation_toIn
   }
 }
 
-- (void)applicationSceneCompatibilityModeAnimatingChangeTo:(int64_t)a3
+- (void)applicationSceneCompatibilityModeAnimatingChangeTo:(int64_t)to
 {
   [(SBDeviceApplicationSceneClassicWrapperView *)self->_classicWrapperView setNeedsLayout];
   [(SBDeviceApplicationSceneView *)self setNeedsLayout];
@@ -1623,29 +1623,29 @@ void __122__SBDeviceApplicationSceneView_willRotateFromInterfaceOrientation_toIn
   [(SBDeviceApplicationSceneView *)self layoutIfNeeded];
 }
 
-- (void)noteApplicationClassicPhoneSceneOrientationPreferenceChangingForUserAction:(BOOL)a3
+- (void)noteApplicationClassicPhoneSceneOrientationPreferenceChangingForUserAction:(BOOL)action
 {
-  if (a3)
+  if (action)
   {
     [(SBDeviceApplicationSceneClassicWrapperView *)self->_classicWrapperView setSuppressLayoutUpdatesForStartOfClassicPhoneAppRotation:1];
   }
 
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 postNotificationName:@"SBClassicPhoneSceneOrientationPreferenceChanged" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"SBClassicPhoneSceneOrientationPreferenceChanged" object:0];
 }
 
-- (void)_createClassicWrapperViewIfNecessaryForHostView:(id)a3
+- (void)_createClassicWrapperViewIfNecessaryForHostView:(id)view
 {
-  v11 = a3;
-  v4 = [(SBDeviceApplicationSceneView *)self _useClassicWrapperView];
+  viewCopy = view;
+  _useClassicWrapperView = [(SBDeviceApplicationSceneView *)self _useClassicWrapperView];
   classicWrapperView = self->_classicWrapperView;
-  if (v4)
+  if (_useClassicWrapperView)
   {
     if (!classicWrapperView)
     {
       v6 = [SBDeviceApplicationSceneClassicWrapperView alloc];
-      v7 = [(SBSceneView *)self sceneHandle];
-      v8 = [(SBDeviceApplicationSceneClassicWrapperView *)v6 initWithSceneHandle:v7];
+      sceneHandle = [(SBSceneView *)self sceneHandle];
+      v8 = [(SBDeviceApplicationSceneClassicWrapperView *)v6 initWithSceneHandle:sceneHandle];
       v9 = self->_classicWrapperView;
       self->_classicWrapperView = v8;
 
@@ -1653,8 +1653,8 @@ void __122__SBDeviceApplicationSceneView_willRotateFromInterfaceOrientation_toIn
       [(SBDeviceApplicationSceneView *)self addSubview:self->_classicWrapperView];
     }
 
-    [(SBDeviceApplicationSceneView *)self _layoutLiveHostView:v11];
-    [(SBDeviceApplicationSceneClassicWrapperView *)self->_classicWrapperView addContentView:v11];
+    [(SBDeviceApplicationSceneView *)self _layoutLiveHostView:viewCopy];
+    [(SBDeviceApplicationSceneClassicWrapperView *)self->_classicWrapperView addContentView:viewCopy];
   }
 
   else
@@ -1665,78 +1665,78 @@ void __122__SBDeviceApplicationSceneView_willRotateFromInterfaceOrientation_toIn
   }
 }
 
-- (void)_windowManagementStyleDidChange:(id)a3
+- (void)_windowManagementStyleDidChange:(id)change
 {
   [(SBSceneView *)self _updateLiveViewContainment];
 
   [(SBDeviceApplicationSceneView *)self setNeedsLayout];
 }
 
-- (void)_configureSceneLiveSnapshotView:(id)a3
+- (void)_configureSceneLiveSnapshotView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   if ([(SBDeviceApplicationSceneView *)self _useClassicWrapperView])
   {
-    [(SBDeviceApplicationSceneClassicWrapperView *)self->_classicWrapperView addContentView:v4];
+    [(SBDeviceApplicationSceneClassicWrapperView *)self->_classicWrapperView addContentView:viewCopy];
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = SBDeviceApplicationSceneView;
-    [(SBSceneView *)&v5 _configureSceneLiveSnapshotView:v4];
+    [(SBSceneView *)&v5 _configureSceneLiveSnapshotView:viewCopy];
   }
 }
 
-- (void)_configureSceneLiveHostView:(id)a3
+- (void)_configureSceneLiveHostView:(id)view
 {
-  v4 = a3;
-  objc_storeWeak(&self->_currentHostView, v4);
+  viewCopy = view;
+  objc_storeWeak(&self->_currentHostView, viewCopy);
   [(SBDeviceApplicationSceneView *)self _updateStatusBarVisibilityForHostView];
   [(SBDeviceApplicationSceneView *)self createClassicAccessoryViewIfNecessary];
-  [(SBDeviceApplicationSceneView *)self _createClassicWrapperViewIfNecessaryForHostView:v4];
+  [(SBDeviceApplicationSceneView *)self _createClassicWrapperViewIfNecessaryForHostView:viewCopy];
   if (![(SBDeviceApplicationSceneView *)self _useClassicWrapperView])
   {
     v8.receiver = self;
     v8.super_class = SBDeviceApplicationSceneView;
-    [(SBSceneView *)&v8 _configureSceneLiveHostView:v4];
+    [(SBSceneView *)&v8 _configureSceneLiveHostView:viewCopy];
   }
 
   [(BSInvalidatable *)self->_snapshottingInfoAssertion invalidate];
-  v5 = [(SBSceneView *)self sceneHandle];
-  v6 = [v5 _sceneHostingInfoForSnapshottingAssertionWithView:v4];
+  sceneHandle = [(SBSceneView *)self sceneHandle];
+  v6 = [sceneHandle _sceneHostingInfoForSnapshottingAssertionWithView:viewCopy];
   snapshottingInfoAssertion = self->_snapshottingInfoAssertion;
   self->_snapshottingInfoAssertion = v6;
 }
 
-- (void)_invalidateSceneLiveHostView:(id)a3
+- (void)_invalidateSceneLiveHostView:(id)view
 {
   v5.receiver = self;
   v5.super_class = SBDeviceApplicationSceneView;
-  [(SBSceneView *)&v5 _invalidateSceneLiveHostView:a3];
+  [(SBSceneView *)&v5 _invalidateSceneLiveHostView:view];
   objc_storeWeak(&self->_currentHostView, 0);
   [(BSInvalidatable *)self->_snapshottingInfoAssertion invalidate];
   snapshottingInfoAssertion = self->_snapshottingInfoAssertion;
   self->_snapshottingInfoAssertion = 0;
 }
 
-- (void)_layoutLiveHostView:(id)a3
+- (void)_layoutLiveHostView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   WeakRetained = objc_loadWeakRetained(&self->_currentHostView);
   v7 = self->_classicWrapperView;
   v8 = v7;
-  if (!v5 || (WeakRetained ? (v9 = v7 == 0) : (v9 = 1), v9))
+  if (!viewCopy || (WeakRetained ? (v9 = v7 == 0) : (v9 = 1), v9))
   {
     v12.receiver = self;
     v12.super_class = SBDeviceApplicationSceneView;
-    [(SBSceneView *)&v12 _layoutLiveHostView:v5];
+    [(SBSceneView *)&v12 _layoutLiveHostView:viewCopy];
   }
 
   else
   {
 
-    if (WeakRetained != v5)
+    if (WeakRetained != viewCopy)
     {
       [(SBDeviceApplicationSceneView(ClassicSupport) *)a2 _layoutLiveHostView:?];
     }
@@ -1744,39 +1744,39 @@ void __122__SBDeviceApplicationSceneView_willRotateFromInterfaceOrientation_toIn
     [(SBDeviceApplicationSceneView *)self bounds];
     [(SBDeviceApplicationSceneClassicWrapperView *)v8 setFrame:?];
     [(SBDeviceApplicationSceneClassicWrapperView *)v8 layoutIfNeeded];
-    v10 = [(SBSceneView *)self backgroundView];
-    v11 = [WeakRetained backgroundView];
+    backgroundView = [(SBSceneView *)self backgroundView];
+    backgroundView2 = [WeakRetained backgroundView];
 
-    if (v11 == v10)
+    if (backgroundView2 == backgroundView)
     {
       [WeakRetained bounds];
-      [v10 setFrame:?];
+      [backgroundView setFrame:?];
     }
   }
 }
 
-- (void)_layoutLiveSnapshotView:(id)a3
+- (void)_layoutLiveSnapshotView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   if ([(SBDeviceApplicationSceneView *)self _useClassicWrapperView])
   {
-    [(SBDeviceApplicationSceneClassicWrapperView *)self->_classicWrapperView addContentView:v4];
+    [(SBDeviceApplicationSceneClassicWrapperView *)self->_classicWrapperView addContentView:viewCopy];
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = SBDeviceApplicationSceneView;
-    [(SBSceneView *)&v5 _layoutLiveSnapshotView:v4];
+    [(SBSceneView *)&v5 _layoutLiveSnapshotView:viewCopy];
   }
 }
 
-- (void)_setOrientation:(int64_t)a3
+- (void)_setOrientation:(int64_t)orientation
 {
   v5.receiver = self;
   v5.super_class = SBDeviceApplicationSceneView;
   [(SBSceneView *)&v5 _setOrientation:?];
-  [(SBDeviceApplicationSceneClassicWrapperView *)self->_classicWrapperView setOrientation:a3];
+  [(SBDeviceApplicationSceneClassicWrapperView *)self->_classicWrapperView setOrientation:orientation];
 }
 
 - (void)initWithSceneHandle:(uint64_t)a1 referenceSize:(uint64_t)a2 contentOrientation:containerOrientation:hostRequester:.cold.1(uint64_t a1, uint64_t a2)

@@ -1,46 +1,46 @@
 @interface SFCATModel
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (SFCATModel)initWithCoder:(id)a3;
-- (SFCATModel)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SFCATModel)initWithCoder:(id)coder;
+- (SFCATModel)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFCATModel
 
-- (SFCATModel)initWithProtobuf:(id)a3
+- (SFCATModel)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v14.receiver = self;
   v14.super_class = SFCATModel;
   v5 = [(SFCATModel *)&v14 init];
   if (v5)
   {
-    v6 = [v4 catIdentifier];
+    catIdentifier = [protobufCopy catIdentifier];
 
-    if (v6)
+    if (catIdentifier)
     {
-      v7 = [v4 catIdentifier];
-      [(SFCATModel *)v5 setCatIdentifier:v7];
+      catIdentifier2 = [protobufCopy catIdentifier];
+      [(SFCATModel *)v5 setCatIdentifier:catIdentifier2];
     }
 
-    v8 = [v4 bundleIdentifier];
+    bundleIdentifier = [protobufCopy bundleIdentifier];
 
-    if (v8)
+    if (bundleIdentifier)
     {
-      v9 = [v4 bundleIdentifier];
-      [(SFCATModel *)v5 setBundleIdentifier:v9];
+      bundleIdentifier2 = [protobufCopy bundleIdentifier];
+      [(SFCATModel *)v5 setBundleIdentifier:bundleIdentifier2];
     }
 
-    v10 = [v4 params];
+    params = [protobufCopy params];
 
-    if (v10)
+    if (params)
     {
-      v11 = [v4 params];
-      [(SFCATModel *)v5 setParams:v11];
+      params2 = [protobufCopy params];
+      [(SFCATModel *)v5 setParams:params2];
     }
 
     v12 = v5;
@@ -51,32 +51,32 @@
 
 - (unint64_t)hash
 {
-  v3 = [(SFCATModel *)self catIdentifier];
-  v4 = [v3 hash];
-  v5 = [(SFCATModel *)self bundleIdentifier];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(SFCATModel *)self params];
-  v8 = [v7 hash];
+  catIdentifier = [(SFCATModel *)self catIdentifier];
+  v4 = [catIdentifier hash];
+  bundleIdentifier = [(SFCATModel *)self bundleIdentifier];
+  v6 = [bundleIdentifier hash] ^ v4;
+  params = [(SFCATModel *)self params];
+  v8 = [params hash];
 
   return v6 ^ v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
 
   else
   {
-    if ([(SFCATModel *)v5 isMemberOfClass:objc_opt_class()])
+    if ([(SFCATModel *)equalCopy isMemberOfClass:objc_opt_class()])
     {
-      v6 = v5;
-      v7 = [(SFCATModel *)self catIdentifier];
-      v8 = [(SFCATModel *)v6 catIdentifier];
-      if ((v7 != 0) == (v8 == 0))
+      v6 = equalCopy;
+      catIdentifier = [(SFCATModel *)self catIdentifier];
+      catIdentifier2 = [(SFCATModel *)v6 catIdentifier];
+      if ((catIdentifier != 0) == (catIdentifier2 == 0))
       {
         v11 = 0;
 LABEL_30:
@@ -84,63 +84,63 @@ LABEL_30:
         goto LABEL_31;
       }
 
-      v9 = [(SFCATModel *)self catIdentifier];
-      if (v9)
+      catIdentifier3 = [(SFCATModel *)self catIdentifier];
+      if (catIdentifier3)
       {
-        v3 = [(SFCATModel *)self catIdentifier];
-        v10 = [(SFCATModel *)v6 catIdentifier];
-        if (![v3 isEqual:v10])
+        catIdentifier4 = [(SFCATModel *)self catIdentifier];
+        catIdentifier5 = [(SFCATModel *)v6 catIdentifier];
+        if (![catIdentifier4 isEqual:catIdentifier5])
         {
           v11 = 0;
           goto LABEL_28;
         }
 
-        v31 = v10;
+        v31 = catIdentifier5;
       }
 
-      v12 = [(SFCATModel *)self bundleIdentifier];
-      v13 = [(SFCATModel *)v6 bundleIdentifier];
-      v14 = v13;
-      if ((v12 != 0) == (v13 == 0))
+      bundleIdentifier = [(SFCATModel *)self bundleIdentifier];
+      bundleIdentifier2 = [(SFCATModel *)v6 bundleIdentifier];
+      v14 = bundleIdentifier2;
+      if ((bundleIdentifier != 0) == (bundleIdentifier2 == 0))
       {
 
         v11 = 0;
         goto LABEL_27;
       }
 
-      v15 = [(SFCATModel *)self bundleIdentifier];
-      if (v15)
+      bundleIdentifier3 = [(SFCATModel *)self bundleIdentifier];
+      if (bundleIdentifier3)
       {
-        v25 = v12;
-        v16 = [(SFCATModel *)self bundleIdentifier];
-        v27 = [(SFCATModel *)v6 bundleIdentifier];
-        v28 = v16;
-        if (![v16 isEqual:?])
+        v25 = bundleIdentifier;
+        bundleIdentifier4 = [(SFCATModel *)self bundleIdentifier];
+        bundleIdentifier5 = [(SFCATModel *)v6 bundleIdentifier];
+        v28 = bundleIdentifier4;
+        if (![bundleIdentifier4 isEqual:?])
         {
           v11 = 0;
-          v12 = v25;
+          bundleIdentifier = v25;
           goto LABEL_25;
         }
 
-        v29 = v15;
-        v30 = v3;
-        v12 = v25;
+        v29 = bundleIdentifier3;
+        v30 = catIdentifier4;
+        bundleIdentifier = v25;
       }
 
       else
       {
         v29 = 0;
-        v30 = v3;
+        v30 = catIdentifier4;
       }
 
-      v17 = [(SFCATModel *)self params];
-      v18 = [(SFCATModel *)v6 params];
-      if ((v17 != 0) == (v18 == 0))
+      params = [(SFCATModel *)self params];
+      params2 = [(SFCATModel *)v6 params];
+      if ((params != 0) == (params2 == 0))
       {
 
         v11 = 0;
-        v15 = v29;
-        v3 = v30;
+        bundleIdentifier3 = v29;
+        catIdentifier4 = v30;
         if (!v29)
         {
           goto LABEL_26;
@@ -149,16 +149,16 @@ LABEL_30:
 
       else
       {
-        v24 = v17;
-        v26 = v18;
-        v19 = [(SFCATModel *)self params];
-        v15 = v29;
-        if (v19)
+        v24 = params;
+        v26 = params2;
+        params3 = [(SFCATModel *)self params];
+        bundleIdentifier3 = v29;
+        if (params3)
         {
-          v23 = v19;
-          v22 = [(SFCATModel *)self params];
-          v20 = [(SFCATModel *)v6 params];
-          v11 = [v22 isEqual:?];
+          v23 = params3;
+          params4 = [(SFCATModel *)self params];
+          params5 = [(SFCATModel *)v6 params];
+          v11 = [params4 isEqual:?];
         }
 
         else
@@ -167,7 +167,7 @@ LABEL_30:
           v11 = 1;
         }
 
-        v3 = v30;
+        catIdentifier4 = v30;
         if (!v29)
         {
           goto LABEL_26;
@@ -178,8 +178,8 @@ LABEL_25:
 
 LABEL_26:
 LABEL_27:
-      v10 = v31;
-      if (!v9)
+      catIdentifier5 = v31;
+      if (!catIdentifier3)
       {
 LABEL_29:
 
@@ -199,19 +199,19 @@ LABEL_31:
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(SFCATModel *)self catIdentifier];
-  v6 = [v5 copy];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  catIdentifier = [(SFCATModel *)self catIdentifier];
+  v6 = [catIdentifier copy];
   [v4 setCatIdentifier:v6];
 
-  v7 = [(SFCATModel *)self bundleIdentifier];
-  v8 = [v7 copy];
+  bundleIdentifier = [(SFCATModel *)self bundleIdentifier];
+  v8 = [bundleIdentifier copy];
   [v4 setBundleIdentifier:v8];
 
-  v9 = [(SFCATModel *)self params];
-  v10 = [v9 copy];
+  params = [(SFCATModel *)self params];
+  v10 = [params copy];
   [v4 setParams:v10];
 
   return v4;
@@ -220,31 +220,31 @@ LABEL_31:
 - (NSData)jsonData
 {
   v2 = [[_SFPBCATModel alloc] initWithFacade:self];
-  v3 = [(_SFPBCATModel *)v2 jsonData];
+  jsonData = [(_SFPBCATModel *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBCATModel alloc] initWithFacade:self];
-  v3 = [(_SFPBCATModel *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBCATModel *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6 = [[_SFPBCATModel alloc] initWithFacade:self];
-  v5 = [(_SFPBCATModel *)v6 data];
-  [v4 encodeObject:v5 forKey:@"_backingStore"];
+  data = [(_SFPBCATModel *)v6 data];
+  [coderCopy encodeObject:data forKey:@"_backingStore"];
 }
 
-- (SFCATModel)initWithCoder:(id)a3
+- (SFCATModel)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v6 = [[_SFPBCATModel alloc] initWithData:v5];
   v7 = [(SFCATModel *)self initWithProtobuf:v6];

@@ -3,38 +3,38 @@
 + (void)load;
 - (CAFPairedDeviceList)pairedDeviceListValue;
 - (id)formattedValue;
-- (void)setPairedDeviceListValue:(id)a3;
+- (void)setPairedDeviceListValue:(id)value;
 @end
 
 @implementation CAFPairedDeviceListCharacteristic
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___CAFPairedDeviceListCharacteristic;
   objc_msgSendSuper2(&v2, sel_load);
 }
 
 - (CAFPairedDeviceList)pairedDeviceListValue
 {
-  v2 = [(CAFArrayCharacteristic *)self arrayValue];
-  v3 = [CAFPairedDeviceList pairedDeviceListWithArray:v2];
+  arrayValue = [(CAFArrayCharacteristic *)self arrayValue];
+  v3 = [CAFPairedDeviceList pairedDeviceListWithArray:arrayValue];
 
   return v3;
 }
 
-- (void)setPairedDeviceListValue:(id)a3
+- (void)setPairedDeviceListValue:(id)value
 {
-  v4 = [a3 arrayRepresentation];
-  [(CAFArrayCharacteristic *)self setArrayValue:v4];
+  arrayRepresentation = [value arrayRepresentation];
+  [(CAFArrayCharacteristic *)self setArrayValue:arrayRepresentation];
 }
 
 - (id)formattedValue
 {
-  v2 = [(CAFPairedDeviceListCharacteristic *)self pairedDeviceListValue];
-  v3 = [v2 formattedValue];
+  pairedDeviceListValue = [(CAFPairedDeviceListCharacteristic *)self pairedDeviceListValue];
+  formattedValue = [pairedDeviceListValue formattedValue];
 
-  return v3;
+  return formattedValue;
 }
 
 + (id)secondaryCharacteristicFormats

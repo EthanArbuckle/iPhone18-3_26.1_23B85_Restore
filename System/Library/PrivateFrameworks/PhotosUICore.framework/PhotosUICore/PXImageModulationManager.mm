@@ -1,15 +1,15 @@
 @interface PXImageModulationManager
-+ ($5A0616AB7869379E861635CACF312FD6)optionsForAsset:(id)a3;
-+ (double)HDRValueForAsset:(id)a3;
-+ (double)_hdrGainForAsset:(id)a3;
-+ (int64_t)_contentFormatForAsset:(id)a3;
++ ($5A0616AB7869379E861635CACF312FD6)optionsForAsset:(id)asset;
++ (double)HDRValueForAsset:(id)asset;
++ (double)_hdrGainForAsset:(id)asset;
++ (int64_t)_contentFormatForAsset:(id)asset;
 - (PXImageModulationManager)init;
-- (PXImageModulationManager)initWithRootViewController:(id)a3 mainScreen:(BOOL)a4;
+- (PXImageModulationManager)initWithRootViewController:(id)controller mainScreen:(BOOL)screen;
 - (UIViewController)rootViewController;
-- (id)_checkoutImageLayerModulatorWithOptions:(id)a3 contentType:(int64_t)a4;
-- (id)checkoutLivePhotoViewModulatorWithOptions:(id)a3;
-- (void)_didEndRequestingEDRHeadroomFactor:(double)a3;
-- (void)_didStartRequestingEDRHeadroomFactor:(double)a3;
+- (id)_checkoutImageLayerModulatorWithOptions:(id)options contentType:(int64_t)type;
+- (id)checkoutLivePhotoViewModulatorWithOptions:(id)options;
+- (void)_didEndRequestingEDRHeadroomFactor:(double)factor;
+- (void)_didStartRequestingEDRHeadroomFactor:(double)factor;
 - (void)_updateActiveIfNeeded;
 - (void)_updateCoreAnimationContext;
 - (void)_updateCurrentScreenSupportsHDRIfNeeded;
@@ -18,32 +18,32 @@
 - (void)_updateFinalRequestedEDRHeadroomFactorIfNeeded;
 - (void)_updateHDRFocusIfNeeded;
 - (void)_updateIfNeeded;
-- (void)_updateImageLayerModulator:(id)a3;
+- (void)_updateImageLayerModulator:(id)modulator;
 - (void)_updateImageLayerModulatorsIfNeeded;
 - (void)_updateImageModulationIntensityIfNeeded;
 - (void)_updateLowPowerModeEnabledIfNeeded;
 - (void)_updateRequestedEDRHeadroomFactorIfNeeded;
-- (void)checkInImageLayerModulator:(id)a3;
-- (void)checkInLivePhotoViewModulator:(id)a3;
+- (void)checkInImageLayerModulator:(id)modulator;
+- (void)checkInLivePhotoViewModulator:(id)modulator;
 - (void)dealloc;
 - (void)didPerformChanges;
 - (void)enableForTesting;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
 - (void)preferencesDidChange;
-- (void)setActive:(BOOL)a3;
-- (void)setApplicationActive:(BOOL)a3;
-- (void)setCoreAnimationContext:(id)a3;
-- (void)setCurrentScreenSupportsHDR:(BOOL)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setEnabledForTesting:(BOOL)a3;
-- (void)setHDRFocus:(double)a3;
-- (void)setImageModulationIntensity:(double)a3;
-- (void)setLowPowerModeEnabled:(BOOL)a3;
+- (void)setActive:(BOOL)active;
+- (void)setApplicationActive:(BOOL)active;
+- (void)setCoreAnimationContext:(id)context;
+- (void)setCurrentScreenSupportsHDR:(BOOL)r;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setEnabledForTesting:(BOOL)testing;
+- (void)setHDRFocus:(double)focus;
+- (void)setImageModulationIntensity:(double)intensity;
+- (void)setLowPowerModeEnabled:(BOOL)enabled;
 - (void)setNeedsEnabledUpdate;
 - (void)setNeedsHDRFocusUpdate;
 - (void)setNeedsImageModulationIntensityUpdate;
-- (void)setRequestedEDRHeadroomFactor:(double)a3;
-- (void)settings:(id)a3 changedValueForKey:(id)a4;
+- (void)setRequestedEDRHeadroomFactor:(double)factor;
+- (void)settings:(id)settings changedValueForKey:(id)key;
 @end
 
 @implementation PXImageModulationManager
@@ -65,16 +65,16 @@
   [(PXImageModulationManager *)self performChanges:v2];
 }
 
-- (void)settings:(id)a3 changedValueForKey:(id)a4
+- (void)settings:(id)settings changedValueForKey:(id)key
 {
-  v5 = a4;
+  keyCopy = key;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __56__PXImageModulationManager_settings_changedValueForKey___block_invoke;
   v7[3] = &unk_1E77498F8;
-  v8 = v5;
-  v9 = self;
-  v6 = v5;
+  v8 = keyCopy;
+  selfCopy = self;
+  v6 = keyCopy;
   [(PXImageModulationManager *)self performChanges:v7];
 }
 
@@ -95,20 +95,20 @@ uint64_t __56__PXImageModulationManager_settings_changedValueForKey___block_invo
   return result;
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v6 = a4;
-  v9 = a3;
-  if (PXRequestedEDRHeadroomFactorFilterObservationContext != a5)
+  changeCopy = change;
+  observableCopy = observable;
+  if (PXRequestedEDRHeadroomFactorFilterObservationContext != context)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"PXImageModulationManager.m" lineNumber:834 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXImageModulationManager.m" lineNumber:834 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  v10 = v9;
-  if ((v6 & 2) != 0)
+  v10 = observableCopy;
+  if ((changeCopy & 2) != 0)
   {
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
@@ -137,8 +137,8 @@ uint64_t __56__PXImageModulationManager_settings_changedValueForKey___block_invo
     v9 = 0u;
     v10 = 0u;
     v11 = 0u;
-    v3 = [(PXImageModulationManager *)self imageLayerModulators];
-    v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+    imageLayerModulators = [(PXImageModulationManager *)self imageLayerModulators];
+    v4 = [imageLayerModulators countByEnumeratingWithState:&v8 objects:v12 count:16];
     if (v4)
     {
       v5 = v4;
@@ -150,14 +150,14 @@ uint64_t __56__PXImageModulationManager_settings_changedValueForKey___block_invo
         {
           if (*v9 != v6)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(imageLayerModulators);
           }
 
           [(PXImageModulationManager *)self _updateImageLayerModulator:*(*(&v8 + 1) + 8 * v7++)];
         }
 
         while (v5 != v7);
-        v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+        v5 = [imageLayerModulators countByEnumeratingWithState:&v8 objects:v12 count:16];
       }
 
       while (v5);
@@ -170,8 +170,8 @@ uint64_t __56__PXImageModulationManager_settings_changedValueForKey___block_invo
   if (self->_needsUpdateFlags.desiredDynamicRange)
   {
     self->_needsUpdateFlags.desiredDynamicRange = 0;
-    v3 = [(PXImageModulationManager *)self enabledForTesting];
-    if (v3)
+    enabledForTesting = [(PXImageModulationManager *)self enabledForTesting];
+    if (enabledForTesting)
     {
       v8 = +[PXImageModulationSettings sharedInstance];
       [v8 deviceMaximumEDRHeadroomStops];
@@ -183,11 +183,11 @@ uint64_t __56__PXImageModulationManager_settings_changedValueForKey___block_invo
     }
 
     v5 = v4;
-    v6 = [(PXImageModulationManager *)self coreAnimationContext];
+    coreAnimationContext = [(PXImageModulationManager *)self coreAnimationContext];
     *&v7 = v5;
-    [v6 setDesiredDynamicRange:v7];
+    [coreAnimationContext setDesiredDynamicRange:v7];
 
-    if (v3)
+    if (enabledForTesting)
     {
     }
   }
@@ -198,8 +198,8 @@ uint64_t __56__PXImageModulationManager_settings_changedValueForKey___block_invo
   if (self->_needsUpdateFlags.finalRequestedEDRHeadroomFactor)
   {
     self->_needsUpdateFlags.finalRequestedEDRHeadroomFactor = 0;
-    v4 = [(PXImageModulationManager *)self requestedEDRHeadroomFactorFilter];
-    [v4 output];
+    requestedEDRHeadroomFactorFilter = [(PXImageModulationManager *)self requestedEDRHeadroomFactorFilter];
+    [requestedEDRHeadroomFactorFilter output];
     [(PXImageModulationManager *)self setRequestedEDRHeadroomFactor:?];
   }
 }
@@ -216,9 +216,9 @@ uint64_t __56__PXImageModulationManager_settings_changedValueForKey___block_invo
   v3 = 0.0;
   if ([(PXImageModulationManager *)self isEnabled]&& [(PXImageModulationManager *)self isApplicationActive])
   {
-    v4 = [(PXImageModulationManager *)self settings];
-    v5 = [v4 EDRHeadroomRequestScheme];
-    if (v5 == 2)
+    settings = [(PXImageModulationManager *)self settings];
+    eDRHeadroomRequestScheme = [settings EDRHeadroomRequestScheme];
+    if (eDRHeadroomRequestScheme == 2)
     {
       [(PXImageModulationManager *)self imageModulationIntensity];
       if (v10 <= 0.0)
@@ -229,18 +229,18 @@ uint64_t __56__PXImageModulationManager_settings_changedValueForKey___block_invo
 
     else
     {
-      if (v5 != 1)
+      if (eDRHeadroomRequestScheme != 1)
       {
-        if (v5)
+        if (eDRHeadroomRequestScheme)
         {
 LABEL_13:
-          [v4 deviceMaximumEDRHeadroomStops];
+          [settings deviceMaximumEDRHeadroomStops];
           v3 = fmin(v3, v11);
 
           goto LABEL_14;
         }
 
-        [v4 manualEDRHeadroomRequestStops];
+        [settings manualEDRHeadroomRequestStops];
 LABEL_12:
         v3 = v6;
         goto LABEL_13;
@@ -248,16 +248,16 @@ LABEL_12:
 
       [(PXImageModulationManager *)self HDRFocus];
       v8 = v7;
-      [v4 EDRHeadroomRequestHDRThreshold];
+      [settings EDRHeadroomRequestHDRThreshold];
       if (v8 < v9)
       {
 LABEL_9:
-        [v4 lowEDRRequestedHeadroomStops];
+        [settings lowEDRRequestedHeadroomStops];
         goto LABEL_12;
       }
     }
 
-    [v4 highEDRRequestedHeadroomStops];
+    [settings highEDRRequestedHeadroomStops];
     goto LABEL_12;
   }
 
@@ -271,13 +271,13 @@ LABEL_14:
     _os_log_impl(&dword_1A3C1C000, v13, OS_LOG_TYPE_DEBUG, "[ImageModulation] unfiltered requestedEDRHeadroomFactor: %f", buf, 0xCu);
   }
 
-  v14 = [(PXImageModulationManager *)self requestedEDRHeadroomFactorFilter];
+  requestedEDRHeadroomFactorFilter = [(PXImageModulationManager *)self requestedEDRHeadroomFactorFilter];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __69__PXImageModulationManager__updateRequestedEDRHeadroomFactorIfNeeded__block_invoke;
   v15[3] = &__block_descriptor_40_e33_v16__0___PXMutableNumberFilter__8l;
   *&v15[4] = v12;
-  [v14 performChanges:v15];
+  [requestedEDRHeadroomFactorFilter performChanges:v15];
 }
 
 - (void)_updateImageModulationIntensityIfNeeded
@@ -285,8 +285,8 @@ LABEL_14:
   if (self->_needsUpdateFlags.imageModulationIntensity)
   {
     self->_needsUpdateFlags.imageModulationIntensity = 0;
-    v3 = [(PXImageModulationManager *)self rootViewController];
-    [v3 px_effectiveImageModulationIntensity];
+    rootViewController = [(PXImageModulationManager *)self rootViewController];
+    [rootViewController px_effectiveImageModulationIntensity];
     v5 = v4;
 
     if (v5 != -1.79769313e308)
@@ -305,8 +305,8 @@ LABEL_14:
     v4 = 0.0;
     if ([(PXImageModulationManager *)self isActive])
     {
-      v5 = [(PXImageModulationManager *)self rootViewController];
-      [v5 px_effectiveHDRFocus];
+      rootViewController = [(PXImageModulationManager *)self rootViewController];
+      [rootViewController px_effectiveHDRFocus];
       v4 = v6;
     }
 
@@ -351,8 +351,8 @@ LABEL_14:
   if (self->_needsUpdateFlags.lowPowerModeEnabled)
   {
     self->_needsUpdateFlags.lowPowerModeEnabled = 0;
-    v4 = [MEMORY[0x1E696AE30] processInfo];
-    -[PXImageModulationManager setLowPowerModeEnabled:](self, "setLowPowerModeEnabled:", [v4 isLowPowerModeEnabled]);
+    processInfo = [MEMORY[0x1E696AE30] processInfo];
+    -[PXImageModulationManager setLowPowerModeEnabled:](self, "setLowPowerModeEnabled:", [processInfo isLowPowerModeEnabled]);
   }
 }
 
@@ -363,8 +363,8 @@ LABEL_14:
     self->_needsUpdateFlags.enabled = 0;
     if ([(PXImageModulationManager *)self isMainScreen])
     {
-      v3 = [(PXImageModulationManager *)self settings];
-      -[PXImageModulationManager setEnabled:](self, "setEnabled:", [v3 isEnabled]);
+      settings = [(PXImageModulationManager *)self settings];
+      -[PXImageModulationManager setEnabled:](self, "setEnabled:", [settings isEnabled]);
     }
 
     else
@@ -412,13 +412,13 @@ uint64_t __60__PXImageModulationManager__processInfoPowerStateDidChange___block_
   return [v1 performChanges:v3];
 }
 
-- (void)setCurrentScreenSupportsHDR:(BOOL)a3
+- (void)setCurrentScreenSupportsHDR:(BOOL)r
 {
-  if (self->_currentScreenSupportsHDR != a3)
+  if (self->_currentScreenSupportsHDR != r)
   {
     v5[5] = v3;
     v5[6] = v4;
-    self->_currentScreenSupportsHDR = a3;
+    self->_currentScreenSupportsHDR = r;
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __56__PXImageModulationManager_setCurrentScreenSupportsHDR___block_invoke;
@@ -428,18 +428,18 @@ uint64_t __60__PXImageModulationManager__processInfoPowerStateDidChange___block_
   }
 }
 
-- (void)setApplicationActive:(BOOL)a3
+- (void)setApplicationActive:(BOOL)active
 {
-  if (self->_applicationActive != a3)
+  if (self->_applicationActive != active)
   {
     v7 = v3;
     v8 = v4;
-    self->_applicationActive = a3;
+    self->_applicationActive = active;
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __49__PXImageModulationManager_setApplicationActive___block_invoke;
     v5[3] = &unk_1E774C670;
-    v6 = a3;
+    activeCopy = active;
     v5[4] = self;
     [(PXImageModulationManager *)self performChanges:v5];
   }
@@ -457,14 +457,14 @@ uint64_t __49__PXImageModulationManager_setApplicationActive___block_invoke(uint
   return [v2 _invalidateRequestedEDRHeadroomFactor];
 }
 
-- (void)setCoreAnimationContext:(id)a3
+- (void)setCoreAnimationContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   coreAnimationContext = self->_coreAnimationContext;
-  if (coreAnimationContext != v4)
+  if (coreAnimationContext != contextCopy)
   {
-    v10 = v4;
-    v6 = v4;
+    v10 = contextCopy;
+    v6 = contextCopy;
     v7 = self->_coreAnimationContext;
     self->_coreAnimationContext = v6;
     v8 = coreAnimationContext;
@@ -473,32 +473,32 @@ uint64_t __49__PXImageModulationManager_setApplicationActive___block_invoke(uint
     [(CAContext *)v8 setDesiredDynamicRange:v9];
 
     [(PXImageModulationManager *)self _invalidateDesiredDynamicRange];
-    v4 = v10;
+    contextCopy = v10;
   }
 }
 
 - (void)_updateCoreAnimationContext
 {
   v14 = *MEMORY[0x1E69E9840];
-  v3 = [(PXImageModulationManager *)self rootViewController];
-  if (v3)
+  rootViewController = [(PXImageModulationManager *)self rootViewController];
+  if (rootViewController)
   {
-    v4 = v3;
+    v4 = rootViewController;
     while (1)
     {
-      v5 = [v4 viewIfLoaded];
-      v6 = [v5 layer];
-      v7 = [v6 context];
+      viewIfLoaded = [v4 viewIfLoaded];
+      layer = [viewIfLoaded layer];
+      context = [layer context];
 
-      if (v7)
+      if (context)
       {
         break;
       }
 
-      v8 = [v4 presentedViewController];
+      presentedViewController = [v4 presentedViewController];
 
-      v4 = v8;
-      if (!v8)
+      v4 = presentedViewController;
+      if (!presentedViewController)
       {
         goto LABEL_5;
       }
@@ -508,10 +508,10 @@ uint64_t __49__PXImageModulationManager_setApplicationActive___block_invoke(uint
   else
   {
 LABEL_5:
-    v9 = [(PXImageModulationManager *)self coreAnimationContext];
-    if (v9)
+    coreAnimationContext = [(PXImageModulationManager *)self coreAnimationContext];
+    if (coreAnimationContext)
     {
-      v7 = v9;
+      context = coreAnimationContext;
       v4 = 0;
     }
 
@@ -520,40 +520,40 @@ LABEL_5:
       v10 = PLUIGetLog();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
-        v11 = [(PXImageModulationManager *)self rootViewController];
+        rootViewController2 = [(PXImageModulationManager *)self rootViewController];
         v12 = 138412290;
-        v13 = v11;
+        v13 = rootViewController2;
         _os_log_impl(&dword_1A3C1C000, v10, OS_LOG_TYPE_ERROR, "[ImageModulation] context missing for %@", &v12, 0xCu);
       }
 
       v4 = 0;
-      v7 = 0;
+      context = 0;
     }
   }
 
-  [(PXImageModulationManager *)self setCoreAnimationContext:v7];
+  [(PXImageModulationManager *)self setCoreAnimationContext:context];
 }
 
-- (void)_didEndRequestingEDRHeadroomFactor:(double)a3
+- (void)_didEndRequestingEDRHeadroomFactor:(double)factor
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v4 = log2(a3);
+  v4 = log2(factor);
   v5 = objc_alloc(MEMORY[0x1E696AEC0]);
   v6 = [MEMORY[0x1E6991F28] bucketNameForDouble:&unk_1F1910C78 bucketLimits:0 numberFormatter:v4];
   v7 = [v5 initWithFormat:@"com.apple.photos.CPAnalytics.EDRHeadroomRequested%@", v6];
 
   v8 = MEMORY[0x1E6991F28];
-  v9 = [(PXImageModulationManager *)self requestedEDRHeadroomSignpost];
+  requestedEDRHeadroomSignpost = [(PXImageModulationManager *)self requestedEDRHeadroomSignpost];
   v10 = *MEMORY[0x1E6991C98];
   v12 = *MEMORY[0x1E6991E40];
   v13[0] = v7;
   v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:&v12 count:1];
-  [v8 endSignpost:v9 forEventName:v10 withPayload:v11];
+  [v8 endSignpost:requestedEDRHeadroomSignpost forEventName:v10 withPayload:v11];
 
   [(PXImageModulationManager *)self setRequestedEDRHeadroomSignpost:0];
 }
 
-- (void)_didStartRequestingEDRHeadroomFactor:(double)a3
+- (void)_didStartRequestingEDRHeadroomFactor:(double)factor
 {
   if ([(PXImageModulationManager *)self requestedEDRHeadroomSignpost])
   {
@@ -563,10 +563,10 @@ LABEL_5:
   -[PXImageModulationManager setRequestedEDRHeadroomSignpost:](self, "setRequestedEDRHeadroomSignpost:", [MEMORY[0x1E6991F28] startSignpost]);
 }
 
-- (void)setRequestedEDRHeadroomFactor:(double)a3
+- (void)setRequestedEDRHeadroomFactor:(double)factor
 {
   v10 = *MEMORY[0x1E69E9840];
-  if (self->_requestedEDRHeadroomFactor != a3)
+  if (self->_requestedEDRHeadroomFactor != factor)
   {
     [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
     v6 = v5;
@@ -575,10 +575,10 @@ LABEL_5:
       [(PXImageModulationManager *)self _didEndRequestingEDRHeadroomFactor:?];
     }
 
-    self->_requestedEDRHeadroomFactor = a3;
-    if (a3 > 1.0)
+    self->_requestedEDRHeadroomFactor = factor;
+    if (factor > 1.0)
     {
-      [(PXImageModulationManager *)self _didStartRequestingEDRHeadroomFactor:a3];
+      [(PXImageModulationManager *)self _didStartRequestingEDRHeadroomFactor:factor];
     }
 
     self->_lastRequestedEDRHeadroomChangeTime = v6;
@@ -587,7 +587,7 @@ LABEL_5:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
       v8 = 134217984;
-      v9 = log2(a3);
+      v9 = log2(factor);
       _os_log_impl(&dword_1A3C1C000, v7, OS_LOG_TYPE_DEBUG, "[ImageModulation] requestedEDRHeadroom: %f", &v8, 0xCu);
     }
 
@@ -596,17 +596,17 @@ LABEL_5:
   }
 }
 
-- (void)setImageModulationIntensity:(double)a3
+- (void)setImageModulationIntensity:(double)intensity
 {
   v8 = *MEMORY[0x1E69E9840];
-  if (self->_imageModulationIntensity != a3)
+  if (self->_imageModulationIntensity != intensity)
   {
-    self->_imageModulationIntensity = a3;
+    self->_imageModulationIntensity = intensity;
     v5 = PLUIGetLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
       v6 = 134217984;
-      v7 = a3;
+      intensityCopy = intensity;
       _os_log_impl(&dword_1A3C1C000, v5, OS_LOG_TYPE_DEBUG, "[ImageModulation] Intensity: %0.6f", &v6, 0xCu);
     }
 
@@ -616,17 +616,17 @@ LABEL_5:
   }
 }
 
-- (void)setHDRFocus:(double)a3
+- (void)setHDRFocus:(double)focus
 {
   v8 = *MEMORY[0x1E69E9840];
-  if (self->_HDRFocus != a3)
+  if (self->_HDRFocus != focus)
   {
-    self->_HDRFocus = a3;
+    self->_HDRFocus = focus;
     v5 = PLUIGetLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
       v6 = 134217984;
-      v7 = a3;
+      focusCopy = focus;
       _os_log_impl(&dword_1A3C1C000, v5, OS_LOG_TYPE_DEBUG, "[ImageModulation] HDR Focus: %0.6f", &v6, 0xCu);
     }
 
@@ -665,18 +665,18 @@ LABEL_5:
   [(PXImageModulationManager *)self performChanges:v2];
 }
 
-- (void)_updateImageLayerModulator:(id)a3
+- (void)_updateImageLayerModulator:(id)modulator
 {
-  v4 = a3;
-  v5 = [(PXImageModulationManager *)self isActive];
+  modulatorCopy = modulator;
+  isActive = [(PXImageModulationManager *)self isActive];
   [(PXImageModulationManager *)self imageModulationIntensity];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __55__PXImageModulationManager__updateImageLayerModulator___block_invoke;
   v7[3] = &__block_descriptor_41_e48_v16__0___PXMutableImageLayerModulator_Private__8l;
-  v8 = v5;
+  v8 = isActive;
   v7[4] = v6;
-  [v4 performChanges_Private:v7];
+  [modulatorCopy performChanges_Private:v7];
 }
 
 void __55__PXImageModulationManager__updateImageLayerModulator___block_invoke(uint64_t a1, void *a2)
@@ -687,43 +687,43 @@ void __55__PXImageModulationManager__updateImageLayerModulator___block_invoke(ui
   [v4 setIntensity:*(a1 + 32)];
 }
 
-- (void)checkInLivePhotoViewModulator:(id)a3
+- (void)checkInLivePhotoViewModulator:(id)modulator
 {
-  v4 = a3;
-  [v4 performChanges_Private:&__block_literal_global_24_122448];
-  v5 = [v4 imageModulator];
-  [(PXImageModulationManager *)self checkInImageLayerModulator:v5];
+  modulatorCopy = modulator;
+  [modulatorCopy performChanges_Private:&__block_literal_global_24_122448];
+  imageModulator = [modulatorCopy imageModulator];
+  [(PXImageModulationManager *)self checkInImageLayerModulator:imageModulator];
 
-  v6 = [v4 videoModulator];
+  videoModulator = [modulatorCopy videoModulator];
 
-  [(PXImageModulationManager *)self checkInImageLayerModulator:v6];
+  [(PXImageModulationManager *)self checkInImageLayerModulator:videoModulator];
 }
 
-- (id)checkoutLivePhotoViewModulatorWithOptions:(id)a3
+- (id)checkoutLivePhotoViewModulatorWithOptions:(id)options
 {
-  v3 = *&a3.var1;
-  var0 = a3.var0;
-  v6 = [(PXImageModulationManager *)self _checkoutImageLayerModulatorWithOptions:a3.var0 contentType:*&a3.var1, 0];
+  v3 = *&options.var1;
+  var0 = options.var0;
+  v6 = [(PXImageModulationManager *)self _checkoutImageLayerModulatorWithOptions:options.var0 contentType:*&options.var1, 0];
   v7 = [(PXImageModulationManager *)self _checkoutImageLayerModulatorWithOptions:var0 contentType:v3, 1];
   v8 = [[PXLivePhotoViewModulator alloc] initWithImageModulator:v6 videoModulator:v7];
 
   return v8;
 }
 
-- (void)checkInImageLayerModulator:(id)a3
+- (void)checkInImageLayerModulator:(id)modulator
 {
-  v4 = a3;
-  [v4 performChanges_Private:&__block_literal_global_122452];
-  v5 = [(PXImageModulationManager *)self imageLayerModulators];
-  [v5 removeObject:v4];
+  modulatorCopy = modulator;
+  [modulatorCopy performChanges_Private:&__block_literal_global_122452];
+  imageLayerModulators = [(PXImageModulationManager *)self imageLayerModulators];
+  [imageLayerModulators removeObject:modulatorCopy];
 }
 
-- (id)_checkoutImageLayerModulatorWithOptions:(id)a3 contentType:(int64_t)a4
+- (id)_checkoutImageLayerModulatorWithOptions:(id)options contentType:(int64_t)type
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = options.var1;
+  var0 = options.var0;
   v22 = *MEMORY[0x1E69E9840];
-  v8 = 0;
+  filterType = 0;
   if (![(PXImageModulationManager *)self isEnabled])
   {
     var0 = 0;
@@ -733,14 +733,14 @@ void __55__PXImageModulationManager__updateImageLayerModulator___block_invoke(ui
   {
     if (var0 == 2)
     {
-      if (a4)
+      if (type)
       {
-        v8 = 1;
+        filterType = 1;
       }
 
       else
       {
-        v8 = 3;
+        filterType = 3;
       }
 
       v9 = 1;
@@ -754,33 +754,33 @@ void __55__PXImageModulationManager__updateImageLayerModulator___block_invoke(ui
       }
 
       v9 = 0;
-      v8 = 3;
+      filterType = 3;
     }
 
 LABEL_17:
     *&v17 = var0;
-    *(&v17 + 1) = v8;
+    *(&v17 + 1) = filterType;
     v18 = var1;
     v19 = 0;
     v20 = v9;
     v21 = 0;
-    v8 = [[PXImageLayerModulator alloc] initWithOptions:&v17];
-    [(PXImageModulationManager *)self _updateImageLayerModulator:v8];
-    v14 = [(PXImageModulationManager *)self imageLayerModulators];
-    [v14 addObject:v8];
+    filterType = [[PXImageLayerModulator alloc] initWithOptions:&v17];
+    [(PXImageModulationManager *)self _updateImageLayerModulator:filterType];
+    imageLayerModulators = [(PXImageModulationManager *)self imageLayerModulators];
+    [imageLayerModulators addObject:filterType];
 
     goto LABEL_18;
   }
 
   if (!var0)
   {
-    v10 = [(PXImageModulationManager *)self settings];
-    [v10 SDRModulationIntensity];
+    settings = [(PXImageModulationManager *)self settings];
+    [settings SDRModulationIntensity];
     v12 = v11;
 
     if (v12 <= 0.0)
     {
-      v8 = 0;
+      filterType = 0;
       goto LABEL_18;
     }
 
@@ -790,10 +790,10 @@ LABEL_17:
   if (var0 == 1)
   {
 LABEL_11:
-    v13 = [(PXImageModulationManager *)self settings];
-    v8 = [v13 filterType];
+    settings2 = [(PXImageModulationManager *)self settings];
+    filterType = [settings2 filterType];
 
-    if (!v8)
+    if (!filterType)
     {
       goto LABEL_18;
     }
@@ -807,18 +807,18 @@ LABEL_18:
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
   {
     LODWORD(v17) = 138412290;
-    *(&v17 + 4) = v8;
+    *(&v17 + 4) = filterType;
     _os_log_impl(&dword_1A3C1C000, v15, OS_LOG_TYPE_DEBUG, "[ImageModulation] created image layer modulator %@", &v17, 0xCu);
   }
 
-  return v8;
+  return filterType;
 }
 
-- (void)setEnabledForTesting:(BOOL)a3
+- (void)setEnabledForTesting:(BOOL)testing
 {
-  if (self->_enabledForTesting != a3)
+  if (self->_enabledForTesting != testing)
   {
-    self->_enabledForTesting = a3;
+    self->_enabledForTesting = testing;
     [(PXImageModulationManager *)self _invalidateDesiredDynamicRange];
   }
 }
@@ -833,18 +833,18 @@ LABEL_18:
   [(PXImageModulationManager *)self performChanges:v2];
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
   v7 = *MEMORY[0x1E69E9840];
-  if (self->_active != a3)
+  if (self->_active != active)
   {
-    v3 = a3;
-    self->_active = a3;
+    activeCopy = active;
+    self->_active = active;
     v5 = PLUIGetLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
       v6[0] = 67109120;
-      v6[1] = v3;
+      v6[1] = activeCopy;
       _os_log_impl(&dword_1A3C1C000, v5, OS_LOG_TYPE_DEBUG, "[ImageModulation] Active: %i", v6, 8u);
     }
 
@@ -853,18 +853,18 @@ LABEL_18:
   }
 }
 
-- (void)setLowPowerModeEnabled:(BOOL)a3
+- (void)setLowPowerModeEnabled:(BOOL)enabled
 {
   v7 = *MEMORY[0x1E69E9840];
-  if (self->_lowPowerModeEnabled != a3)
+  if (self->_lowPowerModeEnabled != enabled)
   {
-    v3 = a3;
-    self->_lowPowerModeEnabled = a3;
+    enabledCopy = enabled;
+    self->_lowPowerModeEnabled = enabled;
     v5 = PLUIGetLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
       v6[0] = 67109120;
-      v6[1] = v3;
+      v6[1] = enabledCopy;
       _os_log_impl(&dword_1A3C1C000, v5, OS_LOG_TYPE_DEBUG, "[ImageModulation] Low power mode: %i", v6, 8u);
     }
 
@@ -872,13 +872,13 @@ LABEL_18:
   }
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  if (self->_enabled != a3)
+  if (self->_enabled != enabled)
   {
     v5[5] = v3;
     v5[6] = v4;
-    self->_enabled = a3;
+    self->_enabled = enabled;
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __39__PXImageModulationManager_setEnabled___block_invoke;
@@ -900,8 +900,8 @@ uint64_t __39__PXImageModulationManager_setEnabled___block_invoke(uint64_t a1)
 {
   LODWORD(v2) = 1.0;
   [(CAContext *)self->_coreAnimationContext setDesiredDynamicRange:v2];
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   PXUnregisterPreferencesObserver(self);
   v5.receiver = self;
@@ -909,9 +909,9 @@ uint64_t __39__PXImageModulationManager_setEnabled___block_invoke(uint64_t a1)
   [(PXImageModulationManager *)&v5 dealloc];
 }
 
-- (PXImageModulationManager)initWithRootViewController:(id)a3 mainScreen:(BOOL)a4
+- (PXImageModulationManager)initWithRootViewController:(id)controller mainScreen:(BOOL)screen
 {
-  v6 = a3;
+  controllerCopy = controller;
   v17.receiver = self;
   v17.super_class = PXImageModulationManager;
   v7 = [(PXImageModulationManager *)&v17 init];
@@ -921,12 +921,12 @@ uint64_t __39__PXImageModulationManager_setEnabled___block_invoke(uint64_t a1)
     v7[105] = 1;
     *(v7 + 24) = 16843009;
     *(v7 + 99) = 16843009;
-    objc_storeWeak(v7 + 21, v6);
-    v9 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    objc_storeWeak(v7 + 21, controllerCopy);
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     v10 = *(v8 + 17);
-    *(v8 + 17) = v9;
+    *(v8 + 17) = weakObjectsHashTable;
 
-    v8[123] = a4;
+    v8[123] = screen;
     v8[121] = 1;
     *(v8 + 24) = 0x3FF0000000000000;
     v11 = [[PXRequestedEDRHeadroomFactorFilter alloc] initWithInput:*(v8 + 24)];
@@ -939,10 +939,10 @@ uint64_t __39__PXImageModulationManager_setEnabled___block_invoke(uint64_t a1)
     *(v8 + 16) = v13;
 
     [*(v8 + 16) addKeyObserver:v8];
-    v15 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v15 addObserver:v8 selector:sel__processInfoPowerStateDidChange_ name:*MEMORY[0x1E696A7D8] object:0];
-    [v15 addObserver:v8 selector:sel__applicationDidResignActive_ name:*MEMORY[0x1E69DDBC8] object:0];
-    [v15 addObserver:v8 selector:sel__applicationDidBecomeActive_ name:*MEMORY[0x1E69DDAB0] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v8 selector:sel__processInfoPowerStateDidChange_ name:*MEMORY[0x1E696A7D8] object:0];
+    [defaultCenter addObserver:v8 selector:sel__applicationDidResignActive_ name:*MEMORY[0x1E69DDBC8] object:0];
+    [defaultCenter addObserver:v8 selector:sel__applicationDidBecomeActive_ name:*MEMORY[0x1E69DDAB0] object:0];
     PXRegisterPreferencesObserver(v8);
   }
 
@@ -951,39 +951,39 @@ uint64_t __39__PXImageModulationManager_setEnabled___block_invoke(uint64_t a1)
 
 - (PXImageModulationManager)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXImageModulationManager.m" lineNumber:184 description:{@"%s is not available as initializer", "-[PXImageModulationManager init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXImageModulationManager.m" lineNumber:184 description:{@"%s is not available as initializer", "-[PXImageModulationManager init]"}];
 
   abort();
 }
 
-+ (int64_t)_contentFormatForAsset:(id)a3
++ (int64_t)_contentFormatForAsset:(id)asset
 {
-  v3 = a3;
+  assetCopy = asset;
   v4 = +[PXImageModulationSettings sharedInstance];
-  v5 = [v4 HDRConsideration];
-  if (v5 == 2)
+  hDRConsideration = [v4 HDRConsideration];
+  if (hDRConsideration == 2)
   {
-    v11 = [v3 isFavorite];
+    isFavorite = [assetCopy isFavorite];
     goto LABEL_10;
   }
 
-  if (v5 != 1)
+  if (hDRConsideration != 1)
   {
-    if (v5 || ([v3 playbackStyle] & 0xFFFFFFFFFFFFFFFDLL) != 1)
+    if (hDRConsideration || ([assetCopy playbackStyle] & 0xFFFFFFFFFFFFFFFDLL) != 1)
     {
       v10 = 0;
       goto LABEL_11;
     }
 
-    v6 = [v3 mediaSubtypes];
+    mediaSubtypes = [assetCopy mediaSubtypes];
     if (objc_opt_respondsToSelector())
     {
-      v7 = [v3 hdrGain];
-      [v7 floatValue];
+      hdrGain = [assetCopy hdrGain];
+      [hdrGain floatValue];
       v9 = v8 <= 0.0;
 
-      if ((v6 & 2) != 0)
+      if ((mediaSubtypes & 2) != 0)
       {
         goto LABEL_7;
       }
@@ -992,27 +992,27 @@ uint64_t __39__PXImageModulationManager_setEnabled___block_invoke(uint64_t a1)
     else
     {
       v9 = 1;
-      if ((v6 & 2) != 0)
+      if ((mediaSubtypes & 2) != 0)
       {
         goto LABEL_7;
       }
     }
 
-    if ((v6 & 0x200) != 0)
+    if ((mediaSubtypes & 0x200) != 0)
     {
       v10 = 4;
       goto LABEL_11;
     }
 
-    if ((v6 >> 23) & 1 | v9)
+    if ((mediaSubtypes >> 23) & 1 | v9)
     {
-      v10 = (v6 & 0x800000) >> 21;
+      v10 = (mediaSubtypes & 0x800000) >> 21;
       goto LABEL_11;
     }
 
-    v11 = [v4 gainBoostEnabled];
+    isFavorite = [v4 gainBoostEnabled];
 LABEL_10:
-    v10 = v11;
+    v10 = isFavorite;
     goto LABEL_11;
   }
 
@@ -1023,17 +1023,17 @@ LABEL_11:
   return v10;
 }
 
-+ (double)_hdrGainForAsset:(id)a3
++ (double)_hdrGainForAsset:(id)asset
 {
-  v3 = a3;
+  assetCopy = asset;
   v4 = 1.0;
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v3 hdrGain];
-    if (v5)
+    hdrGain = [assetCopy hdrGain];
+    if (hdrGain)
     {
-      v6 = v5;
-      [v5 floatValue];
+      v6 = hdrGain;
+      [hdrGain floatValue];
       v4 = v7;
     }
   }
@@ -1041,10 +1041,10 @@ LABEL_11:
   return v4;
 }
 
-+ ($5A0616AB7869379E861635CACF312FD6)optionsForAsset:(id)a3
++ ($5A0616AB7869379E861635CACF312FD6)optionsForAsset:(id)asset
 {
-  v4 = a3;
-  v5 = [a1 _contentFormatForAsset:v4];
+  assetCopy = asset;
+  v5 = [self _contentFormatForAsset:assetCopy];
   if ((v5 - 1) > 2)
   {
     v7 = 0;
@@ -1052,7 +1052,7 @@ LABEL_11:
 
   else
   {
-    [a1 _hdrGainForAsset:v4];
+    [self _hdrGainForAsset:assetCopy];
     *&v6 = v6;
     v7 = LODWORD(v6);
   }
@@ -1064,10 +1064,10 @@ LABEL_11:
   return result;
 }
 
-+ (double)HDRValueForAsset:(id)a3
++ (double)HDRValueForAsset:(id)asset
 {
-  v4 = a3;
-  v5 = [a1 _contentFormatForAsset:v4];
+  assetCopy = asset;
+  v5 = [self _contentFormatForAsset:assetCopy];
   if ((v5 - 1) >= 4)
   {
     v6 = 0.0;
@@ -1097,9 +1097,9 @@ LABEL_11:
   v10 = +[PXImageModulationSettings sharedInstance];
   if ([v10 useThresholdForVideos])
   {
-    v11 = [v4 mediaSubtypes];
+    mediaSubtypes = [assetCopy mediaSubtypes];
 
-    if ((*&v11 & 0x100000) != 0)
+    if ((*&mediaSubtypes & 0x100000) != 0)
     {
       v6 = 1.0;
     }

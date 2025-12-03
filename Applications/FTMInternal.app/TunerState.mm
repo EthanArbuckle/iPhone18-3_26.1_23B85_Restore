@@ -1,22 +1,22 @@
 @interface TunerState
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsRat:(id)a3;
-- (int)StringAsScenarioDecision:(id)a3;
+- (int)StringAsRat:(id)rat;
+- (int)StringAsScenarioDecision:(id)decision;
 - (int)rat;
 - (int)scenarioDecision;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasDeembedVswrMag:(BOOL)a3;
-- (void)setHasDeembedVswrPhase:(BOOL)a3;
-- (void)setHasPortBodypositionFs:(BOOL)a3;
-- (void)setHasRat:(BOOL)a3;
-- (void)setHasScenarioDecision:(BOOL)a3;
-- (void)setHasTxBand:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasDeembedVswrMag:(BOOL)mag;
+- (void)setHasDeembedVswrPhase:(BOOL)phase;
+- (void)setHasPortBodypositionFs:(BOOL)fs;
+- (void)setHasRat:(BOOL)rat;
+- (void)setHasScenarioDecision:(BOOL)decision;
+- (void)setHasTxBand:(BOOL)band;
+- (void)writeTo:(id)to;
 @end
 
 @implementation TunerState
@@ -34,9 +34,9 @@
   }
 }
 
-- (void)setHasRat:(BOOL)a3
+- (void)setHasRat:(BOOL)rat
 {
-  if (a3)
+  if (rat)
   {
     v3 = 16;
   }
@@ -49,75 +49,75 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (int)StringAsRat:(id)a3
+- (int)StringAsRat:(id)rat
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"SYS_MODE_NO_SRV"])
+  ratCopy = rat;
+  if ([ratCopy isEqualToString:@"SYS_MODE_NO_SRV"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"SYS_MODE_LTE_V2"])
+  else if ([ratCopy isEqualToString:@"SYS_MODE_LTE_V2"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"SYS_MODE_CDMA"])
+  else if ([ratCopy isEqualToString:@"SYS_MODE_CDMA"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"SYS_MODE_GSM"])
+  else if ([ratCopy isEqualToString:@"SYS_MODE_GSM"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"SYS_MODE_HDR"])
+  else if ([ratCopy isEqualToString:@"SYS_MODE_HDR"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"SYS_MODE_WCDMA"])
+  else if ([ratCopy isEqualToString:@"SYS_MODE_WCDMA"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"SYS_MODE_EHRPD"])
+  else if ([ratCopy isEqualToString:@"SYS_MODE_EHRPD"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"SYS_MODE_GW"])
+  else if ([ratCopy isEqualToString:@"SYS_MODE_GW"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"SYS_MODE_WLAN"])
+  else if ([ratCopy isEqualToString:@"SYS_MODE_WLAN"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"SYS_MODE_LTE"])
+  else if ([ratCopy isEqualToString:@"SYS_MODE_LTE"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"SYS_MODE_GWL"])
+  else if ([ratCopy isEqualToString:@"SYS_MODE_GWL"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"SYS_MODE_UMTS"])
+  else if ([ratCopy isEqualToString:@"SYS_MODE_UMTS"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"SYS_MODE_NR5G"])
+  else if ([ratCopy isEqualToString:@"SYS_MODE_NR5G"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"SYS_MODE_CDMA_HDR"])
+  else if ([ratCopy isEqualToString:@"SYS_MODE_CDMA_HDR"])
   {
     v4 = 15;
   }
@@ -130,9 +130,9 @@
   return v4;
 }
 
-- (void)setHasTxBand:(BOOL)a3
+- (void)setHasTxBand:(BOOL)band
 {
-  if (a3)
+  if (band)
   {
     v3 = 64;
   }
@@ -145,9 +145,9 @@
   *&self->_has = *&self->_has & 0xBF | v3;
 }
 
-- (void)setHasPortBodypositionFs:(BOOL)a3
+- (void)setHasPortBodypositionFs:(BOOL)fs
 {
-  if (a3)
+  if (fs)
   {
     v3 = 8;
   }
@@ -173,9 +173,9 @@
   }
 }
 
-- (void)setHasScenarioDecision:(BOOL)a3
+- (void)setHasScenarioDecision:(BOOL)decision
 {
-  if (a3)
+  if (decision)
   {
     v3 = 32;
   }
@@ -188,75 +188,75 @@
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (int)StringAsScenarioDecision:(id)a3
+- (int)StringAsScenarioDecision:(id)decision
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"FREE_SPACE_SCENARIO"])
+  decisionCopy = decision;
+  if ([decisionCopy isEqualToString:@"FREE_SPACE_SCENARIO"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"LATG_UATF_SCENARIO"])
+  else if ([decisionCopy isEqualToString:@"LATG_UATF_SCENARIO"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"LATA_UATF_SCENARIO"])
+  else if ([decisionCopy isEqualToString:@"LATA_UATF_SCENARIO"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"LATGA_UATF_SCENARIO"])
+  else if ([decisionCopy isEqualToString:@"LATGA_UATF_SCENARIO"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"LATF_UATH_SCENARIO"])
+  else if ([decisionCopy isEqualToString:@"LATF_UATH_SCENARIO"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"LATG_UATH_SCENARIO"])
+  else if ([decisionCopy isEqualToString:@"LATG_UATH_SCENARIO"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"LATA_UATH_SCENARIO"])
+  else if ([decisionCopy isEqualToString:@"LATA_UATH_SCENARIO"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"LATGA_UATH_SCENARIO"])
+  else if ([decisionCopy isEqualToString:@"LATGA_UATH_SCENARIO"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"RHH_SCENARIO"])
+  else if ([decisionCopy isEqualToString:@"RHH_SCENARIO"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"LHH_SCENARIO"])
+  else if ([decisionCopy isEqualToString:@"LHH_SCENARIO"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"UHH_SCENARIO"])
+  else if ([decisionCopy isEqualToString:@"UHH_SCENARIO"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"E_SCENARIO"])
+  else if ([decisionCopy isEqualToString:@"E_SCENARIO"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"B_SCENARIO"])
+  else if ([decisionCopy isEqualToString:@"B_SCENARIO"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"R_SCENARIO"])
+  else if ([decisionCopy isEqualToString:@"R_SCENARIO"])
   {
     v4 = 13;
   }
@@ -269,9 +269,9 @@
   return v4;
 }
 
-- (void)setHasDeembedVswrMag:(BOOL)a3
+- (void)setHasDeembedVswrMag:(BOOL)mag
 {
-  if (a3)
+  if (mag)
   {
     v3 = 2;
   }
@@ -284,9 +284,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasDeembedVswrPhase:(BOOL)a3
+- (void)setHasDeembedVswrPhase:(BOOL)phase
 {
-  if (a3)
+  if (phase)
   {
     v3 = 4;
   }
@@ -304,8 +304,8 @@
   v7.receiver = self;
   v7.super_class = TunerState;
   v3 = [(TunerState *)&v7 description];
-  v4 = [(TunerState *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(TunerState *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -428,9 +428,9 @@ LABEL_14:
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v12 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 0x10) != 0)
   {
@@ -526,14 +526,14 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 0x10) != 0)
   {
-    v4[6] = self->_rat;
-    *(v4 + 36) |= 0x10u;
+    toCopy[6] = self->_rat;
+    *(toCopy + 36) |= 0x10u;
     has = self->_has;
     if ((has & 0x40) == 0)
     {
@@ -552,8 +552,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[8] = self->_txBand;
-  *(v4 + 36) |= 0x40u;
+  toCopy[8] = self->_txBand;
+  *(toCopy + 36) |= 0x40u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -567,8 +567,8 @@ LABEL_4:
   }
 
 LABEL_14:
-  v4[5] = self->_portBodypositionFs;
-  *(v4 + 36) |= 8u;
+  toCopy[5] = self->_portBodypositionFs;
+  *(toCopy + 36) |= 8u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -582,8 +582,8 @@ LABEL_5:
   }
 
 LABEL_15:
-  v4[7] = self->_scenarioDecision;
-  *(v4 + 36) |= 0x20u;
+  toCopy[7] = self->_scenarioDecision;
+  *(toCopy + 36) |= 0x20u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -597,8 +597,8 @@ LABEL_6:
   }
 
 LABEL_16:
-  v4[3] = self->_deembedVswrMag;
-  *(v4 + 36) |= 2u;
+  toCopy[3] = self->_deembedVswrMag;
+  *(toCopy + 36) |= 2u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -612,21 +612,21 @@ LABEL_7:
   }
 
 LABEL_17:
-  v4[4] = self->_deembedVswrPhase;
-  *(v4 + 36) |= 4u;
+  toCopy[4] = self->_deembedVswrPhase;
+  *(toCopy + 36) |= 4u;
   if (*&self->_has)
   {
 LABEL_8:
-    v4[2] = self->_accessory;
-    *(v4 + 36) |= 1u;
+    toCopy[2] = self->_accessory;
+    *(toCopy + 36) |= 1u;
   }
 
 LABEL_9:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if ((has & 0x10) != 0)
   {
@@ -723,23 +723,23 @@ LABEL_8:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_36;
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(v4 + 36) & 0x10) == 0 || self->_rat != *(v4 + 6))
+    if ((*(equalCopy + 36) & 0x10) == 0 || self->_rat != *(equalCopy + 6))
     {
       goto LABEL_36;
     }
   }
 
-  else if ((*(v4 + 36) & 0x10) != 0)
+  else if ((*(equalCopy + 36) & 0x10) != 0)
   {
 LABEL_36:
     v5 = 0;
@@ -748,73 +748,73 @@ LABEL_36:
 
   if ((*&self->_has & 0x40) != 0)
   {
-    if ((*(v4 + 36) & 0x40) == 0 || self->_txBand != *(v4 + 8))
+    if ((*(equalCopy + 36) & 0x40) == 0 || self->_txBand != *(equalCopy + 8))
     {
       goto LABEL_36;
     }
   }
 
-  else if ((*(v4 + 36) & 0x40) != 0)
+  else if ((*(equalCopy + 36) & 0x40) != 0)
   {
     goto LABEL_36;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 36) & 8) == 0 || self->_portBodypositionFs != *(v4 + 5))
+    if ((*(equalCopy + 36) & 8) == 0 || self->_portBodypositionFs != *(equalCopy + 5))
     {
       goto LABEL_36;
     }
   }
 
-  else if ((*(v4 + 36) & 8) != 0)
+  else if ((*(equalCopy + 36) & 8) != 0)
   {
     goto LABEL_36;
   }
 
   if ((*&self->_has & 0x20) != 0)
   {
-    if ((*(v4 + 36) & 0x20) == 0 || self->_scenarioDecision != *(v4 + 7))
+    if ((*(equalCopy + 36) & 0x20) == 0 || self->_scenarioDecision != *(equalCopy + 7))
     {
       goto LABEL_36;
     }
   }
 
-  else if ((*(v4 + 36) & 0x20) != 0)
+  else if ((*(equalCopy + 36) & 0x20) != 0)
   {
     goto LABEL_36;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 36) & 2) == 0 || self->_deembedVswrMag != *(v4 + 3))
+    if ((*(equalCopy + 36) & 2) == 0 || self->_deembedVswrMag != *(equalCopy + 3))
     {
       goto LABEL_36;
     }
   }
 
-  else if ((*(v4 + 36) & 2) != 0)
+  else if ((*(equalCopy + 36) & 2) != 0)
   {
     goto LABEL_36;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 36) & 4) == 0 || self->_deembedVswrPhase != *(v4 + 4))
+    if ((*(equalCopy + 36) & 4) == 0 || self->_deembedVswrPhase != *(equalCopy + 4))
     {
       goto LABEL_36;
     }
   }
 
-  else if ((*(v4 + 36) & 4) != 0)
+  else if ((*(equalCopy + 36) & 4) != 0)
   {
     goto LABEL_36;
   }
 
-  v5 = (*(v4 + 36) & 1) == 0;
+  v5 = (*(equalCopy + 36) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 36) & 1) == 0 || self->_accessory != *(v4 + 2))
+    if ((*(equalCopy + 36) & 1) == 0 || self->_accessory != *(equalCopy + 2))
     {
       goto LABEL_36;
     }
@@ -923,15 +923,15 @@ LABEL_8:
   return v3 ^ v2 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 36);
+  fromCopy = from;
+  v5 = *(fromCopy + 36);
   if ((v5 & 0x10) != 0)
   {
-    self->_rat = *(v4 + 6);
+    self->_rat = *(fromCopy + 6);
     *&self->_has |= 0x10u;
-    v5 = *(v4 + 36);
+    v5 = *(fromCopy + 36);
     if ((v5 & 0x40) == 0)
     {
 LABEL_3:
@@ -944,14 +944,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 36) & 0x40) == 0)
+  else if ((*(fromCopy + 36) & 0x40) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_txBand = *(v4 + 8);
+  self->_txBand = *(fromCopy + 8);
   *&self->_has |= 0x40u;
-  v5 = *(v4 + 36);
+  v5 = *(fromCopy + 36);
   if ((v5 & 8) == 0)
   {
 LABEL_4:
@@ -964,9 +964,9 @@ LABEL_4:
   }
 
 LABEL_14:
-  self->_portBodypositionFs = *(v4 + 5);
+  self->_portBodypositionFs = *(fromCopy + 5);
   *&self->_has |= 8u;
-  v5 = *(v4 + 36);
+  v5 = *(fromCopy + 36);
   if ((v5 & 0x20) == 0)
   {
 LABEL_5:
@@ -979,9 +979,9 @@ LABEL_5:
   }
 
 LABEL_15:
-  self->_scenarioDecision = *(v4 + 7);
+  self->_scenarioDecision = *(fromCopy + 7);
   *&self->_has |= 0x20u;
-  v5 = *(v4 + 36);
+  v5 = *(fromCopy + 36);
   if ((v5 & 2) == 0)
   {
 LABEL_6:
@@ -994,9 +994,9 @@ LABEL_6:
   }
 
 LABEL_16:
-  self->_deembedVswrMag = *(v4 + 3);
+  self->_deembedVswrMag = *(fromCopy + 3);
   *&self->_has |= 2u;
-  v5 = *(v4 + 36);
+  v5 = *(fromCopy + 36);
   if ((v5 & 4) == 0)
   {
 LABEL_7:
@@ -1009,12 +1009,12 @@ LABEL_7:
   }
 
 LABEL_17:
-  self->_deembedVswrPhase = *(v4 + 4);
+  self->_deembedVswrPhase = *(fromCopy + 4);
   *&self->_has |= 4u;
-  if (*(v4 + 36))
+  if (*(fromCopy + 36))
   {
 LABEL_8:
-    self->_accessory = *(v4 + 2);
+    self->_accessory = *(fromCopy + 2);
     *&self->_has |= 1u;
   }
 

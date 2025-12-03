@@ -1,26 +1,26 @@
 @interface _SFSaveToFilesOperation
-- (_SFSaveToFilesOperation)initWithActivityItemProviderCollection:(id)a3;
+- (_SFSaveToFilesOperation)initWithActivityItemProviderCollection:(id)collection;
 - (_SFSaveToFilesOperationDelegate)delegate;
-- (id)_temporaryFileWithName:(id)a3;
-- (void)_copyFileData:(id)a3;
-- (void)_finishWithURL:(id)a3;
-- (void)_showDocumentPickerForFileURL:(id)a3 sourceURL:(id)a4 willStartDownload:(BOOL)a5;
+- (id)_temporaryFileWithName:(id)name;
+- (void)_copyFileData:(id)data;
+- (void)_finishWithURL:(id)l;
+- (void)_showDocumentPickerForFileURL:(id)l sourceURL:(id)rL willStartDownload:(BOOL)download;
 - (void)dealloc;
-- (void)documentPicker:(id)a3 didPickDocumentsAtURLs:(id)a4;
-- (void)importPlaceholderForDownload:(id)a3 fromURL:(id)a4 completionHandler:(id)a5;
+- (void)documentPicker:(id)picker didPickDocumentsAtURLs:(id)ls;
+- (void)importPlaceholderForDownload:(id)download fromURL:(id)l completionHandler:(id)handler;
 - (void)start;
 @end
 
 @implementation _SFSaveToFilesOperation
 
-- (_SFSaveToFilesOperation)initWithActivityItemProviderCollection:(id)a3
+- (_SFSaveToFilesOperation)initWithActivityItemProviderCollection:(id)collection
 {
-  v5 = a3;
+  collectionCopy = collection;
   v6 = [(_SFSaveToFilesOperation *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_collection, a3);
+    objc_storeStrong(&v6->_collection, collection);
     v8 = v7;
   }
 
@@ -29,8 +29,8 @@
 
 - (void)dealloc
 {
-  v2 = a1;
-  v3 = [OUTLINED_FUNCTION_2() safari_privacyPreservingDescription];
+  selfCopy = self;
+  safari_privacyPreservingDescription = [OUTLINED_FUNCTION_2() safari_privacyPreservingDescription];
   OUTLINED_FUNCTION_3();
   OUTLINED_FUNCTION_0_0(&dword_1D4644000, v4, v5, "Failed to delete temporary directory: %{public}@", v6, v7, v8, v9, v10);
 }
@@ -45,31 +45,31 @@
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-- (void)_showDocumentPickerForFileURL:(id)a3 sourceURL:(id)a4 willStartDownload:(BOOL)a5
+- (void)_showDocumentPickerForFileURL:(id)l sourceURL:(id)rL willStartDownload:(BOOL)download
 {
-  v5 = a5;
-  v7 = [MEMORY[0x1E69DC968] sf_documentPickerViewControllerWithURL:a3 inMode:2 sourceURL:a4];
+  downloadCopy = download;
+  v7 = [MEMORY[0x1E69DC968] sf_documentPickerViewControllerWithURL:l inMode:2 sourceURL:rL];
   documentPickerViewController = self->_documentPickerViewController;
   self->_documentPickerViewController = v7;
 
   [(UIDocumentPickerViewController *)self->_documentPickerViewController setDelegate:self];
-  [(UIDocumentPickerViewController *)self->_documentPickerViewController _setForPickingDownloadsFolder:v5];
-  v9 = directoryURLOfLastSuccessfulSave;
-  if (!v9)
+  [(UIDocumentPickerViewController *)self->_documentPickerViewController _setForPickingDownloadsFolder:downloadCopy];
+  placeholderURLForDownloadsFolder = directoryURLOfLastSuccessfulSave;
+  if (!placeholderURLForDownloadsFolder)
   {
     if (objc_opt_respondsToSelector())
     {
-      v9 = [MEMORY[0x1E699A358] placeholderURLForDownloadsFolder];
+      placeholderURLForDownloadsFolder = [MEMORY[0x1E699A358] placeholderURLForDownloadsFolder];
     }
 
     else
     {
-      v9 = 0;
+      placeholderURLForDownloadsFolder = 0;
     }
   }
 
-  v11 = v9;
-  [(UIDocumentPickerViewController *)self->_documentPickerViewController setDirectoryURL:v9];
+  v11 = placeholderURLForDownloadsFolder;
+  [(UIDocumentPickerViewController *)self->_documentPickerViewController setDirectoryURL:placeholderURLForDownloadsFolder];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector())
   {
@@ -79,17 +79,17 @@
   [WeakRetained saveToFilesOperation:self presentViewController:self->_documentPickerViewController];
 }
 
-- (void)_finishWithURL:(id)a3
+- (void)_finishWithURL:(id)l
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  lCopy = l;
   downloadPlaceholderCompletionHandler = self->_downloadPlaceholderCompletionHandler;
   if (!downloadPlaceholderCompletionHandler)
   {
     download = self->_download;
     self->_download = 0;
 
-    if (v4)
+    if (lCopy)
     {
       goto LABEL_5;
     }
@@ -99,11 +99,11 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  downloadPlaceholderCompletionHandler[2](downloadPlaceholderCompletionHandler, v4);
+  downloadPlaceholderCompletionHandler[2](downloadPlaceholderCompletionHandler, lCopy);
   v6 = self->_downloadPlaceholderCompletionHandler;
   self->_downloadPlaceholderCompletionHandler = 0;
 
-  if (!v4)
+  if (!lCopy)
   {
     v12 = +[_SFDownloadManager sharedManager];
     v16[0] = self->_download;
@@ -120,9 +120,9 @@ LABEL_7:
   self->_download = 0;
 
 LABEL_5:
-  v9 = [v4 URLByDeletingLastPathComponent];
+  uRLByDeletingLastPathComponent = [lCopy URLByDeletingLastPathComponent];
   v10 = directoryURLOfLastSuccessfulSave;
-  directoryURLOfLastSuccessfulSave = v9;
+  directoryURLOfLastSuccessfulSave = uRLByDeletingLastPathComponent;
 
   v11 = 1;
 LABEL_8:
@@ -130,27 +130,27 @@ LABEL_8:
   [WeakRetained saveToFilesOperation:self didFinishWithSuccess:v11];
 }
 
-- (id)_temporaryFileWithName:(id)a3
+- (id)_temporaryFileWithName:(id)name
 {
   v4 = MEMORY[0x1E696AC08];
-  v5 = a3;
-  v6 = [v4 defaultManager];
-  v7 = [v6 safari_createTemporaryDirectoryWithTemplatePrefix:@"File"];
+  nameCopy = name;
+  defaultManager = [v4 defaultManager];
+  v7 = [defaultManager safari_createTemporaryDirectoryWithTemplatePrefix:@"File"];
   containerDirectoryPath = self->_containerDirectoryPath;
   self->_containerDirectoryPath = v7;
 
-  v9 = [(NSString *)self->_containerDirectoryPath stringByAppendingPathComponent:v5];
+  v9 = [(NSString *)self->_containerDirectoryPath stringByAppendingPathComponent:nameCopy];
 
   v10 = MEMORY[0x1E695DFF8];
-  v11 = [v6 _web_pathWithUniqueFilenameForPath:v9];
+  v11 = [defaultManager _web_pathWithUniqueFilenameForPath:v9];
   v12 = [v10 fileURLWithPath:v11];
 
   return v12;
 }
 
-- (void)_copyFileData:(id)a3
+- (void)_copyFileData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
@@ -170,34 +170,34 @@ LABEL_6:
   if (![v6 canShareAsStandaloneImage])
   {
 LABEL_12:
-    v21 = [v7 canShareAsDownload];
+    canShareAsDownload = [v7 canShareAsDownload];
     v20 = 0;
     goto LABEL_13;
   }
 
   v8 = 0;
 LABEL_7:
-  v9 = [(_SFActivityItemProviderCollection *)self->_collection standaloneImageProvider];
+  standaloneImageProvider = [(_SFActivityItemProviderCollection *)self->_collection standaloneImageProvider];
 
-  if (v9)
+  if (standaloneImageProvider)
   {
-    v10 = [(_SFActivityItemProviderCollection *)self->_collection standaloneImageProvider];
-    v11 = [v10 item];
+    standaloneImageProvider2 = [(_SFActivityItemProviderCollection *)self->_collection standaloneImageProvider];
+    item = [standaloneImageProvider2 item];
 
-    v12 = [(_SFActivityItemProviderCollection *)self->_collection webView];
-    v13 = [v12 _sf_suggestedFilename];
-    v14 = [v12 _committedURL];
+    webView = [(_SFActivityItemProviderCollection *)self->_collection webView];
+    _sf_suggestedFilename = [webView _sf_suggestedFilename];
+    _committedURL = [webView _committedURL];
     v15 = MEMORY[0x1E69B1B68];
-    v16 = [v12 _MIMEType];
-    v17 = [v15 properFilenameForOriginalFilename:v13 typeIdentifier:0 mimeType:v16 sourceURL:v14];
+    _MIMEType = [webView _MIMEType];
+    v17 = [v15 properFilenameForOriginalFilename:_sf_suggestedFilename typeIdentifier:0 mimeType:_MIMEType sourceURL:_committedURL];
     v18 = [(_SFSaveToFilesOperation *)self _temporaryFileWithName:v17];
 
     v55[0] = 0;
-    LODWORD(v16) = [v11 writeToURL:v18 options:0 error:v55];
+    LODWORD(_MIMEType) = [item writeToURL:v18 options:0 error:v55];
     v19 = v55[0];
-    if (v16)
+    if (_MIMEType)
     {
-      v4[2](v4, v18, v14, 0);
+      dataCopy[2](dataCopy, v18, _committedURL, 0);
     }
 
     else
@@ -208,7 +208,7 @@ LABEL_7:
         [_SFSaveToFilesOperation _copyFileData:v26];
       }
 
-      v4[2](v4, 0, 0, 0);
+      dataCopy[2](dataCopy, 0, 0, 0);
     }
 
     goto LABEL_21;
@@ -220,19 +220,19 @@ LABEL_7:
   }
 
   v20 = 1;
-  v21 = 1;
+  canShareAsDownload = 1;
 LABEL_13:
-  v22 = [(_SFActivityItemProviderCollection *)self->_collection downloadProvider];
-  v11 = v22;
-  if (v21 && v22)
+  downloadProvider = [(_SFActivityItemProviderCollection *)self->_collection downloadProvider];
+  item = downloadProvider;
+  if (canShareAsDownload && downloadProvider)
   {
-    v23 = [v22 item];
+    item2 = [downloadProvider item];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v24 = [v11 quickLookDocument];
-      v25 = [v24 sourceURL];
-      v4[2](v4, v23, v25, 0);
+      quickLookDocument = [item quickLookDocument];
+      sourceURL = [quickLookDocument sourceURL];
+      dataCopy[2](dataCopy, item2, sourceURL, 0);
     }
 
     else
@@ -240,20 +240,20 @@ LABEL_13:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        v4[2](v4, 0, 0, 0);
+        dataCopy[2](dataCopy, 0, 0, 0);
         goto LABEL_41;
       }
 
-      v24 = v23;
-      v30 = [v11 quickLookDocument];
-      v31 = [v30 inferredUTI];
+      quickLookDocument = item2;
+      quickLookDocument2 = [item quickLookDocument];
+      inferredUTI = [quickLookDocument2 inferredUTI];
       v52[0] = MEMORY[0x1E69E9820];
       v52[1] = 3221225472;
       v52[2] = __41___SFSaveToFilesOperation__copyFileData___block_invoke;
       v52[3] = &unk_1E84959B0;
-      v54 = v4;
-      v53 = v11;
-      v32 = [v24 loadInPlaceFileRepresentationForTypeIdentifier:v31 completionHandler:v52];
+      v54 = dataCopy;
+      v53 = item;
+      v32 = [quickLookDocument loadInPlaceFileRepresentationForTypeIdentifier:inferredUTI completionHandler:v52];
     }
 
 LABEL_41:
@@ -262,14 +262,14 @@ LABEL_41:
 
   if ((v20 & 1) != 0 || [v7 canShareAsWebArchive])
   {
-    v27 = [(_SFActivityItemProviderCollection *)self->_collection webArchiveProvider];
+    webArchiveProvider = [(_SFActivityItemProviderCollection *)self->_collection webArchiveProvider];
 
-    if (v27)
+    if (webArchiveProvider)
     {
-      v28 = [(_SFActivityItemProviderCollection *)self->_collection webArchiveProvider];
-      v12 = [v28 item];
+      webArchiveProvider2 = [(_SFActivityItemProviderCollection *)self->_collection webArchiveProvider];
+      webView = [webArchiveProvider2 item];
 
-      if (v12)
+      if (webView)
       {
         v29 = *MEMORY[0x1E69638F0];
         v50[0] = MEMORY[0x1E69E9820];
@@ -277,13 +277,13 @@ LABEL_41:
         v50[2] = __41___SFSaveToFilesOperation__copyFileData___block_invoke_2;
         v50[3] = &unk_1E84959D8;
         v50[4] = self;
-        v51 = v4;
-        [v12 loadItemForTypeIdentifier:v29 options:0 completionHandler:v50];
+        v51 = dataCopy;
+        [webView loadItemForTypeIdentifier:v29 options:0 completionHandler:v50];
       }
 
       else
       {
-        v4[2](v4, 0, 0, 0);
+        dataCopy[2](dataCopy, 0, 0, 0);
       }
 
       goto LABEL_22;
@@ -298,29 +298,29 @@ LABEL_41:
   if ([v7 canShareAsPDF])
   {
 LABEL_51:
-    v33 = [(_SFActivityItemProviderCollection *)self->_collection printProvider];
+    printProvider = [(_SFActivityItemProviderCollection *)self->_collection printProvider];
 
-    if (v33)
+    if (printProvider)
     {
-      v12 = [(_SFActivityItemProviderCollection *)self->_collection printProvider];
-      v34 = [v12 pdfItemProvider];
-      v13 = v34;
-      if (v34)
+      webView = [(_SFActivityItemProviderCollection *)self->_collection printProvider];
+      pdfItemProvider = [webView pdfItemProvider];
+      _sf_suggestedFilename = pdfItemProvider;
+      if (pdfItemProvider)
       {
         v35 = *MEMORY[0x1E6963858];
         v46[0] = MEMORY[0x1E69E9820];
         v46[1] = 3221225472;
         v46[2] = __41___SFSaveToFilesOperation__copyFileData___block_invoke_4;
         v46[3] = &unk_1E8495A00;
-        v47 = v34;
-        v48 = self;
-        v49 = v4;
+        v47 = pdfItemProvider;
+        selfCopy = self;
+        v49 = dataCopy;
         v36 = [v47 loadDataRepresentationForTypeIdentifier:v35 completionHandler:v46];
       }
 
       else
       {
-        v4[2](v4, 0, 0, 0);
+        dataCopy[2](dataCopy, 0, 0, 0);
       }
 
 LABEL_21:
@@ -332,26 +332,26 @@ LABEL_22:
 
   if ([(_SFActivityItemProviderCollection *)self->_collection displayingStandaloneMedia])
   {
-    v37 = self;
+    selfCopy2 = self;
     v38 = objc_loadWeakRetained(&self->_delegate);
     if (objc_opt_respondsToSelector())
     {
-      v39 = [v38 saveToFilesOperationSupportsDownloads:v37];
+      v39 = [v38 saveToFilesOperationSupportsDownloads:selfCopy2];
 
       if (v39)
       {
-        v23 = [(_SFActivityItemProviderCollection *)self->_collection webView];
+        item2 = [(_SFActivityItemProviderCollection *)self->_collection webView];
         v40 = +[_SFDownloadDispatcher sharedDownloadDispatcher];
-        v41 = [v40 startDownloadForCurrentURLFromWebView:v23];
+        v41 = [v40 startDownloadForCurrentURLFromWebView:item2];
 
         [v41 setExplicitlySaved:1];
         v42 = +[_SFDownloadManager sharedManager];
         [v41 setDelegate:v42];
 
-        [v41 setPlaceholderImporter:v37];
-        v43 = _Block_copy(v4);
-        prepareDownloadPlaceholderHandler = v37->_prepareDownloadPlaceholderHandler;
-        v37->_prepareDownloadPlaceholderHandler = v43;
+        [v41 setPlaceholderImporter:selfCopy2];
+        v43 = _Block_copy(dataCopy);
+        prepareDownloadPlaceholderHandler = selfCopy2->_prepareDownloadPlaceholderHandler;
+        selfCopy2->_prepareDownloadPlaceholderHandler = v43;
 
         goto LABEL_41;
       }
@@ -368,38 +368,38 @@ LABEL_22:
     [_SFSaveToFilesOperation _copyFileData:v45];
   }
 
-  v4[2](v4, 0, 0, 0);
+  dataCopy[2](dataCopy, 0, 0, 0);
 LABEL_47:
 }
 
-- (void)documentPicker:(id)a3 didPickDocumentsAtURLs:(id)a4
+- (void)documentPicker:(id)picker didPickDocumentsAtURLs:(id)ls
 {
-  v5 = [a4 firstObject];
-  [(_SFSaveToFilesOperation *)self _finishWithURL:v5];
+  firstObject = [ls firstObject];
+  [(_SFSaveToFilesOperation *)self _finishWithURL:firstObject];
 }
 
-- (void)importPlaceholderForDownload:(id)a3 fromURL:(id)a4 completionHandler:(id)a5
+- (void)importPlaceholderForDownload:(id)download fromURL:(id)l completionHandler:(id)handler
 {
-  v17 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = _Block_copy(v10);
+  downloadCopy = download;
+  lCopy = l;
+  handlerCopy = handler;
+  v11 = _Block_copy(handlerCopy);
   downloadPlaceholderCompletionHandler = self->_downloadPlaceholderCompletionHandler;
   self->_downloadPlaceholderCompletionHandler = v11;
 
-  [v17 setPlaceholderImporter:0];
+  [downloadCopy setPlaceholderImporter:0];
   p_prepareDownloadPlaceholderHandler = &self->_prepareDownloadPlaceholderHandler;
   if (self->_prepareDownloadPlaceholderHandler)
   {
-    objc_storeStrong(&self->_download, a3);
+    objc_storeStrong(&self->_download, download);
     prepareDownloadPlaceholderHandler = self->_prepareDownloadPlaceholderHandler;
-    v15 = [v17 sourceURL];
-    prepareDownloadPlaceholderHandler[2](prepareDownloadPlaceholderHandler, v9, v15, 1);
+    sourceURL = [downloadCopy sourceURL];
+    prepareDownloadPlaceholderHandler[2](prepareDownloadPlaceholderHandler, lCopy, sourceURL, 1);
   }
 
   else
   {
-    (*(v10 + 2))(v10, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
     p_prepareDownloadPlaceholderHandler = &self->_downloadPlaceholderCompletionHandler;
   }
 

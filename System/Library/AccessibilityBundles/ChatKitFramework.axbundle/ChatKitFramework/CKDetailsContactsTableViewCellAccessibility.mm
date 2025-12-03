@@ -1,19 +1,19 @@
 @interface CKDetailsContactsTableViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (CKDetailsContactsTableViewCellAccessibility)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (CKDetailsContactsTableViewCellAccessibility)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation CKDetailsContactsTableViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CKDetailsContactsTableViewCell" hasInstanceMethod:@"messageButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKDetailsContactsTableViewCell" hasInstanceMethod:@"phoneButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKDetailsContactsTableViewCell" hasInstanceMethod:@"facetimeVideoButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKDetailsContactsTableViewCell" hasInstanceMethod:@"screenSharingButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKDetailsContactsTableViewCell" hasInstanceMethod:@"initWithStyle: reuseIdentifier:" withFullSignature:{"@", "q", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CKDetailsContactsTableViewCell" hasInstanceMethod:@"messageButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKDetailsContactsTableViewCell" hasInstanceMethod:@"phoneButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKDetailsContactsTableViewCell" hasInstanceMethod:@"facetimeVideoButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKDetailsContactsTableViewCell" hasInstanceMethod:@"screenSharingButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKDetailsContactsTableViewCell" hasInstanceMethod:@"initWithStyle: reuseIdentifier:" withFullSignature:{"@", "q", "@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -38,11 +38,11 @@
   [v9 setAccessibilityLabel:v10];
 }
 
-- (CKDetailsContactsTableViewCellAccessibility)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (CKDetailsContactsTableViewCellAccessibility)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v7.receiver = self;
   v7.super_class = CKDetailsContactsTableViewCellAccessibility;
-  v4 = [(CKDetailsContactsTableViewCellAccessibility *)&v7 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(CKDetailsContactsTableViewCellAccessibility *)&v7 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {

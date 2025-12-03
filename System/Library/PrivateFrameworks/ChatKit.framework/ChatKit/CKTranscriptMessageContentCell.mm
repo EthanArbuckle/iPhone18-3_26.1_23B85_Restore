@@ -1,24 +1,24 @@
 @interface CKTranscriptMessageContentCell
 - (CGRect)drawerLabelFrame;
-- (CGRect)messageDisplayViewFrame:(CGRect)a3 inContainerFrame:(CGRect)a4;
+- (CGRect)messageDisplayViewFrame:(CGRect)frame inContainerFrame:(CGRect)containerFrame;
 - (CGSize)drawerTextSize;
 - (CGSize)messageDisplayViewRequestedSize;
-- (CKTranscriptMessageContentCell)initWithFrame:(CGRect)a3;
+- (CKTranscriptMessageContentCell)initWithFrame:(CGRect)frame;
 - (UIEdgeInsets)messageDisplayViewTailInsets;
-- (id)messageDisplayViewLayoutAttributesForMessageDisplayViewFrame:(CGRect)a3 inContainerFrame:(CGRect)a4;
-- (void)configureForChatItem:(id)a3 context:(id)a4 animated:(BOOL)a5 animationDuration:(double)a6 animationCurve:(int64_t)a7;
+- (id)messageDisplayViewLayoutAttributesForMessageDisplayViewFrame:(CGRect)frame inContainerFrame:(CGRect)containerFrame;
+- (void)configureForChatItem:(id)item context:(id)context animated:(BOOL)animated animationDuration:(double)duration animationCurve:(int64_t)curve;
 - (void)layoutSubviewsForAlignmentContents;
 - (void)layoutSubviewsForDrawer;
-- (void)setDrawerText:(id)a3;
+- (void)setDrawerText:(id)text;
 @end
 
 @implementation CKTranscriptMessageContentCell
 
-- (CKTranscriptMessageContentCell)initWithFrame:(CGRect)a3
+- (CKTranscriptMessageContentCell)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = CKTranscriptMessageContentCell;
-  v3 = [(CKPhoneTranscriptMessageCell *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CKPhoneTranscriptMessageCell *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [CKTranscriptLegibilityLabel alloc];
@@ -37,7 +37,7 @@
   [(CKTranscriptCell *)&v44 layoutSubviewsForDrawer];
   [(CKTranscriptCell *)self drawerPercentRevealed];
   v4 = v3;
-  v5 = [(CKTranscriptMessageContentCell *)self drawerLabel];
+  drawerLabel = [(CKTranscriptMessageContentCell *)self drawerLabel];
   [(CKEditableCollectionViewCell *)self contentAlignmentRect];
   v7 = v6;
   v9 = v8;
@@ -47,23 +47,23 @@
   {
     if (v4 == 0.0)
     {
-      [v5 removeFromSuperview];
+      [drawerLabel removeFromSuperview];
     }
 
     else
     {
-      [(CKTranscriptMessageContentCell *)self addSubview:v5];
+      [(CKTranscriptMessageContentCell *)self addSubview:drawerLabel];
     }
 
     [(CKTranscriptMessageContentCell *)self setDrawerWasVisible:v4 != 0.0];
   }
 
-  v13 = [(CKTranscriptMessageContentCell *)self drawerTextChanged];
-  if (v4 != 0.0 && v13)
+  drawerTextChanged = [(CKTranscriptMessageContentCell *)self drawerTextChanged];
+  if (v4 != 0.0 && drawerTextChanged)
   {
-    v14 = [(CKTranscriptMessageContentCell *)self drawerText];
-    [v5 setAttributedText:v14];
-    [v14 size];
+    drawerText = [(CKTranscriptMessageContentCell *)self drawerText];
+    [drawerLabel setAttributedText:drawerText];
+    [drawerText size];
     v16 = v15;
     v18 = v17;
     if (CKMainScreenScale_once_15 != -1)
@@ -109,7 +109,7 @@
     v38 = v40 - v4 * (v34 + v39);
   }
 
-  [v5 setFrame:v38 - (v42 - (v36 - v34))];
+  [drawerLabel setFrame:v38 - (v42 - (v36 - v34))];
 }
 
 - (void)layoutSubviewsForAlignmentContents
@@ -118,15 +118,15 @@
   v46.super_class = CKTranscriptMessageContentCell;
   [(CKEditableCollectionViewCell *)&v46 layoutSubviewsForAlignmentContents];
   [(CKEditableCollectionViewCell *)self contentAlignmentRect];
-  v3 = [(CKTranscriptMessageContentCell *)self messageDisplayView];
+  messageDisplayView = [(CKTranscriptMessageContentCell *)self messageDisplayView];
   v44 = 0u;
   v45 = 0u;
   v43 = 0u;
-  v4 = [(CKTranscriptMessageContentCell *)self messageDisplayView];
-  v5 = v4;
-  if (v4)
+  messageDisplayView2 = [(CKTranscriptMessageContentCell *)self messageDisplayView];
+  v5 = messageDisplayView2;
+  if (messageDisplayView2)
   {
-    [v4 transform];
+    [messageDisplayView2 transform];
   }
 
   else
@@ -140,18 +140,18 @@
   v40 = *MEMORY[0x1E695EFD0];
   v41 = v6;
   v42 = *(MEMORY[0x1E695EFD0] + 32);
-  [v3 setTransform:&v40];
-  [v3 frame];
+  [messageDisplayView setTransform:&v40];
+  [messageDisplayView frame];
   [CKTranscriptMessageContentCell messageDisplayViewFrame:"messageDisplayViewFrame:inContainerFrame:" inContainerFrame:?];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  [v3 setFrame:?];
+  [messageDisplayView setFrame:?];
   v40 = v43;
   v41 = v44;
   v42 = v45;
-  [v3 setTransform:&v40];
+  [messageDisplayView setTransform:&v40];
   if (![(CKEditableCollectionViewCell *)self orientation])
   {
     v15 = +[CKUIBehavior sharedBehaviors];
@@ -182,9 +182,9 @@
         if (MaxX > v29)
         {
           v31 = MaxX;
-          v32 = [(CKEditableCollectionViewCell *)self contentView];
-          [v32 frame];
-          [v32 setFrame:-((v31 - v29) * v39)];
+          contentView = [(CKEditableCollectionViewCell *)self contentView];
+          [contentView frame];
+          [contentView setFrame:-((v31 - v29) * v39)];
         }
       }
     }
@@ -200,21 +200,21 @@
       v33 = v35;
     }
 
-    v36 = [(CKPhoneTranscriptMessageCell *)self contactImageView];
-    [v36 setAlpha:v33];
+    contactImageView = [(CKPhoneTranscriptMessageCell *)self contactImageView];
+    [contactImageView setAlpha:v33];
   }
 }
 
-- (CGRect)messageDisplayViewFrame:(CGRect)a3 inContainerFrame:(CGRect)a4
+- (CGRect)messageDisplayViewFrame:(CGRect)frame inContainerFrame:(CGRect)containerFrame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = containerFrame.size.height;
+  width = containerFrame.size.width;
+  y = containerFrame.origin.y;
+  x = containerFrame.origin.x;
   v49 = *MEMORY[0x1E69E9840];
-  v43 = a3.size.width;
-  v44 = a3.size.height;
-  v9 = [(CKTranscriptMessageContentCell *)self messageDisplayViewLayoutAttributesForMessageDisplayViewFrame:a3.origin.x inContainerFrame:a3.origin.y];
+  v43 = frame.size.width;
+  v44 = frame.size.height;
+  v9 = [(CKTranscriptMessageContentCell *)self messageDisplayViewLayoutAttributesForMessageDisplayViewFrame:frame.origin.x inContainerFrame:frame.origin.y];
   [v9 messageDisplayViewSize];
   v11 = v10;
   if ([(CKEditableCollectionViewCell *)self orientation])
@@ -293,7 +293,7 @@
       {
         [(CKTranscriptMessageContentCell *)self layoutOffset];
         *buf = 138412546;
-        v46 = self;
+        selfCopy2 = self;
         v47 = 2048;
         v48 = v23;
         _os_log_impl(&dword_19020E000, v22, OS_LOG_TYPE_INFO, "cell: %@, found non-zero layout offset: %f", buf, 0x16u);
@@ -314,7 +314,7 @@
       {
         [(CKTranscriptMessageContentCell *)self swipeToReplyLayoutOffset];
         *buf = 138412546;
-        v46 = self;
+        selfCopy2 = self;
         v47 = 2048;
         v48 = v28;
         _os_log_impl(&dword_19020E000, v27, OS_LOG_TYPE_INFO, "Swipe to reply is active on view: %@, updating with reply layout offset: %f", buf, 0x16u);
@@ -322,9 +322,9 @@
     }
   }
 
-  v29 = [v9 wantsFrameClamping];
+  wantsFrameClamping = [v9 wantsFrameClamping];
   v30 = *(MEMORY[0x1E695EFF8] + 8);
-  if (v29)
+  if (wantsFrameClamping)
   {
     if ([(CKEditableCollectionViewCell *)self orientation])
     {
@@ -361,8 +361,8 @@
     }
   }
 
-  v33 = [(CKTranscriptMessageContentCell *)self traitCollection];
-  [v33 displayScale];
+  traitCollection = [(CKTranscriptMessageContentCell *)self traitCollection];
+  [traitCollection displayScale];
   v35 = v34;
   if (v34 == 0.0)
   {
@@ -382,8 +382,8 @@
     }
   }
 
-  v36 = [(CKTranscriptMessageContentCell *)self traitCollection];
-  [v36 displayScale];
+  traitCollection2 = [(CKTranscriptMessageContentCell *)self traitCollection];
+  [traitCollection2 displayScale];
   v38 = v37;
   if (v37 == 0.0)
   {
@@ -414,14 +414,14 @@
   return result;
 }
 
-- (id)messageDisplayViewLayoutAttributesForMessageDisplayViewFrame:(CGRect)a3 inContainerFrame:(CGRect)a4
+- (id)messageDisplayViewLayoutAttributesForMessageDisplayViewFrame:(CGRect)frame inContainerFrame:(CGRect)containerFrame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  [(CKTranscriptMessageContentCell *)self swipeToReplyLayoutOffset:a3.origin.x];
-  v7 = [[_TtC7ChatKit36CKMessageDisplayViewLayoutAttributes alloc] initWithMessageDisplayViewSize:v6 == 0.0 wantsFrameClamping:width, height];
+  height = frame.size.height;
+  width = frame.size.width;
+  [(CKTranscriptMessageContentCell *)self swipeToReplyLayoutOffset:frame.origin.x];
+  height = [[_TtC7ChatKit36CKMessageDisplayViewLayoutAttributes alloc] initWithMessageDisplayViewSize:v6 == 0.0 wantsFrameClamping:width, height];
 
-  return v7;
+  return height;
 }
 
 - (UIEdgeInsets)messageDisplayViewTailInsets
@@ -439,8 +439,8 @@
 
 - (CGRect)drawerLabelFrame
 {
-  v2 = [(CKTranscriptMessageContentCell *)self drawerLabel];
-  [v2 frame];
+  drawerLabel = [(CKTranscriptMessageContentCell *)self drawerLabel];
+  [drawerLabel frame];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -457,18 +457,18 @@
   return result;
 }
 
-- (void)setDrawerText:(id)a3
+- (void)setDrawerText:(id)text
 {
-  v4 = a3;
-  if (self->_drawerText != v4)
+  textCopy = text;
+  if (self->_drawerText != textCopy)
   {
-    v6 = v4;
-    v5 = [(NSAttributedString *)v4 copy];
+    v6 = textCopy;
+    v5 = [(NSAttributedString *)textCopy copy];
 
     objc_storeStrong(&self->_drawerText, v5);
     [(CKTranscriptMessageContentCell *)self setDrawerTextChanged:1];
     [(CKTranscriptMessageContentCell *)self setNeedsLayout];
-    v4 = v5;
+    textCopy = v5;
   }
 }
 
@@ -490,23 +490,23 @@
   return result;
 }
 
-- (void)configureForChatItem:(id)a3 context:(id)a4 animated:(BOOL)a5 animationDuration:(double)a6 animationCurve:(int64_t)a7
+- (void)configureForChatItem:(id)item context:(id)context animated:(BOOL)animated animationDuration:(double)duration animationCurve:(int64_t)curve
 {
-  v9 = a5;
+  animatedCopy = animated;
   v15.receiver = self;
   v15.super_class = CKTranscriptMessageContentCell;
-  v12 = a3;
-  [(CKTranscriptCell *)&v15 configureForChatItem:v12 context:a4 animated:v9 animationDuration:a7 animationCurve:a6];
-  v13 = [v12 transcriptDrawerText];
-  [(CKTranscriptMessageContentCell *)self setDrawerText:v13];
+  itemCopy = item;
+  [(CKTranscriptCell *)&v15 configureForChatItem:itemCopy context:context animated:animatedCopy animationDuration:curve animationCurve:duration];
+  transcriptDrawerText = [itemCopy transcriptDrawerText];
+  [(CKTranscriptMessageContentCell *)self setDrawerText:transcriptDrawerText];
 
-  [v12 size];
+  [itemCopy size];
   [(CKTranscriptMessageContentCell *)self setMessageDisplayViewRequestedSize:?];
-  -[CKTranscriptMessageCell setIsReply:](self, "setIsReply:", [v12 itemIsReply]);
-  -[CKTranscriptMessageCell setIsReplyContextPreview:](self, "setIsReplyContextPreview:", [v12 itemIsReplyContextPreview]);
-  v14 = [v12 IMChatItem];
+  -[CKTranscriptMessageCell setIsReply:](self, "setIsReply:", [itemCopy itemIsReply]);
+  -[CKTranscriptMessageCell setIsReplyContextPreview:](self, "setIsReplyContextPreview:", [itemCopy itemIsReplyContextPreview]);
+  iMChatItem = [itemCopy IMChatItem];
 
-  -[CKTranscriptMessageCell setIsFromMe:](self, "setIsFromMe:", [v14 isFromMe]);
+  -[CKTranscriptMessageCell setIsFromMe:](self, "setIsFromMe:", [iMChatItem isFromMe]);
 }
 
 @end

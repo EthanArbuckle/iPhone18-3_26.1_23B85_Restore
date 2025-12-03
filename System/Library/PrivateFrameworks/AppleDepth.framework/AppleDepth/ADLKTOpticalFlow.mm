@@ -2,71 +2,71 @@
 + ($06231CF0FCC0A6A3B5C95DAAB190E4AF)defaultConfig;
 + ($06231CF0FCC0A6A3B5C95DAAB190E4AF)highPerformanceConfig;
 + ($06231CF0FCC0A6A3B5C95DAAB190E4AF)highQualityConfig;
-+ (CGSize)getNextPyramidLevelSize:(CGSize)a3;
++ (CGSize)getNextPyramidLevelSize:(CGSize)size;
 - ($41DCF25500D59F4991CE6CEF6FDF028F)_prepareLKTGPUUniforms:(id)retstr out_uv_tex:coeff:stride:computeConfidenceComponents:;
-- (ADLKTOpticalFlow)initWithDevice:(id)a3 inputSize:(CGSize)a4 config:(id *)a5;
-- (ADLKTOpticalFlow)initWithDevice:(id)a3 inputSize:(CGSize)a4 config:(id *)a5 confidenceParameters:(id)a6;
-- (ADLKTOpticalFlow)initWithDevice:(id)a3 inputSize:(CGSize)a4 scales:(unint64_t)a5;
-- (BOOL)_createImagePyramidWithCommandBuffer:(id)a3 cropSizeRatio:(id)a4 inOutPyramidsArray:(id)a5 outMeanIntensityAtCoarsestScale:(id *)a6 error:;
-- (BOOL)_createImagePyramidWithCommandBuffer:(id)a3 in_tex:(id)a4 cropSizeRatio:(id)a5 outPyramidsArray:(id)a6 outMeanIntensityAtCoarsestScale:(id *)a7 error:;
-- (BOOL)_setupBufferAndReturnErrorWithDevice:(id)a3 error:(id *)a4;
-- (int)_computeConfidence:(id)a3 shiftMap:(id)a4 outConfidenceMap:(id)a5 cropSizeRatio:;
-- (int)_computeFeaturesDerivativesWithCommandBuffer:(id)a3 cropSizeRatio:(id)a4 in_tex:(id)a5 out_tex:;
-- (int)_computeFeaturesWithCommandBuffer:(id)a3 cropSizeRatio:(id)a4 in_tex:(id)a5 out_tex:;
-- (int)_doSolverWithCommandBuffer:(id)a3 currentFeatures:(id)a4 currentDerivitive:(id)a5 previousFeatures:(id)a6 previousDerivitive:(id)a7 in_uv_tex:(id)a8 out_uv_tex:(id)a9 out_w_tex:(id)a10 uniforms:(id *)a11 cropSizeRatio:;
-- (int)_downscale2XWithCommandBuffer:(ADLKTOpticalFlow *)self in_tex:(SEL)a2 out_tex:(id)a3 scaling_factor:(id)a4 cropSizeRatio:(id)a5 outMeanIntensity:(id)a6;
-- (int64_t)encodeOpticalFlowSolverToCommandBuffer:(id)a3 currentFeaturesArray:(id)a4 currentDerivitiveArray:(id)a5 previousFeaturesArray:(id)a6 previousDerivitiveArray:(id)a7 currentPyramidsArray:(id)a8 validBufferRect:(CGRect)a9 outShiftMap:(id)a10 outConfidenceMap:(id)a11;
-- (int64_t)encodePyramidFeaturesToCommandBuffer:(id)a3 colorTexture:(id)a4 outPyramidsArray:(id)a5 outFeaturesArray:(id)a6 outDerivitiveArray:(id)a7;
-- (int64_t)encodePyramidFeaturesToCommandBuffer:(id)a3 grayscaleTexture:(id)a4 validBufferRect:(CGRect)a5 outPyramidsArray:(id)a6 outFeaturesArray:(id)a7 outDerivitiveArray:(id)a8 outMeanIntensityAtCoarsestScale:(id)a9;
-- (void)_doNLRegularizationWithCommandBuffer:(id)a3 in_uv_tex:(id)a4 join_tex:(id)a5 w_tex:(id)a6 out_uv_tex:(id)a7 cropSizeRatio:;
+- (ADLKTOpticalFlow)initWithDevice:(id)device inputSize:(CGSize)size config:(id *)config;
+- (ADLKTOpticalFlow)initWithDevice:(id)device inputSize:(CGSize)size config:(id *)config confidenceParameters:(id)parameters;
+- (ADLKTOpticalFlow)initWithDevice:(id)device inputSize:(CGSize)size scales:(unint64_t)scales;
+- (BOOL)_createImagePyramidWithCommandBuffer:(id)buffer cropSizeRatio:(id)ratio inOutPyramidsArray:(id)array outMeanIntensityAtCoarsestScale:(id *)scale error:;
+- (BOOL)_createImagePyramidWithCommandBuffer:(id)buffer in_tex:(id)in_tex cropSizeRatio:(id)ratio outPyramidsArray:(id)array outMeanIntensityAtCoarsestScale:(id *)scale error:;
+- (BOOL)_setupBufferAndReturnErrorWithDevice:(id)device error:(id *)error;
+- (int)_computeConfidence:(id)confidence shiftMap:(id)map outConfidenceMap:(id)confidenceMap cropSizeRatio:;
+- (int)_computeFeaturesDerivativesWithCommandBuffer:(id)buffer cropSizeRatio:(id)ratio in_tex:(id)in_tex out_tex:;
+- (int)_computeFeaturesWithCommandBuffer:(id)buffer cropSizeRatio:(id)ratio in_tex:(id)in_tex out_tex:;
+- (int)_doSolverWithCommandBuffer:(id)buffer currentFeatures:(id)features currentDerivitive:(id)derivitive previousFeatures:(id)previousFeatures previousDerivitive:(id)previousDerivitive in_uv_tex:(id)in_uv_tex out_uv_tex:(id)out_uv_tex out_w_tex:(id)self0 uniforms:(id *)self1 cropSizeRatio:;
+- (int)_downscale2XWithCommandBuffer:(ADLKTOpticalFlow *)self in_tex:(SEL)in_tex out_tex:(id)out_tex scaling_factor:(id)scaling_factor cropSizeRatio:(id)ratio outMeanIntensity:(id)intensity;
+- (int64_t)encodeOpticalFlowSolverToCommandBuffer:(id)buffer currentFeaturesArray:(id)array currentDerivitiveArray:(id)derivitiveArray previousFeaturesArray:(id)featuresArray previousDerivitiveArray:(id)previousDerivitiveArray currentPyramidsArray:(id)pyramidsArray validBufferRect:(CGRect)rect outShiftMap:(id)self0 outConfidenceMap:(id)self1;
+- (int64_t)encodePyramidFeaturesToCommandBuffer:(id)buffer colorTexture:(id)texture outPyramidsArray:(id)array outFeaturesArray:(id)featuresArray outDerivitiveArray:(id)derivitiveArray;
+- (int64_t)encodePyramidFeaturesToCommandBuffer:(id)buffer grayscaleTexture:(id)texture validBufferRect:(CGRect)rect outPyramidsArray:(id)array outFeaturesArray:(id)featuresArray outDerivitiveArray:(id)derivitiveArray outMeanIntensityAtCoarsestScale:(id)scale;
+- (void)_doNLRegularizationWithCommandBuffer:(id)buffer in_uv_tex:(id)in_uv_tex join_tex:(id)join_tex w_tex:(id)w_tex out_uv_tex:(id)out_uv_tex cropSizeRatio:;
 - (void)_setupPipelines;
-- (void)_zeroFlowWithCommandBuffer:(id)a3 uv_tex:(id)a4;
+- (void)_zeroFlowWithCommandBuffer:(id)buffer uv_tex:(id)uv_tex;
 - (void)dealloc;
-- (void)dispatchCommandEncoder:(id)a3 pipeline:(id)a4 width:(unsigned int)a5 height:(unsigned int)a6;
+- (void)dispatchCommandEncoder:(id)encoder pipeline:(id)pipeline width:(unsigned int)width height:(unsigned int)height;
 - (void)setPyramidSizes;
 @end
 
 @implementation ADLKTOpticalFlow
 
-- (void)dispatchCommandEncoder:(id)a3 pipeline:(id)a4 width:(unsigned int)a5 height:(unsigned int)a6
+- (void)dispatchCommandEncoder:(id)encoder pipeline:(id)pipeline width:(unsigned int)width height:(unsigned int)height
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = [v10 threadExecutionWidth];
-  v13[0] = a5;
-  v13[1] = a6;
+  encoderCopy = encoder;
+  pipelineCopy = pipeline;
+  threadExecutionWidth = [pipelineCopy threadExecutionWidth];
+  v13[0] = width;
+  v13[1] = height;
   v13[2] = 1;
-  v12[0] = v11;
-  v12[1] = [v10 maxTotalThreadsPerThreadgroup] / v11;
+  v12[0] = threadExecutionWidth;
+  v12[1] = [pipelineCopy maxTotalThreadsPerThreadgroup] / threadExecutionWidth;
   v12[2] = 1;
-  [v9 dispatchThreads:v13 threadsPerThreadgroup:v12];
+  [encoderCopy dispatchThreads:v13 threadsPerThreadgroup:v12];
 }
 
-- (int64_t)encodeOpticalFlowSolverToCommandBuffer:(id)a3 currentFeaturesArray:(id)a4 currentDerivitiveArray:(id)a5 previousFeaturesArray:(id)a6 previousDerivitiveArray:(id)a7 currentPyramidsArray:(id)a8 validBufferRect:(CGRect)a9 outShiftMap:(id)a10 outConfidenceMap:(id)a11
+- (int64_t)encodeOpticalFlowSolverToCommandBuffer:(id)buffer currentFeaturesArray:(id)array currentDerivitiveArray:(id)derivitiveArray previousFeaturesArray:(id)featuresArray previousDerivitiveArray:(id)previousDerivitiveArray currentPyramidsArray:(id)pyramidsArray validBufferRect:(CGRect)rect outShiftMap:(id)self0 outConfidenceMap:(id)self1
 {
-  height = a9.size.height;
-  width = a9.size.width;
-  y = a9.origin.y;
-  x = a9.origin.x;
-  v90 = a3;
-  v89 = a4;
-  v88 = a5;
-  v87 = a6;
-  v86 = a7;
-  v21 = a8;
-  v83 = a10;
-  v22 = a11;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  bufferCopy = buffer;
+  arrayCopy = array;
+  derivitiveArrayCopy = derivitiveArray;
+  featuresArrayCopy = featuresArray;
+  previousDerivitiveArrayCopy = previousDerivitiveArray;
+  pyramidsArrayCopy = pyramidsArray;
+  mapCopy = map;
+  confidenceMapCopy = confidenceMap;
   v102.origin.x = x;
   v102.origin.y = y;
   v102.size.width = width;
   v102.size.height = height;
-  v79 = v21;
+  v79 = pyramidsArrayCopy;
   if (CGRectIsNull(v102))
   {
-    v23 = [v21 objectAtIndexedSubscript:0];
-    v24 = [v23 width];
-    v25 = [v21 objectAtIndexedSubscript:0];
-    width = v24;
+    v23 = [pyramidsArrayCopy objectAtIndexedSubscript:0];
+    width = [v23 width];
+    v25 = [pyramidsArrayCopy objectAtIndexedSubscript:0];
+    width = width;
     height = [v25 height];
 
     x = 0.0;
@@ -75,34 +75,34 @@
 
   if (x == 0.0 && y == 0.0)
   {
-    v26 = [v21 objectAtIndexedSubscript:0];
+    v26 = [pyramidsArrayCopy objectAtIndexedSubscript:0];
     if (width > [v26 width])
     {
     }
 
     else
     {
-      v27 = [v21 objectAtIndexedSubscript:0];
-      v28 = [v27 height];
+      v27 = [pyramidsArrayCopy objectAtIndexedSubscript:0];
+      height = [v27 height];
 
-      if (height <= v28)
+      if (height <= height)
       {
-        v29 = [v21 objectAtIndexedSubscript:0];
-        v30 = [v29 width];
-        v31 = [v21 objectAtIndexedSubscript:0];
-        v32 = [v31 height];
+        v29 = [pyramidsArrayCopy objectAtIndexedSubscript:0];
+        width2 = [v29 width];
+        v31 = [pyramidsArrayCopy objectAtIndexedSubscript:0];
+        height2 = [v31 height];
 
         v99 = 335681520;
         v100 = 0u;
         v101 = 0u;
         kdebug_trace();
         uv_tex = self->_uv_tex;
-        [(ADLKTOpticalFlow *)self _zeroFlowWithCommandBuffer:v90 uv_tex:self->_uv_pxbuf[self->_nscales + 1]];
-        v84 = v22;
+        [(ADLKTOpticalFlow *)self _zeroFlowWithCommandBuffer:bufferCopy uv_tex:self->_uv_pxbuf[self->_nscales + 1]];
+        v84 = confidenceMapCopy;
         v33 = width;
-        *&v34 = v33 / v30;
+        *&v34 = v33 / width2;
         v35 = height;
-        *(&v34 + 1) = v35 / v32;
+        *(&v34 + 1) = v35 / height2;
         v85 = v34;
         nscales = self->_nscales;
         if (nscales < 1)
@@ -138,7 +138,7 @@
               _ZF = v48 == 1 && v43 == 1;
               if (_ZF && !self->_useNonLocalRegularization)
               {
-                v50 = v83;
+                v50 = mapCopy;
                 firstScaleStride = self->_firstScaleStride;
               }
 
@@ -161,15 +161,15 @@
               *buf = 0u;
               v54 = uv_tex[v37];
               [(ADLKTOpticalFlow *)self _prepareLKTGPUUniforms:v54[v81] out_uv_tex:v50 coeff:firstScaleStride stride:v53 computeConfidenceComponents:v47];
-              v55 = [v89 objectAtIndexedSubscript:v46];
-              v56 = [v88 objectAtIndexedSubscript:v46];
-              v57 = [v87 objectAtIndexedSubscript:v46];
-              v58 = [v86 objectAtIndexedSubscript:v46];
+              v55 = [arrayCopy objectAtIndexedSubscript:v46];
+              v56 = [derivitiveArrayCopy objectAtIndexedSubscript:v46];
+              v57 = [featuresArrayCopy objectAtIndexedSubscript:v46];
+              v58 = [previousDerivitiveArrayCopy objectAtIndexedSubscript:v46];
               v59 = v54[v81];
               v93 = *buf;
               v94 = v97;
               v95 = v98;
-              [(ADLKTOpticalFlow *)self _doSolverWithCommandBuffer:v90 currentFeatures:v55 currentDerivitive:v56 previousFeatures:v57 previousDerivitive:v58 in_uv_tex:v59 out_uv_tex:v85 out_w_tex:v50 uniforms:v91 cropSizeRatio:&v93];
+              [(ADLKTOpticalFlow *)self _doSolverWithCommandBuffer:bufferCopy currentFeatures:v55 currentDerivitive:v56 previousFeatures:v57 previousDerivitive:v58 in_uv_tex:v59 out_uv_tex:v85 out_w_tex:v50 uniforms:v91 cropSizeRatio:&v93];
 
               v37 ^= 1uLL;
               v60 = nwarpings[v46];
@@ -185,7 +185,7 @@
 
                   else
                   {
-                    v62 = v83;
+                    v62 = mapCopy;
                     v63 = self->_firstScaleStride;
                   }
 
@@ -202,15 +202,15 @@
                   *buf = 0u;
                   v66 = uv_tex[v37];
                   [(ADLKTOpticalFlow *)self _prepareLKTGPUUniforms:v66[v46] out_uv_tex:v62 coeff:v63 stride:v65 computeConfidenceComponents:_D8];
-                  v67 = [v89 objectAtIndexedSubscript:v46];
-                  v68 = [v88 objectAtIndexedSubscript:v46];
-                  v69 = [v87 objectAtIndexedSubscript:v46];
-                  v70 = [v86 objectAtIndexedSubscript:v46];
+                  v67 = [arrayCopy objectAtIndexedSubscript:v46];
+                  v68 = [derivitiveArrayCopy objectAtIndexedSubscript:v46];
+                  v69 = [featuresArrayCopy objectAtIndexedSubscript:v46];
+                  v70 = [previousDerivitiveArrayCopy objectAtIndexedSubscript:v46];
                   v71 = v66[v46];
                   v93 = *buf;
                   v94 = v97;
                   v95 = v98;
-                  [(ADLKTOpticalFlow *)self _doSolverWithCommandBuffer:v90 currentFeatures:v67 currentDerivitive:v68 previousFeatures:v69 previousDerivitive:v70 in_uv_tex:v71 out_uv_tex:v85 out_w_tex:v62 uniforms:v91 cropSizeRatio:&v93];
+                  [(ADLKTOpticalFlow *)self _doSolverWithCommandBuffer:bufferCopy currentFeatures:v67 currentDerivitive:v68 previousFeatures:v69 previousDerivitive:v70 in_uv_tex:v71 out_uv_tex:v85 out_w_tex:v62 uniforms:v91 cropSizeRatio:&v93];
 
                   v37 ^= 1uLL;
                   nwarpings = self->_nwarpings;
@@ -227,7 +227,7 @@
               v72 = uv_tex[v37 ^ 1][v46];
               if (!v46)
               {
-                v73 = v83;
+                v73 = mapCopy;
 
                 v72 = v73;
               }
@@ -236,7 +236,7 @@
               v75 = [v79 objectAtIndexedSubscript:v46];
               v76 = [v75 newTextureViewWithPixelFormat:53];
 
-              [(ADLKTOpticalFlow *)self _doNLRegularizationWithCommandBuffer:v90 in_uv_tex:v74 join_tex:v76 w_tex:v91 out_uv_tex:v72 cropSizeRatio:v85];
+              [(ADLKTOpticalFlow *)self _doNLRegularizationWithCommandBuffer:bufferCopy in_uv_tex:v74 join_tex:v76 w_tex:v91 out_uv_tex:v72 cropSizeRatio:v85];
               v37 ^= 1uLL;
             }
 
@@ -247,14 +247,14 @@
           while (!v45);
         }
 
-        v22 = v84;
+        confidenceMapCopy = v84;
         if (v84)
         {
-          [(ADLKTOpticalFlow *)self _computeConfidence:v90 shiftMap:v83 outConfidenceMap:v84 cropSizeRatio:v85];
+          [(ADLKTOpticalFlow *)self _computeConfidence:bufferCopy shiftMap:mapCopy outConfidenceMap:v84 cropSizeRatio:v85];
         }
 
         kdebug_trace();
-        v21 = v79;
+        pyramidsArrayCopy = v79;
         v77 = 0;
         goto LABEL_59;
       }
@@ -285,49 +285,49 @@ LABEL_59:
   return v77;
 }
 
-- (int64_t)encodePyramidFeaturesToCommandBuffer:(id)a3 grayscaleTexture:(id)a4 validBufferRect:(CGRect)a5 outPyramidsArray:(id)a6 outFeaturesArray:(id)a7 outDerivitiveArray:(id)a8 outMeanIntensityAtCoarsestScale:(id)a9
+- (int64_t)encodePyramidFeaturesToCommandBuffer:(id)buffer grayscaleTexture:(id)texture validBufferRect:(CGRect)rect outPyramidsArray:(id)array outFeaturesArray:(id)featuresArray outDerivitiveArray:(id)derivitiveArray outMeanIntensityAtCoarsestScale:(id)scale
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v44 = *MEMORY[0x277D85DE8];
-  v19 = a3;
-  v20 = a4;
-  v21 = a6;
-  v22 = a7;
-  v23 = a8;
-  v24 = a9;
+  bufferCopy = buffer;
+  textureCopy = texture;
+  arrayCopy = array;
+  featuresArrayCopy = featuresArray;
+  derivitiveArrayCopy = derivitiveArray;
+  scaleCopy = scale;
   v45.origin.x = x;
   v45.origin.y = y;
   v45.size.width = width;
   v45.size.height = height;
   if (CGRectIsNull(v45))
   {
-    width = [v20 width];
-    height = [v20 height];
+    width = [textureCopy width];
+    height = [textureCopy height];
     x = 0.0;
     y = 0.0;
   }
 
   if (x == 0.0 && y == 0.0)
   {
-    if (width <= [v20 width] && height <= objc_msgSend(v20, "height"))
+    if (width <= [textureCopy width] && height <= objc_msgSend(textureCopy, "height"))
     {
-      v27 = [v20 width];
-      v28 = [v20 height];
+      width = [textureCopy width];
+      height = [textureCopy height];
       *buf = 335682684;
       v40 = 0u;
       v41 = 0u;
       kdebug_trace();
-      if ([v20 pixelFormat] == 10)
+      if ([textureCopy pixelFormat] == 10)
       {
         v29 = height;
         v30 = width;
-        *&v31 = v30 / v27;
-        *(&v31 + 1) = v29 / v28;
+        *&v31 = v30 / width;
+        *(&v31 + 1) = v29 / height;
         v38 = v31;
-        [(ADLKTOpticalFlow *)self _createImagePyramidWithCommandBuffer:v19 in_tex:v20 cropSizeRatio:v21 outPyramidsArray:v24 outMeanIntensityAtCoarsestScale:0 error:?];
+        [(ADLKTOpticalFlow *)self _createImagePyramidWithCommandBuffer:bufferCopy in_tex:textureCopy cropSizeRatio:arrayCopy outPyramidsArray:scaleCopy outMeanIntensityAtCoarsestScale:0 error:?];
         if (self->_nscales < 1)
         {
           v25 = 0;
@@ -335,24 +335,24 @@ LABEL_59:
 
         else
         {
-          v37 = v24;
+          v37 = scaleCopy;
           v32 = (self->_nscales & 0x7FFFFFFF) + 1;
           do
           {
-            v33 = [v21 objectAtIndexedSubscript:v32 - 2];
-            v34 = [v22 objectAtIndexedSubscript:v32 - 2];
-            [(ADLKTOpticalFlow *)self _computeFeaturesWithCommandBuffer:v19 cropSizeRatio:v33 in_tex:v34 out_tex:v38];
+            v33 = [arrayCopy objectAtIndexedSubscript:v32 - 2];
+            v34 = [featuresArrayCopy objectAtIndexedSubscript:v32 - 2];
+            [(ADLKTOpticalFlow *)self _computeFeaturesWithCommandBuffer:bufferCopy cropSizeRatio:v33 in_tex:v34 out_tex:v38];
 
-            v35 = [v22 objectAtIndexedSubscript:v32 - 2];
-            v36 = [v23 objectAtIndexedSubscript:v32 - 2];
-            [(ADLKTOpticalFlow *)self _computeFeaturesDerivativesWithCommandBuffer:v19 cropSizeRatio:v35 in_tex:v36 out_tex:v38];
+            v35 = [featuresArrayCopy objectAtIndexedSubscript:v32 - 2];
+            v36 = [derivitiveArrayCopy objectAtIndexedSubscript:v32 - 2];
+            [(ADLKTOpticalFlow *)self _computeFeaturesDerivativesWithCommandBuffer:bufferCopy cropSizeRatio:v35 in_tex:v36 out_tex:v38];
 
             --v32;
           }
 
           while (v32 > 1);
           v25 = 0;
-          v24 = v37;
+          scaleCopy = v37;
         }
       }
 
@@ -361,7 +361,7 @@ LABEL_59:
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
         {
           *v42 = 134217984;
-          v43 = [v20 pixelFormat];
+          pixelFormat = [textureCopy pixelFormat];
           _os_log_error_impl(&dword_2402F6000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "Not supported pixel format: %lu", v42, 0xCu);
         }
 
@@ -397,23 +397,23 @@ LABEL_59:
   return v25;
 }
 
-- (int64_t)encodePyramidFeaturesToCommandBuffer:(id)a3 colorTexture:(id)a4 outPyramidsArray:(id)a5 outFeaturesArray:(id)a6 outDerivitiveArray:(id)a7
+- (int64_t)encodePyramidFeaturesToCommandBuffer:(id)buffer colorTexture:(id)texture outPyramidsArray:(id)array outFeaturesArray:(id)featuresArray outDerivitiveArray:(id)derivitiveArray
 {
   v22 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  if ([v13 pixelFormat] == 80)
+  bufferCopy = buffer;
+  textureCopy = texture;
+  arrayCopy = array;
+  featuresArrayCopy = featuresArray;
+  derivitiveArrayCopy = derivitiveArray;
+  if ([textureCopy pixelFormat] == 80)
   {
-    v17 = [v12 computeCommandEncoder];
-    [v17 setComputePipelineState:self->_computePipelines[0]];
-    [v17 setTexture:v13 atIndex:0];
-    [v17 setTexture:self->_grayscaleTexture atIndex:1];
-    +[ADMetalUtils dispatchCommandEncoder:pipeline:width:height:](ADMetalUtils, "dispatchCommandEncoder:pipeline:width:height:", v17, self->_computePipelines[0], [v13 width], objc_msgSend(v13, "height"));
-    [v17 endEncoding];
-    v18 = [(ADLKTOpticalFlow *)self encodePyramidFeaturesToCommandBuffer:v12 grayscaleTexture:self->_grayscaleTexture validBufferRect:v14 outPyramidsArray:v15 outFeaturesArray:v16 outDerivitiveArray:0 outMeanIntensityAtCoarsestScale:*MEMORY[0x277CBF398], *(MEMORY[0x277CBF398] + 8), *(MEMORY[0x277CBF398] + 16), *(MEMORY[0x277CBF398] + 24)];
+    computeCommandEncoder = [bufferCopy computeCommandEncoder];
+    [computeCommandEncoder setComputePipelineState:self->_computePipelines[0]];
+    [computeCommandEncoder setTexture:textureCopy atIndex:0];
+    [computeCommandEncoder setTexture:self->_grayscaleTexture atIndex:1];
+    +[ADMetalUtils dispatchCommandEncoder:pipeline:width:height:](ADMetalUtils, "dispatchCommandEncoder:pipeline:width:height:", computeCommandEncoder, self->_computePipelines[0], [textureCopy width], objc_msgSend(textureCopy, "height"));
+    [computeCommandEncoder endEncoding];
+    v18 = [(ADLKTOpticalFlow *)self encodePyramidFeaturesToCommandBuffer:bufferCopy grayscaleTexture:self->_grayscaleTexture validBufferRect:arrayCopy outPyramidsArray:featuresArrayCopy outFeaturesArray:derivitiveArrayCopy outDerivitiveArray:0 outMeanIntensityAtCoarsestScale:*MEMORY[0x277CBF398], *(MEMORY[0x277CBF398] + 8), *(MEMORY[0x277CBF398] + 16), *(MEMORY[0x277CBF398] + 24)];
   }
 
   else
@@ -421,7 +421,7 @@ LABEL_59:
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
       v20 = 134217984;
-      v21 = [v13 pixelFormat];
+      pixelFormat = [textureCopy pixelFormat];
       _os_log_error_impl(&dword_2402F6000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "Not supported pixel format: %lu", &v20, 0xCu);
     }
 
@@ -431,12 +431,12 @@ LABEL_59:
   return v18;
 }
 
-- (ADLKTOpticalFlow)initWithDevice:(id)a3 inputSize:(CGSize)a4 config:(id *)a5 confidenceParameters:(id)a6
+- (ADLKTOpticalFlow)initWithDevice:(id)device inputSize:(CGSize)size config:(id *)config confidenceParameters:(id)parameters
 {
-  height = a4.height;
-  width = a4.width;
-  v12 = a3;
-  v13 = a6;
+  height = size.height;
+  width = size.width;
+  deviceCopy = device;
+  parametersCopy = parameters;
   v39.receiver = self;
   v39.super_class = ADLKTOpticalFlow;
   v14 = [(ADLKTOpticalFlow *)&v39 init];
@@ -444,19 +444,19 @@ LABEL_59:
   v16 = v14;
   if (v14)
   {
-    v38 = v12;
+    v38 = deviceCopy;
     v14->_resX = width;
     v14->_resY = height;
-    var0 = a5->var0;
-    v14->_nscales = a5->var0;
-    v14->_reducedMemoryConsumption = a5->var10;
+    var0 = config->var0;
+    v14->_nscales = config->var0;
+    v14->_reducedMemoryConsumption = config->var10;
     if (var0)
     {
       v18 = 0;
       v19 = 1;
       do
       {
-        v20 = [a5->var1 objectAtIndexedSubscript:v18];
+        v20 = [config->var1 objectAtIndexedSubscript:v18];
         v15->_nwarpings[v18] = [v20 unsignedIntValue];
 
         v18 = v19++;
@@ -465,18 +465,18 @@ LABEL_59:
       while (v16->_nscales > v18);
     }
 
-    v16->_useNonLocalRegularization = a5->var2;
-    v16->_nlreg_radius = a5->var3;
-    v16->_nlreg_padding = a5->var4;
-    v16->_nlreg_sigma_l = a5->var5;
-    v16->_nlreg_sigma_c = a5->var6;
-    v16->_nlreg_sigma_w = a5->var7;
-    v16->_firstScaleStride = a5->var9;
-    objc_storeStrong(&v15->_device, a3);
-    v12 = v38;
-    v21 = [ADMetalUtils textureForSize:1278226488 pixelFormat:v16->_device metalDevice:width, height];
+    v16->_useNonLocalRegularization = config->var2;
+    v16->_nlreg_radius = config->var3;
+    v16->_nlreg_padding = config->var4;
+    v16->_nlreg_sigma_l = config->var5;
+    v16->_nlreg_sigma_c = config->var6;
+    v16->_nlreg_sigma_w = config->var7;
+    v16->_firstScaleStride = config->var9;
+    objc_storeStrong(&v15->_device, device);
+    deviceCopy = v38;
+    height = [ADMetalUtils textureForSize:1278226488 pixelFormat:v16->_device metalDevice:width, height];
     grayscaleTexture = v16->_grayscaleTexture;
-    v16->_grayscaleTexture = v21;
+    v16->_grayscaleTexture = height;
 
     [(ADLKTOpticalFlow *)v16 _setupPipelines];
     [(ADLKTOpticalFlow *)v16 setPyramidSizes];
@@ -492,7 +492,7 @@ LABEL_59:
     conditionNumberConfidenceTex = v16->_conditionNumberConfidenceTex;
     v16->_conditionNumberConfidenceTex = 0;
 
-    objc_storeStrong(&v15->_confidenceParameters, a6);
+    objc_storeStrong(&v15->_confidenceParameters, parameters);
     if ([(ADLKTConfidenceParameters *)v16->_confidenceParameters enableConfidence])
     {
       v25 = (v15 + 16 * [(ADLKTConfidenceParameters *)v15->_confidenceParameters scaleIdxForConfidenceComponents]);
@@ -522,23 +522,23 @@ LABEL_11:
   return v36;
 }
 
-- (ADLKTOpticalFlow)initWithDevice:(id)a3 inputSize:(CGSize)a4 config:(id *)a5
+- (ADLKTOpticalFlow)initWithDevice:(id)device inputSize:(CGSize)size config:(id *)config
 {
-  height = a4.height;
-  width = a4.width;
-  v9 = a3;
+  height = size.height;
+  width = size.width;
+  deviceCopy = device;
   v10 = objc_opt_new();
-  var1 = a5->var1;
-  v15[0] = a5->var0;
+  var1 = config->var1;
+  v15[0] = config->var0;
   v12 = var1;
   v15[1] = v12;
-  v13 = *&a5->var6;
-  v16 = *&a5->var2;
+  v13 = *&config->var6;
+  v16 = *&config->var2;
   *v17 = v13;
-  *&v17[13] = *(&a5->var8 + 5);
+  *&v17[13] = *(&config->var8 + 5);
   if (self)
   {
-    self = [(ADLKTOpticalFlow *)self initWithDevice:v9 inputSize:v15 config:v10 confidenceParameters:width, height];
+    self = [(ADLKTOpticalFlow *)self initWithDevice:deviceCopy inputSize:v15 config:v10 confidenceParameters:width, height];
   }
 
   else
@@ -548,14 +548,14 @@ LABEL_11:
   return self;
 }
 
-- (ADLKTOpticalFlow)initWithDevice:(id)a3 inputSize:(CGSize)a4 scales:(unint64_t)a5
+- (ADLKTOpticalFlow)initWithDevice:(id)device inputSize:(CGSize)size scales:(unint64_t)scales
 {
-  height = a4.height;
-  width = a4.width;
-  v9 = a3;
+  height = size.height;
+  width = size.width;
+  deviceCopy = device;
   +[ADLKTOpticalFlow defaultConfig];
-  v15 = a5;
-  v12[0] = a5;
+  scalesCopy = scales;
+  v12[0] = scales;
   v10 = v16;
   v12[1] = v10;
   v13 = v17;
@@ -563,7 +563,7 @@ LABEL_11:
   *&v14[13] = *&v18[13];
   if (self)
   {
-    self = [(ADLKTOpticalFlow *)self initWithDevice:v9 inputSize:v12 config:width, height];
+    self = [(ADLKTOpticalFlow *)self initWithDevice:deviceCopy inputSize:v12 config:width, height];
   }
 
   else
@@ -573,9 +573,9 @@ LABEL_11:
   return self;
 }
 
-- (BOOL)_setupBufferAndReturnErrorWithDevice:(id)a3 error:(id *)a4
+- (BOOL)_setupBufferAndReturnErrorWithDevice:(id)device error:(id *)error
 {
-  v6 = a3;
+  deviceCopy = device;
   maxThreadExecutionWidth = self->_maxThreadExecutionWidth;
   if (maxThreadExecutionWidth)
   {
@@ -603,20 +603,20 @@ LABEL_6:
       v13 = (maxThreadExecutionWidth + resX - 1) / maxThreadExecutionWidth * maxThreadExecutionWidth;
       reducedMemoryConsumption = self->_reducedMemoryConsumption;
       v15 = 8 * v13;
-      v16 = [v6 newBufferWithLength:8 * v13 * self->_resY options:0];
+      v16 = [deviceCopy newBufferWithLength:8 * v13 * self->_resY options:0];
       v17 = self->_Adiagb_buf[0];
       self->_Adiagb_buf[0] = v16;
 
       if (self->_Adiagb_buf[0])
       {
         v18 = 2 * v13;
-        v19 = [v6 newBufferWithLength:v18 * self->_resY options:0];
+        v19 = [deviceCopy newBufferWithLength:v18 * self->_resY options:0];
         v20 = self->_Ixy_buf[0];
         self->_Ixy_buf[0] = v19;
 
         if (self->_Ixy_buf[0])
         {
-          if (reducedMemoryConsumption || (v21 = [v6 newBufferWithLength:v15 * self->_resY options:0], v22 = self->_Adiagb_buf[1], self->_Adiagb_buf[1] = v21, v22, self->_Adiagb_buf[1]) && (v23 = objc_msgSend(v6, "newBufferWithLength:options:", v18 * self->_resY, 0), v24 = self->_Ixy_buf[1], self->_Ixy_buf[1] = v23, v24, self->_Ixy_buf[1]))
+          if (reducedMemoryConsumption || (v21 = [deviceCopy newBufferWithLength:v15 * self->_resY options:0], v22 = self->_Adiagb_buf[1], self->_Adiagb_buf[1] = v21, v22, self->_Adiagb_buf[1]) && (v23 = objc_msgSend(deviceCopy, "newBufferWithLength:options:", v18 * self->_resY, 0), v24 = self->_Ixy_buf[1], self->_Ixy_buf[1] = v23, v24, self->_Ixy_buf[1]))
           {
             v25 = self->_resX;
             v26 = self->_resY;
@@ -671,7 +671,7 @@ LABEL_6:
 
                   if (self->_useNonLocalRegularization)
                   {
-                    v45 = [ADMetalUtils bindPixelBufferToMTL2DTexture:self->_w_pxbuf pixelFormat:25 textureSize:0 plane:self->_device metalDevice:a4 error:v40, v37];
+                    v45 = [ADMetalUtils bindPixelBufferToMTL2DTexture:self->_w_pxbuf pixelFormat:25 textureSize:0 plane:self->_device metalDevice:error error:v40, v37];
                     v46 = w_tex[v36];
                     w_tex[v36] = v45;
 
@@ -681,9 +681,9 @@ LABEL_6:
                     }
                   }
 
-                  v47 = [ADMetalUtils bindPixelBufferToMTL2DTexture:self->_uv_pxbuf[0] pixelFormat:65 textureSize:0 plane:self->_device metalDevice:a4 error:v40, v37, pyramid_size];
+                  pyramid_size = [ADMetalUtils bindPixelBufferToMTL2DTexture:self->_uv_pxbuf[0] pixelFormat:65 textureSize:0 plane:self->_device metalDevice:error error:v40, v37, pyramid_size];
                   v48 = (*uv_tex)[v36];
-                  (*uv_tex)[v36] = v47;
+                  (*uv_tex)[v36] = pyramid_size;
 
                   v49 = (*uv_tex)[v36];
                   if (!v49)
@@ -695,7 +695,7 @@ LABEL_6:
                   v51 = (*uv_u32_alias_tex)[v36];
                   (*uv_u32_alias_tex)[v36] = v50;
 
-                  v52 = [ADMetalUtils bindPixelBufferToMTL2DTexture:self->_uv_pxbuf[1] pixelFormat:65 textureSize:0 plane:self->_device metalDevice:a4 error:v40, v37];
+                  v52 = [ADMetalUtils bindPixelBufferToMTL2DTexture:self->_uv_pxbuf[1] pixelFormat:65 textureSize:0 plane:self->_device metalDevice:error error:v40, v37];
                   v53 = &(*uv_tex)[v36];
                   v54 = v53[10];
                   v53[10] = v52;
@@ -801,9 +801,9 @@ LABEL_26:
 
     v12 = [(MTLDevice *)self->_device newComputePipelineStateWithFunction:v11 error:0];
     objc_storeStrong(computePipelines, v12);
-    v13 = [v12 threadExecutionWidth];
+    threadExecutionWidth = [v12 threadExecutionWidth];
     maxThreadExecutionWidth = self->_maxThreadExecutionWidth;
-    if (v13 > maxThreadExecutionWidth)
+    if (threadExecutionWidth > maxThreadExecutionWidth)
     {
       maxThreadExecutionWidth = [v12 threadExecutionWidth];
     }
@@ -818,43 +818,43 @@ LABEL_26:
   while (v7 != 11);
 }
 
-- (int)_computeConfidence:(id)a3 shiftMap:(id)a4 outConfidenceMap:(id)a5 cropSizeRatio:
+- (int)_computeConfidence:(id)confidence shiftMap:(id)map outConfidenceMap:(id)confidenceMap cropSizeRatio:
 {
   v17 = v5;
-  v9 = a4;
-  v10 = a5;
-  v11 = [a3 computeCommandEncoder];
-  [v11 setComputePipelineState:self->_computePipelines[10]];
-  [v11 setTexture:self->_gradientNormConfidenceTex atIndex:0];
-  [v11 setTexture:self->_conditionNumberConfidenceTex atIndex:1];
-  [v11 setTexture:v9 atIndex:2];
-  [v11 setTexture:v10 atIndex:3];
-  v18 = [(ADLKTConfidenceParameters *)self->_confidenceParameters checkFlowInFOV];
-  [v11 setBytes:&v18 length:1 atIndex:0];
-  v12 = [v10 width];
-  v13 = [v10 height];
-  LODWORD(v14) = vcvtps_s32_f32(v12 * v17.f32[0]);
-  LODWORD(v15) = vcvtps_s32_f32(vmuls_lane_f32(v13, v17, 1));
-  [(ADLKTOpticalFlow *)self dispatchCommandEncoder:v11 pipeline:self->_computePipelines[10] width:v14 height:v15];
-  [v11 endEncoding];
+  mapCopy = map;
+  confidenceMapCopy = confidenceMap;
+  computeCommandEncoder = [confidence computeCommandEncoder];
+  [computeCommandEncoder setComputePipelineState:self->_computePipelines[10]];
+  [computeCommandEncoder setTexture:self->_gradientNormConfidenceTex atIndex:0];
+  [computeCommandEncoder setTexture:self->_conditionNumberConfidenceTex atIndex:1];
+  [computeCommandEncoder setTexture:mapCopy atIndex:2];
+  [computeCommandEncoder setTexture:confidenceMapCopy atIndex:3];
+  checkFlowInFOV = [(ADLKTConfidenceParameters *)self->_confidenceParameters checkFlowInFOV];
+  [computeCommandEncoder setBytes:&checkFlowInFOV length:1 atIndex:0];
+  width = [confidenceMapCopy width];
+  height = [confidenceMapCopy height];
+  LODWORD(v14) = vcvtps_s32_f32(width * v17.f32[0]);
+  LODWORD(v15) = vcvtps_s32_f32(vmuls_lane_f32(height, v17, 1));
+  [(ADLKTOpticalFlow *)self dispatchCommandEncoder:computeCommandEncoder pipeline:self->_computePipelines[10] width:v14 height:v15];
+  [computeCommandEncoder endEncoding];
 
   return 0;
 }
 
-- (int)_doSolverWithCommandBuffer:(id)a3 currentFeatures:(id)a4 currentDerivitive:(id)a5 previousFeatures:(id)a6 previousDerivitive:(id)a7 in_uv_tex:(id)a8 out_uv_tex:(id)a9 out_w_tex:(id)a10 uniforms:(id *)a11 cropSizeRatio:
+- (int)_doSolverWithCommandBuffer:(id)buffer currentFeatures:(id)features currentDerivitive:(id)derivitive previousFeatures:(id)previousFeatures previousDerivitive:(id)previousDerivitive in_uv_tex:(id)in_uv_tex out_uv_tex:(id)out_uv_tex out_w_tex:(id)self0 uniforms:(id *)self1 cropSizeRatio:
 {
   v38 = v11;
-  v47 = a3;
-  v18 = a4;
-  v45 = a5;
-  v46 = a6;
-  v44 = a7;
-  v48 = a8;
-  v43 = a9;
-  v42 = a10;
-  var0 = a11->var0;
-  var1 = a11->var1;
-  if (a11[1].var5)
+  bufferCopy = buffer;
+  featuresCopy = features;
+  derivitiveCopy = derivitive;
+  previousFeaturesCopy = previousFeatures;
+  previousDerivitiveCopy = previousDerivitive;
+  in_uv_texCopy = in_uv_tex;
+  out_uv_texCopy = out_uv_tex;
+  out_w_texCopy = out_w_tex;
+  var0 = uniforms->var0;
+  var1 = uniforms->var1;
+  if (uniforms[1].var5)
   {
     v21 = self->_gradientNormConfidenceTex;
   }
@@ -864,43 +864,43 @@ LABEL_26:
     v21 = 0;
   }
 
-  v41 = v18;
-  v22 = [v47 computeCommandEncoder];
-  [v22 setComputePipelineState:self->_computePipelines[6]];
-  [v22 setTexture:v48 atIndex:0];
-  [v22 setTexture:v18 atIndex:1];
-  [v22 setTexture:v46 atIndex:2];
-  [v22 setTexture:v45 atIndex:3];
-  [v22 setTexture:v44 atIndex:4];
-  [v22 setTexture:v21 atIndex:5];
-  [v22 setBuffer:self->_Adiagb_buf[0] offset:0 atIndex:0];
-  [v22 setBuffer:self->_Ixy_buf[0] offset:0 atIndex:1];
-  [v22 setBytes:a11 length:48 atIndex:2];
+  v41 = featuresCopy;
+  computeCommandEncoder = [bufferCopy computeCommandEncoder];
+  [computeCommandEncoder setComputePipelineState:self->_computePipelines[6]];
+  [computeCommandEncoder setTexture:in_uv_texCopy atIndex:0];
+  [computeCommandEncoder setTexture:featuresCopy atIndex:1];
+  [computeCommandEncoder setTexture:previousFeaturesCopy atIndex:2];
+  [computeCommandEncoder setTexture:derivitiveCopy atIndex:3];
+  [computeCommandEncoder setTexture:previousDerivitiveCopy atIndex:4];
+  [computeCommandEncoder setTexture:v21 atIndex:5];
+  [computeCommandEncoder setBuffer:self->_Adiagb_buf[0] offset:0 atIndex:0];
+  [computeCommandEncoder setBuffer:self->_Ixy_buf[0] offset:0 atIndex:1];
+  [computeCommandEncoder setBytes:uniforms length:48 atIndex:2];
   v23 = ceil((var0 * v39.f32[0]) * 0.5);
   v24 = ceil(vmuls_lane_f32(var1, v39, 1) * 0.5);
   v25 = (v23 + v23);
   v26 = (v24 + v24);
-  [(ADLKTOpticalFlow *)self dispatchCommandEncoder:v22 pipeline:self->_computePipelines[6] width:v25 height:v26];
-  [v22 endEncoding];
+  [(ADLKTOpticalFlow *)self dispatchCommandEncoder:computeCommandEncoder pipeline:self->_computePipelines[6] width:v25 height:v26];
+  [computeCommandEncoder endEncoding];
   Adiagb_buf = self->_Adiagb_buf;
   Ixy_buf = self->_Ixy_buf;
 
   if (!self->_reducedMemoryConsumption)
   {
-    v29 = [v47 computeCommandEncoder];
-    [v29 setComputePipelineState:self->_computePipelines[7]];
-    [v29 setBuffer:*Adiagb_buf offset:0 atIndex:0];
-    [v29 setBuffer:*Ixy_buf offset:0 atIndex:1];
-    [v29 setBuffer:self->_Adiagb_buf[1] offset:0 atIndex:2];
-    [v29 setBuffer:self->_Ixy_buf[1] offset:0 atIndex:3];
-    [v29 setBytes:a11 length:48 atIndex:4];
-    LODWORD(v30) = vcvtps_u32_f32(v26 / a11[1].var3);
-    [(ADLKTOpticalFlow *)self dispatchCommandEncoder:v29 pipeline:self->_computePipelines[7] width:v25 height:v30];
-    [v29 endEncoding];
+    computeCommandEncoder2 = [bufferCopy computeCommandEncoder];
+    [computeCommandEncoder2 setComputePipelineState:self->_computePipelines[7]];
+    [computeCommandEncoder2 setBuffer:*Adiagb_buf offset:0 atIndex:0];
+    [computeCommandEncoder2 setBuffer:*Ixy_buf offset:0 atIndex:1];
+    [computeCommandEncoder2 setBuffer:self->_Adiagb_buf[1] offset:0 atIndex:2];
+    [computeCommandEncoder2 setBuffer:self->_Ixy_buf[1] offset:0 atIndex:3];
+    [computeCommandEncoder2 setBytes:uniforms length:48 atIndex:4];
+    LODWORD(v30) = vcvtps_u32_f32(v26 / uniforms[1].var3);
+    [(ADLKTOpticalFlow *)self dispatchCommandEncoder:computeCommandEncoder2 pipeline:self->_computePipelines[7] width:v25 height:v30];
+    [computeCommandEncoder2 endEncoding];
   }
 
   v39.i32[0] = v26;
-  if (a11[1].var5)
+  if (uniforms[1].var5)
   {
     v31 = self->_conditionNumberConfidenceTex;
   }
@@ -911,22 +911,22 @@ LABEL_26:
   }
 
   reducedMemoryConsumption = self->_reducedMemoryConsumption;
-  v33 = [v47 computeCommandEncoder];
-  [v33 setComputePipelineState:self->_computePipelines[8]];
+  computeCommandEncoder3 = [bufferCopy computeCommandEncoder];
+  [computeCommandEncoder3 setComputePipelineState:self->_computePipelines[8]];
   reducedMemoryConsumption ^= 1uLL;
-  [v33 setBuffer:Adiagb_buf[reducedMemoryConsumption] offset:0 atIndex:0];
-  [v33 setBuffer:Ixy_buf[reducedMemoryConsumption] offset:0 atIndex:1];
-  [v33 setTexture:v48 atIndex:0];
-  [v33 setTexture:v43 atIndex:1];
-  [v33 setTexture:v42 atIndex:2];
-  [v33 setTexture:v31 atIndex:3];
-  [v33 setBytes:a11 length:48 atIndex:2];
-  [v33 setBytes:&self->_reducedMemoryConsumption length:1 atIndex:3];
-  var3 = a11[1].var3;
+  [computeCommandEncoder3 setBuffer:Adiagb_buf[reducedMemoryConsumption] offset:0 atIndex:0];
+  [computeCommandEncoder3 setBuffer:Ixy_buf[reducedMemoryConsumption] offset:0 atIndex:1];
+  [computeCommandEncoder3 setTexture:in_uv_texCopy atIndex:0];
+  [computeCommandEncoder3 setTexture:out_uv_texCopy atIndex:1];
+  [computeCommandEncoder3 setTexture:out_w_texCopy atIndex:2];
+  [computeCommandEncoder3 setTexture:v31 atIndex:3];
+  [computeCommandEncoder3 setBytes:uniforms length:48 atIndex:2];
+  [computeCommandEncoder3 setBytes:&self->_reducedMemoryConsumption length:1 atIndex:3];
+  var3 = uniforms[1].var3;
   LODWORD(v35) = vcvtps_u32_f32(v25 / var3);
   LODWORD(v36) = vcvtps_u32_f32(v40 / var3);
-  [(ADLKTOpticalFlow *)self dispatchCommandEncoder:v33 pipeline:self->_computePipelines[8] width:v35 height:v36];
-  [v33 endEncoding];
+  [(ADLKTOpticalFlow *)self dispatchCommandEncoder:computeCommandEncoder3 pipeline:self->_computePipelines[8] width:v35 height:v36];
+  [computeCommandEncoder3 endEncoding];
 
   return 0;
 }
@@ -940,19 +940,19 @@ LABEL_26:
   v11 = v1;
   v29 = v2;
   v13 = v10;
-  v14 = [v13 width];
-  v15 = [v13 height];
+  width = [v13 width];
+  height = [v13 height];
   v16 = *(v11 + 264);
-  v17 = [v29 width];
-  v18 = [v29 height];
-  *&v19 = (v17 - 1) / (v14 * v8 - 1);
-  *(&v19 + 1) = (v18 - 1) / (v15 * v8 - 1);
+  width2 = [v29 width];
+  height2 = [v29 height];
+  *&v19 = (width2 - 1) / (width * v8 - 1);
+  *(&v19 + 1) = (height2 - 1) / (height * v8 - 1);
   *&retstr->var2 = 0u;
   *&retstr[1].var1 = 0u;
   *&retstr[2].var0 = 0;
-  retstr->var0 = v14 * v8;
-  retstr->var1 = v15 * v8;
-  retstr->var2 = (v14 * v8 - 1 + v16) / v16 * v16;
+  retstr->var0 = width * v8;
+  retstr->var1 = height * v8;
+  retstr->var2 = (width * v8 - 1 + v16) / v16 * v16;
   *&retstr->var4 = v19;
   *&retstr[1].var1 = v9;
   retstr[1].var3 = v8;
@@ -977,88 +977,88 @@ LABEL_26:
   return result;
 }
 
-- (int)_computeFeaturesDerivativesWithCommandBuffer:(id)a3 cropSizeRatio:(id)a4 in_tex:(id)a5 out_tex:
+- (int)_computeFeaturesDerivativesWithCommandBuffer:(id)buffer cropSizeRatio:(id)ratio in_tex:(id)in_tex out_tex:
 {
   v18 = v5;
-  v9 = a4;
-  v10 = a5;
-  v11 = [a3 computeCommandEncoder];
-  [v11 setComputePipelineState:self->_computePipelines[5]];
-  [v11 setTexture:v9 atIndex:0];
-  [v11 setTexture:v10 atIndex:1];
-  v12 = [v9 width];
-  v13 = [v9 height];
-  v14 = ceil((v12 * v18.f32[0]) * 0.5);
+  ratioCopy = ratio;
+  in_texCopy = in_tex;
+  computeCommandEncoder = [buffer computeCommandEncoder];
+  [computeCommandEncoder setComputePipelineState:self->_computePipelines[5]];
+  [computeCommandEncoder setTexture:ratioCopy atIndex:0];
+  [computeCommandEncoder setTexture:in_texCopy atIndex:1];
+  width = [ratioCopy width];
+  height = [ratioCopy height];
+  v14 = ceil((width * v18.f32[0]) * 0.5);
   v15 = (v14 + v14);
-  v16 = ceil(vmuls_lane_f32(v13, v18, 1) * 0.5);
-  [(ADLKTOpticalFlow *)self dispatchCommandEncoder:v11 pipeline:self->_computePipelines[5] width:v15 height:(v16 + v16)];
-  [v11 endEncoding];
+  v16 = ceil(vmuls_lane_f32(height, v18, 1) * 0.5);
+  [(ADLKTOpticalFlow *)self dispatchCommandEncoder:computeCommandEncoder pipeline:self->_computePipelines[5] width:v15 height:(v16 + v16)];
+  [computeCommandEncoder endEncoding];
 
   return 0;
 }
 
-- (int)_computeFeaturesWithCommandBuffer:(id)a3 cropSizeRatio:(id)a4 in_tex:(id)a5 out_tex:
+- (int)_computeFeaturesWithCommandBuffer:(id)buffer cropSizeRatio:(id)ratio in_tex:(id)in_tex out_tex:
 {
   v18 = v5;
-  v9 = a4;
-  v10 = a5;
-  v11 = [a3 computeCommandEncoder];
-  [v11 setComputePipelineState:self->_computePipelines[4]];
-  [v11 setTexture:v9 atIndex:0];
-  [v11 setTexture:v10 atIndex:1];
-  v12 = [v9 width];
-  v13 = [v9 height];
-  v14 = ceil((v12 * v18.f32[0]) * 0.5);
+  ratioCopy = ratio;
+  in_texCopy = in_tex;
+  computeCommandEncoder = [buffer computeCommandEncoder];
+  [computeCommandEncoder setComputePipelineState:self->_computePipelines[4]];
+  [computeCommandEncoder setTexture:ratioCopy atIndex:0];
+  [computeCommandEncoder setTexture:in_texCopy atIndex:1];
+  width = [ratioCopy width];
+  height = [ratioCopy height];
+  v14 = ceil((width * v18.f32[0]) * 0.5);
   v15 = (v14 + v14);
-  v16 = ceil(vmuls_lane_f32(v13, v18, 1) * 0.5);
-  [(ADLKTOpticalFlow *)self dispatchCommandEncoder:v11 pipeline:self->_computePipelines[4] width:v15 height:(v16 + v16)];
-  [v11 endEncoding];
+  v16 = ceil(vmuls_lane_f32(height, v18, 1) * 0.5);
+  [(ADLKTOpticalFlow *)self dispatchCommandEncoder:computeCommandEncoder pipeline:self->_computePipelines[4] width:v15 height:(v16 + v16)];
+  [computeCommandEncoder endEncoding];
 
   return 0;
 }
 
-- (BOOL)_createImagePyramidWithCommandBuffer:(id)a3 in_tex:(id)a4 cropSizeRatio:(id)a5 outPyramidsArray:(id)a6 outMeanIntensityAtCoarsestScale:(id *)a7 error:
+- (BOOL)_createImagePyramidWithCommandBuffer:(id)buffer in_tex:(id)in_tex cropSizeRatio:(id)ratio outPyramidsArray:(id)array outMeanIntensityAtCoarsestScale:(id *)scale error:
 {
   v11 = v7;
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = [v15 width];
-  v19 = [v16 objectAtIndexedSubscript:0];
-  v20 = [v19 width];
+  bufferCopy = buffer;
+  in_texCopy = in_tex;
+  ratioCopy = ratio;
+  arrayCopy = array;
+  width = [in_texCopy width];
+  v19 = [ratioCopy objectAtIndexedSubscript:0];
+  width2 = [v19 width];
 
-  if (v18 <= v20)
+  if (width <= width2)
   {
-    v21 = [v14 blitCommandEncoder];
-    [v21 setLabel:@"lkt_copyToPyramid"];
-    v23 = [v16 objectAtIndexedSubscript:0];
-    [v21 copyFromTexture:v15 toTexture:v23];
+    blitCommandEncoder = [bufferCopy blitCommandEncoder];
+    [blitCommandEncoder setLabel:@"lkt_copyToPyramid"];
+    v23 = [ratioCopy objectAtIndexedSubscript:0];
+    [blitCommandEncoder copyFromTexture:in_texCopy toTexture:v23];
   }
 
   else
   {
-    v21 = [v14 computeCommandEncoder];
-    [v21 setComputePipelineState:self->_computePipelines[1]];
-    [v21 setTexture:v15 atIndex:0];
-    v22 = [v16 objectAtIndexedSubscript:0];
-    [v21 setTexture:v22 atIndex:1];
+    blitCommandEncoder = [bufferCopy computeCommandEncoder];
+    [blitCommandEncoder setComputePipelineState:self->_computePipelines[1]];
+    [blitCommandEncoder setTexture:in_texCopy atIndex:0];
+    v22 = [ratioCopy objectAtIndexedSubscript:0];
+    [blitCommandEncoder setTexture:v22 atIndex:1];
 
-    -[ADLKTOpticalFlow dispatchCommandEncoder:pipeline:width:height:](self, "dispatchCommandEncoder:pipeline:width:height:", v21, self->_computePipelines[1], [v15 width], objc_msgSend(v15, "height"));
+    -[ADLKTOpticalFlow dispatchCommandEncoder:pipeline:width:height:](self, "dispatchCommandEncoder:pipeline:width:height:", blitCommandEncoder, self->_computePipelines[1], [in_texCopy width], objc_msgSend(in_texCopy, "height"));
   }
 
-  [v21 endEncoding];
+  [blitCommandEncoder endEncoding];
 
-  [(ADLKTOpticalFlow *)self _createImagePyramidWithCommandBuffer:v14 cropSizeRatio:v16 inOutPyramidsArray:v17 outMeanIntensityAtCoarsestScale:a7 error:v11];
+  [(ADLKTOpticalFlow *)self _createImagePyramidWithCommandBuffer:bufferCopy cropSizeRatio:ratioCopy inOutPyramidsArray:arrayCopy outMeanIntensityAtCoarsestScale:scale error:v11];
   return 1;
 }
 
-- (BOOL)_createImagePyramidWithCommandBuffer:(id)a3 cropSizeRatio:(id)a4 inOutPyramidsArray:(id)a5 outMeanIntensityAtCoarsestScale:(id *)a6 error:
+- (BOOL)_createImagePyramidWithCommandBuffer:(id)buffer cropSizeRatio:(id)ratio inOutPyramidsArray:(id)array outMeanIntensityAtCoarsestScale:(id *)scale error:
 {
   v9 = v6;
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  bufferCopy = buffer;
+  ratioCopy = ratio;
+  arrayCopy = array;
   if (self->_nscales >= 2)
   {
     v14 = 2;
@@ -1068,12 +1068,12 @@ LABEL_26:
     v27 = _Q0;
     do
     {
-      v21 = [v12 objectAtIndexedSubscript:{v14 - 2, *&v27}];
-      v22 = [v12 objectAtIndexedSubscript:v15];
+      v21 = [ratioCopy objectAtIndexedSubscript:{v14 - 2, *&v27}];
+      v22 = [ratioCopy objectAtIndexedSubscript:v15];
       v23 = COERCE_DOUBLE(vdiv_f32(vcvt_f32_f64(vaddq_f64(*(&self->_nlreg_radius + v14), v27)), vcvt_f32_f64(vaddq_f64(self->_pyramid_size[v15], v27))));
       if (self->_nscales - 1 == v15)
       {
-        v24 = v13;
+        v24 = arrayCopy;
       }
 
       else
@@ -1082,7 +1082,7 @@ LABEL_26:
       }
 
       v25 = v24;
-      [(ADLKTOpticalFlow *)self _downscale2XWithCommandBuffer:v11 in_tex:v21 out_tex:v22 scaling_factor:v25 cropSizeRatio:v23 outMeanIntensity:v9];
+      [(ADLKTOpticalFlow *)self _downscale2XWithCommandBuffer:bufferCopy in_tex:v21 out_tex:v22 scaling_factor:v25 cropSizeRatio:v23 outMeanIntensity:v9];
 
       v15 = v14++;
     }
@@ -1093,13 +1093,13 @@ LABEL_26:
   return 1;
 }
 
-- (void)_doNLRegularizationWithCommandBuffer:(id)a3 in_uv_tex:(id)a4 join_tex:(id)a5 w_tex:(id)a6 out_uv_tex:(id)a7 cropSizeRatio:
+- (void)_doNLRegularizationWithCommandBuffer:(id)buffer in_uv_tex:(id)in_uv_tex join_tex:(id)join_tex w_tex:(id)w_tex out_uv_tex:(id)out_uv_tex cropSizeRatio:
 {
   v30 = v7;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  in_uv_texCopy = in_uv_tex;
+  join_texCopy = join_tex;
+  w_texCopy = w_tex;
+  out_uv_texCopy = out_uv_tex;
   v31[1] = 0;
   v17.i64[0] = *&self->_nlreg_sigma_l;
   v31[0] = *&self->_nlreg_radius;
@@ -1110,65 +1110,65 @@ LABEL_26:
   v24 = vdivq_f32(_Q1, v18);
   v24.i32[2] = v24.i32[1];
   v32 = v24;
-  v25 = [a3 computeCommandEncoder];
-  [v25 setComputePipelineState:self->_computePipelines[9]];
-  [v25 setTexture:v13 atIndex:0];
-  [v25 setTexture:v14 atIndex:1];
-  [v25 setTexture:v15 atIndex:2];
-  [v25 setTexture:v16 atIndex:3];
-  [v25 setBytes:v31 length:32 atIndex:0];
-  v26 = [v13 width];
-  v27 = [v13 width];
-  LODWORD(v28) = vcvtpd_s64_f64((v30 * v26) * 0.5);
-  LODWORD(v29) = vcvtpd_s64_f64((v30 * v27) * 0.5);
-  [(ADLKTOpticalFlow *)self dispatchCommandEncoder:v25 pipeline:self->_computePipelines[9] width:v28 height:v29];
-  [v25 endEncoding];
+  computeCommandEncoder = [buffer computeCommandEncoder];
+  [computeCommandEncoder setComputePipelineState:self->_computePipelines[9]];
+  [computeCommandEncoder setTexture:in_uv_texCopy atIndex:0];
+  [computeCommandEncoder setTexture:join_texCopy atIndex:1];
+  [computeCommandEncoder setTexture:w_texCopy atIndex:2];
+  [computeCommandEncoder setTexture:out_uv_texCopy atIndex:3];
+  [computeCommandEncoder setBytes:v31 length:32 atIndex:0];
+  width = [in_uv_texCopy width];
+  width2 = [in_uv_texCopy width];
+  LODWORD(v28) = vcvtpd_s64_f64((v30 * width) * 0.5);
+  LODWORD(v29) = vcvtpd_s64_f64((v30 * width2) * 0.5);
+  [(ADLKTOpticalFlow *)self dispatchCommandEncoder:computeCommandEncoder pipeline:self->_computePipelines[9] width:v28 height:v29];
+  [computeCommandEncoder endEncoding];
 }
 
-- (int)_downscale2XWithCommandBuffer:(ADLKTOpticalFlow *)self in_tex:(SEL)a2 out_tex:(id)a3 scaling_factor:(id)a4 cropSizeRatio:(id)a5 outMeanIntensity:(id)a6
+- (int)_downscale2XWithCommandBuffer:(ADLKTOpticalFlow *)self in_tex:(SEL)in_tex out_tex:(id)out_tex scaling_factor:(id)scaling_factor cropSizeRatio:(id)ratio outMeanIntensity:(id)intensity
 {
   v23 = v7;
   v9 = v6;
-  v13 = a4;
-  v14 = a5;
+  scaling_factorCopy = scaling_factor;
+  ratioCopy = ratio;
   v25 = v9;
-  v15 = a6;
-  v16 = [a3 computeCommandEncoder];
-  [v16 setComputePipelineState:self->_computePipelines[3]];
-  [v16 setTexture:v13 atIndex:0];
-  [v16 setTexture:v14 atIndex:1];
-  [v16 setBytes:&v25 length:8 atIndex:0];
-  *[(MTLBuffer *)self->_computeMeanIntensityBuffer contents]= v15 != 0;
-  [v16 setBuffer:self->_computeMeanIntensityBuffer offset:0 atIndex:1];
-  if (v15)
+  intensityCopy = intensity;
+  computeCommandEncoder = [out_tex computeCommandEncoder];
+  [computeCommandEncoder setComputePipelineState:self->_computePipelines[3]];
+  [computeCommandEncoder setTexture:scaling_factorCopy atIndex:0];
+  [computeCommandEncoder setTexture:ratioCopy atIndex:1];
+  [computeCommandEncoder setBytes:&v25 length:8 atIndex:0];
+  *[(MTLBuffer *)self->_computeMeanIntensityBuffer contents]= intensityCopy != 0;
+  [computeCommandEncoder setBuffer:self->_computeMeanIntensityBuffer offset:0 atIndex:1];
+  if (intensityCopy)
   {
-    [v16 setBuffer:v15 offset:0 atIndex:2];
+    [computeCommandEncoder setBuffer:intensityCopy offset:0 atIndex:2];
   }
 
   else
   {
-    [v16 setBuffer:self->_meanIntensityBuffer offset:0 atIndex:2];
+    [computeCommandEncoder setBuffer:self->_meanIntensityBuffer offset:0 atIndex:2];
   }
 
-  v17 = [v14 width];
-  v18 = [v14 height];
-  v19 = ceil((v17 * v24.f32[0]) * 0.5);
+  width = [ratioCopy width];
+  height = [ratioCopy height];
+  v19 = ceil((width * v24.f32[0]) * 0.5);
   v20 = (v19 + v19);
-  v21 = ceil(vmuls_lane_f32(v18, v24, 1) * 0.5);
-  [(ADLKTOpticalFlow *)self dispatchCommandEncoder:v16 pipeline:self->_computePipelines[3] width:v20 height:(v21 + v21)];
-  [v16 endEncoding];
+  v21 = ceil(vmuls_lane_f32(height, v24, 1) * 0.5);
+  [(ADLKTOpticalFlow *)self dispatchCommandEncoder:computeCommandEncoder pipeline:self->_computePipelines[3] width:v20 height:(v21 + v21)];
+  [computeCommandEncoder endEncoding];
 
   return 0;
 }
 
-- (void)_zeroFlowWithCommandBuffer:(id)a3 uv_tex:(id)a4
+- (void)_zeroFlowWithCommandBuffer:(id)buffer uv_tex:(id)uv_tex
 {
-  v7 = a4;
-  v6 = [a3 computeCommandEncoder];
-  [v6 setComputePipelineState:self->_computePipelines[2]];
-  [v6 setTexture:v7 atIndex:0];
-  +[ADMetalUtils dispatchCommandEncoder:pipeline:width:height:](ADMetalUtils, "dispatchCommandEncoder:pipeline:width:height:", v6, self->_computePipelines[2], [v7 width], objc_msgSend(v7, "height"));
-  [v6 endEncoding];
+  uv_texCopy = uv_tex;
+  computeCommandEncoder = [buffer computeCommandEncoder];
+  [computeCommandEncoder setComputePipelineState:self->_computePipelines[2]];
+  [computeCommandEncoder setTexture:uv_texCopy atIndex:0];
+  +[ADMetalUtils dispatchCommandEncoder:pipeline:width:height:](ADMetalUtils, "dispatchCommandEncoder:pipeline:width:height:", computeCommandEncoder, self->_computePipelines[2], [uv_texCopy width], objc_msgSend(uv_texCopy, "height"));
+  [computeCommandEncoder endEncoding];
 }
 
 + ($06231CF0FCC0A6A3B5C95DAAB190E4AF)highPerformanceConfig
@@ -1226,22 +1226,22 @@ LABEL_26:
   return result;
 }
 
-+ (CGSize)getNextPyramidLevelSize:(CGSize)a3
++ (CGSize)getNextPyramidLevelSize:(CGSize)size
 {
-  height = a3.height;
-  v4 = a3.width & 1;
-  if (a3.width < 0)
+  height = size.height;
+  v4 = size.width & 1;
+  if (size.width < 0)
   {
     v4 = -v4;
   }
 
-  v5 = a3.height & 1;
+  v5 = size.height & 1;
   if (height < 0)
   {
     v5 = -v5;
   }
 
-  v6 = v4 + a3.width;
+  v6 = v4 + size.width;
   if (v6 / 2 >= 0)
   {
     v7 = (v6 / 2) & 1;

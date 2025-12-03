@@ -1,26 +1,26 @@
 @interface MTRPluginPBMDeviceNodeMessage
-+ (id)deviceNodeMessageFromMessage:(id)a3;
-+ (id)deviceNodeMessageWithNodeID:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)deviceNodeMessageFromMessage:(id)message;
++ (id)deviceNodeMessageWithNodeID:(id)d;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isValid;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MTRPluginPBMDeviceNodeMessage
 
-+ (id)deviceNodeMessageFromMessage:(id)a3
++ (id)deviceNodeMessageFromMessage:(id)message
 {
-  v3 = a3;
+  messageCopy = message;
   v4 = [MTRPluginPBMDeviceNodeMessage alloc];
-  v5 = [v3 messageData];
+  messageData = [messageCopy messageData];
 
-  v6 = [(MTRPluginPBMDeviceNodeMessage *)v4 initWithData:v5];
+  v6 = [(MTRPluginPBMDeviceNodeMessage *)v4 initWithData:messageData];
   if ([(MTRPluginPBMDeviceNodeMessage *)v6 isValid])
   {
     v7 = v6;
@@ -34,11 +34,11 @@
   return v7;
 }
 
-+ (id)deviceNodeMessageWithNodeID:(id)a3
++ (id)deviceNodeMessageWithNodeID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = objc_alloc_init(MTRPluginPBMDeviceNodeMessage);
-  v5 = [MTRPluginPBMDeviceNode deviceNodeWithNodeID:v3];
+  v5 = [MTRPluginPBMDeviceNode deviceNodeWithNodeID:dCopy];
 
   [(MTRPluginPBMDeviceNodeMessage *)v4 setNode:v5];
 
@@ -52,19 +52,19 @@
     return 0;
   }
 
-  v3 = [(MTRPluginPBMDeviceNodeMessage *)self header];
-  if ([v3 isValid] && -[MTRPluginPBMDeviceNodeMessage hasNode](self, "hasNode"))
+  header = [(MTRPluginPBMDeviceNodeMessage *)self header];
+  if ([header isValid] && -[MTRPluginPBMDeviceNodeMessage hasNode](self, "hasNode"))
   {
-    v4 = [(MTRPluginPBMDeviceNodeMessage *)self node];
-    v5 = [v4 isValid];
+    node = [(MTRPluginPBMDeviceNodeMessage *)self node];
+    isValid = [node isValid];
   }
 
   else
   {
-    v5 = 0;
+    isValid = 0;
   }
 
-  return v5;
+  return isValid;
 }
 
 - (id)description
@@ -73,110 +73,110 @@
   v8.receiver = self;
   v8.super_class = MTRPluginPBMDeviceNodeMessage;
   v4 = [(MTRPluginPBMDeviceNodeMessage *)&v8 description];
-  v5 = [(MTRPluginPBMDeviceNodeMessage *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(MTRPluginPBMDeviceNodeMessage *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   header = self->_header;
   if (header)
   {
-    v5 = [(MTRPluginPBMHeader *)header dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"header"];
+    dictionaryRepresentation = [(MTRPluginPBMHeader *)header dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"header"];
   }
 
   node = self->_node;
   if (node)
   {
-    v7 = [(MTRPluginPBMDeviceNode *)node dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"node"];
+    dictionaryRepresentation2 = [(MTRPluginPBMDeviceNode *)node dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"node"];
   }
 
   value = self->_value;
   if (value)
   {
-    v9 = [(MTRPluginPBMVariableValue *)value dictionaryRepresentation];
-    [v3 setObject:v9 forKey:@"value"];
+    dictionaryRepresentation3 = [(MTRPluginPBMVariableValue *)value dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation3 forKey:@"value"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_header)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_node)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_value)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_header)
   {
-    [v4 setHeader:?];
-    v4 = v5;
+    [toCopy setHeader:?];
+    toCopy = v5;
   }
 
   if (self->_node)
   {
     [v5 setNode:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_value)
   {
     [v5 setValue:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(MTRPluginPBMHeader *)self->_header copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(MTRPluginPBMHeader *)self->_header copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
-  v8 = [(MTRPluginPBMDeviceNode *)self->_node copyWithZone:a3];
+  v8 = [(MTRPluginPBMDeviceNode *)self->_node copyWithZone:zone];
   v9 = v5[2];
   v5[2] = v8;
 
-  v10 = [(MTRPluginPBMVariableValue *)self->_value copyWithZone:a3];
+  v10 = [(MTRPluginPBMVariableValue *)self->_value copyWithZone:zone];
   v11 = v5[3];
   v5[3] = v10;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((header = self->_header, !(header | v4[1])) || -[MTRPluginPBMHeader isEqual:](header, "isEqual:")) && ((node = self->_node, !(node | v4[2])) || -[MTRPluginPBMDeviceNode isEqual:](node, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((header = self->_header, !(header | equalCopy[1])) || -[MTRPluginPBMHeader isEqual:](header, "isEqual:")) && ((node = self->_node, !(node | equalCopy[2])) || -[MTRPluginPBMDeviceNode isEqual:](node, "isEqual:")))
   {
     value = self->_value;
-    if (value | v4[3])
+    if (value | equalCopy[3])
     {
       v8 = [(MTRPluginPBMVariableValue *)value isEqual:?];
     }
@@ -202,12 +202,12 @@
   return v4 ^ [(MTRPluginPBMVariableValue *)self->_value hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   header = self->_header;
-  v6 = v4[1];
-  v11 = v4;
+  v6 = fromCopy[1];
+  v11 = fromCopy;
   if (header)
   {
     if (!v6)
@@ -228,10 +228,10 @@
     [(MTRPluginPBMDeviceNodeMessage *)self setHeader:?];
   }
 
-  v4 = v11;
+  fromCopy = v11;
 LABEL_7:
   node = self->_node;
-  v8 = v4[2];
+  v8 = fromCopy[2];
   if (node)
   {
     if (!v8)
@@ -252,10 +252,10 @@ LABEL_7:
     [(MTRPluginPBMDeviceNodeMessage *)self setNode:?];
   }
 
-  v4 = v11;
+  fromCopy = v11;
 LABEL_13:
   value = self->_value;
-  v10 = v4[3];
+  v10 = fromCopy[3];
   if (value)
   {
     if (v10)

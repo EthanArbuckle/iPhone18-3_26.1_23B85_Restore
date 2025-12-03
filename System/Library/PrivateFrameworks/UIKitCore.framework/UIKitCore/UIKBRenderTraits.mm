@@ -1,19 +1,19 @@
 @interface UIKBRenderTraits
-+ (UIKBRenderTraits)traitsWithGeometry:(id)a3;
-+ (UIKBRenderTraits)traitsWithSymbolStyle:(id)a3;
++ (UIKBRenderTraits)traitsWithGeometry:(id)geometry;
++ (UIKBRenderTraits)traitsWithSymbolStyle:(id)style;
 + (id)emptyTraits;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGSize)floatingContentViewControlFocusedBaseSize;
 - (CGSize)floatingContentViewFocusedIncreaseSize;
 - (UIKBRenderTraits)highlightedVariantTraits;
 - (UIKBTextStyle)fallbackSymbolStyle;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)extraFiltersForType:(id)a3;
-- (void)addForegroundRenderEffect:(id)a3;
-- (void)addRenderEffect:(id)a3;
+- (id)extraFiltersForType:(id)type;
+- (void)addForegroundRenderEffect:(id)effect;
+- (void)addRenderEffect:(id)effect;
 - (void)modifyForMasking;
-- (void)overlayWithTraits:(id)a3;
+- (void)overlayWithTraits:(id)traits;
 - (void)removeAllRenderEffects;
 @end
 
@@ -26,58 +26,58 @@
   return v2;
 }
 
-+ (UIKBRenderTraits)traitsWithGeometry:(id)a3
++ (UIKBRenderTraits)traitsWithGeometry:(id)geometry
 {
-  v3 = a3;
-  v4 = [objc_opt_class() emptyTraits];
-  [v4 setGeometry:v3];
+  geometryCopy = geometry;
+  emptyTraits = [objc_opt_class() emptyTraits];
+  [emptyTraits setGeometry:geometryCopy];
 
-  return v4;
+  return emptyTraits;
 }
 
-+ (UIKBRenderTraits)traitsWithSymbolStyle:(id)a3
++ (UIKBRenderTraits)traitsWithSymbolStyle:(id)style
 {
-  v3 = a3;
-  v4 = [objc_opt_class() emptyTraits];
-  [v4 setSymbolStyle:v3];
+  styleCopy = style;
+  emptyTraits = [objc_opt_class() emptyTraits];
+  [emptyTraits setSymbolStyle:styleCopy];
 
-  return v4;
+  return emptyTraits;
 }
 
-- (void)addRenderEffect:(id)a3
+- (void)addRenderEffect:(id)effect
 {
-  v4 = a3;
+  effectCopy = effect;
   renderEffects = self->_renderEffects;
-  v8 = v4;
+  v8 = effectCopy;
   if (!renderEffects)
   {
     v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:1];
     v7 = self->_renderEffects;
     self->_renderEffects = v6;
 
-    v4 = v8;
+    effectCopy = v8;
     renderEffects = self->_renderEffects;
   }
 
-  [(NSMutableArray *)renderEffects addObject:v4];
+  [(NSMutableArray *)renderEffects addObject:effectCopy];
 }
 
-- (void)addForegroundRenderEffect:(id)a3
+- (void)addForegroundRenderEffect:(id)effect
 {
-  v4 = a3;
+  effectCopy = effect;
   foregroundRenderEffects = self->_foregroundRenderEffects;
-  v8 = v4;
+  v8 = effectCopy;
   if (!foregroundRenderEffects)
   {
     v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:1];
     v7 = self->_foregroundRenderEffects;
     self->_foregroundRenderEffects = v6;
 
-    v4 = v8;
+    effectCopy = v8;
     foregroundRenderEffects = self->_foregroundRenderEffects;
   }
 
-  [(NSMutableArray *)foregroundRenderEffects addObject:v4];
+  [(NSMutableArray *)foregroundRenderEffects addObject:effectCopy];
 }
 
 - (void)removeAllRenderEffects
@@ -91,76 +91,76 @@
 - (id)description
 {
   v3 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"<%@: %p", objc_opt_class(), self];
-  v4 = [(UIKBRenderTraits *)self geometry];
+  geometry = [(UIKBRenderTraits *)self geometry];
 
-  if (v4)
+  if (geometry)
   {
-    v5 = [(UIKBRenderTraits *)self geometry];
-    [v3 appendFormat:@"; geometry = %@", v5];
+    geometry2 = [(UIKBRenderTraits *)self geometry];
+    [v3 appendFormat:@"; geometry = %@", geometry2];
   }
 
-  v6 = [(UIKBRenderTraits *)self backgroundGradient];
+  backgroundGradient = [(UIKBRenderTraits *)self backgroundGradient];
 
-  if (v6)
+  if (backgroundGradient)
   {
-    v7 = [(UIKBRenderTraits *)self backgroundGradient];
-    [v3 appendFormat:@"; backgroundGradient = %@", v7];
+    backgroundGradient2 = [(UIKBRenderTraits *)self backgroundGradient];
+    [v3 appendFormat:@"; backgroundGradient = %@", backgroundGradient2];
   }
 
-  v8 = [(UIKBRenderTraits *)self layeredBackgroundGradient];
+  layeredBackgroundGradient = [(UIKBRenderTraits *)self layeredBackgroundGradient];
 
-  if (v8)
+  if (layeredBackgroundGradient)
   {
-    v9 = [(UIKBRenderTraits *)self layeredBackgroundGradient];
-    [v3 appendFormat:@"; layeredBackgroundGradient = %@", v9];
+    layeredBackgroundGradient2 = [(UIKBRenderTraits *)self layeredBackgroundGradient];
+    [v3 appendFormat:@"; layeredBackgroundGradient = %@", layeredBackgroundGradient2];
   }
 
-  v10 = [(UIKBRenderTraits *)self layeredForegroundGradient];
+  layeredForegroundGradient = [(UIKBRenderTraits *)self layeredForegroundGradient];
 
-  if (v10)
+  if (layeredForegroundGradient)
   {
-    v11 = [(UIKBRenderTraits *)self layeredForegroundGradient];
-    [v3 appendFormat:@"; layeredForegroundGradient = %@", v11];
+    layeredForegroundGradient2 = [(UIKBRenderTraits *)self layeredForegroundGradient];
+    [v3 appendFormat:@"; layeredForegroundGradient = %@", layeredForegroundGradient2];
   }
 
-  v12 = [(UIKBRenderTraits *)self symbolStyle];
+  symbolStyle = [(UIKBRenderTraits *)self symbolStyle];
 
-  if (v12)
+  if (symbolStyle)
   {
-    v13 = [(UIKBRenderTraits *)self symbolStyle];
-    [v3 appendFormat:@"; symbolStyle = %@", v13];
+    symbolStyle2 = [(UIKBRenderTraits *)self symbolStyle];
+    [v3 appendFormat:@"; symbolStyle = %@", symbolStyle2];
   }
 
-  v14 = [(UIKBRenderTraits *)self fallbackSymbolStyle];
+  fallbackSymbolStyle = [(UIKBRenderTraits *)self fallbackSymbolStyle];
 
-  if (v14)
+  if (fallbackSymbolStyle)
   {
-    v15 = [(UIKBRenderTraits *)self fallbackSymbolStyle];
-    [v3 appendFormat:@"; fallbackSymbolStyle = %@", v15];
+    fallbackSymbolStyle2 = [(UIKBRenderTraits *)self fallbackSymbolStyle];
+    [v3 appendFormat:@"; fallbackSymbolStyle = %@", fallbackSymbolStyle2];
   }
 
-  v16 = [(UIKBRenderTraits *)self secondarySymbolStyles];
+  secondarySymbolStyles = [(UIKBRenderTraits *)self secondarySymbolStyles];
 
-  if (v16)
+  if (secondarySymbolStyles)
   {
-    v17 = [(UIKBRenderTraits *)self secondarySymbolStyles];
-    [v3 appendFormat:@"; secondarySymbolStyles = %@", v17];
+    secondarySymbolStyles2 = [(UIKBRenderTraits *)self secondarySymbolStyles];
+    [v3 appendFormat:@"; secondarySymbolStyles = %@", secondarySymbolStyles2];
   }
 
-  v18 = [(UIKBRenderTraits *)self renderEffects];
+  renderEffects = [(UIKBRenderTraits *)self renderEffects];
 
-  if (v18)
+  if (renderEffects)
   {
-    v19 = [(UIKBRenderTraits *)self renderEffects];
-    [v3 appendFormat:@"; renderEffects = %@", v19];
+    renderEffects2 = [(UIKBRenderTraits *)self renderEffects];
+    [v3 appendFormat:@"; renderEffects = %@", renderEffects2];
   }
 
-  v20 = [(UIKBRenderTraits *)self foregroundRenderEffects];
+  foregroundRenderEffects = [(UIKBRenderTraits *)self foregroundRenderEffects];
 
-  if (v20)
+  if (foregroundRenderEffects)
   {
-    v21 = [(UIKBRenderTraits *)self foregroundRenderEffects];
-    [v3 appendFormat:@"; foregroundRenderEffects = %@", v21];
+    foregroundRenderEffects2 = [(UIKBRenderTraits *)self foregroundRenderEffects];
+    [v3 appendFormat:@"; foregroundRenderEffects = %@", foregroundRenderEffects2];
   }
 
   if ([(UIKBRenderTraits *)self blurBlending])
@@ -168,24 +168,24 @@
     [v3 appendString:@"; blurBlending = YES"];
   }
 
-  v22 = [(UIKBRenderTraits *)self blendForm];
-  if ((v22 - 1) > 0xC)
+  blendForm = [(UIKBRenderTraits *)self blendForm];
+  if ((blendForm - 1) > 0xC)
   {
     v23 = @"None";
   }
 
   else
   {
-    v23 = off_1E7114628[v22 - 1];
+    v23 = off_1E7114628[blendForm - 1];
   }
 
   [v3 appendFormat:@"; blendForm = %@", v23];
-  v24 = [(UIKBRenderTraits *)self renderFlags];
+  renderFlags = [(UIKBRenderTraits *)self renderFlags];
 
-  if (v24)
+  if (renderFlags)
   {
-    v25 = [(UIKBRenderTraits *)self renderFlags];
-    [v3 appendFormat:@"; renderFlags = %@", v25];
+    renderFlags2 = [(UIKBRenderTraits *)self renderFlags];
+    [v3 appendFormat:@"; renderFlags = %@", renderFlags2];
   }
 
   if ([(UIKBRenderTraits *)self renderSecondarySymbolsSeparately])
@@ -198,18 +198,18 @@
     [v3 appendFormat:@"; renderFlagsForAboveEffects = %ld", -[UIKBRenderTraits renderFlagsForAboveEffects](self, "renderFlagsForAboveEffects")];
   }
 
-  v26 = [(UIKBRenderTraits *)self hashString];
-  [v3 appendFormat:@"; hashString = %@", v26];
+  hashString = [(UIKBRenderTraits *)self hashString];
+  [v3 appendFormat:@"; hashString = %@", hashString];
 
   [v3 appendString:@">"];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v18 = 1;
   }
@@ -217,13 +217,13 @@
   else
   {
     objc_opt_class();
-    v18 = (objc_opt_isKindOfClass() & 1) != 0 && (geometry = self->_geometry, (v4->_geometry != 0) != (geometry == 0)) && (!geometry || [(UIKBRenderGeometry *)geometry isEqual:?]) && (backgroundGradient = self->_backgroundGradient, (backgroundGradient == 0) != (v4->_backgroundGradient != 0)) && (!backgroundGradient || [(UIKBGradient *)backgroundGradient isEqual:?]) && (layeredBackgroundGradient = self->_layeredBackgroundGradient, (layeredBackgroundGradient == 0) != (v4->_layeredBackgroundGradient != 0)) && (!layeredBackgroundGradient || [(UIKBGradient *)layeredBackgroundGradient isEqual:?]) && (layeredForegroundGradient = self->_layeredForegroundGradient, (layeredForegroundGradient == 0) != (v4->_layeredForegroundGradient != 0)) && (!layeredForegroundGradient || [(UIKBGradient *)layeredForegroundGradient isEqual:?]) && (symbolStyle = self->_symbolStyle, (symbolStyle == 0) != (v4->_symbolStyle != 0)) && (!symbolStyle || [(UIKBTextStyle *)symbolStyle isEqual:?]) && (fallbackSymbolStyle = self->_fallbackSymbolStyle, (fallbackSymbolStyle == 0) != (v4->_fallbackSymbolStyle != 0)) && (!fallbackSymbolStyle || [(UIKBTextStyle *)fallbackSymbolStyle isEqual:?]) && (secondarySymbolStyles = self->_secondarySymbolStyles, (secondarySymbolStyles == 0) != (v4->_secondarySymbolStyles != 0)) && (!secondarySymbolStyles || [(NSArray *)secondarySymbolStyles isEqualToArray:?]) && (renderEffects = self->_renderEffects, (renderEffects == 0) != (v4->_renderEffects != 0)) && (!renderEffects || [(NSMutableArray *)renderEffects isEqualToArray:?]) && (foregroundRenderEffects = self->_foregroundRenderEffects, (foregroundRenderEffects == 0) != (v4->_foregroundRenderEffects != 0)) && (!foregroundRenderEffects || [(NSMutableArray *)foregroundRenderEffects isEqualToArray:?]) && (variantGeometries = self->_variantGeometries, (variantGeometries == 0) != (v4->_variantGeometries != 0)) && (!variantGeometries || [(NSArray *)variantGeometries isEqualToArray:?]) && (variantTraits = self->_variantTraits, (variantTraits == 0) != (v4->_variantTraits != 0)) && (!variantTraits || [(UIKBRenderTraits *)variantTraits isEqual:?]) && (highlightedVariantTraits = self->_highlightedVariantTraits, (highlightedVariantTraits == 0) != (v4->_highlightedVariantTraits != 0)) && (!highlightedVariantTraits || [(UIKBRenderTraits *)highlightedVariantTraits isEqual:?]) && self->_controlOpacities == v4->_controlOpacities && self->_blurBlending == v4->_blurBlending && self->_blendForm == v4->_blendForm && ((renderFlags = self->_renderFlags) == 0 || [(NSArray *)renderFlags isEqualToArray:v4->_renderFlags]) && self->_renderSecondarySymbolsSeparately == v4->_renderSecondarySymbolsSeparately && self->_renderFlagsForAboveEffects == v4->_renderFlagsForAboveEffects;
+    v18 = (objc_opt_isKindOfClass() & 1) != 0 && (geometry = self->_geometry, (equalCopy->_geometry != 0) != (geometry == 0)) && (!geometry || [(UIKBRenderGeometry *)geometry isEqual:?]) && (backgroundGradient = self->_backgroundGradient, (backgroundGradient == 0) != (equalCopy->_backgroundGradient != 0)) && (!backgroundGradient || [(UIKBGradient *)backgroundGradient isEqual:?]) && (layeredBackgroundGradient = self->_layeredBackgroundGradient, (layeredBackgroundGradient == 0) != (equalCopy->_layeredBackgroundGradient != 0)) && (!layeredBackgroundGradient || [(UIKBGradient *)layeredBackgroundGradient isEqual:?]) && (layeredForegroundGradient = self->_layeredForegroundGradient, (layeredForegroundGradient == 0) != (equalCopy->_layeredForegroundGradient != 0)) && (!layeredForegroundGradient || [(UIKBGradient *)layeredForegroundGradient isEqual:?]) && (symbolStyle = self->_symbolStyle, (symbolStyle == 0) != (equalCopy->_symbolStyle != 0)) && (!symbolStyle || [(UIKBTextStyle *)symbolStyle isEqual:?]) && (fallbackSymbolStyle = self->_fallbackSymbolStyle, (fallbackSymbolStyle == 0) != (equalCopy->_fallbackSymbolStyle != 0)) && (!fallbackSymbolStyle || [(UIKBTextStyle *)fallbackSymbolStyle isEqual:?]) && (secondarySymbolStyles = self->_secondarySymbolStyles, (secondarySymbolStyles == 0) != (equalCopy->_secondarySymbolStyles != 0)) && (!secondarySymbolStyles || [(NSArray *)secondarySymbolStyles isEqualToArray:?]) && (renderEffects = self->_renderEffects, (renderEffects == 0) != (equalCopy->_renderEffects != 0)) && (!renderEffects || [(NSMutableArray *)renderEffects isEqualToArray:?]) && (foregroundRenderEffects = self->_foregroundRenderEffects, (foregroundRenderEffects == 0) != (equalCopy->_foregroundRenderEffects != 0)) && (!foregroundRenderEffects || [(NSMutableArray *)foregroundRenderEffects isEqualToArray:?]) && (variantGeometries = self->_variantGeometries, (variantGeometries == 0) != (equalCopy->_variantGeometries != 0)) && (!variantGeometries || [(NSArray *)variantGeometries isEqualToArray:?]) && (variantTraits = self->_variantTraits, (variantTraits == 0) != (equalCopy->_variantTraits != 0)) && (!variantTraits || [(UIKBRenderTraits *)variantTraits isEqual:?]) && (highlightedVariantTraits = self->_highlightedVariantTraits, (highlightedVariantTraits == 0) != (equalCopy->_highlightedVariantTraits != 0)) && (!highlightedVariantTraits || [(UIKBRenderTraits *)highlightedVariantTraits isEqual:?]) && self->_controlOpacities == equalCopy->_controlOpacities && self->_blurBlending == equalCopy->_blurBlending && self->_blendForm == equalCopy->_blendForm && ((renderFlags = self->_renderFlags) == 0 || [(NSArray *)renderFlags isEqualToArray:equalCopy->_renderFlags]) && self->_renderSecondarySymbolsSeparately == equalCopy->_renderSecondarySymbolsSeparately && self->_renderFlagsForAboveEffects == equalCopy->_renderFlagsForAboveEffects;
   }
 
   return v18;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[UIKBRenderTraits allocWithZone:?]];
   v5 = [(UIKBGradient *)self->_backgroundGradient copy];
@@ -286,11 +286,11 @@
 - (UIKBRenderTraits)highlightedVariantTraits
 {
   highlightedVariantTraits = self->_highlightedVariantTraits;
-  v4 = [(UIKBRenderTraits *)self variantTraits];
-  v5 = v4;
+  variantTraits = [(UIKBRenderTraits *)self variantTraits];
+  v5 = variantTraits;
   if (highlightedVariantTraits)
   {
-    v6 = [v4 copy];
+    v6 = [variantTraits copy];
 
     [v6 overlayWithTraits:self->_highlightedVariantTraits];
     v5 = v6;
@@ -302,11 +302,11 @@
 - (UIKBTextStyle)fallbackSymbolStyle
 {
   fallbackSymbolStyle = self->_fallbackSymbolStyle;
-  v4 = [(UIKBRenderTraits *)self symbolStyle];
-  v5 = v4;
+  symbolStyle = [(UIKBRenderTraits *)self symbolStyle];
+  v5 = symbolStyle;
   if (fallbackSymbolStyle)
   {
-    v6 = [v4 copy];
+    v6 = [symbolStyle copy];
 
     [v6 overlayWithStyle:self->_fallbackSymbolStyle];
     v5 = v6;
@@ -315,151 +315,151 @@
   return v5;
 }
 
-- (void)overlayWithTraits:(id)a3
+- (void)overlayWithTraits:(id)traits
 {
-  v4 = a3;
-  v5 = [v4 geometry];
+  traitsCopy = traits;
+  geometry = [traitsCopy geometry];
 
-  if (v5)
+  if (geometry)
   {
-    v6 = [(UIKBRenderTraits *)self geometry];
-    v7 = [v4 geometry];
-    [v6 overlayWithGeometry:v7];
+    geometry2 = [(UIKBRenderTraits *)self geometry];
+    geometry3 = [traitsCopy geometry];
+    [geometry2 overlayWithGeometry:geometry3];
   }
 
-  v8 = [v4 backgroundGradient];
+  backgroundGradient = [traitsCopy backgroundGradient];
 
-  if (v8)
+  if (backgroundGradient)
   {
-    v9 = [v4 backgroundGradient];
-    [(UIKBRenderTraits *)self setBackgroundGradient:v9];
+    backgroundGradient2 = [traitsCopy backgroundGradient];
+    [(UIKBRenderTraits *)self setBackgroundGradient:backgroundGradient2];
 
     [(UIKBRenderTraits *)self setLayeredBackgroundGradient:0];
   }
 
-  v10 = [v4 layeredBackgroundGradient];
+  layeredBackgroundGradient = [traitsCopy layeredBackgroundGradient];
 
-  if (v10)
+  if (layeredBackgroundGradient)
   {
-    v11 = [v4 layeredBackgroundGradient];
-    [(UIKBRenderTraits *)self setLayeredBackgroundGradient:v11];
+    layeredBackgroundGradient2 = [traitsCopy layeredBackgroundGradient];
+    [(UIKBRenderTraits *)self setLayeredBackgroundGradient:layeredBackgroundGradient2];
   }
 
-  v12 = [v4 layeredForegroundGradient];
+  layeredForegroundGradient = [traitsCopy layeredForegroundGradient];
 
-  if (v12)
+  if (layeredForegroundGradient)
   {
-    v13 = [v4 layeredForegroundGradient];
-    [(UIKBRenderTraits *)self setLayeredForegroundGradient:v13];
+    layeredForegroundGradient2 = [traitsCopy layeredForegroundGradient];
+    [(UIKBRenderTraits *)self setLayeredForegroundGradient:layeredForegroundGradient2];
   }
 
-  v14 = [v4 symbolStyle];
+  symbolStyle = [traitsCopy symbolStyle];
 
-  if (v14)
+  if (symbolStyle)
   {
-    v15 = [(UIKBRenderTraits *)self symbolStyle];
-    v16 = [v4 symbolStyle];
-    [v15 overlayWithStyle:v16];
+    symbolStyle2 = [(UIKBRenderTraits *)self symbolStyle];
+    symbolStyle3 = [traitsCopy symbolStyle];
+    [symbolStyle2 overlayWithStyle:symbolStyle3];
   }
 
-  v17 = [v4 fallbackSymbolStyle];
+  fallbackSymbolStyle = [traitsCopy fallbackSymbolStyle];
 
-  if (v17)
+  if (fallbackSymbolStyle)
   {
-    v18 = [(UIKBRenderTraits *)self fallbackSymbolStyle];
-    v19 = [v4 fallbackSymbolStyle];
-    [v18 overlayWithStyle:v19];
+    fallbackSymbolStyle2 = [(UIKBRenderTraits *)self fallbackSymbolStyle];
+    fallbackSymbolStyle3 = [traitsCopy fallbackSymbolStyle];
+    [fallbackSymbolStyle2 overlayWithStyle:fallbackSymbolStyle3];
   }
 
-  v20 = [v4 secondarySymbolStyles];
+  secondarySymbolStyles = [traitsCopy secondarySymbolStyles];
 
-  if (v20)
+  if (secondarySymbolStyles)
   {
-    v21 = [(UIKBRenderTraits *)self secondarySymbolStyles];
+    secondarySymbolStyles2 = [(UIKBRenderTraits *)self secondarySymbolStyles];
 
-    if (v21)
+    if (secondarySymbolStyles2)
     {
-      v22 = [(UIKBRenderTraits *)self secondarySymbolStyles];
+      secondarySymbolStyles3 = [(UIKBRenderTraits *)self secondarySymbolStyles];
       v37[0] = MEMORY[0x1E69E9820];
       v37[1] = 3221225472;
       v37[2] = __38__UIKBRenderTraits_overlayWithTraits___block_invoke;
       v37[3] = &unk_1E71145E0;
-      v38 = v4;
-      [v22 enumerateObjectsUsingBlock:v37];
+      v38 = traitsCopy;
+      [secondarySymbolStyles3 enumerateObjectsUsingBlock:v37];
     }
 
     else
     {
-      v23 = [v4 secondarySymbolStyles];
-      [(UIKBRenderTraits *)self setSecondarySymbolStyles:v23];
+      secondarySymbolStyles4 = [traitsCopy secondarySymbolStyles];
+      [(UIKBRenderTraits *)self setSecondarySymbolStyles:secondarySymbolStyles4];
     }
   }
 
-  v24 = [v4 renderEffects];
+  renderEffects = [traitsCopy renderEffects];
 
-  if (v24)
+  if (renderEffects)
   {
-    v25 = [v4 renderEffects];
-    v26 = [v25 mutableCopy];
+    renderEffects2 = [traitsCopy renderEffects];
+    v26 = [renderEffects2 mutableCopy];
     renderEffects = self->_renderEffects;
     self->_renderEffects = v26;
   }
 
-  v28 = [v4 foregroundRenderEffects];
+  foregroundRenderEffects = [traitsCopy foregroundRenderEffects];
 
-  if (v28)
+  if (foregroundRenderEffects)
   {
-    v29 = [v4 foregroundRenderEffects];
-    v30 = [v29 mutableCopy];
+    foregroundRenderEffects2 = [traitsCopy foregroundRenderEffects];
+    v30 = [foregroundRenderEffects2 mutableCopy];
     foregroundRenderEffects = self->_foregroundRenderEffects;
     self->_foregroundRenderEffects = v30;
   }
 
-  v32 = [v4 variantTraits];
+  variantTraits = [traitsCopy variantTraits];
 
-  if (v32)
+  if (variantTraits)
   {
-    v33 = [v4 variantTraits];
-    [(UIKBRenderTraits *)self setVariantTraits:v33];
+    variantTraits2 = [traitsCopy variantTraits];
+    [(UIKBRenderTraits *)self setVariantTraits:variantTraits2];
   }
 
-  if (*(v4 + 13))
+  if (*(traitsCopy + 13))
   {
-    v34 = [v4 highlightedVariantTraits];
-    [(UIKBRenderTraits *)self setHighlightedVariantTraits:v34];
+    highlightedVariantTraits = [traitsCopy highlightedVariantTraits];
+    [(UIKBRenderTraits *)self setHighlightedVariantTraits:highlightedVariantTraits];
   }
 
-  if (([v4 controlOpacities] & 1) != 0 || *(v4 + 24) == 1)
+  if (([traitsCopy controlOpacities] & 1) != 0 || *(traitsCopy + 24) == 1)
   {
-    -[UIKBRenderTraits setControlOpacities:](self, "setControlOpacities:", [v4 controlOpacities]);
+    -[UIKBRenderTraits setControlOpacities:](self, "setControlOpacities:", [traitsCopy controlOpacities]);
   }
 
-  if ([v4 blurBlending])
+  if ([traitsCopy blurBlending])
   {
-    -[UIKBRenderTraits setBlurBlending:](self, "setBlurBlending:", [v4 blurBlending]);
+    -[UIKBRenderTraits setBlurBlending:](self, "setBlurBlending:", [traitsCopy blurBlending]);
   }
 
-  if ([v4 blendForm])
+  if ([traitsCopy blendForm])
   {
-    -[UIKBRenderTraits setBlendForm:](self, "setBlendForm:", [v4 blendForm]);
+    -[UIKBRenderTraits setBlendForm:](self, "setBlendForm:", [traitsCopy blendForm]);
   }
 
-  v35 = [v4 renderFlags];
+  renderFlags = [traitsCopy renderFlags];
 
-  if (v35)
+  if (renderFlags)
   {
-    v36 = [v4 renderFlags];
-    [(UIKBRenderTraits *)self setRenderFlags:v36];
+    renderFlags2 = [traitsCopy renderFlags];
+    [(UIKBRenderTraits *)self setRenderFlags:renderFlags2];
   }
 
-  if ([v4 renderSecondarySymbolsSeparately])
+  if ([traitsCopy renderSecondarySymbolsSeparately])
   {
-    -[UIKBRenderTraits setRenderSecondarySymbolsSeparately:](self, "setRenderSecondarySymbolsSeparately:", [v4 renderSecondarySymbolsSeparately]);
+    -[UIKBRenderTraits setRenderSecondarySymbolsSeparately:](self, "setRenderSecondarySymbolsSeparately:", [traitsCopy renderSecondarySymbolsSeparately]);
   }
 
-  if ([v4 renderFlagsForAboveEffects])
+  if ([traitsCopy renderFlagsForAboveEffects])
   {
-    -[UIKBRenderTraits setRenderFlagsForAboveEffects:](self, "setRenderFlagsForAboveEffects:", [v4 renderFlagsForAboveEffects]);
+    -[UIKBRenderTraits setRenderFlagsForAboveEffects:](self, "setRenderFlagsForAboveEffects:", [traitsCopy renderFlagsForAboveEffects]);
   }
 }
 
@@ -484,8 +484,8 @@ void __38__UIKBRenderTraits_overlayWithTraits___block_invoke(uint64_t a1, void *
 
 - (void)modifyForMasking
 {
-  v3 = [(UIKBRenderTraits *)self backgroundGradient];
-  if (v3 || ([(UIKBRenderTraits *)self layeredBackgroundGradient], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+  backgroundGradient = [(UIKBRenderTraits *)self backgroundGradient];
+  if (backgroundGradient || ([(UIKBRenderTraits *)self layeredBackgroundGradient], (backgroundGradient = objc_claimAutoreleasedReturnValue()) != 0))
   {
 
 LABEL_4:
@@ -497,9 +497,9 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  v5 = [(UIKBRenderTraits *)self layeredForegroundGradient];
+  layeredForegroundGradient = [(UIKBRenderTraits *)self layeredForegroundGradient];
 
-  if (v5)
+  if (layeredForegroundGradient)
   {
     goto LABEL_4;
   }
@@ -507,21 +507,21 @@ LABEL_4:
 LABEL_5:
   [(UIKBRenderTraits *)self removeAllRenderEffects];
   [(UIKBRenderTraits *)self setHashString:0];
-  v6 = [(UIKBRenderTraits *)self variantTraits];
-  [v6 modifyForMasking];
+  variantTraits = [(UIKBRenderTraits *)self variantTraits];
+  [variantTraits modifyForMasking];
 }
 
-- (id)extraFiltersForType:(id)a3
+- (id)extraFiltersForType:(id)type
 {
   v28[1] = *MEMORY[0x1E69E9840];
-  if (*MEMORY[0x1E6979D78] == a3)
+  if (*MEMORY[0x1E6979D78] == type)
   {
     v5 = [MEMORY[0x1E6979378] filterWithType:?];
-    v6 = [(UIKBRenderTraits *)self usesDarkAppearance];
-    v7 = [(UIKBRenderTraits *)self blendForm];
-    if (v6)
+    usesDarkAppearance = [(UIKBRenderTraits *)self usesDarkAppearance];
+    blendForm = [(UIKBRenderTraits *)self blendForm];
+    if (usesDarkAppearance)
     {
-      if (v7 == 10 || [(UIKBRenderTraits *)self blendForm]== 12)
+      if (blendForm == 10 || [(UIKBRenderTraits *)self blendForm]== 12)
       {
         v8 = MEMORY[0x1E696B098];
         v9 = &xmmword_18A67EFF8;
@@ -529,9 +529,9 @@ LABEL_5:
 
       else
       {
-        v17 = [(UIKBRenderTraits *)self controlOpacities];
+        controlOpacities = [(UIKBRenderTraits *)self controlOpacities];
         v8 = MEMORY[0x1E696B098];
-        if (v17)
+        if (controlOpacities)
         {
           v9 = &xmmword_18A67F048;
         }
@@ -557,7 +557,7 @@ LABEL_5:
 
     else
     {
-      if (v7 == 11 || [(UIKBRenderTraits *)self blendForm]== 13)
+      if (blendForm == 11 || [(UIKBRenderTraits *)self blendForm]== 13)
       {
         v22 = xmmword_18A67F108;
         v23 = unk_18A67F118;

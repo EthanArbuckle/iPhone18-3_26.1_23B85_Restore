@@ -1,32 +1,32 @@
 @interface WiFiAnalyticsAWDWiFiTDM
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)addSliceStats:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addSliceStats:(id)stats;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation WiFiAnalyticsAWDWiFiTDM
 
-- (void)addSliceStats:(id)a3
+- (void)addSliceStats:(id)stats
 {
-  v4 = a3;
+  statsCopy = stats;
   sliceStats = self->_sliceStats;
-  v8 = v4;
+  v8 = statsCopy;
   if (!sliceStats)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_sliceStats;
     self->_sliceStats = v6;
 
-    v4 = v8;
+    statsCopy = v8;
     sliceStats = self->_sliceStats;
   }
 
-  [(NSMutableArray *)sliceStats addObject:v4];
+  [(NSMutableArray *)sliceStats addObject:statsCopy];
 }
 
 - (id)description
@@ -35,8 +35,8 @@
   v8.receiver = self;
   v8.super_class = WiFiAnalyticsAWDWiFiTDM;
   v4 = [(WiFiAnalyticsAWDWiFiTDM *)&v8 description];
-  v5 = [(WiFiAnalyticsAWDWiFiTDM *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(WiFiAnalyticsAWDWiFiTDM *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -44,7 +44,7 @@
 - (id)dictionaryRepresentation
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSMutableArray *)self->_sliceStats count])
   {
     v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{-[NSMutableArray count](self->_sliceStats, "count")}];
@@ -67,8 +67,8 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v13 + 1) + 8 * i) dictionaryRepresentation];
-          [v4 addObject:v10];
+          dictionaryRepresentation = [*(*(&v13 + 1) + 8 * i) dictionaryRepresentation];
+          [v4 addObject:dictionaryRepresentation];
         }
 
         v7 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -77,18 +77,18 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKey:@"sliceStats"];
+    [dictionary setObject:v4 forKey:@"sliceStats"];
   }
 
   v11 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -124,29 +124,29 @@
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if ([(WiFiAnalyticsAWDWiFiTDM *)self sliceStatsCount])
   {
-    [v8 clearSliceStats];
-    v4 = [(WiFiAnalyticsAWDWiFiTDM *)self sliceStatsCount];
-    if (v4)
+    [toCopy clearSliceStats];
+    sliceStatsCount = [(WiFiAnalyticsAWDWiFiTDM *)self sliceStatsCount];
+    if (sliceStatsCount)
     {
-      v5 = v4;
+      v5 = sliceStatsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(WiFiAnalyticsAWDWiFiTDM *)self sliceStatsAtIndex:i];
-        [v8 addSliceStats:v7];
+        [toCopy addSliceStats:v7];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -167,7 +167,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v14 + 1) + 8 * v10) copyWithZone:{a3, v14}];
+        v11 = [*(*(&v14 + 1) + 8 * v10) copyWithZone:{zone, v14}];
         [v5 addSliceStats:v11];
 
         ++v10;
@@ -184,13 +184,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     sliceStats = self->_sliceStats;
-    if (sliceStats | v4[1])
+    if (sliceStats | equalCopy[1])
     {
       v6 = [(NSMutableArray *)sliceStats isEqual:?];
     }
@@ -209,14 +209,14 @@
   return v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v15 = *MEMORY[0x1E69E9840];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = *(a3 + 1);
+  v4 = *(from + 1);
   v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {

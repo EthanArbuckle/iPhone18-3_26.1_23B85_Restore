@@ -1,6 +1,6 @@
 @interface SUUIFilledStarsView
-- (SUUIFilledStarsView)initWithFrame:(CGRect)a3;
-- (id)_starImageViewWithImage:(id)a3;
+- (SUUIFilledStarsView)initWithFrame:(CGRect)frame;
+- (id)_starImageViewWithImage:(id)image;
 - (void)_setupStars;
 - (void)dealloc;
 - (void)layoutSubviews;
@@ -8,11 +8,11 @@
 
 @implementation SUUIFilledStarsView
 
-- (SUUIFilledStarsView)initWithFrame:(CGRect)a3
+- (SUUIFilledStarsView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = SUUIFilledStarsView;
-  v3 = [(SUUIFilledStarsView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SUUIFilledStarsView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -109,12 +109,12 @@
   while (v5);
 }
 
-- (id)_starImageViewWithImage:(id)a3
+- (id)_starImageViewWithImage:(id)image
 {
-  v3 = [a3 imageWithRenderingMode:2];
+  v3 = [image imageWithRenderingMode:2];
   v4 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:v3];
-  v5 = [MEMORY[0x277D75348] systemOrangeColor];
-  [v4 setTintColor:v5];
+  systemOrangeColor = [MEMORY[0x277D75348] systemOrangeColor];
+  [v4 setTintColor:systemOrangeColor];
 
   return v4;
 }

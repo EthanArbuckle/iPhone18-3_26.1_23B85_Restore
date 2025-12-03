@@ -3,10 +3,10 @@
 - (CGRect)cachedTopLevelNormalizedPathContentsRect;
 - (CGSize)imageSize;
 - (VKCImageSubjectContextInstance)init;
-- (id)normalizedSubjectPathWithContentsRect:(CGRect)a3 topLevelOnly:(BOOL)a4;
+- (id)normalizedSubjectPathWithContentsRect:(CGRect)rect topLevelOnly:(BOOL)only;
 - (void)dealloc;
-- (void)setMaskImage:(CGImage *)a3;
-- (void)setOrientedMaskImage:(CGImage *)a3;
+- (void)setMaskImage:(CGImage *)image;
+- (void)setOrientedMaskImage:(CGImage *)image;
 @end
 
 @implementation VKCImageSubjectContextInstance
@@ -38,38 +38,38 @@
   return result;
 }
 
-- (void)setOrientedMaskImage:(CGImage *)a3
+- (void)setOrientedMaskImage:(CGImage *)image
 {
   orientedMaskImage = self->_orientedMaskImage;
-  if (orientedMaskImage != a3)
+  if (orientedMaskImage != image)
   {
     CGImageRelease(orientedMaskImage);
-    self->_orientedMaskImage = a3;
+    self->_orientedMaskImage = image;
 
-    CGImageRetain(a3);
+    CGImageRetain(image);
   }
 }
 
-- (void)setMaskImage:(CGImage *)a3
+- (void)setMaskImage:(CGImage *)image
 {
   maskImage = self->_maskImage;
-  if (maskImage != a3)
+  if (maskImage != image)
   {
     CGImageRelease(maskImage);
-    self->_maskImage = a3;
+    self->_maskImage = image;
 
-    CGImageRetain(a3);
+    CGImageRetain(image);
   }
 }
 
-- (id)normalizedSubjectPathWithContentsRect:(CGRect)a3 topLevelOnly:(BOOL)a4
+- (id)normalizedSubjectPathWithContentsRect:(CGRect)rect topLevelOnly:(BOOL)only
 {
-  v4 = a4;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (a4)
+  onlyCopy = only;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  if (only)
   {
     [(VKCImageSubjectContextInstance *)self cachedTopLevelNormalizedPathContentsRect];
     v11 = v10;
@@ -95,7 +95,7 @@
   v30.size.height = height;
   if (CGRectIsNull(v30) || (v31.origin.x = v11, v31.origin.y = v13, v31.size.width = v15, v31.size.height = v17, v33.origin.x = x, v33.origin.y = y, v33.size.width = width, v33.size.height = height, !CGRectEqualToRect(v31, v33)) || (v23 = v22) == 0)
   {
-    if (v4)
+    if (onlyCopy)
     {
       [(VKCImageSubjectContextInstance *)self baseTopLevelNormalizedSubjectPath];
     }
@@ -122,7 +122,7 @@
       v23 = v25;
     }
 
-    if (v4)
+    if (onlyCopy)
     {
       [(VKCImageSubjectContextInstance *)self setCachedTopLevelNormalizedPathContentsRect:x, y, width, height];
       [(VKCImageSubjectContextInstance *)self setCachedTopLevelNormalizedPath:v23];

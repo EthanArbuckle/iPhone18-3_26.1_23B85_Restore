@@ -1,23 +1,23 @@
 @interface MX_BannerManager
-+ (id)bannerResponseToString:(id)a3;
++ (id)bannerResponseToString:(id)string;
 + (id)getAwaitingDispatchQueue;
 + (id)getBannerCleanupDispatchQueue;
-+ (id)getCacheKey:(id)a3 endpointType:(id)a4;
++ (id)getCacheKey:(id)key endpointType:(id)type;
 + (id)getSharedBannerClient;
 + (id)sharedInstance;
-- (BOOL)isCarPlayPortRoutableFromCustomizedRoutingPerspective:(__CFString *)a3;
-- (BOOL)newPortNeedsToShowBanner:(id)a3 previousPort:(unsigned int)a4;
+- (BOOL)isCarPlayPortRoutableFromCustomizedRoutingPerspective:(__CFString *)perspective;
+- (BOOL)newPortNeedsToShowBanner:(id)banner previousPort:(unsigned int)port;
 - (MX_BannerManager)init;
-- (__CFArray)copyUndoEndpointsForRoute:(id)a3;
-- (void)cleanupBannerCache:(id)a3;
-- (void)cleanupBannerWithTxid:(id)a3 targetRouteUID:(__CFString *)a4 bannerType:(unsigned __int8)a5;
+- (__CFArray)copyUndoEndpointsForRoute:(id)route;
+- (void)cleanupBannerCache:(id)cache;
+- (void)cleanupBannerWithTxid:(id)txid targetRouteUID:(__CFString *)d bannerType:(unsigned __int8)type;
 - (void)cleanupBanners;
-- (void)cleanupBannersIfNeededForRoute:(__CFString *)a3 routeName:(__CFString *)a4 endpointManagerType:(__CFString *)a5;
+- (void)cleanupBannersIfNeededForRoute:(__CFString *)route routeName:(__CFString *)name endpointManagerType:(__CFString *)type;
 - (void)dealloc;
-- (void)promptUserResponseForRoute:(id)a3 connectHandler:(id)a4;
-- (void)promptUserResponseForUndoRoute:(id)a3 undoHandler:(id)a4;
-- (void)sendBannerActionToAudioStatistics:(int64_t)a3 bannerType:(int64_t)a4 targetDeviceType:(int64_t)a5 targetProductID:(id)a6 sourceDeviceType:(id)a7;
-- (void)sendBannerStartToAudioStatistics:(int64_t)a3 targetDeviceType:(int64_t)a4 targetProductID:(id)a5 sourceDeviceType:(id)a6;
+- (void)promptUserResponseForRoute:(id)route connectHandler:(id)handler;
+- (void)promptUserResponseForUndoRoute:(id)route undoHandler:(id)handler;
+- (void)sendBannerActionToAudioStatistics:(int64_t)statistics bannerType:(int64_t)type targetDeviceType:(int64_t)deviceType targetProductID:(id)d sourceDeviceType:(id)sourceDeviceType;
+- (void)sendBannerStartToAudioStatistics:(int64_t)statistics targetDeviceType:(int64_t)type targetProductID:(id)d sourceDeviceType:(id)deviceType;
 @end
 
 @implementation MX_BannerManager
@@ -62,21 +62,21 @@
   return sBannerClient;
 }
 
-+ (id)bannerResponseToString:(id)a3
++ (id)bannerResponseToString:(id)string
 {
-  v4 = [a3 intValue];
-  if (v4 >= 4)
+  intValue = [string intValue];
+  if (intValue >= 4)
   {
-    return [MEMORY[0x1E696AEC0] stringWithFormat:@"Unknown(%@)", a3];
+    return [MEMORY[0x1E696AEC0] stringWithFormat:@"Unknown(%@)", string];
   }
 
   else
   {
-    return off_1E7AEC8D8[v4];
+    return off_1E7AEC8D8[intValue];
   }
 }
 
-- (BOOL)isCarPlayPortRoutableFromCustomizedRoutingPerspective:(__CFString *)a3
+- (BOOL)isCarPlayPortRoutableFromCustomizedRoutingPerspective:(__CFString *)perspective
 {
   v16 = *MEMORY[0x1E69E9840];
   if (![+[MXSessionManager isCurrentRouteHeadphoneAndInEar:"isCurrentRouteHeadphoneAndInEar:"]
@@ -86,7 +86,7 @@
     goto LABEL_19;
   }
 
-  v5 = MXCFCopyPrefixSubstring(a3, 17);
+  v5 = MXCFCopyPrefixSubstring(perspective, 17);
   v6 = [MX_BannerManager getCacheKey:v5 endpointType:*MEMORY[0x1E69618E0]];
   if (dword_1EB75DE40)
   {
@@ -169,11 +169,11 @@ LABEL_19:
   [(MX_BannerManager *)&v3 dealloc];
 }
 
-- (void)cleanupBannerWithTxid:(id)a3 targetRouteUID:(__CFString *)a4 bannerType:(unsigned __int8)a5
+- (void)cleanupBannerWithTxid:(id)txid targetRouteUID:(__CFString *)d bannerType:(unsigned __int8)type
 {
   v16 = *MEMORY[0x1E69E9840];
   v7 = 8;
-  if (a5 == 1)
+  if (type == 1)
   {
     v7 = 16;
   }
@@ -186,7 +186,7 @@ LABEL_19:
     fig_log_call_emit_and_clean_up_after_send_and_compose();
   }
 
-  if (a3)
+  if (txid)
   {
     [+[MX_BannerManager getSharedBannerClient](MX_BannerManager "getSharedBannerClient")];
     if (dword_1EB75DE40)
@@ -198,9 +198,9 @@ LABEL_19:
 
     v11 = bannerResponseCacheMutex;
     objc_sync_enter(bannerResponseCacheMutex);
-    if ([objc_msgSend(v8 objectForKey:{a4), "routeSemaphore"}])
+    if ([objc_msgSend(v8 objectForKey:{d), "routeSemaphore"}])
     {
-      dispatch_semaphore_signal([objc_msgSend(v8 objectForKey:{a4), "routeSemaphore"}]);
+      dispatch_semaphore_signal([objc_msgSend(v8 objectForKey:{d), "routeSemaphore"}]);
     }
 
     if (dword_1EB75DE40)
@@ -210,14 +210,14 @@ LABEL_19:
       fig_log_call_emit_and_clean_up_after_send_and_compose();
     }
 
-    [v8 removeObjectForKey:{a4, v14, v15}];
+    [v8 removeObjectForKey:{d, v14, v15}];
     objc_sync_exit(v11);
   }
 
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)cleanupBannerCache:(id)a3
+- (void)cleanupBannerCache:(id)cache
 {
   v19 = *MEMORY[0x1E69E9840];
   obj = bannerResponseCacheMutex;
@@ -226,7 +226,7 @@ LABEL_19:
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [a3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v4 = [cache countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v4)
   {
     v5 = *v15;
@@ -236,17 +236,17 @@ LABEL_19:
       {
         if (*v15 != v5)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(cache);
         }
 
         v7 = *(*(&v14 + 1) + 8 * i);
-        v8 = [objc_msgSend(a3 objectForKey:{v7, v11, v12), "txid"}];
+        v8 = [objc_msgSend(cache objectForKey:{v7, v11, v12), "txid"}];
         if (v8)
         {
           [+[MX_BannerManager getSharedBannerClient](MX_BannerManager "getSharedBannerClient")];
-          if ([objc_msgSend(a3 objectForKey:{v7), "routeSemaphore"}])
+          if ([objc_msgSend(cache objectForKey:{v7), "routeSemaphore"}])
           {
-            dispatch_semaphore_signal([objc_msgSend(a3 objectForKey:{v7), "routeSemaphore"}]);
+            dispatch_semaphore_signal([objc_msgSend(cache objectForKey:{v7), "routeSemaphore"}]);
           }
 
           if (dword_1EB75DE40)
@@ -258,13 +258,13 @@ LABEL_19:
         }
       }
 
-      v4 = [a3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v4 = [cache countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v4);
   }
 
-  [a3 removeAllObjects];
+  [cache removeAllObjects];
   objc_sync_exit(obj);
   v10 = *MEMORY[0x1E69E9840];
 }
@@ -280,21 +280,21 @@ LABEL_19:
   MXDispatchAsync("[MX_BannerManager cleanupBanners]", "MX_BannerManager.m", 289, 0, 0, v3, v4);
 }
 
-- (void)cleanupBannersIfNeededForRoute:(__CFString *)a3 routeName:(__CFString *)a4 endpointManagerType:(__CFString *)a5
+- (void)cleanupBannersIfNeededForRoute:(__CFString *)route routeName:(__CFString *)name endpointManagerType:(__CFString *)type
 {
-  if (a3)
+  if (route)
   {
-    CFRetain(a3);
+    CFRetain(route);
   }
 
-  if (a4)
+  if (name)
   {
-    CFRetain(a4);
+    CFRetain(name);
   }
 
-  if (a5)
+  if (type)
   {
-    CFRetain(a5);
+    CFRetain(type);
   }
 
   v9 = +[MX_BannerManager getBannerCleanupDispatchQueue];
@@ -303,29 +303,29 @@ LABEL_19:
   v10[2] = __81__MX_BannerManager_cleanupBannersIfNeededForRoute_routeName_endpointManagerType___block_invoke;
   v10[3] = &unk_1E7AE7230;
   v10[4] = self;
-  v10[5] = a3;
-  v10[6] = a5;
-  v10[7] = a4;
+  v10[5] = route;
+  v10[6] = type;
+  v10[7] = name;
   MXDispatchAsync("[MX_BannerManager cleanupBannersIfNeededForRoute:routeName:endpointManagerType:]", "MX_BannerManager.m", 304, 0, 0, v9, v10);
 }
 
-- (void)promptUserResponseForRoute:(id)a3 connectHandler:(id)a4
+- (void)promptUserResponseForRoute:(id)route connectHandler:(id)handler
 {
   v82 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (route)
   {
     v75[0] = 0;
     v75[1] = v75;
     v75[2] = 0x2020000000;
     v76 = 1;
-    cf = [a3 objectForKey:@"PortMacAddress"];
-    v45 = [a3 objectForKey:@"PortDeviceIdentifier"];
-    v49 = [a3 objectForKey:@"RoutingContextUUID"];
-    v46 = [a3 objectForKey:@"PortName"];
-    v7 = [a3 objectForKey:@"PortID"];
-    v47 = [a3 objectForKey:@"WirelessPorts"];
-    v8 = [objc_msgSend(a3 objectForKey:{@"OldPort", "intValue"}];
-    v48 = [a3 objectForKey:@"MostRecentCurrentlyActivatingEndpoint"];
+    cf = [route objectForKey:@"PortMacAddress"];
+    v45 = [route objectForKey:@"PortDeviceIdentifier"];
+    v49 = [route objectForKey:@"RoutingContextUUID"];
+    v46 = [route objectForKey:@"PortName"];
+    v7 = [route objectForKey:@"PortID"];
+    v47 = [route objectForKey:@"WirelessPorts"];
+    v8 = [objc_msgSend(route objectForKey:{@"OldPort", "intValue"}];
+    v48 = [route objectForKey:@"MostRecentCurrentlyActivatingEndpoint"];
     if (dword_1EB75DE40)
     {
       *v71 = 0;
@@ -374,7 +374,7 @@ LABEL_35:
 
       v25 = [(NSMutableDictionary *)self->connectBannerResponseCache objectForKey:v12, v38, v42];
       v26 = [MEMORY[0x1E696AD98] numberWithUnsignedChar:{objc_msgSend(v25, "bannerResponse")}];
-      v27 = [v25 routeSemaphore];
+      routeSemaphore = [v25 routeSemaphore];
       if ([v26 isEqualToNumber:&unk_1F28AF6B0])
       {
         v26 = &unk_1F28AF6C8;
@@ -416,9 +416,9 @@ LABEL_35:
           CFRetain(v45);
         }
 
-        if (v27)
+        if (routeSemaphore)
         {
-          dispatch_retain(v27);
+          dispatch_retain(routeSemaphore);
         }
 
         v29 = v12;
@@ -428,9 +428,9 @@ LABEL_35:
         v51[2] = __62__MX_BannerManager_promptUserResponseForRoute_connectHandler___block_invoke_101;
         v51[3] = &unk_1E7AEC870;
         v51[4] = v12;
-        v51[5] = v27;
+        v51[5] = routeSemaphore;
         v51[6] = self;
-        v51[7] = a4;
+        v51[7] = handler;
         v51[8] = v45;
         v51[9] = v47;
         v51[10] = v48;
@@ -450,7 +450,7 @@ LABEL_35:
           fig_log_call_emit_and_clean_up_after_send_and_compose();
         }
 
-        (*(a4 + 2))(a4, v47, v48, v49);
+        (*(handler + 2))(handler, v47, v48, v49);
       }
 
       else
@@ -551,14 +551,14 @@ LABEL_35:
     v55 = 3221225472;
     v56 = __62__MX_BannerManager_promptUserResponseForRoute_connectHandler___block_invoke;
     v57 = &unk_1E7AEC848;
-    v58 = self;
+    selfCopy = self;
     v59 = v12;
     v62 = v75;
     v63 = &v78;
     v64 = v71;
     v65 = IsPortOfTypeBluetoothVehicle;
     v60 = object;
-    v61 = a4;
+    handlerCopy = handler;
     v66 = v47;
     v67 = v48;
     v68 = v49;
@@ -606,9 +606,9 @@ LABEL_68:
   v35 = *MEMORY[0x1E69E9840];
 }
 
-- (__CFArray)copyUndoEndpointsForRoute:(id)a3
+- (__CFArray)copyUndoEndpointsForRoute:(id)route
 {
-  v3 = [(NSMutableDictionary *)self->undoBannerResponseCache objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->undoBannerResponseCache objectForKey:route];
   Mutable = CFArrayCreateMutable(*MEMORY[0x1E695E480], 0, MEMORY[0x1E695E9C0]);
   if (v3 && [objc_msgSend(v3 "fromPorts")] && objc_msgSend(objc_msgSend(v3, "fromPorts"), "count"))
   {
@@ -635,12 +635,12 @@ LABEL_68:
   return Mutable;
 }
 
-+ (id)getCacheKey:(id)a3 endpointType:(id)a4
++ (id)getCacheKey:(id)key endpointType:(id)type
 {
   v10 = *MEMORY[0x1E69E9840];
-  if ([a4 isEqualToString:*MEMORY[0x1E69618D8]] & 1) != 0 || (objc_msgSend(a4, "isEqualToString:", *MEMORY[0x1E69618E0]))
+  if ([type isEqualToString:*MEMORY[0x1E69618D8]] & 1) != 0 || (objc_msgSend(type, "isEqualToString:", *MEMORY[0x1E69618E0]))
   {
-    result = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_%@", a3, a4];
+    result = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_%@", key, type];
     v7 = *MEMORY[0x1E69E9840];
   }
 
@@ -656,16 +656,16 @@ LABEL_68:
   return result;
 }
 
-- (BOOL)newPortNeedsToShowBanner:(id)a3 previousPort:(unsigned int)a4
+- (BOOL)newPortNeedsToShowBanner:(id)banner previousPort:(unsigned int)port
 {
   v35 = *MEMORY[0x1E69E9840];
-  if (CMSMVAUtility_IsPortOfTypeCarPlayMainAudio([a3 intValue]))
+  if (CMSMVAUtility_IsPortOfTypeCarPlayMainAudio([banner intValue]))
   {
     LOBYTE(v6) = 1;
     goto LABEL_38;
   }
 
-  v7 = vaemCopyEndpointForPort(a4);
+  v7 = vaemCopyEndpointForPort(port);
   cf = 0;
   if (v7)
   {
@@ -733,7 +733,7 @@ LABEL_18:
     ValueAtIndex = CFArrayGetValueAtIndex(v15, 0);
     CFNumberGetValue(ValueAtIndex, kCFNumberSInt32Type, &valuePtr);
     v19 = valuePtr;
-    if (v19 == [a3 intValue])
+    if (v19 == [banner intValue])
     {
       v6 = 1;
 LABEL_27:
@@ -755,7 +755,7 @@ LABEL_27:
       CFNumberGetValue(v21, kCFNumberSInt32Type, &valuePtr);
       v22 = valuePtr;
       ++v20;
-      if (v22 == [a3 intValue])
+      if (v22 == [banner intValue])
       {
         v6 = v20 - 1 < v17;
         goto LABEL_27;
@@ -789,7 +789,7 @@ LABEL_31:
       v33 = 1024;
       v34[0] = v6;
       LOWORD(v34[1]) = 2114;
-      *(&v34[1] + 2) = a3;
+      *(&v34[1] + 2) = banner;
       _os_log_send_and_compose_impl();
     }
 
@@ -801,19 +801,19 @@ LABEL_38:
   return v6;
 }
 
-- (void)promptUserResponseForUndoRoute:(id)a3 undoHandler:(id)a4
+- (void)promptUserResponseForUndoRoute:(id)route undoHandler:(id)handler
 {
   v50 = *MEMORY[0x1E69E9840];
   v43[0] = 0;
   v43[1] = v43;
   v43[2] = 0x2020000000;
   v44 = 1;
-  cf = [a3 objectForKey:@"PortMacAddress"];
-  [a3 objectForKey:@"PortDeviceIdentifier"];
-  v37 = [a3 objectForKey:@"RoutingContextUUID"];
-  v36 = [a3 objectForKey:@"PortName"];
-  v6 = [a3 objectForKey:@"PortID"];
-  v7 = [objc_msgSend(a3 objectForKey:{@"OldPort", "intValue"}];
+  cf = [route objectForKey:@"PortMacAddress"];
+  [route objectForKey:@"PortDeviceIdentifier"];
+  v37 = [route objectForKey:@"RoutingContextUUID"];
+  v36 = [route objectForKey:@"PortName"];
+  v6 = [route objectForKey:@"PortID"];
+  v7 = [objc_msgSend(route objectForKey:{@"OldPort", "intValue"}];
   v8 = +[MX_BannerManager getCacheKey:port:](MX_BannerManager, "getCacheKey:port:", cf, [v6 intValue]);
   v9 = CMSMVAUtility_CopyBluetoothDeviceModelID([v6 intValue]);
   if (dword_1EB75DE40)
@@ -990,27 +990,27 @@ LABEL_43:
   v28 = *MEMORY[0x1E69E9840];
 }
 
-- (void)sendBannerActionToAudioStatistics:(int64_t)a3 bannerType:(int64_t)a4 targetDeviceType:(int64_t)a5 targetProductID:(id)a6 sourceDeviceType:(id)a7
+- (void)sendBannerActionToAudioStatistics:(int64_t)statistics bannerType:(int64_t)type targetDeviceType:(int64_t)deviceType targetProductID:(id)d sourceDeviceType:(id)sourceDeviceType
 {
   v16[8] = *MEMORY[0x1E69E9840];
-  if (a6)
+  if (d)
   {
-    v10 = a6;
+    dCopy = d;
   }
 
   else
   {
-    v10 = @"Unknown";
+    dCopy = @"Unknown";
   }
 
-  if (a7)
+  if (sourceDeviceType)
   {
-    v11 = a7;
+    sourceDeviceTypeCopy = sourceDeviceType;
   }
 
   else
   {
-    v11 = @"Unknown";
+    sourceDeviceTypeCopy = @"Unknown";
   }
 
   v12 = +[MXSystemController preferHeadphonesOverCarsAndSpeakersEnabled];
@@ -1018,15 +1018,15 @@ LABEL_43:
   v16[0] = 0x1F2898890;
   v15[0] = 0x1F2898850;
   v15[1] = 0x1F2898910;
-  v16[1] = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v16[1] = [MEMORY[0x1E696AD98] numberWithInteger:statistics];
   v15[2] = 0x1F28988F0;
-  v16[2] = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+  v16[2] = [MEMORY[0x1E696AD98] numberWithInteger:type];
   v15[3] = 0x1F2898930;
-  v16[3] = [MEMORY[0x1E696AD98] numberWithInteger:a5];
-  v16[4] = v10;
+  v16[3] = [MEMORY[0x1E696AD98] numberWithInteger:deviceType];
+  v16[4] = dCopy;
   v15[4] = 0x1F2898950;
   v15[5] = 0x1F2898970;
-  v16[5] = v11;
+  v16[5] = sourceDeviceTypeCopy;
   v15[6] = 0x1F2898990;
   v16[6] = [MEMORY[0x1E696AD98] numberWithBool:v12];
   v15[7] = 0x1F28989B0;
@@ -1035,27 +1035,27 @@ LABEL_43:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)sendBannerStartToAudioStatistics:(int64_t)a3 targetDeviceType:(int64_t)a4 targetProductID:(id)a5 sourceDeviceType:(id)a6
+- (void)sendBannerStartToAudioStatistics:(int64_t)statistics targetDeviceType:(int64_t)type targetProductID:(id)d sourceDeviceType:(id)deviceType
 {
   v14[7] = *MEMORY[0x1E69E9840];
-  if (a5)
+  if (d)
   {
-    v8 = a5;
+    dCopy = d;
   }
 
   else
   {
-    v8 = @"Unknown";
+    dCopy = @"Unknown";
   }
 
-  if (a6)
+  if (deviceType)
   {
-    v9 = a6;
+    deviceTypeCopy = deviceType;
   }
 
   else
   {
-    v9 = @"Unknown";
+    deviceTypeCopy = @"Unknown";
   }
 
   v10 = +[MXSystemController preferHeadphonesOverCarsAndSpeakersEnabled];
@@ -1063,13 +1063,13 @@ LABEL_43:
   v14[0] = 0x1F28988B0;
   v13[0] = 0x1F2898850;
   v13[1] = 0x1F28988F0;
-  v14[1] = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v14[1] = [MEMORY[0x1E696AD98] numberWithInteger:statistics];
   v13[2] = 0x1F2898930;
-  v14[2] = [MEMORY[0x1E696AD98] numberWithInteger:a4];
-  v14[3] = v8;
+  v14[2] = [MEMORY[0x1E696AD98] numberWithInteger:type];
+  v14[3] = dCopy;
   v13[3] = 0x1F2898950;
   v13[4] = 0x1F2898970;
-  v14[4] = v9;
+  v14[4] = deviceTypeCopy;
   v13[5] = 0x1F2898990;
   v14[5] = [MEMORY[0x1E696AD98] numberWithBool:v10];
   v13[6] = 0x1F28989B0;

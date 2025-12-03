@@ -1,14 +1,14 @@
 @interface MapsSuggestionsBaseLocationUpdater
-- (MapsSuggestionsBaseLocationUpdater)initWithName:(id)a3 queue:(id)a4;
+- (MapsSuggestionsBaseLocationUpdater)initWithName:(id)name queue:(id)queue;
 - (NSString)uniqueName;
 - (id).cxx_construct;
-- (id)restartLocationUpdatesForDelegate:(id)a3;
-- (id)startLocationUpdatesForDelegate:(id)a3;
-- (void)considerMyAllowanceAsLimited:(BOOL)a3;
-- (void)considerMyNewLocation:(id)a3;
-- (void)considerMyNewVisit:(id)a3;
+- (id)restartLocationUpdatesForDelegate:(id)delegate;
+- (id)startLocationUpdatesForDelegate:(id)delegate;
+- (void)considerMyAllowanceAsLimited:(BOOL)limited;
+- (void)considerMyNewLocation:(id)location;
+- (void)considerMyNewVisit:(id)visit;
 - (void)dealloc;
-- (void)stopLocationUpdatesForDelegate:(id)a3;
+- (void)stopLocationUpdatesForDelegate:(id)delegate;
 @end
 
 @implementation MapsSuggestionsBaseLocationUpdater
@@ -27,13 +27,13 @@
   return [v2 description];
 }
 
-- (MapsSuggestionsBaseLocationUpdater)initWithName:(id)a3 queue:(id)a4
+- (MapsSuggestionsBaseLocationUpdater)initWithName:(id)name queue:(id)queue
 {
   v35 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6)
+  nameCopy = name;
+  queueCopy = queue;
+  v8 = queueCopy;
+  if (!nameCopy)
   {
     v27 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
@@ -52,7 +52,7 @@
     goto LABEL_11;
   }
 
-  if (!v7)
+  if (!queueCopy)
   {
     v27 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
@@ -70,7 +70,7 @@
 
 LABEL_11:
 
-    v26 = 0;
+    selfCopy = 0;
     goto LABEL_12;
   }
 
@@ -79,7 +79,7 @@ LABEL_11:
   v9 = [(MapsSuggestionsBaseLocationUpdater *)&v29 init];
   if (v9)
   {
-    v10 = [v6 copy];
+    v10 = [nameCopy copy];
     name = v9->_name;
     v9->_name = v10;
 
@@ -110,10 +110,10 @@ LABEL_11:
   }
 
   self = v9;
-  v26 = self;
+  selfCopy = self;
 LABEL_12:
 
-  return v26;
+  return selfCopy;
 }
 
 - (void)dealloc
@@ -129,10 +129,10 @@ LABEL_12:
   [(MapsSuggestionsBaseLocationUpdater *)&v5 dealloc];
 }
 
-- (void)considerMyNewLocation:(id)a3
+- (void)considerMyNewLocation:(id)location
 {
   v12 = *MEMORY[0x1E69E9840];
-  MapsSuggestionsSetMostRecentLocation(a3);
+  MapsSuggestionsSetMostRecentLocation(location);
   v4 = MapsSuggestionsCurrentBestLocation();
   if (MapsSuggestionsLoggingIsVerbose())
   {
@@ -177,18 +177,18 @@ void __60__MapsSuggestionsBaseLocationUpdater_considerMyNewLocation___block_invo
   [v3 didUpdateLocation:*(a1 + 32)];
 }
 
-- (void)considerMyNewVisit:(id)a3
+- (void)considerMyNewVisit:(id)visit
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (MapsSuggestionsIsValidVisit(v4))
+  visitCopy = visit;
+  if (MapsSuggestionsIsValidVisit(visitCopy))
   {
-    v5 = v4;
+    v5 = visitCopy;
     v6 = v5;
     if (v5)
     {
-      v7 = [v5 departureDate];
-      if (v7 && ([MEMORY[0x1E695DF00] distantFuture], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v7, "isEqualToDate:", v8), v8, !v9))
+      departureDate = [v5 departureDate];
+      if (departureDate && ([MEMORY[0x1E695DF00] distantFuture], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(departureDate, "isEqualToDate:", v8), v8, !v9))
       {
         v10 = 2;
       }
@@ -252,7 +252,7 @@ void __60__MapsSuggestionsBaseLocationUpdater_considerMyNewLocation___block_invo
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v20 = v4;
+      v20 = visitCopy;
       _os_log_impl(&dword_1C5126000, v11, OS_LOG_TYPE_ERROR, "Dropping invalid visit: %@", buf, 0xCu);
     }
   }
@@ -315,12 +315,12 @@ void __57__MapsSuggestionsBaseLocationUpdater_considerMyNewVisit___block_invoke(
   }
 }
 
-- (void)considerMyAllowanceAsLimited:(BOOL)a3
+- (void)considerMyAllowanceAsLimited:(BOOL)limited
 {
-  v3 = a3;
+  limitedCopy = limited;
   v19 = *MEMORY[0x1E69E9840];
   v5 = MapsSuggestionsIsInCoarseLocation();
-  if (v5 == v3)
+  if (v5 == limitedCopy)
   {
     if (MapsSuggestionsLoggingIsVerbose())
     {
@@ -339,8 +339,8 @@ void __57__MapsSuggestionsBaseLocationUpdater_considerMyNewVisit___block_invoke(
     v7 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
-      v8 = [(MapsSuggestionsBaseLocationUpdater *)self uniqueName];
-      v9 = v8;
+      uniqueName = [(MapsSuggestionsBaseLocationUpdater *)self uniqueName];
+      v9 = uniqueName;
       v10 = "Precise";
       if (v6)
       {
@@ -353,10 +353,10 @@ void __57__MapsSuggestionsBaseLocationUpdater_considerMyNewVisit___block_invoke(
       }
 
       v13 = 138412802;
-      v14 = v8;
+      v14 = uniqueName;
       v16 = v11;
       v15 = 2080;
-      if (v3)
+      if (limitedCopy)
       {
         v10 = "Coarse";
       }
@@ -366,8 +366,8 @@ void __57__MapsSuggestionsBaseLocationUpdater_considerMyNewVisit___block_invoke(
       _os_log_impl(&dword_1C5126000, v7, OS_LOG_TYPE_DEBUG, "%@ is switched from %s to %s", &v13, 0x20u);
     }
 
-    MapsSuggestionsSetInCoarseLocation(v3);
-    if (v3)
+    MapsSuggestionsSetInCoarseLocation(limitedCopy);
+    if (limitedCopy)
     {
       MapsSuggestionsResetCurrentLocation();
       [(MapsSuggestionsObservers *)self->_locationObservers callBlock:&__block_literal_global_22];
@@ -394,18 +394,18 @@ void __67__MapsSuggestionsBaseLocationUpdater_considerMyAllowanceAsLimited___blo
   [v2 didLoseLocationPermission];
 }
 
-- (id)startLocationUpdatesForDelegate:(id)a3
+- (id)startLocationUpdatesForDelegate:(id)delegate
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  delegateCopy = delegate;
+  if (delegateCopy)
   {
     v5 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
-      v6 = [v4 uniqueName];
+      uniqueName = [delegateCopy uniqueName];
       *buf = 138412290;
-      v14 = v6;
+      v14 = uniqueName;
       _os_log_impl(&dword_1C5126000, v5, OS_LOG_TYPE_DEBUG, "BaseLocationUpdater startLocationUpdatesForDelegate:%@", buf, 0xCu);
     }
 
@@ -417,10 +417,10 @@ void __67__MapsSuggestionsBaseLocationUpdater_considerMyAllowanceAsLimited___blo
     v11[2] = __70__MapsSuggestionsBaseLocationUpdater_startLocationUpdatesForDelegate___block_invoke;
     v11[3] = &unk_1E81F55C8;
     objc_copyWeak(&v12, buf);
-    [(MapsSuggestionsObservers *)locationObservers registerObserver:v4 handler:v11];
-    if ([v4 conformsToProtocol:&unk_1F44788B8])
+    [(MapsSuggestionsObservers *)locationObservers registerObserver:delegateCopy handler:v11];
+    if ([delegateCopy conformsToProtocol:&unk_1F44788B8])
     {
-      [(MapsSuggestionsObservers *)self->_visitObservers registerObserver:v4 handler:0];
+      [(MapsSuggestionsObservers *)self->_visitObservers registerObserver:delegateCopy handler:0];
     }
 
     [(MapsSuggestionsBaseLocationUpdater *)self considerMyNewLocation:v7];
@@ -480,16 +480,16 @@ void __70__MapsSuggestionsBaseLocationUpdater_startLocationUpdatesForDelegate___
   }
 }
 
-- (void)stopLocationUpdatesForDelegate:(id)a3
+- (void)stopLocationUpdatesForDelegate:(id)delegate
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  delegateCopy = delegate;
   v5 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    v6 = [v4 uniqueName];
+    uniqueName = [delegateCopy uniqueName];
     *buf = 138412290;
-    v11 = v6;
+    v11 = uniqueName;
     _os_log_impl(&dword_1C5126000, v5, OS_LOG_TYPE_DEBUG, "BaseLocationUpdater stopLocationUpdatesForDelegate:%@", buf, 0xCu);
   }
 
@@ -500,10 +500,10 @@ void __70__MapsSuggestionsBaseLocationUpdater_startLocationUpdatesForDelegate___
   v8[2] = __69__MapsSuggestionsBaseLocationUpdater_stopLocationUpdatesForDelegate___block_invoke;
   v8[3] = &unk_1E81F55C8;
   objc_copyWeak(&v9, buf);
-  [(MapsSuggestionsObservers *)locationObservers unregisterObserver:v4 handler:v8];
-  if ([v4 conformsToProtocol:&unk_1F44788B8])
+  [(MapsSuggestionsObservers *)locationObservers unregisterObserver:delegateCopy handler:v8];
+  if ([delegateCopy conformsToProtocol:&unk_1F44788B8])
   {
-    [(MapsSuggestionsObservers *)self->_visitObservers unregisterObserver:v4 handler:0];
+    [(MapsSuggestionsObservers *)self->_visitObservers unregisterObserver:delegateCopy handler:0];
   }
 
   objc_destroyWeak(&v9);
@@ -539,11 +539,11 @@ void __69__MapsSuggestionsBaseLocationUpdater_stopLocationUpdatesForDelegate___b
   }
 }
 
-- (id)restartLocationUpdatesForDelegate:(id)a3
+- (id)restartLocationUpdatesForDelegate:(id)delegate
 {
-  v4 = a3;
-  [(MapsSuggestionsBaseLocationUpdater *)self stopLocationUpdatesForDelegate:v4];
-  v5 = [(MapsSuggestionsBaseLocationUpdater *)self startLocationUpdatesForDelegate:v4];
+  delegateCopy = delegate;
+  [(MapsSuggestionsBaseLocationUpdater *)self stopLocationUpdatesForDelegate:delegateCopy];
+  v5 = [(MapsSuggestionsBaseLocationUpdater *)self startLocationUpdatesForDelegate:delegateCopy];
 
   return v5;
 }

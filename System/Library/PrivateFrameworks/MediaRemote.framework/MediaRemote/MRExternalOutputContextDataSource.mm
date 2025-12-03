@@ -1,8 +1,8 @@
 @interface MRExternalOutputContextDataSource
 - (BOOL)isVolumeMuted;
-- (MRExternalOutputContextDataSource)initWithCoder:(id)a3;
-- (MRExternalOutputContextDataSource)initWithUniqueIdentifier:(id)a3;
-- (MRExternalOutputContextDataSource)initWithUniqueIdentifier:(id)a3 outputDevices:(id)a4 volume:(float)a5 capabilities:(unsigned int)a6 muted:(BOOL)a7;
+- (MRExternalOutputContextDataSource)initWithCoder:(id)coder;
+- (MRExternalOutputContextDataSource)initWithUniqueIdentifier:(id)identifier;
+- (MRExternalOutputContextDataSource)initWithUniqueIdentifier:(id)identifier outputDevices:(id)devices volume:(float)volume capabilities:(unsigned int)capabilities muted:(BOOL)muted;
 - (float)_calculateMasterVolume;
 - (float)volume;
 - (id)outputDevices;
@@ -12,50 +12,50 @@
 - (void)_reevaluateGroupVolumeMuted;
 - (void)_reevaluateMasterVolume;
 - (void)_reevaluateMasterVolumeControlCapabilities;
-- (void)_updateOutputDevice:(void *)a3 predicate:(void *)a4 update:(void *)a5 action:;
-- (void)_updateOutputDevices:(id *)a1;
-- (void)encodeWithCoder:(id)a3;
+- (void)_updateOutputDevice:(void *)device predicate:(void *)predicate update:(void *)update action:;
+- (void)_updateOutputDevices:(id *)devices;
+- (void)encodeWithCoder:(id)coder;
 - (void)initializeVolumeCapabilitiesForLegacyCleints;
 - (void)removeAllOutputDevices;
-- (void)removeOutputDevices:(id)a3;
-- (void)updateOutputDevices:(id)a3;
-- (void)updateVolume:(float)a3 outputDeviceUID:(id)a4;
-- (void)updateVolumeControlCapabilities:(unsigned int)a3 outputDeviceUID:(id)a4;
-- (void)updateVolumeMuted:(BOOL)a3 outputDeviceUID:(id)a4;
+- (void)removeOutputDevices:(id)devices;
+- (void)updateOutputDevices:(id)devices;
+- (void)updateVolume:(float)volume outputDeviceUID:(id)d;
+- (void)updateVolumeControlCapabilities:(unsigned int)capabilities outputDeviceUID:(id)d;
+- (void)updateVolumeMuted:(BOOL)muted outputDeviceUID:(id)d;
 @end
 
 @implementation MRExternalOutputContextDataSource
 
 - (float)volume
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  masterVolume = v2->_masterVolume;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  masterVolume = selfCopy->_masterVolume;
+  objc_sync_exit(selfCopy);
 
   return masterVolume;
 }
 
 - (unsigned)volumeControlCapabilities
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  masterVolumeControlCapabilities = v2->_masterVolumeControlCapabilities;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  masterVolumeControlCapabilities = selfCopy->_masterVolumeControlCapabilities;
+  objc_sync_exit(selfCopy);
 
   return masterVolumeControlCapabilities;
 }
 
-- (MRExternalOutputContextDataSource)initWithUniqueIdentifier:(id)a3
+- (MRExternalOutputContextDataSource)initWithUniqueIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v11.receiver = self;
   v11.super_class = MRExternalOutputContextDataSource;
   v6 = [(MRExternalOutputContextDataSource *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_uniqueIdentifier, a3);
+    objc_storeStrong(&v6->_uniqueIdentifier, identifier);
     v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
     outputDevices = v7->_outputDevices;
     v7->_outputDevices = v8;
@@ -64,20 +64,20 @@
   return v7;
 }
 
-- (MRExternalOutputContextDataSource)initWithUniqueIdentifier:(id)a3 outputDevices:(id)a4 volume:(float)a5 capabilities:(unsigned int)a6 muted:(BOOL)a7
+- (MRExternalOutputContextDataSource)initWithUniqueIdentifier:(id)identifier outputDevices:(id)devices volume:(float)volume capabilities:(unsigned int)capabilities muted:(BOOL)muted
 {
-  v12 = a4;
-  v13 = [(MRExternalOutputContextDataSource *)self initWithUniqueIdentifier:a3];
+  devicesCopy = devices;
+  v13 = [(MRExternalOutputContextDataSource *)self initWithUniqueIdentifier:identifier];
   if (v13)
   {
-    v14 = [v12 msv_map:&__block_literal_global_141];
+    v14 = [devicesCopy msv_map:&__block_literal_global_141];
     v15 = [v14 mutableCopy];
     outputDevices = v13->_outputDevices;
     v13->_outputDevices = v15;
 
-    v13->_masterVolume = a5;
-    v13->_masterVolumeControlCapabilities = a6;
-    v13->_groupVolumeMuted = a7;
+    v13->_masterVolume = volume;
+    v13->_masterVolumeControlCapabilities = capabilities;
+    v13->_groupVolumeMuted = muted;
   }
 
   return v13;
@@ -96,24 +96,24 @@ MRAVDistantOutputDevice *__102__MRExternalOutputContextDataSource_initWithUnique
 
 - (BOOL)isVolumeMuted
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  groupVolumeMuted = v2->_groupVolumeMuted;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  groupVolumeMuted = selfCopy->_groupVolumeMuted;
+  objc_sync_exit(selfCopy);
 
   return groupVolumeMuted;
 }
 
-- (void)updateOutputDevices:(id)a3
+- (void)updateOutputDevices:(id)devices
 {
-  v7 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [v7 mr_allOutputDevices];
-  v6 = [v5 mr_redactClusterMembers];
-  [(MRExternalOutputContextDataSource *)&v4->super.super.isa _updateOutputDevices:v6];
+  devicesCopy = devices;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  mr_allOutputDevices = [devicesCopy mr_allOutputDevices];
+  mr_redactClusterMembers = [mr_allOutputDevices mr_redactClusterMembers];
+  [(MRExternalOutputContextDataSource *)&selfCopy->super.super.isa _updateOutputDevices:mr_redactClusterMembers];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 uint64_t __58__MRExternalOutputContextDataSource__updateOutputDevices___block_invoke(uint64_t a1, void *a2)
@@ -125,18 +125,18 @@ uint64_t __58__MRExternalOutputContextDataSource__updateOutputDevices___block_in
   return v5;
 }
 
-- (void)removeOutputDevices:(id)a3
+- (void)removeOutputDevices:(id)devices
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v18 = [(NSMutableArray *)v5->_outputDevices copy];
+  devicesCopy = devices;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v18 = [(NSMutableArray *)selfCopy->_outputDevices copy];
   v27 = 0u;
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  obj = v4;
+  obj = devicesCopy;
   v19 = [obj countByEnumeratingWithState:&v25 objects:v30 count:16];
   if (v19)
   {
@@ -177,8 +177,8 @@ uint64_t __58__MRExternalOutputContextDataSource__updateOutputDevices___block_in
 
               else
               {
-                v13 = [v11 parentUID];
-                v14 = [v13 isEqualToString:v6];
+                parentUID = [v11 parentUID];
+                v14 = [parentUID isEqualToString:v6];
 
                 if (!v14)
                 {
@@ -186,8 +186,8 @@ uint64_t __58__MRExternalOutputContextDataSource__updateOutputDevices___block_in
                 }
               }
 
-              [(NSMutableArray *)v5->_outputDevices removeObject:v11];
-              [(MROutputContextDataSource *)v5 notifyOutputDeviceRemoved:v11];
+              [(NSMutableArray *)selfCopy->_outputDevices removeObject:v11];
+              [(MROutputContextDataSource *)selfCopy notifyOutputDeviceRemoved:v11];
             }
 
             v8 = [v7 countByEnumeratingWithState:&v21 objects:v29 count:16];
@@ -203,24 +203,24 @@ uint64_t __58__MRExternalOutputContextDataSource__updateOutputDevices___block_in
     while (v19);
   }
 
-  [(MRExternalOutputContextDataSource *)v5 _reevaluateMasterVolume];
-  [(MRExternalOutputContextDataSource *)v5 _reevaluateGroupVolumeMuted];
-  [(MRExternalOutputContextDataSource *)v5 _reevaluateMasterVolumeControlCapabilities];
+  [(MRExternalOutputContextDataSource *)selfCopy _reevaluateMasterVolume];
+  [(MRExternalOutputContextDataSource *)selfCopy _reevaluateGroupVolumeMuted];
+  [(MRExternalOutputContextDataSource *)selfCopy _reevaluateMasterVolumeControlCapabilities];
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
   v15 = *MEMORY[0x1E69E9840];
 }
 
 - (void)removeAllOutputDevices
 {
   v13 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = v2->_outputDevices;
+  v3 = selfCopy->_outputDevices;
   v4 = [(NSMutableArray *)v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
@@ -235,7 +235,7 @@ uint64_t __58__MRExternalOutputContextDataSource__updateOutputDevices___block_in
           objc_enumerationMutation(v3);
         }
 
-        [(MROutputContextDataSource *)v2 notifyOutputDeviceRemoved:?];
+        [(MROutputContextDataSource *)selfCopy notifyOutputDeviceRemoved:?];
       }
 
       while (v4 != v6);
@@ -245,50 +245,50 @@ uint64_t __58__MRExternalOutputContextDataSource__updateOutputDevices___block_in
     while (v4);
   }
 
-  [(NSMutableArray *)v2->_outputDevices removeAllObjects];
-  [(MRExternalOutputContextDataSource *)v2 _reevaluateGroupVolumeMuted];
-  [(MRExternalOutputContextDataSource *)v2 _reevaluateMasterVolume];
-  [(MRExternalOutputContextDataSource *)v2 _reevaluateMasterVolumeControlCapabilities];
-  objc_sync_exit(v2);
+  [(NSMutableArray *)selfCopy->_outputDevices removeAllObjects];
+  [(MRExternalOutputContextDataSource *)selfCopy _reevaluateGroupVolumeMuted];
+  [(MRExternalOutputContextDataSource *)selfCopy _reevaluateMasterVolume];
+  [(MRExternalOutputContextDataSource *)selfCopy _reevaluateMasterVolumeControlCapabilities];
+  objc_sync_exit(selfCopy);
 
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updateVolumeControlCapabilities:(unsigned int)a3 outputDeviceUID:(id)a4
+- (void)updateVolumeControlCapabilities:(unsigned int)capabilities outputDeviceUID:(id)d
 {
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __85__MRExternalOutputContextDataSource_updateVolumeControlCapabilities_outputDeviceUID___block_invoke;
   v8[3] = &__block_descriptor_36_e26_B16__0__MRAVOutputDevice_8l;
-  v9 = a3;
+  capabilitiesCopy = capabilities;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __85__MRExternalOutputContextDataSource_updateVolumeControlCapabilities_outputDeviceUID___block_invoke_2;
   v6[3] = &__block_descriptor_36_e45_v16__0___MRAVOutputDeviceDescriptorProtobuf_8l;
-  v7 = a3;
+  capabilitiesCopy2 = capabilities;
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __85__MRExternalOutputContextDataSource_updateVolumeControlCapabilities_outputDeviceUID___block_invoke_3;
   v4[3] = &unk_1E769CE28;
   v4[4] = self;
-  v5 = a3;
-  [(MRExternalOutputContextDataSource *)self _updateOutputDevice:a4 predicate:v8 update:v6 action:v4];
+  capabilitiesCopy3 = capabilities;
+  [(MRExternalOutputContextDataSource *)self _updateOutputDevice:d predicate:v8 update:v6 action:v4];
 }
 
-- (void)_updateOutputDevice:(void *)a3 predicate:(void *)a4 update:(void *)a5 action:
+- (void)_updateOutputDevice:(void *)device predicate:(void *)predicate update:(void *)update action:
 {
   v31 = *MEMORY[0x1E69E9840];
   v9 = a2;
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (a1)
+  deviceCopy = device;
+  predicateCopy = predicate;
+  updateCopy = update;
+  if (self)
   {
-    v13 = a1;
-    objc_sync_enter(v13);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     if (v9)
     {
-      v14 = v13[4];
+      v14 = selfCopy[4];
       v23[0] = MEMORY[0x1E69E9820];
       v23[1] = 3221225472;
       v23[2] = __81__MRExternalOutputContextDataSource__updateOutputDevice_predicate_update_action___block_invoke;
@@ -299,62 +299,62 @@ uint64_t __58__MRExternalOutputContextDataSource__updateOutputDevices___block_in
       v17 = v16;
       if (v16)
       {
-        v18 = [v16 descriptor];
-        if (v10[2](v10, v17))
+        descriptor = [v16 descriptor];
+        if (deviceCopy[2](deviceCopy, v17))
         {
-          v11[2](v11, v18);
+          predicateCopy[2](predicateCopy, descriptor);
         }
 
-        v19 = [[MRAVDistantOutputDevice alloc] initWithDescriptor:v18];
-        [v13[4] removeObject:v17];
-        [v13[4] addObject:v19];
-        v12[2](v12, v19);
+        v19 = [[MRAVDistantOutputDevice alloc] initWithDescriptor:descriptor];
+        [selfCopy[4] removeObject:v17];
+        [selfCopy[4] addObject:v19];
+        updateCopy[2](updateCopy, v19);
       }
 
       else
       {
-        v18 = _MRLogForCategory(0);
-        if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
+        descriptor = _MRLogForCategory(0);
+        if (os_log_type_enabled(descriptor, OS_LOG_TYPE_DEFAULT))
         {
           v20 = objc_opt_class();
           *buf = 138543874;
           v26 = v20;
           v27 = 2048;
-          v28 = v13;
+          v28 = selfCopy;
           v29 = 2114;
           v30 = v15;
           v21 = v20;
-          _os_log_impl(&dword_1A2860000, v18, OS_LOG_TYPE_DEFAULT, "<%{public}@: %p> Attempted to update a non-existent outputDevice %{public}@", buf, 0x20u);
+          _os_log_impl(&dword_1A2860000, descriptor, OS_LOG_TYPE_DEFAULT, "<%{public}@: %p> Attempted to update a non-existent outputDevice %{public}@", buf, 0x20u);
         }
       }
     }
 
-    objc_sync_exit(v13);
+    objc_sync_exit(selfCopy);
   }
 
   v22 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updateVolume:(float)a3 outputDeviceUID:(id)a4
+- (void)updateVolume:(float)volume outputDeviceUID:(id)d
 {
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __66__MRExternalOutputContextDataSource_updateVolume_outputDeviceUID___block_invoke;
   v8[3] = &unk_1E769CE50;
-  v9 = a3;
+  volumeCopy = volume;
   v8[4] = self;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __66__MRExternalOutputContextDataSource_updateVolume_outputDeviceUID___block_invoke_2;
   v6[3] = &__block_descriptor_36_e45_v16__0___MRAVOutputDeviceDescriptorProtobuf_8l;
-  v7 = a3;
+  volumeCopy2 = volume;
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __66__MRExternalOutputContextDataSource_updateVolume_outputDeviceUID___block_invoke_3;
   v4[3] = &unk_1E769CE28;
   v4[4] = self;
-  v5 = a3;
-  [(MRExternalOutputContextDataSource *)self _updateOutputDevice:a4 predicate:v8 update:v6 action:v4];
+  volumeCopy3 = volume;
+  [(MRExternalOutputContextDataSource *)self _updateOutputDevice:d predicate:v8 update:v6 action:v4];
 }
 
 BOOL __66__MRExternalOutputContextDataSource_updateVolume_outputDeviceUID___block_invoke(uint64_t a1, void *a2)
@@ -364,25 +364,25 @@ BOOL __66__MRExternalOutputContextDataSource_updateVolume_outputDeviceUID___bloc
   return vabds_f32(v4, v3) > 0.00000011921 || v3 > (*(*(a1 + 32) + 40) + 0.00000011921);
 }
 
-- (void)updateVolumeMuted:(BOOL)a3 outputDeviceUID:(id)a4
+- (void)updateVolumeMuted:(BOOL)muted outputDeviceUID:(id)d
 {
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __71__MRExternalOutputContextDataSource_updateVolumeMuted_outputDeviceUID___block_invoke;
   v8[3] = &__block_descriptor_33_e26_B16__0__MRAVOutputDevice_8l;
-  v9 = a3;
+  mutedCopy = muted;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __71__MRExternalOutputContextDataSource_updateVolumeMuted_outputDeviceUID___block_invoke_2;
   v6[3] = &__block_descriptor_33_e45_v16__0___MRAVOutputDeviceDescriptorProtobuf_8l;
-  v7 = a3;
+  mutedCopy2 = muted;
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __71__MRExternalOutputContextDataSource_updateVolumeMuted_outputDeviceUID___block_invoke_3;
   v4[3] = &unk_1E769CEB8;
   v4[4] = self;
-  v5 = a3;
-  [(MRExternalOutputContextDataSource *)self _updateOutputDevice:a4 predicate:v8 update:v6 action:v4];
+  mutedCopy3 = muted;
+  [(MRExternalOutputContextDataSource *)self _updateOutputDevice:d predicate:v8 update:v6 action:v4];
 }
 
 uint64_t __81__MRExternalOutputContextDataSource__updateOutputDevice_predicate_update_action___block_invoke(uint64_t a1, void *a2)
@@ -418,8 +418,8 @@ uint64_t __81__MRExternalOutputContextDataSource__updateOutputDevice_predicate_u
         }
 
         v7 = *(*(&v33 + 1) + 8 * i);
-        v8 = [v7 parentUID];
-        if (!v8)
+        parentUID = [v7 parentUID];
+        if (!parentUID)
         {
           v9 = [v7 uid];
           v10 = v9 == 0;
@@ -429,8 +429,8 @@ uint64_t __81__MRExternalOutputContextDataSource__updateOutputDevice_predicate_u
             continue;
           }
 
-          v8 = [v7 uid];
-          [v2 setObject:v7 forKeyedSubscript:v8];
+          parentUID = [v7 uid];
+          [v2 setObject:v7 forKeyedSubscript:parentUID];
         }
       }
 
@@ -459,26 +459,26 @@ uint64_t __81__MRExternalOutputContextDataSource__updateOutputDevice_predicate_u
         }
 
         v15 = *(*(&v29 + 1) + 8 * j);
-        v16 = [v15 parentUID];
+        parentUID2 = [v15 parentUID];
 
-        if (v16)
+        if (parentUID2)
         {
-          v17 = [v15 parentUID];
-          v18 = [v2 objectForKeyedSubscript:v17];
+          parentUID3 = [v15 parentUID];
+          v18 = [v2 objectForKeyedSubscript:parentUID3];
 
           if (!v18)
           {
-            v23 = [MEMORY[0x1E696AAA8] currentHandler];
-            [v23 handleFailureInMethod:a2 object:obj file:@"MROutputContextDataSource.m" lineNumber:623 description:{@"Invalid parameter not satisfying: %@", @"parent"}];
+            currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+            [currentHandler handleFailureInMethod:a2 object:obj file:@"MROutputContextDataSource.m" lineNumber:623 description:{@"Invalid parameter not satisfying: %@", @"parent"}];
           }
 
-          v19 = [v18 descriptor];
-          v20 = [v15 descriptor];
-          [v19 addActivatedClusterMembers:v20];
+          descriptor = [v18 descriptor];
+          descriptor2 = [v15 descriptor];
+          [descriptor addActivatedClusterMembers:descriptor2];
 
-          v21 = [[MRAVDistantOutputDevice alloc] initWithDescriptor:v19];
-          v22 = [v15 parentUID];
-          [v2 setObject:v21 forKeyedSubscript:v22];
+          v21 = [[MRAVDistantOutputDevice alloc] initWithDescriptor:descriptor];
+          parentUID4 = [v15 parentUID];
+          [v2 setObject:v21 forKeyedSubscript:parentUID4];
         }
       }
 
@@ -488,23 +488,23 @@ uint64_t __81__MRExternalOutputContextDataSource__updateOutputDevice_predicate_u
     while (v12);
   }
 
-  v24 = [v2 allValues];
+  allValues = [v2 allValues];
 
   objc_sync_exit(obj);
   v25 = *MEMORY[0x1E69E9840];
 
-  return v24;
+  return allValues;
 }
 
 - (void)initializeVolumeCapabilitiesForLegacyCleints
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = [(MRExternalOutputContextDataSource *)self outputDevices];
+  outputDevices = [(MRExternalOutputContextDataSource *)self outputDevices];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v4 = [outputDevices countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -515,7 +515,7 @@ uint64_t __81__MRExternalOutputContextDataSource__updateOutputDevice_predicate_u
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(outputDevices);
         }
 
         v8 = *(*(&v11 + 1) + 8 * i);
@@ -525,47 +525,47 @@ uint64_t __81__MRExternalOutputContextDataSource__updateOutputDevice_predicate_u
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [outputDevices countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v5);
   }
 
-  v9 = [(MRExternalOutputContextDataSource *)self volumeControlCapabilities];
-  if (v9)
+  volumeControlCapabilities = [(MRExternalOutputContextDataSource *)self volumeControlCapabilities];
+  if (volumeControlCapabilities)
   {
-    [(MROutputContextDataSource *)self notifyVolumeCapabilitiesDidChange:v9 outputDevice:0];
+    [(MROutputContextDataSource *)self notifyVolumeCapabilitiesDidChange:volumeControlCapabilities outputDevice:0];
   }
 
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(NSMutableArray *)v4->_outputDevices msv_map:&__block_literal_global_155];
-  objc_sync_exit(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = [(NSMutableArray *)selfCopy->_outputDevices msv_map:&__block_literal_global_155];
+  objc_sync_exit(selfCopy);
 
-  [v6 encodeObject:v5 forKey:@"outputDevices"];
-  [v6 encodeObject:v4->_uniqueIdentifier forKey:@"uid"];
+  [coderCopy encodeObject:v5 forKey:@"outputDevices"];
+  [coderCopy encodeObject:selfCopy->_uniqueIdentifier forKey:@"uid"];
 }
 
-- (MRExternalOutputContextDataSource)initWithCoder:(id)a3
+- (MRExternalOutputContextDataSource)initWithCoder:(id)coder
 {
   v17[2] = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E695DFD8];
-  v5 = a3;
+  coderCopy = coder;
   v6 = [v4 alloc];
   v17[0] = objc_opt_class();
   v17[1] = objc_opt_class();
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:2];
   v8 = [v6 initWithArray:v7];
 
-  v9 = [v5 decodeObjectOfClasses:v8 forKey:@"outputDevices"];
+  v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"outputDevices"];
   v10 = [v9 msv_map:&__block_literal_global_167];
-  v11 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"uid"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"uid"];
 
   v12 = [[MRExternalOutputContextDataSource alloc] initWithUniqueIdentifier:v11];
   v13 = [v10 mutableCopy];
@@ -588,13 +588,13 @@ MRAVDistantOutputDevice *__51__MRExternalOutputContextDataSource_initWithCoder__
   return v3;
 }
 
-- (void)_updateOutputDevices:(id *)a1
+- (void)_updateOutputDevices:(id *)devices
 {
   v33 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (devices)
   {
-    v4 = [a1[4] mutableCopy];
+    v4 = [devices[4] mutableCopy];
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
@@ -626,13 +626,13 @@ MRAVDistantOutputDevice *__51__MRExternalOutputContextDataSource_initWithCoder__
           if (v11)
           {
             v13 = [v10 mergingVolumeFrom:v11];
-            [a1[4] removeObject:v11];
-            [a1[4] addObject:v13];
-            [(MROutputContextDataSource *)a1 notifyOutputDeviceChanged:v13];
-            v14 = [v13 volumeCapabilities];
-            if (v14 != [v11 volumeCapabilities])
+            [devices[4] removeObject:v11];
+            [devices[4] addObject:v13];
+            [(MROutputContextDataSource *)devices notifyOutputDeviceChanged:v13];
+            volumeCapabilities = [v13 volumeCapabilities];
+            if (volumeCapabilities != [v11 volumeCapabilities])
             {
-              [(MROutputContextDataSource *)a1 notifyVolumeCapabilitiesDidChange:v13 outputDevice:?];
+              [(MROutputContextDataSource *)devices notifyVolumeCapabilitiesDidChange:v13 outputDevice:?];
             }
 
             [v13 volume];
@@ -641,14 +641,14 @@ MRAVDistantOutputDevice *__51__MRExternalOutputContextDataSource_initWithCoder__
             if (vabds_f32(v16, v17) > 0.00000011921)
             {
               [v13 volume];
-              [(MROutputContextDataSource *)a1 notifyVolumeDidChange:v13 outputDevice:v21];
+              [(MROutputContextDataSource *)devices notifyVolumeDidChange:v13 outputDevice:v21];
             }
 
-            v18 = [v13 isVolumeMuted];
+            isVolumeMuted = [v13 isVolumeMuted];
             v5 = v24;
-            if (v18 != [v11 isVolumeMuted])
+            if (isVolumeMuted != [v11 isVolumeMuted])
             {
-              [(MROutputContextDataSource *)a1 notifyVolumeMutedDidChange:v13 outputDevice:?];
+              [(MROutputContextDataSource *)devices notifyVolumeMutedDidChange:v13 outputDevice:?];
             }
           }
 
@@ -659,14 +659,14 @@ MRAVDistantOutputDevice *__51__MRExternalOutputContextDataSource_initWithCoder__
             if (v12)
             {
               v19 = [MRAVDistantOutputDevice alloc];
-              v20 = [v10 descriptor];
-              v13 = [(MRAVDistantOutputDevice *)v19 initWithDescriptor:v20];
+              descriptor = [v10 descriptor];
+              v13 = [(MRAVDistantOutputDevice *)v19 initWithDescriptor:descriptor];
 
-              [a1[4] addObject:v13];
-              [(MROutputContextDataSource *)a1 notifyOutputDeviceAdded:v13];
-              [(MRExternalOutputContextDataSource *)a1 _reevaluateMasterVolumeControlCapabilities];
-              [(MRExternalOutputContextDataSource *)a1 _reevaluateMasterVolume];
-              [(MRExternalOutputContextDataSource *)a1 _reevaluateGroupVolumeMuted];
+              [devices[4] addObject:v13];
+              [(MROutputContextDataSource *)devices notifyOutputDeviceAdded:v13];
+              [(MRExternalOutputContextDataSource *)devices _reevaluateMasterVolumeControlCapabilities];
+              [(MRExternalOutputContextDataSource *)devices _reevaluateMasterVolume];
+              [(MRExternalOutputContextDataSource *)devices _reevaluateGroupVolumeMuted];
             }
 
             else
@@ -698,13 +698,13 @@ MRAVDistantOutputDevice *__51__MRExternalOutputContextDataSource_initWithCoder__
 
 - (void)_reevaluateMasterVolumeControlCapabilities
 {
-  if (a1)
+  if (self)
   {
-    v2 = [(MRExternalOutputContextDataSource *)a1 _calculateMasterVolumeCapabilities];
-    if (v2 != *(a1 + 44))
+    _calculateMasterVolumeCapabilities = [(MRExternalOutputContextDataSource *)self _calculateMasterVolumeCapabilities];
+    if (_calculateMasterVolumeCapabilities != *(self + 44))
     {
-      *(a1 + 44) = v2;
-      v3 = *(a1 + 44);
+      *(self + 44) = _calculateMasterVolumeCapabilities;
+      v3 = *(self + 44);
       v4 = OUTLINED_FUNCTION_35();
 
       [(MROutputContextDataSource *)v4 notifyVolumeCapabilitiesDidChange:v5 outputDevice:v6];
@@ -714,28 +714,28 @@ MRAVDistantOutputDevice *__51__MRExternalOutputContextDataSource_initWithCoder__
 
 - (void)_reevaluateMasterVolume
 {
-  if (a1)
+  if (self)
   {
-    v2 = [(MRExternalOutputContextDataSource *)a1 _calculateMasterVolume];
-    v5 = OUTLINED_FUNCTION_36(v2);
+    _calculateMasterVolume = [(MRExternalOutputContextDataSource *)self _calculateMasterVolume];
+    v5 = OUTLINED_FUNCTION_36(_calculateMasterVolume);
     if (!(v7 ^ v8 | v6))
     {
-      *&a1[v4] = v5;
-      v9 = *&a1[*(v3 + 3380)];
+      *&self[v4] = v5;
+      v9 = *&self[*(v3 + 3380)];
 
-      [(MROutputContextDataSource *)a1 notifyVolumeDidChange:v9 outputDevice:?];
+      [(MROutputContextDataSource *)self notifyVolumeDidChange:v9 outputDevice:?];
     }
   }
 }
 
 - (void)_reevaluateGroupVolumeMuted
 {
-  if (a1)
+  if (self)
   {
-    v2 = [(MRExternalOutputContextDataSource *)a1 _calculateGroupMute];
-    if (*(a1 + 48) != v2)
+    _calculateGroupMute = [(MRExternalOutputContextDataSource *)self _calculateGroupMute];
+    if (*(self + 48) != _calculateGroupMute)
     {
-      *(a1 + 48) = v2;
+      *(self + 48) = _calculateGroupMute;
       v3 = OUTLINED_FUNCTION_35();
 
       [(MROutputContextDataSource *)v3 notifyVolumeMutedDidChange:v4 outputDevice:v5];
@@ -773,7 +773,7 @@ void __71__MRExternalOutputContextDataSource_updateVolumeMuted_outputDeviceUID__
 - (uint64_t)_calculateMasterVolumeCapabilities
 {
   v40 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     OUTLINED_FUNCTION_10_1();
     v3 = *(v2 + 32);
@@ -788,23 +788,23 @@ void __71__MRExternalOutputContextDataSource_updateVolumeMuted_outputDeviceUID__
         v23 = 0;
         do
         {
-          OUTLINED_FUNCTION_14_0(v15, v16, v17, v18, v19, v20, v21, v22, v28, v30, v32);
+          OUTLINED_FUNCTION_14_0(volumeCapabilities, v16, v17, v18, v19, v20, v21, v22, v28, v30, v32);
           if (!v24)
           {
             objc_enumerationMutation(v1);
           }
 
-          v15 = [*(v30 + 8 * v23) volumeCapabilities];
-          v14 = v15 | v14;
+          volumeCapabilities = [*(v30 + 8 * v23) volumeCapabilities];
+          v14 = volumeCapabilities | v14;
           ++v23;
         }
 
         while (v13 != v23);
-        v15 = OUTLINED_FUNCTION_12_0(v15, v16, v17, v18, v19, v20, v21, v22, v28, v30, v32, v33, v34, v35, v36, v37, v38, v39);
-        v13 = v15;
+        volumeCapabilities = OUTLINED_FUNCTION_12_0(volumeCapabilities, v16, v17, v18, v19, v20, v21, v22, v28, v30, v32, v33, v34, v35, v36, v37, v38, v39);
+        v13 = volumeCapabilities;
       }
 
-      while (v15);
+      while (volumeCapabilities);
     }
 
     else
@@ -825,7 +825,7 @@ void __71__MRExternalOutputContextDataSource_updateVolumeMuted_outputDeviceUID__
 - (float)_calculateMasterVolume
 {
   v43 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     OUTLINED_FUNCTION_10_1();
     v3 = *(v2 + 32);
@@ -840,20 +840,20 @@ void __71__MRExternalOutputContextDataSource_updateVolumeMuted_outputDeviceUID__
         v23 = 0;
         do
         {
-          OUTLINED_FUNCTION_14_0(v14, v15, v16, v17, v18, v19, v20, v21, v31, v33, v35);
+          OUTLINED_FUNCTION_14_0(volumeCapabilities, v15, v16, v17, v18, v19, v20, v21, v31, v33, v35);
           if (!v24)
           {
             objc_enumerationMutation(v1);
           }
 
           v25 = *(v33 + 8 * v23);
-          v14 = [v25 volumeCapabilities];
-          if ((v14 & 2) != 0)
+          volumeCapabilities = [v25 volumeCapabilities];
+          if ((volumeCapabilities & 2) != 0)
           {
-            v14 = [v25 volume];
+            volumeCapabilities = [v25 volume];
             if (v26 > v22)
             {
-              v14 = [v25 volume];
+              volumeCapabilities = [v25 volume];
               v22 = v27;
             }
           }
@@ -862,11 +862,11 @@ void __71__MRExternalOutputContextDataSource_updateVolumeMuted_outputDeviceUID__
         }
 
         while (v13 != v23);
-        v14 = OUTLINED_FUNCTION_12_0(v14, v15, v16, v17, v18, v19, v20, v21, v31, v33, v35, v36, v37, v38, v39, v40, v41, v42);
-        v13 = v14;
+        volumeCapabilities = OUTLINED_FUNCTION_12_0(volumeCapabilities, v15, v16, v17, v18, v19, v20, v21, v31, v33, v35, v36, v37, v38, v39, v40, v41, v42);
+        v13 = volumeCapabilities;
       }
 
-      while (v14);
+      while (volumeCapabilities);
     }
 
     else
@@ -887,7 +887,7 @@ void __71__MRExternalOutputContextDataSource_updateVolumeMuted_outputDeviceUID__
 - (uint64_t)_calculateGroupMute
 {
   v31 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     OUTLINED_FUNCTION_10_1();
     v3 = *(v2 + 32);
@@ -907,15 +907,15 @@ void __71__MRExternalOutputContextDataSource_updateVolumeMuted_outputDeviceUID__
           }
 
           v10 = *(v22 + 8 * i);
-          v11 = [v10 volumeCapabilities];
-          if ((v11 & 8) != 0)
+          volumeCapabilities = [v10 volumeCapabilities];
+          if ((volumeCapabilities & 8) != 0)
           {
-            v11 = [v10 isVolumeMuted];
-            v7 |= v11;
+            volumeCapabilities = [v10 isVolumeMuted];
+            v7 |= volumeCapabilities;
           }
         }
 
-        v6 = OUTLINED_FUNCTION_12_0(v11, v12, v13, v14, v15, v16, v17, v18, v21, v22, v23, v24, v25, v26, v27, v28, v29, v30);
+        v6 = OUTLINED_FUNCTION_12_0(volumeCapabilities, v12, v13, v14, v15, v16, v17, v18, v21, v22, v23, v24, v25, v26, v27, v28, v29, v30);
       }
 
       while (v6);

@@ -1,25 +1,25 @@
 @interface CSAsset
-+ (BOOL)isLeftConfigVersion:(id)a3 newerThanRightConfigVersion:(id)a4;
-+ (id)assetForAssetType:(unint64_t)a3 resourcePath:(id)a4 configVersion:(id)a5 assetProvider:(unint64_t)a6 assetVariant:(unint64_t)a7 identity:(id)a8 assistantLanguageCode:(id)a9 uafAssetVersion:(id)a10;
-+ (id)decodeJson:(id)a3;
++ (BOOL)isLeftConfigVersion:(id)version newerThanRightConfigVersion:(id)configVersion;
++ (id)assetForAssetType:(unint64_t)type resourcePath:(id)path configVersion:(id)version assetProvider:(unint64_t)provider assetVariant:(unint64_t)variant identity:(id)identity assistantLanguageCode:(id)code uafAssetVersion:(id)self0;
++ (id)decodeJson:(id)json;
 + (id)defaultFallBackAssetForAdBlocker;
 + (id)defaultFallBackAssetForHearst;
 + (id)defaultFallBackAssetForVoiceTrigger;
 + (id)fallBackAssetResourcePath;
-+ (id)getAssetFileForAssetType:(unint64_t)a3 resourcePath:(id)a4 assetProvider:(unint64_t)a5;
-+ (id)getConfigFileNameForAssetType:(unint64_t)a3;
++ (id)getAssetFileForAssetType:(unint64_t)type resourcePath:(id)path assetProvider:(unint64_t)provider;
++ (id)getConfigFileNameForAssetType:(unint64_t)type;
 + (id)hybridEndpointerAssetFilename;
 + (id)overrideAssetForVoiceTrigger;
-+ (unint64_t)parseCompatibilityFromConfigVersion:(id)a3;
-- (BOOL)containsCategory:(id)a3;
-- (BOOL)containsKey:(id)a3 category:(id)a4;
++ (unint64_t)parseCompatibilityFromConfigVersion:(id)version;
+- (BOOL)containsCategory:(id)category;
+- (BOOL)containsKey:(id)key category:(id)category;
 - (BOOL)isCompactVersion;
-- (BOOL)isEqualAsset:(id)a3;
-- (BOOL)isHSVoiceTrigger:(id)a3;
-- (BOOL)isJSVoiceTrigger:(id)a3;
+- (BOOL)isEqualAsset:(id)asset;
+- (BOOL)isHSVoiceTrigger:(id)trigger;
+- (BOOL)isJSVoiceTrigger:(id)trigger;
 - (BOOL)progCheckerShadowMode;
-- (CSAsset)initWithCoder:(id)a3;
-- (CSAsset)initWithResourcePath:(id)a3 configFile:(id)a4 configVersion:(id)a5 assetProvderType:(unint64_t)a6 assetType:(unint64_t)a7 assetVariant:(unint64_t)a8 identity:(id)a9 assistantLanguageCode:(id)a10 uafAssetVersion:(id)a11;
+- (CSAsset)initWithCoder:(id)coder;
+- (CSAsset)initWithResourcePath:(id)path configFile:(id)file configVersion:(id)version assetProvderType:(unint64_t)type assetType:(unint64_t)assetType assetVariant:(unint64_t)variant identity:(id)identity assistantLanguageCode:(id)self0 uafAssetVersion:(id)self1;
 - (NSArray)checkerThresholds;
 - (NSArray)contConvRecognizerConfigFiles;
 - (NSArray)contConvThresholds;
@@ -42,30 +42,30 @@
 - (float)mitigationModelDefaultNLDAScore;
 - (float)startOfSpeechPrependAudioDuration;
 - (float)startOfSpeechThresholdDuration;
-- (id)_sha1ForString:(id)a3;
-- (id)assetHashForTrial:(id)a3;
-- (id)assetHashInResourcePath:(id)a3;
+- (id)_sha1ForString:(id)string;
+- (id)assetHashForTrial:(id)trial;
+- (id)assetHashInResourcePath:(id)path;
 - (id)description;
 - (id)getAllMitigationConfigFiles;
 - (id)getAllNldaConfigFiles;
-- (id)getCategoryKeyWithRecordCtx:(id)a3;
-- (id)getNumberForKey:(id)a3 category:(id)a4 default:(id)a5;
-- (id)getRecognizerConfigsFrom:(id)a3;
-- (id)getStringForKey:(id)a3;
-- (id)getStringForKey:(id)a3 category:(id)a4 default:(id)a5;
-- (id)getValueForKey:(id)a3 category:(id)a4;
-- (id)mitigationConfigFileForCategory:(id)a3;
+- (id)getCategoryKeyWithRecordCtx:(id)ctx;
+- (id)getNumberForKey:(id)key category:(id)category default:(id)default;
+- (id)getRecognizerConfigsFrom:(id)from;
+- (id)getStringForKey:(id)key;
+- (id)getStringForKey:(id)key category:(id)category default:(id)default;
+- (id)getValueForKey:(id)key category:(id)category;
+- (id)mitigationConfigFileForCategory:(id)category;
 - (id)mitigatonConfigFile;
 - (id)nldaConfigFile;
-- (id)nldaConfigFileForCategory:(id)a3;
+- (id)nldaConfigFileForCategory:(id)category;
 - (id)stringForCurrentAssetProviderType;
-- (id)uesConfigFileForCategory:(id)a3;
+- (id)uesConfigFileForCategory:(id)category;
 - (int64_t)numOfConsecutiveBoronActivationThreshold;
-- (unint64_t)_mapInputOriginFromAssetToCSAudioRecordType:(id)a3;
+- (unint64_t)_mapInputOriginFromAssetToCSAudioRecordType:(id)type;
 - (unint64_t)allowListWordCountThreshold;
 - (unint64_t)supportedInputOrigins;
 - (void)_updateAssetVariantIfNeeded;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)logAssetVersionForInsight;
 @end
 
@@ -96,9 +96,9 @@
 
 - (NSString)allowKeywordsFile
 {
-  v3 = [(CSAsset *)self resourcePath];
+  resourcePath = [(CSAsset *)self resourcePath];
   v4 = [(CSAsset *)self getStringForKey:@"allowKeywordFile" category:@"AttSiriCC" default:@"allowList.txt"];
-  v5 = [v3 stringByAppendingPathComponent:v4];
+  v5 = [resourcePath stringByAppendingPathComponent:v4];
 
   return v5;
 }
@@ -123,39 +123,39 @@
   return v6;
 }
 
-- (CSAsset)initWithCoder:(id)a3
+- (CSAsset)initWithCoder:(id)coder
 {
   v26[4] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v25.receiver = self;
   v25.super_class = CSAsset;
   v5 = [(CSAsset *)&v25 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"path"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"path"];
     path = v5->_path;
     v5->_path = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"resourcePath"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"resourcePath"];
     resourcePath = v5->_resourcePath;
     v5->_resourcePath = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"configVersion"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"configVersion"];
     configVersion = v5->_configVersion;
     v5->_configVersion = v10;
 
-    v5->_assetProvider = [v4 decodeIntegerForKey:@"assetProvider"];
-    v5->_assetVariant = [v4 decodeIntegerForKey:@"assetVariant"];
-    v5->_assetType = [v4 decodeIntegerForKey:@"assetType"];
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identity"];
+    v5->_assetProvider = [coderCopy decodeIntegerForKey:@"assetProvider"];
+    v5->_assetVariant = [coderCopy decodeIntegerForKey:@"assetVariant"];
+    v5->_assetType = [coderCopy decodeIntegerForKey:@"assetType"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identity"];
     identity = v5->_identity;
     v5->_identity = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"assistantLanguageCode"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"assistantLanguageCode"];
     assistantLanguageCode = v5->_assistantLanguageCode;
     v5->_assistantLanguageCode = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"uafAssetVersion"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"uafAssetVersion"];
     uafAssetVersion = v5->_uafAssetVersion;
     v5->_uafAssetVersion = v16;
 
@@ -166,7 +166,7 @@
     v26[3] = objc_opt_class();
     v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:4];
     v20 = [v18 setWithArray:v19];
-    v21 = [v4 decodeObjectOfClasses:v20 forKey:@"decodedInfo"];
+    v21 = [coderCopy decodeObjectOfClasses:v20 forKey:@"decodedInfo"];
     decodedInfo = v5->_decodedInfo;
     v5->_decodedInfo = v21;
   }
@@ -175,21 +175,21 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   path = self->_path;
-  v5 = a3;
-  [v5 encodeObject:path forKey:@"path"];
-  [v5 encodeObject:self->_resourcePath forKey:@"resourcePath"];
-  [v5 encodeObject:self->_configVersion forKey:@"configVersion"];
-  [v5 encodeInteger:self->_assetProvider forKey:@"assetProvider"];
-  [v5 encodeInteger:self->_assetVariant forKey:@"assetVariant"];
-  [v5 encodeInteger:self->_assetType forKey:@"assetType"];
-  [v5 encodeObject:self->_identity forKey:@"identity"];
-  [v5 encodeObject:self->_assistantLanguageCode forKey:@"assistantLanguageCode"];
-  [v5 encodeObject:self->_uafAssetVersion forKey:@"uafAssetVersion"];
-  v6 = [(CSAsset *)self dictionary];
-  [v5 encodeObject:v6 forKey:@"decodedInfo"];
+  coderCopy = coder;
+  [coderCopy encodeObject:path forKey:@"path"];
+  [coderCopy encodeObject:self->_resourcePath forKey:@"resourcePath"];
+  [coderCopy encodeObject:self->_configVersion forKey:@"configVersion"];
+  [coderCopy encodeInteger:self->_assetProvider forKey:@"assetProvider"];
+  [coderCopy encodeInteger:self->_assetVariant forKey:@"assetVariant"];
+  [coderCopy encodeInteger:self->_assetType forKey:@"assetType"];
+  [coderCopy encodeObject:self->_identity forKey:@"identity"];
+  [coderCopy encodeObject:self->_assistantLanguageCode forKey:@"assistantLanguageCode"];
+  [coderCopy encodeObject:self->_uafAssetVersion forKey:@"uafAssetVersion"];
+  dictionary = [(CSAsset *)self dictionary];
+  [coderCopy encodeObject:dictionary forKey:@"decodedInfo"];
 }
 
 - (void)logAssetVersionForInsight
@@ -207,7 +207,7 @@
     v8 = 136315394;
     v9 = "[CSAsset logAssetVersionForInsight]";
     v10 = 2048;
-    v11 = [(CSAsset *)self assetType];
+    assetType = [(CSAsset *)self assetType];
     _os_log_impl(&dword_1DDA4B000, v4, OS_LOG_TYPE_DEFAULT, "%s logAssetVersionForInsight for assetType: %lu", &v8, 0x16u);
     goto LABEL_7;
   }
@@ -216,11 +216,11 @@
   if (os_log_type_enabled(CSLogCategoryVT, OS_LOG_TYPE_DEFAULT))
   {
     v4 = v3;
-    v5 = [(CSAsset *)self configVersion];
+    configVersion = [(CSAsset *)self configVersion];
     v8 = 136315394;
     v9 = "[CSAsset logAssetVersionForInsight]";
     v10 = 2114;
-    v11 = v5;
+    assetType = configVersion;
     _os_log_impl(&dword_1DDA4B000, v4, OS_LOG_TYPE_DEFAULT, "%s [Asset Version Used]: VTAssetVersion: %{public}@", &v8, 0x16u);
 
 LABEL_7:
@@ -230,10 +230,10 @@ LABEL_8:
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_sha1ForString:(id)a3
+- (id)_sha1ForString:(id)string
 {
   v9 = *MEMORY[0x1E69E9840];
-  v3 = [a3 dataUsingEncoding:4];
+  v3 = [string dataUsingEncoding:4];
   CC_SHA1([v3 bytes], objc_msgSend(v3, "length"), md);
   v4 = [MEMORY[0x1E696AD60] stringWithCapacity:40];
   for (i = 0; i != 20; ++i)
@@ -246,15 +246,15 @@ LABEL_8:
   return v4;
 }
 
-- (id)assetHashInResourcePath:(id)a3
+- (id)assetHashInResourcePath:(id)path
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  pathCopy = path;
+  if (pathCopy)
   {
     if ([(CSAsset *)self assetProvider]== 1 || [(CSAsset *)self assetProvider]== 2)
     {
-      v5 = [(CSAsset *)self assetHashForTrial:v4];
+      v5 = [(CSAsset *)self assetHashForTrial:pathCopy];
     }
 
     else
@@ -268,11 +268,11 @@ LABEL_8:
         if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_ERROR))
         {
           v15 = v8;
-          v16 = [v7 localizedDescription];
+          localizedDescription = [v7 localizedDescription];
           *buf = 136315394;
           v19 = "[CSAsset assetHashInResourcePath:]";
           v20 = 2114;
-          v21 = v16;
+          v21 = localizedDescription;
           _os_log_error_impl(&dword_1DDA4B000, v15, OS_LOG_TYPE_ERROR, "%s Failed to create regular expression : %{public}@", buf, 0x16u);
         }
 
@@ -281,12 +281,12 @@ LABEL_8:
 
       else
       {
-        v9 = [v6 firstMatchInString:v4 options:0 range:{0, objc_msgSend(v4, "length")}];
+        v9 = [v6 firstMatchInString:pathCopy options:0 range:{0, objc_msgSend(pathCopy, "length")}];
         v10 = v9;
         if (v9 && [v9 numberOfRanges] >= 2)
         {
           v11 = [v10 rangeAtIndex:1];
-          v5 = [v4 substringWithRange:{v11, v12}];
+          v5 = [pathCopy substringWithRange:{v11, v12}];
         }
 
         else
@@ -307,9 +307,9 @@ LABEL_8:
   return v5;
 }
 
-- (id)assetHashForTrial:(id)a3
+- (id)assetHashForTrial:(id)trial
 {
-  v4 = [(CSAsset *)self _sha1ForString:a3];
+  v4 = [(CSAsset *)self _sha1ForString:trial];
   v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_%@", v4, self->_configVersion];
 
   return v5;
@@ -331,12 +331,12 @@ LABEL_8:
 
 - (BOOL)isCompactVersion
 {
-  v2 = [(CSAsset *)self configVersion];
-  v3 = v2;
-  if (v2)
+  configVersion = [(CSAsset *)self configVersion];
+  v3 = configVersion;
+  if (configVersion)
   {
-    v4 = [v2 lowercaseString];
-    v5 = [v4 containsString:@"compact"];
+    lowercaseString = [configVersion lowercaseString];
+    v5 = [lowercaseString containsString:@"compact"];
   }
 
   else
@@ -347,31 +347,31 @@ LABEL_8:
   return v5;
 }
 
-- (BOOL)isEqualAsset:(id)a3
+- (BOOL)isEqualAsset:(id)asset
 {
   path = self->_path;
-  v4 = [a3 path];
-  LOBYTE(path) = [(NSString *)path isEqualToString:v4];
+  path = [asset path];
+  LOBYTE(path) = [(NSString *)path isEqualToString:path];
 
   return path;
 }
 
 - (NSString)hashFromResourcePath
 {
-  v3 = [(CSAsset *)self resourcePath];
-  v4 = [(CSAsset *)self assetHashInResourcePath:v3];
+  resourcePath = [(CSAsset *)self resourcePath];
+  v4 = [(CSAsset *)self assetHashInResourcePath:resourcePath];
 
   return v4;
 }
 
-- (BOOL)containsCategory:(id)a3
+- (BOOL)containsCategory:(id)category
 {
-  v4 = a3;
-  v5 = [(CSAsset *)self dictionary];
-  if (v5)
+  categoryCopy = category;
+  dictionary = [(CSAsset *)self dictionary];
+  if (dictionary)
   {
-    v6 = [(CSAsset *)self dictionary];
-    v7 = [v6 objectForKeyedSubscript:v4];
+    dictionary2 = [(CSAsset *)self dictionary];
+    v7 = [dictionary2 objectForKeyedSubscript:categoryCopy];
     v8 = v7 != 0;
   }
 
@@ -383,20 +383,20 @@ LABEL_8:
   return v8;
 }
 
-- (BOOL)containsKey:(id)a3 category:(id)a4
+- (BOOL)containsKey:(id)key category:(id)category
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CSAsset *)self dictionary];
-  if (v8)
+  keyCopy = key;
+  categoryCopy = category;
+  dictionary = [(CSAsset *)self dictionary];
+  if (dictionary)
   {
-    v9 = [(CSAsset *)self dictionary];
-    v10 = [v9 objectForKeyedSubscript:v7];
+    dictionary2 = [(CSAsset *)self dictionary];
+    v10 = [dictionary2 objectForKeyedSubscript:categoryCopy];
     if (v10)
     {
-      v11 = [(CSAsset *)self dictionary];
-      v12 = [v11 objectForKeyedSubscript:v7];
-      v13 = [v12 objectForKeyedSubscript:v6];
+      dictionary3 = [(CSAsset *)self dictionary];
+      v12 = [dictionary3 objectForKeyedSubscript:categoryCopy];
+      v13 = [v12 objectForKeyedSubscript:keyCopy];
       v14 = v13 != 0;
     }
 
@@ -414,24 +414,24 @@ LABEL_8:
   return v14;
 }
 
-- (id)getStringForKey:(id)a3
+- (id)getStringForKey:(id)key
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CSAsset *)self dictionary];
-  if (!v5)
+  keyCopy = key;
+  dictionary = [(CSAsset *)self dictionary];
+  if (!dictionary)
   {
     goto LABEL_4;
   }
 
-  v6 = v5;
-  v7 = [(CSAsset *)self dictionary];
-  v8 = [v7 objectForKeyedSubscript:v4];
+  v6 = dictionary;
+  dictionary2 = [(CSAsset *)self dictionary];
+  v8 = [dictionary2 objectForKeyedSubscript:keyCopy];
 
   if (v8)
   {
-    v9 = [(CSAsset *)self dictionary];
-    v10 = [v9 objectForKeyedSubscript:v4];
+    dictionary3 = [(CSAsset *)self dictionary];
+    v10 = [dictionary3 objectForKeyedSubscript:keyCopy];
   }
 
   else
@@ -443,7 +443,7 @@ LABEL_4:
       v14 = 136315394;
       v15 = "[CSAsset getStringForKey:]";
       v16 = 2114;
-      v17 = v4;
+      v17 = keyCopy;
       _os_log_debug_impl(&dword_1DDA4B000, v11, OS_LOG_TYPE_DEBUG, "%s Cannot access to %{public}@", &v14, 0x16u);
     }
 
@@ -455,29 +455,29 @@ LABEL_4:
   return v10;
 }
 
-- (id)getValueForKey:(id)a3 category:(id)a4
+- (id)getValueForKey:(id)key category:(id)category
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CSAsset *)self dictionary];
-  if (v8)
+  keyCopy = key;
+  categoryCopy = category;
+  dictionary = [(CSAsset *)self dictionary];
+  if (dictionary)
   {
-    v9 = v8;
-    v10 = [(CSAsset *)self dictionary];
-    v11 = [v10 objectForKeyedSubscript:v7];
+    v9 = dictionary;
+    dictionary2 = [(CSAsset *)self dictionary];
+    v11 = [dictionary2 objectForKeyedSubscript:categoryCopy];
     if (v11)
     {
       v12 = v11;
-      v13 = [(CSAsset *)self dictionary];
-      v14 = [v13 objectForKeyedSubscript:v7];
-      v15 = [v14 objectForKeyedSubscript:v6];
+      dictionary3 = [(CSAsset *)self dictionary];
+      v14 = [dictionary3 objectForKeyedSubscript:categoryCopy];
+      v15 = [v14 objectForKeyedSubscript:keyCopy];
 
       if (v15)
       {
-        v16 = [(CSAsset *)self dictionary];
-        v17 = [v16 objectForKeyedSubscript:v7];
-        v18 = [v17 objectForKeyedSubscript:v6];
+        dictionary4 = [(CSAsset *)self dictionary];
+        v17 = [dictionary4 objectForKeyedSubscript:categoryCopy];
+        v18 = [v17 objectForKeyedSubscript:keyCopy];
 
         goto LABEL_9;
       }
@@ -494,9 +494,9 @@ LABEL_4:
     v22 = 136315650;
     v23 = "[CSAsset getValueForKey:category:]";
     v24 = 2114;
-    v25 = v7;
+    v25 = categoryCopy;
     v26 = 2114;
-    v27 = v6;
+    v27 = keyCopy;
     _os_log_debug_impl(&dword_1DDA4B000, v19, OS_LOG_TYPE_DEBUG, "%s Cannot access to %{public}@ %{public}@", &v22, 0x20u);
   }
 
@@ -508,30 +508,30 @@ LABEL_9:
   return v18;
 }
 
-- (id)getStringForKey:(id)a3 category:(id)a4 default:(id)a5
+- (id)getStringForKey:(id)key category:(id)category default:(id)default
 {
   v33 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(CSAsset *)self dictionary];
-  if (v11)
+  keyCopy = key;
+  categoryCopy = category;
+  defaultCopy = default;
+  dictionary = [(CSAsset *)self dictionary];
+  if (dictionary)
   {
-    v12 = v11;
-    v13 = [(CSAsset *)self dictionary];
-    v14 = [v13 objectForKeyedSubscript:v9];
+    v12 = dictionary;
+    dictionary2 = [(CSAsset *)self dictionary];
+    v14 = [dictionary2 objectForKeyedSubscript:categoryCopy];
     if (v14)
     {
       v15 = v14;
-      v16 = [(CSAsset *)self dictionary];
-      v17 = [v16 objectForKeyedSubscript:v9];
-      v18 = [v17 objectForKeyedSubscript:v8];
+      dictionary3 = [(CSAsset *)self dictionary];
+      v17 = [dictionary3 objectForKeyedSubscript:categoryCopy];
+      v18 = [v17 objectForKeyedSubscript:keyCopy];
 
       if (v18)
       {
-        v19 = [(CSAsset *)self dictionary];
-        v20 = [v19 objectForKeyedSubscript:v9];
-        v21 = [v20 objectForKeyedSubscript:v8];
+        dictionary4 = [(CSAsset *)self dictionary];
+        v20 = [dictionary4 objectForKeyedSubscript:categoryCopy];
+        v21 = [v20 objectForKeyedSubscript:keyCopy];
 
         goto LABEL_8;
       }
@@ -543,19 +543,19 @@ LABEL_9:
   }
 
   v22 = CSLogContextFacilityCoreSpeech;
-  v21 = v10;
+  v21 = defaultCopy;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEBUG))
   {
     v25 = 136315906;
     v26 = "[CSAsset getStringForKey:category:default:]";
     v27 = 2114;
-    v28 = v9;
+    v28 = categoryCopy;
     v29 = 2114;
-    v30 = v8;
+    v30 = keyCopy;
     v31 = 2114;
-    v32 = v10;
+    v32 = defaultCopy;
     _os_log_debug_impl(&dword_1DDA4B000, v22, OS_LOG_TYPE_DEBUG, "%s Cannot access to %{public}@ %{public}@ using default value=%{public}@", &v25, 0x2Au);
-    v21 = v10;
+    v21 = defaultCopy;
   }
 
 LABEL_8:
@@ -565,30 +565,30 @@ LABEL_8:
   return v21;
 }
 
-- (id)getNumberForKey:(id)a3 category:(id)a4 default:(id)a5
+- (id)getNumberForKey:(id)key category:(id)category default:(id)default
 {
   v33 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(CSAsset *)self dictionary];
-  if (v11)
+  keyCopy = key;
+  categoryCopy = category;
+  defaultCopy = default;
+  dictionary = [(CSAsset *)self dictionary];
+  if (dictionary)
   {
-    v12 = v11;
-    v13 = [(CSAsset *)self dictionary];
-    v14 = [v13 objectForKeyedSubscript:v9];
+    v12 = dictionary;
+    dictionary2 = [(CSAsset *)self dictionary];
+    v14 = [dictionary2 objectForKeyedSubscript:categoryCopy];
     if (v14)
     {
       v15 = v14;
-      v16 = [(CSAsset *)self dictionary];
-      v17 = [v16 objectForKeyedSubscript:v9];
-      v18 = [v17 objectForKeyedSubscript:v8];
+      dictionary3 = [(CSAsset *)self dictionary];
+      v17 = [dictionary3 objectForKeyedSubscript:categoryCopy];
+      v18 = [v17 objectForKeyedSubscript:keyCopy];
 
       if (v18)
       {
-        v19 = [(CSAsset *)self dictionary];
-        v20 = [v19 objectForKeyedSubscript:v9];
-        v21 = [v20 objectForKeyedSubscript:v8];
+        dictionary4 = [(CSAsset *)self dictionary];
+        v20 = [dictionary4 objectForKeyedSubscript:categoryCopy];
+        v21 = [v20 objectForKeyedSubscript:keyCopy];
 
         goto LABEL_8;
       }
@@ -600,19 +600,19 @@ LABEL_8:
   }
 
   v22 = CSLogContextFacilityCoreSpeech;
-  v21 = v10;
+  v21 = defaultCopy;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEBUG))
   {
     v25 = 136315906;
     v26 = "[CSAsset getNumberForKey:category:default:]";
     v27 = 2114;
-    v28 = v9;
+    v28 = categoryCopy;
     v29 = 2114;
-    v30 = v8;
+    v30 = keyCopy;
     v31 = 2114;
-    v32 = v10;
+    v32 = defaultCopy;
     _os_log_debug_impl(&dword_1DDA4B000, v22, OS_LOG_TYPE_DEBUG, "%s Cannot access to %{public}@ %{public}@ using default value=%{public}@", &v25, 0x2Au);
-    v21 = v10;
+    v21 = defaultCopy;
   }
 
 LABEL_8:
@@ -622,15 +622,15 @@ LABEL_8:
   return v21;
 }
 
-- (CSAsset)initWithResourcePath:(id)a3 configFile:(id)a4 configVersion:(id)a5 assetProvderType:(unint64_t)a6 assetType:(unint64_t)a7 assetVariant:(unint64_t)a8 identity:(id)a9 assistantLanguageCode:(id)a10 uafAssetVersion:(id)a11
+- (CSAsset)initWithResourcePath:(id)path configFile:(id)file configVersion:(id)version assetProvderType:(unint64_t)type assetType:(unint64_t)assetType assetVariant:(unint64_t)variant identity:(id)identity assistantLanguageCode:(id)self0 uafAssetVersion:(id)self1
 {
   v40 = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v34 = a9;
-  v33 = a10;
-  v32 = a11;
+  pathCopy = path;
+  fileCopy = file;
+  versionCopy = version;
+  identityCopy = identity;
+  codeCopy = code;
+  assetVersionCopy = assetVersion;
   v35.receiver = self;
   v35.super_class = CSAsset;
   v18 = [(CSAsset *)&v35 init];
@@ -639,36 +639,36 @@ LABEL_8:
     goto LABEL_7;
   }
 
-  v31 = v17;
+  v31 = versionCopy;
   v19 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v37 = "[CSAsset initWithResourcePath:configFile:configVersion:assetProvderType:assetType:assetVariant:identity:assistantLanguageCode:uafAssetVersion:]";
     v38 = 2114;
-    v39 = v15;
+    v39 = pathCopy;
     _os_log_impl(&dword_1DDA4B000, v19, OS_LOG_TYPE_DEFAULT, "%s %{public}@", buf, 0x16u);
   }
 
-  v20 = [MEMORY[0x1E696AC08] defaultManager];
-  v21 = [(NSString *)v15 stringByAppendingPathComponent:v16];
-  if ([v20 fileExistsAtPath:v15] && (objc_msgSend(v20, "fileExistsAtPath:", v21) & 1) != 0)
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v21 = [(NSString *)pathCopy stringByAppendingPathComponent:fileCopy];
+  if ([defaultManager fileExistsAtPath:pathCopy] && (objc_msgSend(defaultManager, "fileExistsAtPath:", v21) & 1) != 0)
   {
-    objc_storeStrong(&v18->_configVersion, a5);
-    objc_storeStrong(&v18->_resourcePath, a3);
+    objc_storeStrong(&v18->_configVersion, version);
+    objc_storeStrong(&v18->_resourcePath, path);
     path = v18->_path;
     v18->_path = v21;
     v23 = v21;
 
-    v18->_assetProvider = a6;
-    v18->_assetType = a7;
-    objc_storeStrong(&v18->_identity, a9);
-    objc_storeStrong(&v18->_assistantLanguageCode, a10);
-    v18->_assetVariant = a8;
-    objc_storeStrong(&v18->_uafAssetVersion, a11);
+    v18->_assetProvider = type;
+    v18->_assetType = assetType;
+    objc_storeStrong(&v18->_identity, identity);
+    objc_storeStrong(&v18->_assistantLanguageCode, code);
+    v18->_assetVariant = variant;
+    objc_storeStrong(&v18->_uafAssetVersion, assetVersion);
 
     [(CSAsset *)v18 _updateAssetVariantIfNeeded];
-    v17 = v31;
+    versionCopy = v31;
 LABEL_7:
     v24 = v18;
     goto LABEL_11;
@@ -685,34 +685,34 @@ LABEL_7:
   }
 
   v24 = 0;
-  v17 = v31;
+  versionCopy = v31;
 LABEL_11:
 
   v26 = *MEMORY[0x1E69E9840];
   return v24;
 }
 
-+ (BOOL)isLeftConfigVersion:(id)a3 newerThanRightConfigVersion:(id)a4
++ (BOOL)isLeftConfigVersion:(id)version newerThanRightConfigVersion:(id)configVersion
 {
   v31 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  versionCopy = version;
+  configVersionCopy = configVersion;
   v7 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315650;
     v26 = "+[CSAsset isLeftConfigVersion:newerThanRightConfigVersion:]";
     v27 = 2114;
-    v28 = v5;
+    v28 = versionCopy;
     v29 = 2114;
-    v30 = v6;
+    v30 = configVersionCopy;
     _os_log_impl(&dword_1DDA4B000, v7, OS_LOG_TYPE_DEFAULT, "%s Comparing %{public}@ with %{public}@", buf, 0x20u);
   }
 
-  v8 = [v6 componentsSeparatedByString:@"."];
+  v8 = [configVersionCopy componentsSeparatedByString:@"."];
   if ([v8 count] > 2)
   {
-    v11 = [v5 componentsSeparatedByString:@"."];
+    v11 = [versionCopy componentsSeparatedByString:@"."];
     if ([v11 count] > 2)
     {
       v13 = [v11 objectAtIndexedSubscript:0];
@@ -721,8 +721,8 @@ LABEL_11:
       {
         v15 = [v8 objectAtIndexedSubscript:1];
         v16 = [v11 objectAtIndexedSubscript:1];
-        v17 = [v16 integerValue];
-        if (v17 == [v15 integerValue])
+        integerValue = [v16 integerValue];
+        if (integerValue == [v15 integerValue])
         {
           v18 = [v11 objectAtIndexedSubscript:2];
           v19 = [v8 objectAtIndexedSubscript:2];
@@ -740,8 +740,8 @@ LABEL_11:
 
         else
         {
-          v21 = [v16 integerValue];
-          v10 = v21 > [v15 integerValue];
+          integerValue2 = [v16 integerValue];
+          v10 = integerValue2 > [v15 integerValue];
         }
       }
 
@@ -769,7 +769,7 @@ LABEL_11:
         *buf = 136315394;
         v26 = "+[CSAsset isLeftConfigVersion:newerThanRightConfigVersion:]";
         v27 = 2114;
-        v28 = v5;
+        v28 = versionCopy;
         _os_log_error_impl(&dword_1DDA4B000, v12, OS_LOG_TYPE_ERROR, "%s Invalid leftConfig syntax : %{public}@", buf, 0x16u);
       }
 
@@ -785,7 +785,7 @@ LABEL_11:
       *buf = 136315394;
       v26 = "+[CSAsset isLeftConfigVersion:newerThanRightConfigVersion:]";
       v27 = 2114;
-      v28 = v6;
+      v28 = configVersionCopy;
       _os_log_error_impl(&dword_1DDA4B000, v9, OS_LOG_TYPE_ERROR, "%s Invalid rightConfig syntax : %{public}@", buf, 0x16u);
     }
 
@@ -796,16 +796,16 @@ LABEL_11:
   return v10;
 }
 
-+ (id)decodeJson:(id)a3
++ (id)decodeJson:(id)json
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E696AC08] defaultManager];
-  v5 = [v4 fileExistsAtPath:v3];
+  jsonCopy = json;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v5 = [defaultManager fileExistsAtPath:jsonCopy];
 
   if (v5)
   {
-    v6 = [MEMORY[0x1E695DEF0] dataWithContentsOfFile:v3];
+    v6 = [MEMORY[0x1E695DEF0] dataWithContentsOfFile:jsonCopy];
     if (!v6)
     {
       v14 = CSLogContextFacilityCoreSpeech;
@@ -814,7 +814,7 @@ LABEL_11:
         *buf = 136315394;
         v20 = "+[CSAsset decodeJson:]";
         v21 = 2114;
-        v22 = v3;
+        v22 = jsonCopy;
         _os_log_impl(&dword_1DDA4B000, v14, OS_LOG_TYPE_DEFAULT, "%s Cannot read configuration file : %{public}@", buf, 0x16u);
       }
 
@@ -831,11 +831,11 @@ LABEL_11:
       if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
       {
         v10 = v9;
-        v11 = [v8 localizedDescription];
+        localizedDescription = [v8 localizedDescription];
         *buf = 136315394;
         v20 = "+[CSAsset decodeJson:]";
         v21 = 2114;
-        v22 = v11;
+        v22 = localizedDescription;
         _os_log_impl(&dword_1DDA4B000, v10, OS_LOG_TYPE_DEFAULT, "%s Cannot decode configuration json file : %{public}@", buf, 0x16u);
       }
     }
@@ -871,7 +871,7 @@ LABEL_18:
     *buf = 136315394;
     v20 = "+[CSAsset decodeJson:]";
     v21 = 2114;
-    v22 = v3;
+    v22 = jsonCopy;
     _os_log_impl(&dword_1DDA4B000, v12, OS_LOG_TYPE_DEFAULT, "%s Configuration file is not exists : %{public}@", buf, 0x16u);
   }
 
@@ -883,36 +883,36 @@ LABEL_19:
   return v13;
 }
 
-+ (unint64_t)parseCompatibilityFromConfigVersion:(id)a3
++ (unint64_t)parseCompatibilityFromConfigVersion:(id)version
 {
-  v3 = [a3 componentsSeparatedByString:@"."];
+  v3 = [version componentsSeparatedByString:@"."];
   if ([v3 count])
   {
     v4 = [v3 objectAtIndexedSubscript:0];
-    v5 = [v4 integerValue];
+    integerValue = [v4 integerValue];
   }
 
   else
   {
-    v5 = 0;
+    integerValue = 0;
   }
 
-  return v5;
+  return integerValue;
 }
 
 + (id)overrideAssetForVoiceTrigger
 {
   v20 = *MEMORY[0x1E69E9840];
   v2 = +[CSFPreferences sharedPreferences];
-  v3 = [v2 fakeVoiceTriggerAssetPath];
+  fakeVoiceTriggerAssetPath = [v2 fakeVoiceTriggerAssetPath];
 
-  v4 = [v3 stringByDeletingLastPathComponent];
-  v5 = [MEMORY[0x1E696AC08] defaultManager];
-  v6 = [v5 fileExistsAtPath:v3];
+  stringByDeletingLastPathComponent = [fakeVoiceTriggerAssetPath stringByDeletingLastPathComponent];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v6 = [defaultManager fileExistsAtPath:fakeVoiceTriggerAssetPath];
 
   if (v6)
   {
-    v7 = [CSAsset assetForAssetType:0 resourcePath:v4 configVersion:@"override-asset" assetProvider:2];
+    v7 = [CSAsset assetForAssetType:0 resourcePath:stringByDeletingLastPathComponent configVersion:@"override-asset" assetProvider:2];
     v8 = CSLogCategoryAsset;
     if (os_log_type_enabled(CSLogCategoryAsset, OS_LOG_TYPE_DEFAULT))
     {
@@ -957,9 +957,9 @@ LABEL_19:
 
 + (id)defaultFallBackAssetForVoiceTrigger
 {
-  v2 = [a1 fallBackAssetResourcePath];
+  fallBackAssetResourcePath = [self fallBackAssetResourcePath];
   v3 = [CSAsset alloc];
-  v4 = [v2 stringByAppendingPathComponent:@"iOS"];
+  v4 = [fallBackAssetResourcePath stringByAppendingPathComponent:@"iOS"];
   v5 = [(CSAsset *)v3 initWithResourcePath:v4 configFile:@"corespeech.json" configVersion:@"defaultFallback" assetProvderType:0 assetType:0];
 
   return v5;
@@ -968,8 +968,8 @@ LABEL_19:
 + (id)defaultFallBackAssetForAdBlocker
 {
   v3 = [CSAsset alloc];
-  v4 = [a1 fallBackAssetResourcePath];
-  v5 = [(CSAsset *)v3 initWithResourcePath:v4 configFile:@"adBlockerPayload.bin" configVersion:@"defaultFallbackAdBlocker" assetProvderType:0 assetType:4];
+  fallBackAssetResourcePath = [self fallBackAssetResourcePath];
+  v5 = [(CSAsset *)v3 initWithResourcePath:fallBackAssetResourcePath configFile:@"adBlockerPayload.bin" configVersion:@"defaultFallbackAdBlocker" assetProvderType:0 assetType:4];
 
   return v5;
 }
@@ -977,8 +977,8 @@ LABEL_19:
 + (id)defaultFallBackAssetForHearst
 {
   v3 = [CSAsset alloc];
-  v4 = [a1 fallBackAssetResourcePath];
-  v5 = [(CSAsset *)v3 initWithResourcePath:v4 configFile:@"corespeech.json" configVersion:@"defaultFallbackHearst" assetProvderType:0 assetType:0];
+  fallBackAssetResourcePath = [self fallBackAssetResourcePath];
+  v5 = [(CSAsset *)v3 initWithResourcePath:fallBackAssetResourcePath configFile:@"corespeech.json" configVersion:@"defaultFallbackHearst" assetProvderType:0 assetType:0];
 
   return v5;
 }
@@ -1011,84 +1011,84 @@ LABEL_19:
   return v2;
 }
 
-+ (id)assetForAssetType:(unint64_t)a3 resourcePath:(id)a4 configVersion:(id)a5 assetProvider:(unint64_t)a6 assetVariant:(unint64_t)a7 identity:(id)a8 assistantLanguageCode:(id)a9 uafAssetVersion:(id)a10
++ (id)assetForAssetType:(unint64_t)type resourcePath:(id)path configVersion:(id)version assetProvider:(unint64_t)provider assetVariant:(unint64_t)variant identity:(id)identity assistantLanguageCode:(id)code uafAssetVersion:(id)self0
 {
-  v16 = a10;
-  v17 = a9;
-  v18 = a8;
-  v19 = a5;
-  v20 = a4;
-  v21 = [CSAsset getAssetFileForAssetType:a3 resourcePath:v20 assetProvider:a6];
-  v22 = [[CSAsset alloc] initWithResourcePath:v20 configFile:v21 configVersion:v19 assetProvderType:a6 assetType:a3 assetVariant:a7 identity:v18 assistantLanguageCode:v17 uafAssetVersion:v16];
+  assetVersionCopy = assetVersion;
+  codeCopy = code;
+  identityCopy = identity;
+  versionCopy = version;
+  pathCopy = path;
+  v21 = [CSAsset getAssetFileForAssetType:type resourcePath:pathCopy assetProvider:provider];
+  v22 = [[CSAsset alloc] initWithResourcePath:pathCopy configFile:v21 configVersion:versionCopy assetProvderType:provider assetType:type assetVariant:variant identity:identityCopy assistantLanguageCode:codeCopy uafAssetVersion:assetVersionCopy];
 
   return v22;
 }
 
-+ (id)getAssetFileForAssetType:(unint64_t)a3 resourcePath:(id)a4 assetProvider:(unint64_t)a5
++ (id)getAssetFileForAssetType:(unint64_t)type resourcePath:(id)path assetProvider:(unint64_t)provider
 {
-  v7 = a4;
-  v8 = 0;
-  if (a3 <= 3)
+  pathCopy = path;
+  firstObject = 0;
+  if (type <= 3)
   {
-    if (a3 > 1)
+    if (type > 1)
     {
       v9 = @"speakerRecognition.json";
-      if (a3 != 3)
+      if (type != 3)
       {
         v9 = 0;
       }
 
-      if (a3 == 2)
+      if (type == 2)
       {
-        v8 = @"assets.json";
+        firstObject = @"assets.json";
       }
 
       else
       {
-        v8 = v9;
+        firstObject = v9;
       }
 
       goto LABEL_27;
     }
 
-    if (a3)
+    if (type)
     {
-      if (a3 == 1)
+      if (type == 1)
       {
-        v8 = +[CSAsset hybridEndpointerAssetFilename];
+        firstObject = +[CSAsset hybridEndpointerAssetFilename];
       }
 
       goto LABEL_27;
     }
 
 LABEL_17:
-    v8 = @"corespeech.json";
+    firstObject = @"corespeech.json";
     goto LABEL_27;
   }
 
-  if (a3 <= 5)
+  if (type <= 5)
   {
-    if (a3 == 4)
+    if (type == 4)
     {
-      if (a5 == 1)
+      if (provider == 1)
       {
-        v10 = [MEMORY[0x1E696AC08] defaultManager];
-        v11 = [v10 contentsOfDirectoryAtPath:v7 error:0];
+        defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+        v11 = [defaultManager contentsOfDirectoryAtPath:pathCopy error:0];
 
         if (v11 && [v11 count])
         {
-          v8 = [v11 firstObject];
+          firstObject = [v11 firstObject];
         }
 
         else
         {
-          v8 = 0;
+          firstObject = 0;
         }
       }
 
       else
       {
-        v8 = @"adBlockerPayload.bin";
+        firstObject = @"adBlockerPayload.bin";
       }
 
       goto LABEL_27;
@@ -1097,13 +1097,13 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  switch(a3)
+  switch(type)
   {
     case 6uLL:
-      v8 = @"mitigation.json";
+      firstObject = @"mitigation.json";
       break;
     case 8uLL:
-      v8 = @"repromptMetadata.json";
+      firstObject = @"repromptMetadata.json";
       break;
     case 7uLL:
       goto LABEL_17;
@@ -1111,23 +1111,23 @@ LABEL_17:
 
 LABEL_27:
 
-  return v8;
+  return firstObject;
 }
 
-+ (id)getConfigFileNameForAssetType:(unint64_t)a3
++ (id)getConfigFileNameForAssetType:(unint64_t)type
 {
   v5 = 0;
-  if (a3 <= 3)
+  if (type <= 3)
   {
-    if (a3 > 1)
+    if (type > 1)
     {
       v7 = @"speakerRecognition.json";
-      if (a3 != 3)
+      if (type != 3)
       {
         v7 = 0;
       }
 
-      if (a3 == 2)
+      if (type == 2)
       {
         v5 = @"assets.json";
       }
@@ -1140,9 +1140,9 @@ LABEL_27:
       return v5;
     }
 
-    if (a3)
+    if (type)
     {
-      if (a3 != 1)
+      if (type != 1)
       {
 LABEL_6:
 
@@ -1160,9 +1160,9 @@ LABEL_24:
     return v5;
   }
 
-  if (a3 <= 5)
+  if (type <= 5)
   {
-    if (a3 == 4)
+    if (type == 4)
     {
       v5 = @"adBlockerPayload.bin";
 
@@ -1172,7 +1172,7 @@ LABEL_24:
     goto LABEL_24;
   }
 
-  switch(a3)
+  switch(type)
   {
     case 6uLL:
       v5 = @"mitigation.json";
@@ -1211,13 +1211,13 @@ LABEL_24:
 
 - (id)getAllNldaConfigFiles
 {
-  v3 = [(CSAsset *)self resourcePath];
+  resourcePath = [(CSAsset *)self resourcePath];
 
-  if (v3)
+  if (resourcePath)
   {
     v4 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-    v5 = [(CSAsset *)self nldaConfigFile];
-    [v4 addObject:v5];
+    nldaConfigFile = [(CSAsset *)self nldaConfigFile];
+    [v4 addObject:nldaConfigFile];
 
     v6 = [(CSAsset *)self nldaConfigFileForCategory:@"AttSiriCC"];
     [v4 addObject:v6];
@@ -1228,26 +1228,26 @@ LABEL_24:
     v8 = [(CSAsset *)self nldaConfigFileForCategory:@"AttSiriJS"];
     [v4 addObject:v8];
 
-    v9 = [v4 allObjects];
+    allObjects = [v4 allObjects];
   }
 
   else
   {
-    v9 = 0;
+    allObjects = 0;
   }
 
-  return v9;
+  return allObjects;
 }
 
 - (id)getAllMitigationConfigFiles
 {
-  v3 = [(CSAsset *)self resourcePath];
+  resourcePath = [(CSAsset *)self resourcePath];
 
-  if (v3)
+  if (resourcePath)
   {
     v4 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-    v5 = [(CSAsset *)self mitigatonConfigFile];
-    [v4 addObject:v5];
+    mitigatonConfigFile = [(CSAsset *)self mitigatonConfigFile];
+    [v4 addObject:mitigatonConfigFile];
 
     v6 = [(CSAsset *)self mitigationConfigFileForCategory:@"AttSiriCC"];
     [v4 addObject:v6];
@@ -1258,15 +1258,15 @@ LABEL_24:
     v8 = [(CSAsset *)self mitigationConfigFileForCategory:@"AttSiriJS"];
     [v4 addObject:v8];
 
-    v9 = [v4 allObjects];
+    allObjects = [v4 allObjects];
   }
 
   else
   {
-    v9 = 0;
+    allObjects = 0;
   }
 
-  return v9;
+  return allObjects;
 }
 
 - (float)eagerMitigationDurationThreshold
@@ -1278,13 +1278,13 @@ LABEL_24:
   return v4;
 }
 
-- (BOOL)isHSVoiceTrigger:(id)a3
+- (BOOL)isHSVoiceTrigger:(id)trigger
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  triggerCopy = trigger;
+  v4 = triggerCopy;
+  if (triggerCopy)
   {
-    v5 = [v3 objectForKeyedSubscript:@"triggeredPhrase"];
+    v5 = [triggerCopy objectForKeyedSubscript:@"triggeredPhrase"];
 
     if (v5)
     {
@@ -1301,13 +1301,13 @@ LABEL_24:
   return v5;
 }
 
-- (BOOL)isJSVoiceTrigger:(id)a3
+- (BOOL)isJSVoiceTrigger:(id)trigger
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  triggerCopy = trigger;
+  v4 = triggerCopy;
+  if (triggerCopy)
   {
-    v5 = [v3 objectForKeyedSubscript:@"triggeredPhrase"];
+    v5 = [triggerCopy objectForKeyedSubscript:@"triggeredPhrase"];
 
     if (v5)
     {
@@ -1324,21 +1324,21 @@ LABEL_24:
   return v5;
 }
 
-- (id)getCategoryKeyWithRecordCtx:(id)a3
+- (id)getCategoryKeyWithRecordCtx:(id)ctx
 {
-  v4 = a3;
-  v5 = [v4 activationMetadata];
-  if ([(CSAsset *)self isHSVoiceTrigger:v5])
+  ctxCopy = ctx;
+  activationMetadata = [ctxCopy activationMetadata];
+  if ([(CSAsset *)self isHSVoiceTrigger:activationMetadata])
   {
     v6 = @"AttSiriHS";
   }
 
-  else if ([(CSAsset *)self isJSVoiceTrigger:v5])
+  else if ([(CSAsset *)self isJSVoiceTrigger:activationMetadata])
   {
     v6 = @"AttSiriJS";
   }
 
-  else if ([v4 isContinuousConversation])
+  else if ([ctxCopy isContinuousConversation])
   {
     v6 = @"AttSiriCC";
   }
@@ -1351,35 +1351,35 @@ LABEL_24:
   return v6;
 }
 
-- (id)uesConfigFileForCategory:(id)a3
+- (id)uesConfigFileForCategory:(id)category
 {
-  v4 = a3;
-  v5 = [(CSAsset *)self resourcePath];
-  v6 = [(CSAsset *)self getStringForKey:@"uesConfigFile" category:v4 default:@"uesConfig.json"];
+  categoryCopy = category;
+  resourcePath = [(CSAsset *)self resourcePath];
+  v6 = [(CSAsset *)self getStringForKey:@"uesConfigFile" category:categoryCopy default:@"uesConfig.json"];
 
-  v7 = [v5 stringByAppendingPathComponent:v6];
+  v7 = [resourcePath stringByAppendingPathComponent:v6];
 
   return v7;
 }
 
-- (id)nldaConfigFileForCategory:(id)a3
+- (id)nldaConfigFileForCategory:(id)category
 {
-  v4 = a3;
-  v5 = [(CSAsset *)self resourcePath];
-  v6 = [(CSAsset *)self getStringForKey:@"nldaConfigFile" category:v4 default:@"nldaConfig.json"];
+  categoryCopy = category;
+  resourcePath = [(CSAsset *)self resourcePath];
+  v6 = [(CSAsset *)self getStringForKey:@"nldaConfigFile" category:categoryCopy default:@"nldaConfig.json"];
 
-  v7 = [v5 stringByAppendingPathComponent:v6];
+  v7 = [resourcePath stringByAppendingPathComponent:v6];
 
   return v7;
 }
 
-- (id)mitigationConfigFileForCategory:(id)a3
+- (id)mitigationConfigFileForCategory:(id)category
 {
-  v4 = a3;
-  v5 = [(CSAsset *)self resourcePath];
-  v6 = [(CSAsset *)self getStringForKey:@"mitigationModelConfigFile" category:v4 default:@"ouresConfig.json"];
+  categoryCopy = category;
+  resourcePath = [(CSAsset *)self resourcePath];
+  v6 = [(CSAsset *)self getStringForKey:@"mitigationModelConfigFile" category:categoryCopy default:@"ouresConfig.json"];
 
-  v7 = [v5 stringByAppendingPathComponent:v6];
+  v7 = [resourcePath stringByAppendingPathComponent:v6];
 
   return v7;
 }
@@ -1395,9 +1395,9 @@ LABEL_24:
 
 - (id)nldaConfigFile
 {
-  v3 = [(CSAsset *)self resourcePath];
+  resourcePath = [(CSAsset *)self resourcePath];
   v4 = [(CSAsset *)self getStringForKey:@"nldaConfigFile" category:@"AttSiri" default:@"nldaConfig.json"];
-  v5 = [v3 stringByAppendingPathComponent:v4];
+  v5 = [resourcePath stringByAppendingPathComponent:v4];
 
   return v5;
 }
@@ -1431,9 +1431,9 @@ LABEL_24:
 
 - (id)mitigatonConfigFile
 {
-  v3 = [(CSAsset *)self resourcePath];
+  resourcePath = [(CSAsset *)self resourcePath];
   v4 = [(CSAsset *)self getStringForKey:@"mitigationModelConfigFile" category:@"AttSiri" default:@"ouresConfig.json"];
-  v5 = [v3 stringByAppendingPathComponent:v4];
+  v5 = [resourcePath stringByAppendingPathComponent:v4];
 
   return v5;
 }
@@ -1450,9 +1450,9 @@ LABEL_24:
 - (int64_t)numOfConsecutiveBoronActivationThreshold
 {
   v2 = [(CSAsset *)self getNumberForKey:@"numOfConsecutiveBoronActivationThreshold" category:@"AttSiri" default:&unk_1F5916868];
-  v3 = [v2 intValue];
+  intValue = [v2 intValue];
 
-  return v3;
+  return intValue;
 }
 
 - (float)startOfSpeechPrependAudioDuration
@@ -1475,35 +1475,35 @@ LABEL_24:
 
 - (NSString)lipMovementVADModelFile
 {
-  v3 = [(CSAsset *)self resourcePath];
+  resourcePath = [(CSAsset *)self resourcePath];
   v4 = [(CSAsset *)self getStringForKey:@"visualActivityDetectorModelFile" category:@"AttSiri" default:@"vvad.mlmodelc"];
-  v5 = [v3 stringByAppendingPathComponent:v4];
+  v5 = [resourcePath stringByAppendingPathComponent:v4];
 
   return v5;
 }
 
 - (NSString)gazeDetectionModelFile
 {
-  v3 = [(CSAsset *)self resourcePath];
+  resourcePath = [(CSAsset *)self resourcePath];
   v4 = [(CSAsset *)self getStringForKey:@"gazeDetectionModelFile" category:@"AttSiri" default:@"gazeModel.mlmodelc"];
-  v5 = [v3 stringByAppendingPathComponent:v4];
+  v5 = [resourcePath stringByAppendingPathComponent:v4];
 
   return v5;
 }
 
 - (NSString)mimVotingConfigFile
 {
-  v3 = [(CSAsset *)self resourcePath];
+  resourcePath = [(CSAsset *)self resourcePath];
   v4 = [(CSAsset *)self getStringForKey:@"mimVotingConfigFile" category:@"AttSiri" default:@"mimConfig.json"];
-  v5 = [v3 stringByAppendingPathComponent:v4];
+  v5 = [resourcePath stringByAppendingPathComponent:v4];
 
   return v5;
 }
 
-- (unint64_t)_mapInputOriginFromAssetToCSAudioRecordType:(id)a3
+- (unint64_t)_mapInputOriginFromAssetToCSAudioRecordType:(id)type
 {
   v18[6] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  typeCopy = type;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
@@ -1525,7 +1525,7 @@ LABEL_24:
   v11[1] = 3221225472;
   v11[2] = __64__CSAsset_Liminal___mapInputOriginFromAssetToCSAudioRecordType___block_invoke;
   v11[3] = &unk_1E865AE50;
-  v5 = v3;
+  v5 = typeCopy;
   v12 = v5;
   v6 = [v4 keysOfEntriesPassingTest:v11];
   v10[0] = MEMORY[0x1E69E9820];
@@ -1548,18 +1548,18 @@ uint64_t __64__CSAsset_Liminal___mapInputOriginFromAssetToCSAudioRecordType___bl
   return result;
 }
 
-- (id)getRecognizerConfigsFrom:(id)a3
+- (id)getRecognizerConfigsFrom:(id)from
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (v3)
+  fromCopy = from;
+  if (fromCopy)
   {
-    v4 = [CSAsset decodeJson:v3];
+    v4 = [CSAsset decodeJson:fromCopy];
     v5 = [CSFModelConfigDecoder getAftmRecognizerRelativeConfigFromConfigDict:v4];
     if (v5)
     {
       v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
-      v7 = [v3 stringByDeletingLastPathComponent];
+      stringByDeletingLastPathComponent = [fromCopy stringByDeletingLastPathComponent];
       v16 = 0u;
       v17 = 0u;
       v18 = 0u;
@@ -1579,7 +1579,7 @@ uint64_t __64__CSAsset_Liminal___mapInputOriginFromAssetToCSAudioRecordType___bl
               objc_enumerationMutation(v8);
             }
 
-            v13 = [v7 stringByAppendingPathComponent:{*(*(&v16 + 1) + 8 * i), v16}];
+            v13 = [stringByDeletingLastPathComponent stringByAppendingPathComponent:{*(*(&v16 + 1) + 8 * i), v16}];
             [v6 addObject:v13];
           }
 
@@ -1608,8 +1608,8 @@ uint64_t __64__CSAsset_Liminal___mapInputOriginFromAssetToCSAudioRecordType___bl
 
 - (NSArray)contConvThresholds
 {
-  v2 = [(CSAsset *)self contConvConfigFile];
-  v3 = [CSAsset decodeJson:v2];
+  contConvConfigFile = [(CSAsset *)self contConvConfigFile];
+  v3 = [CSAsset decodeJson:contConvConfigFile];
   v4 = [v3 objectForKeyedSubscript:@"checkerConfig"];
 
   if (v4)
@@ -1634,45 +1634,45 @@ uint64_t __64__CSAsset_Liminal___mapInputOriginFromAssetToCSAudioRecordType___bl
 
 - (NSArray)contConvRecognizerConfigFiles
 {
-  v3 = [(CSAsset *)self contConvConfigFile];
-  v4 = [(CSAsset *)self getRecognizerConfigsFrom:v3];
+  contConvConfigFile = [(CSAsset *)self contConvConfigFile];
+  v4 = [(CSAsset *)self getRecognizerConfigsFrom:contConvConfigFile];
 
   return v4;
 }
 
 - (NSString)contConvConfigFile
 {
-  v3 = [(CSAsset *)self resourcePath];
+  resourcePath = [(CSAsset *)self resourcePath];
   v4 = [(CSAsset *)self getStringForKey:@"contionusConversationConfigFile" category:@"Liminal" default:@"progChecker.json"];
-  v5 = [v3 stringByAppendingPathComponent:v4];
+  v5 = [resourcePath stringByAppendingPathComponent:v4];
 
   return v5;
 }
 
 - (BOOL)progCheckerShadowMode
 {
-  v2 = [(CSAsset *)self progCheckerConfigFile];
-  v3 = [CSAsset decodeJson:v2];
+  progCheckerConfigFile = [(CSAsset *)self progCheckerConfigFile];
+  v3 = [CSAsset decodeJson:progCheckerConfigFile];
   v4 = [v3 objectForKeyedSubscript:@"checkerConfig"];
 
   if (v4 && ([v4 objectForKeyedSubscript:@"shadowMode"], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
   {
     v6 = [v4 objectForKeyedSubscript:@"shadowMode"];
-    v7 = [v6 BOOLValue];
+    bOOLValue = [v6 BOOLValue];
   }
 
   else
   {
-    v7 = 1;
+    bOOLValue = 1;
   }
 
-  return v7;
+  return bOOLValue;
 }
 
 - (NSArray)checkerThresholds
 {
-  v2 = [(CSAsset *)self progCheckerConfigFile];
-  v3 = [CSAsset decodeJson:v2];
+  progCheckerConfigFile = [(CSAsset *)self progCheckerConfigFile];
+  v3 = [CSAsset decodeJson:progCheckerConfigFile];
   v4 = [v3 objectForKeyedSubscript:@"checkerConfig"];
 
   if (v4)
@@ -1697,8 +1697,8 @@ uint64_t __64__CSAsset_Liminal___mapInputOriginFromAssetToCSAudioRecordType___bl
 
 - (unint64_t)supportedInputOrigins
 {
-  v3 = [(CSAsset *)self progCheckerConfigFile];
-  v4 = [CSAsset decodeJson:v3];
+  progCheckerConfigFile = [(CSAsset *)self progCheckerConfigFile];
+  v4 = [CSAsset decodeJson:progCheckerConfigFile];
   v5 = [v4 objectForKeyedSubscript:@"checkerConfig"];
 
   if (v5 && ([v5 objectForKeyedSubscript:@"validInputOrigins"], v6 = objc_claimAutoreleasedReturnValue(), v6, v6))
@@ -1720,17 +1720,17 @@ uint64_t __64__CSAsset_Liminal___mapInputOriginFromAssetToCSAudioRecordType___bl
 
 - (NSArray)progCheckerRecognizerConfigFiles
 {
-  v3 = [(CSAsset *)self progCheckerConfigFile];
-  v4 = [(CSAsset *)self getRecognizerConfigsFrom:v3];
+  progCheckerConfigFile = [(CSAsset *)self progCheckerConfigFile];
+  v4 = [(CSAsset *)self getRecognizerConfigsFrom:progCheckerConfigFile];
 
   return v4;
 }
 
 - (NSString)progCheckerConfigFile
 {
-  v3 = [(CSAsset *)self resourcePath];
+  resourcePath = [(CSAsset *)self resourcePath];
   v4 = [(CSAsset *)self getStringForKey:@"progressiveCheckerConfigFile" category:@"Liminal" default:@"progChecker.json"];
-  v5 = [v3 stringByAppendingPathComponent:v4];
+  v5 = [resourcePath stringByAppendingPathComponent:v4];
 
   return v5;
 }
@@ -1746,9 +1746,9 @@ uint64_t __64__CSAsset_Liminal___mapInputOriginFromAssetToCSAudioRecordType___bl
 
 - (NSString)keywordDetectorConfigPathRecognizer
 {
-  v3 = [(CSAsset *)self resourcePath];
+  resourcePath = [(CSAsset *)self resourcePath];
   v4 = [(CSAsset *)self getStringForKey:@"configFileRecognizer" category:@"keywordDetector" default:@"keyword_detector.json"];
-  v5 = [v3 stringByAppendingPathComponent:v4];
+  v5 = [resourcePath stringByAppendingPathComponent:v4];
 
   return v5;
 }

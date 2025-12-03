@@ -1,11 +1,11 @@
 @interface BLSHCountingAssertionAttributeEntry
-+ (id)activateForAttribute:(id)a3 fromAssertion:(id)a4 forService:(id)a5 attributeHandler:(id)a6;
++ (id)activateForAttribute:(id)attribute fromAssertion:(id)assertion forService:(id)service attributeHandler:(id)handler;
 - (BLSAssertionServiceResponding)assertion;
 - (BLSAttribute)attribute;
 - (BLSHAssertionAttributeHandlerService)service;
 - (BOOL)reactivateIfPossible;
 - (NSString)description;
-- (id)initForAttribute:(id)a3 fromAssertion:(id)a4 forService:(id)a5 attributeHandler:(id)a6;
+- (id)initForAttribute:(id)attribute fromAssertion:(id)assertion forService:(id)service attributeHandler:(id)handler;
 - (void)activate;
 - (void)invalidate;
 @end
@@ -14,10 +14,10 @@
 
 - (void)activate
 {
-  if (a1)
+  if (self)
   {
-    WeakRetained = objc_loadWeakRetained(a1 + 1);
-    [(BLSHLocalCountingAssertionAttributeHandler *)WeakRetained incrementCountWithEntry:a1];
+    WeakRetained = objc_loadWeakRetained(self + 1);
+    [(BLSHLocalCountingAssertionAttributeHandler *)WeakRetained incrementCountWithEntry:self];
   }
 }
 
@@ -34,40 +34,40 @@
   [(BLSHLocalCountingAssertionAttributeHandler *)WeakRetained decrementCountWithEntry:?];
 }
 
-+ (id)activateForAttribute:(id)a3 fromAssertion:(id)a4 forService:(id)a5 attributeHandler:(id)a6
++ (id)activateForAttribute:(id)attribute fromAssertion:(id)assertion forService:(id)service attributeHandler:(id)handler
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  attributeCopy = attribute;
+  assertionCopy = assertion;
+  serviceCopy = service;
+  handlerCopy = handler;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    [BLSHCountingAssertionAttributeEntry activateForAttribute:v14 fromAssertion:a2 forService:a1 attributeHandler:?];
+    [BLSHCountingAssertionAttributeEntry activateForAttribute:handlerCopy fromAssertion:a2 forService:self attributeHandler:?];
   }
 
-  v15 = [[BLSHCountingAssertionAttributeEntry alloc] initForAttribute:v11 fromAssertion:v12 forService:v13 attributeHandler:v14];
+  v15 = [[BLSHCountingAssertionAttributeEntry alloc] initForAttribute:attributeCopy fromAssertion:assertionCopy forService:serviceCopy attributeHandler:handlerCopy];
   [(BLSHCountingAssertionAttributeEntry *)v15 activate];
 
   return v15;
 }
 
-- (id)initForAttribute:(id)a3 fromAssertion:(id)a4 forService:(id)a5 attributeHandler:(id)a6
+- (id)initForAttribute:(id)attribute fromAssertion:(id)assertion forService:(id)service attributeHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  attributeCopy = attribute;
+  assertionCopy = assertion;
+  serviceCopy = service;
+  handlerCopy = handler;
   v17.receiver = self;
   v17.super_class = BLSHCountingAssertionAttributeEntry;
   v14 = [(BLSHCountingAssertionAttributeEntry *)&v17 init];
   p_isa = &v14->super.isa;
   if (v14)
   {
-    objc_storeWeak(&v14->_attribute, v10);
-    objc_storeWeak(p_isa + 3, v11);
-    objc_storeWeak(p_isa + 4, v12);
-    objc_storeWeak(p_isa + 1, v13);
+    objc_storeWeak(&v14->_attribute, attributeCopy);
+    objc_storeWeak(p_isa + 3, assertionCopy);
+    objc_storeWeak(p_isa + 4, serviceCopy);
+    objc_storeWeak(p_isa + 1, handlerCopy);
   }
 
   return p_isa;
@@ -81,7 +81,7 @@
   v9 = __50__BLSHCountingAssertionAttributeEntry_description__block_invoke;
   v10 = &unk_27841E538;
   v11 = v3;
-  v12 = self;
+  selfCopy = self;
   v4 = v3;
   [v4 appendProem:self block:&v7];
   v5 = [v4 description];

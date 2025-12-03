@@ -1,35 +1,35 @@
 @interface NSTextList
 + (BOOL)includesTextListMarkers;
-+ (id)_standardMarkerAttributesForAttributes:(id)a3;
++ (id)_standardMarkerAttributesForAttributes:(id)attributes;
 + (void)initialize;
 - (BOOL)isOrdered;
 - (NSTextList)initWithCoder:(NSCoder *)coder;
 - (NSTextList)initWithMarkerFormat:(NSTextListMarkerFormat)markerFormat options:(NSTextListOptions)options startingItemNumber:(NSInteger)startingItemNumber;
 - (NSTextListMarkerFormat)markerFormat;
-- (id)_markerAtIndex:(unint64_t)a3 inText:(id)a4;
-- (id)_markerForMarkerFormat:(id)a3 itemNumber:(int64_t)a4 isNumbered:(BOOL *)a5 substitutionStart:(unint64_t *)a6 end:(unint64_t *)a7 specifierStart:(unint64_t *)a8 end:(unint64_t *)a9;
+- (id)_markerAtIndex:(unint64_t)index inText:(id)text;
+- (id)_markerForMarkerFormat:(id)format itemNumber:(int64_t)number isNumbered:(BOOL *)numbered substitutionStart:(unint64_t *)start end:(unint64_t *)end specifierStart:(unint64_t *)specifierStart end:(unint64_t *)a9;
 - (id)_markerPrefix;
 - (id)_markerSpecifier;
 - (id)_markerSpecifierAsCSSValue;
 - (id)_markerSuffix;
 - (id)_markerTitle;
-- (id)_unaffixedMarkerForItemNumber:(int64_t)a3;
+- (id)_unaffixedMarkerForItemNumber:(int64_t)number;
 - (id)_unaffixedMarkerFormat;
 - (id)_unaffixedMarkerTitle;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NSTextList
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     [NSTextList setVersion:1];
-    __NSTextListClass = a1;
+    __NSTextListClass = self;
   }
 }
 
@@ -113,48 +113,48 @@ LABEL_7:
   [(NSTextList *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "initWithMarkerFormat:options:startingItemNumber:", self->_markerFormat, self->_listFlags, self->_startIndex + 1}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "initWithMarkerFormat:options:startingItemNumber:", self->_markerFormat, self->_listFlags, self->_startIndex + 1}];
   [v4 setMarkerTextAttachment:{-[NSTextList markerTextAttachment](self, "markerTextAttachment")}];
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   markerFormat = self->_markerFormat;
   v11 = markerFormat;
-  v6 = [(NSTextList *)self listOptions];
-  v7 = [(NSTextList *)self startingItemNumber];
-  if ([a3 allowsKeyedCoding])
+  listOptions = [(NSTextList *)self listOptions];
+  startingItemNumber = [(NSTextList *)self startingItemNumber];
+  if ([coder allowsKeyedCoding])
   {
-    [a3 encodeObject:self->_markerTextAttachment forKey:@"NSMarkerTextAttachment"];
-    [a3 encodeObject:markerFormat forKey:@"NSMarkerFormat"];
-    if (v6)
+    [coder encodeObject:self->_markerTextAttachment forKey:@"NSMarkerTextAttachment"];
+    [coder encodeObject:markerFormat forKey:@"NSMarkerFormat"];
+    if (listOptions)
     {
-      [a3 encodeInteger:v6 forKey:@"NSOptions"];
+      [coder encodeInteger:listOptions forKey:@"NSOptions"];
     }
 
-    if (v7 != 1)
+    if (startingItemNumber != 1)
     {
 
-      [a3 encodeInteger:v7 forKey:@"NSStart"];
+      [coder encodeInteger:startingItemNumber forKey:@"NSStart"];
     }
   }
 
   else
   {
-    v10 = v6 & 0xFFFFFFF;
-    if (v7 == 1 || (v9 = [MEMORY[0x1E695DF20] dictionaryWithObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithInteger:", v7), @"NSStart"}]) == 0)
+    v10 = listOptions & 0xFFFFFFF;
+    if (startingItemNumber == 1 || (v9 = [MEMORY[0x1E695DF20] dictionaryWithObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithInteger:", startingItemNumber), @"NSStart"}]) == 0)
     {
-      [a3 encodeValuesOfObjCTypes:{"@I", &v11, &v10}];
+      [coder encodeValuesOfObjCTypes:{"@I", &v11, &v10}];
     }
 
     else
     {
-      v10 = v6 & 0xFFFFFFF | 0x40000000;
-      [a3 encodeValuesOfObjCTypes:{"@I", &v11, &v10}];
-      [a3 encodeValuesOfObjCTypes:{"@", &v9, v8}];
+      v10 = listOptions & 0xFFFFFFF | 0x40000000;
+      [coder encodeValuesOfObjCTypes:{"@I", &v11, &v10}];
+      [coder encodeValuesOfObjCTypes:{"@", &v9, v8}];
     }
   }
 }
@@ -183,19 +183,19 @@ LABEL_7:
 
       if ([(NSCoder *)coder containsValueForKey:@"NSStart"])
       {
-        v8 = [(NSCoder *)coder decodeIntegerForKey:@"NSStart"];
+        integerValue = [(NSCoder *)coder decodeIntegerForKey:@"NSStart"];
       }
 
       else
       {
-        v8 = 1;
+        integerValue = 1;
       }
 
       v11 = [(NSCoder *)coder decodeObjectForKey:@"NSMarkerTextAttachment"];
 LABEL_22:
       v4->_markerFormat = v5;
       v4->_listFlags = v6 & 0xFFFFFFF;
-      v4->_startIndex = v8 - 1;
+      v4->_startIndex = integerValue - 1;
       v4->_markerTextAttachment = v11;
       return v4;
     }
@@ -212,18 +212,18 @@ LABEL_22:
         [(NSCoder *)coder decodeValuesOfObjCTypes:"@", &v15];
         if (v15 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (v12 = [v15 objectForKey:@"NSStart"]) != 0 && (v13 = v12, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
         {
-          v8 = [v13 integerValue];
+          integerValue = [v13 integerValue];
         }
 
         else
         {
-          v8 = 1;
+          integerValue = 1;
         }
       }
 
       else
       {
-        v8 = 1;
+        integerValue = 1;
       }
 
       v11 = 0;
@@ -243,13 +243,13 @@ LABEL_22:
 
 - (id)description
 {
-  v3 = [(NSTextList *)self startingItemNumber];
-  v4 = [(NSTextList *)self listOptions];
+  startingItemNumber = [(NSTextList *)self startingItemNumber];
+  listOptions = [(NSTextList *)self listOptions];
   v5 = MEMORY[0x1E696AEC0];
-  v6 = [(NSTextList *)self markerFormat];
-  if (v4)
+  markerFormat = [(NSTextList *)self markerFormat];
+  if (listOptions)
   {
-    v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@" options 0x%lx", v4];
+    v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@" options 0x%lx", listOptions];
   }
 
   else
@@ -257,36 +257,36 @@ LABEL_22:
     v7 = &stru_1F01AD578;
   }
 
-  if (v3 == 1)
+  if (startingItemNumber == 1)
   {
     v8 = &stru_1F01AD578;
   }
 
   else
   {
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@" start at %ld", v3];
+    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@" start at %ld", startingItemNumber];
   }
 
-  return [v5 stringWithFormat:@"NSTextList %p format <%@>%@%@", self, v6, v7, v8];
+  return [v5 stringWithFormat:@"NSTextList %p format <%@>%@%@", self, markerFormat, v7, v8];
 }
 
-- (id)_markerForMarkerFormat:(id)a3 itemNumber:(int64_t)a4 isNumbered:(BOOL *)a5 substitutionStart:(unint64_t *)a6 end:(unint64_t *)a7 specifierStart:(unint64_t *)a8 end:(unint64_t *)a9
+- (id)_markerForMarkerFormat:(id)format itemNumber:(int64_t)number isNumbered:(BOOL *)numbered substitutionStart:(unint64_t *)start end:(unint64_t *)end specifierStart:(unint64_t *)specifierStart end:(unint64_t *)a9
 {
-  v14 = a3;
-  v15 = [a3 length];
-  if (a6)
+  formatCopy = format;
+  v15 = [format length];
+  if (start)
   {
-    *a6 = 0x7FFFFFFFFFFFFFFFLL;
+    *start = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  if (a7)
+  if (end)
   {
-    *a7 = 0x7FFFFFFFFFFFFFFFLL;
+    *end = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  if (a8)
+  if (specifierStart)
   {
-    *a8 = 0x7FFFFFFFFFFFFFFFLL;
+    *specifierStart = 0x7FFFFFFFFFFFFFFFLL;
   }
 
   if (a9)
@@ -294,40 +294,40 @@ LABEL_22:
     *a9 = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  [v14 rangeOfString:@"{"];
+  [formatCopy rangeOfString:@"{"];
   if (!v16)
   {
     v51 = 0;
-    if (!a5)
+    if (!numbered)
     {
-      return v14;
+      return formatCopy;
     }
 
     goto LABEL_133;
   }
 
-  v17 = [MEMORY[0x1E696AD60] string];
-  v18 = v17;
+  string = [MEMORY[0x1E696AD60] string];
+  v18 = string;
   if (!v15)
   {
     v51 = 0;
-    v14 = v17;
-    if (!a5)
+    formatCopy = string;
+    if (!numbered)
     {
-      return v14;
+      return formatCopy;
     }
 
 LABEL_133:
-    *a5 = v51 & 1;
-    return v14;
+    *numbered = v51 & 1;
+    return formatCopy;
   }
 
-  v65 = a5;
+  numberedCopy = numbered;
   v66 = 0;
-  v19 = a4;
+  numberCopy = number;
   v20 = 0;
   v21 = 0;
-  if ((v19 + 9) >= 0x13)
+  if ((numberCopy + 9) >= 0x13)
   {
     v22 = @"%ld";
   }
@@ -338,14 +338,14 @@ LABEL_133:
   }
 
   v53 = v22;
-  v64 = v19;
-  v23 = v19 - 1;
-  v54 = (v19 - 1) % 10;
-  v24 = ((v19 - 1) * 0x2AAAAAAAAAAAAAABLL) >> 64;
-  v55 = (v19 - 1) % 12;
-  v56 = (v19 - 1) % 47;
-  v57 = (v19 - 1) % 48;
-  v25 = (1 - v19) & 0x1F;
+  v64 = numberCopy;
+  v23 = numberCopy - 1;
+  v54 = (numberCopy - 1) % 10;
+  v24 = ((numberCopy - 1) * 0x2AAAAAAAAAAAAAABLL) >> 64;
+  v55 = (numberCopy - 1) % 12;
+  v56 = (numberCopy - 1) % 47;
+  v57 = (numberCopy - 1) % 48;
+  v25 = (1 - numberCopy) & 0x1F;
   if (v23 <= 0)
   {
     v26 = -v25;
@@ -371,24 +371,24 @@ LABEL_133:
   v63 = (v28 + 97);
   do
   {
-    v29 = [v14 characterAtIndex:v20];
+    v29 = [formatCopy characterAtIndex:v20];
     switch(v29)
     {
       case 123:
         v31 = v20 - v21;
         if (v20 > v21)
         {
-          [v18 appendString:{objc_msgSend(v14, "substringWithRange:", v21, v31)}];
+          [v18 appendString:{objc_msgSend(formatCopy, "substringWithRange:", v21, v31)}];
         }
 
-        if (a6)
+        if (start)
         {
-          *a6 = v20;
+          *start = v20;
         }
 
-        if (a7)
+        if (end)
         {
-          *a7 = v15;
+          *end = v15;
         }
 
         v32 = v20 + 1;
@@ -398,12 +398,12 @@ LABEL_133:
           v34 = v20 + 1;
           while (1)
           {
-            v35 = [v14 characterAtIndex:{v34, v31}];
+            v35 = [formatCopy characterAtIndex:{v34, v31}];
             if (v35 == 125)
             {
-              if (a7)
+              if (end)
               {
-                *a7 = v34 + 1;
+                *end = v34 + 1;
               }
 
               v36 = v34;
@@ -444,12 +444,12 @@ LABEL_48:
         v38 = v33 - v32;
         if (v33 > v32)
         {
-          v37 = [v14 substringWithRange:{v32, v38}];
+          v37 = [formatCopy substringWithRange:{v32, v38}];
         }
 
-        if (a8)
+        if (specifierStart)
         {
-          *a8 = v32;
+          *specifierStart = v32;
         }
 
         if (a9)
@@ -603,17 +603,17 @@ LABEL_77:
                   {
                     if ([@"lower-roman" isEqualToString:v37])
                     {
-                      v50 = romanString(v64);
+                      uppercaseString = romanString(v64);
                     }
 
                     else if ([@"upper-roman" isEqualToString:v37])
                     {
-                      v50 = [romanString(v64) uppercaseString];
+                      uppercaseString = [romanString(v64) uppercaseString];
                     }
 
                     else if ([@"cjk-ideographic" isEqualToString:v37])
                     {
-                      v50 = cjkString(v64);
+                      uppercaseString = cjkString(v64);
                     }
 
                     else
@@ -626,7 +626,7 @@ LABEL_77:
 
                       if ([@"arabic-indic" isEqualToString:v37])
                       {
-                        v50 = arabicIndicString(v64);
+                        uppercaseString = arabicIndicString(v64);
                       }
 
                       else
@@ -637,11 +637,11 @@ LABEL_77:
                           goto LABEL_90;
                         }
 
-                        v50 = hebrewString(v64);
+                        uppercaseString = hebrewString(v64);
                       }
                     }
 
-                    [v18 appendFormat:@"%@", v50];
+                    [v18 appendFormat:@"%@", uppercaseString];
 LABEL_90:
                     v66 = 1;
                     goto LABEL_76;
@@ -679,12 +679,12 @@ LABEL_107:
         v30 = v20 - v21;
         if (v20 > v21)
         {
-          [v18 appendString:{objc_msgSend(v14, "substringWithRange:", v21, v30)}];
+          [v18 appendString:{objc_msgSend(formatCopy, "substringWithRange:", v21, v30)}];
         }
 
-        if (v20 + 1 < v15 && [v14 characterAtIndex:{v20 + 1, v30}] != 9)
+        if (v20 + 1 < v15 && [formatCopy characterAtIndex:{v20 + 1, v30}] != 9)
         {
-          [v18 appendString:{objc_msgSend(v14, "substringWithRange:", v20 + 1, 1)}];
+          [v18 appendString:{objc_msgSend(formatCopy, "substringWithRange:", v20 + 1, 1)}];
         }
 
         v20 += 2;
@@ -692,7 +692,7 @@ LABEL_107:
       case 9:
         if (v20 > v21)
         {
-          [v18 appendString:{objc_msgSend(v14, "substringWithRange:", v21, v20 - v21)}];
+          [v18 appendString:{objc_msgSend(formatCopy, "substringWithRange:", v21, v20 - v21)}];
         }
 
         ++v20;
@@ -701,20 +701,20 @@ LABEL_107:
 
     if (++v20 >= v15 && v15 > v21)
     {
-      [v18 appendString:{objc_msgSend(v14, "substringWithRange:", v21, v15 - v21)}];
+      [v18 appendString:{objc_msgSend(formatCopy, "substringWithRange:", v21, v15 - v21)}];
     }
   }
 
   while (v20 < v15);
-  v14 = v18;
-  a5 = v65;
+  formatCopy = v18;
+  numbered = numberedCopy;
   v51 = v66;
-  if (v65)
+  if (numberedCopy)
   {
     goto LABEL_133;
   }
 
-  return v14;
+  return formatCopy;
 }
 
 - (BOOL)isOrdered
@@ -738,14 +738,14 @@ LABEL_107:
 
 - (id)_markerPrefix
 {
-  v3 = [(NSTextList *)self markerFormat];
+  markerFormat = [(NSTextList *)self markerFormat];
   v5 = 0;
-  [(NSTextList *)self _markerForMarkerFormat:v3 itemNumber:1 isNumbered:0 substitutionStart:&v5 end:0 specifierStart:0 end:0];
+  [(NSTextList *)self _markerForMarkerFormat:markerFormat itemNumber:1 isNumbered:0 substitutionStart:&v5 end:0 specifierStart:0 end:0];
   if (v5 != 0x7FFFFFFFFFFFFFFFLL)
   {
     if (v5)
     {
-      return [(NSString *)v3 substringWithRange:0];
+      return [(NSString *)markerFormat substringWithRange:0];
     }
 
     else
@@ -754,18 +754,18 @@ LABEL_107:
     }
   }
 
-  return v3;
+  return markerFormat;
 }
 
 - (id)_markerSpecifier
 {
-  v3 = [(NSTextList *)self markerFormat];
+  markerFormat = [(NSTextList *)self markerFormat];
   v7 = 0;
   v8 = 0;
-  [(NSTextList *)self _markerForMarkerFormat:v3 itemNumber:1 isNumbered:0 substitutionStart:0 end:0 specifierStart:&v8 end:&v7];
+  [(NSTextList *)self _markerForMarkerFormat:markerFormat itemNumber:1 isNumbered:0 substitutionStart:0 end:0 specifierStart:&v8 end:&v7];
   if (v8 != 0x7FFFFFFFFFFFFFFFLL && v7 != 0x7FFFFFFFFFFFFFFFLL && v7 > v8)
   {
-    return [(NSString *)v3 substringWithRange:v8, v7 - v8];
+    return [(NSString *)markerFormat substringWithRange:v8, v7 - v8];
   }
 
   else
@@ -776,14 +776,14 @@ LABEL_107:
 
 - (id)_markerSpecifierAsCSSValue
 {
-  v2 = [(NSTextList *)self _markerSpecifier];
-  if (!v2)
+  _markerSpecifier = [(NSTextList *)self _markerSpecifier];
+  if (!_markerSpecifier)
   {
     return &stru_1F01AD578;
   }
 
-  v3 = v2;
-  result = [&unk_1F01CC248 objectForKey:v2];
+  v3 = _markerSpecifier;
+  result = [&unk_1F01CC248 objectForKey:_markerSpecifier];
   if (!result)
   {
     return v3;
@@ -794,13 +794,13 @@ LABEL_107:
 
 - (id)_unaffixedMarkerFormat
 {
-  v3 = [(NSTextList *)self markerFormat];
+  markerFormat = [(NSTextList *)self markerFormat];
   v7 = 0;
   v8 = 0;
-  [(NSTextList *)self _markerForMarkerFormat:v3 itemNumber:1 isNumbered:0 substitutionStart:&v8 end:&v7 specifierStart:0 end:0];
+  [(NSTextList *)self _markerForMarkerFormat:markerFormat itemNumber:1 isNumbered:0 substitutionStart:&v8 end:&v7 specifierStart:0 end:0];
   if (v8 != 0x7FFFFFFFFFFFFFFFLL && v7 != 0x7FFFFFFFFFFFFFFFLL && v7 > v8)
   {
-    return [(NSString *)v3 substringWithRange:v8, v7 - v8];
+    return [(NSString *)markerFormat substringWithRange:v8, v7 - v8];
   }
 
   else
@@ -809,15 +809,15 @@ LABEL_107:
   }
 }
 
-- (id)_unaffixedMarkerForItemNumber:(int64_t)a3
+- (id)_unaffixedMarkerForItemNumber:(int64_t)number
 {
-  v5 = [(NSTextList *)self markerFormat];
+  markerFormat = [(NSTextList *)self markerFormat];
   v9 = 0;
   v10 = 0;
-  [(NSTextList *)self _markerForMarkerFormat:v5 itemNumber:a3 isNumbered:0 substitutionStart:&v10 end:&v9 specifierStart:0 end:0];
+  [(NSTextList *)self _markerForMarkerFormat:markerFormat itemNumber:number isNumbered:0 substitutionStart:&v10 end:&v9 specifierStart:0 end:0];
   if (v10 != 0x7FFFFFFFFFFFFFFFLL && v9 != 0x7FFFFFFFFFFFFFFFLL && v9 > v10)
   {
-    return [(NSTextList *)self _markerForMarkerFormat:[(NSString *)v5 substringWithRange:v10 itemNumber:v9 - v10] isNumbered:a3 substitutionStart:0 end:0 specifierStart:0 end:0, 0];
+    return [(NSTextList *)self _markerForMarkerFormat:[(NSString *)markerFormat substringWithRange:v10 itemNumber:v9 - v10] isNumbered:number substitutionStart:0 end:0 specifierStart:0 end:0, 0];
   }
 
   else
@@ -828,17 +828,17 @@ LABEL_107:
 
 - (id)_unaffixedMarkerTitle
 {
-  v3 = [(NSTextList *)self markerFormat];
+  markerFormat = [(NSTextList *)self markerFormat];
   v10 = 0;
   v8 = 0;
   v9 = 0;
-  [(NSTextList *)self _markerForMarkerFormat:v3 itemNumber:1 isNumbered:&v10 substitutionStart:&v9 end:&v8 specifierStart:0 end:0];
+  [(NSTextList *)self _markerForMarkerFormat:markerFormat itemNumber:1 isNumbered:&v10 substitutionStart:&v9 end:&v8 specifierStart:0 end:0];
   if (v9 == 0x7FFFFFFFFFFFFFFFLL || v8 == 0x7FFFFFFFFFFFFFFFLL || v8 <= v9)
   {
     return &stru_1F01AD578;
   }
 
-  v6 = [(NSTextList *)self _markerForMarkerFormat:[(NSString *)v3 substringWithRange:v9 itemNumber:v8 - v9] isNumbered:1 substitutionStart:0 end:0 specifierStart:0 end:0, 0];
+  v6 = [(NSTextList *)self _markerForMarkerFormat:[(NSString *)markerFormat substringWithRange:v9 itemNumber:v8 - v9] isNumbered:1 substitutionStart:0 end:0 specifierStart:0 end:0, 0];
   if (v10 == 1)
   {
     return [MEMORY[0x1E696AEC0] stringWithFormat:@"%@  %@  %@…", v6, -[NSTextList _unaffixedMarkerForItemNumber:](self, "_unaffixedMarkerForItemNumber:", 2), -[NSTextList _unaffixedMarkerForItemNumber:](self, "_unaffixedMarkerForItemNumber:", 3)];
@@ -849,13 +849,13 @@ LABEL_107:
 
 - (id)_markerSuffix
 {
-  v3 = [(NSTextList *)self markerFormat];
+  markerFormat = [(NSTextList *)self markerFormat];
   v7 = 0;
-  v4 = [(NSString *)v3 length];
-  [(NSTextList *)self _markerForMarkerFormat:v3 itemNumber:1 isNumbered:0 substitutionStart:0 end:&v7 specifierStart:0 end:0];
+  v4 = [(NSString *)markerFormat length];
+  [(NSTextList *)self _markerForMarkerFormat:markerFormat itemNumber:1 isNumbered:0 substitutionStart:0 end:&v7 specifierStart:0 end:0];
   if (v7 != 0x7FFFFFFFFFFFFFFFLL && v4 > v7)
   {
-    return [(NSString *)v3 substringWithRange:v7, v4 - v7];
+    return [(NSString *)markerFormat substringWithRange:v7, v4 - v7];
   }
 
   else
@@ -864,9 +864,9 @@ LABEL_107:
   }
 }
 
-- (id)_markerAtIndex:(unint64_t)a3 inText:(id)a4
+- (id)_markerAtIndex:(unint64_t)index inText:(id)text
 {
-  v7 = [a4 itemNumberInTextList:self atIndex:a3];
+  v7 = [text itemNumberInTextList:self atIndex:index];
   if (v7 < 1)
   {
     return &stru_1F01AD578;
@@ -878,7 +878,7 @@ LABEL_107:
     return v8;
   }
 
-  v9 = [objc_msgSend(a4 attribute:@"NSParagraphStyle" atIndex:a3 effectiveRange:{0), "textLists"}];
+  v9 = [objc_msgSend(text attribute:@"NSParagraphStyle" atIndex:index effectiveRange:{0), "textLists"}];
   v10 = [v9 count];
   if (v10 < 2)
   {
@@ -895,37 +895,37 @@ LABEL_107:
     }
   }
 
-  return [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@", objc_msgSend(objc_msgSend(v9, "objectAtIndex:", v12 - 1), "_markerAtIndex:inText:", a3, a4), v8];
+  return [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@", objc_msgSend(objc_msgSend(v9, "objectAtIndex:", v12 - 1), "_markerAtIndex:inText:", index, text), v8];
 }
 
-+ (id)_standardMarkerAttributesForAttributes:(id)a3
++ (id)_standardMarkerAttributesForAttributes:(id)attributes
 {
-  v4 = [MEMORY[0x1E695DF90] dictionary];
-  v5 = [a3 objectForKey:@"NSFont"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v5 = [attributes objectForKey:@"NSFont"];
   if (v5)
   {
-    [v4 setObject:v5 forKey:@"NSFont"];
+    [dictionary setObject:v5 forKey:@"NSFont"];
   }
 
-  v6 = [a3 objectForKey:@"NSParagraphStyle"];
+  v6 = [attributes objectForKey:@"NSParagraphStyle"];
   if (v6)
   {
-    [v4 setObject:v6 forKey:@"NSParagraphStyle"];
+    [dictionary setObject:v6 forKey:@"NSParagraphStyle"];
   }
 
-  v7 = [a3 objectForKey:@"NSColor"];
+  v7 = [attributes objectForKey:@"NSColor"];
   if (v7)
   {
-    [v4 setObject:v7 forKey:@"NSColor"];
+    [dictionary setObject:v7 forKey:@"NSColor"];
   }
 
-  v8 = [a3 objectForKey:@"NSBackgroundColor"];
+  v8 = [attributes objectForKey:@"NSBackgroundColor"];
   if (v8)
   {
-    [v4 setObject:v8 forKey:@"NSBackgroundColor"];
+    [dictionary setObject:v8 forKey:@"NSBackgroundColor"];
   }
 
-  return v4;
+  return dictionary;
 }
 
 @end

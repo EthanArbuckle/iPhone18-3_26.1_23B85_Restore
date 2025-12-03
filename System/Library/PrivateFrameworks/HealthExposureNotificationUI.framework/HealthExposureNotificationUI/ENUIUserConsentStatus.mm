@@ -1,7 +1,7 @@
 @interface ENUIUserConsentStatus
 - (NSDate)dateConsented;
 - (_TtC28HealthExposureNotificationUI21ENUIUserConsentStatus)init;
-- (_TtC28HealthExposureNotificationUI21ENUIUserConsentStatus)initWithTextConsented:(id)a3 versionConsented:(id)a4 dateConsented:(id)a5;
+- (_TtC28HealthExposureNotificationUI21ENUIUserConsentStatus)initWithTextConsented:(id)consented versionConsented:(id)versionConsented dateConsented:(id)dateConsented;
 @end
 
 @implementation ENUIUserConsentStatus
@@ -20,7 +20,7 @@
   return v8;
 }
 
-- (_TtC28HealthExposureNotificationUI21ENUIUserConsentStatus)initWithTextConsented:(id)a3 versionConsented:(id)a4 dateConsented:(id)a5
+- (_TtC28HealthExposureNotificationUI21ENUIUserConsentStatus)initWithTextConsented:(id)consented versionConsented:(id)versionConsented dateConsented:(id)dateConsented
 {
   v6 = sub_251702E24();
   v7 = *(v6 - 8);

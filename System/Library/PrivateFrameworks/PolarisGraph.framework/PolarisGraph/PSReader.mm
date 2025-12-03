@@ -1,15 +1,15 @@
 @interface PSReader
-- (PSReader)initWithName:(id)a3 withInput:(id)a4;
+- (PSReader)initWithName:(id)name withInput:(id)input;
 - (id)description;
 - (void)dealloc;
 @end
 
 @implementation PSReader
 
-- (PSReader)initWithName:(id)a3 withInput:(id)a4
+- (PSReader)initWithName:(id)name withInput:(id)input
 {
-  v7 = a3;
-  v8 = a4;
+  nameCopy = name;
+  inputCopy = input;
   v16.receiver = self;
   v16.super_class = PSReader;
   v9 = [(PSReader *)&v16 init];
@@ -19,8 +19,8 @@
     goto LABEL_4;
   }
 
-  objc_storeStrong(&v9->_name, a3);
-  objc_storeStrong(&v10->_input, a4);
+  objc_storeStrong(&v9->_name, name);
+  objc_storeStrong(&v10->_input, input);
   v11 = malloc_type_calloc(1uLL, 0x38uLL, 0x10A0040F0D21161uLL);
   v10->_context = v11;
   if (v11)

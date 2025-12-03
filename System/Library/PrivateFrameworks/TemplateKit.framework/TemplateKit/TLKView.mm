@@ -1,11 +1,11 @@
 @interface TLKView
 + (UIEdgeInsets)defaultLayoutMargins;
-+ (void)enableLightKeylineStroke:(BOOL)a3 forView:(id)a4;
-+ (void)enableShadow:(BOOL)a3 forView:(id)a4;
-+ (void)makeContainerShadowCompatible:(id)a3;
++ (void)enableLightKeylineStroke:(BOOL)stroke forView:(id)view;
++ (void)enableShadow:(BOOL)shadow forView:(id)view;
++ (void)makeContainerShadowCompatible:(id)compatible;
 - (BOOL)isLayoutSizeDependentOnPerpendicularAxis;
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (TLKObserver)observer;
 - (TLKView)init;
 - (UIEdgeInsets)defaultBaselineRelativeLayoutMargins;
@@ -14,7 +14,7 @@
 - (id)viewForLastBaselineLayout;
 - (void)layoutMarginsDidChange;
 - (void)layoutSubviews;
-- (void)performBatchUpdates:(id)a3;
+- (void)performBatchUpdates:(id)updates;
 - (void)propertiesDidChange;
 @end
 
@@ -22,10 +22,10 @@
 
 - (BOOL)isLayoutSizeDependentOnPerpendicularAxis
 {
-  v2 = [(TLKView *)self contentView];
-  v3 = [v2 isLayoutSizeDependentOnPerpendicularAxis];
+  contentView = [(TLKView *)self contentView];
+  isLayoutSizeDependentOnPerpendicularAxis = [contentView isLayoutSizeDependentOnPerpendicularAxis];
 
-  return v3;
+  return isLayoutSizeDependentOnPerpendicularAxis;
 }
 
 - (void)layoutSubviews
@@ -38,8 +38,8 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(TLKView *)self contentView];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  contentView = [(TLKView *)self contentView];
+  [contentView setFrame:{v4, v6, v8, v10}];
 }
 
 - (TLKView)init
@@ -51,11 +51,11 @@
   if (v2)
   {
     [(TLKView *)v2 setObserver:v2];
-    v4 = [(TLKView *)v3 setupContentView];
+    setupContentView = [(TLKView *)v3 setupContentView];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = setupContentView;
       [v5 setLayoutMarginsRelativeArrangement:1];
       if ([(TLKView *)v3 usesDefaultLayoutMargins])
       {
@@ -64,11 +64,11 @@
       }
     }
 
-    [(TLKView *)v3 setContentView:v4];
-    v6 = [(TLKView *)v3 contentView];
-    [v6 setInvalidatingIntrinsicContentSizeAlsoInvalidatesSuperview:1];
+    [(TLKView *)v3 setContentView:setupContentView];
+    contentView = [(TLKView *)v3 contentView];
+    [contentView setInvalidatingIntrinsicContentSizeAlsoInvalidatesSuperview:1];
 
-    [(TLKView *)v3 addSubview:v4];
+    [(TLKView *)v3 addSubview:setupContentView];
   }
 
   return v3;
@@ -83,7 +83,7 @@
 
 - (void)layoutMarginsDidChange
 {
-  v3 = [(TLKView *)self contentView];
+  contentView = [(TLKView *)self contentView];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -94,8 +94,8 @@
     v8 = v7;
     v10 = v9;
     v12 = v11;
-    v13 = [(TLKView *)self contentView];
-    [v13 setLayoutMargins:{v6, v8, v10, v12}];
+    contentView2 = [(TLKView *)self contentView];
+    [contentView2 setLayoutMargins:{v6, v8, v10, v12}];
   }
 }
 
@@ -104,17 +104,17 @@
   [(TLKView *)self observedPropertiesChanged];
   if ([(TLKView *)self usesDefaultLayoutMargins])
   {
-    v3 = [(TLKView *)self contentView];
+    contentView = [(TLKView *)self contentView];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v5 = [(TLKView *)self contentView];
-      if ([v5 hasBaselineRelativeLayoutMarginsForArrangement])
+      contentView2 = [(TLKView *)self contentView];
+      if ([contentView2 hasBaselineRelativeLayoutMarginsForArrangement])
       {
         [(TLKView *)self defaultBaselineRelativeLayoutMargins];
-        [v5 setLayoutMargins:?];
+        [contentView2 setLayoutMargins:?];
       }
     }
   }
@@ -157,13 +157,13 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(TLKView *)self viewForFirstBaselineLayout];
+  viewForFirstBaselineLayout = [(TLKView *)self viewForFirstBaselineLayout];
   v12 = objc_opt_respondsToSelector();
 
   if (v12)
   {
-    v13 = [(TLKView *)self viewForFirstBaselineLayout];
-    v14 = [v13 performSelector:sel_font];
+    viewForFirstBaselineLayout2 = [(TLKView *)self viewForFirstBaselineLayout];
+    v14 = [viewForFirstBaselineLayout2 performSelector:sel_font];
 
     [v14 capHeight];
     [TLKLayoutUtilities deviceScaledRoundedValue:self forView:?];
@@ -188,14 +188,14 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(TLKView *)self contentView];
+  contentView = [(TLKView *)self contentView];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v13 = [(TLKView *)self contentView];
-    [v13 layoutMargins];
+    contentView2 = [(TLKView *)self contentView];
+    [contentView2 layoutMargins];
     v4 = v14;
     v6 = v15;
     v8 = v16;
@@ -215,95 +215,95 @@
 
 - (id)viewForFirstBaselineLayout
 {
-  v3 = [(TLKView *)self contentView];
+  contentView = [(TLKView *)self contentView];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [(TLKView *)self contentView];
-    v6 = [v5 viewForFirstBaselineLayout];
+    contentView2 = [(TLKView *)self contentView];
+    viewForFirstBaselineLayout = [contentView2 viewForFirstBaselineLayout];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = TLKView;
-    v6 = [(TLKView *)&v8 viewForFirstBaselineLayout];
+    viewForFirstBaselineLayout = [(TLKView *)&v8 viewForFirstBaselineLayout];
   }
 
-  return v6;
+  return viewForFirstBaselineLayout;
 }
 
 - (id)viewForLastBaselineLayout
 {
-  v3 = [(TLKView *)self contentView];
+  contentView = [(TLKView *)self contentView];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [(TLKView *)self contentView];
-    v6 = [v5 viewForLastBaselineLayout];
+    contentView2 = [(TLKView *)self contentView];
+    viewForLastBaselineLayout = [contentView2 viewForLastBaselineLayout];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = TLKView;
-    v6 = [(TLKView *)&v8 viewForLastBaselineLayout];
+    viewForLastBaselineLayout = [(TLKView *)&v8 viewForLastBaselineLayout];
   }
 
-  return v6;
+  return viewForLastBaselineLayout;
 }
 
-- (void)performBatchUpdates:(id)a3
+- (void)performBatchUpdates:(id)updates
 {
-  v4 = a3;
-  v5 = [(TLKView *)self observer];
-  [v5 setBatchUpdateCount:{objc_msgSend(v5, "batchUpdateCount") + 1}];
+  updatesCopy = updates;
+  observer = [(TLKView *)self observer];
+  [observer setBatchUpdateCount:{objc_msgSend(observer, "batchUpdateCount") + 1}];
 
-  if (v4)
+  if (updatesCopy)
   {
-    v6 = [(TLKView *)self contentView];
+    contentView = [(TLKView *)self contentView];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v8 = [(TLKView *)self contentView];
+      contentView2 = [(TLKView *)self contentView];
       v12[0] = MEMORY[0x1E69E9820];
       v12[1] = 3221225472;
       v12[2] = __31__TLKView_performBatchUpdates___block_invoke;
       v12[3] = &unk_1E7FD90A0;
-      v13 = v4;
-      [v8 performBatchUpdates:v12];
+      v13 = updatesCopy;
+      [contentView2 performBatchUpdates:v12];
     }
 
     else
     {
-      v4[2](v4);
+      updatesCopy[2](updatesCopy);
     }
   }
 
-  v9 = [(TLKView *)self observer];
-  [v9 setBatchUpdateCount:{objc_msgSend(v9, "batchUpdateCount") - 1}];
+  observer2 = [(TLKView *)self observer];
+  [observer2 setBatchUpdateCount:{objc_msgSend(observer2, "batchUpdateCount") - 1}];
 
-  v10 = [(TLKView *)self observer];
-  v11 = [v10 batchUpdateCount];
+  observer3 = [(TLKView *)self observer];
+  batchUpdateCount = [observer3 batchUpdateCount];
 
-  if (!v11)
+  if (!batchUpdateCount)
   {
     [(TLKView *)self propertiesDidChange];
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [(TLKView *)self contentView];
-  [v5 effectiveLayoutSizeFittingSize:{width, height}];
+  height = fits.height;
+  width = fits.width;
+  contentView = [(TLKView *)self contentView];
+  [contentView effectiveLayoutSizeFittingSize:{width, height}];
   v7 = v6;
   v9 = v8;
 
@@ -316,8 +316,8 @@
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = [(TLKView *)self contentView];
-  [v2 intrinsicContentSize];
+  contentView = [(TLKView *)self contentView];
+  [contentView intrinsicContentSize];
   v4 = v3;
   v6 = v5;
 
@@ -328,65 +328,65 @@
   return result;
 }
 
-+ (void)enableLightKeylineStroke:(BOOL)a3 forView:(id)a4
++ (void)enableLightKeylineStroke:(BOOL)stroke forView:(id)view
 {
-  v4 = a3;
-  v11 = a4;
-  v6 = [v11 layer];
+  strokeCopy = stroke;
+  viewCopy = view;
+  layer = [viewCopy layer];
   v7 = 0.0;
-  if (v4)
+  if (strokeCopy)
   {
-    [a1 makeContainerShadowCompatible:{v11, 0.0}];
-    [TLKUtilities pixelWidthForView:v11];
+    [self makeContainerShadowCompatible:{viewCopy, 0.0}];
+    [TLKUtilities pixelWidthForView:viewCopy];
     v9 = v8 * 1.5;
     if (v9 > 1.0)
     {
       v9 = 1.0;
     }
 
-    [v6 setShadowRadius:v9];
-    [v6 setShadowOffset:{*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)}];
-    v10 = [MEMORY[0x1E69DC888] whiteColor];
-    [v6 setShadowColor:{objc_msgSend(v10, "CGColor")}];
+    [layer setShadowRadius:v9];
+    [layer setShadowOffset:{*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)}];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [layer setShadowColor:{objc_msgSend(whiteColor, "CGColor")}];
 
-    [v6 setShadowPath:0];
+    [layer setShadowPath:0];
     LODWORD(v7) = 1058642330;
   }
 
-  [v6 setShadowOpacity:v7];
+  [layer setShadowOpacity:v7];
 }
 
-+ (void)enableShadow:(BOOL)a3 forView:(id)a4
++ (void)enableShadow:(BOOL)shadow forView:(id)view
 {
-  v4 = a3;
-  v11 = a4;
-  v6 = [v11 layer];
+  shadowCopy = shadow;
+  viewCopy = view;
+  layer = [viewCopy layer];
   v7 = 0.0;
-  if (v4)
+  if (shadowCopy)
   {
-    [a1 makeContainerShadowCompatible:{v11, 0.0}];
-    v8 = [v6 isGeometryFlipped];
+    [self makeContainerShadowCompatible:{viewCopy, 0.0}];
+    isGeometryFlipped = [layer isGeometryFlipped];
     v9 = -2.0;
-    if (!v8)
+    if (!isGeometryFlipped)
     {
       v9 = 2.0;
     }
 
-    [v6 setShadowOffset:{0.0, v9}];
-    [v6 setShadowRadius:8.0];
-    v10 = [MEMORY[0x1E69DC888] blackColor];
-    [v6 setShadowColor:{objc_msgSend(v10, "CGColor")}];
+    [layer setShadowOffset:{0.0, v9}];
+    [layer setShadowRadius:8.0];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
+    [layer setShadowColor:{objc_msgSend(blackColor, "CGColor")}];
 
     LODWORD(v7) = 1039516303;
   }
 
-  [v6 setShadowOpacity:v7];
+  [layer setShadowOpacity:v7];
 }
 
-+ (void)makeContainerShadowCompatible:(id)a3
++ (void)makeContainerShadowCompatible:(id)compatible
 {
-  v3 = [a3 layer];
-  [v3 setMasksToBounds:0];
+  layer = [compatible layer];
+  [layer setMasksToBounds:0];
 }
 
 @end

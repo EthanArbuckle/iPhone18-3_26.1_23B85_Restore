@@ -1,8 +1,8 @@
 @interface SACInfoListener
 - (SACInfoListener)init;
-- (void)handleSACInfo:(id)a3;
+- (void)handleSACInfo:(id)info;
 - (void)handleServiceCrash;
-- (void)setListenerVerbosity:(unint64_t)a3;
+- (void)setListenerVerbosity:(unint64_t)verbosity;
 - (void)startServiceConnection;
 @end
 
@@ -64,9 +64,9 @@
 
   [(NSXPCConnection *)self->mServiceConnection setExportedObject:self];
   [(NSXPCConnection *)self->mServiceConnection resume];
-  v9 = [(NSXPCConnection *)self->mServiceConnection remoteObjectProxy];
+  remoteObjectProxy = [(NSXPCConnection *)self->mServiceConnection remoteObjectProxy];
   mProxyInterface = self->mProxyInterface;
-  self->mProxyInterface = v9;
+  self->mProxyInterface = remoteObjectProxy;
 
   [(SACServiceDelegate *)self->mProxyInterface registerAsInfoListener];
   _Block_object_dispose(v13, 8);
@@ -96,9 +96,9 @@
   dispatch_after(v5, MEMORY[0x277D85CD0], block);
 }
 
-- (void)setListenerVerbosity:(unint64_t)a3
+- (void)setListenerVerbosity:(unint64_t)verbosity
 {
-  self->mVerbosity = a3;
+  self->mVerbosity = verbosity;
   mProxyInterface = self->mProxyInterface;
   if (mProxyInterface)
   {
@@ -106,16 +106,16 @@
   }
 }
 
-- (void)handleSACInfo:(id)a3
+- (void)handleSACInfo:(id)info
 {
-  v7 = a3;
-  v4 = [(SACInfoListener *)self delegate];
+  infoCopy = info;
+  delegate = [(SACInfoListener *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(SACInfoListener *)self delegate];
-    [v6 handleSACInfo:v7];
+    delegate2 = [(SACInfoListener *)self delegate];
+    [delegate2 handleSACInfo:infoCopy];
   }
 }
 

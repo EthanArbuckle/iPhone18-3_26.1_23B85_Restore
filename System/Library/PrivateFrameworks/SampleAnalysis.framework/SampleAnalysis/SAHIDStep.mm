@@ -1,18 +1,18 @@
 @interface SAHIDStep
-+ (SAHIDStep)hidStepWithDebugId:(int)a3 pid:(unint64_t)a4 tid:;
++ (SAHIDStep)hidStepWithDebugId:(int)id pid:(unint64_t)pid tid:;
 - (NSString)debugidString;
 - (id)debugDescription;
 @end
 
 @implementation SAHIDStep
 
-+ (SAHIDStep)hidStepWithDebugId:(int)a3 pid:(unint64_t)a4 tid:
++ (SAHIDStep)hidStepWithDebugId:(int)id pid:(unint64_t)pid tid:
 {
   objc_opt_self();
   v7 = objc_alloc_init(SAHIDStep);
   v7->_debugid = a2;
-  v7->_pid = a3;
-  v7->_tid = a4;
+  v7->_pid = id;
+  v7->_tid = pid;
 
   return v7;
 }
@@ -163,8 +163,8 @@ LABEL_47:
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
   v4 = [(SATimestamp *)self->_timestamp debugDescription];
   debugid = self->_debugid;
-  v6 = [(SAHIDStep *)self debugidString];
-  v7 = [v3 initWithFormat:@"%@ %#10x (%@) [%d] thread 0x%llx", v4, debugid, v6, self->_pid, self->_tid];
+  debugidString = [(SAHIDStep *)self debugidString];
+  v7 = [v3 initWithFormat:@"%@ %#10x (%@) [%d] thread 0x%llx", v4, debugid, debugidString, self->_pid, self->_tid];
 
   return v7;
 }

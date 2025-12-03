@@ -1,8 +1,8 @@
 @interface NUResetScaleNode
 - ($0AC6E346AE4835514AAA8AC86D8F4844)scale;
-- (NUResetScaleNode)initWithInput:(id)a3 scale:(id)a4;
-- (NUResetScaleNode)initWithInput:(id)a3 settings:(id)a4;
-- (id)nodeByReplayingAgainstCache:(id)a3 pipelineState:(id)a4 error:(id *)a5;
+- (NUResetScaleNode)initWithInput:(id)input scale:(id)scale;
+- (NUResetScaleNode)initWithInput:(id)input settings:(id)settings;
+- (id)nodeByReplayingAgainstCache:(id)cache pipelineState:(id)state error:(id *)error;
 @end
 
 @implementation NUResetScaleNode
@@ -17,12 +17,12 @@
   return result;
 }
 
-- (id)nodeByReplayingAgainstCache:(id)a3 pipelineState:(id)a4 error:(id *)a5
+- (id)nodeByReplayingAgainstCache:(id)cache pipelineState:(id)state error:(id *)error
 {
   v35 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  if (!a5)
+  cacheCopy = cache;
+  stateCopy = state;
+  if (!error)
   {
     v15 = NUAssertLogger_13707();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -43,8 +43,8 @@
         v22 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v23 = MEMORY[0x1E696AF00];
         v24 = v22;
-        v25 = [v23 callStackSymbols];
-        v26 = [v25 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v23 callStackSymbols];
+        v26 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v32 = v22;
         v33 = 2114;
@@ -55,8 +55,8 @@
 
     else if (v19)
     {
-      v20 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v21 = [v20 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v21 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v32 = v21;
       _os_log_error_impl(&dword_1C0184000, v18, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -65,21 +65,21 @@
     _NUAssertFailHandler("[NUResetScaleNode nodeByReplayingAgainstCache:pipelineState:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NURenderSourceNode+Scale.m", 277, @"Invalid parameter not satisfying: %s", v27, v28, v29, v30, "error != nil");
   }
 
-  v10 = v9;
-  v11 = [(NUAbstractScaleNode *)self inputNode];
+  v10 = stateCopy;
+  inputNode = [(NUAbstractScaleNode *)self inputNode];
   v12 = [v10 copy];
   [v12 setScale:{self->_scale.numerator, self->_scale.denominator}];
-  v13 = [v11 nodeByReplayingAgainstCache:v8 pipelineState:v12 error:a5];
+  v13 = [inputNode nodeByReplayingAgainstCache:cacheCopy pipelineState:v12 error:error];
 
   return v13;
 }
 
-- (NUResetScaleNode)initWithInput:(id)a3 scale:(id)a4
+- (NUResetScaleNode)initWithInput:(id)input scale:(id)scale
 {
-  var1 = a4.var1;
-  var0 = a4.var0;
+  var1 = scale.var1;
+  var0 = scale.var0;
   v36 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  inputCopy = input;
   if (var0 < 1 || var1 <= 0)
   {
     v13 = NUAssertLogger_13707();
@@ -101,8 +101,8 @@
         v20 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v21 = MEMORY[0x1E696AF00];
         v22 = v20;
-        v23 = [v21 callStackSymbols];
-        v24 = [v23 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v21 callStackSymbols];
+        v24 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v33 = v20;
         v34 = 2114;
@@ -113,8 +113,8 @@
 
     else if (v17)
     {
-      v18 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v19 = [v18 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v19 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v33 = v19;
       _os_log_error_impl(&dword_1C0184000, v16, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -123,10 +123,10 @@
     _NUAssertFailHandler("[NUResetScaleNode initWithInput:scale:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NURenderSourceNode+Scale.m", 268, @"Invalid parameter not satisfying: %s", v25, v26, v27, v28, "NUScaleIsValid(scale)");
   }
 
-  v8 = v7;
+  v8 = inputCopy;
   v30 = @"scale";
-  v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%ld:%ld", var0, var1];
-  v31 = v9;
+  var1 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%ld:%ld", var0, var1];
+  v31 = var1;
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v31 forKeys:&v30 count:1];
   v29.receiver = self;
   v29.super_class = NUResetScaleNode;
@@ -138,11 +138,11 @@
   return v11;
 }
 
-- (NUResetScaleNode)initWithInput:(id)a3 settings:(id)a4
+- (NUResetScaleNode)initWithInput:(id)input settings:(id)settings
 {
   v38 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  inputCopy = input;
+  settingsCopy = settings;
   if (_NULogOnceToken != -1)
   {
     dispatch_once(&_NULogOnceToken, &__block_literal_global_13724);
@@ -186,8 +186,8 @@ LABEL_8:
     {
       v17 = MEMORY[0x1E696AF00];
       v18 = v16;
-      v19 = [v17 callStackSymbols];
-      v20 = [v19 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v17 callStackSymbols];
+      v20 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v35 = v20;
       _os_log_error_impl(&dword_1C0184000, v18, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -203,8 +203,8 @@ LABEL_8:
     v23 = MEMORY[0x1E696AF00];
     v24 = specific;
     v25 = v21;
-    v26 = [v23 callStackSymbols];
-    v27 = [v26 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v23 callStackSymbols];
+    v27 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v35 = specific;
     v36 = 2114;

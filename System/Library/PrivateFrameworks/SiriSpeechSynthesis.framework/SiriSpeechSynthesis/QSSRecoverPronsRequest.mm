@@ -3,8 +3,8 @@
 - (NSString)language;
 - (NSString)session_id;
 - (NSString)speech_id;
-- (Offset<siri::speech::schema_fb::RecoverPronsRequest>)addObjectToBuffer:(void *)a3;
-- (QSSRecoverPronsRequest)initWithFlatbuffData:(id)a3 root:(const RecoverPronsRequest *)a4 verify:(BOOL)a5;
+- (Offset<siri::speech::schema_fb::RecoverPronsRequest>)addObjectToBuffer:(void *)buffer;
+- (QSSRecoverPronsRequest)initWithFlatbuffData:(id)data root:(const RecoverPronsRequest *)root verify:(BOOL)verify;
 - (id)flatbuffData;
 @end
 
@@ -39,52 +39,52 @@ flatbuffers::DetachedBuffer *__38__QSSRecoverPronsRequest_flatbuffData__block_in
   return result;
 }
 
-- (Offset<siri::speech::schema_fb::RecoverPronsRequest>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::schema_fb::RecoverPronsRequest>)addObjectToBuffer:(void *)buffer
 {
   v43 = *MEMORY[0x277D85DE8];
-  v5 = [(QSSRecoverPronsRequest *)self speech_id];
-  v6 = v5;
-  if (!v5)
+  speech_id = [(QSSRecoverPronsRequest *)self speech_id];
+  v6 = speech_id;
+  if (!speech_id)
   {
-    v5 = &stru_2879AE8E0;
+    speech_id = &stru_2879AE8E0;
   }
 
-  v7 = [(__CFString *)v5 UTF8String];
-  v8 = strlen(v7);
-  String = flatbuffers::FlatBufferBuilder::CreateString(a3, v7, v8);
+  uTF8String = [(__CFString *)speech_id UTF8String];
+  v8 = strlen(uTF8String);
+  String = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String, v8);
 
-  v10 = [(QSSRecoverPronsRequest *)self session_id];
-  v11 = v10;
-  if (!v10)
+  session_id = [(QSSRecoverPronsRequest *)self session_id];
+  v11 = session_id;
+  if (!session_id)
   {
-    v10 = &stru_2879AE8E0;
+    session_id = &stru_2879AE8E0;
   }
 
-  v12 = [(__CFString *)v10 UTF8String];
-  v13 = strlen(v12);
-  v14 = flatbuffers::FlatBufferBuilder::CreateString(a3, v12, v13);
+  uTF8String2 = [(__CFString *)session_id UTF8String];
+  v13 = strlen(uTF8String2);
+  v14 = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String2, v13);
 
-  v15 = [(QSSRecoverPronsRequest *)self language];
-  v16 = v15;
-  if (!v15)
+  language = [(QSSRecoverPronsRequest *)self language];
+  v16 = language;
+  if (!language)
   {
-    v15 = &stru_2879AE8E0;
+    language = &stru_2879AE8E0;
   }
 
-  v17 = [(__CFString *)v15 UTF8String];
-  v18 = strlen(v17);
-  v19 = flatbuffers::FlatBufferBuilder::CreateString(a3, v17, v18);
+  uTF8String3 = [(__CFString *)language UTF8String];
+  v18 = strlen(uTF8String3);
+  v19 = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String3, v18);
 
   memset(&v41, 0, sizeof(v41));
-  v20 = [(QSSRecoverPronsRequest *)self apg_ids];
-  std::vector<flatbuffers::Offset<siri::speech::schema_fb::RecognitionToken>>::reserve(&v41, [v20 count]);
+  apg_ids = [(QSSRecoverPronsRequest *)self apg_ids];
+  std::vector<flatbuffers::Offset<siri::speech::schema_fb::RecognitionToken>>::reserve(&v41, [apg_ids count]);
 
   v39 = 0u;
   v40 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v21 = [(QSSRecoverPronsRequest *)self apg_ids];
-  v22 = [v21 countByEnumeratingWithState:&v37 objects:v42 count:16];
+  apg_ids2 = [(QSSRecoverPronsRequest *)self apg_ids];
+  v22 = [apg_ids2 countByEnumeratingWithState:&v37 objects:v42 count:16];
   if (v22)
   {
     v23 = *v38;
@@ -94,16 +94,16 @@ flatbuffers::DetachedBuffer *__38__QSSRecoverPronsRequest_flatbuffData__block_in
       {
         if (*v38 != v23)
         {
-          objc_enumerationMutation(v21);
+          objc_enumerationMutation(apg_ids2);
         }
 
-        v25 = [*(*(&v37 + 1) + 8 * i) UTF8String];
-        v26 = strlen(v25);
-        v36 = flatbuffers::FlatBufferBuilder::CreateString(a3, v25, v26);
+        uTF8String4 = [*(*(&v37 + 1) + 8 * i) UTF8String];
+        v26 = strlen(uTF8String4);
+        v36 = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String4, v26);
         std::vector<flatbuffers::Offset<siri::speech::schema_fb::RecognitionToken>>::push_back[abi:ne200100](&v41, &v36);
       }
 
-      v22 = [v21 countByEnumeratingWithState:&v37 objects:v42 count:16];
+      v22 = [apg_ids2 countByEnumeratingWithState:&v37 objects:v42 count:16];
     }
 
     while (v22);
@@ -120,17 +120,17 @@ flatbuffers::DetachedBuffer *__38__QSSRecoverPronsRequest_flatbuffData__block_in
     v28 = v41.__begin_;
   }
 
-  v29 = flatbuffers::FlatBufferBuilder::CreateVector<flatbuffers::String>(a3, v28, v41.__end_ - v41.__begin_);
-  flatbuffers::FlatBufferBuilder::NotNested(a3);
-  *(a3 + 70) = 1;
-  v30 = *(a3 + 8);
-  v31 = *(a3 + 12);
-  v32 = *(a3 + 10);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 4, String);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 6, v14);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 8, v19);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 10, v29);
-  v33.var0 = flatbuffers::FlatBufferBuilder::EndTable(a3, v30 - v31 + v32);
+  v29 = flatbuffers::FlatBufferBuilder::CreateVector<flatbuffers::String>(buffer, v28, v41.__end_ - v41.__begin_);
+  flatbuffers::FlatBufferBuilder::NotNested(buffer);
+  *(buffer + 70) = 1;
+  v30 = *(buffer + 8);
+  v31 = *(buffer + 12);
+  v32 = *(buffer + 10);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 4, String);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 6, v14);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 8, v19);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 10, v29);
+  v33.var0 = flatbuffers::FlatBufferBuilder::EndTable(buffer, v30 - v31 + v32);
   if (begin)
   {
     operator delete(begin);
@@ -142,10 +142,10 @@ flatbuffers::DetachedBuffer *__38__QSSRecoverPronsRequest_flatbuffData__block_in
 
 - (NSArray)apg_ids
 {
-  v3 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"apg_ids"];
-  if (!v3)
+  array = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"apg_ids"];
+  if (!array)
   {
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     root = self->_root;
     v5 = &root[-*root->var0];
     if (*v5->var0 >= 0xBu)
@@ -162,7 +162,7 @@ flatbuffers::DetachedBuffer *__38__QSSRecoverPronsRequest_flatbuffData__block_in
           do
           {
             v11 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:&v10[*v10->var0 + 4] length:*v10[*v10->var0].var0 encoding:4];
-            [v3 addObject:v11];
+            [array addObject:v11];
 
             v10 += 4;
             v9 -= 4;
@@ -173,10 +173,10 @@ flatbuffers::DetachedBuffer *__38__QSSRecoverPronsRequest_flatbuffData__block_in
       }
     }
 
-    [(NSMutableDictionary *)self->_storage setObject:v3 forKeyedSubscript:@"apg_ids"];
+    [(NSMutableDictionary *)self->_storage setObject:array forKeyedSubscript:@"apg_ids"];
   }
 
-  return v3;
+  return array;
 }
 
 - (NSString)language
@@ -248,10 +248,10 @@ flatbuffers::DetachedBuffer *__38__QSSRecoverPronsRequest_flatbuffData__block_in
   return v6;
 }
 
-- (QSSRecoverPronsRequest)initWithFlatbuffData:(id)a3 root:(const RecoverPronsRequest *)a4 verify:(BOOL)a5
+- (QSSRecoverPronsRequest)initWithFlatbuffData:(id)data root:(const RecoverPronsRequest *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v41.receiver = self;
   v41.super_class = QSSRecoverPronsRequest;
   v10 = [(QSSRecoverPronsRequest *)&v41 init];
@@ -261,35 +261,35 @@ flatbuffers::DetachedBuffer *__38__QSSRecoverPronsRequest_flatbuffData__block_in
     goto LABEL_42;
   }
 
-  if (!v9 || ![v9 length])
+  if (!dataCopy || ![dataCopy length])
   {
     goto LABEL_43;
   }
 
-  objc_storeStrong(&v10->_data, a3);
-  if (!a4)
+  objc_storeStrong(&v10->_data, data);
+  if (!root)
   {
-    v12 = [(NSData *)v10->_data bytes];
-    a4 = v12 + *v12;
+    bytes = [(NSData *)v10->_data bytes];
+    root = bytes + *bytes;
   }
 
-  v10->_root = a4;
-  if (!v5)
+  v10->_root = root;
+  if (!verifyCopy)
   {
     goto LABEL_41;
   }
 
-  v13 = [(NSData *)v10->_data bytes];
+  bytes2 = [(NSData *)v10->_data bytes];
   v14 = [(NSData *)v10->_data length];
   root = v10->_root;
-  if (root < v13 || root > v13 + v14)
+  if (root < bytes2 || root > bytes2 + v14)
   {
     goto LABEL_43;
   }
 
-  v17 = [(NSData *)v10->_data bytes];
+  bytes3 = [(NSData *)v10->_data bytes];
   v18 = [(NSData *)v10->_data length];
-  v36 = v17;
+  v36 = bytes3;
   v37 = v18;
   v38 = xmmword_26914CD70;
   v39 = 0;
@@ -399,9 +399,9 @@ LABEL_40:
   }
 
 LABEL_41:
-  v32 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   storage = v11->_storage;
-  v11->_storage = v32;
+  v11->_storage = dictionary;
 
 LABEL_42:
   v34 = v11;

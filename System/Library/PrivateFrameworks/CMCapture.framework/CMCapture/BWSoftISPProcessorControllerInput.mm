@@ -1,21 +1,21 @@
 @interface BWSoftISPProcessorControllerInput
-- (BWSoftISPProcessorControllerInput)initWithSettings:(id)a3 portType:(id)a4 resolutionFlavor:(int)a5 gdcEnabled:(BOOL)a6;
+- (BWSoftISPProcessorControllerInput)initWithSettings:(id)settings portType:(id)type resolutionFlavor:(int)flavor gdcEnabled:(BOOL)enabled;
 - (id)description;
-- (void)addFrame:(opaqueCMSampleBuffer *)a3 processingMode:(int)a4 transferOwnership:(BOOL)a5;
+- (void)addFrame:(opaqueCMSampleBuffer *)frame processingMode:(int)mode transferOwnership:(BOOL)ownership;
 - (void)dealloc;
 @end
 
 @implementation BWSoftISPProcessorControllerInput
 
-- (BWSoftISPProcessorControllerInput)initWithSettings:(id)a3 portType:(id)a4 resolutionFlavor:(int)a5 gdcEnabled:(BOOL)a6
+- (BWSoftISPProcessorControllerInput)initWithSettings:(id)settings portType:(id)type resolutionFlavor:(int)flavor gdcEnabled:(BOOL)enabled
 {
   v9.receiver = self;
   v9.super_class = BWSoftISPProcessorControllerInput;
-  result = [(BWStillImageProcessorControllerInput *)&v9 initWithSettings:a3 portType:a4];
+  result = [(BWStillImageProcessorControllerInput *)&v9 initWithSettings:settings portType:type];
   if (result)
   {
-    result->_resolutionFlavor = a5;
-    result->_gdcEnabled = a6;
+    result->_resolutionFlavor = flavor;
+    result->_gdcEnabled = enabled;
   }
 
   return result;
@@ -34,7 +34,7 @@
   [(BWStillImageProcessorControllerInput *)&v4 dealloc];
 }
 
-- (void)addFrame:(opaqueCMSampleBuffer *)a3 processingMode:(int)a4 transferOwnership:(BOOL)a5
+- (void)addFrame:(opaqueCMSampleBuffer *)frame processingMode:(int)mode transferOwnership:(BOOL)ownership
 {
   frame = self->_frame;
   if (frame)
@@ -42,18 +42,18 @@
     CFRelease(frame);
   }
 
-  if (!a5 && a3)
+  if (!ownership && frame)
   {
-    a3 = CFRetain(a3);
+    frame = CFRetain(frame);
   }
 
-  self->_frame = a3;
-  self->_processingMode = a4;
-  v10 = [(BWStillImageProcessorControllerInput *)self delegate];
+  self->_frame = frame;
+  self->_processingMode = mode;
+  delegate = [(BWStillImageProcessorControllerInput *)self delegate];
   v11 = self->_frame;
   resolutionFlavor = self->_resolutionFlavor;
 
-  [(BWStillImageProcessorControllerInputUpdatesDelegate *)v10 input:self addFrame:v11 resolutionFlavor:resolutionFlavor];
+  [(BWStillImageProcessorControllerInputUpdatesDelegate *)delegate input:self addFrame:v11 resolutionFlavor:resolutionFlavor];
 }
 
 - (id)description

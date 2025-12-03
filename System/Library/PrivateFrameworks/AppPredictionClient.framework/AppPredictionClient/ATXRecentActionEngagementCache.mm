@@ -1,50 +1,50 @@
 @interface ATXRecentActionEngagementCache
 + (id)sharedInstance;
 - (ATXRecentActionEngagementCache)init;
-- (ATXRecentActionEngagementCache)initWithCacheDirectory:(id)a3;
+- (ATXRecentActionEngagementCache)initWithCacheDirectory:(id)directory;
 - (id)_getAllCachedActionsNoSync;
-- (id)_recentActionsNoSyncForCacheAtPath:(id)a3;
-- (id)exceptionsFoundInCacheAtPath:(id)a3 forCandidateExceptions:(id)a4;
+- (id)_recentActionsNoSyncForCacheAtPath:(id)path;
+- (id)exceptionsFoundInCacheAtPath:(id)path forCandidateExceptions:(id)exceptions;
 - (id)recentActions;
-- (void)_addEngagedActionNoSync:(id)a3 toCacheAtPath:(id)a4;
-- (void)_addEngagedActionSetNoSync:(id)a3 toCacheAtPath:(id)a4;
-- (void)_serializeAndWriteNoSyncActionSet:(id)a3 toCacheAtPath:(id)a4;
-- (void)addEngagedAction:(id)a3;
+- (void)_addEngagedActionNoSync:(id)sync toCacheAtPath:(id)path;
+- (void)_addEngagedActionSetNoSync:(id)sync toCacheAtPath:(id)path;
+- (void)_serializeAndWriteNoSyncActionSet:(id)set toCacheAtPath:(id)path;
+- (void)addEngagedAction:(id)action;
 - (void)clearRecentEngagements;
-- (void)clearRecentEngagementsFromCacheAtPath:(id)a3 withExceptionActions:(id)a4;
+- (void)clearRecentEngagementsFromCacheAtPath:(id)path withExceptionActions:(id)actions;
 @end
 
 @implementation ATXRecentActionEngagementCache
 
 - (ATXRecentActionEngagementCache)init
 {
-  v3 = [MEMORY[0x1E698B010] appPredictionCacheDirectory];
-  v4 = [(ATXRecentActionEngagementCache *)self initWithCacheDirectory:v3];
+  appPredictionCacheDirectory = [MEMORY[0x1E698B010] appPredictionCacheDirectory];
+  v4 = [(ATXRecentActionEngagementCache *)self initWithCacheDirectory:appPredictionCacheDirectory];
 
   return v4;
 }
 
-- (ATXRecentActionEngagementCache)initWithCacheDirectory:(id)a3
+- (ATXRecentActionEngagementCache)initWithCacheDirectory:(id)directory
 {
-  v4 = a3;
+  directoryCopy = directory;
   v17.receiver = self;
   v17.super_class = ATXRecentActionEngagementCache;
   v5 = [(ATXRecentActionEngagementCache *)&v17 init];
   if (v5)
   {
-    v6 = [v4 stringByAppendingPathComponent:@"ATXRecentMLActions"];
+    v6 = [directoryCopy stringByAppendingPathComponent:@"ATXRecentMLActions"];
     recentMLEngagementCachePath = v5->_recentMLEngagementCachePath;
     v5->_recentMLEngagementCachePath = v6;
 
-    v8 = [v4 stringByAppendingPathComponent:@"ATXRecentHeuristicActions"];
+    v8 = [directoryCopy stringByAppendingPathComponent:@"ATXRecentHeuristicActions"];
     recentHeuristicEngagementCachePath = v5->_recentHeuristicEngagementCachePath;
     v5->_recentHeuristicEngagementCachePath = v8;
 
     v10 = objc_opt_class();
     v11 = NSStringFromClass(v10);
-    v12 = [v11 UTF8String];
+    uTF8String = [v11 UTF8String];
     v13 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v14 = dispatch_queue_create(v12, v13);
+    v14 = dispatch_queue_create(uTF8String, v13);
     queue = v5->_queue;
     v5->_queue = v14;
   }
@@ -106,17 +106,17 @@ uint64_t __47__ATXRecentActionEngagementCache_recentActions__block_invoke(uint64
   return MEMORY[0x1EEE66BB8](v2, v4);
 }
 
-- (void)addEngagedAction:(id)a3
+- (void)addEngagedAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __51__ATXRecentActionEngagementCache_addEngagedAction___block_invoke;
   v7[3] = &unk_1E80C0958;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = actionCopy;
+  selfCopy = self;
+  v6 = actionCopy;
   dispatch_async(queue, v7);
 }
 
@@ -189,11 +189,11 @@ void __56__ATXRecentActionEngagementCache_clearRecentEngagements__block_invoke(u
   return v5;
 }
 
-- (id)_recentActionsNoSyncForCacheAtPath:(id)a3
+- (id)_recentActionsNoSyncForCacheAtPath:(id)path
 {
-  v3 = a3;
+  pathCopy = path;
   v20 = 0;
-  v4 = [MEMORY[0x1E695DEF0] dataWithContentsOfFile:v3 options:0 error:&v20];
+  v4 = [MEMORY[0x1E695DEF0] dataWithContentsOfFile:pathCopy options:0 error:&v20];
   v5 = v20;
   v6 = v5;
   if (v4)
@@ -246,44 +246,44 @@ void __56__ATXRecentActionEngagementCache_clearRecentEngagements__block_invoke(u
   return v16;
 }
 
-- (void)_addEngagedActionSetNoSync:(id)a3 toCacheAtPath:(id)a4
+- (void)_addEngagedActionSetNoSync:(id)sync toCacheAtPath:(id)path
 {
-  v8 = a3;
-  v6 = a4;
-  if (v8 && [v8 count])
+  syncCopy = sync;
+  pathCopy = path;
+  if (syncCopy && [syncCopy count])
   {
-    v7 = [(ATXRecentActionEngagementCache *)self _recentActionsNoSyncForCacheAtPath:v6];
-    [v7 unionSet:v8];
-    [(ATXRecentActionEngagementCache *)self _serializeAndWriteNoSyncActionSet:v7 toCacheAtPath:v6];
+    v7 = [(ATXRecentActionEngagementCache *)self _recentActionsNoSyncForCacheAtPath:pathCopy];
+    [v7 unionSet:syncCopy];
+    [(ATXRecentActionEngagementCache *)self _serializeAndWriteNoSyncActionSet:v7 toCacheAtPath:pathCopy];
   }
 }
 
-- (void)_addEngagedActionNoSync:(id)a3 toCacheAtPath:(id)a4
+- (void)_addEngagedActionNoSync:(id)sync toCacheAtPath:(id)path
 {
-  if (a3)
+  if (sync)
   {
-    v6 = a4;
-    v7 = a3;
-    v8 = [(ATXRecentActionEngagementCache *)self _recentActionsNoSyncForCacheAtPath:v6];
-    [v8 addObject:v7];
+    pathCopy = path;
+    syncCopy = sync;
+    v8 = [(ATXRecentActionEngagementCache *)self _recentActionsNoSyncForCacheAtPath:pathCopy];
+    [v8 addObject:syncCopy];
 
-    [(ATXRecentActionEngagementCache *)self _serializeAndWriteNoSyncActionSet:v8 toCacheAtPath:v6];
+    [(ATXRecentActionEngagementCache *)self _serializeAndWriteNoSyncActionSet:v8 toCacheAtPath:pathCopy];
   }
 }
 
-- (void)_serializeAndWriteNoSyncActionSet:(id)a3 toCacheAtPath:(id)a4
+- (void)_serializeAndWriteNoSyncActionSet:(id)set toCacheAtPath:(id)path
 {
-  v5 = a3;
-  v6 = a4;
+  setCopy = set;
+  pathCopy = path;
   v7 = objc_autoreleasePoolPush();
   v8 = objc_autoreleasePoolPush();
   v12 = 0;
-  v9 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v5 requiringSecureCoding:1 error:&v12];
+  v9 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:setCopy requiringSecureCoding:1 error:&v12];
   v10 = v12;
   objc_autoreleasePoolPop(v8);
   if (v9)
   {
-    [v9 writeToFile:v6 atomically:1];
+    [v9 writeToFile:pathCopy atomically:1];
   }
 
   else
@@ -298,14 +298,14 @@ void __56__ATXRecentActionEngagementCache_clearRecentEngagements__block_invoke(u
   objc_autoreleasePoolPop(v7);
 }
 
-- (id)exceptionsFoundInCacheAtPath:(id)a3 forCandidateExceptions:(id)a4
+- (id)exceptionsFoundInCacheAtPath:(id)path forCandidateExceptions:(id)exceptions
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 count])
+  pathCopy = path;
+  exceptionsCopy = exceptions;
+  if ([exceptionsCopy count])
   {
-    v8 = [(ATXRecentActionEngagementCache *)self _recentActionsNoSyncForCacheAtPath:v6];
-    [v8 intersectSet:v7];
+    v8 = [(ATXRecentActionEngagementCache *)self _recentActionsNoSyncForCacheAtPath:pathCopy];
+    [v8 intersectSet:exceptionsCopy];
   }
 
   else
@@ -316,20 +316,20 @@ void __56__ATXRecentActionEngagementCache_clearRecentEngagements__block_invoke(u
   return v8;
 }
 
-- (void)clearRecentEngagementsFromCacheAtPath:(id)a3 withExceptionActions:(id)a4
+- (void)clearRecentEngagementsFromCacheAtPath:(id)path withExceptionActions:(id)actions
 {
-  v6 = a3;
-  v7 = a4;
+  pathCopy = path;
+  actionsCopy = actions;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __93__ATXRecentActionEngagementCache_clearRecentEngagementsFromCacheAtPath_withExceptionActions___block_invoke;
   block[3] = &unk_1E80C1728;
-  v12 = v7;
-  v13 = v6;
-  v14 = self;
-  v9 = v6;
-  v10 = v7;
+  v12 = actionsCopy;
+  v13 = pathCopy;
+  selfCopy = self;
+  v9 = pathCopy;
+  v10 = actionsCopy;
   dispatch_sync(queue, block);
 }
 

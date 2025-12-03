@@ -6,8 +6,8 @@
 
 - (id)_web_createTarget
 {
-  v2 = [(WKObject *)self _apiObject];
-  CFRetain(v2->var1);
+  _apiObject = [(WKObject *)self _apiObject];
+  CFRetain(_apiObject->var1);
   if ((_MergedGlobals_65 & 1) == 0)
   {
     qword_1ED642408 = 0;
@@ -20,8 +20,8 @@
   }
 
   v3 = objc_alloc(MEMORY[0x1E695AC30]);
-  v5 = [v3 initWithAuthenticationChallenge:WebCore::mac(&v2[1] sender:{v4), qword_1ED642408}];
-  CFRelease(v2->var1);
+  v5 = [v3 initWithAuthenticationChallenge:WebCore::mac(&_apiObject[1] sender:{v4), qword_1ED642408}];
+  CFRelease(_apiObject->var1);
   return v5;
 }
 

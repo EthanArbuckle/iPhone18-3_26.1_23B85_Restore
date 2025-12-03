@@ -1,27 +1,27 @@
 @interface AWDSymptomsAdvisoryAlternateNetworkType
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsAdvice:(id)a3;
-- (int)StringAsAdvisor:(id)a3;
-- (int)StringAsBailOutOf:(id)a3;
-- (int)StringAsCellEgressTriggers:(id)a3;
-- (int)StringAsCellIngressTriggers:(id)a3;
-- (int)StringAsEgressMobilityCode:(id)a3;
-- (int)StringAsEgressTrigger:(id)a3;
-- (int)StringAsEgressTriggerOn:(id)a3;
-- (int)StringAsIngressMobilityCode:(id)a3;
-- (int)StringAsIngressTrigger:(id)a3;
-- (int)StringAsIngressTriggerOn:(id)a3;
-- (int)StringAsPolicy:(id)a3;
-- (int)StringAsWifiEgressTriggers:(id)a3;
-- (int)StringAsWifiIngressTriggers:(id)a3;
+- (int)StringAsAdvice:(id)advice;
+- (int)StringAsAdvisor:(id)advisor;
+- (int)StringAsBailOutOf:(id)of;
+- (int)StringAsCellEgressTriggers:(id)triggers;
+- (int)StringAsCellIngressTriggers:(id)triggers;
+- (int)StringAsEgressMobilityCode:(id)code;
+- (int)StringAsEgressTrigger:(id)trigger;
+- (int)StringAsEgressTriggerOn:(id)on;
+- (int)StringAsIngressMobilityCode:(id)code;
+- (int)StringAsIngressTrigger:(id)trigger;
+- (int)StringAsIngressTriggerOn:(id)on;
+- (int)StringAsPolicy:(id)policy;
+- (int)StringAsWifiEgressTriggers:(id)triggers;
+- (int)StringAsWifiIngressTriggers:(id)triggers;
 - (int)advice;
 - (int)advisor;
 - (int)bailOutOf;
-- (int)cellEgressTriggersAtIndex:(unint64_t)a3;
-- (int)cellIngressTriggersAtIndex:(unint64_t)a3;
+- (int)cellEgressTriggersAtIndex:(unint64_t)index;
+- (int)cellIngressTriggersAtIndex:(unint64_t)index;
 - (int)egressMobilityCode;
 - (int)egressTrigger;
 - (int)egressTriggerOn;
@@ -29,35 +29,35 @@
 - (int)ingressTrigger;
 - (int)ingressTriggerOn;
 - (int)policy;
-- (int)wifiEgressTriggersAtIndex:(unint64_t)a3;
-- (int)wifiIngressTriggersAtIndex:(unint64_t)a3;
+- (int)wifiEgressTriggersAtIndex:(unint64_t)index;
+- (int)wifiIngressTriggersAtIndex:(unint64_t)index;
 - (unint64_t)hash;
-- (void)addEgressTriggerSignature:(id)a3;
-- (void)addIngressTriggerSignature:(id)a3;
-- (void)copyTo:(id)a3;
+- (void)addEgressTriggerSignature:(id)signature;
+- (void)addIngressTriggerSignature:(id)signature;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasActivationIdentifier:(BOOL)a3;
-- (void)setHasAdvice:(BOOL)a3;
-- (void)setHasAdvisor:(BOOL)a3;
-- (void)setHasBailOutOf:(BOOL)a3;
-- (void)setHasCellularDataUsage:(BOOL)a3;
-- (void)setHasComingFromState:(BOOL)a3;
-- (void)setHasEgressMobilityCode:(BOOL)a3;
-- (void)setHasEgressTrigger:(BOOL)a3;
-- (void)setHasEgressTriggerMultiplier:(BOOL)a3;
-- (void)setHasEgressTriggerOn:(BOOL)a3;
-- (void)setHasEgressTriggerPercentagex100:(BOOL)a3;
-- (void)setHasIngressMobilityCode:(BOOL)a3;
-- (void)setHasIngressTrigger:(BOOL)a3;
-- (void)setHasIngressTriggerMultiplier:(BOOL)a3;
-- (void)setHasIngressTriggerOn:(BOOL)a3;
-- (void)setHasIngressTriggerPercentagex100:(BOOL)a3;
-- (void)setHasKernelProbingActivated:(BOOL)a3;
-- (void)setHasPolicy:(BOOL)a3;
-- (void)setHasTimestamp:(BOOL)a3;
-- (void)setHasTransitionsSuppressedByMobility:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasActivationIdentifier:(BOOL)identifier;
+- (void)setHasAdvice:(BOOL)advice;
+- (void)setHasAdvisor:(BOOL)advisor;
+- (void)setHasBailOutOf:(BOOL)of;
+- (void)setHasCellularDataUsage:(BOOL)usage;
+- (void)setHasComingFromState:(BOOL)state;
+- (void)setHasEgressMobilityCode:(BOOL)code;
+- (void)setHasEgressTrigger:(BOOL)trigger;
+- (void)setHasEgressTriggerMultiplier:(BOOL)multiplier;
+- (void)setHasEgressTriggerOn:(BOOL)on;
+- (void)setHasEgressTriggerPercentagex100:(BOOL)percentagex100;
+- (void)setHasIngressMobilityCode:(BOOL)code;
+- (void)setHasIngressTrigger:(BOOL)trigger;
+- (void)setHasIngressTriggerMultiplier:(BOOL)multiplier;
+- (void)setHasIngressTriggerOn:(BOOL)on;
+- (void)setHasIngressTriggerPercentagex100:(BOOL)percentagex100;
+- (void)setHasKernelProbingActivated:(BOOL)activated;
+- (void)setHasPolicy:(BOOL)policy;
+- (void)setHasTimestamp:(BOOL)timestamp;
+- (void)setHasTransitionsSuppressedByMobility:(BOOL)mobility;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDSymptomsAdvisoryAlternateNetworkType
@@ -73,9 +73,9 @@
   [(AWDSymptomsAdvisoryAlternateNetworkType *)&v3 dealloc];
 }
 
-- (void)setHasTimestamp:(BOOL)a3
+- (void)setHasTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 2;
   }
@@ -101,9 +101,9 @@
   }
 }
 
-- (void)setHasAdvice:(BOOL)a3
+- (void)setHasAdvice:(BOOL)advice
 {
-  if (a3)
+  if (advice)
   {
     v3 = 8;
   }
@@ -116,35 +116,35 @@
   self->_has = (*&self->_has & 0xFFFFFFF7 | v3);
 }
 
-- (int)StringAsAdvice:(id)a3
+- (int)StringAsAdvice:(id)advice
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"NoAdvice"])
+  adviceCopy = advice;
+  if ([adviceCopy isEqualToString:@"NoAdvice"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"WeakAdvice"])
+  else if ([adviceCopy isEqualToString:@"WeakAdvice"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"StrongAdvice"])
+  else if ([adviceCopy isEqualToString:@"StrongAdvice"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"ActiveState"])
+  else if ([adviceCopy isEqualToString:@"ActiveState"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"PositiveState"])
+  else if ([adviceCopy isEqualToString:@"PositiveState"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"BrokenState"])
+  else if ([adviceCopy isEqualToString:@"BrokenState"])
   {
     v4 = 6;
   }
@@ -170,9 +170,9 @@
   }
 }
 
-- (void)setHasBailOutOf:(BOOL)a3
+- (void)setHasBailOutOf:(BOOL)of
 {
-  if (a3)
+  if (of)
   {
     v3 = 32;
   }
@@ -185,20 +185,20 @@
   self->_has = (*&self->_has & 0xFFFFFFDF | v3);
 }
 
-- (int)StringAsBailOutOf:(id)a3
+- (int)StringAsBailOutOf:(id)of
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"WIFI"])
+  ofCopy = of;
+  if ([ofCopy isEqualToString:@"WIFI"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"CELLULAR"])
+  else if ([ofCopy isEqualToString:@"CELLULAR"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"WIRED_ETHERNET"])
+  else if ([ofCopy isEqualToString:@"WIRED_ETHERNET"])
   {
     v4 = 3;
   }
@@ -211,9 +211,9 @@
   return v4;
 }
 
-- (void)setHasKernelProbingActivated:(BOOL)a3
+- (void)setHasKernelProbingActivated:(BOOL)activated
 {
-  if (a3)
+  if (activated)
   {
     v3 = 0x100000;
   }
@@ -239,9 +239,9 @@
   }
 }
 
-- (void)setHasIngressTrigger:(BOOL)a3
+- (void)setHasIngressTrigger:(BOOL)trigger
 {
-  if (a3)
+  if (trigger)
   {
     v3 = 0x4000;
   }
@@ -254,170 +254,170 @@
   self->_has = (*&self->_has & 0xFFFFBFFF | v3);
 }
 
-- (int)StringAsIngressTrigger:(id)a3
+- (int)StringAsIngressTrigger:(id)trigger
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Foreground"])
+  triggerCopy = trigger;
+  if ([triggerCopy isEqualToString:@"Foreground"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Active"])
+  else if ([triggerCopy isEqualToString:@"Active"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Primary"])
+  else if ([triggerCopy isEqualToString:@"Primary"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"KnownGood"])
+  else if ([triggerCopy isEqualToString:@"KnownGood"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"RxSignalThreshold"])
+  else if ([triggerCopy isEqualToString:@"RxSignalThreshold"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"Arp"])
+  else if ([triggerCopy isEqualToString:@"Arp"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"DNS"])
+  else if ([triggerCopy isEqualToString:@"DNS"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"Mobility"])
+  else if ([triggerCopy isEqualToString:@"Mobility"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"NoUpLink"])
+  else if ([triggerCopy isEqualToString:@"NoUpLink"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"TcpProbesOverall"])
+  else if ([triggerCopy isEqualToString:@"TcpProbesOverall"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"TcpProbesConnection"])
+  else if ([triggerCopy isEqualToString:@"TcpProbesConnection"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"TcpProbesRead"])
+  else if ([triggerCopy isEqualToString:@"TcpProbesRead"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"TcpProbesWrite"])
+  else if ([triggerCopy isEqualToString:@"TcpProbesWrite"])
   {
     v4 = 13;
   }
 
-  else if ([v3 isEqualToString:@"TxThreshold"])
+  else if ([triggerCopy isEqualToString:@"TxThreshold"])
   {
     v4 = 14;
   }
 
-  else if ([v3 isEqualToString:@"DarkScreen"])
+  else if ([triggerCopy isEqualToString:@"DarkScreen"])
   {
     v4 = 15;
   }
 
-  else if ([v3 isEqualToString:@"WiFiCall"])
+  else if ([triggerCopy isEqualToString:@"WiFiCall"])
   {
     v4 = 16;
   }
 
-  else if ([v3 isEqualToString:@"NoBackhaul"])
+  else if ([triggerCopy isEqualToString:@"NoBackhaul"])
   {
     v4 = 17;
   }
 
-  else if ([v3 isEqualToString:@"KnownBadAP"])
+  else if ([triggerCopy isEqualToString:@"KnownBadAP"])
   {
     v4 = 18;
   }
 
-  else if ([v3 isEqualToString:@"InternetDNS"])
+  else if ([triggerCopy isEqualToString:@"InternetDNS"])
   {
     v4 = 19;
   }
 
-  else if ([v3 isEqualToString:@"Apsd"])
+  else if ([triggerCopy isEqualToString:@"Apsd"])
   {
     v4 = 20;
   }
 
-  else if ([v3 isEqualToString:@"DefRoute"])
+  else if ([triggerCopy isEqualToString:@"DefRoute"])
   {
     v4 = 21;
   }
 
-  else if ([v3 isEqualToString:@"TcpProgressScore"])
+  else if ([triggerCopy isEqualToString:@"TcpProgressScore"])
   {
     v4 = 22;
   }
 
-  else if ([v3 isEqualToString:@"RnfActive"])
+  else if ([triggerCopy isEqualToString:@"RnfActive"])
   {
     v4 = 23;
   }
 
-  else if ([v3 isEqualToString:@"NoProximity"])
+  else if ([triggerCopy isEqualToString:@"NoProximity"])
   {
     v4 = 24;
   }
 
-  else if ([v3 isEqualToString:@"Congestion"])
+  else if ([triggerCopy isEqualToString:@"Congestion"])
   {
     v4 = 25;
   }
 
-  else if ([v3 isEqualToString:@"NetworkMoving"])
+  else if ([triggerCopy isEqualToString:@"NetworkMoving"])
   {
     v4 = 26;
   }
 
-  else if ([v3 isEqualToString:@"BadNetworkReputation"])
+  else if ([triggerCopy isEqualToString:@"BadNetworkReputation"])
   {
     v4 = 27;
   }
 
-  else if ([v3 isEqualToString:@"EdgeBssWalkout"])
+  else if ([triggerCopy isEqualToString:@"EdgeBssWalkout"])
   {
     v4 = 28;
   }
 
-  else if ([v3 isEqualToString:@"RssiGradient"])
+  else if ([triggerCopy isEqualToString:@"RssiGradient"])
   {
     v4 = 29;
   }
 
-  else if ([v3 isEqualToString:@"TcpExtraStats"])
+  else if ([triggerCopy isEqualToString:@"TcpExtraStats"])
   {
     v4 = 30;
   }
 
-  else if ([v3 isEqualToString:@"RxSignalFullBars"])
+  else if ([triggerCopy isEqualToString:@"RxSignalFullBars"])
   {
     v4 = 31;
   }
 
-  else if ([v3 isEqualToString:@"CellOutrankActive"])
+  else if ([triggerCopy isEqualToString:@"CellOutrankActive"])
   {
     v4 = 32;
   }
 
-  else if ([v3 isEqualToString:@"NoCostAdvantage"])
+  else if ([triggerCopy isEqualToString:@"NoCostAdvantage"])
   {
     v4 = 33;
   }
@@ -443,9 +443,9 @@
   }
 }
 
-- (void)setHasIngressTriggerOn:(BOOL)a3
+- (void)setHasIngressTriggerOn:(BOOL)on
 {
-  if (a3)
+  if (on)
   {
     v3 = 0x10000;
   }
@@ -458,20 +458,20 @@
   self->_has = (*&self->_has & 0xFFFEFFFF | v3);
 }
 
-- (int)StringAsIngressTriggerOn:(id)a3
+- (int)StringAsIngressTriggerOn:(id)on
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"WIFI"])
+  onCopy = on;
+  if ([onCopy isEqualToString:@"WIFI"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"CELLULAR"])
+  else if ([onCopy isEqualToString:@"CELLULAR"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"WIRED_ETHERNET"])
+  else if ([onCopy isEqualToString:@"WIRED_ETHERNET"])
   {
     v4 = 3;
   }
@@ -484,9 +484,9 @@
   return v4;
 }
 
-- (void)setHasIngressTriggerMultiplier:(BOOL)a3
+- (void)setHasIngressTriggerMultiplier:(BOOL)multiplier
 {
-  if (a3)
+  if (multiplier)
   {
     v3 = 0x8000;
   }
@@ -499,9 +499,9 @@
   self->_has = (*&self->_has & 0xFFFF7FFF | v3);
 }
 
-- (void)setHasIngressTriggerPercentagex100:(BOOL)a3
+- (void)setHasIngressTriggerPercentagex100:(BOOL)percentagex100
 {
-  if (a3)
+  if (percentagex100)
   {
     v3 = 0x20000;
   }
@@ -527,9 +527,9 @@
   }
 }
 
-- (void)setHasEgressTrigger:(BOOL)a3
+- (void)setHasEgressTrigger:(BOOL)trigger
 {
-  if (a3)
+  if (trigger)
   {
     v3 = 512;
   }
@@ -542,170 +542,170 @@
   self->_has = (*&self->_has & 0xFFFFFDFF | v3);
 }
 
-- (int)StringAsEgressTrigger:(id)a3
+- (int)StringAsEgressTrigger:(id)trigger
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Foreground"])
+  triggerCopy = trigger;
+  if ([triggerCopy isEqualToString:@"Foreground"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Active"])
+  else if ([triggerCopy isEqualToString:@"Active"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Primary"])
+  else if ([triggerCopy isEqualToString:@"Primary"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"KnownGood"])
+  else if ([triggerCopy isEqualToString:@"KnownGood"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"RxSignalThreshold"])
+  else if ([triggerCopy isEqualToString:@"RxSignalThreshold"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"Arp"])
+  else if ([triggerCopy isEqualToString:@"Arp"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"DNS"])
+  else if ([triggerCopy isEqualToString:@"DNS"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"Mobility"])
+  else if ([triggerCopy isEqualToString:@"Mobility"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"NoUpLink"])
+  else if ([triggerCopy isEqualToString:@"NoUpLink"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"TcpProbesOverall"])
+  else if ([triggerCopy isEqualToString:@"TcpProbesOverall"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"TcpProbesConnection"])
+  else if ([triggerCopy isEqualToString:@"TcpProbesConnection"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"TcpProbesRead"])
+  else if ([triggerCopy isEqualToString:@"TcpProbesRead"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"TcpProbesWrite"])
+  else if ([triggerCopy isEqualToString:@"TcpProbesWrite"])
   {
     v4 = 13;
   }
 
-  else if ([v3 isEqualToString:@"TxThreshold"])
+  else if ([triggerCopy isEqualToString:@"TxThreshold"])
   {
     v4 = 14;
   }
 
-  else if ([v3 isEqualToString:@"DarkScreen"])
+  else if ([triggerCopy isEqualToString:@"DarkScreen"])
   {
     v4 = 15;
   }
 
-  else if ([v3 isEqualToString:@"WiFiCall"])
+  else if ([triggerCopy isEqualToString:@"WiFiCall"])
   {
     v4 = 16;
   }
 
-  else if ([v3 isEqualToString:@"NoBackhaul"])
+  else if ([triggerCopy isEqualToString:@"NoBackhaul"])
   {
     v4 = 17;
   }
 
-  else if ([v3 isEqualToString:@"KnownBadAP"])
+  else if ([triggerCopy isEqualToString:@"KnownBadAP"])
   {
     v4 = 18;
   }
 
-  else if ([v3 isEqualToString:@"InternetDNS"])
+  else if ([triggerCopy isEqualToString:@"InternetDNS"])
   {
     v4 = 19;
   }
 
-  else if ([v3 isEqualToString:@"Apsd"])
+  else if ([triggerCopy isEqualToString:@"Apsd"])
   {
     v4 = 20;
   }
 
-  else if ([v3 isEqualToString:@"DefRoute"])
+  else if ([triggerCopy isEqualToString:@"DefRoute"])
   {
     v4 = 21;
   }
 
-  else if ([v3 isEqualToString:@"TcpProgressScore"])
+  else if ([triggerCopy isEqualToString:@"TcpProgressScore"])
   {
     v4 = 22;
   }
 
-  else if ([v3 isEqualToString:@"RnfActive"])
+  else if ([triggerCopy isEqualToString:@"RnfActive"])
   {
     v4 = 23;
   }
 
-  else if ([v3 isEqualToString:@"NoProximity"])
+  else if ([triggerCopy isEqualToString:@"NoProximity"])
   {
     v4 = 24;
   }
 
-  else if ([v3 isEqualToString:@"Congestion"])
+  else if ([triggerCopy isEqualToString:@"Congestion"])
   {
     v4 = 25;
   }
 
-  else if ([v3 isEqualToString:@"NetworkMoving"])
+  else if ([triggerCopy isEqualToString:@"NetworkMoving"])
   {
     v4 = 26;
   }
 
-  else if ([v3 isEqualToString:@"BadNetworkReputation"])
+  else if ([triggerCopy isEqualToString:@"BadNetworkReputation"])
   {
     v4 = 27;
   }
 
-  else if ([v3 isEqualToString:@"EdgeBssWalkout"])
+  else if ([triggerCopy isEqualToString:@"EdgeBssWalkout"])
   {
     v4 = 28;
   }
 
-  else if ([v3 isEqualToString:@"RssiGradient"])
+  else if ([triggerCopy isEqualToString:@"RssiGradient"])
   {
     v4 = 29;
   }
 
-  else if ([v3 isEqualToString:@"TcpExtraStats"])
+  else if ([triggerCopy isEqualToString:@"TcpExtraStats"])
   {
     v4 = 30;
   }
 
-  else if ([v3 isEqualToString:@"RxSignalFullBars"])
+  else if ([triggerCopy isEqualToString:@"RxSignalFullBars"])
   {
     v4 = 31;
   }
 
-  else if ([v3 isEqualToString:@"CellOutrankActive"])
+  else if ([triggerCopy isEqualToString:@"CellOutrankActive"])
   {
     v4 = 32;
   }
 
-  else if ([v3 isEqualToString:@"NoCostAdvantage"])
+  else if ([triggerCopy isEqualToString:@"NoCostAdvantage"])
   {
     v4 = 33;
   }
@@ -731,9 +731,9 @@
   }
 }
 
-- (void)setHasEgressTriggerOn:(BOOL)a3
+- (void)setHasEgressTriggerOn:(BOOL)on
 {
-  if (a3)
+  if (on)
   {
     v3 = 2048;
   }
@@ -746,20 +746,20 @@
   self->_has = (*&self->_has & 0xFFFFF7FF | v3);
 }
 
-- (int)StringAsEgressTriggerOn:(id)a3
+- (int)StringAsEgressTriggerOn:(id)on
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"WIFI"])
+  onCopy = on;
+  if ([onCopy isEqualToString:@"WIFI"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"CELLULAR"])
+  else if ([onCopy isEqualToString:@"CELLULAR"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"WIRED_ETHERNET"])
+  else if ([onCopy isEqualToString:@"WIRED_ETHERNET"])
   {
     v4 = 3;
   }
@@ -772,9 +772,9 @@
   return v4;
 }
 
-- (void)setHasEgressTriggerMultiplier:(BOOL)a3
+- (void)setHasEgressTriggerMultiplier:(BOOL)multiplier
 {
-  if (a3)
+  if (multiplier)
   {
     v3 = 1024;
   }
@@ -787,9 +787,9 @@
   self->_has = (*&self->_has & 0xFFFFFBFF | v3);
 }
 
-- (void)setHasEgressTriggerPercentagex100:(BOOL)a3
+- (void)setHasEgressTriggerPercentagex100:(BOOL)percentagex100
 {
-  if (a3)
+  if (percentagex100)
   {
     v3 = 4096;
   }
@@ -802,45 +802,45 @@
   self->_has = (*&self->_has & 0xFFFFEFFF | v3);
 }
 
-- (void)addIngressTriggerSignature:(id)a3
+- (void)addIngressTriggerSignature:(id)signature
 {
-  v4 = a3;
+  signatureCopy = signature;
   ingressTriggerSignatures = self->_ingressTriggerSignatures;
-  v8 = v4;
+  v8 = signatureCopy;
   if (!ingressTriggerSignatures)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_ingressTriggerSignatures;
     self->_ingressTriggerSignatures = v6;
 
-    v4 = v8;
+    signatureCopy = v8;
     ingressTriggerSignatures = self->_ingressTriggerSignatures;
   }
 
-  [(NSMutableArray *)ingressTriggerSignatures addObject:v4];
+  [(NSMutableArray *)ingressTriggerSignatures addObject:signatureCopy];
 }
 
-- (void)addEgressTriggerSignature:(id)a3
+- (void)addEgressTriggerSignature:(id)signature
 {
-  v4 = a3;
+  signatureCopy = signature;
   egressTriggerSignatures = self->_egressTriggerSignatures;
-  v8 = v4;
+  v8 = signatureCopy;
   if (!egressTriggerSignatures)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_egressTriggerSignatures;
     self->_egressTriggerSignatures = v6;
 
-    v4 = v8;
+    signatureCopy = v8;
     egressTriggerSignatures = self->_egressTriggerSignatures;
   }
 
-  [(NSMutableArray *)egressTriggerSignatures addObject:v4];
+  [(NSMutableArray *)egressTriggerSignatures addObject:signatureCopy];
 }
 
-- (void)setHasComingFromState:(BOOL)a3
+- (void)setHasComingFromState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 128;
   }
@@ -866,9 +866,9 @@
   }
 }
 
-- (void)setHasIngressMobilityCode:(BOOL)a3
+- (void)setHasIngressMobilityCode:(BOOL)code
 {
-  if (a3)
+  if (code)
   {
     v3 = 0x2000;
   }
@@ -881,35 +881,35 @@
   self->_has = (*&self->_has & 0xFFFFDFFF | v3);
 }
 
-- (int)StringAsIngressMobilityCode:(id)a3
+- (int)StringAsIngressMobilityCode:(id)code
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Unknown"])
+  codeCopy = code;
+  if ([codeCopy isEqualToString:@"Unknown"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Stationary"])
+  else if ([codeCopy isEqualToString:@"Stationary"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"UnqualifiedMoving"])
+  else if ([codeCopy isEqualToString:@"UnqualifiedMoving"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"Walking"])
+  else if ([codeCopy isEqualToString:@"Walking"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"Running"])
+  else if ([codeCopy isEqualToString:@"Running"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"Vehicular"])
+  else if ([codeCopy isEqualToString:@"Vehicular"])
   {
     v4 = 6;
   }
@@ -935,9 +935,9 @@
   }
 }
 
-- (void)setHasEgressMobilityCode:(BOOL)a3
+- (void)setHasEgressMobilityCode:(BOOL)code
 {
-  if (a3)
+  if (code)
   {
     v3 = 256;
   }
@@ -950,35 +950,35 @@
   self->_has = (*&self->_has & 0xFFFFFEFF | v3);
 }
 
-- (int)StringAsEgressMobilityCode:(id)a3
+- (int)StringAsEgressMobilityCode:(id)code
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Unknown"])
+  codeCopy = code;
+  if ([codeCopy isEqualToString:@"Unknown"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Stationary"])
+  else if ([codeCopy isEqualToString:@"Stationary"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"UnqualifiedMoving"])
+  else if ([codeCopy isEqualToString:@"UnqualifiedMoving"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"Walking"])
+  else if ([codeCopy isEqualToString:@"Walking"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"Running"])
+  else if ([codeCopy isEqualToString:@"Running"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"Vehicular"])
+  else if ([codeCopy isEqualToString:@"Vehicular"])
   {
     v4 = 6;
   }
@@ -991,9 +991,9 @@
   return v4;
 }
 
-- (void)setHasTransitionsSuppressedByMobility:(BOOL)a3
+- (void)setHasTransitionsSuppressedByMobility:(BOOL)mobility
 {
-  if (a3)
+  if (mobility)
   {
     v3 = 0x80000;
   }
@@ -1006,9 +1006,9 @@
   self->_has = (*&self->_has & 0xFFF7FFFF | v3);
 }
 
-- (void)setHasCellularDataUsage:(BOOL)a3
+- (void)setHasCellularDataUsage:(BOOL)usage
 {
-  if (a3)
+  if (usage)
   {
     v3 = 64;
   }
@@ -1034,9 +1034,9 @@
   }
 }
 
-- (void)setHasPolicy:(BOOL)a3
+- (void)setHasPolicy:(BOOL)policy
 {
-  if (a3)
+  if (policy)
   {
     v3 = 0x40000;
   }
@@ -1049,20 +1049,20 @@
   self->_has = (*&self->_has & 0xFFFBFFFF | v3);
 }
 
-- (int)StringAsPolicy:(id)a3
+- (int)StringAsPolicy:(id)policy
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Off"])
+  policyCopy = policy;
+  if ([policyCopy isEqualToString:@"Off"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Default"])
+  else if ([policyCopy isEqualToString:@"Default"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Unlimited"])
+  else if ([policyCopy isEqualToString:@"Unlimited"])
   {
     v4 = 3;
   }
@@ -1088,9 +1088,9 @@
   }
 }
 
-- (void)setHasAdvisor:(BOOL)a3
+- (void)setHasAdvisor:(BOOL)advisor
 {
-  if (a3)
+  if (advisor)
   {
     v3 = 16;
   }
@@ -1103,13 +1103,13 @@
   self->_has = (*&self->_has & 0xFFFFFFEF | v3);
 }
 
-- (int)StringAsAdvisor:(id)a3
+- (int)StringAsAdvisor:(id)advisor
 {
-  v3 = a3;
+  advisorCopy = advisor;
   v4 = 1;
-  if (([v3 isEqualToString:@"CellFallbackAdvisor"] & 1) == 0)
+  if (([advisorCopy isEqualToString:@"CellFallbackAdvisor"] & 1) == 0)
   {
-    if ([v3 isEqualToString:@"NoBackhaulAdvisor"])
+    if ([advisorCopy isEqualToString:@"NoBackhaulAdvisor"])
     {
       v4 = 2;
     }
@@ -1123,9 +1123,9 @@
   return v4;
 }
 
-- (void)setHasActivationIdentifier:(BOOL)a3
+- (void)setHasActivationIdentifier:(BOOL)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v3 = 4;
   }
@@ -1138,186 +1138,186 @@
   self->_has = (*&self->_has & 0xFFFFFFFB | v3);
 }
 
-- (int)wifiIngressTriggersAtIndex:(unint64_t)a3
+- (int)wifiIngressTriggersAtIndex:(unint64_t)index
 {
   p_wifiIngressTriggers = &self->_wifiIngressTriggers;
   count = self->_wifiIngressTriggers.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x277CBEAD8];
     v7 = *MEMORY[0x277CBE730];
-    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v9 = [v6 exceptionWithName:v7 reason:v8 userInfo:0];
     [v9 raise];
   }
 
-  return p_wifiIngressTriggers->list[a3];
+  return p_wifiIngressTriggers->list[index];
 }
 
-- (int)StringAsWifiIngressTriggers:(id)a3
+- (int)StringAsWifiIngressTriggers:(id)triggers
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Foreground"])
+  triggersCopy = triggers;
+  if ([triggersCopy isEqualToString:@"Foreground"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Active"])
+  else if ([triggersCopy isEqualToString:@"Active"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Primary"])
+  else if ([triggersCopy isEqualToString:@"Primary"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"KnownGood"])
+  else if ([triggersCopy isEqualToString:@"KnownGood"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"RxSignalThreshold"])
+  else if ([triggersCopy isEqualToString:@"RxSignalThreshold"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"Arp"])
+  else if ([triggersCopy isEqualToString:@"Arp"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"DNS"])
+  else if ([triggersCopy isEqualToString:@"DNS"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"Mobility"])
+  else if ([triggersCopy isEqualToString:@"Mobility"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"NoUpLink"])
+  else if ([triggersCopy isEqualToString:@"NoUpLink"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"TcpProbesOverall"])
+  else if ([triggersCopy isEqualToString:@"TcpProbesOverall"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"TcpProbesConnection"])
+  else if ([triggersCopy isEqualToString:@"TcpProbesConnection"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"TcpProbesRead"])
+  else if ([triggersCopy isEqualToString:@"TcpProbesRead"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"TcpProbesWrite"])
+  else if ([triggersCopy isEqualToString:@"TcpProbesWrite"])
   {
     v4 = 13;
   }
 
-  else if ([v3 isEqualToString:@"TxThreshold"])
+  else if ([triggersCopy isEqualToString:@"TxThreshold"])
   {
     v4 = 14;
   }
 
-  else if ([v3 isEqualToString:@"DarkScreen"])
+  else if ([triggersCopy isEqualToString:@"DarkScreen"])
   {
     v4 = 15;
   }
 
-  else if ([v3 isEqualToString:@"WiFiCall"])
+  else if ([triggersCopy isEqualToString:@"WiFiCall"])
   {
     v4 = 16;
   }
 
-  else if ([v3 isEqualToString:@"NoBackhaul"])
+  else if ([triggersCopy isEqualToString:@"NoBackhaul"])
   {
     v4 = 17;
   }
 
-  else if ([v3 isEqualToString:@"KnownBadAP"])
+  else if ([triggersCopy isEqualToString:@"KnownBadAP"])
   {
     v4 = 18;
   }
 
-  else if ([v3 isEqualToString:@"InternetDNS"])
+  else if ([triggersCopy isEqualToString:@"InternetDNS"])
   {
     v4 = 19;
   }
 
-  else if ([v3 isEqualToString:@"Apsd"])
+  else if ([triggersCopy isEqualToString:@"Apsd"])
   {
     v4 = 20;
   }
 
-  else if ([v3 isEqualToString:@"DefRoute"])
+  else if ([triggersCopy isEqualToString:@"DefRoute"])
   {
     v4 = 21;
   }
 
-  else if ([v3 isEqualToString:@"TcpProgressScore"])
+  else if ([triggersCopy isEqualToString:@"TcpProgressScore"])
   {
     v4 = 22;
   }
 
-  else if ([v3 isEqualToString:@"RnfActive"])
+  else if ([triggersCopy isEqualToString:@"RnfActive"])
   {
     v4 = 23;
   }
 
-  else if ([v3 isEqualToString:@"NoProximity"])
+  else if ([triggersCopy isEqualToString:@"NoProximity"])
   {
     v4 = 24;
   }
 
-  else if ([v3 isEqualToString:@"Congestion"])
+  else if ([triggersCopy isEqualToString:@"Congestion"])
   {
     v4 = 25;
   }
 
-  else if ([v3 isEqualToString:@"NetworkMoving"])
+  else if ([triggersCopy isEqualToString:@"NetworkMoving"])
   {
     v4 = 26;
   }
 
-  else if ([v3 isEqualToString:@"BadNetworkReputation"])
+  else if ([triggersCopy isEqualToString:@"BadNetworkReputation"])
   {
     v4 = 27;
   }
 
-  else if ([v3 isEqualToString:@"EdgeBssWalkout"])
+  else if ([triggersCopy isEqualToString:@"EdgeBssWalkout"])
   {
     v4 = 28;
   }
 
-  else if ([v3 isEqualToString:@"RssiGradient"])
+  else if ([triggersCopy isEqualToString:@"RssiGradient"])
   {
     v4 = 29;
   }
 
-  else if ([v3 isEqualToString:@"TcpExtraStats"])
+  else if ([triggersCopy isEqualToString:@"TcpExtraStats"])
   {
     v4 = 30;
   }
 
-  else if ([v3 isEqualToString:@"RxSignalFullBars"])
+  else if ([triggersCopy isEqualToString:@"RxSignalFullBars"])
   {
     v4 = 31;
   }
 
-  else if ([v3 isEqualToString:@"CellOutrankActive"])
+  else if ([triggersCopy isEqualToString:@"CellOutrankActive"])
   {
     v4 = 32;
   }
 
-  else if ([v3 isEqualToString:@"NoCostAdvantage"])
+  else if ([triggersCopy isEqualToString:@"NoCostAdvantage"])
   {
     v4 = 33;
   }
@@ -1330,186 +1330,186 @@
   return v4;
 }
 
-- (int)cellIngressTriggersAtIndex:(unint64_t)a3
+- (int)cellIngressTriggersAtIndex:(unint64_t)index
 {
   p_cellIngressTriggers = &self->_cellIngressTriggers;
   count = self->_cellIngressTriggers.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x277CBEAD8];
     v7 = *MEMORY[0x277CBE730];
-    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v9 = [v6 exceptionWithName:v7 reason:v8 userInfo:0];
     [v9 raise];
   }
 
-  return p_cellIngressTriggers->list[a3];
+  return p_cellIngressTriggers->list[index];
 }
 
-- (int)StringAsCellIngressTriggers:(id)a3
+- (int)StringAsCellIngressTriggers:(id)triggers
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Foreground"])
+  triggersCopy = triggers;
+  if ([triggersCopy isEqualToString:@"Foreground"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Active"])
+  else if ([triggersCopy isEqualToString:@"Active"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Primary"])
+  else if ([triggersCopy isEqualToString:@"Primary"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"KnownGood"])
+  else if ([triggersCopy isEqualToString:@"KnownGood"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"RxSignalThreshold"])
+  else if ([triggersCopy isEqualToString:@"RxSignalThreshold"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"Arp"])
+  else if ([triggersCopy isEqualToString:@"Arp"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"DNS"])
+  else if ([triggersCopy isEqualToString:@"DNS"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"Mobility"])
+  else if ([triggersCopy isEqualToString:@"Mobility"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"NoUpLink"])
+  else if ([triggersCopy isEqualToString:@"NoUpLink"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"TcpProbesOverall"])
+  else if ([triggersCopy isEqualToString:@"TcpProbesOverall"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"TcpProbesConnection"])
+  else if ([triggersCopy isEqualToString:@"TcpProbesConnection"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"TcpProbesRead"])
+  else if ([triggersCopy isEqualToString:@"TcpProbesRead"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"TcpProbesWrite"])
+  else if ([triggersCopy isEqualToString:@"TcpProbesWrite"])
   {
     v4 = 13;
   }
 
-  else if ([v3 isEqualToString:@"TxThreshold"])
+  else if ([triggersCopy isEqualToString:@"TxThreshold"])
   {
     v4 = 14;
   }
 
-  else if ([v3 isEqualToString:@"DarkScreen"])
+  else if ([triggersCopy isEqualToString:@"DarkScreen"])
   {
     v4 = 15;
   }
 
-  else if ([v3 isEqualToString:@"WiFiCall"])
+  else if ([triggersCopy isEqualToString:@"WiFiCall"])
   {
     v4 = 16;
   }
 
-  else if ([v3 isEqualToString:@"NoBackhaul"])
+  else if ([triggersCopy isEqualToString:@"NoBackhaul"])
   {
     v4 = 17;
   }
 
-  else if ([v3 isEqualToString:@"KnownBadAP"])
+  else if ([triggersCopy isEqualToString:@"KnownBadAP"])
   {
     v4 = 18;
   }
 
-  else if ([v3 isEqualToString:@"InternetDNS"])
+  else if ([triggersCopy isEqualToString:@"InternetDNS"])
   {
     v4 = 19;
   }
 
-  else if ([v3 isEqualToString:@"Apsd"])
+  else if ([triggersCopy isEqualToString:@"Apsd"])
   {
     v4 = 20;
   }
 
-  else if ([v3 isEqualToString:@"DefRoute"])
+  else if ([triggersCopy isEqualToString:@"DefRoute"])
   {
     v4 = 21;
   }
 
-  else if ([v3 isEqualToString:@"TcpProgressScore"])
+  else if ([triggersCopy isEqualToString:@"TcpProgressScore"])
   {
     v4 = 22;
   }
 
-  else if ([v3 isEqualToString:@"RnfActive"])
+  else if ([triggersCopy isEqualToString:@"RnfActive"])
   {
     v4 = 23;
   }
 
-  else if ([v3 isEqualToString:@"NoProximity"])
+  else if ([triggersCopy isEqualToString:@"NoProximity"])
   {
     v4 = 24;
   }
 
-  else if ([v3 isEqualToString:@"Congestion"])
+  else if ([triggersCopy isEqualToString:@"Congestion"])
   {
     v4 = 25;
   }
 
-  else if ([v3 isEqualToString:@"NetworkMoving"])
+  else if ([triggersCopy isEqualToString:@"NetworkMoving"])
   {
     v4 = 26;
   }
 
-  else if ([v3 isEqualToString:@"BadNetworkReputation"])
+  else if ([triggersCopy isEqualToString:@"BadNetworkReputation"])
   {
     v4 = 27;
   }
 
-  else if ([v3 isEqualToString:@"EdgeBssWalkout"])
+  else if ([triggersCopy isEqualToString:@"EdgeBssWalkout"])
   {
     v4 = 28;
   }
 
-  else if ([v3 isEqualToString:@"RssiGradient"])
+  else if ([triggersCopy isEqualToString:@"RssiGradient"])
   {
     v4 = 29;
   }
 
-  else if ([v3 isEqualToString:@"TcpExtraStats"])
+  else if ([triggersCopy isEqualToString:@"TcpExtraStats"])
   {
     v4 = 30;
   }
 
-  else if ([v3 isEqualToString:@"RxSignalFullBars"])
+  else if ([triggersCopy isEqualToString:@"RxSignalFullBars"])
   {
     v4 = 31;
   }
 
-  else if ([v3 isEqualToString:@"CellOutrankActive"])
+  else if ([triggersCopy isEqualToString:@"CellOutrankActive"])
   {
     v4 = 32;
   }
 
-  else if ([v3 isEqualToString:@"NoCostAdvantage"])
+  else if ([triggersCopy isEqualToString:@"NoCostAdvantage"])
   {
     v4 = 33;
   }
@@ -1522,186 +1522,186 @@
   return v4;
 }
 
-- (int)wifiEgressTriggersAtIndex:(unint64_t)a3
+- (int)wifiEgressTriggersAtIndex:(unint64_t)index
 {
   p_wifiEgressTriggers = &self->_wifiEgressTriggers;
   count = self->_wifiEgressTriggers.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x277CBEAD8];
     v7 = *MEMORY[0x277CBE730];
-    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v9 = [v6 exceptionWithName:v7 reason:v8 userInfo:0];
     [v9 raise];
   }
 
-  return p_wifiEgressTriggers->list[a3];
+  return p_wifiEgressTriggers->list[index];
 }
 
-- (int)StringAsWifiEgressTriggers:(id)a3
+- (int)StringAsWifiEgressTriggers:(id)triggers
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Foreground"])
+  triggersCopy = triggers;
+  if ([triggersCopy isEqualToString:@"Foreground"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Active"])
+  else if ([triggersCopy isEqualToString:@"Active"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Primary"])
+  else if ([triggersCopy isEqualToString:@"Primary"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"KnownGood"])
+  else if ([triggersCopy isEqualToString:@"KnownGood"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"RxSignalThreshold"])
+  else if ([triggersCopy isEqualToString:@"RxSignalThreshold"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"Arp"])
+  else if ([triggersCopy isEqualToString:@"Arp"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"DNS"])
+  else if ([triggersCopy isEqualToString:@"DNS"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"Mobility"])
+  else if ([triggersCopy isEqualToString:@"Mobility"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"NoUpLink"])
+  else if ([triggersCopy isEqualToString:@"NoUpLink"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"TcpProbesOverall"])
+  else if ([triggersCopy isEqualToString:@"TcpProbesOverall"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"TcpProbesConnection"])
+  else if ([triggersCopy isEqualToString:@"TcpProbesConnection"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"TcpProbesRead"])
+  else if ([triggersCopy isEqualToString:@"TcpProbesRead"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"TcpProbesWrite"])
+  else if ([triggersCopy isEqualToString:@"TcpProbesWrite"])
   {
     v4 = 13;
   }
 
-  else if ([v3 isEqualToString:@"TxThreshold"])
+  else if ([triggersCopy isEqualToString:@"TxThreshold"])
   {
     v4 = 14;
   }
 
-  else if ([v3 isEqualToString:@"DarkScreen"])
+  else if ([triggersCopy isEqualToString:@"DarkScreen"])
   {
     v4 = 15;
   }
 
-  else if ([v3 isEqualToString:@"WiFiCall"])
+  else if ([triggersCopy isEqualToString:@"WiFiCall"])
   {
     v4 = 16;
   }
 
-  else if ([v3 isEqualToString:@"NoBackhaul"])
+  else if ([triggersCopy isEqualToString:@"NoBackhaul"])
   {
     v4 = 17;
   }
 
-  else if ([v3 isEqualToString:@"KnownBadAP"])
+  else if ([triggersCopy isEqualToString:@"KnownBadAP"])
   {
     v4 = 18;
   }
 
-  else if ([v3 isEqualToString:@"InternetDNS"])
+  else if ([triggersCopy isEqualToString:@"InternetDNS"])
   {
     v4 = 19;
   }
 
-  else if ([v3 isEqualToString:@"Apsd"])
+  else if ([triggersCopy isEqualToString:@"Apsd"])
   {
     v4 = 20;
   }
 
-  else if ([v3 isEqualToString:@"DefRoute"])
+  else if ([triggersCopy isEqualToString:@"DefRoute"])
   {
     v4 = 21;
   }
 
-  else if ([v3 isEqualToString:@"TcpProgressScore"])
+  else if ([triggersCopy isEqualToString:@"TcpProgressScore"])
   {
     v4 = 22;
   }
 
-  else if ([v3 isEqualToString:@"RnfActive"])
+  else if ([triggersCopy isEqualToString:@"RnfActive"])
   {
     v4 = 23;
   }
 
-  else if ([v3 isEqualToString:@"NoProximity"])
+  else if ([triggersCopy isEqualToString:@"NoProximity"])
   {
     v4 = 24;
   }
 
-  else if ([v3 isEqualToString:@"Congestion"])
+  else if ([triggersCopy isEqualToString:@"Congestion"])
   {
     v4 = 25;
   }
 
-  else if ([v3 isEqualToString:@"NetworkMoving"])
+  else if ([triggersCopy isEqualToString:@"NetworkMoving"])
   {
     v4 = 26;
   }
 
-  else if ([v3 isEqualToString:@"BadNetworkReputation"])
+  else if ([triggersCopy isEqualToString:@"BadNetworkReputation"])
   {
     v4 = 27;
   }
 
-  else if ([v3 isEqualToString:@"EdgeBssWalkout"])
+  else if ([triggersCopy isEqualToString:@"EdgeBssWalkout"])
   {
     v4 = 28;
   }
 
-  else if ([v3 isEqualToString:@"RssiGradient"])
+  else if ([triggersCopy isEqualToString:@"RssiGradient"])
   {
     v4 = 29;
   }
 
-  else if ([v3 isEqualToString:@"TcpExtraStats"])
+  else if ([triggersCopy isEqualToString:@"TcpExtraStats"])
   {
     v4 = 30;
   }
 
-  else if ([v3 isEqualToString:@"RxSignalFullBars"])
+  else if ([triggersCopy isEqualToString:@"RxSignalFullBars"])
   {
     v4 = 31;
   }
 
-  else if ([v3 isEqualToString:@"CellOutrankActive"])
+  else if ([triggersCopy isEqualToString:@"CellOutrankActive"])
   {
     v4 = 32;
   }
 
-  else if ([v3 isEqualToString:@"NoCostAdvantage"])
+  else if ([triggersCopy isEqualToString:@"NoCostAdvantage"])
   {
     v4 = 33;
   }
@@ -1714,186 +1714,186 @@
   return v4;
 }
 
-- (int)cellEgressTriggersAtIndex:(unint64_t)a3
+- (int)cellEgressTriggersAtIndex:(unint64_t)index
 {
   p_cellEgressTriggers = &self->_cellEgressTriggers;
   count = self->_cellEgressTriggers.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x277CBEAD8];
     v7 = *MEMORY[0x277CBE730];
-    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v9 = [v6 exceptionWithName:v7 reason:v8 userInfo:0];
     [v9 raise];
   }
 
-  return p_cellEgressTriggers->list[a3];
+  return p_cellEgressTriggers->list[index];
 }
 
-- (int)StringAsCellEgressTriggers:(id)a3
+- (int)StringAsCellEgressTriggers:(id)triggers
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Foreground"])
+  triggersCopy = triggers;
+  if ([triggersCopy isEqualToString:@"Foreground"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Active"])
+  else if ([triggersCopy isEqualToString:@"Active"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Primary"])
+  else if ([triggersCopy isEqualToString:@"Primary"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"KnownGood"])
+  else if ([triggersCopy isEqualToString:@"KnownGood"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"RxSignalThreshold"])
+  else if ([triggersCopy isEqualToString:@"RxSignalThreshold"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"Arp"])
+  else if ([triggersCopy isEqualToString:@"Arp"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"DNS"])
+  else if ([triggersCopy isEqualToString:@"DNS"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"Mobility"])
+  else if ([triggersCopy isEqualToString:@"Mobility"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"NoUpLink"])
+  else if ([triggersCopy isEqualToString:@"NoUpLink"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"TcpProbesOverall"])
+  else if ([triggersCopy isEqualToString:@"TcpProbesOverall"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"TcpProbesConnection"])
+  else if ([triggersCopy isEqualToString:@"TcpProbesConnection"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"TcpProbesRead"])
+  else if ([triggersCopy isEqualToString:@"TcpProbesRead"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"TcpProbesWrite"])
+  else if ([triggersCopy isEqualToString:@"TcpProbesWrite"])
   {
     v4 = 13;
   }
 
-  else if ([v3 isEqualToString:@"TxThreshold"])
+  else if ([triggersCopy isEqualToString:@"TxThreshold"])
   {
     v4 = 14;
   }
 
-  else if ([v3 isEqualToString:@"DarkScreen"])
+  else if ([triggersCopy isEqualToString:@"DarkScreen"])
   {
     v4 = 15;
   }
 
-  else if ([v3 isEqualToString:@"WiFiCall"])
+  else if ([triggersCopy isEqualToString:@"WiFiCall"])
   {
     v4 = 16;
   }
 
-  else if ([v3 isEqualToString:@"NoBackhaul"])
+  else if ([triggersCopy isEqualToString:@"NoBackhaul"])
   {
     v4 = 17;
   }
 
-  else if ([v3 isEqualToString:@"KnownBadAP"])
+  else if ([triggersCopy isEqualToString:@"KnownBadAP"])
   {
     v4 = 18;
   }
 
-  else if ([v3 isEqualToString:@"InternetDNS"])
+  else if ([triggersCopy isEqualToString:@"InternetDNS"])
   {
     v4 = 19;
   }
 
-  else if ([v3 isEqualToString:@"Apsd"])
+  else if ([triggersCopy isEqualToString:@"Apsd"])
   {
     v4 = 20;
   }
 
-  else if ([v3 isEqualToString:@"DefRoute"])
+  else if ([triggersCopy isEqualToString:@"DefRoute"])
   {
     v4 = 21;
   }
 
-  else if ([v3 isEqualToString:@"TcpProgressScore"])
+  else if ([triggersCopy isEqualToString:@"TcpProgressScore"])
   {
     v4 = 22;
   }
 
-  else if ([v3 isEqualToString:@"RnfActive"])
+  else if ([triggersCopy isEqualToString:@"RnfActive"])
   {
     v4 = 23;
   }
 
-  else if ([v3 isEqualToString:@"NoProximity"])
+  else if ([triggersCopy isEqualToString:@"NoProximity"])
   {
     v4 = 24;
   }
 
-  else if ([v3 isEqualToString:@"Congestion"])
+  else if ([triggersCopy isEqualToString:@"Congestion"])
   {
     v4 = 25;
   }
 
-  else if ([v3 isEqualToString:@"NetworkMoving"])
+  else if ([triggersCopy isEqualToString:@"NetworkMoving"])
   {
     v4 = 26;
   }
 
-  else if ([v3 isEqualToString:@"BadNetworkReputation"])
+  else if ([triggersCopy isEqualToString:@"BadNetworkReputation"])
   {
     v4 = 27;
   }
 
-  else if ([v3 isEqualToString:@"EdgeBssWalkout"])
+  else if ([triggersCopy isEqualToString:@"EdgeBssWalkout"])
   {
     v4 = 28;
   }
 
-  else if ([v3 isEqualToString:@"RssiGradient"])
+  else if ([triggersCopy isEqualToString:@"RssiGradient"])
   {
     v4 = 29;
   }
 
-  else if ([v3 isEqualToString:@"TcpExtraStats"])
+  else if ([triggersCopy isEqualToString:@"TcpExtraStats"])
   {
     v4 = 30;
   }
 
-  else if ([v3 isEqualToString:@"RxSignalFullBars"])
+  else if ([triggersCopy isEqualToString:@"RxSignalFullBars"])
   {
     v4 = 31;
   }
 
-  else if ([v3 isEqualToString:@"CellOutrankActive"])
+  else if ([triggersCopy isEqualToString:@"CellOutrankActive"])
   {
     v4 = 32;
   }
 
-  else if ([v3 isEqualToString:@"NoCostAdvantage"])
+  else if ([triggersCopy isEqualToString:@"NoCostAdvantage"])
   {
     v4 = 33;
   }
@@ -1912,20 +1912,20 @@
   v8.receiver = self;
   v8.super_class = AWDSymptomsAdvisoryAlternateNetworkType;
   v4 = [(AWDSymptomsAdvisoryAlternateNetworkType *)&v8 description];
-  v5 = [(AWDSymptomsAdvisoryAlternateNetworkType *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(AWDSymptomsAdvisoryAlternateNetworkType *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if ((*&has & 2) != 0)
   {
     v32 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_timestamp];
-    [v3 setObject:v32 forKey:@"timestamp"];
+    [dictionary setObject:v32 forKey:@"timestamp"];
 
     has = self->_has;
     if ((*&has & 8) == 0)
@@ -1956,7 +1956,7 @@ LABEL_3:
     v34 = off_27898B858[v33];
   }
 
-  [v3 setObject:v34 forKey:@"advice"];
+  [dictionary setObject:v34 forKey:@"advice"];
 
   has = self->_has;
   if ((*&has & 0x20) == 0)
@@ -1982,7 +1982,7 @@ LABEL_69:
     v39 = off_27898B888[v38];
   }
 
-  [v3 setObject:v39 forKey:@"bailOutOf"];
+  [dictionary setObject:v39 forKey:@"bailOutOf"];
 
   has = self->_has;
   if ((*&has & 1) == 0)
@@ -1998,7 +1998,7 @@ LABEL_5:
 
 LABEL_77:
   v42 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_adviceHeldForSecs];
-  [v3 setObject:v42 forKey:@"adviceHeldForSecs"];
+  [dictionary setObject:v42 forKey:@"adviceHeldForSecs"];
 
   has = self->_has;
   if ((*&has & 0x100000) == 0)
@@ -2014,7 +2014,7 @@ LABEL_6:
 
 LABEL_78:
   v43 = [MEMORY[0x277CCABB0] numberWithBool:self->_kernelProbingActivated];
-  [v3 setObject:v43 forKey:@"kernelProbingActivated"];
+  [dictionary setObject:v43 forKey:@"kernelProbingActivated"];
 
   has = self->_has;
   if ((*&has & 0x4000) == 0)
@@ -2040,7 +2040,7 @@ LABEL_79:
     v45 = off_27898B8E8[v44];
   }
 
-  [v3 setObject:v45 forKey:@"ingressTrigger"];
+  [dictionary setObject:v45 forKey:@"ingressTrigger"];
 
   has = self->_has;
   if ((*&has & 0x10000) == 0)
@@ -2066,7 +2066,7 @@ LABEL_89:
     v51 = off_27898B888[v50];
   }
 
-  [v3 setObject:v51 forKey:@"ingressTriggerOn"];
+  [dictionary setObject:v51 forKey:@"ingressTriggerOn"];
 
   has = self->_has;
   if ((*&has & 0x8000) == 0)
@@ -2082,7 +2082,7 @@ LABEL_9:
 
 LABEL_98:
   v54 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_ingressTriggerMultiplier];
-  [v3 setObject:v54 forKey:@"ingressTriggerMultiplier"];
+  [dictionary setObject:v54 forKey:@"ingressTriggerMultiplier"];
 
   has = self->_has;
   if ((*&has & 0x20000) == 0)
@@ -2098,7 +2098,7 @@ LABEL_10:
 
 LABEL_99:
   v55 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_ingressTriggerPercentagex100];
-  [v3 setObject:v55 forKey:@"ingressTriggerPercentagex100"];
+  [dictionary setObject:v55 forKey:@"ingressTriggerPercentagex100"];
 
   has = self->_has;
   if ((*&has & 0x200) == 0)
@@ -2124,7 +2124,7 @@ LABEL_100:
     v57 = off_27898B8E8[v56];
   }
 
-  [v3 setObject:v57 forKey:@"egressTrigger"];
+  [dictionary setObject:v57 forKey:@"egressTrigger"];
 
   has = self->_has;
   if ((*&has & 0x800) == 0)
@@ -2150,7 +2150,7 @@ LABEL_104:
     v59 = off_27898B888[v58];
   }
 
-  [v3 setObject:v59 forKey:@"egressTriggerOn"];
+  [dictionary setObject:v59 forKey:@"egressTriggerOn"];
 
   has = self->_has;
   if ((*&has & 0x400) == 0)
@@ -2166,33 +2166,33 @@ LABEL_13:
 
 LABEL_108:
   v60 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_egressTriggerMultiplier];
-  [v3 setObject:v60 forKey:@"egressTriggerMultiplier"];
+  [dictionary setObject:v60 forKey:@"egressTriggerMultiplier"];
 
   if ((*&self->_has & 0x1000) != 0)
   {
 LABEL_14:
     v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_egressTriggerPercentagex100];
-    [v3 setObject:v5 forKey:@"egressTriggerPercentagex100"];
+    [dictionary setObject:v5 forKey:@"egressTriggerPercentagex100"];
   }
 
 LABEL_15:
   ingressTriggerSignatures = self->_ingressTriggerSignatures;
   if (ingressTriggerSignatures)
   {
-    [v3 setObject:ingressTriggerSignatures forKey:@"ingressTriggerSignature"];
+    [dictionary setObject:ingressTriggerSignatures forKey:@"ingressTriggerSignature"];
   }
 
   egressTriggerSignatures = self->_egressTriggerSignatures;
   if (egressTriggerSignatures)
   {
-    [v3 setObject:egressTriggerSignatures forKey:@"egressTriggerSignature"];
+    [dictionary setObject:egressTriggerSignatures forKey:@"egressTriggerSignature"];
   }
 
   v8 = self->_has;
   if ((*&v8 & 0x80) != 0)
   {
     v35 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_comingFromState];
-    [v3 setObject:v35 forKey:@"comingFromState"];
+    [dictionary setObject:v35 forKey:@"comingFromState"];
 
     v8 = self->_has;
     if ((*&v8 & 0x2000) == 0)
@@ -2223,7 +2223,7 @@ LABEL_21:
     v37 = off_27898B8A0[v36];
   }
 
-  [v3 setObject:v37 forKey:@"ingressMobilityCode"];
+  [dictionary setObject:v37 forKey:@"ingressMobilityCode"];
 
   v8 = self->_has;
   if ((*&v8 & 0x100) == 0)
@@ -2249,7 +2249,7 @@ LABEL_73:
     v41 = off_27898B8A0[v40];
   }
 
-  [v3 setObject:v41 forKey:@"egressMobilityCode"];
+  [dictionary setObject:v41 forKey:@"egressMobilityCode"];
 
   v8 = self->_has;
   if ((*&v8 & 0x80000) == 0)
@@ -2265,7 +2265,7 @@ LABEL_23:
 
 LABEL_83:
   v46 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_transitionsSuppressedByMobility];
-  [v3 setObject:v46 forKey:@"transitionsSuppressedByMobility"];
+  [dictionary setObject:v46 forKey:@"transitionsSuppressedByMobility"];
 
   v8 = self->_has;
   if ((*&v8 & 0x40) == 0)
@@ -2281,7 +2281,7 @@ LABEL_24:
 
 LABEL_84:
   v47 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_cellularDataUsage];
-  [v3 setObject:v47 forKey:@"cellularDataUsage"];
+  [dictionary setObject:v47 forKey:@"cellularDataUsage"];
 
   v8 = self->_has;
   if ((*&v8 & 0x40000) == 0)
@@ -2307,7 +2307,7 @@ LABEL_85:
     v49 = off_27898B8D0[v48];
   }
 
-  [v3 setObject:v49 forKey:@"policy"];
+  [dictionary setObject:v49 forKey:@"policy"];
 
   v8 = self->_has;
   if ((*&v8 & 0x10) == 0)
@@ -2338,13 +2338,13 @@ LABEL_93:
     v53 = [MEMORY[0x277CCACA8] stringWithFormat:@"(unknown: %i)", self->_advisor];
   }
 
-  [v3 setObject:v53 forKey:@"advisor"];
+  [dictionary setObject:v53 forKey:@"advisor"];
 
   if ((*&self->_has & 4) != 0)
   {
 LABEL_27:
     v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_activationIdentifier];
-    [v3 setObject:v9 forKey:@"activationIdentifier"];
+    [dictionary setObject:v9 forKey:@"activationIdentifier"];
   }
 
 LABEL_28:
@@ -2376,7 +2376,7 @@ LABEL_28:
       while (v12 < self->_wifiIngressTriggers.count);
     }
 
-    [v3 setObject:v11 forKey:@"wifiIngressTriggers"];
+    [dictionary setObject:v11 forKey:@"wifiIngressTriggers"];
   }
 
   p_cellIngressTriggers = &self->_cellIngressTriggers;
@@ -2407,7 +2407,7 @@ LABEL_28:
       while (v17 < self->_cellIngressTriggers.count);
     }
 
-    [v3 setObject:v16 forKey:@"cellIngressTriggers"];
+    [dictionary setObject:v16 forKey:@"cellIngressTriggers"];
   }
 
   p_wifiEgressTriggers = &self->_wifiEgressTriggers;
@@ -2438,7 +2438,7 @@ LABEL_28:
       while (v22 < self->_wifiEgressTriggers.count);
     }
 
-    [v3 setObject:v21 forKey:@"wifiEgressTriggers"];
+    [dictionary setObject:v21 forKey:@"wifiEgressTriggers"];
   }
 
   p_cellEgressTriggers = &self->_cellEgressTriggers;
@@ -2469,18 +2469,18 @@ LABEL_28:
       while (v27 < p_cellEgressTriggers->count);
     }
 
-    [v3 setObject:v26 forKey:@"cellEgressTriggers"];
+    [dictionary setObject:v26 forKey:@"cellEgressTriggers"];
   }
 
-  v30 = v3;
+  v30 = dictionary;
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v60 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((*&has & 2) != 0)
   {
@@ -2886,14 +2886,14 @@ LABEL_38:
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((*&has & 2) != 0)
   {
-    v4[14] = self->_timestamp;
-    *(v4 + 55) |= 2u;
+    toCopy[14] = self->_timestamp;
+    *(toCopy + 55) |= 2u;
     has = self->_has;
     if ((*&has & 8) == 0)
     {
@@ -2912,8 +2912,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(v4 + 31) = self->_advice;
-  *(v4 + 55) |= 8u;
+  *(toCopy + 31) = self->_advice;
+  *(toCopy + 55) |= 8u;
   has = self->_has;
   if ((*&has & 0x20) == 0)
   {
@@ -2927,8 +2927,8 @@ LABEL_4:
   }
 
 LABEL_53:
-  *(v4 + 33) = self->_bailOutOf;
-  *(v4 + 55) |= 0x20u;
+  *(toCopy + 33) = self->_bailOutOf;
+  *(toCopy + 55) |= 0x20u;
   has = self->_has;
   if ((*&has & 1) == 0)
   {
@@ -2942,8 +2942,8 @@ LABEL_5:
   }
 
 LABEL_54:
-  v4[13] = self->_adviceHeldForSecs;
-  *(v4 + 55) |= 1u;
+  toCopy[13] = self->_adviceHeldForSecs;
+  *(toCopy + 55) |= 1u;
   has = self->_has;
   if ((*&has & 0x100000) == 0)
   {
@@ -2957,8 +2957,8 @@ LABEL_6:
   }
 
 LABEL_55:
-  *(v4 + 216) = self->_kernelProbingActivated;
-  *(v4 + 55) |= 0x100000u;
+  *(toCopy + 216) = self->_kernelProbingActivated;
+  *(toCopy + 55) |= 0x100000u;
   has = self->_has;
   if ((*&has & 0x4000) == 0)
   {
@@ -2972,8 +2972,8 @@ LABEL_7:
   }
 
 LABEL_56:
-  *(v4 + 45) = self->_ingressTrigger;
-  *(v4 + 55) |= 0x4000u;
+  *(toCopy + 45) = self->_ingressTrigger;
+  *(toCopy + 55) |= 0x4000u;
   has = self->_has;
   if ((*&has & 0x10000) == 0)
   {
@@ -2987,8 +2987,8 @@ LABEL_8:
   }
 
 LABEL_57:
-  *(v4 + 47) = self->_ingressTriggerOn;
-  *(v4 + 55) |= 0x10000u;
+  *(toCopy + 47) = self->_ingressTriggerOn;
+  *(toCopy + 55) |= 0x10000u;
   has = self->_has;
   if ((*&has & 0x8000) == 0)
   {
@@ -3002,8 +3002,8 @@ LABEL_9:
   }
 
 LABEL_58:
-  *(v4 + 46) = self->_ingressTriggerMultiplier;
-  *(v4 + 55) |= 0x8000u;
+  *(toCopy + 46) = self->_ingressTriggerMultiplier;
+  *(toCopy + 55) |= 0x8000u;
   has = self->_has;
   if ((*&has & 0x20000) == 0)
   {
@@ -3017,8 +3017,8 @@ LABEL_10:
   }
 
 LABEL_59:
-  *(v4 + 48) = self->_ingressTriggerPercentagex100;
-  *(v4 + 55) |= 0x20000u;
+  *(toCopy + 48) = self->_ingressTriggerPercentagex100;
+  *(toCopy + 55) |= 0x20000u;
   has = self->_has;
   if ((*&has & 0x200) == 0)
   {
@@ -3032,8 +3032,8 @@ LABEL_11:
   }
 
 LABEL_60:
-  *(v4 + 37) = self->_egressTrigger;
-  *(v4 + 55) |= 0x200u;
+  *(toCopy + 37) = self->_egressTrigger;
+  *(toCopy + 55) |= 0x200u;
   has = self->_has;
   if ((*&has & 0x800) == 0)
   {
@@ -3044,8 +3044,8 @@ LABEL_12:
     }
 
 LABEL_62:
-    *(v4 + 38) = self->_egressTriggerMultiplier;
-    *(v4 + 55) |= 0x400u;
+    *(toCopy + 38) = self->_egressTriggerMultiplier;
+    *(toCopy + 55) |= 0x400u;
     if ((*&self->_has & 0x1000) == 0)
     {
       goto LABEL_15;
@@ -3055,8 +3055,8 @@ LABEL_62:
   }
 
 LABEL_61:
-  *(v4 + 39) = self->_egressTriggerOn;
-  *(v4 + 55) |= 0x800u;
+  *(toCopy + 39) = self->_egressTriggerOn;
+  *(toCopy + 55) |= 0x800u;
   has = self->_has;
   if ((*&has & 0x400) != 0)
   {
@@ -3067,19 +3067,19 @@ LABEL_13:
   if ((*&has & 0x1000) != 0)
   {
 LABEL_14:
-    *(v4 + 40) = self->_egressTriggerPercentagex100;
-    *(v4 + 55) |= 0x1000u;
+    *(toCopy + 40) = self->_egressTriggerPercentagex100;
+    *(toCopy + 55) |= 0x1000u;
   }
 
 LABEL_15:
-  v27 = v4;
+  v27 = toCopy;
   if ([(AWDSymptomsAdvisoryAlternateNetworkType *)self ingressTriggerSignaturesCount])
   {
     [v27 clearIngressTriggerSignatures];
-    v6 = [(AWDSymptomsAdvisoryAlternateNetworkType *)self ingressTriggerSignaturesCount];
-    if (v6)
+    ingressTriggerSignaturesCount = [(AWDSymptomsAdvisoryAlternateNetworkType *)self ingressTriggerSignaturesCount];
+    if (ingressTriggerSignaturesCount)
     {
-      v7 = v6;
+      v7 = ingressTriggerSignaturesCount;
       for (i = 0; i != v7; ++i)
       {
         v9 = [(AWDSymptomsAdvisoryAlternateNetworkType *)self ingressTriggerSignatureAtIndex:i];
@@ -3091,10 +3091,10 @@ LABEL_15:
   if ([(AWDSymptomsAdvisoryAlternateNetworkType *)self egressTriggerSignaturesCount])
   {
     [v27 clearEgressTriggerSignatures];
-    v10 = [(AWDSymptomsAdvisoryAlternateNetworkType *)self egressTriggerSignaturesCount];
-    if (v10)
+    egressTriggerSignaturesCount = [(AWDSymptomsAdvisoryAlternateNetworkType *)self egressTriggerSignaturesCount];
+    if (egressTriggerSignaturesCount)
     {
-      v11 = v10;
+      v11 = egressTriggerSignaturesCount;
       for (j = 0; j != v11; ++j)
       {
         v13 = [(AWDSymptomsAdvisoryAlternateNetworkType *)self egressTriggerSignatureAtIndex:j];
@@ -3214,10 +3214,10 @@ LABEL_32:
   if ([(AWDSymptomsAdvisoryAlternateNetworkType *)self wifiIngressTriggersCount])
   {
     [v27 clearWifiIngressTriggers];
-    v15 = [(AWDSymptomsAdvisoryAlternateNetworkType *)self wifiIngressTriggersCount];
-    if (v15)
+    wifiIngressTriggersCount = [(AWDSymptomsAdvisoryAlternateNetworkType *)self wifiIngressTriggersCount];
+    if (wifiIngressTriggersCount)
     {
-      v16 = v15;
+      v16 = wifiIngressTriggersCount;
       for (k = 0; k != v16; ++k)
       {
         [v27 addWifiIngressTriggers:{-[AWDSymptomsAdvisoryAlternateNetworkType wifiIngressTriggersAtIndex:](self, "wifiIngressTriggersAtIndex:", k)}];
@@ -3228,10 +3228,10 @@ LABEL_32:
   if ([(AWDSymptomsAdvisoryAlternateNetworkType *)self cellIngressTriggersCount])
   {
     [v27 clearCellIngressTriggers];
-    v18 = [(AWDSymptomsAdvisoryAlternateNetworkType *)self cellIngressTriggersCount];
-    if (v18)
+    cellIngressTriggersCount = [(AWDSymptomsAdvisoryAlternateNetworkType *)self cellIngressTriggersCount];
+    if (cellIngressTriggersCount)
     {
-      v19 = v18;
+      v19 = cellIngressTriggersCount;
       for (m = 0; m != v19; ++m)
       {
         [v27 addCellIngressTriggers:{-[AWDSymptomsAdvisoryAlternateNetworkType cellIngressTriggersAtIndex:](self, "cellIngressTriggersAtIndex:", m)}];
@@ -3242,10 +3242,10 @@ LABEL_32:
   if ([(AWDSymptomsAdvisoryAlternateNetworkType *)self wifiEgressTriggersCount])
   {
     [v27 clearWifiEgressTriggers];
-    v21 = [(AWDSymptomsAdvisoryAlternateNetworkType *)self wifiEgressTriggersCount];
-    if (v21)
+    wifiEgressTriggersCount = [(AWDSymptomsAdvisoryAlternateNetworkType *)self wifiEgressTriggersCount];
+    if (wifiEgressTriggersCount)
     {
-      v22 = v21;
+      v22 = wifiEgressTriggersCount;
       for (n = 0; n != v22; ++n)
       {
         [v27 addWifiEgressTriggers:{-[AWDSymptomsAdvisoryAlternateNetworkType wifiEgressTriggersAtIndex:](self, "wifiEgressTriggersAtIndex:", n)}];
@@ -3256,10 +3256,10 @@ LABEL_32:
   if ([(AWDSymptomsAdvisoryAlternateNetworkType *)self cellEgressTriggersCount])
   {
     [v27 clearCellEgressTriggers];
-    v24 = [(AWDSymptomsAdvisoryAlternateNetworkType *)self cellEgressTriggersCount];
-    if (v24)
+    cellEgressTriggersCount = [(AWDSymptomsAdvisoryAlternateNetworkType *)self cellEgressTriggersCount];
+    if (cellEgressTriggersCount)
     {
-      v25 = v24;
+      v25 = cellEgressTriggersCount;
       for (ii = 0; ii != v25; ++ii)
       {
         [v27 addCellEgressTriggers:{-[AWDSymptomsAdvisoryAlternateNetworkType cellEgressTriggersAtIndex:](self, "cellEgressTriggersAtIndex:", ii)}];
@@ -3268,10 +3268,10 @@ LABEL_32:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v33 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((*&has & 2) != 0)
@@ -3476,7 +3476,7 @@ LABEL_15:
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v27 + 1) + 8 * v12) copyWithZone:a3];
+        v13 = [*(*(&v27 + 1) + 8 * v12) copyWithZone:zone];
         [v6 addIngressTriggerSignature:v13];
 
         ++v12;
@@ -3509,7 +3509,7 @@ LABEL_15:
           objc_enumerationMutation(v14);
         }
 
-        v19 = [*(*(&v23 + 1) + 8 * v18) copyWithZone:{a3, v23}];
+        v19 = [*(*(&v23 + 1) + 8 * v18) copyWithZone:{zone, v23}];
         [v6 addEgressTriggerSignature:v19];
 
         ++v18;
@@ -3638,19 +3638,19 @@ LABEL_38:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_118;
   }
 
   has = self->_has;
-  v6 = *(v4 + 55);
+  v6 = *(equalCopy + 55);
   if ((*&has & 2) != 0)
   {
-    if ((v6 & 2) == 0 || self->_timestamp != *(v4 + 14))
+    if ((v6 & 2) == 0 || self->_timestamp != *(equalCopy + 14))
     {
       goto LABEL_118;
     }
@@ -3663,7 +3663,7 @@ LABEL_38:
 
   if ((*&has & 8) != 0)
   {
-    if ((v6 & 8) == 0 || self->_advice != *(v4 + 31))
+    if ((v6 & 8) == 0 || self->_advice != *(equalCopy + 31))
     {
       goto LABEL_118;
     }
@@ -3676,7 +3676,7 @@ LABEL_38:
 
   if ((*&has & 0x20) != 0)
   {
-    if ((v6 & 0x20) == 0 || self->_bailOutOf != *(v4 + 33))
+    if ((v6 & 0x20) == 0 || self->_bailOutOf != *(equalCopy + 33))
     {
       goto LABEL_118;
     }
@@ -3689,7 +3689,7 @@ LABEL_38:
 
   if (*&has)
   {
-    if ((v6 & 1) == 0 || self->_adviceHeldForSecs != *(v4 + 13))
+    if ((v6 & 1) == 0 || self->_adviceHeldForSecs != *(equalCopy + 13))
     {
       goto LABEL_118;
     }
@@ -3717,16 +3717,16 @@ LABEL_118:
     goto LABEL_118;
   }
 
-  v7 = *(v4 + 216);
+  v7 = *(equalCopy + 216);
   if (self->_kernelProbingActivated)
   {
-    if ((*(v4 + 216) & 1) == 0)
+    if ((*(equalCopy + 216) & 1) == 0)
     {
       goto LABEL_118;
     }
   }
 
-  else if (*(v4 + 216))
+  else if (*(equalCopy + 216))
   {
     goto LABEL_118;
   }
@@ -3734,7 +3734,7 @@ LABEL_118:
 LABEL_24:
   if ((*&has & 0x4000) != 0)
   {
-    if ((v6 & 0x4000) == 0 || self->_ingressTrigger != *(v4 + 45))
+    if ((v6 & 0x4000) == 0 || self->_ingressTrigger != *(equalCopy + 45))
     {
       goto LABEL_118;
     }
@@ -3747,7 +3747,7 @@ LABEL_24:
 
   if ((*&has & 0x10000) != 0)
   {
-    if ((v6 & 0x10000) == 0 || self->_ingressTriggerOn != *(v4 + 47))
+    if ((v6 & 0x10000) == 0 || self->_ingressTriggerOn != *(equalCopy + 47))
     {
       goto LABEL_118;
     }
@@ -3760,7 +3760,7 @@ LABEL_24:
 
   if ((*&has & 0x8000) != 0)
   {
-    if ((v6 & 0x8000) == 0 || self->_ingressTriggerMultiplier != *(v4 + 46))
+    if ((v6 & 0x8000) == 0 || self->_ingressTriggerMultiplier != *(equalCopy + 46))
     {
       goto LABEL_118;
     }
@@ -3773,7 +3773,7 @@ LABEL_24:
 
   if ((*&has & 0x20000) != 0)
   {
-    if ((v6 & 0x20000) == 0 || self->_ingressTriggerPercentagex100 != *(v4 + 48))
+    if ((v6 & 0x20000) == 0 || self->_ingressTriggerPercentagex100 != *(equalCopy + 48))
     {
       goto LABEL_118;
     }
@@ -3786,7 +3786,7 @@ LABEL_24:
 
   if ((*&has & 0x200) != 0)
   {
-    if ((v6 & 0x200) == 0 || self->_egressTrigger != *(v4 + 37))
+    if ((v6 & 0x200) == 0 || self->_egressTrigger != *(equalCopy + 37))
     {
       goto LABEL_118;
     }
@@ -3799,7 +3799,7 @@ LABEL_24:
 
   if ((*&has & 0x800) != 0)
   {
-    if ((v6 & 0x800) == 0 || self->_egressTriggerOn != *(v4 + 39))
+    if ((v6 & 0x800) == 0 || self->_egressTriggerOn != *(equalCopy + 39))
     {
       goto LABEL_118;
     }
@@ -3812,7 +3812,7 @@ LABEL_24:
 
   if ((*&has & 0x400) != 0)
   {
-    if ((v6 & 0x400) == 0 || self->_egressTriggerMultiplier != *(v4 + 38))
+    if ((v6 & 0x400) == 0 || self->_egressTriggerMultiplier != *(equalCopy + 38))
     {
       goto LABEL_118;
     }
@@ -3825,7 +3825,7 @@ LABEL_24:
 
   if ((*&has & 0x1000) != 0)
   {
-    if ((v6 & 0x1000) == 0 || self->_egressTriggerPercentagex100 != *(v4 + 40))
+    if ((v6 & 0x1000) == 0 || self->_egressTriggerPercentagex100 != *(equalCopy + 40))
     {
       goto LABEL_118;
     }
@@ -3837,13 +3837,13 @@ LABEL_24:
   }
 
   ingressTriggerSignatures = self->_ingressTriggerSignatures;
-  if (ingressTriggerSignatures | *(v4 + 25) && ![(NSMutableArray *)ingressTriggerSignatures isEqual:?])
+  if (ingressTriggerSignatures | *(equalCopy + 25) && ![(NSMutableArray *)ingressTriggerSignatures isEqual:?])
   {
     goto LABEL_118;
   }
 
   egressTriggerSignatures = self->_egressTriggerSignatures;
-  if (egressTriggerSignatures | *(v4 + 21))
+  if (egressTriggerSignatures | *(equalCopy + 21))
   {
     if (![(NSMutableArray *)egressTriggerSignatures isEqual:?])
     {
@@ -3852,10 +3852,10 @@ LABEL_24:
   }
 
   v10 = self->_has;
-  v11 = *(v4 + 55);
+  v11 = *(equalCopy + 55);
   if ((*&v10 & 0x80) != 0)
   {
-    if ((v11 & 0x80) == 0 || self->_comingFromState != *(v4 + 35))
+    if ((v11 & 0x80) == 0 || self->_comingFromState != *(equalCopy + 35))
     {
       goto LABEL_118;
     }
@@ -3868,7 +3868,7 @@ LABEL_24:
 
   if ((*&v10 & 0x2000) != 0)
   {
-    if ((v11 & 0x2000) == 0 || self->_ingressMobilityCode != *(v4 + 44))
+    if ((v11 & 0x2000) == 0 || self->_ingressMobilityCode != *(equalCopy + 44))
     {
       goto LABEL_118;
     }
@@ -3881,7 +3881,7 @@ LABEL_24:
 
   if ((*&v10 & 0x100) != 0)
   {
-    if ((v11 & 0x100) == 0 || self->_egressMobilityCode != *(v4 + 36))
+    if ((v11 & 0x100) == 0 || self->_egressMobilityCode != *(equalCopy + 36))
     {
       goto LABEL_118;
     }
@@ -3894,7 +3894,7 @@ LABEL_24:
 
   if ((*&v10 & 0x80000) != 0)
   {
-    if ((v11 & 0x80000) == 0 || self->_transitionsSuppressedByMobility != *(v4 + 53))
+    if ((v11 & 0x80000) == 0 || self->_transitionsSuppressedByMobility != *(equalCopy + 53))
     {
       goto LABEL_118;
     }
@@ -3907,7 +3907,7 @@ LABEL_24:
 
   if ((*&v10 & 0x40) != 0)
   {
-    if ((v11 & 0x40) == 0 || self->_cellularDataUsage != *(v4 + 34))
+    if ((v11 & 0x40) == 0 || self->_cellularDataUsage != *(equalCopy + 34))
     {
       goto LABEL_118;
     }
@@ -3920,7 +3920,7 @@ LABEL_24:
 
   if ((*&v10 & 0x40000) != 0)
   {
-    if ((v11 & 0x40000) == 0 || self->_policy != *(v4 + 52))
+    if ((v11 & 0x40000) == 0 || self->_policy != *(equalCopy + 52))
     {
       goto LABEL_118;
     }
@@ -3933,7 +3933,7 @@ LABEL_24:
 
   if ((*&v10 & 0x10) != 0)
   {
-    if ((v11 & 0x10) == 0 || self->_advisor != *(v4 + 32))
+    if ((v11 & 0x10) == 0 || self->_advisor != *(equalCopy + 32))
     {
       goto LABEL_118;
     }
@@ -3946,7 +3946,7 @@ LABEL_24:
 
   if ((*&v10 & 4) != 0)
   {
-    if ((v11 & 4) == 0 || self->_activationIdentifier != *(v4 + 30))
+    if ((v11 & 4) == 0 || self->_activationIdentifier != *(equalCopy + 30))
     {
       goto LABEL_118;
     }
@@ -4263,17 +4263,17 @@ LABEL_45:
   return v21 ^ v24 ^ PBRepeatedInt32Hash();
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v41 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  v6 = *(v4 + 55);
+  fromCopy = from;
+  v5 = fromCopy;
+  v6 = *(fromCopy + 55);
   if ((v6 & 2) != 0)
   {
-    self->_timestamp = *(v4 + 14);
+    self->_timestamp = *(fromCopy + 14);
     *&self->_has |= 2u;
-    v6 = *(v4 + 55);
+    v6 = *(fromCopy + 55);
     if ((v6 & 8) == 0)
     {
 LABEL_3:
@@ -4291,9 +4291,9 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  self->_advice = *(v4 + 31);
+  self->_advice = *(fromCopy + 31);
   *&self->_has |= 8u;
-  v6 = *(v4 + 55);
+  v6 = *(fromCopy + 55);
   if ((v6 & 0x20) == 0)
   {
 LABEL_4:
@@ -4306,9 +4306,9 @@ LABEL_4:
   }
 
 LABEL_53:
-  self->_bailOutOf = *(v4 + 33);
+  self->_bailOutOf = *(fromCopy + 33);
   *&self->_has |= 0x20u;
-  v6 = *(v4 + 55);
+  v6 = *(fromCopy + 55);
   if ((v6 & 1) == 0)
   {
 LABEL_5:
@@ -4321,9 +4321,9 @@ LABEL_5:
   }
 
 LABEL_54:
-  self->_adviceHeldForSecs = *(v4 + 13);
+  self->_adviceHeldForSecs = *(fromCopy + 13);
   *&self->_has |= 1u;
-  v6 = *(v4 + 55);
+  v6 = *(fromCopy + 55);
   if ((v6 & 0x100000) == 0)
   {
 LABEL_6:
@@ -4336,9 +4336,9 @@ LABEL_6:
   }
 
 LABEL_55:
-  self->_kernelProbingActivated = *(v4 + 216);
+  self->_kernelProbingActivated = *(fromCopy + 216);
   *&self->_has |= 0x100000u;
-  v6 = *(v4 + 55);
+  v6 = *(fromCopy + 55);
   if ((v6 & 0x4000) == 0)
   {
 LABEL_7:
@@ -4351,9 +4351,9 @@ LABEL_7:
   }
 
 LABEL_56:
-  self->_ingressTrigger = *(v4 + 45);
+  self->_ingressTrigger = *(fromCopy + 45);
   *&self->_has |= 0x4000u;
-  v6 = *(v4 + 55);
+  v6 = *(fromCopy + 55);
   if ((v6 & 0x10000) == 0)
   {
 LABEL_8:
@@ -4366,9 +4366,9 @@ LABEL_8:
   }
 
 LABEL_57:
-  self->_ingressTriggerOn = *(v4 + 47);
+  self->_ingressTriggerOn = *(fromCopy + 47);
   *&self->_has |= 0x10000u;
-  v6 = *(v4 + 55);
+  v6 = *(fromCopy + 55);
   if ((v6 & 0x8000) == 0)
   {
 LABEL_9:
@@ -4381,9 +4381,9 @@ LABEL_9:
   }
 
 LABEL_58:
-  self->_ingressTriggerMultiplier = *(v4 + 46);
+  self->_ingressTriggerMultiplier = *(fromCopy + 46);
   *&self->_has |= 0x8000u;
-  v6 = *(v4 + 55);
+  v6 = *(fromCopy + 55);
   if ((v6 & 0x20000) == 0)
   {
 LABEL_10:
@@ -4396,9 +4396,9 @@ LABEL_10:
   }
 
 LABEL_59:
-  self->_ingressTriggerPercentagex100 = *(v4 + 48);
+  self->_ingressTriggerPercentagex100 = *(fromCopy + 48);
   *&self->_has |= 0x20000u;
-  v6 = *(v4 + 55);
+  v6 = *(fromCopy + 55);
   if ((v6 & 0x200) == 0)
   {
 LABEL_11:
@@ -4411,9 +4411,9 @@ LABEL_11:
   }
 
 LABEL_60:
-  self->_egressTrigger = *(v4 + 37);
+  self->_egressTrigger = *(fromCopy + 37);
   *&self->_has |= 0x200u;
-  v6 = *(v4 + 55);
+  v6 = *(fromCopy + 55);
   if ((v6 & 0x800) == 0)
   {
 LABEL_12:
@@ -4426,9 +4426,9 @@ LABEL_12:
   }
 
 LABEL_61:
-  self->_egressTriggerOn = *(v4 + 39);
+  self->_egressTriggerOn = *(fromCopy + 39);
   *&self->_has |= 0x800u;
-  v6 = *(v4 + 55);
+  v6 = *(fromCopy + 55);
   if ((v6 & 0x400) == 0)
   {
 LABEL_13:
@@ -4441,12 +4441,12 @@ LABEL_13:
   }
 
 LABEL_62:
-  self->_egressTriggerMultiplier = *(v4 + 38);
+  self->_egressTriggerMultiplier = *(fromCopy + 38);
   *&self->_has |= 0x400u;
-  if ((*(v4 + 55) & 0x1000) != 0)
+  if ((*(fromCopy + 55) & 0x1000) != 0)
   {
 LABEL_14:
-    self->_egressTriggerPercentagex100 = *(v4 + 40);
+    self->_egressTriggerPercentagex100 = *(fromCopy + 40);
     *&self->_has |= 0x1000u;
   }
 
@@ -4455,7 +4455,7 @@ LABEL_15:
   v38 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v7 = *(v4 + 25);
+  v7 = *(fromCopy + 25);
   v8 = [v7 countByEnumeratingWithState:&v35 objects:v40 count:16];
   if (v8)
   {
@@ -4615,40 +4615,40 @@ LABEL_37:
   }
 
 LABEL_38:
-  v18 = [v5 wifiIngressTriggersCount];
-  if (v18)
+  wifiIngressTriggersCount = [v5 wifiIngressTriggersCount];
+  if (wifiIngressTriggersCount)
   {
-    v19 = v18;
+    v19 = wifiIngressTriggersCount;
     for (k = 0; k != v19; ++k)
     {
       -[AWDSymptomsAdvisoryAlternateNetworkType addWifiIngressTriggers:](self, "addWifiIngressTriggers:", [v5 wifiIngressTriggersAtIndex:k]);
     }
   }
 
-  v21 = [v5 cellIngressTriggersCount];
-  if (v21)
+  cellIngressTriggersCount = [v5 cellIngressTriggersCount];
+  if (cellIngressTriggersCount)
   {
-    v22 = v21;
+    v22 = cellIngressTriggersCount;
     for (m = 0; m != v22; ++m)
     {
       -[AWDSymptomsAdvisoryAlternateNetworkType addCellIngressTriggers:](self, "addCellIngressTriggers:", [v5 cellIngressTriggersAtIndex:m]);
     }
   }
 
-  v24 = [v5 wifiEgressTriggersCount];
-  if (v24)
+  wifiEgressTriggersCount = [v5 wifiEgressTriggersCount];
+  if (wifiEgressTriggersCount)
   {
-    v25 = v24;
+    v25 = wifiEgressTriggersCount;
     for (n = 0; n != v25; ++n)
     {
       -[AWDSymptomsAdvisoryAlternateNetworkType addWifiEgressTriggers:](self, "addWifiEgressTriggers:", [v5 wifiEgressTriggersAtIndex:n]);
     }
   }
 
-  v27 = [v5 cellEgressTriggersCount];
-  if (v27)
+  cellEgressTriggersCount = [v5 cellEgressTriggersCount];
+  if (cellEgressTriggersCount)
   {
-    v28 = v27;
+    v28 = cellEgressTriggersCount;
     for (ii = 0; ii != v28; ++ii)
     {
       -[AWDSymptomsAdvisoryAlternateNetworkType addCellEgressTriggers:](self, "addCellEgressTriggers:", [v5 cellEgressTriggersAtIndex:ii]);

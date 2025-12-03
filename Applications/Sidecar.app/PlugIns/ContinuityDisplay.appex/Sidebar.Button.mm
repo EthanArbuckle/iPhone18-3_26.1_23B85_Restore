@@ -1,44 +1,44 @@
 @interface Sidebar.Button
 - (BOOL)isHighlighted;
 - (BOOL)isSelected;
-- (CGRect)imageRectForContentRect:(CGRect)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setSelected:(BOOL)a3;
+- (CGRect)imageRectForContentRect:(CGRect)rect;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setSelected:(BOOL)selected;
 @end
 
 @implementation Sidebar.Button
 
 - (BOOL)isHighlighted
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10003A064(&selRef_isHighlighted);
 
   return v3 & 1;
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v4 = self;
-  sub_10003A0FC(a3, &selRef_setHighlighted_);
+  selfCopy = self;
+  sub_10003A0FC(highlighted, &selRef_setHighlighted_);
 }
 
 - (BOOL)isSelected
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10003A064(&selRef_isSelected);
 
   return v3 & 1;
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v4 = self;
-  sub_10003A0FC(a3, &selRef_setSelected_);
+  selfCopy = self;
+  sub_10003A0FC(selected, &selRef_setSelected_);
 }
 
-- (CGRect)imageRectForContentRect:(CGRect)a3
+- (CGRect)imageRectForContentRect:(CGRect)rect
 {
-  v3 = self;
+  selfCopy = self;
   sub_10003A27C();
   v5 = v4;
   v7 = v6;

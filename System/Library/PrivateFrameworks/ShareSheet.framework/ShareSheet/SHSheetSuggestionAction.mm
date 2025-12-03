@@ -1,16 +1,16 @@
 @interface SHSheetSuggestionAction
 - (NSString)suggestionReason;
-- (SHSheetSuggestionAction)initWithSuggestionReason:(id)a3;
+- (SHSheetSuggestionAction)initWithSuggestionReason:(id)reason;
 @end
 
 @implementation SHSheetSuggestionAction
 
-- (SHSheetSuggestionAction)initWithSuggestionReason:(id)a3
+- (SHSheetSuggestionAction)initWithSuggestionReason:(id)reason
 {
   v4 = MEMORY[0x1E698E700];
-  v5 = a3;
+  reasonCopy = reason;
   v6 = objc_alloc_init(v4);
-  [v6 setObject:v5 forSetting:2];
+  [v6 setObject:reasonCopy forSetting:2];
 
   v7 = [(SHSheetSuggestionAction *)self initWithInfo:v6 responder:0];
   return v7;
@@ -18,8 +18,8 @@
 
 - (NSString)suggestionReason
 {
-  v2 = [(SHSheetSuggestionAction *)self info];
-  v3 = [v2 objectForSetting:2];
+  info = [(SHSheetSuggestionAction *)self info];
+  v3 = [info objectForSetting:2];
 
   return v3;
 }

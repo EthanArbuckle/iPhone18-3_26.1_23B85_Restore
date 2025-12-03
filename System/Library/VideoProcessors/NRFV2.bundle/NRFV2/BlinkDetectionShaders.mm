@@ -1,18 +1,18 @@
 @interface BlinkDetectionShaders
-- (BlinkDetectionShaders)initWithMetal:(id)a3;
+- (BlinkDetectionShaders)initWithMetal:(id)metal;
 @end
 
 @implementation BlinkDetectionShaders
 
-- (BlinkDetectionShaders)initWithMetal:(id)a3
+- (BlinkDetectionShaders)initWithMetal:(id)metal
 {
-  v4 = a3;
+  metalCopy = metal;
   v12.receiver = self;
   v12.super_class = BlinkDetectionShaders;
   v6 = [(BlinkDetectionShaders *)&v12 init];
   if (v6)
   {
-    v7 = objc_msgSend_computePipelineStateFor_constants_(v4, v5, @"BlinkDetection", 0);
+    v7 = objc_msgSend_computePipelineStateFor_constants_(metalCopy, v5, @"BlinkDetection", 0);
     blinkDetectionComputePipeline = v6->blinkDetectionComputePipeline;
     v6->blinkDetectionComputePipeline = v7;
 

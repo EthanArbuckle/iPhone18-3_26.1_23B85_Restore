@@ -1,51 +1,51 @@
 @interface _INPBReservationWrapper
-- (BOOL)isEqual:(id)a3;
-- (_INPBReservationWrapper)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBReservationWrapper)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBReservationWrapper
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(_INPBReservationWrapper *)self boatReservation];
-  v5 = [v4 dictionaryRepresentation];
-  [v3 setObject:v5 forKeyedSubscript:@"boatReservation"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  boatReservation = [(_INPBReservationWrapper *)self boatReservation];
+  dictionaryRepresentation = [boatReservation dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"boatReservation"];
 
-  v6 = [(_INPBReservationWrapper *)self busReservation];
-  v7 = [v6 dictionaryRepresentation];
-  [v3 setObject:v7 forKeyedSubscript:@"busReservation"];
+  busReservation = [(_INPBReservationWrapper *)self busReservation];
+  dictionaryRepresentation2 = [busReservation dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"busReservation"];
 
-  v8 = [(_INPBReservationWrapper *)self flightReservation];
-  v9 = [v8 dictionaryRepresentation];
-  [v3 setObject:v9 forKeyedSubscript:@"flightReservation"];
+  flightReservation = [(_INPBReservationWrapper *)self flightReservation];
+  dictionaryRepresentation3 = [flightReservation dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"flightReservation"];
 
-  v10 = [(_INPBReservationWrapper *)self lodgingReservation];
-  v11 = [v10 dictionaryRepresentation];
-  [v3 setObject:v11 forKeyedSubscript:@"lodgingReservation"];
+  lodgingReservation = [(_INPBReservationWrapper *)self lodgingReservation];
+  dictionaryRepresentation4 = [lodgingReservation dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"lodgingReservation"];
 
-  v12 = [(_INPBReservationWrapper *)self rentalCarReservation];
-  v13 = [v12 dictionaryRepresentation];
-  [v3 setObject:v13 forKeyedSubscript:@"rentalCarReservation"];
+  rentalCarReservation = [(_INPBReservationWrapper *)self rentalCarReservation];
+  dictionaryRepresentation5 = [rentalCarReservation dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation5 forKeyedSubscript:@"rentalCarReservation"];
 
-  v14 = [(_INPBReservationWrapper *)self restaurantReservation];
-  v15 = [v14 dictionaryRepresentation];
-  [v3 setObject:v15 forKeyedSubscript:@"restaurantReservation"];
+  restaurantReservation = [(_INPBReservationWrapper *)self restaurantReservation];
+  dictionaryRepresentation6 = [restaurantReservation dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation6 forKeyedSubscript:@"restaurantReservation"];
 
-  v16 = [(_INPBReservationWrapper *)self ticketedEventReservation];
-  v17 = [v16 dictionaryRepresentation];
-  [v3 setObject:v17 forKeyedSubscript:@"ticketedEventReservation"];
+  ticketedEventReservation = [(_INPBReservationWrapper *)self ticketedEventReservation];
+  dictionaryRepresentation7 = [ticketedEventReservation dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation7 forKeyedSubscript:@"ticketedEventReservation"];
 
-  v18 = [(_INPBReservationWrapper *)self trainReservation];
-  v19 = [v18 dictionaryRepresentation];
-  [v3 setObject:v19 forKeyedSubscript:@"trainReservation"];
+  trainReservation = [(_INPBReservationWrapper *)self trainReservation];
+  dictionaryRepresentation8 = [trainReservation dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation8 forKeyedSubscript:@"trainReservation"];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -60,28 +60,28 @@
   return v9 ^ [(_INPBTrainReservation *)self->_trainReservation hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_42;
   }
 
-  v5 = [(_INPBReservationWrapper *)self boatReservation];
-  v6 = [v4 boatReservation];
-  if ((v5 != 0) == (v6 == 0))
+  boatReservation = [(_INPBReservationWrapper *)self boatReservation];
+  boatReservation2 = [equalCopy boatReservation];
+  if ((boatReservation != 0) == (boatReservation2 == 0))
   {
     goto LABEL_41;
   }
 
-  v7 = [(_INPBReservationWrapper *)self boatReservation];
-  if (v7)
+  boatReservation3 = [(_INPBReservationWrapper *)self boatReservation];
+  if (boatReservation3)
   {
-    v8 = v7;
-    v9 = [(_INPBReservationWrapper *)self boatReservation];
-    v10 = [v4 boatReservation];
-    v11 = [v9 isEqual:v10];
+    v8 = boatReservation3;
+    boatReservation4 = [(_INPBReservationWrapper *)self boatReservation];
+    boatReservation5 = [equalCopy boatReservation];
+    v11 = [boatReservation4 isEqual:boatReservation5];
 
     if (!v11)
     {
@@ -93,20 +93,20 @@
   {
   }
 
-  v5 = [(_INPBReservationWrapper *)self busReservation];
-  v6 = [v4 busReservation];
-  if ((v5 != 0) == (v6 == 0))
+  boatReservation = [(_INPBReservationWrapper *)self busReservation];
+  boatReservation2 = [equalCopy busReservation];
+  if ((boatReservation != 0) == (boatReservation2 == 0))
   {
     goto LABEL_41;
   }
 
-  v12 = [(_INPBReservationWrapper *)self busReservation];
-  if (v12)
+  busReservation = [(_INPBReservationWrapper *)self busReservation];
+  if (busReservation)
   {
-    v13 = v12;
-    v14 = [(_INPBReservationWrapper *)self busReservation];
-    v15 = [v4 busReservation];
-    v16 = [v14 isEqual:v15];
+    v13 = busReservation;
+    busReservation2 = [(_INPBReservationWrapper *)self busReservation];
+    busReservation3 = [equalCopy busReservation];
+    v16 = [busReservation2 isEqual:busReservation3];
 
     if (!v16)
     {
@@ -118,20 +118,20 @@
   {
   }
 
-  v5 = [(_INPBReservationWrapper *)self flightReservation];
-  v6 = [v4 flightReservation];
-  if ((v5 != 0) == (v6 == 0))
+  boatReservation = [(_INPBReservationWrapper *)self flightReservation];
+  boatReservation2 = [equalCopy flightReservation];
+  if ((boatReservation != 0) == (boatReservation2 == 0))
   {
     goto LABEL_41;
   }
 
-  v17 = [(_INPBReservationWrapper *)self flightReservation];
-  if (v17)
+  flightReservation = [(_INPBReservationWrapper *)self flightReservation];
+  if (flightReservation)
   {
-    v18 = v17;
-    v19 = [(_INPBReservationWrapper *)self flightReservation];
-    v20 = [v4 flightReservation];
-    v21 = [v19 isEqual:v20];
+    v18 = flightReservation;
+    flightReservation2 = [(_INPBReservationWrapper *)self flightReservation];
+    flightReservation3 = [equalCopy flightReservation];
+    v21 = [flightReservation2 isEqual:flightReservation3];
 
     if (!v21)
     {
@@ -143,20 +143,20 @@
   {
   }
 
-  v5 = [(_INPBReservationWrapper *)self lodgingReservation];
-  v6 = [v4 lodgingReservation];
-  if ((v5 != 0) == (v6 == 0))
+  boatReservation = [(_INPBReservationWrapper *)self lodgingReservation];
+  boatReservation2 = [equalCopy lodgingReservation];
+  if ((boatReservation != 0) == (boatReservation2 == 0))
   {
     goto LABEL_41;
   }
 
-  v22 = [(_INPBReservationWrapper *)self lodgingReservation];
-  if (v22)
+  lodgingReservation = [(_INPBReservationWrapper *)self lodgingReservation];
+  if (lodgingReservation)
   {
-    v23 = v22;
-    v24 = [(_INPBReservationWrapper *)self lodgingReservation];
-    v25 = [v4 lodgingReservation];
-    v26 = [v24 isEqual:v25];
+    v23 = lodgingReservation;
+    lodgingReservation2 = [(_INPBReservationWrapper *)self lodgingReservation];
+    lodgingReservation3 = [equalCopy lodgingReservation];
+    v26 = [lodgingReservation2 isEqual:lodgingReservation3];
 
     if (!v26)
     {
@@ -168,20 +168,20 @@
   {
   }
 
-  v5 = [(_INPBReservationWrapper *)self rentalCarReservation];
-  v6 = [v4 rentalCarReservation];
-  if ((v5 != 0) == (v6 == 0))
+  boatReservation = [(_INPBReservationWrapper *)self rentalCarReservation];
+  boatReservation2 = [equalCopy rentalCarReservation];
+  if ((boatReservation != 0) == (boatReservation2 == 0))
   {
     goto LABEL_41;
   }
 
-  v27 = [(_INPBReservationWrapper *)self rentalCarReservation];
-  if (v27)
+  rentalCarReservation = [(_INPBReservationWrapper *)self rentalCarReservation];
+  if (rentalCarReservation)
   {
-    v28 = v27;
-    v29 = [(_INPBReservationWrapper *)self rentalCarReservation];
-    v30 = [v4 rentalCarReservation];
-    v31 = [v29 isEqual:v30];
+    v28 = rentalCarReservation;
+    rentalCarReservation2 = [(_INPBReservationWrapper *)self rentalCarReservation];
+    rentalCarReservation3 = [equalCopy rentalCarReservation];
+    v31 = [rentalCarReservation2 isEqual:rentalCarReservation3];
 
     if (!v31)
     {
@@ -193,20 +193,20 @@
   {
   }
 
-  v5 = [(_INPBReservationWrapper *)self restaurantReservation];
-  v6 = [v4 restaurantReservation];
-  if ((v5 != 0) == (v6 == 0))
+  boatReservation = [(_INPBReservationWrapper *)self restaurantReservation];
+  boatReservation2 = [equalCopy restaurantReservation];
+  if ((boatReservation != 0) == (boatReservation2 == 0))
   {
     goto LABEL_41;
   }
 
-  v32 = [(_INPBReservationWrapper *)self restaurantReservation];
-  if (v32)
+  restaurantReservation = [(_INPBReservationWrapper *)self restaurantReservation];
+  if (restaurantReservation)
   {
-    v33 = v32;
-    v34 = [(_INPBReservationWrapper *)self restaurantReservation];
-    v35 = [v4 restaurantReservation];
-    v36 = [v34 isEqual:v35];
+    v33 = restaurantReservation;
+    restaurantReservation2 = [(_INPBReservationWrapper *)self restaurantReservation];
+    restaurantReservation3 = [equalCopy restaurantReservation];
+    v36 = [restaurantReservation2 isEqual:restaurantReservation3];
 
     if (!v36)
     {
@@ -218,20 +218,20 @@
   {
   }
 
-  v5 = [(_INPBReservationWrapper *)self ticketedEventReservation];
-  v6 = [v4 ticketedEventReservation];
-  if ((v5 != 0) == (v6 == 0))
+  boatReservation = [(_INPBReservationWrapper *)self ticketedEventReservation];
+  boatReservation2 = [equalCopy ticketedEventReservation];
+  if ((boatReservation != 0) == (boatReservation2 == 0))
   {
     goto LABEL_41;
   }
 
-  v37 = [(_INPBReservationWrapper *)self ticketedEventReservation];
-  if (v37)
+  ticketedEventReservation = [(_INPBReservationWrapper *)self ticketedEventReservation];
+  if (ticketedEventReservation)
   {
-    v38 = v37;
-    v39 = [(_INPBReservationWrapper *)self ticketedEventReservation];
-    v40 = [v4 ticketedEventReservation];
-    v41 = [v39 isEqual:v40];
+    v38 = ticketedEventReservation;
+    ticketedEventReservation2 = [(_INPBReservationWrapper *)self ticketedEventReservation];
+    ticketedEventReservation3 = [equalCopy ticketedEventReservation];
+    v41 = [ticketedEventReservation2 isEqual:ticketedEventReservation3];
 
     if (!v41)
     {
@@ -243,12 +243,12 @@
   {
   }
 
-  v5 = [(_INPBReservationWrapper *)self trainReservation];
-  v6 = [v4 trainReservation];
-  if ((v5 != 0) != (v6 == 0))
+  boatReservation = [(_INPBReservationWrapper *)self trainReservation];
+  boatReservation2 = [equalCopy trainReservation];
+  if ((boatReservation != 0) != (boatReservation2 == 0))
   {
-    v42 = [(_INPBReservationWrapper *)self trainReservation];
-    if (!v42)
+    trainReservation = [(_INPBReservationWrapper *)self trainReservation];
+    if (!trainReservation)
     {
 
 LABEL_45:
@@ -256,10 +256,10 @@ LABEL_45:
       goto LABEL_43;
     }
 
-    v43 = v42;
-    v44 = [(_INPBReservationWrapper *)self trainReservation];
-    v45 = [v4 trainReservation];
-    v46 = [v44 isEqual:v45];
+    v43 = trainReservation;
+    trainReservation2 = [(_INPBReservationWrapper *)self trainReservation];
+    trainReservation3 = [equalCopy trainReservation];
+    v46 = [trainReservation2 isEqual:trainReservation3];
 
     if (v46)
     {
@@ -279,128 +279,128 @@ LABEL_43:
   return v47;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBReservationWrapper allocWithZone:](_INPBReservationWrapper init];
-  v6 = [(_INPBBoatReservation *)self->_boatReservation copyWithZone:a3];
+  v6 = [(_INPBBoatReservation *)self->_boatReservation copyWithZone:zone];
   [(_INPBReservationWrapper *)v5 setBoatReservation:v6];
 
-  v7 = [(_INPBBusReservation *)self->_busReservation copyWithZone:a3];
+  v7 = [(_INPBBusReservation *)self->_busReservation copyWithZone:zone];
   [(_INPBReservationWrapper *)v5 setBusReservation:v7];
 
-  v8 = [(_INPBFlightReservation *)self->_flightReservation copyWithZone:a3];
+  v8 = [(_INPBFlightReservation *)self->_flightReservation copyWithZone:zone];
   [(_INPBReservationWrapper *)v5 setFlightReservation:v8];
 
-  v9 = [(_INPBLodgingReservation *)self->_lodgingReservation copyWithZone:a3];
+  v9 = [(_INPBLodgingReservation *)self->_lodgingReservation copyWithZone:zone];
   [(_INPBReservationWrapper *)v5 setLodgingReservation:v9];
 
-  v10 = [(_INPBRentalCarReservation *)self->_rentalCarReservation copyWithZone:a3];
+  v10 = [(_INPBRentalCarReservation *)self->_rentalCarReservation copyWithZone:zone];
   [(_INPBReservationWrapper *)v5 setRentalCarReservation:v10];
 
-  v11 = [(_INPBRestaurantReservation *)self->_restaurantReservation copyWithZone:a3];
+  v11 = [(_INPBRestaurantReservation *)self->_restaurantReservation copyWithZone:zone];
   [(_INPBReservationWrapper *)v5 setRestaurantReservation:v11];
 
-  v12 = [(_INPBTicketedEventReservation *)self->_ticketedEventReservation copyWithZone:a3];
+  v12 = [(_INPBTicketedEventReservation *)self->_ticketedEventReservation copyWithZone:zone];
   [(_INPBReservationWrapper *)v5 setTicketedEventReservation:v12];
 
-  v13 = [(_INPBTrainReservation *)self->_trainReservation copyWithZone:a3];
+  v13 = [(_INPBTrainReservation *)self->_trainReservation copyWithZone:zone];
   [(_INPBReservationWrapper *)v5 setTrainReservation:v13];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBReservationWrapper *)self data];
+  coderCopy = coder;
+  data = [(_INPBReservationWrapper *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBReservationWrapper)initWithCoder:(id)a3
+- (_INPBReservationWrapper)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBReservationWrapper *)self initWithData:v6];
+    self = [(_INPBReservationWrapper *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v21 = a3;
-  v4 = [(_INPBReservationWrapper *)self boatReservation];
+  toCopy = to;
+  boatReservation = [(_INPBReservationWrapper *)self boatReservation];
 
-  if (v4)
+  if (boatReservation)
   {
-    v5 = [(_INPBReservationWrapper *)self boatReservation];
+    boatReservation2 = [(_INPBReservationWrapper *)self boatReservation];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(_INPBReservationWrapper *)self busReservation];
+  busReservation = [(_INPBReservationWrapper *)self busReservation];
 
-  if (v6)
+  if (busReservation)
   {
-    v7 = [(_INPBReservationWrapper *)self busReservation];
+    busReservation2 = [(_INPBReservationWrapper *)self busReservation];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(_INPBReservationWrapper *)self flightReservation];
+  flightReservation = [(_INPBReservationWrapper *)self flightReservation];
 
-  if (v8)
+  if (flightReservation)
   {
-    v9 = [(_INPBReservationWrapper *)self flightReservation];
+    flightReservation2 = [(_INPBReservationWrapper *)self flightReservation];
     PBDataWriterWriteSubmessage();
   }
 
-  v10 = [(_INPBReservationWrapper *)self lodgingReservation];
+  lodgingReservation = [(_INPBReservationWrapper *)self lodgingReservation];
 
-  if (v10)
+  if (lodgingReservation)
   {
-    v11 = [(_INPBReservationWrapper *)self lodgingReservation];
+    lodgingReservation2 = [(_INPBReservationWrapper *)self lodgingReservation];
     PBDataWriterWriteSubmessage();
   }
 
-  v12 = [(_INPBReservationWrapper *)self rentalCarReservation];
+  rentalCarReservation = [(_INPBReservationWrapper *)self rentalCarReservation];
 
-  if (v12)
+  if (rentalCarReservation)
   {
-    v13 = [(_INPBReservationWrapper *)self rentalCarReservation];
+    rentalCarReservation2 = [(_INPBReservationWrapper *)self rentalCarReservation];
     PBDataWriterWriteSubmessage();
   }
 
-  v14 = [(_INPBReservationWrapper *)self restaurantReservation];
+  restaurantReservation = [(_INPBReservationWrapper *)self restaurantReservation];
 
-  if (v14)
+  if (restaurantReservation)
   {
-    v15 = [(_INPBReservationWrapper *)self restaurantReservation];
+    restaurantReservation2 = [(_INPBReservationWrapper *)self restaurantReservation];
     PBDataWriterWriteSubmessage();
   }
 
-  v16 = [(_INPBReservationWrapper *)self ticketedEventReservation];
+  ticketedEventReservation = [(_INPBReservationWrapper *)self ticketedEventReservation];
 
-  if (v16)
+  if (ticketedEventReservation)
   {
-    v17 = [(_INPBReservationWrapper *)self ticketedEventReservation];
+    ticketedEventReservation2 = [(_INPBReservationWrapper *)self ticketedEventReservation];
     PBDataWriterWriteSubmessage();
   }
 
-  v18 = [(_INPBReservationWrapper *)self trainReservation];
+  trainReservation = [(_INPBReservationWrapper *)self trainReservation];
 
-  v19 = v21;
-  if (v18)
+  v19 = toCopy;
+  if (trainReservation)
   {
-    v20 = [(_INPBReservationWrapper *)self trainReservation];
+    trainReservation2 = [(_INPBReservationWrapper *)self trainReservation];
     PBDataWriterWriteSubmessage();
 
-    v19 = v21;
+    v19 = toCopy;
   }
 }
 

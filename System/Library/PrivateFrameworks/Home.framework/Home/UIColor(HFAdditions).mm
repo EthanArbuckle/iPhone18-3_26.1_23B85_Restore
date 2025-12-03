@@ -9,16 +9,16 @@
 {
   if (+[HFUtilities shouldUseControlCenterMaterials])
   {
-    v0 = [MEMORY[0x277D75348] clearColor];
+    clearColor = [MEMORY[0x277D75348] clearColor];
   }
 
   else
   {
-    v1 = [MEMORY[0x277D759A0] mainScreen];
-    v2 = [v1 traitCollection];
-    v3 = [v2 userInterfaceStyle];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    traitCollection = [mainScreen traitCollection];
+    userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-    if (v3 == 2)
+    if (userInterfaceStyle == 2)
     {
       [MEMORY[0x277D75348] colorWithWhite:0.15 alpha:1.0];
     }
@@ -27,10 +27,10 @@
     {
       [MEMORY[0x277D75348] systemGroupedBackgroundColor];
     }
-    v0 = ;
+    clearColor = ;
   }
 
-  return v0;
+  return clearColor;
 }
 
 - (BOOL)isEqualToColor:()HFAdditions
@@ -44,7 +44,7 @@
   v6 = 0.0;
   v7 = 0.0;
   v4 = a3;
-  [a1 getRed:&v13 green:&v12 blue:&v11 alpha:&v10];
+  [self getRed:&v13 green:&v12 blue:&v11 alpha:&v10];
   [v4 getRed:&v9 green:&v8 blue:&v7 alpha:&v6];
 
   return vabdd_f64(v13, v9) < 0.00000011920929 && vabdd_f64(v12, v8) < 0.00000011920929 && vabdd_f64(v11, v7) < 0.00000011920929 && vabdd_f64(v10, v6) < 0.00000011920929;

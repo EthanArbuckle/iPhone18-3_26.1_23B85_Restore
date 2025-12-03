@@ -1,7 +1,7 @@
 @interface ABPKRetargeting
 - (ABPKRetargeting)init;
-- (id)_retargetSkeleton:(id)a3;
-- (id)processData:(id)a3;
+- (id)_retargetSkeleton:(id)skeleton;
+- (id)processData:(id)data;
 - (void)dealloc;
 @end
 
@@ -39,17 +39,17 @@
   [(ABPKRetargeting *)&v3 dealloc];
 }
 
-- (id)processData:(id)a3
+- (id)processData:(id)data
 {
-  v3 = [(ABPKRetargeting *)self _retargetSkeleton:a3];
+  v3 = [(ABPKRetargeting *)self _retargetSkeleton:data];
 
   return v3;
 }
 
-- (id)_retargetSkeleton:(id)a3
+- (id)_retargetSkeleton:(id)skeleton
 {
   v76 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  skeletonCopy = skeleton;
   v5 = __ABPKLogSharedInstance();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -72,9 +72,9 @@
     v73 = xmmword_23EE28170;
     do
     {
-      v17 = [v4 joints];
+      joints = [skeletonCopy joints];
       v18 = v73;
-      *(v11 - 1) = vdivq_f32(*(v17 + 16 * v10), v72);
+      *(v11 - 1) = vdivq_f32(*(joints + 16 * v10), v72);
       *v11 = v18;
       ++v10;
       v11 += 2;
@@ -197,7 +197,7 @@
 
     v64 = [ABPKResultRetargeting alloc];
     LODWORD(v65) = 981668463;
-    v28 = [v4 createResultScaledByFactor:v65];
+    v28 = [skeletonCopy createResultScaledByFactor:v65];
     v29 = [(ABPKResultRetargeting *)v64 initWithModelJointTransforms:&v68[-8 * TargetBufferSize] localJointTransformsSRT:v27 numberOfTransforms:TargetBufferSize liftedSkeletonData:v28 identifier:self->_skeletonIdentifier];
   }
 

@@ -1,24 +1,24 @@
 @interface TRIExperimentHistoryDatabase
-- (BOOL)_enumerateRecordsMatchingWhereClause:(id)a3 bind:(id)a4 block:(id)a5;
-- (BOOL)_isValidNextStateForEvent:(id)a3;
-- (BOOL)addRecord:(id)a3;
-- (BOOL)enumerateRecordsNewerThanDate:(id)a3 matchingDeploymentEnvironments:(id)a4 block:(id)a5;
-- (BOOL)expireRecordsOlderThanDate:(id)a3 deletedCount:(unint64_t *)a4;
-- (BOOL)storeExperimentEvent:(id)a3 isValidTransition:(BOOL *)a4;
-- (TRIExperimentHistoryDatabase)initWithDatabase:(id)a3;
-- (id)getAllAllocationStatusesForExperimentId:(id)a3 deploymentId:(int)a4 treatmentId:(id)a5;
-- (unsigned)previousExperimentStateForTriple:(id)a3;
+- (BOOL)_enumerateRecordsMatchingWhereClause:(id)clause bind:(id)bind block:(id)block;
+- (BOOL)_isValidNextStateForEvent:(id)event;
+- (BOOL)addRecord:(id)record;
+- (BOOL)enumerateRecordsNewerThanDate:(id)date matchingDeploymentEnvironments:(id)environments block:(id)block;
+- (BOOL)expireRecordsOlderThanDate:(id)date deletedCount:(unint64_t *)count;
+- (BOOL)storeExperimentEvent:(id)event isValidTransition:(BOOL *)transition;
+- (TRIExperimentHistoryDatabase)initWithDatabase:(id)database;
+- (id)getAllAllocationStatusesForExperimentId:(id)id deploymentId:(int)deploymentId treatmentId:(id)treatmentId;
+- (unsigned)previousExperimentStateForTriple:(id)triple;
 @end
 
 @implementation TRIExperimentHistoryDatabase
 
-- (TRIExperimentHistoryDatabase)initWithDatabase:(id)a3
+- (TRIExperimentHistoryDatabase)initWithDatabase:(id)database
 {
-  v6 = a3;
-  if (!v6)
+  databaseCopy = database;
+  if (!databaseCopy)
   {
-    v10 = [MEMORY[0x277CCA890] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"TRIExperimentHistoryDatabase.m" lineNumber:31 description:{@"Invalid parameter not satisfying: %@", @"database"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIExperimentHistoryDatabase.m" lineNumber:31 description:{@"Invalid parameter not satisfying: %@", @"database"}];
   }
 
   v11.receiver = self;
@@ -27,19 +27,19 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_db, a3);
+    objc_storeStrong(&v7->_db, database);
   }
 
   return v8;
 }
 
-- (BOOL)addRecord:(id)a3
+- (BOOL)addRecord:(id)record
 {
-  v5 = a3;
-  if (!v5)
+  recordCopy = record;
+  if (!recordCopy)
   {
-    v14 = [MEMORY[0x277CCA890] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"TRIExperimentHistoryDatabase.m" lineNumber:47 description:{@"Invalid parameter not satisfying: %@", @"record"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIExperimentHistoryDatabase.m" lineNumber:47 description:{@"Invalid parameter not satisfying: %@", @"record"}];
   }
 
   v20 = 0;
@@ -51,16 +51,16 @@
   v15[2] = __42__TRIExperimentHistoryDatabase_addRecord___block_invoke;
   v15[3] = &unk_279DE1758;
   v16 = @" INSERT INTO experimentHistory(    eventSecondsFromEpoch,     eventType,     deploymentEnvironment,     experimentId,     deploymentId,     treatmentId,     errorOrDeactivationReason) VALUES(    :timestamp,     :event_type,     :environment,     :exp_id,     :dep_id,     :trt_id,     :reason);";
-  v6 = v5;
+  v6 = recordCopy;
   v17 = v6;
-  v18 = self;
+  selfCopy = self;
   v19 = &v20;
   [(TRIExperimentHistoryDatabase *)self writeTransactionWithFailableBlock:v15];
   if (*(v21 + 24) == 1)
   {
-    v7 = [MEMORY[0x277D73648] internalToExternalStatusMapping];
+    internalToExternalStatusMapping = [MEMORY[0x277D73648] internalToExternalStatusMapping];
     v8 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:{objc_msgSend(v6, "eventType")}];
-    v9 = [v7 objectForKeyedSubscript:v8];
+    v9 = [internalToExternalStatusMapping objectForKeyedSubscript:v8];
 
     if (v9)
     {
@@ -205,16 +205,16 @@ void __42__TRIExperimentHistoryDatabase_addRecord___block_invoke_3(uint64_t a1, 
   [v5 bindNamedParam:":cv" toInt64:{objc_msgSend(*(a1 + 32), "compatibilityVersion")}];
 }
 
-- (BOOL)_enumerateRecordsMatchingWhereClause:(id)a3 bind:(id)a4 block:(id)a5
+- (BOOL)_enumerateRecordsMatchingWhereClause:(id)clause bind:(id)bind block:(id)block
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
-  if ((v9 == 0) != (v10 == 0))
+  clauseCopy = clause;
+  bindCopy = bind;
+  blockCopy = block;
+  v12 = blockCopy;
+  if ((clauseCopy == 0) != (bindCopy == 0))
   {
-    v30 = [MEMORY[0x277CCA890] currentHandler];
-    [v30 handleFailureInMethod:a2 object:self file:@"TRIExperimentHistoryDatabase.m" lineNumber:133 description:{@"Invalid parameter not satisfying: %@", @"(whereClause == nil) == (bind == nil)"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIExperimentHistoryDatabase.m" lineNumber:133 description:{@"Invalid parameter not satisfying: %@", @"(whereClause == nil) == (bind == nil)"}];
 
     if (v12)
     {
@@ -222,13 +222,13 @@ void __42__TRIExperimentHistoryDatabase_addRecord___block_invoke_3(uint64_t a1, 
     }
 
 LABEL_5:
-    v31 = [MEMORY[0x277CCA890] currentHandler];
-    [v31 handleFailureInMethod:a2 object:self file:@"TRIExperimentHistoryDatabase.m" lineNumber:134 description:{@"Invalid parameter not satisfying: %@", @"block"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"TRIExperimentHistoryDatabase.m" lineNumber:134 description:{@"Invalid parameter not satisfying: %@", @"block"}];
 
     goto LABEL_3;
   }
 
-  if (!v11)
+  if (!blockCopy)
   {
     goto LABEL_5;
   }
@@ -300,13 +300,13 @@ LABEL_3:
   v33[1] = 3221225472;
   v33[2] = __80__TRIExperimentHistoryDatabase__enumerateRecordsMatchingWhereClause_bind_block___block_invoke_5;
   v33[3] = &unk_279DE18C0;
-  v24 = v9;
+  v24 = clauseCopy;
   v34 = v24;
-  v25 = v10;
+  v25 = bindCopy;
   v36 = v25;
   v26 = v23;
   v37 = v26;
-  v35 = self;
+  selfCopy = self;
   v27 = v20;
   v38 = v27;
   v39 = &v59;
@@ -445,44 +445,44 @@ uint64_t __80__TRIExperimentHistoryDatabase__enumerateRecordsMatchingWhereClause
   return *v13;
 }
 
-- (BOOL)enumerateRecordsNewerThanDate:(id)a3 matchingDeploymentEnvironments:(id)a4 block:(id)a5
+- (BOOL)enumerateRecordsNewerThanDate:(id)date matchingDeploymentEnvironments:(id)environments block:(id)block
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v9)
+  dateCopy = date;
+  environmentsCopy = environments;
+  blockCopy = block;
+  if (dateCopy)
   {
-    if (v10)
+    if (environmentsCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_6:
-    v17 = [MEMORY[0x277CCA890] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"TRIExperimentHistoryDatabase.m" lineNumber:271 description:{@"Invalid parameter not satisfying: %@", @"deploymentEnvironments"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIExperimentHistoryDatabase.m" lineNumber:271 description:{@"Invalid parameter not satisfying: %@", @"deploymentEnvironments"}];
 
-    if (v11)
+    if (blockCopy)
     {
       goto LABEL_4;
     }
 
 LABEL_7:
-    v18 = [MEMORY[0x277CCA890] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"TRIExperimentHistoryDatabase.m" lineNumber:272 description:{@"Invalid parameter not satisfying: %@", @"block"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"TRIExperimentHistoryDatabase.m" lineNumber:272 description:{@"Invalid parameter not satisfying: %@", @"block"}];
 
     goto LABEL_4;
   }
 
-  v16 = [MEMORY[0x277CCA890] currentHandler];
-  [v16 handleFailureInMethod:a2 object:self file:@"TRIExperimentHistoryDatabase.m" lineNumber:270 description:{@"Invalid parameter not satisfying: %@", @"date"}];
+  currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"TRIExperimentHistoryDatabase.m" lineNumber:270 description:{@"Invalid parameter not satisfying: %@", @"date"}];
 
-  if (!v10)
+  if (!environmentsCopy)
   {
     goto LABEL_6;
   }
 
 LABEL_3:
-  if (!v11)
+  if (!blockCopy)
   {
     goto LABEL_7;
   }
@@ -492,11 +492,11 @@ LABEL_4:
   v19[1] = 3221225472;
   v19[2] = __99__TRIExperimentHistoryDatabase_enumerateRecordsNewerThanDate_matchingDeploymentEnvironments_block___block_invoke;
   v19[3] = &unk_279DDFB20;
-  v20 = v10;
-  v21 = v9;
-  v12 = v9;
-  v13 = v10;
-  v14 = [(TRIExperimentHistoryDatabase *)self _enumerateRecordsMatchingWhereClause:@" WHERE         e.deploymentEnvironment IN _pas_nsset(:matching_envs)     AND e.eventSecondsFromEpoch > :threshold" bind:v19 block:v11];
+  v20 = environmentsCopy;
+  v21 = dateCopy;
+  v12 = dateCopy;
+  v13 = environmentsCopy;
+  v14 = [(TRIExperimentHistoryDatabase *)self _enumerateRecordsMatchingWhereClause:@" WHERE         e.deploymentEnvironment IN _pas_nsset(:matching_envs)     AND e.eventSecondsFromEpoch > :threshold" bind:v19 block:blockCopy];
 
   return v14;
 }
@@ -510,13 +510,13 @@ void __99__TRIExperimentHistoryDatabase_enumerateRecordsNewerThanDate_matchingDe
   [v4 bindNamedParam:":threshold" toDouble:?];
 }
 
-- (BOOL)expireRecordsOlderThanDate:(id)a3 deletedCount:(unint64_t *)a4
+- (BOOL)expireRecordsOlderThanDate:(id)date deletedCount:(unint64_t *)count
 {
-  v7 = a3;
-  if (!v7)
+  dateCopy = date;
+  if (!dateCopy)
   {
-    v11 = [MEMORY[0x277CCA890] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"TRIExperimentHistoryDatabase.m" lineNumber:289 description:{@"Invalid parameter not satisfying: %@", @"date"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIExperimentHistoryDatabase.m" lineNumber:289 description:{@"Invalid parameter not satisfying: %@", @"date"}];
   }
 
   v16 = 0;
@@ -528,9 +528,9 @@ void __99__TRIExperimentHistoryDatabase_enumerateRecordsNewerThanDate_matchingDe
   v12[2] = __72__TRIExperimentHistoryDatabase_expireRecordsOlderThanDate_deletedCount___block_invoke;
   v12[3] = &unk_279DE1560;
   v12[4] = self;
-  v8 = v7;
+  v8 = dateCopy;
   v14 = &v16;
-  v15 = a4;
+  countCopy = count;
   v13 = v8;
   [(TRIExperimentHistoryDatabase *)self writeTransactionWithFailableBlock:v12];
   v9 = *(v17 + 24);
@@ -605,22 +605,22 @@ void __72__TRIExperimentHistoryDatabase_expireRecordsOlderThanDate_deletedCount_
   [v3 bindNamedParam:":threshold" toDouble:?];
 }
 
-- (id)getAllAllocationStatusesForExperimentId:(id)a3 deploymentId:(int)a4 treatmentId:(id)a5
+- (id)getAllAllocationStatusesForExperimentId:(id)id deploymentId:(int)deploymentId treatmentId:(id)treatmentId
 {
-  v9 = a3;
-  v10 = a5;
-  if (v9)
+  idCopy = id;
+  treatmentIdCopy = treatmentId;
+  if (idCopy)
   {
-    if (a4)
+    if (deploymentId)
     {
       goto LABEL_3;
     }
 
 LABEL_8:
-    v16 = [MEMORY[0x277CCA890] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"TRIExperimentHistoryDatabase.m" lineNumber:363 description:{@"Invalid parameter not satisfying: %@", @"deploymentId"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIExperimentHistoryDatabase.m" lineNumber:363 description:{@"Invalid parameter not satisfying: %@", @"deploymentId"}];
 
-    if (v10)
+    if (treatmentIdCopy)
     {
       goto LABEL_4;
     }
@@ -628,23 +628,23 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v15 = [MEMORY[0x277CCA890] currentHandler];
-  [v15 handleFailureInMethod:a2 object:self file:@"TRIExperimentHistoryDatabase.m" lineNumber:362 description:{@"Invalid parameter not satisfying: %@", @"experimentId"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"TRIExperimentHistoryDatabase.m" lineNumber:362 description:{@"Invalid parameter not satisfying: %@", @"experimentId"}];
 
-  if (!a4)
+  if (!deploymentId)
   {
     goto LABEL_8;
   }
 
 LABEL_3:
-  if (v10)
+  if (treatmentIdCopy)
   {
     goto LABEL_4;
   }
 
 LABEL_9:
-  v17 = [MEMORY[0x277CCA890] currentHandler];
-  [v17 handleFailureInMethod:a2 object:self file:@"TRIExperimentHistoryDatabase.m" lineNumber:364 description:{@"Invalid parameter not satisfying: %@", @"treatmentId"}];
+  currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"TRIExperimentHistoryDatabase.m" lineNumber:364 description:{@"Invalid parameter not satisfying: %@", @"treatmentId"}];
 
 LABEL_4:
   v33[0] = 0;
@@ -666,14 +666,14 @@ LABEL_4:
   v18[2] = __97__TRIExperimentHistoryDatabase_getAllAllocationStatusesForExperimentId_deploymentId_treatmentId___block_invoke;
   v18[3] = &unk_279DE1A70;
   v22 = v33;
-  v11 = v9;
+  v11 = idCopy;
   v19 = v11;
-  v25 = a4;
-  v12 = v10;
+  deploymentIdCopy = deploymentId;
+  v12 = treatmentIdCopy;
   v23 = v32;
   v24 = &v26;
   v20 = v12;
-  v21 = self;
+  selfCopy = self;
   [(TRIExperimentHistoryDatabase *)self readTransactionWithFailableBlock:v18];
   v13 = v27[5];
 
@@ -738,44 +738,44 @@ uint64_t __97__TRIExperimentHistoryDatabase_getAllAllocationStatusesForExperimen
   return *MEMORY[0x277D42690];
 }
 
-- (BOOL)storeExperimentEvent:(id)a3 isValidTransition:(BOOL *)a4
+- (BOOL)storeExperimentEvent:(id)event isValidTransition:(BOOL *)transition
 {
-  v6 = a3;
-  v7 = [(TRIExperimentHistoryDatabase *)self _isValidNextStateForEvent:v6];
-  if (a4)
+  eventCopy = event;
+  v7 = [(TRIExperimentHistoryDatabase *)self _isValidNextStateForEvent:eventCopy];
+  if (transition)
   {
-    *a4 = v7;
+    *transition = v7;
   }
 
-  v8 = [v6 experimentRecord];
+  experimentRecord = [eventCopy experimentRecord];
 
-  v9 = [(TRIExperimentHistoryDatabase *)self addRecord:v8];
+  v9 = [(TRIExperimentHistoryDatabase *)self addRecord:experimentRecord];
   return v9;
 }
 
-- (BOOL)_isValidNextStateForEvent:(id)a3
+- (BOOL)_isValidNextStateForEvent:(id)event
 {
-  v4 = a3;
-  v5 = [v4 treatmentTriple];
-  v6 = [v5 experimentId];
-  v7 = [v4 treatmentTriple];
-  v8 = [v7 deploymentId];
-  v9 = [v4 treatmentTriple];
-  v10 = [v9 treatmentId];
-  v11 = [(TRIExperimentHistoryDatabase *)self getAllAllocationStatusesForExperimentId:v6 deploymentId:v8 treatmentId:v10];
+  eventCopy = event;
+  treatmentTriple = [eventCopy treatmentTriple];
+  experimentId = [treatmentTriple experimentId];
+  treatmentTriple2 = [eventCopy treatmentTriple];
+  deploymentId = [treatmentTriple2 deploymentId];
+  treatmentTriple3 = [eventCopy treatmentTriple];
+  treatmentId = [treatmentTriple3 treatmentId];
+  v11 = [(TRIExperimentHistoryDatabase *)self getAllAllocationStatusesForExperimentId:experimentId deploymentId:deploymentId treatmentId:treatmentId];
 
-  v12 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:{objc_msgSend(v4, "eventType")}];
-  LOBYTE(v6) = [v11 containsObject:v12];
+  v12 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:{objc_msgSend(eventCopy, "eventType")}];
+  LOBYTE(experimentId) = [v11 containsObject:v12];
 
-  if (v6)
+  if (experimentId)
   {
     v13 = 0;
   }
 
   else
   {
-    v14 = [v4 experimentStateName];
-    v15 = [v14 isEqualToString:@"exp_st_DE"];
+    experimentStateName = [eventCopy experimentStateName];
+    v15 = [experimentStateName isEqualToString:@"exp_st_DE"];
 
     if (v15)
     {
@@ -791,19 +791,19 @@ uint64_t __97__TRIExperimentHistoryDatabase_getAllAllocationStatusesForExperimen
   return v13;
 }
 
-- (unsigned)previousExperimentStateForTriple:(id)a3
+- (unsigned)previousExperimentStateForTriple:(id)triple
 {
-  v4 = a3;
-  v5 = [v4 experimentId];
-  v6 = [v4 deploymentId];
-  v7 = [v4 treatmentId];
+  tripleCopy = triple;
+  experimentId = [tripleCopy experimentId];
+  deploymentId = [tripleCopy deploymentId];
+  treatmentId = [tripleCopy treatmentId];
 
-  v8 = [(TRIExperimentHistoryDatabase *)self getAllAllocationStatusesForExperimentId:v5 deploymentId:v6 treatmentId:v7];
+  v8 = [(TRIExperimentHistoryDatabase *)self getAllAllocationStatusesForExperimentId:experimentId deploymentId:deploymentId treatmentId:treatmentId];
 
-  v9 = [v8 firstObject];
-  LOBYTE(v5) = [v9 intValue];
+  firstObject = [v8 firstObject];
+  LOBYTE(experimentId) = [firstObject intValue];
 
-  return v5;
+  return experimentId;
 }
 
 @end

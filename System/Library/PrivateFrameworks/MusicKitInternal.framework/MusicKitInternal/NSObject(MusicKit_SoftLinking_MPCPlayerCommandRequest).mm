@@ -27,23 +27,23 @@
   _Block_object_dispose(&v7, 8);
   if (objc_opt_isKindOfClass())
   {
-    v4 = a1;
+    selfCopy = self;
   }
 
   else
   {
-    v4 = 0;
+    selfCopy = 0;
   }
 
-  return v4;
+  return selfCopy;
 }
 
 - (void)_musicKit_setCommandOptionValue:()MusicKit_SoftLinking_MPCPlayerCommandRequest forKey:
 {
   v6 = a4;
   v7 = a3;
-  v8 = [a1 _musicKit_self_commandRequest];
-  [v8 setCommandOptionValue:v7 forKey:v6];
+  _musicKit_self_commandRequest = [self _musicKit_self_commandRequest];
+  [_musicKit_self_commandRequest setCommandOptionValue:v7 forKey:v6];
 }
 
 @end

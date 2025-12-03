@@ -1,49 +1,49 @@
 @interface SIRINLUUserWantedToProceed
-- (SIRINLUUserWantedToProceed)initWithCoder:(id)a3;
-- (SIRINLUUserWantedToProceed)initWithReference:(id)a3;
-- (SIRINLUUserWantedToProceed)initWithTaskId:(id)a3 reference:(id)a4;
+- (SIRINLUUserWantedToProceed)initWithCoder:(id)coder;
+- (SIRINLUUserWantedToProceed)initWithReference:(id)reference;
+- (SIRINLUUserWantedToProceed)initWithTaskId:(id)id reference:(id)reference;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SIRINLUUserWantedToProceed
 
 - (id)description
 {
-  v3 = [(SIRINLUUserWantedToProceed *)self reference];
-  v4 = [v3 printedForm];
-  v5 = [SIRINLUPrintUtils indentLines:v4 numSpaces:4];
+  reference = [(SIRINLUUserWantedToProceed *)self reference];
+  printedForm = [reference printedForm];
+  v5 = [SIRINLUPrintUtils indentLines:printedForm numSpaces:4];
 
   v6 = MEMORY[0x1E696AEC0];
-  v7 = [(SIRINLUUserWantedToProceed *)self taskId];
-  v8 = [v6 stringWithFormat:@"{UserWantedToProceed\n  taskId: %@\n  reference:\n%@\n}", v7, v5];
+  taskId = [(SIRINLUUserWantedToProceed *)self taskId];
+  v8 = [v6 stringWithFormat:@"{UserWantedToProceed\n  taskId: %@\n  reference:\n%@\n}", taskId, v5];
 
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(SIRINLUUserWantedToProceed *)self taskId];
-  [v4 encodeObject:v5 forKey:@"taskId"];
+  coderCopy = coder;
+  taskId = [(SIRINLUUserWantedToProceed *)self taskId];
+  [coderCopy encodeObject:taskId forKey:@"taskId"];
 
-  v6 = [(SIRINLUUserWantedToProceed *)self reference];
-  [v4 encodeObject:v6 forKey:@"reference"];
+  reference = [(SIRINLUUserWantedToProceed *)self reference];
+  [coderCopy encodeObject:reference forKey:@"reference"];
 }
 
-- (SIRINLUUserWantedToProceed)initWithCoder:(id)a3
+- (SIRINLUUserWantedToProceed)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = SIRINLUUserWantedToProceed;
   v5 = [(SIRINLUUserWantedToProceed *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"taskId"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"taskId"];
     taskId = v5->_taskId;
     v5->_taskId = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"reference"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"reference"];
     reference = v5->_reference;
     v5->_reference = v8;
   }
@@ -51,33 +51,33 @@
   return v5;
 }
 
-- (SIRINLUUserWantedToProceed)initWithTaskId:(id)a3 reference:(id)a4
+- (SIRINLUUserWantedToProceed)initWithTaskId:(id)id reference:(id)reference
 {
-  v7 = a3;
-  v8 = a4;
+  idCopy = id;
+  referenceCopy = reference;
   v12.receiver = self;
   v12.super_class = SIRINLUUserWantedToProceed;
   v9 = [(SIRINLUUserWantedToProceed *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_taskId, a3);
-    objc_storeStrong(&v10->_reference, a4);
+    objc_storeStrong(&v9->_taskId, id);
+    objc_storeStrong(&v10->_reference, reference);
   }
 
   return v10;
 }
 
-- (SIRINLUUserWantedToProceed)initWithReference:(id)a3
+- (SIRINLUUserWantedToProceed)initWithReference:(id)reference
 {
-  v5 = a3;
+  referenceCopy = reference;
   v9.receiver = self;
   v9.super_class = SIRINLUUserWantedToProceed;
   v6 = [(SIRINLUUserWantedToProceed *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_reference, a3);
+    objc_storeStrong(&v6->_reference, reference);
   }
 
   return v7;

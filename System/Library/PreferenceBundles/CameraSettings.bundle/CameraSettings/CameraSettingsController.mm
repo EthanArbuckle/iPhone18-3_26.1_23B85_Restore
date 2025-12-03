@@ -2,30 +2,30 @@
 - (BOOL)_isHDRVideoEnabled;
 - (BOOL)_shouldDisplayIndicatorsSpecifier;
 - (id)_cinematicSpecifier;
-- (id)_currentSmartStyleName:(id)a3;
-- (id)_getAssociatedAppDisplayName:(id)a3;
+- (id)_currentSmartStyleName:(id)name;
+- (id)_getAssociatedAppDisplayName:(id)name;
 - (id)_initializeSpecifiers;
-- (id)_isMacroControlEnabled:(id)a3;
-- (id)_isSaveAssetsPhotoLibraryEnabled:(id)a3;
-- (id)_isSmudgeDetectionEnabled:(id)a3;
-- (id)_recordCinematicConfiguration:(id)a3;
-- (id)_recordSlomoConfiguration:(id)a3;
-- (id)_recordVideoConfiguration:(id)a3;
+- (id)_isMacroControlEnabled:(id)enabled;
+- (id)_isSaveAssetsPhotoLibraryEnabled:(id)enabled;
+- (id)_isSmudgeDetectionEnabled:(id)enabled;
+- (id)_recordCinematicConfiguration:(id)configuration;
+- (id)_recordSlomoConfiguration:(id)configuration;
+- (id)_recordVideoConfiguration:(id)configuration;
 - (id)_sharedLibrarySpecifier;
 - (id)specifiers;
 - (void)_createAndPrewarmSmartStylesController;
-- (void)_handleConfirmHighEfficiencyLearnMore:(id)a3;
-- (void)_handleSlomoMostCompatibleConfirmed:(id)a3;
-- (void)_launchCameraButtonTips:(id)a3;
-- (void)_launchSemanticStylesSettings:(id)a3;
-- (void)_launchSmartStylesSettings:(id)a3;
-- (void)_privacyButtonPressed:(id)a3;
-- (void)_setMacroControlEnabled:(id)a3 specifier:(id)a4;
-- (void)_setRecordCinematicConfiguration:(id)a3 specifier:(id)a4;
-- (void)_setRecordSlomoConfiguration:(id)a3 specifier:(id)a4;
-- (void)_setSaveAssetsPhotoLibraryEnabled:(id)a3 specifier:(id)a4;
-- (void)_setSmudgeDetectionEnabled:(id)a3 specifier:(id)a4;
-- (void)cameraCaptureButtonAppConfigurationCoordinator:(id)a3 didChangeAssociatedAppBundleID:(id)a4;
+- (void)_handleConfirmHighEfficiencyLearnMore:(id)more;
+- (void)_handleSlomoMostCompatibleConfirmed:(id)confirmed;
+- (void)_launchCameraButtonTips:(id)tips;
+- (void)_launchSemanticStylesSettings:(id)settings;
+- (void)_launchSmartStylesSettings:(id)settings;
+- (void)_privacyButtonPressed:(id)pressed;
+- (void)_setMacroControlEnabled:(id)enabled specifier:(id)specifier;
+- (void)_setRecordCinematicConfiguration:(id)configuration specifier:(id)specifier;
+- (void)_setRecordSlomoConfiguration:(id)configuration specifier:(id)specifier;
+- (void)_setSaveAssetsPhotoLibraryEnabled:(id)enabled specifier:(id)specifier;
+- (void)_setSmudgeDetectionEnabled:(id)enabled specifier:(id)specifier;
+- (void)cameraCaptureButtonAppConfigurationCoordinator:(id)coordinator didChangeAssociatedAppBundleID:(id)d;
 - (void)emitNavigationEvent;
 - (void)viewDidLoad;
 @end
@@ -38,15 +38,15 @@
   v4 = *&self->super.PSListController_opaque[OBJC_IVAR___PSListController__specifiers];
   if (!v4)
   {
-    v5 = [(CameraSettingsController *)self _initializeSpecifiers];
+    _initializeSpecifiers = [(CameraSettingsController *)self _initializeSpecifiers];
     v6 = *&self->super.PSListController_opaque[v3];
-    *&self->super.PSListController_opaque[v3] = v5;
+    *&self->super.PSListController_opaque[v3] = _initializeSpecifiers;
 
     [CameraSettingsBaseController allowMultilineTitlesForSpecifiers:*&self->super.PSListController_opaque[v3]];
     v7 = +[CameraSettingsBaseController capabilities];
-    v8 = [v7 smartStylesSupported];
+    smartStylesSupported = [v7 smartStylesSupported];
 
-    if (v8)
+    if (smartStylesSupported)
     {
       [(CameraSettingsController *)self _createAndPrewarmSmartStylesController];
     }
@@ -72,12 +72,12 @@
   [CAMUserPreferences performHorizonLevelUpgradeWithCapabilities:v4];
   [CAMUserPreferences performAudioConfigurationMigrationWithCapabilities:v4];
   [CAMUserPreferences performMostCompatibleConfirmationMigrationWithCapabilities:v4];
-  v5 = [v4 isCameraButtonSupported];
-  v289 = self;
-  v293 = [v4 smartStylesSupported];
-  if ((v293 & 1) != 0 || v5)
+  isCameraButtonSupported = [v4 isCameraButtonSupported];
+  selfCopy = self;
+  smartStylesSupported = [v4 smartStylesSupported];
+  if ((smartStylesSupported & 1) != 0 || isCameraButtonSupported)
   {
-    if (v5)
+    if (isCameraButtonSupported)
     {
       v6 = sub_11414(@"SYSTEM_SETTINGS_HEADER");
     }
@@ -91,7 +91,7 @@
     [v3 addObject:v7];
     v8 = v7;
     v9 = v8;
-    if (v5)
+    if (isCameraButtonSupported)
     {
       v10 = *(&self->super + 1);
       if (!v10)
@@ -113,7 +113,7 @@
       v16 = sub_11414(@"CAMERA_BUTTON_LEARN_MORE_TITLE");
       v17 = [NSString stringWithFormat:v15, v16];
 
-      self = v289;
+      self = selfCopy;
       v18 = objc_opt_class();
       v19 = NSStringFromClass(v18);
       [v9 setProperty:v19 forKey:PSFooterCellClassGroupKey];
@@ -124,14 +124,14 @@
       v21 = NSStringFromRange(v307);
       [v9 setProperty:v21 forKey:PSFooterHyperlinkViewLinkRangeKey];
 
-      v22 = [NSValue valueWithNonretainedObject:v289];
+      v22 = [NSValue valueWithNonretainedObject:selfCopy];
       [v9 setProperty:v22 forKey:PSFooterHyperlinkViewTargetKey];
 
       v23 = NSStringFromSelector("_launchCameraButtonTips:");
       [v9 setProperty:v23 forKey:PSFooterHyperlinkViewActionKey];
 
       v24 = v9;
-      if (!v293)
+      if (!smartStylesSupported)
       {
         goto LABEL_15;
       }
@@ -145,7 +145,7 @@
     else
     {
       v24 = v8;
-      if (!v293)
+      if (!smartStylesSupported)
       {
 LABEL_15:
         v29 = [PSSpecifier groupSpecifierWithName:0];
@@ -168,13 +168,13 @@ LABEL_15:
   }
 
 LABEL_16:
-  v30 = [v4 back720pMaxFPS];
-  v31 = [v4 back1080pMaxFPS];
-  v32 = v31;
-  v34 = v30 > 29 && v31 > 29;
+  back720pMaxFPS = [v4 back720pMaxFPS];
+  back1080pMaxFPS = [v4 back1080pMaxFPS];
+  v32 = back1080pMaxFPS;
+  v34 = back720pMaxFPS > 29 && back1080pMaxFPS > 29;
   if ([v4 isHEVCEncodingSupported])
   {
-    v35 = [(CameraSettingsController *)self _showHEVCOnlyFormatsOnCapableDevices];
+    _showHEVCOnlyFormatsOnCapableDevices = [(CameraSettingsController *)self _showHEVCOnlyFormatsOnCapableDevices];
   }
 
   else
@@ -189,19 +189,19 @@ LABEL_16:
         *buf = 138543618;
         *&buf[4] = v38;
         v305 = 2048;
-        v306 = self;
+        selfCopy2 = self;
         _os_log_impl(&dword_0, v37, OS_LOG_TYPE_DEFAULT, "<%{public}@: %p> Hiding formats specifiers", buf, 0x16u);
       }
 
       [v3 removeObject:v36];
     }
 
-    v35 = 0;
+    _showHEVCOnlyFormatsOnCapableDevices = 0;
   }
 
-  v39 = [v4 back4kMaxFPS];
+  back4kMaxFPS = [v4 back4kMaxFPS];
   v40 = v32 > 59 || v34;
-  if ((v40 & 1) != 0 || v39 >= 30)
+  if ((v40 & 1) != 0 || back4kMaxFPS >= 30)
   {
     v41 = sub_11414(@"CAM_RECORD_VIDEO_TITLE");
     v42 = [PSSpecifier preferenceSpecifierNamed:v41 target:self set:0 get:"_recordVideoConfiguration:" detail:objc_opt_class() cell:2 edit:0];
@@ -210,18 +210,18 @@ LABEL_16:
     [v3 addObject:v42];
   }
 
-  v43 = [v4 backHighFrameRate720pMaxFPS];
-  v44 = [v4 backHighFrameRate1080pMaxFPS];
-  v283 = [v4 backHighFrameRate4kMaxFPS];
+  backHighFrameRate720pMaxFPS = [v4 backHighFrameRate720pMaxFPS];
+  backHighFrameRate1080pMaxFPS = [v4 backHighFrameRate1080pMaxFPS];
+  backHighFrameRate4kMaxFPS = [v4 backHighFrameRate4kMaxFPS];
   v285 = v4;
-  v45 = v35 & (v44 > 239);
-  if (v43 < 240)
+  v45 = _showHEVCOnlyFormatsOnCapableDevices & (backHighFrameRate1080pMaxFPS > 239);
+  if (backHighFrameRate720pMaxFPS < 240)
   {
     v45 = 1;
   }
 
   v286 = v3;
-  if (v43 <= 239 && v44 < 120)
+  if (backHighFrameRate720pMaxFPS <= 239 && backHighFrameRate1080pMaxFPS < 120)
   {
     v287 = &stru_2DB58;
     goto LABEL_118;
@@ -232,9 +232,9 @@ LABEL_16:
   v46 = [PSSpecifier preferenceSpecifierNamed:v277 target:self set:"_setRecordSlomoConfiguration:specifier:" get:"_recordSlomoConfiguration:" detail:objc_opt_class() cell:2 edit:0];
   [v46 setIdentifier:@"CameraSlomoSettingsList"];
   v47 = +[NSMutableString string];
-  v48 = [v4 isFrontSlomoSupported];
-  v49 = [v4 frontHighFrameRate1080pMaxFPS];
-  if (v48 && v44 >= 240 && v49 <= 239)
+  isFrontSlomoSupported = [v4 isFrontSlomoSupported];
+  frontHighFrameRate1080pMaxFPS = [v4 frontHighFrameRate1080pMaxFPS];
+  if (isFrontSlomoSupported && backHighFrameRate1080pMaxFPS >= 240 && frontHighFrameRate1080pMaxFPS <= 239)
   {
     v50 = sub_11414(@"CAM_RECORD_SLOMO_FOOTER_FFC_120_ONLY");
     [v47 appendFormat:@"%@\n\n", v50];
@@ -246,11 +246,11 @@ LABEL_16:
   v281 = +[NSMutableArray array];
   obj = +[NSMutableArray array];
   v52 = +[NSMutableArray array];
-  v53 = [(CameraSettingsController *)self _isHDRVideoEnabled];
-  v275 = v53;
-  if (v283 > 119)
+  _isHDRVideoEnabled = [(CameraSettingsController *)self _isHDRVideoEnabled];
+  v275 = _isHDRVideoEnabled;
+  if (backHighFrameRate4kMaxFPS > 119)
   {
-    v54 = v53;
+    v54 = _isHDRVideoEnabled;
   }
 
   else
@@ -266,7 +266,7 @@ LABEL_16:
 
   else
   {
-    if (v44 > 239)
+    if (backHighFrameRate1080pMaxFPS > 239)
     {
       v55 = v279;
     }
@@ -280,7 +280,7 @@ LABEL_16:
   }
 
   v273 = v56;
-  if (v44 < 120)
+  if (backHighFrameRate1080pMaxFPS < 120)
   {
     [v281 addObject:&off_32410];
     v57 = sub_11414(@"CAM_RECORD_SLOMO_720p_120");
@@ -297,18 +297,18 @@ LABEL_85:
     goto LABEL_86;
   }
 
-  v272 = v35;
+  v272 = _showHEVCOnlyFormatsOnCapableDevices;
   v271 = v46;
-  if (v35)
+  if (_showHEVCOnlyFormatsOnCapableDevices)
   {
-    v60 = 1;
+    _isHDRVideoEnabled2 = 1;
     v61 = @"CAM_RECORD_SLOMO_1080p_120";
   }
 
   else
   {
-    v60 = [(CameraSettingsController *)v289 _isHDRVideoEnabled];
-    if (v60)
+    _isHDRVideoEnabled2 = [(CameraSettingsController *)selfCopy _isHDRVideoEnabled];
+    if (_isHDRVideoEnabled2)
     {
       v61 = @"CAM_RECORD_SLOMO_1080p_120_MOST_COMPATIBLE";
     }
@@ -352,7 +352,7 @@ LABEL_85:
   v65 = [NSNumber numberWithInteger:v62];
   [v281 addObject:v65];
 
-  if (v283 <= 119)
+  if (backHighFrameRate4kMaxFPS <= 119)
   {
     v66 = @"CAM_RECORD_SLOMO_1080p_120";
   }
@@ -364,7 +364,7 @@ LABEL_85:
 
   v67 = sub_11414(v66);
   v68 = sub_11414(@"CAM_RECORD_SLOMO_1080p_120_SHORT");
-  if (v60)
+  if (_isHDRVideoEnabled2)
   {
     v69 = v63;
   }
@@ -381,10 +381,10 @@ LABEL_85:
   [v47 appendFormat:@"\n%@", v70];
 
   v4 = v285;
-  self = v289;
-  v35 = v272;
+  self = selfCopy;
+  _showHEVCOnlyFormatsOnCapableDevices = v272;
   v46 = v271;
-  if (v44 > 239)
+  if (backHighFrameRate1080pMaxFPS > 239)
   {
     if (v55)
     {
@@ -429,7 +429,7 @@ LABEL_85:
     v287 = v79;
     v81 = [v80 localizedStringForKey:v79 value:&stru_2DB58 table:@"CameraSettings"];
 
-    v35 = v272;
+    _showHEVCOnlyFormatsOnCapableDevices = v272;
     [obj addObject:v76];
     [v52 addObject:v78];
     [v47 appendFormat:@"\n%@", v81];
@@ -486,7 +486,7 @@ LABEL_86:
     v89 = sub_11414(@"CAM_RECORD_SLOMO_720p_240_SHORT");
     [v52 addObject:v89];
 
-    if (v35)
+    if (_showHEVCOnlyFormatsOnCapableDevices)
     {
       v90 = v85;
     }
@@ -503,12 +503,12 @@ LABEL_86:
     v82 = v277;
   }
 
-  if (v283 >= 120)
+  if (backHighFrameRate4kMaxFPS >= 120)
   {
     if ([(CameraSettingsController *)self _isPALVideoEnabled])
     {
       [v83 addObject:&off_32428];
-      if (v35)
+      if (_showHEVCOnlyFormatsOnCapableDevices)
       {
         v92 = @"CAM_RECORD_SLOMO_4k_100";
       }
@@ -539,7 +539,7 @@ LABEL_86:
     }
 
     [v83 addObject:&off_32440];
-    if (v35)
+    if (_showHEVCOnlyFormatsOnCapableDevices)
     {
       v97 = @"CAM_RECORD_SLOMO_4k_120";
     }
@@ -577,8 +577,8 @@ LABEL_86:
 LABEL_118:
   if ([v4 cinematic4KSupported])
   {
-    v102 = [(CameraSettingsController *)self _cinematicSpecifier];
-    [v3 addObject:v102];
+    _cinematicSpecifier = [(CameraSettingsController *)self _cinematicSpecifier];
+    [v3 addObject:_cinematicSpecifier];
   }
 
   if (([v4 isStereoAudioRecordingSupported] & 1) != 0 || (objc_msgSend(v4, "isCinematicAudioSupported") & 1) != 0 || objc_msgSend(v4, "isWindRemovalSupported"))
@@ -620,9 +620,9 @@ LABEL_118:
 
     if (v111)
     {
-      v112 = [v111 BOOLValue];
+      bOOLValue = [v111 BOOLValue];
 
-      if ((v112 & 1) == 0)
+      if ((bOOLValue & 1) == 0)
       {
         goto LABEL_133;
       }
@@ -651,9 +651,9 @@ LABEL_132:
       [v114 setObject:&__kCFBooleanTrue forKeyedSubscript:PSDefaultValueKey];
       [v286 insertObject:v114 atIndex:v106];
       v118 = sub_11414(@"TEXT_ANALYSIS");
-      v119 = [PSSpecifier preferenceSpecifierNamed:v118 target:v289 set:"setPreferenceValue:specifier:" get:"readPreferenceValue:" detail:0 cell:6 edit:0];
+      v119 = [PSSpecifier preferenceSpecifierNamed:v118 target:selfCopy set:"setPreferenceValue:specifier:" get:"readPreferenceValue:" detail:0 cell:6 edit:0];
 
-      self = v289;
+      self = selfCopy;
       [v119 setObject:@"com.apple.camera" forKeyedSubscript:v115];
       v120 = v116;
       v3 = v286;
@@ -673,8 +673,8 @@ LABEL_133:
   {
     v122 = [PSSpecifier groupSpecifierWithID:@"autoAddSharedLibraryGroup"];
     [v3 insertObject:v122 atIndex:v106];
-    v123 = [(CameraSettingsController *)self _sharedLibrarySpecifier];
-    [v3 insertObject:v123 atIndex:v106 + 1];
+    _sharedLibrarySpecifier = [(CameraSettingsController *)self _sharedLibrarySpecifier];
+    [v3 insertObject:_sharedLibrarySpecifier atIndex:v106 + 1];
   }
 
   v124 = [v3 indexOfSpecifierWithID:@"CameraLevelSwitch"];
@@ -729,7 +729,7 @@ LABEL_133:
 
   if (([v4 semanticStylesSupport] & 8) != 0)
   {
-    v133 = v293;
+    v133 = smartStylesSupported;
   }
 
   else
@@ -757,35 +757,35 @@ LABEL_133:
   if ([v4 focalLengthPickerSupported])
   {
     v282 = v125;
-    v139 = [v4 baseFocalLengthForWideCamera];
+    baseFocalLengthForWideCamera = [v4 baseFocalLengthForWideCamera];
     v140 = 0.0;
-    if (v139 <= 3)
+    if (baseFocalLengthForWideCamera <= 3)
     {
-      v140 = dbl_1FF08[v139];
+      v140 = dbl_1FF08[baseFocalLengthForWideCamera];
     }
 
-    v141 = [objc_opt_class() integerFormatter];
+    integerFormatter = [objc_opt_class() integerFormatter];
     v142 = [NSNumber numberWithDouble:v140];
-    v143 = [v141 stringFromNumber:v142];
+    v143 = [integerFormatter stringFromNumber:v142];
 
     v144 = sub_11414(@"FOCAL_LENGTH_ROW_%@_MM_FOOTER");
     v278 = v143;
-    v145 = [NSString stringWithFormat:v144, v143];
+    v143 = [NSString stringWithFormat:v144, v143];
 
     v146 = [PSSpecifier groupSpecifierWithID:@"focalLength"];
-    v276 = v145;
-    [v146 setObject:v145 forKeyedSubscript:PSFooterTextGroupKey];
+    v276 = v143;
+    [v146 setObject:v143 forKeyedSubscript:PSFooterTextGroupKey];
     v274 = v146;
     v280 = v134;
     [v3 insertObject:v146 atIndex:v134];
-    v147 = [v4 supportedCustomLensGroups];
-    v148 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v147 count]);
-    v294 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v147 count]);
+    supportedCustomLensGroups = [v4 supportedCustomLensGroups];
+    v148 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [supportedCustomLensGroups count]);
+    v294 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [supportedCustomLensGroups count]);
     v298 = 0u;
     v299 = 0u;
     v300 = 0u;
     v301 = 0u;
-    obja = v147;
+    obja = supportedCustomLensGroups;
     v149 = [obja countByEnumeratingWithState:&v298 objects:v303 count:16];
     if (v149)
     {
@@ -805,8 +805,8 @@ LABEL_133:
           if ([v153 count] == &dword_0 + 1)
           {
             v155 = sub_11414(@"FOCAL_LENGTH_GROUP_%@_MM_ONLY");
-            v156 = [NSString stringWithFormat:v155, v154];
-            [v294 addObject:v156];
+            v154 = [NSString stringWithFormat:v155, v154];
+            [v294 addObject:v154];
 
             [v148 addObject:v153];
           }
@@ -817,9 +817,9 @@ LABEL_133:
             v158 = -[CameraSettingsController _focalLengthStringForCustomLens:](self, "_focalLengthStringForCustomLens:", [v157 integerValue]);
 
             v159 = sub_11414(@"FOCAL_LENGTH_GROUP_%@_AND_%@_MM");
-            v160 = [NSString stringWithFormat:v159, v154, v158];
+            v158 = [NSString stringWithFormat:v159, v154, v158];
 
-            [v294 addObject:v160];
+            [v294 addObject:v158];
             [v148 addObject:v153];
           }
 
@@ -832,10 +832,10 @@ LABEL_133:
             v164 = -[CameraSettingsController _focalLengthStringForCustomLens:](self, "_focalLengthStringForCustomLens:", [v163 integerValue]);
 
             v165 = sub_11414(@"FOCAL_LENGTH_GROUP_%@_AND_%@_AND_%@_MM");
-            v166 = [NSString stringWithFormat:v165, v154, v162, v164];
+            v164 = [NSString stringWithFormat:v165, v154, v162, v164];
 
-            self = v289;
-            [v294 addObject:v166];
+            self = selfCopy;
+            [v294 addObject:v164];
             [v148 addObject:v153];
           }
         }
@@ -863,8 +863,8 @@ LABEL_133:
     [v169 setIdentifier:@"CameraFocalLengthSettingsList"];
     [v169 setObject:@"com.apple.camera" forKeyedSubscript:PSDefaultsKey];
     [v169 setObject:CAMUserPreferencesSelectedCustomLensGroup forKeyedSubscript:PSKeyNameKey];
-    v170 = [v148 lastObject];
-    [v169 setObject:v170 forKeyedSubscript:PSDefaultValueKey];
+    lastObject = [v148 lastObject];
+    [v169 setObject:lastObject forKeyedSubscript:PSDefaultValueKey];
 
     [v169 setObject:v276 forKeyedSubscript:PSStaticTextMessageKey];
     [v169 setValues:v148 titles:v294];
@@ -1004,20 +1004,20 @@ LABEL_133:
 
   if ([v4 isHDRSettingAllowed])
   {
-    v203 = [v4 isModernHDRSupported];
-    v204 = [v4 isSmartHDRSupported];
-    v205 = [v4 isHDREV0CaptureSupported];
-    if (v204)
+    isModernHDRSupported = [v4 isModernHDRSupported];
+    isSmartHDRSupported = [v4 isSmartHDRSupported];
+    isHDREV0CaptureSupported = [v4 isHDREV0CaptureSupported];
+    if (isSmartHDRSupported)
     {
       v206 = [v196 indexOfObject:v200];
       if (v206 != 0x7FFFFFFFFFFFFFFFLL)
       {
         v207 = v206;
-        v208 = [v200 name];
-        v209 = [v200 target];
-        v210 = [PSSpecifier preferenceSpecifierNamed:v208 target:v209 set:"setPreferenceValue:specifier:" get:"readPreferenceValue:" detail:0 cell:0 edit:0];
+        name = [v200 name];
+        target = [v200 target];
+        v210 = [PSSpecifier preferenceSpecifierNamed:name target:target set:"setPreferenceValue:specifier:" get:"readPreferenceValue:" detail:0 cell:0 edit:0];
 
-        if (v205)
+        if (isHDREV0CaptureSupported)
         {
           v211 = @"CAM_MODERN_HDR_SMART_HDR_FOOTER";
         }
@@ -1044,7 +1044,7 @@ LABEL_133:
 
     else
     {
-      if (!v203)
+      if (!isModernHDRSupported)
       {
         v219 = 0;
 LABEL_209:
@@ -1067,7 +1067,7 @@ LABEL_209:
 
       objb = v226;
       v227 = [PSSpecifier preferenceSpecifierNamed:v226 target:self set:"setPreferenceValue:specifier:" get:"readPreferenceValue:" detail:0 cell:6 edit:0];
-      LOBYTE(v225) = v205;
+      LOBYTE(v225) = isHDREV0CaptureSupported;
       v228 = PSDefaultsKey;
       [v227 setObject:@"com.apple.camera" forKeyedSubscript:PSDefaultsKey];
       v229 = PSKeyNameKey;
@@ -1080,7 +1080,7 @@ LABEL_209:
         [v196 removeObjectAtIndex:v224];
       }
 
-      v231 = [PSSpecifier preferenceSpecifierNamed:v219 target:v289 set:"setPreferenceValue:specifier:" get:"readPreferenceValue:" detail:0 cell:6 edit:0];
+      v231 = [PSSpecifier preferenceSpecifierNamed:v219 target:selfCopy set:"setPreferenceValue:specifier:" get:"readPreferenceValue:" detail:0 cell:6 edit:0];
 
       [v231 setObject:@"com.apple.camera" forKeyedSubscript:v228];
       [v231 setObject:@"CAMUserPreferenceModernHDRBehavior" forKeyedSubscript:v229];
@@ -1122,7 +1122,7 @@ LABEL_210:
 
     [v196 addObject:v232];
     v235 = sub_11414(@"SMUDGE_DETECTION_SWITCH");
-    v236 = [PSSpecifier preferenceSpecifierNamed:v235 target:v289 set:"_setSmudgeDetectionEnabled:specifier:" get:"_isSmudgeDetectionEnabled:" detail:0 cell:6 edit:0];
+    v236 = [PSSpecifier preferenceSpecifierNamed:v235 target:selfCopy set:"_setSmudgeDetectionEnabled:specifier:" get:"_isSmudgeDetectionEnabled:" detail:0 cell:6 edit:0];
 
     [v236 setIdentifier:@"SMUDGE_DETECTION_SWITCH"];
     [v196 addObject:v236];
@@ -1146,13 +1146,13 @@ LABEL_214:
     v240 = sub_11414(v239);
 
     v241 = sub_11414(@"LOCK_SCREEN_SWIPE_%@_FOOTER");
-    v242 = [NSString stringWithFormat:v241, v240];
+    v240 = [NSString stringWithFormat:v241, v240];
 
-    [v237 setObject:v242 forKeyedSubscript:PSFooterTextGroupKey];
+    [v237 setObject:v240 forKeyedSubscript:PSFooterTextGroupKey];
     [v196 addObject:v237];
     sub_11414(@"LOCK_SCREEN_SWIPE_SWITCH");
     v244 = v243 = v200;
-    v245 = [PSSpecifier preferenceSpecifierNamed:v244 target:v289 set:"setPreferenceValue:specifier:" get:"readPreferenceValue:" detail:0 cell:6 edit:0];
+    v245 = [PSSpecifier preferenceSpecifierNamed:v244 target:selfCopy set:"setPreferenceValue:specifier:" get:"readPreferenceValue:" detail:0 cell:6 edit:0];
 
     v200 = v243;
     [v245 setIdentifier:@"LOCK_SCREEN_SWIPE_SWITCH"];
@@ -1172,7 +1172,7 @@ LABEL_214:
 
     [v196 addObject:v247];
     v249 = sub_11414(@"CAM_SAVE_MESSAGES_ASSETS_PHOTO_LIBRARY_SWITCH");
-    v250 = [PSSpecifier preferenceSpecifierNamed:v249 target:v289 set:"_setSaveAssetsPhotoLibraryEnabled:specifier:" get:"_isSaveAssetsPhotoLibraryEnabled:" detail:0 cell:6 edit:0];
+    v250 = [PSSpecifier preferenceSpecifierNamed:v249 target:selfCopy set:"_setSaveAssetsPhotoLibraryEnabled:specifier:" get:"_isSaveAssetsPhotoLibraryEnabled:" detail:0 cell:6 edit:0];
 
     [v250 setIdentifier:@"CAM_SAVE_MESSAGES_ASSETS_PHOTO_LIBRARY_SWITCH"];
     [v196 addObject:v250];
@@ -1183,9 +1183,9 @@ LABEL_214:
     v251 = +[OBBundleManager sharedManager];
     v252 = [v251 bundleWithIdentifier:@"com.apple.onboarding.camera"];
 
-    v253 = [v252 privacyFlow];
-    v254 = [v253 localizedButtonTitle];
-    v255 = [v254 rangeOfString:v254];
+    privacyFlow = [v252 privacyFlow];
+    localizedButtonTitle = [privacyFlow localizedButtonTitle];
+    v255 = [localizedButtonTitle rangeOfString:localizedButtonTitle];
     v256 = v200;
     v258 = v257;
     v259 = [PSSpecifier groupSpecifierWithID:@"Privacy"];
@@ -1193,14 +1193,14 @@ LABEL_214:
     v261 = NSStringFromClass(v260);
     [v259 setProperty:v261 forKey:PSFooterCellClassGroupKey];
 
-    [v259 setProperty:v254 forKey:PSFooterHyperlinkViewTitleKey];
+    [v259 setProperty:localizedButtonTitle forKey:PSFooterHyperlinkViewTitleKey];
     v308.location = v255;
     v308.length = v258;
     v200 = v256;
     v262 = NSStringFromRange(v308);
     [v259 setProperty:v262 forKey:PSFooterHyperlinkViewLinkRangeKey];
 
-    v263 = [NSValue valueWithNonretainedObject:v289];
+    v263 = [NSValue valueWithNonretainedObject:selfCopy];
     [v259 setProperty:v263 forKey:PSFooterHyperlinkViewTargetKey];
 
     v264 = NSStringFromSelector("_privacyButtonPressed:");
@@ -1232,7 +1232,7 @@ LABEL_214:
   return v196;
 }
 
-- (void)_handleConfirmHighEfficiencyLearnMore:(id)a3
+- (void)_handleConfirmHighEfficiencyLearnMore:(id)more
 {
   v3 = [NSBundle bundleForClass:objc_opt_class()];
   v6 = [v3 localizedStringForKey:@"CAM_CONFIRM_HIGH_EFFICIENCY_VIDEO_LEARN_MORE_URL" value:&stru_2DB58 table:@"CameraSettings"];
@@ -1250,12 +1250,12 @@ LABEL_214:
   _objc_release_x2();
 }
 
-- (id)_recordVideoConfiguration:(id)a3
+- (id)_recordVideoConfiguration:(id)configuration
 {
   v3 = +[CameraSettingsBaseController capabilities];
   v4 = [NSNumber numberWithLong:CFPreferencesGetAppIntegerValue(CAMUserPreferenceVideoConfiguration, @"com.apple.camera", 0)];
-  v5 = [v4 integerValue];
-  if (([v3 isSupportedVideoConfiguration:v5 forMode:1 device:1] & 1) == 0 && (objc_msgSend(v3, "isSupportedVideoConfiguration:forMode:device:", v5, 1, 0) & 1) == 0)
+  integerValue = [v4 integerValue];
+  if (([v3 isSupportedVideoConfiguration:integerValue forMode:1 device:1] & 1) == 0 && (objc_msgSend(v3, "isSupportedVideoConfiguration:forMode:device:", integerValue, 1, 0) & 1) == 0)
   {
 
     v4 = &off_32458;
@@ -1266,20 +1266,20 @@ LABEL_214:
   return v6;
 }
 
-- (id)_recordSlomoConfiguration:(id)a3
+- (id)_recordSlomoConfiguration:(id)configuration
 {
-  v3 = [a3 values];
-  v4 = [PFMediaCapabilities recordSlomoConfigurationWithValidValues:v3];
+  values = [configuration values];
+  v4 = [PFMediaCapabilities recordSlomoConfigurationWithValidValues:values];
 
   return v4;
 }
 
-- (void)_setRecordSlomoConfiguration:(id)a3 specifier:(id)a4
+- (void)_setRecordSlomoConfiguration:(id)configuration specifier:(id)specifier
 {
-  v19 = a3;
-  v5 = [v19 integerValue];
-  v6 = v5 - 13 < 2 || v5 == &dword_8;
-  if ((v6 || v5 == &dword_4 && -[CameraSettingsController _isHDRVideoEnabled](self, "_isHDRVideoEnabled")) && (+[CameraSettingsBaseController capabilities](CameraSettingsBaseController, "capabilities"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 isHEVCEncodingSupported], v7, v9 = -[CameraSettingsController _showHEVCOnlyFormatsOnCapableDevices](self, "_showHEVCOnlyFormatsOnCapableDevices"), v8) && (v9 & 1) == 0 && !CFPreferencesGetAppBooleanValue(CAMUserPreferencesDidConfirmSlomoMostCompatible, @"com.apple.camera", 0))
+  configurationCopy = configuration;
+  integerValue = [configurationCopy integerValue];
+  v6 = integerValue - 13 < 2 || integerValue == &dword_8;
+  if ((v6 || integerValue == &dword_4 && -[CameraSettingsController _isHDRVideoEnabled](self, "_isHDRVideoEnabled")) && (+[CameraSettingsBaseController capabilities](CameraSettingsBaseController, "capabilities"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 isHEVCEncodingSupported], v7, v9 = -[CameraSettingsController _showHEVCOnlyFormatsOnCapableDevices](self, "_showHEVCOnlyFormatsOnCapableDevices"), v8) && (v9 & 1) == 0 && !CFPreferencesGetAppBooleanValue(CAMUserPreferencesDidConfirmSlomoMostCompatible, @"com.apple.camera", 0))
   {
     v10 = objc_alloc_init(PSConfirmationSpecifier);
     v11 = [NSBundle bundleForClass:objc_opt_class()];
@@ -1310,30 +1310,30 @@ LABEL_214:
     [v10 setTarget:self];
     [v10 setConfirmationAction:"_handleSlomoMostCompatibleConfirmed:"];
     [v10 setConfirmationCancelAction:"_handleConfirmHighEfficiencyLearnMore:"];
-    [v10 setUserInfo:v19];
+    [v10 setUserInfo:configurationCopy];
     [(CameraSettingsController *)self showConfirmationViewForSpecifier:v10 useAlert:1];
   }
 
   else
   {
-    [PFMediaCapabilities setRecordSlomoConfiguration:v19];
+    [PFMediaCapabilities setRecordSlomoConfiguration:configurationCopy];
     CFPreferencesAppSynchronize(@"com.apple.camera");
   }
 }
 
-- (void)_handleSlomoMostCompatibleConfirmed:(id)a3
+- (void)_handleSlomoMostCompatibleConfirmed:(id)confirmed
 {
-  v3 = [a3 userInfo];
-  [PFMediaCapabilities setRecordSlomoConfiguration:v3];
+  userInfo = [confirmed userInfo];
+  [PFMediaCapabilities setRecordSlomoConfiguration:userInfo];
   CFPreferencesSetAppValue(CAMUserPreferencesDidConfirmSlomoMostCompatible, &__kCFBooleanTrue, @"com.apple.camera");
   CFPreferencesAppSynchronize(@"com.apple.camera");
 }
 
 - (BOOL)_isHDRVideoEnabled
 {
-  v2 = [(CameraSettingsController *)self _showHEVCOnlyFormatsOnCapableDevices];
+  _showHEVCOnlyFormatsOnCapableDevices = [(CameraSettingsController *)self _showHEVCOnlyFormatsOnCapableDevices];
   v3 = +[CameraSettingsBaseController capabilities];
-  v4 = [CAMUserPreferences shouldEnableHDR10BitVideoForHEVCEnabled:v2 capabilities:v3];
+  v4 = [CAMUserPreferences shouldEnableHDR10BitVideoForHEVCEnabled:_showHEVCOnlyFormatsOnCapableDevices capabilities:v3];
 
   return v4;
 }
@@ -1346,12 +1346,12 @@ LABEL_214:
   v5 = +[CameraSettingsBaseController capabilities];
   if ([v5 isPALVideoSupported])
   {
-    v6 = [(CameraSettingsController *)self _isPALVideoEnabled];
+    _isPALVideoEnabled = [(CameraSettingsController *)self _isPALVideoEnabled];
   }
 
   else
   {
-    v6 = 0;
+    _isPALVideoEnabled = 0;
   }
 
   v7 = +[NSMutableString string];
@@ -1381,7 +1381,7 @@ LABEL_214:
   v17 = sub_11414(@"CAM_RECORD_VIDEO_4K_24_HEVC_FOOTER");
   [v7 appendFormat:@"\n%@", v17];
 
-  if (v6)
+  if (_isPALVideoEnabled)
   {
     [v9 addObject:&off_32488];
     v18 = sub_11414(@"CAM_RECORD_VIDEO_4K_25");
@@ -1410,14 +1410,14 @@ LABEL_214:
   return v4;
 }
 
-- (void)_setRecordCinematicConfiguration:(id)a3 specifier:(id)a4
+- (void)_setRecordCinematicConfiguration:(id)configuration specifier:(id)specifier
 {
-  CFPreferencesSetAppValue(CAMUserPreferenceCinematicConfiguration, a3, @"com.apple.camera");
+  CFPreferencesSetAppValue(CAMUserPreferenceCinematicConfiguration, configuration, @"com.apple.camera");
 
   CFPreferencesAppSynchronize(@"com.apple.camera");
 }
 
-- (id)_recordCinematicConfiguration:(id)a3
+- (id)_recordCinematicConfiguration:(id)configuration
 {
   AppIntegerValue = CFPreferencesGetAppIntegerValue(CAMUserPreferenceCinematicConfiguration, @"com.apple.camera", 0);
 
@@ -1432,34 +1432,34 @@ LABEL_214:
   return v4;
 }
 
-- (id)_isMacroControlEnabled:(id)a3
+- (id)_isMacroControlEnabled:(id)enabled
 {
   keyExistsAndHasValidFormat = 0;
   AppBooleanValue = CFPreferencesGetAppBooleanValue(@"CAMUserPreferenceEnableSuperWideAutoMacro", @"com.apple.camera", &keyExistsAndHasValidFormat);
   if (keyExistsAndHasValidFormat)
   {
-    v4 = AppBooleanValue == 0;
+    macroControlEnabledByDefault = AppBooleanValue == 0;
   }
 
   else
   {
     v5 = +[CAMCaptureCapabilities capabilities];
-    v4 = [v5 macroControlEnabledByDefault];
+    macroControlEnabledByDefault = [v5 macroControlEnabledByDefault];
   }
 
-  v6 = [NSNumber numberWithBool:v4];
+  v6 = [NSNumber numberWithBool:macroControlEnabledByDefault];
 
   return v6;
 }
 
-- (void)_setMacroControlEnabled:(id)a3 specifier:(id)a4
+- (void)_setMacroControlEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [a3 BOOLValue] ^ 1);
+  v4 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [enabled BOOLValue] ^ 1);
   CFPreferencesSetAppValue(@"CAMUserPreferenceEnableSuperWideAutoMacro", v4, @"com.apple.camera");
   CFPreferencesAppSynchronize(@"com.apple.camera");
 }
 
-- (id)_isSaveAssetsPhotoLibraryEnabled:(id)a3
+- (id)_isSaveAssetsPhotoLibraryEnabled:(id)enabled
 {
   keyExistsAndHasValidFormat = 0;
   AppBooleanValue = CFPreferencesGetAppBooleanValue(@"CAMUserPreferencesSaveMessagesCapturesPhotoLibrary", @"com.apple.camera", &keyExistsAndHasValidFormat);
@@ -1476,14 +1476,14 @@ LABEL_214:
   return v4;
 }
 
-- (void)_setSaveAssetsPhotoLibraryEnabled:(id)a3 specifier:(id)a4
+- (void)_setSaveAssetsPhotoLibraryEnabled:(id)enabled specifier:(id)specifier
 {
-  CFPreferencesSetAppValue(@"CAMUserPreferencesSaveMessagesCapturesPhotoLibrary", a3, @"com.apple.camera");
+  CFPreferencesSetAppValue(@"CAMUserPreferencesSaveMessagesCapturesPhotoLibrary", enabled, @"com.apple.camera");
 
   CFPreferencesAppSynchronize(@"com.apple.camera");
 }
 
-- (id)_isSmudgeDetectionEnabled:(id)a3
+- (id)_isSmudgeDetectionEnabled:(id)enabled
 {
   keyExistsAndHasValidFormat = 0;
   AppBooleanValue = CFPreferencesGetAppBooleanValue(@"CAMUserPreferenceEnableSmudgeNotifications", @"com.apple.camera", &keyExistsAndHasValidFormat);
@@ -1500,21 +1500,21 @@ LABEL_214:
   return v4;
 }
 
-- (void)_setSmudgeDetectionEnabled:(id)a3 specifier:(id)a4
+- (void)_setSmudgeDetectionEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = a3;
-  CFPreferencesSetAppValue(@"CAMUserPreferenceEnableSmudgeNotifications", v4, @"com.apple.camera");
+  enabledCopy = enabled;
+  CFPreferencesSetAppValue(@"CAMUserPreferenceEnableSmudgeNotifications", enabledCopy, @"com.apple.camera");
   CFPreferencesAppSynchronize(@"com.apple.camera");
-  v5 = [v4 BOOLValue];
+  bOOLValue = [enabledCopy BOOLValue];
 
-  if (v5)
+  if (bOOLValue)
   {
 
     +[CAMUserPreferences resetSmudgeDetectionDisplay];
   }
 }
 
-- (void)_launchSemanticStylesSettings:(id)a3
+- (void)_launchSemanticStylesSettings:(id)settings
 {
   v4 = objc_alloc_init(CAMSemanticStyleSettingsController);
   [v4 setModalPresentationStyle:0];
@@ -1527,10 +1527,10 @@ LABEL_214:
   v4 = *(&self->__captureButtonAppConfigurationCoordinator + 1);
   *(&self->__captureButtonAppConfigurationCoordinator + 1) = v3;
 
-  v5 = [*(&self->__captureButtonAppConfigurationCoordinator + 1) view];
+  view = [*(&self->__captureButtonAppConfigurationCoordinator + 1) view];
 }
 
-- (void)_launchSmartStylesSettings:(id)a3
+- (void)_launchSmartStylesSettings:(id)settings
 {
   v4 = os_log_create("com.apple.camera", "SmartStyleSettings");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -1539,13 +1539,13 @@ LABEL_214:
     _os_log_impl(&dword_0, v4, OS_LOG_TYPE_DEFAULT, "Settings: presenting smart style settings", v6, 2u);
   }
 
-  v5 = [(CameraSettingsController *)self _prewarmedSmartStylesController];
-  [v5 setModalPresentationStyle:0];
-  [(CameraSettingsController *)self presentViewController:v5 animated:1 completion:0];
+  _prewarmedSmartStylesController = [(CameraSettingsController *)self _prewarmedSmartStylesController];
+  [_prewarmedSmartStylesController setModalPresentationStyle:0];
+  [(CameraSettingsController *)self presentViewController:_prewarmedSmartStylesController animated:1 completion:0];
   [(CameraSettingsController *)self set_prewarmedSmartStylesController:0];
 }
 
-- (void)_privacyButtonPressed:(id)a3
+- (void)_privacyButtonPressed:(id)pressed
 {
   v4 = [OBPrivacyPresenter presenterForPrivacySplashWithIdentifier:@"com.apple.onboarding.camera"];
   [v4 setPresentingViewController:self];
@@ -1567,13 +1567,13 @@ LABEL_214:
   v3 = [_NSLocalizedStringResource alloc];
   v4 = +[NSLocale currentLocale];
   v5 = [NSBundle bundleForClass:objc_opt_class()];
-  v6 = [v5 bundleURL];
-  v7 = [v3 initWithKey:@"CAMERA_SETTINGS_TITLE" table:@"CameraSettings" locale:v4 bundleURL:v6];
+  bundleURL = [v5 bundleURL];
+  v7 = [v3 initWithKey:@"CAMERA_SETTINGS_TITLE" table:@"CameraSettings" locale:v4 bundleURL:bundleURL];
 
   [(CameraSettingsController *)self pe_emitNavigationEventForSystemSettingsWithGraphicIconIdentifier:@"com.apple.graphic-icon.camera" title:v7 localizedNavigationComponents:&__NSArray0__struct deepLink:v8];
 }
 
-- (void)_launchCameraButtonTips:(id)a3
+- (void)_launchCameraButtonTips:(id)tips
 {
   v7 = sub_11414(@"CAMERA_BUTTON_TIPS_URL_TOPIC_ID");
   v4 = [HLPHelpViewController URLWithTopicID:v7];
@@ -1584,35 +1584,35 @@ LABEL_214:
   [(CameraSettingsController *)self presentViewController:v6 animated:1 completion:0];
 }
 
-- (id)_currentSmartStyleName:(id)a3
+- (id)_currentSmartStyleName:(id)name
 {
   v3 = +[CAMSmartStyleUtilities readAVCaptureSystemStyle];
-  v4 = [v3 cast];
-  if ([v4 isEqualToString:AVSmartStyleCastTypeTanWarm])
+  cast = [v3 cast];
+  if ([cast isEqualToString:AVSmartStyleCastTypeTanWarm])
   {
     v5 = 1;
     v6 = 2;
   }
 
-  else if ([v4 isEqualToString:AVSmartStyleCastTypeBlushWarm])
+  else if ([cast isEqualToString:AVSmartStyleCastTypeBlushWarm])
   {
     v5 = 1;
     v6 = 3;
   }
 
-  else if ([v4 isEqualToString:AVSmartStyleCastTypeGoldWarm])
+  else if ([cast isEqualToString:AVSmartStyleCastTypeGoldWarm])
   {
     v5 = 1;
     v6 = 4;
   }
 
-  else if ([v4 isEqualToString:AVSmartStyleCastTypeCool])
+  else if ([cast isEqualToString:AVSmartStyleCastTypeCool])
   {
     v5 = 1;
     v6 = 5;
   }
 
-  else if ([v4 isEqualToString:AVSmartStyleCastTypeNeutral])
+  else if ([cast isEqualToString:AVSmartStyleCastTypeNeutral])
   {
     v5 = 1;
     v6 = 6;
@@ -1620,7 +1620,7 @@ LABEL_214:
 
   else
   {
-    v7 = [v4 isEqualToString:AVSmartStyleCastTypeBrightPop];
+    v7 = [cast isEqualToString:AVSmartStyleCastTypeBrightPop];
     v5 = v7;
     if (v7)
     {
@@ -1640,9 +1640,9 @@ LABEL_214:
   v12 = v11;
   [v3 colorBias];
   v14 = [v8 initWithPresetType:v6 castIntensity:v10 toneBias:v12 colorBias:v13];
-  v15 = [v14 isNeutral];
+  isNeutral = [v14 isNeutral];
   v16 = [CEKSmartStyle displayNameForPresetType:v6];
-  if ((v5 & 1) == 0 && (v15 & 1) == 0)
+  if ((v5 & 1) == 0 && (isNeutral & 1) == 0)
   {
     v17 = sub_11414(@"SMART_STYLE_LABEL_SYSTEM_CUSTOMIZED");
 
@@ -1652,9 +1652,9 @@ LABEL_214:
   return v16;
 }
 
-- (void)cameraCaptureButtonAppConfigurationCoordinator:(id)a3 didChangeAssociatedAppBundleID:(id)a4
+- (void)cameraCaptureButtonAppConfigurationCoordinator:(id)coordinator didChangeAssociatedAppBundleID:(id)d
 {
-  v5 = [(CameraSettingsController *)self getGroupSpecifierForSpecifierID:@"systemSettings", a4];
+  v5 = [(CameraSettingsController *)self getGroupSpecifierForSpecifierID:@"systemSettings", d];
   if (v5)
   {
     [(CameraSettingsController *)self reloadSpecifier:v5];
@@ -1663,10 +1663,10 @@ LABEL_214:
   _objc_release_x1();
 }
 
-- (id)_getAssociatedAppDisplayName:(id)a3
+- (id)_getAssociatedAppDisplayName:(id)name
 {
-  v3 = [*(&self->super + 1) associatedAppBundleID];
-  v4 = [CameraSettingsUtilities displayNameForBundleID:v3];
+  associatedAppBundleID = [*(&self->super + 1) associatedAppBundleID];
+  v4 = [CameraSettingsUtilities displayNameForBundleID:associatedAppBundleID];
 
   return v4;
 }
@@ -1675,10 +1675,10 @@ LABEL_214:
 {
   v2 = +[CameraSettingsUtilities isIPad];
   v3 = +[CameraSettingsBaseController capabilities];
-  v4 = [v3 isActionModeControlSupported];
+  isActionModeControlSupported = [v3 isActionModeControlSupported];
 
   v5 = +[CameraSettingsBaseController capabilities];
-  v6 = v4 | [v5 isFrontRearSimultaneousVideoSupported];
+  v6 = isActionModeControlSupported | [v5 isFrontRearSimultaneousVideoSupported];
 
   return v6 & 1 | ((v2 & 1) == 0);
 }

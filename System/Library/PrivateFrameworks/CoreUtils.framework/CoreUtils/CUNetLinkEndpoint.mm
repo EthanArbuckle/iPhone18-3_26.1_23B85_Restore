@@ -1,15 +1,15 @@
 @interface CUNetLinkEndpoint
 - ($4FF8D77539A8BD95DCE0A545902499A9)ipAddr;
-- (id)descriptionWithLevel:(int)a3;
-- (void)setIpAddr:(id *)a3;
+- (id)descriptionWithLevel:(int)level;
+- (void)setIpAddr:(id *)addr;
 @end
 
 @implementation CUNetLinkEndpoint
 
-- (void)setIpAddr:(id *)a3
+- (void)setIpAddr:(id *)addr
 {
-  var0 = a3->var0;
-  *(&self->_ipAddr.v6.sin6_addr + 4) = *(&a3->var2.sin6_addr + 4);
+  var0 = addr->var0;
+  *(&self->_ipAddr.v6.sin6_addr + 4) = *(&addr->var2.sin6_addr + 4);
   self->_ipAddr.sa = var0;
 }
 
@@ -20,10 +20,10 @@
   return self;
 }
 
-- (id)descriptionWithLevel:(int)a3
+- (id)descriptionWithLevel:(int)level
 {
   v75 = 0;
-  NSAppendPrintF(&v75, "CUNetLinkEndpoint %##a", *&a3, v3, v4, v5, v6, v7, &self->_ipAddr);
+  NSAppendPrintF(&v75, "CUNetLinkEndpoint %##a", *&level, v3, v4, v5, v6, v7, &self->_ipAddr);
   v16 = v75;
   v74 = v16;
   state = self->_state;
@@ -73,7 +73,7 @@
   NSAppendPrintF(&v68, ", Probes %u", v49, v50, v51, v52, v53, v54, self->_seqNum);
   v55 = v68;
 
-  if (a3 <= 20)
+  if (level <= 20)
   {
     v67 = v55;
     NSAppendPrintF(&v67, "\n", v56, v57, v58, v59, v60, v61, v66);

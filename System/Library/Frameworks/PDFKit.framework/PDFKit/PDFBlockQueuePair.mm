@@ -1,33 +1,33 @@
 @interface PDFBlockQueuePair
-+ (id)blockQueuePairWithBlock:(id)a3 andQueue:(id)a4;
-- (PDFBlockQueuePair)initWithBlock:(id)a3 andQueue:(id)a4;
++ (id)blockQueuePairWithBlock:(id)block andQueue:(id)queue;
+- (PDFBlockQueuePair)initWithBlock:(id)block andQueue:(id)queue;
 @end
 
 @implementation PDFBlockQueuePair
 
-+ (id)blockQueuePairWithBlock:(id)a3 andQueue:(id)a4
++ (id)blockQueuePairWithBlock:(id)block andQueue:(id)queue
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[PDFBlockQueuePair alloc] initWithBlock:v6 andQueue:v5];
+  queueCopy = queue;
+  blockCopy = block;
+  v7 = [[PDFBlockQueuePair alloc] initWithBlock:blockCopy andQueue:queueCopy];
 
   return v7;
 }
 
-- (PDFBlockQueuePair)initWithBlock:(id)a3 andQueue:(id)a4
+- (PDFBlockQueuePair)initWithBlock:(id)block andQueue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  blockCopy = block;
+  queueCopy = queue;
   v12.receiver = self;
   v12.super_class = PDFBlockQueuePair;
   v8 = [(PDFBlockQueuePair *)&v12 init];
   if (v8)
   {
-    v9 = _Block_copy(v6);
+    v9 = _Block_copy(blockCopy);
     block = v8->_block;
     v8->_block = v9;
 
-    objc_storeStrong(&v8->_queue, a4);
+    objc_storeStrong(&v8->_queue, queue);
   }
 
   return v8;

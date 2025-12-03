@@ -1,21 +1,21 @@
 @interface _MFSearchProcessResultsOperation
-+ (id)operationWithResultsOfType:(unint64_t)a3 completion:(id)a4 consumer:(id)a5;
++ (id)operationWithResultsOfType:(unint64_t)type completion:(id)completion consumer:(id)consumer;
 - (void)main;
 @end
 
 @implementation _MFSearchProcessResultsOperation
 
-+ (id)operationWithResultsOfType:(unint64_t)a3 completion:(id)a4 consumer:(id)a5
++ (id)operationWithResultsOfType:(unint64_t)type completion:(id)completion consumer:(id)consumer
 {
-  v7 = a4;
-  v8 = a5;
+  completionCopy = completion;
+  consumerCopy = consumer;
   v9 = objc_alloc_init(_MFSearchProcessResultsOperation);
-  v9->_type = a3;
+  v9->_type = type;
   consumer = v9->_consumer;
-  v9->_consumer = v8;
-  v11 = v8;
+  v9->_consumer = consumerCopy;
+  v11 = consumerCopy;
 
-  v12 = _Block_copy(v7);
+  v12 = _Block_copy(completionCopy);
   completionBlock = v9->_completionBlock;
   v9->_completionBlock = v12;
 

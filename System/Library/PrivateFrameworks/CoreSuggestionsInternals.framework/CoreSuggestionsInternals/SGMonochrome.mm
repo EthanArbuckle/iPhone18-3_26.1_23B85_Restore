@@ -1,19 +1,19 @@
 @interface SGMonochrome
-+ (id)stringByExtractingPlainTextFromHTML:(id)a3 tableDelimiters:(BOOL)a4 stripLinks:(BOOL)a5;
++ (id)stringByExtractingPlainTextFromHTML:(id)l tableDelimiters:(BOOL)delimiters stripLinks:(BOOL)links;
 @end
 
 @implementation SGMonochrome
 
-+ (id)stringByExtractingPlainTextFromHTML:(id)a3 tableDelimiters:(BOOL)a4 stripLinks:(BOOL)a5
++ (id)stringByExtractingPlainTextFromHTML:(id)l tableDelimiters:(BOOL)delimiters stripLinks:(BOOL)links
 {
-  v7 = a3;
-  if (!v7)
+  lCopy = l;
+  if (!lCopy)
   {
     v16 = 0;
     goto LABEL_27;
   }
 
-  v8 = v7;
+  v8 = lCopy;
   v9 = objc_autoreleasePoolPush();
   if (stringByExtractingPlainTextFromHTML_tableDelimiters_stripLinks__onceToken != -1)
   {
@@ -43,7 +43,7 @@
   }
 
   v17 = v15;
-  v18 = [v15 bytes];
+  bytes = [v15 bytes];
   v19 = [v17 length];
   memset(v37, 0, sizeof(v37));
   v38 = 0;
@@ -63,16 +63,16 @@
   v36 = 0;
   memset(v37 + 4, 255, 20);
   memset(&v37[1] + 12, 0, 20);
-  LOBYTE(v38) = a4;
-  BYTE1(v38) = a5;
-  if (v18)
+  LOBYTE(v38) = delimiters;
+  BYTE1(v38) = links;
+  if (bytes)
   {
     PushParserCtxt = htmlCreatePushParserCtxt(0, 0, 0, 0, 0, XML_CHAR_ENCODING_UTF8);
     if (PushParserCtxt)
     {
       v23 = PushParserCtxt;
       htmlCtxtUseOptions(PushParserCtxt, 2165089);
-      htmlParseChunk(v23, v18, v19, 1);
+      htmlParseChunk(v23, bytes, v19, 1);
       myDoc = v23->myDoc;
       if (myDoc)
       {

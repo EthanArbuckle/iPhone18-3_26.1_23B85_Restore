@@ -1,35 +1,35 @@
 @interface MIBUHCESession
-- (BOOL)_endHCESession:(id *)a3 expected:(BOOL)a4;
+- (BOOL)_endHCESession:(id *)session expected:(BOOL)expected;
 - (BOOL)running;
-- (MIBUHCESession)initWithDelegate:(id)a3;
-- (id)_handleAPDU:(id)a3;
-- (void)_changeSessionState:(unint64_t)a3;
-- (void)_hceSessionDidEnd:(id)a3;
-- (void)_hceSessionDidStart:(id)a3 error:(id)a4;
+- (MIBUHCESession)initWithDelegate:(id)delegate;
+- (id)_handleAPDU:(id)u;
+- (void)_changeSessionState:(unint64_t)state;
+- (void)_hceSessionDidEnd:(id)end;
+- (void)_hceSessionDidStart:(id)start error:(id)error;
 - (void)_listenToCommand;
-- (void)_startHCESessionWithCompletion:(id)a3;
-- (void)endHCESession:(id *)a3;
-- (void)hceSessionDidConnect:(id)a3;
-- (void)hceSessionDidDisconnect:(id)a3;
-- (void)hceSessionDidEndUnexpectedly:(id)a3;
-- (void)startHCESessionWithCompletion:(id)a3;
-- (void)startListening:(id *)a3;
+- (void)_startHCESessionWithCompletion:(id)completion;
+- (void)endHCESession:(id *)session;
+- (void)hceSessionDidConnect:(id)connect;
+- (void)hceSessionDidDisconnect:(id)disconnect;
+- (void)hceSessionDidEndUnexpectedly:(id)unexpectedly;
+- (void)startHCESessionWithCompletion:(id)completion;
+- (void)startListening:(id *)listening;
 - (void)stopListening;
-- (void)waitForTermination:(id *)a3;
+- (void)waitForTermination:(id *)termination;
 @end
 
 @implementation MIBUHCESession
 
-- (MIBUHCESession)initWithDelegate:(id)a3
+- (MIBUHCESession)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v14.receiver = self;
   v14.super_class = MIBUHCESession;
   v5 = [(MIBUHCESession *)&v14 init];
   v6 = v5;
   if (v5)
   {
-    [(MIBUHCESession *)v5 setDelegate:v4];
+    [(MIBUHCESession *)v5 setDelegate:delegateCopy];
     [(MIBUHCESession *)v6 setSession:0];
     v7 = objc_opt_new();
     [(MIBUHCESession *)v6 setSessionLock:v7];
@@ -44,21 +44,21 @@
     v10 = objc_alloc_init(NSOperationQueue);
     [(MIBUHCESession *)v6 setQueue:v10];
 
-    v11 = [(MIBUHCESession *)v6 queue];
-    [v11 setMaxConcurrentOperationCount:1];
+    queue = [(MIBUHCESession *)v6 queue];
+    [queue setMaxConcurrentOperationCount:1];
 
-    v12 = [(MIBUHCESession *)v6 queue];
-    [v12 setName:@"com.apple.mobileinboxupdate.session_queue"];
+    queue2 = [(MIBUHCESession *)v6 queue];
+    [queue2 setName:@"com.apple.mobileinboxupdate.session_queue"];
   }
 
   return v6;
 }
 
-- (void)startHCESessionWithCompletion:(id)a3
+- (void)startHCESessionWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(MIBUHCESession *)self sessionLock];
-  [v5 lock];
+  completionCopy = completion;
+  sessionLock = [(MIBUHCESession *)self sessionLock];
+  [sessionLock lock];
 
   if ([(MIBUHCESession *)self sessionState])
   {
@@ -72,35 +72,35 @@
     {
       v7 = v6;
       v9 = 134217984;
-      v10 = [(MIBUHCESession *)self sessionState];
+      sessionState = [(MIBUHCESession *)self sessionState];
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "HCE Session state: %ld, session already active", &v9, 0xCu);
     }
 
-    if (v4)
+    if (completionCopy)
     {
-      v4[2](v4, 0);
+      completionCopy[2](completionCopy, 0);
     }
   }
 
   else
   {
-    [(MIBUHCESession *)self _startHCESessionWithCompletion:v4];
+    [(MIBUHCESession *)self _startHCESessionWithCompletion:completionCopy];
   }
 
-  v8 = [(MIBUHCESession *)self sessionLock];
-  [v8 unlock];
+  sessionLock2 = [(MIBUHCESession *)self sessionLock];
+  [sessionLock2 unlock];
 }
 
-- (void)endHCESession:(id *)a3
+- (void)endHCESession:(id *)session
 {
-  v5 = [(MIBUHCESession *)self sessionLock];
-  [v5 lock];
+  sessionLock = [(MIBUHCESession *)self sessionLock];
+  [sessionLock lock];
 
   if (![(MIBUHCESession *)self sessionState])
   {
     sub_100052520(self, &v10);
     v6 = v10;
-    if (!a3)
+    if (!session)
     {
       goto LABEL_4;
     }
@@ -111,40 +111,40 @@
   v9 = 0;
   [(MIBUHCESession *)self _endHCESession:&v9 expected:1];
   v6 = v9;
-  if (a3)
+  if (session)
   {
 LABEL_3:
     v7 = v6;
-    *a3 = v6;
+    *session = v6;
   }
 
 LABEL_4:
-  v8 = [(MIBUHCESession *)self sessionLock];
-  [v8 unlock];
+  sessionLock2 = [(MIBUHCESession *)self sessionLock];
+  [sessionLock2 unlock];
 }
 
-- (void)startListening:(id *)a3
+- (void)startListening:(id *)listening
 {
-  v5 = [(MIBUHCESession *)self sessionLock];
-  [v5 lock];
+  sessionLock = [(MIBUHCESession *)self sessionLock];
+  [sessionLock lock];
 
   objc_initWeak(&location, self);
   if ([(MIBUHCESession *)self sessionState]== 2)
   {
-    v6 = [(MIBUHCESession *)self queue];
-    v7 = [v6 operationCount] == 0;
+    queue = [(MIBUHCESession *)self queue];
+    v7 = [queue operationCount] == 0;
 
     if (v7)
     {
-      v8 = [(MIBUHCESession *)self queue];
+      queue2 = [(MIBUHCESession *)self queue];
       v20 = _NSConcreteStackBlock;
       v21 = 3221225472;
       v22 = sub_100002884;
       v23 = &unk_100098E78;
-      v24 = self;
+      selfCopy = self;
       objc_copyWeak(&v25, &location);
       v9 = [NSBlockOperation blockOperationWithBlock:&v20];
-      [v8 addOperation:{v9, v20, v21, v22, v23, v24}];
+      [queue2 addOperation:{v9, v20, v21, v22, v23, selfCopy}];
 
       objc_destroyWeak(&v25);
       v10 = 0;
@@ -163,9 +163,9 @@ LABEL_4:
     v14 = *buf;
     if (v13)
     {
-      v15 = [(MIBUHCESession *)self sessionState];
+      sessionState = [(MIBUHCESession *)self sessionState];
       *buf = 134217984;
-      *&buf[4] = v15;
+      *&buf[4] = sessionState;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "HCE Session state: %ld, session cannot start listening", buf, 0xCu);
     }
 
@@ -174,28 +174,28 @@ LABEL_4:
     v10 = v26;
   }
 
-  if (a3)
+  if (listening)
   {
     v11 = v10;
-    *a3 = v10;
+    *listening = v10;
   }
 
-  v12 = [(MIBUHCESession *)self sessionLock];
-  [v12 unlock];
+  sessionLock2 = [(MIBUHCESession *)self sessionLock];
+  [sessionLock2 unlock];
 
   objc_destroyWeak(&location);
 }
 
 - (void)stopListening
 {
-  v3 = [(MIBUHCESession *)self sessionLock];
-  [v3 lock];
+  sessionLock = [(MIBUHCESession *)self sessionLock];
+  [sessionLock lock];
 
-  v4 = [(MIBUHCESession *)self sessionState];
-  v5 = [(MIBUHCESession *)self suppressLogging];
-  if (v4 < 2)
+  sessionState = [(MIBUHCESession *)self sessionState];
+  suppressLogging = [(MIBUHCESession *)self suppressLogging];
+  if (sessionState < 2)
   {
-    if ((v5 & 1) == 0)
+    if ((suppressLogging & 1) == 0)
     {
       if (qword_1000B84A8[0] != -1)
       {
@@ -213,7 +213,7 @@ LABEL_4:
 
   else
   {
-    if ((v5 & 1) == 0)
+    if ((suppressLogging & 1) == 0)
     {
       if (qword_1000B84A8[0] != -1)
       {
@@ -231,26 +231,26 @@ LABEL_4:
     [(MIBUHCESession *)self _changeSessionState:1];
   }
 
-  v8 = [(MIBUHCESession *)self sessionLock];
-  [v8 unlock];
+  sessionLock2 = [(MIBUHCESession *)self sessionLock];
+  [sessionLock2 unlock];
 }
 
 - (BOOL)running
 {
-  v3 = [(MIBUHCESession *)self sessionLock];
-  [v3 lock];
+  sessionLock = [(MIBUHCESession *)self sessionLock];
+  [sessionLock lock];
 
-  LOBYTE(v3) = [(MIBUHCESession *)self sessionState]!= 0;
-  v4 = [(MIBUHCESession *)self sessionLock];
-  [v4 unlock];
+  LOBYTE(sessionLock) = [(MIBUHCESession *)self sessionState]!= 0;
+  sessionLock2 = [(MIBUHCESession *)self sessionLock];
+  [sessionLock2 unlock];
 
-  return v3;
+  return sessionLock;
 }
 
-- (void)waitForTermination:(id *)a3
+- (void)waitForTermination:(id *)termination
 {
-  v4 = [(MIBUHCESession *)self sessionLock];
-  [v4 lock];
+  sessionLock = [(MIBUHCESession *)self sessionLock];
+  [sessionLock lock];
 
   if ([(MIBUHCESession *)self sessionState])
   {
@@ -269,15 +269,15 @@ LABEL_4:
         if (os_log_type_enabled(qword_1000B84A0, OS_LOG_TYPE_DEFAULT))
         {
           v7 = v6;
-          v8 = [(MIBUHCESession *)self sessionState];
+          sessionState = [(MIBUHCESession *)self sessionState];
           *buf = v12;
-          v14 = v8;
+          v14 = sessionState;
           _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Current session state is %ld; waiting for session to terminate...", buf, 0xCu);
         }
       }
 
-      v9 = [(MIBUHCESession *)self sessionLock];
-      [v9 wait];
+      sessionLock2 = [(MIBUHCESession *)self sessionLock];
+      [sessionLock2 wait];
     }
 
     while ([(MIBUHCESession *)self sessionState]);
@@ -299,14 +299,14 @@ LABEL_4:
   }
 
   [(MIBUHCESession *)self setSession:0];
-  v11 = [(MIBUHCESession *)self sessionLock];
-  [v11 unlock];
+  sessionLock3 = [(MIBUHCESession *)self sessionLock];
+  [sessionLock3 unlock];
 }
 
-- (void)hceSessionDidEndUnexpectedly:(id)a3
+- (void)hceSessionDidEndUnexpectedly:(id)unexpectedly
 {
-  v4 = [(MIBUHCESession *)self sessionLock];
-  [v4 lock];
+  sessionLock = [(MIBUHCESession *)self sessionLock];
+  [sessionLock lock];
 
   if (qword_1000B84A8[0] != -1)
   {
@@ -320,23 +320,23 @@ LABEL_4:
   }
 
   [(MIBUHCESession *)self _changeSessionState:0];
-  v13 = [(MIBUHCESession *)self delegate];
+  delegate = [(MIBUHCESession *)self delegate];
   v14 = objc_opt_respondsToSelector();
 
   if (v14)
   {
-    v15 = [(MIBUHCESession *)self delegate];
-    [v15 sessionDidEndUnexpectedly:self];
+    delegate2 = [(MIBUHCESession *)self delegate];
+    [delegate2 sessionDidEndUnexpectedly:self];
   }
 
-  v16 = [(MIBUHCESession *)self sessionLock];
-  [v16 unlock];
+  sessionLock2 = [(MIBUHCESession *)self sessionLock];
+  [sessionLock2 unlock];
 }
 
-- (void)hceSessionDidConnect:(id)a3
+- (void)hceSessionDidConnect:(id)connect
 {
-  v4 = [(MIBUHCESession *)self sessionLock];
-  [v4 lock];
+  sessionLock = [(MIBUHCESession *)self sessionLock];
+  [sessionLock lock];
 
   if ([(MIBUHCESession *)self sessionState]>= 2)
   {
@@ -356,24 +356,24 @@ LABEL_4:
     }
 
     [(MIBUHCESession *)self _changeSessionState:3];
-    v6 = [(MIBUHCESession *)self delegate];
+    delegate = [(MIBUHCESession *)self delegate];
     v7 = objc_opt_respondsToSelector();
 
     if (v7)
     {
-      v8 = [(MIBUHCESession *)self delegate];
-      [v8 sessionDidConnect:self];
+      delegate2 = [(MIBUHCESession *)self delegate];
+      [delegate2 sessionDidConnect:self];
     }
   }
 
-  v9 = [(MIBUHCESession *)self sessionLock];
-  [v9 unlock];
+  sessionLock2 = [(MIBUHCESession *)self sessionLock];
+  [sessionLock2 unlock];
 }
 
-- (void)hceSessionDidDisconnect:(id)a3
+- (void)hceSessionDidDisconnect:(id)disconnect
 {
-  v4 = [(MIBUHCESession *)self sessionLock];
-  [v4 lock];
+  sessionLock = [(MIBUHCESession *)self sessionLock];
+  [sessionLock lock];
 
   if ([(MIBUHCESession *)self sessionState]>= 2)
   {
@@ -393,27 +393,27 @@ LABEL_4:
     }
 
     [(MIBUHCESession *)self _changeSessionState:2];
-    v6 = [(MIBUHCESession *)self delegate];
+    delegate = [(MIBUHCESession *)self delegate];
     v7 = objc_opt_respondsToSelector();
 
     if (v7)
     {
-      v8 = [(MIBUHCESession *)self delegate];
-      [v8 sessionDidDisconnect:self];
+      delegate2 = [(MIBUHCESession *)self delegate];
+      [delegate2 sessionDidDisconnect:self];
     }
   }
 
-  v9 = [(MIBUHCESession *)self sessionLock];
-  [v9 unlock];
+  sessionLock2 = [(MIBUHCESession *)self sessionLock];
+  [sessionLock2 unlock];
 }
 
-- (void)_hceSessionDidStart:(id)a3 error:(id)a4
+- (void)_hceSessionDidStart:(id)start error:(id)error
 {
-  v5 = a4;
-  v6 = [(MIBUHCESession *)self sessionLock];
-  [v6 lock];
+  errorCopy = error;
+  sessionLock = [(MIBUHCESession *)self sessionLock];
+  [sessionLock lock];
 
-  if (!v5)
+  if (!errorCopy)
   {
     if (![(MIBUHCESession *)self suppressLogging])
     {
@@ -433,39 +433,39 @@ LABEL_4:
     [(MIBUHCESession *)self _changeSessionState:2];
   }
 
-  v8 = [(MIBUHCESession *)self delegate];
+  delegate = [(MIBUHCESession *)self delegate];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v10 = [(MIBUHCESession *)self delegate];
-    [v10 sessionDidStart:self withError:v5];
+    delegate2 = [(MIBUHCESession *)self delegate];
+    [delegate2 sessionDidStart:self withError:errorCopy];
   }
 
-  v11 = [(MIBUHCESession *)self sessionLock];
-  [v11 unlock];
+  sessionLock2 = [(MIBUHCESession *)self sessionLock];
+  [sessionLock2 unlock];
 }
 
-- (void)_hceSessionDidEnd:(id)a3
+- (void)_hceSessionDidEnd:(id)end
 {
-  v4 = [(MIBUHCESession *)self sessionLock];
-  [v4 lock];
+  sessionLock = [(MIBUHCESession *)self sessionLock];
+  [sessionLock lock];
 
   [(MIBUHCESession *)self _changeSessionState:0];
-  v5 = [(MIBUHCESession *)self delegate];
+  delegate = [(MIBUHCESession *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(MIBUHCESession *)self delegate];
-    [v7 sessionDidEnd:self];
+    delegate2 = [(MIBUHCESession *)self delegate];
+    [delegate2 sessionDidEnd:self];
   }
 
-  v8 = [(MIBUHCESession *)self sessionLock];
-  [v8 unlock];
+  sessionLock2 = [(MIBUHCESession *)self sessionLock];
+  [sessionLock2 unlock];
 }
 
-- (void)_changeSessionState:(unint64_t)a3
+- (void)_changeSessionState:(unint64_t)state
 {
   if (![(MIBUHCESession *)self suppressLogging])
   {
@@ -479,21 +479,21 @@ LABEL_4:
     {
       v6 = v5;
       v8 = 134218240;
-      v9 = [(MIBUHCESession *)self sessionState];
+      sessionState = [(MIBUHCESession *)self sessionState];
       v10 = 2048;
-      v11 = a3;
+      stateCopy = state;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Changing HCE session state from: %ld to: %ld", &v8, 0x16u);
     }
   }
 
-  [(MIBUHCESession *)self setSessionState:a3];
-  v7 = [(MIBUHCESession *)self sessionLock];
-  [v7 signal];
+  [(MIBUHCESession *)self setSessionState:state];
+  sessionLock = [(MIBUHCESession *)self sessionLock];
+  [sessionLock signal];
 }
 
-- (void)_startHCESessionWithCompletion:(id)a3
+- (void)_startHCESessionWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v21 = 0;
   v22 = &v21;
@@ -501,10 +501,10 @@ LABEL_4:
   v24 = sub_100003940;
   v25 = sub_100003950;
   v26 = 0;
-  v5 = [(MIBUHCESession *)self manager];
-  v6 = [v5 getHwSupport];
+  manager = [(MIBUHCESession *)self manager];
+  getHwSupport = [manager getHwSupport];
 
-  if (v6 == 2)
+  if (getHwSupport == 2)
   {
     if (![(MIBUHCESession *)self suppressLogging])
     {
@@ -529,7 +529,7 @@ LABEL_4:
     objc_copyWeak(&v18, &location);
     v17 = &v21;
     v15[4] = self;
-    v16 = v4;
+    v16 = completionCopy;
     v9 = [v8 startHCESession:v15];
 
     objc_destroyWeak(&v18);
@@ -542,9 +542,9 @@ LABEL_4:
     obj = v22[5];
     sub_100016130(&obj, 83886085, 0, @"Device does not support NearField", v11, v12, v13, v14, v15[0]);
     objc_storeStrong(v10, obj);
-    if (v4)
+    if (completionCopy)
     {
-      (*(v4 + 2))(v4, v22[5]);
+      (*(completionCopy + 2))(completionCopy, v22[5]);
     }
   }
 
@@ -553,9 +553,9 @@ LABEL_4:
   objc_destroyWeak(&location);
 }
 
-- (BOOL)_endHCESession:(id *)a3 expected:(BOOL)a4
+- (BOOL)_endHCESession:(id *)session expected:(BOOL)expected
 {
-  v4 = a4;
+  expectedCopy = expected;
   if (![(MIBUHCESession *)self suppressLogging])
   {
     if (qword_1000B84A8[0] != -1)
@@ -571,8 +571,8 @@ LABEL_4:
     }
   }
 
-  v8 = [(MIBUHCESession *)self session];
-  v9 = [v8 stopEmulation];
+  session = [(MIBUHCESession *)self session];
+  stopEmulation = [session stopEmulation];
 
   if (![(MIBUHCESession *)self suppressLogging])
   {
@@ -585,27 +585,27 @@ LABEL_4:
     if (os_log_type_enabled(qword_1000B84A0, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109120;
-      v17 = v4;
+      v17 = expectedCopy;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Ending HCE Session; expected=%d...", buf, 8u);
     }
   }
 
-  v11 = [(MIBUHCESession *)self session];
+  session2 = [(MIBUHCESession *)self session];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_100004154;
   v14[3] = &unk_1000990E8;
-  v15 = v4;
+  v15 = expectedCopy;
   v14[4] = self;
-  [v11 endSessionWithCompletion:v14];
+  [session2 endSessionWithCompletion:v14];
 
-  if (a3)
+  if (session)
   {
-    v12 = v9;
-    *a3 = v9;
+    v12 = stopEmulation;
+    *session = stopEmulation;
   }
 
-  return v9 == 0;
+  return stopEmulation == 0;
 }
 
 - (void)_listenToCommand
@@ -629,14 +629,14 @@ LABEL_4:
   v32 = v5;
   while (1)
   {
-    v6 = [(MIBUHCESession *)self sessionLock];
-    [v6 lock];
+    sessionLock = [(MIBUHCESession *)self sessionLock];
+    [sessionLock lock];
     while (1)
     {
 
-      v7 = [(MIBUHCESession *)self sessionState];
-      v8 = v7 != 2;
-      if (v7 != 2)
+      sessionState = [(MIBUHCESession *)self sessionState];
+      v8 = sessionState != 2;
+      if (sessionState != 2)
       {
         break;
       }
@@ -656,9 +656,9 @@ LABEL_4:
         }
       }
 
-      v6 = [NSDate dateWithTimeIntervalSinceNow:55.0];
-      v10 = [(MIBUHCESession *)self sessionLock];
-      v11 = [v10 waitUntilDate:v6];
+      sessionLock = [NSDate dateWithTimeIntervalSinceNow:55.0];
+      sessionLock2 = [(MIBUHCESession *)self sessionLock];
+      v11 = [sessionLock2 waitUntilDate:sessionLock];
 
       if ((v11 & 1) == 0)
       {
@@ -675,8 +675,8 @@ LABEL_4:
           _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "Wait reader connection timed out after %ds", buf, 8u);
         }
 
-        v24 = [(MIBUHCESession *)self sessionLock];
-        [v24 unlock];
+        sessionLock3 = [(MIBUHCESession *)self sessionLock];
+        [sessionLock3 unlock];
 
         goto LABEL_53;
       }
@@ -684,8 +684,8 @@ LABEL_4:
       v3 = dispatch_time(0, 55000000000);
     }
 
-    v12 = [(MIBUHCESession *)self sessionLock];
-    [v12 unlock];
+    sessionLock4 = [(MIBUHCESession *)self sessionLock];
+    [sessionLock4 unlock];
 
     if ([(MIBUHCESession *)self sessionState]<= 1)
     {
@@ -744,7 +744,7 @@ LABEL_53:
       }
     }
 
-    v14 = [(MIBUHCESession *)self session];
+    session = [(MIBUHCESession *)self session];
     v35[0] = _NSConcreteStackBlock;
     v35[1] = 3221225472;
     v35[2] = sub_100004C0C;
@@ -753,7 +753,7 @@ LABEL_53:
     v38 = &v39;
     v15 = v33;
     v36 = v15;
-    [v14 readAPDUWithCompletion:v35];
+    [session readAPDUWithCompletion:v35];
 
     if (dispatch_semaphore_wait(v15, v3))
     {
@@ -827,8 +827,8 @@ LABEL_53:
         }
       }
 
-      v20 = [(MIBUHCESession *)self session];
-      v21 = [v20 sendAPDU:v4];
+      session2 = [(MIBUHCESession *)self session];
+      v21 = [session2 sendAPDU:v4];
       v22 = *(v40[0] + 40);
       *(v40[0] + 40) = v21;
 
@@ -911,11 +911,11 @@ LABEL_60:
   _Block_object_dispose(&v42, 8);
 }
 
-- (id)_handleAPDU:(id)a3
+- (id)_handleAPDU:(id)u
 {
-  v4 = a3;
+  uCopy = u;
   v5 = objc_opt_new();
-  v6 = [[MIBUNFCCommand alloc] initWithAPDU:v4];
+  v6 = [[MIBUNFCCommand alloc] initWithAPDU:uCopy];
   v7 = v6;
   if (!v6)
   {
@@ -945,7 +945,7 @@ LABEL_60:
     if (os_log_type_enabled(qword_1000B84A0, OS_LOG_TYPE_DEFAULT))
     {
       v30 = 138543362;
-      v31 = v4;
+      v31 = uCopy;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Unsupported APDU command: %{public}@", &v30, 0xCu);
     }
 
@@ -958,8 +958,8 @@ LABEL_22:
 
   if ([(MIBUNFCCommand *)v7 code]== 5)
   {
-    v8 = [(MIBUNFCCommand *)v7 payload];
-    v9 = [v8 objectForKey:@"EvelopedAPDU"];
+    payload = [(MIBUNFCCommand *)v7 payload];
+    v9 = [payload objectForKey:@"EvelopedAPDU"];
 
     if (v9 && [v9 length])
     {
@@ -979,8 +979,8 @@ LABEL_22:
         }
       }
 
-      v11 = [(MIBUHCESession *)self pendingAPDU];
-      [v11 appendData:v9];
+      pendingAPDU = [(MIBUHCESession *)self pendingAPDU];
+      [pendingAPDU appendData:v9];
 
       v12 = [[NSData alloc] initWithBytes:&unk_1000852B0 length:2];
     }
@@ -998,15 +998,15 @@ LABEL_22:
         if (os_log_type_enabled(qword_1000B84A0, OS_LOG_TYPE_DEFAULT))
         {
           v22 = v21;
-          v23 = [(MIBUHCESession *)self pendingAPDU];
+          pendingAPDU2 = [(MIBUHCESession *)self pendingAPDU];
           v30 = 138543362;
-          v31 = v23;
+          v31 = pendingAPDU2;
           _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "ENVELOPE command chain ends; processing pending APDU: %{public}@", &v30, 0xCu);
         }
       }
 
-      v24 = [(MIBUHCESession *)self pendingAPDU];
-      v12 = [(MIBUHCESession *)self _handleAPDU:v24];
+      pendingAPDU3 = [(MIBUHCESession *)self pendingAPDU];
+      v12 = [(MIBUHCESession *)self _handleAPDU:pendingAPDU3];
 
       v25 = objc_opt_new();
       [(MIBUHCESession *)self setPendingAPDU:v25];
@@ -1015,8 +1015,8 @@ LABEL_22:
     goto LABEL_37;
   }
 
-  v16 = [(MIBUHCESession *)self delegate];
-  v17 = [v16 handleCommand:v7];
+  delegate = [(MIBUHCESession *)self delegate];
+  v17 = [delegate handleCommand:v7];
 
   if ([v17 rejected])
   {
@@ -1037,11 +1037,11 @@ LABEL_22:
 
   else
   {
-    v26 = [v17 serialize];
-    if (v26)
+    serialize = [v17 serialize];
+    if (serialize)
     {
-      v9 = v26;
-      [v5 appendData:v26];
+      v9 = serialize;
+      [v5 appendData:serialize];
       v27 = [[NSData alloc] initWithBytes:&unk_1000852B0 length:2];
       [v5 appendData:v27];
 

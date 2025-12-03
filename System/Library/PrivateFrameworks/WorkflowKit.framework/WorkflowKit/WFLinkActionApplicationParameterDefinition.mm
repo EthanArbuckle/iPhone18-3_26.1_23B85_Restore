@@ -1,22 +1,22 @@
 @interface WFLinkActionApplicationParameterDefinition
-- (WFLinkActionApplicationParameterDefinition)initWithParameterMetadata:(id)a3;
-- (id)defaultSerializedRepresentationFromParameterMetadataDefaultValue:(id)a3;
-- (id)linkValueFromParameterState:(id)a3 action:(id)a4;
-- (id)parameterStateFromLinkValue:(id)a3;
-- (void)getLinkValueFromProcessedParameterValue:(id)a3 parameterState:(id)a4 permissionRequestor:(id)a5 runningFromToolKit:(BOOL)a6 action:(id)a7 parameterKey:(id)a8 completionHandler:(id)a9;
+- (WFLinkActionApplicationParameterDefinition)initWithParameterMetadata:(id)metadata;
+- (id)defaultSerializedRepresentationFromParameterMetadataDefaultValue:(id)value;
+- (id)linkValueFromParameterState:(id)state action:(id)action;
+- (id)parameterStateFromLinkValue:(id)value;
+- (void)getLinkValueFromProcessedParameterValue:(id)value parameterState:(id)state permissionRequestor:(id)requestor runningFromToolKit:(BOOL)kit action:(id)action parameterKey:(id)key completionHandler:(id)handler;
 @end
 
 @implementation WFLinkActionApplicationParameterDefinition
 
-- (id)parameterStateFromLinkValue:(id)a3
+- (id)parameterStateFromLinkValue:(id)value
 {
-  v3 = [a3 value];
-  if (v3)
+  value = [value value];
+  if (value)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = v3;
+      v4 = value;
     }
 
     else
@@ -47,42 +47,42 @@
   return v8;
 }
 
-- (void)getLinkValueFromProcessedParameterValue:(id)a3 parameterState:(id)a4 permissionRequestor:(id)a5 runningFromToolKit:(BOOL)a6 action:(id)a7 parameterKey:(id)a8 completionHandler:(id)a9
+- (void)getLinkValueFromProcessedParameterValue:(id)value parameterState:(id)state permissionRequestor:(id)requestor runningFromToolKit:(BOOL)kit action:(id)action parameterKey:(id)key completionHandler:(id)handler
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a7;
-  v18 = a8;
-  v19 = a9;
-  v22 = v14;
+  valueCopy = value;
+  stateCopy = state;
+  requestorCopy = requestor;
+  actionCopy = action;
+  keyCopy = key;
+  handlerCopy = handler;
+  v22 = valueCopy;
   if (v22 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v20 = [v22 bundleIdentifier];
-    v21 = [(WFLinkActionParameterDefinition *)self linkValueWithValue:v20];
-    v19[2](v19, v21, 0);
+    bundleIdentifier = [v22 bundleIdentifier];
+    v21 = [(WFLinkActionParameterDefinition *)self linkValueWithValue:bundleIdentifier];
+    handlerCopy[2](handlerCopy, v21, 0);
   }
 
   else
   {
 
-    v19[2](v19, 0, 0);
+    handlerCopy[2](handlerCopy, 0, 0);
   }
 }
 
-- (id)linkValueFromParameterState:(id)a3 action:(id)a4
+- (id)linkValueFromParameterState:(id)state action:(id)action
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
+  stateCopy = state;
+  actionCopy = action;
+  v8 = stateCopy;
   if (v8 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v9 = [v8 value];
-    v10 = [v9 bundleIdentifier];
+    value = [v8 value];
+    bundleIdentifier = [value bundleIdentifier];
 
-    if (v10)
+    if (bundleIdentifier)
     {
-      v11 = [(WFLinkActionParameterDefinition *)self linkValueWithValue:v10];
+      v11 = [(WFLinkActionParameterDefinition *)self linkValueWithValue:bundleIdentifier];
     }
 
     else
@@ -99,15 +99,15 @@
   return v11;
 }
 
-- (id)defaultSerializedRepresentationFromParameterMetadataDefaultValue:(id)a3
+- (id)defaultSerializedRepresentationFromParameterMetadataDefaultValue:(id)value
 {
-  v3 = a3;
-  if (v3)
+  valueCopy = value;
+  if (valueCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = v3;
+      v4 = valueCopy;
     }
 
     else
@@ -126,14 +126,14 @@
   return v4;
 }
 
-- (WFLinkActionApplicationParameterDefinition)initWithParameterMetadata:(id)a3
+- (WFLinkActionApplicationParameterDefinition)initWithParameterMetadata:(id)metadata
 {
   v4 = MEMORY[0x1E69AC888];
-  v5 = a3;
-  v6 = [v4 applicationValueType];
+  metadataCopy = metadata;
+  applicationValueType = [v4 applicationValueType];
   v9.receiver = self;
   v9.super_class = WFLinkActionApplicationParameterDefinition;
-  v7 = [(WFLinkActionParameterDefinition *)&v9 initWithValueType:v6 parameterMetadata:v5];
+  v7 = [(WFLinkActionParameterDefinition *)&v9 initWithValueType:applicationValueType parameterMetadata:metadataCopy];
 
   return v7;
 }

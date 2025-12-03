@@ -1,6 +1,6 @@
 @interface MTRPluginAttributeReportMetric
-+ (id)attributeReportMetricForDevice:(id)a3 homeID:(id)a4 attributeReport:(id)a5 remoteMessageID:(id)a6;
-- (BOOL)isEqual:(id)a3;
++ (id)attributeReportMetricForDevice:(id)device homeID:(id)d attributeReport:(id)report remoteMessageID:(id)iD;
+- (BOOL)isEqual:(id)equal;
 - (id)additionalCoreAnalyticsEventDictionary;
 - (unint64_t)hash;
 - (void)submitMetric;
@@ -8,18 +8,18 @@
 
 @implementation MTRPluginAttributeReportMetric
 
-+ (id)attributeReportMetricForDevice:(id)a3 homeID:(id)a4 attributeReport:(id)a5 remoteMessageID:(id)a6
++ (id)attributeReportMetricForDevice:(id)device homeID:(id)d attributeReport:(id)report remoteMessageID:(id)iD
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [(MTRPluginMetric *)[MTRPluginAttributeReportMetric alloc] initMetricWithName:@"com.apple.matter.attributeReportEvent" device:v12 homeID:v11 remoteMessageID:v9];
+  iDCopy = iD;
+  reportCopy = report;
+  dCopy = d;
+  deviceCopy = device;
+  v13 = [(MTRPluginMetric *)[MTRPluginAttributeReportMetric alloc] initMetricWithName:@"com.apple.matter.attributeReportEvent" device:deviceCopy homeID:dCopy remoteMessageID:iDCopy];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v14 = v10;
+    v14 = reportCopy;
   }
 
   else
@@ -39,8 +39,8 @@
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v2 = [(MTRPluginAttributeReportMetric *)self attributeReport];
-  v3 = [v2 countByEnumeratingWithState:&v31 objects:v35 count:16];
+  attributeReport = [(MTRPluginAttributeReportMetric *)self attributeReport];
+  v3 = [attributeReport countByEnumeratingWithState:&v31 objects:v35 count:16];
   if (v3)
   {
     v4 = v3;
@@ -50,7 +50,7 @@
     v8 = 0x277CD5000uLL;
     v28 = *MEMORY[0x277CD50B8];
     v29 = *v32;
-    v27 = v2;
+    v27 = attributeReport;
     do
     {
       v9 = 0;
@@ -58,7 +58,7 @@
       {
         if (*v32 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(attributeReport);
         }
 
         v10 = *(*(&v31 + 1) + 8 * v9);
@@ -95,8 +95,8 @@
             v20 = v19 = v7;
             [(HMMHomeLogEvent *)self homeUUID];
             v22 = v21 = v8;
-            v23 = [(MTRPluginMetric *)self remoteMessageID];
-            v24 = [(MTRPluginMetric *)v18 initMetricWithName:@"com.apple.matter.attributeReportEvent" device:v20 homeID:v22 remoteMessageID:v23];
+            remoteMessageID = [(MTRPluginMetric *)self remoteMessageID];
+            v24 = [(MTRPluginMetric *)v18 initMetricWithName:@"com.apple.matter.attributeReportEvent" device:v20 homeID:v22 remoteMessageID:remoteMessageID];
 
             v8 = v21;
             v7 = v19;
@@ -104,7 +104,7 @@
             v25 = +[MTRPluginMetricsCollector sharedInstance];
             [v25 countMetric:v24];
 
-            v2 = v27;
+            attributeReport = v27;
             v6 = v28;
             v5 = v29;
 
@@ -118,7 +118,7 @@ LABEL_14:
       }
 
       while (v4 != v9);
-      v4 = [v2 countByEnumeratingWithState:&v31 objects:v35 count:16];
+      v4 = [attributeReport countByEnumeratingWithState:&v31 objects:v35 count:16];
     }
 
     while (v4);
@@ -130,22 +130,22 @@ LABEL_14:
 - (id)additionalCoreAnalyticsEventDictionary
 {
   v19[3] = *MEMORY[0x277D85DE8];
-  v3 = [(MTRPluginAttributeReportMetric *)self attributePath];
-  if (v3 && (v4 = v3, [(MTRPluginMetric *)self count], v5 = objc_claimAutoreleasedReturnValue(), v5, v4, v5))
+  attributePath = [(MTRPluginAttributeReportMetric *)self attributePath];
+  if (attributePath && (v4 = attributePath, [(MTRPluginMetric *)self count], v5 = objc_claimAutoreleasedReturnValue(), v5, v4, v5))
   {
     v6 = MEMORY[0x277CBEB38];
     v18[0] = @"endpointID";
-    v7 = [(MTRPluginAttributeReportMetric *)self attributePath];
-    v8 = [v7 endpoint];
-    v19[0] = v8;
+    attributePath2 = [(MTRPluginAttributeReportMetric *)self attributePath];
+    endpoint = [attributePath2 endpoint];
+    v19[0] = endpoint;
     v18[1] = @"clusterID";
-    v9 = [(MTRPluginAttributeReportMetric *)self attributePath];
-    v10 = [v9 cluster];
-    v19[1] = v10;
+    attributePath3 = [(MTRPluginAttributeReportMetric *)self attributePath];
+    cluster = [attributePath3 cluster];
+    v19[1] = cluster;
     v18[2] = @"attributeID";
-    v11 = [(MTRPluginAttributeReportMetric *)self attributePath];
-    v12 = [v11 attribute];
-    v19[2] = v12;
+    attributePath4 = [(MTRPluginAttributeReportMetric *)self attributePath];
+    attribute = [attributePath4 attribute];
+    v19[2] = attribute;
     v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v19 forKeys:v18 count:3];
     v14 = [v6 dictionaryWithDictionary:v13];
 
@@ -163,10 +163,10 @@ LABEL_14:
   return v14;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
@@ -176,7 +176,7 @@ LABEL_14:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -187,13 +187,13 @@ LABEL_14:
     v6 = v5;
     if ([(MTRPluginAttributeReportMetric *)v6 isMemberOfClass:objc_opt_class()])
     {
-      v7 = [(MTRPluginAttributeReportMetric *)self attributePath];
-      v8 = [(MTRPluginAttributeReportMetric *)v6 attributePath];
-      if (MTRPluginEqualObjects(v7, v8))
+      attributePath = [(MTRPluginAttributeReportMetric *)self attributePath];
+      attributePath2 = [(MTRPluginAttributeReportMetric *)v6 attributePath];
+      if (MTRPluginEqualObjects(attributePath, attributePath2))
       {
-        v9 = [(MTRPluginMetric *)self device];
-        v10 = [(MTRPluginMetric *)v6 device];
-        v11 = MTRPluginEqualObjects(v9, v10);
+        device = [(MTRPluginMetric *)self device];
+        device2 = [(MTRPluginMetric *)v6 device];
+        v11 = MTRPluginEqualObjects(device, device2);
       }
 
       else
@@ -213,10 +213,10 @@ LABEL_14:
 
 - (unint64_t)hash
 {
-  v3 = [(MTRPluginAttributeReportMetric *)self attributePath];
-  v4 = [v3 hash];
-  v5 = [(MTRPluginMetric *)self device];
-  v6 = [v5 hash];
+  attributePath = [(MTRPluginAttributeReportMetric *)self attributePath];
+  v4 = [attributePath hash];
+  device = [(MTRPluginMetric *)self device];
+  v6 = [device hash];
 
   return v6 ^ v4;
 }

@@ -1,5 +1,5 @@
 @interface PhotosSeparationSharedAlbumParticipant
-- (PhotosSeparationSharedAlbumParticipant)initWithInvitationRecord:(id)a3 isOwner:(BOOL)a4 readwrite:(BOOL)a5;
+- (PhotosSeparationSharedAlbumParticipant)initWithInvitationRecord:(id)record isOwner:(BOOL)owner readwrite:(BOOL)readwrite;
 - (id)nameComponents;
 @end
 
@@ -8,44 +8,44 @@
 - (id)nameComponents
 {
   v3 = objc_alloc_init(NSPersonNameComponents);
-  v4 = [(PHCloudSharedAlbumInvitationRecord *)self->_invitationRecord inviteeFirstName];
-  [v3 setGivenName:v4];
+  inviteeFirstName = [(PHCloudSharedAlbumInvitationRecord *)self->_invitationRecord inviteeFirstName];
+  [v3 setGivenName:inviteeFirstName];
 
-  v5 = [(PHCloudSharedAlbumInvitationRecord *)self->_invitationRecord inviteeLastName];
-  [v3 setFamilyName:v5];
+  inviteeLastName = [(PHCloudSharedAlbumInvitationRecord *)self->_invitationRecord inviteeLastName];
+  [v3 setFamilyName:inviteeLastName];
 
   return v3;
 }
 
-- (PhotosSeparationSharedAlbumParticipant)initWithInvitationRecord:(id)a3 isOwner:(BOOL)a4 readwrite:(BOOL)a5
+- (PhotosSeparationSharedAlbumParticipant)initWithInvitationRecord:(id)record isOwner:(BOOL)owner readwrite:(BOOL)readwrite
 {
-  v5 = a5;
-  v6 = a4;
-  v7 = a3;
-  v9 = a3;
-  v10 = [v9 inviteeEmails];
-  v11 = [v10 firstObject];
+  readwriteCopy = readwrite;
+  ownerCopy = owner;
+  recordCopy = record;
+  recordCopy2 = record;
+  inviteeEmails = [recordCopy2 inviteeEmails];
+  firstObject = [inviteeEmails firstObject];
 
-  v12 = [v9 inviteePhones];
-  v13 = [v12 firstObject];
+  inviteePhones = [recordCopy2 inviteePhones];
+  firstObject2 = [inviteePhones firstObject];
 
-  if (!v11 || ([ECEmailAddressParser parseEmailAddressString:v11 displayName:0 localPart:0 domain:0 groupList:0]& 1) != 0 || v13)
+  if (!firstObject || ([ECEmailAddressParser parseEmailAddressString:firstObject displayName:0 localPart:0 domain:0 groupList:0]& 1) != 0 || firstObject2)
   {
-    if (!v13)
+    if (!firstObject2)
     {
-      v14 = v11;
+      v14 = firstObject;
       goto LABEL_22;
     }
 
-    v32 = v6;
-    v14 = v11;
+    v32 = ownerCopy;
+    v14 = firstObject;
   }
 
   else
   {
-    v32 = v6;
+    v32 = ownerCopy;
     v14 = 0;
-    v13 = v11;
+    firstObject2 = firstObject;
   }
 
   v38 = 0;
@@ -53,10 +53,10 @@
   v16 = v38;
   if (v15)
   {
-    v29 = v5;
-    v30 = self;
-    v31 = v7;
-    v17 = [v15 matchesInString:v13 options:0 range:{0, objc_msgSend(v13, "length")}];
+    v29 = readwriteCopy;
+    selfCopy = self;
+    v31 = recordCopy;
+    v17 = [v15 matchesInString:firstObject2 options:0 range:{0, objc_msgSend(firstObject2, "length")}];
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
@@ -78,9 +78,9 @@
           v22 = *(*(&v34 + 1) + 8 * i);
           if ([v22 resultType] == &stru_7D8.size)
           {
-            v23 = [v22 phoneNumber];
+            phoneNumber = [v22 phoneNumber];
 
-            v13 = v23;
+            firstObject2 = phoneNumber;
           }
         }
 
@@ -90,9 +90,9 @@
       while (v19);
     }
 
-    self = v30;
-    v7 = v31;
-    v5 = v29;
+    self = selfCopy;
+    recordCopy = v31;
+    readwriteCopy = v29;
   }
 
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
@@ -102,9 +102,9 @@
     _os_log_impl(&dword_0, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Invitation Recipient can't instantiate detector for phone %@", buf, 0xCu);
   }
 
-  v6 = v32;
+  ownerCopy = v32;
 LABEL_22:
-  if (v6)
+  if (ownerCopy)
   {
     v24 = 1;
   }
@@ -114,7 +114,7 @@ LABEL_22:
     v24 = 2;
   }
 
-  if (v5)
+  if (readwriteCopy)
   {
     v25 = 2;
   }
@@ -126,11 +126,11 @@ LABEL_22:
 
   v33.receiver = self;
   v33.super_class = PhotosSeparationSharedAlbumParticipant;
-  v26 = [(PhotosSeparationParticipant *)&v33 initWithRole:v24 permission:v25 emailAddress:v14 phoneNumber:v13];
+  v26 = [(PhotosSeparationParticipant *)&v33 initWithRole:v24 permission:v25 emailAddress:v14 phoneNumber:firstObject2];
   v27 = v26;
   if (v26)
   {
-    objc_storeStrong(&v26->_invitationRecord, v7);
+    objc_storeStrong(&v26->_invitationRecord, recordCopy);
   }
 
   return v27;

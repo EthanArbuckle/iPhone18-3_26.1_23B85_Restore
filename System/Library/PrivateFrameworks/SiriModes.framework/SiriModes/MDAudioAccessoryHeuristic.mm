@@ -1,7 +1,7 @@
 @interface MDAudioAccessoryHeuristic
 - (MDAudioAccessoryHeuristic)init;
 - (id)determineCurrentMode;
-- (void)_connectedOutputDevicesDidChange:(id)a3;
+- (void)_connectedOutputDevicesDidChange:(id)change;
 - (void)_fetchConnectedAudioAccessoryState;
 @end
 
@@ -14,16 +14,16 @@
   v2 = [(MDAudioAccessoryHeuristic *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CB8698] sharedSystemAudioContext];
+    mEMORY[0x277CB8698] = [MEMORY[0x277CB8698] sharedSystemAudioContext];
     sharedSystemAudioContext = v2->_sharedSystemAudioContext;
-    v2->_sharedSystemAudioContext = v3;
+    v2->_sharedSystemAudioContext = mEMORY[0x277CB8698];
 
     [(MDAudioAccessoryHeuristic *)v2 _fetchConnectedAudioAccessoryState];
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v5 addObserver:v2 selector:sel__connectedOutputDevicesDidChange_ name:*MEMORY[0x277CB8628] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__connectedOutputDevicesDidChange_ name:*MEMORY[0x277CB8628] object:0];
 
-    v6 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v6 addObserver:v2 selector:sel__connectedOutputDevicesDidChange_ name:*MEMORY[0x277CB8630] object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v2 selector:sel__connectedOutputDevicesDidChange_ name:*MEMORY[0x277CB8630] object:0];
   }
 
   return v2;
@@ -47,15 +47,15 @@
 - (void)_fetchConnectedAudioAccessoryState
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [(AVOutputContext *)self->_sharedSystemAudioContext outputDevices];
+  outputDevices = [(AVOutputContext *)self->_sharedSystemAudioContext outputDevices];
   self->_connectedToAudioAccessory = 0;
-  if ([v3 count])
+  if ([outputDevices count])
   {
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v4 = v3;
+    v4 = outputDevices;
     v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v5)
     {
@@ -70,11 +70,11 @@ LABEL_4:
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v13 + 1) + 8 * v8) deviceType];
-        if (v9 <= 4 && ((1 << v9) & 0x13) != 0)
+        deviceType = [*(*(&v13 + 1) + 8 * v8) deviceType];
+        if (deviceType <= 4 && ((1 << deviceType) & 0x13) != 0)
         {
           self->_connectedToAudioAccessory = 1;
-          if (v9 <= 4 && ((1 << v9) & 0x13) != 0)
+          if (deviceType <= 4 && ((1 << deviceType) & 0x13) != 0)
           {
             break;
           }
@@ -97,7 +97,7 @@ LABEL_4:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_connectedOutputDevicesDidChange:(id)a3
+- (void)_connectedOutputDevicesDidChange:(id)change
 {
   objc_initWeak(&location, self);
   v3[0] = MEMORY[0x277D85DD0];

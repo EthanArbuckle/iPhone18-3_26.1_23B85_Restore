@@ -1,5 +1,5 @@
 @interface _ADDeviceSyncCommandPullDeltaRequestMutation
-- (_ADDeviceSyncCommandPullDeltaRequestMutation)initWithBase:(id)a3;
+- (_ADDeviceSyncCommandPullDeltaRequestMutation)initWithBase:(id)base;
 - (id)getDataType;
 - (unint64_t)getGeneration;
 - (unint64_t)getLimit;
@@ -37,27 +37,27 @@
 {
   if ((*&self->_mutationFlags & 2) != 0)
   {
-    v2 = self->_dataType;
+    dataType = self->_dataType;
   }
 
   else
   {
-    v2 = [(ADDeviceSyncCommandPullDeltaRequest *)self->_base dataType];
+    dataType = [(ADDeviceSyncCommandPullDeltaRequest *)self->_base dataType];
   }
 
-  return v2;
+  return dataType;
 }
 
-- (_ADDeviceSyncCommandPullDeltaRequestMutation)initWithBase:(id)a3
+- (_ADDeviceSyncCommandPullDeltaRequestMutation)initWithBase:(id)base
 {
-  v5 = a3;
+  baseCopy = base;
   v9.receiver = self;
   v9.super_class = _ADDeviceSyncCommandPullDeltaRequestMutation;
   v6 = [(_ADDeviceSyncCommandPullDeltaRequestMutation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_base, a3);
+    objc_storeStrong(&v6->_base, base);
   }
 
   return v7;

@@ -1,6 +1,6 @@
 @interface IDSCKNotification
 + (Class)__class;
-+ (id)notificationFromRemoteNotificationDictionary:(id)a3;
++ (id)notificationFromRemoteNotificationDictionary:(id)dictionary;
 @end
 
 @implementation IDSCKNotification
@@ -17,10 +17,10 @@
   return v3;
 }
 
-+ (id)notificationFromRemoteNotificationDictionary:(id)a3
++ (id)notificationFromRemoteNotificationDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [CUTWeakLinkClass() notificationFromRemoteNotificationDictionary:v3];
+  dictionaryCopy = dictionary;
+  v4 = [CUTWeakLinkClass() notificationFromRemoteNotificationDictionary:dictionaryCopy];
 
   return v4;
 }

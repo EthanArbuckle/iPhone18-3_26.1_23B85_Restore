@@ -1,6 +1,6 @@
 @interface NRBabelRoute
-- (BOOL)isEqual:(id)a3;
-- (BOOL)matchesPrefix:(id)a3 neighbor:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)matchesPrefix:(id)prefix neighbor:(id)neighbor;
 - (NRBabelInstance)instance;
 - (id)description;
 - (in6_addr)nextHopInner;
@@ -29,15 +29,15 @@
 
 - (void)applyUsingSystem
 {
-  v2 = self;
-  v3 = [(NRBabelNeighbor *)self->_neighbor babelInterface];
+  selfCopy = self;
+  babelInterface = [(NRBabelNeighbor *)self->_neighbor babelInterface];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [(NRBabelPrefix *)v2->_bPrefix descriptionWithoutPlen];
-    if (!v5)
+    descriptionWithoutPlen = [(NRBabelPrefix *)selfCopy->_bPrefix descriptionWithoutPlen];
+    if (!descriptionWithoutPlen)
     {
       if (qword_100229100 != -1)
       {
@@ -57,25 +57,25 @@
       goto LABEL_21;
     }
 
-    selected = v2->_selected;
+    selected = selfCopy->_selected;
     v7 = [NSString alloc];
     if (selected)
     {
       v8 = v7;
-      v9 = [(NRBabelPrefix *)v2->_bPrefix plen];
+      plen = [(NRBabelPrefix *)selfCopy->_bPrefix plen];
       IPv6AddrString = createIPv6AddrString();
-      v11 = [(NRBabelNeighbor *)v2->_neighbor babelInterface];
-      v12 = [v11 ifName];
-      v13 = [v8 initWithFormat:@"route -nv delete -inet6 %@ ; route -nv add -inet6 -proto2 -prefixlen %u %@ %@%%%@", v5, v9, v5, IPv6AddrString, v12];
+      babelInterface2 = [(NRBabelNeighbor *)selfCopy->_neighbor babelInterface];
+      ifName = [babelInterface2 ifName];
+      v13 = [v8 initWithFormat:@"route -nv delete -inet6 %@ ; route -nv add -inet6 -proto2 -prefixlen %u %@ %@%%%@", descriptionWithoutPlen, plen, descriptionWithoutPlen, IPv6AddrString, ifName];
     }
 
     else
     {
-      v13 = [v7 initWithFormat:@"route -nv delete -inet6 %@", v5];
+      v13 = [v7 initWithFormat:@"route -nv delete -inet6 %@", descriptionWithoutPlen];
     }
 
     v18 = _NRCopySerialQueueAttr();
-    v2 = "terminusd.babel.commands";
+    selfCopy = "terminusd.babel.commands";
     v19 = dispatch_queue_create("terminusd.babel.commands", v18);
 
     if (v19)
@@ -127,12 +127,12 @@ LABEL_21:
     if (qword_100229100 == -1)
     {
 LABEL_9:
-      neighbor = v2->_neighbor;
+      neighbor = selfCopy->_neighbor;
       v16 = v14[31];
-      v27 = [(NRBabelNeighbor *)neighbor babelInterface];
+      babelInterface3 = [(NRBabelNeighbor *)neighbor babelInterface];
       _NRLogWithArgs();
 
-      v17 = v27;
+      v17 = babelInterface3;
 
       return;
     }
@@ -168,17 +168,17 @@ LABEL_26:
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [v5 bPrefix];
-    v7 = [v5 neighbor];
+    v5 = equalCopy;
+    bPrefix = [v5 bPrefix];
+    neighbor = [v5 neighbor];
 
-    v8 = [(NRBabelRoute *)self matchesPrefix:v6 neighbor:v7];
+    v8 = [(NRBabelRoute *)self matchesPrefix:bPrefix neighbor:neighbor];
   }
 
   else
@@ -208,9 +208,9 @@ LABEL_26:
   }
 
   v10 = v7;
-  v11 = [(NRBabelRoute *)self seqno];
+  seqno = [(NRBabelRoute *)self seqno];
   receivedMetric = self->_receivedMetric;
-  v13 = [(NRBabelRoute *)self metric];
+  metric = [(NRBabelRoute *)self metric];
   v14 = [(NRBabelNeighbor *)self->_neighbor descriptionWithNextHop:&self->_nextHopInner];
   v15 = v14;
   if (self->_selected)
@@ -223,17 +223,17 @@ LABEL_26:
     v16 = "not ";
   }
 
-  v17 = [v3 initWithFormat:@"%@ %@ seqno %u recvMetric %u metric %u via %@ %sselected", bPrefix, v10, v11, receivedMetric, v13, v14, v16];
+  v17 = [v3 initWithFormat:@"%@ %@ seqno %u recvMetric %u metric %u via %@ %sselected", bPrefix, v10, seqno, receivedMetric, metric, v14, v16];
 
   return v17;
 }
 
-- (BOOL)matchesPrefix:(id)a3 neighbor:(id)a4
+- (BOOL)matchesPrefix:(id)prefix neighbor:(id)neighbor
 {
-  v6 = a3;
-  if ([(NRBabelNeighbor *)self->_neighbor isEqual:a4])
+  prefixCopy = prefix;
+  if ([(NRBabelNeighbor *)self->_neighbor isEqual:neighbor])
   {
-    v7 = [(NRBabelPrefix *)self->_bPrefix isEqual:v6];
+    v7 = [(NRBabelPrefix *)self->_bPrefix isEqual:prefixCopy];
   }
 
   else

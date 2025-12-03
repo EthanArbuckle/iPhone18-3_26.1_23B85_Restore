@@ -12,9 +12,9 @@
   v7 = [objc_alloc(MEMORY[0x277D3F888]) initWithRTLocation:v5];
   [v6 setLocation:v7];
 
-  v8 = [v5 date];
+  date = [v5 date];
 
-  [v8 timeIntervalSinceReferenceDate];
+  [date timeIntervalSinceReferenceDate];
   [v6 setTimeCFAbsolute:?];
 
   return v6;

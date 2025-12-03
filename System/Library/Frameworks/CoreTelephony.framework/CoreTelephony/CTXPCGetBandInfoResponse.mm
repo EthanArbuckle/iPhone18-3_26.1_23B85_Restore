@@ -1,19 +1,19 @@
 @interface CTXPCGetBandInfoResponse
 + (id)allowedClassesForArguments;
 - (CTBandInfo)bandInfo;
-- (CTXPCGetBandInfoResponse)initWithBandInfo:(id)a3;
-- (CTXPCGetBandInfoResponse)initWithBandMasks:(id)a3;
+- (CTXPCGetBandInfoResponse)initWithBandInfo:(id)info;
+- (CTXPCGetBandInfoResponse)initWithBandMasks:(id)masks;
 - (NSDictionary)bandMasks;
 @end
 
 @implementation CTXPCGetBandInfoResponse
 
-- (CTXPCGetBandInfoResponse)initWithBandMasks:(id)a3
+- (CTXPCGetBandInfoResponse)initWithBandMasks:(id)masks
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  masksCopy = masks;
   v10 = @"bands";
-  v11[0] = v4;
+  v11[0] = masksCopy;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:&v10 count:1];
   v9.receiver = self;
   v9.super_class = CTXPCGetBandInfoResponse;
@@ -23,12 +23,12 @@
   return v6;
 }
 
-- (CTXPCGetBandInfoResponse)initWithBandInfo:(id)a3
+- (CTXPCGetBandInfoResponse)initWithBandInfo:(id)info
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  infoCopy = info;
   v10 = @"bands";
-  v11[0] = v4;
+  v11[0] = infoCopy;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:&v10 count:1];
   v9.receiver = self;
   v9.super_class = CTXPCGetBandInfoResponse;
@@ -40,8 +40,8 @@
 
 - (NSDictionary)bandMasks
 {
-  v2 = [(CTXPCMessage *)self namedArguments];
-  v3 = [v2 objectForKey:@"bands"];
+  namedArguments = [(CTXPCMessage *)self namedArguments];
+  v3 = [namedArguments objectForKey:@"bands"];
   v4 = CTThrowingCastIfClass<NSDictionary>(v3);
 
   return v4;
@@ -49,8 +49,8 @@
 
 - (CTBandInfo)bandInfo
 {
-  v2 = [(CTXPCMessage *)self namedArguments];
-  v3 = [v2 objectForKey:@"bands"];
+  namedArguments = [(CTXPCMessage *)self namedArguments];
+  v3 = [namedArguments objectForKey:@"bands"];
   v4 = CTThrowingCastIfClass<CTBandInfo>(v3);
 
   return v4;
@@ -59,7 +59,7 @@
 + (id)allowedClassesForArguments
 {
   v8[3] = *MEMORY[0x1E69E9840];
-  v7.receiver = a1;
+  v7.receiver = self;
   v7.super_class = &OBJC_METACLASS___CTXPCGetBandInfoResponse;
   v2 = objc_msgSendSuper2(&v7, sel_allowedClassesForArguments);
   v8[0] = objc_opt_class();

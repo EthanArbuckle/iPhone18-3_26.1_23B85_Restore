@@ -1,32 +1,32 @@
 @interface WidgetLocationManager
-- (void)locationManager:(id)a3 didFailWithError:(id)a4;
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4;
-- (void)locationManagerDidChangeAuthorization:(id)a3;
+- (void)locationManager:(id)manager didFailWithError:(id)error;
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations;
+- (void)locationManagerDidChangeAuthorization:(id)authorization;
 @end
 
 @implementation WidgetLocationManager
 
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations
 {
   sub_100031CF8(0, &unk_1001304B0, CLLocation_ptr);
   sub_1000EBFF4();
-  v6 = a3;
-  v7 = self;
+  managerCopy = manager;
+  selfCopy = self;
   sub_10002F93C();
 }
 
-- (void)locationManager:(id)a3 didFailWithError:(id)a4
+- (void)locationManager:(id)manager didFailWithError:(id)error
 {
-  v6 = a3;
-  v8 = a4;
-  v7 = self;
+  managerCopy = manager;
+  errorCopy = error;
+  selfCopy = self;
   sub_10002FF70();
 }
 
-- (void)locationManagerDidChangeAuthorization:(id)a3
+- (void)locationManagerDidChangeAuthorization:(id)authorization
 {
-  v4 = a3;
-  v5 = self;
+  authorizationCopy = authorization;
+  selfCopy = self;
   sub_1000301F4();
 }
 

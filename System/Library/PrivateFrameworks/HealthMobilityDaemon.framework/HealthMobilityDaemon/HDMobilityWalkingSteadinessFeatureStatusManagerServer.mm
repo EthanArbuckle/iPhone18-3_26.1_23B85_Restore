@@ -1,44 +1,44 @@
 @interface HDMobilityWalkingSteadinessFeatureStatusManagerServer
-+ (BOOL)_hasWriteEntitlement:(id)a3 withError:(id *)a4;
-+ (BOOL)validateConfiguration:(id)a3 client:(id)a4 error:(id *)a5;
-+ (id)createTaskServerWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6 error:(id *)a7;
-- (HDMobilityWalkingSteadinessFeatureStatusManagerServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6 classificationsFeatureAvailabilityExtension:(id)a7 mobilitySettingsDefaults:(id)a8 featureStatusProvider:(id)a9;
++ (BOOL)_hasWriteEntitlement:(id)entitlement withError:(id *)error;
++ (BOOL)validateConfiguration:(id)configuration client:(id)client error:(id *)error;
++ (id)createTaskServerWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate error:(id *)error;
+- (HDMobilityWalkingSteadinessFeatureStatusManagerServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate classificationsFeatureAvailabilityExtension:(id)extension mobilitySettingsDefaults:(id)defaults featureStatusProvider:(id)provider;
 - (id)_clientRemoteObjectProxy;
-- (id)_determineNotificationStatusWithFeatureStatus:(id)a3;
-- (id)_determineOnboardingStatusWithFeatureStatus:(id)a3;
-- (id)_getNotificationStatusWithError:(id *)a3;
-- (id)_getOnboardingStatusWithError:(id *)a3;
-- (void)_stopObservingChangesAndExpectToBeObserving:(BOOL)a3;
+- (id)_determineNotificationStatusWithFeatureStatus:(id)status;
+- (id)_determineOnboardingStatusWithFeatureStatus:(id)status;
+- (id)_getNotificationStatusWithError:(id *)error;
+- (id)_getOnboardingStatusWithError:(id *)error;
+- (void)_stopObservingChangesAndExpectToBeObserving:(BOOL)observing;
 - (void)dealloc;
-- (void)featureStatusProviding:(id)a3 didUpdateFeatureStatus:(id)a4;
-- (void)remote_fitnessTrackingEnabledWithCompletion:(id)a3;
-- (void)remote_notificationStatusWithCompletion:(id)a3;
-- (void)remote_onboardingStatusWithCompletion:(id)a3;
-- (void)remote_resetOnboardingWithCompletion:(id)a3;
-- (void)remote_startObservingChangesWithCompletion:(id)a3;
+- (void)featureStatusProviding:(id)providing didUpdateFeatureStatus:(id)status;
+- (void)remote_fitnessTrackingEnabledWithCompletion:(id)completion;
+- (void)remote_notificationStatusWithCompletion:(id)completion;
+- (void)remote_onboardingStatusWithCompletion:(id)completion;
+- (void)remote_resetOnboardingWithCompletion:(id)completion;
+- (void)remote_startObservingChangesWithCompletion:(id)completion;
 @end
 
 @implementation HDMobilityWalkingSteadinessFeatureStatusManagerServer
 
-- (HDMobilityWalkingSteadinessFeatureStatusManagerServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6 classificationsFeatureAvailabilityExtension:(id)a7 mobilitySettingsDefaults:(id)a8 featureStatusProvider:(id)a9
+- (HDMobilityWalkingSteadinessFeatureStatusManagerServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate classificationsFeatureAvailabilityExtension:(id)extension mobilitySettingsDefaults:(id)defaults featureStatusProvider:(id)provider
 {
-  v24 = a7;
-  v16 = a8;
-  v17 = a9;
+  extensionCopy = extension;
+  defaultsCopy = defaults;
+  providerCopy = provider;
   v25.receiver = self;
   v25.super_class = HDMobilityWalkingSteadinessFeatureStatusManagerServer;
-  v18 = [(HDStandardTaskServer *)&v25 initWithUUID:a3 configuration:a4 client:a5 delegate:a6];
+  v18 = [(HDStandardTaskServer *)&v25 initWithUUID:d configuration:configuration client:client delegate:delegate];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_classificationsFeatureAvailabilityExtension, a7);
+    objc_storeStrong(&v18->_classificationsFeatureAvailabilityExtension, extension);
     v20 = HKCreateSerialDispatchQueue();
     queue = v19->_queue;
     v19->_queue = v20;
 
-    objc_storeStrong(&v19->_mobilitySettingsDefaults, a8);
+    objc_storeStrong(&v19->_mobilitySettingsDefaults, defaults);
     v19->_observing = 0;
-    objc_storeStrong(&v19->_featureStatusProvider, a9);
+    objc_storeStrong(&v19->_featureStatusProvider, provider);
     v22 = v19;
   }
 
@@ -53,37 +53,37 @@
   [(HDMobilityWalkingSteadinessFeatureStatusManagerServer *)&v3 dealloc];
 }
 
-- (void)remote_onboardingStatusWithCompletion:(id)a3
+- (void)remote_onboardingStatusWithCompletion:(id)completion
 {
   v7 = 0;
-  v4 = a3;
+  completionCopy = completion;
   v5 = [(HDMobilityWalkingSteadinessFeatureStatusManagerServer *)self _getOnboardingStatusWithError:&v7];
   v6 = v7;
-  v4[2](v4, v5, v6);
+  completionCopy[2](completionCopy, v5, v6);
 }
 
-- (void)remote_notificationStatusWithCompletion:(id)a3
+- (void)remote_notificationStatusWithCompletion:(id)completion
 {
   v7 = 0;
-  v4 = a3;
+  completionCopy = completion;
   v5 = [(HDMobilityWalkingSteadinessFeatureStatusManagerServer *)self _getNotificationStatusWithError:&v7];
   v6 = v7;
-  v4[2](v4, v5, v6);
+  completionCopy[2](completionCopy, v5, v6);
 }
 
-- (void)remote_fitnessTrackingEnabledWithCompletion:(id)a3
+- (void)remote_fitnessTrackingEnabledWithCompletion:(id)completion
 {
   featureStatusProvider = self->_featureStatusProvider;
   v8 = 0;
-  v4 = a3;
+  completionCopy = completion;
   v5 = [(HKFeatureStatusProviding *)featureStatusProvider featureStatusWithError:&v8];
   v6 = v8;
   if (v5)
   {
     v7 = [v5 objectForKeyedSubscript:*MEMORY[0x277D11A38]];
-    v4[2](v4, [v7 isRequirementSatisfiedWithIdentifier:*MEMORY[0x277CCBF40]], v6);
+    completionCopy[2](completionCopy, [v7 isRequirementSatisfiedWithIdentifier:*MEMORY[0x277CCBF40]], v6);
 
-    v4 = v7;
+    completionCopy = v7;
   }
 
   else
@@ -94,22 +94,22 @@
       [HDMobilityWalkingSteadinessFeatureStatusManagerServer remote_fitnessTrackingEnabledWithCompletion:];
     }
 
-    v4[2](v4, 0, v6);
+    completionCopy[2](completionCopy, 0, v6);
   }
 }
 
-+ (BOOL)_hasWriteEntitlement:(id)a3 withError:(id *)a4
++ (BOOL)_hasWriteEntitlement:(id)entitlement withError:(id *)error
 {
-  v5 = [a3 hasEntitlement:*MEMORY[0x277CCC8B0]];
+  v5 = [entitlement hasEntitlement:*MEMORY[0x277CCC8B0]];
   if ((v5 & 1) == 0)
   {
     v6 = [MEMORY[0x277CCA9B8] hk_error:4 format:@"Unauthorized access to modify Walking Steadiness feature status"];
     if (v6)
     {
-      if (a4)
+      if (error)
       {
         v7 = v6;
-        *a4 = v6;
+        *error = v6;
       }
 
       else
@@ -122,15 +122,15 @@
   return v5;
 }
 
-- (void)remote_resetOnboardingWithCompletion:(id)a3
+- (void)remote_resetOnboardingWithCompletion:(id)completion
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = objc_opt_class();
-  v6 = [(HDStandardTaskServer *)self client];
-  v7 = [v6 entitlements];
+  client = [(HDStandardTaskServer *)self client];
+  entitlements = [client entitlements];
   v21 = 0;
-  v8 = [v5 _hasWriteEntitlement:v7 withError:&v21];
+  v8 = [v5 _hasWriteEntitlement:entitlements withError:&v21];
   v9 = v21;
 
   _HKInitializeLogging();
@@ -154,7 +154,7 @@
     v19[2] = __94__HDMobilityWalkingSteadinessFeatureStatusManagerServer_remote_resetOnboardingWithCompletion___block_invoke;
     v19[3] = &unk_2796D9528;
     v19[4] = self;
-    v20 = v4;
+    v20 = completionCopy;
     [(HDFeatureAvailabilityExtension *)classificationsFeatureAvailabilityExtension resetOnboardingWithCompletion:v19];
   }
 
@@ -169,7 +169,7 @@
       _os_log_impl(&dword_251962000, v16, OS_LOG_TYPE_DEFAULT, "[%{public}@] Unauthorized call to reset onboarding", buf, 0xCu);
     }
 
-    (*(v4 + 2))(v4, 0, v9);
+    (*(completionCopy + 2))(completionCopy, 0, v9);
   }
 
   v18 = *MEMORY[0x277D85DE8];
@@ -205,10 +205,10 @@ void __94__HDMobilityWalkingSteadinessFeatureStatusManagerServer_remote_resetOnb
   }
 }
 
-- (void)remote_startObservingChangesWithCompletion:(id)a3
+- (void)remote_startObservingChangesWithCompletion:(id)completion
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   if (self->_observing)
   {
     _HKInitializeLogging();
@@ -226,18 +226,18 @@ void __94__HDMobilityWalkingSteadinessFeatureStatusManagerServer_remote_resetOnb
     if (os_log_type_enabled(*MEMORY[0x277CCC2F8], OS_LOG_TYPE_DEFAULT))
     {
       v7 = 138543362;
-      v8 = self;
+      selfCopy = self;
       _os_log_impl(&dword_251962000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] Starting observation of changes", &v7, 0xCu);
     }
 
     [(HKFeatureStatusProviding *)self->_featureStatusProvider registerObserver:self queue:self->_queue];
-    v4[2](v4, 1, 0);
+    completionCopy[2](completionCopy, 1, 0);
   }
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_getOnboardingStatusWithError:(id *)a3
+- (id)_getOnboardingStatusWithError:(id *)error
 {
   featureStatusProvider = self->_featureStatusProvider;
   v12 = 0;
@@ -258,11 +258,11 @@ void __94__HDMobilityWalkingSteadinessFeatureStatusManagerServer_remote_resetOnb
       [HDMobilityWalkingSteadinessFeatureStatusManagerServer remote_fitnessTrackingEnabledWithCompletion:];
     }
 
-    if (a3)
+    if (error)
     {
       v10 = v7;
       v8 = 0;
-      *a3 = v7;
+      *error = v7;
       goto LABEL_12;
     }
 
@@ -280,19 +280,19 @@ LABEL_12:
   return v8;
 }
 
-- (id)_determineOnboardingStatusWithFeatureStatus:(id)a3
+- (id)_determineOnboardingStatusWithFeatureStatus:(id)status
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v28 = [v4 objectForKeyedSubscript:*MEMORY[0x277D11A30]];
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x277CCBE38]];
-  v6 = [v4 objectForKeyedSubscript:*MEMORY[0x277D11A38]];
+  statusCopy = status;
+  v28 = [statusCopy objectForKeyedSubscript:*MEMORY[0x277D11A30]];
+  v5 = [statusCopy objectForKeyedSubscript:*MEMORY[0x277CCBE38]];
+  v6 = [statusCopy objectForKeyedSubscript:*MEMORY[0x277D11A38]];
   v26 = v6;
   if ([v6 isRequirementSatisfiedWithIdentifier:*MEMORY[0x277CCBF98]])
   {
     v7 = v5;
-    v8 = [v4 onboardingRecord];
-    v9 = [v8 earliestDateOfAnyOnboardingCompletion];
+    onboardingRecord = [statusCopy onboardingRecord];
+    earliestDateOfAnyOnboardingCompletion = [onboardingRecord earliestDateOfAnyOnboardingCompletion];
 
     v10 = 0;
     v11 = 1;
@@ -313,7 +313,7 @@ LABEL_12:
     if (os_log_type_enabled(*v13, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v30 = self;
+      selfCopy6 = self;
       _os_log_impl(&dword_251962000, v14, OS_LOG_TYPE_DEFAULT, "[%{public}@] User is age gated, marking unavailability reason", buf, 0xCu);
     }
 
@@ -327,7 +327,7 @@ LABEL_12:
     if (os_log_type_enabled(*v13, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v30 = self;
+      selfCopy6 = self;
       _os_log_impl(&dword_251962000, v15, OS_LOG_TYPE_DEFAULT, "[%{public}@] Local device cannot support walking steadiness, marking unavailability reason", buf, 0xCu);
     }
 
@@ -341,7 +341,7 @@ LABEL_12:
     if (os_log_type_enabled(*v13, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v30 = self;
+      selfCopy6 = self;
       _os_log_impl(&dword_251962000, v16, OS_LOG_TYPE_DEFAULT, "[%{public}@] User has motion & fitness disabled, marking onboarding unavailability reason", buf, 0xCu);
     }
 
@@ -358,11 +358,11 @@ LABEL_12:
       if (os_log_type_enabled(*v13, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v30 = self;
+        selfCopy6 = self;
         _os_log_impl(&dword_251962000, v17, OS_LOG_TYPE_DEFAULT, "[%{public}@] User not onboarded but no reason why they couldn't onboard", buf, 0xCu);
       }
 
-      v9 = 0;
+      earliestDateOfAnyOnboardingCompletion = 0;
       v10 = 0;
       v11 = 2;
       goto LABEL_27;
@@ -376,7 +376,7 @@ LABEL_12:
     if (os_log_type_enabled(*v13, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v30 = self;
+      selfCopy6 = self;
       _os_log_impl(&dword_251962000, v18, OS_LOG_TYPE_DEFAULT, "[%{public}@] User has health app hidden, marking onboarding unavailability reason", buf, 0xCu);
     }
 
@@ -389,24 +389,24 @@ LABEL_12:
   if (os_log_type_enabled(*v13, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v30 = self;
+    selfCopy6 = self;
     _os_log_impl(&dword_251962000, v19, OS_LOG_TYPE_DEFAULT, "[%{public}@] User not onboarded but onboarding unavailable", buf, 0xCu);
   }
 
-  v9 = 0;
+  earliestDateOfAnyOnboardingCompletion = 0;
   v11 = 0;
 LABEL_27:
-  v20 = [v4 objectForKeyedSubscript:*MEMORY[0x277CCBE50]];
+  v20 = [statusCopy objectForKeyedSubscript:*MEMORY[0x277CCBE50]];
   v21 = objc_alloc(MEMORY[0x277D11AD0]);
-  v22 = [v20 areAllRequirementsSatisfied];
-  v23 = [v21 initWithState:v11 unavailableReasons:v10 dateOnboarded:v9 shouldOnboardingTileBeAdvertised:v22 isLocaleValidOnLocalDevice:objc_msgSend(v20 isClassificationAvailable:{"isRequirementSatisfiedWithIdentifier:", *MEMORY[0x277CCBF08]), objc_msgSend(v28, "areAllRequirementsSatisfied")}];
+  areAllRequirementsSatisfied = [v20 areAllRequirementsSatisfied];
+  v23 = [v21 initWithState:v11 unavailableReasons:v10 dateOnboarded:earliestDateOfAnyOnboardingCompletion shouldOnboardingTileBeAdvertised:areAllRequirementsSatisfied isLocaleValidOnLocalDevice:objc_msgSend(v20 isClassificationAvailable:{"isRequirementSatisfiedWithIdentifier:", *MEMORY[0x277CCBF08]), objc_msgSend(v28, "areAllRequirementsSatisfied")}];
 
   v24 = *MEMORY[0x277D85DE8];
 
   return v23;
 }
 
-- (id)_getNotificationStatusWithError:(id *)a3
+- (id)_getNotificationStatusWithError:(id *)error
 {
   featureStatusProvider = self->_featureStatusProvider;
   v12 = 0;
@@ -427,11 +427,11 @@ LABEL_27:
       [HDMobilityWalkingSteadinessFeatureStatusManagerServer remote_fitnessTrackingEnabledWithCompletion:];
     }
 
-    if (a3)
+    if (error)
     {
       v10 = v7;
       v8 = 0;
-      *a3 = v7;
+      *error = v7;
       goto LABEL_12;
     }
 
@@ -449,34 +449,34 @@ LABEL_12:
   return v8;
 }
 
-- (id)_determineNotificationStatusWithFeatureStatus:(id)a3
+- (id)_determineNotificationStatusWithFeatureStatus:(id)status
 {
   v46 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CCDD30] sharedBehavior];
-  v6 = [v5 isAppleWatch];
+  statusCopy = status;
+  mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+  isAppleWatch = [mEMORY[0x277CCDD30] isAppleWatch];
 
-  if (v6)
+  if (isAppleWatch)
   {
     v7 = 0;
     goto LABEL_47;
   }
 
-  v8 = [v4 objectForKeyedSubscript:*MEMORY[0x277D11A38]];
-  v9 = [v4 objectForKeyedSubscript:*MEMORY[0x277D11A40]];
+  v8 = [statusCopy objectForKeyedSubscript:*MEMORY[0x277D11A38]];
+  v9 = [statusCopy objectForKeyedSubscript:*MEMORY[0x277D11A40]];
   v10 = [v9 isRequirementSatisfiedWithIdentifier:*MEMORY[0x277CCBF40]];
   v11 = *MEMORY[0x277CCBF88];
   v12 = [v9 isRequirementSatisfiedWithIdentifier:*MEMORY[0x277CCBF88]];
-  v13 = [v8 areAllRequirementsSatisfied];
+  areAllRequirementsSatisfied = [v8 areAllRequirementsSatisfied];
   v14 = MEMORY[0x277CCC2F8];
-  if (v13)
+  if (areAllRequirementsSatisfied)
   {
     _HKInitializeLogging();
     v15 = *v14;
     if (os_log_type_enabled(*v14, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v45 = self;
+      selfCopy = self;
       _os_log_impl(&dword_251962000, v15, OS_LOG_TYPE_DEFAULT, "[%{public}@] Notifications enabled, sending back enabled notification status", buf, 0xCu);
     }
 
@@ -490,11 +490,11 @@ LABEL_12:
   else
   {
     v42 = v9;
-    v21 = self;
-    v22 = [v8 unsatisfiedRequirementIdentifiers];
+    selfCopy2 = self;
+    unsatisfiedRequirementIdentifiers = [v8 unsatisfiedRequirementIdentifiers];
     v43 = *MEMORY[0x277CCBF38];
     v23 = [MEMORY[0x277CBEA60] arrayWithObjects:&v43 count:1];
-    v24 = [v22 isEqualToArray:v23];
+    v24 = [unsatisfiedRequirementIdentifiers isEqualToArray:v23];
 
     if (v24)
     {
@@ -503,7 +503,7 @@ LABEL_12:
       if (os_log_type_enabled(*v14, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v45 = v21;
+        selfCopy = selfCopy2;
         _os_log_impl(&dword_251962000, v25, OS_LOG_TYPE_DEFAULT, "[%{public}@] Notifications disabled but otherwise clear, sending back disabled notification status", buf, 0xCu);
       }
 
@@ -517,7 +517,7 @@ LABEL_12:
     {
       v27 = 0;
       v28 = v10;
-      v29 = v21;
+      v29 = selfCopy2;
     }
 
     else
@@ -526,11 +526,11 @@ LABEL_12:
       v30 = *v14;
       v31 = os_log_type_enabled(*v14, OS_LOG_TYPE_DEFAULT);
       v28 = v10;
-      v29 = v21;
+      v29 = selfCopy2;
       if (v31)
       {
         *buf = 138543362;
-        v45 = v21;
+        selfCopy = selfCopy2;
         _os_log_impl(&dword_251962000, v30, OS_LOG_TYPE_DEFAULT, "[%{public}@] User is age gated, marking notification unavailability reason", buf, 0xCu);
       }
 
@@ -545,7 +545,7 @@ LABEL_12:
       if (os_log_type_enabled(*v26, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v45 = v29;
+        selfCopy = v29;
         _os_log_impl(&dword_251962000, v32, OS_LOG_TYPE_DEFAULT, "[%{public}@] Age is not present, marking notification unavailability reason", buf, 0xCu);
       }
 
@@ -559,7 +559,7 @@ LABEL_12:
       if (os_log_type_enabled(*v26, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v45 = v29;
+        selfCopy = v29;
         _os_log_impl(&dword_251962000, v33, OS_LOG_TYPE_DEFAULT, "[%{public}@] Device not capable of walking steadiness, marking notification unavailability reason", buf, 0xCu);
       }
 
@@ -573,7 +573,7 @@ LABEL_12:
       if (os_log_type_enabled(*v26, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v45 = v29;
+        selfCopy = v29;
         _os_log_impl(&dword_251962000, v34, OS_LOG_TYPE_DEFAULT, "[%{public}@] User has fitness tracking disabled, marking notification unavailability reason", buf, 0xCu);
       }
 
@@ -587,7 +587,7 @@ LABEL_12:
       if (os_log_type_enabled(*v26, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v45 = v29;
+        selfCopy = v29;
         _os_log_impl(&dword_251962000, v35, OS_LOG_TYPE_DEFAULT, "[%{public}@] User has health app hidden, marking notification unavailability reason", buf, 0xCu);
       }
 
@@ -601,7 +601,7 @@ LABEL_12:
       if (os_log_type_enabled(*v26, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v45 = v29;
+        selfCopy = v29;
         _os_log_impl(&dword_251962000, v36, OS_LOG_TYPE_DEFAULT, "[%{public}@] User no longer has any values for Height set, marking notification unavailability reason", buf, 0xCu);
       }
 
@@ -615,7 +615,7 @@ LABEL_12:
       if (os_log_type_enabled(*v26, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v45 = v29;
+        selfCopy = v29;
         _os_log_impl(&dword_251962000, v37, OS_LOG_TYPE_DEFAULT, "[%{public}@] User has not onboarded, marking notification unavailability reason", buf, 0xCu);
       }
 
@@ -629,7 +629,7 @@ LABEL_12:
       if (os_log_type_enabled(*v26, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v45 = v29;
+        selfCopy = v29;
         _os_log_impl(&dword_251962000, v38, OS_LOG_TYPE_DEFAULT, "[%{public}@] User has not onboarded, marking notification unavailability reason", buf, 0xCu);
       }
 
@@ -653,7 +653,7 @@ LABEL_47:
   return v7;
 }
 
-- (void)_stopObservingChangesAndExpectToBeObserving:(BOOL)a3
+- (void)_stopObservingChangesAndExpectToBeObserving:(BOOL)observing
 {
   v8 = *MEMORY[0x277D85DE8];
   if (self->_observing)
@@ -665,12 +665,12 @@ LABEL_47:
     if (os_log_type_enabled(*MEMORY[0x277CCC2F8], OS_LOG_TYPE_DEFAULT))
     {
       v6 = 138543362;
-      v7 = self;
+      selfCopy = self;
       _os_log_impl(&dword_251962000, v4, OS_LOG_TYPE_DEFAULT, "[%{public}@] Stopping observation of changes", &v6, 0xCu);
     }
   }
 
-  else if (a3)
+  else if (observing)
   {
     _HKInitializeLogging();
     if (os_log_type_enabled(*MEMORY[0x277CCC2F8], OS_LOG_TYPE_ERROR))
@@ -682,55 +682,55 @@ LABEL_47:
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)featureStatusProviding:(id)a3 didUpdateFeatureStatus:(id)a4
+- (void)featureStatusProviding:(id)providing didUpdateFeatureStatus:(id)status
 {
-  v5 = a4;
-  v9 = [(HDMobilityWalkingSteadinessFeatureStatusManagerServer *)self _determineOnboardingStatusWithFeatureStatus:v5];
-  v6 = [(HDMobilityWalkingSteadinessFeatureStatusManagerServer *)self _clientRemoteObjectProxy];
-  [v6 client_didUpdateOnboardingStatus:v9];
+  statusCopy = status;
+  v9 = [(HDMobilityWalkingSteadinessFeatureStatusManagerServer *)self _determineOnboardingStatusWithFeatureStatus:statusCopy];
+  _clientRemoteObjectProxy = [(HDMobilityWalkingSteadinessFeatureStatusManagerServer *)self _clientRemoteObjectProxy];
+  [_clientRemoteObjectProxy client_didUpdateOnboardingStatus:v9];
 
-  v7 = [(HDMobilityWalkingSteadinessFeatureStatusManagerServer *)self _determineNotificationStatusWithFeatureStatus:v5];
+  v7 = [(HDMobilityWalkingSteadinessFeatureStatusManagerServer *)self _determineNotificationStatusWithFeatureStatus:statusCopy];
 
-  v8 = [(HDMobilityWalkingSteadinessFeatureStatusManagerServer *)self _clientRemoteObjectProxy];
-  [v8 client_didUpdateNotificationStatus:v7];
+  _clientRemoteObjectProxy2 = [(HDMobilityWalkingSteadinessFeatureStatusManagerServer *)self _clientRemoteObjectProxy];
+  [_clientRemoteObjectProxy2 client_didUpdateNotificationStatus:v7];
 }
 
 - (id)_clientRemoteObjectProxy
 {
-  v2 = [(HDStandardTaskServer *)self client];
-  v3 = [v2 connection];
-  v4 = [v3 remoteObjectProxy];
+  client = [(HDStandardTaskServer *)self client];
+  connection = [client connection];
+  remoteObjectProxy = [connection remoteObjectProxy];
 
-  return v4;
+  return remoteObjectProxy;
 }
 
-+ (id)createTaskServerWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6 error:(id *)a7
++ (id)createTaskServerWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate error:(id *)error
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [v11 profile];
-  v15 = [v14 profileExtensionWithIdentifier:*MEMORY[0x277D11A58]];
+  delegateCopy = delegate;
+  clientCopy = client;
+  configurationCopy = configuration;
+  dCopy = d;
+  profile = [clientCopy profile];
+  v15 = [profile profileExtensionWithIdentifier:*MEMORY[0x277D11A58]];
 
   v16 = [v15 featureAvailabilityExtensionForFeatureIdentifier:*MEMORY[0x277CCC110]];
   v17 = [objc_alloc(MEMORY[0x277CBEBD0]) initWithSuiteName:@"com.apple.Mobility.notifications"];
   v18 = objc_alloc(MEMORY[0x277CCD460]);
-  v19 = [v11 profile];
-  v20 = [v18 initWithFeatureAvailabilityProviding:v16 healthDataSource:v19 countryCodeSource:1];
+  profile2 = [clientCopy profile];
+  v20 = [v18 initWithFeatureAvailabilityProviding:v16 healthDataSource:profile2 countryCodeSource:1];
 
-  v21 = [[HDMobilityWalkingSteadinessFeatureStatusManagerServer alloc] initWithUUID:v13 configuration:v12 client:v11 delegate:v10 classificationsFeatureAvailabilityExtension:v16 mobilitySettingsDefaults:v17 featureStatusProvider:v20];
+  v21 = [[HDMobilityWalkingSteadinessFeatureStatusManagerServer alloc] initWithUUID:dCopy configuration:configurationCopy client:clientCopy delegate:delegateCopy classificationsFeatureAvailabilityExtension:v16 mobilitySettingsDefaults:v17 featureStatusProvider:v20];
 
   return v21;
 }
 
-+ (BOOL)validateConfiguration:(id)a3 client:(id)a4 error:(id *)a5
++ (BOOL)validateConfiguration:(id)configuration client:(id)client error:(id *)error
 {
-  v7 = a4;
-  v8 = [v7 entitlements];
-  LOBYTE(a1) = [a1 _hasWriteEntitlement:v8 withError:0];
+  clientCopy = client;
+  entitlements = [clientCopy entitlements];
+  LOBYTE(self) = [self _hasWriteEntitlement:entitlements withError:0];
 
-  if (a1 & 1) != 0 || ([v7 entitlements], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "hasEntitlement:", *MEMORY[0x277CCC570]), v9, (v10))
+  if (self & 1) != 0 || ([clientCopy entitlements], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "hasEntitlement:", *MEMORY[0x277CCC570]), v9, (v10))
   {
     v11 = 1;
   }
@@ -740,10 +740,10 @@ LABEL_47:
     v12 = [MEMORY[0x277CCA9B8] hk_error:4 format:@"Unauthorized access of Walking Steadiness feature status"];
     if (v12)
     {
-      if (a5)
+      if (error)
       {
         v13 = v12;
-        *a5 = v12;
+        *error = v12;
       }
 
       else

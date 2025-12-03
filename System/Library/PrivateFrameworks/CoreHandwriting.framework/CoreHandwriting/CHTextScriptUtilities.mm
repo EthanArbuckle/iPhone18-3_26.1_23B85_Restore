@@ -1,21 +1,21 @@
 @interface CHTextScriptUtilities
-+ (BOOL)isCharacterCJKSymbolsPunctuations:(id)a3;
-+ (BOOL)isCharacterEmoji:(id)a3;
-+ (BOOL)isCharacterFullWidth:(id)a3;
-+ (BOOL)isRightToLeftScriptForCharacter:(id)a3;
-+ (BOOL)shouldCorrectionGesturesSnapToTokensForScriptCode:(int)a3;
-+ (BOOL)shouldRelaxCharacterBoundsPercentageOverlapForScript:(int)a3;
-+ (id)majorityScriptIdForString:(id)a3 invalidCodes:(id)a4;
-+ (id)scriptHistogramForString:(id)a3;
-+ (int)singleScriptCodeForString:(id)a3;
++ (BOOL)isCharacterCJKSymbolsPunctuations:(id)punctuations;
++ (BOOL)isCharacterEmoji:(id)emoji;
++ (BOOL)isCharacterFullWidth:(id)width;
++ (BOOL)isRightToLeftScriptForCharacter:(id)character;
++ (BOOL)shouldCorrectionGesturesSnapToTokensForScriptCode:(int)code;
++ (BOOL)shouldRelaxCharacterBoundsPercentageOverlapForScript:(int)script;
++ (id)majorityScriptIdForString:(id)string invalidCodes:(id)codes;
++ (id)scriptHistogramForString:(id)string;
++ (int)singleScriptCodeForString:(id)string;
 @end
 
 @implementation CHTextScriptUtilities
 
-+ (BOOL)shouldCorrectionGesturesSnapToTokensForScriptCode:(int)a3
++ (BOOL)shouldCorrectionGesturesSnapToTokensForScriptCode:(int)code
 {
-  v3 = a3 + 1;
-  if ((a3 + 1) > 0x27)
+  v3 = code + 1;
+  if ((code + 1) > 0x27)
   {
     return 0;
   }
@@ -28,35 +28,35 @@
   return ((1 << v3) & 0x4000208) != 0;
 }
 
-+ (int)singleScriptCodeForString:(id)a3
++ (int)singleScriptCodeForString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
   v18 = -1;
-  v10 = objc_msgSend_length(v4, v5, v6, v7, v8, v9);
+  v10 = objc_msgSend_length(stringCopy, v5, v6, v7, v8, v9);
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = sub_1837135D4;
   v14[3] = &unk_1E6DDCD38;
   v14[4] = &v15;
-  v14[5] = a1;
-  objc_msgSend_enumerateCodepointsInRange_usingBlock_(v4, v11, 0, v10, v14, v12);
-  LODWORD(a1) = *(v16 + 6);
+  v14[5] = self;
+  objc_msgSend_enumerateCodepointsInRange_usingBlock_(stringCopy, v11, 0, v10, v14, v12);
+  LODWORD(self) = *(v16 + 6);
   _Block_object_dispose(&v15, 8);
 
-  return a1;
+  return self;
 }
 
-+ (BOOL)isCharacterFullWidth:(id)a3
++ (BOOL)isCharacterFullWidth:(id)width
 {
   v18 = 0;
   v19 = 0;
-  v3 = a3;
-  v7 = objc_msgSend_codepointAtIndex_outRange_(v3, v4, 0, &v18, v5, v6);
+  widthCopy = width;
+  v7 = objc_msgSend_codepointAtIndex_outRange_(widthCopy, v4, 0, &v18, v5, v6);
   v8 = v19;
-  v14 = objc_msgSend_length(v3, v9, v10, v11, v12, v13, v18);
+  v14 = objc_msgSend_length(widthCopy, v9, v10, v11, v12, v13, v18);
 
   if (v8 != v14)
   {
@@ -67,11 +67,11 @@
   return IntPropertyValue == 3 || IntPropertyValue == 5;
 }
 
-+ (BOOL)isCharacterCJKSymbolsPunctuations:(id)a3
++ (BOOL)isCharacterCJKSymbolsPunctuations:(id)punctuations
 {
-  v4 = a3;
-  objc_msgSend_rangeOfComposedCharacterSequenceAtIndex_(v4, v5, 0, v6, v7, v8);
-  if (v17 != objc_msgSend_length(v4, v17, v9, v10, v11, v12))
+  punctuationsCopy = punctuations;
+  objc_msgSend_rangeOfComposedCharacterSequenceAtIndex_(punctuationsCopy, v5, 0, v6, v7, v8);
+  if (v17 != objc_msgSend_length(punctuationsCopy, v17, v9, v10, v11, v12))
   {
     if (qword_1EA84DC48 == -1)
     {
@@ -100,8 +100,8 @@ LABEL_5:
   }
 
 LABEL_6:
-  objc_msgSend_rangeOfComposedCharacterSequenceAtIndex_(v4, v13, 0, v14, v15, v16);
-  if (v26 == objc_msgSend_length(v4, v26, v19, v20, v21, v22))
+  objc_msgSend_rangeOfComposedCharacterSequenceAtIndex_(punctuationsCopy, v13, 0, v14, v15, v16);
+  if (v26 == objc_msgSend_length(punctuationsCopy, v26, v19, v20, v21, v22))
   {
     goto LABEL_11;
   }
@@ -131,7 +131,7 @@ LABEL_10:
 LABEL_11:
   v36[0] = 0;
   v36[1] = 0;
-  v28 = objc_msgSend_codepointAtIndex_outRange_(v4, v23, 0, v36, v24, v25);
+  v28 = objc_msgSend_codepointAtIndex_outRange_(punctuationsCopy, v23, 0, v36, v24, v25);
   Code = ublock_getCode(v28);
   if (Code == UBLOCK_CJK_SYMBOLS_AND_PUNCTUATION)
   {
@@ -140,7 +140,7 @@ LABEL_11:
 
   else if (Code == UBLOCK_HALFWIDTH_AND_FULLWIDTH_FORMS)
   {
-    isCharacterFullWidth = objc_msgSend_isCharacterFullWidth_(a1, v30, v4, v31, v32, v33);
+    isCharacterFullWidth = objc_msgSend_isCharacterFullWidth_(self, v30, punctuationsCopy, v31, v32, v33);
   }
 
   else
@@ -151,11 +151,11 @@ LABEL_11:
   return isCharacterFullWidth;
 }
 
-+ (BOOL)isRightToLeftScriptForCharacter:(id)a3
++ (BOOL)isRightToLeftScriptForCharacter:(id)character
 {
-  v3 = a3;
-  objc_msgSend_rangeOfComposedCharacterSequenceAtIndex_(v3, v4, 0, v5, v6, v7);
-  if (v16 != objc_msgSend_length(v3, v16, v8, v9, v10, v11))
+  characterCopy = character;
+  objc_msgSend_rangeOfComposedCharacterSequenceAtIndex_(characterCopy, v4, 0, v5, v6, v7);
+  if (v16 != objc_msgSend_length(characterCopy, v16, v8, v9, v10, v11))
   {
     if (qword_1EA84DC48 == -1)
     {
@@ -184,8 +184,8 @@ LABEL_5:
   }
 
 LABEL_6:
-  objc_msgSend_rangeOfComposedCharacterSequenceAtIndex_(v3, v12, 0, v13, v14, v15);
-  if (v22 != objc_msgSend_length(v3, v22, v18, v19, v20, v21))
+  objc_msgSend_rangeOfComposedCharacterSequenceAtIndex_(characterCopy, v12, 0, v13, v14, v15);
+  if (v22 != objc_msgSend_length(characterCopy, v22, v18, v19, v20, v21))
   {
     if (qword_1EA84DC48 == -1)
     {
@@ -215,29 +215,29 @@ LABEL_10:
 
 LABEL_11:
   v24 = objc_opt_class();
-  objc_msgSend_singleScriptCodeForString_(v24, v25, v3, v26, v27, v28);
+  objc_msgSend_singleScriptCodeForString_(v24, v25, characterCopy, v26, v27, v28);
   v29 = uscript_isRightToLeft() != 0;
 
   return v29;
 }
 
-+ (BOOL)shouldRelaxCharacterBoundsPercentageOverlapForScript:(int)a3
++ (BOOL)shouldRelaxCharacterBoundsPercentageOverlapForScript:(int)script
 {
   result = 1;
-  if ((a3 + 1) > 0x13 || ((1 << (a3 + 1)) & 0xC0001) == 0)
+  if ((script + 1) > 0x13 || ((1 << (script + 1)) & 0xC0001) == 0)
   {
-    return a3 == 105;
+    return script == 105;
   }
 
   return result;
 }
 
-+ (BOOL)isCharacterEmoji:(id)a3
++ (BOOL)isCharacterEmoji:(id)emoji
 {
   v65 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v9 = v3;
-  if (!v3 || !objc_msgSend_length(v3, v4, v5, v6, v7, v8) || (objc_msgSend_rangeOfComposedCharacterSequenceAtIndex_(v9, v10, 0, v11, v12, v13), v22 != objc_msgSend_length(v9, v22, v14, v15, v16, v17)))
+  emojiCopy = emoji;
+  v9 = emojiCopy;
+  if (!emojiCopy || !objc_msgSend_length(emojiCopy, v4, v5, v6, v7, v8) || (objc_msgSend_rangeOfComposedCharacterSequenceAtIndex_(v9, v10, 0, v11, v12, v13), v22 != objc_msgSend_length(v9, v22, v14, v15, v16, v17)))
   {
     if (qword_1EA84DC48 != -1)
     {
@@ -322,33 +322,33 @@ LABEL_22:
   return v60;
 }
 
-+ (id)scriptHistogramForString:(id)a3
++ (id)scriptHistogramForString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
   v23 = sub_183713F18;
   v24 = sub_183713F28;
   v25 = objc_msgSend_dictionary(MEMORY[0x1E695DF90], v4, v5, v6, v7, v8);
-  v14 = objc_msgSend_length(v3, v9, v10, v11, v12, v13);
+  v14 = objc_msgSend_length(stringCopy, v9, v10, v11, v12, v13);
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = sub_183713F30;
   v19[3] = &unk_1E6DDCD60;
   v19[4] = &v20;
-  objc_msgSend_enumerateCodepointsInRange_usingBlock_(v3, v15, 0, v14, v19, v16);
+  objc_msgSend_enumerateCodepointsInRange_usingBlock_(stringCopy, v15, 0, v14, v19, v16);
   v17 = v21[5];
   _Block_object_dispose(&v20, 8);
 
   return v17;
 }
 
-+ (id)majorityScriptIdForString:(id)a3 invalidCodes:(id)a4
++ (id)majorityScriptIdForString:(id)string invalidCodes:(id)codes
 {
-  v5 = a3;
-  v6 = a4;
-  v11 = objc_msgSend_scriptHistogramForString_(CHTextScriptUtilities, v7, v5, v8, v9, v10);
+  stringCopy = string;
+  codesCopy = codes;
+  v11 = objc_msgSend_scriptHistogramForString_(CHTextScriptUtilities, v7, stringCopy, v8, v9, v10);
   v29[0] = 0;
   v29[1] = v29;
   v29[2] = 0x2020000000;
@@ -364,7 +364,7 @@ LABEL_22:
   v19[2] = sub_1837141C4;
   v19[3] = &unk_1E6DDCD88;
   v21 = v29;
-  v12 = v6;
+  v12 = codesCopy;
   v20 = v12;
   v22 = &v23;
   objc_msgSend_enumerateKeysAndObjectsUsingBlock_(v11, v13, v19, v14, v15, v16);

@@ -1,11 +1,11 @@
 @interface NSMeasurementFormatter
-+ (id)_ma_distanceStringWithValue:(double)a3 unit:(id)a4 style:(int64_t)a5;
-+ (id)_ma_sharedMeasurementFormatterWithFractionDigits:(unint64_t)a3 unitOptions:(unint64_t)a4 style:(int64_t)a5;
++ (id)_ma_distanceStringWithValue:(double)value unit:(id)unit style:(int64_t)style;
++ (id)_ma_sharedMeasurementFormatterWithFractionDigits:(unint64_t)digits unitOptions:(unint64_t)options style:(int64_t)style;
 @end
 
 @implementation NSMeasurementFormatter
 
-+ (id)_ma_sharedMeasurementFormatterWithFractionDigits:(unint64_t)a3 unitOptions:(unint64_t)a4 style:(int64_t)a5
++ (id)_ma_sharedMeasurementFormatterWithFractionDigits:(unint64_t)digits unitOptions:(unint64_t)options style:(int64_t)style
 {
   if (qword_5A730 != -1)
   {
@@ -15,21 +15,21 @@
   v8 = +[NSLocale _ma_locale];
   [qword_5A728 setLocale:v8];
 
-  v9 = [NSNumberFormatter _ma_sharedNumberFormatterWithStyle:1 fractionDigits:a3];
+  v9 = [NSNumberFormatter _ma_sharedNumberFormatterWithStyle:1 fractionDigits:digits];
   [qword_5A728 setNumberFormatter:v9];
 
-  [qword_5A728 setUnitOptions:a4];
-  [qword_5A728 setUnitStyle:a5];
+  [qword_5A728 setUnitOptions:options];
+  [qword_5A728 setUnitStyle:style];
   v10 = qword_5A728;
 
   return v10;
 }
 
-+ (id)_ma_distanceStringWithValue:(double)a3 unit:(id)a4 style:(int64_t)a5
++ (id)_ma_distanceStringWithValue:(double)value unit:(id)unit style:(int64_t)style
 {
-  v8 = a4;
-  v9 = [a1 _ma_sharedMeasurementFormatterWithFractionDigits:a3 < 10.0 unitOptions:1 style:a5];
-  v10 = [[NSMeasurement alloc] initWithDoubleValue:v8 unit:a3];
+  unitCopy = unit;
+  v9 = [self _ma_sharedMeasurementFormatterWithFractionDigits:value < 10.0 unitOptions:1 style:style];
+  v10 = [[NSMeasurement alloc] initWithDoubleValue:unitCopy unit:value];
 
   v11 = [v9 stringFromMeasurement:v10];
 

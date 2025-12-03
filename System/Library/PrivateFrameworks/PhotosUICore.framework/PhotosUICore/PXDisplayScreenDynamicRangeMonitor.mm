@@ -1,31 +1,31 @@
 @interface PXDisplayScreenDynamicRangeMonitor
-- (BOOL)_currentlySupportsHDRForScreen:(id)a3;
-- (BOOL)_isHDRCurrentlySupportedForScreen:(id)a3;
-- (BOOL)_isHDRPotentiallySupportedForScreen:(id)a3;
-- (PXDisplayScreenDynamicRangeMonitor)initWithAutomaticApplicationStateTracking:(BOOL)a3;
+- (BOOL)_currentlySupportsHDRForScreen:(id)screen;
+- (BOOL)_isHDRCurrentlySupportedForScreen:(id)screen;
+- (BOOL)_isHDRPotentiallySupportedForScreen:(id)screen;
+- (PXDisplayScreenDynamicRangeMonitor)initWithAutomaticApplicationStateTracking:(BOOL)tracking;
 - (void)_resumeTimer;
 - (void)_teardownTimer;
 - (void)_updateScreenSupportHDR;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)setScreenSupportsHDR:(BOOL)a3;
-- (void)startMonitoringWithScreenProvider:(id)a3;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)setScreenSupportsHDR:(BOOL)r;
+- (void)startMonitoringWithScreenProvider:(id)provider;
 - (void)stopMonitoring;
 @end
 
 @implementation PXDisplayScreenDynamicRangeMonitor
 
-- (BOOL)_currentlySupportsHDRForScreen:(id)a3
+- (BOOL)_currentlySupportsHDRForScreen:(id)screen
 {
-  v4 = a3;
-  v5 = [(PXDisplayScreenDynamicRangeMonitor *)self _isHDRPotentiallySupportedForScreen:v4]|| [(PXDisplayScreenDynamicRangeMonitor *)self _isHDRCurrentlySupportedForScreen:v4];
+  screenCopy = screen;
+  v5 = [(PXDisplayScreenDynamicRangeMonitor *)self _isHDRPotentiallySupportedForScreen:screenCopy]|| [(PXDisplayScreenDynamicRangeMonitor *)self _isHDRCurrentlySupportedForScreen:screenCopy];
 
   return v5;
 }
 
 - (void)_updateScreenSupportHDR
 {
-  v3 = [(PXDisplayScreenDynamicRangeMonitor *)self screenProvider];
-  v4 = v3[2]();
+  screenProvider = [(PXDisplayScreenDynamicRangeMonitor *)self screenProvider];
+  v4 = screenProvider[2]();
 
   v5 = [(PXDisplayScreenDynamicRangeMonitor *)self _currentlySupportsHDRForScreen:v4];
   v6[0] = MEMORY[0x1E69E9820];
@@ -37,9 +37,9 @@
   [(PXDisplayScreenDynamicRangeMonitor *)self performChanges:v6];
 }
 
-- (BOOL)_isHDRCurrentlySupportedForScreen:(id)a3
+- (BOOL)_isHDRCurrentlySupportedForScreen:(id)screen
 {
-  [a3 currentEDRHeadroom];
+  [screen currentEDRHeadroom];
   v4 = v3;
   [MEMORY[0x1E69B3AB0] overrideDisplayHeadroom];
   if (v5 >= 1.0)
@@ -51,9 +51,9 @@
   return v4 > v6;
 }
 
-- (BOOL)_isHDRPotentiallySupportedForScreen:(id)a3
+- (BOOL)_isHDRPotentiallySupportedForScreen:(id)screen
 {
-  [a3 potentialEDRHeadroom];
+  [screen potentialEDRHeadroom];
   v4 = v3;
   [MEMORY[0x1E69B3AB0] overrideDisplayHeadroom];
   if (v5 >= 1.0)
@@ -69,8 +69,8 @@
 
   else
   {
-    v7 = [MEMORY[0x1E696AE30] processInfo];
-    v8 = [v7 isLowPowerModeEnabled] ^ 1;
+    processInfo = [MEMORY[0x1E696AE30] processInfo];
+    v8 = [processInfo isLowPowerModeEnabled] ^ 1;
   }
 
   return v8;
@@ -92,28 +92,28 @@
     self->_displayEDRMonitorTimer = v3;
 
     [(NSTimer *)self->_displayEDRMonitorTimer setTolerance:0.1];
-    v5 = [MEMORY[0x1E695DFD0] mainRunLoop];
-    [v5 addTimer:self->_displayEDRMonitorTimer forMode:*MEMORY[0x1E695DA28]];
+    mainRunLoop = [MEMORY[0x1E695DFD0] mainRunLoop];
+    [mainRunLoop addTimer:self->_displayEDRMonitorTimer forMode:*MEMORY[0x1E695DA28]];
   }
 }
 
-- (void)setScreenSupportsHDR:(BOOL)a3
+- (void)setScreenSupportsHDR:(BOOL)r
 {
-  if (self->_screenSupportsHDR != a3)
+  if (self->_screenSupportsHDR != r)
   {
-    self->_screenSupportsHDR = a3;
+    self->_screenSupportsHDR = r;
     [(PXDisplayScreenDynamicRangeMonitor *)self signalChange:1];
   }
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  if (ApplicationStateContext_114145 == a5)
+  if (ApplicationStateContext_114145 == context)
   {
-    v6 = [PXApplicationState sharedState:a3];
-    v7 = [v6 visibilityState];
+    v6 = [PXApplicationState sharedState:observable];
+    visibilityState = [v6 visibilityState];
 
-    if (v7 == 3)
+    if (visibilityState == 3)
     {
       if ([(PXDisplayScreenDynamicRangeMonitor *)self isMonitoring])
       {
@@ -122,7 +122,7 @@
       }
     }
 
-    else if (v7 == 1 && [(PXDisplayScreenDynamicRangeMonitor *)self isMonitoring])
+    else if (visibilityState == 1 && [(PXDisplayScreenDynamicRangeMonitor *)self isMonitoring])
     {
 
       [(PXDisplayScreenDynamicRangeMonitor *)self _resumeTimer];
@@ -139,13 +139,13 @@
   self->_isMonitoring = 0;
 }
 
-- (void)startMonitoringWithScreenProvider:(id)a3
+- (void)startMonitoringWithScreenProvider:(id)provider
 {
-  v6 = a3;
+  providerCopy = provider;
   if (![(PXDisplayScreenDynamicRangeMonitor *)self isMonitoring])
   {
     self->_isMonitoring = 1;
-    v4 = [v6 copy];
+    v4 = [providerCopy copy];
     screenProvider = self->_screenProvider;
     self->_screenProvider = v4;
 
@@ -154,15 +154,15 @@
   }
 }
 
-- (PXDisplayScreenDynamicRangeMonitor)initWithAutomaticApplicationStateTracking:(BOOL)a3
+- (PXDisplayScreenDynamicRangeMonitor)initWithAutomaticApplicationStateTracking:(BOOL)tracking
 {
-  v3 = a3;
+  trackingCopy = tracking;
   v8.receiver = self;
   v8.super_class = PXDisplayScreenDynamicRangeMonitor;
   v4 = [(PXDisplayScreenDynamicRangeMonitor *)&v8 init];
   if (v4)
   {
-    v5 = !v3;
+    v5 = !trackingCopy;
   }
 
   else

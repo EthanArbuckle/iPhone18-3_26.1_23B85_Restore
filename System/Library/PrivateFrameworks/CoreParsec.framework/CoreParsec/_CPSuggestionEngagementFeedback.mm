@@ -1,27 +1,27 @@
 @interface _CPSuggestionEngagementFeedback
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_CPSuggestionEngagementFeedback)init;
-- (_CPSuggestionEngagementFeedback)initWithFacade:(id)a3;
-- (void)writeTo:(id)a3;
+- (_CPSuggestionEngagementFeedback)initWithFacade:(id)facade;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _CPSuggestionEngagementFeedback
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     timestamp = self->_timestamp;
-    if (timestamp == [v4 timestamp])
+    if (timestamp == [equalCopy timestamp])
     {
-      v6 = [(_CPSuggestionEngagementFeedback *)self suggestion];
-      v7 = [v4 suggestion];
-      v8 = v7;
-      if ((v6 != 0) != (v7 == 0))
+      suggestion = [(_CPSuggestionEngagementFeedback *)self suggestion];
+      suggestion2 = [equalCopy suggestion];
+      v8 = suggestion2;
+      if ((suggestion != 0) != (suggestion2 == 0))
       {
-        v9 = [(_CPSuggestionEngagementFeedback *)self suggestion];
-        if (!v9)
+        suggestion3 = [(_CPSuggestionEngagementFeedback *)self suggestion];
+        if (!suggestion3)
         {
 
 LABEL_11:
@@ -29,10 +29,10 @@ LABEL_11:
           goto LABEL_9;
         }
 
-        v10 = v9;
-        v11 = [(_CPSuggestionEngagementFeedback *)self suggestion];
-        v12 = [v4 suggestion];
-        v13 = [v11 isEqual:v12];
+        v10 = suggestion3;
+        suggestion4 = [(_CPSuggestionEngagementFeedback *)self suggestion];
+        suggestion5 = [equalCopy suggestion];
+        v13 = [suggestion4 isEqual:suggestion5];
 
         if (v13)
         {
@@ -52,20 +52,20 @@ LABEL_9:
   return v14;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v7 = a3;
+  toCopy = to;
   if ([(_CPSuggestionEngagementFeedback *)self timestamp])
   {
     timestamp = self->_timestamp;
     PBDataWriterWriteUint64Field();
   }
 
-  v5 = [(_CPSuggestionEngagementFeedback *)self suggestion];
+  suggestion = [(_CPSuggestionEngagementFeedback *)self suggestion];
 
-  if (v5)
+  if (suggestion)
   {
-    v6 = [(_CPSuggestionEngagementFeedback *)self suggestion];
+    suggestion2 = [(_CPSuggestionEngagementFeedback *)self suggestion];
     PBDataWriterWriteSubmessage();
   }
 }
@@ -84,22 +84,22 @@ LABEL_9:
   return v2;
 }
 
-- (_CPSuggestionEngagementFeedback)initWithFacade:(id)a3
+- (_CPSuggestionEngagementFeedback)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v12.receiver = self;
   v12.super_class = _CPSuggestionEngagementFeedback;
   v5 = [(_CPSuggestionEngagementFeedback *)&v12 init];
   if (v5)
   {
-    -[_CPSuggestionEngagementFeedback setTimestamp:](v5, "setTimestamp:", [v4 timestamp]);
-    v6 = [v4 suggestion];
+    -[_CPSuggestionEngagementFeedback setTimestamp:](v5, "setTimestamp:", [facadeCopy timestamp]);
+    suggestion = [facadeCopy suggestion];
 
-    if (v6)
+    if (suggestion)
     {
       v7 = [_CPSearchSuggestionForFeedback alloc];
-      v8 = [v4 suggestion];
-      v9 = [(_CPSearchSuggestionForFeedback *)v7 initWithFacade:v8];
+      suggestion2 = [facadeCopy suggestion];
+      v9 = [(_CPSearchSuggestionForFeedback *)v7 initWithFacade:suggestion2];
       [(_CPSuggestionEngagementFeedback *)v5 setSuggestion:v9];
     }
 

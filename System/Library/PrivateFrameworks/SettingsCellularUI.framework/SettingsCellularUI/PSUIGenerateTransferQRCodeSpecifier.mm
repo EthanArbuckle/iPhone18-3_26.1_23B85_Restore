@@ -1,31 +1,31 @@
 @interface PSUIGenerateTransferQRCodeSpecifier
-+ (id)keyFor:(id)a3;
-+ (id)specifierWithHostController:(id)a3 iccid:(id)a4 carrierName:(id)a5;
++ (id)keyFor:(id)for;
++ (id)specifierWithHostController:(id)controller iccid:(id)iccid carrierName:(id)name;
 - (PSListController)hostController;
-- (PSUIGenerateTransferQRCodeSpecifier)initWithHostController:(id)a3 iccid:(id)a4 carrierName:(id)a5;
-- (void)generateTransferQRCodeCellPressed:(id)a3;
-- (void)setProperty:(id)a3 forKey:(id)a4;
-- (void)showSpinner:(BOOL)a3;
-- (void)simSetupFlowCompleted:(unint64_t)a3;
+- (PSUIGenerateTransferQRCodeSpecifier)initWithHostController:(id)controller iccid:(id)iccid carrierName:(id)name;
+- (void)generateTransferQRCodeCellPressed:(id)pressed;
+- (void)setProperty:(id)property forKey:(id)key;
+- (void)showSpinner:(BOOL)spinner;
+- (void)simSetupFlowCompleted:(unint64_t)completed;
 @end
 
 @implementation PSUIGenerateTransferQRCodeSpecifier
 
-+ (id)keyFor:(id)a3
++ (id)keyFor:(id)for
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = a3;
-  v5 = [v3 stringWithFormat:@"%@:%@", objc_opt_class(), v4];
+  forCopy = for;
+  forCopy = [v3 stringWithFormat:@"%@:%@", objc_opt_class(), forCopy];
 
-  return v5;
+  return forCopy;
 }
 
-+ (id)specifierWithHostController:(id)a3 iccid:(id)a4 carrierName:(id)a5
++ (id)specifierWithHostController:(id)controller iccid:(id)iccid carrierName:(id)name
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [PSUIGenerateTransferQRCodeSpecifier keyFor:v8];
+  controllerCopy = controller;
+  iccidCopy = iccid;
+  nameCopy = name;
+  v10 = [PSUIGenerateTransferQRCodeSpecifier keyFor:iccidCopy];
   v11 = +[SSFlowHostCache sharedInstance];
   v12 = [v11 objectForKey:v10];
 
@@ -36,7 +36,7 @@
 
   else
   {
-    v13 = [[PSUIGenerateTransferQRCodeSpecifier alloc] initWithHostController:v7 iccid:v8 carrierName:v9];
+    v13 = [[PSUIGenerateTransferQRCodeSpecifier alloc] initWithHostController:controllerCopy iccid:iccidCopy carrierName:nameCopy];
   }
 
   v14 = v13;
@@ -44,11 +44,11 @@
   return v14;
 }
 
-- (PSUIGenerateTransferQRCodeSpecifier)initWithHostController:(id)a3 iccid:(id)a4 carrierName:(id)a5
+- (PSUIGenerateTransferQRCodeSpecifier)initWithHostController:(id)controller iccid:(id)iccid carrierName:(id)name
 {
-  v8 = a3;
-  v17 = a4;
-  v16 = a5;
+  controllerCopy = controller;
+  iccidCopy = iccid;
+  nameCopy = name;
   v9 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v10 = [v9 localizedStringForKey:@"GENERATE_TRANSFER_QRCODE" value:&stru_287733598 table:@"Cellular"];
 
@@ -64,32 +64,32 @@
     [(PSUIGenerateTransferQRCodeSpecifier *)v13 setIdentifier:v12];
     [(PSUIGenerateTransferQRCodeSpecifier *)v14 setTarget:v14];
     [(PSUIGenerateTransferQRCodeSpecifier *)v14 setButtonAction:sel_generateTransferQRCodeCellPressed_];
-    objc_storeWeak(&v14->_hostController, v8);
-    objc_storeStrong(&v14->_iccid, a4);
-    objc_storeStrong(&v14->_carrierName, a5);
+    objc_storeWeak(&v14->_hostController, controllerCopy);
+    objc_storeStrong(&v14->_iccid, iccid);
+    objc_storeStrong(&v14->_carrierName, name);
   }
 
   return v14;
 }
 
-- (void)generateTransferQRCodeCellPressed:(id)a3
+- (void)generateTransferQRCodeCellPressed:(id)pressed
 {
   v20[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
+  pressedCopy = pressed;
+  v5 = pressedCopy;
   if (self->_flow)
   {
-    v6 = [(PSUIGenerateTransferQRCodeSpecifier *)self getLogger];
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+    getLogger = [(PSUIGenerateTransferQRCodeSpecifier *)self getLogger];
+    if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
     {
       LOWORD(buf) = 0;
-      _os_log_impl(&dword_2658DE000, v6, OS_LOG_TYPE_DEFAULT, "duplicate request to launch SimSetupSupport", &buf, 2u);
+      _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "duplicate request to launch SimSetupSupport", &buf, 2u);
     }
   }
 
   else
   {
-    [v4 setProperty:MEMORY[0x277CBEC28] forKey:*MEMORY[0x277D3FF38]];
+    [pressedCopy setProperty:MEMORY[0x277CBEC28] forKey:*MEMORY[0x277D3FF38]];
     v19[0] = *MEMORY[0x277D49548];
     v7 = [MEMORY[0x277CCABB0] numberWithInteger:11];
     v8 = *MEMORY[0x277D49578];
@@ -100,9 +100,9 @@
     v19[1] = v8;
     v19[2] = v10;
     v20[2] = self->_carrierName;
-    v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v20 forKeys:v19 count:3];
+    getLogger = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v20 forKeys:v19 count:3];
 
-    v11 = [MEMORY[0x277D49530] flowWithOptions:v6];
+    v11 = [MEMORY[0x277D49530] flowWithOptions:getLogger];
     flow = self->_flow;
     self->_flow = v11;
 
@@ -185,16 +185,16 @@ void __73__PSUIGenerateTransferQRCodeSpecifier_generateTransferQRCodeCellPressed
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)showSpinner:(BOOL)a3
+- (void)showSpinner:(BOOL)spinner
 {
-  v3 = a3;
+  spinnerCopy = spinner;
   if (!self->_spinner)
   {
     v6 = [objc_alloc(MEMORY[0x277D750E8]) initWithActivityIndicatorStyle:100];
     spinner = self->_spinner;
     self->_spinner = v6;
 
-    if (v3)
+    if (spinnerCopy)
     {
       goto LABEL_3;
     }
@@ -204,7 +204,7 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  if (!a3)
+  if (!spinner)
   {
     goto LABEL_5;
   }
@@ -229,40 +229,40 @@ void __51__PSUIGenerateTransferQRCodeSpecifier_showSpinner___block_invoke(uint64
   [WeakRetained reloadSpecifier:*(a1 + 32)];
 }
 
-- (void)setProperty:(id)a3 forKey:(id)a4
+- (void)setProperty:(id)property forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
-  if ([*MEMORY[0x277D40148] isEqualToString:v7])
+  propertyCopy = property;
+  keyCopy = key;
+  if ([*MEMORY[0x277D40148] isEqualToString:keyCopy])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = v6;
-      v9 = [v8 textLabel];
-      [v9 setNumberOfLines:0];
+      v8 = propertyCopy;
+      textLabel = [v8 textLabel];
+      [textLabel setNumberOfLines:0];
 
-      v10 = [v8 textLabel];
+      textLabel2 = [v8 textLabel];
 
-      [v10 setLineBreakMode:0];
+      [textLabel2 setLineBreakMode:0];
     }
   }
 
-  if ([*MEMORY[0x277D3FF38] isEqualToString:v7])
+  if ([*MEMORY[0x277D3FF38] isEqualToString:keyCopy])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      -[PSUIGenerateTransferQRCodeSpecifier showSpinner:](self, "showSpinner:", [v6 BOOLValue] ^ 1);
+      -[PSUIGenerateTransferQRCodeSpecifier showSpinner:](self, "showSpinner:", [propertyCopy BOOLValue] ^ 1);
     }
   }
 
   v11.receiver = self;
   v11.super_class = PSUIGenerateTransferQRCodeSpecifier;
-  [(PSUIGenerateTransferQRCodeSpecifier *)&v11 setProperty:v6 forKey:v7];
+  [(PSUIGenerateTransferQRCodeSpecifier *)&v11 setProperty:propertyCopy forKey:keyCopy];
 }
 
-- (void)simSetupFlowCompleted:(unint64_t)a3
+- (void)simSetupFlowCompleted:(unint64_t)completed
 {
   objc_initWeak(&location, self);
   v5[0] = MEMORY[0x277D85DD0];
@@ -271,7 +271,7 @@ void __51__PSUIGenerateTransferQRCodeSpecifier_showSpinner___block_invoke(uint64
   v5[3] = &unk_279BA9FE0;
   objc_copyWeak(v6, &location);
   v5[4] = self;
-  v6[1] = a3;
+  v6[1] = completed;
   dispatch_async(MEMORY[0x277D85CD0], v5);
   objc_destroyWeak(v6);
   objc_destroyWeak(&location);

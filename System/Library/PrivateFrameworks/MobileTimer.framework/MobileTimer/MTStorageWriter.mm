@@ -1,14 +1,14 @@
 @interface MTStorageWriter
 - (MTStorageWriter)init;
-- (id)_dictionaryForProtocolObject:(id)a3;
+- (id)_dictionaryForProtocolObject:(id)object;
 - (id)encodedDictionary;
-- (void)_encodeObject:(id)a3 forKey:(id)a4;
-- (void)_encodeProtocolObject:(id)a3 forKey:(id)a4;
-- (void)encodeDouble:(double)a3 forKey:(id)a4;
-- (void)encodeFloat:(float)a3 forKey:(id)a4;
-- (void)encodeInt64:(int64_t)a3 forKey:(id)a4;
-- (void)encodeInteger:(int64_t)a3 forKey:(id)a4;
-- (void)encodeObject:(id)a3 forKey:(id)a4;
+- (void)_encodeObject:(id)object forKey:(id)key;
+- (void)_encodeProtocolObject:(id)object forKey:(id)key;
+- (void)encodeDouble:(double)double forKey:(id)key;
+- (void)encodeFloat:(float)float forKey:(id)key;
+- (void)encodeInt64:(int64_t)int64 forKey:(id)key;
+- (void)encodeInteger:(int64_t)integer forKey:(id)key;
+- (void)encodeObject:(id)object forKey:(id)key;
 @end
 
 @implementation MTStorageWriter
@@ -30,59 +30,59 @@
   return v2;
 }
 
-- (void)_encodeObject:(id)a3 forKey:(id)a4
+- (void)_encodeObject:(id)object forKey:(id)key
 {
   stack = self->_stack;
-  v6 = a4;
-  v7 = a3;
-  v8 = [(NSMutableArray *)stack lastObject];
-  [v8 setObject:v7 forKeyedSubscript:v6];
+  keyCopy = key;
+  objectCopy = object;
+  lastObject = [(NSMutableArray *)stack lastObject];
+  [lastObject setObject:objectCopy forKeyedSubscript:keyCopy];
 }
 
-- (void)encodeInteger:(int64_t)a3 forKey:(id)a4
+- (void)encodeInteger:(int64_t)integer forKey:(id)key
 {
   v6 = MEMORY[0x1E696AD98];
-  v7 = a4;
-  v8 = [v6 numberWithInteger:a3];
-  [(MTStorageWriter *)self _encodeObject:v8 forKey:v7];
+  keyCopy = key;
+  v8 = [v6 numberWithInteger:integer];
+  [(MTStorageWriter *)self _encodeObject:v8 forKey:keyCopy];
 }
 
-- (void)encodeInt64:(int64_t)a3 forKey:(id)a4
+- (void)encodeInt64:(int64_t)int64 forKey:(id)key
 {
   v6 = MEMORY[0x1E696AD98];
-  v7 = a4;
-  v8 = [v6 numberWithLongLong:a3];
-  [(MTStorageWriter *)self _encodeObject:v8 forKey:v7];
+  keyCopy = key;
+  v8 = [v6 numberWithLongLong:int64];
+  [(MTStorageWriter *)self _encodeObject:v8 forKey:keyCopy];
 }
 
-- (void)encodeFloat:(float)a3 forKey:(id)a4
+- (void)encodeFloat:(float)float forKey:(id)key
 {
   v6 = MEMORY[0x1E696AD98];
-  v7 = a4;
-  *&v8 = a3;
+  keyCopy = key;
+  *&v8 = float;
   v9 = [v6 numberWithFloat:v8];
-  [(MTStorageWriter *)self _encodeObject:v9 forKey:v7];
+  [(MTStorageWriter *)self _encodeObject:v9 forKey:keyCopy];
 }
 
-- (void)encodeDouble:(double)a3 forKey:(id)a4
+- (void)encodeDouble:(double)double forKey:(id)key
 {
   v6 = MEMORY[0x1E696AD98];
-  v7 = a4;
-  v8 = [v6 numberWithDouble:a3];
-  [(MTStorageWriter *)self _encodeObject:v8 forKey:v7];
+  keyCopy = key;
+  v8 = [v6 numberWithDouble:double];
+  [(MTStorageWriter *)self _encodeObject:v8 forKey:keyCopy];
 }
 
-- (void)encodeObject:(id)a3 forKey:(id)a4
+- (void)encodeObject:(id)object forKey:(id)key
 {
   v46 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  objectCopy = object;
+  keyCopy = key;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v35 = v6;
-    v8 = v6;
-    v9 = [MEMORY[0x1E695DF70] array];
+    v35 = objectCopy;
+    v8 = objectCopy;
+    array = [MEMORY[0x1E695DF70] array];
     v40 = 0u;
     v41 = 0u;
     v42 = 0u;
@@ -103,18 +103,18 @@
           }
 
           v15 = *(*(&v40 + 1) + 8 * i);
-          v16 = [(MTStorageWriter *)self _serializingProtocol];
-          v17 = [v15 conformsToProtocol:v16];
+          _serializingProtocol = [(MTStorageWriter *)self _serializingProtocol];
+          v17 = [v15 conformsToProtocol:_serializingProtocol];
 
           if (v17)
           {
             v18 = [(MTStorageWriter *)self _dictionaryForProtocolObject:v15];
-            [v9 addObject:v18];
+            [array addObject:v18];
           }
 
           else
           {
-            [v9 addObject:v15];
+            [array addObject:v15];
           }
         }
 
@@ -124,22 +124,22 @@
       while (v12);
     }
 
-    v19 = self;
-    v20 = v9;
+    selfCopy2 = self;
+    v20 = array;
 LABEL_25:
-    [(MTStorageWriter *)v19 _encodeObject:v20 forKey:v7, v34];
+    [(MTStorageWriter *)selfCopy2 _encodeObject:v20 forKey:keyCopy, v34];
 
-    v6 = v35;
+    objectCopy = v35;
     goto LABEL_26;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v34 = v7;
-    v35 = v6;
-    v21 = v6;
-    v9 = [MEMORY[0x1E695DF90] dictionary];
+    v34 = keyCopy;
+    v35 = objectCopy;
+    v21 = objectCopy;
+    array = [MEMORY[0x1E695DF90] dictionary];
     v36 = 0u;
     v37 = 0u;
     v38 = 0u;
@@ -161,18 +161,18 @@ LABEL_25:
 
           v26 = *(*(&v36 + 1) + 8 * j);
           v27 = [v10 objectForKeyedSubscript:{v26, v34}];
-          v28 = [(MTStorageWriter *)self _serializingProtocol];
-          v29 = [v27 conformsToProtocol:v28];
+          _serializingProtocol2 = [(MTStorageWriter *)self _serializingProtocol];
+          v29 = [v27 conformsToProtocol:_serializingProtocol2];
 
           if (v29)
           {
             v30 = [(MTStorageWriter *)self _dictionaryForProtocolObject:v27];
-            [v9 setObject:v30 forKeyedSubscript:v26];
+            [array setObject:v30 forKeyedSubscript:v26];
           }
 
           else
           {
-            [v9 setObject:v27 forKeyedSubscript:v26];
+            [array setObject:v27 forKeyedSubscript:v26];
           }
         }
 
@@ -182,23 +182,23 @@ LABEL_25:
       while (v23);
     }
 
-    v19 = self;
-    v20 = v9;
-    v7 = v34;
+    selfCopy2 = self;
+    v20 = array;
+    keyCopy = v34;
     goto LABEL_25;
   }
 
-  v32 = [(MTStorageWriter *)self _serializingProtocol];
-  v33 = [v6 conformsToProtocol:v32];
+  _serializingProtocol3 = [(MTStorageWriter *)self _serializingProtocol];
+  v33 = [objectCopy conformsToProtocol:_serializingProtocol3];
 
   if (v33)
   {
-    [(MTStorageWriter *)self _encodeProtocolObject:v6 forKey:v7];
+    [(MTStorageWriter *)self _encodeProtocolObject:objectCopy forKey:keyCopy];
   }
 
   else
   {
-    [(MTStorageWriter *)self _encodeObject:v6 forKey:v7];
+    [(MTStorageWriter *)self _encodeObject:objectCopy forKey:keyCopy];
   }
 
 LABEL_26:
@@ -206,16 +206,16 @@ LABEL_26:
   v31 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_encodeProtocolObject:(id)a3 forKey:(id)a4
+- (void)_encodeProtocolObject:(id)object forKey:(id)key
 {
-  v6 = a4;
-  v7 = [(MTStorageWriter *)self _dictionaryForProtocolObject:a3];
-  [(MTStorageWriter *)self _encodeObject:v7 forKey:v6];
+  keyCopy = key;
+  v7 = [(MTStorageWriter *)self _dictionaryForProtocolObject:object];
+  [(MTStorageWriter *)self _encodeObject:v7 forKey:keyCopy];
 }
 
-- (id)_dictionaryForProtocolObject:(id)a3
+- (id)_dictionaryForProtocolObject:(id)object
 {
-  v4 = [a3 copy];
+  v4 = [object copy];
   v5 = objc_opt_new();
   v6 = objc_opt_new();
   [(NSMutableArray *)self->_stack addObject:v6];
@@ -233,8 +233,8 @@ LABEL_26:
 
 - (id)encodedDictionary
 {
-  v2 = [(NSMutableArray *)self->_stack lastObject];
-  v3 = [v2 copy];
+  lastObject = [(NSMutableArray *)self->_stack lastObject];
+  v3 = [lastObject copy];
 
   return v3;
 }

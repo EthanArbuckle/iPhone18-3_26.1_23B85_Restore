@@ -1,5 +1,5 @@
 @interface EpisodeContainerViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_axCollectionView;
 - (id)_axSeasonPicker;
 - (id)accessibilityElements;
@@ -7,25 +7,25 @@
 
 @implementation EpisodeContainerViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"VideosUI.EpisodeCollectionViewController" hasSwiftField:@"viewModel" withSwiftType:"EpisodeCollectionViewModel"];
-  [v3 validateClass:@"VideosUI.EpisodeCollectionViewController" hasSwiftField:@"collectionView" withSwiftType:"UICollectionView"];
-  [v3 validateClass:@"VideosUI.EpisodeCollectionViewController" hasSwiftField:@"headerView" withSwiftType:"Optional<UIView>"];
-  [v3 validateClass:@"VideosUI.EpisodeSectionHeaderView" hasSwiftField:@"buttonView" withSwiftType:"Optional<SeasonPickerButton>"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"VideosUI.EpisodeCollectionViewController" hasSwiftField:@"viewModel" withSwiftType:"EpisodeCollectionViewModel"];
+  [validationsCopy validateClass:@"VideosUI.EpisodeCollectionViewController" hasSwiftField:@"collectionView" withSwiftType:"UICollectionView"];
+  [validationsCopy validateClass:@"VideosUI.EpisodeCollectionViewController" hasSwiftField:@"headerView" withSwiftType:"Optional<UIView>"];
+  [validationsCopy validateClass:@"VideosUI.EpisodeSectionHeaderView" hasSwiftField:@"buttonView" withSwiftType:"Optional<SeasonPickerButton>"];
 }
 
 - (id)accessibilityElements
 {
-  v3 = [MEMORY[0x29EDB8DE8] array];
-  v4 = [(EpisodeContainerViewAccessibility *)self _axSeasonPicker];
-  [v3 axSafelyAddObject:v4];
+  array = [MEMORY[0x29EDB8DE8] array];
+  _axSeasonPicker = [(EpisodeContainerViewAccessibility *)self _axSeasonPicker];
+  [array axSafelyAddObject:_axSeasonPicker];
 
-  v5 = [(EpisodeContainerViewAccessibility *)self _axCollectionView];
-  [v3 axSafelyAddObject:v5];
+  _axCollectionView = [(EpisodeContainerViewAccessibility *)self _axCollectionView];
+  [array axSafelyAddObject:_axCollectionView];
 
-  return v3;
+  return array;
 }
 
 - (id)_axCollectionView

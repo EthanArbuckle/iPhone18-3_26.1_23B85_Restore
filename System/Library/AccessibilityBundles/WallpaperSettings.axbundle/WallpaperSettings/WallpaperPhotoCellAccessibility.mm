@@ -1,5 +1,5 @@
 @interface WallpaperPhotoCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_axWallpaperBundle;
 - (id)accessibilityLabel;
 - (unint64_t)_axWallpaperType;
@@ -7,17 +7,17 @@
 
 @implementation WallpaperPhotoCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"WallpaperGridViewController"];
-  [v3 validateClass:@"WallpaperGridViewController" hasInstanceMethod:@"_bundleCollection" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"WKWallpaperBundleCollection" hasInstanceMethod:@"wallpaperType" withFullSignature:{"Q", 0}];
-  [v3 validateClass:@"WKWallpaperBundleCollection" hasInstanceMethod:@"wallpaperBundleAtIndex:" withFullSignature:{"@", "q", 0}];
-  [v3 validateClass:@"WKWallpaperBundleCollection" hasInstanceMethod:@"numberOfItems" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"WKWallpaperBundle" hasInstanceMethod:@"name" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"WKWallpaperBundle" hasInstanceMethod:@"_wallpaperAssetLookup" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"WKDynamicWallpaper" hasInstanceMethod:@"_dynamicDictionary" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"WallpaperGridViewController"];
+  [validationsCopy validateClass:@"WallpaperGridViewController" hasInstanceMethod:@"_bundleCollection" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"WKWallpaperBundleCollection" hasInstanceMethod:@"wallpaperType" withFullSignature:{"Q", 0}];
+  [validationsCopy validateClass:@"WKWallpaperBundleCollection" hasInstanceMethod:@"wallpaperBundleAtIndex:" withFullSignature:{"@", "q", 0}];
+  [validationsCopy validateClass:@"WKWallpaperBundleCollection" hasInstanceMethod:@"numberOfItems" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"WKWallpaperBundle" hasInstanceMethod:@"name" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"WKWallpaperBundle" hasInstanceMethod:@"_wallpaperAssetLookup" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"WKDynamicWallpaper" hasInstanceMethod:@"_dynamicDictionary" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel
@@ -27,13 +27,13 @@
     accessibilityLabel_Labels = &unk_2A23B1BC8;
   }
 
-  v3 = [(WallpaperPhotoCellAccessibility *)self _axWallpaperBundle];
+  _axWallpaperBundle = [(WallpaperPhotoCellAccessibility *)self _axWallpaperBundle];
   if ([(WallpaperPhotoCellAccessibility *)self _axWallpaperType]!= 2)
   {
     goto LABEL_10;
   }
 
-  v4 = [v3 safeDictionaryForKey:@"_wallpaperAssetLookup"];
+  v4 = [_axWallpaperBundle safeDictionaryForKey:@"_wallpaperAssetLookup"];
   v16 = 0;
   objc_opt_class();
   v5 = [v4 objectForKey:@"WKWallpaperLocationHomeScreen"];
@@ -52,39 +52,39 @@
       v10 = v9;
     }
 
-    v12 = accessibilityLocalizedString(v10);
+    accessibilityLabel = accessibilityLocalizedString(v10);
   }
 
   else
   {
-    v12 = 0;
+    accessibilityLabel = 0;
   }
 
-  if (!v12)
+  if (!accessibilityLabel)
   {
 LABEL_10:
-    v13 = [v3 safeStringForKey:@"name"];
-    v12 = AXWallpaperLabel(v13);
+    v13 = [_axWallpaperBundle safeStringForKey:@"name"];
+    accessibilityLabel = AXWallpaperLabel(v13);
 
-    if (!v12)
+    if (!accessibilityLabel)
     {
       v15.receiver = self;
       v15.super_class = WallpaperPhotoCellAccessibility;
-      v12 = [(WallpaperPhotoCellAccessibility *)&v15 accessibilityLabel];
+      accessibilityLabel = [(WallpaperPhotoCellAccessibility *)&v15 accessibilityLabel];
     }
   }
 
-  return v12;
+  return accessibilityLabel;
 }
 
 - (id)_axWallpaperBundle
 {
-  v2 = self;
-  v3 = [(WallpaperPhotoCellAccessibility *)v2 _accessibilityIndexPath];
-  v4 = [(WallpaperPhotoCellAccessibility *)v2 _accessibilityAncestorIsKindOf:objc_opt_class()];
+  selfCopy = self;
+  _accessibilityIndexPath = [(WallpaperPhotoCellAccessibility *)selfCopy _accessibilityIndexPath];
+  v4 = [(WallpaperPhotoCellAccessibility *)selfCopy _accessibilityAncestorIsKindOf:objc_opt_class()];
   v5 = [v4 safeValueForKey:@"delegate"];
   v6 = [v5 safeValueForKey:@"_bundleCollection"];
-  if ([v3 item] < 0 || (v7 = objc_msgSend(v3, "item"), v7 >= objc_msgSend(v6, "safeIntegerForKey:", @"numberOfItems")))
+  if ([_accessibilityIndexPath item] < 0 || (v7 = objc_msgSend(_accessibilityIndexPath, "item"), v7 >= objc_msgSend(v6, "safeIntegerForKey:", @"numberOfItems")))
   {
     v8 = 0;
   }
@@ -98,7 +98,7 @@ LABEL_10:
     v17 = __Block_byref_object_dispose_;
     v18 = 0;
     v11 = v6;
-    v12 = v3;
+    v12 = _accessibilityIndexPath;
     AXPerformSafeBlock();
     v8 = v14[5];
 
@@ -122,8 +122,8 @@ uint64_t __53__WallpaperPhotoCellAccessibility__axWallpaperBundle__block_invoke(
 
 - (unint64_t)_axWallpaperType
 {
-  v2 = self;
-  v3 = [(WallpaperPhotoCellAccessibility *)v2 _accessibilityAncestorIsKindOf:objc_opt_class()];
+  selfCopy = self;
+  v3 = [(WallpaperPhotoCellAccessibility *)selfCopy _accessibilityAncestorIsKindOf:objc_opt_class()];
 
   v4 = [v3 safeValueForKey:@"delegate"];
   v5 = [v4 safeValueForKey:@"_bundleCollection"];

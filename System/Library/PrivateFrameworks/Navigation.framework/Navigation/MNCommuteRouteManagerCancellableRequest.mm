@@ -7,7 +7,7 @@
 
 - (void)cancel
 {
-  v2 = self;
+  selfCopy = self;
   MNCommuteRouteManagerCancellableRequest.cancel()();
 }
 

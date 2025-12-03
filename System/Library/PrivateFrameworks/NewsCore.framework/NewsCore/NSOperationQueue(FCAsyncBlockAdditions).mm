@@ -7,7 +7,7 @@
 - (void)fc_addAsyncOperationWithBlock:()FCAsyncBlockAdditions
 {
   v2 = [FCAsyncBlockOperation asyncBlockOperationWithBlock:?];
-  [a1 addOperation:v2];
+  [self addOperation:v2];
 }
 
 @end

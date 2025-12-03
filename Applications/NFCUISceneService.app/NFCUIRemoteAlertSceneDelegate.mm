@@ -1,51 +1,51 @@
 @interface NFCUIRemoteAlertSceneDelegate
 - (_TtC17NFCUISceneService29NFCUIRemoteAlertSceneDelegate)init;
-- (void)remoteAlertScene:(id)a3 handleButtonActions:(id)a4;
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5;
-- (void)sceneDidBecomeActive:(id)a3;
-- (void)sceneDidDisconnect:(id)a3;
-- (void)setWindow:(id)a3;
+- (void)remoteAlertScene:(id)scene handleButtonActions:(id)actions;
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options;
+- (void)sceneDidBecomeActive:(id)active;
+- (void)sceneDidDisconnect:(id)disconnect;
+- (void)setWindow:(id)window;
 @end
 
 @implementation NFCUIRemoteAlertSceneDelegate
 
-- (void)setWindow:(id)a3
+- (void)setWindow:(id)window
 {
   v4 = *(&self->super.isa + OBJC_IVAR____TtC17NFCUISceneService29NFCUIRemoteAlertSceneDelegate_window);
-  *(&self->super.isa + OBJC_IVAR____TtC17NFCUISceneService29NFCUIRemoteAlertSceneDelegate_window) = a3;
-  v3 = a3;
+  *(&self->super.isa + OBJC_IVAR____TtC17NFCUISceneService29NFCUIRemoteAlertSceneDelegate_window) = window;
+  windowCopy = window;
 }
 
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  sub_100004DE4(v8);
+  sceneCopy = scene;
+  sessionCopy = session;
+  optionsCopy = options;
+  selfCopy = self;
+  sub_100004DE4(sceneCopy);
 }
 
-- (void)sceneDidBecomeActive:(id)a3
+- (void)sceneDidBecomeActive:(id)active
 {
-  v4 = a3;
-  v5 = self;
+  activeCopy = active;
+  selfCopy = self;
   sub_100005D9C();
 }
 
-- (void)sceneDidDisconnect:(id)a3
+- (void)sceneDidDisconnect:(id)disconnect
 {
-  v4 = a3;
-  v5 = self;
+  disconnectCopy = disconnect;
+  selfCopy = self;
   sub_100006054();
 }
 
-- (void)remoteAlertScene:(id)a3 handleButtonActions:(id)a4
+- (void)remoteAlertScene:(id)scene handleButtonActions:(id)actions
 {
   sub_100002238(0, &qword_10001DAF0, SBUIRemoteAlertButtonAction_ptr);
   sub_1000043A8();
   static Set._unconditionallyBridgeFromObjectiveC(_:)();
-  v6 = a3;
-  v7 = self;
+  sceneCopy = scene;
+  selfCopy = self;
   sub_100006150();
 }
 

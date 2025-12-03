@@ -1,17 +1,17 @@
 @interface PPQuickTypeExplanationSet
-+ (id)stringFromExplanation:(unsigned __int8)a3;
-+ (id)uniqueKeycodeFromExplanation:(unsigned __int8)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToQuickTypeExplanationSet:(id)a3;
++ (id)stringFromExplanation:(unsigned __int8)explanation;
++ (id)uniqueKeycodeFromExplanation:(unsigned __int8)explanation;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToQuickTypeExplanationSet:(id)set;
 - (PPQuickTypeExplanationSet)init;
-- (PPQuickTypeExplanationSet)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PPQuickTypeExplanationSet)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)count;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)enumerateWithBlock:(id)a3;
-- (void)push:(unsigned __int8)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)enumerateWithBlock:(id)block;
+- (void)push:(unsigned __int8)push;
 @end
 
 @implementation PPQuickTypeExplanationSet
@@ -58,16 +58,16 @@ uint64_t __34__PPQuickTypeExplanationSet_count__block_invoke(uint64_t a1, void *
   return result;
 }
 
-- (BOOL)isEqualToQuickTypeExplanationSet:(id)a3
+- (BOOL)isEqualToQuickTypeExplanationSet:(id)set
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  setCopy = set;
+  v5 = setCopy;
+  if (!setCopy)
   {
     goto LABEL_5;
   }
 
-  if (v4 == self)
+  if (setCopy == self)
   {
     v11 = 1;
     goto LABEL_7;
@@ -138,18 +138,18 @@ uint64_t __62__PPQuickTypeExplanationSet_isEqualToQuickTypeExplanationSet___bloc
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PPQuickTypeExplanationSet *)self isEqualToQuickTypeExplanationSet:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PPQuickTypeExplanationSet *)self isEqualToQuickTypeExplanationSet:v5];
   }
 
   return v6;
@@ -181,7 +181,7 @@ uint64_t __40__PPQuickTypeExplanationSet_description__block_invoke(uint64_t a1, 
   return [v5 appendString:@"; "];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   objc_opt_class();
   v4 = objc_opt_new();
@@ -247,23 +247,23 @@ uint64_t __33__PPQuickTypeExplanationSet_hash__block_invoke(uint64_t a1, void *a
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   set = self->_set;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __45__PPQuickTypeExplanationSet_encodeWithCoder___block_invoke;
   v7[3] = &unk_1E77F7218;
-  v8 = v4;
-  v6 = v4;
+  v8 = coderCopy;
+  v6 = coderCopy;
   [(_PASLock *)set runWithLockAcquired:v7];
 }
 
-- (PPQuickTypeExplanationSet)initWithCoder:(id)a3
+- (PPQuickTypeExplanationSet)initWithCoder:(id)coder
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v29.receiver = self;
   v29.super_class = PPQuickTypeExplanationSet;
   v5 = [(PPQuickTypeExplanationSet *)&v29 init];
@@ -272,7 +272,7 @@ uint64_t __33__PPQuickTypeExplanationSet_hash__block_invoke(uint64_t a1, void *a
     v6 = objc_autoreleasePoolPush();
     v7 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{objc_opt_class(), 0}];
     objc_autoreleasePoolPop(v6);
-    v8 = [v4 decodeObjectOfClasses:v7 forKey:@"iset"];
+    v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"iset"];
     v9 = [v8 mutableCopy];
 
     if (!v9)
@@ -283,7 +283,7 @@ uint64_t __33__PPQuickTypeExplanationSet_hash__block_invoke(uint64_t a1, void *a
       v13 = objc_opt_class();
       v14 = [v11 initWithObjects:{v12, v13, objc_opt_class(), 0}];
       objc_autoreleasePoolPop(v10);
-      v15 = [v4 decodeObjectOfClasses:v14 forKey:@"set"];
+      v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"set"];
 
       v9 = objc_opt_new();
       v25 = 0u;
@@ -326,16 +326,16 @@ uint64_t __33__PPQuickTypeExplanationSet_hash__block_invoke(uint64_t a1, void *a
   return v5;
 }
 
-- (void)enumerateWithBlock:(id)a3
+- (void)enumerateWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   set = self->_set;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __48__PPQuickTypeExplanationSet_enumerateWithBlock___block_invoke;
   v7[3] = &unk_1E77F71C8;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   [(_PASLock *)set runWithLockAcquired:v7];
 }
 
@@ -349,40 +349,40 @@ void __48__PPQuickTypeExplanationSet_enumerateWithBlock___block_invoke(uint64_t 
   [a2 enumerateIndexesUsingBlock:v3];
 }
 
-- (void)push:(unsigned __int8)a3
+- (void)push:(unsigned __int8)push
 {
   set = self->_set;
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __34__PPQuickTypeExplanationSet_push___block_invoke;
   v4[3] = &__block_descriptor_33_e27_v16__0__NSMutableIndexSet_8l;
-  v5 = a3;
+  pushCopy = push;
   [(_PASLock *)set runWithLockAcquired:v4];
 }
 
-+ (id)uniqueKeycodeFromExplanation:(unsigned __int8)a3
++ (id)uniqueKeycodeFromExplanation:(unsigned __int8)explanation
 {
-  if ((a3 - 1) > 0x30)
+  if ((explanation - 1) > 0x30)
   {
     return @"None";
   }
 
   else
   {
-    return off_1E77F7410[(a3 - 1)];
+    return off_1E77F7410[(explanation - 1)];
   }
 }
 
-+ (id)stringFromExplanation:(unsigned __int8)a3
++ (id)stringFromExplanation:(unsigned __int8)explanation
 {
-  if ((a3 - 1) > 0x30)
+  if ((explanation - 1) > 0x30)
   {
     return @"None";
   }
 
   else
   {
-    return off_1E77F7288[(a3 - 1)];
+    return off_1E77F7288[(explanation - 1)];
   }
 }
 

@@ -1,14 +1,14 @@
 @interface NTKZeusEmptyComplicationView
-- (NTKZeusEmptyComplicationView)initWithBackgroundView:(id)a3;
+- (NTKZeusEmptyComplicationView)initWithBackgroundView:(id)view;
 @end
 
 @implementation NTKZeusEmptyComplicationView
 
-- (NTKZeusEmptyComplicationView)initWithBackgroundView:(id)a3
+- (NTKZeusEmptyComplicationView)initWithBackgroundView:(id)view
 {
   v6.receiver = self;
   v6.super_class = NTKZeusEmptyComplicationView;
-  v3 = [(NTKZeusComplicationView *)&v6 initWithBackgroundView:a3];
+  v3 = [(NTKZeusComplicationView *)&v6 initWithBackgroundView:view];
   v4 = v3;
   if (v3)
   {

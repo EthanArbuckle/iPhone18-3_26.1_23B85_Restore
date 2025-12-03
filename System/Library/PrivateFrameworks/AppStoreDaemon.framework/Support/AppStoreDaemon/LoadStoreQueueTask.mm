@@ -27,8 +27,8 @@
       if (!self->_requestEncoder)
       {
         v9 = [LoadStoreQueueRequestEncoder alloc];
-        v10 = [(Bag *)self->_bag amsBag];
-        v11 = [(LoadStoreQueueRequestEncoder *)v9 initWithBag:v10];
+        amsBag = [(Bag *)self->_bag amsBag];
+        v11 = [(LoadStoreQueueRequestEncoder *)v9 initWithBag:amsBag];
         requestEncoder = self->_requestEncoder;
         self->_requestEncoder = v11;
 
@@ -47,13 +47,13 @@
       [v14 setObject:v16 forKeyedSubscript:@"kbsync"];
 
       v123 = v7;
-      v17 = [v7 unsignedLongLongValue];
+      unsignedLongLongValue = [v7 unsignedLongLongValue];
       v124 = v8;
-      v18 = [v8 unsignedLongLongValue];
-      if (v17 - 1 < v18)
+      unsignedLongLongValue2 = [v8 unsignedLongLongValue];
+      if (unsignedLongLongValue - 1 < unsignedLongLongValue2)
       {
-        v19 = v18;
-        v20 = [NSString stringWithFormat:@"%llu", v17];
+        v19 = unsignedLongLongValue2;
+        v20 = [NSString stringWithFormat:@"%llu", unsignedLongLongValue];
         [v14 setObject:v20 forKeyedSubscript:@"startId"];
 
         v21 = [NSString stringWithFormat:@"%llu", v19];
@@ -99,16 +99,16 @@
       if (v38)
       {
         v119 = v39;
-        v120 = [v38 object];
-        if (v120)
+        object = [v38 object];
+        if (object)
         {
           v118 = v38;
-          v41 = [v38 response];
+          response = [v38 response];
           objc_opt_class();
-          v42 = v41;
+          v42 = response;
           v43 = (objc_opt_isKindOfClass() & 1) != 0 ? v42 : 0;
 
-          v46 = sub_1003BE8FC(StoreItemResponse, v120, v43, 0, self->_bag);
+          v46 = sub_1003BE8FC(StoreItemResponse, object, v43, 0, self->_bag);
 
           if (v46)
           {
@@ -243,7 +243,7 @@
                       v86 = ASDLogHandleForCategory();
                       if (os_log_type_enabled(v86, OS_LOG_TYPE_DEFAULT))
                       {
-                        v88 = self;
+                        selfCopy = self;
                         if (v64)
                         {
                           v89 = objc_getProperty(v64, v87, 216, 1);
@@ -269,7 +269,7 @@
                         v151 = v75;
                         _os_log_impl(&_mh_execute_header, v86, OS_LOG_TYPE_DEFAULT, "Queue check found duplicate items in the queue for %{public}@ (%{public}@). Choosing %{public}@ over %{public}@.", buf, 0x2Au);
 
-                        self = v88;
+                        self = selfCopy;
                         v49 = v125;
                       }
 
@@ -294,8 +294,8 @@ LABEL_58:
                       if (v97)
                       {
                         v98 = objc_opt_new();
-                        v99 = [(ACAccount *)self->_account ams_DSID];
-                        [v98 setObject:v99 forKeyedSubscript:@"account_id"];
+                        ams_DSID = [(ACAccount *)self->_account ams_DSID];
+                        [v98 setObject:ams_DSID forKeyedSubscript:@"account_id"];
 
                         if (v96)
                         {
@@ -366,8 +366,8 @@ LABEL_67:
               v137 = 0u;
               v134 = 0u;
               v135 = 0u;
-              v109 = [v59 allValues];
-              v110 = [v109 countByEnumeratingWithState:&v134 objects:buf count:16];
+              allValues = [v59 allValues];
+              v110 = [allValues countByEnumeratingWithState:&v134 objects:buf count:16];
               if (v110)
               {
                 v111 = v110;
@@ -378,13 +378,13 @@ LABEL_67:
                   {
                     if (*v135 != v112)
                     {
-                      objc_enumerationMutation(v109);
+                      objc_enumerationMutation(allValues);
                     }
 
                     [v58 addObject:*(*(&v134 + 1) + 8 * i)];
                   }
 
-                  v111 = [v109 countByEnumeratingWithState:&v134 objects:buf count:16];
+                  v111 = [allValues countByEnumeratingWithState:&v134 objects:buf count:16];
                 }
 
                 while (v111);

@@ -1,21 +1,21 @@
 @interface IAMMessageEntryManager
-+ (id)messageEntries:(id)a3 withSatisfiedPresentationTriggerForTriggerContext:(id)a4;
-+ (id)targetIdentifiersForMessageEntries:(id)a3;
-+ (id)uniqueMessageEntriesInMessageEntriesByTrigger:(id)a3;
-+ (void)_addMessageEntry:(id)a3 toTriggerKeyDictionary:(id)a4 atKey:(id)a5;
-- (IAMMessageEntryManager)initWithModalTargetIdentifier:(id)a3;
-- (id)messageEntriesByTriggerForEventContext:(id)a3;
-- (id)messageEntriesForContextPropertiesContext:(id)a3;
++ (id)messageEntries:(id)entries withSatisfiedPresentationTriggerForTriggerContext:(id)context;
++ (id)targetIdentifiersForMessageEntries:(id)entries;
++ (id)uniqueMessageEntriesInMessageEntriesByTrigger:(id)trigger;
++ (void)_addMessageEntry:(id)entry toTriggerKeyDictionary:(id)dictionary atKey:(id)key;
+- (IAMMessageEntryManager)initWithModalTargetIdentifier:(id)identifier;
+- (id)messageEntriesByTriggerForEventContext:(id)context;
+- (id)messageEntriesForContextPropertiesContext:(id)context;
 - (void)_updateMessageIndexes;
-- (void)addPriorityMessageEntry:(id)a3;
-- (void)setMessageEntries:(id)a3;
+- (void)addPriorityMessageEntry:(id)entry;
+- (void)setMessageEntries:(id)entries;
 @end
 
 @implementation IAMMessageEntryManager
 
 - (void)_updateMessageIndexes
 {
-  v66 = self;
+  selfCopy = self;
   v116 = *MEMORY[0x277D85DE8];
   v102 = 0;
   v103 = &v102;
@@ -46,7 +46,7 @@
   v74 = MEMORY[0x259C23D00](v89);
   v69 = objc_opt_new();
   v72 = objc_opt_new();
-  v3 = [(NSDictionary *)v66->_messageEntryByIdentifier copy];
+  v3 = [(NSDictionary *)selfCopy->_messageEntryByIdentifier copy];
   v87 = 0u;
   v88 = 0u;
   v85 = 0u;
@@ -65,13 +65,13 @@
           objc_enumerationMutation(obj);
         }
 
-        v4 = [obj objectForKey:{*(*(&v85 + 1) + 8 * i), v66}];
-        v5 = [v4 applicationMessage];
-        v6 = [v5 targets];
-        v75 = v5;
-        if ([v5 messageType] == 1)
+        v4 = [obj objectForKey:{*(*(&v85 + 1) + 8 * i), selfCopy}];
+        applicationMessage = [v4 applicationMessage];
+        targets = [applicationMessage targets];
+        v75 = applicationMessage;
+        if ([applicationMessage messageType] == 1)
         {
-          modalTargetIdentifier = v66->_modalTargetIdentifier;
+          modalTargetIdentifier = selfCopy->_modalTargetIdentifier;
           v7 = [MEMORY[0x277CBEA60] arrayWithObjects:&modalTargetIdentifier count:1];
 
           v8 = [v7 mutableCopy];
@@ -85,8 +85,8 @@
 
         else
         {
-          v7 = v6;
-          if (v6)
+          v7 = targets;
+          if (targets)
           {
 LABEL_10:
             if ([v7 count])
@@ -99,9 +99,9 @@ LABEL_10:
         v9 = IAMLogCategoryDefault();
         if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
         {
-          v10 = [v75 identifier];
+          identifier = [v75 identifier];
           *buf = 138543362;
-          v109 = v10;
+          v109 = identifier;
           _os_log_impl(&dword_254AF4000, v9, OS_LOG_TYPE_ERROR, "Error indexing message, message specifies no targets = %{public}@", buf, 0xCu);
         }
 
@@ -148,8 +148,8 @@ LABEL_14:
           while (v11);
         }
 
-        v20 = [v75 presentationTriggers];
-        v21 = [v20 copy];
+        presentationTriggers = [v75 presentationTriggers];
+        v21 = [presentationTriggers copy];
 
         v71 = [v21 count];
         v79 = 0u;
@@ -175,38 +175,38 @@ LABEL_14:
               {
                 if ([v26 hasKind])
                 {
-                  v27 = [v26 triggerName];
-                  v28 = [v26 hasKind];
-                  v29 = [v26 kind];
-                  v30 = [v26 bundleIdentifier];
-                  (v74)[2](v74, v4, v27, v28, v29, v30);
+                  triggerName = [v26 triggerName];
+                  hasKind = [v26 hasKind];
+                  kind = [v26 kind];
+                  bundleIdentifier = [v26 bundleIdentifier];
+                  (v74)[2](v74, v4, triggerName, hasKind, kind, bundleIdentifier);
                 }
 
                 else
                 {
-                  v27 = IAMLogCategoryDefault();
-                  if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
+                  triggerName = IAMLogCategoryDefault();
+                  if (os_log_type_enabled(triggerName, OS_LOG_TYPE_ERROR))
                   {
-                    v32 = [v26 triggerName];
-                    v33 = [v75 identifier];
+                    triggerName2 = [v26 triggerName];
+                    identifier2 = [v75 identifier];
                     *buf = 138543618;
-                    v109 = v32;
+                    v109 = triggerName2;
                     v110 = 2114;
-                    v111 = v33;
-                    _os_log_impl(&dword_254AF4000, v27, OS_LOG_TYPE_ERROR, "Error indexing message, message presentation trigger = %{public}@ missing kind = %{public}@", buf, 0x16u);
+                    v111 = identifier2;
+                    _os_log_impl(&dword_254AF4000, triggerName, OS_LOG_TYPE_ERROR, "Error indexing message, message presentation trigger = %{public}@ missing kind = %{public}@", buf, 0x16u);
                   }
                 }
               }
 
               else
               {
-                v27 = IAMLogCategoryDefault();
-                if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
+                triggerName = IAMLogCategoryDefault();
+                if (os_log_type_enabled(triggerName, OS_LOG_TYPE_ERROR))
                 {
-                  v31 = [v75 identifier];
+                  identifier3 = [v75 identifier];
                   *buf = 138543362;
-                  v109 = v31;
-                  _os_log_impl(&dword_254AF4000, v27, OS_LOG_TYPE_ERROR, "Error indexing message, message presentation trigger missing triggerName = %{public}@", buf, 0xCu);
+                  v109 = identifier3;
+                  _os_log_impl(&dword_254AF4000, triggerName, OS_LOG_TYPE_ERROR, "Error indexing message, message presentation trigger missing triggerName = %{public}@", buf, 0xCu);
                 }
               }
             }
@@ -217,21 +217,21 @@ LABEL_14:
           while (v23);
         }
 
-        v34 = [v75 rule];
-        v35 = v34;
-        if (v34)
+        rule = [v75 rule];
+        v35 = rule;
+        if (rule)
         {
           if (!v71)
           {
-            v36 = [v34 triggerEventName];
-            v37 = v36 == 0;
+            triggerEventName = [rule triggerEventName];
+            v37 = triggerEventName == 0;
 
             if (!v37)
             {
-              v38 = [v75 rule];
-              v39 = [v38 triggerEventName];
+              rule2 = [v75 rule];
+              triggerEventName2 = [rule2 triggerEventName];
 
-              v40 = [[IAMTriggerKey alloc] initWithName:v39 bundleIdentifier:0];
+              v40 = [[IAMTriggerKey alloc] initWithName:triggerEventName2 bundleIdentifier:0];
               [IAMMessageEntryManager _addMessageEntry:v4 toTriggerKeyDictionary:v103[5] atKey:v40];
             }
           }
@@ -249,22 +249,22 @@ LABEL_14:
 
   while ([v69 count])
   {
-    v41 = [v69 lastObject];
-    v42 = [v72 lastObject];
+    lastObject = [v69 lastObject];
+    lastObject2 = [v72 lastObject];
     [v69 removeLastObject];
     [v72 removeLastObject];
-    v43 = [v41 triggerEventName];
-    if (v43)
+    triggerEventName3 = [lastObject triggerEventName];
+    if (triggerEventName3)
     {
-      v44 = [v41 triggerCondition];
-      if (v44)
+      triggerCondition = [lastObject triggerCondition];
+      if (triggerCondition)
       {
       }
 
       else
       {
-        v45 = [v41 subrules];
-        v46 = v45 == 0;
+        subrules = [lastObject subrules];
+        v46 = subrules == 0;
 
         if (v46)
         {
@@ -273,36 +273,36 @@ LABEL_14:
       }
     }
 
-    v47 = [v41 type];
-    if (v47 == 1)
+    type = [lastObject type];
+    if (type == 1)
     {
-      v53 = [v41 subrules];
-      [v69 addObjectsFromArray:v53];
+      subrules2 = [lastObject subrules];
+      [v69 addObjectsFromArray:subrules2];
 
       for (m = 0; ; ++m)
       {
-        v55 = [v41 subrules];
-        v56 = [v55 count] > m;
+        subrules3 = [lastObject subrules];
+        v56 = [subrules3 count] > m;
 
         if (!v56)
         {
           break;
         }
 
-        [v72 addObject:v42];
+        [v72 addObject:lastObject2];
       }
     }
 
-    else if (!v47)
+    else if (!type)
     {
-      v48 = [v41 triggerCondition];
-      v49 = [v48 identifier];
-      if (v49)
+      triggerCondition2 = [lastObject triggerCondition];
+      identifier4 = [triggerCondition2 identifier];
+      if (identifier4)
       {
-        v50 = [v48 hasKind];
-        v51 = [v48 kind];
-        v52 = [v48 bundleIdentifier];
-        (v74)[2](v74, v42, v49, v50, v51, v52);
+        hasKind2 = [triggerCondition2 hasKind];
+        kind2 = [triggerCondition2 kind];
+        bundleIdentifier2 = [triggerCondition2 bundleIdentifier];
+        (v74)[2](v74, lastObject2, identifier4, hasKind2, kind2, bundleIdentifier2);
       }
     }
 
@@ -310,20 +310,20 @@ LABEL_57:
   }
 
   v57 = [v103[5] copy];
-  messageEntriesByEventTriggers = v66->_messageEntriesByEventTriggers;
-  v66->_messageEntriesByEventTriggers = v57;
+  messageEntriesByEventTriggers = selfCopy->_messageEntriesByEventTriggers;
+  selfCopy->_messageEntriesByEventTriggers = v57;
 
   v59 = [v97[5] copy];
-  messageEntriesByContextPropertyTriggers = v66->_messageEntriesByContextPropertyTriggers;
-  v66->_messageEntriesByContextPropertyTriggers = v59;
+  messageEntriesByContextPropertyTriggers = selfCopy->_messageEntriesByContextPropertyTriggers;
+  selfCopy->_messageEntriesByContextPropertyTriggers = v59;
 
   v61 = [v91[5] copy];
-  messageEntriesByUnknownKindTriggers = v66->_messageEntriesByUnknownKindTriggers;
-  v66->_messageEntriesByUnknownKindTriggers = v61;
+  messageEntriesByUnknownKindTriggers = selfCopy->_messageEntriesByUnknownKindTriggers;
+  selfCopy->_messageEntriesByUnknownKindTriggers = v61;
 
   v63 = [v2 copy];
-  messageEntriesByTargetIdentifier = v66->_messageEntriesByTargetIdentifier;
-  v66->_messageEntriesByTargetIdentifier = v63;
+  messageEntriesByTargetIdentifier = selfCopy->_messageEntriesByTargetIdentifier;
+  selfCopy->_messageEntriesByTargetIdentifier = v63;
 
   _Block_object_dispose(&v90, 8);
   _Block_object_dispose(&v96, 8);
@@ -332,15 +332,15 @@ LABEL_57:
   v65 = *MEMORY[0x277D85DE8];
 }
 
-- (IAMMessageEntryManager)initWithModalTargetIdentifier:(id)a3
+- (IAMMessageEntryManager)initWithModalTargetIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v16.receiver = self;
   v16.super_class = IAMMessageEntryManager;
   v5 = [(IAMMessageEntryManager *)&v16 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     modalTargetIdentifier = v5->_modalTargetIdentifier;
     v5->_modalTargetIdentifier = v6;
 
@@ -367,22 +367,22 @@ LABEL_57:
   return v5;
 }
 
-- (void)setMessageEntries:(id)a3
+- (void)setMessageEntries:(id)entries
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 copy];
+  entriesCopy = entries;
+  v5 = [entriesCopy copy];
   messageEntries = self->_messageEntries;
   self->_messageEntries = v5;
 
   v7 = objc_opt_new();
-  if (v4)
+  if (entriesCopy)
   {
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v8 = v4;
+    v8 = entriesCopy;
     v9 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v9)
     {
@@ -398,10 +398,10 @@ LABEL_57:
           }
 
           v13 = *(*(&v19 + 1) + 8 * i);
-          v14 = [v13 applicationMessage];
-          v15 = [v14 identifier];
+          applicationMessage = [v13 applicationMessage];
+          identifier = [applicationMessage identifier];
 
-          [v7 setObject:v13 forKeyedSubscript:v15];
+          [v7 setObject:v13 forKeyedSubscript:identifier];
         }
 
         v10 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
@@ -419,21 +419,21 @@ LABEL_57:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (id)messageEntriesForContextPropertiesContext:(id)a3
+- (id)messageEntriesForContextPropertiesContext:(id)context
 {
   v36 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  contextCopy = context;
   v29 = objc_opt_new();
   v5 = [(NSDictionary *)self->_messageEntriesByContextPropertyTriggers copy];
   v6 = [(NSDictionary *)self->_messageEntriesByUnknownKindTriggers copy];
-  v7 = [v4 contextPropertyNames];
-  v27 = v4;
-  v30 = [v4 bundleIdentifier];
+  contextPropertyNames = [contextCopy contextPropertyNames];
+  v27 = contextCopy;
+  bundleIdentifier = [contextCopy bundleIdentifier];
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  obj = v7;
+  obj = contextPropertyNames;
   v8 = [obj countByEnumeratingWithState:&v31 objects:v35 count:16];
   if (v8)
   {
@@ -449,7 +449,7 @@ LABEL_57:
         }
 
         v12 = *(*(&v31 + 1) + 8 * i);
-        v13 = [[IAMTriggerKey alloc] initWithName:v12 bundleIdentifier:v30];
+        v13 = [[IAMTriggerKey alloc] initWithName:v12 bundleIdentifier:bundleIdentifier];
         v14 = [[IAMTriggerKey alloc] initWithName:v12 bundleIdentifier:0];
         v15 = objc_opt_new();
         v16 = [v5 objectForKeyedSubscript:v13];
@@ -496,28 +496,28 @@ LABEL_57:
     while (v9);
   }
 
-  v24 = [v29 allObjects];
+  allObjects = [v29 allObjects];
 
   v25 = *MEMORY[0x277D85DE8];
 
-  return v24;
+  return allObjects;
 }
 
-- (id)messageEntriesByTriggerForEventContext:(id)a3
+- (id)messageEntriesByTriggerForEventContext:(id)context
 {
   v79 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  contextCopy = context;
   v5 = [(NSDictionary *)self->_messageEntriesByEventTriggers copy];
   v6 = [(NSDictionary *)self->_messageEntriesByUnknownKindTriggers copy];
-  v7 = [v4 event];
-  v8 = [v4 bundleIdentifier];
+  event = [contextCopy event];
+  bundleIdentifier = [contextCopy bundleIdentifier];
   objc_opt_class();
   LOBYTE(self) = objc_opt_isKindOfClass();
   v67 = objc_opt_new();
   if (self)
   {
-    v68 = v8;
-    v65 = v4;
+    v68 = bundleIdentifier;
+    v65 = contextCopy;
     v66 = v6;
     v75 = 0u;
     v76 = 0u;
@@ -543,12 +543,12 @@ LABEL_57:
           v15 = [v9 objectForKey:v14];
           if ([v15 count])
           {
-            v16 = [v14 bundleIdentifier];
-            v17 = v16;
-            if (!v16 || [v16 isEqualToString:v68])
+            bundleIdentifier2 = [v14 bundleIdentifier];
+            v17 = bundleIdentifier2;
+            if (!bundleIdentifier2 || [bundleIdentifier2 isEqualToString:v68])
             {
-              v18 = [v14 name];
-              v19 = [v7 matchesWithKey:v18];
+              name = [v14 name];
+              v19 = [event matchesWithKey:name];
 
               if (v19)
               {
@@ -596,12 +596,12 @@ LABEL_57:
           v29 = [v23 objectForKey:v28];
           if ([v29 count])
           {
-            v30 = [v28 bundleIdentifier];
-            v31 = v30;
-            if (!v30 || [v30 isEqualToString:v68])
+            bundleIdentifier3 = [v28 bundleIdentifier];
+            v31 = bundleIdentifier3;
+            if (!bundleIdentifier3 || [bundleIdentifier3 isEqualToString:v68])
             {
-              v32 = [v28 name];
-              v33 = [v7 matchesWithKey:v32];
+              name2 = [v28 name];
+              v33 = [event matchesWithKey:name2];
 
               if (v33)
               {
@@ -628,20 +628,20 @@ LABEL_57:
 
     v37 = [v67 copy];
     v5 = v64;
-    v4 = v65;
+    contextCopy = v65;
     v6 = v66;
-    v8 = v68;
+    bundleIdentifier = v68;
   }
 
   else
   {
     v38 = [IAMTriggerKey alloc];
-    v39 = [v7 name];
-    v40 = [(IAMTriggerKey *)v38 initWithName:v39 bundleIdentifier:v8];
+    name3 = [event name];
+    v40 = [(IAMTriggerKey *)v38 initWithName:name3 bundleIdentifier:bundleIdentifier];
 
     v41 = [IAMTriggerKey alloc];
-    v42 = [v7 name];
-    v43 = [(IAMTriggerKey *)v41 initWithName:v42 bundleIdentifier:0];
+    name4 = [event name];
+    v43 = [(IAMTriggerKey *)v41 initWithName:name4 bundleIdentifier:0];
 
     v44 = [v5 objectForKeyedSubscript:v40];
 
@@ -709,16 +709,16 @@ LABEL_57:
   return v37;
 }
 
-+ (id)targetIdentifiersForMessageEntries:(id)a3
++ (id)targetIdentifiersForMessageEntries:(id)entries
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  entriesCopy = entries;
   v4 = objc_opt_new();
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = v3;
+  v5 = entriesCopy;
   v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
@@ -733,12 +733,12 @@ LABEL_57:
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v15 + 1) + 8 * i) applicationMessage];
-        v11 = [v10 targets];
+        applicationMessage = [*(*(&v15 + 1) + 8 * i) applicationMessage];
+        targets = [applicationMessage targets];
 
-        if (v11)
+        if (targets)
         {
-          [v4 addObjectsFromArray:v11];
+          [v4 addObjectsFromArray:targets];
         }
       }
 
@@ -748,28 +748,28 @@ LABEL_57:
     while (v7);
   }
 
-  v12 = [v4 allObjects];
+  allObjects = [v4 allObjects];
 
   v13 = *MEMORY[0x277D85DE8];
 
-  return v12;
+  return allObjects;
 }
 
-+ (id)messageEntries:(id)a3 withSatisfiedPresentationTriggerForTriggerContext:(id)a4
++ (id)messageEntries:(id)entries withSatisfiedPresentationTriggerForTriggerContext:(id)context
 {
   v46 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  entriesCopy = entries;
+  contextCopy = context;
   v7 = objc_opt_new();
   v8 = v7;
-  if (v5)
+  if (entriesCopy)
   {
     v42 = 0u;
     v43 = 0u;
     v40 = 0u;
     v41 = 0u;
-    v31 = v5;
-    v9 = v5;
+    v31 = entriesCopy;
+    v9 = entriesCopy;
     v35 = [v9 countByEnumeratingWithState:&v40 objects:v45 count:16];
     if (!v35)
     {
@@ -790,14 +790,14 @@ LABEL_57:
         }
 
         v11 = *(*(&v40 + 1) + 8 * v10);
-        v12 = [v11 applicationMessage];
-        v13 = [v12 presentationTriggers];
-        v14 = [v12 rule];
-        v15 = [v13 count];
-        if (v14)
+        applicationMessage = [v11 applicationMessage];
+        presentationTriggers = [applicationMessage presentationTriggers];
+        rule = [applicationMessage rule];
+        v15 = [presentationTriggers count];
+        if (rule)
         {
-          v16 = [v14 triggerEventName];
-          v17 = v16 != 0;
+          triggerEventName = [rule triggerEventName];
+          v17 = triggerEventName != 0;
         }
 
         else
@@ -822,7 +822,7 @@ LABEL_26:
           goto LABEL_27;
         }
 
-        if (!v6)
+        if (!contextCopy)
         {
           goto LABEL_27;
         }
@@ -833,7 +833,7 @@ LABEL_26:
           v39 = 0u;
           v36 = 0u;
           v37 = 0u;
-          v19 = v13;
+          v19 = presentationTriggers;
           v20 = [v19 countByEnumeratingWithState:&v36 objects:v44 count:16];
           if (v20)
           {
@@ -848,7 +848,7 @@ LABEL_26:
                   objc_enumerationMutation(v19);
                 }
 
-                if ([v6 satisfiesPresentationTrigger:*(*(&v36 + 1) + 8 * i)])
+                if ([contextCopy satisfiesPresentationTrigger:*(*(&v36 + 1) + 8 * i)])
                 {
 
                   v8 = v32;
@@ -876,9 +876,9 @@ LABEL_26:
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v24 = [v6 event];
-            v25 = [v14 triggerEventName];
-            v26 = [v24 matchesWithKey:v25];
+            event = [contextCopy event];
+            triggerEventName2 = [rule triggerEventName];
+            v26 = [event matchesWithKey:triggerEventName2];
 
             v9 = v33;
             if (v26)
@@ -901,7 +901,7 @@ LABEL_27:
 LABEL_33:
 
         v28 = [v8 copy];
-        v5 = v31;
+        entriesCopy = v31;
         goto LABEL_35;
       }
     }
@@ -915,16 +915,16 @@ LABEL_35:
   return v28;
 }
 
-+ (id)uniqueMessageEntriesInMessageEntriesByTrigger:(id)a3
++ (id)uniqueMessageEntriesInMessageEntriesByTrigger:(id)trigger
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  triggerCopy = trigger;
   v4 = objc_opt_new();
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v3;
+  v5 = triggerCopy;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -949,33 +949,33 @@ LABEL_35:
     while (v7);
   }
 
-  v11 = [v4 allObjects];
+  allObjects = [v4 allObjects];
 
   v12 = *MEMORY[0x277D85DE8];
 
-  return v11;
+  return allObjects;
 }
 
-- (void)addPriorityMessageEntry:(id)a3
+- (void)addPriorityMessageEntry:(id)entry
 {
   priorityMessageEntryByIdentifier = self->_priorityMessageEntryByIdentifier;
-  v5 = a3;
+  entryCopy = entry;
   v10 = [(NSDictionary *)priorityMessageEntryByIdentifier mutableCopy];
-  v6 = [v5 applicationMessage];
-  v7 = [v6 identifier];
-  [v10 setObject:v5 forKeyedSubscript:v7];
+  applicationMessage = [entryCopy applicationMessage];
+  identifier = [applicationMessage identifier];
+  [v10 setObject:entryCopy forKeyedSubscript:identifier];
 
   v8 = [v10 copy];
   v9 = self->_priorityMessageEntryByIdentifier;
   self->_priorityMessageEntryByIdentifier = v8;
 }
 
-+ (void)_addMessageEntry:(id)a3 toTriggerKeyDictionary:(id)a4 atKey:(id)a5
++ (void)_addMessageEntry:(id)entry toTriggerKeyDictionary:(id)dictionary atKey:(id)key
 {
-  v14 = a3;
-  v7 = a4;
-  v8 = a5;
-  v9 = [v7 objectForKeyedSubscript:v8];
+  entryCopy = entry;
+  dictionaryCopy = dictionary;
+  keyCopy = key;
+  v9 = [dictionaryCopy objectForKeyedSubscript:keyCopy];
   v10 = v9;
   v11 = MEMORY[0x277CBEBF8];
   if (v9)
@@ -985,10 +985,10 @@ LABEL_35:
 
   v12 = v11;
 
-  if (([v12 containsObject:v14] & 1) == 0)
+  if (([v12 containsObject:entryCopy] & 1) == 0)
   {
-    v13 = [v12 arrayByAddingObject:v14];
-    [v7 setObject:v13 forKeyedSubscript:v8];
+    v13 = [v12 arrayByAddingObject:entryCopy];
+    [dictionaryCopy setObject:v13 forKeyedSubscript:keyCopy];
   }
 }
 

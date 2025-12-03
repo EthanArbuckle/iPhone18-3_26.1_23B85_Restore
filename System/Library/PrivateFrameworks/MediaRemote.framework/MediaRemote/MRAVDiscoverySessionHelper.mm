@@ -1,39 +1,39 @@
 @interface MRAVDiscoverySessionHelper
-- (MRAVDiscoverySessionHelper)initWithFeatures:(unint64_t)a3;
+- (MRAVDiscoverySessionHelper)initWithFeatures:(unint64_t)features;
 - (id)createDiscoverySession;
-- (void)searchAVOutputDeviceForUID:(id)a3 timeout:(double)a4 identifier:(id)a5 reason:(id)a6 completion:(id)a7;
+- (void)searchAVOutputDeviceForUID:(id)d timeout:(double)timeout identifier:(id)identifier reason:(id)reason completion:(id)completion;
 @end
 
 @implementation MRAVDiscoverySessionHelper
 
-- (MRAVDiscoverySessionHelper)initWithFeatures:(unint64_t)a3
+- (MRAVDiscoverySessionHelper)initWithFeatures:(unint64_t)features
 {
   v5.receiver = self;
   v5.super_class = MRAVDiscoverySessionHelper;
   result = [(MRAVDiscoverySessionHelper *)&v5 init];
   if (result)
   {
-    result->_discoverySessionFeatures = a3;
+    result->_discoverySessionFeatures = features;
   }
 
   return result;
 }
 
-- (void)searchAVOutputDeviceForUID:(id)a3 timeout:(double)a4 identifier:(id)a5 reason:(id)a6 completion:(id)a7
+- (void)searchAVOutputDeviceForUID:(id)d timeout:(double)timeout identifier:(id)identifier reason:(id)reason completion:(id)completion
 {
   v68[1] = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a5;
-  v41 = a6;
-  v14 = a7;
-  v15 = [MEMORY[0x1E695DF00] date];
-  v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"searchAVOutputDeviceForUID-%@", v41];
-  v40 = [MEMORY[0x1E696AEC0] stringWithFormat:@"outputDeviceUID=%@", v12];
-  v17 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"%@<%@>", v16, v13];
-  v18 = v17;
-  if (v40)
+  dCopy = d;
+  identifierCopy = identifier;
+  reasonCopy = reason;
+  completionCopy = completion;
+  date = [MEMORY[0x1E695DF00] date];
+  reasonCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"searchAVOutputDeviceForUID-%@", reasonCopy];
+  dCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"outputDeviceUID=%@", dCopy];
+  identifierCopy = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"%@<%@>", reasonCopy, identifierCopy];
+  v18 = identifierCopy;
+  if (dCopy)
   {
-    [v17 appendFormat:@" for %@", v40];
+    [identifierCopy appendFormat:@" for %@", dCopy];
   }
 
   v19 = _MRLogForCategory(0xAuLL);
@@ -55,15 +55,15 @@
   v57[2] = __94__MRAVDiscoverySessionHelper_searchAVOutputDeviceForUID_timeout_identifier_reason_completion___block_invoke;
   v57[3] = &unk_1E769C7F8;
   p_buf = &buf;
-  v20 = v12;
+  v20 = dCopy;
   v58 = v20;
-  v21 = v16;
+  v21 = reasonCopy;
   v59 = v21;
-  v39 = v13;
+  v39 = identifierCopy;
   v60 = v39;
-  v22 = v15;
+  v22 = date;
   v61 = v22;
-  v23 = v14;
+  v23 = completionCopy;
   v62 = v23;
   v24 = MEMORY[0x1A58E3570](v57);
   v51 = 0;
@@ -82,9 +82,9 @@
   v26 = v24;
   v49 = v26;
   v27 = MEMORY[0x1A58E3570](v47);
-  v28 = [(MRAVDiscoverySessionHelper *)self createDiscoverySession];
-  [v28 setDiscoveryMode:3];
-  v29 = [MEMORY[0x1E696AD88] defaultCenter];
+  createDiscoverySession = [(MRAVDiscoverySessionHelper *)self createDiscoverySession];
+  [createDiscoverySession setDiscoveryMode:3];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v30 = *MEMORY[0x1E69587A0];
   v44[0] = MEMORY[0x1E69E9820];
   v44[1] = 3221225472;
@@ -92,9 +92,9 @@
   v44[3] = &unk_1E769C870;
   v31 = v27;
   v46 = v31;
-  v32 = v28;
+  v32 = createDiscoverySession;
   v45 = v32;
-  v33 = [v29 addObserverForName:v30 object:v32 queue:0 usingBlock:v44];
+  v33 = [defaultCenter addObserverForName:v30 object:v32 queue:0 usingBlock:v44];
   objc_storeWeak((*(&buf + 1) + 40), v33);
 
   v34 = [MRBlockGuard alloc];
@@ -104,7 +104,7 @@
   v42[3] = &unk_1E769AD80;
   v35 = v26;
   v43 = v35;
-  v36 = [(MRBlockGuard *)v34 initWithTimeout:v21 reason:v42 handler:a4];
+  v36 = [(MRBlockGuard *)v34 initWithTimeout:v21 reason:v42 handler:timeout];
   v37 = v52[5];
   v52[5] = v36;
 

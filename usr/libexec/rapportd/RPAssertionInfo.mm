@@ -1,26 +1,26 @@
 @interface RPAssertionInfo
-+ (id)assertionWithType:(unint64_t)a3 processName:(id)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)assertionWithType:(unint64_t)type processName:(id)name;
+- (BOOL)isEqual:(id)equal;
 - (NSDate)startDate;
 - (NSString)processName;
 - (OS_dispatch_queue)handlerQueue;
 - (double)expirationDuration;
 - (id)_description;
-- (id)_descriptionWithLevel:(int)a3;
-- (id)_initWithType:(unint64_t)a3 processName:(id)a4;
-- (id)descriptionWithLevel:(int)a3;
+- (id)_descriptionWithLevel:(int)level;
+- (id)_initWithType:(unint64_t)type processName:(id)name;
+- (id)descriptionWithLevel:(int)level;
 - (id)expiredHandler;
 - (id)startHandler;
 - (id)stopHandler;
 - (unint64_t)assertionType;
 - (unint64_t)hash;
 - (unint64_t)state;
-- (void)_invokeHandler:(id)a3 onQueue:(id)a4;
-- (void)_withLock:(id)a3;
-- (void)setExpiredHandler:(id)a3;
-- (void)setHandlerQueue:(id)a3;
-- (void)setStartHandler:(id)a3;
-- (void)setStopHandler:(id)a3;
+- (void)_invokeHandler:(id)handler onQueue:(id)queue;
+- (void)_withLock:(id)lock;
+- (void)setExpiredHandler:(id)handler;
+- (void)setHandlerQueue:(id)queue;
+- (void)setStartHandler:(id)handler;
+- (void)setStopHandler:(id)handler;
 - (void)trackerCheckAssertion;
 - (void)trackerStartAssertion;
 - (void)trackerStopAssertion;
@@ -28,9 +28,9 @@
 
 @implementation RPAssertionInfo
 
-- (id)_initWithType:(unint64_t)a3 processName:(id)a4
+- (id)_initWithType:(unint64_t)type processName:(id)name
 {
-  v6 = a4;
+  nameCopy = name;
   v14.receiver = self;
   v14.super_class = RPAssertionInfo;
   v7 = [(RPAssertionInfo *)&v14 init];
@@ -42,8 +42,8 @@
     assertionIdentifier = v8->_assertionIdentifier;
     v8->_assertionIdentifier = v9;
 
-    v8->_assertionType = a3;
-    v11 = [v6 copy];
+    v8->_assertionType = type;
+    v11 = [nameCopy copy];
     processName = v8->_processName;
     v8->_processName = v11;
 
@@ -53,10 +53,10 @@
   return v8;
 }
 
-+ (id)assertionWithType:(unint64_t)a3 processName:(id)a4
++ (id)assertionWithType:(unint64_t)type processName:(id)name
 {
-  v5 = a4;
-  v6 = [[RPAssertionInfo alloc] _initWithType:a3 processName:v5];
+  nameCopy = name;
+  v6 = [[RPAssertionInfo alloc] _initWithType:type processName:nameCopy];
 
   return v6;
 }
@@ -81,15 +81,15 @@
 
 - (double)expirationDuration
 {
-  v2 = [(RPAssertionInfo *)self assertionType];
-  if (v2 - 1 > 6)
+  assertionType = [(RPAssertionInfo *)self assertionType];
+  if (assertionType - 1 > 6)
   {
     return 180.0;
   }
 
   else
   {
-    return dbl_100148E90[v2 - 1];
+    return dbl_100148E90[assertionType - 1];
   }
 }
 
@@ -114,16 +114,16 @@
   return v2;
 }
 
-- (void)setExpiredHandler:(id)a3
+- (void)setExpiredHandler:(id)handler
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1000915C0;
   v4[3] = &unk_1001ABA80;
-  v5 = self;
-  v6 = a3;
-  v3 = v6;
-  [(RPAssertionInfo *)v5 _withLock:v4];
+  selfCopy = self;
+  handlerCopy = handler;
+  v3 = handlerCopy;
+  [(RPAssertionInfo *)selfCopy _withLock:v4];
 }
 
 - (OS_dispatch_queue)handlerQueue
@@ -147,16 +147,16 @@
   return v2;
 }
 
-- (void)setHandlerQueue:(id)a3
+- (void)setHandlerQueue:(id)queue
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1000917AC;
   v4[3] = &unk_1001AB488;
-  v5 = self;
-  v6 = a3;
-  v3 = v6;
-  [(RPAssertionInfo *)v5 _withLock:v4];
+  selfCopy = self;
+  queueCopy = queue;
+  v3 = queueCopy;
+  [(RPAssertionInfo *)selfCopy _withLock:v4];
 }
 
 - (NSString)processName
@@ -222,16 +222,16 @@
   return v2;
 }
 
-- (void)setStartHandler:(id)a3
+- (void)setStartHandler:(id)handler
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100091BC0;
   v4[3] = &unk_1001ABA80;
-  v5 = self;
-  v6 = a3;
-  v3 = v6;
-  [(RPAssertionInfo *)v5 _withLock:v4];
+  selfCopy = self;
+  handlerCopy = handler;
+  v3 = handlerCopy;
+  [(RPAssertionInfo *)selfCopy _withLock:v4];
 }
 
 - (unint64_t)state
@@ -273,16 +273,16 @@
   return v2;
 }
 
-- (void)setStopHandler:(id)a3
+- (void)setStopHandler:(id)handler
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100091EB4;
   v4[3] = &unk_1001ABA80;
-  v5 = self;
-  v6 = a3;
-  v3 = v6;
-  [(RPAssertionInfo *)v5 _withLock:v4];
+  selfCopy = self;
+  handlerCopy = handler;
+  v3 = handlerCopy;
+  [(RPAssertionInfo *)selfCopy _withLock:v4];
 }
 
 - (unint64_t)hash
@@ -303,16 +303,16 @@
   return v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (!equalCopy)
   {
     goto LABEL_5;
   }
 
-  if (self == v4)
+  if (self == equalCopy)
   {
     v7 = 1;
     goto LABEL_7;
@@ -330,7 +330,7 @@
     v9[2] = sub_100092114;
     v9[3] = &unk_1001AE4C0;
     v6 = v5;
-    v11 = self;
+    selfCopy = self;
     v12 = &v13;
     v10 = v6;
     [(RPAssertionInfo *)self _withLock:v9];
@@ -449,7 +449,7 @@ LABEL_7:
   return [(RPAssertionInfo *)self _descriptionWithLevel:50];
 }
 
-- (id)descriptionWithLevel:(int)a3
+- (id)descriptionWithLevel:(int)level
 {
   v7 = 0;
   v8 = &v7;
@@ -463,7 +463,7 @@ LABEL_7:
   v5[3] = &unk_1001AE538;
   v5[4] = self;
   v5[5] = &v7;
-  v6 = a3;
+  levelCopy = level;
   [(RPAssertionInfo *)self _withLock:v5];
   v3 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -471,7 +471,7 @@ LABEL_7:
   return v3;
 }
 
-- (id)_descriptionWithLevel:(int)a3
+- (id)_descriptionWithLevel:(int)level
 {
   os_unfair_lock_assert_owner(&self->_lock);
   NSAppendPrintF();
@@ -517,36 +517,36 @@ LABEL_7:
   return v9;
 }
 
-- (void)_invokeHandler:(id)a3 onQueue:(id)a4
+- (void)_invokeHandler:(id)handler onQueue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  handlerCopy = handler;
+  queueCopy = queue;
+  v8 = queueCopy;
+  if (handlerCopy)
   {
-    if (v7)
+    if (queueCopy)
     {
       v9[0] = _NSConcreteStackBlock;
       v9[1] = 3221225472;
       v9[2] = sub_100092DF8;
       v9[3] = &unk_1001AD898;
       v9[4] = self;
-      v10 = v6;
+      v10 = handlerCopy;
       dispatch_async(v8, v9);
     }
 
     else
     {
-      (*(v6 + 2))(v6, self);
+      (*(handlerCopy + 2))(handlerCopy, self);
     }
   }
 }
 
-- (void)_withLock:(id)a3
+- (void)_withLock:(id)lock
 {
-  v4 = a3;
+  lockCopy = lock;
   os_unfair_lock_lock(&self->_lock);
-  v4[2](v4);
+  lockCopy[2](lockCopy);
 
   os_unfair_lock_unlock(&self->_lock);
 }

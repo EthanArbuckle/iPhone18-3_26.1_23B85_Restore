@@ -1,45 +1,45 @@
 @interface WFPBSetupSuggestedAutomationEvent
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)key;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasCompleted:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasCompleted:(BOOL)completed;
+- (void)writeTo:(id)to;
 @end
 
 @implementation WFPBSetupSuggestedAutomationEvent
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v6 = v4;
-  if (*(v4 + 2))
+  fromCopy = from;
+  v6 = fromCopy;
+  if (*(fromCopy + 2))
   {
     [(WFPBSetupSuggestedAutomationEvent *)self setKey:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(WFPBSetupSuggestedAutomationEvent *)self setSuggestedAutomationIdentifier:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = *(v4 + 36);
+  v5 = *(fromCopy + 36);
   if (v5)
   {
-    self->_currentStep = *(v4 + 2);
+    self->_currentStep = *(fromCopy + 2);
     *&self->_has |= 1u;
-    v5 = *(v4 + 36);
+    v5 = *(fromCopy + 36);
   }
 
   if ((v5 & 2) != 0)
   {
-    self->_completed = *(v4 + 32);
+    self->_completed = *(fromCopy + 32);
     *&self->_has |= 2u;
   }
 }
@@ -72,16 +72,16 @@ LABEL_3:
   return v4 ^ v3 ^ v5 ^ v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_13;
   }
 
   key = self->_key;
-  if (key | *(v4 + 2))
+  if (key | *(equalCopy + 2))
   {
     if (![(NSString *)key isEqual:?])
     {
@@ -90,7 +90,7 @@ LABEL_3:
   }
 
   suggestedAutomationIdentifier = self->_suggestedAutomationIdentifier;
-  if (suggestedAutomationIdentifier | *(v4 + 3))
+  if (suggestedAutomationIdentifier | *(equalCopy + 3))
   {
     if (![(NSString *)suggestedAutomationIdentifier isEqual:?])
     {
@@ -100,21 +100,21 @@ LABEL_3:
 
   if (*&self->_has)
   {
-    if ((*(v4 + 36) & 1) == 0 || self->_currentStep != *(v4 + 2))
+    if ((*(equalCopy + 36) & 1) == 0 || self->_currentStep != *(equalCopy + 2))
     {
       goto LABEL_13;
     }
   }
 
-  else if (*(v4 + 36))
+  else if (*(equalCopy + 36))
   {
     goto LABEL_13;
   }
 
-  v7 = (*(v4 + 36) & 2) == 0;
+  v7 = (*(equalCopy + 36) & 2) == 0;
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 36) & 2) == 0)
+    if ((*(equalCopy + 36) & 2) == 0)
     {
 LABEL_13:
       v7 = 0;
@@ -123,13 +123,13 @@ LABEL_13:
 
     if (self->_completed)
     {
-      if ((*(v4 + 32) & 1) == 0)
+      if ((*(equalCopy + 32) & 1) == 0)
       {
         goto LABEL_13;
       }
     }
 
-    else if (*(v4 + 32))
+    else if (*(equalCopy + 32))
     {
       goto LABEL_13;
     }
@@ -142,14 +142,14 @@ LABEL_14:
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_key copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_key copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
-  v8 = [(NSString *)self->_suggestedAutomationIdentifier copyWithZone:a3];
+  v8 = [(NSString *)self->_suggestedAutomationIdentifier copyWithZone:zone];
   v9 = *(v5 + 24);
   *(v5 + 24) = v8;
 
@@ -170,51 +170,51 @@ LABEL_14:
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_key)
   {
-    [v4 setKey:?];
-    v4 = v6;
+    [toCopy setKey:?];
+    toCopy = v6;
   }
 
   if (self->_suggestedAutomationIdentifier)
   {
     [v6 setSuggestedAutomationIdentifier:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if (has)
   {
-    *(v4 + 2) = self->_currentStep;
-    *(v4 + 36) |= 1u;
+    *(toCopy + 2) = self->_currentStep;
+    *(toCopy + 36) |= 1u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    *(v4 + 32) = self->_completed;
-    *(v4 + 36) |= 2u;
+    *(toCopy + 32) = self->_completed;
+    *(toCopy + 36) |= 2u;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v8 = v4;
+  toCopy = to;
+  v8 = toCopy;
   if (self->_key)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_suggestedAutomationIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   has = self->_has;
@@ -222,7 +222,7 @@ LABEL_14:
   {
     currentStep = self->_currentStep;
     PBDataWriterWriteUint32Field();
-    v4 = v8;
+    toCopy = v8;
     has = self->_has;
   }
 
@@ -230,18 +230,18 @@ LABEL_14:
   {
     completed = self->_completed;
     PBDataWriterWriteBOOLField();
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   key = self->_key;
   if (key)
   {
-    [v3 setObject:key forKey:@"key"];
+    [dictionary setObject:key forKey:@"key"];
   }
 
   suggestedAutomationIdentifier = self->_suggestedAutomationIdentifier;
@@ -274,15 +274,15 @@ LABEL_14:
   v8.receiver = self;
   v8.super_class = WFPBSetupSuggestedAutomationEvent;
   v4 = [(WFPBSetupSuggestedAutomationEvent *)&v8 description];
-  v5 = [(WFPBSetupSuggestedAutomationEvent *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(WFPBSetupSuggestedAutomationEvent *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)setHasCompleted:(BOOL)a3
+- (void)setHasCompleted:(BOOL)completed
 {
-  if (a3)
+  if (completed)
   {
     v3 = 2;
   }

@@ -1,15 +1,15 @@
 @interface PUWallpaperPosterEditToolBar
-- (PUWallpaperPosterEditToolBar)initWithFrame:(CGRect)a3;
+- (PUWallpaperPosterEditToolBar)initWithFrame:(CGRect)frame;
 - (PUWallpaperPosterEditToolbarDelegate)delegate;
 - (id)_createActionButton;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (id)viewForMenuElementIdentifier:(id)a3;
-- (void)_removeMenuElement:(id)a3 fromButton:(id)a4;
-- (void)_setMenuElement:(id)a3 onButton:(id)a4;
-- (void)_setMenuElements:(id)a3 oldMenuElements:(id)a4 onButtonOne:(id)a5 onButtonTwo:(id)a6;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (id)viewForMenuElementIdentifier:(id)identifier;
+- (void)_removeMenuElement:(id)element fromButton:(id)button;
+- (void)_setMenuElement:(id)element onButton:(id)button;
+- (void)_setMenuElements:(id)elements oldMenuElements:(id)menuElements onButtonOne:(id)one onButtonTwo:(id)two;
 - (void)_setupView;
-- (void)setLeadingMenuElements:(id)a3;
-- (void)setTrailingMenuElements:(id)a3;
+- (void)setLeadingMenuElements:(id)elements;
+- (void)setTrailingMenuElements:(id)elements;
 @end
 
 @implementation PUWallpaperPosterEditToolBar
@@ -21,11 +21,11 @@
   return WeakRetained;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
   v6.receiver = self;
   v6.super_class = PUWallpaperPosterEditToolBar;
-  v4 = [(PUWallpaperPosterEditToolBar *)&v6 hitTest:a4 withEvent:a3.x, a3.y];
+  v4 = [(PUWallpaperPosterEditToolBar *)&v6 hitTest:event withEvent:test.x, test.y];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -36,14 +36,14 @@
   return v4;
 }
 
-- (void)_removeMenuElement:(id)a3 fromButton:(id)a4
+- (void)_removeMenuElement:(id)element fromButton:(id)button
 {
-  v6 = a3;
-  v5 = a4;
+  elementCopy = element;
+  buttonCopy = button;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v5 setMenu:0];
+    [buttonCopy setMenu:0];
   }
 
   else
@@ -51,23 +51,23 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [v5 removeAction:v6 forControlEvents:0x2000];
+      [buttonCopy removeAction:elementCopy forControlEvents:0x2000];
     }
   }
 }
 
-- (void)_setMenuElement:(id)a3 onButton:(id)a4
+- (void)_setMenuElement:(id)element onButton:(id)button
 {
-  v7 = a3;
-  v5 = a4;
-  v6 = [v7 image];
-  [v5 setImage:v6 forState:0];
+  elementCopy = element;
+  buttonCopy = button;
+  image = [elementCopy image];
+  [buttonCopy setImage:image forState:0];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v5 setShowsMenuAsPrimaryAction:1];
-    [v5 setMenu:v7];
+    [buttonCopy setShowsMenuAsPrimaryAction:1];
+    [buttonCopy setMenu:elementCopy];
   }
 
   else
@@ -75,24 +75,24 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [v5 setShowsMenuAsPrimaryAction:0];
-      [v5 setMenu:0];
-      [v5 addAction:v7 forControlEvents:0x2000];
+      [buttonCopy setShowsMenuAsPrimaryAction:0];
+      [buttonCopy setMenu:0];
+      [buttonCopy addAction:elementCopy forControlEvents:0x2000];
     }
   }
 }
 
-- (void)_setMenuElements:(id)a3 oldMenuElements:(id)a4 onButtonOne:(id)a5 onButtonTwo:(id)a6
+- (void)_setMenuElements:(id)elements oldMenuElements:(id)menuElements onButtonOne:(id)one onButtonTwo:(id)two
 {
-  v17 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [v10 firstObject];
-  if ([v10 count] < 2)
+  elementsCopy = elements;
+  menuElementsCopy = menuElements;
+  oneCopy = one;
+  twoCopy = two;
+  firstObject = [menuElementsCopy firstObject];
+  if ([menuElementsCopy count] < 2)
   {
     v14 = 0;
-    if (!v13)
+    if (!firstObject)
     {
       goto LABEL_6;
     }
@@ -100,46 +100,46 @@
     goto LABEL_5;
   }
 
-  v14 = [v10 objectAtIndex:1];
-  if (v13)
+  v14 = [menuElementsCopy objectAtIndex:1];
+  if (firstObject)
   {
 LABEL_5:
-    [(PUWallpaperPosterEditToolBar *)self _removeMenuElement:v13 fromButton:v11];
+    [(PUWallpaperPosterEditToolBar *)self _removeMenuElement:firstObject fromButton:oneCopy];
   }
 
 LABEL_6:
   if (v14)
   {
-    [(PUWallpaperPosterEditToolBar *)self _removeMenuElement:v14 fromButton:v12];
+    [(PUWallpaperPosterEditToolBar *)self _removeMenuElement:v14 fromButton:twoCopy];
   }
 
-  v15 = [v17 firstObject];
-  if ([v17 count] < 2)
+  firstObject2 = [elementsCopy firstObject];
+  if ([elementsCopy count] < 2)
   {
     v16 = 0;
   }
 
   else
   {
-    v16 = [v17 objectAtIndex:1];
+    v16 = [elementsCopy objectAtIndex:1];
   }
 
-  [v11 setHidden:v15 == 0];
-  [v12 setHidden:v16 == 0];
-  if (v15)
+  [oneCopy setHidden:firstObject2 == 0];
+  [twoCopy setHidden:v16 == 0];
+  if (firstObject2)
   {
-    [(PUWallpaperPosterEditToolBar *)self _setMenuElement:v15 onButton:v11];
+    [(PUWallpaperPosterEditToolBar *)self _setMenuElement:firstObject2 onButton:oneCopy];
   }
 
   if (v16)
   {
-    [(PUWallpaperPosterEditToolBar *)self _setMenuElement:v16 onButton:v12];
+    [(PUWallpaperPosterEditToolBar *)self _setMenuElement:v16 onButton:twoCopy];
   }
 }
 
-- (id)viewForMenuElementIdentifier:(id)a3
+- (id)viewForMenuElementIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   if ([(NSArray *)self->_leadingMenuElements count])
   {
     v5 = 0;
@@ -156,9 +156,9 @@ LABEL_6:
         v7 = 0;
       }
 
-      v8 = [v7 identifier];
+      identifier = [v7 identifier];
 
-      if (v8 == v4)
+      if (identifier == identifierCopy)
       {
         break;
       }
@@ -204,9 +204,9 @@ LABEL_17:
         v7 = 0;
       }
 
-      v10 = [v7 identifier];
+      identifier2 = [v7 identifier];
 
-      if (v10 == v4)
+      if (identifier2 == identifierCopy)
       {
         break;
       }
@@ -235,35 +235,35 @@ LABEL_25:
   return v11;
 }
 
-- (void)setTrailingMenuElements:(id)a3
+- (void)setTrailingMenuElements:(id)elements
 {
-  v5 = a3;
+  elementsCopy = elements;
   trailingMenuElements = self->_trailingMenuElements;
-  if (trailingMenuElements != v5)
+  if (trailingMenuElements != elementsCopy)
   {
-    v9 = v5;
-    v7 = [(PUWallpaperPosterEditToolBar *)self thirdActionButton];
-    v8 = [(PUWallpaperPosterEditToolBar *)self fourthActionButton];
-    [(PUWallpaperPosterEditToolBar *)self _setMenuElements:v9 oldMenuElements:trailingMenuElements onButtonOne:v7 onButtonTwo:v8];
+    v9 = elementsCopy;
+    thirdActionButton = [(PUWallpaperPosterEditToolBar *)self thirdActionButton];
+    fourthActionButton = [(PUWallpaperPosterEditToolBar *)self fourthActionButton];
+    [(PUWallpaperPosterEditToolBar *)self _setMenuElements:v9 oldMenuElements:trailingMenuElements onButtonOne:thirdActionButton onButtonTwo:fourthActionButton];
 
-    objc_storeStrong(&self->_trailingMenuElements, a3);
-    v5 = v9;
+    objc_storeStrong(&self->_trailingMenuElements, elements);
+    elementsCopy = v9;
   }
 }
 
-- (void)setLeadingMenuElements:(id)a3
+- (void)setLeadingMenuElements:(id)elements
 {
-  v5 = a3;
+  elementsCopy = elements;
   leadingMenuElements = self->_leadingMenuElements;
-  if (leadingMenuElements != v5)
+  if (leadingMenuElements != elementsCopy)
   {
-    v9 = v5;
-    v7 = [(PUWallpaperPosterEditToolBar *)self firstActionButton];
-    v8 = [(PUWallpaperPosterEditToolBar *)self secondActionButton];
-    [(PUWallpaperPosterEditToolBar *)self _setMenuElements:v9 oldMenuElements:leadingMenuElements onButtonOne:v7 onButtonTwo:v8];
+    v9 = elementsCopy;
+    firstActionButton = [(PUWallpaperPosterEditToolBar *)self firstActionButton];
+    secondActionButton = [(PUWallpaperPosterEditToolBar *)self secondActionButton];
+    [(PUWallpaperPosterEditToolBar *)self _setMenuElements:v9 oldMenuElements:leadingMenuElements onButtonOne:firstActionButton onButtonTwo:secondActionButton];
 
-    objc_storeStrong(&self->_leadingMenuElements, a3);
-    v5 = v9;
+    objc_storeStrong(&self->_leadingMenuElements, elements);
+    elementsCopy = v9;
   }
 }
 
@@ -273,8 +273,8 @@ LABEL_25:
   v4 = [MEMORY[0x1E69DCAD8] configurationWithPointSize:20.0];
   [v3 setPreferredSymbolConfiguration:v4 forImageInState:0];
 
-  v5 = [MEMORY[0x1E69DC888] whiteColor];
-  [v3 setTintColor:v5];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  [v3 setTintColor:whiteColor];
 
   [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
   [(PUWallpaperPosterEditToolBar *)self addSubview:v3];
@@ -285,80 +285,80 @@ LABEL_25:
 - (void)_setupView
 {
   v49[12] = *MEMORY[0x1E69E9840];
-  v3 = [(PUWallpaperPosterEditToolBar *)self _createActionButton];
+  _createActionButton = [(PUWallpaperPosterEditToolBar *)self _createActionButton];
   firstActionButton = self->_firstActionButton;
-  self->_firstActionButton = v3;
+  self->_firstActionButton = _createActionButton;
 
-  v5 = [(PUWallpaperPosterEditToolBar *)self _createActionButton];
+  _createActionButton2 = [(PUWallpaperPosterEditToolBar *)self _createActionButton];
   secondActionButton = self->_secondActionButton;
-  self->_secondActionButton = v5;
+  self->_secondActionButton = _createActionButton2;
 
-  v7 = [(PUWallpaperPosterEditToolBar *)self _createActionButton];
+  _createActionButton3 = [(PUWallpaperPosterEditToolBar *)self _createActionButton];
   thirdActionButton = self->_thirdActionButton;
-  self->_thirdActionButton = v7;
+  self->_thirdActionButton = _createActionButton3;
 
-  v9 = [(PUWallpaperPosterEditToolBar *)self _createActionButton];
+  _createActionButton4 = [(PUWallpaperPosterEditToolBar *)self _createActionButton];
   fourthActionButton = self->_fourthActionButton;
-  self->_fourthActionButton = v9;
+  self->_fourthActionButton = _createActionButton4;
 
   v34 = MEMORY[0x1E696ACD8];
-  v48 = [(UIButton *)self->_firstActionButton leadingAnchor];
-  v47 = [(PUWallpaperPosterEditToolBar *)self leadingAnchor];
-  v46 = [v48 constraintEqualToAnchor:v47 constant:20.0];
+  leadingAnchor = [(UIButton *)self->_firstActionButton leadingAnchor];
+  leadingAnchor2 = [(PUWallpaperPosterEditToolBar *)self leadingAnchor];
+  v46 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:20.0];
   v49[0] = v46;
-  v45 = [(UIButton *)self->_firstActionButton bottomAnchor];
-  v44 = [(PUWallpaperPosterEditToolBar *)self bottomAnchor];
-  v43 = [v45 constraintEqualToAnchor:v44];
+  bottomAnchor = [(UIButton *)self->_firstActionButton bottomAnchor];
+  bottomAnchor2 = [(PUWallpaperPosterEditToolBar *)self bottomAnchor];
+  v43 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v49[1] = v43;
-  v42 = [(UIButton *)self->_firstActionButton topAnchor];
-  v41 = [(PUWallpaperPosterEditToolBar *)self topAnchor];
-  v40 = [v42 constraintEqualToAnchor:v41];
+  topAnchor = [(UIButton *)self->_firstActionButton topAnchor];
+  topAnchor2 = [(PUWallpaperPosterEditToolBar *)self topAnchor];
+  v40 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v49[2] = v40;
-  v39 = [(UIButton *)self->_secondActionButton leadingAnchor];
-  v38 = [(UIButton *)self->_firstActionButton trailingAnchor];
-  v37 = [v39 constraintEqualToAnchor:v38 constant:20.0];
+  leadingAnchor3 = [(UIButton *)self->_secondActionButton leadingAnchor];
+  trailingAnchor = [(UIButton *)self->_firstActionButton trailingAnchor];
+  v37 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor constant:20.0];
   v49[3] = v37;
-  v36 = [(UIButton *)self->_secondActionButton bottomAnchor];
-  v35 = [(PUWallpaperPosterEditToolBar *)self bottomAnchor];
-  v33 = [v36 constraintEqualToAnchor:v35];
+  bottomAnchor3 = [(UIButton *)self->_secondActionButton bottomAnchor];
+  bottomAnchor4 = [(PUWallpaperPosterEditToolBar *)self bottomAnchor];
+  v33 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
   v49[4] = v33;
-  v32 = [(UIButton *)self->_secondActionButton topAnchor];
-  v31 = [(PUWallpaperPosterEditToolBar *)self topAnchor];
-  v30 = [v32 constraintEqualToAnchor:v31];
+  topAnchor3 = [(UIButton *)self->_secondActionButton topAnchor];
+  topAnchor4 = [(PUWallpaperPosterEditToolBar *)self topAnchor];
+  v30 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   v49[5] = v30;
-  v29 = [(UIButton *)self->_fourthActionButton trailingAnchor];
-  v28 = [(PUWallpaperPosterEditToolBar *)self trailingAnchor];
-  v27 = [v29 constraintEqualToAnchor:v28 constant:-20.0];
+  trailingAnchor2 = [(UIButton *)self->_fourthActionButton trailingAnchor];
+  trailingAnchor3 = [(PUWallpaperPosterEditToolBar *)self trailingAnchor];
+  v27 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3 constant:-20.0];
   v49[6] = v27;
-  v26 = [(UIButton *)self->_fourthActionButton bottomAnchor];
-  v25 = [(PUWallpaperPosterEditToolBar *)self bottomAnchor];
-  v24 = [v26 constraintEqualToAnchor:v25];
+  bottomAnchor5 = [(UIButton *)self->_fourthActionButton bottomAnchor];
+  bottomAnchor6 = [(PUWallpaperPosterEditToolBar *)self bottomAnchor];
+  v24 = [bottomAnchor5 constraintEqualToAnchor:bottomAnchor6];
   v49[7] = v24;
-  v23 = [(UIButton *)self->_fourthActionButton topAnchor];
-  v22 = [(PUWallpaperPosterEditToolBar *)self topAnchor];
-  v21 = [v23 constraintEqualToAnchor:v22];
+  topAnchor5 = [(UIButton *)self->_fourthActionButton topAnchor];
+  topAnchor6 = [(PUWallpaperPosterEditToolBar *)self topAnchor];
+  v21 = [topAnchor5 constraintEqualToAnchor:topAnchor6];
   v49[8] = v21;
-  v11 = [(UIButton *)self->_thirdActionButton trailingAnchor];
-  v12 = [(UIButton *)self->_fourthActionButton leadingAnchor];
-  v13 = [v11 constraintEqualToAnchor:v12 constant:-20.0];
+  trailingAnchor4 = [(UIButton *)self->_thirdActionButton trailingAnchor];
+  leadingAnchor4 = [(UIButton *)self->_fourthActionButton leadingAnchor];
+  v13 = [trailingAnchor4 constraintEqualToAnchor:leadingAnchor4 constant:-20.0];
   v49[9] = v13;
-  v14 = [(UIButton *)self->_thirdActionButton bottomAnchor];
-  v15 = [(PUWallpaperPosterEditToolBar *)self bottomAnchor];
-  v16 = [v14 constraintEqualToAnchor:v15];
+  bottomAnchor7 = [(UIButton *)self->_thirdActionButton bottomAnchor];
+  bottomAnchor8 = [(PUWallpaperPosterEditToolBar *)self bottomAnchor];
+  v16 = [bottomAnchor7 constraintEqualToAnchor:bottomAnchor8];
   v49[10] = v16;
-  v17 = [(UIButton *)self->_thirdActionButton topAnchor];
-  v18 = [(PUWallpaperPosterEditToolBar *)self topAnchor];
-  v19 = [v17 constraintEqualToAnchor:v18];
+  topAnchor7 = [(UIButton *)self->_thirdActionButton topAnchor];
+  topAnchor8 = [(PUWallpaperPosterEditToolBar *)self topAnchor];
+  v19 = [topAnchor7 constraintEqualToAnchor:topAnchor8];
   v49[11] = v19;
   v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v49 count:12];
   [v34 activateConstraints:v20];
 }
 
-- (PUWallpaperPosterEditToolBar)initWithFrame:(CGRect)a3
+- (PUWallpaperPosterEditToolBar)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = PUWallpaperPosterEditToolBar;
-  v3 = [(PUWallpaperPosterEditToolBar *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PUWallpaperPosterEditToolBar *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

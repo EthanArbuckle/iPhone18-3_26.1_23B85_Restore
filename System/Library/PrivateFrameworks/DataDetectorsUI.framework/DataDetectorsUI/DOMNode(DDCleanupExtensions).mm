@@ -6,16 +6,16 @@
 
 - (void)dd_removeResultLinks
 {
-  if ([a1 nodeType] == 1)
+  if ([self nodeType] == 1)
   {
-    v8 = a1;
-    v2 = [v8 getElementsByTagName:@"A"];
+    selfCopy = self;
+    v2 = [selfCopy getElementsByTagName:@"A"];
     v3 = _DDArrayWithList(v2);
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = [v3 arrayByAddingObject:v8];
+      v4 = [v3 arrayByAddingObject:selfCopy];
 
       v3 = v4;
     }
@@ -26,27 +26,27 @@
       _DDRemoveResultLinksFromArrayOfAnchors(v3, 0);
     }
 
-    v5 = v8;
+    v5 = selfCopy;
   }
 
   else
   {
-    v9 = [a1 childNodes];
-    if ([v9 length])
+    childNodes = [self childNodes];
+    if ([childNodes length])
     {
       v6 = 0;
       do
       {
-        v7 = [v9 item:v6];
+        v7 = [childNodes item:v6];
         [v7 dd_removeResultLinks];
 
         v6 = (v6 + 1);
       }
 
-      while (v6 < [v9 length]);
+      while (v6 < [childNodes length]);
     }
 
-    v5 = v9;
+    v5 = childNodes;
   }
 }
 

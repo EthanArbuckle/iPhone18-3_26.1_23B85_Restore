@@ -1,120 +1,120 @@
 @interface IRHistoryEventDO
-+ (id)historyEventDOWithDate:(id)a3 candidateIdentifier:(id)a4 event:(id)a5 miloPredictionEvent:(id)a6 systemState:(id)a7 sharingPolicy:(id)a8;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToHistoryEventDO:(id)a3;
-- (IRHistoryEventDO)initWithCoder:(id)a3;
-- (IRHistoryEventDO)initWithDate:(id)a3 candidateIdentifier:(id)a4 event:(id)a5 miloPredictionEvent:(id)a6 systemState:(id)a7 sharingPolicy:(id)a8;
-- (id)copyWithReplacementCandidateIdentifier:(id)a3;
-- (id)copyWithReplacementDate:(id)a3;
-- (id)copyWithReplacementEvent:(id)a3;
-- (id)copyWithReplacementMiloPredictionEvent:(id)a3;
-- (id)copyWithReplacementSharingPolicy:(id)a3;
-- (id)copyWithReplacementSystemState:(id)a3;
++ (id)historyEventDOWithDate:(id)date candidateIdentifier:(id)identifier event:(id)event miloPredictionEvent:(id)predictionEvent systemState:(id)state sharingPolicy:(id)policy;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToHistoryEventDO:(id)o;
+- (IRHistoryEventDO)initWithCoder:(id)coder;
+- (IRHistoryEventDO)initWithDate:(id)date candidateIdentifier:(id)identifier event:(id)event miloPredictionEvent:(id)predictionEvent systemState:(id)state sharingPolicy:(id)policy;
+- (id)copyWithReplacementCandidateIdentifier:(id)identifier;
+- (id)copyWithReplacementDate:(id)date;
+- (id)copyWithReplacementEvent:(id)event;
+- (id)copyWithReplacementMiloPredictionEvent:(id)event;
+- (id)copyWithReplacementSharingPolicy:(id)policy;
+- (id)copyWithReplacementSystemState:(id)state;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IRHistoryEventDO
 
-- (IRHistoryEventDO)initWithDate:(id)a3 candidateIdentifier:(id)a4 event:(id)a5 miloPredictionEvent:(id)a6 systemState:(id)a7 sharingPolicy:(id)a8
+- (IRHistoryEventDO)initWithDate:(id)date candidateIdentifier:(id)identifier event:(id)event miloPredictionEvent:(id)predictionEvent systemState:(id)state sharingPolicy:(id)policy
 {
-  v23 = a3;
-  v22 = a4;
-  v21 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  dateCopy = date;
+  identifierCopy = identifier;
+  eventCopy = event;
+  predictionEventCopy = predictionEvent;
+  stateCopy = state;
+  policyCopy = policy;
   v24.receiver = self;
   v24.super_class = IRHistoryEventDO;
   v18 = [(IRHistoryEventDO *)&v24 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_date, a3);
-    objc_storeStrong(&v19->_candidateIdentifier, a4);
-    objc_storeStrong(&v19->_event, a5);
-    objc_storeStrong(&v19->_miloPredictionEvent, a6);
-    objc_storeStrong(&v19->_systemState, a7);
-    objc_storeStrong(&v19->_sharingPolicy, a8);
+    objc_storeStrong(&v18->_date, date);
+    objc_storeStrong(&v19->_candidateIdentifier, identifier);
+    objc_storeStrong(&v19->_event, event);
+    objc_storeStrong(&v19->_miloPredictionEvent, predictionEvent);
+    objc_storeStrong(&v19->_systemState, state);
+    objc_storeStrong(&v19->_sharingPolicy, policy);
   }
 
   return v19;
 }
 
-+ (id)historyEventDOWithDate:(id)a3 candidateIdentifier:(id)a4 event:(id)a5 miloPredictionEvent:(id)a6 systemState:(id)a7 sharingPolicy:(id)a8
++ (id)historyEventDOWithDate:(id)date candidateIdentifier:(id)identifier event:(id)event miloPredictionEvent:(id)predictionEvent systemState:(id)state sharingPolicy:(id)policy
 {
-  v14 = a8;
-  v15 = a7;
-  v16 = a6;
-  v17 = a5;
-  v18 = a4;
-  v19 = a3;
-  v20 = [[a1 alloc] initWithDate:v19 candidateIdentifier:v18 event:v17 miloPredictionEvent:v16 systemState:v15 sharingPolicy:v14];
+  policyCopy = policy;
+  stateCopy = state;
+  predictionEventCopy = predictionEvent;
+  eventCopy = event;
+  identifierCopy = identifier;
+  dateCopy = date;
+  v20 = [[self alloc] initWithDate:dateCopy candidateIdentifier:identifierCopy event:eventCopy miloPredictionEvent:predictionEventCopy systemState:stateCopy sharingPolicy:policyCopy];
 
   return v20;
 }
 
-- (id)copyWithReplacementDate:(id)a3
+- (id)copyWithReplacementDate:(id)date
 {
-  v4 = a3;
-  v5 = [objc_alloc(objc_opt_class()) initWithDate:v4 candidateIdentifier:self->_candidateIdentifier event:self->_event miloPredictionEvent:self->_miloPredictionEvent systemState:self->_systemState sharingPolicy:self->_sharingPolicy];
+  dateCopy = date;
+  v5 = [objc_alloc(objc_opt_class()) initWithDate:dateCopy candidateIdentifier:self->_candidateIdentifier event:self->_event miloPredictionEvent:self->_miloPredictionEvent systemState:self->_systemState sharingPolicy:self->_sharingPolicy];
 
   return v5;
 }
 
-- (id)copyWithReplacementCandidateIdentifier:(id)a3
+- (id)copyWithReplacementCandidateIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [objc_alloc(objc_opt_class()) initWithDate:self->_date candidateIdentifier:v4 event:self->_event miloPredictionEvent:self->_miloPredictionEvent systemState:self->_systemState sharingPolicy:self->_sharingPolicy];
+  identifierCopy = identifier;
+  v5 = [objc_alloc(objc_opt_class()) initWithDate:self->_date candidateIdentifier:identifierCopy event:self->_event miloPredictionEvent:self->_miloPredictionEvent systemState:self->_systemState sharingPolicy:self->_sharingPolicy];
 
   return v5;
 }
 
-- (id)copyWithReplacementEvent:(id)a3
+- (id)copyWithReplacementEvent:(id)event
 {
-  v4 = a3;
-  v5 = [objc_alloc(objc_opt_class()) initWithDate:self->_date candidateIdentifier:self->_candidateIdentifier event:v4 miloPredictionEvent:self->_miloPredictionEvent systemState:self->_systemState sharingPolicy:self->_sharingPolicy];
+  eventCopy = event;
+  v5 = [objc_alloc(objc_opt_class()) initWithDate:self->_date candidateIdentifier:self->_candidateIdentifier event:eventCopy miloPredictionEvent:self->_miloPredictionEvent systemState:self->_systemState sharingPolicy:self->_sharingPolicy];
 
   return v5;
 }
 
-- (id)copyWithReplacementMiloPredictionEvent:(id)a3
+- (id)copyWithReplacementMiloPredictionEvent:(id)event
 {
-  v4 = a3;
-  v5 = [objc_alloc(objc_opt_class()) initWithDate:self->_date candidateIdentifier:self->_candidateIdentifier event:self->_event miloPredictionEvent:v4 systemState:self->_systemState sharingPolicy:self->_sharingPolicy];
+  eventCopy = event;
+  v5 = [objc_alloc(objc_opt_class()) initWithDate:self->_date candidateIdentifier:self->_candidateIdentifier event:self->_event miloPredictionEvent:eventCopy systemState:self->_systemState sharingPolicy:self->_sharingPolicy];
 
   return v5;
 }
 
-- (id)copyWithReplacementSystemState:(id)a3
+- (id)copyWithReplacementSystemState:(id)state
 {
-  v4 = a3;
-  v5 = [objc_alloc(objc_opt_class()) initWithDate:self->_date candidateIdentifier:self->_candidateIdentifier event:self->_event miloPredictionEvent:self->_miloPredictionEvent systemState:v4 sharingPolicy:self->_sharingPolicy];
+  stateCopy = state;
+  v5 = [objc_alloc(objc_opt_class()) initWithDate:self->_date candidateIdentifier:self->_candidateIdentifier event:self->_event miloPredictionEvent:self->_miloPredictionEvent systemState:stateCopy sharingPolicy:self->_sharingPolicy];
 
   return v5;
 }
 
-- (id)copyWithReplacementSharingPolicy:(id)a3
+- (id)copyWithReplacementSharingPolicy:(id)policy
 {
-  v4 = a3;
-  v5 = [objc_alloc(objc_opt_class()) initWithDate:self->_date candidateIdentifier:self->_candidateIdentifier event:self->_event miloPredictionEvent:self->_miloPredictionEvent systemState:self->_systemState sharingPolicy:v4];
+  policyCopy = policy;
+  v5 = [objc_alloc(objc_opt_class()) initWithDate:self->_date candidateIdentifier:self->_candidateIdentifier event:self->_event miloPredictionEvent:self->_miloPredictionEvent systemState:self->_systemState sharingPolicy:policyCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToHistoryEventDO:(id)a3
+- (BOOL)isEqualToHistoryEventDO:(id)o
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  oCopy = o;
+  v5 = oCopy;
+  if (!oCopy)
   {
     goto LABEL_20;
   }
 
   v6 = self->_date == 0;
-  v7 = [v4 date];
-  v8 = v7 != 0;
+  date = [oCopy date];
+  v8 = date != 0;
 
   if (v6 == v8)
   {
@@ -124,8 +124,8 @@
   date = self->_date;
   if (date)
   {
-    v10 = [v5 date];
-    v11 = [(NSDate *)date isEqual:v10];
+    date2 = [v5 date];
+    v11 = [(NSDate *)date isEqual:date2];
 
     if (!v11)
     {
@@ -134,8 +134,8 @@
   }
 
   v12 = self->_candidateIdentifier == 0;
-  v13 = [v5 candidateIdentifier];
-  v14 = v13 != 0;
+  candidateIdentifier = [v5 candidateIdentifier];
+  v14 = candidateIdentifier != 0;
 
   if (v12 == v14)
   {
@@ -145,8 +145,8 @@
   candidateIdentifier = self->_candidateIdentifier;
   if (candidateIdentifier)
   {
-    v16 = [v5 candidateIdentifier];
-    v17 = [(NSString *)candidateIdentifier isEqual:v16];
+    candidateIdentifier2 = [v5 candidateIdentifier];
+    v17 = [(NSString *)candidateIdentifier isEqual:candidateIdentifier2];
 
     if (!v17)
     {
@@ -155,8 +155,8 @@
   }
 
   v18 = self->_event == 0;
-  v19 = [v5 event];
-  v20 = v19 != 0;
+  event = [v5 event];
+  v20 = event != 0;
 
   if (v18 == v20)
   {
@@ -166,8 +166,8 @@
   event = self->_event;
   if (event)
   {
-    v22 = [v5 event];
-    v23 = [(IREventDO *)event isEqual:v22];
+    event2 = [v5 event];
+    v23 = [(IREventDO *)event isEqual:event2];
 
     if (!v23)
     {
@@ -176,8 +176,8 @@
   }
 
   v24 = self->_miloPredictionEvent == 0;
-  v25 = [v5 miloPredictionEvent];
-  v26 = v25 != 0;
+  miloPredictionEvent = [v5 miloPredictionEvent];
+  v26 = miloPredictionEvent != 0;
 
   if (v24 == v26)
   {
@@ -187,8 +187,8 @@
   miloPredictionEvent = self->_miloPredictionEvent;
   if (miloPredictionEvent)
   {
-    v28 = [v5 miloPredictionEvent];
-    v29 = [(IRMiLoPredictionEventDO *)miloPredictionEvent isEqual:v28];
+    miloPredictionEvent2 = [v5 miloPredictionEvent];
+    v29 = [(IRMiLoPredictionEventDO *)miloPredictionEvent isEqual:miloPredictionEvent2];
 
     if (!v29)
     {
@@ -197,8 +197,8 @@
   }
 
   v30 = self->_systemState == 0;
-  v31 = [v5 systemState];
-  v32 = v31 != 0;
+  systemState = [v5 systemState];
+  v32 = systemState != 0;
 
   if (v30 == v32)
   {
@@ -208,8 +208,8 @@
   systemState = self->_systemState;
   if (systemState)
   {
-    v34 = [v5 systemState];
-    v35 = [(IRSystemStateDO *)systemState isEqual:v34];
+    systemState2 = [v5 systemState];
+    v35 = [(IRSystemStateDO *)systemState isEqual:systemState2];
 
     if (!v35)
     {
@@ -218,8 +218,8 @@
   }
 
   v36 = self->_sharingPolicy == 0;
-  v37 = [v5 sharingPolicy];
-  v38 = v37 != 0;
+  sharingPolicy = [v5 sharingPolicy];
+  v38 = sharingPolicy != 0;
 
   if (v36 == v38)
   {
@@ -232,8 +232,8 @@ LABEL_20:
     sharingPolicy = self->_sharingPolicy;
     if (sharingPolicy)
     {
-      v40 = [v5 sharingPolicy];
-      v41 = [(NSString *)sharingPolicy isEqual:v40];
+      sharingPolicy2 = [v5 sharingPolicy];
+      v41 = [(NSString *)sharingPolicy isEqual:sharingPolicy2];
     }
 
     else
@@ -245,18 +245,18 @@ LABEL_20:
   return v41 & 1;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(IRHistoryEventDO *)self isEqualToHistoryEventDO:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(IRHistoryEventDO *)self isEqualToHistoryEventDO:v5];
   }
 
   return v6;
@@ -272,11 +272,11 @@ LABEL_20:
   return [(NSString *)self->_sharingPolicy hash]- v7 + 32 * v7;
 }
 
-- (IRHistoryEventDO)initWithCoder:(id)a3
+- (IRHistoryEventDO)initWithCoder:(id)coder
 {
   v37[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"date"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"date"];
   if (v5)
   {
     objc_opt_class();
@@ -291,9 +291,9 @@ LABEL_20:
       v37[0] = v10;
       v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v37 forKeys:&v36 count:1];
       v12 = [objc_alloc(MEMORY[0x277CCA9B8]) initWithDomain:@"IRHistoryEventDOOCNTErrorDomain" code:3 userInfo:v11];
-      [v4 failWithError:v12];
+      [coderCopy failWithError:v12];
 LABEL_9:
-      v14 = 0;
+      selfCopy = 0;
 LABEL_10:
 
 LABEL_11:
@@ -306,7 +306,7 @@ LABEL_14:
     }
 
 LABEL_6:
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"candidateIdentifier"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"candidateIdentifier"];
     if (v7)
     {
       objc_opt_class();
@@ -321,7 +321,7 @@ LABEL_6:
         v35 = v11;
         v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v35 forKeys:&v34 count:1];
         v17 = [objc_alloc(MEMORY[0x277CCA9B8]) initWithDomain:@"IRHistoryEventDOOCNTErrorDomain" code:3 userInfo:v12];
-        [v4 failWithError:v17];
+        [coderCopy failWithError:v17];
 
         goto LABEL_9;
       }
@@ -329,52 +329,52 @@ LABEL_6:
 
     else
     {
-      v20 = [v4 error];
+      error = [coderCopy error];
 
-      if (v20)
+      if (error)
       {
-        v14 = 0;
+        selfCopy = 0;
         goto LABEL_14;
       }
     }
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"event"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"event"];
     if (!v9)
     {
-      v25 = [v4 error];
+      error2 = [coderCopy error];
 
-      if (v25)
+      if (error2)
       {
-        v14 = 0;
+        selfCopy = 0;
         goto LABEL_13;
       }
     }
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"miloPredictionEvent"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"miloPredictionEvent"];
     if (!v10)
     {
-      v26 = [v4 error];
+      error3 = [coderCopy error];
 
-      if (v26)
+      if (error3)
       {
-        v14 = 0;
+        selfCopy = 0;
         goto LABEL_12;
       }
     }
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"systemState"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"systemState"];
     if (!v11)
     {
-      v27 = [v4 error];
+      error4 = [coderCopy error];
 
-      if (v27)
+      if (error4)
       {
-        v14 = 0;
+        selfCopy = 0;
         goto LABEL_11;
       }
     }
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sharingPolicy"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sharingPolicy"];
     if (v12)
     {
       objc_opt_class();
@@ -389,7 +389,7 @@ LABEL_6:
         v33 = v29;
         v23 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v33 forKeys:&v32 count:1];
         v24 = [objc_alloc(MEMORY[0x277CCA9B8]) initWithDomain:@"IRHistoryEventDOOCNTErrorDomain" code:3 userInfo:v23];
-        [v4 failWithError:v24];
+        [coderCopy failWithError:v24];
 
         goto LABEL_9;
       }
@@ -397,77 +397,77 @@ LABEL_6:
 
     else
     {
-      v28 = [v4 error];
+      error5 = [coderCopy error];
 
-      if (v28)
+      if (error5)
       {
         goto LABEL_9;
       }
     }
 
     self = [(IRHistoryEventDO *)self initWithDate:v5 candidateIdentifier:v7 event:v9 miloPredictionEvent:v10 systemState:v11 sharingPolicy:v12];
-    v14 = self;
+    selfCopy = self;
     goto LABEL_10;
   }
 
-  v13 = [v4 error];
+  error6 = [coderCopy error];
 
-  if (!v13)
+  if (!error6)
   {
     goto LABEL_6;
   }
 
-  v14 = 0;
+  selfCopy = 0;
 LABEL_15:
 
   v18 = *MEMORY[0x277D85DE8];
-  return v14;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   date = self->_date;
-  v11 = v4;
+  v11 = coderCopy;
   if (date)
   {
-    [v4 encodeObject:date forKey:@"date"];
-    v4 = v11;
+    [coderCopy encodeObject:date forKey:@"date"];
+    coderCopy = v11;
   }
 
   candidateIdentifier = self->_candidateIdentifier;
   if (candidateIdentifier)
   {
     [v11 encodeObject:candidateIdentifier forKey:@"candidateIdentifier"];
-    v4 = v11;
+    coderCopy = v11;
   }
 
   event = self->_event;
   if (event)
   {
     [v11 encodeObject:event forKey:@"event"];
-    v4 = v11;
+    coderCopy = v11;
   }
 
   miloPredictionEvent = self->_miloPredictionEvent;
   if (miloPredictionEvent)
   {
     [v11 encodeObject:miloPredictionEvent forKey:@"miloPredictionEvent"];
-    v4 = v11;
+    coderCopy = v11;
   }
 
   systemState = self->_systemState;
   if (systemState)
   {
     [v11 encodeObject:systemState forKey:@"systemState"];
-    v4 = v11;
+    coderCopy = v11;
   }
 
   sharingPolicy = self->_sharingPolicy;
   if (sharingPolicy)
   {
     [v11 encodeObject:sharingPolicy forKey:@"sharingPolicy"];
-    v4 = v11;
+    coderCopy = v11;
   }
 }
 

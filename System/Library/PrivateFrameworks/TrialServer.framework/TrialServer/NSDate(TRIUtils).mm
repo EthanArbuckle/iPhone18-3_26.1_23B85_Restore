@@ -17,7 +17,7 @@
       [v7 timeIntervalSinceReferenceDate];
       v12 = v11;
       [v9 timeIntervalSinceReferenceDate];
-      v10 = vabdd_f64(v12, v13) <= a1;
+      v10 = vabdd_f64(v12, v13) <= self;
     }
   }
 

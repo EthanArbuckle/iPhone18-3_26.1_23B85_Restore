@@ -1,32 +1,32 @@
 @interface HKClinicalDocumentStore
-- (HKClinicalDocumentStore)initWithHealthStore:(id)a3;
+- (HKClinicalDocumentStore)initWithHealthStore:(id)store;
 - (void)_establishProxyConnection;
 - (void)_establishProxyConnectionIfNoObserversArePresent;
-- (void)_unitTesting_triggerDownloadableAttachmentDidChange:(id)a3 completion:(id)a4;
-- (void)addClinicalDocumentStateChangeListener:(id)a3;
-- (void)clientRemote_downloadableAttachmentDidChangeState:(id)a3;
-- (void)fetchAttachmentWithIdentifier:(id)a3 completion:(id)a4;
-- (void)insertDownloadableAttachment:(id)a3 completion:(id)a4;
-- (void)markDataAvailableForAttachmentWithIdentifier:(id)a3 attachmentContent:(id)a4 completion:(id)a5;
-- (void)markDownloadCompleteForAttachmentWithIdentifier:(id)a3 fileURL:(id)a4 completion:(id)a5;
-- (void)notifyDownloadingCompleteAndRequestMoreWithIdentifiers:(id)a3 requestBatchSize:(id)a4 completion:(id)a5;
-- (void)pingWithCompletion:(id)a3;
-- (void)processAttachmentWithIdentifier:(id)a3 completion:(id)a4;
-- (void)removeAllAttachmentsFromMedicalRecord:(id)a3 completion:(id)a4;
-- (void)runMedicalDownloadableAttachmentPipelineWithCompletion:(id)a3;
-- (void)triggerAttachmentRetryForMedicalRecordWithIdentifier:(id)a3 completion:(id)a4;
-- (void)updateErrorStatusAndRetryCountForAttachmentWithIdentifier:(id)a3 errorStatus:(int64_t)a4 lastError:(id)a5 retryCount:(int64_t)a6 completion:(id)a7;
-- (void)updateRetryCountForAttachmentWithIdentifier:(id)a3 retryCount:(int64_t)a4 nextRetryDate:(id)a5 completion:(id)a6;
-- (void)updateStatusAndClearErrorForAttachmentWithIdentifier:(id)a3 status:(int64_t)a4 completion:(id)a5;
+- (void)_unitTesting_triggerDownloadableAttachmentDidChange:(id)change completion:(id)completion;
+- (void)addClinicalDocumentStateChangeListener:(id)listener;
+- (void)clientRemote_downloadableAttachmentDidChangeState:(id)state;
+- (void)fetchAttachmentWithIdentifier:(id)identifier completion:(id)completion;
+- (void)insertDownloadableAttachment:(id)attachment completion:(id)completion;
+- (void)markDataAvailableForAttachmentWithIdentifier:(id)identifier attachmentContent:(id)content completion:(id)completion;
+- (void)markDownloadCompleteForAttachmentWithIdentifier:(id)identifier fileURL:(id)l completion:(id)completion;
+- (void)notifyDownloadingCompleteAndRequestMoreWithIdentifiers:(id)identifiers requestBatchSize:(id)size completion:(id)completion;
+- (void)pingWithCompletion:(id)completion;
+- (void)processAttachmentWithIdentifier:(id)identifier completion:(id)completion;
+- (void)removeAllAttachmentsFromMedicalRecord:(id)record completion:(id)completion;
+- (void)runMedicalDownloadableAttachmentPipelineWithCompletion:(id)completion;
+- (void)triggerAttachmentRetryForMedicalRecordWithIdentifier:(id)identifier completion:(id)completion;
+- (void)updateErrorStatusAndRetryCountForAttachmentWithIdentifier:(id)identifier errorStatus:(int64_t)status lastError:(id)error retryCount:(int64_t)count completion:(id)completion;
+- (void)updateRetryCountForAttachmentWithIdentifier:(id)identifier retryCount:(int64_t)count nextRetryDate:(id)date completion:(id)completion;
+- (void)updateStatusAndClearErrorForAttachmentWithIdentifier:(id)identifier status:(int64_t)status completion:(id)completion;
 @end
 
 @implementation HKClinicalDocumentStore
 
-- (HKClinicalDocumentStore)initWithHealthStore:(id)a3
+- (HKClinicalDocumentStore)initWithHealthStore:(id)store
 {
   v11.receiver = self;
   v11.super_class = HKClinicalDocumentStore;
-  v3 = [(HKClinicalStore *)&v11 initWithHealthStore:a3 exportedObject:self];
+  v3 = [(HKClinicalStore *)&v11 initWithHealthStore:store exportedObject:self];
   v4 = v3;
   if (v3)
   {
@@ -42,18 +42,18 @@
   return v4;
 }
 
-- (void)updateRetryCountForAttachmentWithIdentifier:(id)a3 retryCount:(int64_t)a4 nextRetryDate:(id)a5 completion:(id)a6
+- (void)updateRetryCountForAttachmentWithIdentifier:(id)identifier retryCount:(int64_t)count nextRetryDate:(id)date completion:(id)completion
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = [(HKClinicalStore *)self clientQueueActionHandlerWithCompletion:a6];
+  identifierCopy = identifier;
+  dateCopy = date;
+  v12 = [(HKClinicalStore *)self clientQueueActionHandlerWithCompletion:completion];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __107__HKClinicalDocumentStore_updateRetryCountForAttachmentWithIdentifier_retryCount_nextRetryDate_completion___block_invoke;
   v18[3] = &unk_2796DBFD0;
-  v22 = a4;
-  v19 = v10;
-  v20 = v11;
+  countCopy = count;
+  v19 = identifierCopy;
+  v20 = dateCopy;
   v21 = v12;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
@@ -61,21 +61,21 @@
   v16[3] = &unk_2796DBFF8;
   v17 = v21;
   v13 = v21;
-  v14 = v11;
-  v15 = v10;
+  v14 = dateCopy;
+  v15 = identifierCopy;
   [(HKClinicalStore *)self fetchServerProxyWithHandler:v18 errorHandler:v16];
 }
 
-- (void)updateStatusAndClearErrorForAttachmentWithIdentifier:(id)a3 status:(int64_t)a4 completion:(id)a5
+- (void)updateStatusAndClearErrorForAttachmentWithIdentifier:(id)identifier status:(int64_t)status completion:(id)completion
 {
-  v8 = a3;
-  v9 = [(HKClinicalStore *)self clientQueueActionHandlerWithCompletion:a5];
+  identifierCopy = identifier;
+  v9 = [(HKClinicalStore *)self clientQueueActionHandlerWithCompletion:completion];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __98__HKClinicalDocumentStore_updateStatusAndClearErrorForAttachmentWithIdentifier_status_completion___block_invoke;
   v14[3] = &unk_2796DC020;
-  v15 = v8;
-  v17 = a4;
+  v15 = identifierCopy;
+  statusCopy = status;
   v16 = v9;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
@@ -83,23 +83,23 @@
   v12[3] = &unk_2796DBFF8;
   v13 = v16;
   v10 = v16;
-  v11 = v8;
+  v11 = identifierCopy;
   [(HKClinicalStore *)self fetchServerProxyWithHandler:v14 errorHandler:v12];
 }
 
-- (void)updateErrorStatusAndRetryCountForAttachmentWithIdentifier:(id)a3 errorStatus:(int64_t)a4 lastError:(id)a5 retryCount:(int64_t)a6 completion:(id)a7
+- (void)updateErrorStatusAndRetryCountForAttachmentWithIdentifier:(id)identifier errorStatus:(int64_t)status lastError:(id)error retryCount:(int64_t)count completion:(id)completion
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = [(HKClinicalStore *)self clientQueueActionHandlerWithCompletion:a7];
+  identifierCopy = identifier;
+  errorCopy = error;
+  v14 = [(HKClinicalStore *)self clientQueueActionHandlerWithCompletion:completion];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __129__HKClinicalDocumentStore_updateErrorStatusAndRetryCountForAttachmentWithIdentifier_errorStatus_lastError_retryCount_completion___block_invoke;
   v20[3] = &unk_2796DC048;
-  v21 = v12;
-  v22 = v13;
-  v24 = a4;
-  v25 = a6;
+  v21 = identifierCopy;
+  v22 = errorCopy;
+  statusCopy = status;
+  countCopy = count;
   v23 = v14;
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
@@ -107,22 +107,22 @@
   v18[3] = &unk_2796DBFF8;
   v19 = v23;
   v15 = v23;
-  v16 = v13;
-  v17 = v12;
+  v16 = errorCopy;
+  v17 = identifierCopy;
   [(HKClinicalStore *)self fetchServerProxyWithHandler:v20 errorHandler:v18];
 }
 
-- (void)markDownloadCompleteForAttachmentWithIdentifier:(id)a3 fileURL:(id)a4 completion:(id)a5
+- (void)markDownloadCompleteForAttachmentWithIdentifier:(id)identifier fileURL:(id)l completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(HKClinicalStore *)self clientQueueActionHandlerWithCompletion:a5];
+  identifierCopy = identifier;
+  lCopy = l;
+  v10 = [(HKClinicalStore *)self clientQueueActionHandlerWithCompletion:completion];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __94__HKClinicalDocumentStore_markDownloadCompleteForAttachmentWithIdentifier_fileURL_completion___block_invoke;
   v16[3] = &unk_2796DC070;
-  v17 = v8;
-  v18 = v9;
+  v17 = identifierCopy;
+  v18 = lCopy;
   v19 = v10;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
@@ -130,22 +130,22 @@
   v14[3] = &unk_2796DBFF8;
   v15 = v19;
   v11 = v19;
-  v12 = v9;
-  v13 = v8;
+  v12 = lCopy;
+  v13 = identifierCopy;
   [(HKClinicalStore *)self fetchServerProxyWithHandler:v16 errorHandler:v14];
 }
 
-- (void)markDataAvailableForAttachmentWithIdentifier:(id)a3 attachmentContent:(id)a4 completion:(id)a5
+- (void)markDataAvailableForAttachmentWithIdentifier:(id)identifier attachmentContent:(id)content completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(HKClinicalStore *)self clientQueueActionHandlerWithCompletion:a5];
+  identifierCopy = identifier;
+  contentCopy = content;
+  v10 = [(HKClinicalStore *)self clientQueueActionHandlerWithCompletion:completion];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __101__HKClinicalDocumentStore_markDataAvailableForAttachmentWithIdentifier_attachmentContent_completion___block_invoke;
   v16[3] = &unk_2796DC070;
-  v17 = v8;
-  v18 = v9;
+  v17 = identifierCopy;
+  v18 = contentCopy;
   v19 = v10;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
@@ -153,20 +153,20 @@
   v14[3] = &unk_2796DBFF8;
   v15 = v19;
   v11 = v19;
-  v12 = v9;
-  v13 = v8;
+  v12 = contentCopy;
+  v13 = identifierCopy;
   [(HKClinicalStore *)self fetchServerProxyWithHandler:v16 errorHandler:v14];
 }
 
-- (void)fetchAttachmentWithIdentifier:(id)a3 completion:(id)a4
+- (void)fetchAttachmentWithIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = [(HKClinicalStore *)self clientQueueObjectHandlerWithCompletion:a4];
+  identifierCopy = identifier;
+  v7 = [(HKClinicalStore *)self clientQueueObjectHandlerWithCompletion:completion];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __68__HKClinicalDocumentStore_fetchAttachmentWithIdentifier_completion___block_invoke;
   v12[3] = &unk_2796DC098;
-  v13 = v6;
+  v13 = identifierCopy;
   v14 = v7;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
@@ -174,19 +174,19 @@
   v10[3] = &unk_2796DBFF8;
   v11 = v14;
   v8 = v14;
-  v9 = v6;
+  v9 = identifierCopy;
   [(HKClinicalStore *)self fetchServerProxyWithHandler:v12 errorHandler:v10];
 }
 
-- (void)processAttachmentWithIdentifier:(id)a3 completion:(id)a4
+- (void)processAttachmentWithIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = [(HKClinicalStore *)self clientQueueActionHandlerWithCompletion:a4];
+  identifierCopy = identifier;
+  v7 = [(HKClinicalStore *)self clientQueueActionHandlerWithCompletion:completion];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __70__HKClinicalDocumentStore_processAttachmentWithIdentifier_completion___block_invoke;
   v12[3] = &unk_2796DC098;
-  v13 = v6;
+  v13 = identifierCopy;
   v14 = v7;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
@@ -194,13 +194,13 @@
   v10[3] = &unk_2796DBFF8;
   v11 = v14;
   v8 = v14;
-  v9 = v6;
+  v9 = identifierCopy;
   [(HKClinicalStore *)self fetchServerProxyWithHandler:v12 errorHandler:v10];
 }
 
-- (void)runMedicalDownloadableAttachmentPipelineWithCompletion:(id)a3
+- (void)runMedicalDownloadableAttachmentPipelineWithCompletion:(id)completion
 {
-  v4 = [(HKClinicalStore *)self clientQueueActionHandlerWithCompletion:a3];
+  v4 = [(HKClinicalStore *)self clientQueueActionHandlerWithCompletion:completion];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __82__HKClinicalDocumentStore_runMedicalDownloadableAttachmentPipelineWithCompletion___block_invoke;
@@ -215,17 +215,17 @@
   [(HKClinicalStore *)self fetchServerProxyWithHandler:v8 errorHandler:v6];
 }
 
-- (void)notifyDownloadingCompleteAndRequestMoreWithIdentifiers:(id)a3 requestBatchSize:(id)a4 completion:(id)a5
+- (void)notifyDownloadingCompleteAndRequestMoreWithIdentifiers:(id)identifiers requestBatchSize:(id)size completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(HKClinicalStore *)self clientQueueObjectHandlerWithCompletion:a5];
+  identifiersCopy = identifiers;
+  sizeCopy = size;
+  v10 = [(HKClinicalStore *)self clientQueueObjectHandlerWithCompletion:completion];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __110__HKClinicalDocumentStore_notifyDownloadingCompleteAndRequestMoreWithIdentifiers_requestBatchSize_completion___block_invoke;
   v16[3] = &unk_2796DC070;
-  v17 = v8;
-  v18 = v9;
+  v17 = identifiersCopy;
+  v18 = sizeCopy;
   v19 = v10;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
@@ -233,20 +233,20 @@
   v14[3] = &unk_2796DBFF8;
   v15 = v19;
   v11 = v19;
-  v12 = v9;
-  v13 = v8;
+  v12 = sizeCopy;
+  v13 = identifiersCopy;
   [(HKClinicalStore *)self fetchServerProxyWithHandler:v16 errorHandler:v14];
 }
 
-- (void)triggerAttachmentRetryForMedicalRecordWithIdentifier:(id)a3 completion:(id)a4
+- (void)triggerAttachmentRetryForMedicalRecordWithIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = [(HKClinicalStore *)self clientQueueActionHandlerWithCompletion:a4];
+  identifierCopy = identifier;
+  v7 = [(HKClinicalStore *)self clientQueueActionHandlerWithCompletion:completion];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __91__HKClinicalDocumentStore_triggerAttachmentRetryForMedicalRecordWithIdentifier_completion___block_invoke;
   v12[3] = &unk_2796DC098;
-  v13 = v6;
+  v13 = identifierCopy;
   v14 = v7;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
@@ -254,13 +254,13 @@
   v10[3] = &unk_2796DBFF8;
   v11 = v14;
   v8 = v14;
-  v9 = v6;
+  v9 = identifierCopy;
   [(HKClinicalStore *)self fetchServerProxyWithHandler:v12 errorHandler:v10];
 }
 
-- (void)pingWithCompletion:(id)a3
+- (void)pingWithCompletion:(id)completion
 {
-  v4 = [(HKClinicalStore *)self clientQueueActionHandlerWithCompletion:a3];
+  v4 = [(HKClinicalStore *)self clientQueueActionHandlerWithCompletion:completion];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __46__HKClinicalDocumentStore_pingWithCompletion___block_invoke;
@@ -275,22 +275,22 @@
   [(HKClinicalStore *)self fetchServerProxyWithHandler:v8 errorHandler:v6];
 }
 
-- (void)addClinicalDocumentStateChangeListener:(id)a3
+- (void)addClinicalDocumentStateChangeListener:(id)listener
 {
-  v4 = a3;
+  listenerCopy = listener;
   [(HKClinicalDocumentStore *)self _establishProxyConnectionIfNoObserversArePresent];
-  [(HKObserverSet *)self->_stateChangeListeners registerObserver:v4 queue:0];
+  [(HKObserverSet *)self->_stateChangeListeners registerObserver:listenerCopy queue:0];
 }
 
-- (void)insertDownloadableAttachment:(id)a3 completion:(id)a4
+- (void)insertDownloadableAttachment:(id)attachment completion:(id)completion
 {
-  v6 = a3;
-  v7 = [(HKClinicalStore *)self clientQueueActionHandlerWithCompletion:a4];
+  attachmentCopy = attachment;
+  v7 = [(HKClinicalStore *)self clientQueueActionHandlerWithCompletion:completion];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __67__HKClinicalDocumentStore_insertDownloadableAttachment_completion___block_invoke;
   v12[3] = &unk_2796DC098;
-  v13 = v6;
+  v13 = attachmentCopy;
   v14 = v7;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
@@ -298,19 +298,19 @@
   v10[3] = &unk_2796DBFF8;
   v11 = v14;
   v8 = v14;
-  v9 = v6;
+  v9 = attachmentCopy;
   [(HKClinicalStore *)self fetchServerProxyWithHandler:v12 errorHandler:v10];
 }
 
-- (void)removeAllAttachmentsFromMedicalRecord:(id)a3 completion:(id)a4
+- (void)removeAllAttachmentsFromMedicalRecord:(id)record completion:(id)completion
 {
-  v6 = a3;
-  v7 = [(HKClinicalStore *)self clientQueueActionHandlerWithCompletion:a4];
+  recordCopy = record;
+  v7 = [(HKClinicalStore *)self clientQueueActionHandlerWithCompletion:completion];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __76__HKClinicalDocumentStore_removeAllAttachmentsFromMedicalRecord_completion___block_invoke;
   v12[3] = &unk_2796DC098;
-  v13 = v6;
+  v13 = recordCopy;
   v14 = v7;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
@@ -318,19 +318,19 @@
   v10[3] = &unk_2796DBFF8;
   v11 = v14;
   v8 = v14;
-  v9 = v6;
+  v9 = recordCopy;
   [(HKClinicalStore *)self fetchServerProxyWithHandler:v12 errorHandler:v10];
 }
 
-- (void)_unitTesting_triggerDownloadableAttachmentDidChange:(id)a3 completion:(id)a4
+- (void)_unitTesting_triggerDownloadableAttachmentDidChange:(id)change completion:(id)completion
 {
-  v6 = a3;
-  v7 = [(HKClinicalStore *)self clientQueueActionHandlerWithCompletion:a4];
+  changeCopy = change;
+  v7 = [(HKClinicalStore *)self clientQueueActionHandlerWithCompletion:completion];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __90__HKClinicalDocumentStore__unitTesting_triggerDownloadableAttachmentDidChange_completion___block_invoke;
   v12[3] = &unk_2796DC098;
-  v13 = v6;
+  v13 = changeCopy;
   v14 = v7;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
@@ -338,7 +338,7 @@
   v10[3] = &unk_2796DBFF8;
   v11 = v14;
   v8 = v14;
-  v9 = v6;
+  v9 = changeCopy;
   [(HKClinicalStore *)self fetchServerProxyWithHandler:v12 errorHandler:v10];
 }
 
@@ -399,14 +399,14 @@ void __52__HKClinicalDocumentStore__establishProxyConnection__block_invoke_295(u
   }
 }
 
-- (void)clientRemote_downloadableAttachmentDidChangeState:(id)a3
+- (void)clientRemote_downloadableAttachmentDidChangeState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   _HKInitializeLogging();
   v5 = *MEMORY[0x277CCC2C0];
   if (os_log_type_enabled(*MEMORY[0x277CCC2C0], OS_LOG_TYPE_DEBUG))
   {
-    [(HKClinicalDocumentStore *)self clientRemote_downloadableAttachmentDidChangeState:v5, v4];
+    [(HKClinicalDocumentStore *)self clientRemote_downloadableAttachmentDidChangeState:v5, stateCopy];
   }
 
   stateChangeListeners = self->_stateChangeListeners;
@@ -414,8 +414,8 @@ void __52__HKClinicalDocumentStore__establishProxyConnection__block_invoke_295(u
   v8[1] = 3221225472;
   v8[2] = __77__HKClinicalDocumentStore_clientRemote_downloadableAttachmentDidChangeState___block_invoke;
   v8[3] = &unk_2796DC160;
-  v9 = v4;
-  v7 = v4;
+  v9 = stateCopy;
+  v7 = stateCopy;
   [(HKObserverSet *)stateChangeListeners notifyObservers:v8];
 }
 

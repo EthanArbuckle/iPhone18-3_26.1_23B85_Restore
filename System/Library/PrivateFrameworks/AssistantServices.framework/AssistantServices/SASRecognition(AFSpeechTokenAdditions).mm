@@ -8,11 +8,11 @@
 - (id)af_speechUtterances
 {
   v20 = *MEMORY[0x1E69E9840];
-  v1 = [a1 utterances];
-  v2 = v1;
-  if (v1)
+  utterances = [self utterances];
+  v2 = utterances;
+  if (utterances)
   {
-    v3 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v1, "count")}];
+    v3 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(utterances, "count")}];
   }
 
   else
@@ -41,8 +41,8 @@
 
         v9 = *(*(&v15 + 1) + 8 * i);
         v10 = objc_alloc_init(AFSpeechUtterance);
-        v11 = [v9 interpretationIndices];
-        [(AFSpeechUtterance *)v10 setInterpretationIndices:v11];
+        interpretationIndices = [v9 interpretationIndices];
+        [(AFSpeechUtterance *)v10 setInterpretationIndices:interpretationIndices];
 
         [v9 confidenceScore];
         [(AFSpeechUtterance *)v10 setConfidenceScore:v12];
@@ -64,11 +64,11 @@
 - (id)af_speechPhrases
 {
   v19 = *MEMORY[0x1E69E9840];
-  v1 = [a1 phrases];
-  v2 = v1;
-  if (v1)
+  phrases = [self phrases];
+  v2 = phrases;
+  if (phrases)
   {
-    v3 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v1, "count")}];
+    v3 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(phrases, "count")}];
   }
 
   else
@@ -97,8 +97,8 @@
 
         v9 = *(*(&v14 + 1) + 8 * i);
         v10 = objc_alloc_init(AFSpeechPhrase);
-        v11 = [v9 af_speechInterpretations];
-        [(AFSpeechPhrase *)v10 setInterpretations:v11];
+        af_speechInterpretations = [v9 af_speechInterpretations];
+        [(AFSpeechPhrase *)v10 setInterpretations:af_speechInterpretations];
 
         -[AFSpeechPhrase setIsLowConfidence:](v10, "setIsLowConfidence:", [v9 lowConfidence]);
         [v3 addObject:v10];

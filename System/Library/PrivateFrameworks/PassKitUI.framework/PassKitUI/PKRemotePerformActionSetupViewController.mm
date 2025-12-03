@@ -1,19 +1,19 @@
 @interface PKRemotePerformActionSetupViewController
 - (void)didCancelAction;
 - (void)didPerformAction;
-- (void)viewServiceDidTerminateWithError:(id)a3;
+- (void)viewServiceDidTerminateWithError:(id)error;
 @end
 
 @implementation PKRemotePerformActionSetupViewController
 
-- (void)viewServiceDidTerminateWithError:(id)a3
+- (void)viewServiceDidTerminateWithError:(id)error
 {
   v8 = *MEMORY[0x1E69E9840];
   v5 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = a3;
+    errorCopy = error;
     _os_log_impl(&dword_1BD026000, v5, OS_LOG_TYPE_DEFAULT, "PKPerformActionSetupViewController view service terminated with error: %@", &v6, 0xCu);
   }
 

@@ -6,9 +6,9 @@
 
 - (void)setupFilteringContexts
 {
-  v2 = self;
+  selfCopy = self;
   v3 = objc_opt_class();
-  if (!v2)
+  if (!selfCopy)
   {
     NSStringFromClass(v3);
     objc_claimAutoreleasedReturnValue();
@@ -18,7 +18,7 @@ LABEL_8:
     return;
   }
 
-  if (([(PGAmbientNatureWallpaperSuggester *)v2 isMemberOfClass:v3]& 1) == 0)
+  if (([(PGAmbientNatureWallpaperSuggester *)selfCopy isMemberOfClass:v3]& 1) == 0)
   {
     v5 = objc_opt_class();
     NSStringFromClass(v5);
@@ -29,10 +29,10 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  v4 = [[PGLandscapeWallpaperSuggesterFilteringContext alloc] initForAmbient];
-  [(PGLandscapeWallpaperSuggester *)v2 setPrimaryFilteringContext:v4];
+  initForAmbient = [[PGLandscapeWallpaperSuggesterFilteringContext alloc] initForAmbient];
+  [(PGLandscapeWallpaperSuggester *)selfCopy setPrimaryFilteringContext:initForAmbient];
 
-  [(PGLandscapeWallpaperSuggester *)v2 setSecondaryFilteringContext:0];
+  [(PGLandscapeWallpaperSuggester *)selfCopy setSecondaryFilteringContext:0];
 }
 
 @end

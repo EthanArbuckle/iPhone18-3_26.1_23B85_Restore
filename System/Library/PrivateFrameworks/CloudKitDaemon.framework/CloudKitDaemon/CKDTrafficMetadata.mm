@@ -2,10 +2,10 @@
 - (NSDate)timestamp;
 - (NSDictionary)headers;
 - (NSURL)url;
-- (void)encodeWithCoder:(id)a3;
-- (void)setHeaders:(id)a3;
-- (void)setTimestamp:(id)a3;
-- (void)setUrl:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setHeaders:(id)headers;
+- (void)setTimestamp:(id)timestamp;
+- (void)setUrl:(id)url;
 @end
 
 @implementation CKDTrafficMetadata
@@ -28,13 +28,13 @@
   return isa;
 }
 
-- (void)setTimestamp:(id)a3
+- (void)setTimestamp:(id)timestamp
 {
   v5 = sub_2250B0DFC(&unk_27D719260, &unk_225445B40);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x28223BE20](v5 - 8);
   v8 = &v12 - v7;
-  if (a3)
+  if (timestamp)
   {
     static Date._unconditionallyBridgeFromObjectiveC(_:)();
     v9 = type metadata accessor for Date();
@@ -48,7 +48,7 @@
   }
 
   sub_22507C8C0(v8, v10, 1, v9);
-  v11 = self;
+  selfCopy = self;
   sub_225108094(v8);
 }
 
@@ -71,13 +71,13 @@
   return v8;
 }
 
-- (void)setUrl:(id)a3
+- (void)setUrl:(id)url
 {
   v5 = sub_2250B0DFC(&qword_27D7197B8, &unk_225447A60);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x28223BE20](v5 - 8);
   v8 = &v12 - v7;
-  if (a3)
+  if (url)
   {
     static URL._unconditionallyBridgeFromObjectiveC(_:)();
     v9 = type metadata accessor for URL();
@@ -91,7 +91,7 @@
   }
 
   sub_22507C8C0(v8, v10, 1, v9);
-  v11 = self;
+  selfCopy = self;
   sub_225108304(v8);
 }
 
@@ -110,9 +110,9 @@
   return v2.super.isa;
 }
 
-- (void)setHeaders:(id)a3
+- (void)setHeaders:(id)headers
 {
-  if (a3)
+  if (headers)
   {
     v4 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
   }
@@ -122,15 +122,15 @@
     v4 = 0;
   }
 
-  v5 = self;
+  selfCopy = self;
   sub_22510857C(v4);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_225108854(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_225108854(coderCopy);
 }
 
 @end

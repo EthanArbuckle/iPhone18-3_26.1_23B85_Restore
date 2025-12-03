@@ -1,8 +1,8 @@
 @interface PKEncryptedDataObject
-- (PKEncryptedDataObject)initWithCoder:(id)a3;
-- (PKEncryptedDataObject)initWithWebServiceDictionary:(id)a3;
+- (PKEncryptedDataObject)initWithCoder:(id)coder;
+- (PKEncryptedDataObject)initWithWebServiceDictionary:(id)dictionary;
 - (id)asWebServiceDictionary;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKEncryptedDataObject
@@ -42,17 +42,17 @@
   return v10;
 }
 
-- (PKEncryptedDataObject)initWithWebServiceDictionary:(id)a3
+- (PKEncryptedDataObject)initWithWebServiceDictionary:(id)dictionary
 {
-  v4 = a3;
-  if (v4)
+  dictionaryCopy = dictionary;
+  if (dictionaryCopy)
   {
     v19.receiver = self;
     v19.super_class = PKEncryptedDataObject;
     self = [(PKEncryptedDataObject *)&v19 init];
     if (self)
     {
-      v5 = [v4 PKStringForKey:@"publicKeyHash"];
+      v5 = [dictionaryCopy PKStringForKey:@"publicKeyHash"];
       if (v5)
       {
         v6 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBase64EncodedString:v5 options:0];
@@ -60,7 +60,7 @@
         self->_publicKeyHash = v6;
       }
 
-      v8 = [v4 PKStringForKey:@"ephemeralPublicKey"];
+      v8 = [dictionaryCopy PKStringForKey:@"ephemeralPublicKey"];
       if (v8)
       {
         v9 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBase64EncodedString:v8 options:0];
@@ -68,7 +68,7 @@
         self->_ephemeralPublicKey = v9;
       }
 
-      v11 = [v4 PKStringForKey:@"data"];
+      v11 = [dictionaryCopy PKStringForKey:@"data"];
       if (v11)
       {
         v12 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBase64EncodedString:v11 options:0];
@@ -76,7 +76,7 @@
         self->_data = v12;
       }
 
-      v14 = [v4 PKStringForKey:@"version"];
+      v14 = [dictionaryCopy PKStringForKey:@"version"];
       v15 = v14;
       v17 = 1;
       if (v14 != @"EC_v3")
@@ -94,42 +94,42 @@
   return self;
 }
 
-- (PKEncryptedDataObject)initWithCoder:(id)a3
+- (PKEncryptedDataObject)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = PKEncryptedDataObject;
   v5 = [(PKEncryptedDataObject *)&v14 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"publicKeyHash"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"publicKeyHash"];
     publicKeyHash = v5->_publicKeyHash;
     v5->_publicKeyHash = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ephemeralPublicKey"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ephemeralPublicKey"];
     ephemeralPublicKey = v5->_ephemeralPublicKey;
     v5->_ephemeralPublicKey = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"data"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"data"];
     data = v5->_data;
     v5->_data = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"version"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"version"];
     v5->_version = [v12 unsignedIntegerValue];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   publicKeyHash = self->_publicKeyHash;
-  v5 = a3;
-  [v5 encodeObject:publicKeyHash forKey:@"publicKeyHash"];
-  [v5 encodeObject:self->_ephemeralPublicKey forKey:@"ephemeralPublicKey"];
-  [v5 encodeObject:self->_data forKey:@"data"];
+  coderCopy = coder;
+  [coderCopy encodeObject:publicKeyHash forKey:@"publicKeyHash"];
+  [coderCopy encodeObject:self->_ephemeralPublicKey forKey:@"ephemeralPublicKey"];
+  [coderCopy encodeObject:self->_data forKey:@"data"];
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_version];
-  [v5 encodeObject:v6 forKey:@"version"];
+  [coderCopy encodeObject:v6 forKey:@"version"];
 }
 
 @end

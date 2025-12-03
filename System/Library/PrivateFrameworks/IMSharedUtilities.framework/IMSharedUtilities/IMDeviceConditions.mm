@@ -15,7 +15,7 @@
   block[1] = 3221225472;
   block[2] = sub_1A86F3C58;
   block[3] = &unk_1E7826200;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1ED8CA2F0 != -1)
   {
     dispatch_once(&qword_1ED8CA2F0, block);
@@ -28,18 +28,18 @@
 
 - (BOOL)isDeviceOnWifi
 {
-  v2 = [(IMDeviceConditions *)self _mobileNetworkManager];
-  v3 = [v2 isWiFiUsable];
+  _mobileNetworkManager = [(IMDeviceConditions *)self _mobileNetworkManager];
+  isWiFiUsable = [_mobileNetworkManager isWiFiUsable];
 
-  return v3;
+  return isWiFiUsable;
 }
 
 - (BOOL)isDeviceOnData
 {
-  v2 = [MEMORY[0x1E699BE90] sharedInstance];
-  v3 = [v2 dataActiveAndReachable];
+  mEMORY[0x1E699BE90] = [MEMORY[0x1E699BE90] sharedInstance];
+  dataActiveAndReachable = [mEMORY[0x1E699BE90] dataActiveAndReachable];
 
-  return v3;
+  return dataActiveAndReachable;
 }
 
 - (BOOL)isOnLowBandwidthCellular
@@ -66,10 +66,10 @@
 
 - (BOOL)isDeviceCharging
 {
-  v2 = [(IMDeviceConditions *)self _batteryStatus];
-  v3 = [v2 isCharging];
+  _batteryStatus = [(IMDeviceConditions *)self _batteryStatus];
+  isCharging = [_batteryStatus isCharging];
 
-  return v3;
+  return isCharging;
 }
 
 @end

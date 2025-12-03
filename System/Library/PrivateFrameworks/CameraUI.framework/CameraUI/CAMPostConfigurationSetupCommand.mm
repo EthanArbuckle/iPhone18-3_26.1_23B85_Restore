@@ -1,156 +1,156 @@
 @interface CAMPostConfigurationSetupCommand
-- (CAMPostConfigurationSetupCommand)initWithCoder:(id)a3;
-- (CAMPostConfigurationSetupCommand)initWithGraphConfiguration:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)_configure48MPZSL:(id)a3;
-- (void)_configureAudioConfigurationForContext:(id)a3;
-- (void)_configureAudioSessionForBluetoothHighQualityRecording:(id)a3;
-- (void)_configureAudioSessionMixesWithOthersForContext:(id)a3;
-- (void)_configureAudioWindNoiseRemovalEnabledForContext:(id)a3;
-- (void)_configureControlCenterVideoEffectsForContext:(id)a3;
-- (void)_configureLivePhotoPreservationSuspension:(id)a3;
-- (void)_configureSmoothZoomingForContext:(id)a3;
-- (void)_configureSmudgeDetection:(id)a3;
-- (void)_configureSpatialPhotoCaptureEnabled:(id)a3;
-- (void)_configureStereoVideoCaptureEnabled:(id)a3;
-- (void)_configureTrueVideoEnabled:(id)a3;
-- (void)_configureVideoGreenGhostMitigationForContext:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)executeWithContext:(id)a3;
+- (CAMPostConfigurationSetupCommand)initWithCoder:(id)coder;
+- (CAMPostConfigurationSetupCommand)initWithGraphConfiguration:(id)configuration;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)_configure48MPZSL:(id)l;
+- (void)_configureAudioConfigurationForContext:(id)context;
+- (void)_configureAudioSessionForBluetoothHighQualityRecording:(id)recording;
+- (void)_configureAudioSessionMixesWithOthersForContext:(id)context;
+- (void)_configureAudioWindNoiseRemovalEnabledForContext:(id)context;
+- (void)_configureControlCenterVideoEffectsForContext:(id)context;
+- (void)_configureLivePhotoPreservationSuspension:(id)suspension;
+- (void)_configureSmoothZoomingForContext:(id)context;
+- (void)_configureSmudgeDetection:(id)detection;
+- (void)_configureSpatialPhotoCaptureEnabled:(id)enabled;
+- (void)_configureStereoVideoCaptureEnabled:(id)enabled;
+- (void)_configureTrueVideoEnabled:(id)enabled;
+- (void)_configureVideoGreenGhostMitigationForContext:(id)context;
+- (void)encodeWithCoder:(id)coder;
+- (void)executeWithContext:(id)context;
 @end
 
 @implementation CAMPostConfigurationSetupCommand
 
-- (CAMPostConfigurationSetupCommand)initWithGraphConfiguration:(id)a3
+- (CAMPostConfigurationSetupCommand)initWithGraphConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v10.receiver = self;
   v10.super_class = CAMPostConfigurationSetupCommand;
   v6 = [(CAMCaptureCommand *)&v10 initWithSubcommands:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_graphConfiguration, a3);
+    objc_storeStrong(&v6->_graphConfiguration, configuration);
     v8 = v7;
   }
 
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = CAMPostConfigurationSetupCommand;
-  v4 = [(CAMCaptureCommand *)&v8 copyWithZone:a3];
-  v5 = [(CAMPostConfigurationSetupCommand *)self graphConfiguration];
+  v4 = [(CAMCaptureCommand *)&v8 copyWithZone:zone];
+  graphConfiguration = [(CAMPostConfigurationSetupCommand *)self graphConfiguration];
   v6 = v4[3];
-  v4[3] = v5;
+  v4[3] = graphConfiguration;
 
   return v4;
 }
 
-- (CAMPostConfigurationSetupCommand)initWithCoder:(id)a3
+- (CAMPostConfigurationSetupCommand)initWithCoder:(id)coder
 {
   [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"NSCoding not implemented"];
 
   return 0;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = CAMPostConfigurationSetupCommand;
-  [(CAMCaptureCommand *)&v3 encodeWithCoder:a3];
+  [(CAMCaptureCommand *)&v3 encodeWithCoder:coder];
   [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"NSCoding not implemented"];
 }
 
-- (void)executeWithContext:(id)a3
+- (void)executeWithContext:(id)context
 {
-  v4 = a3;
-  [(CAMPostConfigurationSetupCommand *)self _configureControlCenterVideoEffectsForContext:v4];
-  [(CAMPostConfigurationSetupCommand *)self _configureSmoothZoomingForContext:v4];
-  [(CAMPostConfigurationSetupCommand *)self _configureVideoGreenGhostMitigationForContext:v4];
-  [(CAMPostConfigurationSetupCommand *)self _configureLivePhotoPreservationSuspension:v4];
-  [(CAMPostConfigurationSetupCommand *)self _configureAudioSessionMixesWithOthersForContext:v4];
-  [(CAMPostConfigurationSetupCommand *)self _configureAudioSessionForBluetoothHighQualityRecording:v4];
-  [(CAMPostConfigurationSetupCommand *)self _configureStereoVideoCaptureEnabled:v4];
-  [(CAMPostConfigurationSetupCommand *)self _configureAudioConfigurationForContext:v4];
-  [(CAMPostConfigurationSetupCommand *)self _configureAudioWindNoiseRemovalEnabledForContext:v4];
-  [(CAMPostConfigurationSetupCommand *)self _configureSpatialPhotoCaptureEnabled:v4];
-  [(CAMPostConfigurationSetupCommand *)self _configureTrueVideoEnabled:v4];
-  [(CAMPostConfigurationSetupCommand *)self _configure48MPZSL:v4];
-  [(CAMPostConfigurationSetupCommand *)self _configureSmudgeDetection:v4];
+  contextCopy = context;
+  [(CAMPostConfigurationSetupCommand *)self _configureControlCenterVideoEffectsForContext:contextCopy];
+  [(CAMPostConfigurationSetupCommand *)self _configureSmoothZoomingForContext:contextCopy];
+  [(CAMPostConfigurationSetupCommand *)self _configureVideoGreenGhostMitigationForContext:contextCopy];
+  [(CAMPostConfigurationSetupCommand *)self _configureLivePhotoPreservationSuspension:contextCopy];
+  [(CAMPostConfigurationSetupCommand *)self _configureAudioSessionMixesWithOthersForContext:contextCopy];
+  [(CAMPostConfigurationSetupCommand *)self _configureAudioSessionForBluetoothHighQualityRecording:contextCopy];
+  [(CAMPostConfigurationSetupCommand *)self _configureStereoVideoCaptureEnabled:contextCopy];
+  [(CAMPostConfigurationSetupCommand *)self _configureAudioConfigurationForContext:contextCopy];
+  [(CAMPostConfigurationSetupCommand *)self _configureAudioWindNoiseRemovalEnabledForContext:contextCopy];
+  [(CAMPostConfigurationSetupCommand *)self _configureSpatialPhotoCaptureEnabled:contextCopy];
+  [(CAMPostConfigurationSetupCommand *)self _configureTrueVideoEnabled:contextCopy];
+  [(CAMPostConfigurationSetupCommand *)self _configure48MPZSL:contextCopy];
+  [(CAMPostConfigurationSetupCommand *)self _configureSmudgeDetection:contextCopy];
 }
 
-- (void)_configureControlCenterVideoEffectsForContext:(id)a3
+- (void)_configureControlCenterVideoEffectsForContext:(id)context
 {
-  v3 = [a3 currentVideoDeviceInput];
-  [v3 setBackgroundBlurAllowed:0];
-  [v3 setCenterStageAllowed:0];
+  currentVideoDeviceInput = [context currentVideoDeviceInput];
+  [currentVideoDeviceInput setBackgroundBlurAllowed:0];
+  [currentVideoDeviceInput setCenterStageAllowed:0];
 }
 
-- (void)_configureSmoothZoomingForContext:(id)a3
+- (void)_configureSmoothZoomingForContext:(id)context
 {
-  v4 = [a3 currentMovieFileOutput];
-  v3 = [v4 connectionWithMediaType:*MEMORY[0x1E6987608]];
+  currentMovieFileOutput = [context currentMovieFileOutput];
+  v3 = [currentMovieFileOutput connectionWithMediaType:*MEMORY[0x1E6987608]];
   if ([v3 isVideoZoomSmoothingSupported])
   {
     [v3 setVideoZoomSmoothingEnabled:{objc_msgSend(v3, "isVideoZoomSmoothingSupported")}];
   }
 }
 
-- (void)_configureVideoGreenGhostMitigationForContext:(id)a3
+- (void)_configureVideoGreenGhostMitigationForContext:(id)context
 {
-  v4 = [a3 currentMovieFileOutput];
-  v3 = [v4 connectionWithMediaType:*MEMORY[0x1E6987608]];
+  currentMovieFileOutput = [context currentMovieFileOutput];
+  v3 = [currentMovieFileOutput connectionWithMediaType:*MEMORY[0x1E6987608]];
   if ([v3 isVideoGreenGhostMitigationSupported])
   {
     [v3 setVideoGreenGhostMitigationEnabled:1];
   }
 }
 
-- (void)_configureLivePhotoPreservationSuspension:(id)a3
+- (void)_configureLivePhotoPreservationSuspension:(id)suspension
 {
-  v3 = [a3 currentStillImageOutput];
-  if ([v3 isLivePhotoCaptureSupported] && (objc_opt_respondsToSelector() & 1) != 0)
+  currentStillImageOutput = [suspension currentStillImageOutput];
+  if ([currentStillImageOutput isLivePhotoCaptureSupported] && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v3 setPreservesLivePhotoCaptureSuspendedOnSessionStop:1];
+    [currentStillImageOutput setPreservesLivePhotoCaptureSuspendedOnSessionStop:1];
   }
 }
 
-- (void)_configureAudioSessionMixesWithOthersForContext:(id)a3
+- (void)_configureAudioSessionMixesWithOthersForContext:(id)context
 {
-  v5 = [a3 currentCaptureSession];
+  currentCaptureSession = [context currentCaptureSession];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [(CAMPostConfigurationSetupCommand *)self graphConfiguration];
-    [v5 setConfiguresApplicationAudioSessionToMixWithOthers:{objc_msgSend(v4, "mixAudioWithOthers")}];
+    graphConfiguration = [(CAMPostConfigurationSetupCommand *)self graphConfiguration];
+    [currentCaptureSession setConfiguresApplicationAudioSessionToMixWithOthers:{objc_msgSend(graphConfiguration, "mixAudioWithOthers")}];
   }
 }
 
-- (void)_configureAudioSessionForBluetoothHighQualityRecording:(id)a3
+- (void)_configureAudioSessionForBluetoothHighQualityRecording:(id)recording
 {
-  v3 = [a3 currentCaptureSession];
-  [v3 setConfiguresApplicationAudioSessionForBluetoothHighQualityRecording:1];
+  currentCaptureSession = [recording currentCaptureSession];
+  [currentCaptureSession setConfiguresApplicationAudioSessionForBluetoothHighQualityRecording:1];
 }
 
-- (void)_configureStereoVideoCaptureEnabled:(id)a3
+- (void)_configureStereoVideoCaptureEnabled:(id)enabled
 {
-  v4 = a3;
-  v11 = [v4 currentMovieFileOutput];
-  v5 = [v4 currentVideoDeviceInput];
+  enabledCopy = enabled;
+  currentMovieFileOutput = [enabledCopy currentMovieFileOutput];
+  currentVideoDeviceInput = [enabledCopy currentVideoDeviceInput];
 
-  if (v11 && v5)
+  if (currentMovieFileOutput && currentVideoDeviceInput)
   {
     v6 = +[CAMCaptureCapabilities capabilities];
-    v7 = [v6 isSpatialModeSupported];
+    isSpatialModeSupported = [v6 isSpatialModeSupported];
 
-    if (v7)
+    if (isSpatialModeSupported)
     {
-      v8 = [(CAMPostConfigurationSetupCommand *)self graphConfiguration];
-      v9 = [v8 mode];
+      graphConfiguration = [(CAMPostConfigurationSetupCommand *)self graphConfiguration];
+      mode = [graphConfiguration mode];
 
-      v10 = v9 == 8;
+      v10 = mode == 8;
     }
 
     else
@@ -158,27 +158,27 @@
       v10 = 0;
     }
 
-    if ([v11 isSpatialVideoCaptureSupported])
+    if ([currentMovieFileOutput isSpatialVideoCaptureSupported])
     {
-      [v11 setSpatialVideoCaptureEnabled:v10];
+      [currentMovieFileOutput setSpatialVideoCaptureEnabled:v10];
     }
   }
 }
 
-- (void)_configureAudioConfigurationForContext:(id)a3
+- (void)_configureAudioConfigurationForContext:(id)context
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = [a3 currentAudioDeviceInput];
-  if (v4)
+  currentAudioDeviceInput = [context currentAudioDeviceInput];
+  if (currentAudioDeviceInput)
   {
-    v5 = [(CAMPostConfigurationSetupCommand *)self graphConfiguration];
-    v6 = [v5 audioConfiguration];
+    graphConfiguration = [(CAMPostConfigurationSetupCommand *)self graphConfiguration];
+    audioConfiguration = [graphConfiguration audioConfiguration];
 
-    v7 = [CAMCaptureConversions AVCaptureDeviceAudioCaptureModeForCAMAudioConfiguration:v6];
-    v8 = [v4 isAudioCaptureModeSupported:v7];
+    v7 = [CAMCaptureConversions AVCaptureDeviceAudioCaptureModeForCAMAudioConfiguration:audioConfiguration];
+    v8 = [currentAudioDeviceInput isAudioCaptureModeSupported:v7];
     if (v8)
     {
-      v9 = v6 == 0;
+      v9 = audioConfiguration == 0;
     }
 
     else
@@ -203,125 +203,125 @@
 
     else
     {
-      [v4 setAudioCaptureMode:v7];
+      [currentAudioDeviceInput setAudioCaptureMode:v7];
     }
   }
 }
 
-- (void)_configureAudioWindNoiseRemovalEnabledForContext:(id)a3
+- (void)_configureAudioWindNoiseRemovalEnabledForContext:(id)context
 {
-  v4 = [a3 currentAudioDeviceInput];
-  v5 = v4;
-  if (v4)
+  currentAudioDeviceInput = [context currentAudioDeviceInput];
+  v5 = currentAudioDeviceInput;
+  if (currentAudioDeviceInput)
   {
-    v7 = v4;
-    v4 = [v4 isWindNoiseRemovalSupported];
+    v7 = currentAudioDeviceInput;
+    currentAudioDeviceInput = [currentAudioDeviceInput isWindNoiseRemovalSupported];
     v5 = v7;
-    if (v4)
+    if (currentAudioDeviceInput)
     {
-      v6 = [(CAMPostConfigurationSetupCommand *)self graphConfiguration];
-      [v7 setWindNoiseRemovalEnabled:{objc_msgSend(v6, "windNoiseRemovalEnabled")}];
+      graphConfiguration = [(CAMPostConfigurationSetupCommand *)self graphConfiguration];
+      [v7 setWindNoiseRemovalEnabled:{objc_msgSend(graphConfiguration, "windNoiseRemovalEnabled")}];
 
       v5 = v7;
     }
   }
 
-  MEMORY[0x1EEE66BB8](v4, v5);
+  MEMORY[0x1EEE66BB8](currentAudioDeviceInput, v5);
 }
 
-- (void)_configureSpatialPhotoCaptureEnabled:(id)a3
+- (void)_configureSpatialPhotoCaptureEnabled:(id)enabled
 {
-  v6 = [a3 currentStillImageOutput];
-  if (v6)
+  currentStillImageOutput = [enabled currentStillImageOutput];
+  if (currentStillImageOutput)
   {
-    v4 = [(CAMPostConfigurationSetupCommand *)self graphConfiguration];
-    v5 = [v4 mode];
+    graphConfiguration = [(CAMPostConfigurationSetupCommand *)self graphConfiguration];
+    mode = [graphConfiguration mode];
 
-    if ([v6 isSpatialPhotoCaptureSupported])
+    if ([currentStillImageOutput isSpatialPhotoCaptureSupported])
     {
-      [v6 setSpatialPhotoCaptureEnabled:v5 == 9];
+      [currentStillImageOutput setSpatialPhotoCaptureEnabled:mode == 9];
     }
   }
 }
 
-- (void)_configureTrueVideoEnabled:(id)a3
+- (void)_configureTrueVideoEnabled:(id)enabled
 {
-  v4 = [a3 currentMovieFileOutput];
-  v5 = v4;
-  if (v4)
+  currentMovieFileOutput = [enabled currentMovieFileOutput];
+  v5 = currentMovieFileOutput;
+  if (currentMovieFileOutput)
   {
-    v7 = v4;
-    v4 = [v4 isTrueVideoCaptureSupported];
+    v7 = currentMovieFileOutput;
+    currentMovieFileOutput = [currentMovieFileOutput isTrueVideoCaptureSupported];
     v5 = v7;
-    if (v4)
+    if (currentMovieFileOutput)
     {
-      v6 = [(CAMPostConfigurationSetupCommand *)self graphConfiguration];
-      [v7 setTrueVideoCaptureEnabled:{objc_msgSend(v6, "trueVideoEnabled")}];
+      graphConfiguration = [(CAMPostConfigurationSetupCommand *)self graphConfiguration];
+      [v7 setTrueVideoCaptureEnabled:{objc_msgSend(graphConfiguration, "trueVideoEnabled")}];
 
       v5 = v7;
     }
   }
 
-  MEMORY[0x1EEE66BB8](v4, v5);
+  MEMORY[0x1EEE66BB8](currentMovieFileOutput, v5);
 }
 
-- (void)_configure48MPZSL:(id)a3
+- (void)_configure48MPZSL:(id)l
 {
-  v4 = [a3 currentStillImageOutput];
-  v5 = v4;
-  if (v4)
+  currentStillImageOutput = [l currentStillImageOutput];
+  v5 = currentStillImageOutput;
+  if (currentStillImageOutput)
   {
-    v7 = v4;
-    v4 = [v4 isUltraHighResolutionZeroShutterLagSupported];
+    v7 = currentStillImageOutput;
+    currentStillImageOutput = [currentStillImageOutput isUltraHighResolutionZeroShutterLagSupported];
     v5 = v7;
-    if (v4)
+    if (currentStillImageOutput)
     {
-      v6 = [(CAMPostConfigurationSetupCommand *)self graphConfiguration];
-      [v7 setUltraHighResolutionZeroShutterLagSupportEnabled:{objc_msgSend(v6, "maximumPhotoResolution") == 3}];
+      graphConfiguration = [(CAMPostConfigurationSetupCommand *)self graphConfiguration];
+      [v7 setUltraHighResolutionZeroShutterLagSupportEnabled:{objc_msgSend(graphConfiguration, "maximumPhotoResolution") == 3}];
 
       v5 = v7;
     }
   }
 
-  MEMORY[0x1EEE66BB8](v4, v5);
+  MEMORY[0x1EEE66BB8](currentStillImageOutput, v5);
 }
 
-- (void)_configureSmudgeDetection:(id)a3
+- (void)_configureSmudgeDetection:(id)detection
 {
-  v4 = a3;
-  v5 = [(CAMPostConfigurationSetupCommand *)self graphConfiguration];
-  v6 = [v5 mode];
+  detectionCopy = detection;
+  graphConfiguration = [(CAMPostConfigurationSetupCommand *)self graphConfiguration];
+  mode = [graphConfiguration mode];
 
-  if (v6 <= 9)
+  if (mode <= 9)
   {
-    if (((1 << v6) & 0x3EE) != 0)
+    if (((1 << mode) & 0x3EE) != 0)
     {
-      v7 = [v4 currentVideoDevice];
-      v8 = [v7 activeFormat];
-      v9 = [v8 isCameraLensSmudgeDetectionSupported];
+      currentVideoDevice = [detectionCopy currentVideoDevice];
+      activeFormat = [currentVideoDevice activeFormat];
+      isCameraLensSmudgeDetectionSupported = [activeFormat isCameraLensSmudgeDetectionSupported];
 
-      if (v9)
+      if (isCameraLensSmudgeDetectionSupported)
       {
-        v10 = [v4 currentVideoDevice];
-        v11 = v10;
+        currentVideoDevice2 = [detectionCopy currentVideoDevice];
+        v11 = currentVideoDevice2;
         v16 = *MEMORY[0x1E6960C70];
         v17 = *(MEMORY[0x1E6960C70] + 16);
         v12 = 0;
 LABEL_7:
-        [v10 setCameraLensSmudgeDetectionEnabled:v12 detectionInterval:{&v16, v16, v17}];
+        [currentVideoDevice2 setCameraLensSmudgeDetectionEnabled:v12 detectionInterval:{&v16, v16, v17}];
       }
     }
 
     else
     {
-      v13 = [v4 currentVideoDevice];
-      v14 = [v13 activeFormat];
-      v15 = [v14 isCameraLensSmudgeDetectionSupported];
+      currentVideoDevice3 = [detectionCopy currentVideoDevice];
+      activeFormat2 = [currentVideoDevice3 activeFormat];
+      isCameraLensSmudgeDetectionSupported2 = [activeFormat2 isCameraLensSmudgeDetectionSupported];
 
-      if (v15)
+      if (isCameraLensSmudgeDetectionSupported2)
       {
-        v10 = [v4 currentVideoDevice];
-        v11 = v10;
+        currentVideoDevice2 = [detectionCopy currentVideoDevice];
+        v11 = currentVideoDevice2;
         v16 = *MEMORY[0x1E6960C70];
         v17 = *(MEMORY[0x1E6960C70] + 16);
         v12 = 1;

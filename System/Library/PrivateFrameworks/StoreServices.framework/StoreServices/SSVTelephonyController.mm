@@ -2,7 +2,7 @@
 + (BOOL)_hasRequiredTelephonyEntitlement;
 + (SSVTelephonyController)sharedController;
 - (BOOL)_ensureTelephonyHandlesAreReady;
-- (BOOL)sendSMSWithText:(id)a3 toPhoneNumber:(id)a4 countryCode:(id)a5 error:(id *)a6;
+- (BOOL)sendSMSWithText:(id)text toPhoneNumber:(id)number countryCode:(id)code error:(id *)error;
 - (NSString)IMEI;
 - (NSString)mobileSubscriberCountryCode;
 - (NSString)mobileSubscriberNetworkCode;
@@ -21,10 +21,10 @@
 - (void)_updateRegistrationStatus;
 - (void)activeSubscriptionsDidChange;
 - (void)dealloc;
-- (void)displayStatusChanged:(id)a3 status:(id)a4;
-- (void)operatorNameChanged:(id)a3 name:(id)a4;
-- (void)phoneNumberAvailable:(id)a3;
-- (void)phoneNumberChanged:(id)a3;
+- (void)displayStatusChanged:(id)changed status:(id)status;
+- (void)operatorNameChanged:(id)changed name:(id)name;
+- (void)phoneNumberAvailable:(id)available;
+- (void)phoneNumberChanged:(id)changed;
 @end
 
 @implementation SSVTelephonyController
@@ -561,11 +561,11 @@ LABEL_18:
   }
 }
 
-- (BOOL)sendSMSWithText:(id)a3 toPhoneNumber:(id)a4 countryCode:(id)a5 error:(id *)a6
+- (BOOL)sendSMSWithText:(id)text toPhoneNumber:(id)number countryCode:(id)code error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  textCopy = text;
+  numberCopy = number;
+  codeCopy = code;
   v31 = 0;
   v32 = &v31;
   v33 = 0x2020000000;
@@ -582,18 +582,18 @@ LABEL_18:
   v19[2] = __74__SSVTelephonyController_sendSMSWithText_toPhoneNumber_countryCode_error___block_invoke;
   v19[3] = &unk_1E84B0700;
   v19[4] = self;
-  v14 = v11;
+  v14 = numberCopy;
   v20 = v14;
-  v15 = v12;
+  v15 = codeCopy;
   v21 = v15;
   v23 = &v31;
-  v16 = v10;
+  v16 = textCopy;
   v22 = v16;
   v24 = &v25;
   dispatch_sync(accessQueue, v19);
-  if (a6)
+  if (error)
   {
-    *a6 = v26[5];
+    *error = v26[5];
   }
 
   v17 = *(v32 + 24);
@@ -703,19 +703,19 @@ LABEL_15:
     v3 = +[SSLogConfig sharedConfig];
   }
 
-  v4 = [v3 shouldLog];
+  shouldLog = [v3 shouldLog];
   if ([v3 shouldLogToDisk])
   {
-    v5 = v4 | 2;
+    v5 = shouldLog | 2;
   }
 
   else
   {
-    v5 = v4;
+    v5 = shouldLog;
   }
 
-  v6 = [v3 OSLogObject];
-  if (!os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v3 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v5 &= 2u;
   }
@@ -733,9 +733,9 @@ LABEL_15:
 
   if (v8)
   {
-    v6 = [MEMORY[0x1E696AEC0] stringWithCString:v8 encoding:{4, &v18, v16}];
+    oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v8 encoding:{4, &v18, v16}];
     free(v8);
-    SSFileLog(v3, @"%@", v9, v10, v11, v12, v13, v14, v6);
+    SSFileLog(v3, @"%@", v9, v10, v11, v12, v13, v14, oSLogObject);
 LABEL_11:
   }
 
@@ -759,7 +759,7 @@ uint64_t __54__SSVTelephonyController_activeSubscriptionsDidChange__block_invoke
   return [v4 _ensureTelephonyHandlesAreReady];
 }
 
-- (void)displayStatusChanged:(id)a3 status:(id)a4
+- (void)displayStatusChanged:(id)changed status:(id)status
 {
   accessQueue = self->_accessQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -770,7 +770,7 @@ uint64_t __54__SSVTelephonyController_activeSubscriptionsDidChange__block_invoke
   dispatch_async(accessQueue, block);
 }
 
-- (void)operatorNameChanged:(id)a3 name:(id)a4
+- (void)operatorNameChanged:(id)changed name:(id)name
 {
   accessQueue = self->_accessQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -781,7 +781,7 @@ uint64_t __54__SSVTelephonyController_activeSubscriptionsDidChange__block_invoke
   dispatch_async(accessQueue, block);
 }
 
-- (void)phoneNumberAvailable:(id)a3
+- (void)phoneNumberAvailable:(id)available
 {
   accessQueue = self->_accessQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -792,7 +792,7 @@ uint64_t __54__SSVTelephonyController_activeSubscriptionsDidChange__block_invoke
   dispatch_async(accessQueue, block);
 }
 
-- (void)phoneNumberChanged:(id)a3
+- (void)phoneNumberChanged:(id)changed
 {
   accessQueue = self->_accessQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -845,11 +845,11 @@ void __58__SSVTelephonyController__hasRequiredTelephonyEntitlement__block_invoke
 - (BOOL)_ensureTelephonyHandlesAreReady
 {
   dispatch_assert_queue_V2(self->_accessQueue);
-  v3 = [(SSVTelephonyController *)self _telephonyClient];
-  if (v3)
+  _telephonyClient = [(SSVTelephonyController *)self _telephonyClient];
+  if (_telephonyClient)
   {
-    v4 = [(SSVTelephonyController *)self _telephonySubscriptionContext];
-    v5 = v4 != 0;
+    _telephonySubscriptionContext = [(SSVTelephonyController *)self _telephonySubscriptionContext];
+    v5 = _telephonySubscriptionContext != 0;
   }
 
   else
@@ -876,19 +876,19 @@ void __58__SSVTelephonyController__hasRequiredTelephonyEntitlement__block_invoke
           v5 = +[SSLogConfig sharedConfig];
         }
 
-        v13 = [v5 shouldLog];
+        shouldLog = [v5 shouldLog];
         if ([v5 shouldLogToDisk])
         {
-          v14 = v13 | 2;
+          v14 = shouldLog | 2;
         }
 
         else
         {
-          v14 = v13;
+          v14 = shouldLog;
         }
 
-        v8 = [v5 OSLogObject];
-        if (!os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+        oSLogObject = [v5 OSLogObject];
+        if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
         {
           v14 &= 2u;
         }
@@ -901,8 +901,8 @@ void __58__SSVTelephonyController__hasRequiredTelephonyEntitlement__block_invoke
         v15 = objc_opt_class();
         v16 = MEMORY[0x1E696AE30];
         v17 = v15;
-        v18 = [v16 processInfo];
-        [v18 processName];
+        processInfo = [v16 processInfo];
+        [processInfo processName];
         v28 = 138543618;
         v29 = v15;
         v31 = v30 = 2114;
@@ -917,9 +917,9 @@ LABEL_35:
           goto LABEL_36;
         }
 
-        v8 = [MEMORY[0x1E696AEC0] stringWithCString:v12 encoding:{4, &v28, v27}];
+        oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v12 encoding:{4, &v28, v27}];
         free(v12);
-        SSFileLog(v5, @"%@", v19, v20, v21, v22, v23, v24, v8);
+        SSFileLog(v5, @"%@", v19, v20, v21, v22, v23, v24, oSLogObject);
 LABEL_34:
 
         goto LABEL_35;
@@ -941,19 +941,19 @@ LABEL_34:
         v5 = +[SSLogConfig sharedConfig];
       }
 
-      v6 = [v5 shouldLog];
+      shouldLog2 = [v5 shouldLog];
       if ([v5 shouldLogToDisk])
       {
-        v7 = v6 | 2;
+        v7 = shouldLog2 | 2;
       }
 
       else
       {
-        v7 = v6;
+        v7 = shouldLog2;
       }
 
-      v8 = [v5 OSLogObject];
-      if (!os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+      oSLogObject = [v5 OSLogObject];
+      if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
       {
         v7 &= 2u;
       }
@@ -972,19 +972,19 @@ LABEL_34:
         v5 = +[SSLogConfig sharedConfig];
       }
 
-      v9 = [v5 shouldLog];
+      shouldLog3 = [v5 shouldLog];
       if ([v5 shouldLogToDisk])
       {
-        v10 = v9 | 2;
+        v10 = shouldLog3 | 2;
       }
 
       else
       {
-        v10 = v9;
+        v10 = shouldLog3;
       }
 
-      v8 = [v5 OSLogObject];
-      if (!os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+      oSLogObject = [v5 OSLogObject];
+      if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
       {
         v10 &= 2u;
       }
@@ -1018,9 +1018,9 @@ LABEL_36:
   telephonySubscriptionContext = self->_telephonySubscriptionContext;
   if (!telephonySubscriptionContext)
   {
-    v5 = [(SSVTelephonyController *)self _telephonyClient];
-    v6 = v5;
-    if (!v5)
+    _telephonyClient = [(SSVTelephonyController *)self _telephonyClient];
+    v6 = _telephonyClient;
+    if (!_telephonyClient)
     {
 LABEL_29:
 
@@ -1029,7 +1029,7 @@ LABEL_29:
     }
 
     v44 = 0;
-    v7 = [v5 getUserDefaultVoiceSubscriptionContext:&v44];
+    v7 = [_telephonyClient getUserDefaultVoiceSubscriptionContext:&v44];
     v8 = v44;
     v9 = v8;
     if (v7 || !v8)
@@ -1040,25 +1040,25 @@ LABEL_29:
         v10 = [v6 getActiveContexts:&v43];
         v27 = v43;
 
-        v13 = +[SSLogConfig sharedStoreServicesConfig];
-        if (!v13)
+        oSLogObject2 = +[SSLogConfig sharedStoreServicesConfig];
+        if (!oSLogObject2)
         {
-          v13 = +[SSLogConfig sharedConfig];
+          oSLogObject2 = +[SSLogConfig sharedConfig];
         }
 
-        v29 = [v13 shouldLog];
-        if ([v13 shouldLogToDisk])
+        shouldLog = [oSLogObject2 shouldLog];
+        if ([oSLogObject2 shouldLogToDisk])
         {
-          v30 = v29 | 2;
+          v30 = shouldLog | 2;
         }
 
         else
         {
-          v30 = v29;
+          v30 = shouldLog;
         }
 
-        v31 = [v13 OSLogObject];
-        if (!os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
+        oSLogObject = [oSLogObject2 OSLogObject];
+        if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
         {
           v30 &= 2u;
         }
@@ -1067,11 +1067,11 @@ LABEL_29:
         {
           v32 = objc_opt_class();
           v42 = v32;
-          v33 = [v10 subscriptions];
+          subscriptions = [v10 subscriptions];
           v45 = 138543618;
           v46 = v32;
           v47 = 2114;
-          v48 = v33;
+          v48 = subscriptions;
           LODWORD(v41) = 22;
           v34 = _os_log_send_and_compose_impl();
 
@@ -1080,9 +1080,9 @@ LABEL_29:
             goto LABEL_27;
           }
 
-          v31 = [MEMORY[0x1E696AEC0] stringWithCString:v34 encoding:{4, &v45, v41}];
+          oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v34 encoding:{4, &v45, v41}];
           free(v34);
-          SSFileLog(v13, @"%@", v35, v36, v37, v38, v39, v40, v31);
+          SSFileLog(oSLogObject2, @"%@", v35, v36, v37, v38, v39, v40, oSLogObject);
         }
 
         goto LABEL_27;
@@ -1095,19 +1095,19 @@ LABEL_29:
         v10 = +[SSLogConfig sharedConfig];
       }
 
-      v16 = [v10 shouldLog];
+      shouldLog2 = [v10 shouldLog];
       if ([v10 shouldLogToDisk])
       {
-        v17 = v16 | 2;
+        v17 = shouldLog2 | 2;
       }
 
       else
       {
-        v17 = v16;
+        v17 = shouldLog2;
       }
 
-      v13 = [v10 OSLogObject];
-      if (!os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+      oSLogObject2 = [v10 OSLogObject];
+      if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
       {
         v17 &= 2u;
       }
@@ -1116,13 +1116,13 @@ LABEL_29:
       {
         v18 = objc_opt_class();
         v15 = v18;
-        v19 = [v7 slotID];
+        slotID = [v7 slotID];
         v45 = 138543874;
         v46 = v18;
         v47 = 2114;
         v48 = v7;
         v49 = 2048;
-        v50 = v19;
+        v50 = slotID;
         LODWORD(v41) = 32;
         goto LABEL_24;
       }
@@ -1136,19 +1136,19 @@ LABEL_29:
         v10 = +[SSLogConfig sharedConfig];
       }
 
-      v11 = [v10 shouldLog];
+      shouldLog3 = [v10 shouldLog];
       if ([v10 shouldLogToDisk])
       {
-        v12 = v11 | 2;
+        v12 = shouldLog3 | 2;
       }
 
       else
       {
-        v12 = v11;
+        v12 = shouldLog3;
       }
 
-      v13 = [v10 OSLogObject];
-      if (!os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+      oSLogObject2 = [v10 OSLogObject];
+      if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
       {
         v12 &= 2u;
       }
@@ -1172,9 +1172,9 @@ LABEL_28:
           goto LABEL_29;
         }
 
-        v13 = [MEMORY[0x1E696AEC0] stringWithCString:v20 encoding:{4, &v45, v41}];
+        oSLogObject2 = [MEMORY[0x1E696AEC0] stringWithCString:v20 encoding:{4, &v45, v41}];
         free(v20);
-        SSFileLog(v10, @"%@", v21, v22, v23, v24, v25, v26, v13);
+        SSFileLog(v10, @"%@", v21, v22, v23, v24, v25, v26, oSLogObject2);
       }
     }
 
@@ -1226,9 +1226,9 @@ LABEL_30:
       v11 = v10;
       if (v9 || !v10)
       {
-        v25 = [v9 number];
+        number = [v9 number];
         v12 = self->_phoneNumber;
-        self->_phoneNumber = v25;
+        self->_phoneNumber = number;
         goto LABEL_24;
       }
 
@@ -1238,19 +1238,19 @@ LABEL_30:
         v12 = +[SSLogConfig sharedConfig];
       }
 
-      v13 = [v12 shouldLog];
+      shouldLog = [v12 shouldLog];
       if ([v12 shouldLogToDisk])
       {
-        v14 = v13 | 2;
+        v14 = shouldLog | 2;
       }
 
       else
       {
-        v14 = v13;
+        v14 = shouldLog;
       }
 
-      v15 = [v12 OSLogObject];
-      if (!os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+      oSLogObject = [v12 OSLogObject];
+      if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
       {
         v14 &= 2u;
       }
@@ -1273,9 +1273,9 @@ LABEL_24:
           goto LABEL_25;
         }
 
-        v15 = [MEMORY[0x1E696AEC0] stringWithCString:v18 encoding:{4, &v30, v28}];
+        oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v18 encoding:{4, &v30, v28}];
         free(v18);
-        SSFileLog(v12, @"%@", v19, v20, v21, v22, v23, v24, v15);
+        SSFileLog(v12, @"%@", v19, v20, v21, v22, v23, v24, oSLogObject);
       }
 
       goto LABEL_24;
@@ -1308,10 +1308,10 @@ LABEL_4:
   phoneNumber = self->_phoneNumber;
   self->_phoneNumber = 0;
 
-  v4 = [(SSVTelephonyController *)self _phoneNumber];
-  if (v7 != v4)
+  _phoneNumber = [(SSVTelephonyController *)self _phoneNumber];
+  if (v7 != _phoneNumber)
   {
-    v5 = [(NSString *)v7 isEqualToString:v4];
+    v5 = [(NSString *)v7 isEqualToString:_phoneNumber];
 
     if (v5)
     {
@@ -1376,19 +1376,19 @@ void __44__SSVTelephonyController__updatePhoneNumber__block_invoke(uint64_t a1)
         v13 = +[SSLogConfig sharedConfig];
       }
 
-      v14 = [v13 shouldLog];
+      shouldLog = [v13 shouldLog];
       if ([v13 shouldLogToDisk])
       {
-        v15 = v14 | 2;
+        v15 = shouldLog | 2;
       }
 
       else
       {
-        v15 = v14;
+        v15 = shouldLog;
       }
 
-      v16 = [v13 OSLogObject];
-      if (!os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+      oSLogObject = [v13 OSLogObject];
+      if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
       {
         v15 &= 2u;
       }
@@ -1412,9 +1412,9 @@ LABEL_23:
           goto LABEL_24;
         }
 
-        v16 = [MEMORY[0x1E696AEC0] stringWithCString:v19 encoding:{4, &v30, v28}];
+        oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v19 encoding:{4, &v30, v28}];
         free(v19);
-        SSFileLog(v13, @"%@", v20, v21, v22, v23, v24, v25, v16);
+        SSFileLog(v13, @"%@", v20, v21, v22, v23, v24, v25, oSLogObject);
       }
 
       goto LABEL_22;
@@ -1434,8 +1434,8 @@ LABEL_24:
   operatorName = self->_operatorName;
   self->_operatorName = 0;
 
-  v5 = [(SSVTelephonyController *)self _operatorName];
-  if (v3 != v5 && ![(NSString *)v3 isEqualToString:v5])
+  _operatorName = [(SSVTelephonyController *)self _operatorName];
+  if (v3 != _operatorName && ![(NSString *)v3 isEqualToString:_operatorName])
   {
     notificationQueue = self->_notificationQueue;
     block[0] = MEMORY[0x1E69E9820];
@@ -1478,19 +1478,19 @@ void __45__SSVTelephonyController__updateOperatorName__block_invoke(uint64_t a1)
       v8 = +[SSLogConfig sharedConfig];
     }
 
-    v9 = [v8 shouldLog];
+    shouldLog = [v8 shouldLog];
     if ([v8 shouldLogToDisk])
     {
-      v10 = v9 | 2;
+      v10 = shouldLog | 2;
     }
 
     else
     {
-      v10 = v9;
+      v10 = shouldLog;
     }
 
-    v11 = [v8 OSLogObject];
-    if (!os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v8 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v10 &= 2u;
     }
@@ -1514,9 +1514,9 @@ LABEL_17:
         goto LABEL_18;
       }
 
-      v11 = [MEMORY[0x1E696AEC0] stringWithCString:v14 encoding:{4, &v25, v23}];
+      oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v14 encoding:{4, &v25, v23}];
       free(v14);
-      SSFileLog(v8, @"%@", v15, v16, v17, v18, v19, v20, v11);
+      SSFileLog(v8, @"%@", v15, v16, v17, v18, v19, v20, oSLogObject);
     }
 
     goto LABEL_16;
@@ -1535,8 +1535,8 @@ LABEL_18:
   registrationStatus = self->_registrationStatus;
   self->_registrationStatus = 0;
 
-  v5 = [(SSVTelephonyController *)self _registrationStatus];
-  if (v3 != v5 && ![(NSString *)v3 isEqualToString:v5])
+  _registrationStatus = [(SSVTelephonyController *)self _registrationStatus];
+  if (v3 != _registrationStatus && ![(NSString *)v3 isEqualToString:_registrationStatus])
   {
     notificationQueue = self->_notificationQueue;
     block[0] = MEMORY[0x1E69E9820];

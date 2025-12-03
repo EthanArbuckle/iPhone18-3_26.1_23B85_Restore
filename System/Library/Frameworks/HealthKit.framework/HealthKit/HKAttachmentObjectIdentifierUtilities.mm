@@ -1,55 +1,55 @@
 @interface HKAttachmentObjectIdentifierUtilities
-+ (BOOL)componentsFromAttachmentObjectIdentifier:(id)a3 sampleTypeIdentifier:(id *)a4 bundleIdentifier:(id *)a5 FHIRIdentifier:(id *)a6;
-+ (id)attachmentObjectIdentifierForClinicalRecord:(id)a3;
-+ (id)attachmentObjectIdentifierForMedicalRecord:(id)a3;
++ (BOOL)componentsFromAttachmentObjectIdentifier:(id)identifier sampleTypeIdentifier:(id *)typeIdentifier bundleIdentifier:(id *)bundleIdentifier FHIRIdentifier:(id *)rIdentifier;
++ (id)attachmentObjectIdentifierForClinicalRecord:(id)record;
++ (id)attachmentObjectIdentifierForMedicalRecord:(id)record;
 @end
 
 @implementation HKAttachmentObjectIdentifierUtilities
 
-+ (id)attachmentObjectIdentifierForClinicalRecord:(id)a3
++ (id)attachmentObjectIdentifierForClinicalRecord:(id)record
 {
-  v4 = a3;
-  v5 = [v4 clinicalType];
-  v6 = [v5 identifier];
-  v7 = [v4 sourceRevision];
-  v8 = [v7 source];
-  v9 = [v8 bundleIdentifier];
-  v10 = [v4 FHIRResource];
-  v11 = [v10 resourceType];
-  v12 = [v4 FHIRResource];
+  recordCopy = record;
+  clinicalType = [recordCopy clinicalType];
+  identifier = [clinicalType identifier];
+  sourceRevision = [recordCopy sourceRevision];
+  source = [sourceRevision source];
+  bundleIdentifier = [source bundleIdentifier];
+  fHIRResource = [recordCopy FHIRResource];
+  resourceType = [fHIRResource resourceType];
+  fHIRResource2 = [recordCopy FHIRResource];
 
-  v13 = [v12 identifier];
-  v14 = [a1 _attachmentObjectIdentifierWithSampleTypeIdentifier:v6 bundleIdentifier:v9 FHIRResourceType:v11 FHIRResourceIdentifier:v13];
+  identifier2 = [fHIRResource2 identifier];
+  v14 = [self _attachmentObjectIdentifierWithSampleTypeIdentifier:identifier bundleIdentifier:bundleIdentifier FHIRResourceType:resourceType FHIRResourceIdentifier:identifier2];
 
   return v14;
 }
 
-+ (id)attachmentObjectIdentifierForMedicalRecord:(id)a3
++ (id)attachmentObjectIdentifierForMedicalRecord:(id)record
 {
-  v4 = a3;
-  v5 = [v4 medicalType];
-  v6 = [v5 identifier];
-  v7 = [v4 sourceRevision];
-  v8 = [v7 source];
-  v9 = [v8 bundleIdentifier];
-  v10 = [v4 FHIRIdentifier];
-  v11 = [v10 resourceType];
-  v12 = [v4 FHIRIdentifier];
+  recordCopy = record;
+  medicalType = [recordCopy medicalType];
+  identifier = [medicalType identifier];
+  sourceRevision = [recordCopy sourceRevision];
+  source = [sourceRevision source];
+  bundleIdentifier = [source bundleIdentifier];
+  fHIRIdentifier = [recordCopy FHIRIdentifier];
+  resourceType = [fHIRIdentifier resourceType];
+  fHIRIdentifier2 = [recordCopy FHIRIdentifier];
 
-  v13 = [v12 identifier];
-  v14 = [a1 _attachmentObjectIdentifierWithSampleTypeIdentifier:v6 bundleIdentifier:v9 FHIRResourceType:v11 FHIRResourceIdentifier:v13];
+  identifier2 = [fHIRIdentifier2 identifier];
+  v14 = [self _attachmentObjectIdentifierWithSampleTypeIdentifier:identifier bundleIdentifier:bundleIdentifier FHIRResourceType:resourceType FHIRResourceIdentifier:identifier2];
 
   return v14;
 }
 
-+ (BOOL)componentsFromAttachmentObjectIdentifier:(id)a3 sampleTypeIdentifier:(id *)a4 bundleIdentifier:(id *)a5 FHIRIdentifier:(id *)a6
++ (BOOL)componentsFromAttachmentObjectIdentifier:(id)identifier sampleTypeIdentifier:(id *)typeIdentifier bundleIdentifier:(id *)bundleIdentifier FHIRIdentifier:(id *)rIdentifier
 {
-  v9 = [a3 componentsSeparatedByString:@"/"];
+  v9 = [identifier componentsSeparatedByString:@"/"];
   if ([v9 count] == 4)
   {
     v10 = [v9 objectAtIndexedSubscript:2];
     v11 = [v9 objectAtIndexedSubscript:3];
-    if (a6)
+    if (rIdentifier)
     {
       v12 = [[HKFHIRIdentifier alloc] initWithResourceType:v10 identifier:v11];
       if (!v12)
@@ -61,18 +61,18 @@ LABEL_11:
       }
 
       v13 = v12;
-      *a6 = v13;
+      *rIdentifier = v13;
     }
 
-    if (a4)
+    if (typeIdentifier)
     {
-      *a4 = [v9 objectAtIndexedSubscript:0];
+      *typeIdentifier = [v9 objectAtIndexedSubscript:0];
     }
 
     v14 = 1;
-    if (a5)
+    if (bundleIdentifier)
     {
-      *a5 = [v9 objectAtIndexedSubscript:1];
+      *bundleIdentifier = [v9 objectAtIndexedSubscript:1];
     }
 
     goto LABEL_11;

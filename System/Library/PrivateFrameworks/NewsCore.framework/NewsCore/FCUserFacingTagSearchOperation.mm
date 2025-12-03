@@ -1,8 +1,8 @@
 @interface FCUserFacingTagSearchOperation
 - (BOOL)validateOperation;
-- (id)_fetchResultsForTagType:(unint64_t)a3 batchSize:(unint64_t)a4;
-- (id)_fetchResultsForUserFacingTopicsWithInitialChannels:(id)a3;
-- (void)operationWillFinishWithError:(id)a3;
+- (id)_fetchResultsForTagType:(unint64_t)type batchSize:(unint64_t)size;
+- (id)_fetchResultsForUserFacingTopicsWithInitialChannels:(id)channels;
+- (void)operationWillFinishWithError:(id)error;
 - (void)performOperation;
 @end
 
@@ -11,9 +11,9 @@
 - (BOOL)validateOperation
 {
   v14 = *MEMORY[0x1E69E9840];
-  v2 = [(FCUserFacingTagSearchOperation *)self contentContext];
+  contentContext = [(FCUserFacingTagSearchOperation *)self contentContext];
 
-  if (!v2 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if (!contentContext && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v5 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"tag search operation requires a content context"];
     v6 = 136315906;
@@ -27,26 +27,26 @@
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", &v6, 0x26u);
   }
 
-  result = v2 != 0;
+  result = contentContext != 0;
   v4 = *MEMORY[0x1E69E9840];
   return result;
 }
 
 - (void)performOperation
 {
-  v3 = [(FCUserFacingTagSearchOperation *)self userFacingTagOptions];
-  if (v3)
+  userFacingTagOptions = [(FCUserFacingTagSearchOperation *)self userFacingTagOptions];
+  if (userFacingTagOptions)
   {
-    v4 = v3;
-    v5 = [(FCUserFacingTagSearchOperation *)self batchSize];
+    v4 = userFacingTagOptions;
+    batchSize = [(FCUserFacingTagSearchOperation *)self batchSize];
     v6 = 20;
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __50__FCUserFacingTagSearchOperation_performOperation__block_invoke_2;
     v14[3] = &unk_1E7C3CB30;
-    if (v5 > 0x14)
+    if (batchSize > 0x14)
     {
-      v6 = v5;
+      v6 = batchSize;
     }
 
     v14[4] = self;
@@ -169,31 +169,31 @@ uint64_t __50__FCUserFacingTagSearchOperation_performOperation__block_invoke_6(u
   return 0;
 }
 
-- (void)operationWillFinishWithError:(id)a3
+- (void)operationWillFinishWithError:(id)error
 {
-  v8 = a3;
-  v4 = [(FCUserFacingTagSearchOperation *)self searchResultsBlock];
+  errorCopy = error;
+  searchResultsBlock = [(FCUserFacingTagSearchOperation *)self searchResultsBlock];
 
-  if (v4)
+  if (searchResultsBlock)
   {
-    v5 = [(FCUserFacingTagSearchOperation *)self searchResultsBlock];
-    v6 = [(FCUserFacingTagSearchOperation *)self channelSearchResults];
-    v7 = [(FCUserFacingTagSearchOperation *)self topicSearchResults];
-    (v5)[2](v5, v6, v7, v8);
+    searchResultsBlock2 = [(FCUserFacingTagSearchOperation *)self searchResultsBlock];
+    channelSearchResults = [(FCUserFacingTagSearchOperation *)self channelSearchResults];
+    topicSearchResults = [(FCUserFacingTagSearchOperation *)self topicSearchResults];
+    (searchResultsBlock2)[2](searchResultsBlock2, channelSearchResults, topicSearchResults, errorCopy);
   }
 }
 
-- (id)_fetchResultsForUserFacingTopicsWithInitialChannels:(id)a3
+- (id)_fetchResultsForUserFacingTopicsWithInitialChannels:(id)channels
 {
-  v4 = a3;
+  channelsCopy = channels;
   v5 = objc_alloc(MEMORY[0x1E69B68F8]);
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __86__FCUserFacingTagSearchOperation__fetchResultsForUserFacingTopicsWithInitialChannels___block_invoke;
   v9[3] = &unk_1E7C3B310;
   v9[4] = self;
-  v10 = v4;
-  v6 = v4;
+  v10 = channelsCopy;
+  v6 = channelsCopy;
   v7 = [v5 initWithResolver:v9];
 
   return v7;
@@ -262,7 +262,7 @@ uint64_t __86__FCUserFacingTagSearchOperation__fetchResultsForUserFacingTopicsWi
   return 0;
 }
 
-- (id)_fetchResultsForTagType:(unint64_t)a3 batchSize:(unint64_t)a4
+- (id)_fetchResultsForTagType:(unint64_t)type batchSize:(unint64_t)size
 {
   v7 = objc_alloc(MEMORY[0x1E69B68F8]);
   v10[0] = MEMORY[0x1E69E9820];
@@ -270,8 +270,8 @@ uint64_t __86__FCUserFacingTagSearchOperation__fetchResultsForUserFacingTopicsWi
   v10[2] = __68__FCUserFacingTagSearchOperation__fetchResultsForTagType_batchSize___block_invoke;
   v10[3] = &unk_1E7C3CC18;
   v10[4] = self;
-  v10[5] = a3;
-  v10[6] = a4;
+  v10[5] = type;
+  v10[6] = size;
   v8 = [v7 initWithResolver:v10];
 
   return v8;

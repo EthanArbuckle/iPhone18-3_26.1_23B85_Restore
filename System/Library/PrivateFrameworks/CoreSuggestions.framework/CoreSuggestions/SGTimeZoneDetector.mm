@@ -1,14 +1,14 @@
 @interface SGTimeZoneDetector
-+ (id)_normalizedCountryString:(id)a3;
-+ (id)_normalizedString:(id)a3;
-+ (id)_regularExpressionForPostalCodeFormat:(id)a3;
++ (id)_normalizedCountryString:(id)string;
++ (id)_normalizedString:(id)string;
++ (id)_regularExpressionForPostalCodeFormat:(id)format;
 - (SGTimeZoneDetector)init;
-- (_NSRange)_airportCodeRangeForAddress:(id)a3;
-- (id)_acronymForAddress:(id)a3 airportCodeRange:(_NSRange)a4 airportCodeNames:(id)a5;
-- (id)_countryCodeByCountryNameFromNormalizedAddressWords:(id)a3;
-- (id)_countryCodeByRegionAbbreviationFromNormalizedAddress:(id)a3;
-- (id)_countryCodeByRegionNameFromNormalizedAddress:(id)a3 withWords:(id)a4;
-- (id)_countryCodeByRegularExpressionFromNormalizedAddress:(id)a3;
+- (_NSRange)_airportCodeRangeForAddress:(id)address;
+- (id)_acronymForAddress:(id)address airportCodeRange:(_NSRange)range airportCodeNames:(id)names;
+- (id)_countryCodeByCountryNameFromNormalizedAddressWords:(id)words;
+- (id)_countryCodeByRegionAbbreviationFromNormalizedAddress:(id)address;
+- (id)_countryCodeByRegionNameFromNormalizedAddress:(id)address withWords:(id)words;
+- (id)_countryCodeByRegularExpressionFromNormalizedAddress:(id)address;
 - (id)_getCountryCodeForCountryName;
 - (id)_getPostalCodeFormats;
 - (id)_getRegionAbbreviations;
@@ -18,11 +18,11 @@
 - (id)_getTimeZoneForCountryCodeDictionarySupplement;
 - (id)_getTimeZoneForPostalCode;
 - (id)_getUniquePostalCodeFormats;
-- (id)_postalCodeForAddress:(id)a3 withCountryCode:(id)a4;
-- (id)_timeZoneNameForPostalCode:(id)a3 withPostalCodeTable:(id)a4;
-- (id)countryCodeForAddress:(id)a3;
-- (id)timeZoneFromAiportCodeForAddress:(id)a3;
-- (id)timeZoneNameForAddress:(id)a3 withCountryCode:(id)a4;
+- (id)_postalCodeForAddress:(id)address withCountryCode:(id)code;
+- (id)_timeZoneNameForPostalCode:(id)code withPostalCodeTable:(id)table;
+- (id)countryCodeForAddress:(id)address;
+- (id)timeZoneFromAiportCodeForAddress:(id)address;
+- (id)timeZoneNameForAddress:(id)address withCountryCode:(id)code;
 - (void)_handleMemoryPressureStatus;
 - (void)_readPlistRegionAbbreviationsData;
 - (void)cleanupCache;
@@ -30,26 +30,26 @@
 
 @implementation SGTimeZoneDetector
 
-- (id)timeZoneNameForAddress:(id)a3 withCountryCode:(id)a4
+- (id)timeZoneNameForAddress:(id)address withCountryCode:(id)code
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  objc_sync_enter(v8);
-  v9 = [objc_opt_class() _normalizedString:v6];
+  addressCopy = address;
+  codeCopy = code;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v9 = [objc_opt_class() _normalizedString:addressCopy];
 
-  v10 = [(SGTimeZoneDetector *)v8 _getTimeZoneForPostalCode];
-  v11 = [v10 objectForKey:v7];
+  _getTimeZoneForPostalCode = [(SGTimeZoneDetector *)selfCopy _getTimeZoneForPostalCode];
+  v11 = [_getTimeZoneForPostalCode objectForKey:codeCopy];
   if (v11)
   {
-    v12 = [(SGTimeZoneDetector *)v8 _postalCodeForAddress:v9 withCountryCode:v7];
-    v13 = [(SGTimeZoneDetector *)v8 _timeZoneNameForPostalCode:v12 withPostalCodeTable:v11];
+    _getTimeZoneForCountryCodeDictionarySupplement = [(SGTimeZoneDetector *)selfCopy _postalCodeForAddress:v9 withCountryCode:codeCopy];
+    v13 = [(SGTimeZoneDetector *)selfCopy _timeZoneNameForPostalCode:_getTimeZoneForCountryCodeDictionarySupplement withPostalCodeTable:v11];
   }
 
   else
   {
-    v12 = [(SGTimeZoneDetector *)v8 _getTimeZoneForCountryCodeDictionarySupplement];
-    v14 = [v12 objectForKey:v7];
+    _getTimeZoneForCountryCodeDictionarySupplement = [(SGTimeZoneDetector *)selfCopy _getTimeZoneForCountryCodeDictionarySupplement];
+    v14 = [_getTimeZoneForCountryCodeDictionarySupplement objectForKey:codeCopy];
     if (v14)
     {
       v13 = v14;
@@ -57,21 +57,21 @@
 
     else
     {
-      v15 = [(SGTimeZoneDetector *)v8 _getTimeZoneForCountryCode];
-      v13 = [v15 objectForKey:v7];
+      _getTimeZoneForCountryCode = [(SGTimeZoneDetector *)selfCopy _getTimeZoneForCountryCode];
+      v13 = [_getTimeZoneForCountryCode objectForKey:codeCopy];
     }
   }
 
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
 
   return v13;
 }
 
-- (id)_timeZoneNameForPostalCode:(id)a3 withPostalCodeTable:(id)a4
+- (id)_timeZoneNameForPostalCode:(id)code withPostalCodeTable:(id)table
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 length];
+  codeCopy = code;
+  tableCopy = table;
+  v8 = [codeCopy length];
   if (v8 < 1)
   {
 LABEL_6:
@@ -84,8 +84,8 @@ LABEL_6:
     while (1)
     {
       v10 = objc_autoreleasePoolPush();
-      v11 = [v6 substringToIndex:v9];
-      v12 = [v7 objectForKey:v11];
+      v11 = [codeCopy substringToIndex:v9];
+      v12 = [tableCopy objectForKey:v11];
       if (v12)
       {
         break;
@@ -101,8 +101,8 @@ LABEL_6:
     v14 = v12;
     if ([v12 length] <= 2)
     {
-      v15 = [(SGTimeZoneDetector *)self _getTimeZoneAbbreviations];
-      v16 = [v15 objectForKey:v14];
+      _getTimeZoneAbbreviations = [(SGTimeZoneDetector *)self _getTimeZoneAbbreviations];
+      v16 = [_getTimeZoneAbbreviations objectForKey:v14];
 
       v14 = v16;
     }
@@ -113,41 +113,41 @@ LABEL_6:
   return v14;
 }
 
-- (id)countryCodeForAddress:(id)a3
+- (id)countryCodeForAddress:(id)address
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [objc_opt_class() _normalizedString:v4];
-  v7 = [v6 uppercaseString];
-  v8 = [(SGTimeZoneDetector *)v5 _countryCodeByRegionAbbreviationFromNormalizedAddress:v7];
-  if (v8 || ([(SGTimeZoneDetector *)v5 _countryCodeByRegularExpressionFromNormalizedAddress:v7], (v8 = objc_claimAutoreleasedReturnValue()) != 0))
+  addressCopy = address;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [objc_opt_class() _normalizedString:addressCopy];
+  uppercaseString = [v6 uppercaseString];
+  v8 = [(SGTimeZoneDetector *)selfCopy _countryCodeByRegionAbbreviationFromNormalizedAddress:uppercaseString];
+  if (v8 || ([(SGTimeZoneDetector *)selfCopy _countryCodeByRegularExpressionFromNormalizedAddress:uppercaseString], (v8 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v9 = v8;
   }
 
   else
   {
-    v11 = [v6 capitalizedString];
-    v12 = [v11 componentsSeparatedByString:@" "];
-    v13 = [(SGTimeZoneDetector *)v5 _countryCodeByRegionNameFromNormalizedAddress:v7 withWords:v12];
+    capitalizedString = [v6 capitalizedString];
+    v12 = [capitalizedString componentsSeparatedByString:@" "];
+    v13 = [(SGTimeZoneDetector *)selfCopy _countryCodeByRegionNameFromNormalizedAddress:uppercaseString withWords:v12];
     if (!v13)
     {
-      v13 = [(SGTimeZoneDetector *)v5 _countryCodeByCountryNameFromNormalizedAddressWords:v12];
+      v13 = [(SGTimeZoneDetector *)selfCopy _countryCodeByCountryNameFromNormalizedAddressWords:v12];
     }
 
     v9 = v13;
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v9;
 }
 
-- (id)timeZoneFromAiportCodeForAddress:(id)a3
+- (id)timeZoneFromAiportCodeForAddress:(id)address
 {
-  v5 = a3;
-  v6 = [(SGTimeZoneDetector *)self _airportCodeRangeForAddress:v5];
+  addressCopy = address;
+  v6 = [(SGTimeZoneDetector *)self _airportCodeRangeForAddress:addressCopy];
   if (v6 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v8 = 0;
@@ -163,15 +163,15 @@ LABEL_6:
 
     if (!v13)
     {
-      v21 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v21 handleFailureInMethod:a2 object:self file:@"SGTimeZone.m" lineNumber:504 description:{@"Invalid parameter not satisfying: %@", @"tzAirportCodesDataPath"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"SGTimeZone.m" lineNumber:504 description:{@"Invalid parameter not satisfying: %@", @"tzAirportCodesDataPath"}];
     }
 
     v14 = [objc_alloc(MEMORY[0x1E695DF20]) initWithContentsOfFile:v13];
     v15 = [v14 objectForKeyedSubscript:@"Airport Codes"];
     v16 = [v14 objectForKeyedSubscript:@"Airport Code Names"];
-    v17 = [(SGTimeZoneDetector *)self _acronymForAddress:v5 airportCodeRange:v9 airportCodeNames:v10, v16];
-    v18 = [v5 substringWithRange:{v9, v10}];
+    v17 = [(SGTimeZoneDetector *)self _acronymForAddress:addressCopy airportCodeRange:v9 airportCodeNames:v10, v16];
+    v18 = [addressCopy substringWithRange:{v9, v10}];
     v19 = v18;
     if (v17 && ([v18 isEqualToString:v17] & 1) != 0)
     {
@@ -189,12 +189,12 @@ LABEL_6:
   return v8;
 }
 
-- (id)_countryCodeByCountryNameFromNormalizedAddressWords:(id)a3
+- (id)_countryCodeByCountryNameFromNormalizedAddressWords:(id)words
 {
   v38 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(SGTimeZoneDetector *)self _getCountryCodeForCountryName];
-  v6 = [v4 count];
+  wordsCopy = words;
+  _getCountryCodeForCountryName = [(SGTimeZoneDetector *)self _getCountryCodeForCountryName];
+  v6 = [wordsCopy count];
   v7 = v6 - 1;
   v8 = v6 + 5;
   do
@@ -206,9 +206,9 @@ LABEL_6:
       break;
     }
 
-    v11 = [v4 objectAtIndex:v7];
-    v12 = [MEMORY[0x1E696AB08] decimalDigitCharacterSet];
-    v13 = [v11 rangeOfCharacterFromSet:v12];
+    v11 = [wordsCopy objectAtIndex:v7];
+    decimalDigitCharacterSet = [MEMORY[0x1E696AB08] decimalDigitCharacterSet];
+    v13 = [v11 rangeOfCharacterFromSet:decimalDigitCharacterSet];
 
     v7 = v9 - 1;
     v8 = v10 - 1;
@@ -234,7 +234,7 @@ LABEL_6:
     v18 = v10 - v16;
     do
     {
-      v19 = [v4 subarrayWithRange:{++v17, v18}];
+      v19 = [wordsCopy subarrayWithRange:{++v17, v18}];
       v20 = [v19 _pas_componentsJoinedByString:@" "];
 
       [v14 addObject:v20];
@@ -253,7 +253,7 @@ LABEL_6:
 
     do
     {
-      v21 = [v4 subarrayWithRange:{0, v9}];
+      v21 = [wordsCopy subarrayWithRange:{0, v9}];
       v22 = [v21 _pas_componentsJoinedByString:@" "];
 
       [v14 addObject:v22];
@@ -281,7 +281,7 @@ LABEL_6:
           objc_enumerationMutation(v24);
         }
 
-        v29 = [v5 objectForKeyedSubscript:{*(*(&v33 + 1) + 8 * i), v33}];
+        v29 = [_getCountryCodeForCountryName objectForKeyedSubscript:{*(*(&v33 + 1) + 8 * i), v33}];
         if (v29)
         {
           v30 = v29;
@@ -307,12 +307,12 @@ LABEL_25:
   return v30;
 }
 
-- (id)_countryCodeByRegionNameFromNormalizedAddress:(id)a3 withWords:(id)a4
+- (id)_countryCodeByRegionNameFromNormalizedAddress:(id)address withWords:(id)words
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SGTimeZoneDetector *)self _getRegionNames];
-  v18 = [v7 count];
+  addressCopy = address;
+  wordsCopy = words;
+  _getRegionNames = [(SGTimeZoneDetector *)self _getRegionNames];
+  v18 = [wordsCopy count];
   v9 = v18 - 2;
   v10 = 3;
   while (1)
@@ -338,19 +338,19 @@ LABEL_10:
   {
     if (v10 == 1)
     {
-      v12 = [v7 objectAtIndex:v11];
+      v12 = [wordsCopy objectAtIndex:v11];
     }
 
     else
     {
-      v13 = [v7 subarrayWithRange:{v11, v10}];
+      v13 = [wordsCopy subarrayWithRange:{v11, v10}];
       v12 = [v13 _pas_componentsJoinedByString:@" "];
     }
 
-    v14 = [v8 objectForKey:{v12, v18}];
+    v14 = [_getRegionNames objectForKey:{v12, v18}];
     if (v14)
     {
-      v15 = [(SGTimeZoneDetector *)self _postalCodeForAddress:v6 withCountryCode:v14];
+      v15 = [(SGTimeZoneDetector *)self _postalCodeForAddress:addressCopy withCountryCode:v14];
       if (v15)
       {
         break;
@@ -369,11 +369,11 @@ LABEL_13:
   return v14;
 }
 
-- (id)_countryCodeByRegularExpressionFromNormalizedAddress:(id)a3
+- (id)_countryCodeByRegularExpressionFromNormalizedAddress:(id)address
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  addressCopy = address;
+  if (addressCopy)
   {
     [(SGTimeZoneDetector *)self _getUniquePostalCodeFormats];
     v15 = 0u;
@@ -397,7 +397,7 @@ LABEL_13:
           v10 = objc_autoreleasePoolPush();
           v11 = [v5 objectForKey:{v9, v15}];
           v12 = [objc_alloc(MEMORY[0x1E696AE70]) initWithPattern:v11 options:0 error:0];
-          if ([v12 rangeOfFirstMatchInString:v4 options:0 range:{0, objc_msgSend(v4, "length")}] != 0x7FFFFFFFFFFFFFFFLL)
+          if ([v12 rangeOfFirstMatchInString:addressCopy options:0 range:{0, objc_msgSend(addressCopy, "length")}] != 0x7FFFFFFFFFFFFFFFLL)
           {
             v6 = v9;
 
@@ -431,13 +431,13 @@ LABEL_12:
   return v6;
 }
 
-- (id)_countryCodeByRegionAbbreviationFromNormalizedAddress:(id)a3
+- (id)_countryCodeByRegionAbbreviationFromNormalizedAddress:(id)address
 {
   v43 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(SGTimeZoneDetector *)self _getRegionAbbreviations];
+  addressCopy = address;
+  _getRegionAbbreviations = [(SGTimeZoneDetector *)self _getRegionAbbreviations];
   v6 = objc_autoreleasePoolPush();
-  v7 = [v4 componentsSeparatedByString:@" "];
+  v7 = [addressCopy componentsSeparatedByString:@" "];
   objc_autoreleasePoolPop(v6);
   v39 = 0u;
   v40 = 0u;
@@ -450,7 +450,7 @@ LABEL_12:
     v10 = v9;
     v11 = *v38;
     v30 = v8;
-    v31 = v5;
+    v31 = _getRegionAbbreviations;
     v27 = *v38;
     do
     {
@@ -465,7 +465,7 @@ LABEL_12:
 
         v13 = *(*(&v37 + 1) + 8 * v12);
         v14 = objc_autoreleasePoolPush();
-        v15 = [v5 objectForKey:v13];
+        v15 = [_getRegionAbbreviations objectForKey:v13];
         if (v15)
         {
           context = v14;
@@ -492,13 +492,13 @@ LABEL_12:
                 v21 = *(*(&v33 + 1) + 8 * i);
                 v22 = [v16 objectForKey:{v21, v27}];
                 v23 = [objc_opt_class() _regularExpressionForPostalCodeFormat:v22];
-                if ([v23 rangeOfFirstMatchInString:v4 options:0 range:{0, objc_msgSend(v4, "length")}] != 0x7FFFFFFFFFFFFFFFLL)
+                if ([v23 rangeOfFirstMatchInString:addressCopy options:0 range:{0, objc_msgSend(addressCopy, "length")}] != 0x7FFFFFFFFFFFFFFFLL)
                 {
                   v24 = v21;
 
                   objc_autoreleasePoolPop(context);
                   v8 = v30;
-                  v5 = v31;
+                  _getRegionAbbreviations = v31;
                   goto LABEL_21;
                 }
               }
@@ -514,7 +514,7 @@ LABEL_12:
           }
 
           v8 = v30;
-          v5 = v31;
+          _getRegionAbbreviations = v31;
           v11 = v27;
           v10 = v28;
           v14 = context;
@@ -545,13 +545,13 @@ LABEL_21:
   return v24;
 }
 
-- (id)_acronymForAddress:(id)a3 airportCodeRange:(_NSRange)a4 airportCodeNames:(id)a5
+- (id)_acronymForAddress:(id)address airportCodeRange:(_NSRange)range airportCodeNames:(id)names
 {
-  location = a4.location;
-  v7 = a5;
-  v8 = [a3 substringToIndex:location - 1];
-  v9 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-  v10 = [v8 componentsSeparatedByCharactersInSet:v9];
+  location = range.location;
+  namesCopy = names;
+  v8 = [address substringToIndex:location - 1];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+  v10 = [v8 componentsSeparatedByCharactersInSet:whitespaceAndNewlineCharacterSet];
 
   v11 = objc_opt_new();
   v12 = [v10 count];
@@ -585,7 +585,7 @@ LABEL_21:
           if (v14 > 1)
           {
             v23 = [v11 _pas_componentsJoinedByString:@" "];
-            v24 = [v7 objectForKeyedSubscript:v23];
+            v24 = [namesCopy objectForKeyedSubscript:v23];
 
             if (v24)
             {
@@ -623,12 +623,12 @@ LABEL_13:
   return v21;
 }
 
-- (_NSRange)_airportCodeRangeForAddress:(id)a3
+- (_NSRange)_airportCodeRangeForAddress:(id)address
 {
   v5 = MEMORY[0x1E696AE70];
-  v6 = a3;
+  addressCopy = address;
   v7 = [[v5 alloc] initWithPattern:@"\\([A-Z][A-Z][A-Z]\\)" options:0 error:0];
-  v8 = [v7 rangeOfFirstMatchInString:v6 options:0 range:{0, objc_msgSend(v6, "length")}];
+  v8 = [v7 rangeOfFirstMatchInString:addressCopy options:0 range:{0, objc_msgSend(addressCopy, "length")}];
   v10 = v9;
 
   v11 = 0x7FFFFFFFFFFFFFFFLL;
@@ -636,8 +636,8 @@ LABEL_13:
   {
     if (v10 != 5)
     {
-      v14 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v14 handleFailureInMethod:a2 object:self file:@"SGTimeZone.m" lineNumber:361 description:{@"Invalid parameter not satisfying: %@", @"rangeOfFirstMatch.length == 5"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"SGTimeZone.m" lineNumber:361 description:{@"Invalid parameter not satisfying: %@", @"rangeOfFirstMatch.length == 5"}];
     }
 
     v11 = v8 + 1;
@@ -651,43 +651,43 @@ LABEL_13:
   return result;
 }
 
-- (id)_postalCodeForAddress:(id)a3 withCountryCode:(id)a4
+- (id)_postalCodeForAddress:(id)address withCountryCode:(id)code
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SGTimeZoneDetector *)self _getPostalCodeFormats];
-  v9 = [v8 objectForKey:v7];
+  addressCopy = address;
+  codeCopy = code;
+  _getPostalCodeFormats = [(SGTimeZoneDetector *)self _getPostalCodeFormats];
+  v9 = [_getPostalCodeFormats objectForKey:codeCopy];
   if (v9)
   {
     v10 = objc_autoreleasePoolPush();
     v11 = [objc_opt_class() _regularExpressionForPostalCodeFormat:v9];
-    v12 = [v11 matchesInString:v6 options:0 range:{0, objc_msgSend(v6, "length")}];
+    v12 = [v11 matchesInString:addressCopy options:0 range:{0, objc_msgSend(addressCopy, "length")}];
     if ([v12 count])
     {
       context = objc_autoreleasePoolPush();
-      v13 = [v12 lastObject];
-      v14 = [v13 range];
+      lastObject = [v12 lastObject];
+      range = [lastObject range];
       v16 = v15;
 
-      v17 = [v6 substringWithRange:{v14, v16}];
-      v18 = [MEMORY[0x1E696AB08] alphanumericCharacterSet];
-      v19 = [v18 invertedSet];
-      [v17 componentsSeparatedByCharactersInSet:v19];
+      v17 = [addressCopy substringWithRange:{range, v16}];
+      alphanumericCharacterSet = [MEMORY[0x1E696AB08] alphanumericCharacterSet];
+      invertedSet = [alphanumericCharacterSet invertedSet];
+      [v17 componentsSeparatedByCharactersInSet:invertedSet];
       v29 = v12;
-      v20 = v6;
-      v21 = v8;
-      v22 = v7;
+      v20 = addressCopy;
+      v21 = _getPostalCodeFormats;
+      v22 = codeCopy;
       v24 = v23 = v10;
       [v24 _pas_componentsJoinedByString:&stru_1F385B250];
       v25 = v30 = v11;
 
       v10 = v23;
-      v7 = v22;
-      v8 = v21;
-      v6 = v20;
+      codeCopy = v22;
+      _getPostalCodeFormats = v21;
+      addressCopy = v20;
       v12 = v29;
 
-      v26 = [v25 uppercaseString];
+      uppercaseString = [v25 uppercaseString];
 
       v11 = v30;
       objc_autoreleasePoolPop(context);
@@ -695,7 +695,7 @@ LABEL_13:
 
     else
     {
-      v26 = 0;
+      uppercaseString = 0;
     }
 
     objc_autoreleasePoolPop(v10);
@@ -703,10 +703,10 @@ LABEL_13:
 
   else
   {
-    v26 = 0;
+    uppercaseString = 0;
   }
 
-  return v26;
+  return uppercaseString;
 }
 
 - (id)_getRegionNames
@@ -716,8 +716,8 @@ LABEL_13:
 
   if (!v5)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"SGTimeZone.m" lineNumber:289 description:{@"Invalid parameter not satisfying: %@", @"tzNamesDataPath"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGTimeZone.m" lineNumber:289 description:{@"Invalid parameter not satisfying: %@", @"tzNamesDataPath"}];
   }
 
   v6 = [objc_alloc(MEMORY[0x1E695DF20]) initWithContentsOfFile:v5];
@@ -830,8 +830,8 @@ LABEL_13:
 
   if (!v19)
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"SGTimeZone.m" lineNumber:216 description:{@"Invalid parameter not satisfying: %@", @"tzAbbreviationsDataPath"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGTimeZone.m" lineNumber:216 description:{@"Invalid parameter not satisfying: %@", @"tzAbbreviationsDataPath"}];
   }
 
   v5 = [objc_alloc(MEMORY[0x1E695DF20]) initWithContentsOfFile:v19];
@@ -897,8 +897,8 @@ LABEL_13:
       v8 = *(*(&v20 + 1) + 8 * i);
       v9 = objc_autoreleasePoolPush();
       v10 = [MEMORY[0x1E695DFE8] timeZoneWithName:v8];
-      v11 = [MEMORY[0x1E695DF58] systemLocale];
-      v12 = [v10 localizedName:5 locale:v11];
+      systemLocale = [MEMORY[0x1E695DF58] systemLocale];
+      v12 = [v10 localizedName:5 locale:systemLocale];
 
       if ([v12 length] == 2)
       {
@@ -968,7 +968,7 @@ LABEL_23:
 
   else
   {
-    v5 = self;
+    selfCopy = self;
     location = &self->_countryCodeForCountryName;
     v3 = objc_opt_new();
     v6 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
@@ -976,8 +976,8 @@ LABEL_23:
 
     if (!v7)
     {
-      v35 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v35 handleFailureInMethod:a2 object:v5 file:@"SGTimeZone.m" lineNumber:161 description:{@"Invalid parameter not satisfying: %@", @"tzCountryNamesDataPath"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:selfCopy file:@"SGTimeZone.m" lineNumber:161 description:{@"Invalid parameter not satisfying: %@", @"tzCountryNamesDataPath"}];
     }
 
     v39 = v7;
@@ -990,8 +990,8 @@ LABEL_23:
     v54 = 0u;
     v55 = 0u;
     v56 = 0u;
-    v10 = [MEMORY[0x1E695DF58] preferredLanguages];
-    v11 = [v10 countByEnumeratingWithState:&v53 objects:v61 count:16];
+    preferredLanguages = [MEMORY[0x1E695DF58] preferredLanguages];
+    v11 = [preferredLanguages countByEnumeratingWithState:&v53 objects:v61 count:16];
     if (v11)
     {
       v12 = v11;
@@ -1003,7 +1003,7 @@ LABEL_23:
         {
           if (*v54 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(preferredLanguages);
           }
 
           v16 = *(*(&v53 + 1) + 8 * i);
@@ -1040,7 +1040,7 @@ LABEL_23:
           [v9 addObject:v20];
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v53 objects:v61 count:16];
+        v12 = [preferredLanguages countByEnumeratingWithState:&v53 objects:v61 count:16];
       }
 
       while (v12);
@@ -1072,8 +1072,8 @@ LABEL_23:
           v46 = 0u;
           v47 = 0u;
           v48 = 0u;
-          v44 = [MEMORY[0x1E695DF58] ISOCountryCodes];
-          v23 = [v44 countByEnumeratingWithState:&v45 objects:v59 count:16];
+          iSOCountryCodes = [MEMORY[0x1E695DF58] ISOCountryCodes];
+          v23 = [iSOCountryCodes countByEnumeratingWithState:&v45 objects:v59 count:16];
           if (v23)
           {
             v24 = v23;
@@ -1084,7 +1084,7 @@ LABEL_23:
               {
                 if (*v46 != v25)
                 {
-                  objc_enumerationMutation(v44);
+                  objc_enumerationMutation(iSOCountryCodes);
                 }
 
                 v27 = *(*(&v45 + 1) + 8 * j);
@@ -1097,7 +1097,7 @@ LABEL_23:
 
                 else
                 {
-                  v30 = v5;
+                  v30 = selfCopy;
                   v31 = v3;
                   v32 = sgLogHandle();
                   if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
@@ -1108,11 +1108,11 @@ LABEL_23:
                   }
 
                   v3 = v31;
-                  v5 = v30;
+                  selfCopy = v30;
                 }
               }
 
-              v24 = [v44 countByEnumeratingWithState:&v45 objects:v59 count:16];
+              v24 = [iSOCountryCodes countByEnumeratingWithState:&v45 objects:v59 count:16];
             }
 
             while (v24);
@@ -1128,7 +1128,7 @@ LABEL_23:
       while (v42);
     }
 
-    if (v5->_keepData)
+    if (selfCopy->_keepData)
     {
       objc_storeStrong(location, v3);
     }
@@ -1207,12 +1207,12 @@ void __26__SGTimeZoneDetector_init__block_invoke(uint64_t a1)
   }
 }
 
-+ (id)_regularExpressionForPostalCodeFormat:(id)a3
++ (id)_regularExpressionForPostalCodeFormat:(id)format
 {
-  v3 = a3;
+  formatCopy = format;
   v4 = objc_opt_new();
   [v4 appendString:@"\\b"];
-  [v4 appendString:v3];
+  [v4 appendString:formatCopy];
 
   [v4 appendString:@"\\b"];
   v5 = [objc_alloc(MEMORY[0x1E696AE70]) initWithPattern:v4 options:1 error:0];
@@ -1220,20 +1220,20 @@ void __26__SGTimeZoneDetector_init__block_invoke(uint64_t a1)
   return v5;
 }
 
-+ (id)_normalizedString:(id)a3
++ (id)_normalizedString:(id)string
 {
   v4 = objc_autoreleasePoolPush();
-  v5 = [a3 decomposedStringWithCompatibilityMapping];
-  v6 = [v5 stringByReplacingOccurrencesOfString:@"-" withString:@" "];
+  decomposedStringWithCompatibilityMapping = [string decomposedStringWithCompatibilityMapping];
+  v6 = [decomposedStringWithCompatibilityMapping stringByReplacingOccurrencesOfString:@"-" withString:@" "];
 
   v7 = [v6 stringByReplacingOccurrencesOfString:@"/" withString:@" "];
 
-  v8 = [MEMORY[0x1E696AB08] punctuationCharacterSet];
-  v9 = [v7 componentsSeparatedByCharactersInSet:v8];
+  punctuationCharacterSet = [MEMORY[0x1E696AB08] punctuationCharacterSet];
+  v9 = [v7 componentsSeparatedByCharactersInSet:punctuationCharacterSet];
   v10 = [v9 _pas_componentsJoinedByString:&stru_1F385B250];
 
-  v11 = [MEMORY[0x1E696AB08] nonBaseCharacterSet];
-  v12 = [v10 componentsSeparatedByCharactersInSet:v11];
+  nonBaseCharacterSet = [MEMORY[0x1E696AB08] nonBaseCharacterSet];
+  v12 = [v10 componentsSeparatedByCharactersInSet:nonBaseCharacterSet];
   v13 = [v12 _pas_componentsJoinedByString:&stru_1F385B250];
 
   v14 = [MEMORY[0x1E696AB08] characterSetWithRange:{688, 64}];
@@ -1241,8 +1241,8 @@ void __26__SGTimeZoneDetector_init__block_invoke(uint64_t a1)
   v16 = [v15 _pas_componentsJoinedByString:&stru_1F385B250];
 
   v17 = [MEMORY[0x1E696AE18] predicateWithFormat:@"SELF != ''"];
-  v18 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-  v19 = [v16 componentsSeparatedByCharactersInSet:v18];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+  v19 = [v16 componentsSeparatedByCharactersInSet:whitespaceAndNewlineCharacterSet];
 
   v20 = [v19 filteredArrayUsingPredicate:v17];
   v21 = [v20 _pas_componentsJoinedByString:@" "];
@@ -1253,9 +1253,9 @@ void __26__SGTimeZoneDetector_init__block_invoke(uint64_t a1)
   return v22;
 }
 
-+ (id)_normalizedCountryString:(id)a3
++ (id)_normalizedCountryString:(id)string
 {
-  v4 = trimAfterDelimiter(a3, @" -");
+  v4 = trimAfterDelimiter(string, @" -");
   v5 = trimAfterDelimiter(v4, @" (");
 
   v6 = v5;
@@ -1272,11 +1272,11 @@ void __26__SGTimeZoneDetector_init__block_invoke(uint64_t a1)
 
   v11 = [v10 stringByReplacingOccurrencesOfString:@"No. " withString:@"North "];
 
-  v12 = [a1 _normalizedString:v11];
+  v12 = [self _normalizedString:v11];
 
-  v13 = [v12 capitalizedString];
+  capitalizedString = [v12 capitalizedString];
 
-  return v13;
+  return capitalizedString;
 }
 
 @end

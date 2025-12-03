@@ -1,7 +1,7 @@
 @interface WFSmartPromptDialogViewController
 - (NSArray)actions;
 - (UIStackView)sourceDestinationView;
-- (void)finishWithResult:(unint64_t)a3;
+- (void)finishWithResult:(unint64_t)result;
 - (void)loadContentCollection;
 - (void)loadView;
 @end
@@ -15,51 +15,51 @@
   return WeakRetained;
 }
 
-- (void)finishWithResult:(unint64_t)a3
+- (void)finishWithResult:(unint64_t)result
 {
-  v5 = [MEMORY[0x277CBEB18] array];
-  v6 = [(WFCompactDialogViewController *)self request];
-  v7 = [v6 configuration];
-  v8 = [v7 deletionAuthorizationState];
+  array = [MEMORY[0x277CBEB18] array];
+  request = [(WFCompactDialogViewController *)self request];
+  configuration = [request configuration];
+  deletionAuthorizationState = [configuration deletionAuthorizationState];
 
   v9 = MEMORY[0x277D7C8F0];
-  v10 = [(WFCompactDialogViewController *)self request];
-  v11 = [v10 configuration];
-  if (v8)
+  request2 = [(WFCompactDialogViewController *)self request];
+  configuration2 = [request2 configuration];
+  if (deletionAuthorizationState)
   {
     v17 = 0;
-    v12 = [v9 prepareDeletionAuthorizationDatabaseDataFromConfiguration:v11 resultCode:a3 error:&v17];
+    v12 = [v9 prepareDeletionAuthorizationDatabaseDataFromConfiguration:configuration2 resultCode:result error:&v17];
     v13 = v17;
-    [v5 addObject:v12];
+    [array addObject:v12];
   }
 
   else
   {
     v16 = 0;
-    v12 = [v9 prepareSmartPromptsDatabaseDataFromConfiguration:v11 resultCode:a3 error:&v16];
+    v12 = [v9 prepareSmartPromptsDatabaseDataFromConfiguration:configuration2 resultCode:result error:&v16];
     v13 = v16;
     v14 = [v12 mutableCopy];
 
-    v5 = v14;
+    array = v14;
   }
 
-  v15 = [objc_alloc(MEMORY[0x277D7C8F0]) initWithResult:a3 promptedStatesData:v5];
+  v15 = [objc_alloc(MEMORY[0x277D7C8F0]) initWithResult:result promptedStatesData:array];
   [(WFCompactDialogViewController *)self finishWithResponse:v15];
 }
 
 - (void)loadContentCollection
 {
-  v3 = [(WFSmartPromptDialogViewController *)self dataSource];
+  dataSource = [(WFSmartPromptDialogViewController *)self dataSource];
 
-  if (!v3)
+  if (!dataSource)
   {
-    v4 = [(WFCompactDialogViewController *)self request];
+    request = [(WFCompactDialogViewController *)self request];
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
     v5[2] = __58__WFSmartPromptDialogViewController_loadContentCollection__block_invoke;
     v5[3] = &unk_279EE83B0;
     v5[4] = self;
-    [v4 getContentCollectionWithCompletionHandler:v5];
+    [request getContentCollectionWithCompletionHandler:v5];
   }
 }
 
@@ -144,23 +144,23 @@ void __58__WFSmartPromptDialogViewController_loadContentCollection__block_invoke
   v11.receiver = self;
   v11.super_class = WFSmartPromptDialogViewController;
   [(WFCompactDialogViewController *)&v11 loadView];
-  v3 = [(WFSmartPromptDialogViewController *)self actions];
-  v4 = [v3 count] > 2;
-  v5 = [(WFCompactPlatterViewController *)self platterView];
-  [v5 setArrangeActionsVertically:v4];
+  actions = [(WFSmartPromptDialogViewController *)self actions];
+  v4 = [actions count] > 2;
+  platterView = [(WFCompactPlatterViewController *)self platterView];
+  [platterView setArrangeActionsVertically:v4];
 
-  v6 = [(WFCompactPlatterViewController *)self platterView];
-  v7 = [(WFCompactDialogViewController *)self request];
-  v8 = [v7 secondaryText];
-  [v6 setSecondaryText:v8];
+  platterView2 = [(WFCompactPlatterViewController *)self platterView];
+  request = [(WFCompactDialogViewController *)self request];
+  secondaryText = [request secondaryText];
+  [platterView2 setSecondaryText:secondaryText];
 
-  v9 = [(WFCompactPlatterViewController *)self platterView];
-  [v9 setSecondaryTextAlignment:1];
+  platterView3 = [(WFCompactPlatterViewController *)self platterView];
+  [platterView3 setSecondaryTextAlignment:1];
 
-  v10 = [(WFCompactPlatterViewController *)self platterView];
-  [v10 setSecondaryTextFontStyle:*MEMORY[0x277D76968]];
+  platterView4 = [(WFCompactPlatterViewController *)self platterView];
+  [platterView4 setSecondaryTextFontStyle:*MEMORY[0x277D76968]];
 
-  [(WFCompactDialogViewController *)self configureActionGroupWithActions:v3];
+  [(WFCompactDialogViewController *)self configureActionGroupWithActions:actions];
   [(WFSmartPromptDialogViewController *)self loadContentCollection];
 }
 
@@ -176,73 +176,73 @@ void __58__WFSmartPromptDialogViewController_loadContentCollection__block_invoke
   {
     objc_initWeak(location, self);
     v3 = objc_opt_new();
-    v5 = [(WFCompactDialogViewController *)self request];
-    v6 = [v5 previewButton];
+    request = [(WFCompactDialogViewController *)self request];
+    previewButton = [request previewButton];
 
-    if (v6)
+    if (previewButton)
     {
-      v7 = [(WFCompactDialogViewController *)self request];
-      v8 = [v7 previewButton];
+      request2 = [(WFCompactDialogViewController *)self request];
+      previewButton2 = [request2 previewButton];
       v35[0] = MEMORY[0x277D85DD0];
       v35[1] = 3221225472;
       v35[2] = __44__WFSmartPromptDialogViewController_actions__block_invoke;
       v35[3] = &unk_279EE8908;
       objc_copyWeak(&v36, location);
-      v9 = [WFCompactDialogAction actionForButton:v8 handler:v35];
+      v9 = [WFCompactDialogAction actionForButton:previewButton2 handler:v35];
       [(NSArray *)v3 addObject:v9];
 
       objc_destroyWeak(&v36);
     }
 
-    v10 = [(WFCompactDialogViewController *)self request];
-    v11 = [v10 allowOnceButton];
+    request3 = [(WFCompactDialogViewController *)self request];
+    allowOnceButton = [request3 allowOnceButton];
 
-    if (v11)
+    if (allowOnceButton)
     {
-      v12 = [(WFCompactDialogViewController *)self request];
-      v13 = [v12 allowOnceButton];
+      request4 = [(WFCompactDialogViewController *)self request];
+      allowOnceButton2 = [request4 allowOnceButton];
       v33[0] = MEMORY[0x277D85DD0];
       v33[1] = 3221225472;
       v33[2] = __44__WFSmartPromptDialogViewController_actions__block_invoke_3;
       v33[3] = &unk_279EE8908;
       objc_copyWeak(&v34, location);
-      v14 = [WFCompactDialogAction actionForButton:v13 handler:v33];
+      v14 = [WFCompactDialogAction actionForButton:allowOnceButton2 handler:v33];
       [(NSArray *)v3 addObject:v14];
 
       objc_destroyWeak(&v34);
     }
 
-    v15 = [(WFCompactDialogViewController *)self request];
-    v16 = [v15 allowAlwaysButton];
+    request5 = [(WFCompactDialogViewController *)self request];
+    allowAlwaysButton = [request5 allowAlwaysButton];
 
-    if (v16)
+    if (allowAlwaysButton)
     {
-      v17 = [(WFCompactDialogViewController *)self request];
-      v18 = [v17 allowAlwaysButton];
+      request6 = [(WFCompactDialogViewController *)self request];
+      allowAlwaysButton2 = [request6 allowAlwaysButton];
       v31[0] = MEMORY[0x277D85DD0];
       v31[1] = 3221225472;
       v31[2] = __44__WFSmartPromptDialogViewController_actions__block_invoke_4;
       v31[3] = &unk_279EE8908;
       objc_copyWeak(&v32, location);
-      v19 = [WFCompactDialogAction actionForButton:v18 handler:v31];
+      v19 = [WFCompactDialogAction actionForButton:allowAlwaysButton2 handler:v31];
       [(NSArray *)v3 addObject:v19];
 
       objc_destroyWeak(&v32);
     }
 
-    v20 = [(WFCompactDialogViewController *)self request];
-    v21 = [v20 denyButton];
+    request7 = [(WFCompactDialogViewController *)self request];
+    denyButton = [request7 denyButton];
 
-    if (v21)
+    if (denyButton)
     {
-      v22 = [(WFCompactDialogViewController *)self request];
-      v23 = [v22 denyButton];
+      request8 = [(WFCompactDialogViewController *)self request];
+      denyButton2 = [request8 denyButton];
       v26 = MEMORY[0x277D85DD0];
       v27 = 3221225472;
       v28 = __44__WFSmartPromptDialogViewController_actions__block_invoke_5;
       v29 = &unk_279EE8908;
       objc_copyWeak(&v30, location);
-      v24 = [WFCompactDialogAction actionForButton:v23 handler:&v26];
+      v24 = [WFCompactDialogAction actionForButton:denyButton2 handler:&v26];
       [(NSArray *)v3 addObject:v24, v26, v27, v28, v29];
 
       objc_destroyWeak(&v30);

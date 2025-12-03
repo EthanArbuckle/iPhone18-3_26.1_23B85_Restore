@@ -5,9 +5,9 @@
 - (id)cell;
 - (id)formattedKeyAndValue;
 - (void)beginEditing;
-- (void)toolbarDoneButtonPressed:(id)a3;
-- (void)toolbarNextButtonPressed:(id)a3;
-- (void)toolbarPrevButtonPressed:(id)a3;
+- (void)toolbarDoneButtonPressed:(id)pressed;
+- (void)toolbarNextButtonPressed:(id)pressed;
+- (void)toolbarPrevButtonPressed:(id)pressed;
 - (void)updateCellDisplay;
 @end
 
@@ -15,8 +15,8 @@
 
 - (void)beginEditing
 {
-  v2 = [(HKSimpleDataEntryItem *)self cell];
-  [v2 beginEditing];
+  cell = [(HKSimpleDataEntryItem *)self cell];
+  [cell beginEditing];
 }
 
 - (id)accessoryToolbar
@@ -24,13 +24,13 @@
   v21[2] = *MEMORY[0x1E69E9840];
   v3 = objc_alloc_init(MEMORY[0x1E69DD180]);
   [v3 setAutoresizingMask:18];
-  v4 = [(HKSimpleDataEntryItem *)self toolbarDelegate];
+  toolbarDelegate = [(HKSimpleDataEntryItem *)self toolbarDelegate];
   v5 = objc_opt_respondsToSelector();
 
-  v6 = [(HKSimpleDataEntryItem *)self toolbarDelegate];
+  toolbarDelegate2 = [(HKSimpleDataEntryItem *)self toolbarDelegate];
   v7 = objc_opt_respondsToSelector();
 
-  v8 = [(HKSimpleDataEntryItem *)self toolbarDelegate];
+  toolbarDelegate3 = [(HKSimpleDataEntryItem *)self toolbarDelegate];
   v9 = objc_opt_respondsToSelector();
 
   v10 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -80,39 +80,39 @@ LABEL_6:
   return v3;
 }
 
-- (void)toolbarPrevButtonPressed:(id)a3
+- (void)toolbarPrevButtonPressed:(id)pressed
 {
-  v4 = [(HKSimpleDataEntryItem *)self toolbarDelegate];
+  toolbarDelegate = [(HKSimpleDataEntryItem *)self toolbarDelegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(HKSimpleDataEntryItem *)self toolbarDelegate];
-    [v6 dataEntryItemPrevPressed:self];
+    toolbarDelegate2 = [(HKSimpleDataEntryItem *)self toolbarDelegate];
+    [toolbarDelegate2 dataEntryItemPrevPressed:self];
   }
 }
 
-- (void)toolbarNextButtonPressed:(id)a3
+- (void)toolbarNextButtonPressed:(id)pressed
 {
-  v4 = [(HKSimpleDataEntryItem *)self toolbarDelegate];
+  toolbarDelegate = [(HKSimpleDataEntryItem *)self toolbarDelegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(HKSimpleDataEntryItem *)self toolbarDelegate];
-    [v6 dataEntryItemNextPressed:self];
+    toolbarDelegate2 = [(HKSimpleDataEntryItem *)self toolbarDelegate];
+    [toolbarDelegate2 dataEntryItemNextPressed:self];
   }
 }
 
-- (void)toolbarDoneButtonPressed:(id)a3
+- (void)toolbarDoneButtonPressed:(id)pressed
 {
-  v4 = [(HKSimpleDataEntryItem *)self toolbarDelegate];
+  toolbarDelegate = [(HKSimpleDataEntryItem *)self toolbarDelegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(HKSimpleDataEntryItem *)self toolbarDelegate];
-    [v6 dataEntryItemDonePressed:self];
+    toolbarDelegate2 = [(HKSimpleDataEntryItem *)self toolbarDelegate];
+    [toolbarDelegate2 dataEntryItemDonePressed:self];
   }
 }
 

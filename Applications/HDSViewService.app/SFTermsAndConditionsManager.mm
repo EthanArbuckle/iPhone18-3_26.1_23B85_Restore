@@ -1,26 +1,26 @@
 @interface SFTermsAndConditionsManager
-- (BOOL)remoteUIController:(id)a3 shouldLoadRequest:(id)a4 redirectResponse:(id)a5;
-- (SFTermsAndConditionsManager)initWithPresenter:(id)a3 showWarranty:(BOOL)a4;
-- (void)_handleAgreeFromObjectModel:(id)a3;
+- (BOOL)remoteUIController:(id)controller shouldLoadRequest:(id)request redirectResponse:(id)response;
+- (SFTermsAndConditionsManager)initWithPresenter:(id)presenter showWarranty:(BOOL)warranty;
+- (void)_handleAgreeFromObjectModel:(id)model;
 - (void)activate;
 - (void)loadOfflineTerms;
-- (void)remoteUIController:(id)a3 didFinishLoadWithError:(id)a4 forRequest:(id)a5;
-- (void)remoteUIController:(id)a3 willPresentModalNavigationController:(id)a4;
+- (void)remoteUIController:(id)controller didFinishLoadWithError:(id)error forRequest:(id)request;
+- (void)remoteUIController:(id)controller willPresentModalNavigationController:(id)navigationController;
 @end
 
 @implementation SFTermsAndConditionsManager
 
-- (SFTermsAndConditionsManager)initWithPresenter:(id)a3 showWarranty:(BOOL)a4
+- (SFTermsAndConditionsManager)initWithPresenter:(id)presenter showWarranty:(BOOL)warranty
 {
-  v7 = a3;
+  presenterCopy = presenter;
   v11.receiver = self;
   v11.super_class = SFTermsAndConditionsManager;
   v8 = [(SFTermsAndConditionsManager *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_showWarranty = a4;
-    objc_storeStrong(&v8->_presenter, a3);
+    v8->_showWarranty = warranty;
+    objc_storeStrong(&v8->_presenter, presenter);
   }
 
   return v9;
@@ -33,8 +33,8 @@
   self->_termsController = v3;
 
   [(RemoteUIController *)self->_termsController setHostViewController:self->_presenter];
-  v5 = [(RemoteUIController *)self->_termsController loader];
-  [v5 setAllowNonSecureHTTP:IsAppleInternalBuild() != 0];
+  loader = [(RemoteUIController *)self->_termsController loader];
+  [loader setAllowNonSecureHTTP:IsAppleInternalBuild() != 0];
 
   v6 = self->_termsController;
   v7 = +[RUIStyle setupAssistantStyle];
@@ -42,7 +42,7 @@
 
   [(RemoteUIController *)self->_termsController setDelegate:self];
   v8 = +[ACAccountStore defaultStore];
-  v9 = [v8 aa_primaryAppleAccount];
+  aa_primaryAppleAccount = [v8 aa_primaryAppleAccount];
 
   v10 = [[NSMutableArray alloc] initWithObjects:{&off_1000F3B48, &off_1000F3B98, 0}];
   v11 = v10;
@@ -51,7 +51,7 @@
     [v10 insertObject:&off_1000F3B70 atIndex:1];
   }
 
-  if ([v9 aa_needsToVerifyTerms])
+  if ([aa_primaryAppleAccount aa_needsToVerifyTerms])
   {
     [v11 addObject:&off_1000F3BC0];
   }
@@ -61,7 +61,7 @@
   v24[0] = v11;
   v24[1] = kAAProtocolGenericTermsUIBuddyMLKey;
   v12 = [NSDictionary dictionaryWithObjects:v24 forKeys:v23 count:2];
-  v13 = [[AAGenericTermsUIRequest alloc] initWithAccount:v9 parameters:v12 preferPassword:0];
+  v13 = [[AAGenericTermsUIRequest alloc] initWithAccount:aa_primaryAppleAccount parameters:v12 preferPassword:0];
   if (v13)
   {
     objc_initWeak(&location, self);
@@ -80,8 +80,8 @@
     objc_copyWeak(&v19, &location);
     [(RemoteUIController *)v15 setHandlerForElementName:@"disagree" handler:v18];
     v16 = self->_termsController;
-    v17 = [v13 urlRequest];
-    [(RemoteUIController *)v16 loadRequest:v17 completion:&stru_1000EDC00];
+    urlRequest = [v13 urlRequest];
+    [(RemoteUIController *)v16 loadRequest:urlRequest completion:&stru_1000EDC00];
 
     objc_destroyWeak(&v19);
     objc_destroyWeak(&v21);
@@ -94,14 +94,14 @@
   }
 }
 
-- (void)_handleAgreeFromObjectModel:(id)a3
+- (void)_handleAgreeFromObjectModel:(id)model
 {
-  v4 = [a3 clientInfo];
-  v5 = [v4 objectForKey:@"agreeUrl"];
+  clientInfo = [model clientInfo];
+  v5 = [clientInfo objectForKey:@"agreeUrl"];
   v6 = +[ACAccountStore defaultStore];
-  v7 = [v6 aa_primaryAppleAccount];
+  aa_primaryAppleAccount = [v6 aa_primaryAppleAccount];
 
-  v8 = [[AAiCloudTermsAgreeRequest alloc] initWithURLString:v5 account:v7];
+  v8 = [[AAiCloudTermsAgreeRequest alloc] initWithURLString:v5 account:aa_primaryAppleAccount];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100005DA4;
@@ -113,10 +113,10 @@
 - (void)loadOfflineTerms
 {
   v3 = +[NSBundle mainBundle];
-  v13 = [v3 localizations];
+  localizations = [v3 localizations];
 
   v4 = +[NSLocale preferredLanguages];
-  v5 = [NSBundle preferredLocalizationsFromArray:v13 forPreferences:v4];
+  v5 = [NSBundle preferredLocalizationsFromArray:localizations forPreferences:v4];
 
   v6 = +[NSBundle mainBundle];
   v7 = [v5 objectAtIndex:0];
@@ -126,23 +126,23 @@
   self->_showingOfflineTerms = 1;
   termsController = self->_termsController;
   v11 = +[NSBundle mainBundle];
-  v12 = [v11 resourceURL];
-  [(RemoteUIController *)termsController loadData:v9 baseURL:v12];
+  resourceURL = [v11 resourceURL];
+  [(RemoteUIController *)termsController loadData:v9 baseURL:resourceURL];
 }
 
-- (void)remoteUIController:(id)a3 didFinishLoadWithError:(id)a4 forRequest:(id)a5
+- (void)remoteUIController:(id)controller didFinishLoadWithError:(id)error forRequest:(id)request
 {
-  if (a4)
+  if (error)
   {
-    [(SFTermsAndConditionsManager *)self loadOfflineTerms:a3];
+    [(SFTermsAndConditionsManager *)self loadOfflineTerms:controller];
   }
 }
 
-- (BOOL)remoteUIController:(id)a3 shouldLoadRequest:(id)a4 redirectResponse:(id)a5
+- (BOOL)remoteUIController:(id)controller shouldLoadRequest:(id)request redirectResponse:(id)response
 {
-  v5 = a4;
+  requestCopy = request;
   v6 = objc_opt_new();
-  v7 = [v6 appleIDHeadersForRequest:v5];
+  v7 = [v6 appleIDHeadersForRequest:requestCopy];
 
   v23 = 0u;
   v24 = 0u;
@@ -165,7 +165,7 @@
 
         v13 = *(*(&v21 + 1) + 8 * i);
         v14 = [v8 objectForKeyedSubscript:{v13, v21}];
-        [v5 setValue:v14 forHTTPHeaderField:v13];
+        [requestCopy setValue:v14 forHTTPHeaderField:v13];
       }
 
       v10 = [v8 countByEnumeratingWithState:&v21 objects:v25 count:16];
@@ -175,28 +175,28 @@
   }
 
   v15 = +[AADeviceInfo userAgentHeader];
-  [v5 setValue:v15 forHTTPHeaderField:@"User-Agent"];
+  [requestCopy setValue:v15 forHTTPHeaderField:@"User-Agent"];
 
   v16 = +[AADeviceInfo clientInfoHeader];
-  [v5 setValue:v16 forHTTPHeaderField:@"X-MMe-Client-Info"];
+  [requestCopy setValue:v16 forHTTPHeaderField:@"X-MMe-Client-Info"];
 
   v17 = +[NSLocale currentLocale];
   v18 = [v17 objectForKey:NSLocaleCountryCode];
-  v19 = [v18 uppercaseString];
-  [v5 setValue:v19 forHTTPHeaderField:@"X-MMe-Country"];
+  uppercaseString = [v18 uppercaseString];
+  [requestCopy setValue:uppercaseString forHTTPHeaderField:@"X-MMe-Country"];
 
   return 1;
 }
 
-- (void)remoteUIController:(id)a3 willPresentModalNavigationController:(id)a4
+- (void)remoteUIController:(id)controller willPresentModalNavigationController:(id)navigationController
 {
-  v5 = a4;
+  navigationControllerCopy = navigationController;
   v6 = +[UIDevice currentDevice];
-  v7 = [v6 userInterfaceIdiom];
+  userInterfaceIdiom = [v6 userInterfaceIdiom];
 
-  if (v7 == 1)
+  if (userInterfaceIdiom == 1)
   {
-    [v5 setModalPresentationStyle:2];
+    [navigationControllerCopy setModalPresentationStyle:2];
   }
 
   if (self->_showingOfflineTerms)
@@ -210,17 +210,17 @@
     v13 = sub_100006538(@"TERMS_AGREE_BUTTON_TITLE");
     v14 = [v12 initWithTitle:v13 style:2 target:self action:"handleAgreeButton"];
 
-    [v5 setToolbarHidden:0];
-    v15 = [v5 topViewController];
+    [navigationControllerCopy setToolbarHidden:0];
+    topViewController = [navigationControllerCopy topViewController];
     v18[0] = v10;
     v18[1] = v11;
     v18[2] = v14;
     v16 = [NSArray arrayWithObjects:v18 count:3];
-    [v15 setToolbarItems:v16 animated:0];
+    [topViewController setToolbarItems:v16 animated:0];
   }
 
-  v17 = [(SFTermsAndConditionsManager *)self loadedHandler];
-  v17[2]();
+  loadedHandler = [(SFTermsAndConditionsManager *)self loadedHandler];
+  loadedHandler[2]();
 }
 
 @end

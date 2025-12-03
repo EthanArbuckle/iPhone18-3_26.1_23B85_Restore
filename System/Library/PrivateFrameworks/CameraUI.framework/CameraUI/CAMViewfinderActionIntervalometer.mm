@@ -1,5 +1,5 @@
 @interface CAMViewfinderActionIntervalometer
-- (CAMViewfinderActionIntervalometer)initWithDelegate:(id)a3 interval:(double)a4 delay:(double)a5 maximumCount:(int64_t)a6 viewfinderViewController:(id)a7;
+- (CAMViewfinderActionIntervalometer)initWithDelegate:(id)delegate interval:(double)interval delay:(double)delay maximumCount:(int64_t)count viewfinderViewController:(id)controller;
 - (CAMViewfinderActionIntervalometerDelegate)delegate;
 - (void)_attemptViewfinderActions;
 - (void)startGeneratingRequests;
@@ -8,27 +8,27 @@
 
 @implementation CAMViewfinderActionIntervalometer
 
-- (CAMViewfinderActionIntervalometer)initWithDelegate:(id)a3 interval:(double)a4 delay:(double)a5 maximumCount:(int64_t)a6 viewfinderViewController:(id)a7
+- (CAMViewfinderActionIntervalometer)initWithDelegate:(id)delegate interval:(double)interval delay:(double)delay maximumCount:(int64_t)count viewfinderViewController:(id)controller
 {
-  v12 = a3;
-  v13 = a7;
+  delegateCopy = delegate;
+  controllerCopy = controller;
   v24.receiver = self;
   v24.super_class = CAMViewfinderActionIntervalometer;
   v14 = [(CAMViewfinderActionIntervalometer *)&v24 init];
   v15 = v14;
   if (v14)
   {
-    if (!a6)
+    if (!count)
     {
-      a6 = 0x7FFFFFFFFFFFFFFFLL;
+      count = 0x7FFFFFFFFFFFFFFFLL;
     }
 
-    objc_storeWeak(&v14->_delegate, v12);
-    v15->_interval = a4;
-    v15->_delay = a5;
-    v15->_maximumCount = a6;
-    v15->__remaining = a6;
-    objc_storeStrong(&v15->__viewfinderViewController, a7);
+    objc_storeWeak(&v14->_delegate, delegateCopy);
+    v15->_interval = interval;
+    v15->_delay = delay;
+    v15->_maximumCount = count;
+    v15->__remaining = count;
+    objc_storeStrong(&v15->__viewfinderViewController, controller);
     objc_initWeak(&location, v15);
     v16 = [CAMPreciseTimer alloc];
     v21[0] = MEMORY[0x1E69E9820];
@@ -36,7 +36,7 @@
     v21[2] = __107__CAMViewfinderActionIntervalometer_initWithDelegate_interval_delay_maximumCount_viewfinderViewController___block_invoke;
     v21[3] = &unk_1E76F9A10;
     objc_copyWeak(&v22, &location);
-    v17 = [(CAMPreciseTimer *)v16 initWithDelay:v21 interval:a5 handler:a4];
+    v17 = [(CAMPreciseTimer *)v16 initWithDelay:v21 interval:delay handler:interval];
     timer = v15->__timer;
     v15->__timer = v17;
 
@@ -56,12 +56,12 @@ void __107__CAMViewfinderActionIntervalometer_initWithDelegate_interval_delay_ma
 
 - (void)startGeneratingRequests
 {
-  v3 = [(CAMViewfinderActionIntervalometer *)self _viewfinderViewController];
+  _viewfinderViewController = [(CAMViewfinderActionIntervalometer *)self _viewfinderViewController];
 
-  if (v3)
+  if (_viewfinderViewController)
   {
-    v5 = [(CAMViewfinderActionIntervalometer *)self _timer];
-    [v5 start];
+    _timer = [(CAMViewfinderActionIntervalometer *)self _timer];
+    [_timer start];
   }
 
   else
@@ -76,11 +76,11 @@ void __107__CAMViewfinderActionIntervalometer_initWithDelegate_interval_delay_ma
 
 - (void)_attemptViewfinderActions
 {
-  v3 = [(CAMViewfinderActionIntervalometer *)self delegate];
-  v4 = v3;
-  if (v3)
+  delegate = [(CAMViewfinderActionIntervalometer *)self delegate];
+  v4 = delegate;
+  if (delegate)
   {
-    if ([v3 shouldAttemptAction])
+    if ([delegate shouldAttemptAction])
     {
       if ([v4 executeAction])
       {
@@ -105,8 +105,8 @@ void __107__CAMViewfinderActionIntervalometer_initWithDelegate_interval_delay_ma
 
 - (void)stopAttemptingActions
 {
-  v2 = [(CAMViewfinderActionIntervalometer *)self _timer];
-  [v2 invalidate];
+  _timer = [(CAMViewfinderActionIntervalometer *)self _timer];
+  [_timer invalidate];
 }
 
 - (CAMViewfinderActionIntervalometerDelegate)delegate

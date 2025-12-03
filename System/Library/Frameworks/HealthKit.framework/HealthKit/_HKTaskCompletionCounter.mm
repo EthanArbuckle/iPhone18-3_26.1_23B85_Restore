@@ -1,5 +1,5 @@
 @interface _HKTaskCompletionCounter
-+ (id)counterWithTargetCount:(int64_t)a3 queue:(id)a4 completion:(id)a5;
++ (id)counterWithTargetCount:(int64_t)count queue:(id)queue completion:(id)completion;
 - (void)_invalidate;
 - (void)allTasksEnqueued;
 - (void)decrementCounter;
@@ -8,14 +8,14 @@
 
 @implementation _HKTaskCompletionCounter
 
-+ (id)counterWithTargetCount:(int64_t)a3 queue:(id)a4 completion:(id)a5
++ (id)counterWithTargetCount:(int64_t)count queue:(id)queue completion:(id)completion
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
-  if (v10)
+  queueCopy = queue;
+  completionCopy = completion;
+  v12 = completionCopy;
+  if (queueCopy)
   {
-    if (v11)
+    if (completionCopy)
     {
       goto LABEL_3;
     }
@@ -23,14 +23,14 @@
 
   else
   {
-    [_HKTaskCompletionCounter counterWithTargetCount:a2 queue:a1 completion:?];
+    [_HKTaskCompletionCounter counterWithTargetCount:a2 queue:self completion:?];
     if (v12)
     {
       goto LABEL_3;
     }
   }
 
-  [_HKTaskCompletionCounter counterWithTargetCount:a2 queue:a1 completion:?];
+  [_HKTaskCompletionCounter counterWithTargetCount:a2 queue:self completion:?];
 LABEL_3:
   v13 = objc_alloc_init(_HKTaskCompletionCounter);
   if (v13)
@@ -39,8 +39,8 @@ LABEL_3:
     completion = v13->_completion;
     v13->_completion = v14;
 
-    objc_storeStrong(&v13->_queue, a4);
-    v13->_target = a3;
+    objc_storeStrong(&v13->_queue, queue);
+    v13->_target = count;
   }
 
   return v13;

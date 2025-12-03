@@ -1,5 +1,5 @@
 @interface NUGeometryRequest
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)newRenderJob;
 - (int64_t)mediaComponentType;
 - (void)_commonInit;
@@ -9,17 +9,17 @@
 
 - (int64_t)mediaComponentType
 {
-  v2 = [(NURenderRequest *)self composition];
-  v3 = [v2 mediaType];
+  composition = [(NURenderRequest *)self composition];
+  mediaType = [composition mediaType];
 
-  if ((v3 - 1) > 2)
+  if ((mediaType - 1) > 2)
   {
     return 0;
   }
 
   else
   {
-    return qword_1C03C42E0[v3 - 1];
+    return qword_1C03C42E0[mediaType - 1];
   }
 }
 
@@ -30,11 +30,11 @@
   return [(NURenderJob *)v3 initWithRequest:self];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = NUGeometryRequest;
-  v4 = [(NURenderRequest *)&v7 copyWithZone:a3];
+  v4 = [(NURenderRequest *)&v7 copyWithZone:zone];
   v5 = v4;
   if (v4)
   {

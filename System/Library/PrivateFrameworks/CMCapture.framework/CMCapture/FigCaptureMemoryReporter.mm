@@ -1,24 +1,24 @@
 @interface FigCaptureMemoryReporter
 + (id)sharedInstance;
 - (FigCaptureMemoryReporter)init;
-- (void)_changeReportFrequency:(uint64_t)a1;
-- (void)_generateMemgraph:(uint64_t)a1;
+- (void)_changeReportFrequency:(uint64_t)frequency;
+- (void)_generateMemgraph:(uint64_t)memgraph;
 - (void)_logCurrentTransactions;
 - (void)_reportMemoryStatus;
-- (void)_startMemgraphCoolDown:(uint64_t)a1;
+- (void)_startMemgraphCoolDown:(uint64_t)down;
 - (void)_startReporting;
-- (void)_updateActiveClientCountWithDelta:(uint64_t)a1;
+- (void)_updateActiveClientCountWithDelta:(uint64_t)delta;
 - (void)dealloc;
-- (void)decrementActiveClientCount:(BOOL)a3 clientIsCameraMessagesApp:(BOOL)a4;
-- (void)generateMemgraphWithReason:(id)a3;
-- (void)incrementActiveClientCount:(BOOL)a3 clientIsCameraMessagesApp:(BOOL)a4 withMemoryPool:(id)a5;
+- (void)decrementActiveClientCount:(BOOL)count clientIsCameraMessagesApp:(BOOL)app;
+- (void)generateMemgraphWithReason:(id)reason;
+- (void)incrementActiveClientCount:(BOOL)count clientIsCameraMessagesApp:(BOOL)app withMemoryPool:(id)pool;
 @end
 
 @implementation FigCaptureMemoryReporter
 
 - (void)_reportMemoryStatus
 {
-  if (!a1)
+  if (!self)
   {
     return;
   }
@@ -34,14 +34,14 @@
     ContinuousUpTimeNanoseconds = -1;
   }
 
-  v47 = *(a1 + 40);
+  v47 = *(self + 40);
   if (v47 == 1)
   {
-    *(a1 + 40) = 0;
+    *(self + 40) = 0;
   }
 
   bzero(buffer, 0x1D0uLL);
-  if (proc_pid_rusage(*(a1 + 64), 6, buffer))
+  if (proc_pid_rusage(*(self + 64), 6, buffer))
   {
     OUTLINED_FUNCTION_1_5();
 LABEL_91:
@@ -50,8 +50,8 @@ LABEL_91:
   }
 
   v3 = v105;
-  v4 = (a1 + 128);
-  v5 = atomic_load((a1 + 128));
+  v4 = (self + 128);
+  v5 = atomic_load((self + 128));
   v6 = v3;
   if (v5 > v3)
   {
@@ -60,10 +60,10 @@ LABEL_91:
 
   atomic_store(v6, v4);
   v7 = v104;
-  *(a1 + 120) = v104;
+  *(self + 120) = v104;
   v8 = v7 >> 10;
   v45 = v3 >> 10;
-  if (*(a1 + 44) > 0 || (*(a1 + 70) & 1) != 0 || *(a1 + 80) < v8)
+  if (*(self + 44) > 0 || (*(self + 70) & 1) != 0 || *(self + 80) < v8)
   {
     v101 = 0;
     v102 = 0;
@@ -71,7 +71,7 @@ LABEL_91:
 
   else
   {
-    v21 = *(a1 + 84);
+    v21 = *(self + 84);
     v101 = 0;
     v102 = 0;
     if (v21 <= v8)
@@ -81,7 +81,7 @@ LABEL_91:
     }
   }
 
-  v9 = *(a1 + 144);
+  v9 = *(self + 144);
   if (v9 && (dword_1ED843FF0 & 0x40) != 0)
   {
     [v9 getInUseFootprint:&v102 andOutOfUseFootprint:&v101];
@@ -100,8 +100,8 @@ LABEL_91:
     v11 = v8 - 0x10000;
   }
 
-  *(a1 + 80) = v10;
-  *(a1 + 84) = v11;
+  *(self + 80) = v10;
+  *(self + 84) = v11;
   v12 = dword_1ED843FF0;
   if ((dword_1ED843FF0 & 1) == 0)
   {
@@ -258,7 +258,7 @@ LABEL_32:
   v14 = OUTLINED_FUNCTION_7_75(v13);
   if (OUTLINED_FUNCTION_4_91(v14))
   {
-    v15 = *(a1 + 120) >> 10;
+    v15 = *(self + 120) >> 10;
     v16 = @"false";
     if (v47)
     {
@@ -303,20 +303,20 @@ LABEL_42:
 LABEL_43:
   bzero(host_info64_out, 0xA0uLL);
   v48 = 40;
-  if (host_statistics64(*(a1 + 52), 4, host_info64_out, &v48))
+  if (host_statistics64(*(self + 52), 4, host_info64_out, &v48))
   {
     OUTLINED_FUNCTION_1_5();
     goto LABEL_91;
   }
 
-  v25 = *(a1 + 56);
+  v25 = *(self + 56);
   v26 = v25 * host_info64_out[3];
   v27 = v26 >> 10;
   v44 = (16 * v50);
   v42 = (v25 * host_info64_out[0]) >> 10;
   v41 = (v25 * host_info64_out[1]) >> 10;
   v43 = (v25 * host_info64_out[2]) >> 10;
-  if (*(a1 + 44) > 0 || (*(a1 + 70) & 1) != 0 || *(a1 + 88) < v27 || *(a1 + 92) > v27)
+  if (*(self + 44) > 0 || (*(self + 70) & 1) != 0 || *(self + 88) < v27 || *(self + 92) > v27)
   {
     if (v27 <= 0x100000)
     {
@@ -330,8 +330,8 @@ LABEL_43:
       v29 = v27 - 0x10000;
     }
 
-    *(a1 + 88) = v28;
-    *(a1 + 92) = v29;
+    *(self + 88) = v28;
+    *(self + 92) = v29;
     if (v2[4080])
     {
       OUTLINED_FUNCTION_14_40();
@@ -371,15 +371,15 @@ LABEL_43:
     v30 = 0;
   }
 
-  if ((!v47 || *(a1 + 44) < 1 || (*(a1 + 48) & 1) == 0 && (*(a1 + 49) & 1) == 0) && (*(a1 + 69) & 1) == 0 && *(a1 + 68) != 1)
+  if ((!v47 || *(self + 44) < 1 || (*(self + 48) & 1) == 0 && (*(self + 49) & 1) == 0) && (*(self + 69) & 1) == 0 && *(self + 68) != 1)
   {
     goto LABEL_69;
   }
 
   v33 = *(v2 + 1020);
-  if ((v33 & 0x20) != 0 && (*(a1 + 76) <= v8 || *(a1 + 69) == 1))
+  if ((v33 & 0x20) != 0 && (*(self + 76) <= v8 || *(self + 69) == 1))
   {
-    [(FigCaptureMemoryReporter *)a1 _logCurrentTransactions];
+    [(FigCaptureMemoryReporter *)self _logCurrentTransactions];
     if ((*(v2 + 1020) & 8) != 0)
     {
       goto LABEL_66;
@@ -389,9 +389,9 @@ LABEL_43:
   else if ((v33 & 8) != 0)
   {
 LABEL_66:
-    if (*(a1 + 72) <= v8 || *(a1 + 68) == 1)
+    if (*(self + 72) <= v8 || *(self + 68) == 1)
     {
-      [FigCaptureMemoryReporter _generateMemgraph:a1];
+      [FigCaptureMemoryReporter _generateMemgraph:self];
     }
   }
 
@@ -405,10 +405,10 @@ LABEL_69:
 
     if ((v2[4080] & 0x11) != 0)
     {
-      v34 = *(a1 + 136);
+      v34 = *(self + 136);
       if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
       {
-        v35 = *(a1 + 120) >> 10;
+        v35 = *(self + 120) >> 10;
         *task_info_out = 134219520;
         *&task_info_out[4] = v35;
         v68 = 2048;
@@ -517,7 +517,7 @@ FigCaptureMemoryReporter *__42__FigCaptureMemoryReporter_sharedInstance__block_i
   [(FigCaptureMemoryReporter *)&v3 dealloc];
 }
 
-- (void)generateMemgraphWithReason:(id)a3
+- (void)generateMemgraphWithReason:(id)reason
 {
   if (dword_1ED843FF0)
   {
@@ -565,13 +565,13 @@ FigCaptureMemoryReporter *__42__FigCaptureMemoryReporter_sharedInstance__block_i
   [FigCaptureMemoryReporter _generateMemgraph:?];
 }
 
-- (void)_generateMemgraph:(uint64_t)a1
+- (void)_generateMemgraph:(uint64_t)memgraph
 {
-  if (a1)
+  if (memgraph)
   {
-    os_unfair_lock_lock((a1 + 36));
-    v2 = *(a1 + 24);
-    os_unfair_lock_unlock((a1 + 36));
+    os_unfair_lock_lock((memgraph + 36));
+    v2 = *(memgraph + 24);
+    os_unfair_lock_unlock((memgraph + 36));
     if (dword_1ED843FF0)
     {
       corpse_task_port = 0;
@@ -632,7 +632,7 @@ FigCaptureMemoryReporter *__42__FigCaptureMemoryReporter_sharedInstance__block_i
           fig_log_call_emit_and_clean_up_after_send_and_compose();
         }
 
-        [(FigCaptureMemoryReporter *)a1 _startMemgraphCoolDown:?];
+        [(FigCaptureMemoryReporter *)memgraph _startMemgraphCoolDown:?];
       }
     }
   }
@@ -649,12 +649,12 @@ void __51__FigCaptureMemoryReporter__startMemgraphCoolDown___block_invoke(uint64
   os_unfair_lock_unlock(v2);
 }
 
-- (void)incrementActiveClientCount:(BOOL)a3 clientIsCameraMessagesApp:(BOOL)a4 withMemoryPool:(id)a5
+- (void)incrementActiveClientCount:(BOOL)count clientIsCameraMessagesApp:(BOOL)app withMemoryPool:(id)pool
 {
   if (self->_anyLoggingEnabled)
   {
-    v6 = a4;
-    v7 = a3;
+    appCopy = app;
+    countCopy = count;
     if ((dword_1ED843FF0 & 4) != 0)
     {
       OUTLINED_FUNCTION_112();
@@ -680,32 +680,32 @@ void __51__FigCaptureMemoryReporter__startMemgraphCoolDown___block_invoke(uint64
       fig_log_call_emit_and_clean_up_after_send_and_compose();
     }
 
-    self->_memoryPool = a5;
+    self->_memoryPool = pool;
     [(FigCaptureMemoryReporter *)self _updateActiveClientCountWithDelta:?];
-    if (v7)
+    if (countCopy)
     {
       self->_activeClientsIncludeCamera = 1;
     }
 
-    if (v6)
+    if (appCopy)
     {
       self->_activeClientsIncludeCameraMessagesApp = 1;
     }
   }
 }
 
-- (void)_updateActiveClientCountWithDelta:(uint64_t)a1
+- (void)_updateActiveClientCountWithDelta:(uint64_t)delta
 {
-  if (a1)
+  if (delta)
   {
-    os_unfair_lock_lock((a1 + 32));
-    v4 = *(a1 + 44);
+    os_unfair_lock_lock((delta + 32));
+    v4 = *(delta + 44);
     v5 = v4 + a2;
     v6 = v5 & ~(v5 >> 31);
-    *(a1 + 44) = v6;
+    *(delta + 44) = v6;
     if (v4 != v6 && (!v4 || v5 <= 0))
     {
-      *(a1 + 40) = 1;
+      *(delta + 40) = 1;
       v7 = v5 < 1;
       v8 = 104;
       if (v7)
@@ -713,19 +713,19 @@ void __51__FigCaptureMemoryReporter__startMemgraphCoolDown___block_invoke(uint64
         v8 = 112;
       }
 
-      [(FigCaptureMemoryReporter *)a1 _changeReportFrequency:?];
+      [(FigCaptureMemoryReporter *)delta _changeReportFrequency:?];
     }
 
-    os_unfair_lock_unlock((a1 + 32));
+    os_unfair_lock_unlock((delta + 32));
   }
 }
 
-- (void)decrementActiveClientCount:(BOOL)a3 clientIsCameraMessagesApp:(BOOL)a4
+- (void)decrementActiveClientCount:(BOOL)count clientIsCameraMessagesApp:(BOOL)app
 {
   if (self->_anyLoggingEnabled)
   {
-    v4 = a4;
-    v5 = a3;
+    appCopy = app;
+    countCopy = count;
     if ((dword_1ED843FF0 & 4) != 0)
     {
       OUTLINED_FUNCTION_112();
@@ -743,14 +743,14 @@ void __51__FigCaptureMemoryReporter__startMemgraphCoolDown___block_invoke(uint64
     }
 
     [(FigCaptureMemoryReporter *)self _updateActiveClientCountWithDelta:?];
-    if (v5 || v4)
+    if (countCopy || appCopy)
     {
-      if (v5)
+      if (countCopy)
       {
         self->_activeClientsIncludeCamera = 0;
       }
 
-      if (v4)
+      if (appCopy)
       {
         self->_activeClientsIncludeCameraMessagesApp = 0;
       }
@@ -763,36 +763,36 @@ void __51__FigCaptureMemoryReporter__startMemgraphCoolDown___block_invoke(uint64
   }
 }
 
-- (void)_startMemgraphCoolDown:(uint64_t)a1
+- (void)_startMemgraphCoolDown:(uint64_t)down
 {
-  if (a1)
+  if (down)
   {
-    os_unfair_lock_lock((a1 + 36));
-    if (!*(a1 + 24))
+    os_unfair_lock_lock((down + 36));
+    if (!*(down + 24))
     {
-      v4 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, *(a1 + 8));
-      *(a1 + 24) = v4;
+      v4 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, *(down + 8));
+      *(down + 24) = v4;
       v5 = dispatch_time(0, 1000000000 * a2);
       dispatch_source_set_timer(v4, v5, 0xFFFFFFFFFFFFFFFFLL, 0x3E8uLL);
-      v6 = *(a1 + 24);
+      v6 = *(down + 24);
       handler[0] = MEMORY[0x1E69E9820];
       handler[1] = 3221225472;
       handler[2] = __51__FigCaptureMemoryReporter__startMemgraphCoolDown___block_invoke;
       handler[3] = &unk_1E798F870;
-      handler[4] = a1;
+      handler[4] = down;
       dispatch_source_set_event_handler(v6, handler);
-      dispatch_activate(*(a1 + 24));
+      dispatch_activate(*(down + 24));
     }
 
-    os_unfair_lock_unlock((a1 + 36));
+    os_unfair_lock_unlock((down + 36));
   }
 }
 
-- (void)_changeReportFrequency:(uint64_t)a1
+- (void)_changeReportFrequency:(uint64_t)frequency
 {
-  if (a1)
+  if (frequency)
   {
-    v4 = *(a1 + 16);
+    v4 = *(frequency + 16);
     if (v4)
     {
       if ((dword_1ED843FF0 & 4) != 0)
@@ -819,12 +819,12 @@ void __51__FigCaptureMemoryReporter__startMemgraphCoolDown___block_invoke(uint64
 
         OUTLINED_FUNCTION_2_4();
         fig_log_call_emit_and_clean_up_after_send_and_compose();
-        v4 = *(a1 + 16);
+        v4 = *(frequency + 16);
       }
 
       dispatch_source_cancel(v4);
 
-      *(a1 + 16) = 0;
+      *(frequency + 16) = 0;
     }
 
     if ((dword_1ED843FF0 & 4) != 0)
@@ -846,35 +846,35 @@ void __51__FigCaptureMemoryReporter__startMemgraphCoolDown___block_invoke(uint64
       fig_log_call_emit_and_clean_up_after_send_and_compose();
     }
 
-    v9 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, *(a1 + 8));
-    *(a1 + 16) = v9;
+    v9 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, *(frequency + 8));
+    *(frequency + 16) = v9;
     dispatch_source_set_timer(v9, 0, 1000000 * a2, 0x3E8uLL);
-    v10 = *(a1 + 16);
+    v10 = *(frequency + 16);
     handler[0] = MEMORY[0x1E69E9820];
     handler[1] = 3221225472;
     handler[2] = __51__FigCaptureMemoryReporter__changeReportFrequency___block_invoke;
     handler[3] = &unk_1E798F870;
-    handler[4] = a1;
+    handler[4] = frequency;
     dispatch_source_set_event_handler(v10, handler);
-    dispatch_activate(*(a1 + 16));
+    dispatch_activate(*(frequency + 16));
   }
 }
 
 - (void)_startReporting
 {
-  if (a1 && *(a1 + 96) == 1)
+  if (self && *(self + 96) == 1)
   {
-    *(a1 + 136) = os_log_create("com.apple.coremedia.CMCapture.FigCaptureMemoryReporter", "");
-    os_unfair_lock_lock((a1 + 32));
-    [(FigCaptureMemoryReporter *)a1 _changeReportFrequency:?];
+    *(self + 136) = os_log_create("com.apple.coremedia.CMCapture.FigCaptureMemoryReporter", "");
+    os_unfair_lock_lock((self + 32));
+    [(FigCaptureMemoryReporter *)self _changeReportFrequency:?];
 
-    os_unfair_lock_unlock((a1 + 32));
+    os_unfair_lock_unlock((self + 32));
   }
 }
 
 - (void)_logCurrentTransactions
 {
-  if (a1)
+  if (self)
   {
     obj = FigOSTransactionCopyDescriptions();
     v1 = [objc_msgSend(MEMORY[0x1E695DF00] "date")];

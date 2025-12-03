@@ -1,20 +1,20 @@
 @interface TUIDynamicValue
-+ (TUIDynamicValue)valueWithValue:(id)a3;
-- (TUIDynamicValue)initWithValue:(id)a3;
-- (id)instanceForObserver:(id)a3;
-- (id)instantiateAsBinding:(id)a3 options:(id)a4 flags:(unint64_t)a5 builderClass:(Class)a6 nodes:(id)a7 snapshot:(id)a8 context:(id)a9;
-- (id)instantiateAsEnumerator:(id)a3 options:(id)a4 flags:(unint64_t)a5 builderClass:(Class)a6 nodes:(id)a7 snapshot:(id)a8 context:(id)a9;
-- (id)newInstanceWithObserver:(id)a3;
-- (id)newObserverWithController:(id)a3 block:(id)a4;
-- (id)tui_valueForProperty:(id)a3;
-- (void)_enqueueUpdate:(id)a3;
++ (TUIDynamicValue)valueWithValue:(id)value;
+- (TUIDynamicValue)initWithValue:(id)value;
+- (id)instanceForObserver:(id)observer;
+- (id)instantiateAsBinding:(id)binding options:(id)options flags:(unint64_t)flags builderClass:(Class)class nodes:(id)nodes snapshot:(id)snapshot context:(id)context;
+- (id)instantiateAsEnumerator:(id)enumerator options:(id)options flags:(unint64_t)flags builderClass:(Class)class nodes:(id)nodes snapshot:(id)snapshot context:(id)context;
+- (id)newInstanceWithObserver:(id)observer;
+- (id)newObserverWithController:(id)controller block:(id)block;
+- (id)tui_valueForProperty:(id)property;
+- (void)_enqueueUpdate:(id)update;
 @end
 
 @implementation TUIDynamicValue
 
-- (TUIDynamicValue)initWithValue:(id)a3
+- (TUIDynamicValue)initWithValue:(id)value
 {
-  v5 = a3;
+  valueCopy = value;
   v11.receiver = self;
   v11.super_class = TUIDynamicValue;
   v6 = [(TUIDynamicValue *)&v11 init];
@@ -26,29 +26,29 @@
     instanceByObserver = v7->_instanceByObserver;
     v7->_instanceByObserver = v8;
 
-    objc_storeStrong(&v7->_value, a3);
+    objc_storeStrong(&v7->_value, value);
   }
 
   return v7;
 }
 
-- (id)newInstanceWithObserver:(id)a3
+- (id)newInstanceWithObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [[_TUIDynamicValueInstance alloc] initWithDynamicValue:self value:self->_value observer:v4];
+  observerCopy = observer;
+  v5 = [[_TUIDynamicValueInstance alloc] initWithDynamicValue:self value:self->_value observer:observerCopy];
 
   return v5;
 }
 
-- (id)instanceForObserver:(id)a3
+- (id)instanceForObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_accessLock);
-  v5 = [(NSMapTable *)self->_instanceByObserver objectForKey:v4];
+  v5 = [(NSMapTable *)self->_instanceByObserver objectForKey:observerCopy];
   if (!v5)
   {
-    v5 = [(TUIDynamicValue *)self newInstanceWithObserver:v4];
-    [(NSMapTable *)self->_instanceByObserver setObject:v5 forKey:v4];
+    v5 = [(TUIDynamicValue *)self newInstanceWithObserver:observerCopy];
+    [(NSMapTable *)self->_instanceByObserver setObject:v5 forKey:observerCopy];
   }
 
   os_unfair_lock_unlock(&self->_accessLock);
@@ -56,55 +56,55 @@
   return v5;
 }
 
-- (id)instantiateAsEnumerator:(id)a3 options:(id)a4 flags:(unint64_t)a5 builderClass:(Class)a6 nodes:(id)a7 snapshot:(id)a8 context:(id)a9
+- (id)instantiateAsEnumerator:(id)enumerator options:(id)options flags:(unint64_t)flags builderClass:(Class)class nodes:(id)nodes snapshot:(id)snapshot context:(id)context
 {
-  v15 = a9;
-  v16 = a8;
+  contextCopy = context;
+  snapshotCopy = snapshot;
   v17 = [_TUIDynamicValueItem alloc];
-  v18 = [v15 transactionCoordinator];
-  v19 = [v15 dynamicController];
-  v20 = [(_TUIDynamicValueItem *)v17 initWithEnumerator:a3.var0 binding:TUINameNil value:self context:v15 transactionCoordinator:v18 dynamicController:v19 nodes:a7 snapshot:v16 flags:a5 builderClass:a6];
+  transactionCoordinator = [contextCopy transactionCoordinator];
+  dynamicController = [contextCopy dynamicController];
+  v20 = [(_TUIDynamicValueItem *)v17 initWithEnumerator:enumerator.var0 binding:TUINameNil value:self context:contextCopy transactionCoordinator:transactionCoordinator dynamicController:dynamicController nodes:nodes snapshot:snapshotCopy flags:flags builderClass:class];
 
   return v20;
 }
 
-- (id)instantiateAsBinding:(id)a3 options:(id)a4 flags:(unint64_t)a5 builderClass:(Class)a6 nodes:(id)a7 snapshot:(id)a8 context:(id)a9
+- (id)instantiateAsBinding:(id)binding options:(id)options flags:(unint64_t)flags builderClass:(Class)class nodes:(id)nodes snapshot:(id)snapshot context:(id)context
 {
-  v15 = a9;
-  v16 = a8;
+  contextCopy = context;
+  snapshotCopy = snapshot;
   v17 = [_TUIDynamicValueItem alloc];
-  v18 = [v15 transactionCoordinator];
-  v19 = [v15 dynamicController];
-  v20 = [(_TUIDynamicValueItem *)v17 initWithEnumerator:TUIEnumeratorNil binding:*&a3 value:self context:v15 transactionCoordinator:v18 dynamicController:v19 nodes:a7 snapshot:v16 flags:a5 builderClass:a6];
+  transactionCoordinator = [contextCopy transactionCoordinator];
+  dynamicController = [contextCopy dynamicController];
+  v20 = [(_TUIDynamicValueItem *)v17 initWithEnumerator:TUIEnumeratorNil binding:*&binding value:self context:contextCopy transactionCoordinator:transactionCoordinator dynamicController:dynamicController nodes:nodes snapshot:snapshotCopy flags:flags builderClass:class];
 
   return v20;
 }
 
-+ (TUIDynamicValue)valueWithValue:(id)a3
++ (TUIDynamicValue)valueWithValue:(id)value
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithValue:v4];
+  valueCopy = value;
+  v5 = [[self alloc] initWithValue:valueCopy];
 
   return v5;
 }
 
-- (void)_enqueueUpdate:(id)a3
+- (void)_enqueueUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   os_unfair_lock_lock(&self->_accessLock);
-  v5 = [v4 value];
+  value = [updateCopy value];
   value = self->_value;
-  self->_value = v5;
+  self->_value = value;
 
-  v7 = [(NSMapTable *)self->_instanceByObserver objectEnumerator];
-  v8 = [v7 allObjects];
+  objectEnumerator = [(NSMapTable *)self->_instanceByObserver objectEnumerator];
+  allObjects = [objectEnumerator allObjects];
 
   os_unfair_lock_unlock(&self->_accessLock);
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v9 = v8;
+  v9 = allObjects;
   v10 = [v9 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v10)
   {
@@ -120,7 +120,7 @@
           objc_enumerationMutation(v9);
         }
 
-        [*(*(&v14 + 1) + 8 * v13) enqueueUpdate:{v4, v14}];
+        [*(*(&v14 + 1) + 8 * v13) enqueueUpdate:{updateCopy, v14}];
         v13 = v13 + 1;
       }
 
@@ -132,12 +132,12 @@
   }
 }
 
-- (id)tui_valueForProperty:(id)a3
+- (id)tui_valueForProperty:(id)property
 {
-  v4 = a3;
-  if ([v4 length])
+  propertyCopy = property;
+  if ([propertyCopy length])
   {
-    v5 = [[_TUIDynamicValueProperty alloc] initWithValue:self property:v4];
+    v5 = [[_TUIDynamicValueProperty alloc] initWithValue:self property:propertyCopy];
   }
 
   else
@@ -148,14 +148,14 @@
   return v5;
 }
 
-- (id)newObserverWithController:(id)a3 block:(id)a4
+- (id)newObserverWithController:(id)controller block:(id)block
 {
-  v6 = a4;
-  v7 = a3;
+  blockCopy = block;
+  controllerCopy = controller;
   v8 = [_TUIDynamicValueJSObserver alloc];
-  v9 = [v7 coordinator];
+  coordinator = [controllerCopy coordinator];
 
-  v10 = [(_TUIDynamicValueJSObserver *)v8 initWithCoordinator:v9 block:v6 value:self];
+  v10 = [(_TUIDynamicValueJSObserver *)v8 initWithCoordinator:coordinator block:blockCopy value:self];
   return v10;
 }
 

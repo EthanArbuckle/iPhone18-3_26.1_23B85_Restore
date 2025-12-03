@@ -1,8 +1,8 @@
 @interface APEnablementOracle
 + (id)sharedInstance;
 - (APEnablementOracle)init;
-- (BOOL)canEnablementAction:(unint64_t)a3 bePerformedForFeature:(unint64_t)a4 ofSubject:(id)a5;
-- (BOOL)getPreferredEnablementAction:(unint64_t *)a3 preferredEnableableFeature:(unint64_t *)a4 forSubject:(id)a5 error:(id *)a6;
+- (BOOL)canEnablementAction:(unint64_t)action bePerformedForFeature:(unint64_t)feature ofSubject:(id)subject;
+- (BOOL)getPreferredEnablementAction:(unint64_t *)action preferredEnableableFeature:(unint64_t *)feature forSubject:(id)subject error:(id *)error;
 @end
 
 @implementation APEnablementOracle
@@ -26,22 +26,22 @@
   return v3;
 }
 
-- (BOOL)getPreferredEnablementAction:(unint64_t *)a3 preferredEnableableFeature:(unint64_t *)a4 forSubject:(id)a5 error:(id *)a6
+- (BOOL)getPreferredEnablementAction:(unint64_t *)action preferredEnableableFeature:(unint64_t *)feature forSubject:(id)subject error:(id *)error
 {
-  v9 = a5;
-  v10 = self;
-  sub_1AEA19F98(a3, a4, v9);
+  subjectCopy = subject;
+  selfCopy = self;
+  sub_1AEA19F98(action, feature, subjectCopy);
 
   return 1;
 }
 
-- (BOOL)canEnablementAction:(unint64_t)a3 bePerformedForFeature:(unint64_t)a4 ofSubject:(id)a5
+- (BOOL)canEnablementAction:(unint64_t)action bePerformedForFeature:(unint64_t)feature ofSubject:(id)subject
 {
-  v8 = a5;
-  v9 = self;
-  LOBYTE(a4) = sub_1AEA31AA8(a3, a4, v8);
+  subjectCopy = subject;
+  selfCopy = self;
+  LOBYTE(feature) = sub_1AEA31AA8(action, feature, subjectCopy);
 
-  return a4 & 1;
+  return feature & 1;
 }
 
 @end

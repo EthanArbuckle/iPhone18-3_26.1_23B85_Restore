@@ -1,48 +1,48 @@
 @interface NSNotification
-+ (NSNotification)allocWithZone:(_NSZone *)a3;
++ (NSNotification)allocWithZone:(_NSZone *)zone;
 + (NSNotification)notificationWithName:(NSNotificationName)aName object:(id)anObject;
 + (NSNotification)notificationWithName:(NSNotificationName)aName object:(id)anObject userInfo:(NSDictionary *)aUserInfo;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSNotification)init;
 - (NSNotification)initWithCoder:(NSCoder *)coder;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NSNotification
 
 - (id)description
 {
-  v3 = [(NSNotification *)self object];
-  v4 = [(NSNotification *)self userInfo];
+  object = [(NSNotification *)self object];
+  userInfo = [(NSNotification *)self userInfo];
   v5 = [[NSMutableString alloc] initWithCapacity:256];
   v6 = objc_opt_class();
-  v7 = [(NSNotification *)self name];
-  if (v3 | v4)
+  name = [(NSNotification *)self name];
+  if (object | userInfo)
   {
-    if (v3)
+    if (object)
     {
-      if (v4)
+      if (userInfo)
       {
-        [(NSMutableString *)v5 appendFormat:@"%@ %p {name = %@; object = %@; userInfo = %@}", v6, self, v7, v3, v4];
+        [(NSMutableString *)v5 appendFormat:@"%@ %p {name = %@; object = %@; userInfo = %@}", v6, self, name, object, userInfo];
       }
 
       else
       {
-        [(NSMutableString *)v5 appendFormat:@"%@ %p {name = %@; object = %@}", v6, self, v7, v3, v10];
+        [(NSMutableString *)v5 appendFormat:@"%@ %p {name = %@; object = %@}", v6, self, name, object, v10];
       }
     }
 
     else
     {
-      [(NSMutableString *)v5 appendFormat:@"%@ %p {name = %@; userInfo = %@}", v6, self, v7, v4, v10];
+      [(NSMutableString *)v5 appendFormat:@"%@ %p {name = %@; userInfo = %@}", v6, self, name, userInfo, v10];
     }
   }
 
   else
   {
-    [(NSMutableString *)v5 appendFormat:@"%@ %p {name = %@}", v6, self, v7, v9, v10];
+    [(NSMutableString *)v5 appendFormat:@"%@ %p {name = %@}", v6, self, name, v9, v10];
   }
 
   return v5;
@@ -50,30 +50,30 @@
 
 - (unint64_t)hash
 {
-  v2 = [(NSNotification *)self name];
+  name = [(NSNotification *)self name];
 
-  return [(NSString *)v2 hash];
+  return [(NSString *)name hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v5) = 1;
   }
 
   else
   {
-    if (!a3 || (objc_opt_isKindOfClass() & 1) == 0)
+    if (!equal || (objc_opt_isKindOfClass() & 1) == 0)
     {
       goto LABEL_6;
     }
 
-    v5 = -[NSString isEqual:](-[NSNotification name](self, "name"), "isEqual:", [a3 name]);
+    v5 = -[NSString isEqual:](-[NSNotification name](self, "name"), "isEqual:", [equal name]);
     if (v5)
     {
-      v6 = [(NSNotification *)self object];
-      if (v6 != [a3 object])
+      object = [(NSNotification *)self object];
+      if (object != [equal object])
       {
 LABEL_6:
         LOBYTE(v5) = 0;
@@ -82,13 +82,13 @@ LABEL_6:
 
       if ([(NSNotification *)self userInfo])
       {
-        if (!-[NSDictionary isEqualToDictionary:](-[NSNotification userInfo](self, "userInfo"), "isEqualToDictionary:", [a3 userInfo]))
+        if (!-[NSDictionary isEqualToDictionary:](-[NSNotification userInfo](self, "userInfo"), "isEqualToDictionary:", [equal userInfo]))
         {
           goto LABEL_6;
         }
       }
 
-      else if ([a3 userInfo])
+      else if ([equal userInfo])
       {
         goto LABEL_6;
       }
@@ -100,26 +100,26 @@ LABEL_6:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = [a3 allowsKeyedCoding];
-  v6 = [(NSNotification *)self name];
-  if (v5)
+  allowsKeyedCoding = [coder allowsKeyedCoding];
+  name = [(NSNotification *)self name];
+  if (allowsKeyedCoding)
   {
-    [a3 encodeObject:v6 forKey:@"NS.name"];
-    [a3 encodeObject:-[NSNotification object](self forKey:{"object"), @"NS.object"}];
-    v7 = [(NSNotification *)self userInfo];
+    [coder encodeObject:name forKey:@"NS.name"];
+    [coder encodeObject:-[NSNotification object](self forKey:{"object"), @"NS.object"}];
+    userInfo = [(NSNotification *)self userInfo];
 
-    [a3 encodeObject:v7 forKey:@"NS.userinfo"];
+    [coder encodeObject:userInfo forKey:@"NS.userinfo"];
   }
 
   else
   {
-    [a3 encodeObject:v6];
-    [a3 encodeObject:{-[NSNotification object](self, "object")}];
-    v8 = [(NSNotification *)self userInfo];
+    [coder encodeObject:name];
+    [coder encodeObject:{-[NSNotification object](self, "object")}];
+    userInfo2 = [(NSNotification *)self userInfo];
 
-    [a3 encodeObject:v8];
+    [coder encodeObject:userInfo2];
   }
 }
 
@@ -127,41 +127,41 @@ LABEL_6:
 {
   if ([(NSCoder *)coder allowsKeyedCoding])
   {
-    v5 = [(NSCoder *)coder decodeObjectForKey:@"NS.name"];
-    v6 = [(NSCoder *)coder decodeObjectForKey:@"NS.object"];
-    v7 = [(NSCoder *)coder decodeObjectForKey:@"NS.userinfo"];
+    decodeObject = [(NSCoder *)coder decodeObjectForKey:@"NS.name"];
+    decodeObject2 = [(NSCoder *)coder decodeObjectForKey:@"NS.object"];
+    decodeObject3 = [(NSCoder *)coder decodeObjectForKey:@"NS.userinfo"];
   }
 
   else
   {
-    v5 = [(NSCoder *)coder decodeObject];
-    v6 = [(NSCoder *)coder decodeObject];
-    v7 = [(NSCoder *)coder decodeObject];
+    decodeObject = [(NSCoder *)coder decodeObject];
+    decodeObject2 = [(NSCoder *)coder decodeObject];
+    decodeObject3 = [(NSCoder *)coder decodeObject];
   }
 
-  return [(NSNotification *)self initWithName:v5 object:v6 userInfo:v7];
+  return [(NSNotification *)self initWithName:decodeObject object:decodeObject2 userInfo:decodeObject3];
 }
 
-+ (NSNotification)allocWithZone:(_NSZone *)a3
++ (NSNotification)allocWithZone:(_NSZone *)zone
 {
-  if (NSNotification == a1)
+  if (NSNotification == self)
   {
-    a1 = objc_opt_self();
+    self = objc_opt_self();
   }
 
-  return NSAllocateObject(a1, 0, a3);
+  return NSAllocateObject(self, 0, zone);
 }
 
 + (NSNotification)notificationWithName:(NSNotificationName)aName object:(id)anObject
 {
-  v4 = [[a1 alloc] initWithName:aName object:anObject userInfo:0];
+  v4 = [[self alloc] initWithName:aName object:anObject userInfo:0];
 
   return v4;
 }
 
 + (NSNotification)notificationWithName:(NSNotificationName)aName object:(id)anObject userInfo:(NSDictionary *)aUserInfo
 {
-  v5 = [[a1 alloc] initWithName:aName object:anObject userInfo:aUserInfo];
+  v5 = [[self alloc] initWithName:aName object:anObject userInfo:aUserInfo];
 
   return v5;
 }

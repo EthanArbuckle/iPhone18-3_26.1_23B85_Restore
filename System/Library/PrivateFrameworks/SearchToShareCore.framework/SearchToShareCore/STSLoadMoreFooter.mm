@@ -1,20 +1,20 @@
 @interface STSLoadMoreFooter
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (STSLoadMoreFooter)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (STSLoadMoreFooter)initWithFrame:(CGRect)frame;
 - (STSLoadMoreFooterDelegate)delegate;
-- (void)_handleLogoTap:(id)a3;
+- (void)_handleLogoTap:(id)tap;
 - (void)layoutSubviews;
-- (void)setLoading:(BOOL)a3;
-- (void)setSearchProviderImage:(id)a3;
+- (void)setLoading:(BOOL)loading;
+- (void)setSearchProviderImage:(id)image;
 @end
 
 @implementation STSLoadMoreFooter
 
-- (STSLoadMoreFooter)initWithFrame:(CGRect)a3
+- (STSLoadMoreFooter)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = STSLoadMoreFooter;
-  v3 = [(STSLoadMoreFooter *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(STSLoadMoreFooter *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [objc_alloc(MEMORY[0x277D750E8]) initWithActivityIndicatorStyle:4];
@@ -44,9 +44,9 @@
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
+  width = fits.width;
   [objc_opt_class() defaultHeight];
   v5 = v4;
   v6 = width;
@@ -55,25 +55,25 @@
   return result;
 }
 
-- (void)_handleLogoTap:(id)a3
+- (void)_handleLogoTap:(id)tap
 {
-  v4 = [(STSLoadMoreFooter *)self delegate];
+  delegate = [(STSLoadMoreFooter *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(STSLoadMoreFooter *)self delegate];
-    [v6 loadMoreFooterDidTapLogo];
+    delegate2 = [(STSLoadMoreFooter *)self delegate];
+    [delegate2 loadMoreFooterDidTapLogo];
   }
 }
 
-- (void)setLoading:(BOOL)a3
+- (void)setLoading:(BOOL)loading
 {
-  if (self->_loading != a3)
+  if (self->_loading != loading)
   {
-    self->_loading = a3;
+    self->_loading = loading;
     activityIndicator = self->_activityIndicator;
-    if (a3)
+    if (loading)
     {
       [(UIActivityIndicatorView *)activityIndicator startAnimating];
     }
@@ -85,13 +85,13 @@
   }
 }
 
-- (void)setSearchProviderImage:(id)a3
+- (void)setSearchProviderImage:(id)image
 {
-  v5 = a3;
-  if (self->_searchProviderImage != v5)
+  imageCopy = image;
+  if (self->_searchProviderImage != imageCopy)
   {
-    v12 = v5;
-    objc_storeStrong(&self->_searchProviderImage, a3);
+    v12 = imageCopy;
+    objc_storeStrong(&self->_searchProviderImage, image);
     providerIconView = self->_providerIconView;
     if (providerIconView)
     {
@@ -108,14 +108,14 @@
       [(UIImageView *)self->_providerIconView addGestureRecognizer:v9];
       [(UIImageView *)self->_providerIconView setUserInteractionEnabled:1];
       v10 = self->_providerIconView;
-      v11 = [MEMORY[0x277D75348] sts_providerImageColor];
-      [(UIImageView *)v10 setTintColor:v11];
+      sts_providerImageColor = [MEMORY[0x277D75348] sts_providerImageColor];
+      [(UIImageView *)v10 setTintColor:sts_providerImageColor];
 
       [(STSLoadMoreFooter *)self addSubview:self->_providerIconView];
     }
 
     [(STSLoadMoreFooter *)self setNeedsLayout];
-    v5 = v12;
+    imageCopy = v12;
   }
 }
 

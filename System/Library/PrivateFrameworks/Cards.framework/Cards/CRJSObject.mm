@@ -1,25 +1,25 @@
 @interface CRJSObject
-+ (id)objectWithClassName:(id)a3 objectType:(id)a4;
-- (CRJSObject)initWithClassName:(id)a3 objectType:(int64_t)a4;
-- (id)_backingObjectForJSValue:(id)a3;
-- (id)backingObjectValueForKey:(id)a3;
-- (void)_logErrorLog:(id)a3;
-- (void)setBackingObjectValue:(id)a3 forKey:(id)a4;
++ (id)objectWithClassName:(id)name objectType:(id)type;
+- (CRJSObject)initWithClassName:(id)name objectType:(int64_t)type;
+- (id)_backingObjectForJSValue:(id)value;
+- (id)backingObjectValueForKey:(id)key;
+- (void)_logErrorLog:(id)log;
+- (void)setBackingObjectValue:(id)value forKey:(id)key;
 @end
 
 @implementation CRJSObject
 
-- (CRJSObject)initWithClassName:(id)a3 objectType:(int64_t)a4
+- (CRJSObject)initWithClassName:(id)name objectType:(int64_t)type
 {
-  v6 = a3;
+  nameCopy = name;
   v15.receiver = self;
   v15.super_class = CRJSObject;
   v7 = [(CRJSObject *)&v15 init];
   if (v7)
   {
-    if (a4)
+    if (type)
     {
-      if (a4 != 1)
+      if (type != 1)
       {
         v13 = 0;
         goto LABEL_10;
@@ -33,7 +33,7 @@
       v8 = @"_SFPB";
     }
 
-    v9 = [(__CFString *)v8 stringByAppendingString:v6];
+    v9 = [(__CFString *)v8 stringByAppendingString:nameCopy];
     v10 = NSClassFromString(v9);
 
     if ([(objc_class *)v10 isSubclassOfClass:objc_opt_class()])
@@ -50,72 +50,72 @@ LABEL_10:
   return v13;
 }
 
-+ (id)objectWithClassName:(id)a3 objectType:(id)a4
++ (id)objectWithClassName:(id)name objectType:(id)type
 {
-  v5 = a4;
-  v6 = a3;
+  typeCopy = type;
+  nameCopy = name;
   v7 = objc_alloc(objc_opt_class());
-  v8 = [v6 toString];
+  toString = [nameCopy toString];
 
-  v9 = [v5 toNumber];
+  toNumber = [typeCopy toNumber];
 
-  v10 = [v7 initWithClassName:v8 objectType:{objc_msgSend(v9, "integerValue")}];
+  v10 = [v7 initWithClassName:toString objectType:{objc_msgSend(toNumber, "integerValue")}];
 
   return v10;
 }
 
-- (void)setBackingObjectValue:(id)a3 forKey:(id)a4
+- (void)setBackingObjectValue:(id)value forKey:(id)key
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [v6 toString];
-  if ([v9 isNull] & 1) != 0 || (objc_msgSend(v9, "isUndefined"))
+  valueCopy = value;
+  keyCopy = key;
+  toString = [keyCopy toString];
+  if ([valueCopy isNull] & 1) != 0 || (objc_msgSend(valueCopy, "isUndefined"))
   {
     v8 = 0;
   }
 
   else
   {
-    v8 = [(CRJSObject *)self _backingObjectForJSValue:v9];
+    v8 = [(CRJSObject *)self _backingObjectForJSValue:valueCopy];
   }
 
-  [self->_backingObject setValue:v8 forKey:v7];
+  [self->_backingObject setValue:v8 forKey:toString];
 }
 
-- (id)backingObjectValueForKey:(id)a3
+- (id)backingObjectValueForKey:(id)key
 {
-  v4 = [a3 toString];
+  toString = [key toString];
   v5 = MEMORY[0x277CD4658];
-  v6 = [self->_backingObject valueForKey:v4];
-  v7 = [MEMORY[0x277CD4640] currentContext];
-  v8 = [v5 valueWithObject:v6 inContext:v7];
+  v6 = [self->_backingObject valueForKey:toString];
+  currentContext = [MEMORY[0x277CD4640] currentContext];
+  v8 = [v5 valueWithObject:v6 inContext:currentContext];
 
   return v8;
 }
 
-- (void)_logErrorLog:(id)a3
+- (void)_logErrorLog:(id)log
 {
   v11[1] = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CD4640];
-  v4 = a3;
-  v5 = [v3 currentContext];
-  v6 = [v5 objectForKeyedSubscript:@"console"];
+  logCopy = log;
+  currentContext = [v3 currentContext];
+  v6 = [currentContext objectForKeyedSubscript:@"console"];
   v7 = [v6 objectForKeyedSubscript:@"error"];
-  v11[0] = v4;
+  v11[0] = logCopy;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:1];
 
   v9 = [v7 callWithArguments:v8];
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_backingObjectForJSValue:(id)a3
+- (id)_backingObjectForJSValue:(id)value
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 valueForProperty:@"_backingObject"];
+  valueCopy = value;
+  v5 = [valueCopy valueForProperty:@"_backingObject"];
   if ([v5 isUndefined])
   {
-    v6 = v4;
+    v6 = valueCopy;
   }
 
   else
@@ -123,11 +123,11 @@ LABEL_10:
     v6 = v5;
   }
 
-  v7 = [v6 toObject];
+  toObject = [v6 toObject];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v22 = v7[1];
+    v22 = toObject[1];
   }
 
   else
@@ -136,13 +136,13 @@ LABEL_10:
     if (objc_opt_isKindOfClass())
     {
       v20 = v5;
-      v21 = v4;
-      v22 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v7, "count")}];
+      v21 = valueCopy;
+      v22 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(toObject, "count")}];
       v24 = 0u;
       v25 = 0u;
       v26 = 0u;
       v27 = 0u;
-      obj = v7;
+      obj = toObject;
       v8 = [obj countByEnumeratingWithState:&v24 objects:v28 count:16];
       if (v8)
       {
@@ -161,8 +161,8 @@ LABEL_10:
             v13 = objc_autoreleasePoolPush();
             v14 = [v12 objectForKeyedSubscript:@"_backingObject"];
             v15 = v14[1];
-            v16 = [(CRJSObject *)self backingObject];
-            v17 = [v15 isEqual:v16];
+            backingObject = [(CRJSObject *)self backingObject];
+            v17 = [v15 isEqual:backingObject];
 
             if (v17)
             {
@@ -184,12 +184,12 @@ LABEL_10:
       }
 
       v5 = v20;
-      v4 = v21;
+      valueCopy = v21;
     }
 
     else
     {
-      v22 = v7;
+      v22 = toObject;
     }
   }
 

@@ -5,7 +5,7 @@
 - (void)_registerForNotifications;
 - (void)_updateData;
 - (void)_updateShouldExposeNotChargingState;
-- (void)connectedDevicesDidChange:(id)a3;
+- (void)connectedDevicesDidChange:(id)change;
 - (void)dealloc;
 - (void)invalidate;
 @end
@@ -20,8 +20,8 @@
   if (v2)
   {
     v3 = objc_alloc(MEMORY[0x277D6B930]);
-    v4 = [SBApp systemStatusServer];
-    v5 = [v3 initWithServerHandle:v4];
+    systemStatusServer = [SBApp systemStatusServer];
+    v5 = [v3 initWithServerHandle:systemStatusServer];
     batteryDataPublisher = v2->_batteryDataPublisher;
     v2->_batteryDataPublisher = v5;
 
@@ -47,23 +47,23 @@
 - (void)invalidate
 {
   [(STBatteryStatusDomainPublisher *)self->_batteryDataPublisher invalidate];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   batteryDeviceController = self->_batteryDeviceController;
 
   [(BCBatteryDeviceController *)batteryDeviceController removeBatteryDeviceObserver:self];
 }
 
-- (void)connectedDevicesDidChange:(id)a3
+- (void)connectedDevicesDidChange:(id)change
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changeCopy = change;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [changeCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -75,7 +75,7 @@
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(changeCopy);
         }
 
         if ([*(*(&v9 + 1) + 8 * v8) isInternal])
@@ -87,7 +87,7 @@
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [changeCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
@@ -96,31 +96,31 @@
 
 - (void)_registerForNotifications
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 addObserver:self selector:sel__updateData name:@"SBBootCompleteNotification" object:0];
-  [v3 addObserver:self selector:sel__updateData name:@"SBCurrentLocaleDidChangeNotification" object:0];
-  [v3 addObserver:self selector:sel__updateData name:@"SBBatterySaverModeDidChangeNotification" object:0];
-  [v3 addObserver:self selector:sel__noteNotChargingStatusChanged name:@"SBUIBatteryNotChargingStatusChangedNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__updateData name:@"SBBootCompleteNotification" object:0];
+  [defaultCenter addObserver:self selector:sel__updateData name:@"SBCurrentLocaleDidChangeNotification" object:0];
+  [defaultCenter addObserver:self selector:sel__updateData name:@"SBBatterySaverModeDidChangeNotification" object:0];
+  [defaultCenter addObserver:self selector:sel__noteNotChargingStatusChanged name:@"SBUIBatteryNotChargingStatusChangedNotification" object:0];
 }
 
 - (void)_updateData
 {
-  v3 = [(BCBatteryDeviceController *)self->_batteryDeviceController sb_deviceInternalBattery];
-  if (v3)
+  sb_deviceInternalBattery = [(BCBatteryDeviceController *)self->_batteryDeviceController sb_deviceInternalBattery];
+  if (sb_deviceInternalBattery)
   {
-    v18 = v3;
+    v18 = sb_deviceInternalBattery;
     v4 = objc_alloc_init(MEMORY[0x277D6BA00]);
-    v5 = [(SBSystemStatusBatteryDataProvider *)self shouldExposeNotChargingState];
-    v6 = [SBApp isBatterySaverModeActive];
-    v7 = [v18 percentCharge];
-    if (v7 <= 1)
+    shouldExposeNotChargingState = [(SBSystemStatusBatteryDataProvider *)self shouldExposeNotChargingState];
+    isBatterySaverModeActive = [SBApp isBatterySaverModeActive];
+    percentCharge = [v18 percentCharge];
+    if (percentCharge <= 1)
     {
       v8 = 1;
     }
 
     else
     {
-      v8 = v7;
+      v8 = percentCharge;
     }
 
     if ([v18 isCharging])
@@ -135,7 +135,7 @@
         v9 = 1;
       }
 
-      if (!v5)
+      if (!shouldExposeNotChargingState)
       {
 LABEL_10:
         v10 = [MEMORY[0x277CF0DA8] localizedBatteryDetailTextForBatteryLevel:v8];
@@ -143,34 +143,34 @@ LABEL_10:
 LABEL_18:
         [v4 setChargingState:v9];
         [v4 setPercentCharge:v8];
-        [v4 setBatterySaverModeActive:v6];
+        [v4 setBatterySaverModeActive:isBatterySaverModeActive];
         [v4 setChargingDescription:v10];
         [v4 setChargingDescriptionType:v11];
-        v14 = [(SBSystemStatusBatteryDataProvider *)self batteryDataPublisher];
-        [v14 setData:v4];
+        batteryDataPublisher = [(SBSystemStatusBatteryDataProvider *)self batteryDataPublisher];
+        [batteryDataPublisher setData:v4];
 
         v15 = [v4 copy];
         lastPublishedData = self->_lastPublishedData;
         self->_lastPublishedData = v15;
 
-        v17 = [MEMORY[0x277CCAB98] defaultCenter];
-        [v17 postNotificationName:@"SBSystemStatusBatteryDataProviderDidChangeNotification" object:v4];
+        defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+        [defaultCenter postNotificationName:@"SBSystemStatusBatteryDataProviderDidChangeNotification" object:v4];
 
-        v3 = v18;
+        sb_deviceInternalBattery = v18;
         goto LABEL_19;
       }
     }
 
     else
     {
-      v12 = [v18 powerSourceState];
+      powerSourceState = [v18 powerSourceState];
       v13 = 2;
-      if (v5)
+      if (shouldExposeNotChargingState)
       {
         v13 = 0;
       }
 
-      if (v12 == 2)
+      if (powerSourceState == 2)
       {
         v9 = v13;
       }
@@ -180,7 +180,7 @@ LABEL_18:
         v9 = 0;
       }
 
-      if (!v5)
+      if (!shouldExposeNotChargingState)
       {
         goto LABEL_10;
       }
@@ -215,10 +215,10 @@ LABEL_19:
 
 - (void)_updateShouldExposeNotChargingState
 {
-  v3 = [(SBSystemStatusBatteryDataProvider *)self _isInNotChargingState];
-  if (v3 != [(SBSystemStatusBatteryDataProvider *)self shouldExposeNotChargingState])
+  _isInNotChargingState = [(SBSystemStatusBatteryDataProvider *)self _isInNotChargingState];
+  if (_isInNotChargingState != [(SBSystemStatusBatteryDataProvider *)self shouldExposeNotChargingState])
   {
-    [(SBSystemStatusBatteryDataProvider *)self setShouldExposeNotChargingState:v3];
+    [(SBSystemStatusBatteryDataProvider *)self setShouldExposeNotChargingState:_isInNotChargingState];
 
     [(SBSystemStatusBatteryDataProvider *)self _updateData];
   }
@@ -230,8 +230,8 @@ LABEL_19:
   v4 = v3;
   if (!v3)
   {
-    v2 = [MEMORY[0x277D75418] currentDevice];
-    if ([v2 userInterfaceIdiom] != 1)
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice userInterfaceIdiom] != 1)
     {
       LOBYTE(v5) = 0;
       goto LABEL_10;

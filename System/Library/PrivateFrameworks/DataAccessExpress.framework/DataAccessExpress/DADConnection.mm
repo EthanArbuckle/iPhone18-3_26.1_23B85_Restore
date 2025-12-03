@@ -1,99 +1,99 @@
 @interface DADConnection
-+ (id)_dictionarySuitableForLogging:(id)a3;
++ (id)_dictionarySuitableForLogging:(id)logging;
 + (id)sharedConnection;
 + (unint64_t)_nextStopMonitoringStatusToken;
-+ (void)_logRequestID:(id)a3 forRequestAttributes:(id)a4 associatedContext:(id)a5;
-- (BOOL)_checkInvalidIdExistsInXPCRely:(id)a3;
-- (BOOL)_validateXPCReply:(id)a3;
-- (BOOL)performServerContactsSearch:(id)a3 forAccountWithID:(id)a4;
-- (BOOL)processFolderChange:(id)a3 forAccountWithID:(id)a4;
-- (BOOL)processMeetingRequests:(id)a3 deliveryIdsToClear:(id)a4 deliveryIdsToSoftClear:(id)a5 inFolderWithId:(id)a6 forAccountWithId:(id)a7;
-- (BOOL)registerForInterrogationWithBlock:(id)a3;
-- (BOOL)requestPolicyUpdateForAccountID:(id)a3;
-- (BOOL)resumeWatchingFoldersWithKeys:(id)a3 forAccountID:(id)a4;
-- (BOOL)retrieveOofSettingsRequest:(id)a3 forAccountWithID:(id)a4;
-- (BOOL)setFolderIdsThatExternalClientsCareAboutAdded:(id)a3 deleted:(id)a4 foldersTag:(id)a5 forAccountID:(id)a6;
-- (BOOL)stopWatchingFoldersWithKeys:(id)a3 forAccountID:(id)a4;
-- (BOOL)suspendWatchingFoldersWithKeys:(id)a3 forAccountID:(id)a4;
-- (BOOL)updateOofSettingsRequest:(id)a3 forAccountWithID:(id)a4;
++ (void)_logRequestID:(id)d forRequestAttributes:(id)attributes associatedContext:(id)context;
+- (BOOL)_checkInvalidIdExistsInXPCRely:(id)rely;
+- (BOOL)_validateXPCReply:(id)reply;
+- (BOOL)performServerContactsSearch:(id)search forAccountWithID:(id)d;
+- (BOOL)processFolderChange:(id)change forAccountWithID:(id)d;
+- (BOOL)processMeetingRequests:(id)requests deliveryIdsToClear:(id)clear deliveryIdsToSoftClear:(id)softClear inFolderWithId:(id)id forAccountWithId:(id)withId;
+- (BOOL)registerForInterrogationWithBlock:(id)block;
+- (BOOL)requestPolicyUpdateForAccountID:(id)d;
+- (BOOL)resumeWatchingFoldersWithKeys:(id)keys forAccountID:(id)d;
+- (BOOL)retrieveOofSettingsRequest:(id)request forAccountWithID:(id)d;
+- (BOOL)setFolderIdsThatExternalClientsCareAboutAdded:(id)added deleted:(id)deleted foldersTag:(id)tag forAccountID:(id)d;
+- (BOOL)stopWatchingFoldersWithKeys:(id)keys forAccountID:(id)d;
+- (BOOL)suspendWatchingFoldersWithKeys:(id)keys forAccountID:(id)d;
+- (BOOL)updateOofSettingsRequest:(id)request forAccountWithID:(id)d;
 - (DADConnection)init;
 - (id)_connection;
-- (id)_createReplyToRequest:(id)a3 withProperties:(id)a4;
+- (id)_createReplyToRequest:(id)request withProperties:(id)properties;
 - (id)_init;
 - (id)activeSyncDeviceIdentifier;
-- (id)beginDownloadingAttachmentWithUUID:(id)a3 accountID:(id)a4 queue:(id)a5 progressBlock:(id)a6 completionBlock:(id)a7;
-- (id)currentPolicyKeyForAccountID:(id)a3;
-- (id)decodedErrorFromData:(id)a3;
-- (id)downloadSubscribedCalendarWithURL:(id)a3 queue:(id)a4 delegate:(id)a5;
-- (id)performCalendarDirectorySearchWithAccountID:(id)a3 terms:(id)a4 recordTypes:(id)a5 resultLimit:(unint64_t)a6 resultsBlock:(id)a7 completionBlock:(id)a8;
-- (id)requestCalendarAvailabilityWithAccountID:(id)a3 startDate:(id)a4 endDate:(id)a5 ignoredEventID:(id)a6 addresses:(id)a7 resultsBlock:(id)a8 completionBlock:(id)a9;
-- (id)requestGrantedDelegatesListForAccountID:(id)a3 resultsBlock:(id)a4;
+- (id)beginDownloadingAttachmentWithUUID:(id)d accountID:(id)iD queue:(id)queue progressBlock:(id)block completionBlock:(id)completionBlock;
+- (id)currentPolicyKeyForAccountID:(id)d;
+- (id)decodedErrorFromData:(id)data;
+- (id)downloadSubscribedCalendarWithURL:(id)l queue:(id)queue delegate:(id)delegate;
+- (id)performCalendarDirectorySearchWithAccountID:(id)d terms:(id)terms recordTypes:(id)types resultLimit:(unint64_t)limit resultsBlock:(id)block completionBlock:(id)completionBlock;
+- (id)requestCalendarAvailabilityWithAccountID:(id)d startDate:(id)date endDate:(id)endDate ignoredEventID:(id)iD addresses:(id)addresses resultsBlock:(id)block completionBlock:(id)completionBlock;
+- (id)requestGrantedDelegatesListForAccountID:(id)d resultsBlock:(id)block;
 - (id)statusReports;
-- (id)updateGrantedDelegateForAccountID:(id)a3 grantedDelegate:(id)a4 action:(int64_t)a5 resultsBlock:(id)a6;
+- (id)updateGrantedDelegateForAccountID:(id)d grantedDelegate:(id)delegate action:(int64_t)action resultsBlock:(id)block;
 - (unint64_t)requestDaemonStopMonitoringAgents;
 - (unint64_t)requestDaemonStopMonitoringAgentsSync;
-- (void)_calendarAvailabilityRequestFinished:(id)a3;
-- (void)_calendarAvailabilityRequestReturnedResults:(id)a3;
-- (void)_calendarDirectorySearchFinished:(id)a3;
-- (void)_calendarDirectorySearchReturnedResults:(id)a3;
-- (void)_cancelDownloadsWithIDs:(id)a3 error:(id)a4;
-- (void)_dispatchMessage:(id)a3;
-- (void)_downloadFinished:(id)a3;
-- (void)_downloadProgress:(id)a3;
-- (void)_downloadSubscribedCalendarFinished:(id)a3;
-- (void)_downloadSubscribedCalendarProgress:(id)a3;
-- (void)_downloadSubscribedCalendarRequiresPassword:(id)a3;
-- (void)_folderChangeFinished:(id)a3;
-- (void)_foldersUpdated:(id)a3;
-- (void)_getStatusReportsFromClient:(id)a3;
-- (void)_grantedDelegatesListRequestFinished:(id)a3;
-- (void)_groupExpansionFinished:(id)a3;
-- (void)_holidayCalendarFetchFinished:(id)a3;
-- (void)_holidayCalendarFetchReturnedResults:(id)a3;
+- (void)_calendarAvailabilityRequestFinished:(id)finished;
+- (void)_calendarAvailabilityRequestReturnedResults:(id)results;
+- (void)_calendarDirectorySearchFinished:(id)finished;
+- (void)_calendarDirectorySearchReturnedResults:(id)results;
+- (void)_cancelDownloadsWithIDs:(id)ds error:(id)error;
+- (void)_dispatchMessage:(id)message;
+- (void)_downloadFinished:(id)finished;
+- (void)_downloadProgress:(id)progress;
+- (void)_downloadSubscribedCalendarFinished:(id)finished;
+- (void)_downloadSubscribedCalendarProgress:(id)progress;
+- (void)_downloadSubscribedCalendarRequiresPassword:(id)password;
+- (void)_folderChangeFinished:(id)finished;
+- (void)_foldersUpdated:(id)updated;
+- (void)_getStatusReportsFromClient:(id)client;
+- (void)_grantedDelegatesListRequestFinished:(id)finished;
+- (void)_groupExpansionFinished:(id)finished;
+- (void)_holidayCalendarFetchFinished:(id)finished;
+- (void)_holidayCalendarFetchReturnedResults:(id)results;
 - (void)_initializeConnection;
-- (void)_initializeConnectionWithXPCEndpoint:(id)a3;
-- (void)_initializeXPCConnection:(id)a3;
-- (void)_officeHoursRequestFinished:(id)a3;
-- (void)_oofSettingsRequestsFinished:(id)a3;
-- (void)_policyKeyChanged:(id)a3;
+- (void)_initializeConnectionWithXPCEndpoint:(id)endpoint;
+- (void)_initializeXPCConnection:(id)connection;
+- (void)_officeHoursRequestFinished:(id)finished;
+- (void)_oofSettingsRequestsFinished:(id)finished;
+- (void)_policyKeyChanged:(id)changed;
 - (void)_registerForAppResumedNotification;
-- (void)_requestDaemonChangeAgentMonitoringStatus:(BOOL)a3 withToken:(unint64_t)a4 waitForReply:(BOOL)a5;
-- (void)_resetCertWarningsForAccountId:(id)a3 andDataclasses:(int64_t)a4 isUserRequested:(BOOL)a5;
-- (void)_resetThrottleTimersForAccountId:(id)a3;
-- (void)_sendXPCMessageSynchronous:(BOOL)a3 withParameters:(id)a4 handlerBlock:(id)a5;
-- (void)_serverContactsSearchQueryFinished:(id)a3;
-- (void)_serverDiedWithReason:(id)a3;
-- (void)_shareResponseFinished:(id)a3;
-- (void)_subscriptionCalendarJunkCheckFinished:(id)a3;
+- (void)_requestDaemonChangeAgentMonitoringStatus:(BOOL)status withToken:(unint64_t)token waitForReply:(BOOL)reply;
+- (void)_resetCertWarningsForAccountId:(id)id andDataclasses:(int64_t)dataclasses isUserRequested:(BOOL)requested;
+- (void)_resetThrottleTimersForAccountId:(id)id;
+- (void)_sendXPCMessageSynchronous:(BOOL)synchronous withParameters:(id)parameters handlerBlock:(id)block;
+- (void)_serverContactsSearchQueryFinished:(id)finished;
+- (void)_serverDiedWithReason:(id)reason;
+- (void)_shareResponseFinished:(id)finished;
+- (void)_subscriptionCalendarJunkCheckFinished:(id)finished;
 - (void)_tearDownInFlightObjects;
-- (void)_updateGrantedDelegatePermissionRequestFinished:(id)a3;
-- (void)addExchangeDelegateWithName:(id)a3 emailAddress:(id)a4 toAccountWithID:(id)a5 completion:(id)a6;
-- (void)asyncProcessMeetingRequests:(id)a3 deliveryIdsToClear:(id)a4 deliveryIdsToSoftClear:(id)a5 inFolderWithId:(id)a6 forAccountWithId:(id)a7;
-- (void)beginCalDAVServerSimulationWithHostname:(id)a3;
-- (void)cancelCalendarAvailabilityRequestWithID:(id)a3;
-- (void)cancelCalendarDirectorySearchWithID:(id)a3;
-- (void)cancelDownloadingAttachmentWithDownloadID:(id)a3 error:(id)a4;
-- (void)cancelDownloadingSubscriptionCalendarWithDownloadID:(id)a3;
-- (void)cancelGrantedDelegatesListRequestWithID:(id)a3;
-- (void)cancelServerContactsSearch:(id)a3;
-- (void)checkSubscriptionCalendarIsJunk:(id)a3 queue:(id)a4 completionBlock:(id)a5;
+- (void)_updateGrantedDelegatePermissionRequestFinished:(id)finished;
+- (void)addExchangeDelegateWithName:(id)name emailAddress:(id)address toAccountWithID:(id)d completion:(id)completion;
+- (void)asyncProcessMeetingRequests:(id)requests deliveryIdsToClear:(id)clear deliveryIdsToSoftClear:(id)softClear inFolderWithId:(id)id forAccountWithId:(id)withId;
+- (void)beginCalDAVServerSimulationWithHostname:(id)hostname;
+- (void)cancelCalendarAvailabilityRequestWithID:(id)d;
+- (void)cancelCalendarDirectorySearchWithID:(id)d;
+- (void)cancelDownloadingAttachmentWithDownloadID:(id)d error:(id)error;
+- (void)cancelDownloadingSubscriptionCalendarWithDownloadID:(id)d;
+- (void)cancelGrantedDelegatesListRequestWithID:(id)d;
+- (void)cancelServerContactsSearch:(id)search;
+- (void)checkSubscriptionCalendarIsJunk:(id)junk queue:(id)queue completionBlock:(id)block;
 - (void)dealloc;
-- (void)endCalDAVServerSimulationWithHostname:(id)a3;
-- (void)fetchAvailableHolidayCalendarsWithResultsBlock:(id)a3 completionBlock:(id)a4 queue:(id)a5;
-- (void)fetchOfficeHoursForAccountWithID:(id)a3 queue:(id)a4 completionBlock:(id)a5;
+- (void)endCalDAVServerSimulationWithHostname:(id)hostname;
+- (void)fetchAvailableHolidayCalendarsWithResultsBlock:(id)block completionBlock:(id)completionBlock queue:(id)queue;
+- (void)fetchOfficeHoursForAccountWithID:(id)d queue:(id)queue completionBlock:(id)block;
 - (void)fillOutCurrentEASTimeZoneInfo;
-- (void)handleAccountChange:(id)a3 callback:(id)a4;
-- (void)handleURL:(id)a3;
-- (void)isOofSettingsSupportedForAccountWithID:(id)a3 completionBlock:(id)a4;
-- (void)performGroupExpansionWithAccountID:(id)a3 principalPath:(id)a4 completionBlock:(id)a5;
+- (void)handleAccountChange:(id)change callback:(id)callback;
+- (void)handleURL:(id)l;
+- (void)isOofSettingsSupportedForAccountWithID:(id)d completionBlock:(id)block;
+- (void)performGroupExpansionWithAccountID:(id)d principalPath:(id)path completionBlock:(id)block;
 - (void)reallyRegisterForInterrogation;
-- (void)removeExchangeDelegateWithSourceID:(id)a3 fromParentAccountWithID:(id)a4 completion:(id)a5;
-- (void)reportSharedCalendarInviteAsJunkForCalendarWithID:(id)a3 accountID:(id)a4 queue:(id)a5 completionBlock:(id)a6;
-- (void)reportSubscriptionCalendarAsJunk:(id)a3;
+- (void)removeExchangeDelegateWithSourceID:(id)d fromParentAccountWithID:(id)iD completion:(id)completion;
+- (void)reportSharedCalendarInviteAsJunkForCalendarWithID:(id)d accountID:(id)iD queue:(id)queue completionBlock:(id)block;
+- (void)reportSubscriptionCalendarAsJunk:(id)junk;
 - (void)resetTimersAndWarnings;
-- (void)respondToSharedCalendarInvite:(int64_t)a3 forCalendarWithID:(id)a4 accountID:(id)a5 queue:(id)a6 completionBlock:(id)a7;
-- (void)setOfficeHours:(id)a3 forAccountWithID:(id)a4 queue:(id)a5 completionBlock:(id)a6;
-- (void)validateCandidateSubscriptionURLWithICloud:(id)a3 queue:(id)a4 completionBlock:(id)a5;
+- (void)respondToSharedCalendarInvite:(int64_t)invite forCalendarWithID:(id)d accountID:(id)iD queue:(id)queue completionBlock:(id)block;
+- (void)setOfficeHours:(id)hours forAccountWithID:(id)d queue:(id)queue completionBlock:(id)block;
+- (void)validateCandidateSubscriptionURLWithICloud:(id)cloud queue:(id)queue completionBlock:(id)block;
 @end
 
 @implementation DADConnection
@@ -113,7 +113,7 @@
   block[2] = __41__DADConnection__tearDownInFlightObjects__block_invoke;
   block[3] = &unk_27851FF50;
   block[5] = &v248;
-  v101 = self;
+  selfCopy = self;
   block[4] = self;
   dispatch_sync(muckingWithInFlightCollections, block);
   v4 = v249[5];
@@ -126,13 +126,13 @@
   v244 = __Block_byref_object_copy_;
   v245 = __Block_byref_object_dispose_;
   v246 = 0;
-  v6 = v101->_muckingWithInFlightCollections;
+  v6 = selfCopy->_muckingWithInFlightCollections;
   v240[0] = MEMORY[0x277D85DD0];
   v240[1] = 3221225472;
   v240[2] = __41__DADConnection__tearDownInFlightObjects__block_invoke_181;
   v240[3] = &unk_27851FF50;
   v240[5] = &v241;
-  v240[4] = v101;
+  v240[4] = selfCopy;
   dispatch_sync(v6, v240);
   v239 = 0u;
   v238 = 0u;
@@ -153,9 +153,9 @@
         }
 
         v11 = *(*(&v236 + 1) + 8 * i);
-        v12 = [v11 consumer];
+        consumer = [v11 consumer];
         v13 = [MEMORY[0x277CCA9B8] errorWithDomain:@"DAErrorDomain" code:0 userInfo:0];
-        [v12 folderChange:v11 finishedWithStatus:0 error:v13];
+        [consumer folderChange:v11 finishedWithStatus:0 error:v13];
       }
 
       v8 = [v7 countByEnumeratingWithState:&v236 objects:v266 count:16];
@@ -170,13 +170,13 @@
   v233 = __Block_byref_object_copy_;
   v234 = __Block_byref_object_dispose_;
   v235 = 0;
-  v14 = v101->_muckingWithInFlightCollections;
+  v14 = selfCopy->_muckingWithInFlightCollections;
   v229[0] = MEMORY[0x277D85DD0];
   v229[1] = 3221225472;
   v229[2] = __41__DADConnection__tearDownInFlightObjects__block_invoke_182;
   v229[3] = &unk_27851FF50;
   v229[5] = &v230;
-  v229[4] = v101;
+  v229[4] = selfCopy;
   dispatch_sync(v14, v229);
   v228 = 0u;
   v227 = 0u;
@@ -213,13 +213,13 @@
   v222 = __Block_byref_object_copy_;
   v223 = __Block_byref_object_dispose_;
   v224 = 0;
-  v21 = v101->_muckingWithInFlightCollections;
+  v21 = selfCopy->_muckingWithInFlightCollections;
   v218[0] = MEMORY[0x277D85DD0];
   v218[1] = 3221225472;
   v218[2] = __41__DADConnection__tearDownInFlightObjects__block_invoke_183;
   v218[3] = &unk_27851FF50;
   v218[5] = &v219;
-  v218[4] = v101;
+  v218[4] = selfCopy;
   dispatch_sync(v21, v218);
   v217 = 0u;
   v216 = 0u;
@@ -256,13 +256,13 @@
   v211 = __Block_byref_object_copy_;
   v212 = __Block_byref_object_dispose_;
   v213 = 0;
-  v28 = v101->_muckingWithInFlightCollections;
+  v28 = selfCopy->_muckingWithInFlightCollections;
   v207[0] = MEMORY[0x277D85DD0];
   v207[1] = 3221225472;
   v207[2] = __41__DADConnection__tearDownInFlightObjects__block_invoke_184;
   v207[3] = &unk_27851FF50;
   v207[5] = &v208;
-  v207[4] = v101;
+  v207[4] = selfCopy;
   dispatch_sync(v28, v207);
   v206 = 0u;
   v205 = 0u;
@@ -299,13 +299,13 @@
   v200 = __Block_byref_object_copy_;
   v201 = __Block_byref_object_dispose_;
   v202 = 0;
-  v35 = v101->_muckingWithInFlightCollections;
+  v35 = selfCopy->_muckingWithInFlightCollections;
   v196[0] = MEMORY[0x277D85DD0];
   v196[1] = 3221225472;
   v196[2] = __41__DADConnection__tearDownInFlightObjects__block_invoke_185;
   v196[3] = &unk_27851FF50;
   v196[5] = &v197;
-  v196[4] = v101;
+  v196[4] = selfCopy;
   dispatch_sync(v35, v196);
   v195 = 0u;
   v194 = 0u;
@@ -342,13 +342,13 @@
   v189 = __Block_byref_object_copy_;
   v190 = __Block_byref_object_dispose_;
   v191 = 0;
-  v42 = v101->_muckingWithInFlightCollections;
+  v42 = selfCopy->_muckingWithInFlightCollections;
   v185[0] = MEMORY[0x277D85DD0];
   v185[1] = 3221225472;
   v185[2] = __41__DADConnection__tearDownInFlightObjects__block_invoke_186;
   v185[3] = &unk_27851FF50;
   v185[5] = &v186;
-  v185[4] = v101;
+  v185[4] = selfCopy;
   dispatch_sync(v42, v185);
   v184 = 0u;
   v183 = 0u;
@@ -385,13 +385,13 @@
   v178 = __Block_byref_object_copy_;
   v179 = __Block_byref_object_dispose_;
   v180 = 0;
-  v49 = v101->_muckingWithInFlightCollections;
+  v49 = selfCopy->_muckingWithInFlightCollections;
   v174[0] = MEMORY[0x277D85DD0];
   v174[1] = 3221225472;
   v174[2] = __41__DADConnection__tearDownInFlightObjects__block_invoke_187;
   v174[3] = &unk_27851FF50;
   v174[5] = &v175;
-  v174[4] = v101;
+  v174[4] = selfCopy;
   dispatch_sync(v49, v174);
   v173 = 0u;
   v172 = 0u;
@@ -428,13 +428,13 @@
   v167 = __Block_byref_object_copy_;
   v168 = __Block_byref_object_dispose_;
   v169 = 0;
-  v56 = v101->_muckingWithInFlightCollections;
+  v56 = selfCopy->_muckingWithInFlightCollections;
   v163[0] = MEMORY[0x277D85DD0];
   v163[1] = 3221225472;
   v163[2] = __41__DADConnection__tearDownInFlightObjects__block_invoke_188;
   v163[3] = &unk_27851FF50;
   v163[5] = &v164;
-  v163[4] = v101;
+  v163[4] = selfCopy;
   dispatch_sync(v56, v163);
   v161 = 0u;
   v162 = 0u;
@@ -471,13 +471,13 @@
   v156 = __Block_byref_object_copy_;
   v157 = __Block_byref_object_dispose_;
   v158 = 0;
-  v63 = v101->_muckingWithInFlightCollections;
+  v63 = selfCopy->_muckingWithInFlightCollections;
   v152[0] = MEMORY[0x277D85DD0];
   v152[1] = 3221225472;
   v152[2] = __41__DADConnection__tearDownInFlightObjects__block_invoke_189;
   v152[3] = &unk_27851FF50;
   v152[5] = &v153;
-  v152[4] = v101;
+  v152[4] = selfCopy;
   dispatch_sync(v63, v152);
   v150 = 0u;
   v151 = 0u;
@@ -498,9 +498,9 @@
         }
 
         v68 = *(*(&v148 + 1) + 8 * mm);
-        v69 = [v68 consumer];
+        consumer2 = [v68 consumer];
         v70 = [MEMORY[0x277CCA9B8] errorWithDomain:@"DAErrorDomain" code:-1 userInfo:0];
-        [v69 oofRequestInfo:v68 finishedWithResult:0 error:v70];
+        [consumer2 oofRequestInfo:v68 finishedWithResult:0 error:v70];
       }
 
       v65 = [v64 countByEnumeratingWithState:&v148 objects:v258 count:16];
@@ -515,13 +515,13 @@
   v145 = __Block_byref_object_copy_;
   v146 = __Block_byref_object_dispose_;
   v147 = 0;
-  v71 = v101->_muckingWithInFlightCollections;
+  v71 = selfCopy->_muckingWithInFlightCollections;
   v141[0] = MEMORY[0x277D85DD0];
   v141[1] = 3221225472;
   v141[2] = __41__DADConnection__tearDownInFlightObjects__block_invoke_190;
   v141[3] = &unk_27851FF50;
   v141[5] = &v142;
-  v141[4] = v101;
+  v141[4] = selfCopy;
   dispatch_sync(v71, v141);
   v139 = 0u;
   v140 = 0u;
@@ -558,12 +558,12 @@
   v134 = __Block_byref_object_copy_;
   v135 = __Block_byref_object_dispose_;
   v136 = 0;
-  v78 = v101->_muckingWithInFlightCollections;
+  v78 = selfCopy->_muckingWithInFlightCollections;
   v130[0] = MEMORY[0x277D85DD0];
   v130[1] = 3221225472;
   v130[2] = __41__DADConnection__tearDownInFlightObjects__block_invoke_191;
   v130[3] = &unk_27851FF50;
-  v130[4] = v101;
+  v130[4] = selfCopy;
   v130[5] = &v131;
   dispatch_sync(v78, v130);
   v128 = 0u;
@@ -607,12 +607,12 @@
   v121 = __Block_byref_object_copy_;
   v122 = __Block_byref_object_dispose_;
   v123 = 0;
-  v86 = v101->_muckingWithInFlightCollections;
+  v86 = selfCopy->_muckingWithInFlightCollections;
   v117[0] = MEMORY[0x277D85DD0];
   v117[1] = 3221225472;
   v117[2] = __41__DADConnection__tearDownInFlightObjects__block_invoke_2;
   v117[3] = &unk_27851FF50;
-  v117[4] = v101;
+  v117[4] = selfCopy;
   v117[5] = &v118;
   dispatch_sync(v86, v117);
   v115 = 0u;
@@ -650,12 +650,12 @@
   v110 = __Block_byref_object_copy_;
   v111 = __Block_byref_object_dispose_;
   v112 = 0;
-  v93 = v101->_muckingWithInFlightCollections;
+  v93 = selfCopy->_muckingWithInFlightCollections;
   v106[0] = MEMORY[0x277D85DD0];
   v106[1] = 3221225472;
   v106[2] = __41__DADConnection__tearDownInFlightObjects__block_invoke_194;
   v106[3] = &unk_27851FF50;
-  v106[4] = v101;
+  v106[4] = selfCopy;
   v106[5] = &v107;
   dispatch_sync(v93, v106);
   v104 = 0u;
@@ -949,11 +949,11 @@ uint64_t __41__DADConnection__tearDownInFlightObjects__block_invoke_194(uint64_t
   return [*(*(a1 + 32) + 160) removeAllObjects];
 }
 
-- (void)_serverDiedWithReason:(id)a3
+- (void)_serverDiedWithReason:(id)reason
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == MEMORY[0x277D863F0])
+  reasonCopy = reason;
+  v5 = reasonCopy;
+  if (reasonCopy == MEMORY[0x277D863F0])
   {
     v6 = DALoggingwithCategory(0);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -969,7 +969,7 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if (v4 == MEMORY[0x277D863F8])
+  if (reasonCopy == MEMORY[0x277D863F8])
   {
     v6 = DALoggingwithCategory(0);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -987,8 +987,8 @@ LABEL_7:
 
 LABEL_9:
   [(DADConnection *)self _tearDownInFlightObjects];
-  v9 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v9 postNotificationName:@"DataAccessMonitoringConnectionFailed" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"DataAccessMonitoringConnectionFailed" object:0];
 
   [(DADConnection *)self setRegistered:0];
 }
@@ -1033,9 +1033,9 @@ void __28__DADConnection__connection__block_invoke(uint64_t a1)
 - (void)_initializeConnection
 {
   v12 = *MEMORY[0x277D85DE8];
-  v3 = [@"com.apple.dataaccess.dataaccessd" UTF8String];
+  uTF8String = [@"com.apple.dataaccess.dataaccessd" UTF8String];
   v4 = dispatch_get_global_queue(0, 0);
-  mach_service = xpc_connection_create_mach_service(v3, v4, 0);
+  mach_service = xpc_connection_create_mach_service(uTF8String, v4, 0);
   conn = self->_conn;
   self->_conn = mach_service;
 
@@ -1060,17 +1060,17 @@ void __28__DADConnection__connection__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_initializeConnectionWithXPCEndpoint:(id)a3
+- (void)_initializeConnectionWithXPCEndpoint:(id)endpoint
 {
-  v4 = a3;
+  endpointCopy = endpoint;
   muckingWithConn = self->_muckingWithConn;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __54__DADConnection__initializeConnectionWithXPCEndpoint___block_invoke;
   v7[3] = &unk_27851FED8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = endpointCopy;
+  v6 = endpointCopy;
   dispatch_sync(muckingWithConn, v7);
 }
 
@@ -1105,17 +1105,17 @@ void __54__DADConnection__initializeConnectionWithXPCEndpoint___block_invoke(uin
   }
 }
 
-- (void)_initializeXPCConnection:(id)a3
+- (void)_initializeXPCConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   objc_initWeak(&location, self);
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __42__DADConnection__initializeXPCConnection___block_invoke;
   v5[3] = &unk_27851FFC8;
   objc_copyWeak(&v6, &location);
-  xpc_connection_set_event_handler(v4, v5);
-  xpc_connection_resume(v4);
+  xpc_connection_set_event_handler(connectionCopy, v5);
+  xpc_connection_resume(connectionCopy);
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
 }
@@ -1144,10 +1144,10 @@ void __42__DADConnection__initializeXPCConnection___block_invoke(uint64_t a1, vo
 LABEL_6:
 }
 
-- (id)_createReplyToRequest:(id)a3 withProperties:(id)a4
+- (id)_createReplyToRequest:(id)request withProperties:(id)properties
 {
-  v5 = a4;
-  reply = xpc_dictionary_create_reply(a3);
+  propertiesCopy = properties;
+  reply = xpc_dictionary_create_reply(request);
   v7 = _CFXPCCreateXPCObjectFromCFObject();
 
   applier[0] = MEMORY[0x277D85DD0];
@@ -1161,14 +1161,14 @@ LABEL_6:
   return v8;
 }
 
-- (id)decodedErrorFromData:(id)a3
+- (id)decodedErrorFromData:(id)data
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (v3)
+  dataCopy = data;
+  if (dataCopy)
   {
     v11 = 0;
-    v4 = [objc_alloc(MEMORY[0x277CCAAC8]) initForReadingFromData:v3 error:&v11];
+    v4 = [objc_alloc(MEMORY[0x277CCAAC8]) initForReadingFromData:dataCopy error:&v11];
     v5 = v11;
     if (!v4)
     {
@@ -1195,9 +1195,9 @@ LABEL_6:
   return v8;
 }
 
-+ (id)_dictionarySuitableForLogging:(id)a3
++ (id)_dictionarySuitableForLogging:(id)logging
 {
-  v3 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:a3];
+  v3 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:logging];
   v4 = [v3 objectForKeyedSubscript:@"kDAESubCalPasswordKey"];
 
   if (v4)
@@ -1208,37 +1208,37 @@ LABEL_6:
   return v3;
 }
 
-+ (void)_logRequestID:(id)a3 forRequestAttributes:(id)a4 associatedContext:(id)a5
++ (void)_logRequestID:(id)d forRequestAttributes:(id)attributes associatedContext:(id)context
 {
   v19 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  dCopy = d;
+  attributesCopy = attributes;
+  contextCopy = context;
   v10 = DALoggingwithCategory(0);
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
-    v11 = [objc_opt_class() _dictionarySuitableForLogging:v8];
+    v11 = [objc_opt_class() _dictionarySuitableForLogging:attributesCopy];
     v13 = 138412802;
-    v14 = v7;
+    v14 = dCopy;
     v15 = 2112;
     v16 = v11;
     v17 = 2112;
-    v18 = v9;
+    v18 = contextCopy;
     _os_log_impl(&dword_2243BD000, v10, OS_LOG_TYPE_DEBUG, "Received request ID [%@] for request with attributes: [%@].  Associated context: [%@]", &v13, 0x20u);
   }
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_policyKeyChanged:(id)a3
+- (void)_policyKeyChanged:(id)changed
 {
-  v3 = a3;
+  changedCopy = changed;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __35__DADConnection__policyKeyChanged___block_invoke;
   block[3] = &unk_27851FF00;
-  v6 = v3;
-  v4 = v3;
+  v6 = changedCopy;
+  v4 = changedCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -1293,15 +1293,15 @@ void __35__DADConnection__policyKeyChanged___block_invoke(uint64_t a1)
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_foldersUpdated:(id)a3
+- (void)_foldersUpdated:(id)updated
 {
-  v3 = a3;
+  updatedCopy = updated;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __33__DADConnection__foldersUpdated___block_invoke;
   block[3] = &unk_27851FF00;
-  v6 = v3;
-  v4 = v3;
+  v6 = updatedCopy;
+  v4 = updatedCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -1361,10 +1361,10 @@ void __38__DADConnection__logDataAccessStatus___block_invoke()
   [v0 postNotificationName:@"ASClientAccountDumpStatusNotification" object:0];
 }
 
-- (void)_serverContactsSearchQueryFinished:(id)a3
+- (void)_serverContactsSearchQueryFinished:(id)finished
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  finishedCopy = finished;
   v5 = _CFXPCCreateCFObjectFromXPCObject();
   v6 = [v5 objectForKeyedSubscript:@"kDAESearchIDKey"];
   v7 = [v5 objectForKeyedSubscript:@"kDAEStatusKey"];
@@ -1482,10 +1482,10 @@ uint64_t __52__DADConnection__serverContactsSearchQueryFinished___block_invoke(v
   return result;
 }
 
-- (void)_folderChangeFinished:(id)a3
+- (void)_folderChangeFinished:(id)finished
 {
   v27 = *MEMORY[0x277D85DE8];
-  v18 = a3;
+  finishedCopy = finished;
   v4 = _CFXPCCreateCFObjectFromXPCObject();
   v5 = [v4 objectForKeyedSubscript:@"kDAETaskIDKey"];
   v6 = [v4 objectForKeyedSubscript:@"kDAEStatusKey"];
@@ -1536,17 +1536,17 @@ uint64_t __52__DADConnection__serverContactsSearchQueryFinished___block_invoke(v
       v14 = *&buf[8];
     }
 
-    v16 = [*(v14 + 40) consumer];
-    -[NSObject folderChange:finishedWithStatus:error:](v16, "folderChange:finishedWithStatus:error:", *(*&buf[8] + 40), [v6 intValue], v10);
+    consumer = [*(v14 + 40) consumer];
+    -[NSObject folderChange:finishedWithStatus:error:](consumer, "folderChange:finishedWithStatus:error:", *(*&buf[8] + 40), [v6 intValue], v10);
   }
 
   else
   {
-    v16 = DALoggingwithCategory(0);
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+    consumer = DALoggingwithCategory(0);
+    if (os_log_type_enabled(consumer, OS_LOG_TYPE_ERROR))
     {
       *v19 = 0;
-      _os_log_impl(&dword_2243BD000, v16, OS_LOG_TYPE_ERROR, "received results for an unknown folderChange", v19, 2u);
+      _os_log_impl(&dword_2243BD000, consumer, OS_LOG_TYPE_ERROR, "received results for an unknown folderChange", v19, 2u);
     }
   }
 
@@ -1579,17 +1579,17 @@ uint64_t __39__DADConnection__folderChangeFinished___block_invoke(void *a1)
   return result;
 }
 
-- (void)_getStatusReportsFromClient:(id)a3
+- (void)_getStatusReportsFromClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   v5 = dispatch_get_global_queue(0, 0);
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __45__DADConnection__getStatusReportsFromClient___block_invoke;
   v7[3] = &unk_27851FED8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = clientCopy;
+  v6 = clientCopy;
   dispatch_async(v5, v7);
 }
 
@@ -1652,17 +1652,17 @@ void __45__DADConnection__getStatusReportsFromClient___block_invoke(uint64_t a1)
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_downloadProgress:(id)a3
+- (void)_downloadProgress:(id)progress
 {
   v30 = *MEMORY[0x277D85DE8];
-  v15 = a3;
+  progressCopy = progress;
   v16 = _CFXPCCreateCFObjectFromXPCObject();
   v4 = [v16 objectForKeyedSubscript:@"kDAEAttachmentIdsKey"];
   v5 = [v16 objectForKeyedSubscript:@"kDAEDownloadedBytesKey"];
-  v6 = [v5 longLongValue];
+  longLongValue = [v5 longLongValue];
 
   v7 = [v16 objectForKeyedSubscript:@"kDAETotalBytesKey"];
-  v8 = [v7 longLongValue];
+  longLongValue2 = [v7 longLongValue];
 
   v27 = 0u;
   v28 = 0u;
@@ -1699,7 +1699,7 @@ void __45__DADConnection__getStatusReportsFromClient___block_invoke(uint64_t a1)
         block[6] = &v19;
         block[4] = self;
         dispatch_sync(muckingWithInFlightCollections, block);
-        [v20[5] updateProgressDownloadedByteCount:v6 totalByteCount:{v8, v15}];
+        [v20[5] updateProgressDownloadedByteCount:longLongValue totalByteCount:{longLongValue2, progressCopy}];
         _Block_object_dispose(&v19, 8);
 
         ++v11;
@@ -1725,10 +1725,10 @@ uint64_t __35__DADConnection__downloadProgress___block_invoke(void *a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)_downloadFinished:(id)a3
+- (void)_downloadFinished:(id)finished
 {
   v28 = *MEMORY[0x277D85DE8];
-  v13 = a3;
+  finishedCopy = finished;
   v14 = _CFXPCCreateCFObjectFromXPCObject();
   v4 = [v14 objectForKeyedSubscript:@"kDAEAttachmentIdsKey"];
   v5 = [v14 objectForKeyedSubscript:@"kDAEErrorDataKey"];
@@ -1769,7 +1769,7 @@ uint64_t __35__DADConnection__downloadProgress___block_invoke(void *a1)
         block[6] = &v17;
         block[4] = self;
         dispatch_sync(muckingWithInFlightCollections, block);
-        [v18[5] finishedWithError:{v6, v13}];
+        [v18[5] finishedWithError:{v6, finishedCopy}];
         _Block_object_dispose(&v17, 8);
 
         ++v9;
@@ -1798,9 +1798,9 @@ uint64_t __35__DADConnection__downloadFinished___block_invoke(void *a1)
   return [v6 removeObjectForKey:v5];
 }
 
-- (void)_shareResponseFinished:(id)a3
+- (void)_shareResponseFinished:(id)finished
 {
-  v4 = a3;
+  finishedCopy = finished;
   v5 = _CFXPCCreateCFObjectFromXPCObject();
   v6 = [v5 objectForKeyedSubscript:@"kDAESharedCalendarActionIdKey"];
   v7 = [v5 objectForKeyedSubscript:@"kDAEErrorDataKey"];
@@ -1840,9 +1840,9 @@ uint64_t __40__DADConnection__shareResponseFinished___block_invoke(void *a1)
   return [v6 removeObjectForKey:v5];
 }
 
-- (void)_officeHoursRequestFinished:(id)a3
+- (void)_officeHoursRequestFinished:(id)finished
 {
-  v4 = a3;
+  finishedCopy = finished;
   v5 = _CFXPCCreateCFObjectFromXPCObject();
   v6 = [v5 objectForKeyedSubscript:@"kDAEOfficeHoursRequestIdKey"];
   v7 = [v5 objectForKeyedSubscript:@"kDAEErrorDataKey"];
@@ -1905,10 +1905,10 @@ uint64_t __45__DADConnection__officeHoursRequestFinished___block_invoke(void *a1
   return [v6 removeObjectForKey:v5];
 }
 
-- (void)_oofSettingsRequestsFinished:(id)a3
+- (void)_oofSettingsRequestsFinished:(id)finished
 {
   v35 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  finishedCopy = finished;
   v5 = _CFXPCCreateCFObjectFromXPCObject();
   v6 = [v5 objectForKeyedSubscript:@"kDAEOofRequestIDKey"];
   v7 = [v5 objectForKeyedSubscript:@"kDAEStatusKey"];
@@ -1943,29 +1943,29 @@ uint64_t __45__DADConnection__officeHoursRequestFinished___block_invoke(void *a1
       if ([v7 intValue] == 2)
       {
         v11 = [v5 objectForKeyedSubscript:@"kDAEOofIsUpdateKey"];
-        v12 = v11;
+        consumer4 = v11;
         if (v11 && [v11 BOOLValue])
         {
-          v13 = [*(*(&buf + 1) + 40) consumer];
-          [v13 oofRequestInfo:*(*(&buf + 1) + 40) finishedWithResult:0 error:0];
+          consumer = [*(*(&buf + 1) + 40) consumer];
+          [consumer oofRequestInfo:*(*(&buf + 1) + 40) finishedWithResult:0 error:0];
         }
 
         else
         {
-          v13 = [v5 objectForKeyedSubscript:@"kDAEOofSettingsResultKey"];
-          if (v13)
+          consumer = [v5 objectForKeyedSubscript:@"kDAEOofSettingsResultKey"];
+          if (consumer)
           {
-            v19 = [[DAOofParams alloc] initWithDictionary:v13];
+            consumer3 = [[DAOofParams alloc] initWithDictionary:consumer];
             v20 = DALoggingwithCategory(0);
             if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
             {
               *v28 = 138412290;
-              v29 = v19;
+              v29 = consumer3;
               _os_log_impl(&dword_2243BD000, v20, OS_LOG_TYPE_DEBUG, "Oof settings request results: %@", v28, 0xCu);
             }
 
-            v21 = [*(*(&buf + 1) + 40) consumer];
-            [v21 oofRequestInfo:*(*(&buf + 1) + 40) finishedWithResult:v19 error:0];
+            consumer2 = [*(*(&buf + 1) + 40) consumer];
+            [consumer2 oofRequestInfo:*(*(&buf + 1) + 40) finishedWithResult:consumer3 error:0];
           }
 
           else
@@ -1977,20 +1977,20 @@ uint64_t __45__DADConnection__officeHoursRequestFinished___block_invoke(void *a1
               _os_log_impl(&dword_2243BD000, v22, OS_LOG_TYPE_INFO, "Could not deserialize search results from the xpc message", v28, 2u);
             }
 
-            v19 = [*(*(&buf + 1) + 40) consumer];
+            consumer3 = [*(*(&buf + 1) + 40) consumer];
             v23 = *(*(&buf + 1) + 40);
-            v21 = [MEMORY[0x277CCA9B8] errorWithDomain:@"DAErrorDomain" code:62 userInfo:0];
-            [(DAOofParams *)v19 oofRequestInfo:v23 finishedWithResult:0 error:v21];
+            consumer2 = [MEMORY[0x277CCA9B8] errorWithDomain:@"DAErrorDomain" code:62 userInfo:0];
+            [(DAOofParams *)consumer3 oofRequestInfo:v23 finishedWithResult:0 error:consumer2];
           }
         }
       }
 
       else
       {
-        v12 = [*(*(&buf + 1) + 40) consumer];
+        consumer4 = [*(*(&buf + 1) + 40) consumer];
         v17 = *(*(&buf + 1) + 40);
         v18 = [MEMORY[0x277CCA9B8] errorWithDomain:@"DAErrorDomain" code:objc_msgSend(v7 userInfo:{"intValue"), 0}];
-        [v12 oofRequestInfo:v17 finishedWithResult:0 error:v18];
+        [consumer4 oofRequestInfo:v17 finishedWithResult:0 error:v18];
       }
     }
 
@@ -2003,20 +2003,20 @@ uint64_t __45__DADConnection__officeHoursRequestFinished___block_invoke(void *a1
         _os_log_impl(&dword_2243BD000, v14, OS_LOG_TYPE_INFO, "Status missing from the xpc message", v28, 2u);
       }
 
-      v12 = [*(*(&buf + 1) + 40) consumer];
+      consumer4 = [*(*(&buf + 1) + 40) consumer];
       v15 = *(*(&buf + 1) + 40);
       v16 = [MEMORY[0x277CCA9B8] errorWithDomain:@"DAErrorDomain" code:62 userInfo:0];
-      [v12 oofRequestInfo:v15 finishedWithResult:0 error:v16];
+      [consumer4 oofRequestInfo:v15 finishedWithResult:0 error:v16];
     }
   }
 
   else
   {
-    v12 = DALoggingwithCategory(0);
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+    consumer4 = DALoggingwithCategory(0);
+    if (os_log_type_enabled(consumer4, OS_LOG_TYPE_ERROR))
     {
       *v28 = 0;
-      _os_log_impl(&dword_2243BD000, v12, OS_LOG_TYPE_ERROR, "received results for an unknown oof settings request", v28, 2u);
+      _os_log_impl(&dword_2243BD000, consumer4, OS_LOG_TYPE_ERROR, "received results for an unknown oof settings request", v28, 2u);
     }
   }
 
@@ -2049,9 +2049,9 @@ uint64_t __46__DADConnection__oofSettingsRequestsFinished___block_invoke(void *a
   return result;
 }
 
-- (void)_subscriptionCalendarJunkCheckFinished:(id)a3
+- (void)_subscriptionCalendarJunkCheckFinished:(id)finished
 {
-  v4 = a3;
+  finishedCopy = finished;
   v5 = _CFXPCCreateCFObjectFromXPCObject();
   v6 = [v5 objectForKeyedSubscript:@"kDAECheckSubscribedCalendarIsJunkIdKey"];
   v7 = [v5 objectForKeyedSubscript:@"kDAEErrorDataKey"];
@@ -2076,8 +2076,8 @@ uint64_t __46__DADConnection__oofSettingsRequestsFinished___block_invoke(void *a
   if (v17[5])
   {
     v11 = [v5 objectForKeyedSubscript:@"kDAECheckSubscribedCalendarJunkStatusKey"];
-    v12 = [v11 integerValue];
-    [v17[5] setJunkStatus:v12];
+    integerValue = [v11 integerValue];
+    [v17[5] setJunkStatus:integerValue];
     [v17[5] finishedWithError:v8];
   }
 
@@ -2097,10 +2097,10 @@ uint64_t __56__DADConnection__subscriptionCalendarJunkCheckFinished___block_invo
   return [v6 removeObjectForKey:v5];
 }
 
-- (void)_holidayCalendarFetchReturnedResults:(id)a3
+- (void)_holidayCalendarFetchReturnedResults:(id)results
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  resultsCopy = results;
   v5 = _CFXPCCreateCFObjectFromXPCObject();
   v6 = [v5 objectForKeyedSubscript:@"kDAEFetchHolidayCalendarsIdKey"];
   v25 = 0;
@@ -2168,9 +2168,9 @@ uint64_t __54__DADConnection__holidayCalendarFetchReturnedResults___block_invoke
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)_holidayCalendarFetchFinished:(id)a3
+- (void)_holidayCalendarFetchFinished:(id)finished
 {
-  v4 = a3;
+  finishedCopy = finished;
   v5 = _CFXPCCreateCFObjectFromXPCObject();
   v6 = [v5 objectForKeyedSubscript:@"kDAEFetchHolidayCalendarsIdKey"];
   v7 = [v5 objectForKeyedSubscript:@"kDAEErrorDataKey"];
@@ -2234,10 +2234,10 @@ uint64_t __33__DADConnection_sharedConnection__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (BOOL)_checkInvalidIdExistsInXPCRely:(id)a3
+- (BOOL)_checkInvalidIdExistsInXPCRely:(id)rely
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  relyCopy = rely;
   v4 = MEMORY[0x22AA4EF10]();
   if (v4 == MEMORY[0x277D86468])
   {
@@ -2264,20 +2264,20 @@ uint64_t __33__DADConnection_sharedConnection__block_invoke()
   return v7;
 }
 
-- (BOOL)resumeWatchingFoldersWithKeys:(id)a3 forAccountID:(id)a4
+- (BOOL)resumeWatchingFoldersWithKeys:(id)keys forAccountID:(id)d
 {
   v21[3] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  keysCopy = keys;
+  dCopy = d;
   if (self->_conn)
   {
-    [(DADConnection *)self _resetCertWarningsForAccountId:v7 andDataclasses:127 isUserRequested:0];
+    [(DADConnection *)self _resetCertWarningsForAccountId:dCopy andDataclasses:127 isUserRequested:0];
     v20[0] = @"kDAEMessageNameKey";
     v20[1] = @"kDAEAccountIdKey";
     v21[0] = @"kDAEResumeMonitoringFolders";
-    v21[1] = v7;
+    v21[1] = dCopy;
     v20[2] = @"kDAEFolderIDsKey";
-    v21[2] = v6;
+    v21[2] = keysCopy;
     v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v21 forKeys:v20 count:3];
     v9 = DALoggingwithCategory(0);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
@@ -2288,8 +2288,8 @@ uint64_t __33__DADConnection_sharedConnection__block_invoke()
     }
 
     v10 = _CFXPCCreateXPCObjectFromCFObject();
-    v11 = [(DADConnection *)self _connection];
-    v12 = xpc_connection_send_message_with_reply_sync(v11, v10);
+    _connection = [(DADConnection *)self _connection];
+    v12 = xpc_connection_send_message_with_reply_sync(_connection, v10);
 
     if ([(DADConnection *)self _checkInvalidIdExistsInXPCRely:v12])
     {
@@ -2299,12 +2299,12 @@ uint64_t __33__DADConnection_sharedConnection__block_invoke()
         if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
         {
           v18 = 138543362;
-          v19 = v7;
+          v19 = dCopy;
           _os_log_impl(&dword_2243BD000, v13, OS_LOG_TYPE_DEBUG, "Retry resumeWatchingFoldersWithSyncKeyMap on exchangesyncd for accountID %{public}@", &v18, 0xCu);
         }
 
-        v14 = [getESDConnectionClass() sharedConnection];
-        v15 = [v14 resumeWatchingFoldersWithKeys:v6 forAccountID:v7];
+        sharedConnection = [getESDConnectionClass() sharedConnection];
+        v15 = [sharedConnection resumeWatchingFoldersWithKeys:keysCopy forAccountID:dCopy];
       }
 
       else
@@ -2335,17 +2335,17 @@ uint64_t __33__DADConnection_sharedConnection__block_invoke()
   return v15;
 }
 
-- (BOOL)suspendWatchingFoldersWithKeys:(id)a3 forAccountID:(id)a4
+- (BOOL)suspendWatchingFoldersWithKeys:(id)keys forAccountID:(id)d
 {
   v21[3] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  keysCopy = keys;
+  dCopy = d;
   v20[0] = @"kDAEMessageNameKey";
   v20[1] = @"kDAEAccountIdKey";
   v21[0] = @"kDAESuspendMonitoringFolders";
-  v21[1] = v7;
+  v21[1] = dCopy;
   v20[2] = @"kDAEFolderIDsKey";
-  v21[2] = v6;
+  v21[2] = keysCopy;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v21 forKeys:v20 count:3];
   v9 = DALoggingwithCategory(0);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
@@ -2356,8 +2356,8 @@ uint64_t __33__DADConnection_sharedConnection__block_invoke()
   }
 
   v10 = _CFXPCCreateXPCObjectFromCFObject();
-  v11 = [(DADConnection *)self _connection];
-  v12 = xpc_connection_send_message_with_reply_sync(v11, v10);
+  _connection = [(DADConnection *)self _connection];
+  v12 = xpc_connection_send_message_with_reply_sync(_connection, v10);
 
   if ([(DADConnection *)self _checkInvalidIdExistsInXPCRely:v12])
   {
@@ -2367,12 +2367,12 @@ uint64_t __33__DADConnection_sharedConnection__block_invoke()
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
       {
         v18 = 138543362;
-        v19 = v7;
+        v19 = dCopy;
         _os_log_impl(&dword_2243BD000, v13, OS_LOG_TYPE_DEBUG, "Retry suspendWatchingFoldersWithKeys on exchangesyncd for accountID %{public}@", &v18, 0xCu);
       }
 
-      v14 = [getESDConnectionClass() sharedConnection];
-      v15 = [v14 suspendWatchingFoldersWithKeys:v6 forAccountID:v7];
+      sharedConnection = [getESDConnectionClass() sharedConnection];
+      v15 = [sharedConnection suspendWatchingFoldersWithKeys:keysCopy forAccountID:dCopy];
     }
 
     else
@@ -2390,17 +2390,17 @@ uint64_t __33__DADConnection_sharedConnection__block_invoke()
   return v15;
 }
 
-- (BOOL)stopWatchingFoldersWithKeys:(id)a3 forAccountID:(id)a4
+- (BOOL)stopWatchingFoldersWithKeys:(id)keys forAccountID:(id)d
 {
   v21[3] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  keysCopy = keys;
+  dCopy = d;
   v20[0] = @"kDAEMessageNameKey";
   v20[1] = @"kDAEAccountIdKey";
   v21[0] = @"kDAEStopMonitoringFolders";
-  v21[1] = v7;
+  v21[1] = dCopy;
   v20[2] = @"kDAEFolderIDsKey";
-  v21[2] = v6;
+  v21[2] = keysCopy;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v21 forKeys:v20 count:3];
   v9 = DALoggingwithCategory(0);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
@@ -2411,8 +2411,8 @@ uint64_t __33__DADConnection_sharedConnection__block_invoke()
   }
 
   v10 = _CFXPCCreateXPCObjectFromCFObject();
-  v11 = [(DADConnection *)self _connection];
-  v12 = xpc_connection_send_message_with_reply_sync(v11, v10);
+  _connection = [(DADConnection *)self _connection];
+  v12 = xpc_connection_send_message_with_reply_sync(_connection, v10);
 
   if ([(DADConnection *)self _checkInvalidIdExistsInXPCRely:v12])
   {
@@ -2422,12 +2422,12 @@ uint64_t __33__DADConnection_sharedConnection__block_invoke()
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
       {
         v18 = 138543362;
-        v19 = v7;
+        v19 = dCopy;
         _os_log_impl(&dword_2243BD000, v13, OS_LOG_TYPE_DEBUG, "Retry stopWatchingFoldersWithKeys on exchangesyncd for accountID %{public}@", &v18, 0xCu);
       }
 
-      v14 = [getESDConnectionClass() sharedConnection];
-      v15 = [v14 stopWatchingFoldersWithKeys:v6 forAccountID:v7];
+      sharedConnection = [getESDConnectionClass() sharedConnection];
+      v15 = [sharedConnection stopWatchingFoldersWithKeys:keysCopy forAccountID:dCopy];
     }
 
     else
@@ -2445,18 +2445,18 @@ uint64_t __33__DADConnection_sharedConnection__block_invoke()
   return v15;
 }
 
-- (BOOL)_validateXPCReply:(id)a3
+- (BOOL)_validateXPCReply:(id)reply
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  replyCopy = reply;
   v4 = MEMORY[0x22AA4EF10]();
   if (v4 == MEMORY[0x277D86468])
   {
     v6 = _CFXPCCreateCFObjectFromXPCObject();
     v8 = [v6 objectForKeyedSubscript:@"kDAEStatusKey"];
-    v9 = [v8 intValue];
-    v7 = v9 == 2;
-    if (v9 != 2)
+    intValue = [v8 intValue];
+    v7 = intValue == 2;
+    if (intValue != 2)
     {
       v10 = DALoggingwithCategory(0);
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -2486,22 +2486,22 @@ uint64_t __33__DADConnection_sharedConnection__block_invoke()
   return v7;
 }
 
-- (BOOL)requestPolicyUpdateForAccountID:(id)a3
+- (BOOL)requestPolicyUpdateForAccountID:(id)d
 {
   v11 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  dCopy = d;
   if (ExchangeSyncExpressLibraryCore())
   {
     v4 = DALoggingwithCategory(0);
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
     {
       v9 = 138543362;
-      v10 = v3;
+      v10 = dCopy;
       _os_log_impl(&dword_2243BD000, v4, OS_LOG_TYPE_DEBUG, "Send current policy key to exchangesyncd for accountID %{public}@", &v9, 0xCu);
     }
 
-    v5 = [getESDConnectionClass() sharedConnection];
-    v6 = [v5 requestPolicyUpdateForAccountID:v3];
+    sharedConnection = [getESDConnectionClass() sharedConnection];
+    v6 = [sharedConnection requestPolicyUpdateForAccountID:dCopy];
   }
 
   else
@@ -2513,22 +2513,22 @@ uint64_t __33__DADConnection_sharedConnection__block_invoke()
   return v6;
 }
 
-- (id)currentPolicyKeyForAccountID:(id)a3
+- (id)currentPolicyKeyForAccountID:(id)d
 {
   v11 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  dCopy = d;
   if (ExchangeSyncExpressLibraryCore())
   {
     v4 = DALoggingwithCategory(0);
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
     {
       v9 = 138543362;
-      v10 = v3;
+      v10 = dCopy;
       _os_log_impl(&dword_2243BD000, v4, OS_LOG_TYPE_DEBUG, "Send current policy key to exchangesyncd for accountID %{public}@", &v9, 0xCu);
     }
 
-    v5 = [getESDConnectionClass() sharedConnection];
-    v6 = [v5 currentPolicyKeyForAccountID:v3];
+    sharedConnection = [getESDConnectionClass() sharedConnection];
+    v6 = [sharedConnection currentPolicyKeyForAccountID:dCopy];
   }
 
   else
@@ -2549,16 +2549,16 @@ uint64_t __33__DADConnection_sharedConnection__block_invoke()
   return v2;
 }
 
-- (void)_requestDaemonChangeAgentMonitoringStatus:(BOOL)a3 withToken:(unint64_t)a4 waitForReply:(BOOL)a5
+- (void)_requestDaemonChangeAgentMonitoringStatus:(BOOL)status withToken:(unint64_t)token waitForReply:(BOOL)reply
 {
-  v5 = a5;
-  v7 = a3;
+  replyCopy = reply;
+  statusCopy = status;
   v26 = *MEMORY[0x277D85DE8];
   v9 = DALoggingwithCategory(0);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     v10 = @"stop";
-    if (v7)
+    if (statusCopy)
     {
       v10 = @"start";
     }
@@ -2569,23 +2569,23 @@ uint64_t __33__DADConnection_sharedConnection__block_invoke()
   }
 
   v11 = kDAEStopMonitoringAgents;
-  if (v7)
+  if (statusCopy)
   {
     v11 = kDAEStartMonitoringAgents;
   }
 
   v12 = [MEMORY[0x277CBEB38] dictionaryWithObject:*v11 forKey:@"kDAEMessageNameKey"];
-  v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
+  v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:token];
   [v12 setObject:v13 forKeyedSubscript:@"kDAEAgentMonitoringToken"];
 
-  if (v5)
+  if (replyCopy)
   {
     [v12 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"kDAEAgentMonitoringNeedsReply"];
     v14 = _CFXPCCreateXPCObjectFromCFObject();
-    v15 = [(DADConnection *)self _connection];
-    v16 = xpc_connection_send_message_with_reply_sync(v15, v14);
+    _connection = [(DADConnection *)self _connection];
+    _connection2 = xpc_connection_send_message_with_reply_sync(_connection, v14);
 
-    if (MEMORY[0x22AA4EF10](v16) == MEMORY[0x277D86468])
+    if (MEMORY[0x22AA4EF10](_connection2) == MEMORY[0x277D86468])
     {
       v17 = _CFXPCCreateCFObjectFromXPCObject();
       v18 = [v17 objectForKeyedSubscript:@"kDAEStatusKey"];
@@ -2608,8 +2608,8 @@ uint64_t __33__DADConnection_sharedConnection__block_invoke()
   else
   {
     v14 = _CFXPCCreateXPCObjectFromCFObject();
-    v16 = [(DADConnection *)self _connection];
-    xpc_connection_send_message(v16, v14);
+    _connection2 = [(DADConnection *)self _connection];
+    xpc_connection_send_message(_connection2, v14);
   }
 
   v21 = *MEMORY[0x277D85DE8];
@@ -2617,32 +2617,32 @@ uint64_t __33__DADConnection_sharedConnection__block_invoke()
 
 - (unint64_t)requestDaemonStopMonitoringAgents
 {
-  v3 = [objc_opt_class() _nextStopMonitoringStatusToken];
-  [(DADConnection *)self _requestDaemonChangeAgentMonitoringStatus:0 withToken:v3 waitForReply:0];
-  return v3;
+  _nextStopMonitoringStatusToken = [objc_opt_class() _nextStopMonitoringStatusToken];
+  [(DADConnection *)self _requestDaemonChangeAgentMonitoringStatus:0 withToken:_nextStopMonitoringStatusToken waitForReply:0];
+  return _nextStopMonitoringStatusToken;
 }
 
 - (unint64_t)requestDaemonStopMonitoringAgentsSync
 {
-  v3 = [objc_opt_class() _nextStopMonitoringStatusToken];
-  [(DADConnection *)self _requestDaemonChangeAgentMonitoringStatus:0 withToken:v3 waitForReply:1];
-  return v3;
+  _nextStopMonitoringStatusToken = [objc_opt_class() _nextStopMonitoringStatusToken];
+  [(DADConnection *)self _requestDaemonChangeAgentMonitoringStatus:0 withToken:_nextStopMonitoringStatusToken waitForReply:1];
+  return _nextStopMonitoringStatusToken;
 }
 
-- (void)handleAccountChange:(id)a3 callback:(id)a4
+- (void)handleAccountChange:(id)change callback:(id)callback
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  changeCopy = change;
+  callbackCopy = callback;
   v8 = DALoggingwithCategory(0);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v26 = v6;
+    v26 = changeCopy;
     _os_log_impl(&dword_2243BD000, v8, OS_LOG_TYPE_DEFAULT, "Handling account change: %{public}@", buf, 0xCu);
   }
 
-  if (!v6)
+  if (!changeCopy)
   {
     v16 = DALoggingwithCategory(0);
     if (!os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -2655,12 +2655,12 @@ uint64_t __33__DADConnection_sharedConnection__block_invoke()
     goto LABEL_11;
   }
 
-  v9 = [v6 accountIdentifier];
+  accountIdentifier = [changeCopy accountIdentifier];
 
-  if (v9)
+  if (accountIdentifier)
   {
     v22 = 0;
-    v10 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v6 requiringSecureCoding:1 error:&v22];
+    v10 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:changeCopy requiringSecureCoding:1 error:&v22];
     v11 = v22;
     if (v10)
     {
@@ -2670,14 +2670,14 @@ uint64_t __33__DADConnection_sharedConnection__block_invoke()
       v24[1] = v10;
       v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v24 forKeys:v23 count:2];
       v13 = _CFXPCCreateXPCObjectFromCFObject();
-      v14 = [(DADConnection *)self _connection];
+      _connection = [(DADConnection *)self _connection];
       v15 = dispatch_get_global_queue(0, 0);
       v20[0] = MEMORY[0x277D85DD0];
       v20[1] = 3221225472;
       v20[2] = __46__DADConnection_handleAccountChange_callback___block_invoke;
       v20[3] = &unk_278520060;
-      v21 = v7;
-      xpc_connection_send_message_with_reply(v14, v13, v15, v20);
+      v21 = callbackCopy;
+      xpc_connection_send_message_with_reply(_connection, v13, v15, v20);
     }
 
     else
@@ -2690,9 +2690,9 @@ uint64_t __33__DADConnection_sharedConnection__block_invoke()
         _os_log_impl(&dword_2243BD000, v18, OS_LOG_TYPE_ERROR, "Failed to encode account change info: %@", buf, 0xCu);
       }
 
-      if (v7)
+      if (callbackCopy)
       {
-        (*(v7 + 2))(v7, v11);
+        (*(callbackCopy + 2))(callbackCopy, v11);
       }
     }
 
@@ -2710,10 +2710,10 @@ LABEL_11:
 
 LABEL_12:
 
-  if (v7)
+  if (callbackCopy)
   {
     v11 = [MEMORY[0x277CCA9B8] errorWithDomain:@"DAErrorDomain" code:93 userInfo:0];
-    (*(v7 + 2))(v7, v11);
+    (*(callbackCopy + 2))(callbackCopy, v11);
 LABEL_19:
   }
 
@@ -2764,30 +2764,30 @@ void __46__DADConnection_handleAccountChange_callback___block_invoke(uint64_t a1
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)performServerContactsSearch:(id)a3 forAccountWithID:(id)a4
+- (BOOL)performServerContactsSearch:(id)search forAccountWithID:(id)d
 {
   v37[3] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  [(DADConnection *)self _resetCertWarningsForAccountId:v7 andDataclasses:8 isUserRequested:0];
-  if (v7)
+  searchCopy = search;
+  dCopy = d;
+  [(DADConnection *)self _resetCertWarningsForAccountId:dCopy andDataclasses:8 isUserRequested:0];
+  if (dCopy)
   {
-    v8 = [v6 searchString];
+    searchString = [searchCopy searchString];
 
-    if (v8)
+    if (searchString)
     {
       v36[0] = @"kDAEMessageNameKey";
       v36[1] = @"kDAEAccountIdKey";
       v37[0] = @"kDAEOpenServerContactsSearch";
-      v37[1] = v7;
+      v37[1] = dCopy;
       v36[2] = @"kDAESearchQueryKey";
-      v9 = [v6 dictionaryRepresentation];
-      v37[2] = v9;
+      dictionaryRepresentation = [searchCopy dictionaryRepresentation];
+      v37[2] = dictionaryRepresentation;
       v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v37 forKeys:v36 count:3];
 
       v11 = _CFXPCCreateXPCObjectFromCFObject();
-      v12 = [(DADConnection *)self _connection];
-      v13 = xpc_connection_send_message_with_reply_sync(v12, v11);
+      _connection = [(DADConnection *)self _connection];
+      v13 = xpc_connection_send_message_with_reply_sync(_connection, v11);
 
       if (MEMORY[0x22AA4EF10](v13) != MEMORY[0x277D86468])
       {
@@ -2798,12 +2798,12 @@ LABEL_23:
         goto LABEL_24;
       }
 
-      v16 = _CFXPCCreateCFObjectFromXPCObject();
-      v17 = [v16 objectForKeyedSubscript:@"kDAEStatusKey"];
-      v18 = [v17 integerValue];
-      if (!v17 || (v19 = v18, v18 == 2))
+      sharedConnection = _CFXPCCreateCFObjectFromXPCObject();
+      v17 = [sharedConnection objectForKeyedSubscript:@"kDAEStatusKey"];
+      integerValue = [v17 integerValue];
+      if (!v17 || (v19 = integerValue, integerValue == 2))
       {
-        v21 = [v16 objectForKeyedSubscript:@"kDAEInvalidAccountIDKey"];
+        v21 = [sharedConnection objectForKeyedSubscript:@"kDAEInvalidAccountIDKey"];
         if (v21)
         {
           v22 = v21;
@@ -2824,26 +2824,26 @@ LABEL_23:
           if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
           {
             *buf = 138543362;
-            v35 = v7;
+            v35 = dCopy;
             _os_log_impl(&dword_2243BD000, v24, OS_LOG_TYPE_DEBUG, "Perform server contact search on exchangesyncd for accountID %{public}@", buf, 0xCu);
           }
 
-          v16 = [getESDConnectionClass() sharedConnection];
-          v14 = [v16 performServerContactsSearch:v6 forAccountWithID:v7];
+          sharedConnection = [getESDConnectionClass() sharedConnection];
+          v14 = [sharedConnection performServerContactsSearch:searchCopy forAccountWithID:dCopy];
         }
 
         else
         {
-          v25 = [v16 objectForKeyedSubscript:@"kDAESearchIDKey"];
-          [v6 setSearchID:v25];
+          v25 = [sharedConnection objectForKeyedSubscript:@"kDAESearchIDKey"];
+          [searchCopy setSearchID:v25];
           muckingWithInFlightCollections = self->_muckingWithInFlightCollections;
           block[0] = MEMORY[0x277D85DD0];
           block[1] = 3221225472;
           block[2] = __62__DADConnection_performServerContactsSearch_forAccountWithID___block_invoke;
           block[3] = &unk_27851FF28;
-          v31 = v6;
+          v31 = searchCopy;
           v32 = v25;
-          v33 = self;
+          selfCopy = self;
           v27 = v25;
           dispatch_sync(muckingWithInFlightCollections, block);
 
@@ -2853,9 +2853,9 @@ LABEL_23:
 
       else
       {
-        [v6 sendResultsToConsumer:0];
+        [searchCopy sendResultsToConsumer:0];
         v20 = [MEMORY[0x277CCA9B8] errorWithDomain:@"DAErrorDomain" code:v19 userInfo:0];
-        [v6 sendFinishedToConsumerWithError:v20];
+        [searchCopy sendFinishedToConsumerWithError:v20];
 
         v14 = 0;
       }
@@ -2911,26 +2911,26 @@ uint64_t __62__DADConnection_performServerContactsSearch_forAccountWithID___bloc
   return result;
 }
 
-- (void)cancelServerContactsSearch:(id)a3
+- (void)cancelServerContactsSearch:(id)search
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 searchID];
-  v6 = [v5 length];
+  searchCopy = search;
+  searchID = [searchCopy searchID];
+  v6 = [searchID length];
 
   if (v6)
   {
-    [v4 setState:2];
-    [v4 setConsumer:0];
+    [searchCopy setState:2];
+    [searchCopy setConsumer:0];
     v7 = DALoggingwithCategory(0);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
       LODWORD(buf) = 134217984;
-      *(&buf + 4) = v4;
+      *(&buf + 4) = searchCopy;
       _os_log_impl(&dword_2243BD000, v7, OS_LOG_TYPE_DEBUG, "Cancelling search task %p", &buf, 0xCu);
     }
 
-    v8 = [v4 searchID];
+    searchID2 = [searchCopy searchID];
     *&buf = 0;
     *(&buf + 1) = &buf;
     v28 = 0x3032000000;
@@ -2944,7 +2944,7 @@ uint64_t __62__DADConnection_performServerContactsSearch_forAccountWithID___bloc
     block[3] = &unk_278520038;
     p_buf = &buf;
     block[4] = self;
-    v10 = v8;
+    v10 = searchID2;
     v21 = v10;
     dispatch_sync(muckingWithInFlightCollections, block);
     if (*(*(&buf + 1) + 40))
@@ -2953,10 +2953,10 @@ uint64_t __62__DADConnection_performServerContactsSearch_forAccountWithID___bloc
       v25[1] = @"kDAESearchIDKey";
       v26[0] = @"kDAECancelServerContactsSearch";
       v26[1] = v10;
-      v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v26 forKeys:v25 count:2];
+      sharedConnection = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v26 forKeys:v25 count:2];
       v12 = _CFXPCCreateXPCObjectFromCFObject();
-      v13 = [(DADConnection *)self _connection];
-      xpc_connection_send_message(v13, v12);
+      _connection = [(DADConnection *)self _connection];
+      xpc_connection_send_message(_connection, v12);
 
       v14 = DALoggingwithCategory(0);
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
@@ -2974,7 +2974,7 @@ uint64_t __62__DADConnection_performServerContactsSearch_forAccountWithID___bloc
       v18[4] = self;
       v19 = v10;
       dispatch_sync(v15, v18);
-      [v4 setSearchID:&stru_2837C8288];
+      [searchCopy setSearchID:&stru_2837C8288];
     }
 
     else
@@ -2995,8 +2995,8 @@ LABEL_13:
         _os_log_impl(&dword_2243BD000, v16, OS_LOG_TYPE_DEBUG, "Cancel server contact search on exchangesyncd for searchID %@", v23, 0xCu);
       }
 
-      v11 = [getESDConnectionClass() sharedConnection];
-      [v11 cancelServerContactsSearch:v4];
+      sharedConnection = [getESDConnectionClass() sharedConnection];
+      [sharedConnection cancelServerContactsSearch:searchCopy];
     }
 
     goto LABEL_13;
@@ -3017,26 +3017,26 @@ uint64_t __44__DADConnection_cancelServerContactsSearch___block_invoke(void *a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (BOOL)processMeetingRequests:(id)a3 deliveryIdsToClear:(id)a4 deliveryIdsToSoftClear:(id)a5 inFolderWithId:(id)a6 forAccountWithId:(id)a7
+- (BOOL)processMeetingRequests:(id)requests deliveryIdsToClear:(id)clear deliveryIdsToSoftClear:(id)softClear inFolderWithId:(id)id forAccountWithId:(id)withId
 {
   v23 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  requestsCopy = requests;
+  clearCopy = clear;
+  softClearCopy = softClear;
+  idCopy = id;
+  withIdCopy = withId;
   if (ExchangeSyncExpressLibraryCore())
   {
     v16 = DALoggingwithCategory(0);
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
     {
       v21 = 138543362;
-      v22 = v15;
+      v22 = withIdCopy;
       _os_log_impl(&dword_2243BD000, v16, OS_LOG_TYPE_DEBUG, "Process meeting request on exchangesyncd for accountID %{public}@", &v21, 0xCu);
     }
 
-    v17 = [getESDConnectionClass() sharedConnection];
-    v18 = [v17 processMeetingRequests:v11 deliveryIdsToClear:v12 deliveryIdsToSoftClear:v13 inFolderWithId:v14 forAccountWithId:v15];
+    sharedConnection = [getESDConnectionClass() sharedConnection];
+    v18 = [sharedConnection processMeetingRequests:requestsCopy deliveryIdsToClear:clearCopy deliveryIdsToSoftClear:softClearCopy inFolderWithId:idCopy forAccountWithId:withIdCopy];
   }
 
   else
@@ -3048,50 +3048,50 @@ uint64_t __44__DADConnection_cancelServerContactsSearch___block_invoke(void *a1)
   return v18;
 }
 
-- (void)asyncProcessMeetingRequests:(id)a3 deliveryIdsToClear:(id)a4 deliveryIdsToSoftClear:(id)a5 inFolderWithId:(id)a6 forAccountWithId:(id)a7
+- (void)asyncProcessMeetingRequests:(id)requests deliveryIdsToClear:(id)clear deliveryIdsToSoftClear:(id)softClear inFolderWithId:(id)id forAccountWithId:(id)withId
 {
   v21 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  requestsCopy = requests;
+  clearCopy = clear;
+  softClearCopy = softClear;
+  idCopy = id;
+  withIdCopy = withId;
   if (ExchangeSyncExpressLibraryCore())
   {
     v16 = DALoggingwithCategory(0);
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
     {
       v19 = 138543362;
-      v20 = v15;
+      v20 = withIdCopy;
       _os_log_impl(&dword_2243BD000, v16, OS_LOG_TYPE_DEBUG, "Async process meeting request on exchangesyncd for accountID %{public}@", &v19, 0xCu);
     }
 
-    v17 = [getESDConnectionClass() sharedConnection];
-    [v17 asyncProcessMeetingRequests:v11 deliveryIdsToClear:v12 deliveryIdsToSoftClear:v13 inFolderWithId:v14 forAccountWithId:v15];
+    sharedConnection = [getESDConnectionClass() sharedConnection];
+    [sharedConnection asyncProcessMeetingRequests:requestsCopy deliveryIdsToClear:clearCopy deliveryIdsToSoftClear:softClearCopy inFolderWithId:idCopy forAccountWithId:withIdCopy];
   }
 
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)setFolderIdsThatExternalClientsCareAboutAdded:(id)a3 deleted:(id)a4 foldersTag:(id)a5 forAccountID:(id)a6
+- (BOOL)setFolderIdsThatExternalClientsCareAboutAdded:(id)added deleted:(id)deleted foldersTag:(id)tag forAccountID:(id)d
 {
   v20 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  addedCopy = added;
+  deletedCopy = deleted;
+  tagCopy = tag;
+  dCopy = d;
   if (ExchangeSyncExpressLibraryCore())
   {
     v13 = DALoggingwithCategory(0);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
     {
       v18 = 138543362;
-      v19 = v12;
+      v19 = dCopy;
       _os_log_impl(&dword_2243BD000, v13, OS_LOG_TYPE_DEBUG, "Set folder IDs that external clients care about on exchangesyncd for accountID %{public}@", &v18, 0xCu);
     }
 
-    v14 = [getESDConnectionClass() sharedConnection];
-    v15 = [v14 setFolderIdsThatExternalClientsCareAboutAdded:v9 deleted:v10 foldersTag:v11 forAccountID:v12];
+    sharedConnection = [getESDConnectionClass() sharedConnection];
+    v15 = [sharedConnection setFolderIdsThatExternalClientsCareAboutAdded:addedCopy deleted:deletedCopy foldersTag:tagCopy forAccountID:dCopy];
   }
 
   else
@@ -3103,19 +3103,19 @@ uint64_t __44__DADConnection_cancelServerContactsSearch___block_invoke(void *a1)
   return v15;
 }
 
-- (void)handleURL:(id)a3
+- (void)handleURL:(id)l
 {
   v11[2] = *MEMORY[0x277D85DE8];
-  v4 = [a3 absoluteString];
-  v5 = CFURLCreateStringByAddingPercentEscapes(*MEMORY[0x277CBECE8], v4, 0, @"&=", 0x8000100u);
+  absoluteString = [l absoluteString];
+  v5 = CFURLCreateStringByAddingPercentEscapes(*MEMORY[0x277CBECE8], absoluteString, 0, @"&=", 0x8000100u);
   v10[0] = @"kDAEMessageNameKey";
   v10[1] = @"kDAEURLStringKey";
   v11[0] = @"kDAEHandleURL";
   v11[1] = v5;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:v10 count:2];
   v7 = _CFXPCCreateXPCObjectFromCFObject();
-  v8 = [(DADConnection *)self _connection];
-  xpc_connection_send_message(v8, v7);
+  _connection = [(DADConnection *)self _connection];
+  xpc_connection_send_message(_connection, v7);
 
   if (v5)
   {
@@ -3125,23 +3125,23 @@ uint64_t __44__DADConnection_cancelServerContactsSearch___block_invoke(void *a1)
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_sendXPCMessageSynchronous:(BOOL)a3 withParameters:(id)a4 handlerBlock:(id)a5
+- (void)_sendXPCMessageSynchronous:(BOOL)synchronous withParameters:(id)parameters handlerBlock:(id)block
 {
-  v5 = a3;
-  v7 = a5;
+  synchronousCopy = synchronous;
+  blockCopy = block;
   v8 = _CFXPCCreateXPCObjectFromCFObject();
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __72__DADConnection__sendXPCMessageSynchronous_withParameters_handlerBlock___block_invoke;
   aBlock[3] = &unk_278520060;
-  v16 = v7;
-  v9 = v7;
+  v16 = blockCopy;
+  v9 = blockCopy;
   v10 = _Block_copy(aBlock);
-  v11 = [(DADConnection *)self _connection];
-  v12 = v11;
-  if (v5)
+  _connection = [(DADConnection *)self _connection];
+  v12 = _connection;
+  if (synchronousCopy)
   {
-    v13 = xpc_connection_send_message_with_reply_sync(v11, v8);
+    v13 = xpc_connection_send_message_with_reply_sync(_connection, v8);
 
     v10[2](v10, v13);
     v12 = v13;
@@ -3172,31 +3172,31 @@ void __72__DADConnection__sendXPCMessageSynchronous_withParameters_handlerBlock_
   }
 }
 
-- (id)beginDownloadingAttachmentWithUUID:(id)a3 accountID:(id)a4 queue:(id)a5 progressBlock:(id)a6 completionBlock:(id)a7
+- (id)beginDownloadingAttachmentWithUUID:(id)d accountID:(id)iD queue:(id)queue progressBlock:(id)block completionBlock:(id)completionBlock
 {
   v51[3] = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  dCopy = d;
+  iDCopy = iD;
+  queueCopy = queue;
+  blockCopy = block;
+  completionBlockCopy = completionBlock;
   v17 = DALoggingwithCategory(0);
   if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    *&buf[4] = v12;
+    *&buf[4] = dCopy;
     *&buf[12] = 2114;
-    *&buf[14] = v13;
+    *&buf[14] = iDCopy;
     _os_log_impl(&dword_2243BD000, v17, OS_LOG_TYPE_INFO, "Requesting download of attachment UUID %@ for accountID %{public}@", buf, 0x16u);
   }
 
-  v18 = [[DADownloadContext alloc] initWithAttachmentUUID:v12 accountID:v13 queue:v14 downloadProgressBlock:v15 completionBlock:v16];
+  v18 = [[DADownloadContext alloc] initWithAttachmentUUID:dCopy accountID:iDCopy queue:queueCopy downloadProgressBlock:blockCopy completionBlock:completionBlockCopy];
   v50[0] = @"kDAEMessageNameKey";
   v50[1] = @"kDAEAttachmentUUIDKey";
   v51[0] = @"kDAEBeginDownloadingAttachment";
-  v51[1] = v12;
+  v51[1] = dCopy;
   v50[2] = @"kDAEAccountIdKey";
-  v51[2] = v13;
+  v51[2] = iDCopy;
   v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v51 forKeys:v50 count:3];
   *buf = 0;
   *&buf[8] = buf;
@@ -3215,11 +3215,11 @@ void __72__DADConnection__sendXPCMessageSynchronous_withParameters_handlerBlock_
   v20 = v18;
   v34 = v20;
   v38 = buf;
-  v21 = v12;
+  v21 = dCopy;
   v35 = v21;
-  v22 = v13;
+  v22 = iDCopy;
   v36 = v22;
-  v37 = self;
+  selfCopy = self;
   v39 = &v40;
   [(DADConnection *)self _sendXPCMessageSynchronous:1 withParameters:v19 handlerBlock:&v30];
   if (*(v41 + 24) == 1 && ExchangeSyncExpressLibraryCore())
@@ -3232,8 +3232,8 @@ void __72__DADConnection__sendXPCMessageSynchronous_withParameters_handlerBlock_
       _os_log_impl(&dword_2243BD000, v23, OS_LOG_TYPE_DEBUG, "Begin download attachment on exchangesyncd for accountID %{public}@", v44, 0xCu);
     }
 
-    v24 = [getESDConnectionClass() sharedConnection];
-    v25 = [v24 beginDownloadingAttachmentWithUUID:v21 accountID:v22 queue:v14 progressBlock:v15 completionBlock:v16];
+    sharedConnection = [getESDConnectionClass() sharedConnection];
+    v25 = [sharedConnection beginDownloadingAttachmentWithUUID:v21 accountID:v22 queue:queueCopy progressBlock:blockCopy completionBlock:completionBlockCopy];
     v26 = *(*&buf[8] + 40);
     *(*&buf[8] + 40) = v25;
   }
@@ -3326,14 +3326,14 @@ void __98__DADConnection_beginDownloadingAttachmentWithUUID_accountID_queue_prog
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_cancelDownloadsWithIDs:(id)a3 error:(id)a4
+- (void)_cancelDownloadsWithIDs:(id)ds error:(id)error
 {
   v21 = *MEMORY[0x277D85DE8];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  obj = a3;
+  obj = ds;
   v5 = [obj countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v5)
   {
@@ -3393,33 +3393,33 @@ uint64_t __47__DADConnection__cancelDownloadsWithIDs_error___block_invoke(void *
   return [v6 removeObjectForKey:v5];
 }
 
-- (void)cancelDownloadingAttachmentWithDownloadID:(id)a3 error:(id)a4
+- (void)cancelDownloadingAttachmentWithDownloadID:(id)d error:(id)error
 {
   v20[3] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  dCopy = d;
   v20[0] = @"kDAECancelDownloadingAttachment";
   v19[0] = @"kDAEMessageNameKey";
   v19[1] = @"kDAEErrorDataKey";
   v7 = MEMORY[0x277CCAAB0];
-  v8 = a4;
-  v9 = [v7 archivedDataWithRootObject:v8];
+  errorCopy = error;
+  v9 = [v7 archivedDataWithRootObject:errorCopy];
   v19[2] = @"kDAEAttachmentDownloadIdKey";
   v20[1] = v9;
-  v20[2] = v6;
+  v20[2] = dCopy;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v20 forKeys:v19 count:3];
 
   v11 = DALoggingwithCategory(0);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v18 = v6;
+    v18 = dCopy;
     _os_log_impl(&dword_2243BD000, v11, OS_LOG_TYPE_INFO, "Cancelling Download of attachment with downloadID %@", buf, 0xCu);
   }
 
   [(DADConnection *)self _sendXPCMessageSynchronous:0 withParameters:v10 handlerBlock:0];
-  v16 = v6;
+  v16 = dCopy;
   v12 = [MEMORY[0x277CBEA60] arrayWithObjects:&v16 count:1];
-  [(DADConnection *)self _cancelDownloadsWithIDs:v12 error:v8];
+  [(DADConnection *)self _cancelDownloadsWithIDs:v12 error:errorCopy];
 
   if (ExchangeSyncExpressLibraryCore())
   {
@@ -3427,49 +3427,49 @@ uint64_t __47__DADConnection__cancelDownloadsWithIDs_error___block_invoke(void *
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      v18 = v6;
+      v18 = dCopy;
       _os_log_impl(&dword_2243BD000, v13, OS_LOG_TYPE_DEBUG, "Canceling downloading attachments on exchangesyncd for downloadIDs %@", buf, 0xCu);
     }
 
-    v14 = [getESDConnectionClass() sharedConnection];
-    [v14 cancelDownloadingAttachmentWithDownloadID:v6 error:0];
+    sharedConnection = [getESDConnectionClass() sharedConnection];
+    [sharedConnection cancelDownloadingAttachmentWithDownloadID:dCopy error:0];
   }
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)respondToSharedCalendarInvite:(int64_t)a3 forCalendarWithID:(id)a4 accountID:(id)a5 queue:(id)a6 completionBlock:(id)a7
+- (void)respondToSharedCalendarInvite:(int64_t)invite forCalendarWithID:(id)d accountID:(id)iD queue:(id)queue completionBlock:(id)block
 {
   v36 = *MEMORY[0x277D85DE8];
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  dCopy = d;
+  iDCopy = iD;
+  queueCopy = queue;
+  blockCopy = block;
   v16 = DALoggingwithCategory(0);
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134218498;
-    v31 = a3;
+    inviteCopy = invite;
     v32 = 2112;
-    v33 = v12;
+    v33 = dCopy;
     v34 = 2114;
-    v35 = v13;
+    v35 = iDCopy;
     _os_log_impl(&dword_2243BD000, v16, OS_LOG_TYPE_DEBUG, "Requesting share response %ld for calendar %@ for accountID %{public}@", buf, 0x20u);
   }
 
-  if (v12 && v13)
+  if (dCopy && iDCopy)
   {
-    v17 = [[DASharedCalendarContext alloc] initWithCalendarID:v12 accountID:v13 queue:v14 completionBlock:v15];
-    [(DASharedCalendarContext *)v17 setShouldSyncCalendar:a3 == 1];
+    v17 = [[DASharedCalendarContext alloc] initWithCalendarID:dCopy accountID:iDCopy queue:queueCopy completionBlock:blockCopy];
+    [(DASharedCalendarContext *)v17 setShouldSyncCalendar:invite == 1];
     v28[0] = @"kDAEMessageNameKey";
     v28[1] = @"kDAEAccountIdKey";
     v29[0] = @"kDAERespondToSharedCalendar";
-    v29[1] = v13;
+    v29[1] = iDCopy;
     v28[2] = @"kDAESharedCalendarReponseTypeKey";
-    v18 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+    v18 = [MEMORY[0x277CCABB0] numberWithInteger:invite];
     v28[3] = @"kDAESharedCalendarResponseCalendarIDKey";
     v29[2] = v18;
-    v29[3] = v12;
+    v29[3] = dCopy;
     v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v29 forKeys:v28 count:4];
 
     v23[0] = MEMORY[0x277D85DD0];
@@ -3477,9 +3477,9 @@ uint64_t __47__DADConnection__cancelDownloadsWithIDs_error___block_invoke(void *
     v23[2] = __97__DADConnection_respondToSharedCalendarInvite_forCalendarWithID_accountID_queue_completionBlock___block_invoke;
     v23[3] = &unk_2785200D8;
     v24 = v17;
-    v25 = v12;
-    v26 = v13;
-    v27 = self;
+    v25 = dCopy;
+    v26 = iDCopy;
+    selfCopy = self;
     v20 = v17;
     [(DADConnection *)self _sendXPCMessageSynchronous:0 withParameters:v19 handlerBlock:v23];
   }
@@ -3494,7 +3494,7 @@ uint64_t __47__DADConnection__cancelDownloadsWithIDs_error___block_invoke(void *
     }
 
     v19 = [MEMORY[0x277CCA9B8] errorWithDomain:@"DAErrorDomain" code:93 userInfo:0];
-    v15[2](v15, v12, v13, v19);
+    blockCopy[2](blockCopy, dCopy, iDCopy, v19);
   }
 
   v22 = *MEMORY[0x277D85DE8];
@@ -3556,42 +3556,42 @@ void __97__DADConnection_respondToSharedCalendarInvite_forCalendarWithID_account
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)reportSharedCalendarInviteAsJunkForCalendarWithID:(id)a3 accountID:(id)a4 queue:(id)a5 completionBlock:(id)a6
+- (void)reportSharedCalendarInviteAsJunkForCalendarWithID:(id)d accountID:(id)iD queue:(id)queue completionBlock:(id)block
 {
   v31 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dCopy = d;
+  iDCopy = iD;
+  queueCopy = queue;
+  blockCopy = block;
   v14 = DALoggingwithCategory(0);
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412546;
-    v28 = v10;
+    v28 = dCopy;
     v29 = 2114;
-    v30 = v11;
+    v30 = iDCopy;
     _os_log_impl(&dword_2243BD000, v14, OS_LOG_TYPE_DEBUG, "Reporting calendar %@ for accountID %{public}@ as junk", buf, 0x16u);
   }
 
-  if (v10 && v11)
+  if (dCopy && iDCopy)
   {
-    v15 = [[DASharedCalendarContext alloc] initWithCalendarID:v10 accountID:v11 queue:v12 completionBlock:v13];
+    v15 = [[DASharedCalendarContext alloc] initWithCalendarID:dCopy accountID:iDCopy queue:queueCopy completionBlock:blockCopy];
     [(DASharedCalendarContext *)v15 setShouldSyncCalendar:0];
     v25[0] = @"kDAEMessageNameKey";
     v25[1] = @"kDAEAccountIdKey";
     v26[0] = @"kDAEReportSharedCalendarAsJunk";
-    v26[1] = v11;
+    v26[1] = iDCopy;
     v25[2] = @"kDAESharedCalendarResponseCalendarIDKey";
-    v26[2] = v10;
+    v26[2] = dCopy;
     v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v26 forKeys:v25 count:3];
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __99__DADConnection_reportSharedCalendarInviteAsJunkForCalendarWithID_accountID_queue_completionBlock___block_invoke;
     v20[3] = &unk_2785200D8;
     v21 = v15;
-    v22 = v10;
-    v23 = v11;
-    v24 = self;
+    v22 = dCopy;
+    v23 = iDCopy;
+    selfCopy = self;
     v17 = v15;
     [(DADConnection *)self _sendXPCMessageSynchronous:0 withParameters:v16 handlerBlock:v20];
   }
@@ -3606,7 +3606,7 @@ void __97__DADConnection_respondToSharedCalendarInvite_forCalendarWithID_account
     }
 
     v16 = [MEMORY[0x277CCA9B8] errorWithDomain:@"DAErrorDomain" code:93 userInfo:0];
-    v13[2](v13, v10, v11, v16);
+    blockCopy[2](blockCopy, dCopy, iDCopy, v16);
   }
 
   v19 = *MEMORY[0x277D85DE8];
@@ -3668,38 +3668,38 @@ void __99__DADConnection_reportSharedCalendarInviteAsJunkForCalendarWithID_accou
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fetchOfficeHoursForAccountWithID:(id)a3 queue:(id)a4 completionBlock:(id)a5
+- (void)fetchOfficeHoursForAccountWithID:(id)d queue:(id)queue completionBlock:(id)block
 {
   v25 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
+  dCopy = d;
+  blockCopy = block;
+  queueCopy = queue;
   v11 = DALoggingwithCategory(0);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138543362;
-    v24 = v8;
+    v24 = dCopy;
     _os_log_impl(&dword_2243BD000, v11, OS_LOG_TYPE_DEBUG, "Fetching office hours for accountID %{public}@", buf, 0xCu);
   }
 
   v12 = objc_opt_new();
-  [v12 setAccountID:v8];
-  [v12 setQueue:v10];
+  [v12 setAccountID:dCopy];
+  [v12 setQueue:queueCopy];
 
-  [v12 setFetchCompletionBlock:v9];
+  [v12 setFetchCompletionBlock:blockCopy];
   v21[0] = @"kDAEMessageNameKey";
   v21[1] = @"kDAEAccountIdKey";
   v22[0] = @"kDAEFetchOfficeHours";
-  v22[1] = v8;
+  v22[1] = dCopy;
   v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v22 forKeys:v21 count:2];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __72__DADConnection_fetchOfficeHoursForAccountWithID_queue_completionBlock___block_invoke;
   v17[3] = &unk_278520100;
   v18 = v12;
-  v19 = v8;
-  v20 = self;
-  v14 = v8;
+  v19 = dCopy;
+  selfCopy = self;
+  v14 = dCopy;
   v15 = v12;
   [(DADConnection *)self _sendXPCMessageSynchronous:0 withParameters:v13 handlerBlock:v17];
 
@@ -3759,45 +3759,45 @@ void __72__DADConnection_fetchOfficeHoursForAccountWithID_queue_completionBlock_
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setOfficeHours:(id)a3 forAccountWithID:(id)a4 queue:(id)a5 completionBlock:(id)a6
+- (void)setOfficeHours:(id)hours forAccountWithID:(id)d queue:(id)queue completionBlock:(id)block
 {
   v29 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  hoursCopy = hours;
+  dCopy = d;
+  queueCopy = queue;
+  blockCopy = block;
   v14 = DALoggingwithCategory(0);
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138543362;
-    v28 = v11;
+    v28 = dCopy;
     _os_log_impl(&dword_2243BD000, v14, OS_LOG_TYPE_DEBUG, "Setting office hours for accountID %{public}@", buf, 0xCu);
   }
 
-  if (!v10)
+  if (!hoursCopy)
   {
     v16 = 0;
 LABEL_8:
     v18 = [MEMORY[0x277CCA9B8] errorWithDomain:@"DAErrorDomain" code:91 userInfo:0];
-    v13[2](v13, v11, v18);
+    blockCopy[2](blockCopy, dCopy, v18);
     goto LABEL_9;
   }
 
-  v15 = [CalDAVOfficeHour dataFromOfficeHours:v10];
+  v15 = [CalDAVOfficeHour dataFromOfficeHours:hoursCopy];
   v16 = v15;
-  if (!v11 || !v15)
+  if (!dCopy || !v15)
   {
     goto LABEL_8;
   }
 
   v17 = objc_opt_new();
-  [v17 setAccountID:v11];
-  [v17 setQueue:v12];
-  [v17 setSetCompletionBlock:v13];
+  [v17 setAccountID:dCopy];
+  [v17 setQueue:queueCopy];
+  [v17 setSetCompletionBlock:blockCopy];
   v25[0] = @"kDAEMessageNameKey";
   v25[1] = @"kDAEAccountIdKey";
   v26[0] = @"kDAESetOfficeHours";
-  v26[1] = v11;
+  v26[1] = dCopy;
   v25[2] = @"kDAEOfficeHoursDataKey";
   v26[2] = v16;
   v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v26 forKeys:v25 count:3];
@@ -3806,8 +3806,8 @@ LABEL_8:
   v21[2] = __71__DADConnection_setOfficeHours_forAccountWithID_queue_completionBlock___block_invoke;
   v21[3] = &unk_278520100;
   v22 = v17;
-  v23 = v11;
-  v24 = self;
+  v23 = dCopy;
+  selfCopy = self;
   v19 = v17;
   [(DADConnection *)self _sendXPCMessageSynchronous:0 withParameters:v18 handlerBlock:v21];
 
@@ -3868,10 +3868,10 @@ void __71__DADConnection_setOfficeHours_forAccountWithID_queue_completionBlock__
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)reportSubscriptionCalendarAsJunk:(id)a3
+- (void)reportSubscriptionCalendarAsJunk:(id)junk
 {
   v10[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  junkCopy = junk;
   v5 = DALoggingwithCategory(0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -3882,19 +3882,19 @@ void __71__DADConnection_setOfficeHours_forAccountWithID_queue_completionBlock__
   v9[0] = @"kDAEMessageNameKey";
   v9[1] = @"kDAEURLStringKey";
   v10[0] = @"kDAEReportSubscribedCalendarAsJunk";
-  v10[1] = v4;
+  v10[1] = junkCopy;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v10 forKeys:v9 count:2];
 
   [(DADConnection *)self _sendXPCMessageSynchronous:0 withParameters:v6 handlerBlock:&__block_literal_global_240];
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)checkSubscriptionCalendarIsJunk:(id)a3 queue:(id)a4 completionBlock:(id)a5
+- (void)checkSubscriptionCalendarIsJunk:(id)junk queue:(id)queue completionBlock:(id)block
 {
   v23[2] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  junkCopy = junk;
+  queueCopy = queue;
+  blockCopy = block;
   v11 = DALoggingwithCategory(0);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
@@ -3902,22 +3902,22 @@ void __71__DADConnection_setOfficeHours_forAccountWithID_queue_completionBlock__
     _os_log_impl(&dword_2243BD000, v11, OS_LOG_TYPE_DEBUG, "Checking whether a subscription calendar is junk", buf, 2u);
   }
 
-  if (v8)
+  if (junkCopy)
   {
-    v12 = [[DACheckSubscribedCalendarIsJunkContext alloc] initWithURLString:v8 completionBlock:v10];
-    [(DACheckSubscribedCalendarIsJunkContext *)v12 setQueue:v9];
+    v12 = [[DACheckSubscribedCalendarIsJunkContext alloc] initWithURLString:junkCopy completionBlock:blockCopy];
+    [(DACheckSubscribedCalendarIsJunkContext *)v12 setQueue:queueCopy];
     v22[0] = @"kDAEMessageNameKey";
     v22[1] = @"kDAEURLStringKey";
     v23[0] = @"kDAECheckSubscribedCalendarIsJunk";
-    v23[1] = v8;
+    v23[1] = junkCopy;
     v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v23 forKeys:v22 count:2];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __71__DADConnection_checkSubscriptionCalendarIsJunk_queue_completionBlock___block_invoke;
     v17[3] = &unk_278520100;
     v18 = v12;
-    v19 = v8;
-    v20 = self;
+    v19 = junkCopy;
+    selfCopy = self;
     v14 = v12;
     [(DADConnection *)self _sendXPCMessageSynchronous:0 withParameters:v13 handlerBlock:v17];
   }
@@ -3932,7 +3932,7 @@ void __71__DADConnection_setOfficeHours_forAccountWithID_queue_completionBlock__
     }
 
     v13 = [MEMORY[0x277CCA9B8] errorWithDomain:@"DAErrorDomain" code:93 userInfo:0];
-    v10[2](v10, &stru_2837C8288, 0, v13);
+    blockCopy[2](blockCopy, &stru_2837C8288, 0, v13);
   }
 
   v16 = *MEMORY[0x277D85DE8];
@@ -3991,12 +3991,12 @@ void __71__DADConnection_checkSubscriptionCalendarIsJunk_queue_completionBlock__
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fetchAvailableHolidayCalendarsWithResultsBlock:(id)a3 completionBlock:(id)a4 queue:(id)a5
+- (void)fetchAvailableHolidayCalendarsWithResultsBlock:(id)block completionBlock:(id)completionBlock queue:(id)queue
 {
   v22[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  blockCopy = block;
+  completionBlockCopy = completionBlock;
+  queueCopy = queue;
   v11 = DALoggingwithCategory(0);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
@@ -4004,12 +4004,12 @@ void __71__DADConnection_checkSubscriptionCalendarIsJunk_queue_completionBlock__
     _os_log_impl(&dword_2243BD000, v11, OS_LOG_TYPE_DEBUG, "Fetching list of available holiday calendars", buf, 2u);
   }
 
-  if (v9)
+  if (completionBlockCopy)
   {
-    if (v8)
+    if (blockCopy)
     {
-      v12 = [[DAHolidayCalendarsFetchContext alloc] initWithResultsBlock:v8 completionBlock:v9];
-      [(DAHolidayCalendarsFetchContext *)v12 setQueue:v10];
+      v12 = [[DAHolidayCalendarsFetchContext alloc] initWithResultsBlock:blockCopy completionBlock:completionBlockCopy];
+      [(DAHolidayCalendarsFetchContext *)v12 setQueue:queueCopy];
       v21 = @"kDAEMessageNameKey";
       v22[0] = @"kDAEFetchHolidayCalendars";
       v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v22 forKeys:&v21 count:1];
@@ -4018,7 +4018,7 @@ void __71__DADConnection_checkSubscriptionCalendarIsJunk_queue_completionBlock__
       v17[2] = __86__DADConnection_fetchAvailableHolidayCalendarsWithResultsBlock_completionBlock_queue___block_invoke;
       v17[3] = &unk_278520148;
       v18 = v12;
-      v19 = self;
+      selfCopy = self;
       v14 = v12;
       [(DADConnection *)self _sendXPCMessageSynchronous:0 withParameters:v13 handlerBlock:v17];
     }
@@ -4033,7 +4033,7 @@ void __71__DADConnection_checkSubscriptionCalendarIsJunk_queue_completionBlock__
       }
 
       v13 = [MEMORY[0x277CCA9B8] errorWithDomain:@"DAErrorDomain" code:93 userInfo:0];
-      v9[2](v9, v13);
+      completionBlockCopy[2](completionBlockCopy, v13);
     }
   }
 
@@ -4101,23 +4101,23 @@ void __86__DADConnection_fetchAvailableHolidayCalendarsWithResultsBlock_completi
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)processFolderChange:(id)a3 forAccountWithID:(id)a4
+- (BOOL)processFolderChange:(id)change forAccountWithID:(id)d
 {
   v14 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  changeCopy = change;
+  dCopy = d;
   if (ExchangeSyncExpressLibraryCore())
   {
     v7 = DALoggingwithCategory(0);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
       v12 = 138543362;
-      v13 = v6;
+      v13 = dCopy;
       _os_log_impl(&dword_2243BD000, v7, OS_LOG_TYPE_DEBUG, "Process folder change on exchangesyncd for accountID %{public}@", &v12, 0xCu);
     }
 
-    v8 = [getESDConnectionClass() sharedConnection];
-    v9 = [v8 processFolderChange:v5 forAccountWithID:v6];
+    sharedConnection = [getESDConnectionClass() sharedConnection];
+    v9 = [sharedConnection processFolderChange:changeCopy forAccountWithID:dCopy];
   }
 
   else
@@ -4143,7 +4143,7 @@ void __86__DADConnection_fetchAvailableHolidayCalendarsWithResultsBlock_completi
   v3 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v23 forKeys:&v22 count:1];
   v4 = _CFXPCCreateXPCObjectFromCFObject();
   v5 = dispatch_semaphore_create(0);
-  v6 = [(DADConnection *)self _connection];
+  _connection = [(DADConnection *)self _connection];
   v7 = dispatch_get_global_queue(0, 0);
   handler[0] = MEMORY[0x277D85DD0];
   handler[1] = 3221225472;
@@ -4152,7 +4152,7 @@ void __86__DADConnection_fetchAvailableHolidayCalendarsWithResultsBlock_completi
   v15 = &v16;
   v8 = v5;
   v14 = v8;
-  xpc_connection_send_message_with_reply(v6, v4, v7, handler);
+  xpc_connection_send_message_with_reply(_connection, v4, v7, handler);
 
   v9 = dispatch_time(0, 5000000000);
   dispatch_semaphore_wait(v8, v9);
@@ -4214,22 +4214,22 @@ void __30__DADConnection_statusReports__block_invoke(uint64_t a1, void *a2)
     v10[0] = @"kDAERegisterForInterrogation";
     v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v10 forKeys:&v9 count:1];
     v5 = _CFXPCCreateXPCObjectFromCFObject();
-    v6 = [(DADConnection *)self _connection];
-    xpc_connection_send_message(v6, v5);
+    _connection = [(DADConnection *)self _connection];
+    xpc_connection_send_message(_connection, v5);
   }
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)registerForInterrogationWithBlock:(id)a3
+- (BOOL)registerForInterrogationWithBlock:(id)block
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_statusReportBlock != v4)
+  blockCopy = block;
+  v5 = blockCopy;
+  if (self->_statusReportBlock != blockCopy)
   {
-    if (v4)
+    if (blockCopy)
     {
-      v6 = [v4 copy];
+      v6 = [blockCopy copy];
     }
 
     else
@@ -4256,8 +4256,8 @@ void __30__DADConnection_statusReports__block_invoke(uint64_t a1, void *a2)
       _os_log_impl(&dword_2243BD000, v2, OS_LOG_TYPE_DEBUG, "Fill out current EAS timezone info on exchangesyncd", v4, 2u);
     }
 
-    v3 = [getESDConnectionClass() sharedConnection];
-    [v3 fillOutCurrentEASTimeZoneInfo];
+    sharedConnection = [getESDConnectionClass() sharedConnection];
+    [sharedConnection fillOutCurrentEASTimeZoneInfo];
   }
 }
 
@@ -4272,16 +4272,16 @@ void __30__DADConnection_statusReports__block_invoke(uint64_t a1, void *a2)
       _os_log_impl(&dword_2243BD000, v2, OS_LOG_TYPE_DEBUG, "Get active sync device identifier on exchangesyncd", v6, 2u);
     }
 
-    v3 = [getESDConnectionClass() sharedConnection];
-    v4 = [v3 activeSyncDeviceIdentifier];
+    sharedConnection = [getESDConnectionClass() sharedConnection];
+    activeSyncDeviceIdentifier = [sharedConnection activeSyncDeviceIdentifier];
   }
 
   else
   {
-    v4 = 0;
+    activeSyncDeviceIdentifier = 0;
   }
 
-  return v4;
+  return activeSyncDeviceIdentifier;
 }
 
 uint64_t __71__DADConnection__performOofSettingsRequest_forAccountWithID_forUpdate___block_invoke(uint64_t a1)
@@ -4316,23 +4316,23 @@ uint64_t __71__DADConnection__performOofSettingsRequest_forAccountWithID_forUpda
   return result;
 }
 
-- (BOOL)retrieveOofSettingsRequest:(id)a3 forAccountWithID:(id)a4
+- (BOOL)retrieveOofSettingsRequest:(id)request forAccountWithID:(id)d
 {
   v14 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  requestCopy = request;
+  dCopy = d;
   if (ExchangeSyncExpressLibraryCore())
   {
     v7 = DALoggingwithCategory(0);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
       v12 = 138543362;
-      v13 = v6;
+      v13 = dCopy;
       _os_log_impl(&dword_2243BD000, v7, OS_LOG_TYPE_DEBUG, "Retrieve OOF settings on exchangesyncd for accountID %{public}@", &v12, 0xCu);
     }
 
-    v8 = [getESDConnectionClass() sharedConnection];
-    v9 = [v8 retrieveOofSettingsRequest:v5 forAccountWithID:v6];
+    sharedConnection = [getESDConnectionClass() sharedConnection];
+    v9 = [sharedConnection retrieveOofSettingsRequest:requestCopy forAccountWithID:dCopy];
   }
 
   else
@@ -4344,23 +4344,23 @@ uint64_t __71__DADConnection__performOofSettingsRequest_forAccountWithID_forUpda
   return v9;
 }
 
-- (BOOL)updateOofSettingsRequest:(id)a3 forAccountWithID:(id)a4
+- (BOOL)updateOofSettingsRequest:(id)request forAccountWithID:(id)d
 {
   v14 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  requestCopy = request;
+  dCopy = d;
   if (ExchangeSyncExpressLibraryCore())
   {
     v7 = DALoggingwithCategory(0);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
       v12 = 138543362;
-      v13 = v6;
+      v13 = dCopy;
       _os_log_impl(&dword_2243BD000, v7, OS_LOG_TYPE_DEBUG, "Update OOF settings on exchangesyncd for accountID %{public}@", &v12, 0xCu);
     }
 
-    v8 = [getESDConnectionClass() sharedConnection];
-    v9 = [v8 updateOofSettingsRequest:v5 forAccountWithID:v6];
+    sharedConnection = [getESDConnectionClass() sharedConnection];
+    v9 = [sharedConnection updateOofSettingsRequest:requestCopy forAccountWithID:dCopy];
   }
 
   else
@@ -4372,38 +4372,38 @@ uint64_t __71__DADConnection__performOofSettingsRequest_forAccountWithID_forUpda
   return v9;
 }
 
-- (void)isOofSettingsSupportedForAccountWithID:(id)a3 completionBlock:(id)a4
+- (void)isOofSettingsSupportedForAccountWithID:(id)d completionBlock:(id)block
 {
   v12 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  dCopy = d;
+  blockCopy = block;
   if (ExchangeSyncExpressLibraryCore())
   {
     v7 = DALoggingwithCategory(0);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
       v10 = 138543362;
-      v11 = v5;
+      v11 = dCopy;
       _os_log_impl(&dword_2243BD000, v7, OS_LOG_TYPE_DEBUG, "Checking OOF supported on exchangesyncd for accountID %{public}@", &v10, 0xCu);
     }
 
-    v8 = [getESDConnectionClass() sharedConnection];
-    [v8 isOofSettingsSupportedForAccountWithID:v5 completionBlock:v6];
+    sharedConnection = [getESDConnectionClass() sharedConnection];
+    [sharedConnection isOofSettingsSupportedForAccountWithID:dCopy completionBlock:blockCopy];
   }
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (id)requestCalendarAvailabilityWithAccountID:(id)a3 startDate:(id)a4 endDate:(id)a5 ignoredEventID:(id)a6 addresses:(id)a7 resultsBlock:(id)a8 completionBlock:(id)a9
+- (id)requestCalendarAvailabilityWithAccountID:(id)d startDate:(id)date endDate:(id)endDate ignoredEventID:(id)iD addresses:(id)addresses resultsBlock:(id)block completionBlock:(id)completionBlock
 {
   v77 = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v50 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = a9;
+  dCopy = d;
+  dateCopy = date;
+  endDateCopy = endDate;
+  iDCopy = iD;
+  addressesCopy = addresses;
+  blockCopy = block;
+  completionBlockCopy = completionBlock;
   v61 = 0;
   v62 = &v61;
   v63 = 0x3032000000;
@@ -4414,7 +4414,7 @@ uint64_t __71__DADConnection__performOofSettingsRequest_forAccountWithID_forUpda
   v58 = &v57;
   v59 = 0x2020000000;
   v60 = 0;
-  if (!v15)
+  if (!dCopy)
   {
     v21 = DALoggingwithCategory(0);
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
@@ -4433,15 +4433,15 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if (!v16 || !v17 || [v16 compare:v17] == 1)
+  if (!dateCopy || !endDateCopy || [dateCopy compare:endDateCopy] == 1)
   {
     v21 = DALoggingwithCategory(0);
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v68 = v16;
+      v68 = dateCopy;
       v69 = 2112;
-      v70 = v17;
+      v70 = endDateCopy;
       v22 = "Invalid 'startDate' [%@] and/or 'endDate' [%@] provided.";
       v23 = v21;
       v24 = 22;
@@ -4453,39 +4453,39 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (v18 && [v18 count])
+  if (addressesCopy && [addressesCopy count])
   {
     v39 = DALoggingwithCategory(0);
     if (os_log_type_enabled(v39, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138544386;
-      v68 = v15;
+      v68 = dCopy;
       v69 = 2112;
-      v70 = v16;
+      v70 = dateCopy;
       v71 = 2112;
-      v72 = v17;
+      v72 = endDateCopy;
       v73 = 2112;
-      v74 = v50;
+      v74 = iDCopy;
       v75 = 2112;
-      v76 = v18;
+      v76 = addressesCopy;
       _os_log_impl(&dword_2243BD000, v39, OS_LOG_TYPE_DEBUG, "Preparing calendar availability request.  accountID: [%{public}@] startDate: [%@] endDate: [%@] ignoredEventID: [%@] addresses: [%@]", buf, 0x34u);
     }
 
     v40 = objc_alloc_init(MEMORY[0x277CBEB38]);
     [v40 setObject:@"kDAERequestCalendarAvailability" forKey:@"kDAEMessageNameKey"];
-    [v40 setObject:v15 forKey:@"kDAEAccountIdKey"];
-    [v40 setObject:v16 forKey:@"kDAEStartDateKey"];
-    [v40 setObject:v17 forKey:@"kDAEEndDateKey"];
-    [v40 setObject:v18 forKey:@"kDAEAddressesKey"];
-    if (v50)
+    [v40 setObject:dCopy forKey:@"kDAEAccountIdKey"];
+    [v40 setObject:dateCopy forKey:@"kDAEStartDateKey"];
+    [v40 setObject:endDateCopy forKey:@"kDAEEndDateKey"];
+    [v40 setObject:addressesCopy forKey:@"kDAEAddressesKey"];
+    if (iDCopy)
     {
-      [v40 setObject:v50 forKey:@"kDAEIgnoredEventIDKey"];
+      [v40 setObject:iDCopy forKey:@"kDAEIgnoredEventIDKey"];
     }
 
-    v48 = v20;
+    v48 = completionBlockCopy;
     v52 = v48;
     v53[1] = &v61;
-    v41 = v19;
+    v41 = blockCopy;
     v53[0] = v41;
     v51 = v40;
     v53[2] = &v57;
@@ -4497,22 +4497,22 @@ LABEL_9:
       if (os_log_type_enabled(v42, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138543362;
-        v68 = v15;
+        v68 = dCopy;
         _os_log_impl(&dword_2243BD000, v42, OS_LOG_TYPE_DEBUG, "Retry request calendar availability on exchangesyncd for accountID %{public}@", buf, 0xCu);
       }
 
-      v43 = [getESDConnectionClass() sharedConnection];
-      v44 = [v43 requestCalendarAvailabilityWithAccountID:v15 startDate:v16 endDate:v17 ignoredEventID:v50 addresses:v18 resultsBlock:v41 completionBlock:v48];
+      sharedConnection = [getESDConnectionClass() sharedConnection];
+      v44 = [sharedConnection requestCalendarAvailabilityWithAccountID:dCopy startDate:dateCopy endDate:endDateCopy ignoredEventID:iDCopy addresses:addressesCopy resultsBlock:v41 completionBlock:v48];
       v45 = v62[5];
       v62[5] = v44;
     }
 
-    v33 = v20;
-    v47 = v17;
-    *type = v16;
-    v28 = v15;
-    v29 = v18;
-    v30 = v19;
+    v33 = completionBlockCopy;
+    v47 = endDateCopy;
+    *type = dateCopy;
+    v28 = dCopy;
+    v29 = addressesCopy;
+    v30 = blockCopy;
     v25 = 0;
     v32 = &v52;
     v34 = v53;
@@ -4535,14 +4535,14 @@ LABEL_11:
     _os_log_impl(&dword_2243BD000, v26, OS_LOG_TYPE_DEFAULT, "Will not issue calendar availability request.", buf, 2u);
   }
 
-  if (v20)
+  if (completionBlockCopy)
   {
-    v27 = v20;
-    v47 = v17;
-    *type = v16;
-    v28 = v15;
-    v29 = v18;
-    v30 = v19;
+    v27 = completionBlockCopy;
+    v47 = endDateCopy;
+    *type = dateCopy;
+    v28 = dCopy;
+    v29 = addressesCopy;
+    v30 = blockCopy;
     v31 = dispatch_get_global_queue(0, 0);
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
@@ -4558,12 +4558,12 @@ LABEL_11:
     dispatch_async(v31, block);
 LABEL_15:
 
-    v18 = v29;
-    v15 = v28;
-    v17 = v47;
-    v16 = *type;
-    v19 = v30;
-    v20 = v33;
+    addressesCopy = v29;
+    dCopy = v28;
+    endDateCopy = v47;
+    dateCopy = *type;
+    blockCopy = v30;
+    completionBlockCopy = v33;
   }
 
   v36 = v62[5];
@@ -4643,17 +4643,17 @@ void __130__DADConnection_requestCalendarAvailabilityWithAccountID_startDate_end
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)cancelCalendarAvailabilityRequestWithID:(id)a3
+- (void)cancelCalendarAvailabilityRequestWithID:(id)d
 {
   v24[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  dCopy = d;
+  v5 = dCopy;
+  if (dCopy)
   {
     v23[0] = @"kDAEMessageNameKey";
     v23[1] = @"kDAECalendarAvailabilityRequestIDKey";
     v24[0] = @"kDAECancelCalendarAvailabilityRequest";
-    v24[1] = v4;
+    v24[1] = dCopy;
     v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v24 forKeys:v23 count:2];
     [(DADConnection *)self _sendXPCMessageSynchronous:0 withParameters:v6 handlerBlock:0];
     *buf = 0;
@@ -4674,8 +4674,8 @@ void __130__DADConnection_requestCalendarAvailabilityWithAccountID_startDate_end
     dispatch_sync(muckingWithInFlightCollections, block);
     if (*(v16 + 5))
     {
-      v9 = [MEMORY[0x277CCA9B8] errorWithDomain:@"DAErrorDomain" code:-1 userInfo:0];
-      [*(v16 + 5) finishedWithError:v9];
+      sharedConnection = [MEMORY[0x277CCA9B8] errorWithDomain:@"DAErrorDomain" code:-1 userInfo:0];
+      [*(v16 + 5) finishedWithError:sharedConnection];
     }
 
     else
@@ -4688,8 +4688,8 @@ void __130__DADConnection_requestCalendarAvailabilityWithAccountID_startDate_end
         _os_log_impl(&dword_2243BD000, v10, OS_LOG_TYPE_DEBUG, "Retry canceling calendar availability request on exchangesyncd for requestID %@", v21, 0xCu);
       }
 
-      v9 = [getESDConnectionClass() sharedConnection];
-      [v9 cancelCalendarAvailabilityRequestWithID:v8];
+      sharedConnection = [getESDConnectionClass() sharedConnection];
+      [sharedConnection cancelCalendarAvailabilityRequestWithID:v8];
     }
 
     _Block_object_dispose(buf, 8);
@@ -4721,10 +4721,10 @@ uint64_t __57__DADConnection_cancelCalendarAvailabilityRequestWithID___block_inv
   return [v6 removeObjectForKey:v5];
 }
 
-- (void)_calendarAvailabilityRequestReturnedResults:(id)a3
+- (void)_calendarAvailabilityRequestReturnedResults:(id)results
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  resultsCopy = results;
   v5 = _CFXPCCreateCFObjectFromXPCObject();
   v6 = [v5 objectForKeyedSubscript:@"kDAECalendarAvailabilityRequestIDKey"];
   v7 = [v5 objectForKeyedSubscript:@"kDAECalendarAvailabilityResultsKey"];
@@ -4781,9 +4781,9 @@ uint64_t __61__DADConnection__calendarAvailabilityRequestReturnedResults___block
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)_calendarAvailabilityRequestFinished:(id)a3
+- (void)_calendarAvailabilityRequestFinished:(id)finished
 {
-  v4 = a3;
+  finishedCopy = finished;
   v5 = _CFXPCCreateCFObjectFromXPCObject();
   v6 = [v5 objectForKeyedSubscript:@"kDAECalendarAvailabilityRequestIDKey"];
   v7 = [v5 objectForKeyedSubscript:@"kDAEErrorDataKey"];
@@ -4822,12 +4822,12 @@ uint64_t __54__DADConnection__calendarAvailabilityRequestFinished___block_invoke
   return [v6 removeObjectForKey:v5];
 }
 
-- (id)downloadSubscribedCalendarWithURL:(id)a3 queue:(id)a4 delegate:(id)a5
+- (id)downloadSubscribedCalendarWithURL:(id)l queue:(id)queue delegate:(id)delegate
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v10)
+  lCopy = l;
+  queueCopy = queue;
+  delegateCopy = delegate;
+  if (!delegateCopy)
   {
     v11 = DALoggingwithCategory(0);
     if (!os_log_type_enabled(&v11->super, OS_LOG_TYPE_ERROR))
@@ -4842,7 +4842,7 @@ LABEL_9:
     goto LABEL_13;
   }
 
-  if (!v9)
+  if (!queueCopy)
   {
     v11 = DALoggingwithCategory(0);
     if (!os_log_type_enabled(&v11->super, OS_LOG_TYPE_ERROR))
@@ -4856,13 +4856,13 @@ LABEL_9:
   }
 
   v11 = objc_alloc_init(DAESubscriptionCalendarDownloadContext);
-  [(DAESubscriptionCalendarDownloadContext *)v11 setQueue:v9];
-  [(DAESubscriptionCalendarDownloadContext *)v11 setDelegate:v10];
-  if (v8)
+  [(DAESubscriptionCalendarDownloadContext *)v11 setQueue:queueCopy];
+  [(DAESubscriptionCalendarDownloadContext *)v11 setDelegate:delegateCopy];
+  if (lCopy)
   {
     v12 = objc_alloc_init(MEMORY[0x277CBEB38]);
     [v12 setObject:@"kDAEDownloadSubscribedCalendar" forKey:@"kDAEMessageNameKey"];
-    [v12 setObject:v8 forKey:@"kDAESubCalDownloadURLKey"];
+    [v12 setObject:lCopy forKey:@"kDAESubCalDownloadURLKey"];
     *buf = 0;
     v24 = buf;
     v25 = 0x3032000000;
@@ -4876,7 +4876,7 @@ LABEL_9:
     v11 = v11;
     v22 = buf;
     v19 = v11;
-    v20 = self;
+    selfCopy = self;
     v13 = v12;
     v21 = v13;
     [(DADConnection *)self _sendXPCMessageSynchronous:1 withParameters:v13 handlerBlock:v18];
@@ -4961,17 +4961,17 @@ void __66__DADConnection_downloadSubscribedCalendarWithURL_queue_delegate___bloc
   }
 }
 
-- (void)cancelDownloadingSubscriptionCalendarWithDownloadID:(id)a3
+- (void)cancelDownloadingSubscriptionCalendarWithDownloadID:(id)d
 {
   v24[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  dCopy = d;
+  v5 = dCopy;
+  if (dCopy)
   {
     v23[0] = @"kDAEMessageNameKey";
     v23[1] = @"kDAESubCalDownloadRequestIDKey";
     v24[0] = @"kDAECancelDownloadSubscribedCalendar";
-    v24[1] = v4;
+    v24[1] = dCopy;
     v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v24 forKeys:v23 count:2];
     [(DADConnection *)self _sendXPCMessageSynchronous:0 withParameters:v6 handlerBlock:0];
     *buf = 0;
@@ -5031,16 +5031,16 @@ uint64_t __69__DADConnection_cancelDownloadingSubscriptionCalendarWithDownloadID
   return [v6 removeObjectForKey:v5];
 }
 
-- (void)_downloadSubscribedCalendarProgress:(id)a3
+- (void)_downloadSubscribedCalendarProgress:(id)progress
 {
-  v4 = a3;
+  progressCopy = progress;
   v5 = _CFXPCCreateCFObjectFromXPCObject();
   v6 = [v5 objectForKeyedSubscript:@"kDAESubCalDownloadRequestIDKey"];
   v7 = [v5 objectForKeyedSubscript:@"kDAEDownloadedBytesKey"];
-  v8 = [v7 longLongValue];
+  longLongValue = [v7 longLongValue];
 
   v9 = [v5 objectForKeyedSubscript:@"kDAETotalBytesKey"];
-  v10 = [v9 longLongValue];
+  longLongValue2 = [v9 longLongValue];
 
   v18 = 0;
   v19 = &v18;
@@ -5063,8 +5063,8 @@ uint64_t __69__DADConnection_cancelDownloadingSubscriptionCalendarWithDownloadID
   v14[1] = 3221225472;
   v14[2] = __53__DADConnection__downloadSubscribedCalendarProgress___block_invoke_2;
   v14[3] = &__block_descriptor_48_e49_v16__0___DAESubscribedCalendarDownloadDelegate__8l;
-  v14[4] = v8;
-  v14[5] = v10;
+  v14[4] = longLongValue;
+  v14[5] = longLongValue2;
   [v13 callOutToDelegate:v14];
 
   _Block_object_dispose(&v18, 8);
@@ -5080,10 +5080,10 @@ uint64_t __53__DADConnection__downloadSubscribedCalendarProgress___block_invoke(
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)_downloadSubscribedCalendarFinished:(id)a3
+- (void)_downloadSubscribedCalendarFinished:(id)finished
 {
   v34 = *MEMORY[0x277D85DE8];
-  v19 = a3;
+  finishedCopy = finished;
   v4 = _CFXPCCreateCFObjectFromXPCObject();
   v20 = [v4 objectForKeyedSubscript:@"kDAESubCalDownloadRequestIDKey"];
   v5 = [v4 objectForKeyedSubscript:@"kDAESubCalDownloadSummaryDataKey"];
@@ -5194,9 +5194,9 @@ uint64_t __53__DADConnection__downloadSubscribedCalendarFinished___block_invoke_
   }
 }
 
-- (void)_downloadSubscribedCalendarRequiresPassword:(id)a3
+- (void)_downloadSubscribedCalendarRequiresPassword:(id)password
 {
-  v4 = a3;
+  passwordCopy = password;
   v5 = _CFXPCCreateCFObjectFromXPCObject();
   v6 = [v5 objectForKeyedSubscript:@"kDAESubCalDownloadRequestIDKey"];
   v7 = [v5 objectForKeyedSubscript:@"kDAESubCalDownloadURLKey"];
@@ -5225,7 +5225,7 @@ uint64_t __53__DADConnection__downloadSubscribedCalendarFinished___block_invoke_
   v14 = v11;
   v12 = v9;
   v15 = v12;
-  v16 = self;
+  selfCopy = self;
   [v10 callOutToDelegate:v13];
 
   _Block_object_dispose(&v20, 8);
@@ -5288,23 +5288,23 @@ void __61__DADConnection__downloadSubscribedCalendarRequiresPassword___block_inv
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)validateCandidateSubscriptionURLWithICloud:(id)a3 queue:(id)a4 completionBlock:(id)a5
+- (void)validateCandidateSubscriptionURLWithICloud:(id)cloud queue:(id)queue completionBlock:(id)block
 {
-  v6 = a5;
+  blockCopy = block;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __82__DADConnection_validateCandidateSubscriptionURLWithICloud_queue_completionBlock___block_invoke;
   block[3] = &unk_2785202F0;
-  v9 = v6;
-  v7 = v6;
-  dispatch_async(a4, block);
+  v9 = blockCopy;
+  v7 = blockCopy;
+  dispatch_async(queue, block);
 }
 
-- (id)requestGrantedDelegatesListForAccountID:(id)a3 resultsBlock:(id)a4
+- (id)requestGrantedDelegatesListForAccountID:(id)d resultsBlock:(id)block
 {
   v36 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  blockCopy = block;
   v26 = 0;
   v27 = &v26;
   v28 = 0x3032000000;
@@ -5315,26 +5315,26 @@ void __61__DADConnection__downloadSubscribedCalendarRequiresPassword___block_inv
   v23 = &v22;
   v24 = 0x2020000000;
   v25 = 0;
-  if (v6)
+  if (dCopy)
   {
     v8 = DALoggingwithCategory(0);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138543362;
-      v35 = v6;
+      v35 = dCopy;
       _os_log_impl(&dword_2243BD000, v8, OS_LOG_TYPE_DEBUG, "Preparing granted delegates list request for accountID: [%{public}@]", buf, 0xCu);
     }
 
     v32[0] = @"kDAEMessageNameKey";
     v32[1] = @"kDAEAccountIdKey";
     v33[0] = @"kDAERequestGrantedDelegatesList";
-    v33[1] = v6;
+    v33[1] = dCopy;
     v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v33 forKeys:v32 count:2];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __70__DADConnection_requestGrantedDelegatesListForAccountID_resultsBlock___block_invoke;
     v17[3] = &unk_278520318;
-    v10 = v7;
+    v10 = blockCopy;
     v19 = v10;
     v20 = &v26;
     v17[4] = self;
@@ -5359,10 +5359,10 @@ void __61__DADConnection__downloadSubscribedCalendarRequiresPassword___block_inv
     _os_log_impl(&dword_2243BD000, v13, OS_LOG_TYPE_DEFAULT, "Invalid 'accountID' provided: [%{public}@].", buf, 0xCu);
   }
 
-  if (v7)
+  if (blockCopy)
   {
     v11 = [MEMORY[0x277CCA9B8] errorWithDomain:@"DAErrorDomain" code:93 userInfo:0];
-    (*(v7 + 2))(v7, 0, v11);
+    (*(blockCopy + 2))(blockCopy, 0, v11);
 LABEL_11:
   }
 
@@ -5442,17 +5442,17 @@ void __70__DADConnection_requestGrantedDelegatesListForAccountID_resultsBlock___
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)cancelGrantedDelegatesListRequestWithID:(id)a3
+- (void)cancelGrantedDelegatesListRequestWithID:(id)d
 {
   v20[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  dCopy = d;
+  v5 = dCopy;
+  if (dCopy)
   {
     v19[0] = @"kDAEMessageNameKey";
     v19[1] = @"kDAEGrantedDelegatesListRequestIDKey";
     v20[0] = @"kDAECancelGrantedDelegatesListRequest";
-    v20[1] = v4;
+    v20[1] = dCopy;
     v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v20 forKeys:v19 count:2];
     [(DADConnection *)self _sendXPCMessageSynchronous:0 withParameters:v6 handlerBlock:0];
     *buf = 0;
@@ -5505,10 +5505,10 @@ uint64_t __57__DADConnection_cancelGrantedDelegatesListRequestWithID___block_inv
   return [v6 removeObjectForKey:v5];
 }
 
-- (void)_grantedDelegatesListRequestFinished:(id)a3
+- (void)_grantedDelegatesListRequestFinished:(id)finished
 {
   v29 = *MEMORY[0x277D85DE8];
-  v19 = a3;
+  finishedCopy = finished;
   v4 = _CFXPCCreateCFObjectFromXPCObject();
   v5 = [v4 objectForKeyedSubscript:@"kDAEGrantedDelegatesListRequestIDKey"];
   v6 = [v4 objectForKeyedSubscript:@"kDAEErrorDataKey"];
@@ -5568,12 +5568,12 @@ uint64_t __54__DADConnection__grantedDelegatesListRequestFinished___block_invoke
   return [v6 removeObjectForKey:v5];
 }
 
-- (id)updateGrantedDelegateForAccountID:(id)a3 grantedDelegate:(id)a4 action:(int64_t)a5 resultsBlock:(id)a6
+- (id)updateGrantedDelegateForAccountID:(id)d grantedDelegate:(id)delegate action:(int64_t)action resultsBlock:(id)block
 {
   v46 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
+  dCopy = d;
+  delegateCopy = delegate;
+  blockCopy = block;
   v32 = 0;
   v33 = &v32;
   v34 = 0x3032000000;
@@ -5584,31 +5584,31 @@ uint64_t __54__DADConnection__grantedDelegatesListRequestFinished___block_invoke
   v30[1] = v30;
   v30[2] = 0x2020000000;
   v31 = 0;
-  if (v9)
+  if (dCopy)
   {
     v12 = DALoggingwithCategory(0);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
-      v13 = [v10 uri];
-      v14 = [v10 permission];
+      v13 = [delegateCopy uri];
+      permission = [delegateCopy permission];
       *buf = 138543874;
-      v41 = v9;
+      v41 = dCopy;
       v42 = 2112;
       v43 = v13;
       v44 = 2048;
-      v45 = v14;
+      v45 = permission;
       _os_log_impl(&dword_2243BD000, v12, OS_LOG_TYPE_DEBUG, "Preparing update granted delegate permission for accountID: [%{public}@], delegate uri: %@, permission: %ld", buf, 0x20u);
     }
 
     v29 = 0;
-    v15 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v10 requiringSecureCoding:1 error:&v29];
+    v15 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:delegateCopy requiringSecureCoding:1 error:&v29];
     v16 = v29;
     if (v16)
     {
       v17 = DALoggingwithCategory(0);
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
-        v18 = [v10 uri];
+        v18 = [delegateCopy uri];
         *buf = 138412290;
         v41 = v18;
         _os_log_impl(&dword_2243BD000, v17, OS_LOG_TYPE_DEFAULT, "Unable to encode granted delegate with URI: %@", buf, 0xCu);
@@ -5620,7 +5620,7 @@ uint64_t __54__DADConnection__grantedDelegatesListRequestFinished___block_invoke
       v38[0] = @"kDAEMessageNameKey";
       v38[1] = @"kDAEAccountIdKey";
       v39[0] = @"kDAEUpdateGrantedDelegatePermissionRequest";
-      v39[1] = v9;
+      v39[1] = dCopy;
       v38[2] = @"kDAEGrantedDelegateKey";
       v39[2] = v15;
       v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v39 forKeys:v38 count:3];
@@ -5628,7 +5628,7 @@ uint64_t __54__DADConnection__grantedDelegatesListRequestFinished___block_invoke
       v24[1] = 3221225472;
       v24[2] = __87__DADConnection_updateGrantedDelegateForAccountID_grantedDelegate_action_resultsBlock___block_invoke;
       v24[3] = &unk_278520318;
-      v26 = v11;
+      v26 = blockCopy;
       v27 = &v32;
       v24[4] = self;
       v17 = v20;
@@ -5648,10 +5648,10 @@ uint64_t __54__DADConnection__grantedDelegatesListRequestFinished___block_invoke
     _os_log_impl(&dword_2243BD000, v19, OS_LOG_TYPE_DEFAULT, "Invalid 'accountID' provided: [%{public}@].", buf, 0xCu);
   }
 
-  if (v11)
+  if (blockCopy)
   {
     v16 = [MEMORY[0x277CCA9B8] errorWithDomain:@"DAErrorDomain" code:93 userInfo:0];
-    (*(v11 + 2))(v11, v16);
+    (*(blockCopy + 2))(blockCopy, v16);
 LABEL_13:
   }
 
@@ -5720,9 +5720,9 @@ void __87__DADConnection_updateGrantedDelegateForAccountID_grantedDelegate_actio
   }
 }
 
-- (void)addExchangeDelegateWithName:(id)a3 emailAddress:(id)a4 toAccountWithID:(id)a5 completion:(id)a6
+- (void)addExchangeDelegateWithName:(id)name emailAddress:(id)address toAccountWithID:(id)d completion:(id)completion
 {
-  v6 = a6;
+  completionCopy = completion;
   v7 = DALoggingwithCategory(0);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
   {
@@ -5731,12 +5731,12 @@ void __87__DADConnection_updateGrantedDelegateForAccountID_grantedDelegate_actio
   }
 
   v8 = [MEMORY[0x277CCA9B8] errorWithDomain:@"DAErrorDomain" code:10 userInfo:0];
-  v6[2](v6, 0, -1, v8);
+  completionCopy[2](completionCopy, 0, -1, v8);
 }
 
-- (void)removeExchangeDelegateWithSourceID:(id)a3 fromParentAccountWithID:(id)a4 completion:(id)a5
+- (void)removeExchangeDelegateWithSourceID:(id)d fromParentAccountWithID:(id)iD completion:(id)completion
 {
-  v5 = a5;
+  completionCopy = completion;
   v6 = DALoggingwithCategory(0);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
@@ -5745,12 +5745,12 @@ void __87__DADConnection_updateGrantedDelegateForAccountID_grantedDelegate_actio
   }
 
   v7 = [MEMORY[0x277CCA9B8] errorWithDomain:@"DAErrorDomain" code:10 userInfo:0];
-  v5[2](v5, 0, v7);
+  completionCopy[2](completionCopy, 0, v7);
 }
 
-- (void)_updateGrantedDelegatePermissionRequestFinished:(id)a3
+- (void)_updateGrantedDelegatePermissionRequestFinished:(id)finished
 {
-  v4 = a3;
+  finishedCopy = finished;
   v5 = _CFXPCCreateCFObjectFromXPCObject();
   v6 = [v5 objectForKeyedSubscript:@"kDAEUpdateGrantedDelegatePermissionRequestIDKey"];
   v7 = [v5 objectForKeyedSubscript:@"kDAEErrorDataKey"];
@@ -5789,14 +5789,14 @@ uint64_t __65__DADConnection__updateGrantedDelegatePermissionRequestFinished___b
   return [v6 removeObjectForKey:v5];
 }
 
-- (id)performCalendarDirectorySearchWithAccountID:(id)a3 terms:(id)a4 recordTypes:(id)a5 resultLimit:(unint64_t)a6 resultsBlock:(id)a7 completionBlock:(id)a8
+- (id)performCalendarDirectorySearchWithAccountID:(id)d terms:(id)terms recordTypes:(id)types resultLimit:(unint64_t)limit resultsBlock:(id)block completionBlock:(id)completionBlock
 {
   v67 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a7;
-  v18 = a8;
+  dCopy = d;
+  termsCopy = terms;
+  typesCopy = types;
+  blockCopy = block;
+  completionBlockCopy = completionBlock;
   v53 = 0;
   v54 = &v53;
   v55 = 0x3032000000;
@@ -5807,50 +5807,50 @@ uint64_t __65__DADConnection__updateGrantedDelegatePermissionRequestFinished___b
   v50 = &v49;
   v51 = 0x2020000000;
   v52 = 0;
-  if (v14)
+  if (dCopy)
   {
-    if (v15 && [v15 count])
+    if (termsCopy && [termsCopy count])
     {
-      if (v16 && [v16 count])
+      if (typesCopy && [typesCopy count])
       {
         v19 = DALoggingwithCategory(0);
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
         {
           *buf = 138544130;
-          v60 = v14;
+          v60 = dCopy;
           v61 = 2112;
-          v62 = v16;
+          v62 = typesCopy;
           v63 = 2048;
-          v64 = a6;
+          limitCopy = limit;
           v65 = 2112;
-          v66 = v15;
+          v66 = termsCopy;
           _os_log_impl(&dword_2243BD000, v19, OS_LOG_TYPE_DEBUG, "Preparing calendar directory search.  accountID: [%{public}@] recordTypes:[%@] resultLimit: [%lu] terms: [%@]", buf, 0x2Au);
         }
 
         v20 = objc_alloc_init(MEMORY[0x277CBEB38]);
         [v20 setObject:@"kDAEPerformCalendarDirectorySearch" forKey:@"kDAEMessageNameKey"];
-        [v20 setObject:v14 forKey:@"kDAEAccountIdKey"];
-        v21 = [v15 allObjects];
-        [v20 setObject:v21 forKey:@"kDAECalendarDirectorySearchTermsKey"];
+        [v20 setObject:dCopy forKey:@"kDAEAccountIdKey"];
+        allObjects = [termsCopy allObjects];
+        [v20 setObject:allObjects forKey:@"kDAECalendarDirectorySearchTermsKey"];
 
-        v22 = [v16 allObjects];
-        [v20 setObject:v22 forKey:@"kDAECalendarDirectorySearchRecordTypesKey"];
+        allObjects2 = [typesCopy allObjects];
+        [v20 setObject:allObjects2 forKey:@"kDAECalendarDirectorySearchRecordTypesKey"];
 
-        v23 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a6];
+        v23 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:limit];
         [v20 setObject:v23 forKey:@"kDAECalendarDirectorySearchResultLimitKey"];
 
         v41[0] = MEMORY[0x277D85DD0];
         v41[1] = 3221225472;
         v41[2] = __120__DADConnection_performCalendarDirectorySearchWithAccountID_terms_recordTypes_resultLimit_resultsBlock_completionBlock___block_invoke_263;
         v41[3] = &unk_2785201E8;
-        v40 = v18;
+        v40 = completionBlockCopy;
         v44 = v40;
         v45[1] = &v53;
-        v39 = v17;
+        v39 = blockCopy;
         v45[0] = v39;
         v24 = v20;
         v42 = v24;
-        v43 = self;
+        selfCopy = self;
         v45[2] = &v49;
         [(DADConnection *)self _sendXPCMessageSynchronous:1 withParameters:v24 handlerBlock:v41];
         if (*(v50 + 24) == 1 && ExchangeSyncExpressLibraryCore())
@@ -5859,12 +5859,12 @@ uint64_t __65__DADConnection__updateGrantedDelegatePermissionRequestFinished___b
           if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
           {
             *buf = 138543362;
-            v60 = v14;
+            v60 = dCopy;
             _os_log_impl(&dword_2243BD000, v25, OS_LOG_TYPE_DEBUG, "Retry calendar directory search on exchangesyncd for accountID %{public}@", buf, 0xCu);
           }
 
-          v26 = [getESDConnectionClass() sharedConnection];
-          v27 = [v26 performCalendarDirectorySearchWithAccountID:v14 terms:v15 recordTypes:v16 resultLimit:a6 resultsBlock:v39 completionBlock:v40];
+          sharedConnection = [getESDConnectionClass() sharedConnection];
+          v27 = [sharedConnection performCalendarDirectorySearchWithAccountID:dCopy terms:termsCopy recordTypes:typesCopy resultLimit:limit resultsBlock:v39 completionBlock:v40];
           v28 = v54[5];
           v54[5] = v27;
         }
@@ -5921,7 +5921,7 @@ LABEL_23:
     _os_log_impl(&dword_2243BD000, v35, OS_LOG_TYPE_DEFAULT, "Will not issue calendar directory search.", buf, 2u);
   }
 
-  if (v18)
+  if (completionBlockCopy)
   {
     v24 = dispatch_get_global_queue(0, 0);
     block[0] = MEMORY[0x277D85DD0];
@@ -5929,7 +5929,7 @@ LABEL_23:
     block[2] = __120__DADConnection_performCalendarDirectorySearchWithAccountID_terms_recordTypes_resultLimit_resultsBlock_completionBlock___block_invoke;
     block[3] = &unk_2785201C0;
     v30 = &v48;
-    v48 = v18;
+    v48 = completionBlockCopy;
     v31 = &v47;
     v29 = v29;
     v47 = v29;
@@ -6026,17 +6026,17 @@ void __120__DADConnection_performCalendarDirectorySearchWithAccountID_terms_reco
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)cancelCalendarDirectorySearchWithID:(id)a3
+- (void)cancelCalendarDirectorySearchWithID:(id)d
 {
   v25[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  dCopy = d;
+  v5 = dCopy;
+  if (dCopy)
   {
     v24[0] = @"kDAEMessageNameKey";
     v24[1] = @"kDAECalendarDirectorySearchIDKey";
     v25[0] = @"kDAECancelCalendarDirectorySearch";
-    v25[1] = v4;
+    v25[1] = dCopy;
     v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v25 forKeys:v24 count:2];
     [(DADConnection *)self _sendXPCMessageSynchronous:0 withParameters:v6 handlerBlock:0];
     *v16 = 0;
@@ -6057,8 +6057,8 @@ void __120__DADConnection_performCalendarDirectorySearchWithAccountID_terms_reco
     dispatch_sync(muckingWithInFlightCollections, block);
     if (*(v17 + 5))
     {
-      v9 = [MEMORY[0x277CCA9B8] errorWithDomain:@"DAErrorDomain" code:-1 userInfo:0];
-      [*(v17 + 5) finishedWithError:v9 exceededResultLimit:0];
+      sharedConnection = [MEMORY[0x277CCA9B8] errorWithDomain:@"DAErrorDomain" code:-1 userInfo:0];
+      [*(v17 + 5) finishedWithError:sharedConnection exceededResultLimit:0];
       v10 = DALoggingwithCategory(0);
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
       {
@@ -6086,8 +6086,8 @@ LABEL_13:
         _os_log_impl(&dword_2243BD000, v11, OS_LOG_TYPE_DEBUG, "Retry canceling calendar directory search on exchangesyncd for searchID %@", buf, 0xCu);
       }
 
-      v9 = [getESDConnectionClass() sharedConnection];
-      [v9 cancelCalendarDirectorySearchWithID:v8];
+      sharedConnection = [getESDConnectionClass() sharedConnection];
+      [sharedConnection cancelCalendarDirectorySearchWithID:v8];
     }
 
     goto LABEL_13;
@@ -6118,10 +6118,10 @@ uint64_t __53__DADConnection_cancelCalendarDirectorySearchWithID___block_invoke(
   return [v6 removeObjectForKey:v5];
 }
 
-- (void)_calendarDirectorySearchReturnedResults:(id)a3
+- (void)_calendarDirectorySearchReturnedResults:(id)results
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  resultsCopy = results;
   v5 = _CFXPCCreateCFObjectFromXPCObject();
   v6 = [v5 objectForKeyedSubscript:@"kDAECalendarDirectorySearchIDKey"];
   v7 = [v5 objectForKeyedSubscript:@"kDAECalendarDirectorySearchResultsKey"];
@@ -6197,9 +6197,9 @@ void __57__DADConnection__calendarDirectorySearchReturnedResults___block_invoke_
   [*(a1 + 32) setObject:v8 forKey:v7];
 }
 
-- (void)_calendarDirectorySearchFinished:(id)a3
+- (void)_calendarDirectorySearchFinished:(id)finished
 {
-  v4 = a3;
+  finishedCopy = finished;
   v5 = _CFXPCCreateCFObjectFromXPCObject();
   v6 = [v5 objectForKeyedSubscript:@"kDAECalendarDirectorySearchIDKey"];
   v7 = [v5 objectForKeyedSubscript:@"kDAEErrorDataKey"];
@@ -6208,12 +6208,12 @@ void __57__DADConnection__calendarDirectorySearchReturnedResults___block_invoke_
   v10 = v9;
   if (v9)
   {
-    v11 = [v9 BOOLValue];
+    bOOLValue = [v9 BOOLValue];
   }
 
   else
   {
-    v11 = 0;
+    bOOLValue = 0;
   }
 
   v17 = 0;
@@ -6232,7 +6232,7 @@ void __57__DADConnection__calendarDirectorySearchReturnedResults___block_invoke_
   v13 = v6;
   v15 = v13;
   dispatch_sync(muckingWithInFlightCollections, block);
-  [v18[5] finishedWithError:v8 exceededResultLimit:v11];
+  [v18[5] finishedWithError:v8 exceededResultLimit:bOOLValue];
 
   _Block_object_dispose(&v17, 8);
 }
@@ -6250,37 +6250,37 @@ uint64_t __50__DADConnection__calendarDirectorySearchFinished___block_invoke(voi
   return [v6 removeObjectForKey:v5];
 }
 
-- (void)performGroupExpansionWithAccountID:(id)a3 principalPath:(id)a4 completionBlock:(id)a5
+- (void)performGroupExpansionWithAccountID:(id)d principalPath:(id)path completionBlock:(id)block
 {
   v28 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8)
+  dCopy = d;
+  pathCopy = path;
+  blockCopy = block;
+  if (dCopy)
   {
-    if (v9 && [v9 length])
+    if (pathCopy && [pathCopy length])
     {
       v11 = DALoggingwithCategory(0);
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138543618;
-        v25 = v8;
+        v25 = dCopy;
         v26 = 2112;
-        v27 = v9;
+        v27 = pathCopy;
         _os_log_impl(&dword_2243BD000, v11, OS_LOG_TYPE_DEBUG, "Preparing group expansion.  accountID: [%{public}@]  principalPath: [%@]", buf, 0x16u);
       }
 
       v12 = objc_alloc_init(MEMORY[0x277CBEB38]);
       [v12 setObject:@"kDAEPerformGroupExpansion" forKey:@"kDAEMessageNameKey"];
-      [v12 setObject:v8 forKey:@"kDAEAccountIdKey"];
-      [v12 setObject:v9 forKey:@"kDAEGroupExpansionPrincipalPathKey"];
+      [v12 setObject:dCopy forKey:@"kDAEAccountIdKey"];
+      [v12 setObject:pathCopy forKey:@"kDAEGroupExpansionPrincipalPathKey"];
       v19[0] = MEMORY[0x277D85DD0];
       v19[1] = 3221225472;
       v19[2] = __82__DADConnection_performGroupExpansionWithAccountID_principalPath_completionBlock___block_invoke_268;
       v19[3] = &unk_278520368;
       v13 = &v20;
       v19[4] = self;
-      v20 = v10;
+      v20 = blockCopy;
       [(DADConnection *)self _sendXPCMessageSynchronous:0 withParameters:v12 handlerBlock:v19];
       v14 = 0;
       goto LABEL_17;
@@ -6316,7 +6316,7 @@ uint64_t __50__DADConnection__calendarDirectorySearchFinished___block_invoke(voi
     _os_log_impl(&dword_2243BD000, v17, OS_LOG_TYPE_DEFAULT, "Will not do group expansion.", buf, 2u);
   }
 
-  if (v10)
+  if (blockCopy)
   {
     v12 = dispatch_get_global_queue(0, 0);
     block[0] = MEMORY[0x277D85DD0];
@@ -6324,7 +6324,7 @@ uint64_t __50__DADConnection__calendarDirectorySearchFinished___block_invoke(voi
     block[2] = __82__DADConnection_performGroupExpansionWithAccountID_principalPath_completionBlock___block_invoke;
     block[3] = &unk_2785201C0;
     v13 = &v23;
-    v23 = v10;
+    v23 = blockCopy;
     v14 = v14;
     v22 = v14;
     dispatch_async(v12, block);
@@ -6398,10 +6398,10 @@ void __82__DADConnection_performGroupExpansionWithAccountID_principalPath_comple
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_groupExpansionFinished:(id)a3
+- (void)_groupExpansionFinished:(id)finished
 {
   v35 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  finishedCopy = finished;
   v5 = _CFXPCCreateCFObjectFromXPCObject();
   v6 = [v5 objectForKeyedSubscript:@"kDAEGroupExpansionIDKey"];
   v7 = [v5 objectForKeyedSubscript:@"kDAECalendarDirectorySearchResultsKey"];
@@ -6587,19 +6587,19 @@ void __41__DADConnection__groupExpansionFinished___block_invoke_2(uint64_t a1, v
 - (void)dealloc
 {
   [(DADConnection *)self _tearDownInFlightObjects];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = DADConnection;
   [(DADConnection *)&v4 dealloc];
 }
 
-- (void)_resetCertWarningsForAccountId:(id)a3 andDataclasses:(int64_t)a4 isUserRequested:(BOOL)a5
+- (void)_resetCertWarningsForAccountId:(id)id andDataclasses:(int64_t)dataclasses isUserRequested:(BOOL)requested
 {
-  v5 = a5;
+  requestedCopy = requested;
   v23 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  idCopy = id;
   v9 = DALoggingwithCategory(0);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
@@ -6609,11 +6609,11 @@ void __41__DADConnection__groupExpansionFinished___block_invoke_2(uint64_t a1, v
     _os_log_impl(&dword_2243BD000, v9, OS_LOG_TYPE_DEBUG, "in _resetCertWarningsForAccount, _accountIdsWithAlreadyResetCerts is %{public}@", buf, 0xCu);
   }
 
-  v11 = self;
-  objc_sync_enter(v11);
-  if (v8)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (idCopy)
   {
-    v12 = [(NSMutableSet *)v11->_accountIdsWithAlreadyResetCerts containsObject:v8]^ 1;
+    v12 = [(NSMutableSet *)selfCopy->_accountIdsWithAlreadyResetCerts containsObject:idCopy]^ 1;
   }
 
   else
@@ -6621,31 +6621,31 @@ void __41__DADConnection__groupExpansionFinished___block_invoke_2(uint64_t a1, v
     v12 = 0;
   }
 
-  objc_sync_exit(v11);
+  objc_sync_exit(selfCopy);
 
-  if (((v8 != 0) & (v12 | v5)) == 1)
+  if (((idCopy != 0) & (v12 | requestedCopy)) == 1)
   {
-    v13 = [MEMORY[0x277CCABB0] numberWithInteger:{a4, @"kDAEMessageNameKey", @"kDAEAccountIdKey", @"kDAEDataclassesBitmaskKey", @"kDAEResetCertWarnings", v8}];
+    v13 = [MEMORY[0x277CCABB0] numberWithInteger:{dataclasses, @"kDAEMessageNameKey", @"kDAEAccountIdKey", @"kDAEDataclassesBitmaskKey", @"kDAEResetCertWarnings", idCopy}];
     v20[2] = v13;
     v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v20 forKeys:&v19 count:3];
 
     v15 = _CFXPCCreateXPCObjectFromCFObject();
-    v16 = [(DADConnection *)v11 _connection];
-    xpc_connection_send_message(v16, v15);
+    _connection = [(DADConnection *)selfCopy _connection];
+    xpc_connection_send_message(_connection, v15);
 
-    v17 = v11;
+    v17 = selfCopy;
     objc_sync_enter(v17);
-    [v17[4] addObject:v8];
+    [v17[4] addObject:idCopy];
     objc_sync_exit(v17);
   }
 
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_resetThrottleTimersForAccountId:(id)a3
+- (void)_resetThrottleTimersForAccountId:(id)id
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  idCopy = id;
   v6 = DALoggingwithCategory(0);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
@@ -6658,32 +6658,32 @@ void __41__DADConnection__groupExpansionFinished___block_invoke_2(uint64_t a1, v
     _os_log_impl(&dword_2243BD000, v6, OS_LOG_TYPE_DEBUG, "in %s, _accountIdsWithAlreadyResetThrottleTimers is %{public}@", buf, 0x16u);
   }
 
-  v9 = self;
-  objc_sync_enter(v9);
-  if (!v5)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!idCopy)
   {
-    objc_sync_exit(v9);
-    v11 = v9;
+    objc_sync_exit(selfCopy);
+    v11 = selfCopy;
     goto LABEL_7;
   }
 
-  v10 = [(NSMutableSet *)v9->_accountIdsWithAlreadyResetThrottleTimers containsObject:v5];
-  objc_sync_exit(v9);
+  v10 = [(NSMutableSet *)selfCopy->_accountIdsWithAlreadyResetThrottleTimers containsObject:idCopy];
+  objc_sync_exit(selfCopy);
 
   if ((v10 & 1) == 0)
   {
     v16[0] = @"kDAEMessageNameKey";
     v16[1] = @"kDAEAccountIdKey";
     v17[0] = @"kDAEResetThrottleTimers";
-    v17[1] = v5;
+    v17[1] = idCopy;
     v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v17 forKeys:v16 count:2];
     v12 = _CFXPCCreateXPCObjectFromCFObject();
-    v13 = [(DADConnection *)v9 _connection];
-    xpc_connection_send_message(v13, v12);
+    _connection = [(DADConnection *)selfCopy _connection];
+    xpc_connection_send_message(_connection, v12);
 
-    v14 = v9;
+    v14 = selfCopy;
     objc_sync_enter(v14);
-    [(NSMutableSet *)v9->_accountIdsWithAlreadyResetThrottleTimers addObject:v5];
+    [(NSMutableSet *)selfCopy->_accountIdsWithAlreadyResetThrottleTimers addObject:idCopy];
     objc_sync_exit(v14);
 
 LABEL_7:
@@ -6701,143 +6701,143 @@ LABEL_7:
     _os_log_impl(&dword_2243BD000, v3, OS_LOG_TYPE_DEBUG, "Resetting shouldResetCertWarnings and throttle timers", v5, 2u);
   }
 
-  v4 = self;
-  objc_sync_enter(v4);
-  [(NSMutableSet *)v4->_accountIdsWithAlreadyResetCerts removeAllObjects];
-  [(NSMutableSet *)v4->_accountIdsWithAlreadyResetThrottleTimers removeAllObjects];
-  objc_sync_exit(v4);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSMutableSet *)selfCopy->_accountIdsWithAlreadyResetCerts removeAllObjects];
+  [(NSMutableSet *)selfCopy->_accountIdsWithAlreadyResetThrottleTimers removeAllObjects];
+  objc_sync_exit(selfCopy);
 }
 
 - (void)_registerForAppResumedNotification
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 addObserver:self selector:sel_resetTimersAndWarnings name:@"UIApplicationWillEnterForegroundNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_resetTimersAndWarnings name:@"UIApplicationWillEnterForegroundNotification" object:0];
 }
 
-- (void)_dispatchMessage:(id)a3
+- (void)_dispatchMessage:(id)message
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  messageCopy = message;
   v5 = _CFXPCCreateCFObjectFromXPCObject();
   v6 = [v5 objectForKeyedSubscript:@"kDAEMessageNameKey"];
   if ([v6 isEqualToString:@"kDAEFoldersUpdated"])
   {
-    [(DADConnection *)self _foldersUpdated:v4];
+    [(DADConnection *)self _foldersUpdated:messageCopy];
   }
 
   else if ([v6 isEqualToString:@"kDAEPolicyKeyChanged"])
   {
-    [(DADConnection *)self _policyKeyChanged:v4];
+    [(DADConnection *)self _policyKeyChanged:messageCopy];
   }
 
   else if ([v6 isEqualToString:@"kDAELogDataAccessStatus"])
   {
-    [(DADConnection *)self _logDataAccessStatus:v4];
+    [(DADConnection *)self _logDataAccessStatus:messageCopy];
   }
 
   else if ([v6 isEqualToString:@"kDAEServerContactsSearchQueryFinished"])
   {
-    [(DADConnection *)self _serverContactsSearchQueryFinished:v4];
+    [(DADConnection *)self _serverContactsSearchQueryFinished:messageCopy];
   }
 
   else if ([v6 isEqualToString:@"kDAEFolderChangeFinished"])
   {
-    [(DADConnection *)self _folderChangeFinished:v4];
+    [(DADConnection *)self _folderChangeFinished:messageCopy];
   }
 
   else if ([v6 isEqualToString:@"kDAEGetStatusReportsFromClient"])
   {
-    [(DADConnection *)self _getStatusReportsFromClient:v4];
+    [(DADConnection *)self _getStatusReportsFromClient:messageCopy];
   }
 
   else if ([v6 isEqualToString:@"kDAEAttachmentDownloadProgress"])
   {
-    [(DADConnection *)self _downloadProgress:v4];
+    [(DADConnection *)self _downloadProgress:messageCopy];
   }
 
   else if ([v6 isEqualToString:@"kDAEAttachmentDownloadFinished"])
   {
-    [(DADConnection *)self _downloadFinished:v4];
+    [(DADConnection *)self _downloadFinished:messageCopy];
   }
 
   else if ([v6 isEqualToString:@"kDAECalendarShareResponseFinished"])
   {
-    [(DADConnection *)self _shareResponseFinished:v4];
+    [(DADConnection *)self _shareResponseFinished:messageCopy];
   }
 
   else if ([v6 isEqualToString:@"kDAEOfficeHoursRequestFinished"])
   {
-    [(DADConnection *)self _officeHoursRequestFinished:v4];
+    [(DADConnection *)self _officeHoursRequestFinished:messageCopy];
   }
 
   else if ([v6 isEqualToString:@"kDAEOofSettingsFinished"])
   {
-    [(DADConnection *)self _oofSettingsRequestsFinished:v4];
+    [(DADConnection *)self _oofSettingsRequestsFinished:messageCopy];
   }
 
   else if ([v6 isEqualToString:@"kDAECalendarAvailabilityRequestReturnedResults"])
   {
-    [(DADConnection *)self _calendarAvailabilityRequestReturnedResults:v4];
+    [(DADConnection *)self _calendarAvailabilityRequestReturnedResults:messageCopy];
   }
 
   else if ([v6 isEqualToString:@"kDAECalendarAvailabilityRequestFinished"])
   {
-    [(DADConnection *)self _calendarAvailabilityRequestFinished:v4];
+    [(DADConnection *)self _calendarAvailabilityRequestFinished:messageCopy];
   }
 
   else if ([v6 isEqualToString:@"kDAEGrantedDelegatesListRequestFinished"])
   {
-    [(DADConnection *)self _grantedDelegatesListRequestFinished:v4];
+    [(DADConnection *)self _grantedDelegatesListRequestFinished:messageCopy];
   }
 
   else if ([v6 isEqualToString:@"kDAEUpdateGrantedDelegatePermissionRequestFinished"])
   {
-    [(DADConnection *)self _updateGrantedDelegatePermissionRequestFinished:v4];
+    [(DADConnection *)self _updateGrantedDelegatePermissionRequestFinished:messageCopy];
   }
 
   else if ([v6 isEqualToString:@"kDAECalendarDirectorySearchReturnedResults"])
   {
-    [(DADConnection *)self _calendarDirectorySearchReturnedResults:v4];
+    [(DADConnection *)self _calendarDirectorySearchReturnedResults:messageCopy];
   }
 
   else if ([v6 isEqualToString:@"kDAECalendarDirectorySearchFinished"])
   {
-    [(DADConnection *)self _calendarDirectorySearchFinished:v4];
+    [(DADConnection *)self _calendarDirectorySearchFinished:messageCopy];
   }
 
   else if ([v6 isEqualToString:@"kDAEGroupExpansionFinished"])
   {
-    [(DADConnection *)self _groupExpansionFinished:v4];
+    [(DADConnection *)self _groupExpansionFinished:messageCopy];
   }
 
   else if ([v6 isEqualToString:@"kDAEDownloadSubscribedCalendarProgress"])
   {
-    [(DADConnection *)self _downloadSubscribedCalendarProgress:v4];
+    [(DADConnection *)self _downloadSubscribedCalendarProgress:messageCopy];
   }
 
   else if ([v6 isEqualToString:@"kDAEDownloadSubscribedCalendarFinished"])
   {
-    [(DADConnection *)self _downloadSubscribedCalendarFinished:v4];
+    [(DADConnection *)self _downloadSubscribedCalendarFinished:messageCopy];
   }
 
   else if ([v6 isEqualToString:@"kDAEDownloadSubscribedCalendarPasswordRequired"])
   {
-    [(DADConnection *)self _downloadSubscribedCalendarRequiresPassword:v4];
+    [(DADConnection *)self _downloadSubscribedCalendarRequiresPassword:messageCopy];
   }
 
   else if ([v6 isEqualToString:@"kDAECheckSubscribedCalendarIsJunkFinished"])
   {
-    [(DADConnection *)self _subscriptionCalendarJunkCheckFinished:v4];
+    [(DADConnection *)self _subscriptionCalendarJunkCheckFinished:messageCopy];
   }
 
   else if ([v6 isEqualToString:@"kDAEFetchHolidayCalendarsReturnedResults"])
   {
-    [(DADConnection *)self _holidayCalendarFetchReturnedResults:v4];
+    [(DADConnection *)self _holidayCalendarFetchReturnedResults:messageCopy];
   }
 
   else if ([v6 isEqualToString:@"kDAEFetchHolidayCalendarsFinished"])
   {
-    [(DADConnection *)self _holidayCalendarFetchFinished:v4];
+    [(DADConnection *)self _holidayCalendarFetchFinished:messageCopy];
   }
 
   else
@@ -6861,42 +6861,42 @@ LABEL_7:
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)beginCalDAVServerSimulationWithHostname:(id)a3
+- (void)beginCalDAVServerSimulationWithHostname:(id)hostname
 {
   v11[3] = *MEMORY[0x277D85DE8];
   v10[0] = @"kDAEMessageNameKey";
   v10[1] = @"kDAEServerSimulatorHostnameKey";
   v11[0] = @"kDAEManageCalDAVServerSimulator";
-  v11[1] = a3;
+  v11[1] = hostname;
   v10[2] = @"kDAEServerSimulatorActionKey";
   v11[2] = @"kDAEServerSimulatorActionBegin";
   v4 = MEMORY[0x277CBEAC0];
-  v5 = a3;
+  hostnameCopy = hostname;
   v6 = [v4 dictionaryWithObjects:v11 forKeys:v10 count:3];
 
   v7 = _CFXPCCreateXPCObjectFromCFObject();
-  v8 = [(DADConnection *)self _connection];
-  xpc_connection_send_message(v8, v7);
+  _connection = [(DADConnection *)self _connection];
+  xpc_connection_send_message(_connection, v7);
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)endCalDAVServerSimulationWithHostname:(id)a3
+- (void)endCalDAVServerSimulationWithHostname:(id)hostname
 {
   v11[3] = *MEMORY[0x277D85DE8];
   v10[0] = @"kDAEMessageNameKey";
   v10[1] = @"kDAEServerSimulatorHostnameKey";
   v11[0] = @"kDAEManageCalDAVServerSimulator";
-  v11[1] = a3;
+  v11[1] = hostname;
   v10[2] = @"kDAEServerSimulatorActionKey";
   v11[2] = @"kDAEServerSimulatorActionEnd";
   v4 = MEMORY[0x277CBEAC0];
-  v5 = a3;
+  hostnameCopy = hostname;
   v6 = [v4 dictionaryWithObjects:v11 forKeys:v10 count:3];
 
   v7 = _CFXPCCreateXPCObjectFromCFObject();
-  v8 = [(DADConnection *)self _connection];
-  xpc_connection_send_message(v8, v7);
+  _connection = [(DADConnection *)self _connection];
+  xpc_connection_send_message(_connection, v7);
 
   v9 = *MEMORY[0x277D85DE8];
 }

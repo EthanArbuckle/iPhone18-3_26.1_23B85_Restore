@@ -3,9 +3,9 @@
 + (id)sharedInstance;
 + (id)stringFromBacktrace;
 - (TCCDDatabaseMigrated)init;
-- (int)evalDB:(const char *)a3 locked:(BOOL)a4 bind:(id)a5 step:(id)a6;
+- (int)evalDB:(const char *)b locked:(BOOL)locked bind:(id)bind step:(id)step;
 - (int)setupDB;
-- (void)handleDBErrorAndForceCrash:(BOOL)a3;
+- (void)handleDBErrorAndForceCrash:(BOOL)crash;
 @end
 
 @implementation TCCDDatabaseMigrated
@@ -13,16 +13,16 @@
 + (char)getMigratedDBDir
 {
   v2 = +[TCCDPlatform currentPlatform];
-  v3 = [v2 server];
-  v4 = [v3 stateDirectory];
+  server = [v2 server];
+  stateDirectory = [server stateDirectory];
 
-  if (!v4)
+  if (!stateDirectory)
   {
     sub_1000604F8();
   }
 
   v5 = +[TCCDDatabaseMigrated getMigratedDBRelativeDirPath];
-  v6 = [v4 stringByAppendingPathComponent:v5];
+  v6 = [stateDirectory stringByAppendingPathComponent:v5];
 
   v7 = strdup([v6 UTF8String]);
   if (!v7)
@@ -99,7 +99,7 @@
   block[1] = 3221225472;
   block[2] = sub_1000564D0;
   block[3] = &unk_1000A6468;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1000C12C8 != -1)
   {
     dispatch_once(&qword_1000C12C8, block);
@@ -139,12 +139,12 @@
   if ([(TCCDDatabaseMigrated *)self migratedDBUnavailable])
   {
     v3 = +[TCCDPlatform currentPlatform];
-    v4 = [v3 server];
-    v5 = [v4 logHandle];
+    server = [v3 server];
+    logHandle = [server logHandle];
 
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(logHandle, OS_LOG_TYPE_ERROR))
     {
-      sub_100056EBC(v5);
+      sub_100056EBC(logHandle);
     }
 
 LABEL_13:
@@ -166,12 +166,12 @@ LABEL_13:
   {
     [(TCCDDatabaseMigrated *)self setMigratedDBUnavailable:1];
     v14 = +[TCCDPlatform currentPlatform];
-    v15 = [v14 server];
-    v5 = [v15 logHandle];
+    server2 = [v14 server];
+    logHandle = [server2 logHandle];
 
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(logHandle, OS_LOG_TYPE_ERROR))
     {
-      sub_100056D94(&filename, v5);
+      sub_100056D94(&filename, logHandle);
     }
 
     goto LABEL_13;
@@ -182,14 +182,14 @@ LABEL_13:
   {
     self->_migratedDBHandle = ppDb;
     v17 = +[TCCDPlatform currentPlatform];
-    v18 = [v17 server];
-    v12 = [v18 logHandle];
+    server3 = [v17 server];
+    logHandle2 = [server3 logHandle];
 
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(logHandle2, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 136446210;
       v22 = filename;
-      _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "opened migrated database: %{public}s", buf, 0xCu);
+      _os_log_impl(&_mh_execute_header, logHandle2, OS_LOG_TYPE_DEFAULT, "opened migrated database: %{public}s", buf, 0xCu);
     }
 
     v13 = 0;
@@ -197,19 +197,19 @@ LABEL_13:
   }
 
   v9 = +[TCCDPlatform currentPlatform];
-  v10 = [v9 server];
-  v11 = [v10 logHandle];
+  server4 = [v9 server];
+  logHandle3 = [server4 logHandle];
 
-  if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+  if (os_log_type_enabled(logHandle3, OS_LOG_TYPE_ERROR))
   {
-    sub_100056E10(self, v11);
+    sub_100056E10(self, logHandle3);
   }
 
   self->_migratedDBHandle = ppDb;
   if ([(TCCDDatabaseMigrated *)self migratedDBHandle])
   {
-    v12 = objc_opt_self();
-    v13 = sqlite3_errcode([v12 migratedDBHandle]);
+    logHandle2 = objc_opt_self();
+    v13 = sqlite3_errcode([logHandle2 migratedDBHandle]);
 LABEL_18:
 
     goto LABEL_20;
@@ -225,11 +225,11 @@ LABEL_20:
   return v13;
 }
 
-- (int)evalDB:(const char *)a3 locked:(BOOL)a4 bind:(id)a5 step:(id)a6
+- (int)evalDB:(const char *)b locked:(BOOL)locked bind:(id)bind step:(id)step
 {
-  v7 = a4;
-  v10 = a5;
-  v11 = a6;
+  lockedCopy = locked;
+  bindCopy = bind;
+  stepCopy = step;
   v24 = 0;
   v25 = &v24;
   v26 = 0x2020000000;
@@ -240,22 +240,22 @@ LABEL_20:
   v19[3] = &unk_1000A5258;
   v19[4] = self;
   v22 = &v24;
-  v23 = a3;
-  v12 = v10;
+  bCopy = b;
+  v12 = bindCopy;
   v20 = v12;
-  v13 = v11;
+  v13 = stepCopy;
   v21 = v13;
   v14 = objc_retainBlock(v19);
   v15 = v14;
-  if (v7)
+  if (lockedCopy)
   {
     (v14[2])(v14);
   }
 
   else
   {
-    v16 = [(TCCDDatabaseMigrated *)self migratedDBQueue];
-    dispatch_sync(v16, v15);
+    migratedDBQueue = [(TCCDDatabaseMigrated *)self migratedDBQueue];
+    dispatch_sync(migratedDBQueue, v15);
   }
 
   v17 = *(v25 + 6);
@@ -264,23 +264,23 @@ LABEL_20:
   return v17;
 }
 
-- (void)handleDBErrorAndForceCrash:(BOOL)a3
+- (void)handleDBErrorAndForceCrash:(BOOL)crash
 {
-  v3 = a3;
+  crashCopy = crash;
   v13 = 0;
   v5 = +[TCCDDatabaseMigrated stringFromBacktrace];
   v6 = sqlite3_errmsg([(TCCDDatabaseMigrated *)self migratedDBHandle]);
   if (asprintf(&v13, "database error: %s", v6) != -1)
   {
     v7 = +[TCCDPlatform currentPlatform];
-    v8 = [v7 server];
-    v9 = [v8 logHandle];
+    server = [v7 server];
+    logHandle = [server logHandle];
 
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(logHandle, OS_LOG_TYPE_ERROR))
     {
       v12 = "";
       *buf = 136446722;
-      if (v3)
+      if (crashCopy)
       {
         v12 = " aborting...";
       }
@@ -290,7 +290,7 @@ LABEL_20:
       v17 = v12;
       v18 = 2112;
       v19 = v5;
-      _os_log_error_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "%{public}s%s\n%@", buf, 0x20u);
+      _os_log_error_impl(&_mh_execute_header, logHandle, OS_LOG_TYPE_ERROR, "%{public}s%s\n%@", buf, 0x20u);
     }
   }
 
@@ -304,7 +304,7 @@ LABEL_20:
     free(v11);
   }
 
-  if (v3)
+  if (crashCopy)
   {
     sub_100060514();
   }

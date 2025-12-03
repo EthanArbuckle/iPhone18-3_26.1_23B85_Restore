@@ -1,7 +1,7 @@
 @interface TIKeyboardTyperContinuousPathGenerator
 - (CGPoint)currentPoint;
-- (TIKeyboardTyperContinuousPathGenerator)initWithVelocity:(double)a3 timestamp:(double)a4 dt:(double)a5 stallDuration:(double)a6;
-- (void)addTargetPoint:(CGPoint)a3;
+- (TIKeyboardTyperContinuousPathGenerator)initWithVelocity:(double)velocity timestamp:(double)timestamp dt:(double)dt stallDuration:(double)duration;
+- (void)addTargetPoint:(CGPoint)point;
 - (void)step;
 @end
 
@@ -84,10 +84,10 @@
   self->_currentTimestamp = self->_currentTimestamp + dt + self->_stallDuration * v9;
 }
 
-- (void)addTargetPoint:(CGPoint)a3
+- (void)addTargetPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   targets = self->_targets;
   v7 = [MEMORY[0x277CCAE60] valueWithCGPoint:?];
   [(NSMutableArray *)targets addObject:v7];
@@ -99,20 +99,20 @@
   }
 }
 
-- (TIKeyboardTyperContinuousPathGenerator)initWithVelocity:(double)a3 timestamp:(double)a4 dt:(double)a5 stallDuration:(double)a6
+- (TIKeyboardTyperContinuousPathGenerator)initWithVelocity:(double)velocity timestamp:(double)timestamp dt:(double)dt stallDuration:(double)duration
 {
   v13.receiver = self;
   v13.super_class = TIKeyboardTyperContinuousPathGenerator;
-  v9 = [(TIKeyboardTyperContinuousPathGenerator *)&v13 init:a3];
+  v9 = [(TIKeyboardTyperContinuousPathGenerator *)&v13 init:velocity];
   if (v9)
   {
     v10 = objc_alloc_init(MEMORY[0x277CBEB18]);
     targets = v9->_targets;
     v9->_targets = v10;
 
-    v9->_velocity = a3;
-    v9->_dt = a5;
-    v9->_stallDuration = a6;
+    v9->_velocity = velocity;
+    v9->_dt = dt;
+    v9->_stallDuration = duration;
   }
 
   return v9;

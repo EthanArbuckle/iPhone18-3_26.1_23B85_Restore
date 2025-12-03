@@ -1,24 +1,24 @@
 @interface BridgedCampaignClickRecorder
-- (id)campaignClickErrorWithDescription:(id)a3;
-- (id)recordCampaignClickWithReportUrl:(id)a3 campaignUrl:(id)a4;
+- (id)campaignClickErrorWithDescription:(id)description;
+- (id)recordCampaignClickWithReportUrl:(id)url campaignUrl:(id)campaignUrl;
 @end
 
 @implementation BridgedCampaignClickRecorder
 
-- (id)recordCampaignClickWithReportUrl:(id)a3 campaignUrl:(id)a4
+- (id)recordCampaignClickWithReportUrl:(id)url campaignUrl:(id)campaignUrl
 {
-  v6 = a3;
-  v7 = a4;
+  urlCopy = url;
+  campaignUrlCopy = campaignUrl;
   v8 = objc_alloc(MEMORY[0x1E69B68F8]);
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __77__BridgedCampaignClickRecorder_recordCampaignClickWithReportUrl_campaignUrl___block_invoke;
   v13[3] = &unk_1E84E1E38;
-  v14 = v6;
-  v15 = self;
-  v16 = v7;
-  v9 = v7;
-  v10 = v6;
+  v14 = urlCopy;
+  selfCopy = self;
+  v16 = campaignUrlCopy;
+  v9 = campaignUrlCopy;
+  v10 = urlCopy;
   v11 = [v8 initWithResolver:v13];
 
   return v11;
@@ -153,15 +153,15 @@ void __77__BridgedCampaignClickRecorder_recordCampaignClickWithReportUrl_campaig
   }
 }
 
-- (id)campaignClickErrorWithDescription:(id)a3
+- (id)campaignClickErrorWithDescription:(id)description
 {
   v11[1] = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E696ABC0];
   v4 = BridgedCampaignClickErrorCode;
   v10 = *MEMORY[0x1E696A578];
-  v11[0] = a3;
+  v11[0] = description;
   v5 = MEMORY[0x1E695DF20];
-  v6 = a3;
+  descriptionCopy = description;
   v7 = [v5 dictionaryWithObjects:v11 forKeys:&v10 count:1];
   v8 = [v3 errorWithDomain:@"com.apple.news.campaignclick" code:v4 userInfo:v7];
 

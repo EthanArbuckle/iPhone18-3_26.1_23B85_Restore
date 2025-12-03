@@ -1,36 +1,36 @@
 @interface PKPassGroupViewVerticalPanAnimator
 - (double)currentTouchPosition;
-- (id)initWithGroupView:(void *)a3 gestureRecognizer:(void *)a4 updater:;
-- (uint64_t)createAnimationWithInitialVelocity:(uint64_t)a1;
+- (id)initWithGroupView:(void *)view gestureRecognizer:(void *)recognizer updater:;
+- (uint64_t)createAnimationWithInitialVelocity:(uint64_t)velocity;
 - (uint64_t)layoutViewsWithY:(uint64_t)result;
 - (uint64_t)updateRecognizingWithAllowed:(uint64_t)result;
 - (uint64_t)updateUpdating;
-- (void)beginPanningFromStartingTouchPosition:(double)a3 to:(double)a4 anchoredAt:(double)a5 scalingFrom:(double)a6 to:(double)a7;
+- (void)beginPanningFromStartingTouchPosition:(double)position to:(double)to anchoredAt:(double)at scalingFrom:(double)from to:(double)a7;
 - (void)dealloc;
-- (void)dismissWithStartVelocity:(double)a3 completion:;
+- (void)dismissWithStartVelocity:(double)velocity completion:;
 - (void)invalidate;
-- (void)setDismissAnimation:(uint64_t)a1;
+- (void)setDismissAnimation:(uint64_t)animation;
 @end
 
 @implementation PKPassGroupViewVerticalPanAnimator
 
-- (id)initWithGroupView:(void *)a3 gestureRecognizer:(void *)a4 updater:
+- (id)initWithGroupView:(void *)view gestureRecognizer:(void *)recognizer updater:
 {
   v8 = a2;
-  v9 = a3;
-  v10 = a4;
-  v11 = v10;
-  v12 = 0;
-  if (a1 && v8 && v9 && v10)
+  viewCopy = view;
+  recognizerCopy = recognizer;
+  v11 = recognizerCopy;
+  selfCopy = 0;
+  if (self && v8 && viewCopy && recognizerCopy)
   {
-    v25.receiver = a1;
+    v25.receiver = self;
     v25.super_class = PKPassGroupViewVerticalPanAnimator;
     v13 = objc_msgSendSuper2(&v25, sel_init);
     v14 = v13;
     if (v13)
     {
       objc_storeStrong(v13 + 13, a2);
-      objc_storeStrong(v14 + 14, a3);
+      objc_storeStrong(v14 + 14, view);
       v15 = _Block_copy(v11);
       v16 = v14[1];
       v14[1] = v15;
@@ -47,11 +47,11 @@
       [v14[13] addGestureRecognizer:v14[14]];
     }
 
-    a1 = v14;
-    v12 = a1;
+    self = v14;
+    selfCopy = self;
   }
 
-  return v12;
+  return selfCopy;
 }
 
 - (void)dealloc
@@ -68,53 +68,53 @@
 
 - (void)invalidate
 {
-  if (a1)
+  if (self)
   {
-    if ((*(a1 + 96) & 1) == 0)
+    if ((*(self + 96) & 1) == 0)
     {
-      *(a1 + 96) = 1;
-      [*(a1 + 112) setEnabled:0];
-      [*(a1 + 104) removeGestureRecognizer:*(a1 + 112)];
-      v2 = *(a1 + 8);
-      *(a1 + 8) = 0;
+      *(self + 96) = 1;
+      [*(self + 112) setEnabled:0];
+      [*(self + 104) removeGestureRecognizer:*(self + 112)];
+      v2 = *(self + 8);
+      *(self + 8) = 0;
 
-      [(PKPassGroupViewVerticalPanAnimator *)a1 setDismissAnimation:?];
-      if (*(a1 + 97) == 1)
+      [(PKPassGroupViewVerticalPanAnimator *)self setDismissAnimation:?];
+      if (*(self + 97) == 1)
       {
-        *(a1 + 97) = 0;
-        v3 = *(a1 + 72);
+        *(self + 97) = 0;
+        v3 = *(self + 72);
 
-        MEMORY[0x1EEE4E390](a1 + 40, v3);
+        MEMORY[0x1EEE4E390](self + 40, v3);
       }
     }
   }
 }
 
-- (void)setDismissAnimation:(uint64_t)a1
+- (void)setDismissAnimation:(uint64_t)animation
 {
   v4 = a2;
-  if (a1)
+  if (animation)
   {
-    v5 = *(a1 + 32);
+    v5 = *(animation + 32);
     if (v5 != v4)
     {
       v6 = v4;
       if (v5)
       {
         [v5 stop];
-        objc_storeStrong((a1 + 32), a2);
-        if (!*(a1 + 32))
+        objc_storeStrong((animation + 32), a2);
+        if (!*(animation + 32))
         {
-          [*(a1 + 104) clearPageControlAlphaOverride];
+          [*(animation + 104) clearPageControlAlphaOverride];
         }
       }
 
       else
       {
-        objc_storeStrong((a1 + 32), a2);
+        objc_storeStrong((animation + 32), a2);
       }
 
-      [(PKPassGroupViewVerticalPanAnimator *)a1 updateUpdating];
+      [(PKPassGroupViewVerticalPanAnimator *)animation updateUpdating];
       v4 = v6;
     }
   }
@@ -122,40 +122,40 @@
 
 - (double)currentTouchPosition
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  [*(a1 + 104) center];
+  [*(self + 104) center];
   v3 = v2;
-  v4 = *(a1 + 16);
-  [*(a1 + 104) bounds];
+  v4 = *(self + 16);
+  [*(self + 104) bounds];
   v6 = v5;
-  [*(a1 + 104) anchorPoint];
-  return v3 + (*(a1 + 152) - v7) * (v4 * v6);
+  [*(self + 104) anchorPoint];
+  return v3 + (*(self + 152) - v7) * (v4 * v6);
 }
 
-- (void)beginPanningFromStartingTouchPosition:(double)a3 to:(double)a4 anchoredAt:(double)a5 scalingFrom:(double)a6 to:(double)a7
+- (void)beginPanningFromStartingTouchPosition:(double)position to:(double)to anchoredAt:(double)at scalingFrom:(double)from to:(double)a7
 {
-  if (a1)
+  if (self)
   {
-    if ((*(a1 + 96) & 1) == 0)
+    if ((*(self + 96) & 1) == 0)
     {
-      [*(a1 + 104) center];
-      *(a1 + 136) = v18;
-      *(a1 + 144) = v19;
-      *(a1 + 152) = a6;
-      *(a1 + 160) = a7;
-      *(a1 + 168) = a2;
-      *(a1 + 176) = a3;
-      *(a1 + 184) = a4;
-      *(a1 + 192) = a5;
-      *(a1 + 16) = a8;
-      *(a1 + 120) = a8;
-      *(a1 + 128) = a9;
-      *(a1 + 80) = log(a8);
-      *(a1 + 88) = log(a9);
+      [*(self + 104) center];
+      *(self + 136) = v18;
+      *(self + 144) = v19;
+      *(self + 152) = from;
+      *(self + 160) = a7;
+      *(self + 168) = a2;
+      *(self + 176) = position;
+      *(self + 184) = to;
+      *(self + 192) = at;
+      *(self + 16) = a8;
+      *(self + 120) = a8;
+      *(self + 128) = a9;
+      *(self + 80) = log(a8);
+      *(self + 88) = log(a9);
     }
   }
 }
@@ -305,13 +305,13 @@
   return result;
 }
 
-- (void)dismissWithStartVelocity:(double)a3 completion:
+- (void)dismissWithStartVelocity:(double)velocity completion:
 {
   v5 = a2;
   v6 = v5;
-  if (a1)
+  if (self)
   {
-    if (a1[96] == 1)
+    if (self[96] == 1)
     {
       if (v5)
       {
@@ -321,9 +321,9 @@
 
     else
     {
-      v7 = [(PKPassGroupViewVerticalPanAnimator *)a1 createAnimationWithInitialVelocity:a3];
-      [(PKPassGroupViewVerticalPanAnimator *)a1 setDismissAnimation:v7];
-      objc_initWeak(&location, a1);
+      v7 = [(PKPassGroupViewVerticalPanAnimator *)self createAnimationWithInitialVelocity:velocity];
+      [(PKPassGroupViewVerticalPanAnimator *)self setDismissAnimation:v7];
+      objc_initWeak(&location, self);
       objc_initWeak(&from, v7);
       v12[0] = MEMORY[0x1E69E9820];
       v12[1] = 3221225472;
@@ -348,30 +348,30 @@
   }
 }
 
-- (uint64_t)createAnimationWithInitialVelocity:(uint64_t)a1
+- (uint64_t)createAnimationWithInitialVelocity:(uint64_t)velocity
 {
-  v2 = a1;
-  if (a1)
+  velocityCopy = velocity;
+  if (velocity)
   {
-    [*(a1 + 104) center];
+    [*(velocity + 104) center];
     v5 = v4;
-    v6 = *(v2 + 16);
-    [*(v2 + 104) bounds];
+    v6 = *(velocityCopy + 16);
+    [*(velocityCopy + 104) bounds];
     v8 = v7;
-    [*(v2 + 104) anchorPoint];
-    v10 = v5 + (*(v2 + 160) - v9) * (v6 * v8);
-    v11 = *(v2 + 192);
+    [*(velocityCopy + 104) anchorPoint];
+    v10 = v5 + (*(velocityCopy + 160) - v9) * (v6 * v8);
+    v11 = *(velocityCopy + 192);
     v12 = objc_alloc(MEMORY[0x1E69DD4A0]);
-    v2 = [v12 initWithValue:v10 velocity:a2 unitSize:*MEMORY[0x1E69DE8A0]];
+    velocityCopy = [v12 initWithValue:v10 velocity:a2 unitSize:*MEMORY[0x1E69DE8A0]];
     v13 = [MEMORY[0x1E69DD490] upperBoundary:2 ofType:v11];
-    [v2 addActiveValue:v13];
+    [velocityCopy addActiveValue:v13];
     v14 = [MEMORY[0x1E69DD490] activeValue:0 ofType:v11];
     [v14 _setBoundaryPull:0.06];
-    [v2 addActiveValue:v14];
-    [v2 setFriction:0.200000003];
+    [velocityCopy addActiveValue:v14];
+    [velocityCopy setFriction:0.200000003];
   }
 
-  return v2;
+  return velocityCopy;
 }
 
 void __74__PKPassGroupViewVerticalPanAnimator_dismissWithStartVelocity_completion___block_invoke(uint64_t a1, double a2, double a3)

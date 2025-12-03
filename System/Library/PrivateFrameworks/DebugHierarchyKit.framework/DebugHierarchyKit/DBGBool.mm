@@ -1,6 +1,6 @@
 @interface DBGBool
-+ (id)valueWithEncodedValue:(id)a3 format:(id)a4 error:(id *)a5;
-- (DBGBool)initWithBool:(BOOL)a3;
++ (id)valueWithEncodedValue:(id)value format:(id)format error:(id *)error;
+- (DBGBool)initWithBool:(BOOL)bool;
 - (NSString)debugDescription;
 - (NSString)description;
 - (id)JSONCompatibleRepresentation;
@@ -9,14 +9,14 @@
 
 @implementation DBGBool
 
-- (DBGBool)initWithBool:(BOOL)a3
+- (DBGBool)initWithBool:(BOOL)bool
 {
   v5.receiver = self;
   v5.super_class = DBGBool;
   result = [(DBGBool *)&v5 init];
   if (result)
   {
-    result->_BOOLValue = a3;
+    result->_BOOLValue = bool;
   }
 
   return result;
@@ -24,15 +24,15 @@
 
 - (id)objectValue
 {
-  v2 = [(DBGBool *)self BOOLValue];
+  bOOLValue = [(DBGBool *)self BOOLValue];
 
-  return [NSNumber numberWithBool:v2];
+  return [NSNumber numberWithBool:bOOLValue];
 }
 
 - (NSString)description
 {
-  v2 = [(DBGBool *)self objectValue];
-  v3 = [v2 description];
+  objectValue = [(DBGBool *)self objectValue];
+  v3 = [objectValue description];
 
   return v3;
 }
@@ -47,37 +47,37 @@
   return v6;
 }
 
-+ (id)valueWithEncodedValue:(id)a3 format:(id)a4 error:(id *)a5
++ (id)valueWithEncodedValue:(id)value format:(id)format error:(id *)error
 {
-  v8 = a3;
-  if ([a4 isEqualToString:@"b"])
+  valueCopy = value;
+  if ([format isEqualToString:@"b"])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = [v8 BOOLValue];
+      bOOLValue = [valueCopy BOOLValue];
 LABEL_6:
-      v10 = v9;
+      v10 = bOOLValue;
       goto LABEL_10;
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = [v8 dbgBoolValue];
+      bOOLValue = [valueCopy dbgBoolValue];
       goto LABEL_6;
     }
   }
 
   v10 = 0;
-  if (!v8 && a5)
+  if (!valueCopy && error)
   {
     v10 = 0;
-    *a5 = 0;
+    *error = 0;
   }
 
 LABEL_10:
-  v11 = [a1 withValue:v10];
+  v11 = [self withValue:v10];
 
   return v11;
 }

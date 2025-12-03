@@ -1,14 +1,14 @@
 @interface ResizeViewAction
 - (_TtC24FaceTimeNotificationCore16ResizeViewAction)init;
-- (_TtC24FaceTimeNotificationCore16ResizeViewAction)initWithCoder:(id)a3;
+- (_TtC24FaceTimeNotificationCore16ResizeViewAction)initWithCoder:(id)coder;
 @end
 
 @implementation ResizeViewAction
 
-- (_TtC24FaceTimeNotificationCore16ResizeViewAction)initWithCoder:(id)a3
+- (_TtC24FaceTimeNotificationCore16ResizeViewAction)initWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 decodeSize];
+  coderCopy = coder;
+  [coderCopy decodeSize];
   v5 = (&self->super.super.isa + OBJC_IVAR____TtC24FaceTimeNotificationCore16ResizeViewAction_size);
   *v5 = v6;
   v5[1] = v7;

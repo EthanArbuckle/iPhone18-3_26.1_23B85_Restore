@@ -1,29 +1,29 @@
 @interface AAPrimaryAccountUpdater
-- (AAPrimaryAccountUpdater)initWithAccount:(id)a3;
+- (AAPrimaryAccountUpdater)initWithAccount:(id)account;
 - (BOOL)performVersionUpdate0ToVersion1;
 - (BOOL)performVersionUpdate1ToVersion2;
 @end
 
 @implementation AAPrimaryAccountUpdater
 
-- (AAPrimaryAccountUpdater)initWithAccount:(id)a3
+- (AAPrimaryAccountUpdater)initWithAccount:(id)account
 {
-  v6 = a3;
-  if (([v6 aa_isAccountClass:@"primary"] & 1) == 0)
+  accountCopy = account;
+  if (([accountCopy aa_isAccountClass:@"primary"] & 1) == 0)
   {
     [(AAPrimaryAccountUpdater *)a2 initWithAccount:?];
   }
 
-  v7 = [v6 _aa_primaryAccountUpdaterVersion];
-  v8 = [v7 unsignedIntegerValue];
+  _aa_primaryAccountUpdaterVersion = [accountCopy _aa_primaryAccountUpdaterVersion];
+  unsignedIntegerValue = [_aa_primaryAccountUpdaterVersion unsignedIntegerValue];
 
   v12.receiver = self;
   v12.super_class = AAPrimaryAccountUpdater;
-  v9 = [(AAVersionUpdater *)&v12 initWithStartingVersion:v8];
+  v9 = [(AAVersionUpdater *)&v12 initWithStartingVersion:unsignedIntegerValue];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_appleAccount, a3);
+    objc_storeStrong(&v9->_appleAccount, account);
   }
 
   return v10;

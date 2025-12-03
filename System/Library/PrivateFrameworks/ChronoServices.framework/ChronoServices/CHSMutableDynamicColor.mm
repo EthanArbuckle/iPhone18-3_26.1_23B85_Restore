@@ -1,7 +1,7 @@
 @interface CHSMutableDynamicColor
 - (CHSMutableDynamicColor)init;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)addColor:(id)a3 forColorScheme:(unint64_t)a4 displayGamut:(unint64_t)a5;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)addColor:(id)color forColorScheme:(unint64_t)scheme displayGamut:(unint64_t)gamut;
 @end
 
 @implementation CHSMutableDynamicColor
@@ -23,14 +23,14 @@
   return v2;
 }
 
-- (void)addColor:(id)a3 forColorScheme:(unint64_t)a4 displayGamut:(unint64_t)a5
+- (void)addColor:(id)color forColorScheme:(unint64_t)scheme displayGamut:(unint64_t)gamut
 {
-  v9 = a3;
-  v8 = [[_CHSDynamicColorKey alloc] initWithColorScheme:a4 displayGamut:a5];
-  [(NSMutableDictionary *)self->_mutableColors setObject:v9 forKeyedSubscript:v8];
+  colorCopy = color;
+  v8 = [[_CHSDynamicColorKey alloc] initWithColorScheme:scheme displayGamut:gamut];
+  [(NSMutableDictionary *)self->_mutableColors setObject:colorCopy forKeyedSubscript:v8];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [CHSDynamicColor alloc];
   mutableColors = self->_mutableColors;

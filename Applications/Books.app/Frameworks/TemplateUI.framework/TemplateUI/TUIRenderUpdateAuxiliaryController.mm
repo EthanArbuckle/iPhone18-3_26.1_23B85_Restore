@@ -1,9 +1,9 @@
 @interface TUIRenderUpdateAuxiliaryController
 - (TUIRenderUpdateAuxiliaryController)init;
 - (TUIRenderUpdateAuxiliaryControllerDelegate)delegate;
-- (id)registerDelegate:(id)a3;
-- (void)unregisterDelegate:(id)a3;
-- (void)updateWithRenderModel:(id)a3 transactionGroup:(id)a4;
+- (id)registerDelegate:(id)delegate;
+- (void)unregisterDelegate:(id)delegate;
+- (void)updateWithRenderModel:(id)model transactionGroup:(id)group;
 @end
 
 @implementation TUIRenderUpdateAuxiliaryController
@@ -27,9 +27,9 @@
   return v3;
 }
 
-- (id)registerDelegate:(id)a3
+- (id)registerDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -42,9 +42,9 @@
   block[2] = sub_F8964;
   block[3] = &unk_25DC78;
   block[4] = self;
-  v10 = v4;
+  v10 = delegateCopy;
   v11 = &v12;
-  v6 = v4;
+  v6 = delegateCopy;
   dispatch_sync(accessQueue, block);
   v7 = v13[5];
 
@@ -53,29 +53,29 @@
   return v7;
 }
 
-- (void)unregisterDelegate:(id)a3
+- (void)unregisterDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   accessQueue = self->_accessQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_F8A4C;
   v7[3] = &unk_25DCA0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = delegateCopy;
+  selfCopy = self;
+  v6 = delegateCopy;
   dispatch_sync(accessQueue, v7);
 }
 
-- (void)updateWithRenderModel:(id)a3 transactionGroup:(id)a4
+- (void)updateWithRenderModel:(id)model transactionGroup:(id)group
 {
-  v9 = a3;
-  v7 = a4;
-  if (self->_currentModel != v9 || ![(TUIRenderModelAuxiliary *)v9 isEqualToRenderModel:?])
+  modelCopy = model;
+  groupCopy = group;
+  if (self->_currentModel != modelCopy || ![(TUIRenderModelAuxiliary *)modelCopy isEqualToRenderModel:?])
   {
-    objc_storeStrong(&self->_currentModel, a3);
-    v8 = [(TUIRenderUpdateAuxiliaryController *)self delegate];
-    [v8 applyUpdate:v9];
+    objc_storeStrong(&self->_currentModel, model);
+    delegate = [(TUIRenderUpdateAuxiliaryController *)self delegate];
+    [delegate applyUpdate:modelCopy];
   }
 }
 

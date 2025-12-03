@@ -1,16 +1,16 @@
 @interface TUIElementAnimationTo
-+ (void)configureObject:(id)a3 withBuilder:(id)a4 context:(id)a5;
++ (void)configureObject:(id)object withBuilder:(id)builder context:(id)context;
 @end
 
 @implementation TUIElementAnimationTo
 
-+ (void)configureObject:(id)a3 withBuilder:(id)a4 context:(id)a5
++ (void)configureObject:(id)object withBuilder:(id)builder context:(id)context
 {
-  v8 = a3;
-  v6 = a4;
-  [v8 setDuration:1.0];
-  v7 = [v6 finalizeAnimationValues];
-  [v8 setValues:v7];
+  objectCopy = object;
+  builderCopy = builder;
+  [objectCopy setDuration:1.0];
+  finalizeAnimationValues = [builderCopy finalizeAnimationValues];
+  [objectCopy setValues:finalizeAnimationValues];
 }
 
 @end

@@ -1,23 +1,23 @@
 @interface FHOverallSpendInsight
-- (FHOverallSpendInsight)initWithCoder:(id)a3;
+- (FHOverallSpendInsight)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FHOverallSpendInsight
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = FHOverallSpendInsight;
-  [(FHFeatureInsight *)&v3 encodeWithCoder:a3];
+  [(FHFeatureInsight *)&v3 encodeWithCoder:coder];
 }
 
-- (FHOverallSpendInsight)initWithCoder:(id)a3
+- (FHOverallSpendInsight)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = FHOverallSpendInsight;
-  return [(FHFeatureInsight *)&v4 initWithCoder:a3];
+  return [(FHFeatureInsight *)&v4 initWithCoder:coder];
 }
 
 - (id)description

@@ -1,20 +1,20 @@
 @interface AAKEngagementPluginProvider
-+ (void)performRequestWithObject:(id)a3 completion:(id)a4;
++ (void)performRequestWithObject:(id)object completion:(id)completion;
 - (_TtC35AdAttributionKitEngagementExtension27AAKEngagementPluginProvider)init;
 @end
 
 @implementation AAKEngagementPluginProvider
 
-+ (void)performRequestWithObject:(id)a3 completion:(id)a4
++ (void)performRequestWithObject:(id)object completion:(id)completion
 {
   v7 = (*(*(sub_100001BD0(&qword_10000C420, &qword_100003C98) - 8) + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
   __chkstk_darwin();
   v9 = &v15 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(completion);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = object;
   v11[3] = v10;
-  v11[4] = a1;
+  v11[4] = self;
   v12 = sub_100003684();
   (*(*(v12 - 8) + 56))(v9, 1, 1, v12);
   v13 = swift_allocObject();

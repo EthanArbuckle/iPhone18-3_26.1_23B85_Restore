@@ -1,27 +1,27 @@
 @interface FaceToFaceViewController
-- (_TtC17SequoiaTranslator24FaceToFaceViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC17SequoiaTranslator24FaceToFaceViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (unint64_t)supportedInterfaceOrientations;
 - (void)closeButtonPressed;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation FaceToFaceViewController
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000F2EF8();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v10.receiver = self;
   v10.super_class = type metadata accessor for FaceToFaceViewController();
   v4 = v10.receiver;
-  [(FaceToFaceViewController *)&v10 viewWillAppear:v3];
+  [(FaceToFaceViewController *)&v10 viewWillAppear:appearCopy];
   v5 = objc_opt_self();
   v6 = swift_allocObject();
   *(v6 + 16) = v4;
@@ -39,23 +39,23 @@
   _Block_release(v7);
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   swift_unknownObjectRetain();
-  v8 = self;
-  sub_1000F3100(a4, width, height);
+  selfCopy = self;
+  sub_1000F3100(coordinator, width, height);
   swift_unknownObjectRelease();
 }
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v2 = self;
-  v3 = [(FaceToFaceViewController *)v2 traitCollection];
-  v4 = [v3 userInterfaceIdiom];
+  selfCopy = self;
+  traitCollection = [(FaceToFaceViewController *)selfCopy traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v4)
+  if (userInterfaceIdiom)
   {
     return 30;
   }
@@ -68,11 +68,11 @@
 
 - (void)closeButtonPressed
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000F74FC();
 }
 
-- (_TtC17SequoiaTranslator24FaceToFaceViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC17SequoiaTranslator24FaceToFaceViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

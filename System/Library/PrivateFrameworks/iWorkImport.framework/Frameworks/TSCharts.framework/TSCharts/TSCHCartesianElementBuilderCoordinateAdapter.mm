@@ -1,51 +1,51 @@
 @interface TSCHCartesianElementBuilderCoordinateAdapter
-- ($9E5495ABC9D17321C375100FE022AE0A)cartesianPointsWithSeries:(id)a3 groupIndexSet:(id)a4 nullsUseIntercept:(BOOL)a5 plotAreaFrame:(CGRect)a6;
-- (CGRect)constrainedRectWithSeries:(id)a3 elementBoundingBox:(CGRect)a4 seriesAreaFrame:(CGRect)a5;
+- ($9E5495ABC9D17321C375100FE022AE0A)cartesianPointsWithSeries:(id)series groupIndexSet:(id)set nullsUseIntercept:(BOOL)intercept plotAreaFrame:(CGRect)frame;
+- (CGRect)constrainedRectWithSeries:(id)series elementBoundingBox:(CGRect)box seriesAreaFrame:(CGRect)frame;
 @end
 
 @implementation TSCHCartesianElementBuilderCoordinateAdapter
 
-- ($9E5495ABC9D17321C375100FE022AE0A)cartesianPointsWithSeries:(id)a3 groupIndexSet:(id)a4 nullsUseIntercept:(BOOL)a5 plotAreaFrame:(CGRect)a6
+- ($9E5495ABC9D17321C375100FE022AE0A)cartesianPointsWithSeries:(id)series groupIndexSet:(id)set nullsUseIntercept:(BOOL)intercept plotAreaFrame:(CGRect)frame
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v13 = a3;
-  v14 = a4;
-  v19 = objc_msgSend_count(v14, v15, v16, v17, v18);
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  seriesCopy = series;
+  setCopy = set;
+  v19 = objc_msgSend_count(setCopy, v15, v16, v17, v18);
   v24 = objc_msgSend_p_pointArrayWithCount_(self, v20, v21, v22, v23, v19);
-  v29 = objc_msgSend_axisForAxisType_(v13, v25, v26, v27, v28, 1);
-  v34 = objc_msgSend_axisForAxisType_(v13, v30, v31, v32, v33, 2);
-  v39 = objc_msgSend_model(v13, v35, v36, v37, v38);
-  v44 = objc_msgSend_numberOfGroupsInSeries_(v39, v40, v41, v42, v43, v13);
-  v49 = objc_msgSend_unitSpaceCenterValuesForSeries_groupIndexSet_count_(v29, v45, v46, v47, v48, v13, v14, v44);
+  v29 = objc_msgSend_axisForAxisType_(seriesCopy, v25, v26, v27, v28, 1);
+  v34 = objc_msgSend_axisForAxisType_(seriesCopy, v30, v31, v32, v33, 2);
+  v39 = objc_msgSend_model(seriesCopy, v35, v36, v37, v38);
+  v44 = objc_msgSend_numberOfGroupsInSeries_(v39, v40, v41, v42, v43, seriesCopy);
+  v49 = objc_msgSend_unitSpaceCenterValuesForSeries_groupIndexSet_count_(v29, v45, v46, v47, v48, seriesCopy, setCopy, v44);
 
-  v54 = objc_msgSend_unitSpaceValuesForSeries_groupIndexSet_(v34, v50, v51, v52, v53, v13, v14);
+  v54 = objc_msgSend_unitSpaceValuesForSeries_groupIndexSet_(v34, v50, v51, v52, v53, seriesCopy, setCopy);
   v58[0] = MEMORY[0x277D85DD0];
   v58[1] = 3221225472;
   v58[2] = sub_27615E6D8;
   v58[3] = &unk_27A6B6298;
-  v61 = a5;
-  v59 = v13;
+  interceptCopy = intercept;
+  v59 = seriesCopy;
   v60 = v19;
-  v55 = v13;
+  v55 = seriesCopy;
   objc_msgSend_p_iterateWithXValues_yValues_points_pointCount_plotAreaFrame_yValueModifierBlock_(self, v56, x, y, width, v49, v54, v24, v19, v58, height);
 
   return v24;
 }
 
-- (CGRect)constrainedRectWithSeries:(id)a3 elementBoundingBox:(CGRect)a4 seriesAreaFrame:(CGRect)a5
+- (CGRect)constrainedRectWithSeries:(id)series elementBoundingBox:(CGRect)box seriesAreaFrame:(CGRect)frame
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v9 = a4.size.height;
-  v10 = a4.size.width;
-  v11 = a4.origin.y;
-  v12 = a4.origin.x;
-  v13 = a3;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  v9 = box.size.height;
+  v10 = box.size.width;
+  v11 = box.origin.y;
+  v12 = box.origin.x;
+  seriesCopy = series;
   v118 = v12;
   v119 = v11;
   v120.origin.x = v12;
@@ -79,8 +79,8 @@
   v124.size.width = v16;
   v124.size.height = v17;
   MaxY = CGRectGetMaxY(v124);
-  v21 = objc_msgSend_model(v13, v18, MaxY, v19, v20);
-  v26 = objc_msgSend_axisIDForAxisType_(v13, v22, v23, v24, v25, 1);
+  v21 = objc_msgSend_model(seriesCopy, v18, MaxY, v19, v20);
+  v26 = objc_msgSend_axisIDForAxisType_(seriesCopy, v22, v23, v24, v25, 1);
   v31 = objc_msgSend_axisForID_(v21, v27, v28, v29, v30, v26);
 
   if (!v31)
@@ -94,8 +94,8 @@
   }
 
   objc_opt_class();
-  v55 = objc_msgSend_model(v13, v51, v52, v53, v54);
-  v60 = objc_msgSend_axisIDForAxisType_(v13, v56, v57, v58, v59, 2);
+  v55 = objc_msgSend_model(seriesCopy, v51, v52, v53, v54);
+  v60 = objc_msgSend_axisIDForAxisType_(seriesCopy, v56, v57, v58, v59, 2);
   v65 = objc_msgSend_axisForID_(v55, v61, v62, v63, v64, v60);
   v66 = TSUDynamicCast();
 

@@ -1,18 +1,18 @@
 @interface NTKModularSmallColumnTemplateView
-+ (BOOL)handlesComplicationTemplate:(id)a3;
-- (NTKModularSmallColumnTemplateView)initWithFrame:(CGRect)a3;
++ (BOOL)handlesComplicationTemplate:(id)template;
+- (NTKModularSmallColumnTemplateView)initWithFrame:(CGRect)frame;
 - (id)_newLabelSubview;
-- (void)_enumerateForegroundColoringViewsWithBlock:(id)a3;
-- (void)_enumerateSecondaryForegroundColoringViewsWithBlock:(id)a3;
+- (void)_enumerateForegroundColoringViewsWithBlock:(id)block;
+- (void)_enumerateSecondaryForegroundColoringViewsWithBlock:(id)block;
 - (void)_layoutContentView;
 - (void)_update;
 @end
 
 @implementation NTKModularSmallColumnTemplateView
 
-+ (BOOL)handlesComplicationTemplate:(id)a3
++ (BOOL)handlesComplicationTemplate:(id)template
 {
-  v3 = a3;
+  templateCopy = template;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -28,29 +28,29 @@
   return isKindOfClass & 1;
 }
 
-- (NTKModularSmallColumnTemplateView)initWithFrame:(CGRect)a3
+- (NTKModularSmallColumnTemplateView)initWithFrame:(CGRect)frame
 {
   v14.receiver = self;
   v14.super_class = NTKModularSmallColumnTemplateView;
-  v3 = [(NTKModuleView *)&v14 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(NTKModuleView *)&v14 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(NTKModularSmallColumnTemplateView *)v3 _newLabelSubview];
+    _newLabelSubview = [(NTKModularSmallColumnTemplateView *)v3 _newLabelSubview];
     row1Column1Label = v4->_row1Column1Label;
-    v4->_row1Column1Label = v5;
+    v4->_row1Column1Label = _newLabelSubview;
 
-    v7 = [(NTKModularSmallColumnTemplateView *)v4 _newLabelSubview];
+    _newLabelSubview2 = [(NTKModularSmallColumnTemplateView *)v4 _newLabelSubview];
     row2Column1Label = v4->_row2Column1Label;
-    v4->_row2Column1Label = v7;
+    v4->_row2Column1Label = _newLabelSubview2;
 
-    v9 = [(NTKModularSmallColumnTemplateView *)v4 _newLabelSubview];
+    _newLabelSubview3 = [(NTKModularSmallColumnTemplateView *)v4 _newLabelSubview];
     row1Column2Label = v4->_row1Column2Label;
-    v4->_row1Column2Label = v9;
+    v4->_row1Column2Label = _newLabelSubview3;
 
-    v11 = [(NTKModularSmallColumnTemplateView *)v4 _newLabelSubview];
+    _newLabelSubview4 = [(NTKModularSmallColumnTemplateView *)v4 _newLabelSubview];
     row2Column2Label = v4->_row2Column2Label;
-    v4->_row2Column2Label = v11;
+    v4->_row2Column2Label = _newLabelSubview4;
   }
 
   return v4;
@@ -59,8 +59,8 @@
 - (id)_newLabelSubview
 {
   v3 = objc_alloc_init(off_27877BEF8);
-  v4 = [(NTKModularTemplateView *)self timeTravelDate];
-  [v3 setInTimeTravel:v4 != 0];
+  timeTravelDate = [(NTKModularTemplateView *)self timeTravelDate];
+  [v3 setInTimeTravel:timeTravelDate != 0];
 
   objc_initWeak(&location, self);
   v9[0] = MEMORY[0x277D85DD0];
@@ -75,8 +75,8 @@
   v7[3] = &unk_27877DC58;
   objc_copyWeak(&v8, &location);
   [v3 setNeedsResizeHandler:v7];
-  v5 = [(NTKModuleView *)self contentView];
-  [v5 addSubview:v3];
+  contentView = [(NTKModuleView *)self contentView];
+  [contentView addSubview:v3];
 
   objc_destroyWeak(&v8);
   objc_destroyWeak(&v10);
@@ -111,13 +111,13 @@ void __53__NTKModularSmallColumnTemplateView__newLabelSubview__block_invoke_2(ui
   [v1 setNeedsLayout];
 }
 
-- (void)_enumerateForegroundColoringViewsWithBlock:(id)a3
+- (void)_enumerateForegroundColoringViewsWithBlock:(id)block
 {
-  v4 = a3;
-  v8 = [(NTKModularTemplateView *)self complicationTemplate];
-  v5 = [v8 highlightColumn2];
+  blockCopy = block;
+  complicationTemplate = [(NTKModularTemplateView *)self complicationTemplate];
+  highlightColumn2 = [complicationTemplate highlightColumn2];
   v6 = &OBJC_IVAR___NTKModularSmallColumnTemplateView__row1Column1Label;
-  if (v5)
+  if (highlightColumn2)
   {
     v6 = &OBJC_IVAR___NTKModularSmallColumnTemplateView__row1Column2Label;
     v7 = &OBJC_IVAR___NTKModularSmallColumnTemplateView__row2Column2Label;
@@ -128,17 +128,17 @@ void __53__NTKModularSmallColumnTemplateView__newLabelSubview__block_invoke_2(ui
     v7 = &OBJC_IVAR___NTKModularSmallColumnTemplateView__row2Column1Label;
   }
 
-  v4[2](v4, *(&self->super.super.super.super.super.super.super.isa + *v6));
-  v4[2](v4, *(&self->super.super.super.super.super.super.super.isa + *v7));
+  blockCopy[2](blockCopy, *(&self->super.super.super.super.super.super.super.isa + *v6));
+  blockCopy[2](blockCopy, *(&self->super.super.super.super.super.super.super.isa + *v7));
 }
 
-- (void)_enumerateSecondaryForegroundColoringViewsWithBlock:(id)a3
+- (void)_enumerateSecondaryForegroundColoringViewsWithBlock:(id)block
 {
-  v4 = a3;
-  v8 = [(NTKModularTemplateView *)self complicationTemplate];
-  v5 = [v8 highlightColumn2];
+  blockCopy = block;
+  complicationTemplate = [(NTKModularTemplateView *)self complicationTemplate];
+  highlightColumn2 = [complicationTemplate highlightColumn2];
   v6 = &OBJC_IVAR___NTKModularSmallColumnTemplateView__row1Column2Label;
-  if (v5)
+  if (highlightColumn2)
   {
     v6 = &OBJC_IVAR___NTKModularSmallColumnTemplateView__row1Column1Label;
     v7 = &OBJC_IVAR___NTKModularSmallColumnTemplateView__row2Column1Label;
@@ -149,8 +149,8 @@ void __53__NTKModularSmallColumnTemplateView__newLabelSubview__block_invoke_2(ui
     v7 = &OBJC_IVAR___NTKModularSmallColumnTemplateView__row2Column2Label;
   }
 
-  v4[2](v4, *(&self->super.super.super.super.super.super.super.isa + *v6));
-  v4[2](v4, *(&self->super.super.super.super.super.super.super.isa + *v7));
+  blockCopy[2](blockCopy, *(&self->super.super.super.super.super.super.super.isa + *v6));
+  blockCopy[2](blockCopy, *(&self->super.super.super.super.super.super.super.isa + *v7));
 }
 
 - (void)_layoutContentView
@@ -160,15 +160,15 @@ void __53__NTKModularSmallColumnTemplateView__newLabelSubview__block_invoke_2(ui
   v88 = 0u;
   v89 = 0u;
   v87 = 0u;
-  v3 = [(NTKModuleView *)self device];
+  device = [(NTKModuleView *)self device];
   if ([(NTKComplicationModuleView *)self isXL])
   {
-    ___LayoutConstantsExtraLarge_block_invoke_6(v3, &v87);
+    ___LayoutConstantsExtraLarge_block_invoke_6(device, &v87);
   }
 
   else
   {
-    ___LayoutConstantsModularSmall_block_invoke_3(v3, &v87);
+    ___LayoutConstantsModularSmall_block_invoke_3(device, &v87);
   }
 
   v4 = *&v90;
@@ -178,11 +178,11 @@ void __53__NTKModularSmallColumnTemplateView__newLabelSubview__block_invoke_2(ui
   v70 = *(&v88 + 1);
   v71 = *(&v90 + 1);
   v6 = *(&v90 + 1) + *&v89 * -2.0 - *(&v89 + 1);
-  v7 = [(NTKModularTemplateView *)self complicationTemplate];
-  v8 = [v7 column2Alignment];
+  complicationTemplate = [(NTKModularTemplateView *)self complicationTemplate];
+  column2Alignment = [complicationTemplate column2Alignment];
 
-  v9 = [(NTKModularTemplateView *)self complicationTemplate];
-  v76 = [v9 highlightColumn2];
+  complicationTemplate2 = [(NTKModularTemplateView *)self complicationTemplate];
+  highlightColumn2 = [complicationTemplate2 highlightColumn2];
 
   v85 = 0.0;
   Width = 0.0;
@@ -202,11 +202,11 @@ void __53__NTKModularSmallColumnTemplateView__newLabelSubview__block_invoke_2(ui
     [(CLKUIColoringLabel *)self->_row2Column2Label sizeToFit];
     [(CLKUIColoringLabel *)self->_row2Column2Label bounds];
     v83 = CGRectGetWidth(v95);
-    v10 = [(NTKModuleView *)self device];
+    device2 = [(NTKModuleView *)self device];
     CLKCeilForDevice();
     v12 = v11;
 
-    v13 = [(NTKModuleView *)self device];
+    device3 = [(NTKModuleView *)self device];
     CLKCeilForDevice();
     v15 = v14;
   }
@@ -225,7 +225,7 @@ void __53__NTKModularSmallColumnTemplateView__newLabelSubview__block_invoke_2(ui
         v20 = [(NTKModularSmallColumnTemplateView *)self _headerFontOfSize:v16];
         v21 = [(NTKModularSmallColumnTemplateView *)self _bodyFontOfSize:v16];
         v22 = v21;
-        if (v76)
+        if (highlightColumn2)
         {
           v23 = v21;
         }
@@ -235,7 +235,7 @@ void __53__NTKModularSmallColumnTemplateView__newLabelSubview__block_invoke_2(ui
           v23 = v20;
         }
 
-        if (v76)
+        if (highlightColumn2)
         {
           v24 = v20;
         }
@@ -267,7 +267,7 @@ void __53__NTKModularSmallColumnTemplateView__newLabelSubview__block_invoke_2(ui
         v78 = v18;
         v28 = _Block_copy(v77);
         v29 = v28;
-        if (v76)
+        if (highlightColumn2)
         {
           v15 = (*(v28 + 2))(v28, &v85, &v83, 0.0);
           v12 = v27[2](v27, &Width, &v84);
@@ -315,7 +315,7 @@ void __53__NTKModularSmallColumnTemplateView__newLabelSubview__block_invoke_2(ui
 
   if (v15 + v12 > v6)
   {
-    if (v76)
+    if (highlightColumn2)
     {
       if (v15 > v4)
       {
@@ -391,7 +391,7 @@ void __53__NTKModularSmallColumnTemplateView__newLabelSubview__block_invoke_2(ui
   }
 
   [(CLKUIColoringLabel *)self->_row2Column2Label setFrame:v50, v53, v54, v52];
-  v55 = [(NTKModuleView *)self device];
+  device4 = [(NTKModuleView *)self device];
   CLKRoundForDevice();
   v57 = v56;
 
@@ -436,7 +436,7 @@ void __53__NTKModularSmallColumnTemplateView__newLabelSubview__block_invoke_2(ui
   }
 
   v62 = v15 - v48;
-  if (v8 == 1)
+  if (column2Alignment == 1)
   {
     v63 = v15 - v54;
   }
@@ -483,27 +483,27 @@ void __55__NTKModularSmallColumnTemplateView__layoutContentView__block_invoke_2(
 
 - (void)_update
 {
-  v12 = [(NTKModularTemplateView *)self complicationTemplate];
+  complicationTemplate = [(NTKModularTemplateView *)self complicationTemplate];
   self->_calculatedFontSize = 0;
   [(NTKModuleView *)self _updateColors];
   row1Column1Label = self->_row1Column1Label;
-  v4 = [v12 row1Column1TextProvider];
-  [(CLKUIColoringLabel *)row1Column1Label setTextProvider:v4];
+  row1Column1TextProvider = [complicationTemplate row1Column1TextProvider];
+  [(CLKUIColoringLabel *)row1Column1Label setTextProvider:row1Column1TextProvider];
 
   row1Column2Label = self->_row1Column2Label;
-  v6 = [v12 row1Column2TextProvider];
-  [(CLKUIColoringLabel *)row1Column2Label setTextProvider:v6];
+  row1Column2TextProvider = [complicationTemplate row1Column2TextProvider];
+  [(CLKUIColoringLabel *)row1Column2Label setTextProvider:row1Column2TextProvider];
 
   row2Column1Label = self->_row2Column1Label;
-  v8 = [v12 row2Column1TextProvider];
-  [(CLKUIColoringLabel *)row2Column1Label setTextProvider:v8];
+  row2Column1TextProvider = [complicationTemplate row2Column1TextProvider];
+  [(CLKUIColoringLabel *)row2Column1Label setTextProvider:row2Column1TextProvider];
 
   row2Column2Label = self->_row2Column2Label;
-  v10 = [v12 row2Column2TextProvider];
-  [(CLKUIColoringLabel *)row2Column2Label setTextProvider:v10];
+  row2Column2TextProvider = [complicationTemplate row2Column2TextProvider];
+  [(CLKUIColoringLabel *)row2Column2Label setTextProvider:row2Column2TextProvider];
 
-  v11 = [(NTKModuleView *)self contentView];
-  [v11 setNeedsLayout];
+  contentView = [(NTKModuleView *)self contentView];
+  [contentView setNeedsLayout];
 }
 
 @end

@@ -1,45 +1,45 @@
 @interface ICDelegationPlayInfoRequestOperation
-- (void)_finishWithResult:(BOOL)a3 tokens:(id)a4 error:(id)a5;
+- (void)_finishWithResult:(BOOL)result tokens:(id)tokens error:(id)error;
 - (void)execute;
-- (void)finishWithError:(id)a3;
-- (void)finishWithResponse:(id)a3 requestDate:(id)a4 error:(id)a5;
+- (void)finishWithError:(id)error;
+- (void)finishWithResponse:(id)response requestDate:(id)date error:(id)error;
 @end
 
 @implementation ICDelegationPlayInfoRequestOperation
 
-- (void)_finishWithResult:(BOOL)a3 tokens:(id)a4 error:(id)a5
+- (void)_finishWithResult:(BOOL)result tokens:(id)tokens error:(id)error
 {
-  v6 = a3;
-  v8 = a5;
+  resultCopy = result;
+  errorCopy = error;
   responseHandler = self->_responseHandler;
-  v12 = v8;
+  v12 = errorCopy;
   if (responseHandler)
   {
-    if (a4)
+    if (tokens)
     {
-      v10 = a4;
+      tokensCopy = tokens;
     }
 
     else
     {
-      v10 = MEMORY[0x1E695E0F8];
+      tokensCopy = MEMORY[0x1E695E0F8];
     }
 
-    responseHandler[2](responseHandler, v6, v10, v8);
+    responseHandler[2](responseHandler, resultCopy, tokensCopy, errorCopy);
     v11 = self->_responseHandler;
     self->_responseHandler = 0;
 
-    v8 = v12;
+    errorCopy = v12;
   }
 
-  [(ICDelegationPlayInfoRequestOperation *)self finishWithError:v8];
+  [(ICDelegationPlayInfoRequestOperation *)self finishWithError:errorCopy];
 }
 
-- (void)finishWithError:(id)a3
+- (void)finishWithError:(id)error
 {
   v5.receiver = self;
   v5.super_class = ICDelegationPlayInfoRequestOperation;
-  [(ICAsyncOperation *)&v5 finishWithError:a3];
+  [(ICAsyncOperation *)&v5 finishWithError:error];
   strongSelf = self->_strongSelf;
   self->_strongSelf = 0;
 }
@@ -119,23 +119,23 @@ void __47__ICDelegationPlayInfoRequestOperation_execute__block_invoke(uint64_t a
   }
 }
 
-- (void)finishWithResponse:(id)a3 requestDate:(id)a4 error:(id)a5
+- (void)finishWithResponse:(id)response requestDate:(id)date error:(id)error
 {
   v33 = *MEMORY[0x1E69E9840];
-  v25 = a4;
-  if (a3)
+  dateCopy = date;
+  if (response)
   {
-    v8 = [a3 parsedBodyArray];
-    if (v8)
+    parsedBodyArray = [response parsedBodyArray];
+    if (parsedBodyArray)
     {
-      v23 = self;
+      selfCopy = self;
       v27 = objc_alloc_init(MEMORY[0x1E695DF90]);
       v28 = 0u;
       v29 = 0u;
       v30 = 0u;
       v31 = 0u;
-      v24 = v8;
-      v9 = v8;
+      v24 = parsedBodyArray;
+      v9 = parsedBodyArray;
       v10 = [v9 countByEnumeratingWithState:&v28 objects:v32 count:16];
       if (v10)
       {
@@ -162,7 +162,7 @@ void __47__ICDelegationPlayInfoRequestOperation_execute__block_invoke(uint64_t a
                 if (objc_opt_respondsToSelector())
                 {
                   [v17 doubleValue];
-                  v18 = [v25 dateByAddingTimeInterval:?];
+                  v18 = [dateCopy dateByAddingTimeInterval:?];
                 }
 
                 else
@@ -193,8 +193,8 @@ void __47__ICDelegationPlayInfoRequestOperation_execute__block_invoke(uint64_t a
         while (v11);
       }
 
-      [(ICDelegationPlayInfoRequestOperation *)v23 _finishWithResult:1 tokens:v27 error:0];
-      v8 = v24;
+      [(ICDelegationPlayInfoRequestOperation *)selfCopy _finishWithResult:1 tokens:v27 error:0];
+      parsedBodyArray = v24;
     }
 
     else
@@ -206,7 +206,7 @@ void __47__ICDelegationPlayInfoRequestOperation_execute__block_invoke(uint64_t a
 
   else
   {
-    [(ICDelegationPlayInfoRequestOperation *)self _finishWithResult:0 tokens:0 error:a5];
+    [(ICDelegationPlayInfoRequestOperation *)self _finishWithResult:0 tokens:0 error:error];
   }
 }
 

@@ -1,14 +1,14 @@
 @interface SeparatorSupplementaryView
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (void)layoutSubviews;
 @end
 
 @implementation SeparatorSupplementaryView
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  v4 = self;
+  width = fits.width;
+  selfCopy = self;
   v5 = sub_31D844(width);
   v7 = v6;
 
@@ -28,13 +28,13 @@
   v7 = type metadata accessor for SeparatorSupplementaryView();
   v20.receiver = self;
   v20.super_class = v7;
-  v8 = self;
+  selfCopy = self;
   [(SeparatorSupplementaryView *)&v20 layoutSubviews];
-  v9 = *(&v8->super.super.super.super.isa + OBJC_IVAR____TtC18ASMessagesProvider26SeparatorSupplementaryView_lineView);
+  v9 = *(&selfCopy->super.super.super.super.isa + OBJC_IVAR____TtC18ASMessagesProvider26SeparatorSupplementaryView_lineView);
   v10 = OBJC_IVAR____TtC18ASMessagesProvider26SeparatorSupplementaryView_separator;
   swift_beginAccess();
-  (*(v4 + 16))(v6, v8 + v10, v3);
-  [(SeparatorSupplementaryView *)v8 bounds];
+  (*(v4 + 16))(v6, selfCopy + v10, v3);
+  [(SeparatorSupplementaryView *)selfCopy bounds];
   sub_75D390();
   v12 = v11;
   v14 = v13;

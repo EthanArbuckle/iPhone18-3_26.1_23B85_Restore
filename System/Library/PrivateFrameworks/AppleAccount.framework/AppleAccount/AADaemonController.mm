@@ -1,14 +1,14 @@
 @interface AADaemonController
 - (AADaemonController)init;
-- (void)cacheLoginResponse:(id)a3 forAccount:(id)a4 completion:(id)a5;
-- (void)configureRemoteInterface:(id)a3;
+- (void)cacheLoginResponse:(id)response forAccount:(id)account completion:(id)completion;
+- (void)configureRemoteInterface:(id)interface;
 - (void)dealloc;
-- (void)fetchCachedLoginResponseForAccount:(id)a3 completion:(id)a4;
-- (void)handleAppleAccountDeleteForAccount:(id)a3 completion:(id)a4;
-- (void)removeChildOrTeenConnectFollowUpWithCompletion:(id)a3;
-- (void)removeProtoAccountWithCompletion:(id)a3;
-- (void)startAppleIDAvailabilityHealthCheckWithCompletion:(id)a3;
-- (void)urlConfigurationWithCompletion:(id)a3;
+- (void)fetchCachedLoginResponseForAccount:(id)account completion:(id)completion;
+- (void)handleAppleAccountDeleteForAccount:(id)account completion:(id)completion;
+- (void)removeChildOrTeenConnectFollowUpWithCompletion:(id)completion;
+- (void)removeProtoAccountWithCompletion:(id)completion;
+- (void)startAppleIDAvailabilityHealthCheckWithCompletion:(id)completion;
+- (void)urlConfigurationWithCompletion:(id)completion;
 @end
 
 @implementation AADaemonController
@@ -38,12 +38,12 @@
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleAppleAccountDeleteForAccount:(id)a3 completion:(id)a4
+- (void)handleAppleAccountDeleteForAccount:(id)account completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6)
+  accountCopy = account;
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (!accountCopy)
   {
     [AADaemonController handleAppleAccountDeleteForAccount:completion:];
     if (v8)
@@ -56,7 +56,7 @@ LABEL_5:
     goto LABEL_3;
   }
 
-  if (!v7)
+  if (!completionCopy)
   {
     goto LABEL_5;
   }
@@ -82,7 +82,7 @@ LABEL_3:
   v13 = v11;
   v16 = v13;
   v14 = [(AAFXPCSession *)remoteService remoteServiceProxyWithErrorHandler:v15];
-  [v14 handleAppleAccountDeleteForAccount:v6 completion:v13];
+  [v14 handleAppleAccountDeleteForAccount:accountCopy completion:v13];
 
   os_activity_scope_leave(&state);
 }
@@ -110,15 +110,15 @@ void __68__AADaemonController_handleAppleAccountDeleteForAccount_completion___bl
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)cacheLoginResponse:(id)a3 forAccount:(id)a4 completion:(id)a5
+- (void)cacheLoginResponse:(id)response forAccount:(id)account completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8)
+  responseCopy = response;
+  accountCopy = account;
+  completionCopy = completion;
+  if (!responseCopy)
   {
     [AADaemonController cacheLoginResponse:forAccount:completion:];
-    if (v9)
+    if (accountCopy)
     {
       goto LABEL_3;
     }
@@ -128,7 +128,7 @@ LABEL_5:
     goto LABEL_3;
   }
 
-  if (!v9)
+  if (!accountCopy)
   {
     goto LABEL_5;
   }
@@ -138,12 +138,12 @@ LABEL_3:
   v15 = 3221225472;
   v16 = __63__AADaemonController_cacheLoginResponse_forAccount_completion___block_invoke;
   v17 = &unk_1E7C9B518;
-  v18 = self;
-  v19 = v10;
-  v11 = v10;
+  selfCopy = self;
+  v19 = completionCopy;
+  v11 = completionCopy;
   v12 = _Block_copy(&v14);
-  v13 = [(AAFXPCSession *)self->_remoteService remoteServiceProxyWithErrorHandler:v12, v14, v15, v16, v17, v18];
-  [v13 cacheLoginResponse:v8 forAccount:v9 completion:v12];
+  selfCopy = [(AAFXPCSession *)self->_remoteService remoteServiceProxyWithErrorHandler:v12, v14, v15, v16, v17, selfCopy];
+  [selfCopy cacheLoginResponse:responseCopy forAccount:accountCopy completion:v12];
 }
 
 uint64_t __63__AADaemonController_cacheLoginResponse_forAccount_completion___block_invoke(uint64_t a1)
@@ -157,11 +157,11 @@ uint64_t __63__AADaemonController_cacheLoginResponse_forAccount_completion___blo
   return result;
 }
 
-- (void)fetchCachedLoginResponseForAccount:(id)a3 completion:(id)a4
+- (void)fetchCachedLoginResponseForAccount:(id)account completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  accountCopy = account;
+  completionCopy = completion;
+  if (!accountCopy)
   {
     [AADaemonController fetchCachedLoginResponseForAccount:completion:];
   }
@@ -171,8 +171,8 @@ uint64_t __63__AADaemonController_cacheLoginResponse_forAccount_completion___blo
   aBlock[2] = __68__AADaemonController_fetchCachedLoginResponseForAccount_completion___block_invoke;
   aBlock[3] = &unk_1E7C9BA38;
   aBlock[4] = self;
-  v16 = v7;
-  v8 = v7;
+  v16 = completionCopy;
+  v8 = completionCopy;
   v9 = _Block_copy(aBlock);
   remoteService = self->_remoteService;
   v13[0] = MEMORY[0x1E69E9820];
@@ -182,7 +182,7 @@ uint64_t __63__AADaemonController_cacheLoginResponse_forAccount_completion___blo
   v14 = v9;
   v11 = v9;
   v12 = [(AAFXPCSession *)remoteService remoteServiceProxyWithErrorHandler:v13];
-  [v12 fetchCachedLoginResponseForAccount:v6 completion:v11];
+  [v12 fetchCachedLoginResponseForAccount:accountCopy completion:v11];
 }
 
 uint64_t __68__AADaemonController_fetchCachedLoginResponseForAccount_completion___block_invoke(uint64_t a1)
@@ -196,15 +196,15 @@ uint64_t __68__AADaemonController_fetchCachedLoginResponseForAccount_completion_
   return result;
 }
 
-- (void)urlConfigurationWithCompletion:(id)a3
+- (void)urlConfigurationWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __53__AADaemonController_urlConfigurationWithCompletion___block_invoke;
   aBlock[3] = &unk_1E7C9BA60;
   aBlock[4] = self;
-  v5 = v4;
+  v5 = completionCopy;
   v22 = v5;
   v6 = _Block_copy(aBlock);
   remoteService = self->_remoteService;
@@ -270,9 +270,9 @@ void __53__AADaemonController_urlConfigurationWithCompletion___block_invoke_70(u
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)removeProtoAccountWithCompletion:(id)a3
+- (void)removeProtoAccountWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = _os_activity_create(&dword_1B6F6A000, "daemon-appleaccount/remove-proto-account", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -282,7 +282,7 @@ void __53__AADaemonController_urlConfigurationWithCompletion___block_invoke_70(u
   aBlock[2] = __55__AADaemonController_removeProtoAccountWithCompletion___block_invoke;
   aBlock[3] = &unk_1E7C9B518;
   aBlock[4] = self;
-  v6 = v4;
+  v6 = completionCopy;
   v14 = v6;
   v7 = _Block_copy(aBlock);
   remoteService = self->_remoteService;
@@ -321,9 +321,9 @@ void __55__AADaemonController_removeProtoAccountWithCompletion___block_invoke_2(
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)removeChildOrTeenConnectFollowUpWithCompletion:(id)a3
+- (void)removeChildOrTeenConnectFollowUpWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = _os_activity_create(&dword_1B6F6A000, "daemon-appleaccount/remove-childconnect-followup", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -333,7 +333,7 @@ void __55__AADaemonController_removeProtoAccountWithCompletion___block_invoke_2(
   aBlock[2] = __69__AADaemonController_removeChildOrTeenConnectFollowUpWithCompletion___block_invoke;
   aBlock[3] = &unk_1E7C9B518;
   aBlock[4] = self;
-  v6 = v4;
+  v6 = completionCopy;
   v14 = v6;
   v7 = _Block_copy(aBlock);
   remoteService = self->_remoteService;
@@ -372,17 +372,17 @@ void __69__AADaemonController_removeChildOrTeenConnectFollowUpWithCompletion___b
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)startAppleIDAvailabilityHealthCheckWithCompletion:(id)a3
+- (void)startAppleIDAvailabilityHealthCheckWithCompletion:(id)completion
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   v31[0] = 0;
   v31[1] = v31;
   v31[2] = 0x3032000000;
   v31[3] = __Block_byref_object_copy__4;
   v31[4] = __Block_byref_object_dispose__4;
-  v5 = self;
-  v32 = v5;
+  selfCopy = self;
+  v32 = selfCopy;
   v6 = _os_activity_create(&dword_1B6F6A000, "appleidavailability-appleaccount/start-appleid-availability-health-check", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -414,10 +414,10 @@ void __69__AADaemonController_removeChildOrTeenConnectFollowUpWithCompletion___b
   v27 = v31;
   v28 = v8;
   v29 = v10;
-  v14 = v4;
+  v14 = completionCopy;
   v26 = v14;
   v15 = _Block_copy(aBlock);
-  remoteService = v5->_remoteService;
+  remoteService = selfCopy->_remoteService;
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __72__AADaemonController_startAppleIDAvailabilityHealthCheckWithCompletion___block_invoke_73;
@@ -511,19 +511,19 @@ void __72__AADaemonController_startAppleIDAvailabilityHealthCheckWithCompletion_
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)configureRemoteInterface:(id)a3
+- (void)configureRemoteInterface:(id)interface
 {
   v19[2] = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E695DFD8];
-  v4 = a3;
+  interfaceCopy = interface;
   v19[0] = objc_opt_class();
   v19[1] = objc_opt_class();
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:2];
   v6 = [v3 setWithArray:v5];
 
-  [v4 setClasses:v6 forSelector:sel_handleAppleAccountDeleteForAccount_completion_ argumentIndex:0 ofReply:1];
+  [interfaceCopy setClasses:v6 forSelector:sel_handleAppleAccountDeleteForAccount_completion_ argumentIndex:0 ofReply:1];
   v7 = [v6 copy];
-  [v4 setClasses:v7 forSelector:sel_removeProtoAccountWithCompletion_ argumentIndex:0 ofReply:1];
+  [interfaceCopy setClasses:v7 forSelector:sel_removeProtoAccountWithCompletion_ argumentIndex:0 ofReply:1];
 
   v8 = MEMORY[0x1E695DFD8];
   v12 = objc_opt_class();
@@ -536,7 +536,7 @@ void __72__AADaemonController_startAppleIDAvailabilityHealthCheckWithCompletion_
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v12 count:7];
   v10 = [v8 setWithArray:{v9, v12, v13, v14, v15, v16, v17}];
 
-  [v4 setClasses:v10 forSelector:sel_urlConfigurationWithCompletion_ argumentIndex:0 ofReply:1];
+  [interfaceCopy setClasses:v10 forSelector:sel_urlConfigurationWithCompletion_ argumentIndex:0 ofReply:1];
   v11 = *MEMORY[0x1E69E9840];
 }
 

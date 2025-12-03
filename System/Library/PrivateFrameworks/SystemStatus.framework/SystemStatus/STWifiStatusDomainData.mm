@@ -1,16 +1,16 @@
 @interface STWifiStatusDomainData
-- (BOOL)isEqual:(id)a3;
-- (STWifiStatusDomainData)initWithCoder:(id)a3;
-- (id)_descriptionBuilderWithMultilinePrefix:(uint64_t)a3 forDebug:;
-- (id)dataByApplyingDiff:(id)a3;
-- (id)debugDescriptionWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)diffFromData:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (STWifiStatusDomainData)initWithCoder:(id)coder;
+- (id)_descriptionBuilderWithMultilinePrefix:(uint64_t)prefix forDebug:;
+- (id)dataByApplyingDiff:(id)diff;
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)diffFromData:(id)data;
 - (id)initWithData:(id)result;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (id)succinctDescription;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation STWifiStatusDomainData
@@ -21,114 +21,114 @@
   {
     v2 = result;
     v3 = a2;
-    v4 = [v3 isWifiActive];
-    v5 = [v3 signalStrengthBars];
-    v6 = [v3 isAssociatedToIOSHotspot];
+    isWifiActive = [v3 isWifiActive];
+    signalStrengthBars = [v3 signalStrengthBars];
+    isAssociatedToIOSHotspot = [v3 isAssociatedToIOSHotspot];
 
     v7.receiver = v2;
     v7.super_class = STWifiStatusDomainData;
     result = objc_msgSendSuper2(&v7, sel_init);
     if (result)
     {
-      *(result + 8) = v4;
-      *(result + 2) = v5;
-      *(result + 24) = v6;
+      *(result + 8) = isWifiActive;
+      *(result + 2) = signalStrengthBars;
+      *(result + 24) = isAssociatedToIOSHotspot;
     }
   }
 
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E698E6A0] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
-  v6 = [(STWifiStatusDomainData *)self isWifiActive];
+  equalCopy = equal;
+  v5 = [MEMORY[0x1E698E6A0] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
+  isWifiActive = [(STWifiStatusDomainData *)self isWifiActive];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __34__STWifiStatusDomainData_isEqual___block_invoke;
   v20[3] = &unk_1E85DDD50;
-  v7 = v4;
+  v7 = equalCopy;
   v21 = v7;
-  v8 = [v5 appendBool:v6 counterpart:v20];
-  v9 = [(STWifiStatusDomainData *)self signalStrengthBars];
+  v8 = [v5 appendBool:isWifiActive counterpart:v20];
+  signalStrengthBars = [(STWifiStatusDomainData *)self signalStrengthBars];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __34__STWifiStatusDomainData_isEqual___block_invoke_2;
   v18[3] = &unk_1E85DE2F8;
   v10 = v7;
   v19 = v10;
-  v11 = [v5 appendUnsignedInteger:v9 counterpart:v18];
-  v12 = [(STWifiStatusDomainData *)self isAssociatedToIOSHotspot];
+  v11 = [v5 appendUnsignedInteger:signalStrengthBars counterpart:v18];
+  isAssociatedToIOSHotspot = [(STWifiStatusDomainData *)self isAssociatedToIOSHotspot];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __34__STWifiStatusDomainData_isEqual___block_invoke_3;
   v16[3] = &unk_1E85DDD50;
   v17 = v10;
   v13 = v10;
-  v14 = [v5 appendBool:v12 counterpart:v16];
-  LOBYTE(v12) = [v5 isEqual];
+  v14 = [v5 appendBool:isAssociatedToIOSHotspot counterpart:v16];
+  LOBYTE(isAssociatedToIOSHotspot) = [v5 isEqual];
 
-  return v12;
+  return isAssociatedToIOSHotspot;
 }
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E698E6B8] builder];
-  v4 = [v3 appendBool:{-[STWifiStatusDomainData isWifiActive](self, "isWifiActive")}];
-  v5 = [v3 appendUnsignedInteger:{-[STWifiStatusDomainData signalStrengthBars](self, "signalStrengthBars")}];
-  v6 = [v3 appendBool:{-[STWifiStatusDomainData isAssociatedToIOSHotspot](self, "isAssociatedToIOSHotspot")}];
-  v7 = [v3 hash];
+  builder = [MEMORY[0x1E698E6B8] builder];
+  v4 = [builder appendBool:{-[STWifiStatusDomainData isWifiActive](self, "isWifiActive")}];
+  v5 = [builder appendUnsignedInteger:{-[STWifiStatusDomainData signalStrengthBars](self, "signalStrengthBars")}];
+  v6 = [builder appendBool:{-[STWifiStatusDomainData isAssociatedToIOSHotspot](self, "isAssociatedToIOSHotspot")}];
+  v7 = [builder hash];
 
   return v7;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [STMutableWifiStatusDomainData allocWithZone:a3];
+  v4 = [STMutableWifiStatusDomainData allocWithZone:zone];
 
   return [(STWifiStatusDomainData *)v4 initWithData:?];
 }
 
 - (id)succinctDescription
 {
-  v2 = [(STWifiStatusDomainData *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(STWifiStatusDomainData *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(STWifiStatusDomainData *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(STWifiStatusDomainData *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)debugDescriptionWithMultilinePrefix:(id)a3
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(STWifiStatusDomainData *)self _descriptionBuilderWithMultilinePrefix:a3 forDebug:1];
-  v4 = [v3 build];
+  v3 = [(STWifiStatusDomainData *)self _descriptionBuilderWithMultilinePrefix:prefix forDebug:1];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)_descriptionBuilderWithMultilinePrefix:(uint64_t)a3 forDebug:
+- (id)_descriptionBuilderWithMultilinePrefix:(uint64_t)prefix forDebug:
 {
-  if (a1)
+  if (self)
   {
     v5 = a2;
-    v6 = [a1 succinctDescriptionBuilder];
-    [v6 setUseDebugDescription:a3];
-    [v6 setActiveMultilinePrefix:v5];
+    succinctDescriptionBuilder = [self succinctDescriptionBuilder];
+    [succinctDescriptionBuilder setUseDebugDescription:prefix];
+    [succinctDescriptionBuilder setActiveMultilinePrefix:v5];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __74__STWifiStatusDomainData__descriptionBuilderWithMultilinePrefix_forDebug___block_invoke;
     v10[3] = &unk_1E85DDD00;
-    v7 = v6;
+    v7 = succinctDescriptionBuilder;
     v11 = v7;
-    v12 = a1;
+    selfCopy = self;
     [v7 appendBodySectionWithName:0 multilinePrefix:v5 block:v10];
 
     v8 = v7;
@@ -149,13 +149,13 @@ id __74__STWifiStatusDomainData__descriptionBuilderWithMultilinePrefix_forDebug_
   return [*(a1 + 32) appendBool:objc_msgSend(*(a1 + 40) withName:{"isAssociatedToIOSHotspot"), @"associatedToIOSHotspot"}];
 }
 
-- (id)diffFromData:(id)a3
+- (id)diffFromData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [STWifiStatusDomainDataDiff diffFromData:v4 toData:self];
+    v5 = [STWifiStatusDomainDataDiff diffFromData:dataCopy toData:self];
   }
 
   else
@@ -166,13 +166,13 @@ id __74__STWifiStatusDomainData__descriptionBuilderWithMultilinePrefix_forDebug_
   return v5;
 }
 
-- (id)dataByApplyingDiff:(id)a3
+- (id)dataByApplyingDiff:(id)diff
 {
-  v4 = a3;
+  diffCopy = diff;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if ([v4 isEmpty])
+    if ([diffCopy isEmpty])
     {
       v5 = [(STWifiStatusDomainData *)self copy];
     }
@@ -180,7 +180,7 @@ id __74__STWifiStatusDomainData__descriptionBuilderWithMultilinePrefix_forDebug_
     else
     {
       v5 = [(STWifiStatusDomainData *)self mutableCopy];
-      [v4 applyToMutableData:v5];
+      [diffCopy applyToMutableData:v5];
     }
   }
 
@@ -192,20 +192,20 @@ id __74__STWifiStatusDomainData__descriptionBuilderWithMultilinePrefix_forDebug_
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeBool:-[STWifiStatusDomainData isWifiActive](self forKey:{"isWifiActive"), @"wifiActive"}];
-  [v4 encodeInteger:-[STWifiStatusDomainData signalStrengthBars](self forKey:{"signalStrengthBars"), @"signalStrengthBars"}];
-  [v4 encodeBool:-[STWifiStatusDomainData isAssociatedToIOSHotspot](self forKey:{"isAssociatedToIOSHotspot"), @"associatedToIOSHotspot"}];
+  coderCopy = coder;
+  [coderCopy encodeBool:-[STWifiStatusDomainData isWifiActive](self forKey:{"isWifiActive"), @"wifiActive"}];
+  [coderCopy encodeInteger:-[STWifiStatusDomainData signalStrengthBars](self forKey:{"signalStrengthBars"), @"signalStrengthBars"}];
+  [coderCopy encodeBool:-[STWifiStatusDomainData isAssociatedToIOSHotspot](self forKey:{"isAssociatedToIOSHotspot"), @"associatedToIOSHotspot"}];
 }
 
-- (STWifiStatusDomainData)initWithCoder:(id)a3
+- (STWifiStatusDomainData)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeBoolForKey:@"wifiActive"];
-  v6 = [v4 decodeIntegerForKey:@"signalStrengthBars"];
-  v7 = [v4 decodeBoolForKey:@"associatedToIOSHotspot"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeBoolForKey:@"wifiActive"];
+  v6 = [coderCopy decodeIntegerForKey:@"signalStrengthBars"];
+  v7 = [coderCopy decodeBoolForKey:@"associatedToIOSHotspot"];
 
   if (!self)
   {

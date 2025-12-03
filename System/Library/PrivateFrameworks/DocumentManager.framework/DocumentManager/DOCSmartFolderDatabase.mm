@@ -1,39 +1,39 @@
 @interface DOCSmartFolderDatabase
-- (BOOL)_acquireBackgroundAssertionWithReason:(unint64_t)a3;
+- (BOOL)_acquireBackgroundAssertionWithReason:(unint64_t)reason;
 - (DOCSmartFolderDatabase)init;
-- (DOCSmartFolderDatabase)initWithURL:(id)a3;
-- (id)_createDatabaseIfNeededAtURL:(id)a3 error:(id *)a4;
-- (id)_existingEventSimilarToEvent:(id)a3;
-- (id)_existingFileNameHitsSimilarToHit:(id)a3;
-- (id)_existingFiletypeHitSimilarToHit:(id)a3;
-- (id)_openConnectionToDatabaseAtURL:(id)a3;
-- (id)_setupDatabaseTablesIfNeeded:(id)a3 error:(id *)a4;
-- (id)previousEventsForAppBundleIdentifier:(id)a3 excluding:(id)a4;
+- (DOCSmartFolderDatabase)initWithURL:(id)l;
+- (id)_createDatabaseIfNeededAtURL:(id)l error:(id *)error;
+- (id)_existingEventSimilarToEvent:(id)event;
+- (id)_existingFileNameHitsSimilarToHit:(id)hit;
+- (id)_existingFiletypeHitSimilarToHit:(id)hit;
+- (id)_openConnectionToDatabaseAtURL:(id)l;
+- (id)_setupDatabaseTablesIfNeeded:(id)needed error:(id *)error;
+- (id)previousEventsForAppBundleIdentifier:(id)identifier excluding:(id)excluding;
 - (id)previousHits;
 - (void)_cleanUpAfterClose;
-- (void)_closeDatabaseOnItsQueue:(id)a3;
-- (void)_registerHit:(id)a3;
-- (void)_registerSavingFile:(id)a3 inFolder:(id)a4 atDate:(id)a5 withFrecencyScore:(double)a6 rowId:(id)a7;
-- (void)_registerSavingFileType:(id)a3 inFolder:(id)a4 atDate:(id)a5 withFrecencyScore:(double)a6 rowId:(id)a7;
-- (void)_relinquishBackgroundAssertionWithReason:(unint64_t)a3;
-- (void)_resetDatabaseOnItsQueue:(id)a3;
-- (void)_setUpDatabaseWatcher:(id)a3;
+- (void)_closeDatabaseOnItsQueue:(id)queue;
+- (void)_registerHit:(id)hit;
+- (void)_registerSavingFile:(id)file inFolder:(id)folder atDate:(id)date withFrecencyScore:(double)score rowId:(id)id;
+- (void)_registerSavingFileType:(id)type inFolder:(id)folder atDate:(id)date withFrecencyScore:(double)score rowId:(id)id;
+- (void)_relinquishBackgroundAssertionWithReason:(unint64_t)reason;
+- (void)_resetDatabaseOnItsQueue:(id)queue;
+- (void)_setUpDatabaseWatcher:(id)watcher;
 - (void)close;
-- (void)deleteFolderWithIdentifier:(id)a3 appBundleIdentifier:(id)a4;
+- (void)deleteFolderWithIdentifier:(id)identifier appBundleIdentifier:(id)bundleIdentifier;
 - (void)init;
-- (void)logError:(id)a3 onDB:(id)a4 statement:(id)a5;
+- (void)logError:(id)error onDB:(id)b statement:(id)statement;
 - (void)open;
 - (void)purgeOldEntries;
-- (void)registerEvent:(id)a3;
-- (void)registerFilenameHit:(id)a3 fileTypeHit:(id)a4 smartScoreBlock:(id)a5;
+- (void)registerEvent:(id)event;
+- (void)registerFilenameHit:(id)hit fileTypeHit:(id)typeHit smartScoreBlock:(id)block;
 @end
 
 @implementation DOCSmartFolderDatabase
 
 - (DOCSmartFolderDatabase)init
 {
-  v3 = [MEMORY[0x1E696AC08] defaultManager];
-  v4 = [v3 containerURLForSecurityApplicationGroupIdentifier:@"group.com.apple.DocumentManager"];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v4 = [defaultManager containerURLForSecurityApplicationGroupIdentifier:@"group.com.apple.DocumentManager"];
 
   if (v4)
   {
@@ -54,7 +54,7 @@
       }
 
       self = [(DOCSmartFolderDatabase *)self initWithURL:v5];
-      v8 = self;
+      selfCopy = self;
     }
 
     else
@@ -70,7 +70,7 @@
         [DOCSmartFolderDatabase init];
       }
 
-      v8 = 0;
+      selfCopy = 0;
     }
   }
 
@@ -89,16 +89,16 @@
       [DOCSmartFolderDatabase init];
     }
 
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (DOCSmartFolderDatabase)initWithURL:(id)a3
+- (DOCSmartFolderDatabase)initWithURL:(id)l
 {
-  v5 = a3;
-  if (v5)
+  lCopy = l;
+  if (lCopy)
   {
     v18.receiver = self;
     v18.super_class = DOCSmartFolderDatabase;
@@ -121,32 +121,32 @@
       v13 = v6;
       v17 = v13;
       dispatch_after(v11, v12, block);
-      objc_storeStrong(v13 + 1, a3);
+      objc_storeStrong(v13 + 1, l);
     }
 
     self = v6;
-    v14 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v14 = 0;
+    selfCopy = 0;
   }
 
-  return v14;
+  return selfCopy;
 }
 
-- (void)registerFilenameHit:(id)a3 fileTypeHit:(id)a4 smartScoreBlock:(id)a5
+- (void)registerFilenameHit:(id)hit fileTypeHit:(id)typeHit smartScoreBlock:(id)block
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if ([v9 type])
+  hitCopy = hit;
+  typeHitCopy = typeHit;
+  blockCopy = block;
+  if ([hitCopy type])
   {
     [DOCSmartFolderDatabase registerFilenameHit:fileTypeHit:smartScoreBlock:];
   }
 
-  if ([v10 type] != 1)
+  if ([typeHitCopy type] != 1)
   {
     [DOCSmartFolderDatabase registerFilenameHit:fileTypeHit:smartScoreBlock:];
   }
@@ -156,14 +156,14 @@
   block[1] = 3221225472;
   block[2] = __74__DOCSmartFolderDatabase_registerFilenameHit_fileTypeHit_smartScoreBlock___block_invoke;
   block[3] = &unk_1E8783360;
-  v19 = v11;
+  v19 = blockCopy;
   v20 = a2;
   block[4] = self;
-  v17 = v9;
-  v18 = v10;
-  v13 = v10;
-  v14 = v11;
-  v15 = v9;
+  v17 = hitCopy;
+  v18 = typeHitCopy;
+  v13 = typeHitCopy;
+  v14 = blockCopy;
+  v15 = hitCopy;
   dispatch_async(workingQueue, block);
 }
 
@@ -277,31 +277,31 @@ LABEL_25:
   }
 }
 
-- (void)_registerHit:(id)a3
+- (void)_registerHit:(id)hit
 {
-  v4 = a3;
-  v5 = [v4 type];
-  if (v5 == 1)
+  hitCopy = hit;
+  type = [hitCopy type];
+  if (type == 1)
   {
-    v6 = [v4 value];
-    v7 = [v4 folderItem];
-    v8 = [v4 lastUsedDate];
-    [v4 frecency];
+    value = [hitCopy value];
+    folderItem = [hitCopy folderItem];
+    lastUsedDate = [hitCopy lastUsedDate];
+    [hitCopy frecency];
     v13 = v12;
-    v11 = [v4 rowId];
-    [(DOCSmartFolderDatabase *)self _registerSavingFileType:v6 inFolder:v7 atDate:v8 withFrecencyScore:v11 rowId:v13];
+    rowId = [hitCopy rowId];
+    [(DOCSmartFolderDatabase *)self _registerSavingFileType:value inFolder:folderItem atDate:lastUsedDate withFrecencyScore:rowId rowId:v13];
     goto LABEL_5;
   }
 
-  if (!v5)
+  if (!type)
   {
-    v6 = [v4 value];
-    v7 = [v4 folderItem];
-    v8 = [v4 lastUsedDate];
-    [v4 frecency];
+    value = [hitCopy value];
+    folderItem = [hitCopy folderItem];
+    lastUsedDate = [hitCopy lastUsedDate];
+    [hitCopy frecency];
     v10 = v9;
-    v11 = [v4 rowId];
-    [(DOCSmartFolderDatabase *)self _registerSavingFile:v6 inFolder:v7 atDate:v8 withFrecencyScore:v11 rowId:v10];
+    rowId = [hitCopy rowId];
+    [(DOCSmartFolderDatabase *)self _registerSavingFile:value inFolder:folderItem atDate:lastUsedDate withFrecencyScore:rowId rowId:v10];
 LABEL_5:
 
     goto LABEL_10;
@@ -323,17 +323,17 @@ LABEL_5:
 LABEL_10:
 }
 
-- (id)_existingFileNameHitsSimilarToHit:(id)a3
+- (id)_existingFileNameHitsSimilarToHit:(id)hit
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  hitCopy = hit;
   dispatch_assert_queue_V2(self->_workingQueue);
-  v25 = [MEMORY[0x1E695DF70] array];
-  v5 = [(DOCSmartFolderDatabase *)self connection];
-  v24 = v4;
-  v6 = [v4 folderItem];
-  v7 = [v6 itemIdentifier];
-  v8 = [v5 fetch:{@"SELECT rowid, fp_folder_id, fp_folder_item, file_name, last_hit_date, frecency_at_last_hit_date FROM filenames WHERE fp_folder_id = %@ ORDER BY last_hit_date DESC LIMIT 500", v7}];
+  array = [MEMORY[0x1E695DF70] array];
+  connection = [(DOCSmartFolderDatabase *)self connection];
+  v24 = hitCopy;
+  folderItem = [hitCopy folderItem];
+  itemIdentifier = [folderItem itemIdentifier];
+  v8 = [connection fetch:{@"SELECT rowid, fp_folder_id, fp_folder_item, file_name, last_hit_date, frecency_at_last_hit_date FROM filenames WHERE fp_folder_id = %@ ORDER BY last_hit_date DESC LIMIT 500", itemIdentifier}];
 
   if ([v8 next])
   {
@@ -348,9 +348,9 @@ LABEL_10:
       [v8 doubleAtIndex:5];
       v16 = v15;
       v17 = MEMORY[0x1E696ACD0];
-      v18 = [MEMORY[0x1E6967388] classForKeyedUnarchiver];
+      classForKeyedUnarchiver = [MEMORY[0x1E6967388] classForKeyedUnarchiver];
       v26 = 0;
-      v19 = [v17 unarchivedObjectOfClass:v18 fromData:v12 error:&v26];
+      v19 = [v17 unarchivedObjectOfClass:classForKeyedUnarchiver fromData:v12 error:&v26];
       v20 = v26;
       if (v20 || !v19)
       {
@@ -372,7 +372,7 @@ LABEL_10:
       else
       {
         v21 = [[DOCSmartFolderHit alloc] initWithRowId:v10 folder:v19 type:0 value:v13 lastUsedDate:v14 frecency:v16];
-        [v25 addObject:v21];
+        [array addObject:v21];
       }
 
       objc_autoreleasePoolPop(v9);
@@ -381,7 +381,7 @@ LABEL_10:
     while (([v8 next] & 1) != 0);
   }
 
-  return v25;
+  return array;
 }
 
 - (id)previousHits
@@ -391,7 +391,7 @@ LABEL_10:
   v10 = 0x3032000000;
   v11 = __Block_byref_object_copy__1;
   v12 = __Block_byref_object_dispose__1;
-  v13 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   workingQueue = self->_workingQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -546,18 +546,18 @@ void __38__DOCSmartFolderDatabase_previousHits__block_invoke(uint64_t a1)
   }
 }
 
-- (void)registerEvent:(id)a3
+- (void)registerEvent:(id)event
 {
-  v5 = a3;
+  eventCopy = event;
   workingQueue = self->_workingQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __40__DOCSmartFolderDatabase_registerEvent___block_invoke;
   block[3] = &unk_1E87833B0;
   block[4] = self;
-  v9 = v5;
+  v9 = eventCopy;
   v10 = a2;
-  v7 = v5;
+  v7 = eventCopy;
   dispatch_async(workingQueue, block);
 }
 
@@ -694,18 +694,18 @@ LABEL_28:
   }
 }
 
-- (id)_existingEventSimilarToEvent:(id)a3
+- (id)_existingEventSimilarToEvent:(id)event
 {
   v33 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  eventCopy = event;
   dispatch_assert_queue_V2(self->_workingQueue);
-  v5 = [(DOCSmartFolderDatabase *)self connection];
-  v6 = [v4 appBundleIdentifier];
-  v7 = [v4 folderItem];
-  v8 = [v7 itemIdentifier];
-  v28 = v4;
-  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v4, "type")}];
-  v10 = [v5 fetch:{@"SELECT rowid, app_bundle_id, fp_folder_item, event_type, last_hit_date, frecency_at_last_hit_date FROM hotfolders WHERE app_bundle_id = %@ AND fp_folder_id = %@ AND event_type = %@ ORDER BY last_hit_date DESC LIMIT 500;", v6, v8, v9}];
+  connection = [(DOCSmartFolderDatabase *)self connection];
+  appBundleIdentifier = [eventCopy appBundleIdentifier];
+  folderItem = [eventCopy folderItem];
+  itemIdentifier = [folderItem itemIdentifier];
+  v28 = eventCopy;
+  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(eventCopy, "type")}];
+  v10 = [connection fetch:{@"SELECT rowid, app_bundle_id, fp_folder_item, event_type, last_hit_date, frecency_at_last_hit_date FROM hotfolders WHERE app_bundle_id = %@ AND fp_folder_id = %@ AND event_type = %@ ORDER BY last_hit_date DESC LIMIT 500;", appBundleIdentifier, itemIdentifier, v9}];
 
   v29 = 0;
   do
@@ -724,9 +724,9 @@ LABEL_28:
     [v10 doubleAtIndex:5];
     v18 = v17;
     v19 = MEMORY[0x1E696ACD0];
-    v20 = [MEMORY[0x1E6967388] classForKeyedUnarchiver];
+    classForKeyedUnarchiver = [MEMORY[0x1E6967388] classForKeyedUnarchiver];
     v30 = 0;
-    v21 = [v19 unarchivedObjectOfClass:v20 fromData:v14 error:&v30];
+    v21 = [v19 unarchivedObjectOfClass:classForKeyedUnarchiver fromData:v14 error:&v30];
     v22 = v30;
     v23 = v22 || v21 == 0;
     v24 = v23;
@@ -762,16 +762,16 @@ LABEL_28:
   return v29;
 }
 
-- (id)previousEventsForAppBundleIdentifier:(id)a3 excluding:(id)a4
+- (id)previousEventsForAppBundleIdentifier:(id)identifier excluding:(id)excluding
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  excludingCopy = excluding;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
   v22 = __Block_byref_object_copy__1;
   v23 = __Block_byref_object_dispose__1;
-  v24 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   workingQueue = self->_workingQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -780,10 +780,10 @@ LABEL_28:
   v17 = &v19;
   v18 = a2;
   block[4] = self;
-  v15 = v8;
-  v16 = v7;
-  v10 = v7;
-  v11 = v8;
+  v15 = excludingCopy;
+  v16 = identifierCopy;
+  v10 = identifierCopy;
+  v11 = excludingCopy;
   dispatch_sync(workingQueue, block);
   v12 = v20[5];
 
@@ -891,21 +891,21 @@ void __73__DOCSmartFolderDatabase_previousEventsForAppBundleIdentifier_excluding
   }
 }
 
-- (void)deleteFolderWithIdentifier:(id)a3 appBundleIdentifier:(id)a4
+- (void)deleteFolderWithIdentifier:(id)identifier appBundleIdentifier:(id)bundleIdentifier
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
   workingQueue = self->_workingQueue;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __73__DOCSmartFolderDatabase_deleteFolderWithIdentifier_appBundleIdentifier___block_invoke;
   v12[3] = &unk_1E8783400;
   v12[4] = self;
-  v13 = v8;
-  v14 = v7;
+  v13 = bundleIdentifierCopy;
+  v14 = identifierCopy;
   v15 = a2;
-  v10 = v7;
-  v11 = v8;
+  v10 = identifierCopy;
+  v11 = bundleIdentifierCopy;
   dispatch_async(workingQueue, v12);
 }
 
@@ -1196,16 +1196,16 @@ LABEL_35:
   }
 }
 
-- (void)_registerSavingFile:(id)a3 inFolder:(id)a4 atDate:(id)a5 withFrecencyScore:(double)a6 rowId:(id)a7
+- (void)_registerSavingFile:(id)file inFolder:(id)folder atDate:(id)date withFrecencyScore:(double)score rowId:(id)id
 {
   v50 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  fileCopy = file;
+  folderCopy = folder;
+  dateCopy = date;
+  idCopy = id;
   dispatch_assert_queue_V2(self->_workingQueue);
   v39 = 0;
-  v16 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v13 requiringSecureCoding:1 error:&v39];
+  v16 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:folderCopy requiringSecureCoding:1 error:&v39];
   v17 = v39;
   if (v17 || !v16)
   {
@@ -1225,12 +1225,12 @@ LABEL_35:
 
   else
   {
-    v38 = v12;
-    v18 = [(DOCSmartFolderDatabase *)self connection];
-    if (v15)
+    v38 = fileCopy;
+    connection = [(DOCSmartFolderDatabase *)self connection];
+    if (idCopy)
     {
-      v19 = [MEMORY[0x1E696AD98] numberWithDouble:a6];
-      v20 = [v18 execute:{@"UPDATE filenames SET last_hit_date = %@, frecency_at_last_hit_date = %@ WHERE rowid = %@", v14, v19, v15}];
+      v19 = [MEMORY[0x1E696AD98] numberWithDouble:score];
+      v20 = [connection execute:{@"UPDATE filenames SET last_hit_date = %@, frecency_at_last_hit_date = %@ WHERE rowid = %@", dateCopy, v19, idCopy}];
 
       if (v20)
       {
@@ -1243,18 +1243,18 @@ LABEL_5:
           v22 = *v21;
         }
 
-        v12 = v38;
+        fileCopy = v38;
         if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
         {
           v23 = v22;
-          v24 = [v13 itemIdentifier];
-          v25 = [MEMORY[0x1E696AD98] numberWithDouble:a6];
+          itemIdentifier = [folderCopy itemIdentifier];
+          v25 = [MEMORY[0x1E696AD98] numberWithDouble:score];
           *buf = 138413058;
           v41 = v38;
           v42 = 2112;
-          v43 = v24;
+          v43 = itemIdentifier;
           v44 = 2112;
-          v45 = v14;
+          v45 = dateCopy;
           v46 = 2112;
           v47 = v25;
           _os_log_debug_impl(&dword_1E57D8000, v23, OS_LOG_TYPE_DEBUG, "Successfully registered saving %@ into folderID %@ at date %@ with frecencyScore %@.", buf, 0x2Au);
@@ -1266,9 +1266,9 @@ LABEL_5:
 
     else
     {
-      v28 = [v13 itemIdentifier];
-      v29 = [MEMORY[0x1E696AD98] numberWithDouble:a6];
-      v30 = [v18 execute:{@"INSERT INTO filenames(fp_folder_id, fp_folder_item, file_name, last_hit_date, frecency_at_last_hit_date) VALUES (%@, %@, %@, %@, %@)", v28, v16, v38, v14, v29}];
+      itemIdentifier2 = [folderCopy itemIdentifier];
+      v29 = [MEMORY[0x1E696AD98] numberWithDouble:score];
+      v30 = [connection execute:{@"INSERT INTO filenames(fp_folder_id, fp_folder_item, file_name, last_hit_date, frecency_at_last_hit_date) VALUES (%@, %@, %@, %@, %@)", itemIdentifier2, v16, v38, dateCopy, v29}];
 
       if (v30)
       {
@@ -1284,42 +1284,42 @@ LABEL_5:
       v32 = *v31;
     }
 
-    v12 = v38;
+    fileCopy = v38;
     if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
     {
       v33 = v32;
-      v34 = [v13 itemIdentifier];
-      v35 = [MEMORY[0x1E696AD98] numberWithDouble:a6];
-      v36 = [(DOCSmartFolderDatabase *)self connection];
-      v37 = [v36 lastError];
+      itemIdentifier3 = [folderCopy itemIdentifier];
+      v35 = [MEMORY[0x1E696AD98] numberWithDouble:score];
+      connection2 = [(DOCSmartFolderDatabase *)self connection];
+      lastError = [connection2 lastError];
       *buf = 138413314;
       v41 = v38;
       v42 = 2112;
-      v43 = v34;
+      v43 = itemIdentifier3;
       v44 = 2112;
-      v45 = v14;
+      v45 = dateCopy;
       v46 = 2112;
       v47 = v35;
       v48 = 2112;
-      v49 = v37;
+      v49 = lastError;
       _os_log_error_impl(&dword_1E57D8000, v33, OS_LOG_TYPE_ERROR, "Could not register saving %@ into folderID %@ at date %@ with frecencyScore %@: %@.", buf, 0x34u);
 
-      v12 = v38;
+      fileCopy = v38;
     }
   }
 
 LABEL_18:
 }
 
-- (void)_registerSavingFileType:(id)a3 inFolder:(id)a4 atDate:(id)a5 withFrecencyScore:(double)a6 rowId:(id)a7
+- (void)_registerSavingFileType:(id)type inFolder:(id)folder atDate:(id)date withFrecencyScore:(double)score rowId:(id)id
 {
   v43 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  typeCopy = type;
+  folderCopy = folder;
+  dateCopy = date;
+  idCopy = id;
   v34 = 0;
-  v16 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v13 requiringSecureCoding:1 error:&v34];
+  v16 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:folderCopy requiringSecureCoding:1 error:&v34];
   v17 = v34;
   if (v17)
   {
@@ -1349,11 +1349,11 @@ LABEL_18:
     goto LABEL_20;
   }
 
-  v21 = [(DOCSmartFolderDatabase *)self connection];
-  if (v15)
+  connection = [(DOCSmartFolderDatabase *)self connection];
+  if (idCopy)
   {
-    v22 = [MEMORY[0x1E696AD98] numberWithDouble:a6];
-    v23 = [v21 execute:{@"UPDATE filetypes SET last_hit_date = %@, frecency_at_last_hit_date = %@ WHERE rowid = %@", v14, v22, v15}];
+    v22 = [MEMORY[0x1E696AD98] numberWithDouble:score];
+    v23 = [connection execute:{@"UPDATE filetypes SET last_hit_date = %@, frecency_at_last_hit_date = %@ WHERE rowid = %@", dateCopy, v22, idCopy}];
 
     if (v23)
     {
@@ -1363,9 +1363,9 @@ LABEL_18:
 
   else
   {
-    v29 = [v13 itemIdentifier];
-    v30 = [MEMORY[0x1E696AD98] numberWithDouble:a6];
-    v31 = [v21 execute:{@"INSERT INTO filetypes(fp_folder_id, fp_folder_item, file_type, last_hit_date, frecency_at_last_hit_date) VALUES (%@, %@, %@, %@, %@)", v29, v16, v12, v14, v30}];
+    itemIdentifier = [folderCopy itemIdentifier];
+    v30 = [MEMORY[0x1E696AD98] numberWithDouble:score];
+    v31 = [connection execute:{@"INSERT INTO filetypes(fp_folder_id, fp_folder_item, file_type, last_hit_date, frecency_at_last_hit_date) VALUES (%@, %@, %@, %@, %@)", itemIdentifier, v16, typeCopy, dateCopy, v30}];
 
     if (v31)
     {
@@ -1381,14 +1381,14 @@ LABEL_12:
       if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
       {
         v26 = v25;
-        v27 = [v13 itemIdentifier];
-        v28 = [MEMORY[0x1E696AD98] numberWithDouble:a6];
+        itemIdentifier2 = [folderCopy itemIdentifier];
+        v28 = [MEMORY[0x1E696AD98] numberWithDouble:score];
         *buf = 138413058;
-        v36 = v12;
+        v36 = typeCopy;
         v37 = 2112;
-        v38 = v27;
+        v38 = itemIdentifier2;
         v39 = 2112;
-        v40 = v14;
+        v40 = dateCopy;
         v41 = 2112;
         v42 = v28;
         _os_log_debug_impl(&dword_1E57D8000, v26, OS_LOG_TYPE_DEBUG, "Successfully registered saving %@ into folderID %@ at date %@ with frecencyScore %@.", buf, 0x2Au);
@@ -1412,14 +1412,14 @@ LABEL_22:
   if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
   {
     v26 = v33;
-    v27 = [v13 itemIdentifier];
-    v28 = [MEMORY[0x1E696AD98] numberWithDouble:a6];
+    itemIdentifier2 = [folderCopy itemIdentifier];
+    v28 = [MEMORY[0x1E696AD98] numberWithDouble:score];
     *buf = 138413058;
-    v36 = v12;
+    v36 = typeCopy;
     v37 = 2112;
-    v38 = v27;
+    v38 = itemIdentifier2;
     v39 = 2112;
-    v40 = v14;
+    v40 = dateCopy;
     v41 = 2112;
     v42 = v28;
     _os_log_error_impl(&dword_1E57D8000, v26, OS_LOG_TYPE_ERROR, "Could not register saving %@ into folderID %@ at date %@ with frecencyScore %@.", buf, 0x2Au);
@@ -1429,16 +1429,16 @@ LABEL_22:
 LABEL_20:
 }
 
-- (id)_existingFiletypeHitSimilarToHit:(id)a3
+- (id)_existingFiletypeHitSimilarToHit:(id)hit
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(DOCSmartFolderDatabase *)self connection];
-  v6 = [v4 folderItem];
-  v7 = [v6 itemIdentifier];
-  v26 = v4;
-  v8 = [v4 value];
-  v9 = [v5 fetch:{@"SELECT rowid, fp_folder_id, fp_folder_item, file_type, last_hit_date, frecency_at_last_hit_date FROM filetypes WHERE fp_folder_id = %@ AND file_type = %@ ORDER BY last_hit_date DESC LIMIT 500", v7, v8}];
+  hitCopy = hit;
+  connection = [(DOCSmartFolderDatabase *)self connection];
+  folderItem = [hitCopy folderItem];
+  itemIdentifier = [folderItem itemIdentifier];
+  v26 = hitCopy;
+  value = [hitCopy value];
+  v9 = [connection fetch:{@"SELECT rowid, fp_folder_id, fp_folder_item, file_type, last_hit_date, frecency_at_last_hit_date FROM filetypes WHERE fp_folder_id = %@ AND file_type = %@ ORDER BY last_hit_date DESC LIMIT 500", itemIdentifier, value}];
 
   v27 = 0;
   do
@@ -1457,9 +1457,9 @@ LABEL_20:
     [v9 doubleAtIndex:5];
     v16 = v15;
     v17 = MEMORY[0x1E696ACD0];
-    v18 = [MEMORY[0x1E6967388] classForKeyedUnarchiver];
+    classForKeyedUnarchiver = [MEMORY[0x1E6967388] classForKeyedUnarchiver];
     v29 = 0;
-    v19 = [v17 unarchivedObjectOfClass:v18 fromData:v12 error:&v29];
+    v19 = [v17 unarchivedObjectOfClass:classForKeyedUnarchiver fromData:v12 error:&v29];
     v20 = v29;
     v21 = v20 || v19 == 0;
     v22 = v21;
@@ -1538,15 +1538,15 @@ void __30__DOCSmartFolderDatabase_open__block_invoke(uint64_t a1)
   objc_sync_exit(v2);
 }
 
-- (BOOL)_acquireBackgroundAssertionWithReason:(unint64_t)a3
+- (BOOL)_acquireBackgroundAssertionWithReason:(unint64_t)reason
 {
   v27 = *MEMORY[0x1E69E9840];
-  if (a3 == 1)
+  if (reason == 1)
   {
-    v9 = [(DOCSmartFolderDatabase *)self batchingAssertion];
-    v10 = [v9 isValid];
+    batchingAssertion = [(DOCSmartFolderDatabase *)self batchingAssertion];
+    isValid = [batchingAssertion isValid];
 
-    if (v10)
+    if (isValid)
     {
       v11 = MEMORY[0x1E699A468];
       v8 = *MEMORY[0x1E699A468];
@@ -1570,17 +1570,17 @@ void __30__DOCSmartFolderDatabase_open__block_invoke(uint64_t a1)
     v13 = @"Finishing SQL Batch";
   }
 
-  else if (a3)
+  else if (reason)
   {
     v13 = 0;
   }
 
   else
   {
-    v5 = [(DOCSmartFolderDatabase *)self openAssertion];
-    v6 = [v5 isValid];
+    openAssertion = [(DOCSmartFolderDatabase *)self openAssertion];
+    isValid2 = [openAssertion isValid];
 
-    if (v6)
+    if (isValid2)
     {
       v7 = MEMORY[0x1E699A468];
       v8 = *MEMORY[0x1E699A468];
@@ -1608,22 +1608,22 @@ LABEL_13:
 
   v14 = [MEMORY[0x1E69C7560] attributeWithDomain:@"com.apple.common" name:@"FinishTaskNow"];
   v15 = objc_alloc(MEMORY[0x1E69C7548]);
-  v16 = [MEMORY[0x1E69C7640] currentProcess];
+  currentProcess = [MEMORY[0x1E69C7640] currentProcess];
   v24 = v14;
   v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v24 count:1];
-  v18 = [v15 initWithExplanation:v13 target:v16 attributes:v17];
+  v18 = [v15 initWithExplanation:v13 target:currentProcess attributes:v17];
 
   v23 = 0;
   v12 = [v18 acquireWithError:&v23];
   v19 = v23;
   if (v12)
   {
-    if (a3 == 1)
+    if (reason == 1)
     {
       [(DOCSmartFolderDatabase *)self setBatchingAssertion:v18];
     }
 
-    else if (!a3)
+    else if (!reason)
     {
       [(DOCSmartFolderDatabase *)self setOpenAssertion:v18];
     }
@@ -1648,28 +1648,28 @@ LABEL_13:
   return v12;
 }
 
-- (void)_relinquishBackgroundAssertionWithReason:(unint64_t)a3
+- (void)_relinquishBackgroundAssertionWithReason:(unint64_t)reason
 {
-  if (a3 == 1)
+  if (reason == 1)
   {
-    v5 = [(DOCSmartFolderDatabase *)self batchingAssertion];
-    [v5 invalidate];
+    batchingAssertion = [(DOCSmartFolderDatabase *)self batchingAssertion];
+    [batchingAssertion invalidate];
 
     [(DOCSmartFolderDatabase *)self setBatchingAssertion:0];
   }
 
-  else if (!a3)
+  else if (!reason)
   {
-    v4 = [(DOCSmartFolderDatabase *)self openAssertion];
-    [v4 invalidate];
+    openAssertion = [(DOCSmartFolderDatabase *)self openAssertion];
+    [openAssertion invalidate];
 
     [(DOCSmartFolderDatabase *)self setOpenAssertion:0];
   }
 }
 
-- (id)_openConnectionToDatabaseAtURL:(id)a3
+- (id)_openConnectionToDatabaseAtURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   dispatch_assert_queue_V2(self->_workingQueue);
   v5 = [(DOCSmartFolderDatabase *)self _acquireBackgroundAssertionWithReason:0];
   v46[0] = MEMORY[0x1E69E9820];
@@ -1680,7 +1680,7 @@ LABEL_13:
   v46[4] = self;
   v6 = MEMORY[0x1E692E2E0](v46);
   v45 = 0;
-  v7 = [(DOCSmartFolderDatabase *)self _createDatabaseIfNeededAtURL:v4 error:&v45];
+  v7 = [(DOCSmartFolderDatabase *)self _createDatabaseIfNeededAtURL:lCopy error:&v45];
   v8 = v45;
   if (!v7)
   {
@@ -1697,8 +1697,8 @@ LABEL_13:
       [DOCSmartFolderDatabase _openConnectionToDatabaseAtURL:];
     }
 
-    v11 = [v8 code];
-    if (v11 > 0x1A || ((1 << v11) & 0x5000800) == 0)
+    code = [v8 code];
+    if (code > 0x1A || ((1 << code) & 0x5000800) == 0)
     {
       goto LABEL_42;
     }
@@ -1715,9 +1715,9 @@ LABEL_13:
       [DOCSmartFolderDatabase _openConnectionToDatabaseAtURL:];
     }
 
-    v13 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
     v44 = 0;
-    [v13 removeItemAtURL:v4 error:&v44];
+    [defaultManager removeItemAtURL:lCopy error:&v44];
     v14 = v44;
 
     if (v14)
@@ -1736,7 +1736,7 @@ LABEL_13:
     }
 
     v43 = v8;
-    v7 = [(DOCSmartFolderDatabase *)self _createDatabaseIfNeededAtURL:v4 error:&v43];
+    v7 = [(DOCSmartFolderDatabase *)self _createDatabaseIfNeededAtURL:lCopy error:&v43];
     v16 = v43;
 
     v8 = v16;
@@ -1759,10 +1759,10 @@ LABEL_42:
     }
   }
 
-  v17 = [v7 userVersion];
-  v18 = [v17 unsignedIntegerValue];
+  userVersion = [v7 userVersion];
+  unsignedIntegerValue = [userVersion unsignedIntegerValue];
 
-  if (v18 == 5)
+  if (unsignedIntegerValue == 5)
   {
     v19 = v8;
   }
@@ -1804,7 +1804,7 @@ LABEL_42:
     }
 
     v41 = v8;
-    v22 = [(DOCSmartFolderDatabase *)self _createDatabaseIfNeededAtURL:v4 error:&v41];
+    v22 = [(DOCSmartFolderDatabase *)self _createDatabaseIfNeededAtURL:lCopy error:&v41];
     v19 = v41;
 
     if (!v22)
@@ -1821,7 +1821,7 @@ LABEL_42:
     v38[3] = &unk_1E8783478;
     v7 = v22;
     v39 = v7;
-    v40 = v18;
+    v40 = unsignedIntegerValue;
     [v7 performWithFlags:10 action:v38];
   }
 
@@ -1855,7 +1855,7 @@ LABEL_52:
   [(DOCSmartFolderDatabase *)self _setUpDatabaseWatcher:v23];
   v24 = *MEMORY[0x1E695DB80];
   v36 = v8;
-  v25 = [v4 setResourceValue:MEMORY[0x1E695E118] forKey:v24 error:&v36];
+  v25 = [lCopy setResourceValue:MEMORY[0x1E695E118] forKey:v24 error:&v36];
   v26 = v36;
 
   if ((v25 & 1) == 0)
@@ -1934,9 +1934,9 @@ uint64_t __57__DOCSmartFolderDatabase__openConnectionToDatabaseAtURL___block_inv
   return v3;
 }
 
-- (id)_createDatabaseIfNeededAtURL:(id)a3 error:(id *)a4
+- (id)_createDatabaseIfNeededAtURL:(id)l error:(id *)error
 {
-  v6 = a3;
+  lCopy = l;
   v7 = MEMORY[0x1E699A468];
   v8 = *MEMORY[0x1E699A468];
   if (!*MEMORY[0x1E699A468])
@@ -1950,7 +1950,7 @@ uint64_t __57__DOCSmartFolderDatabase__openConnectionToDatabaseAtURL___block_inv
     [DOCSmartFolderDatabase _createDatabaseIfNeededAtURL:error:];
   }
 
-  if ([v6 checkResourceIsReachableAndReturnError:0])
+  if ([lCopy checkResourceIsReachableAndReturnError:0])
   {
 LABEL_9:
     v12 = objc_alloc_init(MEMORY[0x1E69E5930]);
@@ -1969,27 +1969,27 @@ LABEL_9:
     v20[1] = 3221225472;
     v20[2] = __61__DOCSmartFolderDatabase__createDatabaseIfNeededAtURL_error___block_invoke_2;
     v20[3] = &unk_1E8783388;
-    v23 = a4;
-    v9 = v12;
-    v21 = v9;
+    errorCopy = error;
+    uRLByDeletingLastPathComponent = v12;
+    v21 = uRLByDeletingLastPathComponent;
     v22 = v25;
     v13 = MEMORY[0x1E692E2E0](v20);
-    [v9 setLabel:@"SmartFolder Database"];
-    if ([v9 openAtURL:v6 sharedCache:0 error:a4])
+    [uRLByDeletingLastPathComponent setLabel:@"SmartFolder Database"];
+    if ([uRLByDeletingLastPathComponent openAtURL:lCopy sharedCache:0 error:error])
     {
-      if ([v9 setupPragmas])
+      if ([uRLByDeletingLastPathComponent setupPragmas])
       {
-        [v9 setSynchronousMode:1];
-        v14 = [v9 lastError];
+        [uRLByDeletingLastPathComponent setSynchronousMode:1];
+        lastError = [uRLByDeletingLastPathComponent lastError];
 
-        if (!v14)
+        if (!lastError)
         {
           v19[0] = MEMORY[0x1E69E9820];
           v19[1] = 3221225472;
           v19[2] = __61__DOCSmartFolderDatabase__createDatabaseIfNeededAtURL_error___block_invoke_179;
           v19[3] = &unk_1E87834C8;
           v19[4] = self;
-          [v9 setSqliteErrorHandler:v19];
+          [uRLByDeletingLastPathComponent setSqliteErrorHandler:v19];
           v18 = *v7;
           if (!*v7)
           {
@@ -2002,7 +2002,7 @@ LABEL_9:
             [DOCSmartFolderDatabase _createDatabaseIfNeededAtURL:error:];
           }
 
-          a4 = v9;
+          error = uRLByDeletingLastPathComponent;
           goto LABEL_18;
         }
       }
@@ -2025,22 +2025,22 @@ LABEL_9:
       }
     }
 
-    [v9 close:0];
-    a4 = 0;
+    [uRLByDeletingLastPathComponent close:0];
+    error = 0;
 LABEL_18:
 
     _Block_object_dispose(v25, 8);
     goto LABEL_19;
   }
 
-  v9 = [v6 URLByDeletingLastPathComponent];
-  if ([v9 checkResourceIsReachableAndReturnError:0] & 1) != 0 || (objc_msgSend(MEMORY[0x1E696AC08], "defaultManager"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "createDirectoryAtURL:withIntermediateDirectories:attributes:error:", v9, 0, 0, a4), v10, (v11))
+  uRLByDeletingLastPathComponent = [lCopy URLByDeletingLastPathComponent];
+  if ([uRLByDeletingLastPathComponent checkResourceIsReachableAndReturnError:0] & 1) != 0 || (objc_msgSend(MEMORY[0x1E696AC08], "defaultManager"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "createDirectoryAtURL:withIntermediateDirectories:attributes:error:", uRLByDeletingLastPathComponent, 0, 0, error), v10, (v11))
   {
 
     goto LABEL_9;
   }
 
-  if (a4)
+  if (error)
   {
     v17 = *v7;
     if (!*v7)
@@ -2054,12 +2054,12 @@ LABEL_18:
       [DOCSmartFolderDatabase _createDatabaseIfNeededAtURL:error:];
     }
 
-    a4 = 0;
+    error = 0;
   }
 
 LABEL_19:
 
-  return a4;
+  return error;
 }
 
 void __61__DOCSmartFolderDatabase__createDatabaseIfNeededAtURL_error___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, void *a4)
@@ -2115,25 +2115,25 @@ void __61__DOCSmartFolderDatabase__createDatabaseIfNeededAtURL_error___block_inv
   }
 }
 
-- (void)_setUpDatabaseWatcher:(id)a3
+- (void)_setUpDatabaseWatcher:(id)watcher
 {
-  v5 = a3;
+  watcherCopy = watcher;
   dispatch_assert_queue_V2(self->_workingQueue);
-  [v5 useSerialQueueWithTarget:self->_workingQueue];
-  [v5 useBatchingWithDelay:500 changeCount:2.0];
+  [watcherCopy useSerialQueueWithTarget:self->_workingQueue];
+  [watcherCopy useBatchingWithDelay:500 changeCount:2.0];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __48__DOCSmartFolderDatabase__setUpDatabaseWatcher___block_invoke;
   v22[3] = &unk_1E87834F0;
   v22[4] = self;
   v22[5] = a2;
-  [v5 setWillBeginBatchingHook:v22];
+  [watcherCopy setWillBeginBatchingHook:v22];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __48__DOCSmartFolderDatabase__setUpDatabaseWatcher___block_invoke_184;
   v21[3] = &unk_1E8783518;
   v21[4] = self;
-  [v5 setDidFinishBatchingHook:v21];
+  [watcherCopy setDidFinishBatchingHook:v21];
   watcher = self->_watcher;
   if (watcher)
   {
@@ -2142,10 +2142,10 @@ void __61__DOCSmartFolderDatabase__createDatabaseIfNeededAtURL_error___block_inv
     self->_watcher = 0;
   }
 
-  v8 = [v5 url];
-  v9 = [v8 fileSystemRepresentation];
+  v8 = [watcherCopy url];
+  fileSystemRepresentation = [v8 fileSystemRepresentation];
 
-  LODWORD(v8) = open(v9, 32772);
+  LODWORD(v8) = open(fileSystemRepresentation, 32772);
   v10 = dispatch_source_create(MEMORY[0x1E69E9728], v8, 1uLL, 0);
   v11 = self->_watcher;
   self->_watcher = v10;
@@ -2157,8 +2157,8 @@ void __61__DOCSmartFolderDatabase__createDatabaseIfNeededAtURL_error___block_inv
   handler[2] = __48__DOCSmartFolderDatabase__setUpDatabaseWatcher___block_invoke_185;
   handler[3] = &unk_1E8783540;
   objc_copyWeak(&v19, &location);
-  v18 = v5;
-  v13 = v5;
+  v18 = watcherCopy;
+  v13 = watcherCopy;
   dispatch_source_set_event_handler(v12, handler);
   v14 = self->_watcher;
   v15[0] = MEMORY[0x1E69E9820];
@@ -2248,10 +2248,10 @@ void __48__DOCSmartFolderDatabase__setUpDatabaseWatcher___block_invoke_185(uint6
   }
 }
 
-- (id)_setupDatabaseTablesIfNeeded:(id)a3 error:(id *)a4
+- (id)_setupDatabaseTablesIfNeeded:(id)needed error:(id *)error
 {
   v30 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  neededCopy = needed;
   v6 = MEMORY[0x1E699A468];
   v7 = *MEMORY[0x1E699A468];
   if (!*MEMORY[0x1E699A468])
@@ -2265,11 +2265,11 @@ void __48__DOCSmartFolderDatabase__setUpDatabaseWatcher___block_invoke_185(uint6
     [DOCSmartFolderDatabase _setupDatabaseTablesIfNeeded:error:];
   }
 
-  v8 = [v5 userVersion];
-  v9 = v8;
-  if (v8)
+  userVersion = [neededCopy userVersion];
+  v9 = userVersion;
+  if (userVersion)
   {
-    if ([v8 unsignedIntValue])
+    if ([userVersion unsignedIntValue])
     {
       v10 = *v6;
       if (!*v6)
@@ -2309,12 +2309,12 @@ void __48__DOCSmartFolderDatabase__setUpDatabaseWatcher___block_invoke_185(uint6
       v24[2] = __61__DOCSmartFolderDatabase__setupDatabaseTablesIfNeeded_error___block_invoke;
       v24[3] = &__block_descriptor_44_e23_B16__0__PQLConnection_8l;
       v25 = 0;
-      v24[4] = a4;
-      v11 = [v5 performWithFlags:10 action:v24];
-      v15 = [v5 userVersion];
-      v16 = [v15 unsignedIntValue];
+      v24[4] = error;
+      v11 = [neededCopy performWithFlags:10 action:v24];
+      userVersion2 = [neededCopy userVersion];
+      unsignedIntValue = [userVersion2 unsignedIntValue];
 
-      if (v16 != 1)
+      if (unsignedIntValue != 1)
       {
         v17 = *v6;
         if (!*v6)
@@ -2326,10 +2326,10 @@ void __48__DOCSmartFolderDatabase__setUpDatabaseWatcher___block_invoke_185(uint6
         if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
         {
           v18 = v17;
-          v19 = [v5 userVersion];
-          v20 = [v19 unsignedIntValue];
+          userVersion3 = [neededCopy userVersion];
+          unsignedIntValue2 = [userVersion3 unsignedIntValue];
           *buf = 67109376;
-          v27 = v20;
+          v27 = unsignedIntValue2;
           v28 = 1024;
           v29 = 1;
           _os_log_impl(&dword_1E57D8000, v18, OS_LOG_TYPE_INFO, "Database is at version %u instead of %d", buf, 0xEu);
@@ -2337,29 +2337,29 @@ void __48__DOCSmartFolderDatabase__setUpDatabaseWatcher___block_invoke_185(uint6
       }
     }
 
-    v21 = [v5 userVersion];
-    v22 = [v21 unsignedIntValue];
-    if (v11 && !v22)
+    userVersion4 = [neededCopy userVersion];
+    unsignedIntValue3 = [userVersion4 unsignedIntValue];
+    if (v11 && !unsignedIntValue3)
     {
       [DOCSmartFolderDatabase _setupDatabaseTablesIfNeeded:error:];
     }
 
     if ((v11 & 1) == 0)
     {
-      [v5 close:0];
+      [neededCopy close:0];
 
-      v5 = 0;
+      neededCopy = 0;
     }
 
-    v5 = v5;
-    v13 = v5;
+    neededCopy = neededCopy;
+    v13 = neededCopy;
   }
 
   else
   {
-    if (a4)
+    if (error)
     {
-      *a4 = [v5 lastError];
+      *error = [neededCopy lastError];
     }
 
     v12 = *v6;
@@ -2374,7 +2374,7 @@ void __48__DOCSmartFolderDatabase__setUpDatabaseWatcher___block_invoke_185(uint6
       [DOCSmartFolderDatabase _setupDatabaseTablesIfNeeded:v12 error:?];
     }
 
-    [v5 close:0];
+    [neededCopy close:0];
     v13 = 0;
   }
 
@@ -2422,11 +2422,11 @@ uint64_t __61__DOCSmartFolderDatabase__setupDatabaseTablesIfNeeded_error___block
   }
 }
 
-- (void)_closeDatabaseOnItsQueue:(id)a3
+- (void)_closeDatabaseOnItsQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v10 = 0;
-  v5 = [(PQLConnection *)v4 close:&v10];
+  v5 = [(PQLConnection *)queueCopy close:&v10];
   v6 = v10;
   if ((v5 & 1) == 0)
   {
@@ -2445,7 +2445,7 @@ uint64_t __61__DOCSmartFolderDatabase__setupDatabaseTablesIfNeeded_error___block
   }
 
   connection = self->_connection;
-  if (connection == v4)
+  if (connection == queueCopy)
   {
     self->_connection = 0;
   }
@@ -2473,12 +2473,12 @@ uint64_t __31__DOCSmartFolderDatabase_close__block_invoke(uint64_t a1)
   return [v4 _cleanUpAfterClose];
 }
 
-- (void)_resetDatabaseOnItsQueue:(id)a3
+- (void)_resetDatabaseOnItsQueue:(id)queue
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
+  queueCopy = queue;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v6 = MEMORY[0x1E699A468];
   v7 = *MEMORY[0x1E699A468];
   if (!*MEMORY[0x1E699A468])
@@ -2490,12 +2490,12 @@ uint64_t __31__DOCSmartFolderDatabase_close__block_invoke(uint64_t a1)
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v18 = v4;
+    v18 = queueCopy;
     _os_log_impl(&dword_1E57D8000, v7, OS_LOG_TYPE_INFO, "%@: Resetting the SmartFolder Database", buf, 0xCu);
   }
 
-  [(DOCSmartFolderDatabase *)v5 _closeDatabaseOnItsQueue:v4];
-  [(DOCSmartFolderDatabase *)v5 _cleanUpAfterClose];
+  [(DOCSmartFolderDatabase *)selfCopy _closeDatabaseOnItsQueue:queueCopy];
+  [(DOCSmartFolderDatabase *)selfCopy _cleanUpAfterClose];
   v8 = *v6;
   if (!*v6)
   {
@@ -2508,10 +2508,10 @@ uint64_t __31__DOCSmartFolderDatabase_close__block_invoke(uint64_t a1)
     [DOCSmartFolderDatabase _resetDatabaseOnItsQueue:];
   }
 
-  v9 = [MEMORY[0x1E696AC08] defaultManager];
-  url = v5->_url;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  url = selfCopy->_url;
   v16 = 0;
-  v11 = [v9 removeItemAtURL:url error:&v16];
+  v11 = [defaultManager removeItemAtURL:url error:&v16];
   v12 = v16;
 
   if ((v11 & 1) == 0)
@@ -2541,25 +2541,25 @@ uint64_t __31__DOCSmartFolderDatabase_close__block_invoke(uint64_t a1)
     [DOCSmartFolderDatabase _resetDatabaseOnItsQueue:];
   }
 
-  v15 = [(DOCSmartFolderDatabase *)v5 _openConnectionToDatabaseAtURL:v5->_url];
+  v15 = [(DOCSmartFolderDatabase *)selfCopy _openConnectionToDatabaseAtURL:selfCopy->_url];
 
   if (v15)
   {
-    objc_storeStrong(&v5->_connection, v15);
+    objc_storeStrong(&selfCopy->_connection, v15);
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)logError:(id)a3 onDB:(id)a4 statement:(id)a5
+- (void)logError:(id)error onDB:(id)b statement:(id)statement
 {
   v18 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  errorCopy = error;
+  bCopy = b;
+  statementCopy = statement;
   v10 = MEMORY[0x1E699A468];
   v11 = *MEMORY[0x1E699A468];
-  if (v9)
+  if (statementCopy)
   {
     if (!v11)
     {
@@ -2570,11 +2570,11 @@ uint64_t __31__DOCSmartFolderDatabase_close__block_invoke(uint64_t a1)
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       v12 = 138412802;
-      v13 = v9;
+      v13 = statementCopy;
       v14 = 2112;
-      v15 = v8;
+      v15 = bCopy;
       v16 = 2112;
-      v17 = v7;
+      v17 = errorCopy;
       _os_log_error_impl(&dword_1E57D8000, v11, OS_LOG_TYPE_ERROR, "Sqlite request %@ failed on %@ with error [%@]", &v12, 0x20u);
     }
   }

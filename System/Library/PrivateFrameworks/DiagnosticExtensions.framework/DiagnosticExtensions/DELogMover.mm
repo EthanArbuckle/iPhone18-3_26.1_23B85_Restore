@@ -1,20 +1,20 @@
 @interface DELogMover
-+ (void)moveSystemLogsWithExtensions:(id)a3;
-- (BOOL)sendRequestReturningBooleanResponse:(id)a3 withSuccessKey:(char *)a4;
-- (DELogMover)initWithServiceName:(id)a3;
++ (void)moveSystemLogsWithExtensions:(id)extensions;
+- (BOOL)sendRequestReturningBooleanResponse:(id)response withSuccessKey:(char *)key;
+- (DELogMover)initWithServiceName:(id)name;
 @end
 
 @implementation DELogMover
 
-- (DELogMover)initWithServiceName:(id)a3
+- (DELogMover)initWithServiceName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v10.receiver = self;
   v10.super_class = DELogMover;
   v5 = [(DELogMover *)&v10 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [nameCopy copy];
     serviceName = v5->_serviceName;
     v5->_serviceName = v6;
 
@@ -25,9 +25,9 @@
   return v5;
 }
 
-- (BOOL)sendRequestReturningBooleanResponse:(id)a3 withSuccessKey:(char *)a4
+- (BOOL)sendRequestReturningBooleanResponse:(id)response withSuccessKey:(char *)key
 {
-  v6 = a3;
+  responseCopy = response;
   conn = self->_conn;
   if (!conn)
   {
@@ -66,7 +66,7 @@
     }
   }
 
-  v8 = xpc_connection_send_message_with_reply_sync(conn, v6);
+  v8 = xpc_connection_send_message_with_reply_sync(conn, responseCopy);
   v9 = MEMORY[0x24C1E4A40]();
   if (v9 == MEMORY[0x277D86480])
   {
@@ -85,7 +85,7 @@
       goto LABEL_14;
     }
 
-    v17 = xpc_dictionary_get_value(v8, a4);
+    v17 = xpc_dictionary_get_value(v8, key);
     v16 = v17;
     if (v17)
     {
@@ -131,12 +131,12 @@ void __65__DELogMover_sendRequestReturningBooleanResponse_withSuccessKey___block
   }
 }
 
-+ (void)moveSystemLogsWithExtensions:(id)a3
++ (void)moveSystemLogsWithExtensions:(id)extensions
 {
-  v3 = a3;
-  if (v3)
+  extensionsCopy = extensions;
+  if (extensionsCopy)
   {
-    v4 = v3;
+    v4 = extensionsCopy;
   }
 
   else
@@ -144,7 +144,7 @@ void __65__DELogMover_sendRequestReturningBooleanResponse_withSuccessKey___block
     v4 = &unk_285B71010;
   }
 
-  v5 = v3;
+  v5 = extensionsCopy;
   v6 = dispatch_queue_create("com.apple.DiagnosticExtensions.log_mover", 0);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;

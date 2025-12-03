@@ -18,8 +18,8 @@
 
 - (uint64_t)bcui_isPercentSymbolEnabled
 {
-  v1 = [a1 percentSymbol];
-  v2 = [v1 isEqualToString:&stru_1F41678D8];
+  percentSymbol = [self percentSymbol];
+  v2 = [percentSymbol isEqualToString:&stru_1F41678D8];
 
   return v2;
 }
@@ -36,7 +36,7 @@
     v3 = &stru_1F41678D8;
   }
 
-  return [a1 setPercentSymbol:v3];
+  return [self setPercentSymbol:v3];
 }
 
 @end

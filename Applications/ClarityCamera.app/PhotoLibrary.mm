@@ -1,6 +1,6 @@
 @interface PhotoLibrary
 - (void)dealloc;
-- (void)photoLibraryDidChange:(id)a3;
+- (void)photoLibraryDidChange:(id)change;
 @end
 
 @implementation PhotoLibrary
@@ -8,17 +8,17 @@
 - (void)dealloc
 {
   v2 = *(&self->super.isa + OBJC_IVAR____TtC15ClarityPhotosUI12PhotoLibrary_photoLibrary);
-  v3 = self;
-  [v2 unregisterChangeObserver:v3];
-  v4.receiver = v3;
+  selfCopy = self;
+  [v2 unregisterChangeObserver:selfCopy];
+  v4.receiver = selfCopy;
   v4.super_class = type metadata accessor for PhotoLibrary();
   [(PhotoLibrary *)&v4 dealloc];
 }
 
-- (void)photoLibraryDidChange:(id)a3
+- (void)photoLibraryDidChange:(id)change
 {
-  v4 = a3;
-  v5 = self;
+  changeCopy = change;
+  selfCopy = self;
   sub_100020CF0();
 }
 

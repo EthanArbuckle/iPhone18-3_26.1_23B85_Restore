@@ -1,38 +1,38 @@
 @interface PKAccountStatementMetadata
-- (BOOL)isEqual:(id)a3;
-- (PKAccountStatementMetadata)initWithArray:(id)a3 accountIdentifier:(id)a4 statementIdentifier:(id)a5;
-- (PKAccountStatementMetadata)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (PKAccountStatementMetadata)initWithArray:(id)array accountIdentifier:(id)identifier statementIdentifier:(id)statementIdentifier;
+- (PKAccountStatementMetadata)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (id)reportForMissingItems;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKAccountStatementMetadata
 
-- (PKAccountStatementMetadata)initWithArray:(id)a3 accountIdentifier:(id)a4 statementIdentifier:(id)a5
+- (PKAccountStatementMetadata)initWithArray:(id)array accountIdentifier:(id)identifier statementIdentifier:(id)statementIdentifier
 {
   v30 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  arrayCopy = array;
+  identifierCopy = identifier;
+  statementIdentifierCopy = statementIdentifier;
   v28.receiver = self;
   v28.super_class = PKAccountStatementMetadata;
   v11 = [(PKAccountStatementMetadata *)&v28 init];
   v12 = v11;
   if (v11)
   {
-    v23 = v9;
-    objc_storeStrong(&v11->_accountIdentifier, a4);
-    objc_storeStrong(&v12->_statementIdentifier, a5);
+    v23 = identifierCopy;
+    objc_storeStrong(&v11->_accountIdentifier, identifier);
+    objc_storeStrong(&v12->_statementIdentifier, statementIdentifier);
     v13 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v14 = v8;
+    v14 = arrayCopy;
     v15 = [v14 countByEnumeratingWithState:&v24 objects:v29 count:16];
     if (v15)
     {
@@ -67,7 +67,7 @@
       v20 = [v13 copy];
     }
 
-    v9 = v23;
+    identifierCopy = v23;
     items = v12->_items;
     v12->_items = v20;
   }
@@ -119,8 +119,8 @@
           objc_enumerationMutation(v11);
         }
 
-        v16 = [*(*(&v19 + 1) + 8 * i) dictionaryRepresentation];
-        [v10 safelyAddObject:v16];
+        dictionaryRepresentation = [*(*(&v19 + 1) + 8 * i) dictionaryRepresentation];
+        [v10 safelyAddObject:dictionaryRepresentation];
       }
 
       v13 = [(NSArray *)v11 countByEnumeratingWithState:&v19 objects:v23 count:16];
@@ -137,10 +137,10 @@
 
 - (id)reportForMissingItems
 {
-  v3 = [(PKAccountStatementMetadata *)self itemsMissingFromDevice];
-  if ([v3 count])
+  itemsMissingFromDevice = [(PKAccountStatementMetadata *)self itemsMissingFromDevice];
+  if ([itemsMissingFromDevice count])
   {
-    v4 = [[PKAccountStatementMetadataReport alloc] initWithItems:v3 accountIdentifier:self->_accountIdentifier statementIdentifier:self->_statementIdentifier openingDate:self->_openingDate closingDate:self->_closingDate];
+    v4 = [[PKAccountStatementMetadataReport alloc] initWithItems:itemsMissingFromDevice accountIdentifier:self->_accountIdentifier statementIdentifier:self->_statementIdentifier openingDate:self->_openingDate closingDate:self->_closingDate];
   }
 
   else
@@ -151,41 +151,41 @@
   return v4;
 }
 
-- (PKAccountStatementMetadata)initWithCoder:(id)a3
+- (PKAccountStatementMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v22.receiver = self;
   v22.super_class = PKAccountStatementMetadata;
   v5 = [(PKAccountStatementMetadata *)&v22 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"accountIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"accountIdentifier"];
     accountIdentifier = v5->_accountIdentifier;
     v5->_accountIdentifier = v6;
 
-    v5->_accountType = [v4 decodeIntegerForKey:@"accountType"];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"statementIdentifier"];
+    v5->_accountType = [coderCopy decodeIntegerForKey:@"accountType"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"statementIdentifier"];
     statementIdentifier = v5->_statementIdentifier;
     v5->_statementIdentifier = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"openingDate"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"openingDate"];
     openingDate = v5->_openingDate;
     v5->_openingDate = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"closingDate"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"closingDate"];
     closingDate = v5->_closingDate;
     v5->_closingDate = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lastReportDate"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lastReportDate"];
     lastReportDate = v5->_lastReportDate;
     v5->_lastReportDate = v14;
 
-    v5->_hasBeenProcessed = [v4 decodeBoolForKey:@"hasBeenProcessed"];
-    v5->_reportCount = [v4 decodeIntegerForKey:@"reportCount"];
+    v5->_hasBeenProcessed = [coderCopy decodeBoolForKey:@"hasBeenProcessed"];
+    v5->_reportCount = [coderCopy decodeIntegerForKey:@"reportCount"];
     v16 = MEMORY[0x1E695DFD8];
     v17 = objc_opt_class();
     v18 = [v16 setWithObjects:{v17, objc_opt_class(), 0}];
-    v19 = [v4 decodeObjectOfClasses:v18 forKey:@"items"];
+    v19 = [coderCopy decodeObjectOfClasses:v18 forKey:@"items"];
     items = v5->_items;
     v5->_items = v19;
   }
@@ -193,31 +193,31 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   accountIdentifier = self->_accountIdentifier;
-  v5 = a3;
-  [v5 encodeObject:accountIdentifier forKey:@"accountIdentifier"];
-  [v5 encodeInteger:self->_accountType forKey:@"accountType"];
-  [v5 encodeObject:self->_statementIdentifier forKey:@"statementIdentifier"];
-  [v5 encodeObject:self->_openingDate forKey:@"openingDate"];
-  [v5 encodeObject:self->_closingDate forKey:@"closingDate"];
-  [v5 encodeObject:self->_lastReportDate forKey:@"lastReportDate"];
-  [v5 encodeBool:self->_hasBeenProcessed forKey:@"hasBeenProcessed"];
-  [v5 encodeInteger:self->_reportCount forKey:@"reportCount"];
-  [v5 encodeObject:self->_items forKey:@"items"];
+  coderCopy = coder;
+  [coderCopy encodeObject:accountIdentifier forKey:@"accountIdentifier"];
+  [coderCopy encodeInteger:self->_accountType forKey:@"accountType"];
+  [coderCopy encodeObject:self->_statementIdentifier forKey:@"statementIdentifier"];
+  [coderCopy encodeObject:self->_openingDate forKey:@"openingDate"];
+  [coderCopy encodeObject:self->_closingDate forKey:@"closingDate"];
+  [coderCopy encodeObject:self->_lastReportDate forKey:@"lastReportDate"];
+  [coderCopy encodeBool:self->_hasBeenProcessed forKey:@"hasBeenProcessed"];
+  [coderCopy encodeInteger:self->_reportCount forKey:@"reportCount"];
+  [coderCopy encodeObject:self->_items forKey:@"items"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     goto LABEL_14;
   }
 
-  v5 = v4[2];
+  v5 = equalCopy[2];
   v6 = self->_accountIdentifier;
   v7 = v5;
   v8 = v7;
@@ -240,7 +240,7 @@
     }
   }
 
-  v10 = v4[4];
+  v10 = equalCopy[4];
   v6 = self->_statementIdentifier;
   v11 = v10;
   v8 = v11;
@@ -265,7 +265,7 @@ LABEL_13:
 
 LABEL_17:
   items = self->_items;
-  v16 = v4[9];
+  v16 = equalCopy[9];
   if (items && v16)
   {
     if (([(NSArray *)items isEqual:?]& 1) == 0)
@@ -280,7 +280,7 @@ LABEL_17:
   }
 
   openingDate = self->_openingDate;
-  v18 = v4[5];
+  v18 = equalCopy[5];
   if (openingDate && v18)
   {
     if (([(NSDate *)openingDate isEqual:?]& 1) == 0)
@@ -295,7 +295,7 @@ LABEL_17:
   }
 
   closingDate = self->_closingDate;
-  v20 = v4[6];
+  v20 = equalCopy[6];
   if (closingDate && v20)
   {
     if (([(NSDate *)closingDate isEqual:?]& 1) == 0)
@@ -310,7 +310,7 @@ LABEL_17:
   }
 
   lastReportDate = self->_lastReportDate;
-  v22 = v4[7];
+  v22 = equalCopy[7];
   if (lastReportDate && v22)
   {
     if (([(NSDate *)lastReportDate isEqual:?]& 1) == 0)
@@ -324,9 +324,9 @@ LABEL_17:
     goto LABEL_14;
   }
 
-  if (self->_accountType == v4[3] && self->_reportCount == v4[8])
+  if (self->_accountType == equalCopy[3] && self->_reportCount == equalCopy[8])
   {
-    v13 = self->_hasBeenProcessed == *(v4 + 8);
+    v13 = self->_hasBeenProcessed == *(equalCopy + 8);
     goto LABEL_15;
   }
 
@@ -339,14 +339,14 @@ LABEL_15:
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [v3 safelyAddObject:self->_statementIdentifier];
-  [v3 safelyAddObject:self->_items];
-  [v3 safelyAddObject:self->_accountIdentifier];
-  [v3 safelyAddObject:self->_openingDate];
-  [v3 safelyAddObject:self->_closingDate];
-  [v3 safelyAddObject:self->_lastReportDate];
-  v4 = PKCombinedHash(17, v3);
+  array = [MEMORY[0x1E695DF70] array];
+  [array safelyAddObject:self->_statementIdentifier];
+  [array safelyAddObject:self->_items];
+  [array safelyAddObject:self->_accountIdentifier];
+  [array safelyAddObject:self->_openingDate];
+  [array safelyAddObject:self->_closingDate];
+  [array safelyAddObject:self->_lastReportDate];
+  v4 = PKCombinedHash(17, array);
   v5 = self->_accountType - v4 + 32 * v4;
   v6 = self->_reportCount - v5 + 32 * v5;
   v7 = self->_hasBeenProcessed - v6 + 32 * v6;
@@ -383,30 +383,30 @@ LABEL_15:
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_accountIdentifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_accountIdentifier copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
-  v8 = [(NSString *)self->_statementIdentifier copyWithZone:a3];
+  v8 = [(NSString *)self->_statementIdentifier copyWithZone:zone];
   v9 = *(v5 + 32);
   *(v5 + 32) = v8;
 
-  v10 = [(NSArray *)self->_items copyWithZone:a3];
+  v10 = [(NSArray *)self->_items copyWithZone:zone];
   v11 = *(v5 + 72);
   *(v5 + 72) = v10;
 
-  v12 = [(NSDate *)self->_openingDate copyWithZone:a3];
+  v12 = [(NSDate *)self->_openingDate copyWithZone:zone];
   v13 = *(v5 + 40);
   *(v5 + 40) = v12;
 
-  v14 = [(NSDate *)self->_closingDate copyWithZone:a3];
+  v14 = [(NSDate *)self->_closingDate copyWithZone:zone];
   v15 = *(v5 + 48);
   *(v5 + 48) = v14;
 
-  v16 = [(NSDate *)self->_lastReportDate copyWithZone:a3];
+  v16 = [(NSDate *)self->_lastReportDate copyWithZone:zone];
   v17 = *(v5 + 56);
   *(v5 + 56) = v16;
 

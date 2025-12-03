@@ -1,20 +1,20 @@
 @interface HSAccessoryPairingEventLogger
 + (id)sharedLogger;
 - (HSAccessoryPairingEventLogger)init;
-- (id)bucketizeValueIntoHistogramBin:(double)a3;
+- (id)bucketizeValueIntoHistogramBin:(double)bin;
 - (unint64_t)launchType;
 - (void)_sendEvent;
-- (void)logAccessory:(id)a3;
-- (void)logCodeInputMethod:(unint64_t)a3;
-- (void)logExitStep:(int64_t)a3;
+- (void)logAccessory:(id)accessory;
+- (void)logCodeInputMethod:(unint64_t)method;
+- (void)logExitStep:(int64_t)step;
 - (void)logHUISDismiss;
-- (void)logHUISLaunchWithReason:(int64_t)a3 accessoryDescription:(id)a4;
-- (void)logHUISUserType:(unint64_t)a3;
-- (void)logNumberOfPairedAccessories:(unint64_t)a3;
+- (void)logHUISLaunchWithReason:(int64_t)reason accessoryDescription:(id)description;
+- (void)logHUISUserType:(unint64_t)type;
+- (void)logNumberOfPairedAccessories:(unint64_t)accessories;
 - (void)logPairingBegin;
 - (void)logPairingComplete;
-- (void)logStepStart:(int64_t)a3;
-- (void)logTransportFlagsFromPayload:(id)a3;
+- (void)logStepStart:(int64_t)start;
+- (void)logTransportFlagsFromPayload:(id)payload;
 @end
 
 @implementation HSAccessoryPairingEventLogger
@@ -59,19 +59,19 @@
   return v2;
 }
 
-- (id)bucketizeValueIntoHistogramBin:(double)a3
+- (id)bucketizeValueIntoHistogramBin:(double)bin
 {
-  v5 = [(HSAccessoryPairingEventLogger *)self accessoryPairingEventLoggerTimeHistogramBins];
-  v6 = [v5 count];
+  accessoryPairingEventLoggerTimeHistogramBins = [(HSAccessoryPairingEventLogger *)self accessoryPairingEventLoggerTimeHistogramBins];
+  v6 = [accessoryPairingEventLoggerTimeHistogramBins count];
 
   if (v6 >= 2)
   {
-    v8 = [(HSAccessoryPairingEventLogger *)self accessoryPairingEventLoggerTimeHistogramBins];
-    if ([v8 count] < 2)
+    accessoryPairingEventLoggerTimeHistogramBins2 = [(HSAccessoryPairingEventLogger *)self accessoryPairingEventLoggerTimeHistogramBins];
+    if ([accessoryPairingEventLoggerTimeHistogramBins2 count] < 2)
     {
 LABEL_7:
-      v15 = [v8 lastObject];
-      v7 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", 1000 * [v15 unsignedIntegerValue]);
+      lastObject = [accessoryPairingEventLoggerTimeHistogramBins2 lastObject];
+      v7 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", 1000 * [lastObject unsignedIntegerValue]);
     }
 
     else
@@ -80,15 +80,15 @@ LABEL_7:
       while (1)
       {
         v10 = v9 + 1;
-        v11 = [v8 objectAtIndexedSubscript:v9 + 1];
-        v12 = [v11 unsignedIntegerValue];
+        v11 = [accessoryPairingEventLoggerTimeHistogramBins2 objectAtIndexedSubscript:v9 + 1];
+        unsignedIntegerValue = [v11 unsignedIntegerValue];
 
-        if (v12 > a3)
+        if (unsignedIntegerValue > bin)
         {
           break;
         }
 
-        v13 = [v8 count];
+        v13 = [accessoryPairingEventLoggerTimeHistogramBins2 count];
         v14 = v9 + 2;
         ++v9;
         if (v14 >= v13)
@@ -97,10 +97,10 @@ LABEL_7:
         }
       }
 
-      v15 = [v8 objectAtIndexedSubscript:v9];
-      v16 = [v15 unsignedIntegerValue];
-      v17 = [v8 objectAtIndexedSubscript:v10];
-      v7 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", (1000 * (v16 + [v17 unsignedIntegerValue])) >> 1);
+      lastObject = [accessoryPairingEventLoggerTimeHistogramBins2 objectAtIndexedSubscript:v9];
+      unsignedIntegerValue2 = [lastObject unsignedIntegerValue];
+      v17 = [accessoryPairingEventLoggerTimeHistogramBins2 objectAtIndexedSubscript:v10];
+      v7 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", (1000 * (unsignedIntegerValue2 + [v17 unsignedIntegerValue])) >> 1);
     }
   }
 
@@ -112,32 +112,32 @@ LABEL_7:
   return v7;
 }
 
-- (void)logHUISUserType:(unint64_t)a3
+- (void)logHUISUserType:(unint64_t)type
 {
-  v4 = [NSNumber numberWithUnsignedInteger:a3];
+  v4 = [NSNumber numberWithUnsignedInteger:type];
   [(HSAccessoryPairingEventLogger *)self setHuisUserType:v4];
 }
 
-- (void)logCodeInputMethod:(unint64_t)a3
+- (void)logCodeInputMethod:(unint64_t)method
 {
-  v4 = [NSNumber numberWithUnsignedInteger:a3];
+  v4 = [NSNumber numberWithUnsignedInteger:method];
   [(HSAccessoryPairingEventLogger *)self setCodeInputMethod:v4];
 }
 
-- (void)logHUISLaunchWithReason:(int64_t)a3 accessoryDescription:(id)a4
+- (void)logHUISLaunchWithReason:(int64_t)reason accessoryDescription:(id)description
 {
-  v6 = a4;
-  v12 = v6;
-  if (a3)
+  descriptionCopy = description;
+  v12 = descriptionCopy;
+  if (reason)
   {
     v7 = 2;
   }
 
-  else if ([v6 hf_isLaunchedByHomeApp])
+  else if ([descriptionCopy hf_isLaunchedByHomeApp])
   {
-    v8 = [v12 setupAccessoryPayload];
+    setupAccessoryPayload = [v12 setupAccessoryPayload];
 
-    if (v8)
+    if (setupAccessoryPayload)
     {
       v7 = 3;
     }
@@ -158,7 +158,7 @@ LABEL_7:
     v7 = 100;
   }
 
-  v9 = [NSNumber numberWithInteger:a3];
+  v9 = [NSNumber numberWithInteger:reason];
   [(HSAccessoryPairingEventLogger *)self setHuisLaunchReason:v9];
 
   v10 = [NSNumber numberWithUnsignedInteger:v7];
@@ -170,17 +170,17 @@ LABEL_7:
 
 - (unint64_t)launchType
 {
-  v2 = [(HSAccessoryPairingEventLogger *)self huisLaunchType];
-  v3 = [v2 unsignedIntegerValue];
+  huisLaunchType = [(HSAccessoryPairingEventLogger *)self huisLaunchType];
+  unsignedIntegerValue = [huisLaunchType unsignedIntegerValue];
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
 - (void)logHUISDismiss
 {
-  v3 = [(HSAccessoryPairingEventLogger *)self huisDismissDate];
+  huisDismissDate = [(HSAccessoryPairingEventLogger *)self huisDismissDate];
 
-  if (!v3)
+  if (!huisDismissDate)
   {
     v4 = +[NSDate date];
     [(HSAccessoryPairingEventLogger *)self setHuisDismissDate:v4];
@@ -201,175 +201,175 @@ LABEL_7:
   [(HSAccessoryPairingEventLogger *)self setPairingCompleteDate:v3];
 }
 
-- (void)logNumberOfPairedAccessories:(unint64_t)a3
+- (void)logNumberOfPairedAccessories:(unint64_t)accessories
 {
-  [(HSAccessoryPairingEventLogger *)self setPairingSuccess:a3 != 0];
-  v5 = [NSNumber numberWithUnsignedInteger:a3];
+  [(HSAccessoryPairingEventLogger *)self setPairingSuccess:accessories != 0];
+  v5 = [NSNumber numberWithUnsignedInteger:accessories];
   [(HSAccessoryPairingEventLogger *)self setNumPairedAccessories:v5];
 }
 
-- (void)logExitStep:(int64_t)a3
+- (void)logExitStep:(int64_t)step
 {
   [(HSAccessoryPairingEventLogger *)self logStepStart:0];
-  v5 = [HSSetupContentProvider stringForHSProxCardSetupUIStep:a3];
+  v5 = [HSSetupContentProvider stringForHSProxCardSetupUIStep:step];
   [(HSAccessoryPairingEventLogger *)self setExitCardString:v5];
 }
 
-- (void)logTransportFlagsFromPayload:(id)a3
+- (void)logTransportFlagsFromPayload:(id)payload
 {
-  if (a3)
+  if (payload)
   {
-    v4 = a3;
-    v5 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v4 supportsIP]);
+    payloadCopy = payload;
+    v5 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [payloadCopy supportsIP]);
     [(HSAccessoryPairingEventLogger *)self setSupportsIP:v5];
 
-    v6 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v4 supportsWAC]);
+    v6 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [payloadCopy supportsWAC]);
     [(HSAccessoryPairingEventLogger *)self setSupportsWAC:v6];
 
-    v7 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v4 supportsBTLE]);
+    v7 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [payloadCopy supportsBTLE]);
     [(HSAccessoryPairingEventLogger *)self setSupportsBTLE:v7];
 
-    v9 = [v4 threadIdentifier];
+    threadIdentifier = [payloadCopy threadIdentifier];
 
-    v8 = [NSNumber numberWithInt:v9 != 0];
+    v8 = [NSNumber numberWithInt:threadIdentifier != 0];
     [(HSAccessoryPairingEventLogger *)self setSupportsThread:v8];
   }
 }
 
-- (void)logAccessory:(id)a3
+- (void)logAccessory:(id)accessory
 {
-  v4 = a3;
-  v5 = [v4 name];
-  [(HSAccessoryPairingEventLogger *)self setAccessoryName:v5];
+  accessoryCopy = accessory;
+  name = [accessoryCopy name];
+  [(HSAccessoryPairingEventLogger *)self setAccessoryName:name];
 
-  v6 = [v4 manufacturer];
+  manufacturer = [accessoryCopy manufacturer];
 
-  [(HSAccessoryPairingEventLogger *)self setAccessoryManufacturer:v6];
+  [(HSAccessoryPairingEventLogger *)self setAccessoryManufacturer:manufacturer];
 }
 
-- (void)logStepStart:(int64_t)a3
+- (void)logStepStart:(int64_t)start
 {
-  if ([(HSAccessoryPairingEventLogger *)self currentStep]!= a3)
+  if ([(HSAccessoryPairingEventLogger *)self currentStep]!= start)
   {
     v5 = +[NSDate date];
     if ([(HSAccessoryPairingEventLogger *)self currentStep])
     {
-      v6 = [(HSAccessoryPairingEventLogger *)self currentStepStartTime];
+      currentStepStartTime = [(HSAccessoryPairingEventLogger *)self currentStepStartTime];
 
-      if (v6)
+      if (currentStepStartTime)
       {
-        v7 = [(HSAccessoryPairingEventLogger *)self cardTime];
+        cardTime = [(HSAccessoryPairingEventLogger *)self cardTime];
 
-        if (!v7)
+        if (!cardTime)
         {
           v8 = +[NSMutableArray array];
           [(HSAccessoryPairingEventLogger *)self setCardTime:v8];
         }
 
         v9 = [HSSetupContentProvider stringForHSProxCardSetupUIStep:[(HSAccessoryPairingEventLogger *)self currentStep]];
-        v10 = [(HSAccessoryPairingEventLogger *)self currentStepStartTime];
-        [v5 timeIntervalSinceDate:v10];
+        currentStepStartTime2 = [(HSAccessoryPairingEventLogger *)self currentStepStartTime];
+        [v5 timeIntervalSinceDate:currentStepStartTime2];
         v12 = v11;
 
-        v13 = [(HSAccessoryPairingEventLogger *)self cardTime];
+        cardTime2 = [(HSAccessoryPairingEventLogger *)self cardTime];
         v16 = v9;
         v14 = [(HSAccessoryPairingEventLogger *)self bucketizeValueIntoHistogramBin:v12];
         v17 = v14;
         v15 = [NSDictionary dictionaryWithObjects:&v17 forKeys:&v16 count:1];
-        [v13 na_safeAddObject:v15];
+        [cardTime2 na_safeAddObject:v15];
       }
     }
 
-    [(HSAccessoryPairingEventLogger *)self setCurrentStep:a3];
+    [(HSAccessoryPairingEventLogger *)self setCurrentStep:start];
     [(HSAccessoryPairingEventLogger *)self setCurrentStepStartTime:v5];
   }
 }
 
 - (void)_sendEvent
 {
-  v3 = [(HSAccessoryPairingEventLogger *)self cardTime];
-  v4 = [v3 count];
+  cardTime = [(HSAccessoryPairingEventLogger *)self cardTime];
+  v4 = [cardTime count];
 
   if (v4)
   {
     v5 = +[NSMutableDictionary dictionary];
-    v6 = [(HSAccessoryPairingEventLogger *)self huisDismissDate];
-    v7 = [(HSAccessoryPairingEventLogger *)self huisLaunchDate];
-    [v6 timeIntervalSinceDate:v7];
+    huisDismissDate = [(HSAccessoryPairingEventLogger *)self huisDismissDate];
+    huisLaunchDate = [(HSAccessoryPairingEventLogger *)self huisLaunchDate];
+    [huisDismissDate timeIntervalSinceDate:huisLaunchDate];
     v8 = [(HSAccessoryPairingEventLogger *)self bucketizeValueIntoHistogramBin:?];
     [v5 setObject:v8 forKeyedSubscript:HFAnalyticsDataHUISSessionTimeKey];
 
-    v9 = [(HSAccessoryPairingEventLogger *)self huisLaunchReason];
-    [v5 setObject:v9 forKeyedSubscript:HFAnalyticsDataHUISLaunchReasonKey];
+    huisLaunchReason = [(HSAccessoryPairingEventLogger *)self huisLaunchReason];
+    [v5 setObject:huisLaunchReason forKeyedSubscript:HFAnalyticsDataHUISLaunchReasonKey];
 
-    v10 = [(HSAccessoryPairingEventLogger *)self huisLaunchType];
-    [v5 setObject:v10 forKeyedSubscript:HFAnalyticsDataHUISLaunchTypeKey];
+    huisLaunchType = [(HSAccessoryPairingEventLogger *)self huisLaunchType];
+    [v5 setObject:huisLaunchType forKeyedSubscript:HFAnalyticsDataHUISLaunchTypeKey];
 
-    v11 = [(HSAccessoryPairingEventLogger *)self huisUserType];
-    [v5 setObject:v11 forKeyedSubscript:HFAnalyticsDataHUISUserTypeKey];
+    huisUserType = [(HSAccessoryPairingEventLogger *)self huisUserType];
+    [v5 setObject:huisUserType forKeyedSubscript:HFAnalyticsDataHUISUserTypeKey];
 
-    v12 = [(HSAccessoryPairingEventLogger *)self exitCardString];
-    [v5 setObject:v12 forKeyedSubscript:HFAnalyticsDataHUISExitCardKey];
+    exitCardString = [(HSAccessoryPairingEventLogger *)self exitCardString];
+    [v5 setObject:exitCardString forKeyedSubscript:HFAnalyticsDataHUISExitCardKey];
 
-    v13 = [(HSAccessoryPairingEventLogger *)self cardTime];
-    v14 = [v13 na_flatMap:&stru_1000C7548];
+    cardTime2 = [(HSAccessoryPairingEventLogger *)self cardTime];
+    v14 = [cardTime2 na_flatMap:&stru_1000C7548];
     [v5 setObject:v14 forKeyedSubscript:HFAnalyticsDataCardNameKey];
 
-    v15 = [(HSAccessoryPairingEventLogger *)self cardTime];
-    v16 = [v15 na_flatMap:&stru_1000C7568];
+    cardTime3 = [(HSAccessoryPairingEventLogger *)self cardTime];
+    v16 = [cardTime3 na_flatMap:&stru_1000C7568];
     [v5 setObject:v16 forKeyedSubscript:HFAnalyticsDataCardTimeKey];
 
     v17 = [NSNumber numberWithUnsignedInteger:[(HSAccessoryPairingEventLogger *)self numCards]];
     [v5 setObject:v17 forKeyedSubscript:HFAnalyticsDataCardCountKey];
 
-    v18 = [(HSAccessoryPairingEventLogger *)self huisLaunchReason];
+    huisLaunchReason2 = [(HSAccessoryPairingEventLogger *)self huisLaunchReason];
 
-    if (!v18)
+    if (!huisLaunchReason2)
     {
-      v20 = [(HSAccessoryPairingEventLogger *)self isLaunchedToSetupASpecificAccessory];
-      [v5 setObject:v20 forKeyedSubscript:HFAnalyticsDataHUISIsLaunchedToSetupASpecificAccessory];
+      isLaunchedToSetupASpecificAccessory = [(HSAccessoryPairingEventLogger *)self isLaunchedToSetupASpecificAccessory];
+      [v5 setObject:isLaunchedToSetupASpecificAccessory forKeyedSubscript:HFAnalyticsDataHUISIsLaunchedToSetupASpecificAccessory];
 
-      v21 = [(HSAccessoryPairingEventLogger *)self isUsingCHIPCommunicationProtocol];
-      [v5 setObject:v21 forKeyedSubscript:HFAnalyticsDataHUISIsUsingCHIPCommunicationProtocol];
+      isUsingCHIPCommunicationProtocol = [(HSAccessoryPairingEventLogger *)self isUsingCHIPCommunicationProtocol];
+      [v5 setObject:isUsingCHIPCommunicationProtocol forKeyedSubscript:HFAnalyticsDataHUISIsUsingCHIPCommunicationProtocol];
 
-      v22 = [(HSAccessoryPairingEventLogger *)self codeInputMethod];
-      [v5 setObject:v22 forKeyedSubscript:HFAnalyticsDataHUISCodeInputMethod];
+      codeInputMethod = [(HSAccessoryPairingEventLogger *)self codeInputMethod];
+      [v5 setObject:codeInputMethod forKeyedSubscript:HFAnalyticsDataHUISCodeInputMethod];
 
-      v23 = [(HSAccessoryPairingEventLogger *)self supportsIP];
-      [v5 setObject:v23 forKeyedSubscript:HFAnalyticsDataAccessoryTransportIPKey];
+      supportsIP = [(HSAccessoryPairingEventLogger *)self supportsIP];
+      [v5 setObject:supportsIP forKeyedSubscript:HFAnalyticsDataAccessoryTransportIPKey];
 
-      v24 = [(HSAccessoryPairingEventLogger *)self supportsWAC];
-      [v5 setObject:v24 forKeyedSubscript:HFAnalyticsDataAccessoryTransportWACKey];
+      supportsWAC = [(HSAccessoryPairingEventLogger *)self supportsWAC];
+      [v5 setObject:supportsWAC forKeyedSubscript:HFAnalyticsDataAccessoryTransportWACKey];
 
-      v25 = [(HSAccessoryPairingEventLogger *)self supportsBTLE];
-      [v5 setObject:v25 forKeyedSubscript:HFAnalyticsDataAccessoryTransportBTLEKey];
+      supportsBTLE = [(HSAccessoryPairingEventLogger *)self supportsBTLE];
+      [v5 setObject:supportsBTLE forKeyedSubscript:HFAnalyticsDataAccessoryTransportBTLEKey];
 
-      v26 = [(HSAccessoryPairingEventLogger *)self supportsThread];
-      [v5 setObject:v26 forKeyedSubscript:HFAnalyticsDataAccessoryTransportThreadKey];
+      supportsThread = [(HSAccessoryPairingEventLogger *)self supportsThread];
+      [v5 setObject:supportsThread forKeyedSubscript:HFAnalyticsDataAccessoryTransportThreadKey];
 
-      v27 = [(HSAccessoryPairingEventLogger *)self pairingBeginDate];
+      pairingBeginDate = [(HSAccessoryPairingEventLogger *)self pairingBeginDate];
 
-      if (v27)
+      if (pairingBeginDate)
       {
         v28 = [NSNumber numberWithBool:[(HSAccessoryPairingEventLogger *)self pairingSuccess]];
         [v5 setObject:v28 forKeyedSubscript:HFAnalyticsDataSuccessKey];
 
-        v29 = [(HSAccessoryPairingEventLogger *)self pairingBeginDate];
-        v30 = [(HSAccessoryPairingEventLogger *)self huisLaunchDate];
-        [v29 timeIntervalSinceDate:v30];
+        pairingBeginDate2 = [(HSAccessoryPairingEventLogger *)self pairingBeginDate];
+        huisLaunchDate2 = [(HSAccessoryPairingEventLogger *)self huisLaunchDate];
+        [pairingBeginDate2 timeIntervalSinceDate:huisLaunchDate2];
         v31 = [(HSAccessoryPairingEventLogger *)self bucketizeValueIntoHistogramBin:?];
         [v5 setObject:v31 forKeyedSubscript:HFAnalyticsDataPrePairingTimeKey];
 
-        v32 = [(HSAccessoryPairingEventLogger *)self numPairedAccessories];
-        [v5 setObject:v32 forKeyedSubscript:HFAnalyticsDataNumPairedAccessoriesKey];
+        numPairedAccessories = [(HSAccessoryPairingEventLogger *)self numPairedAccessories];
+        [v5 setObject:numPairedAccessories forKeyedSubscript:HFAnalyticsDataNumPairedAccessoriesKey];
 
-        v33 = [(HSAccessoryPairingEventLogger *)self pairingCompleteDate];
+        pairingCompleteDate = [(HSAccessoryPairingEventLogger *)self pairingCompleteDate];
 
-        if (v33)
+        if (pairingCompleteDate)
         {
-          v34 = [(HSAccessoryPairingEventLogger *)self pairingCompleteDate];
-          v35 = [(HSAccessoryPairingEventLogger *)self pairingBeginDate];
-          [v34 timeIntervalSinceDate:v35];
+          pairingCompleteDate2 = [(HSAccessoryPairingEventLogger *)self pairingCompleteDate];
+          pairingBeginDate3 = [(HSAccessoryPairingEventLogger *)self pairingBeginDate];
+          [pairingCompleteDate2 timeIntervalSinceDate:pairingBeginDate3];
           v36 = [(HSAccessoryPairingEventLogger *)self bucketizeValueIntoHistogramBin:?];
           [v5 setObject:v36 forKeyedSubscript:HFAnalyticsDataPairingTimeKey];
         }

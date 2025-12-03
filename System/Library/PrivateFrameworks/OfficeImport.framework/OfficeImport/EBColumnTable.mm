@@ -1,20 +1,20 @@
 @interface EBColumnTable
-+ (void)readWithState:(id)a3;
++ (void)readWithState:(id)state;
 @end
 
 @implementation EBColumnTable
 
-+ (void)readWithState:(id)a3
++ (void)readWithState:(id)state
 {
-  v3 = a3;
+  stateCopy = state;
   v15 = 0;
   v16 = 0;
   v17 = 0;
-  v4 = [v3 xlReader];
-  (*(*v4 + 392))(v4, &v14);
-  v5 = [v3 edSheet];
-  v6 = [v5 columnInfos];
-  v7 = [v3 resources];
+  xlReader = [stateCopy xlReader];
+  (*(*xlReader + 392))(xlReader, &v14);
+  edSheet = [stateCopy edSheet];
+  columnInfos = [edSheet columnInfos];
+  resources = [stateCopy resources];
   if (((v16 - v15) & 0x7FFFFFFF8) != 0)
   {
     v8 = 0;
@@ -28,7 +28,7 @@
         v12 = ColumnLast;
         if (ColumnLast <= 0xFF)
         {
-          v13 = [[EDColumnInfo alloc] initWithResources:v7 worksheet:v5];
+          v13 = [[EDColumnInfo alloc] initWithResources:resources worksheet:edSheet];
           [(EDColumnInfo *)v13 setWidthInXlUnits:XlColumnTable::getWidth(&v14, v8)];
           [(EDColumnInfo *)v13 setHidden:XlColumnTable::isHidden(&v14, v8)];
           [(EDColumnInfo *)v13 setRangeWithFirstColumn:ColumnFirst lastColumn:v12];
@@ -43,7 +43,7 @@
           }
 
           [(EDColumnInfo *)v13 setOutlineLevel:*(v15[v8] + 28)];
-          [v6 addObject:v13];
+          [columnInfos addObject:v13];
         }
       }
 

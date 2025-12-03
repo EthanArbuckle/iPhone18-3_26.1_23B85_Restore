@@ -1,23 +1,23 @@
 @interface HDCloudSyncSharedSummaryParticipantProfileCreationOperation
-- (HDCloudSyncSharedSummaryParticipantProfileCreationOperation)initWithConfiguration:(id)a3 participants:(id)a4;
-- (void)_createProfileIfNecessaryForParticipant:(id)a3 completion:(id)a4;
-- (void)_createProfileWithProfileIdentifier:(id)a3 contactIdentifier:(id)a4 firstName:(id)a5 lastName:(id)a6 completion:(id)a7;
-- (void)_createProfileWithUUID:(id)a3 contactIdentifier:(id)a4 firstName:(id)a5 lastName:(id)a6 ownerParticipant:(id)a7 completion:(id)a8;
-- (void)_setUpOwnerParticipantForProfileIdentifier:(id)a3 ownerParticipant:(id)a4 completion:(id)a5;
+- (HDCloudSyncSharedSummaryParticipantProfileCreationOperation)initWithConfiguration:(id)configuration participants:(id)participants;
+- (void)_createProfileIfNecessaryForParticipant:(id)participant completion:(id)completion;
+- (void)_createProfileWithProfileIdentifier:(id)identifier contactIdentifier:(id)contactIdentifier firstName:(id)name lastName:(id)lastName completion:(id)completion;
+- (void)_createProfileWithUUID:(id)d contactIdentifier:(id)identifier firstName:(id)name lastName:(id)lastName ownerParticipant:(id)participant completion:(id)completion;
+- (void)_setUpOwnerParticipantForProfileIdentifier:(id)identifier ownerParticipant:(id)participant completion:(id)completion;
 - (void)main;
 @end
 
 @implementation HDCloudSyncSharedSummaryParticipantProfileCreationOperation
 
-- (HDCloudSyncSharedSummaryParticipantProfileCreationOperation)initWithConfiguration:(id)a3 participants:(id)a4
+- (HDCloudSyncSharedSummaryParticipantProfileCreationOperation)initWithConfiguration:(id)configuration participants:(id)participants
 {
-  v6 = a4;
+  participantsCopy = participants;
   v13.receiver = self;
   v13.super_class = HDCloudSyncSharedSummaryParticipantProfileCreationOperation;
-  v7 = [(HDCloudSyncOperation *)&v13 initWithConfiguration:a3 cloudState:0];
+  v7 = [(HDCloudSyncOperation *)&v13 initWithConfiguration:configuration cloudState:0];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [participantsCopy copy];
     participantRecords = v7->_participantRecords;
     v7->_participantRecords = v8;
 
@@ -91,90 +91,90 @@ uint64_t __67__HDCloudSyncSharedSummaryParticipantProfileCreationOperation_main_
   }
 }
 
-- (void)_createProfileIfNecessaryForParticipant:(id)a3 completion:(id)a4
+- (void)_createProfileIfNecessaryForParticipant:(id)participant completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 relationshipType];
-  if ([v8 longValue])
+  participantCopy = participant;
+  completionCopy = completion;
+  relationshipType = [participantCopy relationshipType];
+  if ([relationshipType longValue])
   {
     goto LABEL_6;
   }
 
-  v9 = [v6 relationshipDirection];
-  if ([v9 longValue] != 1)
+  relationshipDirection = [participantCopy relationshipDirection];
+  if ([relationshipDirection longValue] != 1)
   {
 
 LABEL_6:
     goto LABEL_7;
   }
 
-  v10 = [v6 relationshipStatus];
-  v11 = [v10 longValue];
+  relationshipStatus = [participantCopy relationshipStatus];
+  longValue = [relationshipStatus longValue];
 
-  if (v11 != 1)
+  if (longValue != 1)
   {
 LABEL_7:
-    v7[2](v7, 1, 0);
+    completionCopy[2](completionCopy, 1, 0);
     goto LABEL_8;
   }
 
-  v12 = [v6 UUID];
-  v13 = [v6 contactIdentifier];
-  v14 = [v6 firstName];
-  v15 = [v6 lastName];
-  v16 = [v6 ownerParticipant];
+  uUID = [participantCopy UUID];
+  contactIdentifier = [participantCopy contactIdentifier];
+  firstName = [participantCopy firstName];
+  lastName = [participantCopy lastName];
+  ownerParticipant = [participantCopy ownerParticipant];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __114__HDCloudSyncSharedSummaryParticipantProfileCreationOperation__createProfileIfNecessaryForParticipant_completion___block_invoke;
   v17[3] = &unk_2786130D8;
-  v18 = v7;
-  [(HDCloudSyncSharedSummaryParticipantProfileCreationOperation *)self _createProfileWithUUID:v12 contactIdentifier:v13 firstName:v14 lastName:v15 ownerParticipant:v16 completion:v17];
+  v18 = completionCopy;
+  [(HDCloudSyncSharedSummaryParticipantProfileCreationOperation *)self _createProfileWithUUID:uUID contactIdentifier:contactIdentifier firstName:firstName lastName:lastName ownerParticipant:ownerParticipant completion:v17];
 
 LABEL_8:
 }
 
-- (void)_createProfileWithUUID:(id)a3 contactIdentifier:(id)a4 firstName:(id)a5 lastName:(id)a6 ownerParticipant:(id)a7 completion:(id)a8
+- (void)_createProfileWithUUID:(id)d contactIdentifier:(id)identifier firstName:(id)name lastName:(id)lastName ownerParticipant:(id)participant completion:(id)completion
 {
   v46 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  if (v18)
+  dCopy = d;
+  identifierCopy = identifier;
+  nameCopy = name;
+  lastNameCopy = lastName;
+  participantCopy = participant;
+  completionCopy = completion;
+  if (participantCopy)
   {
-    v20 = [MEMORY[0x277CCD7C8] _profileWithUUID:v14 type:2];
-    v21 = [(HDCloudSyncOperation *)self configuration];
-    [v21 repository];
-    v22 = v32 = v14;
+    v20 = [MEMORY[0x277CCD7C8] _profileWithUUID:dCopy type:2];
+    configuration = [(HDCloudSyncOperation *)self configuration];
+    [configuration repository];
+    v22 = v32 = dCopy;
     [v22 cloudSyncShimProvider];
-    v23 = v17;
-    v24 = v16;
-    v26 = v25 = v15;
-    v31 = [v26 profileManagementShim];
+    v23 = lastNameCopy;
+    v24 = nameCopy;
+    v26 = v25 = identifierCopy;
+    profileManagementShim = [v26 profileManagementShim];
 
-    v15 = v25;
-    v16 = v24;
-    v17 = v23;
+    identifierCopy = v25;
+    nameCopy = v24;
+    lastNameCopy = v23;
 
-    v27 = [(HDCloudSyncOperation *)self configuration];
+    configuration2 = [(HDCloudSyncOperation *)self configuration];
     v33[0] = MEMORY[0x277D85DD0];
     v33[1] = 3221225472;
     v33[2] = __151__HDCloudSyncSharedSummaryParticipantProfileCreationOperation__createProfileWithUUID_contactIdentifier_firstName_lastName_ownerParticipant_completion___block_invoke;
     v33[3] = &unk_278613128;
-    v39 = v19;
+    v39 = completionCopy;
     v33[4] = self;
     v34 = v20;
-    v35 = v15;
-    v36 = v16;
+    v35 = identifierCopy;
+    v36 = nameCopy;
     v37 = v23;
-    v38 = v18;
+    v38 = participantCopy;
     v28 = v20;
-    [v31 profileExistsForProfileIdentifier:v28 configuration:v27 completion:v33];
+    [profileManagementShim profileExistsForProfileIdentifier:v28 configuration:configuration2 completion:v33];
 
-    v14 = v32;
+    dCopy = v32;
   }
 
   else
@@ -184,15 +184,15 @@ LABEL_8:
     if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_ERROR))
     {
       *buf = 138543874;
-      v41 = self;
+      selfCopy = self;
       v42 = 2114;
-      v43 = v14;
+      v43 = dCopy;
       v44 = 2112;
-      v45 = v15;
+      v45 = identifierCopy;
       _os_log_error_impl(&dword_228986000, v29, OS_LOG_TYPE_ERROR, "[summary-sharing] %{public}@: No owner participant on sharing entry metadata; unable to create a new local profile for accepted sharing entry %{public}@: %@", buf, 0x20u);
     }
 
-    (*(v19 + 2))(v19, 1, 0);
+    (*(completionCopy + 2))(completionCopy, 1, 0);
   }
 
   v30 = *MEMORY[0x277D85DE8];
@@ -296,38 +296,38 @@ void __151__HDCloudSyncSharedSummaryParticipantProfileCreationOperation__createP
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_setUpOwnerParticipantForProfileIdentifier:(id)a3 ownerParticipant:(id)a4 completion:(id)a5
+- (void)_setUpOwnerParticipantForProfileIdentifier:(id)identifier ownerParticipant:(id)participant completion:(id)completion
 {
   v38 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(HDCloudSyncOperation *)self configuration];
-  v12 = [v11 repository];
-  v13 = [v12 cloudSyncShimProvider];
-  v14 = [v13 profileManagementShim];
+  identifierCopy = identifier;
+  participantCopy = participant;
+  completionCopy = completion;
+  configuration = [(HDCloudSyncOperation *)self configuration];
+  repository = [configuration repository];
+  cloudSyncShimProvider = [repository cloudSyncShimProvider];
+  profileManagementShim = [cloudSyncShimProvider profileManagementShim];
 
-  v15 = [(HDCloudSyncOperation *)self configuration];
-  v16 = [v15 repository];
-  v17 = [v16 profileManager];
-  v18 = [v17 profileForIdentifier:v8];
+  configuration2 = [(HDCloudSyncOperation *)self configuration];
+  repository2 = [configuration2 repository];
+  profileManager = [repository2 profileManager];
+  v18 = [profileManager profileForIdentifier:identifierCopy];
 
-  v19 = [v18 cloudSyncManager];
+  cloudSyncManager = [v18 cloudSyncManager];
   v33 = 0;
-  v20 = [v19 shareOwnerParticipantWithError:&v33];
+  v20 = [cloudSyncManager shareOwnerParticipantWithError:&v33];
   v21 = v33;
 
   if (v20)
   {
-    v10[2](v10, 1, 0);
+    completionCopy[2](completionCopy, 1, 0);
   }
 
   else
   {
-    v20 = v9;
-    v22 = [v18 cloudSyncManager];
+    v20 = participantCopy;
+    cloudSyncManager2 = [v18 cloudSyncManager];
     v32 = 0;
-    v23 = [v22 setShareOwnerParticipant:v20 error:&v32];
+    v23 = [cloudSyncManager2 setShareOwnerParticipant:v20 error:&v32];
     v28 = v32;
 
     _HKInitializeLogging();
@@ -338,13 +338,13 @@ void __151__HDCloudSyncSharedSummaryParticipantProfileCreationOperation__createP
       if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543618;
-        v35 = self;
+        selfCopy2 = self;
         v36 = 2114;
         v37 = v20;
         _os_log_impl(&dword_228986000, v24, OS_LOG_TYPE_DEFAULT, "[summary-sharing] %{public}@: Stored owner participant: %{public}@", buf, 0x16u);
       }
 
-      v10[2](v10, 1, 0);
+      completionCopy[2](completionCopy, 1, 0);
     }
 
     else
@@ -352,21 +352,21 @@ void __151__HDCloudSyncSharedSummaryParticipantProfileCreationOperation__createP
       if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543618;
-        v35 = self;
+        selfCopy2 = self;
         v36 = 2114;
         v37 = v28;
         _os_log_error_impl(&dword_228986000, v24, OS_LOG_TYPE_ERROR, "[summary-sharing] %{public}@: Failed to store owner participant: %{public}@", buf, 0x16u);
       }
 
-      v26 = [(HDCloudSyncOperation *)self configuration];
+      configuration3 = [(HDCloudSyncOperation *)self configuration];
       v29[0] = MEMORY[0x277D85DD0];
       v29[1] = 3221225472;
       v29[2] = __134__HDCloudSyncSharedSummaryParticipantProfileCreationOperation__setUpOwnerParticipantForProfileIdentifier_ownerParticipant_completion___block_invoke;
       v29[3] = &unk_278613150;
       v29[4] = self;
-      v30 = v8;
-      v31 = v10;
-      [v14 deleteProfile:v30 configuration:v26 completion:v29];
+      v30 = identifierCopy;
+      v31 = completionCopy;
+      [profileManagementShim deleteProfile:v30 configuration:configuration3 completion:v29];
     }
   }
 
@@ -400,43 +400,43 @@ void __134__HDCloudSyncSharedSummaryParticipantProfileCreationOperation__setUpOw
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_createProfileWithProfileIdentifier:(id)a3 contactIdentifier:(id)a4 firstName:(id)a5 lastName:(id)a6 completion:(id)a7
+- (void)_createProfileWithProfileIdentifier:(id)identifier contactIdentifier:(id)contactIdentifier firstName:(id)name lastName:(id)lastName completion:(id)completion
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = v13;
-  if (!v13)
+  contactIdentifierCopy = contactIdentifier;
+  nameCopy = name;
+  lastNameCopy = lastName;
+  completionCopy = completion;
+  v16 = nameCopy;
+  if (!nameCopy)
   {
-    if (v14)
+    if (lastNameCopy)
     {
       v16 = &stru_283BF39C8;
     }
 
     else
     {
-      v16 = v12;
+      v16 = contactIdentifierCopy;
     }
   }
 
-  v25 = v13;
-  v17 = a3;
-  v18 = [(HDCloudSyncOperation *)self configuration];
-  v19 = [v18 repository];
-  [v19 cloudSyncShimProvider];
-  v21 = v20 = v12;
-  v22 = [v21 profileManagementShim];
+  v25 = nameCopy;
+  identifierCopy = identifier;
+  configuration = [(HDCloudSyncOperation *)self configuration];
+  repository = [configuration repository];
+  [repository cloudSyncShimProvider];
+  v21 = v20 = contactIdentifierCopy;
+  profileManagementShim = [v21 profileManagementShim];
 
-  v23 = [(HDCloudSyncOperation *)self configuration];
+  configuration2 = [(HDCloudSyncOperation *)self configuration];
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __147__HDCloudSyncSharedSummaryParticipantProfileCreationOperation__createProfileWithProfileIdentifier_contactIdentifier_firstName_lastName_completion___block_invoke;
   v26[3] = &unk_278613178;
   v26[4] = self;
-  v27 = v15;
-  v24 = v15;
-  [v22 createProfileForIdentifier:v17 firstName:v16 lastName:v14 configuration:v23 completion:v26];
+  v27 = completionCopy;
+  v24 = completionCopy;
+  [profileManagementShim createProfileForIdentifier:identifierCopy firstName:v16 lastName:lastNameCopy configuration:configuration2 completion:v26];
 }
 
 void __147__HDCloudSyncSharedSummaryParticipantProfileCreationOperation__createProfileWithProfileIdentifier_contactIdentifier_firstName_lastName_completion___block_invoke(uint64_t a1, void *a2, void *a3)

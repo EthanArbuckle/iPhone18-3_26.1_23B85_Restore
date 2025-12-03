@@ -1,22 +1,22 @@
 @interface FTLmScorerResponse
-- (FTLmScorerResponse)initWithFlatbuffData:(id)a3 root:(const LmScorerResponse *)a4 verify:(BOOL)a5;
+- (FTLmScorerResponse)initWithFlatbuffData:(id)data root:(const LmScorerResponse *)root verify:(BOOL)verify;
 - (NSArray)tokens;
 - (NSString)return_str;
-- (Offset<siri::speech::schema_fb::LmScorerResponse>)addObjectToBuffer:(void *)a3;
+- (Offset<siri::speech::schema_fb::LmScorerResponse>)addObjectToBuffer:(void *)buffer;
 - (double)ppl;
 - (id)flatbuffData;
-- (id)tokens_objectAtIndex:(unint64_t)a3;
+- (id)tokens_objectAtIndex:(unint64_t)index;
 - (int)return_code;
 - (unint64_t)tokens_count;
-- (void)tokens_enumerateObjectsUsingBlock:(id)a3;
+- (void)tokens_enumerateObjectsUsingBlock:(id)block;
 @end
 
 @implementation FTLmScorerResponse
 
-- (FTLmScorerResponse)initWithFlatbuffData:(id)a3 root:(const LmScorerResponse *)a4 verify:(BOOL)a5
+- (FTLmScorerResponse)initWithFlatbuffData:(id)data root:(const LmScorerResponse *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v25.receiver = self;
   v25.super_class = FTLmScorerResponse;
   v10 = [(FTLmScorerResponse *)&v25 init];
@@ -25,35 +25,35 @@
     goto LABEL_13;
   }
 
-  if (!v9 || ![v9 length])
+  if (!dataCopy || ![dataCopy length])
   {
     goto LABEL_14;
   }
 
-  objc_storeStrong(&v10->_data, a3);
-  if (!a4)
+  objc_storeStrong(&v10->_data, data);
+  if (!root)
   {
-    v11 = [(NSData *)v10->_data bytes];
-    a4 = v11 + *v11;
+    bytes = [(NSData *)v10->_data bytes];
+    root = bytes + *bytes;
   }
 
-  v10->_root = a4;
-  if (!v5)
+  v10->_root = root;
+  if (!verifyCopy)
   {
     goto LABEL_13;
   }
 
-  v12 = [(NSData *)v10->_data bytes];
+  bytes2 = [(NSData *)v10->_data bytes];
   v13 = [(NSData *)v10->_data length];
   root = v10->_root;
-  if (root < v12 || root > v12 + v13)
+  if (root < bytes2 || root > bytes2 + v13)
   {
     goto LABEL_14;
   }
 
-  v16 = [(NSData *)v10->_data bytes];
+  bytes3 = [(NSData *)v10->_data bytes];
   v17 = [(NSData *)v10->_data length];
-  v21[0] = v16;
+  v21[0] = bytes3;
   v21[1] = v17;
   v22 = xmmword_233005E20;
   v23 = 0;
@@ -122,12 +122,12 @@ LABEL_13:
   v3 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"tokens"];
   if (!v3)
   {
-    v4 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __28__FTLmScorerResponse_tokens__block_invoke;
     v6[3] = &unk_2789B8AD8;
-    v3 = v4;
+    v3 = array;
     v7 = v3;
     [(FTLmScorerResponse *)self tokens_enumerateObjectsUsingBlock:v6];
     [(NSMutableDictionary *)self->_storage setObject:v3 forKeyedSubscript:@"tokens"];
@@ -136,13 +136,13 @@ LABEL_13:
   return v3;
 }
 
-- (id)tokens_objectAtIndex:(unint64_t)a3
+- (id)tokens_objectAtIndex:(unint64_t)index
 {
   v5 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"tokens"];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 objectAtIndexedSubscript:a3];
+    v7 = [v5 objectAtIndexedSubscript:index];
 LABEL_3:
     v8 = v7;
     goto LABEL_8;
@@ -155,7 +155,7 @@ LABEL_3:
     v11 = *v10[8].var0;
     if (v11)
     {
-      v12 = &root[4 * a3 + v11 + *root[v11].var0];
+      v12 = &root[4 * index + v11 + *root[v11].var0];
       v7 = [[FTLmScorerToken alloc] initWithFlatbuffData:self->_data root:v12 + 4 + *(v12 + 4) verify:0];
       goto LABEL_3;
     }
@@ -194,14 +194,14 @@ LABEL_8:
   return v5;
 }
 
-- (void)tokens_enumerateObjectsUsingBlock:(id)a3
+- (void)tokens_enumerateObjectsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"tokens"];
   v6 = v5;
   if (v5)
   {
-    [v5 enumerateObjectsUsingBlock:v4];
+    [v5 enumerateObjectsUsingBlock:blockCopy];
   }
 
   else
@@ -224,7 +224,7 @@ LABEL_8:
           do
           {
             v15 = [[FTLmScorerToken alloc] initWithFlatbuffData:self->_data root:&v13[*v13->var0] verify:0];
-            v4[2](v4, v15, v12, &v18);
+            blockCopy[2](blockCopy, v15, v12, &v18);
             v16 = v18;
 
             if (v16)
@@ -262,34 +262,34 @@ LABEL_8:
   return result;
 }
 
-- (Offset<siri::speech::schema_fb::LmScorerResponse>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::schema_fb::LmScorerResponse>)addObjectToBuffer:(void *)buffer
 {
   v44 = *MEMORY[0x277D85DE8];
-  v5 = [(FTLmScorerResponse *)self return_code];
-  v6 = [(FTLmScorerResponse *)self return_str];
-  v7 = v6;
-  if (!v6)
+  return_code = [(FTLmScorerResponse *)self return_code];
+  return_str = [(FTLmScorerResponse *)self return_str];
+  v7 = return_str;
+  if (!return_str)
   {
-    v6 = &stru_284834138;
+    return_str = &stru_284834138;
   }
 
-  v8 = [(__CFString *)v6 UTF8String];
-  v9 = strlen(v8);
-  LODWORD(v8) = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(a3, v8, v9);
+  uTF8String = [(__CFString *)return_str UTF8String];
+  v9 = strlen(uTF8String);
+  LODWORD(uTF8String) = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(buffer, uTF8String, v9);
 
   memset(&v42, 0, sizeof(v42));
-  v10 = [(FTLmScorerResponse *)self tokens];
-  std::vector<apple::aiml::flatbuffers2::Offset<siri::speech::schema_fb::RecognitionToken>>::reserve(&v42, [v10 count]);
+  tokens = [(FTLmScorerResponse *)self tokens];
+  std::vector<apple::aiml::flatbuffers2::Offset<siri::speech::schema_fb::RecognitionToken>>::reserve(&v42, [tokens count]);
 
   v40 = 0u;
   v41 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v11 = [(FTLmScorerResponse *)self tokens];
-  v35 = v8;
-  v36 = self;
-  v37 = v5;
-  v12 = [v11 countByEnumeratingWithState:&v38 objects:v43 count:16];
+  tokens2 = [(FTLmScorerResponse *)self tokens];
+  v35 = uTF8String;
+  selfCopy = self;
+  v37 = return_code;
+  v12 = [tokens2 countByEnumeratingWithState:&v38 objects:v43 count:16];
   if (v12)
   {
     v13 = *v39;
@@ -299,10 +299,10 @@ LABEL_8:
       {
         if (*v39 != v13)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(tokens2);
         }
 
-        v15 = [*(*(&v38 + 1) + 8 * i) addObjectToBuffer:a3];
+        v15 = [*(*(&v38 + 1) + 8 * i) addObjectToBuffer:buffer];
         end = v42.__end_;
         if (v42.__end_ >= v42.__end_cap_.__value_)
         {
@@ -358,7 +358,7 @@ LABEL_8:
         v42.__end_ = v17;
       }
 
-      v12 = [v11 countByEnumeratingWithState:&v38 objects:v43 count:16];
+      v12 = [tokens2 countByEnumeratingWithState:&v38 objects:v43 count:16];
     }
 
     while (v12);
@@ -374,18 +374,18 @@ LABEL_8:
     v25 = v42.__begin_;
   }
 
-  v26 = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateVector<apple::aiml::flatbuffers2::String>(a3, v25, v42.__end_ - v42.__begin_);
-  [(FTLmScorerResponse *)v36 ppl];
+  v26 = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateVector<apple::aiml::flatbuffers2::String>(buffer, v25, v42.__end_ - v42.__begin_);
+  [(FTLmScorerResponse *)selfCopy ppl];
   v28 = v27;
-  *(a3 + 70) = 1;
-  v29 = *(a3 + 8);
-  v30 = *(a3 + 12);
-  v31 = *(a3 + 10);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned int>(a3, 4, v37, 0);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 6, v35);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 8, v26);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<double>(a3, 10, v28, 0.0);
-  v32.var0 = apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(a3, v29 - v30 + v31);
+  *(buffer + 70) = 1;
+  v29 = *(buffer + 8);
+  v30 = *(buffer + 12);
+  v31 = *(buffer + 10);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned int>(buffer, 4, v37, 0);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 6, v35);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 8, v26);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<double>(buffer, 10, v28, 0.0);
+  v32.var0 = apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(buffer, v29 - v30 + v31);
   if (v42.__begin_)
   {
     v42.__end_ = v42.__begin_;

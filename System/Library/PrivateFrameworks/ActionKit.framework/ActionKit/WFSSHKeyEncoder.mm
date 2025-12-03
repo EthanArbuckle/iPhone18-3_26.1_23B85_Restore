@@ -2,38 +2,38 @@
 - (NSData)encodedData;
 - (WFSSHKeyEncoder)init;
 - (unint64_t)encodedLength;
-- (void)encodeDataWithPreceedingLength:(id)a3;
-- (void)encodeString:(id)a3;
-- (void)encodeStringWithPreceedingLength:(id)a3;
+- (void)encodeDataWithPreceedingLength:(id)length;
+- (void)encodeString:(id)string;
+- (void)encodeStringWithPreceedingLength:(id)length;
 @end
 
 @implementation WFSSHKeyEncoder
 
-- (void)encodeDataWithPreceedingLength:(id)a3
+- (void)encodeDataWithPreceedingLength:(id)length
 {
-  v4 = a3;
-  -[WFSSHKeyEncoder encodeInteger:](self, "encodeInteger:", [v4 length]);
-  [(WFSSHKeyEncoder *)self encodeData:v4];
+  lengthCopy = length;
+  -[WFSSHKeyEncoder encodeInteger:](self, "encodeInteger:", [lengthCopy length]);
+  [(WFSSHKeyEncoder *)self encodeData:lengthCopy];
 }
 
-- (void)encodeStringWithPreceedingLength:(id)a3
+- (void)encodeStringWithPreceedingLength:(id)length
 {
-  v4 = a3;
-  v5 = [v4 lengthOfBytesUsingEncoding:4];
+  lengthCopy = length;
+  v5 = [lengthCopy lengthOfBytesUsingEncoding:4];
   [(WFSSHKeyEncoder *)self encodeInteger:v5];
   data = self->_data;
-  v8 = [v4 dataUsingEncoding:4];
+  v8 = [lengthCopy dataUsingEncoding:4];
 
   v7 = v8;
   -[NSMutableData appendBytes:length:](data, "appendBytes:length:", [v8 bytes], v5);
 }
 
-- (void)encodeString:(id)a3
+- (void)encodeString:(id)string
 {
-  v4 = a3;
-  v5 = [v4 lengthOfBytesUsingEncoding:4];
+  stringCopy = string;
+  v5 = [stringCopy lengthOfBytesUsingEncoding:4];
   data = self->_data;
-  v8 = [v4 dataUsingEncoding:4];
+  v8 = [stringCopy dataUsingEncoding:4];
 
   v7 = v8;
   -[NSMutableData appendBytes:length:](data, "appendBytes:length:", [v8 bytes], v5);
@@ -41,16 +41,16 @@
 
 - (NSData)encodedData
 {
-  v2 = [(WFSSHKeyEncoder *)self data];
-  v3 = [v2 copy];
+  data = [(WFSSHKeyEncoder *)self data];
+  v3 = [data copy];
 
   return v3;
 }
 
 - (unint64_t)encodedLength
 {
-  v2 = [(WFSSHKeyEncoder *)self data];
-  v3 = [v2 length];
+  data = [(WFSSHKeyEncoder *)self data];
+  v3 = [data length];
 
   return v3;
 }

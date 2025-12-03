@@ -1,15 +1,15 @@
 @interface CNUnifiedContactPosterDataRequestFactory
 - (CNUnifiedContactPosterDataRequestFactory)init;
-- (CNUnifiedContactPosterDataRequestFactory)initWithContactStore:(id)a3;
-- (CNUnifiedContactPosterDataRequestFactory)initWithIdentifierExpander:(id)a3;
-- (id)createImages:(id)a3 forContact:(id)a4;
-- (id)createPosters:(id)a3 forContact:(id)a4;
-- (id)currentImagesForContactWithIdentifier:(id)a3;
-- (id)currentPostersForContactWithIdentifier:(id)a3;
-- (id)recentImagesForContact:(id)a3;
-- (id)recentImagesForContactWithIdentifier:(id)a3;
-- (id)recentPostersForContact:(id)a3;
-- (id)recentPostersForContactWithIdentifier:(id)a3;
+- (CNUnifiedContactPosterDataRequestFactory)initWithContactStore:(id)store;
+- (CNUnifiedContactPosterDataRequestFactory)initWithIdentifierExpander:(id)expander;
+- (id)createImages:(id)images forContact:(id)contact;
+- (id)createPosters:(id)posters forContact:(id)contact;
+- (id)currentImagesForContactWithIdentifier:(id)identifier;
+- (id)currentPostersForContactWithIdentifier:(id)identifier;
+- (id)recentImagesForContact:(id)contact;
+- (id)recentImagesForContactWithIdentifier:(id)identifier;
+- (id)recentPostersForContact:(id)contact;
+- (id)recentPostersForContactWithIdentifier:(id)identifier;
 @end
 
 @implementation CNUnifiedContactPosterDataRequestFactory
@@ -22,93 +22,93 @@
   return v4;
 }
 
-- (CNUnifiedContactPosterDataRequestFactory)initWithContactStore:(id)a3
+- (CNUnifiedContactPosterDataRequestFactory)initWithContactStore:(id)store
 {
-  v4 = a3;
-  v5 = [[CNRefetchingContactIdentifierExpander alloc] initWithContactStore:v4];
+  storeCopy = store;
+  v5 = [[CNRefetchingContactIdentifierExpander alloc] initWithContactStore:storeCopy];
 
   v6 = [(CNUnifiedContactPosterDataRequestFactory *)self initWithIdentifierExpander:v5];
   return v6;
 }
 
-- (CNUnifiedContactPosterDataRequestFactory)initWithIdentifierExpander:(id)a3
+- (CNUnifiedContactPosterDataRequestFactory)initWithIdentifierExpander:(id)expander
 {
-  v5 = a3;
+  expanderCopy = expander;
   v10.receiver = self;
   v10.super_class = CNUnifiedContactPosterDataRequestFactory;
   v6 = [(CNUnifiedContactPosterDataRequestFactory *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_expander, a3);
+    objc_storeStrong(&v6->_expander, expander);
     v8 = v7;
   }
 
   return v7;
 }
 
-- (id)recentPostersForContact:(id)a3
+- (id)recentPostersForContact:(id)contact
 {
-  v3 = [(CNContactPosterUnifiedContactIdentifierExpansion *)self->_expander expandIdentifiersForContact:a3];
+  v3 = [(CNContactPosterUnifiedContactIdentifierExpansion *)self->_expander expandIdentifiersForContact:contact];
   v4 = [CNContactPosterFetchRequest recentPostersRequestForContactIdentifiers:v3];
 
   return v4;
 }
 
-- (id)recentPostersForContactWithIdentifier:(id)a3
+- (id)recentPostersForContactWithIdentifier:(id)identifier
 {
-  v3 = [(CNContactPosterUnifiedContactIdentifierExpansion *)self->_expander expandIdentifiersForContactWithIdentifier:a3];
+  v3 = [(CNContactPosterUnifiedContactIdentifierExpansion *)self->_expander expandIdentifiersForContactWithIdentifier:identifier];
   v4 = [CNContactPosterFetchRequest recentPostersRequestForContactIdentifiers:v3];
 
   return v4;
 }
 
-- (id)currentPostersForContactWithIdentifier:(id)a3
+- (id)currentPostersForContactWithIdentifier:(id)identifier
 {
-  v3 = [(CNContactPosterUnifiedContactIdentifierExpansion *)self->_expander expandIdentifiersForContactWithIdentifier:a3];
+  v3 = [(CNContactPosterUnifiedContactIdentifierExpansion *)self->_expander expandIdentifiersForContactWithIdentifier:identifier];
   v4 = [CNContactPosterFetchRequest currentPostersRequestForContactIdentifiers:v3];
 
   return v4;
 }
 
-- (id)recentImagesForContact:(id)a3
+- (id)recentImagesForContact:(id)contact
 {
-  v3 = [(CNContactPosterUnifiedContactIdentifierExpansion *)self->_expander expandIdentifiersForContact:a3];
+  v3 = [(CNContactPosterUnifiedContactIdentifierExpansion *)self->_expander expandIdentifiersForContact:contact];
   v4 = [CNContactImageFetchRequest recentImagesRequestForContactIdentifiers:v3];
 
   return v4;
 }
 
-- (id)recentImagesForContactWithIdentifier:(id)a3
+- (id)recentImagesForContactWithIdentifier:(id)identifier
 {
-  v3 = [(CNContactPosterUnifiedContactIdentifierExpansion *)self->_expander expandIdentifiersForContactWithIdentifier:a3];
+  v3 = [(CNContactPosterUnifiedContactIdentifierExpansion *)self->_expander expandIdentifiersForContactWithIdentifier:identifier];
   v4 = [CNContactImageFetchRequest recentImagesRequestForContactIdentifiers:v3];
 
   return v4;
 }
 
-- (id)currentImagesForContactWithIdentifier:(id)a3
+- (id)currentImagesForContactWithIdentifier:(id)identifier
 {
-  v3 = [(CNContactPosterUnifiedContactIdentifierExpansion *)self->_expander expandIdentifiersForContactWithIdentifier:a3];
+  v3 = [(CNContactPosterUnifiedContactIdentifierExpansion *)self->_expander expandIdentifiersForContactWithIdentifier:identifier];
   v4 = [CNContactImageFetchRequest currentImagesRequestForContactIdentifiers:v3];
 
   return v4;
 }
 
-- (id)createPosters:(id)a3 forContact:(id)a4
+- (id)createPosters:(id)posters forContact:(id)contact
 {
-  v6 = a3;
-  v7 = [(CNUnifiedContactPosterDataRequestFactory *)self preferredIdentifierForImagesForContact:a4];
-  v8 = [CNContactPosterCreateRequest requestToCreatePosters:v6 forContactIdentifier:v7];
+  postersCopy = posters;
+  v7 = [(CNUnifiedContactPosterDataRequestFactory *)self preferredIdentifierForImagesForContact:contact];
+  v8 = [CNContactPosterCreateRequest requestToCreatePosters:postersCopy forContactIdentifier:v7];
 
   return v8;
 }
 
-- (id)createImages:(id)a3 forContact:(id)a4
+- (id)createImages:(id)images forContact:(id)contact
 {
-  v6 = a3;
-  v7 = [(CNUnifiedContactPosterDataRequestFactory *)self preferredIdentifierForImagesForContact:a4];
-  v8 = [CNContactImageCreateRequest requestToCreateImages:v6 forContactIdentifier:v7];
+  imagesCopy = images;
+  v7 = [(CNUnifiedContactPosterDataRequestFactory *)self preferredIdentifierForImagesForContact:contact];
+  v8 = [CNContactImageCreateRequest requestToCreateImages:imagesCopy forContactIdentifier:v7];
 
   return v8;
 }

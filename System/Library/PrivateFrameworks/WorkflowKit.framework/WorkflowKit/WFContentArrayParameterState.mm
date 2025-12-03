@@ -1,24 +1,24 @@
 @interface WFContentArrayParameterState
-- (void)processWithContext:(id)a3 userInputRequiredHandler:(id)a4 valueHandler:(id)a5;
+- (void)processWithContext:(id)context userInputRequiredHandler:(id)handler valueHandler:(id)valueHandler;
 @end
 
 @implementation WFContentArrayParameterState
 
-- (void)processWithContext:(id)a3 userInputRequiredHandler:(id)a4 valueHandler:(id)a5
+- (void)processWithContext:(id)context userInputRequiredHandler:(id)handler valueHandler:(id)valueHandler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  valueHandlerCopy = valueHandler;
+  handlerCopy = handler;
+  contextCopy = context;
   v11 = objc_opt_class();
-  v12 = [(WFArrayParameterState *)self values];
+  values = [(WFArrayParameterState *)self values];
   v13 = objc_opt_class();
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __89__WFContentArrayParameterState_processWithContext_userInputRequiredHandler_valueHandler___block_invoke;
   v15[3] = &unk_1E837DA88;
-  v16 = v8;
-  v14 = v8;
-  [v11 processValues:v12 context:v10 processingClass:v13 userInputRequiredHandler:v9 valueHandler:v15 processSingleVariableStringsAsContentItems:1];
+  v16 = valueHandlerCopy;
+  v14 = valueHandlerCopy;
+  [v11 processValues:values context:contextCopy processingClass:v13 userInputRequiredHandler:handlerCopy valueHandler:v15 processSingleVariableStringsAsContentItems:1];
 }
 
 void __89__WFContentArrayParameterState_processWithContext_userInputRequiredHandler_valueHandler___block_invoke(uint64_t a1, void *a2, void *a3)

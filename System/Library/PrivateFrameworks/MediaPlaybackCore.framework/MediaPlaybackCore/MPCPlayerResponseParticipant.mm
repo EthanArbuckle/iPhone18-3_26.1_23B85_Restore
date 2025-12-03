@@ -1,6 +1,6 @@
 @interface MPCPlayerResponseParticipant
 - (MPCPlayerResponse)response;
-- (MPCPlayerResponseParticipant)initWithIdentifier:(id)a3 identifierType:(int64_t)a4 participantIdentifier:(id)a5 displayName:(id)a6 response:(id)a7;
+- (MPCPlayerResponseParticipant)initWithIdentifier:(id)identifier identifierType:(int64_t)type participantIdentifier:(id)participantIdentifier displayName:(id)name response:(id)response;
 - (NSString)description;
 - (id)_stateDumpObject;
 @end
@@ -62,31 +62,31 @@
   return [MEMORY[0x1E696AEC0] stringWithFormat:@"<%@: %p %@ id[%@]=%@ displayName=%@>", objc_opt_class(), self, self->_identifier, v4, self->_participantIdentifier, self->_displayName];
 }
 
-- (MPCPlayerResponseParticipant)initWithIdentifier:(id)a3 identifierType:(int64_t)a4 participantIdentifier:(id)a5 displayName:(id)a6 response:(id)a7
+- (MPCPlayerResponseParticipant)initWithIdentifier:(id)identifier identifierType:(int64_t)type participantIdentifier:(id)participantIdentifier displayName:(id)name response:(id)response
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  identifierCopy = identifier;
+  participantIdentifierCopy = participantIdentifier;
+  nameCopy = name;
+  responseCopy = response;
   v24.receiver = self;
   v24.super_class = MPCPlayerResponseParticipant;
   v16 = [(MPCPlayerResponseParticipant *)&v24 init];
   if (v16)
   {
-    v17 = [v12 copy];
+    v17 = [identifierCopy copy];
     identifier = v16->_identifier;
     v16->_identifier = v17;
 
-    v16->_identifierType = a4;
-    v19 = [v13 copy];
+    v16->_identifierType = type;
+    v19 = [participantIdentifierCopy copy];
     participantIdentifier = v16->_participantIdentifier;
     v16->_participantIdentifier = v19;
 
-    v21 = [v14 copy];
+    v21 = [nameCopy copy];
     displayName = v16->_displayName;
     v16->_displayName = v21;
 
-    objc_storeWeak(&v16->_response, v15);
+    objc_storeWeak(&v16->_response, responseCopy);
   }
 
   return v16;

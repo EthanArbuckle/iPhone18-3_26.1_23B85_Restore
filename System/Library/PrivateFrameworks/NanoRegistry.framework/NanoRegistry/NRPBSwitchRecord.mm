@@ -1,11 +1,11 @@
 @interface NRPBSwitchRecord
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)mergeFrom:(uint64_t)a1;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(uint64_t)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NRPBSwitchRecord
@@ -16,20 +16,20 @@
   v8.receiver = self;
   v8.super_class = NRPBSwitchRecord;
   v4 = [(NRPBSwitchRecord *)&v8 description];
-  v5 = [(NRPBSwitchRecord *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NRPBSwitchRecord *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   deviceIDBytes = self->_deviceIDBytes;
   if (deviceIDBytes)
   {
-    [v3 setObject:deviceIDBytes forKey:@"deviceIDBytes"];
+    [dictionary setObject:deviceIDBytes forKey:@"deviceIDBytes"];
   }
 
   has = self->_has;
@@ -50,14 +50,14 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v8 = v4;
+  toCopy = to;
+  v8 = toCopy;
   if (self->_deviceIDBytes)
   {
     PBDataWriterWriteDataField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   has = self->_has;
@@ -65,7 +65,7 @@
   {
     dateTimeInterval = self->_dateTimeInterval;
     PBDataWriterWriteDoubleField();
-    v4 = v8;
+    toCopy = v8;
     has = self->_has;
   }
 
@@ -73,14 +73,14 @@
   {
     switchIndex = self->_switchIndex;
     PBDataWriterWriteInt32Field();
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSData *)self->_deviceIDBytes copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSData *)self->_deviceIDBytes copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
@@ -101,16 +101,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_13;
   }
 
   deviceIDBytes = self->_deviceIDBytes;
-  if (deviceIDBytes | *(v4 + 2))
+  if (deviceIDBytes | *(equalCopy + 2))
   {
     if (![(NSData *)deviceIDBytes isEqual:?])
     {
@@ -120,23 +120,23 @@
 
   if (*&self->_has)
   {
-    if ((*(v4 + 28) & 1) == 0 || self->_dateTimeInterval != *(v4 + 1))
+    if ((*(equalCopy + 28) & 1) == 0 || self->_dateTimeInterval != *(equalCopy + 1))
     {
       goto LABEL_13;
     }
   }
 
-  else if (*(v4 + 28))
+  else if (*(equalCopy + 28))
   {
 LABEL_13:
     v6 = 0;
     goto LABEL_14;
   }
 
-  v6 = (*(v4 + 28) & 2) == 0;
+  v6 = (*(equalCopy + 28) & 2) == 0;
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 28) & 2) == 0 || self->_switchIndex != *(v4 + 6))
+    if ((*(equalCopy + 28) & 2) == 0 || self->_switchIndex != *(equalCopy + 6))
     {
       goto LABEL_13;
     }
@@ -198,31 +198,31 @@ LABEL_14:
   return v6 ^ v3 ^ v10;
 }
 
-- (void)mergeFrom:(uint64_t)a1
+- (void)mergeFrom:(uint64_t)from
 {
   v3 = a2;
-  if (a1)
+  if (from)
   {
     v4 = v3[2];
     if (v4)
     {
       v6 = v3;
-      objc_storeStrong((a1 + 16), v4);
+      objc_storeStrong((from + 16), v4);
       v3 = v6;
     }
 
     v5 = *(v3 + 28);
     if (v5)
     {
-      *(a1 + 8) = v3[1];
-      *(a1 + 28) |= 1u;
+      *(from + 8) = v3[1];
+      *(from + 28) |= 1u;
       v5 = *(v3 + 28);
     }
 
     if ((v5 & 2) != 0)
     {
-      *(a1 + 24) = *(v3 + 6);
-      *(a1 + 28) |= 2u;
+      *(from + 24) = *(v3 + 6);
+      *(from + 28) |= 2u;
     }
   }
 }

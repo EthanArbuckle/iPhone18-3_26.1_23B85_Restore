@@ -1,16 +1,16 @@
 @interface TSPIdentifierSet
-- (BOOL)intersectsIndexSet:(id)a3;
-- (id)formMergeWithIdentifierSet:(id)a3;
-- (id)initFrom:(id)a3;
+- (BOOL)intersectsIndexSet:(id)set;
+- (id)formMergeWithIdentifierSet:(id)set;
+- (id)initFrom:(id)from;
 - (id)makeMutableIdentifierSet;
-- (int64_t)countForIdentifier:(int64_t)a3 default:(int64_t)a4;
+- (int64_t)countForIdentifier:(int64_t)identifier default:(int64_t)default;
 - (int64_t)hash;
-- (void)enumerateIdentifiersUsingBlock:(id)a3;
+- (void)enumerateIdentifiersUsingBlock:(id)block;
 @end
 
 @implementation TSPIdentifierSet
 
-- (id)initFrom:(id)a3
+- (id)initFrom:(id)from
 {
   ObjectType = swift_getObjectType();
   v5 = sub_276BDAF14();
@@ -22,12 +22,12 @@
   return [(TSPIdentifierSet *)&v8 init];
 }
 
-- (int64_t)countForIdentifier:(int64_t)a3 default:(int64_t)a4
+- (int64_t)countForIdentifier:(int64_t)identifier default:(int64_t)default
 {
   v5 = *(&self->super.isa + OBJC_IVAR____TtC13TSPersistence16TSPIdentifierSet_identifierSet);
   if (*(v5 + 16))
   {
-    v6 = sub_276B04718(a3);
+    v6 = sub_276B04718(identifier);
     if (v7)
     {
       if (*(*(v5 + 56) + 8 * v6))
@@ -37,21 +37,21 @@
     }
   }
 
-  return a4;
+  return default;
 }
 
-- (void)enumerateIdentifiersUsingBlock:(id)a3
+- (void)enumerateIdentifiersUsingBlock:(id)block
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(block);
   v5 = *(&self->super.isa + OBJC_IVAR____TtC13TSPersistence16TSPIdentifierSet_identifierSet);
   _Block_copy(v4);
-  v6 = self;
+  selfCopy = self;
   sub_276B05C10(v5, v4);
   _Block_release(v4);
   _Block_release(v4);
 }
 
-- (BOOL)intersectsIndexSet:(id)a3
+- (BOOL)intersectsIndexSet:(id)set
 {
   v4 = sub_276BDAEF4();
   v5 = *(v4 - 8);
@@ -60,20 +60,20 @@
   v8 = &v12 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_276BDAED4();
   v9 = *(&self->super.isa + OBJC_IVAR____TtC13TSPersistence16TSPIdentifierSet_identifierSet);
-  v10 = self;
+  selfCopy = self;
   LOBYTE(v9) = sub_276B02F00(v8, v9);
   (*(v5 + 8))(v8, v4);
 
   return v9 & 1;
 }
 
-- (id)formMergeWithIdentifierSet:(id)a3
+- (id)formMergeWithIdentifierSet:(id)set
 {
   ObjectType = swift_getObjectType();
   v6 = *(&self->super.isa + OBJC_IVAR____TtC13TSPersistence16TSPIdentifierSet_identifierSet);
-  v7 = *(a3 + OBJC_IVAR____TtC13TSPersistence16TSPIdentifierSet_identifierSet);
-  v8 = a3;
-  v9 = self;
+  v7 = *(set + OBJC_IVAR____TtC13TSPersistence16TSPIdentifierSet_identifierSet);
+  setCopy = set;
+  selfCopy = self;
   v10 = sub_276B0308C(v7, v6);
   v11 = objc_allocWithZone(ObjectType);
   *&v11[OBJC_IVAR____TtC13TSPersistence16TSPIdentifierSet_identifierSet] = v10;
@@ -102,7 +102,7 @@
 {
   v3 = *(&self->super.isa + OBJC_IVAR____TtC13TSPersistence16TSPIdentifierSet_identifierSet);
   sub_276BDAF74();
-  v4 = self;
+  selfCopy = self;
   sub_276B05590(v7, v3);
   v5 = sub_276BDAFA4();
 

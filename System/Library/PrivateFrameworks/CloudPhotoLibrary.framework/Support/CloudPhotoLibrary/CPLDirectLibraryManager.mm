@@ -1,111 +1,111 @@
 @interface CPLDirectLibraryManager
 - (BOOL)_isManagementLibraryManager;
-- (BOOL)_isValidScopeForClient:(id)a3 error:(id *)a4;
-- (BOOL)_resetStore:(id)a3 reason:(id)a4 resetSelector:(SEL)a5 error:(id *)a6;
-- (BOOL)isLibraryManagerForEngineLibrary:(id)a3;
-- (CPLDirectLibraryManager)initWithAbstractObject:(id)a3;
+- (BOOL)_isValidScopeForClient:(id)client error:(id *)error;
+- (BOOL)_resetStore:(id)store reason:(id)reason resetSelector:(SEL)selector error:(id *)error;
+- (BOOL)isLibraryManagerForEngineLibrary:(id)library;
+- (CPLDirectLibraryManager)initWithAbstractObject:(id)object;
 - (CPLFingerprintContext)fingerprintContextIfKnown;
 - (NSString)description;
-- (id)_cloudResourcesToLocalResourcesWithLocalResources:(id)a3 targetMapping:(id)a4;
-- (id)_localResourceFromCloudResources:(id)a3 usingMapping:(id)a4;
-- (id)_localResourceFromCloudResourcesAndErrors:(id)a3 usingMapping:(id)a4;
-- (id)displayableNameForEngineLibrary:(id)a3;
-- (id)ownerNameForEngineLibrary:(id)a3;
-- (id)safeResourcesToDeleteFromProposedResources:(id)a3 realPrune:(BOOL)a4 checkServerIfNecessary:(BOOL)a5 allowUnconfirmed:(BOOL)a6 resourcesToCheckOnServer:(id *)a7 targetScopeMapping:(id)a8 unsafeResources:(id)a9;
+- (id)_cloudResourcesToLocalResourcesWithLocalResources:(id)resources targetMapping:(id)mapping;
+- (id)_localResourceFromCloudResources:(id)resources usingMapping:(id)mapping;
+- (id)_localResourceFromCloudResourcesAndErrors:(id)errors usingMapping:(id)mapping;
+- (id)displayableNameForEngineLibrary:(id)library;
+- (id)ownerNameForEngineLibrary:(id)library;
+- (id)safeResourcesToDeleteFromProposedResources:(id)resources realPrune:(BOOL)prune checkServerIfNecessary:(BOOL)necessary allowUnconfirmed:(BOOL)unconfirmed resourcesToCheckOnServer:(id *)server targetScopeMapping:(id)mapping unsafeResources:(id)unsafeResources;
 - (void)_cleanupComputeStateDownloadQueue;
-- (void)_deleteResources:(id)a3 dryRun:(BOOL)a4 checkServerIfNecessary:(BOOL)a5 completionHandler:(id)a6;
-- (void)_dispatchForceSyncForScopeIdentifiers:(id)a3 errors:(id)a4 completionHandler:(id)a5;
+- (void)_deleteResources:(id)resources dryRun:(BOOL)run checkServerIfNecessary:(BOOL)necessary completionHandler:(id)handler;
+- (void)_dispatchForceSyncForScopeIdentifiers:(id)identifiers errors:(id)errors completionHandler:(id)handler;
 - (void)_endComputeStateDownload;
-- (void)_fetchExistingSharedLibraryScopeWithProgress:(id)a3 blocker:(id)a4 completionHandler:(id)a5;
-- (void)_fetchTransportScopeForScope:(id)a3 transportGroup:(id)a4 progress:(id)a5 completionHandler:(id)a6;
+- (void)_fetchExistingSharedLibraryScopeWithProgress:(id)progress blocker:(id)blocker completionHandler:(id)handler;
+- (void)_fetchTransportScopeForScope:(id)scope transportGroup:(id)group progress:(id)progress completionHandler:(id)handler;
 - (void)_startComputeStateDownload;
-- (void)acceptSharedScope:(id)a3 completionHandler:(id)a4;
-- (void)acknowledgeChangedStatuses:(id)a3;
-- (void)activateScopeWithIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)addInfoToLog:(id)a3;
-- (void)addStatusChangesForRecordsWithScopedIdentifiers:(id)a3 persist:(BOOL)a4;
-- (void)attachComputeStates:(id)a3 completionHandler:(id)a4;
-- (void)beginDownloadForResource:(id)a3 clientBundleID:(id)a4 options:(id)a5 proposedTaskIdentifier:(id)a6 completionHandler:(id)a7;
-- (void)beginInMemoryDownloadOfResource:(id)a3 clientBundleID:(id)a4 completionHandler:(id)a5;
-- (void)blockEngineElement:(id)a3;
-- (void)boostPriorityForScopeWithIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)checkHasBackgroundDownloadOperationsWithCompletionHandler:(id)a3;
-- (void)checkServerForResources:(id)a3 targetMapping:(id)a4 transportScopeMapping:(id)a5 completionHandler:(id)a6;
-- (void)closeWithCompletionHandler:(id)a3;
-- (void)cloudCacheGetDescriptionForRecordWithScopedIdentifier:(id)a3 related:(BOOL)a4 completionHandler:(id)a5;
-- (void)compactFileCacheWithCompletionHandler:(id)a3;
-- (void)createScope:(id)a3 completionHandler:(id)a4;
-- (void)deactivateScopeWithIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)deactivateWithCompletionHandler:(id)a3;
-- (void)deleteScopeWithIdentifier:(id)a3 forced:(BOOL)a4 completionHandler:(id)a5;
-- (void)disableMainScopeWithCompletionHandler:(id)a3;
+- (void)acceptSharedScope:(id)scope completionHandler:(id)handler;
+- (void)acknowledgeChangedStatuses:(id)statuses;
+- (void)activateScopeWithIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)addInfoToLog:(id)log;
+- (void)addStatusChangesForRecordsWithScopedIdentifiers:(id)identifiers persist:(BOOL)persist;
+- (void)attachComputeStates:(id)states completionHandler:(id)handler;
+- (void)beginDownloadForResource:(id)resource clientBundleID:(id)d options:(id)options proposedTaskIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)beginInMemoryDownloadOfResource:(id)resource clientBundleID:(id)d completionHandler:(id)handler;
+- (void)blockEngineElement:(id)element;
+- (void)boostPriorityForScopeWithIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)checkHasBackgroundDownloadOperationsWithCompletionHandler:(id)handler;
+- (void)checkServerForResources:(id)resources targetMapping:(id)mapping transportScopeMapping:(id)scopeMapping completionHandler:(id)handler;
+- (void)closeWithCompletionHandler:(id)handler;
+- (void)cloudCacheGetDescriptionForRecordWithScopedIdentifier:(id)identifier related:(BOOL)related completionHandler:(id)handler;
+- (void)compactFileCacheWithCompletionHandler:(id)handler;
+- (void)createScope:(id)scope completionHandler:(id)handler;
+- (void)deactivateScopeWithIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)deactivateWithCompletionHandler:(id)handler;
+- (void)deleteScopeWithIdentifier:(id)identifier forced:(BOOL)forced completionHandler:(id)handler;
+- (void)disableMainScopeWithCompletionHandler:(id)handler;
 - (void)disableMingling;
-- (void)disableSynchronizationWithReason:(id)a3;
-- (void)enableMainScopeWithCompletionHandler:(id)a3;
+- (void)disableSynchronizationWithReason:(id)reason;
+- (void)enableMainScopeWithCompletionHandler:(id)handler;
 - (void)enableMingling;
-- (void)enableSynchronizationWithReason:(id)a3;
-- (void)engineLibrary:(id)a3 didCloseWithError:(id)a4;
-- (void)engineLibrary:(id)a3 didDownloadResourceInBackground:(id)a4;
-- (void)engineLibrary:(id)a3 didFailBackgroundDownloadOfResource:(id)a4;
-- (void)engineLibrary:(id)a3 didStartUploadTask:(id)a4;
-- (void)engineLibrary:(id)a3 getStatusDictionaryWithCompletionHandler:(id)a4;
-- (void)engineLibrary:(id)a3 getStatusWithCompletionHandler:(id)a4;
-- (void)engineLibrary:(id)a3 provideLocalResource:(id)a4 recordClass:(Class)a5 completionHandler:(id)a6;
-- (void)engineLibrary:(id)a3 providePayloadForComputeStates:(id)a4 inFolderWithURL:(id)a5 completionHandler:(id)a6;
-- (void)engineLibrary:(id)a3 pushAllChangesWithCompletionHandler:(id)a4;
-- (void)engineLibrary:(id)a3 sizeOfResourcesToUploadDidChangeToSize:(unint64_t)a4 sizeOfOriginalResourcesToUpload:(unint64_t)a5 numberOfImages:(unint64_t)a6 numberOfVideos:(unint64_t)a7 numberOfOtherItems:(unint64_t)a8;
-- (void)engineLibrary:(id)a3 uploadTask:(id)a4 didFinishWithError:(id)a5;
-- (void)engineLibrary:(id)a3 uploadTask:(id)a4 didProgress:(float)a5;
-- (void)engineLibraryHasChangesInPullQueue:(id)a3;
-- (void)engineLibraryHasStatusChanges:(id)a3;
-- (void)fetchComputeStatesForRecordsWithScopedIdentifiers:(id)a3 validator:(id)a4 shouldDecrypt:(BOOL)a5 onDemand:(BOOL)a6 completionHandler:(id)a7;
-- (void)fetchExistingSharedLibraryScopeWithCompletionHandler:(id)a3;
-- (void)fetchSharedScopeFromShareURL:(id)a3 completionHandler:(id)a4;
-- (void)forceBackupWithCompletionHandler:(id)a3;
-- (void)forceSynchronizingScopeWithIdentifiers:(id)a3 completionHandler:(id)a4;
-- (void)getChangedStatusesWithCompletionHandler:(id)a3;
-- (void)getCloudCacheRecordsWithLocalScopedIdentifiers:(id)a3 desiredProperties:(id)a4 completionHandler:(id)a5;
-- (void)getMappedScopedIdentifiersForScopedIdentifiers:(id)a3 inAreLocalIdentifiers:(BOOL)a4 completionHandler:(id)a5;
-- (void)getResourcesForItemWithScopedIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)getScopeStatusCountsForScopeWithIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)getStatusForPendingRecordsSharedToScopeWithIdentifier:(id)a3 maximumCount:(unint64_t)a4 completionHandler:(id)a5;
-- (void)getStatusForRecordsWithScopedIdentifiers:(id)a3 completionHandler:(id)a4;
-- (void)getStatusesForScopesWithIdentifiers:(id)a3 includeStorages:(BOOL)a4 completionHandler:(id)a5;
-- (void)getStreamingURLForResource:(id)a3 intent:(unint64_t)a4 hints:(id)a5 timeRange:(id *)a6 clientBundleID:(id)a7 completionHandler:(id)a8;
-- (void)getSystemBudgetsWithCompletionHandler:(id)a3;
-- (void)getTargetsForRecordsWithScopedIdentifiers:(id)a3 completionHandler:(id)a4;
+- (void)enableSynchronizationWithReason:(id)reason;
+- (void)engineLibrary:(id)library didCloseWithError:(id)error;
+- (void)engineLibrary:(id)library didDownloadResourceInBackground:(id)background;
+- (void)engineLibrary:(id)library didFailBackgroundDownloadOfResource:(id)resource;
+- (void)engineLibrary:(id)library didStartUploadTask:(id)task;
+- (void)engineLibrary:(id)library getStatusDictionaryWithCompletionHandler:(id)handler;
+- (void)engineLibrary:(id)library getStatusWithCompletionHandler:(id)handler;
+- (void)engineLibrary:(id)library provideLocalResource:(id)resource recordClass:(Class)class completionHandler:(id)handler;
+- (void)engineLibrary:(id)library providePayloadForComputeStates:(id)states inFolderWithURL:(id)l completionHandler:(id)handler;
+- (void)engineLibrary:(id)library pushAllChangesWithCompletionHandler:(id)handler;
+- (void)engineLibrary:(id)library sizeOfResourcesToUploadDidChangeToSize:(unint64_t)size sizeOfOriginalResourcesToUpload:(unint64_t)upload numberOfImages:(unint64_t)images numberOfVideos:(unint64_t)videos numberOfOtherItems:(unint64_t)items;
+- (void)engineLibrary:(id)library uploadTask:(id)task didFinishWithError:(id)error;
+- (void)engineLibrary:(id)library uploadTask:(id)task didProgress:(float)progress;
+- (void)engineLibraryHasChangesInPullQueue:(id)queue;
+- (void)engineLibraryHasStatusChanges:(id)changes;
+- (void)fetchComputeStatesForRecordsWithScopedIdentifiers:(id)identifiers validator:(id)validator shouldDecrypt:(BOOL)decrypt onDemand:(BOOL)demand completionHandler:(id)handler;
+- (void)fetchExistingSharedLibraryScopeWithCompletionHandler:(id)handler;
+- (void)fetchSharedScopeFromShareURL:(id)l completionHandler:(id)handler;
+- (void)forceBackupWithCompletionHandler:(id)handler;
+- (void)forceSynchronizingScopeWithIdentifiers:(id)identifiers completionHandler:(id)handler;
+- (void)getChangedStatusesWithCompletionHandler:(id)handler;
+- (void)getCloudCacheRecordsWithLocalScopedIdentifiers:(id)identifiers desiredProperties:(id)properties completionHandler:(id)handler;
+- (void)getMappedScopedIdentifiersForScopedIdentifiers:(id)identifiers inAreLocalIdentifiers:(BOOL)localIdentifiers completionHandler:(id)handler;
+- (void)getResourcesForItemWithScopedIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)getScopeStatusCountsForScopeWithIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)getStatusForPendingRecordsSharedToScopeWithIdentifier:(id)identifier maximumCount:(unint64_t)count completionHandler:(id)handler;
+- (void)getStatusForRecordsWithScopedIdentifiers:(id)identifiers completionHandler:(id)handler;
+- (void)getStatusesForScopesWithIdentifiers:(id)identifiers includeStorages:(BOOL)storages completionHandler:(id)handler;
+- (void)getStreamingURLForResource:(id)resource intent:(unint64_t)intent hints:(id)hints timeRange:(id *)range clientBundleID:(id)d completionHandler:(id)handler;
+- (void)getSystemBudgetsWithCompletionHandler:(id)handler;
+- (void)getTargetsForRecordsWithScopedIdentifiers:(id)identifiers completionHandler:(id)handler;
 - (void)markLibraryManagerAsInvalid;
 - (void)noteClientIsEndingSignificantWork;
 - (void)noteClientIsInBackground;
 - (void)noteClientReceivedNotificationOfServerChanges;
-- (void)openWithCompletionHandler:(id)a3;
-- (void)queryUserDetailsForShareParticipants:(id)a3 completionHandler:(id)a4;
-- (void)rampingRequestForResourceType:(unint64_t)a3 numRequested:(unint64_t)a4 completionHandler:(id)a5;
-- (void)refreshScopeWithIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)removeParticipants:(id)a3 fromSharedScopeWithIdentifier:(id)a4 retentionPolicy:(int64_t)a5 exitSource:(int64_t)a6 completionHandler:(id)a7;
-- (void)reportMiscInformation:(id)a3;
-- (void)reportSetting:(id)a3 hasBeenSetToValue:(id)a4;
-- (void)requestClientToPullAllChangesInScopeIdentifiers:(id)a3 completionHandler:(id)a4;
-- (void)requestClientToPushAllChangesWithCompletionHandler:(id)a3;
-- (void)resetCacheWithOption:(unint64_t)a3 reason:(id)a4 completionHandler:(id)a5;
+- (void)openWithCompletionHandler:(id)handler;
+- (void)queryUserDetailsForShareParticipants:(id)participants completionHandler:(id)handler;
+- (void)rampingRequestForResourceType:(unint64_t)type numRequested:(unint64_t)requested completionHandler:(id)handler;
+- (void)refreshScopeWithIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)removeParticipants:(id)participants fromSharedScopeWithIdentifier:(id)identifier retentionPolicy:(int64_t)policy exitSource:(int64_t)source completionHandler:(id)handler;
+- (void)reportMiscInformation:(id)information;
+- (void)reportSetting:(id)setting hasBeenSetToValue:(id)value;
+- (void)requestClientToPullAllChangesInScopeIdentifiers:(id)identifiers completionHandler:(id)handler;
+- (void)requestClientToPushAllChangesWithCompletionHandler:(id)handler;
+- (void)resetCacheWithOption:(unint64_t)option reason:(id)reason completionHandler:(id)handler;
 - (void)resetStatus;
-- (void)resolveLocalScopedIdentifiersForCloudScopedIdentifiers:(id)a3 completionHandler:(id)a4;
-- (void)setShouldOverride:(BOOL)a3 forSystemBudgets:(unint64_t)a4;
-- (void)sharedLibraryRampCheckWithCompletionHandler:(id)a3;
-- (void)startExitFromSharedScopeWithIdentifier:(id)a3 retentionPolicy:(int64_t)a4 exitSource:(int64_t)a5 completionHandler:(id)a6;
-- (void)testKey:(id)a3 value:(id)a4 completionHandler:(id)a5;
-- (void)unblockEngineElement:(id)a3;
-- (void)unblockEngineElementOnce:(id)a3;
-- (void)updateShareForScope:(id)a3 completionHandler:(id)a4;
+- (void)resolveLocalScopedIdentifiersForCloudScopedIdentifiers:(id)identifiers completionHandler:(id)handler;
+- (void)setShouldOverride:(BOOL)override forSystemBudgets:(unint64_t)budgets;
+- (void)sharedLibraryRampCheckWithCompletionHandler:(id)handler;
+- (void)startExitFromSharedScopeWithIdentifier:(id)identifier retentionPolicy:(int64_t)policy exitSource:(int64_t)source completionHandler:(id)handler;
+- (void)testKey:(id)key value:(id)value completionHandler:(id)handler;
+- (void)unblockEngineElement:(id)element;
+- (void)unblockEngineElementOnce:(id)once;
+- (void)updateShareForScope:(id)scope completionHandler:(id)handler;
 @end
 
 @implementation CPLDirectLibraryManager
 
-- (CPLDirectLibraryManager)initWithAbstractObject:(id)a3
+- (CPLDirectLibraryManager)initWithAbstractObject:(id)object
 {
   v12.receiver = self;
   v12.super_class = CPLDirectLibraryManager;
-  v3 = [(CPLDirectLibraryManager *)&v12 initWithAbstractObject:a3];
+  v3 = [(CPLDirectLibraryManager *)&v12 initWithAbstractObject:object];
   if (v3)
   {
     v4 = CPLCopyDefaultSerialQueueAttributes();
@@ -125,21 +125,21 @@
   return v3;
 }
 
-- (void)openWithCompletionHandler:(id)a3
+- (void)openWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(CPLDirectLibraryManager *)self abstractObject];
-  v6 = [v5 clientLibraryBaseURL];
-  if (v6)
+  handlerCopy = handler;
+  abstractObject = [(CPLDirectLibraryManager *)self abstractObject];
+  clientLibraryBaseURL = [abstractObject clientLibraryBaseURL];
+  if (clientLibraryBaseURL)
   {
-    v7 = [v5 cloudLibraryStateStorageURL];
-    if (v7)
+    cloudLibraryStateStorageURL = [abstractObject cloudLibraryStateStorageURL];
+    if (cloudLibraryStateStorageURL)
     {
-      v8 = [v5 cloudLibraryResourceStorageURL];
-      if (v8)
+      cloudLibraryResourceStorageURL = [abstractObject cloudLibraryResourceStorageURL];
+      if (cloudLibraryResourceStorageURL)
       {
-        v9 = [v5 libraryIdentifier];
-        v10 = v9 != 0;
+        libraryIdentifier = [abstractObject libraryIdentifier];
+        v10 = libraryIdentifier != 0;
       }
 
       else
@@ -165,7 +165,7 @@
   v36[3] = &unk_100275AF0;
   v36[4] = self;
   v38 = v10;
-  v11 = v4;
+  v11 = handlerCopy;
   v37 = v11;
   v12 = objc_retainBlock(v36);
   v13 = v12;
@@ -178,18 +178,18 @@
   {
     self->_ownsLibrary = 1;
     v27 = [CPLEngineLibrary alloc];
-    v30 = [(CPLDirectLibraryManager *)self abstractObject];
-    v32 = [v30 clientLibraryBaseURL];
-    v29 = [(CPLDirectLibraryManager *)self abstractObject];
-    v31 = [v29 cloudLibraryStateStorageURL];
-    v28 = [(CPLDirectLibraryManager *)self abstractObject];
-    v14 = [v28 cloudLibraryResourceStorageURL];
-    v26 = [(CPLDirectLibraryManager *)self abstractObject];
-    v15 = [v26 libraryIdentifier];
-    v16 = [(CPLDirectLibraryManager *)self abstractObject];
-    v17 = [v16 mainScopeIdentifier];
-    v18 = [(CPLDirectLibraryManager *)self abstractObject];
-    v19 = [v27 initWithClientLibraryBaseURL:v32 cloudLibraryStateStorageURL:v31 cloudLibraryResourceStorageURL:v14 libraryIdentifier:v15 mainScopeIdentifier:v17 options:{objc_msgSend(v18, "libraryOptions")}];
+    abstractObject2 = [(CPLDirectLibraryManager *)self abstractObject];
+    clientLibraryBaseURL2 = [abstractObject2 clientLibraryBaseURL];
+    abstractObject3 = [(CPLDirectLibraryManager *)self abstractObject];
+    cloudLibraryStateStorageURL2 = [abstractObject3 cloudLibraryStateStorageURL];
+    abstractObject4 = [(CPLDirectLibraryManager *)self abstractObject];
+    cloudLibraryResourceStorageURL2 = [abstractObject4 cloudLibraryResourceStorageURL];
+    abstractObject5 = [(CPLDirectLibraryManager *)self abstractObject];
+    libraryIdentifier2 = [abstractObject5 libraryIdentifier];
+    abstractObject6 = [(CPLDirectLibraryManager *)self abstractObject];
+    mainScopeIdentifier = [abstractObject6 mainScopeIdentifier];
+    abstractObject7 = [(CPLDirectLibraryManager *)self abstractObject];
+    v19 = [v27 initWithClientLibraryBaseURL:clientLibraryBaseURL2 cloudLibraryStateStorageURL:cloudLibraryStateStorageURL2 cloudLibraryResourceStorageURL:cloudLibraryResourceStorageURL2 libraryIdentifier:libraryIdentifier2 mainScopeIdentifier:mainScopeIdentifier options:{objc_msgSend(abstractObject7, "libraryOptions")}];
     engineLibrary = self->_engineLibrary;
     self->_engineLibrary = v19;
 
@@ -201,7 +201,7 @@
       {
         v22 = self->_engineLibrary;
         *buf = 138412546;
-        v40 = self;
+        selfCopy = self;
         v41 = 2112;
         v42 = v22;
         _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEBUG, "%@ will own %@", buf, 0x16u);
@@ -232,15 +232,15 @@
   }
 }
 
-- (void)closeWithCompletionHandler:(id)a3
+- (void)closeWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   self->_closing = 1;
-  v5 = [(CPLEngineLibrary *)self->_engineLibrary scheduler];
-  v6 = v5;
+  scheduler = [(CPLEngineLibrary *)self->_engineLibrary scheduler];
+  v6 = scheduler;
   if (self->_foregroundCalls)
   {
-    [v5 noteClientIsInBackground];
+    [scheduler noteClientIsInBackground];
     self->_foregroundCallsHaveBeenQuiet = 0;
     self->_foregroundCalls = 0;
   }
@@ -317,8 +317,8 @@
     v22[3] = &unk_1002727E8;
     v17 = &v23;
     v22[4] = self;
-    v23 = v4;
-    v18 = v4;
+    v23 = handlerCopy;
+    v18 = handlerCopy;
     [(CPLEngineLibrary *)engineLibrary closeAndDeactivate:0 completionHandler:v22];
   }
 
@@ -330,15 +330,15 @@
     v20[3] = &unk_1002727E8;
     v17 = &v21;
     v20[4] = self;
-    v21 = v4;
-    v19 = v4;
+    v21 = handlerCopy;
+    v19 = handlerCopy;
     [(CPLEngineLibrary *)engineLibrary detachObject:self withCompletionHandler:v20];
   }
 }
 
-- (void)deactivateWithCompletionHandler:(id)a3
+- (void)deactivateWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   clientQueue = self->_clientQueue;
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
@@ -360,18 +360,18 @@
   v11[1] = 3221225472;
   v11[2] = sub_10011C8EC;
   v11[3] = &unk_100272EC0;
-  v12 = v4;
-  v10 = v4;
+  v12 = handlerCopy;
+  v10 = handlerCopy;
   [(CPLEngineLibrary *)engineLibrary closeAndDeactivate:1 completionHandler:v11];
 }
 
 - (BOOL)_isManagementLibraryManager
 {
-  v2 = [(CPLDirectLibraryManager *)self abstractObject];
-  v3 = [v2 delegate];
-  if (v3 && (objc_opt_respondsToSelector() & 1) != 0)
+  abstractObject = [(CPLDirectLibraryManager *)self abstractObject];
+  delegate = [abstractObject delegate];
+  if (delegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v4 = [v3 isManagementLibraryManager:v2];
+    v4 = [delegate isManagementLibraryManager:abstractObject];
   }
 
   else
@@ -382,47 +382,47 @@
   return v4;
 }
 
-- (void)enableMainScopeWithCompletionHandler:(id)a3
+- (void)enableMainScopeWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   [(CPLEngineLibrary *)self->_engineLibrary store];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10011CA84;
   v8 = v7[3] = &unk_100279798;
-  v9 = self;
-  v10 = v4;
-  v5 = v4;
+  selfCopy = self;
+  v10 = handlerCopy;
+  v5 = handlerCopy;
   v6 = v8;
   [v6 blockWriteTransactionsWithCompletionHandler:v7];
 }
 
-- (void)disableMainScopeWithCompletionHandler:(id)a3
+- (void)disableMainScopeWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   [(CPLEngineLibrary *)self->_engineLibrary store];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10011CECC;
   v8 = v7[3] = &unk_100279798;
-  v9 = self;
-  v10 = v4;
-  v5 = v4;
+  selfCopy = self;
+  v10 = handlerCopy;
+  v5 = handlerCopy;
   v6 = v8;
   [v6 blockWriteTransactionsWithCompletionHandler:v7];
 }
 
-- (void)activateScopeWithIdentifier:(id)a3 completionHandler:(id)a4
+- (void)activateScopeWithIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CPLDirectLibraryManager *)self abstractObject];
-  v9 = [v8 mainScopeIdentifier];
-  v10 = [v6 isEqualToString:v9];
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  abstractObject = [(CPLDirectLibraryManager *)self abstractObject];
+  mainScopeIdentifier = [abstractObject mainScopeIdentifier];
+  v10 = [identifierCopy isEqualToString:mainScopeIdentifier];
 
   if (v10)
   {
-    [(CPLDirectLibraryManager *)self enableMainScopeWithCompletionHandler:v7];
+    [(CPLDirectLibraryManager *)self enableMainScopeWithCompletionHandler:handlerCopy];
   }
 
   else
@@ -432,25 +432,25 @@
     v12[1] = 3221225472;
     v12[2] = sub_10011D380;
     v13 = v12[3] = &unk_1002797E8;
-    v14 = v6;
-    v15 = self;
-    v16 = v7;
+    v14 = identifierCopy;
+    selfCopy = self;
+    v16 = handlerCopy;
     v11 = v13;
     [v11 blockWriteTransactionsWithCompletionHandler:v12];
   }
 }
 
-- (void)deactivateScopeWithIdentifier:(id)a3 completionHandler:(id)a4
+- (void)deactivateScopeWithIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CPLDirectLibraryManager *)self abstractObject];
-  v9 = [v8 mainScopeIdentifier];
-  v10 = [v6 isEqualToString:v9];
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  abstractObject = [(CPLDirectLibraryManager *)self abstractObject];
+  mainScopeIdentifier = [abstractObject mainScopeIdentifier];
+  v10 = [identifierCopy isEqualToString:mainScopeIdentifier];
 
   if (v10)
   {
-    [(CPLDirectLibraryManager *)self disableMainScopeWithCompletionHandler:v7];
+    [(CPLDirectLibraryManager *)self disableMainScopeWithCompletionHandler:handlerCopy];
   }
 
   else
@@ -460,46 +460,46 @@
     v12[1] = 3221225472;
     v12[2] = sub_10011D92C;
     v13 = v12[3] = &unk_1002797E8;
-    v14 = v6;
-    v15 = self;
-    v16 = v7;
+    v14 = identifierCopy;
+    selfCopy = self;
+    v16 = handlerCopy;
     v11 = v13;
     [v11 blockWriteTransactionsWithCompletionHandler:v12];
   }
 }
 
-- (void)boostPriorityForScopeWithIdentifier:(id)a3 completionHandler:(id)a4
+- (void)boostPriorityForScopeWithIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CPLEngineLibrary *)self->_engineLibrary store];
-  [v8 scopes];
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  store = [(CPLEngineLibrary *)self->_engineLibrary store];
+  [store scopes];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_10011DEB0;
   v16 = v15[3] = &unk_1002726D0;
-  v17 = v6;
+  v17 = identifierCopy;
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_10011E01C;
   v13[3] = &unk_100279860;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v14 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = identifierCopy;
   v11 = v16;
-  v12 = [v8 performWriteTransactionWithBlock:v15 completionHandler:v13];
+  v12 = [store performWriteTransactionWithBlock:v15 completionHandler:v13];
 }
 
-- (void)beginDownloadForResource:(id)a3 clientBundleID:(id)a4 options:(id)a5 proposedTaskIdentifier:(id)a6 completionHandler:(id)a7
+- (void)beginDownloadForResource:(id)resource clientBundleID:(id)d options:(id)options proposedTaskIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = [a3 copy];
-  if (!v13)
+  dCopy = d;
+  optionsCopy = options;
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  v16 = [resource copy];
+  if (!optionsCopy)
   {
-    v13 = +[CPLResourceTransferTaskOptions defaultOptions];
+    optionsCopy = +[CPLResourceTransferTaskOptions defaultOptions];
   }
 
   [(CPLEngineLibrary *)self->_engineLibrary store];
@@ -510,14 +510,14 @@
   v17 = v25[4] = self;
   v26 = v17;
   v27 = v16;
-  v28 = v12;
-  v18 = v13;
+  v28 = dCopy;
+  v18 = optionsCopy;
   v29 = v18;
-  v30 = v14;
-  v31 = v15;
-  v19 = v15;
-  v20 = v14;
-  v21 = v12;
+  v30 = identifierCopy;
+  v31 = handlerCopy;
+  v19 = handlerCopy;
+  v20 = identifierCopy;
+  v21 = dCopy;
   v22 = v16;
   v23 = objc_retainBlock(v25);
   if ([v18 isHighPriority])
@@ -531,20 +531,20 @@
   }
 }
 
-- (void)getStreamingURLForResource:(id)a3 intent:(unint64_t)a4 hints:(id)a5 timeRange:(id *)a6 clientBundleID:(id)a7 completionHandler:(id)a8
+- (void)getStreamingURLForResource:(id)resource intent:(unint64_t)intent hints:(id)hints timeRange:(id *)range clientBundleID:(id)d completionHandler:(id)handler
 {
-  v15 = a3;
-  v41 = a5;
-  v16 = a7;
-  v17 = a8;
-  if (a4 - 2 <= 2 && (-[CPLDirectLibraryManager engineLibrary](self, "engineLibrary"), v18 = objc_claimAutoreleasedReturnValue(), [v18 systemMonitor], v19 = objc_claimAutoreleasedReturnValue(), v20 = objc_msgSend(v19, "isNetworkConstrained"), v19, v18, v20))
+  resourceCopy = resource;
+  hintsCopy = hints;
+  dCopy = d;
+  handlerCopy = handler;
+  if (intent - 2 <= 2 && (-[CPLDirectLibraryManager engineLibrary](self, "engineLibrary"), v18 = objc_claimAutoreleasedReturnValue(), [v18 systemMonitor], v19 = objc_claimAutoreleasedReturnValue(), v20 = objc_msgSend(v19, "isNetworkConstrained"), v19, v18, v20))
   {
     clientQueue = self->_clientQueue;
     v56[0] = _NSConcreteStackBlock;
     v56[1] = 3221225472;
     v56[2] = sub_10011F108;
     v56[3] = &unk_100271E98;
-    v57 = v17;
+    v57 = handlerCopy;
     v22 = v56;
     block = _NSConcreteStackBlock;
     v59 = 3221225472;
@@ -556,14 +556,14 @@
     dispatch_async(v23, v24);
 
     v25 = v57;
-    v26 = v41;
+    v26 = hintsCopy;
   }
 
   else
   {
-    v27 = [v15 itemScopedIdentifier];
+    itemScopedIdentifier = [resourceCopy itemScopedIdentifier];
 
-    if (v27)
+    if (itemScopedIdentifier)
     {
       v28 = objc_opt_class();
       v29 = [NSProgress progressWithTotalUnitCount:1];
@@ -574,29 +574,29 @@
       v62 = v28;
       v63 = a2;
       [v29 setCancellationHandler:&block];
-      v30 = [(CPLEngineLibrary *)self->_engineLibrary store];
-      v31 = [v30 downloadQueue];
+      store = [(CPLEngineLibrary *)self->_engineLibrary store];
+      downloadQueue = [store downloadQueue];
       v44[0] = _NSConcreteStackBlock;
       v44[1] = 3221225472;
       v44[2] = sub_10011F188;
       v44[3] = &unk_100279A00;
       v44[4] = self;
-      v51 = v17;
+      v51 = handlerCopy;
       v45 = v29;
-      v46 = v15;
-      v47 = v30;
-      v48 = v31;
-      v52 = a4;
-      v26 = v41;
-      v49 = v41;
-      v32 = *&a6->var0.var3;
-      v53 = *&a6->var0.var0;
+      v46 = resourceCopy;
+      v47 = store;
+      v48 = downloadQueue;
+      intentCopy = intent;
+      v26 = hintsCopy;
+      v49 = hintsCopy;
+      v32 = *&range->var0.var3;
+      v53 = *&range->var0.var0;
       v54 = v32;
-      v55 = *&a6->var1.var1;
-      v16 = v40;
+      v55 = *&range->var1.var1;
+      dCopy = v40;
       v50 = v40;
-      v33 = v31;
-      v34 = v30;
+      v33 = downloadQueue;
+      v34 = store;
       v25 = v29;
       v35 = [v34 performReadTransactionWithBlock:v44];
     }
@@ -608,7 +608,7 @@
       v42[1] = 3221225472;
       v42[2] = sub_10011F928;
       v42[3] = &unk_100271E98;
-      v43 = v17;
+      v43 = handlerCopy;
       v37 = v42;
       block = _NSConcreteStackBlock;
       v59 = 3221225472;
@@ -620,15 +620,15 @@
       dispatch_async(v38, v39);
 
       v25 = v43;
-      v16 = v40;
-      v26 = v41;
+      dCopy = v40;
+      v26 = hintsCopy;
     }
   }
 }
 
-- (void)rampingRequestForResourceType:(unint64_t)a3 numRequested:(unint64_t)a4 completionHandler:(id)a5
+- (void)rampingRequestForResourceType:(unint64_t)type numRequested:(unint64_t)requested completionHandler:(id)handler
 {
-  v9 = a5;
+  handlerCopy = handler;
   v10 = objc_opt_class();
   v11 = [NSProgress progressWithTotalUnitCount:1];
   block = _NSConcreteStackBlock;
@@ -643,10 +643,10 @@
   v18[1] = 3221225472;
   v18[2] = sub_10011FB68;
   v18[3] = &unk_100279A78;
-  v21 = a3;
-  v22 = a4;
+  typeCopy = type;
+  requestedCopy = requested;
   v19 = v11;
-  v20 = v9;
+  v20 = handlerCopy;
   v18[4] = self;
   v13 = v18;
   block = _NSConcreteStackBlock;
@@ -656,93 +656,93 @@
   v27 = v13;
   v14 = clientQueue;
   v15 = v11;
-  v16 = v9;
+  v16 = handlerCopy;
   v17 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, &block);
   dispatch_async(v14, v17);
 }
 
-- (void)beginInMemoryDownloadOfResource:(id)a3 clientBundleID:(id)a4 completionHandler:(id)a5
+- (void)beginInMemoryDownloadOfResource:(id)resource clientBundleID:(id)d completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(CPLEngineLibrary *)self->_engineLibrary store];
-  [v11 downloadQueue];
+  resourceCopy = resource;
+  dCopy = d;
+  handlerCopy = handler;
+  store = [(CPLEngineLibrary *)self->_engineLibrary store];
+  [store downloadQueue];
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_100120148;
   v18[3] = &unk_100279BB8;
   v18[4] = self;
-  v19 = v8;
-  v21 = v20 = v11;
-  v22 = v9;
-  v23 = v10;
-  v12 = v10;
-  v13 = v9;
+  v19 = resourceCopy;
+  v21 = v20 = store;
+  v22 = dCopy;
+  v23 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = dCopy;
   v14 = v21;
-  v15 = v11;
-  v16 = v8;
+  v15 = store;
+  v16 = resourceCopy;
   v17 = [v15 performReadTransactionWithBlock:v18];
 }
 
-- (void)resolveLocalScopedIdentifiersForCloudScopedIdentifiers:(id)a3 completionHandler:(id)a4
+- (void)resolveLocalScopedIdentifiersForCloudScopedIdentifiers:(id)identifiers completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CPLEngineLibrary *)self->_engineLibrary store];
-  [v8 idMapping];
+  identifiersCopy = identifiers;
+  handlerCopy = handler;
+  store = [(CPLEngineLibrary *)self->_engineLibrary store];
+  [store idMapping];
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_100120F18;
   v17[3] = &unk_1002797C0;
-  v19 = v18 = v6;
+  v19 = v18 = identifiersCopy;
   v20 = objc_alloc_init(NSMutableDictionary);
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_1001210F4;
   v14[3] = &unk_100279C08;
   v15 = v20;
-  v16 = v7;
+  v16 = handlerCopy;
   v9 = v20;
-  v10 = v7;
+  v10 = handlerCopy;
   v11 = v19;
-  v12 = v6;
-  v13 = [v8 performWriteTransactionWithBlock:v17 completionHandler:v14];
+  v12 = identifiersCopy;
+  v13 = [store performWriteTransactionWithBlock:v17 completionHandler:v14];
 }
 
-- (void)getMappedScopedIdentifiersForScopedIdentifiers:(id)a3 inAreLocalIdentifiers:(BOOL)a4 completionHandler:(id)a5
+- (void)getMappedScopedIdentifiersForScopedIdentifiers:(id)identifiers inAreLocalIdentifiers:(BOOL)localIdentifiers completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(CPLEngineLibrary *)self->_engineLibrary store];
-  [v10 idMapping];
+  identifiersCopy = identifiers;
+  handlerCopy = handler;
+  store = [(CPLEngineLibrary *)self->_engineLibrary store];
+  [store idMapping];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_1001212B0;
   v17 = v15[3] = &unk_100279C30;
-  v18 = v9;
-  v19 = a4;
-  v16 = v8;
+  v18 = handlerCopy;
+  localIdentifiersCopy = localIdentifiers;
+  v16 = identifiersCopy;
   v11 = v17;
-  v12 = v8;
-  v13 = v9;
-  v14 = [v10 performReadTransactionWithBlock:v15];
+  v12 = identifiersCopy;
+  v13 = handlerCopy;
+  v14 = [store performReadTransactionWithBlock:v15];
 }
 
-- (void)createScope:(id)a3 completionHandler:(id)a4
+- (void)createScope:(id)scope completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  scopeCopy = scope;
+  handlerCopy = handler;
   if (!CPLIsInTestReadonlyMode())
   {
-    if ([v7 scopeType] == 4 && (CPLIsSharedLibraryFeatureEnabled() & 1) == 0)
+    if ([scopeCopy scopeType] == 4 && (CPLIsSharedLibraryFeatureEnabled() & 1) == 0)
     {
       v13 = @"Shared Library is not enabled on this device";
     }
 
     else
     {
-      if ([v7 scopeType] != 2 || (+[CPLFingerprintScheme supportsEPP](CPLFingerprintScheme, "supportsEPP") & 1) != 0 || !objc_msgSend(v7, "hasEPPAssets"))
+      if ([scopeCopy scopeType] != 2 || (+[CPLFingerprintScheme supportsEPP](CPLFingerprintScheme, "supportsEPP") & 1) != 0 || !objc_msgSend(scopeCopy, "hasEPPAssets"))
       {
         v14 = objc_opt_class();
         v15 = [NSProgress progressWithTotalUnitCount:1];
@@ -753,20 +753,20 @@
         v34 = v14;
         v35 = a2;
         [v15 setCancellationHandler:&block];
-        v16 = [(CPLDirectLibraryManager *)self engineLibrary];
-        v17 = [v16 store];
+        engineLibrary = [(CPLDirectLibraryManager *)self engineLibrary];
+        store = [engineLibrary store];
 
         v21[0] = _NSConcreteStackBlock;
         v21[1] = 3221225472;
         v21[2] = sub_100121804;
         v21[3] = &unk_100279DC0;
-        v26 = v8;
+        v26 = handlerCopy;
         v22 = v15;
-        v23 = self;
+        selfCopy = self;
         v27 = a2;
-        v24 = v7;
-        v25 = v17;
-        v18 = v17;
+        v24 = scopeCopy;
+        v25 = store;
+        v18 = store;
         v19 = v15;
         [v18 blockWriteTransactionsWithCompletionHandler:v21];
 
@@ -777,7 +777,7 @@
     }
 
     v20 = [CPLErrors cplErrorWithCode:1002 description:v13];
-    (*(v8 + 2))(v8, 0, v20);
+    (*(handlerCopy + 2))(handlerCopy, 0, v20);
 
     goto LABEL_12;
   }
@@ -787,7 +787,7 @@
   v28[1] = 3221225472;
   v28[2] = sub_100121788;
   v28[3] = &unk_100271E98;
-  v29 = v8;
+  v29 = handlerCopy;
   v10 = v28;
   block = _NSConcreteStackBlock;
   v31 = 3221225472;
@@ -801,10 +801,10 @@
 LABEL_12:
 }
 
-- (void)updateShareForScope:(id)a3 completionHandler:(id)a4
+- (void)updateShareForScope:(id)scope completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  scopeCopy = scope;
+  handlerCopy = handler;
   if (CPLIsInTestReadonlyMode())
   {
     clientQueue = self->_clientQueue;
@@ -812,14 +812,14 @@ LABEL_12:
     v28[1] = 3221225472;
     v28[2] = sub_100122970;
     v28[3] = &unk_100271E98;
-    v29 = v8;
+    v29 = handlerCopy;
     v10 = v28;
     block = _NSConcreteStackBlock;
     v31 = 3221225472;
     v32 = sub_100002BB8;
     v33 = &unk_100271E98;
     v34 = v10;
-    v11 = v8;
+    v11 = handlerCopy;
     v12 = clientQueue;
     v13 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, &block);
     dispatch_async(v12, v13);
@@ -838,30 +838,30 @@ LABEL_12:
     v34 = v15;
     v35 = a2;
     [v16 setCancellationHandler:&block];
-    v17 = [(CPLDirectLibraryManager *)self engineLibrary];
-    v18 = [v17 store];
+    engineLibrary = [(CPLDirectLibraryManager *)self engineLibrary];
+    store = [engineLibrary store];
 
     v21[0] = _NSConcreteStackBlock;
     v21[1] = 3221225472;
     v21[2] = sub_1001229EC;
     v21[3] = &unk_100279DC0;
-    v26 = v8;
+    v26 = handlerCopy;
     v22 = v16;
-    v23 = v18;
-    v24 = v7;
-    v25 = self;
+    v23 = store;
+    v24 = scopeCopy;
+    selfCopy = self;
     v27 = a2;
-    v19 = v18;
+    v19 = store;
     v14 = v16;
-    v20 = v8;
+    v20 = handlerCopy;
     [v19 blockWriteTransactionsWithCompletionHandler:v21];
   }
 }
 
-- (void)deleteScopeWithIdentifier:(id)a3 forced:(BOOL)a4 completionHandler:(id)a5
+- (void)deleteScopeWithIdentifier:(id)identifier forced:(BOOL)forced completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   if (CPLIsInTestReadonlyMode())
   {
     clientQueue = self->_clientQueue;
@@ -869,14 +869,14 @@ LABEL_12:
     v27[1] = 3221225472;
     v27[2] = sub_1001238EC;
     v27[3] = &unk_100271E98;
-    v28 = v9;
+    v28 = handlerCopy;
     v11 = v27;
     block = _NSConcreteStackBlock;
     v30 = 3221225472;
     v31 = sub_100002BB8;
     v32 = &unk_100271E98;
     v33 = v11;
-    v12 = v9;
+    v12 = handlerCopy;
     v13 = clientQueue;
     v14 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, &block);
     dispatch_async(v13, v14);
@@ -893,9 +893,9 @@ LABEL_12:
     v22[2] = sub_100123964;
     v22[3] = &unk_100279ED8;
     v22[4] = self;
-    v25 = v9;
-    v26 = a4;
-    v23 = v8;
+    v25 = handlerCopy;
+    forcedCopy = forced;
+    v23 = identifierCopy;
     v24 = v16;
     v18 = v22;
     block = _NSConcreteStackBlock;
@@ -905,30 +905,30 @@ LABEL_12:
     v33 = v18;
     v19 = v17;
     v15 = v16;
-    v20 = v9;
+    v20 = handlerCopy;
     v21 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, &block);
     dispatch_async(v19, v21);
   }
 }
 
-- (void)_fetchTransportScopeForScope:(id)a3 transportGroup:(id)a4 progress:(id)a5 completionHandler:(id)a6
+- (void)_fetchTransportScopeForScope:(id)scope transportGroup:(id)group progress:(id)progress completionHandler:(id)handler
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [(CPLDirectLibraryManager *)self engineLibrary];
-  v15 = [v14 transport];
+  handlerCopy = handler;
+  progressCopy = progress;
+  groupCopy = group;
+  scopeCopy = scope;
+  engineLibrary = [(CPLDirectLibraryManager *)self engineLibrary];
+  transport = [engineLibrary transport];
 
   v21[0] = _NSConcreteStackBlock;
   v21[1] = 3221225472;
   v21[2] = sub_100124300;
   v21[3] = &unk_100279F00;
-  v22 = v10;
-  v16 = v10;
-  v17 = [v15 fetchTransportScopeForScope:v13 transportScope:0 completionHandler:v21];
+  v22 = handlerCopy;
+  v16 = handlerCopy;
+  v17 = [transport fetchTransportScopeForScope:scopeCopy transportScope:0 completionHandler:v21];
 
-  [v17 setTransportGroup:v12];
+  [v17 setTransportGroup:groupCopy];
   [v17 setShouldCreateScopeIfNecessary:0];
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
@@ -937,13 +937,13 @@ LABEL_12:
   v19[4] = self;
   v20 = v17;
   v18 = v17;
-  [v11 performAsCurrentWithPendingUnitCount:1 usingBlock:v19];
+  [progressCopy performAsCurrentWithPendingUnitCount:1 usingBlock:v19];
 }
 
-- (void)refreshScopeWithIdentifier:(id)a3 completionHandler:(id)a4
+- (void)refreshScopeWithIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   if (CPLIsInTestReadonlyMode())
   {
     clientQueue = self->_clientQueue;
@@ -951,14 +951,14 @@ LABEL_12:
     v29[1] = 3221225472;
     v29[2] = sub_100124608;
     v29[3] = &unk_100271E98;
-    v30 = v8;
+    v30 = handlerCopy;
     v10 = v29;
     block = _NSConcreteStackBlock;
     v32 = 3221225472;
     v33 = sub_100002BB8;
     v34 = &unk_100271E98;
     v35 = v10;
-    v11 = v8;
+    v11 = handlerCopy;
     v12 = clientQueue;
     v13 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, &block);
     dispatch_async(v12, v13);
@@ -977,47 +977,47 @@ LABEL_12:
     v35 = v15;
     v36 = a2;
     [v16 setCancellationHandler:&block];
-    v17 = [(CPLDirectLibraryManager *)self engineLibrary];
-    v18 = [v17 store];
+    engineLibrary = [(CPLDirectLibraryManager *)self engineLibrary];
+    store = [engineLibrary store];
 
-    v19 = [(CPLDirectLibraryManager *)self engineLibrary];
+    engineLibrary2 = [(CPLDirectLibraryManager *)self engineLibrary];
     v22[0] = _NSConcreteStackBlock;
     v22[1] = 3221225472;
     v22[2] = sub_100124684;
     v22[3] = &unk_10027A058;
-    v27 = v8;
+    v27 = handlerCopy;
     v23 = v16;
-    v24 = v18;
-    v25 = v7;
-    v26 = self;
+    v24 = store;
+    v25 = identifierCopy;
+    selfCopy = self;
     v28 = a2;
-    v20 = v18;
+    v20 = store;
     v14 = v16;
-    v21 = v8;
-    [v19 blockEngineWithReason:@"Refreshing scope" onlyIfBlocked:0 block:v22];
+    v21 = handlerCopy;
+    [engineLibrary2 blockEngineWithReason:@"Refreshing scope" onlyIfBlocked:0 block:v22];
   }
 }
 
-- (BOOL)_isValidScopeForClient:(id)a3 error:(id *)a4
+- (BOOL)_isValidScopeForClient:(id)client error:(id *)error
 {
-  v6 = a3;
-  if (([v6 scopeType] & 0xFFFFFFFFFFFFFFFELL) != 4)
+  clientCopy = client;
+  if (([clientCopy scopeType] & 0xFFFFFFFFFFFFFFFELL) != 4)
   {
     goto LABEL_4;
   }
 
-  v7 = [(CPLDirectLibraryManager *)self engineLibrary];
-  v8 = [v7 libraryOptions];
+  engineLibrary = [(CPLDirectLibraryManager *)self engineLibrary];
+  libraryOptions = [engineLibrary libraryOptions];
 
-  if ((v8 & 2) != 0)
+  if ((libraryOptions & 2) != 0)
   {
     goto LABEL_4;
   }
 
-  v9 = [(CPLDirectLibraryManager *)self engineLibrary];
-  v10 = [v9 store];
-  v11 = [v6 scopeIdentifier];
-  v12 = [v10 mainScopeSupportsSharingScopeWithIdentifier:v11];
+  engineLibrary2 = [(CPLDirectLibraryManager *)self engineLibrary];
+  store = [engineLibrary2 store];
+  scopeIdentifier = [clientCopy scopeIdentifier];
+  v12 = [store mainScopeSupportsSharingScopeWithIdentifier:scopeIdentifier];
 
   if (v12)
   {
@@ -1027,13 +1027,13 @@ LABEL_4:
 
   else
   {
-    v15 = [v6 scopeIdentifier];
-    v16 = [CPLErrors cplErrorWithCode:2001 description:@"%@ is not a valid scope for this engine", v15];
+    scopeIdentifier2 = [clientCopy scopeIdentifier];
+    v16 = [CPLErrors cplErrorWithCode:2001 description:@"%@ is not a valid scope for this engine", scopeIdentifier2];
 
-    if (a4)
+    if (error)
     {
       v17 = v16;
-      *a4 = v16;
+      *error = v16;
     }
 
     v13 = 0;
@@ -1042,10 +1042,10 @@ LABEL_4:
   return v13;
 }
 
-- (void)fetchSharedScopeFromShareURL:(id)a3 completionHandler:(id)a4
+- (void)fetchSharedScopeFromShareURL:(id)l completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  lCopy = l;
+  handlerCopy = handler;
   if (CPLIsInTestReadonlyMode())
   {
     clientQueue = self->_clientQueue;
@@ -1053,14 +1053,14 @@ LABEL_4:
     v26[1] = 3221225472;
     v26[2] = sub_100125EC0;
     v26[3] = &unk_100271E98;
-    v27 = v8;
+    v27 = handlerCopy;
     v10 = v26;
     block = _NSConcreteStackBlock;
     v29 = 3221225472;
     v30 = sub_100002BB8;
     v31 = &unk_100271E98;
     v32 = v10;
-    v11 = v8;
+    v11 = handlerCopy;
     v12 = clientQueue;
     v13 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, &block);
     dispatch_async(v12, v13);
@@ -1084,10 +1084,10 @@ LABEL_4:
     v22[1] = 3221225472;
     v22[2] = sub_100125F3C;
     v22[3] = &unk_1002731C0;
-    v25 = v8;
+    v25 = handlerCopy;
     v22[4] = self;
     v23 = v16;
-    v24 = v7;
+    v24 = lCopy;
     v18 = v22;
     block = _NSConcreteStackBlock;
     v29 = 3221225472;
@@ -1096,19 +1096,19 @@ LABEL_4:
     v32 = v18;
     v19 = v17;
     v14 = v16;
-    v20 = v8;
+    v20 = handlerCopy;
     v21 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, &block);
     dispatch_async(v19, v21);
   }
 }
 
-- (void)acceptSharedScope:(id)a3 completionHandler:(id)a4
+- (void)acceptSharedScope:(id)scope completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  scopeCopy = scope;
+  handlerCopy = handler;
   if (!CPLIsInTestReadonlyMode())
   {
-    if ([v7 scopeType] == 5 && (CPLIsSharedLibraryFeatureEnabled() & 1) == 0)
+    if ([scopeCopy scopeType] == 5 && (CPLIsSharedLibraryFeatureEnabled() & 1) == 0)
     {
       v14 = [CPLErrors cplErrorWithCode:1002 description:@"Shared Library is not enabled on this device"];
     }
@@ -1116,7 +1116,7 @@ LABEL_4:
     else
     {
       v26 = 0;
-      v13 = [(CPLDirectLibraryManager *)self _isValidScopeForClient:v7 error:&v26];
+      v13 = [(CPLDirectLibraryManager *)self _isValidScopeForClient:scopeCopy error:&v26];
       v14 = v26;
       if (v13)
       {
@@ -1129,19 +1129,19 @@ LABEL_4:
         v33 = v15;
         v34 = a2;
         [v16 setCancellationHandler:&block];
-        v17 = [(CPLDirectLibraryManager *)self engineLibrary];
-        v18 = [v17 store];
+        engineLibrary = [(CPLDirectLibraryManager *)self engineLibrary];
+        store = [engineLibrary store];
 
         v21[0] = _NSConcreteStackBlock;
         v21[1] = 3221225472;
         v21[2] = sub_100126CE8;
         v21[3] = &unk_10027A210;
         v21[4] = self;
-        v25 = v8;
+        v25 = handlerCopy;
         v22 = v16;
-        v23 = v7;
-        v24 = v18;
-        v19 = v18;
+        v23 = scopeCopy;
+        v24 = store;
+        v19 = store;
         v20 = v16;
         [v19 blockWriteTransactionsWithCompletionHandler:v21];
 
@@ -1150,7 +1150,7 @@ LABEL_9:
       }
     }
 
-    (*(v8 + 2))(v8, v14);
+    (*(handlerCopy + 2))(handlerCopy, v14);
     goto LABEL_9;
   }
 
@@ -1159,7 +1159,7 @@ LABEL_9:
   v27[1] = 3221225472;
   v27[2] = sub_100126C70;
   v27[3] = &unk_100271E98;
-  v28 = v8;
+  v28 = handlerCopy;
   v10 = v27;
   block = _NSConcreteStackBlock;
   v30 = 3221225472;
@@ -1173,40 +1173,40 @@ LABEL_9:
 LABEL_10:
 }
 
-- (void)_fetchExistingSharedLibraryScopeWithProgress:(id)a3 blocker:(id)a4 completionHandler:(id)a5
+- (void)_fetchExistingSharedLibraryScopeWithProgress:(id)progress blocker:(id)blocker completionHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
-  v11 = [(CPLDirectLibraryManager *)self engineLibrary];
-  v12 = [v11 transport];
+  blockerCopy = blocker;
+  handlerCopy = handler;
+  progressCopy = progress;
+  engineLibrary = [(CPLDirectLibraryManager *)self engineLibrary];
+  transport = [engineLibrary transport];
 
-  v13 = [(CPLDirectLibraryManager *)self engineLibrary];
-  v14 = [v13 store];
+  engineLibrary2 = [(CPLDirectLibraryManager *)self engineLibrary];
+  store = [engineLibrary2 store];
 
   v21[0] = _NSConcreteStackBlock;
   v21[1] = 3221225472;
   v21[2] = sub_1001279B0;
   v21[3] = &unk_10027A238;
-  v22 = v14;
-  v23 = v8;
-  v24 = v9;
-  v15 = v9;
-  v16 = v8;
-  v17 = v14;
-  [v12 fetchExistingSharedLibraryScopeTaskWithCompletionHandler:v21];
+  v22 = store;
+  v23 = blockerCopy;
+  v24 = handlerCopy;
+  v15 = handlerCopy;
+  v16 = blockerCopy;
+  v17 = store;
+  [transport fetchExistingSharedLibraryScopeTaskWithCompletionHandler:v21];
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_100127CAC;
   v19[3] = &unk_1002720E0;
   v20 = v19[4] = self;
   v18 = v20;
-  [v10 performAsCurrentWithPendingUnitCount:1 usingBlock:v19];
+  [progressCopy performAsCurrentWithPendingUnitCount:1 usingBlock:v19];
 }
 
-- (void)fetchExistingSharedLibraryScopeWithCompletionHandler:(id)a3
+- (void)fetchExistingSharedLibraryScopeWithCompletionHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   if (CPLIsInTestReadonlyMode())
   {
     clientQueue = self->_clientQueue;
@@ -1214,14 +1214,14 @@ LABEL_10:
     v22[1] = 3221225472;
     v22[2] = sub_100127F54;
     v22[3] = &unk_100271E98;
-    v23 = v5;
+    v23 = handlerCopy;
     v7 = v22;
     block = _NSConcreteStackBlock;
     v25 = 3221225472;
     v26 = sub_100002BB8;
     v27 = &unk_100271E98;
     v28 = v7;
-    v8 = v5;
+    v8 = handlerCopy;
     v9 = clientQueue;
     v10 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, &block);
     dispatch_async(v9, v10);
@@ -1240,8 +1240,8 @@ LABEL_10:
     v28 = v12;
     v29 = a2;
     [v13 setCancellationHandler:&block];
-    v14 = [(CPLDirectLibraryManager *)self engineLibrary];
-    v15 = [v14 store];
+    engineLibrary = [(CPLDirectLibraryManager *)self engineLibrary];
+    store = [engineLibrary store];
 
     v18[0] = _NSConcreteStackBlock;
     v18[1] = 3221225472;
@@ -1249,19 +1249,19 @@ LABEL_10:
     v18[3] = &unk_10027A2B0;
     v18[4] = self;
     v19 = v13;
-    v20 = v15;
-    v21 = v5;
-    v16 = v15;
+    v20 = store;
+    v21 = handlerCopy;
+    v16 = store;
     v11 = v13;
-    v17 = v5;
+    v17 = handlerCopy;
     [v16 blockWriteTransactionsWithCompletionHandler:v18];
   }
 }
 
-- (void)startExitFromSharedScopeWithIdentifier:(id)a3 retentionPolicy:(int64_t)a4 exitSource:(int64_t)a5 completionHandler:(id)a6
+- (void)startExitFromSharedScopeWithIdentifier:(id)identifier retentionPolicy:(int64_t)policy exitSource:(int64_t)source completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a6;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   if (CPLIsInTestReadonlyMode())
   {
     clientQueue = self->_clientQueue;
@@ -1269,14 +1269,14 @@ LABEL_10:
     v30[1] = 3221225472;
     v30[2] = sub_100128A20;
     v30[3] = &unk_100271E98;
-    v31 = v11;
+    v31 = handlerCopy;
     v13 = v30;
     block = _NSConcreteStackBlock;
     v33 = 3221225472;
     v34 = sub_100002BB8;
     v35 = &unk_100271E98;
     v36 = v13;
-    v14 = v11;
+    v14 = handlerCopy;
     v15 = clientQueue;
     v16 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, &block);
     dispatch_async(v15, v16);
@@ -1293,10 +1293,10 @@ LABEL_10:
     v24[2] = sub_100128A9C;
     v24[3] = &unk_10027A3C8;
     v24[4] = self;
-    v27 = v11;
-    v28 = a4;
-    v29 = a5;
-    v25 = v10;
+    v27 = handlerCopy;
+    policyCopy = policy;
+    sourceCopy = source;
+    v25 = identifierCopy;
     v26 = v18;
     v20 = v24;
     block = _NSConcreteStackBlock;
@@ -1306,17 +1306,17 @@ LABEL_10:
     v36 = v20;
     v21 = v19;
     v17 = v18;
-    v22 = v11;
+    v22 = handlerCopy;
     v23 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, &block);
     dispatch_async(v21, v23);
   }
 }
 
-- (void)removeParticipants:(id)a3 fromSharedScopeWithIdentifier:(id)a4 retentionPolicy:(int64_t)a5 exitSource:(int64_t)a6 completionHandler:(id)a7
+- (void)removeParticipants:(id)participants fromSharedScopeWithIdentifier:(id)identifier retentionPolicy:(int64_t)policy exitSource:(int64_t)source completionHandler:(id)handler
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
+  participantsCopy = participants;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   if (CPLIsInTestReadonlyMode())
   {
     clientQueue = self->_clientQueue;
@@ -1324,14 +1324,14 @@ LABEL_10:
     v34[1] = 3221225472;
     v34[2] = sub_100129AA8;
     v34[3] = &unk_100271E98;
-    v35 = v14;
+    v35 = handlerCopy;
     v16 = v34;
     block = _NSConcreteStackBlock;
     v37 = 3221225472;
     v38 = sub_100002BB8;
     v39 = &unk_100271E98;
     v40 = v16;
-    v17 = v14;
+    v17 = handlerCopy;
     v18 = clientQueue;
     v19 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, &block);
     dispatch_async(v18, v19);
@@ -1348,11 +1348,11 @@ LABEL_10:
     v27[2] = sub_100129B24;
     v27[3] = &unk_10027A490;
     v27[4] = self;
-    v31 = v14;
-    v28 = v13;
-    v32 = a5;
-    v33 = a6;
-    v29 = v12;
+    v31 = handlerCopy;
+    v28 = identifierCopy;
+    policyCopy = policy;
+    sourceCopy = source;
+    v29 = participantsCopy;
     v30 = v21;
     v23 = v27;
     block = _NSConcreteStackBlock;
@@ -1362,32 +1362,32 @@ LABEL_10:
     v40 = v23;
     v24 = v22;
     v20 = v21;
-    v25 = v14;
+    v25 = handlerCopy;
     v26 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, &block);
     dispatch_async(v24, v26);
   }
 }
 
-- (void)getStatusForPendingRecordsSharedToScopeWithIdentifier:(id)a3 maximumCount:(unint64_t)a4 completionHandler:(id)a5
+- (void)getStatusForPendingRecordsSharedToScopeWithIdentifier:(id)identifier maximumCount:(unint64_t)count completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = v9;
-  if (a4 < 0x1F5)
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  v10 = handlerCopy;
+  if (count < 0x1F5)
   {
-    v16 = [(CPLDirectLibraryManager *)self engineLibrary];
-    v17 = [v16 store];
+    engineLibrary = [(CPLDirectLibraryManager *)self engineLibrary];
+    store = [engineLibrary store];
 
     v19[0] = _NSConcreteStackBlock;
     v19[1] = 3221225472;
     v19[2] = sub_10012B460;
     v19[3] = &unk_10027A4B8;
     v23 = v10;
-    v20 = v17;
-    v21 = v8;
-    v22 = self;
-    v24 = a4;
-    v15 = v17;
+    v20 = store;
+    v21 = identifierCopy;
+    selfCopy = self;
+    countCopy = count;
+    v15 = store;
     v18 = [v15 performReadTransactionWithBlock:v19];
   }
 
@@ -1398,7 +1398,7 @@ LABEL_10:
     v25[1] = 3221225472;
     v25[2] = sub_10012B3F0;
     v25[3] = &unk_100271E98;
-    v26 = v9;
+    v26 = handlerCopy;
     v12 = v25;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
@@ -1413,9 +1413,9 @@ LABEL_10:
   }
 }
 
-- (void)sharedLibraryRampCheckWithCompletionHandler:(id)a3
+- (void)sharedLibraryRampCheckWithCompletionHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   v6 = objc_opt_class();
   v7 = [NSProgress progressWithTotalUnitCount:1];
   block = _NSConcreteStackBlock;
@@ -1431,7 +1431,7 @@ LABEL_10:
   v14[2] = sub_10012BE38;
   v14[3] = &unk_100272C08;
   v15 = v7;
-  v16 = v5;
+  v16 = handlerCopy;
   v14[4] = self;
   v9 = v14;
   block = _NSConcreteStackBlock;
@@ -1441,15 +1441,15 @@ LABEL_10:
   v21 = v9;
   v10 = clientQueue;
   v11 = v7;
-  v12 = v5;
+  v12 = handlerCopy;
   v13 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, &block);
   dispatch_async(v10, v13);
 }
 
-- (void)queryUserDetailsForShareParticipants:(id)a3 completionHandler:(id)a4
+- (void)queryUserDetailsForShareParticipants:(id)participants completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  participantsCopy = participants;
+  handlerCopy = handler;
   v9 = objc_opt_class();
   v10 = [NSProgress progressWithTotalUnitCount:1];
   block = _NSConcreteStackBlock;
@@ -1465,9 +1465,9 @@ LABEL_10:
   v18[2] = sub_10012C370;
   v18[3] = &unk_100274E78;
   v18[4] = self;
-  v19 = v7;
+  v19 = participantsCopy;
   v20 = v10;
-  v21 = v8;
+  v21 = handlerCopy;
   v12 = v18;
   block = _NSConcreteStackBlock;
   v23 = 3221225472;
@@ -1476,26 +1476,26 @@ LABEL_10:
   v26 = v12;
   v13 = clientQueue;
   v14 = v10;
-  v15 = v8;
-  v16 = v7;
+  v15 = handlerCopy;
+  v16 = participantsCopy;
   v17 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, &block);
   dispatch_async(v13, v17);
 }
 
-- (void)_dispatchForceSyncForScopeIdentifiers:(id)a3 errors:(id)a4 completionHandler:(id)a5
+- (void)_dispatchForceSyncForScopeIdentifiers:(id)identifiers errors:(id)errors completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifiersCopy = identifiers;
+  errorsCopy = errors;
+  handlerCopy = handler;
   clientQueue = self->_clientQueue;
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_10012C860;
   v18[3] = &unk_1002731C0;
-  v19 = v8;
-  v20 = self;
-  v21 = v9;
-  v22 = v10;
+  v19 = identifiersCopy;
+  selfCopy = self;
+  v21 = errorsCopy;
+  v22 = handlerCopy;
   v12 = v18;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -1503,41 +1503,41 @@ LABEL_10:
   block[3] = &unk_100271E98;
   v24 = v12;
   v13 = clientQueue;
-  v14 = v9;
-  v15 = v10;
-  v16 = v8;
+  v14 = errorsCopy;
+  v15 = handlerCopy;
+  v16 = identifiersCopy;
   v17 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v13, v17);
 }
 
-- (void)forceSynchronizingScopeWithIdentifiers:(id)a3 completionHandler:(id)a4
+- (void)forceSynchronizingScopeWithIdentifiers:(id)identifiers completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CPLEngineLibrary *)self->_engineLibrary store];
-  v9 = [(CPLEngineLibrary *)self->_engineLibrary scheduler];
+  identifiersCopy = identifiers;
+  handlerCopy = handler;
+  store = [(CPLEngineLibrary *)self->_engineLibrary store];
+  scheduler = [(CPLEngineLibrary *)self->_engineLibrary scheduler];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_10012CA44;
   v13[3] = &unk_10027A5A8;
-  v14 = v8;
-  v15 = self;
-  v16 = v6;
-  v17 = v7;
-  v10 = v7;
-  v11 = v6;
-  v12 = v8;
-  [v9 getCurrentRequiredStateWithCompletionHandler:v13];
+  v14 = store;
+  selfCopy = self;
+  v16 = identifiersCopy;
+  v17 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = identifiersCopy;
+  v12 = store;
+  [scheduler getCurrentRequiredStateWithCompletionHandler:v13];
 }
 
-- (void)disableSynchronizationWithReason:(id)a3
+- (void)disableSynchronizationWithReason:(id)reason
 {
-  v5 = a3;
-  [(NSCountedSet *)self->_disablingReasons addObject:v5];
-  if ([(NSCountedSet *)self->_disablingReasons countForObject:v5]== 1)
+  reasonCopy = reason;
+  [(NSCountedSet *)self->_disablingReasons addObject:reasonCopy];
+  if ([(NSCountedSet *)self->_disablingReasons countForObject:reasonCopy]== 1)
   {
-    v4 = [(CPLEngineLibrary *)self->_engineLibrary scheduler];
-    [v4 disableSynchronizationWithReason:v5];
+    scheduler = [(CPLEngineLibrary *)self->_engineLibrary scheduler];
+    [scheduler disableSynchronizationWithReason:reasonCopy];
   }
 }
 
@@ -1546,8 +1546,8 @@ LABEL_10:
   disablingMinglingCount = self->_disablingMinglingCount;
   if (!disablingMinglingCount)
   {
-    v4 = [(CPLEngineLibrary *)self->_engineLibrary scheduler];
-    [v4 disableMingling];
+    scheduler = [(CPLEngineLibrary *)self->_engineLibrary scheduler];
+    [scheduler disableMingling];
 
     disablingMinglingCount = self->_disablingMinglingCount;
   }
@@ -1555,143 +1555,143 @@ LABEL_10:
   self->_disablingMinglingCount = disablingMinglingCount + 1;
 }
 
-- (void)checkHasBackgroundDownloadOperationsWithCompletionHandler:(id)a3
+- (void)checkHasBackgroundDownloadOperationsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(CPLDirectLibraryManager *)self engineLibrary];
-  v6 = [v5 store];
+  handlerCopy = handler;
+  engineLibrary = [(CPLDirectLibraryManager *)self engineLibrary];
+  store = [engineLibrary store];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10012D834;
   v10[3] = &unk_10027A198;
-  v11 = v5;
-  v12 = v4;
-  v7 = v4;
-  v8 = v5;
-  v9 = [v6 performReadTransactionWithBlock:v10];
+  v11 = engineLibrary;
+  v12 = handlerCopy;
+  v7 = handlerCopy;
+  v8 = engineLibrary;
+  v9 = [store performReadTransactionWithBlock:v10];
 }
 
-- (void)getStatusForRecordsWithScopedIdentifiers:(id)a3 completionHandler:(id)a4
+- (void)getStatusForRecordsWithScopedIdentifiers:(id)identifiers completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CPLDirectLibraryManager *)self engineLibrary];
-  v9 = [v8 store];
+  identifiersCopy = identifiers;
+  handlerCopy = handler;
+  engineLibrary = [(CPLDirectLibraryManager *)self engineLibrary];
+  store = [engineLibrary store];
 
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_10012D9B8;
   v14[3] = &unk_10027A5D0;
-  v15 = v9;
-  v16 = v6;
-  v17 = self;
-  v18 = v7;
-  v10 = v7;
-  v11 = v6;
-  v12 = v9;
+  v15 = store;
+  v16 = identifiersCopy;
+  selfCopy = self;
+  v18 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = identifiersCopy;
+  v12 = store;
   v13 = [v12 performReadTransactionWithBlock:v14];
 }
 
-- (void)getChangedStatusesWithCompletionHandler:(id)a3
+- (void)getChangedStatusesWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(CPLDirectLibraryManager *)self engineLibrary];
-  v6 = [v5 store];
+  handlerCopy = handler;
+  engineLibrary = [(CPLDirectLibraryManager *)self engineLibrary];
+  store = [engineLibrary store];
 
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10012DC00;
   v10[3] = &unk_100279770;
-  v12 = self;
-  v13 = v4;
-  v11 = v6;
-  v7 = v4;
-  v8 = v6;
+  selfCopy = self;
+  v13 = handlerCopy;
+  v11 = store;
+  v7 = handlerCopy;
+  v8 = store;
   v9 = [v8 performReadTransactionWithBlock:v10];
 }
 
-- (void)acknowledgeChangedStatuses:(id)a3
+- (void)acknowledgeChangedStatuses:(id)statuses
 {
-  v4 = a3;
-  v5 = [(CPLDirectLibraryManager *)self engineLibrary];
-  v6 = [v5 store];
+  statusesCopy = statuses;
+  engineLibrary = [(CPLDirectLibraryManager *)self engineLibrary];
+  store = [engineLibrary store];
 
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_10012DE9C;
   v12[3] = &unk_1002726D0;
-  v13 = v6;
-  v14 = v4;
+  v13 = store;
+  v14 = statusesCopy;
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_1001B1A5C;
   v10[3] = &unk_100273588;
   v11 = v14;
   v7 = v14;
-  v8 = v6;
+  v8 = store;
   v9 = [v8 performWriteTransactionWithBlock:v12 completionHandler:v10];
 }
 
-- (void)addStatusChangesForRecordsWithScopedIdentifiers:(id)a3 persist:(BOOL)a4
+- (void)addStatusChangesForRecordsWithScopedIdentifiers:(id)identifiers persist:(BOOL)persist
 {
-  v6 = a3;
-  v7 = [(CPLDirectLibraryManager *)self engineLibrary];
-  v8 = [v7 store];
+  identifiersCopy = identifiers;
+  engineLibrary = [(CPLDirectLibraryManager *)self engineLibrary];
+  store = [engineLibrary store];
 
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_10012E0D0;
   v14[3] = &unk_10027A620;
-  v15 = v8;
-  v16 = v6;
-  v17 = a4;
+  v15 = store;
+  v16 = identifiersCopy;
+  persistCopy = persist;
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_1001B1B40;
   v12[3] = &unk_100273588;
   v13 = v16;
   v9 = v16;
-  v10 = v8;
+  v10 = store;
   v11 = [v10 performWriteTransactionWithBlock:v14 completionHandler:v12];
 }
 
-- (void)getScopeStatusCountsForScopeWithIdentifier:(id)a3 completionHandler:(id)a4
+- (void)getScopeStatusCountsForScopeWithIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CPLDirectLibraryManager *)self engineLibrary];
-  v9 = [v8 store];
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  engineLibrary = [(CPLDirectLibraryManager *)self engineLibrary];
+  store = [engineLibrary store];
 
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_10012E3D8;
   v14[3] = &unk_10027A648;
   v14[4] = self;
-  v15 = v9;
-  v16 = v6;
-  v17 = v7;
-  v10 = v6;
-  v11 = v9;
-  v12 = v7;
+  v15 = store;
+  v16 = identifierCopy;
+  v17 = handlerCopy;
+  v10 = identifierCopy;
+  v11 = store;
+  v12 = handlerCopy;
   v13 = [v11 performReadTransactionWithBlock:v14];
 }
 
-- (id)_cloudResourcesToLocalResourcesWithLocalResources:(id)a3 targetMapping:(id)a4
+- (id)_cloudResourcesToLocalResourcesWithLocalResources:(id)resources targetMapping:(id)mapping
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(v6, "count")}];
-  v9 = [(CPLDirectLibraryManager *)self engineLibrary];
-  v10 = [v9 store];
+  resourcesCopy = resources;
+  mappingCopy = mapping;
+  v8 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(resourcesCopy, "count")}];
+  engineLibrary = [(CPLDirectLibraryManager *)self engineLibrary];
+  store = [engineLibrary store];
 
-  [v10 cloudCache];
-  v26 = v25 = v10;
-  v11 = [v10 idMapping];
+  [store cloudCache];
+  v26 = v25 = store;
+  idMapping = [store idMapping];
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v12 = v6;
+  v12 = resourcesCopy;
   v13 = [v12 countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v13)
   {
@@ -1708,21 +1708,21 @@ LABEL_10:
 
         v17 = *(*(&v28 + 1) + 8 * i);
         v27 = 0;
-        v18 = [v17 itemScopedIdentifier];
-        v19 = [v11 cloudScopedIdentifierForLocalScopedIdentifier:v18 isFinal:&v27];
+        itemScopedIdentifier = [v17 itemScopedIdentifier];
+        v19 = [idMapping cloudScopedIdentifierForLocalScopedIdentifier:itemScopedIdentifier isFinal:&v27];
 
         if (!v19)
         {
-          v20 = [v17 itemScopedIdentifier];
-          v19 = [v20 copy];
+          itemScopedIdentifier2 = [v17 itemScopedIdentifier];
+          v19 = [itemScopedIdentifier2 copy];
         }
 
-        v21 = [v7 targetForRecordWithScopedIdentifier:v19];
+        v21 = [mappingCopy targetForRecordWithScopedIdentifier:v19];
 
         if (!v21)
         {
           v22 = [v26 targetForRecordWithCloudScopedIdentifier:v19];
-          [v7 setTarget:v22 forRecordWithScopedIdentifier:v19];
+          [mappingCopy setTarget:v22 forRecordWithScopedIdentifier:v19];
         }
 
         v23 = [v17 copy];
@@ -1739,18 +1739,18 @@ LABEL_10:
   return v8;
 }
 
-- (id)_localResourceFromCloudResources:(id)a3 usingMapping:(id)a4
+- (id)_localResourceFromCloudResources:(id)resources usingMapping:(id)mapping
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 count])
+  resourcesCopy = resources;
+  mappingCopy = mapping;
+  if ([resourcesCopy count])
   {
-    v7 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v5, "count")}];
+    v7 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(resourcesCopy, "count")}];
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v8 = v5;
+    v8 = resourcesCopy;
     v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v9)
     {
@@ -1765,7 +1765,7 @@ LABEL_10:
             objc_enumerationMutation(v8);
           }
 
-          v13 = [v6 objectForKeyedSubscript:{*(*(&v15 + 1) + 8 * i), v15}];
+          v13 = [mappingCopy objectForKeyedSubscript:{*(*(&v15 + 1) + 8 * i), v15}];
           if (v13)
           {
             [v7 addObject:v13];
@@ -1787,21 +1787,21 @@ LABEL_10:
   return v7;
 }
 
-- (id)_localResourceFromCloudResourcesAndErrors:(id)a3 usingMapping:(id)a4
+- (id)_localResourceFromCloudResourcesAndErrors:(id)errors usingMapping:(id)mapping
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 count])
+  errorsCopy = errors;
+  mappingCopy = mapping;
+  if ([errorsCopy count])
   {
-    v7 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(v5, "count")}];
+    v7 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(errorsCopy, "count")}];
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_10012ED24;
     v12[3] = &unk_10027A670;
-    v13 = v6;
+    v13 = mappingCopy;
     v8 = v7;
     v14 = v8;
-    [v5 enumerateKeysAndObjectsUsingBlock:v12];
+    [errorsCopy enumerateKeysAndObjectsUsingBlock:v12];
     v9 = v14;
     v10 = v8;
   }
@@ -1814,48 +1814,48 @@ LABEL_10:
   return v10;
 }
 
-- (void)checkServerForResources:(id)a3 targetMapping:(id)a4 transportScopeMapping:(id)a5 completionHandler:(id)a6
+- (void)checkServerForResources:(id)resources targetMapping:(id)mapping transportScopeMapping:(id)scopeMapping completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a6;
-  v12 = a5;
-  v13 = a4;
-  v14 = [(CPLDirectLibraryManager *)self engineLibrary];
-  v15 = [v14 transport];
-  v16 = [v10 allKeys];
+  resourcesCopy = resources;
+  handlerCopy = handler;
+  scopeMappingCopy = scopeMapping;
+  mappingCopy = mapping;
+  engineLibrary = [(CPLDirectLibraryManager *)self engineLibrary];
+  transport = [engineLibrary transport];
+  allKeys = [resourcesCopy allKeys];
   v21[0] = _NSConcreteStackBlock;
   v21[1] = 3221225472;
   v21[2] = sub_10012EF00;
   v21[3] = &unk_10027A698;
-  v22 = v10;
-  v23 = v11;
+  v22 = resourcesCopy;
+  v23 = handlerCopy;
   v21[4] = self;
-  v17 = v10;
-  v18 = v11;
-  v19 = [v15 resourceCheckTaskForResources:v16 targetMapping:v13 transportScopeMapping:v12 completionHandler:v21];
+  v17 = resourcesCopy;
+  v18 = handlerCopy;
+  v19 = [transport resourceCheckTaskForResources:allKeys targetMapping:mappingCopy transportScopeMapping:scopeMappingCopy completionHandler:v21];
 
-  v20 = [v14 syncManager];
-  [v20 configureDirectTransportTask:v19];
+  syncManager = [engineLibrary syncManager];
+  [syncManager configureDirectTransportTask:v19];
 
   [v19 runWithNoSyncSession];
 }
 
-- (id)safeResourcesToDeleteFromProposedResources:(id)a3 realPrune:(BOOL)a4 checkServerIfNecessary:(BOOL)a5 allowUnconfirmed:(BOOL)a6 resourcesToCheckOnServer:(id *)a7 targetScopeMapping:(id)a8 unsafeResources:(id)a9
+- (id)safeResourcesToDeleteFromProposedResources:(id)resources realPrune:(BOOL)prune checkServerIfNecessary:(BOOL)necessary allowUnconfirmed:(BOOL)unconfirmed resourcesToCheckOnServer:(id *)server targetScopeMapping:(id)mapping unsafeResources:(id)unsafeResources
 {
-  v86 = a6;
-  v11 = a5;
-  v105 = a3;
-  v14 = a8;
-  v15 = a9;
+  unconfirmedCopy = unconfirmed;
+  necessaryCopy = necessary;
+  resourcesCopy = resources;
+  mappingCopy = mapping;
+  unsafeResourcesCopy = unsafeResources;
   v88 = objc_alloc_init(NSMutableArray);
   v16 = objc_alloc_init(NSMutableArray);
-  v17 = [(CPLEngineLibrary *)self->_engineLibrary store];
-  v101 = [v17 scopes];
-  v89 = [v17 cloudCache];
-  v102 = [v17 outgoingResources];
-  v96 = [v17 idMapping];
-  v87 = v17;
-  v18 = [v17 resourceStorage];
+  store = [(CPLEngineLibrary *)self->_engineLibrary store];
+  scopes = [store scopes];
+  cloudCache = [store cloudCache];
+  outgoingResources = [store outgoingResources];
+  idMapping = [store idMapping];
+  v87 = store;
+  resourceStorage = [store resourceStorage];
   v91 = objc_alloc_init(NSMutableDictionary);
   v92 = objc_alloc_init(NSMutableDictionary);
   v85 = objc_alloc_init(NSMutableSet);
@@ -1865,18 +1865,18 @@ LABEL_10:
   v115[1] = 3221225472;
   v115[2] = sub_10012FEE4;
   v115[3] = &unk_10027A6C0;
-  v19 = v18;
+  v19 = resourceStorage;
   v116 = v19;
-  v118 = a4;
-  v20 = v15;
+  pruneCopy = prune;
+  v20 = unsafeResourcesCopy;
   v117 = v20;
   v21 = objc_retainBlock(v115);
-  v84 = v11;
+  v84 = necessaryCopy;
   v98 = v16;
   v82 = v20;
-  v83 = a7;
+  serverCopy = server;
   v81 = v19;
-  if (v11)
+  if (necessaryCopy)
   {
     if (qword_1002D2800 != -1)
     {
@@ -1895,12 +1895,12 @@ LABEL_10:
   v114 = 0u;
   v111 = 0u;
   v112 = 0u;
-  obj = v105;
+  obj = resourcesCopy;
   v106 = [obj countByEnumeratingWithState:&v111 objects:v123 count:16];
   if (v106)
   {
     v104 = *v112;
-    v90 = v14;
+    v90 = mappingCopy;
     do
     {
       v22 = 0;
@@ -1912,8 +1912,8 @@ LABEL_10:
         }
 
         v23 = *(*(&v111 + 1) + 8 * v22);
-        v24 = [v23 itemScopedIdentifier];
-        if (!v24)
+        itemScopedIdentifier = [v23 itemScopedIdentifier];
+        if (!itemScopedIdentifier)
         {
           if (_CPLSilentLogging)
           {
@@ -1939,7 +1939,7 @@ LABEL_21:
           goto LABEL_22;
         }
 
-        if ([v102 shouldUploadResource:v23])
+        if ([outgoingResources shouldUploadResource:v23])
         {
           if ((_CPLSilentLogging & 1) == 0)
           {
@@ -1967,29 +1967,29 @@ LABEL_22:
           goto LABEL_23;
         }
 
-        v32 = [v24 scopeIdentifier];
-        if (([v99 containsObject:v32] & 1) == 0)
+        scopeIdentifier = [itemScopedIdentifier scopeIdentifier];
+        if (([v99 containsObject:scopeIdentifier] & 1) == 0)
         {
-          v26 = [v97 objectForKeyedSubscript:v32];
+          v26 = [v97 objectForKeyedSubscript:scopeIdentifier];
           if (v26)
           {
             goto LABEL_61;
           }
 
-          v38 = [v101 scopeWithIdentifier:v32];
+          v38 = [scopes scopeWithIdentifier:scopeIdentifier];
           if (!v38)
           {
             v26 = @"scope is unknown";
             goto LABEL_60;
           }
 
-          v39 = [v101 flagsForScope:v38];
+          v39 = [scopes flagsForScope:v38];
           v26 = @"scope has been deleted";
           if ([v39 valueForFlag:4] & 1) != 0 || (v26 = @"scope has been disabled", (objc_msgSend(v39, "valueForFlag:", 8)) || (v26 = @"scope is inactive", objc_msgSend(v39, "valueForFlag:", 16)))
           {
 
 LABEL_60:
-            [v97 setObject:v26 forKeyedSubscript:v32];
+            [v97 setObject:v26 forKeyedSubscript:scopeIdentifier];
 
 LABEL_61:
             if ((_CPLSilentLogging & 1) == 0)
@@ -2014,11 +2014,11 @@ LABEL_61:
             goto LABEL_23;
           }
 
-          [v99 addObject:v32];
+          [v99 addObject:scopeIdentifier];
         }
 
         v110 = 0;
-        v33 = [v96 cloudScopedIdentifierForLocalScopedIdentifier:v24 isFinal:&v110];
+        v33 = [idMapping cloudScopedIdentifierForLocalScopedIdentifier:itemScopedIdentifier isFinal:&v110];
         if (!v33)
         {
           goto LABEL_30;
@@ -2063,7 +2063,7 @@ LABEL_67:
         {
           v109 = 0;
           v108 = 0;
-          v40 = [v89 recordWithScopedIdentifier:v33 isConfirmed:&v109 isStaged:&v108];
+          v40 = [cloudCache recordWithScopedIdentifier:v33 isConfirmed:&v109 isStaged:&v108];
           if (!v40)
           {
             sub_1001B428C(v92, v33);
@@ -2072,13 +2072,13 @@ LABEL_67:
 
           v35 = v40;
           [v92 setObject:v40 forKey:v33];
-          if ((v109 & 1) != 0 || v86)
+          if ((v109 & 1) != 0 || unconfirmedCopy)
           {
             [v85 addObject:v33];
           }
         }
 
-        v41 = [v91 objectForKey:v24];
+        v41 = [v91 objectForKey:itemScopedIdentifier];
         v94 = v33;
         v95 = v35;
         if (v41)
@@ -2094,14 +2094,14 @@ LABEL_67:
 
         else
         {
-          v44 = [v87 transactionClientCacheView];
-          v45 = [v44 recordViewWithScopedIdentifier:v24];
+          transactionClientCacheView = [v87 transactionClientCacheView];
+          v45 = [transactionClientCacheView recordViewWithScopedIdentifier:itemScopedIdentifier];
           v42 = [v45 changeForType:8];
 
           if (!v42)
           {
             v42 = +[NSNull null];
-            [v91 setObject:v42 forKey:v24];
+            [v91 setObject:v42 forKey:itemScopedIdentifier];
 LABEL_88:
             v93 = 0;
 LABEL_89:
@@ -2134,15 +2134,15 @@ LABEL_89:
             }
 
             v42 = [v35 resourceForType:{objc_msgSend(v23, "resourceType")}];
-            v64 = [v42 identity];
-            v65 = [v64 fingerPrint];
+            identity = [v42 identity];
+            fingerPrint = [identity fingerPrint];
 
-            v66 = [v23 identity];
-            v67 = [v66 fingerPrint];
+            identity2 = [v23 identity];
+            fingerPrint2 = [identity2 fingerPrint];
 
-            if (v65 && v67)
+            if (fingerPrint && fingerPrint2)
             {
-              v68 = [v65 isEqual:v67];
+              v68 = [fingerPrint isEqual:fingerPrint2];
 
               if ((v68 & 1) == 0)
               {
@@ -2171,21 +2171,21 @@ LABEL_103:
             else
             {
 
-              if (v65 | v67)
+              if (fingerPrint | fingerPrint2)
               {
                 goto LABEL_103;
               }
             }
 
-            v69 = [v42 identity];
-            v70 = [v69 fileUTI];
+            identity3 = [v42 identity];
+            fileUTI = [identity3 fileUTI];
 
-            v71 = [v23 identity];
-            v72 = [v71 fileUTI];
+            identity4 = [v23 identity];
+            fileUTI2 = [identity4 fileUTI];
 
-            if (v70 && v72)
+            if (fileUTI && fileUTI2)
             {
-              v73 = [v70 isEqual:v72];
+              v73 = [fileUTI isEqual:fileUTI2];
 
               if (v73)
               {
@@ -2196,7 +2196,7 @@ LABEL_103:
             else
             {
 
-              if (!(v70 | v72))
+              if (!(fileUTI | fileUTI2))
               {
 LABEL_115:
                 if ([v85 containsObject:v33])
@@ -2303,25 +2303,25 @@ LABEL_108:
             }
 
             v62 = +[NSNull null];
-            [v91 setObject:v62 forKey:v24];
+            [v91 setObject:v62 forKey:itemScopedIdentifier];
 
             goto LABEL_88;
           }
 
-          [v91 setObject:v42 forKey:v24];
+          [v91 setObject:v42 forKey:itemScopedIdentifier];
         }
 
         v93 = v42;
         v42 = -[NSObject resourceForType:](v42, "resourceForType:", [v23 resourceType]);
-        v46 = [v42 identity];
-        v47 = [v46 fingerPrint];
+        identity5 = [v42 identity];
+        fingerPrint3 = [identity5 fingerPrint];
 
-        v48 = [v23 identity];
-        v49 = [v48 fingerPrint];
+        identity6 = [v23 identity];
+        fingerPrint4 = [identity6 fingerPrint];
 
-        if (v47 && v49)
+        if (fingerPrint3 && fingerPrint4)
         {
-          v50 = [v47 isEqual:v49];
+          v50 = [fingerPrint3 isEqual:fingerPrint4];
 
           if ((v50 & 1) == 0)
           {
@@ -2332,21 +2332,21 @@ LABEL_108:
         else
         {
 
-          if (v47 | v49)
+          if (fingerPrint3 | fingerPrint4)
           {
             goto LABEL_74;
           }
         }
 
-        v52 = [v42 identity];
-        v53 = [v52 fileUTI];
+        identity7 = [v42 identity];
+        fileUTI3 = [identity7 fileUTI];
 
-        v54 = [v23 identity];
-        v55 = [v54 fileUTI];
+        identity8 = [v23 identity];
+        fileUTI4 = [identity8 fileUTI];
 
-        if (v53 && v55)
+        if (fileUTI3 && fileUTI4)
         {
-          v56 = [v53 isEqual:v55];
+          v56 = [fileUTI3 isEqual:fileUTI4];
 
           if (v56)
           {
@@ -2357,7 +2357,7 @@ LABEL_108:
         else
         {
 
-          if (!(v53 | v55))
+          if (!(fileUTI3 | fileUTI4))
           {
 LABEL_82:
             v35 = v95;
@@ -2389,7 +2389,7 @@ LABEL_94:
 LABEL_109:
 
 LABEL_110:
-        v14 = v90;
+        mappingCopy = v90;
         if ((v58 & 1) == 0)
         {
           [v88 addObject:v23];
@@ -2402,11 +2402,11 @@ LABEL_110:
         }
 
 LABEL_23:
-        v28 = [v23 itemScopedIdentifier];
-        v29 = [v28 scopeIdentifier];
+        itemScopedIdentifier2 = [v23 itemScopedIdentifier];
+        scopeIdentifier2 = [itemScopedIdentifier2 scopeIdentifier];
 
         v107 = 0;
-        v30 = [v14 addTransportScopeForScopeIdentifier:v29 scopes:v101 useStagingScopeIfNecessary:1 error:&v107];
+        v30 = [mappingCopy addTransportScopeForScopeIdentifier:scopeIdentifier2 scopes:scopes useStagingScopeIfNecessary:1 error:&v107];
         v31 = v107;
         if (v30)
         {
@@ -2430,22 +2430,22 @@ LABEL_68:
     while (v78);
   }
 
-  if (v83)
+  if (serverCopy)
   {
     v79 = v98;
-    *v83 = v98;
+    *serverCopy = v98;
   }
 
   return v88;
 }
 
-- (void)_deleteResources:(id)a3 dryRun:(BOOL)a4 checkServerIfNecessary:(BOOL)a5 completionHandler:(id)a6
+- (void)_deleteResources:(id)resources dryRun:(BOOL)run checkServerIfNecessary:(BOOL)necessary completionHandler:(id)handler
 {
-  v8 = a4;
-  v33 = a3;
-  v34 = a6;
-  v36 = [(CPLEngineLibrary *)self->_engineLibrary store];
-  v35 = [v36 resourceStorage];
+  runCopy = run;
+  resourcesCopy = resources;
+  handlerCopy = handler;
+  store = [(CPLEngineLibrary *)self->_engineLibrary store];
+  resourceStorage = [store resourceStorage];
   if ([(CPLEngineLibrary *)self->_engineLibrary iCloudLibraryClientVersionTooOld])
   {
     if ((_CPLSilentLogging & 1) == 0)
@@ -2454,7 +2454,7 @@ LABEL_68:
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
         v11 = "prune";
-        if (v8)
+        if (runCopy)
         {
           v11 = "check (prune)";
         }
@@ -2470,9 +2470,9 @@ LABEL_68:
     v85[1] = 3221225472;
     v85[2] = sub_10013078C;
     v85[3] = &unk_100272E20;
-    v88 = v34;
-    v86 = v33;
-    v87 = v35;
+    v88 = handlerCopy;
+    v86 = resourcesCopy;
+    v87 = resourceStorage;
     v13 = v85;
     *&buf = _NSConcreteStackBlock;
     *(&buf + 1) = 3221225472;
@@ -2515,8 +2515,8 @@ LABEL_68:
     v75[1] = 3221225472;
     v75[2] = sub_100130830;
     v75[3] = &unk_10027A6E8;
-    v17 = v35;
-    v78 = !v8;
+    v17 = resourceStorage;
+    v78 = !runCopy;
     v76 = v17;
     v77 = v81;
     v18 = objc_retainBlock(v75);
@@ -2524,8 +2524,8 @@ LABEL_68:
     v67[1] = 3221225472;
     v67[2] = sub_1001308F4;
     v67[3] = &unk_10027A710;
-    v73 = v8;
-    v74 = !v8;
+    v73 = runCopy;
+    v74 = !runCopy;
     v31 = v17;
     v68 = v31;
     v71 = v83;
@@ -2537,9 +2537,9 @@ LABEL_68:
     v19 = objc_retainBlock(v67);
     v20 = objc_alloc_init(CPLRecordTargetMapping);
     v21 = [CPLTransportScopeMapping alloc];
-    v22 = [(CPLDirectLibraryManager *)self engineLibrary];
-    v23 = [v22 transport];
-    v24 = [v21 initWithTranslator:v23];
+    engineLibrary = [(CPLDirectLibraryManager *)self engineLibrary];
+    transport = [engineLibrary transport];
+    v24 = [v21 initWithTranslator:transport];
 
     v65[0] = 0;
     v65[1] = v65;
@@ -2551,29 +2551,29 @@ LABEL_68:
     v52[1] = 3221225472;
     v52[2] = sub_100130A34;
     v52[3] = &unk_10027A738;
-    v63 = a5;
+    necessaryCopy = necessary;
     v52[4] = self;
-    v64 = !v8;
-    v53 = v33;
+    v64 = !runCopy;
+    v53 = resourcesCopy;
     v58 = v79;
     v54 = v24;
     v59 = v81;
     v62 = a2;
     v57 = v19;
     p_buf = &buf;
-    v55 = v36;
+    v55 = store;
     v61 = v65;
     v56 = v20;
     v37[0] = _NSConcreteStackBlock;
     v37[1] = 3221225472;
     v37[2] = sub_100130C40;
     v37[3] = &unk_10027A828;
-    v50 = v8;
+    v50 = runCopy;
     v45 = v83;
     v37[4] = self;
-    v43 = v34;
+    v43 = handlerCopy;
     v38 = v53;
-    v51 = !v8;
+    v51 = !runCopy;
     v39 = v31;
     v46 = v65;
     v47 = v81;
@@ -2598,36 +2598,36 @@ LABEL_68:
   }
 }
 
-- (void)getResourcesForItemWithScopedIdentifier:(id)a3 completionHandler:(id)a4
+- (void)getResourcesForItemWithScopedIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CPLEngineLibrary *)self->_engineLibrary store];
-  v9 = [v8 cloudCache];
-  v10 = [v8 outgoingResources];
-  [v8 idMapping];
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  store = [(CPLEngineLibrary *)self->_engineLibrary store];
+  cloudCache = [store cloudCache];
+  outgoingResources = [store outgoingResources];
+  [store idMapping];
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_100131F5C;
   v18[3] = &unk_100279928;
-  v19 = v6;
-  v21 = v20 = v8;
-  v22 = v9;
-  v23 = v10;
-  v24 = self;
-  v25 = v7;
-  v11 = v7;
-  v12 = v10;
-  v13 = v9;
+  v19 = identifierCopy;
+  v21 = v20 = store;
+  v22 = cloudCache;
+  v23 = outgoingResources;
+  selfCopy = self;
+  v25 = handlerCopy;
+  v11 = handlerCopy;
+  v12 = outgoingResources;
+  v13 = cloudCache;
   v14 = v21;
-  v15 = v8;
-  v16 = v6;
+  v15 = store;
+  v16 = identifierCopy;
   v17 = [v15 performReadTransactionWithBlock:v18];
 }
 
-- (void)compactFileCacheWithCompletionHandler:(id)a3
+- (void)compactFileCacheWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   [(CPLEngineLibrary *)self->_engineLibrary store];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
@@ -2637,17 +2637,17 @@ LABEL_68:
   v8[1] = 3221225472;
   v8[2] = sub_1001329C0;
   v8[3] = &unk_100279860;
-  v9 = v4;
-  v5 = v4;
+  v9 = handlerCopy;
+  v5 = handlerCopy;
   v6 = v11;
   v7 = [v6 performWriteTransactionWithBlock:v10 completionHandler:v8];
 }
 
-- (void)testKey:(id)a3 value:(id)a4 completionHandler:(id)a5
+- (void)testKey:(id)key value:(id)value completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  keyCopy = key;
+  valueCopy = value;
+  handlerCopy = handler;
   if ([(CPLDirectLibraryManager *)self _isManagementLibraryManager])
   {
     engineLibrary = self->_engineLibrary;
@@ -2656,9 +2656,9 @@ LABEL_68:
     v19[2] = sub_100132C88;
     v19[3] = &unk_10027A878;
     v19[4] = self;
-    v20 = v10;
-    v12 = v10;
-    [(CPLEngineLibrary *)engineLibrary testKey:v8 value:v9 completionHandler:v19];
+    v20 = handlerCopy;
+    v12 = handlerCopy;
+    [(CPLEngineLibrary *)engineLibrary testKey:keyCopy value:valueCopy completionHandler:v19];
     v13 = v20;
   }
 
@@ -2670,7 +2670,7 @@ LABEL_68:
     v21[2] = sub_100132BE4;
     v21[3] = &unk_100272350;
     v21[4] = self;
-    v22 = v10;
+    v22 = handlerCopy;
     v15 = v21;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
@@ -2678,7 +2678,7 @@ LABEL_68:
     block[3] = &unk_100271E98;
     v24 = v15;
     v16 = clientQueue;
-    v17 = v10;
+    v17 = handlerCopy;
     v18 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
     dispatch_async(v16, v18);
 
@@ -2686,33 +2686,33 @@ LABEL_68:
   }
 }
 
-- (void)getTargetsForRecordsWithScopedIdentifiers:(id)a3 completionHandler:(id)a4
+- (void)getTargetsForRecordsWithScopedIdentifiers:(id)identifiers completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  identifiersCopy = identifiers;
+  handlerCopy = handler;
   [(CPLEngineLibrary *)self->_engineLibrary store];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_100132EF8;
   v12[3] = &unk_10027A8A0;
-  v14 = v6;
-  v13 = v15 = v7;
-  v8 = v6;
+  v14 = identifiersCopy;
+  v13 = v15 = handlerCopy;
+  v8 = identifiersCopy;
   v9 = v13;
-  v10 = v7;
+  v10 = handlerCopy;
   v11 = [v9 performReadTransactionWithBlock:v12];
 }
 
-- (void)engineLibrary:(id)a3 didStartUploadTask:(id)a4
+- (void)engineLibrary:(id)library didStartUploadTask:(id)task
 {
-  v5 = a4;
+  taskCopy = task;
   clientQueue = self->_clientQueue;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100133418;
   v11[3] = &unk_1002720E0;
   v11[4] = self;
-  v12 = v5;
+  v12 = taskCopy;
   v7 = v11;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -2720,23 +2720,23 @@ LABEL_68:
   block[3] = &unk_100271E98;
   v14 = v7;
   v8 = clientQueue;
-  v9 = v5;
+  v9 = taskCopy;
   v10 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v8, v10);
 }
 
-- (void)engineLibrary:(id)a3 uploadTask:(id)a4 didProgress:(float)a5
+- (void)engineLibrary:(id)library uploadTask:(id)task didProgress:(float)progress
 {
-  v7 = a4;
-  v8 = [(CPLDirectLibraryManager *)self abstractObject];
+  taskCopy = task;
+  abstractObject = [(CPLDirectLibraryManager *)self abstractObject];
   clientQueue = self->_clientQueue;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_1001335EC;
   v15[3] = &unk_10027A8C8;
-  v18 = a5;
-  v16 = v8;
-  v17 = v7;
+  progressCopy = progress;
+  v16 = abstractObject;
+  v17 = taskCopy;
   v10 = v15;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -2744,24 +2744,24 @@ LABEL_68:
   block[3] = &unk_100271E98;
   v20 = v10;
   v11 = clientQueue;
-  v12 = v7;
-  v13 = v8;
+  v12 = taskCopy;
+  v13 = abstractObject;
   v14 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v11, v14);
 }
 
-- (void)engineLibrary:(id)a3 uploadTask:(id)a4 didFinishWithError:(id)a5
+- (void)engineLibrary:(id)library uploadTask:(id)task didFinishWithError:(id)error
 {
-  v7 = a4;
-  v8 = a5;
+  taskCopy = task;
+  errorCopy = error;
   clientQueue = self->_clientQueue;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_10013379C;
   v15[3] = &unk_1002721A0;
   v15[4] = self;
-  v16 = v7;
-  v17 = v8;
+  v16 = taskCopy;
+  v17 = errorCopy;
   v10 = v15;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -2769,13 +2769,13 @@ LABEL_68:
   block[3] = &unk_100271E98;
   v19 = v10;
   v11 = clientQueue;
-  v12 = v8;
-  v13 = v7;
+  v12 = errorCopy;
+  v13 = taskCopy;
   v14 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v11, v14);
 }
 
-- (void)engineLibrary:(id)a3 sizeOfResourcesToUploadDidChangeToSize:(unint64_t)a4 sizeOfOriginalResourcesToUpload:(unint64_t)a5 numberOfImages:(unint64_t)a6 numberOfVideos:(unint64_t)a7 numberOfOtherItems:(unint64_t)a8
+- (void)engineLibrary:(id)library sizeOfResourcesToUploadDidChangeToSize:(unint64_t)size sizeOfOriginalResourcesToUpload:(unint64_t)upload numberOfImages:(unint64_t)images numberOfVideos:(unint64_t)videos numberOfOtherItems:(unint64_t)items
 {
   clientQueue = self->_clientQueue;
   v12[0] = _NSConcreteStackBlock;
@@ -2783,11 +2783,11 @@ LABEL_68:
   v12[2] = sub_100133924;
   v12[3] = &unk_10027A8F0;
   v12[4] = self;
-  v12[5] = a4;
-  v12[6] = a5;
-  v12[7] = a6;
-  v12[8] = a7;
-  v12[9] = a8;
+  v12[5] = size;
+  v12[6] = upload;
+  v12[7] = images;
+  v12[8] = videos;
+  v12[9] = items;
   v9 = v12;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -2799,19 +2799,19 @@ LABEL_68:
   dispatch_async(v10, v11);
 }
 
-- (void)engineLibrary:(id)a3 provideLocalResource:(id)a4 recordClass:(Class)a5 completionHandler:(id)a6
+- (void)engineLibrary:(id)library provideLocalResource:(id)resource recordClass:(Class)class completionHandler:(id)handler
 {
-  v9 = a4;
-  v10 = a6;
+  resourceCopy = resource;
+  handlerCopy = handler;
   clientQueue = self->_clientQueue;
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_100133AD0;
   v17[3] = &unk_10027A918;
   v17[4] = self;
-  v18 = v9;
-  v19 = v10;
-  v20 = a5;
+  v18 = resourceCopy;
+  v19 = handlerCopy;
+  classCopy = class;
   v12 = v17;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -2819,22 +2819,22 @@ LABEL_68:
   block[3] = &unk_100271E98;
   v22 = v12;
   v13 = clientQueue;
-  v14 = v10;
-  v15 = v9;
+  v14 = handlerCopy;
+  v15 = resourceCopy;
   v16 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v13, v16);
 }
 
-- (void)engineLibrary:(id)a3 pushAllChangesWithCompletionHandler:(id)a4
+- (void)engineLibrary:(id)library pushAllChangesWithCompletionHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   clientQueue = self->_clientQueue;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100133C70;
   v11[3] = &unk_1002723C8;
   v11[4] = self;
-  v12 = v5;
+  v12 = handlerCopy;
   v7 = v11;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -2842,16 +2842,16 @@ LABEL_68:
   block[3] = &unk_100271E98;
   v14 = v7;
   v8 = clientQueue;
-  v9 = v5;
+  v9 = handlerCopy;
   v10 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v8, v10);
 }
 
-- (void)engineLibrary:(id)a3 providePayloadForComputeStates:(id)a4 inFolderWithURL:(id)a5 completionHandler:(id)a6
+- (void)engineLibrary:(id)library providePayloadForComputeStates:(id)states inFolderWithURL:(id)l completionHandler:(id)handler
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
+  statesCopy = states;
+  lCopy = l;
+  handlerCopy = handler;
   v12 = [NSProgress progressWithTotalUnitCount:1];
   clientQueue = self->_clientQueue;
   v21[0] = _NSConcreteStackBlock;
@@ -2859,10 +2859,10 @@ LABEL_68:
   v21[2] = sub_100133E88;
   v21[3] = &unk_100272568;
   v22 = v12;
-  v23 = self;
-  v24 = v9;
-  v25 = v10;
-  v26 = v11;
+  selfCopy = self;
+  v24 = statesCopy;
+  v25 = lCopy;
+  v26 = handlerCopy;
   v14 = v21;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -2870,9 +2870,9 @@ LABEL_68:
   block[3] = &unk_100271E98;
   v28 = v14;
   v15 = clientQueue;
-  v16 = v11;
-  v17 = v10;
-  v18 = v9;
+  v16 = handlerCopy;
+  v17 = lCopy;
+  v18 = statesCopy;
   v19 = v12;
   v20 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v15, v20);
@@ -2880,13 +2880,13 @@ LABEL_68:
 
 - (NSString)description
 {
-  v2 = [(CPLDirectLibraryManager *)self abstractObject];
-  v3 = [v2 delegate];
+  abstractObject = [(CPLDirectLibraryManager *)self abstractObject];
+  delegate = [abstractObject delegate];
 
   v4 = objc_opt_class();
-  if (v3)
+  if (delegate)
   {
-    [NSString stringWithFormat:@"<%@ %@>", v4, v3];
+    [NSString stringWithFormat:@"<%@ %@>", v4, delegate];
   }
 
   else
@@ -2898,38 +2898,38 @@ LABEL_68:
   return v5;
 }
 
-- (BOOL)_resetStore:(id)a3 reason:(id)a4 resetSelector:(SEL)a5 error:(id *)a6
+- (BOOL)_resetStore:(id)store reason:(id)reason resetSelector:(SEL)selector error:(id *)error
 {
-  v9 = a4;
-  v10 = a3;
+  reasonCopy = reason;
+  storeCopy = store;
   v11 = objc_opt_class();
-  MethodImplementation = class_getMethodImplementation(v11, a5);
-  LOBYTE(a6) = (MethodImplementation)(v10, a5, v9, a6);
+  MethodImplementation = class_getMethodImplementation(v11, selector);
+  LOBYTE(error) = (MethodImplementation)(storeCopy, selector, reasonCopy, error);
 
-  return a6;
+  return error;
 }
 
-- (void)resetCacheWithOption:(unint64_t)a3 reason:(id)a4 completionHandler:(id)a5
+- (void)resetCacheWithOption:(unint64_t)option reason:(id)reason completionHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [(CPLEngineLibrary *)self->_engineLibrary store];
-  v11 = v10;
-  if (a3 == 101)
+  reasonCopy = reason;
+  handlerCopy = handler;
+  store = [(CPLEngineLibrary *)self->_engineLibrary store];
+  v11 = store;
+  if (option == 101)
   {
-    [v10 markAsCorrupted];
-    v9[2](v9, 0);
+    [store markAsCorrupted];
+    handlerCopy[2](handlerCopy, 0);
   }
 
-  else if (a3 == 100)
+  else if (option == 100)
   {
-    v9[2](v9, 0);
+    handlerCopy[2](handlerCopy, 0);
     v19[0] = _NSConcreteStackBlock;
     v19[1] = 3221225472;
     v19[2] = sub_10013443C;
     v19[3] = &unk_100271F40;
     v19[4] = self;
-    [v11 wipeStoreAtNextOpeningWithReason:v8 completionBlock:v19];
+    [v11 wipeStoreAtNextOpeningWithReason:reasonCopy completionBlock:v19];
   }
 
   else
@@ -2938,50 +2938,50 @@ LABEL_68:
     v15[1] = 3221225472;
     v15[2] = sub_1001344AC;
     v15[3] = &unk_10027A990;
-    v18 = a3;
+    optionCopy = option;
     v15[4] = self;
-    v16 = v10;
-    v17 = v8;
+    v16 = store;
+    v17 = reasonCopy;
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_10013455C;
     v13[3] = &unk_10027A198;
     v13[4] = self;
-    v14 = v9;
+    v14 = handlerCopy;
     v12 = [v16 performWriteTransactionWithBlock:v15 completionHandler:v13];
   }
 }
 
-- (void)getStatusesForScopesWithIdentifiers:(id)a3 includeStorages:(BOOL)a4 completionHandler:(id)a5
+- (void)getStatusesForScopesWithIdentifiers:(id)identifiers includeStorages:(BOOL)storages completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(CPLEngineLibrary *)self->_engineLibrary store];
-  [v10 scopes];
+  identifiersCopy = identifiers;
+  handlerCopy = handler;
+  store = [(CPLEngineLibrary *)self->_engineLibrary store];
+  [store scopes];
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_100134844;
   v16[3] = &unk_10027A9E0;
-  v21 = a4;
-  v18 = v17 = v10;
-  v19 = v8;
-  v20 = v9;
-  v11 = v8;
+  storagesCopy = storages;
+  v18 = v17 = store;
+  v19 = identifiersCopy;
+  v20 = handlerCopy;
+  v11 = identifiersCopy;
   v12 = v18;
-  v13 = v10;
-  v14 = v9;
+  v13 = store;
+  v14 = handlerCopy;
   v15 = [v13 performReadTransactionWithBlock:v16];
 }
 
-- (void)getCloudCacheRecordsWithLocalScopedIdentifiers:(id)a3 desiredProperties:(id)a4 completionHandler:(id)a5
+- (void)getCloudCacheRecordsWithLocalScopedIdentifiers:(id)identifiers desiredProperties:(id)properties completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(CPLEngineLibrary *)self->_engineLibrary store];
-  if (v9)
+  identifiersCopy = identifiers;
+  propertiesCopy = properties;
+  handlerCopy = handler;
+  store = [(CPLEngineLibrary *)self->_engineLibrary store];
+  if (propertiesCopy)
   {
-    v12 = [[NSSet alloc] initWithArray:v9];
+    v12 = [[NSSet alloc] initWithArray:propertiesCopy];
   }
 
   else
@@ -2994,81 +2994,81 @@ LABEL_68:
   v18[2] = sub_100135074;
   v18[3] = &unk_10027A288;
   v21 = v12;
-  v22 = v10;
+  v22 = handlerCopy;
   v18[4] = self;
-  v19 = v8;
-  v20 = v11;
+  v19 = identifiersCopy;
+  v20 = store;
   v13 = v12;
-  v14 = v11;
-  v15 = v8;
-  v16 = v10;
+  v14 = store;
+  v15 = identifiersCopy;
+  v16 = handlerCopy;
   v17 = [v14 performReadTransactionWithBlock:v18];
 }
 
-- (void)cloudCacheGetDescriptionForRecordWithScopedIdentifier:(id)a3 related:(BOOL)a4 completionHandler:(id)a5
+- (void)cloudCacheGetDescriptionForRecordWithScopedIdentifier:(id)identifier related:(BOOL)related completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   [(CPLEngineLibrary *)self->_engineLibrary store];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_1001355FC;
   v14[3] = &unk_10027AA08;
   v14[4] = self;
-  v16 = v15 = v8;
-  v17 = v9;
-  v18 = a4;
+  v16 = v15 = identifierCopy;
+  v17 = handlerCopy;
+  relatedCopy = related;
   v10 = v16;
-  v11 = v8;
-  v12 = v9;
+  v11 = identifierCopy;
+  v12 = handlerCopy;
   v13 = [v10 performReadTransactionWithBlock:v14];
 }
 
-- (void)forceBackupWithCompletionHandler:(id)a3
+- (void)forceBackupWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(CPLDirectLibraryManager *)self engineLibrary];
-  [v5 forceBackupWithActivity:0 forceClientPush:1 completionHandler:v4];
+  handlerCopy = handler;
+  engineLibrary = [(CPLDirectLibraryManager *)self engineLibrary];
+  [engineLibrary forceBackupWithActivity:0 forceClientPush:1 completionHandler:handlerCopy];
 }
 
-- (void)requestClientToPushAllChangesWithCompletionHandler:(id)a3
+- (void)requestClientToPushAllChangesWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(CPLDirectLibraryManager *)self engineLibrary];
-  [v5 requestClientToPushAllChangesWithCompletionHandler:v4];
+  handlerCopy = handler;
+  engineLibrary = [(CPLDirectLibraryManager *)self engineLibrary];
+  [engineLibrary requestClientToPushAllChangesWithCompletionHandler:handlerCopy];
 }
 
-- (void)requestClientToPullAllChangesInScopeIdentifiers:(id)a3 completionHandler:(id)a4
+- (void)requestClientToPullAllChangesInScopeIdentifiers:(id)identifiers completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CPLDirectLibraryManager *)self engineLibrary];
-  [v8 requestClientToPullAllChangesWithScopeIdentifiers:v7 completionHandler:v6];
+  handlerCopy = handler;
+  identifiersCopy = identifiers;
+  engineLibrary = [(CPLDirectLibraryManager *)self engineLibrary];
+  [engineLibrary requestClientToPullAllChangesWithScopeIdentifiers:identifiersCopy completionHandler:handlerCopy];
 }
 
-- (id)displayableNameForEngineLibrary:(id)a3
+- (id)displayableNameForEngineLibrary:(id)library
 {
-  v4 = [(CPLDirectLibraryManager *)self abstractObject];
-  v5 = [v4 delegate];
+  abstractObject = [(CPLDirectLibraryManager *)self abstractObject];
+  delegate = [abstractObject delegate];
 
-  if (!v5 || (objc_opt_respondsToSelector() & 1) == 0 || (-[CPLDirectLibraryManager abstractObject](self, "abstractObject"), v6 = objc_claimAutoreleasedReturnValue(), [v5 displayableNameForLibraryManager:v6], v7 = objc_claimAutoreleasedReturnValue(), v6, !v7))
+  if (!delegate || (objc_opt_respondsToSelector() & 1) == 0 || (-[CPLDirectLibraryManager abstractObject](self, "abstractObject"), v6 = objc_claimAutoreleasedReturnValue(), [delegate displayableNameForLibraryManager:v6], processName = objc_claimAutoreleasedReturnValue(), v6, !processName))
   {
     v8 = +[NSProcessInfo processInfo];
-    v7 = [v8 processName];
+    processName = [v8 processName];
   }
 
-  return v7;
+  return processName;
 }
 
-- (BOOL)isLibraryManagerForEngineLibrary:(id)a3
+- (BOOL)isLibraryManagerForEngineLibrary:(id)library
 {
-  v4 = [(CPLDirectLibraryManager *)self abstractObject];
-  v5 = [v4 delegate];
+  abstractObject = [(CPLDirectLibraryManager *)self abstractObject];
+  delegate = [abstractObject delegate];
 
-  if (v5 && (objc_opt_respondsToSelector() & 1) != 0)
+  if (delegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v6 = [(CPLDirectLibraryManager *)self abstractObject];
-    v7 = [v5 isLibraryManager:v6];
+    abstractObject2 = [(CPLDirectLibraryManager *)self abstractObject];
+    v7 = [delegate isLibraryManager:abstractObject2];
   }
 
   else
@@ -3079,10 +3079,10 @@ LABEL_68:
   return v7;
 }
 
-- (void)attachComputeStates:(id)a3 completionHandler:(id)a4
+- (void)attachComputeStates:(id)states completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  statesCopy = states;
+  handlerCopy = handler;
   [(CPLEngineLibrary *)self->_engineLibrary store];
   v26[0] = 0;
   v26[1] = v26;
@@ -3102,7 +3102,7 @@ LABEL_68:
   v17[1] = 3221225472;
   v17[2] = sub_100136438;
   v18 = v17[3] = &unk_10027AA58;
-  v8 = v6;
+  v8 = statesCopy;
   v19 = v8;
   v20 = v26;
   v21 = v22;
@@ -3114,7 +3114,7 @@ LABEL_68:
   v16 = v22;
   v9 = v18;
   v13 = v9;
-  v10 = v7;
+  v10 = handlerCopy;
   v14 = v10;
   v11 = [v9 performWriteTransactionWithBlock:v17 completionHandler:v12];
 
@@ -3156,7 +3156,7 @@ LABEL_68:
   computeStateDownloadCount = self->_computeStateDownloadCount;
   if (!computeStateDownloadCount)
   {
-    sub_1001B4A14(a2, self, v4, v5, v6, v7, v8, v9, v17, v18, v19, v20, v21, v22, v23, v24, v25, vars0, vars8);
+    sub_1001B4A14(a2, self, v4, v5, v6, v7, v8, v9, v17, v18, v19, v20, selfCopy, v22, v23, v24, v25, vars0, vars8);
   }
 
   v11 = computeStateDownloadCount - 1;
@@ -3172,7 +3172,7 @@ LABEL_68:
     *(&v19 + 1) = &unk_1002720E0;
     v14 = v12;
     v20 = v14;
-    v21 = self;
+    selfCopy = self;
     dispatch_source_set_event_handler(v14, &v17);
     cleanupComputeStateDownloadTimer = self->_cleanupComputeStateDownloadTimer;
     self->_cleanupComputeStateDownloadTimer = v14;
@@ -3182,16 +3182,16 @@ LABEL_68:
   }
 }
 
-- (void)fetchComputeStatesForRecordsWithScopedIdentifiers:(id)a3 validator:(id)a4 shouldDecrypt:(BOOL)a5 onDemand:(BOOL)a6 completionHandler:(id)a7
+- (void)fetchComputeStatesForRecordsWithScopedIdentifiers:(id)identifiers validator:(id)validator shouldDecrypt:(BOOL)decrypt onDemand:(BOOL)demand completionHandler:(id)handler
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a7;
-  if ([v13 count])
+  identifiersCopy = identifiers;
+  validatorCopy = validator;
+  handlerCopy = handler;
+  if ([identifiersCopy count])
   {
-    v42 = a5;
-    v16 = [(CPLEngineLibrary *)self->_engineLibrary store];
-    v17 = [v16 scopes];
+    decryptCopy = decrypt;
+    store = [(CPLEngineLibrary *)self->_engineLibrary store];
+    scopes = [store scopes];
     v85[0] = 0;
     v85[1] = v85;
     v85[2] = 0x3032000000;
@@ -3204,8 +3204,8 @@ LABEL_68:
     v83[3] = sub_100004550;
     v83[4] = sub_10000538C;
     v84 = 0;
-    v18 = [(CPLDirectLibraryManager *)self engineLibrary];
-    v41 = [v18 transport];
+    engineLibrary = [(CPLDirectLibraryManager *)self engineLibrary];
+    transport = [engineLibrary transport];
 
     v81[0] = 0;
     v81[1] = v81;
@@ -3234,8 +3234,8 @@ LABEL_68:
     v91 = v19;
     v92 = a2;
     [v20 setCancellationHandler:&block];
-    v40 = a6;
-    v39 = v14;
+    demandCopy = demand;
+    v39 = validatorCopy;
     v75[0] = 0;
     v75[1] = v75;
     v75[2] = 0x2020000000;
@@ -3250,11 +3250,11 @@ LABEL_68:
     v74 = v79;
     v21 = v20;
     v70 = v21;
-    v38 = v15;
-    v71 = v15;
+    v38 = handlerCopy;
+    v71 = handlerCopy;
     v22 = objc_retainBlock(v69);
-    v23 = [v16 recordComputeStatePushQueue];
-    [v23 noteComputeStateDownloadRequest];
+    recordComputeStatePushQueue = [store recordComputeStatePushQueue];
+    [recordComputeStatePushQueue noteComputeStateDownloadRequest];
     v36 = v22;
     v37 = v21;
 
@@ -3274,15 +3274,15 @@ LABEL_68:
     v27 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, &block);
     dispatch_async(v26, v27);
 
-    v28 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v13, "count")}];
+    v28 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(identifiersCopy, "count")}];
     v59[0] = _NSConcreteStackBlock;
     v59[1] = 3221225472;
     v59[2] = sub_10013784C;
     v59[3] = &unk_10027AB40;
-    v60 = v13;
+    v60 = identifiersCopy;
     v64 = v85;
-    v61 = v17;
-    v62 = v16;
+    v61 = scopes;
+    v62 = store;
     v63 = v28;
     v65 = v81;
     v66 = v83;
@@ -3295,7 +3295,7 @@ LABEL_68:
     v51 = v29;
     v30 = v63;
     v44 = v30;
-    v45 = self;
+    selfCopy = self;
     v46 = v60;
     v52 = v77;
     v53 = v85;
@@ -3306,11 +3306,11 @@ LABEL_68:
     v47 = v31;
     v32 = v61;
     v48 = v32;
-    v57 = v42;
+    v57 = decryptCopy;
     v33 = v37;
     v49 = v33;
-    v58 = v40;
-    v34 = v41;
+    v58 = demandCopy;
+    v34 = transport;
     v50 = v34;
     v35 = [v31 performWriteTransactionWithBlock:v59 completionHandler:v43];
 
@@ -3323,134 +3323,134 @@ LABEL_68:
     _Block_object_dispose(v83, 8);
     _Block_object_dispose(v85, 8);
 
-    v15 = v38;
-    v14 = v39;
+    handlerCopy = v38;
+    validatorCopy = v39;
   }
 
   else
   {
-    (*(v15 + 2))(v15, &__NSDictionary0__struct, 0);
+    (*(handlerCopy + 2))(handlerCopy, &__NSDictionary0__struct, 0);
   }
 }
 
-- (void)reportSetting:(id)a3 hasBeenSetToValue:(id)a4
+- (void)reportSetting:(id)setting hasBeenSetToValue:(id)value
 {
   engineLibrary = self->_engineLibrary;
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CPLEngineLibrary *)engineLibrary feedback];
-  [v8 reportSetting:v7 hasBeenSetToValue:v6];
+  valueCopy = value;
+  settingCopy = setting;
+  feedback = [(CPLEngineLibrary *)engineLibrary feedback];
+  [feedback reportSetting:settingCopy hasBeenSetToValue:valueCopy];
 }
 
-- (void)reportMiscInformation:(id)a3
+- (void)reportMiscInformation:(id)information
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:CPLMiscInformationAppendCPLReport];
+  informationCopy = information;
+  v5 = [informationCopy objectForKeyedSubscript:CPLMiscInformationAppendCPLReport];
 
   if (v5)
   {
-    v6 = [(CPLDirectLibraryManager *)self engineLibrary];
-    v7 = [v6 store];
+    engineLibrary = [(CPLDirectLibraryManager *)self engineLibrary];
+    store = [engineLibrary store];
 
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_100138964;
     v10[3] = &unk_1002797C0;
-    v11 = v4;
-    v12 = v7;
-    v13 = self;
-    v8 = v7;
-    v9 = [v8 performReadTransactionWithBlock:v10];
+    v11 = informationCopy;
+    v12 = store;
+    selfCopy = self;
+    feedback = store;
+    v9 = [feedback performReadTransactionWithBlock:v10];
   }
 
   else
   {
-    v8 = [(CPLEngineLibrary *)self->_engineLibrary feedback];
-    [v8 reportMiscInformation:v4];
+    feedback = [(CPLEngineLibrary *)self->_engineLibrary feedback];
+    [feedback reportMiscInformation:informationCopy];
   }
 }
 
-- (void)blockEngineElement:(id)a3
+- (void)blockEngineElement:(id)element
 {
-  if (a3)
+  if (element)
   {
     engineLibrary = self->_engineLibrary;
-    v4 = a3;
-    v5 = [(CPLEngineLibrary *)engineLibrary scheduler];
-    [v5 blockEngineElement:v4];
+    elementCopy = element;
+    scheduler = [(CPLEngineLibrary *)engineLibrary scheduler];
+    [scheduler blockEngineElement:elementCopy];
   }
 }
 
-- (void)unblockEngineElement:(id)a3
+- (void)unblockEngineElement:(id)element
 {
-  if (a3)
+  if (element)
   {
     engineLibrary = self->_engineLibrary;
-    v4 = a3;
-    v5 = [(CPLEngineLibrary *)engineLibrary scheduler];
-    [v5 unblockEngineElement:v4];
+    elementCopy = element;
+    scheduler = [(CPLEngineLibrary *)engineLibrary scheduler];
+    [scheduler unblockEngineElement:elementCopy];
   }
 }
 
-- (void)unblockEngineElementOnce:(id)a3
+- (void)unblockEngineElementOnce:(id)once
 {
-  if (a3)
+  if (once)
   {
     engineLibrary = self->_engineLibrary;
-    v4 = a3;
-    v5 = [(CPLEngineLibrary *)engineLibrary scheduler];
-    [v5 unblockEngineElementOnce:v4];
+    onceCopy = once;
+    scheduler = [(CPLEngineLibrary *)engineLibrary scheduler];
+    [scheduler unblockEngineElementOnce:onceCopy];
   }
 }
 
 - (CPLFingerprintContext)fingerprintContextIfKnown
 {
-  v2 = [(CPLEngineLibrary *)self->_engineLibrary transport];
-  v3 = [v2 fingerprintContext];
+  transport = [(CPLEngineLibrary *)self->_engineLibrary transport];
+  fingerprintContext = [transport fingerprintContext];
 
-  return v3;
+  return fingerprintContext;
 }
 
-- (id)ownerNameForEngineLibrary:(id)a3
+- (id)ownerNameForEngineLibrary:(id)library
 {
-  v3 = [(CPLDirectLibraryManager *)self abstractObject];
-  v4 = [v3 owner];
-  v5 = [v4 ownerNameForLibraryManager:v3];
+  abstractObject = [(CPLDirectLibraryManager *)self abstractObject];
+  owner = [abstractObject owner];
+  v5 = [owner ownerNameForLibraryManager:abstractObject];
 
   return v5;
 }
 
-- (void)engineLibrary:(id)a3 getStatusWithCompletionHandler:(id)a4
+- (void)engineLibrary:(id)library getStatusWithCompletionHandler:(id)handler
 {
-  v5 = a4;
-  v8 = [(CPLDirectLibraryManager *)self abstractObject];
-  v6 = [v8 owner];
-  v7 = v6;
-  if (v6)
+  handlerCopy = handler;
+  abstractObject = [(CPLDirectLibraryManager *)self abstractObject];
+  owner = [abstractObject owner];
+  v7 = owner;
+  if (owner)
   {
-    [v6 libraryManager:v8 getStatusWithCompletionHandler:v5];
+    [owner libraryManager:abstractObject getStatusWithCompletionHandler:handlerCopy];
   }
 
   else
   {
-    (*(v5 + 2))(v5, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
   }
 }
 
-- (void)engineLibrary:(id)a3 getStatusDictionaryWithCompletionHandler:(id)a4
+- (void)engineLibrary:(id)library getStatusDictionaryWithCompletionHandler:(id)handler
 {
-  v5 = a4;
-  v8 = [(CPLDirectLibraryManager *)self abstractObject];
-  v6 = [v8 owner];
-  v7 = v6;
-  if (v6)
+  handlerCopy = handler;
+  abstractObject = [(CPLDirectLibraryManager *)self abstractObject];
+  owner = [abstractObject owner];
+  v7 = owner;
+  if (owner)
   {
-    [v6 libraryManager:v8 getStatusDictionaryWithCompletionHandler:v5];
+    [owner libraryManager:abstractObject getStatusDictionaryWithCompletionHandler:handlerCopy];
   }
 
   else
   {
-    (*(v5 + 2))(v5, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
   }
 }
 
@@ -3478,8 +3478,8 @@ LABEL_68:
     self->_foregroundCalls = v5;
     if (!v5)
     {
-      v6 = [(CPLEngineLibrary *)self->_engineLibrary scheduler];
-      [v6 noteClientIsInBackground];
+      scheduler = [(CPLEngineLibrary *)self->_engineLibrary scheduler];
+      [scheduler noteClientIsInBackground];
 
       self->_foregroundCallsHaveBeenQuiet = 0;
     }
@@ -3511,20 +3511,20 @@ LABEL_68:
     }
   }
 
-  v9 = [(CPLEngineLibrary *)self->_engineLibrary scheduler];
-  [v9 noteServerHasChanges];
+  scheduler = [(CPLEngineLibrary *)self->_engineLibrary scheduler];
+  [scheduler noteServerHasChanges];
 }
 
-- (void)enableSynchronizationWithReason:(id)a3
+- (void)enableSynchronizationWithReason:(id)reason
 {
-  v5 = a3;
-  if ([(NSCountedSet *)self->_disablingReasons countForObject:v5])
+  reasonCopy = reason;
+  if ([(NSCountedSet *)self->_disablingReasons countForObject:reasonCopy])
   {
-    [(NSCountedSet *)self->_disablingReasons removeObject:v5];
-    if (![(NSCountedSet *)self->_disablingReasons countForObject:v5])
+    [(NSCountedSet *)self->_disablingReasons removeObject:reasonCopy];
+    if (![(NSCountedSet *)self->_disablingReasons countForObject:reasonCopy])
     {
       self = [(CPLEngineLibrary *)self->_engineLibrary scheduler];
-      [(CPLDirectLibraryManager *)self enableSynchronizationWithReason:v5];
+      [(CPLDirectLibraryManager *)self enableSynchronizationWithReason:reasonCopy];
 LABEL_7:
     }
   }
@@ -3544,9 +3544,9 @@ LABEL_7:
   }
 }
 
-- (void)getSystemBudgetsWithCompletionHandler:(id)a3
+- (void)getSystemBudgetsWithCompletionHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   if ((_CPLSilentLogging & 1) == 0)
   {
     v6 = sub_10011B768();
@@ -3558,16 +3558,16 @@ LABEL_7:
     }
   }
 
-  v11 = [(CPLEngineLibrary *)self->_engineLibrary transport];
-  [v11 getSystemBudgetsWithCompletionHandler:v5];
+  transport = [(CPLEngineLibrary *)self->_engineLibrary transport];
+  [transport getSystemBudgetsWithCompletionHandler:handlerCopy];
 }
 
-- (void)setShouldOverride:(BOOL)a3 forSystemBudgets:(unint64_t)a4
+- (void)setShouldOverride:(BOOL)override forSystemBudgets:(unint64_t)budgets
 {
   sub_10002B0F4();
   v6 = v5;
   v8 = v7;
-  v10 = [*(v9 + 96) systemMonitor];
+  systemMonitor = [*(v9 + 96) systemMonitor];
   if ((_CPLSilentLogging & 1) == 0)
   {
     v11 = sub_10011B768();
@@ -3582,12 +3582,12 @@ LABEL_7:
 
   if (v8)
   {
-    [v10 startOverridingSystemBudgetsForClient:v6];
+    [systemMonitor startOverridingSystemBudgetsForClient:v6];
   }
 
   else
   {
-    [v10 stopOverridingSystemBudgetsForClient:v6];
+    [systemMonitor stopOverridingSystemBudgetsForClient:v6];
   }
 
   sub_100139520();
@@ -3623,8 +3623,8 @@ LABEL_7:
     self->_disablingMinglingCount = v4;
     if (!v4)
     {
-      v9 = [(CPLEngineLibrary *)self->_engineLibrary scheduler];
-      [v9 enableMingling];
+      scheduler = [(CPLEngineLibrary *)self->_engineLibrary scheduler];
+      [scheduler enableMingling];
     }
   }
 
@@ -3666,7 +3666,7 @@ LABEL_7:
   }
 }
 
-- (void)engineLibrary:(id)a3 didCloseWithError:(id)a4
+- (void)engineLibrary:(id)library didCloseWithError:(id)error
 {
   if (!self->_closing && (_CPLSilentLogging & 1) == 0)
   {
@@ -3681,17 +3681,17 @@ LABEL_7:
   }
 }
 
-- (void)engineLibraryHasChangesInPullQueue:(id)a3
+- (void)engineLibraryHasChangesInPullQueue:(id)queue
 {
   if ((_CPLSilentLogging & 1) == 0)
   {
     v5 = sub_10011B768();
     if (sub_100021E38(v5))
     {
-      v6 = [(CPLDirectLibraryManager *)self abstractObject];
-      v7 = [v6 delegate];
+      abstractObject = [(CPLDirectLibraryManager *)self abstractObject];
+      delegate = [abstractObject delegate];
       LODWORD(block) = 138412290;
-      *(&block + 4) = v7;
+      *(&block + 4) = delegate;
       sub_10000FB94(&_mh_execute_header, v3, v8, "Notifying %@ of changes in pull queue", &block);
     }
   }
@@ -3710,17 +3710,17 @@ LABEL_7:
   dispatch_async(self, v22);
 }
 
-- (void)engineLibraryHasStatusChanges:(id)a3
+- (void)engineLibraryHasStatusChanges:(id)changes
 {
   if ((_CPLSilentLogging & 1) == 0)
   {
     v5 = sub_10011B768();
     if (sub_100021E38(v5))
     {
-      v6 = [(CPLDirectLibraryManager *)self abstractObject];
-      v7 = [v6 delegate];
+      abstractObject = [(CPLDirectLibraryManager *)self abstractObject];
+      delegate = [abstractObject delegate];
       LODWORD(block) = 138412290;
-      *(&block + 4) = v7;
+      *(&block + 4) = delegate;
       sub_10000FB94(&_mh_execute_header, v3, v8, "Notifying %@ of status changes", &block);
     }
   }
@@ -3739,23 +3739,23 @@ LABEL_7:
   dispatch_async(self, v22);
 }
 
-- (void)engineLibrary:(id)a3 didDownloadResourceInBackground:(id)a4
+- (void)engineLibrary:(id)library didDownloadResourceInBackground:(id)background
 {
-  v6 = a4;
+  backgroundCopy = background;
   if ((_CPLSilentLogging & 1) == 0)
   {
     v7 = sub_10011B768();
     if (sub_100021E20(v7))
     {
-      v8 = [(CPLDirectLibraryManager *)self abstractObject];
-      v9 = [v8 resourceProgressDelegate];
+      abstractObject = [(CPLDirectLibraryManager *)self abstractObject];
+      resourceProgressDelegate = [abstractObject resourceProgressDelegate];
       sub_10013948C();
       sub_100037514(&_mh_execute_header, v4, v10, "Notifying %@ that %@ was downloaded in background", block);
     }
   }
 
   sub_100139354(104);
-  v26 = self;
+  selfCopy = self;
   v12 = v11;
   *block = _NSConcreteStackBlock;
   v29 = 3221225472;
@@ -3764,28 +3764,28 @@ LABEL_7:
   v31 = &unk_100271E98;
   v32 = v14;
   v15 = v4;
-  v16 = v6;
-  v24 = sub_1001393C0(v16, v17, v18, v19, v20, v21, v22, v23, v25, 3221225472, sub_1001331DC, &unk_1002720E0, v26, v6, block[0]);
+  v16 = backgroundCopy;
+  v24 = sub_1001393C0(v16, v17, v18, v19, v20, v21, v22, v23, v25, 3221225472, sub_1001331DC, &unk_1002720E0, selfCopy, backgroundCopy, block[0]);
   sub_1001393A4(v24);
 }
 
-- (void)engineLibrary:(id)a3 didFailBackgroundDownloadOfResource:(id)a4
+- (void)engineLibrary:(id)library didFailBackgroundDownloadOfResource:(id)resource
 {
-  v6 = a4;
+  resourceCopy = resource;
   if ((_CPLSilentLogging & 1) == 0)
   {
     v7 = sub_10011B768();
     if (sub_100021E20(v7))
     {
-      v8 = [(CPLDirectLibraryManager *)self abstractObject];
-      v9 = [v8 resourceProgressDelegate];
+      abstractObject = [(CPLDirectLibraryManager *)self abstractObject];
+      resourceProgressDelegate = [abstractObject resourceProgressDelegate];
       sub_10013948C();
       sub_100037514(&_mh_execute_header, v4, v10, "Notifying %@ that %@ did fail to download in background", block);
     }
   }
 
   sub_100139354(104);
-  v26 = self;
+  selfCopy = self;
   v12 = v11;
   *block = _NSConcreteStackBlock;
   v29 = 3221225472;
@@ -3794,14 +3794,14 @@ LABEL_7:
   v31 = &unk_100271E98;
   v32 = v14;
   v15 = v4;
-  v16 = v6;
-  v24 = sub_1001393C0(v16, v17, v18, v19, v20, v21, v22, v23, v25, 3221225472, sub_100133264, &unk_1002720E0, v26, v6, block[0]);
+  v16 = resourceCopy;
+  v24 = sub_1001393C0(v16, v17, v18, v19, v20, v21, v22, v23, v25, 3221225472, sub_100133264, &unk_1002720E0, selfCopy, resourceCopy, block[0]);
   sub_1001393A4(v24);
 }
 
-- (void)addInfoToLog:(id)a3
+- (void)addInfoToLog:(id)log
 {
-  v4 = a3;
+  logCopy = log;
   if ((_CPLSilentLogging & 1) == 0)
   {
     v5 = __CPLGenericOSLogDomain();

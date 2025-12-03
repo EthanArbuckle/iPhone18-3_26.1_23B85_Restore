@@ -6,10 +6,10 @@
 
 - (id)displayDate
 {
-  v1 = [a1 displayDateString];
-  if (v1)
+  displayDateString = [self displayDateString];
+  if (displayDateString)
   {
-    v2 = [MEMORY[0x277CBEAA8] fc_dateFromStringWithISO8601Format:v1];
+    v2 = [MEMORY[0x277CBEAA8] fc_dateFromStringWithISO8601Format:displayDateString];
   }
 
   else

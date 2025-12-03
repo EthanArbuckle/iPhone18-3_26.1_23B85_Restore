@@ -1,23 +1,23 @@
 @interface SoundPlaybackManager
 - (_TtC12searchpartyd20SoundPlaybackManager)init;
-- (void)findMyAccessoryManager:(id)a3 didDisconnectDevice:(id)a4;
-- (void)findMyAccessoryManager:(id)a3 didFailWithError:(id)a4 forDevice:(id)a5;
-- (void)findMyAccessoryManager:(id)a3 didFetchUserStats:(id)a4 fromDevice:(id)a5 withError:(id)a6;
+- (void)findMyAccessoryManager:(id)manager didDisconnectDevice:(id)device;
+- (void)findMyAccessoryManager:(id)manager didFailWithError:(id)error forDevice:(id)device;
+- (void)findMyAccessoryManager:(id)manager didFetchUserStats:(id)stats fromDevice:(id)device withError:(id)error;
 @end
 
 @implementation SoundPlaybackManager
 
-- (void)findMyAccessoryManager:(id)a3 didFetchUserStats:(id)a4 fromDevice:(id)a5 withError:(id)a6
+- (void)findMyAccessoryManager:(id)manager didFetchUserStats:(id)stats fromDevice:(id)device withError:(id)error
 {
   v8 = type metadata accessor for UUID();
   v9 = *(v8 - 8);
   v10 = *(v9 + 64);
   __chkstk_darwin(v8);
   v12 = &v17 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v13 = a5;
-  if (a4)
+  deviceCopy = device;
+  if (stats)
   {
-    v14 = a4;
+    statsCopy = stats;
     v15 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
     sub_100016590(v15, v16);
   }
@@ -27,13 +27,13 @@
   (*(v9 + 8))(v12, v8);
 }
 
-- (void)findMyAccessoryManager:(id)a3 didFailWithError:(id)a4 forDevice:(id)a5
+- (void)findMyAccessoryManager:(id)manager didFailWithError:(id)error forDevice:(id)device
 {
   v6 = sub_1000BC4D4(&qword_1016980D0, &unk_10138F3B0);
   v7 = *(*(v6 - 8) + 64);
   __chkstk_darwin(v6 - 8);
   v9 = &v12 - v8;
-  if (a5)
+  if (device)
   {
     static UUID._unconditionallyBridgeFromObjectiveC(_:)();
     v10 = type metadata accessor for UUID();
@@ -49,7 +49,7 @@
   sub_10000B3A8(v9, &qword_1016980D0, &unk_10138F3B0);
 }
 
-- (void)findMyAccessoryManager:(id)a3 didDisconnectDevice:(id)a4
+- (void)findMyAccessoryManager:(id)manager didDisconnectDevice:(id)device
 {
   v4 = type metadata accessor for UUID();
   v5 = *(v4 - 8);

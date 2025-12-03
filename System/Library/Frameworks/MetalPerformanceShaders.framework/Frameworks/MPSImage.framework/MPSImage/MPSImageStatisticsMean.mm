@@ -2,9 +2,9 @@
 - (MPSImageStatisticsMean)initWithCoder:(NSCoder *)aDecoder device:(id)device;
 - (MPSImageStatisticsMean)initWithDevice:(id)device;
 - (MTLRegion)clipRectSource;
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4;
+- (id)copyWithZone:(_NSZone *)zone device:(id)device;
 - (id)debugDescription;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)setClipRectSource:(MTLRegion *)clipRectSource;
 @end
 
@@ -74,27 +74,27 @@
   return 0;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = self;
+  selfCopy = self;
   *(&self->super.super.super.isa + *MEMORY[0x277CD7358] + 2) = 1;
   v23.receiver = self;
   v23.super_class = MPSImageStatisticsMean;
   [(MPSUnaryImageKernel *)&v23 encodeWithCoder:?];
-  v4 += 26;
-  objc_msgSend_encodeInt64_forKey_(a3, v5, *v4, @"MPSImageStatistics.clipRectSource.origin.x", v6, v7);
-  objc_msgSend_encodeInt64_forKey_(a3, v8, v4[1], @"MPSImageStatistics.clipRectSource.origin.y", v9, v10);
-  objc_msgSend_encodeInt64_forKey_(a3, v11, v4[2], @"MPSImageStatistics.clipRectSource.origin.z", v12, v13);
-  objc_msgSend_encodeInt64_forKey_(a3, v14, v4[3], @"MPSImageStatistics.clipRectSource.size.width", v15, v16);
-  objc_msgSend_encodeInt64_forKey_(a3, v17, v4[4], @"MPSImageStatistics.clipRectSource.size.height", v18, v19);
-  objc_msgSend_encodeInt64_forKey_(a3, v20, v4[5], @"MPSImageStatistics.clipRectSource.size.depth", v21, v22);
+  selfCopy += 26;
+  objc_msgSend_encodeInt64_forKey_(coder, v5, *selfCopy, @"MPSImageStatistics.clipRectSource.origin.x", v6, v7);
+  objc_msgSend_encodeInt64_forKey_(coder, v8, selfCopy[1], @"MPSImageStatistics.clipRectSource.origin.y", v9, v10);
+  objc_msgSend_encodeInt64_forKey_(coder, v11, selfCopy[2], @"MPSImageStatistics.clipRectSource.origin.z", v12, v13);
+  objc_msgSend_encodeInt64_forKey_(coder, v14, selfCopy[3], @"MPSImageStatistics.clipRectSource.size.width", v15, v16);
+  objc_msgSend_encodeInt64_forKey_(coder, v17, selfCopy[4], @"MPSImageStatistics.clipRectSource.size.height", v18, v19);
+  objc_msgSend_encodeInt64_forKey_(coder, v20, selfCopy[5], @"MPSImageStatistics.clipRectSource.size.depth", v21, v22);
 }
 
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4
+- (id)copyWithZone:(_NSZone *)zone device:(id)device
 {
   v14.receiver = self;
   v14.super_class = MPSImageStatisticsMean;
-  result = [(MPSUnaryImageKernel *)&v14 copyWithZone:a3 device:a4];
+  result = [(MPSUnaryImageKernel *)&v14 copyWithZone:zone device:device];
   if (result)
   {
     v12 = *&self->_clipRectSource.origin.z;

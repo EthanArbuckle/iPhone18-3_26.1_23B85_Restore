@@ -1,22 +1,22 @@
 @interface NDFileUtilities
-+ (BOOL)createDataVaultDirectoryAtPath:(id)a3;
-+ (id)bundleManagerPath:(id)a3;
++ (BOOL)createDataVaultDirectoryAtPath:(id)path;
++ (id)bundleManagerPath:(id)path;
 + (id)defaultDownloadDirectoryContainer;
-+ (id)defaultDownloadDirectoryForBundleID:(id)a3;
-+ (id)fetchStreamingZipModificationDate:(id)a3;
-+ (id)noFollowRealURL:(id)a3;
++ (id)defaultDownloadDirectoryForBundleID:(id)d;
++ (id)fetchStreamingZipModificationDate:(id)date;
++ (id)noFollowRealURL:(id)l;
 + (id)nsurlsessiondLaunchdPath;
 + (id)nsurlsessiondPath;
-+ (id)safeDirectoryForDownloads:(id)a3 auditToken:(id *)a4;
-+ (id)safeURLForDownload:(id)a3 auditToken:(id *)a4;
-+ (id)sessionPath:(id)a3 forBundleID:(id)a4;
-+ (void)createDirectoryAtPath:(id)a3;
-+ (void)createDirectoryAtURL:(id)a3;
-+ (void)removeItemAtPath:(id)a3;
-+ (void)removeItemAtURL:(id)a3;
-+ (void)removeStreamingZipModificationDate:(id)a3;
-+ (void)setDaemonWorkState:(BOOL)a3;
-+ (void)updateStreamingZipModificationDate:(id)a3;
++ (id)safeDirectoryForDownloads:(id)downloads auditToken:(id *)token;
++ (id)safeURLForDownload:(id)download auditToken:(id *)token;
++ (id)sessionPath:(id)path forBundleID:(id)d;
++ (void)createDirectoryAtPath:(id)path;
++ (void)createDirectoryAtURL:(id)l;
++ (void)removeItemAtPath:(id)path;
++ (void)removeItemAtURL:(id)l;
++ (void)removeStreamingZipModificationDate:(id)date;
++ (void)setDaemonWorkState:(BOOL)state;
++ (void)updateStreamingZipModificationDate:(id)date;
 @end
 
 @implementation NDFileUtilities
@@ -38,22 +38,22 @@
   return v3;
 }
 
-+ (id)safeURLForDownload:(id)a3 auditToken:(id *)a4
++ (id)safeURLForDownload:(id)download auditToken:(id *)token
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  downloadCopy = download;
+  v6 = downloadCopy;
+  if (downloadCopy)
   {
-    v7 = [v5 URLByDeletingLastPathComponent];
-    v8 = *&a4->var0[4];
-    v13[0] = *a4->var0;
+    uRLByDeletingLastPathComponent = [downloadCopy URLByDeletingLastPathComponent];
+    v8 = *&token->var0[4];
+    v13[0] = *token->var0;
     v13[1] = v8;
-    v9 = [NDFileUtilities safeDirectoryForDownloads:v7 auditToken:v13];
+    v9 = [NDFileUtilities safeDirectoryForDownloads:uRLByDeletingLastPathComponent auditToken:v13];
 
     if (v9)
     {
-      v10 = [v6 lastPathComponent];
-      v11 = [v9 URLByAppendingPathComponent:v10 isDirectory:0];
+      lastPathComponent = [v6 lastPathComponent];
+      v11 = [v9 URLByAppendingPathComponent:lastPathComponent isDirectory:0];
     }
 
     else
@@ -70,17 +70,17 @@
   return v11;
 }
 
-+ (id)safeDirectoryForDownloads:(id)a3 auditToken:(id *)a4
++ (id)safeDirectoryForDownloads:(id)downloads auditToken:(id *)token
 {
-  v5 = a3;
-  v6 = v5;
-  if (!v5)
+  downloadsCopy = downloads;
+  v6 = downloadsCopy;
+  if (!downloadsCopy)
   {
     goto LABEL_7;
   }
 
-  v7 = [v5 path];
-  v8 = [v7 hasPrefix:@"/.nofollow/"];
+  path = [downloadsCopy path];
+  v8 = [path hasPrefix:@"/.nofollow/"];
 
   v9 = v6;
   if (v8)
@@ -99,8 +99,8 @@ LABEL_7:
     }
   }
 
-  v11 = *&a4->var0[4];
-  *__str = *a4->var0;
+  v11 = *&token->var0[4];
+  *__str = *token->var0;
   v15 = v11;
   if (sandbox_check_by_audit_token())
   {
@@ -116,13 +116,13 @@ LABEL_8:
   return v12;
 }
 
-+ (id)noFollowRealURL:(id)a3
++ (id)noFollowRealURL:(id)l
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  lCopy = l;
+  v4 = lCopy;
+  if (lCopy)
   {
-    v5 = realpath_DARWIN_EXTSN([v3 fileSystemRepresentation], 0);
+    v5 = realpath_DARWIN_EXTSN([lCopy fileSystemRepresentation], 0);
     v6 = v5;
     if (v5)
     {
@@ -147,48 +147,48 @@ LABEL_7:
   return v7;
 }
 
-+ (id)fetchStreamingZipModificationDate:(id)a3
++ (id)fetchStreamingZipModificationDate:(id)date
 {
-  v3 = [a3 fileSystemRepresentation];
-  if (v3)
+  fileSystemRepresentation = [date fileSystemRepresentation];
+  if (fileSystemRepresentation)
   {
     value = 0.0;
-    v4 = getxattr(v3, "com.apple.nsurlsessiond.szmodtime", &value, 8uLL, 0, 0);
-    v3 = 0;
+    v4 = getxattr(fileSystemRepresentation, "com.apple.nsurlsessiond.szmodtime", &value, 8uLL, 0, 0);
+    fileSystemRepresentation = 0;
     if (v4 == 8)
     {
-      v3 = [NSDate dateWithTimeIntervalSinceReferenceDate:value];
+      fileSystemRepresentation = [NSDate dateWithTimeIntervalSinceReferenceDate:value];
     }
   }
 
-  return v3;
+  return fileSystemRepresentation;
 }
 
-+ (void)removeStreamingZipModificationDate:(id)a3
++ (void)removeStreamingZipModificationDate:(id)date
 {
-  v4 = a3;
-  v3 = [v4 fileSystemRepresentation];
-  if (v3)
+  dateCopy = date;
+  fileSystemRepresentation = [dateCopy fileSystemRepresentation];
+  if (fileSystemRepresentation)
   {
-    removexattr(v3, "com.apple.nsurlsessiond.szmodtime", 0);
+    removexattr(fileSystemRepresentation, "com.apple.nsurlsessiond.szmodtime", 0);
   }
 }
 
-+ (void)updateStreamingZipModificationDate:(id)a3
++ (void)updateStreamingZipModificationDate:(id)date
 {
-  v3 = a3;
+  dateCopy = date;
   +[NSDate timeIntervalSinceReferenceDate];
   value = v4;
-  v5 = [v3 fileSystemRepresentation];
-  if (v5)
+  fileSystemRepresentation = [dateCopy fileSystemRepresentation];
+  if (fileSystemRepresentation)
   {
-    setxattr(v5, "com.apple.nsurlsessiond.szmodtime", &value, 8uLL, 0, 0);
+    setxattr(fileSystemRepresentation, "com.apple.nsurlsessiond.szmodtime", &value, 8uLL, 0, 0);
   }
 }
 
-+ (void)setDaemonWorkState:(BOOL)a3
++ (void)setDaemonWorkState:(BOOL)state
 {
-  v3 = a3;
+  stateCopy = state;
   v4 = +[NDFileUtilities nsurlsessiondLaunchdPath];
   v5 = v4;
   if (!v4)
@@ -199,7 +199,7 @@ LABEL_7:
 
   v6 = [v4 stringByAppendingString:@"/nsurlsessiond.launch"];
   v7 = v6;
-  if (v3 && v6)
+  if (stateCopy && v6)
   {
     v8 = +[NSFileManager defaultManager];
     [v8 createFileAtPath:v7 contents:0 attributes:0];
@@ -208,7 +208,7 @@ LABEL_5:
     goto LABEL_7;
   }
 
-  if (!v3)
+  if (!stateCopy)
   {
     if (v6)
     {
@@ -228,11 +228,11 @@ LABEL_5:
 LABEL_7:
 }
 
-+ (id)defaultDownloadDirectoryForBundleID:(id)a3
++ (id)defaultDownloadDirectoryForBundleID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = +[NDFileUtilities defaultDownloadDirectoryContainer];
-  v5 = [v4 URLByAppendingPathComponent:v3 isDirectory:1];
+  v5 = [v4 URLByAppendingPathComponent:dCopy isDirectory:1];
 
   return v5;
 }
@@ -243,9 +243,9 @@ LABEL_7:
   v3 = [NSURL fileURLWithPath:v2];
 
   v4 = +[Daemon sharedDaemon];
-  v5 = [v4 isPrivileged];
+  isPrivileged = [v4 isPrivileged];
 
-  if (v5)
+  if (isPrivileged)
   {
     v6 = v3;
   }
@@ -270,11 +270,11 @@ LABEL_7:
       v11 = qword_1000EB210;
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
-        v13 = [v9 code];
+        code = [v9 code];
         *buf = 138412546;
         v16 = v9;
         v17 = 2048;
-        v18 = v13;
+        v18 = code;
         _os_log_error_impl(&_mh_execute_header, v11, OS_LOG_TYPE_ERROR, "Error getting caches directory: %@ [%ld]", buf, 0x16u);
       }
     }
@@ -285,12 +285,12 @@ LABEL_7:
   return v6;
 }
 
-+ (void)createDirectoryAtURL:(id)a3
++ (void)createDirectoryAtURL:(id)l
 {
-  v3 = a3;
+  lCopy = l;
   v4 = +[NSFileManager defaultManager];
   v9 = 0;
-  v5 = [v4 createDirectoryAtURL:v3 withIntermediateDirectories:1 attributes:0 error:&v9];
+  v5 = [v4 createDirectoryAtURL:lCopy withIntermediateDirectories:1 attributes:0 error:&v9];
   v6 = v9;
 
   if ((v5 & 1) == 0)
@@ -298,24 +298,24 @@ LABEL_7:
     v7 = qword_1000EB210;
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      v8 = [v6 code];
+      code = [v6 code];
       *buf = 138412802;
-      v11 = v3;
+      v11 = lCopy;
       v12 = 2112;
       v13 = v6;
       v14 = 2048;
-      v15 = v8;
+      v15 = code;
       _os_log_error_impl(&_mh_execute_header, v7, OS_LOG_TYPE_ERROR, "Couldn't create directory at %@, error: %@ [%ld]", buf, 0x20u);
     }
   }
 }
 
-+ (void)createDirectoryAtPath:(id)a3
++ (void)createDirectoryAtPath:(id)path
 {
-  v3 = a3;
+  pathCopy = path;
   v4 = +[NSFileManager defaultManager];
   v9 = 0;
-  v5 = [v4 createDirectoryAtPath:v3 withIntermediateDirectories:1 attributes:0 error:&v9];
+  v5 = [v4 createDirectoryAtPath:pathCopy withIntermediateDirectories:1 attributes:0 error:&v9];
   v6 = v9;
 
   if ((v5 & 1) == 0)
@@ -323,23 +323,23 @@ LABEL_7:
     v7 = qword_1000EB210;
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      v8 = [v6 code];
+      code = [v6 code];
       *buf = 138412802;
-      v11 = v3;
+      v11 = pathCopy;
       v12 = 2112;
       v13 = v6;
       v14 = 2048;
-      v15 = v8;
+      v15 = code;
       _os_log_error_impl(&_mh_execute_header, v7, OS_LOG_TYPE_ERROR, "Couldn't create directory at %@, error: %@ [%ld]", buf, 0x20u);
     }
   }
 }
 
-+ (BOOL)createDataVaultDirectoryAtPath:(id)a3
++ (BOOL)createDataVaultDirectoryAtPath:(id)path
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  pathCopy = path;
+  v4 = pathCopy;
+  if (!pathCopy)
   {
     v11 = qword_1000EB210;
     if (!os_log_type_enabled(qword_1000EB210, OS_LOG_TYPE_ERROR))
@@ -356,7 +356,7 @@ LABEL_28:
     goto LABEL_16;
   }
 
-  v5 = [v3 cStringUsingEncoding:4];
+  v5 = [pathCopy cStringUsingEncoding:4];
   if (!v5)
   {
     v15 = qword_1000EB210;
@@ -378,10 +378,10 @@ LABEL_28:
 
   if (!v7)
   {
-    v16 = [v4 stringByDeletingLastPathComponent];
+    stringByDeletingLastPathComponent = [v4 stringByDeletingLastPathComponent];
     v17 = +[NSFileManager defaultManager];
     v28 = 0;
-    v18 = [v17 createDirectoryAtPath:v16 withIntermediateDirectories:1 attributes:0 error:&v28];
+    v18 = [v17 createDirectoryAtPath:stringByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:&v28];
     v9 = v28;
 
     if (v18)
@@ -411,13 +411,13 @@ LABEL_30:
       v19 = qword_1000EB210;
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
       {
-        v26 = [v9 code];
+        code = [v9 code];
         *buf = 138412802;
         v30 = v4;
         v31 = 2112;
         v32 = v9;
         v33 = 2048;
-        v34 = v26;
+        v34 = code;
         v21 = "Couldn't create directory at %@, error: %@ [%ld]";
         v22 = v19;
         v23 = 32;
@@ -470,12 +470,12 @@ LABEL_25:
   return v10;
 }
 
-+ (void)removeItemAtURL:(id)a3
++ (void)removeItemAtURL:(id)l
 {
-  v3 = a3;
+  lCopy = l;
   v4 = +[NSFileManager defaultManager];
   v9 = 0;
-  v5 = [v4 removeItemAtURL:v3 error:&v9];
+  v5 = [v4 removeItemAtURL:lCopy error:&v9];
   v6 = v9;
 
   if ((v5 & 1) == 0)
@@ -483,24 +483,24 @@ LABEL_25:
     v7 = qword_1000EB210;
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      v8 = [v6 code];
+      code = [v6 code];
       *buf = 138412802;
-      v11 = v3;
+      v11 = lCopy;
       v12 = 2112;
       v13 = v6;
       v14 = 2048;
-      v15 = v8;
+      v15 = code;
       _os_log_error_impl(&_mh_execute_header, v7, OS_LOG_TYPE_ERROR, "Error removing item at url: %@, error: %@ [%ld]", buf, 0x20u);
     }
   }
 }
 
-+ (void)removeItemAtPath:(id)a3
++ (void)removeItemAtPath:(id)path
 {
-  v3 = a3;
+  pathCopy = path;
   v4 = +[NSFileManager defaultManager];
   v9 = 0;
-  v5 = [v4 removeItemAtPath:v3 error:&v9];
+  v5 = [v4 removeItemAtPath:pathCopy error:&v9];
   v6 = v9;
 
   if ((v5 & 1) == 0)
@@ -508,33 +508,33 @@ LABEL_25:
     v7 = qword_1000EB210;
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      v8 = [v6 code];
+      code = [v6 code];
       *buf = 138412802;
-      v11 = v3;
+      v11 = pathCopy;
       v12 = 2112;
       v13 = v6;
       v14 = 2048;
-      v15 = v8;
+      v15 = code;
       _os_log_error_impl(&_mh_execute_header, v7, OS_LOG_TYPE_ERROR, "Error removing item at path: %@, error: %@ [%ld]", buf, 0x20u);
     }
   }
 }
 
-+ (id)sessionPath:(id)a3 forBundleID:(id)a4
++ (id)sessionPath:(id)path forBundleID:(id)d
 {
-  v5 = a3;
-  v6 = [NDFileUtilities bundleManagerPath:a4];
-  v7 = sub_100002040(v5);
+  pathCopy = path;
+  v6 = [NDFileUtilities bundleManagerPath:d];
+  v7 = sub_100002040(pathCopy);
   v8 = [v6 stringByAppendingPathComponent:v7];
 
   return v8;
 }
 
-+ (id)bundleManagerPath:(id)a3
++ (id)bundleManagerPath:(id)path
 {
-  v3 = a3;
+  pathCopy = path;
   v4 = +[NDFileUtilities nsurlsessiondPath];
-  v5 = sub_100002040(v3);
+  v5 = sub_100002040(pathCopy);
   v6 = [v4 stringByAppendingPathComponent:v5];
 
   return v6;

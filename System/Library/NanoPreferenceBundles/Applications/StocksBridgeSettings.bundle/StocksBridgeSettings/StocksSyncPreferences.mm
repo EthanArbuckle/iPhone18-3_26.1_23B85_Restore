@@ -1,22 +1,22 @@
 @interface StocksSyncPreferences
-- (StocksSyncPreferences)initWithPersistence:(id)a3 delegate:(id)a4;
+- (StocksSyncPreferences)initWithPersistence:(id)persistence delegate:(id)delegate;
 - (StocksSyncPreferencesDelegate)delegate;
 @end
 
 @implementation StocksSyncPreferences
 
-- (StocksSyncPreferences)initWithPersistence:(id)a3 delegate:(id)a4
+- (StocksSyncPreferences)initWithPersistence:(id)persistence delegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
+  persistenceCopy = persistence;
+  delegateCopy = delegate;
   v12.receiver = self;
   v12.super_class = StocksSyncPreferences;
   v9 = [(StocksSyncPreferences *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_persistence, a3);
-    objc_storeWeak(&v10->_delegate, v8);
+    objc_storeStrong(&v9->_persistence, persistence);
+    objc_storeWeak(&v10->_delegate, delegateCopy);
   }
 
   return v10;

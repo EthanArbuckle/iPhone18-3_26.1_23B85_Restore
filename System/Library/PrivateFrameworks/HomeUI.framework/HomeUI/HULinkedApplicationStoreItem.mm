@@ -1,59 +1,59 @@
 @interface HULinkedApplicationStoreItem
 - (HULinkedApplicationStoreItem)init;
-- (HULinkedApplicationStoreItem)initWithStoreItem:(id)a3;
-- (HULinkedApplicationStoreItem)initWithStoreItem:(id)a3 associatedAccessories:(id)a4;
-- (id)_imageForSize:(CGSize)a3 fromArtwork:(id)a4;
-- (id)_loadStoreIconWithArtwork:(id)a3;
-- (id)_subclass_updateWithOptions:(id)a3;
+- (HULinkedApplicationStoreItem)initWithStoreItem:(id)item;
+- (HULinkedApplicationStoreItem)initWithStoreItem:(id)item associatedAccessories:(id)accessories;
+- (id)_imageForSize:(CGSize)size fromArtwork:(id)artwork;
+- (id)_loadStoreIconWithArtwork:(id)artwork;
+- (id)_subclass_updateWithOptions:(id)options;
 - (id)bundleIdentifier;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation HULinkedApplicationStoreItem
 
 - (HULinkedApplicationStoreItem)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithStoreItem_);
-  [v4 handleFailureInMethod:a2 object:self file:@"HULinkedApplicationItem.m" lineNumber:222 description:{@"%s is unavailable; use %@ instead", "-[HULinkedApplicationStoreItem init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HULinkedApplicationItem.m" lineNumber:222 description:{@"%s is unavailable; use %@ instead", "-[HULinkedApplicationStoreItem init]", v5}];
 
   return 0;
 }
 
-- (HULinkedApplicationStoreItem)initWithStoreItem:(id)a3
+- (HULinkedApplicationStoreItem)initWithStoreItem:(id)item
 {
-  v5 = a3;
+  itemCopy = item;
   v9.receiver = self;
   v9.super_class = HULinkedApplicationStoreItem;
   v6 = [(HULinkedApplicationItem *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_storeItem, a3);
+    objc_storeStrong(&v6->_storeItem, item);
   }
 
   return v7;
 }
 
-- (HULinkedApplicationStoreItem)initWithStoreItem:(id)a3 associatedAccessories:(id)a4
+- (HULinkedApplicationStoreItem)initWithStoreItem:(id)item associatedAccessories:(id)accessories
 {
-  v6 = a4;
-  v7 = [(HULinkedApplicationStoreItem *)self initWithStoreItem:a3];
+  accessoriesCopy = accessories;
+  v7 = [(HULinkedApplicationStoreItem *)self initWithStoreItem:item];
   v8 = v7;
   if (v7)
   {
-    [(HULinkedApplicationItem *)v7 setAssociatedAccessories:v6];
+    [(HULinkedApplicationItem *)v7 setAssociatedAccessories:accessoriesCopy];
   }
 
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(HULinkedApplicationStoreItem *)self storeItem];
-  v6 = [(HULinkedApplicationItem *)self associatedAccessories];
-  v7 = [v4 initWithStoreItem:v5 associatedAccessories:v6];
+  storeItem = [(HULinkedApplicationStoreItem *)self storeItem];
+  associatedAccessories = [(HULinkedApplicationItem *)self associatedAccessories];
+  v7 = [v4 initWithStoreItem:storeItem associatedAccessories:associatedAccessories];
 
   [v7 copyLatestResultsFromItem:self];
   return v7;
@@ -61,19 +61,19 @@
 
 - (id)bundleIdentifier
 {
-  v2 = [(HULinkedApplicationStoreItem *)self storeItem];
-  v3 = [v2 bundleIdentifier];
+  storeItem = [(HULinkedApplicationStoreItem *)self storeItem];
+  bundleIdentifier = [storeItem bundleIdentifier];
 
-  return v3;
+  return bundleIdentifier;
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   objc_initWeak(&location, self);
   v10.receiver = self;
   v10.super_class = HULinkedApplicationStoreItem;
-  v5 = [(HULinkedApplicationItem *)&v10 _subclass_updateWithOptions:v4];
+  v5 = [(HULinkedApplicationItem *)&v10 _subclass_updateWithOptions:optionsCopy];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __60__HULinkedApplicationStoreItem__subclass_updateWithOptions___block_invoke;
@@ -218,16 +218,16 @@ id __60__HULinkedApplicationStoreItem__subclass_updateWithOptions___block_invoke
   return v6;
 }
 
-- (id)_loadStoreIconWithArtwork:(id)a3
+- (id)_loadStoreIconWithArtwork:(id)artwork
 {
   v4 = MEMORY[0x277D759A0];
-  v5 = a3;
-  v6 = [v4 mainScreen];
-  [v6 scale];
+  artworkCopy = artwork;
+  mainScreen = [v4 mainScreen];
+  [mainScreen scale];
   v8 = v7;
 
   v9 = [(HULinkedApplicationItem *)self _iconVariantForScale:v8];
-  v10 = [(HULinkedApplicationStoreItem *)self _imageForSize:v5 fromArtwork:60.0, 60.0];
+  v10 = [(HULinkedApplicationStoreItem *)self _imageForSize:artworkCopy fromArtwork:60.0, 60.0];
 
   v11 = [v10 URLWithHeight:(v8 * 60.0) width:(v8 * 60.0) cropStyle:*MEMORY[0x277CEE1D0] format:*MEMORY[0x277CEE1E0]];
   v12 = v11;
@@ -242,10 +242,10 @@ id __60__HULinkedApplicationStoreItem__subclass_updateWithOptions___block_invoke
     v25 = v9;
     v13 = _Block_copy(aBlock);
     v14 = MEMORY[0x277D2C900];
-    v15 = [MEMORY[0x277D2C938] globalAsyncScheduler];
-    v16 = [v14 lazyFutureWithBlock:v13 scheduler:v15];
-    v17 = [MEMORY[0x277D2C938] mainThreadScheduler];
-    v18 = [v16 reschedule:v17];
+    globalAsyncScheduler = [MEMORY[0x277D2C938] globalAsyncScheduler];
+    v16 = [v14 lazyFutureWithBlock:v13 scheduler:globalAsyncScheduler];
+    mainThreadScheduler = [MEMORY[0x277D2C938] mainThreadScheduler];
+    v18 = [v16 reschedule:mainThreadScheduler];
   }
 
   else
@@ -308,17 +308,17 @@ void __58__HULinkedApplicationStoreItem__loadStoreIconWithArtwork___block_invoke
   }
 }
 
-- (id)_imageForSize:(CGSize)a3 fromArtwork:(id)a4
+- (id)_imageForSize:(CGSize)size fromArtwork:(id)artwork
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v30 = *MEMORY[0x277D85DE8];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v6 = a4;
-  v7 = [v6 countByEnumeratingWithState:&v25 objects:v29 count:16];
+  artworkCopy = artwork;
+  v7 = [artworkCopy countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v7)
   {
     v8 = v7;
@@ -332,7 +332,7 @@ void __58__HULinkedApplicationStoreItem__loadStoreIconWithArtwork___block_invoke
       {
         if (*v26 != v12)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(artworkCopy);
         }
 
         v14 = *(*(&v25 + 1) + 8 * i);
@@ -384,7 +384,7 @@ LABEL_21:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v25 objects:v29 count:16];
+      v8 = [artworkCopy countByEnumeratingWithState:&v25 objects:v29 count:16];
       if (v8)
       {
         continue;

@@ -1,26 +1,26 @@
 @interface FigTimePairObj
-+ (id)pairWithPair:(PC_CMTimePair *)a3;
-- (BOOL)isEqual:(id)a3;
-- (FigTimePairObj)initWithCoder:(id)a3;
-- (FigTimePairObj)initWithFigTimePair:(PC_CMTimePair *)a3;
-- (FigTimePairObj)initWithFirst:(id *)a3 Second:(id *)a4;
++ (id)pairWithPair:(PC_CMTimePair *)pair;
+- (BOOL)isEqual:(id)equal;
+- (FigTimePairObj)initWithCoder:(id)coder;
+- (FigTimePairObj)initWithFigTimePair:(PC_CMTimePair *)pair;
+- (FigTimePairObj)initWithFirst:(id *)first Second:(id *)second;
 - (PC_CMTimePair)pair;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)getValue:(PC_CMTimePair *)a3;
-- (void)setFirst:(id *)a3;
-- (void)setPair:(PC_CMTimePair *)a3;
-- (void)setSecond:(id *)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)getValue:(PC_CMTimePair *)value;
+- (void)setFirst:(id *)first;
+- (void)setPair:(PC_CMTimePair *)pair;
+- (void)setSecond:(id *)second;
 @end
 
 @implementation FigTimePairObj
 
-- (FigTimePairObj)initWithFirst:(id *)a3 Second:(id *)a4
+- (FigTimePairObj)initWithFirst:(id *)first Second:(id *)second
 {
-  *v7 = a3->var3;
-  v4 = *&a3->var0;
-  *&v7[8] = *a4;
+  *v7 = first->var3;
+  v4 = *&first->var0;
+  *&v7[8] = *second;
   v6[0] = v4;
   v6[1] = *v7;
   v6[2] = *&v7[16];
@@ -28,16 +28,16 @@
   return [(FigTimePairObj *)self initWithFigTimePair:v6];
 }
 
-- (FigTimePairObj)initWithFigTimePair:(PC_CMTimePair *)a3
+- (FigTimePairObj)initWithFigTimePair:(PC_CMTimePair *)pair
 {
   v7.receiver = self;
   v7.super_class = FigTimePairObj;
   result = [(FigTimePairObj *)&v7 init];
   if (result)
   {
-    v5 = *&a3->first.value;
-    v6 = *&a3->first.epoch;
-    *&result->_pair.second.timescale = *&a3->second.timescale;
+    v5 = *&pair->first.value;
+    v6 = *&pair->first.epoch;
+    *&result->_pair.second.timescale = *&pair->second.timescale;
     *&result->_pair.first.epoch = v6;
     *&result->_pair.first.value = v5;
   }
@@ -45,9 +45,9 @@
   return result;
 }
 
-- (FigTimePairObj)initWithCoder:(id)a3
+- (FigTimePairObj)initWithCoder:(id)coder
 {
-  v5 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"first"];
+  v5 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"first"];
   if (v5)
   {
     [v5 time];
@@ -61,7 +61,7 @@
 
   v11 = v8;
   *v12 = v9;
-  v6 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"second"];
+  v6 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"second"];
   if (v6)
   {
     [v6 time];
@@ -81,19 +81,19 @@
   return [(FigTimePairObj *)self initWithFigTimePair:&v8];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5 = [FigTimeObj alloc];
   first = self->_pair.first;
-  [a3 encodeObject:-[FigTimeObj initWithFigTime:](v5 forKey:{"initWithFigTime:", &first), @"first"}];
+  [coder encodeObject:-[FigTimeObj initWithFigTime:](v5 forKey:{"initWithFigTime:", &first), @"first"}];
   v6 = [FigTimeObj alloc];
   first = self->_pair.second;
-  [a3 encodeObject:-[FigTimeObj initWithFigTime:](v6 forKey:{"initWithFigTime:", &first), @"second"}];
+  [coder encodeObject:-[FigTimeObj initWithFigTime:](v6 forKey:{"initWithFigTime:", &first), @"second"}];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [FigTimePairObj allocWithZone:a3];
+  v4 = [FigTimePairObj allocWithZone:zone];
   v5 = *&self->_pair.first.epoch;
   v7[0] = *&self->_pair.first.value;
   v7[1] = v5;
@@ -110,41 +110,41 @@
   return self;
 }
 
-- (void)setFirst:(id *)a3
+- (void)setFirst:(id *)first
 {
-  v3 = *&a3->var0;
-  self->_pair.first.epoch = a3->var3;
+  v3 = *&first->var0;
+  self->_pair.first.epoch = first->var3;
   *&self->_pair.first.value = v3;
 }
 
-- (void)setSecond:(id *)a3
+- (void)setSecond:(id *)second
 {
-  v3 = *&a3->var0;
-  self->_pair.second.epoch = a3->var3;
+  v3 = *&second->var0;
+  self->_pair.second.epoch = second->var3;
   *&self->_pair.second.value = v3;
 }
 
-- (void)setPair:(PC_CMTimePair *)a3
+- (void)setPair:(PC_CMTimePair *)pair
 {
-  v3 = *&a3->first.value;
-  v4 = *&a3->first.epoch;
-  *&self->_pair.second.timescale = *&a3->second.timescale;
+  v3 = *&pair->first.value;
+  v4 = *&pair->first.epoch;
+  *&self->_pair.second.timescale = *&pair->second.timescale;
   *&self->_pair.first.epoch = v4;
   *&self->_pair.first.value = v3;
 }
 
-- (void)getValue:(PC_CMTimePair *)a3
+- (void)getValue:(PC_CMTimePair *)value
 {
   v3 = *&self->_pair.first.value;
   v4 = *&self->_pair.second.timescale;
-  *&a3->first.epoch = *&self->_pair.first.epoch;
-  *&a3->second.timescale = v4;
-  *&a3->first.value = v3;
+  *&value->first.epoch = *&self->_pair.first.epoch;
+  *&value->second.timescale = v4;
+  *&value->first.value = v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
@@ -158,13 +158,13 @@
     v17 = *&self->_pair.first.value;
     *v18 = v7;
     *&v18[16] = *&self->_pair.second.timescale;
-    v8 = *(a3 + 24);
-    v15 = *(a3 + 8);
+    v8 = *(equal + 24);
+    v15 = *(equal + 8);
     *v16 = v8;
-    *&v16[16] = *(a3 + 40);
+    *&v16[16] = *(equal + 40);
     v13 = *&self->_pair.first.value;
     *v14 = self->_pair.first.epoch;
-    first = *(a3 + 8);
+    first = *(equal + 8);
     if (!CMTimeCompare(&v13, &first))
     {
       v13 = *&v18[8];
@@ -179,9 +179,9 @@
   else
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && !strcmp([a3 objCType], "{PC_CMTimePair={?=qiIq}{?=qiIq}}"))
+    if ((objc_opt_isKindOfClass() & 1) != 0 && !strcmp([equal objCType], "{PC_CMTimePair={?=qiIq}{?=qiIq}}"))
     {
-      [a3 getValue:&v17];
+      [equal getValue:&v17];
       v12 = *&self->_pair.first.epoch;
       v15 = *&self->_pair.first.value;
       *v16 = v12;
@@ -213,13 +213,13 @@
   return GetCMTimeHash(&v3);
 }
 
-+ (id)pairWithPair:(PC_CMTimePair *)a3
++ (id)pairWithPair:(PC_CMTimePair *)pair
 {
   v4 = [FigTimePairObj alloc];
-  v5 = *&a3->first.epoch;
-  v7[0] = *&a3->first.value;
+  v5 = *&pair->first.epoch;
+  v7[0] = *&pair->first.value;
   v7[1] = v5;
-  v7[2] = *&a3->second.timescale;
+  v7[2] = *&pair->second.timescale;
   return [(FigTimePairObj *)v4 initWithFigTimePair:v7];
 }
 

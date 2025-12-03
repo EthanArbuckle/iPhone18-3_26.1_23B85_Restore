@@ -1,7 +1,7 @@
 @interface NULinkedContentManagerFactory
 - (NULinkedContentManagerFactory)init;
-- (id)createLinkedContentManagerForArticle:(id)a3;
-- (void)addLinkedContentProviderFactory:(id)a3;
+- (id)createLinkedContentManagerForArticle:(id)article;
+- (void)addLinkedContentProviderFactory:(id)factory;
 @end
 
 @implementation NULinkedContentManagerFactory
@@ -13,27 +13,27 @@
   v2 = [(NULinkedContentManagerFactory *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     factories = v2->_factories;
-    v2->_factories = v3;
+    v2->_factories = array;
   }
 
   return v2;
 }
 
-- (void)addLinkedContentProviderFactory:(id)a3
+- (void)addLinkedContentProviderFactory:(id)factory
 {
-  if (a3)
+  if (factory)
   {
     [(NSMutableArray *)self->_factories addObject:?];
   }
 }
 
-- (id)createLinkedContentManagerForArticle:(id)a3
+- (id)createLinkedContentManagerForArticle:(id)article
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] array];
+  articleCopy = article;
+  array = [MEMORY[0x277CBEB18] array];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -53,8 +53,8 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v15 + 1) + 8 * i) createLinkedContentProviderForArticle:v4];
-        [v5 addObject:v11];
+        v11 = [*(*(&v15 + 1) + 8 * i) createLinkedContentProviderForArticle:articleCopy];
+        [array addObject:v11];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -63,7 +63,7 @@
     while (v8);
   }
 
-  v12 = [[NULinkedContentManager alloc] initWithLinkedContentProviders:v5];
+  v12 = [[NULinkedContentManager alloc] initWithLinkedContentProviders:array];
   v13 = *MEMORY[0x277D85DE8];
 
   return v12;

@@ -2,52 +2,52 @@
 - (BOOL)_usePMUI;
 - (LAContext)authenticatedContext;
 - (NSString)searchQuery;
-- (SFAccountPickerViewController)initWithConfiguration:(id)a3 completionHandler:(id)a4;
+- (SFAccountPickerViewController)initWithConfiguration:(id)configuration completionHandler:(id)handler;
 - (SFAccountPickerViewControllerSystemAutoFillDelegate)systemAutoFillDelegate;
-- (void)_callCompletionHandlerIfNeeded:(id)a3 passwordToFill:(id)a4;
-- (void)_dismissWithAnimation:(BOOL)a3 accounts:(id)a4 passwordToFill:(id)a5;
-- (void)_viewControllerDismissalTransitionDidEnd:(id)a3;
-- (void)accountPickerTableViewController:(id)a3 fillPasswordForSavedAccount:(id)a4;
-- (void)accountPickerTableViewController:(id)a3 fillUsernameForSavedAccount:(id)a4;
-- (void)accountPickerTableViewController:(id)a3 fillVerificationCode:(id)a4;
-- (void)accountPickerTableViewController:(id)a3 fillVerificationCodeForSavedAccount:(id)a4;
-- (void)buildMenuWithBuilder:(id)a3;
-- (void)setAuthenticatedContext:(id)a3;
-- (void)setSearchQuery:(id)a3;
+- (void)_callCompletionHandlerIfNeeded:(id)needed passwordToFill:(id)fill;
+- (void)_dismissWithAnimation:(BOOL)animation accounts:(id)accounts passwordToFill:(id)fill;
+- (void)_viewControllerDismissalTransitionDidEnd:(id)end;
+- (void)accountPickerTableViewController:(id)controller fillPasswordForSavedAccount:(id)account;
+- (void)accountPickerTableViewController:(id)controller fillUsernameForSavedAccount:(id)account;
+- (void)accountPickerTableViewController:(id)controller fillVerificationCode:(id)code;
+- (void)accountPickerTableViewController:(id)controller fillVerificationCodeForSavedAccount:(id)account;
+- (void)buildMenuWithBuilder:(id)builder;
+- (void)setAuthenticatedContext:(id)context;
+- (void)setSearchQuery:(id)query;
 @end
 
 @implementation SFAccountPickerViewController
 
 - (BOOL)_usePMUI
 {
-  v2 = [MEMORY[0x1E695E000] pm_defaults];
-  v3 = [v2 safari_BOOLForKey:*MEMORY[0x1E69C8D98] defaultValue:1];
+  pm_defaults = [MEMORY[0x1E695E000] pm_defaults];
+  v3 = [pm_defaults safari_BOOLForKey:*MEMORY[0x1E69C8D98] defaultValue:1];
 
   return v3;
 }
 
-- (SFAccountPickerViewController)initWithConfiguration:(id)a3 completionHandler:(id)a4
+- (SFAccountPickerViewController)initWithConfiguration:(id)configuration completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  configurationCopy = configuration;
+  handlerCopy = handler;
   v68.receiver = self;
   v68.super_class = SFAccountPickerViewController;
   v9 = [(SFAccountPickerViewController *)&v68 initWithNibName:0 bundle:0];
   if (v9)
   {
     objc_initWeak(&location, v9);
-    objc_storeStrong(&v9->_configuration, a3);
-    v55 = v8;
-    v10 = _Block_copy(v8);
+    objc_storeStrong(&v9->_configuration, configuration);
+    v55 = handlerCopy;
+    v10 = _Block_copy(handlerCopy);
     completionHandler = v9->_completionHandler;
     v9->_completionHandler = v10;
 
     if ([(SFAccountPickerViewController *)v9 _usePMUI])
     {
-      v41 = [v7 isForFillingIndividualAccountFields];
-      v12 = [v7 shouldShowAutoFillPasskeys];
+      isForFillingIndividualAccountFields = [configurationCopy isForFillingIndividualAccountFields];
+      shouldShowAutoFillPasskeys = [configurationCopy shouldShowAutoFillPasskeys];
       v13 = 3;
-      if (!v12)
+      if (!shouldShowAutoFillPasskeys)
       {
         v13 = 1;
       }
@@ -74,19 +74,19 @@
       v62 = v15;
       v50 = _Block_copy(v61);
       v39 = objc_alloc(MEMORY[0x1E69BC7C0]);
-      v53 = [v7 appID];
-      v49 = [v7 prompt];
-      v48 = [v7 promptWhenPasskeysAreAvailable];
-      v47 = [v7 serviceNameHintStrings];
-      v46 = [v7 domainHintStrings];
-      v45 = [MEMORY[0x1E69C8A38] sharedStore];
+      appID = [configurationCopy appID];
+      prompt = [configurationCopy prompt];
+      promptWhenPasskeysAreAvailable = [configurationCopy promptWhenPasskeysAreAvailable];
+      serviceNameHintStrings = [configurationCopy serviceNameHintStrings];
+      domainHintStrings = [configurationCopy domainHintStrings];
+      mEMORY[0x1E69C8A38] = [MEMORY[0x1E69C8A38] sharedStore];
       v54 = +[_SFFormDataController sharedController];
-      v44 = [v54 autoFillQuirksManager];
-      v38 = [v7 shouldShowAutoFillPasskeys];
-      v43 = [v7 currentWebFrameIdentifierForAutoFillPasskeys];
-      if (v7)
+      autoFillQuirksManager = [v54 autoFillQuirksManager];
+      shouldShowAutoFillPasskeys2 = [configurationCopy shouldShowAutoFillPasskeys];
+      currentWebFrameIdentifierForAutoFillPasskeys = [configurationCopy currentWebFrameIdentifierForAutoFillPasskeys];
+      if (configurationCopy)
       {
-        [v7 connectedAppAuditToken];
+        [configurationCopy connectedAppAuditToken];
       }
 
       else
@@ -94,20 +94,20 @@
         memset(v60, 0, sizeof(v60));
       }
 
-      v37 = [v7 isConnectedAppAWebBrowser];
-      v42 = [v7 initialSearchQuery];
-      v18 = [v7 savedAccountToInitiallyShowDetailsFor];
-      v19 = [v7 shouldAllowAddingNewPasswords];
-      v20 = [v7 addPasswordSuggestedDomain];
-      v21 = [v7 addPasswordSuggestedLabel];
-      v22 = [v7 bundleIDForFallbackIcon];
-      v23 = [v7 savedAccountContext];
-      v24 = [v7 savedAccountForHistorySection];
-      LOBYTE(v36) = v19;
-      LOBYTE(v35) = v37;
-      LOBYTE(v34) = v38;
+      isConnectedAppAWebBrowser = [configurationCopy isConnectedAppAWebBrowser];
+      initialSearchQuery = [configurationCopy initialSearchQuery];
+      savedAccountToInitiallyShowDetailsFor = [configurationCopy savedAccountToInitiallyShowDetailsFor];
+      shouldAllowAddingNewPasswords = [configurationCopy shouldAllowAddingNewPasswords];
+      addPasswordSuggestedDomain = [configurationCopy addPasswordSuggestedDomain];
+      addPasswordSuggestedLabel = [configurationCopy addPasswordSuggestedLabel];
+      bundleIDForFallbackIcon = [configurationCopy bundleIDForFallbackIcon];
+      savedAccountContext = [configurationCopy savedAccountContext];
+      savedAccountForHistorySection = [configurationCopy savedAccountForHistorySection];
+      LOBYTE(v36) = shouldAllowAddingNewPasswords;
+      LOBYTE(v35) = isConnectedAppAWebBrowser;
+      LOBYTE(v34) = shouldShowAutoFillPasskeys2;
       LOBYTE(v33) = 1;
-      v25 = [v39 initWithPersona:v41 appID:v53 credentialTypes:v40 promptString:v49 promptStringWhenPasskeysAreAvailable:v48 serviceNameHintStrings:v47 domainNameHintStrings:v46 bypassLockoutPolicy:v33 savedAccountStore:v45 autoFillQuirksManager:v44 shouldShowAutoFillPasskeys:v34 currentWebFrameIdentifierForAutoFillPasskeys:v43 connectedAppAuditToken:v60 isConnectedAppAWebBrowser:v35 initialSearchQuery:v42 savedAccountToInitiallyShowDetailsFor:v18 shouldAllowAddingNewPasswords:v36 suggestedDomainForNewAccount:v20 localizedHostAppNameForNewAccount:v21 bundleIDForFallbackIconForNewAccount:v22 authenticatedContext:0 savedAccountContext:v23 savedAccountForHistorySection:v24 didSelectHistoryItem:v50 didSelectAccountHandler:v52 didSelectTextToInsertHandler:v51];
+      v25 = [v39 initWithPersona:isForFillingIndividualAccountFields appID:appID credentialTypes:v40 promptString:prompt promptStringWhenPasskeysAreAvailable:promptWhenPasskeysAreAvailable serviceNameHintStrings:serviceNameHintStrings domainNameHintStrings:domainHintStrings bypassLockoutPolicy:v33 savedAccountStore:mEMORY[0x1E69C8A38] autoFillQuirksManager:autoFillQuirksManager shouldShowAutoFillPasskeys:v34 currentWebFrameIdentifierForAutoFillPasskeys:currentWebFrameIdentifierForAutoFillPasskeys connectedAppAuditToken:v60 isConnectedAppAWebBrowser:v35 initialSearchQuery:initialSearchQuery savedAccountToInitiallyShowDetailsFor:savedAccountToInitiallyShowDetailsFor shouldAllowAddingNewPasswords:v36 suggestedDomainForNewAccount:addPasswordSuggestedDomain localizedHostAppNameForNewAccount:addPasswordSuggestedLabel bundleIDForFallbackIconForNewAccount:bundleIDForFallbackIcon authenticatedContext:0 savedAccountContext:savedAccountContext savedAccountForHistorySection:savedAccountForHistorySection didSelectHistoryItem:v50 didSelectAccountHandler:v52 didSelectTextToInsertHandler:v51];
       autoFillPocketViewController = v15->_autoFillPocketViewController;
       v15->_autoFillPocketViewController = v25;
 
@@ -119,7 +119,7 @@
 
     else
     {
-      v16 = [[_SFAccountPickerTableViewController alloc] initWithConfiguration:v7];
+      v16 = [[_SFAccountPickerTableViewController alloc] initWithConfiguration:configurationCopy];
       accountPickerTableViewController = v9->_accountPickerTableViewController;
       v9->_accountPickerTableViewController = v16;
 
@@ -143,14 +143,14 @@
     callObserver = v9->_callObserver;
     v9->_callObserver = v28;
 
-    v30 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v30 addObserver:v9 selector:sel__viewControllerDismissalTransitionDidEnd_ name:*MEMORY[0x1E69DE2C8] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v9 selector:sel__viewControllerDismissalTransitionDidEnd_ name:*MEMORY[0x1E69DE2C8] object:0];
 
     v31 = v9;
     objc_destroyWeak(&v57);
     objc_destroyWeak(&v59);
     objc_destroyWeak(&location);
-    v8 = v55;
+    handlerCopy = v55;
   }
 
   return v9;
@@ -226,59 +226,59 @@ void __73__SFAccountPickerViewController_initWithConfiguration_completionHandler
   [WeakRetained _dismiss];
 }
 
-- (void)_callCompletionHandlerIfNeeded:(id)a3 passwordToFill:(id)a4
+- (void)_callCompletionHandlerIfNeeded:(id)needed passwordToFill:(id)fill
 {
   completionHandler = self->_completionHandler;
   if (completionHandler)
   {
-    completionHandler[2](completionHandler, a3, a4);
+    completionHandler[2](completionHandler, needed, fill);
     v6 = self->_completionHandler;
     self->_completionHandler = 0;
   }
 }
 
-- (void)_viewControllerDismissalTransitionDidEnd:(id)a3
+- (void)_viewControllerDismissalTransitionDidEnd:(id)end
 {
-  v4 = a3;
+  endCopy = end;
   if (!self->_isDismissingSelf)
   {
-    v6 = v4;
-    v5 = [(SFAccountPickerViewController *)self _sf_isPresentationControllerDismissalTransitionDidEndNotification:v4];
-    v4 = v6;
+    v6 = endCopy;
+    v5 = [(SFAccountPickerViewController *)self _sf_isPresentationControllerDismissalTransitionDidEndNotification:endCopy];
+    endCopy = v6;
     if (v5)
     {
       [(SFAccountPickerViewController *)self _callCompletionHandlerIfNeeded:0 passwordToFill:0];
-      v4 = v6;
+      endCopy = v6;
     }
   }
 }
 
-- (void)_dismissWithAnimation:(BOOL)a3 accounts:(id)a4 passwordToFill:(id)a5
+- (void)_dismissWithAnimation:(BOOL)animation accounts:(id)accounts passwordToFill:(id)fill
 {
-  v6 = a3;
-  v8 = a4;
-  v9 = a5;
+  animationCopy = animation;
+  accountsCopy = accounts;
+  fillCopy = fill;
   self->_isDismissingSelf = 1;
-  v10 = [(SFAccountPickerViewController *)self presentingViewController];
+  presentingViewController = [(SFAccountPickerViewController *)self presentingViewController];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __79__SFAccountPickerViewController__dismissWithAnimation_accounts_passwordToFill___block_invoke;
   v13[3] = &unk_1E848F6B0;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v11 = v9;
-  v12 = v8;
-  [v10 dismissViewControllerAnimated:v6 completion:v13];
+  v14 = accountsCopy;
+  v15 = fillCopy;
+  v11 = fillCopy;
+  v12 = accountsCopy;
+  [presentingViewController dismissViewControllerAnimated:animationCopy completion:v13];
 }
 
-- (void)buildMenuWithBuilder:(id)a3
+- (void)buildMenuWithBuilder:(id)builder
 {
   v4.receiver = self;
   v4.super_class = SFAccountPickerViewController;
-  v3 = a3;
-  [(SFAccountPickerViewController *)&v4 buildMenuWithBuilder:v3];
-  [v3 replaceChildrenOfMenuForIdentifier:*MEMORY[0x1E69DE0C8] fromChildrenBlock:{&__block_literal_global_62, v4.receiver, v4.super_class}];
+  builderCopy = builder;
+  [(SFAccountPickerViewController *)&v4 buildMenuWithBuilder:builderCopy];
+  [builderCopy replaceChildrenOfMenuForIdentifier:*MEMORY[0x1E69DE0C8] fromChildrenBlock:{&__block_literal_global_62, v4.receiver, v4.super_class}];
 }
 
 BOOL __54__SFAccountPickerViewController_buildMenuWithBuilder___block_invoke_2(uint64_t a1, void *a2)
@@ -289,98 +289,98 @@ BOOL __54__SFAccountPickerViewController_buildMenuWithBuilder___block_invoke_2(u
   return v3;
 }
 
-- (void)accountPickerTableViewController:(id)a3 fillUsernameForSavedAccount:(id)a4
+- (void)accountPickerTableViewController:(id)controller fillUsernameForSavedAccount:(id)account
 {
-  v6 = a4;
+  accountCopy = account;
   WeakRetained = objc_loadWeakRetained(&self->_systemAutoFillDelegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained accountPickerViewController:self fillUsernameForSavedAccount:v6];
+    [WeakRetained accountPickerViewController:self fillUsernameForSavedAccount:accountCopy];
   }
 }
 
-- (void)accountPickerTableViewController:(id)a3 fillPasswordForSavedAccount:(id)a4
+- (void)accountPickerTableViewController:(id)controller fillPasswordForSavedAccount:(id)account
 {
-  v6 = a4;
+  accountCopy = account;
   WeakRetained = objc_loadWeakRetained(&self->_systemAutoFillDelegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained accountPickerViewController:self fillPasswordForSavedAccount:v6];
+    [WeakRetained accountPickerViewController:self fillPasswordForSavedAccount:accountCopy];
   }
 }
 
-- (void)accountPickerTableViewController:(id)a3 fillVerificationCodeForSavedAccount:(id)a4
+- (void)accountPickerTableViewController:(id)controller fillVerificationCodeForSavedAccount:(id)account
 {
-  v6 = a4;
+  accountCopy = account;
   WeakRetained = objc_loadWeakRetained(&self->_systemAutoFillDelegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained accountPickerViewController:self fillVerificationCodeForSavedAccount:v6];
+    [WeakRetained accountPickerViewController:self fillVerificationCodeForSavedAccount:accountCopy];
   }
 }
 
-- (void)accountPickerTableViewController:(id)a3 fillVerificationCode:(id)a4
+- (void)accountPickerTableViewController:(id)controller fillVerificationCode:(id)code
 {
-  v6 = a4;
+  codeCopy = code;
   WeakRetained = objc_loadWeakRetained(&self->_systemAutoFillDelegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained accountPickerViewController:self fillVerificationCode:v6];
+    [WeakRetained accountPickerViewController:self fillVerificationCode:codeCopy];
   }
 }
 
 - (LAContext)authenticatedContext
 {
-  v3 = [(SFAccountPickerViewController *)self _usePMUI];
+  _usePMUI = [(SFAccountPickerViewController *)self _usePMUI];
   v4 = &OBJC_IVAR___SFAccountPickerViewController__accountPickerTableViewController;
-  if (v3)
+  if (_usePMUI)
   {
     v4 = &OBJC_IVAR___SFAccountPickerViewController__autoFillPocketViewController;
   }
 
-  v5 = [*(&self->super.super.super.super.isa + *v4) authenticatedContext];
+  authenticatedContext = [*(&self->super.super.super.super.isa + *v4) authenticatedContext];
 
-  return v5;
+  return authenticatedContext;
 }
 
-- (void)setAuthenticatedContext:(id)a3
+- (void)setAuthenticatedContext:(id)context
 {
-  v6 = a3;
-  v4 = [(SFAccountPickerViewController *)self _usePMUI];
+  contextCopy = context;
+  _usePMUI = [(SFAccountPickerViewController *)self _usePMUI];
   v5 = &OBJC_IVAR___SFAccountPickerViewController__accountPickerTableViewController;
-  if (v4)
+  if (_usePMUI)
   {
     v5 = &OBJC_IVAR___SFAccountPickerViewController__autoFillPocketViewController;
   }
 
-  [*(&self->super.super.super.super.isa + *v5) setAuthenticatedContext:v6];
+  [*(&self->super.super.super.super.isa + *v5) setAuthenticatedContext:contextCopy];
 }
 
 - (NSString)searchQuery
 {
-  v3 = [(SFAccountPickerViewController *)self _usePMUI];
+  _usePMUI = [(SFAccountPickerViewController *)self _usePMUI];
   v4 = &OBJC_IVAR___SFAccountPickerViewController__accountPickerTableViewController;
-  if (v3)
+  if (_usePMUI)
   {
     v4 = &OBJC_IVAR___SFAccountPickerViewController__autoFillPocketViewController;
   }
 
-  v5 = [*(&self->super.super.super.super.isa + *v4) searchQuery];
+  searchQuery = [*(&self->super.super.super.super.isa + *v4) searchQuery];
 
-  return v5;
+  return searchQuery;
 }
 
-- (void)setSearchQuery:(id)a3
+- (void)setSearchQuery:(id)query
 {
-  v6 = a3;
-  v4 = [(SFAccountPickerViewController *)self _usePMUI];
+  queryCopy = query;
+  _usePMUI = [(SFAccountPickerViewController *)self _usePMUI];
   v5 = &OBJC_IVAR___SFAccountPickerViewController__accountPickerTableViewController;
-  if (v4)
+  if (_usePMUI)
   {
     v5 = &OBJC_IVAR___SFAccountPickerViewController__autoFillPocketViewController;
   }
 
-  [*(&self->super.super.super.super.isa + *v5) setSearchQuery:v6];
+  [*(&self->super.super.super.super.isa + *v5) setSearchQuery:queryCopy];
 }
 
 - (SFAccountPickerViewControllerSystemAutoFillDelegate)systemAutoFillDelegate

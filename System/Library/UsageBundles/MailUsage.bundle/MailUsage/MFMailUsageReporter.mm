@@ -1,18 +1,18 @@
 @interface MFMailUsageReporter
-- (Class)usageDetailControllerClassForUsageBundleApp:(id)a3;
-- (float)sizeForCategory:(id)a3;
+- (Class)usageDetailControllerClassForUsageBundleApp:(id)app;
+- (float)sizeForCategory:(id)category;
 - (id)_bundleApps;
 - (id)_categorySizes;
-- (id)_totalFileSizeAtPath:(id)a3;
+- (id)_totalFileSizeAtPath:(id)path;
 @end
 
 @implementation MFMailUsageReporter
 
-- (id)_totalFileSizeAtPath:(id)a3
+- (id)_totalFileSizeAtPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v5 = +[NSFileManager defaultManager];
-  v6 = [NSURL fileURLWithPath:v4];
+  v6 = [NSURL fileURLWithPath:pathCopy];
   v27 = NSURLFileSizeKey;
   v7 = [NSArray arrayWithObjects:&v27 count:1];
   v25[0] = _NSConcreteStackBlock;
@@ -97,13 +97,13 @@
     v18 = &v17;
     v19 = 0x2020000000;
     v20 = 0;
-    v8 = [(MFMailUsageReporter *)self _categorySizes];
+    _categorySizes = [(MFMailUsageReporter *)self _categorySizes];
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
     v16[2] = sub_19E0;
     v16[3] = &unk_41F8;
     v16[4] = &v17;
-    [v8 enumerateKeysAndObjectsUsingBlock:v16];
+    [_categorySizes enumerateKeysAndObjectsUsingBlock:v16];
 
     if (v7 && v4)
     {
@@ -130,19 +130,19 @@
   return bundleApps;
 }
 
-- (Class)usageDetailControllerClassForUsageBundleApp:(id)a3
+- (Class)usageDetailControllerClassForUsageBundleApp:(id)app
 {
   v3 = objc_opt_class();
 
   return v3;
 }
 
-- (float)sizeForCategory:(id)a3
+- (float)sizeForCategory:(id)category
 {
-  v4 = a3;
-  v5 = [(MFMailUsageReporter *)self _categorySizes];
-  v6 = [v4 identifier];
-  v7 = [v5 objectForKey:v6];
+  categoryCopy = category;
+  _categorySizes = [(MFMailUsageReporter *)self _categorySizes];
+  identifier = [categoryCopy identifier];
+  v7 = [_categorySizes objectForKey:identifier];
 
   [v7 floatValue];
   v9 = v8;

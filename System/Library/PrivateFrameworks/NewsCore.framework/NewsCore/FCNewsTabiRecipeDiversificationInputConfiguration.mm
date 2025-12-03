@@ -1,13 +1,13 @@
 @interface FCNewsTabiRecipeDiversificationInputConfiguration
-- (FCNewsTabiRecipeDiversificationInputConfiguration)initWithDictionary:(id)a3;
+- (FCNewsTabiRecipeDiversificationInputConfiguration)initWithDictionary:(id)dictionary;
 @end
 
 @implementation FCNewsTabiRecipeDiversificationInputConfiguration
 
-- (FCNewsTabiRecipeDiversificationInputConfiguration)initWithDictionary:(id)a3
+- (FCNewsTabiRecipeDiversificationInputConfiguration)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = FCAppConfigurationStringValue(v4, @"inputNames", 0);
+  dictionaryCopy = dictionary;
+  v5 = FCAppConfigurationStringValue(dictionaryCopy, @"inputNames", 0);
   v6 = v5;
   if (v5)
   {
@@ -22,7 +22,7 @@
     }
 
     self = v9;
-    v10 = self;
+    selfCopy = self;
   }
 
   else
@@ -31,12 +31,12 @@
     v13[1] = 3221225472;
     v13[2] = __72__FCNewsTabiRecipeDiversificationInputConfiguration_initWithDictionary___block_invoke;
     v13[3] = &unk_1E7C36F98;
-    v14 = v4;
-    v10 = __72__FCNewsTabiRecipeDiversificationInputConfiguration_initWithDictionary___block_invoke(v13);
+    v14 = dictionaryCopy;
+    selfCopy = __72__FCNewsTabiRecipeDiversificationInputConfiguration_initWithDictionary___block_invoke(v13);
     v7 = v14;
   }
 
-  return v10;
+  return selfCopy;
 }
 
 uint64_t __72__FCNewsTabiRecipeDiversificationInputConfiguration_initWithDictionary___block_invoke(uint64_t a1)

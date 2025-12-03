@@ -34,15 +34,15 @@ uint64_t __51__AXBInternalBundleLoaderManager_initializeMonitor__block_invoke()
     }
 
     self = v4;
-    v5 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 void __53__AXBInternalBundleLoaderManager__loadInternalBundle__block_invoke()

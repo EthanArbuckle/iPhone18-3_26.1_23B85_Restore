@@ -1,41 +1,41 @@
 @interface HUNoiseUtilities
-+ (double)attenuationFor298WithExposure:(double)a3 andListeningState:(int64_t)a4;
-+ (double)attenuationFor515WithExposure:(double)a3 andListeningState:(int64_t)a4;
-+ (double)attenuationFor698WithExposure:(double)a3 andListeningState:(int64_t)a4;
-+ (double)attenuationFor788WithExposure:(double)a3 andListeningState:(int64_t)a4;
-+ (double)attenuationForExposure:(double)a3 deviceType:(int64_t)a4 andListeningState:(int64_t)a5;
++ (double)attenuationFor298WithExposure:(double)exposure andListeningState:(int64_t)state;
++ (double)attenuationFor515WithExposure:(double)exposure andListeningState:(int64_t)state;
++ (double)attenuationFor698WithExposure:(double)exposure andListeningState:(int64_t)state;
++ (double)attenuationFor788WithExposure:(double)exposure andListeningState:(int64_t)state;
++ (double)attenuationForExposure:(double)exposure deviceType:(int64_t)type andListeningState:(int64_t)state;
 @end
 
 @implementation HUNoiseUtilities
 
-+ (double)attenuationForExposure:(double)a3 deviceType:(int64_t)a4 andListeningState:(int64_t)a5
++ (double)attenuationForExposure:(double)exposure deviceType:(int64_t)type andListeningState:(int64_t)state
 {
-  switch(a4)
+  switch(type)
   {
     case 2:
-      [HUNoiseUtilities attenuationFor515WithExposure:a5 andListeningState:a3];
+      [HUNoiseUtilities attenuationFor515WithExposure:state andListeningState:exposure];
       break;
     case 3:
-      [HUNoiseUtilities attenuationFor698WithExposure:a5 andListeningState:a3];
+      [HUNoiseUtilities attenuationFor698WithExposure:state andListeningState:exposure];
       break;
     case 4:
-      [HUNoiseUtilities attenuationFor788WithExposure:a5 andListeningState:a3];
+      [HUNoiseUtilities attenuationFor788WithExposure:state andListeningState:exposure];
       break;
     default:
-      [HUNoiseUtilities attenuationFor298WithExposure:a5 andListeningState:a3];
+      [HUNoiseUtilities attenuationFor298WithExposure:state andListeningState:exposure];
       break;
   }
 
   return result;
 }
 
-+ (double)attenuationFor788WithExposure:(double)a3 andListeningState:(int64_t)a4
++ (double)attenuationFor788WithExposure:(double)exposure andListeningState:(int64_t)state
 {
   v22[96] = *MEMORY[0x1E69E9840];
   v5 = 0.0;
-  if (a4 > 3)
+  if (state > 3)
   {
-    if (a4 == 4)
+    if (state == 4)
     {
       v6 = attenuationFor788WithExposure_andListeningState__AutoANCAttenuation;
       if (!attenuationFor788WithExposure_andListeningState__AutoANCAttenuation)
@@ -240,7 +240,7 @@
       goto LABEL_15;
     }
 
-    if (a4 == 5)
+    if (state == 5)
     {
       v6 = attenuationFor788WithExposure_andListeningState__AHPAttenuation;
       if (!attenuationFor788WithExposure_andListeningState__AHPAttenuation)
@@ -443,7 +443,7 @@
       }
 
 LABEL_15:
-      v10 = [MEMORY[0x1E696AD98] numberWithDouble:round(a3)];
+      v10 = [MEMORY[0x1E696AD98] numberWithDouble:round(exposure)];
       v11 = [v6 objectForKey:v10];
       [v11 doubleValue];
       v5 = v12;
@@ -452,7 +452,7 @@ LABEL_15:
 
   else
   {
-    if (a4 == 1)
+    if (state == 1)
     {
       v6 = attenuationFor788WithExposure_andListeningState__NoneAttenuation;
       if (!attenuationFor788WithExposure_andListeningState__NoneAttenuation)
@@ -657,7 +657,7 @@ LABEL_15:
       goto LABEL_15;
     }
 
-    if (a4 == 2)
+    if (state == 2)
     {
       v6 = attenuationFor788WithExposure_andListeningState__ANCAttenuation;
       if (!attenuationFor788WithExposure_andListeningState__ANCAttenuation)
@@ -872,13 +872,13 @@ LABEL_14:
   return v5;
 }
 
-+ (double)attenuationFor698WithExposure:(double)a3 andListeningState:(int64_t)a4
++ (double)attenuationFor698WithExposure:(double)exposure andListeningState:(int64_t)state
 {
   v22[96] = *MEMORY[0x1E69E9840];
   v5 = 0.0;
-  if (a4 > 3)
+  if (state > 3)
   {
-    if (a4 == 4)
+    if (state == 4)
     {
       v6 = attenuationFor698WithExposure_andListeningState__AutoANCAttenuation;
       if (!attenuationFor698WithExposure_andListeningState__AutoANCAttenuation)
@@ -1083,7 +1083,7 @@ LABEL_14:
       goto LABEL_15;
     }
 
-    if (a4 == 5)
+    if (state == 5)
     {
       v6 = attenuationFor698WithExposure_andListeningState__AHPAttenuation;
       if (!attenuationFor698WithExposure_andListeningState__AHPAttenuation)
@@ -1286,7 +1286,7 @@ LABEL_14:
       }
 
 LABEL_15:
-      v10 = [MEMORY[0x1E696AD98] numberWithDouble:round(a3)];
+      v10 = [MEMORY[0x1E696AD98] numberWithDouble:round(exposure)];
       v11 = [v6 objectForKey:v10];
       [v11 doubleValue];
       v5 = v12;
@@ -1295,7 +1295,7 @@ LABEL_15:
 
   else
   {
-    if (a4 == 1)
+    if (state == 1)
     {
       v6 = attenuationFor698WithExposure_andListeningState__NoneAttenuation;
       if (!attenuationFor698WithExposure_andListeningState__NoneAttenuation)
@@ -1500,7 +1500,7 @@ LABEL_15:
       goto LABEL_15;
     }
 
-    if (a4 == 2)
+    if (state == 2)
     {
       v6 = attenuationFor698WithExposure_andListeningState__ANCAttenuation;
       if (!attenuationFor698WithExposure_andListeningState__ANCAttenuation)
@@ -1715,10 +1715,10 @@ LABEL_14:
   return v5;
 }
 
-+ (double)attenuationFor515WithExposure:(double)a3 andListeningState:(int64_t)a4
++ (double)attenuationFor515WithExposure:(double)exposure andListeningState:(int64_t)state
 {
   v18[95] = *MEMORY[0x1E69E9840];
-  if (a4 == 1)
+  if (state == 1)
   {
     v6 = attenuationFor515WithExposure_andListeningState__NoneAttenuation;
     if (!attenuationFor515WithExposure_andListeningState__NoneAttenuation)
@@ -1927,7 +1927,7 @@ LABEL_14:
     }
 
 LABEL_8:
-    v10 = [MEMORY[0x1E696AD98] numberWithDouble:round(a3)];
+    v10 = [MEMORY[0x1E696AD98] numberWithDouble:round(exposure)];
     v11 = [v6 objectForKey:v10];
     [v11 doubleValue];
     v5 = v12;
@@ -1936,7 +1936,7 @@ LABEL_8:
   }
 
   v5 = 0.0;
-  if (a4 == 2)
+  if (state == 2)
   {
     v6 = attenuationFor515WithExposure_andListeningState__ANCAttenuation;
     if (!attenuationFor515WithExposure_andListeningState__ANCAttenuation)
@@ -2149,10 +2149,10 @@ LABEL_9:
   return v5;
 }
 
-+ (double)attenuationFor298WithExposure:(double)a3 andListeningState:(int64_t)a4
++ (double)attenuationFor298WithExposure:(double)exposure andListeningState:(int64_t)state
 {
   v18[91] = *MEMORY[0x1E69E9840];
-  if (a4 == 1)
+  if (state == 1)
   {
     v6 = attenuationFor298WithExposure_andListeningState__NoneAttenuation;
     if (!attenuationFor298WithExposure_andListeningState__NoneAttenuation)
@@ -2345,7 +2345,7 @@ LABEL_9:
     }
 
 LABEL_8:
-    v10 = [MEMORY[0x1E696AD98] numberWithDouble:round(a3)];
+    v10 = [MEMORY[0x1E696AD98] numberWithDouble:round(exposure)];
     v11 = [v6 objectForKey:v10];
     [v11 doubleValue];
     v5 = v12;
@@ -2354,7 +2354,7 @@ LABEL_8:
   }
 
   v5 = 0.0;
-  if (a4 == 2)
+  if (state == 2)
   {
     v6 = attenuationFor298WithExposure_andListeningState__ANCAttenuation;
     if (!attenuationFor298WithExposure_andListeningState__ANCAttenuation)

@@ -1,8 +1,8 @@
 @interface OverrideTrackerPolicy
 + (id)sharedInstance;
 - (OverrideTrackerPolicy)init;
-- (id)maxConnectionPolicyForTarget:(id)a3;
-- (id)maxRRCTimePolicyForTarget:(id)a3;
+- (id)maxConnectionPolicyForTarget:(id)target;
+- (id)maxRRCTimePolicyForTarget:(id)target;
 @end
 
 @implementation OverrideTrackerPolicy
@@ -13,7 +13,7 @@
   block[1] = 3221225472;
   block[2] = __39__OverrideTrackerPolicy_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_pred_23 != -1)
   {
     dispatch_once(&sharedInstance_pred_23, block);
@@ -297,26 +297,26 @@ LABEL_23:
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (id)maxConnectionPolicyForTarget:(id)a3
+- (id)maxConnectionPolicyForTarget:(id)target
 {
   maxConnectionPolicyOverrides = self->_maxConnectionPolicyOverrides;
-  if (!a3)
+  if (!target)
   {
-    a3 = @"POLICY_APPLY_AS_DEFAULT";
+    target = @"POLICY_APPLY_AS_DEFAULT";
   }
 
-  return [(NSMutableDictionary *)maxConnectionPolicyOverrides objectForKeyedSubscript:a3];
+  return [(NSMutableDictionary *)maxConnectionPolicyOverrides objectForKeyedSubscript:target];
 }
 
-- (id)maxRRCTimePolicyForTarget:(id)a3
+- (id)maxRRCTimePolicyForTarget:(id)target
 {
   maxRRCTimePolicyOverrides = self->_maxRRCTimePolicyOverrides;
-  if (!a3)
+  if (!target)
   {
-    a3 = @"POLICY_APPLY_AS_DEFAULT";
+    target = @"POLICY_APPLY_AS_DEFAULT";
   }
 
-  return [(NSMutableDictionary *)maxRRCTimePolicyOverrides objectForKeyedSubscript:a3];
+  return [(NSMutableDictionary *)maxRRCTimePolicyOverrides objectForKeyedSubscript:target];
 }
 
 @end

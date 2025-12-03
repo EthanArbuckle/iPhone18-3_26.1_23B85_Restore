@@ -1,22 +1,22 @@
 @interface FigBWNodeRenderObserver
-- (FigBWNodeRenderObserver)initWithBWNode:(id)a3;
+- (FigBWNodeRenderObserver)initWithBWNode:(id)node;
 - (void)dealloc;
-- (void)node:(id)a3 format:(id)a4 didBecomeLiveForInput:(id)a5 configurationID:(int64_t)a6;
-- (void)node:(id)a3 willRenderSampleBuffer:(opaqueCMSampleBuffer *)a4 forInput:(id)a5;
+- (void)node:(id)node format:(id)format didBecomeLiveForInput:(id)input configurationID:(int64_t)d;
+- (void)node:(id)node willRenderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input;
 @end
 
 @implementation FigBWNodeRenderObserver
 
-- (FigBWNodeRenderObserver)initWithBWNode:(id)a3
+- (FigBWNodeRenderObserver)initWithBWNode:(id)node
 {
   v7.receiver = self;
   v7.super_class = FigBWNodeRenderObserver;
   v4 = [(FigBWNodeRenderObserver *)&v7 init];
   if (v4)
   {
-    v5 = a3;
-    v4->_node = v5;
-    [(BWNode *)v5 setRenderDelegate:v4];
+    nodeCopy = node;
+    v4->_node = nodeCopy;
+    [(BWNode *)nodeCopy setRenderDelegate:v4];
   }
 
   return v4;
@@ -31,21 +31,21 @@
   [(FigBWNodeRenderObserver *)&v3 dealloc];
 }
 
-- (void)node:(id)a3 willRenderSampleBuffer:(opaqueCMSampleBuffer *)a4 forInput:(id)a5
+- (void)node:(id)node willRenderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input
 {
   willRenderSampleBufferHandler = self->_willRenderSampleBufferHandler;
   if (willRenderSampleBufferHandler)
   {
-    willRenderSampleBufferHandler[2](willRenderSampleBufferHandler, a4, a5);
+    willRenderSampleBufferHandler[2](willRenderSampleBufferHandler, buffer, input);
   }
 }
 
-- (void)node:(id)a3 format:(id)a4 didBecomeLiveForInput:(id)a5 configurationID:(int64_t)a6
+- (void)node:(id)node format:(id)format didBecomeLiveForInput:(id)input configurationID:(int64_t)d
 {
   formatDidBecomeLiveHandler = self->_formatDidBecomeLiveHandler;
   if (formatDidBecomeLiveHandler)
   {
-    formatDidBecomeLiveHandler[2](formatDidBecomeLiveHandler, a4, a5, a6);
+    formatDidBecomeLiveHandler[2](formatDidBecomeLiveHandler, format, input, d);
   }
 }
 

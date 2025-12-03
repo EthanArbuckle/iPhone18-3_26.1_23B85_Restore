@@ -1,39 +1,39 @@
 @interface TCCDAlert
-- (BOOL)isDisplayableForCondition:(int64_t)a3;
-- (TCCDAlert)initWithCondition:(int64_t)a3 platformName:(id)a4 service:(id)a5 displayPolicy:(int64_t)a6 persistentStateType:(unint64_t)a7 displayCountlimit:(int)a8 configuration:(id)a9;
+- (BOOL)isDisplayableForCondition:(int64_t)condition;
+- (TCCDAlert)initWithCondition:(int64_t)condition platformName:(id)name service:(id)service displayPolicy:(int64_t)policy persistentStateType:(unint64_t)type displayCountlimit:(int)countlimit configuration:(id)configuration;
 - (void)display;
 @end
 
 @implementation TCCDAlert
 
-- (TCCDAlert)initWithCondition:(int64_t)a3 platformName:(id)a4 service:(id)a5 displayPolicy:(int64_t)a6 persistentStateType:(unint64_t)a7 displayCountlimit:(int)a8 configuration:(id)a9
+- (TCCDAlert)initWithCondition:(int64_t)condition platformName:(id)name service:(id)service displayPolicy:(int64_t)policy persistentStateType:(unint64_t)type displayCountlimit:(int)countlimit configuration:(id)configuration
 {
-  v15 = a4;
-  v16 = a5;
-  v17 = a9;
+  nameCopy = name;
+  serviceCopy = service;
+  configurationCopy = configuration;
   v25.receiver = self;
   v25.super_class = TCCDAlert;
   v18 = [(TCCDAlert *)&v25 init];
   v19 = v18;
   if (v18)
   {
-    v18->_persistentStateType = a7;
-    v18->_condition = a3;
-    if (v16)
+    v18->_persistentStateType = type;
+    v18->_condition = condition;
+    if (serviceCopy)
     {
-      objc_storeStrong(&v18->_service, a5);
+      objc_storeStrong(&v18->_service, service);
     }
 
-    if (v15)
+    if (nameCopy)
     {
-      v20 = [v15 copy];
+      v20 = [nameCopy copy];
       platformName = v19->_platformName;
       v19->_platformName = v20;
     }
 
-    v19->_displayPolicy = a6;
-    v19->_displayCountlimit = a8;
-    v22 = [v17 copy];
+    v19->_displayPolicy = policy;
+    v19->_displayCountlimit = countlimit;
+    v22 = [configurationCopy copy];
     configuration = v19->_configuration;
     v19->_configuration = v22;
   }
@@ -41,10 +41,10 @@
   return v19;
 }
 
-- (BOOL)isDisplayableForCondition:(int64_t)a3
+- (BOOL)isDisplayableForCondition:(int64_t)condition
 {
-  v5 = [(TCCDAlert *)self platformName];
-  result = (!v5 || (v6 = v5, +[TCCDPlatform currentPlatform](TCCDPlatform, "currentPlatform"), v7 = objc_claimAutoreleasedReturnValue(), [v7 name], v8 = objc_claimAutoreleasedReturnValue(), -[TCCDAlert platformName](self, "platformName"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v8, "isEqualToString:", v9), v9, v8, v7, v6, v10)) && -[TCCDAlert condition](self, "condition") == a3;
+  platformName = [(TCCDAlert *)self platformName];
+  result = (!platformName || (v6 = platformName, +[TCCDPlatform currentPlatform](TCCDPlatform, "currentPlatform"), v7 = objc_claimAutoreleasedReturnValue(), [v7 name], v8 = objc_claimAutoreleasedReturnValue(), -[TCCDAlert platformName](self, "platformName"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v8, "isEqualToString:", v9), v9, v8, v7, v6, v10)) && -[TCCDAlert condition](self, "condition") == condition;
   return result;
 }
 
@@ -52,10 +52,10 @@
 {
   if ([(TCCDAlert *)self displayPolicy])
   {
-    v3 = [(TCCDAlert *)self persistentStateType];
-    v4 = [(TCCDAlert *)self service];
-    v5 = [v4 name];
-    value = db_persistent_state_get_value(v3, v5);
+    persistentStateType = [(TCCDAlert *)self persistentStateType];
+    service = [(TCCDAlert *)self service];
+    name = [service name];
+    value = db_persistent_state_get_value(persistentStateType, name);
 
     if ([(TCCDAlert *)self displayPolicy]== 1)
     {
@@ -93,18 +93,18 @@
 
   if ([(TCCDAlert *)self displayPolicy]== 1)
   {
-    v9 = [(TCCDAlert *)self persistentStateValue];
-    if (v9 >= [(TCCDAlert *)self displayCountlimit])
+    persistentStateValue = [(TCCDAlert *)self persistentStateValue];
+    if (persistentStateValue >= [(TCCDAlert *)self displayCountlimit])
     {
       return;
     }
 
-    v10 = [(TCCDAlert *)self persistentStateType];
-    v19 = [(TCCDAlert *)self service];
-    v11 = [v19 name];
+    persistentStateType2 = [(TCCDAlert *)self persistentStateType];
+    service2 = [(TCCDAlert *)self service];
+    name2 = [service2 name];
     v12 = [(TCCDAlert *)self persistentStateValue]+ 1;
-    v13 = v10;
-    v14 = v11;
+    v13 = persistentStateType2;
+    v14 = name2;
     goto LABEL_22;
   }
 
@@ -113,15 +113,15 @@
     return;
   }
 
-  v15 = [(TCCDAlert *)self persistentStateValue];
-  v16 = (v15 - 1);
-  if (v15 > 1)
+  persistentStateValue2 = [(TCCDAlert *)self persistentStateValue];
+  v16 = (persistentStateValue2 - 1);
+  if (persistentStateValue2 > 1)
   {
-    v18 = [(TCCDAlert *)self persistentStateType];
-    v19 = [(TCCDAlert *)self service];
-    v11 = [v19 name];
-    v13 = v18;
-    v14 = v11;
+    persistentStateType3 = [(TCCDAlert *)self persistentStateType];
+    service2 = [(TCCDAlert *)self service];
+    name2 = [service2 name];
+    v13 = persistentStateType3;
+    v14 = name2;
     v12 = v16;
 LABEL_22:
     db_persistent_state_set_value(v13, v14, v12);
@@ -129,10 +129,10 @@ LABEL_22:
   }
 
 LABEL_19:
-  v17 = [(TCCDAlert *)self persistentStateType];
-  v19 = [(TCCDAlert *)self service];
-  v11 = [v19 name];
-  db_persistent_state_reset(v17, v11);
+  persistentStateType4 = [(TCCDAlert *)self persistentStateType];
+  service2 = [(TCCDAlert *)self service];
+  name2 = [service2 name];
+  db_persistent_state_reset(persistentStateType4, name2);
 LABEL_23:
 }
 

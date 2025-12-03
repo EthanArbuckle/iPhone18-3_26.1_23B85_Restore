@@ -6,7 +6,7 @@
 
 - (id)cr_sqlBindings
 {
-  v4 = [(NSConstantValueExpression *)self constantValue];
+  constantValue = [(NSConstantValueExpression *)self constantValue];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -26,7 +26,7 @@ LABEL_7:
     v23[1] = 3221225472;
     v23[2] = sub_100014368;
     v23[3] = &unk_10002CC58;
-    v23[4] = v4;
+    v23[4] = constantValue;
     v5 = [v23 copy];
     v26 = v5;
     v6 = &v26;
@@ -40,7 +40,7 @@ LABEL_7:
     v22[1] = 3221225472;
     v22[2] = sub_1000143B8;
     v22[3] = &unk_10002CC58;
-    v22[4] = v4;
+    v22[4] = constantValue;
     v5 = [v22 copy];
     v25 = v5;
     v6 = &v25;
@@ -55,7 +55,7 @@ LABEL_7:
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v9 = [v4 countByEnumeratingWithState:&v18 objects:v24 count:16];
+    v9 = [constantValue countByEnumeratingWithState:&v18 objects:v24 count:16];
     if (v9)
     {
       v10 = v9;
@@ -66,7 +66,7 @@ LABEL_7:
         {
           if (*v19 != v11)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(constantValue);
           }
 
           v13 = *(*(&v18 + 1) + 8 * i);
@@ -79,7 +79,7 @@ LABEL_7:
           [(NSArray *)v7 addObject:v14];
         }
 
-        v10 = [v4 countByEnumeratingWithState:&v18 objects:v24 count:16];
+        v10 = [constantValue countByEnumeratingWithState:&v18 objects:v24 count:16];
       }
 
       while (v10);

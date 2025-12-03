@@ -1,7 +1,7 @@
 @interface AXDataPointValue
 + (AXDataPointValue)valueWithCategory:(NSString *)category;
 + (AXDataPointValue)valueWithNumber:(double)number;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -24,13 +24,13 @@
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [(AXDataPointValue *)self number];
   [v4 setNumber:?];
-  v5 = [(AXDataPointValue *)self category];
-  v6 = [v5 copy];
+  category = [(AXDataPointValue *)self category];
+  v6 = [category copy];
   [v4 setCategory:v6];
 
   return v4;
@@ -38,10 +38,10 @@
 
 - (id)description
 {
-  v3 = [(AXDataPointValue *)self category];
-  if (v3)
+  category = [(AXDataPointValue *)self category];
+  if (category)
   {
-    v4 = [(AXDataPointValue *)self category];
+    category2 = [(AXDataPointValue *)self category];
   }
 
   else
@@ -50,10 +50,10 @@
     v6 = MEMORY[0x1E696AD98];
     [(AXDataPointValue *)self number];
     v7 = [v6 numberWithDouble:?];
-    v4 = [v5 stringWithFormat:@"%@", v7];
+    category2 = [v5 stringWithFormat:@"%@", v7];
   }
 
-  return v4;
+  return category2;
 }
 
 @end

@@ -1,21 +1,21 @@
 @interface PHSettingsWebViewController
-- (PHSettingsWebViewController)initWithType:(int64_t)a3;
-- (void)_cancelButtonClicked:(id)a3;
+- (PHSettingsWebViewController)initWithType:(int64_t)type;
+- (void)_cancelButtonClicked:(id)clicked;
 - (void)cancelWebView;
 - (void)doProvisioningCanceled;
 - (void)doProvisioningDone;
 - (void)doProvisioningFailed;
 - (void)doWebViewTimedOut;
-- (void)loadURL:(id)a3 body:(id)a4 completion:(id)a5;
+- (void)loadURL:(id)l body:(id)body completion:(id)completion;
 - (void)loadView;
-- (void)loadWebViewWithSpinner:(id)a3;
-- (void)setupControllerInWebFrame:(id)a3;
-- (void)webView:(id)a3 didFailLoadWithError:(id)a4;
+- (void)loadWebViewWithSpinner:(id)spinner;
+- (void)setupControllerInWebFrame:(id)frame;
+- (void)webView:(id)view didFailLoadWithError:(id)error;
 @end
 
 @implementation PHSettingsWebViewController
 
-- (PHSettingsWebViewController)initWithType:(int64_t)a3
+- (PHSettingsWebViewController)initWithType:(int64_t)type
 {
   v9.receiver = self;
   v9.super_class = PHSettingsWebViewController;
@@ -23,7 +23,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_type = a3;
+    v4->_type = type;
     v6 = objc_alloc_init(UIWebView);
     webView = v5->_webView;
     v5->_webView = v6;
@@ -49,29 +49,29 @@
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  v14 = [(PHSettingsWebViewController *)self webView];
-  [v14 setFrame:{v7, v9, v11, v13}];
+  webView = [(PHSettingsWebViewController *)self webView];
+  [webView setFrame:{v7, v9, v11, v13}];
 
-  v15 = [(PHSettingsWebViewController *)self webView];
-  [v15 setScalesPageToFit:1];
+  webView2 = [(PHSettingsWebViewController *)self webView];
+  [webView2 setScalesPageToFit:1];
 
-  v16 = [(PHSettingsWebViewController *)self webView];
-  [v16 setDelegate:self];
+  webView3 = [(PHSettingsWebViewController *)self webView];
+  [webView3 setDelegate:self];
 
-  v17 = [(PHSettingsWebViewController *)self webView];
-  [v17 setAutoresizingMask:18];
+  webView4 = [(PHSettingsWebViewController *)self webView];
+  [webView4 setAutoresizingMask:18];
 
-  v18 = [(PHSettingsWebViewController *)self webView];
-  [v21 addSubview:v18];
+  webView5 = [(PHSettingsWebViewController *)self webView];
+  [v21 addSubview:webView5];
 
   v19 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:1 target:self action:"_cancelButtonClicked:"];
-  v20 = [(PHSettingsWebViewController *)self navigationItem];
-  [v20 setLeftBarButtonItem:v19];
+  navigationItem = [(PHSettingsWebViewController *)self navigationItem];
+  [navigationItem setLeftBarButtonItem:v19];
 }
 
-- (void)loadWebViewWithSpinner:(id)a3
+- (void)loadWebViewWithSpinner:(id)spinner
 {
-  v4 = a3;
+  spinnerCopy = spinner;
   v5 = PHDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -79,7 +79,7 @@
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "loadWebViewWithSpinner", buf, 2u);
   }
 
-  [(PHSettingsWebViewController *)self setCompletionBlock:v4];
+  [(PHSettingsWebViewController *)self setCompletionBlock:spinnerCopy];
   if (!self->_activityIndicator)
   {
     v6 = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:2];
@@ -87,8 +87,8 @@
     self->_activityIndicator = v6;
 
     [(UIActivityIndicatorView *)self->_activityIndicator setAutoresizingMask:45];
-    v8 = [(PHSettingsWebViewController *)self view];
-    [v8 center];
+    view = [(PHSettingsWebViewController *)self view];
+    [view center];
     [(UIActivityIndicatorView *)self->_activityIndicator setCenter:?];
 
     [(UIActivityIndicatorView *)self->_activityIndicator setHidesWhenStopped:1];
@@ -105,43 +105,43 @@
   [(UIActivityIndicatorView *)self->_activityIndicator startAnimating];
 }
 
-- (void)loadURL:(id)a3 body:(id)a4 completion:(id)a5
+- (void)loadURL:(id)l body:(id)body completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  lCopy = l;
+  bodyCopy = body;
+  completionCopy = completion;
   v11 = PHDefaultLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v25 = v8;
+    v25 = lCopy;
     v26 = 2112;
-    v27 = v9;
+    v27 = bodyCopy;
     _os_log_impl(&dword_0, v11, OS_LOG_TYPE_DEFAULT, "LoadURL: %@ body: %@", buf, 0x16u);
   }
 
   url = self->_url;
-  self->_url = v8;
-  v13 = v8;
+  self->_url = lCopy;
+  v13 = lCopy;
 
   body = self->_body;
-  self->_body = v9;
-  v15 = v9;
+  self->_body = bodyCopy;
+  v15 = bodyCopy;
 
   [(UIActivityIndicatorView *)self->_activityIndicator stopAnimating];
   [(UIActivityIndicatorView *)self->_activityIndicator removeFromSuperview];
   activityIndicator = self->_activityIndicator;
   self->_activityIndicator = 0;
 
-  [(PHSettingsWebViewController *)self setCompletionBlock:v10];
+  [(PHSettingsWebViewController *)self setCompletionBlock:completionCopy];
   v17 = [[NSMutableURLRequest alloc] initWithURL:v13 cachePolicy:1 timeoutInterval:30.0];
   [(NSURL *)v17 setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
   v18 = +[NSLocale preferredLanguages];
-  v19 = [v18 firstObject];
+  firstObject = [v18 firstObject];
 
-  if (v19)
+  if (firstObject)
   {
-    v20 = v19;
+    v20 = firstObject;
   }
 
   else
@@ -163,8 +163,8 @@
     _os_log_impl(&dword_0, v22, OS_LOG_TYPE_DEFAULT, "Loading URL request: %@", buf, 0xCu);
   }
 
-  v23 = [(PHSettingsWebViewController *)self webView];
-  [v23 loadRequest:v17];
+  webView = [(PHSettingsWebViewController *)self webView];
+  [webView loadRequest:v17];
 }
 
 - (void)cancelWebView
@@ -179,7 +179,7 @@
   [(PHSettingsWebViewController *)self doProvisioningCanceled];
 }
 
-- (void)_cancelButtonClicked:(id)a3
+- (void)_cancelButtonClicked:(id)clicked
 {
   v4 = PHDefaultLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -191,16 +191,16 @@
   [(PHSettingsWebViewController *)self doProvisioningCanceled];
 }
 
-- (void)webView:(id)a3 didFailLoadWithError:(id)a4
+- (void)webView:(id)view didFailLoadWithError:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   v6 = PHDefaultLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
-    sub_64C4(v5, v6);
+    sub_64C4(errorCopy, v6);
   }
 
-  if ([v5 code] != -999)
+  if ([errorCopy code] != -999)
   {
     [(PHSettingsWebViewController *)self doProvisioningFailed];
   }
@@ -215,8 +215,8 @@
     _os_log_impl(&dword_0, v3, OS_LOG_TYPE_DEFAULT, "doProvisioningDone", buf, 2u);
   }
 
-  v4 = [(PHSettingsWebViewController *)self completionBlock];
-  v5 = [v4 copy];
+  completionBlock = [(PHSettingsWebViewController *)self completionBlock];
+  v5 = [completionBlock copy];
 
   [(PHSettingsWebViewController *)self setCompletionBlock:0];
   v7[0] = _NSConcreteStackBlock;
@@ -237,8 +237,8 @@
     _os_log_impl(&dword_0, v3, OS_LOG_TYPE_DEFAULT, "doProvisioningCanceled", buf, 2u);
   }
 
-  v4 = [(PHSettingsWebViewController *)self completionBlock];
-  v5 = [v4 copy];
+  completionBlock = [(PHSettingsWebViewController *)self completionBlock];
+  v5 = [completionBlock copy];
 
   [(PHSettingsWebViewController *)self setCompletionBlock:0];
   v7[0] = _NSConcreteStackBlock;
@@ -258,8 +258,8 @@
     sub_653C(v3);
   }
 
-  v4 = [(PHSettingsWebViewController *)self completionBlock];
-  v5 = [v4 copy];
+  completionBlock = [(PHSettingsWebViewController *)self completionBlock];
+  v5 = [completionBlock copy];
 
   [(PHSettingsWebViewController *)self setCompletionBlock:0];
   v7[0] = _NSConcreteStackBlock;
@@ -280,8 +280,8 @@
     _os_log_impl(&dword_0, v3, OS_LOG_TYPE_DEFAULT, "[WARN] doWebViewTimedOut", buf, 2u);
   }
 
-  v4 = [(PHSettingsWebViewController *)self completionBlock];
-  v5 = [v4 copy];
+  completionBlock = [(PHSettingsWebViewController *)self completionBlock];
+  v5 = [completionBlock copy];
 
   [(PHSettingsWebViewController *)self setCompletionBlock:0];
   v7[0] = _NSConcreteStackBlock;
@@ -293,16 +293,16 @@
   [(PHSettingsWebViewController *)self dismissViewControllerAnimated:1 completion:v7];
 }
 
-- (void)setupControllerInWebFrame:(id)a3
+- (void)setupControllerInWebFrame:(id)frame
 {
-  v12 = a3;
-  v4 = [v12 globalContext];
-  if (!v4)
+  frameCopy = frame;
+  globalContext = [frameCopy globalContext];
+  if (!globalContext)
   {
     sub_65D8();
   }
 
-  v5 = v4;
+  v5 = globalContext;
   v6 = qword_114B0;
   if (!qword_114B0)
   {
@@ -317,16 +317,16 @@
   }
 
   v8 = v7;
-  v9 = [v12 windowObject];
-  v10 = [v9 JSObject];
+  windowObject = [frameCopy windowObject];
+  jSObject = [windowObject JSObject];
 
-  if (!v10)
+  if (!jSObject)
   {
     sub_6580();
   }
 
   v11 = JSStringCreateWithCFString(@"WiFiCallingWebViewController");
-  JSObjectSetProperty(v5, v10, v11, v8, 0, 0);
+  JSObjectSetProperty(v5, jSObject, v11, v8, 0, 0);
 }
 
 @end

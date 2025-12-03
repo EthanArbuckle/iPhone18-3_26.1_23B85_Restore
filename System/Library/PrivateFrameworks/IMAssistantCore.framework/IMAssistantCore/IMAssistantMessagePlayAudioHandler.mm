@@ -1,23 +1,23 @@
 @interface IMAssistantMessagePlayAudioHandler
-- (id)createAudioPlayerWithIdentifier:(id)a3;
-- (void)confirmPlayAudioMessage:(id)a3 completion:(id)a4;
-- (void)handlePlayAudioMessage:(id)a3 completion:(id)a4;
-- (void)imAssistantAudioPlayer:(id)a3 didUpdateState:(int64_t)a4;
-- (void)queryAudioMessageURLForIntent:(id)a3 completion:(id)a4;
+- (id)createAudioPlayerWithIdentifier:(id)identifier;
+- (void)confirmPlayAudioMessage:(id)message completion:(id)completion;
+- (void)handlePlayAudioMessage:(id)message completion:(id)completion;
+- (void)imAssistantAudioPlayer:(id)player didUpdateState:(int64_t)state;
+- (void)queryAudioMessageURLForIntent:(id)intent completion:(id)completion;
 @end
 
 @implementation IMAssistantMessagePlayAudioHandler
 
-- (void)handlePlayAudioMessage:(id)a3 completion:(id)a4
+- (void)handlePlayAudioMessage:(id)message completion:(id)completion
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  completionCopy = completion;
   v8 = IMLogHandleForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v17 = v6;
+    v17 = messageCopy;
     _os_log_impl(&dword_25479E000, v8, OS_LOG_TYPE_INFO, "Performing intent: %@", buf, 0xCu);
   }
 
@@ -28,9 +28,9 @@
   v12[3] = &unk_2797869C8;
   v12[4] = self;
   objc_copyWeak(&v15, buf);
-  v9 = v6;
+  v9 = messageCopy;
   v13 = v9;
-  v10 = v7;
+  v10 = completionCopy;
   v14 = v10;
   [(IMAssistantMessagePlayAudioHandler *)self queryAudioMessageURLForIntent:v9 completion:v12];
 
@@ -40,16 +40,16 @@
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)confirmPlayAudioMessage:(id)a3 completion:(id)a4
+- (void)confirmPlayAudioMessage:(id)message completion:(id)completion
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  completionCopy = completion;
   v8 = IMLogHandleForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v14 = v6;
+    v14 = messageCopy;
     _os_log_impl(&dword_25479E000, v8, OS_LOG_TYPE_INFO, "Confirm intent: %@", buf, 0xCu);
   }
 
@@ -57,58 +57,58 @@
   v11[1] = 3221225472;
   v11[2] = sub_2547B7FF0;
   v11[3] = &unk_2797869F0;
-  v12 = v7;
-  v9 = v7;
-  [(IMAssistantMessagePlayAudioHandler *)self queryAudioMessageURLForIntent:v6 completion:v11];
+  v12 = completionCopy;
+  v9 = completionCopy;
+  [(IMAssistantMessagePlayAudioHandler *)self queryAudioMessageURLForIntent:messageCopy completion:v11];
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)queryAudioMessageURLForIntent:(id)a3 completion:(id)a4
+- (void)queryAudioMessageURLForIntent:(id)intent completion:(id)completion
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [a3 messageIdentifier];
-  v8 = v7;
-  if (v7)
+  completionCopy = completion;
+  messageIdentifier = [intent messageIdentifier];
+  v8 = messageIdentifier;
+  if (messageIdentifier)
   {
-    v13[0] = v7;
+    v13[0] = messageIdentifier;
     v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:1];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = sub_2547B8218;
     v11[3] = &unk_279786A18;
-    v12 = v6;
+    v12 = completionCopy;
     [(IMAssistantMessageQueryHandler *)self SPIQueryMessagesWithGUIDs:v9 completion:v11];
   }
 
   else
   {
-    (*(v6 + 2))(v6, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (id)createAudioPlayerWithIdentifier:(id)a3
+- (id)createAudioPlayerWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [[IMAssistantAudioPlayer alloc] initWithDelegate:self identifier:v4];
+  identifierCopy = identifier;
+  v5 = [[IMAssistantAudioPlayer alloc] initWithDelegate:self identifier:identifierCopy];
 
   return v5;
 }
 
-- (void)imAssistantAudioPlayer:(id)a3 didUpdateState:(int64_t)a4
+- (void)imAssistantAudioPlayer:(id)player didUpdateState:(int64_t)state
 {
   if (self->_completionHandler)
   {
     v5 = 4;
-    if (a4 == 2)
+    if (state == 2)
     {
       v5 = 2;
     }
 
-    if (a4 == 1)
+    if (state == 1)
     {
       v6 = 3;
     }

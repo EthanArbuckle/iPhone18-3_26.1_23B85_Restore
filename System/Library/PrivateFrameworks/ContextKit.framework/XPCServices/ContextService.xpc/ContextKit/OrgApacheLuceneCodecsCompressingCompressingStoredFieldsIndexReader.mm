@@ -1,7 +1,7 @@
 @interface OrgApacheLuceneCodecsCompressingCompressingStoredFieldsIndexReader
 + (void)initialize;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)getChildResources;
 - (int64_t)ramBytesUsed;
 - (void)dealloc;
@@ -137,16 +137,16 @@ LABEL_14:
   [(OrgApacheLuceneCodecsCompressingCompressingStoredFieldsIndexReader *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v3 = [(OrgApacheLuceneCodecsCompressingCompressingStoredFieldsIndexReader *)self clone];
+  clone = [(OrgApacheLuceneCodecsCompressingCompressingStoredFieldsIndexReader *)self clone];
 
-  return v3;
+  return clone;
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = OrgApacheLuceneCodecsCompressingCompressingStoredFieldsIndexReader_class_();
     qword_1005547D8 = OrgApacheLuceneUtilRamUsageEstimator_shallowSizeOfInstanceWithIOSClass_(v2);

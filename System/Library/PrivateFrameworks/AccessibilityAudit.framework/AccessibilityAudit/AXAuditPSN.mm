@@ -1,23 +1,23 @@
 @interface AXAuditPSN
-+ (id)createWithPSN:(ProcessSerialNumber)a3;
-+ (void)registerTransportableObjectWithManager:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)createWithPSN:(ProcessSerialNumber)n;
++ (void)registerTransportableObjectWithManager:(id)manager;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation AXAuditPSN
 
-+ (id)createWithPSN:(ProcessSerialNumber)a3
++ (id)createWithPSN:(ProcessSerialNumber)n
 {
   v4 = objc_alloc_init(objc_opt_class());
-  [v4 setPsn:a3];
+  [v4 setPsn:n];
 
   return v4;
 }
 
-+ (void)registerTransportableObjectWithManager:(id)a3
++ (void)registerTransportableObjectWithManager:(id)manager
 {
-  v3 = a3;
+  managerCopy = manager;
   v6 = [[AXAuditObjectTransportInfoPropertyBased alloc] initWithClass:objc_opt_class() transportKey:@"AXAuditPSN_v1"];
   v4 = objc_alloc_init(AXAuditObjectTransportPropertyEntry);
   [(AXAuditObjectTransportPropertyEntry *)v4 setTransportKey:@"PsnHigh_v1"];
@@ -29,7 +29,7 @@
   [(AXAuditObjectTransportPropertyEntry *)v5 setPopulateLocalObjectWithTransportValue:&__block_literal_global_17];
   [(AXAuditObjectTransportInfoPropertyBased *)v6 addPropertyEntry:v5];
   [(AXAuditObjectTransportInfoPropertyBased *)v6 addPropertyEntry:v4];
-  [v3 registerTransportInfoPropertyBased:v6];
+  [managerCopy registerTransportInfoPropertyBased:v6];
 }
 
 uint64_t __53__AXAuditPSN_registerTransportableObjectWithManager___block_invoke(uint64_t a1, void *a2)
@@ -70,17 +70,17 @@ void __53__AXAuditPSN_registerTransportableObjectWithManager___block_invoke_4(ui
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setPsn:{-[AXAuditPSN psn](self, "psn")}];
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -90,7 +90,7 @@ void __53__AXAuditPSN_registerTransportableObjectWithManager___block_invoke_4(ui
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v6 = [(AXAuditPSN *)self psn];
       v7 = [(AXAuditPSN *)v5 psn];
 

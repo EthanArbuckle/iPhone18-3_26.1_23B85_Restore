@@ -5,7 +5,7 @@
 - (NSMeasurement)maximumDepth;
 - (void)_connect;
 - (void)_disconnect;
-- (void)_handleMessage:(shared_ptr<CLConnectionMessage>)a3;
+- (void)_handleMessage:(shared_ptr<CLConnectionMessage>)message;
 - (void)dealloc;
 - (void)notifySubmersionStateProcessingCompleted;
 - (void)setDelegate:(id)delegate;
@@ -140,10 +140,10 @@
   v3 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_handleMessage:(shared_ptr<CLConnectionMessage>)a3
+- (void)_handleMessage:(shared_ptr<CLConnectionMessage>)message
 {
-  var0 = a3.var0;
-  v5 = CLConnectionMessage::name(*a3.var0);
+  var0 = message.var0;
+  v5 = CLConnectionMessage::name(*message.var0);
   if (*(v5 + 23) < 0 && *(v5 + 8) == 62 && !memcmp(*v5, "WaterSubmersion/kCLConnectionMessageWaterSubmersionEventUpdate", 0x3EuLL))
   {
     objc_loadWeak(&self->_delegate);

@@ -1,28 +1,28 @@
 @interface CUIImage
-+ (id)imageWithCGImage:(CGImage *)a3;
++ (id)imageWithCGImage:(CGImage *)image;
 - (CGSize)size;
-- (CUIImage)initWithCGImage:(CGImage *)a3;
+- (CUIImage)initWithCGImage:(CGImage *)image;
 - (void)dealloc;
 @end
 
 @implementation CUIImage
 
-+ (id)imageWithCGImage:(CGImage *)a3
++ (id)imageWithCGImage:(CGImage *)image
 {
-  v3 = [[a1 alloc] initWithCGImage:a3];
+  v3 = [[self alloc] initWithCGImage:image];
 
   return v3;
 }
 
-- (CUIImage)initWithCGImage:(CGImage *)a3
+- (CUIImage)initWithCGImage:(CGImage *)image
 {
   v7.receiver = self;
   v7.super_class = CUIImage;
   v4 = [(CUIImage *)&v7 init];
   v5 = v4;
-  if (a3 && v4)
+  if (image && v4)
   {
-    v4->_cgImage = CFRetain(a3);
+    v4->_cgImage = CFRetain(image);
   }
 
   return v5;

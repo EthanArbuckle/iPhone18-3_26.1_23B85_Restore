@@ -1,11 +1,11 @@
 @interface NEKServicesClient
 + (id)log;
-- (BOOL)_copyFilesWithPrefix:(id)a3 fromSource:(id)a4 toDiagnosticExtension:(id)a5;
-- (NEKServicesClient)initWithConnection:(id)a3 andEnvironment:(id)a4;
+- (BOOL)_copyFilesWithPrefix:(id)prefix fromSource:(id)source toDiagnosticExtension:(id)extension;
+- (NEKServicesClient)initWithConnection:(id)connection andEnvironment:(id)environment;
 - (id)_syncReport;
-- (id)_tempDiagnosticExtDirectoryForDbWithPrefix:(id)a3;
-- (id)_tempDiagnosticExtDirectoryForFilesWithPrefix:(id)a3;
-- (void)dumpDiagnosticsWithCompletion:(id)a3;
+- (id)_tempDiagnosticExtDirectoryForDbWithPrefix:(id)prefix;
+- (id)_tempDiagnosticExtDirectoryForFilesWithPrefix:(id)prefix;
+- (void)dumpDiagnosticsWithCompletion:(id)completion;
 @end
 
 @implementation NEKServicesClient
@@ -22,10 +22,10 @@
   return v3;
 }
 
-- (NEKServicesClient)initWithConnection:(id)a3 andEnvironment:(id)a4
+- (NEKServicesClient)initWithConnection:(id)connection andEnvironment:(id)environment
 {
-  v7 = a3;
-  v8 = a4;
+  connectionCopy = connection;
+  environmentCopy = environment;
   v15.receiver = self;
   v15.super_class = NEKServicesClient;
   v9 = [(NEKServicesClient *)&v15 init];
@@ -42,32 +42,32 @@
     logger = v9->_logger;
     v9->_logger = v11;
 
-    objc_storeStrong(&v9->_connection, a3);
-    objc_storeStrong(&v9->_environment, a4);
+    objc_storeStrong(&v9->_connection, connection);
+    objc_storeStrong(&v9->_environment, environment);
   }
 
   return v9;
 }
 
-- (void)dumpDiagnosticsWithCompletion:(id)a3
+- (void)dumpDiagnosticsWithCompletion:(id)completion
 {
   logger = self->_logger;
-  v5 = a3;
+  completionCopy = completion;
   [(EKSSLogger *)logger timestampLogForString:@"Starting diagnostic dump"];
-  v6 = [(NEKEnvironment *)self->_environment tinyStore];
-  v7 = [v6 asDictionary];
+  tinyStore = [(NEKEnvironment *)self->_environment tinyStore];
+  asDictionary = [tinyStore asDictionary];
 
   [(EKSSLogger *)self->_logger timestampLogForString:@"Adding duplicate and drift diagnostics [iOS only]"];
-  v8 = [(NEKServicesClient *)self _syncReport];
-  v9 = [v8 objectForKey:@"Duplicates"];
-  [v7 setObject:v9 forKeyedSubscript:@"Duplicates"];
+  _syncReport = [(NEKServicesClient *)self _syncReport];
+  v9 = [_syncReport objectForKey:@"Duplicates"];
+  [asDictionary setObject:v9 forKeyedSubscript:@"Duplicates"];
 
-  v10 = [v8 objectForKey:@"Drift"];
-  [v7 setObject:v10 forKeyedSubscript:@"Drift"];
+  v10 = [_syncReport objectForKey:@"Drift"];
+  [asDictionary setObject:v10 forKeyedSubscript:@"Drift"];
 
   [(EKSSLogger *)self->_logger timestampLogForString:@"Encoding diagnostic data to JSON"];
   v24 = 0;
-  v11 = [NSJSONSerialization dataWithJSONObject:v7 options:11 error:&v24];
+  v11 = [NSJSONSerialization dataWithJSONObject:asDictionary options:11 error:&v24];
   v12 = v24;
   v13 = self->_logger;
   v14 = [NSString stringWithFormat:@"JSON encoding complete with error: %@", v12];
@@ -91,7 +91,7 @@
   [(EKSSLogger *)self->_logger timestampLogForString:@"Copying RecordMap database files"];
   v22 = [(NEKServicesClient *)self _tempDiagnosticExtDirectoryForDbWithPrefix:@"RecordMap"];
   [(EKSSLogger *)self->_logger timestampLogForString:@"Diagnostic dump completed"];
-  v5[2](v5, v16, v22, self->_logger);
+  completionCopy[2](completionCopy, v16, v22, self->_logger);
 }
 
 - (id)_syncReport
@@ -138,20 +138,20 @@
   return v11;
 }
 
-- (id)_tempDiagnosticExtDirectoryForDbWithPrefix:(id)a3
+- (id)_tempDiagnosticExtDirectoryForDbWithPrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(NEKEnvironment *)self->_environment dbFileManager];
+  prefixCopy = prefix;
+  dbFileManager = [(NEKEnvironment *)self->_environment dbFileManager];
 
-  if (!v5)
+  if (!dbFileManager)
   {
     [(EKSSLogger *)self->_logger timestampLogForString:@"dbFileManager is nil, skipping database file copy"];
     v10 = 0;
     goto LABEL_10;
   }
 
-  v6 = [(NEKEnvironment *)self->_environment dbFileManager];
-  v7 = [v6 syncStateDBPathFor:&stru_1000B7928];
+  dbFileManager2 = [(NEKEnvironment *)self->_environment dbFileManager];
+  v7 = [dbFileManager2 syncStateDBPathFor:&stru_1000B7928];
 
   v8 = [NSURL fileURLWithPath:v7];
   if (!v8)
@@ -164,8 +164,8 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v9 = [(NEKServicesClient *)self _tempDiagnosticExtDirectoryForFilesWithPrefix:v4];
-  if (!v9 || ![(NEKServicesClient *)self _copyFilesWithPrefix:v4 fromSource:v8 toDiagnosticExtension:v9])
+  v9 = [(NEKServicesClient *)self _tempDiagnosticExtDirectoryForFilesWithPrefix:prefixCopy];
+  if (!v9 || ![(NEKServicesClient *)self _copyFilesWithPrefix:prefixCopy fromSource:v8 toDiagnosticExtension:v9])
   {
     goto LABEL_8;
   }
@@ -179,11 +179,11 @@ LABEL_10:
   return v10;
 }
 
-- (id)_tempDiagnosticExtDirectoryForFilesWithPrefix:(id)a3
+- (id)_tempDiagnosticExtDirectoryForFilesWithPrefix:(id)prefix
 {
-  v4 = [NSString stringWithFormat:@"Companion-%@", a3];
+  prefix = [NSString stringWithFormat:@"Companion-%@", prefix];
   v5 = EKSSDiagnosticsDirectory();
-  v6 = [v5 URLByAppendingPathComponent:v4];
+  v6 = [v5 URLByAppendingPathComponent:prefix];
 
   v7 = +[NSFileManager defaultManager];
   [v7 removeItemAtURL:v6 error:0];
@@ -194,8 +194,8 @@ LABEL_10:
   logger = self->_logger;
   if (v8)
   {
-    v12 = [v6 path];
-    v13 = [NSString stringWithFormat:@"Created tempDir: %@", v12];
+    path = [v6 path];
+    v13 = [NSString stringWithFormat:@"Created tempDir: %@", path];
     [(EKSSLogger *)logger timestampLogForString:v13];
 
     v14 = v6;
@@ -203,8 +203,8 @@ LABEL_10:
 
   else
   {
-    v15 = [v9 localizedDescription];
-    v16 = [NSString stringWithFormat:@"Failed to create tempDir: %@", v15];
+    localizedDescription = [v9 localizedDescription];
+    v16 = [NSString stringWithFormat:@"Failed to create tempDir: %@", localizedDescription];
     [(EKSSLogger *)logger timestampLogForString:v16];
 
     v14 = 0;
@@ -213,30 +213,30 @@ LABEL_10:
   return v14;
 }
 
-- (BOOL)_copyFilesWithPrefix:(id)a3 fromSource:(id)a4 toDiagnosticExtension:(id)a5
+- (BOOL)_copyFilesWithPrefix:(id)prefix fromSource:(id)source toDiagnosticExtension:(id)extension
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  prefixCopy = prefix;
+  sourceCopy = source;
+  extensionCopy = extension;
   v11 = +[NSFileManager defaultManager];
-  v43 = v9;
-  v12 = [v9 path];
+  v43 = sourceCopy;
+  path = [sourceCopy path];
   v51 = 0;
-  v13 = [v11 contentsOfDirectoryAtPath:v12 error:&v51];
+  v13 = [v11 contentsOfDirectoryAtPath:path error:&v51];
   v14 = v51;
 
-  v45 = self;
+  selfCopy = self;
   logger = self->_logger;
   if (!v13)
   {
-    v34 = [v14 localizedDescription];
-    v35 = [NSString stringWithFormat:@"Failed to read sourceDirectory contents: %@", v34];
+    localizedDescription = [v14 localizedDescription];
+    v35 = [NSString stringWithFormat:@"Failed to read sourceDirectory contents: %@", localizedDescription];
     [(EKSSLogger *)logger timestampLogForString:v35];
 
     v13 = 0;
 LABEL_21:
 
-    [v11 removeItemAtURL:v10 error:0];
+    [v11 removeItemAtURL:extensionCopy error:0];
     v33 = 0;
     goto LABEL_22;
   }
@@ -254,9 +254,9 @@ LABEL_21:
   {
 
 LABEL_20:
-    v36 = v45->_logger;
-    v34 = [NSString stringWithFormat:@"No [%@] files were copied, cleaning up temp directory", v8];
-    [(EKSSLogger *)v36 timestampLogForString:v34];
+    v36 = selfCopy->_logger;
+    localizedDescription = [NSString stringWithFormat:@"No [%@] files were copied, cleaning up temp directory", prefixCopy];
+    [(EKSSLogger *)v36 timestampLogForString:localizedDescription];
     goto LABEL_21;
   }
 
@@ -279,17 +279,17 @@ LABEL_20:
       }
 
       v22 = *(*(&v47 + 1) + 8 * v21);
-      if ([v22 hasPrefix:v8])
+      if ([v22 hasPrefix:prefixCopy])
       {
-        v23 = v10;
-        v24 = [v10 URLByAppendingPathComponent:v22];
+        v23 = extensionCopy;
+        v24 = [extensionCopy URLByAppendingPathComponent:v22];
         [v42 removeItemAtURL:v24 error:0];
         v25 = [v43 URLByAppendingPathComponent:v22];
         v46 = v14;
         v26 = [v42 copyItemAtURL:v25 toURL:v24 error:&v46];
         v27 = v46;
 
-        v28 = v45->_logger;
+        v28 = selfCopy->_logger;
         if (v26)
         {
           v29 = [NSString stringWithFormat:@"Copied: %@", v22];
@@ -300,13 +300,13 @@ LABEL_20:
 
         else
         {
-          v31 = [v27 localizedDescription];
-          v32 = [NSString stringWithFormat:@"Failed to copy %@: %@", v22, v31];
+          localizedDescription2 = [v27 localizedDescription];
+          v32 = [NSString stringWithFormat:@"Failed to copy %@: %@", v22, localizedDescription2];
           [(EKSSLogger *)v28 timestampLogForString:v32];
         }
 
         v14 = v27;
-        v10 = v23;
+        extensionCopy = v23;
         v20 = v39;
         v17 = v40;
         v19 = v44;
@@ -314,7 +314,7 @@ LABEL_20:
 
       else
       {
-        v30 = v45->_logger;
+        v30 = selfCopy->_logger;
         v24 = [NSString stringWithFormat:@"Ignored: %@", v22];
         [(EKSSLogger *)v30 timestampLogForString:v24];
       }

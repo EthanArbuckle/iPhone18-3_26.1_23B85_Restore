@@ -1,53 +1,53 @@
 @interface BSUICardNavigationController
 - (BOOL)accessibilityPerformEscape;
-- (id)popToRootViewControllerAnimated:(BOOL)a3;
-- (id)popToViewController:(id)a3 animated:(BOOL)a4;
-- (id)popViewControllerAnimated:(BOOL)a3;
-- (void)_updateNavigationTypeForViewController:(id)a3;
+- (id)popToRootViewControllerAnimated:(BOOL)animated;
+- (id)popToViewController:(id)controller animated:(BOOL)animated;
+- (id)popViewControllerAnimated:(BOOL)animated;
+- (void)_updateNavigationTypeForViewController:(id)controller;
 - (void)notifyFeedDidBecomeCurrent;
-- (void)pushViewController:(id)a3 animated:(BOOL)a4;
-- (void)setIsCurrentCard:(BOOL)a3;
-- (void)setNavigationBarHidden:(BOOL)a3 animated:(BOOL)a4;
+- (void)pushViewController:(id)controller animated:(BOOL)animated;
+- (void)setIsCurrentCard:(BOOL)card;
+- (void)setNavigationBarHidden:(BOOL)hidden animated:(BOOL)animated;
 @end
 
 @implementation BSUICardNavigationController
 
-- (void)setNavigationBarHidden:(BOOL)a3 animated:(BOOL)a4
+- (void)setNavigationBarHidden:(BOOL)hidden animated:(BOOL)animated
 {
-  v4 = a3;
+  hiddenCopy = hidden;
   v26.receiver = self;
   v26.super_class = BSUICardNavigationController;
-  [(BSUICardNavigationController *)&v26 setNavigationBarHidden:a3 animated:a4];
-  v6 = [(BSUICardNavigationController *)self cardStackViewController];
-  v7 = [v6 topCardSetViewController];
-  v8 = [v7 currentCardViewController];
+  [(BSUICardNavigationController *)&v26 setNavigationBarHidden:hidden animated:animated];
+  cardStackViewController = [(BSUICardNavigationController *)self cardStackViewController];
+  topCardSetViewController = [cardStackViewController topCardSetViewController];
+  currentCardViewController = [topCardSetViewController currentCardViewController];
 
-  v9 = [v8 topContentViewController];
-  v10 = [v9 _appearState];
+  topContentViewController = [currentCardViewController topContentViewController];
+  _appearState = [topContentViewController _appearState];
 
-  v11 = [v6 statusBarBackgroundController];
-  [v11 opacity];
+  statusBarBackgroundController = [cardStackViewController statusBarBackgroundController];
+  [statusBarBackgroundController opacity];
   v13 = v12;
 
-  if ((v10 & 0xFFFFFFFD) == 1)
+  if ((_appearState & 0xFFFFFFFD) == 1)
   {
-    v4 = [v8 prefersStatusBarBackgroundHidden] ^ 1;
+    hiddenCopy = [currentCardViewController prefersStatusBarBackgroundHidden] ^ 1;
   }
 
   v14 = _os_feature_enabled_impl();
-  if ([v8 expanded])
+  if ([currentCardViewController expanded])
   {
-    v15 = (v4 & (v14 ^ 1));
-    v16 = [v8 topContentViewController];
-    v17 = [v16 transitionCoordinator];
+    v15 = (hiddenCopy & (v14 ^ 1));
+    topContentViewController2 = [currentCardViewController topContentViewController];
+    transitionCoordinator = [topContentViewController2 transitionCoordinator];
 
-    if (v17)
+    if (transitionCoordinator)
     {
       v23[0] = _NSConcreteStackBlock;
       v23[1] = 3221225472;
       v23[2] = sub_10F3C;
       v23[3] = &unk_387330;
-      v24 = v6;
+      v24 = cardStackViewController;
       v25 = v15;
       v19[0] = _NSConcreteStackBlock;
       v19[1] = 3221225472;
@@ -56,88 +56,88 @@
       v20 = v24;
       v21 = v13;
       v22 = v15;
-      [v17 animateAlongsideTransition:v23 completion:v19];
+      [transitionCoordinator animateAlongsideTransition:v23 completion:v19];
 
-      v18 = v24;
+      statusBarBackgroundController2 = v24;
     }
 
     else
     {
-      v18 = [v6 statusBarBackgroundController];
-      [v18 setOpacity:v15];
+      statusBarBackgroundController2 = [cardStackViewController statusBarBackgroundController];
+      [statusBarBackgroundController2 setOpacity:v15];
     }
   }
 }
 
-- (void)pushViewController:(id)a3 animated:(BOOL)a4
+- (void)pushViewController:(id)controller animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  [(BSUICardNavigationController *)self _updateNavigationTypeForViewController:v6];
+  animatedCopy = animated;
+  controllerCopy = controller;
+  [(BSUICardNavigationController *)self _updateNavigationTypeForViewController:controllerCopy];
   v7.receiver = self;
   v7.super_class = BSUICardNavigationController;
-  [(BSUINavigationController *)&v7 pushViewController:v6 animated:v4];
+  [(BSUINavigationController *)&v7 pushViewController:controllerCopy animated:animatedCopy];
 }
 
-- (id)popViewControllerAnimated:(BOOL)a3
+- (id)popViewControllerAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(BSUICardNavigationController *)self viewControllers];
-  if ([v5 count] <= 1)
+  animatedCopy = animated;
+  viewControllers = [(BSUICardNavigationController *)self viewControllers];
+  if ([viewControllers count] <= 1)
   {
     [(BSUICardNavigationController *)self _updateNavigationTypeForViewController:0];
   }
 
   else
   {
-    v6 = [(BSUICardNavigationController *)self viewControllers];
-    v7 = [(BSUICardNavigationController *)self viewControllers];
-    v8 = [v6 objectAtIndexedSubscript:{objc_msgSend(v7, "count") - 2}];
+    viewControllers2 = [(BSUICardNavigationController *)self viewControllers];
+    viewControllers3 = [(BSUICardNavigationController *)self viewControllers];
+    v8 = [viewControllers2 objectAtIndexedSubscript:{objc_msgSend(viewControllers3, "count") - 2}];
     [(BSUICardNavigationController *)self _updateNavigationTypeForViewController:v8];
   }
 
   v11.receiver = self;
   v11.super_class = BSUICardNavigationController;
-  v9 = [(BSUINavigationController *)&v11 popViewControllerAnimated:v3];
+  v9 = [(BSUINavigationController *)&v11 popViewControllerAnimated:animatedCopy];
   [(BSUIFeedNavigationController *)self updateTopFeedLiveResizeOptions];
 
   return v9;
 }
 
-- (id)popToViewController:(id)a3 animated:(BOOL)a4
+- (id)popToViewController:(id)controller animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  [(BSUICardNavigationController *)self _updateNavigationTypeForViewController:v6];
+  animatedCopy = animated;
+  controllerCopy = controller;
+  [(BSUICardNavigationController *)self _updateNavigationTypeForViewController:controllerCopy];
   v9.receiver = self;
   v9.super_class = BSUICardNavigationController;
-  v7 = [(BSUINavigationController *)&v9 popToViewController:v6 animated:v4];
+  v7 = [(BSUINavigationController *)&v9 popToViewController:controllerCopy animated:animatedCopy];
 
   [(BSUIFeedNavigationController *)self updateTopFeedLiveResizeOptions];
 
   return v7;
 }
 
-- (id)popToRootViewControllerAnimated:(BOOL)a3
+- (id)popToRootViewControllerAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(BSUICardNavigationController *)self viewControllers];
-  v6 = [v5 firstObject];
-  [(BSUICardNavigationController *)self _updateNavigationTypeForViewController:v6];
+  animatedCopy = animated;
+  viewControllers = [(BSUICardNavigationController *)self viewControllers];
+  firstObject = [viewControllers firstObject];
+  [(BSUICardNavigationController *)self _updateNavigationTypeForViewController:firstObject];
 
   v9.receiver = self;
   v9.super_class = BSUICardNavigationController;
-  v7 = [(BSUINavigationController *)&v9 popToRootViewControllerAnimated:v3];
+  v7 = [(BSUINavigationController *)&v9 popToRootViewControllerAnimated:animatedCopy];
   [(BSUIFeedNavigationController *)self updateTopFeedLiveResizeOptions];
 
   return v7;
 }
 
-- (void)setIsCurrentCard:(BOOL)a3
+- (void)setIsCurrentCard:(BOOL)card
 {
-  if (*(&self->super._isCoveredByCardStack + 1) != a3)
+  if (*(&self->super._isCoveredByCardStack + 1) != card)
   {
-    *(&self->super._isCoveredByCardStack + 1) = a3;
+    *(&self->super._isCoveredByCardStack + 1) = card;
     [(BSUIFeedNavigationController *)self updateTopFeedLiveResizeOptions];
 
     [(BSUICardNavigationController *)self notifyFeedDidBecomeCurrent];
@@ -148,36 +148,36 @@
 {
   if ([(BSUICardNavigationController *)self isCurrentCard])
   {
-    v3 = [(BSUIFeedNavigationController *)self currentFeedViewController];
-    [v3 didBecomeCurrentFeed];
+    currentFeedViewController = [(BSUIFeedNavigationController *)self currentFeedViewController];
+    [currentFeedViewController didBecomeCurrentFeed];
 
-    v4 = [(BSUICardNavigationController *)self topViewController];
+    topViewController = [(BSUICardNavigationController *)self topViewController];
     v5 = BUProtocolCast();
 
     [v5 didBecomeVisibleContentScrollView];
   }
 }
 
-- (void)_updateNavigationTypeForViewController:(id)a3
+- (void)_updateNavigationTypeForViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [(BSUICardNavigationController *)self cardStackViewController];
-  v7 = [v5 topCardSetViewController];
+  controllerCopy = controller;
+  cardStackViewController = [(BSUICardNavigationController *)self cardStackViewController];
+  topCardSetViewController = [cardStackViewController topCardSetViewController];
 
   v6 = BUProtocolCast();
 
-  [v6 cardSetViewController:v7 willUpdateWithNavigationType:{objc_msgSend(v7, "lastNavigationType")}];
+  [v6 cardSetViewController:topCardSetViewController willUpdateWithNavigationType:{objc_msgSend(topCardSetViewController, "lastNavigationType")}];
 }
 
 - (BOOL)accessibilityPerformEscape
 {
-  v3 = [(BSUICardNavigationController *)self viewControllers];
-  v4 = [v3 count];
+  viewControllers = [(BSUICardNavigationController *)self viewControllers];
+  v4 = [viewControllers count];
 
   if (v4 < 2)
   {
-    v6 = [(BSUICardNavigationController *)self cardStackViewController];
-    [v6 popCardsAnimated:1];
+    cardStackViewController = [(BSUICardNavigationController *)self cardStackViewController];
+    [cardStackViewController popCardsAnimated:1];
   }
 
   else

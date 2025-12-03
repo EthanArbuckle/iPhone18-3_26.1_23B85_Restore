@@ -1,10 +1,10 @@
 @interface SearchCollectionViewLayout
 + (Class)layoutAttributesClass;
 - (CGSize)collectionViewContentSize;
-- (_TtC22SubscribePageExtension26SearchCollectionViewLayout)initWithCoder:(id)a3;
-- (id)layoutAttributesForDecorationViewOfKind:(id)a3 atIndexPath:(id)a4;
-- (id)layoutAttributesForElementsInRect:(CGRect)a3;
-- (id)layoutAttributesForItemAtIndexPath:(id)a3;
+- (_TtC22SubscribePageExtension26SearchCollectionViewLayout)initWithCoder:(id)coder;
+- (id)layoutAttributesForDecorationViewOfKind:(id)kind atIndexPath:(id)path;
+- (id)layoutAttributesForElementsInRect:(CGRect)rect;
+- (id)layoutAttributesForItemAtIndexPath:(id)path;
 - (void)prepareLayout;
 @end
 
@@ -17,7 +17,7 @@
   return swift_getObjCClassFromMetadata();
 }
 
-- (_TtC22SubscribePageExtension26SearchCollectionViewLayout)initWithCoder:(id)a3
+- (_TtC22SubscribePageExtension26SearchCollectionViewLayout)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC22SubscribePageExtension26SearchCollectionViewLayout_backgroundCornerRadius) = 0;
   v3 = (&self->super.super.super.isa + OBJC_IVAR____TtC22SubscribePageExtension26SearchCollectionViewLayout_pendingPrepareObserver);
@@ -30,7 +30,7 @@
 
 - (CGSize)collectionViewContentSize
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100463940();
   v5 = v4;
 
@@ -41,10 +41,10 @@
   return result;
 }
 
-- (id)layoutAttributesForElementsInRect:(CGRect)a3
+- (id)layoutAttributesForElementsInRect:(CGRect)rect
 {
-  x = a3.origin.x;
-  v4 = self;
+  x = rect.origin.x;
+  selfCopy = self;
   v5 = sub_100463AFC(x);
 
   if (v5)
@@ -61,17 +61,17 @@
   return v6.super.isa;
 }
 
-- (id)layoutAttributesForItemAtIndexPath:(id)a3
+- (id)layoutAttributesForItemAtIndexPath:(id)path
 {
   v4 = sub_1007417F4();
   v5 = *(v4 - 8);
   __chkstk_darwin(v4);
   v7 = &v14 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_100741744();
-  v8 = self;
+  selfCopy = self;
   isa = sub_100741704().super.isa;
   v10 = type metadata accessor for SearchCollectionViewLayout();
-  v14.receiver = v8;
+  v14.receiver = selfCopy;
   v14.super_class = v10;
   v11 = [(SearchCollectionViewLayout *)&v14 layoutAttributesForItemAtIndexPath:isa];
 
@@ -79,7 +79,7 @@
   {
     v12 = sub_100464770(v11);
 
-    v8 = v11;
+    selfCopy = v11;
   }
 
   else
@@ -92,7 +92,7 @@
   return v12;
 }
 
-- (id)layoutAttributesForDecorationViewOfKind:(id)a3 atIndexPath:(id)a4
+- (id)layoutAttributesForDecorationViewOfKind:(id)kind atIndexPath:(id)path
 {
   v5 = sub_1007417F4();
   v6 = *(v5 - 8);
@@ -101,7 +101,7 @@
   v9 = sub_100753094();
   v11 = v10;
   sub_100741744();
-  v12 = self;
+  selfCopy = self;
   v13 = sub_100464C00(v9, v11, v8);
 
   (*(v6 + 8))(v8, v5);
@@ -111,7 +111,7 @@
 
 - (void)prepareLayout
 {
-  v2 = self;
+  selfCopy = self;
   sub_100465B0C();
 }
 

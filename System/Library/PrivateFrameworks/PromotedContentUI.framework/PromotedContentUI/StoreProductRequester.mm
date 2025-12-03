@@ -1,6 +1,6 @@
 @interface StoreProductRequester
 - (_TtC17PromotedContentUI21StoreProductRequester)init;
-- (void)productViewController:(id)a3 didFinishWithResult:(int64_t)a4;
+- (void)productViewController:(id)controller didFinishWithResult:(int64_t)result;
 @end
 
 @implementation StoreProductRequester
@@ -12,11 +12,11 @@
   return result;
 }
 
-- (void)productViewController:(id)a3 didFinishWithResult:(int64_t)a4
+- (void)productViewController:(id)controller didFinishWithResult:(int64_t)result
 {
-  v6 = a3;
-  v7 = self;
-  sub_1C1A2F35C(a4);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_1C1A2F35C(result);
 }
 
 @end

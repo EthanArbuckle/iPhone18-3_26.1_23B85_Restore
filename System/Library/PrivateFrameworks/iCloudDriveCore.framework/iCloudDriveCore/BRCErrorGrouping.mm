@@ -1,25 +1,25 @@
 @interface BRCErrorGrouping
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToErrorGrouping:(id)a3;
-- (BRCErrorGrouping)initWithError:(id)a3 pcsChained:(BOOL)a4 enhancedDrivePrivacyEnabled:(BOOL)a5;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToErrorGrouping:(id)grouping;
+- (BRCErrorGrouping)initWithError:(id)error pcsChained:(BOOL)chained enhancedDrivePrivacyEnabled:(BOOL)enabled;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation BRCErrorGrouping
 
-- (BRCErrorGrouping)initWithError:(id)a3 pcsChained:(BOOL)a4 enhancedDrivePrivacyEnabled:(BOOL)a5
+- (BRCErrorGrouping)initWithError:(id)error pcsChained:(BOOL)chained enhancedDrivePrivacyEnabled:(BOOL)enabled
 {
-  v9 = a3;
+  errorCopy = error;
   v13.receiver = self;
   v13.super_class = BRCErrorGrouping;
   v10 = [(BRCErrorGrouping *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_error, a3);
-    v11->_isPCSChained = a4;
-    v11->_isEnhancedDrivePrivacyEnabled = a5;
+    objc_storeStrong(&v10->_error, error);
+    v11->_isPCSChained = chained;
+    v11->_isEnhancedDrivePrivacyEnabled = enabled;
   }
 
   return v11;
@@ -50,8 +50,8 @@
 
 - (unint64_t)hash
 {
-  v3 = [(NSError *)self->_error domain];
-  v4 = [v3 hash];
+  domain = [(NSError *)self->_error domain];
+  v4 = [domain hash];
   v5 = [(NSError *)self->_error code]+ v4;
 
   if (self->_isPCSChained)
@@ -65,20 +65,20 @@
   }
 }
 
-- (BOOL)isEqualToErrorGrouping:(id)a3
+- (BOOL)isEqualToErrorGrouping:(id)grouping
 {
-  v4 = a3;
-  v5 = [(NSError *)self->_error domain];
-  v6 = [v4 error];
-  v7 = [v6 domain];
-  if ([v5 isEqualToString:v7])
+  groupingCopy = grouping;
+  domain = [(NSError *)self->_error domain];
+  error = [groupingCopy error];
+  domain2 = [error domain];
+  if ([domain isEqualToString:domain2])
   {
-    v8 = [(NSError *)self->_error code];
-    v9 = [v4 error];
-    if (v8 == [v9 code] && (isPCSChained = self->_isPCSChained, isPCSChained == objc_msgSend(v4, "isPCSChained")))
+    code = [(NSError *)self->_error code];
+    error2 = [groupingCopy error];
+    if (code == [error2 code] && (isPCSChained = self->_isPCSChained, isPCSChained == objc_msgSend(groupingCopy, "isPCSChained")))
     {
       isEnhancedDrivePrivacyEnabled = self->_isEnhancedDrivePrivacyEnabled;
-      v12 = isEnhancedDrivePrivacyEnabled == [v4 isEnhancedDrivePrivacyEnabled];
+      v12 = isEnhancedDrivePrivacyEnabled == [groupingCopy isEnhancedDrivePrivacyEnabled];
     }
 
     else
@@ -95,11 +95,11 @@
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(BRCErrorGrouping *)self isEqualToErrorGrouping:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(BRCErrorGrouping *)self isEqualToErrorGrouping:equalCopy];
 
   return v5;
 }

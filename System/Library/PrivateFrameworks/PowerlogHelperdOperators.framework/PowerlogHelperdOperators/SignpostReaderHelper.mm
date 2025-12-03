@@ -1,29 +1,29 @@
 @interface SignpostReaderHelper
 - (id)createXPCConnection;
 - (id)customGetNearestMidnight;
-- (id)generateRapidMSSWithStartDate:(id)a3 endDate:(id)a4 atPath:(id)a5;
-- (id)generateRapidSignpostSummaryWithStartDate:(id)a3 endDate:(id)a4;
-- (id)generateTaskingMSSWithStartDate:(id)a3 endDate:(id)a4 atPath:(id)a5;
-- (id)getSignpostSummaryWithAllowlist:(id)a3 withStartDate:(id)a4 withEndDate:(id)a5;
-- (id)processSignpostWithConfig:(id)a3 withServiceType:(int)a4;
+- (id)generateRapidMSSWithStartDate:(id)date endDate:(id)endDate atPath:(id)path;
+- (id)generateRapidSignpostSummaryWithStartDate:(id)date endDate:(id)endDate;
+- (id)generateTaskingMSSWithStartDate:(id)date endDate:(id)endDate atPath:(id)path;
+- (id)getSignpostSummaryWithAllowlist:(id)allowlist withStartDate:(id)date withEndDate:(id)endDate;
+- (id)processSignpostWithConfig:(id)config withServiceType:(int)type;
 @end
 
 @implementation SignpostReaderHelper
 
-- (id)getSignpostSummaryWithAllowlist:(id)a3 withStartDate:(id)a4 withEndDate:(id)a5
+- (id)getSignpostSummaryWithAllowlist:(id)allowlist withStartDate:(id)date withEndDate:(id)endDate
 {
   v5 = MEMORY[0x277CBEC10];
-  if (a3 && a4 && a5)
+  if (allowlist && date && endDate)
   {
     v9 = MEMORY[0x277CBEB38];
-    v10 = a5;
-    v11 = a4;
-    v12 = a3;
+    endDateCopy = endDate;
+    dateCopy = date;
+    allowlistCopy = allowlist;
     v13 = objc_alloc_init(v9);
-    [v13 setObject:v12 forKey:@"taskingAllowlist"];
+    [v13 setObject:allowlistCopy forKey:@"taskingAllowlist"];
 
-    [v13 setObject:v11 forKey:@"taskingStartDate"];
-    [v13 setObject:v10 forKey:@"taskingEndDate"];
+    [v13 setObject:dateCopy forKey:@"taskingStartDate"];
+    [v13 setObject:endDateCopy forKey:@"taskingEndDate"];
 
     v5 = [(SignpostReaderHelper *)self processSignpostWithConfig:v13 withServiceType:2];
   }
@@ -31,15 +31,15 @@
   return v5;
 }
 
-- (id)generateRapidSignpostSummaryWithStartDate:(id)a3 endDate:(id)a4
+- (id)generateRapidSignpostSummaryWithStartDate:(id)date endDate:(id)endDate
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6 && v7)
+  dateCopy = date;
+  endDateCopy = endDate;
+  v8 = endDateCopy;
+  if (dateCopy && endDateCopy)
   {
     v9 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    [v9 setObject:v6 forKey:@"start_date"];
+    [v9 setObject:dateCopy forKey:@"start_date"];
     [v9 setObject:v8 forKey:@"end_date"];
     v10 = [(SignpostReaderHelper *)self processSignpostWithConfig:v9 withServiceType:3];
   }
@@ -58,18 +58,18 @@
   return v10;
 }
 
-- (id)generateRapidMSSWithStartDate:(id)a3 endDate:(id)a4 atPath:(id)a5
+- (id)generateRapidMSSWithStartDate:(id)date endDate:(id)endDate atPath:(id)path
 {
   v23 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v8 && v9 && v10)
+  dateCopy = date;
+  endDateCopy = endDate;
+  pathCopy = path;
+  v11 = pathCopy;
+  if (dateCopy && endDateCopy && pathCopy)
   {
     v12 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    [v12 setObject:v8 forKey:@"start_date"];
-    [v12 setObject:v9 forKey:@"end_date"];
+    [v12 setObject:dateCopy forKey:@"start_date"];
+    [v12 setObject:endDateCopy forKey:@"end_date"];
     [v12 setObject:v11 forKey:@"mss_filepath"];
     v13 = [(SignpostReaderHelper *)self processSignpostWithConfig:v12 withServiceType:4];
   }
@@ -80,9 +80,9 @@
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
       v17 = 138412802;
-      v18 = v8;
+      v18 = dateCopy;
       v19 = 2112;
-      v20 = v9;
+      v20 = endDateCopy;
       v21 = 2112;
       v22 = v11;
       _os_log_error_impl(&dword_25EE51000, v14, OS_LOG_TYPE_ERROR, "Invalid arguments: startDate=%@ endDate=%@ path=%@", &v17, 0x20u);
@@ -96,18 +96,18 @@
   return v13;
 }
 
-- (id)generateTaskingMSSWithStartDate:(id)a3 endDate:(id)a4 atPath:(id)a5
+- (id)generateTaskingMSSWithStartDate:(id)date endDate:(id)endDate atPath:(id)path
 {
   v23 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v8 && v9 && v10)
+  dateCopy = date;
+  endDateCopy = endDate;
+  pathCopy = path;
+  v11 = pathCopy;
+  if (dateCopy && endDateCopy && pathCopy)
   {
     v12 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    [v12 setObject:v8 forKey:@"start_date"];
-    [v12 setObject:v9 forKey:@"end_date"];
+    [v12 setObject:dateCopy forKey:@"start_date"];
+    [v12 setObject:endDateCopy forKey:@"end_date"];
     [v12 setObject:v11 forKey:@"mss_filepath"];
     v13 = [(SignpostReaderHelper *)self processSignpostWithConfig:v12 withServiceType:5];
   }
@@ -118,9 +118,9 @@
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
       v17 = 138412802;
-      v18 = v8;
+      v18 = dateCopy;
       v19 = 2112;
-      v20 = v9;
+      v20 = endDateCopy;
       v21 = 2112;
       v22 = v11;
       _os_log_error_impl(&dword_25EE51000, v14, OS_LOG_TYPE_ERROR, "Invalid arguments: startDate=%@ endDate=%@ path=%@", &v17, 0x20u);
@@ -134,31 +134,31 @@
   return v13;
 }
 
-- (id)processSignpostWithConfig:(id)a3 withServiceType:(int)a4
+- (id)processSignpostWithConfig:(id)config withServiceType:(int)type
 {
   v37 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  configCopy = config;
   v7 = logHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     *buf = 67109378;
-    *&buf[4] = a4;
+    *&buf[4] = type;
     LOWORD(v33) = 2112;
-    *(&v33 + 2) = v6;
+    *(&v33 + 2) = configCopy;
     _os_log_impl(&dword_25EE51000, v7, OS_LOG_TYPE_INFO, "processSignpost for service type (%d) with config %@", buf, 0x12u);
   }
 
-  v8 = [MEMORY[0x277CBEAA8] date];
-  v9 = [(SignpostReaderHelper *)self createXPCConnection];
+  date = [MEMORY[0x277CBEAA8] date];
+  createXPCConnection = [(SignpostReaderHelper *)self createXPCConnection];
   *buf = 0;
   *&v33 = buf;
   *(&v33 + 1) = 0x3032000000;
   v34 = __Block_byref_object_copy__17;
   v35 = __Block_byref_object_dispose__17;
-  v36 = [MEMORY[0x277CBEAC0] dictionary];
-  if (a4 > 2)
+  dictionary = [MEMORY[0x277CBEAC0] dictionary];
+  if (type > 2)
   {
-    switch(a4)
+    switch(type)
     {
       case 3:
         v22[0] = MEMORY[0x277D85DD0];
@@ -166,7 +166,7 @@
         v22[2] = __66__SignpostReaderHelper_processSignpostWithConfig_withServiceType___block_invoke_37;
         v22[3] = &unk_279A5FD18;
         v22[4] = buf;
-        [v9 readRawSignpostData:v6 withReply:v22];
+        [createXPCConnection readRawSignpostData:configCopy withReply:v22];
         goto LABEL_19;
       case 4:
         v21[0] = MEMORY[0x277D85DD0];
@@ -174,7 +174,7 @@
         v21[2] = __66__SignpostReaderHelper_processSignpostWithConfig_withServiceType___block_invoke_38;
         v21[3] = &unk_279A5FD18;
         v21[4] = buf;
-        [v9 generateMSSReportForRAPID:v6 withReply:v21];
+        [createXPCConnection generateMSSReportForRAPID:configCopy withReply:v21];
         goto LABEL_19;
       case 5:
         v20[0] = MEMORY[0x277D85DD0];
@@ -182,14 +182,14 @@
         v20[2] = __66__SignpostReaderHelper_processSignpostWithConfig_withServiceType___block_invoke_39;
         v20[3] = &unk_279A5FD18;
         v20[4] = buf;
-        [v9 generateMSSReportForTasking:v6 withReply:v20];
+        [createXPCConnection generateMSSReportForTasking:configCopy withReply:v20];
         goto LABEL_19;
     }
   }
 
   else
   {
-    switch(a4)
+    switch(type)
     {
       case 0:
         v25[0] = MEMORY[0x277D85DD0];
@@ -197,7 +197,7 @@
         v25[2] = __66__SignpostReaderHelper_processSignpostWithConfig_withServiceType___block_invoke;
         v25[3] = &unk_279A5FD18;
         v25[4] = buf;
-        [v9 submitSignpostDataWithConfig:v6 withReply:v25];
+        [createXPCConnection submitSignpostDataWithConfig:configCopy withReply:v25];
         goto LABEL_19;
       case 1:
         v24[0] = MEMORY[0x277D85DD0];
@@ -205,7 +205,7 @@
         v24[2] = __66__SignpostReaderHelper_processSignpostWithConfig_withServiceType___block_invoke_35;
         v24[3] = &unk_279A5FD18;
         v24[4] = buf;
-        [v9 summarizeSignpostMetrics:v6 withReply:v24];
+        [createXPCConnection summarizeSignpostMetrics:configCopy withReply:v24];
         goto LABEL_19;
       case 2:
         v23[0] = MEMORY[0x277D85DD0];
@@ -213,7 +213,7 @@
         v23[2] = __66__SignpostReaderHelper_processSignpostWithConfig_withServiceType___block_invoke_36;
         v23[3] = &unk_279A5FD18;
         v23[4] = buf;
-        [v9 aggregateSignpostData:v6 withReply:v23];
+        [createXPCConnection aggregateSignpostData:configCopy withReply:v23];
         goto LABEL_19;
     }
   }
@@ -222,7 +222,7 @@
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     *v26 = 67109120;
-    LODWORD(v27) = a4;
+    LODWORD(v27) = type;
     _os_log_impl(&dword_25EE51000, v10, OS_LOG_TYPE_INFO, "Unknown service type specified: %d", v26, 8u);
   }
 
@@ -237,8 +237,8 @@ LABEL_19:
     _os_log_impl(&dword_25EE51000, v11, OS_LOG_TYPE_INFO, "The successful reply happened: %@", v26, 0xCu);
   }
 
-  v13 = [MEMORY[0x277CBEAA8] date];
-  [v13 timeIntervalSinceDate:v8];
+  date2 = [MEMORY[0x277CBEAA8] date];
+  [date2 timeIntervalSinceDate:date];
   v15 = v14;
   v16 = logHandle();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
@@ -246,9 +246,9 @@ LABEL_19:
     *v26 = 134218498;
     v27 = v15;
     v28 = 2112;
-    v29 = v8;
+    v29 = date;
     v30 = 2112;
-    v31 = v13;
+    v31 = date2;
     _os_log_impl(&dword_25EE51000, v16, OS_LOG_TYPE_INFO, "Time for signpost reading to run: %f, %@, %@", v26, 0x20u);
   }
 
@@ -405,10 +405,10 @@ void __43__SignpostReaderHelper_createXPCConnection__block_invoke_56(uint64_t a1
 
 - (id)customGetNearestMidnight
 {
-  v2 = [MEMORY[0x277CBEAA8] date];
-  v3 = [MEMORY[0x277CBEA80] currentCalendar];
-  v4 = [v3 components:28 fromDate:v2];
-  v5 = [v3 dateFromComponents:v4];
+  date = [MEMORY[0x277CBEAA8] date];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  v4 = [currentCalendar components:28 fromDate:date];
+  v5 = [currentCalendar dateFromComponents:v4];
 
   return v5;
 }

@@ -1,76 +1,76 @@
 @interface AWDCountersRadioS
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasEnergyDetectedEvents:(BOOL)a3;
-- (void)setHasEnergyDetectedRequests:(BOOL)a3;
-- (void)setHasListeningTime:(BOOL)a3;
-- (void)setHasRadioReceivedFrames:(BOOL)a3;
-- (void)setHasRadioStatusDoubleNotification:(BOOL)a3;
-- (void)setHasReceivedEnergyEvents:(BOOL)a3;
-- (void)setHasReceivedFrames:(BOOL)a3;
-- (void)setHasReceivedPreambles:(BOOL)a3;
-- (void)setHasReceivingTime:(BOOL)a3;
-- (void)setHasRetryInterval90perc:(BOOL)a3;
-- (void)setHasRetryIntervalAvg:(BOOL)a3;
-- (void)setHasRetryIntervalMax:(BOOL)a3;
-- (void)setHasRetryIntervalMin:(BOOL)a3;
-- (void)setHasRtt90perc:(BOOL)a3;
-- (void)setHasRttAvgVal:(BOOL)a3;
-- (void)setHasRttMaxVal:(BOOL)a3;
-- (void)setHasRttMinVal:(BOOL)a3;
-- (void)setHasRxErrorAborted:(BOOL)a3;
-- (void)setHasRxErrorAckAborted:(BOOL)a3;
-- (void)setHasRxErrorAckDenied:(BOOL)a3;
-- (void)setHasRxErrorAckFailedRadioDelay:(BOOL)a3;
-- (void)setHasRxErrorAckFailedRadioState:(BOOL)a3;
-- (void)setHasRxErrorDelayedTimeout:(BOOL)a3;
-- (void)setHasRxErrorDelayedTimeslotEnded:(BOOL)a3;
-- (void)setHasRxErrorDestAddrFiltered:(BOOL)a3;
-- (void)setHasRxErrorInvalidData:(BOOL)a3;
-- (void)setHasRxErrorInvalidFcs:(BOOL)a3;
-- (void)setHasRxErrorInvalidFrame:(BOOL)a3;
-- (void)setHasRxErrorInvalidLength:(BOOL)a3;
-- (void)setHasRxErrorReceiveFailed:(BOOL)a3;
-- (void)setHasRxErrorRuntimeDelay:(BOOL)a3;
-- (void)setHasRxErrorTimeslotEnded:(BOOL)a3;
-- (void)setHasSleepState:(BOOL)a3;
-- (void)setHasTransmittedFrames:(BOOL)a3;
-- (void)setHasTransmittingTime:(BOOL)a3;
-- (void)setHasTxDelay90perc:(BOOL)a3;
-- (void)setHasTxDelayAvg:(BOOL)a3;
-- (void)setHasTxDelayMax:(BOOL)a3;
-- (void)setHasTxDelayMin:(BOOL)a3;
-- (void)setHasTxErrorAckNoMem:(BOOL)a3;
-- (void)setHasTxErrorBusyChannelCcaNotStarted:(BOOL)a3;
-- (void)setHasTxErrorChannelAccessCcaBusy:(BOOL)a3;
-- (void)setHasTxErrorChannelAccessFailure:(BOOL)a3;
-- (void)setHasTxErrorInvalidAck:(BOOL)a3;
-- (void)setHasTxErrorNoAck:(BOOL)a3;
-- (void)setHasTxErrorNotGranted:(BOOL)a3;
-- (void)setHasTxErrorTimeslotDenied:(BOOL)a3;
-- (void)setHasTxErrorTimeslotEnded:(BOOL)a3;
-- (void)setHasTxErrorTxAborted:(BOOL)a3;
-- (void)setHasTxErrorTxAbortedCcaTx:(BOOL)a3;
-- (void)setHasTxErrorTxAbortedCsmaBackoff:(BOOL)a3;
-- (void)setHasTxErrorTxAbortedCsmaCfgBackoff:(BOOL)a3;
-- (void)setHasTxErrorTxAbortedCsmaPrepare:(BOOL)a3;
-- (void)setHasTxErrorTxAbortedIfs:(BOOL)a3;
-- (void)setHasTxErrorTxAbortedRxAck:(BOOL)a3;
-- (void)setHasTxErrorTxAbortedTx:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasEnergyDetectedEvents:(BOOL)events;
+- (void)setHasEnergyDetectedRequests:(BOOL)requests;
+- (void)setHasListeningTime:(BOOL)time;
+- (void)setHasRadioReceivedFrames:(BOOL)frames;
+- (void)setHasRadioStatusDoubleNotification:(BOOL)notification;
+- (void)setHasReceivedEnergyEvents:(BOOL)events;
+- (void)setHasReceivedFrames:(BOOL)frames;
+- (void)setHasReceivedPreambles:(BOOL)preambles;
+- (void)setHasReceivingTime:(BOOL)time;
+- (void)setHasRetryInterval90perc:(BOOL)interval90perc;
+- (void)setHasRetryIntervalAvg:(BOOL)avg;
+- (void)setHasRetryIntervalMax:(BOOL)max;
+- (void)setHasRetryIntervalMin:(BOOL)min;
+- (void)setHasRtt90perc:(BOOL)rtt90perc;
+- (void)setHasRttAvgVal:(BOOL)val;
+- (void)setHasRttMaxVal:(BOOL)val;
+- (void)setHasRttMinVal:(BOOL)val;
+- (void)setHasRxErrorAborted:(BOOL)aborted;
+- (void)setHasRxErrorAckAborted:(BOOL)aborted;
+- (void)setHasRxErrorAckDenied:(BOOL)denied;
+- (void)setHasRxErrorAckFailedRadioDelay:(BOOL)delay;
+- (void)setHasRxErrorAckFailedRadioState:(BOOL)state;
+- (void)setHasRxErrorDelayedTimeout:(BOOL)timeout;
+- (void)setHasRxErrorDelayedTimeslotEnded:(BOOL)ended;
+- (void)setHasRxErrorDestAddrFiltered:(BOOL)filtered;
+- (void)setHasRxErrorInvalidData:(BOOL)data;
+- (void)setHasRxErrorInvalidFcs:(BOOL)fcs;
+- (void)setHasRxErrorInvalidFrame:(BOOL)frame;
+- (void)setHasRxErrorInvalidLength:(BOOL)length;
+- (void)setHasRxErrorReceiveFailed:(BOOL)failed;
+- (void)setHasRxErrorRuntimeDelay:(BOOL)delay;
+- (void)setHasRxErrorTimeslotEnded:(BOOL)ended;
+- (void)setHasSleepState:(BOOL)state;
+- (void)setHasTransmittedFrames:(BOOL)frames;
+- (void)setHasTransmittingTime:(BOOL)time;
+- (void)setHasTxDelay90perc:(BOOL)delay90perc;
+- (void)setHasTxDelayAvg:(BOOL)avg;
+- (void)setHasTxDelayMax:(BOOL)max;
+- (void)setHasTxDelayMin:(BOOL)min;
+- (void)setHasTxErrorAckNoMem:(BOOL)mem;
+- (void)setHasTxErrorBusyChannelCcaNotStarted:(BOOL)started;
+- (void)setHasTxErrorChannelAccessCcaBusy:(BOOL)busy;
+- (void)setHasTxErrorChannelAccessFailure:(BOOL)failure;
+- (void)setHasTxErrorInvalidAck:(BOOL)ack;
+- (void)setHasTxErrorNoAck:(BOOL)ack;
+- (void)setHasTxErrorNotGranted:(BOOL)granted;
+- (void)setHasTxErrorTimeslotDenied:(BOOL)denied;
+- (void)setHasTxErrorTimeslotEnded:(BOOL)ended;
+- (void)setHasTxErrorTxAborted:(BOOL)aborted;
+- (void)setHasTxErrorTxAbortedCcaTx:(BOOL)tx;
+- (void)setHasTxErrorTxAbortedCsmaBackoff:(BOOL)backoff;
+- (void)setHasTxErrorTxAbortedCsmaCfgBackoff:(BOOL)backoff;
+- (void)setHasTxErrorTxAbortedCsmaPrepare:(BOOL)prepare;
+- (void)setHasTxErrorTxAbortedIfs:(BOOL)ifs;
+- (void)setHasTxErrorTxAbortedRxAck:(BOOL)ack;
+- (void)setHasTxErrorTxAbortedTx:(BOOL)tx;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDCountersRadioS
 
-- (void)setHasRadioReceivedFrames:(BOOL)a3
+- (void)setHasRadioReceivedFrames:(BOOL)frames
 {
   v3 = 16;
-  if (!a3)
+  if (!frames)
   {
     v3 = 0;
   }
@@ -78,10 +78,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFFEFLL | v3);
 }
 
-- (void)setHasReceivedEnergyEvents:(BOOL)a3
+- (void)setHasReceivedEnergyEvents:(BOOL)events
 {
   v3 = 64;
-  if (!a3)
+  if (!events)
   {
     v3 = 0;
   }
@@ -89,10 +89,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFFBFLL | v3);
 }
 
-- (void)setHasReceivedPreambles:(BOOL)a3
+- (void)setHasReceivedPreambles:(BOOL)preambles
 {
   v3 = 256;
-  if (!a3)
+  if (!preambles)
   {
     v3 = 0;
   }
@@ -100,10 +100,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFEFFLL | v3);
 }
 
-- (void)setHasRttMinVal:(BOOL)a3
+- (void)setHasRttMinVal:(BOOL)val
 {
   v3 = 0x20000;
-  if (!a3)
+  if (!val)
   {
     v3 = 0;
   }
@@ -111,10 +111,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFDFFFFLL | v3);
 }
 
-- (void)setHasRttMaxVal:(BOOL)a3
+- (void)setHasRttMaxVal:(BOOL)val
 {
   v3 = 0x10000;
-  if (!a3)
+  if (!val)
   {
     v3 = 0;
   }
@@ -122,10 +122,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFEFFFFLL | v3);
 }
 
-- (void)setHasRttAvgVal:(BOOL)a3
+- (void)setHasRttAvgVal:(BOOL)val
 {
   v3 = 0x8000;
-  if (!a3)
+  if (!val)
   {
     v3 = 0;
   }
@@ -133,10 +133,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFF7FFFLL | v3);
 }
 
-- (void)setHasRtt90perc:(BOOL)a3
+- (void)setHasRtt90perc:(BOOL)rtt90perc
 {
   v3 = 0x4000;
-  if (!a3)
+  if (!rtt90perc)
   {
     v3 = 0;
   }
@@ -144,10 +144,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFBFFFLL | v3);
 }
 
-- (void)setHasRetryIntervalMin:(BOOL)a3
+- (void)setHasRetryIntervalMin:(BOOL)min
 {
   v3 = 0x2000;
-  if (!a3)
+  if (!min)
   {
     v3 = 0;
   }
@@ -155,10 +155,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFDFFFLL | v3);
 }
 
-- (void)setHasRetryIntervalMax:(BOOL)a3
+- (void)setHasRetryIntervalMax:(BOOL)max
 {
   v3 = 4096;
-  if (!a3)
+  if (!max)
   {
     v3 = 0;
   }
@@ -166,10 +166,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFEFFFLL | v3);
 }
 
-- (void)setHasRetryIntervalAvg:(BOOL)a3
+- (void)setHasRetryIntervalAvg:(BOOL)avg
 {
   v3 = 2048;
-  if (!a3)
+  if (!avg)
   {
     v3 = 0;
   }
@@ -177,10 +177,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFF7FFLL | v3);
 }
 
-- (void)setHasRetryInterval90perc:(BOOL)a3
+- (void)setHasRetryInterval90perc:(BOOL)interval90perc
 {
   v3 = 1024;
-  if (!a3)
+  if (!interval90perc)
   {
     v3 = 0;
   }
@@ -188,10 +188,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFBFFLL | v3);
 }
 
-- (void)setHasTxDelayMin:(BOOL)a3
+- (void)setHasTxDelayMin:(BOOL)min
 {
   v3 = 0x8000000000;
-  if (!a3)
+  if (!min)
   {
     v3 = 0;
   }
@@ -199,10 +199,10 @@
   self->_has = (*&self->_has & 0xFFFFFF7FFFFFFFFFLL | v3);
 }
 
-- (void)setHasTxDelayMax:(BOOL)a3
+- (void)setHasTxDelayMax:(BOOL)max
 {
   v3 = 0x4000000000;
-  if (!a3)
+  if (!max)
   {
     v3 = 0;
   }
@@ -210,10 +210,10 @@
   self->_has = (*&self->_has & 0xFFFFFFBFFFFFFFFFLL | v3);
 }
 
-- (void)setHasTxDelayAvg:(BOOL)a3
+- (void)setHasTxDelayAvg:(BOOL)avg
 {
   v3 = 0x2000000000;
-  if (!a3)
+  if (!avg)
   {
     v3 = 0;
   }
@@ -221,10 +221,10 @@
   self->_has = (*&self->_has & 0xFFFFFFDFFFFFFFFFLL | v3);
 }
 
-- (void)setHasTxDelay90perc:(BOOL)a3
+- (void)setHasTxDelay90perc:(BOOL)delay90perc
 {
   v3 = 0x1000000000;
-  if (!a3)
+  if (!delay90perc)
   {
     v3 = 0;
   }
@@ -232,10 +232,10 @@
   self->_has = (*&self->_has & 0xFFFFFFEFFFFFFFFFLL | v3);
 }
 
-- (void)setHasListeningTime:(BOOL)a3
+- (void)setHasListeningTime:(BOOL)time
 {
   v3 = 8;
-  if (!a3)
+  if (!time)
   {
     v3 = 0;
   }
@@ -243,10 +243,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFFF7 | v3);
 }
 
-- (void)setHasReceivingTime:(BOOL)a3
+- (void)setHasReceivingTime:(BOOL)time
 {
   v3 = 512;
-  if (!a3)
+  if (!time)
   {
     v3 = 0;
   }
@@ -254,10 +254,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFDFFLL | v3);
 }
 
-- (void)setHasTransmittingTime:(BOOL)a3
+- (void)setHasTransmittingTime:(BOOL)time
 {
   v3 = 0x800000000;
-  if (!a3)
+  if (!time)
   {
     v3 = 0;
   }
@@ -265,10 +265,10 @@
   self->_has = (*&self->_has & 0xFFFFFFF7FFFFFFFFLL | v3);
 }
 
-- (void)setHasTransmittedFrames:(BOOL)a3
+- (void)setHasTransmittedFrames:(BOOL)frames
 {
   v3 = 0x400000000;
-  if (!a3)
+  if (!frames)
   {
     v3 = 0;
   }
@@ -276,10 +276,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFBFFFFFFFFLL | v3);
 }
 
-- (void)setHasTxErrorTimeslotEnded:(BOOL)a3
+- (void)setHasTxErrorTimeslotEnded:(BOOL)ended
 {
   v3 = 0x1000000000000;
-  if (!a3)
+  if (!ended)
   {
     v3 = 0;
   }
@@ -287,10 +287,10 @@
   self->_has = (*&self->_has & 0xFFFEFFFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasTxErrorTimeslotDenied:(BOOL)a3
+- (void)setHasTxErrorTimeslotDenied:(BOOL)denied
 {
   v3 = 0x800000000000;
-  if (!a3)
+  if (!denied)
   {
     v3 = 0;
   }
@@ -298,10 +298,10 @@
   self->_has = (*&self->_has & 0xFFFF7FFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasTxErrorBusyChannelCcaNotStarted:(BOOL)a3
+- (void)setHasTxErrorBusyChannelCcaNotStarted:(BOOL)started
 {
   v3 = 0x20000000000;
-  if (!a3)
+  if (!started)
   {
     v3 = 0;
   }
@@ -309,10 +309,10 @@
   self->_has = (*&self->_has & 0xFFFFFDFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasTxErrorChannelAccessCcaBusy:(BOOL)a3
+- (void)setHasTxErrorChannelAccessCcaBusy:(BOOL)busy
 {
   v3 = 0x40000000000;
-  if (!a3)
+  if (!busy)
   {
     v3 = 0;
   }
@@ -320,10 +320,10 @@
   self->_has = (*&self->_has & 0xFFFFFBFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasTxErrorChannelAccessFailure:(BOOL)a3
+- (void)setHasTxErrorChannelAccessFailure:(BOOL)failure
 {
   v3 = 0x80000000000;
-  if (!a3)
+  if (!failure)
   {
     v3 = 0;
   }
@@ -331,10 +331,10 @@
   self->_has = (*&self->_has & 0xFFFFF7FFFFFFFFFFLL | v3);
 }
 
-- (void)setHasTxErrorTxAborted:(BOOL)a3
+- (void)setHasTxErrorTxAborted:(BOOL)aborted
 {
   v3 = 0x2000000000000;
-  if (!a3)
+  if (!aborted)
   {
     v3 = 0;
   }
@@ -342,10 +342,10 @@
   self->_has = (*&self->_has & 0xFFFDFFFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasTxErrorTxAbortedCsmaCfgBackoff:(BOOL)a3
+- (void)setHasTxErrorTxAbortedCsmaCfgBackoff:(BOOL)backoff
 {
   v3 = 0x10000000000000;
-  if (!a3)
+  if (!backoff)
   {
     v3 = 0;
   }
@@ -353,10 +353,10 @@
   self->_has = (*&self->_has & 0xFFEFFFFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasTxErrorTxAbortedCsmaBackoff:(BOOL)a3
+- (void)setHasTxErrorTxAbortedCsmaBackoff:(BOOL)backoff
 {
   v3 = 0x8000000000000;
-  if (!a3)
+  if (!backoff)
   {
     v3 = 0;
   }
@@ -364,10 +364,10 @@
   self->_has = (*&self->_has & 0xFFF7FFFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasTxErrorTxAbortedCsmaPrepare:(BOOL)a3
+- (void)setHasTxErrorTxAbortedCsmaPrepare:(BOOL)prepare
 {
   v3 = 0x20000000000000;
-  if (!a3)
+  if (!prepare)
   {
     v3 = 0;
   }
@@ -375,10 +375,10 @@
   self->_has = (*&self->_has & 0xFFDFFFFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasTxErrorTxAbortedIfs:(BOOL)a3
+- (void)setHasTxErrorTxAbortedIfs:(BOOL)ifs
 {
   v3 = 0x40000000000000;
-  if (!a3)
+  if (!ifs)
   {
     v3 = 0;
   }
@@ -386,10 +386,10 @@
   self->_has = (*&self->_has & 0xFFBFFFFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasTxErrorTxAbortedRxAck:(BOOL)a3
+- (void)setHasTxErrorTxAbortedRxAck:(BOOL)ack
 {
   v3 = 0x80000000000000;
-  if (!a3)
+  if (!ack)
   {
     v3 = 0;
   }
@@ -397,10 +397,10 @@
   self->_has = (*&self->_has & 0xFF7FFFFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasTxErrorTxAbortedCcaTx:(BOOL)a3
+- (void)setHasTxErrorTxAbortedCcaTx:(BOOL)tx
 {
   v3 = 0x4000000000000;
-  if (!a3)
+  if (!tx)
   {
     v3 = 0;
   }
@@ -408,10 +408,10 @@
   self->_has = (*&self->_has & 0xFFFBFFFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasTxErrorTxAbortedTx:(BOOL)a3
+- (void)setHasTxErrorTxAbortedTx:(BOOL)tx
 {
   v3 = 0x100000000000000;
-  if (!a3)
+  if (!tx)
   {
     v3 = 0;
   }
@@ -419,10 +419,10 @@
   self->_has = (*&self->_has & 0xFEFFFFFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasTxErrorNotGranted:(BOOL)a3
+- (void)setHasTxErrorNotGranted:(BOOL)granted
 {
   v3 = 0x400000000000;
-  if (!a3)
+  if (!granted)
   {
     v3 = 0;
   }
@@ -430,10 +430,10 @@
   self->_has = (*&self->_has & 0xFFFFBFFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasTxErrorInvalidAck:(BOOL)a3
+- (void)setHasTxErrorInvalidAck:(BOOL)ack
 {
   v3 = 0x100000000000;
-  if (!a3)
+  if (!ack)
   {
     v3 = 0;
   }
@@ -441,10 +441,10 @@
   self->_has = (*&self->_has & 0xFFFFEFFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasTxErrorNoAck:(BOOL)a3
+- (void)setHasTxErrorNoAck:(BOOL)ack
 {
   v3 = 0x200000000000;
-  if (!a3)
+  if (!ack)
   {
     v3 = 0;
   }
@@ -452,10 +452,10 @@
   self->_has = (*&self->_has & 0xFFFFDFFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasTxErrorAckNoMem:(BOOL)a3
+- (void)setHasTxErrorAckNoMem:(BOOL)mem
 {
   v3 = 0x10000000000;
-  if (!a3)
+  if (!mem)
   {
     v3 = 0;
   }
@@ -463,10 +463,10 @@
   self->_has = (*&self->_has & 0xFFFFFEFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasReceivedFrames:(BOOL)a3
+- (void)setHasReceivedFrames:(BOOL)frames
 {
   v3 = 128;
-  if (!a3)
+  if (!frames)
   {
     v3 = 0;
   }
@@ -474,10 +474,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFF7FLL | v3);
 }
 
-- (void)setHasRxErrorReceiveFailed:(BOOL)a3
+- (void)setHasRxErrorReceiveFailed:(BOOL)failed
 {
   v3 = 0x40000000;
-  if (!a3)
+  if (!failed)
   {
     v3 = 0;
   }
@@ -485,10 +485,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFBFFFFFFFLL | v3);
 }
 
-- (void)setHasRxErrorInvalidFrame:(BOOL)a3
+- (void)setHasRxErrorInvalidFrame:(BOOL)frame
 {
   v3 = 0x10000000;
-  if (!a3)
+  if (!frame)
   {
     v3 = 0;
   }
@@ -496,10 +496,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFEFFFFFFFLL | v3);
 }
 
-- (void)setHasRxErrorDelayedTimeout:(BOOL)a3
+- (void)setHasRxErrorDelayedTimeout:(BOOL)timeout
 {
   v3 = 0x800000;
-  if (!a3)
+  if (!timeout)
   {
     v3 = 0;
   }
@@ -507,10 +507,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFF7FFFFFLL | v3);
 }
 
-- (void)setHasRxErrorInvalidFcs:(BOOL)a3
+- (void)setHasRxErrorInvalidFcs:(BOOL)fcs
 {
   v3 = 0x8000000;
-  if (!a3)
+  if (!fcs)
   {
     v3 = 0;
   }
@@ -518,10 +518,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFF7FFFFFFLL | v3);
 }
 
-- (void)setHasRxErrorDestAddrFiltered:(BOOL)a3
+- (void)setHasRxErrorDestAddrFiltered:(BOOL)filtered
 {
   v3 = 0x2000000;
-  if (!a3)
+  if (!filtered)
   {
     v3 = 0;
   }
@@ -529,10 +529,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFDFFFFFFLL | v3);
 }
 
-- (void)setHasRxErrorRuntimeDelay:(BOOL)a3
+- (void)setHasRxErrorRuntimeDelay:(BOOL)delay
 {
   v3 = 0x80000000;
-  if (!a3)
+  if (!delay)
   {
     v3 = 0;
   }
@@ -540,10 +540,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFF7FFFFFFFLL | v3);
 }
 
-- (void)setHasRxErrorTimeslotEnded:(BOOL)a3
+- (void)setHasRxErrorTimeslotEnded:(BOOL)ended
 {
   v3 = &_mh_execute_header;
-  if (!a3)
+  if (!ended)
   {
     v3 = 0;
   }
@@ -551,10 +551,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFEFFFFFFFFLL | v3);
 }
 
-- (void)setHasRxErrorAborted:(BOOL)a3
+- (void)setHasRxErrorAborted:(BOOL)aborted
 {
   v3 = 0x40000;
-  if (!a3)
+  if (!aborted)
   {
     v3 = 0;
   }
@@ -562,10 +562,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFBFFFFLL | v3);
 }
 
-- (void)setHasRxErrorDelayedTimeslotEnded:(BOOL)a3
+- (void)setHasRxErrorDelayedTimeslotEnded:(BOOL)ended
 {
   v3 = 0x1000000;
-  if (!a3)
+  if (!ended)
   {
     v3 = 0;
   }
@@ -573,10 +573,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFEFFFFFFLL | v3);
 }
 
-- (void)setHasRxErrorInvalidLength:(BOOL)a3
+- (void)setHasRxErrorInvalidLength:(BOOL)length
 {
   v3 = 0x20000000;
-  if (!a3)
+  if (!length)
   {
     v3 = 0;
   }
@@ -584,10 +584,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFDFFFFFFFLL | v3);
 }
 
-- (void)setHasRxErrorInvalidData:(BOOL)a3
+- (void)setHasRxErrorInvalidData:(BOOL)data
 {
   v3 = 0x4000000;
-  if (!a3)
+  if (!data)
   {
     v3 = 0;
   }
@@ -595,10 +595,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFBFFFFFFLL | v3);
 }
 
-- (void)setHasRxErrorAckFailedRadioState:(BOOL)a3
+- (void)setHasRxErrorAckFailedRadioState:(BOOL)state
 {
   v3 = 0x400000;
-  if (!a3)
+  if (!state)
   {
     v3 = 0;
   }
@@ -606,10 +606,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFBFFFFFLL | v3);
 }
 
-- (void)setHasRxErrorAckFailedRadioDelay:(BOOL)a3
+- (void)setHasRxErrorAckFailedRadioDelay:(BOOL)delay
 {
   v3 = 0x200000;
-  if (!a3)
+  if (!delay)
   {
     v3 = 0;
   }
@@ -617,10 +617,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFDFFFFFLL | v3);
 }
 
-- (void)setHasRxErrorAckDenied:(BOOL)a3
+- (void)setHasRxErrorAckDenied:(BOOL)denied
 {
   v3 = 0x100000;
-  if (!a3)
+  if (!denied)
   {
     v3 = 0;
   }
@@ -628,10 +628,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFEFFFFFLL | v3);
 }
 
-- (void)setHasRxErrorAckAborted:(BOOL)a3
+- (void)setHasRxErrorAckAborted:(BOOL)aborted
 {
   v3 = 0x80000;
-  if (!a3)
+  if (!aborted)
   {
     v3 = 0;
   }
@@ -639,10 +639,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFF7FFFFLL | v3);
 }
 
-- (void)setHasSleepState:(BOOL)a3
+- (void)setHasSleepState:(BOOL)state
 {
   v3 = 0x200000000;
-  if (!a3)
+  if (!state)
   {
     v3 = 0;
   }
@@ -650,10 +650,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFDFFFFFFFFLL | v3);
 }
 
-- (void)setHasEnergyDetectedRequests:(BOOL)a3
+- (void)setHasEnergyDetectedRequests:(BOOL)requests
 {
   v3 = 4;
-  if (!a3)
+  if (!requests)
   {
     v3 = 0;
   }
@@ -661,10 +661,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFFFBLL | v3);
 }
 
-- (void)setHasEnergyDetectedEvents:(BOOL)a3
+- (void)setHasEnergyDetectedEvents:(BOOL)events
 {
   v3 = 2;
-  if (!a3)
+  if (!events)
   {
     v3 = 0;
   }
@@ -672,10 +672,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFFFDLL | v3);
 }
 
-- (void)setHasRadioStatusDoubleNotification:(BOOL)a3
+- (void)setHasRadioStatusDoubleNotification:(BOOL)notification
 {
   v3 = 32;
-  if (!a3)
+  if (!notification)
   {
     v3 = 0;
   }
@@ -688,8 +688,8 @@
   v7.receiver = self;
   v7.super_class = AWDCountersRadioS;
   v3 = [(AWDCountersRadioS *)&v7 description];
-  v4 = [(AWDCountersRadioS *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(AWDCountersRadioS *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -760,8 +760,8 @@ LABEL_65:
   if (sRadioStats)
   {
 LABEL_6:
-    v6 = [(AWDRadioStatsS *)sRadioStats dictionaryRepresentation];
-    [v3 setObject:v6 forKey:@"s_radio_stats"];
+    dictionaryRepresentation = [(AWDRadioStatsS *)sRadioStats dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation forKey:@"s_radio_stats"];
   }
 
 LABEL_7:
@@ -1605,9 +1605,9 @@ LABEL_61:
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v64 = a3;
+  toCopy = to;
   has = self->_has;
   if (*&has)
   {
@@ -2447,7 +2447,7 @@ LABEL_119:
   if ((*&self->_has & 0x20) == 0)
   {
 LABEL_60:
-    v6 = v64;
+    v6 = toCopy;
 
     goto LABEL_62;
   }
@@ -2455,19 +2455,19 @@ LABEL_60:
 LABEL_120:
   radioStatusDoubleNotification = self->_radioStatusDoubleNotification;
   PBDataWriterWriteUint32Field();
-  v6 = v64;
+  v6 = toCopy;
 
 LABEL_62:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (*&has)
   {
-    v4[2] = self->_ccaFailedAttempts;
-    *(v4 + 31) |= 1uLL;
+    toCopy[2] = self->_ccaFailedAttempts;
+    *(toCopy + 31) |= 1uLL;
     has = self->_has;
     if ((*&has & 0x10) == 0)
     {
@@ -2486,8 +2486,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[6] = self->_radioReceivedFrames;
-  *(v4 + 31) |= 0x10uLL;
+  toCopy[6] = self->_radioReceivedFrames;
+  *(toCopy + 31) |= 0x10uLL;
   has = self->_has;
   if ((*&has & 0x40) == 0)
   {
@@ -2501,8 +2501,8 @@ LABEL_4:
   }
 
 LABEL_65:
-  v4[8] = self->_receivedEnergyEvents;
-  *(v4 + 31) |= 0x40uLL;
+  toCopy[8] = self->_receivedEnergyEvents;
+  *(toCopy + 31) |= 0x40uLL;
   if ((*&self->_has & 0x100) == 0)
   {
 LABEL_5:
@@ -2515,22 +2515,22 @@ LABEL_5:
   }
 
 LABEL_66:
-  v4[10] = self->_receivedPreambles;
-  *(v4 + 31) |= 0x100uLL;
+  toCopy[10] = self->_receivedPreambles;
+  *(toCopy + 31) |= 0x100uLL;
   if (self->_sRadioStats)
   {
 LABEL_6:
-    v7 = v4;
-    [v4 setSRadioStats:?];
-    v4 = v7;
+    v7 = toCopy;
+    [toCopy setSRadioStats:?];
+    toCopy = v7;
   }
 
 LABEL_7:
   v6 = self->_has;
   if ((*&v6 & 0x20000) != 0)
   {
-    v4[19] = self->_rttMinVal;
-    *(v4 + 31) |= 0x20000uLL;
+    toCopy[19] = self->_rttMinVal;
+    *(toCopy + 31) |= 0x20000uLL;
     v6 = self->_has;
     if ((*&v6 & 0x10000) == 0)
     {
@@ -2549,8 +2549,8 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v4[18] = self->_rttMaxVal;
-  *(v4 + 31) |= 0x10000uLL;
+  toCopy[18] = self->_rttMaxVal;
+  *(toCopy + 31) |= 0x10000uLL;
   v6 = self->_has;
   if ((*&v6 & 0x8000) == 0)
   {
@@ -2564,8 +2564,8 @@ LABEL_10:
   }
 
 LABEL_70:
-  v4[17] = self->_rttAvgVal;
-  *(v4 + 31) |= 0x8000uLL;
+  toCopy[17] = self->_rttAvgVal;
+  *(toCopy + 31) |= 0x8000uLL;
   v6 = self->_has;
   if ((*&v6 & 0x4000) == 0)
   {
@@ -2579,8 +2579,8 @@ LABEL_11:
   }
 
 LABEL_71:
-  v4[16] = self->_rtt90perc;
-  *(v4 + 31) |= 0x4000uLL;
+  toCopy[16] = self->_rtt90perc;
+  *(toCopy + 31) |= 0x4000uLL;
   v6 = self->_has;
   if ((*&v6 & 0x2000) == 0)
   {
@@ -2594,8 +2594,8 @@ LABEL_12:
   }
 
 LABEL_72:
-  v4[15] = self->_retryIntervalMin;
-  *(v4 + 31) |= 0x2000uLL;
+  toCopy[15] = self->_retryIntervalMin;
+  *(toCopy + 31) |= 0x2000uLL;
   v6 = self->_has;
   if ((*&v6 & 0x1000) == 0)
   {
@@ -2609,8 +2609,8 @@ LABEL_13:
   }
 
 LABEL_73:
-  v4[14] = self->_retryIntervalMax;
-  *(v4 + 31) |= 0x1000uLL;
+  toCopy[14] = self->_retryIntervalMax;
+  *(toCopy + 31) |= 0x1000uLL;
   v6 = self->_has;
   if ((*&v6 & 0x800) == 0)
   {
@@ -2624,8 +2624,8 @@ LABEL_14:
   }
 
 LABEL_74:
-  v4[13] = self->_retryIntervalAvg;
-  *(v4 + 31) |= 0x800uLL;
+  toCopy[13] = self->_retryIntervalAvg;
+  *(toCopy + 31) |= 0x800uLL;
   v6 = self->_has;
   if ((*&v6 & 0x400) == 0)
   {
@@ -2639,8 +2639,8 @@ LABEL_15:
   }
 
 LABEL_75:
-  v4[12] = self->_retryInterval90perc;
-  *(v4 + 31) |= 0x400uLL;
+  toCopy[12] = self->_retryInterval90perc;
+  *(toCopy + 31) |= 0x400uLL;
   v6 = self->_has;
   if ((*&v6 & 0x8000000000) == 0)
   {
@@ -2654,8 +2654,8 @@ LABEL_16:
   }
 
 LABEL_76:
-  v4[44] = self->_txDelayMin;
-  *(v4 + 31) |= 0x8000000000uLL;
+  toCopy[44] = self->_txDelayMin;
+  *(toCopy + 31) |= 0x8000000000uLL;
   v6 = self->_has;
   if ((*&v6 & 0x4000000000) == 0)
   {
@@ -2669,8 +2669,8 @@ LABEL_17:
   }
 
 LABEL_77:
-  v4[43] = self->_txDelayMax;
-  *(v4 + 31) |= 0x4000000000uLL;
+  toCopy[43] = self->_txDelayMax;
+  *(toCopy + 31) |= 0x4000000000uLL;
   v6 = self->_has;
   if ((*&v6 & 0x2000000000) == 0)
   {
@@ -2684,8 +2684,8 @@ LABEL_18:
   }
 
 LABEL_78:
-  v4[42] = self->_txDelayAvg;
-  *(v4 + 31) |= 0x2000000000uLL;
+  toCopy[42] = self->_txDelayAvg;
+  *(toCopy + 31) |= 0x2000000000uLL;
   v6 = self->_has;
   if ((*&v6 & 0x1000000000) == 0)
   {
@@ -2699,8 +2699,8 @@ LABEL_19:
   }
 
 LABEL_79:
-  v4[41] = self->_txDelay90perc;
-  *(v4 + 31) |= 0x1000000000uLL;
+  toCopy[41] = self->_txDelay90perc;
+  *(toCopy + 31) |= 0x1000000000uLL;
   v6 = self->_has;
   if ((*&v6 & 8) == 0)
   {
@@ -2714,8 +2714,8 @@ LABEL_20:
   }
 
 LABEL_80:
-  v4[5] = self->_listeningTime;
-  *(v4 + 31) |= 8uLL;
+  toCopy[5] = self->_listeningTime;
+  *(toCopy + 31) |= 8uLL;
   v6 = self->_has;
   if ((*&v6 & 0x200) == 0)
   {
@@ -2729,8 +2729,8 @@ LABEL_21:
   }
 
 LABEL_81:
-  v4[11] = self->_receivingTime;
-  *(v4 + 31) |= 0x200uLL;
+  toCopy[11] = self->_receivingTime;
+  *(toCopy + 31) |= 0x200uLL;
   v6 = self->_has;
   if ((*&v6 & 0x800000000) == 0)
   {
@@ -2744,8 +2744,8 @@ LABEL_22:
   }
 
 LABEL_82:
-  v4[40] = self->_transmittingTime;
-  *(v4 + 31) |= 0x800000000uLL;
+  toCopy[40] = self->_transmittingTime;
+  *(toCopy + 31) |= 0x800000000uLL;
   v6 = self->_has;
   if ((*&v6 & 0x400000000) == 0)
   {
@@ -2759,8 +2759,8 @@ LABEL_23:
   }
 
 LABEL_83:
-  v4[39] = self->_transmittedFrames;
-  *(v4 + 31) |= 0x400000000uLL;
+  toCopy[39] = self->_transmittedFrames;
+  *(toCopy + 31) |= 0x400000000uLL;
   v6 = self->_has;
   if ((*&v6 & 0x1000000000000) == 0)
   {
@@ -2774,8 +2774,8 @@ LABEL_24:
   }
 
 LABEL_84:
-  v4[53] = self->_txErrorTimeslotEnded;
-  *(v4 + 31) |= 0x1000000000000uLL;
+  toCopy[53] = self->_txErrorTimeslotEnded;
+  *(toCopy + 31) |= 0x1000000000000uLL;
   v6 = self->_has;
   if ((*&v6 & 0x800000000000) == 0)
   {
@@ -2789,8 +2789,8 @@ LABEL_25:
   }
 
 LABEL_85:
-  v4[52] = self->_txErrorTimeslotDenied;
-  *(v4 + 31) |= 0x800000000000uLL;
+  toCopy[52] = self->_txErrorTimeslotDenied;
+  *(toCopy + 31) |= 0x800000000000uLL;
   v6 = self->_has;
   if ((*&v6 & 0x20000000000) == 0)
   {
@@ -2804,8 +2804,8 @@ LABEL_26:
   }
 
 LABEL_86:
-  v4[46] = self->_txErrorBusyChannelCcaNotStarted;
-  *(v4 + 31) |= 0x20000000000uLL;
+  toCopy[46] = self->_txErrorBusyChannelCcaNotStarted;
+  *(toCopy + 31) |= 0x20000000000uLL;
   v6 = self->_has;
   if ((*&v6 & 0x40000000000) == 0)
   {
@@ -2819,8 +2819,8 @@ LABEL_27:
   }
 
 LABEL_87:
-  v4[47] = self->_txErrorChannelAccessCcaBusy;
-  *(v4 + 31) |= 0x40000000000uLL;
+  toCopy[47] = self->_txErrorChannelAccessCcaBusy;
+  *(toCopy + 31) |= 0x40000000000uLL;
   v6 = self->_has;
   if ((*&v6 & 0x80000000000) == 0)
   {
@@ -2834,8 +2834,8 @@ LABEL_28:
   }
 
 LABEL_88:
-  v4[48] = self->_txErrorChannelAccessFailure;
-  *(v4 + 31) |= 0x80000000000uLL;
+  toCopy[48] = self->_txErrorChannelAccessFailure;
+  *(toCopy + 31) |= 0x80000000000uLL;
   v6 = self->_has;
   if ((*&v6 & 0x2000000000000) == 0)
   {
@@ -2849,8 +2849,8 @@ LABEL_29:
   }
 
 LABEL_89:
-  v4[54] = self->_txErrorTxAborted;
-  *(v4 + 31) |= 0x2000000000000uLL;
+  toCopy[54] = self->_txErrorTxAborted;
+  *(toCopy + 31) |= 0x2000000000000uLL;
   v6 = self->_has;
   if ((*&v6 & 0x10000000000000) == 0)
   {
@@ -2864,8 +2864,8 @@ LABEL_30:
   }
 
 LABEL_90:
-  v4[57] = self->_txErrorTxAbortedCsmaCfgBackoff;
-  *(v4 + 31) |= 0x10000000000000uLL;
+  toCopy[57] = self->_txErrorTxAbortedCsmaCfgBackoff;
+  *(toCopy + 31) |= 0x10000000000000uLL;
   v6 = self->_has;
   if ((*&v6 & 0x8000000000000) == 0)
   {
@@ -2879,8 +2879,8 @@ LABEL_31:
   }
 
 LABEL_91:
-  v4[56] = self->_txErrorTxAbortedCsmaBackoff;
-  *(v4 + 31) |= 0x8000000000000uLL;
+  toCopy[56] = self->_txErrorTxAbortedCsmaBackoff;
+  *(toCopy + 31) |= 0x8000000000000uLL;
   v6 = self->_has;
   if ((*&v6 & 0x20000000000000) == 0)
   {
@@ -2894,8 +2894,8 @@ LABEL_32:
   }
 
 LABEL_92:
-  v4[58] = self->_txErrorTxAbortedCsmaPrepare;
-  *(v4 + 31) |= 0x20000000000000uLL;
+  toCopy[58] = self->_txErrorTxAbortedCsmaPrepare;
+  *(toCopy + 31) |= 0x20000000000000uLL;
   v6 = self->_has;
   if ((*&v6 & 0x40000000000000) == 0)
   {
@@ -2909,8 +2909,8 @@ LABEL_33:
   }
 
 LABEL_93:
-  v4[59] = self->_txErrorTxAbortedIfs;
-  *(v4 + 31) |= 0x40000000000000uLL;
+  toCopy[59] = self->_txErrorTxAbortedIfs;
+  *(toCopy + 31) |= 0x40000000000000uLL;
   v6 = self->_has;
   if ((*&v6 & 0x80000000000000) == 0)
   {
@@ -2924,8 +2924,8 @@ LABEL_34:
   }
 
 LABEL_94:
-  v4[60] = self->_txErrorTxAbortedRxAck;
-  *(v4 + 31) |= 0x80000000000000uLL;
+  toCopy[60] = self->_txErrorTxAbortedRxAck;
+  *(toCopy + 31) |= 0x80000000000000uLL;
   v6 = self->_has;
   if ((*&v6 & 0x4000000000000) == 0)
   {
@@ -2939,8 +2939,8 @@ LABEL_35:
   }
 
 LABEL_95:
-  v4[55] = self->_txErrorTxAbortedCcaTx;
-  *(v4 + 31) |= 0x4000000000000uLL;
+  toCopy[55] = self->_txErrorTxAbortedCcaTx;
+  *(toCopy + 31) |= 0x4000000000000uLL;
   v6 = self->_has;
   if ((*&v6 & 0x100000000000000) == 0)
   {
@@ -2954,8 +2954,8 @@ LABEL_36:
   }
 
 LABEL_96:
-  v4[61] = self->_txErrorTxAbortedTx;
-  *(v4 + 31) |= 0x100000000000000uLL;
+  toCopy[61] = self->_txErrorTxAbortedTx;
+  *(toCopy + 31) |= 0x100000000000000uLL;
   v6 = self->_has;
   if ((*&v6 & 0x400000000000) == 0)
   {
@@ -2969,8 +2969,8 @@ LABEL_37:
   }
 
 LABEL_97:
-  v4[51] = self->_txErrorNotGranted;
-  *(v4 + 31) |= 0x400000000000uLL;
+  toCopy[51] = self->_txErrorNotGranted;
+  *(toCopy + 31) |= 0x400000000000uLL;
   v6 = self->_has;
   if ((*&v6 & 0x100000000000) == 0)
   {
@@ -2984,8 +2984,8 @@ LABEL_38:
   }
 
 LABEL_98:
-  v4[49] = self->_txErrorInvalidAck;
-  *(v4 + 31) |= 0x100000000000uLL;
+  toCopy[49] = self->_txErrorInvalidAck;
+  *(toCopy + 31) |= 0x100000000000uLL;
   v6 = self->_has;
   if ((*&v6 & 0x200000000000) == 0)
   {
@@ -2999,8 +2999,8 @@ LABEL_39:
   }
 
 LABEL_99:
-  v4[50] = self->_txErrorNoAck;
-  *(v4 + 31) |= 0x200000000000uLL;
+  toCopy[50] = self->_txErrorNoAck;
+  *(toCopy + 31) |= 0x200000000000uLL;
   v6 = self->_has;
   if ((*&v6 & 0x10000000000) == 0)
   {
@@ -3014,8 +3014,8 @@ LABEL_40:
   }
 
 LABEL_100:
-  v4[45] = self->_txErrorAckNoMem;
-  *(v4 + 31) |= 0x10000000000uLL;
+  toCopy[45] = self->_txErrorAckNoMem;
+  *(toCopy + 31) |= 0x10000000000uLL;
   v6 = self->_has;
   if ((*&v6 & 0x80) == 0)
   {
@@ -3029,8 +3029,8 @@ LABEL_41:
   }
 
 LABEL_101:
-  v4[9] = self->_receivedFrames;
-  *(v4 + 31) |= 0x80uLL;
+  toCopy[9] = self->_receivedFrames;
+  *(toCopy + 31) |= 0x80uLL;
   v6 = self->_has;
   if ((*&v6 & 0x40000000) == 0)
   {
@@ -3044,8 +3044,8 @@ LABEL_42:
   }
 
 LABEL_102:
-  v4[32] = self->_rxErrorReceiveFailed;
-  *(v4 + 31) |= 0x40000000uLL;
+  toCopy[32] = self->_rxErrorReceiveFailed;
+  *(toCopy + 31) |= 0x40000000uLL;
   v6 = self->_has;
   if ((*&v6 & 0x10000000) == 0)
   {
@@ -3059,8 +3059,8 @@ LABEL_43:
   }
 
 LABEL_103:
-  v4[30] = self->_rxErrorInvalidFrame;
-  *(v4 + 31) |= 0x10000000uLL;
+  toCopy[30] = self->_rxErrorInvalidFrame;
+  *(toCopy + 31) |= 0x10000000uLL;
   v6 = self->_has;
   if ((*&v6 & 0x800000) == 0)
   {
@@ -3074,8 +3074,8 @@ LABEL_44:
   }
 
 LABEL_104:
-  v4[25] = self->_rxErrorDelayedTimeout;
-  *(v4 + 31) |= 0x800000uLL;
+  toCopy[25] = self->_rxErrorDelayedTimeout;
+  *(toCopy + 31) |= 0x800000uLL;
   v6 = self->_has;
   if ((*&v6 & 0x8000000) == 0)
   {
@@ -3089,8 +3089,8 @@ LABEL_45:
   }
 
 LABEL_105:
-  v4[29] = self->_rxErrorInvalidFcs;
-  *(v4 + 31) |= 0x8000000uLL;
+  toCopy[29] = self->_rxErrorInvalidFcs;
+  *(toCopy + 31) |= 0x8000000uLL;
   v6 = self->_has;
   if ((*&v6 & 0x2000000) == 0)
   {
@@ -3104,8 +3104,8 @@ LABEL_46:
   }
 
 LABEL_106:
-  v4[27] = self->_rxErrorDestAddrFiltered;
-  *(v4 + 31) |= 0x2000000uLL;
+  toCopy[27] = self->_rxErrorDestAddrFiltered;
+  *(toCopy + 31) |= 0x2000000uLL;
   v6 = self->_has;
   if ((*&v6 & 0x80000000) == 0)
   {
@@ -3119,8 +3119,8 @@ LABEL_47:
   }
 
 LABEL_107:
-  v4[33] = self->_rxErrorRuntimeDelay;
-  *(v4 + 31) |= 0x80000000uLL;
+  toCopy[33] = self->_rxErrorRuntimeDelay;
+  *(toCopy + 31) |= 0x80000000uLL;
   v6 = self->_has;
   if ((*&v6 & 0x100000000) == 0)
   {
@@ -3134,8 +3134,8 @@ LABEL_48:
   }
 
 LABEL_108:
-  v4[34] = self->_rxErrorTimeslotEnded;
-  *(v4 + 31) |= &_mh_execute_header;
+  toCopy[34] = self->_rxErrorTimeslotEnded;
+  *(toCopy + 31) |= &_mh_execute_header;
   v6 = self->_has;
   if ((*&v6 & 0x40000) == 0)
   {
@@ -3149,8 +3149,8 @@ LABEL_49:
   }
 
 LABEL_109:
-  v4[20] = self->_rxErrorAborted;
-  *(v4 + 31) |= 0x40000uLL;
+  toCopy[20] = self->_rxErrorAborted;
+  *(toCopy + 31) |= 0x40000uLL;
   v6 = self->_has;
   if ((*&v6 & 0x1000000) == 0)
   {
@@ -3164,8 +3164,8 @@ LABEL_50:
   }
 
 LABEL_110:
-  v4[26] = self->_rxErrorDelayedTimeslotEnded;
-  *(v4 + 31) |= 0x1000000uLL;
+  toCopy[26] = self->_rxErrorDelayedTimeslotEnded;
+  *(toCopy + 31) |= 0x1000000uLL;
   v6 = self->_has;
   if ((*&v6 & 0x20000000) == 0)
   {
@@ -3179,8 +3179,8 @@ LABEL_51:
   }
 
 LABEL_111:
-  v4[31] = self->_rxErrorInvalidLength;
-  *(v4 + 31) |= 0x20000000uLL;
+  toCopy[31] = self->_rxErrorInvalidLength;
+  *(toCopy + 31) |= 0x20000000uLL;
   v6 = self->_has;
   if ((*&v6 & 0x4000000) == 0)
   {
@@ -3194,8 +3194,8 @@ LABEL_52:
   }
 
 LABEL_112:
-  v4[28] = self->_rxErrorInvalidData;
-  *(v4 + 31) |= 0x4000000uLL;
+  toCopy[28] = self->_rxErrorInvalidData;
+  *(toCopy + 31) |= 0x4000000uLL;
   v6 = self->_has;
   if ((*&v6 & 0x400000) == 0)
   {
@@ -3209,8 +3209,8 @@ LABEL_53:
   }
 
 LABEL_113:
-  v4[24] = self->_rxErrorAckFailedRadioState;
-  *(v4 + 31) |= 0x400000uLL;
+  toCopy[24] = self->_rxErrorAckFailedRadioState;
+  *(toCopy + 31) |= 0x400000uLL;
   v6 = self->_has;
   if ((*&v6 & 0x200000) == 0)
   {
@@ -3224,8 +3224,8 @@ LABEL_54:
   }
 
 LABEL_114:
-  v4[23] = self->_rxErrorAckFailedRadioDelay;
-  *(v4 + 31) |= 0x200000uLL;
+  toCopy[23] = self->_rxErrorAckFailedRadioDelay;
+  *(toCopy + 31) |= 0x200000uLL;
   v6 = self->_has;
   if ((*&v6 & 0x100000) == 0)
   {
@@ -3239,8 +3239,8 @@ LABEL_55:
   }
 
 LABEL_115:
-  v4[22] = self->_rxErrorAckDenied;
-  *(v4 + 31) |= 0x100000uLL;
+  toCopy[22] = self->_rxErrorAckDenied;
+  *(toCopy + 31) |= 0x100000uLL;
   v6 = self->_has;
   if ((*&v6 & 0x80000) == 0)
   {
@@ -3254,8 +3254,8 @@ LABEL_56:
   }
 
 LABEL_116:
-  v4[21] = self->_rxErrorAckAborted;
-  *(v4 + 31) |= 0x80000uLL;
+  toCopy[21] = self->_rxErrorAckAborted;
+  *(toCopy + 31) |= 0x80000uLL;
   v6 = self->_has;
   if ((*&v6 & 0x200000000) == 0)
   {
@@ -3269,8 +3269,8 @@ LABEL_57:
   }
 
 LABEL_117:
-  v4[38] = self->_sleepState;
-  *(v4 + 31) |= 0x200000000uLL;
+  toCopy[38] = self->_sleepState;
+  *(toCopy + 31) |= 0x200000000uLL;
   v6 = self->_has;
   if ((*&v6 & 4) == 0)
   {
@@ -3284,8 +3284,8 @@ LABEL_58:
   }
 
 LABEL_118:
-  v4[4] = self->_energyDetectedRequests;
-  *(v4 + 31) |= 4uLL;
+  toCopy[4] = self->_energyDetectedRequests;
+  *(toCopy + 31) |= 4uLL;
   v6 = self->_has;
   if ((*&v6 & 2) == 0)
   {
@@ -3299,8 +3299,8 @@ LABEL_59:
   }
 
 LABEL_119:
-  v4[3] = self->_energyDetectedEvents;
-  *(v4 + 31) |= 2uLL;
+  toCopy[3] = self->_energyDetectedEvents;
+  *(toCopy + 31) |= 2uLL;
   if ((*&self->_has & 0x20) == 0)
   {
 LABEL_60:
@@ -3309,15 +3309,15 @@ LABEL_60:
   }
 
 LABEL_120:
-  v4[7] = self->_radioStatusDoubleNotification;
-  *(v4 + 31) |= 0x20uLL;
+  toCopy[7] = self->_radioStatusDoubleNotification;
+  *(toCopy + 31) |= 0x20uLL;
 
 LABEL_62:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if (*&has)
@@ -3367,7 +3367,7 @@ LABEL_5:
   }
 
 LABEL_6:
-  v8 = [(AWDRadioStatsS *)self->_sRadioStats copyWithZone:a3];
+  v8 = [(AWDRadioStatsS *)self->_sRadioStats copyWithZone:zone];
   v9 = v6[18];
   v6[18] = v8;
 
@@ -4159,19 +4159,19 @@ LABEL_60:
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_290;
   }
 
   has = self->_has;
-  v6 = *(v4 + 31);
+  v6 = *(equalCopy + 31);
   if (*&has)
   {
-    if ((v6 & 1) == 0 || self->_ccaFailedAttempts != *(v4 + 2))
+    if ((v6 & 1) == 0 || self->_ccaFailedAttempts != *(equalCopy + 2))
     {
       goto LABEL_290;
     }
@@ -4184,7 +4184,7 @@ LABEL_60:
 
   if ((*&has & 0x10) != 0)
   {
-    if ((v6 & 0x10) == 0 || self->_radioReceivedFrames != *(v4 + 6))
+    if ((v6 & 0x10) == 0 || self->_radioReceivedFrames != *(equalCopy + 6))
     {
       goto LABEL_290;
     }
@@ -4197,7 +4197,7 @@ LABEL_60:
 
   if ((*&has & 0x40) != 0)
   {
-    if ((v6 & 0x40) == 0 || self->_receivedEnergyEvents != *(v4 + 8))
+    if ((v6 & 0x40) == 0 || self->_receivedEnergyEvents != *(equalCopy + 8))
     {
       goto LABEL_290;
     }
@@ -4210,7 +4210,7 @@ LABEL_60:
 
   if ((*&has & 0x100) != 0)
   {
-    if ((v6 & 0x100) == 0 || self->_receivedPreambles != *(v4 + 10))
+    if ((v6 & 0x100) == 0 || self->_receivedPreambles != *(equalCopy + 10))
     {
       goto LABEL_290;
     }
@@ -4222,7 +4222,7 @@ LABEL_60:
   }
 
   sRadioStats = self->_sRadioStats;
-  if (sRadioStats | *(v4 + 18))
+  if (sRadioStats | *(equalCopy + 18))
   {
     if (![(AWDRadioStatsS *)sRadioStats isEqual:?])
     {
@@ -4232,10 +4232,10 @@ LABEL_60:
     has = self->_has;
   }
 
-  v8 = *(v4 + 31);
+  v8 = *(equalCopy + 31);
   if ((*&has & 0x20000) != 0)
   {
-    if ((v8 & 0x20000) == 0 || self->_rttMinVal != *(v4 + 19))
+    if ((v8 & 0x20000) == 0 || self->_rttMinVal != *(equalCopy + 19))
     {
       goto LABEL_290;
     }
@@ -4248,7 +4248,7 @@ LABEL_60:
 
   if ((*&has & 0x10000) != 0)
   {
-    if ((v8 & 0x10000) == 0 || self->_rttMaxVal != *(v4 + 18))
+    if ((v8 & 0x10000) == 0 || self->_rttMaxVal != *(equalCopy + 18))
     {
       goto LABEL_290;
     }
@@ -4261,7 +4261,7 @@ LABEL_60:
 
   if ((*&has & 0x8000) != 0)
   {
-    if ((v8 & 0x8000) == 0 || self->_rttAvgVal != *(v4 + 17))
+    if ((v8 & 0x8000) == 0 || self->_rttAvgVal != *(equalCopy + 17))
     {
       goto LABEL_290;
     }
@@ -4274,7 +4274,7 @@ LABEL_60:
 
   if ((*&has & 0x4000) != 0)
   {
-    if ((v8 & 0x4000) == 0 || self->_rtt90perc != *(v4 + 16))
+    if ((v8 & 0x4000) == 0 || self->_rtt90perc != *(equalCopy + 16))
     {
       goto LABEL_290;
     }
@@ -4287,7 +4287,7 @@ LABEL_60:
 
   if ((*&has & 0x2000) != 0)
   {
-    if ((v8 & 0x2000) == 0 || self->_retryIntervalMin != *(v4 + 15))
+    if ((v8 & 0x2000) == 0 || self->_retryIntervalMin != *(equalCopy + 15))
     {
       goto LABEL_290;
     }
@@ -4300,7 +4300,7 @@ LABEL_60:
 
   if ((*&has & 0x1000) != 0)
   {
-    if ((v8 & 0x1000) == 0 || self->_retryIntervalMax != *(v4 + 14))
+    if ((v8 & 0x1000) == 0 || self->_retryIntervalMax != *(equalCopy + 14))
     {
       goto LABEL_290;
     }
@@ -4313,7 +4313,7 @@ LABEL_60:
 
   if ((*&has & 0x800) != 0)
   {
-    if ((v8 & 0x800) == 0 || self->_retryIntervalAvg != *(v4 + 13))
+    if ((v8 & 0x800) == 0 || self->_retryIntervalAvg != *(equalCopy + 13))
     {
       goto LABEL_290;
     }
@@ -4326,7 +4326,7 @@ LABEL_60:
 
   if ((*&has & 0x400) != 0)
   {
-    if ((v8 & 0x400) == 0 || self->_retryInterval90perc != *(v4 + 12))
+    if ((v8 & 0x400) == 0 || self->_retryInterval90perc != *(equalCopy + 12))
     {
       goto LABEL_290;
     }
@@ -4339,7 +4339,7 @@ LABEL_60:
 
   if ((*&has & 0x8000000000) != 0)
   {
-    if ((v8 & 0x8000000000) == 0 || self->_txDelayMin != *(v4 + 44))
+    if ((v8 & 0x8000000000) == 0 || self->_txDelayMin != *(equalCopy + 44))
     {
       goto LABEL_290;
     }
@@ -4352,7 +4352,7 @@ LABEL_60:
 
   if ((*&has & 0x4000000000) != 0)
   {
-    if ((v8 & 0x4000000000) == 0 || self->_txDelayMax != *(v4 + 43))
+    if ((v8 & 0x4000000000) == 0 || self->_txDelayMax != *(equalCopy + 43))
     {
       goto LABEL_290;
     }
@@ -4365,7 +4365,7 @@ LABEL_60:
 
   if ((*&has & 0x2000000000) != 0)
   {
-    if ((v8 & 0x2000000000) == 0 || self->_txDelayAvg != *(v4 + 42))
+    if ((v8 & 0x2000000000) == 0 || self->_txDelayAvg != *(equalCopy + 42))
     {
       goto LABEL_290;
     }
@@ -4378,7 +4378,7 @@ LABEL_60:
 
   if ((*&has & 0x1000000000) != 0)
   {
-    if ((v8 & 0x1000000000) == 0 || self->_txDelay90perc != *(v4 + 41))
+    if ((v8 & 0x1000000000) == 0 || self->_txDelay90perc != *(equalCopy + 41))
     {
       goto LABEL_290;
     }
@@ -4391,7 +4391,7 @@ LABEL_60:
 
   if ((*&has & 8) != 0)
   {
-    if ((v8 & 8) == 0 || self->_listeningTime != *(v4 + 5))
+    if ((v8 & 8) == 0 || self->_listeningTime != *(equalCopy + 5))
     {
       goto LABEL_290;
     }
@@ -4404,7 +4404,7 @@ LABEL_60:
 
   if ((*&has & 0x200) != 0)
   {
-    if ((v8 & 0x200) == 0 || self->_receivingTime != *(v4 + 11))
+    if ((v8 & 0x200) == 0 || self->_receivingTime != *(equalCopy + 11))
     {
       goto LABEL_290;
     }
@@ -4417,7 +4417,7 @@ LABEL_60:
 
   if ((*&has & 0x800000000) != 0)
   {
-    if ((v8 & 0x800000000) == 0 || self->_transmittingTime != *(v4 + 40))
+    if ((v8 & 0x800000000) == 0 || self->_transmittingTime != *(equalCopy + 40))
     {
       goto LABEL_290;
     }
@@ -4430,7 +4430,7 @@ LABEL_60:
 
   if ((*&has & 0x400000000) != 0)
   {
-    if ((v8 & 0x400000000) == 0 || self->_transmittedFrames != *(v4 + 39))
+    if ((v8 & 0x400000000) == 0 || self->_transmittedFrames != *(equalCopy + 39))
     {
       goto LABEL_290;
     }
@@ -4443,7 +4443,7 @@ LABEL_60:
 
   if ((*&has & 0x1000000000000) != 0)
   {
-    if ((v8 & 0x1000000000000) == 0 || self->_txErrorTimeslotEnded != *(v4 + 53))
+    if ((v8 & 0x1000000000000) == 0 || self->_txErrorTimeslotEnded != *(equalCopy + 53))
     {
       goto LABEL_290;
     }
@@ -4456,7 +4456,7 @@ LABEL_60:
 
   if ((*&has & 0x800000000000) != 0)
   {
-    if ((v8 & 0x800000000000) == 0 || self->_txErrorTimeslotDenied != *(v4 + 52))
+    if ((v8 & 0x800000000000) == 0 || self->_txErrorTimeslotDenied != *(equalCopy + 52))
     {
       goto LABEL_290;
     }
@@ -4469,7 +4469,7 @@ LABEL_60:
 
   if ((*&has & 0x20000000000) != 0)
   {
-    if ((v8 & 0x20000000000) == 0 || self->_txErrorBusyChannelCcaNotStarted != *(v4 + 46))
+    if ((v8 & 0x20000000000) == 0 || self->_txErrorBusyChannelCcaNotStarted != *(equalCopy + 46))
     {
       goto LABEL_290;
     }
@@ -4482,7 +4482,7 @@ LABEL_60:
 
   if ((*&has & 0x40000000000) != 0)
   {
-    if ((v8 & 0x40000000000) == 0 || self->_txErrorChannelAccessCcaBusy != *(v4 + 47))
+    if ((v8 & 0x40000000000) == 0 || self->_txErrorChannelAccessCcaBusy != *(equalCopy + 47))
     {
       goto LABEL_290;
     }
@@ -4495,7 +4495,7 @@ LABEL_60:
 
   if ((*&has & 0x80000000000) != 0)
   {
-    if ((v8 & 0x80000000000) == 0 || self->_txErrorChannelAccessFailure != *(v4 + 48))
+    if ((v8 & 0x80000000000) == 0 || self->_txErrorChannelAccessFailure != *(equalCopy + 48))
     {
       goto LABEL_290;
     }
@@ -4508,7 +4508,7 @@ LABEL_60:
 
   if ((*&has & 0x2000000000000) != 0)
   {
-    if ((v8 & 0x2000000000000) == 0 || self->_txErrorTxAborted != *(v4 + 54))
+    if ((v8 & 0x2000000000000) == 0 || self->_txErrorTxAborted != *(equalCopy + 54))
     {
       goto LABEL_290;
     }
@@ -4521,7 +4521,7 @@ LABEL_60:
 
   if ((*&has & 0x10000000000000) != 0)
   {
-    if ((v8 & 0x10000000000000) == 0 || self->_txErrorTxAbortedCsmaCfgBackoff != *(v4 + 57))
+    if ((v8 & 0x10000000000000) == 0 || self->_txErrorTxAbortedCsmaCfgBackoff != *(equalCopy + 57))
     {
       goto LABEL_290;
     }
@@ -4534,7 +4534,7 @@ LABEL_60:
 
   if ((*&has & 0x8000000000000) != 0)
   {
-    if ((v8 & 0x8000000000000) == 0 || self->_txErrorTxAbortedCsmaBackoff != *(v4 + 56))
+    if ((v8 & 0x8000000000000) == 0 || self->_txErrorTxAbortedCsmaBackoff != *(equalCopy + 56))
     {
       goto LABEL_290;
     }
@@ -4547,7 +4547,7 @@ LABEL_60:
 
   if ((*&has & 0x20000000000000) != 0)
   {
-    if ((v8 & 0x20000000000000) == 0 || self->_txErrorTxAbortedCsmaPrepare != *(v4 + 58))
+    if ((v8 & 0x20000000000000) == 0 || self->_txErrorTxAbortedCsmaPrepare != *(equalCopy + 58))
     {
       goto LABEL_290;
     }
@@ -4560,7 +4560,7 @@ LABEL_60:
 
   if ((*&has & 0x40000000000000) != 0)
   {
-    if ((v8 & 0x40000000000000) == 0 || self->_txErrorTxAbortedIfs != *(v4 + 59))
+    if ((v8 & 0x40000000000000) == 0 || self->_txErrorTxAbortedIfs != *(equalCopy + 59))
     {
       goto LABEL_290;
     }
@@ -4573,7 +4573,7 @@ LABEL_60:
 
   if ((*&has & 0x80000000000000) != 0)
   {
-    if ((v8 & 0x80000000000000) == 0 || self->_txErrorTxAbortedRxAck != *(v4 + 60))
+    if ((v8 & 0x80000000000000) == 0 || self->_txErrorTxAbortedRxAck != *(equalCopy + 60))
     {
       goto LABEL_290;
     }
@@ -4586,7 +4586,7 @@ LABEL_60:
 
   if ((*&has & 0x4000000000000) != 0)
   {
-    if ((v8 & 0x4000000000000) == 0 || self->_txErrorTxAbortedCcaTx != *(v4 + 55))
+    if ((v8 & 0x4000000000000) == 0 || self->_txErrorTxAbortedCcaTx != *(equalCopy + 55))
     {
       goto LABEL_290;
     }
@@ -4599,7 +4599,7 @@ LABEL_60:
 
   if ((*&has & 0x100000000000000) != 0)
   {
-    if ((v8 & 0x100000000000000) == 0 || self->_txErrorTxAbortedTx != *(v4 + 61))
+    if ((v8 & 0x100000000000000) == 0 || self->_txErrorTxAbortedTx != *(equalCopy + 61))
     {
       goto LABEL_290;
     }
@@ -4612,7 +4612,7 @@ LABEL_60:
 
   if ((*&has & 0x400000000000) != 0)
   {
-    if ((v8 & 0x400000000000) == 0 || self->_txErrorNotGranted != *(v4 + 51))
+    if ((v8 & 0x400000000000) == 0 || self->_txErrorNotGranted != *(equalCopy + 51))
     {
       goto LABEL_290;
     }
@@ -4625,7 +4625,7 @@ LABEL_60:
 
   if ((*&has & 0x100000000000) != 0)
   {
-    if ((v8 & 0x100000000000) == 0 || self->_txErrorInvalidAck != *(v4 + 49))
+    if ((v8 & 0x100000000000) == 0 || self->_txErrorInvalidAck != *(equalCopy + 49))
     {
       goto LABEL_290;
     }
@@ -4638,7 +4638,7 @@ LABEL_60:
 
   if ((*&has & 0x200000000000) != 0)
   {
-    if ((v8 & 0x200000000000) == 0 || self->_txErrorNoAck != *(v4 + 50))
+    if ((v8 & 0x200000000000) == 0 || self->_txErrorNoAck != *(equalCopy + 50))
     {
       goto LABEL_290;
     }
@@ -4651,7 +4651,7 @@ LABEL_60:
 
   if ((*&has & 0x10000000000) != 0)
   {
-    if ((v8 & 0x10000000000) == 0 || self->_txErrorAckNoMem != *(v4 + 45))
+    if ((v8 & 0x10000000000) == 0 || self->_txErrorAckNoMem != *(equalCopy + 45))
     {
       goto LABEL_290;
     }
@@ -4664,7 +4664,7 @@ LABEL_60:
 
   if ((*&has & 0x80) != 0)
   {
-    if ((v8 & 0x80) == 0 || self->_receivedFrames != *(v4 + 9))
+    if ((v8 & 0x80) == 0 || self->_receivedFrames != *(equalCopy + 9))
     {
       goto LABEL_290;
     }
@@ -4677,7 +4677,7 @@ LABEL_60:
 
   if ((*&has & 0x40000000) != 0)
   {
-    if ((v8 & 0x40000000) == 0 || self->_rxErrorReceiveFailed != *(v4 + 32))
+    if ((v8 & 0x40000000) == 0 || self->_rxErrorReceiveFailed != *(equalCopy + 32))
     {
       goto LABEL_290;
     }
@@ -4690,7 +4690,7 @@ LABEL_60:
 
   if ((*&has & 0x10000000) != 0)
   {
-    if ((v8 & 0x10000000) == 0 || self->_rxErrorInvalidFrame != *(v4 + 30))
+    if ((v8 & 0x10000000) == 0 || self->_rxErrorInvalidFrame != *(equalCopy + 30))
     {
       goto LABEL_290;
     }
@@ -4703,7 +4703,7 @@ LABEL_60:
 
   if ((*&has & 0x800000) != 0)
   {
-    if ((v8 & 0x800000) == 0 || self->_rxErrorDelayedTimeout != *(v4 + 25))
+    if ((v8 & 0x800000) == 0 || self->_rxErrorDelayedTimeout != *(equalCopy + 25))
     {
       goto LABEL_290;
     }
@@ -4716,7 +4716,7 @@ LABEL_60:
 
   if ((*&has & 0x8000000) != 0)
   {
-    if ((v8 & 0x8000000) == 0 || self->_rxErrorInvalidFcs != *(v4 + 29))
+    if ((v8 & 0x8000000) == 0 || self->_rxErrorInvalidFcs != *(equalCopy + 29))
     {
       goto LABEL_290;
     }
@@ -4729,7 +4729,7 @@ LABEL_60:
 
   if ((*&has & 0x2000000) != 0)
   {
-    if ((v8 & 0x2000000) == 0 || self->_rxErrorDestAddrFiltered != *(v4 + 27))
+    if ((v8 & 0x2000000) == 0 || self->_rxErrorDestAddrFiltered != *(equalCopy + 27))
     {
       goto LABEL_290;
     }
@@ -4742,7 +4742,7 @@ LABEL_60:
 
   if ((*&has & 0x80000000) != 0)
   {
-    if ((v8 & 0x80000000) == 0 || self->_rxErrorRuntimeDelay != *(v4 + 33))
+    if ((v8 & 0x80000000) == 0 || self->_rxErrorRuntimeDelay != *(equalCopy + 33))
     {
       goto LABEL_290;
     }
@@ -4755,7 +4755,7 @@ LABEL_60:
 
   if ((*&has & 0x100000000) != 0)
   {
-    if ((v8 & 0x100000000) == 0 || self->_rxErrorTimeslotEnded != *(v4 + 34))
+    if ((v8 & 0x100000000) == 0 || self->_rxErrorTimeslotEnded != *(equalCopy + 34))
     {
       goto LABEL_290;
     }
@@ -4768,7 +4768,7 @@ LABEL_60:
 
   if ((*&has & 0x40000) != 0)
   {
-    if ((v8 & 0x40000) == 0 || self->_rxErrorAborted != *(v4 + 20))
+    if ((v8 & 0x40000) == 0 || self->_rxErrorAborted != *(equalCopy + 20))
     {
       goto LABEL_290;
     }
@@ -4781,7 +4781,7 @@ LABEL_60:
 
   if ((*&has & 0x1000000) != 0)
   {
-    if ((v8 & 0x1000000) == 0 || self->_rxErrorDelayedTimeslotEnded != *(v4 + 26))
+    if ((v8 & 0x1000000) == 0 || self->_rxErrorDelayedTimeslotEnded != *(equalCopy + 26))
     {
       goto LABEL_290;
     }
@@ -4794,7 +4794,7 @@ LABEL_60:
 
   if ((*&has & 0x20000000) != 0)
   {
-    if ((v8 & 0x20000000) == 0 || self->_rxErrorInvalidLength != *(v4 + 31))
+    if ((v8 & 0x20000000) == 0 || self->_rxErrorInvalidLength != *(equalCopy + 31))
     {
       goto LABEL_290;
     }
@@ -4807,7 +4807,7 @@ LABEL_60:
 
   if ((*&has & 0x4000000) != 0)
   {
-    if ((v8 & 0x4000000) == 0 || self->_rxErrorInvalidData != *(v4 + 28))
+    if ((v8 & 0x4000000) == 0 || self->_rxErrorInvalidData != *(equalCopy + 28))
     {
       goto LABEL_290;
     }
@@ -4820,7 +4820,7 @@ LABEL_60:
 
   if ((*&has & 0x400000) != 0)
   {
-    if ((v8 & 0x400000) == 0 || self->_rxErrorAckFailedRadioState != *(v4 + 24))
+    if ((v8 & 0x400000) == 0 || self->_rxErrorAckFailedRadioState != *(equalCopy + 24))
     {
       goto LABEL_290;
     }
@@ -4833,7 +4833,7 @@ LABEL_60:
 
   if ((*&has & 0x200000) != 0)
   {
-    if ((v8 & 0x200000) == 0 || self->_rxErrorAckFailedRadioDelay != *(v4 + 23))
+    if ((v8 & 0x200000) == 0 || self->_rxErrorAckFailedRadioDelay != *(equalCopy + 23))
     {
       goto LABEL_290;
     }
@@ -4846,7 +4846,7 @@ LABEL_60:
 
   if ((*&has & 0x100000) != 0)
   {
-    if ((v8 & 0x100000) == 0 || self->_rxErrorAckDenied != *(v4 + 22))
+    if ((v8 & 0x100000) == 0 || self->_rxErrorAckDenied != *(equalCopy + 22))
     {
       goto LABEL_290;
     }
@@ -4859,7 +4859,7 @@ LABEL_60:
 
   if ((*&has & 0x80000) != 0)
   {
-    if ((v8 & 0x80000) == 0 || self->_rxErrorAckAborted != *(v4 + 21))
+    if ((v8 & 0x80000) == 0 || self->_rxErrorAckAborted != *(equalCopy + 21))
     {
       goto LABEL_290;
     }
@@ -4872,7 +4872,7 @@ LABEL_60:
 
   if ((*&has & 0x200000000) != 0)
   {
-    if ((v8 & 0x200000000) == 0 || self->_sleepState != *(v4 + 38))
+    if ((v8 & 0x200000000) == 0 || self->_sleepState != *(equalCopy + 38))
     {
       goto LABEL_290;
     }
@@ -4885,7 +4885,7 @@ LABEL_60:
 
   if ((*&has & 4) != 0)
   {
-    if ((v8 & 4) == 0 || self->_energyDetectedRequests != *(v4 + 4))
+    if ((v8 & 4) == 0 || self->_energyDetectedRequests != *(equalCopy + 4))
     {
       goto LABEL_290;
     }
@@ -4896,7 +4896,7 @@ LABEL_60:
     goto LABEL_290;
   }
 
-  v9 = *(v4 + 31);
+  v9 = *(equalCopy + 31);
   if ((*&has & 2) == 0)
   {
     if ((v9 & 2) == 0)
@@ -4909,7 +4909,7 @@ LABEL_290:
     goto LABEL_291;
   }
 
-  if ((v9 & 2) == 0 || self->_energyDetectedEvents != *(v4 + 3))
+  if ((v9 & 2) == 0 || self->_energyDetectedEvents != *(equalCopy + 3))
   {
     goto LABEL_290;
   }
@@ -4917,7 +4917,7 @@ LABEL_290:
 LABEL_285:
   if ((*&has & 0x20) != 0)
   {
-    if ((v9 & 0x20) == 0 || self->_radioStatusDoubleNotification != *(v4 + 7))
+    if ((v9 & 0x20) == 0 || self->_radioStatusDoubleNotification != *(equalCopy + 7))
     {
       goto LABEL_290;
     }
@@ -4927,7 +4927,7 @@ LABEL_285:
 
   else
   {
-    v10 = (*(v4 + 31) & 0x20) == 0;
+    v10 = (*(equalCopy + 31) & 0x20) == 0;
   }
 
 LABEL_291:
@@ -5728,16 +5728,16 @@ LABEL_63:
   return v62 ^ v63 ^ v61 ^ v60 ^ v58 ^ v57 ^ v56 ^ v55 ^ v54 ^ v53 ^ v52 ^ v51 ^ v50 ^ v59 ^ v49 ^ v48 ^ v47 ^ v46 ^ v45 ^ v44 ^ v43 ^ v42 ^ v41 ^ v40 ^ v39 ^ v38 ^ v37 ^ v36 ^ v35 ^ v34 ^ v33 ^ v32 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13 ^ v14 ^ v15 ^ v16 ^ v17 ^ v18 ^ v19 ^ v20 ^ v21 ^ v22 ^ v23 ^ v24 ^ v25 ^ v26 ^ v27 ^ v28 ^ v29 ^ v30;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  v6 = *(v4 + 31);
+  fromCopy = from;
+  v5 = fromCopy;
+  v6 = *(fromCopy + 31);
   if (v6)
   {
-    self->_ccaFailedAttempts = v4[2];
+    self->_ccaFailedAttempts = fromCopy[2];
     *&self->_has |= 1uLL;
-    v6 = *(v4 + 31);
+    v6 = *(fromCopy + 31);
     if ((v6 & 0x10) == 0)
     {
 LABEL_3:
@@ -5755,9 +5755,9 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  self->_radioReceivedFrames = v4[6];
+  self->_radioReceivedFrames = fromCopy[6];
   *&self->_has |= 0x10uLL;
-  v6 = *(v4 + 31);
+  v6 = *(fromCopy + 31);
   if ((v6 & 0x40) == 0)
   {
 LABEL_4:
@@ -5767,7 +5767,7 @@ LABEL_4:
     }
 
 LABEL_11:
-    self->_receivedPreambles = v4[10];
+    self->_receivedPreambles = fromCopy[10];
     *&self->_has |= 0x100uLL;
     sRadioStats = self->_sRadioStats;
     v8 = *(v5 + 18);
@@ -5780,9 +5780,9 @@ LABEL_11:
   }
 
 LABEL_10:
-  self->_receivedEnergyEvents = v4[8];
+  self->_receivedEnergyEvents = fromCopy[8];
   *&self->_has |= 0x40uLL;
-  if ((*(v4 + 31) & 0x100) != 0)
+  if ((*(fromCopy + 31) & 0x100) != 0)
   {
     goto LABEL_11;
   }

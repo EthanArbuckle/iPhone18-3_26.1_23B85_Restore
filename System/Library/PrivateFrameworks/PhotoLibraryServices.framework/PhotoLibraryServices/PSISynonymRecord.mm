@@ -1,24 +1,24 @@
 @interface PSISynonymRecord
-- (PSISynonymRecord)initWithSynonym:(id)a3 category:(signed __int16)a4 identifier:(id)a5;
+- (PSISynonymRecord)initWithSynonym:(id)synonym category:(signed __int16)category identifier:(id)identifier;
 @end
 
 @implementation PSISynonymRecord
 
-- (PSISynonymRecord)initWithSynonym:(id)a3 category:(signed __int16)a4 identifier:(id)a5
+- (PSISynonymRecord)initWithSynonym:(id)synonym category:(signed __int16)category identifier:(id)identifier
 {
-  v8 = a3;
-  v9 = a5;
+  synonymCopy = synonym;
+  identifierCopy = identifier;
   v16.receiver = self;
   v16.super_class = PSISynonymRecord;
   v10 = [(PSISynonymRecord *)&v16 init];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [synonymCopy copy];
     synonym = v10->_synonym;
     v10->_synonym = v11;
 
-    v10->_category = a4;
-    v13 = [v9 copy];
+    v10->_category = category;
+    v13 = [identifierCopy copy];
     identifier = v10->_identifier;
     v10->_identifier = v13;
   }

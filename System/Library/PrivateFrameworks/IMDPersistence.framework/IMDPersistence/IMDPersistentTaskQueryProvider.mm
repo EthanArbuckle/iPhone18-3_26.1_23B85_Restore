@@ -1,35 +1,35 @@
 @interface IMDPersistentTaskQueryProvider
 + (BOOL)_shouldExplainQueryPlans;
-+ (void)_notifyPTasksUpdatedImmediately:(BOOL)a3;
++ (void)_notifyPTasksUpdatedImmediately:(BOOL)immediately;
 - (BOOL)isBlocking;
-- (IMDPersistentTaskQueryProvider)initWithBlockingDatabaseCalls:(BOOL)a3;
-- (void)_performHandoffBlock:(id)a3 delay:(double)a4;
-- (void)clearAllTasksInLane:(unint64_t)a3 flags:(id)a4 completionBlock:(id)a5;
-- (void)clearTasksWithRowIDs:(id)a3 completionBlock:(id)a4;
-- (void)incrementRetryCountForTasksWithRowIDs:(id)a3 completionBlock:(id)a4;
-- (void)loadPTaskReportsForGroups:(id)a3 excludingReasons:(id)a4 loadFullReports:(BOOL)a5 completionBlock:(id)a6;
-- (void)loadPTasksWithPredicate:(id)a3 sortDescriptors:(id)a4 limit:(int64_t)a5 completionBlock:(id)a6;
-- (void)loadRecentTasksWithFlags:(id)a3 groups:(id)a4 lanes:(id)a5 excludingReasons:(id)a6 limit:(int64_t)a7 completionBlock:(id)a8;
-- (void)remainingPTaskGUIDsFromGUIDs:(id)a3 flag:(unint64_t)a4 lane:(unint64_t)a5 completionBlock:(id)a6;
-- (void)resumeReindexSchedulingWithCompletionBlock:(id)a3;
-- (void)scheduleFullReindexWithContext:(id)a3 completionBlock:(id)a4;
-- (void)scheduleGUIDs:(id)a3 flag:(unint64_t)a4 lane:(unint64_t)a5 reason:(int64_t)a6 userInfo:(id)a7 completionBlock:(id)a8;
-- (void)scheduleMessageGUIDsInChatRowIDs:(id)a3 afterDate:(id)a4 flag:(unint64_t)a5 lane:(unint64_t)a6 reason:(int64_t)a7 completionBlock:(id)a8;
-- (void)scheduleMessageGUIDsUpToLimit:(int64_t)a3 flag:(unint64_t)a4 lane:(unint64_t)a5 reason:(int64_t)a6 userInfo:(id)a7 completionBlock:(id)a8;
-- (void)storeTasks:(id)a3;
-- (void)suspendReindexSchedulingWithCompletionBlock:(id)a3;
+- (IMDPersistentTaskQueryProvider)initWithBlockingDatabaseCalls:(BOOL)calls;
+- (void)_performHandoffBlock:(id)block delay:(double)delay;
+- (void)clearAllTasksInLane:(unint64_t)lane flags:(id)flags completionBlock:(id)block;
+- (void)clearTasksWithRowIDs:(id)ds completionBlock:(id)block;
+- (void)incrementRetryCountForTasksWithRowIDs:(id)ds completionBlock:(id)block;
+- (void)loadPTaskReportsForGroups:(id)groups excludingReasons:(id)reasons loadFullReports:(BOOL)reports completionBlock:(id)block;
+- (void)loadPTasksWithPredicate:(id)predicate sortDescriptors:(id)descriptors limit:(int64_t)limit completionBlock:(id)block;
+- (void)loadRecentTasksWithFlags:(id)flags groups:(id)groups lanes:(id)lanes excludingReasons:(id)reasons limit:(int64_t)limit completionBlock:(id)block;
+- (void)remainingPTaskGUIDsFromGUIDs:(id)ds flag:(unint64_t)flag lane:(unint64_t)lane completionBlock:(id)block;
+- (void)resumeReindexSchedulingWithCompletionBlock:(id)block;
+- (void)scheduleFullReindexWithContext:(id)context completionBlock:(id)block;
+- (void)scheduleGUIDs:(id)ds flag:(unint64_t)flag lane:(unint64_t)lane reason:(int64_t)reason userInfo:(id)info completionBlock:(id)block;
+- (void)scheduleMessageGUIDsInChatRowIDs:(id)ds afterDate:(id)date flag:(unint64_t)flag lane:(unint64_t)lane reason:(int64_t)reason completionBlock:(id)block;
+- (void)scheduleMessageGUIDsUpToLimit:(int64_t)limit flag:(unint64_t)flag lane:(unint64_t)lane reason:(int64_t)reason userInfo:(id)info completionBlock:(id)block;
+- (void)storeTasks:(id)tasks;
+- (void)suspendReindexSchedulingWithCompletionBlock:(id)block;
 @end
 
 @implementation IMDPersistentTaskQueryProvider
 
-- (IMDPersistentTaskQueryProvider)initWithBlockingDatabaseCalls:(BOOL)a3
+- (IMDPersistentTaskQueryProvider)initWithBlockingDatabaseCalls:(BOOL)calls
 {
   v5.receiver = self;
   v5.super_class = IMDPersistentTaskQueryProvider;
   result = [(IMDPersistentTaskQueryProvider *)&v5 init];
   if (result)
   {
-    result->_isBlocking = a3;
+    result->_isBlocking = calls;
   }
 
   return result;
@@ -48,10 +48,10 @@
   }
 }
 
-- (void)_performHandoffBlock:(id)a3 delay:(double)a4
+- (void)_performHandoffBlock:(id)block delay:(double)delay
 {
-  v8 = dispatch_block_create(DISPATCH_BLOCK_INHERIT_QOS_CLASS, a3);
-  if (a4 == 0.0)
+  v8 = dispatch_block_create(DISPATCH_BLOCK_INHERIT_QOS_CLASS, block);
+  if (delay == 0.0)
   {
     isBlocking = objc_msgSend_isBlocking(self, v6, v7);
     IMDPersistencePerformBlockWithHandoffIfNeeded(v8, isBlocking, v14);
@@ -72,7 +72,7 @@
       block[1] = 3221225472;
       block[2] = sub_1B7B31750;
       block[3] = &unk_1E7CB6A70;
-      *&block[4] = a4;
+      *&block[4] = delay;
       dispatch_async(qword_1EBA53F00, block);
       v10 = MEMORY[0x1E696B0B8];
       v11 = qword_1EBA53F00;
@@ -87,20 +87,20 @@
 
     else
     {
-      v15 = dispatch_time(0, (a4 * 1000000000.0));
+      v15 = dispatch_time(0, (delay * 1000000000.0));
       v16 = _IMDPersistenceGetThreadedStoreQueue();
       dispatch_after(v15, v16, v8);
     }
   }
 }
 
-+ (void)_notifyPTasksUpdatedImmediately:(BOOL)a3
++ (void)_notifyPTasksUpdatedImmediately:(BOOL)immediately
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = sub_1B7B318D0;
   v3[3] = &unk_1E7CB7FB0;
-  v5 = a3;
+  immediatelyCopy = immediately;
   v4 = &unk_1F2F9FCD0;
   dispatch_async(MEMORY[0x1E69E96A0], v3);
 }
@@ -121,7 +121,7 @@
   return v6;
 }
 
-- (void)storeTasks:(id)a3
+- (void)storeTasks:(id)tasks
 {
   ObjectType = swift_getObjectType();
   sub_1B7AEE088(0, &qword_1EDBE5A20, off_1E7CB5138);
@@ -136,17 +136,17 @@
   v11[2] = sub_1B7AE14D0;
   v11[3] = &unk_1F2FA40D0;
   v7 = _Block_copy(v11);
-  v8 = self;
+  selfCopy = self;
 
-  v9 = [(IMDPersistentTaskQueryProvider *)v8 isBlocking];
-  IMDPersistencePerformBlock(v7, v9, v10);
+  isBlocking = [(IMDPersistentTaskQueryProvider *)selfCopy isBlocking];
+  IMDPersistencePerformBlock(v7, isBlocking, v10);
 
   _Block_release(v7);
 }
 
-- (void)clearTasksWithRowIDs:(id)a3 completionBlock:(id)a4
+- (void)clearTasksWithRowIDs:(id)ds completionBlock:(id)block
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(block);
   sub_1B7AEE088(0, &unk_1EDBE59B0, 0x1E696AD98);
   v6 = sub_1B7CFECE0();
   v7 = swift_allocObject();
@@ -162,26 +162,26 @@
   v11[2] = sub_1B7AE14D0;
   v11[3] = &unk_1F2FA4080;
   v9 = _Block_copy(v11);
-  v10 = self;
+  selfCopy = self;
 
-  [(IMDPersistentTaskQueryProvider *)v10 _performHandoffBlock:v9];
+  [(IMDPersistentTaskQueryProvider *)selfCopy _performHandoffBlock:v9];
 
   _Block_release(v9);
 }
 
-- (void)loadRecentTasksWithFlags:(id)a3 groups:(id)a4 lanes:(id)a5 excludingReasons:(id)a6 limit:(int64_t)a7 completionBlock:(id)a8
+- (void)loadRecentTasksWithFlags:(id)flags groups:(id)groups lanes:(id)lanes excludingReasons:(id)reasons limit:(int64_t)limit completionBlock:(id)block
 {
-  v12 = _Block_copy(a8);
-  if (a3)
+  v12 = _Block_copy(block);
+  if (flags)
   {
     sub_1B7AEE088(0, &unk_1EDBE59B0, 0x1E696AD98);
-    a3 = sub_1B7CFECE0();
+    flags = sub_1B7CFECE0();
   }
 
-  if (a4)
+  if (groups)
   {
     sub_1B7AEE088(0, &unk_1EDBE59B0, 0x1E696AD98);
-    a4 = sub_1B7CFECE0();
+    groups = sub_1B7CFECE0();
   }
 
   sub_1B7AEE088(0, &unk_1EDBE59B0, 0x1E696AD98);
@@ -190,11 +190,11 @@
   v15 = swift_allocObject();
   *(v15 + 16) = v12;
   v16 = swift_allocObject();
-  v16[2] = a3;
-  v16[3] = a4;
+  v16[2] = flags;
+  v16[3] = groups;
   v16[4] = v13;
   v16[5] = v14;
-  v16[6] = a7;
+  v16[6] = limit;
   v16[7] = self;
   v16[8] = sub_1B7C3D950;
   v16[9] = v15;
@@ -205,23 +205,23 @@
   v19[2] = sub_1B7AE14D0;
   v19[3] = &unk_1F2FA4008;
   v17 = _Block_copy(v19);
-  v18 = self;
+  selfCopy = self;
 
-  [(IMDPersistentTaskQueryProvider *)v18 _performHandoffBlock:v17];
+  [(IMDPersistentTaskQueryProvider *)selfCopy _performHandoffBlock:v17];
 
   _Block_release(v17);
 }
 
-- (void)loadPTaskReportsForGroups:(id)a3 excludingReasons:(id)a4 loadFullReports:(BOOL)a5 completionBlock:(id)a6
+- (void)loadPTaskReportsForGroups:(id)groups excludingReasons:(id)reasons loadFullReports:(BOOL)reports completionBlock:(id)block
 {
-  v10 = _Block_copy(a6);
-  if (a3)
+  v10 = _Block_copy(block);
+  if (groups)
   {
     sub_1B7AEE088(0, &unk_1EDBE59B0, 0x1E696AD98);
-    a3 = sub_1B7CFECE0();
+    groups = sub_1B7CFECE0();
   }
 
-  if (a4)
+  if (reasons)
   {
     sub_1B7AEE088(0, &unk_1EDBE59B0, 0x1E696AD98);
     v11 = sub_1B7CFECE0();
@@ -235,9 +235,9 @@
   v12 = swift_allocObject();
   *(v12 + 16) = v10;
   v13 = swift_allocObject();
-  *(v13 + 16) = a5;
+  *(v13 + 16) = reports;
   *(v13 + 24) = self;
-  *(v13 + 32) = a3;
+  *(v13 + 32) = groups;
   *(v13 + 40) = v11;
   *(v13 + 48) = sub_1B7C3D7A8;
   *(v13 + 56) = v12;
@@ -248,19 +248,19 @@
   v16[2] = sub_1B7AE14D0;
   v16[3] = &unk_1F2FA3F90;
   v14 = _Block_copy(v16);
-  v15 = self;
+  selfCopy = self;
 
-  [(IMDPersistentTaskQueryProvider *)v15 _performHandoffBlock:v14];
+  [(IMDPersistentTaskQueryProvider *)selfCopy _performHandoffBlock:v14];
 
   _Block_release(v14);
 }
 
-- (void)scheduleMessageGUIDsInChatRowIDs:(id)a3 afterDate:(id)a4 flag:(unint64_t)a5 lane:(unint64_t)a6 reason:(int64_t)a7 completionBlock:(id)a8
+- (void)scheduleMessageGUIDsInChatRowIDs:(id)ds afterDate:(id)date flag:(unint64_t)flag lane:(unint64_t)lane reason:(int64_t)reason completionBlock:(id)block
 {
-  v28 = a6;
-  v29 = a7;
-  v27 = a5;
-  v31 = self;
+  laneCopy = lane;
+  reasonCopy = reason;
+  flagCopy = flag;
+  selfCopy = self;
   ObjectType = swift_getObjectType();
   v9 = sub_1B7CFE120();
   v10 = *(v9 - 8);
@@ -269,7 +269,7 @@
   v13 = &v26 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0);
   MEMORY[0x1EEE9AC00](v12);
   v15 = &v26 - v14;
-  v16 = _Block_copy(a8);
+  v16 = _Block_copy(block);
   sub_1B7AEE088(0, &unk_1EDBE59B0, 0x1E696AD98);
   v26 = sub_1B7CFECE0();
   sub_1B7CFE0F0();
@@ -280,10 +280,10 @@
   v19 = (v11 + v18 + 7) & 0xFFFFFFFFFFFFFFF8;
   v20 = (v19 + 15) & 0xFFFFFFFFFFFFFFF8;
   v21 = swift_allocObject();
-  v22 = v28;
-  *(v21 + 2) = v27;
+  v22 = laneCopy;
+  *(v21 + 2) = flagCopy;
   *(v21 + 3) = v22;
-  *(v21 + 4) = v29;
+  *(v21 + 4) = reasonCopy;
   (*(v10 + 32))(&v21[v18], v13, v9);
   *&v21[v19] = v26;
   v23 = &v21[v20];
@@ -297,7 +297,7 @@
   aBlock[2] = sub_1B7AE14D0;
   aBlock[3] = &unk_1F2FA3F18;
   v24 = _Block_copy(aBlock);
-  v25 = v31;
+  v25 = selfCopy;
 
   [(IMDPersistentTaskQueryProvider *)v25 _performHandoffBlock:v24];
   _Block_release(v24);
@@ -305,9 +305,9 @@
   (*(v10 + 8))(v15, v9);
 }
 
-- (void)incrementRetryCountForTasksWithRowIDs:(id)a3 completionBlock:(id)a4
+- (void)incrementRetryCountForTasksWithRowIDs:(id)ds completionBlock:(id)block
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(block);
   sub_1B7AEE088(0, &unk_1EDBE59B0, 0x1E696AD98);
   v6 = sub_1B7CFECE0();
   v7 = swift_allocObject();
@@ -323,20 +323,20 @@
   v11[2] = sub_1B7AE14D0;
   v11[3] = &unk_1F2FA3EA0;
   v9 = _Block_copy(v11);
-  v10 = self;
+  selfCopy = self;
 
-  [(IMDPersistentTaskQueryProvider *)v10 _performHandoffBlock:v9];
+  [(IMDPersistentTaskQueryProvider *)selfCopy _performHandoffBlock:v9];
 
   _Block_release(v9);
 }
 
-- (void)scheduleFullReindexWithContext:(id)a3 completionBlock:(id)a4
+- (void)scheduleFullReindexWithContext:(id)context completionBlock:(id)block
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(block);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
   v8 = swift_allocObject();
-  v8[2] = a3;
+  v8[2] = context;
   v8[3] = self;
   v8[4] = sub_1B7C3D8F4;
   v8[5] = v7;
@@ -347,40 +347,40 @@
   v14[2] = sub_1B7AE14D0;
   v14[3] = &unk_1F2FA3D88;
   v9 = _Block_copy(v14);
-  v10 = a3;
-  v11 = self;
-  v12 = v10;
-  v13 = v11;
+  contextCopy = context;
+  selfCopy = self;
+  v12 = contextCopy;
+  v13 = selfCopy;
 
   [(IMDPersistentTaskQueryProvider *)v13 _performHandoffBlock:v9];
 
   _Block_release(v9);
 }
 
-- (void)resumeReindexSchedulingWithCompletionBlock:(id)a3
+- (void)resumeReindexSchedulingWithCompletionBlock:(id)block
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(block);
   _Block_copy(v4);
-  v5 = self;
-  sub_1B7C3B758(v5, v4);
+  selfCopy = self;
+  sub_1B7C3B758(selfCopy, v4);
   _Block_release(v4);
   _Block_release(v4);
 }
 
-- (void)suspendReindexSchedulingWithCompletionBlock:(id)a3
+- (void)suspendReindexSchedulingWithCompletionBlock:(id)block
 {
-  v4 = _Block_copy(a3);
-  v5 = self;
+  v4 = _Block_copy(block);
+  selfCopy = self;
   sub_1B7C36318();
   v4[2](v4);
 
   _Block_release(v4);
 }
 
-- (void)scheduleMessageGUIDsUpToLimit:(int64_t)a3 flag:(unint64_t)a4 lane:(unint64_t)a5 reason:(int64_t)a6 userInfo:(id)a7 completionBlock:(id)a8
+- (void)scheduleMessageGUIDsUpToLimit:(int64_t)limit flag:(unint64_t)flag lane:(unint64_t)lane reason:(int64_t)reason userInfo:(id)info completionBlock:(id)block
 {
-  v14 = _Block_copy(a8);
-  if (a7)
+  v14 = _Block_copy(block);
+  if (info)
   {
     v15 = sub_1B7CFE990();
   }
@@ -394,10 +394,10 @@
   *(v16 + 16) = v14;
   v17 = swift_allocObject();
   v17[2] = v15;
-  v17[3] = a4;
-  v17[4] = a5;
-  v17[5] = a6;
-  v17[6] = a3;
+  v17[3] = flag;
+  v17[4] = lane;
+  v17[5] = reason;
+  v17[6] = limit;
   v17[7] = self;
   v17[8] = sub_1B7C3D8F0;
   v17[9] = v16;
@@ -408,37 +408,37 @@
   v20[2] = sub_1B7AE14D0;
   v20[3] = &unk_1F2FA3C70;
   v18 = _Block_copy(v20);
-  v19 = self;
+  selfCopy = self;
 
-  [(IMDPersistentTaskQueryProvider *)v19 _performHandoffBlock:v18];
+  [(IMDPersistentTaskQueryProvider *)selfCopy _performHandoffBlock:v18];
 
   _Block_release(v18);
 }
 
-- (void)scheduleGUIDs:(id)a3 flag:(unint64_t)a4 lane:(unint64_t)a5 reason:(int64_t)a6 userInfo:(id)a7 completionBlock:(id)a8
+- (void)scheduleGUIDs:(id)ds flag:(unint64_t)flag lane:(unint64_t)lane reason:(int64_t)reason userInfo:(id)info completionBlock:(id)block
 {
-  v13 = _Block_copy(a8);
+  v13 = _Block_copy(block);
   v14 = sub_1B7CFECE0();
-  if (a7)
+  if (info)
   {
-    a7 = sub_1B7CFE990();
+    info = sub_1B7CFE990();
   }
 
   v15 = swift_allocObject();
   *(v15 + 16) = v13;
-  v16 = self;
-  sub_1B7C36E10(v14, a4, a5, a6, a7, sub_1B7C14DEC, v15);
+  selfCopy = self;
+  sub_1B7C36E10(v14, flag, lane, reason, info, sub_1B7C14DEC, v15);
 }
 
-- (void)clearAllTasksInLane:(unint64_t)a3 flags:(id)a4 completionBlock:(id)a5
+- (void)clearAllTasksInLane:(unint64_t)lane flags:(id)flags completionBlock:(id)block
 {
-  v7 = _Block_copy(a5);
+  v7 = _Block_copy(block);
   sub_1B7AEE088(0, &unk_1EDBE59B0, 0x1E696AD98);
   v8 = sub_1B7CFECE0();
   v9 = swift_allocObject();
   *(v9 + 16) = v7;
   v10 = swift_allocObject();
-  v10[2] = a3;
+  v10[2] = lane;
   v10[3] = v8;
   v10[4] = self;
   v10[5] = sub_1B7AF5954;
@@ -450,16 +450,16 @@
   v13[2] = sub_1B7AE14D0;
   v13[3] = &unk_1F2F9F730;
   v11 = _Block_copy(v13);
-  v12 = self;
+  selfCopy = self;
 
-  [(IMDPersistentTaskQueryProvider *)v12 _performHandoffBlock:v11];
+  [(IMDPersistentTaskQueryProvider *)selfCopy _performHandoffBlock:v11];
 
   _Block_release(v11);
 }
 
-- (void)remainingPTaskGUIDsFromGUIDs:(id)a3 flag:(unint64_t)a4 lane:(unint64_t)a5 completionBlock:(id)a6
+- (void)remainingPTaskGUIDsFromGUIDs:(id)ds flag:(unint64_t)flag lane:(unint64_t)lane completionBlock:(id)block
 {
-  v7 = _Block_copy(a6);
+  v7 = _Block_copy(block);
   v8 = sub_1B7CFECE0();
   v9 = swift_allocObject();
   *(v9 + 16) = v7;
@@ -474,26 +474,26 @@
   v13[2] = sub_1B7AE14D0;
   v13[3] = &unk_1F2FA3AB8;
   v11 = _Block_copy(v13);
-  v12 = self;
+  selfCopy = self;
 
-  [(IMDPersistentTaskQueryProvider *)v12 _performHandoffBlock:v11];
+  [(IMDPersistentTaskQueryProvider *)selfCopy _performHandoffBlock:v11];
 
   _Block_release(v11);
 }
 
-- (void)loadPTasksWithPredicate:(id)a3 sortDescriptors:(id)a4 limit:(int64_t)a5 completionBlock:(id)a6
+- (void)loadPTasksWithPredicate:(id)predicate sortDescriptors:(id)descriptors limit:(int64_t)limit completionBlock:(id)block
 {
-  v10 = _Block_copy(a6);
-  if (a4)
+  v10 = _Block_copy(block);
+  if (descriptors)
   {
     sub_1B7AEE088(0, &unk_1EDBE5900, 0x1E696AEB0);
-    a4 = sub_1B7CFECE0();
+    descriptors = sub_1B7CFECE0();
   }
 
   _Block_copy(v10);
-  v11 = a3;
-  v12 = self;
-  sub_1B7C3C834(a3, a4, a5, v12, v10);
+  predicateCopy = predicate;
+  selfCopy = self;
+  sub_1B7C3C834(predicate, descriptors, limit, selfCopy, v10);
   _Block_release(v10);
   _Block_release(v10);
 }

@@ -1,7 +1,7 @@
 @interface TSSourceAutoReconnectWaitingViewController
 - (TSSIMSetupFlowDelegate)delegate;
 - (TSSourceAutoReconnectWaitingViewController)init;
-- (void)_skipButtonTapped:(id)a3;
+- (void)_skipButtonTapped:(id)tapped;
 - (void)viewDidLoad;
 @end
 
@@ -25,9 +25,9 @@
   v14.receiver = self;
   v14.super_class = TSSourceAutoReconnectWaitingViewController;
   [(TSOBWelcomeController *)&v14 viewDidLoad];
-  v3 = [MEMORY[0x277D37650] linkButton];
+  linkButton = [MEMORY[0x277D37650] linkButton];
   skipButton = self->_skipButton;
-  self->_skipButton = v3;
+  self->_skipButton = linkButton;
 
   [(OBLinkTrayButton *)self->_skipButton setRole:2];
   v5 = self->_skipButton;
@@ -37,11 +37,11 @@
 
   [(OBLinkTrayButton *)self->_skipButton addTarget:self action:sel__skipButtonTapped_ forControlEvents:64];
   [(OBLinkTrayButton *)self->_skipButton setHidden:1];
-  v8 = [(TSSourceAutoReconnectWaitingViewController *)self buttonTray];
-  [v8 addButton:self->_skipButton];
+  buttonTray = [(TSSourceAutoReconnectWaitingViewController *)self buttonTray];
+  [buttonTray addButton:self->_skipButton];
 
-  v9 = [(OBBaseWelcomeController *)self navigationItem];
-  [v9 setHidesBackButton:1 animated:0];
+  navigationItem = [(OBBaseWelcomeController *)self navigationItem];
+  [navigationItem setHidesBackButton:1 animated:0];
 
   objc_initWeak(&location, self);
   v10 = dispatch_time(0, 180000000000);
@@ -62,7 +62,7 @@ void __57__TSSourceAutoReconnectWaitingViewController_viewDidLoad__block_invoke(
   [v1 setHidden:0];
 }
 
-- (void)_skipButtonTapped:(id)a3
+- (void)_skipButtonTapped:(id)tapped
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained userDidTapCancel];

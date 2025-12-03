@@ -1,30 +1,30 @@
 @interface EKUIAutocompleteTracker
-+ (BOOL)_trackedEventProperty:(unint64_t)a3 isPresentInAutocompleteResult:(id)a4;
-+ (BOOL)_trackedEventProperty:(unint64_t)a3 wasOverriddenInEvent:(id)a4 fromAutocompleteResult:(id)a5;
-+ (id)propertyName:(unint64_t)a3;
-- (BOOL)_trackedEventProperty:(unint64_t)a3 wasSetInNewEvent:(id)a4;
-- (void)_augmentPayload:(id)a3 withEvent:(id)a4 selectedResult:(id)a5 selectedIndex:(unint64_t)a6 isZKW:(BOOL)a7;
-- (void)finalizeAutocompleteTrackingOnSave:(BOOL)a3 withEvent:(id)a4 selectedResult:(id)a5 selectedIndex:(unint64_t)a6 isZKW:(BOOL)a7;
++ (BOOL)_trackedEventProperty:(unint64_t)property isPresentInAutocompleteResult:(id)result;
++ (BOOL)_trackedEventProperty:(unint64_t)property wasOverriddenInEvent:(id)event fromAutocompleteResult:(id)result;
++ (id)propertyName:(unint64_t)name;
+- (BOOL)_trackedEventProperty:(unint64_t)property wasSetInNewEvent:(id)event;
+- (void)_augmentPayload:(id)payload withEvent:(id)event selectedResult:(id)result selectedIndex:(unint64_t)index isZKW:(BOOL)w;
+- (void)finalizeAutocompleteTrackingOnSave:(BOOL)save withEvent:(id)event selectedResult:(id)result selectedIndex:(unint64_t)index isZKW:(BOOL)w;
 @end
 
 @implementation EKUIAutocompleteTracker
 
-- (void)finalizeAutocompleteTrackingOnSave:(BOOL)a3 withEvent:(id)a4 selectedResult:(id)a5 selectedIndex:(unint64_t)a6 isZKW:(BOOL)a7
+- (void)finalizeAutocompleteTrackingOnSave:(BOOL)save withEvent:(id)event selectedResult:(id)result selectedIndex:(unint64_t)index isZKW:(BOOL)w
 {
-  v7 = a7;
-  v10 = a3;
+  wCopy = w;
+  saveCopy = save;
   v31[8] = *MEMORY[0x1E69E9840];
-  v12 = a4;
-  v13 = a5;
-  v14 = v13;
+  eventCopy = event;
+  resultCopy = result;
+  v14 = resultCopy;
   if (!self->_hasFinalizedTracking)
   {
-    v25 = v7;
+    v25 = wCopy;
     self->_hasFinalizedTracking = 1;
-    v24 = a6;
-    if (v13)
+    indexCopy = index;
+    if (resultCopy)
     {
-      v15 = a6 + 1;
+      v15 = index + 1;
     }
 
     else
@@ -32,7 +32,7 @@
       v15 = 0;
     }
 
-    v29 = v12;
+    v29 = eventCopy;
     v30[0] = @"ZKWQueryStarted";
     v28 = [MEMORY[0x1E696AD98] numberWithBool:self->_hasTrackedZKWQuery];
     v31[0] = v28;
@@ -52,8 +52,8 @@
     v19 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_finalNumberOfAutocompleteResults];
     v31[5] = v19;
     v30[6] = @"EventSaved";
-    v26 = v10;
-    v20 = [MEMORY[0x1E696AD98] numberWithBool:v10];
+    v26 = saveCopy;
+    v20 = [MEMORY[0x1E696AD98] numberWithBool:saveCopy];
     v31[6] = v20;
     v30[7] = @"WhichResultSelected";
     v21 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v15];
@@ -61,24 +61,24 @@
     v22 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v31 forKeys:v30 count:8];
     v23 = [v22 mutableCopy];
 
-    v12 = v29;
+    eventCopy = v29;
     if (v14 && self->_finalNumberOfAutocompleteResults && v26)
     {
-      [(EKUIAutocompleteTracker *)self _augmentPayload:v23 withEvent:v29 selectedResult:v14 selectedIndex:v24 isZKW:v25];
+      [(EKUIAutocompleteTracker *)self _augmentPayload:v23 withEvent:v29 selectedResult:v14 selectedIndex:indexCopy isZKW:v25];
     }
 
     CalAnalyticsSendEvent();
   }
 }
 
-- (void)_augmentPayload:(id)a3 withEvent:(id)a4 selectedResult:(id)a5 selectedIndex:(unint64_t)a6 isZKW:(BOOL)a7
+- (void)_augmentPayload:(id)payload withEvent:(id)event selectedResult:(id)result selectedIndex:(unint64_t)index isZKW:(BOOL)w
 {
-  v7 = a7;
-  v30 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = v12;
-  if (v7)
+  wCopy = w;
+  payloadCopy = payload;
+  eventCopy = event;
+  resultCopy = result;
+  v13 = resultCopy;
+  if (wCopy)
   {
     if (self->_hasTrackedAutocompleteResultsShown)
     {
@@ -93,18 +93,18 @@
 
   else
   {
-    v14 = [v12 source] == 2;
+    v14 = [resultCopy source] == 2;
   }
 
   v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v14];
-  [v30 setObject:v15 forKeyedSubscript:@"SelectionType"];
+  [payloadCopy setObject:v15 forKeyedSubscript:@"SelectionType"];
 
   v29 = 0;
   for (i = 0; i != 11; ++i)
   {
-    v17 = [(EKUIAutocompleteTracker *)self _trackedEventProperty:i wasSetInNewEvent:v11];
+    v17 = [(EKUIAutocompleteTracker *)self _trackedEventProperty:i wasSetInNewEvent:eventCopy];
     v18 = [objc_opt_class() _trackedEventProperty:i isPresentInAutocompleteResult:v13];
-    v19 = [objc_opt_class() _trackedEventProperty:i wasOverriddenInEvent:v11 fromAutocompleteResult:v13];
+    v19 = [objc_opt_class() _trackedEventProperty:i wasOverriddenInEvent:eventCopy fromAutocompleteResult:v13];
     v20 = v19;
     if (v17 && ((v18 ^ 1 | v19) & 1) != 0)
     {
@@ -114,70 +114,70 @@
     v21 = [EKUIAutocompleteTracker propertyName:i];
     v22 = [MEMORY[0x1E696AD98] numberWithBool:v17];
     v23 = [v21 stringByAppendingString:@"SetInEvent"];
-    [v30 setObject:v22 forKeyedSubscript:v23];
+    [payloadCopy setObject:v22 forKeyedSubscript:v23];
 
     v24 = [MEMORY[0x1E696AD98] numberWithBool:v18];
     v25 = [v21 stringByAppendingString:@"PresentInResult"];
-    [v30 setObject:v24 forKeyedSubscript:v25];
+    [payloadCopy setObject:v24 forKeyedSubscript:v25];
 
     v26 = [MEMORY[0x1E696AD98] numberWithBool:v20 & 1];
     v27 = [v21 stringByAppendingString:@"Overridden"];
-    [v30 setObject:v26 forKeyedSubscript:v27];
+    [payloadCopy setObject:v26 forKeyedSubscript:v27];
   }
 
   v28 = [MEMORY[0x1E696AD98] numberWithInt:(v29 & 1) == 0];
-  [v30 setObject:v28 forKeyedSubscript:@"CompleteWin"];
+  [payloadCopy setObject:v28 forKeyedSubscript:@"CompleteWin"];
 }
 
-+ (id)propertyName:(unint64_t)a3
++ (id)propertyName:(unint64_t)name
 {
-  if (a3 - 1 > 0xA)
+  if (name - 1 > 0xA)
   {
     return @"Title";
   }
 
   else
   {
-    return off_1E8441B20[a3 - 1];
+    return off_1E8441B20[name - 1];
   }
 }
 
-+ (BOOL)_trackedEventProperty:(unint64_t)a3 isPresentInAutocompleteResult:(id)a4
++ (BOOL)_trackedEventProperty:(unint64_t)property isPresentInAutocompleteResult:(id)result
 {
-  v7 = a4;
-  v8 = v7;
+  resultCopy = result;
+  v8 = resultCopy;
   v9 = 1;
-  if (a3 > 5)
+  if (property > 5)
   {
-    if (a3 <= 7)
+    if (property <= 7)
     {
-      if (a3 != 6)
+      if (property != 6)
       {
         goto LABEL_26;
       }
 
-      v11 = [v7 alarms];
+      alarms = [resultCopy alarms];
       goto LABEL_20;
     }
 
-    if (a3 != 8)
+    if (property != 8)
     {
-      if (a3 == 9)
+      if (property == 9)
       {
-        v10 = [v7 URL];
+        notes = [resultCopy URL];
       }
 
       else
       {
-        if (a3 != 10)
+        if (property != 10)
         {
           goto LABEL_17;
         }
 
-        v10 = [v7 notes];
+        notes = [resultCopy notes];
       }
 
-      v9 = v10 != 0;
+      v9 = notes != 0;
 
       goto LABEL_26;
     }
@@ -187,25 +187,25 @@ LABEL_18:
     goto LABEL_26;
   }
 
-  if (a3 > 2)
+  if (property > 2)
   {
-    if (a3 - 3 >= 2)
+    if (property - 3 >= 2)
     {
-      if (a3 == 5)
+      if (property == 5)
       {
-        v11 = [v7 attendees];
+        alarms = [resultCopy attendees];
 LABEL_20:
-        v14 = v11;
-        v9 = [v11 count] != 0;
+        clientLocation = alarms;
+        v9 = [alarms count] != 0;
 LABEL_25:
 
         goto LABEL_26;
       }
 
 LABEL_17:
-      v12 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v13 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"+[EKUIAutocompleteTracker _trackedEventProperty:isPresentInAutocompleteResult:]"];
-      [v12 handleFailureInMethod:a2 object:a1 file:@"EKUIAutocompleteTracker.m" lineNumber:206 description:{@"Unknown property id %lu in %@", a3, v13}];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"EKUIAutocompleteTracker.m" lineNumber:206 description:{@"Unknown property id %lu in %@", property, v13}];
 
       goto LABEL_18;
     }
@@ -213,24 +213,24 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  if (!a3)
+  if (!property)
   {
     goto LABEL_26;
   }
 
-  if (a3 == 1)
+  if (property == 1)
   {
-    v14 = [v7 clientLocation];
-    if (!v14)
+    clientLocation = [resultCopy clientLocation];
+    if (!clientLocation)
     {
-      v15 = [v8 structuredLocation];
-      v9 = v15 != 0;
+      structuredLocation = [v8 structuredLocation];
+      v9 = structuredLocation != 0;
     }
 
     goto LABEL_25;
   }
 
-  if (a3 != 2)
+  if (property != 2)
   {
     goto LABEL_17;
   }
@@ -240,51 +240,51 @@ LABEL_26:
   return v9;
 }
 
-- (BOOL)_trackedEventProperty:(unint64_t)a3 wasSetInNewEvent:(id)a4
+- (BOOL)_trackedEventProperty:(unint64_t)property wasSetInNewEvent:(id)event
 {
-  v7 = a4;
-  v8 = v7;
-  if (a3 > 4)
+  eventCopy = event;
+  v8 = eventCopy;
+  if (property > 4)
   {
-    if (a3 <= 7)
+    if (property <= 7)
     {
-      if (a3 == 5)
+      if (property == 5)
       {
-        v15 = [v7 attendees];
+        attendees = [eventCopy attendees];
       }
 
       else
       {
-        if (a3 != 6)
+        if (property != 6)
         {
-          v9 = [v7 calendar];
-          v10 = [v9 isEqual:self->_initialCalendar] ^ 1;
+          calendar = [eventCopy calendar];
+          v10 = [calendar isEqual:self->_initialCalendar] ^ 1;
 LABEL_41:
 
           goto LABEL_42;
         }
 
-        v15 = [v7 alarms];
+        attendees = [eventCopy alarms];
       }
 
-      v9 = v15;
-      LOBYTE(v10) = [v15 count] != 0;
+      calendar = attendees;
+      LOBYTE(v10) = [attendees count] != 0;
       goto LABEL_41;
     }
 
-    if (a3 != 8)
+    if (property != 8)
     {
-      if (a3 == 9)
+      if (property == 9)
       {
-        v11 = [v7 URL];
+        notes = [eventCopy URL];
         goto LABEL_21;
       }
 
-      if (a3 == 10)
+      if (property == 10)
       {
-        v11 = [v7 notes];
+        notes = [eventCopy notes];
 LABEL_21:
-        LOBYTE(v10) = v11 != 0;
+        LOBYTE(v10) = notes != 0;
 
         goto LABEL_42;
       }
@@ -292,7 +292,7 @@ LABEL_21:
       goto LABEL_31;
     }
 
-    if ([v7 allowsAvailabilityModifications] && objc_msgSend(v8, "availability"))
+    if ([eventCopy allowsAvailabilityModifications] && objc_msgSend(v8, "availability"))
     {
 LABEL_30:
       LOBYTE(v10) = 1;
@@ -308,30 +308,30 @@ LABEL_30:
     goto LABEL_35;
   }
 
-  if (a3 <= 1)
+  if (property <= 1)
   {
-    if (!a3)
+    if (!property)
     {
       goto LABEL_30;
     }
 
-    if (a3 != 1)
+    if (property != 1)
     {
 LABEL_31:
-      v18 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v19 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[EKUIAutocompleteTracker _trackedEventProperty:wasSetInNewEvent:]"];
-      [v18 handleFailureInMethod:a2 object:self file:@"EKUIAutocompleteTracker.m" lineNumber:243 description:{@"Unknown property id %lu in %@", a3, v19}];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"EKUIAutocompleteTracker.m" lineNumber:243 description:{@"Unknown property id %lu in %@", property, v19}];
 
 LABEL_38:
       LOBYTE(v10) = 0;
       goto LABEL_42;
     }
 
-    v9 = [v7 location];
-    if (!v9)
+    calendar = [eventCopy location];
+    if (!calendar)
     {
-      v12 = [v8 preferredLocation];
-      LOBYTE(v10) = v12 != 0;
+      preferredLocation = [v8 preferredLocation];
+      LOBYTE(v10) = preferredLocation != 0;
 
       goto LABEL_41;
     }
@@ -341,21 +341,21 @@ LABEL_32:
     goto LABEL_41;
   }
 
-  if (a3 == 2)
+  if (property == 2)
   {
-    if (self->_initialIsAllDay != [v7 isAllDay])
+    if (self->_initialIsAllDay != [eventCopy isAllDay])
     {
       goto LABEL_30;
     }
 
-    v9 = [v8 startDate];
-    if ([v9 isEqualToDate:self->_initialStartDate])
+    calendar = [v8 startDate];
+    if ([calendar isEqualToDate:self->_initialStartDate])
     {
-      v16 = [v8 endDateUnadjustedForLegacyClients];
-      if ([v16 isEqualToDate:self->_initialEndDate])
+      endDateUnadjustedForLegacyClients = [v8 endDateUnadjustedForLegacyClients];
+      if ([endDateUnadjustedForLegacyClients isEqualToDate:self->_initialEndDate])
       {
-        v17 = [v8 timeZone];
-        v10 = [v17 isEqualToTimeZone:self->_initialTimeZone] ^ 1;
+        timeZone = [v8 timeZone];
+        v10 = [timeZone isEqualToTimeZone:self->_initialTimeZone] ^ 1;
       }
 
       else
@@ -369,13 +369,13 @@ LABEL_32:
     goto LABEL_32;
   }
 
-  if (a3 != 3)
+  if (property != 3)
   {
-    LOBYTE(v10) = [v7 hasRecurrenceRules];
+    LOBYTE(v10) = [eventCopy hasRecurrenceRules];
     goto LABEL_42;
   }
 
-  [v7 travelTime];
+  [eventCopy travelTime];
   v14 = v13 == 0.0;
 LABEL_35:
   LOBYTE(v10) = !v14;
@@ -384,60 +384,60 @@ LABEL_42:
   return v10;
 }
 
-+ (BOOL)_trackedEventProperty:(unint64_t)a3 wasOverriddenInEvent:(id)a4 fromAutocompleteResult:(id)a5
++ (BOOL)_trackedEventProperty:(unint64_t)property wasOverriddenInEvent:(id)event fromAutocompleteResult:(id)result
 {
-  v9 = a4;
-  v10 = a5;
-  if (![a1 _trackedEventProperty:a3 isPresentInAutocompleteResult:v10])
+  eventCopy = event;
+  resultCopy = result;
+  if (![self _trackedEventProperty:property isPresentInAutocompleteResult:resultCopy])
   {
     goto LABEL_39;
   }
 
-  if (a3 > 5)
+  if (property > 5)
   {
-    if (a3 > 8)
+    if (property > 8)
     {
-      if (a3 == 9)
+      if (property == 9)
       {
-        v11 = [v9 URL];
-        v15 = [v10 URL];
+        notes = [eventCopy URL];
+        notes2 = [resultCopy URL];
       }
 
       else
       {
-        if (a3 != 10)
+        if (property != 10)
         {
           goto LABEL_38;
         }
 
-        v11 = [v9 notes];
-        v15 = [v10 notes];
+        notes = [eventCopy notes];
+        notes2 = [resultCopy notes];
       }
     }
 
     else
     {
-      if (a3 == 6)
+      if (property == 6)
       {
-        v31 = [v9 alarms];
-        v32 = [v31 count];
-        v33 = [v10 alarms];
-        v34 = [v33 count];
+        alarms = [eventCopy alarms];
+        v32 = [alarms count];
+        alarms2 = [resultCopy alarms];
+        v34 = [alarms2 count];
 
         if (v32 == v34)
         {
-          v35 = [v9 alarms];
-          v36 = [v35 count];
+          alarms3 = [eventCopy alarms];
+          v36 = [alarms3 count];
 
           if (v36)
           {
             v37 = 0;
             do
             {
-              v38 = [v9 alarms];
-              v39 = [v38 objectAtIndexedSubscript:v37];
-              v40 = [v10 alarms];
-              v41 = [v40 objectAtIndexedSubscript:v37];
+              alarms4 = [eventCopy alarms];
+              v39 = [alarms4 objectAtIndexedSubscript:v37];
+              alarms5 = [resultCopy alarms];
+              v41 = [alarms5 objectAtIndexedSubscript:v37];
               v27 = [v39 isTopographicallyEqualToAlarm:v41];
 
               if ((v27 & 1) == 0)
@@ -446,8 +446,8 @@ LABEL_42:
               }
 
               ++v37;
-              v42 = [v9 alarms];
-              v43 = [v42 count];
+              alarms6 = [eventCopy alarms];
+              v43 = [alarms6 count];
             }
 
             while (v37 != v43);
@@ -464,41 +464,41 @@ LABEL_37:
         goto LABEL_40;
       }
 
-      if (a3 != 7)
+      if (property != 7)
       {
 LABEL_38:
-        v55 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
         v56 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"+[EKUIAutocompleteTracker _trackedEventProperty:wasOverriddenInEvent:fromAutocompleteResult:]"];
-        [v55 handleFailureInMethod:a2 object:a1 file:@"EKUIAutocompleteTracker.m" lineNumber:318 description:{@"Unknown property id %lu in %@", a3, v56}];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"EKUIAutocompleteTracker.m" lineNumber:318 description:{@"Unknown property id %lu in %@", property, v56}];
 
         goto LABEL_39;
       }
 
-      v11 = [v9 calendar];
-      v15 = [v10 calendar];
+      notes = [eventCopy calendar];
+      notes2 = [resultCopy calendar];
     }
 
-    v12 = v15;
-    v30 = [v11 isEqual:v15];
+    preferredLocation = notes2;
+    v30 = [notes isEqual:notes2];
     goto LABEL_34;
   }
 
-  if (a3 <= 1)
+  if (property <= 1)
   {
-    if (a3)
+    if (property)
     {
-      if (a3 == 1)
+      if (property == 1)
       {
-        v11 = [v10 preferredLocation];
-        if (!v11)
+        notes = [resultCopy preferredLocation];
+        if (!notes)
         {
           v14 = 0;
           goto LABEL_36;
         }
 
-        v12 = [v9 preferredLocation];
-        v13 = [v10 preferredLocation];
-        v14 = [v12 isEqualToLocation:v13] ^ 1;
+        preferredLocation = [eventCopy preferredLocation];
+        preferredLocation2 = [resultCopy preferredLocation];
+        v14 = [preferredLocation isEqualToLocation:preferredLocation2] ^ 1;
 
 LABEL_35:
 LABEL_36:
@@ -509,37 +509,37 @@ LABEL_36:
       goto LABEL_38;
     }
 
-    v11 = [v9 title];
-    v12 = [v10 title];
-    v30 = [v11 isEqualToString:v12];
+    notes = [eventCopy title];
+    preferredLocation = [resultCopy title];
+    v30 = [notes isEqualToString:preferredLocation];
 LABEL_34:
     v14 = v30 ^ 1;
     goto LABEL_35;
   }
 
-  if (a3 != 2)
+  if (property != 2)
   {
-    if (a3 == 5)
+    if (property == 5)
     {
-      v16 = [v9 attendees];
-      v17 = [v16 count];
-      v18 = [v10 attendees];
-      v19 = [v18 count];
+      attendees = [eventCopy attendees];
+      v17 = [attendees count];
+      attendees2 = [resultCopy attendees];
+      v19 = [attendees2 count];
 
       if (v17 == v19)
       {
-        v20 = [v9 attendees];
-        v21 = [v20 count];
+        attendees3 = [eventCopy attendees];
+        v21 = [attendees3 count];
 
         if (v21)
         {
           v22 = 0;
           do
           {
-            v23 = [v9 attendees];
-            v24 = [v23 objectAtIndexedSubscript:v22];
-            v25 = [v10 attendees];
-            v26 = [v25 objectAtIndexedSubscript:v22];
+            attendees4 = [eventCopy attendees];
+            v24 = [attendees4 objectAtIndexedSubscript:v22];
+            attendees5 = [resultCopy attendees];
+            v26 = [attendees5 objectAtIndexedSubscript:v22];
             v27 = [v24 isEqualToParticipant:v26];
 
             if ((v27 & 1) == 0)
@@ -548,8 +548,8 @@ LABEL_34:
             }
 
             ++v22;
-            v28 = [v9 attendees];
-            v29 = [v28 count];
+            attendees6 = [eventCopy attendees];
+            v29 = [attendees6 count];
           }
 
           while (v22 != v29);
@@ -567,22 +567,22 @@ LABEL_29:
     goto LABEL_38;
   }
 
-  v44 = [v9 startDate];
-  v45 = [v10 startDate];
-  v46 = [v44 isEqualToDate:v45];
+  startDate = [eventCopy startDate];
+  startDate2 = [resultCopy startDate];
+  v46 = [startDate isEqualToDate:startDate2];
 
-  v47 = [v9 endDateUnadjustedForLegacyClients];
-  v48 = [v10 endDate];
-  v49 = [v47 isEqualToDate:v48];
+  endDateUnadjustedForLegacyClients = [eventCopy endDateUnadjustedForLegacyClients];
+  endDate = [resultCopy endDate];
+  v49 = [endDateUnadjustedForLegacyClients isEqualToDate:endDate];
 
-  LODWORD(v47) = [v9 isAllDay];
-  v50 = v47 ^ [v10 allDay];
-  v51 = [v10 timeZone];
-  if (v51)
+  LODWORD(endDateUnadjustedForLegacyClients) = [eventCopy isAllDay];
+  v50 = endDateUnadjustedForLegacyClients ^ [resultCopy allDay];
+  timeZone = [resultCopy timeZone];
+  if (timeZone)
   {
-    v52 = [v9 timeZone];
-    v53 = [v10 timeZone];
-    v54 = [v52 isEqualToTimeZone:v53] ^ 1;
+    timeZone2 = [eventCopy timeZone];
+    timeZone3 = [resultCopy timeZone];
+    v54 = [timeZone2 isEqualToTimeZone:timeZone3] ^ 1;
   }
 
   else

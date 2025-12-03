@@ -1,15 +1,15 @@
 @interface AKRemoteDeviceObserver
-- (AKRemoteDeviceObserver)initWithQueue:(const queue *)a3 delegate:(const void *)a4;
+- (AKRemoteDeviceObserver)initWithQueue:(const queue *)queue delegate:(const void *)delegate;
 - (id).cxx_construct;
-- (void)_notifyAKDeviceListChanged:(id)a3;
+- (void)_notifyAKDeviceListChanged:(id)changed;
 - (void)dealloc;
 @end
 
 @implementation AKRemoteDeviceObserver
 
-- (AKRemoteDeviceObserver)initWithQueue:(const queue *)a3 delegate:(const void *)a4
+- (AKRemoteDeviceObserver)initWithQueue:(const queue *)queue delegate:(const void *)delegate
 {
-  fObj = a3->fObj.fObj;
+  fObj = queue->fObj.fObj;
   if (fObj)
   {
     dispatch_retain(fObj);
@@ -27,8 +27,8 @@
 
   if (v7)
   {
-    v9 = *a4;
-    v8 = *(a4 + 1);
+    v9 = *delegate;
+    v8 = *(delegate + 1);
     if (v8)
     {
       atomic_fetch_add_explicit((v8 + 8), 1uLL, memory_order_relaxed);
@@ -42,7 +42,7 @@
       sub_100004A34(cntrl);
     }
 
-    v11 = a3->fObj.fObj;
+    v11 = queue->fObj.fObj;
     if (v11)
     {
       dispatch_retain(v11);
@@ -71,7 +71,7 @@
   return v7;
 }
 
-- (void)_notifyAKDeviceListChanged:(id)a3
+- (void)_notifyAKDeviceListChanged:(id)changed
 {
   [(AKRemoteDeviceObserver *)self getLogContext];
   v4 = v11;

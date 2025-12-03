@@ -1,33 +1,33 @@
 @interface SLPerson
-+ (id)createMutableContactWithHandle:(id)a3;
-+ (id)errorForPersonDomain:(id)a3 andCode:(int64_t)a4;
++ (id)createMutableContactWithHandle:(id)handle;
++ (id)errorForPersonDomain:(id)domain andCode:(int64_t)code;
 + (id)fetchMeContact;
 + (id)keysForCNContact;
-+ (id)predicateForHandle:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)predicateForHandle:(id)handle;
+- (BOOL)isEqual:(id)equal;
 - (CNContact)contact;
 - (NSData)thumbnailImageData;
 - (NSString)displayName;
 - (NSString)shortDisplayName;
-- (SLPerson)initWithCSPerson:(id)a3 error:(id *)a4;
-- (SLPerson)initWithCoder:(id)a3;
-- (SLPerson)initWithDictionary:(id)a3;
-- (SLPerson)initWithHandle:(id)a3 displayName:(id)a4;
-- (SLPerson)initWithPortraitPerson:(id)a3 error:(id *)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SLPerson)initWithCSPerson:(id)person error:(id *)error;
+- (SLPerson)initWithCoder:(id)coder;
+- (SLPerson)initWithDictionary:(id)dictionary;
+- (SLPerson)initWithHandle:(id)handle displayName:(id)name;
+- (SLPerson)initWithPortraitPerson:(id)person error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)fetchCNContactWithHandle:(id)a3;
+- (id)fetchCNContactWithHandle:(id)handle;
 - (unint64_t)hash;
 - (void)dictionaryRepresentation;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SLPerson
 
-- (SLPerson)initWithPortraitPerson:(id)a3 error:(id *)a4
+- (SLPerson)initWithPortraitPerson:(id)person error:(id *)error
 {
-  v6 = a3;
+  personCopy = person;
   v21.receiver = self;
   v21.super_class = SLPerson;
   v7 = [(SLPerson *)&v21 init];
@@ -36,26 +36,26 @@
     goto LABEL_16;
   }
 
-  if (v6)
+  if (personCopy)
   {
-    v8 = [v6 handle];
-    v9 = [v8 length];
+    handle = [personCopy handle];
+    v9 = [handle length];
 
     if (v9)
     {
-      v10 = [v6 handle];
+      handle2 = [personCopy handle];
       handle = v7->_handle;
-      v7->_handle = v10;
+      v7->_handle = handle2;
 
-      v12 = [v6 displayName];
-      v13 = [v12 length];
+      displayName = [personCopy displayName];
+      v13 = [displayName length];
 
       if (v13)
       {
-        v14 = [v6 displayName];
+        displayName2 = [personCopy displayName];
 LABEL_15:
         displayName = v7->_displayName;
-        v7->_displayName = v14;
+        v7->_displayName = displayName2;
 
 LABEL_16:
         v17 = v7;
@@ -70,11 +70,11 @@ LABEL_16:
           [SLPerson initWithPortraitPerson:error:];
         }
 
-        v14 = v7->_handle;
+        displayName2 = v7->_handle;
         goto LABEL_15;
       }
 
-      if (a4)
+      if (error)
       {
         v15 = objc_opt_class();
         v16 = 3;
@@ -86,7 +86,7 @@ LABEL_19:
       goto LABEL_20;
     }
 
-    if (!a4)
+    if (!error)
     {
       goto LABEL_19;
     }
@@ -97,7 +97,7 @@ LABEL_19:
 
   else
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_19;
     }
@@ -108,15 +108,15 @@ LABEL_19:
 
 LABEL_10:
   [v15 errorForPersonDomain:@"com.apple.SocialLayer.SLPerson" andCode:v16];
-  *a4 = v17 = 0;
+  *error = v17 = 0;
 LABEL_20:
 
   return v17;
 }
 
-- (SLPerson)initWithCSPerson:(id)a3 error:(id *)a4
+- (SLPerson)initWithCSPerson:(id)person error:(id *)error
 {
-  v6 = a3;
+  personCopy = person;
   v16.receiver = self;
   v16.super_class = SLPerson;
   v7 = [(SLPerson *)&v16 init];
@@ -125,23 +125,23 @@ LABEL_20:
     goto LABEL_9;
   }
 
-  v8 = [v6 handles];
-  v9 = [v8 firstObject];
+  handles = [personCopy handles];
+  firstObject = [handles firstObject];
 
-  if (![v9 length])
+  if (![firstObject length])
   {
-    if (a4)
+    if (error)
     {
-      *a4 = [objc_opt_class() errorForPersonDomain:@"com.apple.SocialLayer.SLPerson" andCode:2];
+      *error = [objc_opt_class() errorForPersonDomain:@"com.apple.SocialLayer.SLPerson" andCode:2];
     }
 
     goto LABEL_15;
   }
 
-  objc_storeStrong(&v7->_handle, v9);
-  v10 = [v6 displayName];
-  v11 = [v10 length];
-  handle = v10;
+  objc_storeStrong(&v7->_handle, firstObject);
+  displayName = [personCopy displayName];
+  v11 = [displayName length];
+  handle = displayName;
   if (!v11)
   {
     if ([(NSString *)v7->_handle length])
@@ -156,9 +156,9 @@ LABEL_20:
       goto LABEL_8;
     }
 
-    if (a4)
+    if (error)
     {
-      *a4 = [objc_opt_class() errorForPersonDomain:@"com.apple.SocialLayer.SLPerson" andCode:3];
+      *error = [objc_opt_class() errorForPersonDomain:@"com.apple.SocialLayer.SLPerson" andCode:3];
     }
 
 LABEL_15:
@@ -176,19 +176,19 @@ LABEL_16:
   return v14;
 }
 
-- (SLPerson)initWithHandle:(id)a3 displayName:(id)a4
+- (SLPerson)initWithHandle:(id)handle displayName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  handleCopy = handle;
+  nameCopy = name;
   v12.receiver = self;
   v12.super_class = SLPerson;
   v8 = [(SLPerson *)&v12 init];
   v9 = v8;
   if (v8)
   {
-    if (v6)
+    if (handleCopy)
     {
-      v10 = v6;
+      v10 = handleCopy;
     }
 
     else
@@ -197,7 +197,7 @@ LABEL_16:
     }
 
     objc_storeStrong(&v8->_handle, v10);
-    objc_storeStrong(&v9->_displayName, a4);
+    objc_storeStrong(&v9->_displayName, name);
   }
 
   return v9;
@@ -208,11 +208,11 @@ LABEL_16:
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(SLPerson *)self handle];
-  v7 = [(SLPerson *)self displayName];
-  v8 = [(SLPerson *)self shortDisplayName];
-  v9 = [(SLPerson *)self contact];
-  v10 = [v3 stringWithFormat:@"[%@: handle: %@  displayName: %@  shortDisplayName: %@ contact: %@]", v5, v6, v7, v8, v9];
+  handle = [(SLPerson *)self handle];
+  displayName = [(SLPerson *)self displayName];
+  shortDisplayName = [(SLPerson *)self shortDisplayName];
+  contact = [(SLPerson *)self contact];
+  v10 = [v3 stringWithFormat:@"[%@: handle: %@  displayName: %@  shortDisplayName: %@ contact: %@]", v5, handle, displayName, shortDisplayName, contact];
 
   return v10;
 }
@@ -222,42 +222,42 @@ LABEL_16:
   v3 = self->_displayName;
   if (![(NSString *)v3 length])
   {
-    v4 = [(SLPerson *)self shortDisplayName];
+    shortDisplayName = [(SLPerson *)self shortDisplayName];
 
-    v3 = v4;
+    v3 = shortDisplayName;
   }
 
   if (![(NSString *)v3 length])
   {
-    v5 = [(SLPerson *)self handle];
+    handle = [(SLPerson *)self handle];
 
-    v3 = v5;
+    v3 = handle;
   }
 
   return v3;
 }
 
-- (SLPerson)initWithDictionary:(id)a3
+- (SLPerson)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v15.receiver = self;
   v15.super_class = SLPerson;
   v5 = [(SLPerson *)&v15 init];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"h"];
+    v6 = [dictionaryCopy objectForKey:@"h"];
     handle = v5->_handle;
     v5->_handle = v6;
 
-    v8 = [v4 objectForKey:@"dn"];
+    v8 = [dictionaryCopy objectForKey:@"dn"];
     displayName = v5->_displayName;
     v5->_displayName = v8;
 
-    v10 = [v4 objectForKey:@"sdn"];
+    v10 = [dictionaryCopy objectForKey:@"sdn"];
     shortDisplayName = v5->_shortDisplayName;
     v5->_shortDisplayName = v10;
 
-    v12 = [v4 objectForKey:@"c"];
+    v12 = [dictionaryCopy objectForKey:@"c"];
     contact = v5->_contact;
     v5->_contact = v12;
   }
@@ -267,36 +267,36 @@ LABEL_16:
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = [(SLPerson *)self handle];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  handle = [(SLPerson *)self handle];
 
-  if (v4)
+  if (handle)
   {
-    v5 = [(SLPerson *)self handle];
-    [v3 setObject:v5 forKey:@"h"];
+    handle2 = [(SLPerson *)self handle];
+    [dictionary setObject:handle2 forKey:@"h"];
 
-    v6 = [(SLPerson *)self displayName];
+    displayName = [(SLPerson *)self displayName];
 
-    if (v6)
+    if (displayName)
     {
-      v7 = [(SLPerson *)self displayName];
-      [v3 setObject:v7 forKey:@"dn"];
+      displayName2 = [(SLPerson *)self displayName];
+      [dictionary setObject:displayName2 forKey:@"dn"];
 
-      v8 = [(SLPerson *)self shortDisplayName];
+      shortDisplayName = [(SLPerson *)self shortDisplayName];
 
-      if (v8)
+      if (shortDisplayName)
       {
-        v9 = [(SLPerson *)self shortDisplayName];
-        [v3 setObject:v9 forKey:@"sdn"];
+        shortDisplayName2 = [(SLPerson *)self shortDisplayName];
+        [dictionary setObject:shortDisplayName2 forKey:@"sdn"];
 
-        v10 = [(SLPerson *)self contact];
+        contact = [(SLPerson *)self contact];
 
-        if (v10)
+        if (contact)
         {
-          v11 = [(SLPerson *)self contact];
-          [v3 setObject:v11 forKey:@"c"];
+          contact2 = [(SLPerson *)self contact];
+          [dictionary setObject:contact2 forKey:@"c"];
 
-          v12 = v3;
+          v12 = dictionary;
           goto LABEL_15;
         }
 
@@ -342,27 +342,27 @@ LABEL_15:
   return v12;
 }
 
-- (SLPerson)initWithCoder:(id)a3
+- (SLPerson)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = SLPerson;
   v5 = [(SLPerson *)&v15 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"h"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"h"];
     handle = v5->_handle;
     v5->_handle = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dn"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dn"];
     displayName = v5->_displayName;
     v5->_displayName = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sdn"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sdn"];
     shortDisplayName = v5->_shortDisplayName;
     v5->_shortDisplayName = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"c"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"c"];
     contact = v5->_contact;
     v5->_contact = v12;
   }
@@ -370,43 +370,43 @@ LABEL_15:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   handle = self->_handle;
-  v5 = a3;
-  [v5 encodeObject:handle forKey:@"h"];
-  [v5 encodeObject:self->_displayName forKey:@"dn"];
-  v6 = [(SLPerson *)self shortDisplayName];
-  [v5 encodeObject:v6 forKey:@"sdn"];
+  coderCopy = coder;
+  [coderCopy encodeObject:handle forKey:@"h"];
+  [coderCopy encodeObject:self->_displayName forKey:@"dn"];
+  shortDisplayName = [(SLPerson *)self shortDisplayName];
+  [coderCopy encodeObject:shortDisplayName forKey:@"sdn"];
 
-  v7 = [(SLPerson *)self contact];
-  [v5 encodeObject:v7 forKey:@"c"];
+  contact = [(SLPerson *)self contact];
+  [coderCopy encodeObject:contact forKey:@"c"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [SLPerson alloc];
-  v5 = [(SLPerson *)self dictionaryRepresentation];
-  v6 = [(SLPerson *)v4 initWithDictionary:v5];
+  dictionaryRepresentation = [(SLPerson *)self dictionaryRepresentation];
+  v6 = [(SLPerson *)v4 initWithDictionary:dictionaryRepresentation];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v6;
-    v8 = [(SLPerson *)self handle];
-    if (v8 || ([v7 handle], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+    v7 = equalCopy;
+    handle = [(SLPerson *)self handle];
+    if (handle || ([v7 handle], (contact4 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v4 = [(SLPerson *)self handle];
-      v9 = [v7 handle];
-      v10 = [v4 isEqualToString:v9];
+      handle2 = [(SLPerson *)self handle];
+      handle3 = [v7 handle];
+      v10 = [handle2 isEqualToString:handle3];
 
-      if (v8)
+      if (handle)
       {
 
         if (!v10)
@@ -425,23 +425,23 @@ LABEL_15:
       }
     }
 
-    v12 = [(SLPerson *)self contact];
-    if (v12 || ([v7 contact], (v26 = objc_claimAutoreleasedReturnValue()) != 0))
+    contact = [(SLPerson *)self contact];
+    if (contact || ([v7 contact], (v26 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v13 = [(SLPerson *)self contact];
-      v3 = 0x277CBD000;
+      contact2 = [(SLPerson *)self contact];
+      contact4 = 0x277CBD000;
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
-      if ((isKindOfClass & 1) == 0 || ([v7 contact], v4 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+      if ((isKindOfClass & 1) == 0 || ([v7 contact], handle2 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
       {
-        v16 = [(SLPerson *)self contact];
-        v3 = [v7 contact];
-        v17 = [v16 isEqual:v3];
+        contact3 = [(SLPerson *)self contact];
+        contact4 = [v7 contact];
+        v17 = [contact3 isEqual:contact4];
 
         if (isKindOfClass)
         {
 
-          if (!v12)
+          if (!contact)
           {
 
             if ((v17 & 1) == 0)
@@ -456,7 +456,7 @@ LABEL_15:
         else
         {
 
-          if (!v12)
+          if (!contact)
           {
           }
         }
@@ -467,21 +467,21 @@ LABEL_15:
         }
 
 LABEL_26:
-        v18 = [(SLPerson *)self displayName];
-        if (!v18)
+        displayName = [(SLPerson *)self displayName];
+        if (!displayName)
         {
-          v3 = [v7 displayName];
-          if (!v3)
+          contact4 = [v7 displayName];
+          if (!contact4)
           {
 LABEL_30:
-            v22 = [(SLPerson *)self shortDisplayName];
-            if (v22 || ([v7 shortDisplayName], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+            shortDisplayName = [(SLPerson *)self shortDisplayName];
+            if (shortDisplayName || ([v7 shortDisplayName], (contact4 = objc_claimAutoreleasedReturnValue()) != 0))
             {
-              v23 = [(SLPerson *)self shortDisplayName];
-              v24 = [v7 shortDisplayName];
-              v11 = [v23 isEqualToString:v24];
+              shortDisplayName2 = [(SLPerson *)self shortDisplayName];
+              shortDisplayName3 = [v7 shortDisplayName];
+              v11 = [shortDisplayName2 isEqualToString:shortDisplayName3];
 
-              if (v22)
+              if (shortDisplayName)
               {
 LABEL_38:
 
@@ -498,11 +498,11 @@ LABEL_38:
           }
         }
 
-        v19 = [(SLPerson *)self displayName];
-        v20 = [v7 displayName];
-        v21 = [v19 isEqualToString:v20];
+        displayName2 = [(SLPerson *)self displayName];
+        displayName3 = [v7 displayName];
+        v21 = [displayName2 isEqualToString:displayName3];
 
-        if (v18)
+        if (displayName)
         {
 
           if (v21)
@@ -528,7 +528,7 @@ LABEL_39:
       }
 
       v15 = v26;
-      if (v12)
+      if (contact)
       {
 LABEL_25:
 
@@ -541,7 +541,7 @@ LABEL_25:
       v15 = 0;
     }
 
-    v12 = v15;
+    contact = v15;
     goto LABEL_25;
   }
 
@@ -551,20 +551,20 @@ LABEL_40:
   return v11;
 }
 
-+ (id)errorForPersonDomain:(id)a3 andCode:(int64_t)a4
++ (id)errorForPersonDomain:(id)domain andCode:(int64_t)code
 {
   v22[2] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  switch(a4)
+  domainCopy = domain;
+  switch(code)
   {
     case 3:
       v17[0] = *MEMORY[0x277CCA450];
-      v6 = [MEMORY[0x277CCA8D8] mainBundle];
-      v7 = [v6 localizedStringForKey:@"SLPerson Init failed." value:&stru_28468DAB8 table:0];
+      mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+      v7 = [mainBundle localizedStringForKey:@"SLPerson Init failed." value:&stru_28468DAB8 table:0];
       v18[0] = v7;
       v17[1] = *MEMORY[0x277CCA470];
-      v8 = [MEMORY[0x277CCA8D8] mainBundle];
-      v9 = [v8 localizedStringForKey:@"PPSocialPerson contains an invalid or nil Display Name." value:&stru_28468DAB8 table:0];
+      mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+      v9 = [mainBundle2 localizedStringForKey:@"PPSocialPerson contains an invalid or nil Display Name." value:&stru_28468DAB8 table:0];
       v18[1] = v9;
       v10 = MEMORY[0x277CBEAC0];
       v11 = v18;
@@ -572,12 +572,12 @@ LABEL_40:
       goto LABEL_7;
     case 2:
       v19[0] = *MEMORY[0x277CCA450];
-      v6 = [MEMORY[0x277CCA8D8] mainBundle];
-      v7 = [v6 localizedStringForKey:@"SLPerson Init failed." value:&stru_28468DAB8 table:0];
+      mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+      v7 = [mainBundle localizedStringForKey:@"SLPerson Init failed." value:&stru_28468DAB8 table:0];
       v20[0] = v7;
       v19[1] = *MEMORY[0x277CCA470];
-      v8 = [MEMORY[0x277CCA8D8] mainBundle];
-      v9 = [v8 localizedStringForKey:@"PPSocialPerson contains an invalid or nil handle." value:&stru_28468DAB8 table:0];
+      mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+      v9 = [mainBundle2 localizedStringForKey:@"PPSocialPerson contains an invalid or nil handle." value:&stru_28468DAB8 table:0];
       v20[1] = v9;
       v10 = MEMORY[0x277CBEAC0];
       v11 = v20;
@@ -585,12 +585,12 @@ LABEL_40:
       goto LABEL_7;
     case 1:
       v21[0] = *MEMORY[0x277CCA450];
-      v6 = [MEMORY[0x277CCA8D8] mainBundle];
-      v7 = [v6 localizedStringForKey:@"SLPerson Init failed." value:&stru_28468DAB8 table:0];
+      mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+      v7 = [mainBundle localizedStringForKey:@"SLPerson Init failed." value:&stru_28468DAB8 table:0];
       v22[0] = v7;
       v21[1] = *MEMORY[0x277CCA470];
-      v8 = [MEMORY[0x277CCA8D8] mainBundle];
-      v9 = [v8 localizedStringForKey:@"Invalid or nil PPSocialPerson." value:&stru_28468DAB8 table:0];
+      mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+      v9 = [mainBundle2 localizedStringForKey:@"Invalid or nil PPSocialPerson." value:&stru_28468DAB8 table:0];
       v22[1] = v9;
       v10 = MEMORY[0x277CBEAC0];
       v11 = v22;
@@ -603,7 +603,7 @@ LABEL_7:
 
   v13 = 0;
 LABEL_9:
-  v14 = [MEMORY[0x277CCA9B8] errorWithDomain:v5 code:a4 userInfo:v13];
+  v14 = [MEMORY[0x277CCA9B8] errorWithDomain:domainCopy code:code userInfo:v13];
 
   v15 = *MEMORY[0x277D85DE8];
 
@@ -614,13 +614,13 @@ LABEL_9:
 {
   if (!self->_shortDisplayName)
   {
-    v3 = [(SLPerson *)self contact];
+    contact = [(SLPerson *)self contact];
 
-    if (v3)
+    if (contact)
     {
       v4 = MEMORY[0x277CBDA78];
-      v5 = [(SLPerson *)self contact];
-      v6 = [v4 stringFromContact:v5 style:1000];
+      contact2 = [(SLPerson *)self contact];
+      v6 = [v4 stringFromContact:contact2 style:1000];
       shortDisplayName = self->_shortDisplayName;
       self->_shortDisplayName = v6;
     }
@@ -636,22 +636,22 @@ LABEL_9:
   contact = self->_contact;
   if (!contact)
   {
-    v4 = [(SLPerson *)self handle];
-    v5 = [(SLPerson *)self fetchCNContactWithHandle:v4];
+    handle = [(SLPerson *)self handle];
+    v5 = [(SLPerson *)self fetchCNContactWithHandle:handle];
 
     if (v5)
     {
       v6 = v5;
       v7 = 0;
-      v8 = self->_contact;
+      handle2 = self->_contact;
       self->_contact = v6;
     }
 
     else
     {
       v9 = objc_opt_class();
-      v8 = [(SLPerson *)self handle];
-      v10 = [v9 createMutableContactWithHandle:v8];
+      handle2 = [(SLPerson *)self handle];
+      v10 = [v9 createMutableContactWithHandle:handle2];
       v11 = self->_contact;
       self->_contact = v10;
 
@@ -670,14 +670,14 @@ LABEL_9:
   thumbnailImageData = self->_thumbnailImageData;
   if (!thumbnailImageData)
   {
-    v4 = [(SLPerson *)self contact];
-    if ([MEMORY[0x277CBDAE8] croppedImageDataAvailableForContact:v4])
+    contact = [(SLPerson *)self contact];
+    if ([MEMORY[0x277CBDAE8] croppedImageDataAvailableForContact:contact])
     {
       v5 = objc_alloc(MEMORY[0x277CBDAE8]);
-      v6 = [(SLPerson *)self contactStore];
-      v7 = [v5 initWithContactStore:v6];
+      contactStore = [(SLPerson *)self contactStore];
+      v7 = [v5 initWithContactStore:contactStore];
 
-      v8 = [v7 croppedImageDataForContact:v4];
+      v8 = [v7 croppedImageDataForContact:contact];
       v9 = self->_thumbnailImageData;
       self->_thumbnailImageData = v8;
     }
@@ -688,11 +688,11 @@ LABEL_9:
   return thumbnailImageData;
 }
 
-- (id)fetchCNContactWithHandle:(id)a3
+- (id)fetchCNContactWithHandle:(id)handle
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 length])
+  handleCopy = handle;
+  if ([handleCopy length])
   {
     v5 = SLGeneralTelemetryLogHandle();
     v6 = os_signpost_id_generate(v5);
@@ -705,7 +705,7 @@ LABEL_9:
       _os_signpost_emit_with_name_impl(&dword_231772000, v8, OS_SIGNPOST_INTERVAL_BEGIN, v6, "SLPersonFetchCNContact", "", buf, 2u);
     }
 
-    v9 = [SLPerson predicateForHandle:v4];
+    v9 = [SLPerson predicateForHandle:handleCopy];
     v10 = +[SLPerson keysForCNContact];
     if (!self->_contactStore)
     {
@@ -718,7 +718,7 @@ LABEL_9:
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v26 = v4;
+      v26 = handleCopy;
       _os_log_impl(&dword_231772000, v13, OS_LOG_TYPE_DEFAULT, "Fetching CNContact for handle %@.", buf, 0xCu);
     }
 
@@ -726,7 +726,7 @@ LABEL_9:
     v24 = 0;
     v15 = [(CNContactStore *)v14 unifiedContactsMatchingPredicate:v9 keysToFetch:v10 error:&v24];
     v16 = v24;
-    v17 = [v15 firstObject];
+    firstObject = [v15 firstObject];
 
     v18 = SLFrameworkLogHandle();
     v19 = v18;
@@ -741,13 +741,13 @@ LABEL_9:
     else if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v26 = v17;
+      v26 = firstObject;
       _os_log_impl(&dword_231772000, v19, OS_LOG_TYPE_DEFAULT, "Fetched CNContact %@.", buf, 0xCu);
     }
 
-    if (!v17)
+    if (!firstObject)
     {
-      v17 = [objc_opt_class() createMutableContactWithHandle:v4];
+      firstObject = [objc_opt_class() createMutableContactWithHandle:handleCopy];
     }
 
     v20 = SLGeneralTelemetryLogHandle();
@@ -767,19 +767,19 @@ LABEL_9:
       [SLPerson fetchCNContactWithHandle:];
     }
 
-    v17 = 0;
+    firstObject = 0;
   }
 
   v22 = *MEMORY[0x277D85DE8];
 
-  return v17;
+  return firstObject;
 }
 
-+ (id)createMutableContactWithHandle:(id)a3
++ (id)createMutableContactWithHandle:(id)handle
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (![v3 length])
+  handleCopy = handle;
+  if (![handleCopy length])
   {
     v6 = SLFrameworkLogHandle();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -790,17 +790,17 @@ LABEL_9:
     goto LABEL_11;
   }
 
-  v4 = v3;
+  v4 = handleCopy;
   if ([v4 length])
   {
-    v5 = [v4 lowercaseString];
-    if ([v5 hasPrefix:@"urn:biz:"])
+    lowercaseString = [v4 lowercaseString];
+    if ([lowercaseString hasPrefix:@"urn:biz:"])
     {
 
       goto LABEL_9;
     }
 
-    v7 = [v5 hasPrefix:@"biz:"];
+    v7 = [lowercaseString hasPrefix:@"biz:"];
 
     if (v7)
     {
@@ -910,23 +910,23 @@ void __26__SLPerson_fetchMeContact__block_invoke()
   fetchMeContact_meContact = v8;
 }
 
-+ (id)predicateForHandle:(id)a3
++ (id)predicateForHandle:(id)handle
 {
-  v3 = a3;
-  if ([v3 length])
+  handleCopy = handle;
+  if ([handleCopy length])
   {
-    if (SLHandleIsPhoneNumber(v3))
+    if (SLHandleIsPhoneNumber(handleCopy))
     {
       v4 = MEMORY[0x277CBDA58];
-      v5 = [MEMORY[0x277CBDB70] phoneNumberWithStringValue:v3];
+      v5 = [MEMORY[0x277CBDB70] phoneNumberWithStringValue:handleCopy];
       v6 = [v4 predicateForContactsMatchingPhoneNumber:v5];
 
       goto LABEL_10;
     }
 
-    if (SLHandleIsEmail(v3))
+    if (SLHandleIsEmail(handleCopy))
     {
-      v6 = [MEMORY[0x277CBDA58] predicateForContactsMatchingEmailAddress:v3];
+      v6 = [MEMORY[0x277CBDA58] predicateForContactsMatchingEmailAddress:handleCopy];
       goto LABEL_10;
     }
 
@@ -989,17 +989,17 @@ void __28__SLPerson_keysForCNContact__block_invoke()
 
 - (unint64_t)hash
 {
-  v3 = [(SLPerson *)self handle];
-  v4 = [v3 hash];
-  v5 = [(SLPerson *)self displayName];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(SLPerson *)self shortDisplayName];
-  v8 = v6 ^ [v7 hash];
+  handle = [(SLPerson *)self handle];
+  v4 = [handle hash];
+  displayName = [(SLPerson *)self displayName];
+  v6 = [displayName hash] ^ v4;
+  shortDisplayName = [(SLPerson *)self shortDisplayName];
+  v8 = v6 ^ [shortDisplayName hash];
 
   if (![(SLPerson *)self hasMutableContact])
   {
-    v9 = [(SLPerson *)self contact];
-    v8 ^= [v9 hash];
+    contact = [(SLPerson *)self contact];
+    v8 ^= [contact hash];
   }
 
   return v8;

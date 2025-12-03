@@ -1,12 +1,12 @@
 @interface VideoSeekSlider
-- (_TtC7Journal15VideoSeekSlider)initWithCoder:(id)a3;
+- (_TtC7Journal15VideoSeekSlider)initWithCoder:(id)coder;
 - (void)editingDidBegin;
 - (void)editingDidEnd;
 @end
 
 @implementation VideoSeekSlider
 
-- (_TtC7Journal15VideoSeekSlider)initWithCoder:(id)a3
+- (_TtC7Journal15VideoSeekSlider)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC7Journal15VideoSeekSlider_isEditing) = 0;
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC7Journal15VideoSeekSlider_isTrackingObserver) = 0;

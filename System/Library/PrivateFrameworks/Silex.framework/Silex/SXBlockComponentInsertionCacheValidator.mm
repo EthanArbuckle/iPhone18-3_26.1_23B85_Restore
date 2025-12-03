@@ -1,15 +1,15 @@
 @interface SXBlockComponentInsertionCacheValidator
-+ (id)validatorWithBlock:(id)a3;
-- (BOOL)validateCache:(id)a3 DOMObjectProvider:(id)a4;
++ (id)validatorWithBlock:(id)block;
+- (BOOL)validateCache:(id)cache DOMObjectProvider:(id)provider;
 @end
 
 @implementation SXBlockComponentInsertionCacheValidator
 
-+ (id)validatorWithBlock:(id)a3
++ (id)validatorWithBlock:(id)block
 {
-  v4 = a3;
-  v5 = objc_alloc_init(a1);
-  v6 = MEMORY[0x1DA716BE0](v4);
+  blockCopy = block;
+  v5 = objc_alloc_init(self);
+  v6 = MEMORY[0x1DA716BE0](blockCopy);
 
   v7 = v5[1];
   v5[1] = v6;
@@ -17,12 +17,12 @@
   return v5;
 }
 
-- (BOOL)validateCache:(id)a3 DOMObjectProvider:(id)a4
+- (BOOL)validateCache:(id)cache DOMObjectProvider:(id)provider
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SXBlockComponentInsertionCacheValidator *)self block];
-  v9 = (v8)[2](v8, v7, v6);
+  providerCopy = provider;
+  cacheCopy = cache;
+  block = [(SXBlockComponentInsertionCacheValidator *)self block];
+  v9 = (block)[2](block, cacheCopy, providerCopy);
 
   return v9;
 }

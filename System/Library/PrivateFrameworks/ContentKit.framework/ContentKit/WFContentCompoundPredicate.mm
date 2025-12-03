@@ -1,11 +1,11 @@
 @interface WFContentCompoundPredicate
-+ (id)andPredicateWithSubpredicates:(id)a3;
-+ (id)notPredicateWithSubpredicate:(id)a3;
-+ (id)orPredicateWithSubpredicates:(id)a3;
++ (id)andPredicateWithSubpredicates:(id)subpredicates;
++ (id)notPredicateWithSubpredicate:(id)subpredicate;
++ (id)orPredicateWithSubpredicates:(id)subpredicates;
 - (NSSet)containedProperties;
-- (WFContentCompoundPredicate)initWithType:(unint64_t)a3 subpredicates:(id)a4;
+- (WFContentCompoundPredicate)initWithType:(unint64_t)type subpredicates:(id)subpredicates;
 - (id)description;
-- (void)evaluateWithObject:(id)a3 propertySubstitutor:(id)a4 completionHandler:(id)a5;
+- (void)evaluateWithObject:(id)object propertySubstitutor:(id)substitutor completionHandler:(id)handler;
 @end
 
 @implementation WFContentCompoundPredicate
@@ -18,8 +18,8 @@
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(WFContentCompoundPredicate *)self subpredicates];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  subpredicates = [(WFContentCompoundPredicate *)self subpredicates];
+  v5 = [subpredicates countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -30,14 +30,14 @@
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(subpredicates);
         }
 
-        v9 = [*(*(&v11 + 1) + 8 * i) containedProperties];
-        [v3 unionSet:v9];
+        containedProperties = [*(*(&v11 + 1) + 8 * i) containedProperties];
+        [v3 unionSet:containedProperties];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [subpredicates countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -46,13 +46,13 @@
   return v3;
 }
 
-- (void)evaluateWithObject:(id)a3 propertySubstitutor:(id)a4 completionHandler:(id)a5
+- (void)evaluateWithObject:(id)object propertySubstitutor:(id)substitutor completionHandler:(id)handler
 {
   v34 = *MEMORY[0x277D85DE8];
-  v18 = a3;
-  v17 = a4;
-  v8 = a5;
-  if (v8)
+  objectCopy = object;
+  substitutorCopy = substitutor;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     v9 = dispatch_group_create();
     v31[0] = 0;
@@ -66,8 +66,8 @@
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v11 = [(WFContentCompoundPredicate *)self subpredicates];
-    v12 = [v11 countByEnumeratingWithState:&v27 objects:v33 count:16];
+    subpredicates = [(WFContentCompoundPredicate *)self subpredicates];
+    v12 = [subpredicates countByEnumeratingWithState:&v27 objects:v33 count:16];
     if (v12)
     {
       v13 = *v28;
@@ -77,7 +77,7 @@
         {
           if (*v28 != v13)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(subpredicates);
           }
 
           v15 = *(*(&v27 + 1) + 8 * i);
@@ -87,13 +87,13 @@
           v22[2] = __87__WFContentCompoundPredicate_evaluateWithObject_propertySubstitutor_completionHandler___block_invoke;
           v22[3] = &unk_278346F50;
           v23 = v10;
-          v24 = self;
+          selfCopy = self;
           v26 = v31;
           v25 = v9;
-          [v15 evaluateWithObject:v18 propertySubstitutor:v17 completionHandler:v22];
+          [v15 evaluateWithObject:objectCopy propertySubstitutor:substitutorCopy completionHandler:v22];
         }
 
-        v12 = [v11 countByEnumeratingWithState:&v27 objects:v33 count:16];
+        v12 = [subpredicates countByEnumeratingWithState:&v27 objects:v33 count:16];
       }
 
       while (v12);
@@ -104,7 +104,7 @@
     block[1] = 3221225472;
     block[2] = __87__WFContentCompoundPredicate_evaluateWithObject_propertySubstitutor_completionHandler___block_invoke_2;
     block[3] = &unk_278346F78;
-    v20 = v8;
+    v20 = handlerCopy;
     v21 = v31;
     dispatch_group_notify(v9, v16, block);
 
@@ -176,37 +176,37 @@ uint64_t __87__WFContentCompoundPredicate_evaluateWithObject_propertySubstitutor
 
 - (id)description
 {
-  v3 = [(WFContentCompoundPredicate *)self compoundPredicateType];
-  if (v3 > 2)
+  compoundPredicateType = [(WFContentCompoundPredicate *)self compoundPredicateType];
+  if (compoundPredicateType > 2)
   {
     v4 = @"unknown";
   }
 
   else
   {
-    v4 = *(&off_278346F98 + v3);
+    v4 = *(&off_278346F98 + compoundPredicateType);
   }
 
   v5 = MEMORY[0x277CCACA8];
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
-  v8 = [(WFContentCompoundPredicate *)self subpredicates];
-  v9 = [v5 stringWithFormat:@"<%@: %p, type: %@, subpredicates: %@>", v7, self, v4, v8];
+  subpredicates = [(WFContentCompoundPredicate *)self subpredicates];
+  v9 = [v5 stringWithFormat:@"<%@: %p, type: %@, subpredicates: %@>", v7, self, v4, subpredicates];
 
   return v9;
 }
 
-- (WFContentCompoundPredicate)initWithType:(unint64_t)a3 subpredicates:(id)a4
+- (WFContentCompoundPredicate)initWithType:(unint64_t)type subpredicates:(id)subpredicates
 {
-  v6 = a4;
+  subpredicatesCopy = subpredicates;
   v13.receiver = self;
   v13.super_class = WFContentCompoundPredicate;
   v7 = [(WFContentCompoundPredicate *)&v13 init];
   v8 = v7;
   if (v7)
   {
-    v7->_compoundPredicateType = a3;
-    v9 = [v6 copy];
+    v7->_compoundPredicateType = type;
+    v9 = [subpredicatesCopy copy];
     subpredicates = v8->_subpredicates;
     v8->_subpredicates = v9;
 
@@ -216,12 +216,12 @@ uint64_t __87__WFContentCompoundPredicate_evaluateWithObject_propertySubstitutor
   return v8;
 }
 
-+ (id)notPredicateWithSubpredicate:(id)a3
++ (id)notPredicateWithSubpredicate:(id)subpredicate
 {
   v9[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [a1 alloc];
-  v9[0] = v4;
+  subpredicateCopy = subpredicate;
+  v5 = [self alloc];
+  v9[0] = subpredicateCopy;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:1];
 
   v7 = [v5 initWithType:0 subpredicates:v6];
@@ -229,18 +229,18 @@ uint64_t __87__WFContentCompoundPredicate_evaluateWithObject_propertySubstitutor
   return v7;
 }
 
-+ (id)orPredicateWithSubpredicates:(id)a3
++ (id)orPredicateWithSubpredicates:(id)subpredicates
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithType:2 subpredicates:v4];
+  subpredicatesCopy = subpredicates;
+  v5 = [[self alloc] initWithType:2 subpredicates:subpredicatesCopy];
 
   return v5;
 }
 
-+ (id)andPredicateWithSubpredicates:(id)a3
++ (id)andPredicateWithSubpredicates:(id)subpredicates
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithType:1 subpredicates:v4];
+  subpredicatesCopy = subpredicates;
+  v5 = [[self alloc] initWithType:1 subpredicates:subpredicatesCopy];
 
   return v5;
 }

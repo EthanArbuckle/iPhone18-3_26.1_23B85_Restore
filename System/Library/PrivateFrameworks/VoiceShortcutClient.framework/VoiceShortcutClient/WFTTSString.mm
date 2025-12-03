@@ -1,22 +1,22 @@
 @interface WFTTSString
-+ (id)parseAnnotatedString:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)parseAnnotatedString:(id)string;
+- (BOOL)isEqual:(id)equal;
 - (NSString)displayString;
-- (WFTTSString)initWithComponents:(id)a3;
+- (WFTTSString)initWithComponents:(id)components;
 - (id)description;
 @end
 
 @implementation WFTTSString
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(WFTTSString *)self components];
-    v6 = [v4 components];
-    v7 = [v5 isEqualToArray:v6];
+    components = [(WFTTSString *)self components];
+    components2 = [equalCopy components];
+    v7 = [components isEqualToArray:components2];
   }
 
   else
@@ -32,16 +32,16 @@
   v7.receiver = self;
   v7.super_class = WFTTSString;
   v3 = [(WFTTSString *)&v7 description];
-  v4 = [(WFTTSString *)self components];
-  v5 = [v3 stringByAppendingFormat:@": %@", v4];
+  components = [(WFTTSString *)self components];
+  v5 = [v3 stringByAppendingFormat:@": %@", components];
 
   return v5;
 }
 
 - (NSString)displayString
 {
-  v2 = [(WFTTSString *)self components];
-  v3 = [v2 if_compactMap:&__block_literal_global_19333];
+  components = [(WFTTSString *)self components];
+  v3 = [components if_compactMap:&__block_literal_global_19333];
 
   v4 = [v3 componentsJoinedByString:&stru_1F28FBBB8];
 
@@ -73,13 +73,13 @@ LABEL_7:
   return v4;
 }
 
-- (WFTTSString)initWithComponents:(id)a3
+- (WFTTSString)initWithComponents:(id)components
 {
-  v5 = a3;
-  if (!v5)
+  componentsCopy = components;
+  if (!componentsCopy)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"WFTTSString.m" lineNumber:29 description:{@"Invalid parameter not satisfying: %@", @"components"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFTTSString.m" lineNumber:29 description:{@"Invalid parameter not satisfying: %@", @"components"}];
   }
 
   v12.receiver = self;
@@ -87,7 +87,7 @@ LABEL_7:
   v6 = [(WFTTSString *)&v12 init];
   if (v6)
   {
-    v7 = [v5 copy];
+    v7 = [componentsCopy copy];
     components = v6->_components;
     v6->_components = v7;
 
@@ -97,22 +97,22 @@ LABEL_7:
   return v6;
 }
 
-+ (id)parseAnnotatedString:(id)a3
++ (id)parseAnnotatedString:(id)string
 {
   v37[2] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  stringCopy = string;
+  if (!stringCopy)
   {
-    v26 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v26 handleFailureInMethod:a2 object:a1 file:@"WFTTSString.m" lineNumber:40 description:{@"Invalid parameter not satisfying: %@", @"string"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFTTSString.m" lineNumber:40 description:{@"Invalid parameter not satisfying: %@", @"string"}];
   }
 
-  v27 = a1;
+  selfCopy = self;
   v37[0] = objc_opt_class();
   v37[1] = objc_opt_class();
   v29 = [MEMORY[0x1E695DEC8] arrayWithObjects:v37 count:2];
   v28 = objc_opt_new();
-  v6 = [v5 rangeOfString:@"[Siri " options:0 range:{0, objc_msgSend(v5, "length")}];
+  v6 = [stringCopy rangeOfString:@"[Siri " options:0 range:{0, objc_msgSend(stringCopy, "length")}];
   v30 = 0;
   if (v6 != 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -121,12 +121,12 @@ LABEL_7:
     do
     {
       v9 = v8 + v7;
-      v10 = [v5 rangeOfString:@"]" options:0 range:{v9, objc_msgSend(v5, "length") - v9}];
+      v10 = [stringCopy rangeOfString:@"]" options:0 range:{v9, objc_msgSend(stringCopy, "length") - v9}];
       if (v10 != 0x7FFFFFFFFFFFFFFFLL)
       {
         v12 = v10;
         v31 = v11;
-        v13 = [v5 substringWithRange:{v9, v10 - v9}];
+        v13 = [stringCopy substringWithRange:{v9, v10 - v9}];
         v32 = 0u;
         v33 = 0u;
         v34 = 0u;
@@ -151,7 +151,7 @@ LABEL_7:
               {
                 v20 = v19;
 
-                v21 = [v5 substringWithRange:{v30, v8 - v30}];
+                v21 = [stringCopy substringWithRange:{v30, v8 - v30}];
                 if ([v21 length])
                 {
                   [v28 addObject:v21];
@@ -177,19 +177,19 @@ LABEL_7:
       }
 
 LABEL_18:
-      v8 = [v5 rangeOfString:@"[Siri " options:0 range:{v9, objc_msgSend(v5, "length") - v9}];
+      v8 = [stringCopy rangeOfString:@"[Siri " options:0 range:{v9, objc_msgSend(stringCopy, "length") - v9}];
     }
 
     while (v8 != 0x7FFFFFFFFFFFFFFFLL);
   }
 
-  if (v30 != [v5 length])
+  if (v30 != [stringCopy length])
   {
-    v22 = [v5 substringWithRange:{v30, objc_msgSend(v5, "length") - v30}];
+    v22 = [stringCopy substringWithRange:{v30, objc_msgSend(stringCopy, "length") - v30}];
     [v28 addObject:v22];
   }
 
-  v23 = [[v27 alloc] initWithComponents:v28];
+  v23 = [[selfCopy alloc] initWithComponents:v28];
 
   v24 = *MEMORY[0x1E69E9840];
 

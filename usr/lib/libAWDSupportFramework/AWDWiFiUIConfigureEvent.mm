@@ -1,15 +1,15 @@
 @interface AWDWiFiUIConfigureEvent
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasPreviousType:(BOOL)a3;
-- (void)setHasType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasPreviousType:(BOOL)type;
+- (void)setHasType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDWiFiUIConfigureEvent
@@ -22,9 +22,9 @@
   [(AWDWiFiUIConfigureEvent *)&v3 dealloc];
 }
 
-- (void)setHasType:(BOOL)a3
+- (void)setHasType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 4;
   }
@@ -37,9 +37,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasPreviousType:(BOOL)a3
+- (void)setHasPreviousType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }
@@ -61,34 +61,34 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   if (*&self->_has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
   }
 
   process = self->_process;
   if (process)
   {
-    [v3 setObject:process forKey:@"process"];
+    [dictionary setObject:process forKey:@"process"];
   }
 
   has = self->_has;
   if ((has & 4) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_type), @"type"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_type), @"type"}];
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_previousType), @"previousType"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_previousType), @"previousType"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (*&self->_has)
   {
@@ -117,37 +117,37 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if (*&self->_has)
   {
-    *(a3 + 1) = self->_timestamp;
-    *(a3 + 36) |= 1u;
+    *(to + 1) = self->_timestamp;
+    *(to + 36) |= 1u;
   }
 
   if (self->_process)
   {
-    [a3 setProcess:?];
+    [to setProcess:?];
   }
 
   has = self->_has;
   if ((has & 4) != 0)
   {
-    *(a3 + 8) = self->_type;
-    *(a3 + 36) |= 4u;
+    *(to + 8) = self->_type;
+    *(to + 36) |= 4u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    *(a3 + 4) = self->_previousType;
-    *(a3 + 36) |= 2u;
+    *(to + 4) = self->_previousType;
+    *(to + 36) |= 2u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -155,7 +155,7 @@
     *(v5 + 36) |= 1u;
   }
 
-  *(v6 + 24) = [(NSString *)self->_process copyWithZone:a3];
+  *(v6 + 24) = [(NSString *)self->_process copyWithZone:zone];
   has = self->_has;
   if ((has & 4) != 0)
   {
@@ -173,22 +173,22 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     has = self->_has;
-    v7 = *(a3 + 36);
+    v7 = *(equal + 36);
     if (has)
     {
-      if ((*(a3 + 36) & 1) == 0 || self->_timestamp != *(a3 + 1))
+      if ((*(equal + 36) & 1) == 0 || self->_timestamp != *(equal + 1))
       {
         goto LABEL_19;
       }
     }
 
-    else if (*(a3 + 36))
+    else if (*(equal + 36))
     {
 LABEL_19:
       LOBYTE(v5) = 0;
@@ -196,7 +196,7 @@ LABEL_19:
     }
 
     process = self->_process;
-    if (process | *(a3 + 3))
+    if (process | *(equal + 3))
     {
       v5 = [(NSString *)process isEqual:?];
       if (!v5)
@@ -209,21 +209,21 @@ LABEL_19:
 
     if ((has & 4) != 0)
     {
-      if ((*(a3 + 36) & 4) == 0 || self->_type != *(a3 + 8))
+      if ((*(equal + 36) & 4) == 0 || self->_type != *(equal + 8))
       {
         goto LABEL_19;
       }
     }
 
-    else if ((*(a3 + 36) & 4) != 0)
+    else if ((*(equal + 36) & 4) != 0)
     {
       goto LABEL_19;
     }
 
-    LOBYTE(v5) = (*(a3 + 36) & 2) == 0;
+    LOBYTE(v5) = (*(equal + 36) & 2) == 0;
     if ((has & 2) != 0)
     {
-      if ((*(a3 + 36) & 2) == 0 || self->_previousType != *(a3 + 4))
+      if ((*(equal + 36) & 2) == 0 || self->_previousType != *(equal + 4))
       {
         goto LABEL_19;
       }
@@ -272,30 +272,30 @@ LABEL_6:
   return v4 ^ v3 ^ v5 ^ v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  if (*(a3 + 36))
+  if (*(from + 36))
   {
-    self->_timestamp = *(a3 + 1);
+    self->_timestamp = *(from + 1);
     *&self->_has |= 1u;
   }
 
-  if (*(a3 + 3))
+  if (*(from + 3))
   {
     [(AWDWiFiUIConfigureEvent *)self setProcess:?];
   }
 
-  v5 = *(a3 + 36);
+  v5 = *(from + 36);
   if ((v5 & 4) != 0)
   {
-    self->_type = *(a3 + 8);
+    self->_type = *(from + 8);
     *&self->_has |= 4u;
-    v5 = *(a3 + 36);
+    v5 = *(from + 36);
   }
 
   if ((v5 & 2) != 0)
   {
-    self->_previousType = *(a3 + 4);
+    self->_previousType = *(from + 4);
     *&self->_has |= 2u;
   }
 }

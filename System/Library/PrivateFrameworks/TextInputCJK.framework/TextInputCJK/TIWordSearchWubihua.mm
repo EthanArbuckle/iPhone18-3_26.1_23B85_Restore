@@ -1,17 +1,17 @@
 @interface TIWordSearchWubihua
-- (id)uncachedCandidatesForOperation:(id)a3;
+- (id)uncachedCandidatesForOperation:(id)operation;
 - (void)dealloc;
 @end
 
 @implementation TIWordSearchWubihua
 
-- (id)uncachedCandidatesForOperation:(id)a3
+- (id)uncachedCandidatesForOperation:(id)operation
 {
-  v4 = a3;
+  operationCopy = operation;
   v5 = objc_alloc_init(MEMORY[0x277D6FF00]);
-  v6 = [v4 inputString];
+  inputString = [operationCopy inputString];
   v7 = objc_autoreleasePoolPush();
-  if (![v6 length])
+  if (![inputString length])
   {
     v8 = 0;
 LABEL_6:
@@ -32,17 +32,17 @@ LABEL_6:
     goto LABEL_8;
   }
 
-  if ([(TIWordSearch *)self addFacemarkCandidatesToResultSet:v5 forInput:v6])
+  if ([(TIWordSearch *)self addFacemarkCandidatesToResultSet:v5 forInput:inputString])
   {
     v8 = 0;
     goto LABEL_8;
   }
 
   v16 = 0;
-  v9 = [(TIWordSearchShapeBased *)self autoconvertLongestValidPrefixes:v6 option:512 candidateResultSet:v5 autoconvertedCandidateArray:&v16];
+  v9 = [(TIWordSearchShapeBased *)self autoconvertLongestValidPrefixes:inputString option:512 candidateResultSet:v5 autoconvertedCandidateArray:&v16];
   v8 = v16;
-  v10 = [(TIWordSearch *)self mecabraEnvironment];
-  v11 = [v10 analyzeString:v9 options:512];
+  mecabraEnvironment = [(TIWordSearch *)self mecabraEnvironment];
+  v11 = [mecabraEnvironment analyzeString:v9 options:512];
 
   if (v11)
   {

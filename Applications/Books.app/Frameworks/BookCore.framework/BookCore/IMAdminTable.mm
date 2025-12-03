@@ -1,28 +1,28 @@
 @interface IMAdminTable
 - (BOOL)hasDatabaseVersion;
-- (IMAdminTable)initWithDatabaseHandle:(id)a3;
-- (id)blobValueForKey:(id)a3 domain:(id)a4;
+- (IMAdminTable)initWithDatabaseHandle:(id)handle;
+- (id)blobValueForKey:(id)key domain:(id)domain;
 - (id)lastAccessDate;
-- (id)numberValueForKey:(id)a3 domain:(id)a4;
-- (id)stringValueForKey:(id)a3 domain:(id)a4;
+- (id)numberValueForKey:(id)key domain:(id)domain;
+- (id)stringValueForKey:(id)key domain:(id)domain;
 - (int64_t)databaseVersion;
-- (void)setDatabaseVersion:(int64_t)a3;
-- (void)setLastAccessDate:(id)a3;
-- (void)setProperty:(id)a3 forKey:(id)a4 domain:(id)a5;
+- (void)setDatabaseVersion:(int64_t)version;
+- (void)setLastAccessDate:(id)date;
+- (void)setProperty:(id)property forKey:(id)key domain:(id)domain;
 @end
 
 @implementation IMAdminTable
 
-- (IMAdminTable)initWithDatabaseHandle:(id)a3
+- (IMAdminTable)initWithDatabaseHandle:(id)handle
 {
-  v5 = a3;
+  handleCopy = handle;
   v10.receiver = self;
   v10.super_class = IMAdminTable;
   v6 = [(IMAdminTable *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_db, a3);
+    objc_storeStrong(&v6->_db, handle);
     v8 = [NSString stringWithFormat:@"create table if not exists admin (pk %@, domain %@, key %@, stringValue %@, intValue %@, blobValue %@)", @"integer primary key", @"text", @"text", @"text", @"integer", @"blob"];
     [(IMDatabaseHandle *)v7->_db runStatement:v8 arguments:0];
   }
@@ -47,14 +47,14 @@
   }
 
   v6 = [v5 objectForKey:@"intValue"];
-  v7 = [v6 integerValue];
+  integerValue = [v6 integerValue];
 
-  return v7;
+  return integerValue;
 }
 
-- (void)setDatabaseVersion:(int64_t)a3
+- (void)setDatabaseVersion:(int64_t)version
 {
-  v4 = [NSNumber numberWithInteger:a3];
+  v4 = [NSNumber numberWithInteger:version];
   [(IMAdminTable *)self setProperty:v4 forKey:@"version" domain:@"database"];
 }
 
@@ -64,23 +64,23 @@
   v3 = [NSArray arrayWithObjects:@"version", @"database", 0];
   v4 = [(IMDatabaseHandle *)db arrayForQuery:@"select count(*) from admin where key = ? and domain = ?" arguments:v3 rawRows:1];
 
-  v5 = [v4 firstObject];
-  v6 = [v5 firstObject];
-  v7 = [v6 integerValue];
+  firstObject = [v4 firstObject];
+  v5FirstObject = [firstObject firstObject];
+  integerValue = [v5FirstObject integerValue];
 
-  return v7 > 0;
+  return integerValue > 0;
 }
 
-- (void)setLastAccessDate:(id)a3
+- (void)setLastAccessDate:(id)date
 {
-  v4 = a3;
-  if (!v4)
+  dateCopy = date;
+  if (!dateCopy)
   {
-    v4 = +[NSDate date];
+    dateCopy = +[NSDate date];
   }
 
-  v7 = v4;
-  [v4 timeIntervalSinceReferenceDate];
+  v7 = dateCopy;
+  [dateCopy timeIntervalSinceReferenceDate];
   *&v5 = v5;
   v6 = [NSNumber numberWithFloat:v5];
   [(IMAdminTable *)self setProperty:v6 forKey:@"lastAccessDate" domain:@"database"];
@@ -95,23 +95,23 @@
   return v4;
 }
 
-- (void)setProperty:(id)a3 forKey:(id)a4 domain:(id)a5
+- (void)setProperty:(id)property forKey:(id)key domain:(id)domain
 {
-  v24 = a3;
-  v8 = a4;
-  v9 = a5;
+  propertyCopy = property;
+  keyCopy = key;
+  domainCopy = domain;
   v10 = @"select count(*) from admin where key = ? and domain = ?";
-  if (!v9)
+  if (!domainCopy)
   {
     v10 = @"select count(*) from admin where key = ?";
   }
 
   v11 = v10;
-  v12 = [[NSArray alloc] initWithObjects:{v8, v9, 0}];
+  v12 = [[NSArray alloc] initWithObjects:{keyCopy, domainCopy, 0}];
   v13 = [(IMDatabaseHandle *)self->_db arrayForQuery:v11 arguments:v12 rawRows:1];
-  v14 = [v13 firstObject];
-  v15 = [v14 firstObject];
-  v16 = [v15 integerValue];
+  firstObject = [v13 firstObject];
+  v14FirstObject = [firstObject firstObject];
+  integerValue = [v14FirstObject integerValue];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -142,12 +142,12 @@
     }
   }
 
-  if (v16)
+  if (integerValue)
   {
-    if (v9)
+    if (domainCopy)
     {
       v18 = [NSString stringWithFormat:@"update admin set %@ = ? where key = ? and domain = ?", v17];
-      v21 = v9;
+      v21 = domainCopy;
       v23 = 0;
     }
 
@@ -157,94 +157,94 @@
       v21 = 0;
     }
 
-    [NSArray arrayWithObjects:v24, v8, v21, v23];
+    [NSArray arrayWithObjects:propertyCopy, keyCopy, v21, v23];
   }
 
   else
   {
-    if (v9)
+    if (domainCopy)
     {
       v18 = [NSString stringWithFormat:@"insert into admin (key, domain, %@) values (?, ?, ?)", v17];
-      v22 = v24;
+      v22 = propertyCopy;
       v23 = 0;
-      v20 = v9;
+      v20 = domainCopy;
     }
 
     else
     {
       v18 = [NSString stringWithFormat:@"insert into admin (key, %@) values (?, ?)", v17];
-      v20 = v24;
+      v20 = propertyCopy;
       v22 = 0;
     }
 
-    [NSArray arrayWithObjects:v8, v20, v22, v23];
+    [NSArray arrayWithObjects:keyCopy, v20, v22, v23];
   }
   v19 = ;
 
   [(IMDatabaseHandle *)self->_db runStatement:v18 arguments:v19];
 }
 
-- (id)blobValueForKey:(id)a3 domain:(id)a4
+- (id)blobValueForKey:(id)key domain:(id)domain
 {
-  if (a4)
+  if (domain)
   {
-    v5 = [NSArray arrayWithObjects:a3, a4, 0];
+    v5 = [NSArray arrayWithObjects:key, domain, 0];
     v6 = @"select blobValue from admin where key = ? and domain = ?";
   }
 
   else
   {
-    v5 = [NSArray arrayWithObject:a3];
+    v5 = [NSArray arrayWithObject:key];
     v6 = @"select blobValue from admin where key = ?";
   }
 
   v7 = [(IMDatabaseHandle *)self->_db arrayForQuery:v6 arguments:v5 rawRows:1];
-  v8 = [v7 firstObject];
-  v9 = [v8 firstObject];
+  firstObject = [v7 firstObject];
+  v8FirstObject = [firstObject firstObject];
 
-  return v9;
+  return v8FirstObject;
 }
 
-- (id)stringValueForKey:(id)a3 domain:(id)a4
+- (id)stringValueForKey:(id)key domain:(id)domain
 {
-  if (a4)
+  if (domain)
   {
-    v5 = [NSArray arrayWithObjects:a3, a4, 0];
+    v5 = [NSArray arrayWithObjects:key, domain, 0];
     v6 = @"select stringValue from admin where key = ? and domain = ?";
   }
 
   else
   {
-    v5 = [NSArray arrayWithObject:a3];
+    v5 = [NSArray arrayWithObject:key];
     v6 = @"select stringValue from admin where key = ?";
   }
 
   v7 = [(IMDatabaseHandle *)self->_db arrayForQuery:v6 arguments:v5 rawRows:1];
-  v8 = [v7 firstObject];
-  v9 = [v8 firstObject];
+  firstObject = [v7 firstObject];
+  v8FirstObject = [firstObject firstObject];
 
-  return v9;
+  return v8FirstObject;
 }
 
-- (id)numberValueForKey:(id)a3 domain:(id)a4
+- (id)numberValueForKey:(id)key domain:(id)domain
 {
-  if (a4)
+  if (domain)
   {
-    v5 = [NSArray arrayWithObjects:a3, a4, 0];
+    v5 = [NSArray arrayWithObjects:key, domain, 0];
     v6 = @"select intValue from admin where key = ? and domain = ?";
   }
 
   else
   {
-    v5 = [NSArray arrayWithObject:a3];
+    v5 = [NSArray arrayWithObject:key];
     v6 = @"select intValue from admin where key = ?";
   }
 
   v7 = [(IMDatabaseHandle *)self->_db arrayForQuery:v6 arguments:v5 rawRows:1];
-  v8 = [v7 firstObject];
-  v9 = [v8 firstObject];
+  firstObject = [v7 firstObject];
+  v8FirstObject = [firstObject firstObject];
 
-  return v9;
+  return v8FirstObject;
 }
 
 @end

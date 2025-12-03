@@ -1,25 +1,25 @@
 @interface _ADPBDeviceStringKeyValueDictionary
-+ (id)_ad_keyValueDictionaryWithDictionary:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)_ad_keyValueDictionaryWithDictionary:(id)dictionary;
+- (BOOL)isEqual:(id)equal;
 - (id)_ad_dictionaryRepresentation;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)addPairs:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addPairs:(id)pairs;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _ADPBDeviceStringKeyValueDictionary
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = *(a3 + 1);
+  v4 = *(from + 1);
   v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
@@ -47,13 +47,13 @@
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     pairs = self->_pairs;
-    if (pairs | v4[1])
+    if (pairs | equalCopy[1])
     {
       v6 = [(NSMutableArray *)pairs isEqual:?];
     }
@@ -72,9 +72,9 @@
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -95,7 +95,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v13 + 1) + 8 * v10) copyWithZone:{a3, v13}];
+        v11 = [*(*(&v13 + 1) + 8 * v10) copyWithZone:{zone, v13}];
         [v5 addPairs:v11];
 
         v10 = v10 + 1;
@@ -111,28 +111,28 @@
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if ([(_ADPBDeviceStringKeyValueDictionary *)self pairsCount])
   {
-    [v8 clearPairs];
-    v4 = [(_ADPBDeviceStringKeyValueDictionary *)self pairsCount];
-    if (v4)
+    [toCopy clearPairs];
+    pairsCount = [(_ADPBDeviceStringKeyValueDictionary *)self pairsCount];
+    if (pairsCount)
     {
-      v5 = v4;
+      v5 = pairsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(_ADPBDeviceStringKeyValueDictionary *)self pairsAtIndex:i];
-        [v8 addPairs:v7];
+        [toCopy addPairs:v7];
       }
     }
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -190,8 +190,8 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v12 + 1) + 8 * i) dictionaryRepresentation];
-          [v4 addObject:v10];
+          dictionaryRepresentation = [*(*(&v12 + 1) + 8 * i) dictionaryRepresentation];
+          [v4 addObject:dictionaryRepresentation];
         }
 
         v7 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -211,28 +211,28 @@
   v7.receiver = self;
   v7.super_class = _ADPBDeviceStringKeyValueDictionary;
   v3 = [(_ADPBDeviceStringKeyValueDictionary *)&v7 description];
-  v4 = [(_ADPBDeviceStringKeyValueDictionary *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(_ADPBDeviceStringKeyValueDictionary *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
 
-- (void)addPairs:(id)a3
+- (void)addPairs:(id)pairs
 {
-  v4 = a3;
+  pairsCopy = pairs;
   pairs = self->_pairs;
-  v8 = v4;
+  v8 = pairsCopy;
   if (!pairs)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_pairs;
     self->_pairs = v6;
 
-    v4 = v8;
+    pairsCopy = v8;
     pairs = self->_pairs;
   }
 
-  [(NSMutableArray *)pairs addObject:v4];
+  [(NSMutableArray *)pairs addObject:pairsCopy];
 }
 
 - (id)_ad_dictionaryRepresentation
@@ -242,8 +242,8 @@
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v4 = [(_ADPBDeviceStringKeyValueDictionary *)self pairs];
-  v5 = [v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  pairs = [(_ADPBDeviceStringKeyValueDictionary *)self pairs];
+  v5 = [pairs countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v5)
   {
     v6 = v5;
@@ -254,26 +254,26 @@
       {
         if (*v18 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(pairs);
         }
 
         v9 = *(*(&v17 + 1) + 8 * i);
-        v10 = [v9 value];
-        if (v10)
+        value = [v9 value];
+        if (value)
         {
-          v11 = v10;
+          v11 = value;
           v12 = [v9 key];
 
           if (v12)
           {
-            v13 = [v9 value];
+            value2 = [v9 value];
             v14 = [v9 key];
-            [v3 setValue:v13 forKey:v14];
+            [v3 setValue:value2 forKey:v14];
           }
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v6 = [pairs countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v6);
@@ -284,17 +284,17 @@
   return v15;
 }
 
-+ (id)_ad_keyValueDictionaryWithDictionary:(id)a3
++ (id)_ad_keyValueDictionaryWithDictionary:(id)dictionary
 {
-  v3 = a3;
-  if (v3)
+  dictionaryCopy = dictionary;
+  if (dictionaryCopy)
   {
     v4 = objc_alloc_init(_ADPBDeviceStringKeyValueDictionary);
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v5 = v3;
+    v5 = dictionaryCopy;
     v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v6)
     {

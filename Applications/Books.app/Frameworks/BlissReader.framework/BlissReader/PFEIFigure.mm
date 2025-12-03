@@ -1,18 +1,18 @@
 @interface PFEIFigure
-- (void)mapEndElementWithState:(id)a3;
+- (void)mapEndElementWithState:(id)state;
 @end
 
 @implementation PFEIFigure
 
-- (void)mapEndElementWithState:(id)a3
+- (void)mapEndElementWithState:(id)state
 {
-  v3 = [a3 currentHtmlStackEntry];
-  v4 = [v3 currentEntryMediaState];
-  v5 = [v3 xmlValueForAttribute:PFXWidgetConstantDataWidgetObjectType[0]];
-  if (xmlStrEqual(v5, PFXWidgetConstantGalleryObjectValueItem[0]) && [v4 childResultCount])
+  currentHtmlStackEntry = [state currentHtmlStackEntry];
+  currentEntryMediaState = [currentHtmlStackEntry currentEntryMediaState];
+  v5 = [currentHtmlStackEntry xmlValueForAttribute:PFXWidgetConstantDataWidgetObjectType[0]];
+  if (xmlStrEqual(v5, PFXWidgetConstantGalleryObjectValueItem[0]) && [currentEntryMediaState childResultCount])
   {
-    v6 = [PFEIGallery galleryItemFromEntry:v3];
-    if (!v6)
+    childResults = [PFEIGallery galleryItemFromEntry:currentHtmlStackEntry];
+    if (!childResults)
     {
       return;
     }
@@ -20,15 +20,15 @@
 
   else
   {
-    if (![v4 childResultCount])
+    if (![currentEntryMediaState childResultCount])
     {
       return;
     }
 
-    v6 = [v4 childResults];
+    childResults = [currentEntryMediaState childResults];
   }
 
-  [v4 setResult:v6];
+  [currentEntryMediaState setResult:childResults];
 }
 
 @end

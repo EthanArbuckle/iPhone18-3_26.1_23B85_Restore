@@ -1,12 +1,12 @@
 @interface ComAppleContextkitCategoriesConstellation_GroupingRequest_$1
-- (int)compareWithId:(id)a3 withId:(id)a4;
+- (int)compareWithId:(id)id withId:(id)withId;
 @end
 
 @implementation ComAppleContextkitCategoriesConstellation_GroupingRequest_$1
 
-- (int)compareWithId:(id)a3 withId:(id)a4
+- (int)compareWithId:(id)id withId:(id)withId
 {
-  if (!a3 || (v5 = [a3 getValue]) == 0 || (v6 = objc_msgSend(v5, "size"), !a4) || (v7 = v6, (v8 = objc_msgSend(a4, "getValue")) == 0))
+  if (!id || (v5 = [id getValue]) == 0 || (v6 = objc_msgSend(v5, "size"), !withId) || (v7 = v6, (v8 = objc_msgSend(withId, "getValue")) == 0))
   {
     JreThrowNullPointerException();
   }

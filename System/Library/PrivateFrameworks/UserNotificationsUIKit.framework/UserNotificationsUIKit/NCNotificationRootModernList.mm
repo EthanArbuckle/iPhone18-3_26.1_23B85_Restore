@@ -1,66 +1,66 @@
 @interface NCNotificationRootModernList
 - (BOOL)adjustForContentSizeCategoryChange;
 - (BOOL)deviceAuthenticated;
-- (BOOL)handleTapOnNotificationListBaseComponent:(id)a3;
-- (BOOL)isEligibleToPerformGroupAnimationForNotificationListBaseComponent:(id)a3 toGrouped:(BOOL)a4;
-- (BOOL)removeNotificationRequest:(id)a3;
-- (BOOL)scrollViewShouldScrollToTop:(id)a3;
-- (BOOL)shouldScrollToTopForNotificationListBaseComponent:(id)a3;
-- (NCNotificationRootModernList)initWithListView:(id)a3 delegate:(id)a4;
-- (double)notificationListView:(id)a3 heightForItemAtIndex:(int64_t)a4 withWidth:(double)a5 inDisplayListAsStackMode:(BOOL)a6 ignoreExpandedGroupStack:(BOOL)a7;
+- (BOOL)handleTapOnNotificationListBaseComponent:(id)component;
+- (BOOL)isEligibleToPerformGroupAnimationForNotificationListBaseComponent:(id)component toGrouped:(BOOL)grouped;
+- (BOOL)removeNotificationRequest:(id)request;
+- (BOOL)scrollViewShouldScrollToTop:(id)top;
+- (BOOL)shouldScrollToTopForNotificationListBaseComponent:(id)component;
+- (NCNotificationRootModernList)initWithListView:(id)view delegate:(id)delegate;
+- (double)notificationListView:(id)view heightForItemAtIndex:(int64_t)index withWidth:(double)width inDisplayListAsStackMode:(BOOL)mode ignoreExpandedGroupStack:(BOOL)stack;
 - (double)scrollViewVisibleContentLayoutOffsetY;
-- (double)targetContentHeightForNotificationList:(id)a3;
+- (double)targetContentHeightForNotificationList:(id)list;
 - (id)initForTesting;
-- (id)notificationListView:(id)a3 topSpacingForItemAtIndex:(int64_t)a4;
+- (id)notificationListView:(id)view topSpacingForItemAtIndex:(int64_t)index;
 - (int64_t)incomingCount;
-- (int64_t)insertNotificationRequest:(id)a3;
-- (void)_backlightChangedToBacklightLuminance:(int64_t)a3;
-- (void)_didUpdateNotificationSectionSettings:(id)a3 previousSectionSettings:(id)a4;
+- (int64_t)insertNotificationRequest:(id)request;
+- (void)_backlightChangedToBacklightLuminance:(int64_t)luminance;
+- (void)_didUpdateNotificationSectionSettings:(id)settings previousSectionSettings:(id)sectionSettings;
 - (void)_displayStyleDidChangeForSleep;
-- (void)_notificationSectionsDidAdd:(id)a3;
+- (void)_notificationSectionsDidAdd:(id)add;
 - (void)_scrollToSystemPreferredPageTypeIfPossible;
-- (void)_setRevealed:(BOOL)a3 forSection:(id)a4;
+- (void)_setRevealed:(BOOL)revealed forSection:(id)section;
 - (void)_updateIndexForReveal;
 - (void)_updateVisibilityOfHistorySection;
-- (void)animateByRetargetingType:(unint64_t)a3 animations:(id)a4 completion:(id)a5;
-- (void)animateUsingSpringBehavior:(id)a3 tracking:(BOOL)a4 type:(unint64_t)a5 animations:(id)a6 completion:(id)a7;
-- (void)animateUsingSpringWithTension:(double)a3 friction:(double)a4 interactive:(BOOL)a5 type:(unint64_t)a6 animations:(id)a7 completion:(id)a8;
-- (void)animateWithDecomposedAnimations:(id)a3 completion:(id)a4;
+- (void)animateByRetargetingType:(unint64_t)type animations:(id)animations completion:(id)completion;
+- (void)animateUsingSpringBehavior:(id)behavior tracking:(BOOL)tracking type:(unint64_t)type animations:(id)animations completion:(id)completion;
+- (void)animateUsingSpringWithTension:(double)tension friction:(double)friction interactive:(BOOL)interactive type:(unint64_t)type animations:(id)animations completion:(id)completion;
+- (void)animateWithDecomposedAnimations:(id)animations completion:(id)completion;
 - (void)didTapCountIndicator;
-- (void)didUpdateToUserInterfaceSizeClass:(int64_t)a3;
-- (void)expandGroupForNotificationRequest:(id)a3 withCompletion:(id)a4;
+- (void)didUpdateToUserInterfaceSizeClass:(int64_t)class;
+- (void)expandGroupForNotificationRequest:(id)request withCompletion:(id)completion;
 - (void)layoutForRootListSizeChange;
-- (void)modifyNotificationRequest:(id)a3;
-- (void)notificationListBaseComponent:(id)a3 didSetGrouped:(BOOL)a4;
-- (void)notificationListBaseComponent:(id)a3 requestsScrollingToContentOffset:(double)a4 withCompletion:(id)a5;
-- (void)notificationListComponentChangedContent:(id)a3;
+- (void)modifyNotificationRequest:(id)request;
+- (void)notificationListBaseComponent:(id)component didSetGrouped:(BOOL)grouped;
+- (void)notificationListBaseComponent:(id)component requestsScrollingToContentOffset:(double)offset withCompletion:(id)completion;
+- (void)notificationListComponentChangedContent:(id)content;
 - (void)notificationListDidLayoutSubviews;
 - (void)notificationListWillLayoutSubviews;
-- (void)notificationStructuredSectionList:(id)a3 transitionedGroupedStateIsGrouped:(BOOL)a4;
-- (void)notificationsLoadedForSectionIdentifier:(id)a3;
-- (void)performAnimationType:(unint64_t)a3 withoutAnimation:(id)a4;
-- (void)reloadNotificationRequest:(id)a3;
-- (void)revealNotificationHistory:(BOOL)a3 animated:(BOOL)a4;
-- (void)scrollViewDidEndDecelerating:(id)a3;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)scrollViewDidEndScrollingAnimation:(id)a3;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
-- (void)setDeviceAuthenticated:(BOOL)a3;
-- (void)supplementaryViewSectionDidChangeContent:(id)a3;
-- (void)supplementaryViewSectionDidChangeHeight:(id)a3;
-- (void)toggleMissedSectionActive:(BOOL)a3 forDNDMode:(id)a4 hideVisibleNotifications:(BOOL)a5;
-- (void)updateListViewVisibleRectForSize:(CGSize)a3;
-- (void)updateNotificationSystemSettings:(id)a3 previousSystemSettings:(id)a4;
+- (void)notificationStructuredSectionList:(id)list transitionedGroupedStateIsGrouped:(BOOL)grouped;
+- (void)notificationsLoadedForSectionIdentifier:(id)identifier;
+- (void)performAnimationType:(unint64_t)type withoutAnimation:(id)animation;
+- (void)reloadNotificationRequest:(id)request;
+- (void)revealNotificationHistory:(BOOL)history animated:(BOOL)animated;
+- (void)scrollViewDidEndDecelerating:(id)decelerating;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)scrollViewDidEndScrollingAnimation:(id)animation;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
+- (void)setDeviceAuthenticated:(BOOL)authenticated;
+- (void)supplementaryViewSectionDidChangeContent:(id)content;
+- (void)supplementaryViewSectionDidChangeHeight:(id)height;
+- (void)toggleMissedSectionActive:(BOOL)active forDNDMode:(id)mode hideVisibleNotifications:(BOOL)notifications;
+- (void)updateListViewVisibleRectForSize:(CGSize)size;
+- (void)updateNotificationSystemSettings:(id)settings previousSystemSettings:(id)systemSettings;
 @end
 
 @implementation NCNotificationRootModernList
 
-- (void)setDeviceAuthenticated:(BOOL)a3
+- (void)setDeviceAuthenticated:(BOOL)authenticated
 {
-  v4 = self;
-  NCNotificationRootModernList.deviceAuthenticated.setter(a3);
+  selfCopy = self;
+  NCNotificationRootModernList.deviceAuthenticated.setter(authenticated);
 }
 
 - (BOOL)deviceAuthenticated
@@ -70,27 +70,27 @@
   return [(NCNotificationRootList *)&v3 deviceAuthenticated];
 }
 
-- (void)notificationListComponentChangedContent:(id)a3
+- (void)notificationListComponentChangedContent:(id)content
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  NCNotificationRootModernList.notificationListComponentChangedContent(_:)(a3);
+  selfCopy = self;
+  NCNotificationRootModernList.notificationListComponentChangedContent(_:)(content);
   swift_unknownObjectRelease();
 }
 
 - (int64_t)incomingCount
 {
-  v2 = self;
+  selfCopy = self;
   NCNotificationRootModernList.incomingCount.getter();
   v4 = v3;
 
   return v4;
 }
 
-- (void)didUpdateToUserInterfaceSizeClass:(int64_t)a3
+- (void)didUpdateToUserInterfaceSizeClass:(int64_t)class
 {
-  v4 = self;
-  NCNotificationRootModernList.didUpdate(to:)(a3);
+  selfCopy = self;
+  NCNotificationRootModernList.didUpdate(to:)(class);
 }
 
 - (double)scrollViewVisibleContentLayoutOffsetY
@@ -122,35 +122,35 @@
 
 - (void)notificationListWillLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   NCNotificationRootModernList.notificationListWillLayoutSubviews()();
 }
 
-- (id)notificationListView:(id)a3 topSpacingForItemAtIndex:(int64_t)a4
+- (id)notificationListView:(id)view topSpacingForItemAtIndex:(int64_t)index
 {
   swift_unknownObjectRetain();
-  v6 = self;
-  v7 = sub_21E78A8A0(a4);
+  selfCopy = self;
+  v7 = sub_21E78A8A0(index);
   swift_unknownObjectRelease();
 
   return v7;
 }
 
-- (double)notificationListView:(id)a3 heightForItemAtIndex:(int64_t)a4 withWidth:(double)a5 inDisplayListAsStackMode:(BOOL)a6 ignoreExpandedGroupStack:(BOOL)a7
+- (double)notificationListView:(id)view heightForItemAtIndex:(int64_t)index withWidth:(double)width inDisplayListAsStackMode:(BOOL)mode ignoreExpandedGroupStack:(BOOL)stack
 {
   swift_unknownObjectRetain();
-  v13 = self;
-  NCNotificationRootModernList.notificationListView(_:heightForItemAt:withWidth:inDisplayListAsStackMode:ignoreExpandedGroupStack:)(a3, a4, a6, a7, a5);
+  selfCopy = self;
+  NCNotificationRootModernList.notificationListView(_:heightForItemAt:withWidth:inDisplayListAsStackMode:ignoreExpandedGroupStack:)(view, index, mode, stack, width);
   v15 = v14;
   swift_unknownObjectRelease();
 
   return v15;
 }
 
-- (double)targetContentHeightForNotificationList:(id)a3
+- (double)targetContentHeightForNotificationList:(id)list
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   _sSo28NCNotificationRootModernListC22UserNotificationsUIKitE19targetContentHeight015forNotificationD012CoreGraphics7CGFloatVSo0aD12ViewProtocol_p_tF_0();
   v6 = v5;
   swift_unknownObjectRelease();
@@ -160,14 +160,14 @@
 
 - (void)notificationListDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   NCNotificationRootModernList.notificationListDidLayoutSubviews()();
 }
 
-- (void)animateUsingSpringWithTension:(double)a3 friction:(double)a4 interactive:(BOOL)a5 type:(unint64_t)a6 animations:(id)a7 completion:(id)a8
+- (void)animateUsingSpringWithTension:(double)tension friction:(double)friction interactive:(BOOL)interactive type:(unint64_t)type animations:(id)animations completion:(id)completion
 {
-  v14 = _Block_copy(a7);
-  v15 = _Block_copy(a8);
+  v14 = _Block_copy(animations);
+  v15 = _Block_copy(completion);
   v16 = swift_allocObject();
   *(v16 + 16) = v14;
   if (v15)
@@ -182,64 +182,64 @@
     v17 = 0;
   }
 
-  v18 = self;
-  NCNotificationRootModernList.animateUsingSpring(withTension:friction:interactive:type:animations:completion:)(a5, a6, sub_21E792C6C, v16, v15, v17, a3, a4);
+  selfCopy = self;
+  NCNotificationRootModernList.animateUsingSpring(withTension:friction:interactive:type:animations:completion:)(interactive, type, sub_21E792C6C, v16, v15, v17, tension, friction);
   sub_21E792694(v15);
 }
 
-- (void)updateListViewVisibleRectForSize:(CGSize)a3
+- (void)updateListViewVisibleRectForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
+  height = size.height;
+  width = size.width;
+  selfCopy = self;
   NCNotificationRootModernList.updateListViewVisibleRect(for:)(__PAIR128__(*&height, *&width));
 }
 
-- (void)_setRevealed:(BOOL)a3 forSection:(id)a4
+- (void)_setRevealed:(BOOL)revealed forSection:(id)section
 {
-  if (a4)
+  if (section)
   {
-    v5 = [swift_unknownObjectRetain() listView];
-    [v5 setRevealed_];
+    listView = [swift_unknownObjectRetain() listView];
+    [listView setRevealed_];
 
-    v6 = [a4 listView];
-    [v6 setRevealPercentage_];
+    listView2 = [section listView];
+    [listView2 setRevealPercentage_];
 
     swift_unknownObjectRelease();
   }
 }
 
-- (void)_backlightChangedToBacklightLuminance:(int64_t)a3
+- (void)_backlightChangedToBacklightLuminance:(int64_t)luminance
 {
-  v4 = self;
-  NCNotificationRootModernList._backlightChanged(toBacklightLuminance:)(a3);
+  selfCopy = self;
+  NCNotificationRootModernList._backlightChanged(toBacklightLuminance:)(luminance);
 }
 
-- (BOOL)removeNotificationRequest:(id)a3
+- (BOOL)removeNotificationRequest:(id)request
 {
-  v3 = a3;
-  v5 = a3;
-  v6 = self;
-  NCNotificationRootModernList.remove(_:)(v3);
-  LOBYTE(v3) = v7;
+  requestCopy = request;
+  requestCopy2 = request;
+  selfCopy = self;
+  NCNotificationRootModernList.remove(_:)(requestCopy);
+  LOBYTE(requestCopy) = v7;
 
-  return v3 & 1;
+  return requestCopy & 1;
 }
 
-- (void)performAnimationType:(unint64_t)a3 withoutAnimation:(id)a4
+- (void)performAnimationType:(unint64_t)type withoutAnimation:(id)animation
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(animation);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
-  v8 = self;
-  NCNotificationRootModernList.perform(_:withoutAnimation:)(a3, sub_21E8B242C, v7);
+  selfCopy = self;
+  NCNotificationRootModernList.perform(_:withoutAnimation:)(type, sub_21E8B242C, v7);
 }
 
-- (NCNotificationRootModernList)initWithListView:(id)a3 delegate:(id)a4
+- (NCNotificationRootModernList)initWithListView:(id)view delegate:(id)delegate
 {
-  v5 = a3;
+  viewCopy = view;
   swift_unknownObjectRetain();
-  sub_21E8C21D8(v5, a4);
+  sub_21E8C21D8(viewCopy, delegate);
   return result;
 }
 
@@ -250,40 +250,40 @@
   return result;
 }
 
-- (void)updateNotificationSystemSettings:(id)a3 previousSystemSettings:(id)a4
+- (void)updateNotificationSystemSettings:(id)settings previousSystemSettings:(id)systemSettings
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  NCNotificationRootModernList.update(_:previousSystemSettings:)(v6, a4);
+  settingsCopy = settings;
+  systemSettingsCopy = systemSettings;
+  selfCopy = self;
+  NCNotificationRootModernList.update(_:previousSystemSettings:)(settingsCopy, systemSettings);
 }
 
 - (void)_updateIndexForReveal
 {
-  v2 = self;
+  selfCopy = self;
   NCNotificationRootModernList._updateIndexForReveal()();
 }
 
-- (void)toggleMissedSectionActive:(BOOL)a3 forDNDMode:(id)a4 hideVisibleNotifications:(BOOL)a5
+- (void)toggleMissedSectionActive:(BOOL)active forDNDMode:(id)mode hideVisibleNotifications:(BOOL)notifications
 {
-  v9 = a4;
-  v10 = self;
-  NCNotificationRootModernList.toggleMissedSectionActive(_:for:hideVisibleNotifications:)(a3, a4, a5);
+  modeCopy = mode;
+  selfCopy = self;
+  NCNotificationRootModernList.toggleMissedSectionActive(_:for:hideVisibleNotifications:)(active, mode, notifications);
 }
 
 - (void)layoutForRootListSizeChange
 {
-  v2 = self;
+  selfCopy = self;
   NCNotificationRootModernList.layoutForRootListSizeChange()();
 }
 
-- (void)_didUpdateNotificationSectionSettings:(id)a3 previousSectionSettings:(id)a4
+- (void)_didUpdateNotificationSectionSettings:(id)settings previousSectionSettings:(id)sectionSettings
 {
   *(&self->super.super.isa + OBJC_IVAR___NCNotificationRootModernList_updatingSectionSettings) = 0;
   v4 = OBJC_IVAR___NCNotificationRootModernList_wantsContentUpdateDuringSectionSettingsChange;
   if (*(&self->super.super.isa + OBJC_IVAR___NCNotificationRootModernList_wantsContentUpdateDuringSectionSettingsChange) == 1)
   {
-    v6 = self;
+    selfCopy = self;
     sub_21E784AD0(0);
     *(&self->super.super.isa + v4) = 0;
   }
@@ -291,7 +291,7 @@
 
 - (BOOL)adjustForContentSizeCategoryChange
 {
-  v2 = self;
+  selfCopy = self;
   NCNotificationRootModernList.adjustForContentSizeCategoryChange()();
 
   return 1;
@@ -299,14 +299,14 @@
 
 - (void)_scrollToSystemPreferredPageTypeIfPossible
 {
-  v2 = self;
+  selfCopy = self;
   NCNotificationRootModernList._scrollToSystemPreferredPageTypeIfPossible()();
 }
 
-- (void)revealNotificationHistory:(BOOL)a3 animated:(BOOL)a4
+- (void)revealNotificationHistory:(BOOL)history animated:(BOOL)animated
 {
-  v5 = self;
-  _sSo28NCNotificationRootModernListC22UserNotificationsUIKitE25revealNotificationHistory_8animatedySb_SbtF_0(a3);
+  selfCopy = self;
+  _sSo28NCNotificationRootModernListC22UserNotificationsUIKitE25revealNotificationHistory_8animatedySb_SbtF_0(history);
 }
 
 - (void)_updateVisibilityOfHistorySection
@@ -314,7 +314,7 @@
   v2 = *(&self->super.super.isa + OBJC_IVAR___NCNotificationRootModernList_layout);
   v3 = *(&self->super._currentListDisplayStyleSetting + OBJC_IVAR___NCNotificationRootModernList_layout);
   v4 = *(&self->super._deviceAuthenticated + OBJC_IVAR___NCNotificationRootModernList_layout);
-  v6 = self;
+  selfCopy = self;
 
   v5.n128_u64[0] = v4;
   sub_21E783428(v2, v7, v3, v5);
@@ -322,135 +322,135 @@
   sub_21E8C8A88(v7);
 }
 
-- (void)_notificationSectionsDidAdd:(id)a3
+- (void)_notificationSectionsDidAdd:(id)add
 {
-  v5 = a3;
-  v6 = self;
-  NCNotificationRootModernList._notificationSectionsDidAdd(_:)(a3);
+  addCopy = add;
+  selfCopy = self;
+  NCNotificationRootModernList._notificationSectionsDidAdd(_:)(add);
 }
 
-- (int64_t)insertNotificationRequest:(id)a3
+- (int64_t)insertNotificationRequest:(id)request
 {
-  v4 = a3;
-  v5 = self;
-  NCNotificationRootModernList.insert(_:)(v4);
+  requestCopy = request;
+  selfCopy = self;
+  NCNotificationRootModernList.insert(_:)(requestCopy);
   v7 = v6;
 
   return v7;
 }
 
-- (void)modifyNotificationRequest:(id)a3
+- (void)modifyNotificationRequest:(id)request
 {
-  v5 = a3;
-  v6 = self;
-  NCNotificationRootModernList.modifyNotificationRequest(_:)(a3);
+  requestCopy = request;
+  selfCopy = self;
+  NCNotificationRootModernList.modifyNotificationRequest(_:)(request);
 }
 
-- (void)reloadNotificationRequest:(id)a3
+- (void)reloadNotificationRequest:(id)request
 {
-  v5 = a3;
-  v6 = self;
-  NCNotificationRootModernList.reload(_:)(a3);
+  requestCopy = request;
+  selfCopy = self;
+  NCNotificationRootModernList.reload(_:)(request);
 }
 
-- (void)notificationsLoadedForSectionIdentifier:(id)a3
+- (void)notificationsLoadedForSectionIdentifier:(id)identifier
 {
   v4 = sub_21E92A458();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   v8._countAndFlagsBits = v4;
   v8._object = v6;
   NCNotificationRootModernList.notificationsLoaded(forSectionIdentifier:)(v8);
 }
 
-- (void)expandGroupForNotificationRequest:(id)a3 withCompletion:(id)a4
+- (void)expandGroupForNotificationRequest:(id)request withCompletion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
-  v8 = a3;
-  v9 = self;
-  NCNotificationRootModernList.expandGroup(for:withCompletion:)(v8, sub_21E8B242C, v7);
+  requestCopy = request;
+  selfCopy = self;
+  NCNotificationRootModernList.expandGroup(for:withCompletion:)(requestCopy, sub_21E8B242C, v7);
 }
 
 - (void)didTapCountIndicator
 {
-  v2 = self;
+  selfCopy = self;
   NCNotificationRootModernList.didTapCountIndicator()();
 }
 
 - (void)_displayStyleDidChangeForSleep
 {
-  v2 = self;
+  selfCopy = self;
   NCNotificationRootModernList._displayStyleDidChangeForSleep()();
 }
 
-- (BOOL)scrollViewShouldScrollToTop:(id)a3
+- (BOOL)scrollViewShouldScrollToTop:(id)top
 {
-  v4 = a3;
-  v5 = self;
+  topCopy = top;
+  selfCopy = self;
   LOBYTE(self) = _sSo28NCNotificationRootModernListC22UserNotificationsUIKitE27scrollViewShouldScrollToTopySbSo08UIScrollI0CF_0();
 
   return self & 1;
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = a3;
-  v5 = self;
-  NCNotificationRootModernList.scrollViewDidScroll(_:)(v4);
+  scrollCopy = scroll;
+  selfCopy = self;
+  NCNotificationRootModernList.scrollViewDidScroll(_:)(scrollCopy);
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
-  v4 = a3;
-  v5 = self;
-  NCNotificationRootModernList.scrollViewWillBeginDragging(_:)(v4);
+  draggingCopy = dragging;
+  selfCopy = self;
+  NCNotificationRootModernList.scrollViewWillBeginDragging(_:)(draggingCopy);
 }
 
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
-  y = a4.y;
-  x = a4.x;
-  v9 = a3;
-  v10 = self;
-  NCNotificationRootModernList.scrollViewWillEndDragging(_:withVelocity:targetContentOffset:)(v9, a5, x, y);
+  y = velocity.y;
+  x = velocity.x;
+  draggingCopy = dragging;
+  selfCopy = self;
+  NCNotificationRootModernList.scrollViewWillEndDragging(_:withVelocity:targetContentOffset:)(draggingCopy, offset, x, y);
 }
 
-- (void)scrollViewDidEndScrollingAnimation:(id)a3
+- (void)scrollViewDidEndScrollingAnimation:(id)animation
 {
-  v4 = a3;
-  v5 = self;
-  NCNotificationRootModernList.scrollViewDidEndScrollingAnimation(_:)(v4);
+  animationCopy = animation;
+  selfCopy = self;
+  NCNotificationRootModernList.scrollViewDidEndScrollingAnimation(_:)(animationCopy);
 }
 
-- (void)scrollViewDidEndDecelerating:(id)a3
+- (void)scrollViewDidEndDecelerating:(id)decelerating
 {
-  v4 = a3;
-  v5 = self;
-  NCNotificationRootModernList.scrollViewDidEndDecelerating(_:)(v4);
+  deceleratingCopy = decelerating;
+  selfCopy = self;
+  NCNotificationRootModernList.scrollViewDidEndDecelerating(_:)(deceleratingCopy);
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
-  v6 = a3;
-  v7 = self;
-  NCNotificationRootModernList.scrollViewDidEndDragging(_:willDecelerate:)(v6, a4);
+  draggingCopy = dragging;
+  selfCopy = self;
+  NCNotificationRootModernList.scrollViewDidEndDragging(_:willDecelerate:)(draggingCopy, decelerate);
 }
 
-- (BOOL)shouldScrollToTopForNotificationListBaseComponent:(id)a3
+- (BOOL)shouldScrollToTopForNotificationListBaseComponent:(id)component
 {
   v19.receiver = self;
   v19.super_class = NCNotificationRootModernList;
-  v3 = self;
-  v4 = [(NCNotificationRootList *)&v19 rootListView];
-  [(NCNotificationListViewProtocol *)v4 contentSize];
+  selfCopy = self;
+  rootListView = [(NCNotificationRootList *)&v19 rootListView];
+  [(NCNotificationListViewProtocol *)rootListView contentSize];
   v6 = v5;
 
-  v18.receiver = v3;
+  v18.receiver = selfCopy;
   v18.super_class = NCNotificationRootModernList;
-  v7 = [(NCNotificationRootList *)&v18 rootListView];
-  [(NCNotificationListViewProtocol *)v7 frame];
+  rootListView2 = [(NCNotificationRootList *)&v18 rootListView];
+  [(NCNotificationListViewProtocol *)rootListView2 frame];
   v9 = v8;
   v11 = v10;
   v13 = v12;
@@ -465,71 +465,71 @@
   return v6 < Height;
 }
 
-- (void)notificationListBaseComponent:(id)a3 requestsScrollingToContentOffset:(double)a4 withCompletion:(id)a5
+- (void)notificationListBaseComponent:(id)component requestsScrollingToContentOffset:(double)offset withCompletion:(id)completion
 {
-  v8 = _Block_copy(a5);
+  v8 = _Block_copy(completion);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   swift_unknownObjectRetain();
-  v10 = self;
-  NCNotificationRootModernList.notificationListBaseComponent(_:requestsScrollingToContentOffset:withCompletion:)(a3, sub_21E8B242C, v9, a4);
+  selfCopy = self;
+  NCNotificationRootModernList.notificationListBaseComponent(_:requestsScrollingToContentOffset:withCompletion:)(component, sub_21E8B242C, v9, offset);
   swift_unknownObjectRelease();
 }
 
-- (void)supplementaryViewSectionDidChangeContent:(id)a3
+- (void)supplementaryViewSectionDidChangeContent:(id)content
 {
-  v4 = a3;
-  v5 = self;
-  NCNotificationRootModernList.supplementaryViewSectionDidChangeContent(_:)(v4);
+  contentCopy = content;
+  selfCopy = self;
+  NCNotificationRootModernList.supplementaryViewSectionDidChangeContent(_:)(contentCopy);
 }
 
-- (void)supplementaryViewSectionDidChangeHeight:(id)a3
+- (void)supplementaryViewSectionDidChangeHeight:(id)height
 {
-  v4 = a3;
-  v5 = self;
-  NCNotificationRootModernList.supplementaryViewSectionDidChangeHeight(_:)(v4);
+  heightCopy = height;
+  selfCopy = self;
+  NCNotificationRootModernList.supplementaryViewSectionDidChangeHeight(_:)(heightCopy);
 }
 
-- (BOOL)isEligibleToPerformGroupAnimationForNotificationListBaseComponent:(id)a3 toGrouped:(BOOL)a4
+- (BOOL)isEligibleToPerformGroupAnimationForNotificationListBaseComponent:(id)component toGrouped:(BOOL)grouped
 {
   swift_unknownObjectRetain();
-  v7 = self;
-  v8 = NCNotificationRootModernList.isEligibleToPerformGroupAnimation(for:toGrouped:)(a3, a4);
+  selfCopy = self;
+  v8 = NCNotificationRootModernList.isEligibleToPerformGroupAnimation(for:toGrouped:)(component, grouped);
   swift_unknownObjectRelease();
 
   return v8 & 1;
 }
 
-- (void)notificationStructuredSectionList:(id)a3 transitionedGroupedStateIsGrouped:(BOOL)a4
+- (void)notificationStructuredSectionList:(id)list transitionedGroupedStateIsGrouped:(BOOL)grouped
 {
-  v6 = a3;
-  v7 = self;
-  NCNotificationRootModernList.notificationStructuredSectionList(_:transitionedGroupedStateIsGrouped:)(v6, a4);
+  listCopy = list;
+  selfCopy = self;
+  NCNotificationRootModernList.notificationStructuredSectionList(_:transitionedGroupedStateIsGrouped:)(listCopy, grouped);
 }
 
-- (void)notificationListBaseComponent:(id)a3 didSetGrouped:(BOOL)a4
+- (void)notificationListBaseComponent:(id)component didSetGrouped:(BOOL)grouped
 {
   swift_unknownObjectRetain();
-  v7 = self;
-  NCNotificationRootModernList.notificationListBaseComponent(_:didSetGrouped:)(a3, a4);
+  selfCopy = self;
+  NCNotificationRootModernList.notificationListBaseComponent(_:didSetGrouped:)(component, grouped);
   swift_unknownObjectRelease();
 }
 
-- (BOOL)handleTapOnNotificationListBaseComponent:(id)a3
+- (BOOL)handleTapOnNotificationListBaseComponent:(id)component
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  NCNotificationRootModernList.handleTap(on:)(a3);
+  selfCopy = self;
+  NCNotificationRootModernList.handleTap(on:)(component);
   v7 = v6;
   swift_unknownObjectRelease();
 
   return v7 & 1;
 }
 
-- (void)animateByRetargetingType:(unint64_t)a3 animations:(id)a4 completion:(id)a5
+- (void)animateByRetargetingType:(unint64_t)type animations:(id)animations completion:(id)completion
 {
-  v8 = _Block_copy(a4);
-  v9 = _Block_copy(a5);
+  v8 = _Block_copy(animations);
+  v9 = _Block_copy(completion);
   v10 = swift_allocObject();
   *(v10 + 16) = v8;
   if (v9)
@@ -544,15 +544,15 @@
     v11 = 0;
   }
 
-  v12 = self;
-  NCNotificationRootModernList.animate(byRetargetingType:animations:completion:)(a3, sub_21E8B242C, v10, v9, v11);
+  selfCopy = self;
+  NCNotificationRootModernList.animate(byRetargetingType:animations:completion:)(type, sub_21E8B242C, v10, v9, v11);
   sub_21E792694(v9);
 }
 
-- (void)animateUsingSpringBehavior:(id)a3 tracking:(BOOL)a4 type:(unint64_t)a5 animations:(id)a6 completion:(id)a7
+- (void)animateUsingSpringBehavior:(id)behavior tracking:(BOOL)tracking type:(unint64_t)type animations:(id)animations completion:(id)completion
 {
-  v12 = _Block_copy(a6);
-  v13 = _Block_copy(a7);
+  v12 = _Block_copy(animations);
+  v13 = _Block_copy(completion);
   v14 = swift_allocObject();
   *(v14 + 16) = v12;
   if (v13)
@@ -568,15 +568,15 @@
   }
 
   swift_unknownObjectRetain();
-  v16 = self;
-  NCNotificationRootModernList.animate(usingSpringBehavior:tracking:type:animations:completion:)(a3, a4, a5, sub_21E8B242C, v14, v13, v15);
+  selfCopy = self;
+  NCNotificationRootModernList.animate(usingSpringBehavior:tracking:type:animations:completion:)(behavior, tracking, type, sub_21E8B242C, v14, v13, v15);
   sub_21E792694(v13);
   swift_unknownObjectRelease();
 }
 
-- (void)animateWithDecomposedAnimations:(id)a3 completion:(id)a4
+- (void)animateWithDecomposedAnimations:(id)animations completion:(id)completion
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(completion);
   type metadata accessor for NCDecomposedAnimation(0);
   v6 = sub_21E92A528();
   if (v5)
@@ -591,7 +591,7 @@
     v7 = 0;
   }
 
-  v8 = self;
+  selfCopy = self;
   NCNotificationRootModernList.animate(with:completion:)(v6, v5, v7);
   sub_21E792694(v5);
 }

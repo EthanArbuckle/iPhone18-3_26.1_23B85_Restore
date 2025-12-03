@@ -1,7 +1,7 @@
 @interface VEVideoDeghostingRepairV2
-- (VEVideoDeghostingRepairV2)initWithMetalContext:(id)a3 imageDimensions:(id)a4 tuningParameters:(id)a5;
-- (id)collectDetectionResultsForLookAheadBuffer:(id *)a3;
-- (int)ConvertGGMStatus:(int64_t)a3;
+- (VEVideoDeghostingRepairV2)initWithMetalContext:(id)context imageDimensions:(id)dimensions tuningParameters:(id)parameters;
+- (id)collectDetectionResultsForLookAheadBuffer:(id *)buffer;
+- (int)ConvertGGMStatus:(int64_t)status;
 - (int)process;
 - (int)resetState;
 - (void)dealloc;
@@ -68,9 +68,9 @@ LABEL_19:
   }
 
   [(GGMController *)self->_GGMCtrl setMetaDictionary:CFDictionaryGetValue(v8, @"MetaData")];
-  v9 = [(GGMController *)self->_GGMCtrl metaDictionary];
+  metaDictionary = [(GGMController *)self->_GGMCtrl metaDictionary];
 
-  if (!v9)
+  if (!metaDictionary)
   {
     sub_24F20();
     goto LABEL_19;
@@ -107,9 +107,9 @@ LABEL_10:
   return 0;
 }
 
-- (int)ConvertGGMStatus:(int64_t)a3
+- (int)ConvertGGMStatus:(int64_t)status
 {
-  if (a3 == 5)
+  if (status == 5)
   {
     v3 = 2;
   }
@@ -119,7 +119,7 @@ LABEL_10:
     v3 = 4;
   }
 
-  if (a3)
+  if (status)
   {
     return v3;
   }
@@ -130,10 +130,10 @@ LABEL_10:
   }
 }
 
-- (id)collectDetectionResultsForLookAheadBuffer:(id *)a3
+- (id)collectDetectionResultsForLookAheadBuffer:(id *)buffer
 {
   v4 = objc_alloc_init(NSMutableArray);
-  var2 = a3->var2;
+  var2 = buffer->var2;
   if (var2 >= 2)
   {
     v6 = 0;
@@ -145,7 +145,7 @@ LABEL_10:
     v7 = 24 * (var2 - 1);
     do
     {
-      v8 = a3->var0 + v6;
+      v8 = buffer->var0 + v6;
       if (v8[40] != 1)
       {
         break;
@@ -166,10 +166,10 @@ LABEL_10:
   return v4;
 }
 
-- (VEVideoDeghostingRepairV2)initWithMetalContext:(id)a3 imageDimensions:(id)a4 tuningParameters:(id)a5
+- (VEVideoDeghostingRepairV2)initWithMetalContext:(id)context imageDimensions:(id)dimensions tuningParameters:(id)parameters
 {
-  v9 = a3;
-  v10 = a5;
+  contextCopy = context;
+  parametersCopy = parameters;
   v20.receiver = self;
   v20.super_class = VEVideoDeghostingRepairV2;
   v11 = [(VEVideoDeghostingRepairV2 *)&v20 init];
@@ -178,22 +178,22 @@ LABEL_10:
     goto LABEL_8;
   }
 
-  if (!v9)
+  if (!contextCopy)
   {
     goto LABEL_7;
   }
 
-  v12 = sub_B724(v10);
+  v12 = sub_B724(parametersCopy);
   cfgDict = v11->_cfgDict;
   v11->_cfgDict = v12;
 
-  v14 = [v9 commandQueue];
+  commandQueue = [contextCopy commandQueue];
   metalCommandQueue = v11->_metalCommandQueue;
-  v11->_metalCommandQueue = v14;
+  v11->_metalCommandQueue = commandQueue;
 
-  v11->_imageDimensions = a4;
-  objc_storeStrong(&v11->_metalContext, a3);
-  v16 = [[GGMController alloc] initWithConfigDict:v11->_cfgDict metalContext:v11->_metalContext imageDimensions:a4];
+  v11->_imageDimensions = dimensions;
+  objc_storeStrong(&v11->_metalContext, context);
+  v16 = [[GGMController alloc] initWithConfigDict:v11->_cfgDict metalContext:v11->_metalContext imageDimensions:dimensions];
   GGMCtrl = v11->_GGMCtrl;
   v11->_GGMCtrl = v16;
 

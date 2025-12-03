@@ -8,14 +8,14 @@
 {
   v4 = PXViewSpecAssociationKey;
   v5 = a3;
-  objc_setAssociatedObject(a1, v4, v5, 1);
-  v9 = [v5 backgroundColor];
-  [a1 setBackgroundColor:v9];
+  objc_setAssociatedObject(self, v4, v5, 1);
+  backgroundColor = [v5 backgroundColor];
+  [self setBackgroundColor:backgroundColor];
   [v5 cornerRadius];
   v7 = v6;
 
-  v8 = [a1 layer];
-  [v8 setCornerRadius:v7];
+  layer = [self layer];
+  [layer setCornerRadius:v7];
 }
 
 @end

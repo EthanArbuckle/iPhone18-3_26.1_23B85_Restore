@@ -1,24 +1,24 @@
 @interface _SFLinkRedirectionResolver
-- (_SFLinkRedirectionResolver)initWithURL:(id)a3 completionHandler:(id)a4;
-- (void)safariViewController:(id)a3 didResolveRedirectionWithURL:(id)a4 appLink:(id)a5;
+- (_SFLinkRedirectionResolver)initWithURL:(id)l completionHandler:(id)handler;
+- (void)safariViewController:(id)controller didResolveRedirectionWithURL:(id)l appLink:(id)link;
 @end
 
 @implementation _SFLinkRedirectionResolver
 
-- (_SFLinkRedirectionResolver)initWithURL:(id)a3 completionHandler:(id)a4
+- (_SFLinkRedirectionResolver)initWithURL:(id)l completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  handlerCopy = handler;
   v15.receiver = self;
   v15.super_class = _SFLinkRedirectionResolver;
   v8 = [(_SFLinkRedirectionResolver *)&v15 init];
   if (v8)
   {
-    v9 = _Block_copy(v7);
+    v9 = _Block_copy(handlerCopy);
     completionHandler = v8->_completionHandler;
     v8->_completionHandler = v9;
 
-    v11 = [[SFLinkRedirectionViewController alloc] initWithURL:v6];
+    v11 = [[SFLinkRedirectionViewController alloc] initWithURL:lCopy];
     redirectionViewController = v8->_redirectionViewController;
     v8->_redirectionViewController = v11;
 
@@ -29,12 +29,12 @@
   return v8;
 }
 
-- (void)safariViewController:(id)a3 didResolveRedirectionWithURL:(id)a4 appLink:(id)a5
+- (void)safariViewController:(id)controller didResolveRedirectionWithURL:(id)l appLink:(id)link
 {
   completionHandler = self->_completionHandler;
   if (completionHandler)
   {
-    completionHandler[2](completionHandler, a4, a5, 0);
+    completionHandler[2](completionHandler, l, link, 0);
   }
 }
 

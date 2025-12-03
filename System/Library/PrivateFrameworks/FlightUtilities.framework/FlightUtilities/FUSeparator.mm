@@ -1,18 +1,18 @@
 @interface FUSeparator
-- (FUSeparator)initWithCoder:(id)a3;
+- (FUSeparator)initWithCoder:(id)coder;
 - (double)onePixelSize;
-- (void)tlk_updateForAppearance:(id)a3;
+- (void)tlk_updateForAppearance:(id)appearance;
 - (void)updateConstraints;
-- (void)updateProminenceForAppearance:(id)a3;
+- (void)updateProminenceForAppearance:(id)appearance;
 @end
 
 @implementation FUSeparator
 
-- (FUSeparator)initWithCoder:(id)a3
+- (FUSeparator)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = FUSeparator;
-  v3 = [(FUSeparator *)&v6 initWithCoder:a3];
+  v3 = [(FUSeparator *)&v6 initWithCoder:coder];
   if (v3)
   {
     v4 = [MEMORY[0x277D6F1A0] bestAppearanceForView:v3];
@@ -22,9 +22,9 @@
   return v3;
 }
 
-- (void)updateProminenceForAppearance:(id)a3
+- (void)updateProminenceForAppearance:(id)appearance
 {
-  if ([a3 isVibrant])
+  if ([appearance isVibrant])
   {
     v4 = 2;
   }
@@ -37,30 +37,30 @@
   [(TLKProminenceView *)self setProminence:v4];
 }
 
-- (void)tlk_updateForAppearance:(id)a3
+- (void)tlk_updateForAppearance:(id)appearance
 {
-  v4 = a3;
-  [(FUSeparator *)self updateProminenceForAppearance:v4];
+  appearanceCopy = appearance;
+  [(FUSeparator *)self updateProminenceForAppearance:appearanceCopy];
   v5.receiver = self;
   v5.super_class = FUSeparator;
-  [(TLKProminenceView *)&v5 tlk_updateForAppearance:v4];
+  [(TLKProminenceView *)&v5 tlk_updateForAppearance:appearanceCopy];
 }
 
 - (double)onePixelSize
 {
-  v2 = [(FUSeparator *)self window];
-  v3 = [v2 screen];
+  window = [(FUSeparator *)self window];
+  screen = [window screen];
 
-  if (v3)
+  if (screen)
   {
-    [v3 scale];
+    [screen scale];
     v5 = v4;
   }
 
   else
   {
-    v6 = [MEMORY[0x277D759A0] mainScreen];
-    [v6 scale];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
     v5 = v7;
   }
 
@@ -84,8 +84,8 @@
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [(FUSeparator *)self constraints];
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  constraints = [(FUSeparator *)self constraints];
+  v4 = [constraints countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -96,7 +96,7 @@
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(constraints);
         }
 
         v8 = *(*(&v11 + 1) + 8 * i);
@@ -107,7 +107,7 @@
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [constraints countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v5);

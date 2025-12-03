@@ -1,45 +1,45 @@
 @interface WFValueListViewController
-- (WFValueListViewController)initWithTitles:(id)a3 switchTitle:(id)a4 sublist:(id)a5;
-- (WFValueListViewController)initWithTitles:(id)a3 switchTitle:(id)a4 sublist:(id)a5 appearanceProxy:(id)a6;
-- (id)cellForTitleAtIndexPath:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (WFValueListViewController)initWithTitles:(id)titles switchTitle:(id)title sublist:(id)sublist;
+- (WFValueListViewController)initWithTitles:(id)titles switchTitle:(id)title sublist:(id)sublist appearanceProxy:(id)proxy;
+- (id)cellForTitleAtIndexPath:(id)path;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
 @implementation WFValueListViewController
 
-- (WFValueListViewController)initWithTitles:(id)a3 switchTitle:(id)a4 sublist:(id)a5
+- (WFValueListViewController)initWithTitles:(id)titles switchTitle:(id)title sublist:(id)sublist
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  sublistCopy = sublist;
+  titleCopy = title;
+  titlesCopy = titles;
   v11 = +[WFAppearanceProxy defaultAppearanceProxy];
-  v12 = [(WFValueListViewController *)self initWithTitles:v10 switchTitle:v9 sublist:v8 appearanceProxy:v11];
+  v12 = [(WFValueListViewController *)self initWithTitles:titlesCopy switchTitle:titleCopy sublist:sublistCopy appearanceProxy:v11];
 
   return v12;
 }
 
-- (WFValueListViewController)initWithTitles:(id)a3 switchTitle:(id)a4 sublist:(id)a5 appearanceProxy:(id)a6
+- (WFValueListViewController)initWithTitles:(id)titles switchTitle:(id)title sublist:(id)sublist appearanceProxy:(id)proxy
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  titlesCopy = titles;
+  titleCopy = title;
+  sublistCopy = sublist;
   v24.receiver = self;
   v24.super_class = WFValueListViewController;
-  v14 = -[WFValueListViewController initWithStyle:](&v24, sel_initWithStyle_, [a6 tableViewStyle]);
+  v14 = -[WFValueListViewController initWithStyle:](&v24, sel_initWithStyle_, [proxy tableViewStyle]);
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_titles, a3);
-    v15->_hasSwitch = v12 != 0;
+    objc_storeStrong(&v14->_titles, titles);
+    v15->_hasSwitch = titleCopy != 0;
     v16 = objc_alloc_init(MEMORY[0x277CBEB18]);
     sections = v15->_sections;
     v15->_sections = v16;
 
-    objc_storeStrong(&v15->_switchTitle, a4);
+    objc_storeStrong(&v15->_switchTitle, title);
     if (v15->_hasSwitch)
     {
       [(NSMutableArray *)v15->_sections addObject:&unk_288322678];
@@ -51,16 +51,16 @@
       [(UISwitch *)v15->_configSwitch setOn:1];
     }
 
-    if (v13)
+    if (sublistCopy)
     {
       [(NSMutableArray *)v15->_sections addObject:&unk_288322690];
-      [(WFValueListViewController *)v15 setSublist:v13];
+      [(WFValueListViewController *)v15 setSublist:sublistCopy];
       v22[0] = MEMORY[0x277D85DD0];
       v22[1] = 3221225472;
       v22[2] = __80__WFValueListViewController_initWithTitles_switchTitle_sublist_appearanceProxy___block_invoke;
       v22[3] = &unk_279EC5718;
       v23 = v15;
-      [v13 setCompletionHandler:v22];
+      [sublistCopy setCompletionHandler:v22];
     }
 
     if ([(NSArray *)v15->_titles count])
@@ -91,32 +91,32 @@ void __80__WFValueListViewController_initWithTitles_switchTitle_sublist_appearan
   v8.super_class = WFValueListViewController;
   [(WFValueListViewController *)&v8 viewDidLoad];
   v3 = *MEMORY[0x277D76F30];
-  v4 = [(WFValueListViewController *)self tableView];
-  [v4 setRowHeight:v3];
+  tableView = [(WFValueListViewController *)self tableView];
+  [tableView setRowHeight:v3];
 
-  v5 = [(WFValueListViewController *)self tableView];
-  [v5 setEstimatedRowHeight:44.0];
+  tableView2 = [(WFValueListViewController *)self tableView];
+  [tableView2 setEstimatedRowHeight:44.0];
 
-  v6 = [(WFValueListViewController *)self tableView];
-  [v6 setEstimatedSectionHeaderHeight:0.0];
+  tableView3 = [(WFValueListViewController *)self tableView];
+  [tableView3 setEstimatedSectionHeaderHeight:0.0];
 
-  v7 = [(WFValueListViewController *)self tableView];
-  [v7 setEstimatedSectionFooterHeight:0.0];
+  tableView4 = [(WFValueListViewController *)self tableView];
+  [tableView4 setEstimatedSectionFooterHeight:0.0];
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
   v6 = [(NSMutableArray *)self->_sections indexOfObject:&unk_288322678];
   v7 = [(NSMutableArray *)self->_sections indexOfObject:&unk_2883226A8];
   v8 = [(NSMutableArray *)self->_sections indexOfObject:&unk_288322690];
-  if (v6 == a4)
+  if (v6 == section)
   {
-    return a4 != 0x7FFFFFFFFFFFFFFFLL;
+    return section != 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  if (v7 == a4)
+  if (v7 == section)
   {
-    if (a4 == 0x7FFFFFFFFFFFFFFFLL)
+    if (section == 0x7FFFFFFFFFFFFFFFLL)
     {
       return 0;
     }
@@ -131,60 +131,60 @@ void __80__WFValueListViewController_initWithTitles_switchTitle_sublist_appearan
 
   else
   {
-    return v8 == a4 && a4 != 0x7FFFFFFFFFFFFFFFLL;
+    return v8 == section && section != 0x7FFFFFFFFFFFFFFFLL;
   }
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   v8 = [(NSMutableArray *)self->_sections indexOfObject:&unk_288322678];
   v9 = [(NSMutableArray *)self->_sections indexOfObject:&unk_2883226A8];
   v10 = [(NSMutableArray *)self->_sections indexOfObject:&unk_288322690];
-  if ([v7 section] == v8)
+  if ([pathCopy section] == v8)
   {
-    v11 = [v6 dequeueReusableCellWithIdentifier:@"kWFValueListCellRandomMACSwitchCellIdentifier"];
+    v11 = [viewCopy dequeueReusableCellWithIdentifier:@"kWFValueListCellRandomMACSwitchCellIdentifier"];
     if (!v11)
     {
       v11 = [objc_alloc(MEMORY[0x277D75B48]) initWithStyle:1 reuseIdentifier:@"kWFValueListCellRandomMACSwitchCellIdentifier"];
     }
 
-    v12 = [(WFValueListViewController *)self switchTitle];
-    v13 = [v11 textLabel];
-    [v13 setText:v12];
+    switchTitle = [(WFValueListViewController *)self switchTitle];
+    textLabel = [v11 textLabel];
+    [textLabel setText:switchTitle];
 
     [v11 setAccessoryView:self->_configSwitch];
     [v11 setSelectionStyle:0];
   }
 
-  else if ([v7 section] == v9)
+  else if ([pathCopy section] == v9)
   {
-    v11 = [(WFValueListViewController *)self cellForTitleAtIndexPath:v7];
+    v11 = [(WFValueListViewController *)self cellForTitleAtIndexPath:pathCopy];
   }
 
-  else if ([v7 section] == v10)
+  else if ([pathCopy section] == v10)
   {
-    v11 = [v6 dequeueReusableCellWithIdentifier:@"kWFValueListCellPrivateAddressCellIdentifier"];
+    v11 = [viewCopy dequeueReusableCellWithIdentifier:@"kWFValueListCellPrivateAddressCellIdentifier"];
     if (!v11)
     {
       v11 = [objc_alloc(MEMORY[0x277D75B48]) initWithStyle:1 reuseIdentifier:@"kWFValueListCellPrivateAddressCellIdentifier"];
       [v11 setSelectionStyle:0];
-      v14 = [MEMORY[0x277D75348] altTextColor];
-      v15 = [v11 detailTextLabel];
-      [v15 setTextColor:v14];
+      altTextColor = [MEMORY[0x277D75348] altTextColor];
+      detailTextLabel = [v11 detailTextLabel];
+      [detailTextLabel setTextColor:altTextColor];
 
       [v11 setAccessoryType:1];
     }
 
-    v16 = [(WFValueListViewController *)self->_sublist navigationItem];
-    v17 = [v16 title];
-    v18 = [v11 textLabel];
-    [v18 setText:v17];
+    navigationItem = [(WFValueListViewController *)self->_sublist navigationItem];
+    title = [navigationItem title];
+    textLabel2 = [v11 textLabel];
+    [textLabel2 setText:title];
 
-    v19 = [(WFValueListViewController *)self->_sublist selectedTitle];
-    v20 = [v11 detailTextLabel];
-    [v20 setText:v19];
+    selectedTitle = [(WFValueListViewController *)self->_sublist selectedTitle];
+    detailTextLabel2 = [v11 detailTextLabel];
+    [detailTextLabel2 setText:selectedTitle];
   }
 
   else
@@ -195,21 +195,21 @@ void __80__WFValueListViewController_initWithTitles_switchTitle_sublist_appearan
   return v11;
 }
 
-- (id)cellForTitleAtIndexPath:(id)a3
+- (id)cellForTitleAtIndexPath:(id)path
 {
   v4 = MEMORY[0x277D75B48];
-  v5 = a3;
+  pathCopy = path;
   v6 = [[v4 alloc] initWithStyle:1 reuseIdentifier:0];
-  v7 = [(WFValueListViewController *)self titles];
-  v8 = [v5 row];
+  titles = [(WFValueListViewController *)self titles];
+  v8 = [pathCopy row];
 
-  v9 = [v7 objectAtIndex:v8];
+  v9 = [titles objectAtIndex:v8];
 
-  v10 = [v6 textLabel];
-  [v10 setText:v9];
+  textLabel = [v6 textLabel];
+  [textLabel setText:v9];
 
-  v11 = [(WFValueListViewController *)self selectedTitle];
-  if ([v9 isEqualToString:v11])
+  selectedTitle = [(WFValueListViewController *)self selectedTitle];
+  if ([v9 isEqualToString:selectedTitle])
   {
     v12 = 3;
   }
@@ -224,72 +224,72 @@ void __80__WFValueListViewController_initWithTitles_switchTitle_sublist_appearan
   return v6;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v21 = a4;
-  [a3 deselectRowAtIndexPath:v21 animated:1];
-  v6 = [(WFValueListViewController *)self sections];
-  v7 = [v6 objectAtIndex:{objc_msgSend(v21, "section")}];
-  v8 = [v7 integerValue];
+  pathCopy = path;
+  [view deselectRowAtIndexPath:pathCopy animated:1];
+  sections = [(WFValueListViewController *)self sections];
+  v7 = [sections objectAtIndex:{objc_msgSend(pathCopy, "section")}];
+  integerValue = [v7 integerValue];
 
-  if (v8 == 1)
+  if (integerValue == 1)
   {
     if (!self->_sublist)
     {
       goto LABEL_8;
     }
 
-    v10 = [(WFValueListViewController *)self navigationController];
-    [v10 pushViewController:self->_sublist animated:1];
+    navigationController = [(WFValueListViewController *)self navigationController];
+    [navigationController pushViewController:self->_sublist animated:1];
   }
 
   else
   {
-    if (v8 != 2)
+    if (integerValue != 2)
     {
       goto LABEL_8;
     }
 
-    v9 = [(WFValueListViewController *)self titles];
-    v10 = [v9 objectAtIndex:{objc_msgSend(v21, "row")}];
+    titles = [(WFValueListViewController *)self titles];
+    navigationController = [titles objectAtIndex:{objc_msgSend(pathCopy, "row")}];
 
-    v11 = [(WFValueListViewController *)self selectedTitle];
-    v12 = [v10 isEqualToString:v11];
+    selectedTitle = [(WFValueListViewController *)self selectedTitle];
+    v12 = [navigationController isEqualToString:selectedTitle];
 
     if ((v12 & 1) == 0)
     {
-      [(WFValueListViewController *)self setSelectedTitle:v10];
-      v13 = [(WFValueListViewController *)self tableView];
-      v14 = [MEMORY[0x277CCAA78] indexSetWithIndex:{objc_msgSend(v21, "section")}];
-      [v13 reloadSections:v14 withRowAnimation:5];
+      [(WFValueListViewController *)self setSelectedTitle:navigationController];
+      tableView = [(WFValueListViewController *)self tableView];
+      v14 = [MEMORY[0x277CCAA78] indexSetWithIndex:{objc_msgSend(pathCopy, "section")}];
+      [tableView reloadSections:v14 withRowAnimation:5];
 
-      v15 = [(WFValueListViewController *)self tableView];
-      v16 = [MEMORY[0x277CCAA78] indexSetWithIndex:{objc_msgSend(v21, "section")}];
-      [v15 _reloadSectionHeaderFooters:v16 withRowAnimation:5];
+      tableView2 = [(WFValueListViewController *)self tableView];
+      v16 = [MEMORY[0x277CCAA78] indexSetWithIndex:{objc_msgSend(pathCopy, "section")}];
+      [tableView2 _reloadSectionHeaderFooters:v16 withRowAnimation:5];
     }
   }
 
 LABEL_8:
-  v17 = [(WFValueListViewController *)self completionHandler];
+  completionHandler = [(WFValueListViewController *)self completionHandler];
 
-  if (v17)
+  if (completionHandler)
   {
-    v18 = [(WFValueListViewController *)self completionHandler];
-    v19 = [(WFValueListViewController *)self selectedTitle];
-    v20 = [(WFValueListViewController *)self configSwitch];
-    (v18)[2](v18, v19, [v20 isOn]);
+    completionHandler2 = [(WFValueListViewController *)self completionHandler];
+    selectedTitle2 = [(WFValueListViewController *)self selectedTitle];
+    configSwitch = [(WFValueListViewController *)self configSwitch];
+    (completionHandler2)[2](completionHandler2, selectedTitle2, [configSwitch isOn]);
   }
 }
 
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section
 {
-  v5 = [(WFValueListViewController *)self footerHandler:a3];
+  v5 = [(WFValueListViewController *)self footerHandler:view];
 
   if (v5)
   {
-    v6 = [(WFValueListViewController *)self footerHandler];
-    v7 = [(WFValueListViewController *)self selectedTitle];
-    v8 = (v6)[2](v6, v7);
+    footerHandler = [(WFValueListViewController *)self footerHandler];
+    selectedTitle = [(WFValueListViewController *)self selectedTitle];
+    v8 = (footerHandler)[2](footerHandler, selectedTitle);
   }
 
   else

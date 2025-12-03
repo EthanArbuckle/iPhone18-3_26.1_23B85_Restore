@@ -1,30 +1,30 @@
 @interface SFTextCopyItem
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (SFTextCopyItem)initWithCoder:(id)a3;
-- (SFTextCopyItem)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SFTextCopyItem)initWithCoder:(id)coder;
+- (SFTextCopyItem)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFTextCopyItem
 
-- (SFTextCopyItem)initWithProtobuf:(id)a3
+- (SFTextCopyItem)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v10.receiver = self;
   v10.super_class = SFTextCopyItem;
   v5 = [(SFTextCopyItem *)&v10 init];
   if (v5)
   {
-    v6 = [v4 copyableString];
+    copyableString = [protobufCopy copyableString];
 
-    if (v6)
+    if (copyableString)
     {
-      v7 = [v4 copyableString];
-      [(SFTextCopyItem *)v5 setCopyableString:v7];
+      copyableString2 = [protobufCopy copyableString];
+      [(SFTextCopyItem *)v5 setCopyableString:copyableString2];
     }
 
     v8 = v5;
@@ -38,38 +38,38 @@
   v7.receiver = self;
   v7.super_class = SFTextCopyItem;
   v3 = [(SFCopyItem *)&v7 hash];
-  v4 = [(SFTextCopyItem *)self copyableString];
-  v5 = [v4 hash];
+  copyableString = [(SFTextCopyItem *)self copyableString];
+  v5 = [copyableString hash];
 
   return v5 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
 
-  else if ([(SFTextCopyItem *)v4 isMemberOfClass:objc_opt_class()]&& (v13.receiver = self, v13.super_class = SFTextCopyItem, [(SFCopyItem *)&v13 isEqual:v4]))
+  else if ([(SFTextCopyItem *)equalCopy isMemberOfClass:objc_opt_class()]&& (v13.receiver = self, v13.super_class = SFTextCopyItem, [(SFCopyItem *)&v13 isEqual:equalCopy]))
   {
-    v5 = v4;
-    v6 = [(SFTextCopyItem *)self copyableString];
-    v7 = [(SFTextCopyItem *)v5 copyableString];
-    if ((v6 != 0) == (v7 == 0))
+    v5 = equalCopy;
+    copyableString = [(SFTextCopyItem *)self copyableString];
+    copyableString2 = [(SFTextCopyItem *)v5 copyableString];
+    if ((copyableString != 0) == (copyableString2 == 0))
     {
       v11 = 0;
     }
 
     else
     {
-      v8 = [(SFTextCopyItem *)self copyableString];
-      if (v8)
+      copyableString3 = [(SFTextCopyItem *)self copyableString];
+      if (copyableString3)
       {
-        v9 = [(SFTextCopyItem *)self copyableString];
-        v10 = [(SFTextCopyItem *)v5 copyableString];
-        v11 = [v9 isEqual:v10];
+        copyableString4 = [(SFTextCopyItem *)self copyableString];
+        copyableString5 = [(SFTextCopyItem *)v5 copyableString];
+        v11 = [copyableString4 isEqual:copyableString5];
       }
 
       else
@@ -87,13 +87,13 @@
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = SFTextCopyItem;
-  v4 = [(SFCopyItem *)&v8 copyWithZone:a3];
-  v5 = [(SFTextCopyItem *)self copyableString];
-  v6 = [v5 copy];
+  v4 = [(SFCopyItem *)&v8 copyWithZone:zone];
+  copyableString = [(SFTextCopyItem *)self copyableString];
+  v6 = [copyableString copy];
   [v4 setCopyableString:v6];
 
   return v4;
@@ -102,31 +102,31 @@
 - (NSData)jsonData
 {
   v2 = [[_SFPBTextCopyItem alloc] initWithFacade:self];
-  v3 = [(_SFPBTextCopyItem *)v2 jsonData];
+  jsonData = [(_SFPBTextCopyItem *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBTextCopyItem alloc] initWithFacade:self];
-  v3 = [(_SFPBTextCopyItem *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBTextCopyItem *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6 = [[_SFPBTextCopyItem alloc] initWithFacade:self];
-  v5 = [(_SFPBTextCopyItem *)v6 data];
-  [v4 encodeObject:v5 forKey:@"_backingStore"];
+  data = [(_SFPBTextCopyItem *)v6 data];
+  [coderCopy encodeObject:data forKey:@"_backingStore"];
 }
 
-- (SFTextCopyItem)initWithCoder:(id)a3
+- (SFTextCopyItem)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v6 = [[_SFPBTextCopyItem alloc] initWithData:v5];
   v7 = [(SFTextCopyItem *)self initWithProtobuf:v6];

@@ -1,5 +1,5 @@
 @interface SXInsertComponentLayout
-- (SXInsertComponentLayout)initWithColumnRange:(_NSRange)a3;
+- (SXInsertComponentLayout)initWithColumnRange:(_NSRange)range;
 - (_NSRange)columnRange;
 - (_SXConvertibleValue)maximumContentWidth;
 - (_SXConvertibleValue)minimumHeight;
@@ -8,10 +8,10 @@
 
 @implementation SXInsertComponentLayout
 
-- (SXInsertComponentLayout)initWithColumnRange:(_NSRange)a3
+- (SXInsertComponentLayout)initWithColumnRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v6.receiver = self;
   v6.super_class = SXInsertComponentLayout;
   result = [(SXInsertComponentLayout *)&v6 init];

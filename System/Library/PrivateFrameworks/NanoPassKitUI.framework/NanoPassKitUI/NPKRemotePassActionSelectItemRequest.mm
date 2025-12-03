@@ -1,8 +1,8 @@
 @interface NPKRemotePassActionSelectItemRequest
 - (NPKCommutePlanField)commutePlanField;
 - (NPKProtoRemotePassActionSelectItemRequest)protoRequest;
-- (NPKRemotePassActionSelectItemRequest)initWithIdentifier:(id)a3 deviceIdentifier:(id)a4 cardType:(unint64_t)a5 passOrganizationName:(id)a6 passTypeIdentifier:(id)a7 passSerialNumber:(id)a8 commutePlanField:(id)a9 image:(id)a10 passLocalizedDesciption:(id)a11 caption:(id)a12 summaryText:(id)a13;
-- (NPKRemotePassActionSelectItemRequest)initWithPass:(id)a3 image:(id)a4 commutePlanField:(id)a5;
+- (NPKRemotePassActionSelectItemRequest)initWithIdentifier:(id)identifier deviceIdentifier:(id)deviceIdentifier cardType:(unint64_t)type passOrganizationName:(id)name passTypeIdentifier:(id)typeIdentifier passSerialNumber:(id)number commutePlanField:(id)field image:(id)self0 passLocalizedDesciption:(id)self1 caption:(id)self2 summaryText:(id)self3;
+- (NPKRemotePassActionSelectItemRequest)initWithPass:(id)pass image:(id)image commutePlanField:(id)field;
 - (NSString)deviceIdentifier;
 - (NSString)passSerialNumber;
 - (NSString)passTypeIdentifier;
@@ -14,73 +14,73 @@
 
 @implementation NPKRemotePassActionSelectItemRequest
 
-- (NPKRemotePassActionSelectItemRequest)initWithPass:(id)a3 image:(id)a4 commutePlanField:(id)a5
+- (NPKRemotePassActionSelectItemRequest)initWithPass:(id)pass image:(id)image commutePlanField:(id)field
 {
-  v7 = a3;
-  v51 = a4;
-  v8 = a5;
+  passCopy = pass;
+  imageCopy = image;
+  fieldCopy = field;
   v9 = MEMORY[0x277CCACA8];
-  v10 = [v7 uniqueID];
-  v11 = [v8 action];
-  [v11 type];
+  uniqueID = [passCopy uniqueID];
+  action = [fieldCopy action];
+  [action type];
   v12 = PKPaymentPassActionTypeToString();
-  v13 = [v8 action];
-  v14 = [v13 identifier];
-  v50 = [v9 stringWithFormat:@"%@:%@:%@", v10, v12, v14];
+  action2 = [fieldCopy action];
+  identifier = [action2 identifier];
+  v50 = [v9 stringWithFormat:@"%@:%@:%@", uniqueID, v12, identifier];
 
   v15 = MEMORY[0x277CCACA8];
   v16 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.NanoPassKitUI"];
   v17 = [v16 localizedStringForKey:@"REQUEST_REMOTE_PAYMENT_PASS_ACTION_RENEW_CAPTION" value:&stru_286CE7B58 table:@"NanoPassKitUI-RemotePaymentPassAction"];
-  v18 = [v7 localizedDescription];
-  v48 = [v15 stringWithFormat:v17, v18];
+  localizedDescription = [passCopy localizedDescription];
+  v48 = [v15 stringWithFormat:v17, localizedDescription];
 
-  v19 = [v7 localizedDescription];
+  localizedDescription2 = [passCopy localizedDescription];
   v20 = MEMORY[0x277CCACA8];
   v21 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.NanoPassKitUI"];
-  v22 = v19;
+  v22 = localizedDescription2;
   v23 = [v21 localizedStringForKey:@"REQUEST_REMOTE_PAYMENT_PASS_ACTION_RENEW_SUMMARY_TEXT" value:&stru_286CE7B58 table:@"NanoPassKitUI-RemotePaymentPassAction"];
   v24 = [v20 localizedStringWithFormat:v23, v22];
 
-  v25 = [v8 action];
-  v26 = [v25 remoteContentConfiguration];
+  action3 = [fieldCopy action];
+  remoteContentConfiguration = [action3 remoteContentConfiguration];
 
-  if (v26)
+  if (remoteContentConfiguration)
   {
-    v46 = [MEMORY[0x277D38170] sharedService];
-    v45 = [v46 context];
-    v27 = [v45 deviceID];
+    mEMORY[0x277D38170] = [MEMORY[0x277D38170] sharedService];
+    context = [mEMORY[0x277D38170] context];
+    deviceID = [context deviceID];
   }
 
   else
   {
-    v27 = 0;
+    deviceID = 0;
   }
 
-  v47 = NPKRemotePassActionCardTypeForPass(v7);
-  v28 = [v7 organizationName];
-  if (v26)
+  v47 = NPKRemotePassActionCardTypeForPass(passCopy);
+  organizationName = [passCopy organizationName];
+  if (remoteContentConfiguration)
   {
-    [v7 passTypeIdentifier];
-    v29 = v27;
-    v44 = v27;
-    v30 = v7;
+    [passCopy passTypeIdentifier];
+    v29 = deviceID;
+    v44 = deviceID;
+    v30 = passCopy;
     v32 = v31 = v22;
     [v30 serialNumber];
-    v34 = v33 = v8;
+    v34 = v33 = fieldCopy;
     v41 = v24;
     v43 = v24;
     v35 = v48;
-    v36 = v51;
+    v36 = imageCopy;
     v37 = v50;
-    v38 = [(NPKRemotePassActionSelectItemRequest *)self initWithIdentifier:v50 deviceIdentifier:v29 cardType:v47 passOrganizationName:v28 passTypeIdentifier:v32 passSerialNumber:v34 commutePlanField:v33 image:v51 passLocalizedDesciption:v31 caption:v48 summaryText:v41];
+    v38 = [(NPKRemotePassActionSelectItemRequest *)self initWithIdentifier:v50 deviceIdentifier:v29 cardType:v47 passOrganizationName:organizationName passTypeIdentifier:v32 passSerialNumber:v34 commutePlanField:v33 image:imageCopy passLocalizedDesciption:v31 caption:v48 summaryText:v41];
 
-    v8 = v33;
+    fieldCopy = v33;
     v39 = v43;
 
     v22 = v31;
-    v7 = v30;
+    passCopy = v30;
 
-    v28 = v46;
+    organizationName = mEMORY[0x277D38170];
   }
 
   else
@@ -88,74 +88,74 @@
     v42 = v24;
     v39 = v24;
     v35 = v48;
-    v36 = v51;
+    v36 = imageCopy;
     v37 = v50;
-    v38 = [(NPKRemotePassActionSelectItemRequest *)self initWithIdentifier:v50 deviceIdentifier:v27 cardType:v47 passOrganizationName:v28 passTypeIdentifier:0 passSerialNumber:0 commutePlanField:v8 image:v51 passLocalizedDesciption:v22 caption:v48 summaryText:v42];
+    v38 = [(NPKRemotePassActionSelectItemRequest *)self initWithIdentifier:v50 deviceIdentifier:deviceID cardType:v47 passOrganizationName:organizationName passTypeIdentifier:0 passSerialNumber:0 commutePlanField:fieldCopy image:imageCopy passLocalizedDesciption:v22 caption:v48 summaryText:v42];
   }
 
   return v38;
 }
 
-- (NPKRemotePassActionSelectItemRequest)initWithIdentifier:(id)a3 deviceIdentifier:(id)a4 cardType:(unint64_t)a5 passOrganizationName:(id)a6 passTypeIdentifier:(id)a7 passSerialNumber:(id)a8 commutePlanField:(id)a9 image:(id)a10 passLocalizedDesciption:(id)a11 caption:(id)a12 summaryText:(id)a13
+- (NPKRemotePassActionSelectItemRequest)initWithIdentifier:(id)identifier deviceIdentifier:(id)deviceIdentifier cardType:(unint64_t)type passOrganizationName:(id)name passTypeIdentifier:(id)typeIdentifier passSerialNumber:(id)number commutePlanField:(id)field image:(id)self0 passLocalizedDesciption:(id)self1 caption:(id)self2 summaryText:(id)self3
 {
   v17 = MEMORY[0x277D2BA30];
-  v18 = a13;
-  v19 = a12;
-  v20 = a11;
-  v45 = a10;
-  v21 = a9;
-  v44 = a8;
-  v22 = a7;
-  v23 = a6;
-  v24 = a4;
-  v25 = a3;
+  textCopy = text;
+  captionCopy = caption;
+  desciptionCopy = desciption;
+  imageCopy = image;
+  fieldCopy = field;
+  numberCopy = number;
+  typeIdentifierCopy = typeIdentifier;
+  nameCopy = name;
+  deviceIdentifierCopy = deviceIdentifier;
+  identifierCopy = identifier;
   v26 = objc_alloc_init(v17);
   [v26 setVersion:2];
   [v26 setIsResponse:0];
   [v26 setMessageType:2];
-  [v26 setPassLocalizedDescription:v20];
+  [v26 setPassLocalizedDescription:desciptionCopy];
 
-  [v26 setCaption:v19];
-  [v26 setSummaryText:v18];
+  [v26 setCaption:captionCopy];
+  [v26 setSummaryText:textCopy];
 
-  [v26 setPassOrganizationName:v23];
-  [v26 setCardType:NPKProtoRemotePassActionCardTypeForNPKRemotePassActionCardType(a5)];
+  [v26 setPassOrganizationName:nameCopy];
+  [v26 setCardType:NPKProtoRemotePassActionCardTypeForNPKRemotePassActionCardType(type)];
   v27 = objc_alloc_init(MEMORY[0x277D2BA38]);
-  v28 = [v21 action];
+  action = [fieldCopy action];
   v29 = NPKSecureArchiveObject();
   [v27 setPaymentPassActionData:v29];
 
-  v30 = [v21 identifier];
-  [v27 setPlanIdentifier:v30];
+  identifier = [fieldCopy identifier];
+  [v27 setPlanIdentifier:identifier];
 
-  v31 = [v21 label];
-  [v27 setPlanLabel:v31];
+  label = [fieldCopy label];
+  [v27 setPlanLabel:label];
 
-  v32 = [v21 detailLabel];
-  [v27 setPlanDetailLabel:v32];
+  detailLabel = [fieldCopy detailLabel];
+  [v27 setPlanDetailLabel:detailLabel];
 
-  v33 = [v21 usageDateRange];
-  v34 = [v33 startDate];
+  usageDateRange = [fieldCopy usageDateRange];
+  startDate = [usageDateRange startDate];
   v35 = NPKSecureArchiveObject();
   [v27 setStartDateData:v35];
 
-  v36 = [v21 usageDateRange];
+  usageDateRange2 = [fieldCopy usageDateRange];
 
-  v37 = [v36 expiryDate];
+  expiryDate = [usageDateRange2 expiryDate];
   v38 = NPKSecureArchiveObject();
   [v27 setExpiryDateData:v38];
 
-  [v27 setRequestUniqueID:v25];
-  [v27 setDeviceIdentifier:v24];
+  [v27 setRequestUniqueID:identifierCopy];
+  [v27 setDeviceIdentifier:deviceIdentifierCopy];
 
-  [v27 setPassTypeIdentifier:v22];
-  [v27 setPassSerialNumber:v44];
+  [v27 setPassTypeIdentifier:typeIdentifierCopy];
+  [v27 setPassSerialNumber:numberCopy];
 
-  v39 = [v27 data];
-  [v26 setMessageProtoData:v39];
+  data = [v27 data];
+  [v26 setMessageProtoData:data];
   v47.receiver = self;
   v47.super_class = NPKRemotePassActionSelectItemRequest;
-  v40 = [(NPKRemotePassAction *)&v47 initWithProtoEnvelope:v26 image:v45];
+  v40 = [(NPKRemotePassAction *)&v47 initWithProtoEnvelope:v26 image:imageCopy];
 
   return v40;
 }
@@ -165,46 +165,46 @@
   v7.receiver = self;
   v7.super_class = NPKRemotePassActionSelectItemRequest;
   v3 = [(NPKRemotePassActionRequest *)&v7 description];
-  v4 = [(NPKRemotePassActionSelectItemRequest *)self commutePlanField];
-  v5 = [v3 stringByAppendingFormat:@" (commutePlanField:%@)", v4];
+  commutePlanField = [(NPKRemotePassActionSelectItemRequest *)self commutePlanField];
+  v5 = [v3 stringByAppendingFormat:@" (commutePlanField:%@)", commutePlanField];
 
   return v5;
 }
 
 - (id)identifier
 {
-  v2 = [(NPKRemotePassActionSelectItemRequest *)self protoRequest];
-  v3 = [v2 requestUniqueID];
+  protoRequest = [(NPKRemotePassActionSelectItemRequest *)self protoRequest];
+  requestUniqueID = [protoRequest requestUniqueID];
 
-  return v3;
+  return requestUniqueID;
 }
 
 - (id)action
 {
-  v2 = [(NPKRemotePassActionSelectItemRequest *)self commutePlanField];
-  v3 = [v2 action];
+  commutePlanField = [(NPKRemotePassActionSelectItemRequest *)self commutePlanField];
+  action = [commutePlanField action];
 
-  return v3;
+  return action;
 }
 
 - (id)actionText
 {
-  v3 = [(NPKRemotePassActionSelectItemRequest *)self action];
-  v4 = [v3 confirmationTitle];
-  v5 = v4;
-  if (v4)
+  action = [(NPKRemotePassActionSelectItemRequest *)self action];
+  confirmationTitle = [action confirmationTitle];
+  v5 = confirmationTitle;
+  if (confirmationTitle)
   {
-    v6 = v4;
+    actionText = confirmationTitle;
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = NPKRemotePassActionSelectItemRequest;
-    v6 = [(NPKRemotePassActionRequest *)&v9 actionText];
+    actionText = [(NPKRemotePassActionRequest *)&v9 actionText];
   }
 
-  v7 = v6;
+  v7 = actionText;
 
   return v7;
 }
@@ -215,9 +215,9 @@
   if (!protoRequest)
   {
     v4 = objc_alloc(MEMORY[0x277D2BA38]);
-    v5 = [(NPKRemotePassAction *)self protoEnvelope];
-    v6 = [v5 messageProtoData];
-    v7 = [v4 initWithData:v6];
+    protoEnvelope = [(NPKRemotePassAction *)self protoEnvelope];
+    messageProtoData = [protoEnvelope messageProtoData];
+    v7 = [v4 initWithData:messageProtoData];
     v8 = self->_protoRequest;
     self->_protoRequest = v7;
 
@@ -232,37 +232,37 @@
   cachedCommutePlanField = self->_cachedCommutePlanField;
   if (!cachedCommutePlanField)
   {
-    v4 = [(NPKRemotePassActionSelectItemRequest *)self protoRequest];
-    v5 = v4;
-    if (v4)
+    protoRequest = [(NPKRemotePassActionSelectItemRequest *)self protoRequest];
+    v5 = protoRequest;
+    if (protoRequest)
     {
-      v6 = [v4 paymentPassActionData];
-      if (v6)
+      paymentPassActionData = [protoRequest paymentPassActionData];
+      if (paymentPassActionData)
       {
         objc_opt_class();
         v7 = NPKSecureUnarchiveObject();
         if (v7)
         {
           v8 = v7;
-          v9 = [v5 startDateData];
+          startDateData = [v5 startDateData];
           objc_opt_class();
           v31 = NPKSecureUnarchiveObject();
 
-          v10 = [v5 expiryDateData];
+          expiryDateData = [v5 expiryDateData];
           objc_opt_class();
           v30 = NPKSecureUnarchiveObject();
 
-          v29 = v6;
+          v29 = paymentPassActionData;
           v11 = [objc_alloc(MEMORY[0x277D2BA18]) initWithStartDate:v31 expirationDate:v30 formatterStyle:3];
           v12 = objc_alloc(MEMORY[0x277D2BA08]);
-          v13 = [v5 planLabel];
-          v14 = [v5 planDetailLabel];
-          v15 = [v5 planIdentifier];
-          v16 = [v8 associatedPlan];
-          LOBYTE(v28) = [v16 isDeviceBound];
-          v17 = [v12 initWithLabel:v13 detailLabel:v14 formattedValue:0 rawCountValue:0 usageDateRange:v11 identifier:v15 details:0 action:v8 isDeviceBound:v28 pendingUpdateExpireDate:0];
+          planLabel = [v5 planLabel];
+          planDetailLabel = [v5 planDetailLabel];
+          planIdentifier = [v5 planIdentifier];
+          associatedPlan = [v8 associatedPlan];
+          LOBYTE(v28) = [associatedPlan isDeviceBound];
+          v17 = [v12 initWithLabel:planLabel detailLabel:planDetailLabel formattedValue:0 rawCountValue:0 usageDateRange:v11 identifier:planIdentifier details:0 action:v8 isDeviceBound:v28 pendingUpdateExpireDate:0];
 
-          v6 = v29;
+          paymentPassActionData = v29;
 LABEL_19:
 
 LABEL_22:
@@ -303,7 +303,7 @@ LABEL_18:
         goto LABEL_18;
       }
 
-      v6 = 0;
+      paymentPassActionData = 0;
     }
 
     else
@@ -323,11 +323,11 @@ LABEL_23:
         goto LABEL_24;
       }
 
-      v6 = pk_RemotePassAction_log();
-      if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+      paymentPassActionData = pk_RemotePassAction_log();
+      if (os_log_type_enabled(paymentPassActionData, OS_LOG_TYPE_ERROR))
       {
         *buf = 0;
-        _os_log_impl(&dword_25B64D000, v6, OS_LOG_TYPE_ERROR, "Error: Missing proto request", buf, 2u);
+        _os_log_impl(&dword_25B64D000, paymentPassActionData, OS_LOG_TYPE_ERROR, "Error: Missing proto request", buf, 2u);
       }
     }
 
@@ -343,26 +343,26 @@ LABEL_24:
 
 - (NSString)deviceIdentifier
 {
-  v2 = [(NPKRemotePassActionSelectItemRequest *)self protoRequest];
-  v3 = [v2 deviceIdentifier];
+  protoRequest = [(NPKRemotePassActionSelectItemRequest *)self protoRequest];
+  deviceIdentifier = [protoRequest deviceIdentifier];
 
-  return v3;
+  return deviceIdentifier;
 }
 
 - (NSString)passTypeIdentifier
 {
-  v2 = [(NPKRemotePassActionSelectItemRequest *)self protoRequest];
-  v3 = [v2 passTypeIdentifier];
+  protoRequest = [(NPKRemotePassActionSelectItemRequest *)self protoRequest];
+  passTypeIdentifier = [protoRequest passTypeIdentifier];
 
-  return v3;
+  return passTypeIdentifier;
 }
 
 - (NSString)passSerialNumber
 {
-  v2 = [(NPKRemotePassActionSelectItemRequest *)self protoRequest];
-  v3 = [v2 passSerialNumber];
+  protoRequest = [(NPKRemotePassActionSelectItemRequest *)self protoRequest];
+  passSerialNumber = [protoRequest passSerialNumber];
 
-  return v3;
+  return passSerialNumber;
 }
 
 @end

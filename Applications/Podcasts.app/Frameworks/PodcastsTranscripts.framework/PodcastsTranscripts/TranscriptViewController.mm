@@ -1,21 +1,21 @@
 @interface TranscriptViewController
-- (BOOL)collectionView:(id)a3 shouldSelectItemAtIndexPath:(id)a4;
-- (BOOL)scrollViewShouldScrollToTop:(id)a3;
+- (BOOL)collectionView:(id)view shouldSelectItemAtIndexPath:(id)path;
+- (BOOL)scrollViewShouldScrollToTop:(id)top;
 - (NSArray)keyCommands;
-- (_TtC19PodcastsTranscripts24TranscriptViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)collectionView:(id)a3 contextMenuConfigurationForItemsAtIndexPaths:(id)a4 point:(CGPoint)a5;
-- (id)findInteraction:(id)a3 sessionForView:(id)a4;
-- (void)_bridgedUpdateContentUnavailableConfigurationUsingState:(id)a3;
-- (void)collectionView:(id)a3 didEndDisplayingCell:(id)a4 forItemAtIndexPath:(id)a5;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5;
+- (_TtC19PodcastsTranscripts24TranscriptViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)collectionView:(id)view contextMenuConfigurationForItemsAtIndexPaths:(id)paths point:(CGPoint)point;
+- (id)findInteraction:(id)interaction sessionForView:(id)view;
+- (void)_bridgedUpdateContentUnavailableConfigurationUsingState:(id)state;
+- (void)collectionView:(id)view didEndDisplayingCell:(id)cell forItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path;
 - (void)commandFKeyboardSearch;
 - (void)didTapEmptySpace;
-- (void)findInteraction:(id)a3 didBeginFindSession:(id)a4;
-- (void)findInteraction:(id)a3 didEndFindSession:(id)a4;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
+- (void)findInteraction:(id)interaction didBeginFindSession:(id)session;
+- (void)findInteraction:(id)interaction didEndFindSession:(id)session;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
 - (void)showControlsIfNotRunning;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
@@ -26,13 +26,13 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   TranscriptViewController.viewDidLoad()();
 }
 
 - (void)viewWillLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   TranscriptViewController.viewWillLayoutSubviews()();
 }
 
@@ -44,11 +44,11 @@
   [(TranscriptViewController *)&v14 viewDidLayoutSubviews];
   sub_7DE30();
   v3 = sub_7D494();
-  v4 = [v2 view];
-  if (v4)
+  view = [v2 view];
+  if (view)
   {
-    v5 = v4;
-    [v4 bounds];
+    v5 = view;
+    [view bounds];
     v7 = v6;
     v9 = v8;
     v11 = v10;
@@ -64,162 +64,162 @@
   }
 }
 
-- (void)_bridgedUpdateContentUnavailableConfigurationUsingState:(id)a3
+- (void)_bridgedUpdateContentUnavailableConfigurationUsingState:(id)state
 {
   v4 = sub_96D78();
   v5 = *(v4 - 8);
   __chkstk_darwin(v4);
   v7 = &v9 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_96D68();
-  v8 = self;
+  selfCopy = self;
   TranscriptViewController.updateContentUnavailableConfiguration(using:)();
 
   (*(v5 + 8))(v7, v4);
 }
 
-- (_TtC19PodcastsTranscripts24TranscriptViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC19PodcastsTranscripts24TranscriptViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
   v6 = sub_96048();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v12 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_95FF8();
-  v10 = a3;
-  v11 = self;
-  TranscriptViewController.collectionView(_:didSelectItemAt:)(v10, v9);
+  viewCopy = view;
+  selfCopy = self;
+  TranscriptViewController.collectionView(_:didSelectItemAt:)(viewCopy, v9);
 
   (*(v7 + 8))(v9, v6);
 }
 
-- (BOOL)collectionView:(id)a3 shouldSelectItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view shouldSelectItemAtIndexPath:(id)path
 {
   v6 = sub_96048();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v13 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_95FF8();
-  v10 = a3;
-  v11 = self;
+  viewCopy = view;
+  selfCopy = self;
   LOBYTE(self) = sub_8E4D0();
 
   (*(v7 + 8))(v9, v6);
   return self & 1;
 }
 
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path
 {
   v8 = sub_96048();
   v9 = *(v8 - 8);
   __chkstk_darwin(v8);
   v11 = &v15 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_95FF8();
-  v12 = a3;
-  v13 = a4;
-  v14 = self;
-  sub_8E5E4(v13);
+  viewCopy = view;
+  cellCopy = cell;
+  selfCopy = self;
+  sub_8E5E4(cellCopy);
 
   (*(v9 + 8))(v11, v8);
 }
 
-- (void)collectionView:(id)a3 didEndDisplayingCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view didEndDisplayingCell:(id)cell forItemAtIndexPath:(id)path
 {
   v8 = sub_96048();
   v9 = *(v8 - 8);
   __chkstk_darwin(v8);
   v11 = &v15 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_95FF8();
-  v12 = a3;
-  v13 = a4;
-  v14 = self;
+  viewCopy = view;
+  cellCopy = cell;
+  selfCopy = self;
   sub_8E8C4();
 
   (*(v9 + 8))(v11, v8);
 }
 
-- (BOOL)scrollViewShouldScrollToTop:(id)a3
+- (BOOL)scrollViewShouldScrollToTop:(id)top
 {
-  v3 = self;
+  selfCopy = self;
   *(sub_7BEDC() + 16) = 3;
   sub_70DEC();
 
   return 1;
 }
 
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
-  y = a4.y;
-  x = a4.x;
-  v8 = a3;
-  v9 = self;
+  y = velocity.y;
+  x = velocity.x;
+  draggingCopy = dragging;
+  selfCopy = self;
   _s19PodcastsTranscripts24TranscriptViewControllerC06scrollD15WillEndDragging_12withVelocity19targetContentOffsetySo08UIScrollD0C_So7CGPointVSpyAJGtF_0(x, y);
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
-  v4 = self;
+  selfCopy = self;
   *(sub_7BEDC() + 16) = 12;
   sub_70DEC();
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = a3;
-  v5 = self;
-  TranscriptViewController.scrollViewDidScroll(_:)(v4);
+  scrollCopy = scroll;
+  selfCopy = self;
+  TranscriptViewController.scrollViewDidScroll(_:)(scrollCopy);
 }
 
-- (id)collectionView:(id)a3 contextMenuConfigurationForItemsAtIndexPaths:(id)a4 point:(CGPoint)a5
+- (id)collectionView:(id)view contextMenuConfigurationForItemsAtIndexPaths:(id)paths point:(CGPoint)point
 {
   sub_96048();
   v7 = sub_97FC8();
-  v8 = a3;
-  v9 = self;
-  v10 = _s19PodcastsTranscripts24TranscriptViewControllerC010collectionD0_34contextMenuConfigurationForItemsAt5pointSo09UIContexthI0CSgSo012UICollectionD0C_Say10Foundation9IndexPathVGSo7CGPointVtF_0(v8, v7);
+  viewCopy = view;
+  selfCopy = self;
+  v10 = _s19PodcastsTranscripts24TranscriptViewControllerC010collectionD0_34contextMenuConfigurationForItemsAt5pointSo09UIContexthI0CSgSo012UICollectionD0C_Say10Foundation9IndexPathVGSo7CGPointVtF_0(viewCopy, v7);
 
   return v10;
 }
 
-- (id)findInteraction:(id)a3 sessionForView:(id)a4
+- (id)findInteraction:(id)interaction sessionForView:(id)view
 {
   swift_getObjectType();
   sub_E104(0, &qword_C7958);
   sub_8DACC(&unk_C7960, v5, type metadata accessor for TranscriptViewController);
-  v6 = self;
+  selfCopy = self;
   v7 = sub_98388();
 
   return v7;
 }
 
-- (void)findInteraction:(id)a3 didBeginFindSession:(id)a4
+- (void)findInteraction:(id)interaction didBeginFindSession:(id)session
 {
-  v4 = self;
+  selfCopy = self;
   *(sub_7BEDC() + 16) = 7;
   sub_70DEC();
 }
 
-- (void)findInteraction:(id)a3 didEndFindSession:(id)a4
+- (void)findInteraction:(id)interaction didEndFindSession:(id)session
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  _s19PodcastsTranscripts24TranscriptViewControllerC15findInteraction_6didEndySo06UIFindG0C_So0J7SessionCtF_0(v6);
+  interactionCopy = interaction;
+  sessionCopy = session;
+  selfCopy = self;
+  _s19PodcastsTranscripts24TranscriptViewControllerC15findInteraction_6didEndySo06UIFindG0C_So0J7SessionCtF_0(interactionCopy);
 }
 
 - (void)commandFKeyboardSearch
 {
-  v5 = self;
-  v2 = [(TranscriptViewController *)v5 view];
-  if (v2)
+  selfCopy = self;
+  view = [(TranscriptViewController *)selfCopy view];
+  if (view)
   {
-    v3 = v2;
-    [v2 becomeFirstResponder];
+    v3 = view;
+    [view becomeFirstResponder];
 
     v4 = sub_79218();
     [v4 presentFindNavigatorShowingReplace:0];
@@ -250,13 +250,13 @@
 
 - (void)showControlsIfNotRunning
 {
-  v2 = self;
+  selfCopy = self;
   sub_8A894();
 }
 
 - (void)didTapEmptySpace
 {
-  v2 = self;
+  selfCopy = self;
   *(sub_7BEDC() + 16) = 10;
   sub_70DEC();
 }

@@ -1,24 +1,24 @@
 @interface ACCPlatformPluginSystem
-- (BOOL)createFolder:(const char *)a3 mode:(unsigned __int16)a4;
-- (BOOL)isAppInstalledWithBundleID:(id)a3;
-- (BOOL)isAppVisibleInCurrentMode:(id)a3;
-- (BOOL)isApplicationInForeground:(id)a3;
-- (BOOL)isApplicationRunning:(id)a3;
+- (BOOL)createFolder:(const char *)folder mode:(unsigned __int16)mode;
+- (BOOL)isAppInstalledWithBundleID:(id)d;
+- (BOOL)isAppVisibleInCurrentMode:(id)mode;
+- (BOOL)isApplicationInForeground:(id)foreground;
+- (BOOL)isApplicationRunning:(id)running;
 - (BOOL)isDeviceLocked;
 - (BOOL)isLockScreenUIDisplayed;
-- (BOOL)launchURL:(id)a3;
-- (BOOL)supportsExternalAccessoryBackgroundMode:(id)a3;
+- (BOOL)launchURL:(id)l;
+- (BOOL)supportsExternalAccessoryBackgroundMode:(id)mode;
 - (NSString)pluginName;
-- (id)_convertDictionaryToPlatformACCDictionary:(id)a3;
-- (id)appNameForBundleID:(id)a3;
-- (id)applicationInfoForBundleID:(id)a3;
-- (id)applicationsInstalledWithExternalAccessoryProtocol:(id)a3;
-- (id)mediaLibraryUIDString:(BOOL)a3;
+- (id)_convertDictionaryToPlatformACCDictionary:(id)dictionary;
+- (id)appNameForBundleID:(id)d;
+- (id)applicationInfoForBundleID:(id)d;
+- (id)applicationsInstalledWithExternalAccessoryProtocol:(id)protocol;
+- (id)mediaLibraryUIDString:(BOOL)string;
 - (int64_t)timeSinceBootInSecs;
-- (void)_observeApplicationState:(id)a3;
+- (void)_observeApplicationState:(id)state;
 - (void)initPlugin;
-- (void)launchApplication:(id)a3 options:(int)a4;
-- (void)launchBundleIDToBackground:(id)a3;
+- (void)launchApplication:(id)application options:(int)options;
+- (void)launchBundleIDToBackground:(id)background;
 - (void)startObservingApplicationState;
 - (void)startObservingFirstUnlockNotification;
 - (void)stopObservingApplicationState;
@@ -45,13 +45,13 @@
   applicationStateLock = self->_applicationStateLock;
   self->_applicationStateLock = v5;
 
-  v7 = [MEMORY[0x277D0AD20] configurationForDefaultMainDisplayMonitor];
-  [v7 setNeedsUserInteractivePriority:1];
+  configurationForDefaultMainDisplayMonitor = [MEMORY[0x277D0AD20] configurationForDefaultMainDisplayMonitor];
+  [configurationForDefaultMainDisplayMonitor setNeedsUserInteractivePriority:1];
   objc_initWeak(&location, self);
-  [v7 setTransitionHandler:&__block_literal_global_145];
+  [configurationForDefaultMainDisplayMonitor setTransitionHandler:&__block_literal_global_145];
   v8 = MEMORY[0x277D0AD08];
-  v9 = [MEMORY[0x277D0AD20] configurationForDefaultMainDisplayMonitor];
-  v10 = [v8 monitorWithConfiguration:v9];
+  configurationForDefaultMainDisplayMonitor2 = [MEMORY[0x277D0AD20] configurationForDefaultMainDisplayMonitor];
+  v10 = [v8 monitorWithConfiguration:configurationForDefaultMainDisplayMonitor2];
   mainDisplayLayoutMonitor = self->_mainDisplayLayoutMonitor;
   self->_mainDisplayLayoutMonitor = v10;
 
@@ -65,18 +65,18 @@
 
 - (void)stopPlugin
 {
-  v3 = [(BKSApplicationStateMonitor *)self->_appStateMonitor handler];
-  [v3 invalidate];
+  handler = [(BKSApplicationStateMonitor *)self->_appStateMonitor handler];
+  [handler invalidate];
 
   [(ACCPlatformPluginSystem *)self setIsRunning:0];
 }
 
-- (void)launchApplication:(id)a3 options:(int)a4
+- (void)launchApplication:(id)application options:(int)options
 {
-  v4 = a4;
+  optionsCopy = options;
   v43[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if ([v6 length])
+  applicationCopy = application;
+  if ([applicationCopy length])
   {
     v7 = MEMORY[0x277CBEB38];
     v8 = *MEMORY[0x277D0AC58];
@@ -87,15 +87,15 @@
     v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v43 forKeys:v42 count:2];
     v10 = [v7 dictionaryWithDictionary:v9];
 
-    if (v4)
+    if (optionsCopy)
     {
-      v11 = [(FBSDisplayLayoutMonitor *)self->_mainDisplayLayoutMonitor currentLayout];
+      currentLayout = [(FBSDisplayLayoutMonitor *)self->_mainDisplayLayoutMonitor currentLayout];
       v32 = 0u;
       v33 = 0u;
       v34 = 0u;
       v35 = 0u;
-      v12 = [v11 elements];
-      v13 = [v12 countByEnumeratingWithState:&v32 objects:v41 count:16];
+      elements = [currentLayout elements];
+      v13 = [elements countByEnumeratingWithState:&v32 objects:v41 count:16];
       if (v13)
       {
         v14 = v13;
@@ -106,7 +106,7 @@ LABEL_5:
         {
           if (*v33 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(elements);
           }
 
           v17 = *(*(&v32 + 1) + 8 * v16);
@@ -117,7 +117,7 @@ LABEL_5:
 
           if (v14 == ++v16)
           {
-            v14 = [v12 countByEnumeratingWithState:&v32 objects:v41 count:16];
+            v14 = [elements countByEnumeratingWithState:&v32 objects:v41 count:16];
             if (v14)
             {
               goto LABEL_5;
@@ -127,14 +127,14 @@ LABEL_5:
           }
         }
 
-        v18 = [v17 bundleIdentifier];
+        bundleIdentifier = [v17 bundleIdentifier];
 
-        if (!v18)
+        if (!bundleIdentifier)
         {
           goto LABEL_26;
         }
 
-        v19 = [objc_alloc(MEMORY[0x277CCB068]) initWithPreviousApplication:v18];
+        v19 = [objc_alloc(MEMORY[0x277CCB068]) initWithPreviousApplication:bundleIdentifier];
         v31 = 0;
         v20 = [v19 asBSActionWithResponder:0 error:&v31];
         v21 = v31;
@@ -173,7 +173,7 @@ LABEL_5:
       else
       {
 LABEL_12:
-        v18 = v12;
+        bundleIdentifier = elements;
       }
 
 LABEL_26:
@@ -198,7 +198,7 @@ LABEL_26:
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v37 = v6;
+      v37 = applicationCopy;
       v38 = 2112;
       v39 = v10;
       _os_log_impl(&dword_233648000, v24, OS_LOG_TYPE_DEFAULT, "Launch app: %@ with options: %@", buf, 0x16u);
@@ -210,7 +210,7 @@ LABEL_26:
     v29[1] = 3221225472;
     v29[2] = __53__ACCPlatformPluginSystem_launchApplication_options___block_invoke;
     v29[3] = &unk_2789E7870;
-    v30 = v6;
+    v30 = applicationCopy;
     [v26 openApplication:v30 withOptions:v27 completion:v29];
   }
 
@@ -288,22 +288,22 @@ void __53__ACCPlatformPluginSystem_launchApplication_options___block_invoke(uint
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)isAppVisibleInCurrentMode:(id)a3
+- (BOOL)isAppVisibleInCurrentMode:(id)mode
 {
-  v3 = a3;
+  modeCopy = mode;
   v4 = WeakLinkClass(@"LSApplicationProxy", 1uLL);
   v5 = WeakLinkClass(@"LSApplicationWorkspace", 1uLL);
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
   v19 = 0;
-  v6 = [v5 defaultWorkspace];
-  v7 = [v6 applicationIsInstalled:v3];
+  defaultWorkspace = [v5 defaultWorkspace];
+  v7 = [defaultWorkspace applicationIsInstalled:modeCopy];
 
   if (v7)
   {
-    v8 = [v4 applicationProxyForIdentifier:v3];
-    v9 = [v5 defaultWorkspace];
+    v8 = [v4 applicationProxyForIdentifier:modeCopy];
+    defaultWorkspace2 = [v5 defaultWorkspace];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __53__ACCPlatformPluginSystem_isAppVisibleInCurrentMode___block_invoke;
@@ -311,7 +311,7 @@ void __53__ACCPlatformPluginSystem_launchApplication_options___block_invoke(uint
     v15 = &v16;
     v10 = v8;
     v14 = v10;
-    [v9 enumerateBundlesOfType:4 block:v13];
+    [defaultWorkspace2 enumerateBundlesOfType:4 block:v13];
   }
 
   v11 = *(v17 + 24);
@@ -332,19 +332,19 @@ uint64_t __53__ACCPlatformPluginSystem_isAppVisibleInCurrentMode___block_invoke(
   return result;
 }
 
-- (id)applicationsInstalledWithExternalAccessoryProtocol:(id)a3
+- (id)applicationsInstalledWithExternalAccessoryProtocol:(id)protocol
 {
   v3 = SBSCopyDisplayIdentifiersForExternalAccessoryProtocol();
 
   return v3;
 }
 
-- (BOOL)launchURL:(id)a3
+- (BOOL)launchURL:(id)l
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEBC0] URLWithString:a3];
-  v4 = [MEMORY[0x277CC1E80] defaultWorkspace];
-  v5 = [v4 openSensitiveURL:v3 withOptions:0];
+  v3 = [MEMORY[0x277CBEBC0] URLWithString:l];
+  defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+  v5 = [defaultWorkspace openSensitiveURL:v3 withOptions:0];
 
   if (gLogObjects)
   {
@@ -391,45 +391,45 @@ uint64_t __53__ACCPlatformPluginSystem_isAppVisibleInCurrentMode___block_invoke(
   return v5;
 }
 
-- (BOOL)isAppInstalledWithBundleID:(id)a3
+- (BOOL)isAppInstalledWithBundleID:(id)d
 {
   v3 = MEMORY[0x277CC1E80];
-  v4 = a3;
-  v5 = [v3 defaultWorkspace];
-  v6 = [v5 applicationIsInstalled:v4];
+  dCopy = d;
+  defaultWorkspace = [v3 defaultWorkspace];
+  v6 = [defaultWorkspace applicationIsInstalled:dCopy];
 
   return v6;
 }
 
-- (id)appNameForBundleID:(id)a3
+- (id)appNameForBundleID:(id)d
 {
-  v3 = [MEMORY[0x277CC1E60] applicationProxyForIdentifier:a3];
+  v3 = [MEMORY[0x277CC1E60] applicationProxyForIdentifier:d];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 localizedName];
+    localizedName = [v3 localizedName];
   }
 
   else
   {
-    v5 = 0;
+    localizedName = 0;
   }
 
-  return v5;
+  return localizedName;
 }
 
-- (BOOL)supportsExternalAccessoryBackgroundMode:(id)a3
+- (BOOL)supportsExternalAccessoryBackgroundMode:(id)mode
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CC1E60] applicationProxyForIdentifier:v3];
+  modeCopy = mode;
+  v4 = [MEMORY[0x277CC1E60] applicationProxyForIdentifier:modeCopy];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 UIBackgroundModes];
+    uIBackgroundModes = [v4 UIBackgroundModes];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [v6 containsObject:@"external-accessory"];
+      v7 = [uIBackgroundModes containsObject:@"external-accessory"];
       if (gLogObjects && gNumLogObjects >= 1)
       {
         v8 = *gLogObjects;
@@ -468,8 +468,8 @@ uint64_t __53__ACCPlatformPluginSystem_isAppVisibleInCurrentMode___block_invoke(
 
 - (void)startObservingApplicationState
 {
-  v3 = [(ACCPlatformPluginSystem *)self applicationStateLock];
-  [v3 lock];
+  applicationStateLock = [(ACCPlatformPluginSystem *)self applicationStateLock];
+  [applicationStateLock lock];
 
   if ((gbApplicationStateMonitoringStarted & 1) == 0)
   {
@@ -498,8 +498,8 @@ void __57__ACCPlatformPluginSystem_startObservingApplicationState__block_invoke(
 
 - (void)stopObservingApplicationState
 {
-  v3 = [(ACCPlatformPluginSystem *)self applicationStateLock];
-  [v3 lock];
+  applicationStateLock = [(ACCPlatformPluginSystem *)self applicationStateLock];
+  [applicationStateLock lock];
 
   if (gbApplicationStateMonitoringStarted == 1)
   {
@@ -507,19 +507,19 @@ void __57__ACCPlatformPluginSystem_startObservingApplicationState__block_invoke(
     gbApplicationStateMonitoringStarted = 0;
   }
 
-  v4 = [(ACCPlatformPluginSystem *)self applicationStateLock];
-  [v4 unlock];
+  applicationStateLock2 = [(ACCPlatformPluginSystem *)self applicationStateLock];
+  [applicationStateLock2 unlock];
 }
 
-- (void)_observeApplicationState:(id)a3
+- (void)_observeApplicationState:(id)state
 {
-  v4 = a3;
-  v5 = [(ACCPlatformPluginSystem *)self applicationStateLock];
-  [v5 lock];
+  stateCopy = state;
+  applicationStateLock = [(ACCPlatformPluginSystem *)self applicationStateLock];
+  [applicationStateLock lock];
 
-  v6 = [v4 valueForKey:*MEMORY[0x277CEEE70]];
-  v7 = [v4 valueForKey:*MEMORY[0x277CEEE68]];
-  v8 = [(ACCPlatformPluginSystem *)self _convertDictionaryToPlatformACCDictionary:v4];
+  v6 = [stateCopy valueForKey:*MEMORY[0x277CEEE70]];
+  v7 = [stateCopy valueForKey:*MEMORY[0x277CEEE68]];
+  v8 = [(ACCPlatformPluginSystem *)self _convertDictionaryToPlatformACCDictionary:stateCopy];
 
   v9 = dispatch_get_global_queue(0, 0);
   block[0] = MEMORY[0x277D85DD0];
@@ -530,8 +530,8 @@ void __57__ACCPlatformPluginSystem_startObservingApplicationState__block_invoke(
   v10 = v8;
   dispatch_async(v9, block);
 
-  v11 = [(ACCPlatformPluginSystem *)self applicationStateLock];
-  [v11 unlock];
+  applicationStateLock2 = [(ACCPlatformPluginSystem *)self applicationStateLock];
+  [applicationStateLock2 unlock];
 }
 
 void __52__ACCPlatformPluginSystem__observeApplicationState___block_invoke(uint64_t a1)
@@ -577,52 +577,52 @@ void __52__ACCPlatformPluginSystem__observeApplicationState___block_invoke(uint6
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_convertDictionaryToPlatformACCDictionary:(id)a3
+- (id)_convertDictionaryToPlatformACCDictionary:(id)dictionary
 {
   v3 = MEMORY[0x277CBEB38];
-  v4 = a3;
-  v5 = [v3 dictionary];
-  v6 = [v4 valueForKey:*MEMORY[0x277CEEE70]];
-  v7 = [v4 valueForKey:*MEMORY[0x277CEEE80]];
-  v8 = [v4 valueForKey:*MEMORY[0x277CEEE68]];
+  dictionaryCopy = dictionary;
+  dictionary = [v3 dictionary];
+  v6 = [dictionaryCopy valueForKey:*MEMORY[0x277CEEE70]];
+  v7 = [dictionaryCopy valueForKey:*MEMORY[0x277CEEE80]];
+  v8 = [dictionaryCopy valueForKey:*MEMORY[0x277CEEE68]];
 
   if (v6)
   {
-    [v5 setObject:v6 forKey:@"ACCPlatformApplicationStateKey"];
+    [dictionary setObject:v6 forKey:@"ACCPlatformApplicationStateKey"];
   }
 
   if (v7)
   {
-    [v5 setObject:v7 forKey:@"ACCPlatformApplicationStateProcessIDKey"];
+    [dictionary setObject:v7 forKey:@"ACCPlatformApplicationStateProcessIDKey"];
   }
 
   if (v8)
   {
-    [v5 setObject:v8 forKey:@"ACCPlatformApplicationStateDisplayIDKey"];
+    [dictionary setObject:v8 forKey:@"ACCPlatformApplicationStateDisplayIDKey"];
   }
 
-  return v5;
+  return dictionary;
 }
 
-- (id)applicationInfoForBundleID:(id)a3
+- (id)applicationInfoForBundleID:(id)d
 {
-  v4 = [(BKSApplicationStateMonitor *)self->_appStateMonitor applicationInfoForApplication:a3];
+  v4 = [(BKSApplicationStateMonitor *)self->_appStateMonitor applicationInfoForApplication:d];
   v5 = [(ACCPlatformPluginSystem *)self _convertDictionaryToPlatformACCDictionary:v4];
 
   return v5;
 }
 
-- (BOOL)isApplicationInForeground:(id)a3
+- (BOOL)isApplicationInForeground:(id)foreground
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ACCPlatformPluginSystem *)self applicationInfoForBundleID:v4];
+  foregroundCopy = foreground;
+  v5 = [(ACCPlatformPluginSystem *)self applicationInfoForBundleID:foregroundCopy];
   v6 = [v5 objectForKey:@"ACCPlatformApplicationStateKey"];
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 unsignedIntValue];
-    if (v8 < 5 || v8 == 16)
+    unsignedIntValue = [v6 unsignedIntValue];
+    if (unsignedIntValue < 5 || unsignedIntValue == 16)
     {
       if (gLogObjects && gNumLogObjects >= 1)
       {
@@ -669,7 +669,7 @@ void __52__ACCPlatformPluginSystem__observeApplicationState___block_invoke(uint6
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
         v16 = 138412290;
-        v17 = v4;
+        v17 = foregroundCopy;
         _os_log_impl(&dword_233648000, v10, OS_LOG_TYPE_DEFAULT, "app bundleID %@ is in foreground", &v16, 0xCu);
       }
 
@@ -686,17 +686,17 @@ void __52__ACCPlatformPluginSystem__observeApplicationState___block_invoke(uint6
   return v11;
 }
 
-- (BOOL)isApplicationRunning:(id)a3
+- (BOOL)isApplicationRunning:(id)running
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ACCPlatformPluginSystem *)self applicationInfoForBundleID:v4];
+  runningCopy = running;
+  v5 = [(ACCPlatformPluginSystem *)self applicationInfoForBundleID:runningCopy];
   v6 = [v5 objectForKey:@"ACCPlatformApplicationStateKey"];
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 unsignedIntValue];
-    if (v8 > 0x10 || ((1 << v8) & 0x10007) == 0)
+    unsignedIntValue = [v6 unsignedIntValue];
+    if (unsignedIntValue > 0x10 || ((1 << unsignedIntValue) & 0x10007) == 0)
     {
       if (gLogObjects && gNumLogObjects >= 1)
       {
@@ -717,7 +717,7 @@ void __52__ACCPlatformPluginSystem__observeApplicationState___block_invoke(uint6
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
         v16 = 138412290;
-        v17 = v4;
+        v17 = runningCopy;
         _os_log_impl(&dword_233648000, v10, OS_LOG_TYPE_DEFAULT, "app bundleID %@ is actively running", &v16, 0xCu);
       }
 
@@ -854,11 +854,11 @@ void __76__ACCPlatformPluginSystem_toggleProcessAssertionForBundleID_application
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)launchBundleIDToBackground:(id)a3
+- (void)launchBundleIDToBackground:(id)background
 {
   v26[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([(ACCPlatformPluginSystem *)self isApplicationRunning:v4])
+  backgroundCopy = background;
+  if ([(ACCPlatformPluginSystem *)self isApplicationRunning:backgroundCopy])
   {
     if (gLogObjects)
     {
@@ -889,12 +889,12 @@ void __76__ACCPlatformPluginSystem_toggleProcessAssertionForBundleID_application
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v24 = v4;
+      v24 = backgroundCopy;
       _os_log_impl(&dword_233648000, v12, OS_LOG_TYPE_DEFAULT, "App %@ is already running.", buf, 0xCu);
     }
 
     v13 = MEMORY[0x277D46F48];
-    v14 = [MEMORY[0x277D46FA0] predicateMatchingBundleIdentifier:v4];
+    v14 = [MEMORY[0x277D46FA0] predicateMatchingBundleIdentifier:backgroundCopy];
     v19 = 0;
     v8 = [v13 handleForPredicate:v14 error:&v19];
     v7 = v19;
@@ -953,7 +953,7 @@ LABEL_24:
       goto LABEL_24;
     }
 
-    -[ACCPlatformPluginSystem toggleProcessAssertionForBundleID:applicationPid:](self, "toggleProcessAssertionForBundleID:applicationPid:", v4, [v8 pid]);
+    -[ACCPlatformPluginSystem toggleProcessAssertionForBundleID:applicationPid:](self, "toggleProcessAssertionForBundleID:applicationPid:", backgroundCopy, [v8 pid]);
   }
 
   else
@@ -966,14 +966,14 @@ LABEL_24:
     v26[0] = MEMORY[0x277CBEC38];
     v26[1] = v8;
     v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v26 forKeys:v25 count:2];
-    v11 = [MEMORY[0x277D0AE18] sharedService];
+    mEMORY[0x277D0AE18] = [MEMORY[0x277D0AE18] sharedService];
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __54__ACCPlatformPluginSystem_launchBundleIDToBackground___block_invoke;
     v20[3] = &unk_2789E7960;
-    v21 = v4;
-    v22 = self;
-    [v11 openApplication:v21 options:v10 withResult:v20];
+    v21 = backgroundCopy;
+    selfCopy = self;
+    [mEMORY[0x277D0AE18] openApplication:v21 options:v10 withResult:v20];
   }
 
 LABEL_25:
@@ -1225,11 +1225,11 @@ LABEL_35:
   return result;
 }
 
-- (BOOL)createFolder:(const char *)a3 mode:(unsigned __int16)a4
+- (BOOL)createFolder:(const char *)folder mode:(unsigned __int16)mode
 {
-  if (a3)
+  if (folder)
   {
-    v5 = mkdir(a3, a4);
+    v5 = mkdir(folder, mode);
     if (!v5)
     {
       return 1;
@@ -1264,7 +1264,7 @@ LABEL_35:
 
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      [(ACCPlatformPluginSystem *)a3 createFolder:v6 mode:v12];
+      [(ACCPlatformPluginSystem *)folder createFolder:v6 mode:v12];
     }
   }
 
@@ -1305,56 +1305,56 @@ LABEL_35:
   return 0;
 }
 
-- (id)mediaLibraryUIDString:(BOOL)a3
+- (id)mediaLibraryUIDString:(BOOL)string
 {
-  if (a3)
+  if (string)
   {
-    v3 = ACCGetOSVersion();
-    v4 = [MEMORY[0x277CD5E10] deviceMediaLibrary];
-    v5 = [v4 uniqueIdentifier];
+    deviceMediaLibrary2 = ACCGetOSVersion();
+    deviceMediaLibrary = [MEMORY[0x277CD5E10] deviceMediaLibrary];
+    uniqueIdentifier = [deviceMediaLibrary uniqueIdentifier];
 
-    v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%@-%@", v5, @"4954524C", v3];
+    v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%@-%@", uniqueIdentifier, @"4954524C", deviceMediaLibrary2];
   }
 
   else
   {
-    v3 = [MEMORY[0x277CD5E10] deviceMediaLibrary];
+    deviceMediaLibrary2 = [MEMORY[0x277CD5E10] deviceMediaLibrary];
     if (_getMediaLibraryHelper___mediaLibraryHelperInitOnce != -1)
     {
       [ACCPlatformPluginSystem mediaLibraryUIDString:];
     }
 
     v7 = _getMediaLibraryHelper___mediaLibraryHelper;
-    v5 = ACCGetOSVersion();
-    v8 = [v3 uniqueIdentifier];
-    v9 = [v7 showMusic];
+    uniqueIdentifier = ACCGetOSVersion();
+    uniqueIdentifier2 = [deviceMediaLibrary2 uniqueIdentifier];
+    showMusic = [v7 showMusic];
     v10 = @"M";
-    if (!v9)
+    if (!showMusic)
     {
       v10 = @"N";
     }
 
     v11 = v10;
-    v12 = [v7 showPodcasts];
+    showPodcasts = [v7 showPodcasts];
     v13 = @"P";
-    if (!v12)
+    if (!showPodcasts)
     {
       v13 = @"N";
     }
 
     v14 = v13;
-    v15 = [v7 showAudioBooks];
+    showAudioBooks = [v7 showAudioBooks];
 
     v6 = &stru_2848F0958;
-    if (v5 && v8)
+    if (uniqueIdentifier && uniqueIdentifier2)
     {
       v16 = @"B";
-      if (!v15)
+      if (!showAudioBooks)
       {
         v16 = @"N";
       }
 
-      v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%@%@%@-%@", v8, v11, v14, v16, v5];
+      v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%@%@%@-%@", uniqueIdentifier2, v11, v14, v16, uniqueIdentifier];
     }
   }
 

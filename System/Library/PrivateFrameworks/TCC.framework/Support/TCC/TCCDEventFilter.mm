@@ -1,13 +1,13 @@
 @interface TCCDEventFilter
-- (BOOL)matches:(id)a3;
-- (TCCDEventFilter)initWithCriteria:(id)a3;
+- (BOOL)matches:(id)matches;
+- (TCCDEventFilter)initWithCriteria:(id)criteria;
 @end
 
 @implementation TCCDEventFilter
 
-- (TCCDEventFilter)initWithCriteria:(id)a3
+- (TCCDEventFilter)initWithCriteria:(id)criteria
 {
-  v4 = a3;
+  criteriaCopy = criteria;
   v38.receiver = self;
   v38.super_class = TCCDEventFilter;
   v5 = [(TCCDEventFilter *)&v38 init];
@@ -46,7 +46,7 @@ LABEL_32:
   v8 = *v35;
   p_superclass = TCCDAuthorizationRightState.superclass;
   v26 = v6;
-  v27 = v4;
+  v27 = criteriaCopy;
   v28 = v7;
   v25 = *v35;
   while (2)
@@ -72,8 +72,8 @@ LABEL_32:
         goto LABEL_38;
       }
 
-      v12 = [p_superclass + 149 currentPlatform];
-      v13 = [v12 serviceByName:v11];
+      currentPlatform = [p_superclass + 149 currentPlatform];
+      v13 = [currentPlatform serviceByName:v11];
 
       if (!v13)
       {
@@ -86,7 +86,7 @@ LABEL_32:
 LABEL_38:
 
         v6 = v26;
-        v4 = v27;
+        criteriaCopy = v27;
         goto LABEL_32;
       }
 
@@ -106,7 +106,7 @@ LABEL_38:
 
 LABEL_31:
 
-          v4 = v27;
+          criteriaCopy = v27;
           goto LABEL_32;
         }
       }
@@ -171,7 +171,7 @@ LABEL_31:
     }
 
     while (v10 != v29);
-    v4 = v27;
+    criteriaCopy = v27;
     v29 = [v7 countByEnumeratingWithState:&v34 objects:v40 count:16];
     if (v29)
     {
@@ -193,18 +193,18 @@ LABEL_33:
   return v21;
 }
 
-- (BOOL)matches:(id)a3
+- (BOOL)matches:(id)matches
 {
-  v4 = a3;
+  matchesCopy = matches;
   if ([(NSDictionary *)self->_servicesToSubjects count])
   {
     servicesToSubjects = self->_servicesToSubjects;
-    v6 = [v4 service];
-    v7 = [v6 name];
-    v8 = [(NSDictionary *)servicesToSubjects objectForKeyedSubscript:v7];
+    service = [matchesCopy service];
+    name = [service name];
+    v8 = [(NSDictionary *)servicesToSubjects objectForKeyedSubscript:name];
 
     objc_opt_class();
-    if (objc_opt_isKindOfClass() & 1) != 0 && ([v8 BOOLValue] & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()) && (objc_msgSend(v4, "subjectIdentifier"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v8, "containsObject:", v9), v9, (v10))
+    if (objc_opt_isKindOfClass() & 1) != 0 && ([v8 BOOLValue] & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()) && (objc_msgSend(matchesCopy, "subjectIdentifier"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v8, "containsObject:", v9), v9, (v10))
     {
       v11 = 1;
     }
@@ -223,8 +223,8 @@ LABEL_33:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v13 = [v4 subjectIdentifier];
-          v11 = [v12 containsObject:v13];
+          subjectIdentifier = [matchesCopy subjectIdentifier];
+          v11 = [v12 containsObject:subjectIdentifier];
         }
 
         else

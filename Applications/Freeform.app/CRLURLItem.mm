@@ -5,21 +5,21 @@
 - (NSArray)customPublicTypesToPromiseWhenCopyingSingleBoardItem;
 - (NSArray)stringContentForSearch;
 - (NSString)previewTooltip;
-- (_TtC8Freeform10CRLURLItem)initWithStore:(id)a3 parentContainerUUID:(id)a4 url:(id)a5 geometry:(id)a6;
+- (_TtC8Freeform10CRLURLItem)initWithStore:(id)store parentContainerUUID:(id)d url:(id)url geometry:(id)geometry;
 - (_TtC8Freeform8CRLAsset)metadataPayload;
-- (id)promisedDataForPublicType:(id)a3;
+- (id)promisedDataForPublicType:(id)type;
 - (id)promisedStringForCopy;
-- (void)setHyperlinkURL:(id)a3;
+- (void)setHyperlinkURL:(id)l;
 @end
 
 @implementation CRLURLItem
 
-- (void)setHyperlinkURL:(id)a3
+- (void)setHyperlinkURL:(id)l
 {
   v4 = sub_1005B981C(&unk_1019F33C0);
   __chkstk_darwin(v4 - 8);
   v6 = &v9 - v5;
-  if (a3)
+  if (l)
   {
     static URL._unconditionallyBridgeFromObjectiveC(_:)();
     v7 = type metadata accessor for URL();
@@ -37,7 +37,7 @@
 
 - (_TtC8Freeform8CRLAsset)metadataPayload
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100A7C258();
 
   return v3;
@@ -72,14 +72,14 @@
   return v17.super.isa;
 }
 
-- (id)promisedDataForPublicType:(id)a3
+- (id)promisedDataForPublicType:(id)type
 {
   v5 = type metadata accessor for UTType();
   v6 = *(v5 - 8);
   __chkstk_darwin(v5);
   v8 = &v17 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v9 = a3;
-  v10 = self;
+  typeCopy = type;
+  selfCopy = self;
   static UTType._unconditionallyBridgeFromObjectiveC(_:)();
 
   v11 = sub_100A7CD48();
@@ -99,7 +99,7 @@
 
 - (id)promisedStringForCopy
 {
-  v2 = self;
+  selfCopy = self;
   sub_100A7D164();
   v4 = v3;
 
@@ -119,11 +119,11 @@
 - (NSString)previewTooltip
 {
   v3 = objc_opt_self();
-  v4 = self;
-  v5 = [v3 mainBundle];
+  selfCopy = self;
+  mainBundle = [v3 mainBundle];
   v6 = String._bridgeToObjectiveC()();
   v7 = String._bridgeToObjectiveC()();
-  v8 = [v5 localizedStringForKey:v6 value:v7 table:0];
+  v8 = [mainBundle localizedStringForKey:v6 value:v7 table:0];
 
   static String._unconditionallyBridgeFromObjectiveC(_:)();
   v9 = String._bridgeToObjectiveC()();
@@ -154,7 +154,7 @@
 
 - (NSArray)stringContentForSearch
 {
-  v2 = self;
+  selfCopy = self;
   sub_100A7FC20();
 
   v3.super.isa = Array._bridgeToObjectiveC()().super.isa;
@@ -162,7 +162,7 @@
   return v3.super.isa;
 }
 
-- (_TtC8Freeform10CRLURLItem)initWithStore:(id)a3 parentContainerUUID:(id)a4 url:(id)a5 geometry:(id)a6
+- (_TtC8Freeform10CRLURLItem)initWithStore:(id)store parentContainerUUID:(id)d url:(id)url geometry:(id)geometry
 {
   v8 = type metadata accessor for URL();
   __chkstk_darwin(v8 - 8);
@@ -172,9 +172,9 @@
   v13 = &v17 - ((v12 + 15) & 0xFFFFFFFFFFFFFFF0);
   static UUID._unconditionallyBridgeFromObjectiveC(_:)();
   static URL._unconditionallyBridgeFromObjectiveC(_:)();
-  v14 = a3;
-  v15 = a6;
-  return sub_100A80148(v14, v13, v10, a6);
+  storeCopy = store;
+  geometryCopy = geometry;
+  return sub_100A80148(storeCopy, v13, v10, geometry);
 }
 
 @end

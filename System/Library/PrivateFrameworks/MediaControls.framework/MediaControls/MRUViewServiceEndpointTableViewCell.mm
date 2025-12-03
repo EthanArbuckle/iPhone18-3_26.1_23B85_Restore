@@ -1,67 +1,67 @@
 @interface MRUViewServiceEndpointTableViewCell
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (MRUViewServiceEndpointTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (MRUViewServiceEndpointTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (UIEdgeInsets)contentEdgeInsets;
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4;
-- (void)_setShouldHaveFullLengthBottomSeparator:(BOOL)a3;
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region;
+- (void)_setShouldHaveFullLengthBottomSeparator:(BOOL)separator;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setContentEdgeInsets:(UIEdgeInsets)a3;
-- (void)setStylingProvider:(id)a3;
+- (void)setContentEdgeInsets:(UIEdgeInsets)insets;
+- (void)setStylingProvider:(id)provider;
 - (void)updateVisualStyling;
 @end
 
 @implementation MRUViewServiceEndpointTableViewCell
 
-- (MRUViewServiceEndpointTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (MRUViewServiceEndpointTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v27[1] = *MEMORY[0x1E69E9840];
   v26.receiver = self;
   v26.super_class = MRUViewServiceEndpointTableViewCell;
-  v4 = [(MRUViewServiceEndpointTableViewCell *)&v26 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(MRUViewServiceEndpointTableViewCell *)&v26 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
-    v5 = [MEMORY[0x1E69DC888] clearColor];
-    [(MRUViewServiceEndpointTableViewCell *)v4 setBackgroundColor:v5];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(MRUViewServiceEndpointTableViewCell *)v4 setBackgroundColor:clearColor];
 
     v6 = objc_alloc_init(MRUNowPlayingCellContentView);
     cellContentView = v4->_cellContentView;
     v4->_cellContentView = v6;
 
-    v8 = [(MRUNowPlayingCellContentView *)v4->_cellContentView artworkView];
-    [v8 setStyle:0];
+    artworkView = [(MRUNowPlayingCellContentView *)v4->_cellContentView artworkView];
+    [artworkView setStyle:0];
 
-    v9 = [(MRUNowPlayingCellContentView *)v4->_cellContentView headerView];
-    [v9 setLayout:3];
+    headerView = [(MRUNowPlayingCellContentView *)v4->_cellContentView headerView];
+    [headerView setLayout:3];
 
-    v10 = [(MRUNowPlayingCellContentView *)v4->_cellContentView headerView];
-    v11 = [v10 labelView];
-    [v11 setLayout:1];
+    headerView2 = [(MRUNowPlayingCellContentView *)v4->_cellContentView headerView];
+    labelView = [headerView2 labelView];
+    [labelView setLayout:1];
 
-    v12 = [(MRUViewServiceEndpointTableViewCell *)v4 contentView];
-    [v12 addSubview:v4->_cellContentView];
+    contentView = [(MRUViewServiceEndpointTableViewCell *)v4 contentView];
+    [contentView addSubview:v4->_cellContentView];
 
     v13 = objc_alloc(MEMORY[0x1E69DD250]);
     v14 = [v13 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
     separatorView = v4->_separatorView;
     v4->_separatorView = v14;
 
-    v16 = [MEMORY[0x1E69DC888] whiteColor];
-    [(UIView *)v4->_separatorView setBackgroundColor:v16];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [(UIView *)v4->_separatorView setBackgroundColor:whiteColor];
 
-    v17 = [(MRUViewServiceEndpointTableViewCell *)v4 contentView];
-    [v17 addSubview:v4->_separatorView];
+    contentView2 = [(MRUViewServiceEndpointTableViewCell *)v4 contentView];
+    [contentView2 addSubview:v4->_separatorView];
 
     v18 = objc_alloc_init(MEMORY[0x1E69DD250]);
     [(MRUViewServiceEndpointTableViewCell *)v4 setSelectedBackgroundView:v18];
 
     v19 = [MEMORY[0x1E69DC888] colorWithWhite:0.0 alpha:0.5];
-    v20 = [(MRUViewServiceEndpointTableViewCell *)v4 selectedBackgroundView];
-    [v20 setBackgroundColor:v19];
+    selectedBackgroundView = [(MRUViewServiceEndpointTableViewCell *)v4 selectedBackgroundView];
+    [selectedBackgroundView setBackgroundColor:v19];
 
     v21 = [objc_alloc(MEMORY[0x1E69DCDB0]) initWithDelegate:v4];
-    v22 = [(MRUViewServiceEndpointTableViewCell *)v4 contentView];
-    [v22 addInteraction:v21];
+    contentView3 = [(MRUViewServiceEndpointTableViewCell *)v4 contentView];
+    [contentView3 addInteraction:v21];
 
     v27[0] = objc_opt_class();
     v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:v27 count:1];
@@ -76,8 +76,8 @@
   v21.receiver = self;
   v21.super_class = MRUViewServiceEndpointTableViewCell;
   [(MRUViewServiceEndpointTableViewCell *)&v21 layoutSubviews];
-  v3 = [(MRUViewServiceEndpointTableViewCell *)self contentView];
-  [v3 bounds];
+  contentView = [(MRUViewServiceEndpointTableViewCell *)self contentView];
+  [contentView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -90,8 +90,8 @@
   v15 = v14;
   v17 = v16;
   v19 = v18;
-  v20 = [(MRUViewServiceEndpointTableViewCell *)self traitCollection];
-  [v20 displayScale];
+  traitCollection = [(MRUViewServiceEndpointTableViewCell *)self traitCollection];
+  [traitCollection displayScale];
 
   v22.origin.x = v13;
   v22.origin.y = v15;
@@ -113,9 +113,9 @@
   [(UIView *)self->_separatorView setFrame:?];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(MRUNowPlayingCellContentView *)self->_cellContentView sizeThatFits:a3.width, a3.height];
+  [(MRUNowPlayingCellContentView *)self->_cellContentView sizeThatFits:fits.width, fits.height];
   v6 = v5 + self->_contentEdgeInsets.top + self->_contentEdgeInsets.bottom;
   result.height = v6;
   result.width = v4;
@@ -127,51 +127,51 @@
   v5.receiver = self;
   v5.super_class = MRUViewServiceEndpointTableViewCell;
   [(MRUViewServiceEndpointTableViewCell *)&v5 prepareForReuse];
-  v3 = [(MRUViewServiceEndpointTableViewCell *)self cellContentView];
-  v4 = [v3 artworkView];
-  [v4 prepareForReuse];
+  cellContentView = [(MRUViewServiceEndpointTableViewCell *)self cellContentView];
+  artworkView = [cellContentView artworkView];
+  [artworkView prepareForReuse];
 }
 
-- (void)setContentEdgeInsets:(UIEdgeInsets)a3
+- (void)setContentEdgeInsets:(UIEdgeInsets)insets
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = insets.top;
+  v3.f64[1] = insets.left;
+  v4.f64[0] = insets.bottom;
+  v4.f64[1] = insets.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_contentEdgeInsets.top, v3), vceqq_f64(*&self->_contentEdgeInsets.bottom, v4)))) & 1) == 0)
   {
-    self->_contentEdgeInsets = a3;
+    self->_contentEdgeInsets = insets;
     [(MRUViewServiceEndpointTableViewCell *)self setNeedsLayout];
   }
 }
 
-- (void)_setShouldHaveFullLengthBottomSeparator:(BOOL)a3
+- (void)_setShouldHaveFullLengthBottomSeparator:(BOOL)separator
 {
-  v3 = a3;
+  separatorCopy = separator;
   v5.receiver = self;
   v5.super_class = MRUViewServiceEndpointTableViewCell;
   [(MRUViewServiceEndpointTableViewCell *)&v5 _setShouldHaveFullLengthBottomSeparator:?];
-  [(UIView *)self->_separatorView setHidden:v3];
+  [(UIView *)self->_separatorView setHidden:separatorCopy];
 }
 
-- (void)setStylingProvider:(id)a3
+- (void)setStylingProvider:(id)provider
 {
-  v5 = a3;
-  if (self->_stylingProvider != v5)
+  providerCopy = provider;
+  if (self->_stylingProvider != providerCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_stylingProvider, a3);
+    v6 = providerCopy;
+    objc_storeStrong(&self->_stylingProvider, provider);
     [(MRUViewServiceEndpointTableViewCell *)self updateVisualStyling];
     [(MRUNowPlayingCellContentView *)self->_cellContentView setStylingProvider:v6];
-    v5 = v6;
+    providerCopy = v6;
   }
 }
 
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region
 {
   v5 = objc_alloc(MEMORY[0x1E69DD070]);
-  v6 = [(MRUViewServiceEndpointTableViewCell *)self contentView];
-  v7 = [v5 initWithView:v6];
+  contentView = [(MRUViewServiceEndpointTableViewCell *)self contentView];
+  v7 = [v5 initWithView:contentView];
 
   v8 = [MEMORY[0x1E69DCDA8] effectWithPreview:v7];
   [v8 setPrefersScaledContent:0];
@@ -184,8 +184,8 @@
 {
   stylingProvider = self->_stylingProvider;
   separatorView = self->_separatorView;
-  v4 = [(MRUViewServiceEndpointTableViewCell *)self traitCollection];
-  [(MRUVisualStylingProvider *)stylingProvider applyStyle:4 toView:separatorView traitCollection:v4];
+  traitCollection = [(MRUViewServiceEndpointTableViewCell *)self traitCollection];
+  [(MRUVisualStylingProvider *)stylingProvider applyStyle:4 toView:separatorView traitCollection:traitCollection];
 }
 
 - (UIEdgeInsets)contentEdgeInsets

@@ -1,13 +1,13 @@
 @interface HMSettingsCreator
-- (id)createSettingsWithOwner:(id)a3;
+- (id)createSettingsWithOwner:(id)owner;
 @end
 
 @implementation HMSettingsCreator
 
-- (id)createSettingsWithOwner:(id)a3
+- (id)createSettingsWithOwner:(id)owner
 {
-  v3 = a3;
-  v4 = [[HMSettings alloc] initWithSettingsOwner:v3];
+  ownerCopy = owner;
+  v4 = [[HMSettings alloc] initWithSettingsOwner:ownerCopy];
 
   return v4;
 }

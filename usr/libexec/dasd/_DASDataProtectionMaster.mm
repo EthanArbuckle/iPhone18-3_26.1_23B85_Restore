@@ -2,12 +2,12 @@
 + (id)sharedInstance;
 - (BOOL)deviceIsLocked;
 - (BOOL)deviceIsPasswordConfigured;
-- (BOOL)isDataAvailableFor:(id)a3;
+- (BOOL)isDataAvailableFor:(id)for;
 - (BOOL)isDataAvailableForClassA;
 - (BOOL)isDataAvailableForClassC;
 - (_DASDataProtectionMaster)init;
-- (id)registerStateChangeHandler:(id)a3;
-- (void)deregisterStateChangeHandler:(id)a3;
+- (id)registerStateChangeHandler:(id)handler;
+- (void)deregisterStateChangeHandler:(id)handler;
 - (void)handleKeyBagLockNotification;
 @end
 
@@ -157,7 +157,7 @@
   block[1] = 3221225472;
   block[2] = sub_100039CE4;
   block[3] = &unk_1001B54A0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10020AF98 != -1)
   {
     dispatch_once(&qword_10020AF98, block);
@@ -252,10 +252,10 @@
   return v3 == kCFBooleanTrue;
 }
 
-- (BOOL)isDataAvailableFor:(id)a3
+- (BOOL)isDataAvailableFor:(id)for
 {
-  v4 = a3;
-  v5 = v4;
+  forCopy = for;
+  v5 = forCopy;
   if (self->_deviceFormatedForContentProtection)
   {
     v12 = 0;
@@ -268,7 +268,7 @@
     block[2] = sub_10003A14C;
     block[3] = &unk_1001B5AB8;
     block[4] = self;
-    v10 = v4;
+    v10 = forCopy;
     v11 = &v12;
     dispatch_sync(stateQueue, block);
     v7 = *(v13 + 24);
@@ -284,10 +284,10 @@
   return v7 & 1;
 }
 
-- (id)registerStateChangeHandler:(id)a3
+- (id)registerStateChangeHandler:(id)handler
 {
-  v4 = a3;
-  if (v4)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     v5 = +[NSUUID UUID];
     stateQueue = self->_stateQueue;
@@ -298,7 +298,7 @@
     block[4] = self;
     v7 = v5;
     v12 = v7;
-    v13 = v4;
+    v13 = handlerCopy;
     dispatch_sync(stateQueue, block);
     v8 = v13;
     v9 = v7;
@@ -312,17 +312,17 @@
   return v9;
 }
 
-- (void)deregisterStateChangeHandler:(id)a3
+- (void)deregisterStateChangeHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   stateQueue = self->_stateQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10003A3A4;
   v7[3] = &unk_1001B56E0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_sync(stateQueue, v7);
 }
 

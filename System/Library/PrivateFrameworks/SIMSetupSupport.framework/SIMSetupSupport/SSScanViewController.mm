@@ -1,28 +1,28 @@
 @interface SSScanViewController
-- (CGPoint)makeCGPoint:(id)a3;
-- (SSScanViewController)initWithTitle:(id)a3 detail:(id)a4;
+- (CGPoint)makeCGPoint:(id)point;
+- (SSScanViewController)initWithTitle:(id)title detail:(id)detail;
 - (SSScanViewControllerDelegate)qrcodeDelegate;
 - (TSSIMSetupFlowDelegate)delegate;
 - (int64_t)_getCurrentDeviceOrientation;
 - (void)_otherButtonTapped;
 - (void)_setNavigationItem;
-- (void)captureOutput:(id)a3 didOutputMetadataObjects:(id)a4 fromConnection:(id)a5;
-- (void)decodeMetadata:(id)a3;
-- (void)didChangeValueForKey:(id)a3;
-- (void)drawQRBox:(id)a3;
+- (void)captureOutput:(id)output didOutputMetadataObjects:(id)objects fromConnection:(id)connection;
+- (void)decodeMetadata:(id)metadata;
+- (void)didChangeValueForKey:(id)key;
+- (void)drawQRBox:(id)box;
 - (void)startScanning;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation SSScanViewController
 
-- (SSScanViewController)initWithTitle:(id)a3 detail:(id)a4
+- (SSScanViewController)initWithTitle:(id)title detail:(id)detail
 {
   v7.receiver = self;
   v7.super_class = SSScanViewController;
-  v4 = [(SSScanViewController *)&v7 initWithTitle:a3 detailText:a4 symbolName:0 contentLayout:1];
+  v4 = [(SSScanViewController *)&v7 initWithTitle:title detailText:detail symbolName:0 contentLayout:1];
   v5 = v4;
   if (v4)
   {
@@ -47,9 +47,9 @@
   v59.receiver = self;
   v59.super_class = SSScanViewController;
   [(TSOBWelcomeController *)&v59 viewDidLoad];
-  v3 = [MEMORY[0x277D75348] systemBackgroundColor];
-  v4 = [(SSScanViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+  view = [(SSScanViewController *)self view];
+  [view setBackgroundColor:systemBackgroundColor];
 
   [(UIViewController *)self setNavigationBarColor];
   v5 = objc_alloc(MEMORY[0x277D75D18]);
@@ -62,8 +62,8 @@
   self->_scanView = v10;
 
   [(UIView *)self->_scanView setTranslatesAutoresizingMaskIntoConstraints:0];
-  v12 = [(SSScanViewController *)self contentView];
-  [v12 addSubview:self->_scanView];
+  contentView = [(SSScanViewController *)self contentView];
+  [contentView addSubview:self->_scanView];
 
   v13 = [[TSCellularPlanQRCodeScannerView alloc] initWithFrame:v6, v7, v8, v9];
   scannerView = self->_scannerView;
@@ -72,19 +72,19 @@
   [(TSCellularPlanQRCodeScannerView *)self->_scannerView setDelegate:self];
   [(TSCellularPlanQRCodeScannerView *)self->_scannerView setupCameraSession];
   v15 = self->_scannerView;
-  v16 = [MEMORY[0x277D75348] blackColor];
-  [(TSCellularPlanQRCodeScannerView *)v15 setBackgroundColor:v16];
+  blackColor = [MEMORY[0x277D75348] blackColor];
+  [(TSCellularPlanQRCodeScannerView *)v15 setBackgroundColor:blackColor];
 
   [(UIView *)self->_scanView addSubview:self->_scannerView];
-  v17 = [MEMORY[0x277CD9F90] layer];
+  layer = [MEMORY[0x277CD9F90] layer];
   holeOutlineLayer = self->_holeOutlineLayer;
-  self->_holeOutlineLayer = v17;
+  self->_holeOutlineLayer = layer;
 
-  v19 = [MEMORY[0x277D75348] clearColor];
-  -[CAShapeLayer setFillColor:](self->_holeOutlineLayer, "setFillColor:", [v19 CGColor]);
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  -[CAShapeLayer setFillColor:](self->_holeOutlineLayer, "setFillColor:", [clearColor CGColor]);
 
-  v20 = [MEMORY[0x277D75348] systemYellowColor];
-  -[CAShapeLayer setStrokeColor:](self->_holeOutlineLayer, "setStrokeColor:", [v20 CGColor]);
+  systemYellowColor = [MEMORY[0x277D75348] systemYellowColor];
+  -[CAShapeLayer setStrokeColor:](self->_holeOutlineLayer, "setStrokeColor:", [systemYellowColor CGColor]);
 
   [(CAShapeLayer *)self->_holeOutlineLayer setLineWidth:2.0];
   v21 = [objc_alloc(MEMORY[0x277D75D18]) initWithFrame:{v6, v7, v8, v9}];
@@ -92,16 +92,16 @@
   self->_cutoutView = v21;
 
   [(UIView *)self->_cutoutView setTranslatesAutoresizingMaskIntoConstraints:0];
-  v23 = [(UIView *)self->_cutoutView layer];
-  [v23 addSublayer:self->_holeOutlineLayer];
+  layer2 = [(UIView *)self->_cutoutView layer];
+  [layer2 addSublayer:self->_holeOutlineLayer];
 
   [(UIView *)self->_cutoutView setAlpha:0.0];
-  v24 = [(SSScanViewController *)self contentView];
-  [v24 addSubview:self->_cutoutView];
+  contentView2 = [(SSScanViewController *)self contentView];
+  [contentView2 addSubview:self->_cutoutView];
 
-  v25 = [(SSScanViewController *)self contentView];
-  v26 = [MEMORY[0x277D75348] systemBackgroundColor];
-  [v25 setBackgroundColor:v26];
+  contentView3 = [(SSScanViewController *)self contentView];
+  systemBackgroundColor2 = [MEMORY[0x277D75348] systemBackgroundColor];
+  [contentView3 setBackgroundColor:systemBackgroundColor2];
 
   v27 = +[SSOBLinkTrayButton linkButton];
   enterDetailsManuallyButton = self->_enterDetailsManuallyButton;
@@ -113,56 +113,56 @@
   v31 = [v30 localizedStringForKey:@"SOURCE_ENTER_DETAILS_MANUALLY" value:&stru_28753DF48 table:@"Localizable"];
   [(SSOBLinkTrayButton *)v29 setTitle:v31 forState:0];
 
-  v32 = [(SSScanViewController *)self buttonTray];
-  [v32 addButton:self->_enterDetailsManuallyButton];
+  buttonTray = [(SSScanViewController *)self buttonTray];
+  [buttonTray addButton:self->_enterDetailsManuallyButton];
 
-  v33 = [(UIView *)self->_scanView centerYAnchor];
-  v34 = [(SSScanViewController *)self contentView];
-  v35 = [v34 centerYAnchor];
-  v36 = [v33 constraintEqualToAnchor:v35];
+  centerYAnchor = [(UIView *)self->_scanView centerYAnchor];
+  contentView4 = [(SSScanViewController *)self contentView];
+  centerYAnchor2 = [contentView4 centerYAnchor];
+  v36 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   [v36 setActive:1];
 
-  v37 = [(UIView *)self->_scanView leadingAnchor];
-  v38 = [(SSScanViewController *)self view];
-  v39 = [v38 leadingAnchor];
-  v40 = [v37 constraintEqualToAnchor:v39];
+  leadingAnchor = [(UIView *)self->_scanView leadingAnchor];
+  view2 = [(SSScanViewController *)self view];
+  leadingAnchor2 = [view2 leadingAnchor];
+  v40 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [v40 setActive:1];
 
-  v41 = [(UIView *)self->_scanView trailingAnchor];
-  v42 = [(SSScanViewController *)self view];
-  v43 = [v42 trailingAnchor];
-  v44 = [v41 constraintEqualToAnchor:v43];
+  trailingAnchor = [(UIView *)self->_scanView trailingAnchor];
+  view3 = [(SSScanViewController *)self view];
+  trailingAnchor2 = [view3 trailingAnchor];
+  v44 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   [v44 setActive:1];
 
-  v45 = [(UIView *)self->_scanView heightAnchor];
-  v46 = [v45 constraintEqualToConstant:242.0];
+  heightAnchor = [(UIView *)self->_scanView heightAnchor];
+  v46 = [heightAnchor constraintEqualToConstant:242.0];
   [v46 setActive:1];
 
-  v47 = [(UIView *)self->_cutoutView leadingAnchor];
-  v48 = [(UIView *)self->_scanView leadingAnchor];
-  v49 = [v47 constraintEqualToAnchor:v48];
+  leadingAnchor3 = [(UIView *)self->_cutoutView leadingAnchor];
+  leadingAnchor4 = [(UIView *)self->_scanView leadingAnchor];
+  v49 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   [v49 setActive:1];
 
-  v50 = [(UIView *)self->_cutoutView topAnchor];
-  v51 = [(UIView *)self->_scanView topAnchor];
-  v52 = [v50 constraintEqualToAnchor:v51];
+  topAnchor = [(UIView *)self->_cutoutView topAnchor];
+  topAnchor2 = [(UIView *)self->_scanView topAnchor];
+  v52 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v52 setActive:1];
 
-  v53 = [(UIView *)self->_cutoutView widthAnchor];
-  v54 = [(UIView *)self->_scanView widthAnchor];
-  v55 = [v53 constraintEqualToAnchor:v54];
+  widthAnchor = [(UIView *)self->_cutoutView widthAnchor];
+  widthAnchor2 = [(UIView *)self->_scanView widthAnchor];
+  v55 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
   [v55 setActive:1];
 
-  v56 = [(UIView *)self->_cutoutView heightAnchor];
-  v57 = [(UIView *)self->_scanView heightAnchor];
-  v58 = [v56 constraintEqualToAnchor:v57];
+  heightAnchor2 = [(UIView *)self->_cutoutView heightAnchor];
+  heightAnchor3 = [(UIView *)self->_scanView heightAnchor];
+  v58 = [heightAnchor2 constraintEqualToAnchor:heightAnchor3];
   [v58 setActive:1];
 }
 
 - (void)_setNavigationItem
 {
-  v2 = [(OBBaseWelcomeController *)self navigationItem];
-  [v2 setHidesBackButton:0 animated:0];
+  navigationItem = [(OBBaseWelcomeController *)self navigationItem];
+  [navigationItem setHidesBackButton:0 animated:0];
 }
 
 - (void)viewDidLayoutSubviews
@@ -170,28 +170,28 @@
   v5.receiver = self;
   v5.super_class = SSScanViewController;
   [(OBBaseWelcomeController *)&v5 viewDidLayoutSubviews];
-  v3 = [(SSScanViewController *)self view];
-  [v3 layoutIfNeeded];
+  view = [(SSScanViewController *)self view];
+  [view layoutIfNeeded];
 
   scannerView = self->_scannerView;
   [(UIView *)self->_scanView bounds];
   [(TSCellularPlanQRCodeScannerView *)scannerView setFrame:?];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v9.receiver = self;
   v9.super_class = SSScanViewController;
-  v7 = a4;
-  [(OBBaseWelcomeController *)&v9 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  coordinatorCopy = coordinator;
+  [(OBBaseWelcomeController *)&v9 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __75__SSScanViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke;
   v8[3] = &unk_279B45690;
   v8[4] = self;
-  [v7 animateAlongsideTransition:0 completion:v8];
+  [coordinatorCopy animateAlongsideTransition:0 completion:v8];
 }
 
 uint64_t __75__SSScanViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke(uint64_t a1)
@@ -203,16 +203,16 @@ uint64_t __75__SSScanViewController_viewWillTransitionToSize_withTransitionCoord
   return [v2 setOrientation:v3];
 }
 
-- (void)captureOutput:(id)a3 didOutputMetadataObjects:(id)a4 fromConnection:(id)a5
+- (void)captureOutput:(id)output didOutputMetadataObjects:(id)objects fromConnection:(id)connection
 {
-  v6 = a4;
+  objectsCopy = objects;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __78__SSScanViewController_captureOutput_didOutputMetadataObjects_fromConnection___block_invoke;
   v8[3] = &unk_279B44490;
-  v9 = v6;
-  v10 = self;
-  v7 = v6;
+  v9 = objectsCopy;
+  selfCopy = self;
+  v7 = objectsCopy;
   dispatch_async(MEMORY[0x277D85CD0], v8);
 }
 
@@ -222,22 +222,22 @@ void __78__SSScanViewController_captureOutput_didOutputMetadataObjects_fromConne
   [*(a1 + 40) decodeMetadata:v2];
 }
 
-- (void)decodeMetadata:(id)a3
+- (void)decodeMetadata:(id)metadata
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 stringValue];
+  metadataCopy = metadata;
+  stringValue = [metadataCopy stringValue];
   v6 = _TSLogDomain();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v20 = v5;
+    v20 = stringValue;
     v21 = 2080;
     v22 = "[SSScanViewController decodeMetadata:]";
     _os_log_impl(&dword_262AA8000, v6, OS_LOG_TYPE_DEFAULT, "scannedCode %@ @%s", buf, 0x16u);
   }
 
-  if (v5)
+  if (stringValue)
   {
     if (self->_scannedCode)
     {
@@ -252,16 +252,16 @@ void __78__SSScanViewController_captureOutput_didOutputMetadataObjects_fromConne
 
     else
     {
-      objc_storeStrong(&self->_scannedCode, v5);
+      objc_storeStrong(&self->_scannedCode, stringValue);
       WeakRetained = objc_loadWeakRetained(&self->_qrcodeDelegate);
       if (WeakRetained)
       {
         [(SSScanViewController *)self _stopScanning];
-        v8 = [(SSScanViewController *)self view];
-        [v8 setUserInteractionEnabled:0];
+        view = [(SSScanViewController *)self view];
+        [view setUserInteractionEnabled:0];
 
-        v9 = [v4 corners];
-        [(SSScanViewController *)self drawQRBox:v9];
+        corners = [metadataCopy corners];
+        [(SSScanViewController *)self drawQRBox:corners];
 
         objc_initWeak(buf, self);
         v10 = MEMORY[0x277D75D18];
@@ -276,7 +276,7 @@ void __78__SSScanViewController_captureOutput_didOutputMetadataObjects_fromConne
         v13[3] = &unk_279B44660;
         WeakRetained = WeakRetained;
         v14 = WeakRetained;
-        v15 = v5;
+        v15 = stringValue;
         objc_copyWeak(&v16, buf);
         [v10 animateWithDuration:v17 animations:v13 completion:0.25];
         objc_destroyWeak(&v16);
@@ -363,13 +363,13 @@ void __39__SSScanViewController_decodeMetadata___block_invoke_50(uint64_t a1, ch
   }
 }
 
-- (CGPoint)makeCGPoint:(id)a3
+- (CGPoint)makeCGPoint:(id)point
 {
-  v4 = a3;
-  v5 = [v4 valueForKey:@"X"];
+  pointCopy = point;
+  v5 = [pointCopy valueForKey:@"X"];
   [v5 floatValue];
   v7 = v6;
-  v8 = [v4 valueForKey:@"Y"];
+  v8 = [pointCopy valueForKey:@"Y"];
 
   [v8 floatValue];
   v10 = v9;
@@ -382,17 +382,17 @@ void __39__SSScanViewController_decodeMetadata___block_invoke_50(uint64_t a1, ch
   return result;
 }
 
-- (void)drawQRBox:(id)a3
+- (void)drawQRBox:(id)box
 {
-  v34 = a3;
-  if ([v34 count])
+  boxCopy = box;
+  if ([boxCopy count])
   {
-    v4 = [v34 objectAtIndexedSubscript:0];
+    v4 = [boxCopy objectAtIndexedSubscript:0];
     [(SSScanViewController *)self makeCGPoint:v4];
     v6 = v5;
     v8 = v7;
 
-    v9 = [v34 objectAtIndexedSubscript:2];
+    v9 = [boxCopy objectAtIndexedSubscript:2];
     [(SSScanViewController *)self makeCGPoint:v9];
     v11 = v10;
     v13 = v12;
@@ -417,7 +417,7 @@ void __39__SSScanViewController_decodeMetadata___block_invoke_50(uint64_t a1, ch
       v15 = 5.0;
     }
 
-    v16 = [MEMORY[0x277D75208] bezierPath];
+    bezierPath = [MEMORY[0x277D75208] bezierPath];
     v36.origin.x = v6;
     v36.origin.y = v8;
     v36.size.width = v14;
@@ -427,7 +427,7 @@ void __39__SSScanViewController_decodeMetadata___block_invoke_50(uint64_t a1, ch
     v37.origin.y = v8;
     v37.size.width = v14;
     v37.size.height = v14;
-    [v16 moveToPoint:{v17, CGRectGetMinY(v37)}];
+    [bezierPath moveToPoint:{v17, CGRectGetMinY(v37)}];
     v38.origin.x = v6;
     v38.origin.y = v8;
     v38.size.width = v14;
@@ -437,7 +437,7 @@ void __39__SSScanViewController_decodeMetadata___block_invoke_50(uint64_t a1, ch
     v39.origin.y = v8;
     v39.size.width = v14;
     v39.size.height = v14;
-    [v16 addLineToPoint:{v18, CGRectGetMinY(v39)}];
+    [bezierPath addLineToPoint:{v18, CGRectGetMinY(v39)}];
     v40.origin.x = v6;
     v40.origin.y = v8;
     v40.size.width = v14;
@@ -447,7 +447,7 @@ void __39__SSScanViewController_decodeMetadata___block_invoke_50(uint64_t a1, ch
     v41.origin.y = v8;
     v41.size.width = v14;
     v41.size.height = v14;
-    [v16 moveToPoint:{v19, CGRectGetMinY(v41)}];
+    [bezierPath moveToPoint:{v19, CGRectGetMinY(v41)}];
     v42.origin.x = v6;
     v42.origin.y = v8;
     v42.size.width = v14;
@@ -457,7 +457,7 @@ void __39__SSScanViewController_decodeMetadata___block_invoke_50(uint64_t a1, ch
     v43.origin.y = v8;
     v43.size.width = v14;
     v43.size.height = v14;
-    [v16 addLineToPoint:{v20, CGRectGetMinY(v43)}];
+    [bezierPath addLineToPoint:{v20, CGRectGetMinY(v43)}];
     v44.origin.x = v6;
     v44.origin.y = v8;
     v44.size.width = v14;
@@ -467,7 +467,7 @@ void __39__SSScanViewController_decodeMetadata___block_invoke_50(uint64_t a1, ch
     v45.origin.y = v8;
     v45.size.width = v14;
     v45.size.height = v14;
-    [v16 addArcWithCenter:1 radius:v21 startAngle:CGRectGetMinY(v45) + 5.0 endAngle:5.0 clockwise:?];
+    [bezierPath addArcWithCenter:1 radius:v21 startAngle:CGRectGetMinY(v45) + 5.0 endAngle:5.0 clockwise:?];
     v46.origin.x = v6;
     v46.origin.y = v8;
     v46.size.width = v14;
@@ -477,7 +477,7 @@ void __39__SSScanViewController_decodeMetadata___block_invoke_50(uint64_t a1, ch
     v47.origin.y = v8;
     v47.size.width = v14;
     v47.size.height = v14;
-    [v16 addLineToPoint:{MaxX, v15 + CGRectGetMinY(v47)}];
+    [bezierPath addLineToPoint:{MaxX, v15 + CGRectGetMinY(v47)}];
     v48.origin.x = v6;
     v48.origin.y = v8;
     v48.size.width = v14;
@@ -487,7 +487,7 @@ void __39__SSScanViewController_decodeMetadata___block_invoke_50(uint64_t a1, ch
     v49.origin.y = v8;
     v49.size.width = v14;
     v49.size.height = v14;
-    [v16 moveToPoint:{v23, CGRectGetMaxY(v49) - v15}];
+    [bezierPath moveToPoint:{v23, CGRectGetMaxY(v49) - v15}];
     v50.origin.x = v6;
     v50.origin.y = v8;
     v50.size.width = v14;
@@ -497,7 +497,7 @@ void __39__SSScanViewController_decodeMetadata___block_invoke_50(uint64_t a1, ch
     v51.origin.y = v8;
     v51.size.width = v14;
     v51.size.height = v14;
-    [v16 addLineToPoint:{v24, CGRectGetMaxY(v51) + -5.0}];
+    [bezierPath addLineToPoint:{v24, CGRectGetMaxY(v51) + -5.0}];
     v52.origin.x = v6;
     v52.origin.y = v8;
     v52.size.width = v14;
@@ -507,7 +507,7 @@ void __39__SSScanViewController_decodeMetadata___block_invoke_50(uint64_t a1, ch
     v53.origin.y = v8;
     v53.size.width = v14;
     v53.size.height = v14;
-    [v16 addArcWithCenter:1 radius:v25 startAngle:CGRectGetMaxY(v53) + -5.0 endAngle:5.0 clockwise:{0.0, 1.57079633}];
+    [bezierPath addArcWithCenter:1 radius:v25 startAngle:CGRectGetMaxY(v53) + -5.0 endAngle:5.0 clockwise:{0.0, 1.57079633}];
     v54.origin.x = v6;
     v54.origin.y = v8;
     v54.size.width = v14;
@@ -517,7 +517,7 @@ void __39__SSScanViewController_decodeMetadata___block_invoke_50(uint64_t a1, ch
     v55.origin.y = v8;
     v55.size.width = v14;
     v55.size.height = v14;
-    [v16 addLineToPoint:{v26, CGRectGetMaxY(v55)}];
+    [bezierPath addLineToPoint:{v26, CGRectGetMaxY(v55)}];
     v56.origin.x = v6;
     v56.origin.y = v8;
     v56.size.width = v14;
@@ -527,7 +527,7 @@ void __39__SSScanViewController_decodeMetadata___block_invoke_50(uint64_t a1, ch
     v57.origin.y = v8;
     v57.size.width = v14;
     v57.size.height = v14;
-    [v16 moveToPoint:{v27, CGRectGetMaxY(v57)}];
+    [bezierPath moveToPoint:{v27, CGRectGetMaxY(v57)}];
     v58.origin.x = v6;
     v58.origin.y = v8;
     v58.size.width = v14;
@@ -537,7 +537,7 @@ void __39__SSScanViewController_decodeMetadata___block_invoke_50(uint64_t a1, ch
     v59.origin.y = v8;
     v59.size.width = v14;
     v59.size.height = v14;
-    [v16 addLineToPoint:{v28, CGRectGetMaxY(v59)}];
+    [bezierPath addLineToPoint:{v28, CGRectGetMaxY(v59)}];
     v60.origin.x = v6;
     v60.origin.y = v8;
     v60.size.width = v14;
@@ -547,7 +547,7 @@ void __39__SSScanViewController_decodeMetadata___block_invoke_50(uint64_t a1, ch
     v61.origin.y = v8;
     v61.size.width = v14;
     v61.size.height = v14;
-    [v16 addArcWithCenter:1 radius:v29 startAngle:CGRectGetMaxY(v61) + -5.0 endAngle:5.0 clockwise:{1.57079633, 3.14159265}];
+    [bezierPath addArcWithCenter:1 radius:v29 startAngle:CGRectGetMaxY(v61) + -5.0 endAngle:5.0 clockwise:{1.57079633, 3.14159265}];
     v62.origin.x = v6;
     v62.origin.y = v8;
     v62.size.width = v14;
@@ -557,7 +557,7 @@ void __39__SSScanViewController_decodeMetadata___block_invoke_50(uint64_t a1, ch
     v63.origin.y = v8;
     v63.size.width = v14;
     v63.size.height = v14;
-    [v16 addLineToPoint:{MinX, CGRectGetMaxY(v63) - v15}];
+    [bezierPath addLineToPoint:{MinX, CGRectGetMaxY(v63) - v15}];
     v64.origin.x = v6;
     v64.origin.y = v8;
     v64.size.width = v14;
@@ -567,7 +567,7 @@ void __39__SSScanViewController_decodeMetadata___block_invoke_50(uint64_t a1, ch
     v65.origin.y = v8;
     v65.size.width = v14;
     v65.size.height = v14;
-    [v16 moveToPoint:{v31, v15 + CGRectGetMinY(v65)}];
+    [bezierPath moveToPoint:{v31, v15 + CGRectGetMinY(v65)}];
     v66.origin.x = v6;
     v66.origin.y = v8;
     v66.size.width = v14;
@@ -577,7 +577,7 @@ void __39__SSScanViewController_decodeMetadata___block_invoke_50(uint64_t a1, ch
     v67.origin.y = v8;
     v67.size.width = v14;
     v67.size.height = v14;
-    [v16 addLineToPoint:{v32, CGRectGetMinY(v67) + 5.0}];
+    [bezierPath addLineToPoint:{v32, CGRectGetMinY(v67) + 5.0}];
     v68.origin.x = v6;
     v68.origin.y = v8;
     v68.size.width = v14;
@@ -587,14 +587,14 @@ void __39__SSScanViewController_decodeMetadata___block_invoke_50(uint64_t a1, ch
     v69.origin.y = v8;
     v69.size.width = v14;
     v69.size.height = v14;
-    [v16 addArcWithCenter:1 radius:v33 startAngle:CGRectGetMinY(v69) + 5.0 endAngle:5.0 clockwise:{3.14159265, 4.71238898}];
-    -[CAShapeLayer setPath:](self->_holeOutlineLayer, "setPath:", [v16 CGPath]);
+    [bezierPath addArcWithCenter:1 radius:v33 startAngle:CGRectGetMinY(v69) + 5.0 endAngle:5.0 clockwise:{3.14159265, 4.71238898}];
+    -[CAShapeLayer setPath:](self->_holeOutlineLayer, "setPath:", [bezierPath CGPath]);
   }
 }
 
-- (void)didChangeValueForKey:(id)a3
+- (void)didChangeValueForKey:(id)key
 {
-  if ([a3 isEqualToString:@"userConsentAllowed"])
+  if ([key isEqualToString:@"userConsentAllowed"])
   {
     scannerView = self->_scannerView;
 
@@ -604,17 +604,17 @@ void __39__SSScanViewController_decodeMetadata___block_invoke_50(uint64_t a1, ch
 
 - (int64_t)_getCurrentDeviceOrientation
 {
-  v2 = [MEMORY[0x277D75418] currentDevice];
-  v3 = [v2 orientation];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  orientation = [currentDevice orientation];
 
-  if ((v3 - 2) >= 3)
+  if ((orientation - 2) >= 3)
   {
     return 1;
   }
 
   else
   {
-    return v3;
+    return orientation;
   }
 }
 

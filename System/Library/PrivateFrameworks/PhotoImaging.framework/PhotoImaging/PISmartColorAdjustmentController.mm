@@ -1,5 +1,5 @@
 @interface PISmartColorAdjustmentController
-- (PISmartColorAdjustmentController)initWithAdjustment:(id)a3;
+- (PISmartColorAdjustmentController)initWithAdjustment:(id)adjustment;
 - (double)inputCast;
 - (double)inputColor;
 - (double)inputContrast;
@@ -8,21 +8,21 @@
 - (double)offsetContrast;
 - (double)offsetSaturation;
 - (id)computedSettings;
-- (id)pasteKeysForMediaType:(int64_t)a3;
-- (void)_updateSettingsWithInputColor:(double)a3;
-- (void)setInputCast:(double)a3;
-- (void)setInputColor:(double)a3;
-- (void)setInputContrast:(double)a3;
-- (void)setInputSaturation:(double)a3;
-- (void)setOffsetCast:(double)a3;
-- (void)setOffsetContrast:(double)a3;
-- (void)setOffsetSaturation:(double)a3;
-- (void)setStatistics:(id)a3;
+- (id)pasteKeysForMediaType:(int64_t)type;
+- (void)_updateSettingsWithInputColor:(double)color;
+- (void)setInputCast:(double)cast;
+- (void)setInputColor:(double)color;
+- (void)setInputContrast:(double)contrast;
+- (void)setInputSaturation:(double)saturation;
+- (void)setOffsetCast:(double)cast;
+- (void)setOffsetContrast:(double)contrast;
+- (void)setOffsetSaturation:(double)saturation;
+- (void)setStatistics:(id)statistics;
 @end
 
 @implementation PISmartColorAdjustmentController
 
-- (id)pasteKeysForMediaType:(int64_t)a3
+- (id)pasteKeysForMediaType:(int64_t)type
 {
   v10[5] = *MEMORY[0x1E69E9840];
   v3 = +[PIAdjustmentController enabledKey];
@@ -39,21 +39,21 @@
   return v8;
 }
 
-- (void)setStatistics:(id)a3
+- (void)setStatistics:(id)statistics
 {
-  v4 = a3;
-  v5 = [v4 copy];
+  statisticsCopy = statistics;
+  v5 = [statisticsCopy copy];
   [(PIAdjustmentController *)self _setPrimitiveValue:v5 forKey:@"statistics"];
 
-  v6 = [v4 objectForKeyedSubscript:@"satPercentile75"];
+  v6 = [statisticsCopy objectForKeyedSubscript:@"satPercentile75"];
   [v6 doubleValue];
   self->_stats.p75 = v7;
 
-  v8 = [v4 objectForKeyedSubscript:@"satPercentile98"];
+  v8 = [statisticsCopy objectForKeyedSubscript:@"satPercentile98"];
   [v8 doubleValue];
   self->_stats.p98 = v9;
 
-  v10 = [v4 objectForKeyedSubscript:@"satPercentileG98"];
+  v10 = [statisticsCopy objectForKeyedSubscript:@"satPercentileG98"];
 
   [v10 doubleValue];
   self->_stats.g98 = v11;
@@ -73,10 +73,10 @@
   return v6;
 }
 
-- (void)setOffsetSaturation:(double)a3
+- (void)setOffsetSaturation:(double)saturation
 {
   [(PIAdjustmentController *)self setIsAuto:0];
-  v6 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+  v6 = [MEMORY[0x1E696AD98] numberWithDouble:saturation];
   v5 = +[PISmartColorAdjustmentController offsetSaturationKey];
   [(PIAdjustmentController *)self _setPrimitiveValue:v6 forKey:v5];
 }
@@ -91,10 +91,10 @@
   return v6;
 }
 
-- (void)setOffsetContrast:(double)a3
+- (void)setOffsetContrast:(double)contrast
 {
   [(PIAdjustmentController *)self setIsAuto:0];
-  v6 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+  v6 = [MEMORY[0x1E696AD98] numberWithDouble:contrast];
   v5 = +[PISmartColorAdjustmentController offsetContrastKey];
   [(PIAdjustmentController *)self _setPrimitiveValue:v6 forKey:v5];
 }
@@ -109,10 +109,10 @@
   return v6;
 }
 
-- (void)setOffsetCast:(double)a3
+- (void)setOffsetCast:(double)cast
 {
   [(PIAdjustmentController *)self setIsAuto:0];
-  v6 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+  v6 = [MEMORY[0x1E696AD98] numberWithDouble:cast];
   v5 = +[PISmartColorAdjustmentController offsetCastKey];
   [(PIAdjustmentController *)self _setPrimitiveValue:v6 forKey:v5];
 }
@@ -128,9 +128,9 @@
   return v7;
 }
 
-- (void)setInputCast:(double)a3
+- (void)setInputCast:(double)cast
 {
-  v5 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+  v5 = [MEMORY[0x1E696AD98] numberWithDouble:cast];
   v4 = +[PISmartColorAdjustmentController inputCastKey];
   [(PIAdjustmentController *)self _setPrimitiveValue:v5 forKey:v4];
 }
@@ -146,9 +146,9 @@
   return v7;
 }
 
-- (void)setInputContrast:(double)a3
+- (void)setInputContrast:(double)contrast
 {
-  v5 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+  v5 = [MEMORY[0x1E696AD98] numberWithDouble:contrast];
   v4 = +[PISmartColorAdjustmentController inputContrastKey];
   [(PIAdjustmentController *)self _setPrimitiveValue:v5 forKey:v4];
 }
@@ -164,31 +164,31 @@
   return v7;
 }
 
-- (void)setInputSaturation:(double)a3
+- (void)setInputSaturation:(double)saturation
 {
-  v5 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+  v5 = [MEMORY[0x1E696AD98] numberWithDouble:saturation];
   v4 = +[PISmartColorAdjustmentController inputSaturationKey];
   [(PIAdjustmentController *)self _setPrimitiveValue:v5 forKey:v4];
 }
 
 - (double)inputColor
 {
-  v2 = [(PIAdjustmentController *)self adjustment];
+  adjustment = [(PIAdjustmentController *)self adjustment];
   v3 = +[PISmartColorAdjustmentController inputColorKey];
-  v4 = [v2 objectForKeyedSubscript:v3];
+  v4 = [adjustment objectForKeyedSubscript:v3];
   [v4 doubleValue];
   v6 = v5;
 
   return v6;
 }
 
-- (void)setInputColor:(double)a3
+- (void)setInputColor:(double)color
 {
   v5 = [MEMORY[0x1E696AD98] numberWithDouble:?];
   v6 = +[PISmartColorAdjustmentController inputColorKey];
   [(PIAdjustmentController *)self _setPrimitiveValue:v5 forKey:v6];
 
-  [(PISmartColorAdjustmentController *)self _updateSettingsWithInputColor:a3];
+  [(PISmartColorAdjustmentController *)self _updateSettingsWithInputColor:color];
 }
 
 - (id)computedSettings
@@ -212,13 +212,13 @@
   return v10;
 }
 
-- (void)_updateSettingsWithInputColor:(double)a3
+- (void)_updateSettingsWithInputColor:(double)color
 {
   v4 = *&self->_stats.autoValue;
   v12[0] = *&self->_stats.p75;
   v12[1] = v4;
   p_smartSettings = &self->_smartSettings;
-  smart_color_adjustments_from_stats(&self->_smartSettings.sat, v12, a3);
+  smart_color_adjustments_from_stats(&self->_smartSettings.sat, v12, color);
   v6 = [MEMORY[0x1E696AD98] numberWithDouble:p_smartSettings->sat];
   v7 = +[PISmartColorAdjustmentController inputSaturationKey];
   [(PIAdjustmentController *)self setObject:v6 forKeyedSubscript:v7];
@@ -232,32 +232,32 @@
   [(PIAdjustmentController *)self setObject:v11 forKeyedSubscript:v10];
 }
 
-- (PISmartColorAdjustmentController)initWithAdjustment:(id)a3
+- (PISmartColorAdjustmentController)initWithAdjustment:(id)adjustment
 {
   v20.receiver = self;
   v20.super_class = PISmartColorAdjustmentController;
-  v3 = a3;
-  v4 = [(PIAdjustmentController *)&v20 initWithAdjustment:v3];
+  adjustmentCopy = adjustment;
+  v4 = [(PIAdjustmentController *)&v20 initWithAdjustment:adjustmentCopy];
   v5 = [PISmartColorAdjustmentController statisticsKey:v20.receiver];
-  v6 = [v3 objectForKeyedSubscript:v5];
+  v6 = [adjustmentCopy objectForKeyedSubscript:v5];
   v7 = [v6 objectForKeyedSubscript:@"satPercentile75"];
   [v7 doubleValue];
   v4->_stats.p75 = v8;
 
   v9 = +[PISmartColorAdjustmentController statisticsKey];
-  v10 = [v3 objectForKeyedSubscript:v9];
+  v10 = [adjustmentCopy objectForKeyedSubscript:v9];
   v11 = [v10 objectForKeyedSubscript:@"satPercentile98"];
   [v11 doubleValue];
   v4->_stats.p98 = v12;
 
   v13 = +[PISmartColorAdjustmentController statisticsKey];
-  v14 = [v3 objectForKeyedSubscript:v13];
+  v14 = [adjustmentCopy objectForKeyedSubscript:v13];
   v15 = [v14 objectForKeyedSubscript:@"satPercentileG98"];
   [v15 doubleValue];
   v4->_stats.g98 = v16;
 
   v17 = +[PISmartColorAdjustmentController inputColorKey];
-  v18 = [v3 objectForKeyedSubscript:v17];
+  v18 = [adjustmentCopy objectForKeyedSubscript:v17];
 
   [v18 doubleValue];
   [(PISmartColorAdjustmentController *)v4 _updateSettingsWithInputColor:?];

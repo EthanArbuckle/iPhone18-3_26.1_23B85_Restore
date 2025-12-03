@@ -1,31 +1,31 @@
 @interface UIUndoGestureInteractionAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (void)setUndoHUDType:(int64_t)a3 visibility:(BOOL)a4;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (void)setUndoHUDType:(int64_t)type visibility:(BOOL)visibility;
 @end
 
 @implementation UIUndoGestureInteractionAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v4 = location;
   obj = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   [location[0] validateClass:@"UIUndoGestureInteraction" hasInstanceMethod:@"setUndoHUDType:visibility:" withFullSignature:{"v", "q", "B", 0}];
   objc_storeStrong(v4, obj);
 }
 
-- (void)setUndoHUDType:(int64_t)a3 visibility:(BOOL)a4
+- (void)setUndoHUDType:(int64_t)type visibility:(BOOL)visibility
 {
-  v8 = self;
+  selfCopy = self;
   v7 = a2;
-  v6 = a3;
-  v5 = a4;
+  typeCopy = type;
+  visibilityCopy = visibility;
   v4.receiver = self;
   v4.super_class = UIUndoGestureInteractionAccessibility;
-  [(UIUndoGestureInteractionAccessibility *)&v4 setUndoHUDType:a3 visibility:a4];
+  [(UIUndoGestureInteractionAccessibility *)&v4 setUndoHUDType:type visibility:visibility];
   UIAccessibilityPostNotification(*MEMORY[0x29EDC7ED8], 0);
 }
 

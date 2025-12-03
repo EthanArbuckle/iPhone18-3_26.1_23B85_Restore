@@ -1,43 +1,43 @@
 @interface ICNoteEditorInputAccessoryView
 - (BOOL)buttonsVisible;
 - (CGSize)intrinsicContentSize;
-- (ICNoteEditorInputAccessoryView)initWithFrame:(CGRect)a3;
+- (ICNoteEditorInputAccessoryView)initWithFrame:(CGRect)frame;
 - (ICNoteEditorInputAccessoryViewDelegate)delegate;
 - (id)accessibilityElements;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (void)_dynamicUserInterfaceTraitDidChange;
-- (void)disclosureTapRecognizer:(id)a3;
+- (void)disclosureTapRecognizer:(id)recognizer;
 - (void)hide;
-- (void)hideDisclosureViewForTransition:(BOOL)a3;
+- (void)hideDisclosureViewForTransition:(BOOL)transition;
 - (void)safeAreaInsetsDidChange;
-- (void)setButtonsVisible:(BOOL)a3;
-- (void)setContentVisible:(BOOL)a3;
-- (void)setToolbar:(id)a3;
-- (void)showWithDelay:(double)a3;
-- (void)toggleDisclosureViewCloseStateWithTap:(BOOL)a3;
+- (void)setButtonsVisible:(BOOL)visible;
+- (void)setContentVisible:(BOOL)visible;
+- (void)setToolbar:(id)toolbar;
+- (void)showWithDelay:(double)delay;
+- (void)toggleDisclosureViewCloseStateWithTap:(BOOL)tap;
 - (void)updateDisclosureViewTrailingConstraint;
-- (void)updateLayoutWithSize:(CGSize)a3;
-- (void)updateToolbarColorsWithForceUpdate:(BOOL)a3;
+- (void)updateLayoutWithSize:(CGSize)size;
+- (void)updateToolbarColorsWithForceUpdate:(BOOL)update;
 @end
 
 @implementation ICNoteEditorInputAccessoryView
 
-- (ICNoteEditorInputAccessoryView)initWithFrame:(CGRect)a3
+- (ICNoteEditorInputAccessoryView)initWithFrame:(CGRect)frame
 {
   v76.receiver = self;
   v76.super_class = ICNoteEditorInputAccessoryView;
-  v3 = [(ICNoteEditorInputAccessoryView *)&v76 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(ICNoteEditorInputAccessoryView *)&v76 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     [(ICNoteEditorInputAccessoryView *)v3 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v5 = [MEMORY[0x277CBEB18] array];
-    v6 = [(ICNoteEditorInputAccessoryView *)v4 heightAnchor];
-    v7 = [v6 constraintEqualToConstant:44.0];
+    array = [MEMORY[0x277CBEB18] array];
+    heightAnchor = [(ICNoteEditorInputAccessoryView *)v4 heightAnchor];
+    v7 = [heightAnchor constraintEqualToConstant:44.0];
     [(ICNoteEditorInputAccessoryView *)v4 setHeightConstraint:v7];
 
-    v8 = [(ICNoteEditorInputAccessoryView *)v4 heightConstraint];
-    [v5 addObject:v8];
+    heightConstraint = [(ICNoteEditorInputAccessoryView *)v4 heightConstraint];
+    [array addObject:heightConstraint];
 
     v9 = [ICNoteEditorInputAccessoryContainerView alloc];
     v10 = *MEMORY[0x277CBF3A0];
@@ -47,128 +47,128 @@
     v14 = [(ICNoteEditorInputAccessoryContainerView *)v9 initWithFrame:*MEMORY[0x277CBF3A0], v11, v12, v13];
     [(ICNoteEditorInputAccessoryView *)v4 setContainerView:v14];
 
-    v15 = [(ICNoteEditorInputAccessoryView *)v4 containerView];
-    [(ICNoteEditorInputAccessoryView *)v4 addSubview:v15];
+    containerView = [(ICNoteEditorInputAccessoryView *)v4 containerView];
+    [(ICNoteEditorInputAccessoryView *)v4 addSubview:containerView];
 
-    v16 = [(ICNoteEditorInputAccessoryView *)v4 containerView];
-    [v16 setTranslatesAutoresizingMaskIntoConstraints:0];
+    containerView2 = [(ICNoteEditorInputAccessoryView *)v4 containerView];
+    [containerView2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v17 = [(ICNoteEditorInputAccessoryView *)v4 containerView];
-    v18 = [v17 topAnchor];
-    v19 = [(ICNoteEditorInputAccessoryView *)v4 topAnchor];
-    v20 = [v18 constraintEqualToAnchor:v19];
-    [v5 addObject:v20];
+    containerView3 = [(ICNoteEditorInputAccessoryView *)v4 containerView];
+    topAnchor = [containerView3 topAnchor];
+    topAnchor2 = [(ICNoteEditorInputAccessoryView *)v4 topAnchor];
+    v20 = [topAnchor constraintEqualToAnchor:topAnchor2];
+    [array addObject:v20];
 
-    v21 = [(ICNoteEditorInputAccessoryView *)v4 containerView];
-    v22 = [v21 leftAnchor];
-    v23 = [(ICNoteEditorInputAccessoryView *)v4 leftAnchor];
-    v24 = [v22 constraintEqualToAnchor:v23];
-    [v5 addObject:v24];
+    containerView4 = [(ICNoteEditorInputAccessoryView *)v4 containerView];
+    leftAnchor = [containerView4 leftAnchor];
+    leftAnchor2 = [(ICNoteEditorInputAccessoryView *)v4 leftAnchor];
+    v24 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
+    [array addObject:v24];
 
-    v25 = [(ICNoteEditorInputAccessoryView *)v4 containerView];
-    v26 = [v25 rightAnchor];
-    v27 = [(ICNoteEditorInputAccessoryView *)v4 rightAnchor];
-    v28 = [v26 constraintEqualToAnchor:v27];
-    [v5 addObject:v28];
+    containerView5 = [(ICNoteEditorInputAccessoryView *)v4 containerView];
+    rightAnchor = [containerView5 rightAnchor];
+    rightAnchor2 = [(ICNoteEditorInputAccessoryView *)v4 rightAnchor];
+    v28 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
+    [array addObject:v28];
 
-    v29 = [(ICNoteEditorInputAccessoryView *)v4 containerView];
-    v30 = [v29 bottomAnchor];
-    v31 = [(ICNoteEditorInputAccessoryView *)v4 bottomAnchor];
-    v32 = [v30 constraintEqualToAnchor:v31];
+    containerView6 = [(ICNoteEditorInputAccessoryView *)v4 containerView];
+    bottomAnchor = [containerView6 bottomAnchor];
+    bottomAnchor2 = [(ICNoteEditorInputAccessoryView *)v4 bottomAnchor];
+    v32 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     [(ICNoteEditorInputAccessoryView *)v4 setBottomConstraint:v32];
 
-    v33 = [(ICNoteEditorInputAccessoryView *)v4 bottomConstraint];
-    [v5 addObject:v33];
+    bottomConstraint = [(ICNoteEditorInputAccessoryView *)v4 bottomConstraint];
+    [array addObject:bottomConstraint];
 
     v34 = [objc_alloc(MEMORY[0x277D75D18]) initWithFrame:{v10, v11, v12, v13}];
     [(ICNoteEditorInputAccessoryView *)v4 setBottomMarginView:v34];
 
-    v35 = [MEMORY[0x277D75348] ICNoteEditorToolbarColor];
-    v36 = [(ICNoteEditorInputAccessoryView *)v4 bottomMarginView];
-    [v36 setBackgroundColor:v35];
+    iCNoteEditorToolbarColor = [MEMORY[0x277D75348] ICNoteEditorToolbarColor];
+    bottomMarginView = [(ICNoteEditorInputAccessoryView *)v4 bottomMarginView];
+    [bottomMarginView setBackgroundColor:iCNoteEditorToolbarColor];
 
-    v37 = [(ICNoteEditorInputAccessoryView *)v4 bottomMarginView];
-    [(ICNoteEditorInputAccessoryView *)v4 addSubview:v37];
+    bottomMarginView2 = [(ICNoteEditorInputAccessoryView *)v4 bottomMarginView];
+    [(ICNoteEditorInputAccessoryView *)v4 addSubview:bottomMarginView2];
 
-    v38 = [(ICNoteEditorInputAccessoryView *)v4 bottomMarginView];
-    [v38 setTranslatesAutoresizingMaskIntoConstraints:0];
+    bottomMarginView3 = [(ICNoteEditorInputAccessoryView *)v4 bottomMarginView];
+    [bottomMarginView3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v39 = [(ICNoteEditorInputAccessoryView *)v4 bottomMarginView];
-    v40 = [v39 topAnchor];
-    v41 = [(ICNoteEditorInputAccessoryView *)v4 topAnchor];
-    v42 = [v40 constraintEqualToAnchor:v41 constant:44.0];
+    bottomMarginView4 = [(ICNoteEditorInputAccessoryView *)v4 bottomMarginView];
+    topAnchor3 = [bottomMarginView4 topAnchor];
+    topAnchor4 = [(ICNoteEditorInputAccessoryView *)v4 topAnchor];
+    v42 = [topAnchor3 constraintEqualToAnchor:topAnchor4 constant:44.0];
     [(ICNoteEditorInputAccessoryView *)v4 setBottomMarginViewTopConstraint:v42];
 
-    v43 = [(ICNoteEditorInputAccessoryView *)v4 bottomMarginViewTopConstraint];
-    [v5 addObject:v43];
+    bottomMarginViewTopConstraint = [(ICNoteEditorInputAccessoryView *)v4 bottomMarginViewTopConstraint];
+    [array addObject:bottomMarginViewTopConstraint];
 
-    v44 = [(ICNoteEditorInputAccessoryView *)v4 bottomMarginView];
-    v45 = [v44 leftAnchor];
-    v46 = [(ICNoteEditorInputAccessoryView *)v4 leftAnchor];
-    v47 = [v45 constraintEqualToAnchor:v46];
-    [v5 addObject:v47];
+    bottomMarginView5 = [(ICNoteEditorInputAccessoryView *)v4 bottomMarginView];
+    leftAnchor3 = [bottomMarginView5 leftAnchor];
+    leftAnchor4 = [(ICNoteEditorInputAccessoryView *)v4 leftAnchor];
+    v47 = [leftAnchor3 constraintEqualToAnchor:leftAnchor4];
+    [array addObject:v47];
 
-    v48 = [(ICNoteEditorInputAccessoryView *)v4 bottomMarginView];
-    v49 = [v48 rightAnchor];
-    v50 = [(ICNoteEditorInputAccessoryView *)v4 rightAnchor];
-    v51 = [v49 constraintEqualToAnchor:v50];
-    [v5 addObject:v51];
+    bottomMarginView6 = [(ICNoteEditorInputAccessoryView *)v4 bottomMarginView];
+    rightAnchor3 = [bottomMarginView6 rightAnchor];
+    rightAnchor4 = [(ICNoteEditorInputAccessoryView *)v4 rightAnchor];
+    v51 = [rightAnchor3 constraintEqualToAnchor:rightAnchor4];
+    [array addObject:v51];
 
-    v52 = [(ICNoteEditorInputAccessoryView *)v4 bottomMarginView];
-    v53 = [v52 bottomAnchor];
-    v54 = [(ICNoteEditorInputAccessoryView *)v4 bottomAnchor];
-    v55 = [v53 constraintEqualToAnchor:v54];
-    [v5 addObject:v55];
+    bottomMarginView7 = [(ICNoteEditorInputAccessoryView *)v4 bottomMarginView];
+    bottomAnchor3 = [bottomMarginView7 bottomAnchor];
+    bottomAnchor4 = [(ICNoteEditorInputAccessoryView *)v4 bottomAnchor];
+    v55 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
+    [array addObject:v55];
 
     v56 = [[ICNoteEditorToolbarDisclosureView alloc] initWithFrame:0.0, 0.0, 44.0, 44.0];
     [(ICNoteEditorInputAccessoryView *)v4 setDisclosureView:v56];
 
-    v57 = [(ICNoteEditorInputAccessoryView *)v4 disclosureView];
-    [v57 setTranslatesAutoresizingMaskIntoConstraints:0];
+    disclosureView = [(ICNoteEditorInputAccessoryView *)v4 disclosureView];
+    [disclosureView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v58 = [(ICNoteEditorInputAccessoryView *)v4 containerView];
-    v59 = [(ICNoteEditorInputAccessoryView *)v4 disclosureView];
-    [v58 addSubview:v59];
+    containerView7 = [(ICNoteEditorInputAccessoryView *)v4 containerView];
+    disclosureView2 = [(ICNoteEditorInputAccessoryView *)v4 disclosureView];
+    [containerView7 addSubview:disclosureView2];
 
     v60 = MEMORY[0x277CCAAD0];
-    v61 = [(ICNoteEditorInputAccessoryView *)v4 containerView];
-    v62 = [(ICNoteEditorInputAccessoryView *)v4 disclosureView];
-    v63 = [v60 constraintWithItem:v61 attribute:4 relatedBy:0 toItem:v62 attribute:4 multiplier:1.0 constant:16.0];
+    containerView8 = [(ICNoteEditorInputAccessoryView *)v4 containerView];
+    disclosureView3 = [(ICNoteEditorInputAccessoryView *)v4 disclosureView];
+    v63 = [v60 constraintWithItem:containerView8 attribute:4 relatedBy:0 toItem:disclosureView3 attribute:4 multiplier:1.0 constant:16.0];
     [(ICNoteEditorInputAccessoryView *)v4 setDisclosureViewBottomConstraint:v63];
 
-    v64 = [(ICNoteEditorInputAccessoryView *)v4 disclosureViewBottomConstraint];
-    [v5 addObject:v64];
+    disclosureViewBottomConstraint = [(ICNoteEditorInputAccessoryView *)v4 disclosureViewBottomConstraint];
+    [array addObject:disclosureViewBottomConstraint];
 
     v65 = MEMORY[0x277CCAAD0];
-    v66 = [(ICNoteEditorInputAccessoryView *)v4 containerView];
-    v67 = [(ICNoteEditorInputAccessoryView *)v4 disclosureView];
-    v68 = [v65 constraintWithItem:v66 attribute:6 relatedBy:0 toItem:v67 attribute:6 multiplier:1.0 constant:16.0];
+    containerView9 = [(ICNoteEditorInputAccessoryView *)v4 containerView];
+    disclosureView4 = [(ICNoteEditorInputAccessoryView *)v4 disclosureView];
+    v68 = [v65 constraintWithItem:containerView9 attribute:6 relatedBy:0 toItem:disclosureView4 attribute:6 multiplier:1.0 constant:16.0];
     [(ICNoteEditorInputAccessoryView *)v4 setDisclosureViewTrailingConstraint:v68];
 
-    v69 = [(ICNoteEditorInputAccessoryView *)v4 disclosureViewTrailingConstraint];
-    [v5 addObject:v69];
+    disclosureViewTrailingConstraint = [(ICNoteEditorInputAccessoryView *)v4 disclosureViewTrailingConstraint];
+    [array addObject:disclosureViewTrailingConstraint];
 
-    v70 = [(ICNoteEditorInputAccessoryView *)v4 disclosureView];
+    disclosureView5 = [(ICNoteEditorInputAccessoryView *)v4 disclosureView];
     v71 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:v4 action:sel_disclosureTapRecognizer_];
-    [v70 addGestureRecognizer:v71];
+    [disclosureView5 addGestureRecognizer:v71];
 
-    v72 = [(ICNoteEditorInputAccessoryView *)v4 disclosureView];
-    v73 = [v72 closeState];
+    disclosureView6 = [(ICNoteEditorInputAccessoryView *)v4 disclosureView];
+    closeState = [disclosureView6 closeState];
 
-    [(ICNoteEditorInputAccessoryView *)v4 setClipsToBounds:v73];
-    [MEMORY[0x277CCAAD0] activateConstraints:v5];
-    v74 = [(ICNoteEditorInputAccessoryView *)v4 disclosureView];
-    [v74 setHidden:1];
+    [(ICNoteEditorInputAccessoryView *)v4 setClipsToBounds:closeState];
+    [MEMORY[0x277CCAAD0] activateConstraints:array];
+    disclosureView7 = [(ICNoteEditorInputAccessoryView *)v4 disclosureView];
+    [disclosureView7 setHidden:1];
   }
 
   return v4;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
   v10.receiver = self;
   v10.super_class = ICNoteEditorInputAccessoryView;
-  v5 = [(ICNoteEditorInputAccessoryView *)&v10 hitTest:a4 withEvent:a3.x, a3.y];
+  v5 = [(ICNoteEditorInputAccessoryView *)&v10 hitTest:event withEvent:test.x, test.y];
   v6 = v5;
   if (v5 == self)
   {
@@ -210,15 +210,15 @@
   }
 
   v6 = v5 + 44.0;
-  v7 = [(ICNoteEditorInputAccessoryView *)self heightConstraint];
-  [v7 setConstant:v5 + 44.0];
+  heightConstraint = [(ICNoteEditorInputAccessoryView *)self heightConstraint];
+  [heightConstraint setConstant:v5 + 44.0];
 
-  v8 = [(ICNoteEditorInputAccessoryView *)self bottomConstraint];
-  [v8 setConstant:-v5];
+  bottomConstraint = [(ICNoteEditorInputAccessoryView *)self bottomConstraint];
+  [bottomConstraint setConstant:-v5];
 
   [(ICNoteEditorInputAccessoryView *)self updateDisclosureViewTrailingConstraint];
-  v9 = [(ICNoteEditorInputAccessoryView *)self disclosureView];
-  if ([v9 closeState])
+  disclosureView = [(ICNoteEditorInputAccessoryView *)self disclosureView];
+  if ([disclosureView closeState])
   {
     v10 = 0.0;
   }
@@ -228,90 +228,90 @@
     v10 = v5 + 44.0;
   }
 
-  v11 = [(ICNoteEditorInputAccessoryView *)self toolbarTopConstraint];
-  [v11 setConstant:v10];
+  toolbarTopConstraint = [(ICNoteEditorInputAccessoryView *)self toolbarTopConstraint];
+  [toolbarTopConstraint setConstant:v10];
 
-  v13 = [(ICNoteEditorInputAccessoryView *)self disclosureView];
-  if ([v13 closeState])
+  disclosureView2 = [(ICNoteEditorInputAccessoryView *)self disclosureView];
+  if ([disclosureView2 closeState])
   {
     v6 = 44.0;
   }
 
-  v12 = [(ICNoteEditorInputAccessoryView *)self bottomMarginViewTopConstraint];
-  [v12 setConstant:v6];
+  bottomMarginViewTopConstraint = [(ICNoteEditorInputAccessoryView *)self bottomMarginViewTopConstraint];
+  [bottomMarginViewTopConstraint setConstant:v6];
 }
 
-- (void)setToolbar:(id)a3
+- (void)setToolbar:(id)toolbar
 {
-  v5 = a3;
+  toolbarCopy = toolbar;
   toolbar = self->_toolbar;
-  if (toolbar != v5)
+  if (toolbar != toolbarCopy)
   {
-    v32 = v5;
+    v32 = toolbarCopy;
     [(UIToolbar *)toolbar removeFromSuperview];
-    objc_storeStrong(&self->_toolbar, a3);
-    v5 = v32;
+    objc_storeStrong(&self->_toolbar, toolbar);
+    toolbarCopy = v32;
     if (v32)
     {
       [(UIToolbar *)v32 setTranslatesAutoresizingMaskIntoConstraints:0];
       [(UIToolbar *)v32 setClipsToBounds:1];
       [(ICNoteEditorInputAccessoryView *)self updateToolbarColorsWithForceUpdate:1];
-      v7 = [(ICNoteEditorInputAccessoryView *)self containerView];
-      v8 = [(ICNoteEditorInputAccessoryView *)self disclosureView];
-      [v7 insertSubview:v32 belowSubview:v8];
+      containerView = [(ICNoteEditorInputAccessoryView *)self containerView];
+      disclosureView = [(ICNoteEditorInputAccessoryView *)self disclosureView];
+      [containerView insertSubview:v32 belowSubview:disclosureView];
 
-      v9 = [(ICNoteEditorInputAccessoryView *)self containerView];
-      v10 = [(ICNoteEditorInputAccessoryView *)self bottomMarginView];
-      [v9 sendSubviewToBack:v10];
+      containerView2 = [(ICNoteEditorInputAccessoryView *)self containerView];
+      bottomMarginView = [(ICNoteEditorInputAccessoryView *)self bottomMarginView];
+      [containerView2 sendSubviewToBack:bottomMarginView];
 
       v11 = MEMORY[0x277CCAAD0];
-      v12 = [(ICNoteEditorInputAccessoryView *)self containerView];
+      containerView3 = [(ICNoteEditorInputAccessoryView *)self containerView];
       v13 = 0.0;
-      v14 = [v11 constraintWithItem:v12 attribute:5 relatedBy:0 toItem:v32 attribute:5 multiplier:1.0 constant:0.0];
+      v14 = [v11 constraintWithItem:containerView3 attribute:5 relatedBy:0 toItem:v32 attribute:5 multiplier:1.0 constant:0.0];
       [(ICNoteEditorInputAccessoryView *)self addConstraint:v14];
 
       v15 = MEMORY[0x277CCAAD0];
-      v16 = [(ICNoteEditorInputAccessoryView *)self containerView];
-      v17 = [v15 constraintWithItem:v32 attribute:6 relatedBy:0 toItem:v16 attribute:6 multiplier:1.0 constant:0.0];
+      containerView4 = [(ICNoteEditorInputAccessoryView *)self containerView];
+      v17 = [v15 constraintWithItem:v32 attribute:6 relatedBy:0 toItem:containerView4 attribute:6 multiplier:1.0 constant:0.0];
       [(ICNoteEditorInputAccessoryView *)self addConstraint:v17];
 
       v18 = [MEMORY[0x277CCAAD0] constraintWithItem:v32 attribute:8 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:44.0];
       [(ICNoteEditorInputAccessoryView *)self addConstraint:v18];
 
       v19 = MEMORY[0x277CCAAD0];
-      v20 = [(ICNoteEditorInputAccessoryView *)self containerView];
-      v21 = [(ICNoteEditorInputAccessoryView *)self disclosureView];
-      if (([v21 closeState] & 1) == 0)
+      containerView5 = [(ICNoteEditorInputAccessoryView *)self containerView];
+      disclosureView2 = [(ICNoteEditorInputAccessoryView *)self disclosureView];
+      if (([disclosureView2 closeState] & 1) == 0)
       {
         [(ICNoteEditorInputAccessoryView *)self safeAreaInsets];
         v13 = v22 + 44.0;
       }
 
-      v23 = [v19 constraintWithItem:v32 attribute:3 relatedBy:0 toItem:v20 attribute:3 multiplier:1.0 constant:v13];
+      v23 = [v19 constraintWithItem:v32 attribute:3 relatedBy:0 toItem:containerView5 attribute:3 multiplier:1.0 constant:v13];
       [(ICNoteEditorInputAccessoryView *)self setToolbarTopConstraint:v23];
 
-      v24 = [(ICNoteEditorInputAccessoryView *)self toolbarTopConstraint];
-      [(ICNoteEditorInputAccessoryView *)self addConstraint:v24];
+      toolbarTopConstraint = [(ICNoteEditorInputAccessoryView *)self toolbarTopConstraint];
+      [(ICNoteEditorInputAccessoryView *)self addConstraint:toolbarTopConstraint];
 
-      v25 = [(ICNoteEditorInputAccessoryView *)self disclosureView];
-      v26 = [v25 closeState];
-      v27 = [(ICNoteEditorInputAccessoryView *)self toolbar];
-      [v27 setHidden:v26 ^ 1u];
+      disclosureView3 = [(ICNoteEditorInputAccessoryView *)self disclosureView];
+      closeState = [disclosureView3 closeState];
+      toolbar = [(ICNoteEditorInputAccessoryView *)self toolbar];
+      [toolbar setHidden:closeState ^ 1u];
 
-      v28 = [(ICNoteEditorInputAccessoryView *)self disclosureView];
-      v29 = [v28 closeState];
-      v30 = [(ICNoteEditorInputAccessoryView *)self bottomMarginView];
-      [v30 setHidden:v29 ^ 1u];
+      disclosureView4 = [(ICNoteEditorInputAccessoryView *)self disclosureView];
+      closeState2 = [disclosureView4 closeState];
+      bottomMarginView2 = [(ICNoteEditorInputAccessoryView *)self bottomMarginView];
+      [bottomMarginView2 setHidden:closeState2 ^ 1u];
 
-      v31 = [(ICNoteEditorInputAccessoryView *)self disclosureView];
-      [v31 setHidden:1];
+      disclosureView5 = [(ICNoteEditorInputAccessoryView *)self disclosureView];
+      [disclosureView5 setHidden:1];
 
-      v5 = v32;
+      toolbarCopy = v32;
     }
   }
 }
 
-- (void)showWithDelay:(double)a3
+- (void)showWithDelay:(double)delay
 {
   if ([(ICNoteEditorInputAccessoryView *)self setButtonsVisibleWhenShown])
   {
@@ -319,37 +319,37 @@
     [(ICNoteEditorInputAccessoryView *)self setSetButtonsVisibleWhenShown:0];
   }
 
-  v5 = [(ICNoteEditorInputAccessoryView *)self disclosureView];
-  v6 = [v5 closeState];
+  disclosureView = [(ICNoteEditorInputAccessoryView *)self disclosureView];
+  closeState = [disclosureView closeState];
 
-  if (v6)
+  if (closeState)
   {
-    v7 = [(ICNoteEditorInputAccessoryView *)self disclosureView];
-    [v7 setHidden:0];
+    disclosureView2 = [(ICNoteEditorInputAccessoryView *)self disclosureView];
+    [disclosureView2 setHidden:0];
 
-    v8 = [(ICNoteEditorInputAccessoryView *)self toolbar];
-    [v8 setHidden:0];
+    toolbar = [(ICNoteEditorInputAccessoryView *)self toolbar];
+    [toolbar setHidden:0];
 
-    v11 = [(ICNoteEditorInputAccessoryView *)self bottomMarginView];
-    [v11 setHidden:0];
+    bottomMarginView = [(ICNoteEditorInputAccessoryView *)self bottomMarginView];
+    [bottomMarginView setHidden:0];
   }
 
   else
   {
     CGAffineTransformMakeScale(&v14, 0.0, 0.0);
-    v9 = [(ICNoteEditorInputAccessoryView *)self disclosureView];
+    disclosureView3 = [(ICNoteEditorInputAccessoryView *)self disclosureView];
     v13 = v14;
-    [v9 setTransform:&v13];
+    [disclosureView3 setTransform:&v13];
 
-    v10 = [(ICNoteEditorInputAccessoryView *)self disclosureView];
-    [v10 setHidden:0];
+    disclosureView4 = [(ICNoteEditorInputAccessoryView *)self disclosureView];
+    [disclosureView4 setHidden:0];
 
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __48__ICNoteEditorInputAccessoryView_showWithDelay___block_invoke;
     v12[3] = &unk_2781ABCF8;
     v12[4] = self;
-    [MEMORY[0x277D75D18] animateWithDuration:0 delay:v12 options:0 animations:0.13 completion:a3];
+    [MEMORY[0x277D75D18] animateWithDuration:0 delay:v12 options:0 animations:0.13 completion:delay];
   }
 }
 
@@ -363,47 +363,47 @@ void __48__ICNoteEditorInputAccessoryView_showWithDelay___block_invoke(uint64_t 
 
 - (void)hide
 {
-  v3 = [(ICNoteEditorInputAccessoryView *)self disclosureView];
-  v4 = [v3 closeState];
+  disclosureView = [(ICNoteEditorInputAccessoryView *)self disclosureView];
+  closeState = [disclosureView closeState];
 
-  v5 = [(ICNoteEditorInputAccessoryView *)self disclosureView];
-  [v5 setHidden:1];
+  disclosureView2 = [(ICNoteEditorInputAccessoryView *)self disclosureView];
+  [disclosureView2 setHidden:1];
 
-  if (v4)
+  if (closeState)
   {
-    v6 = [(ICNoteEditorInputAccessoryView *)self toolbar];
-    [v6 setHidden:1];
+    toolbar = [(ICNoteEditorInputAccessoryView *)self toolbar];
+    [toolbar setHidden:1];
   }
 
   else
   {
-    v7 = [(ICNoteEditorInputAccessoryView *)self disclosureView];
-    [v7 setCloseState:0];
+    disclosureView3 = [(ICNoteEditorInputAccessoryView *)self disclosureView];
+    [disclosureView3 setCloseState:0];
 
     [(ICNoteEditorInputAccessoryView *)self safeAreaInsets];
     v9 = v8 + 44.0;
-    v10 = [(ICNoteEditorInputAccessoryView *)self toolbarTopConstraint];
-    [v10 setConstant:v9];
+    toolbarTopConstraint = [(ICNoteEditorInputAccessoryView *)self toolbarTopConstraint];
+    [toolbarTopConstraint setConstant:v9];
 
-    v11 = [(ICNoteEditorInputAccessoryView *)self toolbar];
-    [v11 setHidden:1];
+    toolbar2 = [(ICNoteEditorInputAccessoryView *)self toolbar];
+    [toolbar2 setHidden:1];
 
-    v12 = [(ICNoteEditorInputAccessoryView *)self toolbar];
-    [v12 layoutIfNeeded];
+    toolbar3 = [(ICNoteEditorInputAccessoryView *)self toolbar];
+    [toolbar3 layoutIfNeeded];
 
     [(ICNoteEditorInputAccessoryView *)self safeAreaInsets];
     v14 = v13 + 44.0;
-    v6 = [(ICNoteEditorInputAccessoryView *)self bottomMarginViewTopConstraint];
-    [v6 setConstant:v14];
+    toolbar = [(ICNoteEditorInputAccessoryView *)self bottomMarginViewTopConstraint];
+    [toolbar setConstant:v14];
   }
 
-  v15 = [(ICNoteEditorInputAccessoryView *)self bottomMarginView];
-  [v15 setHidden:1];
+  bottomMarginView = [(ICNoteEditorInputAccessoryView *)self bottomMarginView];
+  [bottomMarginView setHidden:1];
 }
 
-- (void)setContentVisible:(BOOL)a3
+- (void)setContentVisible:(BOOL)visible
 {
-  if (a3)
+  if (visible)
   {
     v3 = 1.0;
   }
@@ -413,17 +413,17 @@ void __48__ICNoteEditorInputAccessoryView_showWithDelay___block_invoke(uint64_t 
     v3 = 0.0;
   }
 
-  v4 = [(ICNoteEditorInputAccessoryView *)self containerView];
-  [v4 setAlpha:v3];
+  containerView = [(ICNoteEditorInputAccessoryView *)self containerView];
+  [containerView setAlpha:v3];
 }
 
-- (void)setButtonsVisible:(BOOL)a3
+- (void)setButtonsVisible:(BOOL)visible
 {
-  v3 = a3;
-  v5 = [(ICNoteEditorInputAccessoryView *)self disclosureView];
-  v6 = [v5 closeState];
+  visibleCopy = visible;
+  disclosureView = [(ICNoteEditorInputAccessoryView *)self disclosureView];
+  closeState = [disclosureView closeState];
 
-  if (v6 != v3)
+  if (closeState != visibleCopy)
   {
 
     [(ICNoteEditorInputAccessoryView *)self toggleDisclosureViewCloseStateWithTap:0];
@@ -432,15 +432,15 @@ void __48__ICNoteEditorInputAccessoryView_showWithDelay___block_invoke(uint64_t 
 
 - (BOOL)buttonsVisible
 {
-  v2 = [(ICNoteEditorInputAccessoryView *)self disclosureView];
-  v3 = [v2 closeState];
+  disclosureView = [(ICNoteEditorInputAccessoryView *)self disclosureView];
+  closeState = [disclosureView closeState];
 
-  return v3;
+  return closeState;
 }
 
-- (void)hideDisclosureViewForTransition:(BOOL)a3
+- (void)hideDisclosureViewForTransition:(BOOL)transition
 {
-  v3 = a3;
+  transitionCopy = transition;
   if (![(ICNoteEditorInputAccessoryView *)self buttonsVisible])
   {
     v5 = 1.0;
@@ -448,7 +448,7 @@ void __48__ICNoteEditorInputAccessoryView_showWithDelay___block_invoke(uint64_t 
     v6[0] = MEMORY[0x277D85DD0];
     v6[2] = __66__ICNoteEditorInputAccessoryView_hideDisclosureViewForTransition___block_invoke;
     v6[3] = &unk_2781AD1C0;
-    if (v3)
+    if (transitionCopy)
     {
       v5 = 0.0;
     }
@@ -468,9 +468,9 @@ void __66__ICNoteEditorInputAccessoryView_hideDisclosureViewForTransition___bloc
 
 - (void)updateDisclosureViewTrailingConstraint
 {
-  v8 = [(ICNoteEditorInputAccessoryView *)self disclosureView];
+  disclosureView = [(ICNoteEditorInputAccessoryView *)self disclosureView];
   v3 = 16.0;
-  if ([v8 closeState])
+  if ([disclosureView closeState])
   {
     [(ICNoteEditorInputAccessoryView *)self disclosureViewCloseTrailingOffset];
     v3 = v4;
@@ -478,13 +478,13 @@ void __66__ICNoteEditorInputAccessoryView_hideDisclosureViewForTransition___bloc
 
   [(ICNoteEditorInputAccessoryView *)self ic_directionalSafeAreaInsets];
   v6 = v3 + v5;
-  v7 = [(ICNoteEditorInputAccessoryView *)self disclosureViewTrailingConstraint];
-  [v7 setConstant:v6];
+  disclosureViewTrailingConstraint = [(ICNoteEditorInputAccessoryView *)self disclosureViewTrailingConstraint];
+  [disclosureViewTrailingConstraint setConstant:v6];
 }
 
-- (void)updateLayoutWithSize:(CGSize)a3
+- (void)updateLayoutWithSize:(CGSize)size
 {
-  v4 = a3.width <= a3.height;
+  v4 = size.width <= size.height;
   v5 = 16.0;
   if (!v4)
   {
@@ -497,9 +497,9 @@ void __66__ICNoteEditorInputAccessoryView_hideDisclosureViewForTransition___bloc
   [(ICNoteEditorInputAccessoryView *)self updateDisclosureViewTrailingConstraint];
 }
 
-- (void)toggleDisclosureViewCloseStateWithTap:(BOOL)a3
+- (void)toggleDisclosureViewCloseStateWithTap:(BOOL)tap
 {
-  v3 = a3;
+  tapCopy = tap;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v6 = objc_opt_respondsToSelector();
 
@@ -511,15 +511,15 @@ void __66__ICNoteEditorInputAccessoryView_hideDisclosureViewForTransition___bloc
 
   [(ICNoteEditorInputAccessoryView *)self safeAreaInsets];
   v9 = v8 + 44.0;
-  v10 = [(ICNoteEditorInputAccessoryView *)self disclosureView];
-  v11 = [v10 closeState];
-  v12 = [(ICNoteEditorInputAccessoryView *)self disclosureView];
-  [v12 setCloseState:v11 ^ 1u];
+  disclosureView = [(ICNoteEditorInputAccessoryView *)self disclosureView];
+  closeState = [disclosureView closeState];
+  disclosureView2 = [(ICNoteEditorInputAccessoryView *)self disclosureView];
+  [disclosureView2 setCloseState:closeState ^ 1u];
 
-  v13 = [(ICNoteEditorInputAccessoryView *)self disclosureView];
-  v14 = [v13 closeState];
+  disclosureView3 = [(ICNoteEditorInputAccessoryView *)self disclosureView];
+  closeState2 = [disclosureView3 closeState];
 
-  if (v14)
+  if (closeState2)
   {
     v29[0] = MEMORY[0x277D85DD0];
     v29[1] = 3221225472;
@@ -528,28 +528,28 @@ void __66__ICNoteEditorInputAccessoryView_hideDisclosureViewForTransition___bloc
     v29[4] = self;
     *&v29[5] = v9;
     [MEMORY[0x277D75D18] performWithoutAnimation:v29];
-    v15 = [(ICNoteEditorInputAccessoryView *)self toolbarTopConstraint];
-    [v15 setConstant:0.0];
+    toolbarTopConstraint = [(ICNoteEditorInputAccessoryView *)self toolbarTopConstraint];
+    [toolbarTopConstraint setConstant:0.0];
 
-    v16 = [(ICNoteEditorInputAccessoryView *)self bottomMarginViewTopConstraint];
-    v17 = v16;
+    bottomMarginViewTopConstraint = [(ICNoteEditorInputAccessoryView *)self bottomMarginViewTopConstraint];
+    v17 = bottomMarginViewTopConstraint;
     v18 = 44.0;
   }
 
   else
   {
-    v19 = [(ICNoteEditorInputAccessoryView *)self toolbarTopConstraint];
-    [v19 setConstant:v9];
+    toolbarTopConstraint2 = [(ICNoteEditorInputAccessoryView *)self toolbarTopConstraint];
+    [toolbarTopConstraint2 setConstant:v9];
 
-    v16 = [(ICNoteEditorInputAccessoryView *)self bottomMarginViewTopConstraint];
-    v17 = v16;
+    bottomMarginViewTopConstraint = [(ICNoteEditorInputAccessoryView *)self bottomMarginViewTopConstraint];
+    v17 = bottomMarginViewTopConstraint;
     v18 = v9;
   }
 
-  [v16 setConstant:v18];
+  [bottomMarginViewTopConstraint setConstant:v18];
 
-  v20 = [(ICNoteEditorInputAccessoryView *)self disclosureView];
-  if ([v20 closeState])
+  disclosureView4 = [(ICNoteEditorInputAccessoryView *)self disclosureView];
+  if ([disclosureView4 closeState])
   {
     v21 = 0.5;
   }
@@ -559,14 +559,14 @@ void __66__ICNoteEditorInputAccessoryView_hideDisclosureViewForTransition___bloc
     v21 = 16.0;
   }
 
-  v22 = [(ICNoteEditorInputAccessoryView *)self disclosureViewBottomConstraint];
-  [v22 setConstant:v21];
+  disclosureViewBottomConstraint = [(ICNoteEditorInputAccessoryView *)self disclosureViewBottomConstraint];
+  [disclosureViewBottomConstraint setConstant:v21];
 
   [(ICNoteEditorInputAccessoryView *)self updateDisclosureViewTrailingConstraint];
-  v23 = [(ICNoteEditorInputAccessoryView *)self disclosureView];
-  LOBYTE(v22) = [v23 closeState];
+  disclosureView5 = [(ICNoteEditorInputAccessoryView *)self disclosureView];
+  LOBYTE(disclosureViewBottomConstraint) = [disclosureView5 closeState];
 
-  if ((v22 & 1) == 0)
+  if ((disclosureViewBottomConstraint & 1) == 0)
   {
     [(ICNoteEditorInputAccessoryView *)self setClipsToBounds:0];
   }
@@ -588,7 +588,7 @@ void __66__ICNoteEditorInputAccessoryView_hideDisclosureViewForTransition___bloc
   if (v25)
   {
     v26 = objc_loadWeakRetained(&self->_delegate);
-    [v26 inputAccessoryDisclosureStateDidChange:self tapped:v3];
+    [v26 inputAccessoryDisclosureStateDidChange:self tapped:tapCopy];
   }
 }
 
@@ -637,31 +637,31 @@ void __72__ICNoteEditorInputAccessoryView_toggleDisclosureViewCloseStateWithTap_
   }
 }
 
-- (void)disclosureTapRecognizer:(id)a3
+- (void)disclosureTapRecognizer:(id)recognizer
 {
   [(ICNoteEditorInputAccessoryView *)self toggleDisclosureViewCloseStateWithTap:1];
   v4 = *MEMORY[0x277D76488];
-  v5 = [(ICNoteEditorInputAccessoryView *)self disclosureView];
-  UIAccessibilityPostNotification(v4, v5);
+  disclosureView = [(ICNoteEditorInputAccessoryView *)self disclosureView];
+  UIAccessibilityPostNotification(v4, disclosureView);
 }
 
 - (id)accessibilityElements
 {
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = [(ICNoteEditorInputAccessoryView *)self disclosureView];
-  v5 = [v4 closeState];
+  array = [MEMORY[0x277CBEB18] array];
+  disclosureView = [(ICNoteEditorInputAccessoryView *)self disclosureView];
+  closeState = [disclosureView closeState];
 
-  if (v5)
+  if (closeState)
   {
-    v6 = [(ICNoteEditorInputAccessoryView *)self toolbar];
-    v7 = [v6 _accessibleSubviews];
-    [v3 addObjectsFromArray:v7];
+    toolbar = [(ICNoteEditorInputAccessoryView *)self toolbar];
+    _accessibleSubviews = [toolbar _accessibleSubviews];
+    [array addObjectsFromArray:_accessibleSubviews];
   }
 
-  v8 = [(ICNoteEditorInputAccessoryView *)self disclosureView];
-  [v3 addObject:v8];
+  disclosureView2 = [(ICNoteEditorInputAccessoryView *)self disclosureView];
+  [array addObject:disclosureView2];
 
-  v9 = [v3 copy];
+  v9 = [array copy];
 
   return v9;
 }
@@ -674,26 +674,26 @@ void __72__ICNoteEditorInputAccessoryView_toggleDisclosureViewCloseStateWithTap_
   [(ICNoteEditorInputAccessoryView *)self updateToolbarColorsWithForceUpdate:1];
 }
 
-- (void)updateToolbarColorsWithForceUpdate:(BOOL)a3
+- (void)updateToolbarColorsWithForceUpdate:(BOOL)update
 {
-  v3 = a3;
+  updateCopy = update;
   v21 = *MEMORY[0x277D85DE8];
-  v5 = [(ICNoteEditorInputAccessoryView *)self disclosureView];
-  v6 = [v5 itemColor];
+  disclosureView = [(ICNoteEditorInputAccessoryView *)self disclosureView];
+  itemColor = [disclosureView itemColor];
 
-  v7 = [(ICNoteEditorInputAccessoryView *)self toolbar];
-  v8 = [v7 tintColor];
-  v9 = [v8 isEqual:v6];
+  toolbar = [(ICNoteEditorInputAccessoryView *)self toolbar];
+  tintColor = [toolbar tintColor];
+  v9 = [tintColor isEqual:itemColor];
 
-  if (!v9 || v3)
+  if (!v9 || updateCopy)
   {
-    [v7 setTintColor:v6];
+    [toolbar setTintColor:itemColor];
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v10 = [v7 items];
-    v11 = [v10 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    items = [toolbar items];
+    v11 = [items countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v11)
     {
       v12 = v11;
@@ -705,21 +705,21 @@ void __72__ICNoteEditorInputAccessoryView_toggleDisclosureViewCloseStateWithTap_
         {
           if (*v17 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(items);
           }
 
-          [*(*(&v16 + 1) + 8 * v14++) setTintColor:v6];
+          [*(*(&v16 + 1) + 8 * v14++) setTintColor:itemColor];
         }
 
         while (v12 != v14);
-        v12 = [v10 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v12 = [items countByEnumeratingWithState:&v16 objects:v20 count:16];
       }
 
       while (v12);
     }
 
-    v15 = [MEMORY[0x277D75348] ICNoteEditorToolbarColor];
-    [v7 setBarTintColor:v15];
+    iCNoteEditorToolbarColor = [MEMORY[0x277D75348] ICNoteEditorToolbarColor];
+    [toolbar setBarTintColor:iCNoteEditorToolbarColor];
   }
 }
 

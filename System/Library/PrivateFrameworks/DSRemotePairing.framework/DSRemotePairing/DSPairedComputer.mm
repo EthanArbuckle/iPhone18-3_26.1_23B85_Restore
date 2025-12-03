@@ -1,5 +1,5 @@
 @interface DSPairedComputer
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (unint64_t)hash;
 @end
 
@@ -16,10 +16,10 @@
   return [(NSString *)remotePairingFrameworkIdentifier hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     goto LABEL_6;
   }
@@ -32,10 +32,10 @@
   }
 
   serialNumber = self->_serialNumber;
-  v6 = [(DSPairedComputer *)v4 serialNumber];
-  LOBYTE(serialNumber) = [(NSString *)serialNumber isEqualToString:v6];
+  serialNumber = [(DSPairedComputer *)equalCopy serialNumber];
+  LOBYTE(serialNumber) = [(NSString *)serialNumber isEqualToString:serialNumber];
 
-  if ((serialNumber & 1) != 0 || (remotePairingFrameworkIdentifier = self->_remotePairingFrameworkIdentifier) != 0 && ([(DSPairedComputer *)v4 remotePairingFrameworkIdentifier], v8 = objc_claimAutoreleasedReturnValue(), v9 = [(NSString *)remotePairingFrameworkIdentifier isEqualToString:v8], v8, v9))
+  if ((serialNumber & 1) != 0 || (remotePairingFrameworkIdentifier = self->_remotePairingFrameworkIdentifier) != 0 && ([(DSPairedComputer *)equalCopy remotePairingFrameworkIdentifier], v8 = objc_claimAutoreleasedReturnValue(), v9 = [(NSString *)remotePairingFrameworkIdentifier isEqualToString:v8], v8, v9))
   {
 LABEL_6:
     LOBYTE(lockdownFrameworkIdentifier) = 1;
@@ -46,8 +46,8 @@ LABEL_6:
     lockdownFrameworkIdentifier = self->_lockdownFrameworkIdentifier;
     if (lockdownFrameworkIdentifier)
     {
-      v12 = [(DSPairedComputer *)v4 lockdownFrameworkIdentifier];
-      LOBYTE(lockdownFrameworkIdentifier) = [(NSString *)lockdownFrameworkIdentifier isEqualToString:v12];
+      lockdownFrameworkIdentifier = [(DSPairedComputer *)equalCopy lockdownFrameworkIdentifier];
+      LOBYTE(lockdownFrameworkIdentifier) = [(NSString *)lockdownFrameworkIdentifier isEqualToString:lockdownFrameworkIdentifier];
     }
   }
 

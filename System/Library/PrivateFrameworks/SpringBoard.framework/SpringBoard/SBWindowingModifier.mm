@@ -1,61 +1,61 @@
 @interface SBWindowingModifier
-- (BOOL)supportsHomeAffordanceForItem:(id)a3;
-- (CGPoint)adjustedSpaceAccessoryViewAnchorPoint:(CGPoint)a3 forAppLayout:(id)a4;
-- (CGPoint)adjustedSpaceAccessoryViewPerspectiveAngle:(CGPoint)a3 forAppLayout:(id)a4;
-- (CGPoint)anchorPointForIndex:(unint64_t)a3;
-- (CGPoint)perspectiveAngleForIndex:(unint64_t)a3;
-- (CGPoint)perspectiveAngleForItem:(id)a3;
-- (CGRect)adjustedSpaceAccessoryViewFrame:(CGRect)a3 forAppLayout:(id)a4;
-- (CGRect)frameForIndex:(unint64_t)a3;
-- (SBSwitcherWallpaperGradientAttributes)wallpaperGradientAttributesForItem:(id)a3;
-- (SBSwitcherWallpaperGradientAttributes)wallpaperGradientAttributesForLayoutRole:(int64_t)a3 inAppLayout:(id)a4;
-- (SBWindowingItemCorners)cornersForItem:(SEL)a3;
-- (SBWindowingItemFrame)frameForItem:(SEL)a3;
-- (SBWindowingItemShadow)shadowForItem:(id)a3;
-- (SBWindowingItemTitleStyle)titleStyleForItem:(SEL)a3;
+- (BOOL)supportsHomeAffordanceForItem:(id)item;
+- (CGPoint)adjustedSpaceAccessoryViewAnchorPoint:(CGPoint)point forAppLayout:(id)layout;
+- (CGPoint)adjustedSpaceAccessoryViewPerspectiveAngle:(CGPoint)angle forAppLayout:(id)layout;
+- (CGPoint)anchorPointForIndex:(unint64_t)index;
+- (CGPoint)perspectiveAngleForIndex:(unint64_t)index;
+- (CGPoint)perspectiveAngleForItem:(id)item;
+- (CGRect)adjustedSpaceAccessoryViewFrame:(CGRect)frame forAppLayout:(id)layout;
+- (CGRect)frameForIndex:(unint64_t)index;
+- (SBSwitcherWallpaperGradientAttributes)wallpaperGradientAttributesForItem:(id)item;
+- (SBSwitcherWallpaperGradientAttributes)wallpaperGradientAttributesForLayoutRole:(int64_t)role inAppLayout:(id)layout;
+- (SBWindowingItemCorners)cornersForItem:(SEL)item;
+- (SBWindowingItemFrame)frameForItem:(SEL)item;
+- (SBWindowingItemShadow)shadowForItem:(id)item;
+- (SBWindowingItemTitleStyle)titleStyleForItem:(SEL)item;
 - (SBWindowingModifier)init;
-- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)a3;
-- (double)adjustedSpaceAccessoryViewScale:(double)a3 forAppLayout:(id)a4;
-- (double)dimmingAlphaForItem:(id)a3;
-- (double)iconOpacityForIndex:(unint64_t)a3;
-- (double)opacityForItem:(id)a3;
-- (double)opacityForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 atIndex:(unint64_t)a5;
-- (double)scaleForIndex:(unint64_t)a3;
-- (double)shadowOpacityForLayoutRole:(int64_t)a3 atIndex:(unint64_t)a4;
-- (double)titleAndIconOpacityForIndex:(unint64_t)a3;
-- (double)titleOpacityForIndex:(unint64_t)a3;
+- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)index;
+- (double)adjustedSpaceAccessoryViewScale:(double)scale forAppLayout:(id)layout;
+- (double)dimmingAlphaForItem:(id)item;
+- (double)iconOpacityForIndex:(unint64_t)index;
+- (double)opacityForItem:(id)item;
+- (double)opacityForLayoutRole:(int64_t)role inAppLayout:(id)layout atIndex:(unint64_t)index;
+- (double)scaleForIndex:(unint64_t)index;
+- (double)shadowOpacityForLayoutRole:(int64_t)role atIndex:(unint64_t)index;
+- (double)titleAndIconOpacityForIndex:(unint64_t)index;
+- (double)titleOpacityForIndex:(unint64_t)index;
 - (id)activities;
-- (id)animationAttributesForItem:(id)a3;
+- (id)animationAttributesForItem:(id)item;
 - (id)currentResponses;
-- (id)flexibleAutoLayoutSpaceForAppLayout:(id)a3;
-- (id)handleEvent:(id)a3;
-- (id)spaceAccessoryViewModelForItem:(id)a3;
+- (id)flexibleAutoLayoutSpaceForAppLayout:(id)layout;
+- (id)handleEvent:(id)event;
+- (id)spaceAccessoryViewModelForItem:(id)item;
 - (id)stateModel;
 - (id)topMostItems;
 - (id)update;
-- (id)viewModelForItem:(id)a3;
+- (id)viewModelForItem:(id)item;
 - (id)viewModelItems;
 - (id)visibleAppLayouts;
 - (id)visibleItems;
 - (id)windowingConfiguration;
-- (int64_t)headerStyleForIndex:(unint64_t)a3;
-- (unint64_t)maskedCornersForIndex:(unint64_t)a3;
-- (unint64_t)personalityDebugColorStyleForItem:(id)a3;
+- (int64_t)headerStyleForIndex:(unint64_t)index;
+- (unint64_t)maskedCornersForIndex:(unint64_t)index;
+- (unint64_t)personalityDebugColorStyleForItem:(id)item;
 - (unint64_t)transitionPhase;
 - (void)_evaluateInteroperability;
-- (void)_handleGestureEvent:(id)a3;
-- (void)_handleTransitionEvent:(id)a3;
-- (void)_setSwitcherModifierInteroperabilityEnabled:(BOOL)a3 force:(BOOL)a4;
-- (void)addChildModifier:(id)a3 atLevel:(int64_t)a4 key:(id)a5;
-- (void)appendResponse:(id)a3;
-- (void)appendResponses:(id)a3;
+- (void)_handleGestureEvent:(id)event;
+- (void)_handleTransitionEvent:(id)event;
+- (void)_setSwitcherModifierInteroperabilityEnabled:(BOOL)enabled force:(BOOL)force;
+- (void)addChildModifier:(id)modifier atLevel:(int64_t)level key:(id)key;
+- (void)appendResponse:(id)response;
+- (void)appendResponses:(id)responses;
 - (void)complete;
 - (void)currentResponses;
 - (void)layoutViewModelsIfNeeded;
-- (void)removeChildModifier:(id)a3;
-- (void)removeResponse:(id)a3;
-- (void)setState:(int64_t)a3;
-- (void)setViewModel:(id)a3 forItem:(id)a4;
+- (void)removeChildModifier:(id)modifier;
+- (void)removeResponse:(id)response;
+- (void)setState:(int64_t)state;
+- (void)setViewModel:(id)model forItem:(id)item;
 - (void)update;
 @end
 
@@ -77,16 +77,16 @@
 
 - (id)visibleAppLayouts
 {
-  v2 = [(SBWindowingModifier *)self visibleItems];
-  v3 = [v2 bs_compactMap:&__block_literal_global_106];
+  visibleItems = [(SBWindowingModifier *)self visibleItems];
+  v3 = [visibleItems bs_compactMap:&__block_literal_global_106];
 
   return v3;
 }
 
-- (CGPoint)anchorPointForIndex:(unint64_t)a3
+- (CGPoint)anchorPointForIndex:(unint64_t)index
 {
-  v5 = [(SBWindowingModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
+  appLayouts = [(SBWindowingModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:index];
 
   [(SBWindowingModifier *)self frameForItem:v6];
   v7 = v9;
@@ -96,10 +96,10 @@
   return result;
 }
 
-- (CGRect)frameForIndex:(unint64_t)a3
+- (CGRect)frameForIndex:(unint64_t)index
 {
-  v5 = [(SBWindowingModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
+  appLayouts = [(SBWindowingModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:index];
 
   [(SBWindowingModifier *)self frameForItem:v6, 0, 0];
   v7 = 0.0 - 0.0 * 0.5;
@@ -113,19 +113,19 @@
   return result;
 }
 
-- (double)scaleForIndex:(unint64_t)a3
+- (double)scaleForIndex:(unint64_t)index
 {
-  v5 = [(SBWindowingModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
+  appLayouts = [(SBWindowingModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:index];
 
   [(SBWindowingModifier *)self frameForItem:v6];
   return v8;
 }
 
-- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)a3
+- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)index
 {
-  v5 = [(SBWindowingModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
+  appLayouts = [(SBWindowingModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:index];
 
   [(SBWindowingModifier *)self cornersForItem:v6];
   v7 = v11;
@@ -139,10 +139,10 @@
   return result;
 }
 
-- (unint64_t)maskedCornersForIndex:(unint64_t)a3
+- (unint64_t)maskedCornersForIndex:(unint64_t)index
 {
-  v5 = [(SBWindowingModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
+  appLayouts = [(SBWindowingModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:index];
 
   [(SBWindowingModifier *)self cornersForItem:v6];
   v7 = v9;
@@ -150,28 +150,28 @@
   return v7;
 }
 
-- (double)shadowOpacityForLayoutRole:(int64_t)a3 atIndex:(unint64_t)a4
+- (double)shadowOpacityForLayoutRole:(int64_t)role atIndex:(unint64_t)index
 {
-  v6 = [(SBWindowingModifier *)self appLayouts];
-  v7 = [v6 objectAtIndex:a4];
+  appLayouts = [(SBWindowingModifier *)self appLayouts];
+  v7 = [appLayouts objectAtIndex:index];
 
   v8 = COERCE_DOUBLE([(SBWindowingModifier *)self shadowForItem:v7]);
   return v8;
 }
 
-- (double)opacityForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 atIndex:(unint64_t)a5
+- (double)opacityForLayoutRole:(int64_t)role inAppLayout:(id)layout atIndex:(unint64_t)index
 {
-  v6 = [a4 leafAppLayoutForRole:a3];
+  v6 = [layout leafAppLayoutForRole:role];
   [(SBWindowingModifier *)self opacityForItem:v6];
   v8 = v7;
 
   return v8;
 }
 
-- (CGPoint)perspectiveAngleForIndex:(unint64_t)a3
+- (CGPoint)perspectiveAngleForIndex:(unint64_t)index
 {
-  v5 = [(SBWindowingModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
+  appLayouts = [(SBWindowingModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:index];
 
   [(SBWindowingModifier *)self perspectiveAngleForItem:v6];
   v8 = v7;
@@ -184,18 +184,18 @@
   return result;
 }
 
-- (SBSwitcherWallpaperGradientAttributes)wallpaperGradientAttributesForLayoutRole:(int64_t)a3 inAppLayout:(id)a4
+- (SBSwitcherWallpaperGradientAttributes)wallpaperGradientAttributesForLayoutRole:(int64_t)role inAppLayout:(id)layout
 {
-  v6 = a4;
-  [(SBWindowingModifier *)self wallpaperGradientAttributesForItem:v6];
+  layoutCopy = layout;
+  [(SBWindowingModifier *)self wallpaperGradientAttributesForItem:layoutCopy];
   v8 = v7;
   v10 = v9;
-  v11 = [v6 allItems];
-  v12 = [v11 count];
+  allItems = [layoutCopy allItems];
+  v12 = [allItems count];
 
   if (v12 >= 2)
   {
-    v13 = [v6 leafAppLayoutForRole:a3];
+    v13 = [layoutCopy leafAppLayoutForRole:role];
     [(SBWindowingModifier *)self wallpaperGradientAttributesForItem:v13];
     v15 = v14;
     v17 = v16;
@@ -231,10 +231,10 @@
   return result;
 }
 
-- (int64_t)headerStyleForIndex:(unint64_t)a3
+- (int64_t)headerStyleForIndex:(unint64_t)index
 {
-  v5 = [(SBWindowingModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
+  appLayouts = [(SBWindowingModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:index];
 
   [(SBWindowingModifier *)self titleStyleForItem:v6];
   v7 = v9;
@@ -242,48 +242,48 @@
   return v7;
 }
 
-- (double)titleAndIconOpacityForIndex:(unint64_t)a3
+- (double)titleAndIconOpacityForIndex:(unint64_t)index
 {
-  v5 = [(SBWindowingModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
+  appLayouts = [(SBWindowingModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:index];
 
   [(SBWindowingModifier *)self titleStyleForItem:v6];
   return v8;
 }
 
-- (double)iconOpacityForIndex:(unint64_t)a3
+- (double)iconOpacityForIndex:(unint64_t)index
 {
-  v5 = [(SBWindowingModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
+  appLayouts = [(SBWindowingModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:index];
 
   [(SBWindowingModifier *)self titleStyleForItem:v6];
   return v8;
 }
 
-- (double)titleOpacityForIndex:(unint64_t)a3
+- (double)titleOpacityForIndex:(unint64_t)index
 {
-  v5 = [(SBWindowingModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
+  appLayouts = [(SBWindowingModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:index];
 
   [(SBWindowingModifier *)self titleStyleForItem:v6];
   return v8;
 }
 
-- (CGRect)adjustedSpaceAccessoryViewFrame:(CGRect)a3 forAppLayout:(id)a4
+- (CGRect)adjustedSpaceAccessoryViewFrame:(CGRect)frame forAppLayout:(id)layout
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v27.receiver = self;
   v27.super_class = SBWindowingModifier;
-  v9 = a4;
-  [(SBWindowingModifier *)&v27 adjustedSpaceAccessoryViewFrame:v9 forAppLayout:x, y, width, height];
+  layoutCopy = layout;
+  [(SBWindowingModifier *)&v27 adjustedSpaceAccessoryViewFrame:layoutCopy forAppLayout:x, y, width, height];
   v11 = v10;
   v13 = v12;
   v15 = v14;
   v17 = v16;
-  v18 = [(SBWindowingModifier *)self spaceAccessoryViewModelForItem:v9];
+  v18 = [(SBWindowingModifier *)self spaceAccessoryViewModelForItem:layoutCopy];
 
   if (v18)
   {
@@ -307,12 +307,12 @@
   return result;
 }
 
-- (CGPoint)adjustedSpaceAccessoryViewAnchorPoint:(CGPoint)a3 forAppLayout:(id)a4
+- (CGPoint)adjustedSpaceAccessoryViewAnchorPoint:(CGPoint)point forAppLayout:(id)layout
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [(SBWindowingModifier *)self spaceAccessoryViewModelForItem:v7];
+  y = point.y;
+  x = point.x;
+  layoutCopy = layout;
+  v8 = [(SBWindowingModifier *)self spaceAccessoryViewModelForItem:layoutCopy];
   v9 = v8;
   if (v8)
   {
@@ -325,7 +325,7 @@
   {
     v16.receiver = self;
     v16.super_class = SBWindowingModifier;
-    [(SBWindowingModifier *)&v16 adjustedSpaceAccessoryViewAnchorPoint:v7 forAppLayout:x, y];
+    [(SBWindowingModifier *)&v16 adjustedSpaceAccessoryViewAnchorPoint:layoutCopy forAppLayout:x, y];
     v10 = v12;
     v11 = v13;
   }
@@ -337,10 +337,10 @@
   return result;
 }
 
-- (double)adjustedSpaceAccessoryViewScale:(double)a3 forAppLayout:(id)a4
+- (double)adjustedSpaceAccessoryViewScale:(double)scale forAppLayout:(id)layout
 {
-  v6 = a4;
-  v7 = [(SBWindowingModifier *)self spaceAccessoryViewModelForItem:v6];
+  layoutCopy = layout;
+  v7 = [(SBWindowingModifier *)self spaceAccessoryViewModelForItem:layoutCopy];
   v8 = v7;
   if (v7)
   {
@@ -352,19 +352,19 @@
   {
     v12.receiver = self;
     v12.super_class = SBWindowingModifier;
-    [(SBWindowingModifier *)&v12 adjustedSpaceAccessoryViewScale:v6 forAppLayout:a3];
+    [(SBWindowingModifier *)&v12 adjustedSpaceAccessoryViewScale:layoutCopy forAppLayout:scale];
     v9 = v10;
   }
 
   return v9;
 }
 
-- (CGPoint)adjustedSpaceAccessoryViewPerspectiveAngle:(CGPoint)a3 forAppLayout:(id)a4
+- (CGPoint)adjustedSpaceAccessoryViewPerspectiveAngle:(CGPoint)angle forAppLayout:(id)layout
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [(SBWindowingModifier *)self spaceAccessoryViewModelForItem:v7];
+  y = angle.y;
+  x = angle.x;
+  layoutCopy = layout;
+  v8 = [(SBWindowingModifier *)self spaceAccessoryViewModelForItem:layoutCopy];
   v9 = v8;
   if (v8)
   {
@@ -375,7 +375,7 @@
   {
     v16.receiver = self;
     v16.super_class = SBWindowingModifier;
-    [(SBWindowingModifier *)&v16 adjustedSpaceAccessoryViewPerspectiveAngle:v7 forAppLayout:x, y];
+    [(SBWindowingModifier *)&v16 adjustedSpaceAccessoryViewPerspectiveAngle:layoutCopy forAppLayout:x, y];
   }
 
   v12 = v10;
@@ -388,40 +388,40 @@
   return result;
 }
 
-- (void)_setSwitcherModifierInteroperabilityEnabled:(BOOL)a3 force:(BOOL)a4
+- (void)_setSwitcherModifierInteroperabilityEnabled:(BOOL)enabled force:(BOOL)force
 {
-  if (self->_switcherModifierInteroperabilityEnabled != a3 || a4)
+  if (self->_switcherModifierInteroperabilityEnabled != enabled || force)
   {
-    self->_switcherModifierInteroperabilityEnabled = a3;
+    self->_switcherModifierInteroperabilityEnabled = enabled;
   }
 }
 
-- (void)setState:(int64_t)a3
+- (void)setState:(int64_t)state
 {
-  v5 = [(SBChainableModifier *)self state];
-  if (v5 != a3)
+  state = [(SBChainableModifier *)self state];
+  if (state != state)
   {
-    v6 = v5;
+    v6 = state;
     v7.receiver = self;
     v7.super_class = SBWindowingModifier;
-    [(SBChainableModifier *)&v7 setState:a3];
-    if (a3 == 1 && v6 != 1 && self->_hasBegun)
+    [(SBChainableModifier *)&v7 setState:state];
+    if (state == 1 && v6 != 1 && self->_hasBegun)
     {
       [(SBWindowingModifier *)self complete];
     }
   }
 }
 
-- (id)handleEvent:(id)a3
+- (id)handleEvent:(id)event
 {
-  v4 = a3;
-  if (!v4)
+  eventCopy = event;
+  if (!eventCopy)
   {
     [SBWindowingModifier handleEvent:];
   }
 
-  v5 = [v4 switcherModifierEvent];
-  if (!v5)
+  switcherModifierEvent = [eventCopy switcherModifierEvent];
+  if (!switcherModifierEvent)
   {
     [SBWindowingModifier handleEvent:];
   }
@@ -432,69 +432,69 @@
   }
 
   currentEvent = self->_currentEvent;
-  self->_currentEvent = v5;
-  v7 = v5;
+  self->_currentEvent = switcherModifierEvent;
+  v7 = switcherModifierEvent;
 
-  v8 = [(SBWindowingModifier *)self update];
+  update = [(SBWindowingModifier *)self update];
   v9 = self->_currentEvent;
   self->_currentEvent = 0;
 
-  v10 = [v8 count];
+  v10 = [update count];
   if (v10)
   {
     if (v10 == 1)
     {
-      v11 = [v8 firstObject];
+      firstObject = [update firstObject];
     }
 
     else
     {
-      v12 = [v8 firstObject];
-      v11 = [objc_opt_class() newEventResponse];
+      firstObject2 = [update firstObject];
+      firstObject = [objc_opt_class() newEventResponse];
 
-      [v11 addChildResponses:v8];
+      [firstObject addChildResponses:update];
     }
   }
 
   else
   {
-    v11 = 0;
+    firstObject = 0;
   }
 
-  return v11;
+  return firstObject;
 }
 
-- (void)addChildModifier:(id)a3 atLevel:(int64_t)a4 key:(id)a5
+- (void)addChildModifier:(id)modifier atLevel:(int64_t)level key:(id)key
 {
   v6.receiver = self;
   v6.super_class = SBWindowingModifier;
-  [(SBChainableModifier *)&v6 addChildModifier:a3 atLevel:a4 key:a5];
+  [(SBChainableModifier *)&v6 addChildModifier:modifier atLevel:level key:key];
   [(SBWindowingModifier *)self _evaluateInteroperability];
 }
 
-- (void)removeChildModifier:(id)a3
+- (void)removeChildModifier:(id)modifier
 {
   v4.receiver = self;
   v4.super_class = SBWindowingModifier;
-  [(SBChainableModifier *)&v4 removeChildModifier:a3];
+  [(SBChainableModifier *)&v4 removeChildModifier:modifier];
   [(SBWindowingModifier *)self _evaluateInteroperability];
 }
 
 - (void)_evaluateInteroperability
 {
-  v3 = [(SBChainableModifier *)self nextQueryModifier];
-  -[SBWindowingModifier setSwitcherModifierInteroperabilityEnabled:](self, "setSwitcherModifierInteroperabilityEnabled:", [v3 isSwitcherModifier]);
+  nextQueryModifier = [(SBChainableModifier *)self nextQueryModifier];
+  -[SBWindowingModifier setSwitcherModifierInteroperabilityEnabled:](self, "setSwitcherModifierInteroperabilityEnabled:", [nextQueryModifier isSwitcherModifier]);
 }
 
 - (id)activities
 {
   v7.receiver = self;
   v7.super_class = SBWindowingModifier;
-  v3 = [(SBWindowingModifier *)&v7 activities];
-  v4 = v3;
+  activities = [(SBWindowingModifier *)&v7 activities];
+  v4 = activities;
   if (self->_currentEvent)
   {
-    v5 = [v3 setByAddingObject:?];
+    v5 = [activities setByAddingObject:?];
 
     v4 = v5;
   }
@@ -502,13 +502,13 @@
   return v4;
 }
 
-- (id)flexibleAutoLayoutSpaceForAppLayout:(id)a3
+- (id)flexibleAutoLayoutSpaceForAppLayout:(id)layout
 {
-  v4 = a3;
-  v5 = [(SBWindowingModifier *)self displayItemLayoutAttributesCalculator];
-  v6 = [(SBWindowingModifier *)self appLayoutContainingAppLayout:v4];
+  layoutCopy = layout;
+  displayItemLayoutAttributesCalculator = [(SBWindowingModifier *)self displayItemLayoutAttributesCalculator];
+  v6 = [(SBWindowingModifier *)self appLayoutContainingAppLayout:layoutCopy];
 
-  v7 = [(SBWindowingModifier *)self switcherInterfaceOrientation];
+  switcherInterfaceOrientation = [(SBWindowingModifier *)self switcherInterfaceOrientation];
   [(SBWindowingModifier *)self floatingDockHeight];
   v36 = v8;
   [(SBWindowingModifier *)self screenScale];
@@ -518,55 +518,55 @@
   v13 = v12;
   v15 = v14;
   v17 = v16;
-  v18 = [(SBWindowingModifier *)self isDisplayEmbedded];
-  v19 = [(SBWindowingModifier *)self prefersStripHidden];
-  v20 = [(SBWindowingModifier *)self prefersDockHidden];
+  isDisplayEmbedded = [(SBWindowingModifier *)self isDisplayEmbedded];
+  prefersStripHidden = [(SBWindowingModifier *)self prefersStripHidden];
+  prefersDockHidden = [(SBWindowingModifier *)self prefersDockHidden];
   [(SBWindowingModifier *)self leftStatusBarPartIntersectionRegion];
   v22 = v21;
   v24 = v23;
   v26 = v25;
   v28 = v27;
   [(SBWindowingModifier *)self rightStatusBarPartIntersectionRegion];
-  v33 = [v5 flexibleWindowingAutoLayoutSpaceForAppLayout:v6 containerOrientation:v7 floatingDockHeight:v18 screenScale:v19 bounds:v20 isEmbeddedDisplay:v36 prefersStripHidden:v35 prefersDockHidden:v11 leftStatusBarPartIntersectionRegion:v13 rightStatusBarPartIntersectionRegion:{v15, v17, v22, v24, v26, v28, v29, v30, v31, v32}];
+  v33 = [displayItemLayoutAttributesCalculator flexibleWindowingAutoLayoutSpaceForAppLayout:v6 containerOrientation:switcherInterfaceOrientation floatingDockHeight:isDisplayEmbedded screenScale:prefersStripHidden bounds:prefersDockHidden isEmbeddedDisplay:v36 prefersStripHidden:v35 prefersDockHidden:v11 leftStatusBarPartIntersectionRegion:v13 rightStatusBarPartIntersectionRegion:{v15, v17, v22, v24, v26, v28, v29, v30, v31, v32}];
 
   return v33;
 }
 
 - (id)windowingConfiguration
 {
-  v3 = [(SBWindowingModifier *)self switcherInterfaceOrientation];
+  switcherInterfaceOrientation = [(SBWindowingModifier *)self switcherInterfaceOrientation];
 
-  return [(SBWindowingModifier *)self windowingConfigurationForInterfaceOrientation:v3];
+  return [(SBWindowingModifier *)self windowingConfigurationForInterfaceOrientation:switcherInterfaceOrientation];
 }
 
 - (id)stateModel
 {
   v4.receiver = self;
   v4.super_class = SBWindowingModifier;
-  v2 = [(SBWindowingModifier *)&v4 stateModel];
+  stateModel = [(SBWindowingModifier *)&v4 stateModel];
 
-  return v2;
+  return stateModel;
 }
 
 - (id)visibleItems
 {
   v4.receiver = self;
   v4.super_class = SBWindowingModifier;
-  v2 = [(SBWindowingModifier *)&v4 visibleItems];
+  visibleItems = [(SBWindowingModifier *)&v4 visibleItems];
 
-  return v2;
+  return visibleItems;
 }
 
 - (id)topMostItems
 {
   v4.receiver = self;
   v4.super_class = SBWindowingModifier;
-  v2 = [(SBWindowingModifier *)&v4 topMostItems];
+  topMostItems = [(SBWindowingModifier *)&v4 topMostItems];
 
-  return v2;
+  return topMostItems;
 }
 
-- (SBWindowingItemFrame)frameForItem:(SEL)a3
+- (SBWindowingItemFrame)frameForItem:(SEL)item
 {
   v5 = a4;
   v6 = [(NSMutableDictionary *)self->_viewModels objectForKey:v5];
@@ -586,7 +586,7 @@
   return result;
 }
 
-- (SBWindowingItemCorners)cornersForItem:(SEL)a3
+- (SBWindowingItemCorners)cornersForItem:(SEL)item
 {
   v5 = a4;
   v6 = [(NSMutableDictionary *)self->_viewModels objectForKey:v5];
@@ -606,24 +606,24 @@
   return result;
 }
 
-- (SBWindowingItemShadow)shadowForItem:(id)a3
+- (SBWindowingItemShadow)shadowForItem:(id)item
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_viewModels objectForKey:v4];
+  itemCopy = item;
+  v5 = [(NSMutableDictionary *)self->_viewModels objectForKey:itemCopy];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 shadow];
+    shadow = [v5 shadow];
   }
 
   else
   {
     v13.receiver = self;
     v13.super_class = SBWindowingModifier;
-    v7 = [(SBWindowingModifier *)&v13 shadowForItem:v4];
+    shadow = [(SBWindowingModifier *)&v13 shadowForItem:itemCopy];
   }
 
-  v9 = *&v7;
+  v9 = *&shadow;
   v10 = v8;
 
   v11 = v9;
@@ -633,7 +633,7 @@
   return result;
 }
 
-- (SBWindowingItemTitleStyle)titleStyleForItem:(SEL)a3
+- (SBWindowingItemTitleStyle)titleStyleForItem:(SEL)item
 {
   v5 = a4;
   v6 = [(NSMutableDictionary *)self->_viewModels objectForKey:v5];
@@ -653,10 +653,10 @@
   return result;
 }
 
-- (double)opacityForItem:(id)a3
+- (double)opacityForItem:(id)item
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_viewModels objectForKey:v4];
+  itemCopy = item;
+  v5 = [(NSMutableDictionary *)self->_viewModels objectForKey:itemCopy];
   v6 = v5;
   if (v5)
   {
@@ -667,7 +667,7 @@
   {
     v10.receiver = self;
     v10.super_class = SBWindowingModifier;
-    [(SBWindowingModifier *)&v10 opacityForItem:v4];
+    [(SBWindowingModifier *)&v10 opacityForItem:itemCopy];
   }
 
   v8 = v7;
@@ -675,10 +675,10 @@
   return v8;
 }
 
-- (SBSwitcherWallpaperGradientAttributes)wallpaperGradientAttributesForItem:(id)a3
+- (SBSwitcherWallpaperGradientAttributes)wallpaperGradientAttributesForItem:(id)item
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_viewModels objectForKey:v4];
+  itemCopy = item;
+  v5 = [(NSMutableDictionary *)self->_viewModels objectForKey:itemCopy];
   v6 = v5;
   if (v5)
   {
@@ -689,7 +689,7 @@
   {
     v13.receiver = self;
     v13.super_class = SBWindowingModifier;
-    [(SBWindowingModifier *)&v13 wallpaperGradientAttributesForItem:v4];
+    [(SBWindowingModifier *)&v13 wallpaperGradientAttributesForItem:itemCopy];
   }
 
   v9 = v7;
@@ -702,10 +702,10 @@
   return result;
 }
 
-- (CGPoint)perspectiveAngleForItem:(id)a3
+- (CGPoint)perspectiveAngleForItem:(id)item
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_viewModels objectForKey:v4];
+  itemCopy = item;
+  v5 = [(NSMutableDictionary *)self->_viewModels objectForKey:itemCopy];
   v6 = v5;
   if (v5)
   {
@@ -716,7 +716,7 @@
   {
     v13.receiver = self;
     v13.super_class = SBWindowingModifier;
-    [(SBWindowingModifier *)&v13 perspectiveAngleForItem:v4];
+    [(SBWindowingModifier *)&v13 perspectiveAngleForItem:itemCopy];
   }
 
   v9 = v7;
@@ -729,10 +729,10 @@
   return result;
 }
 
-- (double)dimmingAlphaForItem:(id)a3
+- (double)dimmingAlphaForItem:(id)item
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_viewModels objectForKey:v4];
+  itemCopy = item;
+  v5 = [(NSMutableDictionary *)self->_viewModels objectForKey:itemCopy];
   v6 = v5;
   if (v5)
   {
@@ -743,7 +743,7 @@
   {
     v10.receiver = self;
     v10.super_class = SBWindowingModifier;
-    [(SBWindowingModifier *)&v10 dimmingAlphaForItem:v4];
+    [(SBWindowingModifier *)&v10 dimmingAlphaForItem:itemCopy];
   }
 
   v8 = v7;
@@ -751,90 +751,90 @@
   return v8;
 }
 
-- (id)animationAttributesForItem:(id)a3
+- (id)animationAttributesForItem:(id)item
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_viewModels objectForKey:v4];
+  itemCopy = item;
+  v5 = [(NSMutableDictionary *)self->_viewModels objectForKey:itemCopy];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 animationAttributes];
+    animationAttributes = [v5 animationAttributes];
   }
 
   else
   {
     v10.receiver = self;
     v10.super_class = SBWindowingModifier;
-    v7 = [(SBWindowingModifier *)&v10 animationAttributesForItem:v4];
+    animationAttributes = [(SBWindowingModifier *)&v10 animationAttributesForItem:itemCopy];
   }
 
-  v8 = v7;
+  v8 = animationAttributes;
 
   return v8;
 }
 
-- (BOOL)supportsHomeAffordanceForItem:(id)a3
+- (BOOL)supportsHomeAffordanceForItem:(id)item
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_viewModels objectForKey:v4];
+  itemCopy = item;
+  v5 = [(NSMutableDictionary *)self->_viewModels objectForKey:itemCopy];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 supportsHomeAffordance];
+    supportsHomeAffordance = [v5 supportsHomeAffordance];
   }
 
   else
   {
     v10.receiver = self;
     v10.super_class = SBWindowingModifier;
-    v7 = [(SBWindowingModifier *)&v10 supportsHomeAffordanceForItem:v4];
+    supportsHomeAffordance = [(SBWindowingModifier *)&v10 supportsHomeAffordanceForItem:itemCopy];
   }
 
-  v8 = v7;
+  v8 = supportsHomeAffordance;
 
   return v8;
 }
 
-- (id)spaceAccessoryViewModelForItem:(id)a3
+- (id)spaceAccessoryViewModelForItem:(id)item
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_viewModels objectForKey:v4];
+  itemCopy = item;
+  v5 = [(NSMutableDictionary *)self->_viewModels objectForKey:itemCopy];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 spaceAccessoryViewModel];
+    spaceAccessoryViewModel = [v5 spaceAccessoryViewModel];
   }
 
   else
   {
     v10.receiver = self;
     v10.super_class = SBWindowingModifier;
-    v7 = [(SBWindowingModifier *)&v10 spaceAccessoryViewModelForItem:v4];
+    spaceAccessoryViewModel = [(SBWindowingModifier *)&v10 spaceAccessoryViewModelForItem:itemCopy];
   }
 
-  v8 = v7;
+  v8 = spaceAccessoryViewModel;
 
   return v8;
 }
 
-- (unint64_t)personalityDebugColorStyleForItem:(id)a3
+- (unint64_t)personalityDebugColorStyleForItem:(id)item
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_viewModels objectForKey:v4];
+  itemCopy = item;
+  v5 = [(NSMutableDictionary *)self->_viewModels objectForKey:itemCopy];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 personalityDebugColorStyle];
+    personalityDebugColorStyle = [v5 personalityDebugColorStyle];
   }
 
   else
   {
     v10.receiver = self;
     v10.super_class = SBWindowingModifier;
-    v7 = [(SBWindowingModifier *)&v10 personalityDebugColorStyleForItem:v4];
+    personalityDebugColorStyle = [(SBWindowingModifier *)&v10 personalityDebugColorStyleForItem:itemCopy];
   }
 
-  v8 = v7;
+  v8 = personalityDebugColorStyle;
 
   return v8;
 }
@@ -859,8 +859,8 @@
   v43 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v3 = [(SBWindowingModifier *)self activities];
-  v4 = [v3 countByEnumeratingWithState:&v40 objects:v45 count:16];
+  activities = [(SBWindowingModifier *)self activities];
+  v4 = [activities countByEnumeratingWithState:&v40 objects:v45 count:16];
   if (v4)
   {
     v5 = v4;
@@ -872,7 +872,7 @@
       {
         if (*v41 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(activities);
         }
 
         v9 = *(*(&v40 + 1) + 8 * i);
@@ -887,7 +887,7 @@
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v40 objects:v45 count:16];
+      v5 = [activities countByEnumeratingWithState:&v40 objects:v45 count:16];
     }
 
     while (v5);
@@ -949,68 +949,68 @@
 
       if ([v15 isSwitcherModifierEvent])
       {
-        v16 = [v15 switcherModifierEvent];
-        v17 = [v16 type];
-        if (v17 > 15)
+        switcherModifierEvent = [v15 switcherModifierEvent];
+        type = [switcherModifierEvent type];
+        if (type > 15)
         {
-          if (v17 <= 30)
+          if (type <= 30)
           {
-            if (v17 > 18)
+            if (type > 18)
             {
-              if (v17 == 19)
+              if (type == 19)
               {
-                v18 = v16;
+                v18 = switcherModifierEvent;
                 self->_isScrolling = [v18 phase] == 0;
                 [(SBWindowingModifier *)self didScroll:v18];
               }
 
-              else if (v17 == 26)
+              else if (type == 26)
               {
-                [(SBWindowingModifier *)self didEdgeProtectSlideOverTongue:v16];
+                [(SBWindowingModifier *)self didEdgeProtectSlideOverTongue:switcherModifierEvent];
               }
             }
 
-            else if (v17 == 16)
+            else if (type == 16)
             {
-              [(SBWindowingModifier *)self tappedOutsideToDismiss:v16];
+              [(SBWindowingModifier *)self tappedOutsideToDismiss:switcherModifierEvent];
             }
 
-            else if (v17 == 17)
+            else if (type == 17)
             {
-              [(SBWindowingModifier *)self appLayoutTapped:v16];
+              [(SBWindowingModifier *)self appLayoutTapped:switcherModifierEvent];
             }
 
             goto LABEL_46;
           }
 
-          if (v17 > 40)
+          if (type > 40)
           {
-            if (v17 == 41)
+            if (type == 41)
             {
-              if ([v16 phase])
+              if ([switcherModifierEvent phase])
               {
-                [(SBWindowingModifier *)self stripDidChange:v16];
+                [(SBWindowingModifier *)self stripDidChange:switcherModifierEvent];
               }
 
               else
               {
-                [(SBWindowingModifier *)self stripWillChange:v16];
+                [(SBWindowingModifier *)self stripWillChange:switcherModifierEvent];
               }
             }
 
-            else if (v17 == 43)
+            else if (type == 43)
             {
-              [(SBWindowingModifier *)self userDidInteractWithApp:v16];
+              [(SBWindowingModifier *)self userDidInteractWithApp:switcherModifierEvent];
             }
 
             goto LABEL_46;
           }
 
-          if (v17 != 31)
+          if (type != 31)
           {
-            if (v17 == 36)
+            if (type == 36)
             {
-              [(SBWindowingModifier *)self appLayoutHeaderTapped:v16];
+              [(SBWindowingModifier *)self appLayoutHeaderTapped:switcherModifierEvent];
             }
 
             goto LABEL_46;
@@ -1019,46 +1019,46 @@
 
         else
         {
-          if (v17 > 10)
+          if (type > 10)
           {
-            if (v17 > 13)
+            if (type > 13)
             {
-              if (v17 == 14)
+              if (type == 14)
               {
-                [(SBWindowingModifier *)self itemRemoved:v16];
+                [(SBWindowingModifier *)self itemRemoved:switcherModifierEvent];
               }
 
               else
               {
-                [(SBWindowingModifier *)self timerFired:v16];
+                [(SBWindowingModifier *)self timerFired:switcherModifierEvent];
               }
             }
 
-            else if (v17 == 11)
+            else if (type == 11)
             {
-              [(SBWindowingModifier *)self highlightDidChange:v16];
+              [(SBWindowingModifier *)self highlightDidChange:switcherModifierEvent];
             }
 
-            else if (v17 == 13)
+            else if (type == 13)
             {
-              [(SBWindowingModifier *)self itemInserted:v16];
+              [(SBWindowingModifier *)self itemInserted:switcherModifierEvent];
             }
 
             goto LABEL_46;
           }
 
-          if ((v17 - 2) >= 4)
+          if ((type - 2) >= 4)
           {
-            if (v17 == 1)
+            if (type == 1)
             {
-              [(SBWindowingModifier *)self _handleTransitionEvent:v16];
+              [(SBWindowingModifier *)self _handleTransitionEvent:switcherModifierEvent];
             }
 
             goto LABEL_46;
           }
         }
 
-        [(SBWindowingModifier *)self _handleGestureEvent:v16];
+        [(SBWindowingModifier *)self _handleGestureEvent:switcherModifierEvent];
 LABEL_46:
       }
 
@@ -1090,37 +1090,37 @@ LABEL_71:
     goto LABEL_82;
   }
 
-  v22 = [(SBChainableModifier *)self nextQueryModifier];
-  v23 = v22;
-  if (!v22 || ([v22 isWindowingModifier] & 1) != 0)
+  nextQueryModifier = [(SBChainableModifier *)self nextQueryModifier];
+  update = nextQueryModifier;
+  if (!nextQueryModifier || ([nextQueryModifier isWindowingModifier] & 1) != 0)
   {
 LABEL_81:
 
 LABEL_82:
     v34.receiver = self;
     v34.super_class = SBWindowingModifier;
-    v23 = [(SBWindowingModifier *)&v34 update];
-    [(SBWindowingModifier *)self appendResponses:v23];
+    update = [(SBWindowingModifier *)&v34 update];
+    [(SBWindowingModifier *)self appendResponses:update];
     goto LABEL_83;
   }
 
-  v24 = [(SBChainableModifier *)self parentModifier];
-  if (!v24)
+  parentModifier = [(SBChainableModifier *)self parentModifier];
+  if (!parentModifier)
   {
     goto LABEL_78;
   }
 
-  v25 = [v23 parentModifier];
-  v26 = v25;
-  if (v25 == v24)
+  parentModifier2 = [update parentModifier];
+  v26 = parentModifier2;
+  if (parentModifier2 == parentModifier)
   {
 
     goto LABEL_80;
   }
 
-  v27 = [v24 isWindowingModifier];
+  isWindowingModifier = [parentModifier isWindowingModifier];
 
-  if (v27)
+  if (isWindowingModifier)
   {
 LABEL_80:
 
@@ -1128,7 +1128,7 @@ LABEL_80:
   }
 
 LABEL_78:
-  v28 = [v23 handleEvent:self->_currentEvent];
+  v28 = [update handleEvent:self->_currentEvent];
   [(SBWindowingModifier *)self appendResponse:v28];
 
 LABEL_83:
@@ -1192,7 +1192,7 @@ void __29__SBWindowingModifier_update__block_invoke_3(uint64_t a1, void *a2)
 - (void)complete
 {
   OUTLINED_FUNCTION_1_2();
-  v1 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   OUTLINED_FUNCTION_0_3();
   [v0 handleFailureInMethod:? object:? file:? lineNumber:? description:?];
 }
@@ -1208,13 +1208,13 @@ void __29__SBWindowingModifier_update__block_invoke_3(uint64_t a1, void *a2)
   return result;
 }
 
-- (void)appendResponse:(id)a3
+- (void)appendResponse:(id)response
 {
-  v4 = a3;
-  v5 = v4;
+  responseCopy = response;
+  v5 = responseCopy;
   if (self->_hasBegun)
   {
-    if (!v4)
+    if (!responseCopy)
     {
       goto LABEL_6;
     }
@@ -1222,7 +1222,7 @@ void __29__SBWindowingModifier_update__block_invoke_3(uint64_t a1, void *a2)
 
   else
   {
-    v10 = v4;
+    v10 = responseCopy;
     [SBWindowingModifier appendResponse:];
     v5 = v10;
     if (!v10)
@@ -1248,17 +1248,17 @@ LABEL_6:
   MEMORY[0x2821F9730]();
 }
 
-- (void)appendResponses:(id)a3
+- (void)appendResponses:(id)responses
 {
-  v4 = a3;
-  v8 = v4;
+  responsesCopy = responses;
+  v8 = responsesCopy;
   if (!self->_hasBegun)
   {
     [SBWindowingModifier appendResponses:];
-    v4 = v8;
+    responsesCopy = v8;
   }
 
-  if ([v4 count])
+  if ([responsesCopy count])
   {
     currentResponses = self->_currentResponses;
     if (!currentResponses)
@@ -1294,23 +1294,23 @@ LABEL_6:
   return currentResponses;
 }
 
-- (void)removeResponse:(id)a3
+- (void)removeResponse:(id)response
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  responseCopy = response;
+  v5 = responseCopy;
+  if (!responseCopy)
   {
     [SBWindowingModifier removeResponse:];
-    v4 = 0;
+    responseCopy = 0;
   }
 
   if (!self->_hasBegun)
   {
     [SBWindowingModifier removeResponse:];
-    v4 = v5;
+    responseCopy = v5;
   }
 
-  [(NSMutableArray *)self->_currentResponses removeObject:v4];
+  [(NSMutableArray *)self->_currentResponses removeObject:responseCopy];
 }
 
 - (void)layoutViewModelsIfNeeded
@@ -1322,23 +1322,23 @@ LABEL_6:
   self->_viewModels = 0;
 }
 
-- (id)viewModelForItem:(id)a3
+- (id)viewModelForItem:(id)item
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_viewModels objectForKey:v4];
+  itemCopy = item;
+  v5 = [(NSMutableDictionary *)self->_viewModels objectForKey:itemCopy];
   if (!v5)
   {
-    v5 = [[SBWindowingItemViewModelModifier alloc] initWithItem:v4];
+    v5 = [[SBWindowingItemViewModelModifier alloc] initWithItem:itemCopy];
     [(SBChainableModifier *)v5 setDelegate:self];
   }
 
   return v5;
 }
 
-- (void)setViewModel:(id)a3 forItem:(id)a4
+- (void)setViewModel:(id)model forItem:(id)item
 {
-  v10 = a3;
-  v6 = a4;
+  modelCopy = model;
+  itemCopy = item;
   viewModels = self->_viewModels;
   if (!viewModels)
   {
@@ -1349,7 +1349,7 @@ LABEL_6:
     viewModels = self->_viewModels;
   }
 
-  [(NSMutableDictionary *)viewModels setObject:v10 forKey:v6];
+  [(NSMutableDictionary *)viewModels setObject:modelCopy forKey:itemCopy];
 }
 
 - (id)viewModelItems
@@ -1357,28 +1357,28 @@ LABEL_6:
   viewModels = self->_viewModels;
   if (viewModels)
   {
-    v4 = [(NSMutableDictionary *)viewModels allKeys];
+    allKeys = [(NSMutableDictionary *)viewModels allKeys];
   }
 
   else
   {
-    v4 = MEMORY[0x277CBEBF8];
+    allKeys = MEMORY[0x277CBEBF8];
   }
 
-  return v4;
+  return allKeys;
 }
 
-- (void)_handleTransitionEvent:(id)a3
+- (void)_handleTransitionEvent:(id)event
 {
-  v7 = a3;
-  v5 = [v7 phase];
-  if (!self->_transition && ([v7 isAnimated] & 1) != 0)
+  eventCopy = event;
+  phase = [eventCopy phase];
+  if (!self->_transition && ([eventCopy isAnimated] & 1) != 0)
   {
-    objc_storeStrong(&self->_transition, a3);
+    objc_storeStrong(&self->_transition, event);
     [(SBWindowingModifier *)self transitionWillBegin:self->_transition];
-    if (v5 != 3)
+    if (phase != 3)
     {
-      if (v5 != 2)
+      if (phase != 2)
       {
         goto LABEL_12;
       }
@@ -1396,8 +1396,8 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  objc_storeStrong(&self->_transition, a3);
-  switch(v5)
+  objc_storeStrong(&self->_transition, event);
+  switch(phase)
   {
     case 3:
       goto LABEL_11;
@@ -1411,27 +1411,27 @@ LABEL_11:
 LABEL_12:
 }
 
-- (void)_handleGestureEvent:(id)a3
+- (void)_handleGestureEvent:(id)event
 {
-  v8 = a3;
-  if ([v8 phase])
+  eventCopy = event;
+  if ([eventCopy phase])
   {
     gesture = self->_gesture;
-    objc_storeStrong(&self->_gesture, a3);
+    objc_storeStrong(&self->_gesture, event);
     if (!gesture)
     {
       [(SBWindowingModifier *)self gestureWillBegin:self->_gesture];
     }
 
-    v6 = [(SBGestureSwitcherModifierEvent *)self->_gesture phase];
-    if (v6 == 3)
+    phase = [(SBGestureSwitcherModifierEvent *)self->_gesture phase];
+    if (phase == 3)
     {
       [(SBWindowingModifier *)self gestureDidComplete:self->_gesture];
       v7 = self->_gesture;
       self->_gesture = 0;
     }
 
-    else if (v6 == 2)
+    else if (phase == 2)
     {
       [(SBWindowingModifier *)self gestureDidUpdate:self->_gesture];
     }
@@ -1465,7 +1465,7 @@ LABEL_12:
 - (void)update
 {
   OUTLINED_FUNCTION_1_2();
-  v1 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   OUTLINED_FUNCTION_0_3();
   [v0 handleFailureInMethod:? object:? file:? lineNumber:? description:?];
 }
@@ -1489,7 +1489,7 @@ LABEL_12:
 - (void)currentResponses
 {
   OUTLINED_FUNCTION_1_2();
-  v1 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   OUTLINED_FUNCTION_0_3();
   [v0 handleFailureInMethod:? object:? file:? lineNumber:? description:?];
 }

@@ -1,11 +1,11 @@
 @interface _DASSwapModelApplicationKills
-- (BOOL)process:(id)a3 inSet:(id)a4;
+- (BOOL)process:(id)process inSet:(id)set;
 - (_DASSwapModelApplicationKills)init;
-- (double)scoreForApplication:(id)a3 atDate:(id)a4;
-- (double)secondsFrom:(unint64_t)a3 until:(unint64_t)a4;
+- (double)scoreForApplication:(id)application atDate:(id)date;
+- (double)secondsFrom:(unint64_t)from until:(unint64_t)until;
 - (id)_queue_computeScores;
 - (id)appsRecentlyForegrounded;
-- (id)scoresForAllApplicationsAtDate:(id)a3;
+- (id)scoresForAllApplicationsAtDate:(id)date;
 - (void)_queue_loadHistograms;
 - (void)_queue_updateHistograms;
 - (void)incorporateLatestJetsamStatistics;
@@ -133,10 +133,10 @@
   v9[0] = self->_todaysKillHistogram;
   v9[1] = historicalKillHistogram;
   v8[2] = @"zeros";
-  v5 = [(NSMutableSet *)self->_zerosSet allObjects];
+  allObjects = [(NSMutableSet *)self->_zerosSet allObjects];
   v8[3] = @"snapshotTS";
   lastSnapshotTime = self->_lastSnapshotTime;
-  v9[2] = v5;
+  v9[2] = allObjects;
   v9[3] = lastSnapshotTime;
   v7 = [NSDictionary dictionaryWithObjects:v9 forKeys:v8 count:4];
 
@@ -226,14 +226,14 @@
   }
 }
 
-- (double)secondsFrom:(unint64_t)a3 until:(unint64_t)a4
+- (double)secondsFrom:(unint64_t)from until:(unint64_t)until
 {
   if (qword_10020B760 != -1)
   {
     sub_10012A164();
   }
 
-  return (((a3 - a4) * dword_10020B758) / *algn_10020B75C) / 1000000000.0;
+  return (((from - until) * dword_10020B758) / *algn_10020B75C) / 1000000000.0;
 }
 
 - (id)appsRecentlyForegrounded
@@ -243,9 +243,9 @@
   v3 = [_DASBMHistogramBuilder builderForAppInFocusStreamStarting:v2];
 
   v34 = v3;
-  v4 = [v3 histogram];
-  v5 = [v4 counts];
-  v6 = [NSMutableSet setWithSet:v5];
+  histogram = [v3 histogram];
+  counts = [histogram counts];
+  v6 = [NSMutableSet setWithSet:counts];
 
   v7 = +[_CDClientContext userContext];
   v8 = +[_CDContextQueries keyPathForAppUsageDataDictionaries];
@@ -306,12 +306,12 @@
         v24 = *(*(&v36 + 1) + 8 * j);
         v25 = objc_autoreleasePoolPush();
         v26 = [[LSApplicationRecord alloc] initWithBundleIdentifier:v24 allowPlaceholder:0 error:0];
-        v27 = [v26 compatibilityObject];
+        compatibilityObject = [v26 compatibilityObject];
 
-        v28 = [v27 bundleExecutable];
-        if (v28)
+        bundleExecutable = [compatibilityObject bundleExecutable];
+        if (bundleExecutable)
         {
-          [v18 addObject:v28];
+          [v18 addObject:bundleExecutable];
         }
 
         objc_autoreleasePoolPop(v25);
@@ -336,17 +336,17 @@
   return v30;
 }
 
-- (BOOL)process:(id)a3 inSet:(id)a4
+- (BOOL)process:(id)process inSet:(id)set
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 length] > 0x1F)
+  processCopy = process;
+  setCopy = set;
+  if ([processCopy length] > 0x1F)
   {
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v8 = v6;
+    v8 = setCopy;
     v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v9)
     {
@@ -361,7 +361,7 @@
             objc_enumerationMutation(v8);
           }
 
-          if ([*(*(&v14 + 1) + 8 * i) hasPrefix:{v5, v14}])
+          if ([*(*(&v14 + 1) + 8 * i) hasPrefix:{processCopy, v14}])
           {
 
             v7 = 1;
@@ -384,7 +384,7 @@
 
   else
   {
-    v7 = [v6 containsObject:v5];
+    v7 = [setCopy containsObject:processCopy];
   }
 
 LABEL_13:
@@ -394,23 +394,23 @@ LABEL_13:
 
 - (void)incorporateLatestJetsamStatistics
 {
-  v3 = [(_DASSwapModelApplicationKills *)self appsRecentlyForegrounded];
+  appsRecentlyForegrounded = [(_DASSwapModelApplicationKills *)self appsRecentlyForegrounded];
   queue = self->_queue;
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1000C33B4;
   v6[3] = &unk_1001B56E0;
   v6[4] = self;
-  v7 = v3;
-  v5 = v3;
+  v7 = appsRecentlyForegrounded;
+  v5 = appsRecentlyForegrounded;
   dispatch_sync(queue, v6);
 }
 
-- (double)scoreForApplication:(id)a3 atDate:(id)a4
+- (double)scoreForApplication:(id)application atDate:(id)date
 {
-  v6 = a3;
-  v7 = [(_DASSwapModelApplicationKills *)self scoresForAllApplicationsAtDate:a4];
-  v8 = [v7 objectForKeyedSubscript:v6];
+  applicationCopy = application;
+  v7 = [(_DASSwapModelApplicationKills *)self scoresForAllApplicationsAtDate:date];
+  v8 = [v7 objectForKeyedSubscript:applicationCopy];
 
   [v8 doubleValue];
   v10 = v9;
@@ -418,7 +418,7 @@ LABEL_13:
   return v10;
 }
 
-- (id)scoresForAllApplicationsAtDate:(id)a3
+- (id)scoresForAllApplicationsAtDate:(id)date
 {
   v4 = +[NSMutableDictionary dictionary];
   queue = self->_queue;
@@ -426,7 +426,7 @@ LABEL_13:
   v11 = 3221225472;
   v12 = sub_1000C3AC4;
   v13 = &unk_1001B56E0;
-  v14 = self;
+  selfCopy = self;
   v6 = v4;
   v15 = v6;
   dispatch_sync(queue, &v10);

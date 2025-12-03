@@ -1,152 +1,152 @@
 @interface QLPreviewContext
-- (BOOL)isEqual:(id)a3;
-- (QLPreviewContext)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (QLPreviewContext)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation QLPreviewContext
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(QLPreviewContext *)self thumbnailGenerator];
-    v7 = [v5 thumbnailGenerator];
-    v8 = __18__QLItem_isEqual___block_invoke(v7, v6, v7);
+    v5 = equalCopy;
+    thumbnailGenerator = [(QLPreviewContext *)self thumbnailGenerator];
+    thumbnailGenerator2 = [v5 thumbnailGenerator];
+    v8 = __18__QLItem_isEqual___block_invoke(thumbnailGenerator2, thumbnailGenerator, thumbnailGenerator2);
 
     if (!v8)
     {
       goto LABEL_21;
     }
 
-    v9 = [(QLPreviewContext *)self previewTitle];
-    v10 = [v5 previewTitle];
-    v11 = __18__QLItem_isEqual___block_invoke(v10, v9, v10);
+    previewTitle = [(QLPreviewContext *)self previewTitle];
+    previewTitle2 = [v5 previewTitle];
+    v11 = __18__QLItem_isEqual___block_invoke(previewTitle2, previewTitle, previewTitle2);
 
     if (!v11)
     {
       goto LABEL_21;
     }
 
-    v12 = [(QLPreviewContext *)self contentType];
-    v13 = [v5 contentType];
-    v14 = __18__QLItem_isEqual___block_invoke(v13, v12, v13);
+    contentType = [(QLPreviewContext *)self contentType];
+    contentType2 = [v5 contentType];
+    v14 = __18__QLItem_isEqual___block_invoke(contentType2, contentType, contentType2);
 
     if (!v14)
     {
       goto LABEL_21;
     }
 
-    v15 = [(QLPreviewContext *)self originalContentType];
-    v16 = [v5 originalContentType];
-    v17 = __18__QLItem_isEqual___block_invoke(v16, v15, v16);
+    originalContentType = [(QLPreviewContext *)self originalContentType];
+    originalContentType2 = [v5 originalContentType];
+    v17 = __18__QLItem_isEqual___block_invoke(originalContentType2, originalContentType, originalContentType2);
 
     if (!v17)
     {
       goto LABEL_21;
     }
 
-    v18 = [(QLPreviewContext *)self canBeEdited];
-    if (v18 != [v5 canBeEdited])
+    canBeEdited = [(QLPreviewContext *)self canBeEdited];
+    if (canBeEdited != [v5 canBeEdited])
     {
       goto LABEL_21;
     }
 
-    v19 = [(QLPreviewContext *)self canBeShared];
-    if (v19 != [v5 canBeShared])
+    canBeShared = [(QLPreviewContext *)self canBeShared];
+    if (canBeShared != [v5 canBeShared])
     {
       goto LABEL_21;
     }
 
-    v20 = [(QLPreviewContext *)self editedFileBehavior];
-    if (v20 != [v5 editedFileBehavior])
+    editedFileBehavior = [(QLPreviewContext *)self editedFileBehavior];
+    if (editedFileBehavior != [v5 editedFileBehavior])
     {
       goto LABEL_21;
     }
 
-    v21 = [(QLPreviewContext *)self previewItemType];
-    if (v21 != [v5 previewItemType])
+    previewItemType = [(QLPreviewContext *)self previewItemType];
+    if (previewItemType != [v5 previewItemType])
     {
       goto LABEL_21;
     }
 
-    v22 = [(QLPreviewContext *)self backgroundColor];
-    v23 = [v5 backgroundColor];
-    v24 = __18__QLItem_isEqual___block_invoke(v23, v22, v23);
+    backgroundColor = [(QLPreviewContext *)self backgroundColor];
+    backgroundColor2 = [v5 backgroundColor];
+    v24 = __18__QLItem_isEqual___block_invoke(backgroundColor2, backgroundColor, backgroundColor2);
 
     if (!v24)
     {
       goto LABEL_21;
     }
 
-    v25 = [(QLPreviewContext *)self password];
-    v26 = [v5 password];
-    v27 = __18__QLItem_isEqual___block_invoke(v26, v25, v26);
+    password = [(QLPreviewContext *)self password];
+    password2 = [v5 password];
+    v27 = __18__QLItem_isEqual___block_invoke(password2, password, password2);
 
     if (!v27)
     {
       goto LABEL_21;
     }
 
-    v28 = [(QLPreviewContext *)self itemSize];
-    v29 = [v5 itemSize];
-    v30 = __18__QLItem_isEqual___block_invoke(v29, v28, v29);
+    itemSize = [(QLPreviewContext *)self itemSize];
+    itemSize2 = [v5 itemSize];
+    v30 = __18__QLItem_isEqual___block_invoke(itemSize2, itemSize, itemSize2);
 
     if (!v30)
     {
       goto LABEL_21;
     }
 
-    v31 = [(QLPreviewContext *)self processIdentifier];
-    if (v31 != [v5 processIdentifier])
+    processIdentifier = [(QLPreviewContext *)self processIdentifier];
+    if (processIdentifier != [v5 processIdentifier])
     {
       goto LABEL_21;
     }
 
-    v32 = [(QLPreviewContext *)self clientPreviewOptions];
-    v33 = [v5 clientPreviewOptions];
-    v34 = __18__QLItem_isEqual___block_invoke(v33, v32, v33);
+    clientPreviewOptions = [(QLPreviewContext *)self clientPreviewOptions];
+    clientPreviewOptions2 = [v5 clientPreviewOptions];
+    v34 = __18__QLItem_isEqual___block_invoke(clientPreviewOptions2, clientPreviewOptions, clientPreviewOptions2);
 
     if (!v34)
     {
       goto LABEL_21;
     }
 
-    v35 = [(QLPreviewContext *)self clientPreviewItemDisplayState];
-    v36 = [v5 clientPreviewItemDisplayState];
-    v37 = __18__QLItem_isEqual___block_invoke(v36, v35, v36);
+    clientPreviewItemDisplayState = [(QLPreviewContext *)self clientPreviewItemDisplayState];
+    clientPreviewItemDisplayState2 = [v5 clientPreviewItemDisplayState];
+    v37 = __18__QLItem_isEqual___block_invoke(clientPreviewItemDisplayState2, clientPreviewItemDisplayState, clientPreviewItemDisplayState2);
 
     if (!v37)
     {
       goto LABEL_21;
     }
 
-    v38 = [(QLPreviewContext *)self stringEncoding];
-    if (v38 != [v5 stringEncoding])
+    stringEncoding = [(QLPreviewContext *)self stringEncoding];
+    if (stringEncoding != [v5 stringEncoding])
     {
       goto LABEL_21;
     }
 
-    v39 = [(QLPreviewContext *)self attachments];
-    v40 = [v5 attachments];
-    v41 = __18__QLItem_isEqual___block_invoke(v40, v39, v40);
+    attachments = [(QLPreviewContext *)self attachments];
+    attachments2 = [v5 attachments];
+    v41 = __18__QLItem_isEqual___block_invoke(attachments2, attachments, attachments2);
 
     if (!v41)
     {
       goto LABEL_21;
     }
 
-    v42 = [(QLPreviewContext *)self bitmapFormat];
-    v43 = [v5 bitmapFormat];
-    v44 = __18__QLItem_isEqual___block_invoke(v43, v42, v43);
+    bitmapFormat = [(QLPreviewContext *)self bitmapFormat];
+    bitmapFormat2 = [v5 bitmapFormat];
+    v44 = __18__QLItem_isEqual___block_invoke(bitmapFormat2, bitmapFormat, bitmapFormat2);
 
     if (v44)
     {
-      v45 = [(QLPreviewContext *)self viewDynamicRange];
-      v46 = v45 == [v5 viewDynamicRange];
+      viewDynamicRange = [(QLPreviewContext *)self viewDynamicRange];
+      v46 = viewDynamicRange == [v5 viewDynamicRange];
     }
 
     else
@@ -164,172 +164,172 @@ LABEL_21:
   return v46;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v27 = a3;
-  v4 = [(QLPreviewContext *)self thumbnailGenerator];
+  coderCopy = coder;
+  thumbnailGenerator = [(QLPreviewContext *)self thumbnailGenerator];
 
-  if (v4)
+  if (thumbnailGenerator)
   {
-    v5 = [(QLPreviewContext *)self thumbnailGenerator];
-    [v27 encodeObject:v5 forKey:@"thumbnailGenerator"];
+    thumbnailGenerator2 = [(QLPreviewContext *)self thumbnailGenerator];
+    [coderCopy encodeObject:thumbnailGenerator2 forKey:@"thumbnailGenerator"];
   }
 
-  v6 = [(QLPreviewContext *)self previewTitle];
+  previewTitle = [(QLPreviewContext *)self previewTitle];
 
-  if (v6)
+  if (previewTitle)
   {
-    v7 = [(QLPreviewContext *)self previewTitle];
-    [v27 encodeObject:v7 forKey:@"previewTitle"];
+    previewTitle2 = [(QLPreviewContext *)self previewTitle];
+    [coderCopy encodeObject:previewTitle2 forKey:@"previewTitle"];
   }
 
-  v8 = [(QLPreviewContext *)self contentType];
+  contentType = [(QLPreviewContext *)self contentType];
 
-  if (v8)
+  if (contentType)
   {
-    v9 = [(QLPreviewContext *)self contentType];
-    [v27 encodeObject:v9 forKey:@"contentType"];
+    contentType2 = [(QLPreviewContext *)self contentType];
+    [coderCopy encodeObject:contentType2 forKey:@"contentType"];
   }
 
-  v10 = [(QLPreviewContext *)self originalContentType];
+  originalContentType = [(QLPreviewContext *)self originalContentType];
 
-  if (v10)
+  if (originalContentType)
   {
-    v11 = [(QLPreviewContext *)self originalContentType];
-    [v27 encodeObject:v11 forKey:@"originalContentType"];
+    originalContentType2 = [(QLPreviewContext *)self originalContentType];
+    [coderCopy encodeObject:originalContentType2 forKey:@"originalContentType"];
   }
 
-  v12 = [(QLPreviewContext *)self itemSize];
+  itemSize = [(QLPreviewContext *)self itemSize];
 
-  if (v12)
+  if (itemSize)
   {
-    v13 = [(QLPreviewContext *)self itemSize];
-    [v27 encodeObject:v13 forKey:@"itemSize"];
+    itemSize2 = [(QLPreviewContext *)self itemSize];
+    [coderCopy encodeObject:itemSize2 forKey:@"itemSize"];
   }
 
-  v14 = [(QLPreviewContext *)self backgroundColor];
+  backgroundColor = [(QLPreviewContext *)self backgroundColor];
 
-  if (v14)
+  if (backgroundColor)
   {
-    v15 = [(QLPreviewContext *)self backgroundColor];
-    [v27 encodeObject:v15 forKey:@"backgroundColor"];
+    backgroundColor2 = [(QLPreviewContext *)self backgroundColor];
+    [coderCopy encodeObject:backgroundColor2 forKey:@"backgroundColor"];
   }
 
-  v16 = [(QLPreviewContext *)self password];
+  password = [(QLPreviewContext *)self password];
 
-  if (v16)
+  if (password)
   {
-    v17 = [(QLPreviewContext *)self password];
-    [v27 encodeObject:v17 forKey:@"password"];
+    password2 = [(QLPreviewContext *)self password];
+    [coderCopy encodeObject:password2 forKey:@"password"];
   }
 
-  v18 = [(QLPreviewContext *)self clientPreviewOptions];
+  clientPreviewOptions = [(QLPreviewContext *)self clientPreviewOptions];
 
-  if (v18)
+  if (clientPreviewOptions)
   {
-    v19 = [(QLPreviewContext *)self clientPreviewOptions];
-    [v27 encodeObject:v19 forKey:@"clientPreviewOptions"];
+    clientPreviewOptions2 = [(QLPreviewContext *)self clientPreviewOptions];
+    [coderCopy encodeObject:clientPreviewOptions2 forKey:@"clientPreviewOptions"];
   }
 
-  v20 = [(QLPreviewContext *)self clientPreviewItemDisplayState];
+  clientPreviewItemDisplayState = [(QLPreviewContext *)self clientPreviewItemDisplayState];
 
-  if (v20)
+  if (clientPreviewItemDisplayState)
   {
-    v21 = [(QLPreviewContext *)self clientPreviewItemDisplayState];
-    [v27 encodeObject:v21 forKey:@"clientPreviewItemDisplayState"];
+    clientPreviewItemDisplayState2 = [(QLPreviewContext *)self clientPreviewItemDisplayState];
+    [coderCopy encodeObject:clientPreviewItemDisplayState2 forKey:@"clientPreviewItemDisplayState"];
   }
 
-  [v27 encodeInteger:-[QLPreviewContext previewItemType](self forKey:{"previewItemType"), @"previewItemType"}];
-  [v27 encodeBool:-[QLPreviewContext canBeEdited](self forKey:{"canBeEdited"), @"canBeEdited"}];
-  [v27 encodeBool:-[QLPreviewContext canBeShared](self forKey:{"canBeShared"), @"canBeShared"}];
-  [v27 encodeInteger:-[QLPreviewContext editedFileBehavior](self forKey:{"editedFileBehavior"), @"editedFileBehavior"}];
-  v22 = [MEMORY[0x277CCAC38] processInfo];
-  [v27 encodeInteger:objc_msgSend(v22 forKey:{"processIdentifier"), @"processIdentifier"}];
+  [coderCopy encodeInteger:-[QLPreviewContext previewItemType](self forKey:{"previewItemType"), @"previewItemType"}];
+  [coderCopy encodeBool:-[QLPreviewContext canBeEdited](self forKey:{"canBeEdited"), @"canBeEdited"}];
+  [coderCopy encodeBool:-[QLPreviewContext canBeShared](self forKey:{"canBeShared"), @"canBeShared"}];
+  [coderCopy encodeInteger:-[QLPreviewContext editedFileBehavior](self forKey:{"editedFileBehavior"), @"editedFileBehavior"}];
+  processInfo = [MEMORY[0x277CCAC38] processInfo];
+  [coderCopy encodeInteger:objc_msgSend(processInfo forKey:{"processIdentifier"), @"processIdentifier"}];
 
-  [v27 encodeInteger:-[QLPreviewContext stringEncoding](self forKey:{"stringEncoding"), @"stringEncoding"}];
-  v23 = [(QLPreviewContext *)self attachments];
+  [coderCopy encodeInteger:-[QLPreviewContext stringEncoding](self forKey:{"stringEncoding"), @"stringEncoding"}];
+  attachments = [(QLPreviewContext *)self attachments];
 
-  if (v23)
+  if (attachments)
   {
-    v24 = [(QLPreviewContext *)self attachments];
-    [v27 encodeObject:v24 forKey:@"attachments"];
+    attachments2 = [(QLPreviewContext *)self attachments];
+    [coderCopy encodeObject:attachments2 forKey:@"attachments"];
   }
 
-  v25 = [(QLPreviewContext *)self bitmapFormat];
+  bitmapFormat = [(QLPreviewContext *)self bitmapFormat];
 
-  if (v25)
+  if (bitmapFormat)
   {
-    v26 = [(QLPreviewContext *)self bitmapFormat];
-    [v27 encodeObject:v26 forKey:@"bitmapFormat"];
+    bitmapFormat2 = [(QLPreviewContext *)self bitmapFormat];
+    [coderCopy encodeObject:bitmapFormat2 forKey:@"bitmapFormat"];
   }
 
-  [v27 encodeInteger:-[QLPreviewContext viewDynamicRange](self forKey:{"viewDynamicRange"), @"viewDynamicRange"}];
+  [coderCopy encodeInteger:-[QLPreviewContext viewDynamicRange](self forKey:{"viewDynamicRange"), @"viewDynamicRange"}];
 }
 
-- (QLPreviewContext)initWithCoder:(id)a3
+- (QLPreviewContext)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v35.receiver = self;
   v35.super_class = QLPreviewContext;
   v5 = [(QLPreviewContext *)&v35 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"thumbnailGenerator"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"thumbnailGenerator"];
     thumbnailGenerator = v5->_thumbnailGenerator;
     v5->_thumbnailGenerator = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"previewTitle"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"previewTitle"];
     previewTitle = v5->_previewTitle;
     v5->_previewTitle = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"contentType"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"contentType"];
     contentType = v5->_contentType;
     v5->_contentType = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"originalContentType"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"originalContentType"];
     originalContentType = v5->_originalContentType;
     v5->_originalContentType = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"itemSize"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"itemSize"];
     itemSize = v5->_itemSize;
     v5->_itemSize = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"backgroundColor"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"backgroundColor"];
     backgroundColor = v5->_backgroundColor;
     v5->_backgroundColor = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"password"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"password"];
     password = v5->_password;
     v5->_password = v18;
 
-    v5->_previewItemType = [v4 decodeIntegerForKey:@"previewItemType"];
-    v5->_canBeEdited = [v4 decodeBoolForKey:@"canBeEdited"];
-    v5->_canBeShared = [v4 decodeBoolForKey:@"canBeShared"];
-    v5->_editedFileBehavior = [v4 decodeIntegerForKey:@"editedFileBehavior"];
-    v5->_processIdentifier = [v4 decodeIntegerForKey:@"processIdentifier"];
+    v5->_previewItemType = [coderCopy decodeIntegerForKey:@"previewItemType"];
+    v5->_canBeEdited = [coderCopy decodeBoolForKey:@"canBeEdited"];
+    v5->_canBeShared = [coderCopy decodeBoolForKey:@"canBeShared"];
+    v5->_editedFileBehavior = [coderCopy decodeIntegerForKey:@"editedFileBehavior"];
+    v5->_processIdentifier = [coderCopy decodeIntegerForKey:@"processIdentifier"];
     v20 = +[QLItem customExtensionCommunicationEncodedClasses];
-    v21 = [v4 decodeObjectOfClasses:v20 forKey:@"clientPreviewOptions"];
+    v21 = [coderCopy decodeObjectOfClasses:v20 forKey:@"clientPreviewOptions"];
     clientPreviewOptions = v5->_clientPreviewOptions;
     v5->_clientPreviewOptions = v21;
 
     v23 = +[QLItem customExtensionCommunicationEncodedClasses];
-    v24 = [v4 decodeObjectOfClasses:v23 forKey:@"clientPreviewItemDisplayState"];
+    v24 = [coderCopy decodeObjectOfClasses:v23 forKey:@"clientPreviewItemDisplayState"];
     clientPreviewItemDisplayState = v5->_clientPreviewItemDisplayState;
     v5->_clientPreviewItemDisplayState = v24;
 
-    v5->_stringEncoding = [v4 decodeIntegerForKey:@"stringEncoding"];
+    v5->_stringEncoding = [coderCopy decodeIntegerForKey:@"stringEncoding"];
     v26 = MEMORY[0x277CBEB98];
     v27 = objc_opt_class();
     v28 = [v26 setWithObjects:{v27, objc_opt_class(), 0}];
-    v29 = [v4 decodeObjectOfClasses:v28 forKey:@"attachments"];
+    v29 = [coderCopy decodeObjectOfClasses:v28 forKey:@"attachments"];
     attachments = v5->_attachments;
     v5->_attachments = v29;
 
-    v31 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bitmapFormat"];
+    v31 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bitmapFormat"];
     bitmapFormat = v5->_bitmapFormat;
     v5->_bitmapFormat = v31;
 
-    v5->_viewDynamicRange = [v4 decodeIntegerForKey:@"viewDynamicRange"];
+    v5->_viewDynamicRange = [coderCopy decodeIntegerForKey:@"viewDynamicRange"];
     v33 = v5;
   }
 

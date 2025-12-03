@@ -1,40 +1,40 @@
 @interface PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary)initWithDictionary:(id)a3;
-- (PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary)initWithDictionary:(id)dictionary;
+- (PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (int)requestFeatureTagAtIndex:(unint64_t)a3;
+- (int)requestFeatureTagAtIndex:(unint64_t)index;
 - (unint64_t)hash;
-- (void)addBundleId:(id)a3;
-- (void)addRequestFeatureTag:(int)a3;
-- (void)addToolId:(id)a3;
-- (void)setHasNumActionsCreated:(BOOL)a3;
-- (void)setHasNumPlansCreated:(BOOL)a3;
-- (void)setHasNumPlansCreatedForResponse:(BOOL)a3;
-- (void)setHasNumQueriesCreated:(BOOL)a3;
-- (void)setHasNumResponseGenerationRequests:(BOOL)a3;
-- (void)setHasNumStatementsEvaluated:(BOOL)a3;
-- (void)setHasNumStatementsEvaluatedFromPlanner:(BOOL)a3;
-- (void)setHasNumSystemPromptsResolved:(BOOL)a3;
-- (void)setHasNumSystemResponsesGenerated:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addBundleId:(id)id;
+- (void)addRequestFeatureTag:(int)tag;
+- (void)addToolId:(id)id;
+- (void)setHasNumActionsCreated:(BOOL)created;
+- (void)setHasNumPlansCreated:(BOOL)created;
+- (void)setHasNumPlansCreatedForResponse:(BOOL)response;
+- (void)setHasNumQueriesCreated:(BOOL)created;
+- (void)setHasNumResponseGenerationRequests:(BOOL)requests;
+- (void)setHasNumStatementsEvaluated:(BOOL)evaluated;
+- (void)setHasNumStatementsEvaluatedFromPlanner:(BOOL)planner;
+- (void)setHasNumSystemPromptsResolved:(BOOL)resolved;
+- (void)setHasNumSystemResponsesGenerated:(BOOL)generated;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary
 
-- (PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary)initWithDictionary:(id)a3
+- (PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary)initWithDictionary:(id)dictionary
 {
   v101 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v97.receiver = self;
   v97.super_class = PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary;
   v5 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)&v97 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"clientRequestId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"clientRequestId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -42,7 +42,7 @@
       [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)v5 setClientRequestId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"clientSessionId"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"clientSessionId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -50,7 +50,7 @@
       [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)v5 setClientSessionId:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"rawSessionId"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"rawSessionId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -61,7 +61,7 @@
     v77 = v10;
     v78 = v8;
     v79 = v6;
-    v12 = [v4 objectForKeyedSubscript:@"rawQueryEventId"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"rawQueryEventId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -70,7 +70,7 @@
     }
 
     v76 = v12;
-    v14 = [v4 objectForKeyedSubscript:@"status"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"status"];
     objc_opt_class();
     v84 = v14;
     if (objc_opt_isKindOfClass())
@@ -78,7 +78,7 @@
       -[PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary setStatus:](v5, "setStatus:", [v14 longLongValue]);
     }
 
-    v15 = [v4 objectForKeyedSubscript:@"toolId"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"toolId"];
     objc_opt_class();
     v83 = v15;
     if (objc_opt_isKindOfClass())
@@ -118,7 +118,7 @@
       }
     }
 
-    v23 = [v4 objectForKeyedSubscript:@"bundleId"];
+    v23 = [dictionaryCopy objectForKeyedSubscript:@"bundleId"];
     objc_opt_class();
     v82 = v23;
     if (objc_opt_isKindOfClass())
@@ -158,7 +158,7 @@
       }
     }
 
-    v31 = [v4 objectForKeyedSubscript:@"requestFeatureTag"];
+    v31 = [dictionaryCopy objectForKeyedSubscript:@"requestFeatureTag"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -196,21 +196,21 @@
       }
     }
 
-    v38 = [v4 objectForKeyedSubscript:@"numPlansCreated"];
+    v38 = [dictionaryCopy objectForKeyedSubscript:@"numPlansCreated"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary setNumPlansCreated:](v5, "setNumPlansCreated:", [v38 unsignedIntValue]);
     }
 
-    v39 = [v4 objectForKeyedSubscript:@"numPlansCreatedForResponse"];
+    v39 = [dictionaryCopy objectForKeyedSubscript:@"numPlansCreatedForResponse"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary setNumPlansCreatedForResponse:](v5, "setNumPlansCreatedForResponse:", [v39 unsignedIntValue]);
     }
 
-    v40 = [v4 objectForKeyedSubscript:@"numQueriesCreated"];
+    v40 = [dictionaryCopy objectForKeyedSubscript:@"numQueriesCreated"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -218,7 +218,7 @@
     }
 
     v73 = v39;
-    v41 = [v4 objectForKeyedSubscript:@"numActionsCreated"];
+    v41 = [dictionaryCopy objectForKeyedSubscript:@"numActionsCreated"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -226,14 +226,14 @@
     }
 
     v42 = v31;
-    v43 = [v4 objectForKeyedSubscript:@"numStatementsEvaluated"];
+    v43 = [dictionaryCopy objectForKeyedSubscript:@"numStatementsEvaluated"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary setNumStatementsEvaluated:](v5, "setNumStatementsEvaluated:", [v43 unsignedIntValue]);
     }
 
-    v44 = [v4 objectForKeyedSubscript:@"numStatementsEvaluatedFromPlanner"];
+    v44 = [dictionaryCopy objectForKeyedSubscript:@"numStatementsEvaluatedFromPlanner"];
     objc_opt_class();
     v81 = v44;
     if (objc_opt_isKindOfClass())
@@ -241,7 +241,7 @@
       -[PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary setNumStatementsEvaluatedFromPlanner:](v5, "setNumStatementsEvaluatedFromPlanner:", [v44 unsignedIntValue]);
     }
 
-    v45 = [v4 objectForKeyedSubscript:@"numResponseGenerationRequests"];
+    v45 = [dictionaryCopy objectForKeyedSubscript:@"numResponseGenerationRequests"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -249,7 +249,7 @@
     }
 
     v69 = v45;
-    v46 = [v4 objectForKeyedSubscript:@"numSystemResponsesGenerated"];
+    v46 = [dictionaryCopy objectForKeyedSubscript:@"numSystemResponsesGenerated"];
     objc_opt_class();
     v80 = v46;
     v47 = v42;
@@ -259,7 +259,7 @@
     }
 
     v74 = v38;
-    v48 = [v4 objectForKeyedSubscript:@"numSystemPromptsResolved"];
+    v48 = [dictionaryCopy objectForKeyedSubscript:@"numSystemPromptsResolved"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -268,7 +268,7 @@
 
     v68 = v48;
     v72 = v40;
-    v49 = [v4 objectForKeyedSubscript:@"requestResponseTime"];
+    v49 = [dictionaryCopy objectForKeyedSubscript:@"requestResponseTime"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -276,7 +276,7 @@
       [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)v5 setRequestResponseTime:v50];
     }
 
-    v51 = [v4 objectForKeyedSubscript:@"planningTime"];
+    v51 = [dictionaryCopy objectForKeyedSubscript:@"planningTime"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -285,7 +285,7 @@
     }
 
     v71 = v41;
-    v53 = [v4 objectForKeyedSubscript:@"queryTime"];
+    v53 = [dictionaryCopy objectForKeyedSubscript:@"queryTime"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -294,7 +294,7 @@
     }
 
     v70 = v43;
-    v55 = [v4 objectForKeyedSubscript:@"executionTime"];
+    v55 = [dictionaryCopy objectForKeyedSubscript:@"executionTime"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -303,7 +303,7 @@
     }
 
     v75 = v47;
-    v57 = [v4 objectForKeyedSubscript:{@"responsePreparationTime", v49}];
+    v57 = [dictionaryCopy objectForKeyedSubscript:{@"responsePreparationTime", v49}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -311,7 +311,7 @@
       [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)v5 setResponsePreparationTime:v58];
     }
 
-    v59 = [v4 objectForKeyedSubscript:@"planGenerationTime"];
+    v59 = [dictionaryCopy objectForKeyedSubscript:@"planGenerationTime"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -319,7 +319,7 @@
       [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)v5 setPlanGenerationTime:v60];
     }
 
-    v61 = [v4 objectForKeyedSubscript:@"queryDecorationTime"];
+    v61 = [dictionaryCopy objectForKeyedSubscript:@"queryDecorationTime"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -327,7 +327,7 @@
       [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)v5 setQueryDecorationTime:v62];
     }
 
-    v63 = [v4 objectForKeyedSubscript:@"failureInfo"];
+    v63 = [dictionaryCopy objectForKeyedSubscript:@"failureInfo"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -341,30 +341,30 @@
   return v5;
 }
 
-- (PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary)initWithJSON:(id)a3
+- (PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -377,75 +377,75 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_bundleIds)
   {
-    v4 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self bundleIds];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"bundleId"];
+    bundleIds = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self bundleIds];
+    v5 = [bundleIds copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"bundleId"];
   }
 
   if (self->_clientRequestId)
   {
-    v6 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self clientRequestId];
-    v7 = [v6 dictionaryRepresentation];
-    if (v7)
+    clientRequestId = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self clientRequestId];
+    dictionaryRepresentation = [clientRequestId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v7 forKeyedSubscript:@"clientRequestId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"clientRequestId"];
     }
 
     else
     {
-      v8 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v8 forKeyedSubscript:@"clientRequestId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"clientRequestId"];
     }
   }
 
   if (self->_clientSessionId)
   {
-    v9 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self clientSessionId];
-    v10 = [v9 dictionaryRepresentation];
-    if (v10)
+    clientSessionId = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self clientSessionId];
+    dictionaryRepresentation2 = [clientSessionId dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v10 forKeyedSubscript:@"clientSessionId"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"clientSessionId"];
     }
 
     else
     {
-      v11 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v11 forKeyedSubscript:@"clientSessionId"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"clientSessionId"];
     }
   }
 
   if (self->_executionTime)
   {
-    v12 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self executionTime];
-    v13 = [v12 dictionaryRepresentation];
-    if (v13)
+    executionTime = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self executionTime];
+    dictionaryRepresentation3 = [executionTime dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v13 forKeyedSubscript:@"executionTime"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"executionTime"];
     }
 
     else
     {
-      v14 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v14 forKeyedSubscript:@"executionTime"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"executionTime"];
     }
   }
 
   if (self->_failureInfo)
   {
-    v15 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self failureInfo];
-    v16 = [v15 dictionaryRepresentation];
-    if (v16)
+    failureInfo = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self failureInfo];
+    dictionaryRepresentation4 = [failureInfo dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v16 forKeyedSubscript:@"failureInfo"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"failureInfo"];
     }
 
     else
     {
-      v17 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v17 forKeyedSubscript:@"failureInfo"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"failureInfo"];
     }
   }
 
@@ -453,7 +453,7 @@
   if ((has & 0x10) != 0)
   {
     v22 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary numActionsCreated](self, "numActionsCreated")}];
-    [v3 setObject:v22 forKeyedSubscript:@"numActionsCreated"];
+    [dictionary setObject:v22 forKeyedSubscript:@"numActionsCreated"];
 
     has = self->_has;
     if ((has & 2) == 0)
@@ -474,7 +474,7 @@ LABEL_25:
   }
 
   v23 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary numPlansCreated](self, "numPlansCreated")}];
-  [v3 setObject:v23 forKeyedSubscript:@"numPlansCreated"];
+  [dictionary setObject:v23 forKeyedSubscript:@"numPlansCreated"];
 
   has = self->_has;
   if ((has & 4) == 0)
@@ -490,7 +490,7 @@ LABEL_26:
 
 LABEL_38:
   v24 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary numPlansCreatedForResponse](self, "numPlansCreatedForResponse")}];
-  [v3 setObject:v24 forKeyedSubscript:@"numPlansCreatedForResponse"];
+  [dictionary setObject:v24 forKeyedSubscript:@"numPlansCreatedForResponse"];
 
   has = self->_has;
   if ((has & 8) == 0)
@@ -506,7 +506,7 @@ LABEL_27:
 
 LABEL_39:
   v25 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary numQueriesCreated](self, "numQueriesCreated")}];
-  [v3 setObject:v25 forKeyedSubscript:@"numQueriesCreated"];
+  [dictionary setObject:v25 forKeyedSubscript:@"numQueriesCreated"];
 
   has = self->_has;
   if ((has & 0x80) == 0)
@@ -522,7 +522,7 @@ LABEL_28:
 
 LABEL_40:
   v26 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary numResponseGenerationRequests](self, "numResponseGenerationRequests")}];
-  [v3 setObject:v26 forKeyedSubscript:@"numResponseGenerationRequests"];
+  [dictionary setObject:v26 forKeyedSubscript:@"numResponseGenerationRequests"];
 
   has = self->_has;
   if ((has & 0x20) == 0)
@@ -538,7 +538,7 @@ LABEL_29:
 
 LABEL_41:
   v27 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary numStatementsEvaluated](self, "numStatementsEvaluated")}];
-  [v3 setObject:v27 forKeyedSubscript:@"numStatementsEvaluated"];
+  [dictionary setObject:v27 forKeyedSubscript:@"numStatementsEvaluated"];
 
   has = self->_has;
   if ((has & 0x40) == 0)
@@ -554,7 +554,7 @@ LABEL_30:
 
 LABEL_42:
   v28 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary numStatementsEvaluatedFromPlanner](self, "numStatementsEvaluatedFromPlanner")}];
-  [v3 setObject:v28 forKeyedSubscript:@"numStatementsEvaluatedFromPlanner"];
+  [dictionary setObject:v28 forKeyedSubscript:@"numStatementsEvaluatedFromPlanner"];
 
   has = self->_has;
   if ((has & 0x200) == 0)
@@ -570,168 +570,168 @@ LABEL_31:
 
 LABEL_43:
   v29 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary numSystemPromptsResolved](self, "numSystemPromptsResolved")}];
-  [v3 setObject:v29 forKeyedSubscript:@"numSystemPromptsResolved"];
+  [dictionary setObject:v29 forKeyedSubscript:@"numSystemPromptsResolved"];
 
   if ((*&self->_has & 0x100) != 0)
   {
 LABEL_32:
     v19 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary numSystemResponsesGenerated](self, "numSystemResponsesGenerated")}];
-    [v3 setObject:v19 forKeyedSubscript:@"numSystemResponsesGenerated"];
+    [dictionary setObject:v19 forKeyedSubscript:@"numSystemResponsesGenerated"];
   }
 
 LABEL_33:
   if (self->_planGenerationTime)
   {
-    v20 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self planGenerationTime];
-    v21 = [v20 dictionaryRepresentation];
-    if (v21)
+    planGenerationTime = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self planGenerationTime];
+    dictionaryRepresentation5 = [planGenerationTime dictionaryRepresentation];
+    if (dictionaryRepresentation5)
     {
-      [v3 setObject:v21 forKeyedSubscript:@"planGenerationTime"];
+      [dictionary setObject:dictionaryRepresentation5 forKeyedSubscript:@"planGenerationTime"];
     }
 
     else
     {
-      v30 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v30 forKeyedSubscript:@"planGenerationTime"];
+      null5 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null5 forKeyedSubscript:@"planGenerationTime"];
     }
   }
 
   if (self->_planningTime)
   {
-    v31 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self planningTime];
-    v32 = [v31 dictionaryRepresentation];
-    if (v32)
+    planningTime = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self planningTime];
+    dictionaryRepresentation6 = [planningTime dictionaryRepresentation];
+    if (dictionaryRepresentation6)
     {
-      [v3 setObject:v32 forKeyedSubscript:@"planningTime"];
+      [dictionary setObject:dictionaryRepresentation6 forKeyedSubscript:@"planningTime"];
     }
 
     else
     {
-      v33 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v33 forKeyedSubscript:@"planningTime"];
+      null6 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null6 forKeyedSubscript:@"planningTime"];
     }
   }
 
   if (self->_queryDecorationTime)
   {
-    v34 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self queryDecorationTime];
-    v35 = [v34 dictionaryRepresentation];
-    if (v35)
+    queryDecorationTime = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self queryDecorationTime];
+    dictionaryRepresentation7 = [queryDecorationTime dictionaryRepresentation];
+    if (dictionaryRepresentation7)
     {
-      [v3 setObject:v35 forKeyedSubscript:@"queryDecorationTime"];
+      [dictionary setObject:dictionaryRepresentation7 forKeyedSubscript:@"queryDecorationTime"];
     }
 
     else
     {
-      v36 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v36 forKeyedSubscript:@"queryDecorationTime"];
+      null7 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null7 forKeyedSubscript:@"queryDecorationTime"];
     }
   }
 
   if (self->_queryTime)
   {
-    v37 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self queryTime];
-    v38 = [v37 dictionaryRepresentation];
-    if (v38)
+    queryTime = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self queryTime];
+    dictionaryRepresentation8 = [queryTime dictionaryRepresentation];
+    if (dictionaryRepresentation8)
     {
-      [v3 setObject:v38 forKeyedSubscript:@"queryTime"];
+      [dictionary setObject:dictionaryRepresentation8 forKeyedSubscript:@"queryTime"];
     }
 
     else
     {
-      v39 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v39 forKeyedSubscript:@"queryTime"];
+      null8 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null8 forKeyedSubscript:@"queryTime"];
     }
   }
 
   if (self->_rawQueryEventId)
   {
-    v40 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self rawQueryEventId];
-    v41 = [v40 dictionaryRepresentation];
-    if (v41)
+    rawQueryEventId = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self rawQueryEventId];
+    dictionaryRepresentation9 = [rawQueryEventId dictionaryRepresentation];
+    if (dictionaryRepresentation9)
     {
-      [v3 setObject:v41 forKeyedSubscript:@"rawQueryEventId"];
+      [dictionary setObject:dictionaryRepresentation9 forKeyedSubscript:@"rawQueryEventId"];
     }
 
     else
     {
-      v42 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v42 forKeyedSubscript:@"rawQueryEventId"];
+      null9 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null9 forKeyedSubscript:@"rawQueryEventId"];
     }
   }
 
   if (self->_rawSessionId)
   {
-    v43 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self rawSessionId];
-    v44 = [v43 dictionaryRepresentation];
-    if (v44)
+    rawSessionId = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self rawSessionId];
+    dictionaryRepresentation10 = [rawSessionId dictionaryRepresentation];
+    if (dictionaryRepresentation10)
     {
-      [v3 setObject:v44 forKeyedSubscript:@"rawSessionId"];
+      [dictionary setObject:dictionaryRepresentation10 forKeyedSubscript:@"rawSessionId"];
     }
 
     else
     {
-      v45 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v45 forKeyedSubscript:@"rawSessionId"];
+      null10 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null10 forKeyedSubscript:@"rawSessionId"];
     }
   }
 
   if ([(NSArray *)self->_requestFeatureTags count])
   {
-    v46 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self requestFeatureTags];
-    v47 = [v46 copy];
-    [v3 setObject:v47 forKeyedSubscript:@"requestFeatureTag"];
+    requestFeatureTags = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self requestFeatureTags];
+    v47 = [requestFeatureTags copy];
+    [dictionary setObject:v47 forKeyedSubscript:@"requestFeatureTag"];
   }
 
   if (self->_requestResponseTime)
   {
-    v48 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self requestResponseTime];
-    v49 = [v48 dictionaryRepresentation];
-    if (v49)
+    requestResponseTime = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self requestResponseTime];
+    dictionaryRepresentation11 = [requestResponseTime dictionaryRepresentation];
+    if (dictionaryRepresentation11)
     {
-      [v3 setObject:v49 forKeyedSubscript:@"requestResponseTime"];
+      [dictionary setObject:dictionaryRepresentation11 forKeyedSubscript:@"requestResponseTime"];
     }
 
     else
     {
-      v50 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v50 forKeyedSubscript:@"requestResponseTime"];
+      null11 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null11 forKeyedSubscript:@"requestResponseTime"];
     }
   }
 
   if (self->_responsePreparationTime)
   {
-    v51 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self responsePreparationTime];
-    v52 = [v51 dictionaryRepresentation];
-    if (v52)
+    responsePreparationTime = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self responsePreparationTime];
+    dictionaryRepresentation12 = [responsePreparationTime dictionaryRepresentation];
+    if (dictionaryRepresentation12)
     {
-      [v3 setObject:v52 forKeyedSubscript:@"responsePreparationTime"];
+      [dictionary setObject:dictionaryRepresentation12 forKeyedSubscript:@"responsePreparationTime"];
     }
 
     else
     {
-      v53 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v53 forKeyedSubscript:@"responsePreparationTime"];
+      null12 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null12 forKeyedSubscript:@"responsePreparationTime"];
     }
   }
 
   if (*&self->_has)
   {
     v54 = [MEMORY[0x1E696AD98] numberWithLongLong:{-[PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary status](self, "status")}];
-    [v3 setObject:v54 forKeyedSubscript:@"status"];
+    [dictionary setObject:v54 forKeyedSubscript:@"status"];
   }
 
   if (self->_toolIds)
   {
-    v55 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self toolIds];
-    v56 = [v55 copy];
-    [v3 setObject:v56 forKeyedSubscript:@"toolId"];
+    toolIds = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self toolIds];
+    v56 = [toolIds copy];
+    [dictionary setObject:v56 forKeyedSubscript:@"toolId"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
-  v57 = v3;
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
+  v57 = dictionary;
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -885,28 +885,28 @@ LABEL_23:
   return v25 ^ v28 ^ [(PNRODSchemaPNRODFailureInfo *)self->_failureInfo hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_115;
   }
 
-  v5 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self clientRequestId];
-  v6 = [v4 clientRequestId];
-  if ((v5 != 0) == (v6 == 0))
+  clientRequestId = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self clientRequestId];
+  clientRequestId2 = [equalCopy clientRequestId];
+  if ((clientRequestId != 0) == (clientRequestId2 == 0))
   {
     goto LABEL_114;
   }
 
-  v7 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self clientRequestId];
-  if (v7)
+  clientRequestId3 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self clientRequestId];
+  if (clientRequestId3)
   {
-    v8 = v7;
-    v9 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self clientRequestId];
-    v10 = [v4 clientRequestId];
-    v11 = [v9 isEqual:v10];
+    v8 = clientRequestId3;
+    clientRequestId4 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self clientRequestId];
+    clientRequestId5 = [equalCopy clientRequestId];
+    v11 = [clientRequestId4 isEqual:clientRequestId5];
 
     if (!v11)
     {
@@ -918,20 +918,20 @@ LABEL_23:
   {
   }
 
-  v5 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self clientSessionId];
-  v6 = [v4 clientSessionId];
-  if ((v5 != 0) == (v6 == 0))
+  clientRequestId = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self clientSessionId];
+  clientRequestId2 = [equalCopy clientSessionId];
+  if ((clientRequestId != 0) == (clientRequestId2 == 0))
   {
     goto LABEL_114;
   }
 
-  v12 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self clientSessionId];
-  if (v12)
+  clientSessionId = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self clientSessionId];
+  if (clientSessionId)
   {
-    v13 = v12;
-    v14 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self clientSessionId];
-    v15 = [v4 clientSessionId];
-    v16 = [v14 isEqual:v15];
+    v13 = clientSessionId;
+    clientSessionId2 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self clientSessionId];
+    clientSessionId3 = [equalCopy clientSessionId];
+    v16 = [clientSessionId2 isEqual:clientSessionId3];
 
     if (!v16)
     {
@@ -943,20 +943,20 @@ LABEL_23:
   {
   }
 
-  v5 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self rawSessionId];
-  v6 = [v4 rawSessionId];
-  if ((v5 != 0) == (v6 == 0))
+  clientRequestId = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self rawSessionId];
+  clientRequestId2 = [equalCopy rawSessionId];
+  if ((clientRequestId != 0) == (clientRequestId2 == 0))
   {
     goto LABEL_114;
   }
 
-  v17 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self rawSessionId];
-  if (v17)
+  rawSessionId = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self rawSessionId];
+  if (rawSessionId)
   {
-    v18 = v17;
-    v19 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self rawSessionId];
-    v20 = [v4 rawSessionId];
-    v21 = [v19 isEqual:v20];
+    v18 = rawSessionId;
+    rawSessionId2 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self rawSessionId];
+    rawSessionId3 = [equalCopy rawSessionId];
+    v21 = [rawSessionId2 isEqual:rawSessionId3];
 
     if (!v21)
     {
@@ -968,20 +968,20 @@ LABEL_23:
   {
   }
 
-  v5 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self rawQueryEventId];
-  v6 = [v4 rawQueryEventId];
-  if ((v5 != 0) == (v6 == 0))
+  clientRequestId = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self rawQueryEventId];
+  clientRequestId2 = [equalCopy rawQueryEventId];
+  if ((clientRequestId != 0) == (clientRequestId2 == 0))
   {
     goto LABEL_114;
   }
 
-  v22 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self rawQueryEventId];
-  if (v22)
+  rawQueryEventId = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self rawQueryEventId];
+  if (rawQueryEventId)
   {
-    v23 = v22;
-    v24 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self rawQueryEventId];
-    v25 = [v4 rawQueryEventId];
-    v26 = [v24 isEqual:v25];
+    v23 = rawQueryEventId;
+    rawQueryEventId2 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self rawQueryEventId];
+    rawQueryEventId3 = [equalCopy rawQueryEventId];
+    v26 = [rawQueryEventId2 isEqual:rawQueryEventId3];
 
     if (!v26)
     {
@@ -993,7 +993,7 @@ LABEL_23:
   {
   }
 
-  if ((*&self->_has & 1) != (v4[88] & 1))
+  if ((*&self->_has & 1) != (equalCopy[88] & 1))
   {
     goto LABEL_115;
   }
@@ -1001,26 +1001,26 @@ LABEL_23:
   if (*&self->_has)
   {
     status = self->_status;
-    if (status != [v4 status])
+    if (status != [equalCopy status])
     {
       goto LABEL_115;
     }
   }
 
-  v5 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self toolIds];
-  v6 = [v4 toolIds];
-  if ((v5 != 0) == (v6 == 0))
+  clientRequestId = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self toolIds];
+  clientRequestId2 = [equalCopy toolIds];
+  if ((clientRequestId != 0) == (clientRequestId2 == 0))
   {
     goto LABEL_114;
   }
 
-  v28 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self toolIds];
-  if (v28)
+  toolIds = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self toolIds];
+  if (toolIds)
   {
-    v29 = v28;
-    v30 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self toolIds];
-    v31 = [v4 toolIds];
-    v32 = [v30 isEqual:v31];
+    v29 = toolIds;
+    toolIds2 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self toolIds];
+    toolIds3 = [equalCopy toolIds];
+    v32 = [toolIds2 isEqual:toolIds3];
 
     if (!v32)
     {
@@ -1032,20 +1032,20 @@ LABEL_23:
   {
   }
 
-  v5 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self bundleIds];
-  v6 = [v4 bundleIds];
-  if ((v5 != 0) == (v6 == 0))
+  clientRequestId = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self bundleIds];
+  clientRequestId2 = [equalCopy bundleIds];
+  if ((clientRequestId != 0) == (clientRequestId2 == 0))
   {
     goto LABEL_114;
   }
 
-  v33 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self bundleIds];
-  if (v33)
+  bundleIds = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self bundleIds];
+  if (bundleIds)
   {
-    v34 = v33;
-    v35 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self bundleIds];
-    v36 = [v4 bundleIds];
-    v37 = [v35 isEqual:v36];
+    v34 = bundleIds;
+    bundleIds2 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self bundleIds];
+    bundleIds3 = [equalCopy bundleIds];
+    v37 = [bundleIds2 isEqual:bundleIds3];
 
     if (!v37)
     {
@@ -1057,20 +1057,20 @@ LABEL_23:
   {
   }
 
-  v5 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self requestFeatureTags];
-  v6 = [v4 requestFeatureTags];
-  if ((v5 != 0) == (v6 == 0))
+  clientRequestId = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self requestFeatureTags];
+  clientRequestId2 = [equalCopy requestFeatureTags];
+  if ((clientRequestId != 0) == (clientRequestId2 == 0))
   {
     goto LABEL_114;
   }
 
-  v38 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self requestFeatureTags];
-  if (v38)
+  requestFeatureTags = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self requestFeatureTags];
+  if (requestFeatureTags)
   {
-    v39 = v38;
-    v40 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self requestFeatureTags];
-    v41 = [v4 requestFeatureTags];
-    v42 = [v40 isEqual:v41];
+    v39 = requestFeatureTags;
+    requestFeatureTags2 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self requestFeatureTags];
+    requestFeatureTags3 = [equalCopy requestFeatureTags];
+    v42 = [requestFeatureTags2 isEqual:requestFeatureTags3];
 
     if (!v42)
     {
@@ -1084,7 +1084,7 @@ LABEL_23:
 
   has = self->_has;
   v44 = (*&has >> 1) & 1;
-  v45 = v4[88];
+  v45 = equalCopy[88];
   if (v44 != ((v45 >> 1) & 1))
   {
     goto LABEL_115;
@@ -1093,13 +1093,13 @@ LABEL_23:
   if (v44)
   {
     numPlansCreated = self->_numPlansCreated;
-    if (numPlansCreated != [v4 numPlansCreated])
+    if (numPlansCreated != [equalCopy numPlansCreated])
     {
       goto LABEL_115;
     }
 
     has = self->_has;
-    v45 = v4[88];
+    v45 = equalCopy[88];
   }
 
   v47 = (*&has >> 2) & 1;
@@ -1111,13 +1111,13 @@ LABEL_23:
   if (v47)
   {
     numPlansCreatedForResponse = self->_numPlansCreatedForResponse;
-    if (numPlansCreatedForResponse != [v4 numPlansCreatedForResponse])
+    if (numPlansCreatedForResponse != [equalCopy numPlansCreatedForResponse])
     {
       goto LABEL_115;
     }
 
     has = self->_has;
-    v45 = v4[88];
+    v45 = equalCopy[88];
   }
 
   v49 = (*&has >> 3) & 1;
@@ -1129,13 +1129,13 @@ LABEL_23:
   if (v49)
   {
     numQueriesCreated = self->_numQueriesCreated;
-    if (numQueriesCreated != [v4 numQueriesCreated])
+    if (numQueriesCreated != [equalCopy numQueriesCreated])
     {
       goto LABEL_115;
     }
 
     has = self->_has;
-    v45 = v4[88];
+    v45 = equalCopy[88];
   }
 
   v51 = (*&has >> 4) & 1;
@@ -1147,13 +1147,13 @@ LABEL_23:
   if (v51)
   {
     numActionsCreated = self->_numActionsCreated;
-    if (numActionsCreated != [v4 numActionsCreated])
+    if (numActionsCreated != [equalCopy numActionsCreated])
     {
       goto LABEL_115;
     }
 
     has = self->_has;
-    v45 = v4[88];
+    v45 = equalCopy[88];
   }
 
   v53 = (*&has >> 5) & 1;
@@ -1165,13 +1165,13 @@ LABEL_23:
   if (v53)
   {
     numStatementsEvaluated = self->_numStatementsEvaluated;
-    if (numStatementsEvaluated != [v4 numStatementsEvaluated])
+    if (numStatementsEvaluated != [equalCopy numStatementsEvaluated])
     {
       goto LABEL_115;
     }
 
     has = self->_has;
-    v45 = v4[88];
+    v45 = equalCopy[88];
   }
 
   v55 = (*&has >> 6) & 1;
@@ -1183,13 +1183,13 @@ LABEL_23:
   if (v55)
   {
     numStatementsEvaluatedFromPlanner = self->_numStatementsEvaluatedFromPlanner;
-    if (numStatementsEvaluatedFromPlanner != [v4 numStatementsEvaluatedFromPlanner])
+    if (numStatementsEvaluatedFromPlanner != [equalCopy numStatementsEvaluatedFromPlanner])
     {
       goto LABEL_115;
     }
 
     has = self->_has;
-    v45 = v4[88];
+    v45 = equalCopy[88];
   }
 
   v57 = (*&has >> 7) & 1;
@@ -1201,13 +1201,13 @@ LABEL_23:
   if (v57)
   {
     numResponseGenerationRequests = self->_numResponseGenerationRequests;
-    if (numResponseGenerationRequests != [v4 numResponseGenerationRequests])
+    if (numResponseGenerationRequests != [equalCopy numResponseGenerationRequests])
     {
       goto LABEL_115;
     }
 
     has = self->_has;
-    v45 = v4[88];
+    v45 = equalCopy[88];
   }
 
   v59 = (*&has >> 8) & 1;
@@ -1219,13 +1219,13 @@ LABEL_23:
   if (v59)
   {
     numSystemResponsesGenerated = self->_numSystemResponsesGenerated;
-    if (numSystemResponsesGenerated != [v4 numSystemResponsesGenerated])
+    if (numSystemResponsesGenerated != [equalCopy numSystemResponsesGenerated])
     {
       goto LABEL_115;
     }
 
     has = self->_has;
-    v45 = v4[88];
+    v45 = equalCopy[88];
   }
 
   v61 = (*&has >> 9) & 1;
@@ -1237,26 +1237,26 @@ LABEL_23:
   if (v61)
   {
     numSystemPromptsResolved = self->_numSystemPromptsResolved;
-    if (numSystemPromptsResolved != [v4 numSystemPromptsResolved])
+    if (numSystemPromptsResolved != [equalCopy numSystemPromptsResolved])
     {
       goto LABEL_115;
     }
   }
 
-  v5 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self requestResponseTime];
-  v6 = [v4 requestResponseTime];
-  if ((v5 != 0) == (v6 == 0))
+  clientRequestId = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self requestResponseTime];
+  clientRequestId2 = [equalCopy requestResponseTime];
+  if ((clientRequestId != 0) == (clientRequestId2 == 0))
   {
     goto LABEL_114;
   }
 
-  v63 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self requestResponseTime];
-  if (v63)
+  requestResponseTime = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self requestResponseTime];
+  if (requestResponseTime)
   {
-    v64 = v63;
-    v65 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self requestResponseTime];
-    v66 = [v4 requestResponseTime];
-    v67 = [v65 isEqual:v66];
+    v64 = requestResponseTime;
+    requestResponseTime2 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self requestResponseTime];
+    requestResponseTime3 = [equalCopy requestResponseTime];
+    v67 = [requestResponseTime2 isEqual:requestResponseTime3];
 
     if (!v67)
     {
@@ -1268,20 +1268,20 @@ LABEL_23:
   {
   }
 
-  v5 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self planningTime];
-  v6 = [v4 planningTime];
-  if ((v5 != 0) == (v6 == 0))
+  clientRequestId = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self planningTime];
+  clientRequestId2 = [equalCopy planningTime];
+  if ((clientRequestId != 0) == (clientRequestId2 == 0))
   {
     goto LABEL_114;
   }
 
-  v68 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self planningTime];
-  if (v68)
+  planningTime = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self planningTime];
+  if (planningTime)
   {
-    v69 = v68;
-    v70 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self planningTime];
-    v71 = [v4 planningTime];
-    v72 = [v70 isEqual:v71];
+    v69 = planningTime;
+    planningTime2 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self planningTime];
+    planningTime3 = [equalCopy planningTime];
+    v72 = [planningTime2 isEqual:planningTime3];
 
     if (!v72)
     {
@@ -1293,20 +1293,20 @@ LABEL_23:
   {
   }
 
-  v5 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self queryTime];
-  v6 = [v4 queryTime];
-  if ((v5 != 0) == (v6 == 0))
+  clientRequestId = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self queryTime];
+  clientRequestId2 = [equalCopy queryTime];
+  if ((clientRequestId != 0) == (clientRequestId2 == 0))
   {
     goto LABEL_114;
   }
 
-  v73 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self queryTime];
-  if (v73)
+  queryTime = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self queryTime];
+  if (queryTime)
   {
-    v74 = v73;
-    v75 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self queryTime];
-    v76 = [v4 queryTime];
-    v77 = [v75 isEqual:v76];
+    v74 = queryTime;
+    queryTime2 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self queryTime];
+    queryTime3 = [equalCopy queryTime];
+    v77 = [queryTime2 isEqual:queryTime3];
 
     if (!v77)
     {
@@ -1318,20 +1318,20 @@ LABEL_23:
   {
   }
 
-  v5 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self executionTime];
-  v6 = [v4 executionTime];
-  if ((v5 != 0) == (v6 == 0))
+  clientRequestId = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self executionTime];
+  clientRequestId2 = [equalCopy executionTime];
+  if ((clientRequestId != 0) == (clientRequestId2 == 0))
   {
     goto LABEL_114;
   }
 
-  v78 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self executionTime];
-  if (v78)
+  executionTime = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self executionTime];
+  if (executionTime)
   {
-    v79 = v78;
-    v80 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self executionTime];
-    v81 = [v4 executionTime];
-    v82 = [v80 isEqual:v81];
+    v79 = executionTime;
+    executionTime2 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self executionTime];
+    executionTime3 = [equalCopy executionTime];
+    v82 = [executionTime2 isEqual:executionTime3];
 
     if (!v82)
     {
@@ -1343,20 +1343,20 @@ LABEL_23:
   {
   }
 
-  v5 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self responsePreparationTime];
-  v6 = [v4 responsePreparationTime];
-  if ((v5 != 0) == (v6 == 0))
+  clientRequestId = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self responsePreparationTime];
+  clientRequestId2 = [equalCopy responsePreparationTime];
+  if ((clientRequestId != 0) == (clientRequestId2 == 0))
   {
     goto LABEL_114;
   }
 
-  v83 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self responsePreparationTime];
-  if (v83)
+  responsePreparationTime = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self responsePreparationTime];
+  if (responsePreparationTime)
   {
-    v84 = v83;
-    v85 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self responsePreparationTime];
-    v86 = [v4 responsePreparationTime];
-    v87 = [v85 isEqual:v86];
+    v84 = responsePreparationTime;
+    responsePreparationTime2 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self responsePreparationTime];
+    responsePreparationTime3 = [equalCopy responsePreparationTime];
+    v87 = [responsePreparationTime2 isEqual:responsePreparationTime3];
 
     if (!v87)
     {
@@ -1368,20 +1368,20 @@ LABEL_23:
   {
   }
 
-  v5 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self planGenerationTime];
-  v6 = [v4 planGenerationTime];
-  if ((v5 != 0) == (v6 == 0))
+  clientRequestId = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self planGenerationTime];
+  clientRequestId2 = [equalCopy planGenerationTime];
+  if ((clientRequestId != 0) == (clientRequestId2 == 0))
   {
     goto LABEL_114;
   }
 
-  v88 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self planGenerationTime];
-  if (v88)
+  planGenerationTime = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self planGenerationTime];
+  if (planGenerationTime)
   {
-    v89 = v88;
-    v90 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self planGenerationTime];
-    v91 = [v4 planGenerationTime];
-    v92 = [v90 isEqual:v91];
+    v89 = planGenerationTime;
+    planGenerationTime2 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self planGenerationTime];
+    planGenerationTime3 = [equalCopy planGenerationTime];
+    v92 = [planGenerationTime2 isEqual:planGenerationTime3];
 
     if (!v92)
     {
@@ -1393,20 +1393,20 @@ LABEL_23:
   {
   }
 
-  v5 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self queryDecorationTime];
-  v6 = [v4 queryDecorationTime];
-  if ((v5 != 0) == (v6 == 0))
+  clientRequestId = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self queryDecorationTime];
+  clientRequestId2 = [equalCopy queryDecorationTime];
+  if ((clientRequestId != 0) == (clientRequestId2 == 0))
   {
     goto LABEL_114;
   }
 
-  v93 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self queryDecorationTime];
-  if (v93)
+  queryDecorationTime = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self queryDecorationTime];
+  if (queryDecorationTime)
   {
-    v94 = v93;
-    v95 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self queryDecorationTime];
-    v96 = [v4 queryDecorationTime];
-    v97 = [v95 isEqual:v96];
+    v94 = queryDecorationTime;
+    queryDecorationTime2 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self queryDecorationTime];
+    queryDecorationTime3 = [equalCopy queryDecorationTime];
+    v97 = [queryDecorationTime2 isEqual:queryDecorationTime3];
 
     if (!v97)
     {
@@ -1418,17 +1418,17 @@ LABEL_23:
   {
   }
 
-  v5 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self failureInfo];
-  v6 = [v4 failureInfo];
-  if ((v5 != 0) == (v6 == 0))
+  clientRequestId = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self failureInfo];
+  clientRequestId2 = [equalCopy failureInfo];
+  if ((clientRequestId != 0) == (clientRequestId2 == 0))
   {
 LABEL_114:
 
     goto LABEL_115;
   }
 
-  v98 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self failureInfo];
-  if (!v98)
+  failureInfo = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self failureInfo];
+  if (!failureInfo)
   {
 
 LABEL_118:
@@ -1436,10 +1436,10 @@ LABEL_118:
     goto LABEL_116;
   }
 
-  v99 = v98;
-  v100 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self failureInfo];
-  v101 = [v4 failureInfo];
-  v102 = [v100 isEqual:v101];
+  v99 = failureInfo;
+  failureInfo2 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self failureInfo];
+  failureInfo3 = [equalCopy failureInfo];
+  v102 = [failureInfo2 isEqual:failureInfo3];
 
   if (v102)
   {
@@ -1453,39 +1453,39 @@ LABEL_116:
   return v103;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v60 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self clientRequestId];
+  toCopy = to;
+  clientRequestId = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self clientRequestId];
 
-  if (v5)
+  if (clientRequestId)
   {
-    v6 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self clientRequestId];
+    clientRequestId2 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self clientRequestId];
     PBDataWriterWriteSubmessage();
   }
 
-  v7 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self clientSessionId];
+  clientSessionId = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self clientSessionId];
 
-  if (v7)
+  if (clientSessionId)
   {
-    v8 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self clientSessionId];
+    clientSessionId2 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self clientSessionId];
     PBDataWriterWriteSubmessage();
   }
 
-  v9 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self rawSessionId];
+  rawSessionId = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self rawSessionId];
 
-  if (v9)
+  if (rawSessionId)
   {
-    v10 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self rawSessionId];
+    rawSessionId2 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self rawSessionId];
     PBDataWriterWriteSubmessage();
   }
 
-  v11 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self rawQueryEventId];
+  rawQueryEventId = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self rawQueryEventId];
 
-  if (v11)
+  if (rawQueryEventId)
   {
-    v12 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self rawQueryEventId];
+    rawQueryEventId2 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self rawQueryEventId];
     PBDataWriterWriteSubmessage();
   }
 
@@ -1693,74 +1693,74 @@ LABEL_41:
   }
 
 LABEL_42:
-  v29 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self requestResponseTime];
+  requestResponseTime = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self requestResponseTime];
 
-  if (v29)
+  if (requestResponseTime)
   {
-    v30 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self requestResponseTime];
+    requestResponseTime2 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self requestResponseTime];
     PBDataWriterWriteSubmessage();
   }
 
-  v31 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self planningTime];
+  planningTime = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self planningTime];
 
-  if (v31)
+  if (planningTime)
   {
-    v32 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self planningTime];
+    planningTime2 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self planningTime];
     PBDataWriterWriteSubmessage();
   }
 
-  v33 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self queryTime];
+  queryTime = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self queryTime];
 
-  if (v33)
+  if (queryTime)
   {
-    v34 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self queryTime];
+    queryTime2 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self queryTime];
     PBDataWriterWriteSubmessage();
   }
 
-  v35 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self executionTime];
+  executionTime = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self executionTime];
 
-  if (v35)
+  if (executionTime)
   {
-    v36 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self executionTime];
+    executionTime2 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self executionTime];
     PBDataWriterWriteSubmessage();
   }
 
-  v37 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self responsePreparationTime];
+  responsePreparationTime = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self responsePreparationTime];
 
-  if (v37)
+  if (responsePreparationTime)
   {
-    v38 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self responsePreparationTime];
+    responsePreparationTime2 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self responsePreparationTime];
     PBDataWriterWriteSubmessage();
   }
 
-  v39 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self planGenerationTime];
+  planGenerationTime = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self planGenerationTime];
 
-  if (v39)
+  if (planGenerationTime)
   {
-    v40 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self planGenerationTime];
+    planGenerationTime2 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self planGenerationTime];
     PBDataWriterWriteSubmessage();
   }
 
-  v41 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self queryDecorationTime];
+  queryDecorationTime = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self queryDecorationTime];
 
-  if (v41)
+  if (queryDecorationTime)
   {
-    v42 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self queryDecorationTime];
+    queryDecorationTime2 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self queryDecorationTime];
     PBDataWriterWriteSubmessage();
   }
 
-  v43 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self failureInfo];
+  failureInfo = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self failureInfo];
 
-  if (v43)
+  if (failureInfo)
   {
-    v44 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self failureInfo];
+    failureInfo2 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self failureInfo];
     PBDataWriterWriteSubmessage();
   }
 }
 
-- (void)setHasNumSystemPromptsResolved:(BOOL)a3
+- (void)setHasNumSystemPromptsResolved:(BOOL)resolved
 {
-  if (a3)
+  if (resolved)
   {
     v3 = 512;
   }
@@ -1773,9 +1773,9 @@ LABEL_42:
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (void)setHasNumSystemResponsesGenerated:(BOOL)a3
+- (void)setHasNumSystemResponsesGenerated:(BOOL)generated
 {
-  if (a3)
+  if (generated)
   {
     v3 = 256;
   }
@@ -1788,9 +1788,9 @@ LABEL_42:
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasNumResponseGenerationRequests:(BOOL)a3
+- (void)setHasNumResponseGenerationRequests:(BOOL)requests
 {
-  if (a3)
+  if (requests)
   {
     v3 = 128;
   }
@@ -1803,9 +1803,9 @@ LABEL_42:
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasNumStatementsEvaluatedFromPlanner:(BOOL)a3
+- (void)setHasNumStatementsEvaluatedFromPlanner:(BOOL)planner
 {
-  if (a3)
+  if (planner)
   {
     v3 = 64;
   }
@@ -1818,9 +1818,9 @@ LABEL_42:
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasNumStatementsEvaluated:(BOOL)a3
+- (void)setHasNumStatementsEvaluated:(BOOL)evaluated
 {
-  if (a3)
+  if (evaluated)
   {
     v3 = 32;
   }
@@ -1833,9 +1833,9 @@ LABEL_42:
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasNumActionsCreated:(BOOL)a3
+- (void)setHasNumActionsCreated:(BOOL)created
 {
-  if (a3)
+  if (created)
   {
     v3 = 16;
   }
@@ -1848,9 +1848,9 @@ LABEL_42:
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasNumQueriesCreated:(BOOL)a3
+- (void)setHasNumQueriesCreated:(BOOL)created
 {
-  if (a3)
+  if (created)
   {
     v3 = 8;
   }
@@ -1863,9 +1863,9 @@ LABEL_42:
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasNumPlansCreatedForResponse:(BOOL)a3
+- (void)setHasNumPlansCreatedForResponse:(BOOL)response
 {
-  if (a3)
+  if (response)
   {
     v3 = 4;
   }
@@ -1878,9 +1878,9 @@ LABEL_42:
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasNumPlansCreated:(BOOL)a3
+- (void)setHasNumPlansCreated:(BOOL)created
 {
-  if (a3)
+  if (created)
   {
     v3 = 2;
   }
@@ -1893,23 +1893,23 @@ LABEL_42:
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (int)requestFeatureTagAtIndex:(unint64_t)a3
+- (int)requestFeatureTagAtIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->_requestFeatureTags objectAtIndexedSubscript:a3];
-  v4 = [v3 intValue];
+  v3 = [(NSArray *)self->_requestFeatureTags objectAtIndexedSubscript:index];
+  intValue = [v3 intValue];
 
-  return v4;
+  return intValue;
 }
 
-- (void)addRequestFeatureTag:(int)a3
+- (void)addRequestFeatureTag:(int)tag
 {
-  v3 = *&a3;
+  v3 = *&tag;
   requestFeatureTags = self->_requestFeatureTags;
   if (!requestFeatureTags)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_requestFeatureTags;
-    self->_requestFeatureTags = v6;
+    self->_requestFeatureTags = array;
 
     requestFeatureTags = self->_requestFeatureTags;
   }
@@ -1918,158 +1918,158 @@ LABEL_42:
   [(NSArray *)requestFeatureTags addObject:v8];
 }
 
-- (void)addBundleId:(id)a3
+- (void)addBundleId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   bundleIds = self->_bundleIds;
-  v8 = v4;
+  v8 = idCopy;
   if (!bundleIds)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_bundleIds;
-    self->_bundleIds = v6;
+    self->_bundleIds = array;
 
-    v4 = v8;
+    idCopy = v8;
     bundleIds = self->_bundleIds;
   }
 
-  [(NSArray *)bundleIds addObject:v4];
+  [(NSArray *)bundleIds addObject:idCopy];
 }
 
-- (void)addToolId:(id)a3
+- (void)addToolId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   toolIds = self->_toolIds;
-  v8 = v4;
+  v8 = idCopy;
   if (!toolIds)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_toolIds;
-    self->_toolIds = v6;
+    self->_toolIds = array;
 
-    v4 = v8;
+    idCopy = v8;
     toolIds = self->_toolIds;
   }
 
-  [(NSArray *)toolIds addObject:v4];
+  [(NSArray *)toolIds addObject:idCopy];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v43.receiver = self;
   v43.super_class = PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary;
-  v5 = [(SISchemaInstrumentationMessage *)&v43 applySensitiveConditionsPolicy:v4];
-  if ([v4 isConditionSet:4])
+  v5 = [(SISchemaInstrumentationMessage *)&v43 applySensitiveConditionsPolicy:policyCopy];
+  if ([policyCopy isConditionSet:4])
   {
     [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self deleteToolId];
     [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self deleteBundleId];
   }
 
-  v6 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self clientRequestId];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  clientRequestId = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self clientRequestId];
+  v7 = [clientRequestId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self deleteClientRequestId];
   }
 
-  v9 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self clientSessionId];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  clientSessionId = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self clientSessionId];
+  v10 = [clientSessionId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self deleteClientSessionId];
   }
 
-  v12 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self rawSessionId];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  rawSessionId = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self rawSessionId];
+  v13 = [rawSessionId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self deleteRawSessionId];
   }
 
-  v15 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self rawQueryEventId];
-  v16 = [v15 applySensitiveConditionsPolicy:v4];
-  v17 = [v16 suppressMessage];
+  rawQueryEventId = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self rawQueryEventId];
+  v16 = [rawQueryEventId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage4 = [v16 suppressMessage];
 
-  if (v17)
+  if (suppressMessage4)
   {
     [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self deleteRawQueryEventId];
   }
 
-  v18 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self requestResponseTime];
-  v19 = [v18 applySensitiveConditionsPolicy:v4];
-  v20 = [v19 suppressMessage];
+  requestResponseTime = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self requestResponseTime];
+  v19 = [requestResponseTime applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage5 = [v19 suppressMessage];
 
-  if (v20)
+  if (suppressMessage5)
   {
     [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self deleteRequestResponseTime];
   }
 
-  v21 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self planningTime];
-  v22 = [v21 applySensitiveConditionsPolicy:v4];
-  v23 = [v22 suppressMessage];
+  planningTime = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self planningTime];
+  v22 = [planningTime applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage6 = [v22 suppressMessage];
 
-  if (v23)
+  if (suppressMessage6)
   {
     [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self deletePlanningTime];
   }
 
-  v24 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self queryTime];
-  v25 = [v24 applySensitiveConditionsPolicy:v4];
-  v26 = [v25 suppressMessage];
+  queryTime = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self queryTime];
+  v25 = [queryTime applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage7 = [v25 suppressMessage];
 
-  if (v26)
+  if (suppressMessage7)
   {
     [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self deleteQueryTime];
   }
 
-  v27 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self executionTime];
-  v28 = [v27 applySensitiveConditionsPolicy:v4];
-  v29 = [v28 suppressMessage];
+  executionTime = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self executionTime];
+  v28 = [executionTime applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage8 = [v28 suppressMessage];
 
-  if (v29)
+  if (suppressMessage8)
   {
     [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self deleteExecutionTime];
   }
 
-  v30 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self responsePreparationTime];
-  v31 = [v30 applySensitiveConditionsPolicy:v4];
-  v32 = [v31 suppressMessage];
+  responsePreparationTime = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self responsePreparationTime];
+  v31 = [responsePreparationTime applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage9 = [v31 suppressMessage];
 
-  if (v32)
+  if (suppressMessage9)
   {
     [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self deleteResponsePreparationTime];
   }
 
-  v33 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self planGenerationTime];
-  v34 = [v33 applySensitiveConditionsPolicy:v4];
-  v35 = [v34 suppressMessage];
+  planGenerationTime = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self planGenerationTime];
+  v34 = [planGenerationTime applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage10 = [v34 suppressMessage];
 
-  if (v35)
+  if (suppressMessage10)
   {
     [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self deletePlanGenerationTime];
   }
 
-  v36 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self queryDecorationTime];
-  v37 = [v36 applySensitiveConditionsPolicy:v4];
-  v38 = [v37 suppressMessage];
+  queryDecorationTime = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self queryDecorationTime];
+  v37 = [queryDecorationTime applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage11 = [v37 suppressMessage];
 
-  if (v38)
+  if (suppressMessage11)
   {
     [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self deleteQueryDecorationTime];
   }
 
-  v39 = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self failureInfo];
-  v40 = [v39 applySensitiveConditionsPolicy:v4];
-  v41 = [v40 suppressMessage];
+  failureInfo = [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self failureInfo];
+  v40 = [failureInfo applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage12 = [v40 suppressMessage];
 
-  if (v41)
+  if (suppressMessage12)
   {
     [(PNRODSchemaPNRODIntelligenceFlowRequestGrainSummary *)self deleteFailureInfo];
   }

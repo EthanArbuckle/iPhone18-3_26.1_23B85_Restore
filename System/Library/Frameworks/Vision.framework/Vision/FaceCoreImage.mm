@@ -1,54 +1,54 @@
 @interface FaceCoreImage
-- (FaceCoreImage)initWithCGImage:(CGImage *)a3;
-- (FaceCoreImage)initWithCVPixelBuffer:(__CVBuffer *)a3;
-- (FaceCoreImage)initWithWidth:(unint64_t)a3 height:(unint64_t)a4 bytesPerRow:(unint64_t)a5 buffer:(void *)a6 freeWhenDone:(BOOL)a7;
+- (FaceCoreImage)initWithCGImage:(CGImage *)image;
+- (FaceCoreImage)initWithCVPixelBuffer:(__CVBuffer *)buffer;
+- (FaceCoreImage)initWithWidth:(unint64_t)width height:(unint64_t)height bytesPerRow:(unint64_t)row buffer:(void *)buffer freeWhenDone:(BOOL)done;
 - (char)alignedImageData;
 - (void)dealloc;
 @end
 
 @implementation FaceCoreImage
 
-- (FaceCoreImage)initWithWidth:(unint64_t)a3 height:(unint64_t)a4 bytesPerRow:(unint64_t)a5 buffer:(void *)a6 freeWhenDone:(BOOL)a7
+- (FaceCoreImage)initWithWidth:(unint64_t)width height:(unint64_t)height bytesPerRow:(unint64_t)row buffer:(void *)buffer freeWhenDone:(BOOL)done
 {
-  v7 = a6;
-  if (a6)
+  selfCopy = buffer;
+  if (buffer)
   {
     v13.receiver = self;
     v13.super_class = FaceCoreImage;
     self = [(FaceCoreImage *)&v13 init];
     if (self)
     {
-      self->_width = a3;
-      self->_height = a4;
-      self->_bytesPerRow = a5;
-      self->_freeWhenDone = a7;
-      self->_rawDataBuffer = v7;
+      self->_width = width;
+      self->_height = height;
+      self->_bytesPerRow = row;
+      self->_freeWhenDone = done;
+      self->_rawDataBuffer = selfCopy;
       self->_alignedDataBuffer = 0;
       self = self;
-      v7 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v7 = 0;
+      selfCopy = 0;
     }
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (FaceCoreImage)initWithCVPixelBuffer:(__CVBuffer *)a3
+- (FaceCoreImage)initWithCVPixelBuffer:(__CVBuffer *)buffer
 {
-  if (CVPixelBufferGetPixelFormatType(a3) == 1111970369)
+  if (CVPixelBufferGetPixelFormatType(buffer) == 1111970369)
   {
-    v13 = a3;
-    if (a3)
+    bufferCopy = buffer;
+    if (buffer)
     {
-      CVPixelBufferRetain(a3);
+      CVPixelBufferRetain(buffer);
     }
 
-    apple::vision::LockedPixelImageBuffer<unsigned char const[4],1ull>::LockedPixelImageBuffer(&src.data, &v13);
-    apple::vision::CVPixelBufferWrapper::~CVPixelBufferWrapper(&v13);
+    apple::vision::LockedPixelImageBuffer<unsigned char const[4],1ull>::LockedPixelImageBuffer(&src.data, &bufferCopy);
+    apple::vision::CVPixelBufferWrapper::~CVPixelBufferWrapper(&bufferCopy);
     height = src.height;
     width = src.width;
     dest.data = malloc_type_malloc(src.height * src.width, 0x100004077774924uLL);
@@ -62,23 +62,23 @@
     apple::vision::CVPixelBufferWrapper::BaseAddressLock<1ull>::~BaseAddressLock(&v16);
     apple::vision::CVPixelBufferWrapper::~CVPixelBufferWrapper(&v15);
     self = [(FaceCoreImage *)self initWithWidth:v9 height:v8 bytesPerRow:v9 buffer:data freeWhenDone:1];
-    v10 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (FaceCoreImage)initWithCGImage:(CGImage *)a3
+- (FaceCoreImage)initWithCGImage:(CGImage *)image
 {
-  Width = CGImageGetWidth(a3);
-  Height = CGImageGetHeight(a3);
+  Width = CGImageGetWidth(image);
+  Height = CGImageGetHeight(image);
   v7 = dispatch_get_global_queue(0, 0);
-  v8 = [(FaceCoreImage *)self initWithWidth:Width height:Height bytesPerRow:Width buffer:apple::vision::libraries::facecore::utils::aev::AEVConversionUtils::convertCGImageToGrayscale(a3 freeWhenDone:v7), 1];
+  v8 = [(FaceCoreImage *)self initWithWidth:Width height:Height bytesPerRow:Width buffer:apple::vision::libraries::facecore::utils::aev::AEVConversionUtils::convertCGImageToGrayscale(image freeWhenDone:v7), 1];
 
   return v8;
 }

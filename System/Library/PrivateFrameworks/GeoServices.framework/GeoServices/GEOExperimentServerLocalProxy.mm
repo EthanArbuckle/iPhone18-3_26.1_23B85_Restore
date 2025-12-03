@@ -1,28 +1,28 @@
 @interface GEOExperimentServerLocalProxy
 + (void)_deleteExperimentInfoFromDisk;
-- (BOOL)_removeOldExperimentsInfoIfNecessary:(BOOL)a3;
+- (BOOL)_removeOldExperimentsInfoIfNecessary:(BOOL)necessary;
 - (GEOABAssignmentResponse)experimentsInfo;
-- (GEOExperimentServerLocalProxy)initWithDelegate:(id)a3;
+- (GEOExperimentServerLocalProxy)initWithDelegate:(id)delegate;
 - (GEOExperimentServerProxyDelegate)delegate;
-- (id)captureStatePlistWithHints:(os_state_hints_s *)a3;
-- (id)fetchBucketIDWithError:(id *)a3;
-- (void)_debug_fetchAllAvailableExperiments:(id)a3;
-- (void)_debug_setActiveExperimentBranchDictionaryRepresentation:(id)a3;
-- (void)_debug_setBucketIdDictionaryRepresentation:(id)a3;
-- (void)_debug_setQuerySubstring:(id)a3 forExperimentType:(int64_t)a4 dispatcherRequestType:(int)a5;
-- (void)_loadExperimentsConfiguration:(id)a3;
-- (void)_notifyExperimentsInfoChanged:(id)a3 current:(id)a4;
+- (id)captureStatePlistWithHints:(os_state_hints_s *)hints;
+- (id)fetchBucketIDWithError:(id *)error;
+- (void)_debug_fetchAllAvailableExperiments:(id)experiments;
+- (void)_debug_setActiveExperimentBranchDictionaryRepresentation:(id)representation;
+- (void)_debug_setBucketIdDictionaryRepresentation:(id)representation;
+- (void)_debug_setQuerySubstring:(id)substring forExperimentType:(int64_t)type dispatcherRequestType:(int)requestType;
+- (void)_loadExperimentsConfiguration:(id)configuration;
+- (void)_notifyExperimentsInfoChanged:(id)changed current:(id)current;
 - (void)_setupRefreshTask;
-- (void)_submitNonRepeatingRetryTask:(double)a3;
+- (void)_submitNonRepeatingRetryTask:(double)task;
 - (void)_updateIfNecessary;
-- (void)_writeExperimentInfoToDisk:(id)a3;
-- (void)abAssignUUIDWithSyncCompletionHandler:(id)a3;
+- (void)_writeExperimentInfoToDisk:(id)disk;
+- (void)abAssignUUIDWithSyncCompletionHandler:(id)handler;
 - (void)cancelRefreshTask;
 - (void)dealloc;
-- (void)fetchBucketID:(id)a3;
-- (void)forceUpdate:(id)a3;
-- (void)refreshDatasetABStatus:(id)a3;
-- (void)resourceManifestManager:(id)a3 didChangeActiveTileGroup:(id)a4 fromOldTileGroup:(id)a5;
+- (void)fetchBucketID:(id)d;
+- (void)forceUpdate:(id)update;
+- (void)refreshDatasetABStatus:(id)status;
+- (void)resourceManifestManager:(id)manager didChangeActiveTileGroup:(id)group fromOldTileGroup:(id)tileGroup;
 - (void)submitBackgroundTasksNeededDuringDaemonStart;
 @end
 
@@ -35,11 +35,11 @@
   return WeakRetained;
 }
 
-- (void)resourceManifestManager:(id)a3 didChangeActiveTileGroup:(id)a4 fromOldTileGroup:(id)a5
+- (void)resourceManifestManager:(id)manager didChangeActiveTileGroup:(id)group fromOldTileGroup:(id)tileGroup
 {
-  v13 = a3;
-  v8 = a4;
-  v9 = a5;
+  managerCopy = manager;
+  groupCopy = group;
+  tileGroupCopy = tileGroup;
   v10 = objc_autoreleasePoolPush();
   experimentsInfo = self->_experimentsInfo;
   if (!experimentsInfo)
@@ -50,8 +50,8 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v12 = [(GEOABAssignmentResponse *)experimentsInfo hasRefreshIntervalSeconds];
-  if ([(GEOExperimentServerLocalProxy *)self _removeOldExperimentsInfoIfNecessary:1]|| !v12)
+  hasRefreshIntervalSeconds = [(GEOABAssignmentResponse *)experimentsInfo hasRefreshIntervalSeconds];
+  if ([(GEOExperimentServerLocalProxy *)self _removeOldExperimentsInfoIfNecessary:1]|| !hasRefreshIntervalSeconds)
   {
     goto LABEL_6;
   }
@@ -60,7 +60,7 @@ LABEL_7:
   objc_autoreleasePoolPop(v10);
 }
 
-- (id)captureStatePlistWithHints:(os_state_hints_s *)a3
+- (id)captureStatePlistWithHints:(os_state_hints_s *)hints
 {
   os_unfair_lock_lock_with_options();
   v4 = sub_100001E24(self->_experimentsInfo);
@@ -80,87 +80,87 @@ LABEL_7:
   return v5;
 }
 
-- (void)_debug_setBucketIdDictionaryRepresentation:(id)a3
+- (void)_debug_setBucketIdDictionaryRepresentation:(id)representation
 {
-  v4 = [a3 objectForKeyedSubscript:@"bucketId"];
+  v4 = [representation objectForKeyedSubscript:@"bucketId"];
   if (v4)
   {
     v16 = v4;
-    v5 = [v4 unsignedIntegerValue];
+    unsignedIntegerValue = [v4 unsignedIntegerValue];
     os_unfair_lock_lock_with_options();
-    v6 = [(GEOABAssignmentResponse *)self->_experimentsInfo mapsAbClientMetadata];
-    v7 = [v6 clientDatasetMetadata];
-    [v7 setBucketId:v5];
+    mapsAbClientMetadata = [(GEOABAssignmentResponse *)self->_experimentsInfo mapsAbClientMetadata];
+    clientDatasetMetadata = [mapsAbClientMetadata clientDatasetMetadata];
+    [clientDatasetMetadata setBucketId:unsignedIntegerValue];
 
-    v8 = [(GEOABAssignmentResponse *)self->_experimentsInfo parsecClientMetadata];
-    v9 = [v8 clientDatasetMetadata];
-    [v9 setBucketId:v5];
+    parsecClientMetadata = [(GEOABAssignmentResponse *)self->_experimentsInfo parsecClientMetadata];
+    clientDatasetMetadata2 = [parsecClientMetadata clientDatasetMetadata];
+    [clientDatasetMetadata2 setBucketId:unsignedIntegerValue];
 
-    v10 = [(GEOABAssignmentResponse *)self->_experimentsInfo siriClientMetadata];
-    v11 = [v10 clientDatasetMetadata];
-    [v11 setBucketId:v5];
+    siriClientMetadata = [(GEOABAssignmentResponse *)self->_experimentsInfo siriClientMetadata];
+    clientDatasetMetadata3 = [siriClientMetadata clientDatasetMetadata];
+    [clientDatasetMetadata3 setBucketId:unsignedIntegerValue];
 
-    v12 = [(GEOABAssignmentResponse *)self->_experimentsInfo rapClientMetadata];
-    v13 = [v12 clientDatasetMetadata];
-    [v13 setBucketId:v5];
+    rapClientMetadata = [(GEOABAssignmentResponse *)self->_experimentsInfo rapClientMetadata];
+    clientDatasetMetadata4 = [rapClientMetadata clientDatasetMetadata];
+    [clientDatasetMetadata4 setBucketId:unsignedIntegerValue];
 
     [(GEOExperimentServerLocalProxy *)self _writeExperimentInfoToDisk:self->_experimentsInfo];
     os_unfair_lock_unlock(&self->_experimentsInfoLock);
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v15 = [(GEOExperimentServerLocalProxy *)self experimentsInfo];
-    [WeakRetained serverProxy:self didChangeExperimentsInfo:v15];
+    experimentsInfo = [(GEOExperimentServerLocalProxy *)self experimentsInfo];
+    [WeakRetained serverProxy:self didChangeExperimentsInfo:experimentsInfo];
 
     notify_post("com.apple.GeoServices.experimentsChanged");
     v4 = v16;
   }
 }
 
-- (void)_debug_setActiveExperimentBranchDictionaryRepresentation:(id)a3
+- (void)_debug_setActiveExperimentBranchDictionaryRepresentation:(id)representation
 {
   v4 = GeoServicesConfig_DebugActiveExperimentBranch[1];
   GEOConfigSetDictionary();
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v6 = [(GEOExperimentServerLocalProxy *)self experimentsInfo];
-  [WeakRetained serverProxy:self didChangeExperimentsInfo:v6];
+  experimentsInfo = [(GEOExperimentServerLocalProxy *)self experimentsInfo];
+  [WeakRetained serverProxy:self didChangeExperimentsInfo:experimentsInfo];
 
   notify_post("com.apple.GeoServices.experimentsChanged");
 }
 
-- (void)_debug_fetchAllAvailableExperiments:(id)a3
+- (void)_debug_fetchAllAvailableExperiments:(id)experiments
 {
-  v3 = a3;
-  if (v3)
+  experimentsCopy = experiments;
+  if (experimentsCopy)
   {
     v4 = objc_alloc_init(GEOABAssignmentRequest);
     v5 = [GEOPDClientMetadata alloc];
     v6 = +[GEOMapService sharedService];
-    v7 = [v6 defaultTraits];
-    v8 = [v5 initWithTraits:v7];
+    defaultTraits = [v6 defaultTraits];
+    v8 = [v5 initWithTraits:defaultTraits];
     [v4 setClientMetadata:v8];
 
     [v4 setRequestType:2];
     v9 = +[_GEOExperimentServiceRequester sharedInstance];
     v10 = +[GEOMapService sharedService];
-    v11 = [v10 defaultTraits];
+    defaultTraits2 = [v10 defaultTraits];
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_10000720C;
     v12[3] = &unk_100081778;
-    v13 = v3;
-    [v9 startWithRequest:v4 traits:v11 completionHandler:v12];
+    v13 = experimentsCopy;
+    [v9 startWithRequest:v4 traits:defaultTraits2 completionHandler:v12];
   }
 }
 
-- (void)_loadExperimentsConfiguration:(id)a3
+- (void)_loadExperimentsConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   os_unfair_lock_lock_with_options();
   v5 = self->_currentRequest;
   v6 = objc_alloc_init(GEOABAssignmentRequest);
   v7 = [GEOPDClientMetadata alloc];
   v8 = +[GEOMapService sharedService];
-  v9 = [v8 defaultTraits];
-  v10 = [v7 initWithTraits:v9];
+  defaultTraits = [v8 defaultTraits];
+  v10 = [v7 initWithTraits:defaultTraits];
   [v6 setClientMetadata:v10];
 
   v11 = sub_1000076C4();
@@ -176,17 +176,17 @@ LABEL_7:
 
   v13 = +[_GEOExperimentServiceRequester sharedInstance];
   v14 = +[GEOMapService sharedService];
-  v15 = [v14 defaultTraits];
+  defaultTraits2 = [v14 defaultTraits];
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_10000782C;
   v18[3] = &unk_100081750;
   v18[4] = self;
   v19 = v6;
-  v20 = v4;
-  v16 = v4;
+  v20 = configurationCopy;
+  v16 = configurationCopy;
   v17 = v6;
-  [v13 startWithRequest:v17 traits:v15 completionHandler:v18];
+  [v13 startWithRequest:v17 traits:defaultTraits2 completionHandler:v18];
 }
 
 - (void)submitBackgroundTasksNeededDuringDaemonStart
@@ -198,9 +198,9 @@ LABEL_7:
   objc_destroyWeak(&location);
 }
 
-- (void)forceUpdate:(id)a3
+- (void)forceUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   v5 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -218,7 +218,7 @@ LABEL_7:
   v16[2] = sub_100007D48;
   v16[3] = &unk_100082ED0;
   v18 = buf;
-  v6 = v4;
+  v6 = updateCopy;
   v17 = v6;
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
@@ -259,16 +259,16 @@ LABEL_7:
   _Block_object_dispose(buf, 8);
 }
 
-- (void)_writeExperimentInfoToDisk:(id)a3
+- (void)_writeExperimentInfoToDisk:(id)disk
 {
-  v3 = a3;
+  diskCopy = disk;
   v4 = +[NSFileManager defaultManager];
-  if (v3)
+  if (diskCopy)
   {
-    v5 = [v3 data];
+    data = [diskCopy data];
     v6 = GEOExperimentConfigurationPath();
     v16 = 0;
-    v7 = [v5 writeToFile:v6 options:268435457 error:&v16];
+    v7 = [data writeToFile:v6 options:268435457 error:&v16];
     v8 = v16;
 
     if ((v7 & 1) == 0)
@@ -325,10 +325,10 @@ LABEL_11:
   if (experimentsInfo && ([(GEOABAssignmentResponse *)experimentsInfo hasRefreshIntervalSeconds]& 1) != 0)
   {
     v6 = GEOURLString();
-    v4 = [(GEOABAssignmentResponse *)self->_experimentsInfo sourceURL];
-    if (v6 | v4)
+    sourceURL = [(GEOABAssignmentResponse *)self->_experimentsInfo sourceURL];
+    if (v6 | sourceURL)
     {
-      v5 = [v6 isEqualToString:v4];
+      v5 = [v6 isEqualToString:sourceURL];
       os_unfair_lock_unlock(&self->_experimentsInfoLock);
       if ((v5 & 1) == 0)
       {
@@ -350,24 +350,24 @@ LABEL_11:
   }
 }
 
-- (void)_notifyExperimentsInfoChanged:(id)a3 current:(id)a4
+- (void)_notifyExperimentsInfoChanged:(id)changed current:(id)current
 {
-  v6 = a4;
-  v7 = a3;
+  currentCopy = current;
+  changedCopy = changed;
   v11 = [NSMutableDictionary dictionaryWithCapacity:2];
-  v8 = sub_100001E24(v7);
+  v8 = sub_100001E24(changedCopy);
 
   [v11 setObject:v8 forKeyedSubscript:NSKeyValueChangeOldKey];
-  v9 = sub_100001E24(v6);
+  v9 = sub_100001E24(currentCopy);
 
   [v11 setObject:v9 forKeyedSubscript:NSKeyValueChangeNewKey];
   v10 = +[NSNotificationCenter defaultCenter];
   [v10 postNotificationName:@"GEOExperimentInfoChangedInternalNotification" object:self userInfo:v11];
 }
 
-- (BOOL)_removeOldExperimentsInfoIfNecessary:(BOOL)a3
+- (BOOL)_removeOldExperimentsInfoIfNecessary:(BOOL)necessary
 {
-  v3 = a3;
+  necessaryCopy = necessary;
   v5 = GEOURLString();
   os_unfair_lock_lock_with_options();
   experimentsInfo = self->_experimentsInfo;
@@ -378,10 +378,10 @@ LABEL_11:
     goto LABEL_24;
   }
 
-  v7 = [(GEOABAssignmentResponse *)experimentsInfo sourceURL];
-  if (v5 | v7)
+  sourceURL = [(GEOABAssignmentResponse *)experimentsInfo sourceURL];
+  if (v5 | sourceURL)
   {
-    v8 = [v5 isEqualToString:v7] ^ 1;
+    v8 = [v5 isEqualToString:sourceURL] ^ 1;
   }
 
   else
@@ -449,11 +449,11 @@ LABEL_12:
   os_unfair_lock_unlock(&self->_experimentsInfoLock);
   if (v8)
   {
-    if (v3)
+    if (necessaryCopy)
     {
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
-      v23 = [(GEOExperimentServerLocalProxy *)self experimentsInfo];
-      [WeakRetained serverProxy:self didChangeExperimentsInfo:v23];
+      experimentsInfo = [(GEOExperimentServerLocalProxy *)self experimentsInfo];
+      [WeakRetained serverProxy:self didChangeExperimentsInfo:experimentsInfo];
     }
 
     notify_post("com.apple.GeoServices.experimentsChanged");
@@ -464,15 +464,15 @@ LABEL_24:
   return v8;
 }
 
-- (void)_debug_setQuerySubstring:(id)a3 forExperimentType:(int64_t)a4 dispatcherRequestType:(int)a5
+- (void)_debug_setQuerySubstring:(id)substring forExperimentType:(int64_t)type dispatcherRequestType:(int)requestType
 {
-  if (a4)
+  if (type)
   {
     v6 = GeoServicesConfig_Experiment[1];
     _GEOSetQueryForExperimentType();
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v8 = [(GEOExperimentServerLocalProxy *)self experimentsInfo];
-    [WeakRetained serverProxy:self didChangeExperimentsInfo:v8];
+    experimentsInfo = [(GEOExperimentServerLocalProxy *)self experimentsInfo];
+    [WeakRetained serverProxy:self didChangeExperimentsInfo:experimentsInfo];
 
     notify_post("com.apple.GeoServices.experimentsChanged");
   }
@@ -487,15 +487,15 @@ LABEL_24:
   return v3;
 }
 
-- (void)_submitNonRepeatingRetryTask:(double)a3
+- (void)_submitNonRepeatingRetryTask:(double)task
 {
   if (sub_10001FD1C())
   {
     v4 = [objc_alloc(sub_100020080()) initWithIdentifier:GEOExperimentServerLocalProxyBackgroundTaskRetryIdentifier];
-    [v4 setTrySchedulingBefore:a3];
-    v5 = [sub_10001FF30() sharedScheduler];
+    [v4 setTrySchedulingBefore:task];
+    sharedScheduler = [sub_10001FF30() sharedScheduler];
     v10 = 0;
-    v6 = [v5 submitTaskRequest:v4 error:&v10];
+    v6 = [sharedScheduler submitTaskRequest:v4 error:&v10];
     v7 = v10;
 
     if ((v6 & 1) == 0)
@@ -528,7 +528,7 @@ LABEL_24:
       v38 = self->_taskIsolater;
       _geo_isolate_lock_data();
       Current = CFAbsoluteTimeGetCurrent();
-      v5 = [(GEOABAssignmentResponse *)self->_experimentsInfo refreshIntervalSeconds];
+      refreshIntervalSeconds = [(GEOABAssignmentResponse *)self->_experimentsInfo refreshIntervalSeconds];
       [(GEOABAssignmentResponse *)self->_experimentsInfo timestamp];
       v7 = v6;
       os_unfair_lock_unlock(&self->_experimentsInfoLock);
@@ -537,8 +537,8 @@ LABEL_24:
       v9 = GeoServicesConfig_ExperimentMinRefreshInterval[1];
       GEOConfigGetDouble();
       GEOConfigGetDouble();
-      v10 = v5;
-      if (v11 < v5)
+      v10 = refreshIntervalSeconds;
+      if (v11 < refreshIntervalSeconds)
       {
         v12 = GEOFindOrCreateLog();
         if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -595,10 +595,10 @@ LABEL_24:
         [(BGRepeatingSystemTaskRequest *)self->_repeatingTask setInterval:v10];
         [(BGRepeatingSystemTaskRequest *)self->_repeatingTask setRequiresNetworkConnectivity:1];
         [(BGRepeatingSystemTaskRequest *)self->_repeatingTask setPreventsDeviceSleep:1];
-        v31 = [sub_10001FF30() sharedScheduler];
+        sharedScheduler = [sub_10001FF30() sharedScheduler];
         v32 = self->_repeatingTask;
         v36 = 0;
-        v33 = [v31 submitTaskRequest:v32 error:&v36];
+        v33 = [sharedScheduler submitTaskRequest:v32 error:&v36];
         v25 = v36;
 
         if (v33)
@@ -634,10 +634,10 @@ LABEL_24:
           _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEBUG, "Updating experiment refresh interval to %f", buf, 0xCu);
         }
 
-        v22 = [sub_10001FF30() sharedScheduler];
+        sharedScheduler2 = [sub_10001FF30() sharedScheduler];
         v23 = self->_repeatingTask;
         v37 = 0;
-        v24 = [v22 updateTaskRequest:v23 error:&v37];
+        v24 = [sharedScheduler2 updateTaskRequest:v23 error:&v37];
         v25 = v37;
 
         if (v24)
@@ -673,66 +673,66 @@ LABEL_34:
   }
 }
 
-- (id)fetchBucketIDWithError:(id *)a3
+- (id)fetchBucketIDWithError:(id *)error
 {
   os_unfair_lock_lock_with_options();
-  v4 = [(GEOABAssignmentResponse *)self->_experimentsInfo mapsAbClientMetadata];
-  v5 = [v4 clientDatasetMetadata];
-  v6 = [v5 bucketId];
+  mapsAbClientMetadata = [(GEOABAssignmentResponse *)self->_experimentsInfo mapsAbClientMetadata];
+  clientDatasetMetadata = [mapsAbClientMetadata clientDatasetMetadata];
+  bucketId = [clientDatasetMetadata bucketId];
 
   os_unfair_lock_unlock(&self->_experimentsInfoLock);
 
-  return [NSNumber numberWithUnsignedInt:v6];
+  return [NSNumber numberWithUnsignedInt:bucketId];
 }
 
-- (void)fetchBucketID:(id)a3
+- (void)fetchBucketID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   os_unfair_lock_lock_with_options();
-  v5 = [(GEOABAssignmentResponse *)self->_experimentsInfo mapsAbClientMetadata];
-  v6 = [v5 clientDatasetMetadata];
-  v7 = [v6 bucketId];
+  mapsAbClientMetadata = [(GEOABAssignmentResponse *)self->_experimentsInfo mapsAbClientMetadata];
+  clientDatasetMetadata = [mapsAbClientMetadata clientDatasetMetadata];
+  bucketId = [clientDatasetMetadata bucketId];
 
   os_unfair_lock_unlock(&self->_experimentsInfoLock);
-  v8 = [NSNumber numberWithUnsignedInt:v7];
-  v4[2](v4, v8, 0);
+  v8 = [NSNumber numberWithUnsignedInt:bucketId];
+  dCopy[2](dCopy, v8, 0);
 }
 
-- (void)abAssignUUIDWithSyncCompletionHandler:(id)a3
+- (void)abAssignUUIDWithSyncCompletionHandler:(id)handler
 {
-  if (a3)
+  if (handler)
   {
-    v3 = a3;
+    handlerCopy = handler;
     v6 = sub_1000076C4();
     v4 = GeoServicesConfig_ExperimentsBucketGUIDTimestamp[1];
     GEOConfigGetDouble();
     v5 = [NSDate dateWithTimeIntervalSinceReferenceDate:?];
-    v3[2](v3, v6, v5, 0);
+    handlerCopy[2](handlerCopy, v6, v5, 0);
   }
 }
 
-- (void)refreshDatasetABStatus:(id)a3
+- (void)refreshDatasetABStatus:(id)status
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 hasDatasetId])
+  statusCopy = status;
+  v5 = statusCopy;
+  if (statusCopy && [statusCopy hasDatasetId])
   {
     os_unfair_lock_lock_with_options();
-    v6 = [(GEOABAssignmentResponse *)self->_experimentsInfo mapsAbClientMetadata];
-    v7 = [v6 clientDatasetMetadata];
+    mapsAbClientMetadata = [(GEOABAssignmentResponse *)self->_experimentsInfo mapsAbClientMetadata];
+    clientDatasetMetadata = [mapsAbClientMetadata clientDatasetMetadata];
 
-    if (v7)
+    if (clientDatasetMetadata)
     {
-      v8 = [v7 datasetId];
-      if (v8 != [v5 datasetId])
+      datasetId = [clientDatasetMetadata datasetId];
+      if (datasetId != [v5 datasetId])
       {
         v9 = GEOFindOrCreateLog();
         if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
         {
           *buf = 67240448;
-          v40 = [v7 datasetId];
+          datasetId2 = [clientDatasetMetadata datasetId];
           v41 = 1026;
-          v42 = [v5 datasetId];
+          datasetId3 = [v5 datasetId];
           _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "Data set changed (%{public}u -> %{public}u)", buf, 0xEu);
         }
 
@@ -755,41 +755,41 @@ LABEL_34:
           [(GEOABAssignmentResponse *)self->_experimentsInfo setRapClientMetadata:v15];
 
           v16 = objc_alloc_init(GEOPDABClientDatasetMetadata);
-          v17 = [(GEOABAssignmentResponse *)self->_experimentsInfo mapsAbClientMetadata];
-          [v17 setClientDatasetMetadata:v16];
+          mapsAbClientMetadata2 = [(GEOABAssignmentResponse *)self->_experimentsInfo mapsAbClientMetadata];
+          [mapsAbClientMetadata2 setClientDatasetMetadata:v16];
 
           v18 = objc_alloc_init(GEOPDABClientDatasetMetadata);
-          v19 = [(GEOABAssignmentResponse *)self->_experimentsInfo parsecClientMetadata];
-          [v19 setClientDatasetMetadata:v18];
+          parsecClientMetadata = [(GEOABAssignmentResponse *)self->_experimentsInfo parsecClientMetadata];
+          [parsecClientMetadata setClientDatasetMetadata:v18];
 
           v20 = objc_alloc_init(GEOPDABClientDatasetMetadata);
-          v21 = [(GEOABAssignmentResponse *)self->_experimentsInfo siriClientMetadata];
-          [v21 setClientDatasetMetadata:v20];
+          siriClientMetadata = [(GEOABAssignmentResponse *)self->_experimentsInfo siriClientMetadata];
+          [siriClientMetadata setClientDatasetMetadata:v20];
 
           v22 = objc_alloc_init(GEOPDABClientDatasetMetadata);
-          v23 = [(GEOABAssignmentResponse *)self->_experimentsInfo rapClientMetadata];
-          [v23 setClientDatasetMetadata:v22];
+          rapClientMetadata = [(GEOABAssignmentResponse *)self->_experimentsInfo rapClientMetadata];
+          [rapClientMetadata setClientDatasetMetadata:v22];
         }
 
-        v24 = [v5 datasetId];
-        v25 = [(GEOABAssignmentResponse *)self->_experimentsInfo mapsAbClientMetadata];
-        v26 = [v25 clientDatasetMetadata];
-        [v26 setDatasetId:v24];
+        datasetId4 = [v5 datasetId];
+        mapsAbClientMetadata3 = [(GEOABAssignmentResponse *)self->_experimentsInfo mapsAbClientMetadata];
+        clientDatasetMetadata2 = [mapsAbClientMetadata3 clientDatasetMetadata];
+        [clientDatasetMetadata2 setDatasetId:datasetId4];
 
-        v27 = [v5 datasetId];
-        v28 = [(GEOABAssignmentResponse *)self->_experimentsInfo parsecClientMetadata];
-        v29 = [v28 clientDatasetMetadata];
-        [v29 setDatasetId:v27];
+        datasetId5 = [v5 datasetId];
+        parsecClientMetadata2 = [(GEOABAssignmentResponse *)self->_experimentsInfo parsecClientMetadata];
+        clientDatasetMetadata3 = [parsecClientMetadata2 clientDatasetMetadata];
+        [clientDatasetMetadata3 setDatasetId:datasetId5];
 
-        v30 = [v5 datasetId];
-        v31 = [(GEOABAssignmentResponse *)self->_experimentsInfo siriClientMetadata];
-        v32 = [v31 clientDatasetMetadata];
-        [v32 setDatasetId:v30];
+        datasetId6 = [v5 datasetId];
+        siriClientMetadata2 = [(GEOABAssignmentResponse *)self->_experimentsInfo siriClientMetadata];
+        clientDatasetMetadata4 = [siriClientMetadata2 clientDatasetMetadata];
+        [clientDatasetMetadata4 setDatasetId:datasetId6];
 
-        v33 = [v5 datasetId];
-        v34 = [(GEOABAssignmentResponse *)self->_experimentsInfo rapClientMetadata];
-        v35 = [v34 clientDatasetMetadata];
-        [v35 setDatasetId:v33];
+        datasetId7 = [v5 datasetId];
+        rapClientMetadata2 = [(GEOABAssignmentResponse *)self->_experimentsInfo rapClientMetadata];
+        clientDatasetMetadata5 = [rapClientMetadata2 clientDatasetMetadata];
+        [clientDatasetMetadata5 setDatasetId:datasetId7];
 
         [(GEOExperimentServerLocalProxy *)self _writeExperimentInfoToDisk:self->_experimentsInfo];
         v36 = +[GEOResourceManifestManager modernManager];
@@ -830,16 +830,16 @@ LABEL_34:
   [(GEOExperimentServerLocalProxy *)&v5 dealloc];
 }
 
-- (GEOExperimentServerLocalProxy)initWithDelegate:(id)a3
+- (GEOExperimentServerLocalProxy)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v17.receiver = self;
   v17.super_class = GEOExperimentServerLocalProxy;
   v5 = [(GEOExperimentServerLocalProxy *)&v17 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     v6->_experimentsInfoLock._os_unfair_lock_opaque = 0;
     v6->_currentRequestLock._os_unfair_lock_opaque = 0;
     v7 = geo_isolater_create();
@@ -872,10 +872,10 @@ LABEL_34:
 {
   if (sub_10001FD1C())
   {
-    v2 = [sub_10001FF30() sharedScheduler];
+    sharedScheduler = [sub_10001FF30() sharedScheduler];
     v3 = GEOExperimentServerLocalProxyBackgroundTaskIdentifier;
     v11 = 0;
-    [v2 cancelTaskRequestWithIdentifier:GEOExperimentServerLocalProxyBackgroundTaskIdentifier error:&v11];
+    [sharedScheduler cancelTaskRequestWithIdentifier:GEOExperimentServerLocalProxyBackgroundTaskIdentifier error:&v11];
     v4 = v11;
 
     if (v4)
@@ -891,10 +891,10 @@ LABEL_34:
       }
     }
 
-    v6 = [sub_10001FF30() sharedScheduler];
+    sharedScheduler2 = [sub_10001FF30() sharedScheduler];
     v7 = GEOExperimentServerLocalProxyBackgroundTaskRetryIdentifier;
     v10 = 0;
-    [v6 cancelTaskRequestWithIdentifier:GEOExperimentServerLocalProxyBackgroundTaskRetryIdentifier error:&v10];
+    [sharedScheduler2 cancelTaskRequestWithIdentifier:GEOExperimentServerLocalProxyBackgroundTaskRetryIdentifier error:&v10];
     v8 = v10;
 
     if (v8)

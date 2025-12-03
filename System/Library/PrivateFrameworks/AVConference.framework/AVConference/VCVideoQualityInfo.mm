@@ -1,8 +1,8 @@
 @interface VCVideoQualityInfo
-- (BOOL)updateWithCurrentFramerate:(double)a3 bitrate:(double)a4 time:(double)a5;
+- (BOOL)updateWithCurrentFramerate:(double)framerate bitrate:(double)bitrate time:(double)time;
 - (VCVideoQualityInfo)init;
 - (void)dealloc;
-- (void)setVideoIsExpected:(BOOL)a3;
+- (void)setVideoIsExpected:(BOOL)expected;
 @end
 
 @implementation VCVideoQualityInfo
@@ -69,7 +69,7 @@
   [(VCObject *)&v2 dealloc];
 }
 
-- (BOOL)updateWithCurrentFramerate:(double)a3 bitrate:(double)a4 time:(double)a5
+- (BOOL)updateWithCurrentFramerate:(double)framerate bitrate:(double)bitrate time:(double)time
 {
   v33 = *MEMORY[0x1E69E9840];
   if (!self->_videoIsExpected)
@@ -80,44 +80,44 @@
   firstDegradedMeasure = self->_firstDegradedMeasure;
   if (firstDegradedMeasure == 0.0)
   {
-    self->_firstDegradedMeasure = a5;
-    firstDegradedMeasure = a5;
+    self->_firstDegradedMeasure = time;
+    firstDegradedMeasure = time;
   }
 
-  if (a5 - firstDegradedMeasure < 10.0)
+  if (time - firstDegradedMeasure < 10.0)
   {
     return 0;
   }
 
   if (self->_lastGoodVideoQualityTime <= 0.0)
   {
-    self->_lastGoodVideoQualityTime = a5;
-    self->_lastVideoQualityDegradedSwitchTime = a5;
-    self->_lastBadVideoQualityTime = a5 - self->_videoImprovedThreshold;
+    self->_lastGoodVideoQualityTime = time;
+    self->_lastVideoQualityDegradedSwitchTime = time;
+    self->_lastBadVideoQualityTime = time - self->_videoImprovedThreshold;
   }
 
-  if (self->_videoMinFrameRate >= a3)
+  if (self->_videoMinFrameRate >= framerate)
   {
-    self->_lastBadVideoQualityTime = a5;
+    self->_lastBadVideoQualityTime = time;
     lastGoodVideoQualityTime = self->_lastGoodVideoQualityTime;
   }
 
   else
   {
-    self->_lastGoodVideoQualityTime = a5;
-    lastGoodVideoQualityTime = a5;
+    self->_lastGoodVideoQualityTime = time;
+    lastGoodVideoQualityTime = time;
   }
 
   videoDegradedThreshold = self->_videoDegradedThreshold;
-  if (a5 - lastGoodVideoQualityTime <= videoDegradedThreshold)
+  if (time - lastGoodVideoQualityTime <= videoDegradedThreshold)
   {
     if (self->_isVideoQualityDegraded)
     {
-      if ((p_lastVideoQualityDegradedSwitchTime = &self->_lastVideoQualityDegradedSwitchTime, a5 - self->_lastVideoQualityDegradedSwitchTime > videoDegradedThreshold) && self->_shouldUseExitHysteresis || a5 - self->_lastBadVideoQualityTime > self->_videoImprovedThreshold)
+      if ((p_lastVideoQualityDegradedSwitchTime = &self->_lastVideoQualityDegradedSwitchTime, time - self->_lastVideoQualityDegradedSwitchTime > videoDegradedThreshold) && self->_shouldUseExitHysteresis || time - self->_lastBadVideoQualityTime > self->_videoImprovedThreshold)
       {
         self->_isVideoQualityDegraded = 0;
 LABEL_20:
-        *p_lastVideoQualityDegradedSwitchTime = a5;
+        *p_lastVideoQualityDegradedSwitchTime = time;
         if (objc_opt_class() == self)
         {
           if (VRTraceGetErrorLogLevelForModule() < 7)
@@ -180,7 +180,7 @@ LABEL_20:
           v27 = 2112;
           v28 = v11;
           v29 = 2048;
-          v30 = self;
+          selfCopy = self;
           v31 = 1024;
           v32 = v20;
           v15 = " [%s] %s:%d %@(%p) isVideoQualityDegraded:%d";
@@ -204,13 +204,13 @@ LABEL_20:
   return 0;
 }
 
-- (void)setVideoIsExpected:(BOOL)a3
+- (void)setVideoIsExpected:(BOOL)expected
 {
   v29 = *MEMORY[0x1E69E9840];
   videoIsExpected = self->_videoIsExpected;
-  if (videoIsExpected != a3)
+  if (videoIsExpected != expected)
   {
-    v4 = a3;
+    expectedCopy = expected;
     self->_firstDegradedMeasure = 0.0;
     if (videoIsExpected)
     {
@@ -225,7 +225,7 @@ LABEL_20:
       *(&self->super.super.isa + *v8) = v7;
     }
 
-    self->_videoIsExpected = v4;
+    self->_videoIsExpected = expectedCopy;
     if (objc_opt_class() == self)
     {
       if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -241,7 +241,7 @@ LABEL_20:
           v21 = 1024;
           v22 = 140;
           v23 = 1024;
-          LODWORD(v24) = v4;
+          LODWORD(v24) = expectedCopy;
           v12 = " [%s] %s:%d videoIsExpected=%d";
           v13 = v11;
           v14 = 34;
@@ -278,9 +278,9 @@ LABEL_16:
           v23 = 2112;
           v24 = v9;
           v25 = 2048;
-          v26 = self;
+          selfCopy = self;
           v27 = 1024;
-          v28 = v4;
+          v28 = expectedCopy;
           v12 = " [%s] %s:%d %@(%p) videoIsExpected=%d";
           v13 = v16;
           v14 = 54;

@@ -1,7 +1,7 @@
 @interface PSGMultitaskingGestureExplanationView
 - (BOOL)isRTL;
-- (PSGMultitaskingGestureExplanationView)initWithSpecifier:(id)a3;
-- (double)preferredHeightForWidth:(double)a3;
+- (PSGMultitaskingGestureExplanationView)initWithSpecifier:(id)specifier;
+- (double)preferredHeightForWidth:(double)width;
 - (id)newRegionSampleLabelUnderlined;
 - (void)layoutSubviews;
 @end
@@ -17,19 +17,19 @@
 
   [v4 setTextColor:self->_footerTextColor];
   [v4 setLineBreakMode:0];
-  v6 = [MEMORY[0x277D75348] clearColor];
-  [v4 setBackgroundColor:v6];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [v4 setBackgroundColor:clearColor];
 
   [v4 setNumberOfLines:0];
   [(PSGMultitaskingGestureExplanationView *)self addSubview:v4];
   return v4;
 }
 
-- (PSGMultitaskingGestureExplanationView)initWithSpecifier:(id)a3
+- (PSGMultitaskingGestureExplanationView)initWithSpecifier:(id)specifier
 {
   v15.receiver = self;
   v15.super_class = PSGMultitaskingGestureExplanationView;
-  v3 = [(PSGMultitaskingGestureExplanationView *)&v15 initWithFrame:a3, *MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
+  v3 = [(PSGMultitaskingGestureExplanationView *)&v15 initWithFrame:specifier, *MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   if (v3)
   {
     v4 = PreferencesTableViewFooterColor();
@@ -38,9 +38,9 @@
 
     for (i = 0; i != 4; ++i)
     {
-      v7 = [(PSGMultitaskingGestureExplanationView *)v3 newRegionSampleLabelUnderlined];
+      newRegionSampleLabelUnderlined = [(PSGMultitaskingGestureExplanationView *)v3 newRegionSampleLabelUnderlined];
       v8 = v3->_labels[i];
-      v3->_labels[i] = v7;
+      v3->_labels[i] = newRegionSampleLabelUnderlined;
     }
 
     v9 = PSG_LocalizedStringForGeneral(@"Use four or five fingers to:");
@@ -57,16 +57,16 @@
 
     v3->_sized = 0.0;
     [(PSGMultitaskingGestureExplanationView *)v3 setNeedsLayout];
-    v13 = [MEMORY[0x277D75348] clearColor];
-    [(PSGMultitaskingGestureExplanationView *)v3 setBackgroundColor:v13];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(PSGMultitaskingGestureExplanationView *)v3 setBackgroundColor:clearColor];
   }
 
   return v3;
 }
 
-- (double)preferredHeightForWidth:(double)a3
+- (double)preferredHeightForWidth:(double)width
 {
-  if (self->_width == a3)
+  if (self->_width == width)
   {
     return self->_sized;
   }
@@ -83,7 +83,7 @@
     PreferencesTableViewCellLeftPad();
     v14 = v13;
     PreferencesTableViewCellRightPad();
-    [(UILabel *)labels[v5] setFrame:v8, v10, a3 - floorf(v14 + v15), v12];
+    [(UILabel *)labels[v5] setFrame:v8, v10, width - floorf(v14 + v15), v12];
     [(UILabel *)labels[v5] sizeToFit];
     [(UILabel *)labels[v5] bounds];
     v17 = self->_sized + v16 + 1.0;
@@ -102,8 +102,8 @@
   if ((isRTL_isSet & 1) == 0)
   {
     isRTL_isSet = 1;
-    v2 = [MEMORY[0x277D75128] sharedApplication];
-    isRTL_isRTL = [v2 userInterfaceLayoutDirection] == 1;
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    isRTL_isRTL = [mEMORY[0x277D75128] userInterfaceLayoutDirection] == 1;
   }
 
   return isRTL_isRTL;
@@ -111,7 +111,7 @@
 
 - (void)layoutSubviews
 {
-  v3 = [(PSGMultitaskingGestureExplanationView *)self isRTL];
+  isRTL = [(PSGMultitaskingGestureExplanationView *)self isRTL];
   [(PSGMultitaskingGestureExplanationView *)self bounds];
   v5 = v4;
   [(PSGMultitaskingGestureExplanationView *)self preferredHeightForWidth:v5];
@@ -128,7 +128,7 @@
     v15 = v14;
     PreferencesTableViewCellLeftPad();
     v17 = v16;
-    if (v3)
+    if (isRTL)
     {
       [(PSGMultitaskingGestureExplanationView *)self frame];
       v19 = v18 - v17 - v13;

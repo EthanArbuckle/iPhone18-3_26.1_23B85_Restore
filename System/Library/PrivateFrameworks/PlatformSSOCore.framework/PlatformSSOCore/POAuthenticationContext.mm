@@ -2,8 +2,8 @@
 - (BOOL)isServerNonceExpiredOrMissing;
 - (POAuthenticationContext)init;
 - (id)resumeData;
-- (void)addRequiredScope:(id)a3;
-- (void)applyResumeData:(id)a3;
+- (void)addRequiredScope:(id)scope;
+- (void)applyResumeData:(id)data;
 - (void)resumeData;
 @end
 
@@ -16,20 +16,20 @@
   v2 = [(POAuthenticationContext *)&v15 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAD78] UUID];
-    v4 = [v3 UUIDString];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
     nonce = v2->_nonce;
-    v2->_nonce = v4;
+    v2->_nonce = uUIDString;
 
-    v6 = [MEMORY[0x277CCAD78] UUID];
-    v7 = [v6 UUIDString];
+    uUID2 = [MEMORY[0x277CCAD78] UUID];
+    uUIDString2 = [uUID2 UUIDString];
     requestIdentifier = v2->_requestIdentifier;
-    v2->_requestIdentifier = v7;
+    v2->_requestIdentifier = uUIDString2;
 
     v9 = MEMORY[0x277CCACA8];
-    v10 = [MEMORY[0x277CCAD78] UUID];
-    v11 = [v10 UUIDString];
-    v12 = [v9 stringWithFormat:@"urn:uuid:%@", v11];
+    uUID3 = [MEMORY[0x277CCAD78] UUID];
+    uUIDString3 = [uUID3 UUIDString];
+    v12 = [v9 stringWithFormat:@"urn:uuid:%@", uUIDString3];
     wsTrustFederationNonce = v2->_wsTrustFederationNonce;
     v2->_wsTrustFederationNonce = v12;
 
@@ -41,22 +41,22 @@
   return v2;
 }
 
-- (void)addRequiredScope:(id)a3
+- (void)addRequiredScope:(id)scope
 {
-  v11 = a3;
-  if ([v11 length])
+  scopeCopy = scope;
+  if ([scopeCopy length])
   {
-    v4 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-    v5 = [v11 stringByTrimmingCharactersInSet:v4];
+    whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+    v5 = [scopeCopy stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
-    v6 = [(POAuthenticationContext *)self scope];
-    v7 = [v6 containsString:v5];
+    scope = [(POAuthenticationContext *)self scope];
+    v7 = [scope containsString:v5];
 
     if ((v7 & 1) == 0)
     {
       v8 = MEMORY[0x277CCACA8];
-      v9 = [(POAuthenticationContext *)self scope];
-      v10 = [v8 stringWithFormat:@"%@ %@", v9, v5];
+      scope2 = [(POAuthenticationContext *)self scope];
+      v10 = [v8 stringWithFormat:@"%@ %@", scope2, v5];
       [(POAuthenticationContext *)self setScope:v10];
     }
   }
@@ -65,49 +65,49 @@
 - (id)resumeData
 {
   v3 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v4 = [(POAuthenticationContext *)self resumedEmbeddedAssertion];
+  resumedEmbeddedAssertion = [(POAuthenticationContext *)self resumedEmbeddedAssertion];
 
-  if (v4)
+  if (resumedEmbeddedAssertion)
   {
-    v5 = [(POAuthenticationContext *)self resumedEmbeddedAssertion];
+    resumedEmbeddedAssertion2 = [(POAuthenticationContext *)self resumedEmbeddedAssertion];
     v6 = NSStringFromSelector(sel_resumedEmbeddedAssertion);
-    [v3 setObject:v5 forKeyedSubscript:v6];
+    [v3 setObject:resumedEmbeddedAssertion2 forKeyedSubscript:v6];
   }
 
-  v7 = [(POAuthenticationContext *)self requestIdentifier];
+  requestIdentifier = [(POAuthenticationContext *)self requestIdentifier];
 
-  if (v7)
+  if (requestIdentifier)
   {
-    v8 = [(POAuthenticationContext *)self requestIdentifier];
+    requestIdentifier2 = [(POAuthenticationContext *)self requestIdentifier];
     v9 = NSStringFromSelector(sel_requestIdentifier);
-    [v3 setObject:v8 forKeyedSubscript:v9];
+    [v3 setObject:requestIdentifier2 forKeyedSubscript:v9];
   }
 
-  v10 = [(POAuthenticationContext *)self serverNonce];
+  serverNonce = [(POAuthenticationContext *)self serverNonce];
 
-  if (v10)
+  if (serverNonce)
   {
-    v11 = [(POAuthenticationContext *)self serverNonce];
+    serverNonce2 = [(POAuthenticationContext *)self serverNonce];
     v12 = NSStringFromSelector(sel_serverNonce);
-    [v3 setObject:v11 forKeyedSubscript:v12];
+    [v3 setObject:serverNonce2 forKeyedSubscript:v12];
   }
 
-  v13 = [(POAuthenticationContext *)self nonce];
+  nonce = [(POAuthenticationContext *)self nonce];
 
-  if (v13)
+  if (nonce)
   {
-    v14 = [(POAuthenticationContext *)self nonce];
+    nonce2 = [(POAuthenticationContext *)self nonce];
     v15 = NSStringFromSelector(sel_nonce);
-    [v3 setObject:v14 forKeyedSubscript:v15];
+    [v3 setObject:nonce2 forKeyedSubscript:v15];
   }
 
-  v16 = [(POAuthenticationContext *)self scope];
+  scope = [(POAuthenticationContext *)self scope];
 
-  if (v16)
+  if (scope)
   {
-    v17 = [(POAuthenticationContext *)self scope];
+    scope2 = [(POAuthenticationContext *)self scope];
     v18 = NSStringFromSelector(sel_scope);
-    [v3 setObject:v17 forKeyedSubscript:v18];
+    [v3 setObject:scope2 forKeyedSubscript:v18];
   }
 
   v30 = 0;
@@ -148,10 +148,10 @@ id __37__POAuthenticationContext_resumeData__block_invoke(uint64_t a1)
   return v1;
 }
 
-- (void)applyResumeData:(id)a3
+- (void)applyResumeData:(id)data
 {
   v23 = 0;
-  v4 = [a3 decompressedDataUsingAlgorithm:0 error:&v23];
+  v4 = [data decompressedDataUsingAlgorithm:0 error:&v23];
   v5 = v23;
   v6 = v5;
   if (v5)
@@ -223,30 +223,30 @@ id __43__POAuthenticationContext_applyResumeData___block_invoke(uint64_t a1)
 
 - (BOOL)isServerNonceExpiredOrMissing
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(POAuthenticationContext *)v2 serverNonce];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  serverNonce = [(POAuthenticationContext *)selfCopy serverNonce];
 
-  objc_sync_exit(v2);
-  if (!v3)
+  objc_sync_exit(selfCopy);
+  if (!serverNonce)
   {
     return 1;
   }
 
-  v4 = [(POAuthenticationContext *)v2 serverNonceReceived];
+  serverNonceReceived = [(POAuthenticationContext *)selfCopy serverNonceReceived];
 
-  if (!v4)
+  if (!serverNonceReceived)
   {
     return 1;
   }
 
-  v5 = [(POAuthenticationContext *)v2 serverNonceReceived];
-  [v5 timeIntervalSinceNow];
+  serverNonceReceived2 = [(POAuthenticationContext *)selfCopy serverNonceReceived];
+  [serverNonceReceived2 timeIntervalSinceNow];
   v7 = v6;
 
-  v8 = [(POAuthenticationContext *)v2 loginConfiguration];
-  v9 = [v8 serverNonceExpirationTime];
-  v10 = v7 < -[v9 intValue];
+  loginConfiguration = [(POAuthenticationContext *)selfCopy loginConfiguration];
+  serverNonceExpirationTime = [loginConfiguration serverNonceExpirationTime];
+  v10 = v7 < -[serverNonceExpirationTime intValue];
 
   return v10;
 }
@@ -254,7 +254,7 @@ id __43__POAuthenticationContext_applyResumeData___block_invoke(uint64_t a1)
 - (void)resumeData
 {
   v12 = *MEMORY[0x277D85DE8];
-  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(a1, "length")}];
+  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(self, "length")}];
   v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(a2, "length")}];
   v8 = 138543618;
   v9 = v5;

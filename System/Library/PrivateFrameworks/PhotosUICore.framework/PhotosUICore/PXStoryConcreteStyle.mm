@@ -1,12 +1,12 @@
 @interface PXStoryConcreteStyle
-+ (id)bestClipCompositionFromClipCompositions:(id)a3 forKeyAsset:(id)a4 contentInfo:(id *)a5 playbackStyle:(int64_t)a6 spec:(id)a7 croppingContext:(id)a8 options:(unint64_t)a9 loggingOptions:(unint64_t)a10;
++ (id)bestClipCompositionFromClipCompositions:(id)compositions forKeyAsset:(id)asset contentInfo:(id *)info playbackStyle:(int64_t)style spec:(id)spec croppingContext:(id)context options:(unint64_t)options loggingOptions:(unint64_t)self0;
 - ($1A23BB056C565A410801C90FE7234890)styleOptions;
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)outroDuration;
-- (PXStoryConcreteStyle)initWithCustomColorGradeKind:(int64_t)a3 originalColorGradeCategory:(id)a4 songResource:(id)a5 cueSource:(id)a6 autoEditDecisionList:(id)a7 styleOptions:(id)a8 isCustomized:(BOOL)a9 storyConfiguration:(id)a10;
+- (PXStoryConcreteStyle)initWithCustomColorGradeKind:(int64_t)kind originalColorGradeCategory:(id)category songResource:(id)resource cueSource:(id)source autoEditDecisionList:(id)list styleOptions:(id)options isCustomized:(BOOL)customized storyConfiguration:(id)self0;
 - (PXStoryConfiguration)storyConfiguration;
 - (id)createRandomNumberGenerators;
 - (id)description;
-- (id)timelineStyleWithSpec:(id)a3 resourcesDataSource:(id)a4 randomNumberGenerators:(id)a5 errorReporter:(id)a6;
+- (id)timelineStyleWithSpec:(id)spec resourcesDataSource:(id)source randomNumberGenerators:(id)generators errorReporter:(id)reporter;
 @end
 
 @implementation PXStoryConcreteStyle
@@ -27,15 +27,15 @@
   return result;
 }
 
-- (id)timelineStyleWithSpec:(id)a3 resourcesDataSource:(id)a4 randomNumberGenerators:(id)a5 errorReporter:(id)a6
+- (id)timelineStyleWithSpec:(id)spec resourcesDataSource:(id)source randomNumberGenerators:(id)generators errorReporter:(id)reporter
 {
-  v9 = a3;
-  v10 = a4;
-  a6;
-  a5;
+  specCopy = spec;
+  sourceCopy = source;
+  reporter;
+  generators;
   +[PXStorySettings sharedInstance];
   objc_claimAutoreleasedReturnValue();
-  [v9 viewportSize];
+  [specCopy viewportSize];
   PXSizeGetAspectRatio();
 }
 
@@ -51,12 +51,12 @@
 
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)outroDuration
 {
-  v4 = [(PXStoryConcreteStyle *)self autoEditDecisionList];
-  if (v4)
+  autoEditDecisionList = [(PXStoryConcreteStyle *)self autoEditDecisionList];
+  if (autoEditDecisionList)
   {
-    v6 = v4;
-    [v4 outroDuration];
-    v4 = v6;
+    v6 = autoEditDecisionList;
+    [autoEditDecisionList outroDuration];
+    autoEditDecisionList = v6;
   }
 
   else
@@ -73,7 +73,7 @@
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
   v4 = objc_opt_class();
-  v5 = [(PXStoryConcreteStyle *)self originalColorGradeCategory];
+  originalColorGradeCategory = [(PXStoryConcreteStyle *)self originalColorGradeCategory];
   [(PXStoryConcreteStyle *)self customColorGradeKind];
   v6 = PFStoryColorGradeKindToString();
   v7 = v6;
@@ -87,21 +87,21 @@
     v8 = @"-";
   }
 
-  v9 = [(PXStoryConcreteStyle *)self songResource];
-  v10 = [v9 px_storyResourceIdentifier];
-  v11 = [v3 initWithFormat:@"<%@ %p; originalColorGradeCategory: %@; customColorGradeKind %@; songID: %@>", v4, self, v5, v8, v10];
+  songResource = [(PXStoryConcreteStyle *)self songResource];
+  px_storyResourceIdentifier = [songResource px_storyResourceIdentifier];
+  v11 = [v3 initWithFormat:@"<%@ %p; originalColorGradeCategory: %@; customColorGradeKind %@; songID: %@>", v4, self, originalColorGradeCategory, v8, px_storyResourceIdentifier];
 
   return v11;
 }
 
-- (PXStoryConcreteStyle)initWithCustomColorGradeKind:(int64_t)a3 originalColorGradeCategory:(id)a4 songResource:(id)a5 cueSource:(id)a6 autoEditDecisionList:(id)a7 styleOptions:(id)a8 isCustomized:(BOOL)a9 storyConfiguration:(id)a10
+- (PXStoryConcreteStyle)initWithCustomColorGradeKind:(int64_t)kind originalColorGradeCategory:(id)category songResource:(id)resource cueSource:(id)source autoEditDecisionList:(id)list styleOptions:(id)options isCustomized:(BOOL)customized storyConfiguration:(id)self0
 {
   v96[1] = *MEMORY[0x1E69E9840];
-  v16 = a4;
-  v72 = a5;
-  v71 = a6;
-  v70 = a7;
-  v17 = a10;
+  categoryCopy = category;
+  resourceCopy = resource;
+  sourceCopy = source;
+  listCopy = list;
+  configurationCopy = configuration;
   v91.receiver = self;
   v91.super_class = PXStoryConcreteStyle;
   v18 = [(PXStoryConcreteStyle *)&v91 init];
@@ -111,39 +111,39 @@
     goto LABEL_33;
   }
 
-  v69 = v16;
-  v18->_customColorGradeKind = a3;
-  objc_storeStrong(&v18->_originalColorGradeCategory, a4);
-  objc_storeStrong(&v19->_songResource, a5);
-  objc_storeStrong(&v19->_cueSource, a6);
-  v19->_styleOptions = a8;
-  v19->_isCustomized = a9;
-  objc_storeWeak(&v19->_storyConfiguration, v17);
+  v69 = categoryCopy;
+  v18->_customColorGradeKind = kind;
+  objc_storeStrong(&v18->_originalColorGradeCategory, category);
+  objc_storeStrong(&v19->_songResource, resource);
+  objc_storeStrong(&v19->_cueSource, source);
+  v19->_styleOptions = options;
+  v19->_isCustomized = customized;
+  objc_storeWeak(&v19->_storyConfiguration, configurationCopy);
   v20 = +[PXStoryAutoEditConfigurationFactory autoEditConfiguration];
   autoEditConfiguration = v19->_autoEditConfiguration;
   v19->_autoEditConfiguration = v20;
 
-  objc_storeStrong(&v19->_autoEditDecisionList, a7);
+  objc_storeStrong(&v19->_autoEditDecisionList, list);
   if (!v19->_autoEditDecisionList)
   {
-    v22 = [v72 px_storyResourceSongAsset];
-    v23 = v22;
-    if (v22)
+    px_storyResourceSongAsset = [resourceCopy px_storyResourceSongAsset];
+    v23 = px_storyResourceSongAsset;
+    if (px_storyResourceSongAsset)
     {
-      v24 = [v22 pace];
+      pace = [px_storyResourceSongAsset pace];
     }
 
     else
     {
-      v24 = 2;
+      pace = 2;
     }
 
     memset(&v90, 0, sizeof(v90));
-    [(PFStoryAutoEditConfiguration *)v19->_autoEditConfiguration outroDurationForSongPace:v24];
+    [(PFStoryAutoEditConfiguration *)v19->_autoEditConfiguration outroDurationForSongPace:pace];
     CMTimeMakeWithSeconds(&v90, v25, 600);
-    if (v17)
+    if (configurationCopy)
     {
-      v26 = [v17 disableNUp] ^ 1;
+      v26 = [configurationCopy disableNUp] ^ 1;
     }
 
     else
@@ -160,14 +160,14 @@
     v89[0] = *MEMORY[0x1E69C0DB8];
     v89[1] = v29;
     v88 = v90;
-    v30 = [(PXStoryConcreteAutoEditDecisionList *)v27 initWithColorGradeCategory:v16 song:v23 clipCatalog:0 constrainedOverallDurationInfo:v89 outroDuration:&v88 allowsNUp:v26];
+    v30 = [(PXStoryConcreteAutoEditDecisionList *)v27 initWithColorGradeCategory:categoryCopy song:v23 clipCatalog:0 constrainedOverallDurationInfo:v89 outroDuration:&v88 allowsNUp:v26];
     autoEditDecisionList = v19->_autoEditDecisionList;
     v19->_autoEditDecisionList = v30;
   }
 
   v32 = objc_alloc_init(MEMORY[0x1E695DFA0]);
   v33 = objc_alloc_init(MEMORY[0x1E695DFA0]);
-  if ([v17 isLetterboxingAllowed])
+  if ([configurationCopy isLetterboxingAllowed])
   {
     v34 = +[PXStoryClipCompositionFactory defaultOneUpCompositions];
   }
@@ -180,18 +180,18 @@
   }
 
   v36 = +[PXStorySettings sharedInstance];
-  if ([v17 otherAssetsAspectRatioOverride])
+  if ([configurationCopy otherAssetsAspectRatioOverride])
   {
-    v37 = OneUpCompositionForAspectRatio([v17 otherAssetsAspectRatioOverride]);
+    v37 = OneUpCompositionForAspectRatio([configurationCopy otherAssetsAspectRatioOverride]);
     v95 = v37;
     v38 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v95 count:1];
 
     v34 = v38;
   }
 
-  if ([v17 keyAssetAspectRatioOverride])
+  if ([configurationCopy keyAssetAspectRatioOverride])
   {
-    v39 = OneUpCompositionForAspectRatio([v17 keyAssetAspectRatioOverride]);
+    v39 = OneUpCompositionForAspectRatio([configurationCopy keyAssetAspectRatioOverride]);
     v94 = v39;
     v40 = MEMORY[0x1E695DEC8];
     v41 = &v94;
@@ -199,7 +199,7 @@
 
   else
   {
-    if ([v36 allowNonFillingCompositionsForKeyAsset] && objc_msgSend(v17, "isLetterboxingAllowed"))
+    if ([v36 allowNonFillingCompositionsForKeyAsset] && objc_msgSend(configurationCopy, "isLetterboxingAllowed"))
     {
       if ([v36 limitKeyAssetAspectRatioToFeedCard])
       {
@@ -302,21 +302,21 @@ LABEL_23:
     v32 = v68;
   }
 
-  v57 = [v32 array];
+  array = [v32 array];
   allowedClipCompositionsInPortrait = v19->_allowedClipCompositionsInPortrait;
-  v19->_allowedClipCompositionsInPortrait = v57;
+  v19->_allowedClipCompositionsInPortrait = array;
 
-  v59 = [v33 array];
+  array2 = [v33 array];
   allowedClipCompositionsInLandscape = v19->_allowedClipCompositionsInLandscape;
-  v19->_allowedClipCompositionsInLandscape = v59;
+  v19->_allowedClipCompositionsInLandscape = array2;
 
   v61 = [objc_alloc(MEMORY[0x1E695DFA0]) initWithArray:v19->_allowedClipCompositionsInPortrait];
   [v61 addObjectsFromArray:v19->_allowedClipCompositionsInLandscape];
-  v62 = [v61 array];
+  array3 = [v61 array];
   allowedClipCompositionsInSquareView = v19->_allowedClipCompositionsInSquareView;
-  v19->_allowedClipCompositionsInSquareView = v62;
+  v19->_allowedClipCompositionsInSquareView = array3;
 
-  v16 = v69;
+  categoryCopy = v69;
 LABEL_33:
 
   return v19;
@@ -369,23 +369,23 @@ LABEL_7:
 LABEL_8:
 }
 
-+ (id)bestClipCompositionFromClipCompositions:(id)a3 forKeyAsset:(id)a4 contentInfo:(id *)a5 playbackStyle:(int64_t)a6 spec:(id)a7 croppingContext:(id)a8 options:(unint64_t)a9 loggingOptions:(unint64_t)a10
++ (id)bestClipCompositionFromClipCompositions:(id)compositions forKeyAsset:(id)asset contentInfo:(id *)info playbackStyle:(int64_t)style spec:(id)spec croppingContext:(id)context options:(unint64_t)options loggingOptions:(unint64_t)self0
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a7;
-  a8;
-  if (![v13 count])
+  compositionsCopy = compositions;
+  assetCopy = asset;
+  specCopy = spec;
+  context;
+  if (![compositionsCopy count])
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:a1 file:@"PXStoryConcreteStyle.m" lineNumber:157 description:{@"Invalid parameter not satisfying: %@", @"allowedClipCompositions.count > 0"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryConcreteStyle.m" lineNumber:157 description:{@"Invalid parameter not satisfying: %@", @"allowedClipCompositions.count > 0"}];
   }
 
-  [v15 viewportSize];
-  [v15 nUpDividerWidth];
-  [v14 aspectRatio];
-  [v15 safeAreaInsets];
-  [v15 viewportSize];
+  [specCopy viewportSize];
+  [specCopy nUpDividerWidth];
+  [assetCopy aspectRatio];
+  [specCopy safeAreaInsets];
+  [specCopy viewportSize];
   PXSizeGetArea();
 }
 

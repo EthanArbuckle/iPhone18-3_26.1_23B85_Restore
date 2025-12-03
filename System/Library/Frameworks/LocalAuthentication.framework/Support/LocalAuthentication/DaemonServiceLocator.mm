@@ -2,7 +2,7 @@
 + (id)sharedInstance;
 - (DaemonServiceLocator)init;
 - (void)_startNotificationServices;
-- (void)cancelServicesForContextID:(id)a3;
+- (void)cancelServicesForContextID:(id)d;
 - (void)startServices;
 @end
 
@@ -103,11 +103,11 @@
     v45 = +[LACPasscodeHelper sharedInstance];
     [v43 setPasscodeHelper:v45];
 
-    v46 = [(CompanionService *)v34 onenessSessionMonitor];
-    [v43 setOnenessSessionMonitor:v46];
+    onenessSessionMonitor = [(CompanionService *)v34 onenessSessionMonitor];
+    [v43 setOnenessSessionMonitor:onenessSessionMonitor];
 
-    v47 = [(CompanionService *)v34 phoneIntegrationSessionMonitor];
-    [v43 setPhoneIntegrationSessionMonitor:v47];
+    phoneIntegrationSessionMonitor = [(CompanionService *)v34 phoneIntegrationSessionMonitor];
+    [v43 setPhoneIntegrationSessionMonitor:phoneIntegrationSessionMonitor];
 
     v48 = [EnvironmentService alloc];
     v49 = +[DaemonUtils queue];
@@ -132,11 +132,11 @@
   [(DaemonServiceLocator *)self _startCompanionServices];
 }
 
-- (void)cancelServicesForContextID:(id)a3
+- (void)cancelServicesForContextID:(id)d
 {
-  v4 = a3;
-  v5 = [(DaemonServiceLocator *)self companions];
-  [v5 cancelRequestsForContextID:v4];
+  dCopy = d;
+  companions = [(DaemonServiceLocator *)self companions];
+  [companions cancelRequestsForContextID:dCopy];
 }
 
 - (void)_startNotificationServices

@@ -1,11 +1,11 @@
 @interface MXUserPreferredInputRouteCache
 + (id)sharedInstance;
 - (MXUserPreferredInputRouteCache)init;
-- (id)copyUserPreferredRoute:(id)a3;
-- (int)setUserPreferredRoute:(id)a3 hostApplicationBundleID:(id)a4;
-- (void)clearCurrentUserPreferenceForApp:(id)a3;
-- (void)clearUserPreference:(id)a3;
-- (void)clearUserPreferredRoute:(id)a3;
+- (id)copyUserPreferredRoute:(id)route;
+- (int)setUserPreferredRoute:(id)route hostApplicationBundleID:(id)d;
+- (void)clearCurrentUserPreferenceForApp:(id)app;
+- (void)clearUserPreference:(id)preference;
+- (void)clearUserPreferredRoute:(id)route;
 - (void)dealloc;
 @end
 
@@ -63,12 +63,12 @@ MXUserPreferredInputRouteCache *__48__MXUserPreferredInputRouteCache_sharedInsta
   [(MXUserPreferredInputRouteCache *)&v3 dealloc];
 }
 
-- (int)setUserPreferredRoute:(id)a3 hostApplicationBundleID:(id)a4
+- (int)setUserPreferredRoute:(id)route hostApplicationBundleID:(id)d
 {
   v21[26] = *MEMORY[0x1E69E9840];
-  v7 = [a3 objectForKey:@"RouteName"];
-  v8 = [a3 objectForKey:@"RouteUID"];
-  v9 = [a3 objectForKey:@"AudioRouteName"];
+  v7 = [route objectForKey:@"RouteName"];
+  v8 = [route objectForKey:@"RouteUID"];
+  v9 = [route objectForKey:@"AudioRouteName"];
   if (v7)
   {
     v10 = v8 == 0;
@@ -96,14 +96,14 @@ MXUserPreferredInputRouteCache *__48__MXUserPreferredInputRouteCache_sharedInsta
     v20[2] = @"AudioRouteName";
     v21[2] = v9;
     v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v21 forKeys:v20 count:3];
-    if (a4)
+    if (d)
     {
-      v14 = a4;
+      dCopy = d;
     }
 
     else
     {
-      v14 = @"Default";
+      dCopy = @"Default";
     }
 
     [(NSLock *)self->mUserPreferredRouteCacheLock lock];
@@ -114,7 +114,7 @@ MXUserPreferredInputRouteCache *__48__MXUserPreferredInputRouteCache_sharedInsta
       fig_log_call_emit_and_clean_up_after_send_and_compose();
     }
 
-    [(NSMutableDictionary *)self->mUserPreferredRouteCache setObject:v13 forKey:v14, v18, v19];
+    [(NSMutableDictionary *)self->mUserPreferredRouteCache setObject:v13 forKey:dCopy, v18, v19];
     MXCFPreferencesSetAndSynchronizeUserPreference(@"UserPreferredInputRoute", self->mUserPreferredRouteCache);
     [(NSLock *)self->mUserPreferredRouteCacheLock unlock];
     result = 0;
@@ -124,42 +124,42 @@ MXUserPreferredInputRouteCache *__48__MXUserPreferredInputRouteCache_sharedInsta
   return result;
 }
 
-- (id)copyUserPreferredRoute:(id)a3
+- (id)copyUserPreferredRoute:(id)route
 {
-  if (a3)
+  if (route)
   {
-    v4 = a3;
+    routeCopy = route;
   }
 
   else
   {
-    v4 = @"Default";
+    routeCopy = @"Default";
   }
 
   [(NSLock *)self->mUserPreferredRouteCacheLock lock];
-  v5 = [(NSMutableDictionary *)self->mUserPreferredRouteCache objectForKey:v4];
+  v5 = [(NSMutableDictionary *)self->mUserPreferredRouteCache objectForKey:routeCopy];
   [(NSLock *)self->mUserPreferredRouteCacheLock unlock];
   return v5;
 }
 
-- (void)clearUserPreference:(id)a3
+- (void)clearUserPreference:(id)preference
 {
   [(NSLock *)self->mUserPreferredRouteCacheLock lock];
-  [(NSMutableDictionary *)self->mUserPreferredRouteCache removeObjectForKey:a3];
+  [(NSMutableDictionary *)self->mUserPreferredRouteCache removeObjectForKey:preference];
   MXCFPreferencesSetAndSynchronizeUserPreference(@"UserPreferredInputRoute", self->mUserPreferredRouteCache);
   mUserPreferredRouteCacheLock = self->mUserPreferredRouteCacheLock;
 
   [(NSLock *)mUserPreferredRouteCacheLock unlock];
 }
 
-- (void)clearCurrentUserPreferenceForApp:(id)a3
+- (void)clearCurrentUserPreferenceForApp:(id)app
 {
   v10 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (app)
   {
-    v3 = a3;
+    appCopy = app;
     [(NSLock *)self->mUserPreferredRouteCacheLock lock];
-    if (![(NSMutableDictionary *)self->mUserPreferredRouteCache objectForKey:v3])
+    if (![(NSMutableDictionary *)self->mUserPreferredRouteCache objectForKey:appCopy])
     {
       if (dword_1EB75DF20)
       {
@@ -168,11 +168,11 @@ MXUserPreferredInputRouteCache *__48__MXUserPreferredInputRouteCache_sharedInsta
         fig_log_call_emit_and_clean_up_after_send_and_compose();
       }
 
-      v3 = @"Default";
+      appCopy = @"Default";
     }
 
     [(NSLock *)self->mUserPreferredRouteCacheLock unlock:v8];
-    [(MXUserPreferredInputRouteCache *)self clearUserPreference:v3];
+    [(MXUserPreferredInputRouteCache *)self clearUserPreference:appCopy];
   }
 
   else
@@ -185,21 +185,21 @@ MXUserPreferredInputRouteCache *__48__MXUserPreferredInputRouteCache_sharedInsta
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)clearUserPreferredRoute:(id)a3
+- (void)clearUserPreferredRoute:(id)route
 {
   cf[21] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (route)
   {
-    v5 = a3;
+    routeCopy = route;
   }
 
   else
   {
-    v5 = @"Default";
+    routeCopy = @"Default";
   }
 
   [(NSLock *)self->mUserPreferredRouteCacheLock lock];
-  v6 = [(NSMutableDictionary *)self->mUserPreferredRouteCache objectForKey:v5];
+  v6 = [(NSMutableDictionary *)self->mUserPreferredRouteCache objectForKey:routeCopy];
   v7 = [(NSMutableDictionary *)self->mUserPreferredRouteCache objectForKey:@"Default"];
   if (dword_1EB75DF20)
   {
@@ -210,12 +210,12 @@ MXUserPreferredInputRouteCache *__48__MXUserPreferredInputRouteCache_sharedInsta
   }
 
   [(NSLock *)self->mUserPreferredRouteCacheLock unlock:v14];
-  [(MXUserPreferredInputRouteCache *)self clearUserPreference:v5];
+  [(MXUserPreferredInputRouteCache *)self clearUserPreference:routeCopy];
   cf[0] = 0;
   FigRoutingManagerContextUtilities_CopySystemAudioInputContextUUID(cf);
   if (v6)
   {
-    if (([(__CFString *)v5 isEqualToString:@"Default"]& 1) != 0 || !v7)
+    if (([(__CFString *)routeCopy isEqualToString:@"Default"]& 1) != 0 || !v7)
     {
       [v6 objectForKey:@"RouteName"];
       if (dword_1EB75DF20)
@@ -246,7 +246,7 @@ MXUserPreferredInputRouteCache *__48__MXUserPreferredInputRouteCache_sharedInsta
       FigRoutingManagerPickRouteDescriptorForContext(cf[0], v7, 0, 0);
     }
 
-    -[MXAudioStatistics sendSingleClearUserPreferredInputMessage:audioRouteName:isInputOverride:](+[MXAudioStatistics sharedInstance](MXAudioStatistics, "sharedInstance"), "sendSingleClearUserPreferredInputMessage:audioRouteName:isInputOverride:", a3, [v6 objectForKey:{@"AudioRouteName", v15, v17}], 0);
+    -[MXAudioStatistics sendSingleClearUserPreferredInputMessage:audioRouteName:isInputOverride:](+[MXAudioStatistics sharedInstance](MXAudioStatistics, "sharedInstance"), "sendSingleClearUserPreferredInputMessage:audioRouteName:isInputOverride:", route, [v6 objectForKey:{@"AudioRouteName", v15, v17}], 0);
 
     if (cf[0])
     {

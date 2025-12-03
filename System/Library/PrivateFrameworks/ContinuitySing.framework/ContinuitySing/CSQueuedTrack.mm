@@ -1,42 +1,42 @@
 @interface CSQueuedTrack
-- (CSQueuedTrack)initWithDictionary:(id)a3;
-- (CSQueuedTrack)initWithSongTitle:(id)a3 artistName:(id)a4 artworkThumbnailImage:(id)a5 catalogID:(id)a6 trackType:(int64_t)a7;
+- (CSQueuedTrack)initWithDictionary:(id)dictionary;
+- (CSQueuedTrack)initWithSongTitle:(id)title artistName:(id)name artworkThumbnailImage:(id)image catalogID:(id)d trackType:(int64_t)type;
 - (NSDictionary)dictionaryRepresentation;
 - (id)description;
 @end
 
 @implementation CSQueuedTrack
 
-- (CSQueuedTrack)initWithSongTitle:(id)a3 artistName:(id)a4 artworkThumbnailImage:(id)a5 catalogID:(id)a6 trackType:(int64_t)a7
+- (CSQueuedTrack)initWithSongTitle:(id)title artistName:(id)name artworkThumbnailImage:(id)image catalogID:(id)d trackType:(int64_t)type
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  titleCopy = title;
+  nameCopy = name;
+  imageCopy = image;
+  dCopy = d;
   v22.receiver = self;
   v22.super_class = CSQueuedTrack;
   v16 = [(CSQueuedTrack *)&v22 init];
   if (v16)
   {
-    v17 = [v12 copy];
+    v17 = [titleCopy copy];
     songTitle = v16->_songTitle;
     v16->_songTitle = v17;
 
-    v19 = [v13 copy];
+    v19 = [nameCopy copy];
     artistName = v16->_artistName;
     v16->_artistName = v19;
 
-    objc_storeStrong(&v16->_artworkThumbnailImage, a5);
-    objc_storeStrong(&v16->_catalogID, a6);
-    v16->_trackType = a7;
+    objc_storeStrong(&v16->_artworkThumbnailImage, image);
+    objc_storeStrong(&v16->_catalogID, d);
+    v16->_trackType = type;
   }
 
   return v16;
 }
 
-- (CSQueuedTrack)initWithDictionary:(id)a3
+- (CSQueuedTrack)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v18.receiver = self;
   v18.super_class = CSQueuedTrack;
   v5 = [(CSQueuedTrack *)&v18 init];
@@ -85,7 +85,7 @@ LABEL_5:
     v16 = ContinuitySingLog();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
-      [(CSQueuedTrack *)v4 initWithDictionary:v16];
+      [(CSQueuedTrack *)dictionaryCopy initWithDictionary:v16];
     }
 
     v15 = 0;
@@ -96,26 +96,26 @@ LABEL_5:
 
 - (NSDictionary)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v4 = [(NSString *)self->_songTitle copy];
-  [v3 setObject:v4 forKeyedSubscript:@"SongTitle"];
+  [dictionary setObject:v4 forKeyedSubscript:@"SongTitle"];
 
   v5 = [(NSString *)self->_artistName copy];
-  [v3 setObject:v5 forKeyedSubscript:@"ArtistName"];
+  [dictionary setObject:v5 forKeyedSubscript:@"ArtistName"];
 
   v6 = [(NSString *)self->_catalogID copy];
-  [v3 setObject:v6 forKeyedSubscript:@"CatalogID"];
+  [dictionary setObject:v6 forKeyedSubscript:@"CatalogID"];
 
   artworkThumbnailImage = self->_artworkThumbnailImage;
   if (artworkThumbnailImage)
   {
-    [v3 setObject:artworkThumbnailImage forKeyedSubscript:@"ArtworkThumbnailImage"];
+    [dictionary setObject:artworkThumbnailImage forKeyedSubscript:@"ArtworkThumbnailImage"];
   }
 
   v8 = [MEMORY[0x277CCABB0] numberWithInteger:self->_trackType];
-  [v3 setObject:v8 forKeyedSubscript:@"TrackType"];
+  [dictionary setObject:v8 forKeyedSubscript:@"TrackType"];
 
-  v9 = [v3 copy];
+  v9 = [dictionary copy];
 
   return v9;
 }

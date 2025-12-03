@@ -1,54 +1,54 @@
 @interface PXPhotoKitAssetCollectionContentSyndicationSaveToLibraryActionPerformer
-+ (BOOL)canPerformOnAssetCollectionReference:(id)a3 withInputs:(id)a4;
-+ (id)createBarButtonItemForAssetCollectionReference:(id)a3 withTarget:(id)a4 action:(SEL)a5;
-+ (id)localizedTitleForUseCase:(unint64_t)a3 assetCollectionReference:(id)a4 withInputs:(id)a5;
-- (void)_handleCompletionForExpectedUUIDs:(id)a3 photoLibrary:(id)a4 success:(BOOL)a5 error:(id)a6;
++ (BOOL)canPerformOnAssetCollectionReference:(id)reference withInputs:(id)inputs;
++ (id)createBarButtonItemForAssetCollectionReference:(id)reference withTarget:(id)target action:(SEL)action;
++ (id)localizedTitleForUseCase:(unint64_t)case assetCollectionReference:(id)reference withInputs:(id)inputs;
+- (void)_handleCompletionForExpectedUUIDs:(id)ds photoLibrary:(id)library success:(BOOL)success error:(id)error;
 - (void)performBackgroundTask;
 - (void)performUserInteractionTask;
 @end
 
 @implementation PXPhotoKitAssetCollectionContentSyndicationSaveToLibraryActionPerformer
 
-+ (id)createBarButtonItemForAssetCollectionReference:(id)a3 withTarget:(id)a4 action:(SEL)a5
++ (id)createBarButtonItemForAssetCollectionReference:(id)reference withTarget:(id)target action:(SEL)action
 {
-  v8 = a4;
-  v9 = [a1 systemImageNameForAssetCollectionReference:a3 withInputs:0];
+  targetCopy = target;
+  v9 = [self systemImageNameForAssetCollectionReference:reference withInputs:0];
   v10 = [MEMORY[0x1E69DCAB8] systemImageNamed:v9];
   v11 = [v10 imageWithBaselineOffsetFromBottom:5.0];
 
-  v12 = [objc_alloc(MEMORY[0x1E69DC708]) initWithImage:v11 style:0 target:v8 action:a5];
+  v12 = [objc_alloc(MEMORY[0x1E69DC708]) initWithImage:v11 style:0 target:targetCopy action:action];
 
   return v12;
 }
 
-+ (id)localizedTitleForUseCase:(unint64_t)a3 assetCollectionReference:(id)a4 withInputs:(id)a5
++ (id)localizedTitleForUseCase:(unint64_t)case assetCollectionReference:(id)reference withInputs:(id)inputs
 {
-  v5 = [a4 assetCollection];
-  v6 = [v5 photoLibrary];
-  v7 = [v6 librarySpecificFetchOptions];
-  v8 = [MEMORY[0x1E6978630] fetchAssetsInAssetCollection:v5 options:v7];
-  v9 = PXLocalizationKeyByAddingMediaSpecificSuffix(@"PXPhotoKitAssetCollectionActionManagerPreviewActionTitle_ContentSyndicationSaveToLibrary_", [v8 count], objc_msgSend(v5, "aggregateMediaType"));
+  assetCollection = [reference assetCollection];
+  photoLibrary = [assetCollection photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
+  v8 = [MEMORY[0x1E6978630] fetchAssetsInAssetCollection:assetCollection options:librarySpecificFetchOptions];
+  v9 = PXLocalizationKeyByAddingMediaSpecificSuffix(@"PXPhotoKitAssetCollectionActionManagerPreviewActionTitle_ContentSyndicationSaveToLibrary_", [v8 count], objc_msgSend(assetCollection, "aggregateMediaType"));
   v10 = PXLocalizedStringFromTable(v9, @"PhotosUICore");
 
   return v10;
 }
 
-+ (BOOL)canPerformOnAssetCollectionReference:(id)a3 withInputs:(id)a4
++ (BOOL)canPerformOnAssetCollectionReference:(id)reference withInputs:(id)inputs
 {
-  v6 = [a3 assetCollection];
-  if (![v6 px_isContentSyndicationAlbum])
+  assetCollection = [reference assetCollection];
+  if (![assetCollection px_isContentSyndicationAlbum])
   {
     v9 = 0;
     goto LABEL_6;
   }
 
-  v7 = v6;
+  v7 = assetCollection;
   if (!v7)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v12 = objc_opt_class();
     v13 = NSStringFromClass(v12);
-    [v11 handleFailureInMethod:a2 object:a1 file:@"PXPhotoKitAssetCollectionContentSyndicationSaveToLibraryActionPerformer.m" lineNumber:51 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"assetCollection", v13}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotoKitAssetCollectionContentSyndicationSaveToLibraryActionPerformer.m" lineNumber:51 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"assetCollection", v13}];
 LABEL_9:
 
     goto LABEL_4;
@@ -57,11 +57,11 @@ LABEL_9:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v14 = objc_opt_class();
     v13 = NSStringFromClass(v14);
-    v15 = [v7 px_descriptionForAssertionMessage];
-    [v11 handleFailureInMethod:a2 object:a1 file:@"PXPhotoKitAssetCollectionContentSyndicationSaveToLibraryActionPerformer.m" lineNumber:51 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"assetCollection", v13, v15}];
+    px_descriptionForAssertionMessage = [v7 px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotoKitAssetCollectionContentSyndicationSaveToLibraryActionPerformer.m" lineNumber:51 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"assetCollection", v13, px_descriptionForAssertionMessage}];
 
     goto LABEL_9;
   }
@@ -77,9 +77,9 @@ LABEL_6:
 - (void)performBackgroundTask
 {
   v3 = +[PXContentSyndicationSettings sharedInstance];
-  v4 = [v3 preventActualSaveToLibraryBehavior];
+  preventActualSaveToLibraryBehavior = [v3 preventActualSaveToLibraryBehavior];
 
-  if (v4)
+  if (preventActualSaveToLibraryBehavior)
   {
 
     [(PXActionPerformer *)self completeBackgroundTaskWithSuccess:1 error:0];
@@ -94,7 +94,7 @@ LABEL_6:
     v15[3] = __Block_byref_object_copy__237607;
     v15[4] = __Block_byref_object_dispose__237608;
     v16 = [MEMORY[0x1E695DF70] arrayWithCapacity:{-[PHFetchResult count](v5, "count")}];
-    v6 = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
+    px_deprecated_appPhotoLibrary = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __96__PXPhotoKitAssetCollectionContentSyndicationSaveToLibraryActionPerformer_performBackgroundTask__block_invoke;
@@ -108,7 +108,7 @@ LABEL_6:
     v9[3] = &unk_1E7749680;
     v9[4] = self;
     v11 = v15;
-    v8 = v6;
+    v8 = px_deprecated_appPhotoLibrary;
     v10 = v8;
     [v8 performChanges:v12 completionHandler:v9];
 
@@ -192,16 +192,16 @@ void __96__PXPhotoKitAssetCollectionContentSyndicationSaveToLibraryActionPerform
   [WeakRetained _handleCompletionForExpectedUUIDs:*(*(*(a1 + 48) + 8) + 40) photoLibrary:*(a1 + 32) success:*(a1 + 64) error:*(a1 + 40)];
 }
 
-- (void)_handleCompletionForExpectedUUIDs:(id)a3 photoLibrary:(id)a4 success:(BOOL)a5 error:(id)a6
+- (void)_handleCompletionForExpectedUUIDs:(id)ds photoLibrary:(id)library success:(BOOL)success error:(id)error
 {
-  v7 = a5;
+  successCopy = success;
   v45 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
+  dsCopy = ds;
+  libraryCopy = library;
+  errorCopy = error;
   v12 = PLSyndicationUIGetLog();
   v13 = v12;
-  if (v7)
+  if (successCopy)
   {
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
@@ -210,15 +210,15 @@ void __96__PXPhotoKitAssetCollectionContentSyndicationSaveToLibraryActionPerform
     }
 
     v14 = MEMORY[0x1E6978630];
-    v32 = v10;
-    v15 = [v10 librarySpecificFetchOptions];
-    v33 = v9;
-    v16 = [v14 fetchAssetsWithUUIDs:v9 options:v15];
+    v32 = libraryCopy;
+    librarySpecificFetchOptions = [libraryCopy librarySpecificFetchOptions];
+    v33 = dsCopy;
+    v16 = [v14 fetchAssetsWithUUIDs:dsCopy options:librarySpecificFetchOptions];
     savedAssetsFetchResult = self->_savedAssetsFetchResult;
     self->_savedAssetsFetchResult = v16;
 
-    v31 = v11;
-    [(PXActionPerformer *)self completeBackgroundTaskWithSuccess:1 error:v11];
+    v31 = errorCopy;
+    [(PXActionPerformer *)self completeBackgroundTaskWithSuccess:1 error:errorCopy];
     v38 = 0u;
     v39 = 0u;
     v36 = 0u;
@@ -282,9 +282,9 @@ LABEL_6:
       }
     }
 
-    v10 = v32;
-    v9 = v33;
-    v11 = v31;
+    libraryCopy = v32;
+    dsCopy = v33;
+    errorCopy = v31;
   }
 
   else
@@ -292,11 +292,11 @@ LABEL_6:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v41 = v11;
+      v41 = errorCopy;
       _os_log_impl(&dword_1A3C1C000, v13, OS_LOG_TYPE_ERROR, "AssetCollectionContentSyndicationSaveToLibraryAction: Failed to save all unsaved assets. Error: %@", buf, 0xCu);
     }
 
-    [(PXActionPerformer *)self completeBackgroundTaskWithSuccess:0 error:v11];
+    [(PXActionPerformer *)self completeBackgroundTaskWithSuccess:0 error:errorCopy];
   }
 }
 
@@ -304,26 +304,26 @@ LABEL_6:
 {
   v17 = *MEMORY[0x1E69E9840];
   v3 = +[PXContentSyndicationSettings sharedInstance];
-  v4 = [v3 preventActualSaveToLibraryBehavior];
+  preventActualSaveToLibraryBehavior = [v3 preventActualSaveToLibraryBehavior];
 
-  if (v4)
+  if (preventActualSaveToLibraryBehavior)
   {
-    v5 = [MEMORY[0x1E69DC650] alertControllerWithTitle:@"Save to Library Prevented" message:@"Saving to Library is currently disabled via our internal settings (for debugging)." preferredStyle:1];
+    assetCollection = [MEMORY[0x1E69DC650] alertControllerWithTitle:@"Save to Library Prevented" message:@"Saving to Library is currently disabled via our internal settings (for debugging)." preferredStyle:1];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __101__PXPhotoKitAssetCollectionContentSyndicationSaveToLibraryActionPerformer_performUserInteractionTask__block_invoke;
     v14[3] = &unk_1E7749600;
     v14[4] = self;
     v6 = [MEMORY[0x1E69DC648] actionWithTitle:@"OK" style:0 handler:v14];
-    [v5 addAction:v6];
+    [assetCollection addAction:v6];
 
-    [(PXActionPerformer *)self presentViewController:v5];
+    [(PXActionPerformer *)self presentViewController:assetCollection];
   }
 
   else
   {
-    v5 = [(PXAssetCollectionActionPerformer *)self assetCollection];
-    v7 = PXContentSyndicationUnsavedSyndicatedAssetsInAssetCollection(v5);
+    assetCollection = [(PXAssetCollectionActionPerformer *)self assetCollection];
+    v7 = PXContentSyndicationUnsavedSyndicatedAssetsInAssetCollection(assetCollection);
     v8 = PLSyndicationUIGetLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
@@ -333,7 +333,7 @@ LABEL_6:
     }
 
     v9 = PXCreateDefaultAssetSharingHelper(self);
-    v10 = [v7 fetchedObjects];
+    fetchedObjects = [v7 fetchedObjects];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __101__PXPhotoKitAssetCollectionContentSyndicationSaveToLibraryActionPerformer_performUserInteractionTask__block_invoke_226;
@@ -341,7 +341,7 @@ LABEL_6:
     v12[4] = self;
     v13 = v7;
     v11 = v7;
-    [v9 ensureLocalAssetsForSyndicationSave:v10 completion:v12];
+    [v9 ensureLocalAssetsForSyndicationSave:fetchedObjects completion:v12];
   }
 }
 

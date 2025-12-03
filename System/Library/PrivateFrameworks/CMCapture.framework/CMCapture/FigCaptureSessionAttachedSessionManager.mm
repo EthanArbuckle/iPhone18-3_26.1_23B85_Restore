@@ -3,19 +3,19 @@
 - (FigCaptureSessionAttachedSessionManager)init;
 - (uint64_t)_generateStateLog;
 - (uint64_t)_stopAttachedSessionsAndRemoveHostSession:(uint64_t)result;
-- (uint64_t)attachToRunningSession:(uint64_t)a1;
+- (uint64_t)attachToRunningSession:(uint64_t)session;
 - (void)_startNextSession;
-- (void)sessionDidReconfigure:(uint64_t)a1;
-- (void)sessionDidStartRunning:(char)a3 sessionContainsVideoSource:(char)a4 sessionContainsCameraSource:;
-- (void)sessionDidStopRunning:(char)a3 captureDeviceStolen:(char)a4 sessionIsEligibleToAttach:(char)a5 clientStartedSession:;
-- (void)sessionInvalidated:(uint64_t)a1;
+- (void)sessionDidReconfigure:(uint64_t)reconfigure;
+- (void)sessionDidStartRunning:(char)running sessionContainsVideoSource:(char)source sessionContainsCameraSource:;
+- (void)sessionDidStopRunning:(char)running captureDeviceStolen:(char)stolen sessionIsEligibleToAttach:(char)attach clientStartedSession:;
+- (void)sessionInvalidated:(uint64_t)invalidated;
 @end
 
 @implementation FigCaptureSessionAttachedSessionManager
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     FigNote_AllowInternalDefaultLogs();
     fig_note_initialize_category_with_default_work_cf();
@@ -132,22 +132,22 @@ void __62__FigCaptureSessionAttachedSessionManager_sessionInvalidated___block_in
   }
 }
 
-- (uint64_t)attachToRunningSession:(uint64_t)a1
+- (uint64_t)attachToRunningSession:(uint64_t)session
 {
-  if (a1)
+  if (session)
   {
     v6 = 0;
     v7 = &v6;
     v8 = 0x2020000000;
     v9 = 0;
-    v2 = *(a1 + 64);
+    v2 = *(session + 64);
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __66__FigCaptureSessionAttachedSessionManager_attachToRunningSession___block_invoke;
     block[3] = &unk_1E79973C8;
     block[5] = &v6;
     block[6] = a2;
-    block[4] = a1;
+    block[4] = session;
     dispatch_sync(v2, block);
     v3 = *(v7 + 24);
     _Block_object_dispose(&v6, 8);
@@ -281,9 +281,9 @@ LABEL_27:
   return [(FigCaptureSessionAttachedSessionManager *)a1[4] _generateStateLog];
 }
 
-- (void)sessionDidStartRunning:(char)a3 sessionContainsVideoSource:(char)a4 sessionContainsCameraSource:
+- (void)sessionDidStartRunning:(char)running sessionContainsVideoSource:(char)source sessionContainsCameraSource:
 {
-  if (a1)
+  if (self)
   {
     if (cf)
     {
@@ -294,10 +294,10 @@ LABEL_27:
     v10 = 3221225472;
     v11 = __121__FigCaptureSessionAttachedSessionManager_sessionDidStartRunning_sessionContainsVideoSource_sessionContainsCameraSource___block_invoke;
     v12 = &unk_1E7997620;
-    v13 = a1;
+    selfCopy = self;
     v14 = cf;
-    v15 = a3;
-    v16 = a4;
+    runningCopy = running;
+    sourceCopy = source;
     fig_dispatch_async_autoreleasepool(v8, v9);
   }
 }
@@ -511,13 +511,13 @@ void __121__FigCaptureSessionAttachedSessionManager_sessionDidStartRunning_sessi
 
 - (void)_startNextSession
 {
-  if (a1)
+  if (self)
   {
-    if (!*(a1 + 16))
+    if (!*(self + 16))
     {
-      v2 = [*(a1 + 48) firstObject];
-      *(a1 + 16) = v2;
-      if (v2)
+      firstObject = [*(self + 48) firstObject];
+      *(self + 16) = firstObject;
+      if (firstObject)
       {
         if (dword_1EB58E660)
         {
@@ -532,19 +532,19 @@ void __121__FigCaptureSessionAttachedSessionManager_sessionDidStartRunning_sessi
 
           OUTLINED_FUNCTION_2_4();
           OUTLINED_FUNCTION_17_8();
-          v2 = *(a1 + 16);
+          firstObject = *(self + 16);
         }
 
-        FigCaptureSessionStartDetachedSession(v2);
-        *(a1 + 24) = *(a1 + 72);
+        FigCaptureSessionStartDetachedSession(firstObject);
+        *(self + 24) = *(self + 72);
       }
     }
   }
 }
 
-- (void)sessionDidStopRunning:(char)a3 captureDeviceStolen:(char)a4 sessionIsEligibleToAttach:(char)a5 clientStartedSession:
+- (void)sessionDidStopRunning:(char)running captureDeviceStolen:(char)stolen sessionIsEligibleToAttach:(char)attach clientStartedSession:
 {
-  if (a1)
+  if (self)
   {
     if (cf)
     {
@@ -555,11 +555,11 @@ void __121__FigCaptureSessionAttachedSessionManager_sessionDidStartRunning_sessi
     v12 = 3221225472;
     v13 = __132__FigCaptureSessionAttachedSessionManager_sessionDidStopRunning_captureDeviceStolen_sessionIsEligibleToAttach_clientStartedSession___block_invoke;
     v14 = &unk_1E7997648;
-    v15 = a1;
+    selfCopy = self;
     v16 = cf;
-    v17 = a3;
-    v18 = a4;
-    v19 = a5;
+    runningCopy = running;
+    stolenCopy = stolen;
+    attachCopy = attach;
     fig_dispatch_async_autoreleasepool(v10, v11);
   }
 }
@@ -787,9 +787,9 @@ LABEL_43:
   }
 }
 
-- (void)sessionDidReconfigure:(uint64_t)a1
+- (void)sessionDidReconfigure:(uint64_t)reconfigure
 {
-  if (a1)
+  if (reconfigure)
   {
     if (cf)
     {
@@ -800,15 +800,15 @@ LABEL_43:
     v5[1] = 3221225472;
     v5[2] = __65__FigCaptureSessionAttachedSessionManager_sessionDidReconfigure___block_invoke;
     v5[3] = &unk_1E7990178;
-    v5[4] = a1;
+    v5[4] = reconfigure;
     v5[5] = cf;
     fig_dispatch_async_autoreleasepool(v4, v5);
   }
 }
 
-- (void)sessionInvalidated:(uint64_t)a1
+- (void)sessionInvalidated:(uint64_t)invalidated
 {
-  if (a1)
+  if (invalidated)
   {
     if (cf)
     {
@@ -819,7 +819,7 @@ LABEL_43:
     v5[1] = 3221225472;
     v5[2] = __62__FigCaptureSessionAttachedSessionManager_sessionInvalidated___block_invoke;
     v5[3] = &unk_1E7990178;
-    v5[4] = a1;
+    v5[4] = invalidated;
     v5[5] = cf;
     fig_dispatch_async_autoreleasepool(v4, v5);
   }

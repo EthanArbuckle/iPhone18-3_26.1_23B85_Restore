@@ -1,28 +1,28 @@
 @interface _SFPBCommandReference
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBCommandReference)initWithDictionary:(id)a3;
-- (_SFPBCommandReference)initWithFacade:(id)a3;
-- (_SFPBCommandReference)initWithJSON:(id)a3;
+- (_SFPBCommandReference)initWithDictionary:(id)dictionary;
+- (_SFPBCommandReference)initWithFacade:(id)facade;
+- (_SFPBCommandReference)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
-- (void)setReferenceIdentifier:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setReferenceIdentifier:(id)identifier;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBCommandReference
 
-- (_SFPBCommandReference)initWithFacade:(id)a3
+- (_SFPBCommandReference)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBCommandReference *)self init];
   if (v5)
   {
-    v6 = [v4 referenceIdentifier];
+    referenceIdentifier = [facadeCopy referenceIdentifier];
 
-    if (v6)
+    if (referenceIdentifier)
     {
-      v7 = [v4 referenceIdentifier];
-      [(_SFPBCommandReference *)v5 setReferenceIdentifier:v7];
+      referenceIdentifier2 = [facadeCopy referenceIdentifier];
+      [(_SFPBCommandReference *)v5 setReferenceIdentifier:referenceIdentifier2];
     }
 
     v8 = v5;
@@ -31,15 +31,15 @@
   return v5;
 }
 
-- (_SFPBCommandReference)initWithDictionary:(id)a3
+- (_SFPBCommandReference)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = _SFPBCommandReference;
   v5 = [(_SFPBCommandReference *)&v10 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"referenceIdentifier"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"referenceIdentifier"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -53,30 +53,30 @@
   return v5;
 }
 
-- (_SFPBCommandReference)initWithJSON:(id)a3
+- (_SFPBCommandReference)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBCommandReference *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBCommandReference *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBCommandReference *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -89,29 +89,29 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_referenceIdentifier)
   {
-    v4 = [(_SFPBCommandReference *)self referenceIdentifier];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"referenceIdentifier"];
+    referenceIdentifier = [(_SFPBCommandReference *)self referenceIdentifier];
+    v5 = [referenceIdentifier copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"referenceIdentifier"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(_SFPBCommandReference *)self referenceIdentifier];
-    v6 = [v4 referenceIdentifier];
-    v7 = v6;
-    if ((v5 != 0) != (v6 == 0))
+    referenceIdentifier = [(_SFPBCommandReference *)self referenceIdentifier];
+    referenceIdentifier2 = [equalCopy referenceIdentifier];
+    v7 = referenceIdentifier2;
+    if ((referenceIdentifier != 0) != (referenceIdentifier2 == 0))
     {
-      v8 = [(_SFPBCommandReference *)self referenceIdentifier];
-      if (!v8)
+      referenceIdentifier3 = [(_SFPBCommandReference *)self referenceIdentifier];
+      if (!referenceIdentifier3)
       {
 
 LABEL_10:
@@ -119,10 +119,10 @@ LABEL_10:
         goto LABEL_8;
       }
 
-      v9 = v8;
-      v10 = [(_SFPBCommandReference *)self referenceIdentifier];
-      v11 = [v4 referenceIdentifier];
-      v12 = [v10 isEqual:v11];
+      v9 = referenceIdentifier3;
+      referenceIdentifier4 = [(_SFPBCommandReference *)self referenceIdentifier];
+      referenceIdentifier5 = [equalCopy referenceIdentifier];
+      v12 = [referenceIdentifier4 isEqual:referenceIdentifier5];
 
       if (v12)
       {
@@ -141,19 +141,19 @@ LABEL_8:
   return v13;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
-  v4 = [(_SFPBCommandReference *)self referenceIdentifier];
-  if (v4)
+  toCopy = to;
+  referenceIdentifier = [(_SFPBCommandReference *)self referenceIdentifier];
+  if (referenceIdentifier)
   {
     PBDataWriterWriteStringField();
   }
 }
 
-- (void)setReferenceIdentifier:(id)a3
+- (void)setReferenceIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   referenceIdentifier = self->_referenceIdentifier;
   self->_referenceIdentifier = v4;
 

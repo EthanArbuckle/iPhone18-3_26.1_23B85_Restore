@@ -1,16 +1,16 @@
 @interface SBSADefaultIndicatorAppearanceStateContextProvider
-- (id)preferencesFromContext:(id)a3;
+- (id)preferencesFromContext:(id)context;
 @end
 
 @implementation SBSADefaultIndicatorAppearanceStateContextProvider
 
-- (id)preferencesFromContext:(id)a3
+- (id)preferencesFromContext:(id)context
 {
-  v5 = a3;
-  if (v5)
+  contextCopy = context;
+  if (contextCopy)
   {
     v6 = objc_opt_self();
-    v7 = v5;
+    v7 = contextCopy;
     if (v6)
     {
       if (objc_opt_isKindOfClass())
@@ -42,11 +42,11 @@
     v9 = 0;
   }
 
-  v10 = [v9 preferences];
-  if (v10)
+  preferences = [v9 preferences];
+  if (preferences)
   {
     v11 = objc_opt_self();
-    v12 = v10;
+    v12 = preferences;
     if (v11)
     {
       if (objc_opt_isKindOfClass())
@@ -78,12 +78,12 @@
     v14 = 0;
   }
 
-  v15 = [v14 maintainedPreferences];
-  v16 = [v15 indicatorAppearanceStateContext];
-  v17 = v16;
-  if (v16)
+  maintainedPreferences = [v14 maintainedPreferences];
+  indicatorAppearanceStateContext = [maintainedPreferences indicatorAppearanceStateContext];
+  v17 = indicatorAppearanceStateContext;
+  if (indicatorAppearanceStateContext)
   {
-    v18 = [v16 isDisappeared] ^ 1;
+    v18 = [indicatorAppearanceStateContext isDisappeared] ^ 1;
   }
 
   else
@@ -93,9 +93,9 @@
 
   v19 = [(SBSABasePreferencesProvider *)self firstChildPreferenceProviderOfClass:objc_opt_class()];
 
-  v20 = [v9 indicatorElementContext];
-  v21 = v20;
-  if (v20)
+  indicatorElementContext = [v9 indicatorElementContext];
+  v21 = indicatorElementContext;
+  if (indicatorElementContext)
   {
     if (v17)
     {
@@ -108,8 +108,8 @@
     v37[3] = &unk_2783AD750;
     v39 = a2;
     v37[4] = self;
-    v38 = v20;
-    v22 = [v15 copyWithBlock:v37];
+    v38 = indicatorElementContext;
+    v22 = [maintainedPreferences copyWithBlock:v37];
 
     v23 = SBLogSystemAperturePreferencesStackIndicator();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
@@ -139,7 +139,7 @@
     v36[3] = &unk_2783A93E8;
     v36[4] = self;
     v36[5] = a2;
-    v22 = [v15 copyWithBlock:v36];
+    v22 = [maintainedPreferences copyWithBlock:v36];
 
     v24 = SBLogSystemAperturePreferencesStackIndicator();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
@@ -149,11 +149,11 @@
 
 LABEL_33:
 
-    v15 = v22;
+    maintainedPreferences = v22;
   }
 
 LABEL_34:
-  v26 = [v14 maintainedPreferences];
+  maintainedPreferences2 = [v14 maintainedPreferences];
   v27 = BSEqualObjects();
 
   if ((v27 & 1) == 0)
@@ -164,7 +164,7 @@ LABEL_34:
     v33[3] = &unk_2783AD750;
     v35 = a2;
     v33[4] = self;
-    v34 = v15;
+    v34 = maintainedPreferences;
     v28 = [v14 copyWithBlock:v33];
 
     v14 = v28;

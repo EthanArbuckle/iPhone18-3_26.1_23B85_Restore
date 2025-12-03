@@ -1,79 +1,79 @@
 @interface CNContactStore
-+ (BOOL)eraseAllDataAtLocationWithName:(id)a3 error:(id *)a4;
-+ (BOOL)eraseAllDataAtURL:(id)a3 error:(id *)a4;
-+ (BOOL)isAccessLimitedForEntityType:(int64_t)a3;
-+ (BOOL)isAccessRestrictedForEntityType:(int64_t)a3;
++ (BOOL)eraseAllDataAtLocationWithName:(id)name error:(id *)error;
++ (BOOL)eraseAllDataAtURL:(id)l error:(id *)error;
++ (BOOL)isAccessLimitedForEntityType:(int64_t)type;
++ (BOOL)isAccessRestrictedForEntityType:(int64_t)type;
 + (BOOL)isSharedNamePhotoEnabled;
-+ (BOOL)isStoreForContactIdentifier:(id)a3;
-+ (BOOL)isXPCDataMapperStoreForFavorites:(id)a3;
++ (BOOL)isStoreForContactIdentifier:(id)identifier;
++ (BOOL)isXPCDataMapperStoreForFavorites:(id)favorites;
 + (CNAuthorizationStatus)authorizationStatusForEntityType:(CNEntityType)entityType;
-+ (CNContactStore)storeWithDelegateInfo:(id)a3;
-+ (CNContactStore)storeWithEnvironment:(id)a3 options:(unint64_t)a4;
-+ (CNContactStore)storeWithOptions:(unint64_t)a3;
-+ (Class)storeClassWithIdentifier:(id)a3;
-+ (id)_contactStoreForPublicAddressBook:(void *)a3;
++ (CNContactStore)storeWithDelegateInfo:(id)info;
++ (CNContactStore)storeWithEnvironment:(id)environment options:(unint64_t)options;
++ (CNContactStore)storeWithOptions:(unint64_t)options;
++ (Class)storeClassWithIdentifier:(id)identifier;
++ (id)_contactStoreForPublicAddressBook:(void *)book;
 + (id)authorizationForCurrentProcess;
-+ (id)contactIdentifierFromInternalIdentifier:(id)a3;
-+ (id)internalIdentifierFromContactIdentifier:(id)a3;
-+ (id)standardLabelsForPropertyWithKey:(id)a3 options:(unint64_t)a4;
-+ (id)storeForFamilyMember:(id)a3;
++ (id)contactIdentifierFromInternalIdentifier:(id)identifier;
++ (id)internalIdentifierFromContactIdentifier:(id)identifier;
++ (id)standardLabelsForPropertyWithKey:(id)key options:(unint64_t)options;
++ (id)storeForFamilyMember:(id)member;
 + (id)storeIdentifier;
-+ (id)storeIdentifierFromContactIdentifier:(id)a3;
-+ (int64_t)authorizationStatusForEntityType:(int64_t)a3 assumedIdentity:(id)a4;
++ (id)storeIdentifierFromContactIdentifier:(id)identifier;
++ (int64_t)authorizationStatusForEntityType:(int64_t)type assumedIdentity:(id)identity;
 + (void)initialize;
-- (BOOL)clearChangeHistoryForClientIdentifier:(id)a3 toChangeAnchor:(id)a4 error:(id *)a5;
-- (BOOL)enumerateContactsAndMatchInfoWithFetchRequest:(id)a3 error:(id *)a4 usingBlock:(id)a5;
+- (BOOL)clearChangeHistoryForClientIdentifier:(id)identifier toChangeAnchor:(id)anchor error:(id *)error;
+- (BOOL)enumerateContactsAndMatchInfoWithFetchRequest:(id)request error:(id *)error usingBlock:(id)block;
 - (BOOL)enumerateContactsWithFetchRequest:(CNContactFetchRequest *)fetchRequest error:(NSError *)error usingBlock:(void *)block;
-- (BOOL)enumerateNonUnifiedContactsWithFetchRequest:(id)a3 error:(id *)a4 usingBlock:(id)a5;
+- (BOOL)enumerateNonUnifiedContactsWithFetchRequest:(id)request error:(id *)error usingBlock:(id)block;
 - (BOOL)hasAccountFirstSyncCompleted;
-- (BOOL)resetSortDataIfNeededWithError:(id *)a3;
-- (BOOL)setDefaultAccountIdentifier:(id)a3 error:(id *)a4;
-- (BOOL)setDefaultContainer:(id)a3 forAccount:(id)a4 error:(id *)a5;
-- (BOOL)setMeContact:(id)a3 error:(id *)a4;
-- (BOOL)setMeContact:(id)a3 forContainer:(id)a4 error:(id *)a5;
-- (BOOL)supportsSaveRequest:(id)a3;
+- (BOOL)resetSortDataIfNeededWithError:(id *)error;
+- (BOOL)setDefaultAccountIdentifier:(id)identifier error:(id *)error;
+- (BOOL)setDefaultContainer:(id)container forAccount:(id)account error:(id *)error;
+- (BOOL)setMeContact:(id)contact error:(id *)error;
+- (BOOL)setMeContact:(id)contact forContainer:(id)container error:(id *)error;
+- (BOOL)supportsSaveRequest:(id)request;
 - (CNContact)unifiedContactWithIdentifier:(NSString *)identifier keysToFetch:(NSArray *)keys error:(NSError *)error;
 - (CNContact)unifiedMeContactWithKeysToFetch:(NSArray *)keys error:(NSError *)error;
 - (CNContactStore)init;
-- (CNContactStore)initWithConfiguration:(id)a3;
-- (CNContactStore)initWithEnvironment:(id)a3 options:(unint64_t)a4 managedConfiguration:(id)a5;
+- (CNContactStore)initWithConfiguration:(id)configuration;
+- (CNContactStore)initWithEnvironment:(id)environment options:(unint64_t)options managedConfiguration:(id)configuration;
 - (CNFetchResult)enumeratorForChangeHistoryFetchRequest:(CNChangeHistoryFetchRequest *)request error:(NSError *)error;
 - (CNFetchResult)enumeratorForContactFetchRequest:(CNContactFetchRequest *)request error:(NSError *)error;
 - (CNResult)currentHistoryAnchor;
 - (CNiOSAddressBook)addressBook;
-- (id)_contactFromPersonID:(int)a3 keysToFetch:(id)a4;
-- (id)_contactFromPublicABPerson:(void *)a3 keysToFetch:(id)a4;
-- (id)_executeFetchRequestsWithInfos:(id)a3 unifyResults:(BOOL)a4 keysToFetch:(id)a5 error:(id *)a6;
-- (id)_fetchRequestInfosForEmailOrPhoneForContact:(id)a3 additionalRequiredKeys:(id)a4;
-- (id)_ios_meContactIdentifierWithError:(id *)a3;
-- (id)_labeledValueFromPublicMultiValueIdentifier:(int)a3 contact:(id)a4 key:(id)a5;
-- (id)_unifiedMeContactWithKeysToFetch:(uint64_t)a3 error:;
-- (id)authorizedKeysForContactKeys:(id)a3;
-- (id)contactFromPerson:(void *)a3 mutable:(BOOL)a4;
-- (id)contactFromPersonID:(int)a3;
-- (id)contactIdentifierFromPersonID:(int)a3;
-- (id)contactWithMatchingDictionary:(id)a3 keysToFetch:(id)a4;
-- (id)contactsMatchingPropertiesOfContact:(id)a3 unifyResults:(BOOL)a4 keysToFetch:(id)a5 ignoreAvailableKeys:(BOOL)a6 error:(id *)a7;
-- (id)countForFetchRequest:(id)a3 error:(id *)a4;
+- (id)_contactFromPersonID:(int)d keysToFetch:(id)fetch;
+- (id)_contactFromPublicABPerson:(void *)person keysToFetch:(id)fetch;
+- (id)_executeFetchRequestsWithInfos:(id)infos unifyResults:(BOOL)results keysToFetch:(id)fetch error:(id *)error;
+- (id)_fetchRequestInfosForEmailOrPhoneForContact:(id)contact additionalRequiredKeys:(id)keys;
+- (id)_ios_meContactIdentifierWithError:(id *)error;
+- (id)_labeledValueFromPublicMultiValueIdentifier:(int)identifier contact:(id)contact key:(id)key;
+- (id)_unifiedMeContactWithKeysToFetch:(uint64_t)fetch error:;
+- (id)authorizedKeysForContactKeys:(id)keys;
+- (id)contactFromPerson:(void *)person mutable:(BOOL)mutable;
+- (id)contactFromPersonID:(int)d;
+- (id)contactIdentifierFromPersonID:(int)d;
+- (id)contactWithMatchingDictionary:(id)dictionary keysToFetch:(id)fetch;
+- (id)contactsMatchingPropertiesOfContact:(id)contact unifyResults:(BOOL)results keysToFetch:(id)fetch ignoreAvailableKeys:(BOOL)keys error:(id *)error;
+- (id)countForFetchRequest:(id)request error:(id *)error;
 - (id)descriptorForRequiredKeysForMatchingDictionary;
 - (id)descriptorForRequiredKeysForUserActivityUserInfo;
-- (id)executeFetchRequest:(id)a3 completion:(id)a4;
-- (id)executeFetchRequest:(id)a3 error:(id *)a4;
-- (id)executeFetchRequestAndCountResults:(void *)a1;
-- (id)getLimitedAccessLastSyncSequenceNumber:(id *)a3;
-- (id)labeledValueFromMultiValueIdentifier:(int)a3 contact:(id)a4 key:(id)a5;
+- (id)executeFetchRequest:(id)request completion:(id)completion;
+- (id)executeFetchRequest:(id)request error:(id *)error;
+- (id)executeFetchRequestAndCountResults:(void *)results;
+- (id)getLimitedAccessLastSyncSequenceNumber:(id *)number;
+- (id)labeledValueFromMultiValueIdentifier:(int)identifier contact:(id)contact key:(id)key;
 - (id)mainContactStore;
-- (id)policyForContainerWithIdentifier:(id)a3 error:(id *)a4;
-- (id)requestAccessForEntityType:(int64_t)a3;
-- (id)sectionListOffsetsForSortOrder:(int64_t)a3 error:(id *)a4;
-- (id)unifiedMeContactMatchingEmailAddress:(id)a3 keysToFetch:(id)a4 error:(id *)a5;
-- (id)unifiedMeContactMatchingEmailAddresses:(id)a3 keysToFetch:(id)a4 error:(id *)a5;
-- (int)_publicMultiValueIdentifierFromLabeledValue:(id)a3;
-- (void)_publicABPersonFromContact:(id)a3 publicAddressBook:(const void *)a4;
-- (void)personFromContact:(id)a3;
-- (void)pool_enumerateContactsWithFetchRequest:(void *)a3 error:(void *)a4 usingBlock:;
+- (id)policyForContainerWithIdentifier:(id)identifier error:(id *)error;
+- (id)requestAccessForEntityType:(int64_t)type;
+- (id)sectionListOffsetsForSortOrder:(int64_t)order error:(id *)error;
+- (id)unifiedMeContactMatchingEmailAddress:(id)address keysToFetch:(id)fetch error:(id *)error;
+- (id)unifiedMeContactMatchingEmailAddresses:(id)addresses keysToFetch:(id)fetch error:(id *)error;
+- (int)_publicMultiValueIdentifierFromLabeledValue:(id)value;
+- (void)_publicABPersonFromContact:(id)contact publicAddressBook:(const void *)book;
+- (void)personFromContact:(id)contact;
+- (void)pool_enumerateContactsWithFetchRequest:(void *)request error:(void *)error usingBlock:;
 - (void)requestAccessForEntityType:(CNEntityType)entityType completionHandler:(void *)completionHandler;
-- (void)requestAuthorization:(int64_t)a3 entityType:(int64_t)a4 completionHandler:(id)a5;
+- (void)requestAuthorization:(int64_t)authorization entityType:(int64_t)type completionHandler:(id)handler;
 @end
 
 @implementation CNContactStore
@@ -134,45 +134,45 @@ uint64_t __48__CNContactStore_authorizationForCurrentProcess__block_invoke()
 
   else
   {
-    v4 = NSStringFromClass(a1);
+    v4 = NSStringFromClass(self);
   }
 
   return v4;
 }
 
-+ (id)storeForFamilyMember:(id)a3
++ (id)storeForFamilyMember:(id)member
 {
   v4 = MEMORY[0x1E6996688];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithFamilyMember:v5];
+  memberCopy = member;
+  v6 = [[v4 alloc] initWithFamilyMember:memberCopy];
 
-  v7 = [a1 storeWithDelegateInfo:v6];
+  v7 = [self storeWithDelegateInfo:v6];
 
   return v7;
 }
 
-+ (CNContactStore)storeWithDelegateInfo:(id)a3
++ (CNContactStore)storeWithDelegateInfo:(id)info
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  infoCopy = info;
   v5 = +[CNContactsEnvironment currentEnvironment];
-  v11[0] = v4;
+  v11[0] = infoCopy;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
   v7 = [v5 copyWithDelegateInfos:v6];
 
   v8 = objc_alloc_init(CNContactStoreConfiguration);
   [(CNContactStoreConfiguration *)v8 setEnvironment:v7];
-  v9 = [[a1 alloc] initWithConfiguration:v8];
+  v9 = [[self alloc] initWithConfiguration:v8];
 
   return v9;
 }
 
-+ (BOOL)eraseAllDataAtLocationWithName:(id)a3 error:(id *)a4
++ (BOOL)eraseAllDataAtLocationWithName:(id)name error:(id *)error
 {
-  v6 = [CNContactsEnvironment baseURLWithDataLocationName:a3];
+  v6 = [CNContactsEnvironment baseURLWithDataLocationName:name];
   if (v6)
   {
-    v7 = [a1 eraseAllDataAtURL:v6 error:a4];
+    v7 = [self eraseAllDataAtURL:v6 error:error];
   }
 
   else
@@ -183,13 +183,13 @@ uint64_t __48__CNContactStore_authorizationForCurrentProcess__block_invoke()
   return v7;
 }
 
-+ (BOOL)eraseAllDataAtURL:(id)a3 error:(id *)a4
++ (BOOL)eraseAllDataAtURL:(id)l error:(id *)error
 {
   v5 = MEMORY[0x1E696AC08];
-  v6 = a3;
+  lCopy = l;
   v7 = objc_alloc_init(v5);
   v13 = 0;
-  v8 = [v7 removeItemAtURL:v6 error:&v13];
+  v8 = [v7 removeItemAtURL:lCopy error:&v13];
 
   v9 = v13;
   if ((v8 & 1) == 0)
@@ -205,32 +205,32 @@ uint64_t __48__CNContactStore_authorizationForCurrentProcess__block_invoke()
 
   v10 = 1;
 LABEL_6:
-  v11 = [MEMORY[0x1E6996708] ifResultIsNo:v10 setOutputError:a4 toError:v9];
+  v11 = [MEMORY[0x1E6996708] ifResultIsNo:v10 setOutputError:error toError:v9];
 
   return v11;
 }
 
-+ (CNContactStore)storeWithOptions:(unint64_t)a3
++ (CNContactStore)storeWithOptions:(unint64_t)options
 {
   v5 = +[CNContactsEnvironment currentEnvironment];
-  v6 = [a1 storeWithEnvironment:v5 options:a3];
+  v6 = [self storeWithEnvironment:v5 options:options];
 
   return v6;
 }
 
-+ (CNContactStore)storeWithEnvironment:(id)a3 options:(unint64_t)a4
++ (CNContactStore)storeWithEnvironment:(id)environment options:(unint64_t)options
 {
-  v6 = a3;
-  v7 = [[a1 alloc] initWithEnvironment:v6 options:a4];
+  environmentCopy = environment;
+  v7 = [[self alloc] initWithEnvironment:environmentCopy options:options];
 
   return v7;
 }
 
-+ (Class)storeClassWithIdentifier:(id)a3
++ (Class)storeClassWithIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
-    NSClassFromString(a3);
+    NSClassFromString(identifier);
   }
 
   else
@@ -242,37 +242,37 @@ LABEL_6:
   return v3;
 }
 
-+ (id)contactIdentifierFromInternalIdentifier:(id)a3
++ (id)contactIdentifierFromInternalIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (!v4)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
-    v4 = +[CNContact makeIdentifierString];
+    identifierCopy = +[CNContact makeIdentifierString];
   }
 
-  v5 = [a1 storeIdentifier];
-  if (v5)
+  storeIdentifier = [self storeIdentifier];
+  if (storeIdentifier)
   {
-    v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@%@", v5, @"://", v4];
+    identifierCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@%@", storeIdentifier, @"://", identifierCopy];
   }
 
   else
   {
-    v6 = v4;
+    identifierCopy = identifierCopy;
   }
 
-  v7 = v6;
+  v7 = identifierCopy;
 
   return v7;
 }
 
-+ (BOOL)isStoreForContactIdentifier:(id)a3
++ (BOOL)isStoreForContactIdentifier:(id)identifier
 {
-  v4 = [a1 storeIdentifierFromContactIdentifier:a3];
+  v4 = [self storeIdentifierFromContactIdentifier:identifier];
   if (v4)
   {
-    v5 = [a1 storeIdentifier];
-    v6 = [v4 isEqualToString:v5];
+    storeIdentifier = [self storeIdentifier];
+    v6 = [v4 isEqualToString:storeIdentifier];
   }
 
   else
@@ -283,10 +283,10 @@ LABEL_6:
   return v6;
 }
 
-+ (id)storeIdentifierFromContactIdentifier:(id)a3
++ (id)storeIdentifierFromContactIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = [v3 rangeOfString:@"://"];
+  identifierCopy = identifier;
+  v4 = [identifierCopy rangeOfString:@"://"];
   if (v4 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v5 = 0;
@@ -294,24 +294,24 @@ LABEL_6:
 
   else
   {
-    v5 = [v3 substringToIndex:v4];
+    v5 = [identifierCopy substringToIndex:v4];
   }
 
   return v5;
 }
 
-+ (id)internalIdentifierFromContactIdentifier:(id)a3
++ (id)internalIdentifierFromContactIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = [v3 rangeOfString:@"://"];
+  identifierCopy = identifier;
+  v4 = [identifierCopy rangeOfString:@"://"];
   if (v4 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v6 = v3;
+    v6 = identifierCopy;
   }
 
   else
   {
-    v6 = [v3 substringFromIndex:v4 + v5];
+    v6 = [identifierCopy substringFromIndex:v4 + v5];
   }
 
   v7 = v6;
@@ -321,39 +321,39 @@ LABEL_6:
 
 + (BOOL)isSharedNamePhotoEnabled
 {
-  v2 = [MEMORY[0x1E69966E8] currentEnvironment];
-  v3 = [v2 featureFlags];
-  v4 = [v3 isFeatureEnabled:25];
+  currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+  featureFlags = [currentEnvironment featureFlags];
+  v4 = [featureFlags isFeatureEnabled:25];
 
   return v4;
 }
 
-- (CNContactStore)initWithEnvironment:(id)a3 options:(unint64_t)a4 managedConfiguration:(id)a5
+- (CNContactStore)initWithEnvironment:(id)environment options:(unint64_t)options managedConfiguration:(id)configuration
 {
-  v8 = a5;
-  v9 = a3;
+  configurationCopy = configuration;
+  environmentCopy = environment;
   v10 = objc_alloc_init(CNContactStoreConfiguration);
-  [(CNContactStoreConfiguration *)v10 setIncludeLocalContacts:a4 & 1];
-  [(CNContactStoreConfiguration *)v10 setIncludeSuggestedContacts:(a4 >> 1) & 1];
-  [(CNContactStoreConfiguration *)v10 setIncludeDonatedContacts:(a4 >> 2) & 1];
-  [(CNContactStoreConfiguration *)v10 setIncludeIncludeManagedAppleIDs:(a4 >> 3) & 1];
-  [(CNContactStoreConfiguration *)v10 setIncludeAcceptedIntroductions:(a4 >> 5) & 1];
-  [(CNContactStoreConfiguration *)v10 setUseInProcessMapperExclusively:(a4 >> 4) & 1];
-  [(CNContactStoreConfiguration *)v10 setEnvironment:v9];
+  [(CNContactStoreConfiguration *)v10 setIncludeLocalContacts:options & 1];
+  [(CNContactStoreConfiguration *)v10 setIncludeSuggestedContacts:(options >> 1) & 1];
+  [(CNContactStoreConfiguration *)v10 setIncludeDonatedContacts:(options >> 2) & 1];
+  [(CNContactStoreConfiguration *)v10 setIncludeIncludeManagedAppleIDs:(options >> 3) & 1];
+  [(CNContactStoreConfiguration *)v10 setIncludeAcceptedIntroductions:(options >> 5) & 1];
+  [(CNContactStoreConfiguration *)v10 setUseInProcessMapperExclusively:(options >> 4) & 1];
+  [(CNContactStoreConfiguration *)v10 setEnvironment:environmentCopy];
 
-  [(CNContactStoreConfiguration *)v10 setManagedConfiguration:v8];
+  [(CNContactStoreConfiguration *)v10 setManagedConfiguration:configurationCopy];
   v11 = [(CNContactStore *)self initWithConfiguration:v10];
 
   return v11;
 }
 
-- (CNContactStore)initWithConfiguration:(id)a3
+- (CNContactStore)initWithConfiguration:(id)configuration
 {
   v36[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 environment];
+  configurationCopy = configuration;
+  environment = [configurationCopy environment];
 
-  if (!v6)
+  if (!environment)
   {
     v29 = MEMORY[0x1E695DF30];
     v30 = *MEMORY[0x1E695D940];
@@ -366,8 +366,8 @@ LABEL_6:
     objc_exception_throw(v34);
   }
 
-  v7 = [MEMORY[0x1E695DF70] array];
-  if ([v5 includeAcceptedIntroductions])
+  array = [MEMORY[0x1E695DF70] array];
+  if ([configurationCopy includeAcceptedIntroductions])
   {
     v8 = getCRRecentsDomainAcceptedIntroductions();
 
@@ -377,57 +377,57 @@ LABEL_6:
       v10 = getCRRecentsDomainAcceptedIntroductions();
       v36[0] = v10;
       v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v36 count:1];
-      v12 = [(CNCoreRecentsContactStore *)v9 initWithConfiguration:v5 domains:v11];
+      v12 = [(CNCoreRecentsContactStore *)v9 initWithConfiguration:configurationCopy domains:v11];
 
-      [v7 addObject:v12];
+      [array addObject:v12];
     }
   }
 
-  if ([v5 includeSuggestedContacts])
+  if ([configurationCopy includeSuggestedContacts])
   {
     v13 = [CNSuggestedContactStore alloc];
-    v14 = [v5 environment];
-    v15 = [v14 suggestionsService];
-    v16 = [v5 environment];
-    v17 = [v16 siriIntelligenceSettings];
-    v18 = [(CNSuggestedContactStore *)v13 initWithSuggestionsService:v15 siriIntelligenceSettings:v17];
+    environment2 = [configurationCopy environment];
+    suggestionsService = [environment2 suggestionsService];
+    environment3 = [configurationCopy environment];
+    siriIntelligenceSettings = [environment3 siriIntelligenceSettings];
+    v18 = [(CNSuggestedContactStore *)v13 initWithSuggestionsService:suggestionsService siriIntelligenceSettings:siriIntelligenceSettings];
 
-    [v7 addObject:v18];
+    [array addObject:v18];
   }
 
-  if ([v5 includeDonatedContacts])
+  if ([configurationCopy includeDonatedContacts])
   {
-    v19 = [[CNDataMapperConfiguration alloc] initWithContactStoreConfiguration:v5];
+    v19 = [[CNDataMapperConfiguration alloc] initWithContactStoreConfiguration:configurationCopy];
     v20 = [[CNDonationMapper alloc] initWithConfiguration:v19];
     v21 = [[CNDataMapperContactStore alloc] initWithDataMapper:v20 dataMapperConfiguration:v19];
-    [v7 addObject:v21];
+    [array addObject:v21];
   }
 
-  if ([v5 includeIncludeManagedAppleIDs])
+  if ([configurationCopy includeIncludeManagedAppleIDs])
   {
-    v22 = [[CNDataMapperConfiguration alloc] initWithContactStoreConfiguration:v5];
+    v22 = [[CNDataMapperConfiguration alloc] initWithContactStoreConfiguration:configurationCopy];
     v23 = [[CNMAIDMapper alloc] initWithConfiguration:v22];
     v24 = [[CNDataMapperContactStore alloc] initWithDataMapper:v23 dataMapperConfiguration:v22];
-    [v7 addObject:v24];
+    [array addObject:v24];
   }
 
-  if (([v5 includeLocalContacts] & 1) != 0 || !objc_msgSend(v7, "count"))
+  if (([configurationCopy includeLocalContacts] & 1) != 0 || !objc_msgSend(array, "count"))
   {
-    v25 = [[CNDataMapperContactStore alloc] initWithConfiguration:v5];
-    [v7 insertObject:v25 atIndex:0];
+    v25 = [[CNDataMapperContactStore alloc] initWithConfiguration:configurationCopy];
+    [array insertObject:v25 atIndex:0];
   }
 
-  if ([v7 count] == 1 && objc_msgSend(v5, "leaveSingleStoresUnwrapped"))
+  if ([array count] == 1 && objc_msgSend(configurationCopy, "leaveSingleStoresUnwrapped"))
   {
-    v26 = [v7 firstObject];
+    firstObject = [array firstObject];
   }
 
   else
   {
-    v26 = [[CNAggregateContactStore alloc] initWithContactStores:v7 configuration:v5];
+    firstObject = [[CNAggregateContactStore alloc] initWithContactStores:array configuration:configurationCopy];
   }
 
-  p_super = &v26->super;
+  p_super = &firstObject->super;
 
   return p_super;
 }
@@ -465,9 +465,9 @@ LABEL_6:
   [v7 addFailureBlock:v10];
 }
 
-- (id)requestAccessForEntityType:(int64_t)a3
+- (id)requestAccessForEntityType:(int64_t)type
 {
-  v3 = self;
+  selfCopy = self;
   v4 = CNAbstractMethodException();
   objc_exception_throw(v4);
 }
@@ -662,12 +662,12 @@ void __65__CNContactStore_unifiedContactWithIdentifier_keysToFetch_error___block
   *(*(*(a1 + v11) + 8) + 24) = 1;
 }
 
-- (id)_ios_meContactIdentifierWithError:(id *)a3
+- (id)_ios_meContactIdentifierWithError:(id *)error
 {
-  v3 = [(CNContactStore *)self meContactIdentifiers:a3];
-  v4 = [v3 firstObject];
+  v3 = [(CNContactStore *)self meContactIdentifiers:error];
+  firstObject = [v3 firstObject];
 
-  return v4;
+  return firstObject;
 }
 
 - (CNContact)unifiedMeContactWithKeysToFetch:(NSArray *)keys error:(NSError *)error
@@ -716,18 +716,18 @@ void __56__CNContactStore_unifiedMeContactWithKeysToFetch_error___block_invoke(u
   }
 }
 
-- (id)unifiedMeContactMatchingEmailAddresses:(id)a3 keysToFetch:(id)a4 error:(id *)a5
+- (id)unifiedMeContactMatchingEmailAddresses:(id)addresses keysToFetch:(id)fetch error:(id *)error
 {
   v29 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = [(CNContactStore *)self _crossPlatformUnifiedMeContactWithKeysToFetch:a4 error:a5];
+  addressesCopy = addresses;
+  v9 = [(CNContactStore *)self _crossPlatformUnifiedMeContactWithKeysToFetch:fetch error:error];
   v10 = [MEMORY[0x1E695DFA8] set];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v11 = [v9 emailAddresses];
-  v12 = [v11 countByEnumeratingWithState:&v24 objects:v28 count:16];
+  emailAddresses = [v9 emailAddresses];
+  v12 = [emailAddresses countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v12)
   {
     v13 = v12;
@@ -739,25 +739,25 @@ void __56__CNContactStore_unifiedMeContactWithKeysToFetch_error___block_invoke(u
       {
         if (*v25 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(emailAddresses);
         }
 
-        v16 = [*(*(&v24 + 1) + 8 * v15) value];
-        v17 = [v16 lowercaseString];
-        [v10 addObject:v17];
+        value = [*(*(&v24 + 1) + 8 * v15) value];
+        lowercaseString = [value lowercaseString];
+        [v10 addObject:lowercaseString];
 
         ++v15;
       }
 
       while (v13 != v15);
-      v13 = [v11 countByEnumeratingWithState:&v24 objects:v28 count:16];
+      v13 = [emailAddresses countByEnumeratingWithState:&v24 objects:v28 count:16];
     }
 
     while (v13);
   }
 
   v18 = MEMORY[0x1E695DFD8];
-  v19 = [v8 _cn_map:&__block_literal_global_70];
+  v19 = [addressesCopy _cn_map:&__block_literal_global_70];
   v20 = [v18 setWithArray:v19];
 
   if ([v10 intersectsSet:v20])
@@ -775,11 +775,11 @@ void __56__CNContactStore_unifiedMeContactWithKeysToFetch_error___block_invoke(u
   return v21;
 }
 
-- (id)unifiedMeContactMatchingEmailAddress:(id)a3 keysToFetch:(id)a4 error:(id *)a5
+- (id)unifiedMeContactMatchingEmailAddress:(id)address keysToFetch:(id)fetch error:(id *)error
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  addressCopy = address;
+  fetchCopy = fetch;
   if ((*(*MEMORY[0x1E6996568] + 16))())
   {
     v10 = 0;
@@ -787,33 +787,33 @@ void __56__CNContactStore_unifiedMeContactWithKeysToFetch_error___block_invoke(u
 
   else
   {
-    v13[0] = v8;
+    v13[0] = addressCopy;
     v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:1];
-    v10 = [(CNContactStore *)self unifiedMeContactMatchingEmailAddresses:v11 keysToFetch:v9 error:a5];
+    v10 = [(CNContactStore *)self unifiedMeContactMatchingEmailAddresses:v11 keysToFetch:fetchCopy error:error];
   }
 
   return v10;
 }
 
-- (BOOL)setMeContact:(id)a3 error:(id *)a4
+- (BOOL)setMeContact:(id)contact error:(id *)error
 {
   v5 = [CNErrorFactory errorObject:self doesNotImplementSelector:sel_setMeContact_error_];
-  if (a4)
+  if (error)
   {
     v5 = v5;
-    *a4 = v5;
+    *error = v5;
   }
 
   return 0;
 }
 
-- (BOOL)setMeContact:(id)a3 forContainer:(id)a4 error:(id *)a5
+- (BOOL)setMeContact:(id)contact forContainer:(id)container error:(id *)error
 {
   v6 = [CNErrorFactory errorObject:self doesNotImplementSelector:sel_setMeContact_forContainer_error_];
-  if (a5)
+  if (error)
   {
     v6 = v6;
-    *a5 = v6;
+    *error = v6;
   }
 
   return 0;
@@ -846,20 +846,20 @@ void __56__CNContactStore_unifiedMeContactWithKeysToFetch_error___block_invoke(u
   v18 = _Block_copy(v17);
   [v15 push:v18];
 
-  v19 = [(CNContactFetchRequest *)v9 predicate];
+  predicate = [(CNContactFetchRequest *)v9 predicate];
 
-  if (!v19 && pthread_main_np() == 1)
+  if (!predicate && pthread_main_np() == 1)
   {
-    v20 = [MEMORY[0x1E69C75D0] currentProcess];
-    if (([v20 isApplication] & 1) == 0)
+    currentProcess = [MEMORY[0x1E69C75D0] currentProcess];
+    if (([currentProcess isApplication] & 1) == 0)
     {
 
       goto LABEL_19;
     }
 
-    v21 = [MEMORY[0x1E696AE30] processInfo];
-    v22 = [v21 environment];
-    v23 = [v22 objectForKeyedSubscript:@"CN_UNIT_TESTING"];
+    processInfo = [MEMORY[0x1E696AE30] processInfo];
+    environment = [processInfo environment];
+    v23 = [environment objectForKeyedSubscript:@"CN_UNIT_TESTING"];
     v24 = v23;
     if (!v23 || ![v23 length] || (objc_msgSend(v24, "_cn_caseInsensitiveIsEqual:", @"NO") & 1) != 0 || (objc_msgSend(v24, "_cn_caseInsensitiveIsEqual:", @"N") & 1) != 0 || (objc_msgSend(v24, "_cn_caseInsensitiveIsEqual:", @"FALSE") & 1) != 0 || (objc_msgSend(v24, "_cn_caseInsensitiveIsEqual:", @"F") & 1) != 0)
     {
@@ -936,18 +936,18 @@ uint64_t __69__CNContactStore_enumerateContactsWithFetchRequest_error_usingBlock
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-- (void)pool_enumerateContactsWithFetchRequest:(void *)a3 error:(void *)a4 usingBlock:
+- (void)pool_enumerateContactsWithFetchRequest:(void *)request error:(void *)error usingBlock:
 {
   v7 = a2;
-  v8 = a4;
-  if (a1)
+  errorCopy = error;
+  if (self)
   {
     v9 = [[CNAPITriageSession alloc] initWithRequest:v7];
     [(CNAPITriageSession *)v9 open];
-    if ([v7 shouldFailIfAccountNotYetSynced] && (objc_msgSend(a1, "hasAccountFirstSyncCompleted") & 1) == 0)
+    if ([v7 shouldFailIfAccountNotYetSynced] && (objc_msgSend(self, "hasAccountFirstSyncCompleted") & 1) == 0)
     {
-      [CNContactStore pool_enumerateContactsWithFetchRequest:v9 error:a3 usingBlock:?];
-      a1 = 0;
+      [CNContactStore pool_enumerateContactsWithFetchRequest:v9 error:request usingBlock:?];
+      self = 0;
     }
 
     else
@@ -965,17 +965,17 @@ uint64_t __69__CNContactStore_enumerateContactsWithFetchRequest_error_usingBlock
       v17 = v10;
       v11 = v9;
       v18 = v11;
-      v19 = v8;
+      v19 = errorCopy;
       v20 = &v22;
-      a1 = [a1 enumerateContactsAndMatchInfoWithFetchRequest:v10 error:&v21 usingBlock:v16];
+      self = [self enumerateContactsAndMatchInfoWithFetchRequest:v10 error:&v21 usingBlock:v16];
       v12 = v21;
       if ((v23[3] & 1) == 0)
       {
-        v13 = [(CNAPITriageSession *)v11 logger];
-        [v13 didReturnAllResultsForContactFetchRequest:v10];
+        logger = [(CNAPITriageSession *)v11 logger];
+        [logger didReturnAllResultsForContactFetchRequest:v10];
       }
 
-      if (a1)
+      if (self)
       {
         [(CNAPITriageSession *)v11 close];
       }
@@ -983,10 +983,10 @@ uint64_t __69__CNContactStore_enumerateContactsWithFetchRequest_error_usingBlock
       else
       {
         [(CNAPITriageSession *)v11 closeWithError:v12];
-        if (a3)
+        if (request)
         {
           v14 = v12;
-          *a3 = v12;
+          *request = v12;
         }
       }
 
@@ -994,7 +994,7 @@ uint64_t __69__CNContactStore_enumerateContactsWithFetchRequest_error_usingBlock
     }
   }
 
-  return a1;
+  return self;
 }
 
 void __74__CNContactStore_pool_enumerateContactsWithFetchRequest_error_usingBlock___block_invoke(uint64_t a1, void *a2, uint64_t a3, _BYTE *a4)
@@ -1072,11 +1072,11 @@ uint64_t __74__CNContactStore_pool_enumerateContactsWithFetchRequest_error_using
   return (*(v2 + 16))(v2, v3, a1[7]);
 }
 
-- (BOOL)enumerateNonUnifiedContactsWithFetchRequest:(id)a3 error:(id *)a4 usingBlock:(id)a5
+- (BOOL)enumerateNonUnifiedContactsWithFetchRequest:(id)request error:(id *)error usingBlock:(id)block
 {
-  v9 = a3;
-  v10 = a5;
-  if ([v9 unifyResults])
+  requestCopy = request;
+  blockCopy = block;
+  if ([requestCopy unifyResults])
   {
     v13 = MEMORY[0x1E695DF30];
     v14 = *MEMORY[0x1E695D930];
@@ -1089,31 +1089,31 @@ uint64_t __74__CNContactStore_pool_enumerateContactsWithFetchRequest_error_using
     objc_exception_throw(v18);
   }
 
-  v11 = [(CNContactStore *)self enumerateContactsWithFetchRequest:v9 error:a4 usingBlock:v10];
+  v11 = [(CNContactStore *)self enumerateContactsWithFetchRequest:requestCopy error:error usingBlock:blockCopy];
 
   return v11;
 }
 
-- (BOOL)enumerateContactsAndMatchInfoWithFetchRequest:(id)a3 error:(id *)a4 usingBlock:(id)a5
+- (BOOL)enumerateContactsAndMatchInfoWithFetchRequest:(id)request error:(id *)error usingBlock:(id)block
 {
-  v6 = [CNErrorFactory errorWithCode:1005, a4, a5];
-  if (a4)
+  block = [CNErrorFactory errorWithCode:1005, error, block];
+  if (error)
   {
-    v6 = v6;
-    *a4 = v6;
+    block = block;
+    *error = block;
   }
 
   return 0;
 }
 
-- (BOOL)supportsSaveRequest:(id)a3
+- (BOOL)supportsSaveRequest:(id)request
 {
-  v4 = a3;
-  v5 = [v4 storeIdentifier];
-  if (!v5)
+  requestCopy = request;
+  storeIdentifier = [requestCopy storeIdentifier];
+  if (!storeIdentifier)
   {
-    v3 = [objc_opt_class() storeIdentifier];
-    if (!v3)
+    storeIdentifier2 = [objc_opt_class() storeIdentifier];
+    if (!storeIdentifier2)
     {
       v8 = 1;
 LABEL_6:
@@ -1122,11 +1122,11 @@ LABEL_6:
     }
   }
 
-  v6 = [v4 storeIdentifier];
-  v7 = [objc_opt_class() storeIdentifier];
-  v8 = [v6 isEqual:v7];
+  storeIdentifier3 = [requestCopy storeIdentifier];
+  storeIdentifier4 = [objc_opt_class() storeIdentifier];
+  v8 = [storeIdentifier3 isEqual:storeIdentifier4];
 
-  if (!v5)
+  if (!storeIdentifier)
   {
     goto LABEL_6;
   }
@@ -1136,9 +1136,9 @@ LABEL_7:
   return v8;
 }
 
-- (id)executeFetchRequest:(id)a3 error:(id *)a4
+- (id)executeFetchRequest:(id)request error:(id *)error
 {
-  v7 = a3;
+  requestCopy = request;
   [CNAPITriageLogger setThreadEntryPoint:a2];
   v8 = +[CNAPITriageLogger os_log];
   v9 = os_signpost_id_generate(v8);
@@ -1163,7 +1163,7 @@ LABEL_7:
   [v12 push:v15];
 
   objc_opt_class();
-  v16 = v7;
+  v16 = requestCopy;
   if (objc_opt_isKindOfClass())
   {
     v17 = v16;
@@ -1183,29 +1183,29 @@ LABEL_7:
 
   v19 = [[CNContactStoreFetchExecutor alloc] initWithContactStore:self];
   v20 = [(CNContactStoreFetchExecutor *)v19 executeFetchRequest:v16];
-  v21 = [v20 value];
+  value = [v20 value];
 
-  if (v21)
+  if (value)
   {
-    v22 = [v20 value];
+    value2 = [v20 value];
   }
 
   else
   {
-    v23 = [v20 error];
-    if (a4)
+    error = [v20 error];
+    if (error)
     {
-      v23 = v23;
-      *a4 = v23;
+      error = error;
+      *error = error;
     }
 
-    v22 = 0;
+    value2 = 0;
   }
 
   [v12 popAllWithHandler:&__block_literal_global_95];
   v24 = objc_opt_self();
 
-  return v22;
+  return value2;
 }
 
 void __44__CNContactStore_executeFetchRequest_error___block_invoke(uint64_t a1)
@@ -1221,9 +1221,9 @@ void __44__CNContactStore_executeFetchRequest_error___block_invoke(uint64_t a1)
   }
 }
 
-- (id)countForFetchRequest:(id)a3 error:(id *)a4
+- (id)countForFetchRequest:(id)request error:(id *)error
 {
-  v7 = a3;
+  requestCopy = request;
   [CNAPITriageLogger setThreadEntryPoint:a2];
   v8 = +[CNAPITriageLogger os_log];
   v9 = os_signpost_id_generate(v8);
@@ -1248,7 +1248,7 @@ void __44__CNContactStore_executeFetchRequest_error___block_invoke(uint64_t a1)
   [v12 push:v15];
 
   objc_opt_class();
-  v16 = v7;
+  v16 = requestCopy;
   if (objc_opt_isKindOfClass())
   {
     v17 = v16;
@@ -1274,29 +1274,29 @@ void __44__CNContactStore_executeFetchRequest_error___block_invoke(uint64_t a1)
   }
 
   v21 = v20;
-  v22 = [v21 value];
+  value = [v21 value];
 
-  if (v22)
+  if (value)
   {
-    v23 = [v21 value];
+    value2 = [v21 value];
   }
 
   else
   {
-    v24 = [v21 error];
-    if (a4)
+    error = [v21 error];
+    if (error)
     {
-      v24 = v24;
-      *a4 = v24;
+      error = error;
+      *error = error;
     }
 
-    v23 = 0;
+    value2 = 0;
   }
 
   [v12 popAllWithHandler:&__block_literal_global_101_0];
   v25 = objc_opt_self();
 
-  return v23;
+  return value2;
 }
 
 void __45__CNContactStore_countForFetchRequest_error___block_invoke(uint64_t a1)
@@ -1338,20 +1338,20 @@ void __45__CNContactStore_countForFetchRequest_error___block_invoke(uint64_t a1)
   v15 = _Block_copy(v14);
   [v12 push:v15];
 
-  v16 = [(CNContactFetchRequest *)v7 predicate];
+  predicate = [(CNContactFetchRequest *)v7 predicate];
 
-  if (!v16 && pthread_main_np() == 1)
+  if (!predicate && pthread_main_np() == 1)
   {
-    v17 = [MEMORY[0x1E69C75D0] currentProcess];
-    if (([v17 isApplication] & 1) == 0)
+    currentProcess = [MEMORY[0x1E69C75D0] currentProcess];
+    if (([currentProcess isApplication] & 1) == 0)
     {
 
       goto LABEL_19;
     }
 
-    v18 = [MEMORY[0x1E696AE30] processInfo];
-    v19 = [v18 environment];
-    v20 = [v19 objectForKeyedSubscript:@"CN_UNIT_TESTING"];
+    processInfo = [MEMORY[0x1E696AE30] processInfo];
+    environment = [processInfo environment];
+    v20 = [environment objectForKeyedSubscript:@"CN_UNIT_TESTING"];
     v21 = v20;
     if (!v20 || ![v20 length] || (objc_msgSend(v21, "_cn_caseInsensitiveIsEqual:", @"NO") & 1) != 0 || (objc_msgSend(v21, "_cn_caseInsensitiveIsEqual:", @"N") & 1) != 0 || (objc_msgSend(v21, "_cn_caseInsensitiveIsEqual:", @"FALSE") & 1) != 0 || (objc_msgSend(v21, "_cn_caseInsensitiveIsEqual:", @"F") & 1) != 0)
     {
@@ -1383,10 +1383,10 @@ LABEL_19:
   if (v22)
   {
     v23 = [CNFetchResult alloc];
-    v24 = [v22 value];
-    v25 = [v24 objectEnumerator];
-    v26 = [v22 currentHistoryToken];
-    v27 = [(CNFetchResult *)v23 initWithValue:v25 currentHistoryToken:v26];
+    value = [v22 value];
+    objectEnumerator = [value objectEnumerator];
+    currentHistoryToken = [v22 currentHistoryToken];
+    v27 = [(CNFetchResult *)v23 initWithValue:objectEnumerator currentHistoryToken:currentHistoryToken];
   }
 
   else
@@ -1428,10 +1428,10 @@ uint64_t __57__CNContactStore_enumeratorForContactFetchRequest_error___block_inv
   if (v4)
   {
     v5 = [CNFetchResult alloc];
-    v6 = [v4 value];
-    v7 = [v6 objectEnumerator];
-    v8 = [v4 currentHistoryToken];
-    v9 = [(CNFetchResult *)v5 initWithValue:v7 currentHistoryToken:v8];
+    value = [v4 value];
+    objectEnumerator = [value objectEnumerator];
+    currentHistoryToken = [v4 currentHistoryToken];
+    v9 = [(CNFetchResult *)v5 initWithValue:objectEnumerator currentHistoryToken:currentHistoryToken];
   }
 
   else
@@ -1442,10 +1442,10 @@ uint64_t __57__CNContactStore_enumeratorForContactFetchRequest_error___block_inv
   return v9;
 }
 
-- (id)executeFetchRequest:(id)a3 completion:(id)a4
+- (id)executeFetchRequest:(id)request completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   [CNAPITriageLogger setThreadEntryPoint:a2];
   v9 = +[CNAPITriageLogger os_log];
   v10 = os_signpost_id_generate(v9);
@@ -1469,28 +1469,28 @@ uint64_t __57__CNContactStore_enumeratorForContactFetchRequest_error___block_inv
   v16 = _Block_copy(v15);
   [v13 push:v16];
 
-  v17 = [MEMORY[0x1E695DF70] array];
-  v18 = [MEMORY[0x1E695DF90] dictionary];
+  array = [MEMORY[0x1E695DF70] array];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __49__CNContactStore_executeFetchRequest_completion___block_invoke_109;
   aBlock[3] = &unk_1E7413E80;
-  v19 = v17;
+  v19 = array;
   v36 = v19;
-  v20 = v18;
+  v20 = dictionary;
   v37 = v20;
   v21 = _Block_copy(aBlock);
   v28 = MEMORY[0x1E69E9820];
   v29 = 3221225472;
   v30 = __49__CNContactStore_executeFetchRequest_completion___block_invoke_2;
   v31 = &unk_1E7413EA8;
-  v34 = v8;
+  v34 = completionCopy;
   v22 = v19;
   v32 = v22;
   v23 = v20;
   v33 = v23;
   v24 = _Block_copy(&v28);
-  v25 = [(CNContactStore *)self executeFetchRequest:v7 progressiveResults:v21 completion:v24, v28, v29, v30, v31];
+  v25 = [(CNContactStore *)self executeFetchRequest:requestCopy progressiveResults:v21 completion:v24, v28, v29, v30, v31];
 
   [v13 popAllWithHandler:&__block_literal_global_112];
   v26 = objc_opt_self();
@@ -1540,27 +1540,27 @@ void __49__CNContactStore_executeFetchRequest_completion___block_invoke_2(void *
   }
 }
 
-- (id)policyForContainerWithIdentifier:(id)a3 error:(id *)a4
+- (id)policyForContainerWithIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v7 = objc_alloc_init(CNPolicyDescription);
-  [(CNPolicyDescription *)v7 setContainerIdentifier:v6];
+  [(CNPolicyDescription *)v7 setContainerIdentifier:identifierCopy];
 
-  v8 = [(CNContactStore *)self policyWithDescription:v7 error:a4];
+  v8 = [(CNContactStore *)self policyWithDescription:v7 error:error];
 
   return v8;
 }
 
-+ (id)standardLabelsForPropertyWithKey:(id)a3 options:(unint64_t)a4
++ (id)standardLabelsForPropertyWithKey:(id)key options:(unint64_t)options
 {
-  v5 = a3;
+  keyCopy = key;
   v6 = +[CN contactPropertiesByKey];
-  v7 = [v6 objectForKey:v5];
+  v7 = [v6 objectForKey:keyCopy];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [v7 standardLabelsWithOptions:a4];
+    v8 = [v7 standardLabelsWithOptions:options];
   }
 
   else
@@ -1573,52 +1573,52 @@ void __49__CNContactStore_executeFetchRequest_completion___block_invoke_2(void *
 
 - (id)mainContactStore
 {
-  v3 = [objc_opt_class() storeIdentifier];
+  storeIdentifier = [objc_opt_class() storeIdentifier];
 
-  if (v3)
+  if (storeIdentifier)
   {
-    v4 = 0;
+    selfCopy = 0;
   }
 
   else
   {
-    v4 = self;
+    selfCopy = self;
   }
 
-  return v4;
+  return selfCopy;
 }
 
-- (BOOL)resetSortDataIfNeededWithError:(id *)a3
+- (BOOL)resetSortDataIfNeededWithError:(id *)error
 {
   v4 = [CNErrorFactory errorObject:self doesNotImplementSelector:sel_resetSortDataIfNeededWithError_];
-  if (a3)
+  if (error)
   {
     v4 = v4;
-    *a3 = v4;
+    *error = v4;
   }
 
   return 0;
 }
 
-- (BOOL)setDefaultAccountIdentifier:(id)a3 error:(id *)a4
+- (BOOL)setDefaultAccountIdentifier:(id)identifier error:(id *)error
 {
   v5 = [CNErrorFactory errorObject:self doesNotImplementSelector:sel_setDefaultAccountIdentifier_error_];
-  if (a4)
+  if (error)
   {
     v5 = v5;
-    *a4 = v5;
+    *error = v5;
   }
 
   return 0;
 }
 
-- (id)sectionListOffsetsForSortOrder:(int64_t)a3 error:(id *)a4
+- (id)sectionListOffsetsForSortOrder:(int64_t)order error:(id *)error
 {
   v5 = [CNErrorFactory errorObject:self doesNotImplementSelector:sel_sectionListOffsetsForSortOrder_error_];
-  if (a4)
+  if (error)
   {
     v5 = v5;
-    *a4 = v5;
+    *error = v5;
   }
 
   return 0;
@@ -1626,25 +1626,25 @@ void __49__CNContactStore_executeFetchRequest_completion___block_invoke_2(void *
 
 - (id)descriptorForRequiredKeysForUserActivityUserInfo
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CNAbstractMethodException();
   objc_exception_throw(v3);
 }
 
 - (id)descriptorForRequiredKeysForMatchingDictionary
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CNAbstractMethodException();
   objc_exception_throw(v3);
 }
 
-- (id)contactWithMatchingDictionary:(id)a3 keysToFetch:(id)a4
+- (id)contactWithMatchingDictionary:(id)dictionary keysToFetch:(id)fetch
 {
-  v6 = a4;
-  v7 = [(CNContactStore *)self contactIdentifierWithMatchingDictionary:a3];
+  fetchCopy = fetch;
+  v7 = [(CNContactStore *)self contactIdentifierWithMatchingDictionary:dictionary];
   if (v7)
   {
-    v8 = [(CNContactStore *)self unifiedContactWithIdentifier:v7 keysToFetch:v6 error:0];
+    v8 = [(CNContactStore *)self unifiedContactWithIdentifier:v7 keysToFetch:fetchCopy error:0];
   }
 
   else
@@ -1664,49 +1664,49 @@ void __49__CNContactStore_executeFetchRequest_completion___block_invoke_2(void *
   return v4;
 }
 
-- (BOOL)clearChangeHistoryForClientIdentifier:(id)a3 toChangeAnchor:(id)a4 error:(id *)a5
+- (BOOL)clearChangeHistoryForClientIdentifier:(id)identifier toChangeAnchor:(id)anchor error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [[CNChangeHistoryClearRequest alloc] initWithClientIdentifier:v9];
+  anchorCopy = anchor;
+  identifierCopy = identifier;
+  v10 = [[CNChangeHistoryClearRequest alloc] initWithClientIdentifier:identifierCopy];
 
-  [(CNChangeHistoryClearRequest *)v10 setToChangeAnchor:v8];
-  LOBYTE(a5) = [(CNContactStore *)self executeChangeHistoryClearRequest:v10 error:a5];
+  [(CNChangeHistoryClearRequest *)v10 setToChangeAnchor:anchorCopy];
+  LOBYTE(error) = [(CNContactStore *)self executeChangeHistoryClearRequest:v10 error:error];
 
-  return a5;
+  return error;
 }
 
-+ (BOOL)isAccessRestrictedForEntityType:(int64_t)a3
++ (BOOL)isAccessRestrictedForEntityType:(int64_t)type
 {
   v4 = +[CNContactStore authorizationForCurrentProcess];
-  LOBYTE(a3) = [v4 isAccessRestrictedForEntityType:a3];
+  LOBYTE(type) = [v4 isAccessRestrictedForEntityType:type];
 
-  return a3;
+  return type;
 }
 
-+ (BOOL)isAccessLimitedForEntityType:(int64_t)a3
++ (BOOL)isAccessLimitedForEntityType:(int64_t)type
 {
   v4 = +[CNContactStore authorizationForCurrentProcess];
-  v5 = [v4 authorizationStatusForEntityType:a3];
+  v5 = [v4 authorizationStatusForEntityType:type];
 
   return v5 == 4;
 }
 
-+ (int64_t)authorizationStatusForEntityType:(int64_t)a3 assumedIdentity:(id)a4
++ (int64_t)authorizationStatusForEntityType:(int64_t)type assumedIdentity:(id)identity
 {
-  v5 = a4;
-  v6 = [[CNAuthorization alloc] initWithAssumedIdentity:v5];
+  identityCopy = identity;
+  v6 = [[CNAuthorization alloc] initWithAssumedIdentity:identityCopy];
 
-  v7 = [(CNAuthorization *)v6 authorizationStatusForEntityType:a3];
+  v7 = [(CNAuthorization *)v6 authorizationStatusForEntityType:type];
   return v7;
 }
 
-- (void)requestAuthorization:(int64_t)a3 entityType:(int64_t)a4 completionHandler:(id)a5
+- (void)requestAuthorization:(int64_t)authorization entityType:(int64_t)type completionHandler:(id)handler
 {
-  v7 = a5;
-  if ([objc_opt_class() isAccessRestrictedForEntityType:a4])
+  handlerCopy = handler;
+  if ([objc_opt_class() isAccessRestrictedForEntityType:type])
   {
-    v7[2](v7, 4, 0);
+    handlerCopy[2](handlerCopy, 4, 0);
   }
 
   else
@@ -1715,8 +1715,8 @@ void __49__CNContactStore_executeFetchRequest_completion___block_invoke_2(void *
     v8[1] = 3221225472;
     v8[2] = __68__CNContactStore_requestAuthorization_entityType_completionHandler___block_invoke;
     v8[3] = &unk_1E74130B8;
-    v9 = v7;
-    [(CNContactStore *)self requestAccessForEntityType:a4 completionHandler:v8];
+    v9 = handlerCopy;
+    [(CNContactStore *)self requestAccessForEntityType:type completionHandler:v8];
   }
 }
 
@@ -1736,14 +1736,14 @@ uint64_t __68__CNContactStore_requestAuthorization_entityType_completionHandler_
   return (*(v2 + 16))(v2, v3);
 }
 
-- (id)authorizedKeysForContactKeys:(id)a3
+- (id)authorizedKeysForContactKeys:(id)keys
 {
-  v4 = a3;
+  keysCopy = keys;
   objc_opt_class();
-  v5 = self;
+  selfCopy = self;
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = selfCopy;
   }
 
   else
@@ -1754,10 +1754,10 @@ uint64_t __68__CNContactStore_requestAuthorization_entityType_completionHandler_
   v7 = v6;
 
   objc_opt_class();
-  v8 = [(CNContactStore *)v7 mapper];
+  mapper = [(CNContactStore *)v7 mapper];
   if (objc_opt_isKindOfClass())
   {
-    v9 = v8;
+    v9 = mapper;
   }
 
   else
@@ -1769,12 +1769,12 @@ uint64_t __68__CNContactStore_requestAuthorization_entityType_completionHandler_
 
   if (v10)
   {
-    v11 = [v10 authorizedKeysForContactKeys:v4 error:0];
+    v11 = [v10 authorizedKeysForContactKeys:keysCopy error:0];
   }
 
   else
   {
-    v11 = v4;
+    v11 = keysCopy;
   }
 
   v12 = v11;
@@ -1794,20 +1794,20 @@ uint64_t __68__CNContactStore_requestAuthorization_entityType_completionHandler_
     containerCache = self->_containerCache;
   }
 
-  v6 = [(CNContainerCache *)containerCache primaryiCloudContainer];
-  v7 = [v6 lastSyncDate];
-  v8 = v7 != 0;
+  primaryiCloudContainer = [(CNContainerCache *)containerCache primaryiCloudContainer];
+  lastSyncDate = [primaryiCloudContainer lastSyncDate];
+  v8 = lastSyncDate != 0;
 
   return v8;
 }
 
-- (id)getLimitedAccessLastSyncSequenceNumber:(id *)a3
+- (id)getLimitedAccessLastSyncSequenceNumber:(id *)number
 {
   v4 = [CNErrorFactory errorWithCode:1];
-  if (a3)
+  if (number)
   {
     v4 = v4;
-    *a3 = v4;
+    *number = v4;
   }
 
   return 0;
@@ -1815,16 +1815,16 @@ uint64_t __68__CNContactStore_requestAuthorization_entityType_completionHandler_
 
 - (CNiOSAddressBook)addressBook
 {
-  v2 = [(CNContactStore *)self iOSMapper];
-  v3 = [(CNiOSAddressBookDataMapper *)v2 addressBook];
+  iOSMapper = [(CNContactStore *)self iOSMapper];
+  addressBook = [(CNiOSAddressBookDataMapper *)iOSMapper addressBook];
 
-  return v3;
+  return addressBook;
 }
 
-- (BOOL)setDefaultContainer:(id)a3 forAccount:(id)a4 error:(id *)a5
+- (BOOL)setDefaultContainer:(id)container forAccount:(id)account error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  containerCopy = container;
+  accountCopy = account;
   v32 = 0;
   v33 = &v32;
   v34 = 0x2020000000;
@@ -1835,37 +1835,37 @@ uint64_t __68__CNContactStore_requestAuthorization_entityType_completionHandler_
   v29 = __Block_byref_object_copy__26;
   v30 = __Block_byref_object_dispose__26;
   v31 = 0;
-  v10 = [(CNContactStore *)self iOSMapper];
-  v11 = [(CNiOSAddressBookDataMapper *)v10 addressBook];
+  iOSMapper = [(CNContactStore *)self iOSMapper];
+  addressBook = [(CNiOSAddressBookDataMapper *)iOSMapper addressBook];
   v18 = MEMORY[0x1E69E9820];
   v19 = 3221225472;
   v20 = __73__CNContactStore_iOSABUnitTesting__setDefaultContainer_forAccount_error___block_invoke;
   v21 = &unk_1E74165B8;
-  v12 = v8;
+  v12 = containerCopy;
   v22 = v12;
   v24 = &v32;
   v25 = &v26;
-  v13 = v9;
+  v13 = accountCopy;
   v23 = v13;
-  v14 = [v11 performSynchronousWorkWithInvalidatedAddressBook:&v18];
+  v14 = [addressBook performSynchronousWorkWithInvalidatedAddressBook:&v18];
 
   if ([v14 isSuccess])
   {
     v15 = *(v33 + 24);
-    if (a5 && (v33[3] & 1) == 0)
+    if (error && (v33[3] & 1) == 0)
     {
       v15 = 0;
-      *a5 = v27[5];
+      *error = v27[5];
     }
   }
 
   else
   {
-    v16 = [v14 error];
-    if (a5)
+    error = [v14 error];
+    if (error)
     {
-      v16 = v16;
-      *a5 = v16;
+      error = error;
+      *error = error;
     }
 
     v15 = 0;
@@ -1995,29 +1995,29 @@ LABEL_16:
   }
 }
 
-- (id)contactFromPerson:(void *)a3 mutable:(BOOL)a4
+- (id)contactFromPerson:(void *)person mutable:(BOOL)mutable
 {
-  v4 = a4;
+  mutableCopy = mutable;
   v15[1] = *MEMORY[0x1E69E9840];
   v8 = +[CN contactPropertiesByKey];
-  v9 = [v8 allKeys];
+  allKeys = [v8 allKeys];
   v10 = NSStringFromSelector(a2);
-  v11 = [CNContact descriptorWithKeyDescriptors:v9 description:v10];
+  v11 = [CNContact descriptorWithKeyDescriptors:allKeys description:v10];
   v15[0] = v11;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
-  v13 = [(CNContactStore *)self contactFromPerson:a3 keysToFetch:v12 mutable:v4];
+  v13 = [(CNContactStore *)self contactFromPerson:person keysToFetch:v12 mutable:mutableCopy];
 
   return v13;
 }
 
-- (id)contactFromPersonID:(int)a3
+- (id)contactFromPersonID:(int)d
 {
-  v3 = *&a3;
+  v3 = *&d;
   v13[1] = *MEMORY[0x1E69E9840];
   v6 = +[CN contactPropertiesByKey];
-  v7 = [v6 allKeys];
+  allKeys = [v6 allKeys];
   v8 = NSStringFromSelector(a2);
-  v9 = [CNContact descriptorWithKeyDescriptors:v7 description:v8];
+  v9 = [CNContact descriptorWithKeyDescriptors:allKeys description:v8];
   v13[0] = v9;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:1];
   v11 = [(CNContactStore *)self contactFromPersonID:v3 keysToFetch:v10];
@@ -2025,11 +2025,11 @@ LABEL_16:
   return v11;
 }
 
-- (id)_contactFromPersonID:(int)a3 keysToFetch:(id)a4
+- (id)_contactFromPersonID:(int)d keysToFetch:(id)fetch
 {
-  v4 = *&a3;
-  v6 = a4;
-  v7 = [[CNContactFetchRequest alloc] initWithKeysToFetch:v6];
+  v4 = *&d;
+  fetchCopy = fetch;
+  v7 = [[CNContactFetchRequest alloc] initWithKeysToFetch:fetchCopy];
   v8 = [CNContact predicateForLegacyIdentifier:v4];
   [(CNContactFetchRequest *)v7 setPredicate:v8];
 
@@ -2077,39 +2077,39 @@ void __77__CNContactStore_iOSABLegacyCompatibility___contactFromPersonID_keysToF
   }
 }
 
-- (id)contactIdentifierFromPersonID:(int)a3
+- (id)contactIdentifierFromPersonID:(int)d
 {
-  v3 = *&a3;
+  v3 = *&d;
   v10[1] = *MEMORY[0x1E69E9840];
   v10[0] = @"identifier";
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
   v6 = [(CNContactStore *)self _contactFromPersonID:v3 keysToFetch:v5];
 
-  v7 = [v6 identifier];
-  v8 = [v7 copy];
+  identifier = [v6 identifier];
+  v8 = [identifier copy];
 
   return v8;
 }
 
-- (void)personFromContact:(id)a3
+- (void)personFromContact:(id)contact
 {
-  v4 = a3;
+  contactCopy = contact;
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;
   v22 = 0;
-  if ([v4 hasBeenPersisted] && ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusAuthorized)
+  if ([contactCopy hasBeenPersisted] && ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusAuthorized)
   {
-    v5 = [(CNContactStore *)self iOSMapper];
-    v6 = [v4 isUnified];
-    v7 = v6;
-    if (v6)
+    iOSMapper = [(CNContactStore *)self iOSMapper];
+    isUnified = [contactCopy isUnified];
+    v7 = isUnified;
+    if (isUnified)
     {
-      v8 = [v4 linkedContacts];
-      v9 = [v8 objectAtIndexedSubscript:0];
-      v10 = [v9 identifier];
+      linkedContacts = [contactCopy linkedContacts];
+      v9 = [linkedContacts objectAtIndexedSubscript:0];
+      identifier = [v9 identifier];
 
-      if (!v10)
+      if (!identifier)
       {
         goto LABEL_8;
       }
@@ -2117,8 +2117,8 @@ void __77__CNContactStore_iOSABLegacyCompatibility___contactFromPersonID_keysToF
 
     else
     {
-      v10 = [v4 identifier];
-      if (!v10)
+      identifier = [contactCopy identifier];
+      if (!identifier)
       {
 LABEL_8:
 
@@ -2126,38 +2126,38 @@ LABEL_8:
       }
     }
 
-    v11 = [(CNiOSAddressBookDataMapper *)v5 addressBook];
+    addressBook = [(CNiOSAddressBookDataMapper *)iOSMapper addressBook];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __62__CNContactStore_iOSABLegacyCompatibility__personFromContact___block_invoke;
     v15[3] = &unk_1E7417000;
     v17 = &v19;
-    v16 = v10;
+    v16 = identifier;
     v18 = v7;
-    v12 = [v11 performSynchronousWorkWithInvalidatedAddressBook:v15];
+    v12 = [addressBook performSynchronousWorkWithInvalidatedAddressBook:v15];
 
     goto LABEL_8;
   }
 
 LABEL_9:
-  v13 = v20[3];
-  if (!v13)
+  detachedPerson = v20[3];
+  if (!detachedPerson)
   {
-    if ([v4 isUnified])
+    if ([contactCopy isUnified])
     {
-      v13 = v20[3];
+      detachedPerson = v20[3];
     }
 
     else
     {
-      v13 = [v4 detachedPerson];
-      v20[3] = v13;
+      detachedPerson = [contactCopy detachedPerson];
+      v20[3] = detachedPerson;
     }
   }
 
   _Block_object_dispose(&v19, 8);
 
-  return v13;
+  return detachedPerson;
 }
 
 const void *__62__CNContactStore_iOSABLegacyCompatibility__personFromContact___block_invoke(uint64_t a1)
@@ -2184,55 +2184,55 @@ const void *__62__CNContactStore_iOSABLegacyCompatibility__personFromContact___b
   return result;
 }
 
-- (id)labeledValueFromMultiValueIdentifier:(int)a3 contact:(id)a4 key:(id)a5
+- (id)labeledValueFromMultiValueIdentifier:(int)identifier contact:(id)contact key:(id)key
 {
-  v7 = a5;
-  v8 = a4;
+  keyCopy = key;
+  contactCopy = contact;
   v9 = +[CN contactPropertiesByKey];
-  v10 = [v9 objectForKeyedSubscript:v7];
+  v10 = [v9 objectForKeyedSubscript:keyCopy];
 
-  v11 = [v10 CNValueForContact:v8];
+  v11 = [v10 CNValueForContact:contactCopy];
 
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __93__CNContactStore_iOSABLegacyCompatibility__labeledValueFromMultiValueIdentifier_contact_key___block_invoke;
   v14[3] = &__block_descriptor_36_e24_B16__0__CNLabeledValue_8l;
-  v15 = a3;
+  identifierCopy = identifier;
   v12 = [v11 _cn_firstObjectPassingTest:v14];
 
   return v12;
 }
 
-- (id)_fetchRequestInfosForEmailOrPhoneForContact:(id)a3 additionalRequiredKeys:(id)a4
+- (id)_fetchRequestInfosForEmailOrPhoneForContact:(id)contact additionalRequiredKeys:(id)keys
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x1E695DF70] array];
-  if ([v5 isKeyAvailable:@"emailAddresses"])
+  contactCopy = contact;
+  keysCopy = keys;
+  array = [MEMORY[0x1E695DF70] array];
+  if ([contactCopy isKeyAvailable:@"emailAddresses"])
   {
-    v8 = [v5 emailAddresses];
+    emailAddresses = [contactCopy emailAddresses];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __104__CNContactStore_ElaborateSearches___fetchRequestInfosForEmailOrPhoneForContact_additionalRequiredKeys___block_invoke;
     v18[3] = &unk_1E7417328;
-    v19 = v7;
-    v20 = v6;
-    [v8 enumerateObjectsUsingBlock:v18];
+    v19 = array;
+    v20 = keysCopy;
+    [emailAddresses enumerateObjectsUsingBlock:v18];
   }
 
-  if ([v5 isKeyAvailable:@"phoneNumbers"])
+  if ([contactCopy isKeyAvailable:@"phoneNumbers"])
   {
-    v9 = [v5 phoneNumbers];
+    phoneNumbers = [contactCopy phoneNumbers];
     v12 = MEMORY[0x1E69E9820];
     v13 = 3221225472;
     v14 = __104__CNContactStore_ElaborateSearches___fetchRequestInfosForEmailOrPhoneForContact_additionalRequiredKeys___block_invoke_2;
     v15 = &unk_1E7417328;
-    v16 = v7;
-    v17 = v6;
-    [v9 enumerateObjectsUsingBlock:&v12];
+    v16 = array;
+    v17 = keysCopy;
+    [phoneNumbers enumerateObjectsUsingBlock:&v12];
   }
 
-  v10 = [v7 copy];
+  v10 = [array copy];
 
   return v10;
 }
@@ -2267,16 +2267,16 @@ void __104__CNContactStore_ElaborateSearches___fetchRequestInfosForEmailOrPhoneF
   }
 }
 
-- (id)_executeFetchRequestsWithInfos:(id)a3 unifyResults:(BOOL)a4 keysToFetch:(id)a5 error:(id *)a6
+- (id)_executeFetchRequestsWithInfos:(id)infos unifyResults:(BOOL)results keysToFetch:(id)fetch error:(id *)error
 {
-  v10 = a3;
-  v11 = a5;
+  infosCopy = infos;
+  fetchCopy = fetch;
   v28 = 0;
   v29 = &v28;
   v30 = 0x3032000000;
   v31 = __Block_byref_object_copy__31;
   v32 = __Block_byref_object_dispose__31;
-  v33 = [MEMORY[0x1E695DFA0] orderedSet];
+  orderedSet = [MEMORY[0x1E695DFA0] orderedSet];
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -2287,19 +2287,19 @@ void __104__CNContactStore_ElaborateSearches___fetchRequestInfosForEmailOrPhoneF
   v16[1] = 3221225472;
   v16[2] = __99__CNContactStore_ElaborateSearches___executeFetchRequestsWithInfos_unifyResults_keysToFetch_error___block_invoke;
   v16[3] = &unk_1E7417378;
-  v12 = v11;
-  v21 = a4;
+  v12 = fetchCopy;
+  resultsCopy = results;
   v17 = v12;
-  v18 = self;
+  selfCopy = self;
   v19 = &v22;
   v20 = &v28;
-  [v10 enumerateObjectsUsingBlock:v16];
-  if (a6)
+  [infosCopy enumerateObjectsUsingBlock:v16];
+  if (error)
   {
     v13 = v23[5];
     if (v13)
     {
-      *a6 = v13;
+      *error = v13;
     }
   }
 
@@ -2340,48 +2340,48 @@ void __99__CNContactStore_ElaborateSearches___executeFetchRequestsWithInfos_unif
   }
 }
 
-- (id)contactsMatchingPropertiesOfContact:(id)a3 unifyResults:(BOOL)a4 keysToFetch:(id)a5 ignoreAvailableKeys:(BOOL)a6 error:(id *)a7
+- (id)contactsMatchingPropertiesOfContact:(id)contact unifyResults:(BOOL)results keysToFetch:(id)fetch ignoreAvailableKeys:(BOOL)keys error:(id *)error
 {
-  v10 = a4;
+  resultsCopy = results;
   v29[1] = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a5;
-  v14 = [MEMORY[0x1E695DF70] array];
-  v15 = [MEMORY[0x1E695DF70] array];
-  if ([v12 hasBeenPersisted])
+  contactCopy = contact;
+  fetchCopy = fetch;
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
+  if ([contactCopy hasBeenPersisted])
   {
-    if (!a6 && [v12 areKeysAvailable:v13])
+    if (!keys && [contactCopy areKeysAvailable:fetchCopy])
     {
-      v16 = [MEMORY[0x1E695DFB8] orderedSetWithObject:v12];
+      v16 = [MEMORY[0x1E695DFB8] orderedSetWithObject:contactCopy];
       goto LABEL_17;
     }
 
-    v28 = v10;
-    v18 = a7;
-    v19 = [v12 identifier];
-    v29[0] = v19;
+    v28 = resultsCopy;
+    errorCopy = error;
+    identifier = [contactCopy identifier];
+    v29[0] = identifier;
     v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v29 count:1];
     v21 = [CNContact predicateForContactsWithIdentifiers:v20];
     v22 = [_CNContactMatchingFetchRequestInfos fetchRequestInfoForPredicate:v21 properties:0];
-    [v14 addObject:v22];
+    [array addObject:v22];
 
-    a7 = v18;
-    v10 = v28;
+    error = errorCopy;
+    resultsCopy = v28;
   }
 
   else
   {
-    v17 = [(CNContactStore *)self _fetchRequestInfosForEmailOrPhoneForContact:v12 additionalRequiredKeys:v15];
-    [v14 addObjectsFromArray:v17];
+    v17 = [(CNContactStore *)self _fetchRequestInfosForEmailOrPhoneForContact:contactCopy additionalRequiredKeys:array2];
+    [array addObjectsFromArray:v17];
   }
 
-  v23 = [v13 arrayByAddingObjectsFromArray:v15];
-  if (![v14 count])
+  v23 = [fetchCopy arrayByAddingObjectsFromArray:array2];
+  if (![array count])
   {
     goto LABEL_13;
   }
 
-  v24 = [(CNContactStore *)self _executeFetchRequestsWithInfos:v14 unifyResults:v10 keysToFetch:v23 error:a7];
+  v24 = [(CNContactStore *)self _executeFetchRequestsWithInfos:array unifyResults:resultsCopy keysToFetch:v23 error:error];
   v16 = v24;
   if (v24)
   {
@@ -2392,14 +2392,14 @@ void __99__CNContactStore_ElaborateSearches___executeFetchRequestsWithInfos_unif
     }
 
 LABEL_13:
-    if ([v12 areKeysAvailable:v23])
+    if ([contactCopy areKeysAvailable:v23])
     {
-      v16 = [MEMORY[0x1E695DFB8] orderedSetWithObject:v12];
+      v16 = [MEMORY[0x1E695DFB8] orderedSetWithObject:contactCopy];
     }
 
     else
     {
-      v26 = [CNContact newContactWithPropertyKeys:v23 withValuesFromContact:v12];
+      v26 = [CNContact newContactWithPropertyKeys:v23 withValuesFromContact:contactCopy];
       v16 = [MEMORY[0x1E695DFB8] orderedSetWithObject:v26];
     }
 
@@ -2414,45 +2414,45 @@ LABEL_17:
   return v16;
 }
 
-- (id)_contactFromPublicABPerson:(void *)a3 keysToFetch:(id)a4
+- (id)_contactFromPublicABPerson:(void *)person keysToFetch:(id)fetch
 {
-  v5 = a4;
-  v6 = [getABSPublicABCNCompatibilityClass_0() contactFromPublicABPerson:a3 keysToFetch:v5];
+  fetchCopy = fetch;
+  v6 = [getABSPublicABCNCompatibilityClass_0() contactFromPublicABPerson:person keysToFetch:fetchCopy];
 
   return v6;
 }
 
-- (void)_publicABPersonFromContact:(id)a3 publicAddressBook:(const void *)a4
+- (void)_publicABPersonFromContact:(id)contact publicAddressBook:(const void *)book
 {
-  v6 = a3;
-  v7 = [getABSPublicABCNCompatibilityClass_0() publicABPersonFromContact:v6 contactStore:self publicAddressBook:a4];
+  contactCopy = contact;
+  v7 = [getABSPublicABCNCompatibilityClass_0() publicABPersonFromContact:contactCopy contactStore:self publicAddressBook:book];
 
   return v7;
 }
 
-- (int)_publicMultiValueIdentifierFromLabeledValue:(id)a3
+- (int)_publicMultiValueIdentifierFromLabeledValue:(id)value
 {
-  v4 = a3;
-  LODWORD(self) = [getABSPublicABCNCompatibilityClass_0() publicMultiValueIdentifierFromLabeledValue:v4 contactStore:self];
+  valueCopy = value;
+  LODWORD(self) = [getABSPublicABCNCompatibilityClass_0() publicMultiValueIdentifierFromLabeledValue:valueCopy contactStore:self];
 
   return self;
 }
 
-- (id)_labeledValueFromPublicMultiValueIdentifier:(int)a3 contact:(id)a4 key:(id)a5
+- (id)_labeledValueFromPublicMultiValueIdentifier:(int)identifier contact:(id)contact key:(id)key
 {
-  v6 = *&a3;
-  v8 = a5;
-  v9 = a4;
-  v10 = [getABSPublicABCNCompatibilityClass_0() labeledValueFromPublicMultiValueIdentifier:v6 contact:v9 key:v8 contactStore:self];
+  v6 = *&identifier;
+  keyCopy = key;
+  contactCopy = contact;
+  v10 = [getABSPublicABCNCompatibilityClass_0() labeledValueFromPublicMultiValueIdentifier:v6 contact:contactCopy key:keyCopy contactStore:self];
 
   return v10;
 }
 
-+ (id)_contactStoreForPublicAddressBook:(void *)a3
++ (id)_contactStoreForPublicAddressBook:(void *)book
 {
-  if (a3)
+  if (book)
   {
-    v4 = [getABSPublicABCNCompatibilityClass_0() contactStoreForPublicAddressBook:a3];
+    v4 = [getABSPublicABCNCompatibilityClass_0() contactStoreForPublicAddressBook:book];
   }
 
   else
@@ -2463,11 +2463,11 @@ LABEL_17:
   return v4;
 }
 
-+ (BOOL)isXPCDataMapperStoreForFavorites:(id)a3
++ (BOOL)isXPCDataMapperStoreForFavorites:(id)favorites
 {
-  v3 = a3;
+  favoritesCopy = favorites;
   objc_opt_class();
-  v4 = v3;
+  v4 = favoritesCopy;
   if (objc_opt_isKindOfClass())
   {
     v5 = v4;
@@ -2482,7 +2482,7 @@ LABEL_17:
 
   if (v6)
   {
-    v7 = [v6 mapper];
+    mapper = [v6 mapper];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
   }
@@ -2495,17 +2495,17 @@ LABEL_17:
   return isKindOfClass & 1;
 }
 
-- (id)_unifiedMeContactWithKeysToFetch:(uint64_t)a3 error:
+- (id)_unifiedMeContactWithKeysToFetch:(uint64_t)fetch error:
 {
   v47 = *MEMORY[0x1E69E9840];
   v5 = a2;
-  if (a1)
+  if (self)
   {
-    v6 = [a1 meContactIdentifiers:a3];
+    v6 = [self meContactIdentifiers:fetch];
     if ([v6 count] > 1)
     {
       v34 = v5;
-      v8 = [a1 defaultContainerIdentifier];
+      defaultContainerIdentifier = [self defaultContainerIdentifier];
       v41 = 0u;
       v42 = 0u;
       v43 = 0u;
@@ -2516,11 +2516,11 @@ LABEL_17:
       if (v28)
       {
         v10 = 0;
-        v7 = 0;
+        firstObject = 0;
         v11 = *v42;
         v12 = 0x1E7410000uLL;
-        v31 = a1;
-        v32 = a3;
+        selfCopy = self;
+        fetchCopy = fetch;
         v30 = v9;
         v27 = *v42;
         do
@@ -2536,7 +2536,7 @@ LABEL_17:
             v29 = v13;
             v36 = *(*(&v41 + 1) + 8 * v13);
             v35 = [*(v12 + 1632) predicateForContainerOfContactWithIdentifier:v27];
-            v14 = [a1 containersMatchingPredicate:? error:?];
+            v14 = [self containersMatchingPredicate:? error:?];
             v37 = 0u;
             v38 = 0u;
             v39 = 0u;
@@ -2557,13 +2557,13 @@ LABEL_17:
                   }
 
                   v20 = *(*(&v37 + 1) + 8 * i);
-                  v21 = [v20 identifier];
-                  v22 = [v21 isEqualToString:v8];
+                  identifier = [v20 identifier];
+                  v22 = [identifier isEqualToString:defaultContainerIdentifier];
 
                   if (v22)
                   {
                     v5 = v34;
-                    v25 = [v31 unifiedContactWithIdentifier:v36 keysToFetch:v34 error:v32];
+                    v25 = [selfCopy unifiedContactWithIdentifier:v36 keysToFetch:v34 error:fetchCopy];
 
                     v6 = v33;
                     goto LABEL_35;
@@ -2594,7 +2594,7 @@ LABEL_17:
                     v24 = v36;
 
                     v10 = v23;
-                    v7 = v24;
+                    firstObject = v24;
                   }
                 }
 
@@ -2609,8 +2609,8 @@ LABEL_17:
             }
 
             v13 = v29 + 1;
-            a1 = v31;
-            a3 = v32;
+            self = selfCopy;
+            fetch = fetchCopy;
             v9 = v30;
             v11 = v27;
             v12 = 0x1E7410000;
@@ -2625,7 +2625,7 @@ LABEL_17:
 
       else
       {
-        v7 = 0;
+        firstObject = 0;
       }
 
       v6 = v33;
@@ -2634,7 +2634,7 @@ LABEL_17:
 
     else
     {
-      v7 = [v6 firstObject];
+      firstObject = [v6 firstObject];
     }
 
     if ((*(*MEMORY[0x1E6996568] + 16))())
@@ -2644,7 +2644,7 @@ LABEL_17:
 
     else
     {
-      v25 = [a1 unifiedContactWithIdentifier:v7 keysToFetch:v5 error:a3];
+      v25 = [self unifiedContactWithIdentifier:firstObject keysToFetch:v5 error:fetch];
     }
 
 LABEL_35:
@@ -2658,12 +2658,12 @@ LABEL_35:
   return v25;
 }
 
-- (id)executeFetchRequestAndCountResults:(void *)a1
+- (id)executeFetchRequestAndCountResults:(void *)results
 {
-  if (a1)
+  if (results)
   {
     v12 = 0;
-    v2 = [a1 executeFetchRequest:a2 error:&v12];
+    v2 = [results executeFetchRequest:a2 error:&v12];
     v3 = v12;
     if (v3)
     {
@@ -2674,10 +2674,10 @@ LABEL_35:
     {
       v5 = [CNFetchResult alloc];
       v6 = MEMORY[0x1E696AD98];
-      v7 = [v2 value];
-      v8 = [v6 numberWithUnsignedInteger:{objc_msgSend(v7, "count")}];
-      v9 = [v2 currentHistoryToken];
-      v10 = [(CNFetchResult *)v5 initWithValue:v8 currentHistoryToken:v9];
+      value = [v2 value];
+      v8 = [v6 numberWithUnsignedInteger:{objc_msgSend(value, "count")}];
+      currentHistoryToken = [v2 currentHistoryToken];
+      v10 = [(CNFetchResult *)v5 initWithValue:v8 currentHistoryToken:currentHistoryToken];
 
       v4 = [MEMORY[0x1E6996810] successWithValue:v10];
     }

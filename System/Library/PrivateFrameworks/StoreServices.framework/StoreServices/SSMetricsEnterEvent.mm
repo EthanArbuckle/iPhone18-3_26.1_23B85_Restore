@@ -1,7 +1,7 @@
 @interface SSMetricsEnterEvent
 - (SSMetricsEnterEvent)init;
 - (id)description;
-- (void)setEnterTypeWithLaunchReason:(int64_t)a3;
+- (void)setEnterTypeWithLaunchReason:(int64_t)reason;
 @end
 
 @implementation SSMetricsEnterEvent
@@ -20,11 +20,11 @@
   return v3;
 }
 
-- (void)setEnterTypeWithLaunchReason:(int64_t)a3
+- (void)setEnterTypeWithLaunchReason:(int64_t)reason
 {
-  if (a3 <= 2)
+  if (reason <= 2)
   {
-    [(SSMetricsEnterEvent *)self setEnterType:off_1E84B3CA0[a3]];
+    [(SSMetricsEnterEvent *)self setEnterType:off_1E84B3CA0[reason]];
   }
 }
 
@@ -34,8 +34,8 @@
   v8.receiver = self;
   v8.super_class = SSMetricsEnterEvent;
   v4 = [(SSMetricsBaseEvent *)&v8 description];
-  v5 = [(SSMetricsEnterEvent *)self enterType];
-  v6 = [v3 stringWithFormat:@"%@: Type: %@", v4, v5];
+  enterType = [(SSMetricsEnterEvent *)self enterType];
+  v6 = [v3 stringWithFormat:@"%@: Type: %@", v4, enterType];
 
   return v6;
 }

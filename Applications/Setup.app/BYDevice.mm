@@ -18,9 +18,9 @@
     v3 = 1;
     if (v4 != 1)
     {
-      v5 = [(BYDevice *)self isD33];
+      isD33 = [(BYDevice *)self isD33];
       v3 = 1;
-      if ((v5 & 1) == 0)
+      if ((isD33 & 1) == 0)
       {
         v8 = +[UIDevice currentDevice];
         v7 = 1;

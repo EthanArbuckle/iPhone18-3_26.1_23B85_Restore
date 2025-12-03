@@ -1,18 +1,18 @@
 @interface IMADropTarget
 - (CGPoint)screenCoordinate;
 - (CGSize)initialSize;
-- (IMADropTarget)initWithScreenCoordinate:(CGPoint)a3 initialSize:(CGSize)a4 scale:(double)a5 meshScaleFactor:(double)a6 rotation:(double)a7;
+- (IMADropTarget)initWithScreenCoordinate:(CGPoint)coordinate initialSize:(CGSize)size scale:(double)scale meshScaleFactor:(double)factor rotation:(double)rotation;
 - (id)description;
 @end
 
 @implementation IMADropTarget
 
-- (IMADropTarget)initWithScreenCoordinate:(CGPoint)a3 initialSize:(CGSize)a4 scale:(double)a5 meshScaleFactor:(double)a6 rotation:(double)a7
+- (IMADropTarget)initWithScreenCoordinate:(CGPoint)coordinate initialSize:(CGSize)size scale:(double)scale meshScaleFactor:(double)factor rotation:(double)rotation
 {
-  height = a4.height;
-  width = a4.width;
-  y = a3.y;
-  x = a3.x;
+  height = size.height;
+  width = size.width;
+  y = coordinate.y;
+  x = coordinate.x;
   v15.receiver = self;
   v15.super_class = IMADropTarget;
   result = [(IMADropTarget *)&v15 init];
@@ -21,9 +21,9 @@
     result->_screenCoordinate.y = y;
     result->_initialSize.width = width;
     result->_initialSize.height = height;
-    result->_scale = a5;
-    result->_meshScaleFactor = a6;
-    result->_rotation = a7;
+    result->_scale = scale;
+    result->_meshScaleFactor = factor;
+    result->_rotation = rotation;
     result->_screenCoordinate.x = x;
   }
 

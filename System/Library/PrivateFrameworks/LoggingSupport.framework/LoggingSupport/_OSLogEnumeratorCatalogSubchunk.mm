@@ -1,42 +1,42 @@
 @interface _OSLogEnumeratorCatalogSubchunk
-- (_OSLogEnumeratorCatalogSubchunk)initWithCatalog:(id)a3 subchunk:(catalog_subchunk_s *)a4 range:(_NSRange)a5;
-- (_OSLogEnumeratorCatalogSubchunk)initWithCatalog:(id)a3 subchunk:(catalog_subchunk_s *)a4 range:(_NSRange)a5 oldestTime:(unint64_t)a6 endTime:(unint64_t)a7;
-- (id)decompressedBufferForChunk:(tracev3_chunk_s *)a3;
-- (unint64_t)getBootUUIDIndex:(os_trace_uuid_map_s *)a3;
-- (void)enumerateChunksUsingBlock:(id)a3;
+- (_OSLogEnumeratorCatalogSubchunk)initWithCatalog:(id)catalog subchunk:(catalog_subchunk_s *)subchunk range:(_NSRange)range;
+- (_OSLogEnumeratorCatalogSubchunk)initWithCatalog:(id)catalog subchunk:(catalog_subchunk_s *)subchunk range:(_NSRange)range oldestTime:(unint64_t)time endTime:(unint64_t)endTime;
+- (id)decompressedBufferForChunk:(tracev3_chunk_s *)chunk;
+- (unint64_t)getBootUUIDIndex:(os_trace_uuid_map_s *)index;
+- (void)enumerateChunksUsingBlock:(id)block;
 @end
 
 @implementation _OSLogEnumeratorCatalogSubchunk
 
-- (unint64_t)getBootUUIDIndex:(os_trace_uuid_map_s *)a3
+- (unint64_t)getBootUUIDIndex:(os_trace_uuid_map_s *)index
 {
-  v4 = [(_OSLogEnumeratorCatalog *)self->_catalog bootUUID];
+  bootUUID = [(_OSLogEnumeratorCatalog *)self->_catalog bootUUID];
 
-  return _os_trace_uuid_map_lookup(a3, v4);
+  return _os_trace_uuid_map_lookup(index, bootUUID);
 }
 
-- (void)enumerateChunksUsingBlock:(id)a3
+- (void)enumerateChunksUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v8 = MEMORY[0x277D85DD0];
   v9 = 3221225472;
   v10 = __61___OSLogEnumeratorCatalogSubchunk_enumerateChunksUsingBlock___block_invoke;
   v11 = &unk_2787AED60;
-  v12 = self;
-  v13 = v4;
-  v5 = v4;
+  selfCopy = self;
+  v13 = blockCopy;
+  v5 = blockCopy;
   v6 = _Block_copy(&v8);
   v7 = [(_OSLogEnumeratorCatalog *)self->_catalog store:v8];
   [v7 enumerateChunksInRange:self->_range.location usingBlock:{self->_range.length, v6}];
 }
 
-- (id)decompressedBufferForChunk:(tracev3_chunk_s *)a3
+- (id)decompressedBufferForChunk:(tracev3_chunk_s *)chunk
 {
   v5 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:?];
   v6 = [(NSMutableDictionary *)self->_decompressedChunks objectForKeyedSubscript:v5];
   if (!v6)
   {
-    v6 = [[_OSLogChunkBuffer alloc] initWithChunk:a3 subchunk:self->_subchunk];
+    v6 = [[_OSLogChunkBuffer alloc] initWithChunk:chunk subchunk:self->_subchunk];
     [(NSMutableDictionary *)self->_decompressedChunks setObject:v6 forKeyedSubscript:v5];
   }
 
@@ -45,11 +45,11 @@
   return v7;
 }
 
-- (_OSLogEnumeratorCatalogSubchunk)initWithCatalog:(id)a3 subchunk:(catalog_subchunk_s *)a4 range:(_NSRange)a5 oldestTime:(unint64_t)a6 endTime:(unint64_t)a7
+- (_OSLogEnumeratorCatalogSubchunk)initWithCatalog:(id)catalog subchunk:(catalog_subchunk_s *)subchunk range:(_NSRange)range oldestTime:(unint64_t)time endTime:(unint64_t)endTime
 {
-  length = a5.length;
-  location = a5.location;
-  v14 = a3;
+  length = range.length;
+  location = range.location;
+  catalogCopy = catalog;
   v19.receiver = self;
   v19.super_class = _OSLogEnumeratorCatalogSubchunk;
   v15 = [(_OSLogEnumeratorCatalogSubchunk *)&v19 init];
@@ -59,23 +59,23 @@
     decompressedChunks = v15->_decompressedChunks;
     v15->_decompressedChunks = v16;
 
-    objc_storeStrong(&v15->_catalog, a3);
+    objc_storeStrong(&v15->_catalog, catalog);
     v15->_range.location = location;
     v15->_range.length = length;
-    v15->_subchunk = a4;
-    v15->_ot = a6;
-    v15->_et = a7;
+    v15->_subchunk = subchunk;
+    v15->_ot = time;
+    v15->_et = endTime;
   }
 
   return v15;
 }
 
-- (_OSLogEnumeratorCatalogSubchunk)initWithCatalog:(id)a3 subchunk:(catalog_subchunk_s *)a4 range:(_NSRange)a5
+- (_OSLogEnumeratorCatalogSubchunk)initWithCatalog:(id)catalog subchunk:(catalog_subchunk_s *)subchunk range:(_NSRange)range
 {
-  if (a4)
+  if (subchunk)
   {
-    var1 = a4->var1;
-    var2 = a4->var2;
+    var1 = subchunk->var1;
+    var2 = subchunk->var2;
   }
 
   else
@@ -84,7 +84,7 @@
     var2 = -1;
   }
 
-  return [(_OSLogEnumeratorCatalogSubchunk *)self initWithCatalog:a3 subchunk:a4 range:a5.location oldestTime:a5.length endTime:var1, var2];
+  return [(_OSLogEnumeratorCatalogSubchunk *)self initWithCatalog:catalog subchunk:subchunk range:range.location oldestTime:range.length endTime:var1, var2];
 }
 
 @end
